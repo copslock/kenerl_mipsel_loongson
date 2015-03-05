@@ -1,48 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Mar 2015 00:59:32 +0100 (CET)
-Received: from mail-yh0-f74.google.com ([209.85.213.74]:33848 "EHLO
-        mail-yh0-f74.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007079AbbCDX7bisnr3 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 5 Mar 2015 00:59:31 +0100
-Received: by yhab6 with SMTP id b6so6949463yha.1
-        for <linux-mips@linux-mips.org>; Wed, 04 Mar 2015 15:59:26 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=I0lPuRNhF3+Glrj1Ad/Ic3T8XCL+ZCcioPx1OJKtO+I=;
-        b=iUWIgvAY7Cs2BpdYkm2bryxgOLrRvybrRDX96Hr/mSfRlADX2OnjYqFlT8uJoAoFH+
-         0qLggFZtmL15Um458GVFXh0/hkCtjiG/cca3r6qC2hW6CuTQDxz6TdiMaC1AtRv8Ro5X
-         7NBdD8+70VWmF1tyYcjhP8/JR54DdhKYhr4bAOxDKz/fj+vIWpxkGkJ5p/pyqllPiN7n
-         +OxbUtPlHx2S8yHcD49SVm9g7/3BKKqxxiyNclqJvT0/RWGfR25ogANZ+rv8/R3iemp1
-         XqtGf8d0hHS5b2++3qhVQKjgQt4XygD8Twyt7aBS5PQ42egNrxD+Edty1r1O9yrzprkP
-         HAKw==
-X-Gm-Message-State: ALoCoQljpLywNnYpDfdCP6cG1//gDTrYA07+4ldfbMnKACFIpgBJqgZobpCYMjT2GGIJ7oYbfowE
-X-Received: by 10.236.140.199 with SMTP id e47mr7238670yhj.50.1425513566319;
-        Wed, 04 Mar 2015 15:59:26 -0800 (PST)
-Received: from corpmail-nozzle1-1.hot.corp.google.com ([100.108.1.104])
-        by gmr-mx.google.com with ESMTPS id z16si326913yhz.5.2015.03.04.15.59.25
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 04 Mar 2015 15:59:26 -0800 (PST)
-Received: from abrestic.mtv.corp.google.com ([172.22.65.70])
-        by corpmail-nozzle1-1.hot.corp.google.com with ESMTP id bMOHL6lj.1; Wed, 04 Mar 2015 15:59:26 -0800
-Received: by abrestic.mtv.corp.google.com (Postfix, from userid 137652)
-        id 685CB220874; Wed,  4 Mar 2015 15:59:25 -0800 (PST)
-From:   Andrew Bresticker <abrestic@chromium.org>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        Andrew Bresticker <abrestic@chromium.org>
-Subject: [PATCH] MIPS: Provide fallback reboot/poweroff/halt implementations
-Date:   Wed,  4 Mar 2015 15:59:23 -0800
-Message-Id: <1425513563-9897-1-git-send-email-abrestic@chromium.org>
-X-Mailer: git-send-email 2.2.0.rc0.207.ga3a616c
-Return-Path: <abrestic@google.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Mar 2015 01:59:17 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:7137 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27008111AbbCEA7PsSckP (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 5 Mar 2015 01:59:15 +0100
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id C3B0A428015D7;
+        Thu,  5 Mar 2015 00:59:05 +0000 (GMT)
+Received: from BAMAIL02.ba.imgtec.org (10.20.40.28) by KLMAIL01.kl.imgtec.org
+ (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Thu, 5 Mar
+ 2015 00:59:10 +0000
+Received: from fun-lab.mips.com (10.20.2.221) by bamail02.ba.imgtec.org
+ (10.20.40.28) with Microsoft SMTP Server (TLS) id 14.3.174.1; Wed, 4 Mar 2015
+ 16:59:08 -0800
+From:   Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>
+To:     <linux-mips@linux-mips.org>, <ralf@linux-mips.org>
+CC:     Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>
+Subject: [PATCH 00/15] MIPS: Add cputime/clock/hrtick features
+Date:   Wed, 4 Mar 2015 16:58:42 -0800
+Message-ID: <1425517137-26463-1-git-send-email-dengcheng.zhu@imgtec.com>
+X-Mailer: git-send-email 1.8.5.3
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Originating-IP: [10.20.2.221]
+Return-Path: <DengCheng.Zhu@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46165
+X-archive-position: 46166
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: abrestic@chromium.org
+X-original-sender: dengcheng.zhu@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,57 +43,39 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-If a machine-specific hook is not implemented for restart, poweroff,
-or halt, fall back to halting secondary CPUs, disabling interrupts,
-and spinning.  In the case of restart, attempt to restart the system
-via do_kernel_restart() (which will call any registered restart
-handlers) before halting.
+Some generic features are applicable to MIPS but currently missing. Some
+need low-level support. This patch set is mainly for providing high
+resolution cpu/task time accounting. Testing was done on Malta. Welcome
+Tested-by's for other platforms.
 
-Signed-off-by: Andrew Bresticker <abrestic@chromium.org>
----
- arch/mips/kernel/reset.c | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+Deng-Cheng Zhu (15):
+  MIPS: Add SCHED_HRTICK support
+  MIPS: Fall back to generic implementation of cmpxchg64 on 32-bit
+    platforms
+  MIPS: Add support for full dynticks CPU time accounting
+  MIPS: Add sched_clock support
+  MIPS: csrc-r4k: Implement read_sched_clock
+  MIPS: csrc-bcm1480: Remove FSF mail address from GPL notice
+  MIPS: csrc-bcm1480: Implement read_sched_clock
+  MIPS: csrc-ioasic: Remove FSF mail address from GPL notice
+  MIPS: csrc-ioasic: Implement read_sched_clock
+  MIPS: sgi-ip27: Implement read_sched_clock
+  MIPS: cevt-txx9: Implement read_sched_clock
+  MIPS: jz4740: Implement read_sched_clock
+  MIPS: csrc-sb1250: Remove FSF mail address from GPL notice
+  MIPS: csrc-sb1250: Implement read_sched_clock
+  MIPS: Add support for fine granularity task level IRQ time accounting
 
-diff --git a/arch/mips/kernel/reset.c b/arch/mips/kernel/reset.c
-index 07fc524..87b1f08 100644
---- a/arch/mips/kernel/reset.c
-+++ b/arch/mips/kernel/reset.c
-@@ -29,16 +29,36 @@ void machine_restart(char *command)
- {
- 	if (_machine_restart)
- 		_machine_restart(command);
-+
-+#ifdef CONFIG_SMP
-+	smp_send_stop();
-+#endif
-+	do_kernel_restart(command);
-+	pr_emerg("Reboot failed -- System halted\n");
-+	local_irq_disable();
-+	while (1);
- }
- 
- void machine_halt(void)
- {
- 	if (_machine_halt)
- 		_machine_halt();
-+
-+#ifdef CONFIG_SMP
-+	smp_send_stop();
-+#endif
-+	local_irq_disable();
-+	while (1);
- }
- 
- void machine_power_off(void)
- {
- 	if (pm_power_off)
- 		pm_power_off();
-+
-+#ifdef CONFIG_SMP
-+	smp_send_stop();
-+#endif
-+	local_irq_disable();
-+	while (1);
- }
+ arch/mips/Kconfig               |  6 ++++++
+ arch/mips/include/asm/cmpxchg.h | 11 ++++++-----
+ arch/mips/jz4740/time.c         |  8 ++++++++
+ arch/mips/kernel/cevt-txx9.c    |  9 +++++++++
+ arch/mips/kernel/csrc-bcm1480.c | 12 ++++++++----
+ arch/mips/kernel/csrc-ioasic.c  | 13 +++++++++----
+ arch/mips/kernel/csrc-r4k.c     |  8 ++++++++
+ arch/mips/kernel/csrc-sb1250.c  | 12 ++++++++----
+ arch/mips/sgi-ip27/ip27-timer.c |  8 ++++++++
+ 9 files changed, 70 insertions(+), 17 deletions(-)
+
 -- 
-2.2.0.rc0.207.ga3a616c
+1.8.5.3

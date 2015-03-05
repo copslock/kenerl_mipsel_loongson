@@ -1,59 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Mar 2015 10:00:17 +0100 (CET)
-Received: from mail.emea.novell.com ([130.57.118.101]:38005 "EHLO
-        mail.emea.novell.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27007137AbbCEJAPpj09g convert rfc822-to-8bit (ORCPT
-        <rfc822;groupwise-linux-mips@linux-mips.org:10:1>);
-        Thu, 5 Mar 2015 10:00:15 +0100
-Received: from EMEA1-MTA by mail.emea.novell.com
-        with Novell_GroupWise; Thu, 05 Mar 2015 09:00:14 +0000
-Message-Id: <54F8292E02000078000667F9@mail.emea.novell.com>
-X-Mailer: Novell GroupWise Internet Agent 14.0.1 
-Date:   Thu, 05 Mar 2015 09:00:14 +0000
-From:   "Jan Beulich" <JBeulich@suse.com>
-To:     "Xiaoming Wang" <xiaoming.wang@intel.com>
-Cc:     "Liu@aserp2030.oracle.com" <Liu@aserp2030.oracle.com>,
-        "Zhang@aserp2030.oracle.com" <Zhang@aserp2030.oracle.com>,
-        "chris@chris-wilson.co.uk" <chris@chris-wilson.co.uk>,
-        "david.vrabel@citrix.com" <david.vrabel@citrix.com>,
-        "lauraa@codeaurora.org" <lauraa@codeaurora.org>,
-        "heiko.carstens@de.ibm.com" <heiko.carstens@de.ibm.com>,
-        "linux@horizon.com" <linux@horizon.com>,
-        "Chuansheng Liu" <chuansheng.liu@intel.com>,
-        "Dongxing Zhang" <dongxing.zhang@intel.com>,
-        "takahiro.akashi@linaro.org" <takahiro.akashi@linaro.org>,
-        "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "ralf@linux-mips.org" <ralf@linux-mips.org>,
-        "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
-        "boris.ostrovsky@oracle.com" <boris.ostrovsky@oracle.com>,
-        "Konrad RzeszutekWilk" <konrad.wilk@oracle.com>,
-        "d.kasatkin@samsung.com" <d.kasatkin@samsung.com>,
-        "pebolle@tiscali.nl" <pebolle@tiscali.nl>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH v5] modify the IO_TLB_SEGSIZE and
- IO_TLB_DEFAULT_SIZE configurable as flexible requirement about
- SW-IOMMU.
-References: <1425370269-29658-1-git-send-email-xiaoming.wang@intel.com>
- <20150304194237.GA12884@l.oracle.com>
- <FA47D36D6EC9FE4CB463299737C09B9901D05BBA@shsmsx102.ccr.corp.intel.com>
- <54F8247B02000078000667AF@mail.emea.novell.com>
- <FA47D36D6EC9FE4CB463299737C09B9901D05DF8@shsmsx102.ccr.corp.intel.com>
-In-Reply-To: <FA47D36D6EC9FE4CB463299737C09B9901D05DF8@shsmsx102.ccr.corp.intel.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 8BIT
-Content-Disposition: inline
-Return-Path: <JBeulich@suse.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Mar 2015 11:57:08 +0100 (CET)
+Received: from ip4-83-240-67-251.cust.nbox.cz ([83.240.67.251]:35876 "EHLO
+        ip4-83-240-18-248.cust.nbox.cz" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S27007189AbbCEK5EsaUJJ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 5 Mar 2015 11:57:04 +0100
+Received: from ku by ip4-83-240-18-248.cust.nbox.cz with local (Exim 4.85)
+        (envelope-from <jslaby@suse.cz>)
+        id 1YTTSS-00063K-La; Thu, 05 Mar 2015 11:56:48 +0100
+From:   Jiri Slaby <jslaby@suse.cz>
+To:     stable@vger.kernel.org
+Cc:     James Hogan <james.hogan@imgtec.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@imgtec.com>,
+        Gleb Natapov <gleb@kernel.org>, kvm@vger.kernel.org,
+        linux-mips@linux-mips.org, Jiri Slaby <jslaby@suse.cz>
+Subject: [patch added to the 3.12 stable tree] MIPS: Export FP functions used by lose_fpu(1) for KVM
+Date:   Thu,  5 Mar 2015 11:56:31 +0100
+Message-Id: <1425553008-23213-1-git-send-email-jslaby@suse.cz>
+X-Mailer: git-send-email 2.3.0
+Return-Path: <jslaby@suse.cz>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
-X-Orcpt: rfc822;groupwise-linux-mips@linux-mips.org:10:1
-Original-Recipient: rfc822;groupwise-linux-mips@linux-mips.org:10:1
-X-Envid: groupwise.54F81B1E.B9F:78:76fe:N
-Envelope-Id: groupwise.54F81B1E.B9F:78:76fe:N
-X-archive-position: 46197
+X-Orcpt: rfc822;linux-mips@linux-mips.org
+Original-Recipient: rfc822;linux-mips@linux-mips.org
+X-archive-position: 46198
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: JBeulich@suse.com
+X-original-sender: jslaby@suse.cz
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -66,64 +39,61 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
->>> On 05.03.15 at 09:52, <xiaoming.wang@intel.com> wrote:
->> From: Jan Beulich [mailto:JBeulich@suse.com]
->> Sent: Thursday, March 5, 2015 4:40 PM
->> >>> On 05.03.15 at 04:53, <xiaoming.wang@intel.com> wrote:
->> >> From: Konrad Rzeszutek Wilk [mailto:konrad.wilk@oracle.com]
->> >> Sent: Thursday, March 5, 2015 3:43 AM On Tue, Mar 03, 2015 at
->> >> 04:11:09PM +0800, Wang Xiaoming wrote:
->> >> > @@ -101,13 +119,32 @@ setup_io_tlb_npages(char *str)  {
->> >> >  	if (isdigit(*str)) {
->> >> >  		io_tlb_nslabs = simple_strtoul(str, &str, 0);
->> >> > -		/* avoid tail segment of size < IO_TLB_SEGSIZE */
->> >> > -		io_tlb_nslabs = ALIGN(io_tlb_nslabs, IO_TLB_SEGSIZE);
->> >> >  	}
->> >> >  	if (*str == ',')
->> >> >  		++str;
->> >> > -	if (!strcmp(str, "force"))
->> >> > +	if (!strncmp(str, "force", 5)) {
->> >> >  		swiotlb_force = 1;
->> >> > +		str += 5;
->> >> > +	}
->> >>
->> >> So the format is now:
->> >>
->> >> 	Format: { <int> | force | <int> | <int>}
->> >>
->> >> which means I can do
->> >> 	32,22323,force
->> >>
->> >> Or
->> >> 	force,32
->> >>
->> >> Or
->> >> 	32,force
->> >>
->> > If I use Format: { <int>,force,<int>,<int>} 32,22323,force can't
->> > acceptable.
->> > There are three  <int>  here, if there are out of order, that will
->> > cause confuse.
->> > Only 	32,force,32323
->> > Or	32,,32323,2322
->> > Or	,,323222,3232
->> > Are available.
->> 
->> You need to make sure that all previously valid variants are still usable, 
-> i.e.
->> force alone, a number alone, force,<number> and <number>,force. How
->> many variants you want to support with your additions is mostly up to you;
->> I'd recommend permitting force in any position.
->> 
-> I don't think it's suitable to accept that "force" in any position.
-> If we defined Format: { <int>,force,<int>,<int>}
-> "force" must be located in second position. 
-> And we add comment for each <int> also.
-> Every position may be defined specifically.
+From: James Hogan <james.hogan@imgtec.com>
 
-As said, with the old format allowing force in either first or second
-position, you have to at least accept that in the new version too.
-Accepting force in any position would be a (desirable) courtesy to
-the user.
+This patch has been added to the 3.12 stable tree. If you have any
+objections, please let us know.
 
-Jan
+===============
+
+commit 3ce465e04bfd8de9956d515d6e9587faac3375dc upstream.
+
+Export the _save_fp asm function used by the lose_fpu(1) macro to GPL
+modules so that KVM can make use of it when it is built as a module.
+
+This fixes the following build error when CONFIG_KVM=m due to commit
+f798217dfd03 ("KVM: MIPS: Don't leak FPU/DSP to guest"):
+
+ERROR: "_save_fp" [arch/mips/kvm/kvm.ko] undefined!
+
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Fixes: f798217dfd03 (KVM: MIPS: Don't leak FPU/DSP to guest)
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Paul Burton <paul.burton@imgtec.com>
+Cc: Gleb Natapov <gleb@kernel.org>
+Cc: kvm@vger.kernel.org
+Cc: linux-mips@linux-mips.org
+Patchwork: https://patchwork.linux-mips.org/patch/9260/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: Jiri Slaby <jslaby@suse.cz>
+---
+ arch/mips/kernel/mips_ksyms.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/arch/mips/kernel/mips_ksyms.c b/arch/mips/kernel/mips_ksyms.c
+index 6e58e97fcd39..60adf7969337 100644
+--- a/arch/mips/kernel/mips_ksyms.c
++++ b/arch/mips/kernel/mips_ksyms.c
+@@ -14,6 +14,7 @@
+ #include <linux/mm.h>
+ #include <asm/uaccess.h>
+ #include <asm/ftrace.h>
++#include <asm/fpu.h>
+ 
+ extern void *__bzero(void *__s, size_t __count);
+ extern long __strncpy_from_user_nocheck_asm(char *__to,
+@@ -26,6 +27,11 @@ extern long __strnlen_user_nocheck_asm(const char *s);
+ extern long __strnlen_user_asm(const char *s);
+ 
+ /*
++ * Core architecture code
++ */
++EXPORT_SYMBOL_GPL(_save_fp);
++
++/*
+  * String functions
+  */
+ EXPORT_SYMBOL(memset);
+-- 
+2.3.0

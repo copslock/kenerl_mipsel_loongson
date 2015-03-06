@@ -1,77 +1,80 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Mar 2015 20:41:52 +0100 (CET)
-Received: from mail-la0-f51.google.com ([209.85.215.51]:38109 "EHLO
-        mail-la0-f51.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008272AbbCFTluj5Bic (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 6 Mar 2015 20:41:50 +0100
-Received: by labgf13 with SMTP id gf13so35179353lab.5;
-        Fri, 06 Mar 2015 11:41:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        bh=fFCjkS94TKBXco3FWlsF3MsZxbSzJXqLSQEuszcluoY=;
-        b=XUEbvSVaayyCG5rlt2H5bDE4v3wpKshB6of/2DY2HtnPOE5UEa+FHNSXgTvBCDuLQS
-         NV1KYzBJMv5RUaYjROmWr+HmcszIGqp28Fz8ZiE4R2v9GMa53P92yQQk5hi0JikSvzg+
-         K+gto9sVZyhqjnPWvmx6P5roKhmhHg5Hog24qOl4SgRMmzAC8pU0sXQ3umOp4TebB5nQ
-         XQY1BHbY5fLv6YpHa0JFxwl4GBoY0o8RQhz9xZ82u2V2hT8CPtL7iRf1O1H4cd+46bp0
-         uyu+B2ZTkkNoj7GynBqlsWOG+XYr5OzWrq1t6sSuTvRJcP2t5tjDIZp3IeGYt8xcDh2A
-         A1jA==
-MIME-Version: 1.0
-X-Received: by 10.112.8.101 with SMTP id q5mr8546632lba.19.1425670905722; Fri,
- 06 Mar 2015 11:41:45 -0800 (PST)
-Received: by 10.25.155.130 with HTTP; Fri, 6 Mar 2015 11:41:45 -0800 (PST)
-In-Reply-To: <54F855E4.9030106@suse.de>
-References: <1425560442-13367-1-git-send-email-valentinrothberg@gmail.com>
-        <54F855E4.9030106@suse.de>
-Date:   Fri, 6 Mar 2015 11:41:45 -0800
-Message-ID: <CAKdAkRRLk8rHyUw_fAGpNu_u8wkNyL2kDqFQ-=bigefkXqUcxA@mail.gmail.com>
-Subject: Re: [PATCH] Remove deprecated IRQF_DISABLED flag entirely
-From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To:     Hannes Reinecke <hare@suse.de>
-Cc:     Valentin Rothberg <valentinrothberg@gmail.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Jonathan Corbet <corbet@lwn.net>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Mar 2015 21:42:34 +0100 (CET)
+Received: from bh-25.webhostbox.net ([208.91.199.152]:34014 "EHLO
+        bh-25.webhostbox.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27008272AbbCFUmchUB5I (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 6 Mar 2015 21:42:32 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=roeck-us.net; s=default;
+        h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date; bh=gwE8Dgc8rfgudFBcVvSQQVTI9//UUJdUj7iRfrY7VBM=;
+        b=NgXNCaxHchMNKIr9v5bHTivAoxPN/Ndr6yvTrexBhQl22WkjDeUjJWKCwtnneJAmM5nDcyGIXwsDTYXfciP2LtT4TFjX0IUSwMrOiS2xIjqgr+SNmPxDcBi3YkcCoB144qmC6v5Edhgt0z+A4s/1naCD/PSu5d55YpOtSVJtrhQ=;
+Received: from mailnull by bh-25.webhostbox.net with sa-checked (Exim 4.82)
+        (envelope-from <linux@roeck-us.net>)
+        id 1YTz4k-002SWo-Jn
+        for linux-mips@linux-mips.org; Fri, 06 Mar 2015 20:42:26 +0000
+Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:55645 helo=localhost)
+        by bh-25.webhostbox.net with esmtpa (Exim 4.82)
+        (envelope-from <linux@roeck-us.net>)
+        id 1YTz4P-002SPb-O2; Fri, 06 Mar 2015 20:42:06 +0000
+Date:   Fri, 6 Mar 2015 12:42:04 -0800
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     James Hogan <james.hogan@imgtec.com>, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        satoru.takeuchi@gmail.com, shuah.kh@samsung.com,
+        stable@vger.kernel.org, linux-mips@linux-mips.org,
+        Paolo Bonzini <pbonzini@redhat.com>,
         Ralf Baechle <ralf@linux-mips.org>,
-        David Woodhouse <dwmw2@infradead.org>,
-        Brian Norris <computersforpeace@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Paul Bolle <pebolle@tiscali.nl>, Jiri Kosina <jkosina@suse.cz>,
-        Ewan Milne <emilne@redhat.com>, Christoph Hellwig <hch@lst.de>,
-        Huacai Chen <chenhc@lemote.com>,
-        Hongliang Tao <taohl@lemote.com>, Nishanth Menon <nm@ti.com>,
-        Santosh Shilimkar <santosh.shilimkar@ti.com>,
-        Peter Ujfalusi <peter.ujfalusi@ti.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Rajendra Nayak <rnayak@ti.com>,
-        Sricharan R <r.sricharan@ti.com>,
-        Afzal Mohammed <afzal@ti.com>, Keerthy <j-keerthy@ti.com>,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        Zhou Wang <wangzhou1@hisilicon.com>,
-        Felipe Balbi <balbi@ti.com>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Kukjin Kim <kgene.kim@samsung.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Quentin Lambert <lambert.quentin@gmail.com>,
-        Eyal Perry <eyalpe@mellanox.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Peter Zijlstra <peterz@infradead.org>,
-        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-        lkml <linux-kernel@vger.kernel.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        iss_storagedev@hp.com, linux-mtd@lists.infradead.org,
-        linux-usb@vger.kernel.org
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <dmitry.torokhov@gmail.com>
+        Paul Burton <paul.burton@imgtec.com>,
+        Gleb Natapov <gleb@kernel.org>, kvm@vger.kernel.org
+Subject: Re: [PATCH stable 3.10, 3.12, 3.14] MIPS: Export FP functions used
+ by lose_fpu(1) for KVM
+Message-ID: <20150306204204.GA25430@roeck-us.net>
+References: <54F7BE2E.8070708@roeck-us.net>
+ <1425571724-9480-1-git-send-email-james.hogan@imgtec.com>
+ <20150306063034.GA6914@kroah.com>
+ <20150306162249.GA28962@roeck-us.net>
+ <20150306174516.GA3930@kroah.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20150306174516.GA3930@kroah.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+X-Authenticated_sender: guenter@roeck-us.net
+X-OutGoing-Spam-Status: No, score=-1.0
+X-CTCH-PVer: 0000001
+X-CTCH-Spam: Unknown
+X-CTCH-VOD: Unknown
+X-CTCH-Flags: 0
+X-CTCH-RefID: str=0001.0A020203.54FA1132.020D,ss=1,re=0.001,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+X-CTCH-Score: 0.001
+X-CTCH-ScoreCust: 0.000
+X-CTCH-Rules: C_4847,
+X-CTCH-SenderID: linux@roeck-us.net
+X-CTCH-SenderID-Flags: 0
+X-CTCH-SenderID-TotalMessages: 9
+X-CTCH-SenderID-TotalSpam: 0
+X-CTCH-SenderID-TotalSuspected: 0
+X-CTCH-SenderID-TotalConfirmed: 0
+X-CTCH-SenderID-TotalBulk: 0
+X-CTCH-SenderID-TotalVirus: 0
+X-CTCH-SenderID-TotalRecipients: 0
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - bh-25.webhostbox.net
+X-AntiAbuse: Original Domain - linux-mips.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - roeck-us.net
+X-Get-Message-Sender-Via: bh-25.webhostbox.net: mailgid no entry from get_relayhosts_entry
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+Return-Path: <linux@roeck-us.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46243
+X-archive-position: 46244
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dmitry.torokhov@gmail.com
+X-original-sender: linux@roeck-us.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -84,49 +87,55 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Mar 5, 2015 at 5:11 AM, Hannes Reinecke <hare@suse.de> wrote:
-> On 03/05/2015 01:59 PM, Valentin Rothberg wrote:
->> The IRQF_DISABLED is a NOOP and has been scheduled for removal since
->> Linux v2.6.36 by commit 6932bf37bed4 ("genirq: Remove IRQF_DISABLED from
->> core code").
->>
->> According to commit e58aa3d2d0cc ("genirq: Run irq handlers with
->> interrupts disabled") running IRQ handlers with interrupts enabled can
->> cause stack overflows when the interrupt line of the issuing device is
->> still active.
->>
->> This patch ends the grace period for IRQF_DISABLED (i.e., SA_INTERRUPT
->> in older versions of Linux) and removes the definition and all remaining
->> usages of this flag.
->>
->> Signed-off-by: Valentin Rothberg <valentinrothberg@gmail.com>
->> ---
->> The bigger hunk in Documentation/scsi/ncr53c8xx.txt is removed entirely
->> as IRQF_DISABLED is gone now; the usage in older kernel versions
->> (including the old SA_INTERRUPT flag) should be discouraged.  The
->> trouble of using IRQF_SHARED is a general problem and not specific to
->> any driver.
->>
->> I left the reference in Documentation/PCI/MSI-HOWTO.txt untouched since
->> it has already been removed in linux-next by commit b0e1ee8e1405
->> ("MSI-HOWTO.txt: remove reference on IRQF_DISABLED").
->>
->> All remaining references are changelogs that I suggest to keep.
->
-> While you're at it: having '0x0' as a value for the irq flags looks
-> a bit silly, and makes you wonder what the parameter is for.
->
-> I would rather like to have
->
-> #define IRQF_NONE 0x0
->
-> and use it for these cases.
-> That way the scope of that parameter is clear.
+On Fri, Mar 06, 2015 at 09:45:16AM -0800, Greg Kroah-Hartman wrote:
+> On Fri, Mar 06, 2015 at 08:22:49AM -0800, Guenter Roeck wrote:
+> > On Thu, Mar 05, 2015 at 10:30:34PM -0800, Greg Kroah-Hartman wrote:
+> > > On Thu, Mar 05, 2015 at 04:08:44PM +0000, James Hogan wrote:
+> > > > [ Upstream commit 3ce465e04bfd8de9956d515d6e9587faac3375dc ]
+> > > > 
+> > > > Export the _save_fp asm function used by the lose_fpu(1) macro to GPL
+> > > > modules so that KVM can make use of it when it is built as a module.
+> > > > 
+> > > > This fixes the following build error when CONFIG_KVM=m due to commit
+> > > > f798217dfd03 ("KVM: MIPS: Don't leak FPU/DSP to guest"):
+> > > > 
+> > > > ERROR: "_save_fp" [arch/mips/kvm/kvm.ko] undefined!
+> > > > 
+> > > > Signed-off-by: James Hogan <james.hogan@imgtec.com>
+> > > > Fixes: f798217dfd03 (KVM: MIPS: Don't leak FPU/DSP to guest)
+> > > > Cc: Paolo Bonzini <pbonzini@redhat.com>
+> > > > Cc: Ralf Baechle <ralf@linux-mips.org>
+> > > > Cc: Paul Burton <paul.burton@imgtec.com>
+> > > > Cc: Gleb Natapov <gleb@kernel.org>
+> > > > Cc: kvm@vger.kernel.org
+> > > > Cc: linux-mips@linux-mips.org
+> > > > Cc: <stable@vger.kernel.org> # 3.10...3.15
+> > > > Patchwork: https://patchwork.linux-mips.org/patch/9260/
+> > > > Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+> > > > [james.hogan@imgtec.com: Only export when CPU_R4K_FPU=y prior to v3.16,
+> > > >  so as not to break the Octeon build which excludes FPU support. KVM
+> > > >  depends on MIPS32r2 anyway.]
+> > > > Signed-off-by: James Hogan <james.hogan@imgtec.com>
+> > > > ---
+> > > > Appologies for the previous cavium_octeon_defconfig link breakage.
+> > > > Octeon has the symbol since 3.16, but not before. This backport should
+> > > > do the trick for stable 3.10, 3.12, and 3.14. Build tested with
+> > > > cavium_octeon_defconfig and malta_kvm_defconfig on those stable
+> > > > branches.
+> > > > ---
+> > > >  arch/mips/kernel/mips_ksyms.c | 8 ++++++++
+> > > >  1 file changed, 8 insertions(+)
+> > > 
+> > > Now fixed up, thanks.
+> > > 
+> > My auto-builders still fail to build cavium_octeon_defconfig for 3.10 and 3.14,
+> > and as far as I can see they picked up no changes. Did you push the changes into
+> > the stable queue repository ?
+> 
+> I didn't push it publically, didn't have access to my 2-factor key so
+> couldn't do it.  Should be there now, sorry about that.
+> 
+Confirmed, all is good now.
 
-No, that would imply that IRQ never triggers whereas passing 0 means
-we keep triggers that have been set by the platform.
-
-Thanks.
-
--- 
-Dmitry
+Thanks,
+Guenter

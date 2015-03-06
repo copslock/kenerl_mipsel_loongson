@@ -1,52 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Mar 2015 19:07:47 +0100 (CET)
-Received: from mail-qg0-f48.google.com ([209.85.192.48]:36879 "EHLO
-        mail-qg0-f48.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008280AbbCFSHqKnXlR (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 6 Mar 2015 19:07:46 +0100
-Received: by qgdz107 with SMTP id z107so14520571qgd.4
-        for <linux-mips@linux-mips.org>; Fri, 06 Mar 2015 10:07:40 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Mar 2015 19:10:26 +0100 (CET)
+Received: from mail-qg0-f45.google.com ([209.85.192.45]:37681 "EHLO
+        mail-qg0-f45.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008276AbbCFSKYA1Eia (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 6 Mar 2015 19:10:24 +0100
+Received: by qgdz107 with SMTP id z107so14539885qgd.4
+        for <linux-mips@linux-mips.org>; Fri, 06 Mar 2015 10:10:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20120113;
         h=mime-version:sender:in-reply-to:references:date:message-id:subject
          :from:to:cc:content-type;
-        bh=QPav9tpINL3owXAcpxdrqRuzjEpVU+LQ8FnU2lTVLI8=;
-        b=nrCuygQNdygD5ObuMp8FwU/5jHms6h7ad8kHOZZn9n3EHIKtTOKqx54Bp+AjoO4V0u
-         bw5rcOmsx2xQQ/BSdIoBhEN6oENQm2uEJhTddJ7vPGRnCOX8SjQBsjsIcf8i2zu3KeuF
-         8FULzUFAw8n925BAgsJ8E2QG8G+uF4wxAtuCLrgBxsCXCf3oDz3THDK8MKGqvx2iWDpi
-         uVOVGf6ufjyQyzhvC+8o+DLToSt4881fspJaIrTdPRDdUQBGoWyG9ynkO9tg/7UKoKTa
-         TjC+YcvMSEBPgtXWo82PIkyJmq9g56hJG2b4erEVwY2Uo2+cx7Sr4gVWLLkq4At7hx6/
-         majw==
+        bh=lcWSz0GXnUX+fG6ev9TeK2b2JGunYUytb2HItvKri6E=;
+        b=QzYVRxU7q8vpLp92ktaCi2lH3m98L0V6IA6j1n7+krplbhPHzdRutiefRqTh7/Uroi
+         1WQ4b3adP6E6aTVAce5KRoKd1CNtGjQ+QYHKNz14cL07gsj1zip7su6wzynMRFvxXmOm
+         Du249eaQ93yJtiASI2yFjZL1wfEgm6UJ13Z9clUmICXdSz0Xveu6Tw2/gqu4F6gpwQni
+         IyWLjxqK0FTn5tNrXDQJRWI3Da6AVgGT5qunulCEJZexSJCrRePt5i/KxKIUBe5Q9Ovq
+         FB9ENNJFidxbeNzPWSiPKbQbHxLUCTdd8KPP0IbX5ekKl0irfXMufWi9SYIDQVoAAWEt
+         T5aQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=mime-version:sender:in-reply-to:references:date:message-id:subject
          :from:to:cc:content-type;
-        bh=QPav9tpINL3owXAcpxdrqRuzjEpVU+LQ8FnU2lTVLI8=;
-        b=aUNEoy11FGByMQVh6LcFVjWtqw0OwSKbpPUfPg7agnSpQA3bN/rP5Ha0k+kLCJivHE
-         QOYbuTzBnKrhLYy7TnNu94IEDs/SfLZAv+POdyIqpSnowdrhjlMTAFQRZhRO7fX5Kmd5
-         F065Ewo9e1jfrgD+U3cwtYmhVI4AzA+5dqfTw=
+        bh=lcWSz0GXnUX+fG6ev9TeK2b2JGunYUytb2HItvKri6E=;
+        b=SLjORg4XO6B/X8VdJz3vcI6MgCokGggRT7YleakqOKFiaxM5S7PeuZFAjpNphgfsuM
+         kkxlcEhJ/HdpyY2Zy93JBp1H8feJ1sp/jP1vsZM6U5xsl7+mBo223ANsPIsvSMuUF0HA
+         CUAdIIJCc5/r9bf2DNxWZ/GOaAkgZHu6FTNlk=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:mime-version:sender:in-reply-to:references:date
          :message-id:subject:from:to:cc:content-type;
-        bh=QPav9tpINL3owXAcpxdrqRuzjEpVU+LQ8FnU2lTVLI8=;
-        b=AoPVAKuVJrjYEyvt3rOlRCc53j2L2NuMi/TMfcEpkh8aRqQkvLuPqNvTFXVUiM5hMS
-         Ognggso7lCM8SpRMVOwV54wN96ktulSjdUZXcZABb+OIRmnHPP4xKXTbyUvPz2VDifzw
-         IcQgVoelW6MC7yZaaXrZTOtTrKAYf+qXnW7zldWySxM+Jfn5Xn9FHhEFJq/PFvtz/rSO
-         Bj2Fzetwt0b1Bd2SPEATWflGRZIDKwNg+j9ogHsSK54S1im8oNpp0fWE8vydjB927INi
-         smvtsDoYLrf+OuZ8JosIWlm9M2D8tA//jlwew1/ikbjX1evnuYRq9B8N9xxgbTd40dCH
-         dNyg==
-X-Gm-Message-State: ALoCoQlt5c1jzMsQX9EL52kS7MDNHcVBqCfTQzgHT5bdq4L9HdhwJHN+et2UoMQj2ibWd7vypWv2
+        bh=lcWSz0GXnUX+fG6ev9TeK2b2JGunYUytb2HItvKri6E=;
+        b=i+XvGkb/EXAVjwS2svkVingMQzjjeun2P02XWaGwA2D3CoRqzZku53Kbf0JiPqisJ6
+         9AuSwe55Ly0NJAk/zhlRf1vFPTbFiJkRUCCY/pjETVylYCNlFvLpYCILEaSwMnCqLiF6
+         +FHHnG6kmby3zDoBDCkWo9HUM9DS+EoZz9KLbKtG0Az+OS9O3MGNNYUbmvAjjFZRAuRM
+         svRjyALtGkclu/Saow/kfj0qVL4FstYs5+kVmkgqkWWb3t9iLr4WJsF/bMfkpzdsN4Si
+         oCQdGL6Ur86ey3xJk9MNU5AQX106of/ufc7keFjDnwTPzbn9xFffLNo8mpZ3QAalDSPJ
+         +i5w==
+X-Gm-Message-State: ALoCoQka/rvilqtbzNtFygsSyVbTu7LnwJELpvlSfxG1MbBVf7/6ZOLPEFxl7UZKwpkjctRmdxnA
 MIME-Version: 1.0
-X-Received: by 10.55.16.83 with SMTP id a80mr19377456qkh.86.1425665260739;
- Fri, 06 Mar 2015 10:07:40 -0800 (PST)
-Received: by 10.140.19.72 with HTTP; Fri, 6 Mar 2015 10:07:40 -0800 (PST)
-In-Reply-To: <CACRpkdbCOHNPs5Y58h--X6pOVvYyxTrgcFhFyk5dWE+JLo=rhg@mail.gmail.com>
+X-Received: by 10.55.55.4 with SMTP id e4mr20394517qka.97.1425665419011; Fri,
+ 06 Mar 2015 10:10:19 -0800 (PST)
+Received: by 10.140.19.72 with HTTP; Fri, 6 Mar 2015 10:10:18 -0800 (PST)
+In-Reply-To: <CACRpkdbCavYLk-Uo8hjTrGcGLJe6NEB9dVPVNm_fyd3eGccnEw@mail.gmail.com>
 References: <1424744104-14151-1-git-send-email-abrestic@chromium.org>
-        <CACRpkdbCOHNPs5Y58h--X6pOVvYyxTrgcFhFyk5dWE+JLo=rhg@mail.gmail.com>
-Date:   Fri, 6 Mar 2015 10:07:40 -0800
-X-Google-Sender-Auth: qjWJrKJNBzNVV2EyGb4w5eIFNuc
-Message-ID: <CAL1qeaEqcL24DM=w4jgboAvDRi93AidkC9soXPAV9uF4C18JCg@mail.gmail.com>
-Subject: Re: [PATCH 0/2] pinctrl: Support for IMG Pistachio
+        <1424744104-14151-2-git-send-email-abrestic@chromium.org>
+        <CACRpkdbCavYLk-Uo8hjTrGcGLJe6NEB9dVPVNm_fyd3eGccnEw@mail.gmail.com>
+Date:   Fri, 6 Mar 2015 10:10:18 -0800
+X-Google-Sender-Auth: iHYbfMJumLA9CGmXHjxQ1YqQrxk
+Message-ID: <CAL1qeaFcQFBydV7Gnkyp_w9d7M4yivEmX-1tB0OhbtocYeO=AQ@mail.gmail.com>
+Subject: Re: [PATCH 1/2] pinctrl: Add Pistachio SoC pin control binding document
 From:   Andrew Bresticker <abrestic@chromium.org>
 To:     Linus Walleij <linus.walleij@linaro.org>
 Cc:     Alexandre Courbot <gnurou@gmail.com>,
@@ -57,13 +58,19 @@ Cc:     Alexandre Courbot <gnurou@gmail.com>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         Ezequiel Garcia <ezequiel.garcia@imgtec.com>,
         James Hartley <james.hartley@imgtec.com>,
-        James Hogan <james.hogan@imgtec.com>
+        James Hogan <james.hogan@imgtec.com>,
+        Damien Horsley <Damien.Horsley@imgtec.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Pawel Moll <pawel.moll@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ian Campbell <ijc+devicetree@hellion.org.uk>,
+        Kumar Gala <galak@codeaurora.org>
 Content-Type: text/plain; charset=UTF-8
 Return-Path: <abrestic@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46238
+X-archive-position: 46239
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -80,18 +87,61 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Mar 6, 2015 at 3:29 AM, Linus Walleij <linus.walleij@linaro.org> wrote:
+On Fri, Mar 6, 2015 at 3:37 AM, Linus Walleij <linus.walleij@linaro.org> wrote:
 > On Tue, Feb 24, 2015 at 3:15 AM, Andrew Bresticker
 > <abrestic@chromium.org> wrote:
 >
->>  I'd like this to go through the MIPS tree with
->> Linus'/Alex's ACKs if possible.
+>> Add a device-tree binding document for the pin controller present
+>> on the IMG Pistachio SoC.
+>>
+>> Signed-off-by: Damien Horsley <Damien.Horsley@imgtec.com>
+>> Signed-off-by: Andrew Bresticker <abrestic@chromium.org>
+> (...)
+>> +Note that the GPIO bank sub-nodes *must* be listed in order.
 >
-> Why? It will only help creating merge conflicts.
-> There seem to be no compile-related dependencies, just Kconfig
-> symbols, so patches using this can go in orthogonally.
+> Usually we use aliases to mark the order of things. e.g.:
+>
+>         aliases {
+>                 gpio0 = &gpio0;
+>                 gpio1 = &gpio1;
+>                 gpio2 = &gpio2;
+>                 ethernet0 = &eth0;
+>                 ethernet1 = &eth1;
+>         };
+>
+> (arch/arm/boot/dts/armada-375.dtsi)
 
-Ah, ok.  If the missing Kconfig symbol is not a big deal, then let's
-take them through your tree.
+Ok.
 
--Andrew
+>> +Required properties for pin configuration sub-nodes:
+>> +----------------------------------------------------
+>> + - pins: List of pins to which the configuration applies. See below for a
+>> +   list of possible pins.
+>> +
+>> +Optional properties for pin configuration sub-nodes:
+>> +----------------------------------------------------
+>> + - function: Mux function for the specified pins. This is not applicable for
+>> +   non-MFIO pins. See below for a list of valid functions for each pin.
+>> + - bias-high-impedance: Enable high-impedance mode.
+>> + - bias-pull-up: Enable weak pull-up.
+>> + - bias-pull-down: Enable weak pull-down.
+>> + - bias-bus-hold: Enable bus-keeper mode.
+>> + - drive-strength: Drive strength in mA. Supported values: 2, 4, 8, 12.
+>> + - input-schmitt-enable: Enable Schmitt trigger.
+>> + - input-schmitt-disable: Disable Schmitt trigger.
+>> + - slew-rate: Slew rate control. 0 for slow, 1 for fast.
+>
+> We actually haven't specified that function+pins is a valid pattern,
+> a lot of drivers just started doing that :(
+>
+> function+groups is documented for muxing.
+>
+> group + config opts is documented for config.
+>
+> Please consider patching the generic bindings to reflect this
+> mux use of pins... We need to discuss it.
+
+Sure, I can update that documentation.
+
+Thanks,
+Andrew

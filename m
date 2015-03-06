@@ -1,31 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Mar 2015 12:30:02 +0100 (CET)
-Received: from mail-oi0-f52.google.com ([209.85.218.52]:47072 "EHLO
-        mail-oi0-f52.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007216AbbCFLaBI6RMt (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 6 Mar 2015 12:30:01 +0100
-Received: by oiav63 with SMTP id v63so17096248oia.13
-        for <linux-mips@linux-mips.org>; Fri, 06 Mar 2015 03:29:55 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Mar 2015 12:37:16 +0100 (CET)
+Received: from mail-oi0-f54.google.com ([209.85.218.54]:37242 "EHLO
+        mail-oi0-f54.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012677AbbCFLhOVSX0r (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 6 Mar 2015 12:37:14 +0100
+Received: by oigi138 with SMTP id i138so17127638oig.4
+        for <linux-mips@linux-mips.org>; Fri, 06 Mar 2015 03:37:09 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:mime-version:in-reply-to:references:date
          :message-id:subject:from:to:cc:content-type;
-        bh=4PJ56WiwclOOOUDZqWw9AnxfDC1bwX+hg9Ql3Bt0ENM=;
-        b=X9xxKAiaB1jp6Y2jE8jTs43o572EdZlQzddWGaIHSolRnzbQQs2NBbsi/vL32eKa5A
-         uDO9KoOrSpT8dFHtoLSL3OpJPoDfrWLmgbfW8TiBM/q3OYB4oTx/v/GX5j/+YJjoiEkk
-         b7+GZcZ8rU2QpcL8yngFMpwbrEwbgkZyCpi3kx1ZUwY1m6N2Hs+jfWZ5N2ge+I/lA2HE
-         QRX8RBJrdJeXwi6b+HdWEbfDL5rcOLv964KIj2S6oqLbdC3VhF6N1+ebzyAIhUUPtV+/
-         /7jG6tXA7bQW2xcHRqu4RZqwpgYNd8EjMpCRzx+Y7MdNTojA5s5dpe/rVBsDfOgLqx1X
-         tHAg==
-X-Gm-Message-State: ALoCoQkcT8+CxjJuAMWivodXy+/nmNfOt/1LqbMZjLl/YMHXXD2wonkzP1Qx0I87xYNxEQxRZ6jH
+        bh=cImJa/xVz8eLzAiFmvWdMApl/eftg/L5MiE0ym8ex/E=;
+        b=dt6Db8VAS2rmvMNgtiq1FM8S3fwkHiRlCjVeZy2NyPp4AU56xeIszNcLr+i5VG+KJT
+         S3TfAoGOiq4mcxNYw7Wms1gQQN1a90RvPik1tiF5qThXJ/TzhRjfv31UqxLn1eGdMRIO
+         Zdhz6Y/geatGPbraLj5/jCYen3h6j1J7Uy9IGvVuxAQGBJCANI4LgiTedBSDgx+Lomf1
+         WGzUPgd85Dagm9ezptypFEXRzTcrXH48C3lUtBf0SfybhGI/1T2aEh4EoGrrTl0WagAJ
+         Jp+LWrqEf0CzBrDlaDi7MFDMUYe8/weUNL6aZXwaX0ioHe9SwIOgSQ8OUh5b27USwbvz
+         Ym6g==
+X-Gm-Message-State: ALoCoQkwrTh/N8nePychh1wXLk60bewtmm60aXPrcUzGJt4g5l8jLEGN9LZyFRarBuvdIUn7xy2v
 MIME-Version: 1.0
-X-Received: by 10.60.42.42 with SMTP id k10mr10649086oel.15.1425641395872;
- Fri, 06 Mar 2015 03:29:55 -0800 (PST)
-Received: by 10.182.132.45 with HTTP; Fri, 6 Mar 2015 03:29:55 -0800 (PST)
-In-Reply-To: <1424744104-14151-1-git-send-email-abrestic@chromium.org>
+X-Received: by 10.182.97.134 with SMTP id ea6mr10650814obb.21.1425641829131;
+ Fri, 06 Mar 2015 03:37:09 -0800 (PST)
+Received: by 10.182.132.45 with HTTP; Fri, 6 Mar 2015 03:37:09 -0800 (PST)
+In-Reply-To: <1424744104-14151-2-git-send-email-abrestic@chromium.org>
 References: <1424744104-14151-1-git-send-email-abrestic@chromium.org>
-Date:   Fri, 6 Mar 2015 12:29:55 +0100
-Message-ID: <CACRpkdbCOHNPs5Y58h--X6pOVvYyxTrgcFhFyk5dWE+JLo=rhg@mail.gmail.com>
-Subject: Re: [PATCH 0/2] pinctrl: Support for IMG Pistachio
+        <1424744104-14151-2-git-send-email-abrestic@chromium.org>
+Date:   Fri, 6 Mar 2015 12:37:09 +0100
+Message-ID: <CACRpkdbCavYLk-Uo8hjTrGcGLJe6NEB9dVPVNm_fyd3eGccnEw@mail.gmail.com>
+Subject: Re: [PATCH 1/2] pinctrl: Add Pistachio SoC pin control binding document
 From:   Linus Walleij <linus.walleij@linaro.org>
 To:     Andrew Bresticker <abrestic@chromium.org>
 Cc:     Alexandre Courbot <gnurou@gmail.com>,
@@ -36,13 +37,19 @@ Cc:     Alexandre Courbot <gnurou@gmail.com>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         Ezequiel Garcia <ezequiel.garcia@imgtec.com>,
         James Hartley <james.hartley@imgtec.com>,
-        James Hogan <james.hogan@imgtec.com>
+        James Hogan <james.hogan@imgtec.com>,
+        Damien Horsley <Damien.Horsley@imgtec.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Pawel Moll <pawel.moll@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ian Campbell <ijc+devicetree@hellion.org.uk>,
+        Kumar Gala <galak@codeaurora.org>
 Content-Type: text/plain; charset=UTF-8
 Return-Path: <linus.walleij@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46228
+X-archive-position: 46229
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -62,12 +69,53 @@ X-list: linux-mips
 On Tue, Feb 24, 2015 at 3:15 AM, Andrew Bresticker
 <abrestic@chromium.org> wrote:
 
->  I'd like this to go through the MIPS tree with
-> Linus'/Alex's ACKs if possible.
+> Add a device-tree binding document for the pin controller present
+> on the IMG Pistachio SoC.
+>
+> Signed-off-by: Damien Horsley <Damien.Horsley@imgtec.com>
+> Signed-off-by: Andrew Bresticker <abrestic@chromium.org>
+(...)
+> +Note that the GPIO bank sub-nodes *must* be listed in order.
 
-Why? It will only help creating merge conflicts.
-There seem to be no compile-related dependencies, just Kconfig
-symbols, so patches using this can go in orthogonally.
+Usually we use aliases to mark the order of things. e.g.:
+
+        aliases {
+                gpio0 = &gpio0;
+                gpio1 = &gpio1;
+                gpio2 = &gpio2;
+                ethernet0 = &eth0;
+                ethernet1 = &eth1;
+        };
+
+(arch/arm/boot/dts/armada-375.dtsi)
+
+> +Required properties for pin configuration sub-nodes:
+> +----------------------------------------------------
+> + - pins: List of pins to which the configuration applies. See below for a
+> +   list of possible pins.
+> +
+> +Optional properties for pin configuration sub-nodes:
+> +----------------------------------------------------
+> + - function: Mux function for the specified pins. This is not applicable for
+> +   non-MFIO pins. See below for a list of valid functions for each pin.
+> + - bias-high-impedance: Enable high-impedance mode.
+> + - bias-pull-up: Enable weak pull-up.
+> + - bias-pull-down: Enable weak pull-down.
+> + - bias-bus-hold: Enable bus-keeper mode.
+> + - drive-strength: Drive strength in mA. Supported values: 2, 4, 8, 12.
+> + - input-schmitt-enable: Enable Schmitt trigger.
+> + - input-schmitt-disable: Disable Schmitt trigger.
+> + - slew-rate: Slew rate control. 0 for slow, 1 for fast.
+
+We actually haven't specified that function+pins is a valid pattern,
+a lot of drivers just started doing that :(
+
+function+groups is documented for muxing.
+
+group + config opts is documented for config.
+
+Please consider patching the generic bindings to reflect this
+mux use of pins... We need to discuss it.
 
 Yours,
 Linus Walleij

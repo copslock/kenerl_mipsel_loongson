@@ -1,80 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Mar 2015 21:42:34 +0100 (CET)
-Received: from bh-25.webhostbox.net ([208.91.199.152]:34014 "EHLO
-        bh-25.webhostbox.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27008272AbbCFUmchUB5I (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 6 Mar 2015 21:42:32 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=roeck-us.net; s=default;
-        h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date; bh=gwE8Dgc8rfgudFBcVvSQQVTI9//UUJdUj7iRfrY7VBM=;
-        b=NgXNCaxHchMNKIr9v5bHTivAoxPN/Ndr6yvTrexBhQl22WkjDeUjJWKCwtnneJAmM5nDcyGIXwsDTYXfciP2LtT4TFjX0IUSwMrOiS2xIjqgr+SNmPxDcBi3YkcCoB144qmC6v5Edhgt0z+A4s/1naCD/PSu5d55YpOtSVJtrhQ=;
-Received: from mailnull by bh-25.webhostbox.net with sa-checked (Exim 4.82)
-        (envelope-from <linux@roeck-us.net>)
-        id 1YTz4k-002SWo-Jn
-        for linux-mips@linux-mips.org; Fri, 06 Mar 2015 20:42:26 +0000
-Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:55645 helo=localhost)
-        by bh-25.webhostbox.net with esmtpa (Exim 4.82)
-        (envelope-from <linux@roeck-us.net>)
-        id 1YTz4P-002SPb-O2; Fri, 06 Mar 2015 20:42:06 +0000
-Date:   Fri, 6 Mar 2015 12:42:04 -0800
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     James Hogan <james.hogan@imgtec.com>, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        satoru.takeuchi@gmail.com, shuah.kh@samsung.com,
-        stable@vger.kernel.org, linux-mips@linux-mips.org,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@imgtec.com>,
-        Gleb Natapov <gleb@kernel.org>, kvm@vger.kernel.org
-Subject: Re: [PATCH stable 3.10, 3.12, 3.14] MIPS: Export FP functions used
- by lose_fpu(1) for KVM
-Message-ID: <20150306204204.GA25430@roeck-us.net>
-References: <54F7BE2E.8070708@roeck-us.net>
- <1425571724-9480-1-git-send-email-james.hogan@imgtec.com>
- <20150306063034.GA6914@kroah.com>
- <20150306162249.GA28962@roeck-us.net>
- <20150306174516.GA3930@kroah.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Mar 2015 22:52:33 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:49499 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27008284AbbCFVwbopDR6 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 6 Mar 2015 22:52:31 +0100
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 197604EF422D8;
+        Fri,  6 Mar 2015 21:52:22 +0000 (GMT)
+Received: from BAMAIL02.ba.imgtec.org (10.20.40.28) by KLMAIL01.kl.imgtec.org
+ (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Fri, 6 Mar
+ 2015 21:52:25 +0000
+Received: from [10.20.2.221] (10.20.2.221) by bamail02.ba.imgtec.org
+ (10.20.40.28) with Microsoft SMTP Server (TLS) id 14.3.174.1; Fri, 6 Mar 2015
+ 13:52:23 -0800
+Message-ID: <54FA2197.2000005@imgtec.com>
+Date:   Fri, 6 Mar 2015 13:52:23 -0800
+From:   Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux i686; rv:24.0) Gecko/20100101 Thunderbird/24.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20150306174516.GA3930@kroah.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-X-Authenticated_sender: guenter@roeck-us.net
-X-OutGoing-Spam-Status: No, score=-1.0
-X-CTCH-PVer: 0000001
-X-CTCH-Spam: Unknown
-X-CTCH-VOD: Unknown
-X-CTCH-Flags: 0
-X-CTCH-RefID: str=0001.0A020203.54FA1132.020D,ss=1,re=0.001,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-X-CTCH-Score: 0.001
-X-CTCH-ScoreCust: 0.000
-X-CTCH-Rules: C_4847,
-X-CTCH-SenderID: linux@roeck-us.net
-X-CTCH-SenderID-Flags: 0
-X-CTCH-SenderID-TotalMessages: 9
-X-CTCH-SenderID-TotalSpam: 0
-X-CTCH-SenderID-TotalSuspected: 0
-X-CTCH-SenderID-TotalConfirmed: 0
-X-CTCH-SenderID-TotalBulk: 0
-X-CTCH-SenderID-TotalVirus: 0
-X-CTCH-SenderID-TotalRecipients: 0
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - bh-25.webhostbox.net
-X-AntiAbuse: Original Domain - linux-mips.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - roeck-us.net
-X-Get-Message-Sender-Via: bh-25.webhostbox.net: mailgid no entry from get_relayhosts_entry
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-Return-Path: <linux@roeck-us.net>
+To:     "Maciej W. Rozycki" <macro@linux-mips.org>
+CC:     <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: [PATCH 14/15] MIPS: csrc-sb1250: Implement read_sched_clock
+References: <1425517137-26463-1-git-send-email-dengcheng.zhu@imgtec.com> <1425517137-26463-15-git-send-email-dengcheng.zhu@imgtec.com> <alpine.LFD.2.11.1503061228410.15786@eddie.linux-mips.org>
+In-Reply-To: <alpine.LFD.2.11.1503061228410.15786@eddie.linux-mips.org>
+Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.20.2.221]
+Return-Path: <DengCheng.Zhu@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46244
+X-archive-position: 46245
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linux@roeck-us.net
+X-original-sender: dengcheng.zhu@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -87,55 +46,52 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Mar 06, 2015 at 09:45:16AM -0800, Greg Kroah-Hartman wrote:
-> On Fri, Mar 06, 2015 at 08:22:49AM -0800, Guenter Roeck wrote:
-> > On Thu, Mar 05, 2015 at 10:30:34PM -0800, Greg Kroah-Hartman wrote:
-> > > On Thu, Mar 05, 2015 at 04:08:44PM +0000, James Hogan wrote:
-> > > > [ Upstream commit 3ce465e04bfd8de9956d515d6e9587faac3375dc ]
-> > > > 
-> > > > Export the _save_fp asm function used by the lose_fpu(1) macro to GPL
-> > > > modules so that KVM can make use of it when it is built as a module.
-> > > > 
-> > > > This fixes the following build error when CONFIG_KVM=m due to commit
-> > > > f798217dfd03 ("KVM: MIPS: Don't leak FPU/DSP to guest"):
-> > > > 
-> > > > ERROR: "_save_fp" [arch/mips/kvm/kvm.ko] undefined!
-> > > > 
-> > > > Signed-off-by: James Hogan <james.hogan@imgtec.com>
-> > > > Fixes: f798217dfd03 (KVM: MIPS: Don't leak FPU/DSP to guest)
-> > > > Cc: Paolo Bonzini <pbonzini@redhat.com>
-> > > > Cc: Ralf Baechle <ralf@linux-mips.org>
-> > > > Cc: Paul Burton <paul.burton@imgtec.com>
-> > > > Cc: Gleb Natapov <gleb@kernel.org>
-> > > > Cc: kvm@vger.kernel.org
-> > > > Cc: linux-mips@linux-mips.org
-> > > > Cc: <stable@vger.kernel.org> # 3.10...3.15
-> > > > Patchwork: https://patchwork.linux-mips.org/patch/9260/
-> > > > Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-> > > > [james.hogan@imgtec.com: Only export when CPU_R4K_FPU=y prior to v3.16,
-> > > >  so as not to break the Octeon build which excludes FPU support. KVM
-> > > >  depends on MIPS32r2 anyway.]
-> > > > Signed-off-by: James Hogan <james.hogan@imgtec.com>
-> > > > ---
-> > > > Appologies for the previous cavium_octeon_defconfig link breakage.
-> > > > Octeon has the symbol since 3.16, but not before. This backport should
-> > > > do the trick for stable 3.10, 3.12, and 3.14. Build tested with
-> > > > cavium_octeon_defconfig and malta_kvm_defconfig on those stable
-> > > > branches.
-> > > > ---
-> > > >  arch/mips/kernel/mips_ksyms.c | 8 ++++++++
-> > > >  1 file changed, 8 insertions(+)
-> > > 
-> > > Now fixed up, thanks.
-> > > 
-> > My auto-builders still fail to build cavium_octeon_defconfig for 3.10 and 3.14,
-> > and as far as I can see they picked up no changes. Did you push the changes into
-> > the stable queue repository ?
-> 
-> I didn't push it publically, didn't have access to my 2-factor key so
-> couldn't do it.  Should be there now, sorry about that.
-> 
-Confirmed, all is good now.
+Thank you Maciej for the review!
 
-Thanks,
-Guenter
+
+On 03/06/2015 04:47 AM, Maciej W. Rozycki wrote:
+> On Wed, 4 Mar 2015, Deng-Cheng Zhu wrote:
+>
+>> Use sb1250 hpt for sched_clock source. This implementation will give high
+>> resolution cputime accounting.
+>>
+>> Signed-off-by: Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>
+>> ---
+>>   arch/mips/kernel/csrc-sb1250.c | 8 ++++++++
+>>   1 file changed, 8 insertions(+)
+>>
+>> diff --git a/arch/mips/kernel/csrc-sb1250.c b/arch/mips/kernel/csrc-sb1250.c
+>> index df84836..6546fff 100644
+>> --- a/arch/mips/kernel/csrc-sb1250.c
+>> +++ b/arch/mips/kernel/csrc-sb1250.c
+>> @@ -12,6 +12,7 @@
+>>    * GNU General Public License for more details.
+>>    */
+>>   #include <linux/clocksource.h>
+>> +#include <linux/sched_clock.h>
+>>   
+>>   #include <asm/addrspace.h>
+>>   #include <asm/io.h>
+>> @@ -46,6 +47,11 @@ struct clocksource bcm1250_clocksource = {
+>>   	.flags	= CLOCK_SOURCE_IS_CONTINUOUS,
+>>   };
+>>   
+>> +static u64 notrace sb1250_read_sched_clock(void)
+>> +{
+>> +	return sb1250_hpt_read(NULL);
+>> +}
+>> +
+>   I think you're abusing the API of `sb1250_hpt_read' here, by relying on
+> the implementation not using its `cs' argument.
+>
+>   I think it would make sense to reverse the implementation, by calling
+> `sb1250_read_sched_clock' from `sb1250_hpt_read' instead.  Or perhaps
+> better yet use a static inline helper for both, so as to avoid the extra
+> tail call and the associated performance hit.
+>
+>    Maciej
+
+Good point. Will do in v2.
+
+
+Deng-Cheng

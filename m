@@ -1,27 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Mar 2015 22:52:33 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:49499 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 07 Mar 2015 00:23:30 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:30168 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27008284AbbCFVwbopDR6 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 6 Mar 2015 22:52:31 +0100
+        with ESMTP id S27007951AbbCFXX2sQ65Q (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 7 Mar 2015 00:23:28 +0100
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 197604EF422D8;
-        Fri,  6 Mar 2015 21:52:22 +0000 (GMT)
+        by Websense Email Security Gateway with ESMTPS id 0C2A950C29E64;
+        Fri,  6 Mar 2015 23:23:19 +0000 (GMT)
 Received: from BAMAIL02.ba.imgtec.org (10.20.40.28) by KLMAIL01.kl.imgtec.org
  (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Fri, 6 Mar
- 2015 21:52:25 +0000
+ 2015 23:23:22 +0000
 Received: from [10.20.2.221] (10.20.2.221) by bamail02.ba.imgtec.org
  (10.20.40.28) with Microsoft SMTP Server (TLS) id 14.3.174.1; Fri, 6 Mar 2015
- 13:52:23 -0800
-Message-ID: <54FA2197.2000005@imgtec.com>
-Date:   Fri, 6 Mar 2015 13:52:23 -0800
+ 15:23:20 -0800
+Message-ID: <54FA36E8.7010501@imgtec.com>
+Date:   Fri, 6 Mar 2015 15:23:20 -0800
 From:   Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>
 User-Agent: Mozilla/5.0 (X11; Linux i686; rv:24.0) Gecko/20100101 Thunderbird/24.7.0
 MIME-Version: 1.0
-To:     "Maciej W. Rozycki" <macro@linux-mips.org>
-CC:     <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [PATCH 14/15] MIPS: csrc-sb1250: Implement read_sched_clock
-References: <1425517137-26463-1-git-send-email-dengcheng.zhu@imgtec.com> <1425517137-26463-15-git-send-email-dengcheng.zhu@imgtec.com> <alpine.LFD.2.11.1503061228410.15786@eddie.linux-mips.org>
-In-Reply-To: <alpine.LFD.2.11.1503061228410.15786@eddie.linux-mips.org>
+To:     "Maciej W. Rozycki" <macro@linux-mips.org>,
+        Russell King <linux@arm.linux.org.uk>
+CC:     <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>,
+        <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>
+Subject: Re: [PATCH 04/15] MIPS: Add sched_clock support
+References: <1425517137-26463-1-git-send-email-dengcheng.zhu@imgtec.com> <1425517137-26463-5-git-send-email-dengcheng.zhu@imgtec.com> <alpine.LFD.2.11.1503061146430.15786@eddie.linux-mips.org>
+In-Reply-To: <alpine.LFD.2.11.1503061146430.15786@eddie.linux-mips.org>
 Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Originating-IP: [10.20.2.221]
@@ -29,7 +32,7 @@ Return-Path: <DengCheng.Zhu@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46245
+X-archive-position: 46246
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,52 +49,73 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Thank you Maciej for the review!
-
-
-On 03/06/2015 04:47 AM, Maciej W. Rozycki wrote:
+On 03/06/2015 03:58 AM, Maciej W. Rozycki wrote:
 > On Wed, 4 Mar 2015, Deng-Cheng Zhu wrote:
 >
->> Use sb1250 hpt for sched_clock source. This implementation will give high
->> resolution cputime accounting.
+>> This will provide sched_clock interface to implement individual
+>> read_sched_clock(). Not for CAVIUM_OCTEON_SOC as it defines its own
+>> sched_clock() directly (not using the sched_clock_register interface).
 >>
 >> Signed-off-by: Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>
 >> ---
->>   arch/mips/kernel/csrc-sb1250.c | 8 ++++++++
->>   1 file changed, 8 insertions(+)
+>>   arch/mips/Kconfig | 1 +
+>>   1 file changed, 1 insertion(+)
 >>
->> diff --git a/arch/mips/kernel/csrc-sb1250.c b/arch/mips/kernel/csrc-sb1250.c
->> index df84836..6546fff 100644
->> --- a/arch/mips/kernel/csrc-sb1250.c
->> +++ b/arch/mips/kernel/csrc-sb1250.c
->> @@ -12,6 +12,7 @@
->>    * GNU General Public License for more details.
->>    */
->>   #include <linux/clocksource.h>
->> +#include <linux/sched_clock.h>
->>   
->>   #include <asm/addrspace.h>
->>   #include <asm/io.h>
->> @@ -46,6 +47,11 @@ struct clocksource bcm1250_clocksource = {
->>   	.flags	= CLOCK_SOURCE_IS_CONTINUOUS,
->>   };
->>   
->> +static u64 notrace sb1250_read_sched_clock(void)
->> +{
->> +	return sb1250_hpt_read(NULL);
->> +}
->> +
->   I think you're abusing the API of `sb1250_hpt_read' here, by relying on
-> the implementation not using its `cs' argument.
+>> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+>> index 068592a..09405dc 100644
+>> --- a/arch/mips/Kconfig
+>> +++ b/arch/mips/Kconfig
+>> @@ -43,6 +43,7 @@ config MIPS
+>>   	select GENERIC_SMP_IDLE_THREAD
+>>   	select BUILDTIME_EXTABLE_SORT
+>>   	select GENERIC_CLOCKEVENTS
+>> +	select GENERIC_SCHED_CLOCK if !CAVIUM_OCTEON_SOC
+>>   	select GENERIC_CMOS_UPDATE
+>>   	select HAVE_MOD_ARCH_SPECIFIC
+>>   	select VIRT_TO_BUS
+>   Why does this change add this question:
 >
->   I think it would make sense to reverse the implementation, by calling
-> `sb1250_read_sched_clock' from `sb1250_hpt_read' instead.  Or perhaps
-> better yet use a static inline helper for both, so as to avoid the extra
-> tail call and the associated performance hit.
->
->    Maciej
+> ARM Versatile (Express) reference platforms clock source (CLKSRC_VERSATILE) [N/y/?] (NEW) ?
 
-Good point. Will do in v2.
+Good catch.
+
+>
+> This option enables clock source based on free running
+> counter available in the "System Registers" block of
+> ARM Versatile, RealView and Versatile Express reference
+> platforms.
+>
+> Symbol: CLKSRC_VERSATILE [=n]
+> Type  : boolean
+> Prompt: ARM Versatile (Express) reference platforms clock source
+>    Location:
+>      -> Device Drivers
+>        -> Clock Source drivers
+>    Defined at drivers/clocksource/Kconfig:216
+>    Depends on: GENERIC_SCHED_CLOCK [=y] && !ARCH_USES_GETTIMEOFFSET [=n]
+>    Selects: CLKSRC_OF [=n]
+>
+> to a MIPS configuration?  I find it silly, this appears a platform
+> device to me (use reverse dependencies?).
+
+GENERIC_SCHED_CLOCK is generic, by default it uses jiffy_sched_clock_read() 
+for read_sched_clock(). Instead of using reverse dependencies, I suggest 
+the following:
+
+diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
+index 1c2506f..22e0ee1 100644
+--- a/drivers/clocksource/Kconfig
++++ b/drivers/clocksource/Kconfig
+@@ -225,7 +225,7 @@ config CLKSRC_QCOM
+
+  config CLKSRC_VERSATILE
+         bool "ARM Versatile (Express) reference platforms clock source"
+-       depends on GENERIC_SCHED_CLOCK && !ARCH_USES_GETTIMEOFFSET
++       depends on PLAT_VERSATILE && GENERIC_SCHED_CLOCK && 
+!ARCH_USES_GETTIMEOFFSET
+         select CLKSRC_OF
+         default y if MFD_VEXPRESS_SYSREG
+         help
 
 
 Deng-Cheng

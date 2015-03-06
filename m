@@ -1,80 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Mar 2015 19:10:26 +0100 (CET)
-Received: from mail-qg0-f45.google.com ([209.85.192.45]:37681 "EHLO
-        mail-qg0-f45.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008276AbbCFSKYA1Eia (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 6 Mar 2015 19:10:24 +0100
-Received: by qgdz107 with SMTP id z107so14539885qgd.4
-        for <linux-mips@linux-mips.org>; Fri, 06 Mar 2015 10:10:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc:content-type;
-        bh=lcWSz0GXnUX+fG6ev9TeK2b2JGunYUytb2HItvKri6E=;
-        b=QzYVRxU7q8vpLp92ktaCi2lH3m98L0V6IA6j1n7+krplbhPHzdRutiefRqTh7/Uroi
-         1WQ4b3adP6E6aTVAce5KRoKd1CNtGjQ+QYHKNz14cL07gsj1zip7su6wzynMRFvxXmOm
-         Du249eaQ93yJtiASI2yFjZL1wfEgm6UJ13Z9clUmICXdSz0Xveu6Tw2/gqu4F6gpwQni
-         IyWLjxqK0FTn5tNrXDQJRWI3Da6AVgGT5qunulCEJZexSJCrRePt5i/KxKIUBe5Q9Ovq
-         FB9ENNJFidxbeNzPWSiPKbQbHxLUCTdd8KPP0IbX5ekKl0irfXMufWi9SYIDQVoAAWEt
-         T5aQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc:content-type;
-        bh=lcWSz0GXnUX+fG6ev9TeK2b2JGunYUytb2HItvKri6E=;
-        b=SLjORg4XO6B/X8VdJz3vcI6MgCokGggRT7YleakqOKFiaxM5S7PeuZFAjpNphgfsuM
-         kkxlcEhJ/HdpyY2Zy93JBp1H8feJ1sp/jP1vsZM6U5xsl7+mBo223ANsPIsvSMuUF0HA
-         CUAdIIJCc5/r9bf2DNxWZ/GOaAkgZHu6FTNlk=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:sender:in-reply-to:references:date
-         :message-id:subject:from:to:cc:content-type;
-        bh=lcWSz0GXnUX+fG6ev9TeK2b2JGunYUytb2HItvKri6E=;
-        b=i+XvGkb/EXAVjwS2svkVingMQzjjeun2P02XWaGwA2D3CoRqzZku53Kbf0JiPqisJ6
-         9AuSwe55Ly0NJAk/zhlRf1vFPTbFiJkRUCCY/pjETVylYCNlFvLpYCILEaSwMnCqLiF6
-         +FHHnG6kmby3zDoBDCkWo9HUM9DS+EoZz9KLbKtG0Az+OS9O3MGNNYUbmvAjjFZRAuRM
-         svRjyALtGkclu/Saow/kfj0qVL4FstYs5+kVmkgqkWWb3t9iLr4WJsF/bMfkpzdsN4Si
-         oCQdGL6Ur86ey3xJk9MNU5AQX106of/ufc7keFjDnwTPzbn9xFffLNo8mpZ3QAalDSPJ
-         +i5w==
-X-Gm-Message-State: ALoCoQka/rvilqtbzNtFygsSyVbTu7LnwJELpvlSfxG1MbBVf7/6ZOLPEFxl7UZKwpkjctRmdxnA
-MIME-Version: 1.0
-X-Received: by 10.55.55.4 with SMTP id e4mr20394517qka.97.1425665419011; Fri,
- 06 Mar 2015 10:10:19 -0800 (PST)
-Received: by 10.140.19.72 with HTTP; Fri, 6 Mar 2015 10:10:18 -0800 (PST)
-In-Reply-To: <CACRpkdbCavYLk-Uo8hjTrGcGLJe6NEB9dVPVNm_fyd3eGccnEw@mail.gmail.com>
-References: <1424744104-14151-1-git-send-email-abrestic@chromium.org>
-        <1424744104-14151-2-git-send-email-abrestic@chromium.org>
-        <CACRpkdbCavYLk-Uo8hjTrGcGLJe6NEB9dVPVNm_fyd3eGccnEw@mail.gmail.com>
-Date:   Fri, 6 Mar 2015 10:10:18 -0800
-X-Google-Sender-Auth: iHYbfMJumLA9CGmXHjxQ1YqQrxk
-Message-ID: <CAL1qeaFcQFBydV7Gnkyp_w9d7M4yivEmX-1tB0OhbtocYeO=AQ@mail.gmail.com>
-Subject: Re: [PATCH 1/2] pinctrl: Add Pistachio SoC pin control binding document
-From:   Andrew Bresticker <abrestic@chromium.org>
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     Alexandre Courbot <gnurou@gmail.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Mar 2015 19:37:11 +0100 (CET)
+Received: from pmta1.delivery4.ore.mailhop.org ([54.191.151.194]:34012 "EHLO
+        pmta1.delivery4.ore.mailhop.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008279AbbCFShIEiUgF (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 6 Mar 2015 19:37:08 +0100
+Received: from smtp6.ore.mailhop.org (172.31.18.134) by pmta1.delivery1.ore.mailhop.org id hv7ps020r84p; Fri, 6 Mar 2015 18:36:40 +0000 (envelope-from <tony@atomide.com>)
+Received: from 104.193.169-186.public.monkeybrains.net ([104.193.169.186] helo=atomide.com)
+        by smtp6.ore.mailhop.org with esmtpsa (TLSv1.2:AES128-GCM-SHA256:128)
+        (Exim 4.82)
+        (envelope-from <tony@atomide.com>)
+        id 1YTx7M-00021E-QJ; Fri, 06 Mar 2015 18:37:01 +0000
+X-Mail-Handler: DuoCircle Outbound SMTP
+X-Originating-IP: 104.193.169.186
+X-Report-Abuse-To: abuse@duocircle.com (see https://support.duocircle.com/support/solutions/articles/5000540958-duocircle-standard-smtp-abuse-information for abuse reporting information)
+X-MHO-User: U2FsdGVkX18PfME/Mbp1KmbHYQQ6uL1F
+Date:   Fri, 6 Mar 2015 10:31:38 -0800
+From:   Tony Lindgren <tony@atomide.com>
+To:     Valentin Rothberg <valentinrothberg@gmail.com>
+Cc:     akpm@linux-foundation.org, Jonathan Corbet <corbet@lwn.net>,
         Ralf Baechle <ralf@linux-mips.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-        Linux MIPS <linux-mips@linux-mips.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Ezequiel Garcia <ezequiel.garcia@imgtec.com>,
-        James Hartley <james.hartley@imgtec.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        Damien Horsley <Damien.Horsley@imgtec.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Pawel Moll <pawel.moll@arm.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ian Campbell <ijc+devicetree@hellion.org.uk>,
-        Kumar Gala <galak@codeaurora.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <abrestic@google.com>
+        David Woodhouse <dwmw2@infradead.org>,
+        Brian Norris <computersforpeace@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Paul Bolle <pebolle@tiscali.nl>, Jiri Kosina <jkosina@suse.cz>,
+        Hannes Reinecke <hare@suse.de>, Ewan Milne <emilne@redhat.com>,
+        Christoph Hellwig <hch@lst.de>,
+        Hongliang Tao <taohl@lemote.com>,
+        Huacai Chen <chenhc@lemote.com>, Nishanth Menon <nm@ti.com>,
+        Peter Ujfalusi <peter.ujfalusi@ti.com>,
+        Santosh Shilimkar <santosh.shilimkar@ti.com>,
+        Rajendra Nayak <rnayak@ti.com>, Afzal Mohammed <afzal@ti.com>,
+        Keerthy <j-keerthy@ti.com>, Sricharan R <r.sricharan@ti.com>,
+        Zhou Wang <wangzhou1@hisilicon.com>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        Felipe Balbi <balbi@ti.com>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Quentin Lambert <lambert.quentin@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>, Ingo Molnar <mingo@kernel.org>,
+        Eyal Perry <eyalpe@mellanox.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mips@linux-mips.org, iss_storagedev@hp.com,
+        linux-mtd@lists.infradead.org, linux-usb@vger.kernel.org
+Subject: Re: [PATCH v2] Remove deprecated IRQF_DISABLED flag entirely
+Message-ID: <20150306183137.GZ13520@atomide.com>
+References: <1425560442-13367-1-git-send-email-valentinrothberg@gmail.com>
+ <1425565425-12604-1-git-send-email-valentinrothberg@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1425565425-12604-1-git-send-email-valentinrothberg@gmail.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <tony@atomide.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46239
+X-archive-position: 46240
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: abrestic@chromium.org
+X-original-sender: tony@atomide.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -87,61 +72,20 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Mar 6, 2015 at 3:37 AM, Linus Walleij <linus.walleij@linaro.org> wrote:
-> On Tue, Feb 24, 2015 at 3:15 AM, Andrew Bresticker
-> <abrestic@chromium.org> wrote:
->
->> Add a device-tree binding document for the pin controller present
->> on the IMG Pistachio SoC.
->>
->> Signed-off-by: Damien Horsley <Damien.Horsley@imgtec.com>
->> Signed-off-by: Andrew Bresticker <abrestic@chromium.org>
-> (...)
->> +Note that the GPIO bank sub-nodes *must* be listed in order.
->
-> Usually we use aliases to mark the order of things. e.g.:
->
->         aliases {
->                 gpio0 = &gpio0;
->                 gpio1 = &gpio1;
->                 gpio2 = &gpio2;
->                 ethernet0 = &eth0;
->                 ethernet1 = &eth1;
->         };
->
-> (arch/arm/boot/dts/armada-375.dtsi)
+* Valentin Rothberg <valentinrothberg@gmail.com> [150305 06:24]:
+> The IRQF_DISABLED is a NOOP and has been scheduled for removal since
+> Linux v2.6.36 by commit 6932bf37bed4 ("genirq: Remove IRQF_DISABLED from
+> core code").
+> 
+> According to commit e58aa3d2d0cc ("genirq: Run irq handlers with
+> interrupts disabled") running IRQ handlers with interrupts enabled can
+> cause stack overflows when the interrupt line of the issuing device is
+> still active.
+> 
+> This patch ends the grace period for IRQF_DISABLED (i.e., SA_INTERRUPT
+> in older versions of Linux) and removes the definition and all remaining
+> usages of this flag.
+> 
+> Signed-off-by: Valentin Rothberg <valentinrothberg@gmail.com>
 
-Ok.
-
->> +Required properties for pin configuration sub-nodes:
->> +----------------------------------------------------
->> + - pins: List of pins to which the configuration applies. See below for a
->> +   list of possible pins.
->> +
->> +Optional properties for pin configuration sub-nodes:
->> +----------------------------------------------------
->> + - function: Mux function for the specified pins. This is not applicable for
->> +   non-MFIO pins. See below for a list of valid functions for each pin.
->> + - bias-high-impedance: Enable high-impedance mode.
->> + - bias-pull-up: Enable weak pull-up.
->> + - bias-pull-down: Enable weak pull-down.
->> + - bias-bus-hold: Enable bus-keeper mode.
->> + - drive-strength: Drive strength in mA. Supported values: 2, 4, 8, 12.
->> + - input-schmitt-enable: Enable Schmitt trigger.
->> + - input-schmitt-disable: Disable Schmitt trigger.
->> + - slew-rate: Slew rate control. 0 for slow, 1 for fast.
->
-> We actually haven't specified that function+pins is a valid pattern,
-> a lot of drivers just started doing that :(
->
-> function+groups is documented for muxing.
->
-> group + config opts is documented for config.
->
-> Please consider patching the generic bindings to reflect this
-> mux use of pins... We need to discuss it.
-
-Sure, I can update that documentation.
-
-Thanks,
-Andrew
+Acked-by: Tony Lindgren <tony@atomide.com>

@@ -1,51 +1,77 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Mar 2015 00:49:03 +0100 (CET)
-Received: from mail-ie0-f174.google.com ([209.85.223.174]:40203 "EHLO
-        mail-ie0-f174.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008133AbbCEXtAnjpMR (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 6 Mar 2015 00:49:00 +0100
-Received: by iecrp18 with SMTP id rp18so13449803iec.7;
-        Thu, 05 Mar 2015 15:48:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=EDhJWDocA03GJ/IGyLOz+5mmIbeW3P0r1bmt43JwU14=;
-        b=bAUnOg/dV5x5qPUjS3YqWarLi0FfWkboq8D0jlsK2+F+aC0SxkIbMkcbnh5z6Dl5pQ
-         /tVUHX6Kq0YHq2Zp2KKOSir0d+WQnl356FBSz0QE4A6F4QrfR76pry83pXmNXNXdpAzn
-         q5DY+R4WN3XQlBinikhMS2TldUCC4sv1fkmozQ+HGHLCO0i2ZBp0HJP/n+hwOXHsj0l8
-         nYyeQkkZjZxl4+ooQ1ytTwsTR4Q9K902R6s085W0X1YoYWtstJ+TEskNJtiq/+9sMeLh
-         jIDBzwYePKBCOGB8JVLvhophqoYzNLjXgN8W7EvKRQBZUn8IPxxzI/Fs7Zewf5a4E/Ik
-         5WxA==
-X-Received: by 10.50.20.228 with SMTP id q4mr4126196ige.1.1425599334299;
-        Thu, 05 Mar 2015 15:48:54 -0800 (PST)
-Received: from dl.caveonetworks.com (64.2.3.194.ptr.us.xo.net. [64.2.3.194])
-        by mx.google.com with ESMTPSA id e3sm13809346igg.16.2015.03.05.15.48.52
-        (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Thu, 05 Mar 2015 15:48:53 -0800 (PST)
-Message-ID: <54F8EB64.403@gmail.com>
-Date:   Thu, 05 Mar 2015 15:48:52 -0800
-From:   David Daney <ddaney.cavm@gmail.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Mar 2015 02:13:06 +0100 (CET)
+Received: from mga03.intel.com ([134.134.136.65]:39591 "EHLO mga03.intel.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27008234AbbCFBNEyVM0w convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 6 Mar 2015 02:13:04 +0100
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by orsmga103.jf.intel.com with ESMTP; 05 Mar 2015 17:10:22 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.11,350,1422950400"; 
+   d="scan'208";a="694678826"
+Received: from pgsmsx104.gar.corp.intel.com ([10.221.44.91])
+  by orsmga002.jf.intel.com with ESMTP; 05 Mar 2015 17:12:53 -0800
+Received: from kmsmsx154.gar.corp.intel.com (172.21.73.14) by
+ PGSMSX104.gar.corp.intel.com (10.221.44.91) with Microsoft SMTP Server (TLS)
+ id 14.3.195.1; Fri, 6 Mar 2015 09:12:51 +0800
+Received: from shsmsx104.ccr.corp.intel.com (10.239.110.15) by
+ KMSMSX154.gar.corp.intel.com (172.21.73.14) with Microsoft SMTP Server (TLS)
+ id 14.3.195.1; Fri, 6 Mar 2015 09:12:50 +0800
+Received: from shsmsx102.ccr.corp.intel.com ([169.254.2.62]) by
+ SHSMSX104.ccr.corp.intel.com ([169.254.5.161]) with mapi id 14.03.0195.001;
+ Fri, 6 Mar 2015 09:12:49 +0800
+From:   "Wang, Xiaoming" <xiaoming.wang@intel.com>
+To:     Jan Beulich <JBeulich@suse.com>
+CC:     "Liu@aserp2030.oracle.com" <Liu@aserp2030.oracle.com>,
+        "Zhang@aserp2030.oracle.com" <Zhang@aserp2030.oracle.com>,
+        "chris@chris-wilson.co.uk" <chris@chris-wilson.co.uk>,
+        "david.vrabel@citrix.com" <david.vrabel@citrix.com>,
+        "lauraa@codeaurora.org" <lauraa@codeaurora.org>,
+        "heiko.carstens@de.ibm.com" <heiko.carstens@de.ibm.com>,
+        "linux@horizon.com" <linux@horizon.com>,
+        "Liu, Chuansheng" <chuansheng.liu@intel.com>,
+        "Zhang, Dongxing" <dongxing.zhang@intel.com>,
+        "takahiro.akashi@linaro.org" <takahiro.akashi@linaro.org>,
+        "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        "ralf@linux-mips.org" <ralf@linux-mips.org>,
+        "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
+        "boris.ostrovsky@oracle.com" <boris.ostrovsky@oracle.com>,
+        "Konrad RzeszutekWilk" <konrad.wilk@oracle.com>,
+        "d.kasatkin@samsung.com" <d.kasatkin@samsung.com>,
+        "pebolle@tiscali.nl" <pebolle@tiscali.nl>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "jkosina@suse.cz" <jkosina@suse.cz>
+Subject: RE: [PATCH v5] modify the IO_TLB_SEGSIZE and IO_TLB_DEFAULT_SIZE
+ configurable as flexible requirement about SW-IOMMU.
+Thread-Topic: [PATCH v5] modify the IO_TLB_SEGSIZE and IO_TLB_DEFAULT_SIZE
+ configurable as flexible requirement about SW-IOMMU.
+Thread-Index: AQHQVYnWYlmtHDmn0E2ZkLshdhx4b50MNYyAgAECbfD//9bSgIAAiBGQ//99igCAAY/FQA==
+Date:   Fri, 6 Mar 2015 01:12:48 +0000
+Message-ID: <FA47D36D6EC9FE4CB463299737C09B9901D061EB@shsmsx102.ccr.corp.intel.com>
+References: <1425370269-29658-1-git-send-email-xiaoming.wang@intel.com>
+ <20150304194237.GA12884@l.oracle.com>
+ <FA47D36D6EC9FE4CB463299737C09B9901D05BBA@shsmsx102.ccr.corp.intel.com>
+ <54F8247B02000078000667AF@mail.emea.novell.com>
+ <FA47D36D6EC9FE4CB463299737C09B9901D05DF8@shsmsx102.ccr.corp.intel.com>
+ <54F8292E02000078000667F9@mail.emea.novell.com>
+In-Reply-To: <54F8292E02000078000667F9@mail.emea.novell.com>
+Accept-Language: zh-CN, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.239.127.40]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-To:     Aleksey Makarov <aleksey.makarov@auriga.com>
-CC:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        David Daney <david.daney@cavium.com>,
-        Chandrakala Chavva <cchavva@caviumnetworks.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [PATCH] MIPS: OCTEON: Use correct CSR to soft reset
-References: <1425567974-31912-1-git-send-email-aleksey.makarov@auriga.com>
-In-Reply-To: <1425567974-31912-1-git-send-email-aleksey.makarov@auriga.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <ddaney.cavm@gmail.com>
+Return-Path: <xiaoming.wang@intel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46216
+X-archive-position: 46217
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: xiaoming.wang@intel.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,63 +84,129 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 03/05/2015 07:06 AM, Aleksey Makarov wrote:
-> From: Chandrakala Chavva <cchavva@caviumnetworks.com>
->
-> This fixes reboot for Octeon III boards
->
-> Signed-off-by: Chandrakala Chavva <cchavva@caviumnetworks.com>
-> Signed-off-by: Aleksey Makarov <aleksey.makarov@auriga.com>
+Dear Jan
 
-Let's make a change to this patch...
+> -----Original Message-----
+> From: Jan Beulich [mailto:JBeulich@suse.com]
+> Sent: Thursday, March 5, 2015 5:00 PM
+> To: Wang, Xiaoming
+> Cc: Liu@aserp2030.oracle.com; Zhang@aserp2030.oracle.com; chris@chris-
+> wilson.co.uk; david.vrabel@citrix.com; lauraa@codeaurora.org;
+> heiko.carstens@de.ibm.com; linux@horizon.com; Liu, Chuansheng; Zhang,
+> Dongxing; takahiro.akashi@linaro.org; akpm@linux-foundation.org; linux-
+> mips@linux-mips.org; ralf@linux-mips.org; xen-devel@lists.xenproject.org;
+> boris.ostrovsky@oracle.com; Konrad RzeszutekWilk;
+> d.kasatkin@samsung.com; pebolle@tiscali.nl; linux-kernel@vger.kernel.org
+> Subject: RE: [PATCH v5] modify the IO_TLB_SEGSIZE and
+> IO_TLB_DEFAULT_SIZE configurable as flexible requirement about SW-
+> IOMMU.
+> 
+> >>> On 05.03.15 at 09:52, <xiaoming.wang@intel.com> wrote:
+> >> From: Jan Beulich [mailto:JBeulich@suse.com]
+> >> Sent: Thursday, March 5, 2015 4:40 PM
+> >> >>> On 05.03.15 at 04:53, <xiaoming.wang@intel.com> wrote:
+> >> >> From: Konrad Rzeszutek Wilk [mailto:konrad.wilk@oracle.com]
+> >> >> Sent: Thursday, March 5, 2015 3:43 AM On Tue, Mar 03, 2015 at
+> >> >> 04:11:09PM +0800, Wang Xiaoming wrote:
+> >> >> > @@ -101,13 +119,32 @@ setup_io_tlb_npages(char *str)  {
+> >> >> >  	if (isdigit(*str)) {
+> >> >> >  		io_tlb_nslabs = simple_strtoul(str, &str, 0);
+> >> >> > -		/* avoid tail segment of size < IO_TLB_SEGSIZE */
+> >> >> > -		io_tlb_nslabs = ALIGN(io_tlb_nslabs,
+> IO_TLB_SEGSIZE);
+> >> >> >  	}
+> >> >> >  	if (*str == ',')
+> >> >> >  		++str;
+> >> >> > -	if (!strcmp(str, "force"))
+> >> >> > +	if (!strncmp(str, "force", 5)) {
+> >> >> >  		swiotlb_force = 1;
+> >> >> > +		str += 5;
+> >> >> > +	}
+> >> >>
+> >> >> So the format is now:
+> >> >>
+> >> >> 	Format: { <int> | force | <int> | <int>}
+> >> >>
+> >> >> which means I can do
+> >> >> 	32,22323,force
+> >> >>
+> >> >> Or
+> >> >> 	force,32
+> >> >>
+> >> >> Or
+> >> >> 	32,force
+> >> >>
+> >> > If I use Format: { <int>,force,<int>,<int>} 32,22323,force can't
+> >> > acceptable.
+> >> > There are three  <int>  here, if there are out of order, that will
+> >> > cause confuse.
+> >> > Only 	32,force,32323
+> >> > Or	32,,32323,2322
+> >> > Or	,,323222,3232
+> >> > Are available.
+> >>
+> >> You need to make sure that all previously valid variants are still
+> >> usable,
+> > i.e.
+> >> force alone, a number alone, force,<number> and <number>,force. How
+> >> many variants you want to support with your additions is mostly up to
+> >> you; I'd recommend permitting force in any position.
+> >>
+> > I don't think it's suitable to accept that "force" in any position.
+> > If we defined Format: { <int>,force,<int>,<int>} "force" must be
+> > located in second position.
+> > And we add comment for each <int> also.
+> > Every position may be defined specifically.
+> 
+> As said, with the old format allowing force in either first or second position,
+> you have to at least accept that in the new version too.
+> Accepting force in any position would be a (desirable) courtesy to the user.
+> 
+I have checked the code and do some test.
 
-> ---
->   arch/mips/cavium-octeon/setup.c     | 5 ++++-
->   arch/mips/include/asm/octeon/cvmx.h | 6 +++++-
->   2 files changed, 9 insertions(+), 2 deletions(-)
->
-> diff --git a/arch/mips/cavium-octeon/setup.c b/arch/mips/cavium-octeon/setup.c
-> index 01130e9..73348af 100644
-> --- a/arch/mips/cavium-octeon/setup.c
-> +++ b/arch/mips/cavium-octeon/setup.c
-> @@ -416,7 +416,10 @@ static void octeon_restart(char *command)
->
->   	mb();
->   	while (1)
-> -		cvmx_write_csr(CVMX_CIU_SOFT_RST, 1);
-> +		if (OCTEON_IS_OCTEON3())
-> +			cvmx_write_csr(CVMX_RST_SOFT_RST, 1);
-> +		else
-> +			cvmx_write_csr(CVMX_CIU_SOFT_RST, 1);
->   }
->
->
-> diff --git a/arch/mips/include/asm/octeon/cvmx.h b/arch/mips/include/asm/octeon/cvmx.h
-> index 33db1c8..fb575d7 100644
-> --- a/arch/mips/include/asm/octeon/cvmx.h
-> +++ b/arch/mips/include/asm/octeon/cvmx.h
-> @@ -66,6 +66,7 @@ enum cvmx_mips_space {
->   #include <asm/octeon/cvmx-led-defs.h>
->   #include <asm/octeon/cvmx-mio-defs.h>
->   #include <asm/octeon/cvmx-pow-defs.h>
-> +#include <asm/octeon/cvmx-rst-defs.h>
->
->   #include <asm/octeon/cvmx-bootinfo.h>
->   #include <asm/octeon/cvmx-bootmem.h>
-> @@ -441,7 +442,10 @@ static inline void cvmx_reset_octeon(void)
->   	union cvmx_ciu_soft_rst ciu_soft_rst;
->   	ciu_soft_rst.u64 = 0;
->   	ciu_soft_rst.s.soft_rst = 1;
-> -	cvmx_write_csr(CVMX_CIU_SOFT_RST, ciu_soft_rst.u64);
-> +	if (OCTEON_IS_OCTEON3())
-> +		cvmx_write_csr(CVMX_RST_SOFT_RST, ciu_soft_rst.u64);
-> +	else
-> +		cvmx_write_csr(CVMX_CIU_SOFT_RST, ciu_soft_rst.u64);
->   }
+First "|" in Format  means *or*  in Documentation/kernel-parameters.txt
+For example:
+        acpi=           [HW,ACPI,X86]
+                        Advanced Configuration and Power Interface
+                        Format: { force | off | strict | noirq | rsdt }
 
+        acpi_sci=       [HW,ACPI] ACPI System Control Interrupt trigger mode
+                        Format: { level | edge | high | low }
 
-cvmx_reset_octeon() is unused in the kernel.  So instead of patching it 
-up, remove it altogether, thus removing a little bit of ugliness from 
-the world.
+Second the code in lib/swiotlb.c can't realize the function that
+"force" in either first or second position with the Format
+       swiotlb=        [ARM,IA-64,PPC,MIPS,X86]
+                       Format: { <int> | force }
+                       <int> -- Number of I/O TLB slabs
 
-David Daney
+I test with parameter
+BOARD_KERNEL_CMDLINE += swiotlb=force,500
+The result is io_tlb_nslabs=32768, swiotlb_force=0x0,
+io_tlb_nslabs=32768 because that if io_tlb_nslabs can't get from 
+early_param("swiotlb", setup_io_tlb_npages);
+It will be valued at swiotlb_init with default.
+So both  "<int>"  and "force" can't recognized with original code below.
+
+static int __init
+setup_io_tlb_npages(char *str)
+{
+        if (isdigit(*str)) {
+                io_tlb_nslabs = simple_strtoul(str, &str, 0);
+                /* avoid tail segment of size < IO_TLB_SEGSIZE */
+                io_tlb_nslabs = ALIGN(io_tlb_nslabs, IO_TLB_SEGSIZE);
+        }
+        if (*str == ',')
+                ++str;
+        if (!strcmp(str, "force"))
+                swiotlb_force = 1;
+
+        return 0;
+}
+early_param("swiotlb", setup_io_tlb_npages);
+
+So we can't use Format: { <int> | force | <int> | <int>} any more
+as there are four parameters.
+Format: { <int>,force,<int>,<int>} is suitable I think.
+And fixing  "force" is follow the code design previously in setup_io_tlb_npages.
+
+> Jan

@@ -1,42 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 07 Mar 2015 00:23:30 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:30168 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27007951AbbCFXX2sQ65Q (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 7 Mar 2015 00:23:28 +0100
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 0C2A950C29E64;
-        Fri,  6 Mar 2015 23:23:19 +0000 (GMT)
-Received: from BAMAIL02.ba.imgtec.org (10.20.40.28) by KLMAIL01.kl.imgtec.org
- (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Fri, 6 Mar
- 2015 23:23:22 +0000
-Received: from [10.20.2.221] (10.20.2.221) by bamail02.ba.imgtec.org
- (10.20.40.28) with Microsoft SMTP Server (TLS) id 14.3.174.1; Fri, 6 Mar 2015
- 15:23:20 -0800
-Message-ID: <54FA36E8.7010501@imgtec.com>
-Date:   Fri, 6 Mar 2015 15:23:20 -0800
-From:   Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>
-User-Agent: Mozilla/5.0 (X11; Linux i686; rv:24.0) Gecko/20100101 Thunderbird/24.7.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 07 Mar 2015 13:08:29 +0100 (CET)
+Received: from mx1.redhat.com ([209.132.183.28]:49415 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27007380AbbCGMI0BJ0-1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 7 Mar 2015 13:08:26 +0100
+Received: from int-mx11.intmail.prod.int.phx2.redhat.com (int-mx11.intmail.prod.int.phx2.redhat.com [10.5.11.24])
+        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id t27C6rmd014969
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Sat, 7 Mar 2015 07:06:53 -0500
+Received: from shalem.localdomain (vpn1-6-57.ams2.redhat.com [10.36.6.57])
+        by int-mx11.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with ESMTP id t27C6mUm001539
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES128-SHA bits=128 verify=NO);
+        Sat, 7 Mar 2015 07:06:49 -0500
+Message-ID: <54FAE9D8.9050206@redhat.com>
+Date:   Sat, 07 Mar 2015 13:06:48 +0100
+From:   Hans de Goede <hdegoede@redhat.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.5.0
 MIME-Version: 1.0
-To:     "Maciej W. Rozycki" <macro@linux-mips.org>,
-        Russell King <linux@arm.linux.org.uk>
-CC:     <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>,
-        <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>
-Subject: Re: [PATCH 04/15] MIPS: Add sched_clock support
-References: <1425517137-26463-1-git-send-email-dengcheng.zhu@imgtec.com> <1425517137-26463-5-git-send-email-dengcheng.zhu@imgtec.com> <alpine.LFD.2.11.1503061146430.15786@eddie.linux-mips.org>
-In-Reply-To: <alpine.LFD.2.11.1503061146430.15786@eddie.linux-mips.org>
-Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
+To:     David Daney <ddaney.cavm@gmail.com>
+CC:     Aleksey Makarov <aleksey.makarov@auriga.com>,
+        linux-ide@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org, David Daney <david.daney@cavium.com>,
+        Vinita Gupta <vgupta@caviumnetworks.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Pawel Moll <pawel.moll@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ian Campbell <ijc+devicetree@hellion.org.uk>,
+        Kumar Gala <galak@codeaurora.org>, Tejun Heo <tj@kernel.org>,
+        devicetree@vger.kernel.org
+Subject: Re: [PATCH v3] SATA: OCTEON: support SATA on OCTEON platform
+References: <1425567540-31572-1-git-send-email-aleksey.makarov@auriga.com> <54F97C27.508@redhat.com> <54F9D4E2.20107@gmail.com>
+In-Reply-To: <54F9D4E2.20107@gmail.com>
+Content-Type: text/plain; charset=windows-1252; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.20.2.221]
-Return-Path: <DengCheng.Zhu@imgtec.com>
+X-Scanned-By: MIMEDefang 2.68 on 10.5.11.24
+Return-Path: <hdegoede@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46246
+X-archive-position: 46248
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dengcheng.zhu@imgtec.com
+X-original-sender: hdegoede@redhat.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,73 +54,92 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 03/06/2015 03:58 AM, Maciej W. Rozycki wrote:
-> On Wed, 4 Mar 2015, Deng-Cheng Zhu wrote:
->
->> This will provide sched_clock interface to implement individual
->> read_sched_clock(). Not for CAVIUM_OCTEON_SOC as it defines its own
->> sched_clock() directly (not using the sched_clock_register interface).
+Hi,
+
+On 06-03-15 17:25, David Daney wrote:
+> On 03/06/2015 02:06 AM, Hans de Goede wrote:
+>> Hi,
 >>
->> Signed-off-by: Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>
->> ---
->>   arch/mips/Kconfig | 1 +
->>   1 file changed, 1 insertion(+)
+>> On 05-03-15 15:58, Aleksey Makarov wrote:
+>>> The OCTEON SATA controller is currently found on cn71XX devices.
+>>>
+>>> Signed-off-by: David Daney <david.daney@cavium.com>
+>>> Signed-off-by: Vinita Gupta <vgupta@caviumnetworks.com>
+>>> Signed-off-by: Aleksey Makarov <aleksey.makarov@auriga.com>
+>>> ---
+> [...]
+>>> diff --git
+>>> a/Documentation/devicetree/bindings/mips/cavium/sata-uctl.txt
+>>> b/Documentation/devicetree/bindings/mips/cavium/sata-uctl.txt
+>>> new file mode 100644
+>>> index 0000000..59e86a7
+>>> --- /dev/null
+>>> +++ b/Documentation/devicetree/bindings/mips/cavium/sata-uctl.txt
+>>> @@ -0,0 +1,28 @@
+>>> +* UCTL SATA controller glue
+>>> +
+>>> +Properties:
+>>> +- compatible: "cavium,octeon-7130-sata-uctl"
+>>> +
+>>> +  Compatibility with the cn7130 SOC.
+>>> +
+>>> +- reg: The base address of the UCTL register bank.
+>>> +
+>>> +- #address-cells, #size-cells, and ranges must be present and hold
+>>> +    suitable values to map all child nodes.
+>>> +
+>>> +Example:
+>>> +
+>>> +    uctl@118006c000000 {
+>>> +        compatible = "cavium,octeon-7130-sata-uctl";
+>>> +        reg = <0x11800 0x6c000000 0x0 0x100>;
+>>> +        ranges; /* Direct mapping */
+>>> +        #address-cells = <2>;
+>>> +        #size-cells = <2>;
+>>> +
+>>> +        sata: sata@16c0000000000 {
+>>> +            compatible = "cavium,octeon-7130-ahci";
+>>> +            reg = <0x16c00 0x00000000 0x0 0x200>;
+>>> +            interrupt-parent = <&cibsata>;
+>>> +            interrupts = <2 4>; /* Bit: 2, level */
+>>> +        };
+>>> +    };
 >>
->> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
->> index 068592a..09405dc 100644
->> --- a/arch/mips/Kconfig
->> +++ b/arch/mips/Kconfig
->> @@ -43,6 +43,7 @@ config MIPS
->>   	select GENERIC_SMP_IDLE_THREAD
->>   	select BUILDTIME_EXTABLE_SORT
->>   	select GENERIC_CLOCKEVENTS
->> +	select GENERIC_SCHED_CLOCK if !CAVIUM_OCTEON_SOC
->>   	select GENERIC_CMOS_UPDATE
->>   	select HAVE_MOD_ARCH_SPECIFIC
->>   	select VIRT_TO_BUS
->   Why does this change add this question:
+>> Sorry for jumping into this discussion a bit late, but this nonsense
+>> nesting of what clearly are 2 related but different hw blocks,
+>> both living at completely different register addresses is unacceptable,
+>> this is not a proper operating system dependent hw description as
+>> devicetree is supposed to be. This is an ugly hack to ensure a
+>> certain init ordering, and requiring manual instantiation of
+>> the platform device for the nested dt-node.
+>>
+>> NACK.
 >
-> ARM Versatile (Express) reference platforms clock source (CLKSRC_VERSATILE) [N/y/?] (NEW) ?
+> Can you point to the portion of the device tree specification that states that if a node has both "reg" *and* "ranges" properties, the parent-bus-address ranges must be a proper subset of the "reg" property ranges of the parent?   Because that seems like what you are saying here.  I would really like to read the documentation myself so that we can get a better understanding of the requirements.
 
-Good catch.
+This is not a written rule, it is just logic to not represent something
+nested in devicetree while the real world address space it sits in is
+flat. As said devicetree is about (accurately) describing hardware,
+and having nesting in the devicetree where there is no nesting in the
+real hardware is just wrong.
 
->
-> This option enables clock source based on free running
-> counter available in the "System Registers" block of
-> ARM Versatile, RealView and Versatile Express reference
-> platforms.
->
-> Symbol: CLKSRC_VERSATILE [=n]
-> Type  : boolean
-> Prompt: ARM Versatile (Express) reference platforms clock source
->    Location:
->      -> Device Drivers
->        -> Clock Source drivers
->    Defined at drivers/clocksource/Kconfig:216
->    Depends on: GENERIC_SCHED_CLOCK [=y] && !ARCH_USES_GETTIMEOFFSET [=n]
->    Selects: CLKSRC_OF [=n]
->
-> to a MIPS configuration?  I find it silly, this appears a platform
-> device to me (use reverse dependencies?).
+> For what it's worth, there are existing bindings that take the same form, and they don't seem to break anything.  See for example Documentation/devicetree/bindings/mips/cavium/uctl.txt
 
-GENERIC_SCHED_CLOCK is generic, by default it uses jiffy_sched_clock_read() 
-for read_sched_clock(). Instead of using reverse dependencies, I suggest 
-the following:
+I'm not claiming that this will not work, just that it is wrong from
+a conceptual pov IMHO.
 
-diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
-index 1c2506f..22e0ee1 100644
---- a/drivers/clocksource/Kconfig
-+++ b/drivers/clocksource/Kconfig
-@@ -225,7 +225,7 @@ config CLKSRC_QCOM
+> In any event, it is somewhat moot at this point.  The device tree being effectively being a frozen ABI, cannot really be changed.  We are merely documenting what is supplied by the preexisting system boot ROMs, not starting from scratch and discussing what the proper device tree binding for the device should be.
 
-  config CLKSRC_VERSATILE
-         bool "ARM Versatile (Express) reference platforms clock source"
--       depends on GENERIC_SCHED_CLOCK && !ARCH_USES_GETTIMEOFFSET
-+       depends on PLAT_VERSATILE && GENERIC_SCHED_CLOCK && 
-!ARCH_USES_GETTIMEOFFSET
-         select CLKSRC_OF
-         default y if MFD_VEXPRESS_SYSREG
-         help
+Ah I see, I did not know that this was already a shipped ABI.
 
+Given that the devicetree ABI is fixed, and that that was my only
+reason for NACK-ing this patch, I hereby withdraw my NACK.
 
-Deng-Cheng
+Other then the dt bindings issue, the code looks good, so this
+patch is:
+
+Acked-by: Hans de Goede <hdegoede@redhat.com>
+
+Regards,
+
+Hans

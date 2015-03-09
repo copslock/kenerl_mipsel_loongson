@@ -1,68 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Mar 2015 03:43:35 +0100 (CET)
-Received: from szxga01-in.huawei.com ([58.251.152.64]:47971 "EHLO
-        szxga01-in.huawei.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007666AbbCICncUvBvv (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 9 Mar 2015 03:43:32 +0100
-Received: from 172.24.2.119 (EHLO szxeml433-hub.china.huawei.com) ([172.24.2.119])
-        by szxrg01-dlp.huawei.com (MOS 4.3.7-GA FastPath queued)
-        with ESMTP id CKL80102;
-        Mon, 09 Mar 2015 10:43:01 +0800 (CST)
-Received: from localhost.localdomain (10.175.100.166) by
- szxeml433-hub.china.huawei.com (10.82.67.210) with Microsoft SMTP Server id
- 14.3.158.1; Mon, 9 Mar 2015 10:42:34 +0800
-From:   Yijing Wang <wangyijing@huawei.com>
-To:     Bjorn Helgaas <bhelgaas@google.com>
-CC:     Jiang Liu <jiang.liu@linux.intel.com>, <linux-pci@vger.kernel.org>,
-        Yinghai Lu <yinghai@kernel.org>,
-        <linux-kernel@vger.kernel.org>,
-        Marc Zyngier <marc.zyngier@arm.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        Russell King <linux@arm.linux.org.uk>, <x86@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Rusty Russell <rusty@rustcorp.com.au>,
-        Tony Luck <tony.luck@intel.com>, <linux-ia64@vger.kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        "Guan Xuetao" <gxt@mprc.pku.edu.cn>, <linux-alpha@vger.kernel.org>,
-        <linux-m68k@lists.linux-m68k.org>, Liviu Dudau <liviu@dudau.co.uk>,
-        "Arnd Bergmann" <arnd@arndb.de>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        "Yijing Wang" <wangyijing@huawei.com>,
-        Richard Henderson <rth@twiddle.net>,
-        "Ivan Kokshaysky" <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Michal Simek <monstr@monstr.eu>,
-        "Ralf Baechle" <ralf@linux-mips.org>,
-        Paul Mackerras <paulus@samba.org>,
-        "Michael Ellerman" <mpe@ellerman.id.au>,
-        Sebastian Ott <sebott@linux.vnet.ibm.com>,
-        Gerald Schaefer <gerald.schaefer@de.ibm.com>,
-        Chris Metcalf <cmetcalf@ezchip.com>,
-        Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
-        <linux-mips@linux-mips.org>, <linuxppc-dev@lists.ozlabs.org>,
-        <linux-s390@vger.kernel.org>, <linux-sh@vger.kernel.org>,
-        <sparclinux@vger.kernel.org>, <xen-devel@lists.xenproject.org>,
-        Bjorn Helgaas <bhelgaas@google.com>
-Subject: [PATCH v6 07/30] PCI: Pass PCI domain number combined with root bus number
-Date:   Mon, 9 Mar 2015 10:34:04 +0800
-Message-ID: <1425868467-9667-8-git-send-email-wangyijing@huawei.com>
-X-Mailer: git-send-email 1.7.1
-In-Reply-To: <1425868467-9667-1-git-send-email-wangyijing@huawei.com>
-References: <1425868467-9667-1-git-send-email-wangyijing@huawei.com>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.175.100.166]
-X-CFilter-Loop: Reflected
-Return-Path: <wangyijing@huawei.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Mar 2015 09:26:42 +0100 (CET)
+Received: from mga14.intel.com ([192.55.52.115]:28661 "EHLO mga14.intel.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27006153AbbCII0jwftP0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 9 Mar 2015 09:26:39 +0100
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga103.fm.intel.com with ESMTP; 09 Mar 2015 01:21:12 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.11,366,1422950400"; 
+   d="scan'208";a="464504309"
+Received: from wxmubuntu.sh.intel.com ([10.239.154.16])
+  by FMSMGA003.fm.intel.com with ESMTP; 09 Mar 2015 01:19:52 -0700
+From:   Wang Xiaoming <xiaoming.wang@intel.com>
+To:     ralf@linux-mips.org, konrad.wilk@oracle.com,
+        boris.ostrovsky@oracle.com, david.vrabel@citrix.com,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        xen-devel@lists.xenproject.org, akpm@linux-foundation.org,
+        linux@horizon.com, lauraa@codeaurora.org,
+        heiko.carstens@de.ibm.com, d.kasatkin@samsung.com,
+        takahiro.akashi@linaro.org, chris@chris-wilson.co.uk,
+        pebolle@tiscali.nl, jkosina@suse.cz, JBeulich@suse.com
+Cc:     Wang Xiaoming <xiaoming.wang@intel.com>,
+        Chuansheng Liu <chuansheng.liu@intel.com>,
+        Zhang Dongxing <dongxing.zhang@intel.com>
+Subject: [PATCH v6] modify the IO_TLB_SEGSIZE and IO_TLB_DEFAULT_SIZE configurable as flexible requirement about SW-IOMMU.
+Date:   Mon,  9 Mar 2015 16:25:07 +0800
+Message-Id: <1425889507-16959-1-git-send-email-xiaoming.wang@intel.com>
+X-Mailer: git-send-email 1.7.9.5
+Return-Path: <xiaoming.wang@intel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46280
+X-archive-position: 46281
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wangyijing@huawei.com
+X-original-sender: xiaoming.wang@intel.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -75,297 +47,334 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Now we could pass PCI domain combined with bus number
-in u32 argu. Because in arm/arm64, PCI domain number
-is assigned by pci_bus_assign_domain_nr(). So we leave
-pci_scan_root_bus() and pci_create_root_bus() in arm/arm64
-unchanged. A new function pci_host_assign_domain_nr()
-will be introduced for arm/arm64 to assign domain number
-in later patch.
+The maximum of SW-IOMMU is limited to 2^11*128 = 256K.
+And the size of IO_TLB_DEFAULT_SIZE is limited to (64UL<<20) 64M now.
+While in different platform and different requirement this seems improper.
+So modifing the IO_TLB_SEGSIZE to io_tlb_segsize and IO_TLB_DEFAULT_SIZE
+to io_tlb_default_size which can configure by kernel cmdline.
+This can meet different requirement.
 
-Signed-off-by: Yijing Wang <wangyijing@huawei.com>
-CC: Richard Henderson <rth@twiddle.net>
-CC: Ivan Kokshaysky <ink@jurassic.park.msu.ru>
-CC: Matt Turner <mattst88@gmail.com>
-CC: Tony Luck <tony.luck@intel.com>
-CC: Fenghua Yu <fenghua.yu@intel.com>
-CC: Michal Simek <monstr@monstr.eu>
-CC: Ralf Baechle <ralf@linux-mips.org>
-CC: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-CC: Paul Mackerras <paulus@samba.org>
-CC: Michael Ellerman <mpe@ellerman.id.au>
-CC: Sebastian Ott <sebott@linux.vnet.ibm.com>
-CC: Gerald Schaefer <gerald.schaefer@de.ibm.com>
-CC: "David S. Miller" <davem@davemloft.net>
-CC: Chris Metcalf <cmetcalf@ezchip.com>
-CC: Thomas Gleixner <tglx@linutronix.de>
-CC: Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
-CC: linux-alpha@vger.kernel.org
-CC: linux-kernel@vger.kernel.org
-CC: linux-ia64@vger.kernel.org
-CC: linux-mips@linux-mips.org
-CC: linuxppc-dev@lists.ozlabs.org
-CC: linux-s390@vger.kernel.org
-CC: linux-sh@vger.kernel.org
-CC: sparclinux@vger.kernel.org
-CC: xen-devel@lists.xenproject.org
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Signed-off-by: Chuansheng Liu <chuansheng.liu@intel.com>
+Signed-off-by: Zhang Dongxing <dongxing.zhang@intel.com>
+Signed-off-by: Wang Xiaoming <xiaoming.wang@intel.com>
 ---
- arch/alpha/kernel/pci.c          |    5 +++--
- arch/alpha/kernel/sys_nautilus.c |    4 ++--
- arch/ia64/pci/pci.c              |    4 ++--
- arch/ia64/sn/kernel/io_init.c    |    5 +++--
- arch/microblaze/pci/pci-common.c |    5 +++--
- arch/mips/pci/pci.c              |    4 ++--
- arch/powerpc/kernel/pci-common.c |    5 +++--
- arch/s390/pci/pci.c              |    5 +++--
- arch/sh/drivers/pci/pci.c        |    5 +++--
- arch/sparc/kernel/pci.c          |    5 +++--
- arch/tile/kernel/pci.c           |    5 +++--
- arch/tile/kernel/pci_gx.c        |    5 +++--
- arch/x86/pci/acpi.c              |    7 ++++---
- arch/x86/pci/common.c            |    3 ++-
- drivers/pci/xen-pcifront.c       |    5 +++--
- 15 files changed, 42 insertions(+), 30 deletions(-)
+patch v1 make this change at Kconfig
+which needs to edit the .config manually.
+https://lkml.org/lkml/2015/1/25/571
 
-diff --git a/arch/alpha/kernel/pci.c b/arch/alpha/kernel/pci.c
-index 5c845ad..deb0a36 100644
---- a/arch/alpha/kernel/pci.c
-+++ b/arch/alpha/kernel/pci.c
-@@ -336,8 +336,9 @@ common_init_pci(void)
- 		pci_add_resource_offset(&resources, hose->mem_space,
- 					hose->mem_space->start);
+patch v2 only change IO_TLB_SEGSIZE configurable.
+https://lkml.org/lkml/2015/2/5/812
+
+patch v3 parsing io_tlb_segsize and
+io_tlb_default_size independently.
+https://lkml.org/lkml/2015/2/15/217
+
+patch v4 hasn't validated the data from
+command line.
+https://lkml.org/lkml/2015/2/17/114
+
+patch v5 fix the postion of 'force'.
+https://lkml.org/lkml/2015/3/3/84
+
+ Documentation/kernel-parameters.txt  |    5 +-
+ arch/mips/cavium-octeon/dma-octeon.c |    2 +-
+ arch/mips/netlogic/common/nlm-dma.c  |    2 +-
+ drivers/xen/swiotlb-xen.c            |    6 +--
+ include/linux/swiotlb.h              |    8 +--
+ lib/swiotlb.c                        |   99 ++++++++++++++++++++++++++--------
+ 6 files changed, 87 insertions(+), 35 deletions(-)
+
+diff --git a/Documentation/kernel-parameters.txt b/Documentation/kernel-parameters.txt
+index 4df73da..8463ef4 100644
+--- a/Documentation/kernel-parameters.txt
++++ b/Documentation/kernel-parameters.txt
+@@ -3438,10 +3438,13 @@ bytes respectively. Such letter suffixes can also be entirely omitted.
+ 			it if 0 is given (See Documentation/cgroups/memory.txt)
  
--		bus = pci_scan_root_bus(NULL, next_busno, alpha_mv.pci_ops,
--					hose, &resources);
-+		bus = pci_scan_root_bus(NULL,
-+				PCI_DOMBUS(hose->index, next_busno),
-+				alpha_mv.pci_ops, hose, &resources);
- 		if (!bus)
- 			continue;
- 		hose->bus = bus;
-diff --git a/arch/alpha/kernel/sys_nautilus.c b/arch/alpha/kernel/sys_nautilus.c
-index 700686d..be0bbeb 100644
---- a/arch/alpha/kernel/sys_nautilus.c
-+++ b/arch/alpha/kernel/sys_nautilus.c
-@@ -206,10 +206,10 @@ nautilus_init_pci(void)
- 	unsigned long memtop = max_low_pfn << PAGE_SHIFT;
+ 	swiotlb=	[ARM,IA-64,PPC,MIPS,X86]
+-			Format: { <int> | force }
++			Format: { <int>,force,<int>,<int>}
+ 			<int> -- Number of I/O TLB slabs
+ 			force -- force using of bounce buffers even if they
+ 			         wouldn't be automatically used by the kernel
++			<int> -- Maximum allowable number of contiguous slabs to map
++			<int> -- The size of SW-MMU mapped.
++			"Use ',' to seperate them."
  
- 	/* Scan our single hose.  */
--	bus = pci_scan_bus(0, alpha_mv.pci_ops, hose);
-+	bus = pci_scan_bus(PCI_DOMBUS(hose->index, 0),
-+			alpha_mv.pci_ops, hose);
- 	if (!bus)
- 		return;
+ 	switches=	[HW,M68k]
+ 
+diff --git a/arch/mips/cavium-octeon/dma-octeon.c b/arch/mips/cavium-octeon/dma-octeon.c
+index 3778655..a521af6 100644
+--- a/arch/mips/cavium-octeon/dma-octeon.c
++++ b/arch/mips/cavium-octeon/dma-octeon.c
+@@ -312,7 +312,7 @@ void __init plat_swiotlb_setup(void)
+ 		swiotlbsize = 64 * (1<<20);
+ #endif
+ 	swiotlb_nslabs = swiotlbsize >> IO_TLB_SHIFT;
+-	swiotlb_nslabs = ALIGN(swiotlb_nslabs, IO_TLB_SEGSIZE);
++	swiotlb_nslabs = ALIGN(swiotlb_nslabs, io_tlb_segsize);
+ 	swiotlbsize = swiotlb_nslabs << IO_TLB_SHIFT;
+ 
+ 	octeon_swiotlb = alloc_bootmem_low_pages(swiotlbsize);
+diff --git a/arch/mips/netlogic/common/nlm-dma.c b/arch/mips/netlogic/common/nlm-dma.c
+index f3d4ae8..eeffa8f 100644
+--- a/arch/mips/netlogic/common/nlm-dma.c
++++ b/arch/mips/netlogic/common/nlm-dma.c
+@@ -99,7 +99,7 @@ void __init plat_swiotlb_setup(void)
+ 
+ 	swiotlbsize = 1 << 20; /* 1 MB for now */
+ 	swiotlb_nslabs = swiotlbsize >> IO_TLB_SHIFT;
+-	swiotlb_nslabs = ALIGN(swiotlb_nslabs, IO_TLB_SEGSIZE);
++	swiotlb_nslabs = ALIGN(swiotlb_nslabs, io_tlb_segsize);
+ 	swiotlbsize = swiotlb_nslabs << IO_TLB_SHIFT;
+ 
+ 	nlm_swiotlb = alloc_bootmem_low_pages(swiotlbsize);
+diff --git a/drivers/xen/swiotlb-xen.c b/drivers/xen/swiotlb-xen.c
+index 810ad41..3b3e9fe 100644
+--- a/drivers/xen/swiotlb-xen.c
++++ b/drivers/xen/swiotlb-xen.c
+@@ -164,11 +164,11 @@ xen_swiotlb_fixup(void *buf, size_t size, unsigned long nslabs)
+ 	dma_addr_t dma_handle;
+ 	phys_addr_t p = virt_to_phys(buf);
+ 
+-	dma_bits = get_order(IO_TLB_SEGSIZE << IO_TLB_SHIFT) + PAGE_SHIFT;
++	dma_bits = get_order(io_tlb_segsize << IO_TLB_SHIFT) + PAGE_SHIFT;
+ 
+ 	i = 0;
+ 	do {
+-		int slabs = min(nslabs - i, (unsigned long)IO_TLB_SEGSIZE);
++		int slabs = min(nslabs - i, (unsigned long)io_tlb_segsize);
+ 
+ 		do {
+ 			rc = xen_create_contiguous_region(
+@@ -187,7 +187,7 @@ static unsigned long xen_set_nslabs(unsigned long nr_tbl)
+ {
+ 	if (!nr_tbl) {
+ 		xen_io_tlb_nslabs = (64 * 1024 * 1024 >> IO_TLB_SHIFT);
+-		xen_io_tlb_nslabs = ALIGN(xen_io_tlb_nslabs, IO_TLB_SEGSIZE);
++		xen_io_tlb_nslabs = ALIGN(xen_io_tlb_nslabs, io_tlb_segsize);
+ 	} else
+ 		xen_io_tlb_nslabs = nr_tbl;
+ 
+diff --git a/include/linux/swiotlb.h b/include/linux/swiotlb.h
+index e7a018e..13506db 100644
+--- a/include/linux/swiotlb.h
++++ b/include/linux/swiotlb.h
+@@ -8,13 +8,7 @@ struct dma_attrs;
+ struct scatterlist;
+ 
+ extern int swiotlb_force;
 -
- 	hose->bus = bus;
- 	pcibios_claim_one_bus(bus);
+-/*
+- * Maximum allowable number of contiguous slabs to map,
+- * must be a power of 2.  What is the appropriate value ?
+- * The complexity of {map,unmap}_single is linearly dependent on this value.
+- */
+-#define IO_TLB_SEGSIZE	128
++extern int io_tlb_segsize;
  
-diff --git a/arch/ia64/pci/pci.c b/arch/ia64/pci/pci.c
-index 48cc657..675749f 100644
---- a/arch/ia64/pci/pci.c
-+++ b/arch/ia64/pci/pci.c
-@@ -465,8 +465,8 @@ struct pci_bus *pci_acpi_scan_root(struct acpi_pci_root *root)
- 	 * should handle the case here, but it appears that IA64 hasn't
- 	 * such quirk. So we just ignore the case now.
+ /*
+  * log of the size of each IO TLB slab.  The number of slabs is command line
+diff --git a/lib/swiotlb.c b/lib/swiotlb.c
+index 4abda07..223a45b 100644
+--- a/lib/swiotlb.c
++++ b/lib/swiotlb.c
+@@ -56,6 +56,25 @@
+ int swiotlb_force;
+ 
+ /*
++ * default to 128
++ * Maximum allowable number of contiguous slabs to map,
++ * must be a power of 2.  What is the appropriate value ?
++ * define io_tlb_segsize as a parameter
++ * which can be changed dynamically in config file
++ * or as a parameter during bootup for special usage.
++ * The complexity of {map,unmap}_single is linearly dependent on this value.
++ */
++#define IO_TLB_SEGSIZE	128
++int io_tlb_segsize = IO_TLB_SEGSIZE;
++
++/* default to 64MB 
++ * define io_tlb_default_size as a parameter
++ * which can be changed dynamically in config file for special usage.
++ */
++#define IO_TLB_DEFAULT_SIZE (64UL<<20)
++static unsigned long io_tlb_default_size = IO_TLB_DEFAULT_SIZE;
++
++/*
+  * Used to do a quick range check in swiotlb_tbl_unmap_single and
+  * swiotlb_tbl_sync_single_*, to see if the memory was in fact allocated by this
+  * API.
+@@ -96,18 +115,57 @@ static DEFINE_SPINLOCK(io_tlb_lock);
+ 
+ static int late_alloc;
+ 
++/*
++ * Example:
++ * BOARD_KERNEL_CMDLINE += swiotlb=32768,force,512,268435456
++ * io_tlb_nslabs=32768, swiotlb_force=1,
++ * io_tlb_segsize=512, io_tlb_default_size=268435456
++ */
+ static int __init
+ setup_io_tlb_npages(char *str)
+ {
+-	if (isdigit(*str)) {
+-		io_tlb_nslabs = simple_strtoul(str, &str, 0);
+-		/* avoid tail segment of size < IO_TLB_SEGSIZE */
+-		io_tlb_nslabs = ALIGN(io_tlb_nslabs, IO_TLB_SEGSIZE);
+-	}
+-	if (*str == ',')
++	unsigned long swiotlb_param[3] ={0,0,0};
++	int num_param = 3;
++
++	while (*str) {
++		if (!strncmp(str, "force", 5)) {
++			swiotlb_force = 1;
++			str += 5;
++			if (*str != ',')
++				break;
++			++str;
++			continue;
++		}
++		if (!num_param)
++			break;
++		if (isdigit(*str)) {
++			swiotlb_param[3 - num_param] = simple_strtoul(str, &str, 0);
++			num_param--;
++		}
++		if (*str != ',')
++			break;
+ 		++str;
+-	if (!strcmp(str, "force"))
+-		swiotlb_force = 1;
++	}
++
++	if (swiotlb_param[1]) {
++		int n = 0;
++		io_tlb_segsize = (int)swiotlb_param[1];
++		io_tlb_segsize = ALIGN(io_tlb_segsize, IO_TLB_SEGSIZE);
++		while ((io_tlb_segsize - 1) >> n)
++			n++;
++		io_tlb_segsize = (1 << n);
++	}
++
++	if (swiotlb_param[0]) {
++		io_tlb_nslabs = swiotlb_param[0];
++		/* avoid tail segment of size < io_tlb_segsize */
++		io_tlb_nslabs = ALIGN(io_tlb_nslabs, io_tlb_segsize);
++	}
++
++	if (swiotlb_param[2]) {
++		io_tlb_default_size = swiotlb_param[2];
++		io_tlb_default_size = ALIGN(io_tlb_default_size, IO_TLB_DEFAULT_SIZE);
++	}
+ 
+ 	return 0;
+ }
+@@ -120,15 +178,13 @@ unsigned long swiotlb_nr_tbl(void)
+ }
+ EXPORT_SYMBOL_GPL(swiotlb_nr_tbl);
+ 
+-/* default to 64MB */
+-#define IO_TLB_DEFAULT_SIZE (64UL<<20)
+ unsigned long swiotlb_size_or_default(void)
+ {
+ 	unsigned long size;
+ 
+ 	size = io_tlb_nslabs << IO_TLB_SHIFT;
+ 
+-	return size ? size : (IO_TLB_DEFAULT_SIZE);
++	return size ? size : (io_tlb_default_size);
+ }
+ 
+ /* Note that this doesn't work with highmem page */
+@@ -183,7 +239,7 @@ int __init swiotlb_init_with_tbl(char *tlb, unsigned long nslabs, int verbose)
+ 
+ 	/*
+ 	 * Allocate and initialize the free list array.  This array is used
+-	 * to find contiguous free memory regions of size up to IO_TLB_SEGSIZE
++	 * to find contiguous free memory regions of size up to io_tlb_segsize
+ 	 * between io_tlb_start and io_tlb_end.
  	 */
--	pbus = pci_create_root_bus(NULL, bus, &pci_root_ops, controller,
--				   &info->resources);
-+	pbus = pci_create_root_bus(NULL, PCI_DOMBUS(domain, bus),
-+			&pci_root_ops, controller, &info->resources);
- 	if (!pbus) {
- 		pci_free_resource_list(&info->resources);
- 		__release_pci_root_info(info);
-diff --git a/arch/ia64/sn/kernel/io_init.c b/arch/ia64/sn/kernel/io_init.c
-index 1be65eb..7e0b7f9 100644
---- a/arch/ia64/sn/kernel/io_init.c
-+++ b/arch/ia64/sn/kernel/io_init.c
-@@ -266,8 +266,9 @@ sn_pci_controller_fixup(int segment, int busnum, struct pci_bus *bus)
- 	pci_add_resource_offset(&resources,	&res[1],
- 			prom_bussoft_ptr->bs_legacy_mem);
+ 	io_tlb_list = memblock_virt_alloc(
+@@ -193,7 +249,7 @@ int __init swiotlb_init_with_tbl(char *tlb, unsigned long nslabs, int verbose)
+ 				PAGE_ALIGN(io_tlb_nslabs * sizeof(phys_addr_t)),
+ 				PAGE_SIZE);
+ 	for (i = 0; i < io_tlb_nslabs; i++) {
+-		io_tlb_list[i] = IO_TLB_SEGSIZE - OFFSET(i, IO_TLB_SEGSIZE);
++		io_tlb_list[i] = io_tlb_segsize - OFFSET(i, io_tlb_segsize);
+ 		io_tlb_orig_addr[i] = INVALID_PHYS_ADDR;
+ 	}
+ 	io_tlb_index = 0;
+@@ -211,13 +267,12 @@ int __init swiotlb_init_with_tbl(char *tlb, unsigned long nslabs, int verbose)
+ void  __init
+ swiotlb_init(int verbose)
+ {
+-	size_t default_size = IO_TLB_DEFAULT_SIZE;
+ 	unsigned char *vstart;
+ 	unsigned long bytes;
  
--	bus = pci_scan_root_bus(NULL, busnum, &pci_root_ops, controller,
--				&resources);
-+	bus = pci_scan_root_bus(NULL,
-+			PCI_DOMBUS(controller->segment, busnum),
-+			&pci_root_ops, controller, &resources);
-  	if (bus == NULL) {
- 		kfree(res);
- 		kfree(controller);
-diff --git a/arch/microblaze/pci/pci-common.c b/arch/microblaze/pci/pci-common.c
-index 6d8d173..34a32ec 100644
---- a/arch/microblaze/pci/pci-common.c
-+++ b/arch/microblaze/pci/pci-common.c
-@@ -1350,8 +1350,9 @@ static void pcibios_scan_phb(struct pci_controller *hose)
- 
- 	pcibios_setup_phb_resources(hose, &resources);
- 
--	bus = pci_scan_root_bus(hose->parent, hose->first_busno,
--				hose->ops, hose, &resources);
-+	bus = pci_scan_root_bus(hose->parent,
-+			PCI_DOMBUS(hose->global_number, hose->first_busno),
-+			hose->ops, hose, &resources);
- 	if (bus == NULL) {
- 		pr_err("Failed to create bus for PCI domain %04x\n",
- 		       hose->global_number);
-diff --git a/arch/mips/pci/pci.c b/arch/mips/pci/pci.c
-index 9eb54b5..86f8d2b 100644
---- a/arch/mips/pci/pci.c
-+++ b/arch/mips/pci/pci.c
-@@ -92,8 +92,8 @@ static void pcibios_scanbus(struct pci_controller *hose)
- 	pci_add_resource_offset(&resources,
- 				hose->mem_resource, hose->mem_offset);
- 	pci_add_resource_offset(&resources, hose->io_resource, hose->io_offset);
--	bus = pci_scan_root_bus(NULL, next_busno, hose->pci_ops, hose,
--				&resources);
-+	bus = pci_scan_root_bus(NULL, PCI_DOMBUS(hose->index, next_busno),
-+			hose->pci_ops, hose, &resources);
- 	if (!bus)
- 		pci_free_resource_list(&resources);
- 
-diff --git a/arch/powerpc/kernel/pci-common.c b/arch/powerpc/kernel/pci-common.c
-index 2a525c9..a467aca 100644
---- a/arch/powerpc/kernel/pci-common.c
-+++ b/arch/powerpc/kernel/pci-common.c
-@@ -1612,8 +1612,9 @@ void pcibios_scan_phb(struct pci_controller *hose)
- 	pci_add_resource(&resources, &hose->busn);
- 
- 	/* Create an empty bus for the toplevel */
--	bus = pci_create_root_bus(hose->parent, hose->first_busno,
--				  hose->ops, hose, &resources);
-+	bus = pci_create_root_bus(hose->parent,
-+			PCI_DOMBUS(hose->global_number, hose->first_busno),
-+			hose->ops, hose, &resources);
- 	if (bus == NULL) {
- 		pr_err("Failed to create bus for PCI domain %04x\n",
- 			hose->global_number);
-diff --git a/arch/s390/pci/pci.c b/arch/s390/pci/pci.c
-index a2a7391..20e662f 100644
---- a/arch/s390/pci/pci.c
-+++ b/arch/s390/pci/pci.c
-@@ -770,8 +770,9 @@ static int zpci_scan_bus(struct zpci_dev *zdev)
- 	if (ret)
- 		return ret;
- 
--	zdev->bus = pci_scan_root_bus(NULL, ZPCI_BUS_NR, &pci_root_ops,
--				      zdev, &resources);
-+	zdev->bus = pci_scan_root_bus(NULL,
-+			PCI_DOMBUS(zdev->domain, ZPCI_BUS_NR), &pci_root_ops,
-+			zdev, &resources);
- 	if (!zdev->bus) {
- 		zpci_cleanup_bus_resources(zdev);
- 		return -EIO;
-diff --git a/arch/sh/drivers/pci/pci.c b/arch/sh/drivers/pci/pci.c
-index efc1051..116f80f 100644
---- a/arch/sh/drivers/pci/pci.c
-+++ b/arch/sh/drivers/pci/pci.c
-@@ -52,8 +52,9 @@ static void pcibios_scanbus(struct pci_channel *hose)
- 		pci_add_resource_offset(&resources, res, offset);
+ 	if (!io_tlb_nslabs) {
+-		io_tlb_nslabs = (default_size >> IO_TLB_SHIFT);
+-		io_tlb_nslabs = ALIGN(io_tlb_nslabs, IO_TLB_SEGSIZE);
++		io_tlb_nslabs = (io_tlb_default_size >> IO_TLB_SHIFT);
++		io_tlb_nslabs = ALIGN(io_tlb_nslabs, io_tlb_segsize);
  	}
  
--	bus = pci_scan_root_bus(NULL, next_busno, hose->pci_ops, hose,
--				&resources);
-+	bus = pci_scan_root_bus(NULL,
-+			PCI_DOMBUS(hose->index, next_busno),
-+			hose->pci_ops, hose, &resources);
- 	hose->bus = bus;
+ 	bytes = io_tlb_nslabs << IO_TLB_SHIFT;
+@@ -249,7 +304,7 @@ swiotlb_late_init_with_default_size(size_t default_size)
  
- 	need_domain_info = need_domain_info || hose->index;
-diff --git a/arch/sparc/kernel/pci.c b/arch/sparc/kernel/pci.c
-index 9ce5afe..838fe1e 100644
---- a/arch/sparc/kernel/pci.c
-+++ b/arch/sparc/kernel/pci.c
-@@ -667,8 +667,9 @@ struct pci_bus *pci_scan_one_pbm(struct pci_pbm_info *pbm,
- 	pbm->busn.end	= pbm->pci_last_busno;
- 	pbm->busn.flags	= IORESOURCE_BUS;
- 	pci_add_resource(&resources, &pbm->busn);
--	bus = pci_create_root_bus(parent, pbm->pci_first_busno, pbm->pci_ops,
--				  pbm, &resources);
-+	bus = pci_create_root_bus(parent,
-+			PCI_DOMBUS(pbm->index, pbm->pci_first_busno),
-+			pbm->pci_ops, pbm, &resources);
- 	if (!bus) {
- 		printk(KERN_ERR "Failed to create bus for %s\n",
- 		       node->full_name);
-diff --git a/arch/tile/kernel/pci.c b/arch/tile/kernel/pci.c
-index 9475a74..25b0d9b 100644
---- a/arch/tile/kernel/pci.c
-+++ b/arch/tile/kernel/pci.c
-@@ -306,8 +306,9 @@ int __init pcibios_init(void)
- 
- 			pci_add_resource(&resources, &ioport_resource);
- 			pci_add_resource(&resources, &iomem_resource);
--			bus = pci_scan_root_bus(NULL, 0, controller->ops,
--						controller, &resources);
-+			bus = pci_scan_root_bus(NULL,
-+				PCI_DOMBUS(controller->index, 0),
-+				controller->ops, controller, &resources);
- 			controller->root_bus = bus;
- 			controller->last_busno = bus->busn_res.end;
- 		}
-diff --git a/arch/tile/kernel/pci_gx.c b/arch/tile/kernel/pci_gx.c
-index b1df847..f6f41f3 100644
---- a/arch/tile/kernel/pci_gx.c
-+++ b/arch/tile/kernel/pci_gx.c
-@@ -881,8 +881,9 @@ int __init pcibios_init(void)
- 					controller->mem_offset);
- 		pci_add_resource(&resources, &controller->io_space);
- 		controller->first_busno = next_busno;
--		bus = pci_scan_root_bus(NULL, next_busno, controller->ops,
--					controller, &resources);
-+		bus = pci_scan_root_bus(NULL,
-+				PCI_DOMBUS(controller->index, next_busno),
-+				controller->ops, controller, &resources);
- 		controller->root_bus = bus;
- 		next_busno = bus->busn_res.end + 1;
+ 	if (!io_tlb_nslabs) {
+ 		io_tlb_nslabs = (default_size >> IO_TLB_SHIFT);
+-		io_tlb_nslabs = ALIGN(io_tlb_nslabs, IO_TLB_SEGSIZE);
++		io_tlb_nslabs = ALIGN(io_tlb_nslabs, io_tlb_segsize);
  	}
-diff --git a/arch/x86/pci/acpi.c b/arch/x86/pci/acpi.c
-index 6ac2738..ad0e926 100644
---- a/arch/x86/pci/acpi.c
-+++ b/arch/x86/pci/acpi.c
-@@ -424,9 +424,10 @@ struct pci_bus *pci_acpi_scan_root(struct acpi_pci_root *root)
- 		}
  
- 		if (!setup_mcfg_map(info, domain, (u8)root->secondary.start,
--				    (u8)root->secondary.end, root->mcfg_addr))
--			bus = pci_create_root_bus(NULL, busnum, &pci_root_ops,
--						  sd, &resources);
-+				(u8)root->secondary.end, root->mcfg_addr))
-+			bus = pci_create_root_bus(NULL,
-+				PCI_DOMBUS(domain, busnum), &pci_root_ops,
-+				sd, &resources);
+ 	/*
+@@ -308,7 +363,7 @@ swiotlb_late_init_with_tbl(char *tlb, unsigned long nslabs)
  
- 		if (bus) {
- 			pci_scan_child_bus(bus);
-diff --git a/arch/x86/pci/common.c b/arch/x86/pci/common.c
-index 0cbc723..0160280 100644
---- a/arch/x86/pci/common.c
-+++ b/arch/x86/pci/common.c
-@@ -486,7 +486,8 @@ void pcibios_scan_root(int busnum)
- 	sd->node = x86_pci_root_bus_node(busnum);
- 	x86_pci_root_bus_resources(busnum, &resources);
- 	printk(KERN_DEBUG "PCI: Probing PCI hardware (bus %02x)\n", busnum);
--	bus = pci_scan_root_bus(NULL, busnum, &pci_root_ops, sd, &resources);
-+	bus = pci_scan_root_bus(NULL, PCI_DOMBUS(0, busnum),
-+			&pci_root_ops, sd, &resources);
- 	if (!bus) {
- 		pci_free_resource_list(&resources);
- 		kfree(sd);
-diff --git a/drivers/pci/xen-pcifront.c b/drivers/pci/xen-pcifront.c
-index 9e7c28b..af6144a 100644
---- a/drivers/pci/xen-pcifront.c
-+++ b/drivers/pci/xen-pcifront.c
-@@ -479,8 +479,9 @@ static int pcifront_scan_root(struct pcifront_device *pdev,
+ 	/*
+ 	 * Allocate and initialize the free list array.  This array is used
+-	 * to find contiguous free memory regions of size up to IO_TLB_SEGSIZE
++	 * to find contiguous free memory regions of size up to io_tlb_segsize
+ 	 * between io_tlb_start and io_tlb_end.
+ 	 */
+ 	io_tlb_list = (unsigned int *)__get_free_pages(GFP_KERNEL,
+@@ -324,7 +379,7 @@ swiotlb_late_init_with_tbl(char *tlb, unsigned long nslabs)
+ 		goto cleanup4;
  
- 	pci_lock_rescan_remove();
+ 	for (i = 0; i < io_tlb_nslabs; i++) {
+-		io_tlb_list[i] = IO_TLB_SEGSIZE - OFFSET(i, IO_TLB_SEGSIZE);
++		io_tlb_list[i] = io_tlb_segsize - OFFSET(i, io_tlb_segsize);
+ 		io_tlb_orig_addr[i] = INVALID_PHYS_ADDR;
+ 	}
+ 	io_tlb_index = 0;
+@@ -493,7 +548,7 @@ phys_addr_t swiotlb_tbl_map_single(struct device *hwdev,
  
--	b = pci_scan_root_bus(&pdev->xdev->dev, bus,
--				  &pcifront_bus_ops, sd, &resources);
-+	b = pci_scan_root_bus(&pdev->xdev->dev,
-+			PCI_DOMBUS(sd->domain, bus),
-+			&pcifront_bus_ops, sd, &resources);
- 	if (!b) {
- 		dev_err(&pdev->xdev->dev,
- 			"Error creating PCI Frontend Bus!\n");
+ 			for (i = index; i < (int) (index + nslots); i++)
+ 				io_tlb_list[i] = 0;
+-			for (i = index - 1; (OFFSET(i, IO_TLB_SEGSIZE) != IO_TLB_SEGSIZE - 1) && io_tlb_list[i]; i--)
++			for (i = index - 1; (OFFSET(i, io_tlb_segsize) != io_tlb_segsize - 1) && io_tlb_list[i]; i--)
+ 				io_tlb_list[i] = ++count;
+ 			tlb_addr = io_tlb_start + (index << IO_TLB_SHIFT);
+ 
+@@ -571,7 +626,7 @@ void swiotlb_tbl_unmap_single(struct device *hwdev, phys_addr_t tlb_addr,
+ 	 */
+ 	spin_lock_irqsave(&io_tlb_lock, flags);
+ 	{
+-		count = ((index + nslots) < ALIGN(index + 1, IO_TLB_SEGSIZE) ?
++		count = ((index + nslots) < ALIGN(index + 1, io_tlb_segsize) ?
+ 			 io_tlb_list[index + nslots] : 0);
+ 		/*
+ 		 * Step 1: return the slots to the free list, merging the
+@@ -585,7 +640,7 @@ void swiotlb_tbl_unmap_single(struct device *hwdev, phys_addr_t tlb_addr,
+ 		 * Step 2: merge the returned slots with the preceding slots,
+ 		 * if available (non zero)
+ 		 */
+-		for (i = index - 1; (OFFSET(i, IO_TLB_SEGSIZE) != IO_TLB_SEGSIZE -1) && io_tlb_list[i]; i--)
++		for (i = index - 1; (OFFSET(i, io_tlb_segsize) != io_tlb_segsize -1) && io_tlb_list[i]; i--)
+ 			io_tlb_list[i] = ++count;
+ 	}
+ 	spin_unlock_irqrestore(&io_tlb_lock, flags);
 -- 
-1.7.1
+1.7.9.5

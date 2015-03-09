@@ -1,75 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Mar 2015 18:04:56 +0100 (CET)
-Received: from mail-qc0-f172.google.com ([209.85.216.172]:44266 "EHLO
-        mail-qc0-f172.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008440AbbCIREzHceqJ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 9 Mar 2015 18:04:55 +0100
-Received: by qcwr17 with SMTP id r17so3790945qcw.11
-        for <linux-mips@linux-mips.org>; Mon, 09 Mar 2015 10:04:49 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Mar 2015 18:25:06 +0100 (CET)
+Received: from mail-we0-f179.google.com ([74.125.82.179]:34604 "EHLO
+        mail-we0-f179.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007908AbbCIRZEx66JY (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 9 Mar 2015 18:25:04 +0100
+Received: by wesx3 with SMTP id x3so23500644wes.1;
+        Mon, 09 Mar 2015 10:25:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc:content-type;
-        bh=sXuw7hX4v9tkaayH4hzxoI+HyfWj0LVAgFqG/E34Lyk=;
-        b=CxFS7uSlViynQ5AaqjCzX7byoFL9BQve9xIVdr/7JgTS1IXbo7CAUMsCqmW1bC4Qun
-         ZRGzbvRPvXbpRO5VMeTKhlYVJPaqvbtt8i5DW2c7OFobDwSX/rgk7r43OeUUJiUwNy/7
-         ZOzjmi3R9WPC1CVWyGn8eEr62X9NFvGppcIKHyqhWhzhrPM4uGi4tgjFVwHsfU3AevPV
-         ttyA96PIff9vWx3JZFXj9B7f5ttMN8GBNk0f0WHMqkaHuFS4OkGIl1UzTWvuRhakEDlV
-         zdwsbxxzftRqZsG7UmOqxiDtqE4ZSK9rV5EmF8jUjFYZEP/JYWbf3SeyU45xm9+xKqY1
-         2chw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc:content-type;
-        bh=sXuw7hX4v9tkaayH4hzxoI+HyfWj0LVAgFqG/E34Lyk=;
-        b=Z7tnUnKz28pm62MClxXyK6pxUU7KERcgtYNMA82ZoeheUVuufXyUMY/5YawPQ7YZka
-         7hH4Rha+74f8ULRZ1C6gHHU8u8pNzn5Y3JOPETpPtB5yrGZxc4195v2i+L8bdXSkz9/E
-         Ltj5jfuPSH2O1L1RFZh/62vZmZUaQh5p/bzoo=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:sender:in-reply-to:references:date
-         :message-id:subject:from:to:cc:content-type;
-        bh=sXuw7hX4v9tkaayH4hzxoI+HyfWj0LVAgFqG/E34Lyk=;
-        b=kQiAWTnCb0W0oDJvAzx0amphYUr+KDrd106EpIFSehX7loLXGdq8jdZmPXIryjkvU2
-         QhMhyqCVpCGdw7Xa2Bp0SqPxHjMGwgemRH5hUM3Lr+PFb7O4OZkh1TS+M1dbcEBFhae+
-         EsUndLfAvH81X6wG8riKaMU1ooRe9uO1xoLt4FxSmgkVltmD0NgMQuIrhAyN5hjza6qu
-         Fc3jsjWNfiekCEFXjhkZmIUO571bIeO+ujEgvvdzyWC6ufQCeZMUoGFcPydOM3ZPWw+E
-         cN6RTHuiE6v807CoBhQ5OPJ+r0Zn4Ss4Gt08k7Sn3jJyN1D1CeBzzJPP681DGNNQlYJ9
-         KmwA==
-X-Gm-Message-State: ALoCoQnnsEV/yRrjderTDuCpENS9O1MntUHBkQLfC8HBENC5KmjvKrobJ7Sdosx+juRN4X+eNjoD
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc:content-type;
+        bh=ixtNUdRnCYGYBCOJLlKcZFiClqe9b2ypT+p95R7vrvs=;
+        b=JPUeschiOCEc/hxQ3E6DAKPkLoPtwr0edL2CFtqzy3pTLQTtCLXp191DgYrLVdnFvs
+         du9NcyaAH9dCouuwE085qslGfBnHjAomXRqOG5lvzVAQXR6n2Gn7mOdV6Rhout1bfBsD
+         7ZD2vIKofcaO9PK5UZmEuP6TuhKLwTwPEbdcBXHYhfaIfSo15Vgyl09TIbvQPMCsUAOP
+         CF6tvtrPWk5JEu8LrbKW0H6TiW6ehlpKseL61BmYCC52+/GJKCez3Gn+kUW1+b5+WudJ
+         8R7bZATfsGTz4YoMaLNWQPirsdqLknOLzAKISjrVKuy+jcV5irhkQSLjijF+ZhTG9jhh
+         N86g==
+X-Received: by 10.194.82.226 with SMTP id l2mr61453514wjy.11.1425921900233;
+ Mon, 09 Mar 2015 10:25:00 -0700 (PDT)
 MIME-Version: 1.0
-X-Received: by 10.140.91.71 with SMTP id y65mr35134519qgd.90.1425920689435;
- Mon, 09 Mar 2015 10:04:49 -0700 (PDT)
-Received: by 10.140.19.72 with HTTP; Mon, 9 Mar 2015 10:04:49 -0700 (PDT)
-In-Reply-To: <CACUy__Ux6v9O0RmSiUr6vDDJ8JSDPCsCTqm=KOiNM0M=x3hoQQ@mail.gmail.com>
-References: <6D39441BF12EF246A7ABCE6654B0235320FDC2AC@LEMAIL01.le.imgtec.org>
-        <20150226101739.GY17695@NP-P-BURTON>
-        <CACUy__Ux6v9O0RmSiUr6vDDJ8JSDPCsCTqm=KOiNM0M=x3hoQQ@mail.gmail.com>
-Date:   Mon, 9 Mar 2015 10:04:49 -0700
-X-Google-Sender-Auth: 4Lte__QhenZ-kjeW2VT5dSb12hU
-Message-ID: <CAL1qeaFPQvaS6OaaSdcQc-yGevwnH6OXSUK4b0QSoW2iAAForg@mail.gmail.com>
-Subject: Re: [U-Boot] MIPS UHI spec
-From:   Andrew Bresticker <abrestic@chromium.org>
-To:     Daniel Schwierzeck <daniel.schwierzeck@gmail.com>
-Cc:     Paul Burton <paul.burton@imgtec.com>,
-        Matthew Fortune <Matthew.Fortune@imgtec.com>,
-        "u-boot@lists.denx.de" <u-boot@lists.denx.de>,
-        Ezequiel Garcia <ezequiel.garcia@imgtec.com>,
-        James Hartley <james.hartley@imgtec.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        John Crispin <blogic@openwrt.org>,
-        Jonas Gorski <jogo@openwrt.org>,
+Received: by 10.180.198.145 with HTTP; Mon, 9 Mar 2015 10:24:29 -0700 (PDT)
+In-Reply-To: <20150309165242.GK3739@saruman.tx.rr.com>
+References: <1425560442-13367-1-git-send-email-valentinrothberg@gmail.com>
+ <1425565425-12604-1-git-send-email-valentinrothberg@gmail.com> <20150309165242.GK3739@saruman.tx.rr.com>
+From:   Valentin Rothberg <valentinrothberg@gmail.com>
+Date:   Mon, 9 Mar 2015 18:24:29 +0100
+Message-ID: <CAD3Xx4JCL7Gt9SEoumiKSvmQOL-JQmg0Qth5wRE7COFZ-Oap8g@mail.gmail.com>
+Subject: Re: [PATCH v2] Remove deprecated IRQF_DISABLED flag entirely
+To:     balbi@ti.com
+Cc:     akpm@linux-foundation.org, Jonathan Corbet <corbet@lwn.net>,
         Ralf Baechle <ralf@linux-mips.org>,
-        Linux-MIPS <linux-mips@linux-mips.org>
+        David Woodhouse <dwmw2@infradead.org>,
+        Brian Norris <computersforpeace@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Paul Bolle <pebolle@tiscali.nl>, Jiri Kosina <jkosina@suse.cz>,
+        Hannes Reinecke <hare@suse.de>, Ewan Milne <emilne@redhat.com>,
+        Christoph Hellwig <hch@lst.de>,
+        Hongliang Tao <taohl@lemote.com>,
+        Huacai Chen <chenhc@lemote.com>, Nishanth Menon <nm@ti.com>,
+        Peter Ujfalusi <peter.ujfalusi@ti.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Afzal Mohammed <afzal@ti.com>, Keerthy <j-keerthy@ti.com>,
+        Zhou Wang <wangzhou1@hisilicon.com>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Quentin Lambert <lambert.quentin@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>, Ingo Molnar <mingo@kernel.org>,
+        Eyal Perry <eyalpe@mellanox.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mips@linux-mips.org, iss_storagedev@hp.com,
+        linux-mtd@lists.infradead.org, linux-usb@vger.kernel.org
 Content-Type: text/plain; charset=UTF-8
-Return-Path: <abrestic@google.com>
+Return-Path: <valentinrothberg@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46298
+X-archive-position: 46299
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: abrestic@chromium.org
+X-original-sender: valentinrothberg@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -82,49 +74,54 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Daniel,
+On Mon, Mar 9, 2015 at 5:52 PM, Felipe Balbi <balbi@ti.com> wrote:
+> Hi,
+>
+> On Thu, Mar 05, 2015 at 03:23:08PM +0100, Valentin Rothberg wrote:
+>> The IRQF_DISABLED is a NOOP and has been scheduled for removal since
+>> Linux v2.6.36 by commit 6932bf37bed4 ("genirq: Remove IRQF_DISABLED from
+>> core code").
+>>
+>> According to commit e58aa3d2d0cc ("genirq: Run irq handlers with
+>> interrupts disabled") running IRQ handlers with interrupts enabled can
+>> cause stack overflows when the interrupt line of the issuing device is
+>> still active.
+>>
+>> This patch ends the grace period for IRQF_DISABLED (i.e., SA_INTERRUPT
+>> in older versions of Linux) and removes the definition and all remaining
+>> usages of this flag.
+>>
+>> Signed-off-by: Valentin Rothberg <valentinrothberg@gmail.com>
+>> ---
+>> The bigger hunk in Documentation/scsi/ncr53c8xx.txt is removed entirely
+>> as IRQF_DISABLED is gone now; the usage in older kernel versions
+>> (including the old SA_INTERRUPT flag) should be discouraged.  The
+>> trouble of using IRQF_SHARED is a general problem and not specific to
+>> any driver.
+>>
+>> I left the reference in Documentation/PCI/MSI-HOWTO.txt untouched since
+>> it has already been removed in linux-next by commit b0e1ee8e1405
+>> ("MSI-HOWTO.txt: remove reference on IRQF_DISABLED").
+>>
+>> All remaining references are changelogs that I suggest to keep.
+>>
+>> Changelog
+>>
+>> v2: Correct previous change to drivers/mtd/nand/hisi504_nand.c that
+>> broke compilation.  Reported by Dan Carpenter.
+>> ---
+>>  drivers/usb/isp1760/isp1760-core.c   |  3 +--
+>>  drivers/usb/isp1760/isp1760-udc.c    |  4 ++--
+>
+> I have a commit in my tree for isp1760:
+>
+> https://git.kernel.org/cgit/linux/kernel/git/balbi/usb.git/commit/?h=testing/fixes&id=80b4a0f8feeb6ee7fa4430a2b4ae1155ed923bd2
 
-On Thu, Feb 26, 2015 at 4:37 AM, Daniel Schwierzeck
-<daniel.schwierzeck@gmail.com> wrote:
-> 2015-02-26 11:17 GMT+01:00 Paul Burton <paul.burton@imgtec.com>:
->> On Thu, Feb 19, 2015 at 01:50:23PM +0000, Matthew Fortune wrote:
->>> Hi Daniel,
->>>
->>> The spec for MIPS Unified Hosting Interface is available here:
->>>
->>> http://prplfoundation.org/wiki/MIPS_documentation
->>>
->>> As we have previously discussed, this is an ideal place to
->>> define the handover of device tree data from bootloader to
->>> kernel. Using a0 == -2 and defining which register(s) you
->>> need for the actual data will fit nicely. I'll happily
->>> include whatever is decided into the next version of the spec.
->
-> this originates from an off-list discussion some months ago started by
-> John Crispin.
->
-> (CC +John, Ralf, Jonas, linux-mips)
->
->>
->> (CC +Andrew, Ezequiel, James, James)
->>
->> On the talk of DT handover, this recent patchset adding support for a
->> system doing so to Linux is relevant:
->>
->>     http://www.linux-mips.org/archives/linux-mips/2015-02/msg00312.html
->>
->> I'm also working on a system for which I'll need to implement DT
->> handover very soon. It would be very nice if we could agree on some
->> standard way of doing so (and eventually if the code on the Linux side
->> can be generic enough to allow a multiplatform kernel).
->>
->
-> to be conformant with UHI I propose $a0 == -2 and $a1 == address of DT
-> blob. It is a simple extension and should not interfere with the
-> various legacy boot interfaces.
+I am sorry, but I did not receive an email that it has been applied.
+Andrew asked me to do this patch, so I replied to the one you
+mentioned to avoid this conflict:
 
-Just to be clear, is $a1 expected to be the physical or virtual
-(KSEG0) address of the DTB?
+http://comments.gmane.org/gmane.linux.kernel/1896211
 
-Thanks,
-Andrew
+Kind regards,
+ Valentin

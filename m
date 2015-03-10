@@ -1,41 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 10 Mar 2015 14:29:07 +0100 (CET)
-Received: from nivc-ms1.auriga.com ([80.240.102.146]:46335 "EHLO
-        nivc-ms1.auriga.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27007716AbbCJN3EvRLdM (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 10 Mar 2015 14:29:04 +0100
-Received: from localhost (80.240.102.213) by NIVC-MS1.auriga.ru
- (80.240.102.146) with Microsoft SMTP Server (TLS) id 14.3.224.2; Tue, 10 Mar
- 2015 16:28:59 +0300
-From:   Aleksey Makarov <aleksey.makarov@auriga.com>
-To:     <linux-ide@vger.kernel.org>
-CC:     <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>,
-        David Daney <david.daney@cavium.com>,
-        Aleksey Makarov <aleksey.makarov@auriga.com>,
-        "Arnd Bergmann" <arnd@arndb.de>,
-        Vinita Gupta <vgupta@caviumnetworks.com>,
-        "Rob Herring" <robh+dt@kernel.org>,
-        Pawel Moll <pawel.moll@arm.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ian Campbell <ijc+devicetree@hellion.org.uk>,
-        "Kumar Gala" <galak@codeaurora.org>, Tejun Heo <tj@kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        <devicetree@vger.kernel.org>
-Subject: [PATCH v4] SATA: OCTEON: support SATA on OCTEON platform
-Date:   Tue, 10 Mar 2015 16:26:26 +0300
-Message-ID: <1425993989-22770-1-git-send-email-aleksey.makarov@auriga.com>
-X-Mailer: git-send-email 2.3.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 10 Mar 2015 14:56:13 +0100 (CET)
+Received: from eusmtp01.atmel.com ([212.144.249.243]:8364 "EHLO
+        eusmtp01.atmel.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27007716AbbCJN4LFHM3F (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 10 Mar 2015 14:56:11 +0100
+Received: from localhost (10.161.101.13) by eusmtp01.atmel.com (10.161.101.31)
+ with Microsoft SMTP Server id 14.2.347.0; Tue, 10 Mar 2015 14:56:00 +0100
+Date:   Tue, 10 Mar 2015 14:55:20 +0100
+From:   Ludovic Desroches <ludovic.desroches@atmel.com>
+To:     Wolfram Sang <wsa@the-dreams.de>
+CC:     <linux-i2c@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linuxppc-dev@lists.ozlabs.org>, <linux-mips@linux-mips.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Ludovic Desroches <ludovic.desroches@atmel.com>,
+        Yingjoe Chen <yingjoe.chen@mediatek.com>,
+        Eddie Huang <eddie.huang@mediatek.com>,
+        <linux-kernel@vger.kernel.org>
+Subject: Re: [RFC V2 03/12] i2c: at91: make use of the new infrastructure for
+ quirks
+Message-ID: <20150310135520.GY9132@odux.rfo.atmel.com>
+Mail-Followup-To: Wolfram Sang <wsa@the-dreams.de>,
+        linux-i2c@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linuxppc-dev@lists.ozlabs.org, linux-mips@linux-mips.org,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Yingjoe Chen <yingjoe.chen@mediatek.com>,
+        Eddie Huang <eddie.huang@mediatek.com>,
+        linux-kernel@vger.kernel.org
+References: <1424880126-15047-1-git-send-email-wsa@the-dreams.de>
+ <1424880126-15047-4-git-send-email-wsa@the-dreams.de>
+ <20150308082845.GB1904@katana>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [80.240.102.213]
-Return-Path: <aleksey.makarov@auriga.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20150308082845.GB1904@katana>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <ludovic.desroches@atmel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46307
+X-archive-position: 46308
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aleksey.makarov@auriga.com
+X-original-sender: ludovic.desroches@atmel.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,289 +55,99 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The OCTEON SATA controller is currently found on cn71XX devices.
+Hi Wolfram,
 
-Cc: Arnd Bergmann <arnd@arndb.de>
-Acked-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: David Daney <david.daney@cavium.com>
-Signed-off-by: Vinita Gupta <vgupta@caviumnetworks.com>
-Signed-off-by: Aleksey Makarov <aleksey.makarov@auriga.com>
----
- .../devicetree/bindings/ata/ahci-platform.txt      |   1 +
- .../devicetree/bindings/mips/cavium/sata-uctl.txt  |  28 ++++
- drivers/ata/Kconfig                                |   9 ++
- drivers/ata/Makefile                               |   1 +
- drivers/ata/ahci_platform.c                        |   1 +
- drivers/ata/sata_octeon.c                          | 153 +++++++++++++++++++++
- 6 files changed, 193 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/mips/cavium/sata-uctl.txt
- create mode 100644 drivers/ata/sata_octeon.c
+You can add my 
 
-Version 3:
-https://lkml.kernel.org/g/<1425567540-31572-1-git-send-email-aleksey.makarov@auriga.com>
+Acked-by and Tested-By: Ludovic Desroches <ludovic.desroches@atmel.com>
 
-Changes in v4:
-- The call to dma_coerce_mask_and_coherent() was removed as suggested by Arnd Bergmann
-  dma_mask and coherent_dma_mask are actually set in the ahci_platform_init_host()
-  (libahci_platform.c)
+Tested on sama5d3, some problems with at24 eeprom on sama5d4 but it
+doesn't come from the i2c quirks patch series.
 
-Changes in v3:
-- Rebased to v4.0-rc2
-- Cosmetic changes
+Regards
 
-Changes in v2:
-- The driver was rewritten as a driver for the UCTL SATA controller glue.
-  It allowed to get rid of the most changes in ahci_platform.c
-- Documentation for the device tree bindings was fixed.
+Ludovic
 
-diff --git a/Documentation/devicetree/bindings/ata/ahci-platform.txt b/Documentation/devicetree/bindings/ata/ahci-platform.txt
-index c2340ee..3d84dca 100644
---- a/Documentation/devicetree/bindings/ata/ahci-platform.txt
-+++ b/Documentation/devicetree/bindings/ata/ahci-platform.txt
-@@ -11,6 +11,7 @@ Required properties:
- - compatible        : compatible string, one of:
-   - "allwinner,sun4i-a10-ahci"
-   - "hisilicon,hisi-ahci"
-+  - "cavium,octeon-7130-ahci"
-   - "ibm,476gtr-ahci"
-   - "marvell,armada-380-ahci"
-   - "snps,dwc-ahci"
-diff --git a/Documentation/devicetree/bindings/mips/cavium/sata-uctl.txt b/Documentation/devicetree/bindings/mips/cavium/sata-uctl.txt
-new file mode 100644
-index 0000000..59e86a7
---- /dev/null
-+++ b/Documentation/devicetree/bindings/mips/cavium/sata-uctl.txt
-@@ -0,0 +1,28 @@
-+* UCTL SATA controller glue
-+
-+Properties:
-+- compatible: "cavium,octeon-7130-sata-uctl"
-+
-+  Compatibility with the cn7130 SOC.
-+
-+- reg: The base address of the UCTL register bank.
-+
-+- #address-cells, #size-cells, and ranges must be present and hold
-+	suitable values to map all child nodes.
-+
-+Example:
-+
-+	uctl@118006c000000 {
-+		compatible = "cavium,octeon-7130-sata-uctl";
-+		reg = <0x11800 0x6c000000 0x0 0x100>;
-+		ranges; /* Direct mapping */
-+		#address-cells = <2>;
-+		#size-cells = <2>;
-+
-+		sata: sata@16c0000000000 {
-+			compatible = "cavium,octeon-7130-ahci";
-+			reg = <0x16c00 0x00000000 0x0 0x200>;
-+			interrupt-parent = <&cibsata>;
-+			interrupts = <2 4>; /* Bit: 2, level */
-+		};
-+	};
-diff --git a/drivers/ata/Kconfig b/drivers/ata/Kconfig
-index 5f60155..55ad870 100644
---- a/drivers/ata/Kconfig
-+++ b/drivers/ata/Kconfig
-@@ -188,6 +188,15 @@ config SATA_SIL24
- 
- 	  If unsure, say N.
- 
-+config SATA_OCTEON
-+	tristate "Cavium Octeon Soc Serial ATA"
-+	depends on SATA_AHCI_PLATFORM && CAVIUM_OCTEON_SOC
-+	default y
-+	help
-+	  This option enables support for Cavium Octeon SoC Serial ATA.
-+
-+	  If unsure, say N.
-+
- config ATA_SFF
- 	bool "ATA SFF support (for legacy IDE and PATA)"
- 	default y
-diff --git a/drivers/ata/Makefile b/drivers/ata/Makefile
-index ae41107..4a0e5e3 100644
---- a/drivers/ata/Makefile
-+++ b/drivers/ata/Makefile
-@@ -17,6 +17,7 @@ obj-$(CONFIG_AHCI_SUNXI)	+= ahci_sunxi.o libahci.o libahci_platform.o
- obj-$(CONFIG_AHCI_ST)		+= ahci_st.o libahci.o libahci_platform.o
- obj-$(CONFIG_AHCI_TEGRA)	+= ahci_tegra.o libahci.o libahci_platform.o
- obj-$(CONFIG_AHCI_XGENE)	+= ahci_xgene.o libahci.o libahci_platform.o
-+obj-$(CONFIG_SATA_OCTEON)	+= sata_octeon.o
- 
- # SFF w/ custom DMA
- obj-$(CONFIG_PDC_ADMA)		+= pdc_adma.o
-diff --git a/drivers/ata/ahci_platform.c b/drivers/ata/ahci_platform.c
-index 78d6ae0..2c26cde 100644
---- a/drivers/ata/ahci_platform.c
-+++ b/drivers/ata/ahci_platform.c
-@@ -74,6 +74,7 @@ static const struct of_device_id ahci_of_match[] = {
- 	{ .compatible = "ibm,476gtr-ahci", },
- 	{ .compatible = "snps,dwc-ahci", },
- 	{ .compatible = "hisilicon,hisi-ahci", },
-+	{ .compatible = "cavium,octeon-7130-ahci", },
- 	{},
- };
- MODULE_DEVICE_TABLE(of, ahci_of_match);
-diff --git a/drivers/ata/sata_octeon.c b/drivers/ata/sata_octeon.c
-new file mode 100644
-index 0000000..7f40ae8
---- /dev/null
-+++ b/drivers/ata/sata_octeon.c
-@@ -0,0 +1,153 @@
-+/*
-+ * SATA glue for Cavium Octeon III SOCs.
-+ *
-+ *
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-+ *
-+ * Copyright (C) 2010-2015 Cavium Networks
-+ *
-+ */
-+
-+#include <linux/module.h>
-+#include <linux/dma-mapping.h>
-+#include <linux/platform_device.h>
-+#include <linux/of_platform.h>
-+
-+#include <asm/octeon/octeon.h>
-+#include <asm/bitfield.h>
-+
-+/**
-+ * cvmx_sata_uctl_shim_cfg
-+ * from cvmx-sata-defs.h
-+ *
-+ * Accessible by: only when A_CLKDIV_EN
-+ * Reset by: IOI reset (srst_n) or SATA_UCTL_CTL[SATA_UCTL_RST]
-+ * This register allows configuration of various shim (UCTL) features.
-+ * Fields XS_NCB_OOB_* are captured when there are no outstanding OOB errors
-+ * indicated in INTSTAT and a new OOB error arrives.
-+ * Fields XS_BAD_DMA_* are captured when there are no outstanding DMA errors
-+ * indicated in INTSTAT and a new DMA error arrives.
-+ */
-+union cvmx_sata_uctl_shim_cfg {
-+	uint64_t u64;
-+	struct cvmx_sata_uctl_shim_cfg_s {
-+	/*
-+	 * Read/write error log for out-of-bound UAHC register access.
-+	 * 0 = read, 1 = write.
-+	 */
-+	__BITFIELD_FIELD(uint64_t xs_ncb_oob_wrn               : 1,
-+	__BITFIELD_FIELD(uint64_t reserved_57_62               : 6,
-+	/*
-+	 * SRCID error log for out-of-bound UAHC register access.
-+	 * The IOI outbound SRCID for the OOB error.
-+	 */
-+	__BITFIELD_FIELD(uint64_t xs_ncb_oob_osrc              : 9,
-+	/*
-+	 * Read/write error log for bad DMA access from UAHC.
-+	 * 0 = read error log, 1 = write error log.
-+	 */
-+	__BITFIELD_FIELD(uint64_t xm_bad_dma_wrn               : 1,
-+	__BITFIELD_FIELD(uint64_t reserved_44_46               : 3,
-+	/*
-+	 * ErrType error log for bad DMA access from UAHC. Encodes the type of
-+	 * error encountered (error largest encoded value has priority).
-+	 * See SATA_UCTL_XM_BAD_DMA_TYPE_E.
-+	 */
-+	__BITFIELD_FIELD(uint64_t xm_bad_dma_type              : 4,
-+	__BITFIELD_FIELD(uint64_t reserved_13_39               : 27,
-+	/*
-+	 * Selects the IOI read command used by DMA accesses.
-+	 * See SATA_UCTL_DMA_READ_CMD_E.
-+	 */
-+	__BITFIELD_FIELD(uint64_t dma_read_cmd                 : 1,
-+	__BITFIELD_FIELD(uint64_t reserved_10_11               : 2,
-+	/*
-+	 * Selects the endian format for DMA accesses to the L2C.
-+	 * See SATA_UCTL_ENDIAN_MODE_E.
-+	 */
-+	__BITFIELD_FIELD(uint64_t dma_endian_mode              : 2,
-+	__BITFIELD_FIELD(uint64_t reserved_2_7                 : 6,
-+	/*
-+	 * Selects the endian format for IOI CSR accesses to the UAHC.
-+	 * Note that when UAHC CSRs are accessed via RSL, they are returned
-+	 * as big-endian. See SATA_UCTL_ENDIAN_MODE_E.
-+	 */
-+	__BITFIELD_FIELD(uint64_t csr_endian_mode              : 2,
-+		;))))))))))))
-+	} s;
-+};
-+
-+#define CVMX_SATA_UCTL_SHIM_CFG 0xE8
-+
-+static int ahci_octeon_probe(struct platform_device *pdev)
-+{
-+	union cvmx_sata_uctl_shim_cfg shim_cfg;
-+	struct device *dev = &pdev->dev;
-+	struct device_node *node = dev->of_node;
-+	struct resource *res;
-+	void __iomem *base;
-+	int ret;
-+
-+	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+	if (!res) {
-+		dev_err(&pdev->dev, "Platform resource[0] is missing\n");
-+		return -ENODEV;
-+	}
-+
-+	base = devm_ioremap_resource(&pdev->dev, res);
-+	if (IS_ERR(base))
-+		return PTR_ERR(base);
-+
-+	/* set-up endian mode */
-+	shim_cfg.u64 = cvmx_read_csr((uint64_t)base + CVMX_SATA_UCTL_SHIM_CFG);
-+#ifdef __BIG_ENDIAN
-+	shim_cfg.s.dma_endian_mode = 1;
-+	shim_cfg.s.csr_endian_mode = 1;
-+#else
-+	shim_cfg.s.dma_endian_mode = 0;
-+	shim_cfg.s.csr_endian_mode = 0;
-+#endif
-+	shim_cfg.s.dma_read_cmd = 1; /* No allocate L2C */
-+	cvmx_write_csr((uint64_t)base + CVMX_SATA_UCTL_SHIM_CFG, shim_cfg.u64);
-+
-+	if (!node) {
-+		dev_err(dev, "no device node, failed to add octeon sata\n");
-+		return -ENODEV;
-+	}
-+
-+	ret = of_platform_populate(node, NULL, NULL, dev);
-+	if (ret) {
-+		dev_err(dev, "failed to add ahci-platform core\n");
-+		return ret;
-+	}
-+
-+	return 0;
-+}
-+
-+static int ahci_octeon_remove(struct platform_device *pdev)
-+{
-+	return 0;
-+}
-+
-+static const struct of_device_id octeon_ahci_match[] = {
-+	{ .compatible = "cavium,octeon-7130-sata-uctl", },
-+	{},
-+};
-+MODULE_DEVICE_TABLE(of, octeon_ahci_match);
-+
-+static struct platform_driver ahci_octeon_driver = {
-+	.probe          = ahci_octeon_probe,
-+	.remove         = ahci_octeon_remove,
-+	.driver         = {
-+		.name   = "octeon-ahci",
-+		.of_match_table = octeon_ahci_match,
-+	},
-+};
-+
-+module_platform_driver(ahci_octeon_driver);
-+
-+MODULE_LICENSE("GPL");
-+MODULE_AUTHOR("Cavium, Inc. <support@cavium.com>");
-+MODULE_DESCRIPTION("Cavium Inc. sata config.");
--- 
-2.3.0
+On Sun, Mar 08, 2015 at 09:28:45AM +0100, Wolfram Sang wrote:
+> On Wed, Feb 25, 2015 at 05:01:54PM +0100, Wolfram Sang wrote:
+> > From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+> > 
+> > Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+> 
+> Hi Ludovic,
+> 
+> if you have a few minutes, could you please test this series? I'd like to
+> include it in 4.1. and because at91 is using the quirk infrastructure in
+> a more complex way, it is a really good test candidate.
+> 
+> Thanks,
+> 
+>    Wolfram
+> 
+> > ---
+> >  drivers/i2c/busses/i2c-at91.c | 32 +++++++++++---------------------
+> >  1 file changed, 11 insertions(+), 21 deletions(-)
+> > 
+> > diff --git a/drivers/i2c/busses/i2c-at91.c b/drivers/i2c/busses/i2c-at91.c
+> > index 636fd2efad8850..b3a70e8fc653c5 100644
+> > --- a/drivers/i2c/busses/i2c-at91.c
+> > +++ b/drivers/i2c/busses/i2c-at91.c
+> > @@ -487,30 +487,10 @@ static int at91_twi_xfer(struct i2c_adapter *adap, struct i2c_msg *msg, int num)
+> >  	if (ret < 0)
+> >  		goto out;
+> >  
+> > -	/*
+> > -	 * The hardware can handle at most two messages concatenated by a
+> > -	 * repeated start via it's internal address feature.
+> > -	 */
+> > -	if (num > 2) {
+> > -		dev_err(dev->dev,
+> > -			"cannot handle more than two concatenated messages.\n");
+> > -		ret = 0;
+> > -		goto out;
+> > -	} else if (num == 2) {
+> > +	if (num == 2) {
+> >  		int internal_address = 0;
+> >  		int i;
+> >  
+> > -		if (msg->flags & I2C_M_RD) {
+> > -			dev_err(dev->dev, "first transfer must be write.\n");
+> > -			ret = -EINVAL;
+> > -			goto out;
+> > -		}
+> > -		if (msg->len > 3) {
+> > -			dev_err(dev->dev, "first message size must be <= 3.\n");
+> > -			ret = -EINVAL;
+> > -			goto out;
+> > -		}
+> > -
+> >  		/* 1st msg is put into the internal address, start with 2nd */
+> >  		m_start = &msg[1];
+> >  		for (i = 0; i < msg->len; ++i) {
+> > @@ -540,6 +520,15 @@ out:
+> >  	return ret;
+> >  }
+> >  
+> > +/*
+> > + * The hardware can handle at most two messages concatenated by a
+> > + * repeated start via it's internal address feature.
+> > + */
+> > +static struct i2c_adapter_quirks at91_twi_quirks = {
+> > +	.flags = I2C_AQ_COMB | I2C_AQ_COMB_WRITE_FIRST | I2C_AQ_COMB_SAME_ADDR,
+> > +	.max_comb_1st_msg_len = 3,
+> > +};
+> > +
+> >  static u32 at91_twi_func(struct i2c_adapter *adapter)
+> >  {
+> >  	return I2C_FUNC_I2C | I2C_FUNC_SMBUS_EMUL
+> > @@ -777,6 +766,7 @@ static int at91_twi_probe(struct platform_device *pdev)
+> >  	dev->adapter.owner = THIS_MODULE;
+> >  	dev->adapter.class = I2C_CLASS_DEPRECATED;
+> >  	dev->adapter.algo = &at91_twi_algorithm;
+> > +	dev->adapter.quirks = &at91_twi_quirks;
+> >  	dev->adapter.dev.parent = dev->dev;
+> >  	dev->adapter.nr = pdev->id;
+> >  	dev->adapter.timeout = AT91_I2C_TIMEOUT;
+> > -- 
+> > 2.1.4
+> > 

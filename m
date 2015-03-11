@@ -1,26 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Mar 2015 15:51:10 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:34650 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Mar 2015 15:51:26 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:4149 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27013400AbbCKOsQLUOgn (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 11 Mar 2015 15:48:16 +0100
+        with ESMTP id S27013405AbbCKOsRkZoMN (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 11 Mar 2015 15:48:17 +0100
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id ED49C731F28A8;
-        Wed, 11 Mar 2015 14:48:06 +0000 (GMT)
+        by Websense Email Security Gateway with ESMTPS id 26FE0FFDB396D;
+        Wed, 11 Mar 2015 14:48:14 +0000 (GMT)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
  KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Wed, 11 Mar 2015 14:48:09 +0000
+ 14.3.195.1; Wed, 11 Mar 2015 14:48:16 +0000
 Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
  LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.210.2; Wed, 11 Mar 2015 14:48:09 +0000
+ 14.3.210.2; Wed, 11 Mar 2015 14:48:15 +0000
 From:   James Hogan <james.hogan@imgtec.com>
 To:     Paolo Bonzini <pbonzini@redhat.com>, <kvm@vger.kernel.org>,
         <linux-mips@linux-mips.org>
 CC:     James Hogan <james.hogan@imgtec.com>,
+        Paul Burton <paul.burton@imgtec.com>,
         Ralf Baechle <ralf@linux-mips.org>,
         Gleb Natapov <gleb@kernel.org>
-Subject: [PATCH 09/20] MIPS: KVM: Add Config4/5 and writing of Config registers
-Date:   Wed, 11 Mar 2015 14:44:45 +0000
-Message-ID: <1426085096-12932-10-git-send-email-james.hogan@imgtec.com>
+Subject: [PATCH 18/20] MIPS: KVM: Add MSA exception handling
+Date:   Wed, 11 Mar 2015 14:44:54 +0000
+Message-ID: <1426085096-12932-19-git-send-email-james.hogan@imgtec.com>
 X-Mailer: git-send-email 2.0.5
 In-Reply-To: <1426085096-12932-1-git-send-email-james.hogan@imgtec.com>
 References: <1426085096-12932-1-git-send-email-james.hogan@imgtec.com>
@@ -31,7 +32,7 @@ Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46325
+X-archive-position: 46326
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,273 +49,317 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add Config4 and Config5 co-processor 0 registers, and add capability to
-write the Config1, Config3, Config4, and Config5 registers using the KVM
-API.
+Add guest exception handling for MIPS SIMD Architecture (MSA) floating
+point exceptions and MSA disabled exceptions.
 
-Only supported bits can be written, to minimise the chances of the guest
-being given a configuration from e.g. QEMU that is inconsistent with
-that being emulated, and as such the handling is in trap_emul.c as it
-may need to be different for VZ. Currently the only modification
-permitted is to make Config4 and Config5 exist via the M bits, but other
-bits will be added for FPU and MSA support in future patches.
+MSA floating point exceptions from the guest need passing to the guest
+kernel, so for these a guest MSAFPE is emulated.
 
-Care should be taken by userland not to change bits without fully
-handling the possible extra state that may then exist and which the
-guest may begin to use and depend on.
+MSA disabled exceptions are normally handled by passing a reserved
+instruction exception to the guest (because no guest MSA was supported),
+but the hypervisor can now handle them if the guest has MSA by passing
+an MSA disabled exception to the guest, or if the guest has MSA enabled
+by transparently restoring the guest MSA context and enabling MSA and
+the FPU.
 
 Signed-off-by: James Hogan <james.hogan@imgtec.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Paul Burton <paul.burton@imgtec.com>
 Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: Gleb Natapov <gleb@kernel.org>
 Cc: linux-mips@linux-mips.org
 Cc: kvm@vger.kernel.org
 ---
- Documentation/virtual/kvm/api.txt |  2 ++
- arch/mips/include/asm/kvm_host.h  | 13 ++++++++++
- arch/mips/kvm/emulate.c           | 52 +++++++++++++++++++++++++++++++++++++++
- arch/mips/kvm/mips.c              | 14 +++++++++++
- arch/mips/kvm/trap_emul.c         | 49 ++++++++++++++++++++++++++++++++++--
- 5 files changed, 128 insertions(+), 2 deletions(-)
+ arch/mips/include/asm/kvm_host.h | 16 +++++++++
+ arch/mips/kvm/emulate.c          | 71 ++++++++++++++++++++++++++++++++++++++++
+ arch/mips/kvm/mips.c             | 10 ++++++
+ arch/mips/kvm/stats.c            |  2 ++
+ arch/mips/kvm/trap_emul.c        | 43 ++++++++++++++++++++++--
+ 5 files changed, 140 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/virtual/kvm/api.txt b/Documentation/virtual/kvm/api.txt
-index 22dfaa31ed86..1e59515b6d1f 100644
---- a/Documentation/virtual/kvm/api.txt
-+++ b/Documentation/virtual/kvm/api.txt
-@@ -1972,6 +1972,8 @@ registers, find a list below:
-   MIPS  | KVM_REG_MIPS_CP0_CONFIG1      | 32
-   MIPS  | KVM_REG_MIPS_CP0_CONFIG2      | 32
-   MIPS  | KVM_REG_MIPS_CP0_CONFIG3      | 32
-+  MIPS  | KVM_REG_MIPS_CP0_CONFIG4      | 32
-+  MIPS  | KVM_REG_MIPS_CP0_CONFIG5      | 32
-   MIPS  | KVM_REG_MIPS_CP0_CONFIG7      | 32
-   MIPS  | KVM_REG_MIPS_CP0_ERROREPC     | 64
-   MIPS  | KVM_REG_MIPS_COUNT_CTL        | 64
 diff --git a/arch/mips/include/asm/kvm_host.h b/arch/mips/include/asm/kvm_host.h
-index 6996447fd2a7..3f58ee1ebfab 100644
+index 1dc0dca15cbd..4c25823563fe 100644
 --- a/arch/mips/include/asm/kvm_host.h
 +++ b/arch/mips/include/asm/kvm_host.h
-@@ -48,6 +48,8 @@
- #define KVM_REG_MIPS_CP0_CONFIG1	MIPS_CP0_32(16, 1)
- #define KVM_REG_MIPS_CP0_CONFIG2	MIPS_CP0_32(16, 2)
- #define KVM_REG_MIPS_CP0_CONFIG3	MIPS_CP0_32(16, 3)
-+#define KVM_REG_MIPS_CP0_CONFIG4	MIPS_CP0_32(16, 4)
-+#define KVM_REG_MIPS_CP0_CONFIG5	MIPS_CP0_32(16, 5)
- #define KVM_REG_MIPS_CP0_CONFIG7	MIPS_CP0_32(16, 7)
- #define KVM_REG_MIPS_CP0_XCONTEXT	MIPS_CP0_64(20, 0)
- #define KVM_REG_MIPS_CP0_ERROREPC	MIPS_CP0_64(30, 0)
-@@ -209,6 +211,8 @@ struct mips_coproc {
- #define MIPS_CP0_CONFIG1_SEL	1
- #define MIPS_CP0_CONFIG2_SEL	2
- #define MIPS_CP0_CONFIG3_SEL	3
-+#define MIPS_CP0_CONFIG4_SEL	4
-+#define MIPS_CP0_CONFIG5_SEL	5
+@@ -123,7 +123,9 @@ struct kvm_vcpu_stat {
+ 	u32 resvd_inst_exits;
+ 	u32 break_inst_exits;
+ 	u32 trap_inst_exits;
++	u32 msa_fpe_exits;
+ 	u32 fpe_exits;
++	u32 msa_disabled_exits;
+ 	u32 flush_dcache_exits;
+ 	u32 halt_successful_poll;
+ 	u32 halt_wakeup;
+@@ -144,7 +146,9 @@ enum kvm_mips_exit_types {
+ 	RESVD_INST_EXITS,
+ 	BREAK_INST_EXITS,
+ 	TRAP_INST_EXITS,
++	MSA_FPE_EXITS,
+ 	FPE_EXITS,
++	MSA_DISABLED_EXITS,
+ 	FLUSH_DCACHE_EXITS,
+ 	MAX_KVM_MIPS_EXIT_TYPES
+ };
+@@ -305,6 +309,7 @@ enum mips_mmu_types {
+  */
+ #define T_TRAP			13	/* Trap instruction */
+ #define T_VCEI			14	/* Virtual coherency exception */
++#define T_MSAFPE		14	/* MSA floating point exception */
+ #define T_FPE			15	/* Floating point exception */
+ #define T_MSADIS		21	/* MSA disabled exception */
+ #define T_WATCH			23	/* Watch address reference */
+@@ -601,6 +606,7 @@ struct kvm_mips_callbacks {
+ 	int (*handle_res_inst)(struct kvm_vcpu *vcpu);
+ 	int (*handle_break)(struct kvm_vcpu *vcpu);
+ 	int (*handle_trap)(struct kvm_vcpu *vcpu);
++	int (*handle_msa_fpe)(struct kvm_vcpu *vcpu);
+ 	int (*handle_fpe)(struct kvm_vcpu *vcpu);
+ 	int (*handle_msa_disabled)(struct kvm_vcpu *vcpu);
+ 	int (*vm_init)(struct kvm *kvm);
+@@ -756,11 +762,21 @@ extern enum emulation_result kvm_mips_emulate_trap_exc(unsigned long cause,
+ 						       struct kvm_run *run,
+ 						       struct kvm_vcpu *vcpu);
  
- /* Config0 register bits */
- #define CP0C0_M			31
-@@ -461,11 +465,15 @@ struct kvm_vcpu_arch {
- #define kvm_read_c0_guest_config1(cop0)		(cop0->reg[MIPS_CP0_CONFIG][1])
- #define kvm_read_c0_guest_config2(cop0)		(cop0->reg[MIPS_CP0_CONFIG][2])
- #define kvm_read_c0_guest_config3(cop0)		(cop0->reg[MIPS_CP0_CONFIG][3])
-+#define kvm_read_c0_guest_config4(cop0)		(cop0->reg[MIPS_CP0_CONFIG][4])
-+#define kvm_read_c0_guest_config5(cop0)		(cop0->reg[MIPS_CP0_CONFIG][5])
- #define kvm_read_c0_guest_config7(cop0)		(cop0->reg[MIPS_CP0_CONFIG][7])
- #define kvm_write_c0_guest_config(cop0, val)	(cop0->reg[MIPS_CP0_CONFIG][0] = (val))
- #define kvm_write_c0_guest_config1(cop0, val)	(cop0->reg[MIPS_CP0_CONFIG][1] = (val))
- #define kvm_write_c0_guest_config2(cop0, val)	(cop0->reg[MIPS_CP0_CONFIG][2] = (val))
- #define kvm_write_c0_guest_config3(cop0, val)	(cop0->reg[MIPS_CP0_CONFIG][3] = (val))
-+#define kvm_write_c0_guest_config4(cop0, val)	(cop0->reg[MIPS_CP0_CONFIG][4] = (val))
-+#define kvm_write_c0_guest_config5(cop0, val)	(cop0->reg[MIPS_CP0_CONFIG][5] = (val))
- #define kvm_write_c0_guest_config7(cop0, val)	(cop0->reg[MIPS_CP0_CONFIG][7] = (val))
- #define kvm_read_c0_guest_errorepc(cop0)	(cop0->reg[MIPS_CP0_ERROR_PC][0])
- #define kvm_write_c0_guest_errorepc(cop0, val)	(cop0->reg[MIPS_CP0_ERROR_PC][0] = (val))
-@@ -735,6 +743,11 @@ enum emulation_result kvm_mips_emulate_load(uint32_t inst,
- 					    struct kvm_run *run,
- 					    struct kvm_vcpu *vcpu);
- 
-+unsigned int kvm_mips_config1_wrmask(struct kvm_vcpu *vcpu);
-+unsigned int kvm_mips_config3_wrmask(struct kvm_vcpu *vcpu);
-+unsigned int kvm_mips_config4_wrmask(struct kvm_vcpu *vcpu);
-+unsigned int kvm_mips_config5_wrmask(struct kvm_vcpu *vcpu);
++extern enum emulation_result kvm_mips_emulate_msafpe_exc(unsigned long cause,
++							 uint32_t *opc,
++							 struct kvm_run *run,
++							 struct kvm_vcpu *vcpu);
 +
- /* Dynamic binary translation */
- extern int kvm_mips_trans_cache_index(uint32_t inst, uint32_t *opc,
- 				      struct kvm_vcpu *vcpu);
+ extern enum emulation_result kvm_mips_emulate_fpe_exc(unsigned long cause,
+ 						      uint32_t *opc,
+ 						      struct kvm_run *run,
+ 						      struct kvm_vcpu *vcpu);
+ 
++extern enum emulation_result kvm_mips_emulate_msadis_exc(unsigned long cause,
++							 uint32_t *opc,
++							 struct kvm_run *run,
++							 struct kvm_vcpu *vcpu);
++
+ extern enum emulation_result kvm_mips_complete_mmio_load(struct kvm_vcpu *vcpu,
+ 							 struct kvm_run *run);
+ 
 diff --git a/arch/mips/kvm/emulate.c b/arch/mips/kvm/emulate.c
-index 33e132dc7de8..91d5b0e370b4 100644
+index 07f554c72cb8..6230f376a44e 100644
 --- a/arch/mips/kvm/emulate.c
 +++ b/arch/mips/kvm/emulate.c
-@@ -884,6 +884,58 @@ enum emulation_result kvm_mips_emul_tlbp(struct kvm_vcpu *vcpu)
- 	return EMULATE_DONE;
+@@ -2179,6 +2179,41 @@ enum emulation_result kvm_mips_emulate_trap_exc(unsigned long cause,
+ 	return er;
+ }
+ 
++enum emulation_result kvm_mips_emulate_msafpe_exc(unsigned long cause,
++						  uint32_t *opc,
++						  struct kvm_run *run,
++						  struct kvm_vcpu *vcpu)
++{
++	struct mips_coproc *cop0 = vcpu->arch.cop0;
++	struct kvm_vcpu_arch *arch = &vcpu->arch;
++	enum emulation_result er = EMULATE_DONE;
++
++	if ((kvm_read_c0_guest_status(cop0) & ST0_EXL) == 0) {
++		/* save old pc */
++		kvm_write_c0_guest_epc(cop0, arch->pc);
++		kvm_set_c0_guest_status(cop0, ST0_EXL);
++
++		if (cause & CAUSEF_BD)
++			kvm_set_c0_guest_cause(cop0, CAUSEF_BD);
++		else
++			kvm_clear_c0_guest_cause(cop0, CAUSEF_BD);
++
++		kvm_debug("Delivering MSAFPE @ pc %#lx\n", arch->pc);
++
++		kvm_change_c0_guest_cause(cop0, (0xff),
++					  (T_MSAFPE << CAUSEB_EXCCODE));
++
++		/* Set PC to the exception entry point */
++		arch->pc = KVM_GUEST_KSEG0 + 0x180;
++
++	} else {
++		kvm_err("Trying to deliver MSAFPE when EXL is already set\n");
++		er = EMULATE_FAIL;
++	}
++
++	return er;
++}
++
+ enum emulation_result kvm_mips_emulate_fpe_exc(unsigned long cause,
+ 					       uint32_t *opc,
+ 					       struct kvm_run *run,
+@@ -2214,6 +2249,41 @@ enum emulation_result kvm_mips_emulate_fpe_exc(unsigned long cause,
+ 	return er;
+ }
+ 
++enum emulation_result kvm_mips_emulate_msadis_exc(unsigned long cause,
++						  uint32_t *opc,
++						  struct kvm_run *run,
++						  struct kvm_vcpu *vcpu)
++{
++	struct mips_coproc *cop0 = vcpu->arch.cop0;
++	struct kvm_vcpu_arch *arch = &vcpu->arch;
++	enum emulation_result er = EMULATE_DONE;
++
++	if ((kvm_read_c0_guest_status(cop0) & ST0_EXL) == 0) {
++		/* save old pc */
++		kvm_write_c0_guest_epc(cop0, arch->pc);
++		kvm_set_c0_guest_status(cop0, ST0_EXL);
++
++		if (cause & CAUSEF_BD)
++			kvm_set_c0_guest_cause(cop0, CAUSEF_BD);
++		else
++			kvm_clear_c0_guest_cause(cop0, CAUSEF_BD);
++
++		kvm_debug("Delivering MSADIS @ pc %#lx\n", arch->pc);
++
++		kvm_change_c0_guest_cause(cop0, (0xff),
++					  (T_MSADIS << CAUSEB_EXCCODE));
++
++		/* Set PC to the exception entry point */
++		arch->pc = KVM_GUEST_KSEG0 + 0x180;
++
++	} else {
++		kvm_err("Trying to deliver MSADIS when EXL is already set\n");
++		er = EMULATE_FAIL;
++	}
++
++	return er;
++}
++
+ /* ll/sc, rdhwr, sync emulation */
+ 
+ #define OPCODE 0xfc000000
+@@ -2421,6 +2491,7 @@ enum emulation_result kvm_mips_check_privilege(unsigned long cause,
+ 		case T_BREAK:
+ 		case T_RES_INST:
+ 		case T_TRAP:
++		case T_MSAFPE:
+ 		case T_FPE:
+ 		case T_MSADIS:
+ 			break;
+diff --git a/arch/mips/kvm/mips.c b/arch/mips/kvm/mips.c
+index 17434e8b452d..a44a37475156 100644
+--- a/arch/mips/kvm/mips.c
++++ b/arch/mips/kvm/mips.c
+@@ -50,7 +50,9 @@ struct kvm_stats_debugfs_item debugfs_entries[] = {
+ 	{ "resvd_inst",	  VCPU_STAT(resvd_inst_exits),	 KVM_STAT_VCPU },
+ 	{ "break_inst",	  VCPU_STAT(break_inst_exits),	 KVM_STAT_VCPU },
+ 	{ "trap_inst",	  VCPU_STAT(trap_inst_exits),	 KVM_STAT_VCPU },
++	{ "msa_fpe",	  VCPU_STAT(msa_fpe_exits),	 KVM_STAT_VCPU },
+ 	{ "fpe",	  VCPU_STAT(fpe_exits),		 KVM_STAT_VCPU },
++	{ "msa_disabled", VCPU_STAT(msa_disabled_exits), KVM_STAT_VCPU },
+ 	{ "flush_dcache", VCPU_STAT(flush_dcache_exits), KVM_STAT_VCPU },
+ 	{ "halt_successful_poll", VCPU_STAT(halt_successful_poll), KVM_STAT_VCPU },
+ 	{ "halt_wakeup",  VCPU_STAT(halt_wakeup),	 KVM_STAT_VCPU },
+@@ -1256,6 +1258,12 @@ int kvm_mips_handle_exit(struct kvm_run *run, struct kvm_vcpu *vcpu)
+ 		ret = kvm_mips_callbacks->handle_trap(vcpu);
+ 		break;
+ 
++	case T_MSAFPE:
++		++vcpu->stat.msa_fpe_exits;
++		trace_kvm_exit(vcpu, MSA_FPE_EXITS);
++		ret = kvm_mips_callbacks->handle_msa_fpe(vcpu);
++		break;
++
+ 	case T_FPE:
+ 		++vcpu->stat.fpe_exits;
+ 		trace_kvm_exit(vcpu, FPE_EXITS);
+@@ -1263,6 +1271,8 @@ int kvm_mips_handle_exit(struct kvm_run *run, struct kvm_vcpu *vcpu)
+ 		break;
+ 
+ 	case T_MSADIS:
++		++vcpu->stat.msa_disabled_exits;
++		trace_kvm_exit(vcpu, MSA_DISABLED_EXITS);
+ 		ret = kvm_mips_callbacks->handle_msa_disabled(vcpu);
+ 		break;
+ 
+diff --git a/arch/mips/kvm/stats.c b/arch/mips/kvm/stats.c
+index 3843828f3b91..888bb67070ac 100644
+--- a/arch/mips/kvm/stats.c
++++ b/arch/mips/kvm/stats.c
+@@ -26,7 +26,9 @@ char *kvm_mips_exit_types_str[MAX_KVM_MIPS_EXIT_TYPES] = {
+ 	"Reserved Inst",
+ 	"Break Inst",
+ 	"Trap Inst",
++	"MSA FPE",
+ 	"FPE",
++	"MSA Disabled",
+ 	"D-Cache Flushes",
+ };
+ 
+diff --git a/arch/mips/kvm/trap_emul.c b/arch/mips/kvm/trap_emul.c
+index 421d5b815f24..d836ed5b0bc7 100644
+--- a/arch/mips/kvm/trap_emul.c
++++ b/arch/mips/kvm/trap_emul.c
+@@ -362,6 +362,24 @@ static int kvm_trap_emul_handle_trap(struct kvm_vcpu *vcpu)
+ 	return ret;
+ }
+ 
++static int kvm_trap_emul_handle_msa_fpe(struct kvm_vcpu *vcpu)
++{
++	struct kvm_run *run = vcpu->run;
++	uint32_t __user *opc = (uint32_t __user *)vcpu->arch.pc;
++	unsigned long cause = vcpu->arch.host_cp0_cause;
++	enum emulation_result er = EMULATE_DONE;
++	int ret = RESUME_GUEST;
++
++	er = kvm_mips_emulate_msafpe_exc(cause, opc, run, vcpu);
++	if (er == EMULATE_DONE) {
++		ret = RESUME_GUEST;
++	} else {
++		run->exit_reason = KVM_EXIT_INTERNAL_ERROR;
++		ret = RESUME_HOST;
++	}
++	return ret;
++}
++
+ static int kvm_trap_emul_handle_fpe(struct kvm_vcpu *vcpu)
+ {
+ 	struct kvm_run *run = vcpu->run;
+@@ -380,16 +398,36 @@ static int kvm_trap_emul_handle_fpe(struct kvm_vcpu *vcpu)
+ 	return ret;
  }
  
 +/**
-+ * kvm_mips_config1_wrmask() - Find mask of writable bits in guest Config1
-+ * @vcpu:	Virtual CPU.
++ * kvm_trap_emul_handle_msa_disabled() - Guest used MSA while disabled in root.
++ * @vcpu:	Virtual CPU context.
 + *
-+ * Finds the mask of bits which are writable in the guest's Config1 CP0
-+ * register, by userland (currently read-only to the guest).
++ * Handle when the guest attempts to use MSA when it is disabled.
 + */
-+unsigned int kvm_mips_config1_wrmask(struct kvm_vcpu *vcpu)
-+{
-+	/* Read-only */
-+	return 0;
-+}
-+
-+/**
-+ * kvm_mips_config3_wrmask() - Find mask of writable bits in guest Config3
-+ * @vcpu:	Virtual CPU.
-+ *
-+ * Finds the mask of bits which are writable in the guest's Config3 CP0
-+ * register, by userland (currently read-only to the guest).
-+ */
-+unsigned int kvm_mips_config3_wrmask(struct kvm_vcpu *vcpu)
-+{
-+	/* Config4 is optional */
-+	return MIPS_CONF_M;
-+}
-+
-+/**
-+ * kvm_mips_config4_wrmask() - Find mask of writable bits in guest Config4
-+ * @vcpu:	Virtual CPU.
-+ *
-+ * Finds the mask of bits which are writable in the guest's Config4 CP0
-+ * register, by userland (currently read-only to the guest).
-+ */
-+unsigned int kvm_mips_config4_wrmask(struct kvm_vcpu *vcpu)
-+{
-+	/* Config5 is optional */
-+	return MIPS_CONF_M;
-+}
-+
-+/**
-+ * kvm_mips_config5_wrmask() - Find mask of writable bits in guest Config5
-+ * @vcpu:	Virtual CPU.
-+ *
-+ * Finds the mask of bits which are writable in the guest's Config5 CP0
-+ * register, by the guest itself.
-+ */
-+unsigned int kvm_mips_config5_wrmask(struct kvm_vcpu *vcpu)
-+{
-+	/* Read-only */
-+	return 0;
-+}
-+
- enum emulation_result kvm_mips_emulate_CP0(uint32_t inst, uint32_t *opc,
- 					   uint32_t cause, struct kvm_run *run,
- 					   struct kvm_vcpu *vcpu)
-diff --git a/arch/mips/kvm/mips.c b/arch/mips/kvm/mips.c
-index 0aab83d894ba..73eecc779454 100644
---- a/arch/mips/kvm/mips.c
-+++ b/arch/mips/kvm/mips.c
-@@ -510,6 +510,8 @@ static u64 kvm_mips_get_one_regs[] = {
- 	KVM_REG_MIPS_CP0_CONFIG1,
- 	KVM_REG_MIPS_CP0_CONFIG2,
- 	KVM_REG_MIPS_CP0_CONFIG3,
-+	KVM_REG_MIPS_CP0_CONFIG4,
-+	KVM_REG_MIPS_CP0_CONFIG5,
- 	KVM_REG_MIPS_CP0_CONFIG7,
- 	KVM_REG_MIPS_CP0_ERROREPC,
- 
-@@ -590,6 +592,12 @@ static int kvm_mips_get_reg(struct kvm_vcpu *vcpu,
- 	case KVM_REG_MIPS_CP0_CONFIG3:
- 		v = (long)kvm_read_c0_guest_config3(cop0);
- 		break;
-+	case KVM_REG_MIPS_CP0_CONFIG4:
-+		v = (long)kvm_read_c0_guest_config4(cop0);
-+		break;
-+	case KVM_REG_MIPS_CP0_CONFIG5:
-+		v = (long)kvm_read_c0_guest_config5(cop0);
-+		break;
- 	case KVM_REG_MIPS_CP0_CONFIG7:
- 		v = (long)kvm_read_c0_guest_config7(cop0);
- 		break;
-@@ -701,6 +709,12 @@ static int kvm_mips_set_reg(struct kvm_vcpu *vcpu,
- 	case KVM_REG_MIPS_CP0_COUNT:
- 	case KVM_REG_MIPS_CP0_COMPARE:
- 	case KVM_REG_MIPS_CP0_CAUSE:
-+	case KVM_REG_MIPS_CP0_CONFIG:
-+	case KVM_REG_MIPS_CP0_CONFIG1:
-+	case KVM_REG_MIPS_CP0_CONFIG2:
-+	case KVM_REG_MIPS_CP0_CONFIG3:
-+	case KVM_REG_MIPS_CP0_CONFIG4:
-+	case KVM_REG_MIPS_CP0_CONFIG5:
- 	case KVM_REG_MIPS_COUNT_CTL:
- 	case KVM_REG_MIPS_COUNT_RESUME:
- 	case KVM_REG_MIPS_COUNT_HZ:
-diff --git a/arch/mips/kvm/trap_emul.c b/arch/mips/kvm/trap_emul.c
-index bffba002d1a4..8e0968428a78 100644
---- a/arch/mips/kvm/trap_emul.c
-+++ b/arch/mips/kvm/trap_emul.c
-@@ -418,8 +418,14 @@ static int kvm_trap_emul_vcpu_setup(struct kvm_vcpu *vcpu)
- 	kvm_write_c0_guest_config2(cop0, MIPS_CONF_M);
- 	/* MIPS_CONF_M | (read_c0_config2() & 0xfff) */
- 
--	/* No config4, UserLocal */
--	kvm_write_c0_guest_config3(cop0, MIPS_CONF3_ULRI);
-+	/* Have config4, UserLocal */
-+	kvm_write_c0_guest_config3(cop0, MIPS_CONF_M | MIPS_CONF3_ULRI);
-+
-+	/* Have config5 */
-+	kvm_write_c0_guest_config4(cop0, MIPS_CONF_M);
-+
-+	/* No config6 */
-+	kvm_write_c0_guest_config5(cop0, 0);
- 
- 	/* Set Wait IE/IXMT Ignore in Config7, IAR, AR */
- 	kvm_write_c0_guest_config7(cop0, (MIPS_CONF7_WII) | (1 << 10));
-@@ -464,6 +470,7 @@ static int kvm_trap_emul_set_one_reg(struct kvm_vcpu *vcpu,
+ static int kvm_trap_emul_handle_msa_disabled(struct kvm_vcpu *vcpu)
  {
- 	struct mips_coproc *cop0 = vcpu->arch.cop0;
- 	int ret = 0;
-+	unsigned int cur, change;
++	struct mips_coproc *cop0 = vcpu->arch.cop0;
+ 	struct kvm_run *run = vcpu->run;
+ 	uint32_t __user *opc = (uint32_t __user *) vcpu->arch.pc;
+ 	unsigned long cause = vcpu->arch.host_cp0_cause;
+ 	enum emulation_result er = EMULATE_DONE;
+ 	int ret = RESUME_GUEST;
  
- 	switch (reg->id) {
- 	case KVM_REG_MIPS_CP0_COUNT:
-@@ -492,6 +499,44 @@ static int kvm_trap_emul_set_one_reg(struct kvm_vcpu *vcpu,
- 			kvm_write_c0_guest_cause(cop0, v);
- 		}
- 		break;
-+	case KVM_REG_MIPS_CP0_CONFIG:
-+		/* read-only for now */
-+		break;
-+	case KVM_REG_MIPS_CP0_CONFIG1:
-+		cur = kvm_read_c0_guest_config1(cop0);
-+		change = (cur ^ v) & kvm_mips_config1_wrmask(vcpu);
-+		if (change) {
-+			v = cur ^ change;
-+			kvm_write_c0_guest_config1(cop0, v);
-+		}
-+		break;
-+	case KVM_REG_MIPS_CP0_CONFIG2:
-+		/* read-only for now */
-+		break;
-+	case KVM_REG_MIPS_CP0_CONFIG3:
-+		cur = kvm_read_c0_guest_config3(cop0);
-+		change = (cur ^ v) & kvm_mips_config3_wrmask(vcpu);
-+		if (change) {
-+			v = cur ^ change;
-+			kvm_write_c0_guest_config3(cop0, v);
-+		}
-+		break;
-+	case KVM_REG_MIPS_CP0_CONFIG4:
-+		cur = kvm_read_c0_guest_config4(cop0);
-+		change = (cur ^ v) & kvm_mips_config4_wrmask(vcpu);
-+		if (change) {
-+			v = cur ^ change;
-+			kvm_write_c0_guest_config4(cop0, v);
-+		}
-+		break;
-+	case KVM_REG_MIPS_CP0_CONFIG5:
-+		cur = kvm_read_c0_guest_config5(cop0);
-+		change = (cur ^ v) & kvm_mips_config5_wrmask(vcpu);
-+		if (change) {
-+			v = cur ^ change;
-+			kvm_write_c0_guest_config5(cop0, v);
-+		}
-+		break;
- 	case KVM_REG_MIPS_COUNT_CTL:
- 		ret = kvm_mips_set_count_ctl(vcpu, v);
- 		break;
+-	/* No MSA supported in guest, guest reserved instruction exception */
+-	er = kvm_mips_emulate_ri_exc(cause, opc, run, vcpu);
++	if (!kvm_mips_guest_has_msa(&vcpu->arch) ||
++	    (kvm_read_c0_guest_status(cop0) & (ST0_CU1 | ST0_FR)) == ST0_CU1) {
++		/*
++		 * No MSA in guest, or FPU enabled and not in FR=1 mode,
++		 * guest reserved instruction exception
++		 */
++		er = kvm_mips_emulate_ri_exc(cause, opc, run, vcpu);
++	} else if (!(kvm_read_c0_guest_config5(cop0) & MIPS_CONF5_MSAEN)) {
++		/* MSA disabled by guest, guest MSA disabled exception */
++		er = kvm_mips_emulate_msadis_exc(cause, opc, run, vcpu);
++	} else {
++		/* Restore MSA/FPU state */
++		kvm_own_msa(vcpu);
++		er = EMULATE_DONE;
++	}
+ 
+ 	switch (er) {
+ 	case EMULATE_DONE:
+@@ -608,6 +646,7 @@ static struct kvm_mips_callbacks kvm_trap_emul_callbacks = {
+ 	.handle_res_inst = kvm_trap_emul_handle_res_inst,
+ 	.handle_break = kvm_trap_emul_handle_break,
+ 	.handle_trap = kvm_trap_emul_handle_trap,
++	.handle_msa_fpe = kvm_trap_emul_handle_msa_fpe,
+ 	.handle_fpe = kvm_trap_emul_handle_fpe,
+ 	.handle_msa_disabled = kvm_trap_emul_handle_msa_disabled,
+ 
 -- 
 2.0.5

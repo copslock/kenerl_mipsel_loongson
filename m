@@ -1,57 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Mar 2015 05:29:06 +0100 (CET)
-Received: from e28smtp05.in.ibm.com ([122.248.162.5]:48592 "EHLO
-        e28smtp05.in.ibm.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27006154AbbCKE3EmWU8z (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 11 Mar 2015 05:29:04 +0100
-Received: from /spool/local
-        by e28smtp05.in.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <linux-mips@linux-mips.org> from <neelegup@linux.vnet.ibm.com>;
-        Wed, 11 Mar 2015 09:58:56 +0530
-Received: from d28dlp03.in.ibm.com (9.184.220.128)
-        by e28smtp05.in.ibm.com (192.168.1.135) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        Wed, 11 Mar 2015 09:58:54 +0530
-Received: from d28relay04.in.ibm.com (d28relay04.in.ibm.com [9.184.220.61])
-        by d28dlp03.in.ibm.com (Postfix) with ESMTP id C0F69125805A
-        for <linux-mips@linux-mips.org>; Wed, 11 Mar 2015 10:00:18 +0530 (IST)
-Received: from d28av04.in.ibm.com (d28av04.in.ibm.com [9.184.220.66])
-        by d28relay04.in.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id t2B4Snmk51249358
-        for <linux-mips@linux-mips.org>; Wed, 11 Mar 2015 09:58:51 +0530
-Received: from d28av04.in.ibm.com (localhost [127.0.0.1])
-        by d28av04.in.ibm.com (8.14.4/8.14.4/NCO v10.0 AVout) with ESMTP id t2B4Snix027642
-        for <linux-mips@linux-mips.org>; Wed, 11 Mar 2015 09:58:49 +0530
-Received: from localhost.localdomain ([9.124.88.89])
-        by d28av04.in.ibm.com (8.14.4/8.14.4/NCO v10.0 AVin) with ESMTP id t2B4Sjjh027545;
-        Wed, 11 Mar 2015 09:58:46 +0530
-Message-ID: <54FFC3EC.7020708@linux.vnet.ibm.com>
-Date:   Wed, 11 Mar 2015 09:56:20 +0530
-From:   Neelesh Gupta <neelegup@linux.vnet.ibm.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.5.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Mar 2015 06:23:55 +0100 (CET)
+Received: from hqemgate15.nvidia.com ([216.228.121.64]:6189 "EHLO
+        hqemgate15.nvidia.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006515AbbCKFXybH0RG (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 11 Mar 2015 06:23:54 +0100
+Received: from hqnvupgp08.nvidia.com (Not Verified[216.228.121.13]) by hqemgate15.nvidia.com
+        id <B54ffd18c0000>; Tue, 10 Mar 2015 22:24:28 -0700
+Received: from HQMAIL101.nvidia.com ([172.20.187.10])
+  by hqnvupgp08.nvidia.com (PGP Universal service);
+  Tue, 10 Mar 2015 22:21:45 -0700
+X-PGP-Universal: processed;
+        by hqnvupgp08.nvidia.com on Tue, 10 Mar 2015 22:21:45 -0700
+Received: from HKMAIL103.nvidia.com (10.18.16.12) by HQMAIL101.nvidia.com
+ (172.20.187.10) with Microsoft SMTP Server (TLS) id 15.0.847.32; Wed, 11 Mar
+ 2015 05:23:48 +0000
+Received: from [10.19.57.128] (10.19.57.128) by HKMAIL103.nvidia.com
+ (10.18.16.12) with Microsoft SMTP Server (TLS) id 15.0.847.32; Wed, 11 Mar
+ 2015 05:23:43 +0000
+Message-ID: <54FFD15E.3040202@nvidia.com>
+Date:   Wed, 11 Mar 2015 14:23:42 +0900
+From:   Alexandre Courbot <acourbot@nvidia.com>
+Organization: NVIDIA
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.5.0
 MIME-Version: 1.0
-To:     Benjamin Herrenschmidt <benh@kernel.crashing.org>
-CC:     Wolfram Sang <wsa@the-dreams.de>, linux-i2c@vger.kernel.org,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        Ludovic Desroches <ludovic.desroches@atmel.com>,
-        Yingjoe Chen <yingjoe.chen@mediatek.com>,
-        Eddie Huang <eddie.huang@mediatek.com>,
-        linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
-Subject: Re: [RFC V2 04/12] i2c: opal: make use of the new infrastructure
- for quirks
-References: <1424880126-15047-1-git-send-email-wsa@the-dreams.de> <1424880126-15047-5-git-send-email-wsa@the-dreams.de> <54FF2631.9050006@linux.vnet.ibm.com> <1426029133.17565.9.camel@kernel.crashing.org>
-In-Reply-To: <1426029133.17565.9.camel@kernel.crashing.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To:     Nicolas Schichan <nschichan@freebox.fr>,
+        <linux-mips@linux-mips.org>
+CC:     Maxime Bizon <mbizon@freebox.fr>,
+        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>
+Subject: Re: bcm63xx gpio issue on 3.19
+References: <54FDDE00.7030100@freebox.fr>
+In-Reply-To: <54FDDE00.7030100@freebox.fr>
+X-NVConfidentiality: public
+X-Originating-IP: [10.19.57.128]
+X-ClientProxiedBy: DRBGMAIL103.nvidia.com (10.18.16.22) To
+ HKMAIL103.nvidia.com (10.18.16.12)
+Content-Type: text/plain; charset="utf-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-X-TM-AS-MML: disable
-X-Content-Scanned: Fidelis XPS MAILER
-x-cbid: 15031104-0017-0000-0000-0000040C6E81
-Return-Path: <neelegup@linux.vnet.ibm.com>
+Return-Path: <acourbot@nvidia.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46312
+X-archive-position: 46313
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: neelegup@linux.vnet.ibm.com
+X-original-sender: acourbot@nvidia.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -64,140 +57,51 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+Hi Nicolas,
 
-On 03/11/2015 04:42 AM, Benjamin Herrenschmidt wrote:
-> On Tue, 2015-03-10 at 22:43 +0530, Neelesh Gupta wrote:
->> I tested the i2c opal driver after updating the patch as below.
->> Basically I think we can also support write-then-{read/write}
->> for the number of messages = 2.
->> Ben, any issues if we support both write plus read/write in the
->> opal driver ?
-> Nope, in fact it's a good idea, I found myself having to expoes such
-> an interface to some userspace tool of ours.
->
-> However...
->
->> diff --git a/drivers/i2c/busses/i2c-opal.c b/drivers/i2c/busses/i2c-opal.c
->> index 16f90b1..85412ba 100644
->> --- a/drivers/i2c/busses/i2c-opal.c
->> +++ b/drivers/i2c/busses/i2c-opal.c
->> @@ -104,18 +104,8 @@ static int i2c_opal_master_xfer(struct i2c_adapter *adap, struct i2c_msg *msgs,
->>    		req.buffer_ra = cpu_to_be64(__pa(msgs[0].buf));
->>    		break;
->>    	case 2:
->> -		/* For two messages, we basically support only simple
->> -		 * smbus transactions of a write plus a read. We might
->> -		 * want to allow also two writes but we'd have to bounce
->> -		 * the data into a single buffer.
->> -		 */
->> -		if ((msgs[0].flags & I2C_M_RD) || !(msgs[1].flags & I2C_M_RD))
->> -			return -EOPNOTSUPP;
-> Don't we still want to enforce that the first message is a write ?
-> Somebody may not be looking at the quirks...
->
->> -		if (msgs[0].len > 4)
->> -			return -EOPNOTSUPP;
-> And that the len is supported...
->
->> -		if (msgs[0].addr != msgs[1].addr)
->> -			return -EOPNOTSUPP;
-> Same...
->
-> Ie, the quirk indicates to the callers what we support, but we should
-> still check that we aren't called with something that doesn't match.
+(adding the linux-gpio mailing-list and Linus W.)
 
-Quirk *also* return error to the user if any of the conditions mismatch with
-what we have indicated through the quriks structure...
+On 03/10/2015 02:53 AM, Nicolas Schichan wrote:
+>
+> Hello Alexandre,
+>
+> Using the latest 3.19 kernel, the bcm63xx GPIO code under
+> arch/mips/bcm63xx/gpio.c is unable to register the gpio chip via
+> gpiochip_add(), as it returns -ENOMEM. The kcalloc call for the gpio_desc
+> array fails, as during prom code, it is too early for the kmalloc to work.
+>
+> It looks like the issue is caused by your patch: "gpio: remove gpio_descs
+> global array"
 
-I think we can't land up here by-passing the check for quirks so above 
-checks
-are duplicated here..
-
-Neelesh.
+Indeed. This happens because we removed the global GPIO array and 
+replaced it with a more flexible per-chip array of GPIOs. We were hoping 
+that issues like this one would have been caught in -next, but sadly the 
+problem with bcm63xx went unnoticed until now. :(
 
 >
->> -		req.type = OPAL_I2C_SM_READ;
->> +		req.type = (msgs[1].flags & I2C_M_RD) ?
->> +			OPAL_I2C_SM_READ : OPAL_I2C_SM_WRITE;
->>    		req.addr = cpu_to_be16(msgs[0].addr);
->>    		req.subaddr_sz = msgs[0].len;
->>    		for (i = 0; i < msgs[0].len; i++)
->> @@ -210,6 +200,11 @@ static const struct i2c_algorithm i2c_opal_algo = {
->>    	.functionality	= i2c_opal_func,
->>    };
->>
->> +static struct i2c_adapter_quirks i2c_opal_quirks = {
->> +	.flags = I2C_AQ_COMB | I2C_AQ_COMB_WRITE_FIRST | I2C_AQ_COMB_SAME_ADDR,
->> +	.max_comb_1st_msg_len = 4,
->> +};
->> +
->>    static int i2c_opal_probe(struct platform_device *pdev)
->>    {
->>    	struct i2c_adapter	*adapter;
->> @@ -232,6 +227,7 @@ static int i2c_opal_probe(struct platform_device *pdev)
->>
->>    	adapter->algo = &i2c_opal_algo;
->>    	adapter->algo_data = (void *)(unsigned long)opal_id;
->> +	adapter->quirks = &i2c_opal_quirks;
->>    	adapter->dev.parent = &pdev->dev;
->>    	adapter->dev.of_node = of_node_get(pdev->dev.of_node);
->>    	pname = of_get_property(pdev->dev.of_node, "ibm,port-name", NULL);
->>
->>
->>
->> On 02/25/2015 09:31 PM, Wolfram Sang wrote:
->>> From: Wolfram Sang <wsa+renesas@sang-engineering.com>
->>>
->>> Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
->>> ---
->>>    drivers/i2c/busses/i2c-opal.c | 22 +++++++++++-----------
->>>    1 file changed, 11 insertions(+), 11 deletions(-)
->>>
->>> diff --git a/drivers/i2c/busses/i2c-opal.c b/drivers/i2c/busses/i2c-opal.c
->>> index 16f90b1a750894..b2788ecad5b3cb 100644
->>> --- a/drivers/i2c/busses/i2c-opal.c
->>> +++ b/drivers/i2c/busses/i2c-opal.c
->>> @@ -104,17 +104,6 @@ static int i2c_opal_master_xfer(struct i2c_adapter *adap, struct i2c_msg *msgs,
->>>    		req.buffer_ra = cpu_to_be64(__pa(msgs[0].buf));
->>>    		break;
->>>    	case 2:
->>> -		/* For two messages, we basically support only simple
->>> -		 * smbus transactions of a write plus a read. We might
->>> -		 * want to allow also two writes but we'd have to bounce
->>> -		 * the data into a single buffer.
->>> -		 */
->>> -		if ((msgs[0].flags & I2C_M_RD) || !(msgs[1].flags & I2C_M_RD))
->>> -			return -EOPNOTSUPP;
->>> -		if (msgs[0].len > 4)
->>> -			return -EOPNOTSUPP;
->>> -		if (msgs[0].addr != msgs[1].addr)
->>> -			return -EOPNOTSUPP;
->>>    		req.type = OPAL_I2C_SM_READ;
->>>    		req.addr = cpu_to_be16(msgs[0].addr);
->>>    		req.subaddr_sz = msgs[0].len;
->>> @@ -210,6 +199,16 @@ static const struct i2c_algorithm i2c_opal_algo = {
->>>    	.functionality	= i2c_opal_func,
->>>    };
->>>    
->>> +/* For two messages, we basically support only simple
->>> + * smbus transactions of a write plus a read. We might
->>> + * want to allow also two writes but we'd have to bounce
->>> + * the data into a single buffer.
->>> + */
->>> +static struct i2c_adapter_quirks i2c_opal_quirks = {
->>> +	.flags = I2C_AQ_COMB_WRITE_THEN_READ,
->>> +	.max_comb_1st_msg_len = 4,
->>> +};
->>> +
->>>    static int i2c_opal_probe(struct platform_device *pdev)
->>>    {
->>>    	struct i2c_adapter	*adapter;
->>> @@ -232,6 +231,7 @@ static int i2c_opal_probe(struct platform_device *pdev)
->>>    
->>>    	adapter->algo = &i2c_opal_algo;
->>>    	adapter->algo_data = (void *)(unsigned long)opal_id;
->>> +	adapter->quirks = &i2c_opal_quirks;
->>>    	adapter->dev.parent = &pdev->dev;
->>>    	adapter->dev.of_node = of_node_get(pdev->dev.of_node);
->>>    	pname = of_get_property(pdev->dev.of_node, "ibm,port-name", NULL);
->
+> Could you please advise on how to fix/workaround that ? (ideally while keeping
+> the possibility to invoke the gpiolib code from the setup/prom code).
+
+The only allocation performed by gpiochip_add() is the array of 
+gpio_descs. Having this array pre-allocated in your early code (maybe by 
+using a static array variable) and passing it to a gpiochip_add_early() 
+function would do the trick.
+
+However, it is not that simple since gpio_desc is a private structure 
+which details (including its size) are not visible outside of drivers/gpio.
+
+Another solution I could see would be to have a kernel config option 
+that would make gpiolib "pre-allocate" a number of gpio descriptors as a 
+static array for such cases - similar to the global GPIO array, but not 
+as big.
+
+Finally, we can also restore the global GPIO array as a config option 
+for the few architectures that need it.
+
+Of course, I would prefer a solution based on dynamic allocation - is 
+there a kind a primitive memory allocator that we can use at this early 
+stage of boot? I.e. would alloc_pages() maybe work?
+
+How do other subsystems that rely on dynamic allocation for registering 
+their resources handle this? I guess regulator must fall in the same 
+use-case, doesn't it?

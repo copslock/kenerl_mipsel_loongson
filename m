@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Mar 2015 15:50:16 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:42489 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Mar 2015 15:50:36 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:10349 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27013389AbbCKOsOpO5U- (ORCPT
+        with ESMTP id S27013393AbbCKOsOuLci0 (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Wed, 11 Mar 2015 15:48:14 +0100
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 3D416CC8587CA;
-        Wed, 11 Mar 2015 14:48:07 +0000 (GMT)
+        by Websense Email Security Gateway with ESMTPS id C32FC723AC944;
+        Wed, 11 Mar 2015 14:48:05 +0000 (GMT)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
  KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Wed, 11 Mar 2015 14:48:09 +0000
+ 14.3.195.1; Wed, 11 Mar 2015 14:48:08 +0000
 Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
  LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
  14.3.210.2; Wed, 11 Mar 2015 14:48:08 +0000
@@ -18,9 +18,9 @@ To:     Paolo Bonzini <pbonzini@redhat.com>, <kvm@vger.kernel.org>,
 CC:     James Hogan <james.hogan@imgtec.com>,
         Ralf Baechle <ralf@linux-mips.org>,
         Gleb Natapov <gleb@kernel.org>
-Subject: [PATCH 08/20] MIPS: KVM: Simplify default guest Config registers
-Date:   Wed, 11 Mar 2015 14:44:44 +0000
-Message-ID: <1426085096-12932-9-git-send-email-james.hogan@imgtec.com>
+Subject: [PATCH 07/20] MIPS: KVM: Clean up register definitions a little
+Date:   Wed, 11 Mar 2015 14:44:43 +0000
+Message-ID: <1426085096-12932-8-git-send-email-james.hogan@imgtec.com>
 X-Mailer: git-send-email 2.0.5
 In-Reply-To: <1426085096-12932-1-git-send-email-james.hogan@imgtec.com>
 References: <1426085096-12932-1-git-send-email-james.hogan@imgtec.com>
@@ -31,7 +31,7 @@ Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46322
+X-archive-position: 46323
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,9 +48,12 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Various semi-used definitions exist in kvm_host.h for the default guest
-config registers. Remove them and use the appropriate values directly
-when initialising the Config registers.
+Clean up KVM_GET_ONE_REG / KVM_SET_ONE_REG register definitions for
+MIPS, to prepare for adding a new group for FPU & MSA vector registers.
+
+Definitions are added for common bits in each group of registers, e.g.
+KVM_REG_MIPS_CP0 = KVM_REG_MIPS | 0x10000, for the coprocessor 0
+registers.
 
 Signed-off-by: James Hogan <james.hogan@imgtec.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>
@@ -59,78 +62,181 @@ Cc: Gleb Natapov <gleb@kernel.org>
 Cc: linux-mips@linux-mips.org
 Cc: kvm@vger.kernel.org
 ---
- arch/mips/include/asm/kvm_host.h | 25 -------------------------
- arch/mips/kvm/trap_emul.c        | 15 +++++++++------
- 2 files changed, 9 insertions(+), 31 deletions(-)
+ arch/mips/include/asm/kvm_host.h |   4 +-
+ arch/mips/include/uapi/asm/kvm.h | 115 ++++++++++++++++++++++-----------------
+ 2 files changed, 66 insertions(+), 53 deletions(-)
 
 diff --git a/arch/mips/include/asm/kvm_host.h b/arch/mips/include/asm/kvm_host.h
-index 1bd392d3a35b..6996447fd2a7 100644
+index 26d91b0f3c3c..1bd392d3a35b 100644
 --- a/arch/mips/include/asm/kvm_host.h
 +++ b/arch/mips/include/asm/kvm_host.h
-@@ -265,31 +265,6 @@ struct mips_coproc {
- #define CP0C3_SM		1
- #define CP0C3_TL		0
+@@ -21,10 +21,10 @@
  
--/* Have config1, Cacheable, noncoherent, write-back, write allocate*/
--#define MIPS_CONFIG0						\
--  ((1 << CP0C0_M) | (0x3 << CP0C0_K0))
--
--/* Have config2, no coprocessor2 attached, no MDMX support attached,
--   no performance counters, watch registers present,
--   no code compression, EJTAG present, no FPU, no watch registers */
--#define MIPS_CONFIG1						\
--((1 << CP0C1_M) |						\
-- (0 << CP0C1_C2) | (0 << CP0C1_MD) | (0 << CP0C1_PC) |		\
-- (0 << CP0C1_WR) | (0 << CP0C1_CA) | (1 << CP0C1_EP) |		\
-- (0 << CP0C1_FP))
--
--/* Have config3, no tertiary/secondary caches implemented */
--#define MIPS_CONFIG2						\
--((1 << CP0C2_M))
--
--/* No config4, no DSP ASE, no large physaddr (PABITS),
--   no external interrupt controller, no vectored interrupts,
--   no 1kb pages, no SmartMIPS ASE, no trace logic */
--#define MIPS_CONFIG3						\
--((0 << CP0C3_M) | (0 << CP0C3_DSPP) | (0 << CP0C3_LPA) |	\
-- (0 << CP0C3_VEIC) | (0 << CP0C3_VInt) | (0 << CP0C3_SP) |	\
-- (0 << CP0C3_SM) | (0 << CP0C3_TL))
--
- /* MMU types, the first four entries have the same layout as the
-    CP0C0_MT field.  */
- enum mips_mmu_types {
-diff --git a/arch/mips/kvm/trap_emul.c b/arch/mips/kvm/trap_emul.c
-index dc019950e243..bffba002d1a4 100644
---- a/arch/mips/kvm/trap_emul.c
-+++ b/arch/mips/kvm/trap_emul.c
-@@ -396,8 +396,9 @@ static int kvm_trap_emul_vcpu_setup(struct kvm_vcpu *vcpu)
- 	 * guest will come up as expected, for now we simulate a MIPS 24kc
- 	 */
- 	kvm_write_c0_guest_prid(cop0, 0x00019300);
--	kvm_write_c0_guest_config(cop0,
--				  MIPS_CONFIG0 | (0x1 << CP0C0_AR) |
-+	/* Have config1, Cacheable, noncoherent, write-back, write allocate */
-+	kvm_write_c0_guest_config(cop0, MIPS_CONF_M | (0x3 << CP0C0_K0) |
-+				  (0x1 << CP0C0_AR) |
- 				  (MMU_TYPE_R4000 << CP0C0_MT));
+ /* MIPS KVM register ids */
+ #define MIPS_CP0_32(_R, _S)					\
+-	(KVM_REG_MIPS | KVM_REG_SIZE_U32 | 0x10000 | (8 * (_R) + (_S)))
++	(KVM_REG_MIPS_CP0 | KVM_REG_SIZE_U32 | (8 * (_R) + (_S)))
  
- 	/* Read the cache characteristics from the host Config1 Register */
-@@ -413,10 +414,12 @@ static int kvm_trap_emul_vcpu_setup(struct kvm_vcpu *vcpu)
- 	      (1 << CP0C1_WR) | (1 << CP0C1_CA));
- 	kvm_write_c0_guest_config1(cop0, config1);
+ #define MIPS_CP0_64(_R, _S)					\
+-	(KVM_REG_MIPS | KVM_REG_SIZE_U64 | 0x10000 | (8 * (_R) + (_S)))
++	(KVM_REG_MIPS_CP0 | KVM_REG_SIZE_U64 | (8 * (_R) + (_S)))
  
--	kvm_write_c0_guest_config2(cop0, MIPS_CONFIG2);
--	/* MIPS_CONFIG2 | (read_c0_config2() & 0xfff) */
--	kvm_write_c0_guest_config3(cop0, MIPS_CONFIG3 | (0 << CP0C3_VInt) |
--					 (1 << CP0C3_ULRI));
-+	/* Have config3, no tertiary/secondary caches implemented */
-+	kvm_write_c0_guest_config2(cop0, MIPS_CONF_M);
-+	/* MIPS_CONF_M | (read_c0_config2() & 0xfff) */
+ #define KVM_REG_MIPS_CP0_INDEX		MIPS_CP0_32(0, 0)
+ #define KVM_REG_MIPS_CP0_ENTRYLO0	MIPS_CP0_64(2, 0)
+diff --git a/arch/mips/include/uapi/asm/kvm.h b/arch/mips/include/uapi/asm/kvm.h
+index 2c04b6d9ff85..75d6d8557e57 100644
+--- a/arch/mips/include/uapi/asm/kvm.h
++++ b/arch/mips/include/uapi/asm/kvm.h
+@@ -52,61 +52,76 @@ struct kvm_fpu {
+ 
+ 
+ /*
+- * For MIPS, we use KVM_SET_ONE_REG and KVM_GET_ONE_REG to access CP0
++ * For MIPS, we use KVM_SET_ONE_REG and KVM_GET_ONE_REG to access various
+  * registers.  The id field is broken down as follows:
+  *
+- *  bits[2..0]   - Register 'sel' index.
+- *  bits[7..3]   - Register 'rd'  index.
+- *  bits[15..8]  - Must be zero.
+- *  bits[31..16] - 1 -> CP0 registers.
+- *  bits[51..32] - Must be zero.
+  *  bits[63..52] - As per linux/kvm.h
++ *  bits[51..32] - Must be zero.
++ *  bits[31..16] - Register set.
++ *
++ * Register set = 0: GP registers from kvm_regs (see definitions below).
++ *
++ * Register set = 1: CP0 registers.
++ *  bits[15..8]  - Must be zero.
++ *  bits[7..3]   - Register 'rd'  index.
++ *  bits[2..0]   - Register 'sel' index.
++ *
++ * Register set = 2: KVM specific registers (see definitions below).
+  *
+  * Other sets registers may be added in the future.  Each set would
+  * have its own identifier in bits[31..16].
+- *
+- * The registers defined in struct kvm_regs are also accessible, the
+- * id values for these are below.
+  */
+ 
+-#define KVM_REG_MIPS_R0 (KVM_REG_MIPS | KVM_REG_SIZE_U64 | 0)
+-#define KVM_REG_MIPS_R1 (KVM_REG_MIPS | KVM_REG_SIZE_U64 | 1)
+-#define KVM_REG_MIPS_R2 (KVM_REG_MIPS | KVM_REG_SIZE_U64 | 2)
+-#define KVM_REG_MIPS_R3 (KVM_REG_MIPS | KVM_REG_SIZE_U64 | 3)
+-#define KVM_REG_MIPS_R4 (KVM_REG_MIPS | KVM_REG_SIZE_U64 | 4)
+-#define KVM_REG_MIPS_R5 (KVM_REG_MIPS | KVM_REG_SIZE_U64 | 5)
+-#define KVM_REG_MIPS_R6 (KVM_REG_MIPS | KVM_REG_SIZE_U64 | 6)
+-#define KVM_REG_MIPS_R7 (KVM_REG_MIPS | KVM_REG_SIZE_U64 | 7)
+-#define KVM_REG_MIPS_R8 (KVM_REG_MIPS | KVM_REG_SIZE_U64 | 8)
+-#define KVM_REG_MIPS_R9 (KVM_REG_MIPS | KVM_REG_SIZE_U64 | 9)
+-#define KVM_REG_MIPS_R10 (KVM_REG_MIPS | KVM_REG_SIZE_U64 | 10)
+-#define KVM_REG_MIPS_R11 (KVM_REG_MIPS | KVM_REG_SIZE_U64 | 11)
+-#define KVM_REG_MIPS_R12 (KVM_REG_MIPS | KVM_REG_SIZE_U64 | 12)
+-#define KVM_REG_MIPS_R13 (KVM_REG_MIPS | KVM_REG_SIZE_U64 | 13)
+-#define KVM_REG_MIPS_R14 (KVM_REG_MIPS | KVM_REG_SIZE_U64 | 14)
+-#define KVM_REG_MIPS_R15 (KVM_REG_MIPS | KVM_REG_SIZE_U64 | 15)
+-#define KVM_REG_MIPS_R16 (KVM_REG_MIPS | KVM_REG_SIZE_U64 | 16)
+-#define KVM_REG_MIPS_R17 (KVM_REG_MIPS | KVM_REG_SIZE_U64 | 17)
+-#define KVM_REG_MIPS_R18 (KVM_REG_MIPS | KVM_REG_SIZE_U64 | 18)
+-#define KVM_REG_MIPS_R19 (KVM_REG_MIPS | KVM_REG_SIZE_U64 | 19)
+-#define KVM_REG_MIPS_R20 (KVM_REG_MIPS | KVM_REG_SIZE_U64 | 20)
+-#define KVM_REG_MIPS_R21 (KVM_REG_MIPS | KVM_REG_SIZE_U64 | 21)
+-#define KVM_REG_MIPS_R22 (KVM_REG_MIPS | KVM_REG_SIZE_U64 | 22)
+-#define KVM_REG_MIPS_R23 (KVM_REG_MIPS | KVM_REG_SIZE_U64 | 23)
+-#define KVM_REG_MIPS_R24 (KVM_REG_MIPS | KVM_REG_SIZE_U64 | 24)
+-#define KVM_REG_MIPS_R25 (KVM_REG_MIPS | KVM_REG_SIZE_U64 | 25)
+-#define KVM_REG_MIPS_R26 (KVM_REG_MIPS | KVM_REG_SIZE_U64 | 26)
+-#define KVM_REG_MIPS_R27 (KVM_REG_MIPS | KVM_REG_SIZE_U64 | 27)
+-#define KVM_REG_MIPS_R28 (KVM_REG_MIPS | KVM_REG_SIZE_U64 | 28)
+-#define KVM_REG_MIPS_R29 (KVM_REG_MIPS | KVM_REG_SIZE_U64 | 29)
+-#define KVM_REG_MIPS_R30 (KVM_REG_MIPS | KVM_REG_SIZE_U64 | 30)
+-#define KVM_REG_MIPS_R31 (KVM_REG_MIPS | KVM_REG_SIZE_U64 | 31)
++#define KVM_REG_MIPS_GP		(KVM_REG_MIPS | 0x0000000000000000ULL)
++#define KVM_REG_MIPS_CP0	(KVM_REG_MIPS | 0x0000000000010000ULL)
++#define KVM_REG_MIPS_KVM	(KVM_REG_MIPS | 0x0000000000020000ULL)
+ 
+-#define KVM_REG_MIPS_HI (KVM_REG_MIPS | KVM_REG_SIZE_U64 | 32)
+-#define KVM_REG_MIPS_LO (KVM_REG_MIPS | KVM_REG_SIZE_U64 | 33)
+-#define KVM_REG_MIPS_PC (KVM_REG_MIPS | KVM_REG_SIZE_U64 | 34)
+ 
+-/* KVM specific control registers */
++/*
++ * KVM_REG_MIPS_GP - General purpose registers from kvm_regs.
++ */
 +
-+	/* No config4, UserLocal */
-+	kvm_write_c0_guest_config3(cop0, MIPS_CONF3_ULRI);
++#define KVM_REG_MIPS_R0		(KVM_REG_MIPS_GP | KVM_REG_SIZE_U64 |  0)
++#define KVM_REG_MIPS_R1		(KVM_REG_MIPS_GP | KVM_REG_SIZE_U64 |  1)
++#define KVM_REG_MIPS_R2		(KVM_REG_MIPS_GP | KVM_REG_SIZE_U64 |  2)
++#define KVM_REG_MIPS_R3		(KVM_REG_MIPS_GP | KVM_REG_SIZE_U64 |  3)
++#define KVM_REG_MIPS_R4		(KVM_REG_MIPS_GP | KVM_REG_SIZE_U64 |  4)
++#define KVM_REG_MIPS_R5		(KVM_REG_MIPS_GP | KVM_REG_SIZE_U64 |  5)
++#define KVM_REG_MIPS_R6		(KVM_REG_MIPS_GP | KVM_REG_SIZE_U64 |  6)
++#define KVM_REG_MIPS_R7		(KVM_REG_MIPS_GP | KVM_REG_SIZE_U64 |  7)
++#define KVM_REG_MIPS_R8		(KVM_REG_MIPS_GP | KVM_REG_SIZE_U64 |  8)
++#define KVM_REG_MIPS_R9		(KVM_REG_MIPS_GP | KVM_REG_SIZE_U64 |  9)
++#define KVM_REG_MIPS_R10	(KVM_REG_MIPS_GP | KVM_REG_SIZE_U64 | 10)
++#define KVM_REG_MIPS_R11	(KVM_REG_MIPS_GP | KVM_REG_SIZE_U64 | 11)
++#define KVM_REG_MIPS_R12	(KVM_REG_MIPS_GP | KVM_REG_SIZE_U64 | 12)
++#define KVM_REG_MIPS_R13	(KVM_REG_MIPS_GP | KVM_REG_SIZE_U64 | 13)
++#define KVM_REG_MIPS_R14	(KVM_REG_MIPS_GP | KVM_REG_SIZE_U64 | 14)
++#define KVM_REG_MIPS_R15	(KVM_REG_MIPS_GP | KVM_REG_SIZE_U64 | 15)
++#define KVM_REG_MIPS_R16	(KVM_REG_MIPS_GP | KVM_REG_SIZE_U64 | 16)
++#define KVM_REG_MIPS_R17	(KVM_REG_MIPS_GP | KVM_REG_SIZE_U64 | 17)
++#define KVM_REG_MIPS_R18	(KVM_REG_MIPS_GP | KVM_REG_SIZE_U64 | 18)
++#define KVM_REG_MIPS_R19	(KVM_REG_MIPS_GP | KVM_REG_SIZE_U64 | 19)
++#define KVM_REG_MIPS_R20	(KVM_REG_MIPS_GP | KVM_REG_SIZE_U64 | 20)
++#define KVM_REG_MIPS_R21	(KVM_REG_MIPS_GP | KVM_REG_SIZE_U64 | 21)
++#define KVM_REG_MIPS_R22	(KVM_REG_MIPS_GP | KVM_REG_SIZE_U64 | 22)
++#define KVM_REG_MIPS_R23	(KVM_REG_MIPS_GP | KVM_REG_SIZE_U64 | 23)
++#define KVM_REG_MIPS_R24	(KVM_REG_MIPS_GP | KVM_REG_SIZE_U64 | 24)
++#define KVM_REG_MIPS_R25	(KVM_REG_MIPS_GP | KVM_REG_SIZE_U64 | 25)
++#define KVM_REG_MIPS_R26	(KVM_REG_MIPS_GP | KVM_REG_SIZE_U64 | 26)
++#define KVM_REG_MIPS_R27	(KVM_REG_MIPS_GP | KVM_REG_SIZE_U64 | 27)
++#define KVM_REG_MIPS_R28	(KVM_REG_MIPS_GP | KVM_REG_SIZE_U64 | 28)
++#define KVM_REG_MIPS_R29	(KVM_REG_MIPS_GP | KVM_REG_SIZE_U64 | 29)
++#define KVM_REG_MIPS_R30	(KVM_REG_MIPS_GP | KVM_REG_SIZE_U64 | 30)
++#define KVM_REG_MIPS_R31	(KVM_REG_MIPS_GP | KVM_REG_SIZE_U64 | 31)
++
++#define KVM_REG_MIPS_HI		(KVM_REG_MIPS_GP | KVM_REG_SIZE_U64 | 32)
++#define KVM_REG_MIPS_LO		(KVM_REG_MIPS_GP | KVM_REG_SIZE_U64 | 33)
++#define KVM_REG_MIPS_PC		(KVM_REG_MIPS_GP | KVM_REG_SIZE_U64 | 34)
++
++
++/*
++ * KVM_REG_MIPS_KVM - KVM specific control registers.
++ */
  
- 	/* Set Wait IE/IXMT Ignore in Config7, IAR, AR */
- 	kvm_write_c0_guest_config7(cop0, (MIPS_CONF7_WII) | (1 << 10));
+ /*
+  * CP0_Count control
+@@ -118,8 +133,7 @@ struct kvm_fpu {
+  *        safely without losing time or guest timer interrupts.
+  * Other: Reserved, do not change.
+  */
+-#define KVM_REG_MIPS_COUNT_CTL		(KVM_REG_MIPS | KVM_REG_SIZE_U64 | \
+-					 0x20000 | 0)
++#define KVM_REG_MIPS_COUNT_CTL	    (KVM_REG_MIPS_KVM | KVM_REG_SIZE_U64 | 0)
+ #define KVM_REG_MIPS_COUNT_CTL_DC	0x00000001
+ 
+ /*
+@@ -131,15 +145,14 @@ struct kvm_fpu {
+  * emulated.
+  * Modifications to times in the future are rejected.
+  */
+-#define KVM_REG_MIPS_COUNT_RESUME	(KVM_REG_MIPS | KVM_REG_SIZE_U64 | \
+-					 0x20000 | 1)
++#define KVM_REG_MIPS_COUNT_RESUME   (KVM_REG_MIPS_KVM | KVM_REG_SIZE_U64 | 1)
+ /*
+  * CP0_Count rate in Hz
+  * Specifies the rate of the CP0_Count timer in Hz. Modifications occur without
+  * discontinuities in CP0_Count.
+  */
+-#define KVM_REG_MIPS_COUNT_HZ		(KVM_REG_MIPS | KVM_REG_SIZE_U64 | \
+-					 0x20000 | 2)
++#define KVM_REG_MIPS_COUNT_HZ	    (KVM_REG_MIPS_KVM | KVM_REG_SIZE_U64 | 2)
++
+ 
+ /*
+  * KVM MIPS specific structures and definitions
 -- 
 2.0.5

@@ -1,47 +1,88 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Mar 2015 19:29:52 +0100 (CET)
-Received: from mail-wi0-f172.google.com ([209.85.212.172]:34358 "EHLO
-        mail-wi0-f172.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008511AbbCKS3utq-NE (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 11 Mar 2015 19:29:50 +0100
-Received: by wiwl15 with SMTP id l15so39137351wiw.1;
-        Wed, 11 Mar 2015 11:29:45 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Mar 2015 20:00:03 +0100 (CET)
+Received: from mail-vc0-f173.google.com ([209.85.220.173]:52678 "EHLO
+        mail-vc0-f173.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008511AbbCKTAAvtAod (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 11 Mar 2015 20:00:00 +0100
+Received: by mail-vc0-f173.google.com with SMTP id hy10so3739997vcb.4
+        for <linux-mips@linux-mips.org>; Wed, 11 Mar 2015 11:59:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:mime-version:content-type
-         :content-transfer-encoding;
-        bh=Qjvonl4mOz9qCRxtSwtMjQcnBi+cnHr6lzhluyJJnQ0=;
-        b=dLw3j4xNE8FpSDLq7xDkf6ejlodKDaDrKCJpcEzRthEYUcCxpEk7ZshsZioxOaPR78
-         dmtTRoslz3BbBb2RrIdzx0Ei7YFGQYYCtR9PjjkPE/WEZsT1AjNGlZ1nPN0y9h9r41q3
-         6dkHkPkhXOBoSAh7C0sB8ALf6T+qI8s2kOIuUTTgB4iyqv4Dpxot9js6Vrso1V9qgxE7
-         eUWQHizrmDqaJ/0bP0DLQFWYGSWbVlmMPLl4POAyN0twaeKt1e2QzkUJ4GwYZamQDjDe
-         DjSrDi/riW6QRN1fPYG/EhX+HyW3DOQv8knKt5b+UCRiy5NqxpAWENyOlz6hpQTj+eKF
-         PlPA==
-X-Received: by 10.194.62.52 with SMTP id v20mr80350017wjr.137.1426098585300;
-        Wed, 11 Mar 2015 11:29:45 -0700 (PDT)
-Received: from linux-tdhb.lan (ip-194-187-74-233.konfederacka.maverick.com.pl. [194.187.74.233])
-        by mx.google.com with ESMTPSA id ei3sm12481905wib.4.2015.03.11.11.29.43
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 11 Mar 2015 11:29:44 -0700 (PDT)
-From:   =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
-To:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Cc:     Hauke Mehrtens <hauke@hauke-m.de>,
-        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
-Subject: [PATCH] MIPS: BCM47XX: Support for SPROM prefixes for PCI devices
-Date:   Wed, 11 Mar 2015 19:29:30 +0100
-Message-Id: <1426098570-4685-1-git-send-email-zajec5@gmail.com>
-X-Mailer: git-send-email 1.8.4.5
+        d=google.com; s=20120113;
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type;
+        bh=fGiWOgdnSGWqgtkswLwrg8Fb26jdUJ5fEGIfJ2wI+t0=;
+        b=EhO0vQp9vy1qIwiGsdEskxH6LIBt+MChUM8jghFqWpP0PYUeSupG8b8eDDOhveAhg4
+         R0WDid4Z2de58u7c/oHbDBCPhgXHHX6Cs7DeOm8ll+noCs49uj4Enola2lLbGOhzKpzE
+         IgoNAhotanFfL6ykAtj/JTPwUAioKB7UBAzjXRmCTFCWSd5polgLAv78zuQRuLfYsuMu
+         jdR8YKV36jHXxMD7IDQGBwD1Oqd52F/+e+yWEk0WXtSFL9jIGSJVN96uNm1AUHm9FbY8
+         CHVlcrVeCimVk88ns2ELlRvWql4Oj6F7n0E4jX6nM7Iea5YGsECLTFiOs1bNmj3PBsER
+         Au2w==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type;
+        bh=fGiWOgdnSGWqgtkswLwrg8Fb26jdUJ5fEGIfJ2wI+t0=;
+        b=aFqG3z1J494wyNyUUU3Do+Lkk7MxXj28gRbEpq6yYD5g6XGePiURxlizkbDQNVszGd
+         ZwXLS53uhRh8tH+bNuU0jczvnS6ckunCc7oBEKwcbACnvSGtPCmYSCbwoSm7puB3W0EN
+         B0kLPxraoIZPyXkqxwIe29JdpZT+lYkZ23cZk=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:sender:in-reply-to:references:date
+         :message-id:subject:from:to:cc:content-type;
+        bh=fGiWOgdnSGWqgtkswLwrg8Fb26jdUJ5fEGIfJ2wI+t0=;
+        b=ELsWg7hPxV1GY6GVOd9M+xHT9I4ohC5+GmggCqxsAGoG4CN+e3BW/R7QWmbcIsvOIl
+         VVmfxqf4MTDRbGEz6wK2HWpMd5ii6zWzHJIJW5x4BgozrqIH0sYcnZYA9jVR8Fm0f5HV
+         AUHrxZa+137xeSRLEX7jHaHTfP7Gl1G/miavipulwWxmbaatVYcDfuLSakeAy4uBbdde
+         dG09mnydzhPXm5XSxEPoH/FsOAe8u0isHyd2N3r9K31FbchSb6g67aXwfPLOXNSKX0sb
+         3FaCuuVRbB5vKTjRGwNmMLzdCyPVHgdTVBHw/IevG8w+BKOC0PzEGoxEdpf8/qJxhYB/
+         pMFA==
+X-Gm-Message-State: ALoCoQng4HumJjq2EQKo/GsYVniraKZTutW6y/bAoh2ekTCfGKVu2z+/PEpmeJhH6F5lTqSfzVg5
 MIME-Version: 1.0
+X-Received: by 10.52.103.10 with SMTP id fs10mr44829384vdb.58.1426100395279;
+ Wed, 11 Mar 2015 11:59:55 -0700 (PDT)
+Received: by 10.52.172.35 with HTTP; Wed, 11 Mar 2015 11:59:55 -0700 (PDT)
+In-Reply-To: <1425518828-16017-1-git-send-email-keescook@chromium.org>
+References: <1425518828-16017-1-git-send-email-keescook@chromium.org>
+Date:   Wed, 11 Mar 2015 11:59:55 -0700
+X-Google-Sender-Auth: _V2hF6Rc6Mb1S7ii_RxC2oU2I-M
+Message-ID: <CAGXu5j+PMBEPLTLiDVZ9XvnT9a2P+tOGPLXfE865crteeChDFQ@mail.gmail.com>
+Subject: Re: [PATCH v3 0/8] switch to using asm-generic for seccomp.h
+From:   Kees Cook <keescook@chromium.org>
+To:     Andrew Morton <akpm@linux-foundation.org>
+Cc:     Kees Cook <keescook@chromium.org>, Ingo Molnar <mingo@redhat.com>,
+        Russell King <linux@arm.linux.org.uk>,
+        Michal Simek <monstr@monstr.eu>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        "James E.J. Bottomley" <jejb@parisc-linux.org>,
+        Helge Deller <deller@gmx.de>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        "David S. Miller" <davem@davemloft.net>,
+        "x86@kernel.org" <x86@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+        Frederic Weisbecker <fweisbec@gmail.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Will Deacon <will.deacon@arm.com>,
+        Daniel Borkmann <dborkman@redhat.com>,
+        Laura Abbott <lauraa@codeaurora.org>,
+        James Hogan <james.hogan@imgtec.com>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        linux-parisc <linux-parisc@vger.kernel.org>,
+        linuxppc-dev@lists.ozlabs.org,
+        sparclinux <sparclinux@vger.kernel.org>,
+        linux-arch <linux-arch@vger.kernel.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Return-Path: <zajec5@gmail.com>
+Return-Path: <keescook@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46339
+X-archive-position: 46340
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: zajec5@gmail.com
+X-original-sender: keescook@chromium.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,61 +95,32 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Support parsing SPROMs with prefixes defined like devpath1=pci/1/1
+On Wed, Mar 4, 2015 at 5:27 PM, Kees Cook <keescook@chromium.org> wrote:
+> Most architectures don't need to do much special for the strict-mode
+> seccomp syscall entries. Remove the redundant headers and reduce the
+> others.
+>
+> Signed-off-by: Kees Cook <keescook@chromium.org>
 
-Signed-off-by: Rafał Miłecki <zajec5@gmail.com>
----
- arch/mips/bcm47xx/sprom.c | 31 +++++++++++++++++++++++++++++++
- 1 file changed, 31 insertions(+)
+Hi Andrew,
 
-diff --git a/arch/mips/bcm47xx/sprom.c b/arch/mips/bcm47xx/sprom.c
-index 290309e..e5d254b 100644
---- a/arch/mips/bcm47xx/sprom.c
-+++ b/arch/mips/bcm47xx/sprom.c
-@@ -835,6 +835,36 @@ static int bcm47xx_get_sprom_ssb(struct ssb_bus *bus, struct ssb_sprom *out)
- #endif
- 
- #if defined(CONFIG_BCM47XX_BCMA)
-+/*
-+ * Having many NVRAM entries for PCI devices led to repeating prefixes like
-+ * pci/1/1/ all the time and wasting flash space. So at some point Broadcom
-+ * decided to introduce prefixes like 0: 1: 2: etc.
-+ * If we find e.g. devpath0=pci/2/1 we should use 0: instead of pci/2/1/.
-+ */
-+static void bcm47xx_sprom_apply_prefix_alias(char *prefix, size_t prefix_len)
-+{
-+	size_t needle_len = strlen(prefix) - 1;
-+	char nvram_var[10];
-+	char buf[20];
-+	int i;
-+
-+	/* Standard prefix ends with / but devpath-s don't include it */
-+	if (needle_len <= 0 || prefix[needle_len] != '/')
-+		return;
-+
-+	for (i = 0; i < 3; i++) {
-+		if (snprintf(nvram_var, sizeof(nvram_var), "devpath%d", i) <= 0)
-+			continue;
-+		if (bcm47xx_nvram_getenv(nvram_var, buf, sizeof(buf)) < 0)
-+			continue;
-+		if (strlen(buf) == needle_len &&
-+		    !strncmp(buf, prefix, needle_len)) {
-+			snprintf(prefix, prefix_len, "%d:", i);
-+			return;
-+		}
-+	}
-+}
-+
- static int bcm47xx_get_sprom_bcma(struct bcma_bus *bus, struct ssb_sprom *out)
- {
- 	char prefix[10];
-@@ -846,6 +876,7 @@ static int bcm47xx_get_sprom_bcma(struct bcma_bus *bus, struct ssb_sprom *out)
- 		snprintf(prefix, sizeof(prefix), "pci/%u/%u/",
- 			 bus->host_pci->bus->number + 1,
- 			 PCI_SLOT(bus->host_pci->devfn));
-+		bcm47xx_sprom_apply_prefix_alias(prefix, sizeof(prefix));
- 		bcm47xx_fill_sprom(out, prefix, false);
- 		return 0;
- 	case BCMA_HOSTTYPE_SOC:
+Just a quick ping: are you able to pick up this series, or should I
+try to get this in on a per-arch basis?
+
+Thanks!
+
+-Kees
+
+> ---
+> v3:
+> - split patch series by architecture
+> - fix up architectures that need sigreturn overrides (ingo)
+> v2:
+> - use Kbuild "generic-y" instead of explicit #include lines (sfr)
+>
+
+
+
 -- 
-1.8.4.5
+Kees Cook
+Chrome OS Security

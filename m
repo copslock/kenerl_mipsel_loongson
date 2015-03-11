@@ -1,38 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Mar 2015 18:49:48 +0100 (CET)
-Received: from ns.iliad.fr ([212.27.33.1]:54348 "EHLO ns.iliad.fr"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27008511AbbCKRtqt-mqW (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 11 Mar 2015 18:49:46 +0100
-Received: from ns.iliad.fr (localhost [127.0.0.1])
-        by ns.iliad.fr (Postfix) with ESMTP id B3C5E20206;
-        Wed, 11 Mar 2015 18:49:46 +0100 (CET)
-Received: from [192.168.108.32] (freebox.vlq16.iliad.fr [213.36.7.13])
-        by ns.iliad.fr (Postfix) with ESMTP id A43561FF49;
-        Wed, 11 Mar 2015 18:49:46 +0100 (CET)
-Message-ID: <5500803A.7080409@freebox.fr>
-Date:   Wed, 11 Mar 2015 18:49:46 +0100
-From:   Nicolas Schichan <nschichan@freebox.fr>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.5.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Mar 2015 19:29:52 +0100 (CET)
+Received: from mail-wi0-f172.google.com ([209.85.212.172]:34358 "EHLO
+        mail-wi0-f172.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008511AbbCKS3utq-NE (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 11 Mar 2015 19:29:50 +0100
+Received: by wiwl15 with SMTP id l15so39137351wiw.1;
+        Wed, 11 Mar 2015 11:29:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id:mime-version:content-type
+         :content-transfer-encoding;
+        bh=Qjvonl4mOz9qCRxtSwtMjQcnBi+cnHr6lzhluyJJnQ0=;
+        b=dLw3j4xNE8FpSDLq7xDkf6ejlodKDaDrKCJpcEzRthEYUcCxpEk7ZshsZioxOaPR78
+         dmtTRoslz3BbBb2RrIdzx0Ei7YFGQYYCtR9PjjkPE/WEZsT1AjNGlZ1nPN0y9h9r41q3
+         6dkHkPkhXOBoSAh7C0sB8ALf6T+qI8s2kOIuUTTgB4iyqv4Dpxot9js6Vrso1V9qgxE7
+         eUWQHizrmDqaJ/0bP0DLQFWYGSWbVlmMPLl4POAyN0twaeKt1e2QzkUJ4GwYZamQDjDe
+         DjSrDi/riW6QRN1fPYG/EhX+HyW3DOQv8knKt5b+UCRiy5NqxpAWENyOlz6hpQTj+eKF
+         PlPA==
+X-Received: by 10.194.62.52 with SMTP id v20mr80350017wjr.137.1426098585300;
+        Wed, 11 Mar 2015 11:29:45 -0700 (PDT)
+Received: from linux-tdhb.lan (ip-194-187-74-233.konfederacka.maverick.com.pl. [194.187.74.233])
+        by mx.google.com with ESMTPSA id ei3sm12481905wib.4.2015.03.11.11.29.43
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 11 Mar 2015 11:29:44 -0700 (PDT)
+From:   =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
+To:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
+Cc:     Hauke Mehrtens <hauke@hauke-m.de>,
+        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
+Subject: [PATCH] MIPS: BCM47XX: Support for SPROM prefixes for PCI devices
+Date:   Wed, 11 Mar 2015 19:29:30 +0100
+Message-Id: <1426098570-4685-1-git-send-email-zajec5@gmail.com>
+X-Mailer: git-send-email 1.8.4.5
 MIME-Version: 1.0
-To:     Alexandre Courbot <acourbot@nvidia.com>, linux-mips@linux-mips.org
-CC:     Maxime Bizon <mbizon@freebox.fr>,
-        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>
-Subject: Re: bcm63xx gpio issue on 3.19
-References: <54FDDE00.7030100@freebox.fr> <54FFD15E.3040202@nvidia.com>
-In-Reply-To: <54FFD15E.3040202@nvidia.com>
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: ClamAV using ClamSMTP ; ns.iliad.fr ; Wed Mar 11 18:49:46 2015 +0100 (CET)
-Return-Path: <nschichan@freebox.fr>
+Return-Path: <zajec5@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46338
+X-archive-position: 46339
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: nschichan@freebox.fr
+X-original-sender: zajec5@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,46 +54,61 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 03/11/2015 06:23 AM, Alexandre Courbot wrote:
->> Could you please advise on how to fix/workaround that ? (ideally while keeping
->> the possibility to invoke the gpiolib code from the setup/prom code).
-> 
-> The only allocation performed by gpiochip_add() is the array of gpio_descs.
-> Having this array pre-allocated in your early code (maybe by using a static
-> array variable) and passing it to a gpiochip_add_early() function would do the
-> trick.
-> 
-> However, it is not that simple since gpio_desc is a private structure which
-> details (including its size) are not visible outside of drivers/gpio.
-> 
-> Another solution I could see would be to have a kernel config option that
-> would make gpiolib "pre-allocate" a number of gpio descriptors as a static
-> array for such cases - similar to the global GPIO array, but not as big.
-> 
-> Finally, we can also restore the global GPIO array as a config option for the
-> few architectures that need it.
-> 
-> Of course, I would prefer a solution based on dynamic allocation - is there a
-> kind a primitive memory allocator that we can use at this early stage of boot?
-> I.e. would alloc_pages() maybe work?
-> 
-> How do other subsystems that rely on dynamic allocation for registering their
-> resources handle this? I guess regulator must fall in the same use-case,
-> doesn't it?
+Support parsing SPROMs with prefixes defined like devpath1=pci/1/1
 
-Hi Alexandre,
+Signed-off-by: Rafał Miłecki <zajec5@gmail.com>
+---
+ arch/mips/bcm47xx/sprom.c | 31 +++++++++++++++++++++++++++++++
+ 1 file changed, 31 insertions(+)
 
-Moving the bcm63xx_gpio_init() call from board_prom_init() to
-bcm63xx_register_devices() (an arch_initcall) is enough to get called when
-kmalloc is working. If code poking GPIOs is invoked earlier by a board code,
-it will have to move in the board_register_devices() function though there
-doesn't seem to any problems with the mainline bcm63xx board code in that regard.
-
-I can produce a patch for that if it is an accepted solution. It has the
-advantage of not requiring changes to the gpiolib code.
-
-Regards,
-
+diff --git a/arch/mips/bcm47xx/sprom.c b/arch/mips/bcm47xx/sprom.c
+index 290309e..e5d254b 100644
+--- a/arch/mips/bcm47xx/sprom.c
++++ b/arch/mips/bcm47xx/sprom.c
+@@ -835,6 +835,36 @@ static int bcm47xx_get_sprom_ssb(struct ssb_bus *bus, struct ssb_sprom *out)
+ #endif
+ 
+ #if defined(CONFIG_BCM47XX_BCMA)
++/*
++ * Having many NVRAM entries for PCI devices led to repeating prefixes like
++ * pci/1/1/ all the time and wasting flash space. So at some point Broadcom
++ * decided to introduce prefixes like 0: 1: 2: etc.
++ * If we find e.g. devpath0=pci/2/1 we should use 0: instead of pci/2/1/.
++ */
++static void bcm47xx_sprom_apply_prefix_alias(char *prefix, size_t prefix_len)
++{
++	size_t needle_len = strlen(prefix) - 1;
++	char nvram_var[10];
++	char buf[20];
++	int i;
++
++	/* Standard prefix ends with / but devpath-s don't include it */
++	if (needle_len <= 0 || prefix[needle_len] != '/')
++		return;
++
++	for (i = 0; i < 3; i++) {
++		if (snprintf(nvram_var, sizeof(nvram_var), "devpath%d", i) <= 0)
++			continue;
++		if (bcm47xx_nvram_getenv(nvram_var, buf, sizeof(buf)) < 0)
++			continue;
++		if (strlen(buf) == needle_len &&
++		    !strncmp(buf, prefix, needle_len)) {
++			snprintf(prefix, prefix_len, "%d:", i);
++			return;
++		}
++	}
++}
++
+ static int bcm47xx_get_sprom_bcma(struct bcma_bus *bus, struct ssb_sprom *out)
+ {
+ 	char prefix[10];
+@@ -846,6 +876,7 @@ static int bcm47xx_get_sprom_bcma(struct bcma_bus *bus, struct ssb_sprom *out)
+ 		snprintf(prefix, sizeof(prefix), "pci/%u/%u/",
+ 			 bus->host_pci->bus->number + 1,
+ 			 PCI_SLOT(bus->host_pci->devfn));
++		bcm47xx_sprom_apply_prefix_alias(prefix, sizeof(prefix));
+ 		bcm47xx_fill_sprom(out, prefix, false);
+ 		return 0;
+ 	case BCMA_HOSTTYPE_SOC:
 -- 
-Nicolas Schichan
-Freebox SAS
+1.8.4.5

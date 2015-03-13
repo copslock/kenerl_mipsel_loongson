@@ -1,40 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Mar 2015 18:20:05 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:47092 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27013675AbbCMRUCxCrUC (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 13 Mar 2015 18:20:02 +0100
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.9/8.14.8) with ESMTP id t2DHASZN018289;
-        Fri, 13 Mar 2015 18:13:08 +0100
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.9/8.14.9/Submit) id t2DHARJ7018288;
-        Fri, 13 Mar 2015 18:10:27 +0100
-Date:   Fri, 13 Mar 2015 18:10:27 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     David Daney <ddaney@caviumnetworks.com>
-Cc:     Markos Chandras <markos.chandras@imgtec.com>,
-        linux-mips@linux-mips.org, David Daney <david.daney@cavium.com>
-Subject: Re: [PATCH] MIPS: mm: tlbex: Replace cpu_has_mips_r2_exec_hazard
- with cpu_has_mips_r2_r6
-Message-ID: <20150313171027.GB12977@linux-mips.org>
-References: <1424731974-27926-1-git-send-email-ddaney.cavm@gmail.com>
- <1426238288-15560-1-git-send-email-markos.chandras@imgtec.com>
- <20150313144443.GA12977@linux-mips.org>
- <5503063B.5000104@caviumnetworks.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5503063B.5000104@caviumnetworks.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Mar 2015 18:35:45 +0100 (CET)
+Received: from ducie-dc1.codethink.co.uk ([185.25.241.215]:46516 "EHLO
+        ducie-dc1.codethink.co.uk" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008710AbbCMRfnq9E0o (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 13 Mar 2015 18:35:43 +0100
+Received: from localhost (localhost [127.0.0.1])
+        by ducie-dc1.codethink.co.uk (Postfix) with ESMTP id A2FF0460AF0
+        for <linux-mips@linux-mips.org>; Fri, 13 Mar 2015 17:35:38 +0000 (GMT)
+X-Virus-Scanned: Debian amavisd-new at ducie-dc1.codethink.co.uk
+Received: from ducie-dc1.codethink.co.uk ([127.0.0.1])
+        by localhost (ducie-dc1.codethink.co.uk [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id ijbgVR6XyibX; Fri, 13 Mar 2015 17:35:36 +0000 (GMT)
+Received: from pm-laptop.codethink.co.uk (pm-laptop.dyn.ducie.codethink.co.uk [10.24.1.94])
+        by ducie-dc1.codethink.co.uk (Postfix) with ESMTPSA id 14A8E46062E;
+        Fri, 13 Mar 2015 17:35:36 +0000 (GMT)
+Received: from pm by pm-laptop.codethink.co.uk with local (Exim 4.84)
+        (envelope-from <paul.martin@codethink.co.uk>)
+        id 1YWTUl-0000QZ-RN; Fri, 13 Mar 2015 17:35:35 +0000
+From:   Paul Martin <paul.martin@codethink.co.uk>
+To:     linux-mips@linux-mips.org
+Cc:     Paul Martin <paul.martin@codethink.co.uk>
+Subject: [PATCH 0/6] MIPS: OCTEON: Patches to enable Little Endian
+Date:   Fri, 13 Mar 2015 17:34:52 +0000
+Message-Id: <1426268098-1603-1-git-send-email-paul.martin@codethink.co.uk>
+X-Mailer: git-send-email 2.1.4
+Return-Path: <paul.martin@codethink.co.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46366
+X-archive-position: 46367
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: paul.martin@codethink.co.uk
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,76 +44,44 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Mar 13, 2015 at 08:46:03AM -0700, David Daney wrote:
+Octeon II CPUs can switch from Big Endian to Little Endian freely
+even in kernel/supervisor mode.
 
-> >>Commit 77f3ee59ee7cf ("MIPS: mm: tlbex: Use cpu_has_mips_r2_exec_hazard
-> >>for the EHB instruction") replaced cpu_has_mips_r2 with
-> >>cpu_has_mips_r2_exec_hazard to indicate whether the ISA has the EHB
-> >>instruction. However, the meaning of the cpu_has_mips_r2_exec_hazard
-> >>is different. It was meant to be used as an indication on whether the
-> >>running processor needs to run the EHB instruction instead of checking
-> >>whether the EHB is available on the ISA. This broke processors that do
-> >>not define cpu_has_mips_r2_exec_hazard. We fix this by replacing the
-> >>said macro with cpu_has_mips_r2_r6 which covers R2 and R6 processors.
-> >>
-> >>Fixes: 77f3ee59ee7cf ("MIPS: mm: tlbex: Use cpu_has_mips_r2_exec_hazard for the EHB instruction")
-> >>Cc: David Daney <david.daney@cavium.com>
-> >>Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
-> >
-> >Either of this David's revert or this patch applied will leave
-> >cpu_has_mips_r2_exec_hazard unused which at a glance doesn't seem to
-> >be right and defeats David's old patches 9e290a19 / 41f0e4d0 from working.
-> >
-> >cpu_has_mips_r2_exec_hazard was made unused by 625c0a21 which I think
-> >should be reverted and cpu_has_mips_r2_exec_hazard be defined to be something
-> >like
-> >
-> >#define cpu_has_mips_r2_exec_hazard					\
-> >({									\
-> >	int __res;							\
-> >									\
-> >	switch (current_cpu_type()) {					\
-> >	case CPU_M14KC:							\
-> >	case CPU74K:							\
-> >	case CPU_CAVIUM_OCTEON:						\
-> >	case CPU_CAVIUM_OCTEON_PLUS:					\
-> >         case CPU_CAVIUM_OCTEON2:					\
-> >	case CPU_CAVIUM_OCTEON3:					\
-> 
-> The four octeon models are already covered in
-> arch/mips/include/asm/mach-cavium-octeon/cpu-feature-overrides.h
-> 
-> >		__res = 0;						\
-> >		break;							\
-> >									\
-> >	default:							\
-> >		__res = 1;						\
-> >	}								\
-> >									\
-> >	__res;								\
-> >})
-> >
-> >?
-> >
-> 
-> Something like that is needed somewhere
-> 
-> I would suggest having the default definition contain some generalizations
-> about where it should return true, and
-> arch/mips/include/asm/mach-*/cpu-feature-overrides.h isolate the specific
-> models for each sub-architecture.
+These patches allow an EdgeRouterPro to boot in LE mode with no
+hardware modifications.  They have not been subjected to extensive
+testing yet and should be considered experimental.  (I have seen some
+strange memory corruption in libstdc++ which I haven't yet been able
+to trace.)
 
-In the past we had this very simple kind of constructs like
+Parts of this patchset are based on the "GPL" sources released by
+Ubiquiti.
 
-#ifndef cpu_has_weird_stuff
-#define cpu_has_weird_stuff (current_cpu_data()->feature_flags & WEIRD_FLAG)
-#endif
 
-plus the platform-specific overrides because GCC wasn't able to properly
-optimize something like my suggested definition for
-cpu_has_mips_r2_exec_hazard.  Since a while GCC howeer is capable of
-optimizing that sort of constructs eleminating dead case statements and
-so I think we're probably better off eleminating the per-platform
-overrides definitions where we can.
+Paul Martin (6):
+  MIPS: OCTEON: Tell the kernel build system we can do Little Endian
+  MIPS: OCTEON: Ensure CPUs come up little endian
+  MIPS: OCTEON: Turn hardware bitfields and structures inside out
+  MIPS: OCTEON: Set appropriate endianness in L2C registers
+  MIPS: OCTEON: Reverse the order of register accesses to the FAU
+  MIPS: OCTEON: Set up ethernet hardware for little endian
 
-  Ralf
+ arch/mips/Kconfig                                  |   1 +
+ arch/mips/cavium-octeon/executive/cvmx-l2c.c       |  45 ++++
+ arch/mips/cavium-octeon/octeon-platform.c          |  12 +
+ .../asm/mach-cavium-octeon/kernel-entry-init.h     | 137 +++++++++++-
+ arch/mips/include/asm/octeon/cvmx-address.h        |  67 ++++++
+ arch/mips/include/asm/octeon/cvmx-bootinfo.h       |  55 +++++
+ arch/mips/include/asm/octeon/cvmx-bootmem.h        |  14 ++
+ arch/mips/include/asm/octeon/cvmx-fau.h            |  22 ++
+ arch/mips/include/asm/octeon/cvmx-fpa.h            |   7 +
+ arch/mips/include/asm/octeon/cvmx-l2c.h            |   9 +
+ arch/mips/include/asm/octeon/cvmx-packet.h         |   8 +
+ arch/mips/include/asm/octeon/cvmx-pko.h            |  31 +++
+ arch/mips/include/asm/octeon/cvmx-pow.h            | 247 +++++++++++++++++++++
+ arch/mips/include/asm/octeon/cvmx-wqe.h            |  71 ++++++
+ drivers/staging/octeon/ethernet-tx.c               |   3 +
+ drivers/staging/octeon/ethernet.c                  |  10 +
+ 16 files changed, 738 insertions(+), 1 deletion(-)
+
+-- 
+2.1.4

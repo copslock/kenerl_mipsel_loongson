@@ -1,17 +1,17 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Mar 2015 03:30:31 +0100 (CET)
-Received: from smtpbgsg2.qq.com ([54.254.200.128]:49195 "EHLO smtpbgsg2.qq.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Mar 2015 03:30:47 +0100 (CET)
+Received: from smtpbgsg2.qq.com ([54.254.200.128]:49218 "EHLO smtpbgsg2.qq.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27008621AbbCMCa3CO0gs (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S27008640AbbCMCa3ZXDTv (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Fri, 13 Mar 2015 03:30:29 +0100
-X-QQ-mid: bizesmtp2t1426213800t792t079
+X-QQ-mid: bizesmtp2t1426213802t566t072
 Received: from localhost.localdomain (unknown [222.92.8.142])
         by esmtp4.qq.com (ESMTP) with 
-        id ; Fri, 13 Mar 2015 10:29:41 +0800 (CST)
+        id ; Fri, 13 Mar 2015 10:30:01 +0800 (CST)
 X-QQ-SSF: 01100000000000F0FJ52B00A0000000
-X-QQ-FEAT: iQqhHoA+F4pfhryQl6pMRj8FcvEwj/AfYkGi2UoUzZUK4YNARvEI/gBgOIl/Y
-        2JrkP5HgtNgA1GD5eQJSa6BI957MvWI/soxsFsGsjdSJXs1NbKn3JXS3Gtjskq2EojT0VQL
-        Hrv83UHQ2UHX+Win72z7ml2gQ0P5ggv/5pv1FNM6Blegp1Lcima//A7OBAhQx+Bj5/5kxQQ
-        uGuWL8SVpwpFsaf3gxGWu6W0iJLgVLd0NJywpW1yCWRW/FvWnwKf/
+X-QQ-FEAT: BZS0nEuSLHBSNZ9Z0zDfqBe886PM99Drc81PTnUl7idihHN/H2+xJUroJaIU9
+        3xyM4JGx8Tn/blDtTFchJbZRWv/3wbALv6ak+RZtDOUDQkqUwquvjBKf97Zu/vJ2G4jrSxK
+        eF+xEKJPdgphWnK05YisbX9iXpkQa+iwpNOBKCwC/KCq8vdhzq5+Ga/IczT9I2FxRdRnfnC
+        kP11KyycK2t7jVzADXJnVOvTVFwffn4Y0abamuwM0HQ==
 X-QQ-GoodBg: 0
 From:   Huacai Chen <chenhc@lemote.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
@@ -19,17 +19,19 @@ Cc:     "Steven J. Hill" <Steven.Hill@imgtec.com>,
         linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
         Zhangjin Wu <wuzhangjin@gmail.com>,
         Huacai Chen <chenhc@lemote.com>
-Subject: [PATCH V8 6/8] MIPS: Loongson-3: Add CPU Hwmon platform driver
-Date:   Fri, 13 Mar 2015 10:28:25 +0800
-Message-Id: <1426213706-28542-1-git-send-email-chenhc@lemote.com>
+Subject: [PATCH V8 7/8] MIPS: Loongson-3: Add chipset ACPI platform driver
+Date:   Fri, 13 Mar 2015 10:28:26 +0800
+Message-Id: <1426213706-28542-2-git-send-email-chenhc@lemote.com>
 X-Mailer: git-send-email 1.7.7.3
+In-Reply-To: <1426213706-28542-1-git-send-email-chenhc@lemote.com>
+References: <1426213706-28542-1-git-send-email-chenhc@lemote.com>
 X-QQ-SENDSIZE: 520
 X-QQ-Bgrelay: 1
 Return-Path: <chenhc@lemote.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46358
+X-archive-position: 46359
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,347 +48,208 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This add CPU Hwmon (temperature sensor) platform driver for Loongson-3.
+This add south-bridge (SB700/SB710/SB800 chipset) ACPI platform driver
+for Loongson-3. This will be used by EC (Embedded Controller, used by
+laptops) driver and STR (Suspend To RAM).
 
 Signed-off-by: Huacai Chen <chenhc@lemote.com>
 ---
- arch/mips/include/asm/mach-loongson/loongson.h |    4 +
- arch/mips/loongson/common/env.c                |    9 +
- drivers/platform/Kconfig                       |    3 +
- drivers/platform/Makefile                      |    1 +
- drivers/platform/mips/Kconfig                  |   26 +++
- drivers/platform/mips/Makefile                 |    1 +
- drivers/platform/mips/cpu_hwmon.c              |  206 ++++++++++++++++++++++++
- 7 files changed, 250 insertions(+), 0 deletions(-)
- create mode 100644 drivers/platform/mips/Kconfig
- create mode 100644 drivers/platform/mips/Makefile
- create mode 100644 drivers/platform/mips/cpu_hwmon.c
+ arch/mips/loongson/common/pci.c   |    6 ++
+ drivers/platform/mips/Makefile    |    1 +
+ drivers/platform/mips/acpi_init.c |  150 +++++++++++++++++++++++++++++++++++++
+ 3 files changed, 157 insertions(+), 0 deletions(-)
+ create mode 100644 drivers/platform/mips/acpi_init.c
 
-diff --git a/arch/mips/include/asm/mach-loongson/loongson.h b/arch/mips/include/asm/mach-loongson/loongson.h
-index 5459ac0..9783103 100644
---- a/arch/mips/include/asm/mach-loongson/loongson.h
-+++ b/arch/mips/include/asm/mach-loongson/loongson.h
-@@ -255,6 +255,10 @@ static inline void do_perfcnt_IRQ(void)
- extern u64 loongson_chipcfg[MAX_PACKAGES];
- #define LOONGSON_CHIPCFG(id) (*(volatile u32 *)(loongson_chipcfg[id]))
+diff --git a/arch/mips/loongson/common/pci.c b/arch/mips/loongson/common/pci.c
+index 003ab4e..4e25756 100644
+--- a/arch/mips/loongson/common/pci.c
++++ b/arch/mips/loongson/common/pci.c
+@@ -78,6 +78,8 @@ static void __init setup_pcimap(void)
+ #endif
+ }
  
-+/* Chip Temperature registor of each physical cpu package, PRid >= Loongson-3A */
-+extern u64 loongson_chiptemp[MAX_PACKAGES];
-+#define LOONGSON_CHIPTEMP(id) (*(volatile u32 *)(loongson_chiptemp[id]))
++extern int sbx00_acpi_init(void);
 +
- /* Freq Control register of each physical cpu package, PRid >= Loongson-3B */
- extern u64 loongson_freqctrl[MAX_PACKAGES];
- #define LOONGSON_FREQCTRL(id) (*(volatile u32 *)(loongson_freqctrl[id]))
-diff --git a/arch/mips/loongson/common/env.c b/arch/mips/loongson/common/env.c
-index 045ea3d..22f04ca 100644
---- a/arch/mips/loongson/common/env.c
-+++ b/arch/mips/loongson/common/env.c
-@@ -29,6 +29,7 @@ struct efi_memory_map_loongson *loongson_memmap;
- struct loongson_system_configuration loongson_sysconf;
+ static int __init pcibios_init(void)
+ {
+ 	setup_pcimap();
+@@ -89,6 +91,10 @@ static int __init pcibios_init(void)
+ #endif
+ 	register_pci_controller(&loongson_pci_controller);
  
- u64 loongson_chipcfg[MAX_PACKAGES] = {0xffffffffbfc00180};
-+u64 loongson_chiptemp[MAX_PACKAGES];
- u64 loongson_freqctrl[MAX_PACKAGES];
++#ifdef CONFIG_CPU_LOONGSON3
++	sbx00_acpi_init();
++#endif
++
+ 	return 0;
+ }
  
- unsigned long long smp_group[4];
-@@ -97,6 +98,10 @@ void __init prom_init_env(void)
- 		loongson_chipcfg[1] = 0x900010001fe00180;
- 		loongson_chipcfg[2] = 0x900020001fe00180;
- 		loongson_chipcfg[3] = 0x900030001fe00180;
-+		loongson_chiptemp[0] = 0x900000001fe0019c;
-+		loongson_chiptemp[1] = 0x900010001fe0019c;
-+		loongson_chiptemp[2] = 0x900020001fe0019c;
-+		loongson_chiptemp[3] = 0x900030001fe0019c;
- 		loongson_sysconf.ht_control_base = 0x90000EFDFB000000;
- 		loongson_sysconf.workarounds = WORKAROUND_CPUFREQ;
- 	} else if (ecpu->cputype == Loongson_3B) {
-@@ -110,6 +115,10 @@ void __init prom_init_env(void)
- 		loongson_chipcfg[1] = 0x900020001fe00180;
- 		loongson_chipcfg[2] = 0x900040001fe00180;
- 		loongson_chipcfg[3] = 0x900060001fe00180;
-+		loongson_chiptemp[0] = 0x900000001fe0019c;
-+		loongson_chiptemp[1] = 0x900020001fe0019c;
-+		loongson_chiptemp[2] = 0x900040001fe0019c;
-+		loongson_chiptemp[3] = 0x900060001fe0019c;
- 		loongson_freqctrl[0] = 0x900000001fe001d0;
- 		loongson_freqctrl[1] = 0x900020001fe001d0;
- 		loongson_freqctrl[2] = 0x900040001fe001d0;
-diff --git a/drivers/platform/Kconfig b/drivers/platform/Kconfig
-index 09fde58..eacabd1 100644
---- a/drivers/platform/Kconfig
-+++ b/drivers/platform/Kconfig
-@@ -4,5 +4,8 @@ endif
- if GOLDFISH
- source "drivers/platform/goldfish/Kconfig"
- endif
-+if MIPS
-+source "drivers/platform/mips/Kconfig"
-+endif
- 
- source "drivers/platform/chrome/Kconfig"
-diff --git a/drivers/platform/Makefile b/drivers/platform/Makefile
-index 3656b7b..f2dbc00 100644
---- a/drivers/platform/Makefile
-+++ b/drivers/platform/Makefile
-@@ -5,4 +5,5 @@
- obj-$(CONFIG_X86)		+= x86/
- obj-$(CONFIG_OLPC)		+= olpc/
- obj-$(CONFIG_GOLDFISH)		+= goldfish/
-+obj-$(CONFIG_CPU_LOONGSON3)	+= mips/
- obj-$(CONFIG_CHROME_PLATFORMS)	+= chrome/
-diff --git a/drivers/platform/mips/Kconfig b/drivers/platform/mips/Kconfig
-new file mode 100644
-index 0000000..b3ae30a
---- /dev/null
-+++ b/drivers/platform/mips/Kconfig
-@@ -0,0 +1,26 @@
-+#
-+# MIPS Platform Specific Drivers
-+#
-+
-+menuconfig MIPS_PLATFORM_DEVICES
-+	bool "MIPS Platform Specific Device Drivers"
-+	default y
-+	help
-+	  Say Y here to get to see options for device drivers of various
-+	  MIPS platforms, including vendor-specific netbook/laptop/desktop
-+	  extension and hardware monitor drivers. This option itself does
-+	  not add any kernel code.
-+
-+	  If you say N, all options in this submenu will be skipped and disabled.
-+
-+if MIPS_PLATFORM_DEVICES
-+
-+config CPU_HWMON
-+	tristate "Loongson CPU HWMon Driver"
-+	depends on LOONGSON_MACH3X
-+	select HWMON
-+	default y
-+	help
-+	  Loongson-3A/3B CPU Hwmon (temperature sensor) driver.
-+
-+endif # MIPS_PLATFORM_DEVICES
 diff --git a/drivers/platform/mips/Makefile b/drivers/platform/mips/Makefile
-new file mode 100644
-index 0000000..8dfd039
---- /dev/null
+index 8dfd039..20e471d 100644
+--- a/drivers/platform/mips/Makefile
 +++ b/drivers/platform/mips/Makefile
-@@ -0,0 +1 @@
-+obj-$(CONFIG_CPU_HWMON) += cpu_hwmon.o
-diff --git a/drivers/platform/mips/cpu_hwmon.c b/drivers/platform/mips/cpu_hwmon.c
+@@ -1 +1,2 @@
++obj-y += acpi_init.o
+ obj-$(CONFIG_CPU_HWMON) += cpu_hwmon.o
+diff --git a/drivers/platform/mips/acpi_init.c b/drivers/platform/mips/acpi_init.c
 new file mode 100644
-index 0000000..529950a
+index 0000000..dbdad79
 --- /dev/null
-+++ b/drivers/platform/mips/cpu_hwmon.c
-@@ -0,0 +1,206 @@
-+#include <linux/err.h>
-+#include <linux/module.h>
-+#include <linux/reboot.h>
-+#include <linux/jiffies.h>
-+#include <linux/hwmon.h>
-+#include <linux/hwmon-sysfs.h>
++++ b/drivers/platform/mips/acpi_init.c
+@@ -0,0 +1,150 @@
++#include <linux/io.h>
++#include <linux/init.h>
++#include <linux/ioport.h>
++#include <linux/export.h>
 +
-+#include <loongson.h>
-+#include <boot_param.h>
-+#include <loongson_hwmon.h>
++#define SBX00_ACPI_IO_BASE 0x800
++#define SBX00_ACPI_IO_SIZE 0x100
++
++#define ACPI_PM_EVT_BLK         (SBX00_ACPI_IO_BASE + 0x00) /* 4 bytes */
++#define ACPI_PM_CNT_BLK         (SBX00_ACPI_IO_BASE + 0x04) /* 2 bytes */
++#define ACPI_PMA_CNT_BLK        (SBX00_ACPI_IO_BASE + 0x0F) /* 1 byte */
++#define ACPI_PM_TMR_BLK         (SBX00_ACPI_IO_BASE + 0x18) /* 4 bytes */
++#define ACPI_GPE0_BLK           (SBX00_ACPI_IO_BASE + 0x10) /* 8 bytes */
++#define ACPI_END                (SBX00_ACPI_IO_BASE + 0x80)
++
++#define PM_INDEX        0xCD6
++#define PM_DATA         0xCD7
++#define PM2_INDEX       0xCD0
++#define PM2_DATA        0xCD1
 +
 +/*
-+ * Loongson-3 series cpu has two sensors inside,
-+ * each of them from 0 to 255,
-+ * if more than 127, that is dangerous.
-+ * here only provide sensor1 data, because it always hot than sensor0
++ * SCI interrupt need acpi space, allocate here
 + */
-+int loongson3_cpu_temp(int cpu)
++
++static int __init register_acpi_resource(void)
 +{
-+	u32 reg;
-+
-+	reg = LOONGSON_CHIPTEMP(cpu);
-+	if (loongson_sysconf.cputype == Loongson_3A)
-+		reg = (reg >> 8) & 0xff;
-+	else if (loongson_sysconf.cputype == Loongson_3B)
-+		reg = ((reg >> 8) & 0xff) - 100;
-+
-+	return (int)reg * 1000;
++	request_region(SBX00_ACPI_IO_BASE, SBX00_ACPI_IO_SIZE, "acpi");
++	return 0;
 +}
 +
-+static struct device *cpu_hwmon_dev;
-+
-+static ssize_t get_hwmon_name(struct device *dev,
-+			struct device_attribute *attr, char *buf);
-+static SENSOR_DEVICE_ATTR(name, S_IRUGO, get_hwmon_name, NULL, 0);
-+
-+static struct attribute *cpu_hwmon_attributes[] = {
-+	&sensor_dev_attr_name.dev_attr.attr,
-+	NULL
-+};
-+
-+/* Hwmon device attribute group */
-+static struct attribute_group cpu_hwmon_attribute_group = {
-+	.attrs = cpu_hwmon_attributes,
-+};
-+
-+/* Hwmon device get name */
-+static ssize_t get_hwmon_name(struct device *dev,
-+			struct device_attribute *attr, char *buf)
++static void pmio_write_index(u16 index, u8 reg, u8 value)
 +{
-+	return sprintf(buf, "cpu-hwmon\n");
++	outb(reg, index);
++	outb(value, index + 1);
 +}
 +
-+static ssize_t get_cpu0_temp(struct device *dev,
-+			struct device_attribute *attr, char *buf);
-+static ssize_t get_cpu1_temp(struct device *dev,
-+			struct device_attribute *attr, char *buf);
-+static ssize_t cpu0_temp_label(struct device *dev,
-+			struct device_attribute *attr, char *buf);
-+static ssize_t cpu1_temp_label(struct device *dev,
-+			struct device_attribute *attr, char *buf);
-+
-+static SENSOR_DEVICE_ATTR(temp1_input, S_IRUGO, get_cpu0_temp, NULL, 1);
-+static SENSOR_DEVICE_ATTR(temp1_label, S_IRUGO, cpu0_temp_label, NULL, 1);
-+static SENSOR_DEVICE_ATTR(temp2_input, S_IRUGO, get_cpu1_temp, NULL, 2);
-+static SENSOR_DEVICE_ATTR(temp2_label, S_IRUGO, cpu1_temp_label, NULL, 2);
-+
-+static const struct attribute *hwmon_cputemp1[] = {
-+	&sensor_dev_attr_temp1_input.dev_attr.attr,
-+	&sensor_dev_attr_temp1_label.dev_attr.attr,
-+	NULL
-+};
-+
-+static const struct attribute *hwmon_cputemp2[] = {
-+	&sensor_dev_attr_temp2_input.dev_attr.attr,
-+	&sensor_dev_attr_temp2_label.dev_attr.attr,
-+	NULL
-+};
-+
-+static ssize_t cpu0_temp_label(struct device *dev,
-+			struct device_attribute *attr, char *buf)
++static u8 pmio_read_index(u16 index, u8 reg)
 +{
-+	return sprintf(buf, "CPU 0 Temprature\n");
++	outb(reg, index);
++	return inb(index + 1);
 +}
 +
-+static ssize_t cpu1_temp_label(struct device *dev,
-+			struct device_attribute *attr, char *buf)
++void pm_iowrite(u8 reg, u8 value)
 +{
-+	return sprintf(buf, "CPU 1 Temprature\n");
++	pmio_write_index(PM_INDEX, reg, value);
++}
++EXPORT_SYMBOL(pm_iowrite);
++
++u8 pm_ioread(u8 reg)
++{
++	return pmio_read_index(PM_INDEX, reg);
++}
++EXPORT_SYMBOL(pm_ioread);
++
++void pm2_iowrite(u8 reg, u8 value)
++{
++	pmio_write_index(PM2_INDEX, reg, value);
++}
++EXPORT_SYMBOL(pm2_iowrite);
++
++u8 pm2_ioread(u8 reg)
++{
++	return pmio_read_index(PM2_INDEX, reg);
++}
++EXPORT_SYMBOL(pm2_ioread);
++
++static void acpi_hw_clear_status(void)
++{
++	u16 value;
++
++	/* PMStatus: Clear WakeStatus/PwrBtnStatus */
++	value = inw(ACPI_PM_EVT_BLK);
++	value |= (1 << 8 | 1 << 15);
++	outw(value, ACPI_PM_EVT_BLK);
++
++	/* GPEStatus: Clear all generated events */
++	outl(inl(ACPI_GPE0_BLK), ACPI_GPE0_BLK);
 +}
 +
-+static ssize_t get_cpu0_temp(struct device *dev,
-+			struct device_attribute *attr, char *buf)
++void acpi_registers_setup(void)
 +{
-+	int value = loongson3_cpu_temp(0);
-+	return sprintf(buf, "%d\n", value);
++	u32 value;
++
++	/* PM Status Base */
++	pm_iowrite(0x20, ACPI_PM_EVT_BLK & 0xff);
++	pm_iowrite(0x21, ACPI_PM_EVT_BLK >> 8);
++
++	/* PM Control Base */
++	pm_iowrite(0x22, ACPI_PM_CNT_BLK & 0xff);
++	pm_iowrite(0x23, ACPI_PM_CNT_BLK >> 8);
++
++	/* GPM Base */
++	pm_iowrite(0x28, ACPI_GPE0_BLK & 0xff);
++	pm_iowrite(0x29, ACPI_GPE0_BLK >> 8);
++
++	/* ACPI End */
++	pm_iowrite(0x2e, ACPI_END & 0xff);
++	pm_iowrite(0x2f, ACPI_END >> 8);
++
++	/* IO Decode: When AcpiDecodeEnable set, South-Bridge uses the contents
++	 * of the PM registers at index 0x20~0x2B to decode ACPI I/O address. */
++	pm_iowrite(0x0e, 1 << 3);
++
++	/* SCI_EN set */
++	outw(1, ACPI_PM_CNT_BLK);
++
++	/* Enable to generate SCI */
++	pm_iowrite(0x10, pm_ioread(0x10) | 1);
++
++	/* GPM3/GPM9 enable */
++	value = inl(ACPI_GPE0_BLK + 4);
++	outl(value | (1 << 14) | (1 << 22), ACPI_GPE0_BLK + 4);
++
++	/* Set GPM9 as input */
++	pm_iowrite(0x8d, pm_ioread(0x8d) & (~(1 << 1)));
++
++	/* Set GPM9 as non-output */
++	pm_iowrite(0x94, pm_ioread(0x94) | (1 << 3));
++
++	/* GPM3 config ACPI trigger SCIOUT */
++	pm_iowrite(0x33, pm_ioread(0x33) & (~(3 << 4)));
++
++	/* GPM9 config ACPI trigger SCIOUT */
++	pm_iowrite(0x3d, pm_ioread(0x3d) & (~(3 << 2)));
++
++	/* GPM3 config falling edge trigger */
++	pm_iowrite(0x37, pm_ioread(0x37) & (~(1 << 6)));
++
++	/* No wait for STPGNT# in ACPI Sx state */
++	pm_iowrite(0x7c, pm_ioread(0x7c) | (1 << 6));
++
++	/* Set GPM3 pull-down enable */
++	value = pm2_ioread(0xf6);
++	value |= ((1 << 7) | (1 << 3));
++	pm2_iowrite(0xf6, value);
++
++	/* Set GPM9 pull-down enable */
++	value = pm2_ioread(0xf8);
++	value |= ((1 << 5) | (1 << 1));
++	pm2_iowrite(0xf8, value);
 +}
 +
-+static ssize_t get_cpu1_temp(struct device *dev,
-+			struct device_attribute *attr, char *buf)
++int __init sbx00_acpi_init(void)
 +{
-+	int value = loongson3_cpu_temp(1);
-+	return sprintf(buf, "%d\n", value);
-+}
-+
-+static int create_sysfs_cputemp_files(struct kobject *kobj)
-+{
-+	int ret;
-+
-+	ret = sysfs_create_files(kobj, hwmon_cputemp1);
-+	if (ret)
-+		goto sysfs_create_temp1_fail;
-+
-+	if (loongson_sysconf.nr_cpus <= loongson_sysconf.cores_per_package)
-+		return 0;
-+
-+	ret = sysfs_create_files(kobj, hwmon_cputemp2);
-+	if (ret)
-+		goto sysfs_create_temp2_fail;
++	register_acpi_resource();
++	acpi_registers_setup();
++	acpi_hw_clear_status();
 +
 +	return 0;
-+
-+sysfs_create_temp2_fail:
-+	sysfs_remove_files(kobj, hwmon_cputemp1);
-+
-+sysfs_create_temp1_fail:
-+	return -1;
 +}
-+
-+static void remove_sysfs_cputemp_files(struct kobject *kobj)
-+{
-+	sysfs_remove_files(&cpu_hwmon_dev->kobj, hwmon_cputemp1);
-+
-+	if (loongson_sysconf.nr_cpus > loongson_sysconf.cores_per_package)
-+		sysfs_remove_files(&cpu_hwmon_dev->kobj, hwmon_cputemp2);
-+}
-+
-+#define CPU_THERMAL_THRESHOLD 90000
-+static struct delayed_work thermal_work;
-+
-+static void do_thermal_timer(struct work_struct *work)
-+{
-+	int value = loongson3_cpu_temp(0);
-+	if (value <= CPU_THERMAL_THRESHOLD)
-+		schedule_delayed_work(&thermal_work, msecs_to_jiffies(5000));
-+	else
-+		orderly_poweroff(true);
-+}
-+
-+static int __init loongson_hwmon_init(void)
-+{
-+	int ret;
-+
-+	pr_info("Loongson Hwmon Enter...\n");
-+
-+	cpu_hwmon_dev = hwmon_device_register(NULL);
-+	if (IS_ERR(cpu_hwmon_dev)) {
-+		ret = -ENOMEM;
-+		pr_err("hwmon_device_register fail!\n");
-+		goto fail_hwmon_device_register;
-+	}
-+
-+	ret = sysfs_create_group(&cpu_hwmon_dev->kobj,
-+				&cpu_hwmon_attribute_group);
-+	if (ret) {
-+		pr_err("fail to create loongson hwmon!\n");
-+		goto fail_sysfs_create_group_hwmon;
-+	}
-+
-+	ret = create_sysfs_cputemp_files(&cpu_hwmon_dev->kobj);
-+	if (ret) {
-+		pr_err("fail to create cpu temprature interface!\n");
-+		goto fail_create_sysfs_cputemp_files;
-+	}
-+
-+	INIT_DEFERRABLE_WORK(&thermal_work, do_thermal_timer);
-+	schedule_delayed_work(&thermal_work, msecs_to_jiffies(20000));
-+
-+	return ret;
-+
-+fail_create_sysfs_cputemp_files:
-+	sysfs_remove_group(&cpu_hwmon_dev->kobj,
-+				&cpu_hwmon_attribute_group);
-+
-+fail_sysfs_create_group_hwmon:
-+	hwmon_device_unregister(cpu_hwmon_dev);
-+
-+fail_hwmon_device_register:
-+	return ret;
-+}
-+
-+static void __exit loongson_hwmon_exit(void)
-+{
-+	cancel_delayed_work_sync(&thermal_work);
-+	remove_sysfs_cputemp_files(&cpu_hwmon_dev->kobj);
-+	sysfs_remove_group(&cpu_hwmon_dev->kobj,
-+				&cpu_hwmon_attribute_group);
-+	hwmon_device_unregister(cpu_hwmon_dev);
-+}
-+
-+module_init(loongson_hwmon_init);
-+module_exit(loongson_hwmon_exit);
-+
-+MODULE_AUTHOR("Yu Xiang <xiangy@lemote.com>");
-+MODULE_AUTHOR("Huacai Chen <chenhc@lemote.com>");
-+MODULE_DESCRIPTION("Loongson CPU Hwmon driver");
 -- 
 1.7.7.3
 
 
-YXNzI/
+
+¹

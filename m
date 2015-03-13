@@ -1,37 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Mar 2015 03:30:47 +0100 (CET)
-Received: from smtpbgsg2.qq.com ([54.254.200.128]:49218 "EHLO smtpbgsg2.qq.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Mar 2015 03:33:43 +0100 (CET)
+Received: from SMTPBG7.QQ.COM ([183.60.61.200]:54100 "EHLO smtpbg7.qq.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27008640AbbCMCa3ZXDTv (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 13 Mar 2015 03:30:29 +0100
-X-QQ-mid: bizesmtp2t1426213802t566t072
+        id S27008621AbbCMCdlf-Lyp (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 13 Mar 2015 03:33:41 +0100
+X-QQ-mid: bizesmtp1t1426213679t550t305
 Received: from localhost.localdomain (unknown [222.92.8.142])
         by esmtp4.qq.com (ESMTP) with 
-        id ; Fri, 13 Mar 2015 10:30:01 +0800 (CST)
+        id ; Fri, 13 Mar 2015 10:27:58 +0800 (CST)
 X-QQ-SSF: 01100000000000F0FJ52B00A0000000
-X-QQ-FEAT: BZS0nEuSLHBSNZ9Z0zDfqBe886PM99Drc81PTnUl7idihHN/H2+xJUroJaIU9
-        3xyM4JGx8Tn/blDtTFchJbZRWv/3wbALv6ak+RZtDOUDQkqUwquvjBKf97Zu/vJ2G4jrSxK
-        eF+xEKJPdgphWnK05YisbX9iXpkQa+iwpNOBKCwC/KCq8vdhzq5+Ga/IczT9I2FxRdRnfnC
-        kP11KyycK2t7jVzADXJnVOvTVFwffn4Y0abamuwM0HQ==
+X-QQ-FEAT: xflb0yrtfs8u6oXk9wVqDAb/hrCgmoTAuiRdGxQtv9yz1CqkcXPt+2emzHAHy
+        3tpCOpfFbnoBWfh8Fdv1I0QPdiuy+x2OEeBZehaWXHjL6YYQvCBgnt7ygbIkGx2cYaUeRJd
+        boFw5eXF58ywL/xvmHVOPGJnCQX1UpK0E1DwdoNWGxd3IRsIPvKl9+blCY5r885faShMwd4
+        Z3UUzvqgfQO92oMhEmkelwX/C5WOtx7EgbJdmmItw8A==
 X-QQ-GoodBg: 0
 From:   Huacai Chen <chenhc@lemote.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     "Steven J. Hill" <Steven.Hill@imgtec.com>,
         linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>, linux-gpio@vger.kernel.org,
         Huacai Chen <chenhc@lemote.com>
-Subject: [PATCH V8 7/8] MIPS: Loongson-3: Add chipset ACPI platform driver
-Date:   Fri, 13 Mar 2015 10:28:26 +0800
-Message-Id: <1426213706-28542-2-git-send-email-chenhc@lemote.com>
+Subject: [PATCH V8 4/8] MIPS: Move Loongson GPIO driver to drivers/gpio
+Date:   Fri, 13 Mar 2015 10:26:34 +0800
+Message-Id: <1426213595-28454-2-git-send-email-chenhc@lemote.com>
 X-Mailer: git-send-email 1.7.7.3
-In-Reply-To: <1426213706-28542-1-git-send-email-chenhc@lemote.com>
-References: <1426213706-28542-1-git-send-email-chenhc@lemote.com>
+In-Reply-To: <1426213595-28454-1-git-send-email-chenhc@lemote.com>
+References: <1426213595-28454-1-git-send-email-chenhc@lemote.com>
 X-QQ-SENDSIZE: 520
 X-QQ-Bgrelay: 1
 Return-Path: <chenhc@lemote.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46359
+X-archive-position: 46360
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,208 +48,78 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This add south-bridge (SB700/SB710/SB800 chipset) ACPI platform driver
-for Loongson-3. This will be used by EC (Embedded Controller, used by
-laptops) driver and STR (Suspend To RAM).
+Move Loongson-2's GPIO driver to drivers/gpio and add Kconfig options.
 
 Signed-off-by: Huacai Chen <chenhc@lemote.com>
 ---
- arch/mips/loongson/common/pci.c   |    6 ++
- drivers/platform/mips/Makefile    |    1 +
- drivers/platform/mips/acpi_init.c |  150 +++++++++++++++++++++++++++++++++++++
- 3 files changed, 157 insertions(+), 0 deletions(-)
- create mode 100644 drivers/platform/mips/acpi_init.c
+ arch/mips/configs/lemote2f_defconfig               |    1 +
+ arch/mips/loongson/common/Makefile                 |    1 -
+ drivers/gpio/Kconfig                               |    6 ++++++
+ drivers/gpio/Makefile                              |    1 +
+ .../common/gpio.c => drivers/gpio/gpio-loongson.c  |    0
+ 5 files changed, 8 insertions(+), 1 deletions(-)
+ rename arch/mips/loongson/common/gpio.c => drivers/gpio/gpio-loongson.c (100%)
 
-diff --git a/arch/mips/loongson/common/pci.c b/arch/mips/loongson/common/pci.c
-index 003ab4e..4e25756 100644
---- a/arch/mips/loongson/common/pci.c
-+++ b/arch/mips/loongson/common/pci.c
-@@ -78,6 +78,8 @@ static void __init setup_pcimap(void)
- #endif
- }
+diff --git a/arch/mips/configs/lemote2f_defconfig b/arch/mips/configs/lemote2f_defconfig
+index e51aad9..0cbc986 100644
+--- a/arch/mips/configs/lemote2f_defconfig
++++ b/arch/mips/configs/lemote2f_defconfig
+@@ -171,6 +171,7 @@ CONFIG_SERIAL_8250_FOURPORT=y
+ CONFIG_LEGACY_PTY_COUNT=16
+ CONFIG_HW_RANDOM=y
+ CONFIG_RTC=y
++CONFIG_GPIO_LOONGSON=y
+ CONFIG_THERMAL=y
+ CONFIG_MEDIA_SUPPORT=m
+ CONFIG_VIDEO_DEV=m
+diff --git a/arch/mips/loongson/common/Makefile b/arch/mips/loongson/common/Makefile
+index d87e033..e70c33f 100644
+--- a/arch/mips/loongson/common/Makefile
++++ b/arch/mips/loongson/common/Makefile
+@@ -4,7 +4,6 @@
  
-+extern int sbx00_acpi_init(void);
-+
- static int __init pcibios_init(void)
- {
- 	setup_pcimap();
-@@ -89,6 +91,10 @@ static int __init pcibios_init(void)
- #endif
- 	register_pci_controller(&loongson_pci_controller);
+ obj-y += setup.o init.o cmdline.o env.o time.o reset.o irq.o \
+     bonito-irq.o mem.o machtype.o platform.o
+-obj-$(CONFIG_GPIOLIB) += gpio.o
+ obj-$(CONFIG_PCI) += pci.o
  
-+#ifdef CONFIG_CPU_LOONGSON3
-+	sbx00_acpi_init();
-+#endif
-+
- 	return 0;
- }
+ #
+diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
+index c1e2ca3..6454160 100644
+--- a/drivers/gpio/Kconfig
++++ b/drivers/gpio/Kconfig
+@@ -499,6 +499,12 @@ config GPIO_GRGPIO
+ 	  Select this to support Aeroflex Gaisler GRGPIO cores from the GRLIB
+ 	  VHDL IP core library.
  
-diff --git a/drivers/platform/mips/Makefile b/drivers/platform/mips/Makefile
-index 8dfd039..20e471d 100644
---- a/drivers/platform/mips/Makefile
-+++ b/drivers/platform/mips/Makefile
-@@ -1 +1,2 @@
-+obj-y += acpi_init.o
- obj-$(CONFIG_CPU_HWMON) += cpu_hwmon.o
-diff --git a/drivers/platform/mips/acpi_init.c b/drivers/platform/mips/acpi_init.c
-new file mode 100644
-index 0000000..dbdad79
---- /dev/null
-+++ b/drivers/platform/mips/acpi_init.c
-@@ -0,0 +1,150 @@
-+#include <linux/io.h>
-+#include <linux/init.h>
-+#include <linux/ioport.h>
-+#include <linux/export.h>
++config GPIO_LOONGSON
++	tristate "Loongson-2 GPIO support"
++	depends on CPU_LOONGSON2
++	help
++	  driver for GPIO functionality on Loongson-2F processors.
 +
-+#define SBX00_ACPI_IO_BASE 0x800
-+#define SBX00_ACPI_IO_SIZE 0x100
-+
-+#define ACPI_PM_EVT_BLK         (SBX00_ACPI_IO_BASE + 0x00) /* 4 bytes */
-+#define ACPI_PM_CNT_BLK         (SBX00_ACPI_IO_BASE + 0x04) /* 2 bytes */
-+#define ACPI_PMA_CNT_BLK        (SBX00_ACPI_IO_BASE + 0x0F) /* 1 byte */
-+#define ACPI_PM_TMR_BLK         (SBX00_ACPI_IO_BASE + 0x18) /* 4 bytes */
-+#define ACPI_GPE0_BLK           (SBX00_ACPI_IO_BASE + 0x10) /* 8 bytes */
-+#define ACPI_END                (SBX00_ACPI_IO_BASE + 0x80)
-+
-+#define PM_INDEX        0xCD6
-+#define PM_DATA         0xCD7
-+#define PM2_INDEX       0xCD0
-+#define PM2_DATA        0xCD1
-+
-+/*
-+ * SCI interrupt need acpi space, allocate here
-+ */
-+
-+static int __init register_acpi_resource(void)
-+{
-+	request_region(SBX00_ACPI_IO_BASE, SBX00_ACPI_IO_SIZE, "acpi");
-+	return 0;
-+}
-+
-+static void pmio_write_index(u16 index, u8 reg, u8 value)
-+{
-+	outb(reg, index);
-+	outb(value, index + 1);
-+}
-+
-+static u8 pmio_read_index(u16 index, u8 reg)
-+{
-+	outb(reg, index);
-+	return inb(index + 1);
-+}
-+
-+void pm_iowrite(u8 reg, u8 value)
-+{
-+	pmio_write_index(PM_INDEX, reg, value);
-+}
-+EXPORT_SYMBOL(pm_iowrite);
-+
-+u8 pm_ioread(u8 reg)
-+{
-+	return pmio_read_index(PM_INDEX, reg);
-+}
-+EXPORT_SYMBOL(pm_ioread);
-+
-+void pm2_iowrite(u8 reg, u8 value)
-+{
-+	pmio_write_index(PM2_INDEX, reg, value);
-+}
-+EXPORT_SYMBOL(pm2_iowrite);
-+
-+u8 pm2_ioread(u8 reg)
-+{
-+	return pmio_read_index(PM2_INDEX, reg);
-+}
-+EXPORT_SYMBOL(pm2_ioread);
-+
-+static void acpi_hw_clear_status(void)
-+{
-+	u16 value;
-+
-+	/* PMStatus: Clear WakeStatus/PwrBtnStatus */
-+	value = inw(ACPI_PM_EVT_BLK);
-+	value |= (1 << 8 | 1 << 15);
-+	outw(value, ACPI_PM_EVT_BLK);
-+
-+	/* GPEStatus: Clear all generated events */
-+	outl(inl(ACPI_GPE0_BLK), ACPI_GPE0_BLK);
-+}
-+
-+void acpi_registers_setup(void)
-+{
-+	u32 value;
-+
-+	/* PM Status Base */
-+	pm_iowrite(0x20, ACPI_PM_EVT_BLK & 0xff);
-+	pm_iowrite(0x21, ACPI_PM_EVT_BLK >> 8);
-+
-+	/* PM Control Base */
-+	pm_iowrite(0x22, ACPI_PM_CNT_BLK & 0xff);
-+	pm_iowrite(0x23, ACPI_PM_CNT_BLK >> 8);
-+
-+	/* GPM Base */
-+	pm_iowrite(0x28, ACPI_GPE0_BLK & 0xff);
-+	pm_iowrite(0x29, ACPI_GPE0_BLK >> 8);
-+
-+	/* ACPI End */
-+	pm_iowrite(0x2e, ACPI_END & 0xff);
-+	pm_iowrite(0x2f, ACPI_END >> 8);
-+
-+	/* IO Decode: When AcpiDecodeEnable set, South-Bridge uses the contents
-+	 * of the PM registers at index 0x20~0x2B to decode ACPI I/O address. */
-+	pm_iowrite(0x0e, 1 << 3);
-+
-+	/* SCI_EN set */
-+	outw(1, ACPI_PM_CNT_BLK);
-+
-+	/* Enable to generate SCI */
-+	pm_iowrite(0x10, pm_ioread(0x10) | 1);
-+
-+	/* GPM3/GPM9 enable */
-+	value = inl(ACPI_GPE0_BLK + 4);
-+	outl(value | (1 << 14) | (1 << 22), ACPI_GPE0_BLK + 4);
-+
-+	/* Set GPM9 as input */
-+	pm_iowrite(0x8d, pm_ioread(0x8d) & (~(1 << 1)));
-+
-+	/* Set GPM9 as non-output */
-+	pm_iowrite(0x94, pm_ioread(0x94) | (1 << 3));
-+
-+	/* GPM3 config ACPI trigger SCIOUT */
-+	pm_iowrite(0x33, pm_ioread(0x33) & (~(3 << 4)));
-+
-+	/* GPM9 config ACPI trigger SCIOUT */
-+	pm_iowrite(0x3d, pm_ioread(0x3d) & (~(3 << 2)));
-+
-+	/* GPM3 config falling edge trigger */
-+	pm_iowrite(0x37, pm_ioread(0x37) & (~(1 << 6)));
-+
-+	/* No wait for STPGNT# in ACPI Sx state */
-+	pm_iowrite(0x7c, pm_ioread(0x7c) | (1 << 6));
-+
-+	/* Set GPM3 pull-down enable */
-+	value = pm2_ioread(0xf6);
-+	value |= ((1 << 7) | (1 << 3));
-+	pm2_iowrite(0xf6, value);
-+
-+	/* Set GPM9 pull-down enable */
-+	value = pm2_ioread(0xf8);
-+	value |= ((1 << 5) | (1 << 1));
-+	pm2_iowrite(0xf8, value);
-+}
-+
-+int __init sbx00_acpi_init(void)
-+{
-+	register_acpi_resource();
-+	acpi_registers_setup();
-+	acpi_hw_clear_status();
-+
-+	return 0;
-+}
+ config GPIO_TB10X
+ 	bool
+ 	select GENERIC_IRQ_CHIP
+diff --git a/drivers/gpio/Makefile b/drivers/gpio/Makefile
+index bdda6a9..1b5be76 100644
+--- a/drivers/gpio/Makefile
++++ b/drivers/gpio/Makefile
+@@ -41,6 +41,7 @@ obj-$(CONFIG_GPIO_JANZ_TTL)	+= gpio-janz-ttl.o
+ obj-$(CONFIG_GPIO_KEMPLD)	+= gpio-kempld.o
+ obj-$(CONFIG_ARCH_KS8695)	+= gpio-ks8695.o
+ obj-$(CONFIG_GPIO_INTEL_MID)	+= gpio-intel-mid.o
++obj-$(CONFIG_GPIO_LOONGSON)	+= gpio-loongson.o
+ obj-$(CONFIG_GPIO_LP3943)	+= gpio-lp3943.o
+ obj-$(CONFIG_ARCH_LPC32XX)	+= gpio-lpc32xx.o
+ obj-$(CONFIG_GPIO_LYNXPOINT)	+= gpio-lynxpoint.o
+diff --git a/arch/mips/loongson/common/gpio.c b/drivers/gpio/gpio-loongson.c
+similarity index 100%
+rename from arch/mips/loongson/common/gpio.c
+rename to drivers/gpio/gpio-loongson.c
 -- 
 1.7.7.3
 
 
 
-¹
+By	

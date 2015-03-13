@@ -1,27 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Mar 2015 18:36:58 +0100 (CET)
-Received: from ducie-dc1.codethink.co.uk ([185.25.241.215]:46539 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Mar 2015 18:37:14 +0100 (CET)
+Received: from ducie-dc1.codethink.co.uk ([185.25.241.215]:46546 "EHLO
         ducie-dc1.codethink.co.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27013708AbbCMRftA7rO0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 13 Mar 2015 18:35:49 +0100
+        by eddie.linux-mips.org with ESMTP id S27013709AbbCMRfv2dsrl (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 13 Mar 2015 18:35:51 +0100
 Received: from localhost (localhost [127.0.0.1])
-        by ducie-dc1.codethink.co.uk (Postfix) with ESMTP id 46E09460B7E
-        for <linux-mips@linux-mips.org>; Fri, 13 Mar 2015 17:35:44 +0000 (GMT)
+        by ducie-dc1.codethink.co.uk (Postfix) with ESMTP id D09C146095A
+        for <linux-mips@linux-mips.org>; Fri, 13 Mar 2015 17:35:46 +0000 (GMT)
 X-Virus-Scanned: Debian amavisd-new at ducie-dc1.codethink.co.uk
 Received: from ducie-dc1.codethink.co.uk ([127.0.0.1])
         by localhost (ducie-dc1.codethink.co.uk [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id GEozHruYtZQX; Fri, 13 Mar 2015 17:35:41 +0000 (GMT)
+        with ESMTP id 6YtqqWDvocb4; Fri, 13 Mar 2015 17:35:44 +0000 (GMT)
 Received: from pm-laptop.codethink.co.uk (pm-laptop.dyn.ducie.codethink.co.uk [10.24.1.94])
-        by ducie-dc1.codethink.co.uk (Postfix) with ESMTPSA id 58FDE46062E;
-        Fri, 13 Mar 2015 17:35:39 +0000 (GMT)
+        by ducie-dc1.codethink.co.uk (Postfix) with ESMTPSA id A7A0E4602EF;
+        Fri, 13 Mar 2015 17:35:40 +0000 (GMT)
 Received: from pm by pm-laptop.codethink.co.uk with local (Exim 4.84)
         (envelope-from <paul.martin@codethink.co.uk>)
-        id 1YWTUp-0000Qu-4N; Fri, 13 Mar 2015 17:35:39 +0000
+        id 1YWTUq-0000R4-FP; Fri, 13 Mar 2015 17:35:40 +0000
 From:   Paul Martin <paul.martin@codethink.co.uk>
 To:     linux-mips@linux-mips.org
 Cc:     Paul Martin <paul.martin@codethink.co.uk>
-Subject: [PATCH 4/6] MIPS: OCTEON: Set appropriate endianness in L2C registers
-Date:   Fri, 13 Mar 2015 17:34:56 +0000
-Message-Id: <1426268098-1603-5-git-send-email-paul.martin@codethink.co.uk>
+Subject: [PATCH 6/6] MIPS: OCTEON: Set up ethernet hardware for little endian
+Date:   Fri, 13 Mar 2015 17:34:58 +0000
+Message-Id: <1426268098-1603-7-git-send-email-paul.martin@codethink.co.uk>
 X-Mailer: git-send-email 2.1.4
 In-Reply-To: <1426268098-1603-1-git-send-email-paul.martin@codethink.co.uk>
 References: <1426268098-1603-1-git-send-email-paul.martin@codethink.co.uk>
@@ -29,7 +29,7 @@ Return-Path: <paul.martin@codethink.co.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46371
+X-archive-position: 46372
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,42 +47,44 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 ---
- arch/mips/cavium-octeon/octeon-platform.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/staging/octeon/ethernet-tx.c |  3 +++
+ drivers/staging/octeon/ethernet.c    | 10 ++++++++++
+ 2 files changed, 13 insertions(+)
 
-diff --git a/arch/mips/cavium-octeon/octeon-platform.c b/arch/mips/cavium-octeon/octeon-platform.c
-index 12410a2..990c4e4 100644
---- a/arch/mips/cavium-octeon/octeon-platform.c
-+++ b/arch/mips/cavium-octeon/octeon-platform.c
-@@ -325,8 +325,14 @@ static void __init octeon_ehci_hw_start(struct device *dev)
- 	/* Use 64-bit addressing. */
- 	ehci_ctl.s.ehci_64b_addr_en = 1;
- 	ehci_ctl.s.l2c_addr_msb = 0;
-+#ifdef __BIG_ENDIAN
- 	ehci_ctl.s.l2c_buff_emod = 1; /* Byte swapped. */
- 	ehci_ctl.s.l2c_desc_emod = 1; /* Byte swapped. */
-+#else
-+	ehci_ctl.s.l2c_buff_emod = 0; /* not swapped. */
-+	ehci_ctl.s.l2c_desc_emod = 0; /* not swapped. */
-+	ehci_ctl.s.inv_reg_a2 = 1;
+diff --git a/drivers/staging/octeon/ethernet-tx.c b/drivers/staging/octeon/ethernet-tx.c
+index b7a7854..a078b90 100644
+--- a/drivers/staging/octeon/ethernet-tx.c
++++ b/drivers/staging/octeon/ethernet-tx.c
+@@ -274,6 +274,9 @@ int cvm_oct_xmit(struct sk_buff *skb, struct net_device *dev)
+ 
+ 	/* Build the PKO command */
+ 	pko_command.u64 = 0;
++#ifdef __LITTLE_ENDIAN
++	pko_command.s.le = 1;
 +#endif
- 	cvmx_write_csr(CVMX_UCTLX_EHCI_CTL(0), ehci_ctl.u64);
+ 	pko_command.s.n2 = 1;	/* Don't pollute L2 with the outgoing packet */
+ 	pko_command.s.segs = 1;
+ 	pko_command.s.total_bytes = skb->len;
+diff --git a/drivers/staging/octeon/ethernet.c b/drivers/staging/octeon/ethernet.c
+index 460e854..85618f1 100644
+--- a/drivers/staging/octeon/ethernet.c
++++ b/drivers/staging/octeon/ethernet.c
+@@ -170,6 +170,16 @@ static void cvm_oct_configure_common_hw(void)
+ 		cvm_oct_mem_fill_fpa(CVMX_FPA_OUTPUT_BUFFER_POOL,
+ 				     CVMX_FPA_OUTPUT_BUFFER_POOL_SIZE, 128);
  
- 	octeon2_usb_clocks_stop();
-@@ -381,8 +387,14 @@ static void __init octeon_ohci_hw_start(struct device *dev)
- 
- 	ohci_ctl.u64 = cvmx_read_csr(CVMX_UCTLX_OHCI_CTL(0));
- 	ohci_ctl.s.l2c_addr_msb = 0;
-+#ifdef __BIG_ENDIAN
- 	ohci_ctl.s.l2c_buff_emod = 1; /* Byte swapped. */
- 	ohci_ctl.s.l2c_desc_emod = 1; /* Byte swapped. */
-+#else
-+	ohci_ctl.s.l2c_buff_emod = 0; /* not swapped. */
-+	ohci_ctl.s.l2c_desc_emod = 0; /* not swapped. */
-+	ohci_ctl.s.inv_reg_a2 = 1;
++#ifdef __LITTLE_ENDIAN
++	{
++		union cvmx_ipd_ctl_status ipd_ctl_status;
++		ipd_ctl_status.u64 = cvmx_read_csr(CVMX_IPD_CTL_STATUS);
++		ipd_ctl_status.s.pkt_lend = 1;
++		ipd_ctl_status.s.wqe_lend = 1;
++		cvmx_write_csr(CVMX_IPD_CTL_STATUS, ipd_ctl_status.u64);
++	}
 +#endif
- 	cvmx_write_csr(CVMX_UCTLX_OHCI_CTL(0), ohci_ctl.u64);
- 
- 	octeon2_usb_clocks_stop();
++
+ 	if (USE_RED)
+ 		cvmx_helper_setup_red(num_packet_buffers / 4,
+ 				      num_packet_buffers / 8);
 -- 
 2.1.4

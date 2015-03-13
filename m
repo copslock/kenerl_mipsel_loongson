@@ -1,17 +1,17 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Mar 2015 03:25:58 +0100 (CET)
-Received: from smtpbgsg2.qq.com ([54.254.200.128]:55628 "EHLO smtpbgsg2.qq.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Mar 2015 03:26:14 +0100 (CET)
+Received: from smtpbgsg2.qq.com ([54.254.200.128]:56183 "EHLO smtpbgsg2.qq.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27008640AbbCMCZ4DNBpz (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 13 Mar 2015 03:25:56 +0100
-X-QQ-mid: bizesmtp10t1426213533t631t23
+        id S27013618AbbCMC0CEVECr (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 13 Mar 2015 03:26:02 +0100
+X-QQ-mid: bizesmtp10t1426213538t491t16
 Received: from localhost.localdomain (unknown [222.92.8.142])
         by esmtp4.qq.com (ESMTP) with 
-        id ; Fri, 13 Mar 2015 10:24:59 +0800 (CST)
+        id ; Fri, 13 Mar 2015 10:25:37 +0800 (CST)
 X-QQ-SSF: 01100000000000F0FJ52000A0000000
-X-QQ-FEAT: XuMeJyEEcjqEziijszqi6mADKXhy4IHgppnLYIDb9dnfbxjQ4Ez1/9Mqs0PTY
-        FTzCh/oc+CmZL1km2nkIDqBCknnVf271tN5r6b8ZScGvRhRNsUDM3IhrLsKT3KtAzmhNeg4
-        hYa3o8BTp+3kWxUWAtS9txr3zR+Z5MvuwNOgS55dfA9/8VuEAhGDg4KORf1z4WfPcRHI3gb
-        TUvRoDoUh9+wyGEtgJWEITk/PfzXGKJY=
+X-QQ-FEAT: wto48VEmSUEbgW3zOtK3AnxKgYjg9WchwMqbtdkBIB5pfLdCCwe+hre+7HUE8
+        ci2+pwWBa7yEIx5Bpp6VTIQqY6CARytzMHQ46EnKrPIQpqN5EuxlxQAPo0cFyE5zkLdMvPZ
+        t+lVTJI3lbG1PKqoI2DDypwWzAXc8Fh1iwzQv/wBceqeL+JT1IQ1jnJmrWtMy8AKs4BryzF
+        2NGIu8s3GFC/zoVYoPJnfHeaMPBOemkZ5R8CIXMpWzQ==
 X-QQ-GoodBg: 0
 From:   Huacai Chen <chenhc@lemote.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
@@ -20,17 +20,19 @@ Cc:     "Steven J. Hill" <Steven.Hill@imgtec.com>,
         Zhangjin Wu <wuzhangjin@gmail.com>,
         Huacai Chen <chenhc@lemote.com>,
         Hongliang Tao <taohl@lemote.com>
-Subject: [PATCH V8 0/8] MIPS: Loongson-3: Improve kernel functionality
-Date:   Fri, 13 Mar 2015 10:24:50 +0800
-Message-Id: <1426213492-28350-1-git-send-email-chenhc@lemote.com>
+Subject: [PATCH V8 1/8] MIPS: Loongson: Introduce and use cpu_has_coherent_cache feature
+Date:   Fri, 13 Mar 2015 10:24:51 +0800
+Message-Id: <1426213492-28350-2-git-send-email-chenhc@lemote.com>
 X-Mailer: git-send-email 1.7.7.3
+In-Reply-To: <1426213492-28350-1-git-send-email-chenhc@lemote.com>
+References: <1426213492-28350-1-git-send-email-chenhc@lemote.com>
 X-QQ-SENDSIZE: 520
 X-QQ-Bgrelay: 1
 Return-Path: <chenhc@lemote.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46353
+X-archive-position: 46354
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,94 +49,136 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This patchset is prepared for the next 4.1 release for Linux/MIPS. In
-this series we promote Loongson-3's ISA level to MIPS64R1 since it is
-not fully compatible with MIPS64R2. Multi-node DMA and coherent cache
-features are both added here. LEFI firmware interface is improved to
-make the kernel more generic (machtypes can be dropped). Besides, we
-add some basic platform drivers (GPIO, CPU Hwmon, ACPI init, oprofile,
-HPET and CPUFreq) for Loongson-3. 
-
-V1 -> V2:
-1, Add a patch to fix Loongson's CCA setting.
-2, Rework the third patch.
-3, Rebase the code for 3.19.
-
-V2 -> V3:
-1, Remove patches which have merged in upstream.
-2, Moving GPIO driver from arch/mips to drivers/gpio directory.
-3, Optimize cacheflush by moving cpu_has_coherent_cache checking from
-   local version to global version.
-
-V3 -> V4:
-1, Don't build CPU Hwmon driver unconditionally.
-2, Split the 2nd patch (Loongson GPIO driver) to two patches.
-
-V4 -> V5:
-1, Cleanup Loongson-2F's GPIO driver before move to drivers/gpio.
-
-V5 -> V6:
-1, Add perf support for Loongson-3.
-2, Rebase the code for 3.20.
-
-V6 -> V7:
-1, Rework the third and fifth patches.
-
-V7 -> V8:
-1, Improve the seventh patch (ACPI init).
-2, Rebase the code for 4.1.
-
-Huacai Chen(8):
- MIPS: Loongson: Introduce and use cpu_has_coherent_cache feature.
- MIPS: perf: Add hardware perf events support for Loongson-3.
- MIPS: Cleanup Loongson-2F's gpio driver.
- MIPS: Move Loongson GPIO driver to drivers/gpio.
- GPIO: Add Loongson-3A/3B GPIO driver support.
- MIPS: Loongson-3: Add CPU Hwmon platform driver.
- MIPS: Loongson-3: Add chipset ACPI platform driver.
- MIPS: Loongson: Make CPUFreq usable for Loongson-3.
+Loongson-3 maintains cache coherency by hardware. So we introduce a cpu
+feature named cpu_has_coherent_cache and use it to modify MIPS's cache
+flushing functions.
 
 Signed-off-by: Huacai Chen <chenhc@lemote.com>
 Signed-off-by: Hongliang Tao <taohl@lemote.com>
 ---
- arch/mips/Kconfig                                  |    6 +-
- arch/mips/configs/lemote2f_defconfig               |    1 +
- arch/mips/configs/loongson3_defconfig              |    1 +
- arch/mips/include/asm/cpu-features.h               |    3 +
+ arch/mips/Kconfig                                  |    3 ++
+ arch/mips/include/asm/cpu-features.h               |    3 ++
  .../asm/mach-loongson/cpu-feature-overrides.h      |    1 +
- arch/mips/include/asm/mach-loongson/gpio.h         |   15 +-
- arch/mips/include/asm/mach-loongson/loongson.h     |    5 +
- arch/mips/kernel/perf_event_mipsxx.c               |   71 ++++++
- arch/mips/kernel/smp.c                             |    3 +-
- arch/mips/loongson/Kconfig                         |    1 +
- arch/mips/loongson/common/Makefile                 |    1 -
- arch/mips/loongson/common/env.c                    |    9 +
- arch/mips/loongson/common/gpio.c                   |  139 -----------
- arch/mips/loongson/common/pci.c                    |    6 +
- arch/mips/loongson/common/platform.c               |   13 +-
- arch/mips/loongson/loongson-3/Makefile             |    2 +-
- arch/mips/loongson/loongson-3/clock.c              |  191 ++++++++++++++++
- arch/mips/mm/c-r4k.c                               |   21 ++
- drivers/cpufreq/Kconfig                            |   15 ++
- drivers/cpufreq/Makefile                           |    1 +
- drivers/cpufreq/loongson3_cpufreq.c                |  240 ++++++++++++++++++++
- drivers/gpio/Kconfig                               |    6 +
- drivers/gpio/Makefile                              |    1 +
- drivers/gpio/gpio-loongson.c                       |  115 ++++++++++
- drivers/platform/Kconfig                           |    3 +
- drivers/platform/Makefile                          |    1 +
- drivers/platform/mips/Kconfig                      |   26 ++
- drivers/platform/mips/Makefile                     |    2 +
- drivers/platform/mips/acpi_init.c                  |  150 ++++++++++++
- drivers/platform/mips/cpu_hwmon.c                  |  206 +++++++++++++++++
- 30 files changed, 1102 insertions(+), 153 deletions(-)
- delete mode 100644 arch/mips/loongson/common/gpio.c
- create mode 100644 arch/mips/loongson/loongson-3/clock.c
- create mode 100644 drivers/cpufreq/loongson3_cpufreq.c
- create mode 100644 drivers/gpio/gpio-loongson.c
- create mode 100644 drivers/platform/mips/Kconfig
- create mode 100644 drivers/platform/mips/Makefile
- create mode 100644 drivers/platform/mips/acpi_init.c
- create mode 100644 drivers/platform/mips/cpu_hwmon.c
---
+ arch/mips/mm/c-r4k.c                               |   21 ++++++++++++++++++++
+ 4 files changed, 28 insertions(+), 0 deletions(-)
+
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index c7a1690..61e7aed 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -1677,6 +1677,7 @@ config CPU_BMIPS5000
+ config SYS_HAS_CPU_LOONGSON3
+ 	bool
+ 	select CPU_SUPPORTS_CPUFREQ
++	select CPU_SUPPORTS_COHERENT_CACHE
+ 
+ config SYS_HAS_CPU_LOONGSON2E
+ 	bool
+@@ -1852,6 +1853,8 @@ config CPU_SUPPORTS_HUGEPAGES
+ 	bool
+ config CPU_SUPPORTS_UNCACHED_ACCELERATED
+ 	bool
++config CPU_SUPPORTS_COHERENT_CACHE
++	bool
+ config MIPS_PGD_C0_CONTEXT
+ 	bool
+ 	default y if 64BIT && CPU_MIPSR2 && !CPU_XLP
+diff --git a/arch/mips/include/asm/cpu-features.h b/arch/mips/include/asm/cpu-features.h
+index 0d8208d..0678e3e 100644
+--- a/arch/mips/include/asm/cpu-features.h
++++ b/arch/mips/include/asm/cpu-features.h
+@@ -151,6 +151,9 @@
+ #ifndef cpu_has_pindexed_dcache
+ #define cpu_has_pindexed_dcache	(cpu_data[0].dcache.flags & MIPS_CACHE_PINDEX)
+ #endif
++#ifndef cpu_has_coherent_cache
++#define cpu_has_coherent_cache	0
++#endif
+ #ifndef cpu_has_local_ebase
+ #define cpu_has_local_ebase	1
+ #endif
+diff --git a/arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h b/arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h
+index 6d69332..7efb191 100644
+--- a/arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h
++++ b/arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h
+@@ -58,5 +58,6 @@
+ #define cpu_has_local_ebase	0
+ 
+ #define cpu_has_wsbh		IS_ENABLED(CONFIG_CPU_LOONGSON3)
++#define cpu_has_coherent_cache	IS_ENABLED(CONFIG_CPU_SUPPORTS_COHERENT_CACHE)
+ 
+ #endif /* __ASM_MACH_LOONGSON_CPU_FEATURE_OVERRIDES_H */
+diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
+index 3f80596..36f553f 100644
+--- a/arch/mips/mm/c-r4k.c
++++ b/arch/mips/mm/c-r4k.c
+@@ -420,6 +420,9 @@ static void r4k_blast_scache_setup(void)
+ 
+ static inline void local_r4k___flush_cache_all(void * args)
+ {
++	if (cpu_has_coherent_cache)
++		return;
++
+ 	switch (current_cpu_type()) {
+ 	case CPU_LOONGSON2:
+ 	case CPU_LOONGSON3:
+@@ -447,6 +450,9 @@ static inline void local_r4k___flush_cache_all(void * args)
+ 
+ static void r4k___flush_cache_all(void)
+ {
++	if (cpu_has_coherent_cache)
++		return;
++
+ 	r4k_on_each_cpu(local_r4k___flush_cache_all, NULL);
+ }
+ 
+@@ -493,6 +499,9 @@ static void r4k_flush_cache_range(struct vm_area_struct *vma,
+ {
+ 	int exec = vma->vm_flags & VM_EXEC;
+ 
++	if (cpu_has_coherent_cache)
++		return;
++
+ 	if (cpu_has_dc_aliases || (exec && !cpu_has_ic_fills_f_dc))
+ 		r4k_on_each_cpu(local_r4k_flush_cache_range, vma);
+ }
+@@ -616,6 +625,9 @@ static void r4k_flush_cache_page(struct vm_area_struct *vma,
+ {
+ 	struct flush_cache_page_args args;
+ 
++	if (cpu_has_coherent_cache)
++		return;
++
+ 	args.vma = vma;
+ 	args.addr = addr;
+ 	args.pfn = pfn;
+@@ -625,11 +637,17 @@ static void r4k_flush_cache_page(struct vm_area_struct *vma,
+ 
+ static inline void local_r4k_flush_data_cache_page(void * addr)
+ {
++	if (cpu_has_coherent_cache)
++		return;
++
+ 	r4k_blast_dcache_page((unsigned long) addr);
+ }
+ 
+ static void r4k_flush_data_cache_page(unsigned long addr)
+ {
++	if (cpu_has_coherent_cache)
++		return;
++
+ 	if (in_atomic())
+ 		local_r4k_flush_data_cache_page((void *)addr);
+ 	else
+@@ -814,6 +832,9 @@ static void local_r4k_flush_cache_sigtramp(void * arg)
+ 
+ static void r4k_flush_cache_sigtramp(unsigned long addr)
+ {
++	if (cpu_has_coherent_cache)
++		return;
++
+ 	r4k_on_each_cpu(local_r4k_flush_cache_sigtramp, (void *) addr);
+ }
+ 
+-- 
 1.7.7.3

@@ -1,52 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Mar 2015 18:48:13 +0100 (CET)
-Received: from mail-la0-f53.google.com ([209.85.215.53]:43633 "EHLO
-        mail-la0-f53.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008710AbbCMRsMPRuzG (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 13 Mar 2015 18:48:12 +0100
-Received: by labge10 with SMTP id ge10so23746630lab.10
-        for <linux-mips@linux-mips.org>; Fri, 13 Mar 2015 10:48:07 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:message-id:date:from:organization:user-agent
-         :mime-version:to:subject:references:in-reply-to:content-type
-         :content-transfer-encoding;
-        bh=2Oe1R+JqeVG5RZ3pYPWhy2KgJPDIYQ+rlw0iebnQRLk=;
-        b=N0W41N23RxRubvRdiVVQZAHeygH5rQGMnh6dWn4iJofe3eN4W/fXNEXwyHXNJsCkMZ
-         +P8sTp6WhZDStS53AIeGdZOWDA4Ra2zcOokT8Jsw8ZFX7KzPu155+fIoZ5s8s8cf4ceF
-         fcmXf3QbM6Y70FEzHYQhRdRLcIJR8y7kg/zXfA8mxtqomUC8ZXLxqjbjCPRqJwwvMQxO
-         O4H0Cx6hzgq5OeQ5pON6CtaFZ5cVQvMsc5sRoQD41jZYaPPfrrtvmkEsqEciLgZX8MBp
-         jFrMqODRkU/A9i/v5dn0AItBfWQGb/q6RBt7jcxPJmNITr8HQKlEDXSSi6UGrql1JF0T
-         NAaw==
-X-Gm-Message-State: ALoCoQkh8wD5fRr7w66RQowjpkVRJ960G8dJIL3TRFFcEB0dy7Z8Yc+k8c6TOFgmR/ZSFeeVhbi8
-X-Received: by 10.112.67.107 with SMTP id m11mr19551523lbt.43.1426268887601;
-        Fri, 13 Mar 2015 10:48:07 -0700 (PDT)
-Received: from wasted.cogentembedded.com (ppp83-237-251-226.pppoe.mtu-net.ru. [83.237.251.226])
-        by mx.google.com with ESMTPSA id h7sm529194lbj.29.2015.03.13.10.48.05
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 13 Mar 2015 10:48:06 -0700 (PDT)
-Message-ID: <550322D4.6060303@cogentembedded.com>
-Date:   Fri, 13 Mar 2015 20:48:04 +0300
-From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Organization: Cogent Embedded
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.5.0
-MIME-Version: 1.0
-To:     Paul Martin <paul.martin@codethink.co.uk>,
-        linux-mips@linux-mips.org
-Subject: Re: [PATCH 1/6] MIPS: OCTEON: Tell the kernel build system we can
- do Little Endian
-References: <1426268098-1603-1-git-send-email-paul.martin@codethink.co.uk> <1426268098-1603-2-git-send-email-paul.martin@codethink.co.uk>
-In-Reply-To: <1426268098-1603-2-git-send-email-paul.martin@codethink.co.uk>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sergei.shtylyov@cogentembedded.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Mar 2015 19:15:44 +0100 (CET)
+Received: from mail-wi0-f179.google.com ([209.85.212.179]:41925 "EHLO
+        mail-wi0-f179.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008717AbbCMSPmN6poJ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 13 Mar 2015 19:15:42 +0100
+Received: by wiwl15 with SMTP id l15so8125506wiw.0;
+        Fri, 13 Mar 2015 11:15:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references;
+        bh=3+2h8da0BPISMBjyYvBTr+ZM6pxHJZvtAopyOCeEjs8=;
+        b=rSnn5AJYUIzhyMK8If9pHN+dwYpivpU+TfariFXWuOmVqLwqpPm52lpi4K7nkloiLS
+         f+XQJgd+8oy4XnrllBxcWOGX/+CSl7ORftWzCtUFscB32bwDUxeivRQYJdAOXupBv4CQ
+         QFdptsdPRVnDctrX1Q405qgQ7gpFje/yho7CWsratchWZfmHOm0fMH/1U60Mctt2ynEq
+         rC4Z14Jj7KhpmhkI9W0bdWVU/QoE9qTIMStyJvSMsB9/jycA0cryz7HkQ1v9fp++20eh
+         ciWg4fNjeL8Tl1KurR6169gSBmnlkq2tBbNzp7drEhcITIrRvW0s+LgjoZMULiSAI12w
+         qyaw==
+X-Received: by 10.180.76.4 with SMTP id g4mr142361083wiw.43.1426270537665;
+        Fri, 13 Mar 2015 11:15:37 -0700 (PDT)
+Received: from alex-ThinkPad-L530.resnet.local ([41.215.180.30])
+        by mx.google.com with ESMTPSA id gj16sm3789705wic.24.2015.03.13.11.15.33
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Fri, 13 Mar 2015 11:15:36 -0700 (PDT)
+From:   Alex Dowad <alexinbeijing@gmail.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@imgtec.com>,
+        Alex Smith <alex@alex-smith.me.uk>,
+        Markos Chandras <markos.chandras@imgtec.com>,
+        James Hogan <james.hogan@imgtec.com>,
+        Eunbong Song <eunb.song@samsung.com>,
+        linux-mips@linux-mips.org (open list:MIPS)
+Subject: [PATCH 18/32] mips: copy_thread(): rename 'arg' argument to 'kthread_arg'
+Date:   Fri, 13 Mar 2015 20:14:41 +0200
+Message-Id: <1426270496-26362-8-git-send-email-alexinbeijing@gmail.com>
+X-Mailer: git-send-email 2.0.0.GIT
+In-Reply-To: <1426270496-26362-1-git-send-email-alexinbeijing@gmail.com>
+References: <1426270496-26362-1-git-send-email-alexinbeijing@gmail.com>
+Return-Path: <alexinbeijing@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46374
+X-archive-position: 46375
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sergei.shtylyov@cogentembedded.com
+X-original-sender: alexinbeijing@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,13 +57,54 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hello.
+The 'arg' argument to copy_thread() is only ever used when forking a new
+kernel thread. Hence, rename it to 'kthread_arg' for clarity (and consistency
+with do_fork() and other arch-specific implementations of copy_thread()).
 
-On 03/13/2015 08:34 PM, Paul Martin wrote:
+Signed-off-by: Alex Dowad <alexinbeijing@gmail.com>
+---
+ arch/mips/kernel/process.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-> Update the Kconfig file so that the configure system will
-> allow us to build the kernel little endian.
-
-    You didn't sign off on your patches, so they can't be applied.
-
-WBR, Sergei
+diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
+index bf85cc1..d295bd1 100644
+--- a/arch/mips/kernel/process.c
++++ b/arch/mips/kernel/process.c
+@@ -107,8 +107,11 @@ int arch_dup_task_struct(struct task_struct *dst, struct task_struct *src)
+ 	return 0;
+ }
+ 
++/*
++ * Copy architecture-specific thread state
++ */
+ int copy_thread(unsigned long clone_flags, unsigned long usp,
+-	unsigned long arg, struct task_struct *p)
++	unsigned long kthread_arg, struct task_struct *p)
+ {
+ 	struct thread_info *ti = task_thread_info(p);
+ 	struct pt_regs *childregs, *regs = current_pt_regs();
+@@ -123,11 +126,12 @@ int copy_thread(unsigned long clone_flags, unsigned long usp,
+ 	childksp = (unsigned long) childregs;
+ 	p->thread.cp0_status = read_c0_status() & ~(ST0_CU2|ST0_CU1);
+ 	if (unlikely(p->flags & PF_KTHREAD)) {
++		/* kernel thread */
+ 		unsigned long status = p->thread.cp0_status;
+ 		memset(childregs, 0, sizeof(struct pt_regs));
+ 		ti->addr_limit = KERNEL_DS;
+ 		p->thread.reg16 = usp; /* fn */
+-		p->thread.reg17 = arg;
++		p->thread.reg17 = kthread_arg;
+ 		p->thread.reg29 = childksp;
+ 		p->thread.reg31 = (unsigned long) ret_from_kernel_thread;
+ #if defined(CONFIG_CPU_R3000) || defined(CONFIG_CPU_TX39XX)
+@@ -139,6 +143,8 @@ int copy_thread(unsigned long clone_flags, unsigned long usp,
+ 		childregs->cp0_status = status;
+ 		return 0;
+ 	}
++
++	/* user thread */
+ 	*childregs = *regs;
+ 	childregs->regs[7] = 0; /* Clear error flag */
+ 	childregs->regs[2] = 0; /* Child gets zero as return value */
+-- 
+2.0.0.GIT

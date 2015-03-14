@@ -1,41 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 14 Mar 2015 12:14:55 +0100 (CET)
-Received: from sauhun.de ([89.238.76.85]:52335 "EHLO pokefinder.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27007168AbbCNLOxquIrT (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 14 Mar 2015 12:14:53 +0100
-Received: from p4fe2544a.dip0.t-ipconnect.de ([79.226.84.74]:58484 helo=katana)
-        by pokefinder.org with esmtpsa (TLS1.2:RSA_AES_128_CBC_SHA1:128)
-        (Exim 4.80)
-        (envelope-from <wsa@the-dreams.de>)
-        id 1YWk1V-00045p-9D; Sat, 14 Mar 2015 12:14:30 +0100
-Date:   Sat, 14 Mar 2015 12:14:51 +0100
-From:   Wolfram Sang <wsa@the-dreams.de>
-To:     linux-i2c@vger.kernel.org
-Cc:     linux-arm-kernel@lists.infradead.org,
-        linuxppc-dev@lists.ozlabs.org, linux-mips@linux-mips.org,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Ludovic Desroches <ludovic.desroches@atmel.com>,
-        Yingjoe Chen <yingjoe.chen@mediatek.com>,
-        Eddie Huang <eddie.huang@mediatek.com>,
-        bcm-kernel-feedback-list@broadcom.com, linux-kernel@vger.kernel.org
-Subject: Re: [RFC V2 00/12] i2c: describe adapter quirks in a generic way
-Message-ID: <20150314111450.GC970@katana>
-References: <1424880126-15047-1-git-send-email-wsa@the-dreams.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 14 Mar 2015 17:56:17 +0100 (CET)
+Received: from mail-wi0-f177.google.com ([209.85.212.177]:34343 "EHLO
+        mail-wi0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008200AbbCNQ4QW7yzN (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 14 Mar 2015 17:56:16 +0100
+Received: by wibg7 with SMTP id g7so7445121wib.1;
+        Sat, 14 Mar 2015 09:56:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-type:content-transfer-encoding;
+        bh=8N2tDGZpDEdryVf8zfy1cXqti2B7Th8+H5JRdny+l58=;
+        b=pFw5OEcThFl6zk4jhai4z/5OcweXp1yYI+orVYNq+NSe4rWfDVMqYg+gkTZn0MKN31
+         O+KNIkUAKaJ+TlxAFAbxebX1sYcIoGt7KruZP8TSAasGWvkuBSsBCUIBGgeDusstgQ/Z
+         Q3ht0q4wKPlkRGVL7PwfulDLWfKsFG0IWxBbsdvcyw9lxLg8oWID7yuDhQneFXHwZ5TW
+         ZVzk70PbYiRZjyuTctMOvfmJse1Dhy68inHzV6Sk8swz1+0/NJUZIinDxfGVbyVRv3mh
+         BY2Gg4DscosQ90goDKlnQg018tbSpeCfdES4xezzrAd8h9wbkEK0ByKBL90CCsCG5S6H
+         vTXQ==
+X-Received: by 10.180.75.140 with SMTP id c12mr77777823wiw.14.1426352171695;
+        Sat, 14 Mar 2015 09:56:11 -0700 (PDT)
+Received: from linux-tdhb.lan (ip-194-187-74-233.konfederacka.maverick.com.pl. [194.187.74.233])
+        by mx.google.com with ESMTPSA id bd1sm7670404wib.13.2015.03.14.09.56.09
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Sat, 14 Mar 2015 09:56:10 -0700 (PDT)
+From:   =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
+To:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
+Cc:     Hauke Mehrtens <hauke@hauke-m.de>,
+        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
+Subject: [PATCH V2] MIPS: BCM47XX: Support SPROM prefixes for PCI devices
+Date:   Sat, 14 Mar 2015 17:55:54 +0100
+Message-Id: <1426352154-10253-1-git-send-email-zajec5@gmail.com>
+X-Mailer: git-send-email 1.8.4.5
+In-Reply-To: <1426098570-4685-1-git-send-email-zajec5@gmail.com>
+References: <1426098570-4685-1-git-send-email-zajec5@gmail.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="nmemrqcdn5VTmUEE"
-Content-Disposition: inline
-In-Reply-To: <1424880126-15047-1-git-send-email-wsa@the-dreams.de>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <wsa@the-dreams.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Return-Path: <zajec5@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46385
+X-archive-position: 46386
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wsa@the-dreams.de
+X-original-sender: zajec5@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,51 +56,68 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+Support parsing SPROMs with prefixes defined like devpath1=pci/1/1
 
---nmemrqcdn5VTmUEE
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Rafał Miłecki <zajec5@gmail.com>
+---
+V2: I've noticed that Buffalo WZR-1750 uses an extra slash in NVRAM
+    devpaths entries. I added support for them and updated comment.
+    This adds one line over 80 chars, but it improved condition
+    readability so I think it's alright there. 
+---
+ arch/mips/bcm47xx/sprom.c | 33 +++++++++++++++++++++++++++++++++
+ 1 file changed, 33 insertions(+)
 
-On Wed, Feb 25, 2015 at 05:01:51PM +0100, Wolfram Sang wrote:
-> From: Wolfram Sang <wsa+renesas@sang-engineering.com>
->=20
-> Here is the second version of the patch series to describe i2c adapter qu=
-irks
-> in a generic way. For the motivation, please read description of patch 1.=
- This
-> is still RFC because I would like to do some more tests on my own, but I =
-need
-> to write a tool for that. However, I'd really like to have the driver aut=
-hors
-> to have a look already. Actual testing is very much appreciated. Thanks t=
-o the
-> Mediatek guys for rebasing their new driver to this framework. That helps=
-, too!
-
-Thanks for all the testing. Merged this branch now into for-next!
-
-
---nmemrqcdn5VTmUEE
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
-
-iQIcBAEBAgAGBQJVBBgqAAoJEBQN5MwUoCm2fQAQAI1w0/RXIcR5OoBFBLw5DkCr
-vA2Ou1OG9x9M2FP29hco4AzXRaRRHqe9hFRl31Adm0YoQF41/nf+7z4g1VveN4hD
-P+ocEWMvzHnafbwGO0+QIYY4nhBVN+/a8eg+j4+AbKdQBLL2+b0I9uwpL1uwdiCY
-ceRhoMrrg1oHcFUNKErXyuzA/t0dNq5ekx3z8iqpjjXjp3JRVmfpeueCzD6Gv0zg
-HkXAC+U9Ur2gLvBpSRhadn9/Cy6cvOeuIF8Jq2wMOKDUM54Z1HwttT7dTiW8IGXo
-xgXFaimc4StYeR1JQEyGLYUATfhXlOKPFOXrUktTwWLlGbgjKUqB3KKGDzR9XXB+
-NvtWekSj9+h/c0hHYOiezMV21AIzr7n3c3cmAoK9XYMRz/NeTseC1jG4EgSVCQr1
-Vl+QgAgOiOcSNJ3BPfLStNM0kAyPov0UB41EP25fWq3eOJMWUzUEvlLkJMadmPbL
-ucvuLhMUvI1jp8EdTEiBltQuukM4tlHgp/tQrK245vO1s0NHnbOdgy68Lab7RfFp
-KxbBwIQ1DOhMin80xOC9AUkkYbBppbqhCUc79Fpufx5FYSd+tS3dTLAdwOErmmSh
-7YbWXMOdscAUD3+vuDYTWn4gPJGDtzM4MaYn2AAbGVchPa6UR/W1UZDKlpTDLcV/
-wvo+3WNDb7KyV+YGySP4
-=KnPk
------END PGP SIGNATURE-----
-
---nmemrqcdn5VTmUEE--
+diff --git a/arch/mips/bcm47xx/sprom.c b/arch/mips/bcm47xx/sprom.c
+index 290309e..5d32afc 100644
+--- a/arch/mips/bcm47xx/sprom.c
++++ b/arch/mips/bcm47xx/sprom.c
+@@ -835,6 +835,38 @@ static int bcm47xx_get_sprom_ssb(struct ssb_bus *bus, struct ssb_sprom *out)
+ #endif
+ 
+ #if defined(CONFIG_BCM47XX_BCMA)
++/*
++ * Having many NVRAM entries for PCI devices led to repeating prefixes like
++ * pci/1/1/ all the time and wasting flash space. So at some point Broadcom
++ * decided to introduce prefixes like 0: 1: 2: etc.
++ * If we find e.g. devpath0=pci/2/1 or devpath0=pci/2/1/ we should use 0:
++ * instead of pci/2/1/.
++ */
++static void bcm47xx_sprom_apply_prefix_alias(char *prefix, size_t prefix_size)
++{
++	size_t prefix_len = strlen(prefix);
++	size_t short_len = prefix_len - 1;
++	char nvram_var[10];
++	char buf[20];
++	int i;
++
++	/* Passed prefix has to end with a slash */
++	if (prefix_len <= 0 || prefix[prefix_len - 1] != '/')
++		return;
++
++	for (i = 0; i < 3; i++) {
++		if (snprintf(nvram_var, sizeof(nvram_var), "devpath%d", i) <= 0)
++			continue;
++		if (bcm47xx_nvram_getenv(nvram_var, buf, sizeof(buf)) < 0)
++			continue;
++		if (!strcmp(buf, prefix) ||
++		    (short_len && strlen(buf) == short_len && !strncmp(buf, prefix, short_len))) {
++			snprintf(prefix, prefix_size, "%d:", i);
++			return;
++		}
++	}
++}
++
+ static int bcm47xx_get_sprom_bcma(struct bcma_bus *bus, struct ssb_sprom *out)
+ {
+ 	char prefix[10];
+@@ -846,6 +878,7 @@ static int bcm47xx_get_sprom_bcma(struct bcma_bus *bus, struct ssb_sprom *out)
+ 		snprintf(prefix, sizeof(prefix), "pci/%u/%u/",
+ 			 bus->host_pci->bus->number + 1,
+ 			 PCI_SLOT(bus->host_pci->devfn));
++		bcm47xx_sprom_apply_prefix_alias(prefix, sizeof(prefix));
+ 		bcm47xx_fill_sprom(out, prefix, false);
+ 		return 0;
+ 	case BCMA_HOSTTYPE_SOC:
+-- 
+1.8.4.5

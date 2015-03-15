@@ -1,39 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 15 Mar 2015 19:30:55 +0100 (CET)
-Received: from filtteri2.pp.htv.fi ([213.243.153.185]:58918 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 15 Mar 2015 19:37:08 +0100 (CET)
+Received: from filtteri2.pp.htv.fi ([213.243.153.185]:58649 "EHLO
         filtteri2.pp.htv.fi" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27008174AbbCOSaxOsonI (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 15 Mar 2015 19:30:53 +0100
+        with ESMTP id S27008174AbbCOShGojFI5 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 15 Mar 2015 19:37:06 +0100
 Received: from localhost (localhost [127.0.0.1])
-        by filtteri2.pp.htv.fi (Postfix) with ESMTP id 7887319C17A;
-        Sun, 15 Mar 2015 20:30:53 +0200 (EET)
+        by filtteri2.pp.htv.fi (Postfix) with ESMTP id 0A26419C15B;
+        Sun, 15 Mar 2015 20:37:07 +0200 (EET)
 X-Virus-Scanned: Debian amavisd-new at pp.htv.fi
 Received: from smtp4.welho.com ([213.243.153.38])
         by localhost (filtteri2.pp.htv.fi [213.243.153.185]) (amavisd-new, port 10024)
-        with ESMTP id bkOxjJfAfyg8; Sun, 15 Mar 2015 20:30:48 +0200 (EET)
+        with ESMTP id Nx97H34MAsQw; Sun, 15 Mar 2015 20:37:02 +0200 (EET)
 Received: from fuloong-minipc (91-145-91-118.bb.dnainternet.fi [91.145.91.118])
-        by smtp4.welho.com (Postfix) with ESMTP id 7DD345BC01B;
-        Sun, 15 Mar 2015 20:30:48 +0200 (EET)
-Date:   Sun, 15 Mar 2015 20:30:48 +0200
+        by smtp4.welho.com (Postfix) with ESMTP id DA8EB5BC010;
+        Sun, 15 Mar 2015 20:37:01 +0200 (EET)
+Date:   Sun, 15 Mar 2015 20:37:01 +0200
 From:   Aaro Koskinen <aaro.koskinen@iki.fi>
 To:     Aleksey Makarov <aleksey.makarov@auriga.com>
-Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        David Daney <david.daney@cavium.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [PATCH v2 3/3] MIPS: OCTEON: Use device tree to probe for flash
- chips.
-Message-ID: <20150315183048.GA586@fuloong-minipc.musicnaut.iki.fi>
-References: <1425565893-30614-1-git-send-email-aleksey.makarov@auriga.com>
- <1425565893-30614-4-git-send-email-aleksey.makarov@auriga.com>
+Cc:     linux-mmc@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org, David Daney <david.daney@cavium.com>,
+        Leonid Rosenboim <lrosenboim@caviumnetworks.com>,
+        Aaron Williams <aaron.williams@cavium.com>,
+        Chandrakala Chavva <cchavva@caviumnetworks.com>,
+        Peter Swain <pswain@cavium.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Pawel Moll <pawel.moll@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ian Campbell <ijc+devicetree@hellion.org.uk>,
+        Kumar Gala <galak@codeaurora.org>,
+        Chris Ball <chris@printf.net>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        devicetree@vger.kernel.org
+Subject: Re: [PATCH v3] mmc: OCTEON: Add host driver for OCTEON MMC controller
+Message-ID: <20150315183701.GB586@fuloong-minipc.musicnaut.iki.fi>
+References: <1425567033-31236-1-git-send-email-aleksey.makarov@auriga.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1425565893-30614-4-git-send-email-aleksey.makarov@auriga.com>
+In-Reply-To: <1425567033-31236-1-git-send-email-aleksey.makarov@auriga.com>
 User-Agent: Mutt/1.5.23 (2014-03-12)
 Return-Path: <aaro.koskinen@iki.fi>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46389
+X-archive-position: 46390
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -52,14 +61,28 @@ X-list: linux-mips
 
 Hi,
 
-On Thu, Mar 05, 2015 at 05:31:31PM +0300, Aleksey Makarov wrote:
-> From: David Daney <david.daney@cavium.com>
+On Thu, Mar 05, 2015 at 05:50:31PM +0300, Aleksey Makarov wrote:
+> The OCTEON MMC controller is currently found on cn61XX and cnf71XX
+> devices.  Device parameters are configured from device tree data.
 > 
-> Don't assume they are there, the device tree will tell us.
+> eMMC, MMC and SD devices are supported.
 > 
 > Signed-off-by: David Daney <david.daney@cavium.com>
+> Signed-off-by: Leonid Rosenboim <lrosenboim@caviumnetworks.com>
+> Signed-off-by: Aaron Williams <aaron.williams@cavium.com>
+> Signed-off-by: Chandrakala Chavva <cchavva@caviumnetworks.com>
+> Signed-off-by: Peter Swain <pswain@cavium.com>
+> [aleksey.makarov@auriga.com: preparation for submission]
 > Signed-off-by: Aleksey Makarov <aleksey.makarov@auriga.com>
 
+Seems to work fine on EdgeRouter Pro (cn61xx).
+
 Tested-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+
+However, there is a sparse warning that probably needs to be fixed:
+
+	octeon_mmc.c:1141:29: error: incompatible types for operation (>=)
+	octeon_mmc.c:1141:29:    left side has type struct gpio_desc *pwr_gpiod
+	octeon_mmc.c:1141:29:    right side has type int
 
 A.

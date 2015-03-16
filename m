@@ -1,57 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Mar 2015 11:30:17 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:11171 "EHLO
-        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27008837AbbCPKaQVH08A (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 16 Mar 2015 11:30:16 +0100
-Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
-        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id BFF7F41F8DC0;
-        Mon, 16 Mar 2015 10:30:11 +0000 (GMT)
-Received: from mailapp01.imgtec.com ([10.100.180.242])
-  by imgpgp01.kl.imgtec.org (PGP Universal service);
-  Mon, 16 Mar 2015 10:30:11 +0000
-X-PGP-Universal: processed;
-        by imgpgp01.kl.imgtec.org on Mon, 16 Mar 2015 10:30:11 +0000
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 244C596F5A5C0;
-        Mon, 16 Mar 2015 10:30:10 +0000 (GMT)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Mon, 16 Mar 2015 10:30:11 +0000
-Received: from [192.168.154.110] (192.168.154.110) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Mon, 16 Mar
- 2015 10:30:10 +0000
-Message-ID: <5506B0B2.3020606@imgtec.com>
-Date:   Mon, 16 Mar 2015 10:30:10 +0000
-From:   James Hogan <james.hogan@imgtec.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.5.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Mar 2015 11:39:50 +0100 (CET)
+Received: from ducie-dc1.codethink.co.uk ([185.25.241.215]:48642 "EHLO
+        ducie-dc1.codethink.co.uk" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27013881AbbCPKjtCwIQn (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 16 Mar 2015 11:39:49 +0100
+Received: from localhost (localhost [127.0.0.1])
+        by ducie-dc1.codethink.co.uk (Postfix) with ESMTP id 0A99D4608F5;
+        Mon, 16 Mar 2015 10:39:44 +0000 (GMT)
+X-Virus-Scanned: Debian amavisd-new at ducie-dc1.codethink.co.uk
+Received: from ducie-dc1.codethink.co.uk ([127.0.0.1])
+        by localhost (ducie-dc1.codethink.co.uk [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id 8cDLdW9its9M; Mon, 16 Mar 2015 10:39:41 +0000 (GMT)
+Received: from pm-laptop.codethink.co.uk (pm-laptop.dyn.ducie.codethink.co.uk [10.24.1.94])
+        by ducie-dc1.codethink.co.uk (Postfix) with ESMTPSA id E400546088B;
+        Mon, 16 Mar 2015 10:39:40 +0000 (GMT)
+Received: from localhost ([::1] helo=paulmartin.codethink.co.uk)
+        by pm-laptop.codethink.co.uk with esmtp (Exim 4.84)
+        (envelope-from <paul.martin@codethink.co.uk>)
+        id 1YXSQu-0007OL-8S; Mon, 16 Mar 2015 10:39:40 +0000
+Date:   Mon, 16 Mar 2015 10:39:40 +0000
+From:   Paul Martin <paul.martin@codethink.co.uk>
+To:     Aaro Koskinen <aaro.koskinen@iki.fi>
+Cc:     Paul Martin <paul.martin@codethink.co.uk>,
+        linux-mips@linux-mips.org
+Subject: Re: [PATCH 0/6] MIPS: OCTEON: Patches to enable Little Endian
+Message-ID: <20150316103939.GA28205@paulmartin.codethink.co.uk>
+Mail-Followup-To: Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Paul Martin <paul.martin@codethink.co.uk>,
+        linux-mips@linux-mips.org
+References: <1426268098-1603-1-git-send-email-paul.martin@codethink.co.uk>
+ <20150313185258.GJ587@fuloong-minipc.musicnaut.iki.fi>
 MIME-Version: 1.0
-To:     Daniel Schwierzeck <daniel.schwierzeck@gmail.com>,
-        Paul Burton <paul.burton@imgtec.com>,
-        Matthew Fortune <Matthew.Fortune@imgtec.com>,
-        Andrew Bresticker <abrestic@chromium.org>
-CC:     "u-boot@lists.denx.de" <u-boot@lists.denx.de>,
-        Ezequiel Garcia <ezequiel.garcia@imgtec.com>,
-        James Hartley <james.hartley@imgtec.com>,
-        "John Crispin" <blogic@openwrt.org>,
-        Jonas Gorski <jogo@openwrt.org>,
-        Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
-Subject: Re: [U-Boot] MIPS UHI spec
-References: <6D39441BF12EF246A7ABCE6654B0235320FDC2AC@LEMAIL01.le.imgtec.org>   <20150226101739.GY17695@NP-P-BURTON> <CACUy__Ux6v9O0RmSiUr6vDDJ8JSDPCsCTqm=KOiNM0M=x3hoQQ@mail.gmail.com>
-In-Reply-To: <CACUy__Ux6v9O0RmSiUr6vDDJ8JSDPCsCTqm=KOiNM0M=x3hoQQ@mail.gmail.com>
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature";
-        boundary="jsox8XNqLhRna4qK0swddEh8ng2sV6wek"
-X-Originating-IP: [192.168.154.110]
-X-ESG-ENCRYPT-TAG: b93fcccb
-Return-Path: <James.Hogan@imgtec.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20150313185258.GJ587@fuloong-minipc.musicnaut.iki.fi>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <paul.martin@codethink.co.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46392
+X-archive-position: 46393
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: paul.martin@codethink.co.uk
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -64,93 +55,38 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---jsox8XNqLhRna4qK0swddEh8ng2sV6wek
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+On Fri, Mar 13, 2015 at 08:52:58PM +0200, Aaro Koskinen wrote:
+> Hi,
+> 
+> On Fri, Mar 13, 2015 at 05:34:52PM +0000, Paul Martin wrote:
+> > Octeon II CPUs can switch from Big Endian to Little Endian freely
+> > even in kernel/supervisor mode.
+> 
+> You are enabling it on all OCTEONS. Is that valid? At least octeon-usb
+> still needs to be fixed for little-endian mode.
 
-On 26/02/15 12:37, Daniel Schwierzeck wrote:
-> 2015-02-26 11:17 GMT+01:00 Paul Burton <paul.burton@imgtec.com>:
->> On Thu, Feb 19, 2015 at 01:50:23PM +0000, Matthew Fortune wrote:
->>> Hi Daniel,
->>>
->>> The spec for MIPS Unified Hosting Interface is available here:
->>>
->>> http://prplfoundation.org/wiki/MIPS_documentation
->>>
->>> As we have previously discussed, this is an ideal place to
->>> define the handover of device tree data from bootloader to
->>> kernel. Using a0 =3D=3D -2 and defining which register(s) you
->>> need for the actual data will fit nicely. I'll happily
->>> include whatever is decided into the next version of the spec.
->=20
-> this originates from an off-list discussion some months ago started by
-> John Crispin.
->=20
-> (CC +John, Ralf, Jonas, linux-mips)
->=20
->>
->> (CC +Andrew, Ezequiel, James, James)
->>
->> On the talk of DT handover, this recent patchset adding support for a
->> system doing so to Linux is relevant:
->>
->>     http://www.linux-mips.org/archives/linux-mips/2015-02/msg00312.htm=
-l
->>
->> I'm also working on a system for which I'll need to implement DT
->> handover very soon. It would be very nice if we could agree on some
->> standard way of doing so (and eventually if the code on the Linux side=
+The USB works perfectly with the patches that were posted to this list
+over the last couple of months.
 
->> can be generic enough to allow a multiplatform kernel).
->>
->=20
-> to be conformant with UHI I propose $a0 =3D=3D -2 and $a1 =3D=3D addres=
-s of DT
-> blob. It is a simple extension and should not interfere with the
-> various legacy boot interfaces.
+I'm currently booting off a USB SSD and building on it!
 
-I was just looking at Andrew's patch:
-http://patchwork.linux-mips.org/patch/9549/
+> > These patches allow an EdgeRouterPro to boot in LE mode with no
+> > hardware modifications.  They have not been subjected to extensive
+> > testing yet and should be considered experimental.  (I have seen some
+> > strange memory corruption in libstdc++ which I haven't yet been able
+> > to trace.)
+> 
+> Which drivers did you test? Did you test e.g. octeon-md5?
 
-How would the other registers (i.e. $a2 and $a3) be defined for this
-boot interface? I'm guessing any future extensions are envisioned to use
-a different negative value of $a0, in which case treating them as
-unused/undefined is fine, but perhaps that should be spelt out in the
-UHI spec?
+No, I haven't tested any of the crypto functions in the kernel.  I'm
+assuming that anything that doesn't access hardware has been written
+in an endian-agnostic fashion.
 
-Cheers
-James
+> Definitely not ready for merging.
 
->=20
-> U-Boot mainline code is almost ready for DT handover. I have prepared
-> a patch [1] which completes it by implementing my proposal.
->=20
-> [1] http://git.denx.de/?p=3Du-boot/u-boot-mips.git;a=3Dcommitdiff;h=3D3=
-464e8de491c640d14d72853a741cc367ebabc79
->=20
+I know that!  I should have marked it RFC.  I did say it was
+experimental and not well tested.
 
-
---jsox8XNqLhRna4qK0swddEh8ng2sV6wek
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQIcBAEBAgAGBQJVBrCyAAoJEGwLaZPeOHZ6Pq4P/ir/t0IRXMg3IxD8Wwf7iwL4
-thsgP7w1B6kfhDgBOALxqSGCyEbRzO754X+5jQ3lTZ7cEfEjwEdi+jZE9g2E2ir1
-4JebH5FmYvqdiICZsE6LYvT1tYL1k1nBq/Tphpf/lGt01lHxkY3Hq+0wwYwVXhzy
-B31EwiPm0NAyLGVPWVZCoqWpOAk8MjvRU1fGQCP1HFQGSg9Up2ykeYOr6C/5tYKB
-c/avVvHbgDVpIVp/CFacVHWFS9ULQro9KP2n4m8dWQez8QtwPJEACWKgf5rk/zaD
-e+txktX0Ky9jl4P20qkU1DO10GDwFJOP8vmU+3NREo0DaQWcYEXm+2yc6rNwkvvl
-ECMFhuFU6Exhk1mMBLqsAbRsBLKbwQzThNHu7iTx9cMQWSRy30z0GeilqTpLR0qG
-jzXMux81DZwNlsPrU4c2A1Q7cpXq4JIalHTyQgL5BUquYyCHUv9rdAuQiTIdvXOS
-bR6mR+YO2wU4SYThOHB0jNXYkfu6hqXBIB55vQEnlZj9zz+O6FXGZgwWmG1SvE9y
-wJ0ClZ4vkkqvDzau8wfISa+PO3Z9hbTwBzwX/sE/CmvDwDFFt3ghJpmFmGpfUU5S
-uV7AGqUTJKt8ZCe3r5puUjEiMJSrhhA5bGrndG9+vHrgh0DuyMB8PGwsVu+oOPIK
-6nIL/tgzisuAGw4glKXc
-=Zs2S
------END PGP SIGNATURE-----
-
---jsox8XNqLhRna4qK0swddEh8ng2sV6wek--
+-- 
+Paul Martin                                  http://www.codethink.co.uk/
+Senior Software Developer, Codethink Ltd.

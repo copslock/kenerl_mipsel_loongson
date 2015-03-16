@@ -1,43 +1,77 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Mar 2015 16:55:26 +0100 (CET)
-Received: from arrakis.dune.hu ([78.24.191.176]:53289 "EHLO arrakis.dune.hu"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27013918AbbCPPzXwF7wo (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 16 Mar 2015 16:55:23 +0100
-Received: from localhost (localhost [127.0.0.1])
-        by arrakis.dune.hu (Postfix) with ESMTP id C2F0F28C61C;
-        Mon, 16 Mar 2015 16:54:54 +0100 (CET)
-X-Virus-Scanned: at arrakis.dune.hu
-Received: from mail-qc0-f174.google.com (mail-qc0-f174.google.com [209.85.216.174])
-        by arrakis.dune.hu (Postfix) with ESMTPSA id 935FB28A22B;
-        Mon, 16 Mar 2015 16:54:50 +0100 (CET)
-Received: by qcbkw5 with SMTP id kw5so47648590qcb.2;
-        Mon, 16 Mar 2015 08:55:14 -0700 (PDT)
-X-Received: by 10.55.16.83 with SMTP id a80mr110016357qkh.86.1426521314849;
- Mon, 16 Mar 2015 08:55:14 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Mar 2015 16:56:12 +0100 (CET)
+Received: from mail-qc0-f169.google.com ([209.85.216.169]:36517 "EHLO
+        mail-qc0-f169.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008786AbbCPP4ItD5G5 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 16 Mar 2015 16:56:08 +0100
+Received: by qcto4 with SMTP id o4so47625975qct.3
+        for <linux-mips@linux-mips.org>; Mon, 16 Mar 2015 08:56:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type;
+        bh=js+ajterNIEWER+0JsAIS7h1ZWGn/PBLDIiNCRIyQQI=;
+        b=b4QPx3Yhn3ZFAKIYYBBFIGaAFNp2NohEk5noR98CcEebFNbLlk/PncuEli3Diy/DSK
+         oTDRfalVj+RscrqhVsgUhwhAfnoQUE7zShCrS9nk1WbzbabmminzviVVsMz2UsWPuULu
+         tmlVoiemZlrJQHQURtASMawxAdl4xaTjxzHIaAa8YpCK3LwK/oJI4eagTUJlHVNk3SlM
+         R9/F5dTphvU/LffkMfYvqWoi8eKTjzS9DP7k6nocjficfZp/2CE2ZFClo5aX/L4Z87KS
+         c61xtUDZzOqKQ7DANUA95xFsIdQyHwm/I6zmutU/hCsnMS3lOa6eScdqfQ+xrU7VzfxN
+         DlJQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type;
+        bh=js+ajterNIEWER+0JsAIS7h1ZWGn/PBLDIiNCRIyQQI=;
+        b=kP2e+Y7hgBaCPRcGJ//2HJhOJ7pTN4xGdx7IAzdgwaKr2opqOxQE5cXAeeQgS6G1AA
+         zhWwfhNfW0v7rY4ct/xEhsScPFmPD2Ru3S6WcDnE15Dzk5wmz/JPcGRW1dNUvVdSsC53
+         LOegw3igntbh/iq2Xd+oh1zVwd75PB5Irvj1k=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:sender:in-reply-to:references:date
+         :message-id:subject:from:to:cc:content-type;
+        bh=js+ajterNIEWER+0JsAIS7h1ZWGn/PBLDIiNCRIyQQI=;
+        b=JYoR5YC6/8Wyj3lv3zuX1bjDK1Ah6/QqLdkDZ6vtyWGODpjEmBE3DRBAyPW3CVW0yS
+         AIRYbHOOCGFyEHRUD16mhvG7IpJhvnniTGCZUihqYDT03QZhYTPmT042weleOKieqiO5
+         mfdh2maqE/3LnoOM3BaisjiGa3WbTvUd4Na/GznABnTW8/Zky5FzX5B5k0Oq6JiliJ5f
+         tTQHp/MOOdVWzNpGWJJQA8tb5gj9deIEN7ZdWqOU/6mzHrFM6iHZnP5XcaAT3NFXJQ12
+         flYdAHdqI1rueKFLg/NsXwyfcd5cKA21rmj97VbMy9mdoxhqbFfizChGO2mhH2nKHZlA
+         PkmQ==
+X-Gm-Message-State: ALoCoQmFGikDxVDqvprkDdYNJcEFky9LwHNGgOlftWyiCCKI1F0mNvP3iDBnHwnSXg/3ebQitwl+
 MIME-Version: 1.0
-Received: by 10.140.42.229 with HTTP; Mon, 16 Mar 2015 08:54:54 -0700 (PDT)
-In-Reply-To: <1426517616.25162.24.camel@sakura.staff.proxad.net>
-References: <1426176058-26114-1-git-send-email-nschichan@freebox.fr> <1426517616.25162.24.camel@sakura.staff.proxad.net>
-From:   Jonas Gorski <jogo@openwrt.org>
-Date:   Mon, 16 Mar 2015 16:54:54 +0100
-Message-ID: <CAOiHx==nyb946TouM5-eZKWBzNbhEuworX6bfTZntZTqfK08bQ@mail.gmail.com>
-Subject: Re: [PATCH] MIPS: bcm63xx: move bcm63xx_gpio_init() to bcm63xx_register_devices().
-To:     Maxime Bizon <mbizon@freebox.fr>
-Cc:     Nicolas Schichan <nschichan@freebox.fr>,
+X-Received: by 10.140.151.74 with SMTP id 71mr78529759qhx.15.1426521363846;
+ Mon, 16 Mar 2015 08:56:03 -0700 (PDT)
+Received: by 10.140.19.72 with HTTP; Mon, 16 Mar 2015 08:56:03 -0700 (PDT)
+In-Reply-To: <6D39441BF12EF246A7ABCE6654B023532100679F@LEMAIL01.le.imgtec.org>
+References: <6D39441BF12EF246A7ABCE6654B0235320FDC2AC@LEMAIL01.le.imgtec.org>
+        <20150226101739.GY17695@NP-P-BURTON>
+        <CACUy__Ux6v9O0RmSiUr6vDDJ8JSDPCsCTqm=KOiNM0M=x3hoQQ@mail.gmail.com>
+        <5506B0B2.3020606@imgtec.com>
+        <6D39441BF12EF246A7ABCE6654B023532100679F@LEMAIL01.le.imgtec.org>
+Date:   Mon, 16 Mar 2015 08:56:03 -0700
+X-Google-Sender-Auth: uPN1bgIycsCaqQSzNzuzaJT1L6c
+Message-ID: <CAL1qeaGqRy_sV8mzM7+8VWipyq1nhbB3SVQpZGAEkPEvKfE=yg@mail.gmail.com>
+Subject: Re: [U-Boot] MIPS UHI spec
+From:   Andrew Bresticker <abrestic@chromium.org>
+To:     Matthew Fortune <Matthew.Fortune@imgtec.com>
+Cc:     James Hogan <James.Hogan@imgtec.com>,
+        Daniel Schwierzeck <daniel.schwierzeck@gmail.com>,
+        Paul Burton <Paul.Burton@imgtec.com>,
+        "u-boot@lists.denx.de" <u-boot@lists.denx.de>,
+        Ezequiel Garcia <Ezequiel.Garcia@imgtec.com>,
+        James Hartley <James.Hartley@imgtec.com>,
+        John Crispin <blogic@openwrt.org>,
+        Jonas Gorski <jogo@openwrt.org>,
         Ralf Baechle <ralf@linux-mips.org>,
-        MIPS Mailing List <linux-mips@linux-mips.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Alexandre Courbot <acourbot@nvidia.com>
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
 Content-Type: text/plain; charset=UTF-8
-Return-Path: <jogo@openwrt.org>
+Return-Path: <abrestic@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46403
+X-archive-position: 46404
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jogo@openwrt.org
+X-original-sender: abrestic@chromium.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,59 +84,70 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Mar 16, 2015 at 3:53 PM, Maxime Bizon <mbizon@freebox.fr> wrote:
->
-> On Thu, 2015-03-12 at 17:00 +0100, Nicolas Schichan wrote:
->
->> When called from prom init code, bcm63xx_gpio_init() will fail as it
->> will call gpiochip_add() which relies on a working kmalloc() to alloc
->> the gpio_desc array and kmalloc is not useable yet at prom init time.
+On Mon, Mar 16, 2015 at 4:53 AM, Matthew Fortune
+<Matthew.Fortune@imgtec.com> wrote:
+> James Hogan <James.Hogan@imgtec.com> writes:
+>> On 26/02/15 12:37, Daniel Schwierzeck wrote:
+>> > 2015-02-26 11:17 GMT+01:00 Paul Burton <paul.burton@imgtec.com>:
+>> >> On Thu, Feb 19, 2015 at 01:50:23PM +0000, Matthew Fortune wrote:
+>> >>> Hi Daniel,
+>> >>>
+>> >>> The spec for MIPS Unified Hosting Interface is available here:
+>> >>>
+>> >>> http://prplfoundation.org/wiki/MIPS_documentation
+>> >>>
+>> >>> As we have previously discussed, this is an ideal place to define
+>> >>> the handover of device tree data from bootloader to kernel. Using a0
+>> >>> == -2 and defining which register(s) you need for the actual data
+>> >>> will fit nicely. I'll happily include whatever is decided into the
+>> >>> next version of the spec.
+>> >
+>> > this originates from an off-list discussion some months ago started by
+>> > John Crispin.
+>> >
+>> > (CC +John, Ralf, Jonas, linux-mips)
+>> >
+>> >>
+>> >> (CC +Andrew, Ezequiel, James, James)
+>> >>
+>> >> On the talk of DT handover, this recent patchset adding support for a
+>> >> system doing so to Linux is relevant:
+>> >>
+>> >>
+>> >> http://www.linux-mips.org/archives/linux-mips/2015-02/msg00312.html
+>> >>
+>> >> I'm also working on a system for which I'll need to implement DT
+>> >> handover very soon. It would be very nice if we could agree on some
+>> >> standard way of doing so (and eventually if the code on the Linux
+>> >> side can be generic enough to allow a multiplatform kernel).
+>> >>
+>> >
+>> > to be conformant with UHI I propose $a0 == -2 and $a1 == address of DT
+>> > blob. It is a simple extension and should not interfere with the
+>> > various legacy boot interfaces.
 >>
->> Move bcm63xx_gpio_init() to bcm63xx_register_devices() (an
->> arch_initcall) where kmalloc works.
+>> I was just looking at Andrew's patch:
+>> http://patchwork.linux-mips.org/patch/9549/
+>>
+>> How would the other registers (i.e. $a2 and $a3) be defined for this
+>> boot interface? I'm guessing any future extensions are envisioned to use
+>> a different negative value of $a0, in which case treating them as
+>> unused/undefined is fine, but perhaps that should be spelt out in the
+>> UHI spec?
 >
-> no that patch is completely bogus:
+> Sounds sensible. Making it explicit may help prevent anyone extending this
+> and presuming that they can give meaning to one of the unused registers.
 >
-> 1) bcm63xx_gpio_init() does more than registering the gpio_chip: look at
-> bcm63xx_gpio_out_low_reg_init().
->
-> We want at least the low lever helpers bcm_gpio_readl()/writel() to work
-> early.
+> Did anyone come to a conclusion on physical vs virtual address for the
+> DTB? I forgot to reply to the thread, I would have thought the KSEG0
+> address would be the obvious choice so that it is immediately usable from
+> ordinary memory accesses. However, that is only because I don't follow how
+> the kernel would benefit from being given a physical address. It can't be
+> remapped except for the case of segmentation control (I believe) so there
+> seems little risk in using KSEG0.
 
-bcm_gpio_readl/bcm_gpio_writel() are completely unaffected by anything
-done by bcm63xx_gpio_out_low_reg_init(), all they do is access the
-gpio register space.
+We've changed our bootloader to pass the DTB via KSEG0.  V2 of the
+Pistachio platform patches I posted last week used this protocol.
 
-And all of the functions using the gpio_out_low_reg are static and
-only accessible through the registered gpio chip, so there can't be
-any rouge accesses before the chip is registered.
-
-> 2) look at board_register_devices() in board_bcm963xx.c, it uses the
-> gpio API, but is called during arch_initcall() (there was an attempt to
-> move it later, but it has been reverted)
->
-> so you cannot move that gpiochip registration later as-is, more
-> refactoring and *testing* is required.
-
-The only access done in board_register_devices() is the ephy-reset
-gpio, and that is still done *after* moving bcm63xx_gpio_init() to
-register_devices().
-
-So I don't see how this breaks anything. But for the sake of the
-argument, let's give it a spin:
-
-root@OpenWrt:/# uname -a
-Linux OpenWrt 4.0.0-rc1+ #383 SMP Mon Mar 16 16:46:49 CET 2015 mips GNU/Linux
-root@OpenWrt:/# cat /sys/kernel/debug/gpio
-GPIOs 0-39, bcm63xx-gpio:
- gpio-4   (power               ) out hi
- gpio-5   (stop                ) out lo
- gpio-15  (adsl-fail           ) out hi
- gpio-22  (ppp                 ) out hi
- gpio-23  (ppp-fail            ) out hi
- gpio-36  (ephy-reset          ) out hi
-
-Everything seems to work fine.
-
-
-Jonas
+Thanks,
+Andrew

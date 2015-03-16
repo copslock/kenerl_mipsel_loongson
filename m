@@ -1,32 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Mar 2015 22:44:16 +0100 (CET)
-Received: from mail-ie0-f201.google.com ([209.85.223.201]:32924 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Mar 2015 22:44:33 +0100 (CET)
+Received: from mail-ie0-f201.google.com ([209.85.223.201]:34678 "EHLO
         mail-ie0-f201.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27013954AbbCPVnVJfUKs (ORCPT
+        by eddie.linux-mips.org with ESMTP id S27013957AbbCPVnVY-TXo (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Mon, 16 Mar 2015 22:43:21 +0100
-Received: by iecrp18 with SMTP id rp18so11503309iec.0
+Received: by iebtr6 with SMTP id tr6so11501832ieb.1
         for <linux-mips@linux-mips.org>; Mon, 16 Mar 2015 14:43:16 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=fOj3fWRuScYI1RDedgLyWAHnRZAJRuBkJdCWGNcqhYU=;
-        b=CrCzqMC0Fpepmlg6uMzwbIfy3DXK1tS88l+omnSudz/HWfV3IUj3Cy8lsOPRKg8+T3
-         Uk0S7SUSNA6ldwv+kQHvIQ+k3lunjGVemBiHdpiuLh5x7QHKj3gQiyX0hmCW8kuXVC3t
-         c8uoyOYNr86LfIf2+/OT8wUGiz+NpvrkcSK/1oDkhAq46gcmiMydi0kIYWTsZFqVDmVx
-         3N0VXi+xZsKKJ1lC6zwpQESwKIWz+D0BVxqrUkzPiLMgb8e1jVW2rAiXwJFEI7Pruqzu
-         5fnIiPAktKQ4Hwlotx9qxorrWsInMGMercVXifmiusmW8hLxrf14rbwj8rScggf3bxqR
-         z9DQ==
-X-Gm-Message-State: ALoCoQmpiQivJpxkzhE+BePXsUIyNvXLsxdxiUYHWzyQTOAo34jbpB8uA5TdQN9EIuksnRgzOwqA
-X-Received: by 10.50.43.229 with SMTP id z5mr11769327igl.3.1426542196122;
+        bh=d4VI5RH7n6PODIeVGszSEiTiQ3cQfWt7woKiN030ZQM=;
+        b=drCHAm/wQspUiXwHRhWuNUE+uXtb+ApfkbhwkxGACIui4VQpNR2utk9tJnwHiNPhXo
+         A9q0yvG4/QmxFCa8brGicW1Si/JV/AYtKrpuOyS0ys7k9M4dU67U7xWGLX4mzSD/ppS+
+         tT5DGuvLgt+60NIFhShcOuwg5qmmR/RwlHK4lXgW3vxLH+ACC1Qy11boICrD6pfz0GFY
+         rzla0wjWEhezWNes0rIEyHEohn69Ee/SOnEptLhtcMUpz41WwBiq0apkMkEXV0fE3prR
+         wOILNPSnZv4NP5owXoEK4il+9nCe6xFW+zU6KcjQB1BDBagMpKTlIaZhA1y3+CcgdpOA
+         lPHw==
+X-Gm-Message-State: ALoCoQnur7dI8lsxpVmAWcPBAAroZ7kcwzOvLNVSdBg15ytKxh9kE+yUPiDofleBCDrfeBW0C1/1
+X-Received: by 10.182.237.18 with SMTP id uy18mr62219960obc.36.1426542196338;
         Mon, 16 Mar 2015 14:43:16 -0700 (PDT)
 Received: from corpmail-nozzle1-1.hot.corp.google.com ([100.108.1.104])
-        by gmr-mx.google.com with ESMTPS id 40si591488yho.6.2015.03.16.14.43.15
+        by gmr-mx.google.com with ESMTPS id 3si597084yhe.0.2015.03.16.14.43.15
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
         Mon, 16 Mar 2015 14:43:16 -0700 (PDT)
 Received: from abrestic.mtv.corp.google.com ([172.22.65.70])
-        by corpmail-nozzle1-1.hot.corp.google.com with ESMTP id VelUEkWh.1; Mon, 16 Mar 2015 14:43:16 -0700
+        by corpmail-nozzle1-1.hot.corp.google.com with ESMTP id 4uE3WGkb.1; Mon, 16 Mar 2015 14:43:16 -0700
 Received: by abrestic.mtv.corp.google.com (Postfix, from userid 137652)
-        id C68E322057C; Mon, 16 Mar 2015 14:43:14 -0700 (PDT)
+        id 5EF68220A56; Mon, 16 Mar 2015 14:43:15 -0700 (PDT)
 From:   Andrew Bresticker <abrestic@chromium.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
@@ -34,15 +34,10 @@ Cc:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         Andrew Bresticker <abrestic@chromium.org>,
         Ezequiel Garcia <ezequiel.garcia@imgtec.com>,
         James Hartley <james.hartley@imgtec.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Pawel Moll <pawel.moll@arm.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ian Campbell <ijc+devicetree@hellion.org.uk>,
-        Kumar Gala <galak@codeaurora.org>
-Subject: [PATCH V3 3/5] MIPS: Document Pistachio boot protocol and device-tree bindings
-Date:   Mon, 16 Mar 2015 14:43:09 -0700
-Message-Id: <1426542191-6883-4-git-send-email-abrestic@chromium.org>
+        James Hogan <james.hogan@imgtec.com>
+Subject: [PATCH V3 4/5] MIPS: Add support for the IMG Pistachio SoC
+Date:   Mon, 16 Mar 2015 14:43:10 -0700
+Message-Id: <1426542191-6883-5-git-send-email-abrestic@chromium.org>
 X-Mailer: git-send-email 2.2.0.rc0.207.ga3a616c
 In-Reply-To: <1426542191-6883-1-git-send-email-abrestic@chromium.org>
 References: <1426542191-6883-1-git-send-email-abrestic@chromium.org>
@@ -50,7 +45,7 @@ Return-Path: <abrestic@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46421
+X-archive-position: 46422
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -67,72 +62,386 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The Pistachio SoC boots only with device-tree.  Document the required
-properties and nodes as well as the boot protocol between the bootlaoder
-and the kernel.
+Add initial support for boards based on the Imagination Pistachio SoC.
+Pistachio is based on a dual-core MIPS interAptiv CPU and will boot
+using device-tree.
 
+Signed-off-by: James Hartley <james.hartley@imgtec.com>
 Signed-off-by: Andrew Bresticker <abrestic@chromium.org>
-Cc: Rob Herring <robh+dt@kernel.org>
-Cc: Pawel Moll <pawel.moll@arm.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Ian Campbell <ijc+devicetree@hellion.org.uk>
-Cc: Kumar Gala <galak@codeaurora.org>
 ---
-No changes from v2.
+Changes from v2:
+ - addressed reviewed feedback from James
 Changes from v1:
  - switched to MIPS UHI hand-off protocol
 ---
- .../devicetree/bindings/mips/img/pistachio.txt     | 42 ++++++++++++++++++++++
- 1 file changed, 42 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/mips/img/pistachio.txt
+ arch/mips/Kbuild.platforms                  |   1 +
+ arch/mips/Kconfig                           |  27 ++++++
+ arch/mips/include/asm/mach-pistachio/gpio.h |  21 +++++
+ arch/mips/include/asm/mach-pistachio/irq.h  |  18 ++++
+ arch/mips/pistachio/Makefile                |   1 +
+ arch/mips/pistachio/Platform                |   8 ++
+ arch/mips/pistachio/init.c                  | 131 ++++++++++++++++++++++++++++
+ arch/mips/pistachio/irq.c                   |  28 ++++++
+ arch/mips/pistachio/time.c                  |  52 +++++++++++
+ 9 files changed, 287 insertions(+)
+ create mode 100644 arch/mips/include/asm/mach-pistachio/gpio.h
+ create mode 100644 arch/mips/include/asm/mach-pistachio/irq.h
+ create mode 100644 arch/mips/pistachio/Makefile
+ create mode 100644 arch/mips/pistachio/Platform
+ create mode 100644 arch/mips/pistachio/init.c
+ create mode 100644 arch/mips/pistachio/irq.c
+ create mode 100644 arch/mips/pistachio/time.c
 
-diff --git a/Documentation/devicetree/bindings/mips/img/pistachio.txt b/Documentation/devicetree/bindings/mips/img/pistachio.txt
+diff --git a/arch/mips/Kbuild.platforms b/arch/mips/Kbuild.platforms
+index e5fc463..86c63d2 100644
+--- a/arch/mips/Kbuild.platforms
++++ b/arch/mips/Kbuild.platforms
+@@ -21,6 +21,7 @@ platforms += mti-malta
+ platforms += mti-sead3
+ platforms += netlogic
+ platforms += paravirt
++platforms += pistachio
+ platforms += pmcs-msp71xx
+ platforms += pnx833x
+ platforms += ralink
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index c7a1690..343b238 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -352,6 +352,33 @@ config MACH_LOONGSON1
+ 	  the ICT (Institute of Computing Technology) and the Chinese Academy
+ 	  of Sciences.
+ 
++config MACH_PISTACHIO
++	bool "IMG Pistachio SoC based boards"
++	select ARCH_REQUIRE_GPIOLIB
++	select BOOT_ELF32
++	select BOOT_RAW
++	select CEVT_R4K
++	select CLKSRC_MIPS_GIC
++	select COMMON_CLK
++	select CSRC_R4K
++	select DMA_MAYBE_COHERENT
++	select IRQ_CPU
++	select LIBFDT
++	select MFD_SYSCON
++	select MIPS_CPU_SCACHE
++	select MIPS_GIC
++	select PINCTRL
++	select REGULATOR
++	select SYS_HAS_CPU_MIPS32_R2
++	select SYS_SUPPORTS_32BIT_KERNEL
++	select SYS_SUPPORTS_LITTLE_ENDIAN
++	select SYS_SUPPORTS_MIPS_CPS
++	select SYS_SUPPORTS_MULTITHREADING
++	select SYS_SUPPORTS_ZBOOT
++	select USE_OF
++	help
++	  This enables support for the IMG Pistachio SoC platform.
++
+ config MIPS_MALTA
+ 	bool "MIPS Malta board"
+ 	select ARCH_MAY_HAVE_PC_FDC
+diff --git a/arch/mips/include/asm/mach-pistachio/gpio.h b/arch/mips/include/asm/mach-pistachio/gpio.h
 new file mode 100644
-index 0000000..a736d88
+index 0000000..6c1649c
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/mips/img/pistachio.txt
-@@ -0,0 +1,42 @@
-+Imagination Pistachio SoC
-+=========================
++++ b/arch/mips/include/asm/mach-pistachio/gpio.h
+@@ -0,0 +1,21 @@
++/*
++ * Pistachio IRQ setup
++ *
++ * Copyright (C) 2014 Google, Inc.
++ *
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms and conditions of the GNU General Public License,
++ * version 2, as published by the Free Software Foundation.
++ */
 +
-+Required properties:
-+--------------------
-+ - compatible: Must include "img,pistachio".
++#ifndef __ASM_MACH_PISTACHIO_GPIO_H
++#define __ASM_MACH_PISTACHIO_GPIO_H
 +
-+CPU nodes:
-+----------
-+A "cpus" node is required.  Required properties:
-+ - #address-cells: Must be 1.
-+ - #size-cells: Must be 0.
-+A CPU sub-node is also required for at least CPU 0.  Since the topology may
-+be probed via CPS, it is not necessary to specify secondary CPUs.  Required
-+propertis:
-+ - device_type: Must be "cpu".
-+ - compatible: Must be "mti,interaptiv".
-+ - reg: CPU number.
-+ - clocks: Must include the CPU clock.  See ../../clock/clock-bindings.txt for
-+   details on clock bindings.
-+Example:
-+	cpus {
-+		#address-cells = <1>;
-+		#size-cells = <0>;
++#include <asm-generic/gpio.h>
 +
-+		cpu0: cpu@0 {
-+			device_type = "cpu";
-+			compatible = "mti,interaptiv";
-+			reg = <0>;
-+			clocks = <&clk_core CLK_MIPS>;
-+		};
-+	};
++#define gpio_get_value	__gpio_get_value
++#define gpio_set_value	__gpio_set_value
++#define gpio_cansleep	__gpio_cansleep
++#define gpio_to_irq	__gpio_to_irq
 +
++#endif /* __ASM_MACH_PISTACHIO_GPIO_H */
+diff --git a/arch/mips/include/asm/mach-pistachio/irq.h b/arch/mips/include/asm/mach-pistachio/irq.h
+new file mode 100644
+index 0000000..b94a09a
+--- /dev/null
++++ b/arch/mips/include/asm/mach-pistachio/irq.h
+@@ -0,0 +1,18 @@
++/*
++ * Pistachio IRQ setup
++ *
++ * Copyright (C) 2014 Google, Inc.
++ *
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms and conditions of the GNU General Public License,
++ * version 2, as published by the Free Software Foundation.
++ */
 +
-+Boot protocol:
-+--------------
-+In accordance with the MIPS UHI specification[1], the bootloader must pass the
-+following arguments to the kernel:
-+ - $a0: -2.
-+ - $a1: KSEG0 address of the flattened device-tree blob.
++#ifndef __ASM_MACH_PISTACHIO_IRQ_H
++#define __ASM_MACH_PISTACHIO_IRQ_H
 +
-+[1] http://prplfoundation.org/wiki/MIPS_documentation
++#define NR_IRQS 256
++
++#include_next <irq.h>
++
++#endif /* __ASM_MACH_PISTACHIO_IRQ_H */
+diff --git a/arch/mips/pistachio/Makefile b/arch/mips/pistachio/Makefile
+new file mode 100644
+index 0000000..32189c6
+--- /dev/null
++++ b/arch/mips/pistachio/Makefile
+@@ -0,0 +1 @@
++obj-y	+= init.o irq.o time.o
+diff --git a/arch/mips/pistachio/Platform b/arch/mips/pistachio/Platform
+new file mode 100644
+index 0000000..d80cd61
+--- /dev/null
++++ b/arch/mips/pistachio/Platform
+@@ -0,0 +1,8 @@
++#
++# IMG Pistachio SoC
++#
++platform-$(CONFIG_MACH_PISTACHIO)	+= pistachio/
++cflags-$(CONFIG_MACH_PISTACHIO)		+=				\
++		-I$(srctree)/arch/mips/include/asm/mach-pistachio
++load-$(CONFIG_MACH_PISTACHIO)		+= 0xffffffff80400000
++zload-$(CONFIG_MACH_PISTACHIO)		+= 0xffffffff81000000
+diff --git a/arch/mips/pistachio/init.c b/arch/mips/pistachio/init.c
+new file mode 100644
+index 0000000..d2dc836
+--- /dev/null
++++ b/arch/mips/pistachio/init.c
+@@ -0,0 +1,131 @@
++/*
++ * Pistachio platform setup
++ *
++ * Copyright (C) 2014 Google, Inc.
++ *
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms and conditions of the GNU General Public License,
++ * version 2, as published by the Free Software Foundation.
++ */
++
++#include <linux/init.h>
++#include <linux/kernel.h>
++#include <linux/of_address.h>
++#include <linux/of_fdt.h>
++#include <linux/of_platform.h>
++
++#include <asm/cacheflush.h>
++#include <asm/dma-coherence.h>
++#include <asm/fw/fw.h>
++#include <asm/mips-boards/generic.h>
++#include <asm/mips-cm.h>
++#include <asm/mips-cpc.h>
++#include <asm/prom.h>
++#include <asm/smp-ops.h>
++#include <asm/traps.h>
++
++const char *get_system_type(void)
++{
++	return "IMG Pistachio SoC";
++}
++
++static void __init plat_setup_iocoherency(void)
++{
++	/*
++	 * Kernel has been configured with software coherency
++	 * but we might choose to turn it off and use hardware
++	 * coherency instead.
++	 */
++	if (mips_cm_numiocu() != 0) {
++		/* Nothing special needs to be done to enable coherency */
++		pr_info("CMP IOCU detected\n");
++		hw_coherentio = 1;
++		if (coherentio == 0)
++			pr_info("Hardware DMA cache coherency disabled\n");
++		else
++			pr_info("Hardware DMA cache coherency enabled\n");
++	} else {
++		if (coherentio == 1)
++			pr_info("Hardware DMA cache coherency unsupported, but enabled from command line!\n");
++		else
++			pr_info("Software DMA cache coherency enabled\n");
++	}
++}
++
++void __init plat_mem_setup(void)
++{
++	if (fw_arg0 != -2)
++		panic("Device-tree not present");
++
++	__dt_setup_arch((void *)fw_arg1);
++	strlcpy(arcs_cmdline, boot_command_line, COMMAND_LINE_SIZE);
++
++	plat_setup_iocoherency();
++}
++
++#define DEFAULT_CPC_BASE_ADDR 0x1bde0000
++
++phys_addr_t mips_cpc_default_phys_base(void)
++{
++	return DEFAULT_CPC_BASE_ADDR;
++}
++
++static void __init mips_nmi_setup(void)
++{
++	void *base;
++	extern char except_vec_nmi;
++
++	base = cpu_has_veic ?
++		(void *)(CAC_BASE + 0xa80) :
++		(void *)(CAC_BASE + 0x380);
++	memcpy(base, &except_vec_nmi, 0x80);
++	flush_icache_range((unsigned long)base,
++			   (unsigned long)base + 0x80);
++}
++
++static void __init mips_ejtag_setup(void)
++{
++	void *base;
++	extern char except_vec_ejtag_debug;
++
++	base = cpu_has_veic ?
++		(void *)(CAC_BASE + 0xa00) :
++		(void *)(CAC_BASE + 0x300);
++	memcpy(base, &except_vec_ejtag_debug, 0x80);
++	flush_icache_range((unsigned long)base,
++			   (unsigned long)base + 0x80);
++}
++
++void __init prom_init(void)
++{
++	board_nmi_handler_setup = mips_nmi_setup;
++	board_ejtag_handler_setup = mips_ejtag_setup;
++
++	mips_cm_probe();
++	mips_cpc_probe();
++	register_cps_smp_ops();
++}
++
++void __init prom_free_prom_memory(void)
++{
++}
++
++void __init device_tree_init(void)
++{
++	if (!initial_boot_params)
++		return;
++
++	unflatten_and_copy_device_tree();
++}
++
++static int __init plat_of_setup(void)
++{
++	if (!of_have_populated_dt())
++		panic("Device tree not present");
++
++	if (of_platform_populate(NULL, of_default_bus_match_table, NULL, NULL))
++		panic("Failed to populate DT");
++
++	return 0;
++}
++arch_initcall(plat_of_setup);
+diff --git a/arch/mips/pistachio/irq.c b/arch/mips/pistachio/irq.c
+new file mode 100644
+index 0000000..0a6b24c
+--- /dev/null
++++ b/arch/mips/pistachio/irq.c
+@@ -0,0 +1,28 @@
++/*
++ * Pistachio IRQ setup
++ *
++ * Copyright (C) 2014 Google, Inc.
++ *
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms and conditions of the GNU General Public License,
++ * version 2, as published by the Free Software Foundation.
++ */
++
++#include <linux/init.h>
++#include <linux/irqchip.h>
++#include <linux/irqchip/mips-gic.h>
++#include <linux/kernel.h>
++
++#include <asm/cpu-features.h>
++#include <asm/irq_cpu.h>
++
++void __init arch_init_irq(void)
++{
++	pr_info("EIC is %s\n", cpu_has_veic ? "on" : "off");
++	pr_info("VINT is %s\n", cpu_has_vint ? "on" : "off");
++
++	if (!cpu_has_veic)
++		mips_cpu_irq_init();
++
++	irqchip_init();
++}
+diff --git a/arch/mips/pistachio/time.c b/arch/mips/pistachio/time.c
+new file mode 100644
+index 0000000..67889fc
+--- /dev/null
++++ b/arch/mips/pistachio/time.c
+@@ -0,0 +1,52 @@
++/*
++ * Pistachio clocksource/timer setup
++ *
++ * Copyright (C) 2014 Google, Inc.
++ *
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms and conditions of the GNU General Public License,
++ * version 2, as published by the Free Software Foundation.
++ */
++
++#include <linux/clk.h>
++#include <linux/clk-provider.h>
++#include <linux/clocksource.h>
++#include <linux/init.h>
++#include <linux/irqchip/mips-gic.h>
++#include <linux/of.h>
++
++#include <asm/time.h>
++
++unsigned int get_c0_compare_int(void)
++{
++	return gic_get_c0_compare_int();
++}
++
++int get_c0_perfcount_int(void)
++{
++	return gic_get_c0_perfcount_int();
++}
++
++void __init plat_time_init(void)
++{
++	struct device_node *np;
++	struct clk *clk;
++
++	of_clk_init(NULL);
++	clocksource_of_init();
++
++	np = of_get_cpu_node(0, NULL);
++	if (!np) {
++		pr_err("Failed to get CPU node\n");
++		return;
++	}
++
++	clk = of_clk_get(np, 0);
++	if (IS_ERR(clk)) {
++		pr_err("Failed to get CPU clock: %ld\n", PTR_ERR(clk));
++		return;
++	}
++
++	mips_hpt_frequency = clk_get_rate(clk) / 2;
++	clk_put(clk);
++}
 -- 
 2.2.0.rc0.207.ga3a616c

@@ -1,27 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Mar 2015 19:19:58 +0100 (CET)
-Received: from ducie-dc1.codethink.co.uk ([185.25.241.215]:38136 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Mar 2015 19:20:16 +0100 (CET)
+Received: from ducie-dc1.codethink.co.uk ([185.25.241.215]:38141 "EHLO
         ducie-dc1.codethink.co.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27013947AbbCPSTEGD6U9 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 16 Mar 2015 19:19:04 +0100
+        by eddie.linux-mips.org with ESMTP id S27013948AbbCPSTFPafF6 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 16 Mar 2015 19:19:05 +0100
 Received: from localhost (localhost [127.0.0.1])
-        by ducie-dc1.codethink.co.uk (Postfix) with ESMTP id 5704C46090E
-        for <linux-mips@linux-mips.org>; Mon, 16 Mar 2015 18:18:59 +0000 (GMT)
+        by ducie-dc1.codethink.co.uk (Postfix) with ESMTP id 8676E46090F
+        for <linux-mips@linux-mips.org>; Mon, 16 Mar 2015 18:19:00 +0000 (GMT)
 X-Virus-Scanned: Debian amavisd-new at ducie-dc1.codethink.co.uk
 Received: from ducie-dc1.codethink.co.uk ([127.0.0.1])
         by localhost (ducie-dc1.codethink.co.uk [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id xnSXe1S6iM8l; Mon, 16 Mar 2015 18:18:57 +0000 (GMT)
+        with ESMTP id VPBijGSlyfag; Mon, 16 Mar 2015 18:18:58 +0000 (GMT)
 Received: from pm-laptop.codethink.co.uk (pm-laptop.dyn.ducie.codethink.co.uk [10.24.1.94])
-        by ducie-dc1.codethink.co.uk (Postfix) with ESMTPSA id 9E6324608C3;
+        by ducie-dc1.codethink.co.uk (Postfix) with ESMTPSA id C67104608CE;
         Mon, 16 Mar 2015 18:18:52 +0000 (GMT)
 Received: from pm by pm-laptop.codethink.co.uk with local (Exim 4.84)
         (envelope-from <paul.martin@codethink.co.uk>)
-        id 1YXZbI-0003Tz-EJ; Mon, 16 Mar 2015 18:18:52 +0000
+        id 1YXZbI-0003U5-IJ; Mon, 16 Mar 2015 18:18:52 +0000
 From:   Paul Martin <paul.martin@codethink.co.uk>
 To:     linux-mips@linux-mips.org
 Cc:     Paul Martin <paul.martin@codethink.co.uk>
-Subject: [PATCH 3/7] MIPS: OCTEON: Set appropriate endianness in L2C registers
-Date:   Mon, 16 Mar 2015 18:18:39 +0000
-Message-Id: <1426529923-13340-4-git-send-email-paul.martin@codethink.co.uk>
+Subject: [PATCH 4/7] MIPS: OCTEON: Reverse the order of register accesses to the FAU
+Date:   Mon, 16 Mar 2015 18:18:40 +0000
+Message-Id: <1426529923-13340-5-git-send-email-paul.martin@codethink.co.uk>
 X-Mailer: git-send-email 2.1.4
 In-Reply-To: <1426529923-13340-1-git-send-email-paul.martin@codethink.co.uk>
 References: <1426529923-13340-1-git-send-email-paul.martin@codethink.co.uk>
@@ -29,7 +29,7 @@ Return-Path: <paul.martin@codethink.co.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46408
+X-archive-position: 46409
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,44 +46,132 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+64 bit access is unaffected but for 32 bit access, swap high and
+low words.  Similarly for 16 bit access, reverse the order of the
+four possible words, and for 8 bit access reverse the order of byte
+accesses.
+
 Signed-off-by: Paul Martin <paul.martin@codethink.co.uk>
 ---
- arch/mips/cavium-octeon/octeon-platform.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ arch/mips/include/asm/octeon/cvmx-fau.h | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
-diff --git a/arch/mips/cavium-octeon/octeon-platform.c b/arch/mips/cavium-octeon/octeon-platform.c
-index 12410a2..990c4e4 100644
---- a/arch/mips/cavium-octeon/octeon-platform.c
-+++ b/arch/mips/cavium-octeon/octeon-platform.c
-@@ -325,8 +325,14 @@ static void __init octeon_ehci_hw_start(struct device *dev)
- 	/* Use 64-bit addressing. */
- 	ehci_ctl.s.ehci_64b_addr_en = 1;
- 	ehci_ctl.s.l2c_addr_msb = 0;
-+#ifdef __BIG_ENDIAN
- 	ehci_ctl.s.l2c_buff_emod = 1; /* Byte swapped. */
- 	ehci_ctl.s.l2c_desc_emod = 1; /* Byte swapped. */
+diff --git a/arch/mips/include/asm/octeon/cvmx-fau.h b/arch/mips/include/asm/octeon/cvmx-fau.h
+index ef98f7f..dafeae3 100644
+--- a/arch/mips/include/asm/octeon/cvmx-fau.h
++++ b/arch/mips/include/asm/octeon/cvmx-fau.h
+@@ -105,6 +105,16 @@ typedef union {
+ 	} s;
+ } cvmx_fau_async_tagwait_result_t;
+ 
++#ifdef __BIG_ENDIAN_BITFIELD
++#define SWIZZLE_8  0
++#define SWIZZLE_16 0
++#define SWIZZLE_32 0
 +#else
-+	ehci_ctl.s.l2c_buff_emod = 0; /* not swapped. */
-+	ehci_ctl.s.l2c_desc_emod = 0; /* not swapped. */
-+	ehci_ctl.s.inv_reg_a2 = 1;
++#define SWIZZLE_8  0x7
++#define SWIZZLE_16 0x6
++#define SWIZZLE_32 0x4
 +#endif
- 	cvmx_write_csr(CVMX_UCTLX_EHCI_CTL(0), ehci_ctl.u64);
++
+ /**
+  * Builds a store I/O address for writing to the FAU
+  *
+@@ -175,6 +185,7 @@ static inline int64_t cvmx_fau_fetch_and_add64(cvmx_fau_reg_64_t reg,
+ static inline int32_t cvmx_fau_fetch_and_add32(cvmx_fau_reg_32_t reg,
+ 					       int32_t value)
+ {
++	reg ^= SWIZZLE_32;
+ 	return cvmx_read64_int32(__cvmx_fau_atomic_address(0, reg, value));
+ }
  
- 	octeon2_usb_clocks_stop();
-@@ -381,8 +387,14 @@ static void __init octeon_ohci_hw_start(struct device *dev)
+@@ -189,6 +200,7 @@ static inline int32_t cvmx_fau_fetch_and_add32(cvmx_fau_reg_32_t reg,
+ static inline int16_t cvmx_fau_fetch_and_add16(cvmx_fau_reg_16_t reg,
+ 					       int16_t value)
+ {
++	reg ^= SWIZZLE_16;
+ 	return cvmx_read64_int16(__cvmx_fau_atomic_address(0, reg, value));
+ }
  
- 	ohci_ctl.u64 = cvmx_read_csr(CVMX_UCTLX_OHCI_CTL(0));
- 	ohci_ctl.s.l2c_addr_msb = 0;
-+#ifdef __BIG_ENDIAN
- 	ohci_ctl.s.l2c_buff_emod = 1; /* Byte swapped. */
- 	ohci_ctl.s.l2c_desc_emod = 1; /* Byte swapped. */
-+#else
-+	ohci_ctl.s.l2c_buff_emod = 0; /* not swapped. */
-+	ohci_ctl.s.l2c_desc_emod = 0; /* not swapped. */
-+	ohci_ctl.s.inv_reg_a2 = 1;
-+#endif
- 	cvmx_write_csr(CVMX_UCTLX_OHCI_CTL(0), ohci_ctl.u64);
+@@ -201,6 +213,7 @@ static inline int16_t cvmx_fau_fetch_and_add16(cvmx_fau_reg_16_t reg,
+  */
+ static inline int8_t cvmx_fau_fetch_and_add8(cvmx_fau_reg_8_t reg, int8_t value)
+ {
++	reg ^= SWIZZLE_8;
+ 	return cvmx_read64_int8(__cvmx_fau_atomic_address(0, reg, value));
+ }
  
- 	octeon2_usb_clocks_stop();
+@@ -247,6 +260,7 @@ cvmx_fau_tagwait_fetch_and_add32(cvmx_fau_reg_32_t reg, int32_t value)
+ 		uint64_t i32;
+ 		cvmx_fau_tagwait32_t t;
+ 	} result;
++	reg ^= SWIZZLE_32;
+ 	result.i32 =
+ 	    cvmx_read64_int32(__cvmx_fau_atomic_address(1, reg, value));
+ 	return result.t;
+@@ -270,6 +284,7 @@ cvmx_fau_tagwait_fetch_and_add16(cvmx_fau_reg_16_t reg, int16_t value)
+ 		uint64_t i16;
+ 		cvmx_fau_tagwait16_t t;
+ 	} result;
++	reg ^= SWIZZLE_16;
+ 	result.i16 =
+ 	    cvmx_read64_int16(__cvmx_fau_atomic_address(1, reg, value));
+ 	return result.t;
+@@ -292,6 +307,7 @@ cvmx_fau_tagwait_fetch_and_add8(cvmx_fau_reg_8_t reg, int8_t value)
+ 		uint64_t i8;
+ 		cvmx_fau_tagwait8_t t;
+ 	} result;
++	reg ^= SWIZZLE_8;
+ 	result.i8 = cvmx_read64_int8(__cvmx_fau_atomic_address(1, reg, value));
+ 	return result.t;
+ }
+@@ -521,6 +537,7 @@ static inline void cvmx_fau_atomic_add64(cvmx_fau_reg_64_t reg, int64_t value)
+  */
+ static inline void cvmx_fau_atomic_add32(cvmx_fau_reg_32_t reg, int32_t value)
+ {
++	reg ^= SWIZZLE_32;
+ 	cvmx_write64_int32(__cvmx_fau_store_address(0, reg), value);
+ }
+ 
+@@ -533,6 +550,7 @@ static inline void cvmx_fau_atomic_add32(cvmx_fau_reg_32_t reg, int32_t value)
+  */
+ static inline void cvmx_fau_atomic_add16(cvmx_fau_reg_16_t reg, int16_t value)
+ {
++	reg ^= SWIZZLE_16;
+ 	cvmx_write64_int16(__cvmx_fau_store_address(0, reg), value);
+ }
+ 
+@@ -544,6 +562,7 @@ static inline void cvmx_fau_atomic_add16(cvmx_fau_reg_16_t reg, int16_t value)
+  */
+ static inline void cvmx_fau_atomic_add8(cvmx_fau_reg_8_t reg, int8_t value)
+ {
++	reg ^= SWIZZLE_8;
+ 	cvmx_write64_int8(__cvmx_fau_store_address(0, reg), value);
+ }
+ 
+@@ -568,6 +587,7 @@ static inline void cvmx_fau_atomic_write64(cvmx_fau_reg_64_t reg, int64_t value)
+  */
+ static inline void cvmx_fau_atomic_write32(cvmx_fau_reg_32_t reg, int32_t value)
+ {
++	reg ^= SWIZZLE_32;
+ 	cvmx_write64_int32(__cvmx_fau_store_address(1, reg), value);
+ }
+ 
+@@ -580,6 +600,7 @@ static inline void cvmx_fau_atomic_write32(cvmx_fau_reg_32_t reg, int32_t value)
+  */
+ static inline void cvmx_fau_atomic_write16(cvmx_fau_reg_16_t reg, int16_t value)
+ {
++	reg ^= SWIZZLE_16;
+ 	cvmx_write64_int16(__cvmx_fau_store_address(1, reg), value);
+ }
+ 
+@@ -591,6 +612,7 @@ static inline void cvmx_fau_atomic_write16(cvmx_fau_reg_16_t reg, int16_t value)
+  */
+ static inline void cvmx_fau_atomic_write8(cvmx_fau_reg_8_t reg, int8_t value)
+ {
++	reg ^= SWIZZLE_8;
+ 	cvmx_write64_int8(__cvmx_fau_store_address(1, reg), value);
+ }
+ 
 -- 
 2.1.4

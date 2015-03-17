@@ -1,66 +1,73 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Mar 2015 15:08:01 +0100 (CET)
-Received: from smtp.citrix.com ([66.165.176.89]:33756 "EHLO SMTP.CITRIX.COM"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Mar 2015 15:47:19 +0100 (CET)
+Received: from foss.arm.com ([217.140.101.70]:44692 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27013979AbbCQOH72SkAh (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 17 Mar 2015 15:07:59 +0100
-X-IronPort-AV: E=Sophos;i="5.11,416,1422921600"; 
-   d="scan'208";a="244167523"
-Message-ID: <1426601130.18247.238.camel@citrix.com>
-Subject: Re: [Xen-devel] [PATCH v6 07/30] PCI: Pass PCI domain number
- combined with root bus number
-From:   Ian Campbell <ian.campbell@citrix.com>
-To:     Manish Jaggi <mjaggi@caviumnetworks.com>
-CC:     Yijing Wang <wangyijing@huawei.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        <linux-mips@linux-mips.org>, <linux-ia64@vger.kernel.org>,
-        <linux-sh@vger.kernel.org>, <linux-pci@vger.kernel.org>,
-        Chris Metcalf <cmetcalf@ezchip.com>,
-        Paul Mackerras <paulus@samba.org>,
-        <sparclinux@vger.kernel.org>, Guan Xuetao <gxt@mprc.pku.edu.cn>,
-        <linux-s390@vger.kernel.org>,
+        id S27013978AbbCQOrQi3Jae (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 17 Mar 2015 15:47:16 +0100
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E19AB580;
+        Tue, 17 Mar 2015 07:47:21 -0700 (PDT)
+Received: from arm.com (usa-sjc-imap-foss1.foss.arm.com [10.72.51.249])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8022D3F265;
+        Tue, 17 Mar 2015 07:47:04 -0700 (PDT)
+Date:   Tue, 17 Mar 2015 14:47:02 +0000
+From:   Will Deacon <will.deacon@arm.com>
+To:     Kees Cook <keescook@chromium.org>
+Cc:     "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Hector Marco-Gisbert <hecmargi@upv.es>,
+        Ismael Ripoll <iripoll@upv.es>,
         Russell King <linux@arm.linux.org.uk>,
-        Michael Ellerman <mpe@ellerman.id.au>, <x86@kernel.org>,
-        Sebastian Ott <sebott@linux.vnet.ibm.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        <linux-arm-kernel@lists.infradead.org>,
+        Catalin Marinas <Catalin.Marinas@arm.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
         Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        <xen-devel@lists.xenproject.org>, Matt Turner <mattst88@gmail.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Marc Zyngier <marc.zyngier@arm.com>,
-        Rusty Russell <rusty@rustcorp.com.au>,
-        <linux-m68k@lists.linux-m68k.org>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "Yinghai Lu" <yinghai@kernel.org>,
-        Gerald Schaefer <gerald.schaefer@de.ibm.com>,
-        Richard Henderson <rth@twiddle.net>,
-        Liviu Dudau <liviu@dudau.co.uk>,
-        Michal Simek <monstr@monstr.eu>,
-        Tony Luck <tony.luck@intel.com>,
-        <linux-kernel@vger.kernel.org>, Ralf Baechle <ralf@linux-mips.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        <linux-alpha@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>,
-        Jiang Liu <jiang.liu@linux.intel.com>
-Date:   Tue, 17 Mar 2015 14:05:30 +0000
-In-Reply-To: <5507B88D.1020300@caviumnetworks.com>
-References: <1425868467-9667-1-git-send-email-wangyijing@huawei.com>
-         <1425868467-9667-8-git-send-email-wangyijing@huawei.com>
-         <5507B88D.1020300@caviumnetworks.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.12.9-1+b1 
+        Paul Mackerras <paulus@samba.org>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        "linux390@de.ibm.com" <linux390@de.ibm.com>,
+        "x86@kernel.org" <x86@kernel.org>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        Andy Lutomirski <luto@amacapital.net>,
+        Oleg Nesterov <oleg@redhat.com>,
+        "David A. Long" <dave.long@linaro.org>,
+        Andrey Ryabinin <a.ryabinin@samsung.com>,
+        Arun Chandran <achandran@mvista.com>,
+        Yann Droneaud <ydroneaud@opteya.com>,
+        Min-Hua Chen <orca.chen@gmail.com>,
+        Paul Burton <paul.burton@imgtec.com>,
+        Alex Smith <alex@alex-smith.me.uk>,
+        Markos Chandras <markos.chandras@imgtec.com>,
+        Vineeth Vijayan <vvijayan@mvista.com>,
+        Jeff Bailey <jeffbailey@google.com>,
+        Michael Holzheu <holzheu@linux.vnet.ibm.com>,
+        Ben Hutchings <ben@decadent.org.uk>,
+        Borislav Petkov <bp@suse.de>,
+        Jan-Simon =?iso-8859-1?Q?M=F6ller?= <dl9pf@gmx.de>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+        "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>
+Subject: Re: [PATCH v4 03/10] arm64: standardize mmap_rnd() usage
+Message-ID: <20150317144702.GN8399@arm.com>
+References: <1425503454-7531-1-git-send-email-keescook@chromium.org>
+ <1425503454-7531-4-git-send-email-keescook@chromium.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-DLP:  MIA2
-Return-Path: <Ian.Campbell@citrix.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1425503454-7531-4-git-send-email-keescook@chromium.org>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <will.deacon@arm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46432
+X-archive-position: 46433
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ian.campbell@citrix.com
+X-original-sender: will.deacon@arm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -73,32 +80,24 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, 2015-03-17 at 10:45 +0530, Manish Jaggi wrote:
-> On Monday 09 March 2015 08:04 AM, Yijing Wang wrote:
-> > Now we could pass PCI domain combined with bus number
-> > in u32 argu. Because in arm/arm64, PCI domain number
-> > is assigned by pci_bus_assign_domain_nr(). So we leave
-> > pci_scan_root_bus() and pci_create_root_bus() in arm/arm64
-> > unchanged. A new function pci_host_assign_domain_nr()
-> > will be introduced for arm/arm64 to assign domain number
-> > in later patch.
-> Hi,
-> I think these changes might not be required. We have made very few 
-> changes in the xen-pcifront to support PCI passthrough in arm64.
-> As per xen architecture for a domU only a single pci virtual bus is 
-> created and all passthrough devices are attached to it.
+On Wed, Mar 04, 2015 at 09:10:47PM +0000, Kees Cook wrote:
+> In preparation for splitting out ET_DYN ASLR, this refactors the use of
+> mmap_rnd() to be used similarly to arm and x86. This additionally enables
+> mmap ASLR on legacy mmap layouts, which appeared to be missing on arm64,
+> and was already supported on arm. Additionally removes a copy/pasted
+> declaration of an unused function.
+> 
+> Signed-off-by: Kees Cook <keescook@chromium.org>
+> ---
+>  arch/arm64/include/asm/elf.h |  1 -
+>  arch/arm64/mm/mmap.c         | 18 +++++++++++-------
+>  2 files changed, 11 insertions(+), 8 deletions(-)
 
-I guess you are only talking about the changes to xen-pcifront.c?
-Otherwise you are ignoring the dom0 case which is exposed to the real
-set of PCI root complexes and anyway I'm not sure how "not needed for
-Xen domU" translates into not required, since it is clearly required for
-other systems.
+Looks fine to me:
 
-Strictly speaking the Xen pciif protocol does support multiple buses,
-it's just that the tools, and perhaps kernels, have not yet felt any
-need to actually make use of that.
+  Acked-by: Will Deacon <will.deacon@arm.com>
 
-There doesn't seem to be any harm in updating pcifront to follow this
-generic API change.
+Do you want me to pick this up, or are you taking it along with the rest of
+your series (it doesn't have any obvious dependencies to me)?
 
-Ian.
+Will

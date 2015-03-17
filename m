@@ -1,36 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Mar 2015 09:43:47 +0100 (CET)
-Received: from ip4-83-240-67-251.cust.nbox.cz ([83.240.67.251]:44010 "EHLO
-        ip4-83-240-18-248.cust.nbox.cz" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27007630AbbCQImvfOSRn (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 17 Mar 2015 09:42:51 +0100
-Received: from ku by ip4-83-240-18-248.cust.nbox.cz with local (Exim 4.85)
-        (envelope-from <jslaby@suse.cz>)
-        id 1YXn57-0005oq-R7; Tue, 17 Mar 2015 09:42:33 +0100
-From:   Jiri Slaby <jslaby@suse.cz>
-To:     stable@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org, James Hogan <james.hogan@imgtec.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Mar 2015 13:16:59 +0100 (CET)
+Received: from mail-oi0-f42.google.com ([209.85.218.42]:36472 "EHLO
+        mail-oi0-f42.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008388AbbCQMQ5nGhz6 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 17 Mar 2015 13:16:57 +0100
+Received: by oigv203 with SMTP id v203so6222758oig.3
+        for <linux-mips@linux-mips.org>; Tue, 17 Mar 2015 05:16:52 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:in-reply-to:references:date
+         :message-id:subject:from:to:cc:content-type;
+        bh=JHLHc2hTVxewxsgkfvzz0GvB8+9khM4g0doIVEC+Ft0=;
+        b=FCX1Vcc/xkatCJM5W4xPuzViEdIX/JpskccqHd+Ijpv1cBFVR996zua0nofVbiKue0
+         ADN1LipBp4vSFxQegewaOiJRRuZV5+GbPeUlhX+MVfR5Q6my4vMobbDf9aH2prZgKGny
+         BwwfjGXwDs7Kmnp90aZ7Jz9c4Bncou6diMKZ8FAX0ghbEwg00ApolYTrKDMwEO2SFuk5
+         qWoaeIaGFFfNIPTgG588UpNfJfuh3/71PKYn9ib5W0AeEHZiO/5X/V0av13ThxeieE20
+         EBtsDTvTJ8bwMssfXNKpSNmXY03R38tnf6oYS7GDI4htJ2IdAaZX2YHrfOV50gOs9phM
+         sOHQ==
+X-Gm-Message-State: ALoCoQlT1bnskn/Ai0wWWwX5q0jAR9sFupT3yorqJ+sX1MKCT6wAd7q8zq9pQAKIMFYn937PUwgL
+MIME-Version: 1.0
+X-Received: by 10.182.241.99 with SMTP id wh3mr9014415obc.81.1426594612456;
+ Tue, 17 Mar 2015 05:16:52 -0700 (PDT)
+Received: by 10.182.132.45 with HTTP; Tue, 17 Mar 2015 05:16:52 -0700 (PDT)
+In-Reply-To: <CAL1qeaHzpi3_PNpxnLOf=b8d2n5DrRrnB_yiZFHpiP8C7b0hSg@mail.gmail.com>
+References: <1424744104-14151-1-git-send-email-abrestic@chromium.org>
+        <1424744104-14151-3-git-send-email-abrestic@chromium.org>
+        <CACRpkdbqioAreyDwM2JN87=gH20n1OkUXPjdkW885iDWUV1NnA@mail.gmail.com>
+        <CAL1qeaHzpi3_PNpxnLOf=b8d2n5DrRrnB_yiZFHpiP8C7b0hSg@mail.gmail.com>
+Date:   Tue, 17 Mar 2015 13:16:52 +0100
+Message-ID: <CACRpkdbt4MQYY7MqjFN-1Dp0am1PaOZ1YL+bKc8SJrtFDnSW_Q@mail.gmail.com>
+Subject: Re: [PATCH 2/2] pinctrl: Add Pistachio SoC pin control driver
+From:   Linus Walleij <linus.walleij@linaro.org>
+To:     Andrew Bresticker <abrestic@chromium.org>
+Cc:     Alexandre Courbot <gnurou@gmail.com>,
         Ralf Baechle <ralf@linux-mips.org>,
-        Sanjay Lal <sanjayl@kymasys.com>,
-        Gleb Natapov <gleb@kernel.org>, kvm@vger.kernel.org,
-        linux-mips@linux-mips.org, Jiri Slaby <jslaby@suse.cz>
-Subject: [PATCH 3.12 048/175] KVM: MIPS: Don't leak FPU/DSP to guest
-Date:   Tue, 17 Mar 2015 09:40:26 +0100
-Message-Id: <48f80a96dd46107d0612605bfc0d6038d7f25e47.1426581621.git.jslaby@suse.cz>
-X-Mailer: git-send-email 2.3.0
-In-Reply-To: <a48f1a6bfc3ee997dfd719eaecb44a05477b93e2.1426581620.git.jslaby@suse.cz>
-References: <a48f1a6bfc3ee997dfd719eaecb44a05477b93e2.1426581620.git.jslaby@suse.cz>
-In-Reply-To: <cover.1426581620.git.jslaby@suse.cz>
-References: <cover.1426581620.git.jslaby@suse.cz>
-Return-Path: <jslaby@suse.cz>
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+        Linux MIPS <linux-mips@linux-mips.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Ezequiel Garcia <ezequiel.garcia@imgtec.com>,
+        James Hartley <james.hartley@imgtec.com>,
+        James Hogan <james.hogan@imgtec.com>,
+        Damien Horsley <Damien.Horsley@imgtec.com>,
+        Govindraj Raja <govindraj.raja@imgtec.com>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <linus.walleij@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46430
+X-archive-position: 46431
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jslaby@suse.cz
+X-original-sender: linus.walleij@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,103 +64,78 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: James Hogan <james.hogan@imgtec.com>
+On Fri, Mar 6, 2015 at 7:51 PM, Andrew Bresticker <abrestic@chromium.org> wrote:
+> On Fri, Mar 6, 2015 at 3:55 AM, Linus Walleij <linus.walleij@linaro.org> wrote:
 
-3.12-stable review patch.  If anyone has any objections, please let me know.
+>>> +static inline void gpio_writel(struct pistachio_gpio_bank *bank, u32 val,
+>>> +                              u32 reg)
+>>> +{
+>>> +       writel(val, bank->base + reg);
+>>> +}
+>>
+>> I don't see the point of these special readl/writel accessors. Just
+>> use readl/writel
+>> directly. Or consider readl/writel_relaxed() if MIPS has this.
+>
+> I actually find these useful for tracing MMIO accesses within a driver
+> and it seems many other drivers do this too.  I can drop them though
+> if you'd prefer.
 
-===============
+OK does it turn up in ftrace etc? I was thinking these would be
+inlined by the compiler (especially since you even state they shall
+be inlined) and the symbols trashed?
 
-[ Upstream commit f798217dfd038af981a18bbe4bc57027a08bb182 ]
+>> (...)
+>>> +static int pistachio_gpio_register(struct pistachio_pinctrl *pctl)
+>>> +{
+>>> +       struct device_node *child, *node = pctl->dev->of_node;
+>>> +       struct pistachio_gpio_bank *bank;
+>>> +       unsigned int i = 0;
+>>> +       int irq, ret = 0;
+>>> +
+>>> +       for_each_child_of_node(node, child) {
+>>> +               if (!of_find_property(child, "gpio-controller", NULL))
+>>> +                       continue;
+>>
+>> So why not instead specify "simple-bus" as compatible on the parent node
+>> and have each subnode be its own device (simple-bus will spawn platform
+>> devices for all subnodes).
+>>
+>> Overall this composite-device pattern is discouraged if we can instead have
+>> unique devices for each bank.
+>
+> I think there's an issue here though if some other device probes
+> between the pinctrl driver and the gpiochip drivers.  Since all these
+> pins are configured as GPIOs at POR, the pinctrl driver needs to clear
+> the GPIO enable bit on a pin when enabling a pinmux function for that
+> pin (see pistachio_pinmux_enable()).  If the gpiochip driver has yet
+> to probe, attempting to map the pinctrl pin to a GPIO range/pin (via
+> pinctrl_find_gpio_range_from_pin()) will fail and we won't be able to
+> disable the GPIO function for that pin.
 
-The FPU and DSP are enabled via the CP0 Status CU1 and MX bits by
-kvm_mips_set_c0_status() on a guest exit, presumably in case there is
-active state that needs saving if pre-emption occurs. However neither of
-these bits are cleared again when returning to the guest.
+I was thinking the GPIO driver part should get a -EPROBE_DEFER when
+trying to call gpiochip_add_pin_range() and continue later when the
+pin controller is available?
 
-This effectively gives the guest access to the FPU/DSP hardware after
-the first guest exit even though it is not aware of its presence,
-allowing FP instructions in guest user code to intermittently actually
-execute instead of trapping into the guest OS for emulation. It will
-then read & manipulate the hardware FP registers which technically
-belong to the user process (e.g. QEMU), or are stale from another user
-process. It can also crash the guest OS by causing an FP exception, for
-which a guest exception handler won't have been registered.
+And all drivers using GPIOs in turn get a -EPROBE_DEFER when
+trying to get GPIOs on a not-yet registered GPIO chip.
 
-First lets save and disable the FPU (and MSA) state with lose_fpu(1)
-before entering the guest. This simplifies the problem, especially for
-when guest FPU/MSA support is added in the future, and prevents FR=1 FPU
-state being live when the FR bit gets cleared for the guest, which
-according to the architecture causes the contents of the FPU and vector
-registers to become UNPREDICTABLE.
+Sorry if I don't really know how things work now... :(
+It seems like a logical way to me.
 
-We can then safely remove the enabling of the FPU in
-kvm_mips_set_c0_status(), since there should never be any active FPU or
-MSA state to save at pre-emption, which should plug the FPU leak.
+>  Also it doesn't look like
+> there's a good way to tell gpiolib to disable a GPIO form the pinctrl
+> driver.
 
-DSP state is always live rather than being lazily restored, so for that
-it is simpler to just clear the MX bit again when re-entering the guest.
+Define exactly what you mean by "disable". There is
+pinctrl_free_gpio().
 
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Sanjay Lal <sanjayl@kymasys.com>
-Cc: Gleb Natapov <gleb@kernel.org>
-Cc: kvm@vger.kernel.org
-Cc: linux-mips@linux-mips.org
-Cc: <stable@vger.kernel.org> # v3.10+: 044f0f03eca0: MIPS: KVM: Deliver guest interrupts
-Cc: <stable@vger.kernel.org> # v3.10+: 3ce465e04bfd: MIPS: Export FP functions used by lose_fpu(1) for KVM
-Cc: <stable@vger.kernel.org> # v3.10+
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Signed-off-by: Jiri Slaby <jslaby@suse.cz>
----
- arch/mips/kvm/kvm_locore.S | 2 +-
- arch/mips/kvm/kvm_mips.c   | 6 +++---
- 2 files changed, 4 insertions(+), 4 deletions(-)
+>  Any ideas?  I suppose I could keep the pin-to-GPIO mapping in
+> the pinctrl driver in addition to expressing it in the DT with
+> gpio-ranges, but that doesn't seem too nice.
 
-diff --git a/arch/mips/kvm/kvm_locore.S b/arch/mips/kvm/kvm_locore.S
-index bbace092ad0a..03a2db58b22d 100644
---- a/arch/mips/kvm/kvm_locore.S
-+++ b/arch/mips/kvm/kvm_locore.S
-@@ -428,7 +428,7 @@ __kvm_mips_return_to_guest:
- 	/* Setup status register for running guest in UM */
- 	.set	at
- 	or	v1, v1, (ST0_EXL | KSU_USER | ST0_IE)
--	and	v1, v1, ~ST0_CU0
-+	and	v1, v1, ~(ST0_CU0 | ST0_MX)
- 	.set	noat
- 	mtc0	v1, CP0_STATUS
- 	ehb
-diff --git a/arch/mips/kvm/kvm_mips.c b/arch/mips/kvm/kvm_mips.c
-index 016f163b42da..2cb24788a8a6 100644
---- a/arch/mips/kvm/kvm_mips.c
-+++ b/arch/mips/kvm/kvm_mips.c
-@@ -15,6 +15,7 @@
- #include <linux/vmalloc.h>
- #include <linux/fs.h>
- #include <linux/bootmem.h>
-+#include <asm/fpu.h>
- #include <asm/page.h>
- #include <asm/cacheflush.h>
- #include <asm/mmu_context.h>
-@@ -417,6 +418,8 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu, struct kvm_run *run)
- 		vcpu->mmio_needed = 0;
- 	}
- 
-+	lose_fpu(1);
-+
- 	local_irq_disable();
- 	/* Check if we have any exceptions/interrupts pending */
- 	kvm_mips_deliver_interrupts(vcpu,
-@@ -1021,9 +1024,6 @@ void kvm_mips_set_c0_status(void)
- {
- 	uint32_t status = read_c0_status();
- 
--	if (cpu_has_fpu)
--		status |= (ST0_CU1);
--
- 	if (cpu_has_dsp)
- 		status |= (ST0_MX);
- 
--- 
-2.3.0
+The ranges shall definately be registered from the GPIO side of
+the driver, that much I can tell you for sure...
+
+Yours,
+Linus Walleij

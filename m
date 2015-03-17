@@ -1,57 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Mar 2015 13:16:59 +0100 (CET)
-Received: from mail-oi0-f42.google.com ([209.85.218.42]:36472 "EHLO
-        mail-oi0-f42.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008388AbbCQMQ5nGhz6 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 17 Mar 2015 13:16:57 +0100
-Received: by oigv203 with SMTP id v203so6222758oig.3
-        for <linux-mips@linux-mips.org>; Tue, 17 Mar 2015 05:16:52 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:in-reply-to:references:date
-         :message-id:subject:from:to:cc:content-type;
-        bh=JHLHc2hTVxewxsgkfvzz0GvB8+9khM4g0doIVEC+Ft0=;
-        b=FCX1Vcc/xkatCJM5W4xPuzViEdIX/JpskccqHd+Ijpv1cBFVR996zua0nofVbiKue0
-         ADN1LipBp4vSFxQegewaOiJRRuZV5+GbPeUlhX+MVfR5Q6my4vMobbDf9aH2prZgKGny
-         BwwfjGXwDs7Kmnp90aZ7Jz9c4Bncou6diMKZ8FAX0ghbEwg00ApolYTrKDMwEO2SFuk5
-         qWoaeIaGFFfNIPTgG588UpNfJfuh3/71PKYn9ib5W0AeEHZiO/5X/V0av13ThxeieE20
-         EBtsDTvTJ8bwMssfXNKpSNmXY03R38tnf6oYS7GDI4htJ2IdAaZX2YHrfOV50gOs9phM
-         sOHQ==
-X-Gm-Message-State: ALoCoQlT1bnskn/Ai0wWWwX5q0jAR9sFupT3yorqJ+sX1MKCT6wAd7q8zq9pQAKIMFYn937PUwgL
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Mar 2015 15:08:01 +0100 (CET)
+Received: from smtp.citrix.com ([66.165.176.89]:33756 "EHLO SMTP.CITRIX.COM"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27013979AbbCQOH72SkAh (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 17 Mar 2015 15:07:59 +0100
+X-IronPort-AV: E=Sophos;i="5.11,416,1422921600"; 
+   d="scan'208";a="244167523"
+Message-ID: <1426601130.18247.238.camel@citrix.com>
+Subject: Re: [Xen-devel] [PATCH v6 07/30] PCI: Pass PCI domain number
+ combined with root bus number
+From:   Ian Campbell <ian.campbell@citrix.com>
+To:     Manish Jaggi <mjaggi@caviumnetworks.com>
+CC:     Yijing Wang <wangyijing@huawei.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        <linux-mips@linux-mips.org>, <linux-ia64@vger.kernel.org>,
+        <linux-sh@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+        Chris Metcalf <cmetcalf@ezchip.com>,
+        Paul Mackerras <paulus@samba.org>,
+        <sparclinux@vger.kernel.org>, Guan Xuetao <gxt@mprc.pku.edu.cn>,
+        <linux-s390@vger.kernel.org>,
+        Russell King <linux@arm.linux.org.uk>,
+        Michael Ellerman <mpe@ellerman.id.au>, <x86@kernel.org>,
+        Sebastian Ott <sebott@linux.vnet.ibm.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        <xen-devel@lists.xenproject.org>, Matt Turner <mattst88@gmail.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Marc Zyngier <marc.zyngier@arm.com>,
+        Rusty Russell <rusty@rustcorp.com.au>,
+        <linux-m68k@lists.linux-m68k.org>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "Yinghai Lu" <yinghai@kernel.org>,
+        Gerald Schaefer <gerald.schaefer@de.ibm.com>,
+        Richard Henderson <rth@twiddle.net>,
+        Liviu Dudau <liviu@dudau.co.uk>,
+        Michal Simek <monstr@monstr.eu>,
+        Tony Luck <tony.luck@intel.com>,
+        <linux-kernel@vger.kernel.org>, Ralf Baechle <ralf@linux-mips.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        <linux-alpha@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>,
+        Jiang Liu <jiang.liu@linux.intel.com>
+Date:   Tue, 17 Mar 2015 14:05:30 +0000
+In-Reply-To: <5507B88D.1020300@caviumnetworks.com>
+References: <1425868467-9667-1-git-send-email-wangyijing@huawei.com>
+         <1425868467-9667-8-git-send-email-wangyijing@huawei.com>
+         <5507B88D.1020300@caviumnetworks.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.12.9-1+b1 
 MIME-Version: 1.0
-X-Received: by 10.182.241.99 with SMTP id wh3mr9014415obc.81.1426594612456;
- Tue, 17 Mar 2015 05:16:52 -0700 (PDT)
-Received: by 10.182.132.45 with HTTP; Tue, 17 Mar 2015 05:16:52 -0700 (PDT)
-In-Reply-To: <CAL1qeaHzpi3_PNpxnLOf=b8d2n5DrRrnB_yiZFHpiP8C7b0hSg@mail.gmail.com>
-References: <1424744104-14151-1-git-send-email-abrestic@chromium.org>
-        <1424744104-14151-3-git-send-email-abrestic@chromium.org>
-        <CACRpkdbqioAreyDwM2JN87=gH20n1OkUXPjdkW885iDWUV1NnA@mail.gmail.com>
-        <CAL1qeaHzpi3_PNpxnLOf=b8d2n5DrRrnB_yiZFHpiP8C7b0hSg@mail.gmail.com>
-Date:   Tue, 17 Mar 2015 13:16:52 +0100
-Message-ID: <CACRpkdbt4MQYY7MqjFN-1Dp0am1PaOZ1YL+bKc8SJrtFDnSW_Q@mail.gmail.com>
-Subject: Re: [PATCH 2/2] pinctrl: Add Pistachio SoC pin control driver
-From:   Linus Walleij <linus.walleij@linaro.org>
-To:     Andrew Bresticker <abrestic@chromium.org>
-Cc:     Alexandre Courbot <gnurou@gmail.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-        Linux MIPS <linux-mips@linux-mips.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Ezequiel Garcia <ezequiel.garcia@imgtec.com>,
-        James Hartley <james.hartley@imgtec.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        Damien Horsley <Damien.Horsley@imgtec.com>,
-        Govindraj Raja <govindraj.raja@imgtec.com>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <linus.walleij@linaro.org>
+Content-Transfer-Encoding: 7bit
+X-DLP:  MIA2
+Return-Path: <Ian.Campbell@citrix.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46431
+X-archive-position: 46432
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linus.walleij@linaro.org
+X-original-sender: ian.campbell@citrix.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -64,78 +73,32 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Mar 6, 2015 at 7:51 PM, Andrew Bresticker <abrestic@chromium.org> wrote:
-> On Fri, Mar 6, 2015 at 3:55 AM, Linus Walleij <linus.walleij@linaro.org> wrote:
+On Tue, 2015-03-17 at 10:45 +0530, Manish Jaggi wrote:
+> On Monday 09 March 2015 08:04 AM, Yijing Wang wrote:
+> > Now we could pass PCI domain combined with bus number
+> > in u32 argu. Because in arm/arm64, PCI domain number
+> > is assigned by pci_bus_assign_domain_nr(). So we leave
+> > pci_scan_root_bus() and pci_create_root_bus() in arm/arm64
+> > unchanged. A new function pci_host_assign_domain_nr()
+> > will be introduced for arm/arm64 to assign domain number
+> > in later patch.
+> Hi,
+> I think these changes might not be required. We have made very few 
+> changes in the xen-pcifront to support PCI passthrough in arm64.
+> As per xen architecture for a domU only a single pci virtual bus is 
+> created and all passthrough devices are attached to it.
 
->>> +static inline void gpio_writel(struct pistachio_gpio_bank *bank, u32 val,
->>> +                              u32 reg)
->>> +{
->>> +       writel(val, bank->base + reg);
->>> +}
->>
->> I don't see the point of these special readl/writel accessors. Just
->> use readl/writel
->> directly. Or consider readl/writel_relaxed() if MIPS has this.
->
-> I actually find these useful for tracing MMIO accesses within a driver
-> and it seems many other drivers do this too.  I can drop them though
-> if you'd prefer.
+I guess you are only talking about the changes to xen-pcifront.c?
+Otherwise you are ignoring the dom0 case which is exposed to the real
+set of PCI root complexes and anyway I'm not sure how "not needed for
+Xen domU" translates into not required, since it is clearly required for
+other systems.
 
-OK does it turn up in ftrace etc? I was thinking these would be
-inlined by the compiler (especially since you even state they shall
-be inlined) and the symbols trashed?
+Strictly speaking the Xen pciif protocol does support multiple buses,
+it's just that the tools, and perhaps kernels, have not yet felt any
+need to actually make use of that.
 
->> (...)
->>> +static int pistachio_gpio_register(struct pistachio_pinctrl *pctl)
->>> +{
->>> +       struct device_node *child, *node = pctl->dev->of_node;
->>> +       struct pistachio_gpio_bank *bank;
->>> +       unsigned int i = 0;
->>> +       int irq, ret = 0;
->>> +
->>> +       for_each_child_of_node(node, child) {
->>> +               if (!of_find_property(child, "gpio-controller", NULL))
->>> +                       continue;
->>
->> So why not instead specify "simple-bus" as compatible on the parent node
->> and have each subnode be its own device (simple-bus will spawn platform
->> devices for all subnodes).
->>
->> Overall this composite-device pattern is discouraged if we can instead have
->> unique devices for each bank.
->
-> I think there's an issue here though if some other device probes
-> between the pinctrl driver and the gpiochip drivers.  Since all these
-> pins are configured as GPIOs at POR, the pinctrl driver needs to clear
-> the GPIO enable bit on a pin when enabling a pinmux function for that
-> pin (see pistachio_pinmux_enable()).  If the gpiochip driver has yet
-> to probe, attempting to map the pinctrl pin to a GPIO range/pin (via
-> pinctrl_find_gpio_range_from_pin()) will fail and we won't be able to
-> disable the GPIO function for that pin.
+There doesn't seem to be any harm in updating pcifront to follow this
+generic API change.
 
-I was thinking the GPIO driver part should get a -EPROBE_DEFER when
-trying to call gpiochip_add_pin_range() and continue later when the
-pin controller is available?
-
-And all drivers using GPIOs in turn get a -EPROBE_DEFER when
-trying to get GPIOs on a not-yet registered GPIO chip.
-
-Sorry if I don't really know how things work now... :(
-It seems like a logical way to me.
-
->  Also it doesn't look like
-> there's a good way to tell gpiolib to disable a GPIO form the pinctrl
-> driver.
-
-Define exactly what you mean by "disable". There is
-pinctrl_free_gpio().
-
->  Any ideas?  I suppose I could keep the pin-to-GPIO mapping in
-> the pinctrl driver in addition to expressing it in the DT with
-> gpio-ranges, but that doesn't seem too nice.
-
-The ranges shall definately be registered from the GPIO side of
-the driver, that much I can tell you for sure...
-
-Yours,
-Linus Walleij
+Ian.

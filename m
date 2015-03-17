@@ -1,24 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Mar 2015 09:42:52 +0100 (CET)
-Received: from ip4-83-240-67-251.cust.nbox.cz ([83.240.67.251]:43976 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Mar 2015 09:43:10 +0100 (CET)
+Received: from ip4-83-240-67-251.cust.nbox.cz ([83.240.67.251]:44000 "EHLO
         ip4-83-240-18-248.cust.nbox.cz" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27007371AbbCQImqM70-T (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 17 Mar 2015 09:42:46 +0100
+        by eddie.linux-mips.org with ESMTP id S27007654AbbCQImr1iTpt (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 17 Mar 2015 09:42:47 +0100
 Received: from ku by ip4-83-240-18-248.cust.nbox.cz with local (Exim 4.85)
         (envelope-from <jslaby@suse.cz>)
-        id 1YXn58-0005uo-Qg; Tue, 17 Mar 2015 09:42:34 +0100
+        id 1YXn58-0005qs-8v; Tue, 17 Mar 2015 09:42:34 +0100
 From:   Jiri Slaby <jslaby@suse.cz>
 To:     stable@vger.kernel.org
 Cc:     linux-kernel@vger.kernel.org, James Hogan <james.hogan@imgtec.com>,
         Paolo Bonzini <pbonzini@redhat.com>,
         Ralf Baechle <ralf@linux-mips.org>,
-        Marcelo Tosatti <mtosatti@redhat.com>,
-        Gleb Natapov <gleb@kernel.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Ingo Molnar <mingo@redhat.com>, linux-mips@linux-mips.org,
-        kvm@vger.kernel.org, Jiri Slaby <jslaby@suse.cz>
-Subject: [PATCH 3.12 110/175] KVM: MIPS: Fix trace event to save PC directly
-Date:   Tue, 17 Mar 2015 09:41:28 +0100
-Message-Id: <f14b3c6a641171aa18b98597ef6d4eb5015d0b8a.1426581621.git.jslaby@suse.cz>
+        Paul Burton <paul.burton@imgtec.com>,
+        Gleb Natapov <gleb@kernel.org>, kvm@vger.kernel.org,
+        linux-mips@linux-mips.org, Jiri Slaby <jslaby@suse.cz>
+Subject: [PATCH 3.12 070/175] MIPS: Export FP functions used by lose_fpu(1) for KVM
+Date:   Tue, 17 Mar 2015 09:40:48 +0100
+Message-Id: <4f877b0c89a891eaea726b7972217c8252b250c7.1426581621.git.jslaby@suse.cz>
 X-Mailer: git-send-email 2.3.0
 In-Reply-To: <a48f1a6bfc3ee997dfd719eaecb44a05477b93e2.1426581620.git.jslaby@suse.cz>
 References: <a48f1a6bfc3ee997dfd719eaecb44a05477b93e2.1426581620.git.jslaby@suse.cz>
@@ -28,7 +26,7 @@ Return-Path: <jslaby@suse.cz>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46427
+X-archive-position: 46428
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -51,62 +49,60 @@ From: James Hogan <james.hogan@imgtec.com>
 
 ===============
 
-commit b3cffac04eca9af46e1e23560a8ee22b1bd36d43 upstream.
+commit 3ce465e04bfd8de9956d515d6e9587faac3375dc upstream.
 
-Currently the guest exit trace event saves the VCPU pointer to the
-structure, and the guest PC is retrieved by dereferencing it when the
-event is printed rather than directly from the trace record. This isn't
-safe as the printing may occur long afterwards, after the PC has changed
-and potentially after the VCPU has been freed. Usually this results in
-the same (wrong) PC being printed for multiple trace events. It also
-isn't portable as userland has no way to access the VCPU data structure
-when interpreting the trace record itself.
+Export the _save_fp asm function used by the lose_fpu(1) macro to GPL
+modules so that KVM can make use of it when it is built as a module.
 
-Lets save the actual PC in the structure so that the correct value is
-accessible later.
+This fixes the following build error when CONFIG_KVM=m due to commit
+f798217dfd03 ("KVM: MIPS: Don't leak FPU/DSP to guest"):
 
-Fixes: 669e846e6c4e ("KVM/MIPS32: MIPS arch specific APIs for KVM")
+ERROR: "_save_fp" [arch/mips/kvm/kvm.ko] undefined!
+
 Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Fixes: f798217dfd03 (KVM: MIPS: Don't leak FPU/DSP to guest)
 Cc: Paolo Bonzini <pbonzini@redhat.com>
 Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Marcelo Tosatti <mtosatti@redhat.com>
+Cc: Paul Burton <paul.burton@imgtec.com>
 Cc: Gleb Natapov <gleb@kernel.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: linux-mips@linux-mips.org
 Cc: kvm@vger.kernel.org
-Acked-by: Steven Rostedt <rostedt@goodmis.org>
-Signed-off-by: Marcelo Tosatti <mtosatti@redhat.com>
+Cc: linux-mips@linux-mips.org
+Patchwork: https://patchwork.linux-mips.org/patch/9260/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+[james.hogan@imgtec.com: Only export when CPU_R4K_FPU=y prior to v3.16,
+ so as not to break the Octeon build which excludes FPU support. KVM
+ depends on MIPS32r2 anyway.]
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
 Signed-off-by: Jiri Slaby <jslaby@suse.cz>
 ---
- arch/mips/kvm/trace.h | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/mips/kernel/mips_ksyms.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/arch/mips/kvm/trace.h b/arch/mips/kvm/trace.h
-index bc9e0f406c08..e51621e36152 100644
---- a/arch/mips/kvm/trace.h
-+++ b/arch/mips/kvm/trace.h
-@@ -26,18 +26,18 @@ TRACE_EVENT(kvm_exit,
- 	    TP_PROTO(struct kvm_vcpu *vcpu, unsigned int reason),
- 	    TP_ARGS(vcpu, reason),
- 	    TP_STRUCT__entry(
--			__field(struct kvm_vcpu *, vcpu)
-+			__field(unsigned long, pc)
- 			__field(unsigned int, reason)
- 	    ),
+diff --git a/arch/mips/kernel/mips_ksyms.c b/arch/mips/kernel/mips_ksyms.c
+index 6e58e97fcd39..cedeb5686eb5 100644
+--- a/arch/mips/kernel/mips_ksyms.c
++++ b/arch/mips/kernel/mips_ksyms.c
+@@ -14,6 +14,7 @@
+ #include <linux/mm.h>
+ #include <asm/uaccess.h>
+ #include <asm/ftrace.h>
++#include <asm/fpu.h>
  
- 	    TP_fast_assign(
--			__entry->vcpu = vcpu;
-+			__entry->pc = vcpu->arch.pc;
- 			__entry->reason = reason;
- 	    ),
+ extern void *__bzero(void *__s, size_t __count);
+ extern long __strncpy_from_user_nocheck_asm(char *__to,
+@@ -26,6 +27,13 @@ extern long __strnlen_user_nocheck_asm(const char *s);
+ extern long __strnlen_user_asm(const char *s);
  
- 	    TP_printk("[%s]PC: 0x%08lx",
- 		      kvm_mips_exit_types_str[__entry->reason],
--		      __entry->vcpu->arch.pc)
-+		      __entry->pc)
- );
- 
- #endif /* _TRACE_KVM_H */
+ /*
++ * Core architecture code
++ */
++#ifdef CONFIG_CPU_R4K_FPU
++EXPORT_SYMBOL_GPL(_save_fp);
++#endif
++
++/*
+  * String functions
+  */
+ EXPORT_SYMBOL(memset);
 -- 
 2.3.0

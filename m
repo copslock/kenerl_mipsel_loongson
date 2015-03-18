@@ -1,53 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Mar 2015 12:41:57 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:21919 "EHLO
-        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27007238AbbCRLlyU7R8e (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 18 Mar 2015 12:41:54 +0100
-Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
-        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id A8C4D41F8E05;
-        Wed, 18 Mar 2015 11:41:49 +0000 (GMT)
-Received: from mailapp01.imgtec.com ([10.100.180.241])
-  by imgpgp01.kl.imgtec.org (PGP Universal service);
-  Wed, 18 Mar 2015 11:41:49 +0000
-X-PGP-Universal: processed;
-        by imgpgp01.kl.imgtec.org on Wed, 18 Mar 2015 11:41:49 +0000
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 332E568552889;
-        Wed, 18 Mar 2015 11:41:47 +0000 (GMT)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Wed, 18 Mar 2015 11:41:49 +0000
-Received: from [192.168.154.110] (192.168.154.110) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Wed, 18 Mar
- 2015 11:41:48 +0000
-Message-ID: <5509647C.2010004@imgtec.com>
-Date:   Wed, 18 Mar 2015 11:41:48 +0000
-From:   James Hogan <james.hogan@imgtec.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.5.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Mar 2015 14:06:27 +0100 (CET)
+Received: from demumfd002.nsn-inter.net ([93.183.12.31]:35823 "EHLO
+        demumfd002.nsn-inter.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007238AbbCRNG0Mlmlu (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 18 Mar 2015 14:06:26 +0100
+Received: from demuprx017.emea.nsn-intra.net ([10.150.129.56])
+        by demumfd002.nsn-inter.net (8.14.3/8.14.3) with ESMTP id t2ID5Q79032086
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
+        Wed, 18 Mar 2015 13:05:26 GMT
+Received: from [10.151.38.33] ([10.151.38.33])
+        by demuprx017.emea.nsn-intra.net (8.12.11.20060308/8.12.11) with ESMTP id t2ID5Lm1011223;
+        Wed, 18 Mar 2015 14:05:21 +0100
+Message-ID: <55097811.8050003@nokia.com>
+Date:   Wed, 18 Mar 2015 14:05:21 +0100
+From:   Alexander Sverdlin <alexander.sverdlin@nokia.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.1.2
 MIME-Version: 1.0
-To:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
-        <linux-mips@linux-mips.org>, <wangr@lemote.com>,
-        <peterz@infradead.org>, <qais.yousef@imgtec.com>,
-        <linux-kernel@vger.kernel.org>, <ralf@linux-mips.org>,
-        <davidlohr@hp.com>, <chenhc@lemote.com>, <manuel.lauss@gmail.com>,
-        <mingo@kernel.org>
-Subject: Re: [PATCH] MIPS: MSA: misaligned support
-References: <20150318011630.2702.28882.stgit@ubuntu-yegoshin>
-In-Reply-To: <20150318011630.2702.28882.stgit@ubuntu-yegoshin>
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature";
-        boundary="OAT8novCxdF0GIvhoNDriieIdKefoEln5"
-X-Originating-IP: [192.168.154.110]
-X-ESG-ENCRYPT-TAG: da4c5968
-Return-Path: <James.Hogan@imgtec.com>
+To:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        David Daney <ddaney@cavium.com>, ddaney.cavm@gmail.com,
+        "ext Daney, David" <David.Daney@caviumnetworks.com>
+CC:     Rob Herring <robh@kernel.org>, Jiri Kosina <jkosina@suse.cz>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Masanari Iida <standby24x7@gmail.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        "Rulf, Mathias (Nokia - DE/Ulm)" <mathias.rulf@nokia.com>
+Subject: [PATCH] pci: octeon: Remove udelay() causing huge IRQ latency
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+X-purgate-type: clean
+X-purgate-Ad: Categorized by eleven eXpurgate (R) http://www.eleven.de
+X-purgate: clean
+X-purgate: This mail is considered clean (visit http://www.eleven.de for further information)
+X-purgate-size: 2371
+X-purgate-ID: 151667::1426683926-00007F9C-137A230F/0/0
+Return-Path: <alexander.sverdlin@nokia.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46440
+X-archive-position: 46441
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: alexander.sverdlin@nokia.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -60,451 +53,71 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---OAT8novCxdF0GIvhoNDriieIdKefoEln5
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+udelay() in PCI/PCIe read/write callbacks cause 30ms IRQ latency on Octeon
+platforms because these operations are called from PCI_OP_READ() and
+PCI_OP_WRITE() under raw_spin_lock_irqsave().
 
-Hi Leonid,
+Signed-off-by: Alexander Sverdlin <alexander.sverdlin@nokia.com>
+---
+ arch/mips/include/asm/octeon/pci-octeon.h |    3 ---
+ arch/mips/pci/pci-octeon.c                |    6 ------
+ arch/mips/pci/pcie-octeon.c               |    8 --------
+ 3 files changed, 0 insertions(+), 17 deletions(-)
 
-On 18/03/15 01:16, Leonid Yegoshin wrote:
-> MIPS R5, MIPS R6 and MSA HW specs allow a broad range of address except=
-ion
-> on unalaigned MSA load/store operations - from none unaligned up to
-> full support in HW. In practice, it is expected that HW can occasionall=
-y
-> triggers AdE for non-aligned data access (misalignment). It is usually
-> expected on page boundaries because HW handling of two TLBs in single
-> data access operation may be complicated and expensive.
->=20
-> So, this patch handles MSA LD.df and ST.df Address Error exceptions.
->=20
-> It handles separately two cases - MSA owned by thread and MSA registers=
-
-> saved in current->thread.fpu. If thread still ownes MSA unit then it
-> loads and stores directly with MSA unit and only one MSA register. Savi=
-ng
-> and restoring the full MSA context (512bytes) on each misalign exceptio=
-n
-> is expensive! Preemption is disabled, of course.
->=20
-> Signed-off-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-> ---
->  arch/mips/include/asm/processor.h |    2 +
->  arch/mips/include/uapi/asm/inst.h |   21 +++++
->  arch/mips/kernel/r4k_fpu.S        |  107 ++++++++++++++++++++++++++++
->  arch/mips/kernel/unaligned.c      |  143 +++++++++++++++++++++++++++++=
-++++++++
->  4 files changed, 273 insertions(+)
-
-Please also run checkpatch (a few long lines) and rebase on v4.0-rcX
-(minor conflict in unaligned.c).
-
-Thanks
-James
-
->=20
-> diff --git a/arch/mips/include/asm/processor.h b/arch/mips/include/asm/=
-processor.h
-> index f1df4cb4a286..af2675060244 100644
-> --- a/arch/mips/include/asm/processor.h
-> +++ b/arch/mips/include/asm/processor.h
-> @@ -104,6 +104,8 @@ extern unsigned int vced_count, vcei_count;
->  #endif
-> =20
->  union fpureg {
-> +	__u8    val8[FPU_REG_WIDTH / 8];
-> +	__u16   val16[FPU_REG_WIDTH / 16];
->  	__u32	val32[FPU_REG_WIDTH / 32];
->  	__u64	val64[FPU_REG_WIDTH / 64];
->  };
-> diff --git a/arch/mips/include/uapi/asm/inst.h b/arch/mips/include/uapi=
-/asm/inst.h
-> index 89c22433b1c6..7ab6987cb7d5 100644
-> --- a/arch/mips/include/uapi/asm/inst.h
-> +++ b/arch/mips/include/uapi/asm/inst.h
-> @@ -58,6 +58,7 @@ enum spec_op {
->  	dsll_op, spec7_unused_op, dsrl_op, dsra_op,
->  	dsll32_op, spec8_unused_op, dsrl32_op, dsra32_op
->  };
-> +#define msa_op  mdmx_op
-> =20
->  /*
->   * func field of spec2 opcode.
-> @@ -217,6 +218,14 @@ enum bshfl_func {
->  };
-> =20
->  /*
-> + * func field for MSA MI10 format
-> + */
-> +enum msa_mi10_func {
-> +	msa_ld_op =3D 8,
-> +	msa_st_op =3D 9,
-> +};
-> +
-> +/*
->   * (microMIPS) Major opcodes.
->   */
->  enum mm_major_op {
-> @@ -616,6 +625,17 @@ struct spec3_format {   /* SPEC3 */
->  	;)))))
->  };
-> =20
-> +struct msa_mi10_format {        /* MSA */
-> +	__BITFIELD_FIELD(unsigned int opcode : 6,
-> +	__BITFIELD_FIELD(signed int s10 : 10,
-> +	__BITFIELD_FIELD(unsigned int rs : 5,
-> +	__BITFIELD_FIELD(unsigned int wd : 5,
-> +	__BITFIELD_FIELD(unsigned int func : 4,
-> +	__BITFIELD_FIELD(unsigned int df : 2,
-> +	;))))))
-> +};
-> +
-> +
->  /*
->   * microMIPS instruction formats (32-bit length)
->   *
-> @@ -884,6 +904,7 @@ union mips_instruction {
->  	struct p_format p_format;
->  	struct f_format f_format;
->  	struct ma_format ma_format;
-> +	struct msa_mi10_format msa_mi10_format;
->  	struct b_format b_format;
->  	struct ps_format ps_format;
->  	struct v_format v_format;
-> diff --git a/arch/mips/kernel/r4k_fpu.S b/arch/mips/kernel/r4k_fpu.S
-> index 6c160c67984c..5f48f45f81e7 100644
-> --- a/arch/mips/kernel/r4k_fpu.S
-> +++ b/arch/mips/kernel/r4k_fpu.S
-> @@ -13,6 +13,7 @@
->   * Copyright (C) 1999, 2001 Silicon Graphics, Inc.
->   */
->  #include <asm/asm.h>
-> +#include <asm/asmmacro.h>
->  #include <asm/errno.h>
->  #include <asm/fpregdef.h>
->  #include <asm/mipsregs.h>
-> @@ -268,6 +269,112 @@ LEAF(_restore_fp_context32)
->  	END(_restore_fp_context32)
->  #endif
-> =20
-> +#ifdef CONFIG_CPU_HAS_MSA
-> +
-> +	.macro  msa_ld_d    wd, base
-> +	ld_d    \wd, 0, \base
-> +	jalr    $0, $31
-> +	  nop
-> +	.align  4
-> +	.endm
-> +
-> +	.macro  msa_st_d    wd, base
-> +	st_d    \wd, 0, \base
-> +	jalr    $0, $31
-> +	  nop
-> +	.align  4
-> +	.endm
-> +
-> +LEAF(msa_to_wd)
-> +	.set    push
-> +	.set    noreorder
-> +	sll         t0, a0, 4
-> +	PTR_LA      t1, Lmsa_to
-> +	PTR_ADDU    t0, t0, t1
-> +	jalr        $0, t0
-> +	  nop
-> +Lmsa_to:
-> +	msa_ld_d    0, a1
-> +	msa_ld_d    1, a1
-> +	msa_ld_d    2, a1
-> +	msa_ld_d    3, a1
-> +	msa_ld_d    4, a1
-> +	msa_ld_d    5, a1
-> +	msa_ld_d    6, a1
-> +	msa_ld_d    7, a1
-> +	msa_ld_d    8, a1
-> +	msa_ld_d    9, a1
-> +	msa_ld_d    10, a1
-> +	msa_ld_d    11, a1
-> +	msa_ld_d    12, a1
-> +	msa_ld_d    13, a1
-> +	msa_ld_d    14, a1
-> +	msa_ld_d    15, a1
-> +	msa_ld_d    16, a1
-> +	msa_ld_d    17, a1
-> +	msa_ld_d    18, a1
-> +	msa_ld_d    19, a1
-> +	msa_ld_d    20, a1
-> +	msa_ld_d    21, a1
-> +	msa_ld_d    22, a1
-> +	msa_ld_d    23, a1
-> +	msa_ld_d    24, a1
-> +	msa_ld_d    25, a1
-> +	msa_ld_d    26, a1
-> +	msa_ld_d    27, a1
-> +	msa_ld_d    28, a1
-> +	msa_ld_d    29, a1
-> +	msa_ld_d    30, a1
-> +	msa_ld_d    31, a1
-> +	.set    pop
-> +	END(msa_to_wd)
-> +
-> +LEAF(msa_from_wd)
-> +	.set    push
-> +	.set    noreorder
-> +	sll         t0, a0, 4
-> +	PTR_LA      t1, Lmsa_from
-> +	PTR_ADDU    t0, t0, t1
-> +	jalr        $0, t0
-> +	  nop
-> +Lmsa_from:
-> +	msa_st_d    0, a1
-> +	msa_st_d    1, a1
-> +	msa_st_d    2, a1
-> +	msa_st_d    3, a1
-> +	msa_st_d    4, a1
-> +	msa_st_d    5, a1
-> +	msa_st_d    6, a1
-> +	msa_st_d    7, a1
-> +	msa_st_d    8, a1
-> +	msa_st_d    9, a1
-> +	msa_st_d    10, a1
-> +	msa_st_d    11, a1
-> +	msa_st_d    12, a1
-> +	msa_st_d    13, a1
-> +	msa_st_d    14, a1
-> +	msa_st_d    15, a1
-> +	msa_st_d    16, a1
-> +	msa_st_d    17, a1
-> +	msa_st_d    18, a1
-> +	msa_st_d    19, a1
-> +	msa_st_d    20, a1
-> +	msa_st_d    21, a1
-> +	msa_st_d    22, a1
-> +	msa_st_d    23, a1
-> +	msa_st_d    24, a1
-> +	msa_st_d    25, a1
-> +	msa_st_d    26, a1
-> +	msa_st_d    27, a1
-> +	msa_st_d    28, a1
-> +	msa_st_d    29, a1
-> +	msa_st_d    30, a1
-> +	msa_st_d    31, a1
-> +	.set    pop
-> +	END(msa_from_wd)
-> +
-> +#endif /* CONFIG_CPU_HAS_MSA */
-> +
->  	.set	reorder
-> =20
->  	.type	fault@function
-> diff --git a/arch/mips/kernel/unaligned.c b/arch/mips/kernel/unaligned.=
-c
-> index e11906dff885..558f41fa93c5 100644
-> --- a/arch/mips/kernel/unaligned.c
-> +++ b/arch/mips/kernel/unaligned.c
-> @@ -108,6 +108,11 @@ static u32 unaligned_action;
->  #endif
->  extern void show_registers(struct pt_regs *regs);
-> =20
-> +#ifdef CONFIG_CPU_HAS_MSA
-> +void msa_to_wd(unsigned int wd, union fpureg *from);
-> +void msa_from_wd(unsigned int wd, union fpureg *to);
-> +#endif
-> +
->  #ifdef __BIG_ENDIAN
->  #define     LoadHW(addr, value, res)  \
->  		__asm__ __volatile__ (".set\tnoat\n"        \
-> @@ -422,6 +427,64 @@ extern void show_registers(struct pt_regs *regs);
->  		: "r" (value), "r" (addr), "i" (-EFAULT));
->  #endif
-> =20
-> +#ifdef CONFIG_CPU_HAS_MSA
-> +#ifdef __BIG_ENDIAN
-> +/*
-> + * MSA data format conversion.
-> + * Only for BIG ENDIAN - LITTLE ENDIAN has register format which match=
-es memory
-> + * layout contiguosly.
-> + *
-> + * Conversion is done between two Double words and other formats (W/H/=
-B)
-> + * because kernel uses LD.D and ST.D to load/store MSA registers and k=
-eeps
-> + * MSA registers in this format in current->thread.fpu.fpr
-> + */
-> +static void msa_convert(union fpureg *to, union fpureg *from, int fmt)=
-
-> +{
-> +	switch (fmt) {
-> +	case 0: /* byte */
-> +		to->val8[0] =3D from->val8[7];
-> +		to->val8[1] =3D from->val8[6];
-> +		to->val8[2] =3D from->val8[5];
-> +		to->val8[3] =3D from->val8[4];
-> +		to->val8[4] =3D from->val8[3];
-> +		to->val8[5] =3D from->val8[2];
-> +		to->val8[6] =3D from->val8[1];
-> +		to->val8[7] =3D from->val8[0];
-> +		to->val8[8] =3D from->val8[15];
-> +		to->val8[9] =3D from->val8[14];
-> +		to->val8[10] =3D from->val8[13];
-> +		to->val8[11] =3D from->val8[12];
-> +		to->val8[12] =3D from->val8[11];
-> +		to->val8[13] =3D from->val8[10];
-> +		to->val8[14] =3D from->val8[9];
-> +		to->val8[15] =3D from->val8[8];
-> +		break;
-> +
-> +	case 1: /* halfword */
-> +		to->val16[0] =3D from->val16[3];
-> +		to->val16[1] =3D from->val16[2];
-> +		to->val16[2] =3D from->val16[1];
-> +		to->val16[3] =3D from->val16[0];
-> +		to->val16[4] =3D from->val16[7];
-> +		to->val16[5] =3D from->val16[6];
-> +		to->val16[6] =3D from->val16[5];
-> +		to->val16[7] =3D from->val16[4];
-> +		break;
-> +
-> +	case 2: /* word */
-> +		to->val32[0] =3D from->val32[1];
-> +		to->val32[1] =3D from->val32[0];
-> +		to->val32[2] =3D from->val32[3];
-> +		to->val32[3] =3D from->val32[2];
-> +		break;
-> +
-> +	case 3: /* doubleword, no conversion */
-> +		break;
-> +	}
-> +}
-> +#endif
-> +#endif
-> +
->  static void emulate_load_store_insn(struct pt_regs *regs,
->  	void __user *addr, unsigned int __user *pc)
->  {
-> @@ -434,6 +497,10 @@ static void emulate_load_store_insn(struct pt_regs=
- *regs,
->  #ifdef	CONFIG_EVA
->  	mm_segment_t seg;
->  #endif
-> +#ifdef CONFIG_CPU_HAS_MSA
-> +	union fpureg msadatabase[2], *msadata;
-> +	unsigned int func, df, rs, wd;
-> +#endif
->  	origpc =3D (unsigned long)pc;
->  	orig31 =3D regs->regs[31];
-> =20
-> @@ -703,6 +770,82 @@ static void emulate_load_store_insn(struct pt_regs=
- *regs,
->  			break;
->  		return;
-> =20
-> +#ifdef CONFIG_CPU_HAS_MSA
-> +	case msa_op:
-> +		if (cpu_has_mdmx)
-> +			goto sigill;
-> +
-> +		func =3D insn.msa_mi10_format.func;
-> +		switch (func) {
-> +		default:
-> +			goto sigbus;
-> +
-> +		case msa_ld_op:
-> +		case msa_st_op:
-> +			;
-> +		}
-> +
-> +		if (!thread_msa_context_live())
-> +			goto sigbus;
-> +
-> +		df =3D insn.msa_mi10_format.df;
-> +		rs =3D insn.msa_mi10_format.rs;
-> +		wd =3D insn.msa_mi10_format.wd;
-> +		addr =3D (unsigned long *)(regs->regs[rs] + (insn.msa_mi10_format.s1=
-0 * (1 << df)));
-> +		/* align a working space in stack... */
-> +		msadata =3D (union fpureg *)(((unsigned long)msadatabase + 15) & ~(u=
-nsigned long)0xf);
-> +		if (func =3D=3D msa_ld_op) {
-> +			if (!access_ok(VERIFY_READ, addr, 16))
-> +				goto sigbus;
-> +			compute_return_epc(regs);
-> +			res =3D __copy_from_user_inatomic(msadata, addr, 16);
-> +			if (res)
-> +				goto fault;
-> +			preempt_disable();
-> +			if (test_thread_flag(TIF_USEDMSA)) {
-> +#ifdef __BIG_ENDIAN
-> +				msa_convert(&current->thread.fpu.fpr[wd], msadata, df);
-> +				msa_to_wd(wd, &current->thread.fpu.fpr[wd]);
-> +#else
-> +				msa_to_wd(wd, msadata);
-> +#endif
-> +				preempt_enable();
-> +			} else {
-> +				preempt_enable();
-> +#ifdef __BIG_ENDIAN
-> +				msa_convert(&current->thread.fpu.fpr[wd], msadata, df);
-> +#else
-> +				current->thread.fpu.fpr[wd] =3D *msadata;
-> +#endif
-> +			}
-> +		} else {
-> +			if (!access_ok(VERIFY_WRITE, addr, 16))
-> +				goto sigbus;
-> +			compute_return_epc(regs);
-> +			if (test_thread_flag(TIF_USEDMSA)) {
-> +#ifdef __BIG_ENDIAN
-> +				msa_from_wd(wd, &current->thread.fpu.fpr[wd]);
-> +				msa_convert(msadata, &current->thread.fpu.fpr[wd], df);
-> +#else
-> +				msa_from_wd(wd, msadata);
-> +#endif
-> +				preempt_enable();
-> +			} else {
-> +				preempt_enable();
-> +#ifdef __BIG_ENDIAN
-> +				msa_convert(msadata, &current->thread.fpu.fpr[wd], df);
-> +#else
-> +				*msadata =3D current->thread.fpu.fpr[wd];
-> +#endif
-> +			}
-> +			res =3D __copy_to_user_inatomic(addr, msadata, 16);
-> +			if (res)
-> +				goto fault;
-> +		}
-> +
-> +		break;
-> +#endif /* CONFIG_CPU_HAS_MSA */
-> +
->  	/*
->  	 * COP2 is available to implementor for application specific use.
->  	 * It's up to applications to register a notifier chain and do
->=20
->=20
-
-
---OAT8novCxdF0GIvhoNDriieIdKefoEln5
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQIcBAEBAgAGBQJVCWR8AAoJEGwLaZPeOHZ6inMP/3bdHEYhlZHvERqhVpdsCgj5
-IzRUPc40Zoh+rdWCMEVNtwGvG8sQ1UBcM8oueed6A4Ivd4RYgL0J1CZThrN1/BjP
-MpOj9dNZtEiodNXG8A1+esZxrVoy7IlRmtAKfgJ0FmplWqZ4Bi2OTorPz51xdT0U
-aX8i8113XsTU3gBGW8woDNgy5jHl8E3jxn1ZA/Sla+0uqFILDXk7umWtyL+K8f6+
-yLloXHz/Epzj6x+x94QJhatxIUFUDLXfagoXphGa48w7a35FPECKtj2wBq6hHKwQ
-1ppJEK4ISPbLUn2cG0OqtjlnuzGxMnOtUPFoUxjngMPMlC1LC+hLKHfPUNBneo/9
-77PiAvDNCwPH4bcUaRB1075dydUEx6F33uXvptrvI05SKm+X8U3DOGASm18OagDq
-PIc6Eyx6HOOiYExFSZeMaMSCMkdmFhIWKwqldz5uoZnX7c5ffYvJswNhDdiT4Nwn
-o2Ozeoxzq0vTxGFLZxRarCZxv4Uo5PmqZqTJmdSMc8x8qW5VdGDHBqMde/JFHlE/
-lq/euBcx+2ifI059F9+jGIgsjvjMeADjg87Lvdy8NKa+zJZ0r3uN+AdZRhl+iaJT
-wMtCzSQT1mbBku8qtl07QW/ocQ4kWX1jUkYEPwcMkKYtJ1k4cBFT2vyFoCsbfCoM
-sFp4qp9IkDyiwF6JhdPA
-=aG9V
------END PGP SIGNATURE-----
-
---OAT8novCxdF0GIvhoNDriieIdKefoEln5--
+diff --git a/arch/mips/include/asm/octeon/pci-octeon.h b/arch/mips/include/asm/octeon/pci-octeon.h
+index 64ba56a..1884609 100644
+--- a/arch/mips/include/asm/octeon/pci-octeon.h
++++ b/arch/mips/include/asm/octeon/pci-octeon.h
+@@ -11,9 +11,6 @@
+ 
+ #include <linux/pci.h>
+ 
+-/* Some PCI cards require delays when accessing config space. */
+-#define PCI_CONFIG_SPACE_DELAY 10000
+-
+ /*
+  * The physical memory base mapped by BAR1.  256MB at the end of the
+  * first 4GB.
+diff --git a/arch/mips/pci/pci-octeon.c b/arch/mips/pci/pci-octeon.c
+index a04af55..01c604a 100644
+--- a/arch/mips/pci/pci-octeon.c
++++ b/arch/mips/pci/pci-octeon.c
+@@ -271,9 +271,6 @@ static int octeon_read_config(struct pci_bus *bus, unsigned int devfn,
+ 	pci_addr.s.func = devfn & 0x7;
+ 	pci_addr.s.reg = reg;
+ 
+-#if PCI_CONFIG_SPACE_DELAY
+-	udelay(PCI_CONFIG_SPACE_DELAY);
+-#endif
+ 	switch (size) {
+ 	case 4:
+ 		*val = le32_to_cpu(cvmx_read64_uint32(pci_addr.u64));
+@@ -308,9 +305,6 @@ static int octeon_write_config(struct pci_bus *bus, unsigned int devfn,
+ 	pci_addr.s.func = devfn & 0x7;
+ 	pci_addr.s.reg = reg;
+ 
+-#if PCI_CONFIG_SPACE_DELAY
+-	udelay(PCI_CONFIG_SPACE_DELAY);
+-#endif
+ 	switch (size) {
+ 	case 4:
+ 		cvmx_write64_uint32(pci_addr.u64, cpu_to_le32(val));
+diff --git a/arch/mips/pci/pcie-octeon.c b/arch/mips/pci/pcie-octeon.c
+index 1bb0b2b..99f3db4 100644
+--- a/arch/mips/pci/pcie-octeon.c
++++ b/arch/mips/pci/pcie-octeon.c
+@@ -1762,14 +1762,6 @@ static int octeon_pcie_write_config(unsigned int pcie_port, struct pci_bus *bus,
+ 	default:
+ 		return PCIBIOS_FUNC_NOT_SUPPORTED;
+ 	}
+-#if PCI_CONFIG_SPACE_DELAY
+-	/*
+-	 * Delay on writes so that devices have time to come up. Some
+-	 * bridges need this to allow time for the secondary busses to
+-	 * work
+-	 */
+-	udelay(PCI_CONFIG_SPACE_DELAY);
+-#endif
+ 	return PCIBIOS_SUCCESSFUL;
+ }
+ 

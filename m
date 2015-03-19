@@ -1,50 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Mar 2015 15:56:56 +0100 (CET)
-Received: from demumfd001.nsn-inter.net ([93.183.12.32]:54841 "EHLO
-        demumfd001.nsn-inter.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007513AbbCSO4zGEHTU (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 19 Mar 2015 15:56:55 +0100
-Received: from demuprx017.emea.nsn-intra.net ([10.150.129.56])
-        by demumfd001.nsn-inter.net (8.14.3/8.14.3) with ESMTP id t2JEtx2x024752
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
-        Thu, 19 Mar 2015 14:56:00 GMT
-Received: from [10.151.38.33] ([10.151.38.33])
-        by demuprx017.emea.nsn-intra.net (8.12.11.20060308/8.12.11) with ESMTP id t2JEtw6M006250;
-        Thu, 19 Mar 2015 15:55:58 +0100
-Message-ID: <550AE37E.1020908@nokia.com>
-Date:   Thu, 19 Mar 2015 15:55:58 +0100
-From:   Alexander Sverdlin <alexander.sverdlin@nokia.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.5.0
-MIME-Version: 1.0
-To:     ext Aaro Koskinen <aaro.koskinen@iki.fi>
-CC:     ext David Daney <ddaney@caviumnetworks.com>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        David Daney <ddaney@cavium.com>, ddaney.cavm@gmail.com,
-        "ext Daney, David" <David.Daney@caviumnetworks.com>,
-        Rob Herring <robh@kernel.org>, Jiri Kosina <jkosina@suse.cz>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Masanari Iida <standby24x7@gmail.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        "Rulf, Mathias (Nokia - DE/Ulm)" <mathias.rulf@nokia.com>
-Subject: Re: [PATCH] pci: octeon: Remove udelay() causing huge IRQ latency
-References: <55097811.8050003@nokia.com> <5509A39C.6010707@caviumnetworks.com> <5509A500.7020109@nokia.com> <20150318180638.GA10043@fuloong-minipc.musicnaut.iki.fi>
-In-Reply-To: <20150318180638.GA10043@fuloong-minipc.musicnaut.iki.fi>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-purgate-type: clean
-X-purgate-Ad: Categorized by eleven eXpurgate (R) http://www.eleven.de
-X-purgate: clean
-X-purgate: This mail is considered clean (visit http://www.eleven.de for further information)
-X-purgate-size: 319
-X-purgate-ID: 151667::1426776960-00005972-E3892009/0/0
-Return-Path: <alexander.sverdlin@nokia.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Mar 2015 23:29:24 +0100 (CET)
+Received: from youngberry.canonical.com ([91.189.89.112]:57366 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27009140AbbCSW3XN8zhG (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 19 Mar 2015 23:29:23 +0100
+Received: from [10.172.68.52] (helo=fourier)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:DHE_RSA_AES_128_CBC_SHA1:16)
+        (Exim 4.71)
+        (envelope-from <kamal@canonical.com>)
+        id 1YYiwN-0006Sm-6o; Thu, 19 Mar 2015 22:29:23 +0000
+Received: from kamal by fourier with local (Exim 4.82)
+        (envelope-from <kamal@whence.com>)
+        id 1YYiwK-0000Qj-Io; Thu, 19 Mar 2015 15:29:20 -0700
+From:   Kamal Mostafa <kamal@canonical.com>
+To:     Felix Fietkau <nbd@openwrt.org>
+Cc:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
+        Kamal Mostafa <kamal@canonical.com>,
+        kernel-team@lists.ubuntu.com
+Subject: [3.13.y-ckt stable] Patch "MIPS: IRQ: Fix disable_irq on CPU IRQs" has been added to staging queue
+Date:   Thu, 19 Mar 2015 15:29:19 -0700
+Message-Id: <1426804159-1622-1-git-send-email-kamal@canonical.com>
+X-Mailer: git-send-email 1.9.1
+X-Extended-Stable: 3.13
+Return-Path: <kamal@canonical.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46459
+X-archive-position: 46460
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alexander.sverdlin@nokia.com
+X-original-sender: kamal@canonical.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -57,15 +42,24 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi!
+This is a note to let you know that I have just added a patch titled
 
-On 18/03/15 19:06, ext Aaro Koskinen wrote:
-> You could at least say on which OCTEON platforms (e.g. OCTEON II
-> or older) you tested the patch on, and tell about tested PCI bus
-> topology and devices.
+    MIPS: IRQ: Fix disable_irq on CPU IRQs
 
-Octeon II CN68xx with Marvell XGE switch connected to PCIe.
+to the linux-3.13.y-queue branch of the 3.13.y-ckt extended stable tree 
+which can be found at:
 
--- 
-Best regards,
-Alexander Sverdlin.
+ http://kernel.ubuntu.com/git?p=ubuntu/linux.git;a=shortlog;h=refs/heads/linux-3.13.y-queue
+
+This patch is scheduled to be released in version 3.13.11-ckt17.
+
+If you, or anyone else, feels it should not be added to this tree, please 
+reply to this email.
+
+For more information about the 3.13.y-ckt tree, see
+https://wiki.ubuntu.com/Kernel/Dev/ExtendedStable
+
+Thanks.
+-Kamal
+
+------

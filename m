@@ -1,25 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Mar 2015 23:37:04 +0100 (CET)
-Received: from youngberry.canonical.com ([91.189.89.112]:57839 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Mar 2015 23:37:21 +0100 (CET)
+Received: from youngberry.canonical.com ([91.189.89.112]:57891 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27014183AbbCSWhD3Vdg9 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 19 Mar 2015 23:37:03 +0100
+        by eddie.linux-mips.org with ESMTP id S27009174AbbCSWhIrCGZ3 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 19 Mar 2015 23:37:08 +0100
 Received: from [10.172.68.52] (helo=fourier)
         by youngberry.canonical.com with esmtpsa (TLS1.0:DHE_RSA_AES_128_CBC_SHA1:16)
         (Exim 4.71)
         (envelope-from <kamal@canonical.com>)
-        id 1YYj3n-0006t3-MG; Thu, 19 Mar 2015 22:37:04 +0000
+        id 1YYj3s-0006yS-DQ; Thu, 19 Mar 2015 22:37:08 +0000
 Received: from kamal by fourier with local (Exim 4.82)
         (envelope-from <kamal@whence.com>)
-        id 1YYj3l-0000ra-8l; Thu, 19 Mar 2015 15:37:01 -0700
+        id 1YYj3p-0000sG-Vl; Thu, 19 Mar 2015 15:37:05 -0700
 From:   Kamal Mostafa <kamal@canonical.com>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
         kernel-team@lists.ubuntu.com
-Cc:     Felix Fietkau <nbd@openwrt.org>, linux-mips@linux-mips.org,
-        Ralf Baechle <ralf@linux-mips.org>,
+Cc:     Hemmo Nieminen <hemmo.nieminen@iki.fi>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        David Daney <david.daney@cavium.com>,
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
         Kamal Mostafa <kamal@canonical.com>
-Subject: [PATCH 3.13.y-ckt 60/80] MIPS: IRQ: Fix disable_irq on CPU IRQs
-Date:   Thu, 19 Mar 2015 15:35:48 -0700
-Message-Id: <1426804568-2907-61-git-send-email-kamal@canonical.com>
+Subject: [PATCH 3.13.y-ckt 68/80] MIPS: Fix kernel lockup or crash after CPU offline/online
+Date:   Thu, 19 Mar 2015 15:35:56 -0700
+Message-Id: <1426804568-2907-69-git-send-email-kamal@canonical.com>
 X-Mailer: git-send-email 1.9.1
 In-Reply-To: <1426804568-2907-1-git-send-email-kamal@canonical.com>
 References: <1426804568-2907-1-git-send-email-kamal@canonical.com>
@@ -28,7 +30,7 @@ Return-Path: <kamal@canonical.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46463
+X-archive-position: 46464
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -49,51 +51,48 @@ X-list: linux-mips
 
 ------------------
 
-From: Felix Fietkau <nbd@openwrt.org>
+From: Hemmo Nieminen <hemmo.nieminen@iki.fi>
 
-commit a3e6c1eff54878506b2dddcc202df9cc8180facb upstream.
+commit c7754e75100ed5e3068ac5085747f2bfc386c8d6 upstream.
 
-If the irq_chip does not define .irq_disable, any call to disable_irq
-will defer disabling the IRQ until it fires while marked as disabled.
-This assumes that the handler function checks for this condition, which
-handle_percpu_irq does not. In this case, calling disable_irq leads to
-an IRQ storm, if the interrupt fires while disabled.
+As printk() invocation can cause e.g. a TLB miss, printk() cannot be
+called before the exception handlers have been properly initialized.
+This can happen e.g. when netconsole has been loaded as a kernel module
+and the TLB table has been cleared when a CPU was offline.
 
-This optimization is only useful when disabling the IRQ is slow, which
-is not true for the MIPS CPU IRQ.
+Call cpu_report() in start_secondary() only after the exception handlers
+have been initialized to fix this.
 
-Disable this optimization by implementing .irq_disable and .irq_enable
+Without the patch the kernel will randomly either lockup or crash
+after a CPU is onlined and the console driver is a module.
 
-Signed-off-by: Felix Fietkau <nbd@openwrt.org>
+Signed-off-by: Hemmo Nieminen <hemmo.nieminen@iki.fi>
+Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+Cc: David Daney <david.daney@cavium.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/8949/
+Cc: linux-kernel@vger.kernel.org
+Patchwork: https://patchwork.linux-mips.org/patch/8953/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Kamal Mostafa <kamal@canonical.com>
 ---
- arch/mips/kernel/irq_cpu.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/mips/kernel/smp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/mips/kernel/irq_cpu.c b/arch/mips/kernel/irq_cpu.c
-index e498f2b..f5598e2 100644
---- a/arch/mips/kernel/irq_cpu.c
-+++ b/arch/mips/kernel/irq_cpu.c
-@@ -56,6 +56,8 @@ static struct irq_chip mips_cpu_irq_controller = {
- 	.irq_mask_ack	= mask_mips_irq,
- 	.irq_unmask	= unmask_mips_irq,
- 	.irq_eoi	= unmask_mips_irq,
-+	.irq_disable	= mask_mips_irq,
-+	.irq_enable	= unmask_mips_irq,
- };
+diff --git a/arch/mips/kernel/smp.c b/arch/mips/kernel/smp.c
+index 0a022ee..18ed112 100644
+--- a/arch/mips/kernel/smp.c
++++ b/arch/mips/kernel/smp.c
+@@ -109,10 +109,10 @@ asmlinkage void start_secondary(void)
+ 	else
+ #endif /* CONFIG_MIPS_MT_SMTC */
+ 	cpu_probe();
+-	cpu_report();
+ 	per_cpu_trap_init(false);
+ 	mips_clockevent_init();
+ 	mp_ops->init_secondary();
++	cpu_report();
  
- /*
-@@ -92,6 +94,8 @@ static struct irq_chip mips_mt_cpu_irq_controller = {
- 	.irq_mask_ack	= mips_mt_cpu_irq_ack,
- 	.irq_unmask	= unmask_mips_irq,
- 	.irq_eoi	= unmask_mips_irq,
-+	.irq_disable	= mask_mips_irq,
-+	.irq_enable	= unmask_mips_irq,
- };
- 
- void __init mips_cpu_irq_init(void)
+ 	/*
+ 	 * XXX parity protection should be folded in here when it's converted
 -- 
 1.9.1

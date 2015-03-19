@@ -1,40 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Mar 2015 11:28:30 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:46822 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27007921AbbCSK23XkNhy (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 19 Mar 2015 11:28:29 +0100
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id B784E610F7285;
-        Thu, 19 Mar 2015 10:28:19 +0000 (GMT)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Thu, 19 Mar 2015 10:28:21 +0000
-Received: from mchandras-linux.le.imgtec.org (192.168.154.138) by
- LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.210.2; Thu, 19 Mar 2015 10:28:21 +0000
-From:   Markos Chandras <markos.chandras@imgtec.com>
-To:     <linux-mips@linux-mips.org>
-CC:     Markos Chandras <markos.chandras@imgtec.com>,
-        <netdev@vger.kernel.org>, <stable@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, Don Fry <pcnet32@frontier.com>
-Subject: [PATCH v2] net: ethernet: pcnet32: Setup the SRAM and NOUFLO on Am79C97{3,5}
-Date:   Thu, 19 Mar 2015 10:28:14 +0000
-Message-ID: <1426760894-2677-1-git-send-email-markos.chandras@imgtec.com>
-X-Mailer: git-send-email 2.3.3
-In-Reply-To: <20150319083704.GA31322@mchandras-linux.le.imgtec.org>
-References: <20150319083704.GA31322@mchandras-linux.le.imgtec.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Mar 2015 15:56:56 +0100 (CET)
+Received: from demumfd001.nsn-inter.net ([93.183.12.32]:54841 "EHLO
+        demumfd001.nsn-inter.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007513AbbCSO4zGEHTU (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 19 Mar 2015 15:56:55 +0100
+Received: from demuprx017.emea.nsn-intra.net ([10.150.129.56])
+        by demumfd001.nsn-inter.net (8.14.3/8.14.3) with ESMTP id t2JEtx2x024752
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
+        Thu, 19 Mar 2015 14:56:00 GMT
+Received: from [10.151.38.33] ([10.151.38.33])
+        by demuprx017.emea.nsn-intra.net (8.12.11.20060308/8.12.11) with ESMTP id t2JEtw6M006250;
+        Thu, 19 Mar 2015 15:55:58 +0100
+Message-ID: <550AE37E.1020908@nokia.com>
+Date:   Thu, 19 Mar 2015 15:55:58 +0100
+From:   Alexander Sverdlin <alexander.sverdlin@nokia.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.5.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.154.138]
-Return-Path: <Markos.Chandras@imgtec.com>
+To:     ext Aaro Koskinen <aaro.koskinen@iki.fi>
+CC:     ext David Daney <ddaney@caviumnetworks.com>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        David Daney <ddaney@cavium.com>, ddaney.cavm@gmail.com,
+        "ext Daney, David" <David.Daney@caviumnetworks.com>,
+        Rob Herring <robh@kernel.org>, Jiri Kosina <jkosina@suse.cz>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Masanari Iida <standby24x7@gmail.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        "Rulf, Mathias (Nokia - DE/Ulm)" <mathias.rulf@nokia.com>
+Subject: Re: [PATCH] pci: octeon: Remove udelay() causing huge IRQ latency
+References: <55097811.8050003@nokia.com> <5509A39C.6010707@caviumnetworks.com> <5509A500.7020109@nokia.com> <20150318180638.GA10043@fuloong-minipc.musicnaut.iki.fi>
+In-Reply-To: <20150318180638.GA10043@fuloong-minipc.musicnaut.iki.fi>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+X-purgate-type: clean
+X-purgate-Ad: Categorized by eleven eXpurgate (R) http://www.eleven.de
+X-purgate: clean
+X-purgate: This mail is considered clean (visit http://www.eleven.de for further information)
+X-purgate-size: 319
+X-purgate-ID: 151667::1426776960-00005972-E3892009/0/0
+Return-Path: <alexander.sverdlin@nokia.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46458
+X-archive-position: 46459
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: markos.chandras@imgtec.com
+X-original-sender: alexander.sverdlin@nokia.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,95 +57,15 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On a MIPS Malta board, tons of fifo underflow errors have been observed
-when using u-boot as bootloader instead of YAMON. The reason for that
-is that YAMON used to set the pcnet device to SRAM mode but u-boot does
-not. As a result, the default Tx threshold (64 bytes) is now too small to
-keep the fifo relatively used and it can result to Tx fifo underflow errors.
-As a result of which, it's best to setup the SRAM on supported controllers
-so we can always use the NOUFLO bit.
+Hi!
 
-Cc: <netdev@vger.kernel.org>
-Cc: <stable@vger.kernel.org>
-Cc: <linux-kernel@vger.kernel.org>
-Cc: Don Fry <pcnet32@frontier.com>
-Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
----
-Changes since v1:
-- Fix comment
----
- drivers/net/ethernet/amd/pcnet32.c | 31 +++++++++++++++++++++++++++++--
- 1 file changed, 29 insertions(+), 2 deletions(-)
+On 18/03/15 19:06, ext Aaro Koskinen wrote:
+> You could at least say on which OCTEON platforms (e.g. OCTEON II
+> or older) you tested the patch on, and tell about tested PCI bus
+> topology and devices.
 
-diff --git a/drivers/net/ethernet/amd/pcnet32.c b/drivers/net/ethernet/amd/pcnet32.c
-index 11d6e6561df1..15a8190a6f75 100644
---- a/drivers/net/ethernet/amd/pcnet32.c
-+++ b/drivers/net/ethernet/amd/pcnet32.c
-@@ -1543,7 +1543,7 @@ pcnet32_probe1(unsigned long ioaddr, int shared, struct pci_dev *pdev)
- {
- 	struct pcnet32_private *lp;
- 	int i, media;
--	int fdx, mii, fset, dxsuflo;
-+	int fdx, mii, fset, dxsuflo, sram;
- 	int chip_version;
- 	char *chipname;
- 	struct net_device *dev;
-@@ -1580,7 +1580,7 @@ pcnet32_probe1(unsigned long ioaddr, int shared, struct pci_dev *pdev)
- 	}
- 
- 	/* initialize variables */
--	fdx = mii = fset = dxsuflo = 0;
-+	fdx = mii = fset = dxsuflo = sram = 0;
- 	chip_version = (chip_version >> 12) & 0xffff;
- 
- 	switch (chip_version) {
-@@ -1613,6 +1613,7 @@ pcnet32_probe1(unsigned long ioaddr, int shared, struct pci_dev *pdev)
- 		chipname = "PCnet/FAST III 79C973";	/* PCI */
- 		fdx = 1;
- 		mii = 1;
-+		sram = 1;
- 		break;
- 	case 0x2626:
- 		chipname = "PCnet/Home 79C978";	/* PCI */
-@@ -1636,6 +1637,7 @@ pcnet32_probe1(unsigned long ioaddr, int shared, struct pci_dev *pdev)
- 		chipname = "PCnet/FAST III 79C975";	/* PCI */
- 		fdx = 1;
- 		mii = 1;
-+		sram = 1;
- 		break;
- 	case 0x2628:
- 		chipname = "PCnet/PRO 79C976";
-@@ -1664,6 +1666,31 @@ pcnet32_probe1(unsigned long ioaddr, int shared, struct pci_dev *pdev)
- 		dxsuflo = 1;
- 	}
- 
-+	/*
-+	 * The Am79C973/Am79C975 controllers come with 12K of SRAM
-+	 * which we can use for the Tx/Rx buffers but most importantly,
-+	 * the use of SRAM allow us to use the BCR18:NOUFLO bit to avoid
-+	 * Tx fifo underflows.
-+	 */
-+	if (sram) {
-+		/*
-+		 * The SRAM is being configured in two steps. First we
-+		 * set the SRAM size in the BCR25:SRAM_SIZE bits. According
-+		 * to the datasheet, each bit corresponds to a 512-byte
-+		 * page so we can have at most 24 pages. The SRAM_SIZE
-+		 * holds the value of the upper 8 bits of the 16-bit SRAM size.
-+		 * The low 8-bits start at 0x00 and end at 0xff. So the
-+		 * address range is from 0x0000 up to 0x17ff. Therefore,
-+		 * the SRAM_SIZE is set to 0x17. The next step is to set
-+		 * the BCR26:SRAM_BND midway through so the Tx and Rx
-+		 * buffers can share the SRAM equally.
-+		 */
-+		a->write_bcr(ioaddr, 25, 0x17);
-+		a->write_bcr(ioaddr, 26, 0xc);
-+		/* And finally enable the NOUFLO bit */
-+		a->write_bcr(ioaddr, 18, a->read_bcr(ioaddr, 18) | (1 << 11));
-+	}
-+
- 	dev = alloc_etherdev(sizeof(*lp));
- 	if (!dev) {
- 		ret = -ENOMEM;
+Octeon II CN68xx with Marvell XGE switch connected to PCIe.
+
 -- 
-2.3.3
+Best regards,
+Alexander Sverdlin.

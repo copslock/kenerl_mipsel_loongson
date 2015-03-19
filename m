@@ -1,51 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Mar 2015 00:25:59 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:27766 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27008130AbbCRXZ6OrBmG (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 19 Mar 2015 00:25:58 +0100
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 121301D6C1286;
-        Wed, 18 Mar 2015 23:25:49 +0000 (GMT)
-Received: from hhmail02.hh.imgtec.org (10.100.10.20) by KLMAIL01.kl.imgtec.org
- (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Wed, 18 Mar
- 2015 23:25:53 +0000
-Received: from BAMAIL02.ba.imgtec.org (10.20.40.28) by hhmail02.hh.imgtec.org
- (10.100.10.20) with Microsoft SMTP Server (TLS) id 14.3.224.2; Wed, 18 Mar
- 2015 23:25:52 +0000
-Received: from [10.20.3.79] (10.20.3.79) by bamail02.ba.imgtec.org
- (10.20.40.28) with Microsoft SMTP Server (TLS) id 14.3.174.1; Wed, 18 Mar
- 2015 16:25:47 -0700
-Message-ID: <550A097B.7020400@imgtec.com>
-Date:   Wed, 18 Mar 2015 16:25:47 -0700
-From:   Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.2.0
-MIME-Version: 1.0
-To:     James Hogan <james.hogan@imgtec.com>
-CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "wangr@lemote.com" <wangr@lemote.com>,
-        "peterz@infradead.org" <peterz@infradead.org>,
-        Qais Yousef <Qais.Yousef@imgtec.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "ralf@linux-mips.org" <ralf@linux-mips.org>,
-        "davidlohr@hp.com" <davidlohr@hp.com>,
-        "chenhc@lemote.com" <chenhc@lemote.com>,
-        "manuel.lauss@gmail.com" <manuel.lauss@gmail.com>,
-        "mingo@kernel.org" <mingo@kernel.org>
-Subject: Re: [PATCH] MIPS: MSA: misaligned support
-References: <20150318011630.2702.28882.stgit@ubuntu-yegoshin> <5509611D.80404@imgtec.com> <5509D62B.7030507@imgtec.com> <20150318221248.GB1116@jhogan-linux.le.imgtec.org>
-In-Reply-To: <20150318221248.GB1116@jhogan-linux.le.imgtec.org>
-Content-Type: text/plain; charset="utf-8"; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Mar 2015 03:07:50 +0100 (CET)
+Received: from filter01.dlls.pa.frontiernet.net ([199.224.80.228]:51409 "EHLO
+        filter01.dlls.pa.frontiernet.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008917AbbCSCHstOeL0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 19 Mar 2015 03:07:48 +0100
+Received: from localhost (localhost [127.0.0.1])
+        by filter01.dlls.pa.frontiernet.net (Postfix) with ESMTP id 59CDB1FE022;
+        Thu, 19 Mar 2015 02:07:48 +0000 (UTC)
+Received: from relay03.dlls.pa.frontiernet.net ([199.224.80.246])
+        by localhost (filter01.dlls.pa.frontiernet.net [199.224.80.228]) (amavisd-new, port 10024)
+        with LMTP id pFq0qfY8Fn+L; Thu, 19 Mar 2015 02:07:36 +0000 (UTC)
+X-Originating-IP: [50.43.35.110]
+X-Previous-IP: 50.43.35.110
+Received: from [192.168.1.6] (static-50-43-35-110.bvtn.or.frontiernet.net [50.43.35.110])
+        by relay03.dlls.pa.frontiernet.net (Postfix) with ESMTPA id 9782C94099;
+        Thu, 19 Mar 2015 02:07:35 +0000 (UTC)
+Message-ID: <1426730854.1840.23.camel@Lunix2.home>
+Subject: Re: [PATCH] net: ethernet: pcnet32: Setup the SRAM and NOUFLO on
+ Am79C97{3,5}
+From:   Don Fry <pcnet32@frontier.com>
+To:     Markos Chandras <markos.chandras@imgtec.com>
+Cc:     linux-mips@linux-mips.org, netdev@vger.kernel.org,
+        stable@vger.kernel.org, linux-kernel@vger.kernel.org
+Date:   Wed, 18 Mar 2015 19:07:34 -0700
+In-Reply-To: <1426709407-16033-1-git-send-email-markos.chandras@imgtec.com>
+References: <1426709407-16033-1-git-send-email-markos.chandras@imgtec.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.10.4 (3.10.4-4.fc20) 
+Mime-Version: 1.0
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.20.3.79]
-Return-Path: <Leonid.Yegoshin@imgtec.com>
+Return-Path: <pcnet32@frontier.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46452
+X-archive-position: 46453
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Leonid.Yegoshin@imgtec.com
+X-original-sender: pcnet32@frontier.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,36 +49,42 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 03/18/2015 03:12 PM, James Hogan wrote:
-> Hi Leonid,
->
-> On Wed, Mar 18, 2015 at 12:46:51PM -0700, Leonid Yegoshin wrote:
->
->> thread_msa_context_live() == check of TIF_MSA_CTX_LIVE == existence of
->> MSA context for thread.
->> It differs from MSA is owned by thread, it just says that thread has
->> already initialized MSA.
->>
->> Unfortunate choice of function name, I believe.
-> Right (I mis-read when its cleared when i grepped). Still, that would
-> make it even harder to hit since lose_fpu wouldn't clear it, and you
-> already would've taken an MSA disabled exception first.
-No, lose_fpu disables MSA now, saves MSA context and switches off 
-TIF_USEDMSA. See 33c771ba5c5d067f85a5a6c4b11047219b5b8f4e, "MIPS: 
-save/disable MSA in lose_fpu".
+One little change to the comment is needed.  See below
 
-However, a process still has MSA context initialized and it is indicated 
-by TIF_MSA_CTX_LIVE.
-It should have it before it can get any AdE exception on MSA instruction.
+Don
 
->
-> Anyway, my point was that there's nothing invalid about an unaligned
-> load being the first MSA instruction. You might use it to load the
-> initial vector state.
+On Wed, 2015-03-18 at 20:10 +0000, Markos Chandras wrote:
+> On a MIPS Malta board, tons of fifo underflow errors have been observed
+> when using u-boot as bootloader instead of YAMON. The reason for that
+> is that YAMON used to set the pcnet device to SRAM mode but u-boot does
+> not. As a result, the default Tx threshold (64 bytes) is now too small to
+> keep the fifo relatively used and it can result to Tx fifo underflow errors.
+> As a result of which, it's best to setup the SRAM on supported controllers
+> so we can always use the NOUFLO bit.
 
-No, it is invalid. If MSA is disabled it should trigger "MSA Disabled" 
-exception.
+> +	/*
+> +	 * The Am79C973/Am79C975 controllers come with 12K of SRAM
+> +	 * which we can use for the Tx/Rx buffers but most importantly,
+> +	 * the use of SRAM allow us to use the BCR18:NOUFLO bit to avoid
+> +	 * Tx fifo underflows.
+> +	 */
+> +	if (sram) {
+> +		/*
+> +		 * The SRAM is being configured in two steps. First we
+> +		 * set the SRAM size in the BCR25:SRAM_SIZE bits. According
+> +		 * to the datasheet, each bit corresponds to a 512-byte
+> +		 * page so we can have at most 24 pages. The SRAM_SIZE
+> +		 * corresponds holds the value of the upper 8 bits of
+> +		 * the 16-bit SRAM size. The low 8-bits start at 0x00
+> +		 * and end at 0xff. So the address range is from 0x0000
+> +		 * up to 0x17ff. Therefore, the SRAM_SIZE is set to 0x17.
+> +		 * The next step is to set the BCR24:SRAM_BND midway through
+> +		 * so the Tx and Rx buffers can share the SRAM equally.
+> +		 */
 
-Unfortunately, some HW versions had AdE first and it may be logical from 
-some HW point (if access is done before instruction is completely 
-decoded). But that is wrong.
+The comment specifies BCR24 but the code is changing BCR26 which matches
+the documentation.  Please correct the comment to avoid confusion.
+
+> +		a->write_bcr(ioaddr, 25, 0x17);
+> +		a->write_bcr(ioaddr, 26, 0xc);
+> +		/* And finally enable the NOUFLO bit */

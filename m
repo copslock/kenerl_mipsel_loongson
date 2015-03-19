@@ -1,50 +1,68 @@
-From: David Daney <david.daney@cavium.com>
-Date: Tue, 6 Jan 2015 10:42:23 -0800
-Subject: MIPS: Fix C0_Pagegrain[IEC] support.
-Message-ID: <20150106184223.rJvGQdkpYu06wWr3LtcTUpyGgJAlgJHUX6uzrY3vs6M@z>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Mar 2015 23:30:01 +0100 (CET)
+Received: from youngberry.canonical.com ([91.189.89.112]:57426 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27014157AbbCSW3eAdtMf (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 19 Mar 2015 23:29:34 +0100
+Received: from [10.172.68.52] (helo=fourier)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:DHE_RSA_AES_128_CBC_SHA1:16)
+        (Exim 4.71)
+        (envelope-from <kamal@canonical.com>)
+        id 1YYiwT-0006TR-8w; Thu, 19 Mar 2015 22:29:29 +0000
+Received: from kamal by fourier with local (Exim 4.82)
+        (envelope-from <kamal@whence.com>)
+        id 1YYiwQ-0000W9-Qg; Thu, 19 Mar 2015 15:29:26 -0700
+From:   Kamal Mostafa <kamal@canonical.com>
+To:     Hemmo Nieminen <hemmo.nieminen@iki.fi>
+Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>,
+        David Daney <david.daney@cavium.com>,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Kamal Mostafa <kamal@canonical.com>,
+        kernel-team@lists.ubuntu.com
+Subject: [3.13.y-ckt stable] Patch "MIPS: Fix kernel lockup or crash after CPU offline/online" has been added to staging queue
+Date:   Thu, 19 Mar 2015 15:29:26 -0700
+Message-Id: <1426804166-1959-1-git-send-email-kamal@canonical.com>
+X-Mailer: git-send-email 1.9.1
+X-Extended-Stable: 3.13
+Return-Path: <kamal@canonical.com>
+X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
+X-Orcpt: rfc822;linux-mips@linux-mips.org
+Original-Recipient: rfc822;linux-mips@linux-mips.org
+X-archive-position: 46462
+X-ecartis-version: Ecartis v1.0.0
+Sender: linux-mips-bounce@linux-mips.org
+Errors-to: linux-mips-bounce@linux-mips.org
+X-original-sender: kamal@canonical.com
+Precedence: bulk
+List-help: <mailto:ecartis@linux-mips.org?Subject=help>
+List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
+List-software: Ecartis version 1.0.0
+List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
+X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
+List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
+List-owner: <mailto:ralf@linux-mips.org>
+List-post: <mailto:linux-mips@linux-mips.org>
+List-archive: <http://www.linux-mips.org/archives/linux-mips/>
+X-list: linux-mips
 
-commit 9ead8632bbf454cfc709b6205dc9cd8582fb0d64 upstream.
+This is a note to let you know that I have just added a patch titled
 
-The following commits:
+    MIPS: Fix kernel lockup or crash after CPU offline/online
 
-  5890f70f15c52d (MIPS: Use dedicated exception handler if CPU supports RI/XI exceptions)
-  6575b1d4173eae (MIPS: kernel: cpu-probe: Detect unique RI/XI exceptions)
+to the linux-3.13.y-queue branch of the 3.13.y-ckt extended stable tree 
+which can be found at:
 
-break the kernel for *all* existing MIPS CPUs that implement the
-CP0_PageGrain[IEC] bit.  They cause the TLB exception handlers to be
-generated without the legacy execute-inhibit handling, but never set
-the CP0_PageGrain[IEC] bit to activate the use of dedicated exception
-vectors for execute-inhibit exceptions.  The result is that upon
-detection of an execute-inhibit violation, we loop forever in the TLB
-exception handlers instead of sending SIGSEGV to the task.
+ http://kernel.ubuntu.com/git?p=ubuntu/linux.git;a=shortlog;h=refs/heads/linux-3.13.y-queue
 
-If we are generating TLB exception handlers expecting separate
-vectors, we must also enable the CP0_PageGrain[IEC] feature.
+This patch is scheduled to be released in version 3.13.11-ckt17.
 
-The bug was introduced in kernel version 3.17.
+If you, or anyone else, feels it should not be added to this tree, please 
+reply to this email.
 
-Signed-off-by: David Daney <david.daney@cavium.com>
-Cc: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-Cc: linux-mips@linux-mips.org
-Patchwork: http://patchwork.linux-mips.org/patch/8880/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Kamal Mostafa <kamal@canonical.com>
----
- arch/mips/mm/tlb-r4k.c | 2 ++
- 1 file changed, 2 insertions(+)
+For more information about the 3.13.y-ckt tree, see
+https://wiki.ubuntu.com/Kernel/Dev/ExtendedStable
 
-diff --git a/arch/mips/mm/tlb-r4k.c b/arch/mips/mm/tlb-r4k.c
-index da3b0b9..d04fe4e 100644
---- a/arch/mips/mm/tlb-r4k.c
-+++ b/arch/mips/mm/tlb-r4k.c
-@@ -429,6 +429,8 @@ void tlb_init(void)
- #ifdef CONFIG_64BIT
- 		pg |= PG_ELPA;
- #endif
-+		if (cpu_has_rixiex)
-+			pg |= PG_IEC;
- 		write_c0_pagegrain(pg);
- 	}
+Thanks.
+-Kamal
 
---
-1.9.1
+------

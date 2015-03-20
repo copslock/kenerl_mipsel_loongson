@@ -1,36 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Mar 2015 17:16:26 +0100 (CET)
-Received: from nivc-ms1.auriga.com ([80.240.102.146]:54543 "EHLO
-        nivc-ms1.auriga.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27014329AbbCTQP7QMCMy (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 20 Mar 2015 17:15:59 +0100
-Received: from localhost (80.240.102.213) by NIVC-MS1.auriga.ru
- (80.240.102.146) with Microsoft SMTP Server (TLS) id 14.3.224.2; Fri, 20 Mar
- 2015 19:15:54 +0300
-From:   Aleksey Makarov <aleksey.makarov@auriga.com>
-To:     <linux-mips@linux-mips.org>
-CC:     <linux-kernel@vger.kernel.org>,
-        David Daney <david.daney@cavium.com>,
-        Aleksey Makarov <aleksey.makarov@auriga.com>,
-        Leonid Rosenboim <lrosenboim@caviumnetworks.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 3/3] MIPS: OCTEON: Enable little endian kernel.
-Date:   Fri, 20 Mar 2015 19:11:58 +0300
-Message-ID: <1426867920-7907-4-git-send-email-aleksey.makarov@auriga.com>
-X-Mailer: git-send-email 2.3.3
-In-Reply-To: <1426867920-7907-1-git-send-email-aleksey.makarov@auriga.com>
-References: <1426867920-7907-1-git-send-email-aleksey.makarov@auriga.com>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [80.240.102.213]
-Return-Path: <aleksey.makarov@auriga.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Mar 2015 18:03:06 +0100 (CET)
+Received: from youngberry.canonical.com ([91.189.89.112]:34393 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007992AbbCTRDEUkP4K (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 20 Mar 2015 18:03:04 +0100
+Received: from 1.general.kamal.us.vpn ([10.172.68.52])
+        by youngberry.canonical.com with esmtpsa (TLS1.0:DHE_RSA_AES_128_CBC_SHA1:16)
+        (Exim 4.71)
+        (envelope-from <kamal@canonical.com>)
+        id 1YZ0K5-0002Qd-Uk; Fri, 20 Mar 2015 17:03:02 +0000
+Message-ID: <1426870978.13401.7.camel@fourier>
+Subject: Re: [PATCH 3.13.y-ckt 71/80] MIPS: Fix C0_Pagegrain[IEC] support.
+From:   Kamal Mostafa <kamal@canonical.com>
+To:     David Daney <ddaney@caviumnetworks.com>
+Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        kernel-team@lists.ubuntu.com, David Daney <david.daney@cavium.com>,
+        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
+Date:   Fri, 20 Mar 2015 10:02:58 -0700
+In-Reply-To: <550B575D.8090908@caviumnetworks.com>
+References: <1426804568-2907-1-git-send-email-kamal@canonical.com>
+         <1426804568-2907-72-git-send-email-kamal@canonical.com>
+         <550B575D.8090908@caviumnetworks.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.10.4-0ubuntu2 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Return-Path: <kamal@canonical.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46481
+X-archive-position: 46482
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aleksey.makarov@auriga.com
+X-original-sender: kamal@canonical.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,30 +46,74 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: David Daney <david.daney@cavium.com>
+On Thu, 2015-03-19 at 16:10 -0700, David Daney wrote:
+> On 03/19/2015 03:35 PM, Kamal Mostafa wrote:
+> > 3.13.11-ckt17 -stable review patch.  If anyone has any objections, please let me know.
+> >
+> 
+> Read the patch commentary.  It should only be applied to 3.17 and later.
+> 
+> So:  NACK.
+> 
 
-Now it is supported, so let people select it.
+Thanks very much for reviewing this, David.  Dropped from 3.13-stable.
 
-Signed-off-by: David Daney <david.daney@cavium.com>
-Signed-off-by: Leonid Rosenboim <lrosenboim@caviumnetworks.com>
-Signed-off-by: Aleksey Makarov <aleksey.makarov@auriga.com>
----
- arch/mips/Kconfig | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Also FYI, if you append e.g. "# 3.17+" to your Cc: stable line, that
+will help the stable maintainers (more specifically, will help our
+automated tools ;-) recognize where the patch should and shouldn't be
+applied.  Example:
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 3086b87..a6ca5e1 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -779,7 +779,8 @@ config CAVIUM_OCTEON_SOC
- 	select SYS_SUPPORTS_64BIT_KERNEL
- 	select SYS_SUPPORTS_BIG_ENDIAN
- 	select EDAC_SUPPORT
--	select SYS_SUPPORTS_HOTPLUG_CPU
-+	select SYS_SUPPORTS_LITTLE_ENDIAN
-+	select SYS_SUPPORTS_HOTPLUG_CPU if CONFIG_CPU_BIG_ENDIAN
- 	select SYS_HAS_EARLY_PRINTK
- 	select SYS_HAS_CPU_CAVIUM_OCTEON
- 	select SWAP_IO_SPACE
--- 
-2.3.3
+    Cc: <stable@vger.kernel.org> # 3.17+
+
+ -Kamal
+
+
+> > ------------------
+> >
+> > From: David Daney <david.daney@cavium.com>
+> >
+> > commit 9ead8632bbf454cfc709b6205dc9cd8582fb0d64 upstream.
+> >
+> > The following commits:
+> >
+> >    5890f70f15c52d (MIPS: Use dedicated exception handler if CPU supports RI/XI exceptions)
+> >    6575b1d4173eae (MIPS: kernel: cpu-probe: Detect unique RI/XI exceptions)
+> >
+> > break the kernel for *all* existing MIPS CPUs that implement the
+> > CP0_PageGrain[IEC] bit.  They cause the TLB exception handlers to be
+> > generated without the legacy execute-inhibit handling, but never set
+> > the CP0_PageGrain[IEC] bit to activate the use of dedicated exception
+> > vectors for execute-inhibit exceptions.  The result is that upon
+> > detection of an execute-inhibit violation, we loop forever in the TLB
+> > exception handlers instead of sending SIGSEGV to the task.
+> >
+> > If we are generating TLB exception handlers expecting separate
+> > vectors, we must also enable the CP0_PageGrain[IEC] feature.
+> >
+> > The bug was introduced in kernel version 3.17.
+> >
+> > Signed-off-by: David Daney <david.daney@cavium.com>
+> > Cc: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+> > Cc: linux-mips@linux-mips.org
+> > Patchwork: http://patchwork.linux-mips.org/patch/8880/
+> > Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+> > Signed-off-by: Kamal Mostafa <kamal@canonical.com>
+> > ---
+> >   arch/mips/mm/tlb-r4k.c | 2 ++
+> >   1 file changed, 2 insertions(+)
+> >
+> > diff --git a/arch/mips/mm/tlb-r4k.c b/arch/mips/mm/tlb-r4k.c
+> > index da3b0b9..d04fe4e 100644
+> > --- a/arch/mips/mm/tlb-r4k.c
+> > +++ b/arch/mips/mm/tlb-r4k.c
+> > @@ -429,6 +429,8 @@ void tlb_init(void)
+> >   #ifdef CONFIG_64BIT
+> >   		pg |= PG_ELPA;
+> >   #endif
+> > +		if (cpu_has_rixiex)
+> > +			pg |= PG_IEC;
+> >   		write_c0_pagegrain(pg);
+> >   	}
+> >
+> >
+> 

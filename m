@@ -1,20 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Mar 2015 17:15:52 +0100 (CET)
-Received: from nivc-ms1.auriga.com ([80.240.102.146]:54535 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Mar 2015 17:16:08 +0100 (CET)
+Received: from nivc-ms1.auriga.com ([80.240.102.146]:54539 "EHLO
         nivc-ms1.auriga.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27014325AbbCTQPmv6PnE (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 20 Mar 2015 17:15:42 +0100
+        with ESMTP id S27008821AbbCTQPv3Txtq (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 20 Mar 2015 17:15:51 +0100
 Received: from localhost (80.240.102.213) by NIVC-MS1.auriga.ru
  (80.240.102.146) with Microsoft SMTP Server (TLS) id 14.3.224.2; Fri, 20 Mar
- 2015 19:15:38 +0300
+ 2015 19:15:46 +0300
 From:   Aleksey Makarov <aleksey.makarov@auriga.com>
 To:     <linux-mips@linux-mips.org>
 CC:     <linux-kernel@vger.kernel.org>,
         David Daney <david.daney@cavium.com>,
         Aleksey Makarov <aleksey.makarov@auriga.com>,
         Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 1/3] MIPS: OCTEON: Handle bootloader structures in little-endian mode.
-Date:   Fri, 20 Mar 2015 19:11:56 +0300
-Message-ID: <1426867920-7907-2-git-send-email-aleksey.makarov@auriga.com>
+Subject: [PATCH 2/3] MIPS: OCTEON: Add mach-cavium-octeon/mangle-port.h
+Date:   Fri, 20 Mar 2015 19:11:57 +0300
+Message-ID: <1426867920-7907-3-git-send-email-aleksey.makarov@auriga.com>
 X-Mailer: git-send-email 2.3.3
 In-Reply-To: <1426867920-7907-1-git-send-email-aleksey.makarov@auriga.com>
 References: <1426867920-7907-1-git-send-email-aleksey.makarov@auriga.com>
@@ -25,7 +25,7 @@ Return-Path: <aleksey.makarov@auriga.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46479
+X-archive-position: 46480
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -44,134 +44,95 @@ X-list: linux-mips
 
 From: David Daney <david.daney@cavium.com>
 
-Compensate for the differences in the layout of in-memory bootloader
-information as seen from little-endian mode.
+Needed for little-endian ioport access.
+This fixes NOR flash in little-endian mode
 
 Signed-off-by: David Daney <david.daney@cavium.com>
 Signed-off-by: Aleksey Makarov <aleksey.makarov@auriga.com>
 ---
- arch/mips/cavium-octeon/octeon_boot.h        | 23 ++++++++++++
- arch/mips/include/asm/octeon/cvmx-bootinfo.h | 55 ++++++++++++++++++++++++++++
- 2 files changed, 78 insertions(+)
+ .../include/asm/mach-cavium-octeon/mangle-port.h   | 74 ++++++++++++++++++++++
+ 1 file changed, 74 insertions(+)
+ create mode 100644 arch/mips/include/asm/mach-cavium-octeon/mangle-port.h
 
-diff --git a/arch/mips/cavium-octeon/octeon_boot.h b/arch/mips/cavium-octeon/octeon_boot.h
-index 7b066bb..a6ce7c4 100644
---- a/arch/mips/cavium-octeon/octeon_boot.h
-+++ b/arch/mips/cavium-octeon/octeon_boot.h
-@@ -37,11 +37,13 @@ struct boot_init_vector {
- 
- /* similar to bootloader's linux_app_boot_info but without global data */
- struct linux_app_boot_info {
-+#ifdef __BIG_ENDIAN_BITFIELD
- 	uint32_t labi_signature;
- 	uint32_t start_core0_addr;
- 	uint32_t avail_coremask;
- 	uint32_t pci_console_active;
- 	uint32_t icache_prefetch_disable;
-+	uint32_t padding;
- 	uint64_t InitTLBStart_addr;
- 	uint32_t start_app_addr;
- 	uint32_t cur_exception_base;
-@@ -49,6 +51,27 @@ struct linux_app_boot_info {
- 	uint32_t compact_flash_common_base_addr;
- 	uint32_t compact_flash_attribute_base_addr;
- 	uint32_t led_display_base_addr;
+diff --git a/arch/mips/include/asm/mach-cavium-octeon/mangle-port.h b/arch/mips/include/asm/mach-cavium-octeon/mangle-port.h
+new file mode 100644
+index 0000000..374eefa
+--- /dev/null
++++ b/arch/mips/include/asm/mach-cavium-octeon/mangle-port.h
+@@ -0,0 +1,74 @@
++/*
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ *
++ * Copyright (C) 2003, 2004 Ralf Baechle
++ */
++#ifndef __ASM_MACH_GENERIC_MANGLE_PORT_H
++#define __ASM_MACH_GENERIC_MANGLE_PORT_H
++
++#include <asm/byteorder.h>
++
++#ifdef __BIG_ENDIAN
++
++# define __swizzle_addr_b(port)	(port)
++# define __swizzle_addr_w(port)	(port)
++# define __swizzle_addr_l(port)	(port)
++# define __swizzle_addr_q(port)	(port)
++
++#else /* __LITTLE_ENDIAN */
++
++static inline bool __should_swizzle_addr(unsigned long p)
++{
++	/* boot bus? */
++	return ((p >> 40) & 0xff) == 0;
++}
++
++# define __swizzle_addr_b(port)	\
++	(__should_swizzle_addr(port) ? (port) ^ 7 : (port))
++# define __swizzle_addr_w(port)	\
++	(__should_swizzle_addr(port) ? (port) ^ 6 : (port))
++# define __swizzle_addr_l(port)	\
++	(__should_swizzle_addr(port) ? (port) ^ 4 : (port))
++# define __swizzle_addr_q(port)	(port)
++
++#endif /* __BIG_ENDIAN */
++
++/*
++ * Sane hardware offers swapping of PCI/ISA I/O space accesses in hardware;
++ * less sane hardware forces software to fiddle with this...
++ *
++ * Regardless, if the host bus endianness mismatches that of PCI/ISA, then
++ * you can't have the numerical value of data and byte addresses within
++ * multibyte quantities both preserved at the same time.  Hence two
++ * variations of functions: non-prefixed ones that preserve the value
++ * and prefixed ones that preserve byte addresses.  The latters are
++ * typically used for moving raw data between a peripheral and memory (cf.
++ * string I/O functions), hence the "__mem_" prefix.
++ */
++#if defined(CONFIG_SWAP_IO_SPACE)
++
++# define ioswabb(a, x)		(x)
++# define __mem_ioswabb(a, x)	(x)
++# define ioswabw(a, x)		le16_to_cpu(x)
++# define __mem_ioswabw(a, x)	(x)
++# define ioswabl(a, x)		le32_to_cpu(x)
++# define __mem_ioswabl(a, x)	(x)
++# define ioswabq(a, x)		le64_to_cpu(x)
++# define __mem_ioswabq(a, x)	(x)
++
 +#else
-+	uint32_t start_core0_addr;
-+	uint32_t labi_signature;
 +
-+	uint32_t pci_console_active;
-+	uint32_t avail_coremask;
++# define ioswabb(a, x)		(x)
++# define __mem_ioswabb(a, x)	(x)
++# define ioswabw(a, x)		(x)
++# define __mem_ioswabw(a, x)	cpu_to_le16(x)
++# define ioswabl(a, x)		(x)
++# define __mem_ioswabl(a, x)	cpu_to_le32(x)
++# define ioswabq(a, x)		(x)
++# define __mem_ioswabq(a, x)	cpu_to_le32(x)
 +
-+	uint32_t padding;
-+	uint32_t icache_prefetch_disable;
-+
-+	uint64_t InitTLBStart_addr;
-+
-+	uint32_t cur_exception_base;
-+	uint32_t start_app_addr;
-+
-+	uint32_t compact_flash_common_base_addr;
-+	uint32_t no_mark_private_data;
-+
-+	uint32_t led_display_base_addr;
-+	uint32_t compact_flash_attribute_base_addr;
 +#endif
- };
- 
- /* If not to copy a lot of bootloader's structures
-diff --git a/arch/mips/include/asm/octeon/cvmx-bootinfo.h b/arch/mips/include/asm/octeon/cvmx-bootinfo.h
-index 2298199..c373d95 100644
---- a/arch/mips/include/asm/octeon/cvmx-bootinfo.h
-+++ b/arch/mips/include/asm/octeon/cvmx-bootinfo.h
-@@ -53,6 +53,7 @@
-  * to 0.
-  */
- struct cvmx_bootinfo {
-+#ifdef __BIG_ENDIAN_BITFIELD
- 	uint32_t major_version;
- 	uint32_t minor_version;
- 
-@@ -123,6 +124,60 @@ struct cvmx_bootinfo {
- 	 */
- 	uint64_t fdt_addr;
- #endif
-+#else				/* __BIG_ENDIAN */
-+	/*
-+	 * Little-Endian: When the CPU mode is switched to
-+	 * little-endian, the view of the structure has some of the
-+	 * fields swapped.
-+	 */
-+	uint32_t minor_version;
-+	uint32_t major_version;
 +
-+	uint64_t stack_top;
-+	uint64_t heap_base;
-+	uint64_t heap_end;
-+	uint64_t desc_vaddr;
-+
-+	uint32_t stack_size;
-+	uint32_t exception_base_addr;
-+
-+	uint32_t core_mask;
-+	uint32_t flags;
-+
-+	uint32_t phy_mem_desc_addr;
-+	uint32_t dram_size;
-+
-+	uint32_t eclock_hz;
-+	uint32_t debugger_flags_base_addr;
-+
-+	uint32_t reserved0;
-+	uint32_t dclock_hz;
-+
-+	uint8_t reserved3;
-+	uint8_t reserved2;
-+	uint16_t reserved1;
-+	uint8_t board_rev_minor;
-+	uint8_t board_rev_major;
-+	uint16_t board_type;
-+
-+	char board_serial_number[CVMX_BOOTINFO_OCTEON_SERIAL_LEN];
-+	uint8_t mac_addr_base[6];
-+	uint8_t mac_addr_count;
-+	uint8_t pad[5];
-+
-+#if (CVMX_BOOTINFO_MIN_VER >= 1)
-+	uint64_t compact_flash_common_base_addr;
-+	uint64_t compact_flash_attribute_base_addr;
-+	uint64_t led_display_base_addr;
-+#endif
-+#if (CVMX_BOOTINFO_MIN_VER >= 2)
-+	uint32_t config_flags;
-+	uint32_t dfa_ref_clock_hz;
-+#endif
-+#if (CVMX_BOOTINFO_MIN_VER >= 3)
-+	uint64_t fdt_addr;
-+#endif
-+#endif
- };
- 
- #define CVMX_BOOTINFO_CFG_FLAG_PCI_HOST			(1ull << 0)
++#endif /* __ASM_MACH_GENERIC_MANGLE_PORT_H */
 -- 
 2.3.3

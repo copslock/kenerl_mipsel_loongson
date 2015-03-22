@@ -1,39 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 22 Mar 2015 12:25:31 +0100 (CET)
-Received: from kiutl.biot.com ([31.172.244.210]:57090 "EHLO kiutl.biot.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27006513AbbCVLZaUPJdF (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 22 Mar 2015 12:25:30 +0100
-Received: from spamd by kiutl.biot.com with sa-checked (Exim 4.83)
-        (envelope-from <bert@biot.com>)
-        id 1YZe0Y-0002Dn-HE
-        for linux-mips@linux-mips.org; Sun, 22 Mar 2015 12:25:30 +0100
-Received: from [2a02:578:4a04:2a00::5]
-        by kiutl.biot.com with esmtps (TLSv1.2:DHE-RSA-AES128-SHA:128)
-        (Exim 4.83)
-        (envelope-from <bert@biot.com>)
-        id 1YZe0T-0002DQ-AE; Sun, 22 Mar 2015 12:25:25 +0100
-Message-ID: <550EA6A4.6010206@biot.com>
-Date:   Sun, 22 Mar 2015 12:25:24 +0100
-From:   Bert Vermeulen <bert@biot.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.4.0
-MIME-Version: 1.0
-To:     Mark Brown <broonie@kernel.org>
-CC:     ralf@linux-mips.org, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
-Subject: Re: [PATCH 1/2] spi: Add SPI driver for Mikrotik RB4xx series boards
-References: <1426853793-24454-1-git-send-email-bert@biot.com> <1426853793-24454-2-git-send-email-bert@biot.com> <20150320125139.GJ2869@sirena.org.uk>
-In-Reply-To: <20150320125139.GJ2869@sirena.org.uk>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Return-Path: <bert@biot.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 22 Mar 2015 16:55:50 +0100 (CET)
+Received: from filtteri2.pp.htv.fi ([213.243.153.185]:49030 "EHLO
+        filtteri2.pp.htv.fi" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27009511AbbCVPzsAOCax (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 22 Mar 2015 16:55:48 +0100
+Received: from localhost (localhost [127.0.0.1])
+        by filtteri2.pp.htv.fi (Postfix) with ESMTP id 4AC9C19BDA9;
+        Sun, 22 Mar 2015 17:55:48 +0200 (EET)
+X-Virus-Scanned: Debian amavisd-new at pp.htv.fi
+Received: from smtp4.welho.com ([213.243.153.38])
+        by localhost (filtteri2.pp.htv.fi [213.243.153.185]) (amavisd-new, port 10024)
+        with ESMTP id 8xBxJ3f+KK6f; Sun, 22 Mar 2015 17:55:43 +0200 (EET)
+Received: from amd-fx-6350.bb.dnainternet.fi (91-145-91-118.bb.dnainternet.fi [91.145.91.118])
+        by smtp4.welho.com (Postfix) with ESMTP id 4D8B35BC010;
+        Sun, 22 Mar 2015 17:55:43 +0200 (EET)
+From:   Aaro Koskinen <aaro.koskinen@iki.fi>
+To:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>
+Subject: [PATCH] MIPS: OCTEON: fix PCI interrupt mapping for D-Link DSR-1000N
+Date:   Sun, 22 Mar 2015 17:55:39 +0200
+Message-Id: <1427039739-11322-1-git-send-email-aaro.koskinen@iki.fi>
+X-Mailer: git-send-email 2.2.0
+Return-Path: <aaro.koskinen@iki.fi>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46486
+X-archive-position: 46487
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: bert@biot.com
+X-original-sender: aaro.koskinen@iki.fi
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,48 +41,26 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 03/20/2015 01:51 PM, Mark Brown wrote:
+Fix PCI interrupt mapping for DSR1000N. This will get the PCI slot
+interrupts working. The mapping is based on D-Link GPL tarball.
 
-Mark,
+Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+---
+ arch/mips/pci/pci-octeon.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Thanks very much for your detailed review. I'll fix things according to your
-comments. However...
-
-> On Fri, Mar 20, 2015 at 01:16:32PM +0100, Bert Vermeulen wrote:
->> +static void do_spi_byte(void __iomem *base, unsigned char byte)
->> +{
->> +	do_spi_clk(base, byte >> 7);
->> +	do_spi_clk(base, byte >> 6);
->> +	do_spi_clk(base, byte >> 5);
->> +	do_spi_clk(base, byte >> 4);
->> +	do_spi_clk(base, byte >> 3);
->> +	do_spi_clk(base, byte >> 2);
->> +	do_spi_clk(base, byte >> 1);
->> +	do_spi_clk(base, byte);
-> 
-> This looks awfully like it's bitbanging the value out, can we not use
-> spi-bitbang here?
-> 
-
-[...]
-
->> +static inline void do_spi_clk_fast(void __iomem *base, unsigned bit1,
->> +				   unsigned bit2)
-> 
-> Why would we ever want the slow version?
-
-It is bitbanging, at least on write. The hardware has a shift register that
-is uses for reads. The generic spi for this board's architecture (ath79)
-indeed uses spi-bitbang.
-
-This "fast SPI" thing is what makes this one different: the boot flash and
-MMC use regular SPI on the same bus as the CPLD. This CPLD needs this fast
-SPI: a mode where it shifts in two bits per clock. The second bit is
-apparently sent via the CS2 pin.
-
-So I don't think spi-bitbang will do. I need to see about reworking things
-to use less custom queueing -- I'm not that familiar with this yet.
-
-
+diff --git a/arch/mips/pci/pci-octeon.c b/arch/mips/pci/pci-octeon.c
+index a04af55..ec3de02 100644
+--- a/arch/mips/pci/pci-octeon.c
++++ b/arch/mips/pci/pci-octeon.c
+@@ -214,6 +214,8 @@ const char *octeon_get_pci_interrupts(void)
+ 		return "AAABAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+ 	case CVMX_BOARD_TYPE_BBGW_REF:
+ 		return "AABCD";
++	case CVMX_BOARD_TYPE_CUST_DSR1000N:
++		return "CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC";
+ 	case CVMX_BOARD_TYPE_THUNDER:
+ 	case CVMX_BOARD_TYPE_EBH3000:
+ 	default:
 -- 
-Bert Vermeulen        bert@biot.com          email/xmpp
+2.2.0

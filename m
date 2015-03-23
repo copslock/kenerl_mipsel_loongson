@@ -1,39 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Mar 2015 13:33:07 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:4950 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27014513AbbCWMc3Me2Iy (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 23 Mar 2015 13:32:29 +0100
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 94F165CE1C3C4;
-        Mon, 23 Mar 2015 12:32:22 +0000 (GMT)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Mon, 23 Mar 2015 12:32:24 +0000
-Received: from mchandras-linux.le.imgtec.org (192.168.154.138) by
- LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.210.2; Mon, 23 Mar 2015 12:32:23 +0000
-From:   Markos Chandras <markos.chandras@imgtec.com>
-To:     <linux-mips@linux-mips.org>
-CC:     Markos Chandras <markos.chandras@imgtec.com>,
-        <linux-kernel@vger.kernel.org>
-Subject: [PATCH 3/3] MIPS: Malta: malta-time: Ensure GIC counter is running
-Date:   Mon, 23 Mar 2015 12:32:03 +0000
-Message-ID: <1427113923-9840-4-git-send-email-markos.chandras@imgtec.com>
-X-Mailer: git-send-email 2.3.3
-In-Reply-To: <1427113923-9840-1-git-send-email-markos.chandras@imgtec.com>
-References: <1427113923-9840-1-git-send-email-markos.chandras@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Mar 2015 13:39:27 +0100 (CET)
+Received: from ducie-dc1.codethink.co.uk ([185.25.241.215]:53579 "EHLO
+        ducie-dc1.codethink.co.uk" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008895AbbCWMjZMDxDl (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 23 Mar 2015 13:39:25 +0100
+Received: from localhost (localhost [127.0.0.1])
+        by ducie-dc1.codethink.co.uk (Postfix) with ESMTP id 7A1D5460351
+        for <linux-mips@linux-mips.org>; Mon, 23 Mar 2015 12:39:20 +0000 (GMT)
+X-Virus-Scanned: Debian amavisd-new at ducie-dc1.codethink.co.uk
+Received: from ducie-dc1.codethink.co.uk ([127.0.0.1])
+        by localhost (ducie-dc1.codethink.co.uk [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id AZcefs9X5-a8 for <linux-mips@linux-mips.org>;
+        Mon, 23 Mar 2015 12:39:16 +0000 (GMT)
+Received: from pm-laptop.codethink.co.uk (pm-laptop.dyn.ducie.codethink.co.uk [10.24.1.94])
+        by ducie-dc1.codethink.co.uk (Postfix) with ESMTPSA id 98FE94606A4
+        for <linux-mips@linux-mips.org>; Mon, 23 Mar 2015 12:39:16 +0000 (GMT)
+Received: from localhost ([::1] helo=paulmartin.codethink.co.uk)
+        by pm-laptop.codethink.co.uk with esmtp (Exim 4.84)
+        (envelope-from <paul.martin@codethink.co.uk>)
+        id 1Ya1dU-00055j-1H
+        for linux-mips@linux-mips.org; Mon, 23 Mar 2015 12:39:16 +0000
+Date:   Mon, 23 Mar 2015 12:39:16 +0000
+From:   Paul Martin <paul.martin@codethink.co.uk>
+To:     linux-mips@linux-mips.org
+Subject: Re: [PATCH 2/3] MIPS: OCTEON: Add mach-cavium-octeon/mangle-port.h
+Message-ID: <20150323123914.GA19416@paulmartin.codethink.co.uk>
+Mail-Followup-To: linux-mips@linux-mips.org
+References: <1426867920-7907-1-git-send-email-aleksey.makarov@auriga.com>
+ <1426867920-7907-3-git-send-email-aleksey.makarov@auriga.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.154.138]
-Return-Path: <Markos.Chandras@imgtec.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1426867920-7907-3-git-send-email-aleksey.makarov@auriga.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <paul.martin@codethink.co.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46494
+X-archive-position: 46495
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: markos.chandras@imgtec.com
+X-original-sender: paul.martin@codethink.co.uk
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,29 +53,29 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Start the GIC counter before we try to determine its frequency.
+On Fri, Mar 20, 2015 at 07:11:57PM +0300, Aleksey Makarov wrote:
+> From: David Daney <david.daney@cavium.com>
+> 
+> Needed for little-endian ioport access.
+> This fixes NOR flash in little-endian mode
+> 
+> Signed-off-by: David Daney <david.daney@cavium.com>
+> Signed-off-by: Aleksey Makarov <aleksey.makarov@auriga.com>
+> ---
+>  .../include/asm/mach-cavium-octeon/mangle-port.h   | 74 ++++++++++++++++++++++
 
-Cc: <linux-kernel@vger.kernel.org>
-Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
----
- arch/mips/mti-malta/malta-time.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+This seems to be a new header file that's not used anywhere else.
 
-diff --git a/arch/mips/mti-malta/malta-time.c b/arch/mips/mti-malta/malta-time.c
-index ce02dbdedc62..128a74bd7cea 100644
---- a/arch/mips/mti-malta/malta-time.c
-+++ b/arch/mips/mti-malta/malta-time.c
-@@ -87,8 +87,10 @@ static void __init estimate_frequencies(void)
- 
- 	/* Initialize counters. */
- 	start = read_c0_count();
--	if (gic_present)
-+	if (gic_present) {
-+		gic_start_count();
- 		gicstart = gic_read_count();
-+	}
- 
- 	/* Read counter exactly on falling edge of update flag. */
- 	while (CMOS_READ(RTC_REG_A) & RTC_UIP);
+I get the feeling that there should be at least another three patches
+in this series which have been omitted.
+
+Certainly, the Octeon peripherals won't work with just the three part
+patch set presented here.
+
+Thanks for this patch (and the padding bugfix to the boot structure).
+
+PS. Don't forget the missing htons() in drivers/staging/octeon/ethernet-tx.c
+
 -- 
-2.3.3
+Paul Martin                                  http://www.codethink.co.uk/
+Senior Software Developer, Codethink Ltd.

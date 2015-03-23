@@ -1,33 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Mar 2015 15:07:58 +0100 (CET)
-Received: from nivc-ms1.auriga.com ([80.240.102.146]:10871 "EHLO
-        nivc-ms1.auriga.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27008858AbbCWOH4nQ040 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 23 Mar 2015 15:07:56 +0100
-Received: from [80.240.102.213] (80.240.102.213) by NIVC-MS1.auriga.ru
- (80.240.102.146) with Microsoft SMTP Server (TLS) id 14.3.224.2; Mon, 23 Mar
- 2015 17:07:51 +0300
-Message-ID: <55101D58.1050309@auriga.com>
-Date:   Mon, 23 Mar 2015 17:04:08 +0300
-From:   Aleksey Makarov <aleksey.makarov@auriga.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.5.0
-MIME-Version: 1.0
-To:     <linux-mips@linux-mips.org>
-CC:     Paul Martin <paul.martin@codethink.co.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Mar 2015 15:18:39 +0100 (CET)
+Received: from ducie-dc1.codethink.co.uk ([185.25.241.215]:56556 "EHLO
+        ducie-dc1.codethink.co.uk" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008858AbbCWOShtvMun (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 23 Mar 2015 15:18:37 +0100
+Received: from localhost (localhost [127.0.0.1])
+        by ducie-dc1.codethink.co.uk (Postfix) with ESMTP id 3D48D4605DF
+        for <linux-mips@linux-mips.org>; Mon, 23 Mar 2015 14:18:33 +0000 (GMT)
+X-Virus-Scanned: Debian amavisd-new at ducie-dc1.codethink.co.uk
+Received: from ducie-dc1.codethink.co.uk ([127.0.0.1])
+        by localhost (ducie-dc1.codethink.co.uk [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id o8P6jlkLAwzX for <linux-mips@linux-mips.org>;
+        Mon, 23 Mar 2015 14:18:27 +0000 (GMT)
+Received: from pm-laptop.codethink.co.uk (pm-laptop.dyn.ducie.codethink.co.uk [10.24.1.94])
+        by ducie-dc1.codethink.co.uk (Postfix) with ESMTPSA id ED04A460882
+        for <linux-mips@linux-mips.org>; Mon, 23 Mar 2015 14:18:26 +0000 (GMT)
+Received: from localhost ([::1] helo=paulmartin.codethink.co.uk)
+        by pm-laptop.codethink.co.uk with esmtp (Exim 4.84)
+        (envelope-from <paul.martin@codethink.co.uk>)
+        id 1Ya3BS-00083L-BQ
+        for linux-mips@linux-mips.org; Mon, 23 Mar 2015 14:18:26 +0000
+Date:   Mon, 23 Mar 2015 14:18:26 +0000
+From:   Paul Martin <paul.martin@codethink.co.uk>
+To:     linux-mips@linux-mips.org
 Subject: Re: [PATCH 2/3] MIPS: OCTEON: Add mach-cavium-octeon/mangle-port.h
-References: <1426867920-7907-1-git-send-email-aleksey.makarov@auriga.com> <1426867920-7907-3-git-send-email-aleksey.makarov@auriga.com>
-In-Reply-To: <1426867920-7907-3-git-send-email-aleksey.makarov@auriga.com>
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [80.240.102.213]
-Return-Path: <aleksey.makarov@auriga.com>
+Message-ID: <20150323141825.GB19416@paulmartin.codethink.co.uk>
+Mail-Followup-To: linux-mips@linux-mips.org
+References: <1426867920-7907-1-git-send-email-aleksey.makarov@auriga.com>
+ <1426867920-7907-3-git-send-email-aleksey.makarov@auriga.com>
+ <55101D58.1050309@auriga.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <55101D58.1050309@auriga.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <paul.martin@codethink.co.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46498
+X-archive-position: 46499
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aleksey.makarov@auriga.com
+X-original-sender: paul.martin@codethink.co.uk
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -40,39 +54,14 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-> On Fri, Mar 20, 2015 at 07:11:57PM +0300, Aleksey Makarov wrote:
->> From: David Daney <david.daney@cavium.com>
->> 
->> Needed for little-endian ioport access.
->> This fixes NOR flash in little-endian mode
->> 
->> Signed-off-by: David Daney <david.daney@cavium.com>
->> Signed-off-by: Aleksey Makarov <aleksey.makarov@auriga.com>
->> ---
->>  .../include/asm/mach-cavium-octeon/mangle-port.h   | 74 
->> ++++++++++++++++++++++
-> 
-> This seems to be a new header file that's not used anywhere else.
+On Mon, Mar 23, 2015 at 05:04:08PM +0300, Aleksey Makarov wrote:
 
-arch/mips/include/asm/io.h:#include <mangle-port.h>
+> With these patches the cn7000 board boots in little-endian mode with 
+> all peripherials supported on this board working fine.  The peripherials
+> on other boards should probably be fixed separately.
 
-Also note the compiler flags:
+Including octeon-rng?  :-)
 
--I./arch/mips/include/asm/mach-cavium-octeon -I./arch/mips/include/asm/mach-generic 
-
-> I get the feeling that there should be at least another three patches
-> in this series which have been omitted.
-> 
-> Certainly, the Octeon peripherals won't work with just the three part
-> patch set presented here.
-
-With these patches the cn7000 board boots in little-endian mode with 
-all peripherials supported on this board working fine.  The peripherials
-on other boards should probably be fixed separately.
-
-> PS. Don't forget the missing htons() in drivers/staging/octeon/ethernet-tx.c
-
-Thanks.  A patch would be appreciated.
-
-Thanks
-Aleksey Makarov
+-- 
+Paul Martin                                  http://www.codethink.co.uk/
+Senior Software Developer, Codethink Ltd.

@@ -1,67 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Mar 2015 17:31:24 +0100 (CET)
-Received: from mail-qg0-f52.google.com ([209.85.192.52]:33742 "EHLO
-        mail-qg0-f52.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27009672AbbCXQbTvGRYP (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 24 Mar 2015 17:31:19 +0100
-Received: by qgfa8 with SMTP id a8so204421035qgf.0
-        for <linux-mips@linux-mips.org>; Tue, 24 Mar 2015 09:31:15 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Mar 2015 23:48:59 +0100 (CET)
+Received: from mail-pd0-f173.google.com ([209.85.192.173]:36641 "EHLO
+        mail-pd0-f173.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27009017AbbCXWs6a8iIb (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 24 Mar 2015 23:48:58 +0100
+Received: by pdbcz9 with SMTP id cz9so7519401pdb.3;
+        Tue, 24 Mar 2015 15:48:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc:content-type;
-        bh=t/6wu9mvWGuCQT6dmSdNYx137vaat9gg1yT7wMwkBsE=;
-        b=aitOlLLlQoA7gHz1JU964IQnXcl6E5+3RRi1uFmUoC3Ob3BBXJsBsesu2hZIR1OwlV
-         UdSlRbX+UZ0PsWTxB8ddOvKtOmPzHDulmU0u1F/dXgF/yze9KYBgT5bksqQUESm5ae8H
-         BPgNlIyF9pNSsH0fEqHC6vGSBSGj1SrS3yOG5UJ1ie4oi56y/lxwpAAYtqWeHe/1PY+L
-         I/BL8d1qVWerun5KvQIXSlsaRr6Y7zhJHjleaPMvurn1wlX01Obfpx124k3EiAz399TS
-         6LcrQJ9DNa0ekHafemB6eiQh8JKK6iis7aFWH+ZEDfhNhaenvDWH7Vz4lrPp58kSCRoi
-         SCEg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc:content-type;
-        bh=t/6wu9mvWGuCQT6dmSdNYx137vaat9gg1yT7wMwkBsE=;
-        b=n9fnIyexwT3lQ/zBjNcEjkxmCKuIhHhFWdtPWs4I33KRrsWEldCahxZG59sm7xZS+c
-         aFcMQmm5p6utx0qhQCfltnmgm1pUrmwo/JPMSVbdCTtWWMZLR/VmSIZYhl/wS7G1PFN0
-         aR0mFqY+V7xRz1FQE0fCJxKznGqum11iKuzaM=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:sender:in-reply-to:references:date
-         :message-id:subject:from:to:cc:content-type;
-        bh=t/6wu9mvWGuCQT6dmSdNYx137vaat9gg1yT7wMwkBsE=;
-        b=FRSz3+EQRWizqHDl0D4xRHmyysfD9Izu9mVl67Zjaq8JW8PLJNKpm3l2NPwcH5hL8i
-         m1JJRCZbPnV7+Ma/yUAPbpSU/YjnOPw9EdbcKjakjt8kerlqdvSKsw8IlqKCTw/AM2qa
-         tyNWhWwQEMZVn8Ij5liEUvrrEy7KjlwkCxYAiDOhXKix9r1VjQD2d98oH3rgIlWKKJWY
-         1szu7z4yftpR0UAjZDTtvSY3yLXu1T8l1rUKadhSoGhKVmGLeM8FIV4ng6FYqd0BK9OO
-         tej7DAhXIva1qVd4sWQg/+kvMLalfBmmHd/EkHMrJWmrhvfNcqdCdVcoQPavVE8UMMSn
-         ylNg==
-X-Gm-Message-State: ALoCoQkLpPtFou6AyixbJpuBfPG/a23e3tlrdarmyOL1yYhTB4qVrFDD0zA8mmCAyHSDCCg6hRPg
+        d=gmail.com; s=20120113;
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding;
+        bh=8EBA7q7cU+uZF2n7kWMtXzLocnLsi6DBXGTd+QEcpZk=;
+        b=bkXdTZYzMkSM1BPAU/uyVovdc2Ki3Lbv7918UW1PcJjWv6nJNcnRZ3gLnS+1sHMHYi
+         ZPdvcXlaXm2yrdPFHWavKY7RZ1YQh1wdBc7xgTYpk9AAEiU5xpMW5T+k9Iu0ym/1RHAF
+         ZPWLzakuDIj0B5bgsHVPd5csalN5B6dsFb6syN+weL7iEKE0SEufayqNIlw5vl+Ks4sW
+         PvjvY+L/O5n7etTyBPZNmzRFzn2rpkGW3JTgPCqyyb+6RAFHA7tfli6juOMvMnacaB2z
+         R4viMZPXJVjGbvOn+ZqIJiVIsrlG1jYva2N4xpJ6O3cfbTV5El1CxP0KDVSOAIg0nkqH
+         54sQ==
+X-Received: by 10.70.98.139 with SMTP id ei11mr11525112pdb.3.1427237333287;
+        Tue, 24 Mar 2015 15:48:53 -0700 (PDT)
+Received: from [10.12.156.244] (5520-maca-inet1-outside.broadcom.com. [216.31.211.11])
+        by mx.google.com with ESMTPSA id gy3sm342387pbb.42.2015.03.24.15.48.51
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 24 Mar 2015 15:48:52 -0700 (PDT)
+Message-ID: <5511E9A8.6090908@gmail.com>
+Date:   Tue, 24 Mar 2015 15:48:08 -0700
+From:   Florian Fainelli <f.fainelli@gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.5.0
 MIME-Version: 1.0
-X-Received: by 10.140.91.71 with SMTP id y65mr6514106qgd.90.1427214651810;
- Tue, 24 Mar 2015 09:30:51 -0700 (PDT)
-Received: by 10.140.19.104 with HTTP; Tue, 24 Mar 2015 09:30:51 -0700 (PDT)
-In-Reply-To: <5511731E.5000901@imgtec.com>
-References: <1425513563-9897-1-git-send-email-abrestic@chromium.org>
-        <5511731E.5000901@imgtec.com>
-Date:   Tue, 24 Mar 2015 09:30:51 -0700
-X-Google-Sender-Auth: uao3OzQyz8MAg7jpx44L5eV646E
-Message-ID: <CAL1qeaG5+15w1FZX549k++PjFnXV7PZ7by03xNA7irQ8aNzM5A@mail.gmail.com>
-Subject: Re: [PATCH] MIPS: Provide fallback reboot/poweroff/halt implementations
-From:   Andrew Bresticker <abrestic@chromium.org>
-To:     James Hogan <james.hogan@imgtec.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Linux-MIPS <linux-mips@linux-mips.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <abrestic@google.com>
+To:     Kevin Cernekee <cernekee@gmail.com>, ralf@linux-mips.org
+CC:     jaedon.shin@gmail.com, abrestic@chromium.org, tglx@linutronix.de,
+        jason@lakedaemon.net, jogo@openwrt.org, arnd@arndb.de,
+        computersforpeace@gmail.com, linux-mips@linux-mips.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH V6 00/25] Generic BMIPS kernel
+References: <1419529760-9520-1-git-send-email-cernekee@gmail.com>
+In-Reply-To: <1419529760-9520-1-git-send-email-cernekee@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46508
+X-archive-position: 46509
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: abrestic@chromium.org
+X-original-sender: f.fainelli@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -74,57 +58,27 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi James,
+On 25/12/14 09:48, Kevin Cernekee wrote:
+> V5->V6: Incorporate several fixes/enhancements from Jaedon Shin:
+> 
+>  - Fix register read/modify/write in RAC flush code.
+> 
+>  - Fix use of "SYS_HAS_CPU_BMIPS32_3300" Kconfig symbol.
+> 
+>  - Add base platform support for 7358 and 7362.
+> 
+> The DTS files follow Andrew Bresticker's new per-vendor directory layout.
+> 
+> This series applies on top of Linus' current head of tree.
+> 
+> Patch 01 (Fix outdated use of mips_cpu_intc_init()) is REQUIRED for 3.19
+> to fix a build failure seen in 3.19-rc.  The other patches can
+> be queued for 3.20 or later.
 
-On Tue, Mar 24, 2015 at 7:22 AM, James Hogan <james.hogan@imgtec.com> wrote:
-> Hi Andrew,
->
-> On 04/03/15 23:59, Andrew Bresticker wrote:
->> If a machine-specific hook is not implemented for restart, poweroff,
->> or halt, fall back to halting secondary CPUs, disabling interrupts,
->> and spinning.  In the case of restart, attempt to restart the system
->> via do_kernel_restart() (which will call any registered restart
->> handlers) before halting.
->>
->> Signed-off-by: Andrew Bresticker <abrestic@chromium.org>
->> ---
->>  arch/mips/kernel/reset.c | 20 ++++++++++++++++++++
->>  1 file changed, 20 insertions(+)
->>
->> diff --git a/arch/mips/kernel/reset.c b/arch/mips/kernel/reset.c
->> index 07fc524..87b1f08 100644
->> --- a/arch/mips/kernel/reset.c
->> +++ b/arch/mips/kernel/reset.c
->> @@ -29,16 +29,36 @@ void machine_restart(char *command)
->>  {
->>       if (_machine_restart)
->>               _machine_restart(command);
->> +
->> +#ifdef CONFIG_SMP
->> +     smp_send_stop();
->
-> Maybe local_irq_disable should be before smp_send_stop() to avoid
-> deadlocks (same below)?
->
-> See for example commit 44424c34049f41123a3a8b4853822f47f4ff03a2 ("ARM:
-> 7803/1: Fix deadlock scenario with smp_send_stop()").
+Jason, can you merge the irqchip patches through your tree? They still
+apply cleanly to your irqchip/core branch as of today, except the last
+one which has a small hunk to be fixed in drivers/irqchip/Makefile.
 
-Ah right, good catch.
-
->> +#endif
->> +     do_kernel_restart(command);
->> +     pr_emerg("Reboot failed -- System halted\n");
->
-> Perhaps we could have a grace period like ARM does here:
->
->> /* Give a grace period for failure to restart of 1s */
->> mdelay(1000);
->
-> Otherwise with this patch a reboot on Malta usually shows some/all of
-> this pr_emerg message prior to actually restarting. (Arguably thats a
-> failing of Malta's _machine_restart not to have a delay... thoughts?).
-
-Yes, I think it's reasonable to put a delay here.
-
-Thanks,
-Andrew
+Thanks!
+-- 
+Florian

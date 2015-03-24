@@ -1,53 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Mar 2015 23:16:55 +0100 (CET)
-Received: from mail-ig0-f181.google.com ([209.85.213.181]:36482 "EHLO
-        mail-ig0-f181.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27009429AbbCWWQxvUUf8 convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 23 Mar 2015 23:16:53 +0100
-Received: by igbud6 with SMTP id ud6so56010861igb.1;
-        Mon, 23 Mar 2015 15:16:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type:content-transfer-encoding;
-        bh=nWevnwXziK0oddG08AVkyfwfwLIvXslDzb5XPYAf3ow=;
-        b=gNO92j0URoLdnsZgVlOVXoSpFb866CjguJWnvSwh+hZtueAAAzunDMBd0mzMhAAV5+
-         n5zl/uK1Q3Y7TLjrw9oRJ8echJkqEFuFN1GL2vvRHHouM4iH8jlrfA1CSAfDXEJ8dCFw
-         qJL0rIWC6B0uN14QuW+VWNJnqqP84YxbbT03HPfQ40OR4YL5uzP+FelswxZkIXaLt5+T
-         Gt3p7Q9/JJp/FnJIozT+vnM6GeG0Zngnt5LkD5etk5cv7O6HAsVAP8AgVOhY6bBVwYoT
-         VTC7NexEyWqGoE1hsqCigyGh4LzGvJO/axJoakMgQn7zF5CZKGR9NJozYtcO1cjW3u+J
-         9Y0A==
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Mar 2015 10:00:04 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:26411 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27006953AbbCXJACrmNEW (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 24 Mar 2015 10:00:02 +0100
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id E822DBB377896;
+        Tue, 24 Mar 2015 08:59:55 +0000 (GMT)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Tue, 24 Mar 2015 08:59:57 +0000
+Received: from [192.168.154.138] (192.168.154.138) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Tue, 24 Mar
+ 2015 08:59:57 +0000
+Message-ID: <5511278D.4030109@imgtec.com>
+Date:   Tue, 24 Mar 2015 08:59:57 +0000
+From:   Markos Chandras <Markos.Chandras@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.5.0
 MIME-Version: 1.0
-X-Received: by 10.50.73.99 with SMTP id k3mr17678673igv.21.1427149009096; Mon,
- 23 Mar 2015 15:16:49 -0700 (PDT)
-Received: by 10.107.16.139 with HTTP; Mon, 23 Mar 2015 15:16:49 -0700 (PDT)
-In-Reply-To: <20150323212524.GU14954@sirena.org.uk>
-References: <E1YZyoN-00019n-50@debutante>
-        <20150323212524.GU14954@sirena.org.uk>
-Date:   Mon, 23 Mar 2015 23:16:49 +0100
-Message-ID: <CACna6rzRO=vtiv_RfC9nDz+nCZdGGvCh4-zx5cm-W2GSRC1U6w@mail.gmail.com>
-Subject: Re: next-20150323 build: 1 failures 23 warnings (next-20150323)
-From:   =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
-To:     Mark Brown <broonie@kernel.org>
-Cc:     "David S. Miller" <davem@davemloft.net>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        kernel-build-reports@lists.linaro.org,
-        linaro-kernel@lists.linaro.org,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        Network Development <netdev@vger.kernel.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-Return-Path: <zajec5@gmail.com>
+To:     "Maciej W. Rozycki" <macro@linux-mips.org>
+CC:     <linux-mips@linux-mips.org>
+Subject: Re: [PATCH 1/4] MIPS: asm: r4kcache: Use correct base register for
+ MIPS R6 cache flushes
+References: <1425408530-21613-1-git-send-email-markos.chandras@imgtec.com> <1425408530-21613-2-git-send-email-markos.chandras@imgtec.com> <alpine.LFD.2.11.1503050245540.18344@eddie.linux-mips.org> <54FD5D34.7060201@imgtec.com> <alpine.LFD.2.11.1503232033060.8758@eddie.linux-mips.org>
+In-Reply-To: <alpine.LFD.2.11.1503232033060.8758@eddie.linux-mips.org>
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.154.138]
+Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46504
+X-archive-position: 46505
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: zajec5@gmail.com
+X-original-sender: Markos.Chandras@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -60,20 +47,46 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 23 March 2015 at 22:25, Mark Brown <broonie@kernel.org> wrote:
-> On Mon, Mar 23, 2015 at 09:38:19AM +0000, Build bot for Mark Brown wrote:
->
-> In current -next the bgmac driver does not compile in an ARM
-> allmodconfig:
->
->>       arm-allmodconfig
->> ../drivers/net/ethernet/broadcom/bgmac.c:20:27: fatal error: bcm47xx_nvram.h: No such file or directory
->
-> because this include file is only present on MIPS.  This looks at first
-> glance to have happened in the merge commit edb15d83a875a1f4 from the
-> MIPS tree though I think that needs a bit more investigation.
+On 03/23/2015 08:40 PM, Maciej W. Rozycki wrote:
+> On Mon, 9 Mar 2015, Markos Chandras wrote:
+> 
+>>>  Since this operates on addresses shouldn't PTR_ADDIU be used instead?
+>>>
+>>>   Maciej
+>>>
+>>
+>> I don't know. I thought PTR_ADDIU should be used for pointers but the
+>> arguments in these macros are "unsigned long".
+> 
+>  Hmm, good point.  I think we should match the C data type used even 
+> though we have an assumption that sizeof(long) == sizeof(void *), so your 
+> change looks right to me as it stands.
+> 
+>  I think we have a convention to separate `linux' from `asm' inclusions by 
+> an empty line though, so I suggest that you add one here:
+> 
+>> diff --git a/arch/mips/include/asm/r4kcache.h b/arch/mips/include/asm/r4kcache.h
+>> index 1b22d2da88a1..d329f7328bd4 100644
+>> --- a/arch/mips/include/asm/r4kcache.h
+>> +++ b/arch/mips/include/asm/r4kcache.h
+>> @@ -12,6 +12,7 @@
+>>  #ifndef _ASM_R4KCACHE_H
+>>  #define _ASM_R4KCACHE_H
+>>  
+>> +#include <linux/stringify.h>
+>>  #include <asm/asm.h>
+>>  #include <asm/cacheops.h>
+>>  #include <asm/compiler.h>
+> 
+> as well.  I can offer you my review tag if you repost the change with this 
+> trivial update.
+> 
+>   Maciej
+> 
+Hi,
 
-Sorry & thanks. Will fix that tomorrow.
+I believe Ralf can fix this trivial change whenever he gets to apply
+these patches. If not, I will post it again.
 
 -- 
-Rafał
+markos

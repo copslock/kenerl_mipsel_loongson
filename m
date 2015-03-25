@@ -1,40 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Mar 2015 15:03:48 +0100 (CET)
-Received: from youngberry.canonical.com ([91.189.89.112]:37215 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27014605AbbCYODpr4zoB (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Mar 2015 15:03:45 +0100
-Received: from [10.172.192.212] (helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_128_CBC_SHA1:16)
-        (Exim 4.71)
-        (envelope-from <luis.henriques@canonical.com>)
-        id 1YaluD-000455-55; Wed, 25 Mar 2015 14:03:37 +0000
-From:   Luis Henriques <luis.henriques@canonical.com>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        kernel-team@lists.ubuntu.com
-Cc:     James Hogan <james.hogan@imgtec.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Marcelo Tosatti <mtosatti@redhat.com>,
-        Gleb Natapov <gleb@kernel.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Ingo Molnar <mingo@redhat.com>, linux-mips@linux-mips.org,
-        kvm@vger.kernel.org, Luis Henriques <luis.henriques@canonical.com>
-Subject: [PATCH 3.16.y-ckt 070/165] KVM: MIPS: Fix trace event to save PC directly
-Date:   Wed, 25 Mar 2015 14:00:43 +0000
-Message-Id: <1427292138-7021-71-git-send-email-luis.henriques@canonical.com>
-X-Mailer: git-send-email 2.1.4
-In-Reply-To: <1427292138-7021-1-git-send-email-luis.henriques@canonical.com>
-References: <1427292138-7021-1-git-send-email-luis.henriques@canonical.com>
-X-Extended-Stable: 3.16
-Return-Path: <luis.henriques@canonical.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Mar 2015 16:11:37 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:4907 "EHLO
+        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S27009001AbbCYPLgfkyrp (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Mar 2015 16:11:36 +0100
+Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
+        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 3582141F8DCD;
+        Wed, 25 Mar 2015 15:11:32 +0000 (GMT)
+Received: from mailapp01.imgtec.com ([10.100.180.241])
+  by imgpgp01.kl.imgtec.org (PGP Universal service);
+  Wed, 25 Mar 2015 15:11:32 +0000
+X-PGP-Universal: processed;
+        by imgpgp01.kl.imgtec.org on Wed, 25 Mar 2015 15:11:32 +0000
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 43AA3FA86BFC0;
+        Wed, 25 Mar 2015 15:11:29 +0000 (GMT)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Wed, 25 Mar 2015 15:11:31 +0000
+Received: from [192.168.154.110] (192.168.154.110) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Wed, 25 Mar
+ 2015 15:11:31 +0000
+Message-ID: <5512D01C.1050500@imgtec.com>
+Date:   Wed, 25 Mar 2015 15:11:24 +0000
+From:   James Hogan <james.hogan@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.5.0
+MIME-Version: 1.0
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 2/3] MIPS: Add CDMM bus support
+References: <1422877510-29247-1-git-send-email-james.hogan@imgtec.com> <1422877510-29247-3-git-send-email-james.hogan@imgtec.com> <20150325123756.GA2200@kroah.com>
+In-Reply-To: <20150325123756.GA2200@kroah.com>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature";
+        boundary="bKMEwn0sxnK16RmuBKpsXfmQfSGWVphd4"
+X-Originating-IP: [192.168.154.110]
+X-ESG-ENCRYPT-TAG: da4c5968
+Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46519
+X-archive-position: 46520
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: luis.henriques@canonical.com
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,66 +57,45 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-3.16.7-ckt9 -stable review patch.  If anyone has any objections, please let me know.
+--bKMEwn0sxnK16RmuBKpsXfmQfSGWVphd4
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: quoted-printable
 
-------------------
+On 25/03/15 12:37, Greg Kroah-Hartman wrote:
+> On Mon, Feb 02, 2015 at 11:45:09AM +0000, James Hogan wrote:
+>> +struct bus_type mips_cdmm_bustype =3D {
+>> +	.name		=3D "cdmm",
+>> +	.dev_attrs	=3D mips_cdmm_dev_attrs,
+>=20
+> .dev_attrs is going away "soon", please use dev_groups instead here.
 
-From: James Hogan <james.hogan@imgtec.com>
+Thanks Greg. I've fixed this, and will send a v3 of this patch soon.
 
-commit b3cffac04eca9af46e1e23560a8ee22b1bd36d43 upstream.
+Cheers
+James
 
-Currently the guest exit trace event saves the VCPU pointer to the
-structure, and the guest PC is retrieved by dereferencing it when the
-event is printed rather than directly from the trace record. This isn't
-safe as the printing may occur long afterwards, after the PC has changed
-and potentially after the VCPU has been freed. Usually this results in
-the same (wrong) PC being printed for multiple trace events. It also
-isn't portable as userland has no way to access the VCPU data structure
-when interpreting the trace record itself.
 
-Lets save the actual PC in the structure so that the correct value is
-accessible later.
+--bKMEwn0sxnK16RmuBKpsXfmQfSGWVphd4
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
 
-Fixes: 669e846e6c4e ("KVM/MIPS32: MIPS arch specific APIs for KVM")
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Marcelo Tosatti <mtosatti@redhat.com>
-Cc: Gleb Natapov <gleb@kernel.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: linux-mips@linux-mips.org
-Cc: kvm@vger.kernel.org
-Acked-by: Steven Rostedt <rostedt@goodmis.org>
-Signed-off-by: Marcelo Tosatti <mtosatti@redhat.com>
-Signed-off-by: Luis Henriques <luis.henriques@canonical.com>
----
- arch/mips/kvm/trace.h | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
 
-diff --git a/arch/mips/kvm/trace.h b/arch/mips/kvm/trace.h
-index bc9e0f406c08..e51621e36152 100644
---- a/arch/mips/kvm/trace.h
-+++ b/arch/mips/kvm/trace.h
-@@ -26,18 +26,18 @@ TRACE_EVENT(kvm_exit,
- 	    TP_PROTO(struct kvm_vcpu *vcpu, unsigned int reason),
- 	    TP_ARGS(vcpu, reason),
- 	    TP_STRUCT__entry(
--			__field(struct kvm_vcpu *, vcpu)
-+			__field(unsigned long, pc)
- 			__field(unsigned int, reason)
- 	    ),
- 
- 	    TP_fast_assign(
--			__entry->vcpu = vcpu;
-+			__entry->pc = vcpu->arch.pc;
- 			__entry->reason = reason;
- 	    ),
- 
- 	    TP_printk("[%s]PC: 0x%08lx",
- 		      kvm_mips_exit_types_str[__entry->reason],
--		      __entry->vcpu->arch.pc)
-+		      __entry->pc)
- );
- 
- #endif /* _TRACE_KVM_H */
+iQIcBAEBAgAGBQJVEtAjAAoJEGwLaZPeOHZ6y6EP/judqDj5E0JvT3fnKve0x1tb
+qNlOm/DMM5srXxi2fs2lGkmxP0cVrNIQD76mtXs/3fe6Ifh/EI8uEuo4tEFjwQj5
+1xlXmLcpqIO2Xs4UWHmrXIBh5bra+U+mpO7DLbVZT2cqMO7EQPne498cC4yb/YSZ
+QqIkEj+6WVaPvv+MHXNrYoPmd63I+reIweie5LgiOpFQZdGUgNpS+ES1wKXXBW+J
+Je1r++QAhVPTVJR/lysTLvlAE4pTRksy8yA5nMXNPNSeSagNV8uu3wpawnZ3tgq/
+oVQoOaFmD8jNH3j/8Z+jNrOkudABZA+x4Rkqg1SC10z92M4sPl9sDbke182CV9Ii
+yFjupQOOJQWElcaBxBj7UJZFASIuhKRm7aivDmrhubznTz2Q72EquBokZEUK1wRy
+DuENY4uJ/aDQSQ4o7nIfAo2kRij24TUOJggDIyAoE4I+nx3LaKw2k9nkqmic/mA6
+4qVsoWAb7WulgEyqVGghEzgGjKsiUQolHI/5XuqoeoyR1g7UeY/pWxFssNCDWakF
+ChrqlmvGdoQm1l+KSiWMcmsPgC94QLfEzEWklLjxzSulQF+Gr6e1S09Zozhqxekf
+LueIlYjVRRLEz26inyp2RQtQvG/MEuW+aDVu98KGhA3kPW5KC1rEweVyH8kCTDhM
+JZ+2RQwd/YHoozf8n3fS
+=1E5/
+-----END PGP SIGNATURE-----
+
+--bKMEwn0sxnK16RmuBKpsXfmQfSGWVphd4--

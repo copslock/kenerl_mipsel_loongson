@@ -1,55 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Mar 2015 18:09:14 +0100 (CET)
-Received: from mail-qg0-f52.google.com ([209.85.192.52]:34883 "EHLO
-        mail-qg0-f52.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008424AbbCYRJNE3U0C convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 25 Mar 2015 18:09:13 +0100
-Received: by qgh3 with SMTP id 3so40928923qgh.2;
-        Wed, 25 Mar 2015 10:09:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-type:content-transfer-encoding;
-        bh=0Rl84e8id8x9qdUFWNJro/P42jxkeDSFd7EA9QhwBZc=;
-        b=da9ln+LMo/eknHkipX36An/zfw9ch3PmPhWE+Qf6HuGbjeFxeVP6qrkE3ktt589vX4
-         EYrI8b9ZT/rWVIoB+xpV6qL0Yxsn3ciRQxff1B7ietEwVx10nhx/+XXWiRoAK1CN5OBW
-         mVmp5u2XUzo/leSPQMQOygmfJqiarSVE6XI9jFRPTlRRm1bUzvMi4bvLItcDe8SBgxK2
-         sDvi9Wmw8ZN/GTXu7+cC0vzs3p+8V+AKESwibl5g3RUTNZebsioQUapPpdwkEQe5AFN/
-         BooyqX7MDExLgINswB6L3/V+rD/hOsrXEAZBezfzojS5KREaEB6bujl/kvBXPJB3EzP4
-         yj2Q==
-X-Received: by 10.55.56.75 with SMTP id f72mr20768030qka.75.1427303347906;
- Wed, 25 Mar 2015 10:09:07 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 10.140.90.18 with HTTP; Wed, 25 Mar 2015 10:08:47 -0700 (PDT)
-In-Reply-To: <20150325092358.GA31933@linux-mips.org>
-References: <1419529760-9520-1-git-send-email-cernekee@gmail.com>
- <1419529760-9520-16-git-send-email-cernekee@gmail.com> <20150325092358.GA31933@linux-mips.org>
-From:   Kevin Cernekee <cernekee@gmail.com>
-Date:   Wed, 25 Mar 2015 10:08:47 -0700
-Message-ID: <CAJiQ=7Cca_rc+g5uo-7h6PUSu3QCbC=Ev1-hnqoqz1wy_EKeZQ@mail.gmail.com>
-Subject: Re: [PATCH V6 15/25] MIPS: BMIPS: Flush the readahead cache after DMA
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Mar 2015 18:25:59 +0100 (CET)
+Received: from mail-ig0-f201.google.com ([209.85.213.201]:33733 "EHLO
+        mail-ig0-f201.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27009902AbbCYRZ5e0nL0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Mar 2015 18:25:57 +0100
+Received: by igjz20 with SMTP id z20so2231924igj.0
+        for <linux-mips@linux-mips.org>; Wed, 25 Mar 2015 10:25:52 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references;
+        bh=nbvykFyJ9Nt3K8NZDtCSSPF07DxNXA4j32c9TWm2+ek=;
+        b=f3LsfxQQK6/pnBUW55vszg1injRRoZVoqWsv60jyMULvuXjvFTV4QvmjgNXvOQMN3q
+         Tz3FjjYgdgQJAyT+pHHmpa2j9rV/0Cp3snbTnbhO0nhdQbFI7cIX3TJkbau5kUs3ix/z
+         D4IsIk0FhDVh+oAdJDWTB8PJ7k/G4zGgx3ZLBXGxOnRzXDjqIAx8EVjBgZJeKKdJ6Jww
+         Niv43PRqtf1Hni1o+/68ink78JHQuVl4JZRL0Uwgu80adN9Nr4anMs40+HojJoE45tjz
+         gs5z/DNNVF6iAPlVDRdwfiViJMHjm/G7cWlXBCZrz8eQE1rm+QASXDZAIoyBuYrTGS+U
+         ceWQ==
+X-Gm-Message-State: ALoCoQnx9a37eb/l8mIOCzJcPo44gV010nM4cVSkWwVf4PyYvRSgTCO1qhGzwA3TWJwE9W3ooQh4
+X-Received: by 10.182.112.167 with SMTP id ir7mr12080139obb.29.1427304352589;
+        Wed, 25 Mar 2015 10:25:52 -0700 (PDT)
+Received: from corpmail-nozzle1-1.hot.corp.google.com ([100.108.1.104])
+        by gmr-mx.google.com with ESMTPS id pc4si387951pac.0.2015.03.25.10.25.49
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 25 Mar 2015 10:25:52 -0700 (PDT)
+Received: from abrestic.mtv.corp.google.com ([172.22.65.70])
+        by corpmail-nozzle1-1.hot.corp.google.com with ESMTP id QPVi2zac.1; Wed, 25 Mar 2015 10:25:52 -0700
+Received: by abrestic.mtv.corp.google.com (Postfix, from userid 137652)
+        id B522E2208C0; Wed, 25 Mar 2015 10:25:46 -0700 (PDT)
+From:   Andrew Bresticker <abrestic@chromium.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Florian Fainelli <f.fainelli@gmail.com>,
-        Jaedon Shin <jaedon.shin@gmail.com>,
+Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
         Andrew Bresticker <abrestic@chromium.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Jonas Gorski <jogo@openwrt.org>, Arnd Bergmann <arnd@arndb.de>,
-        Brian Norris <computersforpeace@gmail.com>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-Return-Path: <cernekee@gmail.com>
+        James Hogan <james.hogan@imgtec.com>,
+        "Maciej W. Rozycki" <macro@linux-mips.org>
+Subject: [PATCH V2 2/2] MIPS: Provide fallback reboot/poweroff/halt implementations
+Date:   Wed, 25 Mar 2015 10:25:44 -0700
+Message-Id: <1427304344-24739-2-git-send-email-abrestic@chromium.org>
+X-Mailer: git-send-email 2.2.0.rc0.207.ga3a616c
+In-Reply-To: <1427304344-24739-1-git-send-email-abrestic@chromium.org>
+References: <1427304344-24739-1-git-send-email-abrestic@chromium.org>
+Return-Path: <abrestic@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46524
+X-archive-position: 46525
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: cernekee@gmail.com
+X-original-sender: abrestic@chromium.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -62,58 +60,75 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Mar 25, 2015 at 2:23 AM, Ralf Baechle <ralf@linux-mips.org> wrote:
-> On Thu, Dec 25, 2014 at 09:49:10AM -0800, Kevin Cernekee wrote:
->
->> BMIPS 3300/435x/438x CPUs have a readahead cache that is separate from
->> the L1/L2.  During a DMA operation, accesses adjacent to a DMA buffer
->> may cause parts of the DMA buffer to be prefetched into the RAC.  To
->> avoid possible coherency problems, flush the RAC upon DMA completion.
->>
->> Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
->> Signed-off-by: Jaedon Shin <jaedon.shin@gmail.com>
->> ---
->>  arch/mips/mm/dma-default.c | 15 +++++++++++++++
->>  1 file changed, 15 insertions(+)
->>
->> diff --git a/arch/mips/mm/dma-default.c b/arch/mips/mm/dma-default.c
->> index af5f046..38ee47a 100644
->> --- a/arch/mips/mm/dma-default.c
->> +++ b/arch/mips/mm/dma-default.c
->> @@ -18,6 +18,7 @@
->>  #include <linux/highmem.h>
->>  #include <linux/dma-contiguous.h>
->>
->> +#include <asm/bmips.h>
->>  #include <asm/cache.h>
->>  #include <asm/cpu-type.h>
->>  #include <asm/io.h>
->
-> Aside of platform-specific headers having no business of getting
-> included directly in a generic arch file
+If a machine-specific hook is not implemented for restart, poweroff,
+or halt, fall back to halting secondary CPUs, disabling interrupts,
+and spinning.  In the case of restart, attempt to restart the system
+via do_kernel_restart() (which will call any registered restart
+handlers) before halting.
 
-<asm/bmips.h> covers all BMIPS CPUs across multiple platforms.
+Signed-off-by: Andrew Bresticker <abrestic@chromium.org>
+Cc: James Hogan <james.hogan@imgtec.com>
+Cc: Maciej W. Rozycki <macro@linux-mips.org>
+---
+Changes from v1:
+ - disable preemption before calling smp_send_stop()
+ - add a 1s delay after do_kernel_restart()
+---
+ arch/mips/kernel/reset.c | 25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
-The intention was to add code needed to support BMIPS CPUs into a
-central place, rather than duplicating it in the platform code for
-each of the BMIPS-based systems: arch/mips/{bcm63xx,bmips,brcmstb}.
-
-> this also breaks the build
-> of many platforms:
->
->   CC      arch/mips/mm/dma-default.o
-> In file included from arch/mips/mm/dma-default.c:21:0:
-> ./arch/mips/include/asm/bmips.h: In function ‘bmips_read_zscm_reg’:
-> ./arch/mips/include/asm/bmips.h:97:160: error: cast to pointer from integer of different size [-Werror=int-to-pointer-cast]
->   cache_op(Index_Load_Tag_S, ZSCM_REG_BASE + offset);
->                                                                                                                                                                 ^
-> ./arch/mips/include/asm/bmips.h: In function ‘bmips_write_zscm_reg’:
-> ./arch/mips/include/asm/bmips.h:118:160: error: cast to pointer from integer of different size [-Werror=int-to-pointer-cast]
->   cache_op(Index_Store_Tag_S, ZSCM_REG_BASE + offset);
->
-> I think the broken platforms are all the 64 bit platforms.
-
-Hmm, looks like I might need to use 0x97000000UL for ZSCM_REG_BASE.
-
-If this fixes the build should I resubmit, or do you really want the
-BMIPS flush code moved into another file?
+diff --git a/arch/mips/kernel/reset.c b/arch/mips/kernel/reset.c
+index 07fc524..7c746d3 100644
+--- a/arch/mips/kernel/reset.c
++++ b/arch/mips/kernel/reset.c
+@@ -11,6 +11,7 @@
+ #include <linux/pm.h>
+ #include <linux/types.h>
+ #include <linux/reboot.h>
++#include <linux/delay.h>
+ 
+ #include <asm/reboot.h>
+ 
+@@ -29,16 +30,40 @@ void machine_restart(char *command)
+ {
+ 	if (_machine_restart)
+ 		_machine_restart(command);
++
++#ifdef CONFIG_SMP
++	preempt_disable();
++	smp_send_stop();
++#endif
++	do_kernel_restart(command);
++	mdelay(1000);
++	pr_emerg("Reboot failed -- System halted\n");
++	local_irq_disable();
++	while (1);
+ }
+ 
+ void machine_halt(void)
+ {
+ 	if (_machine_halt)
+ 		_machine_halt();
++
++#ifdef CONFIG_SMP
++	preempt_disable();
++	smp_send_stop();
++#endif
++	local_irq_disable();
++	while (1);
+ }
+ 
+ void machine_power_off(void)
+ {
+ 	if (pm_power_off)
+ 		pm_power_off();
++
++#ifdef CONFIG_SMP
++	preempt_disable();
++	smp_send_stop();
++#endif
++	local_irq_disable();
++	while (1);
+ }
+-- 
+2.2.0.rc0.207.ga3a616c

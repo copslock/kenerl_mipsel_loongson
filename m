@@ -1,50 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Mar 2015 16:11:37 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:4907 "EHLO
-        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27009001AbbCYPLgfkyrp (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Mar 2015 16:11:36 +0100
-Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
-        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 3582141F8DCD;
-        Wed, 25 Mar 2015 15:11:32 +0000 (GMT)
-Received: from mailapp01.imgtec.com ([10.100.180.241])
-  by imgpgp01.kl.imgtec.org (PGP Universal service);
-  Wed, 25 Mar 2015 15:11:32 +0000
-X-PGP-Universal: processed;
-        by imgpgp01.kl.imgtec.org on Wed, 25 Mar 2015 15:11:32 +0000
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 43AA3FA86BFC0;
-        Wed, 25 Mar 2015 15:11:29 +0000 (GMT)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Wed, 25 Mar 2015 15:11:31 +0000
-Received: from [192.168.154.110] (192.168.154.110) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Wed, 25 Mar
- 2015 15:11:31 +0000
-Message-ID: <5512D01C.1050500@imgtec.com>
-Date:   Wed, 25 Mar 2015 15:11:24 +0000
-From:   James Hogan <james.hogan@imgtec.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.5.0
-MIME-Version: 1.0
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-CC:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 2/3] MIPS: Add CDMM bus support
-References: <1422877510-29247-1-git-send-email-james.hogan@imgtec.com> <1422877510-29247-3-git-send-email-james.hogan@imgtec.com> <20150325123756.GA2200@kroah.com>
-In-Reply-To: <20150325123756.GA2200@kroah.com>
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature";
-        boundary="bKMEwn0sxnK16RmuBKpsXfmQfSGWVphd4"
-X-Originating-IP: [192.168.154.110]
-X-ESG-ENCRYPT-TAG: da4c5968
-Return-Path: <James.Hogan@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Mar 2015 16:32:41 +0100 (CET)
+Received: from mail-wi0-f180.google.com ([209.85.212.180]:33367 "EHLO
+        mail-wi0-f180.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27009770AbbCYPcj4TJSW (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Mar 2015 16:32:39 +0100
+Received: by wixw10 with SMTP id w10so77312890wix.0
+        for <linux-mips@linux-mips.org>; Wed, 25 Mar 2015 08:32:35 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=ZyJD+soNJomXssnZt0JcmR/Qr0pBO0l4oZSju921zGk=;
+        b=NyXNsyu6XcYIvPteweaBzMAMaeZgSHVckqZX+mxwT4miPaTSFBtpeJ2bByvYThHVsv
+         WKZ/It2nt43DqZl8KDWDrgsxLzHuII1a7Vn8ee0Sn+RTV7MKd0jtuOk06Zouw8Rh7z76
+         YNqjeVVAlvhTFbfpedWaOeuXE+FZORHIhIUm0fLN5vLQ3M+PMrVskVWF81UnFGR0jGaw
+         6d/Ie1qd1E0u2gQtbig8FrLSZX4RxmXGkkNcKJoyHNv0Ze8u8EdwXBsrBbQORC537BQI
+         eCmzBCWpyawkaIX4UuumEszuRmXQMZyau/84guOwTDeHEyaCIh9XGJ9SDYLgo16+Axmx
+         lKcA==
+X-Gm-Message-State: ALoCoQmiHduWZUYgE6DzpywWxVCPoGRFM08svO+Eh7stYOzUcEgpgmW8eyH4xFktsSEvDRPPQVBj
+X-Received: by 10.180.38.15 with SMTP id c15mr39317783wik.74.1427297555448;
+        Wed, 25 Mar 2015 08:32:35 -0700 (PDT)
+Received: from archischi.lse.epita.fr (lse.epita.fr. [163.5.55.17])
+        by mx.google.com with ESMTPSA id ge8sm4197483wjc.32.2015.03.25.08.32.34
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Wed, 25 Mar 2015 08:32:34 -0700 (PDT)
+From:   Adrien Schildknecht <adrien+dev@schischi.me>
+To:     m@bues.ch, zajec5@gmail.com, ralf@linux-mips.org
+Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        Adrien Schildknecht <adrien+dev@schischi.me>
+Subject: [PATCH] ssb: fix Kconfig dependencies
+Date:   Wed, 25 Mar 2015 16:31:42 +0100
+Message-Id: <1427297502-369-1-git-send-email-adrien+dev@schischi.me>
+X-Mailer: git-send-email 2.3.2
+Return-Path: <adrien+dev@schischi.me>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46520
+X-archive-position: 46521
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: adrien+dev@schischi.me
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -57,45 +51,35 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---bKMEwn0sxnK16RmuBKpsXfmQfSGWVphd4
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: quoted-printable
+The commit 21400f252a97 ("MIPS: BCM47XX: Make ssb init NVRAM instead of
+bcm47xx polling it") introduces a dependency to SSB_SFLASH but did not
+add it to the Kconfig.
 
-On 25/03/15 12:37, Greg Kroah-Hartman wrote:
-> On Mon, Feb 02, 2015 at 11:45:09AM +0000, James Hogan wrote:
->> +struct bus_type mips_cdmm_bustype =3D {
->> +	.name		=3D "cdmm",
->> +	.dev_attrs	=3D mips_cdmm_dev_attrs,
->=20
-> .dev_attrs is going away "soon", please use dev_groups instead here.
+drivers/ssb/driver_mipscore.c:216:36: error: 'struct ssb_mipscore' has no
+member named 'sflash'
+  struct ssb_sflash *sflash = &mcore->sflash;
+                                    ^
+drivers/ssb/driver_mipscore.c:249:12: error: dereferencing pointer to
+incomplete type
+  if (sflash->present) {
+            ^
 
-Thanks Greg. I've fixed this, and will send a v3 of this patch soon.
+Signed-off-by: Adrien Schildknecht <adrien+dev@schischi.me>
+---
+ drivers/ssb/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-Cheers
-James
-
-
---bKMEwn0sxnK16RmuBKpsXfmQfSGWVphd4
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQIcBAEBAgAGBQJVEtAjAAoJEGwLaZPeOHZ6y6EP/judqDj5E0JvT3fnKve0x1tb
-qNlOm/DMM5srXxi2fs2lGkmxP0cVrNIQD76mtXs/3fe6Ifh/EI8uEuo4tEFjwQj5
-1xlXmLcpqIO2Xs4UWHmrXIBh5bra+U+mpO7DLbVZT2cqMO7EQPne498cC4yb/YSZ
-QqIkEj+6WVaPvv+MHXNrYoPmd63I+reIweie5LgiOpFQZdGUgNpS+ES1wKXXBW+J
-Je1r++QAhVPTVJR/lysTLvlAE4pTRksy8yA5nMXNPNSeSagNV8uu3wpawnZ3tgq/
-oVQoOaFmD8jNH3j/8Z+jNrOkudABZA+x4Rkqg1SC10z92M4sPl9sDbke182CV9Ii
-yFjupQOOJQWElcaBxBj7UJZFASIuhKRm7aivDmrhubznTz2Q72EquBokZEUK1wRy
-DuENY4uJ/aDQSQ4o7nIfAo2kRij24TUOJggDIyAoE4I+nx3LaKw2k9nkqmic/mA6
-4qVsoWAb7WulgEyqVGghEzgGjKsiUQolHI/5XuqoeoyR1g7UeY/pWxFssNCDWakF
-ChrqlmvGdoQm1l+KSiWMcmsPgC94QLfEzEWklLjxzSulQF+Gr6e1S09Zozhqxekf
-LueIlYjVRRLEz26inyp2RQtQvG/MEuW+aDVu98KGhA3kPW5KC1rEweVyH8kCTDhM
-JZ+2RQwd/YHoozf8n3fS
-=1E5/
------END PGP SIGNATURE-----
-
---bKMEwn0sxnK16RmuBKpsXfmQfSGWVphd4--
+diff --git a/drivers/ssb/Kconfig b/drivers/ssb/Kconfig
+index 75b3603..f0d22cd 100644
+--- a/drivers/ssb/Kconfig
++++ b/drivers/ssb/Kconfig
+@@ -130,6 +130,7 @@ config SSB_DRIVER_MIPS
+ 	bool "SSB Broadcom MIPS core driver"
+ 	depends on SSB && MIPS
+ 	select SSB_SERIAL
++	select SSB_SFLASH
+ 	help
+ 	  Driver for the Sonics Silicon Backplane attached
+ 	  Broadcom MIPS core.
+-- 
+2.3.2

@@ -1,49 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Mar 2015 18:25:59 +0100 (CET)
-Received: from mail-ig0-f201.google.com ([209.85.213.201]:33733 "EHLO
-        mail-ig0-f201.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27009902AbbCYRZ5e0nL0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Mar 2015 18:25:57 +0100
-Received: by igjz20 with SMTP id z20so2231924igj.0
-        for <linux-mips@linux-mips.org>; Wed, 25 Mar 2015 10:25:52 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Mar 2015 18:26:15 +0100 (CET)
+Received: from mail-pd0-f202.google.com ([209.85.192.202]:34620 "EHLO
+        mail-pd0-f202.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27014620AbbCYRZ6WQ0sE (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Mar 2015 18:25:58 +0100
+Received: by pdjy10 with SMTP id y10so2402922pdj.1
+        for <linux-mips@linux-mips.org>; Wed, 25 Mar 2015 10:25:53 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=nbvykFyJ9Nt3K8NZDtCSSPF07DxNXA4j32c9TWm2+ek=;
-        b=f3LsfxQQK6/pnBUW55vszg1injRRoZVoqWsv60jyMULvuXjvFTV4QvmjgNXvOQMN3q
-         Tz3FjjYgdgQJAyT+pHHmpa2j9rV/0Cp3snbTnbhO0nhdQbFI7cIX3TJkbau5kUs3ix/z
-         D4IsIk0FhDVh+oAdJDWTB8PJ7k/G4zGgx3ZLBXGxOnRzXDjqIAx8EVjBgZJeKKdJ6Jww
-         Niv43PRqtf1Hni1o+/68ink78JHQuVl4JZRL0Uwgu80adN9Nr4anMs40+HojJoE45tjz
-         gs5z/DNNVF6iAPlVDRdwfiViJMHjm/G7cWlXBCZrz8eQE1rm+QASXDZAIoyBuYrTGS+U
-         ceWQ==
-X-Gm-Message-State: ALoCoQnx9a37eb/l8mIOCzJcPo44gV010nM4cVSkWwVf4PyYvRSgTCO1qhGzwA3TWJwE9W3ooQh4
-X-Received: by 10.182.112.167 with SMTP id ir7mr12080139obb.29.1427304352589;
-        Wed, 25 Mar 2015 10:25:52 -0700 (PDT)
-Received: from corpmail-nozzle1-1.hot.corp.google.com ([100.108.1.104])
-        by gmr-mx.google.com with ESMTPS id pc4si387951pac.0.2015.03.25.10.25.49
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=gAR2Du0+fploG+yKw2JGMQBnBjFhUPdtXOmMXhTeW7g=;
+        b=gD3Ys7tgcQ0FRgmMCj1YAmXObzswGeZOD3/xu5zZ0jqla0SxSQGQQx3k0AtCQBQXmR
+         49TqLms3D1Fr3/KDyytj3tjxFUzAOnMCyVxOkkCzulcxI/hkJIJf7hS/ch19PExb/YrE
+         xcdQlNOm1ztpz4gehquXMQzEkQlgA+nUBdglVDmws5SBSKQoO1sEvqzukZUG5Y7JsGWi
+         11bQgXPGZHDFFV47iDFu5+PdmoZoUGelWUCLE+tNJNJWhFDQAWeaj4O5XIu3Rpb9i+vS
+         sHaQ1Dk0BUhE/j+fGCdwqz0kRAAg8Eurwr5vBfzfj6DIcGcOOAVYVa6rRwExQQLtiyph
+         eVAg==
+X-Gm-Message-State: ALoCoQmnJ3lVv+m95IkjweioStoaMGB4rmX7Ci4zoLHvMtHHCrVuiCZmEpfM8QaShIK4dXZU48Qq
+X-Received: by 10.66.153.6 with SMTP id vc6mr11720495pab.37.1427304353195;
+        Wed, 25 Mar 2015 10:25:53 -0700 (PDT)
+Received: from corpmail-nozzle1-2.hot.corp.google.com ([100.108.1.103])
+        by gmr-mx.google.com with ESMTPS id oc12si389094pdb.1.2015.03.25.10.25.50
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 25 Mar 2015 10:25:52 -0700 (PDT)
+        Wed, 25 Mar 2015 10:25:53 -0700 (PDT)
 Received: from abrestic.mtv.corp.google.com ([172.22.65.70])
-        by corpmail-nozzle1-1.hot.corp.google.com with ESMTP id QPVi2zac.1; Wed, 25 Mar 2015 10:25:52 -0700
+        by corpmail-nozzle1-2.hot.corp.google.com with ESMTP id OZ2huqQp.1; Wed, 25 Mar 2015 10:25:52 -0700
 Received: by abrestic.mtv.corp.google.com (Postfix, from userid 137652)
-        id B522E2208C0; Wed, 25 Mar 2015 10:25:46 -0700 (PDT)
+        id D89022206EA; Wed, 25 Mar 2015 10:25:45 -0700 (PDT)
 From:   Andrew Bresticker <abrestic@chromium.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
         Andrew Bresticker <abrestic@chromium.org>,
         James Hogan <james.hogan@imgtec.com>,
         "Maciej W. Rozycki" <macro@linux-mips.org>
-Subject: [PATCH V2 2/2] MIPS: Provide fallback reboot/poweroff/halt implementations
-Date:   Wed, 25 Mar 2015 10:25:44 -0700
-Message-Id: <1427304344-24739-2-git-send-email-abrestic@chromium.org>
+Subject: [PATCH V2 1/2] MIPS: smp: Make stop_this_cpu() actually stop the CPU
+Date:   Wed, 25 Mar 2015 10:25:43 -0700
+Message-Id: <1427304344-24739-1-git-send-email-abrestic@chromium.org>
 X-Mailer: git-send-email 2.2.0.rc0.207.ga3a616c
-In-Reply-To: <1427304344-24739-1-git-send-email-abrestic@chromium.org>
-References: <1427304344-24739-1-git-send-email-abrestic@chromium.org>
 Return-Path: <abrestic@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46525
+X-archive-position: 46526
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -60,75 +57,37 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-If a machine-specific hook is not implemented for restart, poweroff,
-or halt, fall back to halting secondary CPUs, disabling interrupts,
-and spinning.  In the case of restart, attempt to restart the system
-via do_kernel_restart() (which will call any registered restart
-handlers) before halting.
+Since cpu_wait() enables interrupts upon return, CPUs which have
+entered stop_this_cpu() may still end up handling interrupts.
+This can lead to the softlockup detector firing on a panic or
+restart/poweroff/halt.  Just disable interrupts and spin to ensure
+nothing else runs on the CPU once it has entered stop_this_cpu().
 
 Signed-off-by: Andrew Bresticker <abrestic@chromium.org>
 Cc: James Hogan <james.hogan@imgtec.com>
 Cc: Maciej W. Rozycki <macro@linux-mips.org>
 ---
-Changes from v1:
- - disable preemption before calling smp_send_stop()
- - add a 1s delay after do_kernel_restart()
+New for v2.
 ---
- arch/mips/kernel/reset.c | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+ arch/mips/kernel/smp.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/arch/mips/kernel/reset.c b/arch/mips/kernel/reset.c
-index 07fc524..7c746d3 100644
---- a/arch/mips/kernel/reset.c
-+++ b/arch/mips/kernel/reset.c
-@@ -11,6 +11,7 @@
- #include <linux/pm.h>
- #include <linux/types.h>
- #include <linux/reboot.h>
-+#include <linux/delay.h>
- 
- #include <asm/reboot.h>
- 
-@@ -29,16 +30,40 @@ void machine_restart(char *command)
- {
- 	if (_machine_restart)
- 		_machine_restart(command);
-+
-+#ifdef CONFIG_SMP
-+	preempt_disable();
-+	smp_send_stop();
-+#endif
-+	do_kernel_restart(command);
-+	mdelay(1000);
-+	pr_emerg("Reboot failed -- System halted\n");
+diff --git a/arch/mips/kernel/smp.c b/arch/mips/kernel/smp.c
+index 1c0d8c5..5b020bd 100644
+--- a/arch/mips/kernel/smp.c
++++ b/arch/mips/kernel/smp.c
+@@ -176,10 +176,8 @@ static void stop_this_cpu(void *dummy)
+ 	 * Remove this CPU:
+ 	 */
+ 	set_cpu_online(smp_processor_id(), false);
+-	for (;;) {
+-		if (cpu_wait)
+-			(*cpu_wait)();		/* Wait if available. */
+-	}
 +	local_irq_disable();
 +	while (1);
  }
  
- void machine_halt(void)
- {
- 	if (_machine_halt)
- 		_machine_halt();
-+
-+#ifdef CONFIG_SMP
-+	preempt_disable();
-+	smp_send_stop();
-+#endif
-+	local_irq_disable();
-+	while (1);
- }
- 
- void machine_power_off(void)
- {
- 	if (pm_power_off)
- 		pm_power_off();
-+
-+#ifdef CONFIG_SMP
-+	preempt_disable();
-+	smp_send_stop();
-+#endif
-+	local_irq_disable();
-+	while (1);
- }
+ void smp_send_stop(void)
 -- 
 2.2.0.rc0.207.ga3a616c

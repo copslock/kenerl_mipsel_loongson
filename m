@@ -1,41 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Mar 2015 10:24:02 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:49890 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27009902AbbCYJYBET3n9 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 25 Mar 2015 10:24:01 +0100
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.9/8.14.8) with ESMTP id t2P9NxEH032093;
-        Wed, 25 Mar 2015 10:23:59 +0100
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.9/8.14.9/Submit) id t2P9NwZx032092;
-        Wed, 25 Mar 2015 10:23:58 +0100
-Date:   Wed, 25 Mar 2015 10:23:58 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Kevin Cernekee <cernekee@gmail.com>
-Cc:     f.fainelli@gmail.com, jaedon.shin@gmail.com, abrestic@chromium.org,
-        tglx@linutronix.de, jason@lakedaemon.net, jogo@openwrt.org,
-        arnd@arndb.de, computersforpeace@gmail.com,
-        linux-mips@linux-mips.org, devicetree@vger.kernel.org,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Mar 2015 14:31:29 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:40141 "EHLO
+        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008944AbbCYNb2Igi7S (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Mar 2015 14:31:28 +0100
+Received: from localhost (samsung-greg.rsr.lip6.fr [132.227.76.96])
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id A0CC5AE7;
+        Wed, 25 Mar 2015 13:31:21 +0000 (UTC)
+Date:   Wed, 25 Mar 2015 13:37:56 +0100
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     James Hogan <james.hogan@imgtec.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH V6 15/25] MIPS: BMIPS: Flush the readahead cache after DMA
-Message-ID: <20150325092358.GA31933@linux-mips.org>
-References: <1419529760-9520-1-git-send-email-cernekee@gmail.com>
- <1419529760-9520-16-git-send-email-cernekee@gmail.com>
+Subject: Re: [PATCH v2 2/3] MIPS: Add CDMM bus support
+Message-ID: <20150325123756.GA2200@kroah.com>
+References: <1422877510-29247-1-git-send-email-james.hogan@imgtec.com>
+ <1422877510-29247-3-git-send-email-james.hogan@imgtec.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1419529760-9520-16-git-send-email-cernekee@gmail.com>
+In-Reply-To: <1422877510-29247-3-git-send-email-james.hogan@imgtec.com>
 User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <ralf@linux-mips.org>
+Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46517
+X-archive-position: 46518
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: gregkh@linuxfoundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,46 +41,13 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Dec 25, 2014 at 09:49:10AM -0800, Kevin Cernekee wrote:
+On Mon, Feb 02, 2015 at 11:45:09AM +0000, James Hogan wrote:
+> +struct bus_type mips_cdmm_bustype = {
+> +	.name		= "cdmm",
+> +	.dev_attrs	= mips_cdmm_dev_attrs,
 
-> BMIPS 3300/435x/438x CPUs have a readahead cache that is separate from
-> the L1/L2.  During a DMA operation, accesses adjacent to a DMA buffer
-> may cause parts of the DMA buffer to be prefetched into the RAC.  To
-> avoid possible coherency problems, flush the RAC upon DMA completion.
-> 
-> Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
-> Signed-off-by: Jaedon Shin <jaedon.shin@gmail.com>
-> ---
->  arch/mips/mm/dma-default.c | 15 +++++++++++++++
->  1 file changed, 15 insertions(+)
-> 
-> diff --git a/arch/mips/mm/dma-default.c b/arch/mips/mm/dma-default.c
-> index af5f046..38ee47a 100644
-> --- a/arch/mips/mm/dma-default.c
-> +++ b/arch/mips/mm/dma-default.c
-> @@ -18,6 +18,7 @@
->  #include <linux/highmem.h>
->  #include <linux/dma-contiguous.h>
->  
-> +#include <asm/bmips.h>
->  #include <asm/cache.h>
->  #include <asm/cpu-type.h>
->  #include <asm/io.h>
+.dev_attrs is going away "soon", please use dev_groups instead here.
 
-Aside of platform-specific headers having no business of getting
-included directly in a generic arch file, this also breaks the build
-of many platforms:
+thanks,
 
-  CC      arch/mips/mm/dma-default.o
-In file included from arch/mips/mm/dma-default.c:21:0:
-./arch/mips/include/asm/bmips.h: In function ‘bmips_read_zscm_reg’:
-./arch/mips/include/asm/bmips.h:97:160: error: cast to pointer from integer of different size [-Werror=int-to-pointer-cast]
-  cache_op(Index_Load_Tag_S, ZSCM_REG_BASE + offset);
-                                                                                                                                                                ^
-./arch/mips/include/asm/bmips.h: In function ‘bmips_write_zscm_reg’:
-./arch/mips/include/asm/bmips.h:118:160: error: cast to pointer from integer of different size [-Werror=int-to-pointer-cast]
-  cache_op(Index_Store_Tag_S, ZSCM_REG_BASE + offset);
-
-I think the broken platforms are all the 64 bit platforms.
-
-  Ralf
+greg k-h

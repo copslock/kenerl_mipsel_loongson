@@ -1,51 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Mar 2015 23:48:59 +0100 (CET)
-Received: from mail-pd0-f173.google.com ([209.85.192.173]:36641 "EHLO
-        mail-pd0-f173.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27009017AbbCXWs6a8iIb (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 24 Mar 2015 23:48:58 +0100
-Received: by pdbcz9 with SMTP id cz9so7519401pdb.3;
-        Tue, 24 Mar 2015 15:48:53 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Mar 2015 02:15:38 +0100 (CET)
+Received: from mail-wg0-f47.google.com ([74.125.82.47]:33292 "EHLO
+        mail-wg0-f47.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27009656AbbCYBPhk2J3O (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Mar 2015 02:15:37 +0100
+Received: by wgbcc7 with SMTP id cc7so9806978wgb.0;
+        Tue, 24 Mar 2015 18:15:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=8EBA7q7cU+uZF2n7kWMtXzLocnLsi6DBXGTd+QEcpZk=;
-        b=bkXdTZYzMkSM1BPAU/uyVovdc2Ki3Lbv7918UW1PcJjWv6nJNcnRZ3gLnS+1sHMHYi
-         ZPdvcXlaXm2yrdPFHWavKY7RZ1YQh1wdBc7xgTYpk9AAEiU5xpMW5T+k9Iu0ym/1RHAF
-         ZPWLzakuDIj0B5bgsHVPd5csalN5B6dsFb6syN+weL7iEKE0SEufayqNIlw5vl+Ks4sW
-         PvjvY+L/O5n7etTyBPZNmzRFzn2rpkGW3JTgPCqyyb+6RAFHA7tfli6juOMvMnacaB2z
-         R4viMZPXJVjGbvOn+ZqIJiVIsrlG1jYva2N4xpJ6O3cfbTV5El1CxP0KDVSOAIg0nkqH
-         54sQ==
-X-Received: by 10.70.98.139 with SMTP id ei11mr11525112pdb.3.1427237333287;
-        Tue, 24 Mar 2015 15:48:53 -0700 (PDT)
-Received: from [10.12.156.244] (5520-maca-inet1-outside.broadcom.com. [216.31.211.11])
-        by mx.google.com with ESMTPSA id gy3sm342387pbb.42.2015.03.24.15.48.51
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 24 Mar 2015 15:48:52 -0700 (PDT)
-Message-ID: <5511E9A8.6090908@gmail.com>
-Date:   Tue, 24 Mar 2015 15:48:08 -0700
-From:   Florian Fainelli <f.fainelli@gmail.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.5.0
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type;
+        bh=uJZC8fRBaD7bOIbVTThiQUnn6Q3TU91IeWArN1kv/g8=;
+        b=QYZrzJa2r5js/1B/mONi1FSn/SSbCY7InatSI7g9H4wLzQOqenLwg9mcuk51LfrpHz
+         9o3Xp4mmM7806WOUK0E++SBxc+32u1wzpt/XOHz4j67O3wFubnfgAjuub81WCmi9Uzgy
+         hOxXTdXLykRg4L500nWfVtpT7N7nvC0/6kw7K5VHbVp4GHAjDA32Z6Hr6g9cptvi4rcD
+         afviqkJGyXNsvi/u6iuF4k75PJir0gcgIlFQd/1zFiQ/PzCCL6SEwABkbvNiEMMVWovB
+         weNyZycd/Ocd4jywY2MFjBaYM2nnCAiQBvzovas7QLdppJRGMdFILuJqKymEdyCD8GcT
+         qCng==
 MIME-Version: 1.0
-To:     Kevin Cernekee <cernekee@gmail.com>, ralf@linux-mips.org
-CC:     jaedon.shin@gmail.com, abrestic@chromium.org, tglx@linutronix.de,
-        jason@lakedaemon.net, jogo@openwrt.org, arnd@arndb.de,
-        computersforpeace@gmail.com, linux-mips@linux-mips.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH V6 00/25] Generic BMIPS kernel
-References: <1419529760-9520-1-git-send-email-cernekee@gmail.com>
-In-Reply-To: <1419529760-9520-1-git-send-email-cernekee@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Return-Path: <f.fainelli@gmail.com>
+X-Received: by 10.180.98.137 with SMTP id ei9mr32245871wib.92.1427246133398;
+ Tue, 24 Mar 2015 18:15:33 -0700 (PDT)
+Received: by 10.28.62.131 with HTTP; Tue, 24 Mar 2015 18:15:33 -0700 (PDT)
+In-Reply-To: <CAAVeFuLytDZwo-=Q3DSxS7jLWbr4Jgf8BsBr9VGptBBu4SzZZg@mail.gmail.com>
+References: <1426213595-28454-1-git-send-email-chenhc@lemote.com>
+        <CAAVeFuLytDZwo-=Q3DSxS7jLWbr4Jgf8BsBr9VGptBBu4SzZZg@mail.gmail.com>
+Date:   Wed, 25 Mar 2015 09:15:33 +0800
+X-Google-Sender-Auth: _HKxAEPQbKW_vORK1D4Bljq_fUs
+Message-ID: <CAAhV-H5i+ysaJi1=6ftyY_82yGBZnCqpUmCV2ayMVMDFw0uWVQ@mail.gmail.com>
+Subject: Re: [PATCH V8 3/8] MIPS: Cleanup Loongson-2F's gpio driver
+From:   Huacai Chen <chenhc@lemote.com>
+To:     Alexandre Courbot <gnurou@gmail.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        "Steven J. Hill" <Steven.Hill@imgtec.com>,
+        linux-mips <linux-mips@linux-mips.org>,
+        Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <chenhuacai@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46509
+X-archive-position: 46510
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: f.fainelli@gmail.com
+X-original-sender: chenhc@lemote.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,27 +57,18 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 25/12/14 09:48, Kevin Cernekee wrote:
-> V5->V6: Incorporate several fixes/enhancements from Jaedon Shin:
-> 
->  - Fix register read/modify/write in RAC flush code.
-> 
->  - Fix use of "SYS_HAS_CPU_BMIPS32_3300" Kconfig symbol.
-> 
->  - Add base platform support for 7358 and 7362.
-> 
-> The DTS files follow Andrew Bresticker's new per-vendor directory layout.
-> 
-> This series applies on top of Linus' current head of tree.
-> 
-> Patch 01 (Fix outdated use of mips_cpu_intc_init()) is REQUIRED for 3.19
-> to fix a build failure seen in 3.19-rc.  The other patches can
-> be queued for 3.20 or later.
+I think these three patches can go to GPIO tree, because it has no
+relationship with others in this series.
 
-Jason, can you merge the irqchip patches through your tree? They still
-apply cleanly to your irqchip/core branch as of today, except the last
-one which has a small hunk to be fixed in drivers/irqchip/Makefile.
+Huacai
 
-Thanks!
--- 
-Florian
+On Mon, Mar 23, 2015 at 2:29 PM, Alexandre Courbot <gnurou@gmail.com> wrote:
+> On Fri, Mar 13, 2015 at 11:26 AM, Huacai Chen <chenhc@lemote.com> wrote:
+>> This cleanup is prepare to move the driver to drivers/gpio. Custom
+>> definitions of gpio_get_value()/gpio_set_value() are dropped.
+>
+> I suppose this is starting to look ok, at least patches 3, 4 and 5
+> which are of interest for GPIO. I wonder which tree they should be
+> merged through, MIPS or GPIO? Not seeing the rest of the series, I
+> cannot make a suggestion.
+>

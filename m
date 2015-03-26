@@ -1,37 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Mar 2015 17:56:56 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:15231 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27007636AbbCZQ4zArR61 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 26 Mar 2015 17:56:55 +0100
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 2927196CFF9B9;
-        Thu, 26 Mar 2015 16:56:47 +0000 (GMT)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Thu, 26 Mar 2015 16:56:50 +0000
-Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
- LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.210.2; Thu, 26 Mar 2015 16:56:49 +0000
-From:   James Hogan <james.hogan@imgtec.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     James Hogan <james.hogan@imgtec.com>, <linux-mips@linux-mips.org>,
-        <stable@vger.kernel.org>
-Subject: [PATCH] MIPS: dma-default: Fix 32-bit fall back to GFP_DMA
-Date:   Thu, 26 Mar 2015 16:56:33 +0000
-Message-ID: <1427388993-17697-1-git-send-email-james.hogan@imgtec.com>
-X-Mailer: git-send-email 2.0.5
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.154.110]
-Return-Path: <James.Hogan@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Mar 2015 18:08:16 +0100 (CET)
+Received: from mail-pa0-f43.google.com ([209.85.220.43]:33495 "EHLO
+        mail-pa0-f43.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006505AbbCZRIOs5HzP (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 26 Mar 2015 18:08:14 +0100
+Received: by pabxg6 with SMTP id xg6so68695677pab.0;
+        Thu, 26 Mar 2015 10:08:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id;
+        bh=0EYS4IaTG8b+kDn78DVCv+DYXUMwk7YLgZ87lGSCAJU=;
+        b=fXOxNUWShSLyMBstj1j0tCNMZZHbB0g31/il2pd+MZLahV8LLNtkX+H7EPmcM9S6dW
+         DNok557q36OfU0Vmxy+G3w+dLTPLdpowOEcgsQhW9+DFP9mM/t1FB8RSKIMlgGsTGi4c
+         ioz2dGjt9x2PMa6R/uGhQ6Id0IrndyfGUV5gYK1SORcYhRxzHIoKKW9uZn0nvELJREUo
+         Cr08ypl2aQ8BcYj5cfKAoGlo5Tcf2dDDkgbjBAP7cOZLQ7NJF6+qHwFYRUgXDCxAc+/P
+         qUbb2mwjGtEHKuVTrgebPg356tzWzbd4nWN9jxydVTbKPENQBAcLsx6BVVTJwUcDfZ0G
+         smwA==
+X-Received: by 10.68.221.41 with SMTP id qb9mr1652538pbc.77.1427389689524;
+        Thu, 26 Mar 2015 10:08:09 -0700 (PDT)
+Received: from 172.16.1.105 (sfo1.node.ihipop.info. [107.170.230.69])
+        by mx.google.com with ESMTPSA id fz1sm6133919pbb.12.2015.03.26.10.08.04
+        (version=TLSv1 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Thu, 26 Mar 2015 10:08:08 -0700 (PDT)
+From:   cee1 <fykcee1@gmail.com>
+To:     linux-mips@linux-mips.org
+Cc:     ralf@linux-mips.org, Chen Jie <chenj@lemote.com>
+Subject: [v5] MIPS: lib: csum_partial: more instruction paral
+Date:   Fri, 27 Mar 2015 01:07:24 +0800
+Message-Id: <1427389644-92793-1-git-send-email-fykcee1@gmail.com>
+X-Mailer: git-send-email 1.9.5 (Apple Git-50.3)
+Return-Path: <fykcee1@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46557
+X-archive-position: 46558
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: fykcee1@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,44 +49,138 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-If there is a DMA zone (usually 24bit = 16MB I believe), but no DMA32
-zone, as is the case for some 32-bit kernels, then massage_gfp_flags()
-will cause DMA memory allocated for devices with a 32..63-bit
-coherent_dma_mask to fall back to using __GFP_DMA, even though there may
-only be 32-bits of physical address available anyway.
+From: Chen Jie <chenj@lemote.com>
 
-Correct that case to compare against a mask the size of phys_addr_t
-instead of always using a 64-bit mask.
+Computing sum introduces true data dependency. This patch removes some
+true data depdendencies, hence increases instruction level parallelism.
 
-Fixes: a2e715a86c6d ("MIPS: DMA: Fix computation of DMA flags from device's coherent_dma_mask.")
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
-Cc: <stable@vger.kernel.org> # 2.6.36+
+This patch brings at most 50% csum performance gain on Loongson 3a
+processor in our test.
+
+One example about how this patch works is in CSUM_BIGCHUNK1:
+// ** original **    vs    ** patch applied **
+    ADDC(sum, t0)           ADDC(t0, t1)
+    ADDC(sum, t1)           ADDC(t2, t3)
+    ADDC(sum, t2)           ADDC(sum, t0)
+    ADDC(sum, t3)           ADDC(sum, t2)
+
+In the original implementation, each ADDC(sum, ...) depends on the sum
+value updated by previous ADDC(as source operand).
+
+With this patch applied, the first two ADDC operations are independent,
+hence can be executed simultaneously if possible.
+
+Another example is in the "copy and sum calculating chunk":
+// ** original **    vs    ** patch applied **
+    STORE(t0, UNIT(0) ...   STORE(t0, UNIT(0) ...
+    ADDC(sum, t0)           ADDC(t0, t1)
+    STORE(t1, UNIT(1) ...   STORE(t1, UNIT(1) ...
+    ADDC(sum, t1)           ADDC(sum, t0)
+    STORE(t2, UNIT(2) ...   STORE(t2, UNIT(2) ...
+    ADDC(sum, t2)           ADDC(t2, t3)
+    STORE(t3, UNIT(3) ...   STORE(t3, UNIT(3) ...
+    ADDC(sum, t3)           ADDC(sum, t2)
+
+With this patch applied, ADDC and the **next next** ADDC are independent.
+
+Signed-off-by: chenj <chenj@lemote.com>
 ---
-This works around problems encountered on Malta with ethernet and IDE
-drivers being unable to allocate any coherent memory when the entire
-16MB DMA zone is taken up with static kernel data (a separate problem),
-even though their coherent_dma_masks are 32-bit. This can happen when
-PROVE_RCU and PROVE_LOCKING are set, especially since commit
-1413c0389333 ("lockdep: Increase static allocations") was applied in
-v3.16.
----
- arch/mips/mm/dma-default.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+1. The result can be found at
+http://dev.lemote.com/files/upload/software/csum-opti/csum-opti-benchmark.html
+And is generated by a userspace test program:
+http://dev.lemote.com/files/upload/software/csum-opti/csum-test.tar.gz
 
-diff --git a/arch/mips/mm/dma-default.c b/arch/mips/mm/dma-default.c
-index af5f046e627e..501557026768 100644
---- a/arch/mips/mm/dma-default.c
-+++ b/arch/mips/mm/dma-default.c
-@@ -100,7 +100,7 @@ static gfp_t massage_gfp_flags(const struct device *dev, gfp_t gfp)
- 	else
+[v2: amend commit message]
+[v3: further amend commit message]
+[v4: amend commit message & sign-off my patch]
+[v5: amend commit message]
+
+ arch/mips/lib/csum_partial.S | 38 +++++++++++++++++++-------------------
+ 1 file changed, 19 insertions(+), 19 deletions(-)
+
+diff --git a/arch/mips/lib/csum_partial.S b/arch/mips/lib/csum_partial.S
+index 4c721e2..ed88647 100644
+--- a/arch/mips/lib/csum_partial.S
++++ b/arch/mips/lib/csum_partial.S
+@@ -76,10 +76,10 @@
+ 	LOAD	_t1, (offset + UNIT(1))(src);			\
+ 	LOAD	_t2, (offset + UNIT(2))(src);			\
+ 	LOAD	_t3, (offset + UNIT(3))(src);			\
++	ADDC(_t0, _t1);						\
++	ADDC(_t2, _t3);						\
+ 	ADDC(sum, _t0);						\
+-	ADDC(sum, _t1);						\
+-	ADDC(sum, _t2);						\
+-	ADDC(sum, _t3)
++	ADDC(sum, _t2)
+ 
+ #ifdef USE_DOUBLE
+ #define CSUM_BIGCHUNK(src, offset, sum, _t0, _t1, _t2, _t3)	\
+@@ -504,21 +504,21 @@ LEAF(csum_partial)
+ 	SUB	len, len, 8*NBYTES
+ 	ADD	src, src, 8*NBYTES
+ 	STORE(t0, UNIT(0)(dst),	.Ls_exc\@)
+-	ADDC(sum, t0)
++	ADDC(t0, t1)
+ 	STORE(t1, UNIT(1)(dst),	.Ls_exc\@)
+-	ADDC(sum, t1)
++	ADDC(sum, t0)
+ 	STORE(t2, UNIT(2)(dst),	.Ls_exc\@)
+-	ADDC(sum, t2)
++	ADDC(t2, t3)
+ 	STORE(t3, UNIT(3)(dst),	.Ls_exc\@)
+-	ADDC(sum, t3)
++	ADDC(sum, t2)
+ 	STORE(t4, UNIT(4)(dst),	.Ls_exc\@)
+-	ADDC(sum, t4)
++	ADDC(t4, t5)
+ 	STORE(t5, UNIT(5)(dst),	.Ls_exc\@)
+-	ADDC(sum, t5)
++	ADDC(sum, t4)
+ 	STORE(t6, UNIT(6)(dst),	.Ls_exc\@)
+-	ADDC(sum, t6)
++	ADDC(t6, t7)
+ 	STORE(t7, UNIT(7)(dst),	.Ls_exc\@)
+-	ADDC(sum, t7)
++	ADDC(sum, t6)
+ 	.set	reorder				/* DADDI_WAR */
+ 	ADD	dst, dst, 8*NBYTES
+ 	bgez	len, 1b
+@@ -544,13 +544,13 @@ LEAF(csum_partial)
+ 	SUB	len, len, 4*NBYTES
+ 	ADD	src, src, 4*NBYTES
+ 	STORE(t0, UNIT(0)(dst),	.Ls_exc\@)
+-	ADDC(sum, t0)
++	ADDC(t0, t1)
+ 	STORE(t1, UNIT(1)(dst),	.Ls_exc\@)
+-	ADDC(sum, t1)
++	ADDC(sum, t0)
+ 	STORE(t2, UNIT(2)(dst),	.Ls_exc\@)
+-	ADDC(sum, t2)
++	ADDC(t2, t3)
+ 	STORE(t3, UNIT(3)(dst),	.Ls_exc\@)
+-	ADDC(sum, t3)
++	ADDC(sum, t2)
+ 	.set	reorder				/* DADDI_WAR */
+ 	ADD	dst, dst, 4*NBYTES
+ 	beqz	len, .Ldone\@
+@@ -649,13 +649,13 @@ LEAF(csum_partial)
+ 	nop				# improves slotting
  #endif
- #if defined(CONFIG_ZONE_DMA) && !defined(CONFIG_ZONE_DMA32)
--	     if (dev->coherent_dma_mask < DMA_BIT_MASK(64))
-+	     if (dev->coherent_dma_mask < DMA_BIT_MASK(sizeof(phys_addr_t)*8))
- 		dma_flag = __GFP_DMA;
- 	else
- #endif
+ 	STORE(t0, UNIT(0)(dst),	.Ls_exc\@)
+-	ADDC(sum, t0)
++	ADDC(t0, t1)
+ 	STORE(t1, UNIT(1)(dst),	.Ls_exc\@)
+-	ADDC(sum, t1)
++	ADDC(sum, t0)
+ 	STORE(t2, UNIT(2)(dst),	.Ls_exc\@)
+-	ADDC(sum, t2)
++	ADDC(t2, t3)
+ 	STORE(t3, UNIT(3)(dst),	.Ls_exc\@)
+-	ADDC(sum, t3)
++	ADDC(sum, t2)
+ 	.set	reorder				/* DADDI_WAR */
+ 	ADD	dst, dst, 4*NBYTES
+ 	bne	len, rem, 1b
 -- 
-2.0.5
+1.9.5 (Apple Git-50.3)

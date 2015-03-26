@@ -1,34 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Mar 2015 23:03:51 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:53766 "EHLO
-        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008964AbbCYWDstw2uG (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Mar 2015 23:03:48 +0100
-Received: from localhost (gob75-2-82-67-192-59.fbx.proxad.net [82.67.192.59])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 176AFAF5;
-        Wed, 25 Mar 2015 22:03:41 +0000 (UTC)
-Date:   Wed, 25 Mar 2015 23:03:39 +0100
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     James Hogan <james.hogan@imgtec.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 2/3] MIPS: Add CDMM bus support
-Message-ID: <20150325220339.GC10513@kroah.com>
-References: <20150325123756.GA2200@kroah.com>
- <1427297990-14023-1-git-send-email-james.hogan@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Mar 2015 01:58:45 +0100 (CET)
+Received: from mail-wi0-f173.google.com ([209.85.212.173]:36385 "EHLO
+        mail-wi0-f173.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008271AbbCZA6mvhQjA convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 26 Mar 2015 01:58:42 +0100
+Received: by wibg7 with SMTP id g7so130240141wib.1;
+        Wed, 25 Mar 2015 17:58:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type:content-transfer-encoding;
+        bh=Io/+CbP8sAmQLbQAaDUSSIYt7hidYdHAwp3Q63apzN0=;
+        b=UEDxJNw+kyBN813/fXf8ORp/4CEK3d9ncKYumm5VeELwqCdlCd6b4oU4839fksZviS
+         hZxNtBpYPkodNmAnmQkrPiuLk7iMgvouqzVH1RYF46Pjvyk/aDXV3BmznY8zQROqv6bz
+         E15poLuVcuUeSxWjZOnWTZG+44g6iIZKFNqe/3XJFgq3GQ/b6aEn7l/Uw+oNb1ZSbZrM
+         3A1e3CTBiUUu90yFGjt+CYpJcl7DkVlBNo/eALorycjIevDu52mFFYdRgOsfaKEQ6xs/
+         53xMzcejE9QYPwljEoLk4hxNMOFx2BXZUQUhno8A3MzgVma+9SmlnppLC6p6FBlOSgy8
+         9JfA==
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1427297990-14023-1-git-send-email-james.hogan@imgtec.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <gregkh@linuxfoundation.org>
+X-Received: by 10.180.75.103 with SMTP id b7mr30811899wiw.32.1427331518567;
+ Wed, 25 Mar 2015 17:58:38 -0700 (PDT)
+Received: by 10.28.62.131 with HTTP; Wed, 25 Mar 2015 17:58:38 -0700 (PDT)
+In-Reply-To: <tencent_61CBDDE16BEF4EA42D44A313@qq.com>
+References: <1419215439-27900-1-git-send-email-chenhc@lemote.com>
+        <tencent_61CBDDE16BEF4EA42D44A313@qq.com>
+Date:   Thu, 26 Mar 2015 08:58:38 +0800
+X-Google-Sender-Auth: EcszZEU55L73AnUHN6NjG_jRELg
+Message-ID: <CAAhV-H7jZ35=qTDeSf-zSCueknXhWVf6w3cd=GS_LPtMY923fw@mail.gmail.com>
+Subject: Re: [PATCH 1/2] MIPS: Hibernate: flush TLB entries earlier
+From:   Huacai Chen <chenhc@lemote.com>
+To:     Huacai Chen <chenhc@lemote.com>, Ralf Baechle <ralf@linux-mips.org>
+Cc:     John Crispin <john@phrozen.org>,
+        "Steven J. Hill" <Steven.Hill@imgtec.com>,
+        linux-mips <linux-mips@linux-mips.org>,
+        Fuxin Zhang <zhangfx@lemote.com>,
+        wuzhangjin <wuzhangjin@gmail.com>,
+        stable <stable@vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+Return-Path: <chenhuacai@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46530
+X-archive-position: 46531
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
+X-original-sender: chenhc@lemote.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -41,58 +59,56 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Mar 25, 2015 at 03:39:50PM +0000, James Hogan wrote:
-> Add MIPS Common Device Memory Map (CDMM) support in the form of a bus in
-> the standard Linux device model. Each device attached via CDMM is
-> discoverable via an 8-bit type identifier and may contain a number of
-> blocks of memory mapped registers in the CDMM region. IRQs are expected
-> to be handled separately.
-> 
-> Due to the per-cpu (per-VPE for MT cores) nature of the CDMM devices,
-> all the driver callbacks take place from workqueues which are run on the
-> right CPU for the device in question, so that the driver doesn't need to
-> be as concerned about which CPU it is running on. Callbacks also exist
-> for when CPUs are taken offline, so that any per-CPU resources used by
-> the driver can be disabled so they don't get forcefully migrated. CDMM
-> devices are created as children of the CPU device they are attached to.
-> 
-> Any existing CDMM configuration by the bootloader will be inherited,
-> however platforms wishing to enable CDMM should implement the weak
-> mips_cdmm_phys_base() function (see asm/cdmm.h) so that the bus driver
-> knows where it should put the CDMM region in the physical address space
-> if the bootloader hasn't already enabled it.
-> 
-> A mips_cdmm_early_probe() function is also provided to allow early boot
-> or particularly low level code to set up the CDMM region and probe for a
-> specific device type, for example early console or KGDB IO drivers for
-> the EJTAG Fast Debug Channel (FDC) CDMM device.
-> 
-> Signed-off-by: James Hogan <james.hogan@imgtec.com>
-> Cc: Ralf Baechle <ralf@linux-mips.org>
-> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Cc: linux-mips@linux-mips.org
-> ---
-> Changes in v3:
-> - Convert to use dev_groups rather than dev_attrs (GregKH).
-> - Rename mips_cdmm_attr_func() macro to CDMM_ATTR for consistency with
->   other similar macro names I've seen around the kernel.
-> - Add modalias attribute.
-> 
-> Changes in v2:
-> - Fix some checkpatch errors.
-> - Correct CDMM name in various places. It is "Common Device Memory Map",
->   rather than "Common Device Mapped Memory" (which for some reason had
->   got stuck in my head).
-> ---
->  arch/mips/include/asm/cdmm.h      |  87 +++++
->  drivers/bus/Kconfig               |  13 +
->  drivers/bus/Makefile              |   1 +
->  drivers/bus/mips_cdmm.c           | 716 ++++++++++++++++++++++++++++++++++++++
->  include/linux/mod_devicetable.h   |   8 +
->  scripts/mod/devicetable-offsets.c |   3 +
->  scripts/mod/file2alias.c          |  16 +
->  7 files changed, 844 insertions(+)
->  create mode 100644 arch/mips/include/asm/cdmm.h
->  create mode 100644 drivers/bus/mips_cdmm.c
+Hi, Ralf,
 
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Can these two patches be merged in 4.0?
+
+Huacai
+
+On Thu, Jan 22, 2015 at 10:59 PM, 陈华才 <chenhc@lemote.com> wrote:
+> Hi, Ralf,
+>
+> Can these two patches be merged in 3.19?
+>
+> Huacai
+>
+> ------------------ Original ------------------
+> From:  "Huacai Chen"<chenhc@lemote.com>;
+> Date:  Mon, Dec 22, 2014 10:30 AM
+> To:  "Ralf Baechle"<ralf@linux-mips.org>;
+> Cc:  "John Crispin"<john@phrozen.org>; "Steven J. Hill"<Steven.Hill@imgtec.com>; "linux-mips"<linux-mips@linux-mips.org>; "Fuxin Zhang"<zhangfx@lemote.com>; "wuzhangjin"<wuzhangjin@gmail.com>; "Huacai Chen"<chenhc@lemote.com>; "stable"<stable@vger.kernel.org>;
+> Subject:  [PATCH 1/2] MIPS: Hibernate: flush TLB entries earlier
+>
+> We found that TLB mismatch not only happens after kernel resume, but
+> also happens during snapshot restore. So move it to the beginning of
+> swsusp_arch_suspend().
+>
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Huacai Chen <chenhc@lemote.com>
+> ---
+>  arch/mips/power/hibernate.S |    3 ++-
+>  1 files changed, 2 insertions(+), 1 deletions(-)
+>
+> diff --git a/arch/mips/power/hibernate.S b/arch/mips/power/hibernate.S
+> index 32a7c82..e7567c8 100644
+> --- a/arch/mips/power/hibernate.S
+> +++ b/arch/mips/power/hibernate.S
+> @@ -30,6 +30,8 @@ LEAF(swsusp_arch_suspend)
+>  END(swsusp_arch_suspend)
+>
+>  LEAF(swsusp_arch_resume)
+> +       /* Avoid TLB mismatch during and after kernel resume */
+> +       jal local_flush_tlb_all
+>         PTR_L t0, restore_pblist
+>  0:
+>         PTR_L t1, PBE_ADDRESS(t0)   /* source */
+> @@ -43,7 +45,6 @@ LEAF(swsusp_arch_resume)
+>         bne t1, t3, 1b
+>         PTR_L t0, PBE_NEXT(t0)
+>         bnez t0, 0b
+> -       jal local_flush_tlb_all /* Avoid TLB mismatch after kernel resume */
+>         PTR_LA t0, saved_regs
+>         PTR_L ra, PT_R31(t0)
+>         PTR_L sp, PT_R29(t0)
+> --
+> 1.7.7.3

@@ -1,52 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Mar 2015 01:58:45 +0100 (CET)
-Received: from mail-wi0-f173.google.com ([209.85.212.173]:36385 "EHLO
-        mail-wi0-f173.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008271AbbCZA6mvhQjA convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 26 Mar 2015 01:58:42 +0100
-Received: by wibg7 with SMTP id g7so130240141wib.1;
-        Wed, 25 Mar 2015 17:58:38 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Mar 2015 03:12:39 +0100 (CET)
+Received: from mail-ie0-f171.google.com ([209.85.223.171]:34680 "EHLO
+        mail-ie0-f171.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008271AbbCZCMhN8Id2 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 26 Mar 2015 03:12:37 +0100
+Received: by iedfl3 with SMTP id fl3so41097610ied.1;
+        Wed, 25 Mar 2015 19:12:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc:content-type:content-transfer-encoding;
-        bh=Io/+CbP8sAmQLbQAaDUSSIYt7hidYdHAwp3Q63apzN0=;
-        b=UEDxJNw+kyBN813/fXf8ORp/4CEK3d9ncKYumm5VeELwqCdlCd6b4oU4839fksZviS
-         hZxNtBpYPkodNmAnmQkrPiuLk7iMgvouqzVH1RYF46Pjvyk/aDXV3BmznY8zQROqv6bz
-         E15poLuVcuUeSxWjZOnWTZG+44g6iIZKFNqe/3XJFgq3GQ/b6aEn7l/Uw+oNb1ZSbZrM
-         3A1e3CTBiUUu90yFGjt+CYpJcl7DkVlBNo/eALorycjIevDu52mFFYdRgOsfaKEQ6xs/
-         53xMzcejE9QYPwljEoLk4hxNMOFx2BXZUQUhno8A3MzgVma+9SmlnppLC6p6FBlOSgy8
-         9JfA==
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc:content-type;
+        bh=toTb8p0+mRPDuZpFH+9abaQDDvLy81xRaBO87depZqs=;
+        b=lYPLKMCg5JlK2aLZTl16Ovd6T7mOytXJvTm409XYsDCEuSJFbuXUvPJuXssQF0xhtA
+         n/0cdo+NmSmFyb5KMiRdMktjGfSE0WUC0pCAaIBow5U/dPbaLwuqDvq7MJBSoD507e+E
+         Hdy5KfE+vnBm4OYaTbqKCIzOFkP+lRIS05pH+9G7k/lbJdovpdOqzsXNy0TnMysPMcjK
+         n1pA0M3JC8Wxh39oC9t/MAKXx/9s+E9QFVXK7JOwtALU4RryA54kRsLn5mM6CQeUZj5Q
+         5rCuwKwAOhe84meGh7SoMdNpo7jPZhYAqIeRAM9W3CZTS8clA25stYLKwQoQ9x4Rl4GV
+         2WdQ==
+X-Received: by 10.107.27.143 with SMTP id b137mr17878895iob.76.1427335952293;
+ Wed, 25 Mar 2015 19:12:32 -0700 (PDT)
 MIME-Version: 1.0
-X-Received: by 10.180.75.103 with SMTP id b7mr30811899wiw.32.1427331518567;
- Wed, 25 Mar 2015 17:58:38 -0700 (PDT)
-Received: by 10.28.62.131 with HTTP; Wed, 25 Mar 2015 17:58:38 -0700 (PDT)
-In-Reply-To: <tencent_61CBDDE16BEF4EA42D44A313@qq.com>
-References: <1419215439-27900-1-git-send-email-chenhc@lemote.com>
-        <tencent_61CBDDE16BEF4EA42D44A313@qq.com>
-Date:   Thu, 26 Mar 2015 08:58:38 +0800
-X-Google-Sender-Auth: EcszZEU55L73AnUHN6NjG_jRELg
-Message-ID: <CAAhV-H7jZ35=qTDeSf-zSCueknXhWVf6w3cd=GS_LPtMY923fw@mail.gmail.com>
-Subject: Re: [PATCH 1/2] MIPS: Hibernate: flush TLB entries earlier
-From:   Huacai Chen <chenhc@lemote.com>
-To:     Huacai Chen <chenhc@lemote.com>, Ralf Baechle <ralf@linux-mips.org>
-Cc:     John Crispin <john@phrozen.org>,
+Received: by 10.64.21.41 with HTTP; Wed, 25 Mar 2015 19:12:12 -0700 (PDT)
+In-Reply-To: <20150325180927.GI1385@linux-mips.org>
+References: <1426213595-28454-1-git-send-email-chenhc@lemote.com>
+ <CAAVeFuLytDZwo-=Q3DSxS7jLWbr4Jgf8BsBr9VGptBBu4SzZZg@mail.gmail.com>
+ <CAAhV-H5i+ysaJi1=6ftyY_82yGBZnCqpUmCV2ayMVMDFw0uWVQ@mail.gmail.com>
+ <CAAVeFuLF7tHgqXbX1MAikM67DwSu729eG0JcBiipSAG=AeBfOQ@mail.gmail.com> <20150325180927.GI1385@linux-mips.org>
+From:   Alexandre Courbot <gnurou@gmail.com>
+Date:   Thu, 26 Mar 2015 11:12:12 +0900
+Message-ID: <CAAVeFuLb7TOYfG_L7PBmAVAFEVeybCSU19W+_j2WZLF-Q5qNow@mail.gmail.com>
+Subject: Re: [PATCH V8 3/8] MIPS: Cleanup Loongson-2F's gpio driver
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     Huacai Chen <chenhc@lemote.com>,
         "Steven J. Hill" <Steven.Hill@imgtec.com>,
         linux-mips <linux-mips@linux-mips.org>,
         Fuxin Zhang <zhangfx@lemote.com>,
-        wuzhangjin <wuzhangjin@gmail.com>,
-        stable <stable@vger.kernel.org>
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-Return-Path: <chenhuacai@gmail.com>
+Return-Path: <gnurou@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46531
+X-archive-position: 46532
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: chenhc@lemote.com
+X-original-sender: gnurou@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,56 +58,28 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi, Ralf,
+Thanks Ralf!
 
-Can these two patches be merged in 4.0?
+Huacai, since these 3 patches are standalone, would you mind
+re-sending them in their own series to Linus Walleij, myself and the
+linux-gpio list along with Ralf's ack? It will improve their
+visibility and make it easier to merge them. I will give my ack/review
+tag on this new series.
 
-Huacai
+Thanks!
 
-On Thu, Jan 22, 2015 at 10:59 PM, 陈华才 <chenhc@lemote.com> wrote:
-> Hi, Ralf,
+On Thu, Mar 26, 2015 at 3:09 AM, Ralf Baechle <ralf@linux-mips.org> wrote:
+> On Wed, Mar 25, 2015 at 11:19:01AM +0900, Alexandre Courbot wrote:
 >
-> Can these two patches be merged in 3.19?
+>> On Wed, Mar 25, 2015 at 10:15 AM, Huacai Chen <chenhc@lemote.com> wrote:
+>> > I think these three patches can go to GPIO tree, because it has no
+>> > relationship with others in this series.
+>>
+>> In that case we would need a ack from the MIPS maintainers to move the
+>> code into drivers/gpio/.
 >
-> Huacai
+> Yes, please.  For all three patches:
 >
-> ------------------ Original ------------------
-> From:  "Huacai Chen"<chenhc@lemote.com>;
-> Date:  Mon, Dec 22, 2014 10:30 AM
-> To:  "Ralf Baechle"<ralf@linux-mips.org>;
-> Cc:  "John Crispin"<john@phrozen.org>; "Steven J. Hill"<Steven.Hill@imgtec.com>; "linux-mips"<linux-mips@linux-mips.org>; "Fuxin Zhang"<zhangfx@lemote.com>; "wuzhangjin"<wuzhangjin@gmail.com>; "Huacai Chen"<chenhc@lemote.com>; "stable"<stable@vger.kernel.org>;
-> Subject:  [PATCH 1/2] MIPS: Hibernate: flush TLB entries earlier
+> Acked-by: Ralf Baechle <ralf@linux-mips.org>
 >
-> We found that TLB mismatch not only happens after kernel resume, but
-> also happens during snapshot restore. So move it to the beginning of
-> swsusp_arch_suspend().
->
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Huacai Chen <chenhc@lemote.com>
-> ---
->  arch/mips/power/hibernate.S |    3 ++-
->  1 files changed, 2 insertions(+), 1 deletions(-)
->
-> diff --git a/arch/mips/power/hibernate.S b/arch/mips/power/hibernate.S
-> index 32a7c82..e7567c8 100644
-> --- a/arch/mips/power/hibernate.S
-> +++ b/arch/mips/power/hibernate.S
-> @@ -30,6 +30,8 @@ LEAF(swsusp_arch_suspend)
->  END(swsusp_arch_suspend)
->
->  LEAF(swsusp_arch_resume)
-> +       /* Avoid TLB mismatch during and after kernel resume */
-> +       jal local_flush_tlb_all
->         PTR_L t0, restore_pblist
->  0:
->         PTR_L t1, PBE_ADDRESS(t0)   /* source */
-> @@ -43,7 +45,6 @@ LEAF(swsusp_arch_resume)
->         bne t1, t3, 1b
->         PTR_L t0, PBE_NEXT(t0)
->         bnez t0, 0b
-> -       jal local_flush_tlb_all /* Avoid TLB mismatch after kernel resume */
->         PTR_LA t0, saved_regs
->         PTR_L ra, PT_R31(t0)
->         PTR_L sp, PT_R29(t0)
-> --
-> 1.7.7.3
+>   Ralf

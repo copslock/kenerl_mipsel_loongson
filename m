@@ -1,44 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Mar 2015 11:48:22 +0100 (CET)
-Received: from mail-wg0-f41.google.com ([74.125.82.41]:34129 "EHLO
-        mail-wg0-f41.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27006155AbbCZKsVU2S0v (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 26 Mar 2015 11:48:21 +0100
-Received: by wgs2 with SMTP id 2so59607114wgs.1;
-        Thu, 26 Mar 2015 03:48:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:from:date:message-id:subject:to:cc:content-type;
-        bh=3UIXYvUzbzS7lfido6OOIatqdHJJDjchPbPmYFcQtiU=;
-        b=ONJB1EiBxQyea485oRqsnFnxuZCw3iy2ov9uJl1Whw+hBf0321PJD/AA+p8wdrAnjy
-         E8INaTwKkNPrTmURya6JQPvloZJm1W25ZiIALpS6Y0BRwrv8ymhLoQiQV3aut75Ha7FS
-         fAtshiDQbIkAgS8ror44jYRKjVTJwZ6HKCkn6o7LEULV4LrfDanmjo5eUFYBFxzFYRaU
-         5gbDGpCkMTwsw6J5q8s/96nNYHWITmLTnD6N57bwZEPvYJyZbX9U6CohANfCbv5vqoZw
-         tob1Ue2Vp3+N5/EnfKEAAhn1218UCtMntJzOGep+COPu6V+k8N1qasU/wqbZdrjFV9Dy
-         gzPw==
-X-Received: by 10.180.228.104 with SMTP id sh8mr38106056wic.61.1427366897017;
- Thu, 26 Mar 2015 03:48:17 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Mar 2015 13:32:16 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:57135 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S27014639AbbCZMcMbdErL (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 26 Mar 2015 13:32:12 +0100
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.9/8.14.8) with ESMTP id t2QCW6HD012046;
+        Thu, 26 Mar 2015 13:32:06 +0100
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.9/8.14.9/Submit) id t2QCW5c8012045;
+        Thu, 26 Mar 2015 13:32:05 +0100
+Date:   Thu, 26 Mar 2015 13:32:05 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Huacai Chen <chenhc@lemote.com>
+Cc:     "Steven J. Hill" <Steven.Hill@imgtec.com>,
+        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>
+Subject: Re: [PATCH V8 6/8] MIPS: Loongson-3: Add CPU Hwmon platform driver
+Message-ID: <20150326123204.GB9705@linux-mips.org>
+References: <1426213706-28542-1-git-send-email-chenhc@lemote.com>
 MIME-Version: 1.0
-Received: by 10.180.198.145 with HTTP; Thu, 26 Mar 2015 03:47:46 -0700 (PDT)
-From:   Valentin Rothberg <valentinrothberg@gmail.com>
-Date:   Thu, 26 Mar 2015 11:47:46 +0100
-Message-ID: <CAD3Xx4LMq1F8cDSR=17c3ViOML2ZYaL4d1ApkEog6bftSwKAPQ@mail.gmail.com>
-Subject: MIPS: BMIPS: broken select on RAW_IRQ_ACCESSORS
-To:     cernekee@gmail.com
-Cc:     ralf@linux-mips.org, jaedon.shin@gmail.com,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        Paul Bolle <pebolle@tiscali.nl>,
-        Andreas Ruprecht <rupran@einserver.de>,
-        hengelein Stefan <stefan.hengelein@fau.de>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <valentinrothberg@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1426213706-28542-1-git-send-email-chenhc@lemote.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46539
+X-archive-position: 46540
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: valentinrothberg@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,20 +44,12 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Kevin,
+On Fri, Mar 13, 2015 at 10:28:25AM +0800, Huacai Chen wrote:
 
-your commit dd6d84812b1a ("MIPS: BMIPS: Enable additional peripheral
-and CPU support in defconfig") adds a select on the Kconfig symbol
-RAW_IRQ_ACCESORS.   However, this symbol is not defined in Kconfig so
-that the select turns out to be a NOOP.
+> +MODULE_AUTHOR("Yu Xiang <xiangy@lemote.com>");
+> +MODULE_AUTHOR("Huacai Chen <chenhc@lemote.com>");
+> +MODULE_DESCRIPTION("Loongson CPU Hwmon driver");
 
-Is there a patch scheduled somewhere to add this symbol to Kconfig?
+No MODULE_LICENSE()?  May I add a MODULE_LICENSE("GPL")?
 
-I detected this issue with ./scripts/checkkconfigsymbols.py.  Since
-commit b1a3f243485f ("checkkconfigsymbols.py: make it Git aware") the
-script can check and diff specified Git commits.  I found
-RAW_IRQ_ACCESORS by diffing yesterday's and today's next trees (--diff
-commit..commit2).
-
-Kind regards,
- Valentin
+  Ralf

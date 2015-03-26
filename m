@@ -1,52 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Mar 2015 10:52:44 +0100 (CET)
-Received: from mail-wi0-f178.google.com ([209.85.212.178]:38180 "EHLO
-        mail-wi0-f178.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007571AbbCZJwnFgIC5 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 26 Mar 2015 10:52:43 +0100
-Received: by wibgn9 with SMTP id gn9so77099251wib.1
-        for <linux-mips@linux-mips.org>; Thu, 26 Mar 2015 02:52:38 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:message-id:date:from:user-agent:mime-version:to
-         :cc:subject:references:in-reply-to:content-type
-         :content-transfer-encoding;
-        bh=YUs2GzH2Xd1nbRO5hsh9yhhwQmNFDKTPz3trRxPdO1U=;
-        b=TttefpoJNrviOdrG0muTLI0N1hCvDyqiAODr4vtNB8Zs3BnKTq4W5zs93zy1T/SsDQ
-         pjWE6OzaQSYhwsVJDXVZYF1853lgWBoCgkwlWHl1VpJGMkLZZpRcNuiQCf252algQqJD
-         /IYzP+sMJNQhHGU1J3dxqGIKcjZ9AZx+dF+z5VYdnOJzfCSaSFvEHDc2gVTyrwtkKbkp
-         l2Xs83ioG/igij+st6OVJgEb1wFYZl8P7H24qlTlWGN1EjCwJlhjAAlhTyypo38BRboV
-         Zb0YeEPA/iMmFk+3zMrU0Otr0c9Cygh9HqJXjC6SorRXCjo8/6TG6sHG7UFFhmPeZBOf
-         jAKg==
-X-Gm-Message-State: ALoCoQmQ/JAPATO/QRcW7DJ7+Y84xFj4oCdWef5N/7IMqICNx7kAoygkUFe+YHqUvzDoNcEdw2WB
-X-Received: by 10.180.91.11 with SMTP id ca11mr23127533wib.10.1427363558770;
-        Thu, 26 Mar 2015 02:52:38 -0700 (PDT)
-Received: from ?IPv6:2001:41d0:fe90:b800:fc9a:462b:8dd9:d151? ([2001:41d0:fe90:b800:fc9a:462b:8dd9:d151])
-        by mx.google.com with ESMTPSA id i3sm1394787wiy.23.2015.03.26.02.52.37
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 26 Mar 2015 02:52:37 -0700 (PDT)
-Message-ID: <5513D6E4.4000101@linaro.org>
-Date:   Thu, 26 Mar 2015 10:52:36 +0100
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-User-Agent: Mozilla/5.0 (X11; Linux i686; rv:31.0) Gecko/20100101 Thunderbird/31.5.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Mar 2015 11:48:22 +0100 (CET)
+Received: from mail-wg0-f41.google.com ([74.125.82.41]:34129 "EHLO
+        mail-wg0-f41.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006155AbbCZKsVU2S0v (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 26 Mar 2015 11:48:21 +0100
+Received: by wgs2 with SMTP id 2so59607114wgs.1;
+        Thu, 26 Mar 2015 03:48:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:from:date:message-id:subject:to:cc:content-type;
+        bh=3UIXYvUzbzS7lfido6OOIatqdHJJDjchPbPmYFcQtiU=;
+        b=ONJB1EiBxQyea485oRqsnFnxuZCw3iy2ov9uJl1Whw+hBf0321PJD/AA+p8wdrAnjy
+         E8INaTwKkNPrTmURya6JQPvloZJm1W25ZiIALpS6Y0BRwrv8ymhLoQiQV3aut75Ha7FS
+         fAtshiDQbIkAgS8ror44jYRKjVTJwZ6HKCkn6o7LEULV4LrfDanmjo5eUFYBFxzFYRaU
+         5gbDGpCkMTwsw6J5q8s/96nNYHWITmLTnD6N57bwZEPvYJyZbX9U6CohANfCbv5vqoZw
+         tob1Ue2Vp3+N5/EnfKEAAhn1218UCtMntJzOGep+COPu6V+k8N1qasU/wqbZdrjFV9Dy
+         gzPw==
+X-Received: by 10.180.228.104 with SMTP id sh8mr38106056wic.61.1427366897017;
+ Thu, 26 Mar 2015 03:48:17 -0700 (PDT)
 MIME-Version: 1.0
-To:     Markos Chandras <markos.chandras@imgtec.com>,
-        linux-mips@linux-mips.org
-CC:     Thomas Gleixner <tglx@linutronix.de>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/3] clocksource: mips-gic-timer: Ensure GIC counter is
- running
-References: <1427113923-9840-1-git-send-email-markos.chandras@imgtec.com> <1427113923-9840-3-git-send-email-markos.chandras@imgtec.com>
-In-Reply-To: <1427113923-9840-3-git-send-email-markos.chandras@imgtec.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Return-Path: <daniel.lezcano@linaro.org>
+Received: by 10.180.198.145 with HTTP; Thu, 26 Mar 2015 03:47:46 -0700 (PDT)
+From:   Valentin Rothberg <valentinrothberg@gmail.com>
+Date:   Thu, 26 Mar 2015 11:47:46 +0100
+Message-ID: <CAD3Xx4LMq1F8cDSR=17c3ViOML2ZYaL4d1ApkEog6bftSwKAPQ@mail.gmail.com>
+Subject: MIPS: BMIPS: broken select on RAW_IRQ_ACCESSORS
+To:     cernekee@gmail.com
+Cc:     ralf@linux-mips.org, jaedon.shin@gmail.com,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        Paul Bolle <pebolle@tiscali.nl>,
+        Andreas Ruprecht <rupran@einserver.de>,
+        hengelein Stefan <stefan.hengelein@fau.de>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <valentinrothberg@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46538
+X-archive-position: 46539
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: daniel.lezcano@linaro.org
+X-original-sender: valentinrothberg@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,41 +51,20 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 03/23/2015 01:32 PM, Markos Chandras wrote:
-> Start the GIC counter after configuring the clocksource since there
-> are no guarantees the counter will be running after a CPU reset.
->
-> Cc: Daniel Lezcano <daniel.lezcano@linaro.org>
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Cc: <linux-kernel@vger.kernel.org>
-> Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+Hi Kevin,
 
-Acked-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+your commit dd6d84812b1a ("MIPS: BMIPS: Enable additional peripheral
+and CPU support in defconfig") adds a select on the Kconfig symbol
+RAW_IRQ_ACCESORS.   However, this symbol is not defined in Kconfig so
+that the select turns out to be a NOOP.
 
-> ---
->   drivers/clocksource/mips-gic-timer.c | 3 +++
->   1 file changed, 3 insertions(+)
->
-> diff --git a/drivers/clocksource/mips-gic-timer.c b/drivers/clocksource/mips-gic-timer.c
-> index 3bd31b1321f6..16adbc1fa4c1 100644
-> --- a/drivers/clocksource/mips-gic-timer.c
-> +++ b/drivers/clocksource/mips-gic-timer.c
-> @@ -133,6 +133,9 @@ static void __init __gic_clocksource_init(void)
->   	clocksource_register_hz(&gic_clocksource, gic_frequency);
->
->   	gic_clockevent_init();
-> +
-> +	/* And finally start the counter */
-> +	gic_start_count();
->   }
->
->   void __init gic_clocksource_init(unsigned int frequency)
->
+Is there a patch scheduled somewhere to add this symbol to Kconfig?
 
+I detected this issue with ./scripts/checkkconfigsymbols.py.  Since
+commit b1a3f243485f ("checkkconfigsymbols.py: make it Git aware") the
+script can check and diff specified Git commits.  I found
+RAW_IRQ_ACCESORS by diffing yesterday's and today's next trees (--diff
+commit..commit2).
 
--- 
-  <http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
-
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
+Kind regards,
+ Valentin

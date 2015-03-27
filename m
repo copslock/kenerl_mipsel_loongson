@@ -1,29 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Mar 2015 21:52:28 +0100 (CET)
-Received: (from localhost user: 'macro', uid#1010) by eddie.linux-mips.org
-        with ESMTP id S27007636AbbCZUw0rBA8q (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 26 Mar 2015 21:52:26 +0100
-Date:   Thu, 26 Mar 2015 20:52:26 +0000 (GMT)
-From:   "Maciej W. Rozycki" <macro@linux-mips.org>
-To:     Markos Chandras <Markos.Chandras@imgtec.com>
-cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        David Daney <david.daney@cavium.com>
-Subject: Re: [PATCH] MIPS: mm: tlbex: Replace cpu_has_mips_r2_exec_hazard
- with cpu_has_mips_r2_r6
-In-Reply-To: <55030539.6070803@imgtec.com>
-Message-ID: <alpine.LFD.2.11.1503262051350.5791@eddie.linux-mips.org>
-References: <1424731974-27926-1-git-send-email-ddaney.cavm@gmail.com> <1426238288-15560-1-git-send-email-markos.chandras@imgtec.com> <20150313144443.GA12977@linux-mips.org> <55030539.6070803@imgtec.com>
-User-Agent: Alpine 2.11 (LFD 23 2013-08-11)
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Mar 2015 02:33:52 +0100 (CET)
+Received: from down.free-electrons.com ([37.187.137.238]:52572 "EHLO
+        mail.free-electrons.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S27008555AbbC0BdvYQ8Te (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 27 Mar 2015 02:33:51 +0100
+Received: by mail.free-electrons.com (Postfix, from userid 106)
+        id F21BF2F4; Fri, 27 Mar 2015 02:33:48 +0100 (CET)
+Received: from localhost (unknown [216.9.110.4])
+        by mail.free-electrons.com (Postfix) with ESMTPSA id 25C66209;
+        Fri, 27 Mar 2015 02:33:47 +0100 (CET)
+From:   Michael Opdenacker <michael.opdenacker@free-electrons.com>
+To:     ralf@linux-mips.org
+Cc:     chenhc@lemote.com, taohl@lemote.com, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org,
+        Michael Opdenacker <michael.opdenacker@free-electrons.com>
+Subject: [PATCH] MIPS: Loongson-3: remove deprecated IRQF_DISABLED
+Date:   Thu, 26 Mar 2015 18:33:41 -0700
+Message-Id: <1427420021-27663-1-git-send-email-michael.opdenacker@free-electrons.com>
+X-Mailer: git-send-email 2.1.0
+Return-Path: <michael.opdenacker@free-electrons.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46560
+X-archive-position: 46561
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: michael.opdenacker@free-electrons.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -36,22 +38,28 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, 13 Mar 2015, Markos Chandras wrote:
+This removes the use of the IRQF_DISABLED flag
+from arch/mips/loongson/loongson-3/hpet.c
 
-> > Either of this David's revert or this patch applied will leave
-> > cpu_has_mips_r2_exec_hazard unused which at a glance doesn't seem to
-> > be right and defeats David's old patches 9e290a19 / 41f0e4d0 from working.
-> > 
-> > cpu_has_mips_r2_exec_hazard was made unused by 625c0a21 which I think
-> > should be reverted and cpu_has_mips_r2_exec_hazard be defined to be something
-> > like
-> 
-> Indeed that looks an old regression. Thanks for spotting that.
+It's a NOOP since 2.6.35.
 
- Noted here:
+Signed-off-by: Michael Opdenacker <michael.opdenacker@free-electrons.com>
+---
+ arch/mips/loongson/loongson-3/hpet.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-http://www.linux-mips.org/cgi-bin/mesg.cgi?a=linux-mips&i=alpine.LFD.2.11.1502240011420.17311%40eddie.linux-mips.org
-
-several weeks ago already.
-
-  Maciej
+diff --git a/arch/mips/loongson/loongson-3/hpet.c b/arch/mips/loongson/loongson-3/hpet.c
+index e898d68668a9..5c21cd3bd339 100644
+--- a/arch/mips/loongson/loongson-3/hpet.c
++++ b/arch/mips/loongson/loongson-3/hpet.c
+@@ -162,7 +162,7 @@ static irqreturn_t hpet_irq_handler(int irq, void *data)
+ 
+ static struct irqaction hpet_irq = {
+ 	.handler = hpet_irq_handler,
+-	.flags = IRQF_DISABLED | IRQF_NOBALANCING | IRQF_TIMER,
++	.flags = IRQF_NOBALANCING | IRQF_TIMER,
+ 	.name = "hpet",
+ };
+ 
+-- 
+2.1.0

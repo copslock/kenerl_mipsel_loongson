@@ -1,37 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Mar 2015 09:33:59 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:17565 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27007236AbbC0Id5nFd8a (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 27 Mar 2015 09:33:57 +0100
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id B14BE5F05B860;
-        Fri, 27 Mar 2015 08:33:50 +0000 (GMT)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Fri, 27 Mar 2015 08:33:52 +0000
-Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
- LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.210.2; Fri, 27 Mar 2015 08:33:51 +0000
-From:   James Hogan <james.hogan@imgtec.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     James Hogan <james.hogan@imgtec.com>, <linux-mips@linux-mips.org>,
-        <stable@vger.kernel.org>
-Subject: [PATCH v2] MIPS: dma-default: Fix 32-bit fall back to GFP_DMA
-Date:   Fri, 27 Mar 2015 08:33:43 +0000
-Message-ID: <1427445223-8017-1-git-send-email-james.hogan@imgtec.com>
-X-Mailer: git-send-email 2.0.5
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Mar 2015 10:35:29 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:34970 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S27014055AbbC0Jf1hDg2Q (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 27 Mar 2015 10:35:27 +0100
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.9/8.14.8) with ESMTP id t2R9ZQTD004030;
+        Fri, 27 Mar 2015 10:35:26 +0100
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.9/8.14.9/Submit) id t2R9ZLen004029;
+        Fri, 27 Mar 2015 10:35:21 +0100
+Date:   Fri, 27 Mar 2015 10:35:21 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Michael Opdenacker <michael.opdenacker@free-electrons.com>
+Cc:     chenhc@lemote.com, taohl@lemote.com, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] MIPS: Loongson-3: remove deprecated IRQF_DISABLED
+Message-ID: <20150327093521.GA3959@linux-mips.org>
+References: <1427420021-27663-1-git-send-email-michael.opdenacker@free-electrons.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.154.110]
-Return-Path: <James.Hogan@imgtec.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1427420021-27663-1-git-send-email-michael.opdenacker@free-electrons.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46563
+X-archive-position: 46564
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,47 +43,16 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-If there is a DMA zone (usually 24bit = 16MB I believe), but no DMA32
-zone, as is the case for some 32-bit kernels, then massage_gfp_flags()
-will cause DMA memory allocated for devices with a 32..63-bit
-coherent_dma_mask to fall back to using __GFP_DMA, even though there may
-only be 32-bits of physical address available anyway.
+On Thu, Mar 26, 2015 at 06:33:41PM -0700, Michael Opdenacker wrote:
 
-Correct that case to compare against a mask the size of phys_addr_t
-instead of always using a 64-bit mask.
+> This removes the use of the IRQF_DISABLED flag
+> from arch/mips/loongson/loongson-3/hpet.c
+> 
+> It's a NOOP since 2.6.35.
+> 
+> Signed-off-by: Michael Opdenacker <michael.opdenacker@free-electrons.com>
 
-Fixes: a2e715a86c6d ("MIPS: DMA: Fix computation of DMA flags from device's coherent_dma_mask.")
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
-Cc: <stable@vger.kernel.org> # 2.6.36+
----
-Changes in v2:
-- Add whitespace around * operator (Sergei).
+An equivalent patch has been merged into linux-next as d8bf368d0631 (genirq:
+Remove the deprecated 'IRQF_DISABLED' request_irq() flag entirely).
 
-This works around problems encountered on Malta with ethernet and IDE
-drivers being unable to allocate any coherent memory when the entire
-16MB DMA zone is taken up with static kernel data (a separate problem),
-even though their coherent_dma_masks are 32-bit. This can happen when
-PROVE_RCU and PROVE_LOCKING are set, especially since commit
-1413c0389333 ("lockdep: Increase static allocations") was applied in
-v3.16.
----
- arch/mips/mm/dma-default.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/mips/mm/dma-default.c b/arch/mips/mm/dma-default.c
-index af5f046e627e..d5096a59ff94 100644
---- a/arch/mips/mm/dma-default.c
-+++ b/arch/mips/mm/dma-default.c
-@@ -100,7 +100,7 @@ static gfp_t massage_gfp_flags(const struct device *dev, gfp_t gfp)
- 	else
- #endif
- #if defined(CONFIG_ZONE_DMA) && !defined(CONFIG_ZONE_DMA32)
--	     if (dev->coherent_dma_mask < DMA_BIT_MASK(64))
-+	     if (dev->coherent_dma_mask < DMA_BIT_MASK(sizeof(phys_addr_t) * 8))
- 		dma_flag = __GFP_DMA;
- 	else
- #endif
--- 
-2.0.5
+  Ralf

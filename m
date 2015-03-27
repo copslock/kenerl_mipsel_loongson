@@ -1,39 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Mar 2015 18:00:21 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:15277 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27014685AbbC0RATEZidx (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 27 Mar 2015 18:00:19 +0100
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id F070C1FA8D230;
-        Fri, 27 Mar 2015 17:00:10 +0000 (GMT)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Fri, 27 Mar 2015 17:00:14 +0000
-Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
- LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.210.2; Fri, 27 Mar 2015 17:00:13 +0000
-From:   James Hogan <james.hogan@imgtec.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     <linux-mips@linux-mips.org>, Paul Burton <paul.burton@imgtec.com>,
-        "James Hogan" <james.hogan@imgtec.com>
-Subject: [PATCH v3 01/10] MIPS: push .set mips64r* into the functions needing it
-Date:   Fri, 27 Mar 2015 17:00:03 +0000
-Message-ID: <1427475603-1529-1-git-send-email-james.hogan@imgtec.com>
-X-Mailer: git-send-email 2.0.5
-In-Reply-To: <1422619779-9940-2-git-send-email-paul.burton@imgtec.com>
-References: <1422619779-9940-2-git-send-email-paul.burton@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Mar 2015 22:34:46 +0100 (CET)
+Received: from mail-qg0-f46.google.com ([209.85.192.46]:33924 "EHLO
+        mail-qg0-f46.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27009753AbbC0Velp0Hbs (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 27 Mar 2015 22:34:41 +0100
+Received: by qgep97 with SMTP id p97so145608499qge.1;
+        Fri, 27 Mar 2015 14:34:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc:content-type;
+        bh=7H+cMWBnweuqMmuGF1H5dI/5e4UGKb9yLwwWfp2jT+0=;
+        b=mrh3Hth2VcoG7MgOdLKkSyST7gA2LePj+gsvo4Nt5TypWWi9LtVcDDMQ1nIC8kPzTd
+         0zMwtB4RZN68BJTQI08/cTaZTF+bBF/JLy+snNl3BGvS77rXVWCLDQFjKcOzqyny05AO
+         EgvUoKCRtnDhE3uo0jfpocMtN+/NGwih5LZbI91lDP5LMZvhSXDt6t6wJBVxi1oZhXF5
+         zFCDDSqqQ20Y3szbGlzhWmc356sD7B3P2UP1rYii90tJcxxKTs3nXQ6q3GgqrVs21u8V
+         8Yqnf1PgYJn8+yPiPjtULtsnW7VDElzuj/y2O4OatlaA1v6zDRMDLn83keC32Dbb13Yd
+         +q5A==
+X-Received: by 10.140.108.116 with SMTP id i107mr26238774qgf.73.1427492076871;
+ Fri, 27 Mar 2015 14:34:36 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.154.110]
-Return-Path: <James.Hogan@imgtec.com>
+Received: by 10.140.90.18 with HTTP; Fri, 27 Mar 2015 14:34:16 -0700 (PDT)
+In-Reply-To: <20150327120405.GP1385@linux-mips.org>
+References: <1427345715-16516-1-git-send-email-f.fainelli@gmail.com>
+ <1427345715-16516-2-git-send-email-f.fainelli@gmail.com> <20150327120405.GP1385@linux-mips.org>
+From:   Kevin Cernekee <cernekee@gmail.com>
+Date:   Fri, 27 Mar 2015 14:34:16 -0700
+Message-ID: <CAJiQ=7DeNDzu0Sk014aOaWsFP3AVnBc4G7RU=6dCQe2iKLBM5g@mail.gmail.com>
+Subject: Re: [PATCH 1/2] MIPS: BMIPS: Flush the readahead cache after DMA
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     Florian Fainelli <f.fainelli@gmail.com>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        Jaedon Shin <jaedon.shin@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <cernekee@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46570
+X-archive-position: 46571
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: cernekee@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,102 +53,42 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Paul Burton <paul.burton@imgtec.com>
+On Fri, Mar 27, 2015 at 5:04 AM, Ralf Baechle <ralf@linux-mips.org> wrote:
+> On Wed, Mar 25, 2015 at 09:55:14PM -0700, Florian Fainelli wrote:
+>
+>> From: Kevin Cernekee <cernekee@gmail.com>
+>>
+>> BMIPS 3300/435x/438x CPUs have a readahead cache that is separate from
+>> the L1/L2.  During a DMA operation, accesses adjacent to a DMA buffer
+>> may cause parts of the DMA buffer to be prefetched into the RAC.  To
+>> avoid possible coherency problems, flush the RAC upon DMA completion.
+>>
+>> Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
+>> Signed-off-by: Jaedon Shin <jaedon.shin@gmail.com>
+>> Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
+>> ---
+>>  arch/mips/include/asm/bmips.h |  2 +-
+>>  arch/mips/mm/dma-default.c    | 15 +++++++++++++++
+>>  2 files changed, 16 insertions(+), 1 deletion(-)
+>
+> I'm not keen on including platform-specific files that may blow up on
+> another platform.  So what I suggest instead is something like rewriting
+> cpu_needs_post_dma_flush() to invoke a platform-specific hook function
+> plat_post_dma_flush() which would be defined in <asm/dma-coherence.h>
+> rsp. <mach/dma-coherence.h>.
+>
+> I'm going to whip up something.
 
-The {save,restore}_fp_context{,32} functions require that the assembler
-allows the use of sdc instructions on any FP register, and this is
-acomplished by setting the arch to mips64r2 or mips64r6
-(using MIPS_ISA_ARCH_LEVEL_RAW).
+Hi Ralf,
 
-However this has the effect of enabling the assembler to use mips64
-instructions in the expansion of pseudo-instructions. This was done in
-the (now-reverted) commit eec43a224cf1 "MIPS: Save/restore MSA context
-around signals" which led to my mistakenly believing that there was an
-assembler bug, when in reality the assembler was just emitting mips64
-instructions. Avoid the issue for future commits which will add code to
-r4k_fpu.S by pushing the .set MIPS_ISA_ARCH_LEVEL_RAW directives into
-the functions that require it, and remove the spurious assertion
-declaring the assembler bug.
+Regarding this patch:
+http://git.linux-mips.org/cgit/ralf/upstream-sfr.git/commit/?id=47df84c7341a4816b69b784b01fce304a15777a2
 
-Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-[james.hogan@imgtec.com: Rebase on v4.0-rc1 and reword commit message to
- reflect use of MIPS_ISA_ARCH_LEVEL_RAW]
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
----
-Changes in v3:
-  - Rebase atop v4.0-rc1, switching arch=r4000 to
-    MIPS_ISA_ARCH_LEVEL_RAW (either mips64r2 or mips64r6).
+The same change is also needed for mach-bcm63xx (in-tree) and
+mach-brcmstb (out-of-tree).  Somewhat confusingly, mach-bmips is a
+"Generic BMIPS kernel" but it isn't the only platform which uses BMIPS
+processors that have readahead caches.
 
-Changes in v2:
-  - Rebase atop v3.19-rc6.
----
- arch/mips/include/asm/asmmacro.h | 12 ++++--------
- arch/mips/kernel/r4k_fpu.S       |  2 +-
- 2 files changed, 5 insertions(+), 9 deletions(-)
-
-diff --git a/arch/mips/include/asm/asmmacro.h b/arch/mips/include/asm/asmmacro.h
-index 0cae4595e985..782dde7fed57 100644
---- a/arch/mips/include/asm/asmmacro.h
-+++ b/arch/mips/include/asm/asmmacro.h
-@@ -326,8 +326,7 @@
- 	SET_HARDFLOAT
- 	.insn
- 	.word	COPY_UW_MSA_INSN | (\n << 16) | (\ws << 11)
--	/* move triggers an assembler bug... */
--	or	\rd, $1, zero
-+	move	\rd, $1
- 	.set	pop
- 	.endm
- 
-@@ -337,8 +336,7 @@
- 	SET_HARDFLOAT
- 	.insn
- 	.word	COPY_UD_MSA_INSN | (\n << 16) | (\ws << 11)
--	/* move triggers an assembler bug... */
--	or	\rd, $1, zero
-+	move	\rd, $1
- 	.set	pop
- 	.endm
- 
-@@ -346,8 +344,7 @@
- 	.set	push
- 	.set	noat
- 	SET_HARDFLOAT
--	/* move triggers an assembler bug... */
--	or	$1, \rs, zero
-+	move	$1, \rs
- 	.word	INSERT_W_MSA_INSN | (\n << 16) | (\wd << 6)
- 	.set	pop
- 	.endm
-@@ -356,8 +353,7 @@
- 	.set	push
- 	.set	noat
- 	SET_HARDFLOAT
--	/* move triggers an assembler bug... */
--	or	$1, \rs, zero
-+	move	$1, \rs
- 	.word	INSERT_D_MSA_INSN | (\n << 16) | (\wd << 6)
- 	.set	pop
- 	.endm
-diff --git a/arch/mips/kernel/r4k_fpu.S b/arch/mips/kernel/r4k_fpu.S
-index 676c5030a953..1d88af26ba82 100644
---- a/arch/mips/kernel/r4k_fpu.S
-+++ b/arch/mips/kernel/r4k_fpu.S
-@@ -34,7 +34,6 @@
- 	.endm
- 
- 	.set	noreorder
--	.set	MIPS_ISA_ARCH_LEVEL_RAW
- 
- LEAF(_save_fp_context)
- 	.set	push
-@@ -103,6 +102,7 @@ LEAF(_save_fp_context)
- 	/* Save 32-bit process floating point context */
- LEAF(_save_fp_context32)
- 	.set push
-+	.set MIPS_ISA_ARCH_LEVEL_RAW
- 	SET_HARDFLOAT
- 	cfc1	t1, fcr31
- 
--- 
-2.0.5
+I am hoping that someday mach-bmips will have support for all
+mach-bcm63xx and mach-brcmstb platforms/peripherals, but we aren't
+quite there yet.

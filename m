@@ -1,65 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Nov 2015 21:39:49 +0100 (CET)
-Received: from youngberry.canonical.com ([91.189.89.112]:53832 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012224AbbKLUjquxNZx (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 12 Nov 2015 21:39:46 +0100
-Received: from 1.general.kamal.us.vpn ([10.172.68.52] helo=fourier)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:DHE_RSA_AES_128_CBC_SHA1:16)
-        (Exim 4.76)
-        (envelope-from <kamal@canonical.com>)
-        id 1Zwyeo-0006ij-Ed; Thu, 12 Nov 2015 20:39:46 +0000
-Received: from kamal by fourier with local (Exim 4.82)
-        (envelope-from <kamal@whence.com>)
-        id 1Zwyem-0004Kx-7i; Thu, 12 Nov 2015 12:39:44 -0800
-From:   Kamal Mostafa <kamal@canonical.com>
-To:     James Hogan <james.hogan@imgtec.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        Kamal Mostafa <kamal@canonical.com>,
-        kernel-team@lists.ubuntu.com
-Subject: [3.19.y-ckt stable] Patch "MIPS: dma-default: Fix 32-bit fall back to GFP_DMA" has been added to staging queue
-Date:   Thu, 12 Nov 2015 12:39:43 -0800
-Message-Id: <1447360783-16641-1-git-send-email-kamal@canonical.com>
-X-Mailer: git-send-email 1.9.1
-X-Extended-Stable: 3.19
-Return-Path: <kamal@canonical.com>
-X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
-X-Orcpt: rfc822;linux-mips@linux-mips.org
-Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49901
-X-ecartis-version: Ecartis v1.0.0
-Sender: linux-mips-bounce@linux-mips.org
-Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kamal@canonical.com
-Precedence: bulk
-List-help: <mailto:ecartis@linux-mips.org?Subject=help>
-List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
-List-software: Ecartis version 1.0.0
-List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
-X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
-List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
-List-owner: <mailto:ralf@linux-mips.org>
-List-post: <mailto:linux-mips@linux-mips.org>
-List-archive: <http://www.linux-mips.org/archives/linux-mips/>
-X-list: linux-mips
+From: James Hogan <james.hogan@imgtec.com>
+Date: Fri, 27 Mar 2015 08:33:43 +0000
+Subject: MIPS: dma-default: Fix 32-bit fall back to GFP_DMA
+Message-ID: <20150327083343.KeEua1zz3Vu5Zdg_x1NBuDpc9yUr_2AghzUtO9KjAcs@z>
 
-This is a note to let you know that I have just added a patch titled
+commit 53960059d56ecef67d4ddd546731623641a3d2d1 upstream.
 
-    MIPS: dma-default: Fix 32-bit fall back to GFP_DMA
+If there is a DMA zone (usually 24bit = 16MB I believe), but no DMA32
+zone, as is the case for some 32-bit kernels, then massage_gfp_flags()
+will cause DMA memory allocated for devices with a 32..63-bit
+coherent_dma_mask to fall back to using __GFP_DMA, even though there may
+only be 32-bits of physical address available anyway.
 
-to the linux-3.19.y-queue branch of the 3.19.y-ckt extended stable tree 
-which can be found at:
+Correct that case to compare against a mask the size of phys_addr_t
+instead of always using a 64-bit mask.
 
-    http://kernel.ubuntu.com/git/ubuntu/linux.git/log/?h=linux-3.19.y-queue
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Fixes: a2e715a86c6d ("MIPS: DMA: Fix computation of DMA flags from device's coherent_dma_mask.")
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: linux-mips@linux-mips.org
+Patchwork: https://patchwork.linux-mips.org/patch/9610/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: Kamal Mostafa <kamal@canonical.com>
+---
+ arch/mips/mm/dma-default.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-This patch is scheduled to be released in version 3.19.8-ckt10.
-
-If you, or anyone else, feels it should not be added to this tree, please 
-reply to this email.
-
-For more information about the 3.19.y-ckt tree, see
-https://wiki.ubuntu.com/Kernel/Dev/ExtendedStable
-
-Thanks.
--Kamal
-
-------
+diff --git a/arch/mips/mm/dma-default.c b/arch/mips/mm/dma-default.c
+index af5f046..d5096a5 100644
+--- a/arch/mips/mm/dma-default.c
++++ b/arch/mips/mm/dma-default.c
+@@ -100,7 +100,7 @@ static gfp_t massage_gfp_flags(const struct device *dev, gfp_t gfp)
+ 	else
+ #endif
+ #if defined(CONFIG_ZONE_DMA) && !defined(CONFIG_ZONE_DMA32)
+-	     if (dev->coherent_dma_mask < DMA_BIT_MASK(64))
++	     if (dev->coherent_dma_mask < DMA_BIT_MASK(sizeof(phys_addr_t) * 8))
+ 		dma_flag = __GFP_DMA;
+ 	else
+ #endif
+--
+1.9.1

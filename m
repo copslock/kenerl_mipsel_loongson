@@ -1,42 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Mar 2015 12:45:18 +0100 (CET)
-Received: from conuserg010.nifty.com ([202.248.44.36]:35599 "EHLO
-        conuserg010-v.nifty.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27007238AbbC0LpR1gBei (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 27 Mar 2015 12:45:17 +0100
-Received: from beagle.diag.org (KD106151093169.au-net.ne.jp [106.151.93.169]) (authenticated)
-        by conuserg010-v.nifty.com with ESMTP id t2RBhcvH024225;
-        Fri, 27 Mar 2015 20:43:43 +0900
-X-Nifty-SrcIP: [106.151.93.169]
-From:   Masahiro Yamada <yamada.masahiro@socionext.com>
-To:     linux-kbuild@vger.kernel.org
-Cc:     Masahiro Yamada <yamada.masahiro@socionext.com>,
-        linux-mips@linux-mips.org, Tony Luck <tony.luck@intel.com>,
-        x86@kernel.org, linux-ia64@vger.kernel.org,
-        user-mode-linux-devel@lists.sourceforge.net,
-        Jeff Dike <jdike@addtoit.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, linux-kernel@vger.kernel.org,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Russell King <linux@arm.linux.org.uk>,
-        Richard Weinberger <richard@nod.at>,
-        Michal Marek <mmarek@suse.cz>,
-        user-mode-linux-user@lists.sourceforge.net,
-        Ingo Molnar <mingo@redhat.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        linux-arm-kernel@lists.infradead.org
-Subject: [PATCH 0/4] kbuild: refactor Makefile inclusion
-Date:   Fri, 27 Mar 2015 20:43:34 +0900
-Message-Id: <1427456618-23830-1-git-send-email-yamada.masahiro@socionext.com>
-X-Mailer: git-send-email 1.9.1
-Return-Path: <yamada.masahiro@socionext.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Mar 2015 13:04:09 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:35947 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S27014668AbbC0MEF1VnzK (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 27 Mar 2015 13:04:05 +0100
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.9/8.14.8) with ESMTP id t2RC45pt007399;
+        Fri, 27 Mar 2015 13:04:05 +0100
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.9/8.14.9/Submit) id t2RC452w007398;
+        Fri, 27 Mar 2015 13:04:05 +0100
+Date:   Fri, 27 Mar 2015 13:04:05 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Florian Fainelli <f.fainelli@gmail.com>
+Cc:     linux-mips@linux-mips.org, cernekee@gmail.com,
+        jaedon.shin@gmail.com
+Subject: Re: [PATCH 1/2] MIPS: BMIPS: Flush the readahead cache after DMA
+Message-ID: <20150327120405.GP1385@linux-mips.org>
+References: <1427345715-16516-1-git-send-email-f.fainelli@gmail.com>
+ <1427345715-16516-2-git-send-email-f.fainelli@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1427345715-16516-2-git-send-email-f.fainelli@gmail.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46567
+X-archive-position: 46568
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yamada.masahiro@socionext.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,22 +44,29 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Masahiro Yamada (4):
-  kbuild: use relative path to include Makefile
-  kbuild: use relative path more to include Makefile
-  kbuild: include $(src)/Makefile rather than $(obj)/Makefile
-  kbuild: ia64: use $(src)/Makefile.gate rather than particular path
+On Wed, Mar 25, 2015 at 09:55:14PM -0700, Florian Fainelli wrote:
 
- Makefile                  | 22 ++++++++++------------
- arch/arm/boot/Makefile    |  2 +-
- arch/ia64/kernel/Makefile |  2 +-
- arch/mips/Makefile        |  2 +-
- arch/um/Makefile          |  6 +++---
- arch/x86/Makefile         |  2 +-
- arch/x86/Makefile.um      |  2 +-
- scripts/Makefile.dtbinst  |  2 +-
- scripts/Makefile.fwinst   |  2 +-
- 9 files changed, 20 insertions(+), 22 deletions(-)
+> From: Kevin Cernekee <cernekee@gmail.com>
+> 
+> BMIPS 3300/435x/438x CPUs have a readahead cache that is separate from
+> the L1/L2.  During a DMA operation, accesses adjacent to a DMA buffer
+> may cause parts of the DMA buffer to be prefetched into the RAC.  To
+> avoid possible coherency problems, flush the RAC upon DMA completion.
+> 
+> Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
+> Signed-off-by: Jaedon Shin <jaedon.shin@gmail.com>
+> Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
+> ---
+>  arch/mips/include/asm/bmips.h |  2 +-
+>  arch/mips/mm/dma-default.c    | 15 +++++++++++++++
+>  2 files changed, 16 insertions(+), 1 deletion(-)
 
--- 
-1.9.1
+I'm not keen on including platform-specific files that may blow up on
+another platform.  So what I suggest instead is something like rewriting
+cpu_needs_post_dma_flush() to invoke a platform-specific hook function
+plat_post_dma_flush() which would be defined in <asm/dma-coherence.h>
+rsp. <mach/dma-coherence.h>.
+
+I'm going to whip up something.
+
+  Ralf

@@ -1,36 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Mar 2015 10:35:29 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:34970 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27014055AbbC0Jf1hDg2Q (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 27 Mar 2015 10:35:27 +0100
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.9/8.14.8) with ESMTP id t2R9ZQTD004030;
-        Fri, 27 Mar 2015 10:35:26 +0100
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.9/8.14.9/Submit) id t2R9ZLen004029;
-        Fri, 27 Mar 2015 10:35:21 +0100
-Date:   Fri, 27 Mar 2015 10:35:21 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Michael Opdenacker <michael.opdenacker@free-electrons.com>
-Cc:     chenhc@lemote.com, taohl@lemote.com, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] MIPS: Loongson-3: remove deprecated IRQF_DISABLED
-Message-ID: <20150327093521.GA3959@linux-mips.org>
-References: <1427420021-27663-1-git-send-email-michael.opdenacker@free-electrons.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Mar 2015 11:51:52 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:22063 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27008633AbbC0KvtbMQ7r (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 27 Mar 2015 11:51:49 +0100
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 72DC66D640CD2;
+        Fri, 27 Mar 2015 10:51:42 +0000 (GMT)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Fri, 27 Mar 2015 10:51:44 +0000
+Received: from [192.168.154.138] (192.168.154.138) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Fri, 27 Mar
+ 2015 10:51:43 +0000
+Message-ID: <5515363F.1050209@imgtec.com>
+Date:   Fri, 27 Mar 2015 10:51:43 +0000
+From:   Markos Chandras <Markos.Chandras@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.5.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1427420021-27663-1-git-send-email-michael.opdenacker@free-electrons.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <ralf@linux-mips.org>
+To:     Lars-Peter Clausen <lars@metafoo.de>,
+        Mark Brown <broonie@kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Ralf Baechle <ralf@linux-mips.org>
+CC:     <linux-mips@linux-mips.org>, <alsa-devel@alsa-project.org>,
+        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+        stable <stable@vger.kernel.org>
+Subject: Re: [PATCH 1/6] ASoC: jz4740: Remove Makefile entry for removed file
+References: <1398199596-23649-1-git-send-email-lars@metafoo.de>
+In-Reply-To: <1398199596-23649-1-git-send-email-lars@metafoo.de>
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.154.138]
+Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46564
+X-archive-position: 46565
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: Markos.Chandras@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,16 +51,45 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Mar 26, 2015 at 06:33:41PM -0700, Michael Opdenacker wrote:
-
-> This removes the use of the IRQF_DISABLED flag
-> from arch/mips/loongson/loongson-3/hpet.c
+On 04/22/2014 09:46 PM, Lars-Peter Clausen wrote:
+> Commit 0406a40a0 ("ASoC: jz4740: Use the generic dmaengine PCM driver")
+> jz4740-pcm.c file, but neglected to remove the Makefile entries.
 > 
-> It's a NOOP since 2.6.35.
+> Fixes: 0406a40a0 ("ASoC: jz4740: Use the generic dmaengine PCM driver")
+> Reported-by: kbuild test robot <fengguang.wu@intel.com>
+> Reported-by: Ralf Baechle <ralf@linux-mips.org>
+> Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
+> ---
+>  sound/soc/jz4740/Makefile | 2 --
+>  1 file changed, 2 deletions(-)
 > 
-> Signed-off-by: Michael Opdenacker <michael.opdenacker@free-electrons.com>
+> diff --git a/sound/soc/jz4740/Makefile b/sound/soc/jz4740/Makefile
+> index be873c1..d32c540 100644
+> --- a/sound/soc/jz4740/Makefile
+> +++ b/sound/soc/jz4740/Makefile
+> @@ -1,10 +1,8 @@
+>  #
+>  # Jz4740 Platform Support
+>  #
+> -snd-soc-jz4740-objs := jz4740-pcm.o
+>  snd-soc-jz4740-i2s-objs := jz4740-i2s.o
+>  
+> -obj-$(CONFIG_SND_JZ4740_SOC) += snd-soc-jz4740.o
+>  obj-$(CONFIG_SND_JZ4740_SOC_I2S) += snd-soc-jz4740-i2s.o
+>  
+>  # Jz4740 Machine Support
+> 
+Hi,
 
-An equivalent patch has been merged into linux-next as d8bf368d0631 (genirq:
-Remove the deprecated 'IRQF_DISABLED' request_irq() flag entirely).
+This patch (eebdec044e82) is present in 3.15-rc1 but the build failure
+that was introduced by 0406a40a0 ("ASoC: jz4740: Use the generic
+dmaengine PCM driver") is present in 3.14-rc1 so 3.14 is still broken.
 
-  Ralf
+Greg, would it be possible to cherry pick eebdec044e82 ("ASoC: jz4740:
+Remove Makefile entry for removed file") to 3.14 stable branch? It seems
+to apply without conflicts.
+
+Thank you
+
+-- 
+markos

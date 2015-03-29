@@ -1,37 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 29 Mar 2015 04:56:17 +0200 (CEST)
-Received: from smtpbgau1.qq.com ([54.206.16.166]:58237 "EHLO smtpbgau1.qq.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 29 Mar 2015 04:56:36 +0200 (CEST)
+Received: from smtpbgbr2.qq.com ([54.207.22.56]:44493 "EHLO smtpbgbr2.qq.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27007935AbbC2CzL0Bw3o (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 29 Mar 2015 04:55:11 +0200
-X-QQ-mid: bizesmtp2t1427597658t862t045
+        id S27008066AbbC2CzdF2J98 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 29 Mar 2015 04:55:33 +0200
+X-QQ-mid: bizesmtp2t1427597656t780t018
 Received: from localhost.localdomain (unknown [222.92.8.142])
         by esmtp4.qq.com (ESMTP) with 
-        id ; Sun, 29 Mar 2015 10:54:18 +0800 (CST)
+        id ; Sun, 29 Mar 2015 10:54:12 +0800 (CST)
 X-QQ-SSF: 01100000002000F0FJ52B00A0000000
-X-QQ-FEAT: /peYvah/M2UOdDXNwWx6ThDSsc7XnR+30CdBqGvpbVRhRb/bxxVOE5ESNoGAD
-        zssJChxd2HCPZW89B1V8qp4xt4Ac5xHc9CD3rMJp0+NpPn7PSTFWh/6WDuH3IMKyTFu76VN
-        HHCbl1XWwMuFWJQCx5EOiVJVY81u4YBNhtWZjC0ADPwDsFhoBrj9y3WPE9eqJkLOP/+paMj
-        IEaziaz5muWwzQlfvMuTxvToxnajYVD4rhH7w9XJ/Vg==
+X-QQ-FEAT: R558sku3fV0ieoKKFkIoL2pq9q+cBPRsjH82Qw5UshvmdbV98u91QKEOasyrG
+        Tnoc6B2hXr4k49luCnTPpOzCMhwb44GcvfeQpzhYkW5QW6XkR3aEkOVGtuYPXgD4tYuZ147
+        nGJ2spK5LxLGrM4vV5l0b/0OrKuU0zjPZGQDrkGzxvLMkiBakunjb5yM/9OHAM90+lETBgT
+        kfuhzqcatclM7Ljj7ejuCzzph0rQ4di7MqCFJAiwLSw==
 X-QQ-GoodBg: 0
 From:   Huacai Chen <chenhc@lemote.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     "Steven J. Hill" <Steven.Hill@imgtec.com>,
         linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
         Zhangjin Wu <wuzhangjin@gmail.com>,
-        Huacai Chen <chenhc@lemote.com>, <stable@vger.kernel.org>
-Subject: [PATCH V9 1/7] MIPS: Hibernate: flush TLB entries earlier
-Date:   Sun, 29 Mar 2015 10:54:05 +0800
-Message-Id: <1427597650-2368-2-git-send-email-chenhc@lemote.com>
+        Huacai Chen <chenhc@lemote.com>,
+        Hongliang Tao <taohl@lemote.com>
+Subject: [PATCH V9 0/7] MIPS: Loongson-3: Improve kernel functionality
+Date:   Sun, 29 Mar 2015 10:54:04 +0800
+Message-Id: <1427597650-2368-1-git-send-email-chenhc@lemote.com>
 X-Mailer: git-send-email 1.7.7.3
-In-Reply-To: <1427597650-2368-1-git-send-email-chenhc@lemote.com>
-References: <1427597650-2368-1-git-send-email-chenhc@lemote.com>
 X-QQ-SENDSIZE: 520
 X-QQ-Bgrelay: 1
 Return-Path: <chenhc@lemote.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46583
+X-archive-position: 46584
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,36 +47,96 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-We found that TLB mismatch not only happens after kernel resume, but
-also happens during snapshot restore. So move it to the beginning of
-swsusp_arch_suspend().
+This patchset is prepared for the next 4.1 release for Linux/MIPS. In
+this series we promote Loongson-3's ISA level to MIPS64R1 since it is
+not fully compatible with MIPS64R2. Multi-node DMA and coherent cache
+features are both added here. LEFI firmware interface is improved to
+make the kernel more generic (machtypes can be dropped). Besides, we
+add some basic platform drivers (GPIO, CPU Hwmon, ACPI init, oprofile,
+HPET and CPUFreq) for Loongson-3. 
 
-Cc: <stable@vger.kernel.org>
+V1 -> V2:
+1, Add a patch to fix Loongson's CCA setting.
+2, Rework the third patch.
+3, Rebase the code for 3.19.
+
+V2 -> V3:
+1, Remove patches which have merged in upstream.
+2, Moving GPIO driver from arch/mips to drivers/gpio directory.
+3, Optimize cacheflush by moving cpu_has_coherent_cache checking from
+   local version to global version.
+
+V3 -> V4:
+1, Don't build CPU Hwmon driver unconditionally.
+2, Split the 2nd patch (Loongson GPIO driver) to two patches.
+
+V4 -> V5:
+1, Cleanup Loongson-2F's GPIO driver before move to drivers/gpio.
+
+V5 -> V6:
+1, Add perf support for Loongson-3.
+2, Rebase the code for 3.20.
+
+V6 -> V7:
+1, Rework the third and fifth patches.
+
+V7 -> V8:
+1, Improve the seventh patch (ACPI init).
+2, Rebase the code for 4.1.
+
+V8 -> V9:
+1, Add two patches to fix hibernation bugs.
+2, Add MODULE_LICENSE("GPL") in platform drivers.
+3, Adjust Kconfig and Makefile in platform drivers.
+4, Remove the 3rd~5th patches since they will be merged in gpio tree.
+
+Huacai Chen(7):
+ MIPS: Hibernate: flush TLB entries earlier.
+ MIPS: Hibernate: Restructure files and functions.
+ MIPS: Loongson: Introduce and use cpu_has_coherent_cache feature.
+ MIPS: perf: Add hardware perf events support for Loongson-3.
+ MIPS: Loongson-3: Add CPU Hwmon platform driver.
+ MIPS: Loongson-3: Add chipset ACPI platform driver.
+ MIPS: Loongson: Make CPUFreq usable for Loongson-3.
+
 Signed-off-by: Huacai Chen <chenhc@lemote.com>
+Signed-off-by: Hongliang Tao <taohl@lemote.com>
 ---
- arch/mips/power/hibernate.S |    3 ++-
- 1 files changed, 2 insertions(+), 1 deletions(-)
-
-diff --git a/arch/mips/power/hibernate.S b/arch/mips/power/hibernate.S
-index 32a7c82..e7567c8 100644
---- a/arch/mips/power/hibernate.S
-+++ b/arch/mips/power/hibernate.S
-@@ -30,6 +30,8 @@ LEAF(swsusp_arch_suspend)
- END(swsusp_arch_suspend)
- 
- LEAF(swsusp_arch_resume)
-+	/* Avoid TLB mismatch during and after kernel resume */
-+	jal local_flush_tlb_all
- 	PTR_L t0, restore_pblist
- 0:
- 	PTR_L t1, PBE_ADDRESS(t0)   /* source */
-@@ -43,7 +45,6 @@ LEAF(swsusp_arch_resume)
- 	bne t1, t3, 1b
- 	PTR_L t0, PBE_NEXT(t0)
- 	bnez t0, 0b
--	jal local_flush_tlb_all /* Avoid TLB mismatch after kernel resume */
- 	PTR_LA t0, saved_regs
- 	PTR_L ra, PT_R31(t0)
- 	PTR_L sp, PT_R29(t0)
--- 
+ arch/mips/Kconfig                                  |    5 +-
+ arch/mips/include/asm/cpu-features.h               |    3 +
+ .../asm/mach-loongson/cpu-feature-overrides.h      |    1 +
+ arch/mips/include/asm/mach-loongson/loongson.h     |    5 +
+ arch/mips/kernel/perf_event_mipsxx.c               |   71 ++++++
+ arch/mips/kernel/smp.c                             |    3 +-
+ arch/mips/loongson/Kconfig                         |    1 +
+ arch/mips/loongson/common/env.c                    |    9 +
+ arch/mips/loongson/common/pci.c                    |    6 +
+ arch/mips/loongson/common/platform.c               |   13 +-
+ arch/mips/loongson/loongson-3/Makefile             |    2 +-
+ arch/mips/loongson/loongson-3/clock.c              |  191 ++++++++++++++++
+ arch/mips/mm/c-r4k.c                               |   21 ++
+ arch/mips/power/Makefile                           |    2 +-
+ arch/mips/power/hibernate.S                        |   62 -----
+ arch/mips/power/hibernate.c                        |   10 +
+ arch/mips/power/hibernate_asm.S                    |   61 +++++
+ drivers/cpufreq/Kconfig                            |   15 ++
+ drivers/cpufreq/Makefile                           |    1 +
+ drivers/cpufreq/loongson3_cpufreq.c                |  240 ++++++++++++++++++++
+ drivers/platform/Kconfig                           |    3 +
+ drivers/platform/Makefile                          |    1 +
+ drivers/platform/mips/Kconfig                      |   26 ++
+ drivers/platform/mips/Makefile                     |    4 +
+ drivers/platform/mips/acpi_init.c                  |  150 ++++++++++++
+ drivers/platform/mips/cpu_hwmon.c                  |  207 +++++++++++++++++
+ 26 files changed, 1044 insertions(+), 69 deletions(-)
+ create mode 100644 arch/mips/loongson/loongson-3/clock.c
+ delete mode 100644 arch/mips/power/hibernate.S
+ create mode 100644 arch/mips/power/hibernate.c
+ create mode 100644 arch/mips/power/hibernate_asm.S
+ create mode 100644 drivers/cpufreq/loongson3_cpufreq.c
+ create mode 100644 drivers/platform/mips/Kconfig
+ create mode 100644 drivers/platform/mips/Makefile
+ create mode 100644 drivers/platform/mips/acpi_init.c
+ create mode 100644 drivers/platform/mips/cpu_hwmon.c
+--
 1.7.7.3

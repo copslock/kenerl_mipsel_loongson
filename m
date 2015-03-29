@@ -1,52 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 28 Mar 2015 20:29:22 +0100 (CET)
-Received: from mail-qg0-f51.google.com ([209.85.192.51]:35619 "EHLO
-        mail-qg0-f51.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008992AbbC1T3Usfw-J (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 28 Mar 2015 20:29:20 +0100
-Received: by qgh3 with SMTP id 3so143668331qgh.2
-        for <linux-mips@linux-mips.org>; Sat, 28 Mar 2015 12:29:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-type;
-        bh=/QYc+HOtF19KVG7SgIv8Pbd+0e9VARzZZoGXzvbYk04=;
-        b=eVzggk0JKc06Q6oXWBRKpnXYaS1Axyh//OuMTC9OoBJxb2oSObLDxGvIZNXClja5Uw
-         kLDBuqlEM4Ubr/ur8pgYzhX9i6UlObGfHwQEdpNPfUn0VgyRVNt7tqaH0qFbjb4wp8ke
-         przPtkYpEIp9NdTQrNtUMViXA/NKo+5nthkMJ9+7rjoqr065dQec085Ice/klU8PrNXs
-         u8Bb0h7Hv7VvhRCu9CUsjsvlPkrsyMY83CGE95Ze6VI8fCxWvWIaMF9GgX86Eb4O0fYA
-         DFH+SfGACgWgr5USlsLTE2yGIZkv1xYnJFtL0CvDUObYb46+oeAQpSs+A+UnuHgioggw
-         JAWw==
-X-Received: by 10.55.23.208 with SMTP id 77mr52288636qkx.21.1427570956075;
- Sat, 28 Mar 2015 12:29:16 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 10.140.90.18 with HTTP; Sat, 28 Mar 2015 12:28:55 -0700 (PDT)
-In-Reply-To: <5516DE64.6000104@hurleysoftware.com>
-References: <1416872182-6440-1-git-send-email-cernekee@gmail.com>
- <1416872182-6440-6-git-send-email-cernekee@gmail.com> <54F3914F.3080905@hurleysoftware.com>
- <20150328013604.488A0C4091F@trevor.secretlab.ca> <5516DE64.6000104@hurleysoftware.com>
-From:   Kevin Cernekee <cernekee@gmail.com>
-Date:   Sat, 28 Mar 2015 12:28:55 -0700
-Message-ID: <CAJiQ=7AS5+HkHcjRsYKi-EHVc3F1fg3Zp=1fCor1HrKeSWU72Q@mail.gmail.com>
-Subject: Re: [PATCH V3 5/7] serial: earlycon: Set UPIO_MEM32BE based on DT properties
-To:     Peter Hurley <peter@hurleysoftware.com>
-Cc:     Grant Likely <grant.likely@linaro.org>,
-        Greg KH <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jslaby@suse.cz>, Rob Herring <robh@kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        "linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <cernekee@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 29 Mar 2015 04:54:50 +0200 (CEST)
+Received: from smtpbgbr2.qq.com ([54.207.22.56]:44170 "EHLO smtpbgbr2.qq.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27006694AbbC2CyqqBfqq (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 29 Mar 2015 04:54:46 +0200
+X-QQ-mid: bizesmtp2t1427597660t416t115
+Received: from localhost.localdomain (unknown [222.92.8.142])
+        by esmtp4.qq.com (ESMTP) with 
+        id ; Sun, 29 Mar 2015 10:54:19 +0800 (CST)
+X-QQ-SSF: 01100000002000F0FJ52B00A0000000
+X-QQ-FEAT: ct8bDOb4/pUiOOxV9bIMXh7lLbp7ZVrnFI+mYs1jm8Sf4TAkSCoy/iY7VKxk1
+        +TeqtYDbGu768EPJ/mEohmaPrhL3CPkwJ/wrrj5j+vf/ThPjt8aSui+2MYNBMSv5aEEllaw
+        hwV0wFbo3JXe2TtssJb/mIZovlPzG9Rs3fhhd0EfmHu/1qh4kNQGnLpvQZAv9Tt4RHhGRNx
+        p/+MLtU6Ee9phVuMgihQxTPrrGWBXs4hAInaZ+7frQg==
+X-QQ-GoodBg: 0
+From:   Huacai Chen <chenhc@lemote.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     "Steven J. Hill" <Steven.Hill@imgtec.com>,
+        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        Huacai Chen <chenhc@lemote.com>
+Subject: [PATCH V9 2/7] MIPS: Hibernate: Restructure files and functions
+Date:   Sun, 29 Mar 2015 10:54:06 +0800
+Message-Id: <1427597650-2368-3-git-send-email-chenhc@lemote.com>
+X-Mailer: git-send-email 1.7.7.3
+In-Reply-To: <1427597650-2368-1-git-send-email-chenhc@lemote.com>
+References: <1427597650-2368-1-git-send-email-chenhc@lemote.com>
+X-QQ-SENDSIZE: 520
+X-QQ-Bgrelay: 1
+Return-Path: <chenhc@lemote.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46577
+X-archive-position: 46578
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: cernekee@gmail.com
+X-original-sender: chenhc@lemote.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,65 +48,178 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sat, Mar 28, 2015 at 10:01 AM, Peter Hurley <peter@hurleysoftware.com> wrote:
->>> I know these got ACKs already but as you point out in the commit log,
->>> earlycon _will_ need reg-io-width, reg-offset and reg-shift. Since the
->>> distinction between early_init_dt_scan_chosen_serial() and
->>> of_setup_earlycon() is arbitrary, I'd rather see of_setup_earlycon()
->>> taught to properly decode of_serial driver bindings instead of a
->>> stack of parameters to of_setup_earlycon().
->>>
->>> In fact, this patch allows a mis-defined devicetree to bring up a
->>> functioning earlycon because the 'big-endian' property is directly
->>> associated with UPIO_MEM32BE, which will create incompatibility problems
->>> when DT earlycon is fixed to decode the of_serial DT bindings.
->>
->> That's a good point. This hasn't been merged yet, so there isn't any
->> impact on addressing this. I would propose that for consistency, the
->> earlycon code should always default to 8-bit access. if big-endian
->> accesses are required, then reg-io-width + big-endian must be specified.
->>
->> Something like the following would do it and would be future-proof. We
->> can add support for 16 or 64bit big or little endian access if it ever
->> became necessary.
->
-> I was planning on adding MEM32BE support to OF earlycon on top of my
-> patch series 'OF earlycon cleanup', which adds full support for the
-> of_serial driver DT properties (among other things).
+This patch has no functional changes, it just to keep the assembler
+code to a minimum. Files and functions naming is borrowed from X86.
 
-Hi Peter,
+Signed-off-by: Huacai Chen <chenhc@lemote.com>
+---
+ arch/mips/power/Makefile        |    2 +-
+ arch/mips/power/hibernate.S     |   63 ---------------------------------------
+ arch/mips/power/hibernate.c     |   10 ++++++
+ arch/mips/power/hibernate_asm.S |   61 +++++++++++++++++++++++++++++++++++++
+ 4 files changed, 72 insertions(+), 64 deletions(-)
+ delete mode 100644 arch/mips/power/hibernate.S
+ create mode 100644 arch/mips/power/hibernate.c
+ create mode 100644 arch/mips/power/hibernate_asm.S
 
-This is my latest work-in-progress, incorporating the feedback from
-you and Grant:
-
-https://github.com/cernekee/linux/commits/endian
-
-Not sure if this code plays nice with your recent cleanups?  If we're
-touching the same files/functions we should probably coordinate.
-
-Also, it is untested, as I do not currently have access to BE systems.
-If I get desperate I can try it on an LE system, adding the big-endian
-properties in DT and then hacking the 8250 driver to swap LE accesses
-for BE accesses.
-
-> Unfortunately, that series is waiting on two things:
-> 1. libfdt upstream patch, which I submitted but was referred back to me
-> to add test cases. That was 3 weeks ago and I simply haven't had a free
-> day to burn to figure out how their test matrix is organized. I don't
-> think that's going to change anytime soon; I might just abandon that patch
-> and do the string manipulation on the stack.
->
-> ATM, earlycon is still broken if stdout-path options have been set.
->
-> 2. Rob never got back to me on my query [1] to unify the OF_EARLYCON_DECLARE
-> macro with the EARLYCON_DECLARE macro so that all earlycon consoles
-> are named.
-
-Side note:
-
-AFAIK we still have a problem if somebody wants to build serial8250 +
-(any other tty driver that occupies major 4 / minor 64) into the same
-kernel, and use DT to pick the correct driver at runtime.
-serial8250_init() starts registering ports before it knows whether the
-system even has an 8250.  I talked to Rob about it earlier this week
-and he suggested that you might have some thoughts on how to fix it.
+diff --git a/arch/mips/power/Makefile b/arch/mips/power/Makefile
+index 73d56b8..70bd788 100644
+--- a/arch/mips/power/Makefile
++++ b/arch/mips/power/Makefile
+@@ -1 +1 @@
+-obj-$(CONFIG_HIBERNATION) += cpu.o hibernate.o
++obj-$(CONFIG_HIBERNATION) += cpu.o hibernate.o hibernate_asm.o
+diff --git a/arch/mips/power/hibernate.S b/arch/mips/power/hibernate.S
+deleted file mode 100644
+index e7567c8..0000000
+--- a/arch/mips/power/hibernate.S
++++ /dev/null
+@@ -1,63 +0,0 @@
+-/*
+- * Hibernation support specific for mips - temporary page tables
+- *
+- * Licensed under the GPLv2
+- *
+- * Copyright (C) 2009 Lemote Inc.
+- * Author: Hu Hongbing <huhb@lemote.com>
+- *	   Wu Zhangjin <wuzhangjin@gmail.com>
+- */
+-#include <asm/asm-offsets.h>
+-#include <asm/regdef.h>
+-#include <asm/asm.h>
+-
+-.text
+-LEAF(swsusp_arch_suspend)
+-	PTR_LA t0, saved_regs
+-	PTR_S ra, PT_R31(t0)
+-	PTR_S sp, PT_R29(t0)
+-	PTR_S fp, PT_R30(t0)
+-	PTR_S gp, PT_R28(t0)
+-	PTR_S s0, PT_R16(t0)
+-	PTR_S s1, PT_R17(t0)
+-	PTR_S s2, PT_R18(t0)
+-	PTR_S s3, PT_R19(t0)
+-	PTR_S s4, PT_R20(t0)
+-	PTR_S s5, PT_R21(t0)
+-	PTR_S s6, PT_R22(t0)
+-	PTR_S s7, PT_R23(t0)
+-	j swsusp_save
+-END(swsusp_arch_suspend)
+-
+-LEAF(swsusp_arch_resume)
+-	/* Avoid TLB mismatch during and after kernel resume */
+-	jal local_flush_tlb_all
+-	PTR_L t0, restore_pblist
+-0:
+-	PTR_L t1, PBE_ADDRESS(t0)   /* source */
+-	PTR_L t2, PBE_ORIG_ADDRESS(t0) /* destination */
+-	PTR_ADDU t3, t1, _PAGE_SIZE
+-1:
+-	REG_L t8, (t1)
+-	REG_S t8, (t2)
+-	PTR_ADDIU t1, t1, SZREG
+-	PTR_ADDIU t2, t2, SZREG
+-	bne t1, t3, 1b
+-	PTR_L t0, PBE_NEXT(t0)
+-	bnez t0, 0b
+-	PTR_LA t0, saved_regs
+-	PTR_L ra, PT_R31(t0)
+-	PTR_L sp, PT_R29(t0)
+-	PTR_L fp, PT_R30(t0)
+-	PTR_L gp, PT_R28(t0)
+-	PTR_L s0, PT_R16(t0)
+-	PTR_L s1, PT_R17(t0)
+-	PTR_L s2, PT_R18(t0)
+-	PTR_L s3, PT_R19(t0)
+-	PTR_L s4, PT_R20(t0)
+-	PTR_L s5, PT_R21(t0)
+-	PTR_L s6, PT_R22(t0)
+-	PTR_L s7, PT_R23(t0)
+-	PTR_LI v0, 0x0
+-	jr ra
+-END(swsusp_arch_resume)
+diff --git a/arch/mips/power/hibernate.c b/arch/mips/power/hibernate.c
+new file mode 100644
+index 0000000..19a9af6
+--- /dev/null
++++ b/arch/mips/power/hibernate.c
+@@ -0,0 +1,10 @@
++#include <asm/tlbflush.h>
++
++extern int restore_image(void);
++
++int swsusp_arch_resume(void)
++{
++	/* Avoid TLB mismatch during and after kernel resume */
++	local_flush_tlb_all();
++	return restore_image();
++}
+diff --git a/arch/mips/power/hibernate_asm.S b/arch/mips/power/hibernate_asm.S
+new file mode 100644
+index 0000000..b1fab95
+--- /dev/null
++++ b/arch/mips/power/hibernate_asm.S
+@@ -0,0 +1,61 @@
++/*
++ * Hibernation support specific for mips - temporary page tables
++ *
++ * Licensed under the GPLv2
++ *
++ * Copyright (C) 2009 Lemote Inc.
++ * Author: Hu Hongbing <huhb@lemote.com>
++ *	   Wu Zhangjin <wuzhangjin@gmail.com>
++ */
++#include <asm/asm-offsets.h>
++#include <asm/regdef.h>
++#include <asm/asm.h>
++
++.text
++LEAF(swsusp_arch_suspend)
++	PTR_LA t0, saved_regs
++	PTR_S ra, PT_R31(t0)
++	PTR_S sp, PT_R29(t0)
++	PTR_S fp, PT_R30(t0)
++	PTR_S gp, PT_R28(t0)
++	PTR_S s0, PT_R16(t0)
++	PTR_S s1, PT_R17(t0)
++	PTR_S s2, PT_R18(t0)
++	PTR_S s3, PT_R19(t0)
++	PTR_S s4, PT_R20(t0)
++	PTR_S s5, PT_R21(t0)
++	PTR_S s6, PT_R22(t0)
++	PTR_S s7, PT_R23(t0)
++	j swsusp_save
++END(swsusp_arch_suspend)
++
++LEAF(restore_image)
++	PTR_L t0, restore_pblist
++0:
++	PTR_L t1, PBE_ADDRESS(t0)   /* source */
++	PTR_L t2, PBE_ORIG_ADDRESS(t0) /* destination */
++	PTR_ADDU t3, t1, _PAGE_SIZE
++1:
++	REG_L t8, (t1)
++	REG_S t8, (t2)
++	PTR_ADDIU t1, t1, SZREG
++	PTR_ADDIU t2, t2, SZREG
++	bne t1, t3, 1b
++	PTR_L t0, PBE_NEXT(t0)
++	bnez t0, 0b
++	PTR_LA t0, saved_regs
++	PTR_L ra, PT_R31(t0)
++	PTR_L sp, PT_R29(t0)
++	PTR_L fp, PT_R30(t0)
++	PTR_L gp, PT_R28(t0)
++	PTR_L s0, PT_R16(t0)
++	PTR_L s1, PT_R17(t0)
++	PTR_L s2, PT_R18(t0)
++	PTR_L s3, PT_R19(t0)
++	PTR_L s4, PT_R20(t0)
++	PTR_L s5, PT_R21(t0)
++	PTR_L s6, PT_R22(t0)
++	PTR_L s7, PT_R23(t0)
++	PTR_LI v0, 0x0
++	jr ra
++END(restore_image)
+-- 
+1.7.7.3

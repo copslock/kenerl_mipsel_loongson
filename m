@@ -1,36 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Mar 2015 01:47:24 +0200 (CEST)
-Received: from smtprelay0136.hostedemail.com ([216.40.44.136]:32844 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27010169AbbC3XrQzmdC- (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 31 Mar 2015 01:47:16 +0200
-Received: from filter.hostedemail.com (unknown [216.40.38.60])
-        by smtprelay04.hostedemail.com (Postfix) with ESMTP id CFF19351F02;
-        Mon, 30 Mar 2015 23:47:16 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-HE-Tag: pin73_2259415ea6e55
-X-Filterd-Recvd-Size: 1410
-Received: from joe-laptop.perches.com (pool-71-119-66-80.lsanca.fios.verizon.net [71.119.66.80])
-        (Authenticated sender: joe@perches.com)
-        by omf10.hostedemail.com (Postfix) with ESMTPA;
-        Mon, 30 Mar 2015 23:47:15 +0000 (UTC)
-From:   Joe Perches <joe@perches.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: [PATCH 05/25] mips: Use bool function return values of true/false not 1/0
-Date:   Mon, 30 Mar 2015 16:46:03 -0700
-Message-Id: <2249121b5518fc8e74796729546f0e0854dddbac.1427759009.git.joe@perches.com>
-X-Mailer: git-send-email 2.1.2
-In-Reply-To: <cover.1427759009.git.joe@perches.com>
-References: <cover.1427759009.git.joe@perches.com>
-Return-Path: <joe@perches.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Mar 2015 02:00:01 +0200 (CEST)
+Received: from smtp.codeaurora.org ([198.145.29.96]:37243 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27010143AbbC3X77dkLhA (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 31 Mar 2015 01:59:59 +0200
+Received: from smtp.codeaurora.org (localhost [127.0.0.1])
+        by smtp.codeaurora.org (Postfix) with ESMTP id 1A1D8141994;
+        Mon, 30 Mar 2015 23:59:58 +0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 486)
+        id 0A8561419A5; Mon, 30 Mar 2015 23:59:58 +0000 (UTC)
+Received: from [10.134.64.202] (i-global254.qualcomm.com [199.106.103.254])
+        (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: sboyd@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 87EB8141994;
+        Mon, 30 Mar 2015 23:59:57 +0000 (UTC)
+Message-ID: <5519E37C.9010201@codeaurora.org>
+Date:   Mon, 30 Mar 2015 16:59:56 -0700
+From:   Stephen Boyd <sboyd@codeaurora.org>
+User-Agent: Mozilla/5.0 (X11; Linux i686 on x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.4.0
+MIME-Version: 1.0
+To:     Andrew Bresticker <abrestic@chromium.org>,
+        Mike Turquette <mturquette@linaro.org>,
+        Ralf Baechle <ralf@linux-mips.org>
+CC:     devicetree@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org,
+        Ezequiel Garcia <ezequiel.garcia@imgtec.com>,
+        James Hartley <james.hartley@imgtec.com>,
+        James Hogan <james.hogan@imgtec.com>
+Subject: Re: [PATCH 2/7] clk: Add basic infrastructure for Pistachio clocks
+References: <1424836567-7252-1-git-send-email-abrestic@chromium.org> <1424836567-7252-3-git-send-email-abrestic@chromium.org>
+In-Reply-To: <1424836567-7252-3-git-send-email-abrestic@chromium.org>
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: ClamAV using ClamSMTP
+Return-Path: <sboyd@codeaurora.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46629
+X-archive-position: 46630
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: joe@perches.com
+X-original-sender: sboyd@codeaurora.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,25 +54,32 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Use the normal return values for bool functions
+On 02/24/15 19:56, Andrew Bresticker wrote:
+> +
+> +void pistachio_clk_force_enable(struct pistachio_clk_provider *p,
+> +				unsigned int *clk_ids, unsigned int num)
+> +{
+> +	unsigned int i;
+> +	int err;
+> +
+> +	for (i = 0; i < num; i++) {
+> +		struct clk *clk = p->clk_data.clks[clk_ids[i]];
+> +
+> +		if (IS_ERR(clk))
+> +			continue;
+> +
+> +		err = clk_prepare_enable(clk);
+> +		if (err)
+> +			pr_err("Failed to enable clock %s: %d\n",
+> +			       __clk_get_name(clk), err);
+> +	}
+> +}
+>
 
-Signed-off-by: Joe Perches <joe@perches.com>
----
- arch/mips/include/asm/dma-mapping.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Is this to workaround some problems in the framework where clocks are
+turned off? Or is it that these clocks are already on before we boot
+Linux and we need to make sure the framework knows that?
 
-diff --git a/arch/mips/include/asm/dma-mapping.h b/arch/mips/include/asm/dma-mapping.h
-index 06412aa..fd1b4a1 100644
---- a/arch/mips/include/asm/dma-mapping.h
-+++ b/arch/mips/include/asm/dma-mapping.h
-@@ -23,7 +23,7 @@ static inline struct dma_map_ops *get_dma_ops(struct device *dev)
- static inline bool dma_capable(struct device *dev, dma_addr_t addr, size_t size)
- {
- 	if (!dev->dma_mask)
--		return 0;
-+		return false;
- 
- 	return addr + size <= *dev->dma_mask;
- }
 -- 
-2.1.2
+Qualcomm Innovation Center, Inc. is a member of Code Aurora Forum,
+a Linux Foundation Collaborative Project

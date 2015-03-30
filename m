@@ -1,50 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Mar 2015 20:16:26 +0200 (CEST)
-Received: from mail-ie0-f172.google.com ([209.85.223.172]:34702 "EHLO
-        mail-ie0-f172.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010002AbbC3SQYVvhZ5 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 30 Mar 2015 20:16:24 +0200
-Received: by iedfl3 with SMTP id fl3so140826479ied.1
-        for <linux-mips@linux-mips.org>; Mon, 30 Mar 2015 11:16:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=Q+8f1Yy674HM054ziy8BF955XbQAIh3atImx0nGyPbg=;
-        b=luAImCu8hGhpx2q5uzlm0FkzQnSiF27m706VKnWx9nlBrpD1tnI3G29rnB8FiT/vRV
-         opU5ElT/jBtMFp3MeBraPzV93TJP7TmVcyUc2YGEQ4fSNDNHLjrdLIcQ3gQvWlSXca6L
-         DIMirPqTdfRQDrNRVItauMib+z6mEAEknaoNpcnKGSpCR6VRgpXxNM6BdWy50KT4+3Yr
-         LUqpoYDjm5rRdhYuLS7GQfFauzp0phbtVQBXfcQuU83v/hbMgptfCxZRdMau/kWtwyrm
-         n/V/yVncGeGF57T+Cbsj2wCpqN2ceG2Ed3RwyizNWAhz0TCEVWRwNcr44aequ0XmoyEz
-         8wdQ==
-X-Received: by 10.107.12.96 with SMTP id w93mr16306243ioi.10.1427739379597;
-        Mon, 30 Mar 2015 11:16:19 -0700 (PDT)
-Received: from dl.caveonetworks.com (64.2.3.194.ptr.us.xo.net. [64.2.3.194])
-        by mx.google.com with ESMTPSA id gz4sm8293042igb.19.2015.03.30.11.16.17
-        (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Mon, 30 Mar 2015 11:16:18 -0700 (PDT)
-Message-ID: <551992F0.5050809@gmail.com>
-Date:   Mon, 30 Mar 2015 11:16:16 -0700
-From:   David Daney <ddaney.cavm@gmail.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
-MIME-Version: 1.0
-To:     Aaro Koskinen <aaro.koskinen@iki.fi>
-CC:     Wim Van Sebroeck <wim@iguana.be>,
-        David Daney <david.daney@cavium.com>,
-        linux-watchdog@vger.kernel.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH 1/3] watchdog: octeon: convert to WATCHDOG_CORE API
-References: <1427565940-22951-1-git-send-email-aaro.koskinen@iki.fi>
-In-Reply-To: <1427565940-22951-1-git-send-email-aaro.koskinen@iki.fi>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <ddaney.cavm@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Mar 2015 20:24:36 +0200 (CEST)
+Received: from kiutl.biot.com ([31.172.244.210]:42354 "EHLO kiutl.biot.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27014787AbbC3SYfQDhTH (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 30 Mar 2015 20:24:35 +0200
+Received: from spamd by kiutl.biot.com with sa-checked (Exim 4.83)
+        (envelope-from <bert@biot.com>)
+        id 1YceMV-0005HP-S0
+        for linux-mips@linux-mips.org; Mon, 30 Mar 2015 20:24:36 +0200
+Received: from [2a02:578:4a04:2a00::5] (helo=sumner.biot.com)
+        by kiutl.biot.com with esmtps (TLSv1.2:DHE-RSA-AES128-SHA:128)
+        (Exim 4.83)
+        (envelope-from <bert@biot.com>)
+        id 1YceMR-0005H3-1B; Mon, 30 Mar 2015 20:24:31 +0200
+Received: from bert by sumner.biot.com with local (Exim 4.82)
+        (envelope-from <bert@biot.com>)
+        id 1YceMQ-0003VW-O1; Mon, 30 Mar 2015 20:24:30 +0200
+From:   Bert Vermeulen <bert@biot.com>
+To:     ralf@linux-mips.org, broonie@kernel.org, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+        andy.shevchenko@gmail.com
+Cc:     Bert Vermeulen <bert@biot.com>
+Subject: [PATCH v2 0/1] spi: Add driver for Routerboard RB4xx boards
+Date:   Mon, 30 Mar 2015 20:24:16 +0200
+Message-Id: <1427739857-13395-1-git-send-email-bert@biot.com>
+X-Mailer: git-send-email 1.9.1
+Return-Path: <bert@biot.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46606
+X-archive-position: 46607
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: bert@biot.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -57,27 +45,22 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 03/28/2015 11:05 AM, Aaro Koskinen wrote:
-> Convert OCTEON watchdog to WATCHDOG_CORE API. This enables support
-> for multiple watchdogs on OCTEON boards.
->
-> Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
-> ---
->   drivers/watchdog/Kconfig           |   1 +
->   drivers/watchdog/octeon-wdt-main.c | 185 ++++++++-----------------------------
->   2 files changed, 39 insertions(+), 147 deletions(-)
->
-[...]
+Changes in v2:
+This is a near complete rewrite of the original OpenWrt driver. All comments
+were taken into account, and the spi_transfer.fast_write flag is gone.
+Instead, the cs_change flag is used. It's not too bad a hack, as it really
+does use CS.
 
-You didn't seem to say how it was tested.
+The CPLD module will be submitted as an MFD driver, as suggested.
 
-If you have verified that "echo > /dev/watchdog" produces register dumps 
-and reboots the board, then the whole series:
+Bert Vermeulen (1):
+  spi: Add SPI driver for Mikrotik RB4xx series boards
 
-Acked-by: David Daney <david.daney@cavium.com>
+ drivers/spi/Kconfig     |   6 ++
+ drivers/spi/Makefile    |   1 +
+ drivers/spi/spi-rb4xx.c | 241 ++++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 248 insertions(+)
+ create mode 100644 drivers/spi/spi-rb4xx.c
 
-
-
-Thanks for doing this, I had been meaning to make the conversion myself.
-
-David.
+-- 
+1.9.1

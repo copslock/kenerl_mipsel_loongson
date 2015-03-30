@@ -1,35 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Mar 2015 22:10:27 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:50261 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27014780AbbC3UKZFL25j (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 30 Mar 2015 22:10:25 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.9/8.14.8) with ESMTP id t2UKAIXf013497;
-        Mon, 30 Mar 2015 22:10:18 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.9/8.14.9/Submit) id t2UKAF3d013496;
-        Mon, 30 Mar 2015 22:10:15 +0200
-Date:   Mon, 30 Mar 2015 22:10:15 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     cee1 <fykcee1@gmail.com>
-Cc:     linux-mips@linux-mips.org, Chen Jie <chenj@lemote.com>
-Subject: Re: [v5] MIPS: lib: csum_partial: more instruction paral
-Message-ID: <20150330201015.GA3757@linux-mips.org>
-References: <1427389644-92793-1-git-send-email-fykcee1@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Mar 2015 00:02:33 +0200 (CEST)
+Received: from mail-ig0-f176.google.com ([209.85.213.176]:38454 "EHLO
+        mail-ig0-f176.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010143AbbC3WCbVdky8 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 31 Mar 2015 00:02:31 +0200
+Received: by igbqf9 with SMTP id qf9so1858728igb.1;
+        Mon, 30 Mar 2015 15:02:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding;
+        bh=9GnI1UcO11GUtMy/lqgU8Vc5mP/wl9HL1e5N+4a7cn0=;
+        b=BJJhymqJdKBM5JvyD3lLMl9sZ7wMa+2Zzsm+dgbIxnVcH65aGjneXLtfUPdXsFz1bV
+         WBOnDdHKjOYxnGRz8EFkgQ/kzMJOtzhEIVEayeWYGXcej0kVhOppUQf8V4P8O32vencS
+         PfPoB+WeaeEnHmuQ26vEjjBRsqNve5+Bz538nq9QRVIXN9Eghc4hMpRAbA73ATABTiW/
+         KoYoV53VhFrtppUEaunVl+oJqQ1GtHCUfrVmjbCo1kjljlL73teoYHv+qfHvzMEB7MfT
+         3oARV9h3rtaGPi2ViuujkKqyIC3JugWmLwd/xUzmZhF1YwSbHvnMjAoLVRC8DrNwpu2/
+         0J+g==
+X-Received: by 10.43.13.200 with SMTP id pn8mr65794741icb.0.1427752946505;
+        Mon, 30 Mar 2015 15:02:26 -0700 (PDT)
+Received: from dl.caveonetworks.com (64.2.3.194.ptr.us.xo.net. [64.2.3.194])
+        by mx.google.com with ESMTPSA id k13sm3049576ioe.28.2015.03.30.15.02.24
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Mon, 30 Mar 2015 15:02:25 -0700 (PDT)
+Message-ID: <5519C7EF.4070602@gmail.com>
+Date:   Mon, 30 Mar 2015 15:02:23 -0700
+From:   David Daney <ddaney.cavm@gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1427389644-92793-1-git-send-email-fykcee1@gmail.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <ralf@linux-mips.org>
+To:     Paul Martin <paul.martin@codethink.co.uk>,
+        Ralf Baechle <ralf@linux-mips.org>
+CC:     linux-mips@linux-mips.org
+Subject: Re: [PATCH 00/10] MIPS: OCTEON: Little Endian roll-up
+References: <1427731263-29950-1-git-send-email-paul.martin@codethink.co.uk>
+In-Reply-To: <1427731263-29950-1-git-send-email-paul.martin@codethink.co.uk>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <ddaney.cavm@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46612
+X-archive-position: 46613
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -42,48 +56,58 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Mar 27, 2015 at 01:07:24AM +0800, cee1 wrote:
+On 03/30/2015 09:00 AM, Paul Martin wrote:
+> This is an experimental patch set for enabling Little Endian working on
+> the Cavium Octeon II.  It may work for other Octeon models but has not
+> been tested on them.
+>
+> It's been extensively tested on a Ubiquiti EdgeRouter Pro, building a
+> current GNU/Linux toolchain from sources using an external USB drive.
+>
+> My contributions (with the exception of the changes to octeon-md5) are
+> mainly cherry-picked from the GPL tarball released by Ubiquiti, and
+> appear to have originally been authored by Cavium.
+>
+> David Daney (3):
+>    MIPS: OCTEON: Handle bootloader structures in little-endian mode.
+>    MIPS: OCTEON: Add mach-cavium-octeon/mangle-port.h
+>    MIPS: OCTEON: Enable little endian kernel.
+>
+> Paul Martin (7):
+>    MIPS: OCTEON: Turn hardware bitfields and structures inside out.
+>    MIPS: OCTEON: Set appropriate endianness in L2C registers
+>    MIPS: OCTEON: Reverse the order of register accesses to the FAU
+>    MIPS: OCTEON: Set up ethernet hardware for little endian
+>    MIPS: OCTEON: Make octeon-md5 driver endian-agnostic
+>    MIPS: OCTEON: Fix to IP checksum offloading in Little Endian
+>    MIPS: OCTEON: Fix Kconfig file typo
+>
+>   arch/mips/Kconfig                                  |   3 +-
+>   arch/mips/cavium-octeon/crypto/octeon-crypto.h     |   8 +-
+>   arch/mips/cavium-octeon/executive/cvmx-l2c.c       |  45 ++++
+>   arch/mips/cavium-octeon/octeon-platform.c          |  12 +
+>   arch/mips/cavium-octeon/octeon_boot.h              |  23 ++
+>   .../include/asm/mach-cavium-octeon/mangle-port.h   |  74 ++++++
+>   arch/mips/include/asm/octeon/cvmx-address.h        |  67 ++++++
+>   arch/mips/include/asm/octeon/cvmx-bootinfo.h       |  55 +++++
+>   arch/mips/include/asm/octeon/cvmx-bootmem.h        |  14 ++
+>   arch/mips/include/asm/octeon/cvmx-fau.h            |  22 ++
+>   arch/mips/include/asm/octeon/cvmx-fpa.h            |   7 +
+>   arch/mips/include/asm/octeon/cvmx-l2c.h            |   9 +
+>   arch/mips/include/asm/octeon/cvmx-packet.h         |   8 +
+>   arch/mips/include/asm/octeon/cvmx-pko.h            |  31 +++
+>   arch/mips/include/asm/octeon/cvmx-pow.h            | 247 +++++++++++++++++++++
+>   arch/mips/include/asm/octeon/cvmx-wqe.h            |  71 ++++++
+>   drivers/staging/octeon/ethernet-tx.c               |   5 +-
+>   drivers/staging/octeon/ethernet.c                  |  10 +
+>   18 files changed, 705 insertions(+), 6 deletions(-)
+>   create mode 100644 arch/mips/include/asm/mach-cavium-octeon/mangle-port.h
+>
 
-> From: Chen Jie <chenj@lemote.com>
-> 
-> Computing sum introduces true data dependency. This patch removes some
-> true data depdendencies, hence increases instruction level parallelism.
-> 
-> This patch brings at most 50% csum performance gain on Loongson 3a
-> processor in our test.
-> 
-> One example about how this patch works is in CSUM_BIGCHUNK1:
-> // ** original **    vs    ** patch applied **
->     ADDC(sum, t0)           ADDC(t0, t1)
->     ADDC(sum, t1)           ADDC(t2, t3)
->     ADDC(sum, t2)           ADDC(sum, t0)
->     ADDC(sum, t3)           ADDC(sum, t2)
-> 
-> In the original implementation, each ADDC(sum, ...) depends on the sum
-> value updated by previous ADDC(as source operand).
-> 
-> With this patch applied, the first two ADDC operations are independent,
-> hence can be executed simultaneously if possible.
-> 
-> Another example is in the "copy and sum calculating chunk":
-> // ** original **    vs    ** patch applied **
->     STORE(t0, UNIT(0) ...   STORE(t0, UNIT(0) ...
->     ADDC(sum, t0)           ADDC(t0, t1)
->     STORE(t1, UNIT(1) ...   STORE(t1, UNIT(1) ...
->     ADDC(sum, t1)           ADDC(sum, t0)
->     STORE(t2, UNIT(2) ...   STORE(t2, UNIT(2) ...
->     ADDC(sum, t2)           ADDC(t2, t3)
->     STORE(t3, UNIT(3) ...   STORE(t3, UNIT(3) ...
->     ADDC(sum, t3)           ADDC(sum, t2)
-> 
-> With this patch applied, ADDC and the **next next** ADDC are independent.
+The whole series:
 
-This is interesting because even CPUs as old as the R2000 have a pipeline
-bypass which allows an instruction to use a result written to a register
-by an immediately preceeeding instruction.
+Acked-by: David Daney <david.daney@cavium.com>
 
-Can you explain why this patch is so beneficial for Loongson 3A?
+Thanks for doing the work.
 
-Thanks,
-
-  Ralf
+David.

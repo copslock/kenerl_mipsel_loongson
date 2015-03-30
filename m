@@ -1,33 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Mar 2015 00:11:07 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:50849 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Mar 2015 00:15:05 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:50971 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27010149AbbC3WLFatOoG (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 31 Mar 2015 00:11:05 +0200
+        id S27010149AbbC3WPD02UkF (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 31 Mar 2015 00:15:03 +0200
 Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.9/8.14.8) with ESMTP id t2UMB53v015787;
-        Tue, 31 Mar 2015 00:11:05 +0200
+        by scotty.linux-mips.net (8.14.9/8.14.8) with ESMTP id t2UMF3E7015940;
+        Tue, 31 Mar 2015 00:15:03 +0200
 Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.9/8.14.9/Submit) id t2UMB4Ac015784;
-        Tue, 31 Mar 2015 00:11:04 +0200
-Date:   Tue, 31 Mar 2015 00:11:04 +0200
+        by scotty.linux-mips.net (8.14.9/8.14.9/Submit) id t2UMF3NY015939;
+        Tue, 31 Mar 2015 00:15:03 +0200
+Date:   Tue, 31 Mar 2015 00:15:03 +0200
 From:   Ralf Baechle <ralf@linux-mips.org>
 To:     Paul Martin <paul.martin@codethink.co.uk>
 Cc:     linux-mips@linux-mips.org
-Subject: Re: [PATCH 01/10] MIPS: OCTEON: Handle bootloader structures in
- little-endian mode.
-Message-ID: <20150330221104.GC3757@linux-mips.org>
+Subject: Re: [PATCH 02/10] MIPS: OCTEON: Add mach-cavium-octeon/mangle-port.h
+Message-ID: <20150330221503.GD3757@linux-mips.org>
 References: <1427731263-29950-1-git-send-email-paul.martin@codethink.co.uk>
- <1427731263-29950-2-git-send-email-paul.martin@codethink.co.uk>
+ <1427731263-29950-3-git-send-email-paul.martin@codethink.co.uk>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1427731263-29950-2-git-send-email-paul.martin@codethink.co.uk>
+In-Reply-To: <1427731263-29950-3-git-send-email-paul.martin@codethink.co.uk>
 User-Agent: Mutt/1.5.23 (2014-03-12)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46614
+X-archive-position: 46615
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -44,7 +43,6 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Dropped - I've already applied https://patchwork.linux-mips.org/patch/9590/
-which seems to be identical.
+Dropped -- I've already applied https://patchwork.linux-mips.org/patch/9591/
 
   Ralf

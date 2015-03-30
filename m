@@ -1,41 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Mar 2015 16:36:40 +0200 (CEST)
-Received: from mx1.redhat.com ([209.132.183.28]:34770 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27014744AbbC3OghpA5ns (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 30 Mar 2015 16:36:37 +0200
-Received: from int-mx10.intmail.prod.int.phx2.redhat.com (int-mx10.intmail.prod.int.phx2.redhat.com [10.5.11.23])
-        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id t2UEaDXE027260
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 30 Mar 2015 10:36:13 -0400
-Received: from [10.36.112.40] (ovpn-112-40.ams2.redhat.com [10.36.112.40])
-        by int-mx10.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with ESMTP id t2UEa74F001942
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
-        Mon, 30 Mar 2015 10:36:10 -0400
-Message-ID: <55195F56.6050604@redhat.com>
-Date:   Mon, 30 Mar 2015 16:36:06 +0200
-From:   Paolo Bonzini <pbonzini@redhat.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.5.0
-MIME-Version: 1.0
-To:     James Hogan <james.hogan@imgtec.com>,
-        "Marcelo Tosatti (Redhat)" <mtosatti@redhat.com>,
-        kvm <kvm@vger.kernel.org>, Gleb Natapov <gleb@kernel.org>
-CC:     linux-mips <linux-mips@linux-mips.org>,
-        "Ralf (LMO)" <ralf@linux-mips.org>, Paul <paul.burton@imgtec.com>
-Subject: Re: [GIT PULL] MIPS KVM Guest FPU & SIMD (MSA) Support for 4.1
-References: <55192045.3080302@imgtec.com>
-In-Reply-To: <55192045.3080302@imgtec.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.68 on 10.5.11.23
-Return-Path: <pbonzini@redhat.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Mar 2015 18:01:16 +0200 (CEST)
+Received: from ducie-dc1.codethink.co.uk ([185.25.241.215]:41413 "EHLO
+        ducie-dc1.codethink.co.uk" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27009138AbbC3QBOn4nJz (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 30 Mar 2015 18:01:14 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by ducie-dc1.codethink.co.uk (Postfix) with ESMTP id C9E38460C48
+        for <linux-mips@linux-mips.org>; Mon, 30 Mar 2015 17:01:09 +0100 (BST)
+X-Virus-Scanned: Debian amavisd-new at ducie-dc1.codethink.co.uk
+Received: from ducie-dc1.codethink.co.uk ([127.0.0.1])
+        by localhost (ducie-dc1.codethink.co.uk [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id P7x1E9SjZrR9 for <linux-mips@linux-mips.org>;
+        Mon, 30 Mar 2015 17:01:03 +0100 (BST)
+Received: from pm-laptop.codethink.co.uk (pm-laptop.dyn.ducie.codethink.co.uk [10.24.1.94])
+        by ducie-dc1.codethink.co.uk (Postfix) with ESMTPSA id 9D37D460BC3
+        for <linux-mips@linux-mips.org>; Mon, 30 Mar 2015 17:01:03 +0100 (BST)
+Received: from pm by pm-laptop.codethink.co.uk with local (Exim 4.84)
+        (envelope-from <paul.martin@codethink.co.uk>)
+        id 1Ycc7b-0007nl-AF
+        for linux-mips@linux-mips.org; Mon, 30 Mar 2015 17:01:03 +0100
+From:   Paul Martin <paul.martin@codethink.co.uk>
+To:     linux-mips@linux-mips.org
+Subject: [PATCH 02/10] MIPS: OCTEON: Add mach-cavium-octeon/mangle-port.h
+Date:   Mon, 30 Mar 2015 17:00:55 +0100
+Message-Id: <1427731263-29950-3-git-send-email-paul.martin@codethink.co.uk>
+X-Mailer: git-send-email 2.1.4
+In-Reply-To: <1427731263-29950-1-git-send-email-paul.martin@codethink.co.uk>
+References: <1427731263-29950-1-git-send-email-paul.martin@codethink.co.uk>
+Return-Path: <paul.martin@codethink.co.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46594
+X-archive-position: 46595
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: pbonzini@redhat.com
+X-original-sender: paul.martin@codethink.co.uk
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,117 +47,98 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
------BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA256
+From: David Daney <david.daney@cavium.com>
 
+Needed for little-endian ioport access.
+This fixes NOR flash in little-endian mode
 
+Signed-off-by: David Daney <david.daney@cavium.com>
+Signed-off-by: Aleksey Makarov <aleksey.makarov@auriga.com>
+Signed-off-by: Paul Martin <paul.martin@codethink.co.uk>
+---
+ .../include/asm/mach-cavium-octeon/mangle-port.h   | 74 ++++++++++++++++++++++
+ 1 file changed, 74 insertions(+)
+ create mode 100644 arch/mips/include/asm/mach-cavium-octeon/mangle-port.h
 
-On 30/03/2015 12:07, James Hogan wrote:
-> Hi Paolo, Marcelo,
-> 
-> Here is the MIPS guest FPU & SIMD (MSA) work. I've based this on 
-> kvm/queue as of Friday, and it also pulls in some MIPS FP/MSA fixes
-> from a branch in Ralf's MIPS tree. Hope that's okay.
-> 
-> Please pull
-> 
-> Thanks James
-> 
-> The following changes since commit
-> b3a2a9076d3149781c8622d6a98a51045ff946e4:
-> 
-> KVM: nVMX: Add support for rdtscp (2015-03-26 22:33:48 -0300)
-> 
-> are available in the git repository at:
-> 
-> git://git.kernel.org/pub/scm/linux/kernel/git/jhogan/kvm-mips.git
-> tags/kvm_mips_20150327
-> 
-> for you to fetch changes up to
-> d952bd070f79b6dcbad52c03dbc41cbc8ba086c8:
-> 
-> MIPS: KVM: Wire up MSA capability (2015-03-27 21:25:22 +0000)
-> 
-> ---------------------------------------------------------------- 
-> MIPS KVM Guest FPU & SIMD (MSA) Support
-> 
-> Add guest FPU and MIPS SIMD Architecture (MSA) support to MIPS KVM,
-> by enabling the host FPU/MSA while in guest mode. This adds two new
-> KVM capabilities, KVM_CAP_MIPS_FPU & KVM_CAP_MIPS_MSA, and supports
-> the 3 FP register modes (FR=0, FR=1, FRE=1), and 128-bit MSA vector
-> registers, with lazy FPU/MSA context save and restore.
-> 
-> Some required MIPS FP/MSA fixes are merged in from a branch in the
-> MIPS tree first.
-> 
-> ---------------------------------------------------------------- 
-> James Hogan (24): MIPS: lose_fpu(): Disable FPU when MSA enabled 
-> Revert "MIPS: Don't assume 64-bit FP registers for context switch" 
-> MIPS: MSA: Fix big-endian FPR_IDX implementation Merge branch
-> '4.1-fp' of git://git.linux-mips.org/pub/scm/ralf/upstream-sfr into
-> kvm_mips_queue MIPS: KVM: Handle MSA Disabled exceptions from
-> guest MIPS: Clear [MSA]FPE CSR.Cause after notify_die() MIPS: KVM:
-> Handle TRAP exceptions from guest kernel MIPS: KVM: Implement PRid
-> CP0 register access MIPS: KVM: Sort kvm_mips_get_reg() registers 
-> MIPS: KVM: Drop pr_info messages on init/exit MIPS: KVM: Clean up
-> register definitions a little MIPS: KVM: Simplify default guest
-> Config registers MIPS: KVM: Add Config4/5 and writing of Config
-> registers MIPS: KVM: Add vcpu_get_regs/vcpu_set_regs callback MIPS:
-> KVM: Add base guest FPU support MIPS: KVM: Emulate FPU bits in COP0
-> interface MIPS: KVM: Add FP exception handling MIPS: KVM: Expose
-> FPU registers MIPS: KVM: Wire up FPU capability MIPS: KVM: Add base
-> guest MSA support MIPS: KVM: Emulate MSA bits in COP0 interface 
-> MIPS: KVM: Add MSA exception handling MIPS: KVM: Expose MSA
-> registers MIPS: KVM: Wire up MSA capability
-> 
-> Paul Burton (8): MIPS: Push .set mips64r* into the functions
-> needing it MIPS: assume at as source/dest of MSA copy/insert
-> instructions MIPS: remove MSA macro recursion MIPS: wrap cfcmsa &
-> ctcmsa accesses for toolchains with MSA support MIPS: clear MSACSR
-> cause bits when handling MSA FP exception MIPS: Ensure FCSR cause
-> bits are clear after invoking FPU emulator MIPS: prevent FP context
-> set via ptrace being discarded MIPS: disable FPU if the mode is
-> unsupported
-> 
-> Documentation/virtual/kvm/api.txt   |  54 +++++ 
-> arch/mips/include/asm/asmmacro-32.h | 128 +++++----- 
-> arch/mips/include/asm/asmmacro.h    | 218 ++++++++++------- 
-> arch/mips/include/asm/fpu.h         |  20 +- 
-> arch/mips/include/asm/kdebug.h      |   3 +- 
-> arch/mips/include/asm/kvm_host.h    | 125 +++++++--- 
-> arch/mips/include/asm/processor.h   |   2 +- 
-> arch/mips/include/uapi/asm/kvm.h    | 160 +++++++----- 
-> arch/mips/kernel/asm-offsets.c      | 105 +++----- 
-> arch/mips/kernel/genex.S            |  15 +- 
-> arch/mips/kernel/ptrace.c           |  30 ++- 
-> arch/mips/kernel/r4k_fpu.S          |   2 +- 
-> arch/mips/kernel/traps.c            |  35 ++- 
-> arch/mips/kvm/Makefile              |   8 +- 
-> arch/mips/kvm/emulate.c             | 332
-> ++++++++++++++++++++++++- arch/mips/kvm/fpu.S                 | 122
-> ++++++++++ arch/mips/kvm/locore.S              |  38 +++ 
-> arch/mips/kvm/mips.c                | 472
-> +++++++++++++++++++++++++++++++++++- arch/mips/kvm/msa.S
-> | 161 ++++++++++++ arch/mips/kvm/stats.c               |   4 + 
-> arch/mips/kvm/tlb.c                 |   6 + 
-> arch/mips/kvm/trap_emul.c           | 199 ++++++++++++++- 
-> include/uapi/linux/kvm.h            |   2 + 23 files changed, 1876
-> insertions(+), 365 deletions(-) create mode 100644
-> arch/mips/kvm/fpu.S create mode 100644 arch/mips/kvm/msa.S
-> 
-
-Pulled, thanks.  I'm now going through the other pending MIPS patches
-and applying them.
-
-Paolo
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJVGV9TAAoJEL/70l94x66DNiMIAKIAeSR3RRH6eU1ZdAlW8wG2
-MCxs4ls8vilJKe+JStIi04FfVWHARvccJXrJajo1U2YMDzsAxEr8myJ+AFKiEIFC
-JJv5D0L09qYqC0Baqfv0KWwcyNL2NS6FQ3Nw1+gsQhjoAFmD55mc0cGiljh2dNWq
-zKox0a8fd+8PCY39h671bj+WsC9UtK7NdSro0kUl2BtCww8Cumwl4Uk370+Ng3Kx
-blEjtpaJd4QCM7WobDM9pj9fPiROaYB682FSbLTSBAf5PD9pbnYN8mKIS3vJVZRS
-Gme1WpSUGOC1Mlc0nyvauCd9DYLBBHLTAm0q4vh7GXbRPcJ9u+yi61qIWRYNmUQ=
-=leS8
------END PGP SIGNATURE-----
+diff --git a/arch/mips/include/asm/mach-cavium-octeon/mangle-port.h b/arch/mips/include/asm/mach-cavium-octeon/mangle-port.h
+new file mode 100644
+index 0000000..374eefa
+--- /dev/null
++++ b/arch/mips/include/asm/mach-cavium-octeon/mangle-port.h
+@@ -0,0 +1,74 @@
++/*
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ *
++ * Copyright (C) 2003, 2004 Ralf Baechle
++ */
++#ifndef __ASM_MACH_GENERIC_MANGLE_PORT_H
++#define __ASM_MACH_GENERIC_MANGLE_PORT_H
++
++#include <asm/byteorder.h>
++
++#ifdef __BIG_ENDIAN
++
++# define __swizzle_addr_b(port)	(port)
++# define __swizzle_addr_w(port)	(port)
++# define __swizzle_addr_l(port)	(port)
++# define __swizzle_addr_q(port)	(port)
++
++#else /* __LITTLE_ENDIAN */
++
++static inline bool __should_swizzle_addr(unsigned long p)
++{
++	/* boot bus? */
++	return ((p >> 40) & 0xff) == 0;
++}
++
++# define __swizzle_addr_b(port)	\
++	(__should_swizzle_addr(port) ? (port) ^ 7 : (port))
++# define __swizzle_addr_w(port)	\
++	(__should_swizzle_addr(port) ? (port) ^ 6 : (port))
++# define __swizzle_addr_l(port)	\
++	(__should_swizzle_addr(port) ? (port) ^ 4 : (port))
++# define __swizzle_addr_q(port)	(port)
++
++#endif /* __BIG_ENDIAN */
++
++/*
++ * Sane hardware offers swapping of PCI/ISA I/O space accesses in hardware;
++ * less sane hardware forces software to fiddle with this...
++ *
++ * Regardless, if the host bus endianness mismatches that of PCI/ISA, then
++ * you can't have the numerical value of data and byte addresses within
++ * multibyte quantities both preserved at the same time.  Hence two
++ * variations of functions: non-prefixed ones that preserve the value
++ * and prefixed ones that preserve byte addresses.  The latters are
++ * typically used for moving raw data between a peripheral and memory (cf.
++ * string I/O functions), hence the "__mem_" prefix.
++ */
++#if defined(CONFIG_SWAP_IO_SPACE)
++
++# define ioswabb(a, x)		(x)
++# define __mem_ioswabb(a, x)	(x)
++# define ioswabw(a, x)		le16_to_cpu(x)
++# define __mem_ioswabw(a, x)	(x)
++# define ioswabl(a, x)		le32_to_cpu(x)
++# define __mem_ioswabl(a, x)	(x)
++# define ioswabq(a, x)		le64_to_cpu(x)
++# define __mem_ioswabq(a, x)	(x)
++
++#else
++
++# define ioswabb(a, x)		(x)
++# define __mem_ioswabb(a, x)	(x)
++# define ioswabw(a, x)		(x)
++# define __mem_ioswabw(a, x)	cpu_to_le16(x)
++# define ioswabl(a, x)		(x)
++# define __mem_ioswabl(a, x)	cpu_to_le32(x)
++# define ioswabq(a, x)		(x)
++# define __mem_ioswabq(a, x)	cpu_to_le32(x)
++
++#endif
++
++#endif /* __ASM_MACH_GENERIC_MANGLE_PORT_H */
+-- 
+2.1.4

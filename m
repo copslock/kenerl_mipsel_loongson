@@ -1,28 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Mar 2015 18:02:58 +0200 (CEST)
-Received: from ducie-dc1.codethink.co.uk ([185.25.241.215]:41447 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Mar 2015 18:03:14 +0200 (CEST)
+Received: from ducie-dc1.codethink.co.uk ([185.25.241.215]:41441 "EHLO
         ducie-dc1.codethink.co.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27014774AbbC3QBVlul1l (ORCPT
+        by eddie.linux-mips.org with ESMTP id S27014775AbbC3QBVrv7KM (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Mon, 30 Mar 2015 18:01:21 +0200
 Received: from localhost (localhost [127.0.0.1])
-        by ducie-dc1.codethink.co.uk (Postfix) with ESMTP id 5F463460BC2
-        for <linux-mips@linux-mips.org>; Mon, 30 Mar 2015 17:01:17 +0100 (BST)
+        by ducie-dc1.codethink.co.uk (Postfix) with ESMTP id A4C49460BD6
+        for <linux-mips@linux-mips.org>; Mon, 30 Mar 2015 17:01:22 +0100 (BST)
 X-Virus-Scanned: Debian amavisd-new at ducie-dc1.codethink.co.uk
 Received: from ducie-dc1.codethink.co.uk ([127.0.0.1])
         by localhost (ducie-dc1.codethink.co.uk [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id jdiufItqbfDS for <linux-mips@linux-mips.org>;
-        Mon, 30 Mar 2015 17:01:15 +0100 (BST)
+        with ESMTP id Wm1KfV1qEd57 for <linux-mips@linux-mips.org>;
+        Mon, 30 Mar 2015 17:01:20 +0100 (BST)
 Received: from pm-laptop.codethink.co.uk (pm-laptop.dyn.ducie.codethink.co.uk [10.24.1.94])
-        by ducie-dc1.codethink.co.uk (Postfix) with ESMTPSA id 48B64460C31
+        by ducie-dc1.codethink.co.uk (Postfix) with ESMTPSA id A4E4F460C47
         for <linux-mips@linux-mips.org>; Mon, 30 Mar 2015 17:01:04 +0100 (BST)
 Received: from pm by pm-laptop.codethink.co.uk with local (Exim 4.84)
         (envelope-from <paul.martin@codethink.co.uk>)
-        id 1Ycc7c-0007oA-1z
+        id 1Ycc7c-0007oP-EV
         for linux-mips@linux-mips.org; Mon, 30 Mar 2015 17:01:04 +0100
 From:   Paul Martin <paul.martin@codethink.co.uk>
 To:     linux-mips@linux-mips.org
-Subject: [PATCH 07/10] MIPS: OCTEON: Make octeon-md5 driver endian-agnostic
-Date:   Mon, 30 Mar 2015 17:01:00 +0100
-Message-Id: <1427731263-29950-8-git-send-email-paul.martin@codethink.co.uk>
+Subject: [PATCH 10/10] MIPS: OCTEON: Fix Kconfig file typo
+Date:   Mon, 30 Mar 2015 17:01:03 +0100
+Message-Id: <1427731263-29950-11-git-send-email-paul.martin@codethink.co.uk>
 X-Mailer: git-send-email 2.1.4
 In-Reply-To: <1427731263-29950-1-git-send-email-paul.martin@codethink.co.uk>
 References: <1427731263-29950-1-git-send-email-paul.martin@codethink.co.uk>
@@ -30,7 +30,7 @@ Return-Path: <paul.martin@codethink.co.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46601
+X-archive-position: 46602
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,56 +47,23 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The octeon crypto co-processor expects values to be big endian.
-Wrap the data transfers with cpu_to_be64() and be64_to_cpu()
-transformations.
-
-This passes for all the MD5 test vectors in crypto/testmgr.h
-
 Signed-off-by: Paul Martin <paul.martin@codethink.co.uk>
 ---
- arch/mips/cavium-octeon/crypto/octeon-crypto.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/mips/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/mips/cavium-octeon/crypto/octeon-crypto.h b/arch/mips/cavium-octeon/crypto/octeon-crypto.h
-index e2a4aec..0e157f1 100644
---- a/arch/mips/cavium-octeon/crypto/octeon-crypto.h
-+++ b/arch/mips/cavium-octeon/crypto/octeon-crypto.h
-@@ -32,7 +32,7 @@ do {							\
- 	__asm__ __volatile__ (				\
- 	"dmtc2 %[rt],0x0048+" STR(index)		\
- 	:						\
--	: [rt] "d" (value));				\
-+	: [rt] "d" (cpu_to_be64(value)));		\
- } while (0)
- 
- /*
-@@ -47,7 +47,7 @@ do {							\
- 	: [rt] "=d" (__value)				\
- 	: );						\
- 							\
--	__value;					\
-+	be64_to_cpu(__value);				\
- })
- 
- /*
-@@ -58,7 +58,7 @@ do {							\
- 	__asm__ __volatile__ (				\
- 	"dmtc2 %[rt],0x0040+" STR(index)		\
- 	:						\
--	: [rt] "d" (value));				\
-+	: [rt] "d" (cpu_to_be64(value)));		\
- } while (0)
- 
- /*
-@@ -69,7 +69,7 @@ do {							\
- 	__asm__ __volatile__ (				\
- 	"dmtc2 %[rt],0x4047"				\
- 	:						\
--	: [rt] "d" (value));				\
-+	: [rt] "d" (cpu_to_be64(value)));		\
- } while (0)
- 
- #endif /* __LINUX_OCTEON_CRYPTO_H */
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 68e64cb..c4d0229 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -780,7 +780,7 @@ config CAVIUM_OCTEON_SOC
+ 	select SYS_SUPPORTS_BIG_ENDIAN
+ 	select EDAC_SUPPORT
+ 	select SYS_SUPPORTS_LITTLE_ENDIAN
+-	select SYS_SUPPORTS_HOTPLUG_CPU if CONFIG_CPU_BIG_ENDIAN
++	select SYS_SUPPORTS_HOTPLUG_CPU if CPU_BIG_ENDIAN
+ 	select SYS_HAS_EARLY_PRINTK
+ 	select SYS_HAS_CPU_CAVIUM_OCTEON
+ 	select SWAP_IO_SPACE
 -- 
 2.1.4

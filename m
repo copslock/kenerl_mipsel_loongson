@@ -1,33 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Mar 2015 00:19:42 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:51100 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Mar 2015 00:20:01 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:51217 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27010149AbbC3WTkTN2YD (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 31 Mar 2015 00:19:40 +0200
+        id S27014807AbbC3WTxK0EZb (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 31 Mar 2015 00:19:53 +0200
 Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.9/8.14.8) with ESMTP id t2UMJe72016071;
-        Tue, 31 Mar 2015 00:19:40 +0200
+        by scotty.linux-mips.net (8.14.9/8.14.8) with ESMTP id t2UMJrUB016098;
+        Tue, 31 Mar 2015 00:19:53 +0200
 Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.9/8.14.9/Submit) id t2UMJe19016070;
-        Tue, 31 Mar 2015 00:19:40 +0200
-Date:   Tue, 31 Mar 2015 00:19:40 +0200
+        by scotty.linux-mips.net (8.14.9/8.14.9/Submit) id t2UMJrEK016097;
+        Tue, 31 Mar 2015 00:19:53 +0200
+Date:   Tue, 31 Mar 2015 00:19:53 +0200
 From:   Ralf Baechle <ralf@linux-mips.org>
 To:     Paul Martin <paul.martin@codethink.co.uk>
 Cc:     linux-mips@linux-mips.org
-Subject: Re: [PATCH 04/10] MIPS: OCTEON: Set appropriate endianness in L2C
- registers
-Message-ID: <20150330221940.GF3757@linux-mips.org>
+Subject: Re: [PATCH 05/10] MIPS: OCTEON: Reverse the order of register
+ accesses to the FAU
+Message-ID: <20150330221953.GG3757@linux-mips.org>
 References: <1427731263-29950-1-git-send-email-paul.martin@codethink.co.uk>
- <1427731263-29950-5-git-send-email-paul.martin@codethink.co.uk>
+ <1427731263-29950-6-git-send-email-paul.martin@codethink.co.uk>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1427731263-29950-5-git-send-email-paul.martin@codethink.co.uk>
+In-Reply-To: <1427731263-29950-6-git-send-email-paul.martin@codethink.co.uk>
 User-Agent: Mutt/1.5.23 (2014-03-12)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46617
+X-archive-position: 46618
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,7 +45,5 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 Applied.
-
-Thanks,
 
   Ralf

@@ -1,36 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Mar 2015 13:21:40 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:56303 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27010266AbbCaLVjMDaBz (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 31 Mar 2015 13:21:39 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.9/8.14.8) with ESMTP id t2VBLd2W031975;
-        Tue, 31 Mar 2015 13:21:39 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.9/8.14.9/Submit) id t2VBLdwY031974;
-        Tue, 31 Mar 2015 13:21:39 +0200
-Date:   Tue, 31 Mar 2015 13:21:38 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Joshua Kinard <kumba@gentoo.org>
-Cc:     Linux MIPS List <linux-mips@linux-mips.org>
-Subject: Re: [PATCH] MIPS: PCI: Add a hook for IORESOURCE_BUS in
- pci_controller/bridge_controller
-Message-ID: <20150331112138.GC28951@linux-mips.org>
-References: <54BCCC18.8020706@gentoo.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Mar 2015 13:54:06 +0200 (CEST)
+Received: from ducie-dc1.codethink.co.uk ([185.25.241.215]:40209 "EHLO
+        ducie-dc1.codethink.co.uk" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006154AbbCaLyEd08NK (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 31 Mar 2015 13:54:04 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by ducie-dc1.codethink.co.uk (Postfix) with ESMTP id AEB0846074E
+        for <linux-mips@linux-mips.org>; Tue, 31 Mar 2015 12:53:59 +0100 (BST)
+X-Virus-Scanned: Debian amavisd-new at ducie-dc1.codethink.co.uk
+Received: from ducie-dc1.codethink.co.uk ([127.0.0.1])
+        by localhost (ducie-dc1.codethink.co.uk [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id oRFBcigjSQse; Tue, 31 Mar 2015 12:53:57 +0100 (BST)
+Received: from [10.24.2.193] (rainbowdash.dyn.ducie.codethink.co.uk [10.24.2.193])
+        by ducie-dc1.codethink.co.uk (Postfix) with ESMTPSA id B58234605F5;
+        Tue, 31 Mar 2015 12:53:57 +0100 (BST)
+Message-ID: <551A8AD5.8000509@codethink.co.uk>
+Date:   Tue, 31 Mar 2015 12:53:57 +0100
+From:   Ben Dooks <ben.dooks@codethink.co.uk>
+Organization: Codethink Limited.
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Icedove/31.5.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <54BCCC18.8020706@gentoo.org>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <ralf@linux-mips.org>
+To:     Paul Martin <paul.martin@codethink.co.uk>,
+        linux-mips@linux-mips.org
+Subject: Re: [Linux-kernel] [PATCH 10/10] MIPS: OCTEON: Fix Kconfig file typo
+References: <1427731263-29950-1-git-send-email-paul.martin@codethink.co.uk> <1427731263-29950-11-git-send-email-paul.martin@codethink.co.uk>
+In-Reply-To: <1427731263-29950-11-git-send-email-paul.martin@codethink.co.uk>
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
+Return-Path: <ben.dooks@codethink.co.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46645
+X-archive-position: 46646
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: ben.dooks@codethink.co.uk
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,45 +47,29 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Jan 19, 2015 at 04:19:20AM -0500, Joshua Kinard wrote:
-
-> From: Joshua Kinard <kumba@gentoo.org>
-> 
-> On SGI Origin 2k/Onyx2 and SGI Octane systems, there can exist multiple PCI
-> buses attached to the Xtalk bus.  The current code will stop counting PCI buses
-> after it finds the first one.  If one installs the optional PCI cardcage
-> ("shoebox") into these systems, because of the order of the Xtalk widgets, the
-> current PCI code will find the cardcage first, and fail to detect the BaseIO
-> PCI devices, which are on a higher Xtalk widget ID.
-> 
-> This patch adds the hooks needed for resolving this issue in the IP27 PCI code
-> (in a later patch).
-> 
-> Verified on both an SGI Onyx2 and an SGI Octane.
-> 
-> Signed-off-by: Joshua Kinard <kumba@gentoo.org>
+On 30/03/15 17:01, Paul Martin wrote:
+> Signed-off-by: Paul Martin <paul.martin@codethink.co.uk>
 > ---
->  arch/mips/include/asm/pci.h        |    2 ++
->  arch/mips/include/asm/pci/bridge.h |    1 +
->  arch/mips/pci/pci.c                |    5 ++++-
->  3 files changed, 7 insertions(+), 1 deletion(-)
+>  arch/mips/Kconfig | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> Ralf,
+> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+> index 68e64cb..c4d0229 100644
+> --- a/arch/mips/Kconfig
+> +++ b/arch/mips/Kconfig
+> @@ -780,7 +780,7 @@ config CAVIUM_OCTEON_SOC
+>  	select SYS_SUPPORTS_BIG_ENDIAN
+>  	select EDAC_SUPPORT
+>  	select SYS_SUPPORTS_LITTLE_ENDIAN
+> -	select SYS_SUPPORTS_HOTPLUG_CPU if CONFIG_CPU_BIG_ENDIAN
+> +	select SYS_SUPPORTS_HOTPLUG_CPU if CPU_BIG_ENDIAN
+>  	select SYS_HAS_EARLY_PRINTK
+>  	select SYS_HAS_CPU_CAVIUM_OCTEON
+>  	select SWAP_IO_SPACE
 > 
->   I have the needed IP27 changes, but I tied them up with some cleanups to the
-> Xtalk code to make it more centralized so I could remove duplicate code from
-> the Octane's patches.  I've still gotta fiddle with that code some more and
-> remove the debug bits, but this change should be safe to go in by itself, as
-> it's a prerequisite.  I'll probably send the IP27 bits in along with the IOC3
-> stuff, because IP27 seems to be very flakey (at least my Onyx2 was) with the
-> in-tree IOC3 bits.  Most common was requiring several reboots to properly
-> detect the MAC address.  Under the metadriver, it detects things fine.
 
-There's a long-standing defect in the IOC3 code resulting in bad timing
-for the 1-Wire bus driver.  The reason is that some bitfield is incorrectly
-sized resulting in overflow.
+merge back into previous commit?
 
-As for the patch itself - everybody had their fair chance at yelling, nobody
-did so I queued it up for 4.1.
-
-  Ralf
+-- 
+Ben Dooks				http://www.codethink.co.uk/
+Senior Engineer				Codethink - Providing Genius

@@ -1,40 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Mar 2015 10:35:08 +0200 (CEST)
-Received: from mail-ig0-f175.google.com ([209.85.213.175]:35996 "EHLO
-        mail-ig0-f175.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008592AbbCaIfGIwguf (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 31 Mar 2015 10:35:06 +0200
-Received: by igbud6 with SMTP id ud6so12141777igb.1;
-        Tue, 31 Mar 2015 01:34:59 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Mar 2015 10:35:26 +0200 (CEST)
+Received: from mail-ig0-f178.google.com ([209.85.213.178]:38694 "EHLO
+        mail-ig0-f178.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27009467AbbCaIfV4XejG convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 31 Mar 2015 10:35:21 +0200
+Received: by igbqf9 with SMTP id qf9so11096032igb.1;
+        Tue, 31 Mar 2015 01:35:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-type;
-        bh=QMyP2N2k1TKi8TqbGjYYesFnPQprygNCY4wX3sHJJ4Q=;
-        b=auxg481g5Q+lJ9BCNtfYSHArHAZCkBXQtfn67y0QV2j3FEJxbGU37Tr9IIZC1d/M8S
-         51gsv9VYlh8QMPjqHB/BZNdBZ9VXqhkVikOPIL+tSoLTSQPkgYOGj4P1BviAlOFNd/Tl
-         A+Bln0lEWm2JrAC+voEYtRmuTv+VWF3jMMSIcJLhSkZU6XmWihXAcFFizRmMvSLPToDS
-         nNfmBL5UzzyJtptifEvJEt7v+Die7cePffnaFw6FppMvc1hfIy547B6nU4lCAYcUFQ7v
-         aclQTZ/Jnzk4qpHx35hQUlwWVmG7yqG/iQWk/PBMz+AS5iBQA4+uR9ajAS28DcUkgZU5
-         Uz/w==
-X-Received: by 10.50.143.36 with SMTP id sb4mr2566986igb.0.1427790899592; Tue,
- 31 Mar 2015 01:34:59 -0700 (PDT)
+         :cc:content-type:content-transfer-encoding;
+        bh=yTW/atLFfI087wIGxgx+dbl/rjUpATlhLTjgLomxTEo=;
+        b=FoA8E13aBXLLt3m/MijkBhbOVY3T/YDdWgvLxYDpuPw7P0yrWJnVb8PVZLImu32ktP
+         6X9yl65YBs7VgBmCCs6D/3mvKy3z9vLn6BF4P+WCtIWN4Wo8scjuoMvCgEVdJ1CTAYfT
+         Ww251OsDt6ijEBXfYhO83bwqSizOeT8dWNJ6/9KKOWl4iP+zDZ8PuwrTDW/xrlTvRDiN
+         Xzn/kNddQWgTT8IemF1g2iIRijETdrqDq1S3ddsnqecZcXk6mdcLBKL8s7DWGAXtqpeA
+         WGESbWSjpVIlDgaG+udHFzaowVeb5yYH1F8RXGdRD0bHXF5QjiyOvGyZch26HRrgJkBP
+         Fp+w==
+X-Received: by 10.42.68.204 with SMTP id y12mr20175628ici.84.1427790917025;
+ Tue, 31 Mar 2015 01:35:17 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 10.50.239.38 with HTTP; Tue, 31 Mar 2015 01:34:39 -0700 (PDT)
-In-Reply-To: <20150330201015.GA3757@linux-mips.org>
-References: <1427389644-92793-1-git-send-email-fykcee1@gmail.com> <20150330201015.GA3757@linux-mips.org>
+Received: by 10.50.239.38 with HTTP; Tue, 31 Mar 2015 01:34:56 -0700 (PDT)
+In-Reply-To: <1427389644-92793-1-git-send-email-fykcee1@gmail.com>
+References: <1427389644-92793-1-git-send-email-fykcee1@gmail.com>
 From:   cee1 <fykcee1@gmail.com>
-Date:   Tue, 31 Mar 2015 16:34:39 +0800
-Message-ID: <CAGXxSxU_fCvUqkrFDU64MOgsyOW3XkcrSuB7DjcBMODG-B8=xw@mail.gmail.com>
+Date:   Tue, 31 Mar 2015 16:34:56 +0800
+Message-ID: <CAGXxSxWYDmK9x5nLQy97bxPmrcH_DAkvGTwvxR4QpNx1GMOXbw@mail.gmail.com>
 Subject: Re: [v5] MIPS: lib: csum_partial: more instruction paral
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        Chen Jie <chenj@lemote.com>
+To:     Linux MIPS Mailing List <linux-mips@linux-mips.org>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        =?UTF-8?B?6ZmI5Y2O5omN?= <chenhc@lemote.com>,
+        =?UTF-8?B?5ZC056ug6YeR?= <wuzhangjin@gmail.com>
 Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 Return-Path: <fykcee1@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46640
+X-archive-position: 46641
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -51,43 +54,109 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-2015-03-31 4:10 GMT+08:00 Ralf Baechle <ralf@linux-mips.org>:
->> One example about how this patch works is in CSUM_BIGCHUNK1:
->> // ** original **    vs    ** patch applied **
->>     ADDC(sum, t0)           ADDC(t0, t1)
->>     ADDC(sum, t1)           ADDC(t2, t3)
->>     ADDC(sum, t2)           ADDC(sum, t0)
->>     ADDC(sum, t3)           ADDC(sum, t2)
->>
->> With this patch applied, ADDC and the **next next** ADDC are independent.
->
-> This is interesting because even CPUs as old as the R2000 have a pipeline
-> bypass which allows an instruction to use a result written to a register
-> by an immediately preceeeding instruction.
+The output result isn't influenced by this patch, as shown by
+following mathematical proof.
 
-But if removes some dependency(as the patch did), instruction A and
-instruction B can be issued at the same cycle[1], instead of B waiting
-for the result from A   (a pipeline bypass reduces the wait time, but
-not eliminates it, right?)
+For convenience, let's mark '2^64' as '@', mark 'ADDC(A, B)' as 'A ⊕ B', then:
+A ⊕ B = (A + B >= @) ? A + B - @ + 1 : A + B
 
->
-> Can you explain why this patch is so beneficial for Loongson 3A?
+What this patch did is transforming "sum ⊕ A ⊕ B ⊕ C ⊕ D" to "sum ⊕ (A
+⊕ B) ⊕ (C ⊕ D)",
+so what we are trying to prove is:
 
-I have written a simply test[2] to measure the performance gain on
-Loongson 3A, the result[3] shows at most 50% performance gain.
+sum ⊕ A ⊕ B ⊕ C ⊕ D = sum ⊕ (A ⊕ B)
 
-IMHO, the patch not only benefits Loongson 3A, but would also benefit
-other MIPS CPU(s).
+Let's first prove "sum ⊕ A ⊕ B" = "sum ⊕ (A ⊕ B)". There are 2 add ops
+within 2 '⊕' here. According whether these add ops overflow, there are
+4 cases:
+Case 1: Only the first add op overflows.
+
+Case 2: Only the second add op overflows.
+
+Case 3: Both add ops overflow.
+
+Case 4: Neither add ops overflow.
+
+## In Case 1, we have
+(1) sum + A >= @
+    => sum ⊕ A = sum + A - @ + 1
+
+(2) sum + A - @ + 1 + B < @
+    => sum ⊕ A ⊕ B = sum + A + B - @ + 1
+
+If A + B >= @:
+    => A ⊕ B = A + B - @ + 1
+    => sum + (A ⊕ B) = sum + A + B - @ + 1 < @   (see (2))
+    => sum ⊕ (A ⊕ B) = sum + A + B - @ + 1 = sum ⊕ A ⊕ B
+
+If A + B < @:
+    => A ⊕ B = A + B
+(3) => sum + (A ⊕ B) = sum + A + B
+
+    sum + A + B >= @ + B >= @   (adds B to both sides of (1))
+    => sum + (A ⊕ B) >= @       (see (3))
+    => sum ⊕ (A ⊕ B) = sum + A + B - @ + 1 = sum ⊕ A ⊕ B
+
+## In Case 2, we have
+(1) sum + A < @
+    => sum ⊕ A = sum + A
+
+(2) sum + A + B >= @
+    => sum ⊕ A ⊕ B = sum + A + B - @ + 1
+
+If A + B >= @:
+    => A ⊕ B = A + B - @ + 1
+(3) => sum + (A ⊕ B) = sum + A + B - @ + 1
+
+    sum + A + B - @ + 1 < @ + B - @ + 1   (adds 'B - @ + 1' to both
+sides of (1))
+    => sum + A + B - @ + 1 < B + 1 <= @
+    => sum + A + B - @ + 1 < @
+    => sum + (A ⊕ B) < @                  (see (3))
+    => sum ⊕ (A ⊕ B) = sum + A + B - @ + 1 = sum ⊕ A ⊕ B
+
+If A + B < @:
+    => A ⊕ B = A + B
+    => sum + (A ⊕ B) = sum + A + B >= @   (see (2))
+    => sum ⊕ (A ⊕ B) = sum + A + B - @ + 1 = sum ⊕ A ⊕ B
+
+## In Case 3, we have
+(1) sum + A >= @
+    => sum ⊕ A = sum + A - @ + 1
+
+(2) sum + A - @ + 1 + B >= @
+    => sum ⊕ A ⊕ B = sum + A + B - 2@ + 2
+
+(3) A + B >= 2@ - 1 - sum   (transformed from (2))
+
+    1 + sum <= @            ( sum is in range [0, @) )
+    => @ + 1 + sum <= 2@    ( adds @ to both sides)
+    => @ <= 2@ - 1 - sum <= A + B   (combining with (3))
+    => A + B >= @                   (cleaning up)
+    => A ⊕ B = A + B - @ + 1
+    => sum + (A ⊕ B) = sum + A + B - @ + 1 >= @   (see (2))
+    => sum ⊕ (A ⊕ B) = sum + A + B - 2@ + 2 = sum ⊕ A ⊕ B
+
+## In Case 4, we have
+(1) sum + A < @
+    => sum ⊕ A = sum + A
+
+(2) sum + A + B < @
+    => sum ⊕ A ⊕ B = sum + A + B
+
+    A + B < @ - sum    (subtracts 'sum' from both sides of (2))
+    => A + B < @
+    => A ⊕ B = A + B
+    => sum + (A ⊕ B) = sum + A + B < @   (see (2))
+    => sum ⊕ (A ⊕ B) = sum + A + B = sum ⊕ A ⊕ B
+
+Conclusion: sum ⊕ A ⊕ B = sum ⊕ (A ⊕ B)
 
 
---
-1. If the hardware supports this, e.g. at least two ALU units for ALU
-operations, and is an out of order execution pipeline, etc
-2. http://dev.lemote.com/files/upload/software/csum-opti/csum-test.tar.gz
-3. http://dev.lemote.com/files/upload/software/csum-opti/csum-opti-benchmark.html
+Let U = sum ⊕ A ⊕ B (or sum ⊕ (A ⊕ B)), then
 
+sum ⊕ A ⊕ B ⊕ C ⊕ D = U ⊕ C ⊕ D = U ⊕ (C ⊕ D)   (use the conclusion)
 
+so we have:
 
-Regards,
-
-- cee1
+sum ⊕ A ⊕ B ⊕ C ⊕ D = sum ⊕ (A ⊕ B) ⊕ (C ⊕ D)

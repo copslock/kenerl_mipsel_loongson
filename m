@@ -1,30 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Mar 2015 21:49:52 +0200 (CEST)
-Received: from youngberry.canonical.com ([91.189.89.112]:50899 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Mar 2015 21:50:11 +0200 (CEST)
+Received: from youngberry.canonical.com ([91.189.89.112]:51249 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27014857AbbCaTtfIqUva (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 31 Mar 2015 21:49:35 +0200
+        by eddie.linux-mips.org with ESMTP id S27014846AbbCaTuJayzPy (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 31 Mar 2015 21:50:09 +0200
 Received: from [10.172.68.52] (helo=fourier)
         by youngberry.canonical.com with esmtpsa (TLS1.0:DHE_RSA_AES_128_CBC_SHA1:16)
         (Exim 4.71)
         (envelope-from <kamal@canonical.com>)
-        id 1Yd2AD-0000pV-BU; Tue, 31 Mar 2015 19:49:29 +0000
+        id 1Yd2Ao-0000yI-4S; Tue, 31 Mar 2015 19:50:06 +0000
 Received: from kamal by fourier with local (Exim 4.82)
         (envelope-from <kamal@whence.com>)
-        id 1Yd2AA-0000d2-Tg; Tue, 31 Mar 2015 12:49:26 -0700
+        id 1Yd2Al-0000h9-M4; Tue, 31 Mar 2015 12:50:03 -0700
 From:   Kamal Mostafa <kamal@canonical.com>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
         kernel-team@lists.ubuntu.com
 Cc:     James Hogan <james.hogan@imgtec.com>,
         Paolo Bonzini <pbonzini@redhat.com>,
         Ralf Baechle <ralf@linux-mips.org>,
-        Sanjay Lal <sanjayl@kymasys.com>,
+        Paul Burton <paul.burton@imgtec.com>,
         Gleb Natapov <gleb@kernel.org>, kvm@vger.kernel.org,
-        linux-mips@linux-mips.org,
-        Luis Henriques <luis.henriques@canonical.com>,
-        Kamal Mostafa <kamal@canonical.com>
-Subject: [PATCH 3.13.y-ckt 069/143] KVM: MIPS: Don't leak FPU/DSP to guest
-Date:   Tue, 31 Mar 2015 12:47:14 -0700
-Message-Id: <1427831308-1854-70-git-send-email-kamal@canonical.com>
+        linux-mips@linux-mips.org, Kamal Mostafa <kamal@canonical.com>
+Subject: [PATCH 3.13.y-ckt 119/143] MIPS: Export FP functions used by lose_fpu(1) for KVM
+Date:   Tue, 31 Mar 2015 12:48:04 -0700
+Message-Id: <1427831308-1854-120-git-send-email-kamal@canonical.com>
 X-Mailer: git-send-email 1.9.1
 In-Reply-To: <1427831308-1854-1-git-send-email-kamal@canonical.com>
 References: <1427831308-1854-1-git-send-email-kamal@canonical.com>
@@ -33,7 +31,7 @@ Return-Path: <kamal@canonical.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46670
+X-archive-position: 46671
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -56,98 +54,60 @@ X-list: linux-mips
 
 From: James Hogan <james.hogan@imgtec.com>
 
-commit f798217dfd038af981a18bbe4bc57027a08bb182 upstream.
+[ Upstream commit 3ce465e04bfd8de9956d515d6e9587faac3375dc ]
 
-The FPU and DSP are enabled via the CP0 Status CU1 and MX bits by
-kvm_mips_set_c0_status() on a guest exit, presumably in case there is
-active state that needs saving if pre-emption occurs. However neither of
-these bits are cleared again when returning to the guest.
+Export the _save_fp asm function used by the lose_fpu(1) macro to GPL
+modules so that KVM can make use of it when it is built as a module.
 
-This effectively gives the guest access to the FPU/DSP hardware after
-the first guest exit even though it is not aware of its presence,
-allowing FP instructions in guest user code to intermittently actually
-execute instead of trapping into the guest OS for emulation. It will
-then read & manipulate the hardware FP registers which technically
-belong to the user process (e.g. QEMU), or are stale from another user
-process. It can also crash the guest OS by causing an FP exception, for
-which a guest exception handler won't have been registered.
+This fixes the following build error when CONFIG_KVM=m due to commit
+f798217dfd03 ("KVM: MIPS: Don't leak FPU/DSP to guest"):
 
-First lets save and disable the FPU (and MSA) state with lose_fpu(1)
-before entering the guest. This simplifies the problem, especially for
-when guest FPU/MSA support is added in the future, and prevents FR=1 FPU
-state being live when the FR bit gets cleared for the guest, which
-according to the architecture causes the contents of the FPU and vector
-registers to become UNPREDICTABLE.
-
-We can then safely remove the enabling of the FPU in
-kvm_mips_set_c0_status(), since there should never be any active FPU or
-MSA state to save at pre-emption, which should plug the FPU leak.
-
-DSP state is always live rather than being lazily restored, so for that
-it is simpler to just clear the MX bit again when re-entering the guest.
+ERROR: "_save_fp" [arch/mips/kvm/kvm.ko] undefined!
 
 Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Fixes: f798217dfd03 (KVM: MIPS: Don't leak FPU/DSP to guest)
 Cc: Paolo Bonzini <pbonzini@redhat.com>
 Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Sanjay Lal <sanjayl@kymasys.com>
+Cc: Paul Burton <paul.burton@imgtec.com>
 Cc: Gleb Natapov <gleb@kernel.org>
 Cc: kvm@vger.kernel.org
 Cc: linux-mips@linux-mips.org
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-[ luis: backported to 3.16: files rename:
-  - locore.S -> kvm_locore.S
-  - mips.c -> kvm_mips.c ]
-Signed-off-by: Luis Henriques <luis.henriques@canonical.com>
-
+Patchwork: https://patchwork.linux-mips.org/patch/9260/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+[james.hogan@imgtec.com: Only export when CPU_R4K_FPU=y prior to v3.16,
+ so as not to break the Octeon build which excludes FPU support. KVM
+ depends on MIPS32r2 anyway.]
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
 Signed-off-by: Kamal Mostafa <kamal@canonical.com>
 ---
- arch/mips/kvm/kvm_locore.S | 2 +-
- arch/mips/kvm/kvm_mips.c   | 6 +++---
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ arch/mips/kernel/mips_ksyms.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/arch/mips/kvm/kvm_locore.S b/arch/mips/kvm/kvm_locore.S
-index bbace09..03a2db5 100644
---- a/arch/mips/kvm/kvm_locore.S
-+++ b/arch/mips/kvm/kvm_locore.S
-@@ -428,7 +428,7 @@ __kvm_mips_return_to_guest:
- 	/* Setup status register for running guest in UM */
- 	.set	at
- 	or	v1, v1, (ST0_EXL | KSU_USER | ST0_IE)
--	and	v1, v1, ~ST0_CU0
-+	and	v1, v1, ~(ST0_CU0 | ST0_MX)
- 	.set	noat
- 	mtc0	v1, CP0_STATUS
- 	ehb
-diff --git a/arch/mips/kvm/kvm_mips.c b/arch/mips/kvm/kvm_mips.c
-index 4d058a7..bdc5eeb 100644
---- a/arch/mips/kvm/kvm_mips.c
-+++ b/arch/mips/kvm/kvm_mips.c
-@@ -15,6 +15,7 @@
- #include <linux/vmalloc.h>
- #include <linux/fs.h>
- #include <linux/bootmem.h>
+diff --git a/arch/mips/kernel/mips_ksyms.c b/arch/mips/kernel/mips_ksyms.c
+index 6e58e97..cedeb56 100644
+--- a/arch/mips/kernel/mips_ksyms.c
++++ b/arch/mips/kernel/mips_ksyms.c
+@@ -14,6 +14,7 @@
+ #include <linux/mm.h>
+ #include <asm/uaccess.h>
+ #include <asm/ftrace.h>
 +#include <asm/fpu.h>
- #include <asm/page.h>
- #include <asm/cacheflush.h>
- #include <asm/mmu_context.h>
-@@ -424,6 +425,8 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu, struct kvm_run *run)
- 		vcpu->mmio_needed = 0;
- 	}
  
-+	lose_fpu(1);
+ extern void *__bzero(void *__s, size_t __count);
+ extern long __strncpy_from_user_nocheck_asm(char *__to,
+@@ -26,6 +27,13 @@ extern long __strnlen_user_nocheck_asm(const char *s);
+ extern long __strnlen_user_asm(const char *s);
+ 
+ /*
++ * Core architecture code
++ */
++#ifdef CONFIG_CPU_R4K_FPU
++EXPORT_SYMBOL_GPL(_save_fp);
++#endif
 +
- 	local_irq_disable();
- 	/* Check if we have any exceptions/interrupts pending */
- 	kvm_mips_deliver_interrupts(vcpu,
-@@ -1028,9 +1031,6 @@ void kvm_mips_set_c0_status(void)
- {
- 	uint32_t status = read_c0_status();
- 
--	if (cpu_has_fpu)
--		status |= (ST0_CU1);
--
- 	if (cpu_has_dsp)
- 		status |= (ST0_MX);
- 
++/*
+  * String functions
+  */
+ EXPORT_SYMBOL(memset);
 -- 
 1.9.1

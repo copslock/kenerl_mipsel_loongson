@@ -1,28 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Mar 2015 21:49:35 +0200 (CEST)
-Received: from youngberry.canonical.com ([91.189.89.112]:50867 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Mar 2015 21:49:52 +0200 (CEST)
+Received: from youngberry.canonical.com ([91.189.89.112]:50899 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27014835AbbCaTtceteU9 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 31 Mar 2015 21:49:32 +0200
+        by eddie.linux-mips.org with ESMTP id S27014857AbbCaTtfIqUva (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 31 Mar 2015 21:49:35 +0200
 Received: from [10.172.68.52] (helo=fourier)
         by youngberry.canonical.com with esmtpsa (TLS1.0:DHE_RSA_AES_128_CBC_SHA1:16)
         (Exim 4.71)
         (envelope-from <kamal@canonical.com>)
-        id 1Yd2AC-0000pQ-PO; Tue, 31 Mar 2015 19:49:29 +0000
+        id 1Yd2AD-0000pV-BU; Tue, 31 Mar 2015 19:49:29 +0000
 Received: from kamal by fourier with local (Exim 4.82)
         (envelope-from <kamal@whence.com>)
-        id 1Yd2AA-0000cx-BH; Tue, 31 Mar 2015 12:49:26 -0700
+        id 1Yd2AA-0000d2-Tg; Tue, 31 Mar 2015 12:49:26 -0700
 From:   Kamal Mostafa <kamal@canonical.com>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
         kernel-team@lists.ubuntu.com
 Cc:     James Hogan <james.hogan@imgtec.com>,
         Paolo Bonzini <pbonzini@redhat.com>,
-        Gleb Natapov <gleb@kernel.org>, kvm@vger.kernel.org,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        Ralf Baechle <ralf@linux-mips.org>,
         Sanjay Lal <sanjayl@kymasys.com>,
+        Gleb Natapov <gleb@kernel.org>, kvm@vger.kernel.org,
+        linux-mips@linux-mips.org,
+        Luis Henriques <luis.henriques@canonical.com>,
         Kamal Mostafa <kamal@canonical.com>
-Subject: [PATCH 3.13.y-ckt 068/143] MIPS: KVM: Deliver guest interrupts after local_irq_disable()
-Date:   Tue, 31 Mar 2015 12:47:13 -0700
-Message-Id: <1427831308-1854-69-git-send-email-kamal@canonical.com>
+Subject: [PATCH 3.13.y-ckt 069/143] KVM: MIPS: Don't leak FPU/DSP to guest
+Date:   Tue, 31 Mar 2015 12:47:14 -0700
+Message-Id: <1427831308-1854-70-git-send-email-kamal@canonical.com>
 X-Mailer: git-send-email 1.9.1
 In-Reply-To: <1427831308-1854-1-git-send-email-kamal@canonical.com>
 References: <1427831308-1854-1-git-send-email-kamal@canonical.com>
@@ -31,7 +33,7 @@ Return-Path: <kamal@canonical.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46669
+X-archive-position: 46670
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -54,42 +56,98 @@ X-list: linux-mips
 
 From: James Hogan <james.hogan@imgtec.com>
 
-commit 044f0f03eca0110e1835b2ea038a484b93950328 upstream.
+commit f798217dfd038af981a18bbe4bc57027a08bb182 upstream.
 
-When about to run the guest, deliver guest interrupts after disabling
-host interrupts. This should prevent an hrtimer interrupt from being
-handled after delivering guest interrupts, and therefore not delivering
-the guest timer interrupt until after the next guest exit.
+The FPU and DSP are enabled via the CP0 Status CU1 and MX bits by
+kvm_mips_set_c0_status() on a guest exit, presumably in case there is
+active state that needs saving if pre-emption occurs. However neither of
+these bits are cleared again when returning to the guest.
+
+This effectively gives the guest access to the FPU/DSP hardware after
+the first guest exit even though it is not aware of its presence,
+allowing FP instructions in guest user code to intermittently actually
+execute instead of trapping into the guest OS for emulation. It will
+then read & manipulate the hardware FP registers which technically
+belong to the user process (e.g. QEMU), or are stale from another user
+process. It can also crash the guest OS by causing an FP exception, for
+which a guest exception handler won't have been registered.
+
+First lets save and disable the FPU (and MSA) state with lose_fpu(1)
+before entering the guest. This simplifies the problem, especially for
+when guest FPU/MSA support is added in the future, and prevents FR=1 FPU
+state being live when the FR bit gets cleared for the guest, which
+according to the architecture causes the contents of the FPU and vector
+registers to become UNPREDICTABLE.
+
+We can then safely remove the enabling of the FPU in
+kvm_mips_set_c0_status(), since there should never be any active FPU or
+MSA state to save at pre-emption, which should plug the FPU leak.
+
+DSP state is always live rather than being lazily restored, so for that
+it is simpler to just clear the MX bit again when re-entering the guest.
 
 Signed-off-by: James Hogan <james.hogan@imgtec.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Sanjay Lal <sanjayl@kymasys.com>
 Cc: Gleb Natapov <gleb@kernel.org>
 Cc: kvm@vger.kernel.org
-Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
-Cc: Sanjay Lal <sanjayl@kymasys.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+[ luis: backported to 3.16: files rename:
+  - locore.S -> kvm_locore.S
+  - mips.c -> kvm_mips.c ]
+Signed-off-by: Luis Henriques <luis.henriques@canonical.com>
+
 Signed-off-by: Kamal Mostafa <kamal@canonical.com>
 ---
- arch/mips/kvm/kvm_mips.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/kvm/kvm_locore.S | 2 +-
+ arch/mips/kvm/kvm_mips.c   | 6 +++---
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
+diff --git a/arch/mips/kvm/kvm_locore.S b/arch/mips/kvm/kvm_locore.S
+index bbace09..03a2db5 100644
+--- a/arch/mips/kvm/kvm_locore.S
++++ b/arch/mips/kvm/kvm_locore.S
+@@ -428,7 +428,7 @@ __kvm_mips_return_to_guest:
+ 	/* Setup status register for running guest in UM */
+ 	.set	at
+ 	or	v1, v1, (ST0_EXL | KSU_USER | ST0_IE)
+-	and	v1, v1, ~ST0_CU0
++	and	v1, v1, ~(ST0_CU0 | ST0_MX)
+ 	.set	noat
+ 	mtc0	v1, CP0_STATUS
+ 	ehb
 diff --git a/arch/mips/kvm/kvm_mips.c b/arch/mips/kvm/kvm_mips.c
-index 7a8b440..4d058a7 100644
+index 4d058a7..bdc5eeb 100644
 --- a/arch/mips/kvm/kvm_mips.c
 +++ b/arch/mips/kvm/kvm_mips.c
-@@ -424,11 +424,11 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu, struct kvm_run *run)
+@@ -15,6 +15,7 @@
+ #include <linux/vmalloc.h>
+ #include <linux/fs.h>
+ #include <linux/bootmem.h>
++#include <asm/fpu.h>
+ #include <asm/page.h>
+ #include <asm/cacheflush.h>
+ #include <asm/mmu_context.h>
+@@ -424,6 +425,8 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu, struct kvm_run *run)
  		vcpu->mmio_needed = 0;
  	}
  
-+	local_irq_disable();
++	lose_fpu(1);
++
+ 	local_irq_disable();
  	/* Check if we have any exceptions/interrupts pending */
  	kvm_mips_deliver_interrupts(vcpu,
- 				    kvm_read_c0_guest_cause(vcpu->arch.cop0));
+@@ -1028,9 +1031,6 @@ void kvm_mips_set_c0_status(void)
+ {
+ 	uint32_t status = read_c0_status();
  
--	local_irq_disable();
- 	kvm_guest_enter();
+-	if (cpu_has_fpu)
+-		status |= (ST0_CU1);
+-
+ 	if (cpu_has_dsp)
+ 		status |= (ST0_MX);
  
- 	r = __kvm_mips_vcpu_run(run, vcpu);
 -- 
 1.9.1

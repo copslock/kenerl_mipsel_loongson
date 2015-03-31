@@ -1,36 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Mar 2015 21:40:18 +0200 (CEST)
-Received: from youngberry.canonical.com ([91.189.89.112]:50422 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Mar 2015 21:49:35 +0200 (CEST)
+Received: from youngberry.canonical.com ([91.189.89.112]:50867 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27014858AbbCaTkQM3wYt (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 31 Mar 2015 21:40:16 +0200
-Received: from [10.172.68.52]
+        by eddie.linux-mips.org with ESMTP id S27014835AbbCaTtceteU9 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 31 Mar 2015 21:49:32 +0200
+Received: from [10.172.68.52] (helo=fourier)
         by youngberry.canonical.com with esmtpsa (TLS1.0:DHE_RSA_AES_128_CBC_SHA1:16)
         (Exim 4.71)
         (envelope-from <kamal@canonical.com>)
-        id 1Yd21E-0000Ms-Ni; Tue, 31 Mar 2015 19:40:13 +0000
-Message-ID: <1427830809.32761.6.camel@fourier>
-Subject: Re: [3.13.y-ckt stable] Patch "MIPS: Export FP functions used by
- lose_fpu(1) for KVM" has been added to staging queue
+        id 1Yd2AC-0000pQ-PO; Tue, 31 Mar 2015 19:49:29 +0000
+Received: from kamal by fourier with local (Exim 4.82)
+        (envelope-from <kamal@whence.com>)
+        id 1Yd2AA-0000cx-BH; Tue, 31 Mar 2015 12:49:26 -0700
 From:   Kamal Mostafa <kamal@canonical.com>
-To:     James Hogan <james.hogan@imgtec.com>
-Cc:     Paolo Bonzini <pbonzini@redhat.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@imgtec.com>,
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        kernel-team@lists.ubuntu.com
+Cc:     James Hogan <james.hogan@imgtec.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
         Gleb Natapov <gleb@kernel.org>, kvm@vger.kernel.org,
-        linux-mips@linux-mips.org, kernel-team@lists.ubuntu.com
-Date:   Tue, 31 Mar 2015 12:40:09 -0700
-In-Reply-To: <20150331190803.GD9457@jhogan-linux.le.imgtec.org>
-References: <1427827603-26295-1-git-send-email-kamal@canonical.com>
-         <20150331190803.GD9457@jhogan-linux.le.imgtec.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.10.4-0ubuntu2 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        Sanjay Lal <sanjayl@kymasys.com>,
+        Kamal Mostafa <kamal@canonical.com>
+Subject: [PATCH 3.13.y-ckt 068/143] MIPS: KVM: Deliver guest interrupts after local_irq_disable()
+Date:   Tue, 31 Mar 2015 12:47:13 -0700
+Message-Id: <1427831308-1854-69-git-send-email-kamal@canonical.com>
+X-Mailer: git-send-email 1.9.1
+In-Reply-To: <1427831308-1854-1-git-send-email-kamal@canonical.com>
+References: <1427831308-1854-1-git-send-email-kamal@canonical.com>
+X-Extended-Stable: 3.13
 Return-Path: <kamal@canonical.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46668
+X-archive-position: 46669
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,101 +48,48 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, 2015-03-31 at 20:08 +0100, James Hogan wrote:
-> Hi Kamal,
-> 
-> On Tue, Mar 31, 2015 at 11:46:43AM -0700, Kamal Mostafa wrote:
-> > This is a note to let you know that I have just added a patch titled
-> > 
-> >     MIPS: Export FP functions used by lose_fpu(1) for KVM
-> > 
-> > to the linux-3.13.y-queue branch of the 3.13.y-ckt extended stable tree 
-> > which can be found at:
-> > 
-> >  http://kernel.ubuntu.com/git?p=ubuntu/linux.git;a=shortlog;h=refs/heads/linux-3.13.y-queue
-> > 
-> > This patch is scheduled to be released in version 3.13.11-ckt18.
-> > 
-> > If you, or anyone else, feels it should not be added to this tree, please 
-> > reply to this email.
-> > 
-> > For more information about the 3.13.y-ckt tree, see
-> > https://wiki.ubuntu.com/Kernel/Dev/ExtendedStable
-> > 
-> > Thanks.
-> > -Kamal
-> > 
-> > ------
-> > 
-> > From 7adee277d64254de602234e7e53691d729f5e50c Mon Sep 17 00:00:00 2001
-> > From: James Hogan <james.hogan@imgtec.com>
-> > Date: Tue, 10 Feb 2015 10:02:59 +0000
-> > Subject: MIPS: Export FP functions used by lose_fpu(1) for KVM
-> > 
-> > commit 3ce465e04bfd8de9956d515d6e9587faac3375dc upstream.
-> > 
-> > Export the _save_fp asm function used by the lose_fpu(1) macro to GPL
-> > modules so that KVM can make use of it when it is built as a module.
-> > 
-> > This fixes the following build error when CONFIG_KVM=m due to commit
-> > f798217dfd03 ("KVM: MIPS: Don't leak FPU/DSP to guest"):
-> > 
-> > ERROR: "_save_fp" [arch/mips/kvm/kvm.ko] undefined!
-> > 
-> > Signed-off-by: James Hogan <james.hogan@imgtec.com>
-> > Fixes: f798217dfd03 (KVM: MIPS: Don't leak FPU/DSP to guest)
-> > Cc: Paolo Bonzini <pbonzini@redhat.com>
-> > Cc: Ralf Baechle <ralf@linux-mips.org>
-> > Cc: Paul Burton <paul.burton@imgtec.com>
-> > Cc: Gleb Natapov <gleb@kernel.org>
-> > Cc: kvm@vger.kernel.org
-> > Cc: linux-mips@linux-mips.org
-> > Patchwork: https://patchwork.linux-mips.org/patch/9260/
-> > Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-> > Signed-off-by: Kamal Mostafa <kamal@canonical.com>
-> > ---
-> >  arch/mips/kernel/mips_ksyms.c | 6 ++++++
-> >  1 file changed, 6 insertions(+)
-> > 
-> > diff --git a/arch/mips/kernel/mips_ksyms.c b/arch/mips/kernel/mips_ksyms.c
-> > index 6e58e97..60adf79 100644
-> > --- a/arch/mips/kernel/mips_ksyms.c
-> > +++ b/arch/mips/kernel/mips_ksyms.c
-> > @@ -14,6 +14,7 @@
-> >  #include <linux/mm.h>
-> >  #include <asm/uaccess.h>
-> >  #include <asm/ftrace.h>
-> > +#include <asm/fpu.h>
-> > 
-> >  extern void *__bzero(void *__s, size_t __count);
-> >  extern long __strncpy_from_user_nocheck_asm(char *__to,
-> > @@ -26,6 +27,11 @@ extern long __strnlen_user_nocheck_asm(const char *s);
-> >  extern long __strnlen_user_asm(const char *s);
-> > 
-> >  /*
-> > + * Core architecture code
-> > + */
-> > +EXPORT_SYMBOL_GPL(_save_fp);
-> 
-> Before v3.16 this will cause a build error with cavium_octeon_defconfig.
-> I submitted an updated stable patch for v3.10, v3.12, and v3.14, which
-> should be suitable for v3.13 too. See:
-> https://marc.info/?l=linux-mips&m=142557178417268&w=2
+3.13.11-ckt18 -stable review patch.  If anyone has any objections, please let me know.
 
-Okay, replaced this in 3.13-stable with your backport.  Thanks very
-much, James!
+------------------
 
- -Kamal
+From: James Hogan <james.hogan@imgtec.com>
 
+commit 044f0f03eca0110e1835b2ea038a484b93950328 upstream.
 
-> Cheers
-> James
-> 
-> > +
-> > +/*
-> >   * String functions
-> >   */
-> >  EXPORT_SYMBOL(memset);
-> > --
-> > 1.9.1
-> > 
+When about to run the guest, deliver guest interrupts after disabling
+host interrupts. This should prevent an hrtimer interrupt from being
+handled after delivering guest interrupts, and therefore not delivering
+the guest timer interrupt until after the next guest exit.
+
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Gleb Natapov <gleb@kernel.org>
+Cc: kvm@vger.kernel.org
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: linux-mips@linux-mips.org
+Cc: Sanjay Lal <sanjayl@kymasys.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Kamal Mostafa <kamal@canonical.com>
+---
+ arch/mips/kvm/kvm_mips.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/mips/kvm/kvm_mips.c b/arch/mips/kvm/kvm_mips.c
+index 7a8b440..4d058a7 100644
+--- a/arch/mips/kvm/kvm_mips.c
++++ b/arch/mips/kvm/kvm_mips.c
+@@ -424,11 +424,11 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu, struct kvm_run *run)
+ 		vcpu->mmio_needed = 0;
+ 	}
+ 
++	local_irq_disable();
+ 	/* Check if we have any exceptions/interrupts pending */
+ 	kvm_mips_deliver_interrupts(vcpu,
+ 				    kvm_read_c0_guest_cause(vcpu->arch.cop0));
+ 
+-	local_irq_disable();
+ 	kvm_guest_enter();
+ 
+ 	r = __kvm_mips_vcpu_run(run, vcpu);
+-- 
+1.9.1

@@ -1,47 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Mar 2015 10:35:26 +0200 (CEST)
-Received: from mail-ig0-f178.google.com ([209.85.213.178]:38694 "EHLO
-        mail-ig0-f178.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27009467AbbCaIfV4XejG convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 31 Mar 2015 10:35:21 +0200
-Received: by igbqf9 with SMTP id qf9so11096032igb.1;
-        Tue, 31 Mar 2015 01:35:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-type:content-transfer-encoding;
-        bh=yTW/atLFfI087wIGxgx+dbl/rjUpATlhLTjgLomxTEo=;
-        b=FoA8E13aBXLLt3m/MijkBhbOVY3T/YDdWgvLxYDpuPw7P0yrWJnVb8PVZLImu32ktP
-         6X9yl65YBs7VgBmCCs6D/3mvKy3z9vLn6BF4P+WCtIWN4Wo8scjuoMvCgEVdJ1CTAYfT
-         Ww251OsDt6ijEBXfYhO83bwqSizOeT8dWNJ6/9KKOWl4iP+zDZ8PuwrTDW/xrlTvRDiN
-         Xzn/kNddQWgTT8IemF1g2iIRijETdrqDq1S3ddsnqecZcXk6mdcLBKL8s7DWGAXtqpeA
-         WGESbWSjpVIlDgaG+udHFzaowVeb5yYH1F8RXGdRD0bHXF5QjiyOvGyZch26HRrgJkBP
-         Fp+w==
-X-Received: by 10.42.68.204 with SMTP id y12mr20175628ici.84.1427790917025;
- Tue, 31 Mar 2015 01:35:17 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Mar 2015 10:44:34 +0200 (CEST)
+Received: from mezzanine.sirena.org.uk ([106.187.55.193]:39458 "EHLO
+        mezzanine.sirena.org.uk" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006802AbbCaIodNWq1K (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 31 Mar 2015 10:44:33 +0200
+Received: from cpc11-sgyl31-2-0-cust672.sgyl.cable.virginm.net ([94.175.94.161] helo=debutante)
+        by mezzanine.sirena.org.uk with esmtpsa (TLS1.2:RSA_AES_128_CBC_SHA1:128)
+        (Exim 4.80)
+        (envelope-from <broonie@sirena.org.uk>)
+        id 1Ycrme-0005ds-M3; Tue, 31 Mar 2015 08:44:29 +0000
+Received: from broonie by debutante with local (Exim 4.84)
+        (envelope-from <broonie@sirena.org.uk>)
+        id 1Ycrmb-00021A-S7; Tue, 31 Mar 2015 09:44:25 +0100
+Date:   Tue, 31 Mar 2015 09:44:25 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     Bert Vermeulen <bert@biot.com>
+Cc:     ralf@linux-mips.org, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+        andy.shevchenko@gmail.com
+Message-ID: <20150331084425.GI2869@sirena.org.uk>
+References: <1427739857-13395-1-git-send-email-bert@biot.com>
 MIME-Version: 1.0
-Received: by 10.50.239.38 with HTTP; Tue, 31 Mar 2015 01:34:56 -0700 (PDT)
-In-Reply-To: <1427389644-92793-1-git-send-email-fykcee1@gmail.com>
-References: <1427389644-92793-1-git-send-email-fykcee1@gmail.com>
-From:   cee1 <fykcee1@gmail.com>
-Date:   Tue, 31 Mar 2015 16:34:56 +0800
-Message-ID: <CAGXxSxWYDmK9x5nLQy97bxPmrcH_DAkvGTwvxR4QpNx1GMOXbw@mail.gmail.com>
-Subject: Re: [v5] MIPS: lib: csum_partial: more instruction paral
-To:     Linux MIPS Mailing List <linux-mips@linux-mips.org>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        =?UTF-8?B?6ZmI5Y2O5omN?= <chenhc@lemote.com>,
-        =?UTF-8?B?5ZC056ug6YeR?= <wuzhangjin@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-Return-Path: <fykcee1@gmail.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="k0ZRCT9yCxlKcKW0"
+Content-Disposition: inline
+In-Reply-To: <1427739857-13395-1-git-send-email-bert@biot.com>
+X-Cookie: Wanna buy a duck?
+User-Agent: Mutt/1.5.23 (2014-03-12)
+X-SA-Exim-Connect-IP: 94.175.94.161
+X-SA-Exim-Mail-From: broonie@sirena.org.uk
+Subject: Re: [PATCH v2 0/1] spi: Add driver for Routerboard RB4xx boards
+X-SA-Exim-Version: 4.2.1 (built Mon, 26 Dec 2011 16:24:06 +0000)
+X-SA-Exim-Scanned: Yes (on mezzanine.sirena.org.uk)
+Return-Path: <broonie@sirena.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46641
+X-archive-position: 46642
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: fykcee1@gmail.com
+X-original-sender: broonie@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,109 +52,37 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The output result isn't influenced by this patch, as shown by
-following mathematical proof.
 
-For convenience, let's mark '2^64' as '@', mark 'ADDC(A, B)' as 'A ⊕ B', then:
-A ⊕ B = (A + B >= @) ? A + B - @ + 1 : A + B
+--k0ZRCT9yCxlKcKW0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-What this patch did is transforming "sum ⊕ A ⊕ B ⊕ C ⊕ D" to "sum ⊕ (A
-⊕ B) ⊕ (C ⊕ D)",
-so what we are trying to prove is:
+On Mon, Mar 30, 2015 at 08:24:16PM +0200, Bert Vermeulen wrote:
+> Changes in v2:
+> This is a near complete rewrite of the original OpenWrt driver. All comments
+> were taken into account, and the spi_transfer.fast_write flag is gone.
+> Instead, the cs_change flag is used. It's not too bad a hack, as it really
+> does use CS.
 
-sum ⊕ A ⊕ B ⊕ C ⊕ D = sum ⊕ (A ⊕ B)
+Don't send cover letters for single patches, if there's anything that
+needs saying it should either be in the changelog or after the ---.  A
+separate cover letter adds to the mail volume and probably means that
+the patch itself is inadequately described.
 
-Let's first prove "sum ⊕ A ⊕ B" = "sum ⊕ (A ⊕ B)". There are 2 add ops
-within 2 '⊕' here. According whether these add ops overflow, there are
-4 cases:
-Case 1: Only the first add op overflows.
+--k0ZRCT9yCxlKcKW0
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
-Case 2: Only the second add op overflows.
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
 
-Case 3: Both add ops overflow.
+iQEcBAEBCAAGBQJVGl5pAAoJECTWi3JdVIfQINsH/2SYu3oaYferb6YG3DJM6BZz
+p41HA/vLqkIQYOk1HZy9XuUWdj3A4hQ60sflTooqymPaxa1l3ibHor+43f67AmWf
+QHGVX8O5BabytdZ3o+9k5kw8F6vs8CxciaHeZjrSmTGjWLS3/atEEKU88WM2u134
+h/JeTHeskj6xU5hjRRi45DBWpqO5/U1dYtxkT3QKG8Aw91dRDdWScnSJBy2RwppS
+gdoF+49y+fP2zR/rkWeo/EobANxFAvUzFlsbwcoUY/u/WNpWNeUSmp/j/ag9f8Ll
+q7Pv6f1vgcLswJSF9xO/yT0iPRTMaKSxKnc25bDIE2zZT5Tgl1RjgtEZ2xNUL7M=
+=CfCM
+-----END PGP SIGNATURE-----
 
-Case 4: Neither add ops overflow.
-
-## In Case 1, we have
-(1) sum + A >= @
-    => sum ⊕ A = sum + A - @ + 1
-
-(2) sum + A - @ + 1 + B < @
-    => sum ⊕ A ⊕ B = sum + A + B - @ + 1
-
-If A + B >= @:
-    => A ⊕ B = A + B - @ + 1
-    => sum + (A ⊕ B) = sum + A + B - @ + 1 < @   (see (2))
-    => sum ⊕ (A ⊕ B) = sum + A + B - @ + 1 = sum ⊕ A ⊕ B
-
-If A + B < @:
-    => A ⊕ B = A + B
-(3) => sum + (A ⊕ B) = sum + A + B
-
-    sum + A + B >= @ + B >= @   (adds B to both sides of (1))
-    => sum + (A ⊕ B) >= @       (see (3))
-    => sum ⊕ (A ⊕ B) = sum + A + B - @ + 1 = sum ⊕ A ⊕ B
-
-## In Case 2, we have
-(1) sum + A < @
-    => sum ⊕ A = sum + A
-
-(2) sum + A + B >= @
-    => sum ⊕ A ⊕ B = sum + A + B - @ + 1
-
-If A + B >= @:
-    => A ⊕ B = A + B - @ + 1
-(3) => sum + (A ⊕ B) = sum + A + B - @ + 1
-
-    sum + A + B - @ + 1 < @ + B - @ + 1   (adds 'B - @ + 1' to both
-sides of (1))
-    => sum + A + B - @ + 1 < B + 1 <= @
-    => sum + A + B - @ + 1 < @
-    => sum + (A ⊕ B) < @                  (see (3))
-    => sum ⊕ (A ⊕ B) = sum + A + B - @ + 1 = sum ⊕ A ⊕ B
-
-If A + B < @:
-    => A ⊕ B = A + B
-    => sum + (A ⊕ B) = sum + A + B >= @   (see (2))
-    => sum ⊕ (A ⊕ B) = sum + A + B - @ + 1 = sum ⊕ A ⊕ B
-
-## In Case 3, we have
-(1) sum + A >= @
-    => sum ⊕ A = sum + A - @ + 1
-
-(2) sum + A - @ + 1 + B >= @
-    => sum ⊕ A ⊕ B = sum + A + B - 2@ + 2
-
-(3) A + B >= 2@ - 1 - sum   (transformed from (2))
-
-    1 + sum <= @            ( sum is in range [0, @) )
-    => @ + 1 + sum <= 2@    ( adds @ to both sides)
-    => @ <= 2@ - 1 - sum <= A + B   (combining with (3))
-    => A + B >= @                   (cleaning up)
-    => A ⊕ B = A + B - @ + 1
-    => sum + (A ⊕ B) = sum + A + B - @ + 1 >= @   (see (2))
-    => sum ⊕ (A ⊕ B) = sum + A + B - 2@ + 2 = sum ⊕ A ⊕ B
-
-## In Case 4, we have
-(1) sum + A < @
-    => sum ⊕ A = sum + A
-
-(2) sum + A + B < @
-    => sum ⊕ A ⊕ B = sum + A + B
-
-    A + B < @ - sum    (subtracts 'sum' from both sides of (2))
-    => A + B < @
-    => A ⊕ B = A + B
-    => sum + (A ⊕ B) = sum + A + B < @   (see (2))
-    => sum ⊕ (A ⊕ B) = sum + A + B = sum ⊕ A ⊕ B
-
-Conclusion: sum ⊕ A ⊕ B = sum ⊕ (A ⊕ B)
-
-
-Let U = sum ⊕ A ⊕ B (or sum ⊕ (A ⊕ B)), then
-
-sum ⊕ A ⊕ B ⊕ C ⊕ D = U ⊕ C ⊕ D = U ⊕ (C ⊕ D)   (use the conclusion)
-
-so we have:
-
-sum ⊕ A ⊕ B ⊕ C ⊕ D = sum ⊕ (A ⊕ B) ⊕ (C ⊕ D)
+--k0ZRCT9yCxlKcKW0--

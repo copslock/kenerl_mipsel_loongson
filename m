@@ -1,44 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Mar 2015 14:56:34 +0200 (CEST)
-Received: from demumfd001.nsn-inter.net ([93.183.12.32]:53122 "EHLO
-        demumfd001.nsn-inter.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010408AbbCaM4d0P0Z5 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 31 Mar 2015 14:56:33 +0200
-Received: from demuprx017.emea.nsn-intra.net ([10.150.129.56])
-        by demumfd001.nsn-inter.net (8.14.3/8.14.3) with ESMTP id t2VCuQjP020384
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
-        Tue, 31 Mar 2015 12:56:26 GMT
-Received: from ak-desktop.emea.nsn-net.net ([10.144.35.206])
-        by demuprx017.emea.nsn-intra.net (8.12.11.20060308/8.12.11) with SMTP id t2VCuOdN013108;
-        Tue, 31 Mar 2015 14:56:24 +0200
-Received: by ak-desktop.emea.nsn-net.net (sSMTP sendmail emulation); Tue, 31 Mar 2015 15:56:15 +0300
-Date:   Tue, 31 Mar 2015 15:56:14 +0300
-From:   Aaro Koskinen <aaro.koskinen@nokia.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Paul Burton <paul.burton@imgtec.com>, linux-mips@linux-mips.org
-Subject: Re: [PATCH] MIPS: malta: pass fw arguments on kexec
-Message-ID: <20150331125614.GN24448@ak-desktop.emea.nsn-net.net>
-References: <1424877665-4487-1-git-send-email-aaro.koskinen@nokia.com>
- <20150331111300.GB28951@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Mar 2015 16:00:38 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:57310 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S27014819AbbCaOAfqVFBW (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 31 Mar 2015 16:00:35 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.9/8.14.8) with ESMTP id t2VE0ZH9022138;
+        Tue, 31 Mar 2015 16:00:35 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.9/8.14.9/Submit) id t2VE0YO4022134;
+        Tue, 31 Mar 2015 16:00:34 +0200
+Date:   Tue, 31 Mar 2015 16:00:34 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Andrew Bresticker <abrestic@chromium.org>
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        Alexandre Courbot <gnurou@gmail.com>,
+        devicetree@vger.kernel.org, linux-gpio@vger.kernel.org,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        Ezequiel Garcia <ezequiel.garcia@imgtec.com>,
+        James Hartley <james.hartley@imgtec.com>,
+        James Hogan <james.hogan@imgtec.com>
+Subject: Re: [PATCH V2 0/3] pinctrl: Support for IMG Pistachio
+Message-ID: <20150331140034.GE28951@linux-mips.org>
+References: <1427757416-14491-1-git-send-email-abrestic@chromium.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20150331111300.GB28951@linux-mips.org>
+In-Reply-To: <1427757416-14491-1-git-send-email-abrestic@chromium.org>
 User-Agent: Mutt/1.5.23 (2014-03-12)
-X-purgate-type: clean
-X-purgate-Ad: Categorized by eleven eXpurgate (R) http://www.eleven.de
-X-purgate: clean
-X-purgate: This mail is considered clean (visit http://www.eleven.de for further information)
-X-purgate-size: 790
-X-purgate-ID: 151667::1427806586-00005972-F158CAAB/0/0
-Return-Path: <aaro.koskinen@nokia.com>
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46648
+X-archive-position: 46649
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aaro.koskinen@nokia.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,30 +48,23 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi,
+On Mon, Mar 30, 2015 at 04:16:53PM -0700, Andrew Bresticker wrote:
 
-On Tue, Mar 31, 2015 at 01:13:00PM +0200, Ralf Baechle wrote:
-> On Wed, Feb 25, 2015 at 05:21:05PM +0200, Aaro Koskinen wrote:
-> >  #define SOFTRES_REG	0x1f000500
-> > @@ -36,8 +38,19 @@ static void mips_machine_power_off(void)
-> >  	mips_machine_restart(NULL);
-> >  }
-> >  
-> > +static int mips_kexec_prepare(struct kimage *image)
-> > +{
-> > +	kexec_args[0] = fw_arg0;
-> > +	kexec_args[1] = fw_arg1;
-> > +	kexec_args[2] = fw_arg2;
-> > +	kexec_args[3] = fw_arg3;
-> > +
-> > +	return 0;
-> > +}
+> This series adds support for the system pin and GPIO controller on the IMG
+> Pistachio SoC.  Pistachio's system pin controller manages 99 pins, 90 of
+> which are MFIOs which can be muxed between multiple functions or used
+> as GPIOs.  The GPIO control for the 90 MFIOs is broken up into banks
+> of 16.  Pistachio also has a second pin controller, the RPU pin controller,
+> which will be supported by a future patchset through an extension to this
+> driver.
 > 
-> This makes arguments coming from the firmware non-overridable default?
+> Test on an IMG Pistachio BuB.  Based on mips-for-linux-next which inluces my
+> series adding Pistachio platform support [1].  A branch with this series is
+> available at [2].
 
-Yes, the new kernel will boot with the same arguments as the old kernel...
+Does this mean you want me to funnel this through the MIPS tree?  If so,
+could I have an Ack from the maintainers?
 
-I guess the kernel command line at least should be taken from kexec,
-OCTEON seems to have some code for that.
+Thanks,
 
-A.
+  Ralf

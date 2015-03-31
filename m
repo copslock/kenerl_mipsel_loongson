@@ -1,38 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Mar 2015 22:59:57 +0200 (CEST)
-Received: from kiutl.biot.com ([31.172.244.210]:44249 "EHLO kiutl.biot.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27014874AbbCaU74RwWdu (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 31 Mar 2015 22:59:56 +0200
-Received: from spamd by kiutl.biot.com with sa-checked (Exim 4.83)
-        (envelope-from <bert@biot.com>)
-        id 1Yd3GO-0006oH-6G
-        for linux-mips@linux-mips.org; Tue, 31 Mar 2015 22:59:57 +0200
-Received: from [2a02:578:4a04:2a00::5] (helo=sumner.biot.com)
-        by kiutl.biot.com with esmtps (TLSv1.2:DHE-RSA-AES128-SHA:128)
-        (Exim 4.83)
-        (envelope-from <bert@biot.com>)
-        id 1Yd3GG-0006nq-Os; Tue, 31 Mar 2015 22:59:48 +0200
-Received: from bert by sumner.biot.com with local (Exim 4.82)
-        (envelope-from <bert@biot.com>)
-        id 1Yd3GG-0003dw-DZ; Tue, 31 Mar 2015 22:59:48 +0200
-From:   Bert Vermeulen <bert@biot.com>
-To:     ralf@linux-mips.org, broonie@kernel.org, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        andy.shevchenko@gmail.com, jogo@openwrt.org
-Cc:     Bert Vermeulen <bert@biot.com>
-Subject: [PATCH v5] spi: Add SPI driver for Mikrotik RB4xx series boards
-Date:   Tue, 31 Mar 2015 22:59:35 +0200
-Message-Id: <1427835575-13949-1-git-send-email-bert@biot.com>
-X-Mailer: git-send-email 1.9.1
-Return-Path: <bert@biot.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Mar 2015 23:10:00 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:33582 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S27014871AbbCaVJ5xIKUF (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 31 Mar 2015 23:09:57 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.9/8.14.8) with ESMTP id t2VL9vkl002122;
+        Tue, 31 Mar 2015 23:09:57 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.9/8.14.9/Submit) id t2VL9vZx002120;
+        Tue, 31 Mar 2015 23:09:57 +0200
+Date:   Tue, 31 Mar 2015 23:09:57 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     "Maciej W. Rozycki" <macro@codesourcery.com>
+Cc:     linux-mips@linux-mips.org
+Subject: Re: [PATCH] MIPS: c-r4k.c: Fix the 74K D-cache alias erratum
+ workaround
+Message-ID: <20150331210957.GI28951@linux-mips.org>
+References: <alpine.DEB.1.10.1411160041230.2881@tp.orcam.me.uk>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <alpine.DEB.1.10.1411160041230.2881@tp.orcam.me.uk>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46672
+X-archive-position: 46673
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: bert@biot.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,303 +43,41 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This driver mediates access between the connected CPLD and other devices
-on the bus.
+On Sun, Nov 16, 2014 at 01:02:29AM +0000, Maciej W. Rozycki wrote:
 
-The m25p80-compatible boot flash and (some models) MMC use regular SPI,
-bitbanged as required by the SoC. However the SPI-connected CPLD has
-a "fast write" mode, in which two bits are transferred by SPI clock
-cycle. The second bit is transmitted with the SoC's CS2 pin.
+> Fix the 74K D-cache alias erratum workaround so that it actually works.  
+> Our current code sets MIPS_CACHE_VTAG for the D-cache, but that flag 
+> only has any effect for the I-cache.  Additionally MIPS_CACHE_PINDEX is 
+> set for the D-cache if CP0.Config7.AR is also set for an affected 
+> processor, leading to confusing information in the bootstrap log (the 
+> flag isn't used beyond that).
+> 
+> So delete the setting of MIPS_CACHE_VTAG and rely on MIPS_CACHE_ALIASES, 
+> set in a common place, removing I-cache coherency issues seen in GDB 
+> testing with software breakpoints, gdbserver and ptrace(2), on affected 
+> systems.
+> 
+> While at it add a little piece of explanation of what CP0.Config6.SYND 
+> is so that people do not have to chase documentation.
+> 
+> Signed-off-by: Maciej W. Rozycki <macro@codesourcery.com>
+> ---
+> Hi,
+> 
+>  It looks like I-cache aliasing handling setup needs some TLC too, first 
+> of all what's the purpose of checking CP0.Config7.IAR and setting the 
+> MIPS_CACHE_ALIASES flag for the I-cache where the flag is nowhere used 
+> afterwards?  Anyway that's something for another occasion.  For now, 
+> please apply this change.
 
-Protocol drivers using this fast write facility signal this by setting
-the cs_change flag on transfers.
+Applied, finally.  I take it the discussion in
+https://patchwork.linux-mips.org/patch/8876/ does not concern the
+correctness of your patch.
 
-Signed-off-by: Bert Vermeulen <bert@biot.com>
----
- drivers/spi/Kconfig     |   6 ++
- drivers/spi/Makefile    |   1 +
- drivers/spi/spi-rb4xx.c | 244 ++++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 251 insertions(+)
- create mode 100644 drivers/spi/spi-rb4xx.c
+Backporting this patch to older kernels is getting increasingly more
+painful so I only did so for kernels as old as 3.13.  If anybody cares,
+send patches :)
 
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index ab8dfbe..8b1beaf6 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -429,6 +429,12 @@ config SPI_ROCKCHIP
- 	  The main usecase of this controller is to use spi flash as boot
- 	  device.
- 
-+config SPI_RB4XX
-+	tristate "Mikrotik RB4XX SPI master"
-+	depends on SPI_MASTER && ATH79
-+	help
-+	  SPI controller driver for the Mikrotik RB4xx series boards.
-+
- config SPI_RSPI
- 	tristate "Renesas RSPI/QSPI controller"
- 	depends on SUPERH || ARCH_SHMOBILE || COMPILE_TEST
-diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
-index d8cbf65..0218f39 100644
---- a/drivers/spi/Makefile
-+++ b/drivers/spi/Makefile
-@@ -66,6 +66,7 @@ obj-$(CONFIG_SPI_PXA2XX)		+= spi-pxa2xx-platform.o
- obj-$(CONFIG_SPI_PXA2XX_PCI)		+= spi-pxa2xx-pci.o
- obj-$(CONFIG_SPI_QUP)			+= spi-qup.o
- obj-$(CONFIG_SPI_ROCKCHIP)		+= spi-rockchip.o
-+obj-$(CONFIG_SPI_RB4XX)			+= spi-rb4xx.o
- obj-$(CONFIG_SPI_RSPI)			+= spi-rspi.o
- obj-$(CONFIG_SPI_S3C24XX)		+= spi-s3c24xx-hw.o
- spi-s3c24xx-hw-y			:= spi-s3c24xx.o
-diff --git a/drivers/spi/spi-rb4xx.c b/drivers/spi/spi-rb4xx.c
-new file mode 100644
-index 0000000..155b81c
---- /dev/null
-+++ b/drivers/spi/spi-rb4xx.c
-@@ -0,0 +1,244 @@
-+/*
-+ * SPI controller driver for the Mikrotik RB4xx boards
-+ *
-+ * Copyright (C) 2010 Gabor Juhos <juhosg@openwrt.org>
-+ * Copyright (C) 2015 Bert Vermeulen <bert@biot.com>
-+ *
-+ * This file was based on the patches for Linux 2.6.27.39 published by
-+ * MikroTik for their RouterBoard 4xx series devices.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2 as
-+ * published by the Free Software Foundation.
-+ *
-+ */
-+
-+#include <linux/kernel.h>
-+#include <linux/module.h>
-+#include <linux/platform_device.h>
-+#include <linux/clk.h>
-+#include <linux/spi/spi.h>
-+
-+#include <asm/mach-ath79/ar71xx_regs.h>
-+
-+#define SPI_CLOCK_FASTEST	0x40
-+#define SPI_HZ			33333334
-+#define CPLD_CMD_WRITE_NAND	0x08 /* bulk write mode */
-+
-+struct rb4xx_spi {
-+	void __iomem		*base;
-+	struct spi_master	*master;
-+};
-+
-+static inline u32 rb4xx_read(struct rb4xx_spi *rbspi, u32 reg)
-+{
-+	return __raw_readl(rbspi->base + reg);
-+}
-+
-+static inline void rb4xx_write(struct rb4xx_spi *rbspi, u32 reg, u32 value)
-+{
-+	__raw_writel(value, rbspi->base + reg);
-+}
-+
-+static inline void do_spi_clk(struct rb4xx_spi *rbspi, u32 spi_ioc, int value)
-+{
-+	u32 regval;
-+
-+	regval = spi_ioc;
-+	if (value & BIT(0))
-+		regval |= AR71XX_SPI_IOC_DO;
-+
-+	rb4xx_write(rbspi, AR71XX_SPI_REG_IOC, regval);
-+	rb4xx_write(rbspi, AR71XX_SPI_REG_IOC, regval | AR71XX_SPI_IOC_CLK);
-+}
-+
-+static void do_spi_byte(struct rb4xx_spi *rbspi, u32 spi_ioc, u8 byte)
-+{
-+	int i;
-+
-+	for (i = 7; i >= 0; i--)
-+		do_spi_clk(rbspi, spi_ioc, byte >> i);
-+}
-+
-+static inline void do_spi_clk_fast(struct rb4xx_spi *rbspi, u32 spi_ioc,
-+				   u8 value)
-+{
-+	u32 regval;
-+
-+	regval = spi_ioc;
-+	if (value & BIT(1))
-+		regval |= AR71XX_SPI_IOC_DO;
-+	if (value & BIT(0))
-+		regval |= AR71XX_SPI_IOC_CS2;
-+
-+	rb4xx_write(rbspi, AR71XX_SPI_REG_IOC, regval);
-+	rb4xx_write(rbspi, AR71XX_SPI_REG_IOC, regval | AR71XX_SPI_IOC_CLK);
-+}
-+
-+/* Two bits at a time, msb first */
-+static void do_spi_byte_fast(struct rb4xx_spi *rbspi, u32 spi_ioc, u8 byte)
-+{
-+	do_spi_clk_fast(rbspi, spi_ioc, byte >> 6);
-+	do_spi_clk_fast(rbspi, spi_ioc, byte >> 4);
-+	do_spi_clk_fast(rbspi, spi_ioc, byte >> 2);
-+	do_spi_clk_fast(rbspi, spi_ioc, byte >> 0);
-+}
-+
-+static void rb4xx_set_cs(struct spi_device *spi, bool enable)
-+{
-+	struct rb4xx_spi *rbspi = spi_master_get_devdata(spi->master);
-+
-+	/*
-+	 * Setting CS is done along with bitbanging the actual values,
-+	 * since it's all on the same hardware register. However the
-+	 * CPLD needs CS deselected after every command.
-+	 */
-+	if (!enable)
-+		rb4xx_write(rbspi, AR71XX_SPI_REG_IOC,
-+			    AR71XX_SPI_IOC_CS0 | AR71XX_SPI_IOC_CS1);
-+}
-+
-+/* Deselect CS0 and CS1. */
-+static int rb4xx_unprepare_transfer_hardware(struct spi_master *master)
-+{
-+	struct rb4xx_spi *rbspi = spi_master_get_devdata(master);
-+
-+	rb4xx_write(rbspi, AR71XX_SPI_REG_IOC,
-+		    AR71XX_SPI_IOC_CS0 | AR71XX_SPI_IOC_CS1);
-+
-+	return 0;
-+}
-+
-+static int rb4xx_transfer_one(struct spi_master *master,
-+			      struct spi_device *spi, struct spi_transfer *t)
-+{
-+	struct rb4xx_spi *rbspi = spi_master_get_devdata(master);
-+	int i;
-+	u32 spi_ioc;
-+	u8 *rx_buf;
-+	const u8 *tx_buf;
-+	unsigned char out;
-+
-+	/*
-+	 * Prime the SPI register with the SPI device selected. The m25p80 boot
-+	 * flash and CPLD share the CS0 pin. This works because the CPLD's
-+	 * command set was designed to almost not clash with that of the
-+	 * boot flash.
-+	 */
-+	if (spi->chip_select == 2)
-+		spi_ioc = AR71XX_SPI_IOC_CS0;
-+	else
-+		spi_ioc = AR71XX_SPI_IOC_CS1;
-+
-+	tx_buf = t->tx_buf;
-+	rx_buf = t->rx_buf;
-+	for (i = 0; i < t->len; ++i) {
-+		out = tx_buf ? tx_buf[i] : 0x00;
-+		if (spi->chip_select == 1 && t->cs_change) {
-+			/* CPLD in bulk write mode gets two bits per clock */
-+			do_spi_byte_fast(rbspi, spi_ioc, out);
-+			/* Don't want the real CS toggled */
-+			t->cs_change = 0;
-+		} else {
-+			do_spi_byte(rbspi, spi_ioc, out);
-+		}
-+		if (!rx_buf)
-+			continue;
-+		rx_buf[i] = rb4xx_read(rbspi, AR71XX_SPI_REG_RDS);
-+	}
-+	spi_finalize_current_transfer(master);
-+
-+	return 0;
-+}
-+
-+static int rb4xx_spi_setup(struct spi_device *spi)
-+{
-+	if (spi->mode & ~SPI_CS_HIGH) {
-+		dev_err(&spi->dev, "mode %x not supported\n", spi->mode);
-+		return -EINVAL;
-+	}
-+
-+	if (spi->bits_per_word != 8 && spi->bits_per_word != 0) {
-+		dev_err(&spi->dev, "bits_per_word %u not supported\n",
-+			spi->bits_per_word);
-+		return -EINVAL;
-+	}
-+
-+	return 0;
-+}
-+
-+static int rb4xx_spi_probe(struct platform_device *pdev)
-+{
-+	struct spi_master *master;
-+	struct clk *ahb_clk;
-+	struct rb4xx_spi *rbspi;
-+	struct resource *r;
-+	int err;
-+	void __iomem *spi_base;
-+
-+	ahb_clk = devm_clk_get(&pdev->dev, "ahb");
-+	if (IS_ERR(ahb_clk))
-+		return PTR_ERR(ahb_clk);
-+
-+	err = clk_prepare_enable(ahb_clk);
-+	if (err)
-+		return err;
-+
-+	r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+	spi_base = devm_ioremap_resource(&pdev->dev, r);
-+	if (!spi_base)
-+		return PTR_ERR(spi_base);
-+
-+	master = spi_alloc_master(&pdev->dev, sizeof(*rbspi));
-+	if (!master)
-+		return -ENOMEM;
-+
-+	master->bus_num = 0;
-+	master->num_chipselect = 3;
-+	master->setup = rb4xx_spi_setup;
-+	master->transfer_one = rb4xx_transfer_one;
-+	master->unprepare_transfer_hardware = rb4xx_unprepare_transfer_hardware;
-+	master->set_cs = rb4xx_set_cs;
-+
-+	rbspi = spi_master_get_devdata(master);
-+	rbspi->master = master;
-+	rbspi->base = spi_base;
-+
-+	platform_set_drvdata(pdev, rbspi);
-+
-+	err = spi_register_master(master);
-+	if (err) {
-+		dev_err(&pdev->dev, "failed to register SPI master\n");
-+		spi_master_put(master);
-+		return err;
-+	}
-+
-+	/* Enable SPI */
-+	rb4xx_write(rbspi, AR71XX_SPI_REG_FS, AR71XX_SPI_FS_GPIO);
-+
-+	return 0;
-+}
-+
-+static int rb4xx_spi_remove(struct platform_device *pdev)
-+{
-+	struct rb4xx_spi *rbspi = platform_get_drvdata(pdev);
-+
-+	spi_master_put(rbspi->master);
-+
-+	return 0;
-+}
-+
-+static struct platform_driver rb4xx_spi_drv = {
-+	.probe		= rb4xx_spi_probe,
-+	.remove		= rb4xx_spi_remove,
-+	.driver		= {
-+		.name	= "rb4xx-spi",
-+	},
-+};
-+
-+module_platform_driver(rb4xx_spi_drv);
-+
-+MODULE_DESCRIPTION("Mikrotik RB4xx SPI controller driver");
-+MODULE_AUTHOR("Gabor Juhos <juhosg@openwrt.org>");
-+MODULE_AUTHOR("Bert Vermeulen <bert@biot.com>");
-+MODULE_LICENSE("GPL v2");
--- 
-1.9.1
+Thanks Maciej!
+
+  Ralf

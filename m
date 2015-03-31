@@ -1,43 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Mar 2015 20:41:48 +0200 (CEST)
-Received: from arrakis.dune.hu ([78.24.191.176]:33127 "EHLO arrakis.dune.hu"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27009059AbbCaSlqksl28 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 31 Mar 2015 20:41:46 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by arrakis.dune.hu (Postfix) with ESMTP id E4D3728C95E;
-        Tue, 31 Mar 2015 20:41:04 +0200 (CEST)
-X-Virus-Scanned: at arrakis.dune.hu
-Received: from mail-qg0-f42.google.com (mail-qg0-f42.google.com [209.85.192.42])
-        by arrakis.dune.hu (Postfix) with ESMTPSA id 55DD428C95D;
-        Tue, 31 Mar 2015 20:41:02 +0200 (CEST)
-Received: by qgfa8 with SMTP id a8so22863479qgf.0;
-        Tue, 31 Mar 2015 11:41:40 -0700 (PDT)
-X-Received: by 10.140.150.131 with SMTP id 125mr52333713qhw.55.1427827300774;
- Tue, 31 Mar 2015 11:41:40 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 10.140.42.229 with HTTP; Tue, 31 Mar 2015 11:41:20 -0700 (PDT)
-In-Reply-To: <1427819134-29128-1-git-send-email-bert@biot.com>
-References: <1427819134-29128-1-git-send-email-bert@biot.com>
-From:   Jonas Gorski <jogo@openwrt.org>
-Date:   Tue, 31 Mar 2015 20:41:20 +0200
-Message-ID: <CAOiHx=krTV-NKPD-C1jMhyjmz8qWuLmBWQVwSYGqmaFyq96QWg@mail.gmail.com>
-Subject: Re: [PATCH v4] spi: Add SPI driver for Mikrotik RB4xx series boards
-To:     Bert Vermeulen <bert@biot.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Mark Brown <broonie@kernel.org>,
-        MIPS Mailing List <linux-mips@linux-mips.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        linux-spi@vger.kernel.org, andy.shevchenko@gmail.com
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <jogo@openwrt.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Mar 2015 20:46:07 +0200 (CEST)
+Received: from youngberry.canonical.com ([91.189.89.112]:49700 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010448AbbCaSqFxVfF- (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 31 Mar 2015 20:46:05 +0200
+Received: from 1.general.kamal.us.vpn ([10.172.68.52] helo=fourier)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:DHE_RSA_AES_128_CBC_SHA1:16)
+        (Exim 4.71)
+        (envelope-from <kamal@canonical.com>)
+        id 1Yd1Am-0006lw-SO; Tue, 31 Mar 2015 18:46:01 +0000
+Received: from kamal by fourier with local (Exim 4.82)
+        (envelope-from <kamal@whence.com>)
+        id 1Yd1Ak-0006Ft-Eb; Tue, 31 Mar 2015 11:45:58 -0700
+From:   Kamal Mostafa <kamal@canonical.com>
+To:     James Hogan <james.hogan@imgtec.com>
+Cc:     Paolo Bonzini <pbonzini@redhat.com>,
+        Gleb Natapov <gleb@kernel.org>, kvm@vger.kernel.org,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        Sanjay Lal <sanjayl@kymasys.com>,
+        Kamal Mostafa <kamal@canonical.com>,
+        kernel-team@lists.ubuntu.com
+Subject: [3.13.y-ckt stable] Patch "MIPS: KVM: Deliver guest interrupts after local_irq_disable()" has been added to staging queue
+Date:   Tue, 31 Mar 2015 11:45:57 -0700
+Message-Id: <1427827557-24016-1-git-send-email-kamal@canonical.com>
+X-Mailer: git-send-email 1.9.1
+X-Extended-Stable: 3.13
+Return-Path: <kamal@canonical.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46661
+X-archive-position: 46662
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jogo@openwrt.org
+X-original-sender: kamal@canonical.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,44 +45,24 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi,
+This is a note to let you know that I have just added a patch titled
 
-On Tue, Mar 31, 2015 at 6:25 PM, Bert Vermeulen <bert@biot.com> wrote:
-> This driver mediates access between the connected CPLD and other devices
-> on the bus.
->
-> The m25p80-compatible boot flash and (some models) MMC use regular SPI,
-> bitbanged as required by the SoC. However the SPI-connected CPLD has
-> a "fast write" mode, in which two bits are transferred by SPI clock
-> cycle. The second bit is transmitted with the SoC's CS2 pin.
->
-> Protocol drivers using this fast write facility signal this by setting
-> the cs_change flag on transfers.
->
-> Signed-off-by: Bert Vermeulen <bert@biot.com>
-> ---
->  drivers/spi/Kconfig     |   6 ++
->  drivers/spi/Makefile    |   1 +
->  drivers/spi/spi-rb4xx.c | 244 ++++++++++++++++++++++++++++++++++++++++++++++++
->  3 files changed, 251 insertions(+)
->  create mode 100644 drivers/spi/spi-rb4xx.c
->
-> diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-> index ab8dfbe..aa76ce5 100644
-> --- a/drivers/spi/Kconfig
-> +++ b/drivers/spi/Kconfig
-> @@ -429,6 +429,12 @@ config SPI_ROCKCHIP
->           The main usecase of this controller is to use spi flash as boot
->           device.
->
-> +config SPI_RB4XX
-> +       tristate "Mikrotik RB4XX SPI master"
-> +       depends on SPI_MASTER && ATH79_MACH_RB4XX
+    MIPS: KVM: Deliver guest interrupts after local_irq_disable()
 
-There is no ATH79_MACH_RB4XX in upstream. I suggest depending on just
-ATH79, allowing maintainers/patch submitters to at least test build
-any future modifications on it.
+to the linux-3.13.y-queue branch of the 3.13.y-ckt extended stable tree 
+which can be found at:
 
+ http://kernel.ubuntu.com/git?p=ubuntu/linux.git;a=shortlog;h=refs/heads/linux-3.13.y-queue
 
-Regards
-Jonas
+This patch is scheduled to be released in version 3.13.11-ckt18.
+
+If you, or anyone else, feels it should not be added to this tree, please 
+reply to this email.
+
+For more information about the 3.13.y-ckt tree, see
+https://wiki.ubuntu.com/Kernel/Dev/ExtendedStable
+
+Thanks.
+-Kamal
+
+------

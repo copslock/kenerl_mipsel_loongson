@@ -1,34 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Mar 2015 12:56:53 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:55961 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Mar 2015 13:13:02 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:56137 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27010149AbbCaK4vi0fAR (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 31 Mar 2015 12:56:51 +0200
+        id S27010266AbbCaLNAfD9Rl (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 31 Mar 2015 13:13:00 +0200
 Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.9/8.14.8) with ESMTP id t2VAupWb031375;
-        Tue, 31 Mar 2015 12:56:51 +0200
+        by scotty.linux-mips.net (8.14.9/8.14.8) with ESMTP id t2VBD0dM031770;
+        Tue, 31 Mar 2015 13:13:00 +0200
 Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.9/8.14.9/Submit) id t2VAuoHi031374;
-        Tue, 31 Mar 2015 12:56:50 +0200
-Date:   Tue, 31 Mar 2015 12:56:50 +0200
+        by scotty.linux-mips.net (8.14.9/8.14.9/Submit) id t2VBD0Hf031769;
+        Tue, 31 Mar 2015 13:13:00 +0200
+Date:   Tue, 31 Mar 2015 13:13:00 +0200
 From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Joshua Kinard <kumba@gentoo.org>
-Cc:     Alessandro Zummo <a.zummo@towertech.it>,
-        Linux/MIPS <linux-mips@linux-mips.org>,
-        rtc-linux@googlegroups.com, LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2] MIPS: IP32: Add platform data hooks to use DS1685
- driver
-Message-ID: <20150331105650.GA28951@linux-mips.org>
-References: <54EFD536.2080508@gentoo.org>
+To:     Aaro Koskinen <aaro.koskinen@nokia.com>
+Cc:     Paul Burton <paul.burton@imgtec.com>, linux-mips@linux-mips.org
+Subject: Re: [PATCH] MIPS: malta: pass fw arguments on kexec
+Message-ID: <20150331111300.GB28951@linux-mips.org>
+References: <1424877665-4487-1-git-send-email-aaro.koskinen@nokia.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <54EFD536.2080508@gentoo.org>
+In-Reply-To: <1424877665-4487-1-git-send-email-aaro.koskinen@nokia.com>
 User-Agent: Mutt/1.5.23 (2014-03-12)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46643
+X-archive-position: 46644
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,69 +42,48 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Feb 26, 2015 at 09:23:50PM -0500, Joshua Kinard wrote:
+On Wed, Feb 25, 2015 at 05:21:05PM +0200, Aaro Koskinen wrote:
 
-> This modifies the IP32 (SGI O2) platform and reset code to utilize the new
-> rtc-ds1685 driver.  The old mc146818rtc.h header is removed and ip32_defconfig
-> is updated as well.
-
-In general - good cleanup.  But:
-
-> index 511e9ff..ec9eb7f 100644
-> --- a/arch/mips/sgi-ip32/ip32-platform.c
-> +++ b/arch/mips/sgi-ip32/ip32-platform.c
-[...]
->  MODULE_AUTHOR("Ralf Baechle <ralf@linux-mips.org>");
->  MODULE_LICENSE("GPL");
-> -MODULE_DESCRIPTION("8250 UART probe driver for SGI IP32 aka O2");
-> +MODULE_DESCRIPTION("IP32 platform setup for SGI IP32 aka O2");
-
-This isn't even a kernel module so I've just nuked all these MODULE_*
-calls.
-
-> diff --git a/arch/mips/sgi-ip32/ip32-reset.c b/arch/mips/sgi-ip32/ip32-reset.c
-> index 44b3470..ef21706 100644
-> --- a/arch/mips/sgi-ip32/ip32-reset.c
-> +++ b/arch/mips/sgi-ip32/ip32-reset.c
-[...]
-> -static void ip32_machine_restart(char *cmd)
-> +static __noreturn void ip32_poweroff(void *data)
->  {
-> -	crime->control = CRIME_CONTROL_HARD_RESET;
-> -	while (1);
-> -}
-> +	void (*poweroff_func)(struct platform_device *) =
-> +		symbol_get(ds1685_rtc_poweroff);
-> +
-> +#ifdef CONFIG_MODULES
-> +	/* If the first __symbol_get failed, our module wasn't loaded. */
-> +	if (!poweroff_func) {
-> +		request_module("rtc-ds1685");
-> +		poweroff_func = symbol_get(ds1685_rtc_poweroff);
-> +	}
-> +#endif
-
-symbol_get() calls are high on my list of items that indicate a piece of
-code is probably ill-structured.
-
-While RTCs often deal with power the RTC really only wants to deal with
-time and so power stuff should rather go elsewhere.  I suggest to take a
-look at drivers/power/reset/.  A small driver there could set pm_power_off
-approriately.  drivers/power/reset/restart-poweroff.c is a very compact
-example.
-
-> -	shuting_down = 1;
-> +	shutting_down = 1;
-
-I'm amazed nobody of the church of speel patchology has caught this earlier.
-
-> @@ -190,15 +141,12 @@ static __init int ip32_reboot_setup(void)
+> Pass fw arguments on kexec to the new kernel.
+> 
+> Tested with MIPS64 QEMU. Without the patch the new kernel will default to
+> (likely) incorrect default memory and console setup, making kexec pretty
+> much useless.
+> 
+> Signed-off-by: Aaro Koskinen <aaro.koskinen@nokia.com>
+> ---
+>  arch/mips/mti-malta/malta-reset.c | 13 +++++++++++++
+>  1 file changed, 13 insertions(+)
+> 
+> diff --git a/arch/mips/mti-malta/malta-reset.c b/arch/mips/mti-malta/malta-reset.c
+> index 2fd2cc2..f218ba8 100644
+> --- a/arch/mips/mti-malta/malta-reset.c
+> +++ b/arch/mips/mti-malta/malta-reset.c
+> @@ -8,8 +8,10 @@
+>   */
+>  #include <linux/io.h>
+>  #include <linux/pm.h>
+> +#include <linux/kexec.h>
 >  
->  	_machine_restart = ip32_machine_restart;
->  	_machine_halt = ip32_machine_halt;
-> -	pm_power_off = ip32_machine_power_off;
-> +	pm_power_off = ip32_machine_halt;
+>  #include <asm/reboot.h>
+> +#include <asm/bootinfo.h>
+>  #include <asm/mach-malta/malta-pm.h>
+>  
+>  #define SOFTRES_REG	0x1f000500
+> @@ -36,8 +38,19 @@ static void mips_machine_power_off(void)
+>  	mips_machine_restart(NULL);
+>  }
+>  
+> +static int mips_kexec_prepare(struct kimage *image)
+> +{
+> +	kexec_args[0] = fw_arg0;
+> +	kexec_args[1] = fw_arg1;
+> +	kexec_args[2] = fw_arg2;
+> +	kexec_args[3] = fw_arg3;
+> +
+> +	return 0;
+> +}
 
-So halt and power_off no do the same?
+This makes arguments coming from the firmware non-overridable default?
 
   Ralf

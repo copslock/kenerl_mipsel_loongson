@@ -1,43 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Mar 2015 10:10:25 +0200 (CEST)
-Received: from lb1-smtp-cloud3.xs4all.net ([194.109.24.22]:59400 "EHLO
-        lb1-smtp-cloud3.xs4all.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27006802AbbCaIKYfyxuB (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 31 Mar 2015 10:10:24 +0200
-Received: from [192.168.10.109] ([83.160.161.190])
-        by smtp-cloud3.xs4all.net with ESMTP
-        id A8AF1q00546mmVf018AG9e; Tue, 31 Mar 2015 10:10:18 +0200
-Message-ID: <1427789415.2408.45.camel@x220>
-Subject: Re: [PATCH V2 3/3] pinctrl: Add Pistachio SoC pin control driver
-From:   Paul Bolle <pebolle@tiscali.nl>
-To:     Andrew Bresticker <abrestic@chromium.org>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        Alexandre Courbot <gnurou@gmail.com>,
-        Ralf Baechle <ralf@linux-mips.org>, devicetree@vger.kernel.org,
-        linux-gpio@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org,
-        Ezequiel Garcia <ezequiel.garcia@imgtec.com>,
-        James Hartley <james.hartley@imgtec.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        Damien Horsley <Damien.Horsley@imgtec.com>,
-        Govindraj Raja <govindraj.raja@imgtec.com>,
-        Kevin Cernekee <cernekee@chromium.org>
-Date:   Tue, 31 Mar 2015 10:10:15 +0200
-In-Reply-To: <1427757416-14491-4-git-send-email-abrestic@chromium.org>
-References: <1427757416-14491-1-git-send-email-abrestic@chromium.org>
-         <1427757416-14491-4-git-send-email-abrestic@chromium.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.10.4 (3.10.4-4.fc20) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Return-Path: <pebolle@tiscali.nl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Mar 2015 10:35:08 +0200 (CEST)
+Received: from mail-ig0-f175.google.com ([209.85.213.175]:35996 "EHLO
+        mail-ig0-f175.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008592AbbCaIfGIwguf (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 31 Mar 2015 10:35:06 +0200
+Received: by igbud6 with SMTP id ud6so12141777igb.1;
+        Tue, 31 Mar 2015 01:34:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc:content-type;
+        bh=QMyP2N2k1TKi8TqbGjYYesFnPQprygNCY4wX3sHJJ4Q=;
+        b=auxg481g5Q+lJ9BCNtfYSHArHAZCkBXQtfn67y0QV2j3FEJxbGU37Tr9IIZC1d/M8S
+         51gsv9VYlh8QMPjqHB/BZNdBZ9VXqhkVikOPIL+tSoLTSQPkgYOGj4P1BviAlOFNd/Tl
+         A+Bln0lEWm2JrAC+voEYtRmuTv+VWF3jMMSIcJLhSkZU6XmWihXAcFFizRmMvSLPToDS
+         nNfmBL5UzzyJtptifEvJEt7v+Die7cePffnaFw6FppMvc1hfIy547B6nU4lCAYcUFQ7v
+         aclQTZ/Jnzk4qpHx35hQUlwWVmG7yqG/iQWk/PBMz+AS5iBQA4+uR9ajAS28DcUkgZU5
+         Uz/w==
+X-Received: by 10.50.143.36 with SMTP id sb4mr2566986igb.0.1427790899592; Tue,
+ 31 Mar 2015 01:34:59 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 10.50.239.38 with HTTP; Tue, 31 Mar 2015 01:34:39 -0700 (PDT)
+In-Reply-To: <20150330201015.GA3757@linux-mips.org>
+References: <1427389644-92793-1-git-send-email-fykcee1@gmail.com> <20150330201015.GA3757@linux-mips.org>
+From:   cee1 <fykcee1@gmail.com>
+Date:   Tue, 31 Mar 2015 16:34:39 +0800
+Message-ID: <CAGXxSxU_fCvUqkrFDU64MOgsyOW3XkcrSuB7DjcBMODG-B8=xw@mail.gmail.com>
+Subject: Re: [v5] MIPS: lib: csum_partial: more instruction paral
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        Chen Jie <chenj@lemote.com>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <fykcee1@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46639
+X-archive-position: 46640
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: pebolle@tiscali.nl
+X-original-sender: fykcee1@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,101 +51,43 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The patch adds a mismatch between the Kconfig symbol (a bool) and the
-code (which suggests that a modular build is also possible).
+2015-03-31 4:10 GMT+08:00 Ralf Baechle <ralf@linux-mips.org>:
+>> One example about how this patch works is in CSUM_BIGCHUNK1:
+>> // ** original **    vs    ** patch applied **
+>>     ADDC(sum, t0)           ADDC(t0, t1)
+>>     ADDC(sum, t1)           ADDC(t2, t3)
+>>     ADDC(sum, t2)           ADDC(sum, t0)
+>>     ADDC(sum, t3)           ADDC(sum, t2)
+>>
+>> With this patch applied, ADDC and the **next next** ADDC are independent.
+>
+> This is interesting because even CPUs as old as the R2000 have a pipeline
+> bypass which allows an instruction to use a result written to a register
+> by an immediately preceeeding instruction.
 
-On Mon, 2015-03-30 at 16:16 -0700, Andrew Bresticker wrote:
-> --- a/drivers/pinctrl/Kconfig
-> +++ b/drivers/pinctrl/Kconfig
+But if removes some dependency(as the patch did), instruction A and
+instruction B can be issued at the same cycle[1], instead of B waiting
+for the result from A   (a pipeline bypass reduces the wait time, but
+not eliminates it, right?)
 
-> +config PINCTRL_PISTACHIO
-> +	def_bool y if MACH_PISTACHIO
+>
+> Can you explain why this patch is so beneficial for Loongson 3A?
 
-This adds a bool symbol.
+I have written a simply test[2] to measure the performance gain on
+Loongson 3A, the result[3] shows at most 50% performance gain.
 
-> +	select PINMUX
-> +	select GENERIC_PINCONF
-> +	select GPIOLIB_IRQCHIP
-
-> --- a/drivers/pinctrl/Makefile
-> +++ b/drivers/pinctrl/Makefile
-
-> +obj-$(CONFIG_PINCTRL_PISTACHIO)	+= pinctrl-pistachio.o
-
-So pinctrl-pistachio.o will never be part of a module.
-
-> --- /dev/null
-> +++ b/drivers/pinctrl/pinctrl-pistachio.c
-
-> +#include <linux/module.h>
-
-Chances are this include is not needed.
-
-> +static struct pinctrl_desc pistachio_pinctrl_desc = {
-> +	.name = "pistachio-pinctrl",
-> +	.pctlops = &pistachio_pinctrl_ops,
-> +	.pmxops = &pistachio_pinmux_ops,
-> +	.confops = &pistachio_pinconf_ops,
-> +	.owner = THIS_MODULE,
-
-According to include/linux/export.h THIS_MODULE is equivalent to NULL,
-so this can probably be dropped.
-
-> +};
-
-> +#define GPIO_BANK(_bank, _pin_base, _npins)				\
-> +	{								\
-> +		.gpio_chip = {						\
-> +			.label = "GPIO" #_bank,				\
-> +			.request = pistachio_gpio_request,		\
-> +			.free = pistachio_gpio_free,			\
-> +			.get_direction = pistachio_gpio_get_direction,	\
-> +			.direction_input = pistachio_gpio_direction_input, \
-> +			.direction_output = pistachio_gpio_direction_output, \
-> +			.get = pistachio_gpio_get,			\
-> +			.set = pistachio_gpio_set,			\
-> +			.base = _pin_base,				\
-> +			.ngpio = _npins,				\
-> +			.owner = THIS_MODULE,				\
-
-Ditto.
-
-> +		},							\
-> +		.irq_chip = {						\
-> +			.name = "GPIO" #_bank,				\
-> +			.irq_startup = pistachio_gpio_irq_startup,	\
-> +			.irq_ack = pistachio_gpio_irq_ack,		\
-> +			.irq_mask = pistachio_gpio_irq_mask,		\
-> +			.irq_unmask = pistachio_gpio_irq_unmask,	\
-> +			.irq_set_type = pistachio_gpio_irq_set_type,	\
-> +		},							\
-> +		.gpio_range = {						\
-> +			.name = "GPIO" #_bank,				\
-> +			.id = _bank,					\
-> +			.base = _pin_base,				\
-> +			.pin_base = _pin_base,				\
-> +			.npins = _npins,				\
-> +		},							\
-> +	}
-
-> +MODULE_DEVICE_TABLE(of, pistachio_pinctrl_of_match);
-
-According to include/linux/module.h this will be preprocessed away.
-
-> +module_platform_driver(pistachio_pinctrl_driver);
-
-This seems to be equivalent to adding a wrapper that does
-    platform_driver_register(&pistachio_pinctrl_driver);
-
-and marking that wrapper with device_initcall(). I don't think there's
-one line macro to do that.
-
-> +MODULE_AUTHOR("Andrew Bresticker <abrestic@chromium.org>");
-> +MODULE_AUTHOR("Damien Horsley <Damien.Horsley@imgtec.com>");
-> +MODULE_DESCRIPTION("Pistachio pinctrl driver");
-> +MODULE_LICENSE("GPL v2");
-
-These macros will (basically) be preprocessed away.
+IMHO, the patch not only benefits Loongson 3A, but would also benefit
+other MIPS CPU(s).
 
 
-Paul Bolle
+--
+1. If the hardware supports this, e.g. at least two ALU units for ALU
+operations, and is an out of order execution pipeline, etc
+2. http://dev.lemote.com/files/upload/software/csum-opti/csum-test.tar.gz
+3. http://dev.lemote.com/files/upload/software/csum-opti/csum-opti-benchmark.html
+
+
+
+Regards,
+
+- cee1

@@ -1,36 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Mar 2015 14:18:00 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:56715 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27009598AbbCaMR6eNwiY (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 31 Mar 2015 14:17:58 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.9/8.14.8) with ESMTP id t2VCHwQb000720;
-        Tue, 31 Mar 2015 14:17:58 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.9/8.14.9/Submit) id t2VCHws5000719;
-        Tue, 31 Mar 2015 14:17:58 +0200
-Date:   Tue, 31 Mar 2015 14:17:58 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Joshua Kinard <kumba@gentoo.org>
-Cc:     Linux MIPS List <linux-mips@linux-mips.org>
-Subject: Re: [PATCH v2] MIPS: R10000: Split R10000 definitions from R12000
- and up
-Message-ID: <20150331121757.GD28951@linux-mips.org>
-References: <54BFA0DF.8000104@gentoo.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Mar 2015 14:56:34 +0200 (CEST)
+Received: from demumfd001.nsn-inter.net ([93.183.12.32]:53122 "EHLO
+        demumfd001.nsn-inter.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010408AbbCaM4d0P0Z5 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 31 Mar 2015 14:56:33 +0200
+Received: from demuprx017.emea.nsn-intra.net ([10.150.129.56])
+        by demumfd001.nsn-inter.net (8.14.3/8.14.3) with ESMTP id t2VCuQjP020384
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
+        Tue, 31 Mar 2015 12:56:26 GMT
+Received: from ak-desktop.emea.nsn-net.net ([10.144.35.206])
+        by demuprx017.emea.nsn-intra.net (8.12.11.20060308/8.12.11) with SMTP id t2VCuOdN013108;
+        Tue, 31 Mar 2015 14:56:24 +0200
+Received: by ak-desktop.emea.nsn-net.net (sSMTP sendmail emulation); Tue, 31 Mar 2015 15:56:15 +0300
+Date:   Tue, 31 Mar 2015 15:56:14 +0300
+From:   Aaro Koskinen <aaro.koskinen@nokia.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     Paul Burton <paul.burton@imgtec.com>, linux-mips@linux-mips.org
+Subject: Re: [PATCH] MIPS: malta: pass fw arguments on kexec
+Message-ID: <20150331125614.GN24448@ak-desktop.emea.nsn-net.net>
+References: <1424877665-4487-1-git-send-email-aaro.koskinen@nokia.com>
+ <20150331111300.GB28951@linux-mips.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <54BFA0DF.8000104@gentoo.org>
+In-Reply-To: <20150331111300.GB28951@linux-mips.org>
 User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <ralf@linux-mips.org>
+X-purgate-type: clean
+X-purgate-Ad: Categorized by eleven eXpurgate (R) http://www.eleven.de
+X-purgate: clean
+X-purgate: This mail is considered clean (visit http://www.eleven.de for further information)
+X-purgate-size: 790
+X-purgate-ID: 151667::1427806586-00005972-F158CAAB/0/0
+Return-Path: <aaro.koskinen@nokia.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46647
+X-archive-position: 46648
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: aaro.koskinen@nokia.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,31 +51,30 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Jan 21, 2015 at 07:51:43AM -0500, Joshua Kinard wrote:
+Hi,
 
->  up
-> Content-Type: text/plain; charset=utf-8
+On Tue, Mar 31, 2015 at 01:13:00PM +0200, Ralf Baechle wrote:
+> On Wed, Feb 25, 2015 at 05:21:05PM +0200, Aaro Koskinen wrote:
+> >  #define SOFTRES_REG	0x1f000500
+> > @@ -36,8 +38,19 @@ static void mips_machine_power_off(void)
+> >  	mips_machine_restart(NULL);
+> >  }
+> >  
+> > +static int mips_kexec_prepare(struct kimage *image)
+> > +{
+> > +	kexec_args[0] = fw_arg0;
+> > +	kexec_args[1] = fw_arg1;
+> > +	kexec_args[2] = fw_arg2;
+> > +	kexec_args[3] = fw_arg3;
+> > +
+> > +	return 0;
+> > +}
 > 
-> From: Joshua Kinard <kumba@gentoo.org>
-> 
-> This patch splits the old R10000 definitions so that the R10000_LLSC_WAR can be
-> disabled and -mno-fix-r10000 passed to CFLAGS for systems running R12000 CPUs
-> and greater.  This allows the kernel to build without branch-likely
-> instructions, which are considered deprecated in current MIPS implementations.
->  Only R10000 systems with R2.6 and lower CPUs require branch-likely to work
-> around a known hardware errata item.
+> This makes arguments coming from the firmware non-overridable default?
 
-The kernel doesn't use -mfix-r10000 rsp. -mno-fix-r10000 or any code that
-would rely on the default setting for this option.  The kernel rather
-opencodes all these atomic sequences in inline assembler.
+Yes, the new kernel will boot with the same arguments as the old kernel...
 
-Only platforms which are known to be equipped with R10000 v2.6 processors
-enable R10000_LLSC_WAR and I've done so quite intentionally not just for
-some CPU configuration but the entire platforms which at this time are IP27
-and IP28.
+I guess the kernel command line at least should be taken from kexec,
+OCTEON seems to have some code for that.
 
-Another mysterious question of course is why
-arch/mips/include/asm/mach-pmcs-msp71xx/msp_regops.h caters for the case
-where R10000_LLSC_WAR is enabled.  It won't be for that platform.
-
-  Ralf
+A.

@@ -1,44 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Apr 2015 12:03:30 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:36566 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27014868AbbDAKD3G6tNm (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 1 Apr 2015 12:03:29 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.9/8.14.8) with ESMTP id t31A3Swl020631;
-        Wed, 1 Apr 2015 12:03:28 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.9/8.14.9/Submit) id t31A3QHv020630;
-        Wed, 1 Apr 2015 12:03:26 +0200
-Date:   Wed, 1 Apr 2015 12:03:26 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     Andrew Bresticker <abrestic@chromium.org>,
-        Alexandre Courbot <gnurou@gmail.com>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-        Linux MIPS <linux-mips@linux-mips.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Ezequiel Garcia <ezequiel.garcia@imgtec.com>,
-        James Hartley <james.hartley@imgtec.com>,
-        James Hogan <james.hogan@imgtec.com>
-Subject: Re: [PATCH 0/2] pinctrl: Support for IMG Pistachio
-Message-ID: <20150401100326.GA20157@linux-mips.org>
-References: <1424744104-14151-1-git-send-email-abrestic@chromium.org>
- <CACRpkdbCOHNPs5Y58h--X6pOVvYyxTrgcFhFyk5dWE+JLo=rhg@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Apr 2015 13:15:16 +0200 (CEST)
+Received: from mail-lb0-f173.google.com ([209.85.217.173]:34212 "EHLO
+        mail-lb0-f173.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008635AbbDALPOrU60t (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 1 Apr 2015 13:15:14 +0200
+Received: by lboc7 with SMTP id c7so33422039lbo.1
+        for <linux-mips@linux-mips.org>; Wed, 01 Apr 2015 04:15:10 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:message-id:date:from:user-agent:mime-version:to
+         :cc:subject:references:in-reply-to:content-type
+         :content-transfer-encoding;
+        bh=ECXeJiy/z58ZXQ7htW1m/cjg23BPZIyoTE+P3s+5qVc=;
+        b=RU7xtB9+zQ0A2x/OZHJtYGWTbNLrSv7xVMWugZl/3N87cPa+5AizFOZ9y9FV4EI2JA
+         9L4y1pbopEDKwp3F45LtCfTukfZFJ52UzxY/dQ9IuLpp28IuoUX/rPV3605Zc1HySXrQ
+         7kqscbpPrxN8xGS1nmXnbdC4bjpsbcH6U+yo1tLGViGtdFxhKm7QxPRQ9o8FbMwhTYFm
+         5OdrHJ06so5TXxlSaJ+80Ol7AMQrHUkUKf06ylqmeZDcsGRWOVSp1GJJ8bndjzTwvc4W
+         BWkbfxQpR4/JpzDXupCVTuCaaE5lNZvl2VayddJI+/LGjZYDfW65DBVCafkx7G9HKEQz
+         TPyQ==
+X-Gm-Message-State: ALoCoQlX+7563Ap/hp83fCtochB/G6nOj+bC3K2lA6TF1lNhgAc5PEKnJYGoNpWB51VRTWSS9ROs
+X-Received: by 10.112.48.107 with SMTP id k11mr19358793lbn.92.1427886910158;
+        Wed, 01 Apr 2015 04:15:10 -0700 (PDT)
+Received: from [192.168.3.154] (ppp85-141-196-14.pppoe.mtu-net.ru. [85.141.196.14])
+        by mx.google.com with ESMTPSA id e1sm347086lbc.7.2015.04.01.04.15.08
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 01 Apr 2015 04:15:09 -0700 (PDT)
+Message-ID: <551BD33B.5030707@cogentembedded.com>
+Date:   Wed, 01 Apr 2015 14:15:07 +0300
+From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:31.0) Gecko/20100101 Thunderbird/31.5.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CACRpkdbCOHNPs5Y58h--X6pOVvYyxTrgcFhFyk5dWE+JLo=rhg@mail.gmail.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <ralf@linux-mips.org>
+To:     =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
+CC:     Hauke Mehrtens <hauke@hauke-m.de>
+Subject: Re: [PATCH 1/3] MIPS: BCM47XX: Include io.h directly and fix brace
+ indent
+References: <1427869385-23333-1-git-send-email-zajec5@gmail.com>
+In-Reply-To: <1427869385-23333-1-git-send-email-zajec5@gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Return-Path: <sergei.shtylyov@cogentembedded.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46682
+X-archive-position: 46683
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: sergei.shtylyov@cogentembedded.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,32 +59,31 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Mar 06, 2015 at 12:29:55PM +0100, Linus Walleij wrote:
-> Date:   Fri, 6 Mar 2015 12:29:55 +0100
-> From: Linus Walleij <linus.walleij@linaro.org>
-> To: Andrew Bresticker <abrestic@chromium.org>
-> Cc: Alexandre Courbot <gnurou@gmail.com>, Ralf Baechle
->  <ralf@linux-mips.org>, "devicetree@vger.kernel.org"
->  <devicetree@vger.kernel.org>, "linux-gpio@vger.kernel.org"
->  <linux-gpio@vger.kernel.org>, Linux MIPS <linux-mips@linux-mips.org>,
->  "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Ezequiel
->  Garcia <ezequiel.garcia@imgtec.com>, James Hartley
->  <james.hartley@imgtec.com>, James Hogan <james.hogan@imgtec.com>
-> Subject: Re: [PATCH 0/2] pinctrl: Support for IMG Pistachio
-> Content-Type: text/plain; charset=UTF-8
-> 
-> On Tue, Feb 24, 2015 at 3:15 AM, Andrew Bresticker
-> <abrestic@chromium.org> wrote:
-> 
-> >  I'd like this to go through the MIPS tree with
-> > Linus'/Alex's ACKs if possible.
-> 
-> Why? It will only help creating merge conflicts.
-> There seem to be no compile-related dependencies, just Kconfig
-> symbols, so patches using this can go in orthogonally.
+Hello.
 
-It would mean all the bits for Pistachio support go through a single tree
-which simplifies testing and possibly fixing significantly.  The
-conflict potencial for this series is fairly low, I think.
+On 4/1/2015 9:23 AM, Rafał Miłecki wrote:
 
-  Ralf
+> We use IO functions like readl & ioremap_nocache, so include linux/io.h
+
+> Signed-off-by: Rafał Miłecki <zajec5@gmail.com>
+> ---
+>   arch/mips/bcm47xx/nvram.c | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
+
+> diff --git a/arch/mips/bcm47xx/nvram.c b/arch/mips/bcm47xx/nvram.c
+> index 6a97732..2357ea3 100644
+> --- a/arch/mips/bcm47xx/nvram.c
+> +++ b/arch/mips/bcm47xx/nvram.c
+[...]
+> @@ -203,7 +204,7 @@ int bcm47xx_nvram_getenv(const char *name, char *val, size_t val_len)
+>   		if (eq - var == strlen(name) &&
+>   		    strncmp(var, name, eq - var) == 0)
+>   			return snprintf(val, val_len, "%s", value);
+> -		}
+> +	}
+
+    Unrelated (and undescribed) change.
+
+[...]
+
+WBR, Sergei

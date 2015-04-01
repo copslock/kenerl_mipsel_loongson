@@ -1,47 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Apr 2015 16:01:17 +0200 (CEST)
-Received: from mail-wg0-f48.google.com ([74.125.82.48]:35592 "EHLO
-        mail-wg0-f48.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008305AbbDAOBLsZUqf (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 1 Apr 2015 16:01:11 +0200
-Received: by wgdm6 with SMTP id m6so54467331wgd.2;
-        Wed, 01 Apr 2015 07:01:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:mime-version:content-type
-         :content-transfer-encoding;
-        bh=5nfHYJpLzIL6/gQciv/Bf1UjbCKbXFspe0Mptscm2Ww=;
-        b=ns8hk8anpAZG+tzTjEZwur9ZdK54GVUwurj4Lo1vZ2xy4+my51t8YfsGJeticXDF5o
-         L/e2ClvzdjdDC1FQaVwbN344FXGJe0z84ZiaEVtUPGSCxPG89AgmFvGTd3CzXnDr/hVj
-         WKdJN/w3rfvEb2bYQHcws6U1anxh/n3VLWg0mDtDigOidJm7whvqLSWX1yMZ2Zcq8O3q
-         hWH79EsjNWQxUepDrX0QFKUiS0AgGr+L8K/wNT+kHmAUawRoNP1epkO2X2mmh+Vm1PJC
-         AVVZmA9JWSqLgglcez5whvle4+2lN0ymAZLhBxHDD3F0M71FS4bcEF1LQuSQWT78/zuV
-         8CUg==
-X-Received: by 10.180.35.97 with SMTP id g1mr15154503wij.17.1427896867636;
-        Wed, 01 Apr 2015 07:01:07 -0700 (PDT)
-Received: from linux-tdhb.lan (ip-194-187-74-233.konfederacka.maverick.com.pl. [194.187.74.233])
-        by mx.google.com with ESMTPSA id hw7sm2838413wjb.24.2015.04.01.07.01.06
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 01 Apr 2015 07:01:06 -0700 (PDT)
-From:   =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
-To:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Cc:     Hauke Mehrtens <hauke@hauke-m.de>,
-        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
-Subject: [PATCH] MIPS: BCM47XX: Fix detecting Microsoft MN-700 & Asus WL500G
-Date:   Wed,  1 Apr 2015 16:01:02 +0200
-Message-Id: <1427896862-24752-1-git-send-email-zajec5@gmail.com>
-X-Mailer: git-send-email 1.8.4.5
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Apr 2015 17:08:51 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:38536 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S27014946AbbDAPIs67dkm (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 1 Apr 2015 17:08:48 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.9/8.14.8) with ESMTP id t31F8nri027244;
+        Wed, 1 Apr 2015 17:08:49 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.9/8.14.9/Submit) id t31F8mat027243;
+        Wed, 1 Apr 2015 17:08:48 +0200
+Date:   Wed, 1 Apr 2015 17:08:48 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Jonas Gorski <jogo@openwrt.org>
+Cc:     Florian Fainelli <florian@openwrt.org>,
+        Joe Perches <joe@perches.com>,
+        Daniel Walter <dwalter@google.com>,
+        Linux-MIPS <linux-mips@linux-mips.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 1/1] ar7: replace mac address parsing
+Message-ID: <20150401150848.GA27199@linux-mips.org>
+References: <20140624153959.GA19564@google.com>
+ <1403624918.29061.16.camel@joe-AO725>
+ <CAGVrzcbgds+zHbTJWnUi48Nn1xPiEjGV7PGRmUX46da2CD+G=g@mail.gmail.com>
+ <CAOiHx==91cquJ0OAf-n40HB39HbtLw-5RrxhxtsJXbTyNgit8w@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Return-Path: <zajec5@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAOiHx==91cquJ0OAf-n40HB39HbtLw-5RrxhxtsJXbTyNgit8w@mail.gmail.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46688
+X-archive-position: 46689
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: zajec5@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,28 +49,16 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Since the day of adding this code it was broken. We were iterating over
-a wrong array and checking for wrong NVRAM entry.
+On Wed, Apr 01, 2015 at 02:17:16PM +0200, Jonas Gorski wrote:
 
-Signed-off-by: Rafał Miłecki <zajec5@gmail.com>
----
- arch/mips/bcm47xx/board.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+>        for (i = 0; i < 6; i++)
+>                dev_addr[i] = (char2hex(mac[i * 3]) << 4) +
+>                        char2hex(mac[i * 3 + 1]);
+> 
+> 
+> So I'm tempted to say it should not cause any issues. But my sample
+> size is rather small.
 
-diff --git a/arch/mips/bcm47xx/board.c b/arch/mips/bcm47xx/board.c
-index d4a5a51..4016481 100644
---- a/arch/mips/bcm47xx/board.c
-+++ b/arch/mips/bcm47xx/board.c
-@@ -247,8 +247,8 @@ static __init const struct bcm47xx_board_type *bcm47xx_board_get_nvram(void)
- 	}
- 
- 	if (bcm47xx_nvram_getenv("hardware_version", buf1, sizeof(buf1)) >= 0 &&
--	    bcm47xx_nvram_getenv("boardtype", buf2, sizeof(buf2)) >= 0) {
--		for (e2 = bcm47xx_board_list_boot_hw; e2->value1; e2++) {
-+	    bcm47xx_nvram_getenv("boardnum", buf2, sizeof(buf2)) >= 0) {
-+		for (e2 = bcm47xx_board_list_hw_version_num; e2->value1; e2++) {
- 			if (!strstarts(buf1, e2->value1) &&
- 			    !strcmp(buf2, e2->value2))
- 				return &e2->board;
--- 
-1.8.4.5
+4.1 is still long enough out to test ...
+
+  Ralf

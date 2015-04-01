@@ -1,50 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Apr 2015 13:28:36 +0200 (CEST)
-Received: from mail-la0-f45.google.com ([209.85.215.45]:36496 "EHLO
-        mail-la0-f45.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27014850AbbDAL2e6FqKB convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 1 Apr 2015 13:28:34 +0200
-Received: by labe2 with SMTP id e2so34114642lab.3;
-        Wed, 01 Apr 2015 04:28:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type:content-transfer-encoding;
-        bh=Uxca8HmolZqLnIzKTeB2Sg0L9zTPU4yCYZGPYEhuCUo=;
-        b=cX4kIBXnKlJeIe8cKOxQDmlwzTW5q9AoPyhz22vWLU5cjRUQAo3aJqzLbyYJG+yU86
-         Do85/L1WYPVrs+BZsfDep6LxW1PVUWxlB6BJsRQ4sCqsOxcLEQhEDeLuDc4+pRNHld7g
-         8AoktNhq+XNVz+jjmr5HWLKqulGbxcon7ufOlnyZUbJdgmvCrrC27BpjeWEDs2c4n/aF
-         P6PNvsAbGBT3eZ6FzwGHdFF4XnMY7BbwHAQLT+mvV2PBIpbz9KmOBG1eqWu+oBeKkh8h
-         IkjD//0fVNY5JwTxg5tKAYvybZCZUSD6x+a4+LSJnqcvF6KKG0mxWO4a1x586UN18+0J
-         woBg==
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Apr 2015 14:17:42 +0200 (CEST)
+Received: from arrakis.dune.hu ([78.24.191.176]:41516 "EHLO arrakis.dune.hu"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27014911AbbDAMRlcK8Yo (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 1 Apr 2015 14:17:41 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by arrakis.dune.hu (Postfix) with ESMTP id 6E7E128C911;
+        Wed,  1 Apr 2015 14:17:00 +0200 (CEST)
+X-Virus-Scanned: at arrakis.dune.hu
+Received: from mail-qg0-f44.google.com (mail-qg0-f44.google.com [209.85.192.44])
+        by arrakis.dune.hu (Postfix) with ESMTPSA id 7CA5228BF5F;
+        Wed,  1 Apr 2015 14:16:57 +0200 (CEST)
+Received: by qgf60 with SMTP id 60so40076706qgf.3;
+        Wed, 01 Apr 2015 05:17:36 -0700 (PDT)
+X-Received: by 10.229.192.199 with SMTP id dr7mr1509160qcb.8.1427890656578;
+ Wed, 01 Apr 2015 05:17:36 -0700 (PDT)
 MIME-Version: 1.0
-X-Received: by 10.112.140.38 with SMTP id rd6mr34970689lbb.116.1427887710782;
- Wed, 01 Apr 2015 04:28:30 -0700 (PDT)
-Received: by 10.112.11.229 with HTTP; Wed, 1 Apr 2015 04:28:30 -0700 (PDT)
-In-Reply-To: <551BD541.7080707@cogentembedded.com>
-References: <1427869385-23333-1-git-send-email-zajec5@gmail.com>
-        <551BD33B.5030707@cogentembedded.com>
-        <CACna6ry-vFUPuwp1GLv9PbE219zug7n9S=Xr=1mrdTx=JStnvQ@mail.gmail.com>
-        <551BD541.7080707@cogentembedded.com>
-Date:   Wed, 1 Apr 2015 13:28:30 +0200
-Message-ID: <CACna6rxoFe3BH9nmd2qEeRw05ndN5U09-JHKRY6DvRGBPNU4ZA@mail.gmail.com>
-Subject: Re: [PATCH 1/3] MIPS: BCM47XX: Include io.h directly and fix brace indent
-From:   =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
-To:     Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Cc:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+Received: by 10.140.42.229 with HTTP; Wed, 1 Apr 2015 05:17:16 -0700 (PDT)
+In-Reply-To: <CAGVrzcbgds+zHbTJWnUi48Nn1xPiEjGV7PGRmUX46da2CD+G=g@mail.gmail.com>
+References: <20140624153959.GA19564@google.com> <1403624918.29061.16.camel@joe-AO725>
+ <CAGVrzcbgds+zHbTJWnUi48Nn1xPiEjGV7PGRmUX46da2CD+G=g@mail.gmail.com>
+From:   Jonas Gorski <jogo@openwrt.org>
+Date:   Wed, 1 Apr 2015 14:17:16 +0200
+Message-ID: <CAOiHx==91cquJ0OAf-n40HB39HbtLw-5RrxhxtsJXbTyNgit8w@mail.gmail.com>
+Subject: Re: [PATCH 1/1] ar7: replace mac address parsing
+To:     Florian Fainelli <florian@openwrt.org>
+Cc:     Joe Perches <joe@perches.com>, Daniel Walter <dwalter@google.com>,
         Ralf Baechle <ralf@linux-mips.org>,
-        Hauke Mehrtens <hauke@hauke-m.de>
+        Linux-MIPS <linux-mips@linux-mips.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-Return-Path: <zajec5@gmail.com>
+Return-Path: <jogo@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46686
+X-archive-position: 46687
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: zajec5@gmail.com
+X-original-sender: jogo@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -57,18 +50,54 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 1 April 2015 at 13:23, Sergei Shtylyov
-<sergei.shtylyov@cogentembedded.com> wrote:
-> On 4/1/2015 2:20 PM, Rafał Miłecki wrote:
->> I was feeling a bit unsure about sending two so trivial patches: one
+On Tue, Jun 24, 2014 at 9:26 PM, Florian Fainelli <florian@openwrt.org> wrote:
+> 2014-06-24 8:48 GMT-07:00 Joe Perches <joe@perches.com>:
+>> On Tue, 2014-06-24 at 16:39 +0100, Daniel Walter wrote:
+>>> Replace sscanf() with mac_pton().
+>> []
+>>> diff --git a/arch/mips/ar7/platform.c b/arch/mips/ar7/platform.c
+>> []
+>>> @@ -307,10 +307,7 @@ static void __init cpmac_get_mac(int instance, unsigned char *dev_addr)
+>>>       }
+>>>
+>>>       if (mac) {
+>>> -             if (sscanf(mac, "%hhx:%hhx:%hhx:%hhx:%hhx:%hhx",
+>>> -                                     &dev_addr[0], &dev_addr[1],
+>>> -                                     &dev_addr[2], &dev_addr[3],
+>>> -                                     &dev_addr[4], &dev_addr[5]) != 6) {
+>>> +             if (!mac_pton(mac, dev_addr)) {
+>>
+>> There is a slight functional change with this conversion.
+>>
+>> mac_pton is strict about leading 0's and requires a 17 char strlen.
 >
->> for single-line include, second for single-line indent. So I merged
->> them.
->
->    No need to be unsure about this. Doing one thing per patch is perfectly
-> legal and certainly better than doing 2 unrelated things. :-)
+> I do not have my devices handy, but I am fairly positive the use of
+> sscanf() was exactly for that, we may or may not have leading zeroes.
+> I am feeling a little uncomfortable with random code changes like that
+> without being actually able to test on real hardware that has a
+> variety of bootloaders and environment variables.
 
-OK, I promise to note that for the future, thanks!
+One of my two devices has a mac address with one of the numbers being
+< 16, and it uses a fixed length mac:
 
--- 
-Rafał
+(psbl) printenv
+...
+HWA_0           00:16:B6:2A:A4:3B
+
+Also looking at the history[1] of this code, it looks like this was
+just an optimization of an earlier code which did expect 17 char len:
+
+       for (i = 0; i < 6; i++)
+               dev_addr[i] = (char2hex(mac[i * 3]) << 4) +
+                       char2hex(mac[i * 3 + 1]);
+
+
+So I'm tempted to say it should not cause any issues. But my sample
+size is rather small.
+
+
+Regards
+Jonas
+
+
+[1] d16f7093b6eb4f3859856f6ee4ab504cbeeea0b9

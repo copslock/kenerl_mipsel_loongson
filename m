@@ -1,49 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Apr 2015 08:24:06 +0200 (CEST)
-Received: from mail-wi0-f172.google.com ([209.85.212.172]:34928 "EHLO
-        mail-wi0-f172.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27014449AbbDAGXh2Gs0t (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 1 Apr 2015 08:23:37 +0200
-Received: by widdi4 with SMTP id di4so33030032wid.0;
-        Tue, 31 Mar 2015 23:23:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-type:content-transfer-encoding;
-        bh=s7eMcvUMEHRLxzZ8wRzmaRkrz43bQ4tHJ+md1j3shro=;
-        b=qOtMia48xODOV5eDaHztq7fCfmu70f9XxddVaIerfu2hKoasqpzmAl6NpgeEdCjiDL
-         KJzvCAHJy65OlTfKeUcrupUDieqhqnJ/J0gFCQqlbuqujKB6+dTeWBWqGwTkhdMlXjiP
-         pS/JC46B0C/rgdDyfQMcQHHQHNVUTZvr1KnZlOxZGZLYxYt0MjehFh+uvUtruZ/jTfSz
-         91SL4+f8R/apczFmCPGr+ynDJPl4WaZsbYFmJHxMe084sKcO5Bqkg5b2gabZCCsY4p4z
-         i+qverl80u2+L8k0xsue0JtS6Zrjnqlz1kHhUBAqxWUFZdezMNZvQCRx8xs/MgF1bv1B
-         YdzA==
-X-Received: by 10.180.94.199 with SMTP id de7mr11990947wib.53.1427869413371;
-        Tue, 31 Mar 2015 23:23:33 -0700 (PDT)
-Received: from linux-tdhb.lan (ip-194-187-74-233.konfederacka.maverick.com.pl. [194.187.74.233])
-        by mx.google.com with ESMTPSA id dm6sm1588096wib.22.2015.03.31.23.23.31
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 31 Mar 2015 23:23:32 -0700 (PDT)
-From:   =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
-To:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Cc:     Hauke Mehrtens <hauke@hauke-m.de>,
-        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
-Subject: [PATCH 3/3] MIPS: BCM47XX: Don't try guessing NVRAM size on MTD partition
-Date:   Wed,  1 Apr 2015 08:23:05 +0200
-Message-Id: <1427869385-23333-3-git-send-email-zajec5@gmail.com>
-X-Mailer: git-send-email 1.8.4.5
-In-Reply-To: <1427869385-23333-1-git-send-email-zajec5@gmail.com>
-References: <1427869385-23333-1-git-send-email-zajec5@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Apr 2015 08:50:10 +0200 (CEST)
+Received: from resqmta-ch2-10v.sys.comcast.net ([69.252.207.42]:40118 "EHLO
+        resqmta-ch2-10v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008182AbbDAGuI2qF2l (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 1 Apr 2015 08:50:08 +0200
+Received: from resomta-ch2-11v.sys.comcast.net ([69.252.207.107])
+        by resqmta-ch2-10v.sys.comcast.net with comcast
+        id AWq21q0032Ka2Q501Wq2DW; Wed, 01 Apr 2015 06:50:02 +0000
+Received: from [192.168.1.13] ([69.251.155.187])
+        by resomta-ch2-11v.sys.comcast.net with comcast
+        id AWq11q00A42s2jH01Wq1Zj; Wed, 01 Apr 2015 06:50:02 +0000
+Message-ID: <551B9513.5020606@gentoo.org>
+Date:   Wed, 01 Apr 2015 02:49:55 -0400
+From:   Joshua Kinard <kumba@gentoo.org>
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:31.0) Gecko/20100101 Thunderbird/31.5.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Return-Path: <zajec5@gmail.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+CC:     Linux MIPS List <linux-mips@linux-mips.org>
+Subject: [PATCH]: MIPS: Select CONFIG_MIPS_O32_FP64_SUPPORT if 64bit kernel
+ and o32
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=comcast.net;
+        s=q20140121; t=1427871002;
+        bh=FUwtiTtiaG05VkqYOP+X8UBNLjYYTeziQsGBS0ilZtU=;
+        h=Received:Received:Message-ID:Date:From:MIME-Version:To:Subject:
+         Content-Type;
+        b=HUtViAzUh1+SMpLos3SxqKDaqb59GtK3rXwtasFXvoj3EbAwh33qwAlU1eu2/z2k4
+         Tza4prCjEEXsY2SP+advLNg1/W0sNBh6L7wjO8C5Bho1eMVaDfOoT46K9M9mY2YAfy
+         RY/Ym0kPWfUyf5YANGrRaB8rxnV6oeSY1owyDKyHwqZvBqO9nhZo1v+u2UNru7lfad
+         +kugYW/0/sHV2RXj3oRftBCmU36KJctBFv4u2XnLjX1fZ3UQF4M7IFDhAYA/+VZYOw
+         SJufTfYX/1mbIkHXhNXTWi3NVC3Ubb4AvPWgRPOFbVUdFG7P973u1N80sQ5e6M8K4j
+         XB7hCb4YBWnOg==
+Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46678
+X-archive-position: 46679
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: zajec5@gmail.com
+X-original-sender: kumba@gentoo.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,69 +52,30 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-When dealing with whole flash content (bcm47xx_nvram_init_from_mem) we
-need to find NVRAM start trying various partition sizes (nvram_sizes).
-This is not needed when using MTD as we have direct partition access.
+From: Joshua Kinard <kumba@gentoo.org>
 
-Signed-off-by: Rafał Miłecki <zajec5@gmail.com>
+Select CONFIG_MIPS_O32_FP64_SUPPORT by default if CONFIG_64BIT and
+CONFIG_MIPS32_O32 are selected.  This avoids breaking things when
+booting into an o32 userland under a 64bit kernel.  Symptoms of not
+selecting CONFIG_MIPS_O32_FP64_SUPPORT can include OpenSSH claiming that
+the "PRNG is not seeded" and Python programs to fail with either a
+SIGSEGV or errors regarding "float NaN".
+
+Signed-off-by: Joshua Kinard <kumba@gentoo.org>
 ---
- arch/mips/bcm47xx/nvram.c | 36 ++++++++++++++----------------------
- 1 file changed, 14 insertions(+), 22 deletions(-)
+ arch/mips/Kconfig |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/mips/bcm47xx/nvram.c b/arch/mips/bcm47xx/nvram.c
-index 2ac7482..ba632ff 100644
---- a/arch/mips/bcm47xx/nvram.c
-+++ b/arch/mips/bcm47xx/nvram.c
-@@ -139,36 +139,28 @@ static int nvram_init(void)
- 	struct mtd_info *mtd;
- 	struct nvram_header header;
- 	size_t bytes_read;
--	int err, i;
-+	int err;
- 
- 	mtd = get_mtd_device_nm("nvram");
- 	if (IS_ERR(mtd))
- 		return -ENODEV;
- 
--	for (i = 0; i < ARRAY_SIZE(nvram_sizes); i++) {
--		loff_t from = mtd->size - nvram_sizes[i];
--
--		if (from < 0)
--			continue;
--
--		err = mtd_read(mtd, from, sizeof(header), &bytes_read,
--			       (uint8_t *)&header);
--		if (!err && header.magic == NVRAM_MAGIC) {
--			u8 *dst = (uint8_t *)nvram_buf;
--			size_t len = header.len;
-+	err = mtd_read(mtd, 0, sizeof(header), &bytes_read, (uint8_t *)&header);
-+	if (!err && header.magic == NVRAM_MAGIC) {
-+		u8 *dst = (uint8_t *)nvram_buf;
-+		size_t len = header.len;
- 
--			if (header.len > NVRAM_SPACE) {
--				pr_err("nvram on flash (%i bytes) is bigger than the reserved space in memory, will just copy the first %i bytes\n",
--				       header.len, NVRAM_SPACE);
--				len = NVRAM_SPACE;
--			}
-+		if (header.len > NVRAM_SPACE) {
-+			pr_err("nvram on flash (%i bytes) is bigger than the reserved space in memory, will just copy the first %i bytes\n",
-+				header.len, NVRAM_SPACE);
-+			len = NVRAM_SPACE;
-+		}
- 
--			err = mtd_read(mtd, from, len, &bytes_read, dst);
--			if (err)
--				return err;
-+		err = mtd_read(mtd, 0, len, &bytes_read, dst);
-+		if (err)
-+			return err;
- 
--			return 0;
--		}
-+		return 0;
- 	}
- #endif
- 
--- 
-1.8.4.5
+mips-fix-o32-fp64-on-mips64.patch
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 294f82e..1b826ed 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -2736,6 +2736,7 @@ config MIPS32_O32
+ 	select COMPAT
+ 	select MIPS32_COMPAT
+ 	select SYSVIPC_COMPAT if SYSVIPC
++	select MIPS_O32_FP64_SUPPORT if 64BIT
+ 	help
+ 	  Select this option if you want to run o32 binaries.  These are pure
+ 	  32-bit binaries as used by the 32-bit Linux/MIPS port.  Most of

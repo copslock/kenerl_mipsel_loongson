@@ -1,46 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Apr 2015 20:05:57 +0200 (CEST)
-Received: from smtprelay0025.hostedemail.com ([216.40.44.25]:50513 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27009654AbbDASF4IcTsc (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 1 Apr 2015 20:05:56 +0200
-Received: from filter.hostedemail.com (unknown [216.40.38.60])
-        by smtprelay02.hostedemail.com (Postfix) with ESMTP id 69B6212BCFE;
-        Wed,  1 Apr 2015 18:05:55 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-HE-Tag: dogs38_50825c1206c2f
-X-Filterd-Recvd-Size: 3340
-Received: from joe-X200MA.home (pool-71-119-66-80.lsanca.fios.verizon.net [71.119.66.80])
-        (Authenticated sender: joe@perches.com)
-        by omf06.hostedemail.com (Postfix) with ESMTPA;
-        Wed,  1 Apr 2015 18:05:53 +0000 (UTC)
-Message-ID: <1427911550.31790.56.camel@perches.com>
-Subject: Re: [PATCH 1/1] ar7: replace mac address parsing
-From:   Joe Perches <joe@perches.com>
-To:     Jonas Gorski <jogo@openwrt.org>
-Cc:     Florian Fainelli <florian@openwrt.org>,
-        Daniel Walter <dwalter@google.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Linux-MIPS <linux-mips@linux-mips.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Date:   Wed, 01 Apr 2015 11:05:50 -0700
-In-Reply-To: <CAOiHx==91cquJ0OAf-n40HB39HbtLw-5RrxhxtsJXbTyNgit8w@mail.gmail.com>
-References: <20140624153959.GA19564@google.com>
-         <1403624918.29061.16.camel@joe-AO725>
-         <CAGVrzcbgds+zHbTJWnUi48Nn1xPiEjGV7PGRmUX46da2CD+G=g@mail.gmail.com>
-         <CAOiHx==91cquJ0OAf-n40HB39HbtLw-5RrxhxtsJXbTyNgit8w@mail.gmail.com>
-Content-Type: text/plain; charset="ISO-8859-1"
-X-Mailer: Evolution 3.12.10-0ubuntu1~14.10.1 
-Mime-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Apr 2015 20:38:11 +0200 (CEST)
+Received: from resqmta-ch2-04v.sys.comcast.net ([69.252.207.36]:36394 "EHLO
+        resqmta-ch2-04v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27014965AbbDASiJ3pOCZ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 1 Apr 2015 20:38:09 +0200
+Received: from resomta-ch2-01v.sys.comcast.net ([69.252.207.97])
+        by resqmta-ch2-04v.sys.comcast.net with comcast
+        id Aida1q00526dK1R01ie0RT; Wed, 01 Apr 2015 18:38:00 +0000
+Received: from [192.168.1.13] ([69.251.155.187])
+        by resomta-ch2-01v.sys.comcast.net with comcast
+        id Aidz1q00W42s2jH01idzHR; Wed, 01 Apr 2015 18:38:00 +0000
+Message-ID: <551C3AFE.20803@gentoo.org>
+Date:   Wed, 01 Apr 2015 14:37:50 -0400
+From:   Joshua Kinard <kumba@gentoo.org>
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:31.0) Gecko/20100101 Thunderbird/31.5.0
+MIME-Version: 1.0
+To:     Markos Chandras <Markos.Chandras@imgtec.com>,
+        Ralf Baechle <ralf@linux-mips.org>
+CC:     Linux MIPS List <linux-mips@linux-mips.org>
+Subject: Re: [PATCH]: MIPS: Select CONFIG_MIPS_O32_FP64_SUPPORT if 64bit kernel
+ and o32
+References: <551B9513.5020606@gentoo.org> <551BA5ED.7060106@imgtec.com>
+In-Reply-To: <551BA5ED.7060106@imgtec.com>
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
-Return-Path: <joe@perches.com>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=comcast.net;
+        s=q20140121; t=1427913480;
+        bh=uu2Ffo9OzllpjWmJhTcTiRBvYf5DvAT8CNRPTX/z2+A=;
+        h=Received:Received:Message-ID:Date:From:MIME-Version:To:Subject:
+         Content-Type;
+        b=qAU4vuvYQoSoWif/mj21ywHlfuba+oTNx9BuYzd3s7ZnLbZlr/+vGCY1VH8haLhR0
+         XLFe4qe8N+TVlypV/KchYeX3pKiUki3r8iuyXhwz3MPIk5hIwpFRqrI/5/fCPOGFz7
+         qHuSwKhe2N3zMN3OFhsClD7JECGpMg9YL6yUV4OVRgvHbfaZMbXHzMhklKhA2lKo4X
+         yLk+y0kTsGG1QAMS/XYOhpn+hu0kCbcnJVxUylpdL+QNsSCvucjApbPZXPVWd+/71Y
+         jcqCRIpnLfgIOTStnDzDME3iCqMhXS/YHOPbQvHOL1UddUi8BStHaevnrl4JE1Gaz2
+         hbM9PKgSDZK+w==
+Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46692
+X-archive-position: 46693
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: joe@perches.com
+X-original-sender: kumba@gentoo.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,55 +55,50 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, 2015-04-01 at 14:17 +0200, Jonas Gorski wrote:
-> On Tue, Jun 24, 2014 at 9:26 PM, Florian Fainelli <florian@openwrt.org> wrote:
-> > 2014-06-24 8:48 GMT-07:00 Joe Perches <joe@perches.com>:
-> >> On Tue, 2014-06-24 at 16:39 +0100, Daniel Walter wrote:
-> >>> Replace sscanf() with mac_pton().
-> >> []
-> >>> diff --git a/arch/mips/ar7/platform.c b/arch/mips/ar7/platform.c
-> >> []
-> >>> @@ -307,10 +307,7 @@ static void __init cpmac_get_mac(int instance, unsigned char *dev_addr)
-> >>>       }
-> >>>
-> >>>       if (mac) {
-> >>> -             if (sscanf(mac, "%hhx:%hhx:%hhx:%hhx:%hhx:%hhx",
-> >>> -                                     &dev_addr[0], &dev_addr[1],
-> >>> -                                     &dev_addr[2], &dev_addr[3],
-> >>> -                                     &dev_addr[4], &dev_addr[5]) != 6) {
-> >>> +             if (!mac_pton(mac, dev_addr)) {
-> >>
-> >> There is a slight functional change with this conversion.
-> >>
-> >> mac_pton is strict about leading 0's and requires a 17 char strlen.
-> >
-> > I do not have my devices handy, but I am fairly positive the use of
-> > sscanf() was exactly for that, we may or may not have leading zeroes.
-> > I am feeling a little uncomfortable with random code changes like that
-> > without being actually able to test on real hardware that has a
-> > variety of bootloaders and environment variables.
+On 04/01/2015 04:01, Markos Chandras wrote:
+> On 04/01/2015 07:49 AM, Joshua Kinard wrote:
+>> From: Joshua Kinard <kumba@gentoo.org>
+>>
+>> Select CONFIG_MIPS_O32_FP64_SUPPORT by default if CONFIG_64BIT and
+>> CONFIG_MIPS32_O32 are selected.  This avoids breaking things when
+>> booting into an o32 userland under a 64bit kernel.  Symptoms of not
+>> selecting CONFIG_MIPS_O32_FP64_SUPPORT can include OpenSSH claiming that
+>> the "PRNG is not seeded" and Python programs to fail with either a
+>> SIGSEGV or errors regarding "float NaN".
+>>
+>> Signed-off-by: Joshua Kinard <kumba@gentoo.org>
+>> ---
+>>  arch/mips/Kconfig |    1 +
+>>  1 file changed, 1 insertion(+)
+>>
+>> mips-fix-o32-fp64-on-mips64.patch
+>> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+>> index 294f82e..1b826ed 100644
+>> --- a/arch/mips/Kconfig
+>> +++ b/arch/mips/Kconfig
+>> @@ -2736,6 +2736,7 @@ config MIPS32_O32
+>>  	select COMPAT
+>>  	select MIPS32_COMPAT
+>>  	select SYSVIPC_COMPAT if SYSVIPC
+>> +	select MIPS_O32_FP64_SUPPORT if 64BIT
+>>  	help
+>>  	  Select this option if you want to run o32 binaries.  These are pure
+>>  	  32-bit binaries as used by the 32-bit Linux/MIPS port.  Most of
+>>
+>>
+> Hi,
 > 
-> One of my two devices has a mac address with one of the numbers being
-> < 16, and it uses a fixed length mac:
+> No this is not a good solution. This has already been fixed in
+> mips-for-linux-next and might make it to 4.0 in time
 > 
-> (psbl) printenv
-> ...
-> HWA_0           00:16:B6:2A:A4:3B
+> https://patchwork.linux-mips.org/patch/9344/
 > 
-> Also looking at the history[1] of this code, it looks like this was
-> just an optimization of an earlier code which did expect 17 char len:
-> 
->        for (i = 0; i < 6; i++)
->                dev_addr[i] = (char2hex(mac[i * 3]) << 4) +
->                        char2hex(mac[i * 3 + 1]);
-> 
-> 
-> So I'm tempted to say it should not cause any issues. But my sample
-> size is rather small.
-> [1] d16f7093b6eb4f3859856f6ee4ab504cbeeea0b9
+> can you try that patch instead?
 
-Wow Jonas, a 9 month thread gestation...
+This appears to fix the problem.  I definitely suggest this get into 4.0, or
+some machines out there are going to break if CONFIG_MIPS_O32_FP64_SUPPORT
+isn't selected.  This one was stumping me for a few hours last night...
 
-Given the old code and the commit comment, I'd
-say it was almost certainly safe and my issue with
-the patch resolved.
+Thanks!,
+
+--J

@@ -1,36 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Mar 2015 23:10:00 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:33582 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27014871AbbCaVJ5xIKUF (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 31 Mar 2015 23:09:57 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.9/8.14.8) with ESMTP id t2VL9vkl002122;
-        Tue, 31 Mar 2015 23:09:57 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.9/8.14.9/Submit) id t2VL9vZx002120;
-        Tue, 31 Mar 2015 23:09:57 +0200
-Date:   Tue, 31 Mar 2015 23:09:57 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     "Maciej W. Rozycki" <macro@codesourcery.com>
-Cc:     linux-mips@linux-mips.org
-Subject: Re: [PATCH] MIPS: c-r4k.c: Fix the 74K D-cache alias erratum
- workaround
-Message-ID: <20150331210957.GI28951@linux-mips.org>
-References: <alpine.DEB.1.10.1411160041230.2881@tp.orcam.me.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Apr 2015 06:36:59 +0200 (CEST)
+Received: from resqmta-ch2-02v.sys.comcast.net ([69.252.207.34]:38920 "EHLO
+        resqmta-ch2-02v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008595AbbDAEgzZznme (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 1 Apr 2015 06:36:55 +0200
+Received: from resomta-ch2-20v.sys.comcast.net ([69.252.207.116])
+        by resqmta-ch2-02v.sys.comcast.net with comcast
+        id AUcq1q0032XD5SV01Ucquz; Wed, 01 Apr 2015 04:36:50 +0000
+Received: from [192.168.1.13] ([69.251.155.187])
+        by resomta-ch2-20v.sys.comcast.net with comcast
+        id AUco1q00642s2jH01UcofS; Wed, 01 Apr 2015 04:36:50 +0000
+Message-ID: <551B75DA.10603@gentoo.org>
+Date:   Wed, 01 Apr 2015 00:36:42 -0400
+From:   Joshua Kinard <kumba@gentoo.org>
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:31.0) Gecko/20100101 Thunderbird/31.5.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <alpine.DEB.1.10.1411160041230.2881@tp.orcam.me.uk>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <ralf@linux-mips.org>
+To:     Ralf Baechle <ralf@linux-mips.org>
+CC:     Linux MIPS List <linux-mips@linux-mips.org>
+Subject: Re: [PATCH v2] MIPS: R10000: Split R10000 definitions from R12000
+ and up
+References: <54BFA0DF.8000104@gentoo.org> <20150331121757.GD28951@linux-mips.org>
+In-Reply-To: <20150331121757.GD28951@linux-mips.org>
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=comcast.net;
+        s=q20140121; t=1427863010;
+        bh=7ETq1VyFfT00AqLOU6ORU6cjIm2lJT5rnuC5mAtuADU=;
+        h=Received:Received:Message-ID:Date:From:MIME-Version:To:Subject:
+         Content-Type;
+        b=m+9LwL/DhxZuK3wfbR2EQDKAjb5fsZa899+6/DaVLfLBrfL82HVpbDoOPUqOW+1S2
+         1dAuJLqBb80cMMAa/VKLt/SS+FYQnh1uM+bOslbEAU04y3yNRuszeEkdpSdPW2Yqnl
+         EVVRiIVyXxQa/NMRysk2M7o2e5HGJfyM6jaZz6y99/roFssWJw5EBILY5SjtUSTqDJ
+         vZ4yyXeJT7KCP51AohJwBbiFqVeZizyoRL19RvMc5d6lX+33I7ijcGIUJmuib/TuMQ
+         dM7KwEIRIpEZDA17zhA/i41x9UelzgAsqCeSG9ultgdzMxWJvJ1JY+S6akMJNQSwct
+         Hb17J3kARSvhQ==
+Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46673
+X-archive-position: 46674
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: kumba@gentoo.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,41 +54,51 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sun, Nov 16, 2014 at 01:02:29AM +0000, Maciej W. Rozycki wrote:
-
-> Fix the 74K D-cache alias erratum workaround so that it actually works.  
-> Our current code sets MIPS_CACHE_VTAG for the D-cache, but that flag 
-> only has any effect for the I-cache.  Additionally MIPS_CACHE_PINDEX is 
-> set for the D-cache if CP0.Config7.AR is also set for an affected 
-> processor, leading to confusing information in the bootstrap log (the 
-> flag isn't used beyond that).
+On 03/31/2015 08:17, Ralf Baechle wrote:
+> On Wed, Jan 21, 2015 at 07:51:43AM -0500, Joshua Kinard wrote:
 > 
-> So delete the setting of MIPS_CACHE_VTAG and rely on MIPS_CACHE_ALIASES, 
-> set in a common place, removing I-cache coherency issues seen in GDB 
-> testing with software breakpoints, gdbserver and ptrace(2), on affected 
-> systems.
+>>  up
+>> Content-Type: text/plain; charset=utf-8
+>>
+>> From: Joshua Kinard <kumba@gentoo.org>
+>>
+>> This patch splits the old R10000 definitions so that the R10000_LLSC_WAR can be
+>> disabled and -mno-fix-r10000 passed to CFLAGS for systems running R12000 CPUs
+>> and greater.  This allows the kernel to build without branch-likely
+>> instructions, which are considered deprecated in current MIPS implementations.
+>>  Only R10000 systems with R2.6 and lower CPUs require branch-likely to work
+>> around a known hardware errata item.
 > 
-> While at it add a little piece of explanation of what CP0.Config6.SYND 
-> is so that people do not have to chase documentation.
-> 
-> Signed-off-by: Maciej W. Rozycki <macro@codesourcery.com>
-> ---
-> Hi,
-> 
->  It looks like I-cache aliasing handling setup needs some TLC too, first 
-> of all what's the purpose of checking CP0.Config7.IAR and setting the 
-> MIPS_CACHE_ALIASES flag for the I-cache where the flag is nowhere used 
-> afterwards?  Anyway that's something for another occasion.  For now, 
-> please apply this change.
+> The kernel doesn't use -mfix-r10000 rsp. -mno-fix-r10000 or any code that
+> would rely on the default setting for this option.  The kernel rather
+> opencodes all these atomic sequences in inline assembler.
 
-Applied, finally.  I take it the discussion in
-https://patchwork.linux-mips.org/patch/8876/ does not concern the
-correctness of your patch.
+True, though I added that on the off chance the compiler decides to emit its
+own ll/sc pair somewhere and thus could use normal beq/beqz insns instead of
+the branch-likely variants.  Couldn't hurt.
 
-Backporting this patch to older kernels is getting increasingly more
-painful so I only did so for kernels as old as 3.13.  If anybody cares,
-send patches :)
 
-Thanks Maciej!
+> Only platforms which are known to be equipped with R10000 v2.6 processors
+> enable R10000_LLSC_WAR and I've done so quite intentionally not just for
+> some CPU configuration but the entire platforms which at this time are IP27
+> and IP28.
 
-  Ralf
+This allows one to override this on IP27 at least.  I've got both R12K and R14K
+node boards, neither of which require the branch-likely workarounds, so it's
+safe to disable the WAR there.  And although it's not in the tree yet, IP30
+also benefits from this as well.  I am not sure how old the IP30 R10000 CPU
+revs can go, so it might need the WAR in limited circumstances, too.  It also
+sets things up to further separate R12K from R14K should any beneficial
+enhancements be discovered in the future (or if I can ever figure out why R14K
+seems weirder in some instances than R12K).
+
+-- 
+Joshua Kinard
+Gentoo/MIPS
+kumba@gentoo.org
+4096R/D25D95E3 2011-03-28
+
+"The past tempts us, the present confuses us, the future frightens us.  And our
+lives slip away, moment by moment, lost in that vast, terrible in-between."
+
+--Emperor Turhan, Centauri Republic

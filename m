@@ -1,31 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Apr 2015 17:36:52 +0200 (CEST)
-Received: from mail-qc0-f173.google.com ([209.85.216.173]:36122 "EHLO
-        mail-qc0-f173.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27009544AbbDBPgvMMaHB (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 2 Apr 2015 17:36:51 +0200
-Received: by qcgx3 with SMTP id x3so70117729qcg.3
-        for <linux-mips@linux-mips.org>; Thu, 02 Apr 2015 08:36:46 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Apr 2015 18:15:17 +0200 (CEST)
+Received: from mail-qg0-f48.google.com ([209.85.192.48]:34411 "EHLO
+        mail-qg0-f48.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006802AbbDBQPQBrJTM (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 2 Apr 2015 18:15:16 +0200
+Received: by qgep97 with SMTP id p97so73537586qge.1
+        for <linux-mips@linux-mips.org>; Thu, 02 Apr 2015 09:15:11 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:message-id:date:from:user-agent:mime-version:to
          :cc:subject:references:in-reply-to:content-type
          :content-transfer-encoding;
-        bh=6+fskcUxQi5wsQp8SN6r5EehCy+19/jBdGLk0lNG2qs=;
-        b=G6o+tnEO/PRsjx2Lht2uI8qhMOKKzBpVDmtL7z5ikVWa3GPXUlbYm9ZDVjqgR+tBOz
-         QLOzKh52cWlEU+crDewpin/phXn2/IKRvWmQM9oJuTFf2ZafV5vZg9uVd5CzqLyYrAtc
-         tHWaXIfOY5ym0+M1h4MGzjaoSnXPyim3X/5hgbQaHaORLUan3e+GSz+IZpy1hfsgaFAa
-         RnJFTAK7FoMrx+USsZKMX/SJbqY2JbORiS1Np2alfuNB43djZImyw0DX5Fz//lgxWSdx
-         8fEO3Y5JBY/hRL/M0U1H/qZevYfTtFH8Go054GBDOrsaDT/98v9TzJqYIPkWVyGrLPgK
-         V7rw==
-X-Gm-Message-State: ALoCoQm5bzfDSW6sKA31dCYO/1kCXujORJEtngdl+iuAA0BDBsBEIjJDBZmBIzMfQwLMFsQXCllz
-X-Received: by 10.140.232.19 with SMTP id d19mr18181467qhc.19.1427989006595;
-        Thu, 02 Apr 2015 08:36:46 -0700 (PDT)
+        bh=+n6QV247qATx9WV8hn7iSL+YaeNL+B53Ep2E26SRjN0=;
+        b=BjwT/2o666daBmMAlBac809ZtPNVfxmcTn0dImGij/jfenO7s+z5AJ94fZYho5fb4t
+         gbKle77uz1xRa48W7qVH8jQ/QNd9/Y8AHrfK1v/zH3RO6/PSq9DMtKFDzEHNxlzWV577
+         OEj8trBmsgWF67NvbO1XAKJ6GlSaFcoBPOmNTa0Zk4kiZlDfft1Pviwy2lbaiS5lLVSw
+         h+IV3CrU+G8Ts5gLBzWLKD8RBie3Tm4zy1srT4t5qjTglvw21YAZU5iahzFV++y0tGVk
+         JaMjK+knqTkIZ5o1h9QaFPqmY11AFYoSG4GAL2kbTbUBkBWxPMGVSGTNkkMKgkx9DDwM
+         SLvw==
+X-Gm-Message-State: ALoCoQl+0nE8S/2rLINSf0bBBeZyU4WvKBrrYtQz0dVJr/sRXl5/Ue0tVD3EPcl3fPQCIVVS71Gn
+X-Received: by 10.55.21.221 with SMTP id 90mr24870112qkv.44.1427991311243;
+        Thu, 02 Apr 2015 09:15:11 -0700 (PDT)
 Received: from [192.168.1.139] (h96-61-87-245.cntcnh.dsl.dynamic.tds.net. [96.61.87.245])
-        by mx.google.com with ESMTPSA id 64sm3679001qgx.40.2015.04.02.08.36.45
+        by mx.google.com with ESMTPSA id o4sm3732849qko.49.2015.04.02.09.15.10
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 02 Apr 2015 08:36:45 -0700 (PDT)
-Message-ID: <551D6208.2060009@hurleysoftware.com>
-Date:   Thu, 02 Apr 2015 11:36:40 -0400
+        Thu, 02 Apr 2015 09:15:10 -0700 (PDT)
+Message-ID: <551D6B09.6060100@hurleysoftware.com>
+Date:   Thu, 02 Apr 2015 12:15:05 -0400
 From:   Peter Hurley <peter@hurleysoftware.com>
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.5.0
 MIME-Version: 1.0
@@ -48,7 +48,7 @@ Return-Path: <peter@hurleysoftware.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46709
+X-archive-position: 46710
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -65,54 +65,36 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Kevin,
-
 On 03/28/2015 03:28 PM, Kevin Cernekee wrote:
-> On Sat, Mar 28, 2015 at 10:01 AM, Peter Hurley <peter@hurleysoftware.com> wrote:
->>>> I know these got ACKs already but as you point out in the commit log,
->>>> earlycon _will_ need reg-io-width, reg-offset and reg-shift. Since the
->>>> distinction between early_init_dt_scan_chosen_serial() and
->>>> of_setup_earlycon() is arbitrary, I'd rather see of_setup_earlycon()
->>>> taught to properly decode of_serial driver bindings instead of a
->>>> stack of parameters to of_setup_earlycon().
->>>>
->>>> In fact, this patch allows a mis-defined devicetree to bring up a
->>>> functioning earlycon because the 'big-endian' property is directly
->>>> associated with UPIO_MEM32BE, which will create incompatibility problems
->>>> when DT earlycon is fixed to decode the of_serial DT bindings.
->>>
->>> That's a good point. This hasn't been merged yet, so there isn't any
->>> impact on addressing this. I would propose that for consistency, the
->>> earlycon code should always default to 8-bit access. if big-endian
->>> accesses are required, then reg-io-width + big-endian must be specified.
->>>
->>> Something like the following would do it and would be future-proof. We
->>> can add support for 16 or 64bit big or little endian access if it ever
->>> became necessary.
->>
->> I was planning on adding MEM32BE support to OF earlycon on top of my
->> patch series 'OF earlycon cleanup', which adds full support for the
->> of_serial driver DT properties (among other things).
+> Side note:
 > 
-> Hi Peter,
-> 
-> This is my latest work-in-progress, incorporating the feedback from
-> you and Grant:
-> 
-> https://github.com/cernekee/linux/commits/endian
-> 
-> Not sure if this code plays nice with your recent cleanups?  If we're
-> touching the same files/functions we should probably coordinate.
+> AFAIK we still have a problem if somebody wants to build serial8250 +
+> (any other tty driver that occupies major 4 / minor 64) into the same
+> kernel, and use DT to pick the correct driver at runtime.
 
-Ok, I'll look over your git tree and add whatever's required to
-earlycon.
+Yep, exactly.
 
-> Also, it is untested, as I do not currently have access to BE systems.
-> If I get desperate I can try it on an LE system, adding the big-endian
-> properties in DT and then hacking the 8250 driver to swap LE accesses
-> for BE accesses.
+> serial8250_init() starts registering ports before it knows whether the
+> system even has an 8250.
 
-Ok.
+This behavior is required to support hw configuration from userspace.
+
+> I talked to Rob about it earlier this week
+> and he suggested that you might have some thoughts on how to fix it.
+ 
+A big piece of that will land in 4.01 (once I get the actual 8250 split
+commit to Greg).
+
+The 8250 driver has been split into a legacy/universal 8250 driver
+and separate port ops module; one of the benefits of this is that the
+objectionable legacy behavior of the 8250 driver (especially limitations
+wrt ttyS sharing) can be left behind in that driver without breaking
+existing users.
+
+The idea is that an alternate 8250 driver(s) with none of the legacy
+baggage can be taught to share (4,64) ports with other drivers.
+Unfortunately, I haven't made further progress with because of other
+projects.
 
 Regards,
 Peter Hurley

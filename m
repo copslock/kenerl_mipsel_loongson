@@ -1,38 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Apr 2015 14:46:33 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:43263 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27013844AbbDBMqbnfcLP (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 2 Apr 2015 14:46:31 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.9/8.14.8) with ESMTP id t32CkUkF020938;
-        Thu, 2 Apr 2015 14:46:30 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.9/8.14.9/Submit) id t32CkSOm020937;
-        Thu, 2 Apr 2015 14:46:28 +0200
-Date:   Thu, 2 Apr 2015 14:46:28 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Huacai Chen <chenhc@lemote.com>
-Cc:     "Steven J. Hill" <Steven.Hill@imgtec.com>,
-        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>
-Subject: Re: [PATCH V9 6/7] MIPS: Loongson-3: Add chipset ACPI platform driver
-Message-ID: <20150402124628.GD20157@linux-mips.org>
-References: <1427597650-2368-1-git-send-email-chenhc@lemote.com>
- <1427597650-2368-7-git-send-email-chenhc@lemote.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Apr 2015 14:59:30 +0200 (CEST)
+Received: (from localhost user: 'macro', uid#1010) by eddie.linux-mips.org
+        with ESMTP id S27014353AbbDBM71cHNn1 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 2 Apr 2015 14:59:27 +0200
+Date:   Thu, 2 Apr 2015 13:59:27 +0100 (BST)
+From:   "Maciej W. Rozycki" <macro@linux-mips.org>
+To:     cee1 <fykcee1@gmail.com>
+cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        Chen Jie <chenj@lemote.com>
+Subject: Re: [v5] MIPS: lib: csum_partial: more instruction paral
+In-Reply-To: <CAGXxSxU_fCvUqkrFDU64MOgsyOW3XkcrSuB7DjcBMODG-B8=xw@mail.gmail.com>
+Message-ID: <alpine.LFD.2.11.1504021342130.5791@eddie.linux-mips.org>
+References: <1427389644-92793-1-git-send-email-fykcee1@gmail.com> <20150330201015.GA3757@linux-mips.org> <CAGXxSxU_fCvUqkrFDU64MOgsyOW3XkcrSuB7DjcBMODG-B8=xw@mail.gmail.com>
+User-Agent: Alpine 2.11 (LFD 23 2013-08-11)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1427597650-2368-7-git-send-email-chenhc@lemote.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <ralf@linux-mips.org>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46700
+X-archive-position: 46701
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,32 +36,58 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sun, Mar 29, 2015 at 10:54:10AM +0800, Huacai Chen wrote:
+On Tue, 31 Mar 2015, cee1 wrote:
 
->  arch/mips/loongson/common/pci.c   |    6 ++
->  drivers/platform/mips/Makefile    |    3 +
->  drivers/platform/mips/acpi_init.c |  150 +++++++++++++++++++++++++++++++++++++
+> >> One example about how this patch works is in CSUM_BIGCHUNK1:
+> >> // ** original **    vs    ** patch applied **
+> >>     ADDC(sum, t0)           ADDC(t0, t1)
+> >>     ADDC(sum, t1)           ADDC(t2, t3)
+> >>     ADDC(sum, t2)           ADDC(sum, t0)
+> >>     ADDC(sum, t3)           ADDC(sum, t2)
+> >>
+> >> With this patch applied, ADDC and the **next next** ADDC are independent.
+> >
+> > This is interesting because even CPUs as old as the R2000 have a pipeline
+> > bypass which allows an instruction to use a result written to a register
+> > by an immediately preceeeding instruction.
+> 
+> But if removes some dependency(as the patch did), instruction A and
+> instruction B can be issued at the same cycle[1], instead of B waiting
+> for the result from A   (a pipeline bypass reduces the wait time, but
+> not eliminates it, right?)
 
-Applied - but:
+ Hmm, that sounds to me remarkably like the scenario with Intel's original 
+Pentium processor that had a dual issue pipeline with U and V execution 
+pipes, both of which accepted ALU operations, and then each had some 
+further constraints as to other instructions, some of which had to go to a 
+specific pipe of the two (and were still parallelised if the other 
+instruction was acceptable for the other pipe).
 
-This isn't even a proper driver but rather a collection of subroutines.
-I wonder this has to reside in drivers/platform/mips, not in drivers/acpi/
-or even in the Loongson arch code?
+ To get good performance out of that design you had to interleave ALU 
+operations so that there was no data dependency between two consecutive 
+instructions, in which case two instructions could have been issued and 
+retired at a time, in parallel.  The further constraints the U and V pipes 
+had with other instructions made instruction scheduling quite an 
+interesting challenge for the compiler or handcoded assembly.
 
-> diff --git a/drivers/platform/mips/Makefile b/drivers/platform/mips/Makefile
-> index 8dfd039..522c8e1 100644
-> --- a/drivers/platform/mips/Makefile
-> +++ b/drivers/platform/mips/Makefile
-> @@ -1 +1,4 @@
-> +ifdef CONFIG_CPU_LOONGSON3
-> +obj-y += acpi_init.o
->  obj-$(CONFIG_CPU_HWMON) += cpu_hwmon.o
-> +endif
+ With the more complex pipeline design the Pentium's successor Pentium Pro 
+had there was no longer such an issue, I reckon there were several 
+mechanisms involved including register renaming and speculative execution 
+of more than just two instructions ahead that eliminated the need of such 
+constrained instruction scheduling although I don't remember offhand how 
+all this worked.
 
-This is where the yelling starts.  A Makefile that doesn't define any
-obj-* or lib-* variables such as this one if CONFIG_CPU_LOONGSON3 is
-undefined, will break the build.  In other words, this hasn't been tested
-on even a single other platform.  I've fixed this but it's normally
-up to the submitter to ensure this sort of thing doesn't happen.
+> > Can you explain why this patch is so beneficial for Loongson 3A?
+> 
+> I have written a simply test[2] to measure the performance gain on
+> Loongson 3A, the result[3] shows at most 50% performance gain.
+> 
+> IMHO, the patch not only benefits Loongson 3A, but would also benefit
+> other MIPS CPU(s).
 
-  Ralf
+ I'm not sure if any such other superscalar MIPS pipeline implementation 
+exists, but if written correctly then at worst it won't hurt anyone else, 
+so just make sure your change does not regress scalar MIPS pipelines.  I 
+hope you have a way to verify it.
+
+  Maciej

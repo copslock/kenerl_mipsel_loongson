@@ -1,14 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 04 Apr 2015 00:26:58 +0200 (CEST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 04 Apr 2015 00:27:17 +0200 (CEST)
 Received: (from localhost user: 'macro', uid#1010) by eddie.linux-mips.org
-        with ESMTP id S27025263AbbDCWYfCRLAc (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 4 Apr 2015 00:24:35 +0200
-Date:   Fri, 3 Apr 2015 23:24:35 +0100 (BST)
+        with ESMTP id S27008399AbbDCWYlHJd5X (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 4 Apr 2015 00:24:41 +0200
+Date:   Fri, 3 Apr 2015 23:24:41 +0100 (BST)
 From:   "Maciej W. Rozycki" <macro@linux-mips.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
-cc:     linux-mips@linux-mips.org
-Subject: [PATCH 12/48] MIPS: math-emu: Fix oversize lines in comparisons
+cc:     Markos Chandras <markos.chandras@imgtec.com>,
+        linux-mips@linux-mips.org
+Subject: [PATCH 13/48] MIPS: ELF: Drop `get_fp_abi'
 In-Reply-To: <alpine.LFD.2.11.1504030054200.21028@eddie.linux-mips.org>
-Message-ID: <alpine.LFD.2.11.1504031329520.21028@eddie.linux-mips.org>
+Message-ID: <alpine.LFD.2.11.1504030233280.21028@eddie.linux-mips.org>
 References: <alpine.LFD.2.11.1504030054200.21028@eddie.linux-mips.org>
 User-Agent: Alpine 2.11 (LFD 23 2013-08-11)
 MIME-Version: 1.0
@@ -17,7 +18,7 @@ Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46729
+X-archive-position: 46730
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -34,41 +35,45 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+Commit 46490b57 [MIPS: kernel: elf: Improve the overall ABI and FPU mode 
+checks] reduced `get_fp_abi' to an elaborate pass-through.  Drop it 
+then.
+
+Cc: Markos Chandras <markos.chandras@imgtec.com>
 Signed-off-by: Maciej W. Rozycki <macro@linux-mips.org>
 ---
-Ralf,
-
- There's another line going past 79 columns in these functions, it'll be 
-removed altogether with a later functional change.
-
-  Maciej
-
-linux-mips-emu-cmp-indent.diff
-Index: linux/arch/mips/math-emu/dp_cmp.c
+linux-mips-get-fp-abi.diff
+Index: linux/arch/mips/kernel/elf.c
 ===================================================================
---- linux.orig/arch/mips/math-emu/dp_cmp.c	2015-04-03 12:57:39.280529000 +0100
-+++ linux/arch/mips/math-emu/dp_cmp.c	2015-04-03 12:57:45.552589000 +0100
-@@ -36,7 +36,8 @@ int ieee754dp_cmp(union ieee754dp x, uni
- 	ieee754_clearcx();	/* Even clear inexact flag here */
+--- linux.orig/arch/mips/kernel/elf.c	2015-04-02 20:18:51.786524000 +0100
++++ linux/arch/mips/kernel/elf.c	2015-04-02 20:27:53.523178000 +0100
+@@ -131,16 +131,6 @@ int arch_elf_pt_proc(void *_ehdr, void *
+ 	return 0;
+ }
  
- 	if (ieee754dp_isnan(x) || ieee754dp_isnan(y)) {
--		if (sig || xc == IEEE754_CLASS_SNAN || yc == IEEE754_CLASS_SNAN)
-+		if (sig ||
-+		    xc == IEEE754_CLASS_SNAN || yc == IEEE754_CLASS_SNAN)
- 			ieee754_setcx(IEEE754_INVALID_OPERATION);
- 		if (cmp & IEEE754_CUN)
- 			return 1;
-Index: linux/arch/mips/math-emu/sp_cmp.c
-===================================================================
---- linux.orig/arch/mips/math-emu/sp_cmp.c	2015-04-03 12:57:39.282535000 +0100
-+++ linux/arch/mips/math-emu/sp_cmp.c	2015-04-03 12:57:45.554593000 +0100
-@@ -36,7 +36,8 @@ int ieee754sp_cmp(union ieee754sp x, uni
- 	ieee754_clearcx();	/* Even clear inexact flag here */
+-static inline unsigned get_fp_abi(int in_abi)
+-{
+-	/* If the ABI requirement is provided, simply return that */
+-	if (in_abi != MIPS_ABI_FP_UNKNOWN)
+-		return in_abi;
+-
+-	/* Unknown ABI */
+-	return MIPS_ABI_FP_UNKNOWN;
+-}
+-
+ int arch_check_elf(void *_ehdr, bool has_interpreter,
+ 		   struct arch_elf_state *state)
+ {
+@@ -151,10 +141,10 @@ int arch_check_elf(void *_ehdr, bool has
+ 	if (!config_enabled(CONFIG_MIPS_O32_FP64_SUPPORT))
+ 		return 0;
  
- 	if (ieee754sp_isnan(x) || ieee754sp_isnan(y)) {
--		if (sig || xc == IEEE754_CLASS_SNAN || yc == IEEE754_CLASS_SNAN)
-+		if (sig ||
-+		    xc == IEEE754_CLASS_SNAN || yc == IEEE754_CLASS_SNAN)
- 			ieee754_setcx(IEEE754_INVALID_OPERATION);
- 		if (cmp & IEEE754_CUN)
- 			return 1;
+-	fp_abi = get_fp_abi(state->fp_abi);
++	fp_abi = state->fp_abi;
+ 
+ 	if (has_interpreter) {
+-		interp_fp_abi = get_fp_abi(state->interp_fp_abi);
++		interp_fp_abi = state->interp_fp_abi;
+ 
+ 		abi0 = min(fp_abi, interp_fp_abi);
+ 		abi1 = max(fp_abi, interp_fp_abi);

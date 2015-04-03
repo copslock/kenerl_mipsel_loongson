@@ -1,14 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 04 Apr 2015 00:30:49 +0200 (CEST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 04 Apr 2015 00:31:10 +0200 (CEST)
 Received: (from localhost user: 'macro', uid#1010) by eddie.linux-mips.org
-        with ESMTP id S27025288AbbDCWZi3ydYi (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 4 Apr 2015 00:25:38 +0200
-Date:   Fri, 3 Apr 2015 23:25:38 +0100 (BST)
+        with ESMTP id S27025289AbbDCWZnLfEHI (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 4 Apr 2015 00:25:43 +0200
+Date:   Fri, 3 Apr 2015 23:25:43 +0100 (BST)
 From:   "Maciej W. Rozycki" <macro@linux-mips.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 cc:     linux-mips@linux-mips.org
-Subject: [PATCH 25/48] MIPS: math-emu: Optimise NaN handling in comparisons
+Subject: [PATCH 26/48] MIPS: math-emu: Remove redundant code from NaN
+ comparison
 In-Reply-To: <alpine.LFD.2.11.1504030054200.21028@eddie.linux-mips.org>
-Message-ID: <alpine.LFD.2.11.1504031344150.21028@eddie.linux-mips.org>
+Message-ID: <alpine.LFD.2.11.1504030533480.21028@eddie.linux-mips.org>
 References: <alpine.LFD.2.11.1504030054200.21028@eddie.linux-mips.org>
 User-Agent: Alpine 2.11 (LFD 23 2013-08-11)
 MIME-Version: 1.0
@@ -17,7 +18,7 @@ Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46742
+X-archive-position: 46743
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -34,80 +35,52 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-We have the input operands already classified in `ieee754sp_cmp' and 
-`ieee754dp_cmp' comparison operations, so use the class obtained to tell 
-NaNs and numbers apart rather than classifying inputs again for this 
-purpose, reducing the size of code by 24 and 40 instructions or 96 and 
-160 bytes respectively.
+Remove a redundant call to `ieee754_setandtestcx' in `ieee754sp_cmp' and 
+`ieee754dp_cmp'.  The IEEE 754 exception requested will have already 
+been set by a call to `ieee754_setcx' immediately above, because `sig' 
+has to be non-zero to reach here, and the comparison result returned 
+will be 0 regardless of the result from the call.  Simplify the return 
+expression remaining.  All this reducing the size of code by 16 and 12 
+instructions or 64 and 48 bytes respectively.
 
 Signed-off-by: Maciej W. Rozycki <macro@linux-mips.org>
 ---
-linux-mips-emu-cmp-nan.diff
+linux-mips-emu-cmp.diff
 Index: linux/arch/mips/math-emu/dp_cmp.c
 ===================================================================
---- linux.orig/arch/mips/math-emu/dp_cmp.c	2015-04-03 13:23:28.348835000 +0100
-+++ linux/arch/mips/math-emu/dp_cmp.c	2015-04-03 13:23:31.663867000 +0100
-@@ -35,7 +35,7 @@ int ieee754dp_cmp(union ieee754dp x, uni
- 	FLUSHYDP;
- 	ieee754_clearcx();	/* Even clear inexact flag here */
- 
--	if (ieee754dp_isnan(x) || ieee754dp_isnan(y)) {
-+	if (ieee754_class_nan(xc) || ieee754_class_nan(yc)) {
+--- linux.orig/arch/mips/math-emu/dp_cmp.c	2015-04-03 13:23:31.663867000 +0100
++++ linux/arch/mips/math-emu/dp_cmp.c	2015-04-03 13:23:37.279924000 +0100
+@@ -39,13 +39,7 @@ int ieee754dp_cmp(union ieee754dp x, uni
  		if (sig ||
  		    xc == IEEE754_CLASS_SNAN || yc == IEEE754_CLASS_SNAN)
  			ieee754_setcx(IEEE754_INVALID_OPERATION);
-Index: linux/arch/mips/math-emu/ieee754dp.c
-===================================================================
---- linux.orig/arch/mips/math-emu/ieee754dp.c	2015-04-03 13:23:28.349836000 +0100
-+++ linux/arch/mips/math-emu/ieee754dp.c	2015-04-03 13:23:31.665869000 +0100
-@@ -32,7 +32,7 @@ int ieee754dp_class(union ieee754dp x)
- 
- int ieee754dp_isnan(union ieee754dp x)
- {
--	return ieee754dp_class(x) >= IEEE754_CLASS_SNAN;
-+	return ieee754_class_nan(ieee754dp_class(x));
- }
- 
- static inline int ieee754dp_issnan(union ieee754dp x)
-Index: linux/arch/mips/math-emu/ieee754int.h
-===================================================================
---- linux.orig/arch/mips/math-emu/ieee754int.h	2015-04-03 13:23:28.350839000 +0100
-+++ linux/arch/mips/math-emu/ieee754int.h	2015-04-03 13:23:31.667874000 +0100
-@@ -44,6 +44,11 @@ static inline int ieee754_setandtestcx(c
- 	return ieee754_csr.mx & x;
- }
- 
-+static inline int ieee754_class_nan(int xc)
-+{
-+	return xc >= IEEE754_CLASS_SNAN;
-+}
-+
- #define COMPXSP \
- 	unsigned xm; int xe; int xs __maybe_unused; int xc
- 
-Index: linux/arch/mips/math-emu/ieee754sp.c
-===================================================================
---- linux.orig/arch/mips/math-emu/ieee754sp.c	2015-04-03 13:23:28.352832000 +0100
-+++ linux/arch/mips/math-emu/ieee754sp.c	2015-04-03 13:23:31.678870000 +0100
-@@ -32,7 +32,7 @@ int ieee754sp_class(union ieee754sp x)
- 
- int ieee754sp_isnan(union ieee754sp x)
- {
--	return ieee754sp_class(x) >= IEEE754_CLASS_SNAN;
-+	return ieee754_class_nan(ieee754sp_class(x));
- }
- 
- static inline int ieee754sp_issnan(union ieee754sp x)
+-		if (cmp & IEEE754_CUN)
+-			return 1;
+-		if (cmp & (IEEE754_CLT | IEEE754_CGT)) {
+-			if (sig && ieee754_setandtestcx(IEEE754_INVALID_OPERATION))
+-				return 0;
+-		}
+-		return 0;
++		return (cmp & IEEE754_CUN) != 0;
+ 	} else {
+ 		vx = x.bits;
+ 		vy = y.bits;
 Index: linux/arch/mips/math-emu/sp_cmp.c
 ===================================================================
---- linux.orig/arch/mips/math-emu/sp_cmp.c	2015-04-03 13:23:28.354835000 +0100
-+++ linux/arch/mips/math-emu/sp_cmp.c	2015-04-03 13:23:31.680870000 +0100
-@@ -35,7 +35,7 @@ int ieee754sp_cmp(union ieee754sp x, uni
- 	FLUSHYSP;
- 	ieee754_clearcx();	/* Even clear inexact flag here */
- 
--	if (ieee754sp_isnan(x) || ieee754sp_isnan(y)) {
-+	if (ieee754_class_nan(xc) || ieee754_class_nan(yc)) {
+--- linux.orig/arch/mips/math-emu/sp_cmp.c	2015-04-03 13:23:31.680870000 +0100
++++ linux/arch/mips/math-emu/sp_cmp.c	2015-04-03 13:23:37.281921000 +0100
+@@ -39,13 +39,7 @@ int ieee754sp_cmp(union ieee754sp x, uni
  		if (sig ||
  		    xc == IEEE754_CLASS_SNAN || yc == IEEE754_CLASS_SNAN)
  			ieee754_setcx(IEEE754_INVALID_OPERATION);
+-		if (cmp & IEEE754_CUN)
+-			return 1;
+-		if (cmp & (IEEE754_CLT | IEEE754_CGT)) {
+-			if (sig && ieee754_setandtestcx(IEEE754_INVALID_OPERATION))
+-				return 0;
+-		}
+-		return 0;
++		return (cmp & IEEE754_CUN) != 0;
+ 	} else {
+ 		vx = x.bits;
+ 		vy = y.bits;

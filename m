@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 04 Apr 2015 00:32:03 +0200 (CEST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 04 Apr 2015 00:32:21 +0200 (CEST)
 Received: (from localhost user: 'macro', uid#1010) by eddie.linux-mips.org
-        with ESMTP id S27025292AbbDCWZ5Mmcsy (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 4 Apr 2015 00:25:57 +0200
-Date:   Fri, 3 Apr 2015 23:25:57 +0100 (BST)
+        with ESMTP id S27025294AbbDCW0ETNir6 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 4 Apr 2015 00:26:04 +0200
+Date:   Fri, 3 Apr 2015 23:26:04 +0100 (BST)
 From:   "Maciej W. Rozycki" <macro@linux-mips.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 cc:     linux-mips@linux-mips.org
-Subject: [PATCH 29/48] MIPS: math-emu: Make NaN classifiers static
+Subject: [PATCH 30/48] MIPS: Correct `nofpu' non-functionality
 In-Reply-To: <alpine.LFD.2.11.1504030054200.21028@eddie.linux-mips.org>
-Message-ID: <alpine.LFD.2.11.1504031614470.21028@eddie.linux-mips.org>
+Message-ID: <alpine.LFD.2.11.1504031619570.21028@eddie.linux-mips.org>
 References: <alpine.LFD.2.11.1504030054200.21028@eddie.linux-mips.org>
 User-Agent: Alpine 2.11 (LFD 23 2013-08-11)
 MIME-Version: 1.0
@@ -17,7 +17,7 @@ Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46746
+X-archive-position: 46747
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -34,58 +34,94 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The `ieee754sp_isnan' and `ieee754dp_isnan' NaN classifiers are now no 
-longer externally referred, remove their header prototypes and make them 
-local to the two only respective places still making use of them.
+The `cpu_has_fpu' feature flag must not be hardcoded to 1 or the `nofpu'
+kernel option will be ignored.  Remove any such overrides and add a 
+cautionary note.  Hardcoding to 0 is fine for FPU-less platforms.
 
 Signed-off-by: Maciej W. Rozycki <macro@linux-mips.org>
 ---
-linux-mips-emu-isnan.diff
-Index: linux/arch/mips/math-emu/ieee754dp.c
+linux-mips-cpu-has-fpu.patch
+Index: linux/arch/mips/include/asm/cpu-features.h
 ===================================================================
---- linux.orig/arch/mips/math-emu/ieee754dp.c	2015-04-02 20:27:55.587207000 +0100
-+++ linux/arch/mips/math-emu/ieee754dp.c	2015-04-02 20:27:56.032207000 +0100
-@@ -30,7 +30,7 @@ int ieee754dp_class(union ieee754dp x)
- 	return xc;
- }
- 
--int ieee754dp_isnan(union ieee754dp x)
-+static inline int ieee754dp_isnan(union ieee754dp x)
- {
- 	return ieee754_class_nan(ieee754dp_class(x));
- }
-Index: linux/arch/mips/math-emu/ieee754dp.h
+--- linux.orig/arch/mips/include/asm/cpu-features.h	2015-04-02 20:18:50.163509000 +0100
++++ linux/arch/mips/include/asm/cpu-features.h	2015-04-02 20:27:56.252205000 +0100
+@@ -68,6 +68,7 @@
+ #ifndef cpu_has_octeon_cache
+ #define cpu_has_octeon_cache	0
+ #endif
++/* Don't override `cpu_has_fpu' to 1 or the "nofpu" option won't work.  */
+ #ifndef cpu_has_fpu
+ #define cpu_has_fpu		(current_cpu_data.options & MIPS_CPU_FPU)
+ #define raw_cpu_has_fpu		(raw_current_cpu_data.options & MIPS_CPU_FPU)
+Index: linux/arch/mips/include/asm/mach-cobalt/cpu-feature-overrides.h
 ===================================================================
---- linux.orig/arch/mips/math-emu/ieee754dp.h	2015-04-02 20:18:50.309509000 +0100
-+++ linux/arch/mips/math-emu/ieee754dp.h	2015-04-02 20:27:56.035204000 +0100
-@@ -77,6 +77,5 @@ static inline union ieee754dp builddp(in
- 	return r;
- }
- 
--extern int ieee754dp_isnan(union ieee754dp);
- extern union ieee754dp __cold ieee754dp_nanxcpt(union ieee754dp);
- extern union ieee754dp ieee754dp_format(int, int, u64);
-Index: linux/arch/mips/math-emu/ieee754sp.c
+--- linux.orig/arch/mips/include/asm/mach-cobalt/cpu-feature-overrides.h	2015-04-02 20:18:50.166512000 +0100
++++ linux/arch/mips/include/asm/mach-cobalt/cpu-feature-overrides.h	2015-04-02 20:27:56.276209000 +0100
+@@ -14,7 +14,6 @@
+ #define cpu_has_3k_cache	0
+ #define cpu_has_4k_cache	1
+ #define cpu_has_tx39_cache	0
+-#define cpu_has_fpu		1
+ #define cpu_has_32fpr		1
+ #define cpu_has_counter		1
+ #define cpu_has_watch		0
+Index: linux/arch/mips/include/asm/mach-dec/cpu-feature-overrides.h
 ===================================================================
---- linux.orig/arch/mips/math-emu/ieee754sp.c	2015-04-02 20:27:55.601223000 +0100
-+++ linux/arch/mips/math-emu/ieee754sp.c	2015-04-02 20:27:56.037202000 +0100
-@@ -30,7 +30,7 @@ int ieee754sp_class(union ieee754sp x)
- 	return xc;
- }
- 
--int ieee754sp_isnan(union ieee754sp x)
-+static inline int ieee754sp_isnan(union ieee754sp x)
- {
- 	return ieee754_class_nan(ieee754sp_class(x));
- }
-Index: linux/arch/mips/math-emu/ieee754sp.h
+--- linux.orig/arch/mips/include/asm/mach-dec/cpu-feature-overrides.h	2015-04-02 20:18:50.169511000 +0100
++++ linux/arch/mips/include/asm/mach-dec/cpu-feature-overrides.h	2015-04-02 20:27:56.289206000 +0100
+@@ -15,7 +15,6 @@
+ /* Generic ones first.  */
+ #define cpu_has_tlb			1
+ #define cpu_has_tx39_cache		0
+-#define cpu_has_fpu			1
+ #define cpu_has_divec			0
+ #define cpu_has_prefetch		0
+ #define cpu_has_mcheck			0
+Index: linux/arch/mips/include/asm/mach-ip22/cpu-feature-overrides.h
 ===================================================================
---- linux.orig/arch/mips/math-emu/ieee754sp.h	2015-04-02 20:18:50.314505000 +0100
-+++ linux/arch/mips/math-emu/ieee754sp.h	2015-04-02 20:27:56.039206000 +0100
-@@ -82,6 +82,5 @@ static inline union ieee754sp buildsp(in
- 	return r;
- }
- 
--extern int ieee754sp_isnan(union ieee754sp);
- extern union ieee754sp __cold ieee754sp_nanxcpt(union ieee754sp);
- extern union ieee754sp ieee754sp_format(int, int, unsigned);
+--- linux.orig/arch/mips/include/asm/mach-ip22/cpu-feature-overrides.h	2015-04-02 20:18:50.172504000 +0100
++++ linux/arch/mips/include/asm/mach-ip22/cpu-feature-overrides.h	2015-04-02 20:27:56.299204000 +0100
+@@ -16,7 +16,6 @@
+ #define cpu_has_tlb		1
+ #define cpu_has_4kex		1
+ #define cpu_has_4k_cache	1
+-#define cpu_has_fpu		1
+ #define cpu_has_32fpr		1
+ #define cpu_has_counter		1
+ #define cpu_has_mips16		0
+Index: linux/arch/mips/include/asm/mach-ip32/cpu-feature-overrides.h
+===================================================================
+--- linux.orig/arch/mips/include/asm/mach-ip32/cpu-feature-overrides.h	2015-04-02 20:18:50.175504000 +0100
++++ linux/arch/mips/include/asm/mach-ip32/cpu-feature-overrides.h	2015-04-02 20:27:56.306207000 +0100
+@@ -26,7 +26,6 @@
+ /* Settings which are common for all ip32 CPUs */
+ #define cpu_has_tlb		1
+ #define cpu_has_4kex		1
+-#define cpu_has_fpu		1
+ #define cpu_has_32fpr		1
+ #define cpu_has_counter		1
+ #define cpu_has_mips16		0
+Index: linux/arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h
+===================================================================
+--- linux.orig/arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h	2015-04-02 20:18:50.178504000 +0100
++++ linux/arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h	2015-04-02 20:27:56.323205000 +0100
+@@ -34,7 +34,6 @@
+ #define cpu_has_dsp		0
+ #define cpu_has_dsp2		0
+ #define cpu_has_ejtag		0
+-#define cpu_has_fpu		1
+ #define cpu_has_ic_fills_f_dc	0
+ #define cpu_has_inclusive_pcaches	1
+ #define cpu_has_llsc		1
+Index: linux/arch/mips/include/asm/mach-rm/cpu-feature-overrides.h
+===================================================================
+--- linux.orig/arch/mips/include/asm/mach-rm/cpu-feature-overrides.h	2015-04-02 20:18:50.182511000 +0100
++++ linux/arch/mips/include/asm/mach-rm/cpu-feature-overrides.h	2015-04-02 20:27:56.333207000 +0100
+@@ -15,7 +15,6 @@
+ #define cpu_has_tlb		1
+ #define cpu_has_4kex		1
+ #define cpu_has_4k_cache	1
+-#define cpu_has_fpu		1
+ #define cpu_has_32fpr		1
+ #define cpu_has_counter		1
+ #define cpu_has_watch		0

@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 04 Apr 2015 00:33:47 +0200 (CEST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 04 Apr 2015 00:34:04 +0200 (CEST)
 Received: (from localhost user: 'macro', uid#1010) by eddie.linux-mips.org
-        with ESMTP id S27025304AbbDCW0oPxCs6 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 4 Apr 2015 00:26:44 +0200
-Date:   Fri, 3 Apr 2015 23:26:44 +0100 (BST)
+        with ESMTP id S27025257AbbDCW0t0Iiqu (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 4 Apr 2015 00:26:49 +0200
+Date:   Fri, 3 Apr 2015 23:26:49 +0100 (BST)
 From:   "Maciej W. Rozycki" <macro@linux-mips.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 cc:     linux-mips@linux-mips.org
-Subject: [PATCH 35/48] MIPS: Correct MIPS I FP context layout
+Subject: [PATCH 36/48] MIPS: Correct FP ISA requirements
 In-Reply-To: <alpine.LFD.2.11.1504030054200.21028@eddie.linux-mips.org>
-Message-ID: <alpine.LFD.2.11.1504031711120.21028@eddie.linux-mips.org>
+Message-ID: <alpine.LFD.2.11.1504031719470.21028@eddie.linux-mips.org>
 References: <alpine.LFD.2.11.1504030054200.21028@eddie.linux-mips.org>
 User-Agent: Alpine 2.11 (LFD 23 2013-08-11)
 MIME-Version: 1.0
@@ -17,7 +17,7 @@ Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46752
+X-archive-position: 46753
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -34,130 +34,271 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Implement the correct ordering of individual floating-point registers 
-within double-precision register pairs for the MIPS I FP context, as 
-required by our FP emulation code and expected by userland talking via 
-ptrace(2).  Use L.D and S.D assembly macros that do the right thing like 
-LDC1 and SDC1 from MIPS II up, avoiding the need to mess up with 
-endianness conditionals.
+Correct ISA requirements for floating-point instructions:
 
-This in particular fixes the handling of denormals and NaN generation in 
-Unimplemented Operation emulation traps.
+* the CU3 exception signifies a real COP3 instruction in MIPS I & II,
+
+* the BC1FL and BC1TL instructions are not supported in MIPS I,
+
+* the SQRT.fmt instructions are indeed supported in MIPS II,
+
+* the LDC1 and SDC1 instructions are indeed supported in MIPS32r1,
+
+* the CEIL.W.fmt, FLOOR.W.fmt, ROUND.W.fmt and TRUNC.W.fmt instructions 
+  are indeed supported in MIPS32,
+
+* the CVT.L.fmt and CVT.fmt.L instructions are indeed supported in 
+  MIPS32r2 and MIPS32r6,
+
+* the CEIL.L.fmt, FLOOR.L.fmt, ROUND.L.fmt and TRUNC.L.fmt instructions 
+  are indeed supported in MIPS32r2 and MIPS32r6,
+
+* the RSQRT.fmt and RECIP.fmt instructions are indeed supported in 
+  MIPS64r1,
+
+Also simplify conditionals for MIPS III and MIPS IV FPU instructions and 
+the handling of the MOVCI minor opcode.
 
 Signed-off-by: Maciej W. Rozycki <macro@linux-mips.org>
 ---
-linux-mips-isa1-fp-context.patch
-Index: linux/arch/mips/include/asm/asmmacro-32.h
+linux-mips-emu-isa.diff
+Index: linux/arch/mips/include/asm/cpu-features.h
 ===================================================================
---- linux.orig/arch/mips/include/asm/asmmacro-32.h	2015-04-02 20:18:49.474495000 +0100
-+++ linux/arch/mips/include/asm/asmmacro-32.h	2015-04-02 20:27:57.304220000 +0100
-@@ -16,38 +16,22 @@
- 	.set push
- 	SET_HARDFLOAT
- 	cfc1	\tmp,  fcr31
--	swc1	$f0,  THREAD_FPR0_LS64(\thread)
--	swc1	$f1,  THREAD_FPR1_LS64(\thread)
--	swc1	$f2,  THREAD_FPR2_LS64(\thread)
--	swc1	$f3,  THREAD_FPR3_LS64(\thread)
--	swc1	$f4,  THREAD_FPR4_LS64(\thread)
--	swc1	$f5,  THREAD_FPR5_LS64(\thread)
--	swc1	$f6,  THREAD_FPR6_LS64(\thread)
--	swc1	$f7,  THREAD_FPR7_LS64(\thread)
--	swc1	$f8,  THREAD_FPR8_LS64(\thread)
--	swc1	$f9,  THREAD_FPR9_LS64(\thread)
--	swc1	$f10, THREAD_FPR10_LS64(\thread)
--	swc1	$f11, THREAD_FPR11_LS64(\thread)
--	swc1	$f12, THREAD_FPR12_LS64(\thread)
--	swc1	$f13, THREAD_FPR13_LS64(\thread)
--	swc1	$f14, THREAD_FPR14_LS64(\thread)
--	swc1	$f15, THREAD_FPR15_LS64(\thread)
--	swc1	$f16, THREAD_FPR16_LS64(\thread)
--	swc1	$f17, THREAD_FPR17_LS64(\thread)
--	swc1	$f18, THREAD_FPR18_LS64(\thread)
--	swc1	$f19, THREAD_FPR19_LS64(\thread)
--	swc1	$f20, THREAD_FPR20_LS64(\thread)
--	swc1	$f21, THREAD_FPR21_LS64(\thread)
--	swc1	$f22, THREAD_FPR22_LS64(\thread)
--	swc1	$f23, THREAD_FPR23_LS64(\thread)
--	swc1	$f24, THREAD_FPR24_LS64(\thread)
--	swc1	$f25, THREAD_FPR25_LS64(\thread)
--	swc1	$f26, THREAD_FPR26_LS64(\thread)
--	swc1	$f27, THREAD_FPR27_LS64(\thread)
--	swc1	$f28, THREAD_FPR28_LS64(\thread)
--	swc1	$f29, THREAD_FPR29_LS64(\thread)
--	swc1	$f30, THREAD_FPR30_LS64(\thread)
--	swc1	$f31, THREAD_FPR31_LS64(\thread)
-+	s.d	$f0,  THREAD_FPR0_LS64(\thread)
-+	s.d	$f2,  THREAD_FPR2_LS64(\thread)
-+	s.d	$f4,  THREAD_FPR4_LS64(\thread)
-+	s.d	$f6,  THREAD_FPR6_LS64(\thread)
-+	s.d	$f8,  THREAD_FPR8_LS64(\thread)
-+	s.d	$f10, THREAD_FPR10_LS64(\thread)
-+	s.d	$f12, THREAD_FPR12_LS64(\thread)
-+	s.d	$f14, THREAD_FPR14_LS64(\thread)
-+	s.d	$f16, THREAD_FPR16_LS64(\thread)
-+	s.d	$f18, THREAD_FPR18_LS64(\thread)
-+	s.d	$f20, THREAD_FPR20_LS64(\thread)
-+	s.d	$f22, THREAD_FPR22_LS64(\thread)
-+	s.d	$f24, THREAD_FPR24_LS64(\thread)
-+	s.d	$f26, THREAD_FPR26_LS64(\thread)
-+	s.d	$f28, THREAD_FPR28_LS64(\thread)
-+	s.d	$f30, THREAD_FPR30_LS64(\thread)
- 	sw	\tmp, THREAD_FCR31(\thread)
- 	.set pop
- 	.endm
-@@ -56,38 +40,22 @@
- 	.set push
- 	SET_HARDFLOAT
- 	lw	\tmp, THREAD_FCR31(\thread)
--	lwc1	$f0,  THREAD_FPR0_LS64(\thread)
--	lwc1	$f1,  THREAD_FPR1_LS64(\thread)
--	lwc1	$f2,  THREAD_FPR2_LS64(\thread)
--	lwc1	$f3,  THREAD_FPR3_LS64(\thread)
--	lwc1	$f4,  THREAD_FPR4_LS64(\thread)
--	lwc1	$f5,  THREAD_FPR5_LS64(\thread)
--	lwc1	$f6,  THREAD_FPR6_LS64(\thread)
--	lwc1	$f7,  THREAD_FPR7_LS64(\thread)
--	lwc1	$f8,  THREAD_FPR8_LS64(\thread)
--	lwc1	$f9,  THREAD_FPR9_LS64(\thread)
--	lwc1	$f10, THREAD_FPR10_LS64(\thread)
--	lwc1	$f11, THREAD_FPR11_LS64(\thread)
--	lwc1	$f12, THREAD_FPR12_LS64(\thread)
--	lwc1	$f13, THREAD_FPR13_LS64(\thread)
--	lwc1	$f14, THREAD_FPR14_LS64(\thread)
--	lwc1	$f15, THREAD_FPR15_LS64(\thread)
--	lwc1	$f16, THREAD_FPR16_LS64(\thread)
--	lwc1	$f17, THREAD_FPR17_LS64(\thread)
--	lwc1	$f18, THREAD_FPR18_LS64(\thread)
--	lwc1	$f19, THREAD_FPR19_LS64(\thread)
--	lwc1	$f20, THREAD_FPR20_LS64(\thread)
--	lwc1	$f21, THREAD_FPR21_LS64(\thread)
--	lwc1	$f22, THREAD_FPR22_LS64(\thread)
--	lwc1	$f23, THREAD_FPR23_LS64(\thread)
--	lwc1	$f24, THREAD_FPR24_LS64(\thread)
--	lwc1	$f25, THREAD_FPR25_LS64(\thread)
--	lwc1	$f26, THREAD_FPR26_LS64(\thread)
--	lwc1	$f27, THREAD_FPR27_LS64(\thread)
--	lwc1	$f28, THREAD_FPR28_LS64(\thread)
--	lwc1	$f29, THREAD_FPR29_LS64(\thread)
--	lwc1	$f30, THREAD_FPR30_LS64(\thread)
--	lwc1	$f31, THREAD_FPR31_LS64(\thread)
-+	l.d	$f0,  THREAD_FPR0_LS64(\thread)
-+	l.d	$f2,  THREAD_FPR2_LS64(\thread)
-+	l.d	$f4,  THREAD_FPR4_LS64(\thread)
-+	l.d	$f6,  THREAD_FPR6_LS64(\thread)
-+	l.d	$f8,  THREAD_FPR8_LS64(\thread)
-+	l.d	$f10, THREAD_FPR10_LS64(\thread)
-+	l.d	$f12, THREAD_FPR12_LS64(\thread)
-+	l.d	$f14, THREAD_FPR14_LS64(\thread)
-+	l.d	$f16, THREAD_FPR16_LS64(\thread)
-+	l.d	$f18, THREAD_FPR18_LS64(\thread)
-+	l.d	$f20, THREAD_FPR20_LS64(\thread)
-+	l.d	$f22, THREAD_FPR22_LS64(\thread)
-+	l.d	$f24, THREAD_FPR24_LS64(\thread)
-+	l.d	$f26, THREAD_FPR26_LS64(\thread)
-+	l.d	$f28, THREAD_FPR28_LS64(\thread)
-+	l.d	$f30, THREAD_FPR30_LS64(\thread)
- 	ctc1	\tmp, fcr31
- 	.set pop
- 	.endm
+--- linux.orig/arch/mips/include/asm/cpu-features.h	2015-04-02 20:27:56.252205000 +0100
++++ linux/arch/mips/include/asm/cpu-features.h	2015-04-02 20:27:57.478232000 +0100
+@@ -221,8 +221,11 @@
+ #define cpu_has_mips_4_5_r	(cpu_has_mips_4 | cpu_has_mips_5_r)
+ #define cpu_has_mips_5_r	(cpu_has_mips_5 | cpu_has_mips_r)
+ 
+-#define cpu_has_mips_4_5_r2_r6	(cpu_has_mips_4_5 | cpu_has_mips_r2 | \
+-				 cpu_has_mips_r6)
++#define cpu_has_mips_3_4_5_64_r2_r6					\
++				(cpu_has_mips_3 | cpu_has_mips_4_5_64_r2_r6)
++#define cpu_has_mips_4_5_64_r2_r6					\
++				(cpu_has_mips_4_5 | cpu_has_mips64r1 |	\
++				 cpu_has_mips_r2 | cpu_has_mips_r6)
+ 
+ #define cpu_has_mips32	(cpu_has_mips32r1 | cpu_has_mips32r2 | cpu_has_mips32r6)
+ #define cpu_has_mips64	(cpu_has_mips64r1 | cpu_has_mips64r2 | cpu_has_mips64r6)
+Index: linux/arch/mips/kernel/traps.c
+===================================================================
+--- linux.orig/arch/mips/kernel/traps.c	2015-04-02 20:27:56.948213000 +0100
++++ linux/arch/mips/kernel/traps.c	2015-04-02 20:27:57.489216000 +0100
+@@ -1349,19 +1349,18 @@ asmlinkage void do_cpu(struct pt_regs *r
+ 
+ 	case 3:
+ 		/*
+-		 * Old (MIPS I and MIPS II) processors will set this code
+-		 * for COP1X opcode instructions that replaced the original
+-		 * COP3 space.	We don't limit COP1 space instructions in
+-		 * the emulator according to the CPU ISA, so we want to
+-		 * treat COP1X instructions consistently regardless of which
+-		 * code the CPU chose.	Therefore we redirect this trap to
+-		 * the FP emulator too.
+-		 *
+-		 * Then some newer FPU-less processors use this code
+-		 * erroneously too, so they are covered by this choice
+-		 * as well.
++		 * The COP3 opcode space and consequently the CP0.Status.CU3
++		 * bit and the CP0.Cause.CE=3 encoding have been removed as
++		 * of the MIPS III ISA.  From the MIPS IV and MIPS32r2 ISAs
++		 * up the space has been reused for COP1X instructions, that
++		 * are enabled by the CP0.Status.CU1 bit and consequently
++		 * use the CP0.Cause.CE=1 encoding for Coprocessor Unusable
++		 * exceptions.  Some FPU-less processors that implement one
++		 * of these ISAs however use this code erroneously for COP1X
++		 * instructions.  Therefore we redirect this trap to the FP
++		 * emulator too.
+ 		 */
+-		if (raw_cpu_has_fpu) {
++		if (raw_cpu_has_fpu || !cpu_has_mips_4_5_64_r2_r6) {
+ 			force_sig(SIGILL, current);
+ 			break;
+ 		}
+Index: linux/arch/mips/math-emu/cp1emu.c
+===================================================================
+--- linux.orig/arch/mips/math-emu/cp1emu.c	2015-04-02 20:27:54.459192000 +0100
++++ linux/arch/mips/math-emu/cp1emu.c	2015-04-02 20:27:57.493218000 +0100
+@@ -1115,17 +1115,18 @@ static int cop1Emulate(struct pt_regs *x
+ 			likely = 0;
+ 			switch (MIPSInst_RT(ir) & 3) {
+ 			case bcfl_op:
+-				likely = 1;
++				if (cpu_has_mips_2_3_4_5_r)
++					likely = 1;
++				/* Fall through */
+ 			case bcf_op:
+ 				cond = !cond;
+ 				break;
+ 			case bctl_op:
+-				likely = 1;
++				if (cpu_has_mips_2_3_4_5_r)
++					likely = 1;
++				/* Fall through */
+ 			case bct_op:
+ 				break;
+-			default:
+-				/* thats an illegal instruction */
+-				return SIGILL;
+ 			}
+ 
+ 			set_delay_slot(xcp);
+@@ -1165,36 +1166,34 @@ static int cop1Emulate(struct pt_regs *x
+ 
+ 				switch (MIPSInst_OPCODE(ir)) {
+ 				case lwc1_op:
+-					goto emul;
+-
+ 				case swc1_op:
+ 					goto emul;
+ 
+ 				case ldc1_op:
+ 				case sdc1_op:
+-					if (cpu_has_mips_2_3_4_5 ||
+-					    cpu_has_mips64)
++					if (cpu_has_mips_2_3_4_5_r)
+ 						goto emul;
+ 
+ 					return SIGILL;
+-					goto emul;
+ 
+ 				case cop1_op:
+ 					goto emul;
+ 
+ 				case cop1x_op:
+-					if (cpu_has_mips_4_5 || cpu_has_mips64 || cpu_has_mips32r2)
++					if (cpu_has_mips_4_5_64_r2_r6)
+ 						/* its one of ours */
+ 						goto emul;
+ 
+ 					return SIGILL;
+ 
+ 				case spec_op:
+-					if (!cpu_has_mips_4_5_r)
+-						return SIGILL;
++					switch (MIPSInst_FUNC(ir)) {
++					case movc_op:
++						if (cpu_has_mips_4_5_r)
++							goto emul;
+ 
+-					if (MIPSInst_FUNC(ir) == movc_op)
+-						goto emul;
++						return SIGILL;
++					}
+ 					break;
+ 				}
+ 
+@@ -1228,7 +1227,7 @@ static int cop1Emulate(struct pt_regs *x
+ 		break;
+ 
+ 	case cop1x_op:
+-		if (!cpu_has_mips_4_5 && !cpu_has_mips64 && !cpu_has_mips32r2)
++		if (!cpu_has_mips_4_5_64_r2_r6)
+ 			return SIGILL;
+ 
+ 		sig = fpux_emu(xcp, ctx, ir, fault_addr);
+@@ -1561,7 +1560,7 @@ static int fpu_emu(struct pt_regs *xcp, 
+ 
+ 			/* unary  ops */
+ 		case fsqrt_op:
+-			if (!cpu_has_mips_4_5_r)
++			if (!cpu_has_mips_2_3_4_5_r)
+ 				return SIGILL;
+ 
+ 			handler.u = ieee754sp_sqrt;
+@@ -1573,14 +1572,14 @@ static int fpu_emu(struct pt_regs *xcp, 
+ 		 * achieve full IEEE-754 accuracy - however this emulator does.
+ 		 */
+ 		case frsqrt_op:
+-			if (!cpu_has_mips_4_5_r2_r6)
++			if (!cpu_has_mips_4_5_64_r2_r6)
+ 				return SIGILL;
+ 
+ 			handler.u = fpemu_sp_rsqrt;
+ 			goto scopuop;
+ 
+ 		case frecip_op:
+-			if (!cpu_has_mips_4_5_r2_r6)
++			if (!cpu_has_mips_4_5_64_r2_r6)
+ 				return SIGILL;
+ 
+ 			handler.u = fpemu_sp_recip;
+@@ -1682,7 +1681,7 @@ static int fpu_emu(struct pt_regs *xcp, 
+ 		case ftrunc_op:
+ 		case fceil_op:
+ 		case ffloor_op:
+-			if (!cpu_has_mips_2_3_4_5 && !cpu_has_mips64)
++			if (!cpu_has_mips_2_3_4_5_r)
+ 				return SIGILL;
+ 
+ 			oldrm = ieee754_csr.rm;
+@@ -1694,7 +1693,7 @@ static int fpu_emu(struct pt_regs *xcp, 
+ 			goto copcsr;
+ 
+ 		case fcvtl_op:
+-			if (!cpu_has_mips_3_4_5 && !cpu_has_mips64)
++			if (!cpu_has_mips_3_4_5_64_r2_r6)
+ 				return SIGILL;
+ 
+ 			SPFROMREG(fs, MIPSInst_FS(ir));
+@@ -1706,7 +1705,7 @@ static int fpu_emu(struct pt_regs *xcp, 
+ 		case ftruncl_op:
+ 		case fceill_op:
+ 		case ffloorl_op:
+-			if (!cpu_has_mips_3_4_5 && !cpu_has_mips64)
++			if (!cpu_has_mips_3_4_5_64_r2_r6)
+ 				return SIGILL;
+ 
+ 			oldrm = ieee754_csr.rm;
+@@ -1775,13 +1774,13 @@ static int fpu_emu(struct pt_regs *xcp, 
+ 		 * achieve full IEEE-754 accuracy - however this emulator does.
+ 		 */
+ 		case frsqrt_op:
+-			if (!cpu_has_mips_4_5_r2_r6)
++			if (!cpu_has_mips_4_5_64_r2_r6)
+ 				return SIGILL;
+ 
+ 			handler.u = fpemu_dp_rsqrt;
+ 			goto dcopuop;
+ 		case frecip_op:
+-			if (!cpu_has_mips_4_5_r2_r6)
++			if (!cpu_has_mips_4_5_64_r2_r6)
+ 				return SIGILL;
+ 
+ 			handler.u = fpemu_dp_recip;
+@@ -1871,7 +1870,7 @@ static int fpu_emu(struct pt_regs *xcp, 
+ 			goto copcsr;
+ 
+ 		case fcvtl_op:
+-			if (!cpu_has_mips_3_4_5 && !cpu_has_mips64)
++			if (!cpu_has_mips_3_4_5_64_r2_r6)
+ 				return SIGILL;
+ 
+ 			DPFROMREG(fs, MIPSInst_FS(ir));
+@@ -1883,7 +1882,7 @@ static int fpu_emu(struct pt_regs *xcp, 
+ 		case ftruncl_op:
+ 		case fceill_op:
+ 		case ffloorl_op:
+-			if (!cpu_has_mips_3_4_5 && !cpu_has_mips64)
++			if (!cpu_has_mips_3_4_5_64_r2_r6)
+ 				return SIGILL;
+ 
+ 			oldrm = ieee754_csr.rm;
+@@ -1942,7 +1941,7 @@ static int fpu_emu(struct pt_regs *xcp, 
+ 
+ 	case l_fmt:
+ 
+-		if (!cpu_has_mips_3_4_5 && !cpu_has_mips64)
++		if (!cpu_has_mips_3_4_5_64_r2_r6)
+ 			return SIGILL;
+ 
+ 		DIFROMREG(bits, MIPSInst_FS(ir));
+@@ -2006,7 +2005,7 @@ static int fpu_emu(struct pt_regs *xcp, 
+ 		SITOREG(rv.w, MIPSInst_FD(ir));
+ 		break;
+ 	case l_fmt:
+-		if (!cpu_has_mips_3_4_5 && !cpu_has_mips64)
++		if (!cpu_has_mips_3_4_5_64_r2_r6)
+ 			return SIGILL;
+ 
+ 		DITOREG(rv.l, MIPSInst_FD(ir));

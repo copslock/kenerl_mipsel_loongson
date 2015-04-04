@@ -1,36 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 04 Apr 2015 22:05:01 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:60804 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27010451AbbDDUE7dBQ87 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 4 Apr 2015 22:04:59 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.9/8.14.8) with ESMTP id t34K50ph010040;
-        Sat, 4 Apr 2015 22:05:00 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.9/8.14.9/Submit) id t34K4xRn010039;
-        Sat, 4 Apr 2015 22:04:59 +0200
-Date:   Sat, 4 Apr 2015 22:04:59 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     "Maciej W. Rozycki" <macro@linux-mips.org>
-Cc:     linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 04 Apr 2015 22:55:11 +0200 (CEST)
+Received: (from localhost user: 'macro', uid#1010) by eddie.linux-mips.org
+        with ESMTP id S27009427AbbDDUzJpWl4t (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 4 Apr 2015 22:55:09 +0200
+Date:   Sat, 4 Apr 2015 21:55:09 +0100 (BST)
+From:   "Maciej W. Rozycki" <macro@linux-mips.org>
+To:     Ralf Baechle <ralf@linux-mips.org>
+cc:     linux-mips@linux-mips.org
 Subject: Re: [PATCH 00/48] FPU and FP emulation clean-ups, fixes and feature
  updates
-Message-ID: <20150404200459.GE20157@linux-mips.org>
-References: <alpine.LFD.2.11.1504030054200.21028@eddie.linux-mips.org>
+In-Reply-To: <20150404200459.GE20157@linux-mips.org>
+Message-ID: <alpine.LFD.2.11.1504042142500.21028@eddie.linux-mips.org>
+References: <alpine.LFD.2.11.1504030054200.21028@eddie.linux-mips.org> <20150404200459.GE20157@linux-mips.org>
+User-Agent: Alpine 2.11 (LFD 23 2013-08-11)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <alpine.LFD.2.11.1504030054200.21028@eddie.linux-mips.org>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <ralf@linux-mips.org>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46779
+X-archive-position: 46780
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,27 +35,32 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Apr 03, 2015 at 11:23:29PM +0100, Maciej W. Rozycki wrote:
+On Sat, 4 Apr 2015, Ralf Baechle wrote:
 
->  These are fixes to address code structuring and coding style problems 
-> and then bug fixes I discovered in the course of implementing an 
-> upcoming FPU feature.  There are some minor feature updates too.  They 
-> are related to one another to a various extent, sometimes very loosely, 
-> but I decided to keep them as a series because there is a lot of 
-> syntactical overlap, as changes are made in steps, one issue at a time.  
-> Keeping them in order guarantees that they apply on top of one another.
+> >  Clean-ups come first as they should be completely uncontroversial, 
+> > followed by restructuring, bug fixes and new features.
 > 
->  Clean-ups come first as they should be completely uncontroversial, 
-> followed by restructuring, bug fixes and new features.
+> It would have been nice if the bug fixes or at least those relevant to
+> 4.0 and older were at the beginning to reduce issue when applying them
+> to the 4.0-fixes and possibly -stable branches.
 
-It would have been nice if the bug fixes or at least those relevant to
-4.0 and older were at the beginning to reduce issue when applying them
-to the 4.0-fixes and possibly -stable branches.
+ Good point, I will keep it in mind in the future.  I think there's 
+actually little if any overlap here though, you should be able to ignore 
+comment and formatting changes when doing any backports and the rest 
+should just apply right away.
 
-I applied your patches on top of my working branch and ran into a number
-of conflicts.  Will push the result out as soon as I'm done with the
-conflict resolution.
+ I can send you a pre-r6 version of the relevant patches too if that would 
+help -- I think there are 3 or 4 that I had to rework while rebasing from 
+3.19 to 4.0.
 
-Thanks!
+> I applied your patches on top of my working branch and ran into a number
+> of conflicts.  Will push the result out as soon as I'm done with the
+> conflict resolution.
 
-  Ralf
+ Great, thanks!
+
+ Is there a better branch than master of ralf/linux.git to base patches 
+submitted against so as to save you from the need to sort out conflicts?  
+Let me know if you need help with any unobvious 3-way merge too.
+
+  Maciej

@@ -1,61 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 04 Apr 2015 05:35:01 +0200 (CEST)
-Received: from mail-ig0-f169.google.com ([209.85.213.169]:35333 "EHLO
-        mail-ig0-f169.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27006152AbbDDDe5mTt-5 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 4 Apr 2015 05:34:57 +0200
-Received: by igcau2 with SMTP id au2so110957551igc.0;
-        Fri, 03 Apr 2015 20:34:52 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 04 Apr 2015 13:22:30 +0200 (CEST)
+Received: from mail-lb0-f173.google.com ([209.85.217.173]:34977 "EHLO
+        mail-lb0-f173.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006150AbbDDLW26CaAO (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 4 Apr 2015 13:22:28 +0200
+Received: by lbdc10 with SMTP id c10so91503522lbd.2
+        for <linux-mips@linux-mips.org>; Sat, 04 Apr 2015 04:22:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc:content-type;
-        bh=Q0abZIk0G2RoF6pyVqHwYDj617sAqcgWPkC35VGOvIs=;
-        b=HHppxDutNZUVyXfjbNfvZndWl+aAVfra6qKayGCvlGtb1D8zYquJNq5vk62XnwriJL
-         V5PNlh95jreG5y+eX7EejmxMXsAmUeelqLo1QK2EZnZs8NJzWrNjrkmmoTXq3VC/VimV
-         tF46Lxec5aHAx/cGfsEYFtQ9Lx+muALh3DQSBsVFxsj+Hwc3cGpkksMGxbwQDluh2TsS
-         vzMqyBZ5V8hVdYAqN5y35xwB9yQfmqaUd+/zbfMXKJs2FuJmsHNUQeoHhpwob9oVlloO
-         8OCQDYKrzGzA4rdLJ8LXntfzwhriKm99TmRnHntAU9ZBwIfU/vjy7lWdXdrgvMJRHXAE
-         5ZWQ==
-MIME-Version: 1.0
-X-Received: by 10.107.15.129 with SMTP id 1mr8053045iop.20.1428118492810; Fri,
- 03 Apr 2015 20:34:52 -0700 (PDT)
-Received: by 10.64.208.43 with HTTP; Fri, 3 Apr 2015 20:34:52 -0700 (PDT)
-In-Reply-To: <20150403205201.GF10892@google.com>
-References: <1427857069-6789-1-git-send-email-yinghai@kernel.org>
-        <1427857069-6789-2-git-send-email-yinghai@kernel.org>
-        <20150403193234.GD10892@google.com>
-        <20150403205201.GF10892@google.com>
-Date:   Fri, 3 Apr 2015 20:34:52 -0700
-X-Google-Sender-Auth: C80mlEfG9l_pRvo3r9JRJSyHpHE
-Message-ID: <CAE9FiQVqAEvoLDRZMcNFki0gLMQiyQd2VYivjAh1teRGeuNwBw@mail.gmail.com>
-Subject: Re: [PATCH 1/3] PCI: Introduce pci_bus_addr_t
-From:   Yinghai Lu <yinghai@kernel.org>
-To:     Bjorn Helgaas <bhelgaas@google.com>
-Cc:     David Miller <davem@davemloft.net>,
-        David Ahern <david.ahern@oracle.com>,
-        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        Russell King <linux@arm.linux.org.uk>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        "the arch/x86 maintainers" <x86@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <yhlu.kernel@gmail.com>
+        h=from:to:cc:subject:date:message-id;
+        bh=oDIhnTuuVb3Mh8C8L14VUNxFaPbdqxdAsALdDQlhFZ0=;
+        b=k2nn+q1WxJT4A/Lm6I6F3GRSN3AdL3aj+rix41PSnp1/nn20KqYgI6ZIKc3N12VTQJ
+         vgr4qqGQ3LNLCibaHQpIB5F7JQmRUcBjh2jis/z6ZVhN3xm/ucOZOlOH3JNbBS+U6PO2
+         +zhqdmRgRJMZ1A3RGW6yhNR+81NxhaQ2zThzEvjldE7J6G/sR9VfrlTHZxinU3xH2jpj
+         98uKn9p+WimKFQq9+xK+YqdIwZGkiOiQ6UBdpR9JkSPEiHJo+QUxNnKwIlDtVjedguMv
+         ermzBt9HcWk6Z/BIcFA9b+SMpPU2j9n5xx0E2EfZh+dfCox3uxgy5bNQKyMUi4jfNTJw
+         2WDA==
+X-Received: by 10.152.87.204 with SMTP id ba12mr5853082lab.35.1428146544713;
+        Sat, 04 Apr 2015 04:22:24 -0700 (PDT)
+Received: from localhost.localdomain (ppp37-190-59-35.pppoe.spdop.ru. [37.190.59.35])
+        by mx.google.com with ESMTPSA id wh9sm375329lbb.45.2015.04.04.04.22.20
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Sat, 04 Apr 2015 04:22:23 -0700 (PDT)
+From:   Yury Norov <yury.norov@gmail.com>
+To:     rth@twiddle.net, ink@jurassic.park.msu.ru,
+        akpm@linux-foundation.org, davem@davemloft.net
+Cc:     klimov.linux@gmail.com, yury.norov@gmail.com,
+        linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
+        linux-mips@linux-mips.org, sparclinux@vger.kernel.org
+Subject: [PATCH] signal: optimize 'sigaction' call path
+Date:   Sat,  4 Apr 2015 14:22:13 +0300
+Message-Id: <1428146533-2208-1-git-send-email-yury.norov@gmail.com>
+X-Mailer: git-send-email 2.1.0
+Return-Path: <yury.norov@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46772
+X-archive-position: 46775
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yinghai@kernel.org
+X-original-sender: yury.norov@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -68,63 +52,498 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Apr 3, 2015 at 1:52 PM, Bjorn Helgaas <bhelgaas@google.com> wrote:
-> [+cc Sam (commented on previous versions), Russell, linux-arm-kernel, Ralf,
-> linux-mips, Ben, linuxppc-dev, x86]
->
-> On Fri, Apr 03, 2015 at 02:32:34PM -0500, Bjorn Helgaas wrote:
->> On Tue, Mar 31, 2015 at 07:57:47PM -0700, Yinghai Lu wrote:
->> > David Ahern found commit d63e2e1f3df9 ("sparc/PCI: Clip bridge windows
->> > to fit in upstream windows") broke booting on sparc/T5-8.
->> >
->> > In the boot log, there is
->> >   pci 0000:06:00.0: reg 0x184: can't handle BAR above 4GB (bus address
->> >   0x110204000)
->> > but that only could happen when dma_addr_t is 32-bit.
->> >
->> > According to David Miller, all DMA occurs behind an IOMMU and these
->> > IOMMUs only support 32-bit addressing, therefore dma_addr_t is
->> > 32-bit on sparc64.
->> >
->> > Let's introduce pci_bus_addr_t instead of using dma_addr_t,
->> > and pci_bus_addr_t will be 64-bit on 64-bit platform or X86_PAE.
->> >
->> > Fixes: commit d63e2e1f3df9 ("sparc/PCI: Clip bridge windows to fit in upstream windows")
->> > Fixes: commit 23b13bc76f35 ("PCI: Fail safely if we can't handle BARs larger than 4GB")
->> > Link: http://lkml.kernel.org/r/CAE9FiQU1gJY1LYrxs+ma5LCTEEe4xmtjRG0aXJ9K_Tsu+m9Wuw@mail.gmail.com
->> > Reported-by: David Ahern <david.ahern@oracle.com>
->> > Tested-by: David Ahern <david.ahern@oracle.com>
->> > Signed-off-by: Yinghai Lu <yinghai@kernel.org>
->> > Cc: <stable@vger.kernel.org> #3.19
->> > ---
->> >  drivers/pci/Kconfig |  4 ++++
->> >  drivers/pci/bus.c   | 10 +++++-----
->> >  drivers/pci/probe.c | 12 ++++++------
->> >  include/linux/pci.h | 12 +++++++++---
->> >  4 files changed, 24 insertions(+), 14 deletions(-)
->> >
->> > diff --git a/drivers/pci/Kconfig b/drivers/pci/Kconfig
->> > index 7a8f1c5..6a5a269 100644
->> > --- a/drivers/pci/Kconfig
->> > +++ b/drivers/pci/Kconfig
->> > @@ -1,6 +1,10 @@
->> >  #
->> >  # PCI configuration
->> >  #
->> > +config PCI_BUS_ADDR_T_64BIT
->> > +   def_bool y if (64BIT || X86_PAE)
->> > +   depends on PCI
->>
->> We're going to use pci_bus_addr_t in some places where we previously used
->> dma_addr_t, which means pci_bus_addr_t should be at least as large as
->> dma_addr_t.  Can you enforce that directly, e.g., with something like this?
->>
->>     def_bool y if (ARCH_DMA_ADDR_T_64BIT || 64BIT || X86_PAE)
+There is a set of syscalls in the kernel about 'sigaction'.
+All they end up with calling the helper 'do_sigaction',
+so the generic scheme is:
 
-then should use
+- copy user data to kernel;
+- 'do_sigaction';
+- copy kernel data to user.
 
-def_bool y if (ARCH_DMA_ADDR_T_64BIT || 64BIT)
+'do_sigaction' checks 'signum' parameter before doing its main job.
+If this check fails syscall fails immediately, as well. But at this
+stage first copy is already done. And so there's a potential chance
+having it useless. It may affect performance significantly if user
+data was, say, swapped, and a fault was handled to obtain it.
 
-Thanks
+In this patch, 'signum' sanity check is moved out of 'do_sigaction'
+to a small function 'user_signal'. So we can call it before any copying.
 
-Yinghai
+Signed-off-by: Yury Norov <yury.norov@gmail.com>
+---
+ arch/alpha/kernel/signal.c       | 19 +++++++-------
+ arch/mips/kernel/signal.c        | 10 +++++---
+ arch/mips/kernel/signal32.c      | 10 +++++---
+ arch/sparc/kernel/sys_sparc32.c  | 10 ++++----
+ arch/sparc/kernel/sys_sparc_32.c | 10 ++++----
+ arch/sparc/kernel/sys_sparc_64.c | 10 ++++----
+ include/linux/sched.h            |  2 +-
+ include/linux/signal.h           |  5 ++++
+ kernel/signal.c                  | 54 +++++++++++++++++++++-------------------
+ 9 files changed, 71 insertions(+), 59 deletions(-)
+
+diff --git a/arch/alpha/kernel/signal.c b/arch/alpha/kernel/signal.c
+index 8dbfb15..5a5db6f 100644
+--- a/arch/alpha/kernel/signal.c
++++ b/arch/alpha/kernel/signal.c
+@@ -59,7 +59,9 @@ SYSCALL_DEFINE3(osf_sigaction, int, sig,
+ 		struct osf_sigaction __user *, oact)
+ {
+ 	struct k_sigaction new_ka, old_ka;
+-	int ret;
++
++	if (!user_signal(sig))
++		return -EINVAL;
+ 
+ 	if (act) {
+ 		old_sigset_t mask;
+@@ -72,9 +74,9 @@ SYSCALL_DEFINE3(osf_sigaction, int, sig,
+ 		new_ka.ka_restorer = NULL;
+ 	}
+ 
+-	ret = do_sigaction(sig, act ? &new_ka : NULL, oact ? &old_ka : NULL);
++	do_sigaction(sig, act ? &new_ka : NULL, oact ? &old_ka : NULL);
+ 
+-	if (!ret && oact) {
++	if (oact) {
+ 		if (!access_ok(VERIFY_WRITE, oact, sizeof(*oact)) ||
+ 		    __put_user(old_ka.sa.sa_handler, &oact->sa_handler) ||
+ 		    __put_user(old_ka.sa.sa_flags, &oact->sa_flags) ||
+@@ -82,7 +84,7 @@ SYSCALL_DEFINE3(osf_sigaction, int, sig,
+ 			return -EFAULT;
+ 	}
+ 
+-	return ret;
++	return 0;
+ }
+ 
+ SYSCALL_DEFINE5(rt_sigaction, int, sig, const struct sigaction __user *, act,
+@@ -90,10 +92,9 @@ SYSCALL_DEFINE5(rt_sigaction, int, sig, const struct sigaction __user *, act,
+ 		size_t, sigsetsize, void __user *, restorer)
+ {
+ 	struct k_sigaction new_ka, old_ka;
+-	int ret;
+ 
+ 	/* XXX: Don't preclude handling different sized sigset_t's.  */
+-	if (sigsetsize != sizeof(sigset_t))
++	if (sigsetsize != sizeof(sigset_t) || !user_signal(sig))
+ 		return -EINVAL;
+ 
+ 	if (act) {
+@@ -102,14 +103,14 @@ SYSCALL_DEFINE5(rt_sigaction, int, sig, const struct sigaction __user *, act,
+ 			return -EFAULT;
+ 	}
+ 
+-	ret = do_sigaction(sig, act ? &new_ka : NULL, oact ? &old_ka : NULL);
++	do_sigaction(sig, act ? &new_ka : NULL, oact ? &old_ka : NULL);
+ 
+-	if (!ret && oact) {
++	if (oact) {
+ 		if (copy_to_user(oact, &old_ka.sa, sizeof(*oact)))
+ 			return -EFAULT;
+ 	}
+ 
+-	return ret;
++	return 0;
+ }
+ 
+ /*
+diff --git a/arch/mips/kernel/signal.c b/arch/mips/kernel/signal.c
+index 6a28c79..461a54f 100644
+--- a/arch/mips/kernel/signal.c
++++ b/arch/mips/kernel/signal.c
+@@ -316,9 +316,11 @@ SYSCALL_DEFINE3(sigaction, int, sig, const struct sigaction __user *, act,
+ 	struct sigaction __user *, oact)
+ {
+ 	struct k_sigaction new_ka, old_ka;
+-	int ret;
+ 	int err = 0;
+ 
++	if (!user_signal(sig))
++		return -EINVAL;
++
+ 	if (act) {
+ 		old_sigset_t mask;
+ 
+@@ -333,9 +335,9 @@ SYSCALL_DEFINE3(sigaction, int, sig, const struct sigaction __user *, act,
+ 		siginitset(&new_ka.sa.sa_mask, mask);
+ 	}
+ 
+-	ret = do_sigaction(sig, act ? &new_ka : NULL, oact ? &old_ka : NULL);
++	do_sigaction(sig, act ? &new_ka : NULL, oact ? &old_ka : NULL);
+ 
+-	if (!ret && oact) {
++	if (oact) {
+ 		if (!access_ok(VERIFY_WRITE, oact, sizeof(*oact)))
+ 			return -EFAULT;
+ 		err |= __put_user(old_ka.sa.sa_flags, &oact->sa_flags);
+@@ -348,7 +350,7 @@ SYSCALL_DEFINE3(sigaction, int, sig, const struct sigaction __user *, act,
+ 			return -EFAULT;
+ 	}
+ 
+-	return ret;
++	return 0;
+ }
+ #endif
+ 
+diff --git a/arch/mips/kernel/signal32.c b/arch/mips/kernel/signal32.c
+index 19a7705..7850b02 100644
+--- a/arch/mips/kernel/signal32.c
++++ b/arch/mips/kernel/signal32.c
+@@ -317,9 +317,11 @@ SYSCALL_DEFINE3(32_sigaction, long, sig, const struct compat_sigaction __user *,
+ 	struct compat_sigaction __user *, oact)
+ {
+ 	struct k_sigaction new_ka, old_ka;
+-	int ret;
+ 	int err = 0;
+ 
++	if (!user_signal(sig))
++		return -EINVAL;
++
+ 	if (act) {
+ 		old_sigset_t mask;
+ 		s32 handler;
+@@ -336,9 +338,9 @@ SYSCALL_DEFINE3(32_sigaction, long, sig, const struct compat_sigaction __user *,
+ 		siginitset(&new_ka.sa.sa_mask, mask);
+ 	}
+ 
+-	ret = do_sigaction(sig, act ? &new_ka : NULL, oact ? &old_ka : NULL);
++	do_sigaction(sig, act ? &new_ka : NULL, oact ? &old_ka : NULL);
+ 
+-	if (!ret && oact) {
++	if (oact) {
+ 		if (!access_ok(VERIFY_WRITE, oact, sizeof(*oact)))
+ 			return -EFAULT;
+ 		err |= __put_user(old_ka.sa.sa_flags, &oact->sa_flags);
+@@ -352,7 +354,7 @@ SYSCALL_DEFINE3(32_sigaction, long, sig, const struct compat_sigaction __user *,
+ 			return -EFAULT;
+ 	}
+ 
+-	return ret;
++	return 0;
+ }
+ 
+ int copy_siginfo_to_user32(compat_siginfo_t __user *to, const siginfo_t *from)
+diff --git a/arch/sparc/kernel/sys_sparc32.c b/arch/sparc/kernel/sys_sparc32.c
+index 022c30c..5c83f7b 100644
+--- a/arch/sparc/kernel/sys_sparc32.c
++++ b/arch/sparc/kernel/sys_sparc32.c
+@@ -162,7 +162,7 @@ COMPAT_SYSCALL_DEFINE5(rt_sigaction, int, sig,
+ 	compat_sigset_t set32;
+ 
+         /* XXX: Don't preclude handling different sized sigset_t's.  */
+-        if (sigsetsize != sizeof(compat_sigset_t))
++	if (sigsetsize != sizeof(compat_sigset_t) || !user_signal(sig))
+                 return -EINVAL;
+ 
+         if (act) {
+@@ -180,19 +180,19 @@ COMPAT_SYSCALL_DEFINE5(rt_sigaction, int, sig,
+                 	return -EFAULT;
+ 	}
+ 
+-	ret = do_sigaction(sig, act ? &new_ka : NULL, oact ? &old_ka : NULL);
++	do_sigaction(sig, act ? &new_ka : NULL, oact ? &old_ka : NULL);
+ 
+-	if (!ret && oact) {
++	if (oact) {
+ 		sigset_to_compat(&set32, &old_ka.sa.sa_mask);
+ 		ret = put_user(ptr_to_compat(old_ka.sa.sa_handler), &oact->sa_handler);
+ 		ret |= copy_to_user(&oact->sa_mask, &set32, sizeof(compat_sigset_t));
+ 		ret |= put_user(old_ka.sa.sa_flags, &oact->sa_flags);
+ 		ret |= put_user(ptr_to_compat(old_ka.sa.sa_restorer), &oact->sa_restorer);
+ 		if (ret)
+-			ret = -EFAULT;
++			return -EFAULT;
+         }
+ 
+-        return ret;
++	return 0;
+ }
+ 
+ asmlinkage compat_ssize_t sys32_pread64(unsigned int fd,
+diff --git a/arch/sparc/kernel/sys_sparc_32.c b/arch/sparc/kernel/sys_sparc_32.c
+index 646988d..ee5b598 100644
+--- a/arch/sparc/kernel/sys_sparc_32.c
++++ b/arch/sparc/kernel/sys_sparc_32.c
+@@ -20,6 +20,7 @@
+ #include <linux/utsname.h>
+ #include <linux/smp.h>
+ #include <linux/ipc.h>
++#include <linux/signal.h>
+ 
+ #include <asm/uaccess.h>
+ #include <asm/unistd.h>
+@@ -177,10 +178,9 @@ SYSCALL_DEFINE5(rt_sigaction, int, sig,
+ 		 size_t, sigsetsize)
+ {
+ 	struct k_sigaction new_ka, old_ka;
+-	int ret;
+ 
+ 	/* XXX: Don't preclude handling different sized sigset_t's.  */
+-	if (sigsetsize != sizeof(sigset_t))
++	if (sigsetsize != sizeof(sigset_t) || !user_signal(sig))
+ 		return -EINVAL;
+ 
+ 	if (act) {
+@@ -189,14 +189,14 @@ SYSCALL_DEFINE5(rt_sigaction, int, sig,
+ 			return -EFAULT;
+ 	}
+ 
+-	ret = do_sigaction(sig, act ? &new_ka : NULL, oact ? &old_ka : NULL);
++	do_sigaction(sig, act ? &new_ka : NULL, oact ? &old_ka : NULL);
+ 
+-	if (!ret && oact) {
++	if (oact) {
+ 		if (copy_to_user(oact, &old_ka.sa, sizeof(*oact)))
+ 			return -EFAULT;
+ 	}
+ 
+-	return ret;
++	return 0;
+ }
+ 
+ asmlinkage long sys_getdomainname(char __user *name, int len)
+diff --git a/arch/sparc/kernel/sys_sparc_64.c b/arch/sparc/kernel/sys_sparc_64.c
+index c85403d..b22a753 100644
+--- a/arch/sparc/kernel/sys_sparc_64.c
++++ b/arch/sparc/kernel/sys_sparc_64.c
+@@ -25,6 +25,7 @@
+ #include <linux/random.h>
+ #include <linux/export.h>
+ #include <linux/context_tracking.h>
++#include <linux/signal.h>
+ 
+ #include <asm/uaccess.h>
+ #include <asm/utrap.h>
+@@ -619,10 +620,9 @@ SYSCALL_DEFINE5(rt_sigaction, int, sig, const struct sigaction __user *, act,
+ 		size_t, sigsetsize)
+ {
+ 	struct k_sigaction new_ka, old_ka;
+-	int ret;
+ 
+ 	/* XXX: Don't preclude handling different sized sigset_t's.  */
+-	if (sigsetsize != sizeof(sigset_t))
++	if (sigsetsize != sizeof(sigset_t) || !user_signal(sig))
+ 		return -EINVAL;
+ 
+ 	if (act) {
+@@ -631,14 +631,14 @@ SYSCALL_DEFINE5(rt_sigaction, int, sig, const struct sigaction __user *, act,
+ 			return -EFAULT;
+ 	}
+ 
+-	ret = do_sigaction(sig, act ? &new_ka : NULL, oact ? &old_ka : NULL);
++	do_sigaction(sig, act ? &new_ka : NULL, oact ? &old_ka : NULL);
+ 
+-	if (!ret && oact) {
++	if (oact) {
+ 		if (copy_to_user(oact, &old_ka.sa, sizeof(*oact)))
+ 			return -EFAULT;
+ 	}
+ 
+-	return ret;
++	return 0;
+ }
+ 
+ asmlinkage long sys_kern_features(void)
+diff --git a/include/linux/sched.h b/include/linux/sched.h
+index 6d77432..4643b7d 100644
+--- a/include/linux/sched.h
++++ b/include/linux/sched.h
+@@ -2394,7 +2394,7 @@ extern int zap_other_threads(struct task_struct *p);
+ extern struct sigqueue *sigqueue_alloc(void);
+ extern void sigqueue_free(struct sigqueue *);
+ extern int send_sigqueue(struct sigqueue *,  struct task_struct *, int group);
+-extern int do_sigaction(int, struct k_sigaction *, struct k_sigaction *);
++extern void do_sigaction(int, struct k_sigaction *, struct k_sigaction *);
+ 
+ static inline void restore_saved_sigmask(void)
+ {
+diff --git a/include/linux/signal.h b/include/linux/signal.h
+index ab1e039..129e975 100644
+--- a/include/linux/signal.h
++++ b/include/linux/signal.h
+@@ -437,6 +437,11 @@ int __save_altstack(stack_t __user *, unsigned long);
+ 	put_user_ex(t->sas_ss_size, &__uss->ss_size); \
+ } while (0);
+ 
++static inline int user_signal(unsigned long sig)
++{
++	return sig && valid_signal(sig) && !sig_kernel_only(sig);
++}
++
+ #ifdef CONFIG_PROC_FS
+ struct seq_file;
+ extern void render_sigset_t(struct seq_file *, const char *, sigset_t *);
+diff --git a/kernel/signal.c b/kernel/signal.c
+index a390499..5537435 100644
+--- a/kernel/signal.c
++++ b/kernel/signal.c
+@@ -3099,15 +3099,12 @@ void kernel_sigaction(int sig, __sighandler_t action)
+ }
+ EXPORT_SYMBOL(kernel_sigaction);
+ 
+-int do_sigaction(int sig, struct k_sigaction *act, struct k_sigaction *oact)
++void do_sigaction(int sig, struct k_sigaction *act, struct k_sigaction *oact)
+ {
+ 	struct task_struct *p = current, *t;
+ 	struct k_sigaction *k;
+ 	sigset_t mask;
+ 
+-	if (!valid_signal(sig) || sig < 1 || (act && sig_kernel_only(sig)))
+-		return -EINVAL;
+-
+ 	k = &p->sighand->action[sig-1];
+ 
+ 	spin_lock_irq(&p->sighand->siglock);
+@@ -3139,8 +3136,8 @@ int do_sigaction(int sig, struct k_sigaction *act, struct k_sigaction *oact)
+ 	}
+ 
+ 	spin_unlock_irq(&p->sighand->siglock);
+-	return 0;
+ }
++EXPORT_SYMBOL(do_sigaction);
+ 
+ static int
+ do_sigaltstack (const stack_t __user *uss, stack_t __user *uoss, unsigned long sp)
+@@ -3356,25 +3353,24 @@ SYSCALL_DEFINE4(rt_sigaction, int, sig,
+ 		size_t, sigsetsize)
+ {
+ 	struct k_sigaction new_sa, old_sa;
+-	int ret = -EINVAL;
+ 
+ 	/* XXX: Don't preclude handling different sized sigset_t's.  */
+-	if (sigsetsize != sizeof(sigset_t))
+-		goto out;
++	if (sigsetsize != sizeof(sigset_t) || !user_signal(sig))
++		return -EINVAL;
+ 
+ 	if (act) {
+ 		if (copy_from_user(&new_sa.sa, act, sizeof(new_sa.sa)))
+ 			return -EFAULT;
+ 	}
+ 
+-	ret = do_sigaction(sig, act ? &new_sa : NULL, oact ? &old_sa : NULL);
++	do_sigaction(sig, act ? &new_sa : NULL, oact ? &old_sa : NULL);
+ 
+-	if (!ret && oact) {
++	if (!oact) {
+ 		if (copy_to_user(oact, &old_sa.sa, sizeof(old_sa.sa)))
+ 			return -EFAULT;
+ 	}
+-out:
+-	return ret;
++
++	return 0;
+ }
+ #ifdef CONFIG_COMPAT
+ COMPAT_SYSCALL_DEFINE4(rt_sigaction, int, sig,
+@@ -3390,7 +3386,7 @@ COMPAT_SYSCALL_DEFINE4(rt_sigaction, int, sig,
+ 	int ret;
+ 
+ 	/* XXX: Don't preclude handling different sized sigset_t's.  */
+-	if (sigsetsize != sizeof(compat_sigset_t))
++	if (sigsetsize != sizeof(compat_sigset_t) || !user_signal(sig))
+ 		return -EINVAL;
+ 
+ 	if (act) {
+@@ -3408,8 +3404,8 @@ COMPAT_SYSCALL_DEFINE4(rt_sigaction, int, sig,
+ 		sigset_from_compat(&new_ka.sa.sa_mask, &mask);
+ 	}
+ 
+-	ret = do_sigaction(sig, act ? &new_ka : NULL, oact ? &old_ka : NULL);
+-	if (!ret && oact) {
++	do_sigaction(sig, act ? &new_ka : NULL, oact ? &old_ka : NULL);
++	if (oact) {
+ 		sigset_to_compat(&mask, &old_ka.sa.sa_mask);
+ 		ret = put_user(ptr_to_compat(old_ka.sa.sa_handler), 
+ 			       &oact->sa_handler);
+@@ -3431,7 +3427,9 @@ SYSCALL_DEFINE3(sigaction, int, sig,
+ 	        struct old_sigaction __user *, oact)
+ {
+ 	struct k_sigaction new_ka, old_ka;
+-	int ret;
++
++	if (!user_signal(sig))
++		return -EINVAL;
+ 
+ 	if (act) {
+ 		old_sigset_t mask;
+@@ -3447,9 +3445,9 @@ SYSCALL_DEFINE3(sigaction, int, sig,
+ 		siginitset(&new_ka.sa.sa_mask, mask);
+ 	}
+ 
+-	ret = do_sigaction(sig, act ? &new_ka : NULL, oact ? &old_ka : NULL);
++	do_sigaction(sig, act ? &new_ka : NULL, oact ? &old_ka : NULL);
+ 
+-	if (!ret && oact) {
++	if (oact) {
+ 		if (!access_ok(VERIFY_WRITE, oact, sizeof(*oact)) ||
+ 		    __put_user(old_ka.sa.sa_handler, &oact->sa_handler) ||
+ 		    __put_user(old_ka.sa.sa_restorer, &oact->sa_restorer) ||
+@@ -3458,7 +3456,7 @@ SYSCALL_DEFINE3(sigaction, int, sig,
+ 			return -EFAULT;
+ 	}
+ 
+-	return ret;
++	return 0;
+ }
+ #endif
+ #ifdef CONFIG_COMPAT_OLD_SIGACTION
+@@ -3467,10 +3465,12 @@ COMPAT_SYSCALL_DEFINE3(sigaction, int, sig,
+ 	        struct compat_old_sigaction __user *, oact)
+ {
+ 	struct k_sigaction new_ka, old_ka;
+-	int ret;
+ 	compat_old_sigset_t mask;
+ 	compat_uptr_t handler, restorer;
+ 
++	if (!user_signal(sig))
++		return -EINVAL;
++
+ 	if (act) {
+ 		if (!access_ok(VERIFY_READ, act, sizeof(*act)) ||
+ 		    __get_user(handler, &act->sa_handler) ||
+@@ -3487,9 +3487,9 @@ COMPAT_SYSCALL_DEFINE3(sigaction, int, sig,
+ 		siginitset(&new_ka.sa.sa_mask, mask);
+ 	}
+ 
+-	ret = do_sigaction(sig, act ? &new_ka : NULL, oact ? &old_ka : NULL);
++	 do_sigaction(sig, act ? &new_ka : NULL, oact ? &old_ka : NULL);
+ 
+-	if (!ret && oact) {
++	if (oact) {
+ 		if (!access_ok(VERIFY_WRITE, oact, sizeof(*oact)) ||
+ 		    __put_user(ptr_to_compat(old_ka.sa.sa_handler),
+ 			       &oact->sa_handler) ||
+@@ -3499,7 +3499,7 @@ COMPAT_SYSCALL_DEFINE3(sigaction, int, sig,
+ 		    __put_user(old_ka.sa.sa_mask.sig[0], &oact->sa_mask))
+ 			return -EFAULT;
+ 	}
+-	return ret;
++	return 0;
+ }
+ #endif
+ 
+@@ -3533,15 +3533,17 @@ SYSCALL_DEFINE1(ssetmask, int, newmask)
+ SYSCALL_DEFINE2(signal, int, sig, __sighandler_t, handler)
+ {
+ 	struct k_sigaction new_sa, old_sa;
+-	int ret;
++
++	if (!user_signal(sig))
++		return -EINVAL;
+ 
+ 	new_sa.sa.sa_handler = handler;
+ 	new_sa.sa.sa_flags = SA_ONESHOT | SA_NOMASK;
+ 	sigemptyset(&new_sa.sa.sa_mask);
+ 
+-	ret = do_sigaction(sig, &new_sa, &old_sa);
++	do_sigaction(sig, &new_sa, &old_sa);
+ 
+-	return ret ? ret : (unsigned long)old_sa.sa.sa_handler;
++	return (unsigned long) old_sa.sa.sa_handler;
+ }
+ #endif /* __ARCH_WANT_SYS_SIGNAL */
+ 
+-- 
+2.1.0

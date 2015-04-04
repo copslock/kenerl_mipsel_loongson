@@ -1,27 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 04 Apr 2015 02:07:49 +0200 (CEST)
-Received: (from localhost user: 'macro', uid#1010) by eddie.linux-mips.org
-        with ESMTP id S27006895AbbDDAHr1GLoI (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 4 Apr 2015 02:07:47 +0200
-Date:   Sat, 4 Apr 2015 01:07:47 +0100 (BST)
-From:   "Maciej W. Rozycki" <macro@linux-mips.org>
-To:     Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: Re: [PATCH 18/48] MIPS: math-emu: Factor out CFC1/CTC1 emulation
-In-Reply-To: <551F233E.4040602@cogentembedded.com>
-Message-ID: <alpine.LFD.2.11.1504040058570.21028@eddie.linux-mips.org>
-References: <alpine.LFD.2.11.1504030054200.21028@eddie.linux-mips.org> <alpine.LFD.2.11.1504030318150.21028@eddie.linux-mips.org> <551F233E.4040602@cogentembedded.com>
-User-Agent: Alpine 2.11 (LFD 23 2013-08-11)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 04 Apr 2015 05:35:01 +0200 (CEST)
+Received: from mail-ig0-f169.google.com ([209.85.213.169]:35333 "EHLO
+        mail-ig0-f169.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006152AbbDDDe5mTt-5 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 4 Apr 2015 05:34:57 +0200
+Received: by igcau2 with SMTP id au2so110957551igc.0;
+        Fri, 03 Apr 2015 20:34:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type;
+        bh=Q0abZIk0G2RoF6pyVqHwYDj617sAqcgWPkC35VGOvIs=;
+        b=HHppxDutNZUVyXfjbNfvZndWl+aAVfra6qKayGCvlGtb1D8zYquJNq5vk62XnwriJL
+         V5PNlh95jreG5y+eX7EejmxMXsAmUeelqLo1QK2EZnZs8NJzWrNjrkmmoTXq3VC/VimV
+         tF46Lxec5aHAx/cGfsEYFtQ9Lx+muALh3DQSBsVFxsj+Hwc3cGpkksMGxbwQDluh2TsS
+         vzMqyBZ5V8hVdYAqN5y35xwB9yQfmqaUd+/zbfMXKJs2FuJmsHNUQeoHhpwob9oVlloO
+         8OCQDYKrzGzA4rdLJ8LXntfzwhriKm99TmRnHntAU9ZBwIfU/vjy7lWdXdrgvMJRHXAE
+         5ZWQ==
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@linux-mips.org>
+X-Received: by 10.107.15.129 with SMTP id 1mr8053045iop.20.1428118492810; Fri,
+ 03 Apr 2015 20:34:52 -0700 (PDT)
+Received: by 10.64.208.43 with HTTP; Fri, 3 Apr 2015 20:34:52 -0700 (PDT)
+In-Reply-To: <20150403205201.GF10892@google.com>
+References: <1427857069-6789-1-git-send-email-yinghai@kernel.org>
+        <1427857069-6789-2-git-send-email-yinghai@kernel.org>
+        <20150403193234.GD10892@google.com>
+        <20150403205201.GF10892@google.com>
+Date:   Fri, 3 Apr 2015 20:34:52 -0700
+X-Google-Sender-Auth: C80mlEfG9l_pRvo3r9JRJSyHpHE
+Message-ID: <CAE9FiQVqAEvoLDRZMcNFki0gLMQiyQd2VYivjAh1teRGeuNwBw@mail.gmail.com>
+Subject: Re: [PATCH 1/3] PCI: Introduce pci_bus_addr_t
+From:   Yinghai Lu <yinghai@kernel.org>
+To:     Bjorn Helgaas <bhelgaas@google.com>
+Cc:     David Miller <davem@davemloft.net>,
+        David Ahern <david.ahern@oracle.com>,
+        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        Russell King <linux@arm.linux.org.uk>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        "the arch/x86 maintainers" <x86@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <yhlu.kernel@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46771
+X-archive-position: 46772
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: yinghai@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -34,53 +68,63 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sat, 4 Apr 2015, Sergei Shtylyov wrote:
+On Fri, Apr 3, 2015 at 1:52 PM, Bjorn Helgaas <bhelgaas@google.com> wrote:
+> [+cc Sam (commented on previous versions), Russell, linux-arm-kernel, Ralf,
+> linux-mips, Ben, linuxppc-dev, x86]
+>
+> On Fri, Apr 03, 2015 at 02:32:34PM -0500, Bjorn Helgaas wrote:
+>> On Tue, Mar 31, 2015 at 07:57:47PM -0700, Yinghai Lu wrote:
+>> > David Ahern found commit d63e2e1f3df9 ("sparc/PCI: Clip bridge windows
+>> > to fit in upstream windows") broke booting on sparc/T5-8.
+>> >
+>> > In the boot log, there is
+>> >   pci 0000:06:00.0: reg 0x184: can't handle BAR above 4GB (bus address
+>> >   0x110204000)
+>> > but that only could happen when dma_addr_t is 32-bit.
+>> >
+>> > According to David Miller, all DMA occurs behind an IOMMU and these
+>> > IOMMUs only support 32-bit addressing, therefore dma_addr_t is
+>> > 32-bit on sparc64.
+>> >
+>> > Let's introduce pci_bus_addr_t instead of using dma_addr_t,
+>> > and pci_bus_addr_t will be 64-bit on 64-bit platform or X86_PAE.
+>> >
+>> > Fixes: commit d63e2e1f3df9 ("sparc/PCI: Clip bridge windows to fit in upstream windows")
+>> > Fixes: commit 23b13bc76f35 ("PCI: Fail safely if we can't handle BARs larger than 4GB")
+>> > Link: http://lkml.kernel.org/r/CAE9FiQU1gJY1LYrxs+ma5LCTEEe4xmtjRG0aXJ9K_Tsu+m9Wuw@mail.gmail.com
+>> > Reported-by: David Ahern <david.ahern@oracle.com>
+>> > Tested-by: David Ahern <david.ahern@oracle.com>
+>> > Signed-off-by: Yinghai Lu <yinghai@kernel.org>
+>> > Cc: <stable@vger.kernel.org> #3.19
+>> > ---
+>> >  drivers/pci/Kconfig |  4 ++++
+>> >  drivers/pci/bus.c   | 10 +++++-----
+>> >  drivers/pci/probe.c | 12 ++++++------
+>> >  include/linux/pci.h | 12 +++++++++---
+>> >  4 files changed, 24 insertions(+), 14 deletions(-)
+>> >
+>> > diff --git a/drivers/pci/Kconfig b/drivers/pci/Kconfig
+>> > index 7a8f1c5..6a5a269 100644
+>> > --- a/drivers/pci/Kconfig
+>> > +++ b/drivers/pci/Kconfig
+>> > @@ -1,6 +1,10 @@
+>> >  #
+>> >  # PCI configuration
+>> >  #
+>> > +config PCI_BUS_ADDR_T_64BIT
+>> > +   def_bool y if (64BIT || X86_PAE)
+>> > +   depends on PCI
+>>
+>> We're going to use pci_bus_addr_t in some places where we previously used
+>> dma_addr_t, which means pci_bus_addr_t should be at least as large as
+>> dma_addr_t.  Can you enforce that directly, e.g., with something like this?
+>>
+>>     def_bool y if (ARCH_DMA_ADDR_T_64BIT || 64BIT || X86_PAE)
 
-> > +	if (MIPSInst_RD(ir) == FPCREG_CSR) {
-> > +		value = ctx->fcr31;
-> > +		pr_debug("%p gpr[%d]<-csr=%08x\n",
-> > +			 (void *)xcp->cp0_epc,
-> > +			 MIPSInst_RT(ir), value);
-> > +	} else if (MIPSInst_RD(ir) == FPCREG_RID)
-> > +		value = 0;
-> > +	else
-> > +		value = 0;
-> 
->    CodingStyle: all arms of the *if* statement shouyld have {} if at leats one
-> has them.
-> 
-> > +	if (MIPSInst_RT(ir))
-> > +		xcp->regs[MIPSInst_RT(ir)] = value;
-> > +}
-> > +
-> > +/*
-> > + * Emulate a CTC1 instruction.
-> > + */
-> > +static inline void cop1_ctc(struct pt_regs *xcp, struct mips_fpu_struct
-> > *ctx,
-> > +			    mips_instruction ir)
-> > +{
-> > +	u32 value;
-> > +
-> > +	if (MIPSInst_RT(ir) == 0)
-> > +		value = 0;
-> > +	else
-> > +		value = xcp->regs[MIPSInst_RT(ir)];
-> > +
-> > +	/* we only have one writable control reg
-> > +	 */
-> 
->    This comment would fit on a single line.
+then should use
 
- Thanks for your comments.
+def_bool y if (ARCH_DMA_ADDR_T_64BIT || 64BIT)
 
- These patches move lots of preexisting code around, in some cases copying 
-preexiting problems.  These problems are addressed as code is updated by 
-later changes, so please have a look there too before pointing out issues.  
-If I missed anything and a problem remains in code being poked at after 
-all the changes have been applied, then please do let me know, I'll 
-correct it.
+Thanks
 
- Thanks for your assistance with keeping our code clean!
-
-  Maciej
+Yinghai

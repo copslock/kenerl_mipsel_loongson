@@ -1,38 +1,73 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 04 Apr 2015 23:57:01 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:33079 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27006155AbbDDV477BzL0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 4 Apr 2015 23:56:59 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.9/8.14.8) with ESMTP id t34Lv084016755;
-        Sat, 4 Apr 2015 23:57:00 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.9/8.14.9/Submit) id t34Lv0lT016754;
-        Sat, 4 Apr 2015 23:57:00 +0200
-Date:   Sat, 4 Apr 2015 23:57:00 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     "Maciej W. Rozycki" <macro@linux-mips.org>
-Cc:     linux-mips@linux-mips.org
-Subject: Re: [PATCH 00/48] FPU and FP emulation clean-ups, fixes and feature
- updates
-Message-ID: <20150404215700.GF20157@linux-mips.org>
-References: <alpine.LFD.2.11.1504030054200.21028@eddie.linux-mips.org>
- <20150404200459.GE20157@linux-mips.org>
- <alpine.LFD.2.11.1504042142500.21028@eddie.linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 05 Apr 2015 05:25:29 +0200 (CEST)
+Received: from mail-qc0-f169.google.com ([209.85.216.169]:34832 "EHLO
+        mail-qc0-f169.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007518AbbDEDZ2OMg2a (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 5 Apr 2015 05:25:28 +0200
+Received: by qcbii10 with SMTP id ii10so1838610qcb.2
+        for <linux-mips@linux-mips.org>; Sat, 04 Apr 2015 20:25:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc:content-type;
+        bh=YhDwjwGA710R3SHmXiXEGOpwkBb693PSYEbv6rVth/4=;
+        b=Cs4yyWgF+1aExIclB698M4ow0Do83zZoKUgoc/OSblRqCoq0tr7+0PvMXffXvFELFF
+         EzUkzj/0eEnW1OthahXxTG3t/C9MyGC8IV44KNTirq2cwnl/E/MpW/gY0KBdRNL8OLeC
+         l1dAl7X6fHIZrG+vmI4veBIUbsYzot7RS3ZcNYocQy9emQhUip3ni2ZaYjVz7jh+wLrR
+         sJ2f9mk8CXrR7tH1a7fHZfcw7c4y7xs1JANfSu0xNdaqF1y3tHtYpfvky2c8r5lpl4iP
+         VF/K6FZ5i/1qiz8BLtG06sDsRB7cIh5nVLnzmfwRi8Fkur2nsutI6JENq3nLLm/MDFRe
+         fzlw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc:content-type;
+        bh=YhDwjwGA710R3SHmXiXEGOpwkBb693PSYEbv6rVth/4=;
+        b=ZaV13WurjnFdKYBDw7ESljvDXLavIHFdI1oyLB1DSrPc8DDLRwAASe5KFahBlrcs81
+         a8rYwoaFOr6G0AjCVw8U5r61NZexhnh6aU/hixY71z+++6z25Tvdm7LV4INApwrNGEvc
+         rQrkadZvZVU6595Gsoj93H2snzttoDgWFX9LzTiqY99TqPp0J/GB4AAX1FYMjZhJkUAs
+         TZdO99+P4X0kPz6+HgPuyyFdLOOhFyGG4lSAX0Y+dQ+qDU86EAkS6mP6nWZFAsTRYEpi
+         lX5PkZsrMWkXNPuAdojnIlHiA1Qte3eammnPYZotUsJmkMA8xQEs/ozOyzdbxjhwwk9C
+         0Zuw==
+X-Gm-Message-State: ALoCoQnKtYUiDjba4ttPnTxlPmFn2W6Agxxx1BFhW5Api1+gK9gGi46z1WqWXkbLe1kCqroztrKu
+X-Received: by 10.140.18.175 with SMTP id 44mr10327092qgf.80.1428204323541;
+ Sat, 04 Apr 2015 20:25:23 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <alpine.LFD.2.11.1504042142500.21028@eddie.linux-mips.org>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <ralf@linux-mips.org>
+Received: by 10.229.163.78 with HTTP; Sat, 4 Apr 2015 20:25:03 -0700 (PDT)
+In-Reply-To: <CAL_JsqJyH==8OtkcU8_P4_47U6qe6FYqj-WUZ20_Y+iC_OF4_w@mail.gmail.com>
+References: <1427857069-6789-1-git-send-email-yinghai@kernel.org>
+ <1427857069-6789-2-git-send-email-yinghai@kernel.org> <20150403193234.GD10892@google.com>
+ <20150403205201.GF10892@google.com> <CAE9FiQVqAEvoLDRZMcNFki0gLMQiyQd2VYivjAh1teRGeuNwBw@mail.gmail.com>
+ <CAErSpo55rpO6SNeY57zZ8ah0PJ3eY+-L92vUJwYiRn4tCfLtJg@mail.gmail.com> <CAL_JsqJyH==8OtkcU8_P4_47U6qe6FYqj-WUZ20_Y+iC_OF4_w@mail.gmail.com>
+From:   Bjorn Helgaas <bhelgaas@google.com>
+Date:   Sat, 4 Apr 2015 22:25:03 -0500
+Message-ID: <CAErSpo4cw2MSPmrur_QFMwnH01qf0XMfBEAyZ2f+HrUOGEXyjw@mail.gmail.com>
+Subject: Re: [PATCH 1/3] PCI: Introduce pci_bus_addr_t
+To:     Rob Herring <robherring2@gmail.com>
+Cc:     Yinghai Lu <yinghai@kernel.org>,
+        David Ahern <david.ahern@oracle.com>,
+        "the arch/x86 maintainers" <x86@kernel.org>,
+        Russell King <linux@arm.linux.org.uk>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        David Miller <davem@davemloft.net>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <bhelgaas@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46781
+X-archive-position: 46782
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: bhelgaas@google.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,24 +80,20 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sat, Apr 04, 2015 at 09:55:09PM +0100, Maciej W. Rozycki wrote:
+On Sat, Apr 4, 2015 at 2:48 PM, Rob Herring <robherring2@gmail.com> wrote:
+> On Sat, Apr 4, 2015 at 7:46 AM, Bjorn Helgaas <bhelgaas@google.com> wrote:
 
->  Is there a better branch than master of ralf/linux.git to base patches 
-> submitted against so as to save you from the need to sort out conflicts?  
-> Let me know if you need help with any unobvious 3-way merge too.
+>> I think there's still an unresolved question about the OF parsing code.
+>
+> Got a pointer to what that is? I'll take a guess. Generally, we make
+> the parsing code independent of the kernel addr sizes and use u64
+> types. The DT sizes and kernel sizes are not always aligned. For
+> example, an LPAE capable platform running a non-LPAE kernel build.
 
-That's a little harder this time.  Normally the top of upstream-sfr's
-mips-for-linux-next is a good choice for the base but this time I have
-another branch, 4.1-fp in upstream-sfr and I want to keep the merge
-commit pulling this branch and the 4.0-fixes branch on top which lands
-me in a bunch of conflicts.
+Yep: http://lkml.kernel.org/r/1427857069-6789-3-git-send-email-yinghai@kernel.org
 
-The conflicts are in
+Yinghai made a change to the sparc OF parsing code.  The question is
+whether a similar change should be made to clones of that code (two
+others in arch/sparc, one in arch/powerpc, and one in drivers/of).
 
-    arch/mips/include/asm/asmmacro-32.h
-    arch/mips/kernel/traps.c
-
-I've tested a number of defconfigs and I'm pushing a new upstream-sfr
-now.  I'd appreciate if you could test/review the result.
-
-  Ralf
+Bjorn

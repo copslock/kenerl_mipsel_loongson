@@ -1,64 +1,79 @@
-From: James Hogan <james.hogan@imgtec.com>
-Date: Tue, 24 Feb 2015 11:46:20 +0000
-Subject: KVM: MIPS: Fix trace event to save PC directly
-Message-ID: <20150224114620.ObxupEWbNTkxdpNVU-iqcSQQVN-Vj6aap7npmE6Rf6Q@z>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Apr 2015 00:49:37 +0200 (CEST)
+Received: from kiutl.biot.com ([31.172.244.210]:53945 "EHLO kiutl.biot.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27008532AbbDFWtgjhkl1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 7 Apr 2015 00:49:36 +0200
+Received: from spamd by kiutl.biot.com with sa-checked (Exim 4.83)
+        (envelope-from <bert@biot.com>)
+        id 1YfFpm-0004Jh-Kj
+        for linux-mips@linux-mips.org; Tue, 07 Apr 2015 00:49:35 +0200
+Received: from [2a02:578:4a04:2a00::5]
+        by kiutl.biot.com with esmtps (TLSv1.2:DHE-RSA-AES128-SHA:128)
+        (Exim 4.83)
+        (envelope-from <bert@biot.com>)
+        id 1YfFpd-0004J2-H9; Tue, 07 Apr 2015 00:49:25 +0200
+Message-ID: <55230D74.3000003@biot.com>
+Date:   Tue, 07 Apr 2015 00:49:24 +0200
+From:   Bert Vermeulen <bert@biot.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.6.0
+MIME-Version: 1.0
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+CC:     Ralf Baechle <ralf@linux-mips.org>,
+        Samuel Ortiz <sameo@linux.intel.com>,
+        Lee Jones <lee.jones@linaro.org>, linux-mips@linux-mips.org,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] mfd: Add support for CPLD chip on Mikrotik RB4xx boards
+References: <1428285076-14269-1-git-send-email-bert@biot.com> <CAHp75VfeY80hu9kZWJ1KPos7gzTgV53OT-X67MJWT2h8nGSjqw@mail.gmail.com>
+In-Reply-To: <CAHp75VfeY80hu9kZWJ1KPos7gzTgV53OT-X67MJWT2h8nGSjqw@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Return-Path: <bert@biot.com>
+X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
+X-Orcpt: rfc822;linux-mips@linux-mips.org
+Original-Recipient: rfc822;linux-mips@linux-mips.org
+X-archive-position: 46797
+X-ecartis-version: Ecartis v1.0.0
+Sender: linux-mips-bounce@linux-mips.org
+Errors-to: linux-mips-bounce@linux-mips.org
+X-original-sender: bert@biot.com
+Precedence: bulk
+List-help: <mailto:ecartis@linux-mips.org?Subject=help>
+List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
+List-software: Ecartis version 1.0.0
+List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
+X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
+List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
+List-owner: <mailto:ralf@linux-mips.org>
+List-post: <mailto:linux-mips@linux-mips.org>
+List-archive: <http://www.linux-mips.org/archives/linux-mips/>
+X-list: linux-mips
 
-commit b3cffac04eca9af46e1e23560a8ee22b1bd36d43 upstream.
+Hi Andy,
 
-Currently the guest exit trace event saves the VCPU pointer to the
-structure, and the guest PC is retrieved by dereferencing it when the
-event is printed rather than directly from the trace record. This isn't
-safe as the printing may occur long afterwards, after the PC has changed
-and potentially after the VCPU has been freed. Usually this results in
-the same (wrong) PC being printed for multiple trace events. It also
-isn't portable as userland has no way to access the VCPU data structure
-when interpreting the trace record itself.
+I will submit a new version with your comments addressed. However this one:
 
-Lets save the actual PC in the structure so that the correct value is
-accessible later.
+On 04/06/2015 12:13 PM, Andy Shevchenko wrote:
 
-Fixes: 669e846e6c4e ("KVM/MIPS32: MIPS arch specific APIs for KVM")
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Marcelo Tosatti <mtosatti@redhat.com>
-Cc: Gleb Natapov <gleb@kernel.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: linux-mips@linux-mips.org
-Cc: kvm@vger.kernel.org
-Acked-by: Steven Rostedt <rostedt@goodmis.org>
-Signed-off-by: Marcelo Tosatti <mtosatti@redhat.com>
-Signed-off-by: Kamal Mostafa <kamal@canonical.com>
----
- arch/mips/kvm/trace.h | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+>> +static struct spi_driver rb4xx_cpld_driver = {
+>> +       .probe = rb4xx_cpld_probe,
+>> +       .remove = rb4xx_cpld_remove,
+>> +       .driver = {
+>> +               .name = "rb4xx-cpld",
+>> +               .bus = &spi_bus_type,
+>> +               .owner = THIS_MODULE,
+> 
+> Do we really need this line?
+>
+> +       },
+> +};
+> +
+> +module_spi_driver(rb4xx_cpld_driver);
 
-diff --git a/arch/mips/kvm/trace.h b/arch/mips/kvm/trace.h
-index bc9e0f4..e51621e 100644
---- a/arch/mips/kvm/trace.h
-+++ b/arch/mips/kvm/trace.h
-@@ -26,18 +26,18 @@ TRACE_EVENT(kvm_exit,
- 	    TP_PROTO(struct kvm_vcpu *vcpu, unsigned int reason),
- 	    TP_ARGS(vcpu, reason),
- 	    TP_STRUCT__entry(
--			__field(struct kvm_vcpu *, vcpu)
-+			__field(unsigned long, pc)
- 			__field(unsigned int, reason)
- 	    ),
+Yes, apparently. It's only the module_platform_driver() macro that
+automatically fills in the owner field. All SPI protocol drivers do this
+(except one, video/backlight/hx8357.c). Having said that, I don't really get
+what that field is used for.
 
- 	    TP_fast_assign(
--			__entry->vcpu = vcpu;
-+			__entry->pc = vcpu->arch.pc;
- 			__entry->reason = reason;
- 	    ),
 
- 	    TP_printk("[%s]PC: 0x%08lx",
- 		      kvm_mips_exit_types_str[__entry->reason],
--		      __entry->vcpu->arch.pc)
-+		      __entry->pc)
- );
-
- #endif /* _TRACE_KVM_H */
---
-1.9.1
+-- 
+Bert Vermeulen        bert@biot.com          email/xmpp

@@ -1,27 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Apr 2015 23:13:40 +0200 (CEST)
-Received: (from localhost user: 'macro', uid#1010) by eddie.linux-mips.org
-        with ESMTP id S27009668AbbDGVNiudXPR (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Apr 2015 23:13:38 +0200
-Date:   Tue, 7 Apr 2015 22:13:38 +0100 (BST)
-From:   "Maciej W. Rozycki" <macro@linux-mips.org>
-To:     Ralf Baechle <ralf@linux-mips.org>
-cc:     linux-mips@linux-mips.org
-Subject: Re: [PATCH 47/48] MIPS: Respect the ISA level in FCSR handling
-In-Reply-To: <20150407125434.GA27914@linux-mips.org>
-Message-ID: <alpine.LFD.2.11.1504072209520.21028@eddie.linux-mips.org>
-References: <alpine.LFD.2.11.1504030054200.21028@eddie.linux-mips.org> <alpine.LFD.2.11.1504032248160.21028@eddie.linux-mips.org> <20150407125434.GA27914@linux-mips.org>
-User-Agent: Alpine 2.11 (LFD 23 2013-08-11)
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Apr 2015 00:04:27 +0200 (CEST)
+Received: from mail-pa0-f74.google.com ([209.85.220.74]:33794 "EHLO
+        mail-pa0-f74.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27014567AbbDGWEZzxqBo (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 8 Apr 2015 00:04:25 +0200
+Received: by pabli10 with SMTP id li10so5739999pab.1
+        for <linux-mips@linux-mips.org>; Tue, 07 Apr 2015 15:04:20 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=JzCnq/aKXyMyuIPGtzF2PnfeKLZquzktzSsusq8EHp8=;
+        b=eyKhpgUYTu13Lyc4ogAkpT4Z52fUzi61G3nivz/mG5fZbyJbftMi/O4d+It6sbMKSE
+         bTD8In2QYBF0KQ+EImRaO2Z879EWEbnTQfTeSdcgI+RtsSr0Kvtfe17bCUnWWY942tl8
+         lP13TZ/VgPdYfhmfeK6uvWlT5Z1/ceVbPB7mTxfQEzB3C058rEwJOl1BG/bU2JzvEGME
+         GrLOVoalR4uPE7or/qpBnEjacti2/ee26c9nFCKBnlhWeEmeFahABmFQmXJtzu0QQbeY
+         EGvY+w71a2ZLr0GypZKXYobvL3VOvmsjGZw/oT1E+UaNz3Y04RbENM9dfZ5LwVGTzS+V
+         du5A==
+X-Gm-Message-State: ALoCoQmcWDgS/9EDU6LQtfNE5PvrVdU4jhu5DnBxDWddoWF8czdtMTbMJlNAiS1PFDFNGB1e9OVQ
+X-Received: by 10.66.150.133 with SMTP id ui5mr26608636pab.33.1428444260738;
+        Tue, 07 Apr 2015 15:04:20 -0700 (PDT)
+Received: from corpmail-nozzle1-1.hot.corp.google.com ([100.108.1.104])
+        by gmr-mx.google.com with ESMTPS id t22si408700yho.2.2015.04.07.15.04.20
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 07 Apr 2015 15:04:20 -0700 (PDT)
+Received: from abrestic.mtv.corp.google.com ([172.22.65.70])
+        by corpmail-nozzle1-1.hot.corp.google.com with ESMTP id usVfEEgZ.1; Tue, 07 Apr 2015 15:04:20 -0700
+Received: by abrestic.mtv.corp.google.com (Postfix, from userid 137652)
+        id 89DC0220568; Tue,  7 Apr 2015 15:04:19 -0700 (PDT)
+From:   Andrew Bresticker <abrestic@chromium.org>
+To:     Ralf Baechle <ralf@linux-mips.org>,
+        Kishon Vijay Abraham I <kishon@ti.com>
+Cc:     devicetree@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org,
+        Andrew Bresticker <abrestic@chromium.org>,
+        James Hartley <james.hartley@imgtec.com>,
+        Damien Horsley <Damien.Horsley@imgtec.com>
+Subject: [PATCH V2 0/3] Pistachio USB2.0 PHY
+Date:   Tue,  7 Apr 2015 15:04:15 -0700
+Message-Id: <1428444258-25852-1-git-send-email-abrestic@chromium.org>
+X-Mailer: git-send-email 2.2.0.rc0.207.ga3a616c
+Return-Path: <abrestic@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46821
+X-archive-position: 46822
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: abrestic@chromium.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -34,25 +59,33 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, 7 Apr 2015, Ralf Baechle wrote:
+This series adds support for the USB2.0 PHY present on the IMG Pistachio SoC.
 
-> > Index: linux/arch/mips/include/asm/fpu.h
-> > ===================================================================
-> > --- linux.orig/arch/mips/include/asm/fpu.h	2015-04-02 20:18:47.499480000 +0100
-> > +++ linux/arch/mips/include/asm/fpu.h	2015-04-02 20:27:59.745241000 +0100
-> > @@ -14,6 +14,7 @@
-> >  #include <linux/thread_info.h>
-> >  #include <linux/bitops.h>
-> >  
-> > +#include <asm/current.h>
-> >  #include <asm/mipsregs.h>
-> >  #include <asm/cpu.h>
-> >  #include <asm/cpu-features.h>
-> 
-> This is adding a 2nd inclusion of <asm/current.h>.  Will fix that.
+Based on mips-for-linux-next and tested on the IMG Pistachio BuB.  If possible,
+I'd like this to go through the MIPS tree with Kishon's ACK.
 
- Thanks!  I resisted the temptation to include changes to sort inclusions 
-with this series or it would risk becoming an ever going effort.  Though 
-it would have avoided an oversight like this.
+Cc: James Hartley <james.hartley@imgtec.com>
+Cc: Damien Horsley <Damien.Horsley@imgtec.com>
 
-  Maciej
+Changes from v1:
+ - Added patch to enable PHY driver in pistachio_defconfig
+ - Fixed a couple of spelling errors
+
+Andrew Bresticker (3):
+  phy: Add binding document for Pistachio USB2.0 PHY
+  phy: Add driver for Pistachio USB2.0 PHY
+  MIPS: pistachio: Enable USB PHY driver in defconfig
+
+ .../devicetree/bindings/phy/pistachio-usb-phy.txt  |  29 +++
+ arch/mips/configs/pistachio_defconfig              |   1 +
+ drivers/phy/Kconfig                                |   7 +
+ drivers/phy/Makefile                               |   1 +
+ drivers/phy/phy-pistachio-usb.c                    | 206 +++++++++++++++++++++
+ include/dt-bindings/phy/phy-pistachio-usb.h        |  16 ++
+ 6 files changed, 260 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/phy/pistachio-usb-phy.txt
+ create mode 100644 drivers/phy/phy-pistachio-usb.c
+ create mode 100644 include/dt-bindings/phy/phy-pistachio-usb.h
+
+-- 
+2.2.0.rc0.207.ga3a616c

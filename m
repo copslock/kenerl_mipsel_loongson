@@ -1,32 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Apr 2015 00:05:03 +0200 (CEST)
-Received: from mail-vn0-f73.google.com ([209.85.216.73]:33483 "EHLO
-        mail-vn0-f73.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27014896AbbDGWE0MYuPA (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 8 Apr 2015 00:04:26 +0200
-Received: by vnbg62 with SMTP id g62so7125161vnb.0
-        for <linux-mips@linux-mips.org>; Tue, 07 Apr 2015 15:04:21 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Apr 2015 00:05:22 +0200 (CEST)
+Received: from mail-qk0-f201.google.com ([209.85.220.201]:34252 "EHLO
+        mail-qk0-f201.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27014925AbbDGWE1WVsOS (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 8 Apr 2015 00:04:27 +0200
+Received: by qkbw1 with SMTP id w1so12928419qkb.1
+        for <linux-mips@linux-mips.org>; Tue, 07 Apr 2015 15:04:22 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=66ft3INlpyvEeC97cDXRxFl0zzJF57oBXy7LO7E5/MM=;
-        b=OZarlNuwEOWcXyaorD+iYYGNvCpEpyI28zrUDWtgjlRXL0SBN+O6Ex3hYZmlUZWvn4
-         nZAFKIBqiwNSUNRGV7B0+BkhmQHeiCug32gX6m/TZcraPdWhhiyqxpQtNaGX0cA372sK
-         nfipgnNRihrJPIXMK2kSOpiHieaq2oIqWW4t/fy+5Up28mJqZXYlOdZ/TSn6ELlD9oVI
-         QxIGT5Du8P7Rn/WIhkYqvoFR1Nvsqg98U2Cfjv2FOqckBK4wqdtDyHXIW2LQtuaz9cXh
-         FgQCL3ZGV3CXWGRU7UH3Tcf60QfAqk9xYSHdz7FWiRU75EE+7bXfgB9mTrkVCDl6GxB2
-         kWVw==
-X-Gm-Message-State: ALoCoQkLbq0Kk4cAKiXe9WbVCFSL9EG3VqPUa1IPU6Pv4cq8KpSF1dFLPBCTsKw5SEerz5qOVA1T
-X-Received: by 10.236.18.231 with SMTP id l67mr20247279yhl.57.1428444261515;
-        Tue, 07 Apr 2015 15:04:21 -0700 (PDT)
-Received: from corpmail-nozzle1-2.hot.corp.google.com ([100.108.1.103])
-        by gmr-mx.google.com with ESMTPS id v17si201442yhc.0.2015.04.07.15.04.20
+        bh=jYm2ErXXDg1abk1sxAqpTjaEP+/bjyr6QXiwdHwyEvo=;
+        b=QDG0lcRFu6hWof0cmrp9M/dGclfTm27sIvb/WTHnD+qWe9NfgGZZ6SlIksW/oBxGtV
+         8MsvWHcJZm2ycNpFGRsg4K2+995tqK9Sr792TfmhbtgOLncGqSwfjUHrBUxcPso4CeDm
+         CvXJBIECBhsznEBNgaf2zmtelJjcB6eT/8jARPrsbNdCv1xEK2BpmTe0y8vC60ePmXGp
+         h2m4d7rtUmVPy9oGkm/p2IyrSvB49LCpvYeqk8fwozBztcuNkp430+GK00rhbTKTesdD
+         PKOl3iPJHHrAcQrK3qBHiUzQDOSJ9t3vAhiaumlV7m/l9/s0oD0tOtYl32y06pU0RzwS
+         3sPA==
+X-Gm-Message-State: ALoCoQlurdghvqoWmFD/R4QQTM0EU/84ysrlDBz1wAELe1uDDoaYQbZFdmC1k0iRwhYKtxa/o45X
+X-Received: by 10.236.16.130 with SMTP id h2mr26488721yhh.36.1428444262782;
+        Tue, 07 Apr 2015 15:04:22 -0700 (PDT)
+Received: from corpmail-nozzle1-1.hot.corp.google.com ([100.108.1.104])
+        by gmr-mx.google.com with ESMTPS id z21si392162yhc.5.2015.04.07.15.04.22
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 07 Apr 2015 15:04:21 -0700 (PDT)
+        Tue, 07 Apr 2015 15:04:22 -0700 (PDT)
 Received: from abrestic.mtv.corp.google.com ([172.22.65.70])
-        by corpmail-nozzle1-2.hot.corp.google.com with ESMTP id mRuABHFB.1; Tue, 07 Apr 2015 15:04:21 -0700
+        by corpmail-nozzle1-1.hot.corp.google.com with ESMTP id 42HowY8A.1; Tue, 07 Apr 2015 15:04:22 -0700
 Received: by abrestic.mtv.corp.google.com (Postfix, from userid 137652)
-        id 762CC2206CE; Tue,  7 Apr 2015 15:04:20 -0700 (PDT)
+        id D808A220568; Tue,  7 Apr 2015 15:04:21 -0700 (PDT)
 From:   Andrew Bresticker <abrestic@chromium.org>
 To:     Ralf Baechle <ralf@linux-mips.org>,
         Kishon Vijay Abraham I <kishon@ti.com>
@@ -35,9 +35,9 @@ Cc:     devicetree@vger.kernel.org, linux-mips@linux-mips.org,
         Andrew Bresticker <abrestic@chromium.org>,
         James Hartley <james.hartley@imgtec.com>,
         Damien Horsley <Damien.Horsley@imgtec.com>
-Subject: [PATCH V2 2/3] phy: Add driver for Pistachio USB2.0 PHY
-Date:   Tue,  7 Apr 2015 15:04:17 -0700
-Message-Id: <1428444258-25852-3-git-send-email-abrestic@chromium.org>
+Subject: [PATCH V2 3/3] MIPS: pistachio: Enable USB PHY driver in defconfig
+Date:   Tue,  7 Apr 2015 15:04:18 -0700
+Message-Id: <1428444258-25852-4-git-send-email-abrestic@chromium.org>
 X-Mailer: git-send-email 2.2.0.rc0.207.ga3a616c
 In-Reply-To: <1428444258-25852-1-git-send-email-abrestic@chromium.org>
 References: <1428444258-25852-1-git-send-email-abrestic@chromium.org>
@@ -45,7 +45,7 @@ Return-Path: <abrestic@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46824
+X-archive-position: 46825
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -62,257 +62,26 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add a driver for the USB2.0 PHY found on the IMG Pistachio SoC.
+Update pistachio_defconfig to enable Pistachio's USB PHY driver.
 
 Signed-off-by: Andrew Bresticker <abrestic@chromium.org>
 ---
-Changes from v1:
- - Fixed a couple of typos
+New for v2.
 ---
- drivers/phy/Kconfig             |   7 ++
- drivers/phy/Makefile            |   1 +
- drivers/phy/phy-pistachio-usb.c | 206 ++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 214 insertions(+)
- create mode 100644 drivers/phy/phy-pistachio-usb.c
+ arch/mips/configs/pistachio_defconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/phy/Kconfig b/drivers/phy/Kconfig
-index 2962de2..717f30d 100644
---- a/drivers/phy/Kconfig
-+++ b/drivers/phy/Kconfig
-@@ -225,6 +225,13 @@ config PHY_EXYNOS5_USBDRD
- 	  This driver provides PHY interface for USB 3.0 DRD controller
- 	  present on Exynos5 SoC series.
- 
-+config PHY_PISTACHIO_USB
-+	tristate "IMG Pistachio USB2.0 PHY driver"
-+	depends on MACH_PISTACHIO
-+	select GENERIC_PHY
-+	help
-+	  Enable this to support the USB2.0 PHY on the IMG Pistachio SoC.
-+
- config PHY_QCOM_APQ8064_SATA
- 	tristate "Qualcomm APQ8064 SATA SerDes/PHY driver"
- 	depends on ARCH_QCOM
-diff --git a/drivers/phy/Makefile b/drivers/phy/Makefile
-index f080e1b..e561708 100644
---- a/drivers/phy/Makefile
-+++ b/drivers/phy/Makefile
-@@ -38,3 +38,4 @@ obj-$(CONFIG_PHY_STIH41X_USB)		+= phy-stih41x-usb.o
- obj-$(CONFIG_PHY_QCOM_UFS) 	+= phy-qcom-ufs.o
- obj-$(CONFIG_PHY_QCOM_UFS) 	+= phy-qcom-ufs-qmp-20nm.o
- obj-$(CONFIG_PHY_QCOM_UFS) 	+= phy-qcom-ufs-qmp-14nm.o
-+obj-$(CONFIG_PHY_PISTACHIO_USB)		+= phy-pistachio-usb.o
-diff --git a/drivers/phy/phy-pistachio-usb.c b/drivers/phy/phy-pistachio-usb.c
-new file mode 100644
-index 0000000..c6db35e
---- /dev/null
-+++ b/drivers/phy/phy-pistachio-usb.c
-@@ -0,0 +1,206 @@
-+/*
-+ * IMG Pistachio USB PHY driver
-+ *
-+ * Copyright (C) 2015 Google, Inc.
-+ *
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms and conditions of the GNU General Public License,
-+ * version 2, as published by the Free Software Foundation.
-+ */
-+
-+#include <linux/clk.h>
-+#include <linux/delay.h>
-+#include <linux/io.h>
-+#include <linux/kernel.h>
-+#include <linux/mfd/syscon.h>
-+#include <linux/module.h>
-+#include <linux/of.h>
-+#include <linux/phy/phy.h>
-+#include <linux/platform_device.h>
-+#include <linux/regmap.h>
-+
-+#include <dt-bindings/phy/phy-pistachio-usb.h>
-+
-+#define USB_PHY_CONTROL1				0x04
-+#define USB_PHY_CONTROL1_FSEL_SHIFT			2
-+#define USB_PHY_CONTROL1_FSEL_MASK			0x7
-+
-+#define USB_PHY_STRAP_CONTROL				0x10
-+#define USB_PHY_STRAP_CONTROL_REFCLK_SHIFT		4
-+#define USB_PHY_STRAP_CONTROL_REFCLK_MASK		0x3
-+
-+#define USB_PHY_STATUS					0x14
-+#define USB_PHY_STATUS_RX_PHY_CLK			BIT(9)
-+#define USB_PHY_STATUS_RX_UTMI_CLK			BIT(8)
-+#define USB_PHY_STATUS_VBUS_FAULT			BIT(7)
-+
-+struct pistachio_usb_phy {
-+	struct device *dev;
-+	struct regmap *cr_top;
-+	struct clk *phy_clk;
-+	unsigned int refclk;
-+};
-+
-+static const unsigned long fsel_rate_map[] = {
-+	9600000,
-+	10000000,
-+	12000000,
-+	19200000,
-+	20000000,
-+	24000000,
-+	0,
-+	50000000,
-+};
-+
-+static int pistachio_usb_phy_power_on(struct phy *phy)
-+{
-+	struct pistachio_usb_phy *p_phy = phy_get_drvdata(phy);
-+	unsigned long timeout, rate;
-+	unsigned int i;
-+	int ret;
-+
-+	ret = clk_prepare_enable(p_phy->phy_clk);
-+	if (ret < 0) {
-+		dev_err(p_phy->dev, "Failed to enable PHY clock: %d\n", ret);
-+		return ret;
-+	}
-+
-+	regmap_update_bits(p_phy->cr_top, USB_PHY_STRAP_CONTROL,
-+			   USB_PHY_STRAP_CONTROL_REFCLK_MASK <<
-+			   USB_PHY_STRAP_CONTROL_REFCLK_SHIFT,
-+			   p_phy->refclk << USB_PHY_STRAP_CONTROL_REFCLK_SHIFT);
-+
-+	rate = clk_get_rate(p_phy->phy_clk);
-+	if (p_phy->refclk == REFCLK_XO_CRYSTAL && rate != 12000000) {
-+		dev_err(p_phy->dev, "Unsupported rate for XO crystal: %ld\n",
-+			rate);
-+		ret = -EINVAL;
-+		goto disable_clk;
-+	}
-+
-+	for (i = 0; i < ARRAY_SIZE(fsel_rate_map); i++) {
-+		if (rate == fsel_rate_map[i])
-+			break;
-+	}
-+	if (i == ARRAY_SIZE(fsel_rate_map)) {
-+		dev_err(p_phy->dev, "Unsupported clock rate: %lu\n", rate);
-+		ret = -EINVAL;
-+		goto disable_clk;
-+	}
-+
-+	regmap_update_bits(p_phy->cr_top, USB_PHY_CONTROL1,
-+			   USB_PHY_CONTROL1_FSEL_MASK <<
-+			   USB_PHY_CONTROL1_FSEL_SHIFT,
-+			   i << USB_PHY_CONTROL1_FSEL_SHIFT);
-+
-+	timeout = jiffies + msecs_to_jiffies(200);
-+	while (time_before(jiffies, timeout)) {
-+		unsigned int val;
-+
-+		regmap_read(p_phy->cr_top, USB_PHY_STATUS, &val);
-+		if (val & USB_PHY_STATUS_VBUS_FAULT) {
-+			dev_err(p_phy->dev, "VBUS fault detected\n");
-+			ret = -EIO;
-+			goto disable_clk;
-+		}
-+		if ((val & USB_PHY_STATUS_RX_PHY_CLK) &&
-+		    (val & USB_PHY_STATUS_RX_UTMI_CLK))
-+			return 0;
-+		usleep_range(1000, 1500);
-+	}
-+
-+	dev_err(p_phy->dev, "Timed out waiting for PHY to power on\n");
-+	ret = -ETIMEDOUT;
-+
-+disable_clk:
-+	clk_disable_unprepare(p_phy->phy_clk);
-+	return ret;
-+}
-+
-+static int pistachio_usb_phy_power_off(struct phy *phy)
-+{
-+	struct pistachio_usb_phy *p_phy = phy_get_drvdata(phy);
-+
-+	clk_disable_unprepare(p_phy->phy_clk);
-+
-+	return 0;
-+}
-+
-+static const struct phy_ops pistachio_usb_phy_ops = {
-+	.power_on = pistachio_usb_phy_power_on,
-+	.power_off = pistachio_usb_phy_power_off,
-+	.owner = THIS_MODULE,
-+};
-+
-+static int pistachio_usb_phy_probe(struct platform_device *pdev)
-+{
-+	struct pistachio_usb_phy *p_phy;
-+	struct phy_provider *provider;
-+	struct phy *phy;
-+	int ret;
-+
-+	p_phy = devm_kzalloc(&pdev->dev, sizeof(*p_phy), GFP_KERNEL);
-+	if (!p_phy)
-+		return -ENOMEM;
-+	p_phy->dev = &pdev->dev;
-+	platform_set_drvdata(pdev, p_phy);
-+
-+	p_phy->cr_top = syscon_regmap_lookup_by_phandle(p_phy->dev->of_node,
-+							"img,cr-top");
-+	if (IS_ERR(p_phy->cr_top)) {
-+		dev_err(p_phy->dev, "Failed to get CR_TOP registers: %ld\n",
-+			PTR_ERR(p_phy->cr_top));
-+		return PTR_ERR(p_phy->cr_top);
-+	}
-+
-+	p_phy->phy_clk = devm_clk_get(p_phy->dev, "usb_phy");
-+	if (IS_ERR(p_phy->phy_clk)) {
-+		dev_err(p_phy->dev, "Failed to get usb_phy clock: %ld\n",
-+			PTR_ERR(p_phy->phy_clk));
-+		return PTR_ERR(p_phy->phy_clk);
-+	}
-+
-+	ret = of_property_read_u32(p_phy->dev->of_node, "img,refclk",
-+				   &p_phy->refclk);
-+	if (ret < 0) {
-+		dev_err(p_phy->dev, "No reference clock selector specified\n");
-+		return ret;
-+	}
-+
-+	phy = devm_phy_create(p_phy->dev, NULL, &pistachio_usb_phy_ops);
-+	if (IS_ERR(phy)) {
-+		dev_err(p_phy->dev, "Failed to create PHY: %ld\n",
-+			PTR_ERR(phy));
-+		return PTR_ERR(phy);
-+	}
-+	phy_set_drvdata(phy, p_phy);
-+
-+	provider = devm_of_phy_provider_register(p_phy->dev,
-+						 of_phy_simple_xlate);
-+	if (IS_ERR(provider)) {
-+		dev_err(p_phy->dev, "Failed to register PHY provider: %ld\n",
-+			PTR_ERR(provider));
-+		return PTR_ERR(provider);
-+	}
-+
-+	return 0;
-+}
-+
-+static const struct of_device_id pistachio_usb_phy_of_match[] = {
-+	{ .compatible = "img,pistachio-usb-phy", },
-+	{ },
-+};
-+MODULE_DEVICE_TABLE(of, pistachio_usb_phy_of_match);
-+
-+static struct platform_driver pistachio_usb_phy_driver = {
-+	.probe		= pistachio_usb_phy_probe,
-+	.driver		= {
-+		.name	= "pistachio-usb-phy",
-+		.of_match_table = pistachio_usb_phy_of_match,
-+	},
-+};
-+module_platform_driver(pistachio_usb_phy_driver);
-+
-+MODULE_AUTHOR("Andrew Bresticker <abrestic@chromium.org>");
-+MODULE_DESCRIPTION("IMG Pistachio USB2.0 PHY driver");
-+MODULE_LICENSE("GPL v2");
+diff --git a/arch/mips/configs/pistachio_defconfig b/arch/mips/configs/pistachio_defconfig
+index f22e92e..1646cce 100644
+--- a/arch/mips/configs/pistachio_defconfig
++++ b/arch/mips/configs/pistachio_defconfig
+@@ -272,6 +272,7 @@ CONFIG_IIO=y
+ CONFIG_CC10001_ADC=y
+ CONFIG_PWM=y
+ CONFIG_PWM_IMG=y
++CONFIG_PHY_PISTACHIO_USB=y
+ CONFIG_ANDROID=y
+ CONFIG_EXT4_FS=y
+ CONFIG_EXT4_FS_POSIX_ACL=y
 -- 
 2.2.0.rc0.207.ga3a616c

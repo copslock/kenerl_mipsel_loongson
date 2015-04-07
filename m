@@ -1,54 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Apr 2015 15:20:43 +0200 (CEST)
-Received: from mail-ig0-f169.google.com ([209.85.213.169]:36512 "EHLO
-        mail-ig0-f169.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010150AbbDGNUi21xPn (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Apr 2015 15:20:38 +0200
-Received: by igblo3 with SMTP id lo3so11270171igb.1
-        for <linux-mips@linux-mips.org>; Tue, 07 Apr 2015 06:20:34 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Apr 2015 15:24:30 +0200 (CEST)
+Received: from mail-ie0-f169.google.com ([209.85.223.169]:36534 "EHLO
+        mail-ie0-f169.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27014196AbbDGNY3WNXvF (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Apr 2015 15:24:29 +0200
+Received: by iebrs15 with SMTP id rs15so46007731ieb.3
+        for <linux-mips@linux-mips.org>; Tue, 07 Apr 2015 06:24:25 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:mime-version:in-reply-to:references:date
          :message-id:subject:from:to:cc:content-type;
-        bh=X9pztutcX3aDYNXo/Ds5SL9Y4zxX8w0a6nQoAtmban0=;
-        b=dEs+/i/8oUwCkx8VxYHCaOL6Vu9IthPmJOluGMDmVoGnlwusGqPXm8aTZZKdijX/W5
-         VEl9k1B6YCl/9/DnfZMW1kSJYP7aNfUum8MUCSHS+STwW4m9zzpZirbr+FBLbjGRLhpZ
-         tYg4a47fkiy3O+i6J6g8hON6z3URxEPf/2gDkkm09wzU7gF6UDDBIgAOzxqqQlh3etLw
-         vQ8xNrNIhS1mtbdhkIsnG1lKuT0t6KO++8TTUzhEzWik4KcToZNP6IhNKJFtFq9ENwc2
-         HrKKDpB0xkw3PsXNMlq2hZERJoqGlfdxPPhRwibkcom+p6C884k2cfmpiajG3OIC8wWH
-         U+cQ==
-X-Gm-Message-State: ALoCoQns/894pCxDTt4NCrz2KPyz1P/IWAajarT7/fWr+VAZQiA1Gklmz8CQzySvM7Q12WEMF6Tj
+        bh=o28B98OCFoQzfwkxv7q5Dgh3bqry9cw3ONQwa6ERtf0=;
+        b=kTSneX2MaCKgTSJ5IsiDgfbENyAp6VIl7eEVq6qjlMlKzmnrz4aIJmM+IF40PUl4VW
+         IAC0IM+Gn/81T1HGH6111twe6jBZpXHJgdFy0m4YjAFoD9D9oOtjS7rMK7KqTjXwFQKe
+         Ft/U6lx1HPvZPHl7QZuUNQkpJf4L6iG04IuP0rQzG7D4oXD1j339Qry0SrQYZi/Akspa
+         iGDy4641VTbUQw/l79rVnrA5r1kzmdsF/cK21cWn8YBaSRDg9kSPY0qkhqEknrI33+VQ
+         zzmK9QrqNECCRfvt34H8xGlGqa69TFyhIqMCyuPcVbCUjxmsj2ggKLOIM4ykteKfpPmW
+         15hQ==
+X-Gm-Message-State: ALoCoQnPLWN5FwtHr1rU+u0zWv8WOSlCO6gVeE2DiXafLbcRUGNI/odhhhj/9A1eMvUBqPsqGhWc
 MIME-Version: 1.0
-X-Received: by 10.50.111.115 with SMTP id ih19mr3465265igb.47.1428412834015;
- Tue, 07 Apr 2015 06:20:34 -0700 (PDT)
-Received: by 10.42.103.133 with HTTP; Tue, 7 Apr 2015 06:20:33 -0700 (PDT)
-In-Reply-To: <1427757416-14491-2-git-send-email-abrestic@chromium.org>
+X-Received: by 10.50.18.49 with SMTP id t17mr3552662igd.3.1428413065039; Tue,
+ 07 Apr 2015 06:24:25 -0700 (PDT)
+Received: by 10.42.103.133 with HTTP; Tue, 7 Apr 2015 06:24:24 -0700 (PDT)
+In-Reply-To: <CAL1qeaFd0dz0wirFzCRfetprjs1vJqm6RrmuPj0sBiEg_mc6pg@mail.gmail.com>
 References: <1427757416-14491-1-git-send-email-abrestic@chromium.org>
-        <1427757416-14491-2-git-send-email-abrestic@chromium.org>
-Date:   Tue, 7 Apr 2015 15:20:33 +0200
-Message-ID: <CACRpkdZ=kCyW37z-2C-2aK_Y8HaEwnfGXxfFNfMiUKkJSYpUAg@mail.gmail.com>
-Subject: Re: [PATCH V2 1/3] pinctrl: Document "function" + "pins" pinmux binding
+        <20150331140034.GE28951@linux-mips.org>
+        <CAL1qeaFd0dz0wirFzCRfetprjs1vJqm6RrmuPj0sBiEg_mc6pg@mail.gmail.com>
+Date:   Tue, 7 Apr 2015 15:24:24 +0200
+Message-ID: <CACRpkdZTTfrE9D7hWzfyq_4tWCFWiZM+96v=dCnEOHLf_BvWRQ@mail.gmail.com>
+Subject: Re: [PATCH V2 0/3] pinctrl: Support for IMG Pistachio
 From:   Linus Walleij <linus.walleij@linaro.org>
 To:     Andrew Bresticker <abrestic@chromium.org>
-Cc:     Alexandre Courbot <gnurou@gmail.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Alexandre Courbot <gnurou@gmail.com>,
         "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
         "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-        Linux MIPS <linux-mips@linux-mips.org>,
+        Linux-MIPS <linux-mips@linux-mips.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         Ezequiel Garcia <ezequiel.garcia@imgtec.com>,
         James Hartley <james.hartley@imgtec.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Pawel Moll <pawel.moll@arm.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ian Campbell <ijc+devicetree@hellion.org.uk>,
-        Kumar Gala <galak@codeaurora.org>
+        James Hogan <james.hogan@imgtec.com>
 Content-Type: text/plain; charset=UTF-8
 Return-Path: <linus.walleij@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46803
+X-archive-position: 46804
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -65,25 +61,36 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Mar 31, 2015 at 1:16 AM, Andrew Bresticker
+On Tue, Mar 31, 2015 at 7:20 PM, Andrew Bresticker
 <abrestic@chromium.org> wrote:
-
-> Currently the "function" + "groups" combination is the only documented
-> format for pinmux nodes, although many drivers use "function" + "pins".
-> Update the generic pinctrl binding to include the "function" + "pins"
-> combination as well.
+> On Tue, Mar 31, 2015 at 7:00 AM, Ralf Baechle <ralf@linux-mips.org> wrote:
+>> On Mon, Mar 30, 2015 at 04:16:53PM -0700, Andrew Bresticker wrote:
+>>
+>>> This series adds support for the system pin and GPIO controller on the IMG
+>>> Pistachio SoC.  Pistachio's system pin controller manages 99 pins, 90 of
+>>> which are MFIOs which can be muxed between multiple functions or used
+>>> as GPIOs.  The GPIO control for the 90 MFIOs is broken up into banks
+>>> of 16.  Pistachio also has a second pin controller, the RPU pin controller,
+>>> which will be supported by a future patchset through an extension to this
+>>> driver.
+>>>
+>>> Test on an IMG Pistachio BuB.  Based on mips-for-linux-next which inluces my
+>>> series adding Pistachio platform support [1].  A branch with this series is
+>>> available at [2].
+>>
+>> Does this mean you want me to funnel this through the MIPS tree?  If so,
+>> could I have an Ack from the maintainers?
 >
-> Signed-off-by: Andrew Bresticker <abrestic@chromium.org>
-> Cc: Rob Herring <robh+dt@kernel.org>
-> Cc: Pawel Moll <pawel.moll@arm.com>
-> Cc: Mark Rutland <mark.rutland@arm.com>
-> Cc: Ian Campbell <ijc+devicetree@hellion.org.uk>
-> Cc: Kumar Gala <galak@codeaurora.org>
-> ---
-> New for v2.
+> Linus mentioned in v1 that if the only dependency was a Kconfig symbol
+> that he could take it through his tree.  I'm fine either way, though
+> it would be slightly more convenient for it to go through the MIPS
+> tree.  Linus?
 
-Patch applied, as it just documents what some drivers are
-already doing. Not much to be discussed there.
+I took 1/3 into pinctrl since it touched my core documentation and
+actually even had to be slightly rebased.
+
+I will look at 2/3 and 3/3 and provide ACK if I think they are
+all right.
 
 Yours,
 Linus Walleij

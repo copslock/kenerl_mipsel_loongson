@@ -1,60 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Apr 2015 12:54:29 +0200 (CEST)
-Received: from bes.se.axis.com ([195.60.68.10]:44680 "EHLO bes.se.axis.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Apr 2015 23:31:45 +0200 (CEST)
+Received: from kiutl.biot.com ([31.172.244.210]:58940 "EHLO kiutl.biot.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27008090AbbDIKy1Jpp9m convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 9 Apr 2015 12:54:27 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by bes.se.axis.com (Postfix) with ESMTP id D70552E3EE;
-        Thu,  9 Apr 2015 12:54:22 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at bes.se.axis.com
-Received: from bes.se.axis.com ([IPv6:::ffff:127.0.0.1])
-        by localhost (bes.se.axis.com [::ffff:127.0.0.1]) (amavisd-new, port 10024)
-        with LMTP id VB5ZZrISO-Sm; Thu,  9 Apr 2015 12:54:22 +0200 (CEST)
-Received: from boulder.se.axis.com (boulder.se.axis.com [10.0.2.104])
-        by bes.se.axis.com (Postfix) with ESMTP id E62102E3EC;
-        Thu,  9 Apr 2015 12:54:21 +0200 (CEST)
-Received: from boulder.se.axis.com (localhost [127.0.0.1])
-        by postfix.imss71 (Postfix) with ESMTP id CC5B9E79;
-        Thu,  9 Apr 2015 12:54:21 +0200 (CEST)
-Received: from seth.se.axis.com (seth.se.axis.com [10.0.2.172])
-        by boulder.se.axis.com (Postfix) with ESMTP id C0C4EC76;
-        Thu,  9 Apr 2015 12:54:21 +0200 (CEST)
-Received: from xmail3.se.axis.com (xmail3.se.axis.com [10.0.5.75])
-        by seth.se.axis.com (Postfix) with ESMTP id BDAD43E049;
-        Thu,  9 Apr 2015 12:54:21 +0200 (CEST)
-Received: from xmail2.se.axis.com ([10.0.5.74]) by xmail3.se.axis.com
- ([10.0.5.75]) with mapi; Thu, 9 Apr 2015 12:54:21 +0200
-From:   Lars Persson <lars.persson@axis.com>
-To:     Paul Burton <paul.burton@imgtec.com>
-CC:     Lars Persson <larper@axis.com>,
-        "ralf@linux-mips.org" <ralf@linux-mips.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Date:   Thu, 9 Apr 2015 12:54:21 +0200
-Subject: Re: [PATCH 0/2] New fix for icache coherency race
-Thread-Topic: [PATCH 0/2] New fix for icache coherency race
-Thread-Index: AdBys4kRBSeZUxAiSeGqPm6SYWNtJg==
-Message-ID: <171D0CF6-78EB-4FA8-A213-2612A3680E5F@axis.com>
-References: <1424956563-29535-1-git-send-email-larper@axis.com>
- <20150408225324.GH2896@NP-P-BURTON>
-In-Reply-To: <20150408225324.GH2896@NP-P-BURTON>
-Accept-Language: en-US, sv-SE
-Content-Language: sv-SE
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-acceptlanguage: en-US, sv-SE
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        id S27010720AbbDIVboImlLl (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 9 Apr 2015 23:31:44 +0200
+Received: from spamd by kiutl.biot.com with sa-checked (Exim 4.83)
+        (envelope-from <bert@biot.com>)
+        id 1YgK36-0004Zs-MA
+        for linux-mips@linux-mips.org; Thu, 09 Apr 2015 23:31:44 +0200
+Received: from [2a02:578:4a04:2a00::5]
+        by kiutl.biot.com with esmtps (TLSv1.2:DHE-RSA-AES128-SHA:128)
+        (Exim 4.83)
+        (envelope-from <bert@biot.com>)
+        id 1YgK2d-0004Yb-Eo; Thu, 09 Apr 2015 23:31:15 +0200
+Message-ID: <5526EFA0.2010108@biot.com>
+Date:   Thu, 09 Apr 2015 23:31:12 +0200
+From:   Bert Vermeulen <bert@biot.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.6.0
 MIME-Version: 1.0
-Return-Path: <lars.persson@axis.com>
+To:     Mark Brown <broonie@kernel.org>
+CC:     ralf@linux-mips.org, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+        andy.shevchenko@gmail.com, jogo@openwrt.org
+Subject: Re: [PATCH v6] spi: Add SPI driver for Mikrotik RB4xx series boards
+References: <1428285263-15135-1-git-send-email-bert@biot.com> <20150406163905.GL6023@sirena.org.uk>
+In-Reply-To: <20150406163905.GL6023@sirena.org.uk>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Return-Path: <bert@biot.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46846
+X-archive-position: 46847
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: lars.persson@axis.com
+X-original-sender: bert@biot.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -67,100 +47,62 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Paul
+On 04/06/2015 06:39 PM, Mark Brown wrote:> On Mon, Apr 06, 2015 at
+03:54:23AM +0200, Bert Vermeulen wrote:
+>> +		if (spi->chip_select == 1 && t->cs_change) {
+>> +			/* CPLD in bulk write mode gets two bits per clock */
+>> +			do_spi_byte_fast(rbspi, spi_ioc, out);
+>> +			/* Don't want the real CS toggled */
+>> +			t->cs_change = 0;
+>> +		} else {
+>> +			do_spi_byte(rbspi, spi_ioc, out);
+>> +		}
+> 
+> This is making very little sense to me and the fact that the driver is
+> messing with cs_change is definitely buggy, it'll mean that repeated use
+> of the same transfer will be broken.  What is the above code supposed to
+> do, both with regard to selecting "fast" mode (why would you want slow
+> mode?) and with regard to the chip select?
+> 
+> I queried this on a previous version and asked for the code to be better
+> documented...
 
-I guess you have run into the limitation of __update_cache() not supporting highmem pages. That could be caused by an omission in my patch that forgets to clear the PG_dcache_dirty flag in flush_icache_page. I will submit an incremental patch for this.
+I documented it in the commit message:
 
-- Lars
+ The m25p80-compatible boot flash and (some models) MMC use regular SPI,
+ bitbanged as required by the SoC. However the SPI-connected CPLD has
+ a "fast write" mode, in which two bits are transferred by SPI clock
+ cycle. The second bit is transmitted with the SoC's CS2 pin.
 
-> 9 apr 2015 kl. 00:53 skrev Paul Burton <paul.burton@imgtec.com>:
+ Protocol drivers using this fast write facility signal this by setting
+ the cs_change flag on transfers.
+
+The cs_change flag is used here instead of the openwrt version's
+spi_transfer.fast_write flag. The CPLD driver sets this flag on a
+per-transfer basis.
+
+I wish I could tell you more about it, but I only know what I found in this
+code.
+
+>> +	ahb_clk = devm_clk_get(&pdev->dev, "ahb");
+>> +	if (IS_ERR(ahb_clk))
+>> +		return PTR_ERR(ahb_clk);
+>> +
+>> +	err = clk_prepare_enable(ahb_clk);
+>> +	if (err)
+>> +		return err;
 > 
->> On Thu, Feb 26, 2015 at 02:16:01PM +0100, Lars Persson wrote:
->> This patch set proposes an improved fix for the race condition that
->> originally was fixed in commit 2a4a8b1e5d9d ("MIPS: Remove race window
->> in page fault handling").
->> 
->> I have used the flush_icache_page API that is marked as deprecated in
->> Documentation/cachetlb.txt. There are strong reasons to keep this API
->> because it is not possible to implement an efficient and race-free
->> lazy flushing using the other APIs.
->> 
->> You can refer to a discussion about the same issue in arch/arm where
->> they chose to implement the solution in set_pte_at. In arch/mips we
->> could not do this because we lack information about the executability
->> of the mapping in set_pte_at() and thus we would have to flush all
->> pages to be safe.
->> 
->> http://lists.infradead.org/pipermail/linux-arm-kernel/2010-November/030915.html
->> 
->> Lars Persson (2):
->>  Revert "MIPS: Remove race window in page fault handling"
->>  MIPS: Fix race condition in lazy cache flushing.
-> 
-> FYI these 2 patches prevent a linux-next based kernel booting on the
-> Ingenic JZ4780-based CI20 board. I've not yet tried on the in-tree
-> JZ4740-based qi_lb60 to see whether it's also affected, nor have I yet
-> figured out what's going wrong. I'll hopefully dig into it tomorrow, but
-> just a heads up!
-> 
-> The boot failure (using an initramfs, so no DMA or much I/O at all):
-> 
->    [    4.618013] Freeing unused kernel memory: 5160K (803d6000 - 808e0000)
->    [    4.625211] CPU 0 Unable to handle kernel paging request at virtual address 00000000, epc == 80027924, ra == 8001db10
->    [    4.635881] Oops[#1]:
->    [    4.638149] CPU: 0 PID: 1 Comm: init Not tainted 4.0.0-rc7-next-20150408+ #334
->    [    4.645354] task: 8dc39568 ti: 8dc3a000 task.ti: 8dc3a000
->    [    4.650736] $ 0   : 00000000 00000001 00000001 00001000
->    [    4.655965] $ 4   : 00000000 00000001 808e0000 8df0b610
->    [    4.639347] $ 8   : 00000000 8d8f8160 00000000 00000000
->    [    4.644575] $12   : 00000000 00000118 00000040 ffff0000
->    [    4.649802] $16   : 81c649fc 77984000 00000004 8df013f8
->    [    4.655030] $20   : 81c649fc 00000000 00000000 00040000
->    [    4.638413] $24   : ff000000 80027920
->    [    4.643642] $28   : 8dc3a000 8dc3bd38 ffffffbf 8001db10
->    [    4.648871] Hi    : 3036f946
->    [    4.651740] Lo    : eeea49fc
->    [    4.654620] epc   : 80027924 r4k_blast_dcache_page_dc32+0x4/0x9c
->    [    4.638763]     Not tainted
->    [    4.641550] ra    : 8001db10 __update_cache+0xa4/0xd0
->    [    4.646585] Status: 10000403 KERNEL EXL IE
->    [    4.650767] Cause : 00800008
->    [    4.653634] BadVA : 00000000
->    [    4.656503] PrId  : 3ee1024f (Ingenic JZRISC)
->    [    4.639002] Process init (pid: 1, threadinfo=8dc3a000, task=8dc39568, tls=00000000)
->    [    4.646636] Stack : 3f916478 67caba37 58047621 77984000 58047621 77984000 8df0b610 800b777c
->              00400000 00031ec0 00000001 00400000 8d8f8178 8ddae840 8de8fbdc 81c649fc
->              8df013f8 8dc3be00 8de8fbe0 8008f7ac 8df09e38 8de9be40 fffffff8 8deeb000
->              00000000 00000000 00000000 00000040 803b9924 8dcd9000 77984000 800e2200
->              803ca320 800e1474 8df013f8 00000610 77984b50 00000000 8df00778 8df0b610
->              ...
->    [    4.638523] Call Trace:
->    [    4.640962] [<80027924>] r4k_blast_dcache_page_dc32+0x4/0x9c
->    [    4.646608] [<8001db10>] __update_cache+0xa4/0xd0
->    [    4.651305] [<800b777c>] do_set_pte+0x14c/0x174
->    [    4.655826] [<8008f7ac>] filemap_map_pages+0x2ac/0x384
->    [    4.639107] [<800b7a54>] handle_mm_fault+0x2b0/0x1020
->    [    4.644148] [<8001f460>] __do_page_fault+0x160/0x470
->    [    4.649102] [<80013e24>] resume_userspace_check+0x0/0x10
->    [    4.654395]
->    [    4.655876]
->    Code: 03e00008  00000000  24831000 <bc950000> bc950020  bc950040  bc950060  bc950080  bc9500a0
->    [    4.643978] ---[ end trace 672ef517bf5944f0 ]---
->    [    4.648581] Fatal exception: panic in 5 seconds
-> 
-> The next-20140408 based CI20 branch (currently including reverts of
-> these 2 patches) if anyone wants to reproduce:
-> 
->    https://github.com/paulburton/linux/tree/wip-ci20-v4.1
-> 
-> Thanks,
->    Paul
-> 
->> arch/mips/include/asm/cacheflush.h |   35 ++++++++++++++++++++---------------
->> arch/mips/include/asm/pgtable.h    |   10 ++++++----
->> arch/mips/mm/cache.c               |   27 ++++++++-------------------
->> 3 files changed, 34 insertions(+), 38 deletions(-)
->> 
->> -- 
->> 1.7.10.4
->> 
+> There's no error handling (or indeed any other code) disabling the
+> clock, probably this enable should happen later and those disables
+> definitely need adding.  I'd also expect to see runtime PM to keep the
+> clock disabled when the controller isn't in use in order to save power.
+
+No problem disabling the clock on error/remove, but PM doesn't seem worth
+doing in this case -- the ath79 platform's clock enable/disable are just
+dummy functions. The ar7100 series SoCs have no power management, it seems.
+
+I have a patch addressing all your other comments.
+
+
+-- 
+Bert Vermeulen        bert@biot.com          email/xmpp

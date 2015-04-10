@@ -1,49 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Apr 2015 17:45:17 +0200 (CEST)
-Received: from mezzanine.sirena.org.uk ([106.187.55.193]:35308 "EHLO
-        mezzanine.sirena.org.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011122AbbDJPpQGXP0P (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 10 Apr 2015 17:45:16 +0200
-Received: from cpc11-sgyl31-2-0-cust672.sgyl.cable.virginm.net ([94.175.94.161] helo=debutante)
-        by mezzanine.sirena.org.uk with esmtpsa (TLS1.2:RSA_AES_128_CBC_SHA1:128)
-        (Exim 4.80)
-        (envelope-from <broonie@sirena.org.uk>)
-        id 1Ygb7F-0006PU-2C; Fri, 10 Apr 2015 15:45:09 +0000
-Received: from broonie by debutante with local (Exim 4.84)
-        (envelope-from <broonie@sirena.org.uk>)
-        id 1Ygb7C-0004p5-0f; Fri, 10 Apr 2015 16:45:06 +0100
-Date:   Fri, 10 Apr 2015 16:45:05 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Bert Vermeulen <bert@biot.com>
-Cc:     ralf@linux-mips.org, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        andy.shevchenko@gmail.com, jogo@openwrt.org
-Message-ID: <20150410154505.GM6023@sirena.org.uk>
-References: <1428285263-15135-1-git-send-email-bert@biot.com>
- <20150406163905.GL6023@sirena.org.uk>
- <5526EFA0.2010108@biot.com>
- <20150409215047.GE6023@sirena.org.uk>
- <5527ECC3.1000209@biot.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Apr 2015 20:17:35 +0200 (CEST)
+Received: from filtteri5.pp.htv.fi ([213.243.153.188]:56174 "EHLO
+        filtteri5.pp.htv.fi" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27006987AbbDJSRdVEbs3 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 10 Apr 2015 20:17:33 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by filtteri5.pp.htv.fi (Postfix) with ESMTP id E5D715A722F;
+        Fri, 10 Apr 2015 21:17:22 +0300 (EEST)
+X-Virus-Scanned: Debian amavisd-new at pp.htv.fi
+Received: from smtp5.welho.com ([213.243.153.39])
+        by localhost (filtteri5.pp.htv.fi [213.243.153.188]) (amavisd-new, port 10024)
+        with ESMTP id 85v-0YG0C8J9; Fri, 10 Apr 2015 21:17:18 +0300 (EEST)
+Received: from fuloong-minipc (91-145-91-118.bb.dnainternet.fi [91.145.91.118])
+        by smtp5.welho.com (Postfix) with ESMTP id 2ED1D5BC005;
+        Fri, 10 Apr 2015 21:17:29 +0300 (EEST)
+Date:   Fri, 10 Apr 2015 21:17:28 +0300
+From:   Aaro Koskinen <aaro.koskinen@iki.fi>
+To:     Jonas Gorski <jogo@openwrt.org>
+Cc:     MIPS Mailing List <linux-mips@linux-mips.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        John Crispin <blogic@openwrt.org>,
+        James Hogan <james.hogan@imgtec.com>,
+        Markos Chandras <markos.chandras@imgtec.com>
+Subject: Re: [PATCH RFC v2] MIPS: add support for vmlinux.bin appended DTB
+Message-ID: <20150410181728.GC569@fuloong-minipc.musicnaut.iki.fi>
+References: <1405162157-30357-1-git-send-email-jogo@openwrt.org>
+ <CAOiHx=mS-CSE-rM7nWxoRwO9twYiO2F4ObMf9ZVLo1oskZVKLg@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="mgP3ep6s6oWoM+py"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <5527ECC3.1000209@biot.com>
-X-Cookie: I've been there.
+In-Reply-To: <CAOiHx=mS-CSE-rM7nWxoRwO9twYiO2F4ObMf9ZVLo1oskZVKLg@mail.gmail.com>
 User-Agent: Mutt/1.5.23 (2014-03-12)
-X-SA-Exim-Connect-IP: 94.175.94.161
-X-SA-Exim-Mail-From: broonie@sirena.org.uk
-Subject: Re: [PATCH v6] spi: Add SPI driver for Mikrotik RB4xx series boards
-X-SA-Exim-Version: 4.2.1 (built Mon, 26 Dec 2011 16:24:06 +0000)
-X-SA-Exim-Scanned: Yes (on mezzanine.sirena.org.uk)
-Return-Path: <broonie@sirena.org.uk>
+Return-Path: <aaro.koskinen@iki.fi>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46854
+X-archive-position: 46855
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: broonie@kernel.org
+X-original-sender: aaro.koskinen@iki.fi
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,43 +51,33 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+Hi,
 
---mgP3ep6s6oWoM+py
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+On Fri, Aug 08, 2014 at 08:39:48PM +0200, Jonas Gorski wrote:
+> On Sat, Jul 12, 2014 at 12:49 PM, Jonas Gorski <jogo@openwrt.org> wrote:
+> > (snip)
+> > diff --git a/arch/mips/kernel/vmlinux.lds.S b/arch/mips/kernel/vmlinux.lds.S
+> > index 3b46f7c..8009530 100644
+> > --- a/arch/mips/kernel/vmlinux.lds.S
+> > +++ b/arch/mips/kernel/vmlinux.lds.S
+> > @@ -127,6 +127,12 @@ SECTIONS
+> >         }
+> >
+> >         PERCPU_SECTION(1 << CONFIG_MIPS_L1_CACHE_SHIFT)
+> > +
+> > +#ifdef CONFIG_MIPS_APPENDED_DTB
+> > +       __appended_dtb = .;
+> > +       /* leave space for appended DTB */
+> > +       . = . + 0x100000;
+> > +#endif
+> 
+> Okay, this won't work for non SMP kernels - PERCPU is empty there, so
+> the actual binary end is then __mips_machine_end, not __per_cpu_end
+> (unless mips_machine_end happens to satisfty the per_cpu alignment
+> requirements).
+> 
+> So back to the drawing board.
 
-On Fri, Apr 10, 2015 at 05:31:15PM +0200, Bert Vermeulen wrote:
-> On 04/09/2015 11:50 PM, Mark Brown wrote:
-> > On Thu, Apr 09, 2015 at 11:31:12PM +0200, Bert Vermeulen wrote:
+Any news? Would it work just by not defining PERCPU on non-SMP builds?
 
-> > implementation of that standard API to the core.  It *sounds* like
-> > you're just trying to implement two wire mode which does have a standard
-> > API, please use that.
-
-> Can you please advise what kind of solution would be acceptable then? I need
-> to signal from an SPI protocol driver to an SPI master on a per-transfer basis.
-
-Please refer to my reply above...
-
-> Also, I have no idea what you mean by two-wire mode. This "fast mode" is SPI
-> + one extra pin.
-
-SPI_TX_DUAL.
-
---mgP3ep6s6oWoM+py
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJVJ/ABAAoJECTWi3JdVIfQHnkH/2RtnbZDBAPSWGyuBsbA7EP9
-UAeU4TYPsx0VpZjzx6g7TAVIgnLaysxe4II0fI3Z9MZosxj5dTmCGWguNHtpWZE7
-vFXWx/55JhazlWmCVdxFAdQKJ+pmQAHSQ/ymFooJ1ZxMly5DAiABPT58aPjYyqQr
-wABLeWbQuAAMSaV2690FPa7ENPldsxipum4RCrfHMwGXLjyeeTw7NBvKvnrjsezV
-Wxi91QqiuxRKjD7EZJ7nLlUebh55VWHv8FwprBQJMkZvu0amsSHLLBA3YY/76mm0
-nwjpB3XiGAtxffbMeaVdqwxgCSaVT2oKBWWXn/Wou9JiSjroxryhy9jGZi/NH8w=
-=6CLs
------END PGP SIGNATURE-----
-
---mgP3ep6s6oWoM+py--
+A.

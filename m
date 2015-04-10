@@ -1,60 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Apr 2015 16:31:13 +0200 (CEST)
-Received: from bes.se.axis.com ([195.60.68.10]:39705 "EHLO bes.se.axis.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Apr 2015 17:31:43 +0200 (CEST)
+Received: from kiutl.biot.com ([31.172.244.210]:60143 "EHLO kiutl.biot.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27010902AbbDJObLTGhtv convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 10 Apr 2015 16:31:11 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by bes.se.axis.com (Postfix) with ESMTP id C85362E426;
-        Fri, 10 Apr 2015 16:31:06 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at bes.se.axis.com
-Received: from bes.se.axis.com ([IPv6:::ffff:127.0.0.1])
-        by localhost (bes.se.axis.com [::ffff:127.0.0.1]) (amavisd-new, port 10024)
-        with LMTP id RN+FjTAnwnFW; Fri, 10 Apr 2015 16:31:05 +0200 (CEST)
-Received: from boulder.se.axis.com (boulder.se.axis.com [10.0.2.104])
-        by bes.se.axis.com (Postfix) with ESMTP id 8F7482E349;
-        Fri, 10 Apr 2015 16:31:05 +0200 (CEST)
-Received: from boulder.se.axis.com (localhost [127.0.0.1])
-        by postfix.imss71 (Postfix) with ESMTP id 756CE10AE;
-        Fri, 10 Apr 2015 16:31:05 +0200 (CEST)
-Received: from thoth.se.axis.com (thoth.se.axis.com [10.0.2.173])
-        by boulder.se.axis.com (Postfix) with ESMTP id 659FF10A9;
-        Fri, 10 Apr 2015 16:31:05 +0200 (CEST)
-Received: from xmail4.se.axis.com (xmail4.se.axis.com [10.0.5.46])
-        by thoth.se.axis.com (Postfix) with ESMTP id 63BAB3404A;
-        Fri, 10 Apr 2015 16:31:05 +0200 (CEST)
-Received: from xmail2.se.axis.com ([10.0.5.74]) by xmail4.se.axis.com
- ([fe80::2dfa:6a3a:302a:d4e8%14]) with mapi; Fri, 10 Apr 2015 16:31:05 +0200
-From:   Lars Persson <lars.persson@axis.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     Lars Persson <larper@axis.com>,
-        "paul.burton@imgtec.com" <paul.burton@imgtec.com>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Date:   Fri, 10 Apr 2015 16:31:06 +0200
-Subject: Re: [PATCH] MIPS: Fix HIGHMEM crash in __update_cache().
-Thread-Topic: [PATCH] MIPS: Fix HIGHMEM crash in __update_cache().
-Thread-Index: AdBzmvm8a+fz1qvEQYCdvuRdV6M/VA==
-Message-ID: <675481A1-B1B2-47BF-9AF9-2E7773497FEA@axis.com>
-References: <1428672084-20676-1-git-send-email-larper@axis.com>
- <20150410134711.GC21107@linux-mips.org>
-In-Reply-To: <20150410134711.GC21107@linux-mips.org>
-Accept-Language: en-US, sv-SE
-Content-Language: sv-SE
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-acceptlanguage: en-US, sv-SE
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        id S27011114AbbDJPbltb9rb (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 10 Apr 2015 17:31:41 +0200
+Received: from spamd by kiutl.biot.com with sa-checked (Exim 4.83)
+        (envelope-from <bert@biot.com>)
+        id 1YgauC-0005yA-T0
+        for linux-mips@linux-mips.org; Fri, 10 Apr 2015 17:31:42 +0200
+Received: from [2a02:578:4a04:2a00::5]
+        by kiutl.biot.com with esmtps (TLSv1.2:DHE-RSA-AES128-SHA:128)
+        (Exim 4.83)
+        (envelope-from <bert@biot.com>)
+        id 1Ygato-0005wb-A2; Fri, 10 Apr 2015 17:31:16 +0200
+Message-ID: <5527ECC3.1000209@biot.com>
+Date:   Fri, 10 Apr 2015 17:31:15 +0200
+From:   Bert Vermeulen <bert@biot.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.6.0
 MIME-Version: 1.0
-Return-Path: <lars.persson@axis.com>
+To:     Mark Brown <broonie@kernel.org>
+CC:     ralf@linux-mips.org, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+        andy.shevchenko@gmail.com, jogo@openwrt.org
+Subject: Re: [PATCH v6] spi: Add SPI driver for Mikrotik RB4xx series boards
+References: <1428285263-15135-1-git-send-email-bert@biot.com> <20150406163905.GL6023@sirena.org.uk> <5526EFA0.2010108@biot.com> <20150409215047.GE6023@sirena.org.uk>
+In-Reply-To: <20150409215047.GE6023@sirena.org.uk>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Return-Path: <bert@biot.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46852
+X-archive-position: 46853
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: lars.persson@axis.com
+X-original-sender: bert@biot.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -67,25 +47,39 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Ralf,
-
-I came to think that also non-executable mappings for highmem pages could reach the flushing code in __update_cache() and trigger an OOPS.
-
-Until the highmem patches are merged we should block highmem pages in __update_cache().  Could you add this to the patch ?
-
-Sent from my iPhone
-
-> 10 apr 2015 kl. 15:47 skrev Ralf Baechle <ralf@linux-mips.org>:
+On 04/09/2015 11:50 PM, Mark Brown wrote:
+> On Thu, Apr 09, 2015 at 11:31:12PM +0200, Bert Vermeulen wrote:
+>>  The m25p80-compatible boot flash and (some models) MMC use regular SPI,
+>>  bitbanged as required by the SoC. However the SPI-connected CPLD has
+>>  a "fast write" mode, in which two bits are transferred by SPI clock
+>>  cycle. The second bit is transmitted with the SoC's CS2 pin.
 > 
->> On Fri, Apr 10, 2015 at 03:21:24PM +0200, Lars Persson wrote:
->> 
->> Commit 8b5fe5e54b47 ("MIPS: Fix race condition in lazy cache flushing.")
->> triggered NULL pointer dereferences on systems with HIGHMEM.
->> 
->> The problem was caused by not clearing the PG_dcache_dirty flag in
->> flush_icache_page() and thus we enter __update_cache() that lacks
->> support for HIGHMEM.
+>>  Protocol drivers using this fast write facility signal this by setting
+>>  the cs_change flag on transfers.
 > 
-> Thanks, I've folded this patch into the original 8b5fe5e54b47 commit.
+>> The cs_change flag is used here instead of the openwrt version's
+>> spi_transfer.fast_write flag. The CPLD driver sets this flag on a
+>> per-transfer basis.
 > 
->  Ralf
+> No, this is broken - it's abusing a standard API in a way that's
+> completly incompatible with the meaning of that API which is obviously a
+> very bad idea, especially since good practice is to offload the
+> implementation of that standard API to the core.  It *sounds* like
+> you're just trying to implement two wire mode which does have a standard
+> API, please use that.
+
+Can you please advise what kind of solution would be acceptable then? I need
+to signal from an SPI protocol driver to an SPI master on a per-transfer basis.
+
+Adding a flag to struct spi_transfer for this one driver, as openwrt does,
+seems stupid -- I agree. And sure, using spi_transfer.cs_change is a little
+dodgy. But I don't see a standard way to do it otherwise, and I don't really
+want to keep trying things until you approve of one. So tell me how you
+would do it, and I'll implement it that way. I just want to get this code in.
+
+Also, I have no idea what you mean by two-wire mode. This "fast mode" is SPI
++ one extra pin.
+
+
+-- 
+Bert Vermeulen        bert@biot.com          email/xmpp

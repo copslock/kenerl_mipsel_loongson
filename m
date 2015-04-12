@@ -1,42 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 12 Apr 2015 12:26:29 +0200 (CEST)
-Received: from arrakis.dune.hu ([78.24.191.176]:41272 "EHLO arrakis.dune.hu"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27014489AbbDLKZdYHFd7 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 12 Apr 2015 12:25:33 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Apr 2015 01:22:02 +0200 (CEST)
+Received: from filtteri6.pp.htv.fi ([213.243.153.189]:55449 "EHLO
+        filtteri6.pp.htv.fi" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27009084AbbDLXV7wzIZV (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 13 Apr 2015 01:21:59 +0200
 Received: from localhost (localhost [127.0.0.1])
-        by arrakis.dune.hu (Postfix) with ESMTP id A554928BC81;
-        Sun, 12 Apr 2015 12:24:42 +0200 (CEST)
-X-Virus-Scanned: at arrakis.dune.hu
-Received: from localhost.localdomain (dslb-088-073-015-232.088.073.pools.vodafone-ip.de [88.73.15.232])
-        by arrakis.dune.hu (Postfix) with ESMTPSA id 498FC28C10B;
-        Sun, 12 Apr 2015 12:24:32 +0200 (CEST)
-From:   Jonas Gorski <jogo@openwrt.org>
-To:     linux-mips@linux-mips.org
-Cc:     devicetree@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
-        John Crispin <blogic@openwrt.org>,
-        Kevin Cernekee <cernekee@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        by filtteri6.pp.htv.fi (Postfix) with ESMTP id 4031956F779;
+        Mon, 13 Apr 2015 02:22:00 +0300 (EEST)
+X-Virus-Scanned: Debian amavisd-new at pp.htv.fi
+Received: from smtp4.welho.com ([213.243.153.38])
+        by localhost (filtteri6.pp.htv.fi [213.243.153.189]) (amavisd-new, port 10024)
+        with ESMTP id UxCAh8qDE30y; Mon, 13 Apr 2015 02:21:55 +0300 (EEST)
+Received: from fuloong-minipc (91-145-91-118.bb.dnainternet.fi [91.145.91.118])
+        by smtp4.welho.com (Postfix) with ESMTP id 3F72D5BC011;
+        Mon, 13 Apr 2015 02:21:55 +0300 (EEST)
+Date:   Mon, 13 Apr 2015 02:21:54 +0300
+From:   Aaro Koskinen <aaro.koskinen@iki.fi>
+To:     "Maciej W. Rozycki" <macro@linux-mips.org>,
+        Ralf Baechle <ralf@linux-mips.org>
+Cc:     James Cowgill <James.Cowgill@imgtec.com>,
         Markos Chandras <markos.chandras@imgtec.com>,
-        Andrew Bresticker <abrestic@chromium.org>,
-        Daniel Schwierzeck <daniel.schwierzeck@gmail.com>,
-        Paul Burton <paul.burton@imgtec.com>,
-        James Hartley <James.Hartley@imgtec.com>
-Subject: [PATCH RFC v3 4/4] MIPS: BMIPS: accept UHI interface for passing a dtb
-Date:   Sun, 12 Apr 2015 12:25:01 +0200
-Message-Id: <1428834301-12721-5-git-send-email-jogo@openwrt.org>
-X-Mailer: git-send-email 1.7.10.4
-In-Reply-To: <1428834301-12721-1-git-send-email-jogo@openwrt.org>
-References: <1428834301-12721-1-git-send-email-jogo@openwrt.org>
-Return-Path: <jogo@openwrt.org>
+        linux-mips@linux-mips.org,
+        Matthew Fortune <Matthew.Fortune@imgtec.com>,
+        Paul Burton <paul.burton@imgtec.com>
+Subject: Re: [PATCH] MIPS: asm: elf: Set O32 default FPU flags
+Message-ID: <20150412232154.GA26498@fuloong-minipc.musicnaut.iki.fi>
+References: <6D39441BF12EF246A7ABCE6654B0235320FBCA7C@LEMAIL01.le.imgtec.org>
+ <1424949090-20682-1-git-send-email-markos.chandras@imgtec.com>
+ <alpine.LFD.2.11.1504071617580.21028@eddie.linux-mips.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <alpine.LFD.2.11.1504071617580.21028@eddie.linux-mips.org>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <aaro.koskinen@iki.fi>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46860
+X-archive-position: 46861
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jogo@openwrt.org
+X-original-sender: aaro.koskinen@iki.fi
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,26 +53,38 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Detect and use passed dtb address using the UHI interface. This allows for
-booting with a vmlinux.bin appended dtb instead of using a built-in one.
+Hi,
 
-Signed-off-by: Jonas Gorski <jogo@openwrt.org>
----
- arch/mips/bmips/setup.c |    2 ++
- 1 file changed, 2 insertions(+)
+On Tue, Apr 07, 2015 at 05:36:08PM +0100, Maciej W. Rozycki wrote:
+> On Thu, 26 Feb 2015, Markos Chandras wrote:
+> > Set good default FPU flags (FR0) for O32 binaries similar to what the
+> > kernel does for the N64/N32 ones. This also fixes a regression
+> > introduced in commit 46490b572544 ("MIPS: kernel: elf: Improve the
+> > overall ABI and FPU mode checks") when MIPS_O32_FP64_SUPPORT is
+> > disabled. In that case, the mips_set_personality_fp() did not set the
+> > FPU mode at all because it assumed that the FPU mode was already set
+> > properly. That led to O32 userland problems.
+> > 
+> > Cc: Matthew Fortune <Matthew.Fortune@imgtec.com>
+> > Cc: Paul Burton <paul.burton@imgtec.com>
+> > Reported-by: Mans Rullgard <mans@mansr.com>
+> > Fixes: 46490b572544 ("MIPS: kernel: elf: Improve the overall ABI and FPU mode checks")
+> > Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+> > ---
+> 
+>  Can you please backport this change to 4.0 ASAP, preferably before it 
+> hits the actual release?
+> 
+>  It fixes a 3.19->4.0 regression, likely affecting all FPU processors and 
+> wreaking havoc.  For example I came across a system that boots 3.19 just 
+> fine, but hangs in `ypbind' with 4.0.  It works again with this change 
+> applied.
 
-diff --git a/arch/mips/bmips/setup.c b/arch/mips/bmips/setup.c
-index fae800e..526ec27 100644
---- a/arch/mips/bmips/setup.c
-+++ b/arch/mips/bmips/setup.c
-@@ -149,6 +149,8 @@ void __init plat_mem_setup(void)
- 	/* intended to somewhat resemble ARM; see Documentation/arm/Booting */
- 	if (fw_arg0 == 0 && fw_arg1 == 0xffffffff)
- 		dtb = phys_to_virt(fw_arg2);
-+	else if (fw_arg0 == -2) /* UHI interface */
-+		dtb = (void *)fw_arg1;
- 	else if (__dtb_start != __dtb_end)
- 		dtb = (void *)__dtb_start;
- 	else
--- 
-1.7.10.4
+It seems this patch, and some other fixes for fatal regressions,
+missed 4.0, although they were reported right after the -rc1 was out.
+
+Basically 4.0 is unusable for MIPS users.
+
+:-(
+
+A.

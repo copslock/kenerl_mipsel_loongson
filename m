@@ -1,15 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 12 Apr 2015 12:26:14 +0200 (CEST)
-Received: from arrakis.dune.hu ([78.24.191.176]:41264 "EHLO arrakis.dune.hu"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 12 Apr 2015 12:26:29 +0200 (CEST)
+Received: from arrakis.dune.hu ([78.24.191.176]:41272 "EHLO arrakis.dune.hu"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27014480AbbDLKZbFdEer (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 12 Apr 2015 12:25:31 +0200
+        id S27014489AbbDLKZdYHFd7 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 12 Apr 2015 12:25:33 +0200
 Received: from localhost (localhost [127.0.0.1])
-        by arrakis.dune.hu (Postfix) with ESMTP id 2F77328BCA3;
-        Sun, 12 Apr 2015 12:24:39 +0200 (CEST)
+        by arrakis.dune.hu (Postfix) with ESMTP id A554928BC81;
+        Sun, 12 Apr 2015 12:24:42 +0200 (CEST)
 X-Virus-Scanned: at arrakis.dune.hu
 Received: from localhost.localdomain (dslb-088-073-015-232.088.073.pools.vodafone-ip.de [88.73.15.232])
-        by arrakis.dune.hu (Postfix) with ESMTPSA id 20B8F28BFFB;
-        Sun, 12 Apr 2015 12:24:28 +0200 (CEST)
+        by arrakis.dune.hu (Postfix) with ESMTPSA id 498FC28C10B;
+        Sun, 12 Apr 2015 12:24:32 +0200 (CEST)
 From:   Jonas Gorski <jogo@openwrt.org>
 To:     linux-mips@linux-mips.org
 Cc:     devicetree@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
@@ -22,9 +22,9 @@ Cc:     devicetree@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
         Daniel Schwierzeck <daniel.schwierzeck@gmail.com>,
         Paul Burton <paul.burton@imgtec.com>,
         James Hartley <James.Hartley@imgtec.com>
-Subject: [PATCH RFC v3 2/4] MIPS: add support for vmlinuz.bin appended dtb
-Date:   Sun, 12 Apr 2015 12:24:59 +0200
-Message-Id: <1428834301-12721-3-git-send-email-jogo@openwrt.org>
+Subject: [PATCH RFC v3 4/4] MIPS: BMIPS: accept UHI interface for passing a dtb
+Date:   Sun, 12 Apr 2015 12:25:01 +0200
+Message-Id: <1428834301-12721-5-git-send-email-jogo@openwrt.org>
 X-Mailer: git-send-email 1.7.10.4
 In-Reply-To: <1428834301-12721-1-git-send-email-jogo@openwrt.org>
 References: <1428834301-12721-1-git-send-email-jogo@openwrt.org>
@@ -32,7 +32,7 @@ Return-Path: <jogo@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46859
+X-archive-position: 46860
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -49,98 +49,26 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add support for detecting a vmlinuz.bin appended dtb and overriding
-the boot arguments to match the UHI interface.
-
-To ensure _edata / __apendend_dtb points to the actual end of the
-binary, align the data section to 16 bytes instead of the address
-cursor.
-
-Due to ld.script not going through the preprocessor, we can't check
-for MIPS_ZBOOT_APPENDED_DTB being enabled, so always reserve space
-for it. It should have no consequences for booting without it enabled
-except 1 MiB more ram usage during the uncompressing stage.
+Detect and use passed dtb address using the UHI interface. This allows for
+booting with a vmlinux.bin appended dtb instead of using a built-in one.
 
 Signed-off-by: Jonas Gorski <jogo@openwrt.org>
 ---
- arch/mips/Kconfig                   |   18 ++++++++++++++++++
- arch/mips/boot/compressed/head.S    |   16 ++++++++++++++++
- arch/mips/boot/compressed/ld.script |    6 +++++-
- 3 files changed, 39 insertions(+), 1 deletion(-)
+ arch/mips/bmips/setup.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 0986619..8aef377 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -2697,6 +2697,24 @@ choice
- 		  look like a DTB header after a reboot if no actual DTB is appended
- 		  to vmlinux.bin.  Do not leave this option active in a production kernel
- 		  if you don't intend to always append a DTB.
-+
-+	config MIPS_ZBOOT_APPENDED_DTB
-+		bool "vmlinuz.bin"
-+		depends on SYS_SUPPORTS_ZBOOT
-+		help
-+		  With this option, the boot code will look for a device tree binary
-+		  DTB) appended to raw vmlinuz.bin (with decompressor).
-+		  (e.g. cat vmlinuz.bin <filename>.dtb > vmlinuz_w_dtb).
-+
-+		  This is meant as a backward compatibility convenience for those
-+		  systems with a bootloader that can't be upgraded to accommodate
-+		  the documented boot protocol using a device tree.
-+
-+		  Beware that there is very little in terms of protection against
-+		  this option being confused by leftover garbage in memory that might
-+		  look like a DTB header after a reboot if no actual DTB is appended
-+		  to vmlinuz.bin.  Do not leave this option active in a production kernel
-+		  if you don't intend to always append a DTB.
- endchoice
- 
- endmenu
-diff --git a/arch/mips/boot/compressed/head.S b/arch/mips/boot/compressed/head.S
-index 409cb48..c580e85 100644
---- a/arch/mips/boot/compressed/head.S
-+++ b/arch/mips/boot/compressed/head.S
-@@ -25,6 +25,22 @@ start:
- 	move	s2, a2
- 	move	s3, a3
- 
-+#ifdef CONFIG_MIPS_ZBOOT_APPENDED_DTB
-+	PTR_LA	t0, __appended_dtb
-+#ifdef CONFIG_CPU_BIG_ENDIAN
-+	li	t1, 0xd00dfeed
-+#else
-+	li	t1, 0xedfe0dd0
-+#endif
-+	lw	t2, (t0)
-+	bne	t1, t2, not_found
-+	 nop
-+
-+	move	s1, t0
-+	PTR_LI	s0, -2
-+not_found:
-+#endif
-+
- 	/* Clear BSS */
- 	PTR_LA	a0, _edata
- 	PTR_LA	a2, _end
-diff --git a/arch/mips/boot/compressed/ld.script b/arch/mips/boot/compressed/ld.script
-index 5a33409..2ed08fb 100644
---- a/arch/mips/boot/compressed/ld.script
-+++ b/arch/mips/boot/compressed/ld.script
-@@ -29,8 +29,12 @@ SECTIONS
- 		*(.image)
- 		__image_end = .;
- 		CONSTRUCTORS
-+		. = ALIGN(16);
- 	}
--	. = ALIGN(16);
-+	__appended_dtb = .;
-+	/* leave space for appended DTB */
-+	. += 0x100000;
-+
- 	_edata = .;
- 	/* End of data section */
- 
+diff --git a/arch/mips/bmips/setup.c b/arch/mips/bmips/setup.c
+index fae800e..526ec27 100644
+--- a/arch/mips/bmips/setup.c
++++ b/arch/mips/bmips/setup.c
+@@ -149,6 +149,8 @@ void __init plat_mem_setup(void)
+ 	/* intended to somewhat resemble ARM; see Documentation/arm/Booting */
+ 	if (fw_arg0 == 0 && fw_arg1 == 0xffffffff)
+ 		dtb = phys_to_virt(fw_arg2);
++	else if (fw_arg0 == -2) /* UHI interface */
++		dtb = (void *)fw_arg1;
+ 	else if (__dtb_start != __dtb_end)
+ 		dtb = (void *)__dtb_start;
+ 	else
 -- 
 1.7.10.4

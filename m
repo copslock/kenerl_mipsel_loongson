@@ -1,38 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Apr 2015 12:06:12 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:41145 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Apr 2015 07:30:10 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:60689 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27008725AbbDPKGLJJGVY (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 16 Apr 2015 12:06:11 +0200
+        with ESMTP id S27009610AbbDQFaJYNhkZ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 17 Apr 2015 07:30:09 +0200
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id D4A441F72D02C
-        for <linux-mips@linux-mips.org>; Thu, 16 Apr 2015 11:06:04 +0100 (IST)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Thu, 16 Apr 2015 11:06:06 +0100
-Received: from mchandras-linux.le.imgtec.org (192.168.154.138) by
- LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.210.2; Thu, 16 Apr 2015 11:06:06 +0100
-From:   Markos Chandras <markos.chandras@imgtec.com>
-To:     <linux-mips@linux-mips.org>
-CC:     Markos Chandras <markos.chandras@imgtec.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        Paul Burton <paul.burton@imgtec.com>
-Subject: [PATCH] MIPS: asm: asmmacro: Ensure 64-bit FP registers are used with MSA
-Date:   Thu, 16 Apr 2015 11:05:59 +0100
-Message-ID: <1429178759-20562-1-git-send-email-markos.chandras@imgtec.com>
-X-Mailer: git-send-email 2.3.5
+        by Websense Email Security Gateway with ESMTPS id 21A7A5CEB52FD;
+        Fri, 17 Apr 2015 06:30:04 +0100 (IST)
+Received: from hhmail02.hh.imgtec.org (10.100.10.20) by KLMAIL01.kl.imgtec.org
+ (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Fri, 17 Apr
+ 2015 06:30:04 +0100
+Received: from [10.100.200.190] (10.100.200.190) by hhmail02.hh.imgtec.org
+ (10.100.10.20) with Microsoft SMTP Server (TLS) id 14.3.224.2; Fri, 17 Apr
+ 2015 06:30:04 +0100
+Message-ID: <553099AF.3060108@imgtec.com>
+Date:   Fri, 17 Apr 2015 02:27:11 -0300
+From:   Ezequiel Garcia <ezequiel.garcia@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.5.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.154.138]
-Return-Path: <Markos.Chandras@imgtec.com>
+To:     Andrew Bresticker <abrestic@chromium.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Alexandre Courbot <gnurou@gmail.com>,
+        "Ralf Baechle" <ralf@linux-mips.org>
+CC:     <devicetree@vger.kernel.org>, <linux-gpio@vger.kernel.org>,
+        <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>,
+        James Hartley <james.hartley@imgtec.com>,
+        James Hogan <james.hogan@imgtec.com>,
+        "Damien Horsley" <Damien.Horsley@imgtec.com>,
+        Govindraj Raja <govindraj.raja@imgtec.com>,
+        Kevin Cernekee <cernekee@chromium.org>,
+        "Paul Bolle" <pebolle@tiscali.nl>
+Subject: Re: [PATCH V3 2/2] pinctrl: Add Pistachio SoC pin control driver
+References: <1428435862-14354-1-git-send-email-abrestic@chromium.org> <1428435862-14354-3-git-send-email-abrestic@chromium.org>
+In-Reply-To: <1428435862-14354-3-git-send-email-abrestic@chromium.org>
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.100.200.190]
+Return-Path: <Ezequiel.Garcia@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46872
+X-archive-position: 46873
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: markos.chandras@imgtec.com
+X-original-sender: ezequiel.garcia@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,92 +56,32 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This silences warnings like the following one when building with the
-latest binutils:
 
-arch/mips/kernel/genex.S: Assembler messages:
-arch/mips/kernel/genex.S:438: Warning: the `msa' extension requires 64-bit FPRs
+Hi Andrew,
 
-Cc: James Hogan <james.hogan@imgtec.com>
-Cc: Paul Burton <paul.burton@imgtec.com>
-Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
----
- arch/mips/include/asm/asmmacro.h | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+On 04/07/2015 04:44 PM, Andrew Bresticker wrote:
+[..]
+> +static int pistachio_gpio_register(struct pistachio_pinctrl *pctl)
+> +{
+> +	struct device_node *node = pctl->dev->of_node;
+> +	struct pistachio_gpio_bank *bank;
+> +	unsigned int i;
+> +	int irq, ret = 0;
+> +
+> +	for (i = 0; i < pctl->nbanks; i++) {
+> +		char child_name[sizeof("gpioXX")];
+> +		struct device_node *child;
 
-diff --git a/arch/mips/include/asm/asmmacro.h b/arch/mips/include/asm/asmmacro.h
-index 6156ac8c4cfb..76317a70200d 100644
---- a/arch/mips/include/asm/asmmacro.h
-+++ b/arch/mips/include/asm/asmmacro.h
-@@ -211,9 +211,13 @@
- 	.endm
- 
- #ifdef TOOLCHAIN_SUPPORTS_MSA
-+/* preprocessor replaces the fp in ".set fp=64" with $30 otherwise */
-+#undef fp
-+
- 	.macro	_cfcmsa	rd, cs
- 	.set	push
- 	.set	mips32r2
-+	.set	fp=64
- 	.set	msa
- 	cfcmsa	\rd, $\cs
- 	.set	pop
-@@ -222,6 +226,7 @@
- 	.macro	_ctcmsa	cd, rs
- 	.set	push
- 	.set	mips32r2
-+	.set	fp=64
- 	.set	msa
- 	ctcmsa	$\cd, \rs
- 	.set	pop
-@@ -230,6 +235,7 @@
- 	.macro	ld_d	wd, off, base
- 	.set	push
- 	.set	mips32r2
-+	.set	fp=64
- 	.set	msa
- 	ld.d	$w\wd, \off(\base)
- 	.set	pop
-@@ -238,6 +244,7 @@
- 	.macro	st_d	wd, off, base
- 	.set	push
- 	.set	mips32r2
-+	.set	fp=64
- 	.set	msa
- 	st.d	$w\wd, \off(\base)
- 	.set	pop
-@@ -246,6 +253,7 @@
- 	.macro	copy_u_w	ws, n
- 	.set	push
- 	.set	mips32r2
-+	.set	fp=64
- 	.set	msa
- 	copy_u.w $1, $w\ws[\n]
- 	.set	pop
-@@ -254,6 +262,7 @@
- 	.macro	copy_u_d	ws, n
- 	.set	push
- 	.set	mips64r2
-+	.set	fp=64
- 	.set	msa
- 	copy_u.d $1, $w\ws[\n]
- 	.set	pop
-@@ -262,6 +271,7 @@
- 	.macro	insert_w	wd, n
- 	.set	push
- 	.set	mips32r2
-+	.set	fp=64
- 	.set	msa
- 	insert.w $w\wd[\n], $1
- 	.set	pop
-@@ -270,6 +280,7 @@
- 	.macro	insert_d	wd, n
- 	.set	push
- 	.set	mips64r2
-+	.set	fp=64
- 	.set	msa
- 	insert.d $w\wd[\n], $1
- 	.set	pop
+The first submission used for_each_child_of_node, and I can't find
+any review comments explaining why you've changed it to a regular for
+loop.
+
+> +
+> +		snprintf(child_name, sizeof(child_name), "gpio%d", i);
+
+This assumes the GPIO bank nodes are called gpio0, gpio1, ... and so on.
+Do we really want to assume that?
+
+Thanks,
 -- 
-2.3.4
+Ezequiel

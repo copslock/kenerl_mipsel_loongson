@@ -1,12 +1,12 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Apr 2015 16:24:52 +0200 (CEST)
-Received: from smtp2-g21.free.fr ([212.27.42.2]:46993 "EHLO smtp2-g21.free.fr"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Apr 2015 16:25:08 +0200 (CEST)
+Received: from smtp2-g21.free.fr ([212.27.42.2]:47970 "EHLO smtp2-g21.free.fr"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27025737AbbDQOYvDHs7s (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 17 Apr 2015 16:24:51 +0200
+        id S27025746AbbDQOZGHC1Q4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 17 Apr 2015 16:25:06 +0200
 Received: from localhost.localdomain (unknown [85.177.206.240])
         (Authenticated sender: albeu)
-        by smtp2-g21.free.fr (Postfix) with ESMTPA id B971F4B0175;
-        Fri, 17 Apr 2015 16:21:56 +0200 (CEST)
+        by smtp2-g21.free.fr (Postfix) with ESMTPA id 2D7A34B010F;
+        Fri, 17 Apr 2015 16:22:12 +0200 (CEST)
 From:   Alban Bedel <albeu@free.fr>
 To:     linux-mips@linux-mips.org
 Cc:     Rob Herring <robh+dt@kernel.org>, Pawel Moll <pawel.moll@arm.com>,
@@ -20,15 +20,17 @@ Cc:     Rob Herring <robh+dt@kernel.org>, Pawel Moll <pawel.moll@arm.com>,
         Andrew Bresticker <abrestic@chromium.org>,
         Qais Yousef <qais.yousef@imgtec.com>,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATH] MIPS: ath79: Add OF support and DTS for TL-WR1043ND
-Date:   Fri, 17 Apr 2015 16:24:15 +0200
-Message-Id: <1429280669-2986-1-git-send-email-albeu@free.fr>
+Subject: [PATCH 01/14] devicetree: Add bindings for the SoC of the ATH79 familly
+Date:   Fri, 17 Apr 2015 16:24:16 +0200
+Message-Id: <1429280669-2986-2-git-send-email-albeu@free.fr>
 X-Mailer: git-send-email 2.0.0
+In-Reply-To: <1429280669-2986-1-git-send-email-albeu@free.fr>
+References: <1429280669-2986-1-git-send-email-albeu@free.fr>
 Return-Path: <albeu@free.fr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46885
+X-archive-position: 46886
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,10 +47,38 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This series add OF bindings and code support for the interrupt
-controllers, clocks and GPIOs. However it was only tested on a
-TL-WR1043ND with an AR9132, others SoCs are untested, and a few are
-not supported at all.
+Signed-off-by: Alban Bedel <albeu@free.fr>
+---
+ .../devicetree/bindings/mips/ath79-soc.txt          | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/mips/ath79-soc.txt
 
-Most code changes base on the previous bug fix series:
-[PATH] MIPS: ath79: Various small fix to prepare OF support
+diff --git a/Documentation/devicetree/bindings/mips/ath79-soc.txt b/Documentation/devicetree/bindings/mips/ath79-soc.txt
+new file mode 100644
+index 0000000..88a12a4
+--- /dev/null
++++ b/Documentation/devicetree/bindings/mips/ath79-soc.txt
+@@ -0,0 +1,21 @@
++Binding for Qualcomm Atheros AR7xxx/AR9XXX SoC
++
++Each device tree must specify a compatible value for the AR SoC
++it uses in the compatible property of the root node. The compatible
++value must be one of the following values:
++
++- qca,ar7130
++- qca,ar7141
++- qca,ar7161
++- qca,ar7240
++- qca,ar7241
++- qca,ar7242
++- qca,ar9130
++- qca,ar9132
++- qca,ar9330
++- qca,ar9331
++- qca,ar9341
++- qca,ar9342
++- qca,ar9344
++- qca,qca9556
++- qca,qca9558
+-- 
+2.0.0

@@ -1,12 +1,12 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Apr 2015 16:27:31 +0200 (CEST)
-Received: from smtp2-g21.free.fr ([212.27.42.2]:55091 "EHLO smtp2-g21.free.fr"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Apr 2015 16:27:48 +0200 (CEST)
+Received: from smtp2-g21.free.fr ([212.27.42.2]:55888 "EHLO smtp2-g21.free.fr"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27025752AbbDQO1JSkyum (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 17 Apr 2015 16:27:09 +0200
+        id S27025753AbbDQO1YexVHr (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 17 Apr 2015 16:27:24 +0200
 Received: from localhost.localdomain (unknown [85.177.206.240])
         (Authenticated sender: albeu)
-        by smtp2-g21.free.fr (Postfix) with ESMTPA id 2EC034B010F;
-        Fri, 17 Apr 2015 16:24:15 +0200 (CEST)
+        by smtp2-g21.free.fr (Postfix) with ESMTPA id 908564B01DD;
+        Fri, 17 Apr 2015 16:24:30 +0200 (CEST)
 From:   Alban Bedel <albeu@free.fr>
 To:     linux-mips@linux-mips.org
 Cc:     Rob Herring <robh+dt@kernel.org>, Pawel Moll <pawel.moll@arm.com>,
@@ -20,9 +20,9 @@ Cc:     Rob Herring <robh+dt@kernel.org>, Pawel Moll <pawel.moll@arm.com>,
         Andrew Bresticker <abrestic@chromium.org>,
         Qais Yousef <qais.yousef@imgtec.com>,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 09/14] MIPS: ath79: Add OF support to the clocks
-Date:   Fri, 17 Apr 2015 16:24:24 +0200
-Message-Id: <1429280669-2986-10-git-send-email-albeu@free.fr>
+Subject: [PATCH 10/14] devicetree: Add bindings for the ATH79 GPIO controllers
+Date:   Fri, 17 Apr 2015 16:24:25 +0200
+Message-Id: <1429280669-2986-11-git-send-email-albeu@free.fr>
 X-Mailer: git-send-email 2.0.0
 In-Reply-To: <1429280669-2986-1-git-send-email-albeu@free.fr>
 References: <1429280669-2986-1-git-send-email-albeu@free.fr>
@@ -30,7 +30,7 @@ Return-Path: <albeu@free.fr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46894
+X-archive-position: 46895
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,146 +47,60 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Allow using the SoC clocks in the device tree.
+These bindings support the GPIO controllers found on the Qualcomm
+Atheros AR7xxx/AR9XXX SoC.
 
 Signed-off-by: Alban Bedel <albeu@free.fr>
 ---
- arch/mips/ath79/clock.c | 63 ++++++++++++++++++++++++++++++++++---------------
- 1 file changed, 44 insertions(+), 19 deletions(-)
+ .../devicetree/bindings/gpio/gpio-ath79.txt        | 40 ++++++++++++++++++++++
+ 1 file changed, 40 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/gpio/gpio-ath79.txt
 
-diff --git a/arch/mips/ath79/clock.c b/arch/mips/ath79/clock.c
-index 1fcb691..682bf61 100644
---- a/arch/mips/ath79/clock.c
-+++ b/arch/mips/ath79/clock.c
-@@ -29,7 +29,14 @@
- #define AR724X_BASE_FREQ	5000000
- #define AR913X_BASE_FREQ	5000000
- 
--static void __init ath79_add_sys_clkdev(const char *id, unsigned long rate)
-+static struct clk *clks[3];
-+static struct clk_onecell_data clk_data = {
-+	.clks = clks,
-+	.clk_num = ARRAY_SIZE(clks),
-+};
+diff --git a/Documentation/devicetree/bindings/gpio/gpio-ath79.txt b/Documentation/devicetree/bindings/gpio/gpio-ath79.txt
+new file mode 100644
+index 0000000..663c0b6
+--- /dev/null
++++ b/Documentation/devicetree/bindings/gpio/gpio-ath79.txt
+@@ -0,0 +1,40 @@
++Binding for Qualcomm  Atheros AR7xxx/AR9xxx GPIO controller
 +
-+static struct clk *__init ath79_add_sys_clkdev(
-+	const char *id, unsigned long rate)
- {
- 	struct clk *clk;
- 	int err;
-@@ -41,6 +48,8 @@ static void __init ath79_add_sys_clkdev(const char *id, unsigned long rate)
- 	err = clk_register_clkdev(clk, id, NULL);
- 	if (err)
- 		panic("unable to register %s clock device", id);
++Required properties:
++- compatible: has to be "qca,<soctype>-gpio" and one of the following
++  fallback:
++  - "qca,ar7100-gpio"
++  - "qca,ar7240-gpio"
++  - "qca,ar7241-gpio"
++  - "qca,ar9130-gpio"
++  - "qca,ar9330-gpio"
++  - "qca,ar9340-gpio"
++  - "qca,qca9550-gpio"
++- reg: Base address and size of the controllers memory area
++- gpio-controller : Marks the device node as a GPIO controller.
++- #gpio-cells : Should be two. The first cell is the pin number and the
++  second cell is used to specify optional parameters.
 +
-+	return clk;
- }
- 
- static void __init ar71xx_clocks_init(void)
-@@ -70,9 +79,9 @@ static void __init ar71xx_clocks_init(void)
- 	ahb_rate = cpu_rate / div;
- 
- 	ath79_add_sys_clkdev("ref", ref_rate);
--	ath79_add_sys_clkdev("cpu", cpu_rate);
--	ath79_add_sys_clkdev("ddr", ddr_rate);
--	ath79_add_sys_clkdev("ahb", ahb_rate);
-+	clks[0] = ath79_add_sys_clkdev("cpu", cpu_rate);
-+	clks[1] = ath79_add_sys_clkdev("ddr", ddr_rate);
-+	clks[2] = ath79_add_sys_clkdev("ahb", ahb_rate);
- 
- 	clk_add_alias("wdt", NULL, "ahb", NULL);
- 	clk_add_alias("uart", NULL, "ahb", NULL);
-@@ -106,9 +115,9 @@ static void __init ar724x_clocks_init(void)
- 	ahb_rate = cpu_rate / div;
- 
- 	ath79_add_sys_clkdev("ref", ref_rate);
--	ath79_add_sys_clkdev("cpu", cpu_rate);
--	ath79_add_sys_clkdev("ddr", ddr_rate);
--	ath79_add_sys_clkdev("ahb", ahb_rate);
-+	clks[0] = ath79_add_sys_clkdev("cpu", cpu_rate);
-+	clks[1] = ath79_add_sys_clkdev("ddr", ddr_rate);
-+	clks[2] = ath79_add_sys_clkdev("ahb", ahb_rate);
- 
- 	clk_add_alias("wdt", NULL, "ahb", NULL);
- 	clk_add_alias("uart", NULL, "ahb", NULL);
-@@ -139,9 +148,9 @@ static void __init ar913x_clocks_init(void)
- 	ahb_rate = cpu_rate / div;
- 
- 	ath79_add_sys_clkdev("ref", ref_rate);
--	ath79_add_sys_clkdev("cpu", cpu_rate);
--	ath79_add_sys_clkdev("ddr", ddr_rate);
--	ath79_add_sys_clkdev("ahb", ahb_rate);
-+	clks[0] = ath79_add_sys_clkdev("cpu", cpu_rate);
-+	clks[1] = ath79_add_sys_clkdev("ddr", ddr_rate);
-+	clks[2] = ath79_add_sys_clkdev("ahb", ahb_rate);
- 
- 	clk_add_alias("wdt", NULL, "ahb", NULL);
- 	clk_add_alias("uart", NULL, "ahb", NULL);
-@@ -201,9 +210,9 @@ static void __init ar933x_clocks_init(void)
- 	}
- 
- 	ath79_add_sys_clkdev("ref", ref_rate);
--	ath79_add_sys_clkdev("cpu", cpu_rate);
--	ath79_add_sys_clkdev("ddr", ddr_rate);
--	ath79_add_sys_clkdev("ahb", ahb_rate);
-+	clks[0] = ath79_add_sys_clkdev("cpu", cpu_rate);
-+	clks[1] = ath79_add_sys_clkdev("ddr", ddr_rate);
-+	clks[2] = ath79_add_sys_clkdev("ahb", ahb_rate);
- 
- 	clk_add_alias("wdt", NULL, "ahb", NULL);
- 	clk_add_alias("uart", NULL, "ref", NULL);
-@@ -335,9 +344,9 @@ static void __init ar934x_clocks_init(void)
- 		ahb_rate = cpu_pll / (postdiv + 1);
- 
- 	ath79_add_sys_clkdev("ref", ref_rate);
--	ath79_add_sys_clkdev("cpu", cpu_rate);
--	ath79_add_sys_clkdev("ddr", ddr_rate);
--	ath79_add_sys_clkdev("ahb", ahb_rate);
-+	clks[0] = ath79_add_sys_clkdev("cpu", cpu_rate);
-+	clks[1] = ath79_add_sys_clkdev("ddr", ddr_rate);
-+	clks[2] = ath79_add_sys_clkdev("ahb", ahb_rate);
- 
- 	clk_add_alias("wdt", NULL, "ref", NULL);
- 	clk_add_alias("uart", NULL, "ref", NULL);
-@@ -422,9 +431,9 @@ static void __init qca955x_clocks_init(void)
- 		ahb_rate = cpu_pll / (postdiv + 1);
- 
- 	ath79_add_sys_clkdev("ref", ref_rate);
--	ath79_add_sys_clkdev("cpu", cpu_rate);
--	ath79_add_sys_clkdev("ddr", ddr_rate);
--	ath79_add_sys_clkdev("ahb", ahb_rate);
-+	clks[0] = ath79_add_sys_clkdev("cpu", cpu_rate);
-+	clks[1] = ath79_add_sys_clkdev("ddr", ddr_rate);
-+	clks[2] = ath79_add_sys_clkdev("ahb", ahb_rate);
- 
- 	clk_add_alias("wdt", NULL, "ref", NULL);
- 	clk_add_alias("uart", NULL, "ref", NULL);
-@@ -446,6 +455,8 @@ void __init ath79_clocks_init(void)
- 		qca955x_clocks_init();
- 	else
- 		BUG();
++Optional properties:
++- interrupt-parent: phandle of the parent interrupt controller.
++- interrupts: Interrupt specifier for the controllers interrupt.
++- interrupt-controller : Identifies the node as an interrupt controller
++- #interrupt-cells : Specifies the number of cells needed to encode interrupt
++		     source, should be 2
 +
-+	of_clk_init(NULL);
- }
- 
- unsigned long __init
-@@ -463,3 +474,17 @@ ath79_get_sys_clk_rate(const char *id)
- 
- 	return rate;
- }
++Please refer to interrupts.txt in this directory for details of the common
++Interrupt Controllers bindings used by client devices.
 +
-+#ifdef CONFIG_OF
-+static void __init ath79_clocks_init_dt(struct device_node *np)
-+{
-+	of_clk_add_provider(np, of_clk_src_onecell_get, &clk_data);
-+}
++Example:
 +
-+CLK_OF_DECLARE(ar7100, "qca,ar7100-pll", ath79_clocks_init_dt);
-+CLK_OF_DECLARE(ar7240, "qca,ar7240-pll", ath79_clocks_init_dt);
-+CLK_OF_DECLARE(ar9130, "qca,ar9130-pll", ath79_clocks_init_dt);
-+CLK_OF_DECLARE(ar9330, "qca,ar9330-pll", ath79_clocks_init_dt);
-+CLK_OF_DECLARE(ar9340, "qca,ar9340-pll", ath79_clocks_init_dt);
-+CLK_OF_DECLARE(ar9550, "qca,ar9550-pll", ath79_clocks_init_dt);
-+#endif
++	gpio@18040000 {
++		compatible = "qca,ar9132-gpio", "qca,ar9130-gpio";
++		reg = <0x18040000 0x30>;
++		interrupts = <2>;
++
++		gpio-controller;
++		#gpio-cells = <2>;
++
++		interrupt-controller;
++		#interrupt-cells = <2>;
++	};
 -- 
 2.0.0

@@ -1,31 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Apr 2015 18:17:37 +0200 (CEST)
-Received: from mail-la0-f48.google.com ([209.85.215.48]:34549 "EHLO
-        mail-la0-f48.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010571AbbDQQRgBLvkw (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 17 Apr 2015 18:17:36 +0200
-Received: by laat2 with SMTP id t2so84243884laa.1
-        for <linux-mips@linux-mips.org>; Fri, 17 Apr 2015 09:17:32 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Apr 2015 18:20:24 +0200 (CEST)
+Received: from mail-la0-f53.google.com ([209.85.215.53]:33797 "EHLO
+        mail-la0-f53.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010571AbbDQQUWSg5-G (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 17 Apr 2015 18:20:22 +0200
+Received: by laat2 with SMTP id t2so84302141laa.1
+        for <linux-mips@linux-mips.org>; Fri, 17 Apr 2015 09:20:18 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:message-id:date:from:organization:user-agent
          :mime-version:to:cc:subject:references:in-reply-to:content-type
          :content-transfer-encoding;
-        bh=4E9wMNMoyX7Eq6xhvuBoJYYG2Alx2wDrvE7jr4c1vVM=;
-        b=hj4rK/ouFgrwN0QKDckgyHUnfr33jKqqLy2blCM7j4Lm007aayJAoBRF5YMuk3GFm3
-         glJgpBA5ocZgUSINvaiqAKXJy+PQ1VaAjbnyH5V7S4ZzuPm4KJybtzE84sfoKHLMwt8f
-         a7FCAdacNUFiwGEn2MwFxSEBDVvrGeo8JOEfgdD8YQCauzPrN3xuQes1hpfXN5USIgUg
-         g+G8HoIKzZ5b4vAvKtij3N72hLdMj79GzhM8VU7DWpVzerQpcZEdt0qoJdzJZratIxar
-         IMuL3RHR3uYGgUvshns81FEAR3wsmTn/5g1mdRuPbStYFwj0wYSO/pLDKW7H5EvdU7it
-         6b3A==
-X-Gm-Message-State: ALoCoQkHYTxIAMvXgV7BTkOLiYkmvbzUKQ5CpHAoJy6p3fvUtc3Z6jvRII2IFOMZRX+VZcHqnEYF
-X-Received: by 10.152.22.1 with SMTP id z1mr4920905lae.114.1429287451693;
-        Fri, 17 Apr 2015 09:17:31 -0700 (PDT)
+        bh=8u+57XO2kufjYQkju2lYeVyaN6gdsN4W09b1Ng9QGYg=;
+        b=ZIrzzZjBD6k5X/1uU3vSdDdtDuLobCvLmE7tElVxz7MV9t5bm5lnPZns4/QjKE40WV
+         PSAPk9L1vSIeYkEQNgo6y+myoMadyYIHuREaYs+7VFDYi48Kr9Wcv9c/Mq3xj/7boJnJ
+         JPj5mKEZ/c/Wn7npa2ah+ySBie/AcgtSuq3Ef5nlf2VJLvwGR2A7hJ9/QNEFjw3gQ5e6
+         Ft50IfxUcPULF4gVn2WAGqXcVzgMCSgDr5cmE/lUUA/1I96XaPkISnMOwywmWCaFT1GX
+         Ky4PyA/m14CjedI6yPQe+NToYjtpFutssQTCnw4v59zsbwOdBCoAOIO7kWJC60c0bhw3
+         zYsQ==
+X-Gm-Message-State: ALoCoQkzsXl73lAYAxDpU17pMdpa/rc+0mOaKJ6bZc/rXvAE3734Op/jRArprybIQg38mCS8mj5p
+X-Received: by 10.152.179.39 with SMTP id dd7mr4799346lac.118.1429287618518;
+        Fri, 17 Apr 2015 09:20:18 -0700 (PDT)
 Received: from wasted.cogentembedded.com (ppp85-141-198-209.pppoe.mtu-net.ru. [85.141.198.209])
-        by mx.google.com with ESMTPSA id zf3sm2504905lbb.2.2015.04.17.09.17.28
+        by mx.google.com with ESMTPSA id ba4sm2500254lab.31.2015.04.17.09.20.16
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 17 Apr 2015 09:17:30 -0700 (PDT)
-Message-ID: <55313217.1020604@cogentembedded.com>
-Date:   Fri, 17 Apr 2015 19:17:27 +0300
+        Fri, 17 Apr 2015 09:20:17 -0700 (PDT)
+Message-ID: <553132BE.9070602@cogentembedded.com>
+Date:   Fri, 17 Apr 2015 19:20:14 +0300
 From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
 Organization: Cogent Embedded
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.5.0
@@ -41,17 +41,16 @@ CC:     Rob Herring <robh+dt@kernel.org>, Pawel Moll <pawel.moll@arm.com>,
         Andrew Bresticker <abrestic@chromium.org>,
         Qais Yousef <qais.yousef@imgtec.com>,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 04/14] devicetree: Add bindings for the ATH79 interrupt
- controllers
-References: <1429280669-2986-1-git-send-email-albeu@free.fr> <1429280669-2986-5-git-send-email-albeu@free.fr>
-In-Reply-To: <1429280669-2986-5-git-send-email-albeu@free.fr>
+Subject: Re: [PATCH 07/14] devicetree: Add bindings for the ATH79 PLL controllers
+References: <1429280669-2986-1-git-send-email-albeu@free.fr> <1429280669-2986-8-git-send-email-albeu@free.fr>
+In-Reply-To: <1429280669-2986-8-git-send-email-albeu@free.fr>
 Content-Type: text/plain; charset=windows-1252; format=flowed
 Content-Transfer-Encoding: 7bit
 Return-Path: <sergei.shtylyov@cogentembedded.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46898
+X-archive-position: 46899
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -68,69 +67,42 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hello.
-
 On 04/17/2015 05:24 PM, Alban Bedel wrote:
 
 > Signed-off-by: Alban Bedel <albeu@free.fr>
 > ---
->   .../interrupt-controller/qca,ath79-cpu-intc.txt    | 45 ++++++++++++++++++++++
->   1 file changed, 45 insertions(+)
->   create mode 100644 Documentation/devicetree/bindings/interrupt-controller/qca,ath79-cpu-intc.txt
+>   .../devicetree/bindings/clock/qca,ath79-pll.txt    | 33 ++++++++++++++++++++++
+>   1 file changed, 33 insertions(+)
+>   create mode 100644 Documentation/devicetree/bindings/clock/qca,ath79-pll.txt
 
-> diff --git a/Documentation/devicetree/bindings/interrupt-controller/qca,ath79-cpu-intc.txt b/Documentation/devicetree/bindings/interrupt-controller/qca,ath79-cpu-intc.txt
+> diff --git a/Documentation/devicetree/bindings/clock/qca,ath79-pll.txt b/Documentation/devicetree/bindings/clock/qca,ath79-pll.txt
 > new file mode 100644
-> index 0000000..1548512
+> index 0000000..2d2da3f
 > --- /dev/null
-> +++ b/Documentation/devicetree/bindings/interrupt-controller/qca,ath79-cpu-intc.txt
-> @@ -0,0 +1,45 @@
-> +Binding for Qualcomm Atheros AR7xxx/AR9XXX CPU interrupt controller
+> +++ b/Documentation/devicetree/bindings/clock/qca,ath79-pll.txt
+> @@ -0,0 +1,33 @@
+> +Binding for Qualcomm Atheros AR7xxx/AR9XXX PLL controller
 > +
-> +On most SoC the IRQ controller need to flush the DDR FIFO before running
-> +the interrupt handler of some devices. This is configured using the
-> +qca,ddr-wb-channels and qca,ddr-wb-channel-interrupts properties.
+> +The PPL controller provides the 3 main clocks of the SoC: CPU, DDR and AHB.
 > +
 > +Required Properties:
-> +
-> +- compatible: has to be "qca,<soctype>-cpu-intc", "qca,ar7100-cpu-intc"
-> +  as fallback
-> +- interrupt-controller : Identifies the node as an interrupt controller
-> +- #interrupt-cells : Specifies the number of cells needed to encode interrupt
-> +		     source, should be 1 for intc
-> +
-> +Please refer to interrupts.txt in this directory for details of the common
-> +Interrupt Controllers bindings used by client devices.
-> +
-> +Optional Properties:
-> +
-> +- qca,ddr-wb-channel-interrupts: List of the interrupts needing a write
-> +  buffer flush
-> +- qca,ddr-wb-channels: List of phandles to the write buffer channels for
-> +  each interrupt. If qca,ddr-wb-channel-interrupts is not present the interrupt
-> +  default to the entry's index.
-> +
-> +Example:
-> +
-> +	cpuintc@0 {
+> +- compatible: has to be "qca,<soctype>-cpu-intc" and one of the following
+> +  fallback:
 
-    @0 without the "reg" property?
-    And if this is an interrupt controller, the name should be 
-"interrupt-controller", not "cpuintc", according to the ePAPR standard.
+    Fallbacks.
 
-> +		compatible = "qca,ar9132-cpu-intc", "qca,ar7100-cpu-intc";
-> +
-> +		interrupt-controller;
-> +		#interrupt-cells = <1>;
-> +
-> +		qca,ddr-wb-channel-interrupts = <2>, <3>, <4>, <5>;
-> +		qca,ddr-wb-channels = <&ddr_ctrl 3>, <&ddr_ctrl 2>,
-> +					<&ddr_ctrl 0>, <&ddr_ctrl 1>;
-> +	};
-> +
-> +	...
-> +
-> +	ddr_ctrl: ddr-controller@18000000 {
+> +  - "qca,ar7100-pll"
+> +  - "qca,ar7240-pll"
+> +  - "qca,ar9130-pll"
+> +  - "qca,ar9330-pll"
+> +  - "qca,ar9340-pll"
+> +  - "qca,ar9550-pll"
+> +- reg: Base address and size of the controllers memory area
+> +- clock-names: Name of the input clock, has to be "ref"
+> +- clock: phandle of the external reference clock
 
-    ePAPR standardized "memory-controller" node name in this case.
+    The prop name is "clocks", not "clock".
+
+[...]
 
 WBR, Sergei

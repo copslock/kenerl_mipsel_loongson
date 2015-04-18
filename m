@@ -1,52 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 18 Apr 2015 09:24:27 +0200 (CEST)
-Received: from mail-wi0-f174.google.com ([209.85.212.174]:32893 "EHLO
-        mail-wi0-f174.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008877AbbDRHYZPkpUi (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 18 Apr 2015 09:24:25 +0200
-Received: by wiax7 with SMTP id x7so47671514wia.0
-        for <linux-mips@linux-mips.org>; Sat, 18 Apr 2015 00:24:21 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:sender:in-reply-to:references:mime-version
-         :content-transfer-encoding:content-type:subject:from:date:to:cc
-         :message-id;
-        bh=+p6HHmBnXAhyICOrJGkJpgIxRwqtl4QD/UElLb1v4w4=;
-        b=MCW7pUpqxjsG1QejSCYqLpKFKWCuKwb0jYAWDjDSVFNlGYurzAU9BVRQvYE/bMhzV5
-         rMvERLDrD5s8MxOjLA0p5hk30UX2hVH4ixPlkGKRmqPiPWXd6fKC0prGQ4YU++TmE8o0
-         M9iHmj/glIeE+IrUnkfGTi5vFQm2ge5WAlq/4h0E+KI7bNO2axfljGi/4lU3mnFGq5EL
-         sKUOZllyuq/lw6i6TR9wI9LvwHg/WjEkRdei505kaTG/gtbsJ3Shbnc88PbgdBxmKVvf
-         MNWZJROUoOZI2daP9RoOLOQKEhmR0EjHGHpQDuRXgLuzlRtu7XJf8Y6WDnaAsnDxdx2U
-         1A7Q==
-X-Gm-Message-State: ALoCoQl4kuh1pU9lDiG5hFaa//K/nYe+paJihCqQps8YssbLXLqQoITLjX5tV/cQCBRwDO9Ia93f
-X-Received: by 10.180.188.193 with SMTP id gc1mr7519628wic.7.1429341861568;
-        Sat, 18 Apr 2015 00:24:21 -0700 (PDT)
-Received: from gollum.lan (jahogan.plus.com. [212.159.75.221])
-        by mx.google.com with ESMTPSA id kr5sm17776194wjc.1.2015.04.18.00.24.19
-        (version=TLSv1.2 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Sat, 18 Apr 2015 00:24:20 -0700 (PDT)
-In-Reply-To: <CAL1qeaH_c7eK--7xdLwyWDQfO3QxTcXRD4kKD2VOj5qfo+6bQg@mail.gmail.com>
-References: <1429263856-30471-1-git-send-email-james.hogan@imgtec.com> <1429263856-30471-3-git-send-email-james.hogan@imgtec.com> <CAL1qeaH_c7eK--7xdLwyWDQfO3QxTcXRD4kKD2VOj5qfo+6bQg@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 18 Apr 2015 14:58:13 +0200 (CEST)
+Received: from mezzanine.sirena.org.uk ([106.187.55.193]:53436 "EHLO
+        mezzanine.sirena.org.uk" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006808AbbDRM6LXMCAj (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 18 Apr 2015 14:58:11 +0200
+Received: from cpc11-sgyl31-2-0-cust672.sgyl.cable.virginm.net ([94.175.94.161] helo=finisterre)
+        by mezzanine.sirena.org.uk with esmtpsa (TLS1.2:RSA_AES_128_CBC_SHA1:128)
+        (Exim 4.80)
+        (envelope-from <broonie@sirena.org.uk>)
+        id 1YjSJz-0000vO-Vr; Sat, 18 Apr 2015 12:58:08 +0000
+Received: from broonie by finisterre with local (Exim 4.84)
+        (envelope-from <broonie@sirena.org.uk>)
+        id 1YjSJx-0001Oc-0N; Sat, 18 Apr 2015 13:58:05 +0100
+Date:   Sat, 18 Apr 2015 13:58:04 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     Bert Vermeulen <bert@biot.com>
+Cc:     ralf@linux-mips.org, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+        andy.shevchenko@gmail.com, jogo@openwrt.org
+Message-ID: <20150418125804.GS26185@sirena.org.uk>
+References: <1429112632-32153-1-git-send-email-bert@biot.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain;
- charset=UTF-8
-Subject: Re: [PATCH 2/2] MIPS: Pistachio: Support CDMM & Fast Debug Channel
-From:   James Hogan <james.hogan@imgtec.com>
-Date:   Sat, 18 Apr 2015 08:24:16 +0100
-To:     Andrew Bresticker <abrestic@chromium.org>
-CC:     Ralf Baechle <ralf@linux-mips.org>,
-        James Hartley <james.hartley@imgtec.com>,
-        Linux-MIPS <linux-mips@linux-mips.org>
-Message-ID: <00480F21-6FA8-49FD-868E-F4ED7FBD6935@imgtec.com>
-Return-Path: <james@albanarts.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="2/Dpz40iF3jpiHxF"
+Content-Disposition: inline
+In-Reply-To: <1429112632-32153-1-git-send-email-bert@biot.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+X-SA-Exim-Connect-IP: 94.175.94.161
+X-SA-Exim-Mail-From: broonie@sirena.org.uk
+Subject: Re: [PATCH v7] spi: Add SPI driver for Mikrotik RB4xx series boards
+X-SA-Exim-Version: 4.2.1 (built Mon, 26 Dec 2011 16:24:06 +0000)
+X-SA-Exim-Scanned: Yes (on mezzanine.sirena.org.uk)
+Return-Path: <broonie@sirena.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46905
+X-archive-position: 46906
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: broonie@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,32 +51,31 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 17 April 2015 17:52:09 BST, Andrew Bresticker <abrestic@chromium.org> wrote:
->Hi James,
->
->On Fri, Apr 17, 2015 at 2:44 AM, James Hogan <james.hogan@imgtec.com>
->wrote:
->> Implement the mips_cdmm_phys_base() platform callback to provide a
->> default Common Device Memory Map (CDMM) physical base address for the
->> Pistachio SoC. This allows the CDMM in each VPE to be configured and
->> probed for devices, such as the Fast Debug Channel (FDC).
->>
->> The physical address chosen is just below the default CPC address,
->which
->> appears to also be unallocated.
->>
->> The FDC IRQ is also usable on Pistachio, and is routed through the
->GIC,
->> so implement the get_c0_fdc_int() platform callback using
->> gic_get_c0_fdc_int(), so the FDC driver doesn't have to fall back to
->> polling.
->>
->> Signed-off-by: James Hogan <james.hogan@imgtec.com>
->
->Reviewed-by: Andrew Bresticker <abrestic@chromium.org>
 
+--2/Dpz40iF3jpiHxF
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Thanks for the reviews Andrew.
+On Wed, Apr 15, 2015 at 05:43:52PM +0200, Bert Vermeulen wrote:
+> This driver mediates access between the connected CPLD and other devices
+> on the bus.
 
-Cheers
-James
+Applied, thanks.
+
+--2/Dpz40iF3jpiHxF
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJVMlTcAAoJECTWi3JdVIfQ7dIH/0UkeFmhK+/CE+ph9UK1ziHI
+cuzrYy4F64RnEgMzPHf/Dk/THiLGoHA4tTBvx3NIzEQF/8rTTUjfPiBZOPtCvFMi
+hdR2w/1NM+PWf4RVJJquNJa3IFIGiMu/l/QRN4wDZyHr4tj0Ff1OtJ1h07bnKp0y
+tXt9wCqVkE0mnoOqbgsovtQdCwfEq9MDVtRMtfospvZ0xGjRDcHc/av9POnhW6zM
+kKcboZqaslMKngw8SYLtq3zvO6f0kz/G5AMKWy6hLfxVsgsZYd0y7HRhpqqLWn5f
+AEExoyNAoMyrDGHwGA+OJiaIRo1FWqNkrAy8j+OAx1dFlnOGZ3hxqJKiO1jSrSA=
+=2mNZ
+-----END PGP SIGNATURE-----
+
+--2/Dpz40iF3jpiHxF--

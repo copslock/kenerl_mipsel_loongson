@@ -1,12 +1,12 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 19 Apr 2015 14:30:17 +0200 (CEST)
-Received: from smtp1-g21.free.fr ([212.27.42.1]:55049 "EHLO smtp1-g21.free.fr"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 19 Apr 2015 14:30:33 +0200 (CEST)
+Received: from smtp1-g21.free.fr ([212.27.42.1]:55389 "EHLO smtp1-g21.free.fr"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27007043AbbDSMaQjy4MU (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 19 Apr 2015 14:30:16 +0200
+        id S27011778AbbDSMa0UaY7T (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 19 Apr 2015 14:30:26 +0200
 Received: from localhost.localdomain (unknown [85.177.79.58])
         (Authenticated sender: albeu)
-        by smtp1-g21.free.fr (Postfix) with ESMTPA id 6708F9400D4;
-        Sun, 19 Apr 2015 14:27:55 +0200 (CEST)
+        by smtp1-g21.free.fr (Postfix) with ESMTPA id AE3B794001E;
+        Sun, 19 Apr 2015 14:28:04 +0200 (CEST)
 From:   Alban Bedel <albeu@free.fr>
 To:     linux-mips@linux-mips.org
 Cc:     Ralf Baechle <ralf@linux-mips.org>, Alban Bedel <albeu@free.fr>,
@@ -15,15 +15,17 @@ Cc:     Ralf Baechle <ralf@linux-mips.org>, Alban Bedel <albeu@free.fr>,
         Wolfram Sang <wsa@the-dreams.de>,
         Sergey Ryazanov <ryazanov.s.a@gmail.com>,
         Gabor Juhos <juhosg@openwrt.org>, linux-kernel@vger.kernel.org
-Subject: [PATCH v2 0/5] MIPS: ath79: Various small fix to prepare OF support
-Date:   Sun, 19 Apr 2015 14:29:59 +0200
-Message-Id: <1429446604-15403-1-git-send-email-albeu@free.fr>
+Subject: [PATCH v2 1/5] MIPS: ath79: Enable ZBOOT support
+Date:   Sun, 19 Apr 2015 14:30:00 +0200
+Message-Id: <1429446604-15403-2-git-send-email-albeu@free.fr>
 X-Mailer: git-send-email 2.0.0
+In-Reply-To: <1429446604-15403-1-git-send-email-albeu@free.fr>
+References: <1429446604-15403-1-git-send-email-albeu@free.fr>
 Return-Path: <albeu@free.fr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46918
+X-archive-position: 46919
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -40,29 +42,24 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-First re-run of this serie of misc fix and preparation for OF support on ATH79.
+ZBOOT is working fine, so allow using it.
 
- * Dropped the bad PCI patch
- * Moved the patch to use the common clk API out of the OF support serie
-   into this one.
+Signed-off-by: Alban Bedel <albeu@free.fr>
+---
+ arch/mips/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-Alban Bedel (5):
-  MIPS: ath79: Enable ZBOOT support
-  MIPS: ath79: Add a missing new line in log message
-  MIPS: ath79: Correctly name the defines for the PLL_FB register
-  MIPS: ath79: Improve the DDR controller interface
-  MIPS: ath79: Use the common clk API
-
- arch/mips/Kconfig                              |   2 +
- arch/mips/ath79/clock.c                        |  35 +-----
- arch/mips/ath79/common.c                       |  35 +++++-
- arch/mips/ath79/common.h                       |   1 +
- arch/mips/ath79/irq.c                          | 147 ++++++-------------------
- arch/mips/ath79/setup.c                        |   5 +-
- arch/mips/include/asm/mach-ath79/ar71xx_regs.h |  12 +-
- arch/mips/include/asm/mach-ath79/ath79.h       |   3 +-
- arch/mips/pci/pci-ar71xx.c                     |  10 +-
- 9 files changed, 85 insertions(+), 165 deletions(-)
-
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index f501665..9075147 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -131,6 +131,7 @@ config ATH79
+ 	select SYS_SUPPORTS_32BIT_KERNEL
+ 	select SYS_SUPPORTS_BIG_ENDIAN
+ 	select SYS_SUPPORTS_MIPS16
++	select SYS_SUPPORTS_ZBOOT
+ 	help
+ 	  Support for the Atheros AR71XX/AR724X/AR913X SoCs.
+ 
 -- 
 2.0.0

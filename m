@@ -1,39 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 19 Apr 2015 13:20:18 +0200 (CEST)
-Received: from smtp1-g21.free.fr ([212.27.42.1]:5679 "EHLO smtp1-g21.free.fr"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 19 Apr 2015 13:51:16 +0200 (CEST)
+Received: from smtp1-g21.free.fr ([212.27.42.1]:20379 "EHLO smtp1-g21.free.fr"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27007043AbbDSLUQ5ndA1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 19 Apr 2015 13:20:16 +0200
+        id S27007043AbbDSLvOjcmco convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 19 Apr 2015 13:51:14 +0200
 Received: from tock (unknown [85.177.79.58])
         (Authenticated sender: albeu)
-        by smtp1-g21.free.fr (Postfix) with ESMTPSA id 8CF6B9400AA;
-        Sun, 19 Apr 2015 13:17:55 +0200 (CEST)
-Date:   Sun, 19 Apr 2015 13:20:07 +0200
+        by smtp1-g21.free.fr (Postfix) with ESMTPSA id 8F0E9940069;
+        Sun, 19 Apr 2015 13:48:44 +0200 (CEST)
+Date:   Sun, 19 Apr 2015 13:50:55 +0200
 From:   Alban <albeu@free.fr>
-To:     Jonas Gorski <jogo@openwrt.org>
-Cc:     Aban Bedel <albeu@free.fr>,
-        MIPS Mailing List <linux-mips@linux-mips.org>,
+To:     Florian Fainelli <f.fainelli@gmail.com>
+Cc:     Aban Bedel <albeu@free.fr>, linux-mips@linux-mips.org,
+        Rob Herring <robh+dt@kernel.org>,
+        Pawel Moll <pawel.moll@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ian Campbell <ijc+devicetree@hellion.org.uk>,
+        Kumar Gala <galak@codeaurora.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>,
         Ralf Baechle <ralf@linux-mips.org>,
         Andrew Bresticker <abrestic@chromium.org>,
         Qais Yousef <qais.yousef@imgtec.com>,
-        Wolfram Sang <wsa@the-dreams.de>,
-        Sergey Ryazanov <ryazanov.s.a@gmail.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 4/5] MIPS: ath79: Fix the PCI memory size and offset of
- window 7
-Message-ID: <20150419132007.06e22199@tock>
-In-Reply-To: <CAOiHx=kJD4s4FZ61iKqReE1BkqeoHuo4pET1CFygE1izQZAW4w@mail.gmail.com>
-References: <1429274178-4337-1-git-send-email-albeu@free.fr>
-        <1429274178-4337-5-git-send-email-albeu@free.fr>
-        <CAOiHx=kJD4s4FZ61iKqReE1BkqeoHuo4pET1CFygE1izQZAW4w@mail.gmail.com>
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Gabor Juhos <juhosg@openwrt.org>
+Subject: Re: [PATH] MIPS: ath79: Add OF support and DTS for TL-WR1043ND
+Message-ID: <20150419135055.7f14f014@tock>
+In-Reply-To: <5532BF90.2040907@gmail.com>
+References: <1429280669-2986-1-git-send-email-albeu@free.fr>
+        <5532BF90.2040907@gmail.com>
 X-Mailer: Claws Mail 3.9.3 (GTK+ 2.24.23; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 Return-Path: <albeu@free.fr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46914
+X-archive-position: 46916
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -50,66 +53,20 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sun, 19 Apr 2015 00:28:39 +0200
-Jonas Gorski <jogo@openwrt.org> wrote:
+On Sat, 18 Apr 2015 13:33:20 -0700
+Florian Fainelli <f.fainelli@gmail.com> wrote:
 
-> Hi,
+> Le 17/04/2015 07:24, Alban Bedel a écrit :
+> > This series add OF bindings and code support for the interrupt
+> > controllers, clocks and GPIOs. However it was only tested on a
+> > TL-WR1043ND with an AR9132, others SoCs are untested, and a few are
+> > not supported at all.
+> > 
+> > Most code changes base on the previous bug fix series:
+> > [PATH] MIPS: ath79: Various small fix to prepare OF support
 > 
-> On Fri, Apr 17, 2015 at 2:36 PM, Alban Bedel <albeu@free.fr> wrote:
-> > The define AR71XX_PCI_MEM_SIZE miss one window, there is 7 windows,
-> > not 6. To make things clearer, and allow simpler code, derive
-> > AR71XX_PCI_MEM_SIZE from the newly introduced AR71XX_PCI_WIN_COUNT
-> > and AR71XX_PCI_WIN_SIZE.
-> >
-> > The define AR71XX_PCI_WIN7_OFFS also add a typo, fix it.
-> 
-> I think this will break PCI on ar71xx.
-> 
-> >
-> > Signed-off-by: Alban Bedel <albeu@free.fr>
-> > ---
-> >  arch/mips/include/asm/mach-ath79/ar71xx_regs.h | 6 ++++--
-> >  1 file changed, 4 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/arch/mips/include/asm/mach-ath79/ar71xx_regs.h
-> > b/arch/mips/include/asm/mach-ath79/ar71xx_regs.h index
-> > aa3800c..e2669a8 100644 ---
-> > a/arch/mips/include/asm/mach-ath79/ar71xx_regs.h +++
-> > b/arch/mips/include/asm/mach-ath79/ar71xx_regs.h @@ -41,7 +41,9 @@
-> >  #define AR71XX_RESET_SIZE      0x100
-> >
-> >  #define AR71XX_PCI_MEM_BASE    0x10000000
-> > -#define AR71XX_PCI_MEM_SIZE    0x07000000
-> > +#define AR71XX_PCI_WIN_COUNT   8
-> > +#define AR71XX_PCI_WIN_SIZE    0x01000000
-> > +#define AR71XX_PCI_MEM_SIZE    (AR71XX_PCI_WIN_COUNT *
-> > AR71XX_PCI_WIN_SIZE)
-> >
-> >  #define AR71XX_PCI_WIN0_OFFS   0x10000000
-> >  #define AR71XX_PCI_WIN1_OFFS   0x11000000
-> > @@ -50,7 +52,7 @@
-> >  #define AR71XX_PCI_WIN4_OFFS   0x14000000
-> >  #define AR71XX_PCI_WIN5_OFFS   0x15000000
-> >  #define AR71XX_PCI_WIN6_OFFS   0x16000000
-> > -#define AR71XX_PCI_WIN7_OFFS   0x07000000
-> > +#define AR71XX_PCI_WIN7_OFFS   0x17000000
-> 
-> These values are used in exactly one place, for writing into the PCI
-> address space offset registers.
-> The 7th PCI window is a special one for accessing the configuration
-> space registers, which requires to be set to 0x07000000 for that
-> purpose. So by changing this value you likely break access to these
-> values.
+> Any reasons why Gabor Juhos is not CC'd on these patches?
 
-Sorry, I foolishly assumed it was a typo.
-
-> >
-> >  #define AR71XX_PCI_CFG_BASE    \
-> >         (AR71XX_PCI_MEM_BASE + AR71XX_PCI_WIN7_OFFS + 0x10000)
-> 
-> Also this macro would now be wrong, and calculate a wrong address.
-
-I see, I'll drop this patch and rework the following one to match the
-old code.
+Because get_maintainer.pl didn't return him, I'll add him from now on.
 
 Alban

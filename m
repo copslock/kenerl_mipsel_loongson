@@ -1,27 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 19 Apr 2015 16:28:07 +0200 (CEST)
-Received: from arrakis.dune.hu ([78.24.191.176]:37390 "EHLO arrakis.dune.hu"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 19 Apr 2015 16:30:50 +0200 (CEST)
+Received: from arrakis.dune.hu ([78.24.191.176]:37505 "EHLO arrakis.dune.hu"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27006570AbbDSO2GOnmXD (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 19 Apr 2015 16:28:06 +0200
+        id S27006570AbbDSOasJuYph (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 19 Apr 2015 16:30:48 +0200
 Received: from localhost (localhost [127.0.0.1])
-        by arrakis.dune.hu (Postfix) with ESMTP id C64B92802BA;
-        Sun, 19 Apr 2015 16:27:09 +0200 (CEST)
+        by arrakis.dune.hu (Postfix) with ESMTP id 2C0C1280142;
+        Sun, 19 Apr 2015 16:29:53 +0200 (CEST)
 X-Virus-Scanned: at arrakis.dune.hu
-Received: from mail-qc0-f172.google.com (mail-qc0-f172.google.com [209.85.216.172])
-        by arrakis.dune.hu (Postfix) with ESMTPSA id 4BF592802C2;
-        Sun, 19 Apr 2015 16:27:04 +0200 (CEST)
-Received: by qcbii10 with SMTP id ii10so46513280qcb.2;
-        Sun, 19 Apr 2015 07:27:59 -0700 (PDT)
-X-Received: by 10.140.234.80 with SMTP id f77mr13638486qhc.13.1429453679125;
- Sun, 19 Apr 2015 07:27:59 -0700 (PDT)
+Received: from mail-qc0-f170.google.com (mail-qc0-f170.google.com [209.85.216.170])
+        by arrakis.dune.hu (Postfix) with ESMTPSA id 35F44280427;
+        Sun, 19 Apr 2015 16:29:38 +0200 (CEST)
+Received: by qcrf4 with SMTP id f4so46413721qcr.0;
+        Sun, 19 Apr 2015 07:30:33 -0700 (PDT)
+X-Received: by 10.55.20.207 with SMTP id 76mr21420516qku.46.1429453833236;
+ Sun, 19 Apr 2015 07:30:33 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 10.140.89.146 with HTTP; Sun, 19 Apr 2015 07:27:38 -0700 (PDT)
-In-Reply-To: <1429450936-21642-1-git-send-email-albeu@free.fr>
-References: <1429448288-20742-1-git-send-email-albeu@free.fr> <1429450936-21642-1-git-send-email-albeu@free.fr>
+Received: by 10.140.89.146 with HTTP; Sun, 19 Apr 2015 07:30:13 -0700 (PDT)
+In-Reply-To: <1429448288-20742-8-git-send-email-albeu@free.fr>
+References: <1429448288-20742-1-git-send-email-albeu@free.fr> <1429448288-20742-8-git-send-email-albeu@free.fr>
 From:   Jonas Gorski <jogo@openwrt.org>
-Date:   Sun, 19 Apr 2015 16:27:38 +0200
-Message-ID: <CAOiHx=n8a=HTR-cAQffRx2OaGxXzLDzmtwwy99xCFqty521CKw@mail.gmail.com>
-Subject: Re: [PATCH v2 09/12] devicetree: Add bindings for the ATH79 GPIO controllers
+Date:   Sun, 19 Apr 2015 16:30:13 +0200
+Message-ID: <CAOiHx=nFHarP-Ohjzzvi-V-SYBdrskL+Ur7yqprH8+ZLqGZLXw@mail.gmail.com>
+Subject: Re: [PATCH v2 07/12] devicetree: Add bindings for the ATH79 PLL controllers
 To:     Alban Bedel <albeu@free.fr>
 Cc:     MIPS Mailing List <linux-mips@linux-mips.org>,
         Rob Herring <robh+dt@kernel.org>,
@@ -42,7 +42,7 @@ Return-Path: <jogo@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46935
+X-archive-position: 46936
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -59,57 +59,39 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sun, Apr 19, 2015 at 3:42 PM, Alban Bedel <albeu@free.fr> wrote:
-> These bindings support the GPIO controllers found on the Qualcomm
-> Atheros AR7xxx/AR9XXX SoC.
->
+Hi,
+
+On Sun, Apr 19, 2015 at 2:58 PM, Alban Bedel <albeu@free.fr> wrote:
 > Signed-off-by: Alban Bedel <albeu@free.fr>
 > ---
-> v2: * Add the ngpios property to have fewer fallbacks and simpler code
+> v2: * Fixed the node names to respect ePAPR
+>     * Fixed the missing 's' in 'fallbacks' and the 'clocks' property
 > ---
->  .../devicetree/bindings/gpio/gpio-ath79.txt        | 38 ++++++++++++++++++++++
->  1 file changed, 38 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/gpio/gpio-ath79.txt
+>  .../devicetree/bindings/clock/qca,ath79-pll.txt    | 33 ++++++++++++++++++++++
+>  1 file changed, 33 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/clock/qca,ath79-pll.txt
 >
-> diff --git a/Documentation/devicetree/bindings/gpio/gpio-ath79.txt b/Documentation/devicetree/bindings/gpio/gpio-ath79.txt
+> diff --git a/Documentation/devicetree/bindings/clock/qca,ath79-pll.txt b/Documentation/devicetree/bindings/clock/qca,ath79-pll.txt
 > new file mode 100644
-> index 0000000..e027864
+> index 0000000..df3dbc8
 > --- /dev/null
-> +++ b/Documentation/devicetree/bindings/gpio/gpio-ath79.txt
-> @@ -0,0 +1,38 @@
-> +Binding for Qualcomm  Atheros AR7xxx/AR9xxx GPIO controller
+> +++ b/Documentation/devicetree/bindings/clock/qca,ath79-pll.txt
+> @@ -0,0 +1,33 @@
+> +Binding for Qualcomm Atheros AR7xxx/AR9XXX PLL controller
 > +
-> +Required properties:
-> +- compatible: has to be "qca,<soctype>-gpio" and one of the following
-> +  fallback:
+> +The PPL controller provides the 3 main clocks of the SoC: CPU, DDR and AHB.
+> +
+> +Required Properties:
+> +- compatible: has to be "qca,<soctype>-cpu-intc" and one of the following
+> +  fallbacks:
+> +  - "qca,ar7100-pll"
+> +  - "qca,ar7240-pll"
+> +  - "qca,ar9130-pll"
+> +  - "qca,ar9330-pll"
+> +  - "qca,ar9340-pll"
+> +  - "qca,ar9550-pll"
 
-maybe plural?
-
-> +  - "qca,ar7100-gpio"
-> +  - "qca,ar9340-gpio"
-> +- reg: Base address and size of the controllers memory area
-> +- gpio-controller : Marks the device node as a GPIO controller.
-> +- #gpio-cells : Should be two. The first cell is the pin number and the
-> +  second cell is used to specify optional parameters.
-> +- ngpios: Should be set to the number of GPIOs available on the SoC.
-> +
-> +Optional properties:
-> +- interrupt-parent: phandle of the parent interrupt controller.
-> +- interrupts: Interrupt specifier for the controllers interrupt.
-> +- interrupt-controller : Identifies the node as an interrupt controller
-> +- #interrupt-cells : Specifies the number of cells needed to encode interrupt
-> +                    source, should be 2
-> +
-> +Please refer to interrupts.txt in this directory for details of the common
-> +Interrupt Controllers bindings used by client devices.
-> +
-> +Example:
-> +
-> +       gpio@18040000 {
-> +               compatible = "qca,ar9132-gpio", "qca,ar9130-gpio";
-
-You have neither "qca,ar7100-gpio" nor "qca,ar9340-gpio", so by your
-own documentation this would be invalid.
+Shouldn't this be "qca,qca9550-pll"?
 
 
 Jonas

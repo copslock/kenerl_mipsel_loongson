@@ -1,32 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Apr 2015 13:55:53 +0200 (CEST)
-Received: (from localhost user: 'macro', uid#1010) by eddie.linux-mips.org
-        with ESMTP id S27011180AbbDTLzuvX68m (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 20 Apr 2015 13:55:50 +0200
-Date:   Mon, 20 Apr 2015 12:55:50 +0100 (BST)
-From:   "Maciej W. Rozycki" <macro@linux-mips.org>
-To:     Aaro Koskinen <aaro.koskinen@iki.fi>
-cc:     Ralf Baechle <ralf@linux-mips.org>,
-        James Cowgill <James.Cowgill@imgtec.com>,
-        Markos Chandras <markos.chandras@imgtec.com>,
-        linux-mips@linux-mips.org,
-        Matthew Fortune <Matthew.Fortune@imgtec.com>,
-        Paul Burton <paul.burton@imgtec.com>
-Subject: Re: [PATCH] MIPS: asm: elf: Set O32 default FPU flags
-In-Reply-To: <20150412232154.GA26498@fuloong-minipc.musicnaut.iki.fi>
-Message-ID: <alpine.LFD.2.11.1504201250450.21733@eddie.linux-mips.org>
-References: <6D39441BF12EF246A7ABCE6654B0235320FBCA7C@LEMAIL01.le.imgtec.org> <1424949090-20682-1-git-send-email-markos.chandras@imgtec.com> <alpine.LFD.2.11.1504071617580.21028@eddie.linux-mips.org> <20150412232154.GA26498@fuloong-minipc.musicnaut.iki.fi>
-User-Agent: Alpine 2.11 (LFD 23 2013-08-11)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Apr 2015 20:41:57 +0200 (CEST)
+Received: from filtteri2.pp.htv.fi ([213.243.153.185]:50976 "EHLO
+        filtteri2.pp.htv.fi" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27011771AbbDTSlzquNex (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 20 Apr 2015 20:41:55 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by filtteri2.pp.htv.fi (Postfix) with ESMTP id C7AC519BDC7;
+        Mon, 20 Apr 2015 21:41:56 +0300 (EEST)
+X-Virus-Scanned: Debian amavisd-new at pp.htv.fi
+Received: from smtp4.welho.com ([213.243.153.38])
+        by localhost (filtteri2.pp.htv.fi [213.243.153.185]) (amavisd-new, port 10024)
+        with ESMTP id 5JNTpmgFBjcY; Mon, 20 Apr 2015 21:41:51 +0300 (EEST)
+Received: from fuloong-minipc (91-145-91-118.bb.dnainternet.fi [91.145.91.118])
+        by smtp4.welho.com (Postfix) with ESMTP id CCB915BC011;
+        Mon, 20 Apr 2015 21:41:51 +0300 (EEST)
+Date:   Mon, 20 Apr 2015 21:41:51 +0300
+From:   Aaro Koskinen <aaro.koskinen@iki.fi>
+To:     Huacai Chen <chenhc@lemote.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        "Steven J. Hill" <Steven.Hill@imgtec.com>,
+        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        Kelvin Cheung <keguang.zhang@gmail.com>
+Subject: Re: [RFC PATCH] MIPS: Loongson: Naming style cleanup and rework
+Message-ID: <20150420184151.GA31618@fuloong-minipc.musicnaut.iki.fi>
+References: <1429521179-25758-1-git-send-email-chenhc@lemote.com>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@linux-mips.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1429521179-25758-1-git-send-email-chenhc@lemote.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <aaro.koskinen@iki.fi>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46945
+X-archive-position: 46946
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: aaro.koskinen@iki.fi
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -39,25 +50,23 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, 13 Apr 2015, Aaro Koskinen wrote:
+Hi,
 
-> >  Can you please backport this change to 4.0 ASAP, preferably before it 
-> > hits the actual release?
-> > 
-> >  It fixes a 3.19->4.0 regression, likely affecting all FPU processors and 
-> > wreaking havoc.  For example I came across a system that boots 3.19 just 
-> > fine, but hangs in `ypbind' with 4.0.  It works again with this change 
-> > applied.
-> 
-> It seems this patch, and some other fixes for fatal regressions,
-> missed 4.0, although they were reported right after the -rc1 was out.
-> 
-> Basically 4.0 is unusable for MIPS users.
+On Mon, Apr 20, 2015 at 05:12:59PM +0800, Huacai Chen wrote:
+> +config MACH_LOONGSON64
+> +	bool "Loongson-2/3 family of machines"
+>  	select SYS_SUPPORTS_ZBOOT
+>  	help
+> -	  This enables the support of Loongson family of machines.
+> +	  This enables the support of Loongson-2/3 family of machines.
+>  
+> -	  Loongson is a family of general-purpose MIPS-compatible CPUs.
+> -	  developed at Institute of Computing Technology (ICT),
+> +	  Loongson is a family of 64-bit general-purpose MIPS-compatible
+> +	  CPUs. developed at Institute of Computing Technology (ICT),
+              ^
+              ^ This dot should be removed.
 
- I've had some success with the "nofpu" kernel parameter; in fact I didn't 
-notice the problem as I was testing full FPU emulation and until I enabled 
-the FPU hardware.  You may try the option temporarily as a workaround.  
+Also you should probably say "Loongson-2/3 is a family...".
 
- Hopefully the fix makes it through to 4.0.1 or suchlike.
-
-  Maciej
+A.

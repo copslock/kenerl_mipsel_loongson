@@ -1,74 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Apr 2015 06:11:09 +0200 (CEST)
-Received: from bh-25.webhostbox.net ([208.91.199.152]:38823 "EHLO
-        bh-25.webhostbox.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27006151AbbDUELHxDgWs (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 21 Apr 2015 06:11:07 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=roeck-us.net; s=default;
-        h=Content-Transfer-Encoding:Content-Type:In-Reply-To:References:Subject:CC:To:MIME-Version:From:Date:Message-ID; bh=orANe+nIm0s0sloQhRgG/I6YhWZvBIKZkdZpt5l4GJo=;
-        b=Iu8xCnHmvC2qYHyHSjRXJO/TQ0OKY2Wab71Mr7gVhWl9jdY2xf4lLl5zCk/e/lhx0Vzcc2+lmCyDSayJi9y2Qjg5IyzpXB/IrMKOMsgk0qdPwxsCKqwrDhdkoD1H/iXimvDEaP4AwvfBKsBpu6Dy3D7iHzJfY7TSg9EXJSBrPvI=;
-Received: from mailnull by bh-25.webhostbox.net with sa-checked (Exim 4.85)
-        (envelope-from <linux@roeck-us.net>)
-        id 1YkPWY-003CQm-IY
-        for linux-mips@linux-mips.org; Tue, 21 Apr 2015 04:11:02 +0000
-Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:34547 helo=server.roeck-us.net)
-        by bh-25.webhostbox.net with esmtpsa (TLSv1:DHE-RSA-AES128-SHA:128)
-        (Exim 4.85)
-        (envelope-from <linux@roeck-us.net>)
-        id 1YkPWX-003CNX-Rs; Tue, 21 Apr 2015 04:11:02 +0000
-Message-ID: <5535CDD4.8090900@roeck-us.net>
-Date:   Mon, 20 Apr 2015 21:11:00 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Apr 2015 11:38:23 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:18102 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27011376AbbDUJiTqdHWv (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 21 Apr 2015 11:38:19 +0200
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 33933C468FC8E;
+        Tue, 21 Apr 2015 10:38:13 +0100 (IST)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Tue, 21 Apr 2015 10:38:15 +0100
+Received: from [192.168.154.117] (192.168.154.117) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Tue, 21 Apr
+ 2015 10:38:15 +0100
+Message-ID: <55361A86.9060000@imgtec.com>
+Date:   Tue, 21 Apr 2015 10:38:14 +0100
+From:   Markos Chandras <Markos.Chandras@imgtec.com>
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.6.0
 MIME-Version: 1.0
-To:     Aaro Koskinen <aaro.koskinen@iki.fi>
-CC:     linux-kernel@vger.kernel.org,
-        Rusty Russell <rusty@rustcorp.com.au>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        linux-mips@linux-mips.org
-Subject: Re: mips build failures due to commit 8dd928915a73 (mips: fix up
- obsolete cpu function usage)
-References: <20150420194028.GA10814@roeck-us.net> <20150420210933.GB31618@fuloong-minipc.musicnaut.iki.fi>
-In-Reply-To: <20150420210933.GB31618@fuloong-minipc.musicnaut.iki.fi>
-Content-Type: text/plain; charset=windows-1252; format=flowed
+To:     Huacai Chen <chenhc@lemote.com>, Ralf Baechle <ralf@linux-mips.org>
+CC:     "Steven J. Hill" <Steven.Hill@imgtec.com>,
+        <linux-mips@linux-mips.org>, Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        "Kelvin Cheung" <keguang.zhang@gmail.com>
+Subject: Re: [PATCH V2] MIPS: Loongson: Naming style cleanup and rework
+References: <1429581635-26476-1-git-send-email-chenhc@lemote.com>
+In-Reply-To: <1429581635-26476-1-git-send-email-chenhc@lemote.com>
+Content-Type: text/plain; charset="windows-1252"
 Content-Transfer-Encoding: 7bit
-X-Authenticated_sender: linux@roeck-us.net
-X-OutGoing-Spam-Status: No, score=-1.0
-X-CTCH-PVer: 0000001
-X-CTCH-Spam: Unknown
-X-CTCH-VOD: Unknown
-X-CTCH-Flags: 0
-X-CTCH-RefID: str=0001.0A020201.5535CDD6.016E,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-X-CTCH-Score: 0.000
-X-CTCH-ScoreCust: 0.000
-X-CTCH-Rules: 
-X-CTCH-SenderID: linux@roeck-us.net
-X-CTCH-SenderID-Flags: 0
-X-CTCH-SenderID-TotalMessages: 1
-X-CTCH-SenderID-TotalSpam: 0
-X-CTCH-SenderID-TotalSuspected: 0
-X-CTCH-SenderID-TotalConfirmed: 0
-X-CTCH-SenderID-TotalBulk: 0
-X-CTCH-SenderID-TotalVirus: 0
-X-CTCH-SenderID-TotalRecipients: 0
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - bh-25.webhostbox.net
-X-AntiAbuse: Original Domain - linux-mips.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - roeck-us.net
-X-Get-Message-Sender-Via: bh-25.webhostbox.net: mailgid no entry from get_relayhosts_entry
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-Return-Path: <linux@roeck-us.net>
+X-Originating-IP: [192.168.154.117]
+Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46953
+X-archive-position: 46954
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linux@roeck-us.net
+X-original-sender: Markos.Chandras@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -81,48 +49,25 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 04/20/2015 02:09 PM, Aaro Koskinen wrote:
-> Hi,
->
-> On Mon, Apr 20, 2015 at 12:40:28PM -0700, Guenter Roeck wrote:
->> the upstream kernel fails to build mips:nlm_xlp_defconfig,
->> mips:nlm_xlp_defconfig, mips:cavium_octeon_defconfig, and possibly
->> other targets, with errors such as
->>
->> arch/mips/kernel/smp.c:211:2: error:
->> 	passing argument 2 of 'cpumask_set_cpu' discards 'volatile' qualifier
->> 	from pointer target type
->> arch/mips/kernel/process.c:52:2: error:
->> 	passing argument 2 of 'cpumask_test_cpu' discards 'volatile' qualifier
->> 	from pointer target type
->> arch/mips/cavium-octeon/smp.c:242:2: error:
->> 	passing argument 2 of 'cpumask_clear_cpu' discards 'volatile' qualifier
->> 	from pointer target type
->>
->> The problem was introduced with commit 8dd928915a73 (" mips: fix up
->> obsolete cpu function usage"). I would send a patch to fix it, but I
->> am not sure if removing 'volatile' from the variable declaration(s)
->> would be a good idea.
->
-> I think removing volatile from cpu_callin_map declaration should be OK,
-> since test_cpu (only reader) uses test_bit which takes care of it:
->
-> 	static inline int test_bit(int nr, const volatile unsigned long *addr)
->
+Hi,
 
-I ran two tests with nlm_xlp_defconfig:
+On 04/21/2015 03:00 AM, Huacai Chen wrote:
+> Currently, code of Loongson-2/3 is under loongson directory and code of
+> Loongson-1 is under loongson1 directory. Besides, there are Kconfig
+> options such as MACH_LOONGSON and MACH_LOONGSON1. This naming style is
+> very ugly and confusing. Since Loongson-2/3 are both 64-bit general-
+> purpose CPU while Loongson-1 is 32-bit SoC, we rename both file names
+> and Kconfig symbols from loongson/loongson1 to loongson64/loongson32.
+> 
+> V2: Update Kconfig description.
+This ^^^^ needs to be below the '---' part of the patch because it
+should not be part of the commit message. It is just a changelog for the
+patch itself.
 
-- add volatile to the second argument of cpumask_set_cpu() and cpumask_test_cpu():
-   vmlinux image size 194664946
-- remove volatile from cpu_callin_map:
-   vmlinux image size 194664066
+> 
+> Signed-off-by: Huacai Chen <chenhc@lemote.com>
+> ---
+^^^ Please add "V2:..." here instead.
 
-Given that, I am not sure I understand the impact of removing volatile
-from cpu_callin_map. Maybe it is just better optimization without
-volatile. Maybe there is no impact. Maybe the use of volatile is wrong
-to start with ('Volatile Considered Harmful' comes into mind).
-Maybe the use of volatile for cpu_callin_map is wrong for other architectures
-as well (powerpc, ia64). Either case, I don't know to code well enough to
-make this call.
-
-Guenter
+-- 
+markos

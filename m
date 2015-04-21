@@ -1,52 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Apr 2015 18:56:12 +0200 (CEST)
-Received: from mail-lb0-f176.google.com ([209.85.217.176]:33019 "EHLO
-        mail-lb0-f176.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012063AbbDUQ4LF3nHG (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 21 Apr 2015 18:56:11 +0200
-Received: by lbbzk7 with SMTP id zk7so160619013lbb.0
-        for <linux-mips@linux-mips.org>; Tue, 21 Apr 2015 09:56:07 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:message-id:date:from:organization:user-agent
-         :mime-version:to:cc:subject:references:in-reply-to:content-type
-         :content-transfer-encoding;
-        bh=MrNHOfA0l9JgQzTRJXEius2/hnY+jgkLcWMq9h/MfmI=;
-        b=DwL5n3wFxXGedDSZ9vsk3FQhcYzcBgX1wXBAeSOjRYqsy20YOr4Hp4vMnX8g67HkmS
-         UFx+Xfelx8qrnO05utG9SWrYRC6wmJqtiuohWKCqpoqI4kUMOxcb7fdcSITOGbBGOrfo
-         aaXUNEHZrbg4UVyBPyTpnsMzJ/EcrXa/HqqaeYtWmtJdfAFQFNCionscfItqZpngrMWl
-         MImBqiWv4ArbZ1CaVbWiUnJZBZay5ZZ7Wb9g4IOm2jDdRfU1tdowhTQibQzbw8nbn3X9
-         qyjp2ILNSkfJFEpaRSyykRy/MSg4xJ7ElFL/ULr9kLCFACr2dChHOtteE/pTOgW5OLxA
-         pN0Q==
-X-Gm-Message-State: ALoCoQnKud3Sj/4dR9XCaWWpp4PR0CQbJTZHwQdrGh1qK9HoiBs6+5Ip+L67Mxv1f8m44ewgEQuO
-X-Received: by 10.152.239.135 with SMTP id vs7mr21007871lac.104.1429635366910;
-        Tue, 21 Apr 2015 09:56:06 -0700 (PDT)
-Received: from wasted.cogentembedded.com (ppp83-237-254-74.pppoe.mtu-net.ru. [83.237.254.74])
-        by mx.google.com with ESMTPSA id aj4sm533922lbd.5.2015.04.21.09.56.04
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 21 Apr 2015 09:56:05 -0700 (PDT)
-Message-ID: <55368124.8020706@cogentembedded.com>
-Date:   Tue, 21 Apr 2015 19:56:04 +0300
-From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Organization: Cogent Embedded
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.5.0
-MIME-Version: 1.0
-To:     Paul Burton <paul.burton@imgtec.com>, linux-mips@linux-mips.org
-CC:     Lars-Peter Clausen <lars@metafoo.de>, devicetree@vger.kernel.org
-Subject: Re: [PATCH v3 10/37] devicetree: document Ingenic SoC interrupt controller
- binding
-References: <1429627624-30525-1-git-send-email-paul.burton@imgtec.com> <1429627624-30525-11-git-send-email-paul.burton@imgtec.com>
-In-Reply-To: <1429627624-30525-11-git-send-email-paul.burton@imgtec.com>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sergei.shtylyov@cogentembedded.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Apr 2015 20:33:12 +0200 (CEST)
+Received: from smtp.gentoo.org ([140.211.166.183]:51562 "EHLO smtp.gentoo.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27010448AbbDUSdKpr0j4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 21 Apr 2015 20:33:10 +0200
+Received: from localhost.localdomain (localhost [127.0.0.1])
+        by smtp.gentoo.org (Postfix) with ESMTP id AB23C34097F;
+        Tue, 21 Apr 2015 18:33:04 +0000 (UTC)
+From:   Mike Frysinger <vapier@gentoo.org>
+To:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Cc:     oss@malat.biz, Mike Frysinger <vapier@chromium.org>
+Subject: [PATCH] Revert "MIPS: Provide correct siginfo_t.si_stime"
+Date:   Tue, 21 Apr 2015 14:33:03 -0400
+Message-Id: <1429641183-15873-1-git-send-email-vapier@gentoo.org>
+X-Mailer: git-send-email 2.3.5
+Return-Path: <vapier@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46997
+X-archive-position: 46998
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sergei.shtylyov@cogentembedded.com
+X-original-sender: vapier@gentoo.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,51 +34,97 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hello.
+From: Mike Frysinger <vapier@chromium.org>
 
-On 04/21/2015 05:46 PM, Paul Burton wrote:
+This reverts commit 8cb48fe169dd682b6c29a3b7ef18333e4f577890.
 
-> Add binding documentation for Ingenic SoC interrupt controllers.
+UAPI headers cannot use "uapi/" in their paths by design -- when they're
+installed, they do not have the uapi/ prefix.  Otherwise doing so breaks
+userland badly:
+$ printf '#include <stddef.h>\n#include <linux/signal.h>\n' > test.c
+$ mips64-unknown-linux-gnu-gcc -c test.c
+In file included from /usr/mips64-unknown-linux-gnu/usr/include/linux/signal.h:5:0,
+                 from test.c:2:
+/usr/mips64-unknown-linux-gnu/usr/include/asm/siginfo.h:31:38: fatal error: uapi/asm-generic/siginfo.h: No such file or directory
+compilation terminated.
 
-> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-> Cc: Lars-Peter Clausen <lars@metafoo.de>
-> Cc: devicetree@vger.kernel.org
-> ---
-> Changes in v3:
->    - Merge documentation for various Ingenic SoCs, which only differ by
->      their compatible strings.
+Signed-off-by: Mike Frysinger <vapier@chromium.org>
+---
+ arch/mips/include/asm/siginfo.h      | 29 +++++++++++++++++++++++++++++
+ arch/mips/include/uapi/asm/siginfo.h | 11 ++++++++---
+ 2 files changed, 37 insertions(+), 3 deletions(-)
+ create mode 100644 arch/mips/include/asm/siginfo.h
 
-> Changes in v2:
->    - None.
-> ---
->   .../bindings/interrupt-controller/ingenic,intc.txt | 25 ++++++++++++++++++++++
->   1 file changed, 25 insertions(+)
->   create mode 100644 Documentation/devicetree/bindings/interrupt-controller/ingenic,intc.txt
-
-> diff --git a/Documentation/devicetree/bindings/interrupt-controller/ingenic,intc.txt b/Documentation/devicetree/bindings/interrupt-controller/ingenic,intc.txt
-> new file mode 100644
-> index 0000000..5d652e4
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/interrupt-controller/ingenic,intc.txt
-> @@ -0,0 +1,25 @@
-> +Ingenic SoC Interrupt Controller
-> +
-> +Required properties:
-> +
-> +- compatible : should be "ingenic,<socname>-intc". For example
-> +  "ingenic,jz4740-intc" or "ingenic,jz4780-intc".
-> +- reg : Specifies base physical address and size of the registers.
-> +- interrupt-controller : Identifies the node as an interrupt controller
-> +- #interrupt-cells : Specifies the number of cells needed to encode an
-> +  interrupt source. The value shall be 1.
-> +- interrupt-parent : phandle of the CPU interrupt controller.
-> +- interrupts : Specifies the CPU interrupt the controller is connected to.
-> +
-> +Example:
-> +
-> +intc: intc@10001000 {
-
-    The node should be named "interrupt-controller@10001000", according to the 
-epAPR standard.
-
-WBR, Sergei
+diff --git a/arch/mips/include/asm/siginfo.h b/arch/mips/include/asm/siginfo.h
+new file mode 100644
+index 0000000..dd9a762
+--- /dev/null
++++ b/arch/mips/include/asm/siginfo.h
+@@ -0,0 +1,29 @@
++/*
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ *
++ * Copyright (C) 1998, 1999, 2001, 2003 Ralf Baechle
++ * Copyright (C) 2000, 2001 Silicon Graphics, Inc.
++ */
++#ifndef _ASM_SIGINFO_H
++#define _ASM_SIGINFO_H
++
++#include <uapi/asm/siginfo.h>
++
++
++/*
++ * Duplicated here because of <asm-generic/siginfo.h> braindamage ...
++ */
++#include <linux/string.h>
++
++static inline void copy_siginfo(struct siginfo *to, struct siginfo *from)
++{
++	if (from->si_code < 0)
++		memcpy(to, from, sizeof(*to));
++	else
++		/* _sigchld is currently the largest know union member */
++		memcpy(to, from, 3*sizeof(int) + sizeof(from->_sifields._sigchld));
++}
++
++#endif /* _ASM_SIGINFO_H */
+diff --git a/arch/mips/include/uapi/asm/siginfo.h b/arch/mips/include/uapi/asm/siginfo.h
+index 2cb7fde..d08f83f 100644
+--- a/arch/mips/include/uapi/asm/siginfo.h
++++ b/arch/mips/include/uapi/asm/siginfo.h
+@@ -16,6 +16,13 @@
+ #define HAVE_ARCH_SIGINFO_T
+ 
+ /*
++ * We duplicate the generic versions - <asm-generic/siginfo.h> is just borked
++ * by design ...
++ */
++#define HAVE_ARCH_COPY_SIGINFO
++struct siginfo;
++
++/*
+  * Careful to keep union _sifields from shifting ...
+  */
+ #if _MIPS_SZLONG == 32
+@@ -28,9 +35,8 @@
+ 
+ #define __ARCH_SIGSYS
+ 
+-#include <uapi/asm-generic/siginfo.h>
++#include <asm-generic/siginfo.h>
+ 
+-/* We can't use generic siginfo_t, because our si_code and si_errno are swapped */
+ typedef struct siginfo {
+ 	int si_signo;
+ 	int si_code;
+@@ -118,6 +124,5 @@ typedef struct siginfo {
+ #define SI_TIMER __SI_CODE(__SI_TIMER, -3) /* sent by timer expiration */
+ #define SI_MESGQ __SI_CODE(__SI_MESGQ, -4) /* sent by real time mesq state change */
+ 
+-#include <asm-generic/siginfo.h>
+ 
+ #endif /* _UAPI_ASM_SIGINFO_H */
+-- 
+2.3.5

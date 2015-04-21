@@ -1,24 +1,24 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Apr 2015 16:49:16 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:56463 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Apr 2015 16:49:32 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:59258 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27025939AbbDUOtBQrVAP (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 21 Apr 2015 16:49:01 +0200
+        with ESMTP id S27025938AbbDUOtSoE-VJ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 21 Apr 2015 16:49:18 +0200
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id A6CE1D79E3604;
-        Tue, 21 Apr 2015 15:48:53 +0100 (IST)
+        by Websense Email Security Gateway with ESMTPS id 8652456B7CE2A;
+        Tue, 21 Apr 2015 15:49:11 +0100 (IST)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
  KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Tue, 21 Apr 2015 15:48:56 +0100
+ 14.3.195.1; Tue, 21 Apr 2015 15:49:13 +0100
 Received: from localhost (192.168.159.67) by LEMAIL01.le.imgtec.org
  (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Tue, 21 Apr
- 2015 15:48:56 +0100
+ 2015 15:49:12 +0100
 From:   Paul Burton <paul.burton@imgtec.com>
 To:     <linux-mips@linux-mips.org>
 CC:     Paul Burton <paul.burton@imgtec.com>,
         Lars-Peter Clausen <lars@metafoo.de>
-Subject: [PATCH v3 05/37] MIPS: JZ4740: require & include DT
-Date:   Tue, 21 Apr 2015 15:46:32 +0100
-Message-ID: <1429627624-30525-6-git-send-email-paul.burton@imgtec.com>
+Subject: [PATCH v3 06/37] MIPS: irq_cpu: declare irqchip table entry
+Date:   Tue, 21 Apr 2015 15:46:33 +0100
+Message-ID: <1429627624-30525-7-git-send-email-paul.burton@imgtec.com>
 X-Mailer: git-send-email 2.3.5
 In-Reply-To: <1429627624-30525-1-git-send-email-paul.burton@imgtec.com>
 References: <1429627624-30525-1-git-send-email-paul.burton@imgtec.com>
@@ -29,7 +29,7 @@ Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46962
+X-archive-position: 46963
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,9 +46,10 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Require a DT for JZ4740 based systems, and add a stub one for the
-qi_lb60 (Ben NanoNote) board. Devices will be migrated to being probed
-via this DT over time.
+Allow the MIPS CPU interrupt controller to be probed from DT using the
+generic __irqchip_of_table for platforms which use irqchip_init. This
+will avoid such platforms needing to duplicate the compatible string &
+init function pointer.
 
 Signed-off-by: Paul Burton <paul.burton@imgtec.com>
 Cc: Lars-Peter Clausen <lars@metafoo.de>
@@ -59,120 +60,26 @@ Changes in v3:
 Changes in v2:
   - None.
 ---
- arch/mips/Kconfig                      |  2 ++
- arch/mips/boot/dts/Makefile            |  1 +
- arch/mips/boot/dts/ingenic/Makefile    |  9 +++++++++
- arch/mips/boot/dts/ingenic/jz4740.dtsi |  5 +++++
- arch/mips/boot/dts/ingenic/qi_lb60.dts |  7 +++++++
- arch/mips/jz4740/setup.c               | 19 +++++++++++++++++++
- 6 files changed, 43 insertions(+)
- create mode 100644 arch/mips/boot/dts/ingenic/Makefile
- create mode 100644 arch/mips/boot/dts/ingenic/jz4740.dtsi
- create mode 100644 arch/mips/boot/dts/ingenic/qi_lb60.dts
+ arch/mips/kernel/irq_cpu.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 4a3acca..741e364 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -299,6 +299,8 @@ config MACH_INGENIC
- 	select SYS_HAS_EARLY_PRINTK
- 	select HAVE_CLK
- 	select GENERIC_IRQ_CHIP
-+	select BUILTIN_DTB
-+	select USE_OF
+diff --git a/arch/mips/kernel/irq_cpu.c b/arch/mips/kernel/irq_cpu.c
+index 6eb7a3f..f96313d 100644
+--- a/arch/mips/kernel/irq_cpu.c
++++ b/arch/mips/kernel/irq_cpu.c
+@@ -38,6 +38,8 @@
+ #include <asm/mipsmtregs.h>
+ #include <asm/setup.h>
  
- config LANTIQ
- 	bool "Lantiq based platforms"
-diff --git a/arch/mips/boot/dts/Makefile b/arch/mips/boot/dts/Makefile
-index 5d95e4b..9c31b30 100644
---- a/arch/mips/boot/dts/Makefile
-+++ b/arch/mips/boot/dts/Makefile
-@@ -1,5 +1,6 @@
- dts-dirs	+= brcm
- dts-dirs	+= cavium-octeon
-+dts-dirs	+= ingenic
- dts-dirs	+= lantiq
- dts-dirs	+= mti
- dts-dirs	+= netlogic
-diff --git a/arch/mips/boot/dts/ingenic/Makefile b/arch/mips/boot/dts/ingenic/Makefile
-new file mode 100644
-index 0000000..0c84f0b
---- /dev/null
-+++ b/arch/mips/boot/dts/ingenic/Makefile
-@@ -0,0 +1,9 @@
-+dtb-$(CONFIG_JZ4740_QI_LB60)	+= qi_lb60.dtb
++#include "../../drivers/irqchip/irqchip.h"
 +
-+obj-y				+= $(patsubst %.dtb, %.dtb.o, $(dtb-y))
-+
-+# Force kbuild to make empty built-in.o if necessary
-+obj-				+= dummy.o
-+
-+always				:= $(dtb-y)
-+clean-files			:= *.dtb *.dtb.S
-diff --git a/arch/mips/boot/dts/ingenic/jz4740.dtsi b/arch/mips/boot/dts/ingenic/jz4740.dtsi
-new file mode 100644
-index 0000000..c538691f
---- /dev/null
-+++ b/arch/mips/boot/dts/ingenic/jz4740.dtsi
-@@ -0,0 +1,5 @@
-+/ {
-+	#address-cells = <1>;
-+	#size-cells = <1>;
-+	compatible = "ingenic,jz4740";
-+};
-diff --git a/arch/mips/boot/dts/ingenic/qi_lb60.dts b/arch/mips/boot/dts/ingenic/qi_lb60.dts
-new file mode 100644
-index 0000000..0c0f639
---- /dev/null
-+++ b/arch/mips/boot/dts/ingenic/qi_lb60.dts
-@@ -0,0 +1,7 @@
-+/dts-v1/;
-+
-+#include "jz4740.dtsi"
-+
-+/ {
-+	compatible = "qi,lb60", "ingenic,jz4740";
-+};
-diff --git a/arch/mips/jz4740/setup.c b/arch/mips/jz4740/setup.c
-index ef796f9..d6bb7a3 100644
---- a/arch/mips/jz4740/setup.c
-+++ b/arch/mips/jz4740/setup.c
-@@ -17,8 +17,11 @@
- #include <linux/init.h>
- #include <linux/io.h>
- #include <linux/kernel.h>
-+#include <linux/of_fdt.h>
-+#include <linux/of_platform.h>
- 
- #include <asm/bootinfo.h>
-+#include <asm/prom.h>
- 
- #include <asm/mach-jz4740/base.h>
- 
-@@ -53,8 +56,24 @@ void __init plat_mem_setup(void)
+ static inline void unmask_mips_irq(struct irq_data *d)
  {
- 	jz4740_reset_init();
- 	jz4740_detect_mem();
-+	__dt_setup_arch(__dtb_start);
+ 	set_c0_status(0x100 << (d->irq - MIPS_CPU_IRQ_BASE));
+@@ -167,3 +169,4 @@ int __init mips_cpu_irq_of_init(struct device_node *of_node,
+ 	__mips_cpu_irq_init(of_node);
+ 	return 0;
  }
- 
-+void __init device_tree_init(void)
-+{
-+	if (!initial_boot_params)
-+		return;
-+
-+	unflatten_and_copy_device_tree();
-+}
-+
-+static int __init populate_machine(void)
-+{
-+	of_platform_populate(NULL, of_default_bus_match_table, NULL, NULL);
-+	return 0;
-+}
-+arch_initcall(populate_machine);
-+
- const char *get_system_type(void)
- {
- 	return "JZ4740";
++IRQCHIP_DECLARE(cpu_intc, "mti,cpu-interrupt-controller", mips_cpu_irq_of_init);
 -- 
 2.3.5

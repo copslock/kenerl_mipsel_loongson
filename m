@@ -1,39 +1,74 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Apr 2015 16:58:59 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:29281 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27025967AbbDUO6HuJTUV (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 21 Apr 2015 16:58:07 +0200
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 064C03C4E60F9;
-        Tue, 21 Apr 2015 15:58:00 +0100 (IST)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Tue, 21 Apr 2015 15:58:02 +0100
-Received: from localhost (192.168.159.67) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Tue, 21 Apr
- 2015 15:57:59 +0100
-From:   Paul Burton <paul.burton@imgtec.com>
-To:     <linux-mips@linux-mips.org>
-CC:     Paul Burton <paul.burton@imgtec.com>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Subject: [PATCH v3 37/37] MIPS: ingenic: initial MIPS Creator CI20 support
-Date:   Tue, 21 Apr 2015 15:47:04 +0100
-Message-ID: <1429627624-30525-38-git-send-email-paul.burton@imgtec.com>
-X-Mailer: git-send-email 2.3.5
-In-Reply-To: <1429627624-30525-1-git-send-email-paul.burton@imgtec.com>
-References: <1429627624-30525-1-git-send-email-paul.burton@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Apr 2015 17:41:38 +0200 (CEST)
+Received: from bh-25.webhostbox.net ([208.91.199.152]:60694 "EHLO
+        bh-25.webhostbox.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27006895AbbDUPlhTTwbl (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 21 Apr 2015 17:41:37 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=roeck-us.net; s=default;
+        h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date; bh=U9CccwSj7zWPfS91jRH531xX0Kgp+fqOCK2/3/L9WY8=;
+        b=OEM/XUbQa1pTHM3lG17QYP7B4Uib27Hgi3Uwo8CRd7gXmQgS5q9lHboSG0HxxO+i8USF2mDK63ZWGu4rRuj7aUEdBDA7gGBZPeCk3C/KSV3026OUXpJ6k5i3FVrw8EvUOzfmh6pN49D9dp2o7JgrqthQ6MDxS3OQgxphXXtq23o=;
+Received: from mailnull by bh-25.webhostbox.net with sa-checked (Exim 4.85)
+        (envelope-from <linux@roeck-us.net>)
+        id 1YkaIm-002QEB-N2
+        for linux-mips@linux-mips.org; Tue, 21 Apr 2015 15:41:32 +0000
+Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:49592 helo=localhost)
+        by bh-25.webhostbox.net with esmtpa (Exim 4.85)
+        (envelope-from <linux@roeck-us.net>)
+        id 1YkaIP-002Q7a-Tv; Tue, 21 Apr 2015 15:41:11 +0000
+Date:   Tue, 21 Apr 2015 08:41:08 -0700
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Rusty Russell <rusty@rustcorp.com.au>
+Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>, linux-kernel@vger.kernel.org,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        linux-mips@linux-mips.org
+Subject: Re: mips build failures due to commit 8dd928915a73 (mips: fix up
+ obsolete cpu function usage)
+Message-ID: <20150421154108.GA20223@roeck-us.net>
+References: <20150420194028.GA10814@roeck-us.net>
+ <20150420210933.GB31618@fuloong-minipc.musicnaut.iki.fi>
+ <87fv7up15k.fsf@rustcorp.com.au>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.159.67]
-Return-Path: <Paul.Burton@imgtec.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87fv7up15k.fsf@rustcorp.com.au>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+X-Authenticated_sender: guenter@roeck-us.net
+X-OutGoing-Spam-Status: No, score=-1.0
+X-CTCH-PVer: 0000001
+X-CTCH-Spam: Unknown
+X-CTCH-VOD: Unknown
+X-CTCH-Flags: 0
+X-CTCH-RefID: str=0001.0A020201.55366FAD.0052,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+X-CTCH-Score: 0.000
+X-CTCH-ScoreCust: 0.000
+X-CTCH-Rules: 
+X-CTCH-SenderID: linux@roeck-us.net
+X-CTCH-SenderID-Flags: 0
+X-CTCH-SenderID-TotalMessages: 6
+X-CTCH-SenderID-TotalSpam: 0
+X-CTCH-SenderID-TotalSuspected: 0
+X-CTCH-SenderID-TotalConfirmed: 0
+X-CTCH-SenderID-TotalBulk: 0
+X-CTCH-SenderID-TotalVirus: 0
+X-CTCH-SenderID-TotalRecipients: 0
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - bh-25.webhostbox.net
+X-AntiAbuse: Original Domain - linux-mips.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - roeck-us.net
+X-Get-Message-Sender-Via: bh-25.webhostbox.net: mailgid no entry from get_relayhosts_entry
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+Return-Path: <linux@roeck-us.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46995
+X-archive-position: 46996
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@imgtec.com
+X-original-sender: linux@roeck-us.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,252 +81,120 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add an initial device tree for the Ingenic JZ4780 based MIPS Creator
-CI20 board.
+On Tue, Apr 21, 2015 at 01:45:35PM +0930, Rusty Russell wrote:
+> Aaro Koskinen <aaro.koskinen@iki.fi> writes:
+> > Hi,
+> >
+> > On Mon, Apr 20, 2015 at 12:40:28PM -0700, Guenter Roeck wrote:
+> >> the upstream kernel fails to build mips:nlm_xlp_defconfig,
+> >> mips:nlm_xlp_defconfig, mips:cavium_octeon_defconfig, and possibly
+> >> other targets, with errors such as
+> >> 
+> >> arch/mips/kernel/smp.c:211:2: error:
+> >> 	passing argument 2 of 'cpumask_set_cpu' discards 'volatile' qualifier
+> >> 	from pointer target type
+> >> arch/mips/kernel/process.c:52:2: error:
+> >> 	passing argument 2 of 'cpumask_test_cpu' discards 'volatile' qualifier
+> >> 	from pointer target type
+> >> arch/mips/cavium-octeon/smp.c:242:2: error:
+> >> 	passing argument 2 of 'cpumask_clear_cpu' discards 'volatile' qualifier
+> >> 	from pointer target type
+> >> 
+> >> The problem was introduced with commit 8dd928915a73 (" mips: fix up
+> >> obsolete cpu function usage"). I would send a patch to fix it, but I
+> >> am not sure if removing 'volatile' from the variable declaration(s)
+> >> would be a good idea.
+> >
+> > I think removing volatile from cpu_callin_map declaration should be OK,
+> > since test_cpu (only reader) uses test_bit which takes care of it:
+> >
+> > 	static inline int test_bit(int nr, const volatile unsigned long *addr)
+> 
+> No, that got replaced too, with cpumask_test_cpu AFAICT.
+> 
+> You can open-code it, like so:
+> 
+>         test_bit(0, cpumask_bits(cpu_callin_map));
+> 
+> But you probably want to put a barrier in that loop instead of relying
+> on volatile.
+> 
+The following might do it. Note that I can not really test it since I don't have
+a real mips system, and qemu gets rcu hangs if I enable more than one CPU (I see
+that with older kernels as well, so it is not a new problem). Someone will have
+to test the patch on a real multi-core system.
 
-Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>
+Guenter
+
 ---
-Changes in v3:
-  - Rebase, relocating behind CONFIG_MACH_INGENIC.
+From 94026cc98a6b7b3567780a5443674c71202e2497 Mon Sep 17 00:00:00 2001
+From: Guenter Roeck <linux@roeck-us.net>
+Date: Tue, 21 Apr 2015 08:31:01 -0700
+Subject: [PATCH] mips: Fix SMP builds
+Content-Length: 2261
+Lines: 65
 
-Changes in v2:
-  - None.
+Mips SMP builds fail with error messages similar to the following.
+
+arch/mips/kernel/smp.c:211:2: error:
+	passing argument 2 of 'cpumask_set_cpu' discards 'volatile'
+	qualifier from pointer target type
+arch/mips/kernel/process.c:52:2: error:
+	passing argument 2 of 'cpumask_test_cpu' discards 'volatile'
+	qualifier from pointer target type
+arch/mips/cavium-octeon/smp.c:242:2: error:
+	passing argument 2 of 'cpumask_clear_cpu' discards 'volatile'
+	qualifier from pointer target type
+
+cpu_callin_map is declared as volatile variable, but passed to various
+functions with non-volatile arguments. Make it non-volatile and add a
+memory barrier at the one location where volatile might be needed.
+
+Fixes: 8dd928915a73 ("mips: fix up obsolete cpu function usage")
+Cc: Rusty Russell <rusty@rustcorp.com.au>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 ---
- arch/mips/boot/dts/ingenic/Makefile |   1 +
- arch/mips/boot/dts/ingenic/ci20.dts |  21 +++++
- arch/mips/configs/ci20_defconfig    | 169 ++++++++++++++++++++++++++++++++++++
- arch/mips/jz4740/Kconfig            |   4 +
- 4 files changed, 195 insertions(+)
- create mode 100644 arch/mips/boot/dts/ingenic/ci20.dts
- create mode 100644 arch/mips/configs/ci20_defconfig
+ arch/mips/include/asm/smp.h | 2 +-
+ arch/mips/kernel/smp.c      | 6 ++++--
+ 2 files changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/arch/mips/boot/dts/ingenic/Makefile b/arch/mips/boot/dts/ingenic/Makefile
-index 0c84f0b..f2b864f 100644
---- a/arch/mips/boot/dts/ingenic/Makefile
-+++ b/arch/mips/boot/dts/ingenic/Makefile
-@@ -1,4 +1,5 @@
- dtb-$(CONFIG_JZ4740_QI_LB60)	+= qi_lb60.dtb
-+dtb-$(CONFIG_JZ4780_CI20)	+= ci20.dtb
+diff --git a/arch/mips/include/asm/smp.h b/arch/mips/include/asm/smp.h
+index bb02fac9b4fa..2b25d1ba1ea0 100644
+--- a/arch/mips/include/asm/smp.h
++++ b/arch/mips/include/asm/smp.h
+@@ -45,7 +45,7 @@ extern int __cpu_logical_map[NR_CPUS];
+ #define SMP_DUMP		0x8
+ #define SMP_ASK_C0COUNT		0x10
  
- obj-y				+= $(patsubst %.dtb, %.dtb.o, $(dtb-y))
+-extern volatile cpumask_t cpu_callin_map;
++extern cpumask_t cpu_callin_map;
  
-diff --git a/arch/mips/boot/dts/ingenic/ci20.dts b/arch/mips/boot/dts/ingenic/ci20.dts
-new file mode 100644
-index 0000000..4f882ef
---- /dev/null
-+++ b/arch/mips/boot/dts/ingenic/ci20.dts
-@@ -0,0 +1,21 @@
-+/dts-v1/;
-+
-+#include "jz4780.dtsi"
-+
-+/ {
-+	compatible = "img,ci20", "ingenic,jz4780";
-+
-+	chosen {
-+		stdout-path = &uart4;
-+	};
-+
-+	memory {
-+		device_type = "memory";
-+		reg = <0x0 0x10000000
-+		       0x30000000 0x30000000>;
-+	};
-+};
-+
-+&ext {
-+	clock-frequency = <48000000>;
-+};
-diff --git a/arch/mips/configs/ci20_defconfig b/arch/mips/configs/ci20_defconfig
-new file mode 100644
-index 0000000..0305fe0
---- /dev/null
-+++ b/arch/mips/configs/ci20_defconfig
-@@ -0,0 +1,169 @@
-+CONFIG_MACH_INGENIC=y
-+CONFIG_JZ4780_CI20=y
-+CONFIG_HIGHMEM=y
-+# CONFIG_COMPACTION is not set
-+CONFIG_CMA=y
-+CONFIG_HZ_100=y
-+CONFIG_PREEMPT=y
-+# CONFIG_SECCOMP is not set
-+# CONFIG_LOCALVERSION_AUTO is not set
-+CONFIG_KERNEL_XZ=y
-+CONFIG_SYSVIPC=y
-+CONFIG_POSIX_MQUEUE=y
-+CONFIG_FHANDLE=y
-+CONFIG_NO_HZ_IDLE=y
-+CONFIG_HIGH_RES_TIMERS=y
-+CONFIG_IKCONFIG=y
-+CONFIG_IKCONFIG_PROC=y
-+CONFIG_LOG_BUF_SHIFT=14
-+CONFIG_CGROUPS=y
-+CONFIG_CGROUP_FREEZER=y
-+CONFIG_CGROUP_DEVICE=y
-+CONFIG_CPUSETS=y
-+CONFIG_CGROUP_CPUACCT=y
-+CONFIG_MEMCG=y
-+CONFIG_MEMCG_KMEM=y
-+CONFIG_CGROUP_SCHED=y
-+CONFIG_NAMESPACES=y
-+CONFIG_USER_NS=y
-+CONFIG_BLK_DEV_INITRD=y
-+CONFIG_INITRAMFS_SOURCE="arch/mips/boot/ramdisk.cpio.xz"
-+# CONFIG_RD_GZIP is not set
-+# CONFIG_RD_BZIP2 is not set
-+# CONFIG_RD_LZMA is not set
-+# CONFIG_RD_LZO is not set
-+# CONFIG_RD_LZ4 is not set
-+CONFIG_CC_OPTIMIZE_FOR_SIZE=y
-+CONFIG_SYSCTL_SYSCALL=y
-+CONFIG_KALLSYMS_ALL=y
-+CONFIG_EMBEDDED=y
-+# CONFIG_VM_EVENT_COUNTERS is not set
-+# CONFIG_COMPAT_BRK is not set
-+CONFIG_SLAB=y
-+# CONFIG_CORE_DUMP_DEFAULT_ELF_HEADERS is not set
-+# CONFIG_SUSPEND is not set
-+CONFIG_NET=y
-+CONFIG_PACKET=y
-+CONFIG_UNIX=y
-+CONFIG_INET=y
-+# CONFIG_INET_XFRM_MODE_TRANSPORT is not set
-+# CONFIG_INET_XFRM_MODE_TUNNEL is not set
-+# CONFIG_INET_XFRM_MODE_BEET is not set
-+# CONFIG_INET_LRO is not set
-+# CONFIG_INET_DIAG is not set
-+# CONFIG_IPV6 is not set
-+# CONFIG_WIRELESS is not set
-+CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
-+CONFIG_DEVTMPFS=y
-+# CONFIG_FW_LOADER is not set
-+# CONFIG_ALLOW_DEV_COREDUMP is not set
-+CONFIG_DMA_CMA=y
-+CONFIG_CMA_SIZE_MBYTES=32
-+CONFIG_NETDEVICES=y
-+# CONFIG_NET_VENDOR_ARC is not set
-+# CONFIG_NET_CADENCE is not set
-+# CONFIG_NET_VENDOR_BROADCOM is not set
-+CONFIG_DM9000=y
-+CONFIG_DM9000_FORCE_SIMPLE_PHY_POLL=y
-+# CONFIG_NET_VENDOR_INTEL is not set
-+# CONFIG_NET_VENDOR_MARVELL is not set
-+# CONFIG_NET_VENDOR_MICREL is not set
-+# CONFIG_NET_VENDOR_NATSEMI is not set
-+# CONFIG_NET_VENDOR_QUALCOMM is not set
-+# CONFIG_NET_VENDOR_ROCKER is not set
-+# CONFIG_NET_VENDOR_SAMSUNG is not set
-+# CONFIG_NET_VENDOR_SEEQ is not set
-+# CONFIG_NET_VENDOR_SMSC is not set
-+# CONFIG_NET_VENDOR_STMICRO is not set
-+# CONFIG_NET_VENDOR_VIA is not set
-+# CONFIG_NET_VENDOR_WIZNET is not set
-+# CONFIG_WLAN is not set
-+# CONFIG_INPUT_MOUSEDEV is not set
-+# CONFIG_INPUT_KEYBOARD is not set
-+# CONFIG_INPUT_MOUSE is not set
-+# CONFIG_SERIO is not set
-+CONFIG_VT_HW_CONSOLE_BINDING=y
-+CONFIG_LEGACY_PTY_COUNT=2
-+# CONFIG_DEVKMEM is not set
-+CONFIG_SERIAL_8250=y
-+CONFIG_SERIAL_8250_CONSOLE=y
-+CONFIG_SERIAL_8250_NR_UARTS=5
-+CONFIG_SERIAL_8250_RUNTIME_UARTS=5
-+CONFIG_SERIAL_8250_INGENIC=y
-+CONFIG_SERIAL_OF_PLATFORM=y
-+# CONFIG_HW_RANDOM is not set
-+CONFIG_I2C=y
-+CONFIG_I2C_JZ4780=y
-+CONFIG_GPIO_SYSFS=y
-+# CONFIG_HWMON is not set
-+CONFIG_REGULATOR=y
-+CONFIG_REGULATOR_DEBUG=y
-+CONFIG_REGULATOR_FIXED_VOLTAGE=y
-+# CONFIG_VGA_CONSOLE is not set
-+# CONFIG_HID is not set
-+# CONFIG_USB_SUPPORT is not set
-+CONFIG_MMC=y
-+# CONFIG_IOMMU_SUPPORT is not set
-+CONFIG_MEMORY=y
-+# CONFIG_DNOTIFY is not set
-+CONFIG_PROC_KCORE=y
-+# CONFIG_PROC_PAGE_MONITOR is not set
-+CONFIG_TMPFS=y
-+CONFIG_CONFIGFS_FS=y
-+# CONFIG_MISC_FILESYSTEMS is not set
-+# CONFIG_NETWORK_FILESYSTEMS is not set
-+CONFIG_NLS=y
-+CONFIG_NLS_CODEPAGE_437=y
-+CONFIG_NLS_CODEPAGE_737=y
-+CONFIG_NLS_CODEPAGE_775=y
-+CONFIG_NLS_CODEPAGE_850=y
-+CONFIG_NLS_CODEPAGE_852=y
-+CONFIG_NLS_CODEPAGE_855=y
-+CONFIG_NLS_CODEPAGE_857=y
-+CONFIG_NLS_CODEPAGE_860=y
-+CONFIG_NLS_CODEPAGE_861=y
-+CONFIG_NLS_CODEPAGE_862=y
-+CONFIG_NLS_CODEPAGE_863=y
-+CONFIG_NLS_CODEPAGE_864=y
-+CONFIG_NLS_CODEPAGE_865=y
-+CONFIG_NLS_CODEPAGE_866=y
-+CONFIG_NLS_CODEPAGE_869=y
-+CONFIG_NLS_CODEPAGE_936=y
-+CONFIG_NLS_CODEPAGE_950=y
-+CONFIG_NLS_CODEPAGE_932=y
-+CONFIG_NLS_CODEPAGE_949=y
-+CONFIG_NLS_CODEPAGE_874=y
-+CONFIG_NLS_ISO8859_8=y
-+CONFIG_NLS_CODEPAGE_1250=y
-+CONFIG_NLS_CODEPAGE_1251=y
-+CONFIG_NLS_ASCII=y
-+CONFIG_NLS_ISO8859_1=y
-+CONFIG_NLS_ISO8859_2=y
-+CONFIG_NLS_ISO8859_3=y
-+CONFIG_NLS_ISO8859_4=y
-+CONFIG_NLS_ISO8859_5=y
-+CONFIG_NLS_ISO8859_6=y
-+CONFIG_NLS_ISO8859_7=y
-+CONFIG_NLS_ISO8859_9=y
-+CONFIG_NLS_ISO8859_13=y
-+CONFIG_NLS_ISO8859_14=y
-+CONFIG_NLS_ISO8859_15=y
-+CONFIG_NLS_KOI8_R=y
-+CONFIG_NLS_KOI8_U=y
-+CONFIG_NLS_UTF8=y
-+CONFIG_PRINTK_TIME=y
-+CONFIG_DEBUG_INFO=y
-+CONFIG_STRIP_ASM_SYMS=y
-+CONFIG_DEBUG_FS=y
-+CONFIG_MAGIC_SYSRQ=y
-+CONFIG_LOCKUP_DETECTOR=y
-+CONFIG_BOOTPARAM_SOFTLOCKUP_PANIC=y
-+CONFIG_BOOTPARAM_HUNG_TASK_PANIC=y
-+CONFIG_PANIC_ON_OOPS=y
-+CONFIG_PANIC_TIMEOUT=10
-+# CONFIG_SCHED_DEBUG is not set
-+# CONFIG_DEBUG_PREEMPT is not set
-+CONFIG_STACKTRACE=y
-+# CONFIG_FTRACE is not set
-+CONFIG_CMDLINE_BOOL=y
-+CONFIG_CMDLINE="earlycon console=ttyS4,115200 clk_ignore_unused nowait"
-diff --git a/arch/mips/jz4740/Kconfig b/arch/mips/jz4740/Kconfig
-index 21adcea..36f8201 100644
---- a/arch/mips/jz4740/Kconfig
-+++ b/arch/mips/jz4740/Kconfig
-@@ -7,6 +7,10 @@ config JZ4740_QI_LB60
- 	bool "Qi Hardware Ben NanoNote"
- 	select MACH_JZ4740
+ /* Mask of CPUs which are currently definitely operating coherently */
+ extern cpumask_t cpu_coherent_mask;
+diff --git a/arch/mips/kernel/smp.c b/arch/mips/kernel/smp.c
+index 193ace7955fb..158191394770 100644
+--- a/arch/mips/kernel/smp.c
++++ b/arch/mips/kernel/smp.c
+@@ -43,7 +43,7 @@
+ #include <asm/time.h>
+ #include <asm/setup.h>
  
-+config JZ4780_CI20
-+	bool "MIPS Creator CI20"
-+	select MACH_JZ4780
-+
- endchoice
+-volatile cpumask_t cpu_callin_map;	/* Bitmask of started secondaries */
++cpumask_t cpu_callin_map;		/* Bitmask of started secondaries */
  
- config MACH_JZ4740
+ int __cpu_number_map[NR_CPUS];		/* Map physical to logical */
+ EXPORT_SYMBOL(__cpu_number_map);
+@@ -218,8 +218,10 @@ int __cpu_up(unsigned int cpu, struct task_struct *tidle)
+ 	/*
+ 	 * Trust is futile.  We should really have timeouts ...
+ 	 */
+-	while (!cpumask_test_cpu(cpu, &cpu_callin_map))
++	while (!cpumask_test_cpu(cpu, &cpu_callin_map)) {
+ 		udelay(100);
++		mb();
++	}
+ 
+ 	synchronise_count_master(cpu);
+ 	return 0;
 -- 
-2.3.5
+2.1.0

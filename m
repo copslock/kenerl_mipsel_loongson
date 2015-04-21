@@ -1,33 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Apr 2015 13:13:34 +0200 (CEST)
-Received: from ozlabs.org ([103.22.144.67]:33623 "EHLO ozlabs.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27006880AbbDULNadCYi7 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 21 Apr 2015 13:13:30 +0200
-Received: by ozlabs.org (Postfix, from userid 1011)
-        id 4196114010F; Tue, 21 Apr 2015 21:13:26 +1000 (AEST)
-From:   Rusty Russell <rusty@rustcorp.com.au>
-To:     Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Guenter Roeck <linux@roeck-us.net>
-Cc:     linux-kernel@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        linux-mips@linux-mips.org
-Subject: Re: mips build failures due to commit 8dd928915a73 (mips: fix up obsolete cpu function usage)
-In-Reply-To: <20150420210933.GB31618@fuloong-minipc.musicnaut.iki.fi>
-References: <20150420194028.GA10814@roeck-us.net> <20150420210933.GB31618@fuloong-minipc.musicnaut.iki.fi>
-User-Agent: Notmuch/0.17 (http://notmuchmail.org) Emacs/24.3.1 (x86_64-pc-linux-gnu)
-Date:   Tue, 21 Apr 2015 13:45:35 +0930
-Message-ID: <87fv7up15k.fsf@rustcorp.com.au>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Apr 2015 16:27:00 +0200 (CEST)
+Received: from mail-wi0-f177.google.com ([209.85.212.177]:38752 "EHLO
+        mail-wi0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012029AbbDUO06X2fRY (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 21 Apr 2015 16:26:58 +0200
+Received: by wiun10 with SMTP id n10so23622346wiu.1;
+        Tue, 21 Apr 2015 07:26:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc:content-type;
+        bh=/jB2UTCvzTw1PiE00u72wh4AkVczILxSk8eNcQ82C9A=;
+        b=SzlvLl/zM17+bK0yPmd4bcL0/qWd8WGS4HR7ZgAIfuads2Qu5rZ8ZUeR9Nm9VkJR06
+         WxXvrT/1WosKVIucqSzlzzrImVispbPXjZ8+IJqJ/um39WJCYpGZ5TFG8p2nq6A0qGiH
+         81EZyOZKduLLcRWaQsNat/WyJzOf74XGAtQAxx84Mf9OoIHuIoRI87TShghtBhdjyl4o
+         KIdsYK5Lfreg+TQwlT63S537nm8FPBRyzU+NIgSb3hEAK185i7N8PJ8NBZHJN/N/mgVO
+         2seeT3QlfmbTmOOQZGRiXctGIYWAS5NN/vo8SgRXK/b19Dg5SmUSP8+vx3BM8yb927IW
+         XA+Q==
+X-Received: by 10.194.133.133 with SMTP id pc5mr40477077wjb.31.1429626414768;
+ Tue, 21 Apr 2015 07:26:54 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-Return-Path: <rusty@ozlabs.org>
+Received: by 10.28.139.195 with HTTP; Tue, 21 Apr 2015 07:26:34 -0700 (PDT)
+In-Reply-To: <1429373607-9226-2-git-send-email-albeu@free.fr>
+References: <1429280669-2986-1-git-send-email-albeu@free.fr>
+ <1429373607-9226-1-git-send-email-albeu@free.fr> <1429373607-9226-2-git-send-email-albeu@free.fr>
+From:   Rob Herring <robherring2@gmail.com>
+Date:   Tue, 21 Apr 2015 09:26:34 -0500
+Message-ID: <CAL_JsqJJnkMH7Tk6TxvtESEJisCeUVxcSPc7d8W-_AnLvZYfuw@mail.gmail.com>
+Subject: Re: [PATCH 13/14] of: Add vendor prefix for TP-Link Technologies Co. Ltd
+To:     Alban Bedel <albeu@free.fr>
+Cc:     Linux-MIPS <linux-mips@linux-mips.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Pawel Moll <pawel.moll@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ian Campbell <ijc+devicetree@hellion.org.uk>,
+        Kumar Gala <galak@codeaurora.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Andrew Bresticker <abrestic@chromium.org>,
+        Qais Yousef <qais.yousef@imgtec.com>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <robherring2@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46955
+X-archive-position: 46956
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rusty@rustcorp.com.au
+X-original-sender: robherring2@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -40,42 +63,29 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Aaro Koskinen <aaro.koskinen@iki.fi> writes:
-> Hi,
+On Sat, Apr 18, 2015 at 11:13 AM, Alban Bedel <albeu@free.fr> wrote:
+> Signed-off-by: Alban Bedel <albeu@free.fr>
+> ---
+>  Documentation/devicetree/bindings/vendor-prefixes.txt | 1 +
+>  1 file changed, 1 insertion(+)
 >
-> On Mon, Apr 20, 2015 at 12:40:28PM -0700, Guenter Roeck wrote:
->> the upstream kernel fails to build mips:nlm_xlp_defconfig,
->> mips:nlm_xlp_defconfig, mips:cavium_octeon_defconfig, and possibly
->> other targets, with errors such as
->> 
->> arch/mips/kernel/smp.c:211:2: error:
->> 	passing argument 2 of 'cpumask_set_cpu' discards 'volatile' qualifier
->> 	from pointer target type
->> arch/mips/kernel/process.c:52:2: error:
->> 	passing argument 2 of 'cpumask_test_cpu' discards 'volatile' qualifier
->> 	from pointer target type
->> arch/mips/cavium-octeon/smp.c:242:2: error:
->> 	passing argument 2 of 'cpumask_clear_cpu' discards 'volatile' qualifier
->> 	from pointer target type
->> 
->> The problem was introduced with commit 8dd928915a73 (" mips: fix up
->> obsolete cpu function usage"). I would send a patch to fix it, but I
->> am not sure if removing 'volatile' from the variable declaration(s)
->> would be a good idea.
+> diff --git a/Documentation/devicetree/bindings/vendor-prefixes.txt b/Documentation/devicetree/bindings/vendor-prefixes.txt
+> index b13aa55..9e965b6 100644
+> --- a/Documentation/devicetree/bindings/vendor-prefixes.txt
+> +++ b/Documentation/devicetree/bindings/vendor-prefixes.txt
+> @@ -185,6 +185,7 @@ tbs TBS Technologies
+>  thine  THine Electronics, Inc.
+>  ti     Texas Instruments
+>  tlm    Trusted Logic Mobility
+> +tplink TP-LINK Technologies Co., Ltd.
+
+Alphabetical order please.
+
+Rob
+
+>  toradex        Toradex AG
+>  toshiba        Toshiba Corporation
+>  toumaz Toumaz
+> --
+> 2.0.0
 >
-> I think removing volatile from cpu_callin_map declaration should be OK,
-> since test_cpu (only reader) uses test_bit which takes care of it:
->
-> 	static inline int test_bit(int nr, const volatile unsigned long *addr)
-
-No, that got replaced too, with cpumask_test_cpu AFAICT.
-
-You can open-code it, like so:
-
-        test_bit(0, cpumask_bits(cpu_callin_map));
-
-But you probably want to put a barrier in that loop instead of relying
-on volatile.
-
-Thanks,
-Rusty.

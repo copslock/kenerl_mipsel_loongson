@@ -1,24 +1,24 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Apr 2015 16:48:56 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:8433 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Apr 2015 16:49:16 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:56463 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27025934AbbDUOspu6SO6 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 21 Apr 2015 16:48:45 +0200
+        with ESMTP id S27025939AbbDUOtBQrVAP (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 21 Apr 2015 16:49:01 +0200
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 30EDB4FA31A45;
-        Tue, 21 Apr 2015 15:48:39 +0100 (IST)
+        by Websense Email Security Gateway with ESMTPS id A6CE1D79E3604;
+        Tue, 21 Apr 2015 15:48:53 +0100 (IST)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
  KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Tue, 21 Apr 2015 15:48:41 +0100
+ 14.3.195.1; Tue, 21 Apr 2015 15:48:56 +0100
 Received: from localhost (192.168.159.67) by LEMAIL01.le.imgtec.org
  (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Tue, 21 Apr
- 2015 15:48:40 +0100
+ 2015 15:48:56 +0100
 From:   Paul Burton <paul.burton@imgtec.com>
 To:     <linux-mips@linux-mips.org>
 CC:     Paul Burton <paul.burton@imgtec.com>,
         Lars-Peter Clausen <lars@metafoo.de>
-Subject: [PATCH v3 04/37] MIPS: ingenic: add newer vendor IDs
-Date:   Tue, 21 Apr 2015 15:46:31 +0100
-Message-ID: <1429627624-30525-5-git-send-email-paul.burton@imgtec.com>
+Subject: [PATCH v3 05/37] MIPS: JZ4740: require & include DT
+Date:   Tue, 21 Apr 2015 15:46:32 +0100
+Message-ID: <1429627624-30525-6-git-send-email-paul.burton@imgtec.com>
 X-Mailer: git-send-email 2.3.5
 In-Reply-To: <1429627624-30525-1-git-send-email-paul.burton@imgtec.com>
 References: <1429627624-30525-1-git-send-email-paul.burton@imgtec.com>
@@ -29,7 +29,7 @@ Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46961
+X-archive-position: 46962
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,64 +46,133 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Ingenic have actually varied the vendor/company ID of the XBurst cores
-across their range of SoCs, whilst keeping the product ID & revision
-constant... Add definitions for vendor IDs known to be used in some of
-Ingenic's newer SoCs, and handle them in the same way as the existing
-Ingenic vendor ID from the JZ4740.
+Require a DT for JZ4740 based systems, and add a stub one for the
+qi_lb60 (Ben NanoNote) board. Devices will be migrated to being probed
+via this DT over time.
 
 Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-Co-authored-by: Paul Cercueil <paul@crapouillou.net>
 Cc: Lars-Peter Clausen <lars@metafoo.de>
 ---
 Changes in v3:
-  - New patch, encompassing patch 31 "MIPS: add jz4780 Ingenic vendor
-    ID" of v2.
+  - Rebase.
 
-  - Give up on associating vendor IDs with unique SoCs.
+Changes in v2:
+  - None.
 ---
- arch/mips/include/asm/cpu.h  | 6 ++++--
- arch/mips/kernel/cpu-probe.c | 4 +++-
- 2 files changed, 7 insertions(+), 3 deletions(-)
+ arch/mips/Kconfig                      |  2 ++
+ arch/mips/boot/dts/Makefile            |  1 +
+ arch/mips/boot/dts/ingenic/Makefile    |  9 +++++++++
+ arch/mips/boot/dts/ingenic/jz4740.dtsi |  5 +++++
+ arch/mips/boot/dts/ingenic/qi_lb60.dts |  7 +++++++
+ arch/mips/jz4740/setup.c               | 19 +++++++++++++++++++
+ 6 files changed, 43 insertions(+)
+ create mode 100644 arch/mips/boot/dts/ingenic/Makefile
+ create mode 100644 arch/mips/boot/dts/ingenic/jz4740.dtsi
+ create mode 100644 arch/mips/boot/dts/ingenic/qi_lb60.dts
 
-diff --git a/arch/mips/include/asm/cpu.h b/arch/mips/include/asm/cpu.h
-index e3adca1..73dd357 100644
---- a/arch/mips/include/asm/cpu.h
-+++ b/arch/mips/include/asm/cpu.h
-@@ -42,7 +42,9 @@
- #define PRID_COMP_LEXRA		0x0b0000
- #define PRID_COMP_NETLOGIC	0x0c0000
- #define PRID_COMP_CAVIUM	0x0d0000
--#define PRID_COMP_INGENIC	0xd00000
-+#define PRID_COMP_INGENIC_D0	0xd00000	/* JZ4740, JZ4750 */
-+#define PRID_COMP_INGENIC_D1	0xd10000	/* JZ4770, JZ4775 */
-+#define PRID_COMP_INGENIC_E1	0xe10000	/* JZ4780 */
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 4a3acca..741e364 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -299,6 +299,8 @@ config MACH_INGENIC
+ 	select SYS_HAS_EARLY_PRINTK
+ 	select HAVE_CLK
+ 	select GENERIC_IRQ_CHIP
++	select BUILTIN_DTB
++	select USE_OF
  
- /*
-  * Assigned Processor ID (implementation) values for bits 15:8 of the PRId
-@@ -168,7 +170,7 @@
- #define PRID_IMP_CAVIUM_CN70XX 0x9600
+ config LANTIQ
+ 	bool "Lantiq based platforms"
+diff --git a/arch/mips/boot/dts/Makefile b/arch/mips/boot/dts/Makefile
+index 5d95e4b..9c31b30 100644
+--- a/arch/mips/boot/dts/Makefile
++++ b/arch/mips/boot/dts/Makefile
+@@ -1,5 +1,6 @@
+ dts-dirs	+= brcm
+ dts-dirs	+= cavium-octeon
++dts-dirs	+= ingenic
+ dts-dirs	+= lantiq
+ dts-dirs	+= mti
+ dts-dirs	+= netlogic
+diff --git a/arch/mips/boot/dts/ingenic/Makefile b/arch/mips/boot/dts/ingenic/Makefile
+new file mode 100644
+index 0000000..0c84f0b
+--- /dev/null
++++ b/arch/mips/boot/dts/ingenic/Makefile
+@@ -0,0 +1,9 @@
++dtb-$(CONFIG_JZ4740_QI_LB60)	+= qi_lb60.dtb
++
++obj-y				+= $(patsubst %.dtb, %.dtb.o, $(dtb-y))
++
++# Force kbuild to make empty built-in.o if necessary
++obj-				+= dummy.o
++
++always				:= $(dtb-y)
++clean-files			:= *.dtb *.dtb.S
+diff --git a/arch/mips/boot/dts/ingenic/jz4740.dtsi b/arch/mips/boot/dts/ingenic/jz4740.dtsi
+new file mode 100644
+index 0000000..c538691f
+--- /dev/null
++++ b/arch/mips/boot/dts/ingenic/jz4740.dtsi
+@@ -0,0 +1,5 @@
++/ {
++	#address-cells = <1>;
++	#size-cells = <1>;
++	compatible = "ingenic,jz4740";
++};
+diff --git a/arch/mips/boot/dts/ingenic/qi_lb60.dts b/arch/mips/boot/dts/ingenic/qi_lb60.dts
+new file mode 100644
+index 0000000..0c0f639
+--- /dev/null
++++ b/arch/mips/boot/dts/ingenic/qi_lb60.dts
+@@ -0,0 +1,7 @@
++/dts-v1/;
++
++#include "jz4740.dtsi"
++
++/ {
++	compatible = "qi,lb60", "ingenic,jz4740";
++};
+diff --git a/arch/mips/jz4740/setup.c b/arch/mips/jz4740/setup.c
+index ef796f9..d6bb7a3 100644
+--- a/arch/mips/jz4740/setup.c
++++ b/arch/mips/jz4740/setup.c
+@@ -17,8 +17,11 @@
+ #include <linux/init.h>
+ #include <linux/io.h>
+ #include <linux/kernel.h>
++#include <linux/of_fdt.h>
++#include <linux/of_platform.h>
  
- /*
-- * These are the PRID's for when 23:16 == PRID_COMP_INGENIC
-+ * These are the PRID's for when 23:16 == PRID_COMP_INGENIC_*
-  */
+ #include <asm/bootinfo.h>
++#include <asm/prom.h>
  
- #define PRID_IMP_JZRISC	       0x0200
-diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
-index e36515d..0444e69 100644
---- a/arch/mips/kernel/cpu-probe.c
-+++ b/arch/mips/kernel/cpu-probe.c
-@@ -1444,7 +1444,9 @@ void cpu_probe(void)
- 	case PRID_COMP_CAVIUM:
- 		cpu_probe_cavium(c, cpu);
- 		break;
--	case PRID_COMP_INGENIC:
-+	case PRID_COMP_INGENIC_D0:
-+	case PRID_COMP_INGENIC_D1:
-+	case PRID_COMP_INGENIC_E1:
- 		cpu_probe_ingenic(c, cpu);
- 		break;
- 	case PRID_COMP_NETLOGIC:
+ #include <asm/mach-jz4740/base.h>
+ 
+@@ -53,8 +56,24 @@ void __init plat_mem_setup(void)
+ {
+ 	jz4740_reset_init();
+ 	jz4740_detect_mem();
++	__dt_setup_arch(__dtb_start);
+ }
+ 
++void __init device_tree_init(void)
++{
++	if (!initial_boot_params)
++		return;
++
++	unflatten_and_copy_device_tree();
++}
++
++static int __init populate_machine(void)
++{
++	of_platform_populate(NULL, of_default_bus_match_table, NULL, NULL);
++	return 0;
++}
++arch_initcall(populate_machine);
++
+ const char *get_system_type(void)
+ {
+ 	return "JZ4740";
 -- 
 2.3.5

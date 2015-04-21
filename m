@@ -1,40 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Apr 2015 23:09:47 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:55056 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Apr 2015 23:47:43 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:10163 "EHLO
         imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27007121AbbDUVJpWemMp (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 21 Apr 2015 23:09:45 +0200
+        by eddie.linux-mips.org with ESMTP id S27007121AbbDUVrlQHDEN (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 21 Apr 2015 23:47:41 +0200
 Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
-        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 8003C41F8D57;
-        Tue, 21 Apr 2015 22:09:41 +0100 (BST)
+        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 5202441F8D57;
+        Tue, 21 Apr 2015 22:47:37 +0100 (BST)
 Received: from mailapp01.imgtec.com ([10.100.180.241])
   by imgpgp01.kl.imgtec.org (PGP Universal service);
-  Tue, 21 Apr 2015 22:09:41 +0100
+  Tue, 21 Apr 2015 22:47:37 +0100
 X-PGP-Universal: processed;
-        by imgpgp01.kl.imgtec.org on Tue, 21 Apr 2015 22:09:41 +0100
+        by imgpgp01.kl.imgtec.org on Tue, 21 Apr 2015 22:47:37 +0100
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id CBACB9DEC1526;
-        Tue, 21 Apr 2015 22:09:37 +0100 (IST)
+        by Websense Email Security Gateway with ESMTPS id 8B2D594AA28B;
+        Tue, 21 Apr 2015 22:47:33 +0100 (IST)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
  KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Tue, 21 Apr 2015 22:09:41 +0100
+ 14.3.195.1; Tue, 21 Apr 2015 22:47:36 +0100
 Received: from localhost (192.168.154.110) by LEMAIL01.le.imgtec.org
  (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Tue, 21 Apr
- 2015 22:09:40 +0100
-Date:   Tue, 21 Apr 2015 22:09:40 +0100
+ 2015 22:47:36 +0100
+Date:   Tue, 21 Apr 2015 22:47:36 +0100
 From:   James Hogan <james.hogan@imgtec.com>
 To:     Paul Burton <paul.burton@imgtec.com>
 CC:     <linux-mips@linux-mips.org>, Lars-Peter Clausen <lars@metafoo.de>,
-        "Thomas Gleixner" <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>
-Subject: Re: [PATCH v3 15/37] MIPS: JZ4740: remove jz_intc_base global
-Message-ID: <20150421210843.GA10157@jhogan-linux.le.imgtec.org>
+        "Mike Turquette" <mturquette@linaro.org>,
+        <devicetree@vger.kernel.org>
+Subject: Re: [PATCH v3 24/37] devicetree: add Ingenic CGU binding
+ documentation
+Message-ID: <20150421214736.GB10157@jhogan-linux.le.imgtec.org>
 References: <1429627624-30525-1-git-send-email-paul.burton@imgtec.com>
- <1429627624-30525-16-git-send-email-paul.burton@imgtec.com>
+ <1429627624-30525-25-git-send-email-paul.burton@imgtec.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="98e8jtXdkpgskNou"
+        protocol="application/pgp-signature"; boundary="V88s5gaDVPzZ0KCq"
 Content-Disposition: inline
-In-Reply-To: <1429627624-30525-16-git-send-email-paul.burton@imgtec.com>
+In-Reply-To: <1429627624-30525-25-git-send-email-paul.burton@imgtec.com>
 User-Agent: Mutt/1.5.23 (2014-03-12)
 X-Originating-IP: [192.168.154.110]
 X-ESG-ENCRYPT-TAG: da4c5968
@@ -42,7 +43,7 @@ Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46999
+X-archive-position: 47000
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -59,140 +60,277 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---98e8jtXdkpgskNou
+--V88s5gaDVPzZ0KCq
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-Hi Paul,
-
-On Tue, Apr 21, 2015 at 03:46:42PM +0100, Paul Burton wrote:
-> Avoid the need for the global variable jz_intc_base by introducing a
-> struct ingenic_intc_data and passing it around as the IRQ handler data.
+On Tue, Apr 21, 2015 at 03:46:51PM +0100, Paul Burton wrote:
+> Document the devicetree binding for Ingenic SoC CGUs, and add headers
+> defining the clock specifiers for clocks provided by the JZ4740 & JZ4780
+> CGU blocks.
 >=20
 > Signed-off-by: Paul Burton <paul.burton@imgtec.com>
 > Cc: Lars-Peter Clausen <lars@metafoo.de>
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Jason Cooper <jason@lakedaemon.net>
+> Cc: Mike Turquette <mturquette@linaro.org>
+> Cc: devicetree@vger.kernel.org
 > ---
 > Changes in v3:
->   - New patch.
-> ---
->  arch/mips/jz4740/irq.c | 35 ++++++++++++++++++++++++++---------
->  1 file changed, 26 insertions(+), 9 deletions(-)
+>   - Merge binding documentation for various Ingenic SoCs which differ only
+>     by compatible strings.
 >=20
-> diff --git a/arch/mips/jz4740/irq.c b/arch/mips/jz4740/irq.c
-> index 615eaa8..498ff28 100644
-> --- a/arch/mips/jz4740/irq.c
-> +++ b/arch/mips/jz4740/irq.c
-> @@ -32,7 +32,9 @@
-> =20
->  #include "../../drivers/irqchip/irqchip.h"
-> =20
-> -static void __iomem *jz_intc_base;
-> +struct ingenic_intc_data {
-> +	void __iomem *base;
-> +};
-> =20
->  #define JZ_REG_INTC_STATUS	0x00
->  #define JZ_REG_INTC_MASK	0x04
-> @@ -42,9 +44,10 @@ static void __iomem *jz_intc_base;
-> =20
->  static irqreturn_t jz4740_cascade(int irq, void *data)
->  {
-> +	struct ingenic_intc_data *intc =3D irq_get_handler_data(irq);
->  	uint32_t irq_reg;
-> =20
-> -	irq_reg =3D readl(jz_intc_base + JZ_REG_INTC_PENDING);
-> +	irq_reg =3D readl(intc->base + JZ_REG_INTC_PENDING);
-> =20
->  	if (irq_reg)
->  		generic_handle_irq(__fls(irq_reg) + JZ4740_IRQ_BASE);
-> @@ -80,21 +83,30 @@ static struct irqaction jz4740_cascade_action =3D {
->  static int __init jz4740_intc_of_init(struct device_node *node,
->  	struct device_node *parent)
->  {
-> +	struct ingenic_intc_data *intc;
->  	struct irq_chip_generic *gc;
->  	struct irq_chip_type *ct;
->  	struct irq_domain *domain;
-> -	int parent_irq;
-> +	int parent_irq, err =3D 0;
+> Changes in v2:
+>   - None.
+> ---
+>  .../devicetree/bindings/clock/ingenic,cgu.txt      | 53 +++++++++++++
+>  include/dt-bindings/clock/jz4740-cgu.h             | 37 +++++++++
+>  include/dt-bindings/clock/jz4780-cgu.h             | 88 ++++++++++++++++=
+++++++
+>  3 files changed, 178 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/clock/ingenic,cgu.t=
+xt
+>  create mode 100644 include/dt-bindings/clock/jz4740-cgu.h
+>  create mode 100644 include/dt-bindings/clock/jz4780-cgu.h
+>=20
+> diff --git a/Documentation/devicetree/bindings/clock/ingenic,cgu.txt b/Do=
+cumentation/devicetree/bindings/clock/ingenic,cgu.txt
+> new file mode 100644
+> index 0000000..7421f8c
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/clock/ingenic,cgu.txt
+> @@ -0,0 +1,53 @@
+> +Ingenic SoC CGU binding
 > +
-> +	intc =3D kzalloc(sizeof(*intc), GFP_KERNEL);
-> +	if (!intc) {
-> +		err =3D -ENOMEM;
-> +		goto out;
-> +	}
-> =20
->  	parent_irq =3D irq_of_parse_and_map(node, 0);
-> -	if (!parent_irq)
-> -		return -EINVAL;
-> +	if (!parent_irq) {
-> +		err =3D -EINVAL;
-> +		goto out;
-> +	}
-> =20
-> -	jz_intc_base =3D ioremap(JZ4740_INTC_BASE_ADDR, 0x14);
-> +	intc->base =3D ioremap(JZ4740_INTC_BASE_ADDR, 0x14);
-> =20
->  	/* Mask all irqs */
-> -	writel(0xffffffff, jz_intc_base + JZ_REG_INTC_SET_MASK);
-> +	writel(0xffffffff, intc->base + JZ_REG_INTC_SET_MASK);
-> =20
-> -	gc =3D irq_alloc_generic_chip("INTC", 1, JZ4740_IRQ_BASE, jz_intc_base,
-> +	gc =3D irq_alloc_generic_chip("INTC", 1, JZ4740_IRQ_BASE, intc->base,
->  		handle_level_irq);
-> =20
->  	gc->wake_enabled =3D IRQ_MSK(32);
-> @@ -116,7 +128,12 @@ static int __init jz4740_intc_of_init(struct device_=
-node *node,
->  	if (!domain)
->  		pr_warn("unable to register IRQ domain\n");
-> =20
-> +	err =3D irq_set_handler_data(parent_irq, intc);
-> +	if (err)
-> +		goto out;
+> +The CGU in an Ingenic SoC provides all the clocks generated on-chip. It
+> +typically includes a variety of PLLs, multiplexers, dividers & gates in =
+order
+> +to provide many different clock signals derived from only 2 external sou=
+rce
+> +clocks.
 > +
->  	setup_irq(parent_irq, &jz4740_cascade_action);
-> -	return 0;
-> +out:
+> +Required properties:
+> +- compatible : Should be "ingenic,<soctype>-cgu".
+> +  For example "ingenic,jz4740-cgu" or "ingenic,jz4780-cgu".
+> +- reg : The address & length of the CGU registers.
+> +- clocks : List of phandle & clock specifiers for clocks external to the=
+ TCU.
 
-Error handling in this function seems a bit lacking. Should it not be
-freeing, iounmapping, and somehow freeing the generic irq chip as
-appropriate for each of the error cases?
+Suspect TCU is a typo for CGU.
 
 Cheers
 James
 
-> +	return err;
->  }
->  IRQCHIP_DECLARE(jz4740_intc, "ingenic,jz4740-intc", jz4740_intc_of_init);
+> +  Two such external clocks should be specified - first the external crys=
+tal
+> +  "ext" and second the RTC clock source "rtc".
+> +- clock-names : List of name strings for the external clocks.
+> +- #clock-cells: Should be 1.
+> +  Clock consumers specify this argument to identify a clock. The valid v=
+alues
+> +  may be found in <dt-bindings/clock/<soctype>-cgu.h>.
+> +
+> +Example SoC include file:
+> +
+> +/ {
+> +	cgu: jz4740-cgu {
+> +		compatible =3D "ingenic,jz4740-cgu";
+> +		reg =3D <0x10000000 0x100>;
+> +		#clock-cells =3D <1>;
+> +	};
+> +
+> +	uart0: serial@10030000 {
+> +		clocks =3D <&cgu JZ4740_CLK_UART0>;
+> +	};
+> +};
+> +
+> +Example board file:
+> +
+> +/ {
+> +	ext: clock@0 {
+> +		compatible =3D "fixed-clock";
+> +		#clock-cells =3D <0>;
+> +		clock-frequency =3D <12000000>;
+> +	};
+> +
+> +	rtc: clock@1 {
+> +		compatible =3D "fixed-clock";
+> +		#clock-cells =3D <0>;
+> +		clock-frequency =3D <32768>;
+> +	};
+> +
+> +	&cgu {
+> +		clocks =3D <&ext> <&rtc>;
+> +		clock-names: "ext", "rtc";
+> +	};
+> +};
+> diff --git a/include/dt-bindings/clock/jz4740-cgu.h b/include/dt-bindings=
+/clock/jz4740-cgu.h
+> new file mode 100644
+> index 0000000..43153d3
+> --- /dev/null
+> +++ b/include/dt-bindings/clock/jz4740-cgu.h
+> @@ -0,0 +1,37 @@
+> +/*
+> + * This header provides clock numbers for the ingenic,jz4740-cgu DT bind=
+ing.
+> + *
+> + * They are roughly ordered as:
+> + *   - external clocks
+> + *   - PLLs
+> + *   - muxes/dividers in the order they appear in the jz4740 programmers=
+ manual
+> + *   - gates in order of their bit in the CLKGR* registers
+> + */
+> +
+> +#ifndef __DT_BINDINGS_CLOCK_JZ4740_CGU_H__
+> +#define __DT_BINDINGS_CLOCK_JZ4740_CGU_H__
+> +
+> +#define JZ4740_CLK_EXT		0
+> +#define JZ4740_CLK_RTC		1
+> +#define JZ4740_CLK_PLL		2
+> +#define JZ4740_CLK_PLL_HALF	3
+> +#define JZ4740_CLK_CCLK		4
+> +#define JZ4740_CLK_HCLK		5
+> +#define JZ4740_CLK_PCLK		6
+> +#define JZ4740_CLK_MCLK		7
+> +#define JZ4740_CLK_LCD		8
+> +#define JZ4740_CLK_LCD_PCLK	9
+> +#define JZ4740_CLK_I2S		10
+> +#define JZ4740_CLK_SPI		11
+> +#define JZ4740_CLK_MMC		12
+> +#define JZ4740_CLK_UHC		13
+> +#define JZ4740_CLK_UDC		14
+> +#define JZ4740_CLK_UART0	15
+> +#define JZ4740_CLK_UART1	16
+> +#define JZ4740_CLK_DMA		17
+> +#define JZ4740_CLK_IPU		18
+> +#define JZ4740_CLK_ADC		19
+> +#define JZ4740_CLK_I2C		20
+> +#define JZ4740_CLK_AIC		21
+> +
+> +#endif /* __DT_BINDINGS_CLOCK_JZ4740_CGU_H__ */
+> diff --git a/include/dt-bindings/clock/jz4780-cgu.h b/include/dt-bindings=
+/clock/jz4780-cgu.h
+> new file mode 100644
+> index 0000000..467165e
+> --- /dev/null
+> +++ b/include/dt-bindings/clock/jz4780-cgu.h
+> @@ -0,0 +1,88 @@
+> +/*
+> + * This header provides clock numbers for the ingenic,jz4780-cgu DT bind=
+ing.
+> + *
+> + * They are roughly ordered as:
+> + *   - external clocks
+> + *   - PLLs
+> + *   - muxes/dividers in the order they appear in the jz4780 programmers=
+ manual
+> + *   - gates in order of their bit in the CLKGR* registers
+> + */
+> +
+> +#ifndef __DT_BINDINGS_CLOCK_JZ4780_CGU_H__
+> +#define __DT_BINDINGS_CLOCK_JZ4780_CGU_H__
+> +
+> +#define JZ4780_CLK_EXCLK	0
+> +#define JZ4780_CLK_RTCLK	1
+> +#define JZ4780_CLK_APLL		2
+> +#define JZ4780_CLK_MPLL		3
+> +#define JZ4780_CLK_EPLL		4
+> +#define JZ4780_CLK_VPLL		5
+> +#define JZ4780_CLK_OTGPHY	6
+> +#define JZ4780_CLK_SCLKA	7
+> +#define JZ4780_CLK_CPUMUX	8
+> +#define JZ4780_CLK_CPU		9
+> +#define JZ4780_CLK_L2CACHE	10
+> +#define JZ4780_CLK_AHB0		11
+> +#define JZ4780_CLK_AHB2PMUX	12
+> +#define JZ4780_CLK_AHB2		13
+> +#define JZ4780_CLK_PCLK		14
+> +#define JZ4780_CLK_DDR		15
+> +#define JZ4780_CLK_VPU		16
+> +#define JZ4780_CLK_I2SPLL	17
+> +#define JZ4780_CLK_I2S		18
+> +#define JZ4780_CLK_LCD0PIXCLK	19
+> +#define JZ4780_CLK_LCD1PIXCLK	20
+> +#define JZ4780_CLK_MSCMUX	21
+> +#define JZ4780_CLK_MSC0		22
+> +#define JZ4780_CLK_MSC1		23
+> +#define JZ4780_CLK_MSC2		24
+> +#define JZ4780_CLK_UHC		25
+> +#define JZ4780_CLK_SSIPLL	26
+> +#define JZ4780_CLK_SSI		27
+> +#define JZ4780_CLK_CIMMCLK	28
+> +#define JZ4780_CLK_PCMPLL	29
+> +#define JZ4780_CLK_PCM		30
+> +#define JZ4780_CLK_GPU		31
+> +#define JZ4780_CLK_HDMI		32
+> +#define JZ4780_CLK_BCH		33
+> +#define JZ4780_CLK_NEMC		34
+> +#define JZ4780_CLK_OTG0		35
+> +#define JZ4780_CLK_SSI0		36
+> +#define JZ4780_CLK_SMB0		37
+> +#define JZ4780_CLK_SMB1		38
+> +#define JZ4780_CLK_SCC		39
+> +#define JZ4780_CLK_AIC		40
+> +#define JZ4780_CLK_TSSI0	41
+> +#define JZ4780_CLK_OWI		42
+> +#define JZ4780_CLK_KBC		43
+> +#define JZ4780_CLK_SADC		44
+> +#define JZ4780_CLK_UART0	45
+> +#define JZ4780_CLK_UART1	46
+> +#define JZ4780_CLK_UART2	47
+> +#define JZ4780_CLK_UART3	48
+> +#define JZ4780_CLK_SSI1		49
+> +#define JZ4780_CLK_SSI2		50
+> +#define JZ4780_CLK_PDMA		51
+> +#define JZ4780_CLK_GPS		52
+> +#define JZ4780_CLK_MAC		53
+> +#define JZ4780_CLK_SMB2		54
+> +#define JZ4780_CLK_CIM		55
+> +#define JZ4780_CLK_LCD		56
+> +#define JZ4780_CLK_TVE		57
+> +#define JZ4780_CLK_IPU		58
+> +#define JZ4780_CLK_DDR0		59
+> +#define JZ4780_CLK_DDR1		60
+> +#define JZ4780_CLK_SMB3		61
+> +#define JZ4780_CLK_TSSI1	62
+> +#define JZ4780_CLK_COMPRESS	63
+> +#define JZ4780_CLK_AIC1		64
+> +#define JZ4780_CLK_GPVLC	65
+> +#define JZ4780_CLK_OTG1		66
+> +#define JZ4780_CLK_UART4	67
+> +#define JZ4780_CLK_AHBMON	68
+> +#define JZ4780_CLK_SMB4		69
+> +#define JZ4780_CLK_DES		70
+> +#define JZ4780_CLK_X2D		71
+> +#define JZ4780_CLK_CORE1	72
+> +
+> +#endif /* __DT_BINDINGS_CLOCK_JZ4780_CGU_H__ */
 > --=20
 > 2.3.5
 >=20
 >=20
 
---98e8jtXdkpgskNou
+--V88s5gaDVPzZ0KCq
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQIcBAEBAgAGBQJVNryUAAoJEGwLaZPeOHZ6PCMP/iArilu6Vl+Ckmg+NQdtAQzX
-UDJA1pDgRmY9rK8gpUB0cECLJQT+PSRI2cf14SR87J1mJTFQPDdelZl33Fzb+5/b
-6TgVXcfQvDPW21bCmSBRYIzRSWfuMx3bB+GJOpymFnwlvMIg5xVndAWvaPzvFBlv
-5DIn8B/nxe7X6VYo9DlsqycS8Twh8r0Gzm4Kf0lg3Qcn8fT6uJxtXFZ/p9sMIQ4o
-2KTl0id/FxnJwrSqy+xE5HjsRh8rdVnP9WMjw+TTaO4ntjaDQ/cua5v1zzLUauWy
-ELPaMtDpn90xILN7OAgPIl1cngMFFegxVbNm/2+eq+nI5HkCKIcIoBthufOUCSlU
-FvrPD16+1asBi5eo2uNQSHHx+TFDe24R16+RikWphGNUv5MC4bNOhmgh0+QHof7T
-bmTxUqeqR1eGLsbyEmu9ibIm4EjdX3m775KzE8+QUa/tm3hpwIlgViJtO/FeOSBg
-W2C1xlT3TtAxettFBLVzRTwotik5HozhU+p+8OOqkCB6wuTwkAS/enSY7QLSPrZB
-65XeQl6dDH0Q0HW3ASwJy0XYRPhaZul2TshLt9c2PO2NUEaSu9uU2Y/JIRFy/VpC
-INpHlDC2awurmEhrniARNpgg0MVJ4c6eQZeCqTRs6ydAyXDa+lTsIJ6/tEJmpN9C
-PELxPP/pjgxp+x+Jz9gO
-=8Mxa
+iQIcBAEBAgAGBQJVNsV4AAoJEGwLaZPeOHZ6gBAP/3tOYBV6DTrpdQn1URGLJ3H9
+8yW1Dw/ANHZ7daYi2ZP3xea8V3m8W3NjIlssuJLoiL5V9rME0g3DiHdMHmMfnrYI
+4LvSzAR7xbuhT8fzuBud7WS3or//g+Xw5Px6z6JYtJGuu+0ftSux9UkjShCYwsWR
+vr/2Ny5Mcp6UqWA7oAr5l+ZBlwxINdYCdu8HxBWRksetATe5dQ4NktF3LBjDGYCm
+ShNI/PidwUNWHltmzJtTOmHPdOS4DCsLTF1ltaf1wSc6XM4skJAihWh13hiFSZYR
+In9Ks6vOINBfPq/gl/R8a3gja9OUD1zfcqdkIXX8Q7/e3mC/MPnLPSPEEMxahAKV
+yfpScMx5qYd84Y4xyMtDis4lSdXSnpP7Dj9sS9uWPRc6AGcSCWD0YLeBGQJdQNPC
+/DPs+msfn2OHpDBeKnXKIDi4EhZ1vwRoIUulJXLR63ZgG/EiMJMYuIjupN8378XT
+uCaRyUxPfSjydJXBBspdcKOPhAdjQ0aQfCBcNR7pcRq5MsJOq4tlSt3nqdFypWOW
+DoN1BUwa+W30iYTAbF2+R4L3eujNVgU3HX2dcwpuPnbF7tmN2ZaoUzgYgaMWpu5H
+AcQ1nQQksnhcVvJO0rnmJtn72qB8UYMwrDmLgbV89zFgPMm9X5KduUrtqDU4oyKN
+ZrGDXuajmoWRE+rVZ+XG
+=wjiS
 -----END PGP SIGNATURE-----
 
---98e8jtXdkpgskNou--
+--V88s5gaDVPzZ0KCq--

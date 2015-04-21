@@ -1,24 +1,24 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Apr 2015 16:58:43 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:34292 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Apr 2015 16:58:59 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:29281 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27025968AbbDUO5uRjtKl (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 21 Apr 2015 16:57:50 +0200
+        with ESMTP id S27025967AbbDUO6HuJTUV (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 21 Apr 2015 16:58:07 +0200
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id B3500609BD6BD;
-        Tue, 21 Apr 2015 15:57:41 +0100 (IST)
+        by Websense Email Security Gateway with ESMTPS id 064C03C4E60F9;
+        Tue, 21 Apr 2015 15:58:00 +0100 (IST)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
  KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Tue, 21 Apr 2015 15:57:44 +0100
+ 14.3.195.1; Tue, 21 Apr 2015 15:58:02 +0100
 Received: from localhost (192.168.159.67) by LEMAIL01.le.imgtec.org
  (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Tue, 21 Apr
- 2015 15:57:43 +0100
+ 2015 15:57:59 +0100
 From:   Paul Burton <paul.burton@imgtec.com>
 To:     <linux-mips@linux-mips.org>
 CC:     Paul Burton <paul.burton@imgtec.com>,
         Lars-Peter Clausen <lars@metafoo.de>
-Subject: [PATCH v3 36/37] MIPS: ingenic: initial JZ4780 support
-Date:   Tue, 21 Apr 2015 15:47:03 +0100
-Message-ID: <1429627624-30525-37-git-send-email-paul.burton@imgtec.com>
+Subject: [PATCH v3 37/37] MIPS: ingenic: initial MIPS Creator CI20 support
+Date:   Tue, 21 Apr 2015 15:47:04 +0100
+Message-ID: <1429627624-30525-38-git-send-email-paul.burton@imgtec.com>
 X-Mailer: git-send-email 2.3.5
 In-Reply-To: <1429627624-30525-1-git-send-email-paul.burton@imgtec.com>
 References: <1429627624-30525-1-git-send-email-paul.burton@imgtec.com>
@@ -29,7 +29,7 @@ Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46994
+X-archive-position: 46995
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,265 +46,252 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Support the Ingenic JZ4780 SoC using the existing code under
-arch/mips/jz4740 now that it has been generalised sufficiently.
+Add an initial device tree for the Ingenic JZ4780 based MIPS Creator
+CI20 board.
 
 Signed-off-by: Paul Burton <paul.burton@imgtec.com>
 Cc: Lars-Peter Clausen <lars@metafoo.de>
 ---
 Changes in v3:
-  - Rebase, dropping serial.h & relocating behind CONFIG_MACH_INGENIC.
+  - Rebase, relocating behind CONFIG_MACH_INGENIC.
 
 Changes in v2:
   - None.
 ---
- arch/mips/boot/dts/ingenic/jz4780.dtsi             | 101 +++++++++++++++++++++
- arch/mips/include/asm/cpu-type.h                   |   2 +-
- .../asm/mach-jz4740/cpu-feature-overrides.h        |   3 -
- arch/mips/include/asm/mach-jz4740/irq.h            |   4 +
- arch/mips/jz4740/Kconfig                           |   6 ++
- arch/mips/jz4740/Makefile                          |   4 +-
- arch/mips/jz4740/setup.c                           |   3 +
- arch/mips/jz4740/time.c                            |   7 +-
- 8 files changed, 124 insertions(+), 6 deletions(-)
- create mode 100644 arch/mips/boot/dts/ingenic/jz4780.dtsi
+ arch/mips/boot/dts/ingenic/Makefile |   1 +
+ arch/mips/boot/dts/ingenic/ci20.dts |  21 +++++
+ arch/mips/configs/ci20_defconfig    | 169 ++++++++++++++++++++++++++++++++++++
+ arch/mips/jz4740/Kconfig            |   4 +
+ 4 files changed, 195 insertions(+)
+ create mode 100644 arch/mips/boot/dts/ingenic/ci20.dts
+ create mode 100644 arch/mips/configs/ci20_defconfig
 
-diff --git a/arch/mips/boot/dts/ingenic/jz4780.dtsi b/arch/mips/boot/dts/ingenic/jz4780.dtsi
+diff --git a/arch/mips/boot/dts/ingenic/Makefile b/arch/mips/boot/dts/ingenic/Makefile
+index 0c84f0b..f2b864f 100644
+--- a/arch/mips/boot/dts/ingenic/Makefile
++++ b/arch/mips/boot/dts/ingenic/Makefile
+@@ -1,4 +1,5 @@
+ dtb-$(CONFIG_JZ4740_QI_LB60)	+= qi_lb60.dtb
++dtb-$(CONFIG_JZ4780_CI20)	+= ci20.dtb
+ 
+ obj-y				+= $(patsubst %.dtb, %.dtb.o, $(dtb-y))
+ 
+diff --git a/arch/mips/boot/dts/ingenic/ci20.dts b/arch/mips/boot/dts/ingenic/ci20.dts
 new file mode 100644
-index 0000000..5e44dd6
+index 0000000..4f882ef
 --- /dev/null
-+++ b/arch/mips/boot/dts/ingenic/jz4780.dtsi
-@@ -0,0 +1,101 @@
-+#include <dt-bindings/clock/jz4780-cgu.h>
++++ b/arch/mips/boot/dts/ingenic/ci20.dts
+@@ -0,0 +1,21 @@
++/dts-v1/;
++
++#include "jz4780.dtsi"
 +
 +/ {
-+	#address-cells = <1>;
-+	#size-cells = <1>;
-+	compatible = "ingenic,jz4780";
++	compatible = "img,ci20", "ingenic,jz4780";
 +
-+	cpuintc: interrupt-controller {
-+		#address-cells = <0>;
-+		#interrupt-cells = <1>;
-+		interrupt-controller;
-+		compatible = "mti,cpu-interrupt-controller";
++	chosen {
++		stdout-path = &uart4;
 +	};
 +
-+	intc: interrupt-controller@10001000 {
-+		compatible = "ingenic,jz4780-intc";
-+		reg = <0x10001000 0x50>;
-+
-+		interrupt-controller;
-+		#interrupt-cells = <1>;
-+
-+		interrupt-parent = <&cpuintc>;
-+		interrupts = <2>;
-+	};
-+
-+	ext: ext {
-+		compatible = "fixed-clock";
-+		#clock-cells = <0>;
-+	};
-+
-+	rtc: rtc {
-+		compatible = "fixed-clock";
-+		#clock-cells = <0>;
-+		clock-frequency = <32768>;
-+	};
-+
-+	cgu: jz4780-cgu@10000000 {
-+		compatible = "ingenic,jz4780-cgu";
-+		reg = <0x10000000 0x100>;
-+
-+		clocks = <&ext>, <&rtc>;
-+		clock-names = "ext", "rtc";
-+
-+		#clock-cells = <1>;
-+	};
-+
-+	uart0: serial@10030000 {
-+		compatible = "ingenic,jz4780-uart";
-+		reg = <0x10030000 0x100>;
-+
-+		interrupt-parent = <&intc>;
-+		interrupts = <51>;
-+
-+		clocks = <&ext>, <&cgu JZ4780_CLK_UART0>;
-+		clock-names = "baud", "module";
-+	};
-+
-+	uart1: serial@10031000 {
-+		compatible = "ingenic,jz4780-uart";
-+		reg = <0x10031000 0x100>;
-+
-+		interrupt-parent = <&intc>;
-+		interrupts = <50>;
-+
-+		clocks = <&ext>, <&cgu JZ4780_CLK_UART1>;
-+		clock-names = "baud", "module";
-+	};
-+
-+	uart2: serial@10032000 {
-+		compatible = "ingenic,jz4780-uart";
-+		reg = <0x10032000 0x100>;
-+
-+		interrupt-parent = <&intc>;
-+		interrupts = <49>;
-+
-+		clocks = <&ext>, <&cgu JZ4780_CLK_UART2>;
-+		clock-names = "baud", "module";
-+	};
-+
-+	uart3: serial@10033000 {
-+		compatible = "ingenic,jz4780-uart";
-+		reg = <0x10033000 0x100>;
-+
-+		interrupt-parent = <&intc>;
-+		interrupts = <48>;
-+
-+		clocks = <&ext>, <&cgu JZ4780_CLK_UART3>;
-+		clock-names = "baud", "module";
-+	};
-+
-+	uart4: serial@10034000 {
-+		compatible = "ingenic,jz4780-uart";
-+		reg = <0x10034000 0x100>;
-+
-+		interrupt-parent = <&intc>;
-+		interrupts = <34>;
-+
-+		clocks = <&ext>, <&cgu JZ4780_CLK_UART4>;
-+		clock-names = "baud", "module";
++	memory {
++		device_type = "memory";
++		reg = <0x0 0x10000000
++		       0x30000000 0x30000000>;
 +	};
 +};
-diff --git a/arch/mips/include/asm/cpu-type.h b/arch/mips/include/asm/cpu-type.h
-index 33f3cab..d41e8e2 100644
---- a/arch/mips/include/asm/cpu-type.h
-+++ b/arch/mips/include/asm/cpu-type.h
-@@ -32,12 +32,12 @@ static inline int __pure __get_cpu_type(const int cpu_type)
- 	case CPU_4KC:
- 	case CPU_ALCHEMY:
- 	case CPU_PR4450:
--	case CPU_JZRISC:
- #endif
- 
- #if defined(CONFIG_SYS_HAS_CPU_MIPS32_R1) || \
-     defined(CONFIG_SYS_HAS_CPU_MIPS32_R2)
- 	case CPU_4KEC:
-+	case CPU_JZRISC:
- #endif
- 
- #ifdef CONFIG_SYS_HAS_CPU_MIPS32_R2
-diff --git a/arch/mips/include/asm/mach-jz4740/cpu-feature-overrides.h b/arch/mips/include/asm/mach-jz4740/cpu-feature-overrides.h
-index a225baa..0933f94 100644
---- a/arch/mips/include/asm/mach-jz4740/cpu-feature-overrides.h
-+++ b/arch/mips/include/asm/mach-jz4740/cpu-feature-overrides.h
-@@ -12,8 +12,6 @@
- #define cpu_has_3k_cache	0
- #define cpu_has_4k_cache	1
- #define cpu_has_tx39_cache	0
--#define cpu_has_fpu		0
--#define cpu_has_32fpr	0
- #define cpu_has_counter		0
- #define cpu_has_watch		1
- #define cpu_has_divec		1
-@@ -34,7 +32,6 @@
- #define cpu_has_ic_fills_f_dc	0
- #define cpu_has_pindexed_dcache 0
- #define cpu_has_mips32r1	1
--#define cpu_has_mips32r2	0
- #define cpu_has_mips64r1	0
- #define cpu_has_mips64r2	0
- #define cpu_has_dsp		0
-diff --git a/arch/mips/include/asm/mach-jz4740/irq.h b/arch/mips/include/asm/mach-jz4740/irq.h
-index b218f76..9b439fc 100644
---- a/arch/mips/include/asm/mach-jz4740/irq.h
-+++ b/arch/mips/include/asm/mach-jz4740/irq.h
-@@ -21,6 +21,8 @@
- 
- #ifdef CONFIG_MACH_JZ4740
- # define NR_INTC_IRQS	32
-+#else
-+# define NR_INTC_IRQS	64
- #endif
- 
- /* 1st-level interrupts */
-@@ -48,6 +50,8 @@
- #define JZ4740_IRQ_IPU		JZ4740_IRQ(29)
- #define JZ4740_IRQ_LCD		JZ4740_IRQ(30)
- 
-+#define JZ4780_IRQ_TCU2		JZ4740_IRQ(25)
 +
- /* 2nd-level interrupts */
- #define JZ4740_IRQ_DMA(x)	(JZ4740_IRQ(NR_INTC_IRQS) + (x))
- 
++&ext {
++	clock-frequency = <48000000>;
++};
+diff --git a/arch/mips/configs/ci20_defconfig b/arch/mips/configs/ci20_defconfig
+new file mode 100644
+index 0000000..0305fe0
+--- /dev/null
++++ b/arch/mips/configs/ci20_defconfig
+@@ -0,0 +1,169 @@
++CONFIG_MACH_INGENIC=y
++CONFIG_JZ4780_CI20=y
++CONFIG_HIGHMEM=y
++# CONFIG_COMPACTION is not set
++CONFIG_CMA=y
++CONFIG_HZ_100=y
++CONFIG_PREEMPT=y
++# CONFIG_SECCOMP is not set
++# CONFIG_LOCALVERSION_AUTO is not set
++CONFIG_KERNEL_XZ=y
++CONFIG_SYSVIPC=y
++CONFIG_POSIX_MQUEUE=y
++CONFIG_FHANDLE=y
++CONFIG_NO_HZ_IDLE=y
++CONFIG_HIGH_RES_TIMERS=y
++CONFIG_IKCONFIG=y
++CONFIG_IKCONFIG_PROC=y
++CONFIG_LOG_BUF_SHIFT=14
++CONFIG_CGROUPS=y
++CONFIG_CGROUP_FREEZER=y
++CONFIG_CGROUP_DEVICE=y
++CONFIG_CPUSETS=y
++CONFIG_CGROUP_CPUACCT=y
++CONFIG_MEMCG=y
++CONFIG_MEMCG_KMEM=y
++CONFIG_CGROUP_SCHED=y
++CONFIG_NAMESPACES=y
++CONFIG_USER_NS=y
++CONFIG_BLK_DEV_INITRD=y
++CONFIG_INITRAMFS_SOURCE="arch/mips/boot/ramdisk.cpio.xz"
++# CONFIG_RD_GZIP is not set
++# CONFIG_RD_BZIP2 is not set
++# CONFIG_RD_LZMA is not set
++# CONFIG_RD_LZO is not set
++# CONFIG_RD_LZ4 is not set
++CONFIG_CC_OPTIMIZE_FOR_SIZE=y
++CONFIG_SYSCTL_SYSCALL=y
++CONFIG_KALLSYMS_ALL=y
++CONFIG_EMBEDDED=y
++# CONFIG_VM_EVENT_COUNTERS is not set
++# CONFIG_COMPAT_BRK is not set
++CONFIG_SLAB=y
++# CONFIG_CORE_DUMP_DEFAULT_ELF_HEADERS is not set
++# CONFIG_SUSPEND is not set
++CONFIG_NET=y
++CONFIG_PACKET=y
++CONFIG_UNIX=y
++CONFIG_INET=y
++# CONFIG_INET_XFRM_MODE_TRANSPORT is not set
++# CONFIG_INET_XFRM_MODE_TUNNEL is not set
++# CONFIG_INET_XFRM_MODE_BEET is not set
++# CONFIG_INET_LRO is not set
++# CONFIG_INET_DIAG is not set
++# CONFIG_IPV6 is not set
++# CONFIG_WIRELESS is not set
++CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
++CONFIG_DEVTMPFS=y
++# CONFIG_FW_LOADER is not set
++# CONFIG_ALLOW_DEV_COREDUMP is not set
++CONFIG_DMA_CMA=y
++CONFIG_CMA_SIZE_MBYTES=32
++CONFIG_NETDEVICES=y
++# CONFIG_NET_VENDOR_ARC is not set
++# CONFIG_NET_CADENCE is not set
++# CONFIG_NET_VENDOR_BROADCOM is not set
++CONFIG_DM9000=y
++CONFIG_DM9000_FORCE_SIMPLE_PHY_POLL=y
++# CONFIG_NET_VENDOR_INTEL is not set
++# CONFIG_NET_VENDOR_MARVELL is not set
++# CONFIG_NET_VENDOR_MICREL is not set
++# CONFIG_NET_VENDOR_NATSEMI is not set
++# CONFIG_NET_VENDOR_QUALCOMM is not set
++# CONFIG_NET_VENDOR_ROCKER is not set
++# CONFIG_NET_VENDOR_SAMSUNG is not set
++# CONFIG_NET_VENDOR_SEEQ is not set
++# CONFIG_NET_VENDOR_SMSC is not set
++# CONFIG_NET_VENDOR_STMICRO is not set
++# CONFIG_NET_VENDOR_VIA is not set
++# CONFIG_NET_VENDOR_WIZNET is not set
++# CONFIG_WLAN is not set
++# CONFIG_INPUT_MOUSEDEV is not set
++# CONFIG_INPUT_KEYBOARD is not set
++# CONFIG_INPUT_MOUSE is not set
++# CONFIG_SERIO is not set
++CONFIG_VT_HW_CONSOLE_BINDING=y
++CONFIG_LEGACY_PTY_COUNT=2
++# CONFIG_DEVKMEM is not set
++CONFIG_SERIAL_8250=y
++CONFIG_SERIAL_8250_CONSOLE=y
++CONFIG_SERIAL_8250_NR_UARTS=5
++CONFIG_SERIAL_8250_RUNTIME_UARTS=5
++CONFIG_SERIAL_8250_INGENIC=y
++CONFIG_SERIAL_OF_PLATFORM=y
++# CONFIG_HW_RANDOM is not set
++CONFIG_I2C=y
++CONFIG_I2C_JZ4780=y
++CONFIG_GPIO_SYSFS=y
++# CONFIG_HWMON is not set
++CONFIG_REGULATOR=y
++CONFIG_REGULATOR_DEBUG=y
++CONFIG_REGULATOR_FIXED_VOLTAGE=y
++# CONFIG_VGA_CONSOLE is not set
++# CONFIG_HID is not set
++# CONFIG_USB_SUPPORT is not set
++CONFIG_MMC=y
++# CONFIG_IOMMU_SUPPORT is not set
++CONFIG_MEMORY=y
++# CONFIG_DNOTIFY is not set
++CONFIG_PROC_KCORE=y
++# CONFIG_PROC_PAGE_MONITOR is not set
++CONFIG_TMPFS=y
++CONFIG_CONFIGFS_FS=y
++# CONFIG_MISC_FILESYSTEMS is not set
++# CONFIG_NETWORK_FILESYSTEMS is not set
++CONFIG_NLS=y
++CONFIG_NLS_CODEPAGE_437=y
++CONFIG_NLS_CODEPAGE_737=y
++CONFIG_NLS_CODEPAGE_775=y
++CONFIG_NLS_CODEPAGE_850=y
++CONFIG_NLS_CODEPAGE_852=y
++CONFIG_NLS_CODEPAGE_855=y
++CONFIG_NLS_CODEPAGE_857=y
++CONFIG_NLS_CODEPAGE_860=y
++CONFIG_NLS_CODEPAGE_861=y
++CONFIG_NLS_CODEPAGE_862=y
++CONFIG_NLS_CODEPAGE_863=y
++CONFIG_NLS_CODEPAGE_864=y
++CONFIG_NLS_CODEPAGE_865=y
++CONFIG_NLS_CODEPAGE_866=y
++CONFIG_NLS_CODEPAGE_869=y
++CONFIG_NLS_CODEPAGE_936=y
++CONFIG_NLS_CODEPAGE_950=y
++CONFIG_NLS_CODEPAGE_932=y
++CONFIG_NLS_CODEPAGE_949=y
++CONFIG_NLS_CODEPAGE_874=y
++CONFIG_NLS_ISO8859_8=y
++CONFIG_NLS_CODEPAGE_1250=y
++CONFIG_NLS_CODEPAGE_1251=y
++CONFIG_NLS_ASCII=y
++CONFIG_NLS_ISO8859_1=y
++CONFIG_NLS_ISO8859_2=y
++CONFIG_NLS_ISO8859_3=y
++CONFIG_NLS_ISO8859_4=y
++CONFIG_NLS_ISO8859_5=y
++CONFIG_NLS_ISO8859_6=y
++CONFIG_NLS_ISO8859_7=y
++CONFIG_NLS_ISO8859_9=y
++CONFIG_NLS_ISO8859_13=y
++CONFIG_NLS_ISO8859_14=y
++CONFIG_NLS_ISO8859_15=y
++CONFIG_NLS_KOI8_R=y
++CONFIG_NLS_KOI8_U=y
++CONFIG_NLS_UTF8=y
++CONFIG_PRINTK_TIME=y
++CONFIG_DEBUG_INFO=y
++CONFIG_STRIP_ASM_SYMS=y
++CONFIG_DEBUG_FS=y
++CONFIG_MAGIC_SYSRQ=y
++CONFIG_LOCKUP_DETECTOR=y
++CONFIG_BOOTPARAM_SOFTLOCKUP_PANIC=y
++CONFIG_BOOTPARAM_HUNG_TASK_PANIC=y
++CONFIG_PANIC_ON_OOPS=y
++CONFIG_PANIC_TIMEOUT=10
++# CONFIG_SCHED_DEBUG is not set
++# CONFIG_DEBUG_PREEMPT is not set
++CONFIG_STACKTRACE=y
++# CONFIG_FTRACE is not set
++CONFIG_CMDLINE_BOOL=y
++CONFIG_CMDLINE="earlycon console=ttyS4,115200 clk_ignore_unused nowait"
 diff --git a/arch/mips/jz4740/Kconfig b/arch/mips/jz4740/Kconfig
-index dff0966..21adcea 100644
+index 21adcea..36f8201 100644
 --- a/arch/mips/jz4740/Kconfig
 +++ b/arch/mips/jz4740/Kconfig
-@@ -12,3 +12,9 @@ endchoice
+@@ -7,6 +7,10 @@ config JZ4740_QI_LB60
+ 	bool "Qi Hardware Ben NanoNote"
+ 	select MACH_JZ4740
+ 
++config JZ4780_CI20
++	bool "MIPS Creator CI20"
++	select MACH_JZ4780
++
+ endchoice
+ 
  config MACH_JZ4740
- 	bool
- 	select SYS_HAS_CPU_MIPS32_R1
-+
-+config MACH_JZ4780
-+	bool
-+	select MIPS_CPU_SCACHE
-+	select SYS_HAS_CPU_MIPS32_R2
-+	select SYS_SUPPORTS_HIGHMEM
-diff --git a/arch/mips/jz4740/Makefile b/arch/mips/jz4740/Makefile
-index 89ce401..39d70bd 100644
---- a/arch/mips/jz4740/Makefile
-+++ b/arch/mips/jz4740/Makefile
-@@ -5,7 +5,9 @@
- # Object file lists.
- 
- obj-y += prom.o time.o reset.o setup.o \
--	gpio.o platform.o timer.o
-+	platform.o timer.o
-+
-+obj-$(CONFIG_MACH_JZ4740) += gpio.o
- 
- CFLAGS_setup.o = -I$(src)/../../../scripts/dtc/libfdt
- 
-diff --git a/arch/mips/jz4740/setup.c b/arch/mips/jz4740/setup.c
-index 1bed3cb..510fc0d 100644
---- a/arch/mips/jz4740/setup.c
-+++ b/arch/mips/jz4740/setup.c
-@@ -83,6 +83,9 @@ arch_initcall(populate_machine);
- 
- const char *get_system_type(void)
- {
-+	if (config_enabled(CONFIG_MACH_JZ4780))
-+		return "JZ4780";
-+
- 	return "JZ4740";
- }
- 
-diff --git a/arch/mips/jz4740/time.c b/arch/mips/jz4740/time.c
-index 9172553..7ab47fe 100644
---- a/arch/mips/jz4740/time.c
-+++ b/arch/mips/jz4740/time.c
-@@ -102,7 +102,12 @@ static struct clock_event_device jz4740_clockevent = {
- 	.set_next_event = jz4740_clockevent_set_next,
- 	.set_mode = jz4740_clockevent_set_mode,
- 	.rating = 200,
-+#ifdef CONFIG_MACH_JZ4740
- 	.irq = JZ4740_IRQ_TCU0,
-+#endif
-+#ifdef CONFIG_MACH_JZ4780
-+	.irq = JZ4780_IRQ_TCU2,
-+#endif
- };
- 
- static struct irqaction timer_irqaction = {
-@@ -144,7 +149,7 @@ void __init plat_time_init(void)
- 
- 	sched_clock_register(jz4740_read_sched_clock, 16, clk_rate);
- 
--	setup_irq(JZ4740_IRQ_TCU0, &timer_irqaction);
-+	setup_irq(jz4740_clockevent.irq, &timer_irqaction);
- 
- 	ctrl = JZ_TIMER_CTRL_PRESCALE_16 | JZ_TIMER_CTRL_SRC_EXT;
- 
 -- 
 2.3.5

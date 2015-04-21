@@ -1,24 +1,25 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Apr 2015 16:57:26 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:47554 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Apr 2015 16:57:42 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:60384 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27025963AbbDUO4sAWRh0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 21 Apr 2015 16:56:48 +0200
+        with ESMTP id S27025965AbbDUO5Az0Gmp (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 21 Apr 2015 16:57:00 +0200
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 6B55E3148CE8C;
-        Tue, 21 Apr 2015 15:56:39 +0100 (IST)
+        by Websense Email Security Gateway with ESMTPS id 502F6D95AF8A0;
+        Tue, 21 Apr 2015 15:56:54 +0100 (IST)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
  KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Tue, 21 Apr 2015 15:56:42 +0100
+ 14.3.195.1; Tue, 21 Apr 2015 15:56:56 +0100
 Received: from localhost (192.168.159.67) by LEMAIL01.le.imgtec.org
  (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Tue, 21 Apr
- 2015 15:56:41 +0100
+ 2015 15:56:56 +0100
 From:   Paul Burton <paul.burton@imgtec.com>
 To:     <linux-mips@linux-mips.org>
 CC:     Paul Burton <paul.burton@imgtec.com>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Subject: [PATCH v3 32/37] MIPS: JZ4740: only detect RAM size if not specified in DT
-Date:   Tue, 21 Apr 2015 15:46:59 +0100
-Message-ID: <1429627624-30525-33-git-send-email-paul.burton@imgtec.com>
+        Lars-Peter Clausen <lars@metafoo.de>,
+        <devicetree@vger.kernel.org>
+Subject: [PATCH v3 33/37] devicetree: document Ingenic SoC UART binding
+Date:   Tue, 21 Apr 2015 15:47:00 +0100
+Message-ID: <1429627624-30525-34-git-send-email-paul.burton@imgtec.com>
 X-Mailer: git-send-email 2.3.5
 In-Reply-To: <1429627624-30525-1-git-send-email-paul.burton@imgtec.com>
 References: <1429627624-30525-1-git-send-email-paul.burton@imgtec.com>
@@ -29,7 +30,7 @@ Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46990
+X-archive-position: 46991
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,78 +47,50 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Allow a devicetree to specify the memory present in the system rather
-than probing it from the memory controller. This both saves the probing
-for systems where the amount of memory is fixed, and will simplify the
-bringup of later Ingenic SoCs where the memory controller register
-layout differs.
+Add binding documentation for the UARTs found in Ingenic SoCs.
 
 Signed-off-by: Paul Burton <paul.burton@imgtec.com>
 Cc: Lars-Peter Clausen <lars@metafoo.de>
+Cc: devicetree@vger.kernel.org
 ---
 Changes in v3:
-  - Rebase.
+  - Merge binding documentation for Ingenic SoCs whose bindings differ
+    only by their compatible strings.
 
 Changes in v2:
   - None.
 ---
- arch/mips/Kconfig         | 1 +
- arch/mips/jz4740/Makefile | 2 ++
- arch/mips/jz4740/setup.c  | 8 +++++++-
- 3 files changed, 10 insertions(+), 1 deletion(-)
+ .../devicetree/bindings/serial/ingenic,uart.txt    | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/serial/ingenic,uart.txt
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index e3c859c..f07a213 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -301,6 +301,7 @@ config MACH_INGENIC
- 	select GENERIC_IRQ_CHIP
- 	select BUILTIN_DTB
- 	select USE_OF
-+	select LIBFDT
- 
- config LANTIQ
- 	bool "Lantiq based platforms"
-diff --git a/arch/mips/jz4740/Makefile b/arch/mips/jz4740/Makefile
-index 7636432..70a9578 100644
---- a/arch/mips/jz4740/Makefile
-+++ b/arch/mips/jz4740/Makefile
-@@ -7,6 +7,8 @@
- obj-y += prom.o time.o reset.o setup.o \
- 	gpio.o platform.o timer.o serial.o
- 
-+CFLAGS_setup.o = -I$(src)/../../../scripts/dtc/libfdt
+diff --git a/Documentation/devicetree/bindings/serial/ingenic,uart.txt b/Documentation/devicetree/bindings/serial/ingenic,uart.txt
+new file mode 100644
+index 0000000..c2d3b3a
+--- /dev/null
++++ b/Documentation/devicetree/bindings/serial/ingenic,uart.txt
+@@ -0,0 +1,22 @@
++* Ingenic SoC UART
 +
- # board specific support
- 
- obj-$(CONFIG_JZ4740_QI_LB60)	+= board-qi_lb60.o
-diff --git a/arch/mips/jz4740/setup.c b/arch/mips/jz4740/setup.c
-index 8c08d7d..1bed3cb 100644
---- a/arch/mips/jz4740/setup.c
-+++ b/arch/mips/jz4740/setup.c
-@@ -18,6 +18,7 @@
- #include <linux/io.h>
- #include <linux/irqchip.h>
- #include <linux/kernel.h>
-+#include <linux/libfdt.h>
- #include <linux/of_fdt.h>
- #include <linux/of_platform.h>
- 
-@@ -55,9 +56,14 @@ static void __init jz4740_detect_mem(void)
- 
- void __init plat_mem_setup(void)
- {
-+	int offset;
++Required properties:
++- compatible : "ingenic,jz4740-uart" or "ingenic,jz4780-uart"
++- reg : offset and length of the register set for the device.
++- interrupts : should contain uart interrupt.
++- clocks : phandles to the module & baud clocks.
++- clock-names: tuple listing input clock names.
++	Required elements: "baud", "module"
 +
- 	jz4740_reset_init();
--	jz4740_detect_mem();
- 	__dt_setup_arch(__dtb_start);
++Example:
 +
-+	offset = fdt_path_offset(__dtb_start, "/memory");
-+	if (offset < 0)
-+		jz4740_detect_mem();
- }
- 
- void __init device_tree_init(void)
++uart0: serial@10030000 {
++	compatible = "ingenic,jz4740-uart";
++	reg = <0x10030000 0x100>;
++
++	interrupt-parent = <&intc>;
++	interrupts = <9>;
++
++	clocks = <&ext>, <&cgu JZ4740_CLK_UART0>;
++	clock-names = "baud", "module";
++};
 -- 
 2.3.5

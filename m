@@ -1,24 +1,24 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Apr 2015 16:57:06 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:50838 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Apr 2015 16:57:26 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:47554 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27025952AbbDUO4cXIkzM (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 21 Apr 2015 16:56:32 +0200
+        with ESMTP id S27025963AbbDUO4sAWRh0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 21 Apr 2015 16:56:48 +0200
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id E3EDD444F327;
-        Tue, 21 Apr 2015 15:56:24 +0100 (IST)
+        by Websense Email Security Gateway with ESMTPS id 6B55E3148CE8C;
+        Tue, 21 Apr 2015 15:56:39 +0100 (IST)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
  KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Tue, 21 Apr 2015 15:56:28 +0100
+ 14.3.195.1; Tue, 21 Apr 2015 15:56:42 +0100
 Received: from localhost (192.168.159.67) by LEMAIL01.le.imgtec.org
  (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Tue, 21 Apr
- 2015 15:56:27 +0100
+ 2015 15:56:41 +0100
 From:   Paul Burton <paul.burton@imgtec.com>
 To:     <linux-mips@linux-mips.org>
 CC:     Paul Burton <paul.burton@imgtec.com>,
         Lars-Peter Clausen <lars@metafoo.de>
-Subject: [PATCH v3 31/37] MIPS: JZ4740: remove clock.h
-Date:   Tue, 21 Apr 2015 15:46:58 +0100
-Message-ID: <1429627624-30525-32-git-send-email-paul.burton@imgtec.com>
+Subject: [PATCH v3 32/37] MIPS: JZ4740: only detect RAM size if not specified in DT
+Date:   Tue, 21 Apr 2015 15:46:59 +0100
+Message-ID: <1429627624-30525-33-git-send-email-paul.burton@imgtec.com>
 X-Mailer: git-send-email 2.3.5
 In-Reply-To: <1429627624-30525-1-git-send-email-paul.burton@imgtec.com>
 References: <1429627624-30525-1-git-send-email-paul.burton@imgtec.com>
@@ -29,7 +29,7 @@ Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 46989
+X-archive-position: 46990
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,10 +46,11 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The only thing remaining in arch/mips/jz4740/clock.h is declarations of
-the jz4740_clock_{suspend,resume} functions. Move these to
-arch/mips/include/asm/mach-jz4740/clock.h for consistency with similar
-functions, and remove the redundant arch/mips/jz4740/clock.h header.
+Allow a devicetree to specify the memory present in the system rather
+than probing it from the memory controller. This both saves the probing
+for systems where the amount of memory is fixed, and will simplify the
+bringup of later Ingenic SoCs where the memory controller register
+layout differs.
 
 Signed-off-by: Paul Burton <paul.burton@imgtec.com>
 Cc: Lars-Peter Clausen <lars@metafoo.de>
@@ -60,69 +61,63 @@ Changes in v3:
 Changes in v2:
   - None.
 ---
- arch/mips/include/asm/mach-jz4740/clock.h |  3 +++
- arch/mips/jz4740/clock.h                  | 25 -------------------------
- arch/mips/jz4740/pm.c                     |  2 --
- 3 files changed, 3 insertions(+), 27 deletions(-)
- delete mode 100644 arch/mips/jz4740/clock.h
+ arch/mips/Kconfig         | 1 +
+ arch/mips/jz4740/Makefile | 2 ++
+ arch/mips/jz4740/setup.c  | 8 +++++++-
+ 3 files changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/arch/mips/include/asm/mach-jz4740/clock.h b/arch/mips/include/asm/mach-jz4740/clock.h
-index 16659cd..104d2df 100644
---- a/arch/mips/include/asm/mach-jz4740/clock.h
-+++ b/arch/mips/include/asm/mach-jz4740/clock.h
-@@ -22,6 +22,9 @@ enum jz4740_wait_mode {
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index e3c859c..f07a213 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -301,6 +301,7 @@ config MACH_INGENIC
+ 	select GENERIC_IRQ_CHIP
+ 	select BUILTIN_DTB
+ 	select USE_OF
++	select LIBFDT
  
- void jz4740_clock_set_wait_mode(enum jz4740_wait_mode mode);
+ config LANTIQ
+ 	bool "Lantiq based platforms"
+diff --git a/arch/mips/jz4740/Makefile b/arch/mips/jz4740/Makefile
+index 7636432..70a9578 100644
+--- a/arch/mips/jz4740/Makefile
++++ b/arch/mips/jz4740/Makefile
+@@ -7,6 +7,8 @@
+ obj-y += prom.o time.o reset.o setup.o \
+ 	gpio.o platform.o timer.o serial.o
  
-+void jz4740_clock_suspend(void);
-+void jz4740_clock_resume(void);
++CFLAGS_setup.o = -I$(src)/../../../scripts/dtc/libfdt
 +
- void jz4740_clock_udc_enable_auto_suspend(void);
- void jz4740_clock_udc_disable_auto_suspend(void);
+ # board specific support
  
-diff --git a/arch/mips/jz4740/clock.h b/arch/mips/jz4740/clock.h
-deleted file mode 100644
-index 86a3e01..0000000
---- a/arch/mips/jz4740/clock.h
-+++ /dev/null
-@@ -1,25 +0,0 @@
--/*
-- *  Copyright (C) 2010, Lars-Peter Clausen <lars@metafoo.de>
-- *  JZ4740 SoC clock support
-- *
-- *  This program is free software; you can redistribute	 it and/or modify it
-- *  under  the terms of	 the GNU General  Public License as published by the
-- *  Free Software Foundation;  either version 2 of the	License, or (at your
-- *  option) any later version.
-- *
-- *  You should have received a copy of the  GNU General Public License along
-- *  with this program; if not, write  to the Free Software Foundation, Inc.,
-- *  675 Mass Ave, Cambridge, MA 02139, USA.
-- *
-- */
--
--#ifndef __MIPS_JZ4740_CLOCK_H__
--#define __MIPS_JZ4740_CLOCK_H__
--
--#include <linux/clk.h>
--#include <linux/list.h>
--
--void jz4740_clock_suspend(void);
--void jz4740_clock_resume(void);
--
--#endif
-diff --git a/arch/mips/jz4740/pm.c b/arch/mips/jz4740/pm.c
-index d8e2130..2d8653f 100644
---- a/arch/mips/jz4740/pm.c
-+++ b/arch/mips/jz4740/pm.c
-@@ -20,8 +20,6 @@
+ obj-$(CONFIG_JZ4740_QI_LB60)	+= board-qi_lb60.o
+diff --git a/arch/mips/jz4740/setup.c b/arch/mips/jz4740/setup.c
+index 8c08d7d..1bed3cb 100644
+--- a/arch/mips/jz4740/setup.c
++++ b/arch/mips/jz4740/setup.c
+@@ -18,6 +18,7 @@
+ #include <linux/io.h>
+ #include <linux/irqchip.h>
+ #include <linux/kernel.h>
++#include <linux/libfdt.h>
+ #include <linux/of_fdt.h>
+ #include <linux/of_platform.h>
  
- #include <asm/mach-jz4740/clock.h>
+@@ -55,9 +56,14 @@ static void __init jz4740_detect_mem(void)
  
--#include "clock.h"
--
- static int jz4740_pm_enter(suspend_state_t state)
+ void __init plat_mem_setup(void)
  {
- 	jz4740_clock_suspend();
++	int offset;
++
+ 	jz4740_reset_init();
+-	jz4740_detect_mem();
+ 	__dt_setup_arch(__dtb_start);
++
++	offset = fdt_path_offset(__dtb_start, "/memory");
++	if (offset < 0)
++		jz4740_detect_mem();
+ }
+ 
+ void __init device_tree_init(void)
 -- 
 2.3.5

@@ -1,47 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Apr 2015 06:06:40 +0200 (CEST)
-Received: from mail-wi0-f174.google.com ([209.85.212.174]:33520 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Apr 2015 06:12:39 +0200 (CEST)
+Received: from mail-wi0-f174.google.com ([209.85.212.174]:36564 "EHLO
         mail-wi0-f174.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010489AbbDVEGfRRT03 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 22 Apr 2015 06:06:35 +0200
-Received: by wiax7 with SMTP id x7so120793986wia.0
-        for <linux-mips@linux-mips.org>; Tue, 21 Apr 2015 21:06:31 -0700 (PDT)
+        by eddie.linux-mips.org with ESMTP id S27009298AbbDVEMhg3nWf (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 22 Apr 2015 06:12:37 +0200
+Received: by wizk4 with SMTP id k4so162468933wiz.1
+        for <linux-mips@linux-mips.org>; Tue, 21 Apr 2015 21:12:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=mime-version:in-reply-to:references:from:date:message-id:subject:to
          :cc:content-type;
-        bh=GA07fZYdSOusAczk6tDu5ijZtEV9/LJncBqS/CzK7tU=;
-        b=dWA+5N1OJjoVB+ijTEh9kVg+zMFz1O1CdhjctRgJJswcvJAgL5iW/CtXs+mpYFh64p
-         0L9RVUIKFztFpIwZoAOLqPJTeHWdy/t8b6rmM3jwOW5UyiTe1IqPFS3KasZ2Tt3t44xK
-         KsFpYnsNUWNE7fOc2TStiJez3LSULDp2ZVwMy3PtsqHRS9F6K2YeBQDinzPwurqnCsx+
-         gPVyFr0OIzoaDEZFtXD/KIY58JSmMUZsqBp7Nl0oNndjetWmTTPYNw0qnzfzZigz+1fG
-         yayvg32XSvs5y21yrx0vc9q7fCye6l9J9q+BbDEZbqawna585MCkxWfRiQvW8ZmkWxDS
-         6H1A==
-X-Received: by 10.180.103.130 with SMTP id fw2mr2085882wib.87.1429675591673;
- Tue, 21 Apr 2015 21:06:31 -0700 (PDT)
+        bh=KjJpkGpk1NEw053Dtnz2D5QbijiLssMK+sJCDy7Q3Lk=;
+        b=sDYsFmy3me6xBphKjEeNVltsm3LU84TdVilrFBLRsL+A+1LAmX44a9Gdv47br4Jjep
+         6TP/n+Lz2QqwWZp6JPcl2Fk7ZEq4ZC7V9UgPRj7dfcKPo10f1Sdy/VNPfC+duT9a8i5g
+         GP11BLit4KWcEJfMhQXfQBuKszVhV7K1Rgl5Cbwv0u/Nvar9yAs1f7gufQF4axJq+0NK
+         eAjfyf5TGjlck1oIbq717XphKrrh332GTe9PM0N0RNqENwr7OJ5Ikv+FHGQaZRQwkmoP
+         YfgSrGw8iAuxRYY7YhYU1Zy+XpH+LTjex+HpCaD3s+Lunb4eBp/gwHI1qWlR/O06YxkO
+         KxOw==
+X-Received: by 10.180.87.199 with SMTP id ba7mr2152539wib.81.1429675954007;
+ Tue, 21 Apr 2015 21:12:34 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 10.28.139.195 with HTTP; Tue, 21 Apr 2015 21:06:11 -0700 (PDT)
-In-Reply-To: <1429627624-30525-1-git-send-email-paul.burton@imgtec.com>
-References: <1429627624-30525-1-git-send-email-paul.burton@imgtec.com>
+Received: by 10.28.139.195 with HTTP; Tue, 21 Apr 2015 21:12:13 -0700 (PDT)
+In-Reply-To: <1429627624-30525-34-git-send-email-paul.burton@imgtec.com>
+References: <1429627624-30525-1-git-send-email-paul.burton@imgtec.com> <1429627624-30525-34-git-send-email-paul.burton@imgtec.com>
 From:   Rob Herring <robherring2@gmail.com>
-Date:   Tue, 21 Apr 2015 23:06:11 -0500
-Message-ID: <CAL_Jsq+Eri73Pk5rsVgd5bhnb4n27fVZUJ1Qtt2Soqp-bGa0dg@mail.gmail.com>
-Subject: Re: [PATCH v3 00/37] JZ4780 & CI20 support
+Date:   Tue, 21 Apr 2015 23:12:13 -0500
+Message-ID: <CAL_JsqLdeN4K0Gru2PXuts=MSTwAWr81-Caa+0rUJmsDqeLtPw@mail.gmail.com>
+Subject: Re: [PATCH v3 33/37] devicetree: document Ingenic SoC UART binding
 To:     Paul Burton <paul.burton@imgtec.com>
 Cc:     Linux-MIPS <linux-mips@linux-mips.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Mike Turquette <mturquette@linaro.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Return-Path: <robherring2@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47004
+X-archive-position: 47005
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -58,163 +52,57 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Apr 21, 2015 at 9:46 AM, Paul Burton <paul.burton@imgtec.com> wrote:
-> This series introduces initial support for the Ingenic JZ4780 SoC and
-> the Imagination Technologies MIPS Creator CI20 board which is built
-> around it. In the process the existing JZ4740 & qi_lb60 code gains
-> initial support for using DeviceTree such that much of the existing
-> platform code under arch/mips/jz4740 can be shared.
+On Tue, Apr 21, 2015 at 9:47 AM, Paul Burton <paul.burton@imgtec.com> wrote:
+> Add binding documentation for the UARTs found in Ingenic SoCs.
 >
-> The series has undergone quite a bit of restructure since v2. Each
-> patch contains a changelog indicating its differences, but a rough
-> overview for changes across the series would be:
->
->   - s/jz47xx/ingenic/ in various places, to reflect the fact that
->     Ingenic have changed the naming scheme for their newest SoCs
->     (now Mxxx).
->
->   - Restructure the Kconfig entries to provide a MACH_INGENIC
->     indicating and Ingenic SoC, and have boards select the
->     appropriate SoC symbol.
->
->   - Merge DT binding documentation where SoC bindings differ only
->     by compatible strings.
->
->   - Capitalise "JZ" in SoC names, where not identifiers in code,
->     to match the way Ingenic write them.
->
->   - Further clean up the Ingenic SoC interrupt controller driver
->     and move it under drivers/irqchip/.
->
-> Review appreciated, and hopefully this can make it into v4.2.
->
-> Thanks,
->     Paul
->
-> Paul Burton (37):
->   devicetree/bindings: add Ingenic Semiconductor vendor prefix
->   devicetree/bindings: add Qi Hardware vendor prefix
->   MIPS: JZ4740: introduce CONFIG_MACH_INGENIC
->   MIPS: ingenic: add newer vendor IDs
->   MIPS: JZ4740: require & include DT
->   MIPS: irq_cpu: declare irqchip table entry
->   MIPS: JZ4740: probe CPU interrupt controller via DT
->   MIPS: JZ4740: use generic plat_irq_dispatch
->   MIPS: JZ4740: move arch_init_irq out of arch/mips/jz4740/irq.c
->   devicetree: document Ingenic SoC interrupt controller binding
+> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+> Cc: Lars-Peter Clausen <lars@metafoo.de>
+> Cc: devicetree@vger.kernel.org
 
-For patches 1, 2, and 10:
+And for this one too:
 
 Acked-by: Rob Herring <robh@kernel.org>
 
->   MIPS: JZ4740: probe interrupt controller via DT
->   MIPS: JZ4740: parse SoC interrupt controller parent IRQ from DT
->   MIPS: JZ4740: register an irq_domain for the interrupt controller
->   MIPS: JZ4740: drop intc debugfs code
->   MIPS: JZ4740: remove jz_intc_base global
->   MIPS: JZ4740: support >32 interrupts
->   MIPS: JZ4740: define IRQ numbers based on number of intc IRQs
->   MIPS: JZ4740: read intc base address from DT
->   MIPS: JZ4740: avoid JZ4740-specific naming
->   MIPS: JZ4740: support newer SoC interrupt controllers
->   irqchip: move Ingenic SoC intc driver to drivers/irqchip
->   MIPS: JZ4740: call jz4740_clock_init earlier
->   MIPS: JZ4740: replace use of jz4740_clock_bdata
->   devicetree: add Ingenic CGU binding documentation
->   clk: ingenic: add driver for Ingenic SoC CGU clocks
->   MIPS,clk: migrate JZ4740 to common clock framework
->   MIPS,clk: move jz4740_clock_set_wait_mode to jz4740-cgu
->   MIPS,clk: move jz4740 UDC auto suspend functions to jz4740-cgu
->   MIPS,clk: move jz4740 clock suspend,resume functions to jz4740-cgu
->   clk: ingenic: add JZ4780 CGU support
->   MIPS: JZ4740: remove clock.h
->   MIPS: JZ4740: only detect RAM size if not specified in DT
->   devicetree: document Ingenic SoC UART binding
->   serial: 8250_ingenic: support for Ingenic SoC UARTs
->   MIPS: JZ4740: use Ingenic SoC UART driver
->   MIPS: ingenic: initial JZ4780 support
->   MIPS: ingenic: initial MIPS Creator CI20 support
+> ---
+> Changes in v3:
+>   - Merge binding documentation for Ingenic SoCs whose bindings differ
+>     only by their compatible strings.
 >
->  .../devicetree/bindings/clock/ingenic,cgu.txt      |  53 ++
->  .../bindings/interrupt-controller/ingenic,intc.txt |  25 +
->  .../devicetree/bindings/serial/ingenic,uart.txt    |  22 +
->  .../devicetree/bindings/vendor-prefixes.txt        |   2 +
->  arch/mips/Kconfig                                  |  11 +-
->  arch/mips/boot/dts/Makefile                        |   1 +
->  arch/mips/boot/dts/ingenic/Makefile                |  10 +
->  arch/mips/boot/dts/ingenic/ci20.dts                |  21 +
->  arch/mips/boot/dts/ingenic/jz4740.dtsi             |  68 ++
->  arch/mips/boot/dts/ingenic/jz4780.dtsi             | 101 +++
->  arch/mips/boot/dts/ingenic/qi_lb60.dts             |  15 +
->  arch/mips/configs/ci20_defconfig                   | 169 ++++
->  arch/mips/configs/qi_lb60_defconfig                |   3 +-
->  arch/mips/include/asm/cpu-type.h                   |   2 +-
->  arch/mips/include/asm/cpu.h                        |   6 +-
->  arch/mips/include/asm/mach-jz4740/clock.h          |   3 +
->  .../asm/mach-jz4740/cpu-feature-overrides.h        |   3 -
->  arch/mips/include/asm/mach-jz4740/irq.h            |  14 +-
->  arch/mips/include/asm/mach-jz4740/platform.h       |   2 -
->  arch/mips/jz4740/Kconfig                           |  17 +-
->  arch/mips/jz4740/Makefile                          |   8 +-
->  arch/mips/jz4740/Platform                          |   8 +-
->  arch/mips/jz4740/board-qi_lb60.c                   |   7 -
->  arch/mips/jz4740/clock-debugfs.c                   | 108 ---
->  arch/mips/jz4740/clock.c                           | 924 ---------------------
->  arch/mips/jz4740/clock.h                           |  76 --
->  arch/mips/jz4740/gpio.c                            |   7 +-
->  arch/mips/jz4740/irq.c                             | 162 ----
->  arch/mips/jz4740/platform.c                        |  38 +-
->  arch/mips/jz4740/pm.c                              |   2 -
->  arch/mips/jz4740/prom.c                            |  13 -
->  arch/mips/jz4740/reset.c                           |  13 +-
->  arch/mips/jz4740/serial.c                          |  33 -
->  arch/mips/jz4740/serial.h                          |  23 -
->  arch/mips/jz4740/setup.c                           |  36 +-
->  arch/mips/jz4740/time.c                            |  19 +-
->  arch/mips/kernel/cpu-probe.c                       |   4 +-
->  arch/mips/kernel/irq_cpu.c                         |   3 +
->  drivers/clk/Makefile                               |   1 +
->  drivers/clk/ingenic/Makefile                       |   3 +
->  drivers/clk/ingenic/cgu.c                          | 711 ++++++++++++++++
->  drivers/clk/ingenic/cgu.h                          | 223 +++++
->  drivers/clk/ingenic/jz4740-cgu.c                   | 301 +++++++
->  drivers/clk/ingenic/jz4780-cgu.c                   | 732 ++++++++++++++++
->  drivers/irqchip/Kconfig                            |   5 +
->  drivers/irqchip/Makefile                           |   1 +
->  drivers/irqchip/irq-ingenic.c                      | 171 ++++
->  drivers/tty/serial/8250/8250_ingenic.c             | 261 ++++++
->  drivers/tty/serial/8250/Kconfig                    |   9 +
->  drivers/tty/serial/8250/Makefile                   |   3 +
->  include/dt-bindings/clock/jz4740-cgu.h             |  37 +
->  include/dt-bindings/clock/jz4780-cgu.h             |  88 ++
->  .../irq.h => include/linux/irqchip/ingenic.h       |   8 +-
->  53 files changed, 3162 insertions(+), 1424 deletions(-)
->  create mode 100644 Documentation/devicetree/bindings/clock/ingenic,cgu.txt
->  create mode 100644 Documentation/devicetree/bindings/interrupt-controller/ingenic,intc.txt
+> Changes in v2:
+>   - None.
+> ---
+>  .../devicetree/bindings/serial/ingenic,uart.txt    | 22 ++++++++++++++++++++++
+>  1 file changed, 22 insertions(+)
 >  create mode 100644 Documentation/devicetree/bindings/serial/ingenic,uart.txt
->  create mode 100644 arch/mips/boot/dts/ingenic/Makefile
->  create mode 100644 arch/mips/boot/dts/ingenic/ci20.dts
->  create mode 100644 arch/mips/boot/dts/ingenic/jz4740.dtsi
->  create mode 100644 arch/mips/boot/dts/ingenic/jz4780.dtsi
->  create mode 100644 arch/mips/boot/dts/ingenic/qi_lb60.dts
->  create mode 100644 arch/mips/configs/ci20_defconfig
->  delete mode 100644 arch/mips/jz4740/clock-debugfs.c
->  delete mode 100644 arch/mips/jz4740/clock.c
->  delete mode 100644 arch/mips/jz4740/clock.h
->  delete mode 100644 arch/mips/jz4740/irq.c
->  delete mode 100644 arch/mips/jz4740/serial.c
->  delete mode 100644 arch/mips/jz4740/serial.h
->  create mode 100644 drivers/clk/ingenic/Makefile
->  create mode 100644 drivers/clk/ingenic/cgu.c
->  create mode 100644 drivers/clk/ingenic/cgu.h
->  create mode 100644 drivers/clk/ingenic/jz4740-cgu.c
->  create mode 100644 drivers/clk/ingenic/jz4780-cgu.c
->  create mode 100644 drivers/irqchip/irq-ingenic.c
->  create mode 100644 drivers/tty/serial/8250/8250_ingenic.c
->  create mode 100644 include/dt-bindings/clock/jz4740-cgu.h
->  create mode 100644 include/dt-bindings/clock/jz4780-cgu.h
->  rename arch/mips/jz4740/irq.h => include/linux/irqchip/ingenic.h (74%)
 >
+> diff --git a/Documentation/devicetree/bindings/serial/ingenic,uart.txt b/Documentation/devicetree/bindings/serial/ingenic,uart.txt
+> new file mode 100644
+> index 0000000..c2d3b3a
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/serial/ingenic,uart.txt
+> @@ -0,0 +1,22 @@
+> +* Ingenic SoC UART
+> +
+> +Required properties:
+> +- compatible : "ingenic,jz4740-uart" or "ingenic,jz4780-uart"
+> +- reg : offset and length of the register set for the device.
+> +- interrupts : should contain uart interrupt.
+> +- clocks : phandles to the module & baud clocks.
+> +- clock-names: tuple listing input clock names.
+> +       Required elements: "baud", "module"
+> +
+> +Example:
+> +
+> +uart0: serial@10030000 {
+> +       compatible = "ingenic,jz4740-uart";
+> +       reg = <0x10030000 0x100>;
+> +
+> +       interrupt-parent = <&intc>;
+> +       interrupts = <9>;
+> +
+> +       clocks = <&ext>, <&cgu JZ4740_CLK_UART0>;
+> +       clock-names = "baud", "module";
+> +};
 > --
 > 2.3.5
 >

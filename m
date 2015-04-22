@@ -1,49 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Apr 2015 05:00:31 +0200 (CEST)
-Received: from mail-oi0-f49.google.com ([209.85.218.49]:33582 "EHLO
-        mail-oi0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27006150AbbDVDA3dRepe (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 22 Apr 2015 05:00:29 +0200
-Received: by oica37 with SMTP id a37so166431955oic.0;
-        Tue, 21 Apr 2015 20:00:25 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Apr 2015 06:06:40 +0200 (CEST)
+Received: from mail-wi0-f174.google.com ([209.85.212.174]:33520 "EHLO
+        mail-wi0-f174.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010489AbbDVEGfRRT03 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 22 Apr 2015 06:06:35 +0200
+Received: by wiax7 with SMTP id x7so120793986wia.0
+        for <linux-mips@linux-mips.org>; Tue, 21 Apr 2015 21:06:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=mime-version:in-reply-to:references:from:date:message-id:subject:to
          :cc:content-type;
-        bh=aYMFaKZL71PZPOYKy9W8whKQmnEiKNMPL6iYg8hsFkY=;
-        b=RPmBzd2okbbUIIez+8ja3KIDNEcHSDbva9FitTidkwB8h+SPHSf/kXPFhTwRUC+Erj
-         kzTn2+l8pz/SLV56uQn1OnJhinC1fpU0Lg8y3A9XezUylswaJXwlj7GL0RMeJmALGPo0
-         a9sEEGCvirkigAk2wE91oNgJg+BrM8xoprYGTXpBrk3arJZJxmDyMHM9fWmx1wF4oFb0
-         amiREVK19UKphByp6xDKq05XHKcLUUwr+I8qiAjc8I5xAQ8oDe4rr3f0Ymi5HKm0uOZp
-         ZeRD81K0fBBicUt0/3AC9VcEXHgtN43k1BOXZu7jpS6hCXshZNjKBCZnahItZL8marJf
-         aZcg==
-X-Received: by 10.182.80.103 with SMTP id q7mr21763714obx.18.1429671625122;
- Tue, 21 Apr 2015 20:00:25 -0700 (PDT)
+        bh=GA07fZYdSOusAczk6tDu5ijZtEV9/LJncBqS/CzK7tU=;
+        b=dWA+5N1OJjoVB+ijTEh9kVg+zMFz1O1CdhjctRgJJswcvJAgL5iW/CtXs+mpYFh64p
+         0L9RVUIKFztFpIwZoAOLqPJTeHWdy/t8b6rmM3jwOW5UyiTe1IqPFS3KasZ2Tt3t44xK
+         KsFpYnsNUWNE7fOc2TStiJez3LSULDp2ZVwMy3PtsqHRS9F6K2YeBQDinzPwurqnCsx+
+         gPVyFr0OIzoaDEZFtXD/KIY58JSmMUZsqBp7Nl0oNndjetWmTTPYNw0qnzfzZigz+1fG
+         yayvg32XSvs5y21yrx0vc9q7fCye6l9J9q+BbDEZbqawna585MCkxWfRiQvW8ZmkWxDS
+         6H1A==
+X-Received: by 10.180.103.130 with SMTP id fw2mr2085882wib.87.1429675591673;
+ Tue, 21 Apr 2015 21:06:31 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 10.202.209.3 with HTTP; Tue, 21 Apr 2015 19:59:44 -0700 (PDT)
-In-Reply-To: <20150421154108.GA20223@roeck-us.net>
-References: <20150420194028.GA10814@roeck-us.net> <20150420210933.GB31618@fuloong-minipc.musicnaut.iki.fi>
- <87fv7up15k.fsf@rustcorp.com.au> <20150421154108.GA20223@roeck-us.net>
-From:   Florian Fainelli <f.fainelli@gmail.com>
-Date:   Tue, 21 Apr 2015 19:59:44 -0700
-Message-ID: <CAGVrzcYt0EAK05DoKBMT5m9wjk3rjAS_puDz3gbpbThrUq7e4A@mail.gmail.com>
-Subject: Re: mips build failures due to commit 8dd928915a73 (mips: fix up
- obsolete cpu function usage)
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     Rusty Russell <rusty@rustcorp.com.au>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Linux-MIPS <linux-mips@linux-mips.org>
+Received: by 10.28.139.195 with HTTP; Tue, 21 Apr 2015 21:06:11 -0700 (PDT)
+In-Reply-To: <1429627624-30525-1-git-send-email-paul.burton@imgtec.com>
+References: <1429627624-30525-1-git-send-email-paul.burton@imgtec.com>
+From:   Rob Herring <robherring2@gmail.com>
+Date:   Tue, 21 Apr 2015 23:06:11 -0500
+Message-ID: <CAL_Jsq+Eri73Pk5rsVgd5bhnb4n27fVZUJ1Qtt2Soqp-bGa0dg@mail.gmail.com>
+Subject: Re: [PATCH v3 00/37] JZ4780 & CI20 support
+To:     Paul Burton <paul.burton@imgtec.com>
+Cc:     Linux-MIPS <linux-mips@linux-mips.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Paul Cercueil <paul@crapouillou.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Mike Turquette <mturquette@linaro.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>
 Content-Type: text/plain; charset=UTF-8
-Return-Path: <f.fainelli@gmail.com>
+Return-Path: <robherring2@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47003
+X-archive-position: 47004
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: f.fainelli@gmail.com
+X-original-sender: robherring2@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,134 +58,167 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-2015-04-21 8:41 GMT-07:00 Guenter Roeck <linux@roeck-us.net>:
-> On Tue, Apr 21, 2015 at 01:45:35PM +0930, Rusty Russell wrote:
->> Aaro Koskinen <aaro.koskinen@iki.fi> writes:
->> > Hi,
->> >
->> > On Mon, Apr 20, 2015 at 12:40:28PM -0700, Guenter Roeck wrote:
->> >> the upstream kernel fails to build mips:nlm_xlp_defconfig,
->> >> mips:nlm_xlp_defconfig, mips:cavium_octeon_defconfig, and possibly
->> >> other targets, with errors such as
->> >>
->> >> arch/mips/kernel/smp.c:211:2: error:
->> >>    passing argument 2 of 'cpumask_set_cpu' discards 'volatile' qualifier
->> >>    from pointer target type
->> >> arch/mips/kernel/process.c:52:2: error:
->> >>    passing argument 2 of 'cpumask_test_cpu' discards 'volatile' qualifier
->> >>    from pointer target type
->> >> arch/mips/cavium-octeon/smp.c:242:2: error:
->> >>    passing argument 2 of 'cpumask_clear_cpu' discards 'volatile' qualifier
->> >>    from pointer target type
->> >>
->> >> The problem was introduced with commit 8dd928915a73 (" mips: fix up
->> >> obsolete cpu function usage"). I would send a patch to fix it, but I
->> >> am not sure if removing 'volatile' from the variable declaration(s)
->> >> would be a good idea.
->> >
->> > I think removing volatile from cpu_callin_map declaration should be OK,
->> > since test_cpu (only reader) uses test_bit which takes care of it:
->> >
->> >     static inline int test_bit(int nr, const volatile unsigned long *addr)
->>
->> No, that got replaced too, with cpumask_test_cpu AFAICT.
->>
->> You can open-code it, like so:
->>
->>         test_bit(0, cpumask_bits(cpu_callin_map));
->>
->> But you probably want to put a barrier in that loop instead of relying
->> on volatile.
->>
-> The following might do it. Note that I can not really test it since I don't have
-> a real mips system, and qemu gets rcu hangs if I enable more than one CPU (I see
-> that with older kernels as well, so it is not a new problem). Someone will have
-> to test the patch on a real multi-core system.
+On Tue, Apr 21, 2015 at 9:46 AM, Paul Burton <paul.burton@imgtec.com> wrote:
+> This series introduces initial support for the Ingenic JZ4780 SoC and
+> the Imagination Technologies MIPS Creator CI20 board which is built
+> around it. In the process the existing JZ4740 & qi_lb60 code gains
+> initial support for using DeviceTree such that much of the existing
+> platform code under arch/mips/jz4740 can be shared.
+>
+> The series has undergone quite a bit of restructure since v2. Each
+> patch contains a changelog indicating its differences, but a rough
+> overview for changes across the series would be:
+>
+>   - s/jz47xx/ingenic/ in various places, to reflect the fact that
+>     Ingenic have changed the naming scheme for their newest SoCs
+>     (now Mxxx).
+>
+>   - Restructure the Kconfig entries to provide a MACH_INGENIC
+>     indicating and Ingenic SoC, and have boards select the
+>     appropriate SoC symbol.
+>
+>   - Merge DT binding documentation where SoC bindings differ only
+>     by compatible strings.
+>
+>   - Capitalise "JZ" in SoC names, where not identifiers in code,
+>     to match the way Ingenic write them.
+>
+>   - Further clean up the Ingenic SoC interrupt controller driver
+>     and move it under drivers/irqchip/.
+>
+> Review appreciated, and hopefully this can make it into v4.2.
+>
+> Thanks,
+>     Paul
+>
+> Paul Burton (37):
+>   devicetree/bindings: add Ingenic Semiconductor vendor prefix
+>   devicetree/bindings: add Qi Hardware vendor prefix
+>   MIPS: JZ4740: introduce CONFIG_MACH_INGENIC
+>   MIPS: ingenic: add newer vendor IDs
+>   MIPS: JZ4740: require & include DT
+>   MIPS: irq_cpu: declare irqchip table entry
+>   MIPS: JZ4740: probe CPU interrupt controller via DT
+>   MIPS: JZ4740: use generic plat_irq_dispatch
+>   MIPS: JZ4740: move arch_init_irq out of arch/mips/jz4740/irq.c
+>   devicetree: document Ingenic SoC interrupt controller binding
 
-Would be nice to get this merged ASAP as a build failure is not great.
-See below for the tested tag, thanks for the fix!
+For patches 1, 2, and 10:
 
->
-> Guenter
->
-> ---
-> From 94026cc98a6b7b3567780a5443674c71202e2497 Mon Sep 17 00:00:00 2001
-> From: Guenter Roeck <linux@roeck-us.net>
-> Date: Tue, 21 Apr 2015 08:31:01 -0700
-> Subject: [PATCH] mips: Fix SMP builds
->
-> Mips SMP builds fail with error messages similar to the following.
->
-> arch/mips/kernel/smp.c:211:2: error:
->         passing argument 2 of 'cpumask_set_cpu' discards 'volatile'
->         qualifier from pointer target type
-> arch/mips/kernel/process.c:52:2: error:
->         passing argument 2 of 'cpumask_test_cpu' discards 'volatile'
->         qualifier from pointer target type
-> arch/mips/cavium-octeon/smp.c:242:2: error:
->         passing argument 2 of 'cpumask_clear_cpu' discards 'volatile'
->         qualifier from pointer target type
->
-> cpu_callin_map is declared as volatile variable, but passed to various
-> functions with non-volatile arguments. Make it non-volatile and add a
-> memory barrier at the one location where volatile might be needed.
->
-> Fixes: 8dd928915a73 ("mips: fix up obsolete cpu function usage")
-> Cc: Rusty Russell <rusty@rustcorp.com.au>
-> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Acked-by: Rob Herring <robh@kernel.org>
 
-On Netlogic XLP-FVP (8 cores):
-
-Tested-by: Florian Fainelli <f.fainelli@gmail.com>
-
-> ---
->  arch/mips/include/asm/smp.h | 2 +-
->  arch/mips/kernel/smp.c      | 6 ++++--
->  2 files changed, 5 insertions(+), 3 deletions(-)
+>   MIPS: JZ4740: probe interrupt controller via DT
+>   MIPS: JZ4740: parse SoC interrupt controller parent IRQ from DT
+>   MIPS: JZ4740: register an irq_domain for the interrupt controller
+>   MIPS: JZ4740: drop intc debugfs code
+>   MIPS: JZ4740: remove jz_intc_base global
+>   MIPS: JZ4740: support >32 interrupts
+>   MIPS: JZ4740: define IRQ numbers based on number of intc IRQs
+>   MIPS: JZ4740: read intc base address from DT
+>   MIPS: JZ4740: avoid JZ4740-specific naming
+>   MIPS: JZ4740: support newer SoC interrupt controllers
+>   irqchip: move Ingenic SoC intc driver to drivers/irqchip
+>   MIPS: JZ4740: call jz4740_clock_init earlier
+>   MIPS: JZ4740: replace use of jz4740_clock_bdata
+>   devicetree: add Ingenic CGU binding documentation
+>   clk: ingenic: add driver for Ingenic SoC CGU clocks
+>   MIPS,clk: migrate JZ4740 to common clock framework
+>   MIPS,clk: move jz4740_clock_set_wait_mode to jz4740-cgu
+>   MIPS,clk: move jz4740 UDC auto suspend functions to jz4740-cgu
+>   MIPS,clk: move jz4740 clock suspend,resume functions to jz4740-cgu
+>   clk: ingenic: add JZ4780 CGU support
+>   MIPS: JZ4740: remove clock.h
+>   MIPS: JZ4740: only detect RAM size if not specified in DT
+>   devicetree: document Ingenic SoC UART binding
+>   serial: 8250_ingenic: support for Ingenic SoC UARTs
+>   MIPS: JZ4740: use Ingenic SoC UART driver
+>   MIPS: ingenic: initial JZ4780 support
+>   MIPS: ingenic: initial MIPS Creator CI20 support
 >
-> diff --git a/arch/mips/include/asm/smp.h b/arch/mips/include/asm/smp.h
-> index bb02fac9b4fa..2b25d1ba1ea0 100644
-> --- a/arch/mips/include/asm/smp.h
-> +++ b/arch/mips/include/asm/smp.h
-> @@ -45,7 +45,7 @@ extern int __cpu_logical_map[NR_CPUS];
->  #define SMP_DUMP               0x8
->  #define SMP_ASK_C0COUNT                0x10
+>  .../devicetree/bindings/clock/ingenic,cgu.txt      |  53 ++
+>  .../bindings/interrupt-controller/ingenic,intc.txt |  25 +
+>  .../devicetree/bindings/serial/ingenic,uart.txt    |  22 +
+>  .../devicetree/bindings/vendor-prefixes.txt        |   2 +
+>  arch/mips/Kconfig                                  |  11 +-
+>  arch/mips/boot/dts/Makefile                        |   1 +
+>  arch/mips/boot/dts/ingenic/Makefile                |  10 +
+>  arch/mips/boot/dts/ingenic/ci20.dts                |  21 +
+>  arch/mips/boot/dts/ingenic/jz4740.dtsi             |  68 ++
+>  arch/mips/boot/dts/ingenic/jz4780.dtsi             | 101 +++
+>  arch/mips/boot/dts/ingenic/qi_lb60.dts             |  15 +
+>  arch/mips/configs/ci20_defconfig                   | 169 ++++
+>  arch/mips/configs/qi_lb60_defconfig                |   3 +-
+>  arch/mips/include/asm/cpu-type.h                   |   2 +-
+>  arch/mips/include/asm/cpu.h                        |   6 +-
+>  arch/mips/include/asm/mach-jz4740/clock.h          |   3 +
+>  .../asm/mach-jz4740/cpu-feature-overrides.h        |   3 -
+>  arch/mips/include/asm/mach-jz4740/irq.h            |  14 +-
+>  arch/mips/include/asm/mach-jz4740/platform.h       |   2 -
+>  arch/mips/jz4740/Kconfig                           |  17 +-
+>  arch/mips/jz4740/Makefile                          |   8 +-
+>  arch/mips/jz4740/Platform                          |   8 +-
+>  arch/mips/jz4740/board-qi_lb60.c                   |   7 -
+>  arch/mips/jz4740/clock-debugfs.c                   | 108 ---
+>  arch/mips/jz4740/clock.c                           | 924 ---------------------
+>  arch/mips/jz4740/clock.h                           |  76 --
+>  arch/mips/jz4740/gpio.c                            |   7 +-
+>  arch/mips/jz4740/irq.c                             | 162 ----
+>  arch/mips/jz4740/platform.c                        |  38 +-
+>  arch/mips/jz4740/pm.c                              |   2 -
+>  arch/mips/jz4740/prom.c                            |  13 -
+>  arch/mips/jz4740/reset.c                           |  13 +-
+>  arch/mips/jz4740/serial.c                          |  33 -
+>  arch/mips/jz4740/serial.h                          |  23 -
+>  arch/mips/jz4740/setup.c                           |  36 +-
+>  arch/mips/jz4740/time.c                            |  19 +-
+>  arch/mips/kernel/cpu-probe.c                       |   4 +-
+>  arch/mips/kernel/irq_cpu.c                         |   3 +
+>  drivers/clk/Makefile                               |   1 +
+>  drivers/clk/ingenic/Makefile                       |   3 +
+>  drivers/clk/ingenic/cgu.c                          | 711 ++++++++++++++++
+>  drivers/clk/ingenic/cgu.h                          | 223 +++++
+>  drivers/clk/ingenic/jz4740-cgu.c                   | 301 +++++++
+>  drivers/clk/ingenic/jz4780-cgu.c                   | 732 ++++++++++++++++
+>  drivers/irqchip/Kconfig                            |   5 +
+>  drivers/irqchip/Makefile                           |   1 +
+>  drivers/irqchip/irq-ingenic.c                      | 171 ++++
+>  drivers/tty/serial/8250/8250_ingenic.c             | 261 ++++++
+>  drivers/tty/serial/8250/Kconfig                    |   9 +
+>  drivers/tty/serial/8250/Makefile                   |   3 +
+>  include/dt-bindings/clock/jz4740-cgu.h             |  37 +
+>  include/dt-bindings/clock/jz4780-cgu.h             |  88 ++
+>  .../irq.h => include/linux/irqchip/ingenic.h       |   8 +-
+>  53 files changed, 3162 insertions(+), 1424 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/clock/ingenic,cgu.txt
+>  create mode 100644 Documentation/devicetree/bindings/interrupt-controller/ingenic,intc.txt
+>  create mode 100644 Documentation/devicetree/bindings/serial/ingenic,uart.txt
+>  create mode 100644 arch/mips/boot/dts/ingenic/Makefile
+>  create mode 100644 arch/mips/boot/dts/ingenic/ci20.dts
+>  create mode 100644 arch/mips/boot/dts/ingenic/jz4740.dtsi
+>  create mode 100644 arch/mips/boot/dts/ingenic/jz4780.dtsi
+>  create mode 100644 arch/mips/boot/dts/ingenic/qi_lb60.dts
+>  create mode 100644 arch/mips/configs/ci20_defconfig
+>  delete mode 100644 arch/mips/jz4740/clock-debugfs.c
+>  delete mode 100644 arch/mips/jz4740/clock.c
+>  delete mode 100644 arch/mips/jz4740/clock.h
+>  delete mode 100644 arch/mips/jz4740/irq.c
+>  delete mode 100644 arch/mips/jz4740/serial.c
+>  delete mode 100644 arch/mips/jz4740/serial.h
+>  create mode 100644 drivers/clk/ingenic/Makefile
+>  create mode 100644 drivers/clk/ingenic/cgu.c
+>  create mode 100644 drivers/clk/ingenic/cgu.h
+>  create mode 100644 drivers/clk/ingenic/jz4740-cgu.c
+>  create mode 100644 drivers/clk/ingenic/jz4780-cgu.c
+>  create mode 100644 drivers/irqchip/irq-ingenic.c
+>  create mode 100644 drivers/tty/serial/8250/8250_ingenic.c
+>  create mode 100644 include/dt-bindings/clock/jz4740-cgu.h
+>  create mode 100644 include/dt-bindings/clock/jz4780-cgu.h
+>  rename arch/mips/jz4740/irq.h => include/linux/irqchip/ingenic.h (74%)
 >
-> -extern volatile cpumask_t cpu_callin_map;
-> +extern cpumask_t cpu_callin_map;
->
->  /* Mask of CPUs which are currently definitely operating coherently */
->  extern cpumask_t cpu_coherent_mask;
-> diff --git a/arch/mips/kernel/smp.c b/arch/mips/kernel/smp.c
-> index 193ace7955fb..158191394770 100644
-> --- a/arch/mips/kernel/smp.c
-> +++ b/arch/mips/kernel/smp.c
-> @@ -43,7 +43,7 @@
->  #include <asm/time.h>
->  #include <asm/setup.h>
->
-> -volatile cpumask_t cpu_callin_map;     /* Bitmask of started secondaries */
-> +cpumask_t cpu_callin_map;              /* Bitmask of started secondaries */
->
->  int __cpu_number_map[NR_CPUS];         /* Map physical to logical */
->  EXPORT_SYMBOL(__cpu_number_map);
-> @@ -218,8 +218,10 @@ int __cpu_up(unsigned int cpu, struct task_struct *tidle)
->         /*
->          * Trust is futile.  We should really have timeouts ...
->          */
-> -       while (!cpumask_test_cpu(cpu, &cpu_callin_map))
-> +       while (!cpumask_test_cpu(cpu, &cpu_callin_map)) {
->                 udelay(100);
-> +               mb();
-> +       }
->
->         synchronise_count_master(cpu);
->         return 0;
 > --
-> 2.1.0
+> 2.3.5
 >
-
-
-
--- 
-Florian
+> --
+> To unsubscribe from this list: send the line "unsubscribe devicetree" in
+> the body of a message to majordomo@vger.kernel.org
+> More majordomo info at  http://vger.kernel.org/majordomo-info.html

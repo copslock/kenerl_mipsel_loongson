@@ -1,53 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Apr 2015 13:10:34 +0200 (CEST)
-Received: from mail-wi0-f171.google.com ([209.85.212.171]:38069 "EHLO
-        mail-wi0-f171.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010687AbbDWLKdGhOPY (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 23 Apr 2015 13:10:33 +0200
-Received: by wiun10 with SMTP id n10so88313681wiu.1
-        for <linux-mips@linux-mips.org>; Thu, 23 Apr 2015 04:10:29 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
-         :references:mime-version:content-type:content-disposition
-         :in-reply-to:user-agent;
-        bh=bl41oXh1uVrhRPcyyiWAJdTUKiYoMMMCAbm9uqNKfaE=;
-        b=iH1UOI+wzLkC1jE8RzSNDWG9GgreTDnyKt2YDYHvVvKZizSXWHmNJTuzEsBDm4yzp+
-         5KMH7iKRrmQgLW3S/PZ2YYwx/gFr48klCXdOkLmOAiyFiPCMqQXv4GGwYwQkfI+c1V9C
-         tG+OTcJGPDyUHkfYE5nh+HnhLwUDWuyvQVmdnoJipG6SAYpXZVuvDjJGD2MJxPRrWvj9
-         s+qCsBHkZBkeLs19jLVX8nmjed4/mwkFrTybB+gZrJK+kWW5oX3ZFUs3YTZaI6bICgvm
-         a9WiYz1ulax7fKB/rMUo2M7HGBLqgJ39sF7KqqBotW07tIzcHskSzfJSf0TuMdFxC3Wd
-         z36g==
-X-Gm-Message-State: ALoCoQlAm4lGjqkuYrTLF+qTHpfpgGSfEo++W6UAo7hOCwcMth6xD6MzkColz2+jd7q5Ps/3JpDC
-X-Received: by 10.194.23.66 with SMTP id k2mr4321211wjf.18.1429787429461;
-        Thu, 23 Apr 2015 04:10:29 -0700 (PDT)
-Received: from bordel.klfree.net (bordel.klfree.cz. [81.201.48.42])
-        by mx.google.com with ESMTPSA id hy7sm11624680wjb.1.2015.04.23.04.10.28
-        (version=TLSv1.2 cipher=RC4-SHA bits=128/128);
-        Thu, 23 Apr 2015 04:10:28 -0700 (PDT)
-Date:   Thu, 23 Apr 2015 13:10:22 +0200
-From:   Petr Malat <oss@malat.biz>
-To:     Mike Frysinger <vapier@gentoo.org>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        Mike Frysinger <vapier@chromium.org>
-Subject: Re: [PATCH] Revert "MIPS: Provide correct siginfo_t.si_stime"
-Message-ID: <20150423111021.GA32635@bordel.klfree.net>
-References: <1429641183-15873-1-git-send-email-vapier@gentoo.org>
- <20150422123045.GA5428@bordel.klfree.net>
- <20150423013606.GQ12496@vapier>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Apr 2015 14:28:49 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:58761 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27010762AbbDWM2sT9WsA (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 23 Apr 2015 14:28:48 +0200
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id EA3C2F5288452;
+        Thu, 23 Apr 2015 13:28:41 +0100 (IST)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Thu, 23 Apr 2015 13:28:44 +0100
+Received: from mchandras-linux.le.imgtec.org (192.168.154.77) by
+ LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
+ 14.3.210.2; Thu, 23 Apr 2015 13:28:43 +0100
+From:   Markos Chandras <markos.chandras@imgtec.com>
+To:     <linux-mips@linux-mips.org>
+CC:     Markos Chandras <markos.chandras@imgtec.com>,
+        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
+Subject: [PATCH] MIPS: bcm47xx: Move the BCM47XX board types under a choice symbol
+Date:   Thu, 23 Apr 2015 13:28:13 +0100
+Message-ID: <1429792093-8160-1-git-send-email-markos.chandras@imgtec.com>
+X-Mailer: git-send-email 2.3.5
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20150423013606.GQ12496@vapier>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <oss@malat.biz>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [192.168.154.77]
+Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47013
+X-archive-position: 47014
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: oss@malat.biz
+X-original-sender: markos.chandras@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -60,36 +45,41 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-So the whole include dependency is a mess.
+Since the build system expects one of the two types to be selected,
+it's better if we move these symbols under a new choice symbol.
+Moreover, this fixes the following build problem when no board is
+selected:
 
-arch/mips/include/uapi/asm/siginfo.h defines siginfo_t structure, which
-requires ./include/uapi/asm-generic/siginfo.h for definition of SI_MAX_SIZE
-and others, but it can't include ./include/asm-generic/siginfo.h, because
-that one contains inline function copy_siginfo, which dereferences
-siginfo_t structure.
+In file included from arch/mips/bcm47xx/irq.c:32:0:
+./arch/mips/include/asm/mach-bcm47xx/bcm47xx.h:34:1: error: expected identifier
+before '}' token };
+                 ^
+Cc: "Rafał Miłecki" <zajec5@gmail.com>
+Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+---
+ arch/mips/bcm47xx/Kconfig | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-It can be solved by
- - Modifying generic siginfo definition to allow swapping si_code and
-   si_errno either by changing the definition to
-     typedef struct siginfo {
-        int si_signo;
-        int __ARCH_SI_SECOND_MEMBER;
-        int __ARCH_SI_THIRD_MEMBER;
-   or by providing swapping define
-     typedef struct siginfo {
-        int si_signo;
-     #ifdef    __ARCH_SI_SWAP_ERRNO_CODE
-        int si_code;
-        int si_errno;
-     #else
-        int si_errno;
-        int si_code;
-     #endif
-   then the generic definition can be used.
-
- - Coping copy_siginfo into arch specific include file also solves the problem
-
- - Use #ifdef __KERNEL__
-
-Comments, please.
-  P.
+diff --git a/arch/mips/bcm47xx/Kconfig b/arch/mips/bcm47xx/Kconfig
+index fc21d3659fa0..39e24407709e 100644
+--- a/arch/mips/bcm47xx/Kconfig
++++ b/arch/mips/bcm47xx/Kconfig
+@@ -1,5 +1,9 @@
+ if BCM47XX
+ 
++choice
++	prompt "Board type"
++	default BCM47XX_SSB
++
+ config BCM47XX_SSB
+ 	bool "SSB Support for Broadcom BCM47XX"
+ 	select SYS_HAS_CPU_BMIPS32_3300
+@@ -34,4 +38,6 @@ config BCM47XX_BCMA
+ 
+ 	 This will generate an image with support for BCMA and MIPS32 R2 instruction set.
+ 
++endchoice
++
+ endif
+-- 
+2.3.5

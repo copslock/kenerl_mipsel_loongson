@@ -1,30 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Apr 2015 15:26:05 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:3896 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Apr 2015 15:26:25 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:24511 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27026035AbbDXN0DcxpA- (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 24 Apr 2015 15:26:03 +0200
+        with ESMTP id S27026035AbbDXN0WZIOAU (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 24 Apr 2015 15:26:22 +0200
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 8F8F0E0F7EFFE;
-        Fri, 24 Apr 2015 14:25:53 +0100 (IST)
+        by Websense Email Security Gateway with ESMTPS id 4E1A2A36C4BB7;
+        Fri, 24 Apr 2015 14:26:14 +0100 (IST)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
  KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Fri, 24 Apr 2015 14:25:56 +0100
+ 14.3.195.1; Fri, 24 Apr 2015 14:26:16 +0100
 Received: from localhost (192.168.159.76) by LEMAIL01.le.imgtec.org
  (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Fri, 24 Apr
- 2015 14:25:51 +0100
+ 2015 14:26:13 +0100
 From:   Paul Burton <paul.burton@imgtec.com>
 To:     <linux-mips@linux-mips.org>
 CC:     Paul Burton <paul.burton@imgtec.com>,
-        Ian Campbell <ijc+devicetree@hellion.org.uk>,
-        Kumar Gala <galak@codeaurora.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Mark Rutland <mark.rutland@arm.com>,
         Mike Turquette <mturquette@linaro.org>,
-        Pawel Moll <pawel.moll@arm.com>,
-        "Rob Herring" <robh+dt@kernel.org>, <devicetree@vger.kernel.org>
-Subject: [PATCH v4 24/37] devicetree: add Ingenic CGU binding documentation
-Date:   Fri, 24 Apr 2015 14:17:24 +0100
-Message-ID: <1429881457-16016-25-git-send-email-paul.burton@imgtec.com>
+        Stephen Boyd <sboyd@codeaurora.org>,
+        <linux-clk@vger.kernel.org>
+Subject: [PATCH v4 25/37] clk: ingenic: add driver for Ingenic SoC CGU clocks
+Date:   Fri, 24 Apr 2015 14:17:25 +0100
+Message-ID: <1429881457-16016-26-git-send-email-paul.burton@imgtec.com>
 X-Mailer: git-send-email 2.3.5
 In-Reply-To: <1429881457-16016-1-git-send-email-paul.burton@imgtec.com>
 References: <1429881457-16016-1-git-send-email-paul.burton@imgtec.com>
@@ -35,7 +32,7 @@ Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47058
+X-archive-position: 47059
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -52,233 +49,1046 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Document the devicetree binding for Ingenic SoC CGUs, and add headers
-defining the clock specifiers for clocks provided by the JZ4740 & JZ4780
-CGU blocks.
+This driver supports the CGU clocks for Ingenic SoCs. It is generic
+enough to be usable across at least the JZ4740 to the JZ4780, and will
+be made use of on such devices in subsequent commits. This patch by
+itself only adds the SoC-agnostic infrastructure that forms the bulk of
+the CGU driver for the aforementioned further commits to make use of.
 
 Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-Cc: Ian Campbell <ijc+devicetree@hellion.org.uk>
-Cc: Kumar Gala <galak@codeaurora.org>
+Co-authored-by: Paul Cercueil <paul@crapouillou.net>
 Cc: Lars-Peter Clausen <lars@metafoo.de>
-Cc: Mark Rutland <mark.rutland@arm.com>
 Cc: Mike Turquette <mturquette@linaro.org>
-Cc: Pawel Moll <pawel.moll@arm.com>
-Cc: Rob Herring <robh+dt@kernel.org>
-Cc: devicetree@vger.kernel.org
+Cc: Stephen Boyd <sboyd@codeaurora.org>
+Cc: linux-clk@vger.kernel.org
 ---
 Changes in v4:
-  - s/TCU/CGU/
+  - Add brackets to functions in kerneldoc comments.
+
+  - Correct some stale comments.
+
+  - Return bool from ingenic_cgu_gate_get.
+
+  - Use div_u64 to avoid potential overflows in PLL rate calculations.
+
+  - Honor m_offset & n_offset in ingenic_pll_calc.
+
+  - Avoid incorrectly calculating the value to write to a mux field in
+    ingenic_clk_set_parent when the desired parent is the first (idx ==
+    0) and the hardware's zero value is not a valid parent (ie.
+    clk_info->parents[0] == -1).
+
+  - Return parent rate for non-dividing clocks in
+    ingenic_clk_round_rate.
+
+  - Drop redundant cgu != NULL check in ingenic_cgu_register_clocks
+    error path.
+
+  - Consistently use u8/s8 for bit specifications where the bit is
+    required or optional respectively.
+
+  - Use BIT & GENMASK macros in a few more places, replacing open coded
+    versions.
+
+  - Simplify & correct locking. CGU registers aren't always neatly
+    divided into those controlling whether clocks are enabled & those
+    controlling other attributes of the clock (rate, parent etc). Thus
+    accesses to many of these registers can occur from either of the two
+    groups of operations described by Documentation/clk.txt and from
+    either atomic or non-atomic context. The split of functionality
+    between different CGU registers also differs between SoCs. Simplify
+    handling all of this by using a single spinlock, which at least
+    is simple, works correctly and can be revisited if it ever proves to
+    be a performance issue in future.
 
 Changes in v3:
-  - Merge binding documentation for various Ingenic SoCs which differ only
-    by compatible strings.
+  - s/jz47xx/ingenic/ since Ingenic have changed their naming scheme to
+    "Mxxx" for newer SoCs.
+
+  - Allow clock gating with registers other than CLKGR* (pcercuei).
+
+  - Fixup dividers to never exceed the requested rate (pcercuei).
+
+  - Fixup PLL calculations to work better with more restricted
+    coefficient bit widths (pcercuei).
 
 Changes in v2:
-  - None.
+  - Fix spinlock handling in jz47xx_clk_set_rate error path (ZubairLK).
 ---
- .../devicetree/bindings/clock/ingenic,cgu.txt      | 53 +++++++++++++
- include/dt-bindings/clock/jz4740-cgu.h             | 37 +++++++++
- include/dt-bindings/clock/jz4780-cgu.h             | 88 ++++++++++++++++++++++
- 3 files changed, 178 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/clock/ingenic,cgu.txt
- create mode 100644 include/dt-bindings/clock/jz4740-cgu.h
- create mode 100644 include/dt-bindings/clock/jz4780-cgu.h
+ drivers/clk/Makefile         |   1 +
+ drivers/clk/ingenic/Makefile |   1 +
+ drivers/clk/ingenic/cgu.c    | 712 +++++++++++++++++++++++++++++++++++++++++++
+ drivers/clk/ingenic/cgu.h    | 223 ++++++++++++++
+ 4 files changed, 937 insertions(+)
+ create mode 100644 drivers/clk/ingenic/Makefile
+ create mode 100644 drivers/clk/ingenic/cgu.c
+ create mode 100644 drivers/clk/ingenic/cgu.h
 
-diff --git a/Documentation/devicetree/bindings/clock/ingenic,cgu.txt b/Documentation/devicetree/bindings/clock/ingenic,cgu.txt
+diff --git a/drivers/clk/Makefile b/drivers/clk/Makefile
+index 3d00c25..cc77327 100644
+--- a/drivers/clk/Makefile
++++ b/drivers/clk/Makefile
+@@ -50,6 +50,7 @@ obj-$(CONFIG_ARCH_BERLIN)		+= berlin/
+ obj-$(CONFIG_ARCH_HI3xxx)		+= hisilicon/
+ obj-$(CONFIG_ARCH_HIP04)		+= hisilicon/
+ obj-$(CONFIG_ARCH_HIX5HD2)		+= hisilicon/
++obj-$(CONFIG_MACH_INGENIC)		+= ingenic/
+ obj-$(CONFIG_COMMON_CLK_KEYSTONE)	+= keystone/
+ ifeq ($(CONFIG_COMMON_CLK), y)
+ obj-$(CONFIG_ARCH_MMP)			+= mmp/
+diff --git a/drivers/clk/ingenic/Makefile b/drivers/clk/ingenic/Makefile
 new file mode 100644
-index 0000000..f8d4134
+index 0000000..5ac2fd9
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/clock/ingenic,cgu.txt
-@@ -0,0 +1,53 @@
-+Ingenic SoC CGU binding
++++ b/drivers/clk/ingenic/Makefile
+@@ -0,0 +1 @@
++obj-y				+= cgu.o
+diff --git a/drivers/clk/ingenic/cgu.c b/drivers/clk/ingenic/cgu.c
+new file mode 100644
+index 0000000..33dab67
+--- /dev/null
++++ b/drivers/clk/ingenic/cgu.c
+@@ -0,0 +1,712 @@
++/*
++ * Ingenic SoC CGU driver
++ *
++ * Copyright (c) 2013-2015 Imagination Technologies
++ * Author: Paul Burton <paul.burton@imgtec.com>
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ */
 +
-+The CGU in an Ingenic SoC provides all the clocks generated on-chip. It
-+typically includes a variety of PLLs, multiplexers, dividers & gates in order
-+to provide many different clock signals derived from only 2 external source
-+clocks.
++#include <linux/bitops.h>
++#include <linux/clk-provider.h>
++#include <linux/clkdev.h>
++#include <linux/delay.h>
++#include <linux/math64.h>
++#include <linux/of.h>
++#include <linux/of_address.h>
++#include <linux/slab.h>
++#include <linux/spinlock.h>
++#include "cgu.h"
 +
-+Required properties:
-+- compatible : Should be "ingenic,<soctype>-cgu".
-+  For example "ingenic,jz4740-cgu" or "ingenic,jz4780-cgu".
-+- reg : The address & length of the CGU registers.
-+- clocks : List of phandle & clock specifiers for clocks external to the CGU.
-+  Two such external clocks should be specified - first the external crystal
-+  "ext" and second the RTC clock source "rtc".
-+- clock-names : List of name strings for the external clocks.
-+- #clock-cells: Should be 1.
-+  Clock consumers specify this argument to identify a clock. The valid values
-+  may be found in <dt-bindings/clock/<soctype>-cgu.h>.
++#define MHZ (1000 * 1000)
 +
-+Example SoC include file:
++/**
++ * ingenic_cgu_gate_get() - get the value of clock gate register bit
++ * @cgu: reference to the CGU whose registers should be read
++ * @info: info struct describing the gate bit
++ *
++ * Retrieves the state of the clock gate bit described by info. The
++ * caller must hold cgu->lock.
++ *
++ * Return: true if the gate bit is set, else false.
++ */
++static inline bool
++ingenic_cgu_gate_get(struct ingenic_cgu *cgu,
++		     const struct ingenic_cgu_gate_info *info)
++{
++	return readl(cgu->base + info->reg) & BIT(info->bit);
++}
 +
-+/ {
-+	cgu: jz4740-cgu {
-+		compatible = "ingenic,jz4740-cgu";
-+		reg = <0x10000000 0x100>;
-+		#clock-cells = <1>;
-+	};
++/**
++ * ingenic_cgu_gate_set() - set the value of clock gate register bit
++ * @cgu: reference to the CGU whose registers should be modified
++ * @info: info struct describing the gate bit
++ * @val: non-zero to gate a clock, otherwise zero
++ *
++ * Sets the given gate bit in order to gate or ungate a clock.
++ *
++ * The caller must hold cgu->lock.
++ */
++static inline void
++ingenic_cgu_gate_set(struct ingenic_cgu *cgu,
++		     const struct ingenic_cgu_gate_info *info, bool val)
++{
++	u32 clkgr = readl(cgu->base + info->reg);
 +
-+	uart0: serial@10030000 {
-+		clocks = <&cgu JZ4740_CLK_UART0>;
++	if (val)
++		clkgr |= BIT(info->bit);
++	else
++		clkgr &= ~BIT(info->bit);
++
++	writel(clkgr, cgu->base + info->reg);
++}
++
++/*
++ * PLL operations
++ */
++
++static unsigned long
++ingenic_pll_recalc_rate(struct clk_hw *hw, unsigned long parent_rate)
++{
++	struct ingenic_clk *ingenic_clk = to_ingenic_clk(hw);
++	struct ingenic_cgu *cgu = ingenic_clk->cgu;
++	const struct ingenic_cgu_clk_info *clk_info;
++	const struct ingenic_cgu_pll_info *pll_info;
++	unsigned m, n, od_enc, od;
++	bool bypass, enable;
++	unsigned long flags;
++	u32 ctl;
++
++	clk_info = &cgu->clock_info[ingenic_clk->idx];
++	BUG_ON(clk_info->type != CGU_CLK_PLL);
++	pll_info = &clk_info->pll;
++
++	spin_lock_irqsave(&cgu->lock, flags);
++	ctl = readl(cgu->base + pll_info->reg);
++	spin_unlock_irqrestore(&cgu->lock, flags);
++
++	m = ((ctl >> pll_info->m_shift) & GENMASK(pll_info->m_bits - 1, 0));
++	m += pll_info->m_offset;
++	n = ((ctl >> pll_info->n_shift) & GENMASK(pll_info->n_bits - 1, 0));
++	n += pll_info->n_offset;
++	od_enc = ctl >> pll_info->od_shift;
++	od_enc &= GENMASK(pll_info->od_bits - 1, 0);
++	bypass = !!(ctl & BIT(pll_info->bypass_bit));
++	enable = !!(ctl & BIT(pll_info->enable_bit));
++
++	if (bypass)
++		return parent_rate;
++
++	if (!enable)
++		return 0;
++
++	for (od = 0; od < pll_info->od_max; od++) {
++		if (pll_info->od_encoding[od] == od_enc)
++			break;
++	}
++	BUG_ON(od == pll_info->od_max);
++	od++;
++
++	return div_u64((u64)parent_rate * m, n * od);
++}
++
++static unsigned long
++ingenic_pll_calc(const struct ingenic_cgu_clk_info *clk_info,
++		 unsigned long rate, unsigned long parent_rate,
++		 unsigned *pm, unsigned *pn, unsigned *pod)
++{
++	const struct ingenic_cgu_pll_info *pll_info;
++	unsigned m, n, od;
++
++	pll_info = &clk_info->pll;
++	od = 1;
++
++	/*
++	 * The frequency after the input divider must be between 10 and 50 MHz.
++	 * The highest divider yields the best resolution.
++	 */
++	n = parent_rate / (10 * MHZ);
++	n = min_t(unsigned, n, 1 << clk_info->pll.n_bits);
++	n = max_t(unsigned, n, pll_info->n_offset);
++
++	m = (rate / MHZ) * od * n / (parent_rate / MHZ);
++	m = min_t(unsigned, m, 1 << clk_info->pll.m_bits);
++	m = max_t(unsigned, m, pll_info->m_offset);
++
++	if (pm)
++		*pm = m;
++	if (pn)
++		*pn = n;
++	if (pod)
++		*pod = od;
++
++	return div_u64((u64)parent_rate * m, n * od);
++}
++
++static long
++ingenic_pll_round_rate(struct clk_hw *hw, unsigned long req_rate,
++		       unsigned long *prate)
++{
++	struct ingenic_clk *ingenic_clk = to_ingenic_clk(hw);
++	struct ingenic_cgu *cgu = ingenic_clk->cgu;
++	const struct ingenic_cgu_clk_info *clk_info;
++
++	clk_info = &cgu->clock_info[ingenic_clk->idx];
++	BUG_ON(clk_info->type != CGU_CLK_PLL);
++
++	return ingenic_pll_calc(clk_info, req_rate, *prate, NULL, NULL, NULL);
++}
++
++static int
++ingenic_pll_set_rate(struct clk_hw *hw, unsigned long req_rate,
++		     unsigned long parent_rate)
++{
++	const unsigned timeout = 100;
++	struct ingenic_clk *ingenic_clk = to_ingenic_clk(hw);
++	struct ingenic_cgu *cgu = ingenic_clk->cgu;
++	const struct ingenic_cgu_clk_info *clk_info;
++	const struct ingenic_cgu_pll_info *pll_info;
++	unsigned long rate, flags;
++	unsigned m, n, od, i;
++	u32 ctl;
++
++	clk_info = &cgu->clock_info[ingenic_clk->idx];
++	BUG_ON(clk_info->type != CGU_CLK_PLL);
++	pll_info = &clk_info->pll;
++
++	rate = ingenic_pll_calc(clk_info, req_rate, parent_rate,
++			       &m, &n, &od);
++	if (rate != req_rate)
++		pr_info("ingenic-cgu: request '%s' rate %luHz, actual %luHz\n",
++			clk_info->name, req_rate, rate);
++
++	spin_lock_irqsave(&cgu->lock, flags);
++	ctl = readl(cgu->base + pll_info->reg);
++
++	ctl &= ~(GENMASK(pll_info->m_bits - 1, 0) << pll_info->m_shift);
++	ctl |= (m - pll_info->m_offset) << pll_info->m_shift;
++
++	ctl &= ~(GENMASK(pll_info->n_bits - 1, 0) << pll_info->n_shift);
++	ctl |= (n - pll_info->n_offset) << pll_info->n_shift;
++
++	ctl &= ~(GENMASK(pll_info->od_bits - 1, 0) << pll_info->od_shift);
++	ctl |= pll_info->od_encoding[od - 1] << pll_info->od_shift;
++
++	ctl &= ~BIT(pll_info->bypass_bit);
++	ctl |= BIT(pll_info->enable_bit);
++
++	writel(ctl, cgu->base + pll_info->reg);
++
++	/* wait for the PLL to stabilise */
++	for (i = 0; i < timeout; i++) {
++		ctl = readl(cgu->base + pll_info->reg);
++		if (ctl & BIT(pll_info->stable_bit))
++			break;
++		mdelay(1);
++	}
++
++	spin_unlock_irqrestore(&cgu->lock, flags);
++
++	if (i == timeout)
++		return -EBUSY;
++
++	return 0;
++}
++
++static const struct clk_ops ingenic_pll_ops = {
++	.recalc_rate = ingenic_pll_recalc_rate,
++	.round_rate = ingenic_pll_round_rate,
++	.set_rate = ingenic_pll_set_rate,
++};
++
++/*
++ * Operations for all non-PLL clocks
++ */
++
++static u8 ingenic_clk_get_parent(struct clk_hw *hw)
++{
++	struct ingenic_clk *ingenic_clk = to_ingenic_clk(hw);
++	struct ingenic_cgu *cgu = ingenic_clk->cgu;
++	const struct ingenic_cgu_clk_info *clk_info;
++	u32 reg;
++	u8 i, hw_idx, idx = 0;
++
++	clk_info = &cgu->clock_info[ingenic_clk->idx];
++
++	if (clk_info->type & CGU_CLK_MUX) {
++		reg = readl(cgu->base + clk_info->mux.reg);
++		hw_idx = (reg >> clk_info->mux.shift) &
++			 GENMASK(clk_info->mux.bits - 1, 0);
++
++		/*
++		 * Convert the hardware index to the parent index by skipping
++		 * over any -1's in the parents array.
++		 */
++		for (i = 0; i < hw_idx; i++) {
++			if (clk_info->parents[i] != -1)
++				idx++;
++		}
++	}
++
++	return idx;
++}
++
++static int ingenic_clk_set_parent(struct clk_hw *hw, u8 idx)
++{
++	struct ingenic_clk *ingenic_clk = to_ingenic_clk(hw);
++	struct ingenic_cgu *cgu = ingenic_clk->cgu;
++	const struct ingenic_cgu_clk_info *clk_info;
++	unsigned long flags;
++	u8 curr_idx, hw_idx, num_poss;
++	u32 reg, mask;
++
++	clk_info = &cgu->clock_info[ingenic_clk->idx];
++
++	if (clk_info->type & CGU_CLK_MUX) {
++		/*
++		 * Convert the parent index to the hardware index by adding
++		 * 1 for any -1 in the parents array preceding the given
++		 * index. That is, we want the index of idx'th entry in
++		 * clk_info->parents which does not equal -1.
++		 */
++		hw_idx = curr_idx = 0;
++		num_poss = 1 << clk_info->mux.bits;
++		for (; hw_idx < num_poss; hw_idx++) {
++			if (clk_info->parents[hw_idx] == -1)
++				continue;
++			if (curr_idx == idx)
++				break;
++			curr_idx++;
++		}
++
++		/* idx should always be a valid parent */
++		BUG_ON(curr_idx != idx);
++
++		mask = GENMASK(clk_info->mux.bits - 1, 0);
++		mask <<= clk_info->mux.shift;
++
++		spin_lock_irqsave(&cgu->lock, flags);
++
++		/* write the register */
++		reg = readl(cgu->base + clk_info->mux.reg);
++		reg &= ~mask;
++		reg |= hw_idx << clk_info->mux.shift;
++		writel(reg, cgu->base + clk_info->mux.reg);
++
++		spin_unlock_irqrestore(&cgu->lock, flags);
++		return 0;
++	}
++
++	return idx ? -EINVAL : 0;
++}
++
++static unsigned long
++ingenic_clk_recalc_rate(struct clk_hw *hw, unsigned long parent_rate)
++{
++	struct ingenic_clk *ingenic_clk = to_ingenic_clk(hw);
++	struct ingenic_cgu *cgu = ingenic_clk->cgu;
++	const struct ingenic_cgu_clk_info *clk_info;
++	unsigned long rate = parent_rate;
++	u32 div_reg, div;
++
++	clk_info = &cgu->clock_info[ingenic_clk->idx];
++
++	if (clk_info->type & CGU_CLK_DIV) {
++		div_reg = readl(cgu->base + clk_info->div.reg);
++		div = (div_reg >> clk_info->div.shift) &
++		      GENMASK(clk_info->div.bits - 1, 0);
++		div += 1;
++
++		rate /= div;
++	}
++
++	return rate;
++}
++
++static unsigned
++ingenic_clk_calc_div(const struct ingenic_cgu_clk_info *clk_info,
++		     unsigned long parent_rate, unsigned long req_rate)
++{
++	unsigned div;
++
++	/* calculate the divide */
++	div = DIV_ROUND_UP(parent_rate, req_rate);
++
++	/* and impose hardware constraints */
++	div = min_t(unsigned, div, 1 << clk_info->div.bits);
++	div = max_t(unsigned, div, 1);
++
++	return div;
++}
++
++static long
++ingenic_clk_round_rate(struct clk_hw *hw, unsigned long req_rate,
++		       unsigned long *parent_rate)
++{
++	struct ingenic_clk *ingenic_clk = to_ingenic_clk(hw);
++	struct ingenic_cgu *cgu = ingenic_clk->cgu;
++	const struct ingenic_cgu_clk_info *clk_info;
++	long rate = *parent_rate;
++
++	clk_info = &cgu->clock_info[ingenic_clk->idx];
++
++	if (clk_info->type & CGU_CLK_DIV) {
++		rate /= ingenic_clk_calc_div(clk_info, *parent_rate, req_rate);
++	} else if (clk_info->type & CGU_CLK_FIXDIV) {
++		rate /= clk_info->fixdiv.div;
++	}
++
++	return rate;
++}
++
++static int
++ingenic_clk_set_rate(struct clk_hw *hw, unsigned long req_rate,
++		     unsigned long parent_rate)
++{
++	struct ingenic_clk *ingenic_clk = to_ingenic_clk(hw);
++	struct ingenic_cgu *cgu = ingenic_clk->cgu;
++	const struct ingenic_cgu_clk_info *clk_info;
++	const unsigned timeout = 100;
++	unsigned long rate, flags;
++	unsigned div, i;
++	u32 reg, mask;
++	int ret = 0;
++
++	clk_info = &cgu->clock_info[ingenic_clk->idx];
++
++	if (clk_info->type & CGU_CLK_DIV) {
++		div = ingenic_clk_calc_div(clk_info, parent_rate, req_rate);
++		rate = parent_rate / div;
++
++		if (rate != req_rate)
++			return -EINVAL;
++
++		spin_lock_irqsave(&cgu->lock, flags);
++		reg = readl(cgu->base + clk_info->div.reg);
++
++		/* update the divide */
++		mask = GENMASK(clk_info->div.bits - 1, 0);
++		reg &= ~(mask << clk_info->div.shift);
++		reg |= (div - 1) << clk_info->div.shift;
++
++		/* clear the stop bit */
++		if (clk_info->div.stop_bit != -1)
++			reg &= ~BIT(clk_info->div.stop_bit);
++
++		/* set the change enable bit */
++		if (clk_info->div.ce_bit != -1)
++			reg |= BIT(clk_info->div.ce_bit);
++
++		/* update the hardware */
++		writel(reg, cgu->base + clk_info->div.reg);
++
++		/* wait for the change to take effect */
++		if (clk_info->div.busy_bit != -1) {
++			for (i = 0; i < timeout; i++) {
++				reg = readl(cgu->base + clk_info->div.reg);
++				if (!(reg & BIT(clk_info->div.busy_bit)))
++					break;
++				mdelay(1);
++			}
++			if (i == timeout)
++				ret = -EBUSY;
++		}
++
++		spin_unlock_irqrestore(&cgu->lock, flags);
++		return ret;
++	}
++
++	return -EINVAL;
++}
++
++static int ingenic_clk_enable(struct clk_hw *hw)
++{
++	struct ingenic_clk *ingenic_clk = to_ingenic_clk(hw);
++	struct ingenic_cgu *cgu = ingenic_clk->cgu;
++	const struct ingenic_cgu_clk_info *clk_info;
++	unsigned long flags;
++
++	clk_info = &cgu->clock_info[ingenic_clk->idx];
++
++	if (clk_info->type & CGU_CLK_GATE) {
++		/* ungate the clock */
++		spin_lock_irqsave(&cgu->lock, flags);
++		ingenic_cgu_gate_set(cgu, &clk_info->gate, false);
++		spin_unlock_irqrestore(&cgu->lock, flags);
++	}
++
++	return 0;
++}
++
++static void ingenic_clk_disable(struct clk_hw *hw)
++{
++	struct ingenic_clk *ingenic_clk = to_ingenic_clk(hw);
++	struct ingenic_cgu *cgu = ingenic_clk->cgu;
++	const struct ingenic_cgu_clk_info *clk_info;
++	unsigned long flags;
++
++	clk_info = &cgu->clock_info[ingenic_clk->idx];
++
++	if (clk_info->type & CGU_CLK_GATE) {
++		/* gate the clock */
++		spin_lock_irqsave(&cgu->lock, flags);
++		ingenic_cgu_gate_set(cgu, &clk_info->gate, true);
++		spin_unlock_irqrestore(&cgu->lock, flags);
++	}
++}
++
++static int ingenic_clk_is_enabled(struct clk_hw *hw)
++{
++	struct ingenic_clk *ingenic_clk = to_ingenic_clk(hw);
++	struct ingenic_cgu *cgu = ingenic_clk->cgu;
++	const struct ingenic_cgu_clk_info *clk_info;
++	unsigned long flags;
++	int enabled = 1;
++
++	clk_info = &cgu->clock_info[ingenic_clk->idx];
++
++	if (clk_info->type & CGU_CLK_GATE) {
++		spin_lock_irqsave(&cgu->lock, flags);
++		enabled = !ingenic_cgu_gate_get(cgu, &clk_info->gate);
++		spin_unlock_irqrestore(&cgu->lock, flags);
++	}
++
++	return enabled;
++}
++
++static const struct clk_ops ingenic_clk_ops = {
++	.get_parent = ingenic_clk_get_parent,
++	.set_parent = ingenic_clk_set_parent,
++
++	.recalc_rate = ingenic_clk_recalc_rate,
++	.round_rate = ingenic_clk_round_rate,
++	.set_rate = ingenic_clk_set_rate,
++
++	.enable = ingenic_clk_enable,
++	.disable = ingenic_clk_disable,
++	.is_enabled = ingenic_clk_is_enabled,
++};
++
++/*
++ * Setup functions.
++ */
++
++static int register_clock(struct ingenic_cgu *cgu, unsigned idx)
++{
++	const struct ingenic_cgu_clk_info *clk_info = &cgu->clock_info[idx];
++	struct clk_init_data clk_init;
++	struct ingenic_clk *ingenic_clk = NULL;
++	struct clk *clk, *parent;
++	const char *parent_names[4];
++	unsigned caps, i, num_possible;
++	int err = -EINVAL;
++
++	BUILD_BUG_ON(ARRAY_SIZE(clk_info->parents) > ARRAY_SIZE(parent_names));
++
++	if (clk_info->type == CGU_CLK_EXT) {
++		clk = of_clk_get_by_name(cgu->np, clk_info->name);
++		if (IS_ERR(clk)) {
++			pr_err("%s: no external clock '%s' provided\n",
++			       __func__, clk_info->name);
++			err = -ENODEV;
++			goto out;
++		}
++		err = clk_register_clkdev(clk, clk_info->name, NULL);
++		if (err) {
++			clk_put(clk);
++			goto out;
++		}
++		cgu->clocks.clks[idx] = clk;
++		return 0;
++	}
++
++	if (!clk_info->type) {
++		pr_err("%s: no clock type specified for '%s'\n", __func__,
++		       clk_info->name);
++		goto out;
++	}
++
++	ingenic_clk = kzalloc(sizeof(*ingenic_clk), GFP_KERNEL);
++	if (!ingenic_clk) {
++		err = -ENOMEM;
++		goto out;
++	}
++
++	ingenic_clk->hw.init = &clk_init;
++	ingenic_clk->cgu = cgu;
++	ingenic_clk->idx = idx;
++
++	clk_init.name = clk_info->name;
++	clk_init.flags = 0;
++	clk_init.parent_names = parent_names;
++
++	caps = clk_info->type;
++
++	if (caps & (CGU_CLK_MUX | CGU_CLK_CUSTOM)) {
++		clk_init.num_parents = 0;
++
++		if (caps & CGU_CLK_MUX)
++			num_possible = 1 << clk_info->mux.bits;
++		else
++			num_possible = ARRAY_SIZE(clk_info->parents);
++
++		for (i = 0; i < num_possible; i++) {
++			if (clk_info->parents[i] == -1)
++				continue;
++
++			parent = cgu->clocks.clks[clk_info->parents[i]];
++			parent_names[clk_init.num_parents] =
++				__clk_get_name(parent);
++			clk_init.num_parents++;
++		}
++
++		BUG_ON(!clk_init.num_parents);
++		BUG_ON(clk_init.num_parents > ARRAY_SIZE(parent_names));
++	} else {
++		BUG_ON(clk_info->parents[0] == -1);
++		clk_init.num_parents = 1;
++		parent = cgu->clocks.clks[clk_info->parents[0]];
++		parent_names[0] = __clk_get_name(parent);
++	}
++
++	if (caps & CGU_CLK_CUSTOM) {
++		clk_init.ops = clk_info->custom.clk_ops;
++
++		caps &= ~CGU_CLK_CUSTOM;
++
++		if (caps) {
++			pr_err("%s: custom clock may not be combined with type 0x%x\n",
++			       __func__, caps);
++			goto out;
++		}
++	} else if (caps & CGU_CLK_PLL) {
++		clk_init.ops = &ingenic_pll_ops;
++
++		caps &= ~CGU_CLK_PLL;
++
++		if (caps) {
++			pr_err("%s: PLL may not be combined with type 0x%x\n",
++			       __func__, caps);
++			goto out;
++		}
++	} else {
++		clk_init.ops = &ingenic_clk_ops;
++	}
++
++	/* nothing to do for gates or fixed dividers */
++	caps &= ~(CGU_CLK_GATE | CGU_CLK_FIXDIV);
++
++	if (caps & CGU_CLK_MUX) {
++		if (!(caps & CGU_CLK_MUX_GLITCHFREE))
++			clk_init.flags |= CLK_SET_PARENT_GATE;
++
++		caps &= ~(CGU_CLK_MUX | CGU_CLK_MUX_GLITCHFREE);
++	}
++
++	if (caps & CGU_CLK_DIV) {
++		caps &= ~CGU_CLK_DIV;
++	} else {
++		/* pass rate changes to the parent clock */
++		clk_init.flags |= CLK_SET_RATE_PARENT;
++	}
++
++	if (caps) {
++		pr_err("%s: unknown clock type 0x%x\n", __func__, caps);
++		goto out;
++	}
++
++	clk = clk_register(NULL, &ingenic_clk->hw);
++	if (IS_ERR(clk)) {
++		pr_err("%s: failed to register clock '%s'\n", __func__,
++		       clk_info->name);
++		err = PTR_ERR(clk);
++		goto out;
++	}
++
++	err = clk_register_clkdev(clk, clk_info->name, NULL);
++	if (err)
++		goto out;
++
++	cgu->clocks.clks[idx] = clk;
++out:
++	if (err)
++		kfree(ingenic_clk);
++	return err;
++}
++
++struct ingenic_cgu *
++ingenic_cgu_new(const struct ingenic_cgu_clk_info *clock_info,
++		unsigned num_clocks, struct device_node *np)
++{
++	struct ingenic_cgu *cgu;
++
++	cgu = kzalloc(sizeof(*cgu), GFP_KERNEL);
++	if (!cgu)
++		goto err_out;
++
++	cgu->base = of_iomap(np, 0);
++	if (!cgu->base) {
++		pr_err("%s: failed to map CGU registers\n", __func__);
++		goto err_out_free;
++	}
++
++	cgu->np = np;
++	cgu->clock_info = clock_info;
++	cgu->clocks.clk_num = num_clocks;
++
++	spin_lock_init(&cgu->lock);
++
++	return cgu;
++
++err_out_free:
++	kfree(cgu);
++err_out:
++	return NULL;
++}
++
++int ingenic_cgu_register_clocks(struct ingenic_cgu *cgu)
++{
++	unsigned i;
++	int err;
++
++	cgu->clocks.clks = kcalloc(cgu->clocks.clk_num, sizeof(struct clk *),
++				   GFP_KERNEL);
++	if (!cgu->clocks.clks) {
++		err = -ENOMEM;
++		goto err_out;
++	}
++
++	for (i = 0; i < cgu->clocks.clk_num; i++) {
++		err = register_clock(cgu, i);
++		if (err)
++			goto err_out_unregister;
++	}
++
++	err = of_clk_add_provider(cgu->np, of_clk_src_onecell_get,
++				  &cgu->clocks);
++	if (err)
++		goto err_out_unregister;
++
++	return 0;
++
++err_out_unregister:
++	for (i = 0; i < cgu->clocks.clk_num; i++) {
++		if (!cgu->clocks.clks[i])
++			continue;
++		if (cgu->clock_info[i].type & CGU_CLK_EXT)
++			clk_put(cgu->clocks.clks[i]);
++		else
++			clk_unregister(cgu->clocks.clks[i]);
++	}
++	kfree(cgu->clocks.clks);
++err_out:
++	return err;
++}
+diff --git a/drivers/clk/ingenic/cgu.h b/drivers/clk/ingenic/cgu.h
+new file mode 100644
+index 0000000..0702c0c
+--- /dev/null
++++ b/drivers/clk/ingenic/cgu.h
+@@ -0,0 +1,223 @@
++/*
++ * Ingenic SoC CGU driver
++ *
++ * Copyright (c) 2013-2015 Imagination Technologies
++ * Author: Paul Burton <paul.burton@imgtec.com>
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ */
++
++#ifndef __DRIVERS_CLK_INGENIC_CGU_H__
++#define __DRIVERS_CLK_INGENIC_CGU_H__
++
++#include <linux/bitops.h>
++#include <linux/of.h>
++#include <linux/spinlock.h>
++
++/**
++ * struct ingenic_cgu_pll_info - information about a PLL
++ * @reg: the offset of the PLL's control register within the CGU
++ * @m_shift: the number of bits to shift the multiplier value by (ie. the
++ *           index of the lowest bit of the multiplier value in the PLL's
++ *           control register)
++ * @m_bits: the size of the multiplier field in bits
++ * @m_offset: the multiplier value which encodes to 0 in the PLL's control
++ *            register
++ * @n_shift: the number of bits to shift the divider value by (ie. the
++ *           index of the lowest bit of the divider value in the PLL's
++ *           control register)
++ * @n_bits: the size of the divider field in bits
++ * @n_offset: the divider value which encodes to 0 in the PLL's control
++ *            register
++ * @od_shift: the number of bits to shift the post-VCO divider value by (ie.
++ *            the index of the lowest bit of the post-VCO divider value in
++ *            the PLL's control register)
++ * @od_bits: the size of the post-VCO divider field in bits
++ * @od_max: the maximum post-VCO divider value
++ * @od_encoding: a pointer to an array mapping post-VCO divider values to
++ *               their encoded values in the PLL control register, or -1 for
++ *               unsupported values
++ * @bypass_bit: the index of the bypass bit in the PLL control register
++ * @enable_bit: the index of the enable bit in the PLL control register
++ * @stable_bit: the index of the stable bit in the PLL control register
++ */
++struct ingenic_cgu_pll_info {
++	unsigned reg;
++	const s8 *od_encoding;
++	u8 m_shift, m_bits, m_offset;
++	u8 n_shift, n_bits, n_offset;
++	u8 od_shift, od_bits, od_max;
++	u8 bypass_bit;
++	u8 enable_bit;
++	u8 stable_bit;
++};
++
++/**
++ * struct ingenic_cgu_mux_info - information about a clock mux
++ * @reg: offset of the mux control register within the CGU
++ * @shift: number of bits to shift the mux value by (ie. the index of
++ *         the lowest bit of the mux value within its control register)
++ * @bits: the size of the mux value in bits
++ */
++struct ingenic_cgu_mux_info {
++	unsigned reg;
++	u8 shift;
++	u8 bits;
++};
++
++/**
++ * struct ingenic_cgu_div_info - information about a divider
++ * @reg: offset of the divider control register within the CGU
++ * @shift: number of bits to shift the divide value by (ie. the index of
++ *         the lowest bit of the divide value within its control register)
++ * @bits: the size of the divide value in bits
++ * @ce_bit: the index of the change enable bit within reg, or -1 if there
++ *          isn't one
++ * @busy_bit: the index of the busy bit within reg, or -1 if there isn't one
++ * @stop_bit: the index of the stop bit within reg, or -1 if there isn't one
++ */
++struct ingenic_cgu_div_info {
++	unsigned reg;
++	u8 shift;
++	u8 bits;
++	s8 ce_bit;
++	s8 busy_bit;
++	s8 stop_bit;
++};
++
++/**
++ * struct ingenic_cgu_fixdiv_info - information about a fixed divider
++ * @div: the divider applied to the parent clock
++ */
++struct ingenic_cgu_fixdiv_info {
++	unsigned div;
++};
++
++/**
++ * struct ingenic_cgu_gate_info - information about a clock gate
++ * @reg: offset of the gate control register within the CGU
++ * @bit: offset of the bit in the register that controls the gate
++ */
++struct ingenic_cgu_gate_info {
++	unsigned reg;
++	u8 bit;
++};
++
++/**
++ * struct ingenic_cgu_custom_info - information about a custom (SoC) clock
++ * @clk_ops: custom clock operation callbacks
++ */
++struct ingenic_cgu_custom_info {
++	struct clk_ops *clk_ops;
++};
++
++/**
++ * struct ingenic_cgu_clk_info - information about a clock
++ * @name: name of the clock
++ * @type: a bitmask formed from CGU_CLK_* values
++ * @parents: an array of the indices of potential parents of this clock
++ *           within the clock_info array of the CGU, or -1 in entries
++ *           which correspond to no valid parent
++ * @pll: information valid if type includes CGU_CLK_PLL
++ * @gate: information valid if type includes CGU_CLK_GATE
++ * @mux: information valid if type includes CGU_CLK_MUX
++ * @div: information valid if type includes CGU_CLK_DIV
++ * @fixdiv: information valid if type includes CGU_CLK_FIXDIV
++ * @custom: information valid if type includes CGU_CLK_CUSTOM
++ */
++struct ingenic_cgu_clk_info {
++	const char *name;
++
++	enum {
++		CGU_CLK_NONE		= 0,
++		CGU_CLK_EXT		= BIT(0),
++		CGU_CLK_PLL		= BIT(1),
++		CGU_CLK_GATE		= BIT(2),
++		CGU_CLK_MUX		= BIT(3),
++		CGU_CLK_MUX_GLITCHFREE	= BIT(4),
++		CGU_CLK_DIV		= BIT(5),
++		CGU_CLK_FIXDIV		= BIT(6),
++		CGU_CLK_CUSTOM		= BIT(7),
++	} type;
++
++	int parents[4];
++
++	union {
++		struct ingenic_cgu_pll_info pll;
++
++		struct {
++			struct ingenic_cgu_gate_info gate;
++			struct ingenic_cgu_mux_info mux;
++			struct ingenic_cgu_div_info div;
++			struct ingenic_cgu_fixdiv_info fixdiv;
++		};
++
++		struct ingenic_cgu_custom_info custom;
 +	};
 +};
 +
-+Example board file:
++/**
++ * struct ingenic_cgu - data about the CGU
++ * @np: the device tree node that caused the CGU to be probed
++ * @base: the ioremap'ed base address of the CGU registers
++ * @clock_info: an array containing information about implemented clocks
++ * @clocks: used to provide clocks to DT, allows lookup of struct clk*
++ * @lock: lock to be held whilst manipulating CGU registers
++ */
++struct ingenic_cgu {
++	struct device_node *np;
++	void __iomem *base;
 +
-+/ {
-+	ext: clock@0 {
-+		compatible = "fixed-clock";
-+		#clock-cells = <0>;
-+		clock-frequency = <12000000>;
-+	};
++	const struct ingenic_cgu_clk_info *clock_info;
++	struct clk_onecell_data clocks;
 +
-+	rtc: clock@1 {
-+		compatible = "fixed-clock";
-+		#clock-cells = <0>;
-+		clock-frequency = <32768>;
-+	};
-+
-+	&cgu {
-+		clocks = <&ext> <&rtc>;
-+		clock-names: "ext", "rtc";
-+	};
++	spinlock_t lock;
 +};
-diff --git a/include/dt-bindings/clock/jz4740-cgu.h b/include/dt-bindings/clock/jz4740-cgu.h
-new file mode 100644
-index 0000000..43153d3
---- /dev/null
-+++ b/include/dt-bindings/clock/jz4740-cgu.h
-@@ -0,0 +1,37 @@
-+/*
-+ * This header provides clock numbers for the ingenic,jz4740-cgu DT binding.
-+ *
-+ * They are roughly ordered as:
-+ *   - external clocks
-+ *   - PLLs
-+ *   - muxes/dividers in the order they appear in the jz4740 programmers manual
-+ *   - gates in order of their bit in the CLKGR* registers
++
++/**
++ * struct ingenic_clk - private data for a clock
++ * @hw: see Documentation/clk.txt
++ * @cgu: a pointer to the CGU data
++ * @idx: the index of this clock in cgu->clock_info
 + */
++struct ingenic_clk {
++	struct clk_hw hw;
++	struct ingenic_cgu *cgu;
++	unsigned idx;
++};
 +
-+#ifndef __DT_BINDINGS_CLOCK_JZ4740_CGU_H__
-+#define __DT_BINDINGS_CLOCK_JZ4740_CGU_H__
++#define to_ingenic_clk(_hw) container_of(_hw, struct ingenic_clk, hw)
 +
-+#define JZ4740_CLK_EXT		0
-+#define JZ4740_CLK_RTC		1
-+#define JZ4740_CLK_PLL		2
-+#define JZ4740_CLK_PLL_HALF	3
-+#define JZ4740_CLK_CCLK		4
-+#define JZ4740_CLK_HCLK		5
-+#define JZ4740_CLK_PCLK		6
-+#define JZ4740_CLK_MCLK		7
-+#define JZ4740_CLK_LCD		8
-+#define JZ4740_CLK_LCD_PCLK	9
-+#define JZ4740_CLK_I2S		10
-+#define JZ4740_CLK_SPI		11
-+#define JZ4740_CLK_MMC		12
-+#define JZ4740_CLK_UHC		13
-+#define JZ4740_CLK_UDC		14
-+#define JZ4740_CLK_UART0	15
-+#define JZ4740_CLK_UART1	16
-+#define JZ4740_CLK_DMA		17
-+#define JZ4740_CLK_IPU		18
-+#define JZ4740_CLK_ADC		19
-+#define JZ4740_CLK_I2C		20
-+#define JZ4740_CLK_AIC		21
-+
-+#endif /* __DT_BINDINGS_CLOCK_JZ4740_CGU_H__ */
-diff --git a/include/dt-bindings/clock/jz4780-cgu.h b/include/dt-bindings/clock/jz4780-cgu.h
-new file mode 100644
-index 0000000..467165e
---- /dev/null
-+++ b/include/dt-bindings/clock/jz4780-cgu.h
-@@ -0,0 +1,88 @@
-+/*
-+ * This header provides clock numbers for the ingenic,jz4780-cgu DT binding.
++/**
++ * ingenic_cgu_new() - create a new CGU instance
++ * @clock_info: an array of clock information structures describing the clocks
++ *              which are implemented by the CGU
++ * @num_clocks: the number of entries in clock_info
++ * @np: the device tree node which causes this CGU to be probed
 + *
-+ * They are roughly ordered as:
-+ *   - external clocks
-+ *   - PLLs
-+ *   - muxes/dividers in the order they appear in the jz4780 programmers manual
-+ *   - gates in order of their bit in the CLKGR* registers
++ * Return: a pointer to the CGU instance if initialisation is successful,
++ *         otherwise NULL.
 + */
++struct ingenic_cgu *
++ingenic_cgu_new(const struct ingenic_cgu_clk_info *clock_info,
++		unsigned num_clocks, struct device_node *np);
 +
-+#ifndef __DT_BINDINGS_CLOCK_JZ4780_CGU_H__
-+#define __DT_BINDINGS_CLOCK_JZ4780_CGU_H__
++/**
++ * ingenic_cgu_register_clocks() - Registers the clocks
++ * @cgu: pointer to cgu data
++ *
++ * Register the clocks described by the CGU with the common clock framework.
++ *
++ * Return: 1 on success or -errno if unsuccesful.
++ */
++int ingenic_cgu_register_clocks(struct ingenic_cgu *cgu);
 +
-+#define JZ4780_CLK_EXCLK	0
-+#define JZ4780_CLK_RTCLK	1
-+#define JZ4780_CLK_APLL		2
-+#define JZ4780_CLK_MPLL		3
-+#define JZ4780_CLK_EPLL		4
-+#define JZ4780_CLK_VPLL		5
-+#define JZ4780_CLK_OTGPHY	6
-+#define JZ4780_CLK_SCLKA	7
-+#define JZ4780_CLK_CPUMUX	8
-+#define JZ4780_CLK_CPU		9
-+#define JZ4780_CLK_L2CACHE	10
-+#define JZ4780_CLK_AHB0		11
-+#define JZ4780_CLK_AHB2PMUX	12
-+#define JZ4780_CLK_AHB2		13
-+#define JZ4780_CLK_PCLK		14
-+#define JZ4780_CLK_DDR		15
-+#define JZ4780_CLK_VPU		16
-+#define JZ4780_CLK_I2SPLL	17
-+#define JZ4780_CLK_I2S		18
-+#define JZ4780_CLK_LCD0PIXCLK	19
-+#define JZ4780_CLK_LCD1PIXCLK	20
-+#define JZ4780_CLK_MSCMUX	21
-+#define JZ4780_CLK_MSC0		22
-+#define JZ4780_CLK_MSC1		23
-+#define JZ4780_CLK_MSC2		24
-+#define JZ4780_CLK_UHC		25
-+#define JZ4780_CLK_SSIPLL	26
-+#define JZ4780_CLK_SSI		27
-+#define JZ4780_CLK_CIMMCLK	28
-+#define JZ4780_CLK_PCMPLL	29
-+#define JZ4780_CLK_PCM		30
-+#define JZ4780_CLK_GPU		31
-+#define JZ4780_CLK_HDMI		32
-+#define JZ4780_CLK_BCH		33
-+#define JZ4780_CLK_NEMC		34
-+#define JZ4780_CLK_OTG0		35
-+#define JZ4780_CLK_SSI0		36
-+#define JZ4780_CLK_SMB0		37
-+#define JZ4780_CLK_SMB1		38
-+#define JZ4780_CLK_SCC		39
-+#define JZ4780_CLK_AIC		40
-+#define JZ4780_CLK_TSSI0	41
-+#define JZ4780_CLK_OWI		42
-+#define JZ4780_CLK_KBC		43
-+#define JZ4780_CLK_SADC		44
-+#define JZ4780_CLK_UART0	45
-+#define JZ4780_CLK_UART1	46
-+#define JZ4780_CLK_UART2	47
-+#define JZ4780_CLK_UART3	48
-+#define JZ4780_CLK_SSI1		49
-+#define JZ4780_CLK_SSI2		50
-+#define JZ4780_CLK_PDMA		51
-+#define JZ4780_CLK_GPS		52
-+#define JZ4780_CLK_MAC		53
-+#define JZ4780_CLK_SMB2		54
-+#define JZ4780_CLK_CIM		55
-+#define JZ4780_CLK_LCD		56
-+#define JZ4780_CLK_TVE		57
-+#define JZ4780_CLK_IPU		58
-+#define JZ4780_CLK_DDR0		59
-+#define JZ4780_CLK_DDR1		60
-+#define JZ4780_CLK_SMB3		61
-+#define JZ4780_CLK_TSSI1	62
-+#define JZ4780_CLK_COMPRESS	63
-+#define JZ4780_CLK_AIC1		64
-+#define JZ4780_CLK_GPVLC	65
-+#define JZ4780_CLK_OTG1		66
-+#define JZ4780_CLK_UART4	67
-+#define JZ4780_CLK_AHBMON	68
-+#define JZ4780_CLK_SMB4		69
-+#define JZ4780_CLK_DES		70
-+#define JZ4780_CLK_X2D		71
-+#define JZ4780_CLK_CORE1	72
-+
-+#endif /* __DT_BINDINGS_CLOCK_JZ4780_CGU_H__ */
++#endif /* __DRIVERS_CLK_INGENIC_CGU_H__ */
 -- 
 2.3.5

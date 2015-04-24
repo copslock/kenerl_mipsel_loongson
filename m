@@ -1,37 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Apr 2015 16:20:52 +0200 (CEST)
-Received: from smtp6-g21.free.fr ([212.27.42.6]:13186 "EHLO smtp6-g21.free.fr"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27026075AbbDXOUiM22Ch (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 24 Apr 2015 16:20:38 +0200
-Received: from localhost.localdomain (unknown [85.177.202.128])
-        (Authenticated sender: albeu)
-        by smtp6-g21.free.fr (Postfix) with ESMTPA id 63BEA82348;
-        Fri, 24 Apr 2015 16:18:05 +0200 (CEST)
-From:   Alban Bedel <albeu@free.fr>
-To:     linux-spi@vger.kernel.org
-Cc:     Rob Herring <robh+dt@kernel.org>, Pawel Moll <pawel.moll@arm.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ian Campbell <ijc+devicetree@hellion.org.uk>,
-        Kumar Gala <galak@codeaurora.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Mark Brown <broonie@kernel.org>, Alban Bedel <albeu@free.fr>,
-        Gabor Juhos <juhosg@openwrt.org>, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
-Subject: [PATCH 4/4] spi: spi-ath79: Set the initial state of CS0
-Date:   Fri, 24 Apr 2015 16:19:24 +0200
-Message-Id: <1429885164-28501-5-git-send-email-albeu@free.fr>
-X-Mailer: git-send-email 2.0.0
-In-Reply-To: <1429885164-28501-1-git-send-email-albeu@free.fr>
-References: <1429885164-28501-1-git-send-email-albeu@free.fr>
-Return-Path: <albeu@free.fr>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Apr 2015 19:29:11 +0200 (CEST)
+Received: from mail-pd0-f175.google.com ([209.85.192.175]:33841 "EHLO
+        mail-pd0-f175.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012144AbbDXR3KIb4ss (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 24 Apr 2015 19:29:10 +0200
+Received: by pdbqa5 with SMTP id qa5so54496267pdb.1;
+        Fri, 24 Apr 2015 10:29:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id;
+        bh=sEleGoKw8SenpXfpprixqnwS9DfAXF4/VtbPXoOxQqY=;
+        b=RPJGF5uC6u8HOWjcQxsVWV0XGhoYh6SlaGmNCrjXGUNJHBEKGg+JXwm4P080v3m7vB
+         mO+coyU3JkPpBMYl7kQCPoW9ZisgSTszK51hokVR7J3gVZErlFPh89FRSTNnKHaT94B8
+         2tQcQSlP4OF17u3BL7kj8RmDgnDL/oDj8ihHQDVcsyAPuhFmY25tzoN05yXLj22GqHZq
+         Bk3IxGvD9p8ym37zGSfgoYAi1knegGQgTqBQ9YXT/pd7EKxWSdBdloX0Q1E4BcciKtV8
+         r7C8cFywIQaMAKRFhbiZR5TF0NKsvUpGrVCjbx7Cz6Sg+eqURLKKsytGhklvmDo5+aho
+         waiw==
+X-Received: by 10.70.24.130 with SMTP id u2mr8183714pdf.147.1429896545612;
+        Fri, 24 Apr 2015 10:29:05 -0700 (PDT)
+Received: from fainelli-desktop.broadcom.com (5520-maca-inet1-outside.broadcom.com. [216.31.211.11])
+        by mx.google.com with ESMTPSA id sw4sm11625530pbc.64.2015.04.24.10.29.04
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Fri, 24 Apr 2015 10:29:04 -0700 (PDT)
+From:   Florian Fainelli <f.fainelli@gmail.com>
+To:     linux-mips@linux-mips.org
+Cc:     linux-kernel@vger.kernel.org, ralf@linux-mips.org, mmarek@suse.cz,
+        akpm@linux-foundation.org, gregkh@linuxfoundation.org,
+        Florian Fainelli <f.fainelli@gmail.com>
+Subject: [PATCH] gitignore: Add MIPS vmlinux.32 to the list
+Date:   Fri, 24 Apr 2015 10:27:40 -0700
+Message-Id: <1429896460-15026-1-git-send-email-f.fainelli@gmail.com>
+X-Mailer: git-send-email 2.1.0
+Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47076
+X-archive-position: 47077
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: albeu@free.fr
+X-original-sender: f.fainelli@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,39 +51,25 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The internal chip select CS0 wasn't initialized properly to work with
-CS HIGH chips.
+MIPS64 kernels builds will produce a vmlinux.32 kernel image for
+compatibility, ignore them.
 
-Signed-off-by: Alban Bedel <albeu@free.fr>
+Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
 ---
- drivers/spi/spi-ath79.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ .gitignore | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/spi/spi-ath79.c b/drivers/spi/spi-ath79.c
-index b37bedd..bf1f9b3 100644
---- a/drivers/spi/spi-ath79.c
-+++ b/drivers/spi/spi-ath79.c
-@@ -115,6 +115,7 @@ static void ath79_spi_disable(struct ath79_spi *sp)
- 
- static int ath79_spi_setup_cs(struct spi_device *spi)
- {
-+	struct ath79_spi *sp = ath79_spidev_to_sp(spi);
- 	int status;
- 
- 	if (spi->chip_select && !gpio_is_valid(spi->cs_gpio))
-@@ -132,6 +133,13 @@ static int ath79_spi_setup_cs(struct spi_device *spi)
- 
- 		status = gpio_request_one(spi->cs_gpio, flags,
- 					  dev_name(&spi->dev));
-+	} else {
-+		if (spi->mode & SPI_CS_HIGH)
-+			sp->ioc_base &= ~AR71XX_SPI_IOC_CS0;
-+		else
-+			sp->ioc_base |= AR71XX_SPI_IOC_CS0;
-+
-+		ath79_spi_wr(sp, AR71XX_SPI_REG_IOC, sp->ioc_base);
- 	}
- 
- 	return status;
+diff --git a/.gitignore b/.gitignore
+index acb6afe6b7a3..6c7ca7a2d52e 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -43,6 +43,7 @@ Module.symvers
+ /TAGS
+ /linux
+ /vmlinux
++/vmlinux.32
+ /vmlinux-gdb.py
+ /vmlinuz
+ /System.map
 -- 
-2.0.0
+2.1.0

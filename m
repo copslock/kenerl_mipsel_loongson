@@ -1,17 +1,17 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Apr 2015 15:22:38 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:26488 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Apr 2015 15:22:55 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:18029 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27026033AbbDXNWbL2iDj (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 24 Apr 2015 15:22:31 +0200
+        with ESMTP id S27026034AbbDXNWp2tjnU (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 24 Apr 2015 15:22:45 +0200
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id D577F4FA4F152;
-        Fri, 24 Apr 2015 14:22:22 +0100 (IST)
+        by Websense Email Security Gateway with ESMTPS id A83908642F8A4;
+        Fri, 24 Apr 2015 14:22:38 +0100 (IST)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
  KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Fri, 24 Apr 2015 14:22:25 +0100
+ 14.3.195.1; Fri, 24 Apr 2015 14:22:41 +0100
 Received: from localhost (192.168.159.76) by LEMAIL01.le.imgtec.org
  (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Fri, 24 Apr
- 2015 14:22:24 +0100
+ 2015 14:22:40 +0100
 From:   Paul Burton <paul.burton@imgtec.com>
 To:     <linux-mips@linux-mips.org>
 CC:     Paul Burton <paul.burton@imgtec.com>,
@@ -19,9 +19,9 @@ CC:     Paul Burton <paul.burton@imgtec.com>,
         Thomas Gleixner <tglx@linutronix.de>,
         Jason Cooper <jason@lakedaemon.net>,
         Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH v4 13/37] MIPS: JZ4740: register an irq_domain for the interrupt controller
-Date:   Fri, 24 Apr 2015 14:17:13 +0100
-Message-ID: <1429881457-16016-14-git-send-email-paul.burton@imgtec.com>
+Subject: [PATCH v4 14/37] MIPS: JZ4740: drop intc debugfs code
+Date:   Fri, 24 Apr 2015 14:17:14 +0100
+Message-ID: <1429881457-16016-15-git-send-email-paul.burton@imgtec.com>
 X-Mailer: git-send-email 2.3.5
 In-Reply-To: <1429881457-16016-1-git-send-email-paul.burton@imgtec.com>
 References: <1429881457-16016-1-git-send-email-paul.burton@imgtec.com>
@@ -32,7 +32,7 @@ Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47047
+X-archive-position: 47048
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -49,9 +49,9 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-When probining the interrupt controller, register an IRQ domain such
-that the interrupts can be translated by devicetree code & thus used
-from devicetree.
+The debugfs code becomes a nuisance when attempting to avoid globals,
+since the interrupt controller probe function run too early for it to be
+safe to create the debugfs files. Drop it.
 
 Signed-off-by: Paul Burton <paul.burton@imgtec.com>
 Cc: Lars-Peter Clausen <lars@metafoo.de>
@@ -60,41 +60,74 @@ Cc: Jason Cooper <jason@lakedaemon.net>
 Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
 ---
+I recognise this one may be controversial. Please shout if you care
+about this debugfs code!
+
 Changes in v4:
   - None.
 
 Changes in v3:
-  - Rebase.
-
-Changes in v2:
-  - None.
+  - New patch.
 ---
- arch/mips/jz4740/irq.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/mips/jz4740/irq.c | 42 ------------------------------------------
+ 1 file changed, 42 deletions(-)
 
 diff --git a/arch/mips/jz4740/irq.c b/arch/mips/jz4740/irq.c
-index ed51915..ddcf78a 100644
+index ddcf78a..615eaa8 100644
 --- a/arch/mips/jz4740/irq.c
 +++ b/arch/mips/jz4740/irq.c
-@@ -85,6 +85,7 @@ static int __init jz4740_intc_of_init(struct device_node *node,
- {
- 	struct irq_chip_generic *gc;
- 	struct irq_chip_type *ct;
-+	struct irq_domain *domain;
- 	int parent_irq;
+@@ -23,9 +23,6 @@
+ #include <linux/slab.h>
+ #include <linux/delay.h>
  
- 	parent_irq = irq_of_parse_and_map(node, 0);
-@@ -113,6 +114,11 @@ static int __init jz4740_intc_of_init(struct device_node *node,
+-#include <linux/debugfs.h>
+-#include <linux/seq_file.h>
+-
+ #include <asm/io.h>
  
- 	irq_setup_generic_chip(gc, IRQ_MSK(32), 0, 0, IRQ_NOPROBE | IRQ_LEVEL);
- 
-+	domain = irq_domain_add_legacy(node, num_chips * 32, JZ4740_IRQ_BASE, 0,
-+				       &irq_domain_simple_ops, NULL);
-+	if (!domain)
-+		pr_warn("unable to register IRQ domain\n");
-+
- 	setup_irq(parent_irq, &jz4740_cascade_action);
+ #include <asm/mach-jz4740/base.h>
+@@ -123,42 +120,3 @@ static int __init jz4740_intc_of_init(struct device_node *node,
  	return 0;
  }
+ IRQCHIP_DECLARE(jz4740_intc, "ingenic,jz4740-intc", jz4740_intc_of_init);
+-
+-#ifdef CONFIG_DEBUG_FS
+-
+-static inline void intc_seq_reg(struct seq_file *s, const char *name,
+-	unsigned int reg)
+-{
+-	seq_printf(s, "%s:\t\t%08x\n", name, readl(jz_intc_base + reg));
+-}
+-
+-static int intc_regs_show(struct seq_file *s, void *unused)
+-{
+-	intc_seq_reg(s, "Status", JZ_REG_INTC_STATUS);
+-	intc_seq_reg(s, "Mask", JZ_REG_INTC_MASK);
+-	intc_seq_reg(s, "Pending", JZ_REG_INTC_PENDING);
+-
+-	return 0;
+-}
+-
+-static int intc_regs_open(struct inode *inode, struct file *file)
+-{
+-	return single_open(file, intc_regs_show, NULL);
+-}
+-
+-static const struct file_operations intc_regs_operations = {
+-	.open		= intc_regs_open,
+-	.read		= seq_read,
+-	.llseek		= seq_lseek,
+-	.release	= single_release,
+-};
+-
+-static int __init intc_debugfs_init(void)
+-{
+-	(void) debugfs_create_file("jz_regs_intc", S_IFREG | S_IRUGO,
+-				NULL, NULL, &intc_regs_operations);
+-	return 0;
+-}
+-subsys_initcall(intc_debugfs_init);
+-
+-#endif
 -- 
 2.3.5

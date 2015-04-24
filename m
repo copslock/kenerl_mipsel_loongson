@@ -1,41 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Apr 2015 14:26:57 +0200 (CEST)
-Received: from smtp6-g21.free.fr ([212.27.42.6]:34032 "EHLO smtp6-g21.free.fr"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27025401AbbDXM04Daosi (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 24 Apr 2015 14:26:56 +0200
-Received: from localhost.localdomain (unknown [85.177.202.128])
-        (Authenticated sender: albeu)
-        by smtp6-g21.free.fr (Postfix) with ESMTPA id CAD6C82364;
-        Fri, 24 Apr 2015 14:24:20 +0200 (CEST)
-From:   Alban Bedel <albeu@free.fr>
-To:     linux-mips@linux-mips.org
-Cc:     Rob Herring <robh+dt@kernel.org>, Pawel Moll <pawel.moll@arm.com>,
-        Mark Rutland <mark.rutland@arm.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Apr 2015 15:18:28 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:48545 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27026019AbbDXNS0jgDUH (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 24 Apr 2015 15:18:26 +0200
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 45813B4282EC6;
+        Fri, 24 Apr 2015 14:18:18 +0100 (IST)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Fri, 24 Apr 2015 14:18:20 +0100
+Received: from localhost (192.168.159.76) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Fri, 24 Apr
+ 2015 14:18:18 +0100
+From:   Paul Burton <paul.burton@imgtec.com>
+To:     <linux-mips@linux-mips.org>
+CC:     Paul Burton <paul.burton@imgtec.com>, <devicetree@vger.kernel.org>,
+        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
         Ian Campbell <ijc+devicetree@hellion.org.uk>,
-        Kumar Gala <galak@codeaurora.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
         Jason Cooper <jason@lakedaemon.net>,
+        "Jiri Slaby" <jslaby@suse.cz>, Kumar Gala <galak@codeaurora.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        <linux-clk@vger.kernel.org>, <linux-serial@vger.kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        "Mike Turquette" <mturquette@linaro.org>,
+        Paul Cercueil <paul@crapouillou.net>,
+        Pawel Moll <pawel.moll@arm.com>,
         Ralf Baechle <ralf@linux-mips.org>,
-        Alban Bedel <albeu@free.fr>,
-        Andrew Bresticker <abrestic@chromium.org>,
-        Qais Yousef <qais.yousef@imgtec.com>,
-        Gabor Juhos <juhosg@openwrt.org>, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v3 12/12] MIPS: Add basic support for the TL-WR1043ND version 1
-Date:   Fri, 24 Apr 2015 14:26:35 +0200
-Message-Id: <1429878395-15554-1-git-send-email-albeu@free.fr>
-X-Mailer: git-send-email 2.0.0
-In-Reply-To: <1429875679-14973-1-git-send-email-albeu@free.fr>
-References: <1429875679-14973-1-git-send-email-albeu@free.fr>
-Return-Path: <albeu@free.fr>
+        "Rob Herring" <robh+dt@kernel.org>,
+        Stephen Boyd <sboyd@codeaurora.org>,
+        "Thomas Gleixner" <tglx@linutronix.de>
+Subject: [PATCH v4 00/37] JZ4780 & CI20 support
+Date:   Fri, 24 Apr 2015 14:17:00 +0100
+Message-ID: <1429881457-16016-1-git-send-email-paul.burton@imgtec.com>
+X-Mailer: git-send-email 2.3.5
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Originating-IP: [192.168.159.76]
+Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47033
+X-archive-position: 47034
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: albeu@free.fr
+X-original-sender: paul.burton@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,296 +57,136 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add a DTS for TL-WR1043ND version 1 and allow to have it built in the
-kernel to circumvent the broken u-boot found on these boards.
-Currently only the UART, LEDs and buttons are supported.
+This series introduces initial support for the Ingenic JZ4780 SoC and
+the Imagination Technologies MIPS Creator CI20 board which is built
+around it. In the process the existing JZ4740 & qi_lb60 code gains
+initial support for using DeviceTree such that much of the existing
+platform code under arch/mips/jz4740 can be shared.
 
-Signed-off-by: Alban Bedel <albeu@free.fr>
----
-v2: * Rebased for the new vendor directory structure
-    * Merged the 2 separate patch for SoC dtsi and board DTS in a
-      single one
-    * Fixed the node names to use ePAPR standardized names
-v3: * Moved adding the Kconfig Builtin devicetree menu to this patch
-    * Set the Kconfig builtin DTB menu as optional, removed config
-      DTB_ATH79_NONE and slightly improved the menu name and help
-      message.
----
- arch/mips/ath79/Kconfig                          |  12 +++
- arch/mips/boot/dts/Makefile                      |   1 +
- arch/mips/boot/dts/qca/Makefile                  |   9 ++
- arch/mips/boot/dts/qca/ar9132.dtsi               | 121 +++++++++++++++++++++++
- arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts |  83 ++++++++++++++++
- 5 files changed, 226 insertions(+)
- create mode 100644 arch/mips/boot/dts/qca/Makefile
- create mode 100644 arch/mips/boot/dts/qca/ar9132.dtsi
- create mode 100644 arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts
+The series applies atop next-20150421. Review appreciated, and
+hopefully this can make it in for v4.2.
 
-diff --git a/arch/mips/ath79/Kconfig b/arch/mips/ath79/Kconfig
-index dfc6020..13c04cf 100644
---- a/arch/mips/ath79/Kconfig
-+++ b/arch/mips/ath79/Kconfig
-@@ -71,6 +71,18 @@ config ATH79_MACH_UBNT_XM
- 	  Say 'Y' here if you want your kernel to support the
- 	  Ubiquiti Networks XM (rev 1.0) board.
- 
-+choice
-+	prompt "Build a DTB in the kernel"
-+	optional
-+	help
-+	  Select a devicetree that should be built into the kernel.
-+
-+	config DTB_TL_WR1043ND_V1
-+		bool "TL-WR1043ND Version 1"
-+		select BUILTIN_DTB
-+		select SOC_AR913X
-+endchoice
-+
- endmenu
- 
- config SOC_AR71XX
-diff --git a/arch/mips/boot/dts/Makefile b/arch/mips/boot/dts/Makefile
-index 5d95e4b..9975485 100644
---- a/arch/mips/boot/dts/Makefile
-+++ b/arch/mips/boot/dts/Makefile
-@@ -3,6 +3,7 @@ dts-dirs	+= cavium-octeon
- dts-dirs	+= lantiq
- dts-dirs	+= mti
- dts-dirs	+= netlogic
-+dts-dirs	+= qca
- dts-dirs	+= ralink
- 
- obj-y		:= $(addsuffix /, $(dts-dirs))
-diff --git a/arch/mips/boot/dts/qca/Makefile b/arch/mips/boot/dts/qca/Makefile
-new file mode 100644
-index 0000000..5f02aa6
---- /dev/null
-+++ b/arch/mips/boot/dts/qca/Makefile
-@@ -0,0 +1,9 @@
-+dtb-$(CONFIG_DTB_TL_WR1043ND_V1)	+= ar9132_tl_wr1043nd_v1.dtb
-+
-+obj-y				+= $(patsubst %.dtb, %.dtb.o, $(dtb-y))
-+
-+# Force kbuild to make empty built-in.o if necessary
-+obj-				+= dummy.o
-+
-+always				:= $(dtb-y)
-+clean-files			:= *.dtb *.dtb.S
-diff --git a/arch/mips/boot/dts/qca/ar9132.dtsi b/arch/mips/boot/dts/qca/ar9132.dtsi
-new file mode 100644
-index 0000000..c05b65c2
---- /dev/null
-+++ b/arch/mips/boot/dts/qca/ar9132.dtsi
-@@ -0,0 +1,121 @@
-+/ {
-+	compatible = "qca,ar9132";
-+
-+	#address-cells = <1>;
-+	#size-cells = <1>;
-+
-+	cpus {
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		cpu@0 {
-+			device_type = "cpu";
-+			compatible = "mips,mips24Kc";
-+			reg = <0>;
-+		};
-+	};
-+
-+	cpuintc: interrupt-controller {
-+		compatible = "qca,ar9132-cpu-intc", "qca,ar7100-cpu-intc";
-+
-+		interrupt-controller;
-+		#interrupt-cells = <1>;
-+
-+		qca,ddr-wb-channel-interrupts = <2>, <3>, <4>, <5>;
-+		qca,ddr-wb-channels = <&ddr_ctrl 3>, <&ddr_ctrl 2>,
-+					<&ddr_ctrl 0>, <&ddr_ctrl 1>;
-+	};
-+
-+	ahb {
-+		compatible = "simple-bus";
-+		ranges;
-+
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+
-+		interrupt-parent = <&cpuintc>;
-+
-+		apb {
-+			compatible = "simple-bus";
-+			ranges;
-+
-+			#address-cells = <1>;
-+			#size-cells = <1>;
-+
-+			interrupt-parent = <&miscintc>;
-+
-+			ddr_ctrl: memory-controller@18000000 {
-+				compatible = "qca,ar9132-ddr-controller",
-+						"qca,ar7240-ddr-controller";
-+				reg = <0x18000000 0x100>;
-+
-+				#qca,ddr-wb-channel-cells = <1>;
-+			};
-+
-+			uart@18020000 {
-+				compatible = "ns8250";
-+				reg = <0x18020000 0x20>;
-+				interrupts = <3>;
-+
-+				clocks = <&pll 2>;
-+				clock-names = "uart";
-+
-+				reg-io-width = <4>;
-+				reg-shift = <2>;
-+				no-loopback-test;
-+
-+				status = "disabled";
-+			};
-+
-+			gpio: gpio@18040000 {
-+				compatible = "qca,ar9132-gpio",
-+						"qca,ar7100-gpio";
-+				reg = <0x18040000 0x30>;
-+				interrupts = <2>;
-+
-+				ngpios = <22>;
-+
-+				gpio-controller;
-+				#gpio-cells = <2>;
-+
-+				interrupt-controller;
-+				#interrupt-cells = <2>;
-+			};
-+
-+			pll: pll-controller@18050000 {
-+				compatible = "qca,ar9132-ppl",
-+						"qca,ar9130-pll";
-+				reg = <0x18050000 0x20>;
-+
-+				clock-names = "ref";
-+				/* The board must provides the ref clock */
-+
-+				#clock-cells = <1>;
-+				clock-output-names = "cpu", "ddr", "ahb";
-+			};
-+
-+			wdt@18060008 {
-+				compatible = "qca,ar7130-wdt";
-+				reg = <0x18060008 0x8>;
-+
-+				interrupts = <4>;
-+
-+				clocks = <&pll 2>;
-+				clock-names = "wdt";
-+			};
-+
-+			miscintc: interrupt-controller@18060010 {
-+				compatible = "qca,ar9132-misc-intc",
-+					   "qca,ar7100-misc-intc";
-+				reg = <0x18060010 0x4>;
-+
-+				interrupt-parent = <&cpuintc>;
-+				interrupts = <6>;
-+
-+				interrupt-controller;
-+				#interrupt-cells = <1>;
-+			};
-+
-+		};
-+	};
-+};
-diff --git a/arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts b/arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts
-new file mode 100644
-index 0000000..ab36c7c
---- /dev/null
-+++ b/arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts
-@@ -0,0 +1,83 @@
-+/dts-v1/;
-+
-+#include <dt-bindings/gpio/gpio.h>
-+#include <dt-bindings/input/input.h>
-+
-+#include "ar9132.dtsi"
-+
-+/ {
-+	compatible = "tplink,tl-wr1043nd-v1", "qca,ar9132";
-+	model = "TP-Link TL-WR1043ND Version 1";
-+
-+	alias {
-+		serial0 = "/ahb/apb/uart@18020000";
-+	};
-+
-+	memory@0 {
-+		device_type = "memory";
-+		reg = <0x0 0x2000000>;
-+	};
-+
-+	extosc: oscillator {
-+		compatible = "fixed-clock";
-+		#clock-cells = <0>;
-+		clock-frequency = <40000000>;
-+	};
-+
-+	ahb {
-+		apb {
-+			uart@18020000 {
-+				status = "okay";
-+			};
-+
-+			pll-controller@18050000 {
-+				clocks = <&extosc>;
-+			};
-+		};
-+	};
-+
-+	gpio-keys {
-+		compatible = "gpio-keys-polled";
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		poll-interval = <20>;
-+		button@0 {
-+			label = "reset";
-+			linux,code = <KEY_RESTART>;
-+			gpios = <&gpio 3 GPIO_ACTIVE_LOW>;
-+			debounce-interval = <60>;
-+		};
-+
-+		button@1 {
-+			label = "qss";
-+			linux,code = <KEY_WPS_BUTTON>;
-+			gpios = <&gpio 7 GPIO_ACTIVE_LOW>;
-+			debounce-interval = <60>;
-+		};
-+	};
-+
-+	leds {
-+		compatible = "gpio-leds";
-+		led@0 {
-+			label = "tp-link:green:usb";
-+			gpios = <&gpio 1 GPIO_ACTIVE_LOW>;
-+		};
-+
-+		led@1 {
-+			label = "tp-link:green:system";
-+			gpios = <&gpio 2 GPIO_ACTIVE_LOW>;
-+			linux,default-trigger = "heartbeat";
-+		};
-+
-+		led@2 {
-+			label = "tp-link:green:qss";
-+			gpios = <&gpio 5 GPIO_ACTIVE_HIGH>;
-+		};
-+
-+		led@3 {
-+			label = "tp-link:green:wlan";
-+			gpios = <&gpio 9 GPIO_ACTIVE_LOW>;
-+		};
-+	};
-+};
+Thanks,
+    Paul
+
+Paul Burton (37):
+  devicetree/bindings: add Ingenic Semiconductor vendor prefix
+  devicetree/bindings: add Qi Hardware vendor prefix
+  MIPS: JZ4740: introduce CONFIG_MACH_INGENIC
+  MIPS: ingenic: add newer vendor IDs
+  MIPS: JZ4740: require & include DT
+  MIPS: irq_cpu: declare irqchip table entry
+  MIPS: JZ4740: probe CPU interrupt controller via DT
+  MIPS: JZ4740: use generic plat_irq_dispatch
+  MIPS: JZ4740: move arch_init_irq out of arch/mips/jz4740/irq.c
+  devicetree: document Ingenic SoC interrupt controller binding
+  MIPS: JZ4740: probe interrupt controller via DT
+  MIPS: JZ4740: parse SoC interrupt controller parent IRQ from DT
+  MIPS: JZ4740: register an irq_domain for the interrupt controller
+  MIPS: JZ4740: drop intc debugfs code
+  MIPS: JZ4740: remove jz_intc_base global
+  MIPS: JZ4740: support >32 interrupts
+  MIPS: JZ4740: define IRQ numbers based on number of intc IRQs
+  MIPS: JZ4740: read intc base address from DT
+  MIPS: JZ4740: avoid JZ4740-specific naming
+  MIPS: JZ4740: support newer SoC interrupt controllers
+  irqchip: move Ingenic SoC intc driver to drivers/irqchip
+  MIPS: JZ4740: call jz4740_clock_init earlier
+  MIPS: JZ4740: replace use of jz4740_clock_bdata
+  devicetree: add Ingenic CGU binding documentation
+  clk: ingenic: add driver for Ingenic SoC CGU clocks
+  MIPS,clk: migrate JZ4740 to common clock framework
+  MIPS,clk: move jz4740_clock_set_wait_mode to jz4740-cgu
+  MIPS,clk: move jz4740 UDC auto suspend functions to jz4740-cgu
+  MIPS,clk: move jz4740 clock suspend,resume functions to jz4740-cgu
+  clk: ingenic: add JZ4780 CGU support
+  MIPS: JZ4740: remove clock.h
+  MIPS: JZ4740: only detect RAM size if not specified in DT
+  devicetree: document Ingenic SoC UART binding
+  serial: 8250_ingenic: support for Ingenic SoC UARTs
+  MIPS: JZ4740: use Ingenic SoC UART driver
+  MIPS: ingenic: initial JZ4780 support
+  MIPS: ingenic: initial MIPS Creator CI20 support
+
+ .../devicetree/bindings/clock/ingenic,cgu.txt      |  53 ++
+ .../bindings/interrupt-controller/ingenic,intc.txt |  25 +
+ .../devicetree/bindings/serial/ingenic,uart.txt    |  22 +
+ .../devicetree/bindings/vendor-prefixes.txt        |   2 +
+ arch/mips/Kconfig                                  |  11 +-
+ arch/mips/boot/dts/Makefile                        |   1 +
+ arch/mips/boot/dts/ingenic/Makefile                |  10 +
+ arch/mips/boot/dts/ingenic/ci20.dts                |  21 +
+ arch/mips/boot/dts/ingenic/jz4740.dtsi             |  68 ++
+ arch/mips/boot/dts/ingenic/jz4780.dtsi             | 101 +++
+ arch/mips/boot/dts/ingenic/qi_lb60.dts             |  15 +
+ arch/mips/configs/ci20_defconfig                   | 169 ++++
+ arch/mips/configs/qi_lb60_defconfig                |   3 +-
+ arch/mips/include/asm/cpu-type.h                   |   2 +-
+ arch/mips/include/asm/cpu.h                        |   6 +-
+ arch/mips/include/asm/mach-jz4740/clock.h          |   3 +
+ .../asm/mach-jz4740/cpu-feature-overrides.h        |   3 -
+ arch/mips/include/asm/mach-jz4740/irq.h            |  14 +-
+ arch/mips/include/asm/mach-jz4740/platform.h       |   2 -
+ arch/mips/jz4740/Kconfig                           |  17 +-
+ arch/mips/jz4740/Makefile                          |   8 +-
+ arch/mips/jz4740/Platform                          |   8 +-
+ arch/mips/jz4740/board-qi_lb60.c                   |   7 -
+ arch/mips/jz4740/clock-debugfs.c                   | 108 ---
+ arch/mips/jz4740/clock.c                           | 924 ---------------------
+ arch/mips/jz4740/clock.h                           |  76 --
+ arch/mips/jz4740/gpio.c                            |   7 +-
+ arch/mips/jz4740/irq.c                             | 162 ----
+ arch/mips/jz4740/platform.c                        |  38 +-
+ arch/mips/jz4740/pm.c                              |   2 -
+ arch/mips/jz4740/prom.c                            |  13 -
+ arch/mips/jz4740/reset.c                           |  13 +-
+ arch/mips/jz4740/serial.c                          |  33 -
+ arch/mips/jz4740/serial.h                          |  23 -
+ arch/mips/jz4740/setup.c                           |  36 +-
+ arch/mips/jz4740/time.c                            |  19 +-
+ arch/mips/kernel/cpu-probe.c                       |   4 +-
+ arch/mips/kernel/irq_cpu.c                         |   3 +
+ drivers/clk/Makefile                               |   1 +
+ drivers/clk/ingenic/Makefile                       |   3 +
+ drivers/clk/ingenic/cgu.c                          | 712 ++++++++++++++++
+ drivers/clk/ingenic/cgu.h                          | 223 +++++
+ drivers/clk/ingenic/jz4740-cgu.c                   | 303 +++++++
+ drivers/clk/ingenic/jz4780-cgu.c                   | 736 ++++++++++++++++
+ drivers/irqchip/Kconfig                            |   5 +
+ drivers/irqchip/Makefile                           |   1 +
+ drivers/irqchip/irq-ingenic.c                      | 171 ++++
+ drivers/tty/serial/8250/8250_ingenic.c             | 261 ++++++
+ drivers/tty/serial/8250/Kconfig                    |   9 +
+ drivers/tty/serial/8250/Makefile                   |   3 +
+ include/dt-bindings/clock/jz4740-cgu.h             |  37 +
+ include/dt-bindings/clock/jz4780-cgu.h             |  88 ++
+ .../irq.h => include/linux/irqchip/ingenic.h       |   8 +-
+ 53 files changed, 3169 insertions(+), 1424 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/clock/ingenic,cgu.txt
+ create mode 100644 Documentation/devicetree/bindings/interrupt-controller/ingenic,intc.txt
+ create mode 100644 Documentation/devicetree/bindings/serial/ingenic,uart.txt
+ create mode 100644 arch/mips/boot/dts/ingenic/Makefile
+ create mode 100644 arch/mips/boot/dts/ingenic/ci20.dts
+ create mode 100644 arch/mips/boot/dts/ingenic/jz4740.dtsi
+ create mode 100644 arch/mips/boot/dts/ingenic/jz4780.dtsi
+ create mode 100644 arch/mips/boot/dts/ingenic/qi_lb60.dts
+ create mode 100644 arch/mips/configs/ci20_defconfig
+ delete mode 100644 arch/mips/jz4740/clock-debugfs.c
+ delete mode 100644 arch/mips/jz4740/clock.c
+ delete mode 100644 arch/mips/jz4740/clock.h
+ delete mode 100644 arch/mips/jz4740/irq.c
+ delete mode 100644 arch/mips/jz4740/serial.c
+ delete mode 100644 arch/mips/jz4740/serial.h
+ create mode 100644 drivers/clk/ingenic/Makefile
+ create mode 100644 drivers/clk/ingenic/cgu.c
+ create mode 100644 drivers/clk/ingenic/cgu.h
+ create mode 100644 drivers/clk/ingenic/jz4740-cgu.c
+ create mode 100644 drivers/clk/ingenic/jz4780-cgu.c
+ create mode 100644 drivers/irqchip/irq-ingenic.c
+ create mode 100644 drivers/tty/serial/8250/8250_ingenic.c
+ create mode 100644 include/dt-bindings/clock/jz4740-cgu.h
+ create mode 100644 include/dt-bindings/clock/jz4780-cgu.h
+ rename arch/mips/jz4740/irq.h => include/linux/irqchip/ingenic.h (74%)
+
 -- 
-2.0.0
+2.3.5

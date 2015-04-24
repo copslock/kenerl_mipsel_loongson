@@ -1,27 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Apr 2015 15:26:25 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:24511 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Apr 2015 15:26:51 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:18979 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27026035AbbDXN0WZIOAU (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 24 Apr 2015 15:26:22 +0200
+        with ESMTP id S27026035AbbDXN0r11Jgl (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 24 Apr 2015 15:26:47 +0200
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 4E1A2A36C4BB7;
-        Fri, 24 Apr 2015 14:26:14 +0100 (IST)
+        by Websense Email Security Gateway with ESMTPS id 0810367349083;
+        Fri, 24 Apr 2015 14:26:40 +0100 (IST)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
  KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Fri, 24 Apr 2015 14:26:16 +0100
+ 14.3.195.1; Fri, 24 Apr 2015 14:26:42 +0100
 Received: from localhost (192.168.159.76) by LEMAIL01.le.imgtec.org
  (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Fri, 24 Apr
- 2015 14:26:13 +0100
+ 2015 14:26:35 +0100
 From:   Paul Burton <paul.burton@imgtec.com>
 To:     <linux-mips@linux-mips.org>
 CC:     Paul Burton <paul.burton@imgtec.com>,
+        Ian Campbell <ijc+devicetree@hellion.org.uk>,
+        Kumar Gala <galak@codeaurora.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
+        Mark Rutland <mark.rutland@arm.com>,
         Mike Turquette <mturquette@linaro.org>,
+        Pawel Moll <pawel.moll@arm.com>,
+        "Ralf Baechle" <ralf@linux-mips.org>,
+        Rob Herring <robh+dt@kernel.org>,
         Stephen Boyd <sboyd@codeaurora.org>,
-        <linux-clk@vger.kernel.org>
-Subject: [PATCH v4 25/37] clk: ingenic: add driver for Ingenic SoC CGU clocks
-Date:   Fri, 24 Apr 2015 14:17:25 +0100
-Message-ID: <1429881457-16016-26-git-send-email-paul.burton@imgtec.com>
+        <devicetree@vger.kernel.org>, <linux-clk@vger.kernel.org>
+Subject: [PATCH v4 26/37] MIPS,clk: migrate JZ4740 to common clock framework
+Date:   Fri, 24 Apr 2015 14:17:26 +0100
+Message-ID: <1429881457-16016-27-git-send-email-paul.burton@imgtec.com>
 X-Mailer: git-send-email 2.3.5
 In-Reply-To: <1429881457-16016-1-git-send-email-paul.burton@imgtec.com>
 References: <1429881457-16016-1-git-send-email-paul.burton@imgtec.com>
@@ -32,7 +38,7 @@ Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47059
+X-archive-position: 47060
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -49,110 +55,1235 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This driver supports the CGU clocks for Ingenic SoCs. It is generic
-enough to be usable across at least the JZ4740 to the JZ4780, and will
-be made use of on such devices in subsequent commits. This patch by
-itself only adds the SoC-agnostic infrastructure that forms the bulk of
-the CGU driver for the aforementioned further commits to make use of.
+Migrate the JZ4740 & the qi_lb60 board to use common clock framework
+via the new Ingenic SoC CGU driver. Note that the JZ4740-specific
+debugfs code is removed since common clock framework provides its own
+debug capabilities.
 
 Signed-off-by: Paul Burton <paul.burton@imgtec.com>
 Co-authored-by: Paul Cercueil <paul@crapouillou.net>
+Cc: Ian Campbell <ijc+devicetree@hellion.org.uk>
+Cc: Kumar Gala <galak@codeaurora.org>
 Cc: Lars-Peter Clausen <lars@metafoo.de>
+Cc: Mark Rutland <mark.rutland@arm.com>
 Cc: Mike Turquette <mturquette@linaro.org>
+Cc: Pawel Moll <pawel.moll@arm.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Rob Herring <robh+dt@kernel.org>
 Cc: Stephen Boyd <sboyd@codeaurora.org>
+Cc: devicetree@vger.kernel.org
 Cc: linux-clk@vger.kernel.org
+Cc: linux-mips@linux-mips.org
 ---
 Changes in v4:
-  - Add brackets to functions in kerneldoc comments.
+  - Return on ingenic_cgu_new failure.
 
-  - Correct some stale comments.
+  - Mention debugfs changes in commit message.
 
-  - Return bool from ingenic_cgu_gate_get.
-
-  - Use div_u64 to avoid potential overflows in PLL rate calculations.
-
-  - Honor m_offset & n_offset in ingenic_pll_calc.
-
-  - Avoid incorrectly calculating the value to write to a mux field in
-    ingenic_clk_set_parent when the desired parent is the first (idx ==
-    0) and the hardware's zero value is not a valid parent (ie.
-    clk_info->parents[0] == -1).
-
-  - Return parent rate for non-dividing clocks in
-    ingenic_clk_round_rate.
-
-  - Drop redundant cgu != NULL check in ingenic_cgu_register_clocks
-    error path.
-
-  - Consistently use u8/s8 for bit specifications where the bit is
-    required or optional respectively.
-
-  - Use BIT & GENMASK macros in a few more places, replacing open coded
-    versions.
-
-  - Simplify & correct locking. CGU registers aren't always neatly
-    divided into those controlling whether clocks are enabled & those
-    controlling other attributes of the clock (rate, parent etc). Thus
-    accesses to many of these registers can occur from either of the two
-    groups of operations described by Documentation/clk.txt and from
-    either atomic or non-atomic context. The split of functionality
-    between different CGU registers also differs between SoCs. Simplify
-    handling all of this by using a single spinlock, which at least
-    is simple, works correctly and can be revisited if it ever proves to
-    be a performance issue in future.
+  - Initialise all unused clock parent fields to -1. Zero initialisation
+    works out so long as the common clock framework only ever attempts
+    to set a parent clock that was specified in the parent array (which
+    is OK), and so long as the hardware state is always valid according
+    to the clock description (which is hopefully OK). Initialising to -1
+    makes sense for resilience should the latter ever not be the case,
+    and to avoid that bit of implicit magic knowledge.
 
 Changes in v3:
-  - s/jz47xx/ingenic/ since Ingenic have changed their naming scheme to
-    "Mxxx" for newer SoCs.
-
-  - Allow clock gating with registers other than CLKGR* (pcercuei).
-
-  - Fixup dividers to never exceed the requested rate (pcercuei).
-
-  - Fixup PLL calculations to work better with more restricted
-    coefficient bit widths (pcercuei).
+  - Handle gating the "udc" clock.
 
 Changes in v2:
-  - Fix spinlock handling in jz47xx_clk_set_rate error path (ZubairLK).
+  - None.
 ---
- drivers/clk/Makefile         |   1 +
- drivers/clk/ingenic/Makefile |   1 +
- drivers/clk/ingenic/cgu.c    | 712 +++++++++++++++++++++++++++++++++++++++++++
- drivers/clk/ingenic/cgu.h    | 223 ++++++++++++++
- 4 files changed, 937 insertions(+)
- create mode 100644 drivers/clk/ingenic/Makefile
- create mode 100644 drivers/clk/ingenic/cgu.c
- create mode 100644 drivers/clk/ingenic/cgu.h
+ arch/mips/Kconfig                      |   2 +-
+ arch/mips/boot/dts/ingenic/jz4740.dtsi |  23 +
+ arch/mips/boot/dts/ingenic/qi_lb60.dts |   4 +
+ arch/mips/jz4740/Makefile              |   2 -
+ arch/mips/jz4740/board-qi_lb60.c       |   5 -
+ arch/mips/jz4740/clock-debugfs.c       | 108 -----
+ arch/mips/jz4740/clock.c               | 801 +--------------------------------
+ arch/mips/jz4740/clock.h               |  53 +--
+ arch/mips/jz4740/time.c                |   2 +
+ drivers/clk/ingenic/Makefile           |   1 +
+ drivers/clk/ingenic/jz4740-cgu.c       | 222 +++++++++
+ 11 files changed, 255 insertions(+), 968 deletions(-)
+ delete mode 100644 arch/mips/jz4740/clock-debugfs.c
+ create mode 100644 drivers/clk/ingenic/jz4740-cgu.c
 
-diff --git a/drivers/clk/Makefile b/drivers/clk/Makefile
-index 3d00c25..cc77327 100644
---- a/drivers/clk/Makefile
-+++ b/drivers/clk/Makefile
-@@ -50,6 +50,7 @@ obj-$(CONFIG_ARCH_BERLIN)		+= berlin/
- obj-$(CONFIG_ARCH_HI3xxx)		+= hisilicon/
- obj-$(CONFIG_ARCH_HIP04)		+= hisilicon/
- obj-$(CONFIG_ARCH_HIX5HD2)		+= hisilicon/
-+obj-$(CONFIG_MACH_INGENIC)		+= ingenic/
- obj-$(CONFIG_COMMON_CLK_KEYSTONE)	+= keystone/
- ifeq ($(CONFIG_COMMON_CLK), y)
- obj-$(CONFIG_ARCH_MMP)			+= mmp/
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 741e364..e3c859c 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -297,7 +297,7 @@ config MACH_INGENIC
+ 	select IRQ_CPU
+ 	select ARCH_REQUIRE_GPIOLIB
+ 	select SYS_HAS_EARLY_PRINTK
+-	select HAVE_CLK
++	select COMMON_CLK
+ 	select GENERIC_IRQ_CHIP
+ 	select BUILTIN_DTB
+ 	select USE_OF
+diff --git a/arch/mips/boot/dts/ingenic/jz4740.dtsi b/arch/mips/boot/dts/ingenic/jz4740.dtsi
+index 3142e6c..9903ab2 100644
+--- a/arch/mips/boot/dts/ingenic/jz4740.dtsi
++++ b/arch/mips/boot/dts/ingenic/jz4740.dtsi
+@@ -1,3 +1,5 @@
++#include <dt-bindings/clock/jz4740-cgu.h>
++
+ / {
+ 	#address-cells = <1>;
+ 	#size-cells = <1>;
+@@ -20,4 +22,25 @@
+ 		interrupt-parent = <&cpuintc>;
+ 		interrupts = <2>;
+ 	};
++
++	ext: ext {
++		compatible = "fixed-clock";
++		#clock-cells = <0>;
++	};
++
++	rtc: rtc {
++		compatible = "fixed-clock";
++		#clock-cells = <0>;
++		clock-frequency = <32768>;
++	};
++
++	cgu: jz4740-cgu@10000000 {
++		compatible = "ingenic,jz4740-cgu";
++		reg = <0x10000000 0x100>;
++
++		clocks = <&ext>, <&rtc>;
++		clock-names = "ext", "rtc";
++
++		#clock-cells = <1>;
++	};
+ };
+diff --git a/arch/mips/boot/dts/ingenic/qi_lb60.dts b/arch/mips/boot/dts/ingenic/qi_lb60.dts
+index 0c0f639..106d13c 100644
+--- a/arch/mips/boot/dts/ingenic/qi_lb60.dts
++++ b/arch/mips/boot/dts/ingenic/qi_lb60.dts
+@@ -5,3 +5,7 @@
+ / {
+ 	compatible = "qi,lb60", "ingenic,jz4740";
+ };
++
++&ext {
++	clock-frequency = <12000000>;
++};
+diff --git a/arch/mips/jz4740/Makefile b/arch/mips/jz4740/Makefile
+index 6cf5dd4..fdb12efc 100644
+--- a/arch/mips/jz4740/Makefile
++++ b/arch/mips/jz4740/Makefile
+@@ -7,8 +7,6 @@
+ obj-y += prom.o time.o reset.o setup.o \
+ 	gpio.o clock.o platform.o timer.o serial.o
+ 
+-obj-$(CONFIG_DEBUG_FS) += clock-debugfs.o
+-
+ # board specific support
+ 
+ obj-$(CONFIG_JZ4740_QI_LB60)	+= board-qi_lb60.o
+diff --git a/arch/mips/jz4740/board-qi_lb60.c b/arch/mips/jz4740/board-qi_lb60.c
+index 9dd051e..21b034c 100644
+--- a/arch/mips/jz4740/board-qi_lb60.c
++++ b/arch/mips/jz4740/board-qi_lb60.c
+@@ -497,11 +497,6 @@ static int __init qi_lb60_init_platform_devices(void)
+ 
+ }
+ 
+-struct jz4740_clock_board_data jz4740_clock_bdata = {
+-	.ext_rate = 12000000,
+-	.rtc_rate = 32768,
+-};
+-
+ static __init int board_avt2(char *str)
+ {
+ 	qi_lb60_mmc_pdata.card_detect_active_low = 1;
+diff --git a/arch/mips/jz4740/clock-debugfs.c b/arch/mips/jz4740/clock-debugfs.c
+deleted file mode 100644
+index 325422d0..0000000
+--- a/arch/mips/jz4740/clock-debugfs.c
++++ /dev/null
+@@ -1,108 +0,0 @@
+-/*
+- *  Copyright (C) 2010, Lars-Peter Clausen <lars@metafoo.de>
+- *  JZ4740 SoC clock support debugfs entries
+- *
+- *  This program is free software; you can redistribute it and/or modify it
+- *  under  the terms of the GNU General	 Public License as published by the
+- *  Free Software Foundation;  either version 2 of the License, or (at your
+- *  option) any later version.
+- *
+- *  You should have received a copy of the GNU General Public License along
+- *  with this program; if not, write to the Free Software Foundation, Inc.,
+- *  675 Mass Ave, Cambridge, MA 02139, USA.
+- *
+- */
+-
+-#include <linux/kernel.h>
+-#include <linux/module.h>
+-#include <linux/clk.h>
+-#include <linux/err.h>
+-
+-#include <linux/debugfs.h>
+-#include <linux/uaccess.h>
+-
+-#include <asm/mach-jz4740/clock.h>
+-#include "clock.h"
+-
+-static struct dentry *jz4740_clock_debugfs;
+-
+-static int jz4740_clock_debugfs_show_enabled(void *data, uint64_t *value)
+-{
+-	struct clk *clk = data;
+-	*value = clk_is_enabled(clk);
+-
+-	return 0;
+-}
+-
+-static int jz4740_clock_debugfs_set_enabled(void *data, uint64_t value)
+-{
+-	struct clk *clk = data;
+-
+-	if (value)
+-		return clk_enable(clk);
+-	else
+-		clk_disable(clk);
+-
+-	return 0;
+-}
+-
+-DEFINE_SIMPLE_ATTRIBUTE(jz4740_clock_debugfs_ops_enabled,
+-	jz4740_clock_debugfs_show_enabled,
+-	jz4740_clock_debugfs_set_enabled,
+-	"%llu\n");
+-
+-static int jz4740_clock_debugfs_show_rate(void *data, uint64_t *value)
+-{
+-	struct clk *clk = data;
+-	*value = clk_get_rate(clk);
+-
+-	return 0;
+-}
+-
+-DEFINE_SIMPLE_ATTRIBUTE(jz4740_clock_debugfs_ops_rate,
+-	jz4740_clock_debugfs_show_rate,
+-	NULL,
+-	"%llu\n");
+-
+-void jz4740_clock_debugfs_add_clk(struct clk *clk)
+-{
+-	if (!jz4740_clock_debugfs)
+-		return;
+-
+-	clk->debugfs_entry = debugfs_create_dir(clk->name, jz4740_clock_debugfs);
+-	debugfs_create_file("rate", S_IWUGO | S_IRUGO, clk->debugfs_entry, clk,
+-				&jz4740_clock_debugfs_ops_rate);
+-	debugfs_create_file("enabled", S_IRUGO, clk->debugfs_entry, clk,
+-				&jz4740_clock_debugfs_ops_enabled);
+-
+-	if (clk->parent) {
+-		char parent_path[100];
+-		snprintf(parent_path, 100, "../%s", clk->parent->name);
+-		clk->debugfs_parent_entry = debugfs_create_symlink("parent",
+-						clk->debugfs_entry,
+-						parent_path);
+-	}
+-}
+-
+-/* TODO: Locking */
+-void jz4740_clock_debugfs_update_parent(struct clk *clk)
+-{
+-	debugfs_remove(clk->debugfs_parent_entry);
+-
+-	if (clk->parent) {
+-		char parent_path[100];
+-		snprintf(parent_path, 100, "../%s", clk->parent->name);
+-		clk->debugfs_parent_entry = debugfs_create_symlink("parent",
+-						clk->debugfs_entry,
+-						parent_path);
+-	} else {
+-		clk->debugfs_parent_entry = NULL;
+-	}
+-}
+-
+-void jz4740_clock_debugfs_init(void)
+-{
+-	jz4740_clock_debugfs = debugfs_create_dir("jz4740-clock", NULL);
+-	if (IS_ERR(jz4740_clock_debugfs))
+-		jz4740_clock_debugfs = NULL;
+-}
+diff --git a/arch/mips/jz4740/clock.c b/arch/mips/jz4740/clock.c
+index c257073..dedee7c 100644
+--- a/arch/mips/jz4740/clock.c
++++ b/arch/mips/jz4740/clock.c
+@@ -16,6 +16,7 @@
+ #include <linux/kernel.h>
+ #include <linux/errno.h>
+ #include <linux/clk.h>
++#include <linux/clk-provider.h>
+ #include <linux/spinlock.h>
+ #include <linux/io.h>
+ #include <linux/module.h>
+@@ -27,820 +28,44 @@
+ 
+ #include "clock.h"
+ 
+-#define JZ_REG_CLOCK_CTRL	0x00
+ #define JZ_REG_CLOCK_LOW_POWER	0x04
+ #define JZ_REG_CLOCK_PLL	0x10
+ #define JZ_REG_CLOCK_GATE	0x20
+-#define JZ_REG_CLOCK_SLEEP_CTRL 0x24
+-#define JZ_REG_CLOCK_I2S	0x60
+-#define JZ_REG_CLOCK_LCD	0x64
+-#define JZ_REG_CLOCK_MMC	0x68
+-#define JZ_REG_CLOCK_UHC	0x6C
+-#define JZ_REG_CLOCK_SPI	0x74
+-
+-#define JZ_CLOCK_CTRL_I2S_SRC_PLL	BIT(31)
+-#define JZ_CLOCK_CTRL_KO_ENABLE		BIT(30)
+-#define JZ_CLOCK_CTRL_UDC_SRC_PLL	BIT(29)
+-#define JZ_CLOCK_CTRL_UDIV_MASK		0x1f800000
+-#define JZ_CLOCK_CTRL_CHANGE_ENABLE	BIT(22)
+-#define JZ_CLOCK_CTRL_PLL_HALF		BIT(21)
+-#define JZ_CLOCK_CTRL_LDIV_MASK		0x001f0000
+-#define JZ_CLOCK_CTRL_UDIV_OFFSET	23
+-#define JZ_CLOCK_CTRL_LDIV_OFFSET	16
+-#define JZ_CLOCK_CTRL_MDIV_OFFSET	12
+-#define JZ_CLOCK_CTRL_PDIV_OFFSET	 8
+-#define JZ_CLOCK_CTRL_HDIV_OFFSET	 4
+-#define JZ_CLOCK_CTRL_CDIV_OFFSET	 0
+ 
+ #define JZ_CLOCK_GATE_UART0	BIT(0)
+ #define JZ_CLOCK_GATE_TCU	BIT(1)
+-#define JZ_CLOCK_GATE_RTC	BIT(2)
+-#define JZ_CLOCK_GATE_I2C	BIT(3)
+-#define JZ_CLOCK_GATE_SPI	BIT(4)
+-#define JZ_CLOCK_GATE_AIC	BIT(5)
+-#define JZ_CLOCK_GATE_I2S	BIT(6)
+-#define JZ_CLOCK_GATE_MMC	BIT(7)
+-#define JZ_CLOCK_GATE_ADC	BIT(8)
+-#define JZ_CLOCK_GATE_CIM	BIT(9)
+-#define JZ_CLOCK_GATE_LCD	BIT(10)
+ #define JZ_CLOCK_GATE_UDC	BIT(11)
+ #define JZ_CLOCK_GATE_DMAC	BIT(12)
+-#define JZ_CLOCK_GATE_IPU	BIT(13)
+-#define JZ_CLOCK_GATE_UHC	BIT(14)
+-#define JZ_CLOCK_GATE_UART1	BIT(15)
+-
+-#define JZ_CLOCK_I2S_DIV_MASK		0x01ff
+-
+-#define JZ_CLOCK_LCD_DIV_MASK		0x01ff
+-
+-#define JZ_CLOCK_MMC_DIV_MASK		0x001f
+ 
+-#define JZ_CLOCK_UHC_DIV_MASK		0x000f
+-
+-#define JZ_CLOCK_SPI_SRC_PLL		BIT(31)
+-#define JZ_CLOCK_SPI_DIV_MASK		0x000f
+-
+-#define JZ_CLOCK_PLL_M_MASK		0x01ff
+-#define JZ_CLOCK_PLL_N_MASK		0x001f
+-#define JZ_CLOCK_PLL_OD_MASK		0x0003
+ #define JZ_CLOCK_PLL_STABLE		BIT(10)
+-#define JZ_CLOCK_PLL_BYPASS		BIT(9)
+ #define JZ_CLOCK_PLL_ENABLED		BIT(8)
+-#define JZ_CLOCK_PLL_STABLIZE_MASK	0x000f
+-#define JZ_CLOCK_PLL_M_OFFSET		23
+-#define JZ_CLOCK_PLL_N_OFFSET		18
+-#define JZ_CLOCK_PLL_OD_OFFSET		16
+ 
+ #define JZ_CLOCK_LOW_POWER_MODE_DOZE BIT(2)
+ #define JZ_CLOCK_LOW_POWER_MODE_SLEEP BIT(0)
+ 
+-#define JZ_CLOCK_SLEEP_CTRL_SUSPEND_UHC BIT(7)
+-#define JZ_CLOCK_SLEEP_CTRL_ENABLE_UDC BIT(6)
+-
+ static void __iomem *jz_clock_base;
+-static spinlock_t jz_clock_lock;
+-static LIST_HEAD(jz_clocks);
+-
+-struct main_clk {
+-	struct clk clk;
+-	uint32_t div_offset;
+-};
+-
+-struct divided_clk {
+-	struct clk clk;
+-	uint32_t reg;
+-	uint32_t mask;
+-};
+-
+-struct static_clk {
+-	struct clk clk;
+-	unsigned long rate;
+-};
+ 
+ static uint32_t jz_clk_reg_read(int reg)
+ {
+ 	return readl(jz_clock_base + reg);
+ }
+ 
+-static void jz_clk_reg_write_mask(int reg, uint32_t val, uint32_t mask)
+-{
+-	uint32_t val2;
+-
+-	spin_lock(&jz_clock_lock);
+-	val2 = readl(jz_clock_base + reg);
+-	val2 &= ~mask;
+-	val2 |= val;
+-	writel(val2, jz_clock_base + reg);
+-	spin_unlock(&jz_clock_lock);
+-}
+-
+ static void jz_clk_reg_set_bits(int reg, uint32_t mask)
+ {
+ 	uint32_t val;
+ 
+-	spin_lock(&jz_clock_lock);
+ 	val = readl(jz_clock_base + reg);
+ 	val |= mask;
+ 	writel(val, jz_clock_base + reg);
+-	spin_unlock(&jz_clock_lock);
+ }
+ 
+ static void jz_clk_reg_clear_bits(int reg, uint32_t mask)
+ {
+ 	uint32_t val;
+ 
+-	spin_lock(&jz_clock_lock);
+ 	val = readl(jz_clock_base + reg);
+ 	val &= ~mask;
+ 	writel(val, jz_clock_base + reg);
+-	spin_unlock(&jz_clock_lock);
+-}
+-
+-static int jz_clk_enable_gating(struct clk *clk)
+-{
+-	if (clk->gate_bit == JZ4740_CLK_NOT_GATED)
+-		return -EINVAL;
+-
+-	jz_clk_reg_clear_bits(JZ_REG_CLOCK_GATE, clk->gate_bit);
+-	return 0;
+-}
+-
+-static int jz_clk_disable_gating(struct clk *clk)
+-{
+-	if (clk->gate_bit == JZ4740_CLK_NOT_GATED)
+-		return -EINVAL;
+-
+-	jz_clk_reg_set_bits(JZ_REG_CLOCK_GATE, clk->gate_bit);
+-	return 0;
+-}
+-
+-static int jz_clk_is_enabled_gating(struct clk *clk)
+-{
+-	if (clk->gate_bit == JZ4740_CLK_NOT_GATED)
+-		return 1;
+-
+-	return !(jz_clk_reg_read(JZ_REG_CLOCK_GATE) & clk->gate_bit);
+-}
+-
+-static unsigned long jz_clk_static_get_rate(struct clk *clk)
+-{
+-	return ((struct static_clk *)clk)->rate;
+-}
+-
+-static int jz_clk_ko_enable(struct clk *clk)
+-{
+-	jz_clk_reg_set_bits(JZ_REG_CLOCK_CTRL, JZ_CLOCK_CTRL_KO_ENABLE);
+-	return 0;
+-}
+-
+-static int jz_clk_ko_disable(struct clk *clk)
+-{
+-	jz_clk_reg_clear_bits(JZ_REG_CLOCK_CTRL, JZ_CLOCK_CTRL_KO_ENABLE);
+-	return 0;
+-}
+-
+-static int jz_clk_ko_is_enabled(struct clk *clk)
+-{
+-	return !!(jz_clk_reg_read(JZ_REG_CLOCK_CTRL) & JZ_CLOCK_CTRL_KO_ENABLE);
+-}
+-
+-static const int pllno[] = {1, 2, 2, 4};
+-
+-static unsigned long jz_clk_pll_get_rate(struct clk *clk)
+-{
+-	uint32_t val;
+-	int m;
+-	int n;
+-	int od;
+-
+-	val = jz_clk_reg_read(JZ_REG_CLOCK_PLL);
+-
+-	if (val & JZ_CLOCK_PLL_BYPASS)
+-		return clk_get_rate(clk->parent);
+-
+-	m = ((val >> 23) & 0x1ff) + 2;
+-	n = ((val >> 18) & 0x1f) + 2;
+-	od = (val >> 16) & 0x3;
+-
+-	return ((clk_get_rate(clk->parent) / n) * m) / pllno[od];
+-}
+-
+-static unsigned long jz_clk_pll_half_get_rate(struct clk *clk)
+-{
+-	uint32_t reg;
+-
+-	reg = jz_clk_reg_read(JZ_REG_CLOCK_CTRL);
+-	if (reg & JZ_CLOCK_CTRL_PLL_HALF)
+-		return jz_clk_pll_get_rate(clk->parent);
+-	return jz_clk_pll_get_rate(clk->parent) >> 1;
+-}
+-
+-static const int jz_clk_main_divs[] = {1, 2, 3, 4, 6, 8, 12, 16, 24, 32};
+-
+-static unsigned long jz_clk_main_round_rate(struct clk *clk, unsigned long rate)
+-{
+-	unsigned long parent_rate = jz_clk_pll_get_rate(clk->parent);
+-	int div;
+-
+-	div = parent_rate / rate;
+-	if (div > 32)
+-		return parent_rate / 32;
+-	else if (div < 1)
+-		return parent_rate;
+-
+-	div &= (0x3 << (ffs(div) - 1));
+-
+-	return parent_rate / div;
+-}
+-
+-static unsigned long jz_clk_main_get_rate(struct clk *clk)
+-{
+-	struct main_clk *mclk = (struct main_clk *)clk;
+-	uint32_t div;
+-
+-	div = jz_clk_reg_read(JZ_REG_CLOCK_CTRL);
+-
+-	div >>= mclk->div_offset;
+-	div &= 0xf;
+-
+-	if (div >= ARRAY_SIZE(jz_clk_main_divs))
+-		div = ARRAY_SIZE(jz_clk_main_divs) - 1;
+-
+-	return jz_clk_pll_get_rate(clk->parent) / jz_clk_main_divs[div];
+-}
+-
+-static int jz_clk_main_set_rate(struct clk *clk, unsigned long rate)
+-{
+-	struct main_clk *mclk = (struct main_clk *)clk;
+-	int i;
+-	int div;
+-	unsigned long parent_rate = jz_clk_pll_get_rate(clk->parent);
+-
+-	rate = jz_clk_main_round_rate(clk, rate);
+-
+-	div = parent_rate / rate;
+-
+-	i = (ffs(div) - 1) << 1;
+-	if (i > 0 && !(div & BIT(i-1)))
+-		i -= 1;
+-
+-	jz_clk_reg_write_mask(JZ_REG_CLOCK_CTRL, i << mclk->div_offset,
+-				0xf << mclk->div_offset);
+-
+-	return 0;
+-}
+-
+-static struct clk_ops jz_clk_static_ops = {
+-	.get_rate = jz_clk_static_get_rate,
+-	.enable = jz_clk_enable_gating,
+-	.disable = jz_clk_disable_gating,
+-	.is_enabled = jz_clk_is_enabled_gating,
+-};
+-
+-static struct static_clk jz_clk_ext = {
+-	.clk = {
+-		.name = "ext",
+-		.gate_bit = JZ4740_CLK_NOT_GATED,
+-		.ops = &jz_clk_static_ops,
+-	},
+-};
+-
+-static struct clk_ops jz_clk_pll_ops = {
+-	.get_rate = jz_clk_pll_get_rate,
+-};
+-
+-static struct clk jz_clk_pll = {
+-	.name = "pll",
+-	.parent = &jz_clk_ext.clk,
+-	.ops = &jz_clk_pll_ops,
+-};
+-
+-static struct clk_ops jz_clk_pll_half_ops = {
+-	.get_rate = jz_clk_pll_half_get_rate,
+-};
+-
+-static struct clk jz_clk_pll_half = {
+-	.name = "pll half",
+-	.parent = &jz_clk_pll,
+-	.ops = &jz_clk_pll_half_ops,
+-};
+-
+-static const struct clk_ops jz_clk_main_ops = {
+-	.get_rate = jz_clk_main_get_rate,
+-	.set_rate = jz_clk_main_set_rate,
+-	.round_rate = jz_clk_main_round_rate,
+-};
+-
+-static struct main_clk jz_clk_cpu = {
+-	.clk = {
+-		.name = "cclk",
+-		.parent = &jz_clk_pll,
+-		.ops = &jz_clk_main_ops,
+-	},
+-	.div_offset = JZ_CLOCK_CTRL_CDIV_OFFSET,
+-};
+-
+-static struct main_clk jz_clk_memory = {
+-	.clk = {
+-		.name = "mclk",
+-		.parent = &jz_clk_pll,
+-		.ops = &jz_clk_main_ops,
+-	},
+-	.div_offset = JZ_CLOCK_CTRL_MDIV_OFFSET,
+-};
+-
+-static struct main_clk jz_clk_high_speed_peripheral = {
+-	.clk = {
+-		.name = "hclk",
+-		.parent = &jz_clk_pll,
+-		.ops = &jz_clk_main_ops,
+-	},
+-	.div_offset = JZ_CLOCK_CTRL_HDIV_OFFSET,
+-};
+-
+-
+-static struct main_clk jz_clk_low_speed_peripheral = {
+-	.clk = {
+-		.name = "pclk",
+-		.parent = &jz_clk_pll,
+-		.ops = &jz_clk_main_ops,
+-	},
+-	.div_offset = JZ_CLOCK_CTRL_PDIV_OFFSET,
+-};
+-
+-static const struct clk_ops jz_clk_ko_ops = {
+-	.enable = jz_clk_ko_enable,
+-	.disable = jz_clk_ko_disable,
+-	.is_enabled = jz_clk_ko_is_enabled,
+-};
+-
+-static struct clk jz_clk_ko = {
+-	.name = "cko",
+-	.parent = &jz_clk_memory.clk,
+-	.ops = &jz_clk_ko_ops,
+-};
+-
+-static int jz_clk_spi_set_parent(struct clk *clk, struct clk *parent)
+-{
+-	if (parent == &jz_clk_pll)
+-		jz_clk_reg_set_bits(JZ_CLOCK_SPI_SRC_PLL, JZ_REG_CLOCK_SPI);
+-	else if (parent == &jz_clk_ext.clk)
+-		jz_clk_reg_clear_bits(JZ_CLOCK_SPI_SRC_PLL, JZ_REG_CLOCK_SPI);
+-	else
+-		return -EINVAL;
+-
+-	clk->parent = parent;
+-
+-	return 0;
+-}
+-
+-static int jz_clk_i2s_set_parent(struct clk *clk, struct clk *parent)
+-{
+-	if (parent == &jz_clk_pll_half)
+-		jz_clk_reg_set_bits(JZ_REG_CLOCK_CTRL, JZ_CLOCK_CTRL_I2S_SRC_PLL);
+-	else if (parent == &jz_clk_ext.clk)
+-		jz_clk_reg_clear_bits(JZ_REG_CLOCK_CTRL, JZ_CLOCK_CTRL_I2S_SRC_PLL);
+-	else
+-		return -EINVAL;
+-
+-	clk->parent = parent;
+-
+-	return 0;
+-}
+-
+-static int jz_clk_udc_enable(struct clk *clk)
+-{
+-	jz_clk_reg_set_bits(JZ_REG_CLOCK_SLEEP_CTRL,
+-			JZ_CLOCK_SLEEP_CTRL_ENABLE_UDC);
+-
+-	return 0;
+-}
+-
+-static int jz_clk_udc_disable(struct clk *clk)
+-{
+-	jz_clk_reg_clear_bits(JZ_REG_CLOCK_SLEEP_CTRL,
+-			JZ_CLOCK_SLEEP_CTRL_ENABLE_UDC);
+-
+-	return 0;
+-}
+-
+-static int jz_clk_udc_is_enabled(struct clk *clk)
+-{
+-	return !!(jz_clk_reg_read(JZ_REG_CLOCK_SLEEP_CTRL) &
+-			JZ_CLOCK_SLEEP_CTRL_ENABLE_UDC);
+-}
+-
+-static int jz_clk_udc_set_parent(struct clk *clk, struct clk *parent)
+-{
+-	if (parent == &jz_clk_pll_half)
+-		jz_clk_reg_set_bits(JZ_REG_CLOCK_CTRL, JZ_CLOCK_CTRL_UDC_SRC_PLL);
+-	else if (parent == &jz_clk_ext.clk)
+-		jz_clk_reg_clear_bits(JZ_REG_CLOCK_CTRL, JZ_CLOCK_CTRL_UDC_SRC_PLL);
+-	else
+-		return -EINVAL;
+-
+-	clk->parent = parent;
+-
+-	return 0;
+-}
+-
+-static int jz_clk_udc_set_rate(struct clk *clk, unsigned long rate)
+-{
+-	int div;
+-
+-	if (clk->parent == &jz_clk_ext.clk)
+-		return -EINVAL;
+-
+-	div = clk_get_rate(clk->parent) / rate - 1;
+-
+-	if (div < 0)
+-		div = 0;
+-	else if (div > 63)
+-		div = 63;
+-
+-	jz_clk_reg_write_mask(JZ_REG_CLOCK_CTRL, div << JZ_CLOCK_CTRL_UDIV_OFFSET,
+-				JZ_CLOCK_CTRL_UDIV_MASK);
+-	return 0;
+-}
+-
+-static unsigned long jz_clk_udc_get_rate(struct clk *clk)
+-{
+-	int div;
+-
+-	if (clk->parent == &jz_clk_ext.clk)
+-		return clk_get_rate(clk->parent);
+-
+-	div = (jz_clk_reg_read(JZ_REG_CLOCK_CTRL) & JZ_CLOCK_CTRL_UDIV_MASK);
+-	div >>= JZ_CLOCK_CTRL_UDIV_OFFSET;
+-	div += 1;
+-
+-	return clk_get_rate(clk->parent) / div;
+-}
+-
+-static unsigned long jz_clk_divided_get_rate(struct clk *clk)
+-{
+-	struct divided_clk *dclk = (struct divided_clk *)clk;
+-	int div;
+-
+-	if (clk->parent == &jz_clk_ext.clk)
+-		return clk_get_rate(clk->parent);
+-
+-	div = (jz_clk_reg_read(dclk->reg) & dclk->mask) + 1;
+-
+-	return clk_get_rate(clk->parent) / div;
+-}
+-
+-static int jz_clk_divided_set_rate(struct clk *clk, unsigned long rate)
+-{
+-	struct divided_clk *dclk = (struct divided_clk *)clk;
+-	int div;
+-
+-	if (clk->parent == &jz_clk_ext.clk)
+-		return -EINVAL;
+-
+-	div = clk_get_rate(clk->parent) / rate - 1;
+-
+-	if (div < 0)
+-		div = 0;
+-	else if (div > dclk->mask)
+-		div = dclk->mask;
+-
+-	jz_clk_reg_write_mask(dclk->reg, div, dclk->mask);
+-
+-	return 0;
+-}
+-
+-static unsigned long jz_clk_ldclk_round_rate(struct clk *clk, unsigned long rate)
+-{
+-	int div;
+-	unsigned long parent_rate = jz_clk_pll_half_get_rate(clk->parent);
+-
+-	if (rate > 150000000)
+-		return 150000000;
+-
+-	div = parent_rate / rate;
+-	if (div < 1)
+-		div = 1;
+-	else if (div > 32)
+-		div = 32;
+-
+-	return parent_rate / div;
+-}
+-
+-static int jz_clk_ldclk_set_rate(struct clk *clk, unsigned long rate)
+-{
+-	int div;
+-
+-	if (rate > 150000000)
+-		return -EINVAL;
+-
+-	div = jz_clk_pll_half_get_rate(clk->parent) / rate - 1;
+-	if (div < 0)
+-		div = 0;
+-	else if (div > 31)
+-		div = 31;
+-
+-	jz_clk_reg_write_mask(JZ_REG_CLOCK_CTRL, div << JZ_CLOCK_CTRL_LDIV_OFFSET,
+-				JZ_CLOCK_CTRL_LDIV_MASK);
+-
+-	return 0;
+-}
+-
+-static unsigned long jz_clk_ldclk_get_rate(struct clk *clk)
+-{
+-	int div;
+-
+-	div = jz_clk_reg_read(JZ_REG_CLOCK_CTRL) & JZ_CLOCK_CTRL_LDIV_MASK;
+-	div >>= JZ_CLOCK_CTRL_LDIV_OFFSET;
+-
+-	return jz_clk_pll_half_get_rate(clk->parent) / (div + 1);
+-}
+-
+-static const struct clk_ops jz_clk_ops_ld = {
+-	.set_rate = jz_clk_ldclk_set_rate,
+-	.get_rate = jz_clk_ldclk_get_rate,
+-	.round_rate = jz_clk_ldclk_round_rate,
+-	.enable = jz_clk_enable_gating,
+-	.disable = jz_clk_disable_gating,
+-	.is_enabled = jz_clk_is_enabled_gating,
+-};
+-
+-static struct clk jz_clk_ld = {
+-	.name = "lcd",
+-	.gate_bit = JZ_CLOCK_GATE_LCD,
+-	.parent = &jz_clk_pll_half,
+-	.ops = &jz_clk_ops_ld,
+-};
+-
+-static const struct clk_ops jz_clk_i2s_ops = {
+-	.set_rate = jz_clk_divided_set_rate,
+-	.get_rate = jz_clk_divided_get_rate,
+-	.enable = jz_clk_enable_gating,
+-	.disable = jz_clk_disable_gating,
+-	.is_enabled = jz_clk_is_enabled_gating,
+-	.set_parent = jz_clk_i2s_set_parent,
+-};
+-
+-static const struct clk_ops jz_clk_spi_ops = {
+-	.set_rate = jz_clk_divided_set_rate,
+-	.get_rate = jz_clk_divided_get_rate,
+-	.enable = jz_clk_enable_gating,
+-	.disable = jz_clk_disable_gating,
+-	.is_enabled = jz_clk_is_enabled_gating,
+-	.set_parent = jz_clk_spi_set_parent,
+-};
+-
+-static const struct clk_ops jz_clk_divided_ops = {
+-	.set_rate = jz_clk_divided_set_rate,
+-	.get_rate = jz_clk_divided_get_rate,
+-	.enable = jz_clk_enable_gating,
+-	.disable = jz_clk_disable_gating,
+-	.is_enabled = jz_clk_is_enabled_gating,
+-};
+-
+-static struct divided_clk jz4740_clock_divided_clks[] = {
+-	[0] = {
+-		.clk = {
+-			.name = "i2s",
+-			.parent = &jz_clk_ext.clk,
+-			.gate_bit = JZ_CLOCK_GATE_I2S,
+-			.ops = &jz_clk_i2s_ops,
+-		},
+-		.reg = JZ_REG_CLOCK_I2S,
+-		.mask = JZ_CLOCK_I2S_DIV_MASK,
+-	},
+-	[1] = {
+-		.clk = {
+-			.name = "spi",
+-			.parent = &jz_clk_ext.clk,
+-			.gate_bit = JZ_CLOCK_GATE_SPI,
+-			.ops = &jz_clk_spi_ops,
+-		},
+-		.reg = JZ_REG_CLOCK_SPI,
+-		.mask = JZ_CLOCK_SPI_DIV_MASK,
+-	},
+-	[2] = {
+-		.clk = {
+-			.name = "lcd_pclk",
+-			.parent = &jz_clk_pll_half,
+-			.gate_bit = JZ4740_CLK_NOT_GATED,
+-			.ops = &jz_clk_divided_ops,
+-		},
+-		.reg = JZ_REG_CLOCK_LCD,
+-		.mask = JZ_CLOCK_LCD_DIV_MASK,
+-	},
+-	[3] = {
+-		.clk = {
+-			.name = "mmc",
+-			.parent = &jz_clk_pll_half,
+-			.gate_bit = JZ_CLOCK_GATE_MMC,
+-			.ops = &jz_clk_divided_ops,
+-		},
+-		.reg = JZ_REG_CLOCK_MMC,
+-		.mask = JZ_CLOCK_MMC_DIV_MASK,
+-	},
+-	[4] = {
+-		.clk = {
+-			.name = "uhc",
+-			.parent = &jz_clk_pll_half,
+-			.gate_bit = JZ_CLOCK_GATE_UHC,
+-			.ops = &jz_clk_divided_ops,
+-		},
+-		.reg = JZ_REG_CLOCK_UHC,
+-		.mask = JZ_CLOCK_UHC_DIV_MASK,
+-	},
+-};
+-
+-static const struct clk_ops jz_clk_udc_ops = {
+-	.set_parent = jz_clk_udc_set_parent,
+-	.set_rate = jz_clk_udc_set_rate,
+-	.get_rate = jz_clk_udc_get_rate,
+-	.enable = jz_clk_udc_enable,
+-	.disable = jz_clk_udc_disable,
+-	.is_enabled = jz_clk_udc_is_enabled,
+-};
+-
+-static const struct clk_ops jz_clk_simple_ops = {
+-	.enable = jz_clk_enable_gating,
+-	.disable = jz_clk_disable_gating,
+-	.is_enabled = jz_clk_is_enabled_gating,
+-};
+-
+-static struct clk jz4740_clock_simple_clks[] = {
+-	[0] = {
+-		.name = "udc",
+-		.parent = &jz_clk_ext.clk,
+-		.ops = &jz_clk_udc_ops,
+-	},
+-	[1] = {
+-		.name = "uart0",
+-		.parent = &jz_clk_ext.clk,
+-		.gate_bit = JZ_CLOCK_GATE_UART0,
+-		.ops = &jz_clk_simple_ops,
+-	},
+-	[2] = {
+-		.name = "uart1",
+-		.parent = &jz_clk_ext.clk,
+-		.gate_bit = JZ_CLOCK_GATE_UART1,
+-		.ops = &jz_clk_simple_ops,
+-	},
+-	[3] = {
+-		.name = "dma",
+-		.parent = &jz_clk_high_speed_peripheral.clk,
+-		.gate_bit = JZ_CLOCK_GATE_DMAC,
+-		.ops = &jz_clk_simple_ops,
+-	},
+-	[4] = {
+-		.name = "ipu",
+-		.parent = &jz_clk_high_speed_peripheral.clk,
+-		.gate_bit = JZ_CLOCK_GATE_IPU,
+-		.ops = &jz_clk_simple_ops,
+-	},
+-	[5] = {
+-		.name = "adc",
+-		.parent = &jz_clk_ext.clk,
+-		.gate_bit = JZ_CLOCK_GATE_ADC,
+-		.ops = &jz_clk_simple_ops,
+-	},
+-	[6] = {
+-		.name = "i2c",
+-		.parent = &jz_clk_ext.clk,
+-		.gate_bit = JZ_CLOCK_GATE_I2C,
+-		.ops = &jz_clk_simple_ops,
+-	},
+-	[7] = {
+-		.name = "aic",
+-		.parent = &jz_clk_ext.clk,
+-		.gate_bit = JZ_CLOCK_GATE_AIC,
+-		.ops = &jz_clk_simple_ops,
+-	},
+-};
+-
+-static struct static_clk jz_clk_rtc = {
+-	.clk = {
+-		.name = "rtc",
+-		.gate_bit = JZ_CLOCK_GATE_RTC,
+-		.ops = &jz_clk_static_ops,
+-	},
+-	.rate = 32768,
+-};
+-
+-int clk_enable(struct clk *clk)
+-{
+-	if (!clk->ops->enable)
+-		return -EINVAL;
+-
+-	return clk->ops->enable(clk);
+-}
+-EXPORT_SYMBOL_GPL(clk_enable);
+-
+-void clk_disable(struct clk *clk)
+-{
+-	if (clk->ops->disable)
+-		clk->ops->disable(clk);
+-}
+-EXPORT_SYMBOL_GPL(clk_disable);
+-
+-int clk_is_enabled(struct clk *clk)
+-{
+-	if (clk->ops->is_enabled)
+-		return clk->ops->is_enabled(clk);
+-
+-	return 1;
+-}
+-
+-unsigned long clk_get_rate(struct clk *clk)
+-{
+-	if (clk->ops->get_rate)
+-		return clk->ops->get_rate(clk);
+-	if (clk->parent)
+-		return clk_get_rate(clk->parent);
+-
+-	return -EINVAL;
+-}
+-EXPORT_SYMBOL_GPL(clk_get_rate);
+-
+-int clk_set_rate(struct clk *clk, unsigned long rate)
+-{
+-	if (!clk->ops->set_rate)
+-		return -EINVAL;
+-	return clk->ops->set_rate(clk, rate);
+-}
+-EXPORT_SYMBOL_GPL(clk_set_rate);
+-
+-long clk_round_rate(struct clk *clk, unsigned long rate)
+-{
+-	if (clk->ops->round_rate)
+-		return clk->ops->round_rate(clk, rate);
+-
+-	return -EINVAL;
+-}
+-EXPORT_SYMBOL_GPL(clk_round_rate);
+-
+-int clk_set_parent(struct clk *clk, struct clk *parent)
+-{
+-	int ret;
+-	int enabled;
+-
+-	if (!clk->ops->set_parent)
+-		return -EINVAL;
+-
+-	enabled = clk_is_enabled(clk);
+-	if (enabled)
+-		clk_disable(clk);
+-	ret = clk->ops->set_parent(clk, parent);
+-	if (enabled)
+-		clk_enable(clk);
+-
+-	jz4740_clock_debugfs_update_parent(clk);
+-
+-	return ret;
+-}
+-EXPORT_SYMBOL_GPL(clk_set_parent);
+-
+-struct clk *clk_get(struct device *dev, const char *name)
+-{
+-	struct clk *clk;
+-
+-	list_for_each_entry(clk, &jz_clocks, list) {
+-		if (strcmp(clk->name, name) == 0)
+-			return clk;
+-	}
+-	return ERR_PTR(-ENXIO);
+-}
+-EXPORT_SYMBOL_GPL(clk_get);
+-
+-void clk_put(struct clk *clk)
+-{
+-}
+-EXPORT_SYMBOL_GPL(clk_put);
+-
+-static inline void clk_add(struct clk *clk)
+-{
+-	list_add_tail(&clk->list, &jz_clocks);
+-
+-	jz4740_clock_debugfs_add_clk(clk);
+-}
+-
+-static void clk_register_clks(void)
+-{
+-	size_t i;
+-
+-	clk_add(&jz_clk_ext.clk);
+-	clk_add(&jz_clk_pll);
+-	clk_add(&jz_clk_pll_half);
+-	clk_add(&jz_clk_cpu.clk);
+-	clk_add(&jz_clk_high_speed_peripheral.clk);
+-	clk_add(&jz_clk_low_speed_peripheral.clk);
+-	clk_add(&jz_clk_ko);
+-	clk_add(&jz_clk_ld);
+-	clk_add(&jz_clk_rtc.clk);
+-
+-	for (i = 0; i < ARRAY_SIZE(jz4740_clock_divided_clks); ++i)
+-		clk_add(&jz4740_clock_divided_clks[i].clk);
+-
+-	for (i = 0; i < ARRAY_SIZE(jz4740_clock_simple_clks); ++i)
+-		clk_add(&jz4740_clock_simple_clks[i]);
+ }
+ 
+ void jz4740_clock_set_wait_mode(enum jz4740_wait_mode mode)
+@@ -891,33 +116,9 @@ void jz4740_clock_resume(void)
+ 
+ int jz4740_clock_init(void)
+ {
+-	uint32_t val;
+-
+ 	jz_clock_base = ioremap(JZ4740_CPM_BASE_ADDR, 0x100);
+ 	if (!jz_clock_base)
+ 		return -EBUSY;
+ 
+-	spin_lock_init(&jz_clock_lock);
+-
+-	jz_clk_ext.rate = jz4740_clock_bdata.ext_rate;
+-	jz_clk_rtc.rate = jz4740_clock_bdata.rtc_rate;
+-
+-	val = jz_clk_reg_read(JZ_REG_CLOCK_SPI);
+-
+-	if (val & JZ_CLOCK_SPI_SRC_PLL)
+-		jz4740_clock_divided_clks[1].clk.parent = &jz_clk_pll_half;
+-
+-	val = jz_clk_reg_read(JZ_REG_CLOCK_CTRL);
+-
+-	if (val & JZ_CLOCK_CTRL_I2S_SRC_PLL)
+-		jz4740_clock_divided_clks[0].clk.parent = &jz_clk_pll_half;
+-
+-	if (val & JZ_CLOCK_CTRL_UDC_SRC_PLL)
+-		jz4740_clock_simple_clks[0].parent = &jz_clk_pll_half;
+-
+-	jz4740_clock_debugfs_init();
+-
+-	clk_register_clks();
+-
+ 	return 0;
+ }
+diff --git a/arch/mips/jz4740/clock.h b/arch/mips/jz4740/clock.h
+index 5d07499..86a3e01 100644
+--- a/arch/mips/jz4740/clock.h
++++ b/arch/mips/jz4740/clock.h
+@@ -16,61 +16,10 @@
+ #ifndef __MIPS_JZ4740_CLOCK_H__
+ #define __MIPS_JZ4740_CLOCK_H__
+ 
++#include <linux/clk.h>
+ #include <linux/list.h>
+ 
+-struct jz4740_clock_board_data {
+-	unsigned long ext_rate;
+-	unsigned long rtc_rate;
+-};
+-
+-extern struct jz4740_clock_board_data jz4740_clock_bdata;
+-
+ void jz4740_clock_suspend(void);
+ void jz4740_clock_resume(void);
+ 
+-struct clk;
+-
+-struct clk_ops {
+-	unsigned long (*get_rate)(struct clk *clk);
+-	unsigned long (*round_rate)(struct clk *clk, unsigned long rate);
+-	int (*set_rate)(struct clk *clk, unsigned long rate);
+-	int (*enable)(struct clk *clk);
+-	int (*disable)(struct clk *clk);
+-	int (*is_enabled)(struct clk *clk);
+-
+-	int (*set_parent)(struct clk *clk, struct clk *parent);
+-
+-};
+-
+-struct clk {
+-	const char *name;
+-	struct clk *parent;
+-
+-	uint32_t gate_bit;
+-
+-	const struct clk_ops *ops;
+-
+-	struct list_head list;
+-
+-#ifdef CONFIG_DEBUG_FS
+-	struct dentry *debugfs_entry;
+-	struct dentry *debugfs_parent_entry;
+-#endif
+-
+-};
+-
+-#define JZ4740_CLK_NOT_GATED ((uint32_t)-1)
+-
+-int clk_is_enabled(struct clk *clk);
+-
+-#ifdef CONFIG_DEBUG_FS
+-void jz4740_clock_debugfs_init(void);
+-void jz4740_clock_debugfs_add_clk(struct clk *clk);
+-void jz4740_clock_debugfs_update_parent(struct clk *clk);
+-#else
+-static inline void jz4740_clock_debugfs_init(void) {};
+-static inline void jz4740_clock_debugfs_add_clk(struct clk *clk) {};
+-static inline void jz4740_clock_debugfs_update_parent(struct clk *clk) {};
+-#endif
+-
+ #endif
+diff --git a/arch/mips/jz4740/time.c b/arch/mips/jz4740/time.c
+index f66f7f5..be9b0a3 100644
+--- a/arch/mips/jz4740/time.c
++++ b/arch/mips/jz4740/time.c
+@@ -14,6 +14,7 @@
+  */
+ 
+ #include <linux/clk.h>
++#include <linux/clk-provider.h>
+ #include <linux/interrupt.h>
+ #include <linux/kernel.h>
+ #include <linux/time.h>
+@@ -118,6 +119,7 @@ void __init plat_time_init(void)
+ 	uint16_t ctrl;
+ 	struct clk *ext_clk;
+ 
++	of_clk_init(NULL);
+ 	jz4740_clock_init();
+ 	jz4740_timer_init();
+ 
 diff --git a/drivers/clk/ingenic/Makefile b/drivers/clk/ingenic/Makefile
-new file mode 100644
-index 0000000..5ac2fd9
---- /dev/null
+index 5ac2fd9..e6db7da 100644
+--- a/drivers/clk/ingenic/Makefile
 +++ b/drivers/clk/ingenic/Makefile
-@@ -0,0 +1 @@
-+obj-y				+= cgu.o
-diff --git a/drivers/clk/ingenic/cgu.c b/drivers/clk/ingenic/cgu.c
+@@ -1 +1,2 @@
+ obj-y				+= cgu.o
++obj-$(CONFIG_MACH_JZ4740)	+= jz4740-cgu.o
+diff --git a/drivers/clk/ingenic/jz4740-cgu.c b/drivers/clk/ingenic/jz4740-cgu.c
 new file mode 100644
-index 0000000..33dab67
+index 0000000..d5bb7a3
 --- /dev/null
-+++ b/drivers/clk/ingenic/cgu.c
-@@ -0,0 +1,712 @@
++++ b/drivers/clk/ingenic/jz4740-cgu.c
+@@ -0,0 +1,222 @@
 +/*
-+ * Ingenic SoC CGU driver
++ * Ingenic JZ4740 SoC CGU driver
 + *
-+ * Copyright (c) 2013-2015 Imagination Technologies
++ * Copyright (c) 2015 Imagination Technologies
 + * Author: Paul Burton <paul.burton@imgtec.com>
 + *
 + * This program is free software; you can redistribute it and/or
@@ -166,929 +1297,210 @@ index 0000000..33dab67
 + * GNU General Public License for more details.
 + */
 +
-+#include <linux/bitops.h>
 +#include <linux/clk-provider.h>
-+#include <linux/clkdev.h>
 +#include <linux/delay.h>
-+#include <linux/math64.h>
 +#include <linux/of.h>
-+#include <linux/of_address.h>
-+#include <linux/slab.h>
-+#include <linux/spinlock.h>
++#include <dt-bindings/clock/jz4740-cgu.h>
 +#include "cgu.h"
 +
-+#define MHZ (1000 * 1000)
++/* CGU register offsets */
++#define CGU_REG_CPCCR		0x00
++#define CGU_REG_CPPCR		0x10
++#define CGU_REG_SCR		0x24
++#define CGU_REG_I2SCDR		0x60
++#define CGU_REG_LPCDR		0x64
++#define CGU_REG_MSCCDR		0x68
++#define CGU_REG_UHCCDR		0x6c
++#define CGU_REG_SSICDR		0x74
 +
-+/**
-+ * ingenic_cgu_gate_get() - get the value of clock gate register bit
-+ * @cgu: reference to the CGU whose registers should be read
-+ * @info: info struct describing the gate bit
-+ *
-+ * Retrieves the state of the clock gate bit described by info. The
-+ * caller must hold cgu->lock.
-+ *
-+ * Return: true if the gate bit is set, else false.
-+ */
-+static inline bool
-+ingenic_cgu_gate_get(struct ingenic_cgu *cgu,
-+		     const struct ingenic_cgu_gate_info *info)
-+{
-+	return readl(cgu->base + info->reg) & BIT(info->bit);
-+}
++/* bits within a PLL control register */
++#define PLLCTL_M_SHIFT		23
++#define PLLCTL_M_MASK		(0x1ff << PLLCTL_M_SHIFT)
++#define PLLCTL_N_SHIFT		18
++#define PLLCTL_N_MASK		(0x1f << PLLCTL_N_SHIFT)
++#define PLLCTL_OD_SHIFT		16
++#define PLLCTL_OD_MASK		(0x3 << PLLCTL_OD_SHIFT)
++#define PLLCTL_STABLE		(1 << 10)
++#define PLLCTL_BYPASS		(1 << 9)
++#define PLLCTL_ENABLE		(1 << 8)
 +
-+/**
-+ * ingenic_cgu_gate_set() - set the value of clock gate register bit
-+ * @cgu: reference to the CGU whose registers should be modified
-+ * @info: info struct describing the gate bit
-+ * @val: non-zero to gate a clock, otherwise zero
-+ *
-+ * Sets the given gate bit in order to gate or ungate a clock.
-+ *
-+ * The caller must hold cgu->lock.
-+ */
-+static inline void
-+ingenic_cgu_gate_set(struct ingenic_cgu *cgu,
-+		     const struct ingenic_cgu_gate_info *info, bool val)
-+{
-+	u32 clkgr = readl(cgu->base + info->reg);
++static struct ingenic_cgu *cgu;
 +
-+	if (val)
-+		clkgr |= BIT(info->bit);
-+	else
-+		clkgr &= ~BIT(info->bit);
-+
-+	writel(clkgr, cgu->base + info->reg);
-+}
-+
-+/*
-+ * PLL operations
-+ */
-+
-+static unsigned long
-+ingenic_pll_recalc_rate(struct clk_hw *hw, unsigned long parent_rate)
-+{
-+	struct ingenic_clk *ingenic_clk = to_ingenic_clk(hw);
-+	struct ingenic_cgu *cgu = ingenic_clk->cgu;
-+	const struct ingenic_cgu_clk_info *clk_info;
-+	const struct ingenic_cgu_pll_info *pll_info;
-+	unsigned m, n, od_enc, od;
-+	bool bypass, enable;
-+	unsigned long flags;
-+	u32 ctl;
-+
-+	clk_info = &cgu->clock_info[ingenic_clk->idx];
-+	BUG_ON(clk_info->type != CGU_CLK_PLL);
-+	pll_info = &clk_info->pll;
-+
-+	spin_lock_irqsave(&cgu->lock, flags);
-+	ctl = readl(cgu->base + pll_info->reg);
-+	spin_unlock_irqrestore(&cgu->lock, flags);
-+
-+	m = ((ctl >> pll_info->m_shift) & GENMASK(pll_info->m_bits - 1, 0));
-+	m += pll_info->m_offset;
-+	n = ((ctl >> pll_info->n_shift) & GENMASK(pll_info->n_bits - 1, 0));
-+	n += pll_info->n_offset;
-+	od_enc = ctl >> pll_info->od_shift;
-+	od_enc &= GENMASK(pll_info->od_bits - 1, 0);
-+	bypass = !!(ctl & BIT(pll_info->bypass_bit));
-+	enable = !!(ctl & BIT(pll_info->enable_bit));
-+
-+	if (bypass)
-+		return parent_rate;
-+
-+	if (!enable)
-+		return 0;
-+
-+	for (od = 0; od < pll_info->od_max; od++) {
-+		if (pll_info->od_encoding[od] == od_enc)
-+			break;
-+	}
-+	BUG_ON(od == pll_info->od_max);
-+	od++;
-+
-+	return div_u64((u64)parent_rate * m, n * od);
-+}
-+
-+static unsigned long
-+ingenic_pll_calc(const struct ingenic_cgu_clk_info *clk_info,
-+		 unsigned long rate, unsigned long parent_rate,
-+		 unsigned *pm, unsigned *pn, unsigned *pod)
-+{
-+	const struct ingenic_cgu_pll_info *pll_info;
-+	unsigned m, n, od;
-+
-+	pll_info = &clk_info->pll;
-+	od = 1;
-+
-+	/*
-+	 * The frequency after the input divider must be between 10 and 50 MHz.
-+	 * The highest divider yields the best resolution.
-+	 */
-+	n = parent_rate / (10 * MHZ);
-+	n = min_t(unsigned, n, 1 << clk_info->pll.n_bits);
-+	n = max_t(unsigned, n, pll_info->n_offset);
-+
-+	m = (rate / MHZ) * od * n / (parent_rate / MHZ);
-+	m = min_t(unsigned, m, 1 << clk_info->pll.m_bits);
-+	m = max_t(unsigned, m, pll_info->m_offset);
-+
-+	if (pm)
-+		*pm = m;
-+	if (pn)
-+		*pn = n;
-+	if (pod)
-+		*pod = od;
-+
-+	return div_u64((u64)parent_rate * m, n * od);
-+}
-+
-+static long
-+ingenic_pll_round_rate(struct clk_hw *hw, unsigned long req_rate,
-+		       unsigned long *prate)
-+{
-+	struct ingenic_clk *ingenic_clk = to_ingenic_clk(hw);
-+	struct ingenic_cgu *cgu = ingenic_clk->cgu;
-+	const struct ingenic_cgu_clk_info *clk_info;
-+
-+	clk_info = &cgu->clock_info[ingenic_clk->idx];
-+	BUG_ON(clk_info->type != CGU_CLK_PLL);
-+
-+	return ingenic_pll_calc(clk_info, req_rate, *prate, NULL, NULL, NULL);
-+}
-+
-+static int
-+ingenic_pll_set_rate(struct clk_hw *hw, unsigned long req_rate,
-+		     unsigned long parent_rate)
-+{
-+	const unsigned timeout = 100;
-+	struct ingenic_clk *ingenic_clk = to_ingenic_clk(hw);
-+	struct ingenic_cgu *cgu = ingenic_clk->cgu;
-+	const struct ingenic_cgu_clk_info *clk_info;
-+	const struct ingenic_cgu_pll_info *pll_info;
-+	unsigned long rate, flags;
-+	unsigned m, n, od, i;
-+	u32 ctl;
-+
-+	clk_info = &cgu->clock_info[ingenic_clk->idx];
-+	BUG_ON(clk_info->type != CGU_CLK_PLL);
-+	pll_info = &clk_info->pll;
-+
-+	rate = ingenic_pll_calc(clk_info, req_rate, parent_rate,
-+			       &m, &n, &od);
-+	if (rate != req_rate)
-+		pr_info("ingenic-cgu: request '%s' rate %luHz, actual %luHz\n",
-+			clk_info->name, req_rate, rate);
-+
-+	spin_lock_irqsave(&cgu->lock, flags);
-+	ctl = readl(cgu->base + pll_info->reg);
-+
-+	ctl &= ~(GENMASK(pll_info->m_bits - 1, 0) << pll_info->m_shift);
-+	ctl |= (m - pll_info->m_offset) << pll_info->m_shift;
-+
-+	ctl &= ~(GENMASK(pll_info->n_bits - 1, 0) << pll_info->n_shift);
-+	ctl |= (n - pll_info->n_offset) << pll_info->n_shift;
-+
-+	ctl &= ~(GENMASK(pll_info->od_bits - 1, 0) << pll_info->od_shift);
-+	ctl |= pll_info->od_encoding[od - 1] << pll_info->od_shift;
-+
-+	ctl &= ~BIT(pll_info->bypass_bit);
-+	ctl |= BIT(pll_info->enable_bit);
-+
-+	writel(ctl, cgu->base + pll_info->reg);
-+
-+	/* wait for the PLL to stabilise */
-+	for (i = 0; i < timeout; i++) {
-+		ctl = readl(cgu->base + pll_info->reg);
-+		if (ctl & BIT(pll_info->stable_bit))
-+			break;
-+		mdelay(1);
-+	}
-+
-+	spin_unlock_irqrestore(&cgu->lock, flags);
-+
-+	if (i == timeout)
-+		return -EBUSY;
-+
-+	return 0;
-+}
-+
-+static const struct clk_ops ingenic_pll_ops = {
-+	.recalc_rate = ingenic_pll_recalc_rate,
-+	.round_rate = ingenic_pll_round_rate,
-+	.set_rate = ingenic_pll_set_rate,
++static const s8 pll_od_encoding[4] = {
++	0x0, 0x1, -1, 0x3,
 +};
 +
-+/*
-+ * Operations for all non-PLL clocks
-+ */
++static const struct ingenic_cgu_clk_info jz4740_cgu_clocks[] = {
 +
-+static u8 ingenic_clk_get_parent(struct clk_hw *hw)
-+{
-+	struct ingenic_clk *ingenic_clk = to_ingenic_clk(hw);
-+	struct ingenic_cgu *cgu = ingenic_clk->cgu;
-+	const struct ingenic_cgu_clk_info *clk_info;
-+	u32 reg;
-+	u8 i, hw_idx, idx = 0;
++	/* External clocks */
 +
-+	clk_info = &cgu->clock_info[ingenic_clk->idx];
++	[JZ4740_CLK_EXT] = { "ext", CGU_CLK_EXT },
++	[JZ4740_CLK_RTC] = { "rtc", CGU_CLK_EXT },
 +
-+	if (clk_info->type & CGU_CLK_MUX) {
-+		reg = readl(cgu->base + clk_info->mux.reg);
-+		hw_idx = (reg >> clk_info->mux.shift) &
-+			 GENMASK(clk_info->mux.bits - 1, 0);
++	[JZ4740_CLK_PLL] = {
++		"pll", CGU_CLK_PLL,
++		.parents = { JZ4740_CLK_EXT, -1, -1, -1 },
++		.pll = {
++			.reg = CGU_REG_CPPCR,
++			.m_shift = 23,
++			.m_bits = 9,
++			.m_offset = 2,
++			.n_shift = 18,
++			.n_bits = 5,
++			.n_offset = 2,
++			.od_shift = 16,
++			.od_bits = 2,
++			.od_max = 4,
++			.od_encoding = pll_od_encoding,
++			.stable_bit = 10,
++			.bypass_bit = 9,
++			.enable_bit = 8,
++		},
++	},
 +
-+		/*
-+		 * Convert the hardware index to the parent index by skipping
-+		 * over any -1's in the parents array.
-+		 */
-+		for (i = 0; i < hw_idx; i++) {
-+			if (clk_info->parents[i] != -1)
-+				idx++;
-+		}
-+	}
++	/* Muxes & dividers */
 +
-+	return idx;
-+}
++	[JZ4740_CLK_PLL_HALF] = {
++		"pll half", CGU_CLK_DIV,
++		.parents = { JZ4740_CLK_PLL, -1, -1, -1 },
++		.div = { CGU_REG_CPCCR, 21, 1, -1, -1, -1 },
++	},
 +
-+static int ingenic_clk_set_parent(struct clk_hw *hw, u8 idx)
-+{
-+	struct ingenic_clk *ingenic_clk = to_ingenic_clk(hw);
-+	struct ingenic_cgu *cgu = ingenic_clk->cgu;
-+	const struct ingenic_cgu_clk_info *clk_info;
-+	unsigned long flags;
-+	u8 curr_idx, hw_idx, num_poss;
-+	u32 reg, mask;
++	[JZ4740_CLK_CCLK] = {
++		"cclk", CGU_CLK_DIV,
++		.parents = { JZ4740_CLK_PLL, -1, -1, -1 },
++		.div = { CGU_REG_CPCCR, 0, 4, 22, -1, -1 },
++	},
 +
-+	clk_info = &cgu->clock_info[ingenic_clk->idx];
++	[JZ4740_CLK_HCLK] = {
++		"hclk", CGU_CLK_DIV,
++		.parents = { JZ4740_CLK_PLL, -1, -1, -1 },
++		.div = { CGU_REG_CPCCR, 4, 4, 22, -1, -1 },
++	},
 +
-+	if (clk_info->type & CGU_CLK_MUX) {
-+		/*
-+		 * Convert the parent index to the hardware index by adding
-+		 * 1 for any -1 in the parents array preceding the given
-+		 * index. That is, we want the index of idx'th entry in
-+		 * clk_info->parents which does not equal -1.
-+		 */
-+		hw_idx = curr_idx = 0;
-+		num_poss = 1 << clk_info->mux.bits;
-+		for (; hw_idx < num_poss; hw_idx++) {
-+			if (clk_info->parents[hw_idx] == -1)
-+				continue;
-+			if (curr_idx == idx)
-+				break;
-+			curr_idx++;
-+		}
++	[JZ4740_CLK_PCLK] = {
++		"pclk", CGU_CLK_DIV,
++		.parents = { JZ4740_CLK_PLL, -1, -1, -1 },
++		.div = { CGU_REG_CPCCR, 8, 4, 22, -1, -1 },
++	},
 +
-+		/* idx should always be a valid parent */
-+		BUG_ON(curr_idx != idx);
++	[JZ4740_CLK_MCLK] = {
++		"mclk", CGU_CLK_DIV,
++		.parents = { JZ4740_CLK_PLL, -1, -1, -1 },
++		.div = { CGU_REG_CPCCR, 12, 4, 22, -1, -1 },
++	},
 +
-+		mask = GENMASK(clk_info->mux.bits - 1, 0);
-+		mask <<= clk_info->mux.shift;
++	[JZ4740_CLK_LCD] = {
++		"lcd", CGU_CLK_DIV | CGU_CLK_GATE,
++		.parents = { JZ4740_CLK_PLL_HALF, -1, -1, -1 },
++		.div = { CGU_REG_CPCCR, 16, 5, 22, -1, -1 },
++		.gate = { CGU_REG_CLKGR, 10 },
++	},
 +
-+		spin_lock_irqsave(&cgu->lock, flags);
++	[JZ4740_CLK_LCD_PCLK] = {
++		"lcd_pclk", CGU_CLK_DIV,
++		.parents = { JZ4740_CLK_PLL_HALF, -1, -1, -1 },
++		.div = { CGU_REG_LPCDR, 0, 11, -1, -1, -1 },
++	},
 +
-+		/* write the register */
-+		reg = readl(cgu->base + clk_info->mux.reg);
-+		reg &= ~mask;
-+		reg |= hw_idx << clk_info->mux.shift;
-+		writel(reg, cgu->base + clk_info->mux.reg);
++	[JZ4740_CLK_I2S] = {
++		"i2s", CGU_CLK_MUX | CGU_CLK_DIV | CGU_CLK_GATE,
++		.parents = { JZ4740_CLK_EXT, JZ4740_CLK_PLL_HALF, -1, -1 },
++		.mux = { CGU_REG_CPCCR, 31, 1 },
++		.div = { CGU_REG_I2SCDR, 0, 8, -1, -1, -1 },
++		.gate = { CGU_REG_CLKGR, 6 },
++	},
 +
-+		spin_unlock_irqrestore(&cgu->lock, flags);
-+		return 0;
-+	}
++	[JZ4740_CLK_SPI] = {
++		"spi", CGU_CLK_MUX | CGU_CLK_DIV | CGU_CLK_GATE,
++		.parents = { JZ4740_CLK_EXT, JZ4740_CLK_PLL, -1, -1 },
++		.mux = { CGU_REG_SSICDR, 31, 1 },
++		.div = { CGU_REG_SSICDR, 0, 4, -1, -1, -1 },
++		.gate = { CGU_REG_CLKGR, 4 },
++	},
 +
-+	return idx ? -EINVAL : 0;
-+}
++	[JZ4740_CLK_MMC] = {
++		"mmc", CGU_CLK_DIV | CGU_CLK_GATE,
++		.parents = { JZ4740_CLK_PLL_HALF, -1, -1, -1 },
++		.div = { CGU_REG_MSCCDR, 0, 5, -1, -1, -1 },
++		.gate = { CGU_REG_CLKGR, 7 },
++	},
 +
-+static unsigned long
-+ingenic_clk_recalc_rate(struct clk_hw *hw, unsigned long parent_rate)
-+{
-+	struct ingenic_clk *ingenic_clk = to_ingenic_clk(hw);
-+	struct ingenic_cgu *cgu = ingenic_clk->cgu;
-+	const struct ingenic_cgu_clk_info *clk_info;
-+	unsigned long rate = parent_rate;
-+	u32 div_reg, div;
++	[JZ4740_CLK_UHC] = {
++		"uhc", CGU_CLK_DIV | CGU_CLK_GATE,
++		.parents = { JZ4740_CLK_PLL_HALF, -1, -1, -1 },
++		.div = { CGU_REG_UHCCDR, 0, 4, -1, -1, -1 },
++		.gate = { CGU_REG_CLKGR, 14 },
++	},
 +
-+	clk_info = &cgu->clock_info[ingenic_clk->idx];
++	[JZ4740_CLK_UDC] = {
++		"udc", CGU_CLK_MUX | CGU_CLK_DIV,
++		.parents = { JZ4740_CLK_EXT, JZ4740_CLK_PLL_HALF, -1, -1 },
++		.mux = { CGU_REG_CPCCR, 29, 1 },
++		.div = { CGU_REG_CPCCR, 23, 6, -1, -1, -1 },
++		.gate = { CGU_REG_SCR, 6 },
++	},
 +
-+	if (clk_info->type & CGU_CLK_DIV) {
-+		div_reg = readl(cgu->base + clk_info->div.reg);
-+		div = (div_reg >> clk_info->div.shift) &
-+		      GENMASK(clk_info->div.bits - 1, 0);
-+		div += 1;
++	/* Gate-only clocks */
 +
-+		rate /= div;
-+	}
++	[JZ4740_CLK_UART0] = {
++		"uart0", CGU_CLK_GATE,
++		.parents = { JZ4740_CLK_EXT, -1, -1, -1 },
++		.gate = { CGU_REG_CLKGR, 0 },
++	},
 +
-+	return rate;
-+}
++	[JZ4740_CLK_UART1] = {
++		"uart1", CGU_CLK_GATE,
++		.parents = { JZ4740_CLK_EXT, -1, -1, -1 },
++		.gate = { CGU_REG_CLKGR, 15 },
++	},
 +
-+static unsigned
-+ingenic_clk_calc_div(const struct ingenic_cgu_clk_info *clk_info,
-+		     unsigned long parent_rate, unsigned long req_rate)
-+{
-+	unsigned div;
++	[JZ4740_CLK_DMA] = {
++		"dma", CGU_CLK_GATE,
++		.parents = { JZ4740_CLK_PCLK, -1, -1, -1 },
++		.gate = { CGU_REG_CLKGR, 12 },
++	},
 +
-+	/* calculate the divide */
-+	div = DIV_ROUND_UP(parent_rate, req_rate);
++	[JZ4740_CLK_IPU] = {
++		"ipu", CGU_CLK_GATE,
++		.parents = { JZ4740_CLK_PCLK, -1, -1, -1 },
++		.gate = { CGU_REG_CLKGR, 13 },
++	},
 +
-+	/* and impose hardware constraints */
-+	div = min_t(unsigned, div, 1 << clk_info->div.bits);
-+	div = max_t(unsigned, div, 1);
++	[JZ4740_CLK_ADC] = {
++		"adc", CGU_CLK_GATE,
++		.parents = { JZ4740_CLK_EXT, -1, -1, -1 },
++		.gate = { CGU_REG_CLKGR, 8 },
++	},
 +
-+	return div;
-+}
++	[JZ4740_CLK_I2C] = {
++		"i2c", CGU_CLK_GATE,
++		.parents = { JZ4740_CLK_EXT, -1, -1, -1 },
++		.gate = { CGU_REG_CLKGR, 3 },
++	},
 +
-+static long
-+ingenic_clk_round_rate(struct clk_hw *hw, unsigned long req_rate,
-+		       unsigned long *parent_rate)
-+{
-+	struct ingenic_clk *ingenic_clk = to_ingenic_clk(hw);
-+	struct ingenic_cgu *cgu = ingenic_clk->cgu;
-+	const struct ingenic_cgu_clk_info *clk_info;
-+	long rate = *parent_rate;
-+
-+	clk_info = &cgu->clock_info[ingenic_clk->idx];
-+
-+	if (clk_info->type & CGU_CLK_DIV) {
-+		rate /= ingenic_clk_calc_div(clk_info, *parent_rate, req_rate);
-+	} else if (clk_info->type & CGU_CLK_FIXDIV) {
-+		rate /= clk_info->fixdiv.div;
-+	}
-+
-+	return rate;
-+}
-+
-+static int
-+ingenic_clk_set_rate(struct clk_hw *hw, unsigned long req_rate,
-+		     unsigned long parent_rate)
-+{
-+	struct ingenic_clk *ingenic_clk = to_ingenic_clk(hw);
-+	struct ingenic_cgu *cgu = ingenic_clk->cgu;
-+	const struct ingenic_cgu_clk_info *clk_info;
-+	const unsigned timeout = 100;
-+	unsigned long rate, flags;
-+	unsigned div, i;
-+	u32 reg, mask;
-+	int ret = 0;
-+
-+	clk_info = &cgu->clock_info[ingenic_clk->idx];
-+
-+	if (clk_info->type & CGU_CLK_DIV) {
-+		div = ingenic_clk_calc_div(clk_info, parent_rate, req_rate);
-+		rate = parent_rate / div;
-+
-+		if (rate != req_rate)
-+			return -EINVAL;
-+
-+		spin_lock_irqsave(&cgu->lock, flags);
-+		reg = readl(cgu->base + clk_info->div.reg);
-+
-+		/* update the divide */
-+		mask = GENMASK(clk_info->div.bits - 1, 0);
-+		reg &= ~(mask << clk_info->div.shift);
-+		reg |= (div - 1) << clk_info->div.shift;
-+
-+		/* clear the stop bit */
-+		if (clk_info->div.stop_bit != -1)
-+			reg &= ~BIT(clk_info->div.stop_bit);
-+
-+		/* set the change enable bit */
-+		if (clk_info->div.ce_bit != -1)
-+			reg |= BIT(clk_info->div.ce_bit);
-+
-+		/* update the hardware */
-+		writel(reg, cgu->base + clk_info->div.reg);
-+
-+		/* wait for the change to take effect */
-+		if (clk_info->div.busy_bit != -1) {
-+			for (i = 0; i < timeout; i++) {
-+				reg = readl(cgu->base + clk_info->div.reg);
-+				if (!(reg & BIT(clk_info->div.busy_bit)))
-+					break;
-+				mdelay(1);
-+			}
-+			if (i == timeout)
-+				ret = -EBUSY;
-+		}
-+
-+		spin_unlock_irqrestore(&cgu->lock, flags);
-+		return ret;
-+	}
-+
-+	return -EINVAL;
-+}
-+
-+static int ingenic_clk_enable(struct clk_hw *hw)
-+{
-+	struct ingenic_clk *ingenic_clk = to_ingenic_clk(hw);
-+	struct ingenic_cgu *cgu = ingenic_clk->cgu;
-+	const struct ingenic_cgu_clk_info *clk_info;
-+	unsigned long flags;
-+
-+	clk_info = &cgu->clock_info[ingenic_clk->idx];
-+
-+	if (clk_info->type & CGU_CLK_GATE) {
-+		/* ungate the clock */
-+		spin_lock_irqsave(&cgu->lock, flags);
-+		ingenic_cgu_gate_set(cgu, &clk_info->gate, false);
-+		spin_unlock_irqrestore(&cgu->lock, flags);
-+	}
-+
-+	return 0;
-+}
-+
-+static void ingenic_clk_disable(struct clk_hw *hw)
-+{
-+	struct ingenic_clk *ingenic_clk = to_ingenic_clk(hw);
-+	struct ingenic_cgu *cgu = ingenic_clk->cgu;
-+	const struct ingenic_cgu_clk_info *clk_info;
-+	unsigned long flags;
-+
-+	clk_info = &cgu->clock_info[ingenic_clk->idx];
-+
-+	if (clk_info->type & CGU_CLK_GATE) {
-+		/* gate the clock */
-+		spin_lock_irqsave(&cgu->lock, flags);
-+		ingenic_cgu_gate_set(cgu, &clk_info->gate, true);
-+		spin_unlock_irqrestore(&cgu->lock, flags);
-+	}
-+}
-+
-+static int ingenic_clk_is_enabled(struct clk_hw *hw)
-+{
-+	struct ingenic_clk *ingenic_clk = to_ingenic_clk(hw);
-+	struct ingenic_cgu *cgu = ingenic_clk->cgu;
-+	const struct ingenic_cgu_clk_info *clk_info;
-+	unsigned long flags;
-+	int enabled = 1;
-+
-+	clk_info = &cgu->clock_info[ingenic_clk->idx];
-+
-+	if (clk_info->type & CGU_CLK_GATE) {
-+		spin_lock_irqsave(&cgu->lock, flags);
-+		enabled = !ingenic_cgu_gate_get(cgu, &clk_info->gate);
-+		spin_unlock_irqrestore(&cgu->lock, flags);
-+	}
-+
-+	return enabled;
-+}
-+
-+static const struct clk_ops ingenic_clk_ops = {
-+	.get_parent = ingenic_clk_get_parent,
-+	.set_parent = ingenic_clk_set_parent,
-+
-+	.recalc_rate = ingenic_clk_recalc_rate,
-+	.round_rate = ingenic_clk_round_rate,
-+	.set_rate = ingenic_clk_set_rate,
-+
-+	.enable = ingenic_clk_enable,
-+	.disable = ingenic_clk_disable,
-+	.is_enabled = ingenic_clk_is_enabled,
++	[JZ4740_CLK_AIC] = {
++		"aic", CGU_CLK_GATE,
++		.parents = { JZ4740_CLK_EXT, -1, -1, -1 },
++		.gate = { CGU_REG_CLKGR, 5 },
++	},
 +};
 +
-+/*
-+ * Setup functions.
-+ */
-+
-+static int register_clock(struct ingenic_cgu *cgu, unsigned idx)
++static void __init jz4740_cgu_init(struct device_node *np)
 +{
-+	const struct ingenic_cgu_clk_info *clk_info = &cgu->clock_info[idx];
-+	struct clk_init_data clk_init;
-+	struct ingenic_clk *ingenic_clk = NULL;
-+	struct clk *clk, *parent;
-+	const char *parent_names[4];
-+	unsigned caps, i, num_possible;
-+	int err = -EINVAL;
++	int retval;
 +
-+	BUILD_BUG_ON(ARRAY_SIZE(clk_info->parents) > ARRAY_SIZE(parent_names));
-+
-+	if (clk_info->type == CGU_CLK_EXT) {
-+		clk = of_clk_get_by_name(cgu->np, clk_info->name);
-+		if (IS_ERR(clk)) {
-+			pr_err("%s: no external clock '%s' provided\n",
-+			       __func__, clk_info->name);
-+			err = -ENODEV;
-+			goto out;
-+		}
-+		err = clk_register_clkdev(clk, clk_info->name, NULL);
-+		if (err) {
-+			clk_put(clk);
-+			goto out;
-+		}
-+		cgu->clocks.clks[idx] = clk;
-+		return 0;
++	cgu = ingenic_cgu_new(jz4740_cgu_clocks,
++			      ARRAY_SIZE(jz4740_cgu_clocks), np);
++	if (!cgu) {
++		pr_err("%s: failed to initialise CGU\n", __func__);
++		return;
 +	}
 +
-+	if (!clk_info->type) {
-+		pr_err("%s: no clock type specified for '%s'\n", __func__,
-+		       clk_info->name);
-+		goto out;
-+	}
-+
-+	ingenic_clk = kzalloc(sizeof(*ingenic_clk), GFP_KERNEL);
-+	if (!ingenic_clk) {
-+		err = -ENOMEM;
-+		goto out;
-+	}
-+
-+	ingenic_clk->hw.init = &clk_init;
-+	ingenic_clk->cgu = cgu;
-+	ingenic_clk->idx = idx;
-+
-+	clk_init.name = clk_info->name;
-+	clk_init.flags = 0;
-+	clk_init.parent_names = parent_names;
-+
-+	caps = clk_info->type;
-+
-+	if (caps & (CGU_CLK_MUX | CGU_CLK_CUSTOM)) {
-+		clk_init.num_parents = 0;
-+
-+		if (caps & CGU_CLK_MUX)
-+			num_possible = 1 << clk_info->mux.bits;
-+		else
-+			num_possible = ARRAY_SIZE(clk_info->parents);
-+
-+		for (i = 0; i < num_possible; i++) {
-+			if (clk_info->parents[i] == -1)
-+				continue;
-+
-+			parent = cgu->clocks.clks[clk_info->parents[i]];
-+			parent_names[clk_init.num_parents] =
-+				__clk_get_name(parent);
-+			clk_init.num_parents++;
-+		}
-+
-+		BUG_ON(!clk_init.num_parents);
-+		BUG_ON(clk_init.num_parents > ARRAY_SIZE(parent_names));
-+	} else {
-+		BUG_ON(clk_info->parents[0] == -1);
-+		clk_init.num_parents = 1;
-+		parent = cgu->clocks.clks[clk_info->parents[0]];
-+		parent_names[0] = __clk_get_name(parent);
-+	}
-+
-+	if (caps & CGU_CLK_CUSTOM) {
-+		clk_init.ops = clk_info->custom.clk_ops;
-+
-+		caps &= ~CGU_CLK_CUSTOM;
-+
-+		if (caps) {
-+			pr_err("%s: custom clock may not be combined with type 0x%x\n",
-+			       __func__, caps);
-+			goto out;
-+		}
-+	} else if (caps & CGU_CLK_PLL) {
-+		clk_init.ops = &ingenic_pll_ops;
-+
-+		caps &= ~CGU_CLK_PLL;
-+
-+		if (caps) {
-+			pr_err("%s: PLL may not be combined with type 0x%x\n",
-+			       __func__, caps);
-+			goto out;
-+		}
-+	} else {
-+		clk_init.ops = &ingenic_clk_ops;
-+	}
-+
-+	/* nothing to do for gates or fixed dividers */
-+	caps &= ~(CGU_CLK_GATE | CGU_CLK_FIXDIV);
-+
-+	if (caps & CGU_CLK_MUX) {
-+		if (!(caps & CGU_CLK_MUX_GLITCHFREE))
-+			clk_init.flags |= CLK_SET_PARENT_GATE;
-+
-+		caps &= ~(CGU_CLK_MUX | CGU_CLK_MUX_GLITCHFREE);
-+	}
-+
-+	if (caps & CGU_CLK_DIV) {
-+		caps &= ~CGU_CLK_DIV;
-+	} else {
-+		/* pass rate changes to the parent clock */
-+		clk_init.flags |= CLK_SET_RATE_PARENT;
-+	}
-+
-+	if (caps) {
-+		pr_err("%s: unknown clock type 0x%x\n", __func__, caps);
-+		goto out;
-+	}
-+
-+	clk = clk_register(NULL, &ingenic_clk->hw);
-+	if (IS_ERR(clk)) {
-+		pr_err("%s: failed to register clock '%s'\n", __func__,
-+		       clk_info->name);
-+		err = PTR_ERR(clk);
-+		goto out;
-+	}
-+
-+	err = clk_register_clkdev(clk, clk_info->name, NULL);
-+	if (err)
-+		goto out;
-+
-+	cgu->clocks.clks[idx] = clk;
-+out:
-+	if (err)
-+		kfree(ingenic_clk);
-+	return err;
++	retval = ingenic_cgu_register_clocks(cgu);
++	if (retval)
++		pr_err("%s: failed to register CGU Clocks\n", __func__);
 +}
-+
-+struct ingenic_cgu *
-+ingenic_cgu_new(const struct ingenic_cgu_clk_info *clock_info,
-+		unsigned num_clocks, struct device_node *np)
-+{
-+	struct ingenic_cgu *cgu;
-+
-+	cgu = kzalloc(sizeof(*cgu), GFP_KERNEL);
-+	if (!cgu)
-+		goto err_out;
-+
-+	cgu->base = of_iomap(np, 0);
-+	if (!cgu->base) {
-+		pr_err("%s: failed to map CGU registers\n", __func__);
-+		goto err_out_free;
-+	}
-+
-+	cgu->np = np;
-+	cgu->clock_info = clock_info;
-+	cgu->clocks.clk_num = num_clocks;
-+
-+	spin_lock_init(&cgu->lock);
-+
-+	return cgu;
-+
-+err_out_free:
-+	kfree(cgu);
-+err_out:
-+	return NULL;
-+}
-+
-+int ingenic_cgu_register_clocks(struct ingenic_cgu *cgu)
-+{
-+	unsigned i;
-+	int err;
-+
-+	cgu->clocks.clks = kcalloc(cgu->clocks.clk_num, sizeof(struct clk *),
-+				   GFP_KERNEL);
-+	if (!cgu->clocks.clks) {
-+		err = -ENOMEM;
-+		goto err_out;
-+	}
-+
-+	for (i = 0; i < cgu->clocks.clk_num; i++) {
-+		err = register_clock(cgu, i);
-+		if (err)
-+			goto err_out_unregister;
-+	}
-+
-+	err = of_clk_add_provider(cgu->np, of_clk_src_onecell_get,
-+				  &cgu->clocks);
-+	if (err)
-+		goto err_out_unregister;
-+
-+	return 0;
-+
-+err_out_unregister:
-+	for (i = 0; i < cgu->clocks.clk_num; i++) {
-+		if (!cgu->clocks.clks[i])
-+			continue;
-+		if (cgu->clock_info[i].type & CGU_CLK_EXT)
-+			clk_put(cgu->clocks.clks[i]);
-+		else
-+			clk_unregister(cgu->clocks.clks[i]);
-+	}
-+	kfree(cgu->clocks.clks);
-+err_out:
-+	return err;
-+}
-diff --git a/drivers/clk/ingenic/cgu.h b/drivers/clk/ingenic/cgu.h
-new file mode 100644
-index 0000000..0702c0c
---- /dev/null
-+++ b/drivers/clk/ingenic/cgu.h
-@@ -0,0 +1,223 @@
-+/*
-+ * Ingenic SoC CGU driver
-+ *
-+ * Copyright (c) 2013-2015 Imagination Technologies
-+ * Author: Paul Burton <paul.burton@imgtec.com>
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ */
-+
-+#ifndef __DRIVERS_CLK_INGENIC_CGU_H__
-+#define __DRIVERS_CLK_INGENIC_CGU_H__
-+
-+#include <linux/bitops.h>
-+#include <linux/of.h>
-+#include <linux/spinlock.h>
-+
-+/**
-+ * struct ingenic_cgu_pll_info - information about a PLL
-+ * @reg: the offset of the PLL's control register within the CGU
-+ * @m_shift: the number of bits to shift the multiplier value by (ie. the
-+ *           index of the lowest bit of the multiplier value in the PLL's
-+ *           control register)
-+ * @m_bits: the size of the multiplier field in bits
-+ * @m_offset: the multiplier value which encodes to 0 in the PLL's control
-+ *            register
-+ * @n_shift: the number of bits to shift the divider value by (ie. the
-+ *           index of the lowest bit of the divider value in the PLL's
-+ *           control register)
-+ * @n_bits: the size of the divider field in bits
-+ * @n_offset: the divider value which encodes to 0 in the PLL's control
-+ *            register
-+ * @od_shift: the number of bits to shift the post-VCO divider value by (ie.
-+ *            the index of the lowest bit of the post-VCO divider value in
-+ *            the PLL's control register)
-+ * @od_bits: the size of the post-VCO divider field in bits
-+ * @od_max: the maximum post-VCO divider value
-+ * @od_encoding: a pointer to an array mapping post-VCO divider values to
-+ *               their encoded values in the PLL control register, or -1 for
-+ *               unsupported values
-+ * @bypass_bit: the index of the bypass bit in the PLL control register
-+ * @enable_bit: the index of the enable bit in the PLL control register
-+ * @stable_bit: the index of the stable bit in the PLL control register
-+ */
-+struct ingenic_cgu_pll_info {
-+	unsigned reg;
-+	const s8 *od_encoding;
-+	u8 m_shift, m_bits, m_offset;
-+	u8 n_shift, n_bits, n_offset;
-+	u8 od_shift, od_bits, od_max;
-+	u8 bypass_bit;
-+	u8 enable_bit;
-+	u8 stable_bit;
-+};
-+
-+/**
-+ * struct ingenic_cgu_mux_info - information about a clock mux
-+ * @reg: offset of the mux control register within the CGU
-+ * @shift: number of bits to shift the mux value by (ie. the index of
-+ *         the lowest bit of the mux value within its control register)
-+ * @bits: the size of the mux value in bits
-+ */
-+struct ingenic_cgu_mux_info {
-+	unsigned reg;
-+	u8 shift;
-+	u8 bits;
-+};
-+
-+/**
-+ * struct ingenic_cgu_div_info - information about a divider
-+ * @reg: offset of the divider control register within the CGU
-+ * @shift: number of bits to shift the divide value by (ie. the index of
-+ *         the lowest bit of the divide value within its control register)
-+ * @bits: the size of the divide value in bits
-+ * @ce_bit: the index of the change enable bit within reg, or -1 if there
-+ *          isn't one
-+ * @busy_bit: the index of the busy bit within reg, or -1 if there isn't one
-+ * @stop_bit: the index of the stop bit within reg, or -1 if there isn't one
-+ */
-+struct ingenic_cgu_div_info {
-+	unsigned reg;
-+	u8 shift;
-+	u8 bits;
-+	s8 ce_bit;
-+	s8 busy_bit;
-+	s8 stop_bit;
-+};
-+
-+/**
-+ * struct ingenic_cgu_fixdiv_info - information about a fixed divider
-+ * @div: the divider applied to the parent clock
-+ */
-+struct ingenic_cgu_fixdiv_info {
-+	unsigned div;
-+};
-+
-+/**
-+ * struct ingenic_cgu_gate_info - information about a clock gate
-+ * @reg: offset of the gate control register within the CGU
-+ * @bit: offset of the bit in the register that controls the gate
-+ */
-+struct ingenic_cgu_gate_info {
-+	unsigned reg;
-+	u8 bit;
-+};
-+
-+/**
-+ * struct ingenic_cgu_custom_info - information about a custom (SoC) clock
-+ * @clk_ops: custom clock operation callbacks
-+ */
-+struct ingenic_cgu_custom_info {
-+	struct clk_ops *clk_ops;
-+};
-+
-+/**
-+ * struct ingenic_cgu_clk_info - information about a clock
-+ * @name: name of the clock
-+ * @type: a bitmask formed from CGU_CLK_* values
-+ * @parents: an array of the indices of potential parents of this clock
-+ *           within the clock_info array of the CGU, or -1 in entries
-+ *           which correspond to no valid parent
-+ * @pll: information valid if type includes CGU_CLK_PLL
-+ * @gate: information valid if type includes CGU_CLK_GATE
-+ * @mux: information valid if type includes CGU_CLK_MUX
-+ * @div: information valid if type includes CGU_CLK_DIV
-+ * @fixdiv: information valid if type includes CGU_CLK_FIXDIV
-+ * @custom: information valid if type includes CGU_CLK_CUSTOM
-+ */
-+struct ingenic_cgu_clk_info {
-+	const char *name;
-+
-+	enum {
-+		CGU_CLK_NONE		= 0,
-+		CGU_CLK_EXT		= BIT(0),
-+		CGU_CLK_PLL		= BIT(1),
-+		CGU_CLK_GATE		= BIT(2),
-+		CGU_CLK_MUX		= BIT(3),
-+		CGU_CLK_MUX_GLITCHFREE	= BIT(4),
-+		CGU_CLK_DIV		= BIT(5),
-+		CGU_CLK_FIXDIV		= BIT(6),
-+		CGU_CLK_CUSTOM		= BIT(7),
-+	} type;
-+
-+	int parents[4];
-+
-+	union {
-+		struct ingenic_cgu_pll_info pll;
-+
-+		struct {
-+			struct ingenic_cgu_gate_info gate;
-+			struct ingenic_cgu_mux_info mux;
-+			struct ingenic_cgu_div_info div;
-+			struct ingenic_cgu_fixdiv_info fixdiv;
-+		};
-+
-+		struct ingenic_cgu_custom_info custom;
-+	};
-+};
-+
-+/**
-+ * struct ingenic_cgu - data about the CGU
-+ * @np: the device tree node that caused the CGU to be probed
-+ * @base: the ioremap'ed base address of the CGU registers
-+ * @clock_info: an array containing information about implemented clocks
-+ * @clocks: used to provide clocks to DT, allows lookup of struct clk*
-+ * @lock: lock to be held whilst manipulating CGU registers
-+ */
-+struct ingenic_cgu {
-+	struct device_node *np;
-+	void __iomem *base;
-+
-+	const struct ingenic_cgu_clk_info *clock_info;
-+	struct clk_onecell_data clocks;
-+
-+	spinlock_t lock;
-+};
-+
-+/**
-+ * struct ingenic_clk - private data for a clock
-+ * @hw: see Documentation/clk.txt
-+ * @cgu: a pointer to the CGU data
-+ * @idx: the index of this clock in cgu->clock_info
-+ */
-+struct ingenic_clk {
-+	struct clk_hw hw;
-+	struct ingenic_cgu *cgu;
-+	unsigned idx;
-+};
-+
-+#define to_ingenic_clk(_hw) container_of(_hw, struct ingenic_clk, hw)
-+
-+/**
-+ * ingenic_cgu_new() - create a new CGU instance
-+ * @clock_info: an array of clock information structures describing the clocks
-+ *              which are implemented by the CGU
-+ * @num_clocks: the number of entries in clock_info
-+ * @np: the device tree node which causes this CGU to be probed
-+ *
-+ * Return: a pointer to the CGU instance if initialisation is successful,
-+ *         otherwise NULL.
-+ */
-+struct ingenic_cgu *
-+ingenic_cgu_new(const struct ingenic_cgu_clk_info *clock_info,
-+		unsigned num_clocks, struct device_node *np);
-+
-+/**
-+ * ingenic_cgu_register_clocks() - Registers the clocks
-+ * @cgu: pointer to cgu data
-+ *
-+ * Register the clocks described by the CGU with the common clock framework.
-+ *
-+ * Return: 1 on success or -errno if unsuccesful.
-+ */
-+int ingenic_cgu_register_clocks(struct ingenic_cgu *cgu);
-+
-+#endif /* __DRIVERS_CLK_INGENIC_CGU_H__ */
++CLK_OF_DECLARE(jz4740_cgu, "ingenic,jz4740-cgu", jz4740_cgu_init);
 -- 
 2.3.5

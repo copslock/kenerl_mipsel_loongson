@@ -1,12 +1,12 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Apr 2015 13:43:37 +0200 (CEST)
-Received: from smtp6-g21.free.fr ([212.27.42.6]:22801 "EHLO smtp6-g21.free.fr"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Apr 2015 13:43:53 +0200 (CEST)
+Received: from smtp6-g21.free.fr ([212.27.42.6]:23634 "EHLO smtp6-g21.free.fr"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27025385AbbDXLn3SsV0s (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 24 Apr 2015 13:43:29 +0200
+        id S27025423AbbDXLnpaHshw (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 24 Apr 2015 13:43:45 +0200
 Received: from localhost.localdomain (unknown [85.177.202.128])
         (Authenticated sender: albeu)
-        by smtp6-g21.free.fr (Postfix) with ESMTPA id 994558228B;
-        Fri, 24 Apr 2015 13:40:54 +0200 (CEST)
+        by smtp6-g21.free.fr (Postfix) with ESMTPA id C2028822C2;
+        Fri, 24 Apr 2015 13:41:10 +0200 (CEST)
 From:   Alban Bedel <albeu@free.fr>
 To:     linux-mips@linux-mips.org
 Cc:     Rob Herring <robh+dt@kernel.org>, Pawel Moll <pawel.moll@arm.com>,
@@ -21,9 +21,9 @@ Cc:     Rob Herring <robh+dt@kernel.org>, Pawel Moll <pawel.moll@arm.com>,
         Qais Yousef <qais.yousef@imgtec.com>,
         Gabor Juhos <juhosg@openwrt.org>, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH v3 06/12] MIPS: ath79: Add OF support to the IRQ controllers
-Date:   Fri, 24 Apr 2015 13:41:13 +0200
-Message-Id: <1429875679-14973-7-git-send-email-albeu@free.fr>
+Subject: [PATCH v3 07/12] devicetree: Add bindings for the ATH79 PLL controllers
+Date:   Fri, 24 Apr 2015 13:41:14 +0200
+Message-Id: <1429875679-14973-8-git-send-email-albeu@free.fr>
 X-Mailer: git-send-email 2.0.0
 In-Reply-To: <1429875679-14973-1-git-send-email-albeu@free.fr>
 References: <1429875679-14973-1-git-send-email-albeu@free.fr>
@@ -31,7 +31,7 @@ Return-Path: <albeu@free.fr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47027
+X-archive-position: 47028
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,127 +48,54 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add OF support for the CPU and MISC interrupt controllers of most
-supported ATH79 devices.
-
 Signed-off-by: Alban Bedel <albeu@free.fr>
 ---
- arch/mips/ath79/irq.c | 87 ++++++++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 86 insertions(+), 1 deletion(-)
+v2: * Fixed the node names to respect ePAPR
+    * Fixed the missing 's' in 'fallbacks' and the 'clocks' property
+v3: * Fix the compatible string for qca9550
+---
+ .../devicetree/bindings/clock/qca,ath79-pll.txt    | 33 ++++++++++++++++++++++
+ 1 file changed, 33 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/clock/qca,ath79-pll.txt
 
-diff --git a/arch/mips/ath79/irq.c b/arch/mips/ath79/irq.c
-index 2c3991a..afb0096 100644
---- a/arch/mips/ath79/irq.c
-+++ b/arch/mips/ath79/irq.c
-@@ -15,7 +15,9 @@
- #include <linux/kernel.h>
- #include <linux/init.h>
- #include <linux/interrupt.h>
--#include <linux/irq.h>
-+#include <linux/irqchip.h>
-+#include <linux/of_irq.h>
-+#include "../../../drivers/irqchip/irqchip.h"
- 
- #include <asm/irq_cpu.h>
- #include <asm/mipsregs.h>
-@@ -23,6 +25,7 @@
- #include <asm/mach-ath79/ath79.h>
- #include <asm/mach-ath79/ar71xx_regs.h>
- #include "common.h"
-+#include "machtypes.h"
- 
- static void ath79_misc_irq_handler(unsigned int irq, struct irq_desc *desc)
- {
-@@ -268,8 +271,90 @@ asmlinkage void plat_irq_dispatch(void)
- 	}
- }
- 
-+#ifdef CONFIG_IRQCHIP
-+static int misc_map(struct irq_domain *d, unsigned int irq, irq_hw_number_t hw)
-+{
-+	irq_set_chip_and_handler(irq, &ath79_misc_irq_chip, handle_level_irq);
-+	return 0;
-+}
+diff --git a/Documentation/devicetree/bindings/clock/qca,ath79-pll.txt b/Documentation/devicetree/bindings/clock/qca,ath79-pll.txt
+new file mode 100644
+index 0000000..e0fc2c1
+--- /dev/null
++++ b/Documentation/devicetree/bindings/clock/qca,ath79-pll.txt
+@@ -0,0 +1,33 @@
++Binding for Qualcomm Atheros AR7xxx/AR9XXX PLL controller
 +
-+static const struct irq_domain_ops misc_irq_domain_ops = {
-+	.xlate = irq_domain_xlate_onecell,
-+	.map = misc_map,
-+};
++The PPL controller provides the 3 main clocks of the SoC: CPU, DDR and AHB.
 +
-+static int __init ath79_misc_intc_of_init(
-+	struct device_node *node, struct device_node *parent)
-+{
-+	void __iomem *base = ath79_reset_base;
-+	struct irq_domain *domain;
-+	int irq;
++Required Properties:
++- compatible: has to be "qca,<soctype>-cpu-intc" and one of the following
++  fallbacks:
++  - "qca,ar7100-pll"
++  - "qca,ar7240-pll"
++  - "qca,ar9130-pll"
++  - "qca,ar9330-pll"
++  - "qca,ar9340-pll"
++  - "qca,qca9550-pll"
++- reg: Base address and size of the controllers memory area
++- clock-names: Name of the input clock, has to be "ref"
++- clocks: phandle of the external reference clock
++- #clock-cells: has to be one
 +
-+	irq = irq_of_parse_and_map(node, 0);
-+	if (!irq)
-+		panic("Failed to get MISC IRQ");
++Optional properties:
++- clock-output-names: should be "cpu", "ddr", "ahb"
 +
-+	domain = irq_domain_add_legacy(node, ATH79_MISC_IRQ_COUNT,
-+			ATH79_MISC_IRQ_BASE, 0, &misc_irq_domain_ops, NULL);
-+	if (!domain)
-+		panic("Failed to add MISC irqdomain");
++Example:
 +
-+	/* Disable and clear all interrupts */
-+	__raw_writel(0, base + AR71XX_RESET_REG_MISC_INT_ENABLE);
-+	__raw_writel(0, base + AR71XX_RESET_REG_MISC_INT_STATUS);
++	memory-controller@18050000 {
++		compatible = "qca,ar9132-ppl", "qca,ar9130-pll";
++		reg = <0x18050000 0x20>;
 +
++		clock-names = "ref";
++		clocks = <&extosc>;
 +
-+	irq_set_chained_handler(irq, ath79_misc_irq_handler);
-+
-+	return 0;
-+}
-+IRQCHIP_DECLARE(ath79_misc_intc, "qca,ar7100-misc-intc",
-+		ath79_misc_intc_of_init);
-+
-+static int __init ar79_cpu_intc_of_init(
-+	struct device_node *node, struct device_node *parent)
-+{
-+	int err, i, count;
-+
-+	/* Fill the irq_wb_chan table */
-+	count = of_count_phandle_with_args(
-+		node, "qca,ddr-wb-channels", "#qca,ddr-wb-channel-cells");
-+
-+	for (i = 0; i < count; i++) {
-+		struct of_phandle_args args;
-+		u32 irq = i;
-+
-+		of_property_read_u32_index(
-+			node, "qca,ddr-wb-channel-interrupts", i, &irq);
-+		if (irq >= ARRAY_SIZE(irq_wb_chan))
-+			continue;
-+
-+		err = of_parse_phandle_with_args(
-+			node, "qca,ddr-wb-channels",
-+			"#qca,ddr-wb-channel-cells",
-+			i, &args);
-+		if (err)
-+			return err;
-+
-+		irq_wb_chan[irq] = args.args[0];
-+		pr_info("IRQ: Set flush channel of IRQ%d to %d\n",
-+			irq, args.args[0]);
-+	}
-+
-+	return mips_cpu_irq_of_init(node, parent);
-+}
-+IRQCHIP_DECLARE(ar79_cpu_intc, "qca,ar7100-cpu-intc",
-+		ar79_cpu_intc_of_init);
-+
-+#endif
-+
- void __init arch_init_irq(void)
- {
-+	if (mips_machtype == ATH79_MACH_GENERIC_OF) {
-+		irqchip_init();
-+		return;
-+	}
-+
- 	if (soc_is_ar71xx() || soc_is_ar724x() ||
- 	    soc_is_ar913x() || soc_is_ar933x()) {
- 		irq_wb_chan[2] = 3;
++		#clock-cells = <1>;
++		clock-output-names = "cpu", "ddr", "ahb";
++	};
 -- 
 2.0.0

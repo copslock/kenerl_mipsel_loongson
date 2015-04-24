@@ -1,59 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Apr 2015 19:37:46 +0200 (CEST)
-Received: from mail-la0-f43.google.com ([209.85.215.43]:33720 "EHLO
-        mail-la0-f43.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011844AbbDXRhopKNHS (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 24 Apr 2015 19:37:44 +0200
-Received: by layy10 with SMTP id y10so40488354lay.0
-        for <linux-mips@linux-mips.org>; Fri, 24 Apr 2015 10:37:41 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:message-id:date:from:organization:user-agent
-         :mime-version:to:cc:subject:references:in-reply-to:content-type
-         :content-transfer-encoding;
-        bh=Or5hF6usy3ujicacCaDfqH58u1KmvOikXDF6XSktvEE=;
-        b=SM7ukN1xSyQEK7oFi6qBJV55NoAoVGmhrtuosy1+hxtAAwfR7MjQSZT26tDyyoVuQA
-         DOYqa4f16EcXPqfNvuX2rpl8mXXZq14eVxVdZvlqNwPJ+CqlJ+RFfhh/ukDi2dm4OCnw
-         glJjwlMGgJx/V6KYi6tSBRoYl/+RWLH2b5efAJpHCSkTx/nlzL4DAmI9HYqe2DjezLcO
-         OhKU+CsZKhMAMkj9tssemlFit9F6Vc57kC40XyrPTeHOOFcX5JuL973LD9TU9IgqmHk9
-         VqyvBvH1Q2sq6fBSdDYYsHyKiajWBW3vc+JC4c6KtTsI/tjeRQdf4YdYn/AoQ82z8oPD
-         bqYw==
-X-Gm-Message-State: ALoCoQmD8qXKrz+fTfl31YkVvnvIzfORL8yk3tlCCJLSj7+VHRSAxbTyaTfSheOvQAhSte3DVCDw
-X-Received: by 10.112.168.165 with SMTP id zx5mr7710721lbb.111.1429897061054;
-        Fri, 24 Apr 2015 10:37:41 -0700 (PDT)
-Received: from wasted.cogentembedded.com (ppp85-141-192-99.pppoe.mtu-net.ru. [85.141.192.99])
-        by mx.google.com with ESMTPSA id ml10sm2778809lbc.29.2015.04.24.10.37.39
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 24 Apr 2015 10:37:40 -0700 (PDT)
-Message-ID: <553A7F62.80108@cogentembedded.com>
-Date:   Fri, 24 Apr 2015 20:37:38 +0300
-From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Organization: Cogent Embedded
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.5.0
-MIME-Version: 1.0
-To:     Alban Bedel <albeu@free.fr>, linux-spi@vger.kernel.org
-CC:     Rob Herring <robh+dt@kernel.org>, Pawel Moll <pawel.moll@arm.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Apr 2015 19:58:50 +0200 (CEST)
+Received: from mezzanine.sirena.org.uk ([106.187.55.193]:36575 "EHLO
+        mezzanine.sirena.org.uk" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011844AbbDXR6sK7JtQ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 24 Apr 2015 19:58:48 +0200
+Received: from cpc11-sgyl31-2-0-cust672.sgyl.cable.virginm.net ([94.175.94.161] helo=debutante)
+        by mezzanine.sirena.org.uk with esmtpsa (TLS1.2:RSA_AES_128_CBC_SHA1:128)
+        (Exim 4.80)
+        (envelope-from <broonie@sirena.org.uk>)
+        id 1Ylhry-0003Mi-PH; Fri, 24 Apr 2015 17:58:31 +0000
+Received: from broonie by debutante with local (Exim 4.84)
+        (envelope-from <broonie@sirena.org.uk>)
+        id 1Ylhrv-0000Q6-Uo; Fri, 24 Apr 2015 18:58:27 +0100
+Date:   Fri, 24 Apr 2015 18:58:27 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     Alban Bedel <albeu@free.fr>
+Cc:     linux-spi@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        Pawel Moll <pawel.moll@arm.com>,
         Mark Rutland <mark.rutland@arm.com>,
         Ian Campbell <ijc+devicetree@hellion.org.uk>,
         Kumar Gala <galak@codeaurora.org>,
         Ralf Baechle <ralf@linux-mips.org>,
-        Mark Brown <broonie@kernel.org>,
         Gabor Juhos <juhosg@openwrt.org>, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH 1/4] devicetree: add binding documentation for the AR7100
- SPI controller
-References: <1429885164-28501-1-git-send-email-albeu@free.fr> <1429885164-28501-2-git-send-email-albeu@free.fr>
-In-Reply-To: <1429885164-28501-2-git-send-email-albeu@free.fr>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sergei.shtylyov@cogentembedded.com>
+Message-ID: <20150424175827.GE22845@sirena.org.uk>
+References: <1429885164-28501-1-git-send-email-albeu@free.fr>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="i528gjSbuG1KhLiw"
+Content-Disposition: inline
+In-Reply-To: <1429885164-28501-1-git-send-email-albeu@free.fr>
+X-Cookie: Your present plans will be successful.
+User-Agent: Mutt/1.5.23 (2014-03-12)
+X-SA-Exim-Connect-IP: 94.175.94.161
+X-SA-Exim-Mail-From: broonie@sirena.org.uk
+Subject: Re: [PATCH 0/4] spi: spi-ath79: Devicetree support and misc fixes
+X-SA-Exim-Version: 4.2.1 (built Mon, 26 Dec 2011 16:24:06 +0000)
+X-SA-Exim-Scanned: Yes (on mezzanine.sirena.org.uk)
+Return-Path: <broonie@sirena.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47079
+X-archive-position: 47080
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sergei.shtylyov@cogentembedded.com
+X-original-sender: broonie@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -66,48 +57,36 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hello.
 
-On 04/24/2015 05:19 PM, Alban Bedel wrote:
+--i528gjSbuG1KhLiw
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> Signed-off-by: Alban Bedel <albeu@free.fr>
-> ---
->   .../devicetree/bindings/spi/spi-ath79.txt          | 24 ++++++++++++++++++++++
->   1 file changed, 24 insertions(+)
->   create mode 100644 Documentation/devicetree/bindings/spi/spi-ath79.txt
+On Fri, Apr 24, 2015 at 04:19:20PM +0200, Alban Bedel wrote:
+> Hello all,
+>=20
+> this serie add a DT support for the ATH79 SPI controller and fix a few
+> trivial bugs. While adding DT support we also remove the unused custom
+> controller data in favor of the generic GPIO based chip select.
 
-> diff --git a/Documentation/devicetree/bindings/spi/spi-ath79.txt b/Documentation/devicetree/bindings/spi/spi-ath79.txt
-> new file mode 100644
-> index 0000000..f1ad9c3
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/spi/spi-ath79.txt
-> @@ -0,0 +1,24 @@
-> +Binding for Qualcomm Atheros AR7xxx/AR9xxx SPI controller
-> +
-> +Required properties:
-> +- compatible: has to be "qca,<soc-type>-spi", "qca,ar7100-spi" as fallback.
-> +- reg: Base address and size of the controllers memory area
-> +- clocks: phandle to the AHB clock.
+Applied, thanks.  Please use subject lines reflecting the style for the
+subsystem.
 
-    s/to/of/?
+--i528gjSbuG1KhLiw
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
-> +- clock-names: has to be "ahb".
-> +- #address-cells: <1>, as required by generic SPI binding.
-> +- #size-cells: <0>, also as required by generic SPI binding.
-> +
-> +Child nodes as per the generic SPI binding.
-> +
-> +Example:
-> +
-> +	spi@1F000000 {
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
 
-    All lowercase, please.
+iQEcBAEBCAAGBQJVOoRDAAoJECTWi3JdVIfQif0H/0KKbqgnJDCivWhl36IofnCd
+HJ0tD5a71yuw1PM12plvUSuwc7DUAy+OxiyIgdsEQ34KAbPlsIFKIqmLNzfpRCpl
+x6KSl63VRSTfp3trZm6kgT6lzLJyCcq660yUEXMk+WOYjfl14DEscmcMLxWpClNY
+h6ZiAH4wGsJwJRTQmO3rhKMVeVLfGcbZ6iviRLtJSd6SHuvJN03IYz5mOd1LdCvI
+9xcx/Mnjyof5NEPZJvfU59fofz/SzFvMTJp3A08a16buxzf0q8cPBakPoGUd1VGp
+iOtoQkLl7EmSvk/yaFCoJxxu5Bae1OPm6c7+h5yQeQXSkQtTYflqQL4F2oKkns4=
+=evpm
+-----END PGP SIGNATURE-----
 
-> +		compatible = "qca,ar9132-spi", "qca,ar7100-spi";
-> +		reg = <0x1F000000 0x10>;
-
-    Likewise.
-
-[...]
-
-WBR, Sergei
+--i528gjSbuG1KhLiw--

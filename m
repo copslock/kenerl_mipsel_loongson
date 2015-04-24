@@ -1,17 +1,17 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Apr 2015 15:29:31 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:64236 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Apr 2015 15:29:48 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:58119 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27026054AbbDXN3XlyQNz (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 24 Apr 2015 15:29:23 +0200
+        with ESMTP id S27026056AbbDXN3k6z-B5 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 24 Apr 2015 15:29:40 +0200
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 5E63EF1A804E5;
-        Fri, 24 Apr 2015 14:29:16 +0100 (IST)
+        by Websense Email Security Gateway with ESMTPS id 9B9F07409AF66;
+        Fri, 24 Apr 2015 14:29:33 +0100 (IST)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
  KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Fri, 24 Apr 2015 14:29:18 +0100
+ 14.3.195.1; Fri, 24 Apr 2015 14:29:35 +0100
 Received: from localhost (192.168.159.76) by LEMAIL01.le.imgtec.org
  (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Fri, 24 Apr
- 2015 14:29:15 +0100
+ 2015 14:29:34 +0100
 From:   Paul Burton <paul.burton@imgtec.com>
 To:     <linux-mips@linux-mips.org>
 CC:     Paul Burton <paul.burton@imgtec.com>,
@@ -22,9 +22,9 @@ CC:     Paul Burton <paul.burton@imgtec.com>,
         Pawel Moll <pawel.moll@arm.com>,
         Ralf Baechle <ralf@linux-mips.org>,
         "Rob Herring" <robh+dt@kernel.org>, <devicetree@vger.kernel.org>
-Subject: [PATCH v4 35/37] MIPS: JZ4740: use Ingenic SoC UART driver
-Date:   Fri, 24 Apr 2015 14:17:35 +0100
-Message-ID: <1429881457-16016-36-git-send-email-paul.burton@imgtec.com>
+Subject: [PATCH v4 36/37] MIPS: ingenic: initial JZ4780 support
+Date:   Fri, 24 Apr 2015 14:17:36 +0100
+Message-ID: <1429881457-16016-37-git-send-email-paul.burton@imgtec.com>
 X-Mailer: git-send-email 2.3.5
 In-Reply-To: <1429881457-16016-1-git-send-email-paul.burton@imgtec.com>
 References: <1429881457-16016-1-git-send-email-paul.burton@imgtec.com>
@@ -35,7 +35,7 @@ Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47069
+X-archive-position: 47070
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -52,9 +52,8 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Remove the serial support from arch/mips/jz4740 & make use of the new
-Ingenic SoC UART driver. This is done for both regular & early console
-output.
+Support the Ingenic JZ4780 SoC using the existing code under
+arch/mips/jz4740 now that it has been generalised sufficiently.
 
 Signed-off-by: Paul Burton <paul.burton@imgtec.com>
 Cc: Ian Campbell <ijc+devicetree@hellion.org.uk>
@@ -71,285 +70,258 @@ Changes in v4:
   - None.
 
 Changes in v3:
-  - Enable the UART driver in qi_lb60_defconfig to preserve its current
-    behaviour.
+  - Rebase, dropping serial.h & relocating behind CONFIG_MACH_INGENIC.
 
 Changes in v2:
   - None.
 ---
- arch/mips/Kconfig                            |  1 -
- arch/mips/boot/dts/ingenic/jz4740.dtsi       | 22 ++++++++++++++
- arch/mips/boot/dts/ingenic/qi_lb60.dts       |  4 +++
- arch/mips/configs/qi_lb60_defconfig          |  1 +
- arch/mips/include/asm/mach-jz4740/platform.h |  2 --
- arch/mips/jz4740/Makefile                    |  2 +-
- arch/mips/jz4740/board-qi_lb60.c             |  2 --
- arch/mips/jz4740/platform.c                  | 45 ----------------------------
- arch/mips/jz4740/prom.c                      | 13 --------
- arch/mips/jz4740/serial.c                    | 33 --------------------
- arch/mips/jz4740/serial.h                    | 23 --------------
- 11 files changed, 28 insertions(+), 120 deletions(-)
- delete mode 100644 arch/mips/jz4740/serial.c
- delete mode 100644 arch/mips/jz4740/serial.h
+ arch/mips/boot/dts/ingenic/jz4780.dtsi             | 101 +++++++++++++++++++++
+ arch/mips/include/asm/cpu-type.h                   |   2 +-
+ .../asm/mach-jz4740/cpu-feature-overrides.h        |   3 -
+ arch/mips/include/asm/mach-jz4740/irq.h            |   4 +
+ arch/mips/jz4740/Kconfig                           |   6 ++
+ arch/mips/jz4740/Makefile                          |   4 +-
+ arch/mips/jz4740/setup.c                           |   3 +
+ arch/mips/jz4740/time.c                            |   7 +-
+ 8 files changed, 124 insertions(+), 6 deletions(-)
+ create mode 100644 arch/mips/boot/dts/ingenic/jz4780.dtsi
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index f07a213..01045fb 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -296,7 +296,6 @@ config MACH_INGENIC
- 	select DMA_NONCOHERENT
- 	select IRQ_CPU
- 	select ARCH_REQUIRE_GPIOLIB
--	select SYS_HAS_EARLY_PRINTK
- 	select COMMON_CLK
- 	select GENERIC_IRQ_CHIP
- 	select BUILTIN_DTB
-diff --git a/arch/mips/boot/dts/ingenic/jz4740.dtsi b/arch/mips/boot/dts/ingenic/jz4740.dtsi
-index 9903ab2..c64e01f 100644
---- a/arch/mips/boot/dts/ingenic/jz4740.dtsi
-+++ b/arch/mips/boot/dts/ingenic/jz4740.dtsi
-@@ -43,4 +43,26 @@
- 
- 		#clock-cells = <1>;
- 	};
+diff --git a/arch/mips/boot/dts/ingenic/jz4780.dtsi b/arch/mips/boot/dts/ingenic/jz4780.dtsi
+new file mode 100644
+index 0000000..5e44dd6
+--- /dev/null
++++ b/arch/mips/boot/dts/ingenic/jz4780.dtsi
+@@ -0,0 +1,101 @@
++#include <dt-bindings/clock/jz4780-cgu.h>
++
++/ {
++	#address-cells = <1>;
++	#size-cells = <1>;
++	compatible = "ingenic,jz4780";
++
++	cpuintc: interrupt-controller {
++		#address-cells = <0>;
++		#interrupt-cells = <1>;
++		interrupt-controller;
++		compatible = "mti,cpu-interrupt-controller";
++	};
++
++	intc: interrupt-controller@10001000 {
++		compatible = "ingenic,jz4780-intc";
++		reg = <0x10001000 0x50>;
++
++		interrupt-controller;
++		#interrupt-cells = <1>;
++
++		interrupt-parent = <&cpuintc>;
++		interrupts = <2>;
++	};
++
++	ext: ext {
++		compatible = "fixed-clock";
++		#clock-cells = <0>;
++	};
++
++	rtc: rtc {
++		compatible = "fixed-clock";
++		#clock-cells = <0>;
++		clock-frequency = <32768>;
++	};
++
++	cgu: jz4780-cgu@10000000 {
++		compatible = "ingenic,jz4780-cgu";
++		reg = <0x10000000 0x100>;
++
++		clocks = <&ext>, <&rtc>;
++		clock-names = "ext", "rtc";
++
++		#clock-cells = <1>;
++	};
 +
 +	uart0: serial@10030000 {
-+		compatible = "ingenic,jz4740-uart";
++		compatible = "ingenic,jz4780-uart";
 +		reg = <0x10030000 0x100>;
 +
 +		interrupt-parent = <&intc>;
-+		interrupts = <9>;
++		interrupts = <51>;
 +
-+		clocks = <&ext>, <&cgu JZ4740_CLK_UART0>;
++		clocks = <&ext>, <&cgu JZ4780_CLK_UART0>;
 +		clock-names = "baud", "module";
 +	};
 +
 +	uart1: serial@10031000 {
-+		compatible = "ingenic,jz4740-uart";
++		compatible = "ingenic,jz4780-uart";
 +		reg = <0x10031000 0x100>;
 +
 +		interrupt-parent = <&intc>;
-+		interrupts = <8>;
++		interrupts = <50>;
 +
-+		clocks = <&ext>, <&cgu JZ4740_CLK_UART1>;
++		clocks = <&ext>, <&cgu JZ4780_CLK_UART1>;
 +		clock-names = "baud", "module";
 +	};
- };
-diff --git a/arch/mips/boot/dts/ingenic/qi_lb60.dts b/arch/mips/boot/dts/ingenic/qi_lb60.dts
-index 106d13c..2414d63 100644
---- a/arch/mips/boot/dts/ingenic/qi_lb60.dts
-+++ b/arch/mips/boot/dts/ingenic/qi_lb60.dts
-@@ -4,6 +4,10 @@
- 
- / {
- 	compatible = "qi,lb60", "ingenic,jz4740";
 +
-+	chosen {
-+		stdout-path = &uart0;
++	uart2: serial@10032000 {
++		compatible = "ingenic,jz4780-uart";
++		reg = <0x10032000 0x100>;
++
++		interrupt-parent = <&intc>;
++		interrupts = <49>;
++
++		clocks = <&ext>, <&cgu JZ4780_CLK_UART2>;
++		clock-names = "baud", "module";
 +	};
- };
- 
- &ext {
-diff --git a/arch/mips/configs/qi_lb60_defconfig b/arch/mips/configs/qi_lb60_defconfig
-index 1139b89..d7bb8cc 100644
---- a/arch/mips/configs/qi_lb60_defconfig
-+++ b/arch/mips/configs/qi_lb60_defconfig
-@@ -66,6 +66,7 @@ CONFIG_SERIAL_8250_CONSOLE=y
- # CONFIG_SERIAL_8250_DMA is not set
- CONFIG_SERIAL_8250_NR_UARTS=2
- CONFIG_SERIAL_8250_RUNTIME_UARTS=2
-+CONFIG_SERIAL_8250_INGENIC=y
- # CONFIG_HW_RANDOM is not set
- CONFIG_SPI=y
- CONFIG_SPI_GPIO=y
-diff --git a/arch/mips/include/asm/mach-jz4740/platform.h b/arch/mips/include/asm/mach-jz4740/platform.h
-index 069b43a..32cfbe6 100644
---- a/arch/mips/include/asm/mach-jz4740/platform.h
-+++ b/arch/mips/include/asm/mach-jz4740/platform.h
-@@ -35,6 +35,4 @@ extern struct platform_device jz4740_wdt_device;
- extern struct platform_device jz4740_pwm_device;
- extern struct platform_device jz4740_dma_device;
- 
--void jz4740_serial_device_register(void);
--
++
++	uart3: serial@10033000 {
++		compatible = "ingenic,jz4780-uart";
++		reg = <0x10033000 0x100>;
++
++		interrupt-parent = <&intc>;
++		interrupts = <48>;
++
++		clocks = <&ext>, <&cgu JZ4780_CLK_UART3>;
++		clock-names = "baud", "module";
++	};
++
++	uart4: serial@10034000 {
++		compatible = "ingenic,jz4780-uart";
++		reg = <0x10034000 0x100>;
++
++		interrupt-parent = <&intc>;
++		interrupts = <34>;
++
++		clocks = <&ext>, <&cgu JZ4780_CLK_UART4>;
++		clock-names = "baud", "module";
++	};
++};
+diff --git a/arch/mips/include/asm/cpu-type.h b/arch/mips/include/asm/cpu-type.h
+index 33f3cab..d41e8e2 100644
+--- a/arch/mips/include/asm/cpu-type.h
++++ b/arch/mips/include/asm/cpu-type.h
+@@ -32,12 +32,12 @@ static inline int __pure __get_cpu_type(const int cpu_type)
+ 	case CPU_4KC:
+ 	case CPU_ALCHEMY:
+ 	case CPU_PR4450:
+-	case CPU_JZRISC:
  #endif
+ 
+ #if defined(CONFIG_SYS_HAS_CPU_MIPS32_R1) || \
+     defined(CONFIG_SYS_HAS_CPU_MIPS32_R2)
+ 	case CPU_4KEC:
++	case CPU_JZRISC:
+ #endif
+ 
+ #ifdef CONFIG_SYS_HAS_CPU_MIPS32_R2
+diff --git a/arch/mips/include/asm/mach-jz4740/cpu-feature-overrides.h b/arch/mips/include/asm/mach-jz4740/cpu-feature-overrides.h
+index a225baa..0933f94 100644
+--- a/arch/mips/include/asm/mach-jz4740/cpu-feature-overrides.h
++++ b/arch/mips/include/asm/mach-jz4740/cpu-feature-overrides.h
+@@ -12,8 +12,6 @@
+ #define cpu_has_3k_cache	0
+ #define cpu_has_4k_cache	1
+ #define cpu_has_tx39_cache	0
+-#define cpu_has_fpu		0
+-#define cpu_has_32fpr	0
+ #define cpu_has_counter		0
+ #define cpu_has_watch		1
+ #define cpu_has_divec		1
+@@ -34,7 +32,6 @@
+ #define cpu_has_ic_fills_f_dc	0
+ #define cpu_has_pindexed_dcache 0
+ #define cpu_has_mips32r1	1
+-#define cpu_has_mips32r2	0
+ #define cpu_has_mips64r1	0
+ #define cpu_has_mips64r2	0
+ #define cpu_has_dsp		0
+diff --git a/arch/mips/include/asm/mach-jz4740/irq.h b/arch/mips/include/asm/mach-jz4740/irq.h
+index b218f76..9b439fc 100644
+--- a/arch/mips/include/asm/mach-jz4740/irq.h
++++ b/arch/mips/include/asm/mach-jz4740/irq.h
+@@ -21,6 +21,8 @@
+ 
+ #ifdef CONFIG_MACH_JZ4740
+ # define NR_INTC_IRQS	32
++#else
++# define NR_INTC_IRQS	64
+ #endif
+ 
+ /* 1st-level interrupts */
+@@ -48,6 +50,8 @@
+ #define JZ4740_IRQ_IPU		JZ4740_IRQ(29)
+ #define JZ4740_IRQ_LCD		JZ4740_IRQ(30)
+ 
++#define JZ4780_IRQ_TCU2		JZ4740_IRQ(25)
++
+ /* 2nd-level interrupts */
+ #define JZ4740_IRQ_DMA(x)	(JZ4740_IRQ(NR_INTC_IRQS) + (x))
+ 
+diff --git a/arch/mips/jz4740/Kconfig b/arch/mips/jz4740/Kconfig
+index dff0966..21adcea 100644
+--- a/arch/mips/jz4740/Kconfig
++++ b/arch/mips/jz4740/Kconfig
+@@ -12,3 +12,9 @@ endchoice
+ config MACH_JZ4740
+ 	bool
+ 	select SYS_HAS_CPU_MIPS32_R1
++
++config MACH_JZ4780
++	bool
++	select MIPS_CPU_SCACHE
++	select SYS_HAS_CPU_MIPS32_R2
++	select SYS_SUPPORTS_HIGHMEM
 diff --git a/arch/mips/jz4740/Makefile b/arch/mips/jz4740/Makefile
-index 70a9578..89ce401 100644
+index 89ce401..39d70bd 100644
 --- a/arch/mips/jz4740/Makefile
 +++ b/arch/mips/jz4740/Makefile
-@@ -5,7 +5,7 @@
+@@ -5,7 +5,9 @@
  # Object file lists.
  
  obj-y += prom.o time.o reset.o setup.o \
--	gpio.o platform.o timer.o serial.o
-+	gpio.o platform.o timer.o
+-	gpio.o platform.o timer.o
++	platform.o timer.o
++
++obj-$(CONFIG_MACH_JZ4740) += gpio.o
  
  CFLAGS_setup.o = -I$(src)/../../../scripts/dtc/libfdt
  
-diff --git a/arch/mips/jz4740/board-qi_lb60.c b/arch/mips/jz4740/board-qi_lb60.c
-index 21b034c..4e62bf8 100644
---- a/arch/mips/jz4740/board-qi_lb60.c
-+++ b/arch/mips/jz4740/board-qi_lb60.c
-@@ -482,8 +482,6 @@ static int __init qi_lb60_init_platform_devices(void)
- 	gpiod_add_lookup_table(&qi_lb60_audio_gpio_table);
- 	gpiod_add_lookup_table(&qi_lb60_nand_gpio_table);
+diff --git a/arch/mips/jz4740/setup.c b/arch/mips/jz4740/setup.c
+index 1bed3cb..510fc0d 100644
+--- a/arch/mips/jz4740/setup.c
++++ b/arch/mips/jz4740/setup.c
+@@ -83,6 +83,9 @@ arch_initcall(populate_machine);
  
--	jz4740_serial_device_register();
--
- 	spi_register_board_info(qi_lb60_spi_board_info,
- 				ARRAY_SIZE(qi_lb60_spi_board_info));
+ const char *get_system_type(void)
+ {
++	if (config_enabled(CONFIG_MACH_JZ4780))
++		return "JZ4780";
++
+ 	return "JZ4740";
+ }
  
-diff --git a/arch/mips/jz4740/platform.c b/arch/mips/jz4740/platform.c
-index 2a5c7c7..e8a463b 100644
---- a/arch/mips/jz4740/platform.c
-+++ b/arch/mips/jz4740/platform.c
-@@ -30,7 +30,6 @@
- #include <linux/serial_core.h>
- #include <linux/serial_8250.h>
- 
--#include "serial.h"
- #include "clock.h"
- 
- /* OHCI controller */
-@@ -280,50 +279,6 @@ struct platform_device jz4740_adc_device = {
- 	.resource	= jz4740_adc_resources,
+diff --git a/arch/mips/jz4740/time.c b/arch/mips/jz4740/time.c
+index 9172553..7ab47fe 100644
+--- a/arch/mips/jz4740/time.c
++++ b/arch/mips/jz4740/time.c
+@@ -102,7 +102,12 @@ static struct clock_event_device jz4740_clockevent = {
+ 	.set_next_event = jz4740_clockevent_set_next,
+ 	.set_mode = jz4740_clockevent_set_mode,
+ 	.rating = 200,
++#ifdef CONFIG_MACH_JZ4740
+ 	.irq = JZ4740_IRQ_TCU0,
++#endif
++#ifdef CONFIG_MACH_JZ4780
++	.irq = JZ4780_IRQ_TCU2,
++#endif
  };
  
--/* Serial */
--#define JZ4740_UART_DATA(_id) \
--	{ \
--		.flags = UPF_SKIP_TEST | UPF_IOREMAP | UPF_FIXED_TYPE, \
--		.iotype = UPIO_MEM, \
--		.regshift = 2, \
--		.serial_out = jz4740_serial_out, \
--		.type = PORT_16550, \
--		.mapbase = JZ4740_UART ## _id ## _BASE_ADDR, \
--		.irq = JZ4740_IRQ_UART ## _id, \
--	}
--
--static struct plat_serial8250_port jz4740_uart_data[] = {
--	JZ4740_UART_DATA(0),
--	JZ4740_UART_DATA(1),
--	{},
--};
--
--static struct platform_device jz4740_uart_device = {
--	.name = "serial8250",
--	.id = 0,
--	.dev = {
--		.platform_data = jz4740_uart_data,
--	},
--};
--
--void jz4740_serial_device_register(void)
--{
--	struct plat_serial8250_port *p;
--	struct clk *ext_clk;
--	unsigned long ext_rate;
--
--	ext_clk = clk_get(NULL, "ext");
--	if (IS_ERR(ext_clk))
--		panic("unable to get ext clock");
--	ext_rate = clk_get_rate(ext_clk);
--	clk_put(ext_clk);
--
--	for (p = jz4740_uart_data; p->flags != 0; ++p)
--		p->uartclk = ext_rate;
--
--	platform_device_register(&jz4740_uart_device);
--}
--
- /* Watchdog */
- static struct resource jz4740_wdt_resources[] = {
- 	{
-diff --git a/arch/mips/jz4740/prom.c b/arch/mips/jz4740/prom.c
-index 5a93f38..6984683 100644
---- a/arch/mips/jz4740/prom.c
-+++ b/arch/mips/jz4740/prom.c
-@@ -53,16 +53,3 @@ void __init prom_init(void)
- void __init prom_free_prom_memory(void)
- {
- }
--
--#define UART_REG(_reg) ((void __iomem *)CKSEG1ADDR(JZ4740_UART0_BASE_ADDR + (_reg << 2)))
--
--void prom_putchar(char c)
--{
--	uint8_t lsr;
--
--	do {
--		lsr = readb(UART_REG(UART_LSR));
--	} while ((lsr & UART_LSR_TEMT) == 0);
--
--	writeb(c, UART_REG(UART_TX));
--}
-diff --git a/arch/mips/jz4740/serial.c b/arch/mips/jz4740/serial.c
-deleted file mode 100644
-index d23de45..0000000
---- a/arch/mips/jz4740/serial.c
-+++ /dev/null
-@@ -1,33 +0,0 @@
--/*
-- *  Copyright (C) 2010, Lars-Peter Clausen <lars@metafoo.de>
-- *  JZ4740 serial support
-- *
-- *  This program is free software; you can redistribute	 it and/or modify it
-- *  under  the terms of	 the GNU General  Public License as published by the
-- *  Free Software Foundation;  either version 2 of the	License, or (at your
-- *  option) any later version.
-- *
-- *  You should have received a copy of the  GNU General Public License along
-- *  with this program; if not, write  to the Free Software Foundation, Inc.,
-- *  675 Mass Ave, Cambridge, MA 02139, USA.
-- *
-- */
--
--#include <linux/io.h>
--#include <linux/serial_core.h>
--#include <linux/serial_reg.h>
--
--void jz4740_serial_out(struct uart_port *p, int offset, int value)
--{
--	switch (offset) {
--	case UART_FCR:
--		value |= 0x10; /* Enable uart module */
--		break;
--	case UART_IER:
--		value |= (value & 0x4) << 2;
--		break;
--	default:
--		break;
--	}
--	writeb(value, p->membase + (offset << p->regshift));
--}
-diff --git a/arch/mips/jz4740/serial.h b/arch/mips/jz4740/serial.h
-deleted file mode 100644
-index 8eb715b..0000000
---- a/arch/mips/jz4740/serial.h
-+++ /dev/null
-@@ -1,23 +0,0 @@
--/*
-- *  Copyright (C) 2010, Lars-Peter Clausen <lars@metafoo.de>
-- *  JZ4740 serial support
-- *
-- *  This program is free software; you can redistribute	 it and/or modify it
-- *  under  the terms of	 the GNU General  Public License as published by the
-- *  Free Software Foundation;  either version 2 of the	License, or (at your
-- *  option) any later version.
-- *
-- *  You should have received a copy of the  GNU General Public License along
-- *  with this program; if not, write  to the Free Software Foundation, Inc.,
-- *  675 Mass Ave, Cambridge, MA 02139, USA.
-- *
-- */
--
--#ifndef __MIPS_JZ4740_SERIAL_H__
--#define __MIPS_JZ4740_SERIAL_H__
--
--struct uart_port;
--
--void jz4740_serial_out(struct uart_port *p, int offset, int value);
--
--#endif
+ static struct irqaction timer_irqaction = {
+@@ -144,7 +149,7 @@ void __init plat_time_init(void)
+ 
+ 	sched_clock_register(jz4740_read_sched_clock, 16, clk_rate);
+ 
+-	setup_irq(JZ4740_IRQ_TCU0, &timer_irqaction);
++	setup_irq(jz4740_clockevent.irq, &timer_irqaction);
+ 
+ 	ctrl = JZ_TIMER_CTRL_PRESCALE_16 | JZ_TIMER_CTRL_SRC_EXT;
+ 
 -- 
 2.3.5

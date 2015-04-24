@@ -1,12 +1,12 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Apr 2015 13:42:44 +0200 (CEST)
-Received: from smtp6-g21.free.fr ([212.27.42.6]:20255 "EHLO smtp6-g21.free.fr"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Apr 2015 13:43:01 +0200 (CEST)
+Received: from smtp6-g21.free.fr ([212.27.42.6]:20976 "EHLO smtp6-g21.free.fr"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27024970AbbDXLmk51wv5 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 24 Apr 2015 13:42:40 +0200
+        id S27025171AbbDXLm5KYxc8 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 24 Apr 2015 13:42:57 +0200
 Received: from localhost.localdomain (unknown [85.177.202.128])
         (Authenticated sender: albeu)
-        by smtp6-g21.free.fr (Postfix) with ESMTPA id 1F07A8227B;
-        Fri, 24 Apr 2015 13:40:06 +0200 (CEST)
+        by smtp6-g21.free.fr (Postfix) with ESMTPA id 546E6822E1;
+        Fri, 24 Apr 2015 13:40:22 +0200 (CEST)
 From:   Alban Bedel <albeu@free.fr>
 To:     linux-mips@linux-mips.org
 Cc:     Rob Herring <robh+dt@kernel.org>, Pawel Moll <pawel.moll@arm.com>,
@@ -21,9 +21,9 @@ Cc:     Rob Herring <robh+dt@kernel.org>, Pawel Moll <pawel.moll@arm.com>,
         Qais Yousef <qais.yousef@imgtec.com>,
         Gabor Juhos <juhosg@openwrt.org>, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH v3 03/12] devicetree: Add bindings for the ATH79 DDR controllers
-Date:   Fri, 24 Apr 2015 13:41:10 +0200
-Message-Id: <1429875679-14973-4-git-send-email-albeu@free.fr>
+Subject: [PATCH v3 04/12] devicetree: Add bindings for the ATH79 interrupt controllers
+Date:   Fri, 24 Apr 2015 13:41:11 +0200
+Message-Id: <1429875679-14973-5-git-send-email-albeu@free.fr>
 X-Mailer: git-send-email 2.0.0
 In-Reply-To: <1429875679-14973-1-git-send-email-albeu@free.fr>
 References: <1429875679-14973-1-git-send-email-albeu@free.fr>
@@ -31,7 +31,7 @@ Return-Path: <albeu@free.fr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47024
+X-archive-position: 47025
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,61 +48,64 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The DDR controller of the ARxxx and AR9xxx families provides an
-interface to flush the FIFO between various devices and the DDR.
-This is mainly used by the IRQ controller to flush the FIFO before
-running the interrupt handler of such devices.
-
 Signed-off-by: Alban Bedel <albeu@free.fr>
 ---
-v2: * Fix the node names to respect ePAPR
-v3: * Fix some typos
-    * Really fix the node names this time
+v2: * Fixed the node names to respect ePAPR
+    * Removed the unneeded @0 on the node name
 ---
- .../memory-controllers/ath79-ddr-controller.txt    | 35 ++++++++++++++++++++++
- 1 file changed, 35 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/memory-controllers/ath79-ddr-controller.txt
+ .../interrupt-controller/qca,ath79-cpu-intc.txt    | 44 ++++++++++++++++++++++
+ 1 file changed, 44 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/interrupt-controller/qca,ath79-cpu-intc.txt
 
-diff --git a/Documentation/devicetree/bindings/memory-controllers/ath79-ddr-controller.txt b/Documentation/devicetree/bindings/memory-controllers/ath79-ddr-controller.txt
+diff --git a/Documentation/devicetree/bindings/interrupt-controller/qca,ath79-cpu-intc.txt b/Documentation/devicetree/bindings/interrupt-controller/qca,ath79-cpu-intc.txt
 new file mode 100644
-index 0000000..efe35a06
+index 0000000..aabce78
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/memory-controllers/ath79-ddr-controller.txt
-@@ -0,0 +1,35 @@
-+Binding for Qualcomm  Atheros AR7xxx/AR9xxx DDR controller
++++ b/Documentation/devicetree/bindings/interrupt-controller/qca,ath79-cpu-intc.txt
+@@ -0,0 +1,44 @@
++Binding for Qualcomm Atheros AR7xxx/AR9XXX CPU interrupt controller
 +
-+The DDR controller of the ARxxx and AR9xxx families provides an interface
-+to flush the FIFO between various devices and the DDR. This is mainly used
-+by the IRQ controller to flush the FIFO before running the interrupt handler
-+of such devices.
++On most SoC the IRQ controller need to flush the DDR FIFO before running
++the interrupt handler of some devices. This is configured using the
++qca,ddr-wb-channels and qca,ddr-wb-channel-interrupts properties.
 +
-+Required properties:
++Required Properties:
 +
-+- compatible: has to be "qca,<soc-type>-ddr-controller",
-+  "qca,[ar7100|ar7240]-ddr-controller" as fallback.
-+  On SoC with PCI support "qca,ar7100-ddr-controller" should be used as
-+  fallback, otherwise "qca,ar7240-ddr-controller" should be used.
-+- reg: Base address and size of the controllers memory area
-+- #qca,ddr-wb-channel-cells: has to be 1, the index of the write buffer
-+  channel
++- compatible: has to be "qca,<soctype>-cpu-intc", "qca,ar7100-cpu-intc"
++  as fallback
++- interrupt-controller : Identifies the node as an interrupt controller
++- #interrupt-cells : Specifies the number of cells needed to encode interrupt
++		     source, should be 1 for intc
++
++Please refer to interrupts.txt in this directory for details of the common
++Interrupt Controllers bindings used by client devices.
++
++Optional Properties:
++
++- qca,ddr-wb-channel-interrupts: List of the interrupts needing a write
++  buffer flush
++- qca,ddr-wb-channels: List of phandles to the write buffer channels for
++  each interrupt. If qca,ddr-wb-channel-interrupts is not present the interrupt
++  default to the entry's index.
 +
 +Example:
 +
-+	ddr_ctrl: memory-controller@18000000 {
-+		compatible = "qca,ar9132-ddr-controller",
-+				"qca,ar7240-ddr-controller";
-+		reg = <0x18000000 0x100>;
++	interrupt-controller {
++		compatible = "qca,ar9132-cpu-intc", "qca,ar7100-cpu-intc";
 +
-+		#qca,ddr-wb-channel-cells = <1>;
++		interrupt-controller;
++		#interrupt-cells = <1>;
++
++		qca,ddr-wb-channel-interrupts = <2>, <3>, <4>, <5>;
++		qca,ddr-wb-channels = <&ddr_ctrl 3>, <&ddr_ctrl 2>,
++					<&ddr_ctrl 0>, <&ddr_ctrl 1>;
 +	};
 +
 +	...
 +
-+	interrupt-controller {
++	ddr_ctrl: memory-controller@18000000 {
 +		...
-+		qca,ddr-wb-channel-interrupts = <2>, <3>, <4>, <5>;
-+		qca,ddr-wb-channels = <&ddr_ctrl 3>, <&ddr_ctrl 2>,
-+					<&ddr_ctrl 0>, <&ddr_ctrl 1>;
++		#qca,ddr-wb-channel-cells = <1>;
 +	};
 -- 
 2.0.0

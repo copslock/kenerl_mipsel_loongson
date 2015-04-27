@@ -1,38 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Apr 2015 16:08:44 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:50172 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27026172AbbD0OHtAVtNF (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 27 Apr 2015 16:07:49 +0200
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id DC2F3175AD514;
-        Mon, 27 Apr 2015 15:07:42 +0100 (IST)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Mon, 27 Apr 2015 15:07:45 +0100
-Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
- LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.210.2; Mon, 27 Apr 2015 15:07:44 +0100
-From:   James Hogan <james.hogan@imgtec.com>
-To:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
-CC:     James Hogan <james.hogan@imgtec.com>
-Subject: [PATCH 4/4] MIPS: Malta: Select 32bit DMA zone for 64-bit kernels
-Date:   Mon, 27 Apr 2015 15:07:19 +0100
-Message-ID: <1430143639-22580-5-git-send-email-james.hogan@imgtec.com>
-X-Mailer: git-send-email 2.0.5
-In-Reply-To: <1430143639-22580-1-git-send-email-james.hogan@imgtec.com>
-References: <1430143639-22580-1-git-send-email-james.hogan@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Apr 2015 19:36:48 +0200 (CEST)
+Received: from filtteri2.pp.htv.fi ([213.243.153.185]:50896 "EHLO
+        filtteri2.pp.htv.fi" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27011764AbbD0RgrQy0Kv (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 27 Apr 2015 19:36:47 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by filtteri2.pp.htv.fi (Postfix) with ESMTP id A380119C054;
+        Mon, 27 Apr 2015 20:36:48 +0300 (EEST)
+X-Virus-Scanned: Debian amavisd-new at pp.htv.fi
+Received: from smtp5.welho.com ([213.243.153.39])
+        by localhost (filtteri2.pp.htv.fi [213.243.153.185]) (amavisd-new, port 10024)
+        with ESMTP id kXPLJ3sctTS9; Mon, 27 Apr 2015 20:36:44 +0300 (EEST)
+Received: from fuloong-minipc (91-145-91-118.bb.dnainternet.fi [91.145.91.118])
+        by smtp5.welho.com (Postfix) with ESMTP id 939365BC007;
+        Mon, 27 Apr 2015 20:36:44 +0300 (EEST)
+Date:   Mon, 27 Apr 2015 20:36:44 +0300
+From:   Aaro Koskinen <aaro.koskinen@iki.fi>
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        Rusty Russell <rusty@rustcorp.com.au>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        sparclinux <sparclinux@vger.kernel.org>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+        Mark Brown <broonie@kernel.org>,
+        DRI Development <dri-devel@lists.freedesktop.org>,
+        Matthew Wilcox <willy@linux.intel.com>
+Subject: Re: Build regressions/improvements in v4.1-rc1
+Message-ID: <20150427173644.GA595@fuloong-minipc.musicnaut.iki.fi>
+References: <1430128286-8952-1-git-send-email-geert@linux-m68k.org>
+ <CAMuHMdWoUPZ92GX9fe8eq87buLQOT9GMb6Ru3_bQJpkZTFph0g@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.154.110]
-Return-Path: <James.Hogan@imgtec.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMuHMdWoUPZ92GX9fe8eq87buLQOT9GMb6Ru3_bQJpkZTFph0g@mail.gmail.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <aaro.koskinen@iki.fi>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47092
+X-archive-position: 47093
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: aaro.koskinen@iki.fi
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,29 +55,19 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Enable the 32-bit DMA zone for 64-bit Malta kernels so that devices with
-32-bit coherent DMA masks aren't constrained to the low 16MB DMA zone,
-which can easily be exhausted when there is lots of static kernel data
-due to lock and RCU debugging.
+Hi,
 
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
----
- arch/mips/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+On Mon, Apr 27, 2015 at 12:03:32PM +0200, Geert Uytterhoeven wrote:
+> > *** ERRORS ***
+> >
+> > 34 regressions:
+> 
+> The quiet days are over...
+> 
+> >   + /home/kisskb/slave/src/arch/mips/cavium-octeon/smp.c: error: passing argument 2 of 'cpumask_clear_cpu' discards 'volatile' qualifier from pointer target type [-Werror]:  => 242:2
+> >   + /home/kisskb/slave/src/arch/mips/kernel/process.c: error: passing argument 2 of 'cpumask_test_cpu' discards 'volatile' qualifier from pointer target type [-Werror]:  => 52:2
+> >   + /home/kisskb/slave/src/arch/mips/kernel/smp.c: error: passing argument 2 of 'cpumask_set_cpu' discards 'volatile' qualifier from pointer target type [-Werror]:  => 149:2, 211:2
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index f5016656494f..3feebda50ea2 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -434,6 +434,7 @@ config MIPS_MALTA
- 	select SYS_SUPPORTS_MULTITHREADING
- 	select SYS_SUPPORTS_SMARTMIPS
- 	select SYS_SUPPORTS_ZBOOT
-+	select ZONE_DMA32 if 64BIT
- 	help
- 	  This enables support for the MIPS Technologies Malta evaluation
- 	  board.
--- 
-2.0.5
+For these there is a fix proposal: http://patchwork.linux-mips.org/patch/9828/
+
+A.

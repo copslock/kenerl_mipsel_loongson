@@ -1,61 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Apr 2015 15:45:39 +0200 (CEST)
-Received: from mail-wi0-f177.google.com ([209.85.212.177]:37585 "EHLO
-        mail-wi0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27026159AbbD0Nphs9VZ6 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 27 Apr 2015 15:45:37 +0200
-Received: by widdi4 with SMTP id di4so90522236wid.0
-        for <linux-mips@linux-mips.org>; Mon, 27 Apr 2015 06:45:34 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:message-id:date:from:organization:user-agent
-         :mime-version:to:cc:subject:references:in-reply-to:content-type
-         :content-transfer-encoding;
-        bh=7hay39ZC4k0owqh7fGmUYRNUSSgN81DDovLc6sCjrLY=;
-        b=Nt0okju2ZzpaZYDHZSmuifV2Fe48YSL5tRd53AemIyyWcOIzETNDPxXeSRioPOxoEy
-         c6jpSKiTC8t2XvHNTZBTpLFSovbbN/7T/eG8UPIBfiRuL+OuJbBiJqlAGooTf3htx4TR
-         kKmYaMguzFtgmf9DdF1gPdThTb0vlWuNJkR/o+YH5D//mpkvzFomk+mpPUqTmPbSMpTz
-         25huxz081iuzMTnG1XfxxL4U3uWWmsEu82JST89xQvbPuBF5hB9/92K1IFqcup6zWuRn
-         W/AIs28XUbv/YxqfukcyOcweyar1yGqBWxnn7vP/HylRhmIMoBfYv8FFt5y9BbKyhvUp
-         JCmQ==
-X-Gm-Message-State: ALoCoQn8BL6wZBKda2OkUTmWTJ4ruanejwIsXJBCyO2T/GGR4lQzlwBF4ViQCvQFClqWCJQGCLRX
-X-Received: by 10.194.248.132 with SMTP id ym4mr23361118wjc.74.1430142334191;
-        Mon, 27 Apr 2015 06:45:34 -0700 (PDT)
-Received: from [192.168.0.45] ([190.2.108.156])
-        by mx.google.com with ESMTPSA id fu2sm11694914wic.20.2015.04.27.06.45.29
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 27 Apr 2015 06:45:33 -0700 (PDT)
-Message-ID: <553E3CC8.3070304@vanguardiasur.com.ar>
-Date:   Mon, 27 Apr 2015 10:42:32 -0300
-From:   Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
-Organization: VanguardiaSur
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.5.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Apr 2015 16:07:38 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:15239 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27026159AbbD0OHggeM7S (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 27 Apr 2015 16:07:36 +0200
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 3603C42F7F56A;
+        Mon, 27 Apr 2015 15:07:28 +0100 (IST)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Mon, 27 Apr 2015 15:07:31 +0100
+Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
+ LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
+ 14.3.210.2; Mon, 27 Apr 2015 15:07:30 +0100
+From:   James Hogan <james.hogan@imgtec.com>
+To:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
+CC:     James Hogan <james.hogan@imgtec.com>,
+        "Steven J. Hill" <Steven.Hill@imgtec.com>
+Subject: [PATCH 0/4] MIPS: Misc fixes (mostly relating to KVM guests)
+Date:   Mon, 27 Apr 2015 15:07:15 +0100
+Message-ID: <1430143639-22580-1-git-send-email-james.hogan@imgtec.com>
+X-Mailer: git-send-email 2.0.5
 MIME-Version: 1.0
-To:     Alban Bedel <albeu@free.fr>, linux-mips@linux-mips.org
-CC:     Rob Herring <robh+dt@kernel.org>, Pawel Moll <pawel.moll@arm.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ian Campbell <ijc+devicetree@hellion.org.uk>,
-        Kumar Gala <galak@codeaurora.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Andrew Bresticker <abrestic@chromium.org>,
-        Qais Yousef <qais.yousef@imgtec.com>,
-        Gabor Juhos <juhosg@openwrt.org>, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 00/12] MIPS: ath79: Add OF support and DTS for TL-WR1043ND
-References: <1429875679-14973-1-git-send-email-albeu@free.fr>
-In-Reply-To: <1429875679-14973-1-git-send-email-albeu@free.fr>
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-Return-Path: <ezequiel@vanguardiasur.com.ar>
+Content-Type: text/plain
+X-Originating-IP: [192.168.154.110]
+Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47087
+X-archive-position: 47088
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ezequiel@vanguardiasur.com.ar
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -68,75 +44,35 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 04/24/2015 08:41 AM, Alban Bedel wrote:
-> This series add OF bindings and code support for the interrupt
-> controllers, clocks and GPIOs. However it was only tested on a
-> TL-WR1043ND with an AR9132, others SoCs are untested, and a few are
-> not supported at all.
-> 
-> Most code changes base on the previous bug fix series:
-> [PATCH v2 0/5] MIPS: ath79: Various small fix to prepare OF support
-> 
-> The requested patch to move the GPIO driver to drivers/gpio is ready and
-> will follow once it is clearer if this serie get merged.
-> 
-> ChangeLog:
-> v2: * Fixed the OF bindings and DTS to use ePAPR standardized names
->     * Fixed the typos in the OF bindings
->     * Added an ngpios property to the GPIO binding and driver
->     * Removed all the soc_is_xxx() calls out of the GPIO driver probe()
->     * Updated the DTS patches to the new directory structure and merged both
->       in one. Having 3 patches to add Makefile, SoC dtsi and board DTS seemed
->       a bit overkill.
->     * Moved the patch to use the common clk API to the bug fix serie to keep
->       this one cleaner.
-> 
-> v3: * Moved the builtin DTB menu to the patch adding the TL-WR1043ND DTS
->     * Made the builtin DTB menu optional
->     * Fixed more typos
->     * Really fixed the DDR controller binding example to use ePAPR names
->     * Fixed the qca9550 compatible string in the PLL bindings and driver
->     * Fixed the example in the GPIO controller binding
->     * Moved the new vendor entry to the correct place
-> 
-> Alban Bedel (12):
->   devicetree: Add bindings for the SoC of the ATH79 family
->   MIPS: ath79: Add basic device tree support
->   devicetree: Add bindings for the ATH79 DDR controllers
->   devicetree: Add bindings for the ATH79 interrupt controllers
->   devicetree: Add bindings for the ATH79 MISC interrupt controllers
->   MIPS: ath79: Add OF support to the IRQ controllers
->   devicetree: Add bindings for the ATH79 PLL controllers
->   MIPS: ath79: Add OF support to the clocks
->   devicetree: Add bindings for the ATH79 GPIO controllers
->   MIPS: ath79: Add OF support to the GPIO driver
->   of: Add vendor prefix for TP-Link Technologies Co. Ltd
->   MIPS: Add basic support for the TL-WR1043ND version 1
-> 
+Here are a few miscellaneous MIPS fixes, which were mostly found by
+running an up to date KVM guest kernel.
 
-Hi Alban,
+Patch 1 fixes the fixmap address for KVM guests, which was never updated
+to reside in USEG.
 
-I've booted a Carambola2 using this (plus a custom devicetree and some
-small changes):
+Patch 2 fixes a bug in the XPA patches, which seems to manifest in KVM
+guests in particular (for unclear reasons).
+Patch 3 makes a tweak related to patch 2.
+(Steven's review of these two patches in particular would be
+appreciated).
 
-Tested-by: Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
+Finally patch 4 enables ZONE_DMA32 on 64-bit Malta kernels to prevent
+exhaustion of the 16MiB DMA zone being a problem (try enabling
+KVM_PROVE_LOCKING in a recent kernel).
 
-Just a small comment/question: Shouldn't we allow to build all the
-devicetree files, instead of just the one that will be built-in?
+James Hogan (4):
+  MIPS: Fix KVM guest fixmap address
+  MIPS: tlbex: Fix broken offsets on r2 without XPA
+  MIPS: tlbex: Avoid unnecessary _PAGE_PRESENT shifts
+  MIPS: Malta: Select 32bit DMA zone for 64-bit kernels
 
-I.e., something like this:
+ arch/mips/Kconfig                           |  1 +
+ arch/mips/include/asm/mach-generic/spaces.h |  4 ++++
+ arch/mips/mm/tlbex.c                        | 31 +++++++++++++++++++++--------
+ 3 files changed, 28 insertions(+), 8 deletions(-)
 
-dtb-$(CONFIG_MATCH_ATH79_DT)   += ar9132_tl_wr1043nd_v1.dtb
-dtb-$(CONFIG_MACH_ATH79_DT)    += ar9331_carambola2.dtb
-
-It should be useful to catch errors, but also in general, as the
-devicetree is supposed to be independent of the kernel and should be
-built separate from it.
-
-PS: This series depends on a previous patchset. It's usually useful to
-mention this in the cover letter and make a poor tester's life easier :)
-
-Thanks for the work,
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Steven J. Hill <Steven.Hill@imgtec.com>
+Cc: linux-mips@linux-mips.org
 -- 
-Ezequiel Garcia, VanguardiaSur
-www.vanguardiasur.com.ar
+2.0.5

@@ -1,56 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Apr 2015 15:44:36 +0200 (CEST)
-Received: from ducie-dc1.codethink.co.uk ([185.25.241.215]:33040 "EHLO
-        ducie-dc1.codethink.co.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27026159AbbD0NofK3x2e (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 27 Apr 2015 15:44:35 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by ducie-dc1.codethink.co.uk (Postfix) with ESMTP id 56F4B460C83;
-        Mon, 27 Apr 2015 14:44:31 +0100 (BST)
-X-Virus-Scanned: Debian amavisd-new at ducie-dc1.codethink.co.uk
-Received: from ducie-dc1.codethink.co.uk ([127.0.0.1])
-        by localhost (ducie-dc1.codethink.co.uk [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id CfUPmfpM1vmq; Mon, 27 Apr 2015 14:44:28 +0100 (BST)
-Received: from pm-laptop.codethink.co.uk (pm-laptop.dyn.ducie.codethink.co.uk [10.24.1.94])
-        by ducie-dc1.codethink.co.uk (Postfix) with ESMTPSA id D8B6E4607A3;
-        Mon, 27 Apr 2015 14:44:28 +0100 (BST)
-Received: from localhost ([::1] helo=paulmartin.codethink.co.uk)
-        by pm-laptop.codethink.co.uk with esmtp (Exim 4.84)
-        (envelope-from <paul.martin@codethink.co.uk>)
-        id 1YmjKm-0002Uz-E0; Mon, 27 Apr 2015 14:44:28 +0100
-Date:   Mon, 27 Apr 2015 14:44:28 +0100
-From:   Paul Martin <paul.martin@codethink.co.uk>
-To:     Aaro Koskinen <aaro.koskinen@nokia.com>
-Cc:     Guenter Roeck <linux@roeck-us.net>,
-        Rusty Russell <rusty@rustcorp.com.au>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        linux-kernel@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        linux-mips@linux-mips.org
-Subject: Re: mips build failures due to commit 8dd928915a73 (mips: fix up
- obsolete cpu function usage)
-Message-ID: <20150427134427.GA5551@paulmartin.codethink.co.uk>
-Mail-Followup-To: Aaro Koskinen <aaro.koskinen@nokia.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Rusty Russell <rusty@rustcorp.com.au>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>, linux-kernel@vger.kernel.org,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Florian Fainelli <f.fainelli@gmail.com>, linux-mips@linux-mips.org
-References: <20150421154108.GA20223@roeck-us.net>
- <20150427130343.GA26951@ak-desktop.emea.nsn-net.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Apr 2015 15:45:39 +0200 (CEST)
+Received: from mail-wi0-f177.google.com ([209.85.212.177]:37585 "EHLO
+        mail-wi0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27026159AbbD0Nphs9VZ6 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 27 Apr 2015 15:45:37 +0200
+Received: by widdi4 with SMTP id di4so90522236wid.0
+        for <linux-mips@linux-mips.org>; Mon, 27 Apr 2015 06:45:34 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:message-id:date:from:organization:user-agent
+         :mime-version:to:cc:subject:references:in-reply-to:content-type
+         :content-transfer-encoding;
+        bh=7hay39ZC4k0owqh7fGmUYRNUSSgN81DDovLc6sCjrLY=;
+        b=Nt0okju2ZzpaZYDHZSmuifV2Fe48YSL5tRd53AemIyyWcOIzETNDPxXeSRioPOxoEy
+         c6jpSKiTC8t2XvHNTZBTpLFSovbbN/7T/eG8UPIBfiRuL+OuJbBiJqlAGooTf3htx4TR
+         kKmYaMguzFtgmf9DdF1gPdThTb0vlWuNJkR/o+YH5D//mpkvzFomk+mpPUqTmPbSMpTz
+         25huxz081iuzMTnG1XfxxL4U3uWWmsEu82JST89xQvbPuBF5hB9/92K1IFqcup6zWuRn
+         W/AIs28XUbv/YxqfukcyOcweyar1yGqBWxnn7vP/HylRhmIMoBfYv8FFt5y9BbKyhvUp
+         JCmQ==
+X-Gm-Message-State: ALoCoQn8BL6wZBKda2OkUTmWTJ4ruanejwIsXJBCyO2T/GGR4lQzlwBF4ViQCvQFClqWCJQGCLRX
+X-Received: by 10.194.248.132 with SMTP id ym4mr23361118wjc.74.1430142334191;
+        Mon, 27 Apr 2015 06:45:34 -0700 (PDT)
+Received: from [192.168.0.45] ([190.2.108.156])
+        by mx.google.com with ESMTPSA id fu2sm11694914wic.20.2015.04.27.06.45.29
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 27 Apr 2015 06:45:33 -0700 (PDT)
+Message-ID: <553E3CC8.3070304@vanguardiasur.com.ar>
+Date:   Mon, 27 Apr 2015 10:42:32 -0300
+From:   Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
+Organization: VanguardiaSur
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.5.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20150427130343.GA26951@ak-desktop.emea.nsn-net.net>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <paul.martin@codethink.co.uk>
+To:     Alban Bedel <albeu@free.fr>, linux-mips@linux-mips.org
+CC:     Rob Herring <robh+dt@kernel.org>, Pawel Moll <pawel.moll@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ian Campbell <ijc+devicetree@hellion.org.uk>,
+        Kumar Gala <galak@codeaurora.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Andrew Bresticker <abrestic@chromium.org>,
+        Qais Yousef <qais.yousef@imgtec.com>,
+        Gabor Juhos <juhosg@openwrt.org>, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 00/12] MIPS: ath79: Add OF support and DTS for TL-WR1043ND
+References: <1429875679-14973-1-git-send-email-albeu@free.fr>
+In-Reply-To: <1429875679-14973-1-git-send-email-albeu@free.fr>
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
+Return-Path: <ezequiel@vanguardiasur.com.ar>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47086
+X-archive-position: 47087
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.martin@codethink.co.uk
+X-original-sender: ezequiel@vanguardiasur.com.ar
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -63,25 +68,75 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Apr 27, 2015 at 04:03:48PM +0300, Aaro Koskinen wrote:
-> On Tue, Apr 21, 2015 at 08:41:08AM -0700, Guenter Roeck wrote:
-> > The following might do it. Note that I can not really test it since I
-> > don't have a real mips system, and qemu gets rcu hangs if I enable more
-> > than one CPU (I see that with older kernels as well, so it is not a new
-> > problem). Someone will have to test the patch on a real multi-core system.
+On 04/24/2015 08:41 AM, Alban Bedel wrote:
+> This series add OF bindings and code support for the interrupt
+> controllers, clocks and GPIOs. However it was only tested on a
+> TL-WR1043ND with an AR9132, others SoCs are untested, and a few are
+> not supported at all.
 > 
-> That works on Octeon+ EBH5600 board (8 cores) with 4.1-rc1.
+> Most code changes base on the previous bug fix series:
+> [PATCH v2 0/5] MIPS: ath79: Various small fix to prepare OF support
 > 
-> Tested-by: Aaro Koskinen <aaro.koskinen@nokia.com>
+> The requested patch to move the GPIO driver to drivers/gpio is ready and
+> will follow once it is clearer if this serie get merged.
+> 
+> ChangeLog:
+> v2: * Fixed the OF bindings and DTS to use ePAPR standardized names
+>     * Fixed the typos in the OF bindings
+>     * Added an ngpios property to the GPIO binding and driver
+>     * Removed all the soc_is_xxx() calls out of the GPIO driver probe()
+>     * Updated the DTS patches to the new directory structure and merged both
+>       in one. Having 3 patches to add Makefile, SoC dtsi and board DTS seemed
+>       a bit overkill.
+>     * Moved the patch to use the common clk API to the bug fix serie to keep
+>       this one cleaner.
+> 
+> v3: * Moved the builtin DTB menu to the patch adding the TL-WR1043ND DTS
+>     * Made the builtin DTB menu optional
+>     * Fixed more typos
+>     * Really fixed the DDR controller binding example to use ePAPR names
+>     * Fixed the qca9550 compatible string in the PLL bindings and driver
+>     * Fixed the example in the GPIO controller binding
+>     * Moved the new vendor entry to the correct place
+> 
+> Alban Bedel (12):
+>   devicetree: Add bindings for the SoC of the ATH79 family
+>   MIPS: ath79: Add basic device tree support
+>   devicetree: Add bindings for the ATH79 DDR controllers
+>   devicetree: Add bindings for the ATH79 interrupt controllers
+>   devicetree: Add bindings for the ATH79 MISC interrupt controllers
+>   MIPS: ath79: Add OF support to the IRQ controllers
+>   devicetree: Add bindings for the ATH79 PLL controllers
+>   MIPS: ath79: Add OF support to the clocks
+>   devicetree: Add bindings for the ATH79 GPIO controllers
+>   MIPS: ath79: Add OF support to the GPIO driver
+>   of: Add vendor prefix for TP-Link Technologies Co. Ltd
+>   MIPS: Add basic support for the TL-WR1043ND version 1
+> 
 
-http://patchwork.linux-mips.org/patch/9828/
+Hi Alban,
 
-I've been using this patch since 21 Apr on the 4.1 merge HEAD on
-EdgeRouter Pro (Octeon II, dual core).  It's survived several
-builds of gcc (using make -j3).
+I've booted a Carambola2 using this (plus a custom devicetree and some
+small changes):
 
-Tested-by: Paul Martin <paul.martin@codethink.co.uk>
+Tested-by: Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
 
+Just a small comment/question: Shouldn't we allow to build all the
+devicetree files, instead of just the one that will be built-in?
+
+I.e., something like this:
+
+dtb-$(CONFIG_MATCH_ATH79_DT)   += ar9132_tl_wr1043nd_v1.dtb
+dtb-$(CONFIG_MACH_ATH79_DT)    += ar9331_carambola2.dtb
+
+It should be useful to catch errors, but also in general, as the
+devicetree is supposed to be independent of the kernel and should be
+built separate from it.
+
+PS: This series depends on a previous patchset. It's usually useful to
+mention this in the cover letter and make a poor tester's life easier :)
+
+Thanks for the work,
 -- 
-Paul Martin                                  http://www.codethink.co.uk/
-Senior Software Developer, Codethink Ltd.
+Ezequiel Garcia, VanguardiaSur
+www.vanguardiasur.com.ar

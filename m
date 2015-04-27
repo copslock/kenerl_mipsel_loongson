@@ -1,48 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Apr 2015 15:04:56 +0200 (CEST)
-Received: from demumfd001.nsn-inter.net ([93.183.12.32]:42569 "EHLO
-        demumfd001.nsn-inter.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27025564AbbD0NEzRBGWV (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 27 Apr 2015 15:04:55 +0200
-Received: from demuprx016.emea.nsn-intra.net ([10.150.129.55])
-        by demumfd001.nsn-inter.net (8.15.1/8.15.1) with ESMTPS id t3RD4gpv010013
-        (version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
-        Mon, 27 Apr 2015 13:04:42 GMT
-Received: from ak-desktop.emea.nsn-net.net ([10.144.35.206])
-        by demuprx016.emea.nsn-intra.net (8.12.11.20060308/8.12.11) with SMTP id t3RD4doY018615;
-        Mon, 27 Apr 2015 15:04:39 +0200
-Received: by ak-desktop.emea.nsn-net.net (sSMTP sendmail emulation); Mon, 27 Apr 2015 16:03:52 +0300
-Date:   Mon, 27 Apr 2015 16:03:48 +0300
-From:   Aaro Koskinen <aaro.koskinen@nokia.com>
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     Rusty Russell <rusty@rustcorp.com.au>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Apr 2015 15:44:36 +0200 (CEST)
+Received: from ducie-dc1.codethink.co.uk ([185.25.241.215]:33040 "EHLO
+        ducie-dc1.codethink.co.uk" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27026159AbbD0NofK3x2e (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 27 Apr 2015 15:44:35 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by ducie-dc1.codethink.co.uk (Postfix) with ESMTP id 56F4B460C83;
+        Mon, 27 Apr 2015 14:44:31 +0100 (BST)
+X-Virus-Scanned: Debian amavisd-new at ducie-dc1.codethink.co.uk
+Received: from ducie-dc1.codethink.co.uk ([127.0.0.1])
+        by localhost (ducie-dc1.codethink.co.uk [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id CfUPmfpM1vmq; Mon, 27 Apr 2015 14:44:28 +0100 (BST)
+Received: from pm-laptop.codethink.co.uk (pm-laptop.dyn.ducie.codethink.co.uk [10.24.1.94])
+        by ducie-dc1.codethink.co.uk (Postfix) with ESMTPSA id D8B6E4607A3;
+        Mon, 27 Apr 2015 14:44:28 +0100 (BST)
+Received: from localhost ([::1] helo=paulmartin.codethink.co.uk)
+        by pm-laptop.codethink.co.uk with esmtp (Exim 4.84)
+        (envelope-from <paul.martin@codethink.co.uk>)
+        id 1YmjKm-0002Uz-E0; Mon, 27 Apr 2015 14:44:28 +0100
+Date:   Mon, 27 Apr 2015 14:44:28 +0100
+From:   Paul Martin <paul.martin@codethink.co.uk>
+To:     Aaro Koskinen <aaro.koskinen@nokia.com>
+Cc:     Guenter Roeck <linux@roeck-us.net>,
+        Rusty Russell <rusty@rustcorp.com.au>,
         Aaro Koskinen <aaro.koskinen@iki.fi>,
         linux-kernel@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
         Florian Fainelli <f.fainelli@gmail.com>,
         linux-mips@linux-mips.org
 Subject: Re: mips build failures due to commit 8dd928915a73 (mips: fix up
  obsolete cpu function usage)
-Message-ID: <20150427130343.GA26951@ak-desktop.emea.nsn-net.net>
+Message-ID: <20150427134427.GA5551@paulmartin.codethink.co.uk>
+Mail-Followup-To: Aaro Koskinen <aaro.koskinen@nokia.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Rusty Russell <rusty@rustcorp.com.au>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>, linux-kernel@vger.kernel.org,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Florian Fainelli <f.fainelli@gmail.com>, linux-mips@linux-mips.org
 References: <20150421154108.GA20223@roeck-us.net>
+ <20150427130343.GA26951@ak-desktop.emea.nsn-net.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20150421154108.GA20223@roeck-us.net>
+In-Reply-To: <20150427130343.GA26951@ak-desktop.emea.nsn-net.net>
 User-Agent: Mutt/1.5.23 (2014-03-12)
-X-purgate-type: clean
-X-purgate-Ad: Categorized by eleven eXpurgate (R) http://www.eleven.de
-X-purgate: clean
-X-purgate: This mail is considered clean (visit http://www.eleven.de for further information)
-X-purgate-size: 499
-X-purgate-ID: 151667::1430139882-0000746E-945B067C/0/0
-Return-Path: <aaro.koskinen@nokia.com>
+Return-Path: <paul.martin@codethink.co.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47085
+X-archive-position: 47086
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aaro.koskinen@nokia.com
+X-original-sender: paul.martin@codethink.co.uk
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,16 +63,25 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Apr 21, 2015 at 08:41:08AM -0700, Guenter Roeck wrote:
-> The following might do it. Note that I can not really test it since I
-> don't have a real mips system, and qemu gets rcu hangs if I enable more
-> than one CPU (I see that with older kernels as well, so it is not a new
-> problem). Someone will have to test the patch on a real multi-core system.
+On Mon, Apr 27, 2015 at 04:03:48PM +0300, Aaro Koskinen wrote:
+> On Tue, Apr 21, 2015 at 08:41:08AM -0700, Guenter Roeck wrote:
+> > The following might do it. Note that I can not really test it since I
+> > don't have a real mips system, and qemu gets rcu hangs if I enable more
+> > than one CPU (I see that with older kernels as well, so it is not a new
+> > problem). Someone will have to test the patch on a real multi-core system.
+> 
+> That works on Octeon+ EBH5600 board (8 cores) with 4.1-rc1.
+> 
+> Tested-by: Aaro Koskinen <aaro.koskinen@nokia.com>
 
-That works on Octeon+ EBH5600 board (8 cores) with 4.1-rc1.
+http://patchwork.linux-mips.org/patch/9828/
 
-Tested-by: Aaro Koskinen <aaro.koskinen@nokia.com>
+I've been using this patch since 21 Apr on the 4.1 merge HEAD on
+EdgeRouter Pro (Octeon II, dual core).  It's survived several
+builds of gcc (using make -j3).
 
-Thanks,
+Tested-by: Paul Martin <paul.martin@codethink.co.uk>
 
-A.
+-- 
+Paul Martin                                  http://www.codethink.co.uk/
+Senior Software Developer, Codethink Ltd.

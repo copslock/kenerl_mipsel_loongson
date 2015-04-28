@@ -1,22 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Apr 2015 06:48:10 +0200 (CEST)
-Received: from mailout4.w1.samsung.com ([210.118.77.14]:9850 "EHLO
-        mailout4.w1.samsung.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011842AbbD1ErKAaW5N (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 28 Apr 2015 06:47:10 +0200
-Received: from eucpsbgm2.samsung.com (unknown [203.254.199.245])
- by mailout4.w1.samsung.com
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Apr 2015 06:48:27 +0200 (CEST)
+Received: from mailout2.w1.samsung.com ([210.118.77.12]:13123 "EHLO
+        mailout2.w1.samsung.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010440AbbD1ErRz9Q3w (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 28 Apr 2015 06:47:17 +0200
+Received: from eucpsbgm1.samsung.com (unknown [203.254.199.244])
+ by mailout2.w1.samsung.com
  (Oracle Communications Messaging Server 7.0.5.31.0 64bit (built May  5 2014))
- with ESMTP id <0NNI008B32MHPV60@mailout4.w1.samsung.com>; Tue,
- 28 Apr 2015 05:47:06 +0100 (BST)
-X-AuditID: cbfec7f5-f794b6d000001495-7c-553f10ce31e5
+ with ESMTP id <0NNI001BL2MOHK60@mailout2.w1.samsung.com>; Tue,
+ 28 Apr 2015 05:47:12 +0100 (BST)
+X-AuditID: cbfec7f4-f79c56d0000012ee-aa-553f10d239ac
 Received: from eusync1.samsung.com ( [203.254.199.211])
-        by eucpsbgm2.samsung.com (EUCPMTA) with SMTP id E2.96.05269.EC01F355; Tue,
- 28 Apr 2015 05:47:10 +0100 (BST)
+        by eucpsbgm1.samsung.com (EUCPMTA) with SMTP id E9.FD.04846.2D01F355; Tue,
+ 28 Apr 2015 05:47:15 +0100 (BST)
 Received: from localhost.localdomain ([10.252.80.64])
  by eusync1.samsung.com (Oracle Communications Messaging Server 7.0.5.31.0
  64bit (built May  5 2014))
  with ESMTPA id <0NNI00A672LDPN10@eusync1.samsung.com>; Tue,
- 28 Apr 2015 05:47:05 +0100 (BST)
+ 28 Apr 2015 05:47:11 +0100 (BST)
 From:   Krzysztof Kozlowski <k.kozlowski@samsung.com>
 To:     Ralf Baechle <ralf@linux-mips.org>,
         Max Filippov <jcmvbkbc@gmail.com>,
@@ -38,30 +38,30 @@ To:     Ralf Baechle <ralf@linux-mips.org>,
 Cc:     Chanwoo Choi <cw00.choi@samsung.com>,
         Inki Dae <inki.dae@samsung.com>,
         Krzysztof Kozlowski <k.kozlowski@samsung.com>
-Subject: [PATCH v2 5/8] clk: cdce706: Constify parent names in clock init data
-Date:   Tue, 28 Apr 2015 13:46:20 +0900
-Message-id: <1430196383-9190-6-git-send-email-k.kozlowski@samsung.com>
+Subject: [PATCH v2 6/8] clk: sirf: Constify parent names in clock init data
+Date:   Tue, 28 Apr 2015 13:46:21 +0900
+Message-id: <1430196383-9190-7-git-send-email-k.kozlowski@samsung.com>
 X-Mailer: git-send-email 1.9.1
 In-reply-to: <1430196383-9190-1-git-send-email-k.kozlowski@samsung.com>
 References: <1430196383-9190-1-git-send-email-k.kozlowski@samsung.com>
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFmpgkeLIzCtJLcpLzFFi42I5/e/4Zd1zAvahBmeXyVs8OdTLbHH9y3NW
-        i3OvHrFY/H/0mtVi0v0JLBbfHi5ktHj9wtCi//FrZotNj6+xWnzsucdqcXnXHDaLCVMnsVt8
-        evCf2WLG+X1MFp1fZrFZPJ1wkc1i0tqpjBY356dZXNqjYnH4TTurxY8z3SwWrw62sVj83DWP
-        xWLVrj+MDhIel/t6mTx2zrrL7rFpVSebx51re9g8jq5cy+SxeUm9R2/zOzaPvi2rGD22X5vH
-        7PF5k5zHxrmhAdxRXDYpqTmZZalF+nYJXBmT7qxjL1jMXjFxWk0D4w/WLkZODgkBE4mnB/5C
-        2WISF+6tZ+ti5OIQEljKKNFw4DZYQkjgP6PE1/92IDabgLHE5uVLwIpEBHrYJLY+vccMkmAW
-        qJKY93YHWIOwgJ/EpA9LweIsAqoS6+d/ZwGxeQXcJHZ0/maE2CYncfLYZLB6TgF3if7mPiCb
-        A2iZm0RnV/4ERt4FjAyrGEVTS5MLipPSc430ihNzi0vz0vWS83M3MULi5esOxqXHrA4xCnAw
-        KvHwFnDZhwqxJpYVV+YeYpTgYFYS4S3+YxcqxJuSWFmVWpQfX1Sak1p8iFGag0VJnHfmrvch
-        QgLpiSWp2ampBalFMFkmDk6pBkZdxdlHVBNZFnEKmf9M/VH2an+B3Jsdd99rm9VMWir9/jXn
-        y5/X/P5tlbts8fyZ85yV8/q3H3nasrB7Vp4Y69X0IE7Pbv9Yrd0meb80Ts+I4S1QLxfcoGFm
-        ut9n/2qliU/k9OX03vJcZTyn+adBZVFInUiLwfeldX7nA8Vfn1z+Z8OGvNlmCRJKLMUZiYZa
-        zEXFiQBj/ACvkwIAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFmpkkeLIzCtJLcpLzFFi42I5/e/4Zd3LAvahBg1NTBZPDvUyW1z/8pzV
+        4tyrRywW/x+9ZrWYdH8Ci8W3hwsZLV6/MLTof/ya2WLT42usFh977rFaXN41h81iwtRJ7Baf
+        Hvxntphxfh+TReeXWWwWTydcZLOYtHYqo8XN+WkWl/aoWBx+085q8eNMN4vFq4NtLBY/d81j
+        sVi16w+jg4TH5b5eJo+ds+6ye2xa1cnmcefaHjaPoyvXMnlsXlLv0dv8js2jb8sqRo/t1+Yx
+        e3zeJOexcW5oAHcUl01Kak5mWWqRvl0CV0bboxaWgpW8FRfeHWVsYDzA1cXIySEhYCLRe/QF
+        O4QtJnHh3nq2LkYuDiGBpYwSfU93MUM4/xklDn+byQZSxSZgLLF5+RKwKhGBHjaJrU/vMYMk
+        mAWqJOa93cEKYgsLeEvM/38ezGYRUJW4uWUvUAMHB6+Am8TFHneIbXISJ49NBivhFHCX6G/u
+        YwUpEQIq6ezKn8DIu4CRYRWjaGppckFxUnquoV5xYm5xaV66XnJ+7iZGSMR82cG4+JjVIUYB
+        DkYlHt4MZvtQIdbEsuLK3EOMEhzMSiK8xX/sQoV4UxIrq1KL8uOLSnNSiw8xSnOwKInzzt31
+        PkRIID2xJDU7NbUgtQgmy8TBKdXA6G4heer/liuSZbOeb5Q79Lems2uDvCB3u9/uued8Jf/O
+        aXjt7S/zPXFWqK5TwbEddVVmZuufxj2TcAxe/Syd3/fZ4TVe194tcHpT/vvYrg6uKexORdui
+        kqPneNksmWUQODVS6vWO98/ifG+VzLpxVmr7icXeISuFJOK3vtvGor2hSSRP49LEMCWW4oxE
+        Qy3mouJEABO9EOCUAgAA
 Return-Path: <k.kozlowski@samsung.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47108
+X-archive-position: 47109
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -83,29 +83,65 @@ const strings.
 
 Signed-off-by: Krzysztof Kozlowski <k.kozlowski@samsung.com>
 ---
- drivers/clk/clk-cdce706.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/clk/sirf/clk-common.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/clk/clk-cdce706.c b/drivers/clk/clk-cdce706.c
-index b8e4f8a822e9..8a2dfd0012f3 100644
---- a/drivers/clk/clk-cdce706.c
-+++ b/drivers/clk/clk-cdce706.c
-@@ -94,7 +94,7 @@ static const char * const cdce706_source_name[] = {
- 	"clk_in0", "clk_in1",
+diff --git a/drivers/clk/sirf/clk-common.c b/drivers/clk/sirf/clk-common.c
+index 37af51c5f213..e9cf5730effe 100644
+--- a/drivers/clk/sirf/clk-common.c
++++ b/drivers/clk/sirf/clk-common.c
+@@ -188,7 +188,7 @@ static struct clk_ops std_pll_ops = {
+ 	.set_rate = pll_clk_set_rate,
  };
  
--static const char *cdce706_clkin_name[] = {
-+static const char * const cdce706_clkin_name[] = {
- 	"clk_in",
+-static const char *pll_clk_parents[] = {
++static const char * const pll_clk_parents[] = {
+ 	"osc",
  };
  
-@@ -102,7 +102,7 @@ static const char * const cdce706_pll_name[] = {
- 	"pll1", "pll2", "pll3",
+@@ -284,7 +284,7 @@ static struct clk_hw usb_pll_clk_hw = {
+  * clock domains - cpu, mem, sys/io, dsp, gfx
+  */
+ 
+-static const char *dmn_clk_parents[] = {
++static const char * const dmn_clk_parents[] = {
+ 	"rtc",
+ 	"osc",
+ 	"pll1",
+@@ -673,7 +673,7 @@ static void std_clk_disable(struct clk_hw *hw)
+ 	clkc_writel(val, reg);
+ }
+ 
+-static const char *std_clk_io_parents[] = {
++static const char * const std_clk_io_parents[] = {
+ 	"io",
  };
  
--static const char *cdce706_divider_parent_name[] = {
-+static const char * const cdce706_divider_parent_name[] = {
- 	"clk_in", "pll1", "pll2", "pll2", "pll3",
+@@ -949,7 +949,7 @@ static struct clk_std clk_pulse = {
+ 	},
+ };
+ 
+-static const char *std_clk_dsp_parents[] = {
++static const char * const std_clk_dsp_parents[] = {
+ 	"dsp",
+ };
+ 
+@@ -981,7 +981,7 @@ static struct clk_std clk_mf = {
+ 	},
+ };
+ 
+-static const char *std_clk_sys_parents[] = {
++static const char * const std_clk_sys_parents[] = {
+ 	"sys",
+ };
+ 
+@@ -999,7 +999,7 @@ static struct clk_std clk_security = {
+ 	},
+ };
+ 
+-static const char *std_clk_usb_parents[] = {
++static const char * const std_clk_usb_parents[] = {
+ 	"usb_pll",
  };
  
 -- 

@@ -1,22 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Apr 2015 06:46:43 +0200 (CEST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Apr 2015 06:47:01 +0200 (CEST)
 Received: from mailout3.w1.samsung.com ([210.118.77.13]:64353 "EHLO
         mailout3.w1.samsung.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010440AbbD1EqlgCAaF (ORCPT
+        by eddie.linux-mips.org with ESMTP id S27011701AbbD1EqlqV708 (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Tue, 28 Apr 2015 06:46:41 +0200
 Received: from eucpsbgm1.samsung.com (unknown [203.254.199.244])
  by mailout3.w1.samsung.com
  (Oracle Communications Messaging Server 7.0.5.31.0 64bit (built May  5 2014))
- with ESMTP id <0NNI00A882LN6L60@mailout3.w1.samsung.com>; Tue,
- 28 Apr 2015 05:46:35 +0100 (BST)
-X-AuditID: cbfec7f4-f79c56d0000012ee-74-553f10ae9542
+ with ESMTP id <0NNI009A22LTN860@mailout3.w1.samsung.com>; Tue,
+ 28 Apr 2015 05:46:41 +0100 (BST)
+X-AuditID: cbfec7f4-f79c56d0000012ee-7f-553f10b48d32
 Received: from eusync1.samsung.com ( [203.254.199.211])
-        by eucpsbgm1.samsung.com (EUCPMTA) with SMTP id 7F.ED.04846.EA01F355; Tue,
- 28 Apr 2015 05:46:38 +0100 (BST)
+        by eucpsbgm1.samsung.com (EUCPMTA) with SMTP id 32.FD.04846.4B01F355; Tue,
+ 28 Apr 2015 05:46:44 +0100 (BST)
 Received: from localhost.localdomain ([10.252.80.64])
  by eusync1.samsung.com (Oracle Communications Messaging Server 7.0.5.31.0
  64bit (built May  5 2014))
  with ESMTPA id <0NNI00A672LDPN10@eusync1.samsung.com>; Tue,
- 28 Apr 2015 05:46:35 +0100 (BST)
+ 28 Apr 2015 05:46:41 +0100 (BST)
 From:   Krzysztof Kozlowski <k.kozlowski@samsung.com>
 To:     Ralf Baechle <ralf@linux-mips.org>,
         Max Filippov <jcmvbkbc@gmail.com>,
@@ -38,27 +38,30 @@ To:     Ralf Baechle <ralf@linux-mips.org>,
 Cc:     Chanwoo Choi <cw00.choi@samsung.com>,
         Inki Dae <inki.dae@samsung.com>,
         Krzysztof Kozlowski <k.kozlowski@samsung.com>
-Subject: [PATCH v2 0/8] clk: Minor cleanups
-Date:   Tue, 28 Apr 2015 13:46:15 +0900
-Message-id: <1430196383-9190-1-git-send-email-k.kozlowski@samsung.com>
+Subject: [PATCH v2 1/8] clk: rockchip: Staticize file-scope declarations
+Date:   Tue, 28 Apr 2015 13:46:16 +0900
+Message-id: <1430196383-9190-2-git-send-email-k.kozlowski@samsung.com>
 X-Mailer: git-send-email 1.9.1
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrNLMWRmVeSWpSXmKPExsVy+t/xy7rrBOxDDZrPi1o8OdTLbHH9y3NW
+In-reply-to: <1430196383-9190-1-git-send-email-k.kozlowski@samsung.com>
+References: <1430196383-9190-1-git-send-email-k.kozlowski@samsung.com>
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFmpikeLIzCtJLcpLzFFi42I5/e/4Zd0tAvahBv8nSVg8OdTLbHH9y3NW
         i3OvHrFY/H/0mtVi0v0JLBbfHi5ktHj9wtCi//FrZotNj6+xWnzsucdqcXnXHDaLCVMnsVt8
         evCf2WLG+X1MFp1fZrFZPJ1wkc1i0tqpjBY356dZXNqjYnH4TTurxY8z3SwWrw62sVj83DWP
         xWLVrj+MDhIel/t6mTx2zrrL7rFpVSebx51re9g8jq5cy+SxeUm9R2/zOzaPvi2rGD22X5vH
-        7PF5k5zHxrmhAdxRXDYpqTmZZalF+nYJXBkf1rcxFTznrdh7+whzA+N/ri5GTg4JAROJXYs/
-        MkLYYhIX7q1n62Lk4hASWMoose7BJSYI5z+jxPeek8wgVWwCxhKbly8BqxIR6GGT2Pr0HliC
-        WaBKYt7bHawgtrCAtsSOzvXsIDaLgKrEm0m32UBsXgE3if2XVrFArJOTOHlsMusERu4FjAyr
-        GEVTS5MLipPScw31ihNzi0vz0vWS83M3MUKi4MsOxsXHrA4xCnAwKvHwZjDbhwqxJpYVV+Ye
-        YpTgYFYS4S3+YxcqxJuSWFmVWpQfX1Sak1p8iFGag0VJnHfurvchQgLpiSWp2ampBalFMFkm
-        Dk6pBkbpFtWNMXOKp/n/C9b4dqh/zbOs4ws+3br7etYF1UrX/pudOotS1FWvX/sS0X7+lcHU
-        Y8Xd5lsnfAnacNKlcGVLy+qLT+X9OVv+3GP9Lhy0g2u77dorayxaxeWS7n77P2PGYT3PBPsN
-        ertKX1tFp8p23Jm+9q+IsP6nxV9XHv2dvJGD8/9zO84yJZbijERDLeai4kQATX1HiH4CAAA=
+        7PF5k5zHxrmhAdxRXDYpqTmZZalF+nYJXBkHe3ezFmzjquh/u4KpgfEnRxcjJ4eEgInE0/UP
+        GCFsMYkL99azdTFycQgJLGWUmNTwlAXC+c8oMfHTUSaQKjYBY4nNy5eAVYkI9LBJbH16jxkk
+        wSxQJTHv7Q5WEFtYwENi7p0tLCA2i4CqxIsFM9lBbF4BN4n+r10sEOvkJE4emwxWzyngLtHf
+        3AdkcwBtc5Po7MqfwMi7gJFhFaNoamlyQXFSeq6hXnFibnFpXrpecn7uJkZIzHzZwbj4mNUh
+        RgEORiUe3gxm+1Ah1sSy4srcQ4wSHMxKIrzFf+xChXhTEiurUovy44tKc1KLDzFKc7AoifPO
+        3fU+REggPbEkNTs1tSC1CCbLxMEp1cCo+W+N3W7vpWGd0prxjTVLrlYvrXtuOVWt5KXOowyV
+        P2nPbUM5PuzhvM9+eefMIOX+V98uafo3RHtucw3hiJi/qcr4xlp2g/0nm7/rhrhWP/FsSO/1
+        L5R4zLdd+oeIldK6Y5kTpFPLAhxyGxpeNKxXSPqVxHrx6sm25sUnvL43a5vcVymfyaXEUpyR
+        aKjFXFScCABHqM0clQIAAA==
 Return-Path: <k.kozlowski@samsung.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47103
+X-archive-position: 47104
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -75,57 +78,39 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi,
+Add missing static to local (file-scope only) symbols.
 
+Signed-off-by: Krzysztof Kozlowski <k.kozlowski@samsung.com>
+---
+ drivers/clk/rockchip/clk-rk3188.c | 2 +-
+ drivers/clk/rockchip/clk-rk3288.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-Changes since v1
-================
-1. Rebase on next-20150427 and Sascha Hauer's:
-   clk: make strings in parent name arrays const [1]
-2. Add patch "clk: tegra: Fix inconsistent indenting".
-
-
-Description and dependencies
-============================
-Small cleanups for different clock drivers.
-
-The first three patches are independent.
-
-Rest of the patches (these related to constifying parent names,
-including the change for MIPS) depend on the "clk: make strings in
-parent name arrays const" from Sascha Hauer [1].
-
-
-Tested on Arndale Octa (Exynos5420) and Trats2 (Exynos4412). Other
-drivers (and MIPS related) only compile tested plus some static
-checkers.
-
-
-[1] http://www.spinics.net/lists/arm-kernel/msg413763.html
-
-Best regards,
-Krzysztof
-
-Krzysztof Kozlowski (8):
-  clk: rockchip: Staticize file-scope declarations
-  clk: exynos: Staticize file-scope declarations
-  clk: tegra: Fix inconsistent indenting
-  clk: tegra: Fix duplicate const for parent names
-  clk: cdce706: Constify parent names in clock init data
-  clk: sirf: Constify parent names in clock init data
-  clk: ls1x: Fix duplicate const for parent names
-  MIPS: Alchemy: Remove unneeded cast removing const
-
- arch/mips/alchemy/common/clock.c     |  6 +--
- drivers/clk/clk-cdce706.c            |  4 +-
- drivers/clk/clk-ls1x.c               |  6 +--
- drivers/clk/rockchip/clk-rk3188.c    |  2 +-
- drivers/clk/rockchip/clk-rk3288.c    |  2 +-
- drivers/clk/samsung/clk-exynos5260.c | 74 ++++++++++++++++++------------------
- drivers/clk/samsung/clk-exynos5420.c | 10 ++---
- drivers/clk/sirf/clk-common.c        | 12 +++---
- drivers/clk/tegra/clk-emc.c          | 18 ++++-----
- 9 files changed, 67 insertions(+), 67 deletions(-)
-
+diff --git a/drivers/clk/rockchip/clk-rk3188.c b/drivers/clk/rockchip/clk-rk3188.c
+index 556ce041d371..e4f9d472f1ff 100644
+--- a/drivers/clk/rockchip/clk-rk3188.c
++++ b/drivers/clk/rockchip/clk-rk3188.c
+@@ -26,7 +26,7 @@ enum rk3188_plls {
+ 	apll, cpll, dpll, gpll,
+ };
+ 
+-struct rockchip_pll_rate_table rk3188_pll_rates[] = {
++static struct rockchip_pll_rate_table rk3188_pll_rates[] = {
+ 	RK3066_PLL_RATE(2208000000, 1, 92, 1),
+ 	RK3066_PLL_RATE(2184000000, 1, 91, 1),
+ 	RK3066_PLL_RATE(2160000000, 1, 90, 1),
+diff --git a/drivers/clk/rockchip/clk-rk3288.c b/drivers/clk/rockchip/clk-rk3288.c
+index d17eb4528a28..4f817ed9e6ee 100644
+--- a/drivers/clk/rockchip/clk-rk3288.c
++++ b/drivers/clk/rockchip/clk-rk3288.c
+@@ -27,7 +27,7 @@ enum rk3288_plls {
+ 	apll, dpll, cpll, gpll, npll,
+ };
+ 
+-struct rockchip_pll_rate_table rk3288_pll_rates[] = {
++static struct rockchip_pll_rate_table rk3288_pll_rates[] = {
+ 	RK3066_PLL_RATE(2208000000, 1, 92, 1),
+ 	RK3066_PLL_RATE(2184000000, 1, 91, 1),
+ 	RK3066_PLL_RATE(2160000000, 1, 90, 1),
 -- 
 1.9.1

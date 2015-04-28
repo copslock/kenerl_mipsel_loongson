@@ -1,52 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Apr 2015 13:03:16 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:63806 "EHLO
-        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27011830AbbD1LDOQjJeN (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 28 Apr 2015 13:03:14 +0200
-Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
-        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 9469641F8DDE;
-        Tue, 28 Apr 2015 12:03:10 +0100 (BST)
-Received: from mailapp01.imgtec.com ([10.100.180.241])
-  by imgpgp01.kl.imgtec.org (PGP Universal service);
-  Tue, 28 Apr 2015 12:03:10 +0100
-X-PGP-Universal: processed;
-        by imgpgp01.kl.imgtec.org on Tue, 28 Apr 2015 12:03:10 +0100
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 7AECBAF3D89BF;
-        Tue, 28 Apr 2015 12:03:08 +0100 (IST)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Tue, 28 Apr 2015 12:03:10 +0100
-Received: from [192.168.154.110] (192.168.154.110) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Tue, 28 Apr
- 2015 12:03:09 +0100
-Message-ID: <553F68ED.8090307@imgtec.com>
-Date:   Tue, 28 Apr 2015 12:03:09 +0100
-From:   James Hogan <james.hogan@imgtec.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.5.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Apr 2015 13:12:20 +0200 (CEST)
+Received: from arrakis.dune.hu ([78.24.191.176]:42019 "EHLO arrakis.dune.hu"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27011991AbbD1LMSeKhHR (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 28 Apr 2015 13:12:18 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by arrakis.dune.hu (Postfix) with ESMTP id 9699A28BB81;
+        Tue, 28 Apr 2015 13:11:10 +0200 (CEST)
+X-Virus-Scanned: at arrakis.dune.hu
+Received: from mail-qc0-f169.google.com (mail-qc0-f169.google.com [209.85.216.169])
+        by arrakis.dune.hu (Postfix) with ESMTPSA id 560F62805F2;
+        Tue, 28 Apr 2015 13:11:08 +0200 (CEST)
+Received: by qcrf4 with SMTP id f4so68178555qcr.0;
+        Tue, 28 Apr 2015 04:12:10 -0700 (PDT)
+X-Received: by 10.55.41.93 with SMTP id p90mr18071308qkh.98.1430219530768;
+ Tue, 28 Apr 2015 04:12:10 -0700 (PDT)
 MIME-Version: 1.0
-To:     Paul Burton <paul.burton@imgtec.com>, <linux-mips@linux-mips.org>
-CC:     Lars-Peter Clausen <lars@metafoo.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [PATCH v4 20/37] MIPS: JZ4740: support newer SoC interrupt controllers
-References: <1429881457-16016-1-git-send-email-paul.burton@imgtec.com> <1429881457-16016-21-git-send-email-paul.burton@imgtec.com>
-In-Reply-To: <1429881457-16016-21-git-send-email-paul.burton@imgtec.com>
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature";
-        boundary="3cT9p1RPjpqlaH9VcwhViiJQswiP8THBa"
-X-Originating-IP: [192.168.154.110]
-X-ESG-ENCRYPT-TAG: da4c5968
-Return-Path: <James.Hogan@imgtec.com>
+Received: by 10.140.89.146 with HTTP; Tue, 28 Apr 2015 04:11:49 -0700 (PDT)
+In-Reply-To: <20150427233529.4423.20839.stgit@ubuntu-yegoshin>
+References: <20150427233529.4423.20839.stgit@ubuntu-yegoshin>
+From:   Jonas Gorski <jogo@openwrt.org>
+Date:   Tue, 28 Apr 2015 13:11:49 +0200
+Message-ID: <CAOiHx==LrOO26tPCxxh27bQ0b2a28LzvL054fQ6UVLFAvAOJYw@mail.gmail.com>
+Subject: Re: [PATCH] MIPS: R6: memcpy bugfix - zero length overwrites memory
+To:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+Cc:     MIPS Mailing List <linux-mips@linux-mips.org>,
+        Markos Chandras <markos.chandras@imgtec.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <jogo@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47126
+X-archive-position: 47127
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: jogo@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,88 +49,62 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---3cT9p1RPjpqlaH9VcwhViiJQswiP8THBa
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: quoted-printable
+Hi,
 
-On 24/04/15 14:17, Paul Burton wrote:
-> Allow the interrupt controllers of the JZ4770, JZ4775 & JZ4780 SoCs to
-> be probed via devicetree, supporting the 64 interrupts they provide.
->=20
-> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-> Cc: Lars-Peter Clausen <lars@metafoo.de>
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Jason Cooper <jason@lakedaemon.net>
-> Cc: Ralf Baechle <ralf@linux-mips.org>
-> Cc: linux-mips@linux-mips.org
+On Tue, Apr 28, 2015 at 1:35 AM, Leonid Yegoshin
+<Leonid.Yegoshin@imgtec.com> wrote:
+> MIPS R6 version of memcpy has bug - then length to copy is zero
+> and addresses are not aligned then it can overwrite a whole memory.
+>
+> Signed-off-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
 > ---
-> Changes in v4:
->   - None.
->=20
-> Changes in v3:
->   - Support JZ4775, and use a more generic "2chip" probe function name
->     for doing so whilst sharing code with the JZ4780.
->=20
-> Changes in v2:
->   - None.
-> ---
->  arch/mips/jz4740/irq.c | 9 +++++++++
->  1 file changed, 9 insertions(+)
->=20
-> diff --git a/arch/mips/jz4740/irq.c b/arch/mips/jz4740/irq.c
-> index 65b27c8..5f4ec08 100644
-> --- a/arch/mips/jz4740/irq.c
-> +++ b/arch/mips/jz4740/irq.c
-> @@ -161,3 +161,12 @@ static int __init intc_1chip_of_init(struct device=
-_node *node,
->  	return ingenic_intc_of_init(node, 1);
->  }
->  IRQCHIP_DECLARE(jz4740_intc, "ingenic,jz4740-intc", intc_1chip_of_init=
-);
-> +
-> +static int __init intc_2chip_of_init(struct device_node *node,
-> +	struct device_node *parent)
-> +{
-> +	return ingenic_intc_of_init(node, 2);
-> +}
-> +IRQCHIP_DECLARE(jz4770_intc, "ingenic,jz4770-intc", intc_2chip_of_init=
-);
-> +IRQCHIP_DECLARE(jz4775_intc, "ingenic,jz4775-intc", intc_2chip_of_init=
-);
+>  arch/mips/lib/memcpy.S |    2 ++
+>  1 file changed, 2 insertions(+)
+>
+> diff --git a/arch/mips/lib/memcpy.S b/arch/mips/lib/memcpy.S
+> index 9245e1705e69..7e0250f3aec8 100644
+> --- a/arch/mips/lib/memcpy.S
+> +++ b/arch/mips/lib/memcpy.S
+> @@ -514,6 +514,8 @@
+>
+>  #ifdef CONFIG_CPU_MIPSR6
+>  .Lcopy_unaligned_bytes\@:
+> +       beqz    len, .Ldone\@
+> +        nop
+>  1:
+>         COPY_BYTE(0)
+>         COPY_BYTE(1)
 
-I'm inclined to think the binding documentation should list the
-supported compatible strings explicitly. If nothing else it helps with
-grepping.
+AFAICT it should never reach that if the amount to copy is zero bytes,
+so the check seems to be superfluous:
 
-Cheers
-James
-
-> +IRQCHIP_DECLARE(jz4780_intc, "ingenic,jz4780-intc", intc_2chip_of_init=
-);
->=20
+        sltu    t2, len, NBYTES <- check for < NBYTES (4/8 bit
+depending on 32/64 bit)
+        and     t1, dst, ADDRMASK
+        PREFS(  0, 1*32(src) )
+        PREFD(  1, 1*32(dst) )
+        bnez    t2, .Lcopy_bytes_checklen\@ <- skip to
+copy_bytes_checklen if < NBYTES
+         and    t0, src, ADDRMASK
+        PREFS(  0, 2*32(src) )
+        PREFD(  1, 2*32(dst) )
+#ifndef CONFIG_CPU_MIPSR6
+        bnez    t1, .Ldst_unaligned\@
+         nop
+        bnez    t0, .Lsrc_unaligned_dst_aligned\@
+#else
+        or      t0, t0, t1
+        bnez    t0, .Lcopy_unaligned_bytes\@ <- only outside place to
+branch to it, and only reachable if len >= NBYTES bytes.
+#endif
 
 
---3cT9p1RPjpqlaH9VcwhViiJQswiP8THBa
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
+And in the loop itself each COPY_BYTE() will already break out if len
+becomes zero, so the unconditional b 1b should also never be reached
+with len == 0 in that case..
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+But maybe I overlooked something.
 
-iQIcBAEBAgAGBQJVP2jtAAoJEGwLaZPeOHZ6gfQP/2TAPPF86JFy/sPyJbuX9FSs
-RvfpUbMhPfOt1SOB+pgXwk4RTPdtG6Iz/d2GobfRFCmgtR1Gc6BkwEFbGUPslwfX
-efRPGvhmGkNemZUWH6pNLOwdlLXGQqShhGpMDEDggTQbUK+Kd501erHriL1HGda1
-ffs+Ai1fvF4LFxhFEOVuhjZbHmk/g5WGw8cWRn8YXCx41YbXQlSxznHNkFyCQXy7
-qSRu6bWxyktdhyG7rJ13W5kdDoZbn5fPHnErSe+r0ALgTh16mJTeiExMHbd/kRbq
-kt1j3dgzwt6Aa5WHNeJ4x+XaGwXArauNm1HZxhg8E7SRJoSr63CvoIfa6glL1Uhd
-IYkk2ByPQTKcc7mt9Uu0VbA0f4koTjx95kDt+AWNKDAP16LPraY4T+SJmZZjl11X
-BHYvEXbad+4x9F5zJ6/I2QIkgdLWxSJuToKORKFhvEJHGlsDsm2fVoSgDyIh1Rdf
-19UzybA7UVf2u4buBfGLb6DIi9fFeEVlJeqwKeLT2GTjJ7FVBGLLY7GLyQNKIlmS
-u3IQdQtSoaG7zYFMfn2z8Hb0on1S6r6TYCy6J4kuxaSB7qmjv9Muz9Z+UxHEPm0E
-aC6RCMev4N8sVPs73/tIzHJ4yUJdM55R0PWmyzPhAsiNAXukUJuuoh0ipVgukxjB
-fawHWCaPw11eA85mY051
-=OKcw
------END PGP SIGNATURE-----
 
---3cT9p1RPjpqlaH9VcwhViiJQswiP8THBa--
+Regards
+Jonas

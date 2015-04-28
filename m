@@ -1,22 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Apr 2015 06:48:44 +0200 (CEST)
-Received: from mailout4.w1.samsung.com ([210.118.77.14]:9859 "EHLO
-        mailout4.w1.samsung.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011861AbbD1ErWuhgn9 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 28 Apr 2015 06:47:22 +0200
-Received: from eucpsbgm1.samsung.com (unknown [203.254.199.244])
- by mailout4.w1.samsung.com
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Apr 2015 06:49:00 +0200 (CEST)
+Received: from mailout3.w1.samsung.com ([210.118.77.13]:64369 "EHLO
+        mailout3.w1.samsung.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008595AbbD1Er2Ijkrs (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 28 Apr 2015 06:47:28 +0200
+Received: from eucpsbgm2.samsung.com (unknown [203.254.199.245])
+ by mailout3.w1.samsung.com
  (Oracle Communications Messaging Server 7.0.5.31.0 64bit (built May  5 2014))
- with ESMTP id <0NNI008B62MUPV60@mailout4.w1.samsung.com>; Tue,
- 28 Apr 2015 05:47:18 +0100 (BST)
-X-AuditID: cbfec7f4-f79c56d0000012ee-b5-553f10d9ce2b
+ with ESMTP id <0NNI00A8L2N06L60@mailout3.w1.samsung.com>; Tue,
+ 28 Apr 2015 05:47:24 +0100 (BST)
+X-AuditID: cbfec7f5-f794b6d000001495-9c-553f10e06794
 Received: from eusync1.samsung.com ( [203.254.199.211])
-        by eucpsbgm1.samsung.com (EUCPMTA) with SMTP id 8C.FD.04846.9D01F355; Tue,
- 28 Apr 2015 05:47:21 +0100 (BST)
+        by eucpsbgm2.samsung.com (EUCPMTA) with SMTP id 78.96.05269.0E01F355; Tue,
+ 28 Apr 2015 05:47:28 +0100 (BST)
 Received: from localhost.localdomain ([10.252.80.64])
  by eusync1.samsung.com (Oracle Communications Messaging Server 7.0.5.31.0
  64bit (built May  5 2014))
  with ESMTPA id <0NNI00A672LDPN10@eusync1.samsung.com>; Tue,
- 28 Apr 2015 05:47:18 +0100 (BST)
+ 28 Apr 2015 05:47:24 +0100 (BST)
 From:   Krzysztof Kozlowski <k.kozlowski@samsung.com>
 To:     Ralf Baechle <ralf@linux-mips.org>,
         Max Filippov <jcmvbkbc@gmail.com>,
@@ -38,30 +38,30 @@ To:     Ralf Baechle <ralf@linux-mips.org>,
 Cc:     Chanwoo Choi <cw00.choi@samsung.com>,
         Inki Dae <inki.dae@samsung.com>,
         Krzysztof Kozlowski <k.kozlowski@samsung.com>
-Subject: [PATCH v2 7/8] clk: ls1x: Fix duplicate const for parent names
-Date:   Tue, 28 Apr 2015 13:46:22 +0900
-Message-id: <1430196383-9190-8-git-send-email-k.kozlowski@samsung.com>
+Subject: [PATCH v2 8/8] MIPS: Alchemy: Remove unneeded cast removing const
+Date:   Tue, 28 Apr 2015 13:46:23 +0900
+Message-id: <1430196383-9190-9-git-send-email-k.kozlowski@samsung.com>
 X-Mailer: git-send-email 1.9.1
 In-reply-to: <1430196383-9190-1-git-send-email-k.kozlowski@samsung.com>
 References: <1430196383-9190-1-git-send-email-k.kozlowski@samsung.com>
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrHLMWRmVeSWpSXmKPExsVy+t/xy7o3BexDDU62s1o8OdTLbHH9y3NW
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFmpikeLIzCtJLcpLzFFi42I5/e/4Zd0HAvahBhNW6lo8OdTLbHH9y3NW
         i3OvHrFY/H/0mtVi0v0JLBbfHi5ktHj9wtCi//FrZotNj6+xWnzsucdqcXnXHDaLCVMnsVt8
-        evCf2WLG+X1MFp1fZrFZPJ1wkc1i0tqpjBY356dZXNqjYnH4DdCCH2e6WSxeHWxjsfi5ax6L
-        xapdfxgdJDwu9/UyeeycdZfdY9OqTjaPO9f2sHkcXbmWyWPzknqP3uZ3bB59W1Yxemy/No/Z
-        4/MmOY+Nc0MDuKO4bFJSczLLUov07RK4Ml60OBd0c1Rs7O1mbGB8ytbFyMkhIWAiceP+fHYI
-        W0ziwr31QHEuDiGBpYwSXx/vYAFJCAn8Z5R4Nd0cxGYTMJbYvHwJWJGIQA+bxNan95hBEswC
-        VRLz3u5g7WLk4BAWcJf49LUExGQRUJVo7qsCqeAVcJNoeLIQaq+cxMljk1lBbE6g6v7mPrBO
-        IaCazq78CYy8CxgZVjGKppYmFxQnpeca6hUn5haX5qXrJefnbmKExMqXHYyLj1kdYhTgYFTi
-        4c1gtg8VYk0sK67MPcQowcGsJMJb/McuVIg3JbGyKrUoP76oNCe1+BCjNAeLkjjv3F3vQ4QE
-        0hNLUrNTUwtSi2CyTBycUg2MfEt3rHg2aT/na6ZTlouK70Qed4mqrov4MUvixV/Ha8Wn2ivb
-        JM+ydTvKxG39dWXRq6TkeYmicVLLZpu7plgFaZ9JNGIqWLXZ56Tfv7+RJ/Pd2V5uinCd6VLX
-        MGWm+ZtDm1ad2ZPj+9FuyaG/6zlu/fd9ndLq8n97tWTWZAOnJqYZKlOXPrz6WImlOCPRUIu5
-        qDgRAK70Ly6RAgAA
+        evCf2WLG+X1MFp1fZrFZPJ1wkc1i0tqpjBY356dZXNqjYnH4TTurxY8z3SwWrw62sVj83DWP
+        xWLVrj+MDhIel/t6mTx2zrrL7rFpVSebx51re9g8jq5cy+SxeUm9R2/zOzaPvi2rGD22X5vH
+        7PF5k5zHxrmhAdxRXDYpqTmZZalF+nYJXBn7VpxmKbjCVfFo8wrWBsbvHF2MnBwSAiYST9Ys
+        YIKwxSQu3FvP1sXIxSEksJRR4sbtJawQzn9GiZNdH9hAqtgEjCU2L18CViUi0MMmsfXpPWaQ
+        BLNAlcS8tztYQWxhAS+JK5c/g8VZBFQl1u3uYAexeQXcJH73zmKHWCcncfLYZLB6TgF3if7m
+        PiCbA2ibm0RnV/4ERt4FjAyrGEVTS5MLipPSc430ihNzi0vz0vWS83M3MUJi5usOxqXHrA4x
+        CnAwKvHwFnDZhwqxJpYVV+YeYpTgYFYS4S3+YxcqxJuSWFmVWpQfX1Sak1p8iFGag0VJnHfm
+        rvchQgLpiSWp2ampBalFMFkmDk6pBsYua/OgL9VFX+WjNk/LXr7k33fG+dNfXVfeOVfh2Ptz
+        EYe6thXy9p24ZDh7vfSDTCPjs1PkVtes3mE8y9d80Xlu6aDQg016+eIOgYutV+le1tVq7Hh+
+        5+2PgNLDmrzfH7AvdvqoqqY7W+OJWc0Kr2QZI4WdlZd5zdJm/n5onviMwz912tY4EQUlluKM
+        REMt5qLiRABFaJQmlQIAAA==
 Return-Path: <k.kozlowski@samsung.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47110
+X-archive-position: 47111
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -78,30 +78,41 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Replace duplicated const keyword with proper array of const pointers to
-const strings.
+Parent names in clock init data is now array of const pointers to const
+strings so the cast is not needed.
 
 Signed-off-by: Krzysztof Kozlowski <k.kozlowski@samsung.com>
 ---
- drivers/clk/clk-ls1x.c | 6 +++---
+ arch/mips/alchemy/common/clock.c | 6 +++---
  1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/clk/clk-ls1x.c b/drivers/clk/clk-ls1x.c
-index ca80103ac188..d4c61985f448 100644
---- a/drivers/clk/clk-ls1x.c
-+++ b/drivers/clk/clk-ls1x.c
-@@ -80,9 +80,9 @@ static struct clk *__init clk_register_pll(struct device *dev,
- 	return clk;
- }
+diff --git a/arch/mips/alchemy/common/clock.c b/arch/mips/alchemy/common/clock.c
+index 6a98d2cb402c..6e46abe0dac6 100644
+--- a/arch/mips/alchemy/common/clock.c
++++ b/arch/mips/alchemy/common/clock.c
+@@ -752,12 +752,12 @@ static int __init alchemy_clk_init_fgens(int ctype)
+ 	switch (ctype) {
+ 	case ALCHEMY_CPU_AU1000...ALCHEMY_CPU_AU1200:
+ 		id.ops = &alchemy_clkops_fgenv1;
+-		id.parent_names = (const char **)alchemy_clk_fgv1_parents;
++		id.parent_names = alchemy_clk_fgv1_parents;
+ 		id.num_parents = 2;
+ 		break;
+ 	case ALCHEMY_CPU_AU1300:
+ 		id.ops = &alchemy_clkops_fgenv2;
+-		id.parent_names = (const char **)alchemy_clk_fgv2_parents;
++		id.parent_names = alchemy_clk_fgv2_parents;
+ 		id.num_parents = 3;
+ 		break;
+ 	default:
+@@ -961,7 +961,7 @@ static int __init alchemy_clk_setup_imux(int ctype)
+ 	struct clk *c;
  
--static const char const *cpu_parents[] = { "cpu_clk_div", "osc_33m_clk", };
--static const char const *ahb_parents[] = { "ahb_clk_div", "osc_33m_clk", };
--static const char const *dc_parents[] = { "dc_clk_div", "osc_33m_clk", };
-+static const char * const cpu_parents[] = { "cpu_clk_div", "osc_33m_clk", };
-+static const char * const ahb_parents[] = { "ahb_clk_div", "osc_33m_clk", };
-+static const char * const dc_parents[] = { "dc_clk_div", "osc_33m_clk", };
+ 	id.ops = &alchemy_clkops_csrc;
+-	id.parent_names = (const char **)alchemy_clk_csrc_parents;
++	id.parent_names = alchemy_clk_csrc_parents;
+ 	id.num_parents = 7;
+ 	id.flags = CLK_SET_RATE_PARENT | CLK_GET_RATE_NOCACHE;
  
- void __init ls1x_clk_init(void)
- {
 -- 
 1.9.1

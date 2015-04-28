@@ -1,37 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Apr 2015 09:20:57 +0200 (CEST)
-Received: from smtp-out-223.synserver.de ([212.40.185.223]:1129 "EHLO
-        smtp-out-223.synserver.de" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011873AbbD1HUzu1N0r (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 28 Apr 2015 09:20:55 +0200
-Received: (qmail 29651 invoked by uid 0); 28 Apr 2015 07:20:57 -0000
-X-SynServer-TrustedSrc: 1
-X-SynServer-AuthUser: lars@metafoo.de
-X-SynServer-PPID: 29568
-Received: from p4fde67af.dip0.t-ipconnect.de (HELO ?192.168.2.103?) [79.222.103.175]
-  by 217.119.54.73 with AES128-SHA encrypted SMTP; 28 Apr 2015 07:20:56 -0000
-Message-ID: <553F34DA.20400@metafoo.de>
-Date:   Tue, 28 Apr 2015 09:20:58 +0200
-From:   Lars-Peter Clausen <lars@metafoo.de>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Icedove/31.6.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Apr 2015 11:29:07 +0200 (CEST)
+Received: from mail-vn0-f49.google.com ([209.85.216.49]:34393 "EHLO
+        mail-vn0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011719AbbD1J3EhxGwZ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 28 Apr 2015 11:29:04 +0200
+Received: by vnbf190 with SMTP id f190so15351357vnb.1
+        for <linux-mips@linux-mips.org>; Tue, 28 Apr 2015 02:28:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc:content-type;
+        bh=GBiLpQJQ3OfTJ9xKD/9f6GAs1LondpZwdepN4b/JZJc=;
+        b=EuQ+8zh2/uXCO/5+0fceNZcAPardAOWbpLEMYH50ttTKT3OQCmFWVSPAvTz8xDStR2
+         7AgFxQDkcRnFTsfyPKZqydF6O2BCzX3O9B+E4hMv6u5VVQ2u0eqhZxIfNjYhI8u1Xe5k
+         AwwkCV29Bu3918DR8OOIRZaeo6lAKrqB9RV+nTZMqLjry2OexD4FnpSuFyF+e0Ans0GV
+         B9ZUfJLicG+1pVoG2MVmWG/b+G6DIwMGiO21lIzyMDBEzIQr4f9qc//FNnTv2ilBnOdw
+         m/GoDQNEd7gBOgbM2SNfpAdFFeLOGwGRvIb6KXdGhmr1SxAN7r0PrGU402VoP/Q/EL+C
+         ElbQ==
+X-Received: by 10.52.26.229 with SMTP id o5mr1212612vdg.27.1430213339229; Tue,
+ 28 Apr 2015 02:28:59 -0700 (PDT)
 MIME-Version: 1.0
-To:     Paul Burton <paul.burton@imgtec.com>, linux-mips@linux-mips.org
-CC:     Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [PATCH v4 14/37] MIPS: JZ4740: drop intc debugfs code
-References: <1429881457-16016-1-git-send-email-paul.burton@imgtec.com> <1429881457-16016-15-git-send-email-paul.burton@imgtec.com>
-In-Reply-To: <1429881457-16016-15-git-send-email-paul.burton@imgtec.com>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <lars@metafoo.de>
+Received: by 10.52.4.73 with HTTP; Tue, 28 Apr 2015 02:28:38 -0700 (PDT)
+In-Reply-To: <1430174880-27958-7-git-send-email-paul.gortmaker@windriver.com>
+References: <1430174880-27958-1-git-send-email-paul.gortmaker@windriver.com> <1430174880-27958-7-git-send-email-paul.gortmaker@windriver.com>
+From:   Sergey Ryazanov <ryazanov.s.a@gmail.com>
+Date:   Tue, 28 Apr 2015 12:28:38 +0300
+Message-ID: <CAHNKnsQkVQh-JNf8LKF+ain+B3xF-xdCTZ39wD6JoA+W6p322Q@mail.gmail.com>
+Subject: Re: [PATCH 06/11] mips/ath25: remove legacy __cpuinit section that
+ crept in
+To:     Paul Gortmaker <paul.gortmaker@windriver.com>
+Cc:     open list <linux-kernel@vger.kernel.org>,
+        Linux MIPS <linux-mips@linux-mips.org>
+Content-Type: text/plain; charset=ISO-8859-1
+Return-Path: <ryazanov.s.a@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47115
+X-archive-position: 47116
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: lars@metafoo.de
+X-original-sender: ryazanov.s.a@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,22 +52,20 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 04/24/2015 03:17 PM, Paul Burton wrote:
-> The debugfs code becomes a nuisance when attempting to avoid globals,
-> since the interrupt controller probe function run too early for it to be
-> safe to create the debugfs files. Drop it.
+2015-04-28 1:47 GMT+03:00 Paul Gortmaker <paul.gortmaker@windriver.com>:
+> We removed __cpuinit support (leaving no-op stubs) quite some time ago.
+> However this one crept back in as of commit 43cc739fd98b8c517ad45756d869f
+> ("MIPS: ath25: add common parts")
 >
-> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-> Cc: Lars-Peter Clausen <lars@metafoo.de>
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Jason Cooper <jason@lakedaemon.net>
-> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Since we want to clobber the stubs soon, get this removed now.
+>
+> Cc: Sergey Ryazanov <ryazanov.s.a@gmail.com>
 > Cc: linux-mips@linux-mips.org
-> ---
-> I recognise this one may be controversial. Please shout if you care
-> about this debugfs code!
+> Signed-off-by: Paul Gortmaker <paul.gortmaker@windriver.com>
 
-It's ok, it was useful during initial development of the driver, but I doubt 
-anybody ever look at the debugfs files after it.
+Looks like I missed that this macro is scheduled for removing.
 
-Acked-by: Lars-Peter Clausen <lars@metafoo.de>
+Acked-by: Sergey Ryazanov <ryazanov.s.a@gmail.com>
+
+-- 
+Sergey

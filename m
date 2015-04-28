@@ -1,73 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Apr 2015 17:11:52 +0200 (CEST)
-Received: from mail.kapsi.fi ([217.30.184.167]:57075 "EHLO mail.kapsi.fi"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27026218AbbD1PLvK56fv (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 28 Apr 2015 17:11:51 +0200
-Received: from [2001:708:30:12d0:beee:7bff:fe5b:f272]
-        by mail.kapsi.fi with esmtpsa (TLS1.2:DHE_RSA_AES_128_CBC_SHA1:128)
-        (Exim 4.80)
-        (envelope-from <mikko.perttunen@kapsi.fi>)
-        id 1Yn7AY-0001Zj-RK; Tue, 28 Apr 2015 18:11:30 +0300
-Message-ID: <553FA320.4040006@kapsi.fi>
-Date:   Tue, 28 Apr 2015 18:11:28 +0300
-From:   Mikko Perttunen <mikko.perttunen@kapsi.fi>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.4.0
-MIME-Version: 1.0
-To:     Boris Brezillon <boris.brezillon@free-electrons.com>,
-        Mike Turquette <mturquette@linaro.org>
-CC:     Jonathan Corbet <corbet@lwn.net>, Shawn Guo <shawn.guo@linaro.org>,
-        ascha Hauer <kernel@pengutronix.de>,
-        David Brown <davidb@codeaurora.org>,
-        Daniel Walker <dwalker@fifo99.com>,
-        Bryan Huntsman <bryanh@codeaurora.org>,
-        Tony Lindgren <tony@atomide.com>,
-        Paul Walmsley <paul@pwsan.com>,
-        Liviu Dudau <liviu.dudau@arm.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Apr 2015 17:41:05 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:17084 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27026213AbbD1PlDILOLq convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 28 Apr 2015 17:41:03 +0200
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 8051DD0FE1DF9;
+        Tue, 28 Apr 2015 16:40:56 +0100 (IST)
+Received: from BADAG01.ba.imgtec.org (10.20.40.113) by KLMAIL01.kl.imgtec.org
+ (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Tue, 28 Apr
+ 2015 16:40:58 +0100
+Received: from BADAG02.ba.imgtec.org ([fe80::612d:e977:c603:32d6]) by
+ BADAG01.ba.imgtec.org ([fe80::8c38:df2b:fd93:33d3%14]) with mapi id
+ 14.03.0123.003; Tue, 28 Apr 2015 08:40:56 -0700
+From:   Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+To:     Jonas Gorski <jogo@openwrt.org>
+CC:     MIPS Mailing List <linux-mips@linux-mips.org>,
+        Markos Chandras <Markos.Chandras@imgtec.com>,
         Ralf Baechle <ralf@linux-mips.org>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Sylwester Nawrocki <s.nawrocki@samsung.com>,
-        Tomasz Figa <tomasz.figa@gmail.com>,
-        Barry Song <baohua@kernel.org>,
-        Viresh Kumar <viresh.linux@gmail.com>,
-        =?UTF-8?B?RW1pbGlvIEzDs3Bleg==?= <emilio@elopez.com.ar>,
-        Maxime Ripard <maxime.ripard@free-electrons.com>,
-        Peter De Schrijver <pdeschrijver@nvidia.com>,
-        Prashant Gaikwad <pgaikwad@nvidia.com>,
-        Stephen Warren <swarren@wwwdotorg.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Alexandre Courbot <gnurou@gmail.com>,
-        Tero Kristo <t-kristo@ti.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Michal Simek <michal.simek@xilinx.com>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-arm-msm@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-mips@linux-mips.org, patches@opensource.wolfsonmicro.com,
-        linux-rockchip@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, spear-devel@list.st.com,
-        linux-tegra@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-media@vger.kernel.org, rtc-linux@googlegroups.com
-Subject: Re: [PATCH 1/2] clk: change clk_ops' ->round_rate() prototype
-References: <1429255769-13639-1-git-send-email-boris.brezillon@free-electrons.com> <1429255769-13639-2-git-send-email-boris.brezillon@free-electrons.com>
-In-Reply-To: <1429255769-13639-2-git-send-email-boris.brezillon@free-electrons.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 2001:708:30:12d0:beee:7bff:fe5b:f272
-X-SA-Exim-Mail-From: mikko.perttunen@kapsi.fi
-X-SA-Exim-Scanned: No (on mail.kapsi.fi); SAEximRunCond expanded to false
-Return-Path: <mikko.perttunen@kapsi.fi>
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] MIPS: R6: memcpy bugfix - zero length overwrites memory
+Thread-Topic: [PATCH] MIPS: R6: memcpy bugfix - zero length overwrites memory
+Thread-Index: AQHQgULZ1bzX0vDhRkipbErP9k3qlp1iuxGA///V1yI=
+Date:   Tue, 28 Apr 2015 15:40:55 +0000
+Message-ID: <2t0ohi7dtgbcu7itm7j8br57.1430235652967@email.android.com>
+References: <20150427233529.4423.20839.stgit@ubuntu-yegoshin>,<CAOiHx==LrOO26tPCxxh27bQ0b2a28LzvL054fQ6UVLFAvAOJYw@mail.gmail.com>
+In-Reply-To: <CAOiHx==LrOO26tPCxxh27bQ0b2a28LzvL054fQ6UVLFAvAOJYw@mail.gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+MIME-Version: 1.0
+Return-Path: <Leonid.Yegoshin@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47136
+X-archive-position: 47137
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mikko.perttunen@kapsi.fi
+X-original-sender: Leonid.Yegoshin@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -80,17 +53,74 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The series
+You right,
 
-Tested-by: Mikko Perttunen <mikko.perttunen@kapsi.fi>
+I am debugging new core and got a wrong backtrace.
 
-on Jetson-TK1.
+Please cancel it, sorry for noise.
 
-I rebased my cpufreq series on top of this and everything's working well 
-now. :)
+- Leonid.
 
-Thanks,
-Mikko.
 
-On 04/17/2015 10:29 AM, Boris Brezillon wrote:
-> ...
+Jonas Gorski <jogo@openwrt.org> wrote:
+
+
+Hi,
+
+On Tue, Apr 28, 2015 at 1:35 AM, Leonid Yegoshin
+<Leonid.Yegoshin@imgtec.com> wrote:
+> MIPS R6 version of memcpy has bug - then length to copy is zero
+> and addresses are not aligned then it can overwrite a whole memory.
+>
+> Signed-off-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+> ---
+>  arch/mips/lib/memcpy.S |    2 ++
+>  1 file changed, 2 insertions(+)
+>
+> diff --git a/arch/mips/lib/memcpy.S b/arch/mips/lib/memcpy.S
+> index 9245e1705e69..7e0250f3aec8 100644
+> --- a/arch/mips/lib/memcpy.S
+> +++ b/arch/mips/lib/memcpy.S
+> @@ -514,6 +514,8 @@
+>
+>  #ifdef CONFIG_CPU_MIPSR6
+>  .Lcopy_unaligned_bytes\@:
+> +       beqz    len, .Ldone\@
+> +        nop
+>  1:
+>         COPY_BYTE(0)
+>         COPY_BYTE(1)
+
+AFAICT it should never reach that if the amount to copy is zero bytes,
+so the check seems to be superfluous:
+
+        sltu    t2, len, NBYTES <- check for < NBYTES (4/8 bit
+depending on 32/64 bit)
+        and     t1, dst, ADDRMASK
+        PREFS(  0, 1*32(src) )
+        PREFD(  1, 1*32(dst) )
+        bnez    t2, .Lcopy_bytes_checklen\@ <- skip to
+copy_bytes_checklen if < NBYTES
+         and    t0, src, ADDRMASK
+        PREFS(  0, 2*32(src) )
+        PREFD(  1, 2*32(dst) )
+#ifndef CONFIG_CPU_MIPSR6
+        bnez    t1, .Ldst_unaligned\@
+         nop
+        bnez    t0, .Lsrc_unaligned_dst_aligned\@
+#else
+        or      t0, t0, t1
+        bnez    t0, .Lcopy_unaligned_bytes\@ <- only outside place to
+branch to it, and only reachable if len >= NBYTES bytes.
+#endif
+
+
+And in the loop itself each COPY_BYTE() will already break out if len
+becomes zero, so the unconditional b 1b should also never be reached
+with len == 0 in that case..
+
+But maybe I overlooked something.
+
+
+Regards
+Jonas

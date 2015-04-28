@@ -1,56 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Apr 2015 14:29:34 +0200 (CEST)
-Received: from mail-ob0-f178.google.com ([209.85.214.178]:35182 "EHLO
-        mail-ob0-f178.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27026193AbbD1M3cxCVQr (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 28 Apr 2015 14:29:32 +0200
-Received: by obcux3 with SMTP id ux3so106526656obc.2
-        for <linux-mips@linux-mips.org>; Tue, 28 Apr 2015 05:29:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc:content-type;
-        bh=gGvg95Zw6Z3ZDf1nbZDp2lBsScm5mf3GX+fDkdW1Ba8=;
-        b=VqrgyYATT8fmSdzkuffhaTJztHwKWq9+cF4y7LfdBQIbWbGcWJUCcb0qMWptj7YiLv
-         xyKho/tyGI399YOjMXgF0N/t0tqRNLe+2TCTVZQV6rErlSGXuQFoIm2TwSw04ck9ODRO
-         KOCJwV2HHcVd/M+CZG2fx1WH3JiTwZiso2xOGk/8piipzIEZkoeu+JBvY+jtDZWwz6iP
-         7BrTGfL282NO29T4tJfsPEMkj283gzhHw+dsneinE83j5BNjyjUWIV9NrAfZCs2azM4B
-         LIm3bkxpTzzGCmM0c17l7ZTC0FkkKAE6NBzzRthSMjG63QPu1PpDzW8We20EVYNzYy+1
-         rBvA==
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Apr 2015 16:10:39 +0200 (CEST)
+Received: from e06smtp11.uk.ibm.com ([195.75.94.107]:43451 "EHLO
+        e06smtp11.uk.ibm.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27011723AbbD1OKhr0Hdn (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 28 Apr 2015 16:10:37 +0200
+Received: from /spool/local
+        by e06smtp11.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <linux-mips@linux-mips.org> from <borntraeger@de.ibm.com>;
+        Tue, 28 Apr 2015 15:10:32 +0100
+Received: from d06dlp02.portsmouth.uk.ibm.com (9.149.20.14)
+        by e06smtp11.uk.ibm.com (192.168.101.141) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        Tue, 28 Apr 2015 15:10:30 +0100
+Received: from b06cxnps3075.portsmouth.uk.ibm.com (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
+        by d06dlp02.portsmouth.uk.ibm.com (Postfix) with ESMTP id 0B1212190046
+        for <linux-mips@linux-mips.org>; Tue, 28 Apr 2015 15:10:12 +0100 (BST)
+Received: from d06av04.portsmouth.uk.ibm.com (d06av04.portsmouth.uk.ibm.com [9.149.37.216])
+        by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id t3SEAT5l7668208
+        for <linux-mips@linux-mips.org>; Tue, 28 Apr 2015 14:10:29 GMT
+Received: from d06av04.portsmouth.uk.ibm.com (localhost [127.0.0.1])
+        by d06av04.portsmouth.uk.ibm.com (8.14.4/8.14.4/NCO v10.0 AVout) with ESMTP id t3SEARnW009572
+        for <linux-mips@linux-mips.org>; Tue, 28 Apr 2015 08:10:28 -0600
+Received: from oc1450873852.ibm.com (sig-9-81-65-26.evts.uk.ibm.com [9.81.65.26])
+        by d06av04.portsmouth.uk.ibm.com (8.14.4/8.14.4/NCO v10.0 AVin) with ESMTP id t3SEAOMo009349;
+        Tue, 28 Apr 2015 08:10:25 -0600
+Message-ID: <553F94CF.2080409@de.ibm.com>
+Date:   Tue, 28 Apr 2015 16:10:23 +0200
+From:   Christian Borntraeger <borntraeger@de.ibm.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.6.0
 MIME-Version: 1.0
-X-Received: by 10.202.174.131 with SMTP id x125mr13601836oie.18.1430224167635;
- Tue, 28 Apr 2015 05:29:27 -0700 (PDT)
-Received: by 10.60.103.171 with HTTP; Tue, 28 Apr 2015 05:29:27 -0700 (PDT)
-In-Reply-To: <87pp6osaog.fsf@rustcorp.com.au>
-References: <1430128286-8952-1-git-send-email-geert@linux-m68k.org>
-        <CAMuHMdWoUPZ92GX9fe8eq87buLQOT9GMb6Ru3_bQJpkZTFph0g@mail.gmail.com>
-        <871tj4uara.fsf@rustcorp.com.au>
-        <CAMuHMdWj=khxL5dw=O3ymdTE+kBfxa0-gFKZ-ngQ-x4Fzzav1Q@mail.gmail.com>
-        <87pp6osaog.fsf@rustcorp.com.au>
-Date:   Tue, 28 Apr 2015 14:29:27 +0200
-X-Google-Sender-Auth: NtRYAQIUI3ZFQqA0z_sh_oXbIi8
-Message-ID: <CAMuHMdXEH6ZnTSdBi2uJzPriqTLvJvd0bPYH3NPWV5LjZB5S=A@mail.gmail.com>
-Subject: Re: Build regressions/improvements in v4.1-rc1
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-To:     Rusty Russell <rusty@rustcorp.com.au>
-Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        sparclinux <sparclinux@vger.kernel.org>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-        Mark Brown <broonie@kernel.org>,
-        DRI Development <dri-devel@lists.freedesktop.org>,
-        Matthew Wilcox <willy@linux.intel.com>,
-        Chris Metcalf <cmetcalf@ezchip.com>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <geert.uytterhoeven@gmail.com>
+To:     Paolo Bonzini <pbonzini@redhat.com>
+CC:     KVM <kvm@vger.kernel.org>, kvm-ppc@vger.kernel.org,
+        kvmarm@lists.cs.columbia.edu, linux-mips@linux-mips.org,
+        Cornelia Huck <cornelia.huck@de.ibm.com>,
+        Alexander Graf <agraf@suse.de>
+Subject: Re: [PATCH/RFC 2/2] KVM: push down irq_save from kvm_guest_exit
+References: <1430217168-25504-1-git-send-email-borntraeger@de.ibm.com> <1430217168-25504-3-git-send-email-borntraeger@de.ibm.com> <553F70E9.50907@redhat.com>
+In-Reply-To: <553F70E9.50907@redhat.com>
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
+X-TM-AS-MML: disable
+X-Content-Scanned: Fidelis XPS MAILER
+x-cbid: 15042814-0041-0000-0000-00000439C4DD
+Return-Path: <borntraeger@de.ibm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47132
+X-archive-position: 47133
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: borntraeger@de.ibm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -63,21 +61,48 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-cc Chris
+Am 28.04.2015 um 13:37 schrieb Paolo Bonzini:
+>> --- a/arch/powerpc/kvm/book3s_pr.c
+>> +++ b/arch/powerpc/kvm/book3s_pr.c
+>> @@ -891,7 +891,9 @@ int kvmppc_handle_exit_pr(struct kvm_run *run, struct kvm_vcpu *vcpu,
+>>  
+>>  	/* We get here with MSR.EE=1 */
+>>  
+>> +	local_irq_disable();
+>>  	trace_kvm_exit(exit_nr, vcpu);
+>> +	local_irq_enable();
+>>  	kvm_guest_exit();
+> 
+> This looks wrong.
+> 
+Yes it is.
 
-On Tue, Apr 28, 2015 at 2:24 PM, Rusty Russell <rusty@rustcorp.com.au> wrote:
-> Geert Uytterhoeven <geert@linux-m68k.org> writes:
->>> Can't see that one with a simple grep: can you post warning?
->>
->> /home/kisskb/slave/src/arch/tile/kernel/setup.c: In function 'zone_sizes_init':
->> /home/kisskb/slave/src/arch/tile/kernel/setup.c:777:3: warning:
->> passing argument 2 of 'cpumask_test_cpu' from incompatible pointer
->> type [enabled by default]
->> /home/kisskb/slave/src/include/linux/cpumask.h:294:19: note: expected
->> 'const struct cpumask *' but argument is of type 'struct nodemask_t *'
->
-> Um, I turned the cpu_isset() into cpumask_test_cpu(), but that just
-> showed this bug up.  The tile maintainers need to fix this one.
->
-> Thanks,
-> Rusty.
+>> --- a/include/linux/kvm_host.h
+>> +++ b/include/linux/kvm_host.h
+>> @@ -773,11 +773,7 @@ static inline void kvm_guest_enter(void)
+>>  
+>>  static inline void kvm_guest_exit(void)
+>>  {
+>> -	unsigned long flags;
+>> -
+>> -	local_irq_save(flags);
+> 
+> Why no WARN_ON here?
+
+Yes,WARN_ON makes sense.
+Hmm, on the other hand the  irqs_disabled call might be somewhat expensive again
+(would boil down on s390 to call stnsm (store and and system mask) once for 
+query and once for setting.
+
+so...
+> 
+> I think the patches are sensible, especially since you can add warnings.
+>  This kind of code definitely knows if it has interrupts disabled or enabled
+> 
+> Alternatively, the irq-disabled versions could be called
+> __kvm_guest_{enter,exit}.  Then you can use those directly when it makes
+> sense.
+
+..having a special  __kvm_guest_{enter,exit} without the WARN_ON might be even
+the cheapest way. In that way I could leave everything besides s390 alone and
+arch maintainers can do a followup patch if appropriate.

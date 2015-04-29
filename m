@@ -1,51 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Apr 2015 11:18:06 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:63235 "EHLO
-        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27011856AbbD2JSDRkYVA (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 29 Apr 2015 11:18:03 +0200
-Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
-        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 9DADE41F8DED;
-        Wed, 29 Apr 2015 10:17:59 +0100 (BST)
-Received: from mailapp01.imgtec.com ([10.100.180.241])
-  by imgpgp01.kl.imgtec.org (PGP Universal service);
-  Wed, 29 Apr 2015 10:17:59 +0100
-X-PGP-Universal: processed;
-        by imgpgp01.kl.imgtec.org on Wed, 29 Apr 2015 10:17:59 +0100
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id AC5ABE94CF6AF;
-        Wed, 29 Apr 2015 10:17:57 +0100 (IST)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Wed, 29 Apr 2015 10:17:59 +0100
-Received: from [192.168.154.110] (192.168.154.110) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Wed, 29 Apr
- 2015 10:17:58 +0100
-Message-ID: <5540A1BF.7060408@imgtec.com>
-Date:   Wed, 29 Apr 2015 10:17:51 +0100
-From:   James Hogan <james.hogan@imgtec.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.5.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Apr 2015 11:39:04 +0200 (CEST)
+Received: from bastet.se.axis.com ([195.60.68.11]:43933 "EHLO
+        bastet.se.axis.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27011967AbbD2JjB0ykUc (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 29 Apr 2015 11:39:01 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by bastet.se.axis.com (Postfix) with ESMTP id 9CBAB18101;
+        Wed, 29 Apr 2015 11:38:56 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at bastet.se.axis.com
+Received: from bastet.se.axis.com ([IPv6:::ffff:127.0.0.1])
+        by localhost (bastet.se.axis.com [::ffff:127.0.0.1]) (amavisd-new, port 10024)
+        with LMTP id UyCWJYinJkeX; Wed, 29 Apr 2015 11:38:56 +0200 (CEST)
+Received: from boulder.se.axis.com (boulder.se.axis.com [10.0.2.104])
+        by bastet.se.axis.com (Postfix) with ESMTP id 1591C180B2;
+        Wed, 29 Apr 2015 11:38:56 +0200 (CEST)
+Received: from boulder.se.axis.com (localhost [127.0.0.1])
+        by postfix.imss71 (Postfix) with ESMTP id F1CDC14AC;
+        Wed, 29 Apr 2015 11:38:55 +0200 (CEST)
+Received: from seth.se.axis.com (seth.se.axis.com [10.0.2.172])
+        by boulder.se.axis.com (Postfix) with ESMTP id E5DD41217;
+        Wed, 29 Apr 2015 11:38:55 +0200 (CEST)
+Received: from xmail2.se.axis.com (xmail2.se.axis.com [10.0.5.74])
+        by seth.se.axis.com (Postfix) with ESMTP id E31363E049;
+        Wed, 29 Apr 2015 11:38:55 +0200 (CEST)
+Received: from [10.94.49.1] (10.94.49.1) by xmail2.se.axis.com (10.0.5.74)
+ with Microsoft SMTP Server (TLS) id 8.3.342.0; Wed, 29 Apr 2015 11:38:56
+ +0200
+Message-ID: <5540A6AF.5090701@axis.com>
+Date:   Wed, 29 Apr 2015 11:38:55 +0200
+From:   Niklas Cassel <niklas.cassel@axis.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Icedove/31.4.0
 MIME-Version: 1.0
-To:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
-        <linux-mips@linux-mips.org>, <macro@linux-mips.org>,
-        <markos.chandras@imgtec.com>, <ralf@linux-mips.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] MIPS64: R6: R2 emulation bugfix
-References: <20150428195335.11229.4516.stgit@ubuntu-yegoshin>
-In-Reply-To: <20150428195335.11229.4516.stgit@ubuntu-yegoshin>
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature";
-        boundary="jlhnoPVHrTmPgiB8jsF4kIC0QHldAfuCp"
-X-Originating-IP: [192.168.154.110]
-X-ESG-ENCRYPT-TAG: da4c5968
-Return-Path: <James.Hogan@imgtec.com>
+To:     Ezequiel Garcia <ezequiel.garcia@imgtec.com>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        Ralf Baechle <ralf@linux-mips.org>
+CC:     Niklas Cassel <niklass@axis.com>
+Subject: Re: [PATCH] MIPS: Fix up obsolete cpu_set usage
+References: <1430256863-811-1-git-send-email-ezequiel.garcia@imgtec.com>
+In-Reply-To: <1430256863-811-1-git-send-email-ezequiel.garcia@imgtec.com>
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: 7bit
+Return-Path: <niklas.cassel@axis.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47159
+X-archive-position: 47160
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: niklas.cassel@axis.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,258 +60,38 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---jlhnoPVHrTmPgiB8jsF4kIC0QHldAfuCp
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+On 04/28/2015 11:34 PM, Ezequiel Garcia wrote:
+> cpu_set was removed (along with a bunch of cpumask helpers) by
+> commit 2f0f267ea072 ("cpumask: remove deprecated functions.").
+> 
+> Fix this by replacing cpu_set with cpumask_set_cpu. Without this
+> fix the following error is triggered when CONFIG_MIPS_MT_FPAFF=y.
+> 
+>   arch/mips/kernel/smp-cps.c: In function 'cps_smp_setup':
+>   arch/mips/kernel/smp-cps.c:95:3: error: implicit declaration of function 'cpu_set' [-Werror=implicit-function-declaration]
+> 
+> Fixes: 90db024f140d ("MIPS: smp-cps: cpu_set FPU mask if FPU present")
+> Signed-off-by: Ezequiel Garcia <ezequiel.garcia@imgtec.com>
 
-Hi Leonid,
+Acked-by: Niklas Cassel <niklass@axis.com>
 
-On 28/04/15 20:53, Leonid Yegoshin wrote:
-> Error recovery pointers for fixups was improperly set as ".word"
-> which is unsuitable for MIPS64.
->=20
-> Replaced by __stringify(PTR)
-
-Every other case of this sort of thing uses STR(PTR) (or __UA_ADDR in
-uaccess.h). Can we stick to STR(PTR) for consistency please?
-
-With that change made:
-Reviewed-by: James Hogan <james.hogan@imgtec.com>
-
-Please also add these tags:
-
-Fixes: b0a668fb2038 ("MIPS: kernel: mips-r2-to-r6-emul: Add R2 emulator f=
-or MIPS R6")
-Cc: <stable@vger.kernel.org> # 4.0+
-
-Thanks
-James
-
->=20
-> Signed-off-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
 > ---
->  arch/mips/kernel/mips-r2-to-r6-emul.c |  104 +++++++++++++++++--------=
---------
->  1 file changed, 52 insertions(+), 52 deletions(-)
->=20
-> diff --git a/arch/mips/kernel/mips-r2-to-r6-emul.c b/arch/mips/kernel/m=
-ips-r2-to-r6-emul.c
-> index f2977f00911b..c6f079f8f3dc 100644
-> --- a/arch/mips/kernel/mips-r2-to-r6-emul.c
-> +++ b/arch/mips/kernel/mips-r2-to-r6-emul.c
-> @@ -1250,10 +1250,10 @@ fpu_emul:
->  			"	j	10b\n"
->  			"	.previous\n"
->  			"	.section	__ex_table,\"a\"\n"
-> -			"	.word	1b,8b\n"
-> -			"	.word	2b,8b\n"
-> -			"	.word	3b,8b\n"
-> -			"	.word	4b,8b\n"
-> +			__stringify(PTR) " 1b,8b\n"
-> +			__stringify(PTR) " 2b,8b\n"
-> +			__stringify(PTR) " 3b,8b\n"
-> +			__stringify(PTR) " 4b,8b\n"
->  			"	.previous\n"
->  			"	.set	pop\n"
->  			: "+&r"(rt), "=3D&r"(rs),
-> @@ -1325,10 +1325,10 @@ fpu_emul:
->  			"	j	10b\n"
->  			"       .previous\n"
->  			"	.section	__ex_table,\"a\"\n"
-> -			"	.word	1b,8b\n"
-> -			"	.word	2b,8b\n"
-> -			"	.word	3b,8b\n"
-> -			"	.word	4b,8b\n"
-> +			__stringify(PTR) " 1b,8b\n"
-> +			__stringify(PTR) " 2b,8b\n"
-> +			__stringify(PTR) " 3b,8b\n"
-> +			__stringify(PTR) " 4b,8b\n"
->  			"	.previous\n"
->  			"	.set	pop\n"
->  			: "+&r"(rt), "=3D&r"(rs),
-> @@ -1396,10 +1396,10 @@ fpu_emul:
->  			"	j	9b\n"
->  			"	.previous\n"
->  			"	.section        __ex_table,\"a\"\n"
-> -			"	.word	1b,8b\n"
-> -			"	.word	2b,8b\n"
-> -			"	.word	3b,8b\n"
-> -			"	.word	4b,8b\n"
-> +			__stringify(PTR) " 1b,8b\n"
-> +			__stringify(PTR) " 2b,8b\n"
-> +			__stringify(PTR) " 3b,8b\n"
-> +			__stringify(PTR) " 4b,8b\n"
->  			"	.previous\n"
->  			"	.set	pop\n"
->  			: "+&r"(rt), "=3D&r"(rs),
-> @@ -1466,10 +1466,10 @@ fpu_emul:
->  			"	j	9b\n"
->  			"	.previous\n"
->  			"	.section        __ex_table,\"a\"\n"
-> -			"	.word	1b,8b\n"
-> -			"	.word	2b,8b\n"
-> -			"	.word	3b,8b\n"
-> -			"	.word	4b,8b\n"
-> +			__stringify(PTR) " 1b,8b\n"
-> +			__stringify(PTR) " 2b,8b\n"
-> +			__stringify(PTR) " 3b,8b\n"
-> +			__stringify(PTR) " 4b,8b\n"
->  			"	.previous\n"
->  			"	.set	pop\n"
->  			: "+&r"(rt), "=3D&r"(rs),
-> @@ -1581,14 +1581,14 @@ fpu_emul:
->  			"	j	9b\n"
->  			"	.previous\n"
->  			"	.section        __ex_table,\"a\"\n"
-> -			"	.word	1b,8b\n"
-> -			"	.word	2b,8b\n"
-> -			"	.word	3b,8b\n"
-> -			"	.word	4b,8b\n"
-> -			"	.word	5b,8b\n"
-> -			"	.word	6b,8b\n"
-> -			"	.word	7b,8b\n"
-> -			"	.word	0b,8b\n"
-> +			__stringify(PTR) " 1b,8b\n"
-> +			__stringify(PTR) " 2b,8b\n"
-> +			__stringify(PTR) " 3b,8b\n"
-> +			__stringify(PTR) " 4b,8b\n"
-> +			__stringify(PTR) " 5b,8b\n"
-> +			__stringify(PTR) " 6b,8b\n"
-> +			__stringify(PTR) " 7b,8b\n"
-> +			__stringify(PTR) " 0b,8b\n"
->  			"	.previous\n"
->  			"	.set	pop\n"
->  			: "+&r"(rt), "=3D&r"(rs),
-> @@ -1700,14 +1700,14 @@ fpu_emul:
->  			"	j      9b\n"
->  			"	.previous\n"
->  			"	.section        __ex_table,\"a\"\n"
-> -			"	.word  1b,8b\n"
-> -			"	.word  2b,8b\n"
-> -			"	.word  3b,8b\n"
-> -			"	.word  4b,8b\n"
-> -			"	.word  5b,8b\n"
-> -			"	.word  6b,8b\n"
-> -			"	.word  7b,8b\n"
-> -			"	.word  0b,8b\n"
-> +			__stringify(PTR) " 1b,8b\n"
-> +			__stringify(PTR) " 2b,8b\n"
-> +			__stringify(PTR) " 3b,8b\n"
-> +			__stringify(PTR) " 4b,8b\n"
-> +			__stringify(PTR) " 5b,8b\n"
-> +			__stringify(PTR) " 6b,8b\n"
-> +			__stringify(PTR) " 7b,8b\n"
-> +			__stringify(PTR) " 0b,8b\n"
->  			"	.previous\n"
->  			"	.set    pop\n"
->  			: "+&r"(rt), "=3D&r"(rs),
-> @@ -1819,14 +1819,14 @@ fpu_emul:
->  			"	j	9b\n"
->  			"	.previous\n"
->  			"	.section        __ex_table,\"a\"\n"
-> -			"	.word	1b,8b\n"
-> -			"	.word	2b,8b\n"
-> -			"	.word	3b,8b\n"
-> -			"	.word	4b,8b\n"
-> -			"	.word	5b,8b\n"
-> -			"	.word	6b,8b\n"
-> -			"	.word	7b,8b\n"
-> -			"	.word	0b,8b\n"
-> +			__stringify(PTR) " 1b,8b\n"
-> +			__stringify(PTR) " 2b,8b\n"
-> +			__stringify(PTR) " 3b,8b\n"
-> +			__stringify(PTR) " 4b,8b\n"
-> +			__stringify(PTR) " 5b,8b\n"
-> +			__stringify(PTR) " 6b,8b\n"
-> +			__stringify(PTR) " 7b,8b\n"
-> +			__stringify(PTR) " 0b,8b\n"
->  			"	.previous\n"
->  			"	.set	pop\n"
->  			: "+&r"(rt), "=3D&r"(rs),
-> @@ -1937,14 +1937,14 @@ fpu_emul:
->  			"       j	9b\n"
->  			"       .previous\n"
->  			"       .section        __ex_table,\"a\"\n"
-> -			"       .word	1b,8b\n"
-> -			"       .word	2b,8b\n"
-> -			"       .word	3b,8b\n"
-> -			"       .word	4b,8b\n"
-> -			"       .word	5b,8b\n"
-> -			"       .word	6b,8b\n"
-> -			"       .word	7b,8b\n"
-> -			"       .word	0b,8b\n"
-> +			__stringify(PTR) " 1b,8b\n"
-> +			__stringify(PTR) " 2b,8b\n"
-> +			__stringify(PTR) " 3b,8b\n"
-> +			__stringify(PTR) " 4b,8b\n"
-> +			__stringify(PTR) " 5b,8b\n"
-> +			__stringify(PTR) " 6b,8b\n"
-> +			__stringify(PTR) " 7b,8b\n"
-> +			__stringify(PTR) " 0b,8b\n"
->  			"       .previous\n"
->  			"       .set	pop\n"
->  			: "+&r"(rt), "=3D&r"(rs),
-> @@ -1999,7 +1999,7 @@ fpu_emul:
->  			"j	2b\n"
->  			".previous\n"
->  			".section        __ex_table,\"a\"\n"
-> -			".word  1b, 3b\n"
-> +			__stringify(PTR) " 1b,3b\n"
->  			".previous\n"
->  			: "=3D&r"(res), "+&r"(err)
->  			: "r"(vaddr), "i"(SIGSEGV)
-> @@ -2057,7 +2057,7 @@ fpu_emul:
->  			"j	2b\n"
->  			".previous\n"
->  			".section        __ex_table,\"a\"\n"
-> -			".word	1b, 3b\n"
-> +			__stringify(PTR) " 1b,3b\n"
->  			".previous\n"
->  			: "+&r"(res), "+&r"(err)
->  			: "r"(vaddr), "i"(SIGSEGV));
-> @@ -2118,7 +2118,7 @@ fpu_emul:
->  			"j	2b\n"
->  			".previous\n"
->  			".section        __ex_table,\"a\"\n"
-> -			".word  1b, 3b\n"
-> +			__stringify(PTR) " 1b,3b\n"
->  			".previous\n"
->  			: "=3D&r"(res), "+&r"(err)
->  			: "r"(vaddr), "i"(SIGSEGV)
-> @@ -2181,7 +2181,7 @@ fpu_emul:
->  			"j	2b\n"
->  			".previous\n"
->  			".section        __ex_table,\"a\"\n"
-> -			".word	1b, 3b\n"
-> +			__stringify(PTR) " 1b,3b\n"
->  			".previous\n"
->  			: "+&r"(res), "+&r"(err)
->  			: "r"(vaddr), "i"(SIGSEGV));
->=20
->=20
-
-
---jlhnoPVHrTmPgiB8jsF4kIC0QHldAfuCp
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQIcBAEBAgAGBQJVQKHGAAoJEGwLaZPeOHZ6oKcP/2oG1jZDKpGiKYd2aBQNDkuk
-XEU23dFuhYCMem7cWBJnBCVisizpNCapM9GhbAPmNO3ldT2MhW9QyXPyVc4RVMY8
-SWJOwwLPasG//IofOCmvtZXt2S8NK4YDT5nMhu9Z8DwBxJ16PaTukWLCnJsr4yC3
-TAqsudmRcJ/CCaxCi1ti+4T9rJRGeEod0xFPTgaHKY0bwDyWPdiX1UdLLSu6Tkuk
-ScyTqEQfYcFF+ego21on9FM5uvVKS7HhDgHhftr7HrYeMcX+TsSkHl8zYWq3dS/S
-sCJvFu4fhzE/5P4V16gfL7mjg9S/OK3XzsyHCwU2GSL3/0eF+h0crvnYtRpi8TMC
-p0Ch/e80KEw62SlE14hCE7xEkXYBq1OTU2ZEKGMis5AL6puicQMlqeR6LzVasSWV
-ROTWB0HvsCORp2Zk/MEJpsY3hvquUyQJtLHWqruKTNBBNZ+/jbm47x6nW/3LFhRT
-wydjW2PIMxJR2iC4GsnABoExb+309x0ISm0PmZH8rMdt8UTRzdytX94RrDzQ3Grc
-cmlhmR5TggoDkqcFPs4zbAZDpAN0/4axxLvBG7N9ZxGbVxBf+48JcrT6s9j6P0dC
-hDAglQ96UJVOwDrKIYXijZJrcTuFAtnhNnBSp2NJaq26K3kASPbMOge+wrtjtDIT
-MP6/9fFeJhpTJkVnkBYr
-=o65l
------END PGP SIGNATURE-----
-
---jlhnoPVHrTmPgiB8jsF4kIC0QHldAfuCp--
+> This is a fix for v4.1.
+> 
+>  arch/mips/kernel/smp-cps.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/mips/kernel/smp-cps.c b/arch/mips/kernel/smp-cps.c
+> index 7e011f9..4251d39 100644
+> --- a/arch/mips/kernel/smp-cps.c
+> +++ b/arch/mips/kernel/smp-cps.c
+> @@ -92,7 +92,7 @@ static void __init cps_smp_setup(void)
+>  #ifdef CONFIG_MIPS_MT_FPAFF
+>  	/* If we have an FPU, enroll ourselves in the FPU-full mask */
+>  	if (cpu_has_fpu)
+> -		cpu_set(0, mt_fpu_cpumask);
+> +		cpumask_set_cpu(0, &mt_fpu_cpumask);
+>  #endif /* CONFIG_MIPS_MT_FPAFF */
+>  }
+>  
+> 

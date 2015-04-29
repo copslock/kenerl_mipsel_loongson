@@ -1,17 +1,17 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Apr 2015 05:40:05 +0200 (CEST)
-Received: from smtpbg298.qq.com ([184.105.67.102]:46902 "EHLO smtpbg298.qq.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Apr 2015 05:40:22 +0200 (CEST)
+Received: from smtpbg299.qq.com ([184.105.67.99]:46810 "EHLO smtpbg299.qq.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27011268AbbD2DkDAptum (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 29 Apr 2015 05:40:03 +0200
-X-QQ-mid: bizesmtp2t1430278776t843t121
+        id S27012180AbbD2DkHEdjlw (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 29 Apr 2015 05:40:07 +0200
+X-QQ-mid: bizesmtp2t1430278787t988t327
 Received: from software.domain.org (unknown [222.92.8.142])
         by esmtp4.qq.com (ESMTP) with 
-        id ; Wed, 29 Apr 2015 11:39:35 +0800 (CST)
-X-QQ-SSF: 01100000002000F0F212B00A0000000
-X-QQ-FEAT: 0YGU8PmKZ8aYoIJ6i7tQ4PxB5NmDmhjWU8E2Kxtuitk2ZS04UUXS2NcDfVYky
-        c/ouQgUEWVbwx1B4INulRM9eg04cMw+l2HrDevHXLD2d+e4s0kIDWlzE2ERFfpMk4xsVMbL
-        IrPsyz43CeTxzF7fXj3lheuChkGAu39ciP54KJkyK951XrCpdu8bz77MWGopGCM5QMGRSGJ
-        wXlMGDGBqaN+uZfR+K+DUVxnlfFGRmnJo4lgWuoGrB2d7VH1wn8QG
+        id ; Wed, 29 Apr 2015 11:39:46 +0800 (CST)
+X-QQ-SSF: 01100000002000F0F422B00A0000000
+X-QQ-FEAT: wkBK5F5nnthN8RUWKzY/egJWqR2np3AIg8HvjU+2ClDhNAr7Zp7d6QuVnKkoO
+        xJcL2xr3EYlsPhub88wGz8rPZtmR60R6m+Qb2XvElmCgwAvmlY8/9sIIFaK9MyaeqCs9CMc
+        iGBUP3ZFNrrRPJ2qSFQsKDhrEXpki1mcmX7/DrIeRqOdmCADOJAhlx/OT4Z9Y7ZNzL7g/HP
+        k1Lm9VOmBXa8Twry8tiw7RGGLgM6cGVBqoQara1eQVUyysshKyIN/
 X-QQ-GoodBg: 0
 From:   Binbin Zhou <zhoubb@lemote.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
@@ -21,20 +21,20 @@ Cc:     John Crispin <john@phrozen.org>,
         Zhangjin Wu <wuzhangjin@gmail.com>,
         Binbin Zhou <zhoubb@lemote.com>, Chunbo Cui <cuicb@lemote.com>,
         Huacai Chen <chenhc@lemote.com>
-Subject: [PATCH 2/8] MIPS: Loongson: Add Loongson-1A Kconfig options
-Date:   Wed, 29 Apr 2015 11:57:21 +0800
-Message-Id: <1430279847-25120-3-git-send-email-zhoubb@lemote.com>
+Subject: [PATCH 5/8] MIPS: Loongson-1A: Workaround for pll register can't be read
+Date:   Wed, 29 Apr 2015 11:57:24 +0800
+Message-Id: <1430279847-25120-6-git-send-email-zhoubb@lemote.com>
 X-Mailer: git-send-email 1.9.0
 In-Reply-To: <1430279847-25120-1-git-send-email-zhoubb@lemote.com>
 References: <1430279847-25120-1-git-send-email-zhoubb@lemote.com>
 X-QQ-SENDSIZE: 520
-X-QQ-FName: 1EACD0434BEA4AAC951EDAB9950C7B7C
-X-QQ-LocalIP: 163.177.66.155
+X-QQ-FName: DF56C5E3216B408C834745748AA31348
+X-QQ-LocalIP: 112.95.241.173
 Return-Path: <zhoubb@lemote.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47150
+X-archive-position: 47151
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -51,78 +51,154 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Added Kconfig options include: Loongson-1A CPU and machine definition,
-CPU cache features, 32-bit kernel and early printk support.
+This is Loongson 1A's bug that the pll register can't be read,
+so we set the cpu clk in the inline command line.
+
+The command line format is cpu_clk=osc_clk,cpu_mul, the osc_clk standby cpu clock
+and the cpu_mul repect the clock multiplier.
+For example, we use the command is cpu_clk=33333333,8
 
 Signed-off-by: Chunbo Cui <cuicb@lemote.com>
 Signed-off-by: Binbin Zhou <zhoubb@lemote.com>
 Signed-off-by: Huacai Chen <chenhc@lemote.com>
 ---
- arch/mips/Kconfig           | 11 +++++++++++
- arch/mips/loongson1/Kconfig | 20 ++++++++++++++++++++
- 2 files changed, 31 insertions(+)
+ arch/mips/include/asm/mach-loongson1/loongson1.h |  2 ++
+ arch/mips/loongson1/common/platform.c            |  8 +++++++-
+ arch/mips/loongson1/common/time.c                | 11 +++++++++++
+ arch/mips/loongson1/ls1a/board.c                 |  2 ++
+ drivers/clk/clk-ls1x.c                           | 19 +++++++++++++++----
+ 5 files changed, 37 insertions(+), 5 deletions(-)
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 1c971be..2ee1abba 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -1316,6 +1316,14 @@ config CPU_LOONGSON2F
- 	  have a similar programming interface with FPGA northbridge used in
- 	  Loongson2E.
+diff --git a/arch/mips/include/asm/mach-loongson1/loongson1.h b/arch/mips/include/asm/mach-loongson1/loongson1.h
+index c7689ad..c7ce66e 100644
+--- a/arch/mips/include/asm/mach-loongson1/loongson1.h
++++ b/arch/mips/include/asm/mach-loongson1/loongson1.h
+@@ -165,6 +165,8 @@
+ #define ls1x_writew(val, addr)		(*(volatile u16 *)CKSEG1ADDR(addr) = (val))
+ #define ls1x_writel(val, addr)		(*(volatile u32 *)CKSEG1ADDR(addr) = (val))
  
-+config CPU_LOONGSON1A
-+	bool "Loongson 1A"
-+	depends on SYS_HAS_CPU_LOONGSON1A
-+	select CPU_LOONGSON1
-+	help
-+	  The Loongson 1A is a 32-bit SoC, which implements the MIPS32
-+	  release 2 instruction set.
++extern unsigned int ls1a_osc_clk, ls1a_cpu_mul;
 +
- config CPU_LOONGSON1B
- 	bool "Loongson 1B"
- 	depends on SYS_HAS_CPU_LOONGSON1B
-@@ -1758,6 +1766,9 @@ config SYS_HAS_CPU_LOONGSON2F
- 	select CPU_SUPPORTS_ADDRWINCFG if 64BIT
- 	select CPU_SUPPORTS_UNCACHED_ACCELERATED
+ #include <regs-clk.h>
+ #include <regs-mux.h>
+ #include <regs-pwm.h>
+diff --git a/arch/mips/loongson1/common/platform.c b/arch/mips/loongson1/common/platform.c
+index 97d8c01..a5bb1eb 100644
+--- a/arch/mips/loongson1/common/platform.c
++++ b/arch/mips/loongson1/common/platform.c
+@@ -63,9 +63,14 @@ struct platform_device ls1x_uart_pdev = {
  
-+config SYS_HAS_CPU_LOONGSON1A
-+	bool
+ void __init ls1x_serial_setup(struct platform_device *pdev)
+ {
+-	struct clk *clk;
+ 	struct plat_serial8250_port *p;
+ 
++#ifdef CONFIG_CPU_LOONGSON1A
++	for (p = pdev->dev.platform_data; p->flags != 0; ++p)
++		p->uartclk = ls1a_osc_clk * 2;
++#else
++	struct clk *clk;
 +
- config SYS_HAS_CPU_LOONGSON1B
- 	bool
+ 	clk = clk_get(&pdev->dev, pdev->name);
+ 	if (IS_ERR(clk)) {
+ 		pr_err("unable to get %s clock, err=%ld",
+@@ -76,6 +81,7 @@ void __init ls1x_serial_setup(struct platform_device *pdev)
  
-diff --git a/arch/mips/loongson1/Kconfig b/arch/mips/loongson1/Kconfig
-index a2b796e..7899f53 100644
---- a/arch/mips/loongson1/Kconfig
-+++ b/arch/mips/loongson1/Kconfig
-@@ -1,8 +1,28 @@
- if MACH_LOONGSON1
+ 	for (p = pdev->dev.platform_data; p->flags != 0; ++p)
+ 		p->uartclk = clk_get_rate(clk);
++#endif
+ }
  
-+config ZONE_DMA
-+	prompt "Zone DMA"
-+	bool
+ /* CPUFreq */
+diff --git a/arch/mips/loongson1/common/time.c b/arch/mips/loongson1/common/time.c
+index df0f850..c9f2ee4 100644
+--- a/arch/mips/loongson1/common/time.c
++++ b/arch/mips/loongson1/common/time.c
+@@ -224,3 +224,14 @@ void __init plat_time_init(void)
+ 	mips_hpt_frequency = clk_get_rate(clk) / 2;
+ #endif /* CONFIG_CEVT_CSRC_LS1X */
+ }
 +
- choice
- 	prompt "Machine Type"
- 
-+config LOONGSON1_LS1A
-+	bool "Loongson LS1A board"
-+	select CEVT_R4K
-+	select CSRC_R4K
-+	select SYS_HAS_CPU_LOONGSON1A
-+	select DMA_NONCOHERENT
-+	select BOOT_ELF32
-+	select IRQ_CPU
-+	select SYS_SUPPORTS_32BIT_KERNEL
-+	select SYS_SUPPORTS_LITTLE_ENDIAN
-+	select SYS_SUPPORTS_HIGHMEM
-+	select SYS_SUPPORTS_MIPS16
-+	select SYS_HAS_EARLY_PRINTK
-+	select USE_GENERIC_EARLY_PRINTK_8250
-+	select COMMON_CLK
++#ifdef CONFIG_CPU_LOONGSON1A
++unsigned int ls1a_osc_clk = 0, ls1a_cpu_mul = 0;
 +
- config LOONGSON1_LS1B
- 	bool "Loongson LS1B board"
- 	select CEVT_R4K if !MIPS_EXTERNAL_TIMER
++static int __init get_cpu_clk(char *string)
++{
++	sscanf(string, "%u,%u", &ls1a_osc_clk, &ls1a_cpu_mul);
++	return 1;
++}
++__setup("cpu_clk=", get_cpu_clk);
++#endif
+diff --git a/arch/mips/loongson1/ls1a/board.c b/arch/mips/loongson1/ls1a/board.c
+index 98fb86c..9c53ecc 100644
+--- a/arch/mips/loongson1/ls1a/board.c
++++ b/arch/mips/loongson1/ls1a/board.c
+@@ -95,6 +95,8 @@ int __init ls1a_platform_init(void)
+ {
+ 	ls1a_route_setting();
+ 
++	ls1x_serial_setup(&ls1x_uart_pdev);
++
+ 	i2c_register_board_info(1, &ls1a_pcf8563, 1);
+ 	spi_register_board_info(ls1a_spi_info, ARRAY_SIZE(ls1a_spi_info));
+ 
+diff --git a/drivers/clk/clk-ls1x.c b/drivers/clk/clk-ls1x.c
+index ca80103..93eda9e 100644
+--- a/drivers/clk/clk-ls1x.c
++++ b/drivers/clk/clk-ls1x.c
+@@ -32,6 +32,14 @@ static void ls1x_pll_clk_disable(struct clk_hw *hw)
+ static unsigned long ls1x_pll_recalc_rate(struct clk_hw *hw,
+ 					  unsigned long parent_rate)
+ {
++#ifdef CONFIG_CPU_LOONGSON1A
++	/* workaround, loongson 1A pll register can't be read,
++	 * on gateway board, multi is set to 11 */
++	if (ls1a_osc_clk != 0 && ls1a_cpu_mul != 0)
++		return ls1a_osc_clk * ls1a_cpu_mul;
++	else
++		return 33333333 * 8;
++#else
+ 	u32 pll, rate;
+ 
+ 	pll = __raw_readl(LS1X_CLK_PLL_FREQ);
+@@ -40,6 +48,7 @@ static unsigned long ls1x_pll_recalc_rate(struct clk_hw *hw,
+ 	rate >>= 1;
+ 
+ 	return rate;
++#endif
+ }
+ 
+ static const struct clk_ops ls1x_pll_clk_ops = {
+@@ -107,7 +116,8 @@ void __init ls1x_clk_init(void)
+ 				   CLK_GET_RATE_NOCACHE, LS1X_CLK_PLL_DIV,
+ 				   DIV_CPU_SHIFT, DIV_CPU_WIDTH,
+ 				   CLK_DIVIDER_ONE_BASED |
+-				   CLK_DIVIDER_ROUND_CLOSEST, &_lock);
++				   CLK_DIVIDER_ROUND_CLOSEST |
++				   CLK_DIVIDER_ALLOW_ZERO, &_lock);
+ 	clk_register_clkdev(clk, "cpu_clk_div", NULL);
+ 	clk = clk_register_mux(NULL, "cpu_clk", cpu_parents,
+ 			       ARRAY_SIZE(cpu_parents),
+@@ -123,7 +133,8 @@ void __init ls1x_clk_init(void)
+ 	 */
+ 	clk = clk_register_divider(NULL, "dc_clk_div", "pll_clk",
+ 				   0, LS1X_CLK_PLL_DIV, DIV_DC_SHIFT,
+-				   DIV_DC_WIDTH, CLK_DIVIDER_ONE_BASED, &_lock);
++				   DIV_DC_WIDTH, CLK_DIVIDER_ONE_BASED |
++				   CLK_DIVIDER_ALLOW_ZERO, &_lock);
+ 	clk_register_clkdev(clk, "dc_clk_div", NULL);
+ 	clk = clk_register_mux(NULL, "dc_clk", dc_parents,
+ 			       ARRAY_SIZE(dc_parents),
+@@ -139,8 +150,8 @@ void __init ls1x_clk_init(void)
+ 	 */
+ 	clk = clk_register_divider(NULL, "ahb_clk_div", "pll_clk",
+ 				   0, LS1X_CLK_PLL_DIV, DIV_DDR_SHIFT,
+-				   DIV_DDR_WIDTH, CLK_DIVIDER_ONE_BASED,
+-				   &_lock);
++				   DIV_DDR_WIDTH, CLK_DIVIDER_ONE_BASED |
++				   CLK_DIVIDER_ALLOW_ZERO, &_lock);
+ 	clk_register_clkdev(clk, "ahb_clk_div", NULL);
+ 	clk = clk_register_mux(NULL, "ahb_clk", ahb_parents,
+ 			       ARRAY_SIZE(ahb_parents),
 -- 
 1.9.0

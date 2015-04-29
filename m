@@ -1,47 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Apr 2015 01:07:47 +0200 (CEST)
-Received: from smtp6-g21.free.fr ([212.27.42.6]:37187 "EHLO smtp6-g21.free.fr"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27011915AbbD2XHqARKoe (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 30 Apr 2015 01:07:46 +0200
-Received: from tock (unknown [78.54.103.113])
-        (Authenticated sender: albeu)
-        by smtp6-g21.free.fr (Postfix) with ESMTPSA id C518B822CA;
-        Thu, 30 Apr 2015 01:04:57 +0200 (CEST)
-Date:   Thu, 30 Apr 2015 01:07:28 +0200
-From:   Alban <albeu@free.fr>
-To:     Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
-Cc:     Aban Bedel <albeu@free.fr>, linux-mips@linux-mips.org,
-        Rob Herring <robh+dt@kernel.org>,
-        Pawel Moll <pawel.moll@arm.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ian Campbell <ijc+devicetree@hellion.org.uk>,
-        Kumar Gala <galak@codeaurora.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Andrew Bresticker <abrestic@chromium.org>,
-        Qais Yousef <qais.yousef@imgtec.com>,
-        Gabor Juhos <juhosg@openwrt.org>, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 00/12] MIPS: ath79: Add OF support and DTS for
- TL-WR1043ND
-Message-ID: <20150430010728.0331a736@tock>
-In-Reply-To: <553E3CC8.3070304@vanguardiasur.com.ar>
-References: <1429875679-14973-1-git-send-email-albeu@free.fr>
-        <553E3CC8.3070304@vanguardiasur.com.ar>
-X-Mailer: Claws Mail 3.9.3 (GTK+ 2.24.23; x86_64-pc-linux-gnu)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <albeu@free.fr>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Apr 2015 01:49:57 +0200 (CEST)
+Received: from gate2.alliedtelesis.co.nz ([202.36.163.20]:37910 "EHLO
+        gate2.alliedtelesis.co.nz" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012228AbbD2XtzMFSXx (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 30 Apr 2015 01:49:55 +0200
+Received: from mmarshal3.atlnz.lc (mmarshal3.atlnz.lc [10.32.18.43])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (Client did not present a certificate)
+        by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id 3F6C3806BF;
+        Thu, 30 Apr 2015 11:49:52 +1200 (NZST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alliedtelesis.co.nz;
+        s=mail; t=1430351392;
+        bh=FAC3gGX4fXNt2wmNEBeHkUS71PSrr7nZLxJZf+adpJs=;
+        h=From:To:Cc:Subject:Date;
+        b=FeupHgyvSBz0Hv+SiQLvBPsyV/FbWcmzjcON7LaELdpbGqfbJnI0trmAV5tDm7EWM
+         h1xTvgKc6xLtpLyWJAK354AcbuO7kRZIP62rZgV/LodZIFzer5eeLTem3YIg4yCTxk
+         ++kggTxR4xlqeb1ukgE/a72QKtMXUMeRBgVfYsA4=
+Received: from smtp (Not Verified[10.32.16.33]) by mmarshal3.atlnz.lc with Trustwave SEG (v7,3,0,7277)
+        id <B55416e1c0000>; Thu, 30 Apr 2015 11:49:48 +1200
+Received: from mattb-dl.ws.atlnz.lc (mattb-dl.ws.atlnz.lc [10.33.14.25])
+        by smtp (Postfix) with ESMTP id 90ADC13EC0D;
+        Thu, 30 Apr 2015 11:48:11 +1200 (NZST)
+Received: by mattb-dl.ws.atlnz.lc (Postfix, from userid 1672)
+        id 7DCF9C05A9; Thu, 30 Apr 2015 11:49:48 +1200 (NZST)
+From:   Matt Bennett <matt.bennett@alliedtelesis.co.nz>
+To:     david.daney@cavium.com
+Cc:     Matt Bennett <matt.bennett@alliedtelesis.co.nz>,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] MIPS: OCTEON: Stop .bss memory being allocated to the kernel
+Date:   Thu, 30 Apr 2015 11:48:31 +1200
+Message-Id: <1430351311-21056-1-git-send-email-matt.bennett@alliedtelesis.co.nz>
+X-Mailer: git-send-email 1.9.1
+Return-Path: <mattb@alliedtelesis.co.nz>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47165
+X-archive-position: 47166
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: albeu@free.fr
+X-original-sender: matt.bennett@alliedtelesis.co.nz
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,50 +51,74 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, 27 Apr 2015 10:42:32 -0300
-Ezequiel Garcia <ezequiel@vanguardiasur.com.ar> wrote:
+During development work on a 3.16 based kernel it was found that a
+number of builds would panic during the kernel init process, more
+specifically in 'delayed_fput()'. The panic showed the kernel trying
+to access a memory address of '0xb7fdc00' while traversing the
+'delayed_fput_list' structure. Comparing this memory address to the
+value of the pointer used on builds that did not panic confirmed
+that the pointer on crashing builds must have been corrupted at some
+stage earlier in the init process.
 
-> On 04/24/2015 08:41 AM, Alban Bedel wrote:
-> > This series add OF bindings and code support for the interrupt
-> > controllers, clocks and GPIOs. However it was only tested on a
-> > TL-WR1043ND with an AR9132, others SoCs are untested, and a few are
-> > not supported at all.
-> > 
- 
-> Hi Alban,
+By traversing the list earlier and earlier in the code it was found
+that 'plat_mem_setup()' was responsible for corrupting the list.
+Specifically the line:
 
-Hi,
+    memory = cvmx_bootmem_phy_alloc(mem_alloc_size,
+			__pa_symbol(&__init_end), -1,
+			0x100000,
+			CVMX_BOOTMEM_FLAG_NO_LOCKING);
 
-> I've booted a Carambola2 using this (plus a custom devicetree and some
-> small changes):
-> 
-> Tested-by: Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
->
-> Just a small comment/question: Shouldn't we allow to build all the
-> devicetree files, instead of just the one that will be built-in?
-> 
-> I.e., something like this:
-> 
-> dtb-$(CONFIG_MATCH_ATH79_DT)   += ar9132_tl_wr1043nd_v1.dtb
-> dtb-$(CONFIG_MACH_ATH79_DT)    += ar9331_carambola2.dtb
-> 
-> It should be useful to catch errors, but also in general, as the
-> devicetree is supposed to be independent of the kernel and should be
-> built separate from it.
+Which would eventually call:
 
-Yes, that would be better, I'll fix that.
+    cvmx_bootmem_phy_set_size(new_ent_addr,
+		cvmx_bootmem_phy_get_size
+		(ent_addr) -
+		(desired_min_addr -
+			ent_addr));
 
-> PS: This series depends on a previous patchset. It's usually useful to
-> mention this in the cover letter and make a poor tester's life
-> easier :)
+Where 'new_ent_addr'=0x4800000 (the address of 'delayed_fput_list')
+and the second argument (size)=0xb7fdc00 (the address causing the
+kernel panic). The job of this part of 'plat_mem_setup()' is to
+allocate chunks of memory for the kernel to use. At the start of
+each chunk of memory the size of the chunk is written, hence the
+value 0xb7fdc00 is written onto memory at 0x4800000, therefore the
+kernel panics when it goes back to access 'delayed_fput_list' later
+on in the initialisation process.
 
-> > Most code changes base on the previous bug fix series:
-> > [PATCH v2 0/5] MIPS: ath79: Various small fix to prepare OF support
+On builds that were not crashing it was found that the compiler had
+placed 'delayed_fput_list' at 0x4800008, meaning it wasn't corrupted
+(but something else in memory was overwritten).
 
-Wasn't that clear enough?
+As can be seen in the first function call above the code begins to
+allocate chunks of memory beginning from the symbol '__init_end'.
+The MIPS linker script (vmlinux.lds.S) however defines the .bss
+section to begin after '__init_end'. Therefore memory within the
+.bss section is allocated to the kernel to use (System.map shows
+'delayed_fput_list' and other kernel structures to be in .bss).
 
-> Thanks for the work,
+To stop the kernel panic (and the .bss section being corrupted)
+memory should begin being allocated from the symbol '_end'.
 
-Thanks for the testing.
+Signed-off-by: Matt Bennett <matt.bennett@alliedtelesis.co.nz>
+Cc: linux-mips@linux-mips.org
+Cc: linux-kernel@vger.kernel.org
+---
+ arch/mips/cavium-octeon/setup.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Alban
+diff --git a/arch/mips/cavium-octeon/setup.c b/arch/mips/cavium-octeon/setup.c
+index 7e4367b..f632f14 100644
+--- a/arch/mips/cavium-octeon/setup.c
++++ b/arch/mips/cavium-octeon/setup.c
+@@ -1008,7 +1008,7 @@ void __init plat_mem_setup(void)
+ 	while ((boot_mem_map.nr_map < BOOT_MEM_MAP_MAX)
+ 		&& (total < MAX_MEMORY)) {
+ 		memory = cvmx_bootmem_phy_alloc(mem_alloc_size,
+-						__pa_symbol(&__init_end), -1,
++						__pa_symbol(&_end), -1,
+ 						0x100000,
+ 						CVMX_BOOTMEM_FLAG_NO_LOCKING);
+ 		if (memory >= 0) {
+-- 
+1.9.1

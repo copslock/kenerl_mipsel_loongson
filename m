@@ -1,52 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Apr 2015 17:37:55 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:39547 "EHLO
-        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27012146AbbD2PhwGY9dx (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 29 Apr 2015 17:37:52 +0200
-Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
-        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 5948D41F8DED;
-        Wed, 29 Apr 2015 16:37:48 +0100 (BST)
-Received: from mailapp01.imgtec.com ([10.100.180.242])
-  by imgpgp01.kl.imgtec.org (PGP Universal service);
-  Wed, 29 Apr 2015 16:37:48 +0100
-X-PGP-Universal: processed;
-        by imgpgp01.kl.imgtec.org on Wed, 29 Apr 2015 16:37:48 +0100
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 3AECC58010F10;
-        Wed, 29 Apr 2015 16:37:45 +0100 (IST)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Wed, 29 Apr 2015 16:36:47 +0100
-Received: from [192.168.154.110] (192.168.154.110) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Wed, 29 Apr
- 2015 16:36:46 +0100
-Message-ID: <5540FA8E.40209@imgtec.com>
-Date:   Wed, 29 Apr 2015 16:36:46 +0100
-From:   James Hogan <james.hogan@imgtec.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.5.0
-MIME-Version: 1.0
-To:     "Maciej W. Rozycki" <macro@linux-mips.org>
-CC:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
-        <linux-mips@linux-mips.org>, <markos.chandras@imgtec.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Apr 2015 01:07:47 +0200 (CEST)
+Received: from smtp6-g21.free.fr ([212.27.42.6]:37187 "EHLO smtp6-g21.free.fr"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27011915AbbD2XHqARKoe (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 30 Apr 2015 01:07:46 +0200
+Received: from tock (unknown [78.54.103.113])
+        (Authenticated sender: albeu)
+        by smtp6-g21.free.fr (Postfix) with ESMTPSA id C518B822CA;
+        Thu, 30 Apr 2015 01:04:57 +0200 (CEST)
+Date:   Thu, 30 Apr 2015 01:07:28 +0200
+From:   Alban <albeu@free.fr>
+To:     Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
+Cc:     Aban Bedel <albeu@free.fr>, linux-mips@linux-mips.org,
+        Rob Herring <robh+dt@kernel.org>,
+        Pawel Moll <pawel.moll@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ian Campbell <ijc+devicetree@hellion.org.uk>,
+        Kumar Gala <galak@codeaurora.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>,
         Ralf Baechle <ralf@linux-mips.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] MIPS64: R6: R2 emulation bugfix
-References: <20150428195335.11229.4516.stgit@ubuntu-yegoshin> <5540A1BF.7060408@imgtec.com> <alpine.LFD.2.11.1504291025430.17786@eddie.linux-mips.org>
-In-Reply-To: <alpine.LFD.2.11.1504291025430.17786@eddie.linux-mips.org>
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature";
-        boundary="GEwuTDbBnpoWsPeSG51Jr99L7Rt5Nklwv"
-X-Originating-IP: [192.168.154.110]
-X-ESG-ENCRYPT-TAG: b93fcccb
-Return-Path: <James.Hogan@imgtec.com>
+        Andrew Bresticker <abrestic@chromium.org>,
+        Qais Yousef <qais.yousef@imgtec.com>,
+        Gabor Juhos <juhosg@openwrt.org>, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 00/12] MIPS: ath79: Add OF support and DTS for
+ TL-WR1043ND
+Message-ID: <20150430010728.0331a736@tock>
+In-Reply-To: <553E3CC8.3070304@vanguardiasur.com.ar>
+References: <1429875679-14973-1-git-send-email-albeu@free.fr>
+        <553E3CC8.3070304@vanguardiasur.com.ar>
+X-Mailer: Claws Mail 3.9.3 (GTK+ 2.24.23; x86_64-pc-linux-gnu)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <albeu@free.fr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47164
+X-archive-position: 47165
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: albeu@free.fr
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,73 +54,50 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---GEwuTDbBnpoWsPeSG51Jr99L7Rt5Nklwv
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: quoted-printable
+On Mon, 27 Apr 2015 10:42:32 -0300
+Ezequiel Garcia <ezequiel@vanguardiasur.com.ar> wrote:
 
-On 29/04/15 10:49, Maciej W. Rozycki wrote:
-> On Wed, 29 Apr 2015, James Hogan wrote:
->=20
->>> Error recovery pointers for fixups was improperly set as ".word"
->>> which is unsuitable for MIPS64.
->>>
->>> Replaced by __stringify(PTR)
->>
->> Every other case of this sort of thing uses STR(PTR) (or __UA_ADDR in
->> uaccess.h). Can we stick to STR(PTR) for consistency please?
->=20
->  Or __PA_ADDR in paccess.h.
->=20
->  I have mixed feelings, the reason for __stringify being absent is the =
+> On 04/24/2015 08:41 AM, Alban Bedel wrote:
+> > This series add OF bindings and code support for the interrupt
+> > controllers, clocks and GPIOs. However it was only tested on a
+> > TL-WR1043ND with an AR9132, others SoCs are untested, and a few are
+> > not supported at all.
+> > 
+ 
+> Hi Alban,
 
-> macro being generic and more recently added than pieces of code that us=
-e=20
-> STR, e.g. unaligned.c that has been there since forever.  And we do use=
-=20
-> __stringify in many other cases.
+Hi,
 
-Well I don't particularly mind, so feel free to add my Reviewed-by
-regardless, though it'd be nice to have some consistency eventually one
-way or another.
+> I've booted a Carambola2 using this (plus a custom devicetree and some
+> small changes):
+> 
+> Tested-by: Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
+>
+> Just a small comment/question: Shouldn't we allow to build all the
+> devicetree files, instead of just the one that will be built-in?
+> 
+> I.e., something like this:
+> 
+> dtb-$(CONFIG_MATCH_ATH79_DT)   += ar9132_tl_wr1043nd_v1.dtb
+> dtb-$(CONFIG_MACH_ATH79_DT)    += ar9331_carambola2.dtb
+> 
+> It should be useful to catch errors, but also in general, as the
+> devicetree is supposed to be independent of the kernel and should be
+> built separate from it.
 
-Cheers
-James
+Yes, that would be better, I'll fix that.
 
->=20
->  On the other hand STR is short and sweet, unlike __stringify.
->=20
->  So how about adding a macro like __STR_PTR that expands to=20
-> __stringify(PTR) and converting all the places throughout our port=20
-> (including ones currently using __UA_ADDR/__PA_ADDR) to use the new mac=
-ro?
->=20
->  Leonid's bug fix will need to go in first of course.
->=20
->   Maciej
->=20
+> PS: This series depends on a previous patchset. It's usually useful to
+> mention this in the cover letter and make a poor tester's life
+> easier :)
 
+> > Most code changes base on the previous bug fix series:
+> > [PATCH v2 0/5] MIPS: ath79: Various small fix to prepare OF support
 
---GEwuTDbBnpoWsPeSG51Jr99L7Rt5Nklwv
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
+Wasn't that clear enough?
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+> Thanks for the work,
 
-iQIcBAEBAgAGBQJVQPqOAAoJEGwLaZPeOHZ6nuQP/2PFoG4cBDqkwcRL9HZ0hWaP
-KKr8qvWj7SUa/HcHGhB3mhXMrFvRuIea9KClV/8AM9xlHogmjkD0K2o24uD2gXF1
-PZWSR31qzl/p+aWNQti2f+j0z4Kq9g+rUwXFKN8IA7ECVCskWChYGTdYvjQcMCNc
-uhVq4lXeVdwL9790gLsGx/7jyWVjEbJ4uSOotrdk8G3g6H+0IyhqPLBXQiq8K9mK
-hTL/arD+jSlasbhbkROXJPbf7NtJFQymrJQe9gq0udA9P+Q3QdLiL6WpM0mbUJme
-fO8IOdBbS09qeGxBOgRf9Bkwmi3QfgE3pvnBpHVnx8ZL6iGCNb589c+ji5q+7AlE
-B2AJxF6+Rvr4pa90pOuV1ronuvB17DBGp7etjKrm/G7+fkm96g3KBqHucDetKYR8
-wDJSYR4Z2YKnY/50kEqT07pK0spG56KfI8IDxMRT/qj+gDSM1Oi3GsJ6O/ZpHkH3
-wfX7pzJ321/hN/XHUrU5pchN8V9orluxZxeyDnbb6dAGhrTZkZiEtVAQp6tvH8Ld
-7xLXobMpV6hW0P8MR6bw53b1hw9SOCdjSsi+y/AXWE3tratqSv+Zy+3qc49I+x9E
-DM3KlXjn+2OKu95rcGpOdJ2+iNp0SUVWmMZNxoDeGyoCU5vG0K/hOhbPoObkrqwc
-J2hl9kObhUYvAtw8AOnO
-=uW7F
------END PGP SIGNATURE-----
+Thanks for the testing.
 
---GEwuTDbBnpoWsPeSG51Jr99L7Rt5Nklwv--
+Alban

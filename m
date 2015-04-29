@@ -1,74 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Apr 2015 02:49:32 +0200 (CEST)
-Received: from mail-qc0-f175.google.com ([209.85.216.175]:32869 "EHLO
-        mail-qc0-f175.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27026279AbbD2At3PdYAO (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 29 Apr 2015 02:49:29 +0200
-Received: by qcrf4 with SMTP id f4so6351526qcr.0
-        for <linux-mips@linux-mips.org>; Tue, 28 Apr 2015 17:49:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc:content-type;
-        bh=FmXU0wLJXTZS5PjgwQF+tVgdleNf0QYPhA04UjdC0/A=;
-        b=d6HqWPR76cdhIH801NQEb4yw6o9t+9kqicM268F3b7t35/M9tsiYnPhvAraZEkldTx
-         Rd5GnBCHOCJzOE/k8y6wa/sYN2UeIYqgXq4klzxxQRrR5G78RHcSTyN6DC4pEHNULMeh
-         tnqXTLmO/XG2XLmNeEL1v4j7dnVMK+aiWeEdufp7FYwyHTD/FmVvkLTCO9KlCrnDCq1U
-         bMIN25F3JxcsOhI0u0O8Y+mgXvI8rpdxXhTLnKimWx2O5ukDk5R9W/A+YIeETug9Fgbp
-         DkY1MR+n3XeXDL8qr5VPUua5JEwlFCR++QhlZ8mTG7EJ8fDvT+aG3MCmbmtyXMpGqscn
-         Gz4g==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc:content-type;
-        bh=FmXU0wLJXTZS5PjgwQF+tVgdleNf0QYPhA04UjdC0/A=;
-        b=c2GrakA2lp+faTYzeyOvKns0OsExqBS85D5/ASCMPD7WP/47Tr8fW+8VQfD6o1FddW
-         iKH8FV4FgGcAC73fv9hCIunRZ2GJlCGGs9BEXFnQBHFJz14Gc9NJ/SCuyYYEFG/2HPOU
-         P3AJptZ9Z5b9YffQWWXyLUmQLLrICW9z2rJRA=
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Apr 2015 03:13:11 +0200 (CEST)
+Received: from mail-vn0-f74.google.com ([209.85.216.74]:33136 "EHLO
+        mail-vn0-f74.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011923AbbD2BNJTA821 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 29 Apr 2015 03:13:09 +0200
+Received: by vnbg62 with SMTP id g62so455475vnb.0
+        for <linux-mips@linux-mips.org>; Tue, 28 Apr 2015 18:13:05 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:sender:in-reply-to:references:date
-         :message-id:subject:from:to:cc:content-type;
-        bh=FmXU0wLJXTZS5PjgwQF+tVgdleNf0QYPhA04UjdC0/A=;
-        b=DUNUqBHLFtHQEKmVVhuXw6TFzsekUEw/p0h5te++oRmY9TyCiv9/kTbDjGqojJBO88
-         ufjCp+K0rvHVR2sezMHdMUeIPLMakoRn9LBPWKd8Ct80BiskbjN79K6grDxmhqQ1GwMN
-         /AILBG4m9xYl93zmFBufO47r8Vm9htDV66Z+4gKtR0HvHHMBNIXuyIOKFVag6zsS4bUN
-         2nkWnSX0C6LKFkiD6KWAfgnueSzgwLpKg1yqTK+Cbb2hLUx5b4kSgimuWX5+uC5b84NN
-         inQdX0kvHd90vdU8Em1Dbnh0Tlrm6lJxdd1/gbhMjwff3R5OWtKXTpep/4bCQ8RjflxA
-         3QFQ==
-X-Gm-Message-State: ALoCoQnRA2SqKUZJF9/m2CzY1p3Pw5xT3jqdOom2EthOmT7x2jUThDAcu8n9wpiX/vcsfHR+3VUy
-MIME-Version: 1.0
-X-Received: by 10.229.28.9 with SMTP id k9mr15372723qcc.9.1430268565211; Tue,
- 28 Apr 2015 17:49:25 -0700 (PDT)
-Received: by 10.140.23.72 with HTTP; Tue, 28 Apr 2015 17:49:25 -0700 (PDT)
-In-Reply-To: <554016A5.7040209@imgtec.com>
-References: <1428435862-14354-1-git-send-email-abrestic@chromium.org>
-        <1428435862-14354-3-git-send-email-abrestic@chromium.org>
-        <554016A5.7040209@imgtec.com>
-Date:   Tue, 28 Apr 2015 17:49:25 -0700
-X-Google-Sender-Auth: fmvQGjxSiHCSaMiMeckilmMkLqo
-Message-ID: <CAL1qeaH8gg2Df=GbQdW+GvMEzzYgMgAZwO9LSerj=xYYWSnsBA@mail.gmail.com>
-Subject: Re: [PATCH V3 2/2] pinctrl: Add Pistachio SoC pin control driver
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=n3pL0p7Q6jyg/Xjo57bfXzlfeDwf1OfwjkbKohYVMek=;
+        b=UZxhqJ8L5B88Xl1VbekZtChiUChU8+7y0FqX7kqT4ZMg2MGY2QmHNvd8fa3nAFWV5j
+         2aq6RHrWba+SxL8qcDBav+pPEnC87E6+1rdmSjdl2H0Bj+DEhUlPy3nKggSDBqBFxvnJ
+         3AgjRE5ZJW/2lEOj5rZZSo26FIdr57H+S1w1q2eOkpEgIfqDXPrKSrHF0rQw6DkMsARP
+         n0Jf4X0nji46mQPPVAEGKAKIzIjBrPpu+GGhhQSVVR+cTcSR2wTN3QMJLkr1Z66wbFtE
+         BVHHY3XXQWaO87ljL1KnNO7MfvJUimWH5/AF0JUl+zCIeGjcDIDV0I6XQTUqbYJaL6jX
+         NWzA==
+X-Gm-Message-State: ALoCoQm6DXAgHiwezCIvhg8QstNwsNgsmh+ELFhXlE+ledV0ak3XJJPHG4JQyEK6Xsnbakb7s7Ht
+X-Received: by 10.236.3.36 with SMTP id 24mr33788706yhg.44.1430269985075;
+        Tue, 28 Apr 2015 18:13:05 -0700 (PDT)
+Received: from corpmail-nozzle1-2.hot.corp.google.com ([100.108.1.103])
+        by gmr-mx.google.com with ESMTPS id i27si1309106yha.6.2015.04.28.18.13.04
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 28 Apr 2015 18:13:05 -0700 (PDT)
+Received: from abrestic.mtv.corp.google.com ([172.22.65.70])
+        by corpmail-nozzle1-2.hot.corp.google.com with ESMTP id 6EczmM9m.1; Tue, 28 Apr 2015 18:13:05 -0700
+Received: by abrestic.mtv.corp.google.com (Postfix, from userid 137652)
+        id C5ADAA438B; Tue, 28 Apr 2015 18:13:03 -0700 (PDT)
 From:   Andrew Bresticker <abrestic@chromium.org>
-To:     Ezequiel Garcia <ezequiel.garcia@imgtec.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        Alexandre Courbot <gnurou@gmail.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-        Linux-MIPS <linux-mips@linux-mips.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        Andrew Bresticker <abrestic@chromium.org>,
+        Ezequiel Garcia <ezequiel.garcia@imgtec.com>,
         James Hartley <james.hartley@imgtec.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        Damien Horsley <Damien.Horsley@imgtec.com>,
-        Govindraj Raja <govindraj.raja@imgtec.com>,
-        Kevin Cernekee <cernekee@chromium.org>,
-        Paul Bolle <pebolle@tiscali.nl>
-Content-Type: text/plain; charset=UTF-8
+        James Hogan <james.hogan@imgtec.com>
+Subject: [PATCH V4 0/2] pinctrl: Support for IMG Pistachio
+Date:   Tue, 28 Apr 2015 18:13:00 -0700
+Message-Id: <1430269982-24129-1-git-send-email-abrestic@chromium.org>
+X-Mailer: git-send-email 2.2.0.rc0.207.ga3a616c
 Return-Path: <abrestic@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47145
+X-archive-position: 47146
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -85,63 +60,41 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Apr 28, 2015 at 4:24 PM, Ezequiel Garcia
-<ezequiel.garcia@imgtec.com> wrote:
-> Andrew,
->
-> On 04/07/2015 04:44 PM, Andrew Bresticker wrote:
-> [..]
->> +static int pistachio_pinmux_enable(struct pinctrl_dev *pctldev,
->> +                                unsigned func, unsigned group)
->> +{
->> +     struct pistachio_pinctrl *pctl = pinctrl_dev_get_drvdata(pctldev);
->> +     const struct pistachio_pin_group *pg = &pctl->groups[group];
->> +     const struct pistachio_function *pf = &pctl->functions[func];
->> +     struct pinctrl_gpio_range *range;
->> +     unsigned int i;
->> +     u32 val;
->> +
->> +     if (pg->mux_reg > 0) {
->> +             for (i = 0; i < ARRAY_SIZE(pg->mux_option); i++) {
->> +                     if (pg->mux_option[i] == func)
->> +                             break;
->> +             }
->> +             if (i == ARRAY_SIZE(pg->mux_option)) {
->> +                     dev_err(pctl->dev, "Cannot mux pin %u to function %u\n",
->> +                             group, func);
->> +                     return -EINVAL;
->> +             }
->> +
->> +             val = pctl_readl(pctl, pg->mux_reg);
->> +             val &= ~(pg->mux_mask << pg->mux_shift);
->> +             val |= i << pg->mux_shift;
->> +             pctl_writel(pctl, val, pg->mux_reg);
->> +
->> +             if (pf->scenarios) {
->> +                     for (i = 0; i < pf->nscenarios; i++) {
->> +                             if (pf->scenarios[i] == group)
->> +                                     break;
->> +                     }
->> +                     if (WARN_ON(i == pf->nscenarios))
->> +                             return -EINVAL;
->> +
->> +                     val = pctl_readl(pctl, pf->scenario_reg);
->> +                     val &= ~(pf->scenario_mask << pf->scenario_shift);
->> +                     val |= i << pf->scenario_shift;
->> +                     pctl_writel(pctl, val, pf->scenario_reg);
->> +             }
->> +     }
->> +
->> +     range = pinctrl_find_gpio_range_from_pin(pctl->pctldev, group);
->> +     if (range)
->> +             gpio_disable(gc_to_bank(range->gc), group - range->pin_base);
->> +
->
-> If you plan to submit a v4, how about using "pg->pins" here instead of "group"?
->
-> Using "group" relies on having the same numberspace for the group and the pin,
-> and it'll break when introducing the RPU pinctrl.
+This series adds support for the system pin and GPIO controller on the IMG
+Pistachio SoC.  Pistachio's system pin controller manages 99 pins, 90 of
+which are MFIOs which can be muxed between multiple functions or used
+as GPIOs.  The GPIO control for the 90 MFIOs is broken up into banks
+of 16.  Pistachio also has a second pin controller, the RPU pin controller,
+which will be supported by a future patchset through an extension to this
+driver.
 
-Sure, will do.
+Tested on an IMG Pistachio BuB.  Based on v4.1-rc1.
 
--Andrew
+Changes from v3:
+ - Addressed review comments from Ezequiel.
+Changes from v2:
+ - Removed module stuff that ends up being compiled out.
+Changes from v1:
+ - Documented pin + function generic binding.
+ - Changed compatible string to "img,pistachio-system-pinctrl".
+ - Addressed some review comments.
+ - A couple of bug fixes.
+
+Cc: Ezequiel Garcia <ezequiel.garcia@imgtec.com>
+Cc: James Hartley <james.hartley@imgtec.com>
+Cc: James Hogan <james.hogan@imgtec.com>
+
+Andrew Bresticker (2):
+  pinctrl: Add Pistachio SoC pin control binding document
+  pinctrl: Add Pistachio SoC pin control driver
+
+ .../bindings/pinctrl/img,pistachio-pinctrl.txt     |  217 +++
+ drivers/pinctrl/Kconfig                            |    6 +
+ drivers/pinctrl/Makefile                           |    1 +
+ drivers/pinctrl/pinctrl-pistachio.c                | 1502 ++++++++++++++++++++
+ 4 files changed, 1726 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/pinctrl/img,pistachio-pinctrl.txt
+ create mode 100644 drivers/pinctrl/pinctrl-pistachio.c
+
+-- 
+2.2.0.rc0.207.ga3a616c

@@ -1,32 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Apr 2015 03:13:27 +0200 (CEST)
-Received: from mail-yh0-f73.google.com ([209.85.213.73]:34520 "EHLO
-        mail-yh0-f73.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27026272AbbD2BNKDVj-S (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 29 Apr 2015 03:13:10 +0200
-Received: by yhl29 with SMTP id 29so456566yhl.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Apr 2015 03:13:48 +0200 (CEST)
+Received: from mail-pa0-f74.google.com ([209.85.220.74]:34439 "EHLO
+        mail-pa0-f74.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27026279AbbD2BNLivQJi (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 29 Apr 2015 03:13:11 +0200
+Received: by pabli10 with SMTP id li10so1146042pab.1
         for <linux-mips@linux-mips.org>; Tue, 28 Apr 2015 18:13:06 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=BfAlAApfgKJwsLxKZqbRK+B9xPkrO47sYWkqqcg36tM=;
-        b=Oz1fUs62PPwYecKofNT6hhaYXpaIv3gICa1+ondxTLdsJTFiYnl/3frD9JFAo6BaKO
-         REa5SUhc4SMVkJBEKPr1ocZDBDzWF3q0PrVMAwCDVgTPHz6bp0wbUzNeMuOROWzDEb1W
-         i1IJymau2uYz1G8BtYVJdvBcVWSCKRPFnVVv46/w3aDcIB2+VbKpF/lGRhcRGJZHEheV
-         DMACB7/St9S2aFrTxUSM8SBV2HtcFRzesNtZTvN0CvWVl4Mjf2TMxsHt+PYrn6yR2d9M
-         MD0ieDhVxjrIJ3l8UPMHbBO7Ppea9LDXwGhtLpUL2VfdVS1Ne42frYQTuVzJa65KcqAD
-         tHDA==
-X-Gm-Message-State: ALoCoQk+vOtmt3UcwDYLjYm+1hD9buHtbqvTKJDaoSnuCKHSgODnMcPGQ1UKFhnB+be0hdZsX3cQ
-X-Received: by 10.140.151.85 with SMTP id 82mr32569664qhx.1.1430269985831;
-        Tue, 28 Apr 2015 18:13:05 -0700 (PDT)
+        bh=Zw2ZkjrLGKJUQOhS8zoOUKGkhOpOx+9yj60beNA8Iso=;
+        b=UANQgJzNj7hBiZFbhgmu7dEkVx44LO0eeE2RA16A7rPJrR+PdaQDba8+7jLF71BTD5
+         1hT7Hk1EcUy2MemH3AwOAsaPcH5uwEXAxZCaqpAqKKDMurZwcQKJyw1ss/xZXCEUXBt6
+         wxokkvx0rGDaqhS8UyDgqC0zlVtlWf93/I9aRubkJNbsGo+IzEHFLf2eNHeIOy3dQc9J
+         2x5mmZHUm1kLGG1VvH5fPCZ6HKrsD2J7LZ+yypjBLFUJqozGMJNKHANnZm+kogj9GTXb
+         a0SaSlA74Z1MvTJlIJaFG1yOA4yz9B+anBUQN0fBwIZ7cPYYZ3Erv4m1GTeu82wilx9R
+         nIOg==
+X-Gm-Message-State: ALoCoQnNSm5gSRVpB9wIWlgP9SbxowhDWEr/P5UEE1BXrXEd0lJQzfTZs/ka36yQ4lQoQnBSOo45
+X-Received: by 10.68.168.99 with SMTP id zv3mr32355870pbb.6.1430269986339;
+        Tue, 28 Apr 2015 18:13:06 -0700 (PDT)
 Received: from corpmail-nozzle1-1.hot.corp.google.com ([100.108.1.104])
-        by gmr-mx.google.com with ESMTPS id i27si1309107yha.6.2015.04.28.18.13.04
+        by gmr-mx.google.com with ESMTPS id l36si1377876yhb.1.2015.04.28.18.13.05
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 28 Apr 2015 18:13:05 -0700 (PDT)
+        Tue, 28 Apr 2015 18:13:06 -0700 (PDT)
 Received: from abrestic.mtv.corp.google.com ([172.22.65.70])
-        by corpmail-nozzle1-1.hot.corp.google.com with ESMTP id y4v41pYD.1; Tue, 28 Apr 2015 18:13:05 -0700
+        by corpmail-nozzle1-1.hot.corp.google.com with ESMTP id d0ryaaph.1; Tue, 28 Apr 2015 18:13:06 -0700
 Received: by abrestic.mtv.corp.google.com (Postfix, from userid 137652)
-        id 44BBAA438C; Tue, 28 Apr 2015 18:13:04 -0700 (PDT)
+        id D96F3A438D; Tue, 28 Apr 2015 18:13:04 -0700 (PDT)
 From:   Andrew Bresticker <abrestic@chromium.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     Linus Walleij <linus.walleij@linaro.org>,
@@ -37,14 +37,11 @@ Cc:     Linus Walleij <linus.walleij@linaro.org>,
         James Hartley <james.hartley@imgtec.com>,
         James Hogan <james.hogan@imgtec.com>,
         Damien Horsley <Damien.Horsley@imgtec.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Pawel Moll <pawel.moll@arm.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ian Campbell <ijc+devicetree@hellion.org.uk>,
-        Kumar Gala <galak@codeaurora.org>
-Subject: [PATCH V4 1/2] pinctrl: Add Pistachio SoC pin control binding document
-Date:   Tue, 28 Apr 2015 18:13:01 -0700
-Message-Id: <1430269982-24129-2-git-send-email-abrestic@chromium.org>
+        Govindraj Raja <govindraj.raja@imgtec.com>,
+        Kevin Cernekee <cernekee@chromium.org>
+Subject: [PATCH V4 2/2] pinctrl: Add Pistachio SoC pin control driver
+Date:   Tue, 28 Apr 2015 18:13:02 -0700
+Message-Id: <1430269982-24129-3-git-send-email-abrestic@chromium.org>
 X-Mailer: git-send-email 2.2.0.rc0.207.ga3a616c
 In-Reply-To: <1430269982-24129-1-git-send-email-abrestic@chromium.org>
 References: <1430269982-24129-1-git-send-email-abrestic@chromium.org>
@@ -52,7 +49,7 @@ Return-Path: <abrestic@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47147
+X-archive-position: 47148
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -69,249 +66,1568 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add a device-tree binding document for the pin controller present
-on the IMG Pistachio SoC.
+Add a driver for the pin controller present on the IMG Pistachio SoC.
+This driver provides pinmux and pinconfig operations as well as GPIO
+and IRQ chips for the GPIO banks.
 
 Signed-off-by: Damien Horsley <Damien.Horsley@imgtec.com>
+Signed-off-by: Govindraj Raja <govindraj.raja@imgtec.com>
 Signed-off-by: Ezequiel Garcia <ezequiel.garcia@imgtec.com>
+Signed-off-by: Kevin Cernekee <cernekee@chromium.org>
 Signed-off-by: Andrew Bresticker <abrestic@chromium.org>
-Cc: Rob Herring <robh+dt@kernel.org>
-Cc: Pawel Moll <pawel.moll@arm.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Ian Campbell <ijc+devicetree@hellion.org.uk>
-Cc: Kumar Gala <galak@codeaurora.org>
 ---
-No changes from v2/v3.
+Changes from v3:
+ - Addressed review comments from Ezequiel.
+Changes from v2:
+ - Removed module stuff which would be compiled out.
 Changes from v1:
- - Change compatible string to "img,pistachio-system-pinctrl".
- - Specify GPIO sub-node names rather than forcing the nodes to be in order.
+ - Addressed review comments from Linus.
+ - Changed compatible string to "img,pistachio-system-pinctrl".
+ - Look for GPIO sub-nodes by name.
+ - A couple of bug fixes.
 ---
- .../bindings/pinctrl/img,pistachio-pinctrl.txt     | 217 +++++++++++++++++++++
- 1 file changed, 217 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/pinctrl/img,pistachio-pinctrl.txt
+ drivers/pinctrl/Kconfig             |    6 +
+ drivers/pinctrl/Makefile            |    1 +
+ drivers/pinctrl/pinctrl-pistachio.c | 1502 +++++++++++++++++++++++++++++++++++
+ 3 files changed, 1509 insertions(+)
+ create mode 100644 drivers/pinctrl/pinctrl-pistachio.c
 
-diff --git a/Documentation/devicetree/bindings/pinctrl/img,pistachio-pinctrl.txt b/Documentation/devicetree/bindings/pinctrl/img,pistachio-pinctrl.txt
+diff --git a/drivers/pinctrl/Kconfig b/drivers/pinctrl/Kconfig
+index aeb5729..19df0ea 100644
+--- a/drivers/pinctrl/Kconfig
++++ b/drivers/pinctrl/Kconfig
+@@ -125,6 +125,12 @@ config PINCTRL_SIRF
+ 	select PINMUX
+ 	select GPIOLIB_IRQCHIP
+ 
++config PINCTRL_PISTACHIO
++	def_bool y if MACH_PISTACHIO
++	select PINMUX
++	select GENERIC_PINCONF
++	select GPIOLIB_IRQCHIP
++
+ config PINCTRL_ST
+ 	bool
+ 	depends on OF
+diff --git a/drivers/pinctrl/Makefile b/drivers/pinctrl/Makefile
+index 6eadf04..510189e 100644
+--- a/drivers/pinctrl/Makefile
++++ b/drivers/pinctrl/Makefile
+@@ -18,6 +18,7 @@ obj-$(CONFIG_PINCTRL_AMD)	+= pinctrl-amd.o
+ obj-$(CONFIG_PINCTRL_FALCON)	+= pinctrl-falcon.o
+ obj-$(CONFIG_PINCTRL_MESON)	+= meson/
+ obj-$(CONFIG_PINCTRL_PALMAS)	+= pinctrl-palmas.o
++obj-$(CONFIG_PINCTRL_PISTACHIO)	+= pinctrl-pistachio.o
+ obj-$(CONFIG_PINCTRL_ROCKCHIP)	+= pinctrl-rockchip.o
+ obj-$(CONFIG_PINCTRL_SINGLE)	+= pinctrl-single.o
+ obj-$(CONFIG_PINCTRL_SIRF)	+= sirf/
+diff --git a/drivers/pinctrl/pinctrl-pistachio.c b/drivers/pinctrl/pinctrl-pistachio.c
 new file mode 100644
-index 0000000..08a4a32
+index 0000000..4e13387
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/pinctrl/img,pistachio-pinctrl.txt
-@@ -0,0 +1,217 @@
-+Imagination Technologies Pistachio SoC pin controllers
-+======================================================
++++ b/drivers/pinctrl/pinctrl-pistachio.c
+@@ -0,0 +1,1502 @@
++/*
++ * Pistachio SoC pinctrl driver
++ *
++ * Copyright (C) 2014 Imagination Technologies Ltd.
++ * Copyright (C) 2014 Google, Inc.
++ *
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms and conditions of the GNU General Public License,
++ * version 2, as published by the Free Software Foundation.
++ */
 +
-+The pin controllers on Pistachio are a combined GPIO controller, (GPIO)
-+interrupt controller, and pinmux + pinconf device. The system ("east") pin
-+controller on Pistachio has 99 pins, 90 of which are MFIOs which can be
-+configured as GPIOs. The 90 GPIOs are divided into 6 banks of up to 16 GPIOs
-+each. The GPIO banks are represented as sub-nodes of the pad controller node.
++#include <linux/gpio.h>
++#include <linux/gpio/driver.h>
++#include <linux/interrupt.h>
++#include <linux/io.h>
++#include <linux/irq.h>
++#include <linux/of.h>
++#include <linux/of_irq.h>
++#include <linux/pinctrl/pinconf.h>
++#include <linux/pinctrl/pinconf-generic.h>
++#include <linux/pinctrl/pinctrl.h>
++#include <linux/pinctrl/pinmux.h>
++#include <linux/platform_device.h>
++#include <linux/slab.h>
++#include <linux/spinlock.h>
 +
-+Please refer to pinctrl-bindings.txt, ../gpio/gpio.txt, and
-+../interrupt-controller/interrupts.txt for generic information regarding
-+pin controller, GPIO, and interrupt bindings.
++#include "pinctrl-utils.h"
 +
-+Required properties for pin controller node:
-+--------------------------------------------
-+ - compatible: "img,pistachio-system-pinctrl".
-+ - reg: Address range of the pinctrl registers.
++#define PADS_SCHMITT_EN0		0x000
++#define PADS_SCHMITT_EN_REG(pin)	(PADS_SCHMITT_EN0 + 0x4 * ((pin) / 32))
++#define PADS_SCHMITT_EN_BIT(pin)	BIT((pin) % 32)
 +
-+Required properties for GPIO bank sub-nodes:
-+--------------------------------------------
-+ - interrupts: Interrupt line for the GPIO bank.
-+ - gpio-controller: Indicates the device is a GPIO controller.
-+ - #gpio-cells: Must be two. The first cell is the GPIO pin number and the
-+   second cell indicates the polarity. See <dt-bindings/gpio/gpio.h> for
-+   a list of possible values.
-+ - interrupt-controller: Indicates the device is an interrupt controller.
-+ - #interrupt-cells: Must be two. The first cell is the GPIO pin number and
-+   the second cell encodes the interrupt flags. See
-+   <dt-bindings/interrupt-controller/irq.h> for a list of valid flags.
++#define PADS_PU_PD0			0x040
++#define PADS_PU_PD_REG(pin)		(PADS_PU_PD0 + 0x4 * ((pin) / 16))
++#define PADS_PU_PD_SHIFT(pin)		(2 * ((pin) % 16))
++#define PADS_PU_PD_MASK			0x3
++#define PADS_PU_PD_HIGHZ		0x0
++#define PADS_PU_PD_UP			0x1
++#define PADS_PU_PD_DOWN			0x2
++#define PADS_PU_PD_BUS			0x3
 +
-+Note that the N GPIO bank sub-nodes *must* be named gpio0, gpio1, ... gpioN-1.
++#define PADS_FUNCTION_SELECT0		0x0c0
++#define PADS_FUNCTION_SELECT1		0x0c4
++#define PADS_FUNCTION_SELECT2		0x0c8
++#define PADS_SCENARIO_SELECT		0x0f8
 +
-+Required properties for pin configuration sub-nodes:
-+----------------------------------------------------
-+ - pins: List of pins to which the configuration applies. See below for a
-+   list of possible pins.
++#define PADS_SLEW_RATE0			0x100
++#define PADS_SLEW_RATE_REG(pin)		(PADS_SLEW_RATE0 + 0x4 * ((pin) / 32))
++#define PADS_SLEW_RATE_BIT(pin)		BIT((pin) % 32)
 +
-+Optional properties for pin configuration sub-nodes:
-+----------------------------------------------------
-+ - function: Mux function for the specified pins. This is not applicable for
-+   non-MFIO pins. See below for a list of valid functions for each pin.
-+ - bias-high-impedance: Enable high-impedance mode.
-+ - bias-pull-up: Enable weak pull-up.
-+ - bias-pull-down: Enable weak pull-down.
-+ - bias-bus-hold: Enable bus-keeper mode.
-+ - drive-strength: Drive strength in mA. Supported values: 2, 4, 8, 12.
-+ - input-schmitt-enable: Enable Schmitt trigger.
-+ - input-schmitt-disable: Disable Schmitt trigger.
-+ - slew-rate: Slew rate control. 0 for slow, 1 for fast.
++#define PADS_DRIVE_STRENGTH0		0x120
++#define PADS_DRIVE_STRENGTH_REG(pin)					\
++	(PADS_DRIVE_STRENGTH0 + 0x4 * ((pin) / 16))
++#define PADS_DRIVE_STRENGTH_SHIFT(pin)	(2 * ((pin) % 16))
++#define PADS_DRIVE_STRENGTH_MASK	0x3
++#define PADS_DRIVE_STRENGTH_2MA		0x0
++#define PADS_DRIVE_STRENGTH_4MA		0x1
++#define PADS_DRIVE_STRENGTH_8MA		0x2
++#define PADS_DRIVE_STRENGTH_12MA	0x3
 +
-+Pin		Functions
-+---		---------
-+mfio0		spim1
-+mfio1		spim1, spim0, uart1
-+mfio2		spim1, spim0, uart1
-+mfio3		spim1
-+mfio4		spim1
-+mfio5		spim1
-+mfio6		spim1
-+mfio7		spim1
-+mfio8		spim0
-+mfio9		spim0
-+mfio10		spim0
-+mfio11		spis
-+mfio12		spis
-+mfio13		spis
-+mfio14		spis
-+mfio15		sdhost, mips_trace_clk, mips_trace_data
-+mfio16		sdhost, mips_trace_dint, mips_trace_data
-+mfio17		sdhost, mips_trace_trigout, mips_trace_data
-+mfio18		sdhost, mips_trace_trigin, mips_trace_data
-+mfio19		sdhost, mips_trace_dm, mips_trace_data
-+mfio20		sdhost, mips_trace_probe_n, mips_trace_data
-+mfio21		sdhost, mips_trace_data
-+mfio22		sdhost, mips_trace_data
-+mfio23		sdhost
-+mfio24		sdhost
-+mfio25		sdhost
-+mfio26		sdhost
-+mfio27		sdhost
-+mfio28		i2c0, spim0
-+mfio29		i2c0, spim0
-+mfio30		i2c1, spim0
-+mfio31		i2c1, spim1
-+mfio32		i2c2
-+mfio33		i2c2
-+mfio34		i2c3
-+mfio35		i2c3
-+mfio36		i2s_out, audio_clk_in
-+mfio37		i2s_out, debug_raw_cca_ind
-+mfio38		i2s_out, debug_ed_sec20_cca_ind
-+mfio39		i2s_out, debug_ed_sec40_cca_ind
-+mfio40		i2s_out, debug_agc_done_0
-+mfio41		i2s_out, debug_agc_done_1
-+mfio42		i2s_out, debug_ed_cca_ind
-+mfio43		i2s_out, debug_s2l_done
-+mfio44		i2s_out
-+mfio45		i2s_dac_clk, audio_sync
-+mfio46		audio_trigger
-+mfio47		i2s_in
-+mfio48		i2s_in
-+mfio49		i2s_in
-+mfio50		i2s_in
-+mfio51		i2s_in
-+mfio52		i2s_in
-+mfio53		i2s_in
-+mfio54		i2s_in, spdif_in
-+mfio55		uart0, spim0, spim1
-+mfio56		uart0, spim0, spim1
-+mfio57		uart0, spim0, spim1
-+mfio58		uart0, spim1
-+mfio59		uart1
-+mfio60		uart1
-+mfio61		spdif_out
-+mfio62		spdif_in
-+mfio63		eth, mips_trace_clk, mips_trace_data
-+mfio64		eth, mips_trace_dint, mips_trace_data
-+mfio65		eth, mips_trace_trigout, mips_trace_data
-+mfio66		eth, mips_trace_trigin, mips_trace_data
-+mfio67		eth, mips_trace_dm, mips_trace_data
-+mfio68		eth, mips_trace_probe_n, mips_trace_data
-+mfio69		eth, mips_trace_data
-+mfio70		eth, mips_trace_data
-+mfio71		eth
-+mfio72		ir
-+mfio73		pwmpdm, mips_trace_clk, sram_debug
-+mfio74		pwmpdm, mips_trace_dint, sram_debug
-+mfio75		pwmpdm, mips_trace_trigout, rom_debug
-+mfio76		pwmpdm, mips_trace_trigin, rom_debug
-+mfio77		mdc_debug, mips_trace_dm, rpu_debug
-+mfio78		mdc_debug, mips_trace_probe_n, rpu_debug
-+mfio79		ddr_debug, mips_trace_data, mips_debug
-+mfio80		ddr_debug, mips_trace_data, mips_debug
-+mfio81		dreq0, mips_trace_data, eth_debug
-+mfio82		dreq1, mips_trace_data, eth_debug
-+mfio83		mips_pll_lock, mips_trace_data, usb_debug
-+mfio84		sys_pll_lock, mips_trace_data, usb_debug
-+mfio85		wifi_pll_lock, mips_trace_data, sdhost_debug
-+mfio86		bt_pll_lock, mips_trace_data, sdhost_debug
-+mfio87		rpu_v_pll_lock, dreq2, socif_debug
-+mfio88		rpu_l_pll_lock, dreq3, socif_debug
-+mfio89		audio_pll_lock, dreq4, dreq5
-+tck
-+trstn
-+tdi
-+tms
-+tdo
-+jtag_comply
-+safe_mode
-+por_disable
-+resetn
++#define GPIO_BANK_BASE(bank)		(0x200 + 0x24 * (bank))
 +
-+Example:
-+--------
-+pinctrl@18101C00 {
-+	compatible = "img,pistachio-system-pinctrl";
-+	reg = <0x18101C00 0x400>;
++#define GPIO_BIT_EN			0x00
++#define GPIO_OUTPUT_EN			0x04
++#define GPIO_OUTPUT			0x08
++#define GPIO_INPUT			0x0c
++#define GPIO_INPUT_POLARITY		0x10
++#define GPIO_INTERRUPT_TYPE		0x14
++#define GPIO_INTERRUPT_TYPE_LEVEL	0x0
++#define GPIO_INTERRUPT_TYPE_EDGE	0x1
++#define GPIO_INTERRUPT_EDGE		0x18
++#define GPIO_INTERRUPT_EDGE_SINGLE	0x0
++#define GPIO_INTERRUPT_EDGE_DUAL	0x1
++#define GPIO_INTERRUPT_EN		0x1c
++#define GPIO_INTERRUPT_STATUS		0x20
 +
-+	gpio0: gpio0 {
-+		interrupts = <GIC_SHARED 71 IRQ_TYPE_LEVEL_HIGH>;
-+
-+		gpio-controller;
-+		#gpio-cells = <2>;
-+
-+		interrupt-controller;
-+		#interrupt-cells = <2>;
-+	};
-+
-+	...
-+
-+	gpio5: gpio5 {
-+		interrupts = <GIC_SHARED 76 IRQ_TYPE_LEVEL_HIGH>;
-+
-+		gpio-controller;
-+		#gpio-cells = <2>;
-+
-+		interrupt-controller;
-+		#interrupt-cells = <2>;
-+	};
-+
-+	...
-+
-+	uart0_xfer: uart0-xfer {
-+		uart0-rxd {
-+			pins = "mfio55";
-+			function = "uart0";
-+		};
-+		uart0-txd {
-+			pins = "mfio56";
-+			function = "uart0";
-+		};
-+	};
-+
-+	uart0_rts_cts: uart0-rts-cts {
-+		uart0-rts {
-+			  pins = "mfio57";
-+			  function = "uart0";
-+		};
-+		uart0-cts {
-+			  pins = "mfio58";
-+			  function = "uart0";
-+		};
-+	};
++struct pistachio_function {
++	const char *name;
++	const char * const *groups;
++	unsigned int ngroups;
++	const int *scenarios;
++	unsigned int nscenarios;
++	unsigned int scenario_reg;
++	unsigned int scenario_shift;
++	unsigned int scenario_mask;
 +};
 +
-+uart@... {
-+	...
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&uart0_xfer>, <&uart0_rts_cts>;
-+	...
++struct pistachio_pin_group {
++	const char *name;
++	unsigned int pin;
++	int mux_option[3];
++	int mux_reg;
++	int mux_shift;
++	int mux_mask;
 +};
 +
-+usb_vbus: fixed-regulator {
-+	...
-+	gpio = <&gpio5 6 GPIO_ACTIVE_HIGH>;
-+	...
++struct pistachio_gpio_bank {
++	struct pistachio_pinctrl *pctl;
++	void __iomem *base;
++	struct gpio_chip gpio_chip;
++	struct irq_chip irq_chip;
++	struct pinctrl_gpio_range gpio_range;
 +};
++
++struct pistachio_pinctrl {
++	struct device *dev;
++	void __iomem *base;
++	struct pinctrl_dev *pctldev;
++	const struct pinctrl_pin_desc *pins;
++	unsigned int npins;
++	const struct pistachio_function *functions;
++	unsigned int nfunctions;
++	const struct pistachio_pin_group *groups;
++	unsigned int ngroups;
++	struct pistachio_gpio_bank *gpio_banks;
++	unsigned int nbanks;
++};
++
++#define PISTACHIO_PIN_MFIO(p)		(p)
++#define PISTACHIO_PIN_TCK		90
++#define PISTACHIO_PIN_TRSTN		91
++#define PISTACHIO_PIN_TDI		92
++#define PISTACHIO_PIN_TMS		93
++#define PISTACHIO_PIN_TDO		94
++#define PISTACHIO_PIN_JTAG_COMPLY	95
++#define PISTACHIO_PIN_SAFE_MODE		96
++#define PISTACHIO_PIN_POR_DISABLE	97
++#define PISTACHIO_PIN_RESETN		98
++
++#define MFIO_PIN_DESC(p)	PINCTRL_PIN(PISTACHIO_PIN_MFIO(p), "mfio" #p)
++
++static const struct pinctrl_pin_desc pistachio_pins[] = {
++	MFIO_PIN_DESC(0),
++	MFIO_PIN_DESC(1),
++	MFIO_PIN_DESC(2),
++	MFIO_PIN_DESC(3),
++	MFIO_PIN_DESC(4),
++	MFIO_PIN_DESC(5),
++	MFIO_PIN_DESC(6),
++	MFIO_PIN_DESC(7),
++	MFIO_PIN_DESC(8),
++	MFIO_PIN_DESC(9),
++	MFIO_PIN_DESC(10),
++	MFIO_PIN_DESC(11),
++	MFIO_PIN_DESC(12),
++	MFIO_PIN_DESC(13),
++	MFIO_PIN_DESC(14),
++	MFIO_PIN_DESC(15),
++	MFIO_PIN_DESC(16),
++	MFIO_PIN_DESC(17),
++	MFIO_PIN_DESC(18),
++	MFIO_PIN_DESC(19),
++	MFIO_PIN_DESC(20),
++	MFIO_PIN_DESC(21),
++	MFIO_PIN_DESC(22),
++	MFIO_PIN_DESC(23),
++	MFIO_PIN_DESC(24),
++	MFIO_PIN_DESC(25),
++	MFIO_PIN_DESC(26),
++	MFIO_PIN_DESC(27),
++	MFIO_PIN_DESC(28),
++	MFIO_PIN_DESC(29),
++	MFIO_PIN_DESC(30),
++	MFIO_PIN_DESC(31),
++	MFIO_PIN_DESC(32),
++	MFIO_PIN_DESC(33),
++	MFIO_PIN_DESC(34),
++	MFIO_PIN_DESC(35),
++	MFIO_PIN_DESC(36),
++	MFIO_PIN_DESC(37),
++	MFIO_PIN_DESC(38),
++	MFIO_PIN_DESC(39),
++	MFIO_PIN_DESC(40),
++	MFIO_PIN_DESC(41),
++	MFIO_PIN_DESC(42),
++	MFIO_PIN_DESC(43),
++	MFIO_PIN_DESC(44),
++	MFIO_PIN_DESC(45),
++	MFIO_PIN_DESC(46),
++	MFIO_PIN_DESC(47),
++	MFIO_PIN_DESC(48),
++	MFIO_PIN_DESC(49),
++	MFIO_PIN_DESC(50),
++	MFIO_PIN_DESC(51),
++	MFIO_PIN_DESC(52),
++	MFIO_PIN_DESC(53),
++	MFIO_PIN_DESC(54),
++	MFIO_PIN_DESC(55),
++	MFIO_PIN_DESC(56),
++	MFIO_PIN_DESC(57),
++	MFIO_PIN_DESC(58),
++	MFIO_PIN_DESC(59),
++	MFIO_PIN_DESC(60),
++	MFIO_PIN_DESC(61),
++	MFIO_PIN_DESC(62),
++	MFIO_PIN_DESC(63),
++	MFIO_PIN_DESC(64),
++	MFIO_PIN_DESC(65),
++	MFIO_PIN_DESC(66),
++	MFIO_PIN_DESC(67),
++	MFIO_PIN_DESC(68),
++	MFIO_PIN_DESC(69),
++	MFIO_PIN_DESC(70),
++	MFIO_PIN_DESC(71),
++	MFIO_PIN_DESC(72),
++	MFIO_PIN_DESC(73),
++	MFIO_PIN_DESC(74),
++	MFIO_PIN_DESC(75),
++	MFIO_PIN_DESC(76),
++	MFIO_PIN_DESC(77),
++	MFIO_PIN_DESC(78),
++	MFIO_PIN_DESC(79),
++	MFIO_PIN_DESC(80),
++	MFIO_PIN_DESC(81),
++	MFIO_PIN_DESC(82),
++	MFIO_PIN_DESC(83),
++	MFIO_PIN_DESC(84),
++	MFIO_PIN_DESC(85),
++	MFIO_PIN_DESC(86),
++	MFIO_PIN_DESC(87),
++	MFIO_PIN_DESC(88),
++	MFIO_PIN_DESC(89),
++	PINCTRL_PIN(PISTACHIO_PIN_TCK, "tck"),
++	PINCTRL_PIN(PISTACHIO_PIN_TRSTN, "trstn"),
++	PINCTRL_PIN(PISTACHIO_PIN_TDI, "tdi"),
++	PINCTRL_PIN(PISTACHIO_PIN_TMS, "tms"),
++	PINCTRL_PIN(PISTACHIO_PIN_TDO, "tdo"),
++	PINCTRL_PIN(PISTACHIO_PIN_JTAG_COMPLY, "jtag_comply"),
++	PINCTRL_PIN(PISTACHIO_PIN_SAFE_MODE, "safe_mode"),
++	PINCTRL_PIN(PISTACHIO_PIN_POR_DISABLE, "por_disable"),
++	PINCTRL_PIN(PISTACHIO_PIN_RESETN, "resetn"),
++};
++
++static const char * const pistachio_spim0_groups[] = {
++	"mfio1", "mfio2", "mfio8", "mfio9", "mfio10", "mfio28", "mfio29",
++	"mfio30", "mfio55", "mfio56", "mfio57",
++};
++
++static const char * const pistachio_spim1_groups[] = {
++	"mfio0", "mfio1", "mfio2", "mfio3", "mfio4", "mfio5", "mfio6",
++	"mfio7", "mfio31", "mfio55", "mfio56", "mfio57", "mfio58",
++};
++
++static const char * const pistachio_spis_groups[] = {
++	"mfio11", "mfio12", "mfio13", "mfio14",
++};
++
++static const char *const pistachio_sdhost_groups[] = {
++	"mfio15", "mfio16", "mfio17", "mfio18", "mfio19", "mfio20",
++	"mfio21", "mfio22", "mfio23", "mfio24", "mfio25", "mfio26",
++	"mfio27",
++};
++
++static const char * const pistachio_i2c0_groups[] = {
++	"mfio28", "mfio29",
++};
++
++static const char * const pistachio_i2c1_groups[] = {
++	"mfio30", "mfio31",
++};
++
++static const char * const pistachio_i2c2_groups[] = {
++	"mfio32", "mfio33",
++};
++
++static const char * const pistachio_i2c3_groups[] = {
++	"mfio34", "mfio35",
++};
++
++static const char * const pistachio_audio_clk_in_groups[] = {
++	"mfio36",
++};
++
++static const char * const pistachio_i2s_out_groups[] = {
++	"mfio36", "mfio37", "mfio38", "mfio39", "mfio40", "mfio41",
++	"mfio42", "mfio43", "mfio44",
++};
++
++static const char * const pistachio_debug_raw_cca_ind_groups[] = {
++	"mfio37",
++};
++
++static const char * const pistachio_debug_ed_sec20_cca_ind_groups[] = {
++	"mfio38",
++};
++
++static const char * const pistachio_debug_ed_sec40_cca_ind_groups[] = {
++	"mfio39",
++};
++
++static const char * const pistachio_debug_agc_done_0_groups[] = {
++	"mfio40",
++};
++
++static const char * const pistachio_debug_agc_done_1_groups[] = {
++	"mfio41",
++};
++
++static const char * const pistachio_debug_ed_cca_ind_groups[] = {
++	"mfio42",
++};
++
++static const char * const pistachio_debug_s2l_done_groups[] = {
++	"mfio43",
++};
++
++static const char * const pistachio_i2s_dac_clk_groups[] = {
++	"mfio45",
++};
++
++static const char * const pistachio_audio_sync_groups[] = {
++	"mfio45",
++};
++
++static const char * const pistachio_audio_trigger_groups[] = {
++	"mfio46",
++};
++
++static const char * const pistachio_i2s_in_groups[] = {
++	"mfio47", "mfio48", "mfio49", "mfio50", "mfio51", "mfio52",
++	"mfio53", "mfio54",
++};
++
++static const char * const pistachio_uart0_groups[] = {
++	"mfio55", "mfio56", "mfio57", "mfio58",
++};
++
++static const char * const pistachio_uart1_groups[] = {
++	"mfio59", "mfio60", "mfio1", "mfio2",
++};
++
++static const char * const pistachio_spdif_out_groups[] = {
++	"mfio61",
++};
++
++static const char * const pistachio_spdif_in_groups[] = {
++	"mfio62", "mfio54",
++};
++static const int pistachio_spdif_in_scenarios[] = {
++	PISTACHIO_PIN_MFIO(62),
++	PISTACHIO_PIN_MFIO(54),
++};
++
++static const char * const pistachio_eth_groups[] = {
++	"mfio63", "mfio64", "mfio65", "mfio66", "mfio67", "mfio68",
++	"mfio69", "mfio70", "mfio71",
++};
++
++static const char * const pistachio_ir_groups[] = {
++	"mfio72",
++};
++
++static const char * const pistachio_pwmpdm_groups[] = {
++	"mfio73", "mfio74", "mfio75", "mfio76",
++};
++
++static const char * const pistachio_mips_trace_clk_groups[] = {
++	"mfio15", "mfio63", "mfio73",
++};
++
++static const char * const pistachio_mips_trace_dint_groups[] = {
++	"mfio16", "mfio64", "mfio74",
++};
++static const int pistachio_mips_trace_dint_scenarios[] = {
++	PISTACHIO_PIN_MFIO(16),
++	PISTACHIO_PIN_MFIO(64),
++	PISTACHIO_PIN_MFIO(74),
++};
++
++static const char * const pistachio_mips_trace_trigout_groups[] = {
++	"mfio17", "mfio65", "mfio75",
++};
++
++static const char * const pistachio_mips_trace_trigin_groups[] = {
++	"mfio18", "mfio66", "mfio76",
++};
++static const int pistachio_mips_trace_trigin_scenarios[] = {
++	PISTACHIO_PIN_MFIO(18),
++	PISTACHIO_PIN_MFIO(66),
++	PISTACHIO_PIN_MFIO(76),
++};
++
++static const char * const pistachio_mips_trace_dm_groups[] = {
++	"mfio19", "mfio67", "mfio77",
++};
++
++static const char * const pistachio_mips_probe_n_groups[] = {
++	"mfio20", "mfio68", "mfio78",
++};
++static const int pistachio_mips_probe_n_scenarios[] = {
++	PISTACHIO_PIN_MFIO(20),
++	PISTACHIO_PIN_MFIO(68),
++	PISTACHIO_PIN_MFIO(78),
++};
++
++static const char * const pistachio_mips_trace_data_groups[] = {
++	"mfio15", "mfio16", "mfio17", "mfio18", "mfio19", "mfio20",
++	"mfio21", "mfio22", "mfio63", "mfio64", "mfio65", "mfio66",
++	"mfio67", "mfio68", "mfio69", "mfio70", "mfio79", "mfio80",
++	"mfio81", "mfio82", "mfio83", "mfio84", "mfio85", "mfio86",
++};
++
++static const char * const pistachio_sram_debug_groups[] = {
++	"mfio73", "mfio74",
++};
++
++static const char * const pistachio_rom_debug_groups[] = {
++	"mfio75", "mfio76",
++};
++
++static const char * const pistachio_rpu_debug_groups[] = {
++	"mfio77", "mfio78",
++};
++
++static const char * const pistachio_mips_debug_groups[] = {
++	"mfio79", "mfio80",
++};
++
++static const char * const pistachio_eth_debug_groups[] = {
++	"mfio81", "mfio82",
++};
++
++static const char * const pistachio_usb_debug_groups[] = {
++	"mfio83", "mfio84",
++};
++
++static const char * const pistachio_sdhost_debug_groups[] = {
++	"mfio85", "mfio86",
++};
++
++static const char * const pistachio_socif_debug_groups[] = {
++	"mfio87", "mfio88",
++};
++
++static const char * const pistachio_mdc_debug_groups[] = {
++	"mfio77", "mfio78",
++};
++
++static const char * const pistachio_ddr_debug_groups[] = {
++	"mfio79", "mfio80",
++};
++
++static const char * const pistachio_dreq0_groups[] = {
++	"mfio81",
++};
++
++static const char * const pistachio_dreq1_groups[] = {
++	"mfio82",
++};
++
++static const char * const pistachio_dreq2_groups[] = {
++	"mfio87",
++};
++
++static const char * const pistachio_dreq3_groups[] = {
++	"mfio88",
++};
++
++static const char * const pistachio_dreq4_groups[] = {
++	"mfio89",
++};
++
++static const char * const pistachio_dreq5_groups[] = {
++	"mfio89",
++};
++
++static const char * const pistachio_mips_pll_lock_groups[] = {
++	"mfio83",
++};
++
++static const char * const pistachio_sys_pll_lock_groups[] = {
++	"mfio84",
++};
++
++static const char * const pistachio_wifi_pll_lock_groups[] = {
++	"mfio85",
++};
++
++static const char * const pistachio_bt_pll_lock_groups[] = {
++	"mfio86",
++};
++
++static const char * const pistachio_rpu_v_pll_lock_groups[] = {
++	"mfio87",
++};
++
++static const char * const pistachio_rpu_l_pll_lock_groups[] = {
++	"mfio88",
++};
++
++static const char * const pistachio_audio_pll_lock_groups[] = {
++	"mfio89",
++};
++
++#define FUNCTION(_name)							\
++	{								\
++		.name = #_name,						\
++		.groups = pistachio_##_name##_groups,			\
++		.ngroups = ARRAY_SIZE(pistachio_##_name##_groups),	\
++	}
++
++#define FUNCTION_SCENARIO(_name, _reg, _shift, _mask)			\
++	{								\
++		.name = #_name,						\
++		.groups = pistachio_##_name##_groups,			\
++		.ngroups = ARRAY_SIZE(pistachio_##_name##_groups),	\
++		.scenarios = pistachio_##_name##_scenarios,		\
++		.nscenarios = ARRAY_SIZE(pistachio_##_name##_scenarios),\
++		.scenario_reg = _reg,					\
++		.scenario_shift = _shift,				\
++		.scenario_mask = _mask,					\
++	}
++
++enum pistachio_mux_option {
++	PISTACHIO_FUNCTION_NONE = -1,
++	PISTACHIO_FUNCTION_SPIM0,
++	PISTACHIO_FUNCTION_SPIM1,
++	PISTACHIO_FUNCTION_SPIS,
++	PISTACHIO_FUNCTION_SDHOST,
++	PISTACHIO_FUNCTION_I2C0,
++	PISTACHIO_FUNCTION_I2C1,
++	PISTACHIO_FUNCTION_I2C2,
++	PISTACHIO_FUNCTION_I2C3,
++	PISTACHIO_FUNCTION_AUDIO_CLK_IN,
++	PISTACHIO_FUNCTION_I2S_OUT,
++	PISTACHIO_FUNCTION_I2S_DAC_CLK,
++	PISTACHIO_FUNCTION_AUDIO_SYNC,
++	PISTACHIO_FUNCTION_AUDIO_TRIGGER,
++	PISTACHIO_FUNCTION_I2S_IN,
++	PISTACHIO_FUNCTION_UART0,
++	PISTACHIO_FUNCTION_UART1,
++	PISTACHIO_FUNCTION_SPDIF_OUT,
++	PISTACHIO_FUNCTION_SPDIF_IN,
++	PISTACHIO_FUNCTION_ETH,
++	PISTACHIO_FUNCTION_IR,
++	PISTACHIO_FUNCTION_PWMPDM,
++	PISTACHIO_FUNCTION_MIPS_TRACE_CLK,
++	PISTACHIO_FUNCTION_MIPS_TRACE_DINT,
++	PISTACHIO_FUNCTION_MIPS_TRACE_TRIGOUT,
++	PISTACHIO_FUNCTION_MIPS_TRACE_TRIGIN,
++	PISTACHIO_FUNCTION_MIPS_TRACE_DM,
++	PISTACHIO_FUNCTION_MIPS_TRACE_PROBE_N,
++	PISTACHIO_FUNCTION_MIPS_TRACE_DATA,
++	PISTACHIO_FUNCTION_SRAM_DEBUG,
++	PISTACHIO_FUNCTION_ROM_DEBUG,
++	PISTACHIO_FUNCTION_RPU_DEBUG,
++	PISTACHIO_FUNCTION_MIPS_DEBUG,
++	PISTACHIO_FUNCTION_ETH_DEBUG,
++	PISTACHIO_FUNCTION_USB_DEBUG,
++	PISTACHIO_FUNCTION_SDHOST_DEBUG,
++	PISTACHIO_FUNCTION_SOCIF_DEBUG,
++	PISTACHIO_FUNCTION_MDC_DEBUG,
++	PISTACHIO_FUNCTION_DDR_DEBUG,
++	PISTACHIO_FUNCTION_DREQ0,
++	PISTACHIO_FUNCTION_DREQ1,
++	PISTACHIO_FUNCTION_DREQ2,
++	PISTACHIO_FUNCTION_DREQ3,
++	PISTACHIO_FUNCTION_DREQ4,
++	PISTACHIO_FUNCTION_DREQ5,
++	PISTACHIO_FUNCTION_MIPS_PLL_LOCK,
++	PISTACHIO_FUNCTION_SYS_PLL_LOCK,
++	PISTACHIO_FUNCTION_WIFI_PLL_LOCK,
++	PISTACHIO_FUNCTION_BT_PLL_LOCK,
++	PISTACHIO_FUNCTION_RPU_V_PLL_LOCK,
++	PISTACHIO_FUNCTION_RPU_L_PLL_LOCK,
++	PISTACHIO_FUNCTION_AUDIO_PLL_LOCK,
++	PISTACHIO_FUNCTION_DEBUG_RAW_CCA_IND,
++	PISTACHIO_FUNCTION_DEBUG_ED_SEC20_CCA_IND,
++	PISTACHIO_FUNCTION_DEBUG_ED_SEC40_CCA_IND,
++	PISTACHIO_FUNCTION_DEBUG_AGC_DONE_0,
++	PISTACHIO_FUNCTION_DEBUG_AGC_DONE_1,
++	PISTACHIO_FUNCTION_DEBUG_ED_CCA_IND,
++	PISTACHIO_FUNCTION_DEBUG_S2L_DONE,
++};
++
++static const struct pistachio_function pistachio_functions[] = {
++	FUNCTION(spim0),
++	FUNCTION(spim1),
++	FUNCTION(spis),
++	FUNCTION(sdhost),
++	FUNCTION(i2c0),
++	FUNCTION(i2c1),
++	FUNCTION(i2c2),
++	FUNCTION(i2c3),
++	FUNCTION(audio_clk_in),
++	FUNCTION(i2s_out),
++	FUNCTION(i2s_dac_clk),
++	FUNCTION(audio_sync),
++	FUNCTION(audio_trigger),
++	FUNCTION(i2s_in),
++	FUNCTION(uart0),
++	FUNCTION(uart1),
++	FUNCTION(spdif_out),
++	FUNCTION_SCENARIO(spdif_in, PADS_SCENARIO_SELECT, 0, 0x1),
++	FUNCTION(eth),
++	FUNCTION(ir),
++	FUNCTION(pwmpdm),
++	FUNCTION(mips_trace_clk),
++	FUNCTION_SCENARIO(mips_trace_dint, PADS_SCENARIO_SELECT, 1, 0x3),
++	FUNCTION(mips_trace_trigout),
++	FUNCTION_SCENARIO(mips_trace_trigin, PADS_SCENARIO_SELECT, 3, 0x3),
++	FUNCTION(mips_trace_dm),
++	FUNCTION_SCENARIO(mips_probe_n, PADS_SCENARIO_SELECT, 5, 0x3),
++	FUNCTION(mips_trace_data),
++	FUNCTION(sram_debug),
++	FUNCTION(rom_debug),
++	FUNCTION(rpu_debug),
++	FUNCTION(mips_debug),
++	FUNCTION(eth_debug),
++	FUNCTION(usb_debug),
++	FUNCTION(sdhost_debug),
++	FUNCTION(socif_debug),
++	FUNCTION(mdc_debug),
++	FUNCTION(ddr_debug),
++	FUNCTION(dreq0),
++	FUNCTION(dreq1),
++	FUNCTION(dreq2),
++	FUNCTION(dreq3),
++	FUNCTION(dreq4),
++	FUNCTION(dreq5),
++	FUNCTION(mips_pll_lock),
++	FUNCTION(sys_pll_lock),
++	FUNCTION(wifi_pll_lock),
++	FUNCTION(bt_pll_lock),
++	FUNCTION(rpu_v_pll_lock),
++	FUNCTION(rpu_l_pll_lock),
++	FUNCTION(audio_pll_lock),
++	FUNCTION(debug_raw_cca_ind),
++	FUNCTION(debug_ed_sec20_cca_ind),
++	FUNCTION(debug_ed_sec40_cca_ind),
++	FUNCTION(debug_agc_done_0),
++	FUNCTION(debug_agc_done_1),
++	FUNCTION(debug_ed_cca_ind),
++	FUNCTION(debug_s2l_done),
++};
++
++#define PIN_GROUP(_pin, _name)					\
++	{							\
++		.name = #_name,					\
++		.pin = PISTACHIO_PIN_##_pin,			\
++		.mux_option = {					\
++			PISTACHIO_FUNCTION_NONE,		\
++			PISTACHIO_FUNCTION_NONE,		\
++			PISTACHIO_FUNCTION_NONE,		\
++		},						\
++		.mux_reg = -1,					\
++		.mux_shift = -1,				\
++		.mux_mask = -1,					\
++	}
++
++#define MFIO_PIN_GROUP(_pin, _func)				\
++	{							\
++		.name = "mfio" #_pin,				\
++		.pin = PISTACHIO_PIN_MFIO(_pin),		\
++		.mux_option = {					\
++			PISTACHIO_FUNCTION_##_func,		\
++			PISTACHIO_FUNCTION_NONE,		\
++			PISTACHIO_FUNCTION_NONE,		\
++		},						\
++		.mux_reg = -1,					\
++		.mux_shift = -1,				\
++		.mux_mask = -1,					\
++	}
++
++#define MFIO_MUX_PIN_GROUP(_pin, _f0, _f1, _f2, _reg, _shift, _mask)	\
++	{								\
++		.name = "mfio" #_pin,					\
++		.pin = PISTACHIO_PIN_MFIO(_pin),			\
++		.mux_option = {						\
++			PISTACHIO_FUNCTION_##_f0,			\
++			PISTACHIO_FUNCTION_##_f1,			\
++			PISTACHIO_FUNCTION_##_f2,			\
++		},							\
++		.mux_reg = _reg,					\
++		.mux_shift = _shift,					\
++		.mux_mask = _mask,					\
++	}
++
++static const struct pistachio_pin_group pistachio_groups[] = {
++	MFIO_PIN_GROUP(0, SPIM1),
++	MFIO_MUX_PIN_GROUP(1, SPIM1, SPIM0, UART1,
++			   PADS_FUNCTION_SELECT0, 0, 0x3),
++	MFIO_MUX_PIN_GROUP(2, SPIM1, SPIM0, UART1,
++			   PADS_FUNCTION_SELECT0, 2, 0x3),
++	MFIO_PIN_GROUP(3, SPIM1),
++	MFIO_PIN_GROUP(4, SPIM1),
++	MFIO_PIN_GROUP(5, SPIM1),
++	MFIO_PIN_GROUP(6, SPIM1),
++	MFIO_PIN_GROUP(7, SPIM1),
++	MFIO_PIN_GROUP(8, SPIM0),
++	MFIO_PIN_GROUP(9, SPIM0),
++	MFIO_PIN_GROUP(10, SPIM0),
++	MFIO_PIN_GROUP(11, SPIS),
++	MFIO_PIN_GROUP(12, SPIS),
++	MFIO_PIN_GROUP(13, SPIS),
++	MFIO_PIN_GROUP(14, SPIS),
++	MFIO_MUX_PIN_GROUP(15, SDHOST, MIPS_TRACE_CLK, MIPS_TRACE_DATA,
++			   PADS_FUNCTION_SELECT0, 4, 0x3),
++	MFIO_MUX_PIN_GROUP(16, SDHOST, MIPS_TRACE_DINT, MIPS_TRACE_DATA,
++			   PADS_FUNCTION_SELECT0, 6, 0x3),
++	MFIO_MUX_PIN_GROUP(17, SDHOST, MIPS_TRACE_TRIGOUT, MIPS_TRACE_DATA,
++			   PADS_FUNCTION_SELECT0, 8, 0x3),
++	MFIO_MUX_PIN_GROUP(18, SDHOST, MIPS_TRACE_TRIGIN, MIPS_TRACE_DATA,
++			   PADS_FUNCTION_SELECT0, 10, 0x3),
++	MFIO_MUX_PIN_GROUP(19, SDHOST, MIPS_TRACE_DM, MIPS_TRACE_DATA,
++			   PADS_FUNCTION_SELECT0, 12, 0x3),
++	MFIO_MUX_PIN_GROUP(20, SDHOST, MIPS_TRACE_PROBE_N, MIPS_TRACE_DATA,
++			   PADS_FUNCTION_SELECT0, 14, 0x3),
++	MFIO_MUX_PIN_GROUP(21, SDHOST, NONE, MIPS_TRACE_DATA,
++			   PADS_FUNCTION_SELECT0, 16, 0x3),
++	MFIO_MUX_PIN_GROUP(22, SDHOST, NONE, MIPS_TRACE_DATA,
++			   PADS_FUNCTION_SELECT0, 18, 0x3),
++	MFIO_PIN_GROUP(23, SDHOST),
++	MFIO_PIN_GROUP(24, SDHOST),
++	MFIO_PIN_GROUP(25, SDHOST),
++	MFIO_PIN_GROUP(26, SDHOST),
++	MFIO_PIN_GROUP(27, SDHOST),
++	MFIO_MUX_PIN_GROUP(28, I2C0, SPIM0, NONE,
++			   PADS_FUNCTION_SELECT0, 20, 0x1),
++	MFIO_MUX_PIN_GROUP(29, I2C0, SPIM0, NONE,
++			   PADS_FUNCTION_SELECT0, 21, 0x1),
++	MFIO_MUX_PIN_GROUP(30, I2C1, SPIM0, NONE,
++			   PADS_FUNCTION_SELECT0, 22, 0x1),
++	MFIO_MUX_PIN_GROUP(31, I2C1, SPIM1, NONE,
++			   PADS_FUNCTION_SELECT0, 23, 0x1),
++	MFIO_PIN_GROUP(32, I2C2),
++	MFIO_PIN_GROUP(33, I2C2),
++	MFIO_PIN_GROUP(34, I2C3),
++	MFIO_PIN_GROUP(35, I2C3),
++	MFIO_MUX_PIN_GROUP(36, I2S_OUT, AUDIO_CLK_IN, NONE,
++			   PADS_FUNCTION_SELECT0, 24, 0x1),
++	MFIO_MUX_PIN_GROUP(37, I2S_OUT, DEBUG_RAW_CCA_IND, NONE,
++			   PADS_FUNCTION_SELECT0, 25, 0x1),
++	MFIO_MUX_PIN_GROUP(38, I2S_OUT, DEBUG_ED_SEC20_CCA_IND, NONE,
++			   PADS_FUNCTION_SELECT0, 26, 0x1),
++	MFIO_MUX_PIN_GROUP(39, I2S_OUT, DEBUG_ED_SEC40_CCA_IND, NONE,
++			   PADS_FUNCTION_SELECT0, 27, 0x1),
++	MFIO_MUX_PIN_GROUP(40, I2S_OUT, DEBUG_AGC_DONE_0, NONE,
++			   PADS_FUNCTION_SELECT0, 28, 0x1),
++	MFIO_MUX_PIN_GROUP(41, I2S_OUT, DEBUG_AGC_DONE_1, NONE,
++			   PADS_FUNCTION_SELECT0, 29, 0x1),
++	MFIO_MUX_PIN_GROUP(42, I2S_OUT, DEBUG_ED_CCA_IND, NONE,
++			   PADS_FUNCTION_SELECT0, 30, 0x1),
++	MFIO_MUX_PIN_GROUP(43, I2S_OUT, DEBUG_S2L_DONE, NONE,
++			   PADS_FUNCTION_SELECT0, 31, 0x1),
++	MFIO_PIN_GROUP(44, I2S_OUT),
++	MFIO_MUX_PIN_GROUP(45, I2S_DAC_CLK, AUDIO_SYNC, NONE,
++			   PADS_FUNCTION_SELECT1, 0, 0x1),
++	MFIO_PIN_GROUP(46, AUDIO_TRIGGER),
++	MFIO_PIN_GROUP(47, I2S_IN),
++	MFIO_PIN_GROUP(48, I2S_IN),
++	MFIO_PIN_GROUP(49, I2S_IN),
++	MFIO_PIN_GROUP(50, I2S_IN),
++	MFIO_PIN_GROUP(51, I2S_IN),
++	MFIO_PIN_GROUP(52, I2S_IN),
++	MFIO_PIN_GROUP(53, I2S_IN),
++	MFIO_MUX_PIN_GROUP(54, I2S_IN, NONE, SPDIF_IN,
++			   PADS_FUNCTION_SELECT1, 1, 0x3),
++	MFIO_MUX_PIN_GROUP(55, UART0, SPIM0, SPIM1,
++			   PADS_FUNCTION_SELECT1, 3, 0x3),
++	MFIO_MUX_PIN_GROUP(56, UART0, SPIM0, SPIM1,
++			   PADS_FUNCTION_SELECT1, 5, 0x3),
++	MFIO_MUX_PIN_GROUP(57, UART0, SPIM0, SPIM1,
++			   PADS_FUNCTION_SELECT1, 7, 0x3),
++	MFIO_MUX_PIN_GROUP(58, UART0, SPIM1, NONE,
++			   PADS_FUNCTION_SELECT1, 9, 0x1),
++	MFIO_PIN_GROUP(59, UART1),
++	MFIO_PIN_GROUP(60, UART1),
++	MFIO_PIN_GROUP(61, SPDIF_OUT),
++	MFIO_PIN_GROUP(62, SPDIF_IN),
++	MFIO_MUX_PIN_GROUP(63, ETH, MIPS_TRACE_CLK, MIPS_TRACE_DATA,
++			   PADS_FUNCTION_SELECT1, 10, 0x3),
++	MFIO_MUX_PIN_GROUP(64, ETH, MIPS_TRACE_DINT, MIPS_TRACE_DATA,
++			   PADS_FUNCTION_SELECT1, 12, 0x3),
++	MFIO_MUX_PIN_GROUP(65, ETH, MIPS_TRACE_TRIGOUT, MIPS_TRACE_DATA,
++			   PADS_FUNCTION_SELECT1, 14, 0x3),
++	MFIO_MUX_PIN_GROUP(66, ETH, MIPS_TRACE_TRIGIN, MIPS_TRACE_DATA,
++			   PADS_FUNCTION_SELECT1, 16, 0x3),
++	MFIO_MUX_PIN_GROUP(67, ETH, MIPS_TRACE_DM, MIPS_TRACE_DATA,
++			   PADS_FUNCTION_SELECT1, 18, 0x3),
++	MFIO_MUX_PIN_GROUP(68, ETH, MIPS_TRACE_PROBE_N, MIPS_TRACE_DATA,
++			   PADS_FUNCTION_SELECT1, 20, 0x3),
++	MFIO_MUX_PIN_GROUP(69, ETH, NONE, MIPS_TRACE_DATA,
++			   PADS_FUNCTION_SELECT1, 22, 0x3),
++	MFIO_MUX_PIN_GROUP(70, ETH, NONE, MIPS_TRACE_DATA,
++			   PADS_FUNCTION_SELECT1, 24, 0x3),
++	MFIO_PIN_GROUP(71, ETH),
++	MFIO_PIN_GROUP(72, IR),
++	MFIO_MUX_PIN_GROUP(73, PWMPDM, MIPS_TRACE_CLK, SRAM_DEBUG,
++			   PADS_FUNCTION_SELECT1, 26, 0x3),
++	MFIO_MUX_PIN_GROUP(74, PWMPDM, MIPS_TRACE_DINT, SRAM_DEBUG,
++			   PADS_FUNCTION_SELECT1, 28, 0x3),
++	MFIO_MUX_PIN_GROUP(75, PWMPDM, MIPS_TRACE_TRIGOUT, ROM_DEBUG,
++			   PADS_FUNCTION_SELECT1, 30, 0x3),
++	MFIO_MUX_PIN_GROUP(76, PWMPDM, MIPS_TRACE_TRIGIN, ROM_DEBUG,
++			   PADS_FUNCTION_SELECT2, 0, 0x3),
++	MFIO_MUX_PIN_GROUP(77, MDC_DEBUG, MIPS_TRACE_DM, RPU_DEBUG,
++			   PADS_FUNCTION_SELECT2, 2, 0x3),
++	MFIO_MUX_PIN_GROUP(78, MDC_DEBUG, MIPS_TRACE_PROBE_N, RPU_DEBUG,
++			   PADS_FUNCTION_SELECT2, 4, 0x3),
++	MFIO_MUX_PIN_GROUP(79, DDR_DEBUG, MIPS_TRACE_DATA, MIPS_DEBUG,
++			   PADS_FUNCTION_SELECT2, 6, 0x3),
++	MFIO_MUX_PIN_GROUP(80, DDR_DEBUG, MIPS_TRACE_DATA, MIPS_DEBUG,
++			   PADS_FUNCTION_SELECT2, 8, 0x3),
++	MFIO_MUX_PIN_GROUP(81, DREQ0, MIPS_TRACE_DATA, ETH_DEBUG,
++			   PADS_FUNCTION_SELECT2, 10, 0x3),
++	MFIO_MUX_PIN_GROUP(82, DREQ1, MIPS_TRACE_DATA, ETH_DEBUG,
++			   PADS_FUNCTION_SELECT2, 12, 0x3),
++	MFIO_MUX_PIN_GROUP(83, MIPS_PLL_LOCK, MIPS_TRACE_DATA, USB_DEBUG,
++			   PADS_FUNCTION_SELECT2, 14, 0x3),
++	MFIO_MUX_PIN_GROUP(84, SYS_PLL_LOCK, MIPS_TRACE_DATA, USB_DEBUG,
++			   PADS_FUNCTION_SELECT2, 16, 0x3),
++	MFIO_MUX_PIN_GROUP(85, WIFI_PLL_LOCK, MIPS_TRACE_DATA, SDHOST_DEBUG,
++			   PADS_FUNCTION_SELECT2, 18, 0x3),
++	MFIO_MUX_PIN_GROUP(86, BT_PLL_LOCK, MIPS_TRACE_DATA, SDHOST_DEBUG,
++			   PADS_FUNCTION_SELECT2, 20, 0x3),
++	MFIO_MUX_PIN_GROUP(87, RPU_V_PLL_LOCK, DREQ2, SOCIF_DEBUG,
++			   PADS_FUNCTION_SELECT2, 22, 0x3),
++	MFIO_MUX_PIN_GROUP(88, RPU_L_PLL_LOCK, DREQ3, SOCIF_DEBUG,
++			   PADS_FUNCTION_SELECT2, 24, 0x3),
++	MFIO_MUX_PIN_GROUP(89, AUDIO_PLL_LOCK, DREQ4, DREQ5,
++			   PADS_FUNCTION_SELECT2, 26, 0x3),
++	PIN_GROUP(TCK, "tck"),
++	PIN_GROUP(TRSTN, "trstn"),
++	PIN_GROUP(TDI, "tdi"),
++	PIN_GROUP(TMS, "tms"),
++	PIN_GROUP(TDO, "tdo"),
++	PIN_GROUP(JTAG_COMPLY, "jtag_comply"),
++	PIN_GROUP(SAFE_MODE, "safe_mode"),
++	PIN_GROUP(POR_DISABLE, "por_disable"),
++	PIN_GROUP(RESETN, "resetn"),
++};
++
++static inline u32 pctl_readl(struct pistachio_pinctrl *pctl, u32 reg)
++{
++	return readl(pctl->base + reg);
++}
++
++static inline void pctl_writel(struct pistachio_pinctrl *pctl, u32 val, u32 reg)
++{
++	writel(val, pctl->base + reg);
++}
++
++static inline struct pistachio_gpio_bank *gc_to_bank(struct gpio_chip *gc)
++{
++	return container_of(gc, struct pistachio_gpio_bank, gpio_chip);
++}
++
++static inline struct pistachio_gpio_bank *irqd_to_bank(struct irq_data *d)
++{
++	return gc_to_bank(irq_data_get_irq_chip_data(d));
++}
++
++static inline u32 gpio_readl(struct pistachio_gpio_bank *bank, u32 reg)
++{
++	return readl(bank->base + reg);
++}
++
++static inline void gpio_writel(struct pistachio_gpio_bank *bank, u32 val,
++			       u32 reg)
++{
++	writel(val, bank->base + reg);
++}
++
++static inline void gpio_mask_writel(struct pistachio_gpio_bank *bank,
++				    u32 reg, unsigned int bit, u32 val)
++{
++	/*
++	 * For most of the GPIO registers, bit 16 + X must be set in order to
++	 * write bit X.
++	 */
++	gpio_writel(bank, (0x10000 | val) << bit, reg);
++}
++
++static inline void gpio_enable(struct pistachio_gpio_bank *bank,
++			       unsigned offset)
++{
++	gpio_mask_writel(bank, GPIO_BIT_EN, offset, 1);
++}
++
++static inline void gpio_disable(struct pistachio_gpio_bank *bank,
++				unsigned offset)
++{
++	gpio_mask_writel(bank, GPIO_BIT_EN, offset, 0);
++}
++
++static int pistachio_pinctrl_get_groups_count(struct pinctrl_dev *pctldev)
++{
++	struct pistachio_pinctrl *pctl = pinctrl_dev_get_drvdata(pctldev);
++
++	return pctl->ngroups;
++}
++
++static const char *pistachio_pinctrl_get_group_name(struct pinctrl_dev *pctldev,
++						    unsigned group)
++{
++	struct pistachio_pinctrl *pctl = pinctrl_dev_get_drvdata(pctldev);
++
++	return pctl->groups[group].name;
++}
++
++static int pistachio_pinctrl_get_group_pins(struct pinctrl_dev *pctldev,
++					    unsigned group,
++					    const unsigned **pins,
++					    unsigned *num_pins)
++{
++	struct pistachio_pinctrl *pctl = pinctrl_dev_get_drvdata(pctldev);
++
++	*pins = &pctl->groups[group].pin;
++	*num_pins = 1;
++
++	return 0;
++}
++
++static const struct pinctrl_ops pistachio_pinctrl_ops = {
++	.get_groups_count = pistachio_pinctrl_get_groups_count,
++	.get_group_name = pistachio_pinctrl_get_group_name,
++	.get_group_pins = pistachio_pinctrl_get_group_pins,
++	.dt_node_to_map = pinconf_generic_dt_node_to_map_pin,
++	.dt_free_map = pinctrl_utils_dt_free_map,
++};
++
++static int pistachio_pinmux_get_functions_count(struct pinctrl_dev *pctldev)
++{
++	struct pistachio_pinctrl *pctl = pinctrl_dev_get_drvdata(pctldev);
++
++	return pctl->nfunctions;
++}
++
++static const char *
++pistachio_pinmux_get_function_name(struct pinctrl_dev *pctldev, unsigned func)
++{
++	struct pistachio_pinctrl *pctl = pinctrl_dev_get_drvdata(pctldev);
++
++	return pctl->functions[func].name;
++}
++
++static int pistachio_pinmux_get_function_groups(struct pinctrl_dev *pctldev,
++						unsigned func,
++						const char * const **groups,
++						unsigned * const num_groups)
++{
++	struct pistachio_pinctrl *pctl = pinctrl_dev_get_drvdata(pctldev);
++
++	*groups = pctl->functions[func].groups;
++	*num_groups = pctl->functions[func].ngroups;
++
++	return 0;
++}
++
++static int pistachio_pinmux_enable(struct pinctrl_dev *pctldev,
++				   unsigned func, unsigned group)
++{
++	struct pistachio_pinctrl *pctl = pinctrl_dev_get_drvdata(pctldev);
++	const struct pistachio_pin_group *pg = &pctl->groups[group];
++	const struct pistachio_function *pf = &pctl->functions[func];
++	struct pinctrl_gpio_range *range;
++	unsigned int i;
++	u32 val;
++
++	if (pg->mux_reg > 0) {
++		for (i = 0; i < ARRAY_SIZE(pg->mux_option); i++) {
++			if (pg->mux_option[i] == func)
++				break;
++		}
++		if (i == ARRAY_SIZE(pg->mux_option)) {
++			dev_err(pctl->dev, "Cannot mux pin %u to function %u\n",
++				group, func);
++			return -EINVAL;
++		}
++
++		val = pctl_readl(pctl, pg->mux_reg);
++		val &= ~(pg->mux_mask << pg->mux_shift);
++		val |= i << pg->mux_shift;
++		pctl_writel(pctl, val, pg->mux_reg);
++
++		if (pf->scenarios) {
++			for (i = 0; i < pf->nscenarios; i++) {
++				if (pf->scenarios[i] == group)
++					break;
++			}
++			if (WARN_ON(i == pf->nscenarios))
++				return -EINVAL;
++
++			val = pctl_readl(pctl, pf->scenario_reg);
++			val &= ~(pf->scenario_mask << pf->scenario_shift);
++			val |= i << pf->scenario_shift;
++			pctl_writel(pctl, val, pf->scenario_reg);
++		}
++	}
++
++	range = pinctrl_find_gpio_range_from_pin(pctl->pctldev, pg->pin);
++	if (range)
++		gpio_disable(gc_to_bank(range->gc), pg->pin - range->pin_base);
++
++	return 0;
++}
++
++static const struct pinmux_ops pistachio_pinmux_ops = {
++	.get_functions_count = pistachio_pinmux_get_functions_count,
++	.get_function_name = pistachio_pinmux_get_function_name,
++	.get_function_groups = pistachio_pinmux_get_function_groups,
++	.set_mux = pistachio_pinmux_enable,
++};
++
++static int pistachio_pinconf_get(struct pinctrl_dev *pctldev, unsigned pin,
++				 unsigned long *config)
++{
++	struct pistachio_pinctrl *pctl = pinctrl_dev_get_drvdata(pctldev);
++	enum pin_config_param param = pinconf_to_config_param(*config);
++	u32 val, arg;
++
++	switch (param) {
++	case PIN_CONFIG_INPUT_SCHMITT_ENABLE:
++		val = pctl_readl(pctl, PADS_SCHMITT_EN_REG(pin));
++		arg = !!(val & PADS_SCHMITT_EN_BIT(pin));
++		break;
++	case PIN_CONFIG_BIAS_HIGH_IMPEDANCE:
++		val = pctl_readl(pctl, PADS_PU_PD_REG(pin)) >>
++			PADS_PU_PD_SHIFT(pin);
++		arg = (val & PADS_PU_PD_MASK) == PADS_PU_PD_HIGHZ;
++		break;
++	case PIN_CONFIG_BIAS_PULL_UP:
++		val = pctl_readl(pctl, PADS_PU_PD_REG(pin)) >>
++			PADS_PU_PD_SHIFT(pin);
++		arg = (val & PADS_PU_PD_MASK) == PADS_PU_PD_UP;
++		break;
++	case PIN_CONFIG_BIAS_PULL_DOWN:
++		val = pctl_readl(pctl, PADS_PU_PD_REG(pin)) >>
++			PADS_PU_PD_SHIFT(pin);
++		arg = (val & PADS_PU_PD_MASK) == PADS_PU_PD_DOWN;
++		break;
++	case PIN_CONFIG_BIAS_BUS_HOLD:
++		val = pctl_readl(pctl, PADS_PU_PD_REG(pin)) >>
++			PADS_PU_PD_SHIFT(pin);
++		arg = (val & PADS_PU_PD_MASK) == PADS_PU_PD_BUS;
++		break;
++	case PIN_CONFIG_SLEW_RATE:
++		val = pctl_readl(pctl, PADS_SLEW_RATE_REG(pin));
++		arg = !!(val & PADS_SLEW_RATE_BIT(pin));
++		break;
++	case PIN_CONFIG_DRIVE_STRENGTH:
++		val = pctl_readl(pctl, PADS_DRIVE_STRENGTH_REG(pin)) >>
++			PADS_DRIVE_STRENGTH_SHIFT(pin);
++		switch (val & PADS_DRIVE_STRENGTH_MASK) {
++		case PADS_DRIVE_STRENGTH_2MA:
++			arg = 2;
++			break;
++		case PADS_DRIVE_STRENGTH_4MA:
++			arg = 4;
++			break;
++		case PADS_DRIVE_STRENGTH_8MA:
++			arg = 8;
++			break;
++		case PADS_DRIVE_STRENGTH_12MA:
++		default:
++			arg = 12;
++			break;
++		}
++		break;
++	default:
++		dev_dbg(pctl->dev, "Property %u not supported\n", param);
++		return -ENOTSUPP;
++	}
++
++	*config = pinconf_to_config_packed(param, arg);
++
++	return 0;
++}
++
++static int pistachio_pinconf_set(struct pinctrl_dev *pctldev, unsigned pin,
++				 unsigned long *configs, unsigned num_configs)
++{
++	struct pistachio_pinctrl *pctl = pinctrl_dev_get_drvdata(pctldev);
++	enum pin_config_param param;
++	u32 drv, val, arg;
++	unsigned int i;
++
++	for (i = 0; i < num_configs; i++) {
++		param = pinconf_to_config_param(configs[i]);
++		arg = pinconf_to_config_argument(configs[i]);
++
++		switch (param) {
++		case PIN_CONFIG_INPUT_SCHMITT_ENABLE:
++			val = pctl_readl(pctl, PADS_SCHMITT_EN_REG(pin));
++			if (arg)
++				val |= PADS_SCHMITT_EN_BIT(pin);
++			else
++				val &= ~PADS_SCHMITT_EN_BIT(pin);
++			pctl_writel(pctl, val, PADS_SCHMITT_EN_REG(pin));
++			break;
++		case PIN_CONFIG_BIAS_HIGH_IMPEDANCE:
++			val = pctl_readl(pctl, PADS_PU_PD_REG(pin));
++			val &= ~(PADS_PU_PD_MASK << PADS_PU_PD_SHIFT(pin));
++			val |= PADS_PU_PD_HIGHZ << PADS_PU_PD_SHIFT(pin);
++			pctl_writel(pctl, val, PADS_PU_PD_REG(pin));
++			break;
++		case PIN_CONFIG_BIAS_PULL_UP:
++			val = pctl_readl(pctl, PADS_PU_PD_REG(pin));
++			val &= ~(PADS_PU_PD_MASK << PADS_PU_PD_SHIFT(pin));
++			val |= PADS_PU_PD_UP << PADS_PU_PD_SHIFT(pin);
++			pctl_writel(pctl, val, PADS_PU_PD_REG(pin));
++			break;
++		case PIN_CONFIG_BIAS_PULL_DOWN:
++			val = pctl_readl(pctl, PADS_PU_PD_REG(pin));
++			val &= ~(PADS_PU_PD_MASK << PADS_PU_PD_SHIFT(pin));
++			val |= PADS_PU_PD_DOWN << PADS_PU_PD_SHIFT(pin);
++			pctl_writel(pctl, val, PADS_PU_PD_REG(pin));
++			break;
++		case PIN_CONFIG_BIAS_BUS_HOLD:
++			val = pctl_readl(pctl, PADS_PU_PD_REG(pin));
++			val &= ~(PADS_PU_PD_MASK << PADS_PU_PD_SHIFT(pin));
++			val |= PADS_PU_PD_BUS << PADS_PU_PD_SHIFT(pin);
++			pctl_writel(pctl, val, PADS_PU_PD_REG(pin));
++			break;
++		case PIN_CONFIG_SLEW_RATE:
++			val = pctl_readl(pctl, PADS_SLEW_RATE_REG(pin));
++			if (arg)
++				val |= PADS_SLEW_RATE_BIT(pin);
++			else
++				val &= ~PADS_SLEW_RATE_BIT(pin);
++			pctl_writel(pctl, val, PADS_SLEW_RATE_REG(pin));
++			break;
++		case PIN_CONFIG_DRIVE_STRENGTH:
++			val = pctl_readl(pctl, PADS_DRIVE_STRENGTH_REG(pin));
++			val &= ~(PADS_DRIVE_STRENGTH_MASK <<
++				 PADS_DRIVE_STRENGTH_SHIFT(pin));
++			switch (arg) {
++			case 2:
++				drv = PADS_DRIVE_STRENGTH_2MA;
++				break;
++			case 4:
++				drv = PADS_DRIVE_STRENGTH_4MA;
++				break;
++			case 8:
++				drv = PADS_DRIVE_STRENGTH_8MA;
++				break;
++			case 12:
++				drv = PADS_DRIVE_STRENGTH_12MA;
++				break;
++			default:
++				dev_err(pctl->dev,
++					"Drive strength %umA not supported\n",
++					arg);
++				return -EINVAL;
++			}
++			val |= drv << PADS_DRIVE_STRENGTH_SHIFT(pin);
++			pctl_writel(pctl, val, PADS_DRIVE_STRENGTH_REG(pin));
++			break;
++		default:
++			dev_err(pctl->dev, "Property %u not supported\n",
++				param);
++			return -ENOTSUPP;
++		}
++	}
++
++	return 0;
++}
++
++static const struct pinconf_ops pistachio_pinconf_ops = {
++	.pin_config_get = pistachio_pinconf_get,
++	.pin_config_set = pistachio_pinconf_set,
++	.is_generic = true,
++};
++
++static struct pinctrl_desc pistachio_pinctrl_desc = {
++	.name = "pistachio-pinctrl",
++	.pctlops = &pistachio_pinctrl_ops,
++	.pmxops = &pistachio_pinmux_ops,
++	.confops = &pistachio_pinconf_ops,
++};
++
++static int pistachio_gpio_request(struct gpio_chip *chip, unsigned offset)
++{
++	return pinctrl_request_gpio(chip->base + offset);
++}
++
++static void pistachio_gpio_free(struct gpio_chip *chip, unsigned offset)
++{
++	pinctrl_free_gpio(chip->base + offset);
++}
++
++static int pistachio_gpio_get_direction(struct gpio_chip *chip, unsigned offset)
++{
++	struct pistachio_gpio_bank *bank = gc_to_bank(chip);
++
++	return !(gpio_readl(bank, GPIO_OUTPUT_EN) & BIT(offset));
++}
++
++static int pistachio_gpio_get(struct gpio_chip *chip, unsigned offset)
++{
++	struct pistachio_gpio_bank *bank = gc_to_bank(chip);
++	u32 reg;
++
++	if (gpio_readl(bank, GPIO_OUTPUT_EN) & BIT(offset))
++		reg = GPIO_OUTPUT;
++	else
++		reg = GPIO_INPUT;
++
++	return !!(gpio_readl(bank, reg) & BIT(offset));
++}
++
++static void pistachio_gpio_set(struct gpio_chip *chip, unsigned offset,
++			       int value)
++{
++	struct pistachio_gpio_bank *bank = gc_to_bank(chip);
++
++	gpio_mask_writel(bank, GPIO_OUTPUT, offset, !!value);
++}
++
++static int pistachio_gpio_direction_input(struct gpio_chip *chip,
++					  unsigned offset)
++{
++	struct pistachio_gpio_bank *bank = gc_to_bank(chip);
++
++	gpio_mask_writel(bank, GPIO_OUTPUT_EN, offset, 0);
++	gpio_enable(bank, offset);
++
++	return 0;
++}
++
++static int pistachio_gpio_direction_output(struct gpio_chip *chip,
++					   unsigned offset, int value)
++{
++	struct pistachio_gpio_bank *bank = gc_to_bank(chip);
++
++	pistachio_gpio_set(chip, offset, value);
++	gpio_mask_writel(bank, GPIO_OUTPUT_EN, offset, 1);
++	gpio_enable(bank, offset);
++
++	return 0;
++}
++
++static void pistachio_gpio_irq_ack(struct irq_data *data)
++{
++	struct pistachio_gpio_bank *bank = irqd_to_bank(data);
++
++	gpio_mask_writel(bank, GPIO_INTERRUPT_STATUS, data->hwirq, 0);
++}
++
++static void pistachio_gpio_irq_mask(struct irq_data *data)
++{
++	struct pistachio_gpio_bank *bank = irqd_to_bank(data);
++
++	gpio_mask_writel(bank, GPIO_INTERRUPT_EN, data->hwirq, 0);
++}
++
++static void pistachio_gpio_irq_unmask(struct irq_data *data)
++{
++	struct pistachio_gpio_bank *bank = irqd_to_bank(data);
++
++	gpio_mask_writel(bank, GPIO_INTERRUPT_EN, data->hwirq, 1);
++}
++
++static unsigned int pistachio_gpio_irq_startup(struct irq_data *data)
++{
++	struct gpio_chip *chip = irq_data_get_irq_chip_data(data);
++
++	pistachio_gpio_direction_input(chip, data->hwirq);
++	pistachio_gpio_irq_unmask(data);
++
++	return 0;
++}
++
++static int pistachio_gpio_irq_set_type(struct irq_data *data, unsigned int type)
++{
++	struct pistachio_gpio_bank *bank = irqd_to_bank(data);
++
++	switch (type & IRQ_TYPE_SENSE_MASK) {
++	case IRQ_TYPE_EDGE_RISING:
++		gpio_mask_writel(bank, GPIO_INPUT_POLARITY, data->hwirq, 1);
++		gpio_mask_writel(bank, GPIO_INTERRUPT_TYPE, data->hwirq,
++				 GPIO_INTERRUPT_TYPE_EDGE);
++		gpio_mask_writel(bank, GPIO_INTERRUPT_EDGE, data->hwirq,
++				 GPIO_INTERRUPT_EDGE_SINGLE);
++		break;
++	case IRQ_TYPE_EDGE_FALLING:
++		gpio_mask_writel(bank, GPIO_INPUT_POLARITY, data->hwirq, 0);
++		gpio_mask_writel(bank, GPIO_INTERRUPT_TYPE, data->hwirq,
++				 GPIO_INTERRUPT_TYPE_EDGE);
++		gpio_mask_writel(bank, GPIO_INTERRUPT_EDGE, data->hwirq,
++				 GPIO_INTERRUPT_EDGE_SINGLE);
++		break;
++	case IRQ_TYPE_EDGE_BOTH:
++		gpio_mask_writel(bank, GPIO_INTERRUPT_TYPE, data->hwirq,
++				 GPIO_INTERRUPT_TYPE_EDGE);
++		gpio_mask_writel(bank, GPIO_INTERRUPT_EDGE, data->hwirq,
++				 GPIO_INTERRUPT_EDGE_DUAL);
++		break;
++	case IRQ_TYPE_LEVEL_HIGH:
++		gpio_mask_writel(bank, GPIO_INPUT_POLARITY, data->hwirq, 1);
++		gpio_mask_writel(bank, GPIO_INTERRUPT_TYPE, data->hwirq,
++				 GPIO_INTERRUPT_TYPE_LEVEL);
++		break;
++	case IRQ_TYPE_LEVEL_LOW:
++		gpio_mask_writel(bank, GPIO_INPUT_POLARITY, data->hwirq, 0);
++		gpio_mask_writel(bank, GPIO_INTERRUPT_TYPE, data->hwirq,
++				 GPIO_INTERRUPT_TYPE_LEVEL);
++		break;
++	default:
++		return -EINVAL;
++	}
++
++	if (type & IRQ_TYPE_LEVEL_MASK)
++		__irq_set_handler_locked(data->irq, handle_level_irq);
++	else
++		__irq_set_handler_locked(data->irq, handle_edge_irq);
++
++	return 0;
++}
++
++static void pistachio_gpio_irq_handler(unsigned int irq, struct irq_desc *desc)
++{
++	struct gpio_chip *gc = irq_get_handler_data(irq);
++	struct pistachio_gpio_bank *bank = gc_to_bank(gc);
++	struct irq_chip *chip = irq_get_chip(irq);
++	unsigned long pending;
++	unsigned int pin;
++
++	chained_irq_enter(chip, desc);
++	pending = gpio_readl(bank, GPIO_INTERRUPT_STATUS) &
++		gpio_readl(bank, GPIO_INTERRUPT_EN);
++	for_each_set_bit(pin, &pending, 16)
++		generic_handle_irq(irq_linear_revmap(gc->irqdomain, pin));
++	chained_irq_exit(chip, desc);
++}
++
++#define GPIO_BANK(_bank, _pin_base, _npins)				\
++	{								\
++		.gpio_chip = {						\
++			.label = "GPIO" #_bank,				\
++			.request = pistachio_gpio_request,		\
++			.free = pistachio_gpio_free,			\
++			.get_direction = pistachio_gpio_get_direction,	\
++			.direction_input = pistachio_gpio_direction_input, \
++			.direction_output = pistachio_gpio_direction_output, \
++			.get = pistachio_gpio_get,			\
++			.set = pistachio_gpio_set,			\
++			.base = _pin_base,				\
++			.ngpio = _npins,				\
++		},							\
++		.irq_chip = {						\
++			.name = "GPIO" #_bank,				\
++			.irq_startup = pistachio_gpio_irq_startup,	\
++			.irq_ack = pistachio_gpio_irq_ack,		\
++			.irq_mask = pistachio_gpio_irq_mask,		\
++			.irq_unmask = pistachio_gpio_irq_unmask,	\
++			.irq_set_type = pistachio_gpio_irq_set_type,	\
++		},							\
++		.gpio_range = {						\
++			.name = "GPIO" #_bank,				\
++			.id = _bank,					\
++			.base = _pin_base,				\
++			.pin_base = _pin_base,				\
++			.npins = _npins,				\
++		},							\
++	}
++
++static struct pistachio_gpio_bank pistachio_gpio_banks[] = {
++	GPIO_BANK(0, PISTACHIO_PIN_MFIO(0), 16),
++	GPIO_BANK(1, PISTACHIO_PIN_MFIO(16), 16),
++	GPIO_BANK(2, PISTACHIO_PIN_MFIO(32), 16),
++	GPIO_BANK(3, PISTACHIO_PIN_MFIO(48), 16),
++	GPIO_BANK(4, PISTACHIO_PIN_MFIO(64), 16),
++	GPIO_BANK(5, PISTACHIO_PIN_MFIO(80), 10),
++};
++
++static int pistachio_gpio_register(struct pistachio_pinctrl *pctl)
++{
++	struct device_node *node = pctl->dev->of_node;
++	struct pistachio_gpio_bank *bank;
++	unsigned int i;
++	int irq, ret = 0;
++
++	for (i = 0; i < pctl->nbanks; i++) {
++		char child_name[sizeof("gpioXX")];
++		struct device_node *child;
++
++		snprintf(child_name, sizeof(child_name), "gpio%d", i);
++		child = of_get_child_by_name(node, child_name);
++		if (!child) {
++			dev_err(pctl->dev, "No node for bank %u\n", i);
++			ret = -ENODEV;
++			goto err;
++		}
++
++		if (!of_find_property(child, "gpio-controller", NULL)) {
++			dev_err(pctl->dev,
++				"No gpio-controller property for bank %u\n", i);
++			ret = -ENODEV;
++			goto err;
++		}
++
++		irq = irq_of_parse_and_map(child, 0);
++		if (irq < 0) {
++			dev_err(pctl->dev, "No IRQ for bank %u: %d\n", i, irq);
++			ret = irq;
++			goto err;
++		}
++
++		bank = &pctl->gpio_banks[i];
++		bank->pctl = pctl;
++		bank->base = pctl->base + GPIO_BANK_BASE(i);
++
++		bank->gpio_chip.dev = pctl->dev;
++		bank->gpio_chip.of_node = child;
++		ret = gpiochip_add(&bank->gpio_chip);
++		if (ret < 0) {
++			dev_err(pctl->dev, "Failed to add GPIO chip %u: %d\n",
++				i, ret);
++			goto err;
++		}
++
++		ret = gpiochip_irqchip_add(&bank->gpio_chip, &bank->irq_chip,
++					   0, handle_level_irq, IRQ_TYPE_NONE);
++		if (ret < 0) {
++			dev_err(pctl->dev, "Failed to add IRQ chip %u: %d\n",
++				i, ret);
++			gpiochip_remove(&bank->gpio_chip);
++			goto err;
++		}
++		gpiochip_set_chained_irqchip(&bank->gpio_chip, &bank->irq_chip,
++					     irq, pistachio_gpio_irq_handler);
++
++		bank->gpio_range.gc = &bank->gpio_chip;
++		pinctrl_add_gpio_range(pctl->pctldev, &bank->gpio_range);
++	}
++
++	return 0;
++err:
++	for (; i > 0; i--) {
++		bank = &pctl->gpio_banks[i - 1];
++		pinctrl_remove_gpio_range(pctl->pctldev, &bank->gpio_range);
++		gpiochip_remove(&bank->gpio_chip);
++	}
++	return ret;
++}
++
++static const struct of_device_id pistachio_pinctrl_of_match[] = {
++	{ .compatible = "img,pistachio-system-pinctrl", },
++	{ },
++};
++
++static int pistachio_pinctrl_probe(struct platform_device *pdev)
++{
++	struct pistachio_pinctrl *pctl;
++	struct resource *res;
++	int ret;
++
++	pctl = devm_kzalloc(&pdev->dev, sizeof(*pctl), GFP_KERNEL);
++	if (!pctl)
++		return -ENOMEM;
++	pctl->dev = &pdev->dev;
++	dev_set_drvdata(&pdev->dev, pctl);
++
++	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	pctl->base = devm_ioremap_resource(&pdev->dev, res);
++	if (IS_ERR(pctl->base))
++		return PTR_ERR(pctl->base);
++
++	pctl->pins = pistachio_pins;
++	pctl->npins = ARRAY_SIZE(pistachio_pins);
++	pctl->functions = pistachio_functions;
++	pctl->nfunctions = ARRAY_SIZE(pistachio_functions);
++	pctl->groups = pistachio_groups;
++	pctl->ngroups = ARRAY_SIZE(pistachio_groups);
++	pctl->gpio_banks = pistachio_gpio_banks;
++	pctl->nbanks = ARRAY_SIZE(pistachio_gpio_banks);
++
++	pistachio_pinctrl_desc.pins = pctl->pins;
++	pistachio_pinctrl_desc.npins = pctl->npins;
++
++	pctl->pctldev = pinctrl_register(&pistachio_pinctrl_desc, &pdev->dev,
++					 pctl);
++	if (!pctl->pctldev) {
++		dev_err(&pdev->dev, "Failed to register pinctrl device\n");
++		return -EINVAL;
++	}
++
++	ret = pistachio_gpio_register(pctl);
++	if (ret < 0) {
++		pinctrl_unregister(pctl->pctldev);
++		return ret;
++	}
++
++	return 0;
++}
++
++static struct platform_driver pistachio_pinctrl_driver = {
++	.driver = {
++		.name = "pistachio-pinctrl",
++		.of_match_table = pistachio_pinctrl_of_match,
++		.suppress_bind_attrs = true,
++	},
++	.probe = pistachio_pinctrl_probe,
++};
++
++static int __init pistachio_pinctrl_register(void)
++{
++	return platform_driver_register(&pistachio_pinctrl_driver);
++}
++arch_initcall(pistachio_pinctrl_register);
 -- 
 2.2.0.rc0.207.ga3a616c

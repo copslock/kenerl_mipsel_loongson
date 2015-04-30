@@ -1,49 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Apr 2015 05:30:03 +0200 (CEST)
-Received: from mail-oi0-f45.google.com ([209.85.218.45]:35439 "EHLO
-        mail-oi0-f45.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27006211AbbD3DaBRdZ-Y (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 30 Apr 2015 05:30:01 +0200
-Received: by oign205 with SMTP id n205so38175613oig.2;
-        Wed, 29 Apr 2015 20:29:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=aVPuEcTRYCccgeIKRVpzJ6x73HyCupSwNarA9xTVXW0=;
-        b=SeJB5jZjvebNDGj/FVxA+onXEsVe5mQw6AQiazlXRvP+X5TU1RvWRLperLIvUU3qox
-         41PSKDiFMUCO60n+6gw++T1qauFoTJKbn6gSQ6DHipWDyMSrtLhQSA67wde4fAqiJZ1d
-         XztrufwIqR91IAa/bAamCe//IPh6nrYD2Hn3D4G4AEwevh1CkBtmneWHJYxNmZ5+0T+M
-         eC2yhBGiovwag4OETRf3GMzBl/Yw1u1vVq3zxEhpq92lmEcPUNJlZP19xiQkFz/DFwM2
-         9GJBHYqZJ+GfOttlSQuM06aACHl4iOeLwWxtW9cDuFdM+wB8BZv5QJuQewjkSGbZ+BDD
-         C4/A==
-X-Received: by 10.60.177.73 with SMTP id co9mr1784683oec.5.1430364597142;
-        Wed, 29 Apr 2015 20:29:57 -0700 (PDT)
-Received: from ?IPv6:2001:470:d:73f:a107:27cc:b4e6:3d07? ([2001:470:d:73f:a107:27cc:b4e6:3d07])
-        by mx.google.com with ESMTPSA id x17sm705803oif.1.2015.04.29.20.29.55
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 29 Apr 2015 20:29:56 -0700 (PDT)
-Message-ID: <5541A1B3.6050404@gmail.com>
-Date:   Wed, 29 Apr 2015 20:29:55 -0700
-From:   Florian Fainelli <f.fainelli@gmail.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.6.0
-MIME-Version: 1.0
-To:     Kevin Cernekee <cernekee@chromium.org>, ralf@linux-mips.org
-CC:     linux-mips@linux-mips.org, valentinrothberg@gmail.com,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] MIPS: BMIPS: Delete unused Kconfig symbol
-References: <1430243570-6143-1-git-send-email-cernekee@chromium.org>
-In-Reply-To: <1430243570-6143-1-git-send-email-cernekee@chromium.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-Return-Path: <f.fainelli@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Apr 2015 13:43:41 +0200 (CEST)
+Received: from e06smtp13.uk.ibm.com ([195.75.94.109]:40288 "EHLO
+        e06smtp13.uk.ibm.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27012289AbbD3LnjpsTGG (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 30 Apr 2015 13:43:39 +0200
+Received: from /spool/local
+        by e06smtp13.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <linux-mips@linux-mips.org> from <borntraeger@de.ibm.com>;
+        Thu, 30 Apr 2015 12:43:36 +0100
+Received: from d06dlp03.portsmouth.uk.ibm.com (9.149.20.15)
+        by e06smtp13.uk.ibm.com (192.168.101.143) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        Thu, 30 Apr 2015 12:43:35 +0100
+Received: from b06cxnps4075.portsmouth.uk.ibm.com (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+        by d06dlp03.portsmouth.uk.ibm.com (Postfix) with ESMTP id 4D24D1B08069
+        for <linux-mips@linux-mips.org>; Thu, 30 Apr 2015 12:44:14 +0100 (BST)
+Received: from d06av07.portsmouth.uk.ibm.com (d06av07.portsmouth.uk.ibm.com [9.149.37.248])
+        by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id t3UBhYC72556288
+        for <linux-mips@linux-mips.org>; Thu, 30 Apr 2015 11:43:34 GMT
+Received: from d06av07.portsmouth.uk.ibm.com (localhost [127.0.0.1])
+        by d06av07.portsmouth.uk.ibm.com (8.14.4/8.14.4/NCO v10.0 AVout) with ESMTP id t3UBhXat014548
+        for <linux-mips@linux-mips.org>; Thu, 30 Apr 2015 07:43:34 -0400
+Received: from tuxmaker.boeblingen.de.ibm.com (tuxmaker.boeblingen.de.ibm.com [9.152.85.9])
+        by d06av07.portsmouth.uk.ibm.com (8.14.4/8.14.4/NCO v10.0 AVin) with ESMTP id t3UBhX45014543;
+        Thu, 30 Apr 2015 07:43:33 -0400
+Received: by tuxmaker.boeblingen.de.ibm.com (Postfix, from userid 25651)
+        id 6E26B1224435; Thu, 30 Apr 2015 13:43:33 +0200 (CEST)
+From:   Christian Borntraeger <borntraeger@de.ibm.com>
+To:     Paolo Bonzini <pbonzini@redhat.com>
+Cc:     KVM <kvm@vger.kernel.org>, kvm-ppc@vger.kernel.org,
+        kvmarm@lists.cs.columbia.edu, linux-mips@linux-mips.org,
+        Cornelia Huck <cornelia.huck@de.ibm.com>,
+        Alexander Graf <agraf@suse.de>,
+        Christian Borntraeger <borntraeger@de.ibm.com>
+Subject: [PATCH 1/2] KVM: provide irq_unsafe kvm_guest_{enter|exit}
+Date:   Thu, 30 Apr 2015 13:43:30 +0200
+Message-Id: <1430394211-25209-2-git-send-email-borntraeger@de.ibm.com>
+X-Mailer: git-send-email 2.3.0
+In-Reply-To: <1430394211-25209-1-git-send-email-borntraeger@de.ibm.com>
+References: <1430394211-25209-1-git-send-email-borntraeger@de.ibm.com>
+X-TM-AS-MML: disable
+X-Content-Scanned: Fidelis XPS MAILER
+x-cbid: 15043011-0013-0000-0000-000003D4C729
+Return-Path: <borntraeger@de.ibm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47167
+X-archive-position: 47168
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: f.fainelli@gmail.com
+X-original-sender: borntraeger@de.ibm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,38 +61,97 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Le 04/28/15 10:52, Kevin Cernekee a écrit :
-> This was left over from an earlier iteration of the BMIPS irqchip changes.
-> It doesn't actually have an effect, so let's nuke it.
-> 
-> Reported-by: Valentin Rothberg <valentinrothberg@gmail.com>
-> Signed-off-by: Kevin Cernekee <cernekee@chromium.org>
+Several kvm architectures disable interrupts before kvm_guest_enter.
+kvm_guest_enter then uses local_irq_save/restore to disable interrupts
+again or for the first time. Lets provide underscore versions of
+kvm_guest_{enter|exit} that assume being called locked.
+kvm_guest_enter now disables interrupts for the full function and
+thus we can remove the check for preemptible.
 
-Acked-by: Florian Fainelli <f.fainelli@gmail.com>
+This patch then adopts s390/kvm to use local_irq_disable/enable calls
+which are slighty cheaper that local_irq_save/restore and call these
+new functions.
 
-> ---
-> 
-> 
-> Ralf - could you please pull this for 4.1?
-> 
-> 
->  arch/mips/Kconfig | 1 -
->  1 file changed, 1 deletion(-)
-> 
-> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-> index f5016656494f..19e5d40fdf40 100644
-> --- a/arch/mips/Kconfig
-> +++ b/arch/mips/Kconfig
-> @@ -147,7 +147,6 @@ config BMIPS_GENERIC
->  	select BCM7120_L2_IRQ
->  	select BRCMSTB_L2_IRQ
->  	select IRQ_CPU
-> -	select RAW_IRQ_ACCESSORS
->  	select DMA_NONCOHERENT
->  	select SYS_SUPPORTS_32BIT_KERNEL
->  	select SYS_SUPPORTS_LITTLE_ENDIAN
-> 
+Signed-off-by: Christian Borntraeger <borntraeger@de.ibm.com>
+---
+ arch/s390/kvm/kvm-s390.c | 10 ++++++----
+ include/linux/kvm_host.h | 27 ++++++++++++++++++---------
+ 2 files changed, 24 insertions(+), 13 deletions(-)
 
-
+diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
+index 46f37df..c25d4e5 100644
+--- a/arch/s390/kvm/kvm-s390.c
++++ b/arch/s390/kvm/kvm-s390.c
+@@ -2010,12 +2010,14 @@ static int __vcpu_run(struct kvm_vcpu *vcpu)
+ 		 * As PF_VCPU will be used in fault handler, between
+ 		 * guest_enter and guest_exit should be no uaccess.
+ 		 */
+-		preempt_disable();
+-		kvm_guest_enter();
+-		preempt_enable();
++		local_irq_disable();
++		__kvm_guest_enter();
++		local_irq_enable();
+ 		exit_reason = sie64a(vcpu->arch.sie_block,
+ 				     vcpu->run->s.regs.gprs);
+-		kvm_guest_exit();
++		local_irq_disable();
++		__kvm_guest_exit();
++		local_irq_enable();
+ 		vcpu->srcu_idx = srcu_read_lock(&vcpu->kvm->srcu);
+ 
+ 		rc = vcpu_post_run(vcpu, exit_reason);
+diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+index d12b210..2d3b3ce 100644
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -749,16 +749,10 @@ static inline void kvm_iommu_unmap_pages(struct kvm *kvm,
+ }
+ #endif
+ 
+-static inline void kvm_guest_enter(void)
++/* must be called with irqs disabled */
++static inline void __kvm_guest_enter(void)
+ {
+-	unsigned long flags;
+-
+-	BUG_ON(preemptible());
+-
+-	local_irq_save(flags);
+ 	guest_enter();
+-	local_irq_restore(flags);
+-
+ 	/* KVM does not hold any references to rcu protected data when it
+ 	 * switches CPU into a guest mode. In fact switching to a guest mode
+ 	 * is very similar to exiting to userspace from rcu point of view. In
+@@ -769,12 +763,27 @@ static inline void kvm_guest_enter(void)
+ 	rcu_virt_note_context_switch(smp_processor_id());
+ }
+ 
++/* must be called with irqs disabled */
++static inline void __kvm_guest_exit(void)
++{
++	guest_exit();
++}
++
++static inline void kvm_guest_enter(void)
++{
++	unsigned long flags;
++
++	local_irq_save(flags);
++	__kvm_guest_enter();
++	local_irq_restore(flags);
++}
++
+ static inline void kvm_guest_exit(void)
+ {
+ 	unsigned long flags;
+ 
+ 	local_irq_save(flags);
+-	guest_exit();
++	__kvm_guest_exit();
+ 	local_irq_restore(flags);
+ }
+ 
 -- 
-Florian
+2.3.0

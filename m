@@ -1,42 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 May 2015 08:48:00 +0200 (CEST)
-Received: from mail-pd0-f172.google.com ([209.85.192.172]:34202 "EHLO
-        mail-pd0-f172.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27009946AbbEAGr6OBUz8 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 1 May 2015 08:47:58 +0200
-Received: by pdbqa5 with SMTP id qa5so84432382pdb.1;
-        Thu, 30 Apr 2015 23:47:54 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 May 2015 15:57:17 +0200 (CEST)
+Received: from mail-pd0-f173.google.com ([209.85.192.173]:34663 "EHLO
+        mail-pd0-f173.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011465AbbEAN5Pnt0Cb (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 1 May 2015 15:57:15 +0200
+Received: by pdbqa5 with SMTP id qa5so92982433pdb.1;
+        Fri, 01 May 2015 06:57:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=Jo+RJXNhtG1TNHl3r2dTDN+olDi3LXLiHzYUjvI8qsM=;
-        b=e33XbyYjZgymK/U+CGWSBCOFHh2+Tjy03FUqKY0Vd4SPalyFe3Az51/x2W0K0Mx1/q
-         NY/C+dwUxYcgV6qRHAaVI/PAb07odkyjZSJSs4Tus/stz4u+8okOekBKlch1nef13nqL
-         HrsTOpvaV4dyLjzWqQAd713+/jhTNFXvRXm41AJfCVHMgLJOQxQ72RINjjkOzpMNKsGD
-         Loybm62TzwF4OrK9M9J+b/OBlBzoYE21ygvfDKpE5LMiIcqJbnoIQZPpzS5mHv1QEOJV
-         JvpkfUxUDYa2Pl8SEVMsTB3fAKTdsnCAU2/ZgRRZIsjAfC0d+BupXZJiYsR49Tl8iM4s
-         UKxw==
-X-Received: by 10.70.48.68 with SMTP id j4mr14965290pdn.5.1430462873843;
-        Thu, 30 Apr 2015 23:47:53 -0700 (PDT)
+        bh=amgRE3uW/NPwrJzNQ35DK4AkV8YDc3Ig+EjjEkMIJjA=;
+        b=cKjnKc6N7YENoROGPVPRrIuJ4qpCdAsAs9NKPd4QqOrKZrgi1CT8RjcK1LvCYqyIxx
+         6YhJlsAffs5KLeBta4OCno3wXcGjQIlFbjKI1P0vRB5x6WlE+SyN9o5GWcXyJ400syAd
+         RZ7a92Pnm7GAxbqFuNB/rRJN2sWSeC4IWj+jQZIbcTiXDTNMJeO3s458k5+5CdyoyGsr
+         5xAe1t/v99Yo/TP8/6rQyxkb02djGBux56VbP9Aaxd3Blgpr/CbaGYSmDhpdVCoLUSxk
+         0w8rdPTWw7RU+xy4BpA+LL/AnNTmdGbbwXgq0QfmtdWyPWNxi82fhe9do8hwVct3od52
+         87fg==
+X-Received: by 10.70.127.231 with SMTP id nj7mr17847758pdb.110.1430488631508;
+        Fri, 01 May 2015 06:57:11 -0700 (PDT)
 Received: from localhost.localdomain (KD106168100169.ppp-bb.dion.ne.jp. [106.168.100.169])
-        by mx.google.com with ESMTPSA id j10sm3933886pdp.83.2015.04.30.23.47.50
+        by mx.google.com with ESMTPSA id pd10sm4970781pdb.66.2015.05.01.06.57.08
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Thu, 30 Apr 2015 23:47:52 -0700 (PDT)
+        Fri, 01 May 2015 06:57:10 -0700 (PDT)
 From:   Akinobu Mita <akinobu.mita@gmail.com>
 To:     linux-kernel@vger.kernel.org, akpm@linux-foundation.org
 Cc:     Akinobu Mita <akinobu.mita@gmail.com>,
         Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
         linux-arch@vger.kernel.org
-Subject: [PATCH 5/5] mips: use for_each_sg()
-Date:   Fri,  1 May 2015 15:47:26 +0900
-Message-Id: <1430462846-12022-5-git-send-email-akinobu.mita@gmail.com>
+Subject: [PATCH v2 05/10] mips: use for_each_sg()
+Date:   Fri,  1 May 2015 22:56:38 +0900
+Message-Id: <1430488603-11055-5-git-send-email-akinobu.mita@gmail.com>
 X-Mailer: git-send-email 1.9.1
-In-Reply-To: <1430462846-12022-1-git-send-email-akinobu.mita@gmail.com>
-References: <1430462846-12022-1-git-send-email-akinobu.mita@gmail.com>
+In-Reply-To: <1430488603-11055-1-git-send-email-akinobu.mita@gmail.com>
+References: <1430488603-11055-1-git-send-email-akinobu.mita@gmail.com>
 Return-Path: <akinobu.mita@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47182
+X-archive-position: 47183
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -53,16 +53,21 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Since mips doesn't select ARCH_HAS_SG_CHAIN, it is not necessary to
-use for_each_sg() in order to loop over each sg element.  But this can
-help find problems with drivers that do not properly initialize their
-sg tables when CONFIG_DEBUG_SG is enabled.
+This replaces the plain loop over the sglist array with for_each_sg()
+macro which consists of sg_next() function calls.  Since mips doesn't
+select ARCH_HAS_SG_CHAIN, it is not necessary to use for_each_sg() in
+order to loop over each sg element.  But this can help find problems
+with drivers that do not properly initialize their sg tables when
+CONFIG_DEBUG_SG is enabled.
 
 Signed-off-by: Akinobu Mita <akinobu.mita@gmail.com>
 Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
 Cc: linux-arch@vger.kernel.org
 ---
+* Changes from v1
+- Update commit log
+
  arch/mips/mm/dma-default.c | 30 ++++++++++++++++++++----------
  1 file changed, 20 insertions(+), 10 deletions(-)
 

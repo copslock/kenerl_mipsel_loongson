@@ -1,59 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 May 2015 20:51:21 +0200 (CEST)
-Received: from smtp.codeaurora.org ([198.145.29.96]:38223 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27012353AbbEASvTGFO8F (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 1 May 2015 20:51:19 +0200
-Received: from smtp.codeaurora.org (localhost [127.0.0.1])
-        by smtp.codeaurora.org (Postfix) with ESMTP id 9D8E0141698;
-        Fri,  1 May 2015 18:51:19 +0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 486)
-        id 8305C14169C; Fri,  1 May 2015 18:51:19 +0000 (UTC)
-Received: from localhost (i-global254.qualcomm.com [199.106.103.254])
-        (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: sboyd@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id A1FB9141698;
-        Fri,  1 May 2015 18:51:18 +0000 (UTC)
-Date:   Fri, 1 May 2015 11:51:17 -0700
-From:   Stephen Boyd <sboyd@codeaurora.org>
-To:     Krzysztof Kozlowski <k.kozlowski@samsung.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Mike Turquette <mturquette@linaro.org>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Sylwester Nawrocki <s.nawrocki@samsung.com>,
-        Tomasz Figa <tomasz.figa@gmail.com>,
-        Kukjin Kim <kgene@kernel.org>, Barry Song <baohua@kernel.org>,
-        Peter De Schrijver <pdeschrijver@nvidia.com>,
-        Prashant Gaikwad <pgaikwad@nvidia.com>,
-        Stephen Warren <swarren@wwwdotorg.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Alexandre Courbot <gnurou@gmail.com>,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        linux-clk@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-rockchip@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
-        Chanwoo Choi <cw00.choi@samsung.com>,
-        Inki Dae <inki.dae@samsung.com>
-Subject: Re: [PATCH v2 8/8] MIPS: Alchemy: Remove unneeded cast removing const
-Message-ID: <20150501185117.GB29653@codeaurora.org>
-References: <1430196383-9190-1-git-send-email-k.kozlowski@samsung.com>
- <1430196383-9190-9-git-send-email-k.kozlowski@samsung.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1430196383-9190-9-git-send-email-k.kozlowski@samsung.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Virus-Scanned: ClamAV using ClamSMTP
-Return-Path: <sboyd@codeaurora.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 May 2015 21:37:51 +0200 (CEST)
+Received: from filtteri1.pp.htv.fi ([213.243.153.184]:40966 "EHLO
+        filtteri1.pp.htv.fi" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27025943AbbEAThuXbqOc (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 1 May 2015 21:37:50 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by filtteri1.pp.htv.fi (Postfix) with ESMTP id 1ABC421B77C;
+        Fri,  1 May 2015 22:37:51 +0300 (EEST)
+X-Virus-Scanned: Debian amavisd-new at pp.htv.fi
+Received: from smtp5.welho.com ([213.243.153.39])
+        by localhost (filtteri1.pp.htv.fi [213.243.153.184]) (amavisd-new, port 10024)
+        with ESMTP id ZQyvKff8BGZF; Fri,  1 May 2015 22:37:46 +0300 (EEST)
+Received: from amd-fx-6350.bb.dnainternet.fi (91-145-91-118.bb.dnainternet.fi [91.145.91.118])
+        by smtp5.welho.com (Postfix) with ESMTP id 1B26B5BC004;
+        Fri,  1 May 2015 22:37:46 +0300 (EEST)
+From:   Aaro Koskinen <aaro.koskinen@iki.fi>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        David Daney <ddaney.cavm@gmail.com>,
+        David Daney <david.daney@cavium.com>
+Cc:     devel@driverdev.osuosl.org, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org, Aaro Koskinen <aaro.koskinen@iki.fi>
+Subject: [RFC PATCH 01/11] MIPS: OCTEON: cvmx-helper: use function to access interface_port_count
+Date:   Fri,  1 May 2015 22:37:03 +0300
+Message-Id: <1430509033-12113-2-git-send-email-aaro.koskinen@iki.fi>
+X-Mailer: git-send-email 2.3.3
+In-Reply-To: <1430509033-12113-1-git-send-email-aaro.koskinen@iki.fi>
+References: <1430509033-12113-1-git-send-email-aaro.koskinen@iki.fi>
+Return-Path: <aaro.koskinen@iki.fi>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47186
+X-archive-position: 47187
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sboyd@codeaurora.org
+X-original-sender: aaro.koskinen@iki.fi
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -66,14 +47,35 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 04/28, Krzysztof Kozlowski wrote:
-> Parent names in clock init data is now array of const pointers to const
-> strings so the cast is not needed.
-> 
-> Signed-off-by: Krzysztof Kozlowski <k.kozlowski@samsung.com>
+Use function to access interface_port_count. This allows moving
+functions requiring the info to different files.
 
-I can take this through clk-next with an ack from Ralf.
+Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+---
+ arch/mips/cavium-octeon/executive/cvmx-helper.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
+diff --git a/arch/mips/cavium-octeon/executive/cvmx-helper.c b/arch/mips/cavium-octeon/executive/cvmx-helper.c
+index 7e5cf7a..301a9ce 100644
+--- a/arch/mips/cavium-octeon/executive/cvmx-helper.c
++++ b/arch/mips/cavium-octeon/executive/cvmx-helper.c
+@@ -557,7 +557,7 @@ int cvmx_helper_interface_probe(int interface)
+ static int __cvmx_helper_interface_setup_ipd(int interface)
+ {
+ 	int ipd_port = cvmx_helper_get_ipd_port(interface, 0);
+-	int num_ports = interface_port_count[interface];
++	int num_ports = cvmx_helper_ports_on_interface(interface);
+ 
+ 	while (num_ports--) {
+ 		__cvmx_helper_port_setup_ipd(ipd_port);
+@@ -620,7 +620,7 @@ static int __cvmx_helper_interface_setup_pko(int interface)
+ 	 * priorities are set.
+ 	 */
+ 	int ipd_port = cvmx_helper_get_ipd_port(interface, 0);
+-	int num_ports = interface_port_count[interface];
++	int num_ports = cvmx_helper_ports_on_interface(interface);
+ 	while (num_ports--) {
+ 		/*
+ 		 * Give the user a chance to override the per queue
 -- 
-Qualcomm Innovation Center, Inc. is a member of Code Aurora Forum,
-a Linux Foundation Collaborative Project
+2.3.3

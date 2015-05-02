@@ -1,20 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 02 May 2015 21:28:42 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:44820 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 02 May 2015 21:29:00 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:44825 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27026405AbbEBT1rSmpu0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 2 May 2015 21:27:47 +0200
+        by eddie.linux-mips.org with ESMTP id S27026406AbbEBT1vt9GUK (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 2 May 2015 21:27:51 +0200
 Received: from localhost (unknown [87.213.45.130])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id A5616B4C;
-        Sat,  2 May 2015 19:27:40 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 14372B50;
+        Sat,  2 May 2015 19:27:46 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org,
-        Markos Chandras <markos.chandras@imgtec.com>,
-        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 3.19 038/177] MIPS: unaligned: Fix regular load/store instruction emulation for EVA
-Date:   Sat,  2 May 2015 21:01:00 +0200
-Message-Id: <20150502190121.321805615@linuxfoundation.org>
+        stable@vger.kernel.org, Huacai Chen <chenhc@lemote.com>,
+        "Steven J. Hill" <Steven.Hill@imgtec.com>,
+        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH 3.19 039/177] MIPS: Loongson-3: Add IRQF_NO_SUSPEND to Cascade irqaction
+Date:   Sat,  2 May 2015 21:01:01 +0200
+Message-Id: <20150502190121.370545948@linuxfoundation.org>
 X-Mailer: git-send-email 2.3.7
 In-Reply-To: <20150502190119.666291882@linuxfoundation.org>
 References: <20150502190119.666291882@linuxfoundation.org>
@@ -25,7 +27,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47213
+X-archive-position: 47214
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,113 +48,35 @@ X-list: linux-mips
 
 ------------------
 
-From: Markos Chandras <markos.chandras@imgtec.com>
+From: Huacai Chen <chenhc@lemote.com>
 
-commit 6eae35485b26f9e51ab896eb8a936bed9908fdf6 upstream.
+commit 0add9c2f1cff9f3f1f2eb7e9babefa872a9d14b9 upstream.
 
-When emulating a regular lh/lw/lhu/sh/sw we need to use the appropriate
-instruction if we are in EVA mode. This is necessary for userspace
-applications which trigger alignment exceptions. In such case, the
-userspace load/store instruction needs to be emulated with the correct
-eva/non-eva instruction by the kernel emulator.
+HPET irq is routed to i8259 and then to MIPS CPU irq (cascade). After
+commit a3e6c1eff5 (MIPS: IRQ: Fix disable_irq on CPU IRQs), if without
+IRQF_NO_SUSPEND in cascade_irqaction, HPET interrupts will lost during
+suspend. The result is machine cannot be waken up.
 
-Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
-Fixes: c1771216ab48 ("MIPS: kernel: unaligned: Handle unaligned accesses for EVA")
+Signed-off-by: Huacai Chen <chenhc@lemote.com>
+Cc: Steven J. Hill <Steven.Hill@imgtec.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/9503/
+Cc: Fuxin Zhang <zhangfx@lemote.com>
+Cc: Zhangjin Wu <wuzhangjin@gmail.com>
+Patchwork: https://patchwork.linux-mips.org/patch/9528/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/kernel/unaligned.c |   52 ++++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 47 insertions(+), 5 deletions(-)
+ arch/mips/loongson/loongson-3/irq.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/mips/kernel/unaligned.c
-+++ b/arch/mips/kernel/unaligned.c
-@@ -564,7 +564,15 @@ static void emulate_load_store_insn(stru
- 		if (!access_ok(VERIFY_READ, addr, 2))
- 			goto sigbus;
+--- a/arch/mips/loongson/loongson-3/irq.c
++++ b/arch/mips/loongson/loongson-3/irq.c
+@@ -44,6 +44,7 @@ void mach_irq_dispatch(unsigned int pend
  
--		LoadHW(addr, value, res);
-+		if (config_enabled(CONFIG_EVA)) {
-+			if (segment_eq(get_fs(), get_ds()))
-+				LoadHW(addr, value, res);
-+			else
-+				LoadHWE(addr, value, res);
-+		} else {
-+			LoadHW(addr, value, res);
-+		}
-+
- 		if (res)
- 			goto fault;
- 		compute_return_epc(regs);
-@@ -575,7 +583,15 @@ static void emulate_load_store_insn(stru
- 		if (!access_ok(VERIFY_READ, addr, 4))
- 			goto sigbus;
+ static struct irqaction cascade_irqaction = {
+ 	.handler = no_action,
++	.flags = IRQF_NO_SUSPEND,
+ 	.name = "cascade",
+ };
  
--		LoadW(addr, value, res);
-+		if (config_enabled(CONFIG_EVA)) {
-+			if (segment_eq(get_fs(), get_ds()))
-+				LoadW(addr, value, res);
-+			else
-+				LoadWE(addr, value, res);
-+		} else {
-+			LoadW(addr, value, res);
-+		}
-+
- 		if (res)
- 			goto fault;
- 		compute_return_epc(regs);
-@@ -586,7 +602,15 @@ static void emulate_load_store_insn(stru
- 		if (!access_ok(VERIFY_READ, addr, 2))
- 			goto sigbus;
- 
--		LoadHWU(addr, value, res);
-+		if (config_enabled(CONFIG_EVA)) {
-+			if (segment_eq(get_fs(), get_ds()))
-+				LoadHWU(addr, value, res);
-+			else
-+				LoadHWUE(addr, value, res);
-+		} else {
-+			LoadHWU(addr, value, res);
-+		}
-+
- 		if (res)
- 			goto fault;
- 		compute_return_epc(regs);
-@@ -645,7 +669,16 @@ static void emulate_load_store_insn(stru
- 
- 		compute_return_epc(regs);
- 		value = regs->regs[insn.i_format.rt];
--		StoreHW(addr, value, res);
-+
-+		if (config_enabled(CONFIG_EVA)) {
-+			if (segment_eq(get_fs(), get_ds()))
-+				StoreHW(addr, value, res);
-+			else
-+				StoreHWE(addr, value, res);
-+		} else {
-+			StoreHW(addr, value, res);
-+		}
-+
- 		if (res)
- 			goto fault;
- 		break;
-@@ -656,7 +689,16 @@ static void emulate_load_store_insn(stru
- 
- 		compute_return_epc(regs);
- 		value = regs->regs[insn.i_format.rt];
--		StoreW(addr, value, res);
-+
-+		if (config_enabled(CONFIG_EVA)) {
-+			if (segment_eq(get_fs(), get_ds()))
-+				StoreW(addr, value, res);
-+			else
-+				StoreWE(addr, value, res);
-+		} else {
-+			StoreW(addr, value, res);
-+		}
-+
- 		if (res)
- 			goto fault;
- 		break;

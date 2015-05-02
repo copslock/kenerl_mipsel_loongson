@@ -1,33 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 May 2015 22:55:30 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:33222 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 02 May 2015 21:10:04 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:43701 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27025960AbbEAUz2uNPSi (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 1 May 2015 22:55:28 +0200
+        by eddie.linux-mips.org with ESMTP id S27011493AbbEBTKCTDnVH (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 2 May 2015 21:10:02 +0200
 Received: from localhost (unknown [87.213.45.130])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id A40ECBBC;
-        Fri,  1 May 2015 20:55:22 +0000 (UTC)
-Date:   Fri, 1 May 2015 22:55:19 +0200
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 88EB79F2;
+        Sat,  2 May 2015 19:09:56 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Aaro Koskinen <aaro.koskinen@iki.fi>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        David Daney <ddaney.cavm@gmail.com>,
-        David Daney <david.daney@cavium.com>,
-        devel@driverdev.osuosl.org, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH 00/11] MIPS: OCTEON: move all octeon-ethernet code to
- staging
-Message-ID: <20150501205519.GA2550@kroah.com>
-References: <1430509033-12113-1-git-send-email-aaro.koskinen@iki.fi>
+To:     linux-kernel@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, James Hogan <james.hogan@imgtec.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Paul Burton <paul.burton@imgtec.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Gleb Natapov <gleb@kernel.org>, linux-mips@linux-mips.org,
+        kvm@vger.kernel.org
+Subject: [PATCH 4.0 035/220] MIPS: KVM: Handle MSA Disabled exceptions from guest
+Date:   Sat,  2 May 2015 20:59:10 +0200
+Message-Id: <20150502185855.907057268@linuxfoundation.org>
+X-Mailer: git-send-email 2.3.7
+In-Reply-To: <20150502185854.333748961@linuxfoundation.org>
+References: <20150502185854.333748961@linuxfoundation.org>
+User-Agent: quilt/0.64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1430509033-12113-1-git-send-email-aaro.koskinen@iki.fi>
-User-Agent: Mutt/1.5.23 (2014-03-12)
+Content-Type: text/plain; charset=ISO-8859-15
 Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47199
+X-archive-position: 47200
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -44,29 +45,131 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, May 01, 2015 at 10:37:02PM +0300, Aaro Koskinen wrote:
-> Hi,
-> 
-> In order to octeon-ethernet staging work to proceed, we should have all
-> the code in the same tree (staging). Currently, most of the driver code
-> actually lives in the MIPS tree in the "cvmx" helper or OS abstraction
-> routines and include files. Majority of this code needs refactoring
-> (or deletion) for the octeon-ethernet to become a normal Linux driver.
-> Since rest of the kernel does not need this code at all, it should
-> make sense to move it all into the same place while the driver
-> is being developed.
-> 
-> This series does not make any functional changes, just moves the code.
-> Tested on EdgeRouter Lite, EdgeRouter Pro and D-Link DSR-1000N. Also build
-> tested with octeon-ethernet as built-in, module and completely disabled.
-> Patches are based on staging-next.
+4.0-stable review patch.  If anyone has any objections, please let me know.
 
-I don't object to this, especially if it helps get the octeon code out
-of staging sooner.
+------------------
 
-But I need an ack from the MIPS maintainers before I can accept this into
-the staging tree...
+From: James Hogan <james.hogan@imgtec.com>
 
-thanks,
+commit 98119ad53376885819d93dfb8737b6a9a61ca0ba upstream.
 
-greg k-h
+Guest user mode can generate a guest MSA Disabled exception on an MSA
+capable core by simply trying to execute an MSA instruction. Since this
+exception is unknown to KVM it will be passed on to the guest kernel.
+However guest Linux kernels prior to v3.15 do not set up an exception
+handler for the MSA Disabled exception as they don't support any MSA
+capable cores. This results in a guest OS panic.
+
+Since an older processor ID may be being emulated, and MSA support is
+not advertised to the guest, the correct behaviour is to generate a
+Reserved Instruction exception in the guest kernel so it can send the
+guest process an illegal instruction signal (SIGILL), as would happen
+with a non-MSA-capable core.
+
+Fix this as minimally as reasonably possible by preventing
+kvm_mips_check_privilege() from relaying MSA Disabled exceptions from
+guest user mode to the guest kernel, and handling the MSA Disabled
+exception by emulating a Reserved Instruction exception in the guest,
+via a new handle_msa_disabled() KVM callback.
+
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Paul Burton <paul.burton@imgtec.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Gleb Natapov <gleb@kernel.org>
+Cc: linux-mips@linux-mips.org
+Cc: kvm@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+---
+ arch/mips/include/asm/kvm_host.h |    2 ++
+ arch/mips/kvm/emulate.c          |    1 +
+ arch/mips/kvm/mips.c             |    4 ++++
+ arch/mips/kvm/trap_emul.c        |   28 ++++++++++++++++++++++++++++
+ 4 files changed, 35 insertions(+)
+
+--- a/arch/mips/include/asm/kvm_host.h
++++ b/arch/mips/include/asm/kvm_host.h
+@@ -322,6 +322,7 @@ enum mips_mmu_types {
+ #define T_TRAP			13	/* Trap instruction */
+ #define T_VCEI			14	/* Virtual coherency exception */
+ #define T_FPE			15	/* Floating point exception */
++#define T_MSADIS		21	/* MSA disabled exception */
+ #define T_WATCH			23	/* Watch address reference */
+ #define T_VCED			31	/* Virtual coherency data */
+ 
+@@ -578,6 +579,7 @@ struct kvm_mips_callbacks {
+ 	int (*handle_syscall)(struct kvm_vcpu *vcpu);
+ 	int (*handle_res_inst)(struct kvm_vcpu *vcpu);
+ 	int (*handle_break)(struct kvm_vcpu *vcpu);
++	int (*handle_msa_disabled)(struct kvm_vcpu *vcpu);
+ 	int (*vm_init)(struct kvm *kvm);
+ 	int (*vcpu_init)(struct kvm_vcpu *vcpu);
+ 	int (*vcpu_setup)(struct kvm_vcpu *vcpu);
+--- a/arch/mips/kvm/emulate.c
++++ b/arch/mips/kvm/emulate.c
+@@ -2176,6 +2176,7 @@ enum emulation_result kvm_mips_check_pri
+ 		case T_SYSCALL:
+ 		case T_BREAK:
+ 		case T_RES_INST:
++		case T_MSADIS:
+ 			break;
+ 
+ 		case T_COP_UNUSABLE:
+--- a/arch/mips/kvm/mips.c
++++ b/arch/mips/kvm/mips.c
+@@ -1119,6 +1119,10 @@ int kvm_mips_handle_exit(struct kvm_run
+ 		ret = kvm_mips_callbacks->handle_break(vcpu);
+ 		break;
+ 
++	case T_MSADIS:
++		ret = kvm_mips_callbacks->handle_msa_disabled(vcpu);
++		break;
++
+ 	default:
+ 		kvm_err("Exception Code: %d, not yet handled, @ PC: %p, inst: 0x%08x  BadVaddr: %#lx Status: %#lx\n",
+ 			exccode, opc, kvm_get_inst(opc, vcpu), badvaddr,
+--- a/arch/mips/kvm/trap_emul.c
++++ b/arch/mips/kvm/trap_emul.c
+@@ -330,6 +330,33 @@ static int kvm_trap_emul_handle_break(st
+ 	return ret;
+ }
+ 
++static int kvm_trap_emul_handle_msa_disabled(struct kvm_vcpu *vcpu)
++{
++	struct kvm_run *run = vcpu->run;
++	uint32_t __user *opc = (uint32_t __user *) vcpu->arch.pc;
++	unsigned long cause = vcpu->arch.host_cp0_cause;
++	enum emulation_result er = EMULATE_DONE;
++	int ret = RESUME_GUEST;
++
++	/* No MSA supported in guest, guest reserved instruction exception */
++	er = kvm_mips_emulate_ri_exc(cause, opc, run, vcpu);
++
++	switch (er) {
++	case EMULATE_DONE:
++		ret = RESUME_GUEST;
++		break;
++
++	case EMULATE_FAIL:
++		run->exit_reason = KVM_EXIT_INTERNAL_ERROR;
++		ret = RESUME_HOST;
++		break;
++
++	default:
++		BUG();
++	}
++	return ret;
++}
++
+ static int kvm_trap_emul_vm_init(struct kvm *kvm)
+ {
+ 	return 0;
+@@ -470,6 +497,7 @@ static struct kvm_mips_callbacks kvm_tra
+ 	.handle_syscall = kvm_trap_emul_handle_syscall,
+ 	.handle_res_inst = kvm_trap_emul_handle_res_inst,
+ 	.handle_break = kvm_trap_emul_handle_break,
++	.handle_msa_disabled = kvm_trap_emul_handle_msa_disabled,
+ 
+ 	.vm_init = kvm_trap_emul_vm_init,
+ 	.vcpu_init = kvm_trap_emul_vcpu_init,

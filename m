@@ -1,37 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 02 May 2015 21:51:07 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:46097 "EHLO
-        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012126AbbEBTvFQZ4mS (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 2 May 2015 21:51:05 +0200
-Received: from localhost (unknown [87.213.45.130])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id D3C12B68;
-        Sat,  2 May 2015 19:50:59 +0000 (UTC)
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Huacai Chen <chenhc@lemote.com>,
-        "Steven J. Hill" <Steven.Hill@imgtec.com>,
-        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 3.10 11/65] MIPS: Hibernate: flush TLB entries earlier
-Date:   Sat,  2 May 2015 21:03:41 +0200
-Message-Id: <20150502190115.396960195@linuxfoundation.org>
-X-Mailer: git-send-email 2.3.7
-In-Reply-To: <20150502190114.555225285@linuxfoundation.org>
-References: <20150502190114.555225285@linuxfoundation.org>
-User-Agent: quilt/0.64
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 03 May 2015 11:36:20 +0200 (CEST)
+Received: (from localhost user: 'macro', uid#1010) by eddie.linux-mips.org
+        with ESMTP id S27010730AbbECJgTDSOvf (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 3 May 2015 11:36:19 +0200
+Date:   Sun, 3 May 2015 10:36:19 +0100 (BST)
+From:   "Maciej W. Rozycki" <macro@linux-mips.org>
+To:     Ralf Baechle <ralf@linux-mips.org>
+cc:     "Steven J. Hill" <Steven.Hill@imgtec.com>,
+        linux-mips@linux-mips.org
+Subject: [PATCH] MIPS: pgtable-bits.h: Correct _PAGE_GLOBAL_SHIFT build
+ failure
+Message-ID: <alpine.LFD.2.11.1505022309360.30428@eddie.linux-mips.org>
+User-Agent: Alpine 2.11 (LFD 23 2013-08-11)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-15
-Return-Path: <gregkh@linuxfoundation.org>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47217
+X-archive-position: 47218
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,47 +34,84 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-3.10-stable review patch.  If anyone has any objections, please let me know.
+Correct a build failure introduced by be0c37c9 [MIPS: Rearrange PTE bits 
+into fixed positions.]:
 
-------------------
+In file included from ./arch/mips/include/asm/io.h:27:0,
+                 from ./arch/mips/include/asm/page.h:176,
+                 from include/linux/mm_types.h:15,
+                 from include/linux/sched.h:27,
+                 from include/linux/ptrace.h:5,
+                 from arch/mips/kernel/cpu-probe.c:16:
+./arch/mips/include/asm/pgtable-bits.h:164:0: error: "_PAGE_GLOBAL_SHIFT" redefined [-Werror]
+ #define _PAGE_GLOBAL_SHIFT (_PAGE_MODIFIED_SHIFT + 1)
+ ^
+./arch/mips/include/asm/pgtable-bits.h:141:0: note: this is the location of the previous definition
+ #define _PAGE_GLOBAL_SHIFT (_PAGE_SPLITTING_SHIFT + 1)
+ ^
+cc1: all warnings being treated as errors
+make[2]: *** [arch/mips/kernel/cpu-probe.o] Error 1
 
-From: Huacai Chen <chenhc@lemote.com>
+for 64BIT/CPU_MIPSR1/MIPS_HUGE_TLB_SUPPORT configurations.  Remove the 
+scattered double `_PAGE_NO_EXEC_SHIFT' and `_PAGE_GLOBAL_SHIFT' macro 
+definitions and rearrange them so that the respective macros these 
+definitions are based on are also those used for guarding conditionals.
 
-commit a843d00d038b11267279e3b5388222320f9ddc1d upstream.
-
-We found that TLB mismatch not only happens after kernel resume, but
-also happens during snapshot restore. So move it to the beginning of
-swsusp_arch_suspend().
-
-Signed-off-by: Huacai Chen <chenhc@lemote.com>
-Cc: Steven J. Hill <Steven.Hill@imgtec.com>
-Cc: linux-mips@linux-mips.org
-Cc: Fuxin Zhang <zhangfx@lemote.com>
-Cc: Zhangjin Wu <wuzhangjin@gmail.com>
-Patchwork: https://patchwork.linux-mips.org/patch/9621/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
+Signed-off-by: Maciej W. Rozycki <macro@linux-mips.org>
 ---
- arch/mips/power/hibernate.S |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Ralf,
 
---- a/arch/mips/power/hibernate.S
-+++ b/arch/mips/power/hibernate.S
-@@ -30,6 +30,8 @@ LEAF(swsusp_arch_suspend)
- END(swsusp_arch_suspend)
+ This is a regression present in 4.1-rc1, so please push upstream ASAP.
+
+  Maciej
+
+linux-mips-page-global-shift.diff
+Index: linux-org/arch/mips/include/asm/pgtable-bits.h
+===================================================================
+--- linux-org.orig/arch/mips/include/asm/pgtable-bits.h	2015-05-02 23:12:15.583154000 +0100
++++ linux-org/arch/mips/include/asm/pgtable-bits.h	2015-05-02 23:14:28.334176000 +0100
+@@ -133,20 +133,13 @@
+ #define _PAGE_HUGE		(1 << _PAGE_HUGE_SHIFT)
+ #define _PAGE_SPLITTING_SHIFT	(_PAGE_HUGE_SHIFT + 1)
+ #define _PAGE_SPLITTING		(1 << _PAGE_SPLITTING_SHIFT)
+-
+-/* Only R2 or newer cores have the XI bit */
+-#ifdef CONFIG_CPU_MIPSR2
+-#define _PAGE_NO_EXEC_SHIFT	(_PAGE_SPLITTING_SHIFT + 1)
+-#else
+-#define _PAGE_GLOBAL_SHIFT	(_PAGE_SPLITTING_SHIFT + 1)
+-#define _PAGE_GLOBAL		(1 << _PAGE_GLOBAL_SHIFT)
+-#endif	/* CONFIG_CPU_MIPSR2 */
+-
+ #endif	/* CONFIG_64BIT && CONFIG_MIPS_HUGE_TLB_SUPPORT */
  
- LEAF(swsusp_arch_resume)
-+	/* Avoid TLB mismatch during and after kernel resume */
-+	jal local_flush_tlb_all
- 	PTR_L t0, restore_pblist
- 0:
- 	PTR_L t1, PBE_ADDRESS(t0)   /* source */
-@@ -43,7 +45,6 @@ LEAF(swsusp_arch_resume)
- 	bne t1, t3, 1b
- 	PTR_L t0, PBE_NEXT(t0)
- 	bnez t0, 0b
--	jal local_flush_tlb_all /* Avoid TLB mismatch after kernel resume */
- 	PTR_LA t0, saved_regs
- 	PTR_L ra, PT_R31(t0)
- 	PTR_L sp, PT_R29(t0)
+ #ifdef CONFIG_CPU_MIPSR2
+ /* XI - page cannot be executed */
+-#ifndef _PAGE_NO_EXEC_SHIFT
++#ifdef _PAGE_SPLITTING_SHIFT
++#define _PAGE_NO_EXEC_SHIFT	(_PAGE_SPLITTING_SHIFT + 1)
++#else
+ #define _PAGE_NO_EXEC_SHIFT	(_PAGE_MODIFIED_SHIFT + 1)
+ #endif
+ #define _PAGE_NO_EXEC		(cpu_has_rixi ? (1 << _PAGE_NO_EXEC_SHIFT) : 0)
+@@ -156,14 +149,16 @@
+ #define _PAGE_READ		(cpu_has_rixi ? 0 : (1 << _PAGE_READ_SHIFT))
+ #define _PAGE_NO_READ_SHIFT	_PAGE_READ_SHIFT
+ #define _PAGE_NO_READ		(cpu_has_rixi ? (1 << _PAGE_READ_SHIFT) : 0)
++#endif	/* CONFIG_CPU_MIPSR2 */
+ 
++#if defined(_PAGE_NO_READ_SHIFT)
+ #define _PAGE_GLOBAL_SHIFT	(_PAGE_NO_READ_SHIFT + 1)
+-#define _PAGE_GLOBAL		(1 << _PAGE_GLOBAL_SHIFT)
+-
+-#else	/* !CONFIG_CPU_MIPSR2 */
++#elif defined(_PAGE_SPLITTING_SHIFT)
++#define _PAGE_GLOBAL_SHIFT	(_PAGE_SPLITTING_SHIFT + 1)
++#else
+ #define _PAGE_GLOBAL_SHIFT	(_PAGE_MODIFIED_SHIFT + 1)
++#endif
+ #define _PAGE_GLOBAL		(1 << _PAGE_GLOBAL_SHIFT)
+-#endif	/* CONFIG_CPU_MIPSR2 */
+ 
+ #define _PAGE_VALID_SHIFT	(_PAGE_GLOBAL_SHIFT + 1)
+ #define _PAGE_VALID		(1 << _PAGE_VALID_SHIFT)

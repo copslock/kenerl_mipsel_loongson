@@ -1,33 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 May 2015 21:10:41 +0200 (CEST)
-Received: from mail-pa0-f46.google.com ([209.85.220.46]:33224 "EHLO
-        mail-pa0-f46.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011137AbbEDTKYw7d5S (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 4 May 2015 21:10:24 +0200
-Received: by pacwv17 with SMTP id wv17so168804819pac.0;
-        Mon, 04 May 2015 12:10:20 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 May 2015 21:11:00 +0200 (CEST)
+Received: from mail-pd0-f180.google.com ([209.85.192.180]:33373 "EHLO
+        mail-pd0-f180.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27014629AbbEDTK0A5Nwh (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 4 May 2015 21:10:26 +0200
+Received: by pdbnk13 with SMTP id nk13so171167405pdb.0;
+        Mon, 04 May 2015 12:10:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=uXMNFC5PLGMrrkRq0njxbw1BTUQ53b6EjfAPp/xy0FY=;
-        b=aGE1IRkccZ454JFhox9hPk9kRaHIW7MIxCoPDESYkFXsiYhd2Bk7ZefzINVFXwMp69
-         3Z8pyzQ0ExG4rzbjHY5JScahwdoci++2PEfIvRJaR3dOn0hL1iC6wiJTz3i8ml88u9Ra
-         L7IxaPj36IFVauZBXtR/reRhBgC1N/mMpghkTakMXyOJl2dzsihGczYHCm92zhAOJ85i
-         SFNSYpUiLLEP/ANFyOq3aEwvjKGPFYjDUwk5R6ubzP42By2nG61QN1zkRoBvi+LhFtGn
-         yOtmeZQ651X3skJT66KCjaDgymZn5nLfk8n28pql4Rn7gYpjxqftXti8i2xEDVoaiSR8
-         keBw==
-X-Received: by 10.66.162.74 with SMTP id xy10mr24812832pab.55.1430766620868;
-        Mon, 04 May 2015 12:10:20 -0700 (PDT)
+        bh=tQmbtsnWQb5McX7HpGhTG2hHx3brJAocSt9G7Uqb37g=;
+        b=cl86jXqKP06/JdNCSYTKHg3M6NEcnCJ3VP18bswsjzAfq7LHHk8Iv5jroSI3mSAPeD
+         qLXF0H7Z+XdBTU3jMw4yze82szZKxG15JzkU/yYlrwcG+SIc8FR+h6gLQHIsb2M/OFrm
+         xEUP0BBYk8/9H9SeYvMBBgcKsXbm/aAWEsgp38BgYXQprbImRmLj5RjXNL0qlaWrPa1R
+         /x5DyVMLh0e/N0IFqnVfKpokMyzFbrJuIyixHOKUePa4YkZx36zVS+uqtRLTvLkoLs20
+         MbWMep2UwvT5xV5glRu1oyJClM3gA10v/U89MWHDT5RmauMveRqHJo0H2bp27Xmty15U
+         uXMw==
+X-Received: by 10.70.129.106 with SMTP id nv10mr45375409pdb.160.1430766622373;
+        Mon, 04 May 2015 12:10:22 -0700 (PDT)
 Received: from fainelli-desktop.broadcom.com (5520-maca-inet1-outside.broadcom.com. [216.31.211.11])
-        by mx.google.com with ESMTPSA id vi5sm13503820pbc.89.2015.05.04.12.10.19
+        by mx.google.com with ESMTPSA id vi5sm13503820pbc.89.2015.05.04.12.10.20
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Mon, 04 May 2015 12:10:20 -0700 (PDT)
+        Mon, 04 May 2015 12:10:21 -0700 (PDT)
 From:   Florian Fainelli <f.fainelli@gmail.com>
 To:     linux-mips@linux-mips.org
 Cc:     ralf@linux-mips.org, blogic@openwrt.org, cernekee@chromium.org,
         jogo@openwrt.org, Florian Fainelli <f.fainelli@gmail.com>
-Subject: [PATCH 1/2] MIPS: BMIPS: Define BMIPS_FIXADDR_TOP in asm/bmips-spaces.h
-Date:   Mon,  4 May 2015 12:09:43 -0700
-Message-Id: <1430766584-8429-2-git-send-email-f.fainelli@gmail.com>
+Subject: [PATCH 2/2] MIPS: BCM63xx: Utilize asm/bmips-spaces.h
+Date:   Mon,  4 May 2015 12:09:44 -0700
+Message-Id: <1430766584-8429-3-git-send-email-f.fainelli@gmail.com>
 X-Mailer: git-send-email 2.1.0
 In-Reply-To: <1430766584-8429-1-git-send-email-f.fainelli@gmail.com>
 References: <1430766584-8429-1-git-send-email-f.fainelli@gmail.com>
@@ -35,7 +35,7 @@ Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47231
+X-archive-position: 47232
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -52,38 +52,23 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The FIXADDR_TOP value used by mach-bmips is in fact required whenever we
-run on BMIPS3300 BMIPS CPUs, and is not machine, but CPU-specific, move
-this constant to asm/bmips-spaces.h and use it in mach-bmips/spaces.h.
+Since BCM63xx runs on BMIPS3300 which requires the use of a FIXADDR_TOP
+to avoid collisions with the SBR, utilize asm/bmips-spaces.h which
+defines FIXADDR_TOP for us now.
 
 Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
 ---
- arch/mips/include/asm/bmips-spaces.h      | 7 +++++++
- arch/mips/include/asm/mach-bmips/spaces.h | 2 +-
- 2 files changed, 8 insertions(+), 1 deletion(-)
- create mode 100644 arch/mips/include/asm/bmips-spaces.h
+ arch/mips/include/asm/mach-bcm63xx/spaces.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/mips/include/asm/bmips-spaces.h b/arch/mips/include/asm/bmips-spaces.h
-new file mode 100644
-index 000000000000..eb96541ae67e
---- /dev/null
-+++ b/arch/mips/include/asm/bmips-spaces.h
-@@ -0,0 +1,7 @@
-+#ifndef __ASM_BMIPS_SPACES_H
-+#define __ASM_BMIPS_SPACES_H
-+
-+/* Avoid collisions with system base register (SBR) region on BMIPS3300 */
-+#define FIXADDR_TOP		((unsigned long)(long)(int)0xff000000)
-+
-+#endif /* __ASM_BMIPS_SPACES_H */
-diff --git a/arch/mips/include/asm/mach-bmips/spaces.h b/arch/mips/include/asm/mach-bmips/spaces.h
-index 1b05bddc8ec5..c59b28fd9e1d 100644
---- a/arch/mips/include/asm/mach-bmips/spaces.h
-+++ b/arch/mips/include/asm/mach-bmips/spaces.h
-@@ -11,7 +11,7 @@
- #define _ASM_BMIPS_SPACES_H
+diff --git a/arch/mips/include/asm/mach-bcm63xx/spaces.h b/arch/mips/include/asm/mach-bcm63xx/spaces.h
+index 61e750fb4653..1410ed0da4df 100644
+--- a/arch/mips/include/asm/mach-bcm63xx/spaces.h
++++ b/arch/mips/include/asm/mach-bcm63xx/spaces.h
+@@ -10,7 +10,7 @@
+ #ifndef _ASM_BCM63XX_SPACES_H
+ #define _ASM_BCM63XX_SPACES_H
  
- /* Avoid collisions with system base register (SBR) region on BMIPS3300 */
 -#define FIXADDR_TOP		((unsigned long)(long)(int)0xff000000)
 +#include <asm/bmips-spaces.h>
  

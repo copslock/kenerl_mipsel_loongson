@@ -1,57 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 May 2015 05:18:04 +0200 (CEST)
-Received: from mga11.intel.com ([192.55.52.93]:14894 "EHLO mga11.intel.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 May 2015 11:20:15 +0200 (CEST)
+Received: from smtpbg63.qq.com ([103.7.29.150]:1038 "EHLO smtpbg63.qq.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27006535AbbEDDSBaDtJq (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 4 May 2015 05:18:01 +0200
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga102.fm.intel.com with ESMTP; 03 May 2015 20:17:56 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.13,363,1427785200"; 
-   d="scan'208";a="720097915"
-Received: from gerry-dev.bj.intel.com ([10.238.158.61])
-  by fmsmga002.fm.intel.com with ESMTP; 03 May 2015 20:17:51 -0700
-From:   Jiang Liu <jiang.liu@linux.intel.com>
-To:     Thomas Gleixner <tglx@linutronix.de>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Yinghai Lu <yinghai@kernel.org>,
-        Borislav Petkov <bp@alien8.de>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Alexandre Courbot <gnurou@gmail.com>,
-        Michal Simek <michal.simek@xilinx.com>,
-        =?UTF-8?q?S=C3=B6ren=20Brinkmann?= <soren.brinkmann@xilinx.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Manuel Lauss <manuel.lauss@gmail.com>,
-        Jiang Liu <jiang.liu@linux.intel.com>,
-        Marc Zyngier <marc.zyngier@arm.com>
-Cc:     Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>, x86@kernel.org,
-        linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-mips@linux-mips.org, linux-gpio@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-metag@vger.kernel.org
-Subject: [RFC v1 11/11] genirq: Pass irq_data to helper function __irq_set_chip_handler_name_locked()
-Date:   Mon,  4 May 2015 11:15:39 +0800
-Message-Id: <1430709339-29083-12-git-send-email-jiang.liu@linux.intel.com>
-X-Mailer: git-send-email 1.7.10.4
-In-Reply-To: <1430709339-29083-1-git-send-email-jiang.liu@linux.intel.com>
-References: <1430709339-29083-1-git-send-email-jiang.liu@linux.intel.com>
-Return-Path: <jiang.liu@linux.intel.com>
+        id S27009397AbbEDJUKgq2TC (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 4 May 2015 11:20:10 +0200
+X-QQ-mid: bizesmtp3t1430731181t536t043
+Received: from localhost.localdomain (unknown [222.92.8.142])
+        by esmtp4.qq.com (ESMTP) with 
+        id ; Mon, 04 May 2015 17:19:17 +0800 (CST)
+X-QQ-SSF: 01100000002000F0FJ52000A0000000
+X-QQ-FEAT: wf6f/1sQVa7eYu5y5FdmlqQbdkl1k7ePIVnyDctfEiP5/yrfowblPWhsr/r17
+        +WGeDzrvHNm04g2PEXndeqBNrt14QhNR5Av1qcdc3fHZWtn062H08qDKfTAWvO1GFoH6YUt
+        TNPvl5I0o6qS4VPuioMXvl7bBnATqZj4mGGvUGCEWt4cNs+MebsUZYxbiowXukDTZ0R9+z9
+        xuYcde4mxxGbv1+31igmrMvUfysK7btw=
+X-QQ-GoodBg: 0
+From:   Huacai Chen <chenhc@lemote.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     John Crispin <john@phrozen.org>,
+        "Steven J. Hill" <Steven.Hill@imgtec.com>,
+        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        Huacai Chen <chenhc@lemote.com>
+Subject: [PATCH 0/4] MIPS: Loongson: Cleanups and improvements
+Date:   Mon,  4 May 2015 17:19:07 +0800
+Message-Id: <1430731151-4808-1-git-send-email-chenhc@lemote.com>
+X-Mailer: git-send-email 1.7.7.3
+X-QQ-SENDSIZE: 520
+Return-Path: <chenhc@lemote.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47221
+X-archive-position: 47224
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jiang.liu@linux.intel.com
+X-original-sender: chenhc@lemote.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -64,155 +46,222 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-For most cases, callers pass irq_data->irq to helper function
-__irq_set_chip_handler_name_locked() and then it looks up irq_data again
-by calling irq_get_irq_data(irq).
+This patchset is prepared for the next 4.2 release for Linux/MIPS. In this
+series we cleanup the naming style of Loongson's directory and Kconfig options,
+move chipset ACPI code from drivers to arch since it is mostly Loongson-3
+specific, introduce coherent cache features to improve performance, and Make
+CPU names in /proc/cpuinfo more human-readable.
 
-So pass irq_data directly instead of irq_data->irq to
-__irq_set_chip_handler_name_locked().
+Huacai Chen(4):
+ MIPS: Loongson: Naming style cleanup and rework.
+ MIPS: Loongson-3: Move chipset ACPI code from drivers to arch.
+ MIPS: Loongson: Introduce and use cpu_has_coherent_cache feature.
+ MIPS: Loongson: Make CPU names more clear.
 
-Signed-off-by: Jiang Liu <jiang.liu@linux.intel.com>
+Signed-off-by: Huacai Chen <chenhc@lemote.com>
 ---
- arch/ia64/kernel/iosapic.c      |    6 +++---
- arch/mips/alchemy/common/irq.c  |    4 ++--
- drivers/gpio/gpio-zynq.c        |    9 ++++-----
- drivers/irqchip/irq-metag-ext.c |    5 ++---
- drivers/irqchip/irq-mips-gic.c  |   11 ++++-------
- include/linux/irqdesc.h         |    6 +++---
- 6 files changed, 18 insertions(+), 23 deletions(-)
-
-diff --git a/arch/ia64/kernel/iosapic.c b/arch/ia64/kernel/iosapic.c
-index 4d2698d43c39..317993e92cba 100644
---- a/arch/ia64/kernel/iosapic.c
-+++ b/arch/ia64/kernel/iosapic.c
-@@ -610,9 +610,9 @@ register_intr (unsigned int gsi, int irq, unsigned char delivery,
- 			       chip->name, irq_type->name);
- 		chip = irq_type;
- 	}
--	__irq_set_chip_handler_name_locked(irq, chip, trigger == IOSAPIC_EDGE ?
--					   handle_edge_irq : handle_level_irq,
--					   NULL);
-+	__irq_set_chip_handler_name_locked(irq_get_irq_data(irq), chip,
-+		trigger == IOSAPIC_EDGE ? handle_edge_irq : handle_level_irq,
-+		NULL);
- 	return 0;
- }
- 
-diff --git a/arch/mips/alchemy/common/irq.c b/arch/mips/alchemy/common/irq.c
-index 6cb60abfdcc9..026c4eed37d5 100644
---- a/arch/mips/alchemy/common/irq.c
-+++ b/arch/mips/alchemy/common/irq.c
-@@ -491,7 +491,7 @@ static int au1x_ic_settype(struct irq_data *d, unsigned int flow_type)
- 	default:
- 		ret = -EINVAL;
- 	}
--	__irq_set_chip_handler_name_locked(d->irq, chip, handler, name);
-+	__irq_set_chip_handler_name_locked(d, chip, handler, name);
- 
- 	wmb();
- 
-@@ -703,7 +703,7 @@ static int au1300_gpic_settype(struct irq_data *d, unsigned int type)
- 		return -EINVAL;
- 	}
- 
--	__irq_set_chip_handler_name_locked(d->irq, &au1300_gpic, hdl, name);
-+	__irq_set_chip_handler_name_locked(d, &au1300_gpic, hdl, name);
- 
- 	au1300_gpic_chgcfg(d->irq - ALCHEMY_GPIC_INT_BASE, GPIC_CFG_IC_MASK, s);
- 
-diff --git a/drivers/gpio/gpio-zynq.c b/drivers/gpio/gpio-zynq.c
-index 184c4b1b2558..aea6075e5b2e 100644
---- a/drivers/gpio/gpio-zynq.c
-+++ b/drivers/gpio/gpio-zynq.c
-@@ -422,13 +422,12 @@ static int zynq_gpio_set_irq_type(struct irq_data *irq_data, unsigned int type)
- 	writel_relaxed(int_any,
- 		       gpio->base_addr + ZYNQ_GPIO_INTANY_OFFSET(bank_num));
- 
--	if (type & IRQ_TYPE_LEVEL_MASK) {
--		__irq_set_chip_handler_name_locked(irq_data->irq,
-+	if (type & IRQ_TYPE_LEVEL_MASK)
-+		__irq_set_chip_handler_name_locked(irq_data,
- 			&zynq_gpio_level_irqchip, handle_fasteoi_irq, NULL);
--	} else {
--		__irq_set_chip_handler_name_locked(irq_data->irq,
-+	else
-+		__irq_set_chip_handler_name_locked(irq_data,
- 			&zynq_gpio_edge_irqchip, handle_level_irq, NULL);
--	}
- 
- 	return 0;
- }
-diff --git a/drivers/irqchip/irq-metag-ext.c b/drivers/irqchip/irq-metag-ext.c
-index 2cb474ad8809..52e501d8c8f0 100644
---- a/drivers/irqchip/irq-metag-ext.c
-+++ b/drivers/irqchip/irq-metag-ext.c
-@@ -404,7 +404,6 @@ static int meta_intc_irq_set_type(struct irq_data *data, unsigned int flow_type)
- #ifdef CONFIG_METAG_SUSPEND_MEM
- 	struct meta_intc_priv *priv = &meta_intc_priv;
- #endif
--	unsigned int irq = data->irq;
- 	irq_hw_number_t hw = data->hwirq;
- 	unsigned int bit = 1 << meta_intc_offset(hw);
- 	void __iomem *level_addr = meta_intc_level_addr(hw);
-@@ -413,10 +412,10 @@ static int meta_intc_irq_set_type(struct irq_data *data, unsigned int flow_type)
- 
- 	/* update the chip/handler */
- 	if (flow_type & IRQ_TYPE_LEVEL_MASK)
--		__irq_set_chip_handler_name_locked(irq, &meta_intc_level_chip,
-+		__irq_set_chip_handler_name_locked(data, &meta_intc_level_chip,
- 						   handle_level_irq, NULL);
- 	else
--		__irq_set_chip_handler_name_locked(irq, &meta_intc_edge_chip,
-+		__irq_set_chip_handler_name_locked(data, &meta_intc_edge_chip,
- 						   handle_edge_irq, NULL);
- 
- 	/* and clear/set the bit in HWLEVELEXT */
-diff --git a/drivers/irqchip/irq-mips-gic.c b/drivers/irqchip/irq-mips-gic.c
-index 09257c301bd2..fb2e64b1f414 100644
---- a/drivers/irqchip/irq-mips-gic.c
-+++ b/drivers/irqchip/irq-mips-gic.c
-@@ -365,15 +365,12 @@ static int gic_set_type(struct irq_data *d, unsigned int type)
- 		break;
- 	}
- 
--	if (is_edge) {
--		__irq_set_chip_handler_name_locked(d->irq,
--						   &gic_edge_irq_controller,
-+	if (is_edge)
-+		__irq_set_chip_handler_name_locked(d, &gic_edge_irq_controller,
- 						   handle_edge_irq, NULL);
--	} else {
--		__irq_set_chip_handler_name_locked(d->irq,
--						   &gic_level_irq_controller,
-+	else
-+		__irq_set_chip_handler_name_locked(d, &gic_level_irq_controller,
- 						   handle_level_irq, NULL);
--	}
- 	spin_unlock_irqrestore(&gic_lock, flags);
- 
- 	return 0;
-diff --git a/include/linux/irqdesc.h b/include/linux/irqdesc.h
-index 81a7231c0379..720ff116b533 100644
---- a/include/linux/irqdesc.h
-+++ b/include/linux/irqdesc.h
-@@ -168,15 +168,15 @@ static inline void __irq_set_handler_locked(unsigned int irq,
- 
- /* caller has locked the irq_desc and both params are valid */
- static inline void
--__irq_set_chip_handler_name_locked(unsigned int irq, struct irq_chip *chip,
-+__irq_set_chip_handler_name_locked(struct irq_data *data, struct irq_chip *chip,
- 				   irq_flow_handler_t handler, const char *name)
- {
- 	struct irq_desc *desc;
- 
--	desc = irq_to_desc(irq);
--	irq_desc_get_irq_data(desc)->chip = chip;
-+	desc = irq_to_desc(data->irq);
- 	desc->handle_irq = handler;
- 	desc->name = name;
-+	data->chip = chip;
- }
- 
- static inline int irq_balancing_disabled(unsigned int irq)
--- 
-1.7.10.4
+ arch/mips/Kbuild.platforms                         |    4 +-
+ arch/mips/Kconfig                                  |   37 +++++++++++--------
+ arch/mips/boot/compressed/uart-16550.c             |    2 +-
+ arch/mips/configs/fuloong2e_defconfig              |    2 +-
+ arch/mips/configs/lemote2f_defconfig               |    2 +-
+ arch/mips/configs/loongson3_defconfig              |    2 +-
+ arch/mips/configs/ls1b_defconfig                   |    2 +-
+ arch/mips/include/asm/cpu-features.h               |    3 ++
+ arch/mips/include/asm/mach-loongson/workarounds.h  |    7 ----
+ .../{mach-loongson1 => mach-loongson32}/cpufreq.h  |    6 ++--
+ .../asm/{mach-loongson1 => mach-loongson32}/irq.h  |    6 ++--
+ .../loongson1.h                                    |    6 ++--
+ .../{mach-loongson1 => mach-loongson32}/platform.h |    6 ++--
+ .../asm/{mach-loongson1 => mach-loongson32}/prom.h |    6 ++--
+ .../{mach-loongson1 => mach-loongson32}/regs-clk.h |    6 ++--
+ .../{mach-loongson1 => mach-loongson32}/regs-mux.h |    6 ++--
+ .../{mach-loongson1 => mach-loongson32}/regs-pwm.h |    6 ++--
+ .../{mach-loongson1 => mach-loongson32}/regs-wdt.h |    6 ++--
+ .../boot_param.h                                   |    4 +-
+ .../cpu-feature-overrides.h                        |    7 ++--
+ .../cs5536/cs5536.h                                |    0
+ .../cs5536/cs5536_mfgpt.h                          |    0
+ .../cs5536/cs5536_pci.h                            |    0
+ .../cs5536/cs5536_vsm.h                            |    0
+ .../dma-coherence.h                                |    6 ++--
+ .../asm/{mach-loongson => mach-loongson64}/gpio.h  |    0
+ .../asm/{mach-loongson => mach-loongson64}/irq.h   |    6 ++--
+ .../kernel-entry-init.h                            |    6 ++--
+ .../{mach-loongson => mach-loongson64}/loongson.h  |    6 ++--
+ .../loongson_hwmon.h                               |    0
+ .../{mach-loongson => mach-loongson64}/machine.h   |    6 ++--
+ .../mc146818rtc.h                                  |    6 ++--
+ .../asm/{mach-loongson => mach-loongson64}/mem.h   |    6 ++--
+ .../{mach-loongson => mach-loongson64}/mmzone.h    |    0
+ .../asm/{mach-loongson => mach-loongson64}/pci.h   |    6 ++--
+ .../{mach-loongson => mach-loongson64}/spaces.h    |    4 +-
+ .../{mach-loongson => mach-loongson64}/topology.h  |    0
+ .../mips/include/asm/mach-loongson64/workarounds.h |    7 ++++
+ arch/mips/kernel/cpu-probe.c                       |    8 ++--
+ arch/mips/{loongson1 => loongson32}/Kconfig        |    4 +-
+ arch/mips/{loongson1 => loongson32}/Makefile       |    2 +-
+ arch/mips/{loongson1 => loongson32}/Platform       |    4 +-
+ .../mips/{loongson1 => loongson32}/common/Makefile |    0
+ arch/mips/{loongson1 => loongson32}/common/irq.c   |    0
+ .../{loongson1 => loongson32}/common/platform.c    |    0
+ arch/mips/{loongson1 => loongson32}/common/prom.c  |    0
+ arch/mips/{loongson1 => loongson32}/common/reset.c |    0
+ arch/mips/{loongson1 => loongson32}/common/setup.c |    0
+ arch/mips/{loongson1 => loongson32}/common/time.c  |    0
+ arch/mips/{loongson1 => loongson32}/ls1b/Makefile  |    0
+ arch/mips/{loongson1 => loongson32}/ls1b/board.c   |    0
+ arch/mips/{loongson => loongson64}/Kconfig         |    4 +-
+ arch/mips/{loongson => loongson64}/Makefile        |    2 +-
+ arch/mips/{loongson => loongson64}/Platform        |    4 +-
+ arch/mips/{loongson => loongson64}/common/Makefile |    0
+ .../{loongson => loongson64}/common/bonito-irq.c   |    0
+ .../mips/{loongson => loongson64}/common/cmdline.c |    0
+ .../common/cs5536/Makefile                         |    0
+ .../common/cs5536/cs5536_acc.c                     |    0
+ .../common/cs5536/cs5536_ehci.c                    |    0
+ .../common/cs5536/cs5536_ide.c                     |    0
+ .../common/cs5536/cs5536_isa.c                     |    0
+ .../common/cs5536/cs5536_mfgpt.c                   |    0
+ .../common/cs5536/cs5536_ohci.c                    |    0
+ .../common/cs5536/cs5536_pci.c                     |    0
+ .../{loongson => loongson64}/common/dma-swiotlb.c  |    0
+ .../{loongson => loongson64}/common/early_printk.c |    0
+ arch/mips/{loongson => loongson64}/common/env.c    |    0
+ arch/mips/{loongson => loongson64}/common/gpio.c   |    0
+ arch/mips/{loongson => loongson64}/common/init.c   |    0
+ arch/mips/{loongson => loongson64}/common/irq.c    |    0
+ .../{loongson => loongson64}/common/machtype.c     |    0
+ arch/mips/{loongson => loongson64}/common/mem.c    |    0
+ arch/mips/{loongson => loongson64}/common/pci.c    |    0
+ .../{loongson => loongson64}/common/platform.c     |    0
+ arch/mips/{loongson => loongson64}/common/pm.c     |    0
+ arch/mips/{loongson => loongson64}/common/reset.c  |    0
+ arch/mips/{loongson => loongson64}/common/rtc.c    |    0
+ arch/mips/{loongson => loongson64}/common/serial.c |    0
+ arch/mips/{loongson => loongson64}/common/setup.c  |    0
+ arch/mips/{loongson => loongson64}/common/time.c   |    0
+ .../{loongson => loongson64}/common/uart_base.c    |    0
+ .../{loongson => loongson64}/fuloong-2e/Makefile   |    0
+ .../mips/{loongson => loongson64}/fuloong-2e/irq.c |    0
+ .../{loongson => loongson64}/fuloong-2e/reset.c    |    0
+ .../{loongson => loongson64}/lemote-2f/Makefile    |    0
+ .../{loongson => loongson64}/lemote-2f/clock.c     |    0
+ .../lemote-2f/ec_kb3310b.c                         |    0
+ .../lemote-2f/ec_kb3310b.h                         |    0
+ arch/mips/{loongson => loongson64}/lemote-2f/irq.c |    0
+ .../{loongson => loongson64}/lemote-2f/machtype.c  |    0
+ arch/mips/{loongson => loongson64}/lemote-2f/pm.c  |    0
+ .../{loongson => loongson64}/lemote-2f/reset.c     |    0
+ .../{loongson => loongson64}/loongson-3/Makefile   |    2 +-
+ .../mips/loongson64/loongson-3}/acpi_init.c        |    0
+ .../{loongson => loongson64}/loongson-3/cop2-ex.c  |    0
+ .../{loongson => loongson64}/loongson-3/hpet.c     |    0
+ .../mips/{loongson => loongson64}/loongson-3/irq.c |    0
+ .../{loongson => loongson64}/loongson-3/numa.c     |    0
+ .../{loongson => loongson64}/loongson-3/platform.c |    0
+ .../mips/{loongson => loongson64}/loongson-3/smp.c |    0
+ .../mips/{loongson => loongson64}/loongson-3/smp.h |    0
+ arch/mips/mm/c-r4k.c                               |   21 +++++++++++
+ drivers/clk/Makefile                               |    2 +-
+ drivers/cpufreq/ls1x-cpufreq.c                     |    4 +-
+ drivers/platform/mips/Kconfig                      |    4 --
+ drivers/platform/mips/Makefile                     |    1 -
+ drivers/rtc/Kconfig                                |    2 +-
+ drivers/rtc/rtc-ls1x.c                             |    2 +-
+ 109 files changed, 138 insertions(+), 113 deletions(-)
+ delete mode 100644 arch/mips/include/asm/mach-loongson/workarounds.h
+ rename arch/mips/include/asm/{mach-loongson1 => mach-loongson32}/cpufreq.h (81%)
+ rename arch/mips/include/asm/{mach-loongson1 => mach-loongson32}/irq.h (95%)
+ rename arch/mips/include/asm/{mach-loongson1 => mach-loongson32}/loongson1.h (91%)
+ rename arch/mips/include/asm/{mach-loongson1 => mach-loongson32}/platform.h (85%)
+ rename arch/mips/include/asm/{mach-loongson1 => mach-loongson32}/prom.h (84%)
+ rename arch/mips/include/asm/{mach-loongson1 => mach-loongson32}/regs-clk.h (90%)
+ rename arch/mips/include/asm/{mach-loongson1 => mach-loongson32}/regs-mux.h (94%)
+ rename arch/mips/include/asm/{mach-loongson1 => mach-loongson32}/regs-pwm.h (84%)
+ rename arch/mips/include/asm/{mach-loongson1 => mach-loongson32}/regs-wdt.h (77%)
+ rename arch/mips/include/asm/{mach-loongson => mach-loongson64}/boot_param.h (98%)
+ rename arch/mips/include/asm/{mach-loongson => mach-loongson64}/cpu-feature-overrides.h (86%)
+ rename arch/mips/include/asm/{mach-loongson => mach-loongson64}/cs5536/cs5536.h (100%)
+ rename arch/mips/include/asm/{mach-loongson => mach-loongson64}/cs5536/cs5536_mfgpt.h (100%)
+ rename arch/mips/include/asm/{mach-loongson => mach-loongson64}/cs5536/cs5536_pci.h (100%)
+ rename arch/mips/include/asm/{mach-loongson => mach-loongson64}/cs5536/cs5536_vsm.h (100%)
+ rename arch/mips/include/asm/{mach-loongson => mach-loongson64}/dma-coherence.h (93%)
+ rename arch/mips/include/asm/{mach-loongson => mach-loongson64}/gpio.h (100%)
+ rename arch/mips/include/asm/{mach-loongson => mach-loongson64}/irq.h (92%)
+ rename arch/mips/include/asm/{mach-loongson => mach-loongson64}/kernel-entry-init.h (88%)
+ rename arch/mips/include/asm/{mach-loongson => mach-loongson64}/loongson.h (98%)
+ rename arch/mips/include/asm/{mach-loongson => mach-loongson64}/loongson_hwmon.h (100%)
+ rename arch/mips/include/asm/{mach-loongson => mach-loongson64}/machine.h (84%)
+ rename arch/mips/include/asm/{mach-loongson => mach-loongson64}/mc146818rtc.h (85%)
+ rename arch/mips/include/asm/{mach-loongson => mach-loongson64}/mem.h (89%)
+ rename arch/mips/include/asm/{mach-loongson => mach-loongson64}/mmzone.h (100%)
+ rename arch/mips/include/asm/{mach-loongson => mach-loongson64}/pci.h (93%)
+ rename arch/mips/include/asm/{mach-loongson => mach-loongson64}/spaces.h (65%)
+ rename arch/mips/include/asm/{mach-loongson => mach-loongson64}/topology.h (100%)
+ create mode 100644 arch/mips/include/asm/mach-loongson64/workarounds.h
+ rename arch/mips/{loongson1 => loongson32}/Kconfig (96%)
+ rename arch/mips/{loongson1 => loongson32}/Makefile (74%)
+ rename arch/mips/{loongson1 => loongson32}/Platform (59%)
+ rename arch/mips/{loongson1 => loongson32}/common/Makefile (100%)
+ rename arch/mips/{loongson1 => loongson32}/common/irq.c (100%)
+ rename arch/mips/{loongson1 => loongson32}/common/platform.c (100%)
+ rename arch/mips/{loongson1 => loongson32}/common/prom.c (100%)
+ rename arch/mips/{loongson1 => loongson32}/common/reset.c (100%)
+ rename arch/mips/{loongson1 => loongson32}/common/setup.c (100%)
+ rename arch/mips/{loongson1 => loongson32}/common/time.c (100%)
+ rename arch/mips/{loongson1 => loongson32}/ls1b/Makefile (100%)
+ rename arch/mips/{loongson1 => loongson32}/ls1b/board.c (100%)
+ rename arch/mips/{loongson => loongson64}/Kconfig (98%)
+ rename arch/mips/{loongson => loongson64}/Makefile (88%)
+ rename arch/mips/{loongson => loongson64}/Platform (87%)
+ rename arch/mips/{loongson => loongson64}/common/Makefile (100%)
+ rename arch/mips/{loongson => loongson64}/common/bonito-irq.c (100%)
+ rename arch/mips/{loongson => loongson64}/common/cmdline.c (100%)
+ rename arch/mips/{loongson => loongson64}/common/cs5536/Makefile (100%)
+ rename arch/mips/{loongson => loongson64}/common/cs5536/cs5536_acc.c (100%)
+ rename arch/mips/{loongson => loongson64}/common/cs5536/cs5536_ehci.c (100%)
+ rename arch/mips/{loongson => loongson64}/common/cs5536/cs5536_ide.c (100%)
+ rename arch/mips/{loongson => loongson64}/common/cs5536/cs5536_isa.c (100%)
+ rename arch/mips/{loongson => loongson64}/common/cs5536/cs5536_mfgpt.c (100%)
+ rename arch/mips/{loongson => loongson64}/common/cs5536/cs5536_ohci.c (100%)
+ rename arch/mips/{loongson => loongson64}/common/cs5536/cs5536_pci.c (100%)
+ rename arch/mips/{loongson => loongson64}/common/dma-swiotlb.c (100%)
+ rename arch/mips/{loongson => loongson64}/common/early_printk.c (100%)
+ rename arch/mips/{loongson => loongson64}/common/env.c (100%)
+ rename arch/mips/{loongson => loongson64}/common/gpio.c (100%)
+ rename arch/mips/{loongson => loongson64}/common/init.c (100%)
+ rename arch/mips/{loongson => loongson64}/common/irq.c (100%)
+ rename arch/mips/{loongson => loongson64}/common/machtype.c (100%)
+ rename arch/mips/{loongson => loongson64}/common/mem.c (100%)
+ rename arch/mips/{loongson => loongson64}/common/pci.c (100%)
+ rename arch/mips/{loongson => loongson64}/common/platform.c (100%)
+ rename arch/mips/{loongson => loongson64}/common/pm.c (100%)
+ rename arch/mips/{loongson => loongson64}/common/reset.c (100%)
+ rename arch/mips/{loongson => loongson64}/common/rtc.c (100%)
+ rename arch/mips/{loongson => loongson64}/common/serial.c (100%)
+ rename arch/mips/{loongson => loongson64}/common/setup.c (100%)
+ rename arch/mips/{loongson => loongson64}/common/time.c (100%)
+ rename arch/mips/{loongson => loongson64}/common/uart_base.c (100%)
+ rename arch/mips/{loongson => loongson64}/fuloong-2e/Makefile (100%)
+ rename arch/mips/{loongson => loongson64}/fuloong-2e/irq.c (100%)
+ rename arch/mips/{loongson => loongson64}/fuloong-2e/reset.c (100%)
+ rename arch/mips/{loongson => loongson64}/lemote-2f/Makefile (100%)
+ rename arch/mips/{loongson => loongson64}/lemote-2f/clock.c (100%)
+ rename arch/mips/{loongson => loongson64}/lemote-2f/ec_kb3310b.c (100%)
+ rename arch/mips/{loongson => loongson64}/lemote-2f/ec_kb3310b.h (100%)
+ rename arch/mips/{loongson => loongson64}/lemote-2f/irq.c (100%)
+ rename arch/mips/{loongson => loongson64}/lemote-2f/machtype.c (100%)
+ rename arch/mips/{loongson => loongson64}/lemote-2f/pm.c (100%)
+ rename arch/mips/{loongson => loongson64}/lemote-2f/reset.c (100%)
+ rename arch/mips/{loongson => loongson64}/loongson-3/Makefile (73%)
+ rename {drivers/platform/mips => arch/mips/loongson64/loongson-3}/acpi_init.c (100%)
+ rename arch/mips/{loongson => loongson64}/loongson-3/cop2-ex.c (100%)
+ rename arch/mips/{loongson => loongson64}/loongson-3/hpet.c (100%)
+ rename arch/mips/{loongson => loongson64}/loongson-3/irq.c (100%)
+ rename arch/mips/{loongson => loongson64}/loongson-3/numa.c (100%)
+ rename arch/mips/{loongson => loongson64}/loongson-3/platform.c (100%)
+ rename arch/mips/{loongson => loongson64}/loongson-3/smp.c (100%)
+ rename arch/mips/{loongson => loongson64}/loongson-3/smp.h (100%)
+--
+1.7.7.3

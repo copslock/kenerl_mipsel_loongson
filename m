@@ -1,33 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 May 2015 14:38:24 +0200 (CEST)
-Received: from ip4-83-240-67-251.cust.nbox.cz ([83.240.67.251]:53290 "EHLO
-        ip4-83-240-18-248.cust.nbox.cz" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27011279AbbEDMiXBxTyk (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 4 May 2015 14:38:23 +0200
-Received: from ku by ip4-83-240-18-248.cust.nbox.cz with local (Exim 4.85)
-        (envelope-from <jslaby@suse.cz>)
-        id 1YpFdK-0001qM-QC; Mon, 04 May 2015 14:38:02 +0200
-From:   Jiri Slaby <jslaby@suse.cz>
-To:     stable@vger.kernel.org
-Cc:     Huacai Chen <chenhc@lemote.com>,
-        "Steven J. Hill" <Steven.Hill@imgtec.com>,
-        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>,
-        Ralf Baechle <ralf@linux-mips.org>, Jiri Slaby <jslaby@suse.cz>
-Subject: [patch added to the 3.12 stable tree] MIPS: Hibernate: flush TLB entries earlier
-Date:   Mon,  4 May 2015 14:36:58 +0200
-Message-Id: <1430743082-6957-7-git-send-email-jslaby@suse.cz>
-X-Mailer: git-send-email 2.3.5
-In-Reply-To: <1430743082-6957-1-git-send-email-jslaby@suse.cz>
-References: <1430743082-6957-1-git-send-email-jslaby@suse.cz>
-Return-Path: <jslaby@suse.cz>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 May 2015 21:10:25 +0200 (CEST)
+Received: from mail-pa0-f48.google.com ([209.85.220.48]:35699 "EHLO
+        mail-pa0-f48.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011174AbbEDTKXqf2D6 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 4 May 2015 21:10:23 +0200
+Received: by pabtp1 with SMTP id tp1so168727929pab.2;
+        Mon, 04 May 2015 12:10:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id;
+        bh=4RjaltHX0SlUh5NjHLyy2vHhseXrYL4jIlqa1kaQ1ZM=;
+        b=1HemlSQnF6+LSWSsGZu0qRGpAYkxENQoJCAkDpMRgDluy++qJFCESxguG64rlX/iWp
+         VIi1VjQAd2Q4bi55zeoCLAHbSwf4RvagR6YTN93sQsn940zvQkWIHfGPy1ARxLbSkOhs
+         sMlVW2OMZt+B8BGeo3Dw0MkQUpnVOAzJ6ImKA4IkRIvZOIXoG/I+/oH8syBMq/S9ui35
+         ayPc7u9Ir329J4GFeFaQb/a3pRdlIvANRm4jsze+7IDJCHNe5Q6eZFxAshdejmBr9di1
+         6tF/DZ7eObDZ6DAyLNzR8LzHFf76qgy5k05RdXzPtdpb6ZaXXMmBk0oeKP8G5Ww1O3Ok
+         LUcQ==
+X-Received: by 10.66.177.238 with SMTP id ct14mr44856256pac.121.1430766619654;
+        Mon, 04 May 2015 12:10:19 -0700 (PDT)
+Received: from fainelli-desktop.broadcom.com (5520-maca-inet1-outside.broadcom.com. [216.31.211.11])
+        by mx.google.com with ESMTPSA id vi5sm13503820pbc.89.2015.05.04.12.10.17
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Mon, 04 May 2015 12:10:18 -0700 (PDT)
+From:   Florian Fainelli <f.fainelli@gmail.com>
+To:     linux-mips@linux-mips.org
+Cc:     ralf@linux-mips.org, blogic@openwrt.org, cernekee@chromium.org,
+        jogo@openwrt.org, Florian Fainelli <f.fainelli@gmail.com>
+Subject: [PATCH 0/2] MIPS: BMIPS: Centralize FIXADDR_TOP
+Date:   Mon,  4 May 2015 12:09:42 -0700
+Message-Id: <1430766584-8429-1-git-send-email-f.fainelli@gmail.com>
+X-Mailer: git-send-email 2.1.0
+Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47229
+X-archive-position: 47230
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jslaby@suse.cz
+X-original-sender: f.fainelli@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -40,51 +50,20 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Huacai Chen <chenhc@lemote.com>
+Hi all,
 
-This patch has been added to the 3.12 stable tree. If you have any
-objections, please let us know.
+This patch series centralizes the special FIXADDR_TOP value required when using
+BMIPS3300-class CPUs in Broadcom SoCs to avoid clashes with the System Base Register
 
-===============
+Florian Fainelli (2):
+  MIPS: BMIPS: Define BMIPS_FIXADDR_TOP in asm/bmips-spaces.h
+  MIPS: BCM63xx: Utilize asm/bmips-spaces.h
 
-commit a843d00d038b11267279e3b5388222320f9ddc1d upstream.
+ arch/mips/include/asm/bmips-spaces.h        | 7 +++++++
+ arch/mips/include/asm/mach-bcm63xx/spaces.h | 2 +-
+ arch/mips/include/asm/mach-bmips/spaces.h   | 2 +-
+ 3 files changed, 9 insertions(+), 2 deletions(-)
+ create mode 100644 arch/mips/include/asm/bmips-spaces.h
 
-We found that TLB mismatch not only happens after kernel resume, but
-also happens during snapshot restore. So move it to the beginning of
-swsusp_arch_suspend().
-
-Signed-off-by: Huacai Chen <chenhc@lemote.com>
-Cc: Steven J. Hill <Steven.Hill@imgtec.com>
-Cc: linux-mips@linux-mips.org
-Cc: Fuxin Zhang <zhangfx@lemote.com>
-Cc: Zhangjin Wu <wuzhangjin@gmail.com>
-Patchwork: https://patchwork.linux-mips.org/patch/9621/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Jiri Slaby <jslaby@suse.cz>
----
- arch/mips/power/hibernate.S | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/arch/mips/power/hibernate.S b/arch/mips/power/hibernate.S
-index 32a7c828f073..e7567c8a9e79 100644
---- a/arch/mips/power/hibernate.S
-+++ b/arch/mips/power/hibernate.S
-@@ -30,6 +30,8 @@ LEAF(swsusp_arch_suspend)
- END(swsusp_arch_suspend)
- 
- LEAF(swsusp_arch_resume)
-+	/* Avoid TLB mismatch during and after kernel resume */
-+	jal local_flush_tlb_all
- 	PTR_L t0, restore_pblist
- 0:
- 	PTR_L t1, PBE_ADDRESS(t0)   /* source */
-@@ -43,7 +45,6 @@ LEAF(swsusp_arch_resume)
- 	bne t1, t3, 1b
- 	PTR_L t0, PBE_NEXT(t0)
- 	bnez t0, 0b
--	jal local_flush_tlb_all /* Avoid TLB mismatch after kernel resume */
- 	PTR_LA t0, saved_regs
- 	PTR_L ra, PT_R31(t0)
- 	PTR_L sp, PT_R29(t0)
 -- 
-2.3.5
+2.1.0

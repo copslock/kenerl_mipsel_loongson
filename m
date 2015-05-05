@@ -1,31 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 May 2015 14:34:41 +0200 (CEST)
-Received: from hofr.at ([212.69.189.236]:55153 "EHLO mail.hofr.at"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27026074AbbEEMehTwRA4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 5 May 2015 14:34:37 +0200
-Received: by mail.hofr.at (Postfix, from userid 1002)
-        id 63F264F8BE2; Tue,  5 May 2015 14:34:38 +0200 (CEST)
-Date:   Tue, 5 May 2015 14:34:38 +0200
-From:   Nicholas Mc Guire <der.herr@hofr.at>
-To:     Gleb Natapov <gleb@kernel.org>
-Cc:     Paolo Bonzini <pbonzini@redhat.com>,
-        Ralf Baechle <ralf@linux-mips.org>, kvm@vger.kernel.org,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: [BUG ?] MIPS: KVM: condition with no effect
-Message-ID: <20150505123438.GA21514@opentech.at>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 May 2015 20:16:39 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:13333 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27012494AbbEESQiK4mSx (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 5 May 2015 20:16:38 +0200
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 62C03E52E231;
+        Tue,  5 May 2015 19:16:30 +0100 (IST)
+Received: from hhmail02.hh.imgtec.org (10.100.10.20) by KLMAIL01.kl.imgtec.org
+ (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Tue, 5 May
+ 2015 19:16:34 +0100
+Received: from [10.100.200.220] (10.100.200.220) by hhmail02.hh.imgtec.org
+ (10.100.10.20) with Microsoft SMTP Server (TLS) id 14.3.224.2; Tue, 5 May
+ 2015 19:16:32 +0100
+Message-ID: <5549083F.8080505@imgtec.com>
+Date:   Tue, 5 May 2015 15:13:19 -0300
+From:   Ezequiel Garcia <ezequiel.garcia@imgtec.com>
+Reply-To: <1428444258-25852-1-git-send-email-abrestic@chromium.org>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.5.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <hofrat@hofr.at>
+To:     <linux-mips@linux-mips.org>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        "Ralf Baechle" <ralf@linux-mips.org>
+CC:     <devicetree@vger.kernel.org>,
+        James Hartley <james.hartley@imgtec.com>,
+        Damien Horsley <Damien.Horsley@imgtec.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Andrew Bresticker <abrestic@chromium.org>
+Subject: Re: [PATCH V2 0/3] Pistachio USB2.0 PHY
+References: <1428444258-25852-1-git-send-email-abrestic@chromium.org> <CAL1qeaE0+aMLBgk8SKgJ3fXm==M2-Z_yEPYNVZ0yxSee-p7YOw@mail.gmail.com>
+In-Reply-To: <CAL1qeaE0+aMLBgk8SKgJ3fXm==M2-Z_yEPYNVZ0yxSee-p7YOw@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.100.200.220]
+Return-Path: <Ezequiel.Garcia@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47239
+X-archive-position: 47240
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: der.herr@hofr.at
+X-original-sender: ezequiel.garcia@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -38,30 +53,48 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+Hi Kishon,
 
-Hi !
+> 
+> This series adds support for the USB2.0 PHY present on the IMG Pistachio SoC.
+> 
+> Based on mips-for-linux-next and tested on the IMG Pistachio BuB.  If possible,
+> I'd like this to go through the MIPS tree with Kishon's ACK.
+> 
 
- Not sure if this is a bug or maybe a placeholder for
- something... so patch - but maybe someone that knows this code can
- give it a look.
+Tested-by: Ezequiel Garcia <ezequiel.garcia@imgtec.com>
 
-arch/mips/kvm/emulate.c:emulation_result kvm_mips_complete_mmio_load()    
-<snip>
-2414         case 2:
-2415                 if (vcpu->mmio_needed == 2)
-2416                         *gpr = *(int16_t *) run->mmio.data;                
-2417                 else
-2418                         *gpr = *(int16_t *) run->mmio.data;
-2419 
-2420                 break;
-<snip>
+Can we have your Ack for this series so Ralf can pick it?
 
- either the if/else is not needed or one of the branches is wrong
- or it is a place-holder for somethign that did not get
- done - in which case a few lines explaining this would be 
- nice (e.g. like in arch/sh/kernel/traps_64.c line 59)
+Thanks!
+Ezequiel
 
- line numbers refer to 4.1-rc2 
+> Cc: James Hartley <james.hartley@imgtec.com>
+> Cc: Damien Horsley <Damien.Horsley@imgtec.com>
+> 
+> Changes from v1:
+>  - Added patch to enable PHY driver in pistachio_defconfig
+>  - Fixed a couple of spelling errors
+> 
+> Andrew Bresticker (3):
+>   phy: Add binding document for Pistachio USB2.0 PHY
+>   phy: Add driver for Pistachio USB2.0 PHY
+>   MIPS: pistachio: Enable USB PHY driver in defconfig
+> 
+>  .../devicetree/bindings/phy/pistachio-usb-phy.txt  |  29 +++
+>  arch/mips/configs/pistachio_defconfig              |   1 +
+>  drivers/phy/Kconfig                                |   7 +
+>  drivers/phy/Makefile                               |   1 +
+>  drivers/phy/phy-pistachio-usb.c                    | 206 +++++++++++++++++++++
+>  include/dt-bindings/phy/phy-pistachio-usb.h        |  16 ++
+>  6 files changed, 260 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/phy/pistachio-usb-phy.txt
+>  create mode 100644 drivers/phy/phy-pistachio-usb.c
+>  create mode 100644 include/dt-bindings/phy/phy-pistachio-usb.h
+> 
+> --
+> 2.2.0.rc0.207.ga3a616c
+> 
 
-thx!
-hofrat
+-- 
+Ezequiel

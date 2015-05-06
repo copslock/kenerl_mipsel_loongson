@@ -1,58 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 May 2015 07:56:57 +0200 (CEST)
-Received: from smtp.codeaurora.org ([198.145.29.96]:51698 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27011764AbbEFF4zcb3wR (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 6 May 2015 07:56:55 +0200
-Received: from smtp.codeaurora.org (localhost [127.0.0.1])
-        by smtp.codeaurora.org (Postfix) with ESMTP id 6B4961409F8;
-        Wed,  6 May 2015 05:56:55 +0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 486)
-        id 4DDEA1409FF; Wed,  6 May 2015 05:56:55 +0000 (UTC)
-Received: from localhost (i-global254.qualcomm.com [199.106.103.254])
-        (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: sboyd@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 83DC81409F8;
-        Wed,  6 May 2015 05:56:54 +0000 (UTC)
-Date:   Tue, 5 May 2015 22:56:53 -0700
-From:   Stephen Boyd <sboyd@codeaurora.org>
-To:     Krzysztof Kozlowski <k.kozlowski@samsung.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Mike Turquette <mturquette@linaro.org>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Sylwester Nawrocki <s.nawrocki@samsung.com>,
-        Tomasz Figa <tomasz.figa@gmail.com>,
-        Kukjin Kim <kgene@kernel.org>, Barry Song <baohua@kernel.org>,
-        Peter De Schrijver <pdeschrijver@nvidia.com>,
-        Prashant Gaikwad <pgaikwad@nvidia.com>,
-        Stephen Warren <swarren@wwwdotorg.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Alexandre Courbot <gnurou@gmail.com>,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        linux-clk@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-rockchip@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
-        Chanwoo Choi <cw00.choi@samsung.com>,
-        Inki Dae <inki.dae@samsung.com>
-Subject: Re: [PATCH v2 0/8] clk: Minor cleanups
-Message-ID: <20150506055653.GF10871@codeaurora.org>
-References: <1430196383-9190-1-git-send-email-k.kozlowski@samsung.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 May 2015 08:35:43 +0200 (CEST)
+Received: from mail-ob0-f176.google.com ([209.85.214.176]:36295 "EHLO
+        mail-ob0-f176.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012524AbbEFGfkUsf9z (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 6 May 2015 08:35:40 +0200
+Received: by obbkp3 with SMTP id kp3so301882obb.3
+        for <linux-mips@linux-mips.org>; Tue, 05 May 2015 23:35:36 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:in-reply-to:references:date
+         :message-id:subject:from:to:cc:content-type;
+        bh=0UHhVtpqBA1AETL5aCzMANwPUa/4qUxTHC4Yj3t8O5I=;
+        b=m28/HYdQL4duOVrS7P/KLe3BrVSHtfWtXYLjHeiUVwlLs8vMujS5V8f+3ZR7DwtnDw
+         YYiQLqiYlz5xZPdGYDoCUsiN1gOOxZDndHom88TroLrwke3u2Gcpe9ZjDDVMdOB4mJcX
+         /yFk7uP5AaVZQr/h6Nlolvkt9TDGT6uuGwB2Yr1FKcS8/bzGmvIFvz6cQbY3u5Ri6yzu
+         /H9FHAmE1ONH9fTU9jyPlK3q980vIAxTIEqmZjzQWByUOLkVB5nXVlg7sHmTkbXt6JPV
+         yHJW9wXiZ/a+9iIHyaqjj+BX9qzXkvaP8m26wIIUcQpeZLlCIlHlxrkykjCtc7BYM88n
+         Chtw==
+X-Gm-Message-State: ALoCoQlDNHJ0R5c58cgXpxyvSz1bmLGJoRdPSUsPZTS+XvpWidxEzJrmPdhtbjzk2VHad4zM8nCa
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1430196383-9190-1-git-send-email-k.kozlowski@samsung.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Virus-Scanned: ClamAV using ClamSMTP
-Return-Path: <sboyd@codeaurora.org>
+X-Received: by 10.202.73.81 with SMTP id w78mr12930002oia.89.1430894136360;
+ Tue, 05 May 2015 23:35:36 -0700 (PDT)
+Received: by 10.182.204.41 with HTTP; Tue, 5 May 2015 23:35:36 -0700 (PDT)
+In-Reply-To: <1430269982-24129-2-git-send-email-abrestic@chromium.org>
+References: <1430269982-24129-1-git-send-email-abrestic@chromium.org>
+        <1430269982-24129-2-git-send-email-abrestic@chromium.org>
+Date:   Wed, 6 May 2015 08:35:36 +0200
+Message-ID: <CACRpkdbW8WNYy56U-KmsZPatQBFO8xSYAJV8R9BwsPMXnQzbwQ@mail.gmail.com>
+Subject: Re: [PATCH V4 1/2] pinctrl: Add Pistachio SoC pin control binding document
+From:   Linus Walleij <linus.walleij@linaro.org>
+To:     Andrew Bresticker <abrestic@chromium.org>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        Linux MIPS <linux-mips@linux-mips.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Ezequiel Garcia <ezequiel.garcia@imgtec.com>,
+        James Hartley <james.hartley@imgtec.com>,
+        James Hogan <james.hogan@imgtec.com>,
+        Damien Horsley <Damien.Horsley@imgtec.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Pawel Moll <pawel.moll@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ian Campbell <ijc+devicetree@hellion.org.uk>,
+        Kumar Gala <galak@codeaurora.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <linus.walleij@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47249
+X-archive-position: 47250
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sboyd@codeaurora.org
+X-original-sender: linus.walleij@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -65,50 +65,29 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 04/28, Krzysztof Kozlowski wrote:
-> Hi,
-> 
-> 
-> Changes since v1
-> ================
-> 1. Rebase on next-20150427 and Sascha Hauer's:
->    clk: make strings in parent name arrays const [1]
-> 2. Add patch "clk: tegra: Fix inconsistent indenting".
-> 
-> 
-> Description and dependencies
-> ============================
-> Small cleanups for different clock drivers.
-> 
-> The first three patches are independent.
-> 
-> Rest of the patches (these related to constifying parent names,
-> including the change for MIPS) depend on the "clk: make strings in
-> parent name arrays const" from Sascha Hauer [1].
-> 
-> 
-> Tested on Arndale Octa (Exynos5420) and Trats2 (Exynos4412). Other
-> drivers (and MIPS related) only compile tested plus some static
-> checkers.
-> 
-> 
-> [1] http://www.spinics.net/lists/arm-kernel/msg413763.html
-> 
-> Best regards,
-> Krzysztof
-> 
-> Krzysztof Kozlowski (8):
->   clk: rockchip: Staticize file-scope declarations
->   clk: exynos: Staticize file-scope declarations
->   clk: tegra: Fix inconsistent indenting
->   clk: tegra: Fix duplicate const for parent names
->   clk: cdce706: Constify parent names in clock init data
->   clk: sirf: Constify parent names in clock init data
->   clk: ls1x: Fix duplicate const for parent names
->   MIPS: Alchemy: Remove unneeded cast removing const
+On Wed, Apr 29, 2015 at 3:13 AM, Andrew Bresticker
+<abrestic@chromium.org> wrote:
 
-Applied 1,2,5,6,7 to clk-next
+> Add a device-tree binding document for the pin controller present
+> on the IMG Pistachio SoC.
+>
+> Signed-off-by: Damien Horsley <Damien.Horsley@imgtec.com>
+> Signed-off-by: Ezequiel Garcia <ezequiel.garcia@imgtec.com>
+> Signed-off-by: Andrew Bresticker <abrestic@chromium.org>
+> Cc: Rob Herring <robh+dt@kernel.org>
+> Cc: Pawel Moll <pawel.moll@arm.com>
+> Cc: Mark Rutland <mark.rutland@arm.com>
+> Cc: Ian Campbell <ijc+devicetree@hellion.org.uk>
+> Cc: Kumar Gala <galak@codeaurora.org>
+> ---
+> No changes from v2/v3.
+> Changes from v1:
+>  - Change compatible string to "img,pistachio-system-pinctrl".
+>  - Specify GPIO sub-node names rather than forcing the nodes to be in order.
 
--- 
-Qualcomm Innovation Center, Inc. is a member of Code Aurora Forum,
-a Linux Foundation Collaborative Project
+This binding looks nice.
+
+Patch applied.
+
+Yours,
+Linus Walleij

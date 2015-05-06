@@ -1,137 +1,65 @@
-From: James Hogan <james.hogan@imgtec.com>
-Date: Fri, 6 Feb 2015 11:11:56 +0000
-Subject: MIPS: KVM: Handle MSA Disabled exceptions from guest
-Message-ID: <20150206111156.aNhBYj5vzH65r3jaTbnWeqiAUiQxhTuNDktfkXxnDlM@z>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 May 2015 11:50:31 +0200 (CEST)
+Received: from youngberry.canonical.com ([91.189.89.112]:52127 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012505AbbEFJuOkprXT (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 6 May 2015 11:50:14 +0200
+Received: from av-217-129-142-138.netvisao.pt ([217.129.142.138] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_128_CBC_SHA1:16)
+        (Exim 4.71)
+        (envelope-from <luis.henriques@canonical.com>)
+        id 1Ypvxz-0001MS-Eg; Wed, 06 May 2015 09:50:11 +0000
+From:   Luis Henriques <luis.henriques@canonical.com>
+To:     Huacai Chen <chenhc@lemote.com>
+Cc:     "Steven J. Hill" <Steven.Hill@imgtec.com>,
+        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Luis Henriques <luis.henriques@canonical.com>,
+        kernel-team@lists.ubuntu.com
+Subject: [3.16.y-ckt stable] Patch "MIPS: Hibernate: flush TLB entries earlier" has been added to staging queue
+Date:   Wed,  6 May 2015 10:50:10 +0100
+Message-Id: <1430905810-26058-1-git-send-email-luis.henriques@canonical.com>
+X-Mailer: git-send-email 2.1.4
+X-Extended-Stable: 3.16
+Return-Path: <luis.henriques@canonical.com>
+X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
+X-Orcpt: rfc822;linux-mips@linux-mips.org
+Original-Recipient: rfc822;linux-mips@linux-mips.org
+X-archive-position: 47255
+X-ecartis-version: Ecartis v1.0.0
+Sender: linux-mips-bounce@linux-mips.org
+Errors-to: linux-mips-bounce@linux-mips.org
+X-original-sender: luis.henriques@canonical.com
+Precedence: bulk
+List-help: <mailto:ecartis@linux-mips.org?Subject=help>
+List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
+List-software: Ecartis version 1.0.0
+List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
+X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
+List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
+List-owner: <mailto:ralf@linux-mips.org>
+List-post: <mailto:linux-mips@linux-mips.org>
+List-archive: <http://www.linux-mips.org/archives/linux-mips/>
+X-list: linux-mips
 
-commit 98119ad53376885819d93dfb8737b6a9a61ca0ba upstream.
+This is a note to let you know that I have just added a patch titled
 
-Guest user mode can generate a guest MSA Disabled exception on an MSA
-capable core by simply trying to execute an MSA instruction. Since this
-exception is unknown to KVM it will be passed on to the guest kernel.
-However guest Linux kernels prior to v3.15 do not set up an exception
-handler for the MSA Disabled exception as they don't support any MSA
-capable cores. This results in a guest OS panic.
+    MIPS: Hibernate: flush TLB entries earlier
 
-Since an older processor ID may be being emulated, and MSA support is
-not advertised to the guest, the correct behaviour is to generate a
-Reserved Instruction exception in the guest kernel so it can send the
-guest process an illegal instruction signal (SIGILL), as would happen
-with a non-MSA-capable core.
+to the linux-3.16.y-queue branch of the 3.16.y-ckt extended stable tree 
+which can be found at:
 
-Fix this as minimally as reasonably possible by preventing
-kvm_mips_check_privilege() from relaying MSA Disabled exceptions from
-guest user mode to the guest kernel, and handling the MSA Disabled
-exception by emulating a Reserved Instruction exception in the guest,
-via a new handle_msa_disabled() KVM callback.
+    http://kernel.ubuntu.com/git/ubuntu/linux.git/log/?h=linux-3.16.y-queue
 
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Paul Burton <paul.burton@imgtec.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Gleb Natapov <gleb@kernel.org>
-Cc: linux-mips@linux-mips.org
-Cc: kvm@vger.kernel.org
-[ luis: backported to 3.16: files renamed:
-  - arch/mips/kvm/emulate.c -> arch/mips/kvm/kvm_mips_emul.c
-  - arch/mips/kvm/mips.c -> arch/mips/kvm/kvm_mips.c]
-Signed-off-by: Luis Henriques <luis.henriques@canonical.com>
----
- arch/mips/include/asm/kvm_host.h |  2 ++
- arch/mips/kvm/kvm_mips.c         |  4 ++++
- arch/mips/kvm/kvm_mips_emul.c    |  1 +
- arch/mips/kvm/kvm_trap_emul.c    | 28 ++++++++++++++++++++++++++++
- 4 files changed, 35 insertions(+)
+This patch is scheduled to be released in version 3.16.7-ckt11.
 
-diff --git a/arch/mips/include/asm/kvm_host.h b/arch/mips/include/asm/kvm_host.h
-index b0aa95565752..5a8defbad431 100644
---- a/arch/mips/include/asm/kvm_host.h
-+++ b/arch/mips/include/asm/kvm_host.h
-@@ -326,6 +326,7 @@ enum mips_mmu_types {
- #define T_TRAP			13	/* Trap instruction */
- #define T_VCEI			14	/* Virtual coherency exception */
- #define T_FPE			15	/* Floating point exception */
-+#define T_MSADIS		21	/* MSA disabled exception */
- #define T_WATCH			23	/* Watch address reference */
- #define T_VCED			31	/* Virtual coherency data */
+If you, or anyone else, feels it should not be added to this tree, please 
+reply to this email.
 
-@@ -578,6 +579,7 @@ struct kvm_mips_callbacks {
- 	int (*handle_syscall)(struct kvm_vcpu *vcpu);
- 	int (*handle_res_inst)(struct kvm_vcpu *vcpu);
- 	int (*handle_break)(struct kvm_vcpu *vcpu);
-+	int (*handle_msa_disabled)(struct kvm_vcpu *vcpu);
- 	int (*vm_init)(struct kvm *kvm);
- 	int (*vcpu_init)(struct kvm_vcpu *vcpu);
- 	int (*vcpu_setup)(struct kvm_vcpu *vcpu);
-diff --git a/arch/mips/kvm/kvm_mips.c b/arch/mips/kvm/kvm_mips.c
-index d84f96e51349..59298b97ac39 100644
---- a/arch/mips/kvm/kvm_mips.c
-+++ b/arch/mips/kvm/kvm_mips.c
-@@ -1156,6 +1156,10 @@ int kvm_mips_handle_exit(struct kvm_run *run, struct kvm_vcpu *vcpu)
- 		ret = kvm_mips_callbacks->handle_break(vcpu);
- 		break;
+For more information about the 3.16.y-ckt tree, see
+https://wiki.ubuntu.com/Kernel/Dev/ExtendedStable
 
-+	case T_MSADIS:
-+		ret = kvm_mips_callbacks->handle_msa_disabled(vcpu);
-+		break;
-+
- 	default:
- 		kvm_err
- 		    ("Exception Code: %d, not yet handled, @ PC: %p, inst: 0x%08x  BadVaddr: %#lx Status: %#lx\n",
-diff --git a/arch/mips/kvm/kvm_mips_emul.c b/arch/mips/kvm/kvm_mips_emul.c
-index 8d4840090082..2071472bc3c4 100644
---- a/arch/mips/kvm/kvm_mips_emul.c
-+++ b/arch/mips/kvm/kvm_mips_emul.c
-@@ -2204,6 +2204,7 @@ kvm_mips_check_privilege(unsigned long cause, uint32_t *opc,
- 		case T_SYSCALL:
- 		case T_BREAK:
- 		case T_RES_INST:
-+		case T_MSADIS:
- 			break;
+Thanks.
+-Luis
 
- 		case T_COP_UNUSABLE:
-diff --git a/arch/mips/kvm/kvm_trap_emul.c b/arch/mips/kvm/kvm_trap_emul.c
-index 693f952b2fbb..0c521c356553 100644
---- a/arch/mips/kvm/kvm_trap_emul.c
-+++ b/arch/mips/kvm/kvm_trap_emul.c
-@@ -333,6 +333,33 @@ static int kvm_trap_emul_handle_break(struct kvm_vcpu *vcpu)
- 	return ret;
- }
-
-+static int kvm_trap_emul_handle_msa_disabled(struct kvm_vcpu *vcpu)
-+{
-+	struct kvm_run *run = vcpu->run;
-+	uint32_t __user *opc = (uint32_t __user *) vcpu->arch.pc;
-+	unsigned long cause = vcpu->arch.host_cp0_cause;
-+	enum emulation_result er = EMULATE_DONE;
-+	int ret = RESUME_GUEST;
-+
-+	/* No MSA supported in guest, guest reserved instruction exception */
-+	er = kvm_mips_emulate_ri_exc(cause, opc, run, vcpu);
-+
-+	switch (er) {
-+	case EMULATE_DONE:
-+		ret = RESUME_GUEST;
-+		break;
-+
-+	case EMULATE_FAIL:
-+		run->exit_reason = KVM_EXIT_INTERNAL_ERROR;
-+		ret = RESUME_HOST;
-+		break;
-+
-+	default:
-+		BUG();
-+	}
-+	return ret;
-+}
-+
- static int kvm_trap_emul_vm_init(struct kvm *kvm)
- {
- 	return 0;
-@@ -472,6 +499,7 @@ static struct kvm_mips_callbacks kvm_trap_emul_callbacks = {
- 	.handle_syscall = kvm_trap_emul_handle_syscall,
- 	.handle_res_inst = kvm_trap_emul_handle_res_inst,
- 	.handle_break = kvm_trap_emul_handle_break,
-+	.handle_msa_disabled = kvm_trap_emul_handle_msa_disabled,
-
- 	.vm_init = kvm_trap_emul_vm_init,
- 	.vcpu_init = kvm_trap_emul_vcpu_init,
+------

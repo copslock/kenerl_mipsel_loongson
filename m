@@ -1,55 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 May 2015 09:15:04 +0200 (CEST)
-Received: from mail-ob0-f171.google.com ([209.85.214.171]:36501 "EHLO
-        mail-ob0-f171.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008868AbbEFHPCGtux5 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 6 May 2015 09:15:02 +0200
-Received: by obbkp3 with SMTP id kp3so809718obb.3
-        for <linux-mips@linux-mips.org>; Wed, 06 May 2015 00:14:58 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:in-reply-to:references:date
-         :message-id:subject:from:to:cc:content-type;
-        bh=d/UHqkMlrc8gkk/4yCgILKwYkQM98uf7sW56SbD8ZyQ=;
-        b=ZD6J742MpgacFJadQwHNnQJiizD/F351q4YIAROj5+8OkwjdivYL8+hYayRm5emIq5
-         4QlZcOgXjHOIEtK1Yv/agrbuLocnNo8r9lIObgA5hw2vhFVV5EsZ3UyfmBHnxZtjs3j1
-         qlm1QAvrvP14jJBZ+Ent/sI8EcaYtyIaJP46MoOdlHPheTGfayiwvDOZEuNp4IC4e4nH
-         aY9uLUkQVVuzAOaGrIYI73dBeIDb6LRH3zhQX5Ke1kGQ3USefAnG/BUwF/uOa5kYhxSN
-         MVopbWBxFldHOg+MC5by7tu/ke7g+zHmr+wLBgfYsFhyRTsvaOQ4Nitfn92Z7utI1IZK
-         7qlQ==
-X-Gm-Message-State: ALoCoQkVveDDadFSOiRKiJ6MC2a6IdAYP1SIWniF+schZqSECE/N5YlN0US7ZzEgfKhMqVJP7r6H
-MIME-Version: 1.0
-X-Received: by 10.182.128.234 with SMTP id nr10mr2706041obb.81.1430896498297;
- Wed, 06 May 2015 00:14:58 -0700 (PDT)
-Received: by 10.182.204.41 with HTTP; Wed, 6 May 2015 00:14:58 -0700 (PDT)
-In-Reply-To: <1430269982-24129-3-git-send-email-abrestic@chromium.org>
-References: <1430269982-24129-1-git-send-email-abrestic@chromium.org>
-        <1430269982-24129-3-git-send-email-abrestic@chromium.org>
-Date:   Wed, 6 May 2015 09:14:58 +0200
-Message-ID: <CACRpkdZXYcULynAVOU-K+8f2qnQkEFgzK2+Ku7xXzGQx0=uvBQ@mail.gmail.com>
-Subject: Re: [PATCH V4 2/2] pinctrl: Add Pistachio SoC pin control driver
-From:   Linus Walleij <linus.walleij@linaro.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 May 2015 10:26:52 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:62729 "EHLO
+        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S27010556AbbEFI0uPeKTw (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 6 May 2015 10:26:50 +0200
+Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
+        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 7408A41F8DFD;
+        Wed,  6 May 2015 09:26:46 +0100 (BST)
+Received: from mailapp01.imgtec.com ([10.100.180.242])
+  by imgpgp01.kl.imgtec.org (PGP Universal service);
+  Wed, 06 May 2015 09:26:46 +0100
+X-PGP-Universal: processed;
+        by imgpgp01.kl.imgtec.org on Wed, 06 May 2015 09:26:46 +0100
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id EC8BFEC7B59C9;
+        Wed,  6 May 2015 09:26:44 +0100 (IST)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Wed, 6 May 2015 09:25:44 +0100
+Received: from localhost (192.168.154.110) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Wed, 6 May
+ 2015 09:25:43 +0100
+Date:   Wed, 6 May 2015 09:25:43 +0100
+From:   James Hogan <james.hogan@imgtec.com>
 To:     Andrew Bresticker <abrestic@chromium.org>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+CC:     Ralf Baechle <ralf@linux-mips.org>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
         "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        Linux MIPS <linux-mips@linux-mips.org>,
+        Linux-MIPS <linux-mips@linux-mips.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Ezequiel Garcia <ezequiel.garcia@imgtec.com>,
         James Hartley <james.hartley@imgtec.com>,
-        James Hogan <james.hogan@imgtec.com>,
         Damien Horsley <Damien.Horsley@imgtec.com>,
-        Govindraj Raja <govindraj.raja@imgtec.com>,
-        Kevin Cernekee <cernekee@chromium.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <linus.walleij@linaro.org>
+        Rob Herring <robh+dt@kernel.org>,
+        Pawel Moll <pawel.moll@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        "Ian Campbell" <ijc+devicetree@hellion.org.uk>,
+        Kumar Gala <galak@codeaurora.org>
+Subject: Re: [PATCH V2 1/3] phy: Add binding document for Pistachio USB2.0 PHY
+Message-ID: <20150506082543.GC18183@jhogan-linux.le.imgtec.org>
+References: <1428444258-25852-1-git-send-email-abrestic@chromium.org>
+ <1428444258-25852-2-git-send-email-abrestic@chromium.org>
+ <20150505220116.GE17687@jhogan-linux.le.imgtec.org>
+ <CAL1qeaFacmDaCW6VSp247HZx+RwJKjYTWQhu5qxjH5JE3ET6Nw@mail.gmail.com>
+ <20150505224352.GA18183@jhogan-linux.le.imgtec.org>
+ <CAL1qeaG=O7LYo6RRxEMZw2da=eKAp0Dd+LxhBX32TojyBkr=xA@mail.gmail.com>
+ <20150505233534.GB18183@jhogan-linux.le.imgtec.org>
+ <CAL1qeaE9O3RBNVv9DrZZRu6sebkK2GOnbv6hWQsUR5MHKMcGgA@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="qtZFehHsKgwS5rPz"
+Content-Disposition: inline
+In-Reply-To: <CAL1qeaE9O3RBNVv9DrZZRu6sebkK2GOnbv6hWQsUR5MHKMcGgA@mail.gmail.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+X-Originating-IP: [192.168.154.110]
+X-ESG-ENCRYPT-TAG: b93fcccb
+Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47251
+X-archive-position: 47252
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linus.walleij@linaro.org
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -62,112 +74,128 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Andrew and sorry for a slow review process, I've been
-overloaded :(
+--qtZFehHsKgwS5rPz
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Apr 29, 2015 at 3:13 AM, Andrew Bresticker
-<abrestic@chromium.org> wrote:
+On Tue, May 05, 2015 at 06:06:08PM -0700, Andrew Bresticker wrote:
+> On Tue, May 5, 2015 at 4:35 PM, James Hogan <james.hogan@imgtec.com> wrot=
+e:
+> > On Tue, May 05, 2015 at 04:09:31PM -0700, Andrew Bresticker wrote:
+> >> On Tue, May 5, 2015 at 3:43 PM, James Hogan <james.hogan@imgtec.com> w=
+rote:
+> >> > On Tue, May 05, 2015 at 03:16:23PM -0700, Andrew Bresticker wrote:
+> >> >> Hi James,
+> >> >>
+> >> >> On Tue, May 5, 2015 at 3:01 PM, James Hogan <james.hogan@imgtec.com=
+> wrote:
+> >> >> > Hi Andrew,
+> >> >> >
+> >> >> > On Tue, Apr 07, 2015 at 03:04:16PM -0700, Andrew Bresticker wrote:
+> >> >> >> Add a binding document for the USB2.0 PHY found on the IMG Pista=
+chio SoC.
+> >> >> >>
+> >> >> >> Signed-off-by: Andrew Bresticker <abrestic@chromium.org>
+> >> >> >> Cc: Rob Herring <robh+dt@kernel.org>
+> >> >> >> Cc: Pawel Moll <pawel.moll@arm.com>
+> >> >> >> Cc: Mark Rutland <mark.rutland@arm.com>
+> >> >> >> Cc: Ian Campbell <ijc+devicetree@hellion.org.uk>
+> >> >> >> Cc: Kumar Gala <galak@codeaurora.org>
+> >> >> >> ---
+> >> >> >> No changes from v1.
+> >> >> >> ---
+> >> >> >>  .../devicetree/bindings/phy/pistachio-usb-phy.txt  | 29 +++++++=
++++++++++++++++
+> >> >> >>  include/dt-bindings/phy/phy-pistachio-usb.h        | 16 +++++++=
++++++
+> >> >> >>  2 files changed, 45 insertions(+)
+> >> >> >>  create mode 100644 Documentation/devicetree/bindings/phy/pistac=
+hio-usb-phy.txt
+> >> >> >>  create mode 100644 include/dt-bindings/phy/phy-pistachio-usb.h
+> >> >> >>
+> >> >> >> diff --git a/Documentation/devicetree/bindings/phy/pistachio-usb=
+-phy.txt b/Documentation/devicetree/bindings/phy/pistachio-usb-phy.txt
+> >> >> >> new file mode 100644
+> >> >> >> index 0000000..afbc7e2
+> >> >> >> --- /dev/null
+> >> >> >> +++ b/Documentation/devicetree/bindings/phy/pistachio-usb-phy.txt
+> >> >> >> @@ -0,0 +1,29 @@
+> >> >> >> +IMG Pistachio USB PHY
+> >> >> >> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> >> >> >> +
+> >> >> >> +Required properties:
+> >> >> >> +--------------------
+> >> >> >> + - compatible: Must be "img,pistachio-usb-phy".
+> >> >> >> + - #phy-cells: Must be 0.  See ./phy-bindings.txt for details.
+> >> >> >> + - clocks: Must contain an entry for each entry in clock-names.
+> >> >> >> +   See ../clock/clock-bindings.txt for details.
+> >> >> >> + - clock-names: Must include "usb_phy".
+> >> >> >> + - img,cr-top: Must constain a phandle to the CR_TOP syscon nod=
+e.
+> >> >> >> + - img,refclk: Indicates the reference clock source for the USB=
+ PHY.
+> >> >> >> +   See <dt-bindings/phy/phy-pistachio-usb.h> for a list of vali=
+d values.
+> >> >> >
+> >> >> > Possibly dumb question: why isn't the reference clock source spec=
+ified
+> >> >> > in the normal ways like the "usb_phy" clock is?
+> >> >> >
+> >> >> > Does the value required here depend on what usb_phy clock gets mu=
+xed
+> >> >> > from or something?
+> >> >>
+> >> >> Right, the value indicates what clock "usb_phy" is: whether it comes
+> >> >> from the core clock controller, the XO crystal, or is some external
+> >> >> clock.  It's a mux internal to the PHY.
+> >> >
+> >> > Okay. If its a software controllable mux, is there a particular reas=
+on
+> >> > the DT doesn't describe it as such, i.e. have all 3 clock inputs, and
+> >> > the driver somehow work out which to use?
+> >>
+> >> Well, I'm not sure how the driver would determine which clock to use
+> >> without a device-tree property like the one I've got here :).  Also,
+> >
+> > Does it make sense to just look for the "best" usable source clock based
+> > on the supported rates listed in fsel_rate_map[] (for some definition of
+> > "best" such as "fastest" / "slowest" / "first usable"), or are things
+> > just not that simple?
+> >
+> > I'm just wondering how the DT writer would decide, since it seems to
+> > come down to a policy decision rather than a description of the
+> > hardware, which should probably be avoided in DT bindings if possible.
+>=20
+> Ah, sorry if that was unclear - this *is* describing a hardware
+> property.  The DT author would pick a value by looking at which clock
+> is connected to the PHY in the schematic.
 
-> Add a driver for the pin controller present on the IMG Pistachio SoC.
-> This driver provides pinmux and pinconfig operations as well as GPIO
-> and IRQ chips for the GPIO banks.
->
-> Signed-off-by: Damien Horsley <Damien.Horsley@imgtec.com>
-> Signed-off-by: Govindraj Raja <govindraj.raja@imgtec.com>
-> Signed-off-by: Ezequiel Garcia <ezequiel.garcia@imgtec.com>
-> Signed-off-by: Kevin Cernekee <cernekee@chromium.org>
-> Signed-off-by: Andrew Bresticker <abrestic@chromium.org>
-> ---
-> Changes from v3:
->  - Addressed review comments from Ezequiel.
+Okay cool. Sorry for the noise.
 
-Overall this is a very very nice looking driver so expect it to
-be merged after addressing or answering my last few
-concerns.
+Thanks
+James
 
-> +config PINCTRL_PISTACHIO
-> +       def_bool y if MACH_PISTACHIO
-> +       select PINMUX
-> +       select GENERIC_PINCONF
-> +       select GPIOLIB_IRQCHIP
+--qtZFehHsKgwS5rPz
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
-I think you also need
-depends on / select GPIOLIB
-select OF_GPIO
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
 
-x86_64 allmodconfig is usually the best way to test
-if your GPIOs and pin control fragments are correctly Kconfig:ed.
+iQIcBAEBAgAGBQJVSdAHAAoJEGwLaZPeOHZ6xxwP/jKHty710vHJJYfovVyvvMOB
+mFHIOLYOwbOh2H532NnbBUBKVmsxwfXRfLCdl3mWb+phoodwzA0A9a0pALj3O4iH
+Uc/HTTV7HOI3d5SFkioOeHNzue1DDnAWnMsEJFsdebdpjz/RC8TZFMI5GnD3bgi9
+OmhHgpOLzr03X0Xi/D3cQtpB0VpZIaXRM12gbKn3yrzM8gZP2Rk8jY2xUQz15B9j
+W0Q0FUxNRhg3JZlhI+5XilJw7b+Php6X8BHlYF/0yumRFL3oi0h6/FpEROXzeTqN
+8lQlX8w37OiHyDl9rV+h+pqXc0X9kGeKMBCSgZsy2RBlXCKpOWXxgAKv1KIizUPz
+EhlbdAzBQ6F2OEFudN/dQSxvWO99c0Ot1o7Vk/eOJvKO+yWp9qbS1oNYEdLy85+Q
+lNrMdnNGQy4G219Ort5pOy9OU0OgK/oLYJ9QpKXW9Xq5sK2UKvZZpxhGEZv908Ry
+xWDWeQM7aNxgWxifxkwhK10S6ZDkjnoUL31yQQIlBb3Ef2c+j9/WMhl+g72ACsGM
+9r49fdsdeEtGOb8g4ymIQp3j/pOLDj1gyMGhI0jzn4po0c6dlAP8qTWTnDCGDzoo
+18dS0m9eKo/pTcj0qeOD+X0l9RUTTlEB8dSQs2Apq2r0haoWaj58CkMQv19FueU4
+qCpcmnlWAWcg3zn3ZuM7
+=LHaj
+-----END PGP SIGNATURE-----
 
-> +#define PADS_DRIVE_STRENGTH_2MA                0x0
-> +#define PADS_DRIVE_STRENGTH_4MA                0x1
-> +#define PADS_DRIVE_STRENGTH_8MA                0x2
-> +#define PADS_DRIVE_STRENGTH_12MA       0x3
-
-Thanks for being clear on the defines and not using magic
-values. This makes things so much easier for people
-using and maintaining the driver!
-
-> +#define GPIO_BANK(_bank, _pin_base, _npins)                            \
-> +       {                                                               \
-> +               .gpio_chip = {                                          \
-> +                       .label = "GPIO" #_bank,                         \
-> +                       .request = pistachio_gpio_request,              \
-> +                       .free = pistachio_gpio_free,                    \
-> +                       .get_direction = pistachio_gpio_get_direction,  \
-> +                       .direction_input = pistachio_gpio_direction_input, \
-> +                       .direction_output = pistachio_gpio_direction_output, \
-> +                       .get = pistachio_gpio_get,                      \
-> +                       .set = pistachio_gpio_set,                      \
-> +                       .base = _pin_base,                              \
-> +                       .ngpio = _npins,                                \
-> +               },                                                      \
-> +               .irq_chip = {                                           \
-> +                       .name = "GPIO" #_bank,                          \
-> +                       .irq_startup = pistachio_gpio_irq_startup,      \
-> +                       .irq_ack = pistachio_gpio_irq_ack,              \
-> +                       .irq_mask = pistachio_gpio_irq_mask,            \
-> +                       .irq_unmask = pistachio_gpio_irq_unmask,        \
-> +                       .irq_set_type = pistachio_gpio_irq_set_type,    \
-> +               },                                                      \
-> +               .gpio_range = {                                         \
-> +                       .name = "GPIO" #_bank,                          \
-> +                       .id = _bank,                                    \
-> +                       .base = _pin_base,                              \
-> +                       .pin_base = _pin_base,                          \
-> +                       .npins = _npins,                                \
-> +               },                                                      \
-> +       }
-
-This -gpio_range is the only thing that bothers me a little, combined with
-this:
-
-> +               bank->gpio_range.gc = &bank->gpio_chip;
-> +               pinctrl_add_gpio_range(pctl->pctldev, &bank->gpio_range);
-
-Because it adds the ranges from the pinctrl side instead of
-doing it from the gpiochip side using
-gpiochip_add_pin_range() or gpiochip_add_pingroup_range().
-
-Have you tried using those (from <linux/gpio/driver.h> instead?
-
-They have the upside that .base is taken from the gpio_chip
-meaning it is unnecessary to define .base for the gpiochip
-too and you can just go for what gpiolib dynamically assigns
-for you.
-
-> +               pinctrl_remove_gpio_range(pctl->pctldev, &bank->gpio_range);
-
-And this will then be done automatically by gpiochio_remove().
-
-> +static int __init pistachio_pinctrl_register(void)
-> +{
-> +       return platform_driver_register(&pistachio_pinctrl_driver);
-> +}
-> +arch_initcall(pistachio_pinctrl_register);
-
-Is it necessary to have it registered so early?
-
-Apart from these, as noted it looks very nice.
-
-Yours,
-Linus Walleij
+--qtZFehHsKgwS5rPz--

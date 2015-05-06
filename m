@@ -1,39 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 May 2015 12:53:00 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:53712 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27012549AbbEFKw6uglu4 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 6 May 2015 12:52:58 +0200
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 04419CF84614E;
-        Wed,  6 May 2015 11:52:53 +0100 (IST)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Wed, 6 May 2015 11:52:54 +0100
-Received: from localhost (192.168.159.94) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Wed, 6 May
- 2015 11:52:53 +0100
-From:   Paul Burton <paul.burton@imgtec.com>
-To:     <linux-mips@linux-mips.org>
-CC:     Paul Burton <paul.burton@imgtec.com>,
-        Markos Chandras <markos.chandras@imgtec.com>,
-        Matthew Fortune <matthew.fortune@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>, <stable@vger.kernel.org>
-Subject: [PATCH] MIPS: fix FP mode selection in lieu of .MIPS.abiflags data
-Date:   Wed, 6 May 2015 11:52:32 +0100
-Message-ID: <1430909552-1680-1-git-send-email-paul.burton@imgtec.com>
-X-Mailer: git-send-email 2.3.7
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 May 2015 13:34:02 +0200 (CEST)
+Received: from mail-wg0-f43.google.com ([74.125.82.43]:35116 "EHLO
+        mail-wg0-f43.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012560AbbEFLeAeCIKe (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 6 May 2015 13:34:00 +0200
+Received: by wgyo15 with SMTP id o15so8194425wgy.2;
+        Wed, 06 May 2015 04:33:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-type:content-disposition:in-reply-to:user-agent;
+        bh=5BMMkFmRrqdt9SoxaTWI8BBT0IpPnDhsG9pvZKtnc44=;
+        b=HePgLFGJIH/ATpwMMF+aGSb6ZkcbXEjPfe4hA80cmPwPzZEzE4IOFpoKI/vrHZ5d6P
+         0uqXHXXbeI3iwnCqW+BbdWEMJCvgUAV4gqJfbIV36hSgZ1hHweDqWJbfAQaNSfTD147j
+         qcijBXZVAlbiora0YR1RYykTVequfoX8NM4xt0eJ0AAQ1bTsW3xjzZuKRlKzBVgPJVIn
+         2XwRerGvMnAHGyN8rwM47xrbv2DIaFXEHv9KFwO6wssQ1hewprGTBHjun0pNLM2u7Bfq
+         J2FXUzhuykTQOhGwapp1kfpG1kIGi+QSuyEM669jjiD5vyIzXvvJVum+S6sEggqO3cEB
+         b6Vg==
+X-Received: by 10.180.24.65 with SMTP id s1mr4108275wif.66.1430912037382;
+        Wed, 06 May 2015 04:33:57 -0700 (PDT)
+Received: from localhost (port-23489.pppoe.wtnet.de. [46.59.153.115])
+        by mx.google.com with ESMTPSA id r9sm2331742wjo.26.2015.05.06.04.33.56
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 06 May 2015 04:33:56 -0700 (PDT)
+Date:   Wed, 6 May 2015 13:33:55 +0200
+From:   Thierry Reding <thierry.reding@gmail.com>
+To:     Krzysztof Kozlowski <k.kozlowski@samsung.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Mike Turquette <mturquette@linaro.org>,
+        Stephen Boyd <sboyd@codeaurora.org>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Sylwester Nawrocki <s.nawrocki@samsung.com>,
+        Tomasz Figa <tomasz.figa@gmail.com>,
+        Kukjin Kim <kgene@kernel.org>, Barry Song <baohua@kernel.org>,
+        Peter De Schrijver <pdeschrijver@nvidia.com>,
+        Prashant Gaikwad <pgaikwad@nvidia.com>,
+        Stephen Warren <swarren@wwwdotorg.org>,
+        Alexandre Courbot <gnurou@gmail.com>,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        linux-clk@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-rockchip@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
+        Chanwoo Choi <cw00.choi@samsung.com>,
+        Inki Dae <inki.dae@samsung.com>
+Subject: Re: [PATCH v2 0/8] clk: Minor cleanups
+Message-ID: <20150506113354.GA9421@ulmo>
+References: <1430196383-9190-1-git-send-email-k.kozlowski@samsung.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.159.94]
-Return-Path: <Paul.Burton@imgtec.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="h31gzZEtNLTqOjlF"
+Content-Disposition: inline
+In-Reply-To: <1430196383-9190-1-git-send-email-k.kozlowski@samsung.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <thierry.reding@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47258
+X-archive-position: 47259
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@imgtec.com
+X-original-sender: thierry.reding@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,101 +73,40 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Commit 46490b572544 ("MIPS: kernel: elf: Improve the overall ABI and FPU
-mode checks") reworked the ELF FP ABI mode selection logic, but when
-CONFIG_MIPS_O32_FP64_SUPPORT is enabled it breaks the use of binaries
-which have no PT_MIPS_ABIFLAGS program header & associated
-.MIPS.abiflags section.
 
-A default mode is selected based upon whether the ELF contains MIPS32 or
-MIPS64 code, but that selection is made in arch_elf_pt_proc.
-arch_elf_pt_proc only executes when a PT_MIPS_ABIFLAGS program header is
-found. If one is not found then arch_elf_pt_proc is never called, and no
-default overall_fp_mode value is selected. When arch_check_elf is
-called, both abi0 & abi1 are MIPS_ABI_FP_UNKNOWN which leads to both
-prog_req & interp_req being set to none_req. none_req matches none of
-the conditions for mode selection at the end of arch_check_elf, so
-overall_fp_mode is left untouched. Finally once mips_set_personality_fp
-is called the BUG() in the default case is then hit & the kernel likely
-panics.
+--h31gzZEtNLTqOjlF
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Fix this by moving the selection of a default overall mode to the start
-of arch_check_elf, which runs once per ELF executed regardless of
-whether it has a PT_MIPS_ABIFLAGS program header.
+On Tue, Apr 28, 2015 at 01:46:15PM +0900, Krzysztof Kozlowski wrote:
+[...]
+>   clk: tegra: Fix inconsistent indenting
+>   clk: tegra: Fix duplicate const for parent names
 
-Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-Cc: Markos Chandras <markos.chandras@imgtec.com>
-Cc: Matthew Fortune <matthew.fortune@imgtec.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
-Cc: <stable@vger.kernel.org> # v4.0+
----
- arch/mips/kernel/elf.c | 32 +++++++++++++++++---------------
- 1 file changed, 17 insertions(+), 15 deletions(-)
+I've squashed these into the patches that add the EMC driver.
 
-diff --git a/arch/mips/kernel/elf.c b/arch/mips/kernel/elf.c
-index d2c09f6..f20cedc 100644
---- a/arch/mips/kernel/elf.c
-+++ b/arch/mips/kernel/elf.c
-@@ -76,14 +76,6 @@ int arch_elf_pt_proc(void *_ehdr, void *_phdr, struct file *elf,
- 
- 	/* Lets see if this is an O32 ELF */
- 	if (ehdr32->e_ident[EI_CLASS] == ELFCLASS32) {
--		/* FR = 1 for N32 */
--		if (ehdr32->e_flags & EF_MIPS_ABI2)
--			state->overall_fp_mode = FP_FR1;
--		else
--			/* Set a good default FPU mode for O32 */
--			state->overall_fp_mode = cpu_has_mips_r6 ?
--				FP_FRE : FP_FR0;
--
- 		if (ehdr32->e_flags & EF_MIPS_FP64) {
- 			/*
- 			 * Set MIPS_ABI_FP_OLD_64 for EF_MIPS_FP64. We will override it
-@@ -104,9 +96,6 @@ int arch_elf_pt_proc(void *_ehdr, void *_phdr, struct file *elf,
- 				  (char *)&abiflags,
- 				  sizeof(abiflags));
- 	} else {
--		/* FR=1 is really the only option for 64-bit */
--		state->overall_fp_mode = FP_FR1;
--
- 		if (phdr64->p_type != PT_MIPS_ABIFLAGS)
- 			return 0;
- 		if (phdr64->p_filesz < sizeof(abiflags))
-@@ -147,6 +136,7 @@ int arch_check_elf(void *_ehdr, bool has_interpreter,
- 	struct elf32_hdr *ehdr = _ehdr;
- 	struct mode_req prog_req, interp_req;
- 	int fp_abi, interp_fp_abi, abi0, abi1, max_abi;
-+	bool is_mips64;
- 
- 	if (!config_enabled(CONFIG_MIPS_O32_FP64_SUPPORT))
- 		return 0;
-@@ -162,10 +152,22 @@ int arch_check_elf(void *_ehdr, bool has_interpreter,
- 		abi0 = abi1 = fp_abi;
- 	}
- 
--	/* ABI limits. O32 = FP_64A, N32/N64 = FP_SOFT */
--	max_abi = ((ehdr->e_ident[EI_CLASS] == ELFCLASS32) &&
--		   (!(ehdr->e_flags & EF_MIPS_ABI2))) ?
--		MIPS_ABI_FP_64A : MIPS_ABI_FP_SOFT;
-+	is_mips64 = (ehdr->e_ident[EI_CLASS] == ELFCLASS64) ||
-+		    (ehdr->e_flags & EF_MIPS_ABI2);
-+
-+	if (is_mips64) {
-+		/* MIPS64 code always uses FR=1, thus the default is easy */
-+		state->overall_fp_mode = FP_FR1;
-+
-+		/* Disallow access to the various FPXX & FP64 ABIs */
-+		max_abi = MIPS_ABI_FP_SOFT;
-+	} else {
-+		/* Default to a mode capable of running code expecting FR=0 */
-+		state->overall_fp_mode = cpu_has_mips_r6 ? FP_FRE : FP_FR0;
-+
-+		/* Allow all ABIs we know about */
-+		max_abi = MIPS_ABI_FP_64A;
-+	}
- 
- 	if ((abi0 > max_abi && abi0 != MIPS_ABI_FP_UNKNOWN) ||
- 	    (abi1 > max_abi && abi1 != MIPS_ABI_FP_UNKNOWN))
--- 
-2.3.6
+Thanks,
+Thierry
+
+--h31gzZEtNLTqOjlF
+Content-Type: application/pgp-signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQIcBAABCAAGBQJVSfwfAAoJEN0jrNd/PrOhVSwQAJ/rA3S2D6xMynluMc5UstEk
+UZ72ZR6v0z5S9VzLenuIhtSsuk7oVJbTmDgMvf8XAbbOWtbGHJQn6ZmR3Me6GG+x
+zzIGolMjNHrBRK9MOdni1ryv3/F81BE7QZrGHvnMpeXRbDerQJz3C+PUlcZ1nsu6
+6hGfCl6+QCVT82nX3oj3qEdQScMMbiG37VTTluW63wQY3qaSZARouMLou1/MY+ln
+4GUa09KVJdiAlASQ6llRQVAPVas1WGX2OCmhNeqhk8ERQVJj1orjxl4rOyTVux14
+PvHHdfJrTA1w8WxzrLKjvUCm1aJgc5sNTQqZV9TcA0ktdjMtjkFaWAFS70J9oWrG
+/bk+CbeJtEDWhTOIvclVlbwQ0kyZtFexSZgc1uICHB3PABb2LdZ3HDHrZs3KskCD
+7FrUSakBBB5c9USKnaBDmBxuRW5ORDHQfPlrAB46Ye6SBB2GvgsW/S9JxVDRioqX
+BB83VnMMxSxPyGCqgmvAkAV06wHMy3RwVs+OMi8FqhQwb7f+QTo/ERxwTBbtk/WC
+SRJaopAR/sz6igINaL1Nx21Z/kju4xMjCZraLcII4p3CJvT6YtT9Q78xWJGGribj
+U6bHROgmnJxNnb9PTq/nYL4j4GeOfr6+sbp/If0v4WkS7BBtQAxXHXLgVbmPR1Un
+IO7lmnPDceWy7YJedk4F
+=LSUk
+-----END PGP SIGNATURE-----
+
+--h31gzZEtNLTqOjlF--

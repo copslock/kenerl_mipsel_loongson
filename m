@@ -1,66 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Jun 2015 17:15:02 +0200 (CEST)
-Received: from youngberry.canonical.com ([91.189.89.112]:44702 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008806AbbFVPPBBxrLK (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 22 Jun 2015 17:15:01 +0200
-Received: from 1.general.henrix.uk.vpn ([10.172.192.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_128_CBC_SHA1:16)
-        (Exim 4.76)
-        (envelope-from <luis.henriques@canonical.com>)
-        id 1Z73Qx-0007yO-O2; Mon, 22 Jun 2015 15:14:51 +0000
-From:   Luis Henriques <luis.henriques@canonical.com>
-To:     Nicholas Mc Guire <hofrat@osadl.org>
-Cc:     James Hogan <james.hogan@imgtec.com>,
-        Gleb Natapov <gleb@kernel.org>,
-        Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Luis Henriques <luis.henriques@canonical.com>,
-        kernel-team@lists.ubuntu.com
-Subject: [3.16.y-ckt stable] Patch "MIPS: KVM: Do not sign extend on unsigned MMIO load" has been added to staging queue
-Date:   Mon, 22 Jun 2015 16:14:51 +0100
-Message-Id: <1434986091-26241-1-git-send-email-luis.henriques@canonical.com>
-X-Mailer: git-send-email 2.1.4
-X-Extended-Stable: 3.16
-Return-Path: <luis.henriques@canonical.com>
-X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
-X-Orcpt: rfc822;linux-mips@linux-mips.org
-Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48005
-X-ecartis-version: Ecartis v1.0.0
-Sender: linux-mips-bounce@linux-mips.org
-Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: luis.henriques@canonical.com
-Precedence: bulk
-List-help: <mailto:ecartis@linux-mips.org?Subject=help>
-List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
-List-software: Ecartis version 1.0.0
-List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
-X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
-List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
-List-owner: <mailto:ralf@linux-mips.org>
-List-post: <mailto:linux-mips@linux-mips.org>
-List-archive: <http://www.linux-mips.org/archives/linux-mips/>
-X-list: linux-mips
+From: Nicholas Mc Guire <hofrat@osadl.org>
+Date: Thu, 7 May 2015 14:47:50 +0200
+Subject: MIPS: KVM: Do not sign extend on unsigned MMIO load
+Message-ID: <20150507124750.5crJ_gnEDUP1yXqFD8fuyK1wT_jQDfjGKHSbp4NJSdQ@z>
 
-This is a note to let you know that I have just added a patch titled
+commit ed9244e6c534612d2b5ae47feab2f55a0d4b4ced upstream.
 
-    MIPS: KVM: Do not sign extend on unsigned MMIO load
+Fix possible unintended sign extension in unsigned MMIO loads by casting
+to uint16_t in the case of mmio_needed != 2.
 
-to the linux-3.16.y-queue branch of the 3.16.y-ckt extended stable tree 
-which can be found at:
+Signed-off-by: Nicholas Mc Guire <hofrat@osadl.org>
+Reviewed-by: James Hogan <james.hogan@imgtec.com>
+Tested-by: James Hogan <james.hogan@imgtec.com>
+Cc: Gleb Natapov <gleb@kernel.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org
+Cc: linux-mips@linux-mips.org
+Cc: linux-kernel@vger.kernel.org
+Patchwork: https://patchwork.linux-mips.org/patch/9985/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+[ luis: backported to 3.16:
+  - file rename: emulate.c -> kvm_mips_emul.c ]
+Signed-off-by: Luis Henriques <luis.henriques@canonical.com>
+---
+ arch/mips/kvm/kvm_mips_emul.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-    http://kernel.ubuntu.com/git/ubuntu/linux.git/log/?h=linux-3.16.y-queue
+diff --git a/arch/mips/kvm/kvm_mips_emul.c b/arch/mips/kvm/kvm_mips_emul.c
+index 2071472bc3c4..18b4e2fdae33 100644
+--- a/arch/mips/kvm/kvm_mips_emul.c
++++ b/arch/mips/kvm/kvm_mips_emul.c
+@@ -2130,7 +2130,7 @@ kvm_mips_complete_mmio_load(struct kvm_vcpu *vcpu, struct kvm_run *run)
+ 		if (vcpu->mmio_needed == 2)
+ 			*gpr = *(int16_t *) run->mmio.data;
+ 		else
+-			*gpr = *(int16_t *) run->mmio.data;
++			*gpr = *(uint16_t *)run->mmio.data;
 
-This patch is scheduled to be released in version 3.16.7-ckt14.
-
-If you, or anyone else, feels it should not be added to this tree, please 
-reply to this email.
-
-For more information about the 3.16.y-ckt tree, see
-https://wiki.ubuntu.com/Kernel/Dev/ExtendedStable
-
-Thanks.
--Luis
-
-------
+ 		break;
+ 	case 1:

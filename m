@@ -1,22 +1,16 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 May 2015 08:39:59 +0200 (CEST)
-Received: from smtp.codeaurora.org ([198.145.29.96]:35195 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27011805AbbEGGj46-Wmi (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 7 May 2015 08:39:56 +0200
-Received: from smtp.codeaurora.org (localhost [127.0.0.1])
-        by smtp.codeaurora.org (Postfix) with ESMTP id AB944140C36;
-        Thu,  7 May 2015 06:39:55 +0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 486)
-        id 8E90F140C45; Thu,  7 May 2015 06:39:55 +0000 (UTC)
-Received: from localhost (i-global254.qualcomm.com [199.106.103.254])
-        (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: sboyd@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 7EFB5140C36;
-        Thu,  7 May 2015 06:39:54 +0000 (UTC)
-Date:   Wed, 6 May 2015 23:39:53 -0700
-From:   Stephen Boyd <sboyd@codeaurora.org>
-To:     Boris Brezillon <boris.brezillon@free-electrons.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 May 2015 09:37:14 +0200 (CEST)
+Received: from down.free-electrons.com ([37.187.137.238]:53154 "EHLO
+        mail.free-electrons.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S27011830AbbEGHhKqKSgu (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 7 May 2015 09:37:10 +0200
+Received: by mail.free-electrons.com (Postfix, from userid 106)
+        id 99FFACA2; Thu,  7 May 2015 09:37:05 +0200 (CEST)
+Received: from bbrezillon (col31-4-88-188-83-94.fbx.proxad.net [88.188.83.94])
+        by mail.free-electrons.com (Postfix) with ESMTPSA id 61DF4108;
+        Thu,  7 May 2015 09:37:03 +0200 (CEST)
+Date:   Thu, 7 May 2015 09:37:02 +0200
+From:   Boris Brezillon <boris.brezillon@free-electrons.com>
+To:     Stephen Boyd <sboyd@codeaurora.org>
 Cc:     Mike Turquette <mturquette@linaro.org>, linux-clk@vger.kernel.org,
         linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
         Shawn Guo <shawn.guo@linaro.org>,
@@ -36,7 +30,7 @@ Cc:     Mike Turquette <mturquette@linaro.org>, linux-clk@vger.kernel.org,
         Tomasz Figa <tomasz.figa@gmail.com>,
         Barry Song <baohua@kernel.org>,
         Viresh Kumar <viresh.linux@gmail.com>,
-        Emilio =?iso-8859-1?Q?L=F3pez?= <emilio@elopez.com.ar>,
+        Emilio =?UTF-8?B?TMOzcGV6?= <emilio@elopez.com.ar>,
         Maxime Ripard <maxime.ripard@free-electrons.com>,
         Peter De Schrijver <pdeschrijver@nvidia.com>,
         Prashant Gaikwad <pgaikwad@nvidia.com>,
@@ -55,24 +49,24 @@ Cc:     Mike Turquette <mturquette@linaro.org>, linux-clk@vger.kernel.org,
         linux-tegra@vger.kernel.org, dri-devel@lists.freedesktop.org,
         linux-media@vger.kernel.org, rtc-linux@googlegroups.com
 Subject: Re: [PATCH v2 1/2] clk: change clk_ops' ->round_rate() prototype
-Message-ID: <20150507063953.GC32399@codeaurora.org>
+Message-ID: <20150507093702.0b58753d@bbrezillon>
+In-Reply-To: <20150507063953.GC32399@codeaurora.org>
 References: <1430407809-31147-1-git-send-email-boris.brezillon@free-electrons.com>
- <1430407809-31147-2-git-send-email-boris.brezillon@free-electrons.com>
+        <1430407809-31147-2-git-send-email-boris.brezillon@free-electrons.com>
+        <20150507063953.GC32399@codeaurora.org>
+X-Mailer: Claws Mail 3.9.3 (GTK+ 2.24.23; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1430407809-31147-2-git-send-email-boris.brezillon@free-electrons.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Virus-Scanned: ClamAV using ClamSMTP
-Return-Path: <sboyd@codeaurora.org>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <boris.brezillon@free-electrons.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47262
+X-archive-position: 47263
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sboyd@codeaurora.org
+X-original-sender: boris.brezillon@free-electrons.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -85,48 +79,89 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 04/30, Boris Brezillon wrote:
-> Clock rates are stored in an unsigned long field, but ->round_rate()
-> (which returns a rounded rate from a requested one) returns a long
-> value (errors are reported using negative error codes), which can lead
-> to long overflow if the clock rate exceed 2Ghz.
+Hi Stephen,
+
+On Wed, 6 May 2015 23:39:53 -0700
+Stephen Boyd <sboyd@codeaurora.org> wrote:
+
+> On 04/30, Boris Brezillon wrote:
+> > Clock rates are stored in an unsigned long field, but ->round_rate()
+> > (which returns a rounded rate from a requested one) returns a long
+> > value (errors are reported using negative error codes), which can lead
+> > to long overflow if the clock rate exceed 2Ghz.
+> > 
+> > Change ->round_rate() prototype to return 0 or an error code, and pass the
+> > requested rate as a pointer so that it can be adjusted depending on
+> > hardware capabilities.
+> > 
+> > Signed-off-by: Boris Brezillon <boris.brezillon@free-electrons.com>
+> > Tested-by: Heiko Stuebner <heiko@sntech.de>
+> > Tested-by: Mikko Perttunen <mikko.perttunen@kapsi.fi>
+> > Reviewed-by: Heiko Stuebner <heiko@sntech.de>
 > 
-> Change ->round_rate() prototype to return 0 or an error code, and pass the
-> requested rate as a pointer so that it can be adjusted depending on
-> hardware capabilities.
+> This patch is fairly invasive, and it probably doesn't even
+> matter for most of these clock providers to be able to round a
+> rate above 2GHz.
+
+Fair enough.
+
+> I've been trying to remove the .round_rate op
+> from the framework by encouraging new features via the
+> .determine_rate op.
+
+Oh, I wasn't aware of that (BTW, that's a good thing).
+Maybe this should be clearly stated (both in the struct clk_ops
+kerneldoc header and in Documentation/clk.txt).
+
+> Sadly, we still have to do a flag day and
+> change all the .determine_rate ops when we want to add things.
+
+Yes, but the number of clk drivers implementing ->determine_rate() is
+still quite limited compared to those implementing ->round_rate().
+
 > 
-> Signed-off-by: Boris Brezillon <boris.brezillon@free-electrons.com>
-> Tested-by: Heiko Stuebner <heiko@sntech.de>
-> Tested-by: Mikko Perttunen <mikko.perttunen@kapsi.fi>
-> Reviewed-by: Heiko Stuebner <heiko@sntech.de>
+> What if we changed determine_rate ops to take a struct
+> clk_determine_info (or some better named structure) instead of
+> the current list of arguments that it currently takes? Then when
+> we want to make these sorts of framework wide changes we can just
+> throw a new member into that structure and be done.
 
-This patch is fairly invasive, and it probably doesn't even
-matter for most of these clock providers to be able to round a
-rate above 2GHz. I've been trying to remove the .round_rate op
-from the framework by encouraging new features via the
-.determine_rate op. Sadly, we still have to do a flag day and
-change all the .determine_rate ops when we want to add things.
+I really like this idea, especially since I was wondering if we could
+pass other 'clk rate requirements' like the rounding policy (down,
+closest, up), or the maximum clk inaccuracy.
 
-What if we changed determine_rate ops to take a struct
-clk_determine_info (or some better named structure) instead of
-the current list of arguments that it currently takes? Then when
-we want to make these sorts of framework wide changes we can just
-throw a new member into that structure and be done.
+> 
+> It doesn't solve the unsigned long to int return value problem
+> though. We can solve that by gradually introducing a new op and
+> handling another case in the rounding path. If we can come up
+> with some good name for that new op like .decide_rate or
+> something then it makes things nicer in the long run. I like the
+> name .determine_rate though :/
 
-It doesn't solve the unsigned long to int return value problem
-though. We can solve that by gradually introducing a new op and
-handling another case in the rounding path. If we can come up
-with some good name for that new op like .decide_rate or
-something then it makes things nicer in the long run. I like the
-name .determine_rate though :/
+Why not changing the ->determine_rate() prototype. As said above, the
+number of clk drivers implementing this function is still quite
+limited, and I guess we can have an ack for all of them.
 
-The benefit of all this is that we don't have to worry about
-finding the random clk providers that get added into other
-subsystems and fixing them up. If drivers actually care about
-this problem then they'll be fixed to use the proper op. FYI,
-last time we updated the function signature of .determine_rate we
-broke a couple drivers along the way.
+> 
+> The benefit of all this is that we don't have to worry about
+> finding the random clk providers that get added into other
+> subsystems and fixing them up. If drivers actually care about
+> this problem then they'll be fixed to use the proper op. FYI,
+> last time we updated the function signature of .determine_rate we
+> broke a couple drivers along the way.
+> 
+
+Hm, IMHO, adding a new op is not a good thing. I agree that it eases
+the transition, but ITOH you'll have to live with old/deprecated ops in
+your clk_ops structure with people introducing new drivers still using
+the old ops (see the number of clk drivers implementing ->round_rate()
+instead of ->determine_rate()).
+
+Best Regards,
+
+Boris
 
 -- 
-Qualcomm Innovation Center, Inc. is a member of Code Aurora Forum,
-a Linux Foundation Collaborative Project
+Boris Brezillon, Free Electrons
+Embedded Linux and Kernel engineering
+http://free-electrons.com

@@ -1,34 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 May 2015 14:18:40 +0200 (CEST)
-Received: from hofr.at ([212.69.189.236]:43519 "EHLO mail.hofr.at"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 May 2015 14:56:01 +0200 (CEST)
+Received: from www.osadl.org ([62.245.132.105]:42832 "EHLO www.osadl.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27012318AbbEGMSj3exF0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 7 May 2015 14:18:39 +0200
-Received: by mail.hofr.at (Postfix, from userid 1002)
-        id 0EE494F8C0D; Thu,  7 May 2015 14:18:35 +0200 (CEST)
-Date:   Thu, 7 May 2015 14:18:35 +0200
-From:   Nicholas Mc Guire <der.herr@hofr.at>
-To:     James Hogan <james.hogan@imgtec.com>
-Cc:     Gleb Natapov <gleb@kernel.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
+        id S27012252AbbEGM4AMqPAI (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 7 May 2015 14:56:00 +0200
+Received: from debian.hofr.at (92-243-35-153.adsl.nanet.at [92.243.35.153] (may be forged))
+        by www.osadl.org (8.13.8/8.13.8/OSADL-2007092901) with ESMTP id t47CtgZv005523;
+        Thu, 7 May 2015 14:55:45 +0200
+From:   Nicholas Mc Guire <hofrat@osadl.org>
+To:     Gleb Natapov <gleb@kernel.org>
+Cc:     Paolo Bonzini <pbonzini@redhat.com>,
         Ralf Baechle <ralf@linux-mips.org>, kvm@vger.kernel.org,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: Re: [BUG ?] MIPS: KVM: condition with no effect
-Message-ID: <20150507121835.GA23830@opentech.at>
-References: <20150505123438.GA21514@opentech.at> <20150505214205.GD17687@jhogan-linux.le.imgtec.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20150505214205.GD17687@jhogan-linux.le.imgtec.org>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <hofrat@hofr.at>
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        Nicholas Mc Guire <hofrat@osadl.org>
+Subject: [PATCH] MIPS: KVM: do not sign extend on unsigned MMIO load
+Date:   Thu,  7 May 2015 14:47:50 +0200
+Message-Id: <1431002870-30098-1-git-send-email-hofrat@osadl.org>
+X-Mailer: git-send-email 1.7.10.4
+Return-Path: <hofrat@osadl.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47269
+X-archive-position: 47270
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: der.herr@hofr.at
+X-original-sender: hofrat@osadl.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -41,64 +37,35 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, 05 May 2015, James Hogan wrote:
+Fix possible unintended sign extension in unsigned MMIO loads by casting
+to uint16_t in the case of mmio_needed != 2.
 
-> Hi,
-> 
-> On Tue, May 05, 2015 at 02:34:38PM +0200, Nicholas Mc Guire wrote:
-> > 
-> > Hi !
-> > 
-> >  Not sure if this is a bug or maybe a placeholder for
-> >  something... so patch - but maybe someone that knows this code can
-> >  give it a look.
-> > 
-> > arch/mips/kvm/emulate.c:emulation_result kvm_mips_complete_mmio_load()    
-> > <snip>
-> > 2414         case 2:
-> > 2415                 if (vcpu->mmio_needed == 2)
-> > 2416                         *gpr = *(int16_t *) run->mmio.data;                
-> > 2417                 else
-> > 2418                         *gpr = *(int16_t *) run->mmio.data;
-> > 2419 
-> > 2420                 break;
-> > <snip>
-> > 
-> >  either the if/else is not needed or one of the branches is wrong
-> >  or it is a place-holder for somethign that did not get
-> >  done - in which case a few lines explaining this would be 
-> >  nice (e.g. like in arch/sh/kernel/traps_64.c line 59)
-> > 
-> >  line numbers refer to 4.1-rc2 
-> 
-> mmio_needed encodes whether the MMIO load is a signed (2) or unsigned
-> (1) load. E.g. the len == 1 case just below casts the pointer to u8 vs
-> int8_t to control sign extension. So it appears the else branch (line
-> 2418 in your quote) should be uint16_t (or u16) to prevent the MMIO
-> value loaded by a lhu (load halfword unsigned) being sign extended to
-> the full width of the registers. Nice catch!
->
-thanks for the clarification - will send the patch out shortly.
+Signed-off-by: Nicholas Mc Guire <hofrat@osadl.org>
+---
 
-This was found by a trivial coccinelle scanner
+Thanks to James Hogan <james.hogan@imgtec.com> for the explaination of 
+mmio_needed (there is not really any helpful comment in the code on this)
+in this case (mmio_needed!=2) it should be unsigned.
 
-<snip>
-virtual context
-virtual org
-virtual report
+Patch was only compile tested msp71xx_defconfig + CONFIG_KVM=m
 
-@cond@
-position p;
-statement S1;
-@@
+Patch is against 4.1-rc2 (localversion-next is -next-20150506)
 
-<+...
-* if@p (...) S1 else S1
-...+>
+ arch/mips/kvm/emulate.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-@script:python@
-p << cond.p;
-@@
-
-print "%s:%s WARNING: condition with no effect (if branch == else)" % (p[0].file,p[0].line)                                                                     
-<snip>
+diff --git a/arch/mips/kvm/emulate.c b/arch/mips/kvm/emulate.c
+index 6230f37..2f0fc60 100644
+--- a/arch/mips/kvm/emulate.c
++++ b/arch/mips/kvm/emulate.c
+@@ -2415,7 +2415,7 @@ enum emulation_result kvm_mips_complete_mmio_load(struct kvm_vcpu *vcpu,
+ 		if (vcpu->mmio_needed == 2)
+ 			*gpr = *(int16_t *) run->mmio.data;
+ 		else
+-			*gpr = *(int16_t *) run->mmio.data;
++			*gpr = *(uint16_t *)run->mmio.data;
+ 
+ 		break;
+ 	case 1:
+-- 
+1.7.10.4

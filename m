@@ -1,22 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 May 2015 11:48:48 +0200 (CEST)
-Received: from youngberry.canonical.com ([91.189.89.112]:59535 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 May 2015 11:49:08 +0200 (CEST)
+Received: from youngberry.canonical.com ([91.189.89.112]:59540 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012252AbbEGJshZ8inO (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 7 May 2015 11:48:37 +0200
+        by eddie.linux-mips.org with ESMTP id S27012259AbbEGJsiZ8d9w (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 7 May 2015 11:48:38 +0200
 Received: from av-217-129-142-138.netvisao.pt ([217.129.142.138] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_128_CBC_SHA1:16)
         (Exim 4.71)
         (envelope-from <luis.henriques@canonical.com>)
-        id 1YqIQ3-0002LD-1t; Thu, 07 May 2015 09:48:39 +0000
+        id 1YqIQ4-0002LL-40; Thu, 07 May 2015 09:48:40 +0000
 From:   Luis Henriques <luis.henriques@canonical.com>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
         kernel-team@lists.ubuntu.com
 Cc:     Markos Chandras <markos.chandras@imgtec.com>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
         Luis Henriques <luis.henriques@canonical.com>
-Subject: [PATCH 3.16.y-ckt 114/180] MIPS: asm: asm-eva: Introduce kernel load/store variants
-Date:   Thu,  7 May 2015 10:45:23 +0100
-Message-Id: <1430991989-23170-115-git-send-email-luis.henriques@canonical.com>
+Subject: [PATCH 3.16.y-ckt 115/180] MIPS: Malta: Detect and fix bad memsize values
+Date:   Thu,  7 May 2015 10:45:24 +0100
+Message-Id: <1430991989-23170-116-git-send-email-luis.henriques@canonical.com>
 X-Mailer: git-send-email 2.1.4
 In-Reply-To: <1430991989-23170-1-git-send-email-luis.henriques@canonical.com>
 References: <1430991989-23170-1-git-send-email-luis.henriques@canonical.com>
@@ -25,7 +25,7 @@ Return-Path: <luis.henriques@canonical.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47267
+X-archive-position: 47268
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,192 +48,40 @@ X-list: linux-mips
 
 From: Markos Chandras <markos.chandras@imgtec.com>
 
-commit 60cd7e08e453bc6828ac4b539f949e4acd80f143 upstream.
+commit f7f8aea4b97c4d48e42f02cb37026bee445f239f upstream.
 
-Introduce new macros for kernel load/store variants which will be
-used to perform regular kernel space load/store operations in EVA
-mode.
+memsize denotes the amount of RAM we can access from kseg{0,1} and
+that should be up to 256M. In case the bootloader reports a value
+higher than that (perhaps reporting all the available RAM) it's best
+if we fix it ourselves and just warn the user about that. This is
+usually a problem with the bootloader and/or its environment.
+
+[ralf@linux-mips.org: Remove useless parens as suggested bei Sergei.
+Reformat long pr_warn statement to fit into 80 column limit.]
 
 Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/9500/
+Patchwork: https://patchwork.linux-mips.org/patch/9362/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Luis Henriques <luis.henriques@canonical.com>
 ---
- arch/mips/include/asm/asm-eva.h | 137 +++++++++++++++++++++++++++-------------
- 1 file changed, 93 insertions(+), 44 deletions(-)
+ arch/mips/mti-malta/malta-memory.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/arch/mips/include/asm/asm-eva.h b/arch/mips/include/asm/asm-eva.h
-index e41c56e375b1..1e38f0e1ea3e 100644
---- a/arch/mips/include/asm/asm-eva.h
-+++ b/arch/mips/include/asm/asm-eva.h
-@@ -11,6 +11,36 @@
- #define __ASM_ASM_EVA_H
- 
- #ifndef __ASSEMBLY__
-+
-+/* Kernel variants */
-+
-+#define kernel_cache(op, base)		"cache " op ", " base "\n"
-+#define kernel_ll(reg, addr)		"ll " reg ", " addr "\n"
-+#define kernel_sc(reg, addr)		"sc " reg ", " addr "\n"
-+#define kernel_lw(reg, addr)		"lw " reg ", " addr "\n"
-+#define kernel_lwl(reg, addr)		"lwl " reg ", " addr "\n"
-+#define kernel_lwr(reg, addr)		"lwr " reg ", " addr "\n"
-+#define kernel_lh(reg, addr)		"lh " reg ", " addr "\n"
-+#define kernel_lb(reg, addr)		"lb " reg ", " addr "\n"
-+#define kernel_lbu(reg, addr)		"lbu " reg ", " addr "\n"
-+#define kernel_sw(reg, addr)		"sw " reg ", " addr "\n"
-+#define kernel_swl(reg, addr)		"swl " reg ", " addr "\n"
-+#define kernel_swr(reg, addr)		"swr " reg ", " addr "\n"
-+#define kernel_sh(reg, addr)		"sh " reg ", " addr "\n"
-+#define kernel_sb(reg, addr)		"sb " reg ", " addr "\n"
-+
-+#ifdef CONFIG_32BIT
-+/*
-+ * No 'sd' or 'ld' instructions in 32-bit but the code will
-+ * do the correct thing
-+ */
-+#define kernel_sd(reg, addr)		user_sw(reg, addr)
-+#define kernel_ld(reg, addr)		user_lw(reg, addr)
-+#else
-+#define kernel_sd(reg, addr)		"sd " reg", " addr "\n"
-+#define kernel_ld(reg, addr)		"ld " reg", " addr "\n"
-+#endif /* CONFIG_32BIT */
-+
- #ifdef CONFIG_EVA
- 
- #define __BUILD_EVA_INSN(insn, reg, addr)				\
-@@ -41,37 +71,60 @@
- 
- #else
- 
--#define user_cache(op, base)		"cache " op ", " base "\n"
--#define user_ll(reg, addr)		"ll " reg ", " addr "\n"
--#define user_sc(reg, addr)		"sc " reg ", " addr "\n"
--#define user_lw(reg, addr)		"lw " reg ", " addr "\n"
--#define user_lwl(reg, addr)		"lwl " reg ", " addr "\n"
--#define user_lwr(reg, addr)		"lwr " reg ", " addr "\n"
--#define user_lh(reg, addr)		"lh " reg ", " addr "\n"
--#define user_lb(reg, addr)		"lb " reg ", " addr "\n"
--#define user_lbu(reg, addr)		"lbu " reg ", " addr "\n"
--#define user_sw(reg, addr)		"sw " reg ", " addr "\n"
--#define user_swl(reg, addr)		"swl " reg ", " addr "\n"
--#define user_swr(reg, addr)		"swr " reg ", " addr "\n"
--#define user_sh(reg, addr)		"sh " reg ", " addr "\n"
--#define user_sb(reg, addr)		"sb " reg ", " addr "\n"
-+#define user_cache(op, base)		kernel_cache(op, base)
-+#define user_ll(reg, addr)		kernel_ll(reg, addr)
-+#define user_sc(reg, addr)		kernel_sc(reg, addr)
-+#define user_lw(reg, addr)		kernel_lw(reg, addr)
-+#define user_lwl(reg, addr)		kernel_lwl(reg, addr)
-+#define user_lwr(reg, addr)		kernel_lwr(reg, addr)
-+#define user_lh(reg, addr)		kernel_lh(reg, addr)
-+#define user_lb(reg, addr)		kernel_lb(reg, addr)
-+#define user_lbu(reg, addr)		kernel_lbu(reg, addr)
-+#define user_sw(reg, addr)		kernel_sw(reg, addr)
-+#define user_swl(reg, addr)		kernel_swl(reg, addr)
-+#define user_swr(reg, addr)		kernel_swr(reg, addr)
-+#define user_sh(reg, addr)		kernel_sh(reg, addr)
-+#define user_sb(reg, addr)		kernel_sb(reg, addr)
- 
- #ifdef CONFIG_32BIT
--/*
-- * No 'sd' or 'ld' instructions in 32-bit but the code will
-- * do the correct thing
-- */
--#define user_sd(reg, addr)		user_sw(reg, addr)
--#define user_ld(reg, addr)		user_lw(reg, addr)
-+#define user_sd(reg, addr)		kernel_sw(reg, addr)
-+#define user_ld(reg, addr)		kernel_lw(reg, addr)
- #else
--#define user_sd(reg, addr)		"sd " reg", " addr "\n"
--#define user_ld(reg, addr)		"ld " reg", " addr "\n"
-+#define user_sd(reg, addr)		kernel_sd(reg, addr)
-+#define user_ld(reg, addr)		kernel_ld(reg, addr)
- #endif /* CONFIG_32BIT */
- 
- #endif /* CONFIG_EVA */
- 
- #else /* __ASSEMBLY__ */
- 
-+#define kernel_cache(op, base)		cache op, base
-+#define kernel_ll(reg, addr)		ll reg, addr
-+#define kernel_sc(reg, addr)		sc reg, addr
-+#define kernel_lw(reg, addr)		lw reg, addr
-+#define kernel_lwl(reg, addr)		lwl reg, addr
-+#define kernel_lwr(reg, addr)		lwr reg, addr
-+#define kernel_lh(reg, addr)		lh reg, addr
-+#define kernel_lb(reg, addr)		lb reg, addr
-+#define kernel_lbu(reg, addr)		lbu reg, addr
-+#define kernel_sw(reg, addr)		sw reg, addr
-+#define kernel_swl(reg, addr)		swl reg, addr
-+#define kernel_swr(reg, addr)		swr reg, addr
-+#define kernel_sh(reg, addr)		sh reg, addr
-+#define kernel_sb(reg, addr)		sb reg, addr
-+
-+#ifdef CONFIG_32BIT
-+/*
-+ * No 'sd' or 'ld' instructions in 32-bit but the code will
-+ * do the correct thing
-+ */
-+#define kernel_sd(reg, addr)		user_sw(reg, addr)
-+#define kernel_ld(reg, addr)		user_lw(reg, addr)
-+#else
-+#define kernel_sd(reg, addr)		sd reg, addr
-+#define kernel_ld(reg, addr)		ld reg, addr
-+#endif /* CONFIG_32BIT */
-+
- #ifdef CONFIG_EVA
- 
- #define __BUILD_EVA_INSN(insn, reg, addr)			\
-@@ -101,31 +154,27 @@
- #define user_sd(reg, addr)		user_sw(reg, addr)
- #else
- 
--#define user_cache(op, base)		cache op, base
--#define user_ll(reg, addr)		ll reg, addr
--#define user_sc(reg, addr)		sc reg, addr
--#define user_lw(reg, addr)		lw reg, addr
--#define user_lwl(reg, addr)		lwl reg, addr
--#define user_lwr(reg, addr)		lwr reg, addr
--#define user_lh(reg, addr)		lh reg, addr
--#define user_lb(reg, addr)		lb reg, addr
--#define user_lbu(reg, addr)		lbu reg, addr
--#define user_sw(reg, addr)		sw reg, addr
--#define user_swl(reg, addr)		swl reg, addr
--#define user_swr(reg, addr)		swr reg, addr
--#define user_sh(reg, addr)		sh reg, addr
--#define user_sb(reg, addr)		sb reg, addr
-+#define user_cache(op, base)		kernel_cache(op, base)
-+#define user_ll(reg, addr)		kernel_ll(reg, addr)
-+#define user_sc(reg, addr)		kernel_sc(reg, addr)
-+#define user_lw(reg, addr)		kernel_lw(reg, addr)
-+#define user_lwl(reg, addr)		kernel_lwl(reg, addr)
-+#define user_lwr(reg, addr)		kernel_lwr(reg, addr)
-+#define user_lh(reg, addr)		kernel_lh(reg, addr)
-+#define user_lb(reg, addr)		kernel_lb(reg, addr)
-+#define user_lbu(reg, addr)		kernel_lbu(reg, addr)
-+#define user_sw(reg, addr)		kernel_sw(reg, addr)
-+#define user_swl(reg, addr)		kernel_swl(reg, addr)
-+#define user_swr(reg, addr)		kernel_swr(reg, addr)
-+#define user_sh(reg, addr)		kernel_sh(reg, addr)
-+#define user_sb(reg, addr)		kernel_sb(reg, addr)
- 
- #ifdef CONFIG_32BIT
--/*
-- * No 'sd' or 'ld' instructions in 32-bit but the code will
-- * do the correct thing
-- */
--#define user_sd(reg, addr)		user_sw(reg, addr)
--#define user_ld(reg, addr)		user_lw(reg, addr)
-+#define user_sd(reg, addr)		kernel_sw(reg, addr)
-+#define user_ld(reg, addr)		kernel_lw(reg, addr)
- #else
--#define user_sd(reg, addr)		sd reg, addr
--#define user_ld(reg, addr)		ld reg, addr
-+#define user_sd(reg, addr)		kernel_sd(reg, addr)
-+#define user_ld(reg, addr)		kernel_sd(reg, addr)
- #endif /* CONFIG_32BIT */
- 
- #endif /* CONFIG_EVA */
+diff --git a/arch/mips/mti-malta/malta-memory.c b/arch/mips/mti-malta/malta-memory.c
+index fdffc806664f..9b3a07d962ce 100644
+--- a/arch/mips/mti-malta/malta-memory.c
++++ b/arch/mips/mti-malta/malta-memory.c
+@@ -52,6 +52,12 @@ fw_memblock_t * __init fw_getmdesc(int eva)
+ 		pr_warn("memsize not set in YAMON, set to default (32Mb)\n");
+ 		physical_memsize = 0x02000000;
+ 	} else {
++		if (memsize > (256 << 20)) { /* memsize should be capped to 256M */
++			pr_warn("Unsupported memsize value (0x%lx) detected! "
++				"Using 0x10000000 (256M) instead\n",
++				memsize);
++			memsize = 256 << 20;
++		}
+ 		/* If ememsize is set, then set physical_memsize to that */
+ 		physical_memsize = ememsize ? : memsize;
+ 	}

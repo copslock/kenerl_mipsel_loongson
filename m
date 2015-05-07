@@ -1,72 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 May 2015 09:37:14 +0200 (CEST)
-Received: from down.free-electrons.com ([37.187.137.238]:53154 "EHLO
-        mail.free-electrons.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27011830AbbEGHhKqKSgu (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 7 May 2015 09:37:10 +0200
-Received: by mail.free-electrons.com (Postfix, from userid 106)
-        id 99FFACA2; Thu,  7 May 2015 09:37:05 +0200 (CEST)
-Received: from bbrezillon (col31-4-88-188-83-94.fbx.proxad.net [88.188.83.94])
-        by mail.free-electrons.com (Postfix) with ESMTPSA id 61DF4108;
-        Thu,  7 May 2015 09:37:03 +0200 (CEST)
-Date:   Thu, 7 May 2015 09:37:02 +0200
-From:   Boris Brezillon <boris.brezillon@free-electrons.com>
-To:     Stephen Boyd <sboyd@codeaurora.org>
-Cc:     Mike Turquette <mturquette@linaro.org>, linux-clk@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
-        Shawn Guo <shawn.guo@linaro.org>,
-        ascha Hauer <kernel@pengutronix.de>,
-        David Brown <davidb@codeaurora.org>,
-        Daniel Walker <dwalker@fifo99.com>,
-        Bryan Huntsman <bryanh@codeaurora.org>,
-        Tony Lindgren <tony@atomide.com>,
-        Paul Walmsley <paul@pwsan.com>,
-        Liviu Dudau <liviu.dudau@arm.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 May 2015 11:47:58 +0200 (CEST)
+Received: from youngberry.canonical.com ([91.189.89.112]:59309 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012164AbbEGJrzMSVNN (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 7 May 2015 11:47:55 +0200
+Received: from av-217-129-142-138.netvisao.pt ([217.129.142.138] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_128_CBC_SHA1:16)
+        (Exim 4.71)
+        (envelope-from <luis.henriques@canonical.com>)
+        id 1YqIPF-0002Fa-F8; Thu, 07 May 2015 09:47:49 +0000
+From:   Luis Henriques <luis.henriques@canonical.com>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        kernel-team@lists.ubuntu.com
+Cc:     Huacai Chen <chenhc@lemote.com>,
+        "Steven J. Hill" <Steven.Hill@imgtec.com>,
+        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
         Ralf Baechle <ralf@linux-mips.org>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Sylwester Nawrocki <s.nawrocki@samsung.com>,
-        Tomasz Figa <tomasz.figa@gmail.com>,
-        Barry Song <baohua@kernel.org>,
-        Viresh Kumar <viresh.linux@gmail.com>,
-        Emilio =?UTF-8?B?TMOzcGV6?= <emilio@elopez.com.ar>,
-        Maxime Ripard <maxime.ripard@free-electrons.com>,
-        Peter De Schrijver <pdeschrijver@nvidia.com>,
-        Prashant Gaikwad <pgaikwad@nvidia.com>,
-        Stephen Warren <swarren@wwwdotorg.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Alexandre Courbot <gnurou@gmail.com>,
-        Tero Kristo <t-kristo@ti.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Michal Simek <michal.simek@xilinx.com>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        linux-doc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-arm-msm@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-mips@linux-mips.org, patches@opensource.wolfsonmicro.com,
-        linux-rockchip@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, spear-devel@list.st.com,
-        linux-tegra@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-media@vger.kernel.org, rtc-linux@googlegroups.com
-Subject: Re: [PATCH v2 1/2] clk: change clk_ops' ->round_rate() prototype
-Message-ID: <20150507093702.0b58753d@bbrezillon>
-In-Reply-To: <20150507063953.GC32399@codeaurora.org>
-References: <1430407809-31147-1-git-send-email-boris.brezillon@free-electrons.com>
-        <1430407809-31147-2-git-send-email-boris.brezillon@free-electrons.com>
-        <20150507063953.GC32399@codeaurora.org>
-X-Mailer: Claws Mail 3.9.3 (GTK+ 2.24.23; x86_64-pc-linux-gnu)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <boris.brezillon@free-electrons.com>
+        Luis Henriques <luis.henriques@canonical.com>
+Subject: [PATCH 3.16.y-ckt 067/180] MIPS: Loongson-3: Add IRQF_NO_SUSPEND to Cascade irqaction
+Date:   Thu,  7 May 2015 10:44:36 +0100
+Message-Id: <1430991989-23170-68-git-send-email-luis.henriques@canonical.com>
+X-Mailer: git-send-email 2.1.4
+In-Reply-To: <1430991989-23170-1-git-send-email-luis.henriques@canonical.com>
+References: <1430991989-23170-1-git-send-email-luis.henriques@canonical.com>
+X-Extended-Stable: 3.16
+Return-Path: <luis.henriques@canonical.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47263
+X-archive-position: 47264
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: boris.brezillon@free-electrons.com
+X-original-sender: luis.henriques@canonical.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -79,89 +45,40 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Stephen,
+3.16.7-ckt11 -stable review patch.  If anyone has any objections, please let me know.
 
-On Wed, 6 May 2015 23:39:53 -0700
-Stephen Boyd <sboyd@codeaurora.org> wrote:
+------------------
 
-> On 04/30, Boris Brezillon wrote:
-> > Clock rates are stored in an unsigned long field, but ->round_rate()
-> > (which returns a rounded rate from a requested one) returns a long
-> > value (errors are reported using negative error codes), which can lead
-> > to long overflow if the clock rate exceed 2Ghz.
-> > 
-> > Change ->round_rate() prototype to return 0 or an error code, and pass the
-> > requested rate as a pointer so that it can be adjusted depending on
-> > hardware capabilities.
-> > 
-> > Signed-off-by: Boris Brezillon <boris.brezillon@free-electrons.com>
-> > Tested-by: Heiko Stuebner <heiko@sntech.de>
-> > Tested-by: Mikko Perttunen <mikko.perttunen@kapsi.fi>
-> > Reviewed-by: Heiko Stuebner <heiko@sntech.de>
-> 
-> This patch is fairly invasive, and it probably doesn't even
-> matter for most of these clock providers to be able to round a
-> rate above 2GHz.
+From: Huacai Chen <chenhc@lemote.com>
 
-Fair enough.
+commit 0add9c2f1cff9f3f1f2eb7e9babefa872a9d14b9 upstream.
 
-> I've been trying to remove the .round_rate op
-> from the framework by encouraging new features via the
-> .determine_rate op.
+HPET irq is routed to i8259 and then to MIPS CPU irq (cascade). After
+commit a3e6c1eff5 (MIPS: IRQ: Fix disable_irq on CPU IRQs), if without
+IRQF_NO_SUSPEND in cascade_irqaction, HPET interrupts will lost during
+suspend. The result is machine cannot be waken up.
 
-Oh, I wasn't aware of that (BTW, that's a good thing).
-Maybe this should be clearly stated (both in the struct clk_ops
-kerneldoc header and in Documentation/clk.txt).
+Signed-off-by: Huacai Chen <chenhc@lemote.com>
+Cc: Steven J. Hill <Steven.Hill@imgtec.com>
+Cc: linux-mips@linux-mips.org
+Cc: Fuxin Zhang <zhangfx@lemote.com>
+Cc: Zhangjin Wu <wuzhangjin@gmail.com>
+Patchwork: https://patchwork.linux-mips.org/patch/9528/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: Luis Henriques <luis.henriques@canonical.com>
+---
+ arch/mips/loongson/loongson-3/irq.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-> Sadly, we still have to do a flag day and
-> change all the .determine_rate ops when we want to add things.
-
-Yes, but the number of clk drivers implementing ->determine_rate() is
-still quite limited compared to those implementing ->round_rate().
-
-> 
-> What if we changed determine_rate ops to take a struct
-> clk_determine_info (or some better named structure) instead of
-> the current list of arguments that it currently takes? Then when
-> we want to make these sorts of framework wide changes we can just
-> throw a new member into that structure and be done.
-
-I really like this idea, especially since I was wondering if we could
-pass other 'clk rate requirements' like the rounding policy (down,
-closest, up), or the maximum clk inaccuracy.
-
-> 
-> It doesn't solve the unsigned long to int return value problem
-> though. We can solve that by gradually introducing a new op and
-> handling another case in the rounding path. If we can come up
-> with some good name for that new op like .decide_rate or
-> something then it makes things nicer in the long run. I like the
-> name .determine_rate though :/
-
-Why not changing the ->determine_rate() prototype. As said above, the
-number of clk drivers implementing this function is still quite
-limited, and I guess we can have an ack for all of them.
-
-> 
-> The benefit of all this is that we don't have to worry about
-> finding the random clk providers that get added into other
-> subsystems and fixing them up. If drivers actually care about
-> this problem then they'll be fixed to use the proper op. FYI,
-> last time we updated the function signature of .determine_rate we
-> broke a couple drivers along the way.
-> 
-
-Hm, IMHO, adding a new op is not a good thing. I agree that it eases
-the transition, but ITOH you'll have to live with old/deprecated ops in
-your clk_ops structure with people introducing new drivers still using
-the old ops (see the number of clk drivers implementing ->round_rate()
-instead of ->determine_rate()).
-
-Best Regards,
-
-Boris
-
--- 
-Boris Brezillon, Free Electrons
-Embedded Linux and Kernel engineering
-http://free-electrons.com
+diff --git a/arch/mips/loongson/loongson-3/irq.c b/arch/mips/loongson/loongson-3/irq.c
+index f240828181ff..f2077f201a2a 100644
+--- a/arch/mips/loongson/loongson-3/irq.c
++++ b/arch/mips/loongson/loongson-3/irq.c
+@@ -42,6 +42,7 @@ void mach_irq_dispatch(unsigned int pending)
+ 
+ static struct irqaction cascade_irqaction = {
+ 	.handler = no_action,
++	.flags = IRQF_NO_SUSPEND,
+ 	.name = "cascade",
+ };
+ 

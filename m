@@ -1,43 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 May 2015 23:59:58 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:4727 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27012871AbbEHV75HWKWf (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 8 May 2015 23:59:57 +0200
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 1C73CF2397D;
-        Fri,  8 May 2015 22:59:49 +0100 (IST)
-Received: from hhmail02.hh.imgtec.org (10.100.10.20) by KLMAIL01.kl.imgtec.org
- (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Fri, 8 May
- 2015 22:50:42 +0100
-Received: from laptop.hh.imgtec.org (10.100.200.250) by hhmail02.hh.imgtec.org
- (10.100.10.20) with Microsoft SMTP Server (TLS) id 14.3.224.2; Fri, 8 May
- 2015 22:50:41 +0100
-From:   Ezequiel Garcia <ezequiel.garcia@imgtec.com>
-To:     <linux-pwm@vger.kernel.org>,
-        Thierry Reding <thierry.reding@gmail.com>
-CC:     Naidu Tellapati <naidu.tellapati@imgtec.com>,
-        James Hartley <james.hartley@imgtec.com>,
-        <linux-mips@linux-mips.org>, <sai.masarapu@imgtec.com>,
-        <arul.ramasamy@imgtec.com>,
-        Ezequiel Garcia <ezequiel.garcia@imgtec.com>
-Subject: [PATCH v2] pwm: img: Impose upper and lower timebase steps value
-Date:   Fri, 8 May 2015 18:47:31 -0300
-Message-ID: <1431121651-6787-1-git-send-email-ezequiel.garcia@imgtec.com>
-X-Mailer: git-send-email 2.3.3
-In-Reply-To: <1431035961-2008-1-git-send-email-ezequiel.garcia@imgtec.com>
-References: <1431035961-2008-1-git-send-email-ezequiel.garcia@imgtec.com>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.100.200.250]
-Return-Path: <Ezequiel.Garcia@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 09 May 2015 00:10:07 +0200 (CEST)
+Received: from mail-yh0-f73.google.com ([209.85.213.73]:33794 "EHLO
+        mail-yh0-f73.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012800AbbEHWKFyVHv0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 9 May 2015 00:10:05 +0200
+Received: by yhl29 with SMTP id 29so2671951yhl.1
+        for <linux-mips@linux-mips.org>; Fri, 08 May 2015 15:10:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=from:to:cc:subject:message-id:date;
+        bh=0r/eu+D+sf++zLyxmNO0uHeiq1z4Qo4pC/nrTCyH4hw=;
+        b=Dt/Eo7+s8KT+axkhCjp4Hvs9Oe8Sn7trUH9Q+ro5abcAIXXjC+7TjQ3t9d98LxX4ah
+         ou+TiiTTi/9rCVyIinUDMC9PYLPY3qbEvgQnCuUXVgFedYrC0wbcVbcoHwir3uJVWwTW
+         npMurU7R/Jyq/Fltl2ufMkEWI9NSFp/ajZkQZcnt6AW7rgV/VYPIsJ9AVOVtBRPD1VUF
+         ExRwSZolbvYP3Xo08jswgw+bY3b163+nv6nY6lyTxw0Y790NP/TIULWHddGCuVkFaHtq
+         lBlh/2WNJHCwveTaKOZk6Y5Jam5JSXejdZgUZYWsGbLNufmNXVvmwrMc9Gm02qf1JiCy
+         2EUA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:from:to:cc:subject:message-id:date;
+        bh=0r/eu+D+sf++zLyxmNO0uHeiq1z4Qo4pC/nrTCyH4hw=;
+        b=aiKYaILK/xmBMJKLKb5Lsgm0xLKZP42gEGYw4q9f9t1zXpdDFJ47q0eM6/RQHU/t6/
+         PtOArRG5jELXrhgWJlflG0Ki2/e/f7gHdp1cK/M0Neea3PERMNw1bG6QX1orKFEKYmdX
+         /AJIyassmxSHBCw4csYRvgTjBE60iv0T6Ku10UxNwSYuuME7P3m2f8g0ImPQN48lF8vm
+         TKUcm3LlGmIu/pXEx7qTaHRXuI6K71UebAIS1SwKH1uTWBXDYYIxpRHY7aEoLUtIUI0z
+         Ry24jcVPs6p/kmoRp14/Olg3vcNMV4Y1yu9lKpxZk9W1sMvyK7c2jgrZLlUCCENZVIDs
+         vsVg==
+X-Gm-Message-State: ALoCoQmYeoEM7y/Z0XqY8Hyq+zmOb0xMt+QALP0oWgZasc159Q14S9xd7x8uuu4Kwls07uazNXKP
+X-Received: by 10.140.238.201 with SMTP id j192mr288891qhc.14.1431123002098;
+        Fri, 08 May 2015 15:10:02 -0700 (PDT)
+Received: from corpmail-nozzle1-2.hot.corp.google.com ([100.108.1.103])
+        by gmr-mx.google.com with ESMTPS id x25si340522yha.2.2015.05.08.15.10.01
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 08 May 2015 15:10:02 -0700 (PDT)
+Received: from puck.mtv.corp.google.com ([172.27.88.166])
+        by corpmail-nozzle1-2.hot.corp.google.com with ESMTP id 6q1LSrb9.1; Fri, 08 May 2015 15:10:02 -0700
+Received: by puck.mtv.corp.google.com (Postfix, from userid 68020)
+        id 14218220495; Fri,  8 May 2015 15:10:00 -0700 (PDT)
+From:   Petri Gynther <pgynther@google.com>
+To:     linux-mips@linux-mips.org
+Cc:     ralf@linux-mips.org
+Subject: [PATCH 1/2] MIPS: traps: remove extra Tainted: line from __show_regs() output
+Message-Id: <20150508221001.14218220495@puck.mtv.corp.google.com>
+Date:   Fri,  8 May 2015 15:10:00 -0700 (PDT)
+Return-Path: <pgynther@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47299
+X-archive-position: 47300
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ezequiel.garcia@imgtec.com
+X-original-sender: pgynther@google.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,188 +63,25 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Naidu Tellapati <naidu.tellapati@imgtec.com>
+__show_regs() calls show_regs_print_info(), which already outputs
+the Tainted: information. So, no need to output it twice.
 
-The PWM hardware on Pistachio platform has a maximum timebase steps
-value to 255. To fix it, let's introduce a compatible-specific
-data structure to contain the SoC-specific details and use it to
-specify a maximum timebase.
-
-Also, let's limit the minimum timebase to 16 steps, to allow a sane
-range of duty cycle steps.
-
-Fixes: 277bb6a29e00 ("pwm: Imagination Technologies PWM DAC driver")
-Signed-off-by: Naidu Tellapati <naidu.tellapati@imgtec.com>
-Signed-off-by: Ezequiel Garcia <ezequiel.garcia@imgtec.com>
+Signed-off-by: Petri Gynther <pgynther@google.com>
 ---
-This patch is needed for the pwm-img to work properly, so it should be
-pushed as a v4.1-rc fix.
+ arch/mips/kernel/traps.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-Changes from v1:
-
- * After some investigation, we found the hardware has no lower limit
-   for the timebase. However, it still makes sense to have limit it,
-   to allow a sane duty cycle resolution. Updated the commit log and added
-   some comments to the driver explaining this.
-
- * Minor style fixes.
-
- drivers/pwm/pwm-img.c | 76 +++++++++++++++++++++++++++++++++++++++++++--------
- 1 file changed, 64 insertions(+), 12 deletions(-)
-
-diff --git a/drivers/pwm/pwm-img.c b/drivers/pwm/pwm-img.c
-index 476171a..8a029f9 100644
---- a/drivers/pwm/pwm-img.c
-+++ b/drivers/pwm/pwm-img.c
-@@ -16,6 +16,7 @@
- #include <linux/mfd/syscon.h>
- #include <linux/module.h>
- #include <linux/of.h>
-+#include <linux/of_device.h>
- #include <linux/platform_device.h>
- #include <linux/pwm.h>
- #include <linux/regmap.h>
-@@ -38,7 +39,22 @@
- #define PERIP_PWM_PDM_CONTROL_CH_MASK		0x1
- #define PERIP_PWM_PDM_CONTROL_CH_SHIFT(ch)	((ch) * 4)
+diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
+index ba32e48..d2d1c19 100644
+--- a/arch/mips/kernel/traps.c
++++ b/arch/mips/kernel/traps.c
+@@ -269,7 +269,6 @@ static void __show_regs(const struct pt_regs *regs)
+ 	 */
+ 	printk("epc   : %0*lx %pS\n", field, regs->cp0_epc,
+ 	       (void *) regs->cp0_epc);
+-	printk("    %s\n", print_tainted());
+ 	printk("ra    : %0*lx %pS\n", field, regs->regs[31],
+ 	       (void *) regs->regs[31]);
  
--#define MAX_TMBASE_STEPS			65536
-+/*
-+ * PWM period is specified with a timebase register,
-+ * in number of step periods. The PWM duty cycle is also
-+ * specified in step periods, in the [0, $timebase] range.
-+ * In other words, the timebase imposes the duty cycle
-+ * resolution. Therefore, let's constraint the timebase to
-+ * a minimum value to allow a sane range of duty cycle values.
-+ * Imposing a minimum timebase, will impose a maximum PWM frequency.
-+ *
-+ * The value chosen is completely arbitrary.
-+ */
-+#define MIN_TMBASE_STEPS			16
-+
-+struct img_pwm_soc_data {
-+	u32 max_timebase;
-+};
- 
- struct img_pwm_chip {
- 	struct device	*dev;
-@@ -47,6 +63,9 @@ struct img_pwm_chip {
- 	struct clk	*sys_clk;
- 	void __iomem	*base;
- 	struct regmap	*periph_regs;
-+	int		max_period_ns;
-+	int		min_period_ns;
-+	const struct img_pwm_soc_data   *data;
- };
- 
- static inline struct img_pwm_chip *to_img_pwm_chip(struct pwm_chip *chip)
-@@ -72,24 +91,31 @@ static int img_pwm_config(struct pwm_chip *chip, struct pwm_device *pwm,
- 	u32 val, div, duty, timebase;
- 	unsigned long mul, output_clk_hz, input_clk_hz;
- 	struct img_pwm_chip *pwm_chip = to_img_pwm_chip(chip);
-+	unsigned int max_timebase = pwm_chip->data->max_timebase;
-+
-+	if (period_ns < pwm_chip->min_period_ns ||
-+	    period_ns > pwm_chip->max_period_ns) {
-+		dev_err(chip->dev, "configured period not in range\n");
-+		return -ERANGE;
-+	}
- 
- 	input_clk_hz = clk_get_rate(pwm_chip->pwm_clk);
- 	output_clk_hz = DIV_ROUND_UP(NSEC_PER_SEC, period_ns);
- 
- 	mul = DIV_ROUND_UP(input_clk_hz, output_clk_hz);
--	if (mul <= MAX_TMBASE_STEPS) {
-+	if (mul <= max_timebase) {
- 		div = PWM_CTRL_CFG_NO_SUB_DIV;
- 		timebase = DIV_ROUND_UP(mul, 1);
--	} else if (mul <= MAX_TMBASE_STEPS * 8) {
-+	} else if (mul <= max_timebase * 8) {
- 		div = PWM_CTRL_CFG_SUB_DIV0;
- 		timebase = DIV_ROUND_UP(mul, 8);
--	} else if (mul <= MAX_TMBASE_STEPS * 64) {
-+	} else if (mul <= max_timebase * 64) {
- 		div = PWM_CTRL_CFG_SUB_DIV1;
- 		timebase = DIV_ROUND_UP(mul, 64);
--	} else if (mul <= MAX_TMBASE_STEPS * 512) {
-+	} else if (mul <= max_timebase * 512) {
- 		div = PWM_CTRL_CFG_SUB_DIV0_DIV1;
- 		timebase = DIV_ROUND_UP(mul, 512);
--	} else if (mul > MAX_TMBASE_STEPS * 512) {
-+	} else if (mul > max_timebase * 512) {
- 		dev_err(chip->dev,
- 			"failed to configure timebase steps/divider value\n");
- 		return -EINVAL;
-@@ -143,11 +169,27 @@ static const struct pwm_ops img_pwm_ops = {
- 	.owner = THIS_MODULE,
- };
- 
-+static const struct img_pwm_soc_data pistachio_pwm = {
-+	.max_timebase = 255,
-+};
-+
-+static const struct of_device_id img_pwm_of_match[] = {
-+	{
-+		.compatible = "img,pistachio-pwm",
-+		.data = &pistachio_pwm,
-+	},
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(of, img_pwm_of_match);
-+
- static int img_pwm_probe(struct platform_device *pdev)
- {
- 	int ret;
-+	u64 val;
-+	unsigned long clk_rate;
- 	struct resource *res;
- 	struct img_pwm_chip *pwm;
-+	const struct of_device_id *of_dev_id;
- 
- 	pwm = devm_kzalloc(&pdev->dev, sizeof(*pwm), GFP_KERNEL);
- 	if (!pwm)
-@@ -160,6 +202,11 @@ static int img_pwm_probe(struct platform_device *pdev)
- 	if (IS_ERR(pwm->base))
- 		return PTR_ERR(pwm->base);
- 
-+	of_dev_id = of_match_device(img_pwm_of_match, &pdev->dev);
-+	if (!of_dev_id)
-+		return -ENODEV;
-+	pwm->data = of_dev_id->data;
-+
- 	pwm->periph_regs = syscon_regmap_lookup_by_phandle(pdev->dev.of_node,
- 							   "img,cr-periph");
- 	if (IS_ERR(pwm->periph_regs))
-@@ -189,6 +236,17 @@ static int img_pwm_probe(struct platform_device *pdev)
- 		goto disable_sysclk;
- 	}
- 
-+	clk_rate = clk_get_rate(pwm->pwm_clk);
-+
-+	/* The maximum input clock divider is 512 */
-+	val = (u64)NSEC_PER_SEC * 512 * pwm->data->max_timebase;
-+	do_div(val, clk_rate);
-+	pwm->max_period_ns = val;
-+
-+	val = (u64)NSEC_PER_SEC * MIN_TMBASE_STEPS;
-+	do_div(val, clk_rate);
-+	pwm->min_period_ns = val;
-+
- 	pwm->chip.dev = &pdev->dev;
- 	pwm->chip.ops = &img_pwm_ops;
- 	pwm->chip.base = -1;
-@@ -228,12 +286,6 @@ static int img_pwm_remove(struct platform_device *pdev)
- 	return pwmchip_remove(&pwm_chip->chip);
- }
- 
--static const struct of_device_id img_pwm_of_match[] = {
--	{ .compatible = "img,pistachio-pwm", },
--	{ }
--};
--MODULE_DEVICE_TABLE(of, img_pwm_of_match);
--
- static struct platform_driver img_pwm_driver = {
- 	.driver = {
- 		.name = "img-pwm",
 -- 
-2.3.3
+2.2.0.rc0.207.ga3a616c

@@ -1,51 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 May 2015 16:57:21 +0200 (CEST)
-Received: from mail-ig0-f175.google.com ([209.85.213.175]:37704 "EHLO
-        mail-ig0-f175.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27026566AbbEHO5UB-WI0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 8 May 2015 16:57:20 +0200
-Received: by igbsb11 with SMTP id sb11so23360836igb.0;
-        Fri, 08 May 2015 07:57:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=lXG3fsDHvHF0e7gA8XZyzKgteGMcARyjgzcsTK37uz0=;
-        b=eFhXtRxeYdQX8OKaNKLxJIDOS6vTz2t0keYgvOOMJFLyqur5qNn2hokG7DlwelvcQZ
-         l5CXBhzE73jFydoJxNoilIXDiXf3VhXsuyjFHR57hq/vHe10Z9WVllMRJvYFo3FZGlPQ
-         JvvN47bXsDOa4jqjcThjc2wEGWVd1r0eTCvT8OYe2LbpoFwLtImfZioX0RIg95LXCbo8
-         lZZKT0uXHJ0G2Xfr6NZNTfBOb4m7X+jakhJIZxeY0/RXjRpC6CGDEB7xhmATr8gpbJuQ
-         gV5eLsxQaNO7x5vVcZh8Ao5k6IJhlnRGCv5iL4DLoSia7q8e+9hzY/jYEOpFnIHbxzOt
-         ZI/Q==
-X-Received: by 10.107.163.79 with SMTP id m76mr5490388ioe.85.1431097036458;
-        Fri, 08 May 2015 07:57:16 -0700 (PDT)
-Received: from [192.168.0.10] (CPEbc4dfb2691f3-CMbc4dfb2691f0.cpe.net.cable.rogers.com. [99.231.110.121])
-        by mx.google.com with ESMTPSA id g2sm5208694igt.8.2015.05.08.07.57.14
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 08 May 2015 07:57:15 -0700 (PDT)
-Message-ID: <554CCEC9.9080406@gmail.com>
-Date:   Fri, 08 May 2015 10:57:13 -0400
-From:   nick <xerofoify@gmail.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.6.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 May 2015 17:32:51 +0200 (CEST)
+Received: from mout.kundenserver.de ([212.227.17.13]:49677 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27026568AbbEHPctntIwQ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 8 May 2015 17:32:49 +0200
+Received: from wuerfel.localnet ([149.172.15.242]) by mrelayeu.kundenserver.de
+ (mreue101) with ESMTPSA (Nemesis) id 0LmLVi-1ZQM073lFy-00a13j; Fri, 08 May
+ 2015 17:32:46 +0200
+From:   Arnd Bergmann <arnd@arndb.de>
+To:     Kevin Cernekee <cernekee@gmail.com>
+Cc:     Jaedon Shin <jaedon.shin@gmail.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+Subject: Re: [PATCH 1/2] MIPS: BMIPS: dts: remove unsupported entry for bcm7362
+Date:   Fri, 08 May 2015 17:32:44 +0200
+Message-ID: <10776752.kPn2ooXz5Z@wuerfel>
+User-Agent: KMail/4.11.5 (Linux/3.16.0-10-generic; KDE/4.11.5; x86_64; ; )
+In-Reply-To: <CAJiQ=7CQshXhGJ7ftWQSu_UxgKVaRprZPEPXWNP6ci_1bLrJrw@mail.gmail.com>
+References: <1431089958-2626-1-git-send-email-jaedon.shin@gmail.com> <1431089958-2626-2-git-send-email-jaedon.shin@gmail.com> <CAJiQ=7CQshXhGJ7ftWQSu_UxgKVaRprZPEPXWNP6ci_1bLrJrw@mail.gmail.com>
 MIME-Version: 1.0
-To:     James Hogan <james.hogan@imgtec.com>, ralf@linux-mips.org
-CC:     chenhc@lemote.com, andreas.herrmann@caviumnetworks.com,
-        rusty@rustcorp.com.au, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mips:Remove unneeded duplicate declaration of cpu_callin_map
- in smp.h
-References: <1431094355-28145-1-git-send-email-xerofoify@gmail.com> <554CCD6D.9010004@imgtec.com>
-In-Reply-To: <554CCD6D.9010004@imgtec.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Return-Path: <xerofoify@gmail.com>
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+X-Provags-ID:  V03:K0:bXVx86zUJM1QSuE4ZkZSV409+2KTceu7E+kFgFz9xwmS5byJIon
+ 6+TQkeRoHuuv6L7p5gfzcO6GMeCNT3fvdSQEqcAIgblKz2x9MBPc48hWmJtlTTcuAezR4vu
+ fiISZJoZPMe967H95QVOjq/VBqD7qlcABzM4gpKCK9Qexq6DZ/W5wF7I9jLrHJlTgTC6b4+
+ Y4mT+gCy8w4GIN6yLjnpw==
+X-UI-Out-Filterresults: notjunk:1;
+Return-Path: <arnd@arndb.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47285
+X-archive-position: 47286
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: xerofoify@gmail.com
+X-original-sender: arnd@arndb.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,53 +48,37 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+On Friday 08 May 2015 07:40:44 Kevin Cernekee wrote:
+> On Fri, May 8, 2015 at 5:59 AM, Jaedon Shin <jaedon.shin@gmail.com> wrote:
+> > Remove unsupported memory entry for the bcm7362 platform. The BMIPS4380
+> > processor only supports ZONE_NORMAL is not available for HIGHMEM.
+> >
+> > Signed-off-by: Jaedon Shin <jaedon.shin@gmail.com>
+> > ---
+> >  arch/mips/boot/dts/brcm/bcm97362svmb.dts | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/arch/mips/boot/dts/brcm/bcm97362svmb.dts b/arch/mips/boot/dts/brcm/bcm97362svmb.dts
+> > index b7b88e5dc9e7..ab8b01fa7dcf 100644
+> > --- a/arch/mips/boot/dts/brcm/bcm97362svmb.dts
+> > +++ b/arch/mips/boot/dts/brcm/bcm97362svmb.dts
+> > @@ -8,7 +8,7 @@
+> >
+> >         memory@0 {
+> >                 device_type = "memory";
+> > -               reg = <0x00000000 0x10000000>, <0x20000000 0x30000000>;
+> > +               reg = <0x00000000 0x10000000>;
+> 
+> Hmm, this is more of a kernel limitation than a hardware limitation,
+> though.  The board physically has 1GB of memory, right?  It is best if
+> the DT entry reflects the actual hardware configuration.
+> 
+> The Broadcom kernels enable the CPU's special "XKS01" feature to put
+> 1GB of memory in ZONE_NORMAL:
+> 
+> https://github.com/Broadcom/stblinux-3.3/tree/master/linux
+> 
 
+What exactly is the kernel limitation here?
 
-On 2015-05-08 10:51 AM, James Hogan wrote:
-> On 08/05/15 15:12, Nicholas Krause wrote:
->> This removes the unneeded duplicate declaration of cpu_callin_map
->> in smp.h due to use already declaring it in the file,smp.c that
-> 
-> No, it isn't declared in arch/mips/kernel/smp.c, its *defined* there (no
-> "extern"). It's referenced by:
-> arch/mips/cavium-octeon/smp.c
-> arch/mips/kernel/process.c
-> arch/mips/kernel/smp-bmips.c
-> arch/mips/kernel/smp-cps.c
-> arch/mips/loongson/loongson-3/smp.c
-> as well as arch/mips/kernel/smp.c, which is why the declaration is
-> needed in a header.
-> 
-> If you're attempting to fix the build errors in this area, please see:
-> http://patchwork.linux-mips.org/patch/9970/
-> 
-> Cheers
-> James
-> 
->> already uses it internally for functions required this variable
->> for their various internal work.
->>
->> Signed-off-by: Nicholas Krause <xerofoify@gmail.com>
->> ---
->>  arch/mips/include/asm/smp.h | 2 --
->>  1 file changed, 2 deletions(-)
->>
->> diff --git a/arch/mips/include/asm/smp.h b/arch/mips/include/asm/smp.h
->> index bb02fac..7752011 100644
->> --- a/arch/mips/include/asm/smp.h
->> +++ b/arch/mips/include/asm/smp.h
->> @@ -45,8 +45,6 @@ extern int __cpu_logical_map[NR_CPUS];
->>  #define SMP_DUMP		0x8
->>  #define SMP_ASK_C0COUNT		0x10
->>  
->> -extern volatile cpumask_t cpu_callin_map;
->> -
->>  /* Mask of CPUs which are currently definitely operating coherently */
->>  extern cpumask_t cpu_coherent_mask;
->>  
->>
-> James,
-Your patch is 100% percent I missed that it hit all those files and therefore just removed it from the 
-header file. After looking at it further this was easy break the build on other configurations,please
-NAK this patch.
-Nick
+	Arnd

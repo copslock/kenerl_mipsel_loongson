@@ -1,20 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 May 2015 20:01:05 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:35818 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 May 2015 20:01:23 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:35816 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27027485AbbEKRz40kOee (ORCPT
+        by eddie.linux-mips.org with ESMTP id S27027484AbbEKRz4Xlbri (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Mon, 11 May 2015 19:55:56 +0200
 Received: from localhost (c-50-170-35-168.hsd1.wa.comcast.net [50.170.35.168])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 41D8EBB3;
-        Mon, 11 May 2015 17:55:51 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id EA6AEBBE;
+        Mon, 11 May 2015 17:55:45 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Nicolas Schichan <nschichan@freebox.fr>,
-        linux-mips@linux-mips.org, Alexandre Courbot <acourbot@nvidia.com>,
+        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>,
+        linux-mips@linux-mips.org, Hauke Mehrtens <hauke@hauke-m.de>,
         Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.0 07/72] MIPS: BCM63xx: Move bcm63xx_gpio_init() to bcm63xx_register_devices().
-Date:   Mon, 11 May 2015 10:54:13 -0700
-Message-Id: <20150511175437.329697816@linuxfoundation.org>
+Subject: [PATCH 4.0 27/72] MIPS: BCM47XX: Fix detecting Microsoft MN-700 & Asus WL500G
+Date:   Mon, 11 May 2015 10:54:33 -0700
+Message-Id: <20150511175437.924074869@linuxfoundation.org>
 X-Mailer: git-send-email 2.4.0
 In-Reply-To: <20150511175437.112151861@linuxfoundation.org>
 References: <20150511175437.112151861@linuxfoundation.org>
@@ -25,7 +25,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47329
+X-archive-position: 47330
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,68 +47,33 @@ X-list: linux-mips
 ------------------
 
 
-From: Nicolas Schichan <nschichan@freebox.fr>
+From: Rafał Miłecki <zajec5@gmail.com>
 
-Commit 2ec459f2a77b808c1e5a3616c88b613d3f720c8d upstream.
+Commit 96f7c21363e0e0d19f3471f54a719ed06d708513 upstream.
 
-When called from prom init code, bcm63xx_gpio_init() will fail as it
-will call gpiochip_add() which relies on a working kmalloc() to alloc
-the gpio_desc array and kmalloc is not useable yet at prom init time.
+Since the day of adding this code it was broken. We were iterating over
+a wrong array and checking for wrong NVRAM entry.
 
-Move bcm63xx_gpio_init() to bcm63xx_register_devices() (an
-arch_initcall) where kmalloc works.
-
-Fixes: 14e85c0e69d5 ("gpio: remove gpio_descs global array")
-
-Signed-off-by: Nicolas Schichan <nschichan@freebox.fr>
+Signed-off-by: Rafał Miłecki <zajec5@gmail.com>
 Cc: linux-mips@linux-mips.org
-Cc: linux-kernel@vger.kernel.org
-Cc: Alexandre Courbot <acourbot@nvidia.com>
-Patchwork: https://patchwork.linux-mips.org/patch/9530/
+Cc: Hauke Mehrtens <hauke@hauke-m.de>
+Patchwork: https://patchwork.linux-mips.org/patch/9654/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/bcm63xx/prom.c  |    4 ----
- arch/mips/bcm63xx/setup.c |    4 ++++
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ arch/mips/bcm47xx/board.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/mips/bcm63xx/prom.c
-+++ b/arch/mips/bcm63xx/prom.c
-@@ -17,7 +17,6 @@
- #include <bcm63xx_cpu.h>
- #include <bcm63xx_io.h>
- #include <bcm63xx_regs.h>
--#include <bcm63xx_gpio.h>
+--- a/arch/mips/bcm47xx/board.c
++++ b/arch/mips/bcm47xx/board.c
+@@ -247,8 +247,8 @@ static __init const struct bcm47xx_board
+ 	}
  
- void __init prom_init(void)
- {
-@@ -53,9 +52,6 @@ void __init prom_init(void)
- 	reg &= ~mask;
- 	bcm_perf_writel(reg, PERF_CKCTL_REG);
- 
--	/* register gpiochip */
--	bcm63xx_gpio_init();
--
- 	/* do low level board init */
- 	board_prom_init();
- 
---- a/arch/mips/bcm63xx/setup.c
-+++ b/arch/mips/bcm63xx/setup.c
-@@ -20,6 +20,7 @@
- #include <bcm63xx_cpu.h>
- #include <bcm63xx_regs.h>
- #include <bcm63xx_io.h>
-+#include <bcm63xx_gpio.h>
- 
- void bcm63xx_machine_halt(void)
- {
-@@ -160,6 +161,9 @@ void __init plat_mem_setup(void)
- 
- int __init bcm63xx_register_devices(void)
- {
-+	/* register gpiochip */
-+	bcm63xx_gpio_init();
-+
- 	return board_register_devices();
- }
- 
+ 	if (bcm47xx_nvram_getenv("hardware_version", buf1, sizeof(buf1)) >= 0 &&
+-	    bcm47xx_nvram_getenv("boardtype", buf2, sizeof(buf2)) >= 0) {
+-		for (e2 = bcm47xx_board_list_boot_hw; e2->value1; e2++) {
++	    bcm47xx_nvram_getenv("boardnum", buf2, sizeof(buf2)) >= 0) {
++		for (e2 = bcm47xx_board_list_hw_version_num; e2->value1; e2++) {
+ 			if (!strstarts(buf1, e2->value1) &&
+ 			    !strcmp(buf2, e2->value2))
+ 				return &e2->board;

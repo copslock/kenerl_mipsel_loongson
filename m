@@ -1,20 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 May 2015 19:56:56 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:35697 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 May 2015 19:57:14 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:35750 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27027464AbbEKRzo57u0D (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 11 May 2015 19:55:44 +0200
+        by eddie.linux-mips.org with ESMTP id S27027472AbbEKRzu14tlh (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 11 May 2015 19:55:50 +0200
 Received: from localhost (c-50-170-35-168.hsd1.wa.comcast.net [50.170.35.168])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 4C8CCBB4;
-        Mon, 11 May 2015 17:55:41 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 51F3FBB8;
+        Mon, 11 May 2015 17:55:42 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Ganesan Ramalingam <ganesanr@broadcom.com>,
-        Jayachandran C <jchandra@broadcom.com>,
+        Markos Chandras <markos.chandras@imgtec.com>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.0 14/72] MIPS: Netlogic: Fix for SATA PHY init
-Date:   Mon, 11 May 2015 10:54:20 -0700
-Message-Id: <20150511175437.539346851@linuxfoundation.org>
+Subject: [PATCH 4.0 17/72] MIPS: asm: spinlock: Fix addiu instruction for R10000_LLSC_WAR case
+Date:   Mon, 11 May 2015 10:54:23 -0700
+Message-Id: <20150511175437.626968074@linuxfoundation.org>
 X-Mailer: git-send-email 2.4.0
 In-Reply-To: <20150511175437.112151861@linuxfoundation.org>
 References: <20150511175437.112151861@linuxfoundation.org>
@@ -25,7 +24,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47315
+X-archive-position: 47316
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,49 +46,32 @@ X-list: linux-mips
 ------------------
 
 
-From: Ganesan Ramalingam <ganesanr@broadcom.com>
+From: Markos Chandras <markos.chandras@imgtec.com>
 
-Commit 872cd4c2c617bb3a203ebe18115fd0c697112b87 upstream.
+Commit 518222161d4a2d3f3b2700098563b62383f83878 upstream.
 
-Update to the SATA PHY initialization. This is needed for SATA detection
-to succeed in all configurations.
+Commit 5753762cbd1c("MIPS: asm: spinlock: Replace "sub" instruction
+with "addiu") replaced the "sub" instruction with addiu but it did
+not update the immediate value in the R10000_LLSC_WAR case.
 
-Signed-off-by: Ganesan Ramalingam <ganesanr@broadcom.com>
-Signed-off-by: Jayachandran C <jchandra@broadcom.com>
+Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+Fixes: 5753762cbd1c("MIPS: asm: spinlock: Replace "sub" instruction with "addiu"")
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/8886/
+Patchwork: https://patchwork.linux-mips.org/patch/9385/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/netlogic/xlp/ahci-init-xlp2.c |   13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ arch/mips/include/asm/spinlock.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/mips/netlogic/xlp/ahci-init-xlp2.c
-+++ b/arch/mips/netlogic/xlp/ahci-init-xlp2.c
-@@ -203,6 +203,7 @@ static u8 read_phy_reg(u64 regbase, u32
- static void config_sata_phy(u64 regbase)
- {
- 	u32 port, i, reg;
-+	u8 val;
- 
- 	for (port = 0; port < 2; port++) {
- 		for (i = 0, reg = RXCDRCALFOSC0; reg <= CALDUTY; reg++, i++)
-@@ -210,6 +211,18 @@ static void config_sata_phy(u64 regbase)
- 
- 		for (i = 0, reg = RXDPIF; reg <= PPMDRIFTMAX_HI; reg++, i++)
- 			write_phy_reg(regbase, reg, port, sata_phy_config2[i]);
-+
-+		/* Fix for PHY link up failures at lower temperatures */
-+		write_phy_reg(regbase, 0x800F, port, 0x1f);
-+
-+		val = read_phy_reg(regbase, 0x0029, port);
-+		write_phy_reg(regbase, 0x0029, port, val | (0x7 << 1));
-+
-+		val = read_phy_reg(regbase, 0x0056, port);
-+		write_phy_reg(regbase, 0x0056, port, val & ~(1 << 3));
-+
-+		val = read_phy_reg(regbase, 0x0018, port);
-+		write_phy_reg(regbase, 0x0018, port, val & ~(0x7 << 0));
- 	}
- }
- 
+--- a/arch/mips/include/asm/spinlock.h
++++ b/arch/mips/include/asm/spinlock.h
+@@ -263,7 +263,7 @@ static inline void arch_read_unlock(arch
+ 	if (R10000_LLSC_WAR) {
+ 		__asm__ __volatile__(
+ 		"1:	ll	%1, %2		# arch_read_unlock	\n"
+-		"	addiu	%1, 1					\n"
++		"	addiu	%1, -1					\n"
+ 		"	sc	%1, %0					\n"
+ 		"	beqzl	%1, 1b					\n"
+ 		: "=" GCC_OFF_SMALL_ASM() (rw->lock), "=&r" (tmp)

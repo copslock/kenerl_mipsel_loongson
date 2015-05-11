@@ -1,19 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 May 2015 19:57:14 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:35750 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 May 2015 19:57:33 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:35747 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27027472AbbEKRzu14tlh (ORCPT
+        by eddie.linux-mips.org with ESMTP id S27027470AbbEKRzu1HL4c (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Mon, 11 May 2015 19:55:50 +0200
 Received: from localhost (c-50-170-35-168.hsd1.wa.comcast.net [50.170.35.168])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 51F3FBB8;
-        Mon, 11 May 2015 17:55:42 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 9E98BBB5;
+        Mon, 11 May 2015 17:55:41 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Markos Chandras <markos.chandras@imgtec.com>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.0 17/72] MIPS: asm: spinlock: Fix addiu instruction for R10000_LLSC_WAR case
-Date:   Mon, 11 May 2015 10:54:23 -0700
-Message-Id: <20150511175437.626968074@linuxfoundation.org>
+Subject: [PATCH 4.0 15/72] MIPS: Kconfig: Fix typo for the r2-to-r6 emulator kernel parameter
+Date:   Mon, 11 May 2015 10:54:21 -0700
+Message-Id: <20150511175437.567716606@linuxfoundation.org>
 X-Mailer: git-send-email 2.4.0
 In-Reply-To: <20150511175437.112151861@linuxfoundation.org>
 References: <20150511175437.112151861@linuxfoundation.org>
@@ -24,7 +24,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47316
+X-archive-position: 47317
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,30 +48,33 @@ X-list: linux-mips
 
 From: Markos Chandras <markos.chandras@imgtec.com>
 
-Commit 518222161d4a2d3f3b2700098563b62383f83878 upstream.
+Commit 07edf0d46c07568d08feee95bbaa38c71b084150 upstream.
 
-Commit 5753762cbd1c("MIPS: asm: spinlock: Replace "sub" instruction
-with "addiu") replaced the "sub" instruction with addiu but it did
-not update the immediate value in the R10000_LLSC_WAR case.
+Commit b0a668fb2038 ("MIPS: kernel: mips-r2-to-r6-emul: Add R2 emulator
+for MIPS R6") added the mips r2-to-r6 emulator so an R2 userland can be
+executed on R6 kernels. This needed both build time and runtime support.
+The runtime support needed the "mipsr2emu" kernel parameter instead of
+the "mipsr2emul" listed in the Kconfig help message.
 
 Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
-Fixes: 5753762cbd1c("MIPS: asm: spinlock: Replace "sub" instruction with "addiu"")
+Fixes: b0a668fb2038 ("MIPS: kernel: mips-r2-to-r6-emul: Add R2 emulator for MIPS R6")
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/9385/
+Cc: Markos Chandras <markos.chandras@imgtec.com>
+Patchwork: https://patchwork.linux-mips.org/patch/9504/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/include/asm/spinlock.h |    2 +-
+ arch/mips/Kconfig |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/mips/include/asm/spinlock.h
-+++ b/arch/mips/include/asm/spinlock.h
-@@ -263,7 +263,7 @@ static inline void arch_read_unlock(arch
- 	if (R10000_LLSC_WAR) {
- 		__asm__ __volatile__(
- 		"1:	ll	%1, %2		# arch_read_unlock	\n"
--		"	addiu	%1, 1					\n"
-+		"	addiu	%1, -1					\n"
- 		"	sc	%1, %0					\n"
- 		"	beqzl	%1, 1b					\n"
- 		: "=" GCC_OFF_SMALL_ASM() (rw->lock), "=&r" (tmp)
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -2072,7 +2072,7 @@ config MIPSR2_TO_R6_EMULATOR
+ 	help
+ 	  Choose this option if you want to run non-R6 MIPS userland code.
+ 	  Even if you say 'Y' here, the emulator will still be disabled by
+-	  default. You can enable it using the 'mipsr2emul' kernel option.
++	  default. You can enable it using the 'mipsr2emu' kernel option.
+ 	  The only reason this is a build-time option is to save ~14K from the
+ 	  final kernel image.
+ comment "MIPS R2-to-R6 emulator is only available for UP kernels"

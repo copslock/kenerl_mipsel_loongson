@@ -1,20 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 May 2015 20:00:48 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:35817 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 May 2015 20:01:05 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:35818 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27027483AbbEKRz4XaDVc (ORCPT
+        by eddie.linux-mips.org with ESMTP id S27027485AbbEKRz40kOee (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Mon, 11 May 2015 19:55:56 +0200
 Received: from localhost (c-50-170-35-168.hsd1.wa.comcast.net [50.170.35.168])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 945CEBC4;
-        Mon, 11 May 2015 17:55:46 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 41D8EBB3;
+        Mon, 11 May 2015 17:55:51 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Markos Chandras <markos.chandras@imgtec.com>,
-        "Maciej W. Rozycki" <macro@linux-mips.org>,
-        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.0 29/72] MIPS: Makefile: Fix MIPS ASE detection code
-Date:   Mon, 11 May 2015 10:54:35 -0700
-Message-Id: <20150511175437.980676146@linuxfoundation.org>
+        Nicolas Schichan <nschichan@freebox.fr>,
+        linux-mips@linux-mips.org, Alexandre Courbot <acourbot@nvidia.com>,
+        Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH 4.0 07/72] MIPS: BCM63xx: Move bcm63xx_gpio_init() to bcm63xx_register_devices().
+Date:   Mon, 11 May 2015 10:54:13 -0700
+Message-Id: <20150511175437.329697816@linuxfoundation.org>
 X-Mailer: git-send-email 2.4.0
 In-Reply-To: <20150511175437.112151861@linuxfoundation.org>
 References: <20150511175437.112151861@linuxfoundation.org>
@@ -25,7 +25,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47328
+X-archive-position: 47329
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,53 +47,68 @@ X-list: linux-mips
 ------------------
 
 
-From: Markos Chandras <markos.chandras@imgtec.com>
+From: Nicolas Schichan <nschichan@freebox.fr>
 
-Commit 5306a5450824691e27d68f711758515debedeeac upstream.
+Commit 2ec459f2a77b808c1e5a3616c88b613d3f720c8d upstream.
 
-Commit 32098ec7bcba ("MIPS: Makefile: Move the ASEs checks after
-setting the core's CFLAGS") re-arranged the MIPS ASE detection code
-and also added the current cflags to the detection logic. However,
-this introduced a few bugs. First of all, the mips-cflags should not
-be quoted since that ends up being passed as a string to subsequent
-commands leading to broken detection from the cc-option-* tools.
-Moreover, in order to avoid duplicating the cflags-y because of how
-cc-option works, we rework the logic so we pass only those cflags which
-are needed by the selected ASE. Finally, fix some typos resulting in MSA
-not being detected correctly.
+When called from prom init code, bcm63xx_gpio_init() will fail as it
+will call gpiochip_add() which relies on a working kmalloc() to alloc
+the gpio_desc array and kmalloc is not useable yet at prom init time.
 
-Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
-Fixes: Commit 32098ec7bcba ("MIPS: Makefile: Move the ASEs checks after setting the core's CFLAGS")
-Cc: Maciej W. Rozycki <macro@linux-mips.org>
+Move bcm63xx_gpio_init() to bcm63xx_register_devices() (an
+arch_initcall) where kmalloc works.
+
+Fixes: 14e85c0e69d5 ("gpio: remove gpio_descs global array")
+
+Signed-off-by: Nicolas Schichan <nschichan@freebox.fr>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/9661/
+Cc: linux-kernel@vger.kernel.org
+Cc: Alexandre Courbot <acourbot@nvidia.com>
+Patchwork: https://patchwork.linux-mips.org/patch/9530/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/Makefile |   14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ arch/mips/bcm63xx/prom.c  |    4 ----
+ arch/mips/bcm63xx/setup.c |    4 ++++
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
---- a/arch/mips/Makefile
-+++ b/arch/mips/Makefile
-@@ -197,11 +197,17 @@ endif
- # Warning: the 64-bit MIPS architecture does not support the `smartmips' extension
- # Pass -Wa,--no-warn to disable all assembler warnings until the kernel code has
- # been fixed properly.
--mips-cflags				:= "$(cflags-y)"
--cflags-$(CONFIG_CPU_HAS_SMARTMIPS)	+= $(call cc-option,$(mips-cflags),-msmartmips) -Wa,--no-warn
--cflags-$(CONFIG_CPU_MICROMIPS)		+= $(call cc-option,$(mips-cflags),-mmicromips)
-+mips-cflags				:= $(cflags-y)
-+ifeq ($(CONFIG_CPU_HAS_SMARTMIPS),y)
-+smartmips-ase				:= $(call cc-option-yn,$(mips-cflags) -msmartmips)
-+cflags-$(smartmips-ase)			+= -msmartmips -Wa,--no-warn
-+endif
-+ifeq ($(CONFIG_CPU_MICROMIPS),y)
-+micromips-ase				:= $(call cc-option-yn,$(mips-cflags) -mmicromips)
-+cflags-$(micromips-ase)			+= -mmicromips
-+endif
- ifeq ($(CONFIG_CPU_HAS_MSA),y)
--toolchain-msa				:= $(call cc-option-yn,-$(mips-cflags),mhard-float -mfp64 -Wa$(comma)-mmsa)
-+toolchain-msa				:= $(call cc-option-yn,$(mips-cflags) -mhard-float -mfp64 -Wa$(comma)-mmsa)
- cflags-$(toolchain-msa)			+= -DTOOLCHAIN_SUPPORTS_MSA
- endif
+--- a/arch/mips/bcm63xx/prom.c
++++ b/arch/mips/bcm63xx/prom.c
+@@ -17,7 +17,6 @@
+ #include <bcm63xx_cpu.h>
+ #include <bcm63xx_io.h>
+ #include <bcm63xx_regs.h>
+-#include <bcm63xx_gpio.h>
+ 
+ void __init prom_init(void)
+ {
+@@ -53,9 +52,6 @@ void __init prom_init(void)
+ 	reg &= ~mask;
+ 	bcm_perf_writel(reg, PERF_CKCTL_REG);
+ 
+-	/* register gpiochip */
+-	bcm63xx_gpio_init();
+-
+ 	/* do low level board init */
+ 	board_prom_init();
+ 
+--- a/arch/mips/bcm63xx/setup.c
++++ b/arch/mips/bcm63xx/setup.c
+@@ -20,6 +20,7 @@
+ #include <bcm63xx_cpu.h>
+ #include <bcm63xx_regs.h>
+ #include <bcm63xx_io.h>
++#include <bcm63xx_gpio.h>
+ 
+ void bcm63xx_machine_halt(void)
+ {
+@@ -160,6 +161,9 @@ void __init plat_mem_setup(void)
+ 
+ int __init bcm63xx_register_devices(void)
+ {
++	/* register gpiochip */
++	bcm63xx_gpio_init();
++
+ 	return board_register_devices();
+ }
  

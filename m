@@ -1,21 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 May 2015 20:00:30 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:35753 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 May 2015 20:00:48 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:35817 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27027482AbbEKRzvJl1W0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 11 May 2015 19:55:51 +0200
+        by eddie.linux-mips.org with ESMTP id S27027483AbbEKRz4XaDVc (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 11 May 2015 19:55:56 +0200
 Received: from localhost (c-50-170-35-168.hsd1.wa.comcast.net [50.170.35.168])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id E2E0CBC6;
-        Mon, 11 May 2015 17:55:51 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 945CEBC4;
+        Mon, 11 May 2015 17:55:46 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Chandrakala Chavva <cchavva@caviumnetworks.com>,
-        Aleksey Makarov <aleksey.makarov@auriga.com>,
-        linux-mips@linux-mips.org, David Daney <david.daney@cavium.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.0 09/72] MIPS: OCTEON: Use correct CSR to soft reset
-Date:   Mon, 11 May 2015 10:54:15 -0700
-Message-Id: <20150511175437.388532228@linuxfoundation.org>
+        Markos Chandras <markos.chandras@imgtec.com>,
+        "Maciej W. Rozycki" <macro@linux-mips.org>,
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH 4.0 29/72] MIPS: Makefile: Fix MIPS ASE detection code
+Date:   Mon, 11 May 2015 10:54:35 -0700
+Message-Id: <20150511175437.980676146@linuxfoundation.org>
 X-Mailer: git-send-email 2.4.0
 In-Reply-To: <20150511175437.112151861@linuxfoundation.org>
 References: <20150511175437.112151861@linuxfoundation.org>
@@ -26,7 +25,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47327
+X-archive-position: 47328
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,54 +47,53 @@ X-list: linux-mips
 ------------------
 
 
-From: Chandrakala Chavva <cchavva@caviumnetworks.com>
+From: Markos Chandras <markos.chandras@imgtec.com>
 
-Commit 9a49899eb88803dcc0ef437f09912f9a7b7a66fd upstream.
+Commit 5306a5450824691e27d68f711758515debedeeac upstream.
 
-Also delete unused cvmx_reset_octeon()
-This fixes reboot for Octeon III boards
+Commit 32098ec7bcba ("MIPS: Makefile: Move the ASEs checks after
+setting the core's CFLAGS") re-arranged the MIPS ASE detection code
+and also added the current cflags to the detection logic. However,
+this introduced a few bugs. First of all, the mips-cflags should not
+be quoted since that ends up being passed as a string to subsequent
+commands leading to broken detection from the cc-option-* tools.
+Moreover, in order to avoid duplicating the cflags-y because of how
+cc-option works, we rework the logic so we pass only those cflags which
+are needed by the selected ASE. Finally, fix some typos resulting in MSA
+not being detected correctly.
 
-Signed-off-by: Chandrakala Chavva <cchavva@caviumnetworks.com>
-Signed-off-by: Aleksey Makarov <aleksey.makarov@auriga.com>
+Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+Fixes: Commit 32098ec7bcba ("MIPS: Makefile: Move the ASEs checks after setting the core's CFLAGS")
+Cc: Maciej W. Rozycki <macro@linux-mips.org>
 Cc: linux-mips@linux-mips.org
-Cc: linux-kernel@vger.kernel.org
-Cc: David Daney <david.daney@cavium.com>
-Patchwork: https://patchwork.linux-mips.org/patch/9471/
+Patchwork: https://patchwork.linux-mips.org/patch/9661/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/cavium-octeon/setup.c     |    5 ++++-
- arch/mips/include/asm/octeon/cvmx.h |    8 --------
- 2 files changed, 4 insertions(+), 9 deletions(-)
+ arch/mips/Makefile |   14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
---- a/arch/mips/cavium-octeon/setup.c
-+++ b/arch/mips/cavium-octeon/setup.c
-@@ -413,7 +413,10 @@ static void octeon_restart(char *command
+--- a/arch/mips/Makefile
++++ b/arch/mips/Makefile
+@@ -197,11 +197,17 @@ endif
+ # Warning: the 64-bit MIPS architecture does not support the `smartmips' extension
+ # Pass -Wa,--no-warn to disable all assembler warnings until the kernel code has
+ # been fixed properly.
+-mips-cflags				:= "$(cflags-y)"
+-cflags-$(CONFIG_CPU_HAS_SMARTMIPS)	+= $(call cc-option,$(mips-cflags),-msmartmips) -Wa,--no-warn
+-cflags-$(CONFIG_CPU_MICROMIPS)		+= $(call cc-option,$(mips-cflags),-mmicromips)
++mips-cflags				:= $(cflags-y)
++ifeq ($(CONFIG_CPU_HAS_SMARTMIPS),y)
++smartmips-ase				:= $(call cc-option-yn,$(mips-cflags) -msmartmips)
++cflags-$(smartmips-ase)			+= -msmartmips -Wa,--no-warn
++endif
++ifeq ($(CONFIG_CPU_MICROMIPS),y)
++micromips-ase				:= $(call cc-option-yn,$(mips-cflags) -mmicromips)
++cflags-$(micromips-ase)			+= -mmicromips
++endif
+ ifeq ($(CONFIG_CPU_HAS_MSA),y)
+-toolchain-msa				:= $(call cc-option-yn,-$(mips-cflags),mhard-float -mfp64 -Wa$(comma)-mmsa)
++toolchain-msa				:= $(call cc-option-yn,$(mips-cflags) -mhard-float -mfp64 -Wa$(comma)-mmsa)
+ cflags-$(toolchain-msa)			+= -DTOOLCHAIN_SUPPORTS_MSA
+ endif
  
- 	mb();
- 	while (1)
--		cvmx_write_csr(CVMX_CIU_SOFT_RST, 1);
-+		if (OCTEON_IS_OCTEON3())
-+			cvmx_write_csr(CVMX_RST_SOFT_RST, 1);
-+		else
-+			cvmx_write_csr(CVMX_CIU_SOFT_RST, 1);
- }
- 
- 
---- a/arch/mips/include/asm/octeon/cvmx.h
-+++ b/arch/mips/include/asm/octeon/cvmx.h
-@@ -436,14 +436,6 @@ static inline uint64_t cvmx_get_cycle_gl
- 
- /***************************************************************************/
- 
--static inline void cvmx_reset_octeon(void)
--{
--	union cvmx_ciu_soft_rst ciu_soft_rst;
--	ciu_soft_rst.u64 = 0;
--	ciu_soft_rst.s.soft_rst = 1;
--	cvmx_write_csr(CVMX_CIU_SOFT_RST, ciu_soft_rst.u64);
--}
--
- /* Return the number of cores available in the chip */
- static inline uint32_t cvmx_octeon_num_cores(void)
- {

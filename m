@@ -1,19 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 May 2015 19:57:33 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:35747 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 May 2015 19:57:51 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:35749 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27027470AbbEKRzu1HL4c (ORCPT
+        by eddie.linux-mips.org with ESMTP id S27027471AbbEKRzu1ho0F (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Mon, 11 May 2015 19:55:50 +0200
 Received: from localhost (c-50-170-35-168.hsd1.wa.comcast.net [50.170.35.168])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 9E98BBB5;
-        Mon, 11 May 2015 17:55:41 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id A4FBEBB9;
+        Mon, 11 May 2015 17:55:42 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Markos Chandras <markos.chandras@imgtec.com>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.0 15/72] MIPS: Kconfig: Fix typo for the r2-to-r6 emulator kernel parameter
-Date:   Mon, 11 May 2015 10:54:21 -0700
-Message-Id: <20150511175437.567716606@linuxfoundation.org>
+Subject: [PATCH 4.0 18/72] MIPS: kernel: entry.S: Set correct ISA level for mips_ihb
+Date:   Mon, 11 May 2015 10:54:24 -0700
+Message-Id: <20150511175437.661917362@linuxfoundation.org>
 X-Mailer: git-send-email 2.4.0
 In-Reply-To: <20150511175437.112151861@linuxfoundation.org>
 References: <20150511175437.112151861@linuxfoundation.org>
@@ -24,7 +24,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47317
+X-archive-position: 47318
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,33 +48,39 @@ X-list: linux-mips
 
 From: Markos Chandras <markos.chandras@imgtec.com>
 
-Commit 07edf0d46c07568d08feee95bbaa38c71b084150 upstream.
+Commit aebac99384f7a6d83a3dcd42bf2481eed2670083 upstream.
 
-Commit b0a668fb2038 ("MIPS: kernel: mips-r2-to-r6-emul: Add R2 emulator
-for MIPS R6") added the mips r2-to-r6 emulator so an R2 userland can be
-executed on R6 kernels. This needed both build time and runtime support.
-The runtime support needed the "mipsr2emu" kernel parameter instead of
-the "mipsr2emul" listed in the Kconfig help message.
+Commit 6ebb496ffc7e("MIPS: kernel: entry.S: Add MIPS R6 related
+definitions") added the MIPSR6 definition but it did not update the
+ISA level of the actual assembly code so a pre-MIPSR6 jr.hb instruction
+was generated instead. Fix this by using the MISP_ISA_LEVEL_RAW macro.
 
 Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
-Fixes: b0a668fb2038 ("MIPS: kernel: mips-r2-to-r6-emul: Add R2 emulator for MIPS R6")
+Fixes: 6ebb496ffc7e("MIPS: kernel: entry.S: Add MIPS R6 related definitions")
 Cc: linux-mips@linux-mips.org
-Cc: Markos Chandras <markos.chandras@imgtec.com>
-Patchwork: https://patchwork.linux-mips.org/patch/9504/
+Patchwork: https://patchwork.linux-mips.org/patch/9386/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/Kconfig |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/kernel/entry.S |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -2072,7 +2072,7 @@ config MIPSR2_TO_R6_EMULATOR
- 	help
- 	  Choose this option if you want to run non-R6 MIPS userland code.
- 	  Even if you say 'Y' here, the emulator will still be disabled by
--	  default. You can enable it using the 'mipsr2emul' kernel option.
-+	  default. You can enable it using the 'mipsr2emu' kernel option.
- 	  The only reason this is a build-time option is to save ~14K from the
- 	  final kernel image.
- comment "MIPS R2-to-R6 emulator is only available for UP kernels"
+--- a/arch/mips/kernel/entry.S
++++ b/arch/mips/kernel/entry.S
+@@ -10,6 +10,7 @@
+ 
+ #include <asm/asm.h>
+ #include <asm/asmmacro.h>
++#include <asm/compiler.h>
+ #include <asm/regdef.h>
+ #include <asm/mipsregs.h>
+ #include <asm/stackframe.h>
+@@ -185,7 +186,7 @@ syscall_exit_work:
+  * For C code use the inline version named instruction_hazard().
+  */
+ LEAF(mips_ihb)
+-	.set	mips32r2
++	.set	MIPS_ISA_LEVEL_RAW
+ 	jr.hb	ra
+ 	nop
+ 	END(mips_ihb)

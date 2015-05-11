@@ -1,19 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 May 2015 19:59:18 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:35750 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 May 2015 19:59:37 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:35749 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27027478AbbEKRzvCIuOY (ORCPT
+        by eddie.linux-mips.org with ESMTP id S27027480AbbEKRzvCIuOY (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Mon, 11 May 2015 19:55:51 +0200
 Received: from localhost (c-50-170-35-168.hsd1.wa.comcast.net [50.170.35.168])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 4AD52BC1;
-        Mon, 11 May 2015 17:55:45 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 4502CBC3;
+        Mon, 11 May 2015 17:55:46 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Niklas Cassel <niklass@axis.com>, paul.burton@imgtec.com,
+        Markos Chandras <markos.chandras@imgtec.com>,
+        Mans Rullgard <mans@mansr.com>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Matthew Fortune <Matthew.Fortune@imgtec.com>,
+        Paul Burton <paul.burton@imgtec.com>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.0 25/72] MIPS: smp-cps: cpu_set FPU mask if FPU present
-Date:   Mon, 11 May 2015 10:54:31 -0700
-Message-Id: <20150511175437.868135533@linuxfoundation.org>
+Subject: [PATCH 4.0 28/72] MIPS: asm: elf: Set O32 default FPU flags
+Date:   Mon, 11 May 2015 10:54:34 -0700
+Message-Id: <20150511175437.952729401@linuxfoundation.org>
 X-Mailer: git-send-email 2.4.0
 In-Reply-To: <20150511175437.112151861@linuxfoundation.org>
 References: <20150511175437.112151861@linuxfoundation.org>
@@ -24,7 +28,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47323
+X-archive-position: 47324
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,35 +50,51 @@ X-list: linux-mips
 ------------------
 
 
-From: Niklas Cassel <niklas.cassel@axis.com>
+From: Markos Chandras <markos.chandras@imgtec.com>
 
-Commit 90db024f140d0d6ad960cc5f090e3c8ed890ca55 upstream.
+Commit 48f8eaee3f59848809644507fc47363b37e54450 upstream.
 
-If we have an FPU, enroll ourselves in the FPU-full mask.
-Matching the MT_SMP and CMP implementations of smp_setup.
+Set good default FPU flags (FR0) for O32 binaries similar to what the
+kernel does for the N64/N32 ones. This also fixes a regression
+introduced in commit 46490b572544 ("MIPS: kernel: elf: Improve the
+overall ABI and FPU mode checks") when MIPS_O32_FP64_SUPPORT is
+disabled. In that case, the mips_set_personality_fp() did not set the
+FPU mode at all because it assumed that the FPU mode was already set
+properly. That led to O32 userland problems.
 
-Signed-off-by: Niklas Cassel <niklass@axis.com>
-Cc: paul.burton@imgtec.com
+Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+Reported-by: Mans Rullgard <mans@mansr.com>
+Fixes: 46490b572544 ("MIPS: kernel: elf: Improve the overall ABI and FPU mode checks")
+Tested-by: Mans Rullgard <mans@mansr.com>
+Tested-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+Cc: Matthew Fortune <Matthew.Fortune@imgtec.com>
+Cc: Paul Burton <paul.burton@imgtec.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/8948/
+Patchwork: http://patchwork.linux-mips.org/patch/9344/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/kernel/smp-cps.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/mips/include/asm/elf.h |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/arch/mips/kernel/smp-cps.c
-+++ b/arch/mips/kernel/smp-cps.c
-@@ -88,6 +88,12 @@ static void __init cps_smp_setup(void)
- 
- 	/* Make core 0 coherent with everything */
- 	write_gcr_cl_coherence(0xff);
-+
-+#ifdef CONFIG_MIPS_MT_FPAFF
-+	/* If we have an FPU, enroll ourselves in the FPU-full mask */
-+	if (cpu_has_fpu)
-+		cpu_set(0, mt_fpu_cpumask);
-+#endif /* CONFIG_MIPS_MT_FPAFF */
- }
- 
- static void __init cps_prepare_cpus(unsigned int max_cpus)
+--- a/arch/mips/include/asm/elf.h
++++ b/arch/mips/include/asm/elf.h
+@@ -294,6 +294,9 @@ do {									\
+ 	if (personality(current->personality) != PER_LINUX)		\
+ 		set_personality(PER_LINUX);				\
+ 									\
++	clear_thread_flag(TIF_HYBRID_FPREGS);				\
++	set_thread_flag(TIF_32BIT_FPREGS);				\
++									\
+ 	mips_set_personality_fp(state);					\
+ 									\
+ 	current->thread.abi = &mips_abi;				\
+@@ -319,6 +322,8 @@ do {									\
+ 	do {								\
+ 		set_thread_flag(TIF_32BIT_REGS);			\
+ 		set_thread_flag(TIF_32BIT_ADDR);			\
++		clear_thread_flag(TIF_HYBRID_FPREGS);			\
++		set_thread_flag(TIF_32BIT_FPREGS);			\
+ 									\
+ 		mips_set_personality_fp(state);				\
+ 									\

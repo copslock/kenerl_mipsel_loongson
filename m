@@ -1,43 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 May 2015 18:59:27 +0200 (CEST)
-Received: from filtteri6.pp.htv.fi ([213.243.153.189]:45705 "EHLO
-        filtteri6.pp.htv.fi" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27013148AbbELQ7Zwa6YO (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 12 May 2015 18:59:25 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by filtteri6.pp.htv.fi (Postfix) with ESMTP id AE25256F409;
-        Tue, 12 May 2015 19:59:27 +0300 (EEST)
-X-Virus-Scanned: Debian amavisd-new at pp.htv.fi
-Received: from smtp6.welho.com ([213.243.153.40])
-        by localhost (filtteri6.pp.htv.fi [213.243.153.189]) (amavisd-new, port 10024)
-        with ESMTP id odwkKsw2y7ZW; Tue, 12 May 2015 19:59:22 +0300 (EEST)
-Received: from fuloong-minipc (91-145-91-118.bb.dnainternet.fi [91.145.91.118])
-        by smtp6.welho.com (Postfix) with ESMTP id B53165BC008;
-        Tue, 12 May 2015 19:59:22 +0300 (EEST)
-Date:   Tue, 12 May 2015 19:59:22 +0300
-From:   Aaro Koskinen <aaro.koskinen@iki.fi>
-To:     Matthew Fortune <Matthew.Fortune@imgtec.com>
-Cc:     Markos Chandras <Markos.Chandras@imgtec.com>,
-        Joshua Kinard <kumba@gentoo.org>,
-        Linux MIPS List <linux-mips@linux-mips.org>
-Subject: Re: IP28: "Inconsistent ISA" messages during kernel build
-Message-ID: <20150512165922.GA609@fuloong-minipc.musicnaut.iki.fi>
-References: <55516EF3.7010706@gentoo.org>
- <5551B894.9000204@imgtec.com>
- <6D39441BF12EF246A7ABCE6654B0235321052BB1@LEMAIL01.le.imgtec.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 May 2015 19:31:40 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:28888 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27010963AbbELRbglf4w1 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 12 May 2015 19:31:36 +0200
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 4F850AB8815E9;
+        Tue, 12 May 2015 18:31:29 +0100 (IST)
+Received: from hhmail02.hh.imgtec.org (10.100.10.20) by KLMAIL01.kl.imgtec.org
+ (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Tue, 12 May
+ 2015 18:31:32 +0100
+Received: from [10.100.200.52] (10.100.200.52) by hhmail02.hh.imgtec.org
+ (10.100.10.20) with Microsoft SMTP Server (TLS) id 14.3.224.2; Tue, 12 May
+ 2015 18:31:31 +0100
+Message-ID: <55523837.5040207@imgtec.com>
+Date:   Tue, 12 May 2015 14:28:23 -0300
+From:   Ezequiel Garcia <ezequiel.garcia@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.5.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6D39441BF12EF246A7ABCE6654B0235321052BB1@LEMAIL01.le.imgtec.org>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <aaro.koskinen@iki.fi>
+To:     "Maciej W. Rozycki" <macro@linux-mips.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Paul Martin <paul.martin@codethink.co.uk>
+CC:     Markos Chandras <Markos.Chandras@imgtec.com>,
+        James Hogan <james.hogan@imgtec.com>,
+        <linux-mips@linux-mips.org>
+Subject: Re: [PATCH v2] MIPS: Fix a preemption issue with thread's FPU defaults
+References: <alpine.LFD.2.11.1505121432540.1538@eddie.linux-mips.org>
+In-Reply-To: <alpine.LFD.2.11.1505121432540.1538@eddie.linux-mips.org>
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.100.200.52]
+Return-Path: <Ezequiel.Garcia@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47350
+X-archive-position: 47351
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aaro.koskinen@iki.fi
+X-original-sender: ezequiel.garcia@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,26 +50,102 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi,
 
-On Tue, May 12, 2015 at 09:00:23AM +0000, Matthew Fortune wrote:
-> Markos Chandras <Markos.Chandras@imgtec.com> writes:
-> > I presume you are using binutils >= 2.25? I have seen this problem in my
-> > local build tests as well and I discussed this with Matthew (now on CC).
-> > It seems it's an 'innocent' warning added to binutils 2.25 but I am not
-> > sure if this is now fixed or not. Matthew might be able to provide more
-> > information.
+
+On 05/12/2015 11:20 AM, Maciej W. Rozycki wrote:
+> Fix "BUG: using smp_processor_id() in preemptible" reported in accesses 
+> to thread's FPU defaults: the value to initialise FSCR to at program 
+> startup, the FCSR r/w mask and the contents of FIR in full FPU 
+> emulation, removing a regression introduced with 9b26616c [MIPS: Respect 
+> the ISA level in FCSR handling] and f6843626 [MIPS: math-emu: Set FIR 
+> feature flags for full emulation].
 > 
-> I don't really know what an IP28 kernel is. What is the -march for this?
-> There is an issue with -march=xlp as the XLP is marked as an XLR in the
-> e_flags which is a mips64 but the xlp is a mips64r2 which is correctly
-> annotated as such in the .MIPS.abiflags. I haven't quite figured out what
-> to do about this yet.
+> Use `boot_cpu_data' to obtain the data from, following the approach that 
+> `cpu_has_*' macros take and avoiding the call to `smp_processor_id' made 
+> in the reference to `current_cpu_data'.  The contents of FSCR have to be 
+> consistent across processors in an SMP system, the settings there must 
+> not change as a thread is migrated across processors.  And the contents 
+> of FIR are guaranteed to be consistent in FPU emulation, by definition.
+> 
+> Signed-off-by: Maciej W. Rozycki <macro@linux-mips.org>
+> ---
+> Changes from v1:
+> 
+> - also fix PTRACE_SETFPREGS (thanks, Paul!).
+> 
+> Paul, Ezequiel --
+> 
+>  Can you verify this change addresses the problems you saw?
+> 
 
-Not sure if related, but I'm getting tons of these warnings as well
-already when compiling toolchain alone (GCC 5.1, binutils 2.25,
-GLIBC 2.20) for arch=octeon+ and soft-float. This will make e.g. GCC
-testsuite useless as pretty much everything fails with excess errors.
-Currently for OCTEON toolchain I need to downgrade to binutils 2.24. :-(
+Tested-by: Ezequiel Garcia <ezequiel.garcia@imgtec.com>
 
-A.
+> [Ralf, this is another 4.1 material, please push it to Linus ASAP, once 
+> this has been confirmed to DTRT.]
+> 
+>  Thanks,
+> 
+>   Maciej
+> 
+> linux-mips-emu-fcsr-isa-fix.diff
+> Index: linux-org-test/arch/mips/include/asm/elf.h
+> ===================================================================
+> --- linux-org-test.orig/arch/mips/include/asm/elf.h	2015-05-06 23:20:51.946503000 +0100
+> +++ linux-org-test/arch/mips/include/asm/elf.h	2015-05-12 14:37:14.169350000 +0100
+> @@ -304,7 +304,7 @@ do {									\
+>  									\
+>  	current->thread.abi = &mips_abi;				\
+>  									\
+> -	current->thread.fpu.fcr31 = current_cpu_data.fpu_csr31;		\
+> +	current->thread.fpu.fcr31 = boot_cpu_data.fpu_csr31;		\
+>  } while (0)
+>  
+>  #endif /* CONFIG_32BIT */
+> @@ -366,7 +366,7 @@ do {									\
+>  	else								\
+>  		current->thread.abi = &mips_abi;			\
+>  									\
+> -	current->thread.fpu.fcr31 = current_cpu_data.fpu_csr31;		\
+> +	current->thread.fpu.fcr31 = boot_cpu_data.fpu_csr31;		\
+>  									\
+>  	p = personality(current->personality);				\
+>  	if (p != PER_LINUX32 && p != PER_LINUX)				\
+> Index: linux-org-test/arch/mips/kernel/ptrace.c
+> ===================================================================
+> --- linux-org-test.orig/arch/mips/kernel/ptrace.c	2015-04-28 14:52:04.000000000 +0100
+> +++ linux-org-test/arch/mips/kernel/ptrace.c	2015-05-12 15:12:03.511002000 +0100
+> @@ -176,7 +176,7 @@ int ptrace_setfpregs(struct task_struct 
+>  
+>  	__get_user(value, data + 64);
+>  	fcr31 = child->thread.fpu.fcr31;
+> -	mask = current_cpu_data.fpu_msk31;
+> +	mask = boot_cpu_data.fpu_msk31;
+>  	child->thread.fpu.fcr31 = (value & ~mask) | (fcr31 & mask);
+>  
+>  	/* FIR may not be written.  */
+> Index: linux-org-test/arch/mips/math-emu/cp1emu.c
+> ===================================================================
+> --- linux-org-test.orig/arch/mips/math-emu/cp1emu.c	2015-04-28 14:52:04.000000000 +0100
+> +++ linux-org-test/arch/mips/math-emu/cp1emu.c	2015-05-12 14:41:06.308256000 +0100
+> @@ -889,7 +889,7 @@ static inline void cop1_cfc(struct pt_re
+>  		break;
+>  
+>  	case FPCREG_RID:
+> -		value = current_cpu_data.fpu_id;
+> +		value = boot_cpu_data.fpu_id;
+>  		break;
+>  
+>  	default:
+> @@ -921,7 +921,7 @@ static inline void cop1_ctc(struct pt_re
+>  			 (void *)xcp->cp0_epc, MIPSInst_RT(ir), value);
+>  
+>  		/* Preserve read-only bits.  */
+> -		mask = current_cpu_data.fpu_msk31;
+> +		mask = boot_cpu_data.fpu_msk31;
+>  		fcr31 = (value & ~mask) | (fcr31 & mask);
+>  		break;
+>  
+> 
+
+-- 
+Ezequiel

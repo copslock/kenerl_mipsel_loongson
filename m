@@ -1,37 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 May 2015 18:46:28 +0200 (CEST)
-Received: from mail-wg0-f52.google.com ([74.125.82.52]:33107 "EHLO
-        mail-wg0-f52.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27013148AbbELQq1BKfLO (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 12 May 2015 18:46:27 +0200
-Received: by wgin8 with SMTP id n8so16710080wgi.0;
-        Tue, 12 May 2015 09:46:23 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 May 2015 18:46:47 +0200 (CEST)
+Received: from mail-wi0-f182.google.com ([209.85.212.182]:35365 "EHLO
+        mail-wi0-f182.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27026420AbbELQq3UWpdX (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 12 May 2015 18:46:29 +0200
+Received: by widdi4 with SMTP id di4so162448992wid.0;
+        Tue, 12 May 2015 09:46:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:mime-version:content-type
-         :content-transfer-encoding;
-        bh=bOGhVRR9SkTKnzhNFzIopSOsvIl5dMuzy6rO34Y4Dic=;
-        b=kulowX06R4rLNLQHIrvXRmpuLxLQ8BW/AwXkB002DJ3B842ZGFB6e/USsDBsU7wtw/
-         AtBD8bjJfakE4g2dKfaMDHIuokeYkt7NtjRe0uQpxJaXQEYDHgue9iyIWmDRHKW5O4YR
-         tQ2paIetJCo62F7mNj8mTfPpOPR9zZ1eBRs42HF2+8w4XoLz/FmZBgG6fxJE3hSh7mwL
-         fD7XBXtIoFJc2I+TNhW/D0LOoTXHe8VlWhVDnew+JeE23/uhP+OYDZwzKXUI4yqL3DK+
-         ztiSzo7thIgCDKUYVA2/i5DeIK9Qb3cEGeotUvVYmtopbO6HEJk0h01H4WUAA34j3mTd
-         P49Q==
-X-Received: by 10.194.91.176 with SMTP id cf16mr31222118wjb.141.1431449183892;
-        Tue, 12 May 2015 09:46:23 -0700 (PDT)
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-type:content-transfer-encoding;
+        bh=J0SLQlQ6e71rdlyiLhFRK+d6h+elO+S6hrFpb9flfGE=;
+        b=Y5qpAWWVhJayui4W1QoVtRpeCR0bfLXwG85eBgI20wgaK7I/FaxRwogGKFMG6PyXhc
+         tnUK16IX4sC5JmBkTrmHfTaYNs78JB3Yqbch5MHYWs0JSN+GNOHAGfKOR4K4LRHdLb/+
+         TuOOatn+wHxP6erVpELRT/XcXS2YFoDXDruHL5+FjqWiliKEBcnj4e2Rc/CiT0ZOWDC5
+         38rGuya178x5ZCSKvdAx+Z4y/xd0HIaXr8ZKT1LtU9vaqp82fkkG2aoiV2zyUczvkUcI
+         OuhfOlQ0YL9jOX/42IuMW6mYx7pEcaXVV7baJSPuXWHxRvnDPWFjJ8AMgAz4mdg01hBE
+         d5tw==
+X-Received: by 10.194.60.43 with SMTP id e11mr32725919wjr.36.1431449186385;
+        Tue, 12 May 2015 09:46:26 -0700 (PDT)
 Received: from linux-tdhb.lan (ip-194-187-74-233.konfederacka.maverick.com.pl. [194.187.74.233])
-        by mx.google.com with ESMTPSA id lh8sm16616610wjc.23.2015.05.12.09.46.22
+        by mx.google.com with ESMTPSA id lh8sm16616610wjc.23.2015.05.12.09.46.24
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 12 May 2015 09:46:22 -0700 (PDT)
+        Tue, 12 May 2015 09:46:25 -0700 (PDT)
 From:   =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
 To:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
 Cc:     Hauke Mehrtens <hauke@hauke-m.de>,
         Hante Meuleman <meuleman@broadcom.com>,
         Ian Kent <raven@themaw.net>,
         =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
-Subject: [PATCH 1/2] MIPS: BCM47XX: Make sure NVRAM buffer ends with \0
-Date:   Tue, 12 May 2015 18:46:11 +0200
-Message-Id: <1431449172-11352-1-git-send-email-zajec5@gmail.com>
+Subject: [PATCH 2/2] MIPS: BCM47XX: Simplify function looking for NVRAM entry
+Date:   Tue, 12 May 2015 18:46:12 +0200
+Message-Id: <1431449172-11352-2-git-send-email-zajec5@gmail.com>
 X-Mailer: git-send-email 1.8.4.5
+In-Reply-To: <1431449172-11352-1-git-send-email-zajec5@gmail.com>
+References: <1431449172-11352-1-git-send-email-zajec5@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -39,7 +41,7 @@ Return-Path: <zajec5@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47348
+X-archive-position: 47349
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -56,47 +58,52 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This will simplify reading its contents.
+First of all it shouldn't modify copied NVRAM just to make sure it can
+loop over all entries. It's enough to just compare current position
+pointer with the end of buffer address.
+Secondly buffer is guaranteed to be \0 ended, so we don't need strnchr.
 
 Signed-off-by: Rafał Miłecki <zajec5@gmail.com>
 ---
- arch/mips/bcm47xx/nvram.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ arch/mips/bcm47xx/nvram.c | 13 +++++--------
+ 1 file changed, 5 insertions(+), 8 deletions(-)
 
 diff --git a/arch/mips/bcm47xx/nvram.c b/arch/mips/bcm47xx/nvram.c
-index ba632ff..dee1c32 100644
+index dee1c32..95d028c 100644
 --- a/arch/mips/bcm47xx/nvram.c
 +++ b/arch/mips/bcm47xx/nvram.c
-@@ -98,7 +98,7 @@ found:
- 		pr_err("The nvram size accoridng to the header seems to be bigger than the partition on flash\n");
- 	if (header->len > NVRAM_SPACE)
- 		pr_err("nvram on flash (%i bytes) is bigger than the reserved space in memory, will just copy the first %i bytes\n",
--		       header->len, NVRAM_SPACE);
-+		       header->len, NVRAM_SPACE - 1);
+@@ -171,7 +171,7 @@ static int nvram_init(void)
+ int bcm47xx_nvram_getenv(const char *name, char *val, size_t val_len)
+ {
+ 	char *var, *value, *end, *eq;
+-	int data_left, err;
++	int err;
  
- 	src = (u32 *)header;
- 	dst = (u32 *)nvram_buf;
-@@ -106,6 +106,7 @@ found:
- 		*dst++ = __raw_readl(src++);
- 	for (; i < header->len && i < NVRAM_SPACE && i < size; i += 4)
- 		*dst++ = readl(src++);
-+	nvram_buf[NVRAM_SPACE - 1] = '\0';
+ 	if (!name)
+ 		return -EINVAL;
+@@ -184,19 +184,16 @@ int bcm47xx_nvram_getenv(const char *name, char *val, size_t val_len)
  
- 	return 0;
+ 	/* Look for name=value and return value */
+ 	var = &nvram_buf[sizeof(struct nvram_header)];
+-	end = nvram_buf + sizeof(nvram_buf) - 2;
+-	end[0] = '\0';
+-	end[1] = '\0';
+-	for (; *var; var = value + strlen(value) + 1) {
+-		data_left = end - var;
+-
+-		eq = strnchr(var, data_left, '=');
++	end = nvram_buf + sizeof(nvram_buf);
++	while (var < end && *var) {
++		eq = strchr(var, '=');
+ 		if (!eq)
+ 			break;
+ 		value = eq + 1;
+ 		if (eq - var == strlen(name) &&
+ 		    strncmp(var, name, eq - var) == 0)
+ 			return snprintf(val, val_len, "%s", value);
++		var = value + strlen(value) + 1;
+ 	}
+ 	return -ENOENT;
  }
-@@ -150,10 +151,10 @@ static int nvram_init(void)
- 		u8 *dst = (uint8_t *)nvram_buf;
- 		size_t len = header.len;
- 
--		if (header.len > NVRAM_SPACE) {
-+		if (len >= NVRAM_SPACE) {
-+			len = NVRAM_SPACE - 1;
- 			pr_err("nvram on flash (%i bytes) is bigger than the reserved space in memory, will just copy the first %i bytes\n",
--				header.len, NVRAM_SPACE);
--			len = NVRAM_SPACE;
-+				header.len, len);
- 		}
- 
- 		err = mtd_read(mtd, 0, len, &bytes_read, dst);
 -- 
 1.8.4.5

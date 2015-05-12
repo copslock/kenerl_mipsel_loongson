@@ -1,16 +1,16 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 May 2015 15:56:33 +0200 (CEST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 May 2015 16:21:00 +0200 (CEST)
 Received: (from localhost user: 'macro', uid#1010) by eddie.linux-mips.org
-        with ESMTP id S27012508AbbELN4YaXASc (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 12 May 2015 15:56:24 +0200
-Date:   Tue, 12 May 2015 14:56:24 +0100 (BST)
+        with ESMTP id S27012391AbbELOU5y8zYn (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 12 May 2015 16:20:57 +0200
+Date:   Tue, 12 May 2015 15:20:57 +0100 (BST)
 From:   "Maciej W. Rozycki" <macro@linux-mips.org>
 To:     Ralf Baechle <ralf@linux-mips.org>,
         Paul Martin <paul.martin@codethink.co.uk>,
         Ezequiel Garcia <ezequiel.garcia@imgtec.com>
 cc:     Markos Chandras <Markos.Chandras@imgtec.com>,
         James Hogan <james.hogan@imgtec.com>, linux-mips@linux-mips.org
-Subject: [PATCH] MIPS: Fix a preemption issue with thread's FPU defaults
-Message-ID: <alpine.LFD.2.11.1505121419010.1538@eddie.linux-mips.org>
+Subject: [PATCH v2] MIPS: Fix a preemption issue with thread's FPU defaults
+Message-ID: <alpine.LFD.2.11.1505121432540.1538@eddie.linux-mips.org>
 User-Agent: Alpine 2.11 (LFD 23 2013-08-11)
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
@@ -18,7 +18,7 @@ Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47344
+X-archive-position: 47345
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -51,6 +51,10 @@ of FIR are guaranteed to be consistent in FPU emulation, by definition.
 
 Signed-off-by: Maciej W. Rozycki <macro@linux-mips.org>
 ---
+Changes from v1:
+
+- also fix PTRACE_SETFPREGS (thanks, Paul!).
+
 Paul, Ezequiel --
 
  Can you verify this change addresses the problems you saw?
@@ -85,6 +89,19 @@ Index: linux-org-test/arch/mips/include/asm/elf.h
  									\
  	p = personality(current->personality);				\
  	if (p != PER_LINUX32 && p != PER_LINUX)				\
+Index: linux-org-test/arch/mips/kernel/ptrace.c
+===================================================================
+--- linux-org-test.orig/arch/mips/kernel/ptrace.c	2015-04-28 14:52:04.000000000 +0100
++++ linux-org-test/arch/mips/kernel/ptrace.c	2015-05-12 15:12:03.511002000 +0100
+@@ -176,7 +176,7 @@ int ptrace_setfpregs(struct task_struct 
+ 
+ 	__get_user(value, data + 64);
+ 	fcr31 = child->thread.fpu.fcr31;
+-	mask = current_cpu_data.fpu_msk31;
++	mask = boot_cpu_data.fpu_msk31;
+ 	child->thread.fpu.fcr31 = (value & ~mask) | (fcr31 & mask);
+ 
+ 	/* FIR may not be written.  */
 Index: linux-org-test/arch/mips/math-emu/cp1emu.c
 ===================================================================
 --- linux-org-test.orig/arch/mips/math-emu/cp1emu.c	2015-04-28 14:52:04.000000000 +0100

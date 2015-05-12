@@ -1,34 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 May 2015 18:26:18 +0200 (CEST)
-Received: from resqmta-po-10v.sys.comcast.net ([96.114.154.169]:49765 "EHLO
-        resqmta-po-10v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27013148AbbELQ0QgO69x (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 12 May 2015 18:26:16 +0200
-Received: from resomta-po-10v.sys.comcast.net ([96.114.154.234])
-        by resqmta-po-10v.sys.comcast.net with comcast
-        id T4Ry1q00753iAfU014SBEX; Tue, 12 May 2015 16:26:11 +0000
-Received: from [192.168.1.13] ([69.251.155.187])
-        by resomta-po-10v.sys.comcast.net with comcast
-        id T4S91q00T42s2jH014SA0y; Tue, 12 May 2015 16:26:11 +0000
-Message-ID: <55522998.7090208@gentoo.org>
-Date:   Tue, 12 May 2015 12:26:00 -0400
-From:   Joshua Kinard <kumba@gentoo.org>
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:31.0) Gecko/20100101 Thunderbird/31.6.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 May 2015 18:46:28 +0200 (CEST)
+Received: from mail-wg0-f52.google.com ([74.125.82.52]:33107 "EHLO
+        mail-wg0-f52.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27013148AbbELQq1BKfLO (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 12 May 2015 18:46:27 +0200
+Received: by wgin8 with SMTP id n8so16710080wgi.0;
+        Tue, 12 May 2015 09:46:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id:mime-version:content-type
+         :content-transfer-encoding;
+        bh=bOGhVRR9SkTKnzhNFzIopSOsvIl5dMuzy6rO34Y4Dic=;
+        b=kulowX06R4rLNLQHIrvXRmpuLxLQ8BW/AwXkB002DJ3B842ZGFB6e/USsDBsU7wtw/
+         AtBD8bjJfakE4g2dKfaMDHIuokeYkt7NtjRe0uQpxJaXQEYDHgue9iyIWmDRHKW5O4YR
+         tQ2paIetJCo62F7mNj8mTfPpOPR9zZ1eBRs42HF2+8w4XoLz/FmZBgG6fxJE3hSh7mwL
+         fD7XBXtIoFJc2I+TNhW/D0LOoTXHe8VlWhVDnew+JeE23/uhP+OYDZwzKXUI4yqL3DK+
+         ztiSzo7thIgCDKUYVA2/i5DeIK9Qb3cEGeotUvVYmtopbO6HEJk0h01H4WUAA34j3mTd
+         P49Q==
+X-Received: by 10.194.91.176 with SMTP id cf16mr31222118wjb.141.1431449183892;
+        Tue, 12 May 2015 09:46:23 -0700 (PDT)
+Received: from linux-tdhb.lan (ip-194-187-74-233.konfederacka.maverick.com.pl. [194.187.74.233])
+        by mx.google.com with ESMTPSA id lh8sm16616610wjc.23.2015.05.12.09.46.22
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 12 May 2015 09:46:22 -0700 (PDT)
+From:   =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
+To:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
+Cc:     Hauke Mehrtens <hauke@hauke-m.de>,
+        Hante Meuleman <meuleman@broadcom.com>,
+        Ian Kent <raven@themaw.net>,
+        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
+Subject: [PATCH 1/2] MIPS: BCM47XX: Make sure NVRAM buffer ends with \0
+Date:   Tue, 12 May 2015 18:46:11 +0200
+Message-Id: <1431449172-11352-1-git-send-email-zajec5@gmail.com>
+X-Mailer: git-send-email 1.8.4.5
 MIME-Version: 1.0
-To:     linux-mips@linux-mips.org
-Subject: Re: IP28: "Inconsistent ISA" messages during kernel build
-References: <55516EF3.7010706@gentoo.org> <5551B894.9000204@imgtec.com>
-In-Reply-To: <5551B894.9000204@imgtec.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Return-Path: <kumba@gentoo.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Return-Path: <zajec5@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47347
+X-archive-position: 47348
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kumba@gentoo.org
+X-original-sender: zajec5@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -41,47 +56,47 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 05/12/2015 04:23, Markos Chandras wrote:
-> On 05/12/2015 04:09 AM, Joshua Kinard wrote:
->>
->> Has anyone tried to build an IP28 kernel lately?  I've been getting quite a few
->> warnings out of the linker regarding e_flags and the new .MIPS.abiflags stuff.
->>  Not seen it on the other SGI platforms, so I am assuming this has something to
->> do with what flags are passed to the compiler/linker.
->>
->> mips64-unknown-linux-gnu-ld: fs/ext4/symlink.o: warning: Inconsistent ISA
->> between e_flags and .MIPS.abiflags
->> mips64-unknown-linux-gnu-ld: fs/ext4/symlink.o: warning: Inconsistent ISA
->> extensions between e_flags and .MIPS.abiflags
->>
->> Seeing this on a build of 4.0.2 based off of a 20150418 checkout from git.
->>
->> --J
->>
-> Hi,
-> 
-> I presume you are using binutils >= 2.25? I have seen this problem in my
-> local build tests as well and I discussed this with Matthew (now on CC).
-> It seems it's an 'innocent' warning added to binutils 2.25 but I am not
-> sure if this is now fixed or not. Matthew might be able to provide more
-> information.
+This will simplify reading its contents.
 
-Yup, binutils-2.25.  My guess, going by Matthew's description of the XLR, may
-be related to one of the fields storing "mips4" as the -march, and the other
-field storing "r10000".  I haven't looked at the ELF sections yet, though, to
-verify that.  Since I am not seeing this on the other platforms (IP27, IP30, &
-IP32), I'm guessing it's possibly something in the arch/mips/Makefile then?
+Signed-off-by: Rafał Miłecki <zajec5@gmail.com>
+---
+ arch/mips/bcm47xx/nvram.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-At least it's harmless, but it does clutter the screen up with a ton of warnings.
-
+diff --git a/arch/mips/bcm47xx/nvram.c b/arch/mips/bcm47xx/nvram.c
+index ba632ff..dee1c32 100644
+--- a/arch/mips/bcm47xx/nvram.c
++++ b/arch/mips/bcm47xx/nvram.c
+@@ -98,7 +98,7 @@ found:
+ 		pr_err("The nvram size accoridng to the header seems to be bigger than the partition on flash\n");
+ 	if (header->len > NVRAM_SPACE)
+ 		pr_err("nvram on flash (%i bytes) is bigger than the reserved space in memory, will just copy the first %i bytes\n",
+-		       header->len, NVRAM_SPACE);
++		       header->len, NVRAM_SPACE - 1);
+ 
+ 	src = (u32 *)header;
+ 	dst = (u32 *)nvram_buf;
+@@ -106,6 +106,7 @@ found:
+ 		*dst++ = __raw_readl(src++);
+ 	for (; i < header->len && i < NVRAM_SPACE && i < size; i += 4)
+ 		*dst++ = readl(src++);
++	nvram_buf[NVRAM_SPACE - 1] = '\0';
+ 
+ 	return 0;
+ }
+@@ -150,10 +151,10 @@ static int nvram_init(void)
+ 		u8 *dst = (uint8_t *)nvram_buf;
+ 		size_t len = header.len;
+ 
+-		if (header.len > NVRAM_SPACE) {
++		if (len >= NVRAM_SPACE) {
++			len = NVRAM_SPACE - 1;
+ 			pr_err("nvram on flash (%i bytes) is bigger than the reserved space in memory, will just copy the first %i bytes\n",
+-				header.len, NVRAM_SPACE);
+-			len = NVRAM_SPACE;
++				header.len, len);
+ 		}
+ 
+ 		err = mtd_read(mtd, 0, len, &bytes_read, dst);
 -- 
-Joshua Kinard
-Gentoo/MIPS
-kumba@gentoo.org
-6144R/F5C6C943 2015-04-27
-177C 1972 1FB8 F254 BAD0 3E72 5C63 F4E3 F5C6 C943
-
-"The past tempts us, the present confuses us, the future frightens us.  And our
-lives slip away, moment by moment, lost in that vast, terrible in-between."
-
---Emperor Turhan, Centauri Republic
+1.8.4.5

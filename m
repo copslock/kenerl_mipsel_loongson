@@ -1,34 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 May 2015 11:31:40 +0200 (CEST)
-Received: from mail-wi0-f181.google.com ([209.85.212.181]:34377 "EHLO
-        mail-wi0-f181.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012957AbbELJbi1wlRC (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 12 May 2015 11:31:38 +0200
-Received: by wicmc15 with SMTP id mc15so48963552wic.1;
-        Tue, 12 May 2015 02:31:35 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 May 2015 11:55:43 +0200 (CEST)
+Received: from mail-wi0-f172.google.com ([209.85.212.172]:35458 "EHLO
+        mail-wi0-f172.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012350AbbELJzkT1bDb (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 12 May 2015 11:55:40 +0200
+Received: by widdi4 with SMTP id di4so144841138wid.0;
+        Tue, 12 May 2015 02:55:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:mime-version:content-type
          :content-transfer-encoding;
-        bh=aGqcAUa9CMMT/gBi5Dy9ho5l5+c5uwib3SJ+h6prz+o=;
-        b=LqvL7oTZTHvSnj7G0IXTQHuXxebJ36pEYRFFrPIh0LRQv0MmWgWECE6CwnAkIY4m60
-         4oH7XDDyPtB85HF9rrbSV1UqekjQ3OpCqAmR9oF2tCGvao7/uByfPrNwQTh4fofl1712
-         MKkk8dN2EaonLkVSgqdYlKEUxpsqPQCOkSbYsDUfGNIRzCjp4qWEOTOMn9O9MbB3kSfU
-         PRjhFT8aK641wp1JKy+/5/1E8x/uGHpPrm5gzr7B5cV8sIewg8hJpCPQVyZXCBiBgHzR
-         OOZTgUt1YeMCTAfTIhUXqFrDSAH6Zt3yoR5cL7WGOprhAI682ZlUR3jfjWILWGO/X7N7
-         tAYw==
-X-Received: by 10.180.8.34 with SMTP id o2mr5366180wia.18.1431423095483;
-        Tue, 12 May 2015 02:31:35 -0700 (PDT)
+        bh=Ww85vHCXwlPyQIUxqR5x941nsQYzt6AVIHqrI3z6v54=;
+        b=ZNnjes9cUnAvuTb+K2CayL+3HqyKIq4TWppxYCsZudlg3gImEkBYbrnS1UajzxxVsS
+         csZ6m1isA75fTf1DZcd59l/2JNPLPEHu0sVijCyCZyz+YRXLyG55rCUpZyzWy0Qrjr3K
+         8VXSIouiZDi5bvzs9jXlAsuB045PqFhgTv659p5nCeF1UcetlUDtCQK4O+QLXaatpX7k
+         n052yjR0hmjU6PeQET+7nvA6weEVs/f+WpUhYvTAKT0UffhM1gaPWBeDaT+ibzJx41zp
+         1eJmbIp9McM4EIEnBPmp1TF9XwFMpEk48ExGjVJ7LJOXagku6nDEWAfbqLYjP3QX1yJy
+         Grpw==
+X-Received: by 10.180.99.166 with SMTP id er6mr2988057wib.58.1431424537346;
+        Tue, 12 May 2015 02:55:37 -0700 (PDT)
 Received: from linux-tdhb.lan (ip-194-187-74-233.konfederacka.maverick.com.pl. [194.187.74.233])
-        by mx.google.com with ESMTPSA id v20sm26784876wjr.49.2015.05.12.02.31.33
+        by mx.google.com with ESMTPSA id 14sm26910970wjv.0.2015.05.12.02.55.35
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 12 May 2015 02:31:34 -0700 (PDT)
+        Tue, 12 May 2015 02:55:36 -0700 (PDT)
 From:   =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
 To:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
 Cc:     Hauke Mehrtens <hauke@hauke-m.de>,
+        Hante Meuleman <meuleman@broadcom.com>,
+        Ian Kent <raven@themaw.net>,
         =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
-Subject: [PATCH] MIPS: BCM47XX: Extract all boardflags to new u32 fields
-Date:   Tue, 12 May 2015 11:31:02 +0200
-Message-Id: <1431423062-704-1-git-send-email-zajec5@gmail.com>
+Subject: [PATCH] MIPS: BCM47XX: Extract info about et2 interface
+Date:   Tue, 12 May 2015 11:54:48 +0200
+Message-Id: <1431424488-11394-1-git-send-email-zajec5@gmail.com>
 X-Mailer: git-send-email 1.8.4.5
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -37,7 +39,7 @@ Return-Path: <zajec5@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47339
+X-archive-position: 47340
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -54,50 +56,56 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-For years we planned to get rid of old u16 fields, let's start doing it
-with MIPS code. This process will take some time, it requires doing the
-same in ssb/bcma and then switching all drivers to new fields. This will
-be handled in separated patches submitted to appropriate trees.
+New devices may have more than 1 Ethernet core (device). We should
+extract info about them to make it available to Ethernet drivers.
 
 Signed-off-by: Rafał Miłecki <zajec5@gmail.com>
 ---
- arch/mips/bcm47xx/sprom.c | 3 +++
- include/linux/ssb/ssb.h   | 5 ++++-
- 2 files changed, 7 insertions(+), 1 deletion(-)
+ arch/mips/bcm47xx/sprom.c | 6 ++++++
+ include/linux/ssb/ssb.h   | 3 +++
+ 2 files changed, 9 insertions(+)
 
 diff --git a/arch/mips/bcm47xx/sprom.c b/arch/mips/bcm47xx/sprom.c
-index 68ebf23..4048083 100644
+index 4048083..92a6c9d 100644
 --- a/arch/mips/bcm47xx/sprom.c
 +++ b/arch/mips/bcm47xx/sprom.c
-@@ -201,6 +201,9 @@ static void bcm47xx_sprom_fill_auto(struct ssb_sprom *sprom,
- 	bool fb = fallback;
+@@ -531,6 +531,8 @@ static int mac_addr_used = 2;
+ static void bcm47xx_fill_sprom_ethernet(struct ssb_sprom *sprom,
+ 					const char *prefix, bool fallback)
+ {
++	bool fb = fallback;
++
+ 	nvram_read_macaddr(prefix, "et0macaddr", sprom->et0mac, fallback);
+ 	nvram_read_u8(prefix, NULL, "et0mdcport", &sprom->et0mdcport, 0,
+ 		      fallback);
+@@ -543,6 +545,10 @@ static void bcm47xx_fill_sprom_ethernet(struct ssb_sprom *sprom,
+ 	nvram_read_u8(prefix, NULL, "et1phyaddr", &sprom->et1phyaddr, 0,
+ 		      fallback);
  
- 	ENTRY(0xfffffffe, u16, pre, "boardrev", board_rev, 0, true);
-+	ENTRY(0xfffffffe, u32, pre, "boardflags", boardflags, 0, fb);
-+	ENTRY(0xfffffff0, u32, pre, "boardflags2", boardflags2, 0, fb);
-+	ENTRY(0xfffff800, u32, pre, "boardflags3", boardflags3, 0, fb);
- 	ENTRY(0x00000002, u16, pre, "boardflags", boardflags_lo, 0, fb);
- 	ENTRY(0xfffffffc, u16, pre, "boardtype", board_type, 0, true);
- 	ENTRY(0xfffffffe, u16, pre, "boardnum", board_num, 0, fb);
++	nvram_read_macaddr(prefix, "et2macaddr", sprom->et2mac, fb);
++	nvram_read_u8(prefix, NULL, "et2mdcport", &sprom->et2mdcport, 0, fb);
++	nvram_read_u8(prefix, NULL, "et2phyaddr", &sprom->et2phyaddr, 0, fb);
++
+ 	nvram_read_macaddr(prefix, "macaddr", sprom->il0mac, fallback);
+ 	nvram_read_macaddr(prefix, "il0macaddr", sprom->il0mac, fallback);
+ 
 diff --git a/include/linux/ssb/ssb.h b/include/linux/ssb/ssb.h
-index 4568a5c..ee90e32 100644
+index ee90e32..c3d1a52 100644
 --- a/include/linux/ssb/ssb.h
 +++ b/include/linux/ssb/ssb.h
-@@ -88,11 +88,14 @@ struct ssb_sprom {
- 	u32 ofdm5glpo;		/* 5.2GHz OFDM power offset */
- 	u32 ofdm5gpo;		/* 5.3GHz OFDM power offset */
- 	u32 ofdm5ghpo;		/* 5.8GHz OFDM power offset */
-+	u32 boardflags;
-+	u32 boardflags2;
-+	u32 boardflags3;
-+	/* TODO: Switch all drivers to new u32 fields and drop below ones */
- 	u16 boardflags_lo;	/* Board flags (bits 0-15) */
- 	u16 boardflags_hi;	/* Board flags (bits 16-31) */
- 	u16 boardflags2_lo;	/* Board flags (bits 32-47) */
- 	u16 boardflags2_hi;	/* Board flags (bits 48-63) */
--	/* TODO store board flags in a single u64 */
- 
- 	struct ssb_sprom_core_pwr_info core_pwr_info[4];
- 
+@@ -29,10 +29,13 @@ struct ssb_sprom {
+ 	u8 il0mac[6] __aligned(sizeof(u16));	/* MAC address for 802.11b/g */
+ 	u8 et0mac[6] __aligned(sizeof(u16));	/* MAC address for Ethernet */
+ 	u8 et1mac[6] __aligned(sizeof(u16));	/* MAC address for 802.11a */
++	u8 et2mac[6] __aligned(sizeof(u16));	/* MAC address for extra Ethernet */
+ 	u8 et0phyaddr;		/* MII address for enet0 */
+ 	u8 et1phyaddr;		/* MII address for enet1 */
++	u8 et2phyaddr;		/* MII address for enet2 */
+ 	u8 et0mdcport;		/* MDIO for enet0 */
+ 	u8 et1mdcport;		/* MDIO for enet1 */
++	u8 et2mdcport;		/* MDIO for enet2 */
+ 	u16 dev_id;		/* Device ID overriding e.g. PCI ID */
+ 	u16 board_rev;		/* Board revision number from SPROM. */
+ 	u16 board_num;		/* Board number from SPROM. */
 -- 
 1.8.4.5

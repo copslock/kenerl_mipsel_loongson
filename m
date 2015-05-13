@@ -1,46 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 May 2015 23:56:17 +0200 (CEST)
-Received: from mail-gw2-out.broadcom.com ([216.31.210.63]:42593 "EHLO
-        mail-gw2-out.broadcom.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27013241AbbEMV4N4wvmU (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 13 May 2015 23:56:13 +0200
-X-IronPort-AV: E=Sophos;i="5.13,422,1427785200"; 
-   d="scan'208";a="64788857"
-Received: from irvexchcas08.broadcom.com (HELO IRVEXCHCAS08.corp.ad.broadcom.com) ([10.9.208.57])
-  by mail-gw2-out.broadcom.com with ESMTP; 13 May 2015 15:05:24 -0700
-Received: from IRVEXCHSMTP1.corp.ad.broadcom.com (10.9.207.51) by
- IRVEXCHCAS08.corp.ad.broadcom.com (10.9.208.57) with Microsoft SMTP Server
- (TLS) id 14.3.235.1; Wed, 13 May 2015 14:56:03 -0700
-Received: from mail-sj1-12.sj.broadcom.com (10.10.10.20) by
- IRVEXCHSMTP1.corp.ad.broadcom.com (10.9.207.51) with Microsoft SMTP Server id
- 14.3.235.1; Wed, 13 May 2015 14:56:02 -0700
-Received: from [10.176.128.58] (xl-bun-04.bun.broadcom.com [10.176.128.58])     by
- mail-sj1-12.sj.broadcom.com (Postfix) with ESMTP id 72FE627A84;        Wed, 13 May
- 2015 14:56:01 -0700 (PDT)
-Message-ID: <5553C870.5070407@broadcom.com>
-Date:   Wed, 13 May 2015 23:56:00 +0200
-From:   Arend van Spriel <arend@broadcom.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686 (x86_64); en-US; rv:1.9.2.24) Gecko/20111103 Lightning/1.0b2 Thunderbird/3.1.16
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 May 2015 00:20:03 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:9553 "EHLO
+        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S27012138AbbEMWUBCunRL (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 14 May 2015 00:20:01 +0200
+Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
+        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 6A5A641F8E0C;
+        Wed, 13 May 2015 23:19:57 +0100 (BST)
+Received: from mailapp01.imgtec.com ([10.100.180.242])
+  by imgpgp01.kl.imgtec.org (PGP Universal service);
+  Wed, 13 May 2015 23:19:57 +0100
+X-PGP-Universal: processed;
+        by imgpgp01.kl.imgtec.org on Wed, 13 May 2015 23:19:57 +0100
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id C52FA8EF0D5A9;
+        Wed, 13 May 2015 23:19:53 +0100 (IST)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Wed, 13 May 2015 23:19:57 +0100
+Received: from localhost (192.168.154.110) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Wed, 13 May
+ 2015 23:19:56 +0100
+Date:   Wed, 13 May 2015 23:19:56 +0100
+From:   James Hogan <james.hogan@imgtec.com>
+To:     "Maciej W. Rozycki" <macro@linux-mips.org>
+CC:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>,
+        "Paul Burton" <paul.burton@imgtec.com>
+Subject: Re: [PATCH 1/2] MIPS: malta-time: Don't switch RTC to BCD mode
+Message-ID: <20150513221956.GE7723@jhogan-linux.le.imgtec.org>
+References: <1431519473-24049-1-git-send-email-james.hogan@imgtec.com>
+ <1431519473-24049-2-git-send-email-james.hogan@imgtec.com>
+ <alpine.LFD.2.11.1505131829580.1538@eddie.linux-mips.org>
 MIME-Version: 1.0
-To:     Jonas Gorski <jogo@openwrt.org>
-CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        brcm80211 development <brcm80211-dev-list@broadcom.com>,
-        "Maciej W. Rozycki" <macro@linux-mips.org>,
-        Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: 4.1-rc2: build issue with duplicate redefinition of _PAGE_GLOBAL_SHIFT
-References: <55539B68.8060304@broadcom.com> <CAOiHx==e0MTorbgAgmL13nT=5ChW2OnFB7RKxenjaRZbnzS1-A@mail.gmail.com>
-In-Reply-To: <CAOiHx==e0MTorbgAgmL13nT=5ChW2OnFB7RKxenjaRZbnzS1-A@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <arend@broadcom.com>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="5xSkJheCpeK0RUEJ"
+Content-Disposition: inline
+In-Reply-To: <alpine.LFD.2.11.1505131829580.1538@eddie.linux-mips.org>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+X-Originating-IP: [192.168.154.110]
+X-ESG-ENCRYPT-TAG: b93fcccb
+Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47386
+X-archive-position: 47387
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arend@broadcom.com
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,41 +59,84 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 05/13/15 21:19, Jonas Gorski wrote:
-> Hi Arend,
->
-> On Wed, May 13, 2015 at 8:43 PM, Arend van Spriel<arend@broadcom.com>  wrote:
->> For our upstream brcm80211 drivers we build for a number of architectures
->> including MIPS. In recent builds we get an error/warning:
->>
->>    CC [M]  drivers/net/wireless/brcm80211/brcmfmac/cfg80211.o
->> In file included from ./arch/mips/include/asm/io.h:27:0,
->>                   from ./arch/mips/include/asm/page.h:176,
->>                   from include/linux/mm_types.h:15,
->>                   from include/linux/kmemcheck.h:4,
->>                   from include/linux/skbuff.h:18,
->>                   from include/linux/if_ether.h:23,
->>                   from include/linux/etherdevice.h:25,
->>                   from drivers/net/wireless/brcm80211/brcmfmac/cfg80211.c:20:
->> ./arch/mips/include/asm/pgtable-bits.h:164:0: error: "_PAGE_GLOBAL_SHIFT"
->> redefined [-Werror]
->> ./arch/mips/include/asm/pgtable-bits.h:141:0: note: this is the location of
->> the previous definition
->>
->> As it is likely a Kconfig issue I have attached the config file that was
->> used for the build. I started out with mips_config.old and ran 'make
->> oldconfig' and just hit enter a couple of times selecting all defaults which
->> ends up with the mips_config file having the issue. As I have no clue what
->> Kconfig combinations are valid I am hoping anyone on the mips list can shed
->> some light on this.
->
-> this isn't a config issue, it's a clear bug which
->
-> https://patchwork.linux-mips.org/patch/9960/
->
-> intends to fix.
+--5xSkJheCpeK0RUEJ
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Excellent. Thanks, Jonas.
+Hi Maciej,
 
-Regards,
-Arend
+On Wed, May 13, 2015 at 07:03:51PM +0100, Maciej W. Rozycki wrote:
+> On Wed, 13 May 2015, James Hogan wrote:
+>=20
+> > On Malta, the RTC is forced into binary coded decimal (BCD) mode during
+> > init, even if the bootloader put it into binary mode (as YAMON does).
+> > This can result in the RTC seconds being an invalid BCD (e.g.
+> > 0x1a..0x1f) for up to 6 seconds.
+>=20
+>  Sigh.  No sooner I had fixed the breakage (with 636221b8 and a fat=20
+> comment) it got put back (with a87ea88d).  Even though it's easily=20
+> spotted as it breaks the system time (all the fields, including the date=
+=20
+> too, not only the seconds!) across a reboot due to YAMON eagerly=20
+> switching the mode back.  And that'd be the first item I'd check when=20
+> validating a change touching the RTC.
+
+Indeed, a quick bit of experimentation confirms a discrepancy before
+this patch is applied before YAMON's "date" command and the RTC clock as
+read by Linux (with year, day of month, hour & minute all going 22 -> 16
+(22 =3D=3D 0x16), and presumably different rates of time depending on which
+mode its in. After this patch it appears to work again as it should.
+
+>  Is there an actual need to reinitialise the RTC at all?  The RTC=20
+> registers are readable, so the current configuration can be obtained,=20
+> the RTC driver copes with any valid arrangement, so can any other code=20
+> using the clock as a reference.
+>=20
+>  YAMON OTOH is not as flexible, its clock management commands expect the=
+=20
+> format the monitor itself set the chip to, so I think the kernel has to=
+=20
+> respect that (just as it doesn't randomly flip bits in the RTC on x86=20
+> PCs for example).
+>=20
+>  So unless proven otherwise I'll ask for `init_rtc' to be dropped=20
+> altogether
+
+I suspect it comes down to what U-Boot does with RTC (possibly very
+little), but I'll leave that to you and Paul to discuss.
+
+> and any changes required made to `estimate_frequencies'=20
+> instead.  Which I believe you already did with 2/2.
+
+As long as the mode doesn't get changed, my change to
+estimate_frequencies() should be happy enough. Before patch 2/2 it only
+reads UIP flag to try to time a single second, so it shouldn't have
+cared about such details as the RTC mode.
+
+Cheers
+James
+
+--5xSkJheCpeK0RUEJ
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQIcBAEBAgAGBQJVU84MAAoJEGwLaZPeOHZ6RHsP/jQ7nADtTW2poxrxlXpyyYRl
+5c6efRwbHJwtyF7lb5uYU+0S72mDBP/0RZ4mpb8k8GX5wFfYSXAbrAah8cP1NQKo
+LM6Pc9nfdl23uC7MKocRZcUi7FFkmMrbCOiDX7Og6CPRlfktFkUmis/HMBte9MOO
+hXDLEdNasYF8CsLT9qiiGZuRN4/18+0JKyBt8nAr8DB7mIg/Y7MsQh3SECa6BVZJ
+UtT4cXyPWnV7EAHRuDhDtB6rwdCKObCxZDwkWtQO5/m4P3kRhlSsmNSyE2WDkXQP
+ic9r39h+Ti0rEZyd+3UEGrN1WO+AG5EzGVITtEDxTdIut+AkyYFM5imOPZmlsNQ3
+dSSgQC07X/Io1oPhWZaBRUDVwIqlJLGf+kWk0duRYz4Dsn+FvmZy2wkE1+d4oEdO
+cZxn6WHLlBa2znarGw/LTeQcg8d9LVEn1eEi7hfmwlx/q1AjQxZFIcgmSnhfGDOj
+2FlXPLkHLRBYg1Akn8AMMrf8LAYsKWq0zyYpCyEEtCjzeDkKsFpTixe7MuZvxn6l
+zq0PgvxtdjBTfeqf+brvghwd7LjRG1V+XkCoYvYW40zcmsbrVEIn4+KiEvlQuFdN
+9xV0lXAloj0SZSm+Dg19NR27h64xUzhR/o/+BA4GoAK6fqsba9q2AwdX0Z6arb0U
+PCH95HNorZfZXKifYWpY
+=JvN4
+-----END PGP SIGNATURE-----
+
+--5xSkJheCpeK0RUEJ--

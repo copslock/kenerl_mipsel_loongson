@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 May 2015 12:51:11 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:60354 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 May 2015 12:51:27 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:12374 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27011162AbbEMKvJ3vudy (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 13 May 2015 12:51:09 +0200
+        with ESMTP id S27012407AbbEMKvKALyRP (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 13 May 2015 12:51:10 +0200
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id D4038D61BEDF8;
-        Wed, 13 May 2015 11:51:03 +0100 (IST)
+        by Websense Email Security Gateway with ESMTPS id 9668AECE73184;
+        Wed, 13 May 2015 11:51:04 +0100 (IST)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
  KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Wed, 13 May 2015 11:51:05 +0100
+ 14.3.195.1; Wed, 13 May 2015 11:51:06 +0100
 Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
  LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
  14.3.210.2; Wed, 13 May 2015 11:51:05 +0100
 From:   James Hogan <james.hogan@imgtec.com>
 To:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
 CC:     James Hogan <james.hogan@imgtec.com>
-Subject: [PATCH RFC 1/9] MIPS: Add SysRq operation to dump TLBs on all CPUs
-Date:   Wed, 13 May 2015 11:50:47 +0100
-Message-ID: <1431514255-3030-2-git-send-email-james.hogan@imgtec.com>
+Subject: [PATCH 2/9] MIPS: hazards: Add hazard macros for tlb read
+Date:   Wed, 13 May 2015 11:50:48 +0100
+Message-ID: <1431514255-3030-3-git-send-email-james.hogan@imgtec.com>
 X-Mailer: git-send-email 2.3.6
 In-Reply-To: <1431514255-3030-1-git-send-email-james.hogan@imgtec.com>
 References: <1431514255-3030-1-git-send-email-james.hogan@imgtec.com>
@@ -28,7 +28,7 @@ Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47359
+X-archive-position: 47360
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,128 +45,162 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add a MIPS specific SysRq operation to dump the TLB entries on all CPUs,
-using the 'x' trigger key.
+Add hazard macros to <asm/hazards.h> for the following hazards around
+tlbr (TLB read) instructions, which are used in TLB dumping code and
+some KVM TLB management code:
+
+- mtc0_tlbr_hazard
+  Between mtc0 (Index) and tlbr. This is copied from mtc0_tlbw_hazard in
+  all cases on the assumption that tlbr always has similar data user
+  timings to tlbw.
+
+- tlb_read_hazard
+  Between tlbr and mfc0 (various TLB registers). This is copied from
+  tlbw_use_hazard in all cases on the assumption that tlbr has similar
+  data writer characteristics to tlbw, and mfc0 has similar data user
+  characteristics to loads and stores.
 
 Signed-off-by: James Hogan <james.hogan@imgtec.com>
 Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
 ---
-This was mainly for debug purposes, however I've included it for
-completeness as an RFC patch, in case others find it helpful.
+Looking at r4000 manual, its tlbr had similar data user timings to tlbw,
+and mfc0 had similar data writer timings to loads and stores. Are there
+particular other cores that should be checked too?
 ---
- arch/mips/kernel/Makefile |  1 +
- arch/mips/kernel/sysrq.c  | 77 +++++++++++++++++++++++++++++++++++++++++++++++
- drivers/tty/sysrq.c       |  1 +
- 3 files changed, 79 insertions(+)
- create mode 100644 arch/mips/kernel/sysrq.c
+ arch/mips/include/asm/hazards.h | 52 +++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 52 insertions(+)
 
-diff --git a/arch/mips/kernel/Makefile b/arch/mips/kernel/Makefile
-index d3d2ff2d76dc..a2debcbedb6d 100644
---- a/arch/mips/kernel/Makefile
-+++ b/arch/mips/kernel/Makefile
-@@ -77,6 +77,7 @@ obj-$(CONFIG_MIPS32_O32)	+= binfmt_elfo32.o scall64-o32.o
+diff --git a/arch/mips/include/asm/hazards.h b/arch/mips/include/asm/hazards.h
+index 4087b47ad1cb..7b99efd31074 100644
+--- a/arch/mips/include/asm/hazards.h
++++ b/arch/mips/include/asm/hazards.h
+@@ -31,9 +31,15 @@
+ #define __mtc0_tlbw_hazard						\
+ 	___ehb
  
- obj-$(CONFIG_KGDB)		+= kgdb.o
- obj-$(CONFIG_PROC_FS)		+= proc.o
-+obj-$(CONFIG_MAGIC_SYSRQ)	+= sysrq.o
++#define __mtc0_tlbr_hazard						\
++	___ehb
++
+ #define __tlbw_use_hazard						\
+ 	___ehb
  
- obj-$(CONFIG_64BIT)		+= cpu-bugs64.o
++#define __tlb_read_hazard						\
++	___ehb
++
+ #define __tlb_probe_hazard						\
+ 	___ehb
  
-diff --git a/arch/mips/kernel/sysrq.c b/arch/mips/kernel/sysrq.c
-new file mode 100644
-index 000000000000..5b539f5fc9d9
---- /dev/null
-+++ b/arch/mips/kernel/sysrq.c
-@@ -0,0 +1,77 @@
-+/*
-+ * MIPS specific sysrq operations.
-+ *
-+ * Copyright (C) 2015 Imagination Technologies Ltd.
-+ */
-+#include <linux/init.h>
-+#include <linux/smp.h>
-+#include <linux/spinlock.h>
-+#include <linux/sysrq.h>
-+#include <linux/workqueue.h>
+@@ -80,12 +86,23 @@ do {									\
+ 	___ssnop;							\
+ 	___ehb
+ 
++#define __mtc0_tlbr_hazard						\
++	___ssnop;							\
++	___ssnop;							\
++	___ehb
 +
-+#include <asm/cpu-features.h>
-+#include <asm/mipsregs.h>
-+#include <asm/tlbdebug.h>
+ #define __tlbw_use_hazard						\
+ 	___ssnop;							\
+ 	___ssnop;							\
+ 	___ssnop;							\
+ 	___ehb
+ 
++#define __tlb_read_hazard						\
++	___ssnop;							\
++	___ssnop;							\
++	___ssnop;							\
++	___ehb
 +
-+/*
-+ * Dump TLB entries on all CPUs.
-+ */
+ #define __tlb_probe_hazard						\
+ 	___ssnop;							\
+ 	___ssnop;							\
+@@ -147,8 +164,12 @@ do {									\
+ 
+ #define __mtc0_tlbw_hazard
+ 
++#define __mtc0_tlbr_hazard
 +
-+static DEFINE_SPINLOCK(show_lock);
+ #define __tlbw_use_hazard
+ 
++#define __tlb_read_hazard
 +
-+static void sysrq_tlbdump_single(void *dummy)
-+{
-+	const int field = 2 * sizeof(unsigned long);
-+	unsigned long flags;
+ #define __tlb_probe_hazard
+ 
+ #define __irq_enable_hazard
+@@ -166,8 +187,12 @@ do {									\
+  */
+ #define __mtc0_tlbw_hazard
+ 
++#define __mtc0_tlbr_hazard
 +
-+	spin_lock_irqsave(&show_lock, flags);
+ #define __tlbw_use_hazard
+ 
++#define __tlb_read_hazard
 +
-+	pr_info("CPU%d:\n", smp_processor_id());
-+	pr_info("Index	: %0x\n", read_c0_index());
-+	pr_info("Pagemask: %0x\n", read_c0_pagemask());
-+	pr_info("EntryHi : %0*lx\n", field, read_c0_entryhi());
-+	pr_info("EntryLo0: %0*lx\n", field, read_c0_entrylo0());
-+	pr_info("EntryLo1: %0*lx\n", field, read_c0_entrylo1());
-+	pr_info("Wired   : %0x\n", read_c0_wired());
-+	pr_info("Pagegrain: %0x\n", read_c0_pagegrain());
-+	if (cpu_has_htw) {
-+		pr_info("PWField : %0*lx\n", field, read_c0_pwfield());
-+		pr_info("PWSize  : %0*lx\n", field, read_c0_pwsize());
-+		pr_info("PWCtl   : %0x\n", read_c0_pwctl());
-+	}
-+	pr_info("\n");
-+	dump_tlb_all();
-+	pr_info("\n");
+ #define __tlb_probe_hazard
+ 
+ #define __irq_enable_hazard
+@@ -196,11 +221,20 @@ do {									\
+ 	nop;								\
+ 	nop
+ 
++#define __mtc0_tlbr_hazard						\
++	nop;								\
++	nop
 +
-+	spin_unlock_irqrestore(&show_lock, flags);
-+}
+ #define __tlbw_use_hazard						\
+ 	nop;								\
+ 	nop;								\
+ 	nop
+ 
++#define __tlb_read_hazard						\
++	nop;								\
++	nop;								\
++	nop
 +
-+#ifdef CONFIG_SMP
-+static void sysrq_tlbdump_othercpus(struct work_struct *dummy)
-+{
-+	smp_call_function(sysrq_tlbdump_single, NULL, 0);
-+}
+ #define __tlb_probe_hazard						\
+ 	nop;								\
+ 	nop;								\
+@@ -267,7 +301,9 @@ do {									\
+ #define _ssnop ___ssnop
+ #define	_ehb ___ehb
+ #define mtc0_tlbw_hazard __mtc0_tlbw_hazard
++#define mtc0_tlbr_hazard __mtc0_tlbr_hazard
+ #define tlbw_use_hazard __tlbw_use_hazard
++#define tlb_read_hazard __tlb_read_hazard
+ #define tlb_probe_hazard __tlb_probe_hazard
+ #define irq_enable_hazard __irq_enable_hazard
+ #define irq_disable_hazard __irq_disable_hazard
+@@ -300,6 +336,14 @@ do {									\
+ } while (0)
+ 
+ 
++#define mtc0_tlbr_hazard()						\
++do {									\
++	__asm__ __volatile__(						\
++	__stringify(__mtc0_tlbr_hazard)					\
++	);								\
++} while (0)
 +
-+static DECLARE_WORK(sysrq_tlbdump, sysrq_tlbdump_othercpus);
-+#endif
 +
-+static void sysrq_handle_tlbdump(int key)
-+{
-+	sysrq_tlbdump_single(NULL);
-+#ifdef CONFIG_SMP
-+	schedule_work(&sysrq_tlbdump);
-+#endif
-+}
+ #define tlbw_use_hazard()						\
+ do {									\
+ 	__asm__ __volatile__(						\
+@@ -308,6 +352,14 @@ do {									\
+ } while (0)
+ 
+ 
++#define tlb_read_hazard()						\
++do {									\
++	__asm__ __volatile__(						\
++	__stringify(__tlb_read_hazard)					\
++	);								\
++} while (0)
 +
-+static struct sysrq_key_op sysrq_tlbdump_op = {
-+	.handler        = sysrq_handle_tlbdump,
-+	.help_msg       = "show-tlbs(x)",
-+	.action_msg     = "Show TLB entries",
-+	.enable_mask	= SYSRQ_ENABLE_DUMP,
-+};
 +
-+static int __init mips_sysrq_init(void)
-+{
-+	return register_sysrq_key('x', &sysrq_tlbdump_op);
-+}
-+arch_initcall(mips_sysrq_init);
-diff --git a/drivers/tty/sysrq.c b/drivers/tty/sysrq.c
-index 843f2cdc280b..8ba52e56bb8b 100644
---- a/drivers/tty/sysrq.c
-+++ b/drivers/tty/sysrq.c
-@@ -463,6 +463,7 @@ static struct sysrq_key_op *sysrq_key_table[36] = {
- 	/* v: May be registered for frame buffer console restore */
- 	NULL,				/* v */
- 	&sysrq_showstate_blocked_op,	/* w */
-+	/* x: May be registered on mips for TLB dump */
- 	/* x: May be registered on ppc/powerpc for xmon */
- 	/* x: May be registered on sparc64 for global PMU dump */
- 	NULL,				/* x */
+ #define tlb_probe_hazard()						\
+ do {									\
+ 	__asm__ __volatile__(						\
 -- 
 2.3.6

@@ -1,43 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 May 2015 10:08:13 +0200 (CEST)
-Received: from cantor2.suse.de ([195.135.220.15]:52028 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27011186AbbENIILqYK79 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 14 May 2015 10:08:11 +0200
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (charybdis-ext.suse.de [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id D014FAAC7;
-        Thu, 14 May 2015 08:08:12 +0000 (UTC)
-Date:   Thu, 14 May 2015 10:08:12 +0200
-From:   Michal Hocko <mhocko@suse.cz>
-To:     Eric B Munson <emunson@akamai.com>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        Shuah Khan <shuahkh@osg.samsung.com>,
-        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mips@linux-mips.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org, linux-mm@kvack.org,
-        linux-arch@vger.kernel.org, linux-api@vger.kernel.org
-Subject: Re: [PATCH 0/3] Allow user to request memory to be locked on page
- fault
-Message-ID: <20150514080812.GC6433@dhcp22.suse.cz>
-References: <1431113626-19153-1-git-send-email-emunson@akamai.com>
- <20150508124203.6679b1d35ad9555425003929@linux-foundation.org>
- <20150511180631.GA1227@akamai.com>
- <20150513150036.GG1227@akamai.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 May 2015 10:45:10 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:6578 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27011186AbbENIpJBgZRw (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 14 May 2015 10:45:09 +0200
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 4A66C58FE5D9F;
+        Thu, 14 May 2015 09:45:03 +0100 (IST)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Thu, 14 May 2015 09:45:04 +0100
+Received: from localhost (192.168.159.121) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Thu, 14 May
+ 2015 09:45:03 +0100
+Date:   Thu, 14 May 2015 09:44:59 +0100
+From:   Paul Burton <paul.burton@imgtec.com>
+To:     James Hogan <james.hogan@imgtec.com>,
+        "Maciej W. Rozycki" <macro@linux-mips.org>
+CC:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
+Subject: Re: [PATCH 1/2] MIPS: malta-time: Don't switch RTC to BCD mode
+Message-ID: <20150514084130.GE22815@NP-P-BURTON>
+References: <1431519473-24049-1-git-send-email-james.hogan@imgtec.com>
+ <1431519473-24049-2-git-send-email-james.hogan@imgtec.com>
+ <alpine.LFD.2.11.1505131829580.1538@eddie.linux-mips.org>
+ <20150513221956.GE7723@jhogan-linux.le.imgtec.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset="utf-8"
 Content-Disposition: inline
-In-Reply-To: <20150513150036.GG1227@akamai.com>
+In-Reply-To: <20150513221956.GE7723@jhogan-linux.le.imgtec.org>
 User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <mhocko@suse.cz>
+X-Originating-IP: [192.168.159.121]
+Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47392
+X-archive-position: 47393
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mhocko@suse.cz
+X-original-sender: paul.burton@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,62 +50,71 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed 13-05-15 11:00:36, Eric B Munson wrote:
-> On Mon, 11 May 2015, Eric B Munson wrote:
+On Wed, May 13, 2015 at 11:19:56PM +0100, James Hogan wrote:
+> Hi Maciej,
 > 
-> > On Fri, 08 May 2015, Andrew Morton wrote:
+> On Wed, May 13, 2015 at 07:03:51PM +0100, Maciej W. Rozycki wrote:
+> > On Wed, 13 May 2015, James Hogan wrote:
 > > 
-> > > On Fri,  8 May 2015 15:33:43 -0400 Eric B Munson <emunson@akamai.com> wrote:
-> > > 
-> > > > mlock() allows a user to control page out of program memory, but this
-> > > > comes at the cost of faulting in the entire mapping when it is
-> > > > allocated.  For large mappings where the entire area is not necessary
-> > > > this is not ideal.
-> > > > 
-> > > > This series introduces new flags for mmap() and mlockall() that allow a
-> > > > user to specify that the covered are should not be paged out, but only
-> > > > after the memory has been used the first time.
-> > > 
-> > > Please tell us much much more about the value of these changes: the use
-> > > cases, the behavioural improvements and performance results which the
-> > > patchset brings to those use cases, etc.
-> > > 
+> > > On Malta, the RTC is forced into binary coded decimal (BCD) mode during
+> > > init, even if the bootloader put it into binary mode (as YAMON does).
+> > > This can result in the RTC seconds being an invalid BCD (e.g.
+> > > 0x1a..0x1f) for up to 6 seconds.
 > > 
-> > To illustrate the proposed use case I wrote a quick program that mmaps
-> > a 5GB file which is filled with random data and accesses 150,000 pages
-> > from that mapping.  Setup and processing were timed separately to
-> > illustrate the differences between the three tested approaches.  the
-> > setup portion is simply the call to mmap, the processing is the
-> > accessing of the various locations in  that mapping.  The following
-> > values are in milliseconds and are the averages of 20 runs each with a
-> > call to echo 3 > /proc/sys/vm/drop_caches between each run.
-> > 
-> > The first mapping was made with MAP_PRIVATE | MAP_LOCKED as a baseline:
-> > Startup average:    9476.506
-> > Processing average: 3.573
-> > 
-> > The second mapping was simply MAP_PRIVATE but each page was passed to
-> > mlock() before being read:
-> > Startup average:    0.051
-> > Processing average: 721.859
-> > 
-> > The final mapping was MAP_PRIVATE | MAP_LOCKONFAULT:
-> > Startup average:    0.084
-> > Processing average: 42.125
-> > 
+> >  Sigh.  No sooner I had fixed the breakage (with 636221b8 and a fat 
+> > comment) it got put back (with a87ea88d).  Even though it's easily 
+> > spotted as it breaks the system time (all the fields, including the date 
+> > too, not only the seconds!) across a reboot due to YAMON eagerly 
+> > switching the mode back.  And that'd be the first item I'd check when 
+> > validating a change touching the RTC.
 > 
-> Michal's suggestion of changing protections and locking in a signal
-> handler was better than the locking as needed, but still significantly
-> more work required than the LOCKONFAULT case.
+> Indeed, a quick bit of experimentation confirms a discrepancy before
+> this patch is applied before YAMON's "date" command and the RTC clock as
+> read by Linux (with year, day of month, hour & minute all going 22 -> 16
+> (22 == 0x16), and presumably different rates of time depending on which
+> mode its in. After this patch it appears to work again as it should.
 > 
-> Startup average:    0.047
-> Processing average: 86.431
+> >  Is there an actual need to reinitialise the RTC at all?  The RTC 
+> > registers are readable, so the current configuration can be obtained, 
+> > the RTC driver copes with any valid arrangement, so can any other code 
+> > using the clock as a reference.
+> > 
+> >  YAMON OTOH is not as flexible, its clock management commands expect the 
+> > format the monitor itself set the chip to, so I think the kernel has to 
+> > respect that (just as it doesn't randomly flip bits in the RTC on x86 
+> > PCs for example).
+> > 
+> >  So unless proven otherwise I'll ask for `init_rtc' to be dropped 
+> > altogether
+> 
+> I suspect it comes down to what U-Boot does with RTC (possibly very
+> little), but I'll leave that to you and Paul to discuss.
 
-Have you played with batching? Has it helped? Anyway it is to be
-expected that the overhead will be higher than a single mmap call. The
-question is whether you can live with it because adding a new semantic
-to mlock sounds trickier and MAP_LOCKED is tricky enough already...
+The reason for init_rtc was touched upon in the commit message for
+a87ea88d8f6c (MIPS: Malta: initialise the RTC at boot) but could perhaps
+have been clearer. Straight out of reset the RTC may not be running at
+all, but the code in estimate_frequencies (note: not the RTC driver)
+relies upon the RTC having been started. This was an issue when using
+earlier builds of U-boot which didn't touch the RTC at all, and is still
+an issue if you do something like load the kernel via a JTAG probe
+rather than using U-boot or YAMON. If the kernel doesn't ensure the RTC
+is started then it'll just hang in estimate_frequencies waiting for the
+UIP bit to change even though it never will. YAMON isn't the only way to
+boot on Malta, and dependencies such as this between the kernel & the
+bootloader should really be minimised.
 
--- 
-Michal Hocko
-SUSE Labs
+> > and any changes required made to `estimate_frequencies' 
+> > instead.  Which I believe you already did with 2/2.
+> 
+> As long as the mode doesn't get changed, my change to
+> estimate_frequencies() should be happy enough. Before patch 2/2 it only
+> reads UIP flag to try to time a single second, so it shouldn't have
+> cared about such details as the RTC mode.
+
+...and since it seems the U-boot & YAMON RTC drivers use it in different
+modes, I'd consider this patch reasonable. Feel free to have my:
+
+  Reviewed-by: Paul Burton <paul.burton@imgtec.com>
+
+Thanks,
+    Paul

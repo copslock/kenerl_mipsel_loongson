@@ -1,43 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 May 2015 16:20:27 +0200 (CEST)
-Received: from mail-ie0-f172.google.com ([209.85.223.172]:36836 "EHLO
-        mail-ie0-f172.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011186AbbENOUZpE8Wv (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 14 May 2015 16:20:25 +0200
-Received: by iepk2 with SMTP id k2so60187065iep.3;
-        Thu, 14 May 2015 07:20:22 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 May 2015 00:43:13 +0200 (CEST)
+Received: from mail-pa0-f45.google.com ([209.85.220.45]:34935 "EHLO
+        mail-pa0-f45.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012567AbbENWnJoi0Jq (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 15 May 2015 00:43:09 +0200
+Received: by pabru16 with SMTP id ru16so6573329pab.2;
+        Thu, 14 May 2015 15:43:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id;
-        bh=gMBkEFU2Se+1TAZ+hSuvTTUvA1F0DYF9Tgq4/ElyvW4=;
-        b=DsoNO5B+eKwHxuO9ikAa7xtnn2vrf1IdrLSr5Zt+UOT7IQ77epQbyycD2QcL5LESXR
-         8/ab04howFrcLeGzDJgAVo+XT8xFknUgfCASLlB+iLcTd5Vq2An6DfX2h74cwiwePf5U
-         /nRqH7ALpvTBL6VA9U/Anxjuap3MEOq5/ESWm6kxZEp1Fcv3j1B3XCnltOb5g0jVIYbR
-         rV84qE3IsjeTcWFa4DKN8OeGmktAEdURYkfKjw4EsJSK3RNxr/8nNoBRfmOglBLm3YDm
-         2nf8ngqKo7qFX42neat3dsRH6khqzRAqKjo5S7PjAj5SMWxKSj5Kh0DcuvgYSmepasbL
-         yjxw==
-X-Received: by 10.42.102.142 with SMTP id i14mr14975034ico.90.1431613222198;
-        Thu, 14 May 2015 07:20:22 -0700 (PDT)
-Received: from nick-System-Product-Name.hitronhub.home (CPEbc4dfb2691f3-CMbc4dfb2691f0.cpe.net.cable.rogers.com. [99.231.110.121])
-        by mx.google.com with ESMTPSA id j20sm5938437igt.16.2015.05.14.07.20.20
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Thu, 14 May 2015 07:20:21 -0700 (PDT)
-From:   Nicholas Krause <xerofoify@gmail.com>
-To:     ralf@linux-mips.org
-Cc:     akpm@linux-foundation.org, kumba@gentoo.org,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: [PATCH RESEND] mips:Fix build error for ip32_defconfig configuration
-Date:   Thu, 14 May 2015 10:20:17 -0400
-Message-Id: <1431613217-2517-1-git-send-email-xerofoify@gmail.com>
-X-Mailer: git-send-email 2.1.4
-Return-Path: <xerofoify@gmail.com>
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding;
+        bh=wnGmdHeJHbQFNQmp+FtC00XX7o1EogFNhts44PUCIQE=;
+        b=S4BdIarnBbuDOB5bezivrF3iRPqds/L0Mlk7Kq+eJt/ljKmTMOZneUE4KubkI8ujYC
+         SrY4OGq/5Tn6Qecxq1dAowVvXgavTjASNq+dt4VPoXZUCKVhPU/SbKdQ1go6M5Oh86Cs
+         BxdcFT4ALVtY1fqCFv6W7elQ0kMLmvoDneqUfhWiG5JKhVCsuLJ9NtAApT0nbax9RLMD
+         xLHJIeVK2ciRlVSUR+G8mgeXh7PbjOkGrLQWU663qsvTG10ppajh0m6zRSG0bD+/z9rR
+         JRFR5vUzJ5kDuT9K29P7dLPr7uD+03xudBKvdkonRufZHf0B+2drQTS15j8SfyEeAt4m
+         4fXw==
+X-Received: by 10.66.119.174 with SMTP id kv14mr12100006pab.5.1431643380480;
+        Thu, 14 May 2015 15:43:00 -0700 (PDT)
+Received: from [10.12.156.244] (5520-maca-inet1-outside.broadcom.com. [216.31.211.11])
+        by mx.google.com with ESMTPSA id id2sm201882pbb.56.2015.05.14.15.42.58
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 14 May 2015 15:42:59 -0700 (PDT)
+Message-ID: <555524E2.6080700@gmail.com>
+Date:   Thu, 14 May 2015 15:42:42 -0700
+From:   Florian Fainelli <f.fainelli@gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.6.0
+MIME-Version: 1.0
+To:     Kevin Cernekee <cernekee@gmail.com>,
+        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+CC:     mina86@mina86.com,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        Zubair.Kakakhel@imgtec.com, Ralf Baechle <ralf@linux-mips.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] MIPS: Flush cache after DMA_FROM_DEVICE for agressively
+ speculative CPUs
+References: <20150514014924.36593.68642.stgit@ubuntu-yegoshin> <CAJiQ=7CU+MyaypO-9Np8aChVpVX_Vobdtoytt0q4Vz7LY9qHsA@mail.gmail.com>
+In-Reply-To: <CAJiQ=7CU+MyaypO-9Np8aChVpVX_Vobdtoytt0q4Vz7LY9qHsA@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47399
+X-archive-position: 47400
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: xerofoify@gmail.com
+X-original-sender: f.fainelli@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,31 +60,44 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This fixes the make error when building the ip32_defconfig
-configuration due to using sgio2_cmos_devinit rather then
-the correct function,sgio2_rtc_devinit in a device_initcall
-below this function's definition.
+On 13/05/15 19:49, Kevin Cernekee wrote:
+> On Wed, May 13, 2015 at 6:49 PM, Leonid Yegoshin
+> <Leonid.Yegoshin@imgtec.com> wrote:
+>> Some MIPS CPUs have an aggressive speculative load and may erroneuosly load
+>> some cache line in the middle of DMA transaction. CPU discards result but cache
+>> doesn't. If DMA happens from device then additional cache invalidation is needed
+>> on that CPU's after DMA.
+>>
+>> Found in test.
+>>
+>> Signed-off-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+>> ---
+>>  arch/mips/mm/dma-default.c |   10 ++++++----
+>>  1 file changed, 6 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/arch/mips/mm/dma-default.c b/arch/mips/mm/dma-default.c
+>> index 609d1241b0c4..ccf49ecfbf8c 100644
+>> --- a/arch/mips/mm/dma-default.c
+>> +++ b/arch/mips/mm/dma-default.c
+>> @@ -67,11 +67,13 @@ static inline struct page *dma_addr_to_page(struct device *dev,
+>>   * systems and only the R10000 and R12000 are used in such systems, the
+>>   * SGI IP28 Indigo² rsp. SGI IP32 aka O2.
+>>   */
+>> -static inline int cpu_needs_post_dma_flush(struct device *dev)
+>> +static inline int cpu_needs_post_dma_flush(struct device *dev,
+>> +                                          enum dma_data_direction direction)
+>>  {
+>>         return !plat_device_is_coherent(dev) &&
+>>                (boot_cpu_type() == CPU_R10000 ||
+>>                 boot_cpu_type() == CPU_R12000 ||
+>> +               (cpu_has_maar && (direction != DMA_TO_DEVICE)) ||
+>>                 boot_cpu_type() == CPU_BMIPS5000);
+> 
+> Can all of these CPUs safely skip the post_dma_flush on DMA_TO_DEVICE
+> (not just maar)?
 
-Signed-off-by: Nicholas Krause <xerofoify@gmail.com>
----
- arch/mips/sgi-ip32/ip32-platform.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/arch/mips/sgi-ip32/ip32-platform.c b/arch/mips/sgi-ip32/ip32-platform.c
-index 0134db2..2a7efcb 100644
---- a/arch/mips/sgi-ip32/ip32-platform.c
-+++ b/arch/mips/sgi-ip32/ip32-platform.c
-@@ -130,9 +130,9 @@ struct platform_device ip32_rtc_device = {
- 	.resource		= ip32_rtc_resources,
- };
- 
--+static int __init sgio2_rtc_devinit(void)
-+static  __init int sgio2_rtc_devinit(void)
- {
- 	return platform_device_register(&ip32_rtc_device);
- }
- 
--device_initcall(sgio2_cmos_devinit);
-+device_initcall(sgio2_rtc_devinit);
+Agreed that would seem like the logical thing to do. You could then just
+skip the call to cpu_needs_post_dma_flush() and move the direction test
+in arch/mips/mm/dma-default.c for instance?
 -- 
-2.1.4
+Florian

@@ -1,47 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 May 2015 09:43:52 +0200 (CEST)
-Received: from mail-wi0-f177.google.com ([209.85.212.177]:37135 "EHLO
-        mail-wi0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011042AbbENHnuLhIFe (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 14 May 2015 09:43:50 +0200
-Received: by wibt6 with SMTP id t6so4912804wib.0;
-        Thu, 14 May 2015 00:43:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:mime-version:content-type
-         :content-transfer-encoding;
-        bh=OUOi0LpkMbA0l+m9AJFz7Cg9QhV83VP9hIOtJzySd8I=;
-        b=VcoSkeiIVZeo7PDH3SLxl5icjlQNDCM2o7pge89IJs3DUDU8AoVXKKR80YQtMIRLVZ
-         LDlxzDNhcbg6Dh8Y5kkRJFOCmwy+NVXnTVeURYQxin0f9SElqqnpdMSRsq5zdiD/wbor
-         ck7kL4XDPLjKjWKkMb5X3aZfbLNaDH3f5Oqs3Eh/nT9VKqZrw+BbTh0WePkDdigGSOfy
-         ICQhytZX5rz/Gvbps38EOL/m+2m/rS818Ag0mkbH5gRmsxJE8MArXZPRsmCt4/CboExU
-         lkRX9Yd+ChOrzGi9oPZ0QFORcr3seHM+oGi3ICYFZpCS///p8GNKAM5NaPgYv4JymruH
-         eCVg==
-X-Received: by 10.194.172.72 with SMTP id ba8mr5386429wjc.136.1431589427247;
-        Thu, 14 May 2015 00:43:47 -0700 (PDT)
-Received: from linux-tdhb.lan (ip-194-187-74-233.konfederacka.maverick.com.pl. [194.187.74.233])
-        by mx.google.com with ESMTPSA id l6sm36753450wjz.4.2015.05.14.00.43.45
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 14 May 2015 00:43:46 -0700 (PDT)
-From:   =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
-To:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Cc:     Hauke Mehrtens <hauke@hauke-m.de>,
-        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
-Subject: [PATCH] MIPS: BCM47XX: Fix regression in reading WiFi SoC SPROM
-Date:   Thu, 14 May 2015 09:42:50 +0200
-Message-Id: <1431589370-30147-1-git-send-email-zajec5@gmail.com>
-X-Mailer: git-send-email 1.8.4.5
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 May 2015 10:08:13 +0200 (CEST)
+Received: from cantor2.suse.de ([195.135.220.15]:52028 "EHLO mx2.suse.de"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27011186AbbENIILqYK79 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 14 May 2015 10:08:11 +0200
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (charybdis-ext.suse.de [195.135.220.254])
+        by mx2.suse.de (Postfix) with ESMTP id D014FAAC7;
+        Thu, 14 May 2015 08:08:12 +0000 (UTC)
+Date:   Thu, 14 May 2015 10:08:12 +0200
+From:   Michal Hocko <mhocko@suse.cz>
+To:     Eric B Munson <emunson@akamai.com>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        Shuah Khan <shuahkh@osg.samsung.com>,
+        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mips@linux-mips.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
+        linux-xtensa@linux-xtensa.org, linux-mm@kvack.org,
+        linux-arch@vger.kernel.org, linux-api@vger.kernel.org
+Subject: Re: [PATCH 0/3] Allow user to request memory to be locked on page
+ fault
+Message-ID: <20150514080812.GC6433@dhcp22.suse.cz>
+References: <1431113626-19153-1-git-send-email-emunson@akamai.com>
+ <20150508124203.6679b1d35ad9555425003929@linux-foundation.org>
+ <20150511180631.GA1227@akamai.com>
+ <20150513150036.GG1227@akamai.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Return-Path: <zajec5@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20150513150036.GG1227@akamai.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <mhocko@suse.cz>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47391
+X-archive-position: 47392
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: zajec5@gmail.com
+X-original-sender: mhocko@suse.cz
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,43 +50,62 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-In the recent SPROM commit:
-MIPS: BCM47xx: Read board info for all bcma buses
-a proper handling of "fallback" argument has been dropped. Restore it.
+On Wed 13-05-15 11:00:36, Eric B Munson wrote:
+> On Mon, 11 May 2015, Eric B Munson wrote:
+> 
+> > On Fri, 08 May 2015, Andrew Morton wrote:
+> > 
+> > > On Fri,  8 May 2015 15:33:43 -0400 Eric B Munson <emunson@akamai.com> wrote:
+> > > 
+> > > > mlock() allows a user to control page out of program memory, but this
+> > > > comes at the cost of faulting in the entire mapping when it is
+> > > > allocated.  For large mappings where the entire area is not necessary
+> > > > this is not ideal.
+> > > > 
+> > > > This series introduces new flags for mmap() and mlockall() that allow a
+> > > > user to specify that the covered are should not be paged out, but only
+> > > > after the memory has been used the first time.
+> > > 
+> > > Please tell us much much more about the value of these changes: the use
+> > > cases, the behavioural improvements and performance results which the
+> > > patchset brings to those use cases, etc.
+> > > 
+> > 
+> > To illustrate the proposed use case I wrote a quick program that mmaps
+> > a 5GB file which is filled with random data and accesses 150,000 pages
+> > from that mapping.  Setup and processing were timed separately to
+> > illustrate the differences between the three tested approaches.  the
+> > setup portion is simply the call to mmap, the processing is the
+> > accessing of the various locations in  that mapping.  The following
+> > values are in milliseconds and are the averages of 20 runs each with a
+> > call to echo 3 > /proc/sys/vm/drop_caches between each run.
+> > 
+> > The first mapping was made with MAP_PRIVATE | MAP_LOCKED as a baseline:
+> > Startup average:    9476.506
+> > Processing average: 3.573
+> > 
+> > The second mapping was simply MAP_PRIVATE but each page was passed to
+> > mlock() before being read:
+> > Startup average:    0.051
+> > Processing average: 721.859
+> > 
+> > The final mapping was MAP_PRIVATE | MAP_LOCKONFAULT:
+> > Startup average:    0.084
+> > Processing average: 42.125
+> > 
+> 
+> Michal's suggestion of changing protections and locking in a signal
+> handler was better than the locking as needed, but still significantly
+> more work required than the LOCKONFAULT case.
+> 
+> Startup average:    0.047
+> Processing average: 86.431
 
-Signed-off-by: Rafał Miłecki <zajec5@gmail.com>
----
- arch/mips/bcm47xx/sprom.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+Have you played with batching? Has it helped? Anyway it is to be
+expected that the overhead will be higher than a single mmap call. The
+question is whether you can live with it because adding a new semantic
+to mlock sounds trickier and MAP_LOCKED is tricky enough already...
 
-diff --git a/arch/mips/bcm47xx/sprom.c b/arch/mips/bcm47xx/sprom.c
-index 8485143..b0d62e7 100644
---- a/arch/mips/bcm47xx/sprom.c
-+++ b/arch/mips/bcm47xx/sprom.c
-@@ -698,6 +698,7 @@ static int bcm47xx_get_sprom_bcma(struct bcma_bus *bus, struct ssb_sprom *out)
- 	struct bcma_device *core;
- 	char buf[10];
- 	char *prefix;
-+	bool fallback = false;
- 
- 	switch (bus->hosttype) {
- 	case BCMA_HOSTTYPE_PCI:
-@@ -715,6 +716,7 @@ static int bcm47xx_get_sprom_bcma(struct bcma_bus *bus, struct ssb_sprom *out)
- 			snprintf(buf, sizeof(buf), "sb/%u/",
- 				 core->core_index);
- 			prefix = buf;
-+			fallback = true;
- 		} else {
- 			prefix = NULL;
- 		}
-@@ -729,7 +731,7 @@ static int bcm47xx_get_sprom_bcma(struct bcma_bus *bus, struct ssb_sprom *out)
- 		binfo->vendor = SSB_BOARDVENDOR_BCM;
- 	nvram_read_u16(prefix, NULL, "boardtype", &binfo->type, 0, true);
- 
--	bcm47xx_fill_sprom(out, prefix, false);
-+	bcm47xx_fill_sprom(out, prefix, fallback);
- 
- 	return 0;
- }
 -- 
-1.8.4.5
+Michal Hocko
+SUSE Labs

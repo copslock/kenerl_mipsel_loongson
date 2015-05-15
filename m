@@ -1,53 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 May 2015 21:04:01 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:49477 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27012589AbbEOTD766g0s (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 15 May 2015 21:03:59 +0200
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 2A7639DD8817D;
-        Fri, 15 May 2015 20:03:53 +0100 (IST)
-Received: from hhmail02.hh.imgtec.org (10.100.10.20) by KLMAIL01.kl.imgtec.org
- (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Fri, 15 May
- 2015 20:03:56 +0100
-Received: from BAMAIL02.ba.imgtec.org (10.20.40.28) by hhmail02.hh.imgtec.org
- (10.100.10.20) with Microsoft SMTP Server (TLS) id 14.3.224.2; Fri, 15 May
- 2015 20:03:55 +0100
-Received: from [10.20.3.79] (10.20.3.79) by bamail02.ba.imgtec.org
- (10.20.40.28) with Microsoft SMTP Server (TLS) id 14.3.174.1; Fri, 15 May
- 2015 12:03:53 -0700
-Message-ID: <55564319.7020502@imgtec.com>
-Date:   Fri, 15 May 2015 12:03:53 -0700
-From:   Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.2.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 May 2015 21:14:46 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:38183 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S27026711AbbEOTOoag70L (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 15 May 2015 21:14:44 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.9/8.14.8) with ESMTP id t4FJEiRJ008141;
+        Fri, 15 May 2015 21:14:44 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.9/8.14.9/Submit) id t4FJEi9H008140;
+        Fri, 15 May 2015 21:14:44 +0200
+Date:   Fri, 15 May 2015 21:14:43 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     James Hogan <james.hogan@imgtec.com>
+Cc:     linux-mips@linux-mips.org,
+        Markos Chandras <markos.chandras@imgtec.com>
+Subject: Re: [PATCH 1/2] MIPS: cpu: Alter MIPS_CPU_* definitions to fill gap
+Message-ID: <20150515191443.GF2322@linux-mips.org>
+References: <1431530234-32460-1-git-send-email-james.hogan@imgtec.com>
+ <1431530234-32460-2-git-send-email-james.hogan@imgtec.com>
 MIME-Version: 1.0
-To:     David Daney <ddaney.cavm@gmail.com>
-CC:     "aleksey.makarov@auriga.com" <aleksey.makarov@auriga.com>,
-        James Hogan <James.Hogan@imgtec.com>,
-        Paul Burton <Paul.Burton@imgtec.com>,
-        "david.daney@cavium.com" <david.daney@cavium.com>,
-        "peterz@infradead.org" <peterz@infradead.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "ralf@linux-mips.org" <ralf@linux-mips.org>,
-        "davidlohr@hp.com" <davidlohr@hp.com>,
-        "kirill@shutemov.name" <kirill@shutemov.name>,
-        "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-        "mingo@kernel.org" <mingo@kernel.org>
-Subject: Re: [PATCH v2] MIPS64: Support of at least 48 bits of SEGBITS
-References: <20150515013351.7450.12130.stgit@ubuntu-yegoshin> <55561EB6.4020009@gmail.com>
-In-Reply-To: <55561EB6.4020009@gmail.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.20.3.79]
-Return-Path: <Leonid.Yegoshin@imgtec.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1431530234-32460-2-git-send-email-james.hogan@imgtec.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47414
+X-archive-position: 47415
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Leonid.Yegoshin@imgtec.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -60,44 +44,23 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 05/15/2015 09:28 AM, David Daney wrote:
-> On 05/14/2015 06:34 PM, Leonid Yegoshin wrote:
->> SEGBITS default is 40 bits or less, depending from CPU type.
->> This patch introduces 48bits of application virtual address (SEGBITS) support.
->> It is defined only for 16K and 64K pages and is optional (configurable).
->>
->> Penalty - a small number of additional pages for generic (small) applications.
->> But for 64K pages it adds 3rd level of PTE structure, which has a little
->> impact during software TLB refill.
->>
->> This patch is needed because MIPS I6XXX and P6XXX cores have 48 bit of
->> virtual address in each segment (SEGBITS).
->>
-> I'm concerned that the change log doesn't convey the true reason for the
-> patch.
->
-> Many processors support larger VA space than is utilized by the kernel.
->    A choice was made to reduce the size of the VA space in order to
-> reduce TLB handling overhead.
->
-> If the true reason for the patch is to enable larger VA space, say that.
->    But is it really required by those processors you mention?  I doubt it.
->
-> David Daney
->
->
+On Wed, May 13, 2015 at 04:17:13PM +0100, James Hogan wrote:
 
-Well, I was not aware about many processors capability, I can't find 
-this kind of note anywhere.
+> The MIPS_CPU_* definitions accidentally missed bits 27..30 when
+> MIPS_CPU_EVA was added, and further definitions have continued from
+> there.
+> 
+> Shift all the definitions since MIPS_CPU_EVA right by 4 so there are no
+> gaps.
 
-And I assumed that statement "If unsure, say N" and the fact that it is 
-configurable leads to conclusion that it is completely optional. I have 
-a request from management to support 48bit VA but I understand that 
-somebody may not like even small penalty.
+I like the patches but I think there is a bit more cleanup to be done
+here.  For one, we're using long longs to store the CPU feature flags
+and while recent versions of GCC appear to be smarter, older versions
+used to load both 32 bit words of a long long into a register for any
+kind of arithmetic or test on the value.  So I'd be happy if we could
+go back to sorting bits in an array of longs.  And then maybe use
+test_bit() for testing the bits.  And use an enum to number the bits.
 
-In other side, this patch was required to test HW capability, GLIBC and 
-application compatibility (I tested on buildroot FS).
+After solving the include ordering issue, that is ...
 
-So, if you still have concern, please propose a description statement.
-
-- Leonid.
+  Ralf

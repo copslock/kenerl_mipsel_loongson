@@ -1,50 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 May 2015 17:35:55 +0200 (CEST)
-Received: from prod-mail-xrelay02.akamai.com ([72.246.2.14]:51969 "EHLO
-        prod-mail-xrelay02.akamai.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27009768AbbEOPfyPv9YH (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 15 May 2015 17:35:54 +0200
-Received: from prod-mail-xrelay02.akamai.com (localhost [127.0.0.1])
-        by postfix.imss70 (Postfix) with ESMTP id 8B774286F4;
-        Fri, 15 May 2015 15:35:50 +0000 (GMT)
-Received: from prod-mail-relay07.akamai.com (prod-mail-relay07.akamai.com [172.17.121.112])
-        by prod-mail-xrelay02.akamai.com (Postfix) with ESMTP id 757F9285EC;
-        Fri, 15 May 2015 15:35:50 +0000 (GMT)
-Received: from akamai.com (unknown [172.28.12.253])
-        by prod-mail-relay07.akamai.com (Postfix) with ESMTP id 5D9B0800E7;
-        Fri, 15 May 2015 15:35:50 +0000 (GMT)
-Date:   Fri, 15 May 2015 11:35:50 -0400
-From:   Eric B Munson <emunson@akamai.com>
-To:     Michal Hocko <mhocko@suse.cz>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        Shuah Khan <shuahkh@osg.samsung.com>,
-        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mips@linux-mips.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org, linux-mm@kvack.org,
-        linux-arch@vger.kernel.org, linux-api@vger.kernel.org
-Subject: Re: [PATCH 0/3] Allow user to request memory to be locked on page
- fault
-Message-ID: <20150515153550.GA2454@akamai.com>
-References: <1431113626-19153-1-git-send-email-emunson@akamai.com>
- <20150508124203.6679b1d35ad9555425003929@linux-foundation.org>
- <20150511180631.GA1227@akamai.com>
- <20150513150036.GG1227@akamai.com>
- <20150514080812.GC6433@dhcp22.suse.cz>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 May 2015 17:38:01 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:36989 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S27012469AbbEOPh7kC8TN (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 15 May 2015 17:37:59 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.9/8.14.8) with ESMTP id t4FFc1G4004220;
+        Fri, 15 May 2015 17:38:01 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.9/8.14.9/Submit) id t4FFc0Ma004219;
+        Fri, 15 May 2015 17:38:00 +0200
+Date:   Fri, 15 May 2015 17:38:00 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     James Hogan <james.hogan@imgtec.com>
+Cc:     linux-mips@linux-mips.org
+Subject: Re: [PATCH 5/9] MIPS: dump_tlb: Take global bit into account
+Message-ID: <20150515153800.GD2322@linux-mips.org>
+References: <1431514255-3030-1-git-send-email-james.hogan@imgtec.com>
+ <1431514255-3030-6-git-send-email-james.hogan@imgtec.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="UugvWAfsgieZRqgk"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20150514080812.GC6433@dhcp22.suse.cz>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <emunson@akamai.com>
+In-Reply-To: <1431514255-3030-6-git-send-email-james.hogan@imgtec.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47408
+X-archive-position: 47409
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: emunson@akamai.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -57,145 +43,53 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+On Wed, May 13, 2015 at 11:50:51AM +0100, James Hogan wrote:
 
---UugvWAfsgieZRqgk
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> The TLB only matches the ASID when the global bit isn't set, so
+> dump_tlb() shouldn't really be skipping global entries just because the
+> ASID doesn't match. Fix the condition to read the TLB entry's global bit
+> from EntryLo0. Note that after a TLB read the global bits in both
+> EntryLo registers reflect the same global bit in the TLB entry.
+> 
+> Signed-off-by: James Hogan <james.hogan@imgtec.com>
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: linux-mips@linux-mips.org
+> ---
+>  arch/mips/lib/dump_tlb.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/mips/lib/dump_tlb.c b/arch/mips/lib/dump_tlb.c
+> index 17d05caa776d..70e0a6bdb322 100644
+> --- a/arch/mips/lib/dump_tlb.c
+> +++ b/arch/mips/lib/dump_tlb.c
+> @@ -73,7 +73,8 @@ static void dump_tlb(int first, int last)
+>  		 */
+>  		if ((entryhi & ~0x1ffffUL) == CKSEG0)
+>  			continue;
+> -		if ((entryhi & 0xff) != asid)
+> +		/* ASID takes effect in absense of global bit */
+> +		if (!(entrylo0 & 1) && (entryhi & 0xff) != asid)
+>  			continue;
 
-On Thu, 14 May 2015, Michal Hocko wrote:
+Note the architecture mandates that there only is one global bit per
+TLB entry and its written as the logic and of the two global bits in
+the entrylo0 and entrylo1 registers.  On TLB read the G bits of both
+entrylo registers will return the same value.
 
-> On Wed 13-05-15 11:00:36, Eric B Munson wrote:
-> > On Mon, 11 May 2015, Eric B Munson wrote:
-> >=20
-> > > On Fri, 08 May 2015, Andrew Morton wrote:
-> > >=20
-> > > > On Fri,  8 May 2015 15:33:43 -0400 Eric B Munson <emunson@akamai.co=
-m> wrote:
-> > > >=20
-> > > > > mlock() allows a user to control page out of program memory, but =
-this
-> > > > > comes at the cost of faulting in the entire mapping when it is
-> > > > > allocated.  For large mappings where the entire area is not neces=
-sary
-> > > > > this is not ideal.
-> > > > >=20
-> > > > > This series introduces new flags for mmap() and mlockall() that a=
-llow a
-> > > > > user to specify that the covered are should not be paged out, but=
- only
-> > > > > after the memory has been used the first time.
-> > > >=20
-> > > > Please tell us much much more about the value of these changes: the=
- use
-> > > > cases, the behavioural improvements and performance results which t=
-he
-> > > > patchset brings to those use cases, etc.
-> > > >=20
-> > >=20
-> > > To illustrate the proposed use case I wrote a quick program that mmaps
-> > > a 5GB file which is filled with random data and accesses 150,000 pages
-> > > from that mapping.  Setup and processing were timed separately to
-> > > illustrate the differences between the three tested approaches.  the
-> > > setup portion is simply the call to mmap, the processing is the
-> > > accessing of the various locations in  that mapping.  The following
-> > > values are in milliseconds and are the averages of 20 runs each with a
-> > > call to echo 3 > /proc/sys/vm/drop_caches between each run.
-> > >=20
-> > > The first mapping was made with MAP_PRIVATE | MAP_LOCKED as a baselin=
-e:
-> > > Startup average:    9476.506
-> > > Processing average: 3.573
-> > >=20
-> > > The second mapping was simply MAP_PRIVATE but each page was passed to
-> > > mlock() before being read:
-> > > Startup average:    0.051
-> > > Processing average: 721.859
-> > >=20
-> > > The final mapping was MAP_PRIVATE | MAP_LOCKONFAULT:
-> > > Startup average:    0.084
-> > > Processing average: 42.125
-> > >=20
-> >=20
-> > Michal's suggestion of changing protections and locking in a signal
-> > handler was better than the locking as needed, but still significantly
-> > more work required than the LOCKONFAULT case.
-> >=20
-> > Startup average:    0.047
-> > Processing average: 86.431
->=20
-> Have you played with batching? Has it helped? Anyway it is to be
-> expected that the overhead will be higher than a single mmap call. The
-> question is whether you can live with it because adding a new semantic
-> to mlock sounds trickier and MAP_LOCKED is tricky enough already...
->=20
+In reality some implementations differ in hardware, for example the
+SB1 core where the TLB entries both have their separate G bit.  Both
+will be written with the logic and of the G bits of the entrylo registers
+so the existence of multiple G bits per TLB entry should never become
+visible.
 
-I reworked the experiment to better cover the batching solution.  The
-same 5GB data file is used, however instead of 150,000 accesses at
-regular intervals, the test program now does 15,000,000 accesses to
-random pages in the mapping.  The rest of the setup remains the same.
+Except when writing a duplicate TLB entry where certain revisions will
+write the entrylo0 half of the TLB entry, then take the machine check
+exception leaving the entrylo1 half of the TLB entry unchanged.  At
+this point one may end up with architecturally undefined TLB entries
+with one G bit set and one clear.
 
-mmap with MAP_LOCKED:
-Setup avg:      11821.193
-Processing avg: 3404.286
+There may be other CPUs where such invalid TLB entries are possible
+therfore think we should check for entries with mismatching global
+bits and print those anyway.
 
-mmap with mlock() before each access:
-Setup avg:      0.054
-Processing avg: 34263.201
-
-mmap with PROT_NONE and signal handler and batch size of 1 page:
-With the default value in max_map_count, this gets ENOMEM as I attempt
-to change the permissions, after upping the sysctl significantly I get:
-Setup avg:      0.050
-Processing avg: 67690.625
-
-mmap with PROT_NONE and signal handler and batch size of 8 pages:
-Setup avg:      0.098
-Processing avg: 37344.197
-
-mmap with PROT_NONE and signal handler and batch size of 16 pages:
-Setup avg:      0.0548
-Processing avg: 29295.669
-
-mmap with MAP_LOCKONFAULT:
-Setup avg:      0.073
-Processing avg: 18392.136
-
-The signal handler in the batch cases faulted in memory in two steps to
-avoid having to know the start and end of the faulting mapping.  The
-first step covers the page that caused the fault as we know that it will
-be possible to lock.  The second step speculatively tries to mlock and
-mprotect the batch size - 1 pages that follow.  There may be a clever
-way to avoid this without having the program track each mapping to be
-covered by this handeler in a globally accessible structure, but I could
-not find it.
-
-These results show that if the developer knows that a majority of the
-mapping will be used, it is better to try and fault it in at once,
-otherwise MAP_LOCKONFAULT is significantly faster.
-
-Eric
-
---UugvWAfsgieZRqgk
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
-
-iQIcBAEBAgAGBQJVVhJWAAoJELbVsDOpoOa9WYAP/3ov0vZPI/nakqAuXYzn2jqU
-1Dv9ox2VB8OOYQ7rwRVnpS+yJ7uxXSHHiKZLwBOiCI6nRCAlPmropUW8M+2UsdLV
-i/hvNzA4IuazdL2LqZ/w8pLD9wLtbP+9EqFP5ELbmNxmZyakXctGtxpsa+YUXoZM
-viRheOLn9A6qkZvGqDo6A9jMckXRuvd2x7dG4M/qjSPTVGBq573/qFmcOzNqHRZ9
-PQptov2DdetLXYLBIMoU9kb/cK9EHja8fL/vOyB53DScGcMBLNCcjFJIaPz33wy0
-Jdm4/rJIW5SYF3D4V1UvcJY54MdumOiKkidGIPYsqOApyTiUmc6PK/fZxWz2/P6b
-ab4AOBOHNYrURr45nDbgI0/exrvezuOlqnH4xvZTkZKuprx/pMaWFsv07oECfBpm
-iQk7AcTzoF6j8k+UAl8so+VbZ9m5/FSvR+TAMkNb1mtACVL7Y3gAMcuQG7rap3fN
-lJoe72b4MRpXfBaD/sdW1Q9Zi9SelcEzrV8jPZiEbRHyIQC0UkYRrL6wCM+lClV0
-xj8A/y3LD9Kq+k4S0s7oSc65n1EEejx3SumZ3JoWxno1aNT2RI5c7sclxmaviGr0
-Ro2Gbb0HwrlH2yXwGKkC8jEayG7NzDCZVlXHJ6j6SSGABaLD5DWbaDgzIhT8lGtL
-xI28uUdrt/3kVWpHEZr3
-=ycZg
------END PGP SIGNATURE-----
-
---UugvWAfsgieZRqgk--
+  Ralf

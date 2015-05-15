@@ -1,53 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 May 2015 00:43:13 +0200 (CEST)
-Received: from mail-pa0-f45.google.com ([209.85.220.45]:34935 "EHLO
-        mail-pa0-f45.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012567AbbENWnJoi0Jq (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 15 May 2015 00:43:09 +0200
-Received: by pabru16 with SMTP id ru16so6573329pab.2;
-        Thu, 14 May 2015 15:43:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=wnGmdHeJHbQFNQmp+FtC00XX7o1EogFNhts44PUCIQE=;
-        b=S4BdIarnBbuDOB5bezivrF3iRPqds/L0Mlk7Kq+eJt/ljKmTMOZneUE4KubkI8ujYC
-         SrY4OGq/5Tn6Qecxq1dAowVvXgavTjASNq+dt4VPoXZUCKVhPU/SbKdQ1go6M5Oh86Cs
-         BxdcFT4ALVtY1fqCFv6W7elQ0kMLmvoDneqUfhWiG5JKhVCsuLJ9NtAApT0nbax9RLMD
-         xLHJIeVK2ciRlVSUR+G8mgeXh7PbjOkGrLQWU663qsvTG10ppajh0m6zRSG0bD+/z9rR
-         JRFR5vUzJ5kDuT9K29P7dLPr7uD+03xudBKvdkonRufZHf0B+2drQTS15j8SfyEeAt4m
-         4fXw==
-X-Received: by 10.66.119.174 with SMTP id kv14mr12100006pab.5.1431643380480;
-        Thu, 14 May 2015 15:43:00 -0700 (PDT)
-Received: from [10.12.156.244] (5520-maca-inet1-outside.broadcom.com. [216.31.211.11])
-        by mx.google.com with ESMTPSA id id2sm201882pbb.56.2015.05.14.15.42.58
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 14 May 2015 15:42:59 -0700 (PDT)
-Message-ID: <555524E2.6080700@gmail.com>
-Date:   Thu, 14 May 2015 15:42:42 -0700
-From:   Florian Fainelli <f.fainelli@gmail.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.6.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 May 2015 03:23:24 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:6005 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27013392AbbEOBXVW0WmE (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 15 May 2015 03:23:21 +0200
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id E7E21D22F5B3;
+        Fri, 15 May 2015 02:23:16 +0100 (IST)
+Received: from hhmail02.hh.imgtec.org (10.100.10.20) by KLMAIL01.kl.imgtec.org
+ (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Fri, 15 May
+ 2015 02:23:17 +0100
+Received: from BAMAIL02.ba.imgtec.org (10.20.40.28) by hhmail02.hh.imgtec.org
+ (10.100.10.20) with Microsoft SMTP Server (TLS) id 14.3.224.2; Fri, 15 May
+ 2015 02:23:17 +0100
+Received: from [127.0.1.1] (10.20.3.79) by bamail02.ba.imgtec.org
+ (10.20.40.28) with Microsoft SMTP Server (TLS) id 14.3.174.1; Thu, 14 May
+ 2015 18:23:14 -0700
+Subject: [PATCH] MIPS64: Support of at least 48 bits of SEGBITS
+From:   Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+To:     <aleksey.makarov@auriga.com>, <james.hogan@imgtec.com>,
+        <paul.burton@imgtec.com>, <david.daney@cavium.com>,
+        <peterz@infradead.org>, <linux-mips@linux-mips.org>,
+        <linux-kernel@vger.kernel.org>, <ralf@linux-mips.org>,
+        <davidlohr@hp.com>, <kirill@shutemov.name>,
+        <akpm@linux-foundation.org>, <mingo@kernel.org>
+Date:   Thu, 14 May 2015 18:23:14 -0700
+Message-ID: <20150515012314.6819.30051.stgit@ubuntu-yegoshin>
+User-Agent: StGit/0.17.1-dirty
 MIME-Version: 1.0
-To:     Kevin Cernekee <cernekee@gmail.com>,
-        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-CC:     mina86@mina86.com,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        Zubair.Kakakhel@imgtec.com, Ralf Baechle <ralf@linux-mips.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] MIPS: Flush cache after DMA_FROM_DEVICE for agressively
- speculative CPUs
-References: <20150514014924.36593.68642.stgit@ubuntu-yegoshin> <CAJiQ=7CU+MyaypO-9Np8aChVpVX_Vobdtoytt0q4Vz7LY9qHsA@mail.gmail.com>
-In-Reply-To: <CAJiQ=7CU+MyaypO-9Np8aChVpVX_Vobdtoytt0q4Vz7LY9qHsA@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-Return-Path: <f.fainelli@gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.20.3.79]
+Return-Path: <Leonid.Yegoshin@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47400
+X-archive-position: 47401
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: f.fainelli@gmail.com
+X-original-sender: Leonid.Yegoshin@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -60,44 +51,106 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 13/05/15 19:49, Kevin Cernekee wrote:
-> On Wed, May 13, 2015 at 6:49 PM, Leonid Yegoshin
-> <Leonid.Yegoshin@imgtec.com> wrote:
->> Some MIPS CPUs have an aggressive speculative load and may erroneuosly load
->> some cache line in the middle of DMA transaction. CPU discards result but cache
->> doesn't. If DMA happens from device then additional cache invalidation is needed
->> on that CPU's after DMA.
->>
->> Found in test.
->>
->> Signed-off-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
->> ---
->>  arch/mips/mm/dma-default.c |   10 ++++++----
->>  1 file changed, 6 insertions(+), 4 deletions(-)
->>
->> diff --git a/arch/mips/mm/dma-default.c b/arch/mips/mm/dma-default.c
->> index 609d1241b0c4..ccf49ecfbf8c 100644
->> --- a/arch/mips/mm/dma-default.c
->> +++ b/arch/mips/mm/dma-default.c
->> @@ -67,11 +67,13 @@ static inline struct page *dma_addr_to_page(struct device *dev,
->>   * systems and only the R10000 and R12000 are used in such systems, the
->>   * SGI IP28 Indigo² rsp. SGI IP32 aka O2.
->>   */
->> -static inline int cpu_needs_post_dma_flush(struct device *dev)
->> +static inline int cpu_needs_post_dma_flush(struct device *dev,
->> +                                          enum dma_data_direction direction)
->>  {
->>         return !plat_device_is_coherent(dev) &&
->>                (boot_cpu_type() == CPU_R10000 ||
->>                 boot_cpu_type() == CPU_R12000 ||
->> +               (cpu_has_maar && (direction != DMA_TO_DEVICE)) ||
->>                 boot_cpu_type() == CPU_BMIPS5000);
-> 
-> Can all of these CPUs safely skip the post_dma_flush on DMA_TO_DEVICE
-> (not just maar)?
+SEGBITS default is 40 bits or less, depending from CPU type.
+This patch introduces 48bits of application virtual address (SEGBITS) support.
+It is defined only for 16K and 64K pages and is optional (configurable).
 
-Agreed that would seem like the logical thing to do. You could then just
-skip the call to cpu_needs_post_dma_flush() and move the direction test
-in arch/mips/mm/dma-default.c for instance?
--- 
-Florian
+Penalty - a small number of additional pages for generic (small) applications.
+But for 64K pages it adds 3rd level of PTE structure, which has a little
+impact during software TLB refill.
+
+This patch is needed because MIPS I6XXX and P6XXX cores have 48 bit of
+virtual address in each segment (SEGBITS).
+
+Signed-off-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+---
+ arch/mips/Kconfig                  |   10 ++++++++++
+ arch/mips/include/asm/pgtable-64.h |   18 +++++++++++-------
+ arch/mips/include/asm/processor.h  |    2 +-
+ 3 files changed, 22 insertions(+), 8 deletions(-)
+
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 76efb02ae99f..0a151a59a9ac 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -2032,6 +2032,16 @@ config PAGE_SIZE_64KB
+ 
+ endchoice
+ 
++config 48VMBITS
++	bool "48 bits virtual memory"
++	depends on PAGE_SIZE_16KB || PAGE_SIZE_64KB
++	help
++	  Define a maximum at least 48 bits of application virtual memory.
++	  Default is 40 bits or less, depending from CPU.
++	  In generic (small) application it is a small set of pages increase
++	  in page tables.
++	  If unsure, say N.
++
+ config FORCE_MAX_ZONEORDER
+ 	int "Maximum zone order"
+ 	range 14 64 if MIPS_HUGE_TLB_SUPPORT && PAGE_SIZE_64KB
+diff --git a/arch/mips/include/asm/pgtable-64.h b/arch/mips/include/asm/pgtable-64.h
+index cf661a2fb141..c6b5473440e6 100644
+--- a/arch/mips/include/asm/pgtable-64.h
++++ b/arch/mips/include/asm/pgtable-64.h
+@@ -17,7 +17,7 @@
+ #include <asm/cachectl.h>
+ #include <asm/fixmap.h>
+ 
+-#ifdef CONFIG_PAGE_SIZE_64KB
++#if defined(CONFIG_PAGE_SIZE_64KB) && !defined(CONFIG_48VMBITS)
+ #include <asm-generic/pgtable-nopmd.h>
+ #else
+ #include <asm-generic/pgtable-nopud.h>
+@@ -90,7 +90,11 @@
+ #define PTE_ORDER		0
+ #endif
+ #ifdef CONFIG_PAGE_SIZE_16KB
+-#define PGD_ORDER		0
++#ifdef CONFIG_48VMBITS
++#define PGD_ORDER               1
++#else
++#define PGD_ORDER               0
++#endif
+ #define PUD_ORDER		aieeee_attempt_to_allocate_pud
+ #define PMD_ORDER		0
+ #define PTE_ORDER		0
+@@ -104,7 +108,11 @@
+ #ifdef CONFIG_PAGE_SIZE_64KB
+ #define PGD_ORDER		0
+ #define PUD_ORDER		aieeee_attempt_to_allocate_pud
++#ifdef CONFIG_48VMBITS
++#define PMD_ORDER		0
++#else
+ #define PMD_ORDER		aieeee_attempt_to_allocate_pmd
++#endif
+ #define PTE_ORDER		0
+ #endif
+ 
+@@ -114,11 +122,7 @@
+ #endif
+ #define PTRS_PER_PTE	((PAGE_SIZE << PTE_ORDER) / sizeof(pte_t))
+ 
+-#if PGDIR_SIZE >= TASK_SIZE64
+-#define USER_PTRS_PER_PGD	(1)
+-#else
+-#define USER_PTRS_PER_PGD	(TASK_SIZE64 / PGDIR_SIZE)
+-#endif
++#define USER_PTRS_PER_PGD       ((TASK_SIZE64 / PGDIR_SIZE)?(TASK_SIZE64 / PGDIR_SIZE):1)
+ #define FIRST_USER_ADDRESS	0UL
+ 
+ /*
+diff --git a/arch/mips/include/asm/processor.h b/arch/mips/include/asm/processor.h
+index 9b3b48e21c22..3ccb63eaa6c8 100644
+--- a/arch/mips/include/asm/processor.h
++++ b/arch/mips/include/asm/processor.h
+@@ -69,7 +69,7 @@ extern unsigned int vced_count, vcei_count;
+  * 8192EB ...
+  */
+ #define TASK_SIZE32	0x7fff8000UL
+-#define TASK_SIZE64	0x10000000000UL
++#define TASK_SIZE64     (0x1UL << cpu_data[0].vmbits)
+ #define TASK_SIZE (test_thread_flag(TIF_32BIT_ADDR) ? TASK_SIZE32 : TASK_SIZE64)
+ #define STACK_TOP_MAX	TASK_SIZE64
+ 

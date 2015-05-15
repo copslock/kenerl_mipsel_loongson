@@ -1,33 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 May 2015 21:14:46 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:38183 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 May 2015 22:10:53 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:38453 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27026711AbbEOTOoag70L (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 15 May 2015 21:14:44 +0200
+        id S27026711AbbEOUKv1at1O (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 15 May 2015 22:10:51 +0200
 Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.9/8.14.8) with ESMTP id t4FJEiRJ008141;
-        Fri, 15 May 2015 21:14:44 +0200
+        by scotty.linux-mips.net (8.14.9/8.14.8) with ESMTP id t4FKApfJ009142;
+        Fri, 15 May 2015 22:10:51 +0200
 Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.9/8.14.9/Submit) id t4FJEi9H008140;
-        Fri, 15 May 2015 21:14:44 +0200
-Date:   Fri, 15 May 2015 21:14:43 +0200
+        by scotty.linux-mips.net (8.14.9/8.14.9/Submit) id t4FKAink009141;
+        Fri, 15 May 2015 22:10:44 +0200
+Date:   Fri, 15 May 2015 22:10:44 +0200
 From:   Ralf Baechle <ralf@linux-mips.org>
-To:     James Hogan <james.hogan@imgtec.com>
-Cc:     linux-mips@linux-mips.org,
-        Markos Chandras <markos.chandras@imgtec.com>
-Subject: Re: [PATCH 1/2] MIPS: cpu: Alter MIPS_CPU_* definitions to fill gap
-Message-ID: <20150515191443.GF2322@linux-mips.org>
-References: <1431530234-32460-1-git-send-email-james.hogan@imgtec.com>
- <1431530234-32460-2-git-send-email-james.hogan@imgtec.com>
+To:     Nicholas Krause <xerofoify@gmail.com>
+Cc:     akpm@linux-foundation.org, kumba@gentoo.org,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH RESEND] mips:Fix build error for ip32_defconfig
+ configuration
+Message-ID: <20150515201044.GG2322@linux-mips.org>
+References: <1431613217-2517-1-git-send-email-xerofoify@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1431530234-32460-2-git-send-email-james.hogan@imgtec.com>
+In-Reply-To: <1431613217-2517-1-git-send-email-xerofoify@gmail.com>
 User-Agent: Mutt/1.5.23 (2014-03-12)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47415
+X-archive-position: 47416
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -44,23 +44,15 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, May 13, 2015 at 04:17:13PM +0100, James Hogan wrote:
+On Thu, May 14, 2015 at 10:20:17AM -0400, Nicholas Krause wrote:
 
-> The MIPS_CPU_* definitions accidentally missed bits 27..30 when
-> MIPS_CPU_EVA was added, and further definitions have continued from
-> there.
-> 
-> Shift all the definitions since MIPS_CPU_EVA right by 4 so there are no
-> gaps.
+> This fixes the make error when building the ip32_defconfig
+> configuration due to using sgio2_cmos_devinit rather then
+> the correct function,sgio2_rtc_devinit in a device_initcall
+> below this function's definition.
 
-I like the patches but I think there is a bit more cleanup to be done
-here.  For one, we're using long longs to store the CPU feature flags
-and while recent versions of GCC appear to be smarter, older versions
-used to load both 32 bit words of a long long into a register for any
-kind of arithmetic or test on the value.  So I'd be happy if we could
-go back to sorting bits in an array of longs.  And then maybe use
-test_bit() for testing the bits.  And use an enum to number the bits.
-
-After solving the include ordering issue, that is ...
+I've already applied Joshua Kinard's 
+https://patchwork.linux-mips.org/patch/9787/ with a minor cosmetic
+touchup.
 
   Ralf

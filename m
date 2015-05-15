@@ -1,53 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 May 2015 18:28:47 +0200 (CEST)
-Received: from mail-ie0-f174.google.com ([209.85.223.174]:34057 "EHLO
-        mail-ie0-f174.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27009768AbbEOQ2pkW8YW (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 15 May 2015 18:28:45 +0200
-Received: by ieczm2 with SMTP id zm2so46900859iec.1;
-        Fri, 15 May 2015 09:28:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=w+1/nJhQtUAQ8b/w+b7KZ9Ph7OJKhGVpKvIlkMsQ7C8=;
-        b=zr53G5djMIvjLmQgR/TVOi6cyxiG6T7kJjZs3juYHGM3S7m2djUoMoxzAlqvwALoH/
-         ZaL0t6eCGEk/IvqmvASo39bKxwkJgVvGvnJXbBeYxCPCdWyfWrPqgzKwx4cgGBr1Wnfw
-         01/9vxqz9V4TG+swtZhbond4vJbacnCw95Npb859GFbiRL36McV8ev2DivSBOw+5HwUy
-         KP0NzbOUQIo/RFJdjpOAcbnQm/4UVShTbmYrTHpA9JF1l61WiY3sr3aJ1Hm436Xq7MNt
-         hL6X+4jPUqLVYmiV1ZykTNyI3E6F/p2v5ZPjovFuH7Exp0sCNxGobtHlpLU6X4HRvYST
-         wRUQ==
-X-Received: by 10.107.9.67 with SMTP id j64mr14380827ioi.39.1431707321697;
-        Fri, 15 May 2015 09:28:41 -0700 (PDT)
-Received: from dl.caveonetworks.com (64.2.3.194.ptr.us.xo.net. [64.2.3.194])
-        by mx.google.com with ESMTPSA id i80sm1431567iod.6.2015.05.15.09.28.39
-        (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Fri, 15 May 2015 09:28:40 -0700 (PDT)
-Message-ID: <55561EB6.4020009@gmail.com>
-Date:   Fri, 15 May 2015 09:28:38 -0700
-From:   David Daney <ddaney.cavm@gmail.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 May 2015 20:03:54 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:37687 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S27025344AbbEOSDwzIk5M (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 15 May 2015 20:03:52 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.9/8.14.8) with ESMTP id t4FI3psd006923;
+        Fri, 15 May 2015 20:03:51 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.9/8.14.9/Submit) id t4FI3pwn006922;
+        Fri, 15 May 2015 20:03:51 +0200
+Date:   Fri, 15 May 2015 20:03:51 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     "Maciej W. Rozycki" <macro@linux-mips.org>
+Cc:     James Hogan <james.hogan@imgtec.com>,
+        Paul Burton <paul.burton@imgtec.com>, linux-mips@linux-mips.org
+Subject: Re: [PATCH 1/2] MIPS: malta-time: Don't switch RTC to BCD mode
+Message-ID: <20150515180351.GE2322@linux-mips.org>
+References: <1431519473-24049-1-git-send-email-james.hogan@imgtec.com>
+ <1431519473-24049-2-git-send-email-james.hogan@imgtec.com>
+ <alpine.LFD.2.11.1505131829580.1538@eddie.linux-mips.org>
+ <20150513221956.GE7723@jhogan-linux.le.imgtec.org>
+ <20150514084130.GE22815@NP-P-BURTON>
+ <55547238.1040005@imgtec.com>
+ <alpine.LFD.2.11.1505141122380.19904@eddie.linux-mips.org>
 MIME-Version: 1.0
-To:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-CC:     aleksey.makarov@auriga.com, james.hogan@imgtec.com,
-        paul.burton@imgtec.com, david.daney@cavium.com,
-        peterz@infradead.org, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org, ralf@linux-mips.org,
-        davidlohr@hp.com, kirill@shutemov.name, akpm@linux-foundation.org,
-        mingo@kernel.org
-Subject: Re: [PATCH v2] MIPS64: Support of at least 48 bits of SEGBITS
-References: <20150515013351.7450.12130.stgit@ubuntu-yegoshin>
-In-Reply-To: <20150515013351.7450.12130.stgit@ubuntu-yegoshin>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <ddaney.cavm@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <alpine.LFD.2.11.1505141122380.19904@eddie.linux-mips.org>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47411
+X-archive-position: 47412
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -60,136 +49,55 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 05/14/2015 06:34 PM, Leonid Yegoshin wrote:
-> SEGBITS default is 40 bits or less, depending from CPU type.
-> This patch introduces 48bits of application virtual address (SEGBITS) support.
-> It is defined only for 16K and 64K pages and is optional (configurable).
->
-> Penalty - a small number of additional pages for generic (small) applications.
-> But for 64K pages it adds 3rd level of PTE structure, which has a little
-> impact during software TLB refill.
->
-> This patch is needed because MIPS I6XXX and P6XXX cores have 48 bit of
-> virtual address in each segment (SEGBITS).
->
+On Thu, May 14, 2015 at 11:53:22AM +0100, Maciej W. Rozycki wrote:
 
-I'm concerned that the change log doesn't convey the true reason for the 
-patch.
+> > > The reason for init_rtc was touched upon in the commit message for
+> > > a87ea88d8f6c (MIPS: Malta: initialise the RTC at boot) but could perhaps
+> > > have been clearer. Straight out of reset the RTC may not be running at
+> > > all, but the code in estimate_frequencies (note: not the RTC driver)
+> > > relies upon the RTC having been started. This was an issue when using
+> > > earlier builds of U-boot which didn't touch the RTC at all, and is still
+> > > an issue if you do something like load the kernel via a JTAG probe
+> > > rather than using U-boot or YAMON. If the kernel doesn't ensure the RTC
+> > > is started then it'll just hang in estimate_frequencies waiting for the
+> > > UIP bit to change even though it never will. YAMON isn't the only way to
+> > > boot on Malta, and dependencies such as this between the kernel & the
+> > > bootloader should really be minimised.
+> 
+>  You do need to take reverse dependencies into account though, such as 
+> this one where YAMON relies upon a certain state of hardware (that it 
+> does initialise) to function correctly.  Granted, this RTC issue is 
+> probably the only one as other hardware on the Malta board does not 
+> carry initialised state over reset I believe.
+> 
+> > > ...and since it seems the U-boot & YAMON RTC drivers use it in different
+> > > modes, I'd consider this patch reasonable. Feel free to have my:
+> > > 
+> > >   Reviewed-by: Paul Burton <paul.burton@imgtec.com>
+> > 
+> > Thanks Paul,
+> > 
+> > Assuming Maciej is satisfied I'll rewrite the commit message, add a
+> > stable tag, and resend.
+> 
+>  I'd prefer RTC state not to be touched at all if its state is sane.  
+> That is read Register B, check for the only valid divider setting 
+> (32kHz), and if so then exit right away, and otherwise initialise the 
+> chip from scratch.  Consistency with YAMON might be a good idea in that 
+> initialisation, but I have no strong feeling towards that.  If you think 
+> there's value in having the chip set to the BCD mode, then feel free to 
+> keep that option.
+> 
+>  Note that any inhibition of the RTC previously initialised by 
+> temporarily setting the SET bit in Register B during bootstrap will 
+> disturb timekeeping that the system may carry over reset using 
+> adjtimex(8).
 
-Many processors support larger VA space than is utilized by the kernel. 
-  A choice was made to reduce the size of the VA space in order to 
-reduce TLB handling overhead.
+So you're instead suggesting to revoke a87ea88d8f6c ?
 
-If the true reason for the patch is to enable larger VA space, say that. 
-  But is it really required by those processors you mention?  I doubt it.
+If YAMON and U-Boot are differing in RTC handling then I suggest to
+treat that as a U-Boot bug.  YAMON was there first.  However these
+Malta kernels are also frequently booted without firmware in Qemu.
+No idea how Qemu initializes the RTC.
 
-David Daney
-
-
-> Signed-off-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-> ---
-> V2: Added correction for defintion of TASK_SIZE64
-> ---
->   arch/mips/Kconfig                  |   11 +++++++++++
->   arch/mips/include/asm/pgtable-64.h |   18 +++++++++++-------
->   arch/mips/include/asm/processor.h  |    6 +++++-
->   3 files changed, 27 insertions(+), 8 deletions(-)
->
-> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-> index 76efb02ae99f..3acff2f065e9 100644
-> --- a/arch/mips/Kconfig
-> +++ b/arch/mips/Kconfig
-> @@ -2032,6 +2032,17 @@ config PAGE_SIZE_64KB
->
->   endchoice
->
-> +config 48VMBITS
-> +	bool "48 bits virtual memory"
-> +	depends on PAGE_SIZE_16KB || PAGE_SIZE_64KB
-> +	depends on 64BIT
-> +	help
-> +	  Define a maximum at least 48 bits of application virtual memory.
-> +	  Default is 40 bits or less, depending from CPU.
-> +	  In generic (small) application it is a small set of pages increase
-> +	  in page tables.
-> +	  If unsure, say N.
-> +
->   config FORCE_MAX_ZONEORDER
->   	int "Maximum zone order"
->   	range 14 64 if MIPS_HUGE_TLB_SUPPORT && PAGE_SIZE_64KB
-> diff --git a/arch/mips/include/asm/pgtable-64.h b/arch/mips/include/asm/pgtable-64.h
-> index cf661a2fb141..c6b5473440e6 100644
-> --- a/arch/mips/include/asm/pgtable-64.h
-> +++ b/arch/mips/include/asm/pgtable-64.h
-> @@ -17,7 +17,7 @@
->   #include <asm/cachectl.h>
->   #include <asm/fixmap.h>
->
-> -#ifdef CONFIG_PAGE_SIZE_64KB
-> +#if defined(CONFIG_PAGE_SIZE_64KB) && !defined(CONFIG_48VMBITS)
->   #include <asm-generic/pgtable-nopmd.h>
->   #else
->   #include <asm-generic/pgtable-nopud.h>
-> @@ -90,7 +90,11 @@
->   #define PTE_ORDER		0
->   #endif
->   #ifdef CONFIG_PAGE_SIZE_16KB
-> -#define PGD_ORDER		0
-> +#ifdef CONFIG_48VMBITS
-> +#define PGD_ORDER               1
-> +#else
-> +#define PGD_ORDER               0
-> +#endif
->   #define PUD_ORDER		aieeee_attempt_to_allocate_pud
->   #define PMD_ORDER		0
->   #define PTE_ORDER		0
-> @@ -104,7 +108,11 @@
->   #ifdef CONFIG_PAGE_SIZE_64KB
->   #define PGD_ORDER		0
->   #define PUD_ORDER		aieeee_attempt_to_allocate_pud
-> +#ifdef CONFIG_48VMBITS
-> +#define PMD_ORDER		0
-> +#else
->   #define PMD_ORDER		aieeee_attempt_to_allocate_pmd
-> +#endif
->   #define PTE_ORDER		0
->   #endif
->
-> @@ -114,11 +122,7 @@
->   #endif
->   #define PTRS_PER_PTE	((PAGE_SIZE << PTE_ORDER) / sizeof(pte_t))
->
-> -#if PGDIR_SIZE >= TASK_SIZE64
-> -#define USER_PTRS_PER_PGD	(1)
-> -#else
-> -#define USER_PTRS_PER_PGD	(TASK_SIZE64 / PGDIR_SIZE)
-> -#endif
-> +#define USER_PTRS_PER_PGD       ((TASK_SIZE64 / PGDIR_SIZE)?(TASK_SIZE64 / PGDIR_SIZE):1)
->   #define FIRST_USER_ADDRESS	0UL
->
->   /*
-> diff --git a/arch/mips/include/asm/processor.h b/arch/mips/include/asm/processor.h
-> index 9b3b48e21c22..bd2030f32ea4 100644
-> --- a/arch/mips/include/asm/processor.h
-> +++ b/arch/mips/include/asm/processor.h
-> @@ -69,7 +69,11 @@ extern unsigned int vced_count, vcei_count;
->    * 8192EB ...
->    */
->   #define TASK_SIZE32	0x7fff8000UL
-> -#define TASK_SIZE64	0x10000000000UL
-> +#ifdef CONFIG_48VMBITS
-> +#define TASK_SIZE64     (0x1UL << ((cpu_data[0].vmbits>48)?48:cpu_data[0].vmbits))
-> +#else
-> +#define TASK_SIZE64     (0x10000000000UL)
-> +#endif
->   #define TASK_SIZE (test_thread_flag(TIF_32BIT_ADDR) ? TASK_SIZE32 : TASK_SIZE64)
->   #define STACK_TOP_MAX	TASK_SIZE64
->
->
-> --
-> To unsubscribe from this list: send the line "unsubscribe linux-kernel" in
-> the body of a message to majordomo@vger.kernel.org
-> More majordomo info at  http://vger.kernel.org/majordomo-info.html
-> Please read the FAQ at  http://www.tux.org/lkml/
->
->
+  Ralf

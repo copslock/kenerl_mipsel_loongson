@@ -1,76 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 May 2015 17:41:00 +0200 (CEST)
-Received: from down.free-electrons.com ([37.187.137.238]:55395 "EHLO
-        mail.free-electrons.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27009768AbbEOPk5SQ8xk (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 15 May 2015 17:40:57 +0200
-Received: by mail.free-electrons.com (Postfix, from userid 106)
-        id 318D688D; Fri, 15 May 2015 17:40:54 +0200 (CEST)
-Received: from bbrezillon (col31-4-88-188-80-5.fbx.proxad.net [88.188.80.5])
-        by mail.free-electrons.com (Postfix) with ESMTPSA id 416066D4;
-        Fri, 15 May 2015 17:40:49 +0200 (CEST)
-Date:   Fri, 15 May 2015 17:40:48 +0200
-From:   Boris Brezillon <boris.brezillon@free-electrons.com>
-To:     Stephen Boyd <sboyd@codeaurora.org>,
-        Mikko Perttunen <mikko.perttunen@kapsi.fi>
-Cc:     Boris Brezillon <boris.brezillon@free-electrons.com>,
-        Mike Turquette <mturquette@linaro.org>,
-        linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Jonathan Corbet <corbet@lwn.net>,
-        Shawn Guo <shawn.guo@linaro.org>,
-        ascha Hauer <kernel@pengutronix.de>,
-        David Brown <davidb@codeaurora.org>,
-        Daniel Walker <dwalker@fifo99.com>,
-        Bryan Huntsman <bryanh@codeaurora.org>,
-        Tony Lindgren <tony@atomide.com>,
-        Paul Walmsley <paul@pwsan.com>,
-        Liviu Dudau <liviu.dudau@arm.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Sylwester Nawrocki <s.nawrocki@samsung.com>,
-        Tomasz Figa <tomasz.figa@gmail.com>,
-        Barry Song <baohua@kernel.org>,
-        Viresh Kumar <viresh.linux@gmail.com>,
-        Emilio =?UTF-8?B?TMOzcGV6?= <emilio@elopez.com.ar>,
-        Maxime Ripard <maxime.ripard@free-electrons.com>,
-        Peter De Schrijver <pdeschrijver@nvidia.com>,
-        Prashant Gaikwad <pgaikwad@nvidia.com>,
-        Stephen Warren <swarren@wwwdotorg.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Alexandre Courbot <gnurou@gmail.com>,
-        Tero Kristo <t-kristo@ti.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Michal Simek <michal.simek@xilinx.com>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        linux-doc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-arm-msm@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-mips@linux-mips.org, patches@opensource.wolfsonmicro.com,
-        linux-rockchip@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, spear-devel@list.st.com,
-        linux-tegra@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-media@vger.kernel.org, rtc-linux@googlegroups.com
-Subject: Re: [PATCH v2 1/2] clk: change clk_ops' ->round_rate() prototype
-Message-ID: <20150515174048.4a31af49@bbrezillon>
-In-Reply-To: <20150507093702.0b58753d@bbrezillon>
-References: <1430407809-31147-1-git-send-email-boris.brezillon@free-electrons.com>
-        <1430407809-31147-2-git-send-email-boris.brezillon@free-electrons.com>
-        <20150507063953.GC32399@codeaurora.org>
-        <20150507093702.0b58753d@bbrezillon>
-X-Mailer: Claws Mail 3.9.3 (GTK+ 2.24.23; x86_64-pc-linux-gnu)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 May 2015 18:28:47 +0200 (CEST)
+Received: from mail-ie0-f174.google.com ([209.85.223.174]:34057 "EHLO
+        mail-ie0-f174.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27009768AbbEOQ2pkW8YW (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 15 May 2015 18:28:45 +0200
+Received: by ieczm2 with SMTP id zm2so46900859iec.1;
+        Fri, 15 May 2015 09:28:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding;
+        bh=w+1/nJhQtUAQ8b/w+b7KZ9Ph7OJKhGVpKvIlkMsQ7C8=;
+        b=zr53G5djMIvjLmQgR/TVOi6cyxiG6T7kJjZs3juYHGM3S7m2djUoMoxzAlqvwALoH/
+         ZaL0t6eCGEk/IvqmvASo39bKxwkJgVvGvnJXbBeYxCPCdWyfWrPqgzKwx4cgGBr1Wnfw
+         01/9vxqz9V4TG+swtZhbond4vJbacnCw95Npb859GFbiRL36McV8ev2DivSBOw+5HwUy
+         KP0NzbOUQIo/RFJdjpOAcbnQm/4UVShTbmYrTHpA9JF1l61WiY3sr3aJ1Hm436Xq7MNt
+         hL6X+4jPUqLVYmiV1ZykTNyI3E6F/p2v5ZPjovFuH7Exp0sCNxGobtHlpLU6X4HRvYST
+         wRUQ==
+X-Received: by 10.107.9.67 with SMTP id j64mr14380827ioi.39.1431707321697;
+        Fri, 15 May 2015 09:28:41 -0700 (PDT)
+Received: from dl.caveonetworks.com (64.2.3.194.ptr.us.xo.net. [64.2.3.194])
+        by mx.google.com with ESMTPSA id i80sm1431567iod.6.2015.05.15.09.28.39
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Fri, 15 May 2015 09:28:40 -0700 (PDT)
+Message-ID: <55561EB6.4020009@gmail.com>
+Date:   Fri, 15 May 2015 09:28:38 -0700
+From:   David Daney <ddaney.cavm@gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+To:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+CC:     aleksey.makarov@auriga.com, james.hogan@imgtec.com,
+        paul.burton@imgtec.com, david.daney@cavium.com,
+        peterz@infradead.org, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org, ralf@linux-mips.org,
+        davidlohr@hp.com, kirill@shutemov.name, akpm@linux-foundation.org,
+        mingo@kernel.org
+Subject: Re: [PATCH v2] MIPS64: Support of at least 48 bits of SEGBITS
+References: <20150515013351.7450.12130.stgit@ubuntu-yegoshin>
+In-Reply-To: <20150515013351.7450.12130.stgit@ubuntu-yegoshin>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <boris.brezillon@free-electrons.com>
+Return-Path: <ddaney.cavm@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47410
+X-archive-position: 47411
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: boris.brezillon@free-electrons.com
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -83,126 +60,136 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Stephen,
+On 05/14/2015 06:34 PM, Leonid Yegoshin wrote:
+> SEGBITS default is 40 bits or less, depending from CPU type.
+> This patch introduces 48bits of application virtual address (SEGBITS) support.
+> It is defined only for 16K and 64K pages and is optional (configurable).
+>
+> Penalty - a small number of additional pages for generic (small) applications.
+> But for 64K pages it adds 3rd level of PTE structure, which has a little
+> impact during software TLB refill.
+>
+> This patch is needed because MIPS I6XXX and P6XXX cores have 48 bit of
+> virtual address in each segment (SEGBITS).
+>
 
-Adding Mikko in the loop (after all, he was the one complaining about
-this signed long limitation in the first place, and I forgot to add
-him in the Cc list :-/).
+I'm concerned that the change log doesn't convey the true reason for the 
+patch.
 
-Mikko, are you okay with the approach proposed by Stephen (adding a
-new method) ?
+Many processors support larger VA space than is utilized by the kernel. 
+  A choice was made to reduce the size of the VA space in order to 
+reduce TLB handling overhead.
 
-On Thu, 7 May 2015 09:37:02 +0200
-Boris Brezillon <boris.brezillon@free-electrons.com> wrote:
+If the true reason for the patch is to enable larger VA space, say that. 
+  But is it really required by those processors you mention?  I doubt it.
 
-> Hi Stephen,
-> 
-> On Wed, 6 May 2015 23:39:53 -0700
-> Stephen Boyd <sboyd@codeaurora.org> wrote:
-> 
-> > On 04/30, Boris Brezillon wrote:
-> > > Clock rates are stored in an unsigned long field, but ->round_rate()
-> > > (which returns a rounded rate from a requested one) returns a long
-> > > value (errors are reported using negative error codes), which can lead
-> > > to long overflow if the clock rate exceed 2Ghz.
-> > > 
-> > > Change ->round_rate() prototype to return 0 or an error code, and pass the
-> > > requested rate as a pointer so that it can be adjusted depending on
-> > > hardware capabilities.
-> > > 
-> > > Signed-off-by: Boris Brezillon <boris.brezillon@free-electrons.com>
-> > > Tested-by: Heiko Stuebner <heiko@sntech.de>
-> > > Tested-by: Mikko Perttunen <mikko.perttunen@kapsi.fi>
-> > > Reviewed-by: Heiko Stuebner <heiko@sntech.de>
-> > 
-> > This patch is fairly invasive, and it probably doesn't even
-> > matter for most of these clock providers to be able to round a
-> > rate above 2GHz.
-> 
-> Fair enough.
-> 
-> > I've been trying to remove the .round_rate op
-> > from the framework by encouraging new features via the
-> > .determine_rate op.
-> 
-> Oh, I wasn't aware of that (BTW, that's a good thing).
-> Maybe this should be clearly stated (both in the struct clk_ops
-> kerneldoc header and in Documentation/clk.txt).
-> 
-> > Sadly, we still have to do a flag day and
-> > change all the .determine_rate ops when we want to add things.
-> 
-> Yes, but the number of clk drivers implementing ->determine_rate() is
-> still quite limited compared to those implementing ->round_rate().
-> 
-> > 
-> > What if we changed determine_rate ops to take a struct
-> > clk_determine_info (or some better named structure) instead of
-> > the current list of arguments that it currently takes? Then when
-> > we want to make these sorts of framework wide changes we can just
-> > throw a new member into that structure and be done.
-> 
-> I really like this idea, especially since I was wondering if we could
-> pass other 'clk rate requirements' like the rounding policy (down,
-> closest, up), or the maximum clk inaccuracy.
-> 
-> > 
-> > It doesn't solve the unsigned long to int return value problem
-> > though. We can solve that by gradually introducing a new op and
-> > handling another case in the rounding path. If we can come up
-> > with some good name for that new op like .decide_rate or
-> > something then it makes things nicer in the long run. I like the
-> > name .determine_rate though :/
-
-Okay, if you want a new method, how about this one:
-
-struct clk_adjust_rate_req {
-	/* fields filled by the caller */
-	unsigned long rate; /* rate is updated by the clk driver */
-	unsigned long min;
-	unsigned long max;
-
-	/* fields filled by the clk driver */
-	struct clk_hw *best_parent;
-	unsigned long best_parent_rate;
-
-	/*
-	 * new fields I'd like to add at some point:
-	 * unsigned long max_inaccuracy;
-	 * something about the power consumption constraints :-)
-	 */
-};
-
-int (*adjust_rate)(struct clk_hw *hw, struct clk_adjust_rate_req *req);
-
-> 
-> Why not changing the ->determine_rate() prototype. As said above, the
-> number of clk drivers implementing this function is still quite
-> limited, and I guess we can have an ack for all of them.
-> 
-> > 
-> > The benefit of all this is that we don't have to worry about
-> > finding the random clk providers that get added into other
-> > subsystems and fixing them up. If drivers actually care about
-> > this problem then they'll be fixed to use the proper op. FYI,
-> > last time we updated the function signature of .determine_rate we
-> > broke a couple drivers along the way.
-> > 
-> 
-> Hm, IMHO, adding a new op is not a good thing. I agree that it eases
-> the transition, but ITOH you'll have to live with old/deprecated ops in
-> your clk_ops structure with people introducing new drivers still using
-> the old ops (see the number of clk drivers implementing ->round_rate()
-> instead of ->determine_rate()).
-> 
-> Best Regards,
-> 
-> Boris
-> 
+David Daney
 
 
-
--- 
-Boris Brezillon, Free Electrons
-Embedded Linux and Kernel engineering
-http://free-electrons.com
+> Signed-off-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+> ---
+> V2: Added correction for defintion of TASK_SIZE64
+> ---
+>   arch/mips/Kconfig                  |   11 +++++++++++
+>   arch/mips/include/asm/pgtable-64.h |   18 +++++++++++-------
+>   arch/mips/include/asm/processor.h  |    6 +++++-
+>   3 files changed, 27 insertions(+), 8 deletions(-)
+>
+> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+> index 76efb02ae99f..3acff2f065e9 100644
+> --- a/arch/mips/Kconfig
+> +++ b/arch/mips/Kconfig
+> @@ -2032,6 +2032,17 @@ config PAGE_SIZE_64KB
+>
+>   endchoice
+>
+> +config 48VMBITS
+> +	bool "48 bits virtual memory"
+> +	depends on PAGE_SIZE_16KB || PAGE_SIZE_64KB
+> +	depends on 64BIT
+> +	help
+> +	  Define a maximum at least 48 bits of application virtual memory.
+> +	  Default is 40 bits or less, depending from CPU.
+> +	  In generic (small) application it is a small set of pages increase
+> +	  in page tables.
+> +	  If unsure, say N.
+> +
+>   config FORCE_MAX_ZONEORDER
+>   	int "Maximum zone order"
+>   	range 14 64 if MIPS_HUGE_TLB_SUPPORT && PAGE_SIZE_64KB
+> diff --git a/arch/mips/include/asm/pgtable-64.h b/arch/mips/include/asm/pgtable-64.h
+> index cf661a2fb141..c6b5473440e6 100644
+> --- a/arch/mips/include/asm/pgtable-64.h
+> +++ b/arch/mips/include/asm/pgtable-64.h
+> @@ -17,7 +17,7 @@
+>   #include <asm/cachectl.h>
+>   #include <asm/fixmap.h>
+>
+> -#ifdef CONFIG_PAGE_SIZE_64KB
+> +#if defined(CONFIG_PAGE_SIZE_64KB) && !defined(CONFIG_48VMBITS)
+>   #include <asm-generic/pgtable-nopmd.h>
+>   #else
+>   #include <asm-generic/pgtable-nopud.h>
+> @@ -90,7 +90,11 @@
+>   #define PTE_ORDER		0
+>   #endif
+>   #ifdef CONFIG_PAGE_SIZE_16KB
+> -#define PGD_ORDER		0
+> +#ifdef CONFIG_48VMBITS
+> +#define PGD_ORDER               1
+> +#else
+> +#define PGD_ORDER               0
+> +#endif
+>   #define PUD_ORDER		aieeee_attempt_to_allocate_pud
+>   #define PMD_ORDER		0
+>   #define PTE_ORDER		0
+> @@ -104,7 +108,11 @@
+>   #ifdef CONFIG_PAGE_SIZE_64KB
+>   #define PGD_ORDER		0
+>   #define PUD_ORDER		aieeee_attempt_to_allocate_pud
+> +#ifdef CONFIG_48VMBITS
+> +#define PMD_ORDER		0
+> +#else
+>   #define PMD_ORDER		aieeee_attempt_to_allocate_pmd
+> +#endif
+>   #define PTE_ORDER		0
+>   #endif
+>
+> @@ -114,11 +122,7 @@
+>   #endif
+>   #define PTRS_PER_PTE	((PAGE_SIZE << PTE_ORDER) / sizeof(pte_t))
+>
+> -#if PGDIR_SIZE >= TASK_SIZE64
+> -#define USER_PTRS_PER_PGD	(1)
+> -#else
+> -#define USER_PTRS_PER_PGD	(TASK_SIZE64 / PGDIR_SIZE)
+> -#endif
+> +#define USER_PTRS_PER_PGD       ((TASK_SIZE64 / PGDIR_SIZE)?(TASK_SIZE64 / PGDIR_SIZE):1)
+>   #define FIRST_USER_ADDRESS	0UL
+>
+>   /*
+> diff --git a/arch/mips/include/asm/processor.h b/arch/mips/include/asm/processor.h
+> index 9b3b48e21c22..bd2030f32ea4 100644
+> --- a/arch/mips/include/asm/processor.h
+> +++ b/arch/mips/include/asm/processor.h
+> @@ -69,7 +69,11 @@ extern unsigned int vced_count, vcei_count;
+>    * 8192EB ...
+>    */
+>   #define TASK_SIZE32	0x7fff8000UL
+> -#define TASK_SIZE64	0x10000000000UL
+> +#ifdef CONFIG_48VMBITS
+> +#define TASK_SIZE64     (0x1UL << ((cpu_data[0].vmbits>48)?48:cpu_data[0].vmbits))
+> +#else
+> +#define TASK_SIZE64     (0x10000000000UL)
+> +#endif
+>   #define TASK_SIZE (test_thread_flag(TIF_32BIT_ADDR) ? TASK_SIZE32 : TASK_SIZE64)
+>   #define STACK_TOP_MAX	TASK_SIZE64
+>
+>
+> --
+> To unsubscribe from this list: send the line "unsubscribe linux-kernel" in
+> the body of a message to majordomo@vger.kernel.org
+> More majordomo info at  http://vger.kernel.org/majordomo-info.html
+> Please read the FAQ at  http://www.tux.org/lkml/
+>
+>

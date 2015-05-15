@@ -1,39 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 May 2015 22:45:50 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:38764 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27026742AbbEOUpsiqBFa (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 15 May 2015 22:45:48 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.9/8.14.8) with ESMTP id t4FKjlNb009781;
-        Fri, 15 May 2015 22:45:47 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.9/8.14.9/Submit) id t4FKjkBu009780;
-        Fri, 15 May 2015 22:45:46 +0200
-Date:   Fri, 15 May 2015 22:45:46 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     nick <xerofoify@gmail.com>
-Cc:     akpm@linux-foundation.org, kumba@gentoo.org,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH RESEND] mips:Fix build error for ip32_defconfig
- configuration
-Message-ID: <20150515204546.GH2322@linux-mips.org>
-References: <1431613217-2517-1-git-send-email-xerofoify@gmail.com>
- <20150515201044.GG2322@linux-mips.org>
- <5556543B.1010406@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 May 2015 22:48:57 +0200 (CEST)
+Received: from www.linutronix.de ([62.245.132.108]:44065 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27012621AbbEOUsz0KkTj (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 15 May 2015 22:48:55 +0200
+Received: from localhost ([127.0.0.1])
+        by Galois.linutronix.de with esmtps (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:256)
+        (Exim 4.80)
+        (envelope-from <tglx@linutronix.de>)
+        id 1YtMWu-0007BE-QV; Fri, 15 May 2015 22:48:24 +0200
+Date:   Fri, 15 May 2015 22:48:36 +0200 (CEST)
+From:   Thomas Gleixner <tglx@linutronix.de>
+To:     Jiang Liu <jiang.liu@linux.intel.com>
+cc:     Bjorn Helgaas <bhelgaas@google.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Yinghai Lu <yinghai@kernel.org>,
+        Borislav Petkov <bp@alien8.de>,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Alexandre Courbot <gnurou@gmail.com>,
+        Michal Simek <michal.simek@xilinx.com>,
+        =?ISO-8859-15?Q?S=F6ren_Brinkmann?= <soren.brinkmann@xilinx.com>,
+        James Hogan <james.hogan@imgtec.com>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Manuel Lauss <manuel.lauss@gmail.com>,
+        Marc Zyngier <marc.zyngier@arm.com>,
+        Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+        x86@kernel.org, linux-kernel@vger.kernel.org,
+        linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-gpio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-metag@vger.kernel.org
+Subject: Re: [RFC v1 11/11] genirq: Pass irq_data to helper function
+ __irq_set_chip_handler_name_locked()
+In-Reply-To: <1430709339-29083-12-git-send-email-jiang.liu@linux.intel.com>
+Message-ID: <alpine.DEB.2.11.1505152247280.4225@nanos>
+References: <1430709339-29083-1-git-send-email-jiang.liu@linux.intel.com> <1430709339-29083-12-git-send-email-jiang.liu@linux.intel.com>
+User-Agent: Alpine 2.11 (DEB 23 2013-08-11)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5556543B.1010406@gmail.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <ralf@linux-mips.org>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Linutronix-Spam-Score: -1.0
+X-Linutronix-Spam-Level: -
+X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+Return-Path: <tglx@linutronix.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47418
+X-archive-position: 47419
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: tglx@linutronix.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,29 +68,22 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, May 15, 2015 at 04:16:59PM -0400, nick wrote:
+On Mon, 4 May 2015, Jiang Liu wrote:
+>  /* caller has locked the irq_desc and both params are valid */
+>  static inline void
+> -__irq_set_chip_handler_name_locked(unsigned int irq, struct irq_chip *chip,
+> +__irq_set_chip_handler_name_locked(struct irq_data *data, struct irq_chip *chip,
+>  				   irq_flow_handler_t handler, const char *name)
+>  {
+>  	struct irq_desc *desc;
+>  
+> -	desc = irq_to_desc(irq);
+> -	irq_desc_get_irq_data(desc)->chip = chip;
+> +	desc = irq_to_desc(data->irq);
 
-> On 2015-05-15 04:10 PM, Ralf Baechle wrote:
-> > On Thu, May 14, 2015 at 10:20:17AM -0400, Nicholas Krause wrote:
-> > 
-> >> This fixes the make error when building the ip32_defconfig
-> >> configuration due to using sgio2_cmos_devinit rather then
-> >> the correct function,sgio2_rtc_devinit in a device_initcall
-> >> below this function's definition.
-> > 
-> > I've already applied Joshua Kinard's 
-> > https://patchwork.linux-mips.org/patch/9787/ with a minor cosmetic
-> > touchup.
-> > 
-> >   Ralf
-> > 
-> Ralf,
-> As you may already known my rep with the other kernel developers is pretty bad.
-> Based off this work can you try(time permitting) to put it a good word that I am
-> improving.
+We should have a irq_data_to_desc() helper and use that instead of
+going through a full lookup again.
 
-The kernel world is a meritocracy.  Which means your status will depend
-on the value of your contributions.  So I think there's not much I could
-or should do but to let your merrits aka patches speak for themselves.
+Thanks,
 
-  Ralf
+	tglx

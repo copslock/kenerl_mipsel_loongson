@@ -1,21 +1,25 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 May 2015 20:03:54 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:37687 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27025344AbbEOSDwzIk5M (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 15 May 2015 20:03:52 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.9/8.14.8) with ESMTP id t4FI3psd006923;
-        Fri, 15 May 2015 20:03:51 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.9/8.14.9/Submit) id t4FI3pwn006922;
-        Fri, 15 May 2015 20:03:51 +0200
-Date:   Fri, 15 May 2015 20:03:51 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     "Maciej W. Rozycki" <macro@linux-mips.org>
-Cc:     James Hogan <james.hogan@imgtec.com>,
-        Paul Burton <paul.burton@imgtec.com>, linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 May 2015 20:14:21 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:44556 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27012525AbbEOSOT3Ue7F (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 15 May 2015 20:14:19 +0200
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 0D0D7E0FE4AD1;
+        Fri, 15 May 2015 19:14:13 +0100 (IST)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Fri, 15 May 2015 19:14:15 +0100
+Received: from localhost (192.168.159.126) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Fri, 15 May
+ 2015 19:14:15 +0100
+Date:   Fri, 15 May 2015 19:14:13 +0100
+From:   Paul Burton <paul.burton@imgtec.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+CC:     "Maciej W. Rozycki" <macro@linux-mips.org>,
+        James Hogan <james.hogan@imgtec.com>,
+        <linux-mips@linux-mips.org>
 Subject: Re: [PATCH 1/2] MIPS: malta-time: Don't switch RTC to BCD mode
-Message-ID: <20150515180351.GE2322@linux-mips.org>
+Message-ID: <20150515181413.GA30774@NP-P-BURTON>
 References: <1431519473-24049-1-git-send-email-james.hogan@imgtec.com>
  <1431519473-24049-2-git-send-email-james.hogan@imgtec.com>
  <alpine.LFD.2.11.1505131829580.1538@eddie.linux-mips.org>
@@ -23,20 +27,22 @@ References: <1431519473-24049-1-git-send-email-james.hogan@imgtec.com>
  <20150514084130.GE22815@NP-P-BURTON>
  <55547238.1040005@imgtec.com>
  <alpine.LFD.2.11.1505141122380.19904@eddie.linux-mips.org>
+ <20150515180351.GE2322@linux-mips.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset="utf-8"
 Content-Disposition: inline
-In-Reply-To: <alpine.LFD.2.11.1505141122380.19904@eddie.linux-mips.org>
+In-Reply-To: <20150515180351.GE2322@linux-mips.org>
 User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <ralf@linux-mips.org>
+X-Originating-IP: [192.168.159.126]
+Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47412
+X-archive-position: 47413
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: paul.burton@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,55 +55,36 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, May 14, 2015 at 11:53:22AM +0100, Maciej W. Rozycki wrote:
-
-> > > The reason for init_rtc was touched upon in the commit message for
-> > > a87ea88d8f6c (MIPS: Malta: initialise the RTC at boot) but could perhaps
-> > > have been clearer. Straight out of reset the RTC may not be running at
-> > > all, but the code in estimate_frequencies (note: not the RTC driver)
-> > > relies upon the RTC having been started. This was an issue when using
-> > > earlier builds of U-boot which didn't touch the RTC at all, and is still
-> > > an issue if you do something like load the kernel via a JTAG probe
-> > > rather than using U-boot or YAMON. If the kernel doesn't ensure the RTC
-> > > is started then it'll just hang in estimate_frequencies waiting for the
-> > > UIP bit to change even though it never will. YAMON isn't the only way to
-> > > boot on Malta, and dependencies such as this between the kernel & the
-> > > bootloader should really be minimised.
-> 
->  You do need to take reverse dependencies into account though, such as 
-> this one where YAMON relies upon a certain state of hardware (that it 
-> does initialise) to function correctly.  Granted, this RTC issue is 
-> probably the only one as other hardware on the Malta board does not 
-> carry initialised state over reset I believe.
-> 
-> > > ...and since it seems the U-boot & YAMON RTC drivers use it in different
-> > > modes, I'd consider this patch reasonable. Feel free to have my:
-> > > 
-> > >   Reviewed-by: Paul Burton <paul.burton@imgtec.com>
+On Fri, May 15, 2015 at 08:03:51PM +0200, Ralf Baechle wrote:
+> >  I'd prefer RTC state not to be touched at all if its state is sane.  
+> > That is read Register B, check for the only valid divider setting 
+> > (32kHz), and if so then exit right away, and otherwise initialise the 
+> > chip from scratch.  Consistency with YAMON might be a good idea in that 
+> > initialisation, but I have no strong feeling towards that.  If you think 
+> > there's value in having the chip set to the BCD mode, then feel free to 
+> > keep that option.
 > > 
-> > Thanks Paul,
-> > 
-> > Assuming Maciej is satisfied I'll rewrite the commit message, add a
-> > stable tag, and resend.
+> >  Note that any inhibition of the RTC previously initialised by 
+> > temporarily setting the SET bit in Register B during bootstrap will 
+> > disturb timekeeping that the system may carry over reset using 
+> > adjtimex(8).
 > 
->  I'd prefer RTC state not to be touched at all if its state is sane.  
-> That is read Register B, check for the only valid divider setting 
-> (32kHz), and if so then exit right away, and otherwise initialise the 
-> chip from scratch.  Consistency with YAMON might be a good idea in that 
-> initialisation, but I have no strong feeling towards that.  If you think 
-> there's value in having the chip set to the BCD mode, then feel free to 
-> keep that option.
+> So you're instead suggesting to revoke a87ea88d8f6c ?
 > 
->  Note that any inhibition of the RTC previously initialised by 
-> temporarily setting the SET bit in Register B during bootstrap will 
-> disturb timekeeping that the system may carry over reset using 
-> adjtimex(8).
+> If YAMON and U-Boot are differing in RTC handling then I suggest to
+> treat that as a U-Boot bug. YAMON was there first.
 
-So you're instead suggesting to revoke a87ea88d8f6c ?
+That would be fair enough, and is why I added RTC handling to Malta
+U-boot at all. I could see logic in suggesting U-boot be changed to use
+the binary mode instead of BCD. But...
 
-If YAMON and U-Boot are differing in RTC handling then I suggest to
-treat that as a U-Boot bug.  YAMON was there first.  However these
-Malta kernels are also frequently booted without firmware in Qemu.
-No idea how Qemu initializes the RTC.
+> However these Malta kernels are also frequently booted without firmware
+> in Qemu. No idea how Qemu initializes the RTC.
 
-  Ralf
+...kernels can also be booted on real Malta boards with minimal prodding
+over JTAG, and the RTC is one more thing that you need to prod if the
+kernel doesn't ensure it's running. That's what motivated a87ea88d8f6c
+and the other patches from the same series at all.
+
+Thanks,
+    Paul

@@ -1,61 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 May 2015 22:48:57 +0200 (CEST)
-Received: from www.linutronix.de ([62.245.132.108]:44065 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27012621AbbEOUsz0KkTj (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 15 May 2015 22:48:55 +0200
-Received: from localhost ([127.0.0.1])
-        by Galois.linutronix.de with esmtps (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:256)
-        (Exim 4.80)
-        (envelope-from <tglx@linutronix.de>)
-        id 1YtMWu-0007BE-QV; Fri, 15 May 2015 22:48:24 +0200
-Date:   Fri, 15 May 2015 22:48:36 +0200 (CEST)
-From:   Thomas Gleixner <tglx@linutronix.de>
-To:     Jiang Liu <jiang.liu@linux.intel.com>
-cc:     Bjorn Helgaas <bhelgaas@google.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Yinghai Lu <yinghai@kernel.org>,
-        Borislav Petkov <bp@alien8.de>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Alexandre Courbot <gnurou@gmail.com>,
-        Michal Simek <michal.simek@xilinx.com>,
-        =?ISO-8859-15?Q?S=F6ren_Brinkmann?= <soren.brinkmann@xilinx.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Manuel Lauss <manuel.lauss@gmail.com>,
-        Marc Zyngier <marc.zyngier@arm.com>,
-        Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
-        x86@kernel.org, linux-kernel@vger.kernel.org,
-        linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-gpio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-metag@vger.kernel.org
-Subject: Re: [RFC v1 11/11] genirq: Pass irq_data to helper function
- __irq_set_chip_handler_name_locked()
-In-Reply-To: <1430709339-29083-12-git-send-email-jiang.liu@linux.intel.com>
-Message-ID: <alpine.DEB.2.11.1505152247280.4225@nanos>
-References: <1430709339-29083-1-git-send-email-jiang.liu@linux.intel.com> <1430709339-29083-12-git-send-email-jiang.liu@linux.intel.com>
-User-Agent: Alpine 2.11 (DEB 23 2013-08-11)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 May 2015 22:49:46 +0200 (CEST)
+Received: from mail-ig0-f170.google.com ([209.85.213.170]:37419 "EHLO
+        mail-ig0-f170.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012621AbbEOUtmOAvYJ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 15 May 2015 22:49:42 +0200
+Received: by igbsb11 with SMTP id sb11so6009711igb.0;
+        Fri, 15 May 2015 13:49:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding;
+        bh=mL/RwsmrPaU/tV2ImwmfNjfAa8x48KvwS0/JjkhGoZ4=;
+        b=UDG5SQK7aFLtaFDlKpv7CkkIpHT7cPznXNHDQroeX6OPFOnsKr1EAoUnboLufb0OPm
+         2LbDis/bolEL1MxAJRVKRZSuyDRZ/Clw31P42GWemV+b0Wc9uD8cNQ1X6o4WfP2M3v4V
+         0mtkEQcnrdctHhZdbNX9GmYUcMzWqZheaub7gloSwCmN+qmWMGKjYpHgvmeEfGf9rfRQ
+         7IuXnSstM8yhggPY+j34bJSe/zTtZ98imDlDe1/pRSysFg2+7XpAtzfv0zgLvyJw5vDm
+         u5GkCziXox3BbURy5LvLSTNVguZb542WCFqkvXnDn5JPSqOnc/vvHnZs2Zjx0FuD35vn
+         OY1g==
+X-Received: by 10.50.18.50 with SMTP id t18mr653418igd.3.1431722978933;
+        Fri, 15 May 2015 13:49:38 -0700 (PDT)
+Received: from dl.caveonetworks.com (64.2.3.194.ptr.us.xo.net. [64.2.3.194])
+        by mx.google.com with ESMTPSA id l1sm1910043ioe.32.2015.05.15.13.49.36
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Fri, 15 May 2015 13:49:37 -0700 (PDT)
+Message-ID: <55565BDF.6050503@gmail.com>
+Date:   Fri, 15 May 2015 13:49:35 -0700
+From:   David Daney <ddaney.cavm@gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
-Return-Path: <tglx@linutronix.de>
+To:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+CC:     aleksey.makarov@auriga.com, james.hogan@imgtec.com,
+        paul.burton@imgtec.com, david.daney@cavium.com,
+        peterz@infradead.org, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org, ralf@linux-mips.org,
+        davidlohr@hp.com, kirill@shutemov.name, akpm@linux-foundation.org,
+        mingo@kernel.org
+Subject: Re: [PATCH v2] MIPS64: Support of at least 48 bits of SEGBITS
+References: <20150515013351.7450.12130.stgit@ubuntu-yegoshin>
+In-Reply-To: <20150515013351.7450.12130.stgit@ubuntu-yegoshin>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <ddaney.cavm@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47419
+X-archive-position: 47420
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tglx@linutronix.de
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -68,22 +60,137 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, 4 May 2015, Jiang Liu wrote:
->  /* caller has locked the irq_desc and both params are valid */
->  static inline void
-> -__irq_set_chip_handler_name_locked(unsigned int irq, struct irq_chip *chip,
-> +__irq_set_chip_handler_name_locked(struct irq_data *data, struct irq_chip *chip,
->  				   irq_flow_handler_t handler, const char *name)
->  {
->  	struct irq_desc *desc;
->  
-> -	desc = irq_to_desc(irq);
-> -	irq_desc_get_irq_data(desc)->chip = chip;
-> +	desc = irq_to_desc(data->irq);
+On 05/14/2015 06:34 PM, Leonid Yegoshin wrote:
+> SEGBITS default is 40 bits or less, depending from CPU type.
+> This patch introduces 48bits of application virtual address (SEGBITS) support.
+> It is defined only for 16K and 64K pages and is optional (configurable).
+>
+> Penalty - a small number of additional pages for generic (small) applications.
+> But for 64K pages it adds 3rd level of PTE structure, which has a little
+> impact during software TLB refill.
+>
+> This patch is needed because MIPS I6XXX and P6XXX cores have 48 bit of
+> virtual address in each segment (SEGBITS).
+>
 
-We should have a irq_data_to_desc() helper and use that instead of
-going through a full lookup again.
+Those processors don't require the patch.  You wrote the patch to give a 
+larger VA space at the request of kernel users.  So perhaps say:
 
-Thanks,
+   The patch (optionally) increases the VA space available to userspace 
+processes from N-bits to 48-bits
 
-	tglx
+
+> Signed-off-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+> ---
+> V2: Added correction for defintion of TASK_SIZE64
+> ---
+>   arch/mips/Kconfig                  |   11 +++++++++++
+>   arch/mips/include/asm/pgtable-64.h |   18 +++++++++++-------
+>   arch/mips/include/asm/processor.h  |    6 +++++-
+>   3 files changed, 27 insertions(+), 8 deletions(-)
+>
+> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+> index 76efb02ae99f..3acff2f065e9 100644
+> --- a/arch/mips/Kconfig
+> +++ b/arch/mips/Kconfig
+> @@ -2032,6 +2032,17 @@ config PAGE_SIZE_64KB
+>
+>   endchoice
+>
+> +config 48VMBITS
+
+Should probabaly be called VABITS instead of VMBITS to match the terms 
+used in the architecture reference manuals, as well as other ports (ARM64).
+
+Perhaps MIPS_VA_BITS_48
+
+
+> +	bool "48 bits virtual memory"
+> +	depends on PAGE_SIZE_16KB || PAGE_SIZE_64KB
+> +	depends on 64BIT
+> +	help
+> +	  Define a maximum at least 48 bits of application virtual memory.
+> +	  Default is 40 bits or less, depending from CPU.
+> +	  In generic (small) application it is a small set of pages increase
+> +	  in page tables.
+> +	  If unsure, say N.
+> +
+>   config FORCE_MAX_ZONEORDER
+>   	int "Maximum zone order"
+>   	range 14 64 if MIPS_HUGE_TLB_SUPPORT && PAGE_SIZE_64KB
+> diff --git a/arch/mips/include/asm/pgtable-64.h b/arch/mips/include/asm/pgtable-64.h
+> index cf661a2fb141..c6b5473440e6 100644
+> --- a/arch/mips/include/asm/pgtable-64.h
+> +++ b/arch/mips/include/asm/pgtable-64.h
+> @@ -17,7 +17,7 @@
+>   #include <asm/cachectl.h>
+>   #include <asm/fixmap.h>
+>
+> -#ifdef CONFIG_PAGE_SIZE_64KB
+> +#if defined(CONFIG_PAGE_SIZE_64KB) && !defined(CONFIG_48VMBITS)
+>   #include <asm-generic/pgtable-nopmd.h>
+>   #else
+>   #include <asm-generic/pgtable-nopud.h>
+> @@ -90,7 +90,11 @@
+>   #define PTE_ORDER		0
+>   #endif
+>   #ifdef CONFIG_PAGE_SIZE_16KB
+> -#define PGD_ORDER		0
+> +#ifdef CONFIG_48VMBITS
+> +#define PGD_ORDER               1
+> +#else
+> +#define PGD_ORDER               0
+> +#endif
+>   #define PUD_ORDER		aieeee_attempt_to_allocate_pud
+>   #define PMD_ORDER		0
+>   #define PTE_ORDER		0
+> @@ -104,7 +108,11 @@
+>   #ifdef CONFIG_PAGE_SIZE_64KB
+>   #define PGD_ORDER		0
+>   #define PUD_ORDER		aieeee_attempt_to_allocate_pud
+> +#ifdef CONFIG_48VMBITS
+> +#define PMD_ORDER		0
+> +#else
+>   #define PMD_ORDER		aieeee_attempt_to_allocate_pmd
+> +#endif
+>   #define PTE_ORDER		0
+>   #endif
+>
+> @@ -114,11 +122,7 @@
+>   #endif
+>   #define PTRS_PER_PTE	((PAGE_SIZE << PTE_ORDER) / sizeof(pte_t))
+>
+> -#if PGDIR_SIZE >= TASK_SIZE64
+> -#define USER_PTRS_PER_PGD	(1)
+> -#else
+> -#define USER_PTRS_PER_PGD	(TASK_SIZE64 / PGDIR_SIZE)
+> -#endif
+> +#define USER_PTRS_PER_PGD       ((TASK_SIZE64 / PGDIR_SIZE)?(TASK_SIZE64 / PGDIR_SIZE):1)
+>   #define FIRST_USER_ADDRESS	0UL
+>
+>   /*
+> diff --git a/arch/mips/include/asm/processor.h b/arch/mips/include/asm/processor.h
+> index 9b3b48e21c22..bd2030f32ea4 100644
+> --- a/arch/mips/include/asm/processor.h
+> +++ b/arch/mips/include/asm/processor.h
+> @@ -69,7 +69,11 @@ extern unsigned int vced_count, vcei_count;
+>    * 8192EB ...
+>    */
+>   #define TASK_SIZE32	0x7fff8000UL
+> -#define TASK_SIZE64	0x10000000000UL
+> +#ifdef CONFIG_48VMBITS
+> +#define TASK_SIZE64     (0x1UL << ((cpu_data[0].vmbits>48)?48:cpu_data[0].vmbits))
+> +#else
+> +#define TASK_SIZE64     (0x10000000000UL)
+> +#endif
+>   #define TASK_SIZE (test_thread_flag(TIF_32BIT_ADDR) ? TASK_SIZE32 : TASK_SIZE64)
+>   #define STACK_TOP_MAX	TASK_SIZE64
+>
+>
+> --
+> To unsubscribe from this list: send the line "unsubscribe linux-kernel" in
+> the body of a message to majordomo@vger.kernel.org
+> More majordomo info at  http://vger.kernel.org/majordomo-info.html
+> Please read the FAQ at  http://www.tux.org/lkml/
+>
+>

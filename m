@@ -1,51 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 May 2015 22:51:24 +0200 (CEST)
-Received: from mail-ie0-f179.google.com ([209.85.223.179]:34316 "EHLO
-        mail-ie0-f179.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012621AbbEOUvXSINYj (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 15 May 2015 22:51:23 +0200
-Received: by ieczm2 with SMTP id zm2so57934276iec.1;
-        Fri, 15 May 2015 13:51:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=disposition-notification-to:return-receipt-to:user-agent
-         :in-reply-to:references:mime-version:content-transfer-encoding
-         :content-type:subject:from:date:to:cc:message-id;
-        bh=RvjWFsimTkufis3v2dNnTIlYdF4VQBSGZ2lQmxMilho=;
-        b=wbn9UIbriwpAVG8dlAlVwtLMkN3UXnWK8opMMSD8gFYiwQqEA7KFU+ZwoDOmHaktEw
-         211OIeRd2LfZ6L0IisUFaS5MFActkdUGUGVUuyU98M+iLocIhrNXCEjJ0FSP0HT8lJAw
-         0IQc9n9Hkc7akLKgoMwX/AAJjXdnnEVQZA4K0VW4PIMwYrr9kluVOHbFsX5wxuSOChaL
-         ZVtdpfYTo0GIMzXykDNtreGyx83S9tE2gtj0izvslo+PyTI+DdJDO1SGkuYrzeo4Po9x
-         uU78/0PM6cZdfY1S9aBdMwdMcpIEDEEacQ+JI6ibKhPJEZzoxW96zAjMeU06H0bW5H9l
-         b5YA==
-X-Received: by 10.42.103.196 with SMTP id n4mr23703399ico.31.1431723079143;
-        Fri, 15 May 2015 13:51:19 -0700 (PDT)
-Received: from [192.168.0.10] (CPEbc4dfb2691f3-CMbc4dfb2691f0.cpe.net.cable.rogers.com. [99.231.110.121])
-        by mx.google.com with ESMTPSA id g12sm1916636ioe.28.2015.05.15.13.51.17
-        (version=TLSv1.2 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Fri, 15 May 2015 13:51:18 -0700 (PDT)
-User-Agent: K-9 Mail for Android
-In-Reply-To: <20150515204546.GH2322@linux-mips.org>
-References: <1431613217-2517-1-git-send-email-xerofoify@gmail.com> <20150515201044.GG2322@linux-mips.org> <5556543B.1010406@gmail.com> <20150515204546.GH2322@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 May 2015 23:03:01 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:12841 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27012621AbbEOVC7aYZ3P (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 15 May 2015 23:02:59 +0200
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 80871C343C942;
+        Fri, 15 May 2015 22:02:52 +0100 (IST)
+Received: from hhmail02.hh.imgtec.org (10.100.10.20) by KLMAIL01.kl.imgtec.org
+ (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Fri, 15 May
+ 2015 22:01:55 +0100
+Received: from BAMAIL02.ba.imgtec.org (10.20.40.28) by hhmail02.hh.imgtec.org
+ (10.100.10.20) with Microsoft SMTP Server (TLS) id 14.3.224.2; Fri, 15 May
+ 2015 22:01:55 +0100
+Received: from [10.20.3.79] (10.20.3.79) by bamail02.ba.imgtec.org
+ (10.20.40.28) with Microsoft SMTP Server (TLS) id 14.3.174.1; Fri, 15 May
+ 2015 14:01:52 -0700
+Message-ID: <55565EC0.9030102@imgtec.com>
+Date:   Fri, 15 May 2015 14:01:52 -0700
+From:   Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.2.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain;
- charset=UTF-8
-Subject: Re: [PATCH RESEND] mips:Fix build error for ip32_defconfig configuration
-From:   Nicholas Krause <xerofoify@gmail.com>
-Date:   Fri, 15 May 2015 16:51:43 -0400
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     akpm@linux-foundation.org, kumba@gentoo.org,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Message-ID: <97052E66-F758-4D28-ABD7-8564E26CB9FF@gmail.com>
-Return-Path: <xerofoify@gmail.com>
+To:     David Daney <ddaney.cavm@gmail.com>
+CC:     <aleksey.makarov@auriga.com>, <james.hogan@imgtec.com>,
+        <paul.burton@imgtec.com>, <david.daney@cavium.com>,
+        <peterz@infradead.org>, <linux-mips@linux-mips.org>,
+        <linux-kernel@vger.kernel.org>, <ralf@linux-mips.org>,
+        <davidlohr@hp.com>, <kirill@shutemov.name>,
+        <akpm@linux-foundation.org>, <mingo@kernel.org>
+Subject: Re: [PATCH v2] MIPS64: Support of at least 48 bits of SEGBITS
+References: <20150515013351.7450.12130.stgit@ubuntu-yegoshin> <55565BDF.6050503@gmail.com>
+In-Reply-To: <55565BDF.6050503@gmail.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.20.3.79]
+Return-Path: <Leonid.Yegoshin@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47421
+X-archive-position: 47422
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: xerofoify@gmail.com
+X-original-sender: Leonid.Yegoshin@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,40 +54,43 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-
-
-On May 15, 2015 4:45:46 PM EDT, Ralf Baechle <ralf@linux-mips.org> wrote:
->On Fri, May 15, 2015 at 04:16:59PM -0400, nick wrote:
+On 05/15/2015 01:49 PM, David Daney wrote:
+> On 05/14/2015 06:34 PM, Leonid Yegoshin wrote:
+>> SEGBITS default is 40 bits or less, depending from CPU type.
+>> This patch introduces 48bits of application virtual address (SEGBITS) 
+>> support.
+>> It is defined only for 16K and 64K pages and is optional (configurable).
+>>
+>> Penalty - a small number of additional pages for generic (small) 
+>> applications.
+>> But for 64K pages it adds 3rd level of PTE structure, which has a little
+>> impact during software TLB refill.
+>>
+>> This patch is needed because MIPS I6XXX and P6XXX cores have 48 bit of
+>> virtual address in each segment (SEGBITS).
+>>
 >
->> On 2015-05-15 04:10 PM, Ralf Baechle wrote:
->> > On Thu, May 14, 2015 at 10:20:17AM -0400, Nicholas Krause wrote:
->> > 
->> >> This fixes the make error when building the ip32_defconfig
->> >> configuration due to using sgio2_cmos_devinit rather then
->> >> the correct function,sgio2_rtc_devinit in a device_initcall
->> >> below this function's definition.
->> > 
->> > I've already applied Joshua Kinard's 
->> > https://patchwork.linux-mips.org/patch/9787/ with a minor cosmetic
->> > touchup.
->> > 
->> >   Ralf
->> > 
->> Ralf,
->> As you may already known my rep with the other kernel developers is
->pretty bad.
->> Based off this work can you try(time permitting) to put it a good
->word that I am
->> improving.
+> Those processors don't require the patch.  You wrote the patch to give 
+> a larger VA space at the request of kernel users.  So perhaps say:
 >
->The kernel world is a meritocracy.  Which means your status will depend
->on the value of your contributions.  So I think there's not much I
->could
->or should do but to let your merrits aka patches speak for themselves.
+>   The patch (optionally) increases the VA space available to userspace 
+> processes from N-bits to 48-bits
 >
->  Ralf
-Very well then thanks anyway. 
-Nick 
 
--- 
-Sent from my Android device with K-9 Mail. Please excuse my brevity.
+... if CPU model supports that
+
+>
+>>
+>> +config 48VMBITS
+>
+> Should probabaly be called VABITS instead of VMBITS to match the terms 
+> used in the architecture reference manuals, as well as other ports 
+> (ARM64).
+>
+> Perhaps MIPS_VA_BITS_48
+
+I don't mind here. It can be even called 48SEGBITS or so, to match arch 
+manual more. MIPS Arch manual never says about VA bits but speaks about 
+PABITS and SEGBITS.
+
+- Leonid.

@@ -1,53 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 May 2015 22:49:46 +0200 (CEST)
-Received: from mail-ig0-f170.google.com ([209.85.213.170]:37419 "EHLO
-        mail-ig0-f170.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012621AbbEOUtmOAvYJ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 15 May 2015 22:49:42 +0200
-Received: by igbsb11 with SMTP id sb11so6009711igb.0;
-        Fri, 15 May 2015 13:49:39 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 May 2015 22:51:24 +0200 (CEST)
+Received: from mail-ie0-f179.google.com ([209.85.223.179]:34316 "EHLO
+        mail-ie0-f179.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012621AbbEOUvXSINYj (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 15 May 2015 22:51:23 +0200
+Received: by ieczm2 with SMTP id zm2so57934276iec.1;
+        Fri, 15 May 2015 13:51:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=mL/RwsmrPaU/tV2ImwmfNjfAa8x48KvwS0/JjkhGoZ4=;
-        b=UDG5SQK7aFLtaFDlKpv7CkkIpHT7cPznXNHDQroeX6OPFOnsKr1EAoUnboLufb0OPm
-         2LbDis/bolEL1MxAJRVKRZSuyDRZ/Clw31P42GWemV+b0Wc9uD8cNQ1X6o4WfP2M3v4V
-         0mtkEQcnrdctHhZdbNX9GmYUcMzWqZheaub7gloSwCmN+qmWMGKjYpHgvmeEfGf9rfRQ
-         7IuXnSstM8yhggPY+j34bJSe/zTtZ98imDlDe1/pRSysFg2+7XpAtzfv0zgLvyJw5vDm
-         u5GkCziXox3BbURy5LvLSTNVguZb542WCFqkvXnDn5JPSqOnc/vvHnZs2Zjx0FuD35vn
-         OY1g==
-X-Received: by 10.50.18.50 with SMTP id t18mr653418igd.3.1431722978933;
-        Fri, 15 May 2015 13:49:38 -0700 (PDT)
-Received: from dl.caveonetworks.com (64.2.3.194.ptr.us.xo.net. [64.2.3.194])
-        by mx.google.com with ESMTPSA id l1sm1910043ioe.32.2015.05.15.13.49.36
-        (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Fri, 15 May 2015 13:49:37 -0700 (PDT)
-Message-ID: <55565BDF.6050503@gmail.com>
-Date:   Fri, 15 May 2015 13:49:35 -0700
-From:   David Daney <ddaney.cavm@gmail.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
+        h=disposition-notification-to:return-receipt-to:user-agent
+         :in-reply-to:references:mime-version:content-transfer-encoding
+         :content-type:subject:from:date:to:cc:message-id;
+        bh=RvjWFsimTkufis3v2dNnTIlYdF4VQBSGZ2lQmxMilho=;
+        b=wbn9UIbriwpAVG8dlAlVwtLMkN3UXnWK8opMMSD8gFYiwQqEA7KFU+ZwoDOmHaktEw
+         211OIeRd2LfZ6L0IisUFaS5MFActkdUGUGVUuyU98M+iLocIhrNXCEjJ0FSP0HT8lJAw
+         0IQc9n9Hkc7akLKgoMwX/AAJjXdnnEVQZA4K0VW4PIMwYrr9kluVOHbFsX5wxuSOChaL
+         ZVtdpfYTo0GIMzXykDNtreGyx83S9tE2gtj0izvslo+PyTI+DdJDO1SGkuYrzeo4Po9x
+         uU78/0PM6cZdfY1S9aBdMwdMcpIEDEEacQ+JI6ibKhPJEZzoxW96zAjMeU06H0bW5H9l
+         b5YA==
+X-Received: by 10.42.103.196 with SMTP id n4mr23703399ico.31.1431723079143;
+        Fri, 15 May 2015 13:51:19 -0700 (PDT)
+Received: from [192.168.0.10] (CPEbc4dfb2691f3-CMbc4dfb2691f0.cpe.net.cable.rogers.com. [99.231.110.121])
+        by mx.google.com with ESMTPSA id g12sm1916636ioe.28.2015.05.15.13.51.17
+        (version=TLSv1.2 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
+        Fri, 15 May 2015 13:51:18 -0700 (PDT)
+User-Agent: K-9 Mail for Android
+In-Reply-To: <20150515204546.GH2322@linux-mips.org>
+References: <1431613217-2517-1-git-send-email-xerofoify@gmail.com> <20150515201044.GG2322@linux-mips.org> <5556543B.1010406@gmail.com> <20150515204546.GH2322@linux-mips.org>
 MIME-Version: 1.0
-To:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-CC:     aleksey.makarov@auriga.com, james.hogan@imgtec.com,
-        paul.burton@imgtec.com, david.daney@cavium.com,
-        peterz@infradead.org, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org, ralf@linux-mips.org,
-        davidlohr@hp.com, kirill@shutemov.name, akpm@linux-foundation.org,
-        mingo@kernel.org
-Subject: Re: [PATCH v2] MIPS64: Support of at least 48 bits of SEGBITS
-References: <20150515013351.7450.12130.stgit@ubuntu-yegoshin>
-In-Reply-To: <20150515013351.7450.12130.stgit@ubuntu-yegoshin>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <ddaney.cavm@gmail.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain;
+ charset=UTF-8
+Subject: Re: [PATCH RESEND] mips:Fix build error for ip32_defconfig configuration
+From:   Nicholas Krause <xerofoify@gmail.com>
+Date:   Fri, 15 May 2015 16:51:43 -0400
+To:     Ralf Baechle <ralf@linux-mips.org>
+CC:     akpm@linux-foundation.org, kumba@gentoo.org,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Message-ID: <97052E66-F758-4D28-ABD7-8564E26CB9FF@gmail.com>
+Return-Path: <xerofoify@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47420
+X-archive-position: 47421
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: xerofoify@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -60,137 +58,40 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 05/14/2015 06:34 PM, Leonid Yegoshin wrote:
-> SEGBITS default is 40 bits or less, depending from CPU type.
-> This patch introduces 48bits of application virtual address (SEGBITS) support.
-> It is defined only for 16K and 64K pages and is optional (configurable).
->
-> Penalty - a small number of additional pages for generic (small) applications.
-> But for 64K pages it adds 3rd level of PTE structure, which has a little
-> impact during software TLB refill.
->
-> This patch is needed because MIPS I6XXX and P6XXX cores have 48 bit of
-> virtual address in each segment (SEGBITS).
->
-
-Those processors don't require the patch.  You wrote the patch to give a 
-larger VA space at the request of kernel users.  So perhaps say:
-
-   The patch (optionally) increases the VA space available to userspace 
-processes from N-bits to 48-bits
 
 
-> Signed-off-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-> ---
-> V2: Added correction for defintion of TASK_SIZE64
-> ---
->   arch/mips/Kconfig                  |   11 +++++++++++
->   arch/mips/include/asm/pgtable-64.h |   18 +++++++++++-------
->   arch/mips/include/asm/processor.h  |    6 +++++-
->   3 files changed, 27 insertions(+), 8 deletions(-)
+On May 15, 2015 4:45:46 PM EDT, Ralf Baechle <ralf@linux-mips.org> wrote:
+>On Fri, May 15, 2015 at 04:16:59PM -0400, nick wrote:
 >
-> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-> index 76efb02ae99f..3acff2f065e9 100644
-> --- a/arch/mips/Kconfig
-> +++ b/arch/mips/Kconfig
-> @@ -2032,6 +2032,17 @@ config PAGE_SIZE_64KB
+>> On 2015-05-15 04:10 PM, Ralf Baechle wrote:
+>> > On Thu, May 14, 2015 at 10:20:17AM -0400, Nicholas Krause wrote:
+>> > 
+>> >> This fixes the make error when building the ip32_defconfig
+>> >> configuration due to using sgio2_cmos_devinit rather then
+>> >> the correct function,sgio2_rtc_devinit in a device_initcall
+>> >> below this function's definition.
+>> > 
+>> > I've already applied Joshua Kinard's 
+>> > https://patchwork.linux-mips.org/patch/9787/ with a minor cosmetic
+>> > touchup.
+>> > 
+>> >   Ralf
+>> > 
+>> Ralf,
+>> As you may already known my rep with the other kernel developers is
+>pretty bad.
+>> Based off this work can you try(time permitting) to put it a good
+>word that I am
+>> improving.
 >
->   endchoice
+>The kernel world is a meritocracy.  Which means your status will depend
+>on the value of your contributions.  So I think there's not much I
+>could
+>or should do but to let your merrits aka patches speak for themselves.
 >
-> +config 48VMBITS
+>  Ralf
+Very well then thanks anyway. 
+Nick 
 
-Should probabaly be called VABITS instead of VMBITS to match the terms 
-used in the architecture reference manuals, as well as other ports (ARM64).
-
-Perhaps MIPS_VA_BITS_48
-
-
-> +	bool "48 bits virtual memory"
-> +	depends on PAGE_SIZE_16KB || PAGE_SIZE_64KB
-> +	depends on 64BIT
-> +	help
-> +	  Define a maximum at least 48 bits of application virtual memory.
-> +	  Default is 40 bits or less, depending from CPU.
-> +	  In generic (small) application it is a small set of pages increase
-> +	  in page tables.
-> +	  If unsure, say N.
-> +
->   config FORCE_MAX_ZONEORDER
->   	int "Maximum zone order"
->   	range 14 64 if MIPS_HUGE_TLB_SUPPORT && PAGE_SIZE_64KB
-> diff --git a/arch/mips/include/asm/pgtable-64.h b/arch/mips/include/asm/pgtable-64.h
-> index cf661a2fb141..c6b5473440e6 100644
-> --- a/arch/mips/include/asm/pgtable-64.h
-> +++ b/arch/mips/include/asm/pgtable-64.h
-> @@ -17,7 +17,7 @@
->   #include <asm/cachectl.h>
->   #include <asm/fixmap.h>
->
-> -#ifdef CONFIG_PAGE_SIZE_64KB
-> +#if defined(CONFIG_PAGE_SIZE_64KB) && !defined(CONFIG_48VMBITS)
->   #include <asm-generic/pgtable-nopmd.h>
->   #else
->   #include <asm-generic/pgtable-nopud.h>
-> @@ -90,7 +90,11 @@
->   #define PTE_ORDER		0
->   #endif
->   #ifdef CONFIG_PAGE_SIZE_16KB
-> -#define PGD_ORDER		0
-> +#ifdef CONFIG_48VMBITS
-> +#define PGD_ORDER               1
-> +#else
-> +#define PGD_ORDER               0
-> +#endif
->   #define PUD_ORDER		aieeee_attempt_to_allocate_pud
->   #define PMD_ORDER		0
->   #define PTE_ORDER		0
-> @@ -104,7 +108,11 @@
->   #ifdef CONFIG_PAGE_SIZE_64KB
->   #define PGD_ORDER		0
->   #define PUD_ORDER		aieeee_attempt_to_allocate_pud
-> +#ifdef CONFIG_48VMBITS
-> +#define PMD_ORDER		0
-> +#else
->   #define PMD_ORDER		aieeee_attempt_to_allocate_pmd
-> +#endif
->   #define PTE_ORDER		0
->   #endif
->
-> @@ -114,11 +122,7 @@
->   #endif
->   #define PTRS_PER_PTE	((PAGE_SIZE << PTE_ORDER) / sizeof(pte_t))
->
-> -#if PGDIR_SIZE >= TASK_SIZE64
-> -#define USER_PTRS_PER_PGD	(1)
-> -#else
-> -#define USER_PTRS_PER_PGD	(TASK_SIZE64 / PGDIR_SIZE)
-> -#endif
-> +#define USER_PTRS_PER_PGD       ((TASK_SIZE64 / PGDIR_SIZE)?(TASK_SIZE64 / PGDIR_SIZE):1)
->   #define FIRST_USER_ADDRESS	0UL
->
->   /*
-> diff --git a/arch/mips/include/asm/processor.h b/arch/mips/include/asm/processor.h
-> index 9b3b48e21c22..bd2030f32ea4 100644
-> --- a/arch/mips/include/asm/processor.h
-> +++ b/arch/mips/include/asm/processor.h
-> @@ -69,7 +69,11 @@ extern unsigned int vced_count, vcei_count;
->    * 8192EB ...
->    */
->   #define TASK_SIZE32	0x7fff8000UL
-> -#define TASK_SIZE64	0x10000000000UL
-> +#ifdef CONFIG_48VMBITS
-> +#define TASK_SIZE64     (0x1UL << ((cpu_data[0].vmbits>48)?48:cpu_data[0].vmbits))
-> +#else
-> +#define TASK_SIZE64     (0x10000000000UL)
-> +#endif
->   #define TASK_SIZE (test_thread_flag(TIF_32BIT_ADDR) ? TASK_SIZE32 : TASK_SIZE64)
->   #define STACK_TOP_MAX	TASK_SIZE64
->
->
-> --
-> To unsubscribe from this list: send the line "unsubscribe linux-kernel" in
-> the body of a message to majordomo@vger.kernel.org
-> More majordomo info at  http://vger.kernel.org/majordomo-info.html
-> Please read the FAQ at  http://www.tux.org/lkml/
->
->
+-- 
+Sent from my Android device with K-9 Mail. Please excuse my brevity.

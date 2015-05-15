@@ -1,48 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 May 2015 20:14:21 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:44556 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 May 2015 21:04:01 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:49477 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27012525AbbEOSOT3Ue7F (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 15 May 2015 20:14:19 +0200
+        with ESMTP id S27012589AbbEOTD766g0s (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 15 May 2015 21:03:59 +0200
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 0D0D7E0FE4AD1;
-        Fri, 15 May 2015 19:14:13 +0100 (IST)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Fri, 15 May 2015 19:14:15 +0100
-Received: from localhost (192.168.159.126) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Fri, 15 May
- 2015 19:14:15 +0100
-Date:   Fri, 15 May 2015 19:14:13 +0100
-From:   Paul Burton <paul.burton@imgtec.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     "Maciej W. Rozycki" <macro@linux-mips.org>,
-        James Hogan <james.hogan@imgtec.com>,
-        <linux-mips@linux-mips.org>
-Subject: Re: [PATCH 1/2] MIPS: malta-time: Don't switch RTC to BCD mode
-Message-ID: <20150515181413.GA30774@NP-P-BURTON>
-References: <1431519473-24049-1-git-send-email-james.hogan@imgtec.com>
- <1431519473-24049-2-git-send-email-james.hogan@imgtec.com>
- <alpine.LFD.2.11.1505131829580.1538@eddie.linux-mips.org>
- <20150513221956.GE7723@jhogan-linux.le.imgtec.org>
- <20150514084130.GE22815@NP-P-BURTON>
- <55547238.1040005@imgtec.com>
- <alpine.LFD.2.11.1505141122380.19904@eddie.linux-mips.org>
- <20150515180351.GE2322@linux-mips.org>
+        by Websense Email Security Gateway with ESMTPS id 2A7639DD8817D;
+        Fri, 15 May 2015 20:03:53 +0100 (IST)
+Received: from hhmail02.hh.imgtec.org (10.100.10.20) by KLMAIL01.kl.imgtec.org
+ (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Fri, 15 May
+ 2015 20:03:56 +0100
+Received: from BAMAIL02.ba.imgtec.org (10.20.40.28) by hhmail02.hh.imgtec.org
+ (10.100.10.20) with Microsoft SMTP Server (TLS) id 14.3.224.2; Fri, 15 May
+ 2015 20:03:55 +0100
+Received: from [10.20.3.79] (10.20.3.79) by bamail02.ba.imgtec.org
+ (10.20.40.28) with Microsoft SMTP Server (TLS) id 14.3.174.1; Fri, 15 May
+ 2015 12:03:53 -0700
+Message-ID: <55564319.7020502@imgtec.com>
+Date:   Fri, 15 May 2015 12:03:53 -0700
+From:   Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.2.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-In-Reply-To: <20150515180351.GE2322@linux-mips.org>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-X-Originating-IP: [192.168.159.126]
-Return-Path: <Paul.Burton@imgtec.com>
+To:     David Daney <ddaney.cavm@gmail.com>
+CC:     "aleksey.makarov@auriga.com" <aleksey.makarov@auriga.com>,
+        James Hogan <James.Hogan@imgtec.com>,
+        Paul Burton <Paul.Burton@imgtec.com>,
+        "david.daney@cavium.com" <david.daney@cavium.com>,
+        "peterz@infradead.org" <peterz@infradead.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "ralf@linux-mips.org" <ralf@linux-mips.org>,
+        "davidlohr@hp.com" <davidlohr@hp.com>,
+        "kirill@shutemov.name" <kirill@shutemov.name>,
+        "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+        "mingo@kernel.org" <mingo@kernel.org>
+Subject: Re: [PATCH v2] MIPS64: Support of at least 48 bits of SEGBITS
+References: <20150515013351.7450.12130.stgit@ubuntu-yegoshin> <55561EB6.4020009@gmail.com>
+In-Reply-To: <55561EB6.4020009@gmail.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.20.3.79]
+Return-Path: <Leonid.Yegoshin@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47413
+X-archive-position: 47414
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@imgtec.com
+X-original-sender: Leonid.Yegoshin@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,36 +60,44 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, May 15, 2015 at 08:03:51PM +0200, Ralf Baechle wrote:
-> >  I'd prefer RTC state not to be touched at all if its state is sane.  
-> > That is read Register B, check for the only valid divider setting 
-> > (32kHz), and if so then exit right away, and otherwise initialise the 
-> > chip from scratch.  Consistency with YAMON might be a good idea in that 
-> > initialisation, but I have no strong feeling towards that.  If you think 
-> > there's value in having the chip set to the BCD mode, then feel free to 
-> > keep that option.
-> > 
-> >  Note that any inhibition of the RTC previously initialised by 
-> > temporarily setting the SET bit in Register B during bootstrap will 
-> > disturb timekeeping that the system may carry over reset using 
-> > adjtimex(8).
-> 
-> So you're instead suggesting to revoke a87ea88d8f6c ?
-> 
-> If YAMON and U-Boot are differing in RTC handling then I suggest to
-> treat that as a U-Boot bug. YAMON was there first.
+On 05/15/2015 09:28 AM, David Daney wrote:
+> On 05/14/2015 06:34 PM, Leonid Yegoshin wrote:
+>> SEGBITS default is 40 bits or less, depending from CPU type.
+>> This patch introduces 48bits of application virtual address (SEGBITS) support.
+>> It is defined only for 16K and 64K pages and is optional (configurable).
+>>
+>> Penalty - a small number of additional pages for generic (small) applications.
+>> But for 64K pages it adds 3rd level of PTE structure, which has a little
+>> impact during software TLB refill.
+>>
+>> This patch is needed because MIPS I6XXX and P6XXX cores have 48 bit of
+>> virtual address in each segment (SEGBITS).
+>>
+> I'm concerned that the change log doesn't convey the true reason for the
+> patch.
+>
+> Many processors support larger VA space than is utilized by the kernel.
+>    A choice was made to reduce the size of the VA space in order to
+> reduce TLB handling overhead.
+>
+> If the true reason for the patch is to enable larger VA space, say that.
+>    But is it really required by those processors you mention?  I doubt it.
+>
+> David Daney
+>
+>
 
-That would be fair enough, and is why I added RTC handling to Malta
-U-boot at all. I could see logic in suggesting U-boot be changed to use
-the binary mode instead of BCD. But...
+Well, I was not aware about many processors capability, I can't find 
+this kind of note anywhere.
 
-> However these Malta kernels are also frequently booted without firmware
-> in Qemu. No idea how Qemu initializes the RTC.
+And I assumed that statement "If unsure, say N" and the fact that it is 
+configurable leads to conclusion that it is completely optional. I have 
+a request from management to support 48bit VA but I understand that 
+somebody may not like even small penalty.
 
-...kernels can also be booted on real Malta boards with minimal prodding
-over JTAG, and the RTC is one more thing that you need to prod if the
-kernel doesn't ensure it's running. That's what motivated a87ea88d8f6c
-and the other patches from the same series at all.
+In other side, this patch was required to test HW capability, GLIBC and 
+application compatibility (I tested on buildroot FS).
 
-Thanks,
-    Paul
+So, if you still have concern, please propose a description statement.
+
+- Leonid.

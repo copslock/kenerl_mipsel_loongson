@@ -1,36 +1,76 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 May 2015 17:38:01 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:36989 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27012469AbbEOPh7kC8TN (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 15 May 2015 17:37:59 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.9/8.14.8) with ESMTP id t4FFc1G4004220;
-        Fri, 15 May 2015 17:38:01 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.9/8.14.9/Submit) id t4FFc0Ma004219;
-        Fri, 15 May 2015 17:38:00 +0200
-Date:   Fri, 15 May 2015 17:38:00 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     James Hogan <james.hogan@imgtec.com>
-Cc:     linux-mips@linux-mips.org
-Subject: Re: [PATCH 5/9] MIPS: dump_tlb: Take global bit into account
-Message-ID: <20150515153800.GD2322@linux-mips.org>
-References: <1431514255-3030-1-git-send-email-james.hogan@imgtec.com>
- <1431514255-3030-6-git-send-email-james.hogan@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 May 2015 17:41:00 +0200 (CEST)
+Received: from down.free-electrons.com ([37.187.137.238]:55395 "EHLO
+        mail.free-electrons.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S27009768AbbEOPk5SQ8xk (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 15 May 2015 17:40:57 +0200
+Received: by mail.free-electrons.com (Postfix, from userid 106)
+        id 318D688D; Fri, 15 May 2015 17:40:54 +0200 (CEST)
+Received: from bbrezillon (col31-4-88-188-80-5.fbx.proxad.net [88.188.80.5])
+        by mail.free-electrons.com (Postfix) with ESMTPSA id 416066D4;
+        Fri, 15 May 2015 17:40:49 +0200 (CEST)
+Date:   Fri, 15 May 2015 17:40:48 +0200
+From:   Boris Brezillon <boris.brezillon@free-electrons.com>
+To:     Stephen Boyd <sboyd@codeaurora.org>,
+        Mikko Perttunen <mikko.perttunen@kapsi.fi>
+Cc:     Boris Brezillon <boris.brezillon@free-electrons.com>,
+        Mike Turquette <mturquette@linaro.org>,
+        linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Jonathan Corbet <corbet@lwn.net>,
+        Shawn Guo <shawn.guo@linaro.org>,
+        ascha Hauer <kernel@pengutronix.de>,
+        David Brown <davidb@codeaurora.org>,
+        Daniel Walker <dwalker@fifo99.com>,
+        Bryan Huntsman <bryanh@codeaurora.org>,
+        Tony Lindgren <tony@atomide.com>,
+        Paul Walmsley <paul@pwsan.com>,
+        Liviu Dudau <liviu.dudau@arm.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Sylwester Nawrocki <s.nawrocki@samsung.com>,
+        Tomasz Figa <tomasz.figa@gmail.com>,
+        Barry Song <baohua@kernel.org>,
+        Viresh Kumar <viresh.linux@gmail.com>,
+        Emilio =?UTF-8?B?TMOzcGV6?= <emilio@elopez.com.ar>,
+        Maxime Ripard <maxime.ripard@free-electrons.com>,
+        Peter De Schrijver <pdeschrijver@nvidia.com>,
+        Prashant Gaikwad <pgaikwad@nvidia.com>,
+        Stephen Warren <swarren@wwwdotorg.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Alexandre Courbot <gnurou@gmail.com>,
+        Tero Kristo <t-kristo@ti.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Michal Simek <michal.simek@xilinx.com>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        linux-doc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-arm-msm@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-mips@linux-mips.org, patches@opensource.wolfsonmicro.com,
+        linux-rockchip@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, spear-devel@list.st.com,
+        linux-tegra@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-media@vger.kernel.org, rtc-linux@googlegroups.com
+Subject: Re: [PATCH v2 1/2] clk: change clk_ops' ->round_rate() prototype
+Message-ID: <20150515174048.4a31af49@bbrezillon>
+In-Reply-To: <20150507093702.0b58753d@bbrezillon>
+References: <1430407809-31147-1-git-send-email-boris.brezillon@free-electrons.com>
+        <1430407809-31147-2-git-send-email-boris.brezillon@free-electrons.com>
+        <20150507063953.GC32399@codeaurora.org>
+        <20150507093702.0b58753d@bbrezillon>
+X-Mailer: Claws Mail 3.9.3 (GTK+ 2.24.23; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1431514255-3030-6-git-send-email-james.hogan@imgtec.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <ralf@linux-mips.org>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <boris.brezillon@free-electrons.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47409
+X-archive-position: 47410
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: boris.brezillon@free-electrons.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,53 +83,126 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, May 13, 2015 at 11:50:51AM +0100, James Hogan wrote:
+Hi Stephen,
 
-> The TLB only matches the ASID when the global bit isn't set, so
-> dump_tlb() shouldn't really be skipping global entries just because the
-> ASID doesn't match. Fix the condition to read the TLB entry's global bit
-> from EntryLo0. Note that after a TLB read the global bits in both
-> EntryLo registers reflect the same global bit in the TLB entry.
+Adding Mikko in the loop (after all, he was the one complaining about
+this signed long limitation in the first place, and I forgot to add
+him in the Cc list :-/).
+
+Mikko, are you okay with the approach proposed by Stephen (adding a
+new method) ?
+
+On Thu, 7 May 2015 09:37:02 +0200
+Boris Brezillon <boris.brezillon@free-electrons.com> wrote:
+
+> Hi Stephen,
 > 
-> Signed-off-by: James Hogan <james.hogan@imgtec.com>
-> Cc: Ralf Baechle <ralf@linux-mips.org>
-> Cc: linux-mips@linux-mips.org
-> ---
->  arch/mips/lib/dump_tlb.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
+> On Wed, 6 May 2015 23:39:53 -0700
+> Stephen Boyd <sboyd@codeaurora.org> wrote:
 > 
-> diff --git a/arch/mips/lib/dump_tlb.c b/arch/mips/lib/dump_tlb.c
-> index 17d05caa776d..70e0a6bdb322 100644
-> --- a/arch/mips/lib/dump_tlb.c
-> +++ b/arch/mips/lib/dump_tlb.c
-> @@ -73,7 +73,8 @@ static void dump_tlb(int first, int last)
->  		 */
->  		if ((entryhi & ~0x1ffffUL) == CKSEG0)
->  			continue;
-> -		if ((entryhi & 0xff) != asid)
-> +		/* ASID takes effect in absense of global bit */
-> +		if (!(entrylo0 & 1) && (entryhi & 0xff) != asid)
->  			continue;
+> > On 04/30, Boris Brezillon wrote:
+> > > Clock rates are stored in an unsigned long field, but ->round_rate()
+> > > (which returns a rounded rate from a requested one) returns a long
+> > > value (errors are reported using negative error codes), which can lead
+> > > to long overflow if the clock rate exceed 2Ghz.
+> > > 
+> > > Change ->round_rate() prototype to return 0 or an error code, and pass the
+> > > requested rate as a pointer so that it can be adjusted depending on
+> > > hardware capabilities.
+> > > 
+> > > Signed-off-by: Boris Brezillon <boris.brezillon@free-electrons.com>
+> > > Tested-by: Heiko Stuebner <heiko@sntech.de>
+> > > Tested-by: Mikko Perttunen <mikko.perttunen@kapsi.fi>
+> > > Reviewed-by: Heiko Stuebner <heiko@sntech.de>
+> > 
+> > This patch is fairly invasive, and it probably doesn't even
+> > matter for most of these clock providers to be able to round a
+> > rate above 2GHz.
+> 
+> Fair enough.
+> 
+> > I've been trying to remove the .round_rate op
+> > from the framework by encouraging new features via the
+> > .determine_rate op.
+> 
+> Oh, I wasn't aware of that (BTW, that's a good thing).
+> Maybe this should be clearly stated (both in the struct clk_ops
+> kerneldoc header and in Documentation/clk.txt).
+> 
+> > Sadly, we still have to do a flag day and
+> > change all the .determine_rate ops when we want to add things.
+> 
+> Yes, but the number of clk drivers implementing ->determine_rate() is
+> still quite limited compared to those implementing ->round_rate().
+> 
+> > 
+> > What if we changed determine_rate ops to take a struct
+> > clk_determine_info (or some better named structure) instead of
+> > the current list of arguments that it currently takes? Then when
+> > we want to make these sorts of framework wide changes we can just
+> > throw a new member into that structure and be done.
+> 
+> I really like this idea, especially since I was wondering if we could
+> pass other 'clk rate requirements' like the rounding policy (down,
+> closest, up), or the maximum clk inaccuracy.
+> 
+> > 
+> > It doesn't solve the unsigned long to int return value problem
+> > though. We can solve that by gradually introducing a new op and
+> > handling another case in the rounding path. If we can come up
+> > with some good name for that new op like .decide_rate or
+> > something then it makes things nicer in the long run. I like the
+> > name .determine_rate though :/
 
-Note the architecture mandates that there only is one global bit per
-TLB entry and its written as the logic and of the two global bits in
-the entrylo0 and entrylo1 registers.  On TLB read the G bits of both
-entrylo registers will return the same value.
+Okay, if you want a new method, how about this one:
 
-In reality some implementations differ in hardware, for example the
-SB1 core where the TLB entries both have their separate G bit.  Both
-will be written with the logic and of the G bits of the entrylo registers
-so the existence of multiple G bits per TLB entry should never become
-visible.
+struct clk_adjust_rate_req {
+	/* fields filled by the caller */
+	unsigned long rate; /* rate is updated by the clk driver */
+	unsigned long min;
+	unsigned long max;
 
-Except when writing a duplicate TLB entry where certain revisions will
-write the entrylo0 half of the TLB entry, then take the machine check
-exception leaving the entrylo1 half of the TLB entry unchanged.  At
-this point one may end up with architecturally undefined TLB entries
-with one G bit set and one clear.
+	/* fields filled by the clk driver */
+	struct clk_hw *best_parent;
+	unsigned long best_parent_rate;
 
-There may be other CPUs where such invalid TLB entries are possible
-therfore think we should check for entries with mismatching global
-bits and print those anyway.
+	/*
+	 * new fields I'd like to add at some point:
+	 * unsigned long max_inaccuracy;
+	 * something about the power consumption constraints :-)
+	 */
+};
 
-  Ralf
+int (*adjust_rate)(struct clk_hw *hw, struct clk_adjust_rate_req *req);
+
+> 
+> Why not changing the ->determine_rate() prototype. As said above, the
+> number of clk drivers implementing this function is still quite
+> limited, and I guess we can have an ack for all of them.
+> 
+> > 
+> > The benefit of all this is that we don't have to worry about
+> > finding the random clk providers that get added into other
+> > subsystems and fixing them up. If drivers actually care about
+> > this problem then they'll be fixed to use the proper op. FYI,
+> > last time we updated the function signature of .determine_rate we
+> > broke a couple drivers along the way.
+> > 
+> 
+> Hm, IMHO, adding a new op is not a good thing. I agree that it eases
+> the transition, but ITOH you'll have to live with old/deprecated ops in
+> your clk_ops structure with people introducing new drivers still using
+> the old ops (see the number of clk drivers implementing ->round_rate()
+> instead of ->determine_rate()).
+> 
+> Best Regards,
+> 
+> Boris
+> 
+
+
+
+-- 
+Boris Brezillon, Free Electrons
+Embedded Linux and Kernel engineering
+http://free-electrons.com

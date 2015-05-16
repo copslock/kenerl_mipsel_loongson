@@ -1,47 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 16 May 2015 00:42:03 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:61411 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27012643AbbEOWmBa4XVi (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 16 May 2015 00:42:01 +0200
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 5B98442885CC7;
-        Fri, 15 May 2015 23:41:54 +0100 (IST)
-Received: from hhmail02.hh.imgtec.org (10.100.10.20) by KLMAIL01.kl.imgtec.org
- (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Fri, 15 May
- 2015 23:39:57 +0100
-Received: from BAMAIL02.ba.imgtec.org (10.20.40.28) by hhmail02.hh.imgtec.org
- (10.100.10.20) with Microsoft SMTP Server (TLS) id 14.3.224.2; Fri, 15 May
- 2015 23:39:56 +0100
-Received: from [10.20.3.79] (10.20.3.79) by bamail02.ba.imgtec.org
- (10.20.40.28) with Microsoft SMTP Server (TLS) id 14.3.174.1; Fri, 15 May
- 2015 15:39:54 -0700
-Message-ID: <555675BA.9000700@imgtec.com>
-Date:   Fri, 15 May 2015 15:39:54 -0700
-From:   Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.2.0
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 16 May 2015 02:32:21 +0200 (CEST)
+Received: (from localhost user: 'macro', uid#1010) by eddie.linux-mips.org
+        with ESMTP id S27026747AbbEPAcT06FST (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 16 May 2015 02:32:19 +0200
+Date:   Sat, 16 May 2015 01:32:19 +0100 (BST)
+From:   "Maciej W. Rozycki" <macro@linux-mips.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     <aleksey.makarov@auriga.com>, <james.hogan@imgtec.com>,
-        <paul.burton@imgtec.com>, <david.daney@cavium.com>,
-        <peterz@infradead.org>, <linux-mips@linux-mips.org>,
-        <linux-kernel@vger.kernel.org>, <davidlohr@hp.com>,
-        <kirill@shutemov.name>, <akpm@linux-foundation.org>,
-        <mingo@kernel.org>
-Subject: Re: [PATCH v2] MIPS64: Support of at least 48 bits of SEGBITS
-References: <20150515013351.7450.12130.stgit@ubuntu-yegoshin> <20150515215320.GI2322@linux-mips.org>
-In-Reply-To: <20150515215320.GI2322@linux-mips.org>
-Content-Type: text/plain; charset="windows-1252"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.20.3.79]
-Return-Path: <Leonid.Yegoshin@imgtec.com>
+cc:     James Hogan <james.hogan@imgtec.com>, linux-mips@linux-mips.org
+Subject: Re: [PATCH 3/9] MIPS: dump_tlb: Use tlbr hazard macros
+In-Reply-To: <20150515151711.GC2322@linux-mips.org>
+Message-ID: <alpine.LFD.2.11.1505160122170.4923@eddie.linux-mips.org>
+References: <1431514255-3030-1-git-send-email-james.hogan@imgtec.com> <1431514255-3030-4-git-send-email-james.hogan@imgtec.com> <20150515151711.GC2322@linux-mips.org>
+User-Agent: Alpine 2.11 (LFD 23 2013-08-11)
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47425
+X-archive-position: 47426
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Leonid.Yegoshin@imgtec.com
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,26 +34,14 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 05/15/2015 02:53 PM, Ralf Baechle wrote:
-> On Thu, May 14, 2015 at 06:34:43PM -0700, Leonid Yegoshin wrote:
->
-> The order 1 allocation for the PGD are concerning me a little.  On a
-> system under even moderate memory pressure that might become a bit of
-> a reliability or performance issue.
->
-> With 4kB pages we already need order 1 or even 2 allocations for the
-> allocation of the stack and some folks have reported that to be an issue
-> so we may have to start using the PUD for very large VA spaces.
->
->    Ralf
+On Fri, 15 May 2015, Ralf Baechle wrote:
 
-I don't think it is an issue here - people, who wants to exercise 256 
-TERABAIT of memory PER PROCESS may even doesn't note that they have PGD 
-= 2 pages. It is definitely not for systems with 4GB physmemory.
+> Only to repeat for the benefit of the mailing list readers what I already
+> wrote on IRC recently.  The 7 NOPs sequence will send the uncached
+> write-back buffer of the R4400 but not R4000 off-chip.
 
-I also recommend for low memory to look into CONFIG_COMPACTION, it may 
-be a great help for them here, look into mm/vmscan.c, 
-in_reclaim_compaction().
+ Well, the R4000 doesn't have such a buffer, so there's simply nothing to 
+send. :)  And in any case issuing a SYNC followed by a load operation is 
+the proper architectural way to send any outstanding writes off the chip.
 
-Besides that, I defined this feature for 16KB and 64KB pages only, not 
-for 4KB.
+  Maciej

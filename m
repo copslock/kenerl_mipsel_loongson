@@ -1,39 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 16 May 2015 04:11:05 +0200 (CEST)
-Received: (from localhost user: 'macro', uid#1010) by eddie.linux-mips.org
-        with ESMTP id S27006516AbbEPCLBMaDPI (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 16 May 2015 04:11:01 +0200
-Date:   Sat, 16 May 2015 03:11:01 +0100 (BST)
-From:   "Maciej W. Rozycki" <macro@linux-mips.org>
-To:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-cc:     David Daney <ddaney.cavm@gmail.com>,
-        "aleksey.makarov@auriga.com" <aleksey.makarov@auriga.com>,
-        James Hogan <James.Hogan@imgtec.com>,
-        Paul Burton <Paul.Burton@imgtec.com>,
-        "david.daney@cavium.com" <david.daney@cavium.com>,
-        "peterz@infradead.org" <peterz@infradead.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "ralf@linux-mips.org" <ralf@linux-mips.org>,
-        "davidlohr@hp.com" <davidlohr@hp.com>,
-        "kirill@shutemov.name" <kirill@shutemov.name>,
-        "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-        "mingo@kernel.org" <mingo@kernel.org>
-Subject: Re: [PATCH v2] MIPS64: Support of at least 48 bits of SEGBITS
-In-Reply-To: <55564319.7020502@imgtec.com>
-Message-ID: <alpine.LFD.2.11.1505160305100.4923@eddie.linux-mips.org>
-References: <20150515013351.7450.12130.stgit@ubuntu-yegoshin> <55561EB6.4020009@gmail.com> <55564319.7020502@imgtec.com>
-User-Agent: Alpine 2.11 (LFD 23 2013-08-11)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 16 May 2015 04:42:40 +0200 (CEST)
+Received: from resqmta-ch2-04v.sys.comcast.net ([69.252.207.36]:45713 "EHLO
+        resqmta-ch2-04v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006516AbbEPCmikgSnr (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 16 May 2015 04:42:38 +0200
+Received: from resomta-ch2-16v.sys.comcast.net ([69.252.207.112])
+        by resqmta-ch2-04v.sys.comcast.net with comcast
+        id USiX1q0042S2Q5R01SiXxH; Sat, 16 May 2015 02:42:31 +0000
+Received: from [192.168.1.13] ([69.251.155.187])
+        by resomta-ch2-16v.sys.comcast.net with comcast
+        id USiW1q00D42s2jH01SiWNC; Sat, 16 May 2015 02:42:31 +0000
+Message-ID: <5556AE85.4030500@gentoo.org>
+Date:   Fri, 15 May 2015 22:42:13 -0400
+From:   Joshua Kinard <kumba@gentoo.org>
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:31.0) Gecko/20100101 Thunderbird/31.6.0
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@linux-mips.org>
+To:     linux-mips@linux-mips.org
+Subject: Re: [PATCH v2] MIPS64: Support of at least 48 bits of SEGBITS
+References: <20150515013351.7450.12130.stgit@ubuntu-yegoshin> <20150515215320.GI2322@linux-mips.org> <555675BA.9000700@imgtec.com>
+In-Reply-To: <555675BA.9000700@imgtec.com>
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=comcast.net;
+        s=q20140121; t=1431744151;
+        bh=pwXJS7F/8XykdzCyJVWoy3xjj6tfQRe9n2fib9Ip1Qk=;
+        h=Received:Received:Message-ID:Date:From:MIME-Version:To:Subject:
+         Content-Type;
+        b=uxhwTP834ykacZp2L0yqlvJ+k61p3F++ln+cAaDyKOYrHaol3GvTfJZV9g+kjzjqs
+         /xTqJ1xMwdcWvJYuQqO7Y/ssa63uVZNJv1L9dBzv+SQ1hK6GY/kiIu38LiqCTZ6OKn
+         /ogp9qNN5jcByKYKoZlfkQMHuu5VRaXV+4lUNFi+Vz01Cf0/gxMCschSqb2u1R3000
+         FXbQlg01sdymCVN7qMLz1M8i6M9A5mMt/7JmN/g1eTDnMVX4MRgqFaJRzcmSEYNvsv
+         Ct9KsStPjBKILA5/QCYDYYfmInxYyICzC4wYfzti+QBzDFeIbIN518XAMyO697F4tb
+         Ye4x8XwH6NiPQ==
+Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47430
+X-archive-position: 47431
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: kumba@gentoo.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,20 +52,32 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, 15 May 2015, Leonid Yegoshin wrote:
-
-> > Many processors support larger VA space than is utilized by the kernel.
-> >    A choice was made to reduce the size of the VA space in order to
-> > reduce TLB handling overhead.
-> >
-> > If the true reason for the patch is to enable larger VA space, say that.
-> >    But is it really required by those processors you mention?  I doubt it.
+On 05/15/2015 18:39, Leonid Yegoshin wrote:
+> On 05/15/2015 02:53 PM, Ralf Baechle wrote:
+>> On Thu, May 14, 2015 at 06:34:43PM -0700, Leonid Yegoshin wrote:
+>>
+>> The order 1 allocation for the PGD are concerning me a little.  On a
+>> system under even moderate memory pressure that might become a bit of
+>> a reliability or performance issue.
+>>
+>> With 4kB pages we already need order 1 or even 2 allocations for the
+>> allocation of the stack and some folks have reported that to be an issue
+>> so we may have to start using the PUD for very large VA spaces.
+>>
+>>    Ralf
 > 
-> Well, I was not aware about many processors capability, I can't find this kind
-> of note anywhere.
+> I don't think it is an issue here - people, who wants to exercise 256 TERABAIT
+> of memory PER PROCESS may even doesn't note that they have PGD = 2 pages. It is
+> definitely not for systems with 4GB physmemory.
+> 
+> I also recommend for low memory to look into CONFIG_COMPACTION, it may be a
+> great help for them here, look into mm/vmscan.c, in_reclaim_compaction().
+> 
+> Besides that, I defined this feature for 16KB and 64KB pages only, not for 4KB.
 
- The R10000 and friends all have a 44-bit virtual address space, so this 
-is no news to Linux.  This is noted in <asm/processor.h> right above the 
-change you made there.
+There's something screwy with R14000 CPUs and 16kb/64kb pages.  I haven't
+figured it out yet, but you get random SIGSEGV and SIGBUS errors running that
+PAGE_SIZE.  I figure it's some unknown/undocumented bit that SGI added and
+never disclosed anywhere.
 
-  Maciej
+--J

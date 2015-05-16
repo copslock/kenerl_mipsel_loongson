@@ -1,74 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 16 May 2015 13:14:35 +0200 (CEST)
-Received: from mail.kapsi.fi ([217.30.184.167]:51558 "EHLO mail.kapsi.fi"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27011827AbbEPLOcQwSoo (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 16 May 2015 13:14:32 +0200
-Received: from [2001:708:30:12d0:beee:7bff:fe5b:f272]
-        by mail.kapsi.fi with esmtpsa (TLS1.2:DHE_RSA_AES_128_CBC_SHA1:128)
-        (Exim 4.80)
-        (envelope-from <mikko.perttunen@kapsi.fi>)
-        id 1Yta2j-0000iQ-9d; Sat, 16 May 2015 14:14:09 +0300
-Message-ID: <5557267D.7080209@kapsi.fi>
-Date:   Sat, 16 May 2015 14:14:05 +0300
-From:   Mikko Perttunen <mikko.perttunen@kapsi.fi>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.4.0
-MIME-Version: 1.0
-To:     Boris Brezillon <boris.brezillon@free-electrons.com>,
-        Stephen Boyd <sboyd@codeaurora.org>
-CC:     Mike Turquette <mturquette@linaro.org>, linux-clk@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
-        Shawn Guo <shawn.guo@linaro.org>,
-        ascha Hauer <kernel@pengutronix.de>,
-        David Brown <davidb@codeaurora.org>,
-        Daniel Walker <dwalker@fifo99.com>,
-        Bryan Huntsman <bryanh@codeaurora.org>,
-        Tony Lindgren <tony@atomide.com>,
-        Paul Walmsley <paul@pwsan.com>,
-        Liviu Dudau <liviu.dudau@arm.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 16 May 2015 16:34:16 +0200 (CEST)
+Received: from aserp1040.oracle.com ([141.146.126.69]:40100 "EHLO
+        aserp1040.oracle.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27011542AbbEPOePS0pza (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 16 May 2015 16:34:15 +0200
+Received: from aserv0022.oracle.com (aserv0022.oracle.com [141.146.126.234])
+        by aserp1040.oracle.com (Sentrion-MTA-4.3.2/Sentrion-MTA-4.3.2) with ESMTP id t4GEY6ib006947
+        (version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
+        Sat, 16 May 2015 14:34:08 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by aserv0022.oracle.com (8.13.8/8.13.8) with ESMTP id t4GEY4aG021810
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=FAIL);
+        Sat, 16 May 2015 14:34:04 GMT
+Received: from abhmp0020.oracle.com (abhmp0020.oracle.com [141.146.116.26])
+        by aserv0121.oracle.com (8.13.8/8.13.8) with ESMTP id t4GEY4An012167;
+        Sat, 16 May 2015 14:34:04 GMT
+Received: from lappy.hsd1.nh.comcast.net (/10.159.239.59)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Sat, 16 May 2015 07:34:04 -0700
+From:   Sasha Levin <sasha.levin@oracle.com>
+To:     stable@vger.kernel.org, stable-commits@vger.kernel.org
+Cc:     Nicolas Schichan <nschichan@freebox.fr>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org,
+        Alexandre Courbot <acourbot@nvidia.com>,
         Ralf Baechle <ralf@linux-mips.org>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Sylwester Nawrocki <s.nawrocki@samsung.com>,
-        Tomasz Figa <tomasz.figa@gmail.com>,
-        Barry Song <baohua@kernel.org>,
-        Viresh Kumar <viresh.linux@gmail.com>,
-        =?windows-1252?Q?Emilio_L=F3pez?= <emilio@elopez.com.ar>,
-        Maxime Ripard <maxime.ripard@free-electrons.com>,
-        Peter De Schrijver <pdeschrijver@nvidia.com>,
-        Prashant Gaikwad <pgaikwad@nvidia.com>,
-        Stephen Warren <swarren@wwwdotorg.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Alexandre Courbot <gnurou@gmail.com>,
-        Tero Kristo <t-kristo@ti.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Michal Simek <michal.simek@xilinx.com>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        linux-doc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-arm-msm@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-mips@linux-mips.org, patches@opensource.wolfsonmicro.com,
-        linux-rockchip@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, spear-devel@list.st.com,
-        linux-tegra@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-media@vger.kernel.org, rtc-linux@googlegroups.com
-Subject: Re: [PATCH v2 1/2] clk: change clk_ops' ->round_rate() prototype
-References: <1430407809-31147-1-git-send-email-boris.brezillon@free-electrons.com>      <1430407809-31147-2-git-send-email-boris.brezillon@free-electrons.com>  <20150507063953.GC32399@codeaurora.org> <20150507093702.0b58753d@bbrezillon> <20150515174048.4a31af49@bbrezillon>
-In-Reply-To: <20150515174048.4a31af49@bbrezillon>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 2001:708:30:12d0:beee:7bff:fe5b:f272
-X-SA-Exim-Mail-From: mikko.perttunen@kapsi.fi
-X-SA-Exim-Scanned: No (on mail.kapsi.fi); SAEximRunCond expanded to false
-Return-Path: <mikko.perttunen@kapsi.fi>
+        Sasha Levin <sasha.levin@oracle.com>
+Subject: [added to the 3.18 stable tree] MIPS: BCM63xx: Move bcm63xx_gpio_init() to bcm63xx_register_devices().
+Date:   Sat, 16 May 2015 10:33:10 -0400
+Message-Id: <1431786833-25487-2-git-send-email-sasha.levin@oracle.com>
+X-Mailer: git-send-email 2.1.0
+In-Reply-To: <1431786833-25487-1-git-send-email-sasha.levin@oracle.com>
+References: <1431786833-25487-1-git-send-email-sasha.levin@oracle.com>
+X-Source-IP: aserv0022.oracle.com [141.146.126.234]
+Return-Path: <sasha.levin@oracle.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47434
+X-archive-position: 47435
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mikko.perttunen@kapsi.fi
+X-original-sender: sasha.levin@oracle.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -81,135 +52,79 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 05/15/2015 06:40 PM, Boris Brezillon wrote:
-> Hi Stephen,
->
-> Adding Mikko in the loop (after all, he was the one complaining about
-> this signed long limitation in the first place, and I forgot to add
-> him in the Cc list :-/).
+From: Nicolas Schichan <nschichan@freebox.fr>
 
-I think I got it through linux-tegra anyway, but thanks :)
+This patch has been added to the 3.18 stable tree. If you have any
+objections, please let us know.
 
->
-> Mikko, are you okay with the approach proposed by Stephen (adding a
-> new method) ?
+===============
 
-Yes, sounds good to me. If a driver uses the existing methods with too 
-large frequencies, the issue is pretty discoverable anyway. I think 
-"adjust_rate" sounds a bit too much like it sets the clock's rate, 
-though; perhaps "adjust_rate_request" or something like that?
+[ Upstream commit 2ec459f2a77b808c1e5a3616c88b613d3f720c8d ]
 
-Thanks,
-Mikko
+When called from prom init code, bcm63xx_gpio_init() will fail as it
+will call gpiochip_add() which relies on a working kmalloc() to alloc
+the gpio_desc array and kmalloc is not useable yet at prom init time.
 
->
-> On Thu, 7 May 2015 09:37:02 +0200
-> Boris Brezillon <boris.brezillon@free-electrons.com> wrote:
->
->> Hi Stephen,
->>
->> On Wed, 6 May 2015 23:39:53 -0700
->> Stephen Boyd <sboyd@codeaurora.org> wrote:
->>
->>> On 04/30, Boris Brezillon wrote:
->>>> Clock rates are stored in an unsigned long field, but ->round_rate()
->>>> (which returns a rounded rate from a requested one) returns a long
->>>> value (errors are reported using negative error codes), which can lead
->>>> to long overflow if the clock rate exceed 2Ghz.
->>>>
->>>> Change ->round_rate() prototype to return 0 or an error code, and pass the
->>>> requested rate as a pointer so that it can be adjusted depending on
->>>> hardware capabilities.
->>>>
->>>> Signed-off-by: Boris Brezillon <boris.brezillon@free-electrons.com>
->>>> Tested-by: Heiko Stuebner <heiko@sntech.de>
->>>> Tested-by: Mikko Perttunen <mikko.perttunen@kapsi.fi>
->>>> Reviewed-by: Heiko Stuebner <heiko@sntech.de>
->>>
->>> This patch is fairly invasive, and it probably doesn't even
->>> matter for most of these clock providers to be able to round a
->>> rate above 2GHz.
->>
->> Fair enough.
->>
->>> I've been trying to remove the .round_rate op
->>> from the framework by encouraging new features via the
->>> .determine_rate op.
->>
->> Oh, I wasn't aware of that (BTW, that's a good thing).
->> Maybe this should be clearly stated (both in the struct clk_ops
->> kerneldoc header and in Documentation/clk.txt).
->>
->>> Sadly, we still have to do a flag day and
->>> change all the .determine_rate ops when we want to add things.
->>
->> Yes, but the number of clk drivers implementing ->determine_rate() is
->> still quite limited compared to those implementing ->round_rate().
->>
->>>
->>> What if we changed determine_rate ops to take a struct
->>> clk_determine_info (or some better named structure) instead of
->>> the current list of arguments that it currently takes? Then when
->>> we want to make these sorts of framework wide changes we can just
->>> throw a new member into that structure and be done.
->>
->> I really like this idea, especially since I was wondering if we could
->> pass other 'clk rate requirements' like the rounding policy (down,
->> closest, up), or the maximum clk inaccuracy.
->>
->>>
->>> It doesn't solve the unsigned long to int return value problem
->>> though. We can solve that by gradually introducing a new op and
->>> handling another case in the rounding path. If we can come up
->>> with some good name for that new op like .decide_rate or
->>> something then it makes things nicer in the long run. I like the
->>> name .determine_rate though :/
->
-> Okay, if you want a new method, how about this one:
->
-> struct clk_adjust_rate_req {
-> 	/* fields filled by the caller */
-> 	unsigned long rate; /* rate is updated by the clk driver */
-> 	unsigned long min;
-> 	unsigned long max;
->
-> 	/* fields filled by the clk driver */
-> 	struct clk_hw *best_parent;
-> 	unsigned long best_parent_rate;
->
-> 	/*
-> 	 * new fields I'd like to add at some point:
-> 	 * unsigned long max_inaccuracy;
-> 	 * something about the power consumption constraints :-)
-> 	 */
-> };
->
-> int (*adjust_rate)(struct clk_hw *hw, struct clk_adjust_rate_req *req);
->
->>
->> Why not changing the ->determine_rate() prototype. As said above, the
->> number of clk drivers implementing this function is still quite
->> limited, and I guess we can have an ack for all of them.
->>
->>>
->>> The benefit of all this is that we don't have to worry about
->>> finding the random clk providers that get added into other
->>> subsystems and fixing them up. If drivers actually care about
->>> this problem then they'll be fixed to use the proper op. FYI,
->>> last time we updated the function signature of .determine_rate we
->>> broke a couple drivers along the way.
->>>
->>
->> Hm, IMHO, adding a new op is not a good thing. I agree that it eases
->> the transition, but ITOH you'll have to live with old/deprecated ops in
->> your clk_ops structure with people introducing new drivers still using
->> the old ops (see the number of clk drivers implementing ->round_rate()
->> instead of ->determine_rate()).
->>
->> Best Regards,
->>
->> Boris
->>
->
->
->
+Move bcm63xx_gpio_init() to bcm63xx_register_devices() (an
+arch_initcall) where kmalloc works.
+
+Fixes: 14e85c0e69d5 ("gpio: remove gpio_descs global array")
+
+Signed-off-by: Nicolas Schichan <nschichan@freebox.fr>
+Cc: linux-mips@linux-mips.org
+Cc: linux-kernel@vger.kernel.org
+Cc: Alexandre Courbot <acourbot@nvidia.com>
+Patchwork: https://patchwork.linux-mips.org/patch/9530/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: Sasha Levin <sasha.levin@oracle.com>
+---
+ arch/mips/bcm63xx/prom.c  | 4 ----
+ arch/mips/bcm63xx/setup.c | 4 ++++
+ 2 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/arch/mips/bcm63xx/prom.c b/arch/mips/bcm63xx/prom.c
+index e1f27d6..7019e29 100644
+--- a/arch/mips/bcm63xx/prom.c
++++ b/arch/mips/bcm63xx/prom.c
+@@ -17,7 +17,6 @@
+ #include <bcm63xx_cpu.h>
+ #include <bcm63xx_io.h>
+ #include <bcm63xx_regs.h>
+-#include <bcm63xx_gpio.h>
+ 
+ void __init prom_init(void)
+ {
+@@ -53,9 +52,6 @@ void __init prom_init(void)
+ 	reg &= ~mask;
+ 	bcm_perf_writel(reg, PERF_CKCTL_REG);
+ 
+-	/* register gpiochip */
+-	bcm63xx_gpio_init();
+-
+ 	/* do low level board init */
+ 	board_prom_init();
+ 
+diff --git a/arch/mips/bcm63xx/setup.c b/arch/mips/bcm63xx/setup.c
+index 6660c7d..240fb4f 100644
+--- a/arch/mips/bcm63xx/setup.c
++++ b/arch/mips/bcm63xx/setup.c
+@@ -20,6 +20,7 @@
+ #include <bcm63xx_cpu.h>
+ #include <bcm63xx_regs.h>
+ #include <bcm63xx_io.h>
++#include <bcm63xx_gpio.h>
+ 
+ void bcm63xx_machine_halt(void)
+ {
+@@ -160,6 +161,9 @@ void __init plat_mem_setup(void)
+ 
+ int __init bcm63xx_register_devices(void)
+ {
++	/* register gpiochip */
++	bcm63xx_gpio_init();
++
+ 	return board_register_devices();
+ }
+ 
+-- 
+2.1.0

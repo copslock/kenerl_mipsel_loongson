@@ -1,15 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 16 May 2015 02:32:21 +0200 (CEST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 16 May 2015 02:44:42 +0200 (CEST)
 Received: (from localhost user: 'macro', uid#1010) by eddie.linux-mips.org
-        with ESMTP id S27026747AbbEPAcT06FST (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 16 May 2015 02:32:19 +0200
-Date:   Sat, 16 May 2015 01:32:19 +0100 (BST)
+        with ESMTP id S27026747AbbEPAojrKAbk (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 16 May 2015 02:44:39 +0200
+Date:   Sat, 16 May 2015 01:44:39 +0100 (BST)
 From:   "Maciej W. Rozycki" <macro@linux-mips.org>
-To:     Ralf Baechle <ralf@linux-mips.org>
-cc:     James Hogan <james.hogan@imgtec.com>, linux-mips@linux-mips.org
-Subject: Re: [PATCH 3/9] MIPS: dump_tlb: Use tlbr hazard macros
-In-Reply-To: <20150515151711.GC2322@linux-mips.org>
-Message-ID: <alpine.LFD.2.11.1505160122170.4923@eddie.linux-mips.org>
-References: <1431514255-3030-1-git-send-email-james.hogan@imgtec.com> <1431514255-3030-4-git-send-email-james.hogan@imgtec.com> <20150515151711.GC2322@linux-mips.org>
+To:     James Hogan <james.hogan@imgtec.com>
+cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: Re: [PATCH 5/9] MIPS: dump_tlb: Take global bit into account
+In-Reply-To: <1431514255-3030-6-git-send-email-james.hogan@imgtec.com>
+Message-ID: <alpine.LFD.2.11.1505160137150.4923@eddie.linux-mips.org>
+References: <1431514255-3030-1-git-send-email-james.hogan@imgtec.com> <1431514255-3030-6-git-send-email-james.hogan@imgtec.com>
 User-Agent: Alpine 2.11 (LFD 23 2013-08-11)
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
@@ -17,7 +17,7 @@ Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47426
+X-archive-position: 47427
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -34,14 +34,37 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, 15 May 2015, Ralf Baechle wrote:
+On Wed, 13 May 2015, James Hogan wrote:
 
-> Only to repeat for the benefit of the mailing list readers what I already
-> wrote on IRC recently.  The 7 NOPs sequence will send the uncached
-> write-back buffer of the R4400 but not R4000 off-chip.
+> The TLB only matches the ASID when the global bit isn't set, so
+> dump_tlb() shouldn't really be skipping global entries just because the
+> ASID doesn't match. Fix the condition to read the TLB entry's global bit
+> from EntryLo0. Note that after a TLB read the global bits in both
+> EntryLo registers reflect the same global bit in the TLB entry.
+> 
+> Signed-off-by: James Hogan <james.hogan@imgtec.com>
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: linux-mips@linux-mips.org
+> ---
+>  arch/mips/lib/dump_tlb.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/mips/lib/dump_tlb.c b/arch/mips/lib/dump_tlb.c
+> index 17d05caa776d..70e0a6bdb322 100644
+> --- a/arch/mips/lib/dump_tlb.c
+> +++ b/arch/mips/lib/dump_tlb.c
+> @@ -73,7 +73,8 @@ static void dump_tlb(int first, int last)
+>  		 */
+>  		if ((entryhi & ~0x1ffffUL) == CKSEG0)
+>  			continue;
+> -		if ((entryhi & 0xff) != asid)
+> +		/* ASID takes effect in absense of global bit */
 
- Well, the R4000 doesn't have such a buffer, so there's simply nothing to 
-send. :)  And in any case issuing a SYNC followed by a load operation is 
-the proper architectural way to send any outstanding writes off the chip.
+ Typo here, s/absense/absence/.
+
+> +		if (!(entrylo0 & 1) && (entryhi & 0xff) != asid)
+
+ Hmm, it looks like r3k_dump_tlb.c will need a similar update.  I suggest 
+using _PAGE_GLOBAL and ASID_MASK rather than hardcoded 1 and 0xff.
 
   Maciej

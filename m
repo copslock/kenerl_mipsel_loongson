@@ -1,45 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 May 2015 23:41:09 +0200 (CEST)
-Received: from nn-mx.auriga.ru ([81.19.133.66]:55548 "EHLO nn-mx.auriga.ru"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27013022AbbERVlIO-0CM (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 18 May 2015 23:41:08 +0200
-Received: from [IPv6:::1] (unknown [192.168.150.24])
-        by nn-mx.auriga.ru (Postfix) with ESMTP id D384F1FFF9;
-        Tue, 19 May 2015 00:40:44 +0300 (MSK)
-Message-ID: <555A5C5C.9090903@auriga.com>
-Date:   Mon, 18 May 2015 14:40:44 -0700
-From:   Aleksey Makarov <aleksey.makarov@auriga.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.6.0
-MIME-Version: 1.0
-To:     Aaro Koskinen <aaro.koskinen@iki.fi>
-CC:     linux-mmc@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org, David Daney <david.daney@cavium.com>,
-        Chandrakala Chavva <cchavva@caviumnetworks.com>,
-        Leonid Rosenboim <lrosenboim@caviumnetworks.com>,
-        Peter Swain <pswain@cavium.com>,
-        Aaron Williams <aaron.williams@cavium.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Pawel Moll <pawel.moll@arm.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ian Campbell <ijc+devicetree@hellion.org.uk>,
-        Kumar Gala <galak@codeaurora.org>,
-        Chris Ball <chris@printf.net>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        devicetree@vger.kernel.org
-Subject: Re: [PATCH v4] mmc: OCTEON: Add host driver for OCTEON MMC controller
-References: <1426518362-24349-1-git-send-email-aleksey.makarov@auriga.com> <20150518210514.GG609@fuloong-minipc.musicnaut.iki.fi>
-In-Reply-To: <20150518210514.GG609@fuloong-minipc.musicnaut.iki.fi>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <aleksey.makarov@auriga.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 May 2015 01:21:28 +0200 (CEST)
+Received: from mail-pa0-f54.google.com ([209.85.220.54]:36108 "EHLO
+        mail-pa0-f54.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012124AbbERXV1Oknd4 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 19 May 2015 01:21:27 +0200
+Received: by pabts4 with SMTP id ts4so171061755pab.3;
+        Mon, 18 May 2015 16:21:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id;
+        bh=iPGSwIAeP5Cn9OsZAwO2o/0pPJI5hDziOJ1P66Mnv0Q=;
+        b=lgmqIQw48220fZMAYtwH8aaOxHDNBfOTY/nphWudYS5shFCEkhroVTbUrvB4ub/+Ii
+         KYWa8QPSn4AelzVI1IIB77eztJfC1qF3RUJsq8UuMGcwzaqDvSjuBeNaT7qiwTxoqCiX
+         KyaZzgmvhB2OknwGE7HrFIoi3aaqFQcZ8hF5qBnTmtkAcdV657KZT3fL7YLarF1WXGTP
+         0q8qI5aKA28vLFf7flsF9yh65EJEzhJaRKSdeunqMh++DvRayBO17jVJbTshWvT3wFH1
+         bsJMbP+MN9056leMqdQbQb+28vdVe5rXfinJg1E1Uy0glNn0jP7n0wV+RcbsQ5F2uk5L
+         xaLg==
+X-Received: by 10.66.232.104 with SMTP id tn8mr47769462pac.73.1431991282901;
+        Mon, 18 May 2015 16:21:22 -0700 (PDT)
+Received: from ld-irv-0074.broadcom.com (5520-maca-inet1-outside.broadcom.com. [216.31.211.11])
+        by mx.google.com with ESMTPSA id oj10sm11102211pdb.38.2015.05.18.16.21.21
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Mon, 18 May 2015 16:21:22 -0700 (PDT)
+From:   Brian Norris <computersforpeace@gmail.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     <linux-mtd@lists.infradead.org>,
+        Brian Norris <computersforpeace@gmail.com>,
+        linux-mips@linux-mips.org
+Subject: [PATCH] MIPS: netlogic: remove unnecessary MTD partition probe specification
+Date:   Mon, 18 May 2015 16:21:12 -0700
+Message-Id: <1431991272-22200-1-git-send-email-computersforpeace@gmail.com>
+X-Mailer: git-send-email 1.9.1
+Return-Path: <computersforpeace@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47465
+X-archive-position: 47466
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aleksey.makarov@auriga.com
+X-original-sender: computersforpeace@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,37 +51,33 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+The cmdlinepart parser is already supported in the default probe.
 
+Signed-off-by: Brian Norris <computersforpeace@gmail.com>
+---
+ arch/mips/netlogic/xlr/platform-flash.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-On 05/18/2015 02:05 PM, Aaro Koskinen wrote:
-> Hi,
->
-> On Mon, Mar 16, 2015 at 06:06:00PM +0300, Aleksey Makarov wrote:
->> The OCTEON MMC controller is currently found on cn61XX and cnf71XX
->> devices.  Device parameters are configured from device tree data.
->>
->> eMMC, MMC and SD devices are supported.
->>
->> Tested-by: Aaro Koskinen <aaro.koskinen@iki.fi>
->> Signed-off-by: Chandrakala Chavva <cchavva@caviumnetworks.com>
->> Signed-off-by: David Daney <david.daney@cavium.com>
->> Signed-off-by: Aleksey Makarov <aleksey.makarov@auriga.com>
->> Signed-off-by: Leonid Rosenboim <lrosenboim@caviumnetworks.com>
->> Signed-off-by: Peter Swain <pswain@cavium.com>
->> Signed-off-by: Aaron Williams <aaron.williams@cavium.com>
->> ---
->
-> Any updates on this patch? Are you still working on it for
-> the mainline kernel inclusion?
->
-> A:
-> .
-
-We are working on it.  It will also be used in ARM ThunderX arch.  So we 
-will send a new version soon.
-
-We need to decide on what to do with the objections to the way we use 
-device tree.
-
-Thank you
-Aleksey Makarov
+diff --git a/arch/mips/netlogic/xlr/platform-flash.c b/arch/mips/netlogic/xlr/platform-flash.c
+index 6d3c727e0ef8..f03131fec41d 100644
+--- a/arch/mips/netlogic/xlr/platform-flash.c
++++ b/arch/mips/netlogic/xlr/platform-flash.c
+@@ -78,8 +78,6 @@ static struct platform_device xlr_nor_dev = {
+ 	.resource	= xlr_nor_res,
+ };
+ 
+-const char *xlr_part_probes[] = { "cmdlinepart", NULL };
+-
+ /*
+  * Use "gen_nand" driver for NAND flash
+  *
+@@ -111,7 +109,6 @@ struct platform_nand_data xlr_nand_data = {
+ 		.nr_partitions	= ARRAY_SIZE(xlr_nand_parts),
+ 		.chip_delay	= 50,
+ 		.partitions	= xlr_nand_parts,
+-		.part_probe_types = xlr_part_probes,
+ 	},
+ 	.ctrl = {
+ 		.cmd_ctrl	= xlr_nand_ctrl,
+-- 
+1.9.1

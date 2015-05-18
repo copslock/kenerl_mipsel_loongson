@@ -1,45 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 May 2015 15:30:48 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:7258 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 May 2015 15:37:14 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:26108 "EHLO
         imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27012313AbbERNaqYgYjX (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 18 May 2015 15:30:46 +0200
+        by eddie.linux-mips.org with ESMTP id S27012839AbbERNhMfgY6O (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 18 May 2015 15:37:12 +0200
 Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
-        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 44E0541F8DF6;
-        Mon, 18 May 2015 14:30:43 +0100 (BST)
+        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 5705941F8DF6;
+        Mon, 18 May 2015 14:37:09 +0100 (BST)
 Received: from mailapp01.imgtec.com ([10.100.180.242])
   by imgpgp01.kl.imgtec.org (PGP Universal service);
-  Mon, 18 May 2015 14:30:43 +0100
+  Mon, 18 May 2015 14:37:09 +0100
 X-PGP-Universal: processed;
-        by imgpgp01.kl.imgtec.org on Mon, 18 May 2015 14:30:43 +0100
+        by imgpgp01.kl.imgtec.org on Mon, 18 May 2015 14:37:09 +0100
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 48FBCC05A666F;
-        Mon, 18 May 2015 14:30:40 +0100 (IST)
+        by Websense Email Security Gateway with ESMTPS id 5AD787A40B7;
+        Mon, 18 May 2015 14:37:06 +0100 (IST)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
  KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Mon, 18 May 2015 14:30:43 +0100
+ 14.3.195.1; Mon, 18 May 2015 14:37:09 +0100
 Received: from [192.168.154.110] (192.168.154.110) by LEMAIL01.le.imgtec.org
  (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Mon, 18 May
- 2015 14:30:42 +0100
-Message-ID: <5559E982.2050704@imgtec.com>
-Date:   Mon, 18 May 2015 14:30:42 +0100
+ 2015 14:37:08 +0100
+Message-ID: <5559EB04.2000007@imgtec.com>
+Date:   Mon, 18 May 2015 14:37:08 +0100
 From:   James Hogan <james.hogan@imgtec.com>
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.6.0
 MIME-Version: 1.0
 To:     Ralf Baechle <ralf@linux-mips.org>
 CC:     <linux-mips@linux-mips.org>
-Subject: Re: [PATCH 2/9] MIPS: hazards: Add hazard macros for tlb read
-References: <1431514255-3030-1-git-send-email-james.hogan@imgtec.com> <1431514255-3030-3-git-send-email-james.hogan@imgtec.com> <20150515150845.GB2322@linux-mips.org>
-In-Reply-To: <20150515150845.GB2322@linux-mips.org>
+Subject: Re: [PATCH 5/9] MIPS: dump_tlb: Take global bit into account
+References: <1431514255-3030-1-git-send-email-james.hogan@imgtec.com> <1431514255-3030-6-git-send-email-james.hogan@imgtec.com> <20150515153800.GD2322@linux-mips.org>
+In-Reply-To: <20150515153800.GD2322@linux-mips.org>
 Content-Type: multipart/signed; micalg=pgp-sha1;
         protocol="application/pgp-signature";
-        boundary="SoKc9jJ11Fg9351g69E1Ur8C0JcqCIA7c"
+        boundary="ALH7S3QTVv0DjiEQSp8i9uiTxD99nOVGH"
 X-Originating-IP: [192.168.154.110]
 X-ESG-ENCRYPT-TAG: b93fcccb
 Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47458
+X-archive-position: 47459
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -56,75 +56,73 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---SoKc9jJ11Fg9351g69E1Ur8C0JcqCIA7c
+--ALH7S3QTVv0DjiEQSp8i9uiTxD99nOVGH
 Content-Type: text/plain; charset=windows-1252
 Content-Transfer-Encoding: quoted-printable
 
-Hi Ralf,
-
-On 15/05/15 16:08, Ralf Baechle wrote:
-> On Wed, May 13, 2015 at 11:50:48AM +0100, James Hogan wrote:
+On 15/05/15 16:38, Ralf Baechle wrote:
+> On Wed, May 13, 2015 at 11:50:51AM +0100, James Hogan wrote:
 >=20
->> Add hazard macros to <asm/hazards.h> for the following hazards around
->> tlbr (TLB read) instructions, which are used in TLB dumping code and
->> some KVM TLB management code:
->>
->> - mtc0_tlbr_hazard
->>   Between mtc0 (Index) and tlbr. This is copied from mtc0_tlbw_hazard =
-in
->>   all cases on the assumption that tlbr always has similar data user
->>   timings to tlbw.
->>
->> - tlb_read_hazard
->>   Between tlbr and mfc0 (various TLB registers). This is copied from
->>   tlbw_use_hazard in all cases on the assumption that tlbr has similar=
-
->>   data writer characteristics to tlbw, and mfc0 has similar data user
->>   characteristics to loads and stores.
+>> The TLB only matches the ASID when the global bit isn't set, so
+>> dump_tlb() shouldn't really be skipping global entries just because th=
+e
+>> ASID doesn't match. Fix the condition to read the TLB entry's global b=
+it
+>> from EntryLo0. Note that after a TLB read the global bits in both
+>> EntryLo registers reflect the same global bit in the TLB entry.
 >>
 >> Signed-off-by: James Hogan <james.hogan@imgtec.com>
 >> Cc: Ralf Baechle <ralf@linux-mips.org>
 >> Cc: linux-mips@linux-mips.org
 >> ---
->> Looking at r4000 manual, its tlbr had similar data user timings to tlb=
-w,
->> and mfc0 had similar data writer timings to loads and stores. Are ther=
-e
->> particular other cores that should be checked too?
+>>  arch/mips/lib/dump_tlb.c | 3 ++-
+>>  1 file changed, 2 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/arch/mips/lib/dump_tlb.c b/arch/mips/lib/dump_tlb.c
+>> index 17d05caa776d..70e0a6bdb322 100644
+>> --- a/arch/mips/lib/dump_tlb.c
+>> +++ b/arch/mips/lib/dump_tlb.c
+>> @@ -73,7 +73,8 @@ static void dump_tlb(int first, int last)
+>>  		 */
+>>  		if ((entryhi & ~0x1ffffUL) =3D=3D CKSEG0)
+>>  			continue;
+>> -		if ((entryhi & 0xff) !=3D asid)
+>> +		/* ASID takes effect in absense of global bit */
+>> +		if (!(entrylo0 & 1) && (entryhi & 0xff) !=3D asid)
+>>  			continue;
 >=20
-> The R4600 and R5000 CPUs are important.  The R4600 also covers the
-> R4700 and the R5000 the R52xx embedded cores.
+> Note the architecture mandates that there only is one global bit per
+> TLB entry and its written as the logic and of the two global bits in
+> the entrylo0 and entrylo1 registers.  On TLB read the G bits of both
+> entrylo registers will return the same value.
 >=20
-> For most cases the R4000/R4400 due to their long pipeline represent the=
+> In reality some implementations differ in hardware, for example the
+> SB1 core where the TLB entries both have their separate G bit.  Both
+> will be written with the logic and of the G bits of the entrylo registe=
+rs
+> so the existence of multiple G bits per TLB entry should never become
+> visible.
+>=20
+> Except when writing a duplicate TLB entry where certain revisions will
+> write the entrylo0 half of the TLB entry, then take the machine check
+> exception leaving the entrylo1 half of the TLB entry unchanged.  At
+> this point one may end up with architecturally undefined TLB entries
+> with one G bit set and one clear.
+>=20
+> There may be other CPUs where such invalid TLB entries are possible
+> therfore think we should check for entries with mismatching global
+> bits and print those anyway.
 
-> worst case but there are exceptions.
+Okay, makes sense. If either global bit is set I'll make it skip the
+ASID check.
 
-Okay. For mtc0-tlbw/tlbr on r4000:
-mtc0	CPR written stage 7
-tlbwi/r	CPR read stage 5-8 (5-7 for tlbr)
-delay =3D 7-5-1 =3D 1 nop
-but linux has 2 nops for __mtc0_tlbw_hazard. Is that one of the exception=
-s?
-
-(
-For r4600, mtc0-tlbw/tlbr =3D 4-2-1 =3D 1 nop too
-
-For tlbr-mfc0, r4000:
-tlbr	CPR written stage 8
-mfc0	CPR read state 4
-delay =3D 8-4-1 =3D 3 nops (that's what I have)
-
-r4600:
-tlbr	CPR written stage 4
-mfc0	CPR read stage 2
-delay =3D 4-2-1 =3D 1 nop
-)
+Thanks for the information.
 
 Cheers
 James
 
 
---SoKc9jJ11Fg9351g69E1Ur8C0JcqCIA7c
+--ALH7S3QTVv0DjiEQSp8i9uiTxD99nOVGH
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: OpenPGP digital signature
 Content-Disposition: attachment; filename="signature.asc"
@@ -132,19 +130,19 @@ Content-Disposition: attachment; filename="signature.asc"
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQIcBAEBAgAGBQJVWemCAAoJEGwLaZPeOHZ6AuIP/2eHjK8v50JU+opbGKZU4FMS
-T6IoBU8OqOl1U1YPsyHFbZNNkotdImB5JR2TKyuA8dRFM/1irzeV1YDWRL9doi6L
-Rg3z7mRKEU2ylPLyATfjmPBHMQjoXWiWBFHJb9umi5ejWQJf27XILWOVjnWyog4x
-q3nRPWFBAFa75UnmMDbs7LAhiZKvJ+CUDoZJBVrtzWmeWPFPKx1dsfBXj9ku8x57
-BZdYiWrKaE0oUVDebDp3BBtBrROgXDbZ9hcf0qpU34jr+emC0iGEx/kbV9P8EIsU
-C2IQM77BwHrcBbY0EQvp5U7iGpjE/jMmSJHcN7X0TdP5WWeGK2frWqnq9puEykVe
-B/Uso3FXvHdLnyppaaN5OeTrPbXOt3Yk+6zxNBDkh3NKofFsUjPXgLzWf6X/Zbf3
-oy4rb6WTUVAWD2ssgtGmS7uTodxfQZPyY8gb350ZAxvuAScOx4v64dWpC/qff2+t
-nD+yy3Xp/KsFHm0NhPjTxZhdtBuUrRjls8Hn9n1O3FKNZQt33ddQLTuaw45rq8MT
-ppEUA05eVdtX31ZkuqiJJgMGJUdHrcvbOqbaBfAw9qPr8CnQtraZKSQM3SGtQ/Hq
-Xc8l9R8YONcVLbsfnzCq36JGhaQd1kMWrZ+LBKa6oovoVNAf+QzxpChdUbjKKc8J
-0A+nYbPuZ+kVAv2WIoGD
-=mxAQ
+iQIcBAEBAgAGBQJVWesEAAoJEGwLaZPeOHZ6OfsQAJwm7QbcY9c/ZNmktAYwg2Dh
+J9JXreqkjTPQwTZmAFNI2MY6ioeF3iWOzrq4kkenofA8VAO5DGkrR97iVQYRoCSc
+KmlueiyEkOgPrPkLuvdPcBtJzDTFTw0z8RMNFcydpsFNvmCwx8Lpuza/UO6AL1K+
+ijrQVxwrWrBmGNL+Srt6sE9C7NlCccANkP2VDFL4huDb4GVxc1Q7KF/Jrri+WEiI
+jVb3guydhb7E3nu3xdWLNZ9gXfdkMQCf5BnJtzadK5CxX+EilpakXaa4ZIldT9k2
+XV3vfjS2RpcoIEQW6lCi5GsOI4lUgp+pU9ZkxAEcGO4HoTUcHdg61VjVie+Lg4xP
+dBf+MiV0CNKDcF3xo/rPGNtJAdIKQi1N2RDlFhjYoQztVucEUoBLZLO+5BPM3vhv
+yyGW/T6ZVhBbuaJoQdtYL5TRpDRxtPkC4aaD3XtJilrtU2N3Qljf9znU58pnH2bP
+oNuvBbr4od3fPDXdt51JrWjALVeuc/3TicqS/myuTDnA1dpUKKj5IIaawvnkPDmS
+FMA9bnTVIUcqXeWa41oPxOqYDSocN2UZl5Oi+BX0HB4YybVBg5LOawxTDS4O+GTB
+DbBMCm8sBxReLCHduMg9jHTtevIdJnmSHTCDZnCGaZz1WZ7NnlNQEGH4lLvB+E8m
+bPg1Xwpnj/LxeMn3uZ37
+=ZBlJ
 -----END PGP SIGNATURE-----
 
---SoKc9jJ11Fg9351g69E1Ur8C0JcqCIA7c--
+--ALH7S3QTVv0DjiEQSp8i9uiTxD99nOVGH--

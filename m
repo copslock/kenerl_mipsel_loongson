@@ -1,45 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 May 2015 15:37:14 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:26108 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 May 2015 15:50:13 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:44130 "EHLO
         imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27012839AbbERNhMfgY6O (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 18 May 2015 15:37:12 +0200
+        by eddie.linux-mips.org with ESMTP id S27012839AbbERNuLhS6Uj (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 18 May 2015 15:50:11 +0200
 Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
-        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 5705941F8DF6;
-        Mon, 18 May 2015 14:37:09 +0100 (BST)
+        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 9E8A541F8DF6;
+        Mon, 18 May 2015 14:50:08 +0100 (BST)
 Received: from mailapp01.imgtec.com ([10.100.180.242])
   by imgpgp01.kl.imgtec.org (PGP Universal service);
-  Mon, 18 May 2015 14:37:09 +0100
+  Mon, 18 May 2015 14:50:08 +0100
 X-PGP-Universal: processed;
-        by imgpgp01.kl.imgtec.org on Mon, 18 May 2015 14:37:09 +0100
+        by imgpgp01.kl.imgtec.org on Mon, 18 May 2015 14:50:08 +0100
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 5AD787A40B7;
-        Mon, 18 May 2015 14:37:06 +0100 (IST)
+        by Websense Email Security Gateway with ESMTPS id 924722352C74D;
+        Mon, 18 May 2015 14:50:05 +0100 (IST)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
  KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Mon, 18 May 2015 14:37:09 +0100
+ 14.3.195.1; Mon, 18 May 2015 14:50:08 +0100
 Received: from [192.168.154.110] (192.168.154.110) by LEMAIL01.le.imgtec.org
  (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Mon, 18 May
- 2015 14:37:08 +0100
-Message-ID: <5559EB04.2000007@imgtec.com>
-Date:   Mon, 18 May 2015 14:37:08 +0100
+ 2015 14:50:07 +0100
+Message-ID: <5559EE0E.5030606@imgtec.com>
+Date:   Mon, 18 May 2015 14:50:06 +0100
 From:   James Hogan <james.hogan@imgtec.com>
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.6.0
 MIME-Version: 1.0
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     <linux-mips@linux-mips.org>
+To:     "Maciej W. Rozycki" <macro@linux-mips.org>
+CC:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
 Subject: Re: [PATCH 5/9] MIPS: dump_tlb: Take global bit into account
-References: <1431514255-3030-1-git-send-email-james.hogan@imgtec.com> <1431514255-3030-6-git-send-email-james.hogan@imgtec.com> <20150515153800.GD2322@linux-mips.org>
-In-Reply-To: <20150515153800.GD2322@linux-mips.org>
+References: <1431514255-3030-1-git-send-email-james.hogan@imgtec.com> <1431514255-3030-6-git-send-email-james.hogan@imgtec.com> <alpine.LFD.2.11.1505160137150.4923@eddie.linux-mips.org>
+In-Reply-To: <alpine.LFD.2.11.1505160137150.4923@eddie.linux-mips.org>
 Content-Type: multipart/signed; micalg=pgp-sha1;
         protocol="application/pgp-signature";
-        boundary="ALH7S3QTVv0DjiEQSp8i9uiTxD99nOVGH"
+        boundary="69RVe8c9NgQRHoLkoIkKgiRuxinoiDEBR"
 X-Originating-IP: [192.168.154.110]
 X-ESG-ENCRYPT-TAG: b93fcccb
 Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47459
+X-archive-position: 47460
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -56,12 +56,14 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---ALH7S3QTVv0DjiEQSp8i9uiTxD99nOVGH
+--69RVe8c9NgQRHoLkoIkKgiRuxinoiDEBR
 Content-Type: text/plain; charset=windows-1252
 Content-Transfer-Encoding: quoted-printable
 
-On 15/05/15 16:38, Ralf Baechle wrote:
-> On Wed, May 13, 2015 at 11:50:51AM +0100, James Hogan wrote:
+Hi Maciej,
+
+On 16/05/15 01:44, Maciej W. Rozycki wrote:
+> On Wed, 13 May 2015, James Hogan wrote:
 >=20
 >> The TLB only matches the ASID when the global bit isn't set, so
 >> dump_tlb() shouldn't really be skipping global entries just because th=
@@ -88,41 +90,33 @@ it
 >>  			continue;
 >> -		if ((entryhi & 0xff) !=3D asid)
 >> +		/* ASID takes effect in absense of global bit */
+>=20
+>  Typo here, s/absense/absence/.
+
+Thanks!
+
+>=20
 >> +		if (!(entrylo0 & 1) && (entryhi & 0xff) !=3D asid)
->>  			continue;
 >=20
-> Note the architecture mandates that there only is one global bit per
-> TLB entry and its written as the logic and of the two global bits in
-> the entrylo0 and entrylo1 registers.  On TLB read the G bits of both
-> entrylo registers will return the same value.
->=20
-> In reality some implementations differ in hardware, for example the
-> SB1 core where the TLB entries both have their separate G bit.  Both
-> will be written with the logic and of the G bits of the entrylo registe=
-rs
-> so the existence of multiple G bits per TLB entry should never become
-> visible.
->=20
-> Except when writing a duplicate TLB entry where certain revisions will
-> write the entrylo0 half of the TLB entry, then take the machine check
-> exception leaving the entrylo1 half of the TLB entry unchanged.  At
-> this point one may end up with architecturally undefined TLB entries
-> with one G bit set and one clear.
->=20
-> There may be other CPUs where such invalid TLB entries are possible
-> therfore think we should check for entries with mismatching global
-> bits and print those anyway.
+>  Hmm, it looks like r3k_dump_tlb.c will need a similar update.  I sugge=
+st=20
 
-Okay, makes sense. If either global bit is set I'll make it skip the
-ASID check.
+Yes, quite possibly. Would you be happy to test such a patch (assuming
+you have r3000 hardware available)? Patch 1 should allow the code to be
+easily triggered.
 
-Thanks for the information.
+> using _PAGE_GLOBAL and ASID_MASK rather than hardcoded 1 and 0xff.
+
+Yeh, as you mentioned these describe the PTE rather than what goes in
+EntryLo. Perhaps it makes sense to have a few more TLB dependent
+definitions in mipsregs.h (patch 7 already adds a couple for RI/XI bits).=
+
 
 Cheers
 James
 
 
---ALH7S3QTVv0DjiEQSp8i9uiTxD99nOVGH
+--69RVe8c9NgQRHoLkoIkKgiRuxinoiDEBR
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: OpenPGP digital signature
 Content-Disposition: attachment; filename="signature.asc"
@@ -130,19 +124,19 @@ Content-Disposition: attachment; filename="signature.asc"
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQIcBAEBAgAGBQJVWesEAAoJEGwLaZPeOHZ6OfsQAJwm7QbcY9c/ZNmktAYwg2Dh
-J9JXreqkjTPQwTZmAFNI2MY6ioeF3iWOzrq4kkenofA8VAO5DGkrR97iVQYRoCSc
-KmlueiyEkOgPrPkLuvdPcBtJzDTFTw0z8RMNFcydpsFNvmCwx8Lpuza/UO6AL1K+
-ijrQVxwrWrBmGNL+Srt6sE9C7NlCccANkP2VDFL4huDb4GVxc1Q7KF/Jrri+WEiI
-jVb3guydhb7E3nu3xdWLNZ9gXfdkMQCf5BnJtzadK5CxX+EilpakXaa4ZIldT9k2
-XV3vfjS2RpcoIEQW6lCi5GsOI4lUgp+pU9ZkxAEcGO4HoTUcHdg61VjVie+Lg4xP
-dBf+MiV0CNKDcF3xo/rPGNtJAdIKQi1N2RDlFhjYoQztVucEUoBLZLO+5BPM3vhv
-yyGW/T6ZVhBbuaJoQdtYL5TRpDRxtPkC4aaD3XtJilrtU2N3Qljf9znU58pnH2bP
-oNuvBbr4od3fPDXdt51JrWjALVeuc/3TicqS/myuTDnA1dpUKKj5IIaawvnkPDmS
-FMA9bnTVIUcqXeWa41oPxOqYDSocN2UZl5Oi+BX0HB4YybVBg5LOawxTDS4O+GTB
-DbBMCm8sBxReLCHduMg9jHTtevIdJnmSHTCDZnCGaZz1WZ7NnlNQEGH4lLvB+E8m
-bPg1Xwpnj/LxeMn3uZ37
-=ZBlJ
+iQIcBAEBAgAGBQJVWe4PAAoJEGwLaZPeOHZ6lSgQAItjkrBFcStqw4DqbXjC16eT
+YbkL7GG/C5Y9ofEpqj0PZYQ9lOqv3877AUdgaFWiYA62ZcDLg9L0ARvbsNJXmn6G
+AZ2My1bOdz53AE2rGQKHTPD8gwV7w4dCMcworGJYkpnKE5TVKSSfD0vBBnwErEVX
+zMAPbSBy3iBCk8wt8FOO/W9agLlSkvhI8ftnpkDVCZm7Jd0bC+5ASdKiVFZsImGS
++PpYbd8FPy/uDTftrBzVoodKwZew3AT69eqmmwuwPpsxmTe9jwzDvhFXa5UuitGE
+FqelPokX6Nv6eE+dNPPBVEqzeb/tUv+kL9WprfHHGfrVSNrNzWo+sfLCPQ2TlGxB
+eYmuccrdy1lLJJfVdsPXLgkUdZ3VxegOFvN4QkbofIym4QP+2cmy7vuPwHCQmx2D
+UtTFIrQbZ07nkUa+0OvpdSchmyhYqmWq486pEjrDscojttHUe+OAHt36e8hW6uUp
+G4P22LOD6jWCbwkrYRcKEcJfHV10GK3LlH5jnDbxNyLaGt6MtWZrduvjQGwMplcB
+KlcrFnHBdb28pTVSSa4zQhlx/MLxbMdhM8YrH0qKa1gM5g8ZybKr8WDzH7MvOlRm
+kgHJCLDcOKhU6tdN5ifKRvhoCjofR376ldgwi7JrwwqmTk7rRDtNevGHr+VNmvWX
+J3xlfKQTRmolxKIKIeTg
+=W1K9
 -----END PGP SIGNATURE-----
 
---ALH7S3QTVv0DjiEQSp8i9uiTxD99nOVGH--
+--69RVe8c9NgQRHoLkoIkKgiRuxinoiDEBR--

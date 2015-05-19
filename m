@@ -1,23 +1,24 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 May 2015 10:53:15 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:22008 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 May 2015 10:53:31 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:55162 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27013558AbbESIwMsCabJ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 19 May 2015 10:52:12 +0200
+        with ESMTP id S27013498AbbESIwRvMSJM (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 19 May 2015 10:52:17 +0200
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id E09E2AAEC166B;
-        Tue, 19 May 2015 09:52:06 +0100 (IST)
+        by Websense Email Security Gateway with ESMTPS id 04329173FB71A;
+        Tue, 19 May 2015 09:52:12 +0100 (IST)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
  KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Tue, 19 May 2015 09:51:07 +0100
+ 14.3.195.1; Tue, 19 May 2015 09:51:10 +0100
 Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
  LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.210.2; Tue, 19 May 2015 09:51:06 +0100
+ 14.3.210.2; Tue, 19 May 2015 09:51:09 +0100
 From:   James Hogan <james.hogan@imgtec.com>
 To:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
-CC:     James Hogan <james.hogan@imgtec.com>
-Subject: [PATCH v2 02/10] MIPS: hazards: Add hazard macros for tlb read
-Date:   Tue, 19 May 2015 09:50:30 +0100
-Message-ID: <1432025438-26431-3-git-send-email-james.hogan@imgtec.com>
+CC:     James Hogan <james.hogan@imgtec.com>,
+        "Maciej W. Rozycki" <macro@linux-mips.org>
+Subject: [PATCH v2 07/10] MIPS: dump_tlb: Take global bit into account
+Date:   Tue, 19 May 2015 09:50:35 +0100
+Message-ID: <1432025438-26431-8-git-send-email-james.hogan@imgtec.com>
 X-Mailer: git-send-email 2.3.6
 In-Reply-To: <1432025438-26431-1-git-send-email-james.hogan@imgtec.com>
 References: <1432025438-26431-1-git-send-email-james.hogan@imgtec.com>
@@ -28,7 +29,7 @@ Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47474
+X-archive-position: 47475
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,162 +46,63 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add hazard macros to <asm/hazards.h> for the following hazards around
-tlbr (TLB read) instructions, which are used in TLB dumping code and
-some KVM TLB management code:
-
-- mtc0_tlbr_hazard
-  Between mtc0 (Index) and tlbr. This is copied from mtc0_tlbw_hazard in
-  all cases on the assumption that tlbr always has similar data user
-  timings to tlbw.
-
-- tlb_read_hazard
-  Between tlbr and mfc0 (various TLB registers). This is copied from
-  tlbw_use_hazard in all cases on the assumption that tlbr has similar
-  data writer characteristics to tlbw, and mfc0 has similar data user
-  characteristics to loads and stores.
+The TLB only matches the ASID when the global bit isn't set, so
+dump_tlb() shouldn't really be skipping global entries just because the
+ASID doesn't match. Fix the condition to read the TLB entry's global bit
+from EntryLo0. Note that after a TLB read the global bits in both
+EntryLo registers reflect the same global bit in the TLB entry.
 
 Signed-off-by: James Hogan <james.hogan@imgtec.com>
 Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Maciej W. Rozycki <macro@linux-mips.org>
 Cc: linux-mips@linux-mips.org
 ---
-Looking at r4000 manual, its tlbr had similar data user timings to tlbw,
-and mfc0 had similar data writer timings to loads and stores. Are there
-particular other cores that should be checked too?
+Changes in v2:
+- Check both global bits and add comment (Ralf).
+- Fix typo s/absense/absence/ (Maciej).
+- Use MIPS_ENTRYLO_G definition (Maciej).
+- Update r3k_dump_tlb.c too (Maciej - please test).
 ---
- arch/mips/include/asm/hazards.h | 52 +++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 52 insertions(+)
+ arch/mips/lib/dump_tlb.c     | 10 +++++++++-
+ arch/mips/lib/r3k_dump_tlb.c |  5 +++--
+ 2 files changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/arch/mips/include/asm/hazards.h b/arch/mips/include/asm/hazards.h
-index 4087b47ad1cb..7b99efd31074 100644
---- a/arch/mips/include/asm/hazards.h
-+++ b/arch/mips/include/asm/hazards.h
-@@ -31,9 +31,15 @@
- #define __mtc0_tlbw_hazard						\
- 	___ehb
+diff --git a/arch/mips/lib/dump_tlb.c b/arch/mips/lib/dump_tlb.c
+index f02cc554d720..995c393e3342 100644
+--- a/arch/mips/lib/dump_tlb.c
++++ b/arch/mips/lib/dump_tlb.c
+@@ -73,7 +73,15 @@ static void dump_tlb(int first, int last)
+ 		 */
+ 		if ((entryhi & ~0x1ffffUL) == CKSEG0)
+ 			continue;
+-		if ((entryhi & 0xff) != asid)
++		/*
++		 * ASID takes effect in absence of G (global) bit.
++		 * We check both G bits, even though architecturally they should
++		 * match one another, because some revisions of the SB1 core may
++		 * leave only a single G bit set after a machine check exception
++		 * due to duplicate TLB entry.
++		 */
++		if (!((entrylo0 | entrylo1) & MIPS_ENTRYLO_G) &&
++		    (entryhi & 0xff) != asid)
+ 			continue;
  
-+#define __mtc0_tlbr_hazard						\
-+	___ehb
-+
- #define __tlbw_use_hazard						\
- 	___ehb
+ 		/*
+diff --git a/arch/mips/lib/r3k_dump_tlb.c b/arch/mips/lib/r3k_dump_tlb.c
+index e210f04b2bc3..1335e4394e33 100644
+--- a/arch/mips/lib/r3k_dump_tlb.c
++++ b/arch/mips/lib/r3k_dump_tlb.c
+@@ -35,8 +35,9 @@ static void dump_tlb(int first, int last)
+ 		entrylo0 = read_c0_entrylo0();
  
-+#define __tlb_read_hazard						\
-+	___ehb
-+
- #define __tlb_probe_hazard						\
- 	___ehb
- 
-@@ -80,12 +86,23 @@ do {									\
- 	___ssnop;							\
- 	___ehb
- 
-+#define __mtc0_tlbr_hazard						\
-+	___ssnop;							\
-+	___ssnop;							\
-+	___ehb
-+
- #define __tlbw_use_hazard						\
- 	___ssnop;							\
- 	___ssnop;							\
- 	___ssnop;							\
- 	___ehb
- 
-+#define __tlb_read_hazard						\
-+	___ssnop;							\
-+	___ssnop;							\
-+	___ssnop;							\
-+	___ehb
-+
- #define __tlb_probe_hazard						\
- 	___ssnop;							\
- 	___ssnop;							\
-@@ -147,8 +164,12 @@ do {									\
- 
- #define __mtc0_tlbw_hazard
- 
-+#define __mtc0_tlbr_hazard
-+
- #define __tlbw_use_hazard
- 
-+#define __tlb_read_hazard
-+
- #define __tlb_probe_hazard
- 
- #define __irq_enable_hazard
-@@ -166,8 +187,12 @@ do {									\
-  */
- #define __mtc0_tlbw_hazard
- 
-+#define __mtc0_tlbr_hazard
-+
- #define __tlbw_use_hazard
- 
-+#define __tlb_read_hazard
-+
- #define __tlb_probe_hazard
- 
- #define __irq_enable_hazard
-@@ -196,11 +221,20 @@ do {									\
- 	nop;								\
- 	nop
- 
-+#define __mtc0_tlbr_hazard						\
-+	nop;								\
-+	nop
-+
- #define __tlbw_use_hazard						\
- 	nop;								\
- 	nop;								\
- 	nop
- 
-+#define __tlb_read_hazard						\
-+	nop;								\
-+	nop;								\
-+	nop
-+
- #define __tlb_probe_hazard						\
- 	nop;								\
- 	nop;								\
-@@ -267,7 +301,9 @@ do {									\
- #define _ssnop ___ssnop
- #define	_ehb ___ehb
- #define mtc0_tlbw_hazard __mtc0_tlbw_hazard
-+#define mtc0_tlbr_hazard __mtc0_tlbr_hazard
- #define tlbw_use_hazard __tlbw_use_hazard
-+#define tlb_read_hazard __tlb_read_hazard
- #define tlb_probe_hazard __tlb_probe_hazard
- #define irq_enable_hazard __irq_enable_hazard
- #define irq_disable_hazard __irq_disable_hazard
-@@ -300,6 +336,14 @@ do {									\
- } while (0)
- 
- 
-+#define mtc0_tlbr_hazard()						\
-+do {									\
-+	__asm__ __volatile__(						\
-+	__stringify(__mtc0_tlbr_hazard)					\
-+	);								\
-+} while (0)
-+
-+
- #define tlbw_use_hazard()						\
- do {									\
- 	__asm__ __volatile__(						\
-@@ -308,6 +352,14 @@ do {									\
- } while (0)
- 
- 
-+#define tlb_read_hazard()						\
-+do {									\
-+	__asm__ __volatile__(						\
-+	__stringify(__tlb_read_hazard)					\
-+	);								\
-+} while (0)
-+
-+
- #define tlb_probe_hazard()						\
- do {									\
- 	__asm__ __volatile__(						\
+ 		/* Unused entries have a virtual address of KSEG0.  */
+-		if ((entryhi & PAGE_MASK) != KSEG0
+-		    && (entryhi & ASID_MASK) == asid) {
++		if ((entryhi & PAGE_MASK) != KSEG0 &&
++		    (entrylo0 & R3K_ENTRYLO_G ||
++		     (entryhi & ASID_MASK) == asid)) {
+ 			/*
+ 			 * Only print entries in use
+ 			 */
 -- 
 2.3.6

@@ -1,24 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 May 2015 10:51:29 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:32684 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 May 2015 10:51:48 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:24531 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27013476AbbESIvLMh2sA (ORCPT
+        with ESMTP id S27013498AbbESIvLuEyP1 (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Tue, 19 May 2015 10:51:11 +0200
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 9B3F1E34B1BC1;
-        Tue, 19 May 2015 09:51:05 +0100 (IST)
+        by Websense Email Security Gateway with ESMTPS id 5258FC16C5707;
+        Tue, 19 May 2015 09:51:06 +0100 (IST)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
  KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Tue, 19 May 2015 09:51:07 +0100
+ 14.3.195.1; Tue, 19 May 2015 09:51:08 +0100
 Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
  LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.210.2; Tue, 19 May 2015 09:51:07 +0100
+ 14.3.210.2; Tue, 19 May 2015 09:51:08 +0100
 From:   James Hogan <james.hogan@imgtec.com>
 To:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
-CC:     James Hogan <james.hogan@imgtec.com>,
-        "Maciej W. Rozycki" <macro@linux-mips.org>
-Subject: [PATCH v2 03/10] MIPS: mipsregs.h: Add EntryLo bit definitions
-Date:   Tue, 19 May 2015 09:50:31 +0100
-Message-ID: <1432025438-26431-4-git-send-email-james.hogan@imgtec.com>
+CC:     James Hogan <james.hogan@imgtec.com>
+Subject: [PATCH v2 04/10] MIPS: dump_tlb: Use tlbr hazard macros
+Date:   Tue, 19 May 2015 09:50:32 +0100
+Message-ID: <1432025438-26431-5-git-send-email-james.hogan@imgtec.com>
 X-Mailer: git-send-email 2.3.6
 In-Reply-To: <1432025438-26431-1-git-send-email-james.hogan@imgtec.com>
 References: <1432025438-26431-1-git-send-email-james.hogan@imgtec.com>
@@ -29,7 +28,7 @@ Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47468
+X-archive-position: 47469
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,56 +45,57 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add definitions for EntryLo register bits in mipsregs.h. The R4000
-compatible ones are prefixed MIPS_ENTRYLO_ and the R3000 compatible ones
-are prefixed R3K_ENTRYLO_.
+Use the new tlb read hazard macros from <asm/hazards.h> rather than the
+local BARRIER() macro which uses 7 ops regardless of the kernel
+configuration.
 
-These will be used in later patches.
+We use mtc0_tlbr_hazard for the hazard between mtc0 to the index
+register and the tlbr, and tlb_read_hazard for the hazard between the
+tlbr and the mfc0 of the TLB registers written by tlbr.
 
 Signed-off-by: James Hogan <james.hogan@imgtec.com>
 Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Maciej W. Rozycki <macro@linux-mips.org>
 Cc: linux-mips@linux-mips.org
 ---
-Changes in v2:
-- New patch (Maceij) including reordered MIPS_ENTRYLO_RI/XI definitions
-  from patch 7.
----
- arch/mips/include/asm/mipsregs.h | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ arch/mips/lib/dump_tlb.c | 11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
 
-diff --git a/arch/mips/include/asm/mipsregs.h b/arch/mips/include/asm/mipsregs.h
-index 764e2756b54d..3b5a145af659 100644
---- a/arch/mips/include/asm/mipsregs.h
-+++ b/arch/mips/include/asm/mipsregs.h
-@@ -589,6 +589,28 @@
- /*  EntryHI bit definition */
- #define MIPS_ENTRYHI_EHINV	(_ULCAST_(1) << 10)
+diff --git a/arch/mips/lib/dump_tlb.c b/arch/mips/lib/dump_tlb.c
+index 32b9f21bfd85..a62dfacb60f7 100644
+--- a/arch/mips/lib/dump_tlb.c
++++ b/arch/mips/lib/dump_tlb.c
+@@ -7,6 +7,7 @@
+ #include <linux/kernel.h>
+ #include <linux/mm.h>
  
-+/* R3000 EntryLo bit definitions */
-+#define R3K_ENTRYLO_G		(_ULCAST_(1) << 8)
-+#define R3K_ENTRYLO_V		(_ULCAST_(1) << 9)
-+#define R3K_ENTRYLO_D		(_ULCAST_(1) << 10)
-+#define R3K_ENTRYLO_N		(_ULCAST_(1) << 11)
-+
-+/* R4000 compatible EntryLo bit definitions */
-+#define MIPS_ENTRYLO_G		(_ULCAST_(1) << 0)
-+#define MIPS_ENTRYLO_V		(_ULCAST_(1) << 1)
-+#define MIPS_ENTRYLO_D		(_ULCAST_(1) << 2)
-+#define MIPS_ENTRYLO_C_SHIFT	3
-+#define MIPS_ENTRYLO_C		(_ULCAST_(7) << MIPS_ENTRYLO_C_SHIFT)
-+#ifdef CONFIG_64BIT
-+/* as read by dmfc0 */
-+#define MIPS_ENTRYLO_XI		(_ULCAST_(1) << 62)
-+#define MIPS_ENTRYLO_RI		(_ULCAST_(1) << 63)
-+#else
-+/* as read by mfc0 */
-+#define MIPS_ENTRYLO_XI		(_ULCAST_(1) << 30)
-+#define MIPS_ENTRYLO_RI		(_ULCAST_(1) << 31)
-+#endif
-+
- /* CMGCRBase bit definitions */
- #define MIPS_CMGCRB_BASE	11
- #define MIPS_CMGCRF_BASE	(~_ULCAST_((1 << MIPS_CMGCRB_BASE) - 1))
++#include <asm/hazards.h>
+ #include <asm/mipsregs.h>
+ #include <asm/page.h>
+ #include <asm/pgtable.h>
+@@ -40,12 +41,6 @@ static inline const char *msk2str(unsigned int mask)
+ 	return "";
+ }
+ 
+-#define BARRIER()					\
+-	__asm__ __volatile__(				\
+-		".set\tnoreorder\n\t"			\
+-		"nop;nop;nop;nop;nop;nop;nop\n\t"	\
+-		".set\treorder");
+-
+ static void dump_tlb(int first, int last)
+ {
+ 	unsigned long s_entryhi, entryhi, asid;
+@@ -59,9 +54,9 @@ static void dump_tlb(int first, int last)
+ 
+ 	for (i = first; i <= last; i++) {
+ 		write_c0_index(i);
+-		BARRIER();
++		mtc0_tlbr_hazard();
+ 		tlb_read();
+-		BARRIER();
++		tlb_read_hazard();
+ 		pagemask = read_c0_pagemask();
+ 		entryhi	 = read_c0_entryhi();
+ 		entrylo0 = read_c0_entrylo0();
 -- 
 2.3.6

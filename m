@@ -1,38 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 May 2015 10:54:05 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:54995 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27013516AbbESIwSA0Jkh (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 19 May 2015 10:52:18 +0200
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 05E509B247F76;
-        Tue, 19 May 2015 09:52:12 +0100 (IST)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Tue, 19 May 2015 09:51:09 +0100
-Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
- LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.210.2; Tue, 19 May 2015 09:51:08 +0100
-From:   James Hogan <james.hogan@imgtec.com>
-To:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
-CC:     James Hogan <james.hogan@imgtec.com>
-Subject: [PATCH v2 05/10] MIPS: dump_tlb: Refactor TLB matching
-Date:   Tue, 19 May 2015 09:50:33 +0100
-Message-ID: <1432025438-26431-6-git-send-email-james.hogan@imgtec.com>
-X-Mailer: git-send-email 2.3.6
-In-Reply-To: <1432025438-26431-1-git-send-email-james.hogan@imgtec.com>
-References: <1432025438-26431-1-git-send-email-james.hogan@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 May 2015 16:15:36 +0200 (CEST)
+Received: from mail-pa0-f52.google.com ([209.85.220.52]:35786 "EHLO
+        mail-pa0-f52.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27013579AbbESOPcCP-8J (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 19 May 2015 16:15:32 +0200
+Received: by pacwv17 with SMTP id wv17so26617472pac.2
+        for <linux-mips@linux-mips.org>; Tue, 19 May 2015 07:15:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-type:content-disposition:in-reply-to:user-agent;
+        bh=MGXBYKpwlmLpIef7AxmQ6kmqOuOOMdx+yZaLXazTWRw=;
+        b=awZhKYgL6duASkTngfQyCnGtuAbvUSEfS9OeQHH87hnKWSupdMExrfkBV1GDBZ7IUO
+         89rVPh1+2gRvVS6YaEKWF40hvHSkMHtmk2KAx5k8aLVFUhaY4z4+ECeGY1FwFRQy6AT3
+         50BrKITcujAfjjvKsBaYhMgthvV+DnGoC2mX38xLW++QCUNldjqqEmKQnXsQsBaOoRwR
+         RhCpEIJsxV8hMBAm5PmNSLOBWTnW7mWhjt7s6fZUUNptjh80Rtv83hmBvWXE8swJHS7/
+         Tvop71C6vC664dFPs1QpSo4Idpdw9ZjTFIJ6Iw2Ge0WyGikWwvZYb63X+gvotDJMveOV
+         D85w==
+X-Received: by 10.66.162.165 with SMTP id yb5mr55317953pab.32.1432044928425;
+        Tue, 19 May 2015 07:15:28 -0700 (PDT)
+Received: from localhost ([216.228.120.20])
+        by mx.google.com with ESMTPSA id c8sm13283506pdj.65.2015.05.19.07.15.26
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 19 May 2015 07:15:27 -0700 (PDT)
+Date:   Tue, 19 May 2015 16:15:24 +0200
+From:   Thierry Reding <thierry.reding@gmail.com>
+To:     Ezequiel Garcia <ezequiel.garcia@imgtec.com>
+Cc:     linux-pwm@vger.kernel.org,
+        Naidu Tellapati <naidu.tellapati@imgtec.com>,
+        James Hartley <james.hartley@imgtec.com>,
+        linux-mips@linux-mips.org, sai.masarapu@imgtec.com,
+        arul.ramasamy@imgtec.com
+Subject: Re: [PATCH v2] pwm: img: Impose upper and lower timebase steps value
+Message-ID: <20150519141522.GA26748@ulmo.nvidia.com>
+References: <1431035961-2008-1-git-send-email-ezequiel.garcia@imgtec.com>
+ <1431121651-6787-1-git-send-email-ezequiel.garcia@imgtec.com>
+ <555778D3.4030607@imgtec.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.154.110]
-Return-Path: <James.Hogan@imgtec.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="jRHKVT23PllUwdXP"
+Content-Disposition: inline
+In-Reply-To: <555778D3.4030607@imgtec.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <thierry.reding@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47477
+X-archive-position: 47478
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: thierry.reding@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,102 +62,61 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Refactor the TLB matching code in dump_tlb() slightly so that the
-conditions which can cause a TLB entry to be skipped can be more easily
-extended. This should prevent the match condition getting unwieldy once
-it is updated to take further conditions into account.
 
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
----
- arch/mips/lib/dump_tlb.c | 65 ++++++++++++++++++++++++++----------------------
- 1 file changed, 35 insertions(+), 30 deletions(-)
+--jRHKVT23PllUwdXP
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/arch/mips/lib/dump_tlb.c b/arch/mips/lib/dump_tlb.c
-index a62dfacb60f7..17d05caa776d 100644
---- a/arch/mips/lib/dump_tlb.c
-+++ b/arch/mips/lib/dump_tlb.c
-@@ -46,6 +46,11 @@ static void dump_tlb(int first, int last)
- 	unsigned long s_entryhi, entryhi, asid;
- 	unsigned long long entrylo0, entrylo1;
- 	unsigned int s_index, s_pagemask, pagemask, c0, c1, i;
-+#ifdef CONFIG_32BIT
-+	int width = 8;
-+#else
-+	int width = 11;
-+#endif
- 
- 	s_pagemask = read_c0_pagemask();
- 	s_entryhi = read_c0_entryhi();
-@@ -62,38 +67,38 @@ static void dump_tlb(int first, int last)
- 		entrylo0 = read_c0_entrylo0();
- 		entrylo1 = read_c0_entrylo1();
- 
--		/* Unused entries have a virtual address of CKSEG0.  */
--		if ((entryhi & ~0x1ffffUL) != CKSEG0
--		    && (entryhi & 0xff) == asid) {
--#ifdef CONFIG_32BIT
--			int width = 8;
--#else
--			int width = 11;
--#endif
--			/*
--			 * Only print entries in use
--			 */
--			printk("Index: %2d pgmask=%s ", i, msk2str(pagemask));
-+		/*
-+		 * Prior to tlbinv, unused entries have a virtual address of
-+		 * CKSEG0.
-+		 */
-+		if ((entryhi & ~0x1ffffUL) == CKSEG0)
-+			continue;
-+		if ((entryhi & 0xff) != asid)
-+			continue;
- 
--			c0 = (entrylo0 >> 3) & 7;
--			c1 = (entrylo1 >> 3) & 7;
-+		/*
-+		 * Only print entries in use
-+		 */
-+		printk("Index: %2d pgmask=%s ", i, msk2str(pagemask));
- 
--			printk("va=%0*lx asid=%02lx\n",
--			       width, (entryhi & ~0x1fffUL),
--			       entryhi & 0xff);
--			printk("\t[pa=%0*llx c=%d d=%d v=%d g=%d] ",
--			       width,
--			       (entrylo0 << 6) & PAGE_MASK, c0,
--			       (entrylo0 & 4) ? 1 : 0,
--			       (entrylo0 & 2) ? 1 : 0,
--			       (entrylo0 & 1) ? 1 : 0);
--			printk("[pa=%0*llx c=%d d=%d v=%d g=%d]\n",
--			       width,
--			       (entrylo1 << 6) & PAGE_MASK, c1,
--			       (entrylo1 & 4) ? 1 : 0,
--			       (entrylo1 & 2) ? 1 : 0,
--			       (entrylo1 & 1) ? 1 : 0);
--		}
-+		c0 = (entrylo0 >> 3) & 7;
-+		c1 = (entrylo1 >> 3) & 7;
-+
-+		printk("va=%0*lx asid=%02lx\n",
-+		       width, (entryhi & ~0x1fffUL),
-+		       entryhi & 0xff);
-+		printk("\t[pa=%0*llx c=%d d=%d v=%d g=%d] ",
-+		       width,
-+		       (entrylo0 << 6) & PAGE_MASK, c0,
-+		       (entrylo0 & 4) ? 1 : 0,
-+		       (entrylo0 & 2) ? 1 : 0,
-+		       (entrylo0 & 1) ? 1 : 0);
-+		printk("[pa=%0*llx c=%d d=%d v=%d g=%d]\n",
-+		       width,
-+		       (entrylo1 << 6) & PAGE_MASK, c1,
-+		       (entrylo1 & 4) ? 1 : 0,
-+		       (entrylo1 & 2) ? 1 : 0,
-+		       (entrylo1 & 1) ? 1 : 0);
- 	}
- 	printk("\n");
- 
--- 
-2.3.6
+On Sat, May 16, 2015 at 02:05:23PM -0300, Ezequiel Garcia wrote:
+> Thierry,
+>=20
+> On 05/08/2015 06:47 PM, Ezequiel Garcia wrote:
+> > From: Naidu Tellapati <naidu.tellapati@imgtec.com>
+> >=20
+> > The PWM hardware on Pistachio platform has a maximum timebase steps
+> > value to 255. To fix it, let's introduce a compatible-specific
+> > data structure to contain the SoC-specific details and use it to
+> > specify a maximum timebase.
+> >=20
+> > Also, let's limit the minimum timebase to 16 steps, to allow a sane
+> > range of duty cycle steps.
+> >=20
+> > Fixes: 277bb6a29e00 ("pwm: Imagination Technologies PWM DAC driver")
+> > Signed-off-by: Naidu Tellapati <naidu.tellapati@imgtec.com>
+> > Signed-off-by: Ezequiel Garcia <ezequiel.garcia@imgtec.com>
+> > ---
+> > This patch is needed for the pwm-img to work properly, so it should be
+> > pushed as a v4.1-rc fix.
+> >=20
+>=20
+> Any chance you push this patch as a fix for v4.1?
+
+Pull request sent now. In the future it'd be nice to make fix patches
+smaller than this and leave the refactoring to a subsequent patch for
+inclusion in the next release.
+
+Thierry
+
+--jRHKVT23PllUwdXP
+Content-Type: application/pgp-signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQIcBAABCAAGBQJVW0V6AAoJEN0jrNd/PrOhQGgQAJGYD2A22jeo0k75oqqRX+1t
+mjjroNeQMGZ40qto3h9WWz7EdtZzCKmPwERUNq40JHcfkoix4eq2nkHm55+WD1F0
+/eGsnZo3et+Qi+HAB5Myo0IInL1YQZwioxhOjCdAoL5cZkIgtjindIN1LvElhOMi
+dukWUiQTVffgkc7MLIUZpEeYIIgwjpYEbLBbO3uew0V/+JE5S2umKveZ5y+HfiCM
+Gwp/cN2f795A3W3t8xBvPFkbhFjpHenlk2AnVqtSoaBMqf9gX78qLUKFwB2Gg72T
+5utd4TqDYhZYHyU6EkuABehysdPqZawImh/CZ+d8XnfXfpwcUeMXIBDhLQINHQf9
+xyL2rlvRr5X4NYK9grBUk/VV3dEUnNY4CQ2A/1cAitymZzrjq+77AiMwTXzSu/GZ
+a1GXBRM4CNbRP6G/YkJYgHq0G3BpzccmxpxMOWxbd6nncDNaFbdp3X/Q3TPve6Sr
+K4cs2s/ANUzfba81Xfdlr+HP6T2tsTCp1UZXioyB2ozbUF4XutBysb8sYMhHtkJc
+oc0TLFjT3PBMo0OyQZh1K6R5kH4wFb+JVatLui89pOAC3qJv9BXxtA11wiq61F72
+/gP+5kDmW0x+NiQguxGniJYk7zZ+B60EEmjdizxbrdJTpDUYJthrZlKO/0qIqFob
+lI6nrrXABFMgrTAl+xPk
+=4kM+
+-----END PGP SIGNATURE-----
+
+--jRHKVT23PllUwdXP--

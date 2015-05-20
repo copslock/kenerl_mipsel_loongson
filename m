@@ -1,40 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 May 2015 01:07:54 +0200 (CEST)
-Received: from smtp.codeaurora.org ([198.145.29.96]:57427 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 May 2015 01:16:46 +0200 (CEST)
+Received: from smtp.codeaurora.org ([198.145.29.96]:57834 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27013082AbbETXHw3Q9qm (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 21 May 2015 01:07:52 +0200
+        with ESMTP id S27013082AbbETXQpIcZpv (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 21 May 2015 01:16:45 +0200
 Received: from smtp.codeaurora.org (localhost [127.0.0.1])
-        by smtp.codeaurora.org (Postfix) with ESMTP id E767B1417C6;
-        Wed, 20 May 2015 23:07:52 +0000 (UTC)
+        by smtp.codeaurora.org (Postfix) with ESMTP id 32E0914183E;
+        Wed, 20 May 2015 23:16:46 +0000 (UTC)
 Received: by smtp.codeaurora.org (Postfix, from userid 486)
-        id D46011417C9; Wed, 20 May 2015 23:07:52 +0000 (UTC)
+        id 1CBA9141840; Wed, 20 May 2015 23:16:46 +0000 (UTC)
 Received: from localhost (i-global254.qualcomm.com [199.106.103.254])
         (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: sboyd@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 5B4931417C6;
-        Wed, 20 May 2015 23:07:52 +0000 (UTC)
-Date:   Wed, 20 May 2015 16:07:51 -0700
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 98D4D14183E;
+        Wed, 20 May 2015 23:16:45 +0000 (UTC)
+Date:   Wed, 20 May 2015 16:16:44 -0700
 From:   Stephen Boyd <sboyd@codeaurora.org>
 To:     Paul Burton <paul.burton@imgtec.com>
 Cc:     linux-mips@linux-mips.org, Lars-Peter Clausen <lars@metafoo.de>,
         Mike Turquette <mturquette@linaro.org>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-clk@vger.kernel.org
-Subject: Re: [PATCH v4 30/37] clk: ingenic: add JZ4780 CGU support
-Message-ID: <20150520230751.GY31753@codeaurora.org>
+        linux-clk@vger.kernel.org
+Subject: Re: [PATCH v4 25/37] clk: ingenic: add driver for Ingenic SoC CGU
+ clocks
+Message-ID: <20150520231644.GZ31753@codeaurora.org>
 References: <1429881457-16016-1-git-send-email-paul.burton@imgtec.com>
- <1429881457-16016-31-git-send-email-paul.burton@imgtec.com>
+ <1429881457-16016-26-git-send-email-paul.burton@imgtec.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1429881457-16016-31-git-send-email-paul.burton@imgtec.com>
+In-Reply-To: <1429881457-16016-26-git-send-email-paul.burton@imgtec.com>
 User-Agent: Mutt/1.5.21 (2010-09-15)
 X-Virus-Scanned: ClamAV using ClamSMTP
 Return-Path: <sboyd@codeaurora.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47503
+X-archive-position: 47504
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -52,50 +53,80 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 On 04/24, Paul Burton wrote:
-> diff --git a/drivers/clk/ingenic/jz4780-cgu.c b/drivers/clk/ingenic/jz4780-cgu.c
-> new file mode 100644
-> index 0000000..950616a
-> --- /dev/null
-> +++ b/drivers/clk/ingenic/jz4780-cgu.c
-> @@ -0,0 +1,736 @@
 > +
-> +struct clk_ops jz4780_otg_phy_ops = {
-
-static?
-
-> +	.get_parent = jz4780_otg_phy_get_parent,
-> +	.set_parent = jz4780_otg_phy_set_parent,
+> +static unsigned long
+> +ingenic_pll_recalc_rate(struct clk_hw *hw, unsigned long parent_rate)
+> +{
+> +	struct ingenic_clk *ingenic_clk = to_ingenic_clk(hw);
+> +	struct ingenic_cgu *cgu = ingenic_clk->cgu;
+> +	const struct ingenic_cgu_clk_info *clk_info;
+> +	const struct ingenic_cgu_pll_info *pll_info;
+> +	unsigned m, n, od_enc, od;
+> +	bool bypass, enable;
+> +	unsigned long flags;
+> +	u32 ctl;
 > +
-> +	.recalc_rate = jz4780_otg_phy_recalc_rate,
-> +	.round_rate = jz4780_otg_phy_round_rate,
-> +	.set_rate = jz4780_otg_phy_set_rate,
-> +};
+> +	clk_info = &cgu->clock_info[ingenic_clk->idx];
+> +	BUG_ON(clk_info->type != CGU_CLK_PLL);
+> +	pll_info = &clk_info->pll;
+> +
+> +	spin_lock_irqsave(&cgu->lock, flags);
+> +	ctl = readl(cgu->base + pll_info->reg);
+> +	spin_unlock_irqrestore(&cgu->lock, flags);
+> +
+> +	m = ((ctl >> pll_info->m_shift) & GENMASK(pll_info->m_bits - 1, 0));
+> +	m += pll_info->m_offset;
+> +	n = ((ctl >> pll_info->n_shift) & GENMASK(pll_info->n_bits - 1, 0));
+
+Nitpick: Some unnecessary () here.
+
+> +	n += pll_info->n_offset;
+> +	od_enc = ctl >> pll_info->od_shift;
+> +	od_enc &= GENMASK(pll_info->od_bits - 1, 0);
+> +	bypass = !!(ctl & BIT(pll_info->bypass_bit));
+> +	enable = !!(ctl & BIT(pll_info->enable_bit));
+> +
+> +	if (bypass)
+> +		return parent_rate;
+> +
+> +	if (!enable)
+> +		return 0;
+> +
+> +	for (od = 0; od < pll_info->od_max; od++) {
+> +		if (pll_info->od_encoding[od] == od_enc)
+> +			break;
+> +	}
+> +	BUG_ON(od == pll_info->od_max);
+> +	od++;
+> +
+> +	return div_u64((u64)parent_rate * m, n * od);
+> +
 [...]
 > +
-> +static void __init jz4780_cgu_init(struct device_node *np)
+> +/*
+> + * Setup functions.
+> + */
+> +
+> +static int register_clock(struct ingenic_cgu *cgu, unsigned idx)
+
+Please namespace this. It's too generic. igenic_register_clk()?
+
 > +{
-> +	int retval;
+> +	const struct ingenic_cgu_clk_info *clk_info = &cgu->clock_info[idx];
+> +	struct clk_init_data clk_init;
+> +	struct ingenic_clk *ingenic_clk = NULL;
+[...]
 > +
-> +	cgu = ingenic_cgu_new(jz4780_cgu_clocks,
-> +			      ARRAY_SIZE(jz4780_cgu_clocks), np);
-> +	if (!cgu) {
-> +		pr_err("%s: failed to initialise CGU\n", __func__);
-> +		return;
-> +	}
 > +
-> +	retval = ingenic_cgu_register_clocks(cgu);
-> +	if (retval) {
-> +		pr_err("%s: failed to register CGU Clocks\n", __func__);
-> +		return;
-> +	}
-> +
-> +	clk_set_parent(cgu->clocks.clks[JZ4780_CLK_UHC],
-> +		       cgu->clocks.clks[JZ4780_CLK_MPLL]);
+> +/**
+> + * ingenic_cgu_register_clocks() - Registers the clocks
+> + * @cgu: pointer to cgu data
+> + *
+> + * Register the clocks described by the CGU with the common clock framework.
+> + *
+> + * Return: 1 on success or -errno if unsuccesful.
 
-Can you do this via assigned- parents?
-
-> +}
-> +CLK_OF_DECLARE(jz4780_cgu, "ingenic,jz4780-cgu", jz4780_cgu_init);
+It looks like it returns 0 instead of 1 on success? 
 
 -- 
 Qualcomm Innovation Center, Inc. is a member of Code Aurora Forum,

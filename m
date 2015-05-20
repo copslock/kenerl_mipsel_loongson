@@ -1,48 +1,84 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 May 2015 23:15:09 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:33633 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27013082AbbESVPIOjACz (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 19 May 2015 23:15:08 +0200
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id DC05E141A8C8E;
-        Tue, 19 May 2015 22:15:00 +0100 (IST)
-Received: from hhmail02.hh.imgtec.org (10.100.10.20) by KLMAIL01.kl.imgtec.org
- (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Tue, 19 May
- 2015 22:14:02 +0100
-Received: from BAMAIL02.ba.imgtec.org (10.20.40.28) by hhmail02.hh.imgtec.org
- (10.100.10.20) with Microsoft SMTP Server (TLS) id 14.3.224.2; Tue, 19 May
- 2015 22:14:02 +0100
-Received: from [127.0.1.1] (10.20.3.79) by bamail02.ba.imgtec.org
- (10.20.40.28) with Microsoft SMTP Server (TLS) id 14.3.174.1; Tue, 19 May
- 2015 14:13:59 -0700
-Subject: [PATCH 2/2] MIPS: MSA: bugfix of keeping MSA live context through
- clone or fork
-From:   Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-To:     <linux-mips@linux-mips.org>, <rusty@rustcorp.com.au>,
-        <alexinbeijing@gmail.com>, <paul.burton@imgtec.com>,
-        <david.daney@cavium.com>, <alex@alex-smith.me.uk>,
-        <linux-kernel@vger.kernel.org>, <ralf@linux-mips.org>,
-        <james.hogan@imgtec.com>, <markos.chandras@imgtec.com>,
-        <macro@linux-mips.org>, <eunb.song@samsung.com>,
-        <manuel.lauss@gmail.com>, <andreas.herrmann@caviumnetworks.com>
-Date:   Tue, 19 May 2015 14:13:59 -0700
-Message-ID: <20150519211359.35859.24907.stgit@ubuntu-yegoshin>
-In-Reply-To: <20150519211222.35859.52798.stgit@ubuntu-yegoshin>
-References: <20150519211222.35859.52798.stgit@ubuntu-yegoshin>
-User-Agent: StGit/0.17.1-dirty
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 May 2015 03:01:49 +0200 (CEST)
+Received: from smtp.codeaurora.org ([198.145.29.96]:37971 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27013022AbbETBBrUmzWA (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 20 May 2015 03:01:47 +0200
+Received: from smtp.codeaurora.org (localhost [127.0.0.1])
+        by smtp.codeaurora.org (Postfix) with ESMTP id 3CBBF14058B;
+        Wed, 20 May 2015 01:01:46 +0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 486)
+        id 1D2A61405CE; Wed, 20 May 2015 01:01:46 +0000 (UTC)
+Received: from localhost (i-global254.qualcomm.com [199.106.103.254])
+        (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: sboyd@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id B43E814058B;
+        Wed, 20 May 2015 01:01:45 +0000 (UTC)
+Date:   Tue, 19 May 2015 18:01:44 -0700
+From:   Stephen Boyd <sboyd@codeaurora.org>
+To:     Mikko Perttunen <mikko.perttunen@kapsi.fi>
+Cc:     Boris Brezillon <boris.brezillon@free-electrons.com>,
+        Mike Turquette <mturquette@linaro.org>,
+        linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Jonathan Corbet <corbet@lwn.net>,
+        Shawn Guo <shawn.guo@linaro.org>,
+        ascha Hauer <kernel@pengutronix.de>,
+        David Brown <davidb@codeaurora.org>,
+        Daniel Walker <dwalker@fifo99.com>,
+        Bryan Huntsman <bryanh@codeaurora.org>,
+        Tony Lindgren <tony@atomide.com>,
+        Paul Walmsley <paul@pwsan.com>,
+        Liviu Dudau <liviu.dudau@arm.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Sylwester Nawrocki <s.nawrocki@samsung.com>,
+        Tomasz Figa <tomasz.figa@gmail.com>,
+        Barry Song <baohua@kernel.org>,
+        Viresh Kumar <viresh.linux@gmail.com>,
+        Emilio L?pez <emilio@elopez.com.ar>,
+        Maxime Ripard <maxime.ripard@free-electrons.com>,
+        Peter De Schrijver <pdeschrijver@nvidia.com>,
+        Prashant Gaikwad <pgaikwad@nvidia.com>,
+        Stephen Warren <swarren@wwwdotorg.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Alexandre Courbot <gnurou@gmail.com>,
+        Tero Kristo <t-kristo@ti.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Michal Simek <michal.simek@xilinx.com>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        linux-doc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-arm-msm@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-mips@linux-mips.org, patches@opensource.wolfsonmicro.com,
+        linux-rockchip@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, spear-devel@list.st.com,
+        linux-tegra@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-media@vger.kernel.org, rtc-linux@googlegroups.com
+Subject: Re: [PATCH v2 1/2] clk: change clk_ops' ->round_rate() prototype
+Message-ID: <20150520010144.GA31054@codeaurora.org>
+References: <1430407809-31147-1-git-send-email-boris.brezillon@free-electrons.com>
+ <1430407809-31147-2-git-send-email-boris.brezillon@free-electrons.com>
+ <20150507063953.GC32399@codeaurora.org>
+ <20150507093702.0b58753d@bbrezillon>
+ <20150515174048.4a31af49@bbrezillon>
+ <5557267D.7080209@kapsi.fi>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.20.3.79]
-Return-Path: <Leonid.Yegoshin@imgtec.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5557267D.7080209@kapsi.fi>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-Virus-Scanned: ClamAV using ClamSMTP
+Return-Path: <sboyd@codeaurora.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47482
+X-archive-position: 47483
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Leonid.Yegoshin@imgtec.com
+X-original-sender: sboyd@codeaurora.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,30 +91,34 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-It seems the patch 39148e94e3e1f0477ce8ed3fda00123722681f3a
+On 05/16, Mikko Perttunen wrote:
+> On 05/15/2015 06:40 PM, Boris Brezillon wrote:
+> >Hi Stephen,
+> >
+> >Adding Mikko in the loop (after all, he was the one complaining about
+> >this signed long limitation in the first place, and I forgot to add
+> >him in the Cc list :-/).
+> 
+> I think I got it through linux-tegra anyway, but thanks :)
+> 
+> >
+> >Mikko, are you okay with the approach proposed by Stephen (adding a
+> >new method) ?
+> 
+> Yes, sounds good to me. If a driver uses the existing methods with
+> too large frequencies, the issue is pretty discoverable anyway. I
+> think "adjust_rate" sounds a bit too much like it sets the clock's
+> rate, though; perhaps "adjust_rate_request" or something like that?
+> 
 
-    "MIPS: fork: Fix MSA/FPU/DSP context duplication race"
+Well I'm also OK with changing the determine_rate API one more
+time, but we'll have to be careful. Invariably someone will push
+a new clock driver through some non-clk tree path and we'll get
+build breakage. They shouldn't be doing that, so either we do the
+change now and push it to -next and see what breaks, or we do
+this after -rc1 comes out and make sure everyone has lots of
+warning.
 
-assumes that DSP/FPU and MSA context should be inherited in child at clone/fork
-(look into patch description). It was done on Matthew Fortune request from
-toolchain team, I guess.
-
-Well, in this case it should prevent clearing TIF_MSA_CTX_LIVE in copy_thread().
-
-Signed-off-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
----
- arch/mips/kernel/process.c |    1 -
- 1 file changed, 1 deletion(-)
-
-diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
-index f2975d4d1e44..a16e62d40210 100644
---- a/arch/mips/kernel/process.c
-+++ b/arch/mips/kernel/process.c
-@@ -163,7 +163,6 @@ int copy_thread(unsigned long clone_flags, unsigned long usp,
- 
- 	clear_tsk_thread_flag(p, TIF_USEDFPU);
- 	clear_tsk_thread_flag(p, TIF_USEDMSA);
--	clear_tsk_thread_flag(p, TIF_MSA_CTX_LIVE);
- 
- #ifdef CONFIG_MIPS_MT_FPAFF
- 	clear_tsk_thread_flag(p, TIF_FPUBOUND);
+-- 
+Qualcomm Innovation Center, Inc. is a member of Code Aurora Forum,
+a Linux Foundation Collaborative Project

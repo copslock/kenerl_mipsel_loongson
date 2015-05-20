@@ -1,15 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 May 2015 11:43:36 +0200 (CEST)
-Received: from mga11.intel.com ([192.55.52.93]:19915 "EHLO mga11.intel.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 May 2015 11:59:09 +0200 (CEST)
+Received: from mga11.intel.com ([192.55.52.93]:29087 "EHLO mga11.intel.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27012555AbbETJneaVMaG (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 20 May 2015 11:43:34 +0200
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga102.fm.intel.com with ESMTP; 20 May 2015 02:43:30 -0700
+        id S27012555AbbETJ7IC6Z4Y (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 20 May 2015 11:59:08 +0200
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by fmsmga102.fm.intel.com with ESMTP; 20 May 2015 02:59:03 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.13,464,1427785200"; 
-   d="scan'208";a="728902811"
+   d="scan'208";a="574172362"
 Received: from gerry-dev.bj.intel.com ([10.238.158.61])
-  by fmsmga002.fm.intel.com with ESMTP; 20 May 2015 02:43:24 -0700
+  by orsmga003.jf.intel.com with ESMTP; 20 May 2015 02:58:58 -0700
 From:   Jiang Liu <jiang.liu@linux.intel.com>
 To:     Thomas Gleixner <tglx@linutronix.de>,
         Bjorn Helgaas <bhelgaas@google.com>,
@@ -20,34 +20,29 @@ To:     Thomas Gleixner <tglx@linutronix.de>,
         Randy Dunlap <rdunlap@infradead.org>,
         Yinghai Lu <yinghai@kernel.org>,
         Borislav Petkov <bp@alien8.de>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
         Ralf Baechle <ralf@linux-mips.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Alexandre Courbot <gnurou@gmail.com>,
-        Michal Simek <michal.simek@xilinx.com>,
-        =?UTF-8?q?S=C3=B6ren=20Brinkmann?= <soren.brinkmann@xilinx.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        Jason Cooper <jason@lakedaemon.net>,
+        Sergey Ryazanov <ryazanov.s.a@gmail.com>,
+        Aleksey Makarov <aleksey.makarov@auriga.com>,
+        David Daney <david.daney@cavium.com>,
         Jiang Liu <jiang.liu@linux.intel.com>,
-        Manuel Lauss <manuel.lauss@gmail.com>,
-        Marc Zyngier <marc.zyngier@arm.com>
-Cc:     Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>, x86@kernel.org,
+        Christoph Lameter <cl@linux.com>,
+        John Crispin <blogic@openwrt.org>,
+        Andrew Bresticker <abrestic@chromium.org>
+Cc:     Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+        Tony Luck <tony.luck@intel.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-mips@linux-mips.org, linux-gpio@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-metag@vger.kernel.org
-Subject: [Patch v2 14/14] genirq: Pass irq_data to helper function __irq_set_chip_handler_name_locked()
-Date:   Wed, 20 May 2015 17:40:45 +0800
-Message-Id: <1432114845-24304-15-git-send-email-jiang.liu@linux.intel.com>
+        linux-acpi@vger.kernel.org, linux-mips@linux-mips.org
+Subject: [RFC v1 03/25] MIPS, irq: Use irq_desc_get_xxx() to avoid redundant lookup of irq_desc
+Date:   Wed, 20 May 2015 17:59:51 +0800
+Message-Id: <1432116013-25902-4-git-send-email-jiang.liu@linux.intel.com>
 X-Mailer: git-send-email 1.7.10.4
-In-Reply-To: <1432114845-24304-1-git-send-email-jiang.liu@linux.intel.com>
-References: <1432114845-24304-1-git-send-email-jiang.liu@linux.intel.com>
+In-Reply-To: <1432116013-25902-1-git-send-email-jiang.liu@linux.intel.com>
+References: <1432116013-25902-1-git-send-email-jiang.liu@linux.intel.com>
 Return-Path: <jiang.liu@linux.intel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47486
+X-archive-position: 47487
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -64,169 +59,126 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-For most cases, callers pass irq_data->irq to helper function
-__irq_set_chip_handler_name_locked() and __irq_set_chip_handler_name_locked()
-looks up irq_data again by calling irq_get_irq_data(irq_data->irq).
-
-So pass irq_data directly instead of irq_data->irq to
-__irq_set_chip_handler_name_locked().
-
-This also helps to better support hierarchy irqdomain in irq core.
+Use irq_desc_get_xxx() to avoid redundant lookup of irq_desc while we
+already have a pointer to corresponding irq_desc.
 
 Signed-off-by: Jiang Liu <jiang.liu@linux.intel.com>
 ---
- arch/ia64/kernel/iosapic.c      |    6 +++---
- arch/mips/alchemy/common/irq.c  |    4 ++--
- drivers/gpio/gpio-zynq.c        |    9 ++++-----
- drivers/irqchip/irq-metag-ext.c |    5 ++---
- drivers/irqchip/irq-mips-gic.c  |   11 ++++-------
- include/linux/irqdesc.h         |   12 ++++++++----
- 6 files changed, 23 insertions(+), 24 deletions(-)
+ arch/mips/ath25/ar2315.c             |    2 +-
+ arch/mips/ath25/ar5312.c             |    2 +-
+ arch/mips/cavium-octeon/octeon-irq.c |    4 +++-
+ arch/mips/pci/pci-ar2315.c           |    2 +-
+ arch/mips/pci/pci-ar71xx.c           |    2 +-
+ arch/mips/pci/pci-ar724x.c           |    2 +-
+ arch/mips/pci/pci-rt3883.c           |    2 +-
+ arch/mips/ralink/irq.c               |    2 +-
+ 8 files changed, 10 insertions(+), 8 deletions(-)
 
-diff --git a/arch/ia64/kernel/iosapic.c b/arch/ia64/kernel/iosapic.c
-index 4d2698d43c39..317993e92cba 100644
---- a/arch/ia64/kernel/iosapic.c
-+++ b/arch/ia64/kernel/iosapic.c
-@@ -610,9 +610,9 @@ register_intr (unsigned int gsi, int irq, unsigned char delivery,
- 			       chip->name, irq_type->name);
- 		chip = irq_type;
- 	}
--	__irq_set_chip_handler_name_locked(irq, chip, trigger == IOSAPIC_EDGE ?
--					   handle_edge_irq : handle_level_irq,
--					   NULL);
-+	__irq_set_chip_handler_name_locked(irq_get_irq_data(irq), chip,
-+		trigger == IOSAPIC_EDGE ? handle_edge_irq : handle_level_irq,
-+		NULL);
- 	return 0;
- }
+diff --git a/arch/mips/ath25/ar2315.c b/arch/mips/ath25/ar2315.c
+index 2befa7d766a6..8742e1cee492 100644
+--- a/arch/mips/ath25/ar2315.c
++++ b/arch/mips/ath25/ar2315.c
+@@ -76,7 +76,7 @@ static void ar2315_misc_irq_handler(unsigned irq, struct irq_desc *desc)
+ 	unsigned nr, misc_irq = 0;
  
-diff --git a/arch/mips/alchemy/common/irq.c b/arch/mips/alchemy/common/irq.c
-index 6cb60abfdcc9..026c4eed37d5 100644
---- a/arch/mips/alchemy/common/irq.c
-+++ b/arch/mips/alchemy/common/irq.c
-@@ -491,7 +491,7 @@ static int au1x_ic_settype(struct irq_data *d, unsigned int flow_type)
- 	default:
- 		ret = -EINVAL;
- 	}
--	__irq_set_chip_handler_name_locked(d->irq, chip, handler, name);
-+	__irq_set_chip_handler_name_locked(d, chip, handler, name);
+ 	if (pending) {
+-		struct irq_domain *domain = irq_get_handler_data(irq);
++		struct irq_domain *domain = irq_desc_get_handler_data(desc);
  
- 	wmb();
+ 		nr = __ffs(pending);
+ 		misc_irq = irq_find_mapping(domain, nr);
+diff --git a/arch/mips/ath25/ar5312.c b/arch/mips/ath25/ar5312.c
+index b6887f75144c..094b938fd603 100644
+--- a/arch/mips/ath25/ar5312.c
++++ b/arch/mips/ath25/ar5312.c
+@@ -80,7 +80,7 @@ static void ar5312_misc_irq_handler(unsigned irq, struct irq_desc *desc)
+ 	unsigned nr, misc_irq = 0;
  
-@@ -703,7 +703,7 @@ static int au1300_gpic_settype(struct irq_data *d, unsigned int type)
- 		return -EINVAL;
- 	}
+ 	if (pending) {
+-		struct irq_domain *domain = irq_get_handler_data(irq);
++		struct irq_domain *domain = irq_desc_get_handler_data(desc);
  
--	__irq_set_chip_handler_name_locked(d->irq, &au1300_gpic, hdl, name);
-+	__irq_set_chip_handler_name_locked(d, &au1300_gpic, hdl, name);
+ 		nr = __ffs(pending);
+ 		misc_irq = irq_find_mapping(domain, nr);
+diff --git a/arch/mips/cavium-octeon/octeon-irq.c b/arch/mips/cavium-octeon/octeon-irq.c
+index 0643ae614284..18bf3dcb9d1b 100644
+--- a/arch/mips/cavium-octeon/octeon-irq.c
++++ b/arch/mips/cavium-octeon/octeon-irq.c
+@@ -699,7 +699,9 @@ static void octeon_irq_ciu_gpio_ack(struct irq_data *data)
  
- 	au1300_gpic_chgcfg(d->irq - ALCHEMY_GPIC_INT_BASE, GPIC_CFG_IC_MASK, s);
- 
-diff --git a/drivers/gpio/gpio-zynq.c b/drivers/gpio/gpio-zynq.c
-index 184c4b1b2558..aea6075e5b2e 100644
---- a/drivers/gpio/gpio-zynq.c
-+++ b/drivers/gpio/gpio-zynq.c
-@@ -422,13 +422,12 @@ static int zynq_gpio_set_irq_type(struct irq_data *irq_data, unsigned int type)
- 	writel_relaxed(int_any,
- 		       gpio->base_addr + ZYNQ_GPIO_INTANY_OFFSET(bank_num));
- 
--	if (type & IRQ_TYPE_LEVEL_MASK) {
--		__irq_set_chip_handler_name_locked(irq_data->irq,
-+	if (type & IRQ_TYPE_LEVEL_MASK)
-+		__irq_set_chip_handler_name_locked(irq_data,
- 			&zynq_gpio_level_irqchip, handle_fasteoi_irq, NULL);
--	} else {
--		__irq_set_chip_handler_name_locked(irq_data->irq,
-+	else
-+		__irq_set_chip_handler_name_locked(irq_data,
- 			&zynq_gpio_edge_irqchip, handle_level_irq, NULL);
--	}
- 
- 	return 0;
- }
-diff --git a/drivers/irqchip/irq-metag-ext.c b/drivers/irqchip/irq-metag-ext.c
-index 2cb474ad8809..52e501d8c8f0 100644
---- a/drivers/irqchip/irq-metag-ext.c
-+++ b/drivers/irqchip/irq-metag-ext.c
-@@ -404,7 +404,6 @@ static int meta_intc_irq_set_type(struct irq_data *data, unsigned int flow_type)
- #ifdef CONFIG_METAG_SUSPEND_MEM
- 	struct meta_intc_priv *priv = &meta_intc_priv;
- #endif
--	unsigned int irq = data->irq;
- 	irq_hw_number_t hw = data->hwirq;
- 	unsigned int bit = 1 << meta_intc_offset(hw);
- 	void __iomem *level_addr = meta_intc_level_addr(hw);
-@@ -413,10 +412,10 @@ static int meta_intc_irq_set_type(struct irq_data *data, unsigned int flow_type)
- 
- 	/* update the chip/handler */
- 	if (flow_type & IRQ_TYPE_LEVEL_MASK)
--		__irq_set_chip_handler_name_locked(irq, &meta_intc_level_chip,
-+		__irq_set_chip_handler_name_locked(data, &meta_intc_level_chip,
- 						   handle_level_irq, NULL);
- 	else
--		__irq_set_chip_handler_name_locked(irq, &meta_intc_edge_chip,
-+		__irq_set_chip_handler_name_locked(data, &meta_intc_edge_chip,
- 						   handle_edge_irq, NULL);
- 
- 	/* and clear/set the bit in HWLEVELEXT */
-diff --git a/drivers/irqchip/irq-mips-gic.c b/drivers/irqchip/irq-mips-gic.c
-index 09257c301bd2..fb2e64b1f414 100644
---- a/drivers/irqchip/irq-mips-gic.c
-+++ b/drivers/irqchip/irq-mips-gic.c
-@@ -365,15 +365,12 @@ static int gic_set_type(struct irq_data *d, unsigned int type)
- 		break;
- 	}
- 
--	if (is_edge) {
--		__irq_set_chip_handler_name_locked(d->irq,
--						   &gic_edge_irq_controller,
-+	if (is_edge)
-+		__irq_set_chip_handler_name_locked(d, &gic_edge_irq_controller,
- 						   handle_edge_irq, NULL);
--	} else {
--		__irq_set_chip_handler_name_locked(d->irq,
--						   &gic_level_irq_controller,
-+	else
-+		__irq_set_chip_handler_name_locked(d, &gic_level_irq_controller,
- 						   handle_level_irq, NULL);
--	}
- 	spin_unlock_irqrestore(&gic_lock, flags);
- 
- 	return 0;
-diff --git a/include/linux/irqdesc.h b/include/linux/irqdesc.h
-index 8a4044d6efba..8f649e174ed1 100644
---- a/include/linux/irqdesc.h
-+++ b/include/linux/irqdesc.h
-@@ -94,6 +94,11 @@ struct irq_desc {
- extern struct irq_desc irq_desc[NR_IRQS];
- #endif
- 
-+static inline struct irq_desc *irq_data_to_desc(struct irq_data *data)
-+{
-+	return container_of(data->common, struct irq_desc, irq_common_data);
-+}
+ static void octeon_irq_handle_trigger(unsigned int irq, struct irq_desc *desc)
+ {
+-	if (irq_get_trigger_type(irq) & IRQ_TYPE_EDGE_BOTH)
++	struct irq_data *data = irq_desc_get_irq_data(desc);
 +
- static inline struct irq_data *irq_desc_get_irq_data(struct irq_desc *desc)
++	if (irqd_get_trigger_type(data) & IRQ_TYPE_EDGE_BOTH)
+ 		handle_edge_irq(irq, desc);
+ 	else
+ 		handle_level_irq(irq, desc);
+diff --git a/arch/mips/pci/pci-ar2315.c b/arch/mips/pci/pci-ar2315.c
+index 07a18228e63a..dadb30306a0a 100644
+--- a/arch/mips/pci/pci-ar2315.c
++++ b/arch/mips/pci/pci-ar2315.c
+@@ -320,7 +320,7 @@ static int ar2315_pci_host_setup(struct ar2315_pci_ctrl *apc)
+ 
+ static void ar2315_pci_irq_handler(unsigned irq, struct irq_desc *desc)
  {
- 	return &desc->irq_data;
-@@ -168,15 +173,14 @@ static inline void __irq_set_handler_locked(unsigned int irq,
+-	struct ar2315_pci_ctrl *apc = irq_get_handler_data(irq);
++	struct ar2315_pci_ctrl *apc = irq_desc_get_handler_data(desc);
+ 	u32 pending = ar2315_pci_reg_read(apc, AR2315_PCI_ISR) &
+ 		      ar2315_pci_reg_read(apc, AR2315_PCI_IMR);
+ 	unsigned pci_irq = 0;
+diff --git a/arch/mips/pci/pci-ar71xx.c b/arch/mips/pci/pci-ar71xx.c
+index 9e62ad31d4b5..dac6a07c45bf 100644
+--- a/arch/mips/pci/pci-ar71xx.c
++++ b/arch/mips/pci/pci-ar71xx.c
+@@ -232,7 +232,7 @@ static void ar71xx_pci_irq_handler(unsigned int irq, struct irq_desc *desc)
+ 	void __iomem *base = ath79_reset_base;
+ 	u32 pending;
  
- /* caller has locked the irq_desc and both params are valid */
- static inline void
--__irq_set_chip_handler_name_locked(unsigned int irq, struct irq_chip *chip,
-+__irq_set_chip_handler_name_locked(struct irq_data *data, struct irq_chip *chip,
- 				   irq_flow_handler_t handler, const char *name)
- {
--	struct irq_desc *desc;
-+	struct irq_desc *desc = irq_data_to_desc(data);
+-	apc = irq_get_handler_data(irq);
++	apc = irq_desc_get_handler_data(desc);
  
--	desc = irq_to_desc(irq);
--	irq_desc_get_irq_data(desc)->chip = chip;
- 	desc->handle_irq = handler;
- 	desc->name = name;
-+	data->chip = chip;
- }
+ 	pending = __raw_readl(base + AR71XX_RESET_REG_PCI_INT_STATUS) &
+ 		  __raw_readl(base + AR71XX_RESET_REG_PCI_INT_ENABLE);
+diff --git a/arch/mips/pci/pci-ar724x.c b/arch/mips/pci/pci-ar724x.c
+index a1b7d2a1b0d5..0af362b5af92 100644
+--- a/arch/mips/pci/pci-ar724x.c
++++ b/arch/mips/pci/pci-ar724x.c
+@@ -231,7 +231,7 @@ static void ar724x_pci_irq_handler(unsigned int irq, struct irq_desc *desc)
+ 	void __iomem *base;
+ 	u32 pending;
  
- static inline int irq_balancing_disabled(unsigned int irq)
+-	apc = irq_get_handler_data(irq);
++	apc = irq_desc_get_handler_data(desc);
+ 	base = apc->ctrl_base;
+ 
+ 	pending = __raw_readl(base + AR724X_PCI_REG_INT_STATUS) &
+diff --git a/arch/mips/pci/pci-rt3883.c b/arch/mips/pci/pci-rt3883.c
+index ec9be8ca4ada..80fafe646e74 100644
+--- a/arch/mips/pci/pci-rt3883.c
++++ b/arch/mips/pci/pci-rt3883.c
+@@ -134,7 +134,7 @@ static void rt3883_pci_irq_handler(unsigned int irq, struct irq_desc *desc)
+ 	struct rt3883_pci_controller *rpc;
+ 	u32 pending;
+ 
+-	rpc = irq_get_handler_data(irq);
++	rpc = irq_desc_get_handler_data(desc);
+ 
+ 	pending = rt3883_pci_r32(rpc, RT3883_PCI_REG_PCIINT) &
+ 		  rt3883_pci_r32(rpc, RT3883_PCI_REG_PCIENA);
+diff --git a/arch/mips/ralink/irq.c b/arch/mips/ralink/irq.c
+index 7cf91b92e9d1..da301e0a2f1f 100644
+--- a/arch/mips/ralink/irq.c
++++ b/arch/mips/ralink/irq.c
+@@ -100,7 +100,7 @@ static void ralink_intc_irq_handler(unsigned int irq, struct irq_desc *desc)
+ 	u32 pending = rt_intc_r32(INTC_REG_STATUS0);
+ 
+ 	if (pending) {
+-		struct irq_domain *domain = irq_get_handler_data(irq);
++		struct irq_domain *domain = irq_desc_get_handler_data(desc);
+ 		generic_handle_irq(irq_find_mapping(domain, __ffs(pending)));
+ 	} else {
+ 		spurious_interrupt();
 -- 
 1.7.10.4

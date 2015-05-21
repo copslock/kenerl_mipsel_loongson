@@ -1,17 +1,17 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 May 2015 02:03:21 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:31266 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 May 2015 02:03:51 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:28997 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27006702AbbEVADU3RiQu (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 22 May 2015 02:03:20 +0200
+        with ESMTP id S27012557AbbEVADuAVTEC (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 22 May 2015 02:03:50 +0200
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id E59D46EBECC8E;
-        Fri, 22 May 2015 01:03:12 +0100 (IST)
+        by Websense Email Security Gateway with ESMTPS id BB3F8EA31137E;
+        Fri, 22 May 2015 01:03:42 +0100 (IST)
 Received: from hhmail02.hh.imgtec.org (10.100.10.20) by KLMAIL01.kl.imgtec.org
  (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Fri, 22 May
- 2015 01:02:12 +0100
+ 2015 01:03:46 +0100
 Received: from laptop.hh.imgtec.org (10.100.200.44) by hhmail02.hh.imgtec.org
  (10.100.10.20) with Microsoft SMTP Server (TLS) id 14.3.224.2; Fri, 22 May
- 2015 01:02:10 +0100
+ 2015 01:03:45 +0100
 From:   Ezequiel Garcia <ezequiel.garcia@imgtec.com>
 To:     <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>,
         "Mike Turquette" <mturquette@linaro.org>, <sboyd@codeaurora.org>
@@ -20,9 +20,9 @@ CC:     Andrew Bresticker <abrestic@chromium.org>,
         <Govindraj.Raja@imgtec.com>, <Damien.Horsley@imgtec.com>,
         <cernekee@chromium.org>, James Hogan <james.hogan@imgtec.com>,
         Ezequiel Garcia <ezequiel.garcia@imgtec.com>
-Subject: [PATCH 3/9] clk: pistachio: Implement PLL rate adjustment
-Date:   Thu, 21 May 2015 20:57:37 -0300
-Message-ID: <1432252663-31318-4-git-send-email-ezequiel.garcia@imgtec.com>
+Subject: [PATCH 7/9] clk: pistachio: Add a rate table for the MIPS PLL
+Date:   Thu, 21 May 2015 20:57:41 -0300
+Message-ID: <1432252663-31318-8-git-send-email-ezequiel.garcia@imgtec.com>
 X-Mailer: git-send-email 2.3.3
 In-Reply-To: <1432252663-31318-1-git-send-email-ezequiel.garcia@imgtec.com>
 References: <1432252663-31318-1-git-send-email-ezequiel.garcia@imgtec.com>
@@ -33,7 +33,7 @@ Return-Path: <Ezequiel.Garcia@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47541
+X-archive-position: 47542
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -50,129 +50,62 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This commit implements small rate changes to the fractional PLL.
-This is done using the PLL frac parameter. The .set_rate function
-first finds the parameters associated to the closest nominal rate.
+This commit adds a rate parameter table, which makes it possible for
+the MIPS PLL to support rate change.
 
-Then the new rate is set, using parameters from the table entry,
-except for the frac parameter, which is calculated from the rate
-using the fractional PLL rate formula.
-
-Using .round_rate, the driver guarantees that only rates near
-a table nominal rate is applied. To this extent, add two parameters
-fout_min and fout_max, which allows to define the allowed rate
-adjustment.
-
+Signed-off-by: Govindraj Raja <Govindraj.Raja@imgtec.com>
 Signed-off-by: Ezequiel Garcia <ezequiel.garcia@imgtec.com>
 ---
- drivers/clk/pistachio/clk-pll.c | 48 +++++++++++++++++++++++++++++++----------
- drivers/clk/pistachio/clk.h     |  2 ++
- 2 files changed, 39 insertions(+), 11 deletions(-)
+ drivers/clk/pistachio/clk-pistachio.c | 12 +++++++++++-
+ drivers/clk/pistachio/clk.h           | 12 ++++++++++++
+ 2 files changed, 23 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/clk/pistachio/clk-pll.c b/drivers/clk/pistachio/clk-pll.c
-index f12d520..cf000bb 100644
---- a/drivers/clk/pistachio/clk-pll.c
-+++ b/drivers/clk/pistachio/clk-pll.c
-@@ -90,29 +90,50 @@ static struct pistachio_pll_rate_table *
- pll_get_params(struct pistachio_clk_pll *pll, unsigned long fref,
- 	       unsigned long fout)
- {
--	unsigned int i;
-+	unsigned int i, best;
-+	unsigned long err, best_err = ~0;
+diff --git a/drivers/clk/pistachio/clk-pistachio.c b/drivers/clk/pistachio/clk-pistachio.c
+index 22a7ebd..0ac7429 100644
+--- a/drivers/clk/pistachio/clk-pistachio.c
++++ b/drivers/clk/pistachio/clk-pistachio.c
+@@ -145,8 +145,18 @@ static struct pistachio_mux pistachio_muxes[] __initdata = {
+ 	MUX(CLK_BT_PLL_MUX, "bt_pll_mux", mux_xtal_bt, 0x200, 17),
+ };
  
- 	for (i = 0; i < pll->nr_rates; i++) {
--		if (pll->rates[i].fref == fref && pll->rates[i].fout == fout)
--			return &pll->rates[i];
-+		err = abs(pll->rates[i].fout - fout);
-+		if (pll->rates[i].fref == fref && err < best_err) {
-+			best = i;
-+			best_err = err;
-+		}
- 	}
- 
--	return NULL;
-+	return &pll->rates[best];
- }
- 
- static long pll_round_rate(struct clk_hw *hw, unsigned long rate,
- 			   unsigned long *parent_rate)
- {
- 	struct pistachio_clk_pll *pll = to_pistachio_pll(hw);
--	unsigned int i;
-+	unsigned int i, best;
-+	unsigned long err, best_err = ~0;
- 
- 	for (i = 0; i < pll->nr_rates; i++) {
--		if (i > 0 && pll->rates[i].fref == *parent_rate &&
--		    pll->rates[i].fout <= rate)
--			return pll->rates[i - 1].fout;
-+		err = abs(pll->rates[i].fout - rate);
-+		if (pll->rates[i].fref == *parent_rate && err < best_err) {
-+			best = i;
-+			best_err = err;
-+		}
- 	}
- 
--	return pll->rates[0].fout;
-+	/* Make sure fout_{min,max} parameters have sane values */
-+	if (!pll->rates[best].fout_min)
-+		pll->rates[best].fout_min = pll->rates[best].fout;
-+	if (!pll->rates[best].fout_max)
-+		pll->rates[best].fout_max = pll->rates[best].fout;
++static struct pistachio_pll_rate_table mips_pll_rates[] = {
++	MIPS_PLL_RATES(52000000, 416000000, 1, 16, 2, 1),
++	MIPS_PLL_RATES(52000000, 442000000, 1, 17, 2, 1),
++	MIPS_PLL_RATES(52000000, 468000000, 1, 18, 2, 1),
++	MIPS_PLL_RATES(52000000, 494000000, 1, 19, 2, 1),
++	MIPS_PLL_RATES(52000000, 520000000, 1, 20, 2, 1),
++	MIPS_PLL_RATES(52000000, 546000000, 1, 21, 2, 1),
++};
 +
-+	/*
-+	 * If the chosen rate is within the maximum allowed PLL adjustment
-+	 * then we accept it.
-+	 * Otherwise, just return the closest nominal table rate.
-+	 */
-+	if (rate <= pll->rates[best].fout_max &&
-+	    rate >= pll->rates[best].fout_min)
-+		return rate;
-+	return pll->rates[best].fout;
- }
- 
- static int pll_gf40lp_frac_enable(struct clk_hw *hw)
-@@ -158,12 +179,17 @@ static int pll_gf40lp_frac_set_rate(struct clk_hw *hw, unsigned long rate,
- 	struct pistachio_clk_pll *pll = to_pistachio_pll(hw);
- 	struct pistachio_pll_rate_table *params;
- 	int enabled = pll_gf40lp_frac_is_enabled(hw);
--	u32 val;
-+	u32 val, frac;
- 
- 	params = pll_get_params(pll, parent_rate, rate);
- 	if (!params)
- 		return -EINVAL;
- 
-+	/* Calculate the frac parameter */
-+	frac = rate * params->refdiv * params->postdiv1 * params->postdiv2;
-+	frac -= (params->fbdiv * parent_rate);
-+	frac = do_div_round_closest((u64)frac << 24, parent_rate);
-+
- 	val = pll_readl(pll, PLL_CTRL1);
- 	val &= ~((PLL_CTRL1_REFDIV_MASK << PLL_CTRL1_REFDIV_SHIFT) |
- 		 (PLL_CTRL1_FBDIV_MASK << PLL_CTRL1_FBDIV_SHIFT));
-@@ -177,7 +203,7 @@ static int pll_gf40lp_frac_set_rate(struct clk_hw *hw, unsigned long rate,
- 		  PLL_FRAC_CTRL2_POSTDIV1_SHIFT) |
- 		 (PLL_FRAC_CTRL2_POSTDIV2_MASK <<
- 		  PLL_FRAC_CTRL2_POSTDIV2_SHIFT));
--	val |= (params->frac << PLL_FRAC_CTRL2_FRAC_SHIFT) |
-+	val |= (frac << PLL_FRAC_CTRL2_FRAC_SHIFT) |
- 		(params->postdiv1 << PLL_FRAC_CTRL2_POSTDIV1_SHIFT) |
- 		(params->postdiv2 << PLL_FRAC_CTRL2_POSTDIV2_SHIFT);
- 	pll_writel(pll, val, PLL_CTRL2);
+ static struct pistachio_pll pistachio_plls[] __initdata = {
+-	PLL_FIXED(CLK_MIPS_PLL, "mips_pll", "xtal", PLL_GF40LP_LAINT, 0x0),
++	PLL(CLK_MIPS_PLL, "mips_pll", "xtal", PLL_GF40LP_LAINT, 0x0,
++	    mips_pll_rates),
+ 	PLL_FIXED(CLK_AUDIO_PLL, "audio_pll", "audio_refclk_mux",
+ 		  PLL_GF40LP_FRAC, 0xc),
+ 	PLL_FIXED(CLK_RPU_V_PLL, "rpu_v_pll", "xtal", PLL_GF40LP_LAINT, 0x20),
 diff --git a/drivers/clk/pistachio/clk.h b/drivers/clk/pistachio/clk.h
-index 52fabbc..ea48d15 100644
+index 3bb6bbe..b5d22d6 100644
 --- a/drivers/clk/pistachio/clk.h
 +++ b/drivers/clk/pistachio/clk.h
-@@ -97,6 +97,8 @@ struct pistachio_fixed_factor {
- struct pistachio_pll_rate_table {
- 	unsigned long fref;
- 	unsigned long fout;
-+	unsigned long fout_min;
-+	unsigned long fout_max;
- 	unsigned int refdiv;
- 	unsigned int fbdiv;
- 	unsigned int postdiv1;
+@@ -121,6 +121,18 @@ struct pistachio_pll_rate_table {
+ 	unsigned int frac;
+ };
+ 
++#define MIPS_PLL_RATES(_fref, _fout, _refdiv, _fbdiv,	\
++		       _postdiv1, _postdiv2)		\
++{                                                       \
++	.fref           = _fref,                        \
++	.fout           = _fout,                        \
++	.refdiv         = _refdiv,                      \
++	.fbdiv          = _fbdiv,                       \
++	.postdiv1       = _postdiv1,                    \
++	.postdiv2       = _postdiv2,                    \
++	.frac           = 0,                            \
++}
++
+ enum pistachio_pll_type {
+ 	PLL_GF40LP_LAINT,
+ 	PLL_GF40LP_FRAC,
 -- 
 2.3.3

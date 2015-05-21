@@ -1,51 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 May 2015 16:08:31 +0200 (CEST)
-Received: from smtp.codeaurora.org ([198.145.29.96]:47824 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27006567AbbEUOI3nMNGz (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 21 May 2015 16:08:29 +0200
-Received: from smtp.codeaurora.org (localhost [127.0.0.1])
-        by smtp.codeaurora.org (Postfix) with ESMTP id 68FC2140F44;
-        Thu, 21 May 2015 14:08:30 +0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 486)
-        id 521C0140F56; Thu, 21 May 2015 14:08:30 +0000 (UTC)
-Received: from potku.adurom.net (a88-115-185-251.elisa-laajakaista.fi [88.115.185.251])
-        (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 1A283140F44;
-        Thu, 21 May 2015 14:08:27 +0000 (UTC)
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Arend van Spriel <arend@broadcom.com>
-Cc:     =?utf-8?Q?Rafa=C5=82_Mi=C5=82ecki?= <zajec5@gmail.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Hante Meuleman <meuleman@broadcom.com>,
-        "linux-mips\@linux-mips.org" <linux-mips@linux-mips.org>,
-        Hauke Mehrtens <hauke@hauke-m.de>
-Subject: Re: [PATCH 6/6] brcmfmac: Add support for host platform NVRAM loading.
-References: <1432123792-4155-1-git-send-email-arend@broadcom.com>
-        <1432123792-4155-7-git-send-email-arend@broadcom.com>
-        <CACna6ryt5uNkBXAk8chFyMEQVJLdHELLdA_V5TrLcaAikrTZeg@mail.gmail.com>
-        <CACna6ryCgOwkj_nt6Gd1+r826OJu-suPk50YAS1eRVW+kkR7fQ@mail.gmail.com>
-        <555DA529.6000901@broadcom.com>
-        <87vbfm6xsg.fsf@kamboji.qca.qualcomm.com>
-        <555DB3C0.7010000@broadcom.com>
-Date:   Thu, 21 May 2015 17:08:23 +0300
-In-Reply-To: <555DB3C0.7010000@broadcom.com> (Arend van Spriel's message of
-        "Thu, 21 May 2015 12:30:24 +0200")
-Message-ID: <877fs26n1k.fsf@kamboji.qca.qualcomm.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/23.3 (gnu/linux)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Virus-Scanned: ClamAV using ClamSMTP
-Return-Path: <kvalo@codeaurora.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 May 2015 18:10:35 +0200 (CEST)
+Received: from smtprelay0102.hostedemail.com ([216.40.44.102]:40686 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S27006567AbbEUQKeQxAWv (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 21 May 2015 18:10:34 +0200
+Received: from filter.hostedemail.com (unknown [216.40.38.60])
+        by smtprelay01.hostedemail.com (Postfix) with ESMTP id 866CA23416;
+        Thu, 21 May 2015 16:10:33 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-HE-Tag: pen34_5c043a3d91350
+X-Filterd-Recvd-Size: 2307
+Received: from joe-X200MA.home (pool-173-51-221-2.lsanca.fios.verizon.net [173.51.221.2])
+        (Authenticated sender: joe@perches.com)
+        by omf01.hostedemail.com (Postfix) with ESMTPA;
+        Thu, 21 May 2015 16:10:32 +0000 (UTC)
+Message-ID: <1432224631.20840.45.camel@perches.com>
+Subject: Re: [PATCH] mips: irq: Use DECLARE_BITMAP
+From:   Joe Perches <joe@perches.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips <linux-mips@linux-mips.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Gabor Juhos <juhosg@openwrt.org>,
+        Manuel Lauss <manuel.lauss@googlemail.com>,
+        John Crispin <blogic@openwrt.org>
+Date:   Thu, 21 May 2015 09:10:31 -0700
+In-Reply-To: <20150521131429.GA8177@linux-mips.org>
+References: <1432125894.2870.284.camel@perches.com>
+         <20150521131429.GA8177@linux-mips.org>
+Content-Type: text/plain; charset="ISO-8859-1"
+X-Mailer: Evolution 3.12.11-0ubuntu3 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Return-Path: <joe@perches.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47515
+X-archive-position: 47516
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kvalo@codeaurora.org
+X-original-sender: joe@perches.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,18 +51,43 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Arend van Spriel <arend@broadcom.com> writes:
+On Thu, 2015-05-21 at 15:14 +0200, Ralf Baechle wrote:
+> On Wed, May 20, 2015 at 05:44:54AM -0700, Joe Perches wrote:
+> 
+> > Use the generic mechanism to declare a bitmap instead of unsigned long.
+> > 
+> > This could fix an overwrite defect of whatever follows irq_map.
+> > 
+> > Not all "#define NR_IRQS <value>" are a multiple of BITS_PER_LONG so
+> > using DECLARE_BITMAP allocates the proper number of longs required
+> > for the possible bits.
+> > 
+> > For instance:
+> > 
+> > arch/mips/include/asm/mach-ath79/irq.h:#define NR_IRQS                  51
+> > arch/mips/include/asm/mach-db1x00/irq.h:#define NR_IRQS 152
+> > arch/mips/include/asm/mach-lantiq/falcon/irq.h:#define NR_IRQS 328
+> 
+> This only matters to user of the allocate_irqno() API and there is only
+> on such platform, the IP27 which fortunately uses a NR_IRQS value that
+> is a multiple of 64, so no impact.
+> 
+> Thanks anyway!
 
->>> I prefer to avoid tricks so I will ask to drop this patch and wait for
->>> it to land in the next kernel, ie. 4.2, and resubmit this patch for
->>> 4.3. I am not in a hurry.
->>
->> Yes, please :) Let's try to avoid conflicts as much as possible.
->
-> Ok. Let's make it official. Kalle, can you drop patch 6 from the
-> series (if not already done so ;-) ).
+I think you should apply it anyway as it's an
+error-prone style.
 
-Ok, dropped.
+There are 3 mechanisms used today in the kernel
+to declare bitmap arrays.
 
--- 
-Kalle Valo
+	DECLARE_BITMAP(array, size)
+	unsigned long array[BITS_TO_LONGS(size)]
+	unsigned long array[size/BITS_PER_LONG]
+
+The first 2 are fine, the last has this defect
+possible whenever size % BITS_PER_LONG != 0.
+
+The series I sent converts all the uses of the
+the possibly defective style.
+
+cheers, Joe

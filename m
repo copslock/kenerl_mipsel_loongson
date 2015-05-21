@@ -1,53 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 May 2015 11:32:33 +0200 (CEST)
-Received: from mail-ig0-f170.google.com ([209.85.213.170]:37326 "EHLO
-        mail-ig0-f170.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012377AbbEUJcbzEx4N convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 21 May 2015 11:32:31 +0200
-Received: by igbsb11 with SMTP id sb11so4167404igb.0
-        for <linux-mips@linux-mips.org>; Thu, 21 May 2015 02:32:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type:content-transfer-encoding;
-        bh=g5D1AM3ZaTpH+5z/54ulTEMVn/iQMAmZscoemEhPeHI=;
-        b=CE/54M16pu4LWmjUFDq+H6iYB6aKwU4dQJ7MjI5vMsEplRNtKVCKifSzqyg4XM5YJH
-         1iY9Fis2K5YCxrMMcjHa6GTr5QsNm/yucuZXIyC/S/3Znip/TA+N413jcqQocwvlyCX7
-         GUuLYB3YT0v52Q0FvERALEgJ7W4FKqBMZLg1MgSu3uHu+5U5VSUCgYVVRr+SWu7dxce/
-         dXHco8H3WGgdnzfaf8sDwsnuZ1Nt5jqOW6i5SvW7d9AuxHiMVbKIz1Yw8WiKyTl6D8JA
-         Kc+QnJaRIL6dqcf8U8O7UUaBvmN1EoDTq3PhCSi/wpVRwU4sPgJqzlQNIDi0T8c512r6
-         21pA==
-MIME-Version: 1.0
-X-Received: by 10.107.31.134 with SMTP id f128mr2131190iof.19.1432200748776;
- Thu, 21 May 2015 02:32:28 -0700 (PDT)
-Received: by 10.107.36.73 with HTTP; Thu, 21 May 2015 02:32:28 -0700 (PDT)
-In-Reply-To: <555DA529.6000901@broadcom.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 May 2015 12:16:26 +0200 (CEST)
+Received: from smtp.codeaurora.org ([198.145.29.96]:35727 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27012377AbbEUKQYNbCRq convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 21 May 2015 12:16:24 +0200
+Received: from smtp.codeaurora.org (localhost [127.0.0.1])
+        by smtp.codeaurora.org (Postfix) with ESMTP id 0468C140FD7;
+        Thu, 21 May 2015 10:16:24 +0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 486)
+        id C8B98140FCD; Thu, 21 May 2015 10:16:23 +0000 (UTC)
+Received: from potku.adurom.net (a88-115-185-251.elisa-laajakaista.fi [88.115.185.251])
+        (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 80943140FCD;
+        Thu, 21 May 2015 10:16:21 +0000 (UTC)
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Arend van Spriel <arend@broadcom.com>
+Cc:     =?utf-8?Q?Rafa=C5=82_Mi=C5=82ecki?= <zajec5@gmail.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Hante Meuleman <meuleman@broadcom.com>,
+        "linux-mips\@linux-mips.org" <linux-mips@linux-mips.org>,
+        Hauke Mehrtens <hauke@hauke-m.de>
+Subject: Re: [PATCH 6/6] brcmfmac: Add support for host platform NVRAM loading.
 References: <1432123792-4155-1-git-send-email-arend@broadcom.com>
         <1432123792-4155-7-git-send-email-arend@broadcom.com>
         <CACna6ryt5uNkBXAk8chFyMEQVJLdHELLdA_V5TrLcaAikrTZeg@mail.gmail.com>
         <CACna6ryCgOwkj_nt6Gd1+r826OJu-suPk50YAS1eRVW+kkR7fQ@mail.gmail.com>
         <555DA529.6000901@broadcom.com>
-Date:   Thu, 21 May 2015 11:32:28 +0200
-Message-ID: <CACna6rzEepucsrvZYecztOWKzMCV6YAmycWMS4jOBdaT4UJWDw@mail.gmail.com>
-Subject: Re: [PATCH 6/6] brcmfmac: Add support for host platform NVRAM loading.
-From:   =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
-To:     Arend van Spriel <arend@broadcom.com>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Hante Meuleman <meuleman@broadcom.com>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        Hauke Mehrtens <hauke@hauke-m.de>
-Content-Type: text/plain; charset=UTF-8
+Date:   Thu, 21 May 2015 13:16:15 +0300
+In-Reply-To: <555DA529.6000901@broadcom.com> (Arend van Spriel's message of
+        "Thu, 21 May 2015 11:28:09 +0200")
+Message-ID: <87vbfm6xsg.fsf@kamboji.qca.qualcomm.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/23.3 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8BIT
-Return-Path: <zajec5@gmail.com>
+X-Virus-Scanned: ClamAV using ClamSMTP
+Return-Path: <kvalo@codeaurora.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47510
+X-archive-position: 47511
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: zajec5@gmail.com
+X-original-sender: kvalo@codeaurora.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -60,11 +57,10 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 21 May 2015 at 11:28, Arend van Spriel <arend@broadcom.com> wrote:
+Arend van Spriel <arend@broadcom.com> writes:
+
 > On 05/21/15 10:28, Rafał Miłecki wrote:
->>
 >> On 20 May 2015 at 16:33, Rafał Miłecki<zajec5@gmail.com>  wrote:
->>>
 >>> I think the best way for achieving this is to rework your patch to
 >>> modify include/linux/bcm47xx_nvram.h. You could modify it the same way
 >>> you did in your patch for MIPS tree, except for
@@ -76,17 +72,15 @@ On 21 May 2015 at 11:28, Arend van Spriel <arend@broadcom.com> wrote:
 >>>          return NULL;
 >>> }
 >>
->>
 >> One more note.
 >> This of course will lead to conflict at some point, but I believe
 >> Linus will handle it.
 >
->
-> I prefer to avoid tricks so I will ask to drop this patch and wait for it to
-> land in the next kernel, ie. 4.2, and resubmit this patch for 4.3. I am not
-> in a hurry.
+> I prefer to avoid tricks so I will ask to drop this patch and wait for
+> it to land in the next kernel, ie. 4.2, and resubmit this patch for
+> 4.3. I am not in a hurry.
 
-OK :)
+Yes, please :) Let's try to avoid conflicts as much as possible.
 
 -- 
-Rafał
+Kalle Valo

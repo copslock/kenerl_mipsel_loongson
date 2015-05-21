@@ -1,17 +1,17 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 May 2015 02:01:32 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:14310 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 May 2015 02:02:10 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:3236 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27006702AbbEVABa7Bfxn (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 22 May 2015 02:01:30 +0200
+        with ESMTP id S27006702AbbEVACIr5Pio (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 22 May 2015 02:02:08 +0200
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id C32B8758F3491;
-        Fri, 22 May 2015 01:01:23 +0100 (IST)
+        by Websense Email Security Gateway with ESMTPS id 6F78ACEF21B2C;
+        Fri, 22 May 2015 01:02:01 +0100 (IST)
 Received: from hhmail02.hh.imgtec.org (10.100.10.20) by KLMAIL01.kl.imgtec.org
  (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Fri, 22 May
- 2015 01:01:27 +0100
+ 2015 01:02:05 +0100
 Received: from laptop.hh.imgtec.org (10.100.200.44) by hhmail02.hh.imgtec.org
  (10.100.10.20) with Microsoft SMTP Server (TLS) id 14.3.224.2; Fri, 22 May
- 2015 01:01:26 +0100
+ 2015 01:02:03 +0100
 From:   Ezequiel Garcia <ezequiel.garcia@imgtec.com>
 To:     <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>,
         "Mike Turquette" <mturquette@linaro.org>, <sboyd@codeaurora.org>
@@ -20,10 +20,12 @@ CC:     Andrew Bresticker <abrestic@chromium.org>,
         <Govindraj.Raja@imgtec.com>, <Damien.Horsley@imgtec.com>,
         <cernekee@chromium.org>, James Hogan <james.hogan@imgtec.com>,
         Ezequiel Garcia <ezequiel.garcia@imgtec.com>
-Subject: [PATCH 0/9] clk: pistachio: Assorted changes
-Date:   Thu, 21 May 2015 20:57:34 -0300
-Message-ID: <1432252663-31318-1-git-send-email-ezequiel.garcia@imgtec.com>
+Subject: [PATCH 2/9] clk: pistachio: Lock the PLL when enabled upon rate change
+Date:   Thu, 21 May 2015 20:57:36 -0300
+Message-ID: <1432252663-31318-3-git-send-email-ezequiel.garcia@imgtec.com>
 X-Mailer: git-send-email 2.3.3
+In-Reply-To: <1432252663-31318-1-git-send-email-ezequiel.garcia@imgtec.com>
+References: <1432252663-31318-1-git-send-email-ezequiel.garcia@imgtec.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [10.100.200.44]
@@ -31,7 +33,7 @@ Return-Path: <Ezequiel.Garcia@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47537
+X-archive-position: 47538
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,52 +50,111 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This patchset contains a bunch of clock changes for the Pistachio
-clock driver.
+Currently, when the rate is changed, the driver makes sure the
+PLL is enabled before doing so. This is done because the PLL
+cannot be locked while disabled. Once locked, the drivers
+returns the PLL to its previous enable/disable state.
 
-The nine patches in this series are not really related, but I wasn't
-sure it was worth to prepare a separate patchset for each group.
-However, if this makes it harder to review, I can send different groups
-of related patches.
+This is a bit cumbersome, and can be simplified.
 
-Here's a brief summary of the patch groups:
+This commit reworks the .set_rate() functions for the integer
+and fractional PLLs. Upon rate change, the PLL is now locked
+only if it's already enabled.
 
-Patches 1 and 2 clean up the PLL lock handling.
+Also, the driver locks the PLL on .enable(). This makes sure
+the PLL is locked when enabled, and not locked when disabled.
 
-Patch 3 implements PLL rate adjustment, and in particular allows to support
-small (i.e. neighbor-constrained) changes of the fractional PLL rate.
+Signed-off-by: Andrew Bresticker <abrestic@chromium.org>
+Signed-off-by: Ezequiel Garcia <ezequiel.garcia@imgtec.com>
+---
+ drivers/clk/pistachio/clk-pll.c | 28 ++++++++++------------------
+ 1 file changed, 10 insertions(+), 18 deletions(-)
 
-Patch 4 to 7 implements MIPS PLL rate change propagation and introduces
-a table of MIPS PLL rate parameters.
-
-Patch 8 adds some very useful sanity checks on integer and fractions PLL
-set_rate(), to make sure the parameters are modified only when it's legal
-to do so.
-
-Patch 9 fixes the list of critical clocks.
-
-None of these are urgent fixes so this is all v4.2 material.
-
-Damien Horsley (1):
-  clk: pistachio: Correct critical clock list
-
-Ezequiel Garcia (7):
-  clk: pistachio: Add a pll_lock() helper for clarity
-  clk: pistachio: Lock the PLL when enabled upon rate change
-  clk: pistachio: Implement PLL rate adjustment
-  clk: pistachio: Extend DIV_F to pass clk_flags as well
-  clk: pistachio: Add a MUX_F macro to pass clk_flags
-  clk: pistachio: Propagate rate changes in the MIPS PLL clock sub-tree
-  clk: pistachio: Add a rate table for the MIPS PLL
-
-Kevin Cernekee (1):
-  clk: pistachio: Add sanity checks on PLL configuration
-
- drivers/clk/pistachio/clk-pistachio.c |  63 ++++++++-----
- drivers/clk/pistachio/clk-pll.c       | 161 +++++++++++++++++++++++++++-------
- drivers/clk/pistachio/clk.c           |   5 +-
- drivers/clk/pistachio/clk.h           |  33 ++++++-
- 4 files changed, 205 insertions(+), 57 deletions(-)
-
+diff --git a/drivers/clk/pistachio/clk-pll.c b/drivers/clk/pistachio/clk-pll.c
+index 9ce1be7..f12d520 100644
+--- a/drivers/clk/pistachio/clk-pll.c
++++ b/drivers/clk/pistachio/clk-pll.c
+@@ -130,6 +130,8 @@ static int pll_gf40lp_frac_enable(struct clk_hw *hw)
+ 	val &= ~PLL_FRAC_CTRL4_BYPASS;
+ 	pll_writel(pll, val, PLL_CTRL4);
+ 
++	pll_lock(pll);
++
+ 	return 0;
+ }
+ 
+@@ -155,17 +157,13 @@ static int pll_gf40lp_frac_set_rate(struct clk_hw *hw, unsigned long rate,
+ {
+ 	struct pistachio_clk_pll *pll = to_pistachio_pll(hw);
+ 	struct pistachio_pll_rate_table *params;
+-	bool was_enabled;
++	int enabled = pll_gf40lp_frac_is_enabled(hw);
+ 	u32 val;
+ 
+ 	params = pll_get_params(pll, parent_rate, rate);
+ 	if (!params)
+ 		return -EINVAL;
+ 
+-	was_enabled = pll_gf40lp_frac_is_enabled(hw);
+-	if (!was_enabled)
+-		pll_gf40lp_frac_enable(hw);
+-
+ 	val = pll_readl(pll, PLL_CTRL1);
+ 	val &= ~((PLL_CTRL1_REFDIV_MASK << PLL_CTRL1_REFDIV_SHIFT) |
+ 		 (PLL_CTRL1_FBDIV_MASK << PLL_CTRL1_FBDIV_SHIFT));
+@@ -184,10 +182,8 @@ static int pll_gf40lp_frac_set_rate(struct clk_hw *hw, unsigned long rate,
+ 		(params->postdiv2 << PLL_FRAC_CTRL2_POSTDIV2_SHIFT);
+ 	pll_writel(pll, val, PLL_CTRL2);
+ 
+-	pll_lock(pll);
+-
+-	if (!was_enabled)
+-		pll_gf40lp_frac_disable(hw);
++	if (enabled)
++		pll_lock(pll);
+ 
+ 	return 0;
+ }
+@@ -246,6 +242,8 @@ static int pll_gf40lp_laint_enable(struct clk_hw *hw)
+ 	val &= ~PLL_INT_CTRL2_BYPASS;
+ 	pll_writel(pll, val, PLL_CTRL2);
+ 
++	pll_lock(pll);
++
+ 	return 0;
+ }
+ 
+@@ -271,17 +269,13 @@ static int pll_gf40lp_laint_set_rate(struct clk_hw *hw, unsigned long rate,
+ {
+ 	struct pistachio_clk_pll *pll = to_pistachio_pll(hw);
+ 	struct pistachio_pll_rate_table *params;
+-	bool was_enabled;
++	int enabled = pll_gf40lp_laint_is_enabled(hw);
+ 	u32 val;
+ 
+ 	params = pll_get_params(pll, parent_rate, rate);
+ 	if (!params)
+ 		return -EINVAL;
+ 
+-	was_enabled = pll_gf40lp_laint_is_enabled(hw);
+-	if (!was_enabled)
+-		pll_gf40lp_laint_enable(hw);
+-
+ 	val = pll_readl(pll, PLL_CTRL1);
+ 	val &= ~((PLL_CTRL1_REFDIV_MASK << PLL_CTRL1_REFDIV_SHIFT) |
+ 		 (PLL_CTRL1_FBDIV_MASK << PLL_CTRL1_FBDIV_SHIFT) |
+@@ -293,10 +287,8 @@ static int pll_gf40lp_laint_set_rate(struct clk_hw *hw, unsigned long rate,
+ 		(params->postdiv2 << PLL_INT_CTRL1_POSTDIV2_SHIFT);
+ 	pll_writel(pll, val, PLL_CTRL1);
+ 
+-	pll_lock(pll);
+-
+-	if (!was_enabled)
+-		pll_gf40lp_laint_disable(hw);
++	if (enabled)
++		pll_lock(pll);
+ 
+ 	return 0;
+ }
 -- 
 2.3.3

@@ -1,42 +1,73 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 May 2015 00:09:32 +0200 (CEST)
-Received: from www.linutronix.de ([62.245.132.108]:41399 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27012557AbbEUWJa5Nou0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 22 May 2015 00:09:30 +0200
-Received: from localhost ([127.0.0.1])
-        by Galois.linutronix.de with esmtps (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:256)
-        (Exim 4.80)
-        (envelope-from <tglx@linutronix.de>)
-        id 1YvYei-0005nr-Uq; Fri, 22 May 2015 00:09:33 +0200
-Date:   Fri, 22 May 2015 00:09:42 +0200 (CEST)
-From:   Thomas Gleixner <tglx@linutronix.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 May 2015 00:17:18 +0200 (CEST)
+Received: from mail-qk0-f177.google.com ([209.85.220.177]:35891 "EHLO
+        mail-qk0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012557AbbEUWRPu9R5o (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 22 May 2015 00:17:15 +0200
+Received: by qkx62 with SMTP id 62so823292qkx.3
+        for <linux-mips@linux-mips.org>; Thu, 21 May 2015 15:17:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type;
+        bh=S2cNuLt9eM3E265GY9yQYeQ3HLBChsBCShBkgsHgRnI=;
+        b=omvsthX4naNWmbKVz4/AZXRGpIZZKmQmQ6K7Ba4kwqeKLuoPLoPmTPwBLYObQMcuId
+         F8TvDkCpdeXZarQ/2oAbGY5rtfVmdhy1I7YL4mLSe1dCKArv81gTMVPccXytdBoEXAAK
+         ccVnd89yKVc6hMFsEs4wvnDzswCXm7XmhWdD/Ps4ltBLLm2VOJ7u/q+q7IQP0YsgxC9i
+         +JykkyqiQ4FAahRmTuWUSF3V5RcJzIig6XxHdxZyD5alFGpeBtVGQ0848wwvfgzLK0T5
+         ZwnsFHuUbpngJZ/XNF7Q+ksCqDcwkC8Y5jTmYBHXF52nHOUA5b/NJNnNW21TAiVa4PPq
+         wMPA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type;
+        bh=S2cNuLt9eM3E265GY9yQYeQ3HLBChsBCShBkgsHgRnI=;
+        b=b5Wo4Eobd/gSnKvBAN71K/Mha7JfC5gzPQac+L/6b1a5fl9U7xsqj/mGrUX0XC+nzq
+         5R7yCLt98FBlyNiShInHY1LZS5hgf3tf5uKlCM3qDrdKJBfnUH700O8GlTyUd8l5VJBA
+         5ZnPZ1oHJ5+u5mryAHzkBWdwEBKw5m/865VWA=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:sender:in-reply-to:references:date
+         :message-id:subject:from:to:cc:content-type;
+        bh=S2cNuLt9eM3E265GY9yQYeQ3HLBChsBCShBkgsHgRnI=;
+        b=jhAFfQ/A2DDHx4VOfd8kUF1yYbDFpiuGtc7viITJMOMwBSNPTVIhTauCbq0j8zRWHV
+         K7GPmHfaGi9sj3U7o6Riy9vQOdpj6d/63vzSxkk7s7dKkYuR3S3T2q738WCtBv9BrA+B
+         7wJ0SAA4tg49hnLAbfYF8gG8D0HlSdyqlrnClstsgQijLbLZlncwMxWBnUCcqdWbr2Py
+         IgLsFExcHOUGZO4s+Bi5sYYjEqJy0JluCnoVw82Ro4WCfm8IJEcS7reKwK6m5DSjs5Th
+         Y12XCmep2whWwXWhiGOzaZEOhG3Pxp/xbPAnrSdL+rWQgtisfN2/4iIodpQJmNzDyJOd
+         FigQ==
+X-Gm-Message-State: ALoCoQnHCxN3vFsnhQyuYkzBoF8jprblX4+Vw3WVcbdT0sFv/xqz3wg5qCG/b17Hl6hCnXW7ctSK
+MIME-Version: 1.0
+X-Received: by 10.140.100.164 with SMTP id s33mr6940952qge.36.1432246632592;
+ Thu, 21 May 2015 15:17:12 -0700 (PDT)
+Received: by 10.140.23.72 with HTTP; Thu, 21 May 2015 15:17:12 -0700 (PDT)
+In-Reply-To: <1432244260-14908-2-git-send-email-ezequiel.garcia@imgtec.com>
+References: <1432244260-14908-1-git-send-email-ezequiel.garcia@imgtec.com>
+        <1432244260-14908-2-git-send-email-ezequiel.garcia@imgtec.com>
+Date:   Thu, 21 May 2015 15:17:12 -0700
+X-Google-Sender-Auth: gKWccoHwoq3ILABzOQVwNMRoJE4
+Message-ID: <CAL1qeaF-SARu1BzsJLZyhdiLvZn4KMxC9pLmZ7VuT2fTW5Y=AA@mail.gmail.com>
+Subject: Re: [PATCH 1/7] clocksource: mips-gic: Enable the clock before using it
+From:   Andrew Bresticker <abrestic@chromium.org>
 To:     Ezequiel Garcia <ezequiel.garcia@imgtec.com>
-cc:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Linux-MIPS <linux-mips@linux-mips.org>,
         Daniel Lezcano <daniel.lezcano@linaro.org>,
-        devicetree@vger.kernel.org,
-        Andrew Bresticker <abrestic@chromium.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
         James Hartley <james.hartley@imgtec.com>,
         James Hogan <james.hogan@imgtec.com>,
-        Damien.Horsley@imgtec.com, Govindraj.Raja@imgtec.com
-Subject: Re: [PATCH 6/7] clocksource: Add Pistachio clocksource-only driver
-In-Reply-To: <555E55F4.2060500@imgtec.com>
-Message-ID: <alpine.DEB.2.11.1505220009120.5457@nanos>
-References: <1432244260-14908-1-git-send-email-ezequiel.garcia@imgtec.com> <1432244506-15388-1-git-send-email-ezequiel.garcia@imgtec.com> <alpine.DEB.2.11.1505212352330.5457@nanos> <555E55F4.2060500@imgtec.com>
-User-Agent: Alpine 2.11 (DEB 23 2013-08-11)
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
-Return-Path: <tglx@linutronix.de>
+        Thomas Gleixner <tglx@linutronix.de>,
+        Damien Horsley <Damien.Horsley@imgtec.com>,
+        Govindraj Raja <Govindraj.Raja@imgtec.com>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <abrestic@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47529
+X-archive-position: 47530
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tglx@linutronix.de
+X-original-sender: abrestic@chromium.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,27 +80,14 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, 21 May 2015, Ezequiel Garcia wrote:
-> On 05/21/2015 07:00 PM, Thomas Gleixner wrote:
-> > On Thu, 21 May 2015, Ezequiel Garcia wrote:
-> >> +static cycle_t clocksource_read_cycles(struct clocksource *cs)
-> >> +{
-> >> +	u32 counter, overflw;
-> >> +	unsigned long flags;
-> >> +
-> >> +	raw_spin_lock_irqsave(&lock, flags);
-> > 
-> > Hmm. Is that lock really necessary to read that counter? The
-> > clocksource is global. And if its actually used for timekeeping, the
-> > lock can get heavy contended.
-> > 
-> 
-> Yup, it is really (and sadly) necessary. The kernel hangs up completely
-> without it when the counter is accesed by more than one CPU.
-> 
-> Apparently, those two timer registers overflow and counter must be read
-> atomically.
+On Thu, May 21, 2015 at 2:37 PM, Ezequiel Garcia
+<ezequiel.garcia@imgtec.com> wrote:
+> For the clock to be used (e.g. get its rate through clk_get_rate)
+> it should be prepared and enabled first.
+>
+> Also, while the clock is enabled the driver must hold a reference to it,
+> so let's remove the call to clk_put.
+>
+> Signed-off-by: Ezequiel Garcia <ezequiel.garcia@imgtec.com>
 
-Welcome to the wonderful world of useless timer hardware.
-
-	tglx
+Reviewed-by: Andrew Bresticker <abrestic@chromium.org>

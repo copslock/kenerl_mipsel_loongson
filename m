@@ -1,46 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 May 2015 12:30:35 +0200 (CEST)
-Received: from mail-gw2-out.broadcom.com ([216.31.210.63]:1214 "EHLO
-        mail-gw2-out.broadcom.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012377AbbEUKad07o8k (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 21 May 2015 12:30:33 +0200
-X-IronPort-AV: E=Sophos;i="5.13,468,1427785200"; 
-   d="scan'208";a="65438756"
-Received: from irvexchcas08.broadcom.com (HELO IRVEXCHCAS08.corp.ad.broadcom.com) ([10.9.208.57])
-  by mail-gw2-out.broadcom.com with ESMTP; 21 May 2015 03:40:58 -0700
-Received: from IRVEXCHSMTP3.corp.ad.broadcom.com (10.9.207.53) by
- IRVEXCHCAS08.corp.ad.broadcom.com (10.9.208.57) with Microsoft SMTP Server
- (TLS) id 14.3.235.1; Thu, 21 May 2015 03:30:26 -0700
-Received: from mail-sj1-12.sj.broadcom.com (10.10.10.20) by
- IRVEXCHSMTP3.corp.ad.broadcom.com (10.9.207.53) with Microsoft SMTP Server id
- 14.3.235.1; Thu, 21 May 2015 03:30:26 -0700
-Received: from [10.176.128.60] (xl-bun-02.bun.broadcom.com [10.176.128.60])     by
- mail-sj1-12.sj.broadcom.com (Postfix) with ESMTP id 4AEFD27A81;        Thu, 21 May
- 2015 03:30:25 -0700 (PDT)
-Message-ID: <555DB3C0.7010000@broadcom.com>
-Date:   Thu, 21 May 2015 12:30:24 +0200
-From:   Arend van Spriel <arend@broadcom.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686 (x86_64); en-US; rv:1.9.2.24) Gecko/20111103 Lightning/1.0b2 Thunderbird/3.1.16
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 May 2015 15:14:32 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:41853 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S27006621AbbEUNOaKj1yj (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 21 May 2015 15:14:30 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.9/8.14.8) with ESMTP id t4LDEWlO008220;
+        Thu, 21 May 2015 15:14:32 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.9/8.14.9/Submit) id t4LDETEC008219;
+        Thu, 21 May 2015 15:14:29 +0200
+Date:   Thu, 21 May 2015 15:14:29 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Joe Perches <joe@perches.com>
+Cc:     linux-mips <linux-mips@linux-mips.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Gabor Juhos <juhosg@openwrt.org>,
+        Manuel Lauss <manuel.lauss@googlemail.com>,
+        John Crispin <blogic@openwrt.org>
+Subject: Re: [PATCH] mips: irq: Use DECLARE_BITMAP
+Message-ID: <20150521131429.GA8177@linux-mips.org>
+References: <1432125894.2870.284.camel@perches.com>
 MIME-Version: 1.0
-To:     Kalle Valo <kvalo@codeaurora.org>
-CC:     =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Hante Meuleman <meuleman@broadcom.com>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        Hauke Mehrtens <hauke@hauke-m.de>
-Subject: Re: [PATCH 6/6] brcmfmac: Add support for host platform NVRAM loading.
-References: <1432123792-4155-1-git-send-email-arend@broadcom.com>       <1432123792-4155-7-git-send-email-arend@broadcom.com>   <CACna6ryt5uNkBXAk8chFyMEQVJLdHELLdA_V5TrLcaAikrTZeg@mail.gmail.com>    <CACna6ryCgOwkj_nt6Gd1+r826OJu-suPk50YAS1eRVW+kkR7fQ@mail.gmail.com>    <555DA529.6000901@broadcom.com> <87vbfm6xsg.fsf@kamboji.qca.qualcomm.com>
-In-Reply-To: <87vbfm6xsg.fsf@kamboji.qca.qualcomm.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-Return-Path: <arend@broadcom.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1432125894.2870.284.camel@perches.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47512
+X-archive-position: 47513
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arend@broadcom.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,34 +46,26 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 05/21/15 12:16, Kalle Valo wrote:
-> Arend van Spriel<arend@broadcom.com>  writes:
->
->> On 05/21/15 10:28, Rafał Miłecki wrote:
->>> On 20 May 2015 at 16:33, Rafał Miłecki<zajec5@gmail.com>   wrote:
->>>> I think the best way for achieving this is to rework your patch to
->>>> modify include/linux/bcm47xx_nvram.h. You could modify it the same way
->>>> you did in your patch for MIPS tree, except for
->>>> bcm47xx_nvram_get_contents. Don't implement this function for real (in
->>>> .c file), but instead make in dummy inline in a bcm47xx_nvram.h like:
->>>> static inline char *bcm47xx_nvram_get_contents(size_t *val_len)
->>>> {
->>>>           /* TODO: Implement in .c file */
->>>>           return NULL;
->>>> }
->>>
->>> One more note.
->>> This of course will lead to conflict at some point, but I believe
->>> Linus will handle it.
->>
->> I prefer to avoid tricks so I will ask to drop this patch and wait for
->> it to land in the next kernel, ie. 4.2, and resubmit this patch for
->> 4.3. I am not in a hurry.
->
-> Yes, please :) Let's try to avoid conflicts as much as possible.
+On Wed, May 20, 2015 at 05:44:54AM -0700, Joe Perches wrote:
 
-Ok. Let's make it official. Kalle, can you drop patch 6 from the series 
-(if not already done so ;-) ).
+> Use the generic mechanism to declare a bitmap instead of unsigned long.
+> 
+> This could fix an overwrite defect of whatever follows irq_map.
+> 
+> Not all "#define NR_IRQS <value>" are a multiple of BITS_PER_LONG so
+> using DECLARE_BITMAP allocates the proper number of longs required
+> for the possible bits.
+> 
+> For instance:
+> 
+> arch/mips/include/asm/mach-ath79/irq.h:#define NR_IRQS                  51
+> arch/mips/include/asm/mach-db1x00/irq.h:#define NR_IRQS 152
+> arch/mips/include/asm/mach-lantiq/falcon/irq.h:#define NR_IRQS 328
 
-Regards,
-Arend
+This only matters to user of the allocate_irqno() API and there is only
+on such platform, the IP27 which fortunately uses a NR_IRQS value that
+is a multiple of 64, so no impact.
+
+Thanks anyway!
+
+  Ralf

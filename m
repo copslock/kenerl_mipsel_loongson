@@ -1,45 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 May 2015 11:20:25 +0200 (CEST)
-Received: from mail-gw3-out.broadcom.com ([216.31.210.64]:37665 "EHLO
-        mail-gw3-out.broadcom.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27026776AbbEVJUX2Z19i (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 22 May 2015 11:20:23 +0200
-X-IronPort-AV: E=Sophos;i="5.13,474,1427785200"; 
-   d="scan'208";a="65407939"
-Received: from irvexchcas08.broadcom.com (HELO IRVEXCHCAS08.corp.ad.broadcom.com) ([10.9.208.57])
-  by mail-gw3-out.broadcom.com with ESMTP; 22 May 2015 02:30:32 -0700
-Received: from IRVEXCHSMTP2.corp.ad.broadcom.com (10.9.207.52) by
- IRVEXCHCAS08.corp.ad.broadcom.com (10.9.208.57) with Microsoft SMTP Server
- (TLS) id 14.3.235.1; Fri, 22 May 2015 02:20:18 -0700
-Received: from mail-sj1-12.sj.broadcom.com (10.10.10.20) by
- IRVEXCHSMTP2.corp.ad.broadcom.com (10.9.207.52) with Microsoft SMTP Server id
- 14.3.235.1; Fri, 22 May 2015 02:20:18 -0700
-Received: from [10.176.128.60] (xl-bun-02.bun.broadcom.com [10.176.128.60])     by
- mail-sj1-12.sj.broadcom.com (Postfix) with ESMTP id 2726E27A81;        Fri, 22 May
- 2015 02:20:16 -0700 (PDT)
-Message-ID: <555EF4D0.3070302@broadcom.com>
-Date:   Fri, 22 May 2015 11:20:16 +0200
-From:   Arend van Spriel <arend@broadcom.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686 (x86_64); en-US; rv:1.9.2.24) Gecko/20111103 Lightning/1.0b2 Thunderbird/3.1.16
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 May 2015 11:38:21 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:49697 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S27026539AbbEVJiTDbys0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 22 May 2015 11:38:19 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.9/8.14.8) with ESMTP id t4M9cFfD031861;
+        Fri, 22 May 2015 11:38:15 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.9/8.14.9/Submit) id t4M9cDhO031860;
+        Fri, 22 May 2015 11:38:13 +0200
+Date:   Fri, 22 May 2015 11:38:13 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+Cc:     linux-mips@linux-mips.org, rusty@rustcorp.com.au,
+        alexinbeijing@gmail.com, paul.burton@imgtec.com,
+        david.daney@cavium.com, alex@alex-smith.me.uk,
+        linux-kernel@vger.kernel.org, james.hogan@imgtec.com,
+        markos.chandras@imgtec.com, macro@linux-mips.org,
+        eunb.song@samsung.com, manuel.lauss@gmail.com,
+        andreas.herrmann@caviumnetworks.com
+Subject: Re: [PATCH 1/2] MIPS: MSA: bugfix - disable MSA during thread switch
+ correctly
+Message-ID: <20150522093812.GH6941@linux-mips.org>
+References: <20150519211222.35859.52798.stgit@ubuntu-yegoshin>
+ <20150519211351.35859.80332.stgit@ubuntu-yegoshin>
 MIME-Version: 1.0
-To:     =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
-CC:     Kalle Valo <kvalo@codeaurora.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Hante Meuleman <meuleman@broadcom.com>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-Subject: Re: [PATCH 6/6] brcmfmac: Add support for host platform NVRAM loading.
-References: <1432123792-4155-1-git-send-email-arend@broadcom.com>       <1432123792-4155-7-git-send-email-arend@broadcom.com>   <CACna6rx_bBogPXZoa24JTqLED4GsGhezjVLZL_De=2uTqevsPA@mail.gmail.com>    <555EE972.7040801@broadcom.com> <CACna6rx3PK9SH44BUDqKTWcWkvpVeGSfbL5Jm31Zj26O=8KK-Q@mail.gmail.com>
-In-Reply-To: <CACna6rx3PK9SH44BUDqKTWcWkvpVeGSfbL5Jm31Zj26O=8KK-Q@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-Return-Path: <arend@broadcom.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20150519211351.35859.80332.stgit@ubuntu-yegoshin>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47549
+X-archive-position: 47550
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arend@broadcom.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,65 +50,64 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 05/22/15 11:05, Rafał Miłecki wrote:
-> On 22 May 2015 at 10:31, Arend van Spriel<arend@broadcom.com>  wrote:
->> On 05/20/15 17:02, Rafał Miłecki wrote:
->>>
->>> On 20 May 2015 at 14:09, Arend van Spriel<arend@broadcom.com>   wrote:
->>>>
->>>> @@ -139,11 +165,11 @@ brcmf_nvram_handle_value(struct nvram_parser *nvp)
->>>>           char *ekv;
->>>>           u32 cplen;
->>>>
->>>> -       c = nvp->fwnv->data[nvp->pos];
->>>> -       if (!is_nvram_char(c)) {
->>>> +       c = nvp->data[nvp->pos];
->>>> +       if (!is_nvram_char(c)&&   (c != ' ')) {
->>>
->>>
->>> Don't smuggle behavior changes in patches doing something else!
->>
->>
->> The subject is "Add support for host platform NVRAM loading" and guess what.
->> That type of NVRAM turned out to have spaces in the entries so in my opinion
->> it is related to this patch. I can split it up if you feel strongly about
->> this.
->
-> I'd expect such patch to just implement *loading* from different
-> source and nothing else. If there are additional changes needed, I
-> think they should go in separated patch if possible.
->
-> I noticed the same problem with parsing NVRAM values and sent
-> [PATCH] brcmfmac: allow NVRAM values to contain space and '#' chars
-> , so you should be able to drop this patch of your patch anyway.
-> You may give me an Ack if you have a moment :)
+On Tue, May 19, 2015 at 02:13:51PM -0700, Leonid Yegoshin wrote:
 
-Whoops. I did not :-p I don't want to deal with '#' in value field as it 
-is either invalid or irrelevant to firmware on the device.
+> During thread cloning the new (child) thread should have MSA disabled even
+> at first thread entry. So, the code to disable MSA is moved from macro
+> 'switch_to' to assembler function 'resume' before it switches kernel stack
+> to 'next' (new) thread. Call of 'disable_msa' after 'resume' in 'switch_to'
+> macro never called a first time entry into thread.
+> 
+> Signed-off-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+> ---
+>  arch/mips/include/asm/switch_to.h |    1 -
+>  arch/mips/kernel/r4k_switch.S     |    6 ++++++
+>  2 files changed, 6 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/mips/include/asm/switch_to.h b/arch/mips/include/asm/switch_to.h
+> index e92d6c4b5ed1..0d0f7f8f8b3a 100644
+> --- a/arch/mips/include/asm/switch_to.h
+> +++ b/arch/mips/include/asm/switch_to.h
+> @@ -104,7 +104,6 @@ do {									\
+>  	if (test_and_clear_tsk_thread_flag(prev, TIF_USEDMSA))		\
+>  		__fpsave = FP_SAVE_VECTOR;				\
+>  	(last) = resume(prev, next, task_thread_info(next), __fpsave);	\
+> -	disable_msa();							\
+>  } while (0)
+>  
+>  #define finish_arch_switch(prev)					\
+> diff --git a/arch/mips/kernel/r4k_switch.S b/arch/mips/kernel/r4k_switch.S
+> index 04cbbde3521b..7dbb64656bfe 100644
+> --- a/arch/mips/kernel/r4k_switch.S
+> +++ b/arch/mips/kernel/r4k_switch.S
+> @@ -25,6 +25,7 @@
+>  /* preprocessor replaces the fp in ".set fp=64" with $30 otherwise */
+>  #undef fp
+>  
+> +#define t4  $12
 
-Regards,
-Arend
+You're kidding, right?
 
->>>> @@ -406,19 +434,34 @@ static void brcmf_fw_request_nvram_done(const
->>>> struct firmware *fw, void *ctx)
->>>>           struct brcmf_fw *fwctx = ctx;
->>>>           u32 nvram_length = 0;
->>>>           void *nvram = NULL;
->>>> +       u8 *data = NULL;
->>>> +       size_t data_len;
->>>> +       bool raw_nvram;
->>>>
->>>>           brcmf_dbg(TRACE, "enter: dev=%s\n", dev_name(fwctx->dev));
->>>> -       if (!fw&&   !(fwctx->flags&   BRCMF_FW_REQ_NV_OPTIONAL))
->>>> -               goto fail;
->>>> +       if ((fw)&&   (fw->data)) {
->>>
->>>
->>> if (fw&&   fw->data)
->>> will work just fine, I'm surprised checkpatch doesn't complain.
->>
->> I ran checkpatch.pl --strict and did not get complaint about this change.
->
-> I know, it's weird. Maybe I'll report this an improvement idea to
-> checkpatch maintainer.
->
+>  /*
+>   * Offset to the current process status flags, the first 32 bytes of the
+>   * stack are not used.
+> @@ -73,6 +74,11 @@
+>  	cfc1	t1, fcr31
+>  	msa_save_all	a0
+>  	.set pop	/* SET_HARDFLOAT */
+> +	li      t4, MIPS_CONF5_MSAEN
+> +	mfc0    t3, CP0_CONFIG, 5
+> +	or      t3, t3, t4
+> +	xor     t3, t3, t4
+> +	mtc0    t3, CP0_CONFIG, 5
+>  
+>  	sw	t1, THREAD_FCR31(a0)
+>  	b	2f
+
+Just move the call to finish_arch_switch().
+
+Your rewrite also dropped the if (cpu_has_msa) condition from disable_msa()
+probably causing havoc on lots of CPUs which will likely not decode the
+set bits of the MFC0/MTC0 instructions thus end up accessing Config0.
+
+  Ralf

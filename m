@@ -1,53 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 May 2015 18:50:21 +0200 (CEST)
-Received: from mail-qk0-f174.google.com ([209.85.220.174]:33233 "EHLO
-        mail-qk0-f174.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27006627AbbEVQuTvTN5s (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 22 May 2015 18:50:19 +0200
-Received: by qkgv12 with SMTP id v12so16080533qkg.0
-        for <linux-mips@linux-mips.org>; Fri, 22 May 2015 09:50:16 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 May 2015 18:53:54 +0200 (CEST)
+Received: from mail-qk0-f182.google.com ([209.85.220.182]:33709 "EHLO
+        mail-qk0-f182.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006627AbbEVQxwimGew (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 22 May 2015 18:53:52 +0200
+Received: by qkgv12 with SMTP id v12so16168522qkg.0
+        for <linux-mips@linux-mips.org>; Fri, 22 May 2015 09:53:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20120113;
         h=mime-version:sender:in-reply-to:references:date:message-id:subject
          :from:to:cc:content-type;
-        bh=FY6270XEkFLFKdTZcboIqRL6dqKsNtBCB6FnyYHRk/k=;
-        b=NbbNwnw2jnhhWCIumH8RmLUbfv+vvb85X94BYDosSkoRnZwR3rqHirnoNd5iPMhj8k
-         ltKDAEjwlSuADtCOvBv9935Z5AC+Ib0Km28L/FuOpWunuW3sYccKmNeWMk3O0qjSkpmW
-         +/rc1x14S9N1+e4yUIDMjBrh22I+jeQzglT5TbsIdMCrXe8/9WmTCfmLNHNGifPNZ48S
-         EuOZkPEv/6gOKyBu2XJswVV1w8b8HXajCe4vhuhxH995vRX2sZzlyPGxPOhg3+fpIwue
-         FrptLJjI27TotbVzFZqf3Snm2Hg3y5vsQGg2n8MACQOdcZWyuzHR7XoBUbfzAtubAZtM
-         xctw==
+        bh=xsV151YrB1BYLauOyRbuO2v0PSDbsoWH3csV3G9s2XM=;
+        b=bGpDkHwj1/Wzbio1bHIDGQEgfkAsZ/NeC7rQCNxRp7T3bazDis/IU3xJoNDinfTBru
+         Ily5fD7XFkKWQpG72bwNeYYetBzC2eu2ONWuwZ6TWZZbaJimTwYDxxF7M8E4aDd2wKpj
+         6JKhzhk29jy/t8Qnz/SBP8RDiVJ3Jj6oN0epSgO2Us06y1Nqds4qRc2M8Fm6FFOe7YYz
+         z6o/PJgVEmNqT/IsAsSFYqglkY+A/iNKXYYhGNitH/iIzeOGjAnPq6n0HOszqkaPzsnm
+         9LZnbC0VR/Fim6GUOQ3sjQ9M9j+kj6Ln+67EeqTYz0DBdYhFdPPscjN7v7DOHL8OO5oL
+         oUGA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=mime-version:sender:in-reply-to:references:date:message-id:subject
          :from:to:cc:content-type;
-        bh=FY6270XEkFLFKdTZcboIqRL6dqKsNtBCB6FnyYHRk/k=;
-        b=nz6lFzqCryJ60bwKP5g/PG17WK5c9PpxkWAvFXRihzIfQJ/x3msNlXNE+KKwp1Ub4C
-         W9LpTUu25/z4LMraBm6ZLcahkR87+tfs+Sga28f0n617PkxtPIjlKdJKvnWRDKnkWhZi
-         mB8fgUWnEoMGngDd7XZmu0jnXhbXnTAdcSgWQ=
+        bh=xsV151YrB1BYLauOyRbuO2v0PSDbsoWH3csV3G9s2XM=;
+        b=cAzKXNio5Jp/c9sUUhzWHWdgZNq/jvFp4oAhbwMz8kZxZD6CulblrBR2xUiLbIs6rP
+         Hoyp7SB8fVhO3zJEvu5DPl8O0KrQSMBleulNMD632jHee17cHxPjkKY6p9g+2PsRo+sd
+         sMEUiUZuKlC3fTlkhmOCzlWgrZeAPKCzlpKQQ=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:mime-version:sender:in-reply-to:references:date
          :message-id:subject:from:to:cc:content-type;
-        bh=FY6270XEkFLFKdTZcboIqRL6dqKsNtBCB6FnyYHRk/k=;
-        b=Bs6I2a/VrGmvI8UQ4xX2/219bBmeUOxRo5NYd7nlhgCMB1nbOyNAc0V5uW7Bk48eMJ
-         QJDOroQCvE/4S9+cw2VE6pkisPd4AYLHTXGslKicu+VXBhgUGGn++0u+DFBB3RkIs6FI
-         eHVrcTfqC+xCrqIThI8iaurd24XiGiw1F+J9HBN3VGYLipsUXXL2uRLintikBZJG97cP
-         8/db6eSEgZmroRo7L1ii6qSAJP99XPaBLOxdpOEOArkynSsDPIrT2926m0qHUq+Xjh4R
-         ikdnTXHMu2y+TioSAcADTH0u+2Y56btapWCUdpPKCDtsKH/BPbc3XoixKZa3OK54Ks7A
-         50zw==
-X-Gm-Message-State: ALoCoQlK7Bnlq9NHfHceJEsefvA348FcrWfXjSJwv35hzZ4ope7HdsMnGAqhmqGCKVDmEcXmlOD+
+        bh=xsV151YrB1BYLauOyRbuO2v0PSDbsoWH3csV3G9s2XM=;
+        b=M0r5B/M2TXUMfRs0w/gB7QE2lM0lOpUeoDYh2aDO2i5NqTZLks9XKXTxP42AcoWWG7
+         qg1j9ehWzJcqqTDtfuErtNQWtA6i8bIrqOt4Ip8Cvfk4MZqKa70lYgBBIgT9NsLg9LjS
+         uusfc1q4tvv5qANlfeWtEMS5AG++ON8ZQucLgfZZiVGtmNLMRi/ozzcOF9iBXqn4/jWb
+         Ed8NGtBtaZZ8qTqo8+1xqN4qLcjsmzRqXixuC8eDvKILCKSk6w4C5u8tpDeCjK1zMGbE
+         3DxvzJHr1VUWKRUu/yxjzcYBUtnEdwrodsay1VUJHcCoRFL24J4D795IrAjOK8PmtCZM
+         MVpw==
+X-Gm-Message-State: ALoCoQm4wi8v8d74we288x646uELc6TPXFYDRCS77tlA8ajgZelcwKEkSUWNCxFKR2RS45e1/vF5
 MIME-Version: 1.0
-X-Received: by 10.55.41.17 with SMTP id p17mr19825489qkh.86.1432313416484;
- Fri, 22 May 2015 09:50:16 -0700 (PDT)
-Received: by 10.140.23.72 with HTTP; Fri, 22 May 2015 09:50:16 -0700 (PDT)
-In-Reply-To: <1432244618-15548-1-git-send-email-ezequiel.garcia@imgtec.com>
+X-Received: by 10.55.41.17 with SMTP id p17mr19856251qkh.86.1432313629688;
+ Fri, 22 May 2015 09:53:49 -0700 (PDT)
+Received: by 10.140.23.72 with HTTP; Fri, 22 May 2015 09:53:49 -0700 (PDT)
+In-Reply-To: <555E5B5C.9050807@imgtec.com>
 References: <1432244260-14908-1-git-send-email-ezequiel.garcia@imgtec.com>
-        <1432244618-15548-1-git-send-email-ezequiel.garcia@imgtec.com>
-Date:   Fri, 22 May 2015 09:50:16 -0700
-X-Google-Sender-Auth: _LfDCZENfbqQiNG-ZcdzjolHRdU
-Message-ID: <CAL1qeaG=LeQtSS_0w_=hXMNfG2dqTomL5hgifFXV-x1Jy9P1rw@mail.gmail.com>
-Subject: Re: [PATCH 7/7] mips: pistachio: Allow to enable the external timer
- based clocksource
+        <1432244260-14908-4-git-send-email-ezequiel.garcia@imgtec.com>
+        <CAL1qeaFkzpH+nGqRPOuY-L62jP8NgZWP0WxKTYKXZDpe1sSojg@mail.gmail.com>
+        <555E5B5C.9050807@imgtec.com>
+Date:   Fri, 22 May 2015 09:53:49 -0700
+X-Google-Sender-Auth: UHaB_RFTv0uFpSZdfYSM8yZvLgA
+Message-ID: <CAL1qeaG4mh1_gnJA8RqF5xKuco=RUsXfLBcKC2g4OxiXfqUgKA@mail.gmail.com>
+Subject: Re: [PATCH 3/7] clocksource: mips-gic: Split clocksource and
+ clockevent initialization
 From:   Andrew Bresticker <abrestic@chromium.org>
 To:     Ezequiel Garcia <ezequiel.garcia@imgtec.com>
 Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
@@ -64,7 +66,7 @@ Return-Path: <abrestic@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47572
+X-archive-position: 47573
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -81,42 +83,50 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, May 21, 2015 at 2:43 PM, Ezequiel Garcia
+On Thu, May 21, 2015 at 3:25 PM, Ezequiel Garcia
 <ezequiel.garcia@imgtec.com> wrote:
-> This commit introduces a new config, so the user can choose to enable
-> the General Purpose Timer based clocksource. This option is required
-> to have CPUFreq support.
 >
-> Signed-off-by: Ezequiel Garcia <ezequiel.garcia@imgtec.com>
-> ---
->  arch/mips/Kconfig           |  1 +
->  arch/mips/pistachio/Kconfig | 13 +++++++++++++
->  2 files changed, 14 insertions(+)
->  create mode 100644 arch/mips/pistachio/Kconfig
 >
-> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-> index f501665..91f6ca0 100644
-> --- a/arch/mips/Kconfig
-> +++ b/arch/mips/Kconfig
-> @@ -934,6 +934,7 @@ source "arch/mips/jazz/Kconfig"
->  source "arch/mips/jz4740/Kconfig"
->  source "arch/mips/lantiq/Kconfig"
->  source "arch/mips/lasat/Kconfig"
-> +source "arch/mips/pistachio/Kconfig"
->  source "arch/mips/pmcs-msp71xx/Kconfig"
->  source "arch/mips/ralink/Kconfig"
->  source "arch/mips/sgi-ip27/Kconfig"
-> diff --git a/arch/mips/pistachio/Kconfig b/arch/mips/pistachio/Kconfig
-> new file mode 100644
-> index 0000000..97731ea
-> --- /dev/null
-> +++ b/arch/mips/pistachio/Kconfig
-> @@ -0,0 +1,13 @@
-> +config PISTACHIO_GPTIMER_CLKSRC
-> +       bool "Enable General Purpose Timer based clocksource"
-> +       depends on MACH_PISTACHIO
-> +       select CLKSRC_PISTACHIO
-> +       select MIPS_EXTERNAL_TIMER
+> On 05/21/2015 07:24 PM, Andrew Bresticker wrote:
+>> On Thu, May 21, 2015 at 2:37 PM, Ezequiel Garcia
+>> <ezequiel.garcia@imgtec.com> wrote:
+>>> This is preparation work for the introduction of clockevent frequency
+>>> update with a clock notifier. This is only possible when the device
+>>> is passed a clk struct, so let's split the legacy and devicetree
+>>> initialization.
+>>>
+>>> Signed-off-by: Ezequiel Garcia <ezequiel.garcia@imgtec.com>
+>>> ---
+>>>  drivers/clocksource/mips-gic-timer.c | 13 ++++++++-----
+>>>  1 file changed, 8 insertions(+), 5 deletions(-)
+>>>
+>>> diff --git a/drivers/clocksource/mips-gic-timer.c b/drivers/clocksource/mips-gic-timer.c
+>>> index c4352f0..22a4daf 100644
+>>> --- a/drivers/clocksource/mips-gic-timer.c
+>>> +++ b/drivers/clocksource/mips-gic-timer.c
+>>> @@ -142,11 +142,6 @@ static void __init __gic_clocksource_init(void)
+>>>         ret = clocksource_register_hz(&gic_clocksource, gic_frequency);
+>>>         if (ret < 0)
+>>>                 pr_warn("GIC: Unable to register clocksource\n");
+>>> -
+>>> -       gic_clockevent_init();
+>>> -
+>>> -       /* And finally start the counter */
+>>> -       gic_start_count();
+>>>  }
+>>
+>> Instead of duplicating this bit in both the OF and non-OF paths, maybe
+>> it would be better to do the notifier registration in
+>> gic_clockevent_init(), either by passing around the struct clk or
+>> making it a global?
+>>
+>
+> Yeah, I had something like that first, but somehow it looked ugly to have:
+>
+>   gic_clockevent_init(IS_ERR(clk) ? NULL : clk);
+>
+> Don't have a strong opinion though.
 
-Why not just select these in the MACH_PISTACHIO Kconfig entry?  Is
-there any harm in always having the Pistachio GPT enabled?
+Ah that is a bit ugly.  I'm fine either way though, so:
+
+Reviewed-by: Andrew Bresticker <abrestic@chromium.org>

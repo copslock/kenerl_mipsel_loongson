@@ -1,55 +1,24 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 May 2015 19:48:52 +0200 (CEST)
-Received: from mail-qg0-f41.google.com ([209.85.192.41]:34863 "EHLO
-        mail-qg0-f41.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27006684AbbEVRsuf3geJ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 22 May 2015 19:48:50 +0200
-Received: by qgew3 with SMTP id w3so12708098qge.2
-        for <linux-mips@linux-mips.org>; Fri, 22 May 2015 10:48:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc:content-type;
-        bh=m8p48cVarmWI/j6lMi8JHuRsO3u+tia4ek5B3NkIq+A=;
-        b=D7x0yaSioSNhsd4JwW9Hry+Sak7xfB9/Q4OlKlfvdLc97Phu+1iDG9GPCeCp8NHTes
-         r5YMBHTitd/sfhi22v+pcYlXmzcrTDsyZJf8Aqm9tTv1BIaqr4Cwm1zz2e6LZnZAPIsZ
-         vm/Gtio+/laEyY3m0K6eMREAvRdjEdoKyYEYuYtmKFZCdKi1ZdIL45nMBCM5jpFewZB4
-         DBCTyw7YJy2ZdaJZsJsLLkdFD2uFg1fUrYezyIA43xCw+8NxJta3X37p+ZWA/gShJVfC
-         8zncsgCc++7JQqvA3zwqpr0Vc994ptl3OxFIre6+odJHpnFHnXLP4100R4HS6aj5g5li
-         O+eQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc:content-type;
-        bh=m8p48cVarmWI/j6lMi8JHuRsO3u+tia4ek5B3NkIq+A=;
-        b=hB38Lo0nTvFGsMTjmu2IZA0ff3zEwKAk76pTsUMwhpi5XwHS9oV4lM8CG6urtetOXb
-         sqAhqZpx9uuYEQ8y1CJUghQ4zrgp47+YXT1z/i5Xmf5PP3NAbOgmD4aEHul0C0YIusDt
-         nKHjL9mjUor4slg/0msEZmCvwd4cXCoSey+Lw=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:sender:in-reply-to:references:date
-         :message-id:subject:from:to:cc:content-type;
-        bh=m8p48cVarmWI/j6lMi8JHuRsO3u+tia4ek5B3NkIq+A=;
-        b=QNMfoFUJs0UNGNI966wQhuGYWsRz64tr0A3ZiGHPwzfGz1pSGi+VsjHfM9Ct0hGfKZ
-         GSCsqWqtoEbIybTqH2smXnUVNd69kKmBtQnkv4F2Wm+h9Fwp3KDQbbzjPnuXFO4LWKP9
-         U8WEO7osoOK9pUMave4B/s8fHZ4cnTXiVGWtprRpLoGZHFBg/ih7s0pede5j2Ee1+y1i
-         G/aGblEY4VfB8/LZvUon4sXQPaIIbCA3lnkWnJvpNQLp1GvnG0Qb4xv+PaprfP4u/H2p
-         W6nu7Gu15hqfO5chdTdVq7+Ek2Zo4/eK0VqoacILyUa9+J5ACaU4vshoApS/Ddcx72ki
-         y84A==
-X-Gm-Message-State: ALoCoQnS9pTTk1W6oREPPRE3FEWre6FeTrGAOIxuecX3RxETl7wS1eZ+vAoaFGSXX5iEuPZf3C96
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 May 2015 19:56:03 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:37670 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27006684AbbEVR4BAKH2A (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 22 May 2015 19:56:01 +0200
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 6B4DCE0AAFE2B;
+        Fri, 22 May 2015 18:55:53 +0100 (IST)
+Received: from hhmail02.hh.imgtec.org (10.100.10.20) by KLMAIL01.kl.imgtec.org
+ (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Fri, 22 May
+ 2015 18:55:56 +0100
+Received: from [10.100.200.196] (10.100.200.196) by hhmail02.hh.imgtec.org
+ (10.100.10.20) with Microsoft SMTP Server (TLS) id 14.3.224.2; Fri, 22 May
+ 2015 18:55:55 +0100
+Message-ID: <555F6CE8.1070303@imgtec.com>
+Date:   Fri, 22 May 2015 14:52:40 -0300
+From:   Ezequiel Garcia <ezequiel.garcia@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.5.0
 MIME-Version: 1.0
-X-Received: by 10.140.108.195 with SMTP id j61mr12468315qgf.83.1432316927516;
- Fri, 22 May 2015 10:48:47 -0700 (PDT)
-Received: by 10.140.23.72 with HTTP; Fri, 22 May 2015 10:48:47 -0700 (PDT)
-In-Reply-To: <1432252663-31318-9-git-send-email-ezequiel.garcia@imgtec.com>
-References: <1432252663-31318-1-git-send-email-ezequiel.garcia@imgtec.com>
-        <1432252663-31318-9-git-send-email-ezequiel.garcia@imgtec.com>
-Date:   Fri, 22 May 2015 10:48:47 -0700
-X-Google-Sender-Auth: rQ_Hf8YYNK-8tP07B38BV57AIDk
-Message-ID: <CAL1qeaE=JeErsEn8peh2Ys1pJWgDWRFV3d2_KFGF2VoiJjnxVg@mail.gmail.com>
-Subject: Re: [PATCH 8/9] clk: pistachio: Add sanity checks on PLL configuration
-From:   Andrew Bresticker <abrestic@chromium.org>
-To:     Ezequiel Garcia <ezequiel.garcia@imgtec.com>
-Cc:     Linux-MIPS <linux-mips@linux-mips.org>,
+To:     Andrew Bresticker <abrestic@chromium.org>
+CC:     Linux-MIPS <linux-mips@linux-mips.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         Mike Turquette <mturquette@linaro.org>,
         Stephen Boyd <sboyd@codeaurora.org>,
@@ -58,16 +27,22 @@ Cc:     Linux-MIPS <linux-mips@linux-mips.org>,
         Damien Horsley <Damien.Horsley@imgtec.com>,
         Kevin Cernekee <cernekee@chromium.org>,
         James Hogan <james.hogan@imgtec.com>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <abrestic@google.com>
+Subject: Re: [PATCH 6/9] clk: pistachio: Propagate rate changes in the MIPS
+ PLL clock sub-tree
+References: <1432252663-31318-1-git-send-email-ezequiel.garcia@imgtec.com>      <1432252663-31318-7-git-send-email-ezequiel.garcia@imgtec.com> <CAL1qeaEKeNXWWgcu=sX_Ly=6mSsNm4i6OuN0561=_z55MaE6DA@mail.gmail.com>
+In-Reply-To: <CAL1qeaEKeNXWWgcu=sX_Ly=6mSsNm4i6OuN0561=_z55MaE6DA@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.100.200.196]
+Return-Path: <Ezequiel.Garcia@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47583
+X-archive-position: 47584
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: abrestic@chromium.org
+X-original-sender: ezequiel.garcia@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -80,18 +55,32 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, May 21, 2015 at 4:57 PM, Ezequiel Garcia
-<ezequiel.garcia@imgtec.com> wrote:
-> From: Kevin Cernekee <cernekee@chromium.org>
->
-> When setting the PLL rates, check that:
->
->  - VCO is within range
->  - PFD is within range
->  - PLL is disabled when postdiv is changed
->  - postdiv2 <= postdiv1
->
-> Signed-off-by: Kevin Cernekee <cernekee@chromium.org>
-> Signed-off-by: Ezequiel Garcia <ezequiel.garcia@imgtec.com>
 
-Reviewed-by: Andrew Bresticker <abrestic@chromium.org>
+
+On 05/22/2015 02:42 PM, Andrew Bresticker wrote:
+> On Thu, May 21, 2015 at 4:57 PM, Ezequiel Garcia
+> <ezequiel.garcia@imgtec.com> wrote:
+>> This commit passes CLK_SET_RATE_PARENT to the "mips_div",
+>> "mips_internal_div", and "mips_pll_mux" clocks. This flag is needed for the
+>> "mips" clock to propagate rate changes up to the "mips_pll" root clock.
+>>
+>> Signed-off-by: Govindraj Raja <Govindraj.Raja@imgtec.com>
+>> Signed-off-by: Ezequiel Garcia <ezequiel.garcia@imgtec.com>
+> 
+> IIRC the clk core will prefer changing a downstream divider over
+> propagating the rate change up another level.  So, for example, if
+> MIPS_PLL is initially 400Mhz and we request a MIPS rate of 200Mhz,
+> we'll change the first intermediate divider to /2 rather than
+> propagate the rate change up to MIPS_PLL.  Wouldn't it be more
+> power-efficient to set the MIPS_PLL directly to the requested rate
+> rather than using external dividers to divide it down?
+> 
+
+Indeed.
+
+Do you think we still want to be able to change the MIPS clk rate and
+propagate the change up to the PLL? Otherwise, I'll drop this patch and
+I'll drop the DIV_F and MUX_F macro patches.
+
+-- 
+Ezequiel

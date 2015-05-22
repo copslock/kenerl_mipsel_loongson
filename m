@@ -1,24 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 May 2015 19:48:35 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:30271 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27006699AbbEVRseKFp05 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 22 May 2015 19:48:34 +0200
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 1AB2E2923E710;
-        Fri, 22 May 2015 18:48:26 +0100 (IST)
-Received: from hhmail02.hh.imgtec.org (10.100.10.20) by KLMAIL01.kl.imgtec.org
- (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Fri, 22 May
- 2015 18:48:29 +0100
-Received: from [10.100.200.196] (10.100.200.196) by hhmail02.hh.imgtec.org
- (10.100.10.20) with Microsoft SMTP Server (TLS) id 14.3.224.2; Fri, 22 May
- 2015 18:48:28 +0100
-Message-ID: <555F6B29.8030208@imgtec.com>
-Date:   Fri, 22 May 2015 14:45:13 -0300
-From:   Ezequiel Garcia <ezequiel.garcia@imgtec.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.5.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 May 2015 19:48:52 +0200 (CEST)
+Received: from mail-qg0-f41.google.com ([209.85.192.41]:34863 "EHLO
+        mail-qg0-f41.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006684AbbEVRsuf3geJ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 22 May 2015 19:48:50 +0200
+Received: by qgew3 with SMTP id w3so12708098qge.2
+        for <linux-mips@linux-mips.org>; Fri, 22 May 2015 10:48:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type;
+        bh=m8p48cVarmWI/j6lMi8JHuRsO3u+tia4ek5B3NkIq+A=;
+        b=D7x0yaSioSNhsd4JwW9Hry+Sak7xfB9/Q4OlKlfvdLc97Phu+1iDG9GPCeCp8NHTes
+         r5YMBHTitd/sfhi22v+pcYlXmzcrTDsyZJf8Aqm9tTv1BIaqr4Cwm1zz2e6LZnZAPIsZ
+         vm/Gtio+/laEyY3m0K6eMREAvRdjEdoKyYEYuYtmKFZCdKi1ZdIL45nMBCM5jpFewZB4
+         DBCTyw7YJy2ZdaJZsJsLLkdFD2uFg1fUrYezyIA43xCw+8NxJta3X37p+ZWA/gShJVfC
+         8zncsgCc++7JQqvA3zwqpr0Vc994ptl3OxFIre6+odJHpnFHnXLP4100R4HS6aj5g5li
+         O+eQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type;
+        bh=m8p48cVarmWI/j6lMi8JHuRsO3u+tia4ek5B3NkIq+A=;
+        b=hB38Lo0nTvFGsMTjmu2IZA0ff3zEwKAk76pTsUMwhpi5XwHS9oV4lM8CG6urtetOXb
+         sqAhqZpx9uuYEQ8y1CJUghQ4zrgp47+YXT1z/i5Xmf5PP3NAbOgmD4aEHul0C0YIusDt
+         nKHjL9mjUor4slg/0msEZmCvwd4cXCoSey+Lw=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:sender:in-reply-to:references:date
+         :message-id:subject:from:to:cc:content-type;
+        bh=m8p48cVarmWI/j6lMi8JHuRsO3u+tia4ek5B3NkIq+A=;
+        b=QNMfoFUJs0UNGNI966wQhuGYWsRz64tr0A3ZiGHPwzfGz1pSGi+VsjHfM9Ct0hGfKZ
+         GSCsqWqtoEbIybTqH2smXnUVNd69kKmBtQnkv4F2Wm+h9Fwp3KDQbbzjPnuXFO4LWKP9
+         U8WEO7osoOK9pUMave4B/s8fHZ4cnTXiVGWtprRpLoGZHFBg/ih7s0pede5j2Ee1+y1i
+         G/aGblEY4VfB8/LZvUon4sXQPaIIbCA3lnkWnJvpNQLp1GvnG0Qb4xv+PaprfP4u/H2p
+         W6nu7Gu15hqfO5chdTdVq7+Ek2Zo4/eK0VqoacILyUa9+J5ACaU4vshoApS/Ddcx72ki
+         y84A==
+X-Gm-Message-State: ALoCoQnS9pTTk1W6oREPPRE3FEWre6FeTrGAOIxuecX3RxETl7wS1eZ+vAoaFGSXX5iEuPZf3C96
 MIME-Version: 1.0
-To:     Andrew Bresticker <abrestic@chromium.org>
-CC:     Linux-MIPS <linux-mips@linux-mips.org>,
+X-Received: by 10.140.108.195 with SMTP id j61mr12468315qgf.83.1432316927516;
+ Fri, 22 May 2015 10:48:47 -0700 (PDT)
+Received: by 10.140.23.72 with HTTP; Fri, 22 May 2015 10:48:47 -0700 (PDT)
+In-Reply-To: <1432252663-31318-9-git-send-email-ezequiel.garcia@imgtec.com>
+References: <1432252663-31318-1-git-send-email-ezequiel.garcia@imgtec.com>
+        <1432252663-31318-9-git-send-email-ezequiel.garcia@imgtec.com>
+Date:   Fri, 22 May 2015 10:48:47 -0700
+X-Google-Sender-Auth: rQ_Hf8YYNK-8tP07B38BV57AIDk
+Message-ID: <CAL1qeaE=JeErsEn8peh2Ys1pJWgDWRFV3d2_KFGF2VoiJjnxVg@mail.gmail.com>
+Subject: Re: [PATCH 8/9] clk: pistachio: Add sanity checks on PLL configuration
+From:   Andrew Bresticker <abrestic@chromium.org>
+To:     Ezequiel Garcia <ezequiel.garcia@imgtec.com>
+Cc:     Linux-MIPS <linux-mips@linux-mips.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         Mike Turquette <mturquette@linaro.org>,
         Stephen Boyd <sboyd@codeaurora.org>,
@@ -27,21 +58,16 @@ CC:     Linux-MIPS <linux-mips@linux-mips.org>,
         Damien Horsley <Damien.Horsley@imgtec.com>,
         Kevin Cernekee <cernekee@chromium.org>,
         James Hogan <james.hogan@imgtec.com>
-Subject: Re: [PATCH 7/9] clk: pistachio: Add a rate table for the MIPS PLL
-References: <1432252663-31318-1-git-send-email-ezequiel.garcia@imgtec.com>      <1432252663-31318-8-git-send-email-ezequiel.garcia@imgtec.com> <CAL1qeaHQjtVBNN8OB3TDLKSD9WszTQ2n+RwhoK-PMhtUAQYYtA@mail.gmail.com>
-In-Reply-To: <CAL1qeaHQjtVBNN8OB3TDLKSD9WszTQ2n+RwhoK-PMhtUAQYYtA@mail.gmail.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.100.200.196]
-Return-Path: <Ezequiel.Garcia@imgtec.com>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <abrestic@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47582
+X-archive-position: 47583
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ezequiel.garcia@imgtec.com
+X-original-sender: abrestic@chromium.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,73 +80,18 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+On Thu, May 21, 2015 at 4:57 PM, Ezequiel Garcia
+<ezequiel.garcia@imgtec.com> wrote:
+> From: Kevin Cernekee <cernekee@chromium.org>
+>
+> When setting the PLL rates, check that:
+>
+>  - VCO is within range
+>  - PFD is within range
+>  - PLL is disabled when postdiv is changed
+>  - postdiv2 <= postdiv1
+>
+> Signed-off-by: Kevin Cernekee <cernekee@chromium.org>
+> Signed-off-by: Ezequiel Garcia <ezequiel.garcia@imgtec.com>
 
-
-On 05/22/2015 02:45 PM, Andrew Bresticker wrote:
-> On Thu, May 21, 2015 at 4:57 PM, Ezequiel Garcia
-> <ezequiel.garcia@imgtec.com> wrote:
->> This commit adds a rate parameter table, which makes it possible for
->> the MIPS PLL to support rate change.
->>
->> Signed-off-by: Govindraj Raja <Govindraj.Raja@imgtec.com>
->> Signed-off-by: Ezequiel Garcia <ezequiel.garcia@imgtec.com>
->> ---
->>  drivers/clk/pistachio/clk-pistachio.c | 12 +++++++++++-
->>  drivers/clk/pistachio/clk.h           | 12 ++++++++++++
->>  2 files changed, 23 insertions(+), 1 deletion(-)
->>
->> diff --git a/drivers/clk/pistachio/clk-pistachio.c b/drivers/clk/pistachio/clk-pistachio.c
->> index 22a7ebd..0ac7429 100644
->> --- a/drivers/clk/pistachio/clk-pistachio.c
->> +++ b/drivers/clk/pistachio/clk-pistachio.c
->> @@ -145,8 +145,18 @@ static struct pistachio_mux pistachio_muxes[] __initdata = {
->>         MUX(CLK_BT_PLL_MUX, "bt_pll_mux", mux_xtal_bt, 0x200, 17),
->>  };
->>
->> +static struct pistachio_pll_rate_table mips_pll_rates[] = {
->> +       MIPS_PLL_RATES(52000000, 416000000, 1, 16, 2, 1),
->> +       MIPS_PLL_RATES(52000000, 442000000, 1, 17, 2, 1),
->> +       MIPS_PLL_RATES(52000000, 468000000, 1, 18, 2, 1),
->> +       MIPS_PLL_RATES(52000000, 494000000, 1, 19, 2, 1),
->> +       MIPS_PLL_RATES(52000000, 520000000, 1, 20, 2, 1),
->> +       MIPS_PLL_RATES(52000000, 546000000, 1, 21, 2, 1),
->> +};
->> +
->>  static struct pistachio_pll pistachio_plls[] __initdata = {
->> -       PLL_FIXED(CLK_MIPS_PLL, "mips_pll", "xtal", PLL_GF40LP_LAINT, 0x0),
->> +       PLL(CLK_MIPS_PLL, "mips_pll", "xtal", PLL_GF40LP_LAINT, 0x0,
->> +           mips_pll_rates),
->>         PLL_FIXED(CLK_AUDIO_PLL, "audio_pll", "audio_refclk_mux",
->>                   PLL_GF40LP_FRAC, 0xc),
->>         PLL_FIXED(CLK_RPU_V_PLL, "rpu_v_pll", "xtal", PLL_GF40LP_LAINT, 0x20),
->> diff --git a/drivers/clk/pistachio/clk.h b/drivers/clk/pistachio/clk.h
->> index 3bb6bbe..b5d22d6 100644
->> --- a/drivers/clk/pistachio/clk.h
->> +++ b/drivers/clk/pistachio/clk.h
->> @@ -121,6 +121,18 @@ struct pistachio_pll_rate_table {
->>         unsigned int frac;
->>  };
->>
->> +#define MIPS_PLL_RATES(_fref, _fout, _refdiv, _fbdiv,  \
->> +                      _postdiv1, _postdiv2)            \
->> +{                                                       \
->> +       .fref           = _fref,                        \
->> +       .fout           = _fout,                        \
->> +       .refdiv         = _refdiv,                      \
->> +       .fbdiv          = _fbdiv,                       \
->> +       .postdiv1       = _postdiv1,                    \
->> +       .postdiv2       = _postdiv2,                    \
->> +       .frac           = 0,                            \
->> +}
-> 
-> Wouldn't this be applicable to any integer PLL, not just MIPS_PLL?
-> Also, maybe we should just populate fout_{min,max} here, setting them
-> to _fout?  See my comment in patch 3/9.
-> 
-
-Yes, you are right. An INT_PLL_RATE would be OK, setting frac to 0 and
-fout_{min,max} to fout.
-
-I'll respin.
--- 
-Ezequiel
+Reviewed-by: Andrew Bresticker <abrestic@chromium.org>

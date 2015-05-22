@@ -1,32 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 May 2015 18:25:17 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:53247 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 May 2015 18:38:27 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:53395 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27006688AbbEVQZP4P4Em (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 22 May 2015 18:25:15 +0200
+        id S27006677AbbEVQiZhZeuo (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 22 May 2015 18:38:25 +0200
 Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.9/8.14.8) with ESMTP id t4MGPGZq007745;
-        Fri, 22 May 2015 18:25:16 +0200
+        by scotty.linux-mips.net (8.14.9/8.14.8) with ESMTP id t4MGcRWM007971;
+        Fri, 22 May 2015 18:38:27 +0200
 Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.9/8.14.9/Submit) id t4MGPFwQ007744;
-        Fri, 22 May 2015 18:25:15 +0200
-Date:   Fri, 22 May 2015 18:25:15 +0200
+        by scotty.linux-mips.net (8.14.9/8.14.9/Submit) id t4MGcRFs007970;
+        Fri, 22 May 2015 18:38:27 +0200
+Date:   Fri, 22 May 2015 18:38:27 +0200
 From:   Ralf Baechle <ralf@linux-mips.org>
 To:     Joshua Kinard <kumba@gentoo.org>
 Cc:     linux-mips@linux-mips.org
 Subject: Re: IP30: SMP, Almost there?
-Message-ID: <20150522162515.GA6467@linux-mips.org>
+Message-ID: <20150522163826.GB6467@linux-mips.org>
 References: <55597B21.4010704@gentoo.org>
  <5559D483.905@gentoo.org>
+ <555C1A53.9010803@gentoo.org>
+ <555D7469.7090806@gentoo.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <5559D483.905@gentoo.org>
+In-Reply-To: <555D7469.7090806@gentoo.org>
 User-Agent: Mutt/1.5.23 (2014-03-12)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47569
+X-archive-position: 47570
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -43,56 +45,36 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, May 18, 2015 at 08:01:07AM -0400, Joshua Kinard wrote:
+On Thu, May 21, 2015 at 02:00:09AM -0400, Joshua Kinard wrote:
 
-> What is the relationship between the cache-coherency algorithm and SMP?  IP30
-> hardware is supposed to be cache-coherent.  A value of '5' sets the processors
-> to "cacheable coherent exclusive on write" (per the R10K manual).  But I am not
-> sure why things are still flakey.
+> Where I am lost is, though, why would I get an IBE on a 'beqz' instruction?
+> It's a valid instruction from MIPS-I ('beqz' is just 'beq' w/ $0 as rt).  the
+> R10K Manual states this:
 > 
-> --J
+> """
+> A Bus Error exception occurs when a processor block read, upgrade, or
+> double/single/partial-word read request receives an external ERR completion
+> response, or a processor double/single/partial-word read request receives an
+> external ACK completion response where the associated external
+> double/single/partial-word data response contains an uncorrectable error. This
+> exception is not maskable.
+> """
+> 
+> My guess is there's still something not kosher with icache flushing somewhere.
+>  I can reboot this kernel multiple times and not always get the same IBE.  Most
 
-For a cache coherent platform with the R10000 you must use CCA 5 for all
-RAM access or all hell will break loose.
+Not or improperly flush the I-cache will result in stale instructions
+getting executed.  An IBE error otoh is the result of a bus error being
+signalled for the CPU's attempt to load instructions from memory.  With
+the exception of a few special cases I-cache flushing doesn't happen
+when eecuting kernel code, but only for userland and it's also somewhat
+unlikely for improper I-cache flushing to result in an IBE error.
 
-For a 32 bit kernel this means the CCA bits of c0_config need to be set
-to CCA 5.  64 bit kernels such as those on IP30 are running XKPHYS, not
-CSEG0 but still need to use CCA 5.  That means the address bits that
-select the CCA need to be set to 5.  Which means kernel addresses will
-start with 0xa8.
-
-The same holds true for TLB mappings, they also need to use mode 5.
-
-Also, all accesses to a particular page of physical memory need to use the
-same CCA.  Mixing modes is undefined and will in all likelyhood set above
-mention hell loose.
-
-All SMP systems need to be coherent between their CPUs.  Traditionally
-only SMP MIPS systems are coherent will systems that do not support
-multiple processors are non-coherent.  Those may use CCA 3 but again
-mixing is not permitted.
-
-Finally there's CCA 2 which is uncached.  That is only sensible for
-I/O purposes, data structures such rings as ethernet drivers, gfx bitmaps.
-Yet again multiple access modes is not permitted.
-
-The kernel's cca command line option is a bit of a hack meant for hardware
-testing and debug.  For a 64 bit kernel these lines in <asm/mach-generic/-
-spaces.h> select the suitable base address in XKPHYS:
-
-#ifndef CAC_BASE
-#ifdef CONFIG_DMA_NONCOHERENT
-#define CAC_BASE                _AC(0x9800000000000000, UL)
-#else
-#define CAC_BASE                _AC(0xa800000000000000, UL)
-#endif
-#endif
-
-So you simply need to not select DMA_NONCOHERENT for IP30 and the right
-value of 0xa800000000000000 will be used for the kernel base address.
-
-Btw, don't tinker with the CCA bits in c0_config; the firmware will have
-configured that correctly for your platform.  The kernel reads that
-value and uses it for the CCA field for any TLB mappings.
+A huge problem tracking down the cause of a bus error is that they're
+getting signalled by an external agent that is they are not generated by
+the CPU itself and there may be a significant delay until the CPU
+actually takes the exception.  In my experience the EPC is practically
+always worthless in tracking down the cause of the bus error.  Details
+depend on circumstances, as usual.
 
   Ralf

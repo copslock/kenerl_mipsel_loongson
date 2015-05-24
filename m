@@ -1,27 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 24 May 2015 17:22:58 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:57782 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 24 May 2015 17:23:53 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:26834 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27007004AbbEXPWyqwrP6 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 24 May 2015 17:22:54 +0200
+        with ESMTP id S27026534AbbEXPXsoj2DU (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 24 May 2015 17:23:48 +0200
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 476F8150A90C5;
-        Sun, 24 May 2015 16:22:48 +0100 (IST)
+        by Websense Email Security Gateway with ESMTPS id 0C7986FA14071;
+        Sun, 24 May 2015 16:23:41 +0100 (IST)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
  KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Sun, 24 May 2015 16:22:51 +0100
+ 14.3.195.1; Sun, 24 May 2015 16:23:43 +0100
 Received: from localhost (192.168.159.140) by LEMAIL01.le.imgtec.org
  (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Sun, 24 May
- 2015 16:22:17 +0100
+ 2015 16:23:37 +0100
 From:   Paul Burton <paul.burton@imgtec.com>
 To:     <linux-mips@linux-mips.org>
 CC:     Paul Burton <paul.burton@imgtec.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>,
         Ralf Baechle <ralf@linux-mips.org>,
         <linux-kernel@vger.kernel.org>,
-        Brian Norris <computersforpeace@gmail.com>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Subject: [PATCH v5 19/37] MIPS: JZ4740: avoid JZ4740-specific naming
-Date:   Sun, 24 May 2015 16:11:29 +0100
-Message-ID: <1432480307-23789-20-git-send-email-paul.burton@imgtec.com>
+        Brian Norris <computersforpeace@gmail.com>
+Subject: [PATCH v5 21/37] irqchip: move Ingenic SoC intc driver to drivers/irqchip
+Date:   Sun, 24 May 2015 16:11:31 +0100
+Message-ID: <1432480307-23789-22-git-send-email-paul.burton@imgtec.com>
 X-Mailer: git-send-email 2.4.1
 In-Reply-To: <1432480307-23789-1-git-send-email-paul.burton@imgtec.com>
 References: <1432480307-23789-1-git-send-email-paul.burton@imgtec.com>
@@ -32,7 +34,7 @@ Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47619
+X-archive-position: 47620
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -49,11 +51,13 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Rename the functions including jz4740 in their names to be more generic
-in preparation for supporting further SoCs, and for moving this
-interrupt controller code to drivers/irqchip.
+Move the driver for Ingenic SoC interrupt controllers into
+drivers/irqchip where it belongs.
 
 Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Jason Cooper <jason@lakedaemon.net>
 Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
 ---
@@ -65,110 +69,115 @@ Changes in v3:
 
 Changes in v2: None
 
- arch/mips/jz4740/gpio.c |  4 ++--
- arch/mips/jz4740/irq.c  | 24 ++++++++++++------------
- arch/mips/jz4740/irq.h  |  4 ++--
- 3 files changed, 16 insertions(+), 16 deletions(-)
+ arch/mips/jz4740/Makefile                                 | 2 +-
+ arch/mips/jz4740/gpio.c                                   | 3 +--
+ drivers/irqchip/Kconfig                                   | 5 +++++
+ drivers/irqchip/Makefile                                  | 1 +
+ arch/mips/jz4740/irq.c => drivers/irqchip/irq-ingenic.c   | 5 ++---
+ arch/mips/jz4740/irq.h => include/linux/irqchip/ingenic.h | 4 ++--
+ 6 files changed, 12 insertions(+), 8 deletions(-)
+ rename arch/mips/jz4740/irq.c => drivers/irqchip/irq-ingenic.c (98%)
+ rename arch/mips/jz4740/irq.h => include/linux/irqchip/ingenic.h (90%)
 
+diff --git a/arch/mips/jz4740/Makefile b/arch/mips/jz4740/Makefile
+index 28e5535..6cf5dd4 100644
+--- a/arch/mips/jz4740/Makefile
++++ b/arch/mips/jz4740/Makefile
+@@ -4,7 +4,7 @@
+ 
+ # Object file lists.
+ 
+-obj-y += prom.o irq.o time.o reset.o setup.o \
++obj-y += prom.o time.o reset.o setup.o \
+ 	gpio.o clock.o platform.o timer.o serial.o
+ 
+ obj-$(CONFIG_DEBUG_FS) += clock-debugfs.o
 diff --git a/arch/mips/jz4740/gpio.c b/arch/mips/jz4740/gpio.c
-index 00b798d..994a7df 100644
+index 994a7df..54c80d4 100644
 --- a/arch/mips/jz4740/gpio.c
 +++ b/arch/mips/jz4740/gpio.c
-@@ -442,8 +442,8 @@ static void jz4740_gpio_chip_init(struct jz_gpio_chip *chip, unsigned int id)
- 	ct->chip.irq_mask = irq_gc_mask_disable_reg;
- 	ct->chip.irq_unmask = jz_gpio_irq_unmask;
- 	ct->chip.irq_ack = irq_gc_ack_set_bit;
--	ct->chip.irq_suspend = jz4740_irq_suspend;
--	ct->chip.irq_resume = jz4740_irq_resume;
-+	ct->chip.irq_suspend = ingenic_intc_irq_suspend;
-+	ct->chip.irq_resume = ingenic_intc_irq_resume;
- 	ct->chip.irq_startup = jz_gpio_irq_startup;
- 	ct->chip.irq_shutdown = jz_gpio_irq_shutdown;
- 	ct->chip.irq_set_type = jz_gpio_irq_set_type;
-diff --git a/arch/mips/jz4740/irq.c b/arch/mips/jz4740/irq.c
-index 8b7df9a..5887f37 100644
+@@ -21,6 +21,7 @@
+ #include <linux/gpio.h>
+ #include <linux/delay.h>
+ #include <linux/interrupt.h>
++#include <linux/irqchip/ingenic.h>
+ #include <linux/bitops.h>
+ 
+ #include <linux/debugfs.h>
+@@ -28,8 +29,6 @@
+ 
+ #include <asm/mach-jz4740/base.h>
+ 
+-#include "irq.h"
+-
+ #define JZ4740_GPIO_BASE_A (32*0)
+ #define JZ4740_GPIO_BASE_B (32*1)
+ #define JZ4740_GPIO_BASE_C (32*2)
+diff --git a/drivers/irqchip/Kconfig b/drivers/irqchip/Kconfig
+index 6de62a9..1378aca 100644
+--- a/drivers/irqchip/Kconfig
++++ b/drivers/irqchip/Kconfig
+@@ -158,3 +158,8 @@ config KEYSTONE_IRQ
+ config MIPS_GIC
+ 	bool
+ 	select MIPS_CM
++
++config INGENIC_IRQ
++	bool
++	depends on MACH_INGENIC
++	default y
+diff --git a/drivers/irqchip/Makefile b/drivers/irqchip/Makefile
+index dda4927..982eb84 100644
+--- a/drivers/irqchip/Makefile
++++ b/drivers/irqchip/Makefile
+@@ -47,3 +47,4 @@ obj-$(CONFIG_KEYSTONE_IRQ)		+= irq-keystone.o
+ obj-$(CONFIG_MIPS_GIC)			+= irq-mips-gic.o
+ obj-$(CONFIG_ARCH_MEDIATEK)		+= irq-mtk-sysirq.o
+ obj-$(CONFIG_ARCH_DIGICOLOR)		+= irq-digicolor.o
++obj-$(CONFIG_INGENIC_IRQ)		+= irq-ingenic.o
+diff --git a/arch/mips/jz4740/irq.c b/drivers/irqchip/irq-ingenic.c
+similarity index 98%
+rename from arch/mips/jz4740/irq.c
+rename to drivers/irqchip/irq-ingenic.c
+index 64b4c36..005de3f 100644
 --- a/arch/mips/jz4740/irq.c
-+++ b/arch/mips/jz4740/irq.c
-@@ -43,7 +43,7 @@ struct ingenic_intc_data {
- #define JZ_REG_INTC_PENDING	0x10
- #define CHIP_SIZE		0x20
++++ b/drivers/irqchip/irq-ingenic.c
+@@ -18,6 +18,7 @@
+ #include <linux/types.h>
+ #include <linux/interrupt.h>
+ #include <linux/ioport.h>
++#include <linux/irqchip/ingenic.h>
+ #include <linux/of_address.h>
+ #include <linux/of_irq.h>
+ #include <linux/timex.h>
+@@ -27,9 +28,7 @@
+ #include <asm/io.h>
+ #include <asm/mach-jz4740/irq.h>
  
--static irqreturn_t jz4740_cascade(int irq, void *data)
-+static irqreturn_t intc_cascade(int irq, void *data)
- {
- 	struct ingenic_intc_data *intc = irq_get_handler_data(irq);
- 	uint32_t irq_reg;
-@@ -61,7 +61,7 @@ static irqreturn_t jz4740_cascade(int irq, void *data)
- 	return IRQ_HANDLED;
- }
+-#include "irq.h"
+-
+-#include "../../drivers/irqchip/irqchip.h"
++#include "irqchip.h"
  
--static void jz4740_irq_set_mask(struct irq_chip_generic *gc, uint32_t mask)
-+static void intc_irq_set_mask(struct irq_chip_generic *gc, uint32_t mask)
- {
- 	struct irq_chip_regs *regs = &gc->chip_types->regs;
- 
-@@ -69,21 +69,21 @@ static void jz4740_irq_set_mask(struct irq_chip_generic *gc, uint32_t mask)
- 	writel(~mask, gc->reg_base + regs->disable);
- }
- 
--void jz4740_irq_suspend(struct irq_data *data)
-+void ingenic_intc_irq_suspend(struct irq_data *data)
- {
- 	struct irq_chip_generic *gc = irq_data_get_irq_chip_data(data);
--	jz4740_irq_set_mask(gc, gc->wake_active);
-+	intc_irq_set_mask(gc, gc->wake_active);
- }
- 
--void jz4740_irq_resume(struct irq_data *data)
-+void ingenic_intc_irq_resume(struct irq_data *data)
- {
- 	struct irq_chip_generic *gc = irq_data_get_irq_chip_data(data);
--	jz4740_irq_set_mask(gc, gc->mask_cache);
-+	intc_irq_set_mask(gc, gc->mask_cache);
- }
- 
--static struct irqaction jz4740_cascade_action = {
--	.handler = jz4740_cascade,
--	.name = "JZ4740 cascade interrupt",
-+static struct irqaction intc_cascade_action = {
-+	.handler = intc_cascade,
-+	.name = "SoC intc cascade interrupt",
- };
- 
- static int __init ingenic_intc_of_init(struct device_node *node,
-@@ -138,8 +138,8 @@ static int __init ingenic_intc_of_init(struct device_node *node,
- 		ct->chip.irq_mask = irq_gc_mask_disable_reg;
- 		ct->chip.irq_mask_ack = irq_gc_mask_disable_reg;
- 		ct->chip.irq_set_wake = irq_gc_set_wake;
--		ct->chip.irq_suspend = jz4740_irq_suspend;
--		ct->chip.irq_resume = jz4740_irq_resume;
-+		ct->chip.irq_suspend = ingenic_intc_irq_suspend;
-+		ct->chip.irq_resume = ingenic_intc_irq_resume;
- 
- 		irq_setup_generic_chip(gc, IRQ_MSK(32), 0, 0,
- 				       IRQ_NOPROBE | IRQ_LEVEL);
-@@ -150,7 +150,7 @@ static int __init ingenic_intc_of_init(struct device_node *node,
- 	if (!domain)
- 		pr_warn("unable to register IRQ domain\n");
- 
--	setup_irq(parent_irq, &jz4740_cascade_action);
-+	setup_irq(parent_irq, &intc_cascade_action);
- 	return 0;
- 
- out_unmap_irq:
-diff --git a/arch/mips/jz4740/irq.h b/arch/mips/jz4740/irq.h
-index 0f48720..601d527 100644
+ struct ingenic_intc_data {
+ 	void __iomem *base;
+diff --git a/arch/mips/jz4740/irq.h b/include/linux/irqchip/ingenic.h
+similarity index 90%
+rename from arch/mips/jz4740/irq.h
+rename to include/linux/irqchip/ingenic.h
+index 601d527..0ee319a 100644
 --- a/arch/mips/jz4740/irq.h
-+++ b/arch/mips/jz4740/irq.h
-@@ -17,7 +17,7 @@
++++ b/include/linux/irqchip/ingenic.h
+@@ -12,8 +12,8 @@
+  *
+  */
+ 
+-#ifndef __MIPS_JZ4740_IRQ_H__
+-#define __MIPS_JZ4740_IRQ_H__
++#ifndef __LINUX_IRQCHIP_INGENIC_H__
++#define __LINUX_IRQCHIP_INGENIC_H__
  
  #include <linux/irq.h>
  
--extern void jz4740_irq_suspend(struct irq_data *data);
--extern void jz4740_irq_resume(struct irq_data *data);
-+extern void ingenic_intc_irq_suspend(struct irq_data *data);
-+extern void ingenic_intc_irq_resume(struct irq_data *data);
- 
- #endif
 -- 
 2.4.1

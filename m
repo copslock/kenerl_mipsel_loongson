@@ -1,42 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 24 May 2015 00:58:19 +0200 (CEST)
-Received: from resqmta-ch2-05v.sys.comcast.net ([69.252.207.37]:50883 "EHLO
-        resqmta-ch2-05v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27006858AbbEWW6QSi5vA (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 24 May 2015 00:58:16 +0200
-Received: from resomta-ch2-16v.sys.comcast.net ([69.252.207.112])
-        by resqmta-ch2-05v.sys.comcast.net with comcast
-        id Xay81q0012S2Q5R01ayCn6; Sat, 23 May 2015 22:58:12 +0000
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 24 May 2015 05:17:58 +0200 (CEST)
+Received: from resqmta-ch2-04v.sys.comcast.net ([69.252.207.36]:38059 "EHLO
+        resqmta-ch2-04v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006944AbbEXDRyIzOam (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 24 May 2015 05:17:54 +0200
+Received: from resomta-ch2-13v.sys.comcast.net ([69.252.207.109])
+        by resqmta-ch2-04v.sys.comcast.net with comcast
+        id XfHe1q0042N9P4d01fHopk; Sun, 24 May 2015 03:17:48 +0000
 Received: from [192.168.1.13] ([69.251.155.187])
-        by resomta-ch2-16v.sys.comcast.net with comcast
-        id XayB1q00S42s2jH01ayCgL; Sat, 23 May 2015 22:58:12 +0000
-Message-ID: <556105EE.9060802@gentoo.org>
-Date:   Sat, 23 May 2015 18:57:50 -0400
+        by resomta-ch2-13v.sys.comcast.net with comcast
+        id XfHn1q00542s2jH01fHnrk; Sun, 24 May 2015 03:17:48 +0000
+Message-ID: <556142C5.7090206@gentoo.org>
+Date:   Sat, 23 May 2015 23:17:25 -0400
 From:   Joshua Kinard <kumba@gentoo.org>
 User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:31.0) Gecko/20100101 Thunderbird/31.6.0
 MIME-Version: 1.0
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     linux-mips@linux-mips.org
+To:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
 Subject: Re: IP30: SMP, Almost there?
-References: <55597B21.4010704@gentoo.org> <5559D483.905@gentoo.org> <555C1A53.9010803@gentoo.org> <555D7469.7090806@gentoo.org> <20150522163826.GB6467@linux-mips.org>
-In-Reply-To: <20150522163826.GB6467@linux-mips.org>
-Content-Type: text/plain; charset=windows-1252
+References: <55597B21.4010704@gentoo.org>
+In-Reply-To: <55597B21.4010704@gentoo.org>
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=comcast.net;
-        s=q20140121; t=1432421892;
-        bh=D3QUlL171y00WTbfHs0hot6E4epMrrv2pv9k1JfGhYg=;
+        s=q20140121; t=1432437468;
+        bh=MjgjJQ2iSU91a8RQSLMB6BTE7HqBJ65DngaZopSTLSM=;
         h=Received:Received:Message-ID:Date:From:MIME-Version:To:Subject:
          Content-Type;
-        b=GiNjq4JsIdVByxbPwxjvJvOrIt9rtK4BSkDcbfoBTLeOE3k0QbBWz3ZauwKKncr2k
-         6NYWn+tFmIQ5Hx2YTfti/IbI40Lnwkujn7Xz2YAMuDFAAWA3bqp1XrCZRB4lW54fKc
-         xTFICJkz1+uv9FL8WFLUBuhxhbbDzsjhlkAxCTvT2UXfy3rkt33C3w4MvZtGT2+IXv
-         F25IckODtrZzIevN0dp0ZI4FLaZ9Nn3uUQ1aytS+Y79MHttdn97Jp8H8qbd7bSkaOF
-         M27UjOOVVQwiwAfFlQrTOPjENbjT3hsJ6XdPw7ZmIPV4QUva0nlvv3O2L9kotoeLif
-         RLU7RqfCb0fuw==
+        b=d4Q/cs2W/pt59tKRCRYyXWxQh1HnUYuj4Fue4K3c0o7+/R6OpzSZMeNGvZRhe2VOs
+         ZL3iLIeWH/5njRzdjDvqJU0v6gT9aAIW0Vi2nMzfkqPFBX+JA1q5JhUTelfj8oDWP7
+         tmb3eq5kassvHLW45IZBngVFfb/2CxYeBGDvuHp/jPYidXWyjO8O3Q/b7UqaYDJI3k
+         MhpwvuZ/q+sejzbaL3B4VSFaMedgwFSSImfcl4zH/qoSmLhBB3meUvbOV/nAA/eTZZ
+         eC2BuQKncG50onqx2kOzQoDIkFLqUfzRqlcG+EfKxONMtDQzc9EzvTSes/r7RUWzuj
+         guXXcerJ/4rEg==
 Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47594
+X-archive-position: 47596
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -53,59 +52,88 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 05/22/2015 12:38, Ralf Baechle wrote:
-> On Thu, May 21, 2015 at 02:00:09AM -0400, Joshua Kinard wrote:
-> 
->> Where I am lost is, though, why would I get an IBE on a 'beqz' instruction?
->> It's a valid instruction from MIPS-I ('beqz' is just 'beq' w/ $0 as rt).  the
->> R10K Manual states this:
->>
->> """
->> A Bus Error exception occurs when a processor block read, upgrade, or
->> double/single/partial-word read request receives an external ERR completion
->> response, or a processor double/single/partial-word read request receives an
->> external ACK completion response where the associated external
->> double/single/partial-word data response contains an uncorrectable error. This
->> exception is not maskable.
->> """
->>
->> My guess is there's still something not kosher with icache flushing somewhere.
->>  I can reboot this kernel multiple times and not always get the same IBE.  Most
-> 
-> Not or improperly flush the I-cache will result in stale instructions
-> getting executed.  An IBE error otoh is the result of a bus error being
-> signalled for the CPU's attempt to load instructions from memory.  With
-> the exception of a few special cases I-cache flushing doesn't happen
-> when eecuting kernel code, but only for userland and it's also somewhat
-> unlikely for improper I-cache flushing to result in an IBE error.
+On 05/18/2015 01:39, Joshua Kinard wrote:
+> So I've gotten the second CPU in Octane to "tick" again...somehow.  I am
+> certain someone's cat went missing in the process...
 
-Well, the IBE's are happening in userland, loading init, on CPU1.  I hacked
-together a basic bus error handler from IP27's and using that, instead of
-seeing four IBE's in a row, I can get CPU1 to stall and dump whatever debug
-data I want.  Downside is, I've only got the Odyssey Early console available,
-so I have to take pictures of the debug text or oops data, then manually type
-it into a text file.
+So, yeah, the problem appears to be specific to the R14000 CPU module.  I
+swapped in an R12K dual CPU module, and after a little bit of tinkering to
+revert a few hacks and clean up the code, it boots into SMP, mounts the
+userland, and has successfully sync'ed a Gentoo Portage tree w/o annihilating
+the XFS filesystem or the MD RAID5 array.  Even compiled a few C files.
 
-Further experimenting with a dual R12K module suggests that whatever the
-problem is, it's got something to do with the R14K.  I'm having better success
-with the R12K dual module thus far.  More on that later...
+# cat /proc/interrupts
+           CPU0       CPU1
+ 14:          0          0     HEART  powerbtn
+ 15:          0          0     HEART  acfail
+ 16:          0      44887     HEART  qla1280
+ 17:          0      16904     HEART  qla1280
+ 18:       1853          0     HEART  ioc3-eth
+ 20:        243          0     HEART  ioc3-io
+ 46:     348850          0     HEART  cpu0-ipi
+ 47:          0     315948     HEART  cpu1-ipi
+ 50:       1268          0     HEART  heart_timer
+ 71:     118453     195177       CPU  timer
 
+# cat /proc/cpuinfo
+system type             : SGI Octane
+machine                 : Unknown
+processor               : 0
+cpu model               : R12000 V3.5  FPU V0.0
+BogoMIPS                : 600.47
+byteorder               : big endian
+wait instruction        : no
+microsecond timers      : yes
+tlb_entries             : 64
+extra interrupt vector  : no
+hardware watchpoint     : yes, count: 0, address/irw mask: []
+isa                     : mips2 mips3 mips4
+ASEs implemented        :
+shadow register sets    : 1
+kscratch registers      : 0
+package                 : 0
+core                    : 0
+VCED exceptions         : not available
+VCEI exceptions         : not available
 
-> A huge problem tracking down the cause of a bus error is that they're
-> getting signalled by an external agent that is they are not generated by
-> the CPU itself and there may be a significant delay until the CPU
-> actually takes the exception.  In my experience the EPC is practically
-> always worthless in tracking down the cause of the bus error.  Details
-> depend on circumstances, as usual.
+processor               : 1
+cpu model               : R12000 V3.5  FPU V0.0
+BogoMIPS                : 600.47
+byteorder               : big endian
+wait instruction        : no
+microsecond timers      : yes
+tlb_entries             : 64
+extra interrupt vector  : no
+hardware watchpoint     : yes, count: 0, address/irw mask: []
+isa                     : mips2 mips3 mips4
+ASEs implemented        :
+shadow register sets    : 1
+kscratch registers      : 0
+package                 : 0
+core                    : 0
+VCED exceptions         : not available
+VCEI exceptions         : not available
 
-I thought that agent might be HEART, but the HEART_CAUSE register reads
-0x00000000 when an IBE happens, which means no issues from its end.
+I even got the IRQs to be fanned out across both CPUs.  Well, primarily the
+qla1280 drivers.  They randomly hop between both CPUs, but no ill effects so far.
 
-How does one probe the SysAD bus?  The R10K documentation has some breakdown of
-the bit format of SysAD messages.  Is there a memory address somewhere that can
-be used to read data off the bus or even talk to it to get error information
-(like, does it have a CAUSE register or something)?
+But if I boot that *same* working kernel on an R14000 dual module, I get handed
+an IBE as soon as the userland mounts.  The only documented differences that I
+can find on the R14000 is that it supports DDR memory, being able to do memory
+operations on the rising edge and falling edge of each clock.  Not sure if that
+matters to the kernel at all, but I know of nothing else that describes the
+R14K's internals, such as if there's some new bit in CP0 config,
+branch-diagnostic, status, etc, that might explain why these IBE's are happening.
 
-Otherwise, figuring out what's wrong with the R14K is going to take a long time...
+Guess I need to hunt down my old dual R10K module next and verify that works
+fine...
+
+Also, is there a way to hardcode the cca=5 setting for IP30?  Maybe it needs to
+be a hidden Kconfig item?.  I tried setting cpu->writecombine in cpu-probe.c,
+but no dice there.  If I boot an SMP kernel on dual R12K's w/o cca=5, I'll get
+one or two pretty-specific oopses.  The one I did grab complains about bad
+spinlock magic in the core tty driver somewhere.  I can transcribe that oops
+later on if interested.
+
 
 --J

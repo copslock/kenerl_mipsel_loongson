@@ -1,47 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 24 May 2015 23:21:43 +0200 (CEST)
-Received: from resqmta-ch2-05v.sys.comcast.net ([69.252.207.37]:38803 "EHLO
-        resqmta-ch2-05v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27006723AbbEXVVkBRauG (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 24 May 2015 23:21:40 +0200
-Received: from resomta-ch2-19v.sys.comcast.net ([69.252.207.115])
-        by resqmta-ch2-05v.sys.comcast.net with comcast
-        id XxMJ1q0012VvR6D01xMbd5; Sun, 24 May 2015 21:21:35 +0000
-Received: from [192.168.1.13] ([69.251.155.187])
-        by resomta-ch2-19v.sys.comcast.net with comcast
-        id XxMa1q00D42s2jH01xMaQZ; Sun, 24 May 2015 21:21:35 +0000
-Message-ID: <556240DE.1050003@gentoo.org>
-Date:   Sun, 24 May 2015 17:21:34 -0400
-From:   Joshua Kinard <kumba@gentoo.org>
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:31.0) Gecko/20100101 Thunderbird/31.6.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 May 2015 00:40:31 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:34037 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27006587AbbEXWk1ZV5Dv (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 25 May 2015 00:40:27 +0200
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id DC11CB7BAFA21;
+        Sun, 24 May 2015 23:40:19 +0100 (IST)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Sun, 24 May 2015 23:38:19 +0100
+Received: from localhost (192.168.159.138) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Sun, 24 May
+ 2015 23:38:18 +0100
+From:   Paul Burton <paul.burton@imgtec.com>
+To:     <linux-mips@linux-mips.org>
+CC:     <linux-kernel@vger.kernel.org>,
+        Brian Norris <computersforpeace@gmail.com>,
+        Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
+        Paul Burton <paul.burton@imgtec.com>,
+        Ian Campbell <ijc+devicetree@hellion.org.uk>,
+        Kumar Gala <galak@codeaurora.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Pawel Moll <pawel.moll@arm.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Rob Herring <robh+dt@kernel.org>, <devicetree@vger.kernel.org>
+Subject: [PATCH v6 07/37] MIPS: JZ4740: probe CPU interrupt controller via DT
+Date:   Sun, 24 May 2015 23:37:42 +0100
+Message-ID: <1432507062-2853-1-git-send-email-paul.burton@imgtec.com>
+X-Mailer: git-send-email 2.4.1
+In-Reply-To: <5561EB79.30209@cogentembedded.com>
+References: <5561EB79.30209@cogentembedded.com>
 MIME-Version: 1.0
-To:     James Hogan <james.hogan@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: Re: [PATCH RFC v2 01/10] MIPS: Add SysRq operation to dump TLBs on
- all CPUs
-References: <1432025438-26431-1-git-send-email-james.hogan@imgtec.com> <1432025438-26431-2-git-send-email-james.hogan@imgtec.com>
-In-Reply-To: <1432025438-26431-2-git-send-email-james.hogan@imgtec.com>
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=comcast.net;
-        s=q20140121; t=1432502495;
-        bh=KhqkRzS2Wlu496iBocAZZWWG/4quBzsR4lbl6S+sOMA=;
-        h=Received:Received:Message-ID:Date:From:MIME-Version:To:Subject:
-         Content-Type;
-        b=pe2Ek8Kawqo6rxJEVteytJd+iQMvGOdCafyB3dcSuprlZTQ7viI2XZnSdMXIR5uD8
-         RVmm5iQqkmfHuMBcv7//CNT9qqI+WGLTm7gmW5gppKJUIMkQys+w/QaKEAOyF2jjTE
-         3317gYeEsZquT7xVWkFXrYuXVzmFj6H7QiHZygsDkN+F/emWRhlpHY3LZaVBKHtHN+
-         GXpUJtPcYNT8U06el0OIPCLY89liKjPJTsRcH0tdI36RsrGu86+iy+nOkdqI7oZa5D
-         qYXstgoL+ZNGpltahoGP4BIzlqihL8zivmoUYuzqezWEA2ec0VhBV5uX7OyRrwuxF1
-         ygb+usaC98xbQ==
-Return-Path: <kumba@gentoo.org>
+Content-Type: text/plain
+X-Originating-IP: [192.168.159.138]
+Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47640
+X-archive-position: 47641
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kumba@gentoo.org
+X-original-sender: paul.burton@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,50 +55,80 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 05/19/2015 04:50, James Hogan wrote:
-> Add a MIPS specific SysRq operation to dump the TLB entries on all CPUs,
-> using the 'x' trigger key.
+Use the generic irqchip_init function to probe irqchip drivers using DT,
+and add the appropriate node to the JZ4740 devicetree in place of the
+call to mips_cpu_irq_init.
 
-Thought: Would it make sense to split apart the data such that one SysRq key
-dumps the CP0 registers of all CPUs, and another dumps the TLB info?
+Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+Cc: Ian Campbell <ijc+devicetree@hellion.org.uk>
+Cc: Kumar Gala <galak@codeaurora.org>
+Cc: Lars-Peter Clausen <lars@metafoo.de>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Pawel Moll <pawel.moll@arm.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Rob Herring <robh+dt@kernel.org>
+Cc: devicetree@vger.kernel.org
+Cc: linux-mips@linux-mips.org
+---
 
+Changes in v6:
+- Rename cpuintc DT node interrupt-controller@0.
 
-> +/*
-> + * Dump TLB entries on all CPUs.
-> + */
-> +
-> +static DEFINE_SPINLOCK(show_lock);
-> +
-> +static void sysrq_tlbdump_single(void *dummy)
-> +{
-> +	const int field = 2 * sizeof(unsigned long);
-> +	unsigned long flags;
-> +
-> +	spin_lock_irqsave(&show_lock, flags);
-> +
-> +	pr_info("CPU%d:\n", smp_processor_id());
-> +	pr_info("Index	: %0x\n", read_c0_index());
-> +	pr_info("Pagemask: %0x\n", read_c0_pagemask());
-> +	pr_info("EntryHi : %0*lx\n", field, read_c0_entryhi());
-> +	pr_info("EntryLo0: %0*lx\n", field, read_c0_entrylo0());
-> +	pr_info("EntryLo1: %0*lx\n", field, read_c0_entrylo1());
-> +	pr_info("Wired   : %0x\n", read_c0_wired());
-> +	pr_info("Pagegrain: %0x\n", read_c0_pagegrain());
-> +	if (cpu_has_htw) {
-> +		pr_info("PWField : %0*lx\n", field, read_c0_pwfield());
-> +		pr_info("PWSize  : %0*lx\n", field, read_c0_pwsize());
-> +		pr_info("PWCtl   : %0x\n", read_c0_pwctl());
-> +	}
-> +	pr_info("\n");
-> +	dump_tlb_all();
-> +	pr_info("\n");
-> +
-> +	spin_unlock_irqrestore(&show_lock, flags);
-> +}
+Changes in v5: None
+Changes in v4: None
+Changes in v3:
+- Rebase.
 
-The older CPUs, like the R10000 don't have a PageGrain register I believe (at
-least R10K doesn't),  Does that need to be stuffed behind a conditional?  Also,
-R10K (and newer?) CPUs have a FrameMask CP0 register ($21).  Linux currently
-scribbles a 0 to the writable bits, though, so I'm not sure if it matters.
+Changes in v2: None
 
---J
+ arch/mips/boot/dts/ingenic/jz4740.dtsi | 7 +++++++
+ arch/mips/jz4740/irq.c                 | 4 ++--
+ 2 files changed, 9 insertions(+), 2 deletions(-)
+
+diff --git a/arch/mips/boot/dts/ingenic/jz4740.dtsi b/arch/mips/boot/dts/ingenic/jz4740.dtsi
+index c538691f..dd3642f 100644
+--- a/arch/mips/boot/dts/ingenic/jz4740.dtsi
++++ b/arch/mips/boot/dts/ingenic/jz4740.dtsi
+@@ -2,4 +2,11 @@
+ 	#address-cells = <1>;
+ 	#size-cells = <1>;
+ 	compatible = "ingenic,jz4740";
++
++	cpuintc: interrupt-controller@0 {
++		#address-cells = <0>;
++		#interrupt-cells = <1>;
++		interrupt-controller;
++		compatible = "mti,cpu-interrupt-controller";
++	};
+ };
+diff --git a/arch/mips/jz4740/irq.c b/arch/mips/jz4740/irq.c
+index 97206b3..3ec90875 100644
+--- a/arch/mips/jz4740/irq.c
++++ b/arch/mips/jz4740/irq.c
+@@ -18,6 +18,7 @@
+ #include <linux/types.h>
+ #include <linux/interrupt.h>
+ #include <linux/ioport.h>
++#include <linux/irqchip.h>
+ #include <linux/timex.h>
+ #include <linux/slab.h>
+ #include <linux/delay.h>
+@@ -27,7 +28,6 @@
+ 
+ #include <asm/io.h>
+ #include <asm/mipsregs.h>
+-#include <asm/irq_cpu.h>
+ 
+ #include <asm/mach-jz4740/base.h>
+ #include <asm/mach-jz4740/irq.h>
+@@ -84,7 +84,7 @@ void __init arch_init_irq(void)
+ 	struct irq_chip_generic *gc;
+ 	struct irq_chip_type *ct;
+ 
+-	mips_cpu_irq_init();
++	irqchip_init();
+ 
+ 	jz_intc_base = ioremap(JZ4740_INTC_BASE_ADDR, 0x14);
+ 
+-- 
+2.4.1

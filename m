@@ -1,30 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 24 May 2015 17:30:09 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:29221 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 24 May 2015 17:30:32 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:25783 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27006783AbbEXPaFwtANN (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 24 May 2015 17:30:05 +0200
+        with ESMTP id S27012589AbbEXPaVlenTd (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 24 May 2015 17:30:21 +0200
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 48DF39636C055;
-        Sun, 24 May 2015 16:29:59 +0100 (IST)
+        by Websense Email Security Gateway with ESMTPS id 8B2DF7ADCCFE0;
+        Sun, 24 May 2015 16:30:14 +0100 (IST)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
  KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Sun, 24 May 2015 16:27:56 +0100
+ 14.3.195.1; Sun, 24 May 2015 16:30:17 +0100
 Received: from localhost (192.168.159.140) by LEMAIL01.le.imgtec.org
  (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Sun, 24 May
- 2015 16:27:49 +0100
+ 2015 16:30:09 +0100
 From:   Paul Burton <paul.burton@imgtec.com>
 To:     <linux-mips@linux-mips.org>
 CC:     Paul Burton <paul.burton@imgtec.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jslaby@suse.cz>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Mike Turquette <mturquette@linaro.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Stephen Boyd <sboyd@codeaurora.org>,
-        <linux-clk@vger.kernel.org>,
-        Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>,
-        <linux-kernel@vger.kernel.org>
-Subject: [PATCH v5 29/37] MIPS, clk: move jz4740 clock suspend, resume functions to jz4740-cgu
-Date:   Sun, 24 May 2015 16:11:39 +0100
-Message-ID: <1432480307-23789-30-git-send-email-paul.burton@imgtec.com>
+        <linux-serial@vger.kernel.org>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Peter Hurley <peter@hurleysoftware.com>,
+        Alan Cox <alan@linux.intel.com>,
+        <linux-kernel@vger.kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Ricardo Ribalda Delgado <ricardo.ribalda@gmail.com>,
+        Tony Lindgren <tony@atomide.com>,
+        John Crispin <blogic@openwrt.org>
+Subject: [PATCH v5 34/37] serial: 8250_ingenic: support for Ingenic SoC UARTs
+Date:   Sun, 24 May 2015 16:11:44 +0100
+Message-ID: <1432480307-23789-35-git-send-email-paul.burton@imgtec.com>
 X-Mailer: git-send-email 2.4.1
 In-Reply-To: <1432480307-23789-1-git-send-email-paul.burton@imgtec.com>
 References: <1432480307-23789-1-git-send-email-paul.burton@imgtec.com>
@@ -35,7 +40,7 @@ Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47631
+X-archive-position: 47632
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -52,219 +57,343 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The jz4740-cgu driver already has access to the CGU, so it makes sense
-to move the few remaining accesses to the CGU from arch/mips/jz4740
-there too. Move the jz4740_clock_{suspend,resume} functions there for
-such consistency. The arch/mips/jz4740/clock.c file now contains nothing
-more of use & so is removed.
+Introduce a driver suitable for use with the UARTs present in
+Ingenic SoCs such as the JZ4740 & JZ4780. These are described as being
+ns16550 compatible but aren't quite - they require the setting of an
+extra bit in the FCR register to enable the UART module. The serial_out
+implementation is the same as that in arch/mips/jz4740/serial.c - which
+will shortly be removed.
 
 Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Jiri Slaby <jslaby@suse.cz>
 Cc: Lars-Peter Clausen <lars@metafoo.de>
-Cc: Mike Turquette <mturquette@linaro.org>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Stephen Boyd <sboyd@codeaurora.org>
-Cc: linux-clk@vger.kernel.org
-Cc: linux-mips@linux-mips.org
+Cc: linux-serial@vger.kernel.org
 ---
 
-Changes in v5: None
+Changes in v5:
+- Support setting the port line based upon DT aliases, just as of_serial
+  does, in order to allow device numbering to be specified by the DT.
+
 Changes in v4: None
 Changes in v3:
-- Rebase.
+- s/jz47xx/ingenic/ to reflect Ingenic's naming change for newer SoCs.
+- Support JZ4775.
+- Depend on SERIAL_8250_CONSOLE rather than selecting SERIAL_CORE_CONSOLE.
+- Read the UART clock for early consoles from the DT, using libfdt to
+  find the node for the fixed rate external clock which drives the UART
+  in all known Ingenic SoCs, rather than relying upon a hardcoded
+  definition for BASE_BAUD.
 
-Changes in v2: None
+Changes in v2:
+- Remove FSF address (ZubairLK).
+- Select SERIAL_CORE_CONSOLE (ZubairLK).
 
- arch/mips/include/asm/mach-jz4740/clock.h |  2 -
- arch/mips/jz4740/Makefile                 |  2 +-
- arch/mips/jz4740/clock.c                  | 95 -------------------------------
- arch/mips/jz4740/time.c                   |  1 -
- drivers/clk/ingenic/jz4740-cgu.c          | 37 ++++++++++++
- 5 files changed, 38 insertions(+), 99 deletions(-)
- delete mode 100644 arch/mips/jz4740/clock.c
+ drivers/tty/serial/8250/8250_ingenic.c | 266 +++++++++++++++++++++++++++++++++
+ drivers/tty/serial/8250/Kconfig        |   9 ++
+ drivers/tty/serial/8250/Makefile       |   3 +
+ 3 files changed, 278 insertions(+)
+ create mode 100644 drivers/tty/serial/8250/8250_ingenic.c
 
-diff --git a/arch/mips/include/asm/mach-jz4740/clock.h b/arch/mips/include/asm/mach-jz4740/clock.h
-index 01d8468..16659cd 100644
---- a/arch/mips/include/asm/mach-jz4740/clock.h
-+++ b/arch/mips/include/asm/mach-jz4740/clock.h
-@@ -20,8 +20,6 @@ enum jz4740_wait_mode {
- 	JZ4740_WAIT_MODE_SLEEP,
- };
- 
--int jz4740_clock_init(void);
--
- void jz4740_clock_set_wait_mode(enum jz4740_wait_mode mode);
- 
- void jz4740_clock_udc_enable_auto_suspend(void);
-diff --git a/arch/mips/jz4740/Makefile b/arch/mips/jz4740/Makefile
-index fdb12efc..7636432 100644
---- a/arch/mips/jz4740/Makefile
-+++ b/arch/mips/jz4740/Makefile
-@@ -5,7 +5,7 @@
- # Object file lists.
- 
- obj-y += prom.o time.o reset.o setup.o \
--	gpio.o clock.o platform.o timer.o serial.o
-+	gpio.o platform.o timer.o serial.o
- 
- # board specific support
- 
-diff --git a/arch/mips/jz4740/clock.c b/arch/mips/jz4740/clock.c
-deleted file mode 100644
-index 2a10829..0000000
---- a/arch/mips/jz4740/clock.c
-+++ /dev/null
-@@ -1,95 +0,0 @@
--/*
-- *  Copyright (C) 2010, Lars-Peter Clausen <lars@metafoo.de>
-- *  JZ4740 SoC clock support
-- *
-- *  This program is free software; you can redistribute it and/or modify it
-- *  under  the terms of the GNU General	 Public License as published by the
-- *  Free Software Foundation;  either version 2 of the License, or (at your
-- *  option) any later version.
-- *
-- *  You should have received a copy of the GNU General Public License along
-- *  with this program; if not, write to the Free Software Foundation, Inc.,
-- *  675 Mass Ave, Cambridge, MA 02139, USA.
-- *
-- */
--
--#include <linux/kernel.h>
--#include <linux/errno.h>
--#include <linux/clk.h>
--#include <linux/clk-provider.h>
--#include <linux/spinlock.h>
--#include <linux/io.h>
--#include <linux/module.h>
--#include <linux/list.h>
--#include <linux/err.h>
--
--#include <asm/mach-jz4740/clock.h>
--#include <asm/mach-jz4740/base.h>
--
--#include "clock.h"
--
--#define JZ_REG_CLOCK_PLL	0x10
--#define JZ_REG_CLOCK_GATE	0x20
--
--#define JZ_CLOCK_GATE_UART0	BIT(0)
--#define JZ_CLOCK_GATE_TCU	BIT(1)
--#define JZ_CLOCK_GATE_DMAC	BIT(12)
--
--#define JZ_CLOCK_PLL_STABLE		BIT(10)
--#define JZ_CLOCK_PLL_ENABLED		BIT(8)
--
--static void __iomem *jz_clock_base;
--
--static uint32_t jz_clk_reg_read(int reg)
--{
--	return readl(jz_clock_base + reg);
--}
--
--static void jz_clk_reg_set_bits(int reg, uint32_t mask)
--{
--	uint32_t val;
--
--	val = readl(jz_clock_base + reg);
--	val |= mask;
--	writel(val, jz_clock_base + reg);
--}
--
--static void jz_clk_reg_clear_bits(int reg, uint32_t mask)
--{
--	uint32_t val;
--
--	val = readl(jz_clock_base + reg);
--	val &= ~mask;
--	writel(val, jz_clock_base + reg);
--}
--
--void jz4740_clock_suspend(void)
--{
--	jz_clk_reg_set_bits(JZ_REG_CLOCK_GATE,
--		JZ_CLOCK_GATE_TCU | JZ_CLOCK_GATE_DMAC | JZ_CLOCK_GATE_UART0);
--
--	jz_clk_reg_clear_bits(JZ_REG_CLOCK_PLL, JZ_CLOCK_PLL_ENABLED);
--}
--
--void jz4740_clock_resume(void)
--{
--	uint32_t pll;
--
--	jz_clk_reg_set_bits(JZ_REG_CLOCK_PLL, JZ_CLOCK_PLL_ENABLED);
--
--	do {
--		pll = jz_clk_reg_read(JZ_REG_CLOCK_PLL);
--	} while (!(pll & JZ_CLOCK_PLL_STABLE));
--
--	jz_clk_reg_clear_bits(JZ_REG_CLOCK_GATE,
--		JZ_CLOCK_GATE_TCU | JZ_CLOCK_GATE_DMAC | JZ_CLOCK_GATE_UART0);
--}
--
--int jz4740_clock_init(void)
--{
--	jz_clock_base = ioremap(JZ4740_CPM_BASE_ADDR, 0x100);
--	if (!jz_clock_base)
--		return -EBUSY;
--
--	return 0;
--}
-diff --git a/arch/mips/jz4740/time.c b/arch/mips/jz4740/time.c
-index be9b0a3..9172553 100644
---- a/arch/mips/jz4740/time.c
-+++ b/arch/mips/jz4740/time.c
-@@ -120,7 +120,6 @@ void __init plat_time_init(void)
- 	struct clk *ext_clk;
- 
- 	of_clk_init(NULL);
--	jz4740_clock_init();
- 	jz4740_timer_init();
- 
- 	ext_clk = clk_get(NULL, "ext");
-diff --git a/drivers/clk/ingenic/jz4740-cgu.c b/drivers/clk/ingenic/jz4740-cgu.c
-index 0e692ed..305a26c2 100644
---- a/drivers/clk/ingenic/jz4740-cgu.c
-+++ b/drivers/clk/ingenic/jz4740-cgu.c
-@@ -264,3 +264,40 @@ void jz4740_clock_udc_enable_auto_suspend(void)
- 	writel(clkgr, cgu->base + CGU_REG_CLKGR);
- }
- EXPORT_SYMBOL_GPL(jz4740_clock_udc_enable_auto_suspend);
+diff --git a/drivers/tty/serial/8250/8250_ingenic.c b/drivers/tty/serial/8250/8250_ingenic.c
+new file mode 100644
+index 0000000..21bf81f
+--- /dev/null
++++ b/drivers/tty/serial/8250/8250_ingenic.c
+@@ -0,0 +1,266 @@
++/*
++ * Copyright (C) 2010 Lars-Peter Clausen <lars@metafoo.de>
++ * Copyright (C) 2015 Imagination Technologies
++ *
++ * Ingenic SoC UART support
++ *
++ * This program is free software; you can redistribute	 it and/or modify it
++ * under  the terms of	 the GNU General  Public License as published by the
++ * Free Software Foundation;  either version 2 of the	License, or (at your
++ * option) any later version.
++ *
++ * You should have received a copy of the  GNU General Public License along
++ * with this program; if not, write  to the Free Software Foundation, Inc.,
++ * 675 Mass Ave, Cambridge, MA 02139, USA.
++ */
 +
-+#define JZ_CLOCK_GATE_UART0	BIT(0)
-+#define JZ_CLOCK_GATE_TCU	BIT(1)
-+#define JZ_CLOCK_GATE_DMAC	BIT(12)
++#include <linux/clk.h>
++#include <linux/console.h>
++#include <linux/io.h>
++#include <linux/libfdt.h>
++#include <linux/module.h>
++#include <linux/of.h>
++#include <linux/of_fdt.h>
++#include <linux/platform_device.h>
++#include <linux/serial_8250.h>
++#include <linux/serial_core.h>
++#include <linux/serial_reg.h>
 +
-+void jz4740_clock_suspend(void)
++struct ingenic_uart_data {
++	struct clk	*clk_module;
++	struct clk	*clk_baud;
++	int		line;
++};
++
++#define UART_FCR_UME	BIT(4)
++
++static struct earlycon_device *early_device;
++
++static uint8_t __init early_in(struct uart_port *port, int offset)
 +{
-+	uint32_t clkgr, cppcr;
-+
-+	clkgr = readl(cgu->base + CGU_REG_CLKGR);
-+	clkgr |= JZ_CLOCK_GATE_TCU | JZ_CLOCK_GATE_DMAC | JZ_CLOCK_GATE_UART0;
-+	writel(clkgr, cgu->base + CGU_REG_CLKGR);
-+
-+	cppcr = readl(cgu->base + CGU_REG_CPPCR);
-+	cppcr &= ~BIT(jz4740_cgu_clocks[JZ4740_CLK_PLL].pll.enable_bit);
-+	writel(cppcr, cgu->base + CGU_REG_CPPCR);
++	return readl(port->membase + (offset << 2));
 +}
 +
-+void jz4740_clock_resume(void)
++static void __init early_out(struct uart_port *port, int offset, uint8_t value)
 +{
-+	uint32_t clkgr, cppcr, stable;
++	writel(value, port->membase + (offset << 2));
++}
 +
-+	cppcr = readl(cgu->base + CGU_REG_CPPCR);
-+	cppcr |= BIT(jz4740_cgu_clocks[JZ4740_CLK_PLL].pll.enable_bit);
-+	writel(cppcr, cgu->base + CGU_REG_CPPCR);
++static void __init ingenic_early_console_putc(struct uart_port *port, int c)
++{
++	uint8_t lsr;
 +
-+	stable = BIT(jz4740_cgu_clocks[JZ4740_CLK_PLL].pll.stable_bit);
 +	do {
-+		cppcr = readl(cgu->base + CGU_REG_CPPCR);
-+	} while (!(cppcr & stable));
++		lsr = early_in(port, UART_LSR);
++	} while ((lsr & UART_LSR_TEMT) == 0);
 +
-+	clkgr = readl(cgu->base + CGU_REG_CLKGR);
-+	clkgr &= ~JZ_CLOCK_GATE_TCU;
-+	clkgr &= ~JZ_CLOCK_GATE_DMAC;
-+	clkgr &= ~JZ_CLOCK_GATE_UART0;
-+	writel(clkgr, cgu->base + CGU_REG_CLKGR);
++	early_out(port, UART_TX, c);
 +}
++
++static void __init ingenic_early_console_write(struct console *console,
++					      const char *s, unsigned int count)
++{
++	uart_console_write(&early_device->port, s, count,
++			   ingenic_early_console_putc);
++}
++
++static void __init ingenic_early_console_setup_clock(struct earlycon_device *dev)
++{
++	void *fdt = initial_boot_params;
++	const __be32 *prop;
++	int offset;
++
++	offset = fdt_path_offset(fdt, "/ext");
++	if (offset < 0)
++		return;
++
++	prop = fdt_getprop(fdt, offset, "clock-frequency", NULL);
++	if (!prop)
++		return;
++
++	dev->port.uartclk = be32_to_cpup(prop);
++}
++
++static int __init ingenic_early_console_setup(struct earlycon_device *dev,
++					      const char *opt)
++{
++	struct uart_port *port = &dev->port;
++	unsigned int baud, divisor;
++
++	if (!dev->port.membase)
++		return -ENODEV;
++
++	ingenic_early_console_setup_clock(dev);
++
++	baud = dev->baud ?: 115200;
++	divisor = DIV_ROUND_CLOSEST(port->uartclk, 16 * baud);
++
++	early_out(port, UART_IER, 0);
++	early_out(port, UART_LCR, UART_LCR_DLAB | UART_LCR_WLEN8);
++	early_out(port, UART_DLL, 0);
++	early_out(port, UART_DLM, 0);
++	early_out(port, UART_LCR, UART_LCR_WLEN8);
++	early_out(port, UART_FCR, UART_FCR_UME | UART_FCR_CLEAR_XMIT |
++			UART_FCR_CLEAR_RCVR | UART_FCR_ENABLE_FIFO);
++	early_out(port, UART_MCR, UART_MCR_RTS | UART_MCR_DTR);
++
++	early_out(port, UART_LCR, UART_LCR_DLAB | UART_LCR_WLEN8);
++	early_out(port, UART_DLL, divisor & 0xff);
++	early_out(port, UART_DLM, (divisor >> 8) & 0xff);
++	early_out(port, UART_LCR, UART_LCR_WLEN8);
++
++	early_device = dev;
++	dev->con->write = ingenic_early_console_write;
++
++	return 0;
++}
++
++EARLYCON_DECLARE(jz4740_uart, ingenic_early_console_setup);
++OF_EARLYCON_DECLARE(jz4740_uart, "ingenic,jz4740-uart",
++		    ingenic_early_console_setup);
++
++EARLYCON_DECLARE(jz4775_uart, ingenic_early_console_setup);
++OF_EARLYCON_DECLARE(jz4775_uart, "ingenic,jz4775-uart",
++		    ingenic_early_console_setup);
++
++EARLYCON_DECLARE(jz4780_uart, ingenic_early_console_setup);
++OF_EARLYCON_DECLARE(jz4780_uart, "ingenic,jz4780-uart",
++		    ingenic_early_console_setup);
++
++static void ingenic_uart_serial_out(struct uart_port *p, int offset, int value)
++{
++	switch (offset) {
++	case UART_FCR:
++		/* UART module enable */
++		value |= UART_FCR_UME;
++		break;
++
++	case UART_IER:
++		value |= (value & 0x4) << 2;
++		break;
++
++	default:
++		break;
++	}
++
++	writeb(value, p->membase + (offset << p->regshift));
++}
++
++static int ingenic_uart_probe(struct platform_device *pdev)
++{
++	struct uart_8250_port uart = {};
++	struct resource *regs = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	struct resource *irq = platform_get_resource(pdev, IORESOURCE_IRQ, 0);
++	struct ingenic_uart_data *data;
++	int err, line;
++
++	if (!regs || !irq) {
++		dev_err(&pdev->dev, "no registers/irq defined\n");
++		return -EINVAL;
++	}
++
++	data = devm_kzalloc(&pdev->dev, sizeof(*data), GFP_KERNEL);
++	if (!data)
++		return -ENOMEM;
++
++	spin_lock_init(&uart.port.lock);
++	uart.port.type = PORT_16550;
++	uart.port.flags = UPF_SKIP_TEST | UPF_IOREMAP | UPF_FIXED_TYPE;
++	uart.port.iotype = UPIO_MEM;
++	uart.port.mapbase = regs->start;
++	uart.port.regshift = 2;
++	uart.port.serial_out = ingenic_uart_serial_out;
++	uart.port.irq = irq->start;
++	uart.port.dev = &pdev->dev;
++
++	/* Check for a fixed line number */
++	line = of_alias_get_id(pdev->dev.of_node, "serial");
++	if (line >= 0)
++		uart.port.line = line;
++
++	uart.port.membase = devm_ioremap(&pdev->dev, regs->start,
++					 resource_size(regs));
++	if (!uart.port.membase)
++		return -ENOMEM;
++
++	data->clk_module = devm_clk_get(&pdev->dev, "module");
++	if (IS_ERR(data->clk_module)) {
++		err = PTR_ERR(data->clk_module);
++		if (err != -EPROBE_DEFER)
++			dev_err(&pdev->dev,
++				"unable to get module clock: %d\n", err);
++		return err;
++	}
++
++	data->clk_baud = devm_clk_get(&pdev->dev, "baud");
++	if (IS_ERR(data->clk_baud)) {
++		err = PTR_ERR(data->clk_baud);
++		if (err != -EPROBE_DEFER)
++			dev_err(&pdev->dev,
++				"unable to get baud clock: %d\n", err);
++		return err;
++	}
++
++	err = clk_prepare_enable(data->clk_module);
++	if (err) {
++		dev_err(&pdev->dev, "could not enable module clock: %d\n", err);
++		goto out;
++	}
++
++	err = clk_prepare_enable(data->clk_baud);
++	if (err) {
++		dev_err(&pdev->dev, "could not enable baud clock: %d\n", err);
++		goto out_disable_moduleclk;
++	}
++	uart.port.uartclk = clk_get_rate(data->clk_baud);
++
++	data->line = serial8250_register_8250_port(&uart);
++	if (data->line < 0) {
++		err = data->line;
++		goto out_disable_baudclk;
++	}
++
++	platform_set_drvdata(pdev, data);
++	return 0;
++
++out_disable_baudclk:
++	clk_disable_unprepare(data->clk_baud);
++out_disable_moduleclk:
++	clk_disable_unprepare(data->clk_module);
++out:
++	return err;
++}
++
++static int ingenic_uart_remove(struct platform_device *pdev)
++{
++	struct ingenic_uart_data *data = platform_get_drvdata(pdev);
++
++	serial8250_unregister_port(data->line);
++	clk_disable_unprepare(data->clk_module);
++	clk_disable_unprepare(data->clk_baud);
++	return 0;
++}
++
++static const struct of_device_id of_match[] = {
++	{ .compatible = "ingenic,jz4740-uart" },
++	{ .compatible = "ingenic,jz4775-uart" },
++	{ .compatible = "ingenic,jz4780-uart" },
++	{ /* sentinel */ }
++};
++MODULE_DEVICE_TABLE(of, of_match);
++
++static struct platform_driver ingenic_uart_platform_driver = {
++	.driver = {
++		.name		= "ingenic-uart",
++		.owner		= THIS_MODULE,
++		.of_match_table	= of_match,
++	},
++	.probe			= ingenic_uart_probe,
++	.remove			= ingenic_uart_remove,
++};
++
++module_platform_driver(ingenic_uart_platform_driver);
++
++MODULE_AUTHOR("Paul Burton");
++MODULE_LICENSE("GPL");
++MODULE_DESCRIPTION("Ingenic SoC UART driver");
+diff --git a/drivers/tty/serial/8250/Kconfig b/drivers/tty/serial/8250/Kconfig
+index c350703..43330ea 100644
+--- a/drivers/tty/serial/8250/Kconfig
++++ b/drivers/tty/serial/8250/Kconfig
+@@ -342,3 +342,12 @@ config SERIAL_8250_MT6577
+ 	help
+ 	  If you have a Mediatek based board and want to use the
+ 	  serial port, say Y to this option. If unsure, say N.
++
++config SERIAL_8250_INGENIC
++	bool "Support for Ingenic SoC serial ports"
++	depends on SERIAL_8250_CONSOLE && OF_FLATTREE
++	select LIBFDT
++	select SERIAL_EARLYCON
++	help
++	  If you have a system using an Ingenic SoC and wish to make use of
++	  its UARTs, say Y to this option. If unsure, say N.
+diff --git a/drivers/tty/serial/8250/Makefile b/drivers/tty/serial/8250/Makefile
+index 31e7cdc..98fba26 100644
+--- a/drivers/tty/serial/8250/Makefile
++++ b/drivers/tty/serial/8250/Makefile
+@@ -23,3 +23,6 @@ obj-$(CONFIG_SERIAL_8250_EM)		+= 8250_em.o
+ obj-$(CONFIG_SERIAL_8250_OMAP)		+= 8250_omap.o
+ obj-$(CONFIG_SERIAL_8250_FINTEK)	+= 8250_fintek.o
+ obj-$(CONFIG_SERIAL_8250_MT6577)	+= 8250_mtk.o
++obj-$(CONFIG_SERIAL_8250_INGENIC)	+= 8250_ingenic.o
++
++CFLAGS_8250_ingenic.o += -I$(srctree)/scripts/dtc/libfdt
 -- 
 2.4.1

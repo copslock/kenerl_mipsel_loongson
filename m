@@ -1,45 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 24 May 2015 05:17:58 +0200 (CEST)
-Received: from resqmta-ch2-04v.sys.comcast.net ([69.252.207.36]:38059 "EHLO
-        resqmta-ch2-04v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27006944AbbEXDRyIzOam (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 24 May 2015 05:17:54 +0200
-Received: from resomta-ch2-13v.sys.comcast.net ([69.252.207.109])
-        by resqmta-ch2-04v.sys.comcast.net with comcast
-        id XfHe1q0042N9P4d01fHopk; Sun, 24 May 2015 03:17:48 +0000
-Received: from [192.168.1.13] ([69.251.155.187])
-        by resomta-ch2-13v.sys.comcast.net with comcast
-        id XfHn1q00542s2jH01fHnrk; Sun, 24 May 2015 03:17:48 +0000
-Message-ID: <556142C5.7090206@gentoo.org>
-Date:   Sat, 23 May 2015 23:17:25 -0400
-From:   Joshua Kinard <kumba@gentoo.org>
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:31.0) Gecko/20100101 Thunderbird/31.6.0
-MIME-Version: 1.0
-To:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 24 May 2015 16:25:38 +0200 (CEST)
+Received: (from localhost user: 'macro', uid#1010) by eddie.linux-mips.org
+        with ESMTP id S27006775AbbEXOZfvnAnC (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 24 May 2015 16:25:35 +0200
+Date:   Sun, 24 May 2015 15:25:35 +0100 (BST)
+From:   "Maciej W. Rozycki" <macro@linux-mips.org>
+To:     Joshua Kinard <kumba@gentoo.org>,
+        Ralf Baechle <ralf@linux-mips.org>
+cc:     linux-mips@linux-mips.org
 Subject: Re: IP30: SMP, Almost there?
-References: <55597B21.4010704@gentoo.org>
-In-Reply-To: <55597B21.4010704@gentoo.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=comcast.net;
-        s=q20140121; t=1432437468;
-        bh=MjgjJQ2iSU91a8RQSLMB6BTE7HqBJ65DngaZopSTLSM=;
-        h=Received:Received:Message-ID:Date:From:MIME-Version:To:Subject:
-         Content-Type;
-        b=d4Q/cs2W/pt59tKRCRYyXWxQh1HnUYuj4Fue4K3c0o7+/R6OpzSZMeNGvZRhe2VOs
-         ZL3iLIeWH/5njRzdjDvqJU0v6gT9aAIW0Vi2nMzfkqPFBX+JA1q5JhUTelfj8oDWP7
-         tmb3eq5kassvHLW45IZBngVFfb/2CxYeBGDvuHp/jPYidXWyjO8O3Q/b7UqaYDJI3k
-         MhpwvuZ/q+sejzbaL3B4VSFaMedgwFSSImfcl4zH/qoSmLhBB3meUvbOV/nAA/eTZZ
-         eC2BuQKncG50onqx2kOzQoDIkFLqUfzRqlcG+EfKxONMtDQzc9EzvTSes/r7RUWzuj
-         guXXcerJ/4rEg==
-Return-Path: <kumba@gentoo.org>
+In-Reply-To: <556104B7.8070504@gentoo.org>
+Message-ID: <alpine.LFD.2.11.1505240105050.11225@eddie.linux-mips.org>
+References: <55597B21.4010704@gentoo.org> <5559D483.905@gentoo.org> <555C1A53.9010803@gentoo.org> <555D7469.7090806@gentoo.org> <alpine.LFD.2.11.1505220341220.4923@eddie.linux-mips.org> <20150522171113.GC6467@linux-mips.org> <556104B7.8070504@gentoo.org>
+User-Agent: Alpine 2.11 (LFD 23 2013-08-11)
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47596
+X-archive-position: 47597
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kumba@gentoo.org
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,88 +35,51 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 05/18/2015 01:39, Joshua Kinard wrote:
-> So I've gotten the second CPU in Octane to "tick" again...somehow.  I am
-> certain someone's cat went missing in the process...
+On Sat, 23 May 2015, Joshua Kinard wrote:
 
-So, yeah, the problem appears to be specific to the R14000 CPU module.  I
-swapped in an R12K dual CPU module, and after a little bit of tinkering to
-revert a few hacks and clean up the code, it boots into SMP, mounts the
-userland, and has successfully sync'ed a Gentoo Portage tree w/o annihilating
-the XFS filesystem or the MD RAID5 array.  Even compiled a few C files.
+> > Some of IP27's reactions are a bit unobvious though.  First, the uncached
+> > addres space (CCA 2) works differently that one might think.  IP27 uses
+> > the R10000's uncached attribute feature which subdivides the CPUs
+> > uncached XKPHYS address space into four addres spaces with the highest
+> > address byte being 0x90, 0x92, 0x94 or 0x96.  The classic uncached
+> > memory access happens with UC=3, that is the top address byte being
+> > 0x96.
 
-# cat /proc/interrupts
-           CPU0       CPU1
- 14:          0          0     HEART  powerbtn
- 15:          0          0     HEART  acfail
- 16:          0      44887     HEART  qla1280
- 17:          0      16904     HEART  qla1280
- 18:       1853          0     HEART  ioc3-eth
- 20:        243          0     HEART  ioc3-io
- 46:     348850          0     HEART  cpu0-ipi
- 47:          0     315948     HEART  cpu1-ipi
- 50:       1268          0     HEART  heart_timer
- 71:     118453     195177       CPU  timer
+ Interesting.  For the record, this is noted in Section 6.23 "Support for 
+Uncached Attribute" of the R10k manual, though the interpretation of the 
+attributes is itself system-specific.
 
-# cat /proc/cpuinfo
-system type             : SGI Octane
-machine                 : Unknown
-processor               : 0
-cpu model               : R12000 V3.5  FPU V0.0
-BogoMIPS                : 600.47
-byteorder               : big endian
-wait instruction        : no
-microsecond timers      : yes
-tlb_entries             : 64
-extra interrupt vector  : no
-hardware watchpoint     : yes, count: 0, address/irw mask: []
-isa                     : mips2 mips3 mips4
-ASEs implemented        :
-shadow register sets    : 1
-kscratch registers      : 0
-package                 : 0
-core                    : 0
-VCED exceptions         : not available
-VCEI exceptions         : not available
+ And it looks we do handle the attributes correctly in `ioremap', via 
+IO_BASE.  However it also looks to me like a corresponding update to 
+`pte_to_entrylo' is needed so that we don't attempt an uncached virtual 
+mapping with the wrong attribute (e.g. with an O_DSYNC mmap(2) of 
+/dev/mem).  Ralf, WDYT?
 
-processor               : 1
-cpu model               : R12000 V3.5  FPU V0.0
-BogoMIPS                : 600.47
-byteorder               : big endian
-wait instruction        : no
-microsecond timers      : yes
-tlb_entries             : 64
-extra interrupt vector  : no
-hardware watchpoint     : yes, count: 0, address/irw mask: []
-isa                     : mips2 mips3 mips4
-ASEs implemented        :
-shadow register sets    : 1
-kscratch registers      : 0
-package                 : 0
-core                    : 0
-VCED exceptions         : not available
-VCEI exceptions         : not available
+> I was reading the IRIX Device Driver Programming Guide (007-0911-210), Chapter
+> 1, and saw the explanation for this.  Also the bit on how the memory addresses
+> are coded so that a reference to the specific node number can be encoded as
+> well to assist the CPUs in accessing the memory closest to them.  Definitely
+> interesting, but apparently Octane doesn't appear to use any of this.  As far
+> as I can tell, it's main UNCAC_BASE and IO_BASE is classic 0x9000000000000000,
+> CAC_BASE is 0xa800000000000000, and MAP_BASE is 0xc000000000000000.  These are
+> all the defaults in mach-generic/spaces.h, so IP30 has never had to define a
+> local spaces.h override.
+> 
+> It DOES look like I need to hardcode the 'cca=5' bit, somewhere, though.
+> Whatever the Octane is booting up with does not work for SMP.
 
-I even got the IRQs to be fanned out across both CPUs.  Well, primarily the
-qla1280 drivers.  They randomly hop between both CPUs, but no ill effects so far.
+ Hmm, `coherency_setup' normally does the sane thing, Config.K0 should 
+have been correctly set up by the firmware.  If not (what is it then?), 
+then it looks to me like a quirk to resolve in platform code; IMHO just 
+rewrite Config.K0 with the right value early on, before `coherency_setup' 
+is called.
 
-But if I boot that *same* working kernel on an R14000 dual module, I get handed
-an IBE as soon as the userland mounts.  The only documented differences that I
-can find on the R14000 is that it supports DDR memory, being able to do memory
-operations on the rising edge and falling edge of each clock.  Not sure if that
-matters to the kernel at all, but I know of nothing else that describes the
-R14K's internals, such as if there's some new bit in CP0 config,
-branch-diagnostic, status, etc, that might explain why these IBE's are happening.
+> > Do not use that.  EVER.  It entirely bypasses the CPU's cache coherency
+> > logic.  Due to all the consistency checking between the directory
+> > caches and other involved agents the memory controller might detect the
+> > inconsistency between cache and memory and send guess what, a bus
+> > error.
 
-Guess I need to hunt down my old dual R10K module next and verify that works
-fine...
+ OK, that does sound like plausible explanation for the bus error to me.
 
-Also, is there a way to hardcode the cca=5 setting for IP30?  Maybe it needs to
-be a hidden Kconfig item?.  I tried setting cpu->writecombine in cpu-probe.c,
-but no dice there.  If I boot an SMP kernel on dual R12K's w/o cca=5, I'll get
-one or two pretty-specific oopses.  The one I did grab complains about bad
-spinlock magic in the core tty driver somewhere.  I can transcribe that oops
-later on if interested.
-
-
---J
+  Maciej

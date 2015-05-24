@@ -1,27 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 24 May 2015 17:24:11 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:44121 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 24 May 2015 17:25:45 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:60585 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27007004AbbEXPYHy13AC (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 24 May 2015 17:24:07 +0200
+        with ESMTP id S27013572AbbEXPZmBR2lj (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 24 May 2015 17:25:42 +0200
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id C69793B732F97;
-        Sun, 24 May 2015 16:24:01 +0100 (IST)
+        by Websense Email Security Gateway with ESMTPS id A903E1B3D486B;
+        Sun, 24 May 2015 16:25:35 +0100 (IST)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
  KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Sun, 24 May 2015 16:24:04 +0100
+ 14.3.195.1; Sun, 24 May 2015 16:24:35 +0100
 Received: from localhost (192.168.159.140) by LEMAIL01.le.imgtec.org
  (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Sun, 24 May
- 2015 16:24:01 +0100
+ 2015 16:24:28 +0100
 From:   Paul Burton <paul.burton@imgtec.com>
 To:     <linux-mips@linux-mips.org>
 CC:     Paul Burton <paul.burton@imgtec.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Ralf Baechle <ralf@linux-mips.org>,
         Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>,
-        <linux-kernel@vger.kernel.org>
-Subject: [PATCH v5 22/37] MIPS: JZ4740: call jz4740_clock_init earlier
-Date:   Sun, 24 May 2015 16:11:32 +0100
-Message-ID: <1432480307-23789-23-git-send-email-paul.burton@imgtec.com>
+        <linux-kernel@vger.kernel.org>,
+        Apelete Seketeli <apelete@seketeli.net>
+Subject: [PATCH v5 23/37] MIPS: JZ4740: replace use of jz4740_clock_bdata
+Date:   Sun, 24 May 2015 16:11:33 +0100
+Message-ID: <1432480307-23789-24-git-send-email-paul.burton@imgtec.com>
 X-Mailer: git-send-email 2.4.1
 In-Reply-To: <1432480307-23789-1-git-send-email-paul.burton@imgtec.com>
 References: <1432480307-23789-1-git-send-email-paul.burton@imgtec.com>
@@ -32,7 +33,7 @@ Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47621
+X-archive-position: 47622
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -49,10 +50,9 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Call jz4740_clock_init before any uses of jz4740_clock_bdata occur. This
-is in preparation for replacing uses of that struct with calls to
-clk_get_rate, which will allow the clocks to be migrated towards common
-clock framework & devicetree.
+Replace uses of the jz4740_clock_bdata struct with calls to clk_get_rate
+for the appropriate clock. This is in preparation for migrating the
+clocks towards common clock framework & devicetree.
 
 Signed-off-by: Paul Burton <paul.burton@imgtec.com>
 Cc: Lars-Peter Clausen <lars@metafoo.de>
@@ -67,61 +67,115 @@ Changes in v3:
 
 Changes in v2: None
 
- arch/mips/include/asm/mach-jz4740/clock.h | 2 ++
- arch/mips/jz4740/clock.c                  | 3 +--
- arch/mips/jz4740/time.c                   | 2 ++
- 3 files changed, 5 insertions(+), 2 deletions(-)
+ arch/mips/jz4740/platform.c | 11 ++++++++++-
+ arch/mips/jz4740/reset.c    | 13 +++++++++++--
+ arch/mips/jz4740/time.c     |  9 ++++++++-
+ 3 files changed, 29 insertions(+), 4 deletions(-)
 
-diff --git a/arch/mips/include/asm/mach-jz4740/clock.h b/arch/mips/include/asm/mach-jz4740/clock.h
-index 16659cd..01d8468 100644
---- a/arch/mips/include/asm/mach-jz4740/clock.h
-+++ b/arch/mips/include/asm/mach-jz4740/clock.h
-@@ -20,6 +20,8 @@ enum jz4740_wait_mode {
- 	JZ4740_WAIT_MODE_SLEEP,
- };
+diff --git a/arch/mips/jz4740/platform.c b/arch/mips/jz4740/platform.c
+index 0b12f27..2a5c7c7 100644
+--- a/arch/mips/jz4740/platform.c
++++ b/arch/mips/jz4740/platform.c
+@@ -13,6 +13,7 @@
+  *
+  */
  
-+int jz4740_clock_init(void);
-+
- void jz4740_clock_set_wait_mode(enum jz4740_wait_mode mode);
- 
- void jz4740_clock_udc_enable_auto_suspend(void);
-diff --git a/arch/mips/jz4740/clock.c b/arch/mips/jz4740/clock.c
-index 1b5f554..c257073 100644
---- a/arch/mips/jz4740/clock.c
-+++ b/arch/mips/jz4740/clock.c
-@@ -889,7 +889,7 @@ void jz4740_clock_resume(void)
- 		JZ_CLOCK_GATE_TCU | JZ_CLOCK_GATE_DMAC | JZ_CLOCK_GATE_UART0);
- }
- 
--static int jz4740_clock_init(void)
-+int jz4740_clock_init(void)
++#include <linux/clk.h>
+ #include <linux/device.h>
+ #include <linux/kernel.h>
+ #include <linux/platform_device.h>
+@@ -308,9 +309,17 @@ static struct platform_device jz4740_uart_device = {
+ void jz4740_serial_device_register(void)
  {
- 	uint32_t val;
+ 	struct plat_serial8250_port *p;
++	struct clk *ext_clk;
++	unsigned long ext_rate;
++
++	ext_clk = clk_get(NULL, "ext");
++	if (IS_ERR(ext_clk))
++		panic("unable to get ext clock");
++	ext_rate = clk_get_rate(ext_clk);
++	clk_put(ext_clk);
  
-@@ -921,4 +921,3 @@ static int jz4740_clock_init(void)
+ 	for (p = jz4740_uart_data; p->flags != 0; ++p)
+-		p->uartclk = jz4740_clock_bdata.ext_rate;
++		p->uartclk = ext_rate;
  
- 	return 0;
+ 	platform_device_register(&jz4740_uart_device);
  }
--arch_initcall(jz4740_clock_init);
+diff --git a/arch/mips/jz4740/reset.c b/arch/mips/jz4740/reset.c
+index b6c6343..954e669 100644
+--- a/arch/mips/jz4740/reset.c
++++ b/arch/mips/jz4740/reset.c
+@@ -12,6 +12,7 @@
+  *
+  */
+ 
++#include <linux/clk.h>
+ #include <linux/io.h>
+ #include <linux/kernel.h>
+ #include <linux/pm.h>
+@@ -79,12 +80,20 @@ static void jz4740_power_off(void)
+ 	void __iomem *rtc_base = ioremap(JZ4740_RTC_BASE_ADDR, 0x38);
+ 	unsigned long wakeup_filter_ticks;
+ 	unsigned long reset_counter_ticks;
++	struct clk *rtc_clk;
++	unsigned long rtc_rate;
++
++	rtc_clk = clk_get(NULL, "rtc");
++	if (IS_ERR(rtc_clk))
++		panic("unable to get RTC clock");
++	rtc_rate = clk_get_rate(rtc_clk);
++	clk_put(rtc_clk);
+ 
+ 	/*
+ 	 * Set minimum wakeup pin assertion time: 100 ms.
+ 	 * Range is 0 to 2 sec if RTC is clocked at 32 kHz.
+ 	 */
+-	wakeup_filter_ticks = (100 * jz4740_clock_bdata.rtc_rate) / 1000;
++	wakeup_filter_ticks = (100 * rtc_rate) / 1000;
+ 	if (wakeup_filter_ticks < JZ_RTC_WAKEUP_FILTER_MASK)
+ 		wakeup_filter_ticks &= JZ_RTC_WAKEUP_FILTER_MASK;
+ 	else
+@@ -96,7 +105,7 @@ static void jz4740_power_off(void)
+ 	 * Set reset pin low-level assertion time after wakeup: 60 ms.
+ 	 * Range is 0 to 125 ms if RTC is clocked at 32 kHz.
+ 	 */
+-	reset_counter_ticks = (60 * jz4740_clock_bdata.rtc_rate) / 1000;
++	reset_counter_ticks = (60 * rtc_rate) / 1000;
+ 	if (reset_counter_ticks < JZ_RTC_RESET_COUNTER_MASK)
+ 		reset_counter_ticks &= JZ_RTC_RESET_COUNTER_MASK;
+ 	else
 diff --git a/arch/mips/jz4740/time.c b/arch/mips/jz4740/time.c
-index 72b0cecb..78ed765 100644
+index 78ed765..f66f7f5 100644
 --- a/arch/mips/jz4740/time.c
 +++ b/arch/mips/jz4740/time.c
-@@ -20,6 +20,7 @@
- #include <linux/clockchips.h>
- #include <linux/sched_clock.h>
+@@ -13,6 +13,7 @@
+  *
+  */
  
-+#include <asm/mach-jz4740/clock.h>
- #include <asm/mach-jz4740/irq.h>
- #include <asm/mach-jz4740/timer.h>
- #include <asm/time.h>
-@@ -115,6 +116,7 @@ void __init plat_time_init(void)
++#include <linux/clk.h>
+ #include <linux/interrupt.h>
+ #include <linux/kernel.h>
+ #include <linux/time.h>
+@@ -115,11 +116,17 @@ void __init plat_time_init(void)
+ 	int ret;
  	uint32_t clk_rate;
  	uint16_t ctrl;
++	struct clk *ext_clk;
  
-+	jz4740_clock_init();
+ 	jz4740_clock_init();
  	jz4740_timer_init();
  
- 	clk_rate = jz4740_clock_bdata.ext_rate >> 4;
+-	clk_rate = jz4740_clock_bdata.ext_rate >> 4;
++	ext_clk = clk_get(NULL, "ext");
++	if (IS_ERR(ext_clk))
++		panic("unable to get ext clock");
++	clk_rate = clk_get_rate(ext_clk) >> 4;
++	clk_put(ext_clk);
++
+ 	jz4740_jiffies_per_tick = DIV_ROUND_CLOSEST(clk_rate, HZ);
+ 
+ 	clockevent_set_clock(&jz4740_clockevent, clk_rate);
 -- 
 2.4.1

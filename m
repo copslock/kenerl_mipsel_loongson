@@ -1,28 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 24 May 2015 17:28:22 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:33144 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 24 May 2015 17:28:42 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:64794 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27006783AbbEXP2TF2XNN (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 24 May 2015 17:28:19 +0200
+        with ESMTP id S27026828AbbEXP2XyUDwa (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 24 May 2015 17:28:23 +0200
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id D1817897CE2DD;
-        Sun, 24 May 2015 16:28:12 +0100 (IST)
+        by Websense Email Security Gateway with ESMTPS id DE3CF2A86C03C;
+        Sun, 24 May 2015 16:28:17 +0100 (IST)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
  KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Sun, 24 May 2015 16:27:12 +0100
+ 14.3.195.1; Sun, 24 May 2015 16:23:16 +0100
 Received: from localhost (192.168.159.140) by LEMAIL01.le.imgtec.org
  (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Sun, 24 May
- 2015 16:27:08 +0100
+ 2015 16:23:11 +0100
 From:   Paul Burton <paul.burton@imgtec.com>
 To:     <linux-mips@linux-mips.org>
 CC:     Paul Burton <paul.burton@imgtec.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Mike Turquette <mturquette@linaro.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>,
         Ralf Baechle <ralf@linux-mips.org>,
-        Stephen Boyd <sboyd@codeaurora.org>,
-        <linux-clk@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH v5 28/37] MIPS, clk: move jz4740 UDC auto suspend functions to jz4740-cgu
-Date:   Sun, 24 May 2015 16:11:38 +0100
-Message-ID: <1432480307-23789-29-git-send-email-paul.burton@imgtec.com>
+        <linux-kernel@vger.kernel.org>,
+        Brian Norris <computersforpeace@gmail.com>
+Subject: [PATCH v5 20/37] MIPS: JZ4740: support newer SoC interrupt controllers
+Date:   Sun, 24 May 2015 16:11:30 +0100
+Message-ID: <1432480307-23789-21-git-send-email-paul.burton@imgtec.com>
 X-Mailer: git-send-email 2.4.1
 In-Reply-To: <1432480307-23789-1-git-send-email-paul.burton@imgtec.com>
 References: <1432480307-23789-1-git-send-email-paul.burton@imgtec.com>
@@ -33,7 +34,7 @@ Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47627
+X-archive-position: 47628
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -50,105 +51,44 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The jz4740-cgu driver already has access to the CGU, so it makes sense
-to move the few remaining accesses to the CGU from arch/mips/jz4740
-there too. Move the jz4740_clock_udc_{dis,en}able_auto_suspend functions
-there for such consistency.
+Allow the interrupt controllers of the JZ4770, JZ4775 & JZ4780 SoCs to
+be probed via devicetree, supporting the 64 interrupts they provide.
 
 Signed-off-by: Paul Burton <paul.burton@imgtec.com>
 Cc: Lars-Peter Clausen <lars@metafoo.de>
-Cc: Mike Turquette <mturquette@linaro.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Jason Cooper <jason@lakedaemon.net>
 Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Stephen Boyd <sboyd@codeaurora.org>
-Cc: linux-clk@vger.kernel.org
 Cc: linux-mips@linux-mips.org
 ---
 
 Changes in v5: None
 Changes in v4: None
 Changes in v3:
-- Rebase.
+- Support JZ4775, and use a more generic "2chip" probe function name
+  for doing so whilst sharing code with the JZ4780.
 
 Changes in v2: None
 
- arch/mips/jz4740/clock.c         | 13 -------------
- drivers/clk/ingenic/jz4740-cgu.c | 22 ++++++++++++++++++++++
- 2 files changed, 22 insertions(+), 13 deletions(-)
+ arch/mips/jz4740/irq.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/arch/mips/jz4740/clock.c b/arch/mips/jz4740/clock.c
-index 90b44d7..2a10829 100644
---- a/arch/mips/jz4740/clock.c
-+++ b/arch/mips/jz4740/clock.c
-@@ -33,7 +33,6 @@
- 
- #define JZ_CLOCK_GATE_UART0	BIT(0)
- #define JZ_CLOCK_GATE_TCU	BIT(1)
--#define JZ_CLOCK_GATE_UDC	BIT(11)
- #define JZ_CLOCK_GATE_DMAC	BIT(12)
- 
- #define JZ_CLOCK_PLL_STABLE		BIT(10)
-@@ -64,18 +63,6 @@ static void jz_clk_reg_clear_bits(int reg, uint32_t mask)
- 	writel(val, jz_clock_base + reg);
+diff --git a/arch/mips/jz4740/irq.c b/arch/mips/jz4740/irq.c
+index 5887f37..64b4c36 100644
+--- a/arch/mips/jz4740/irq.c
++++ b/arch/mips/jz4740/irq.c
+@@ -167,3 +167,12 @@ static int __init intc_1chip_of_init(struct device_node *node,
+ 	return ingenic_intc_of_init(node, 1);
  }
- 
--void jz4740_clock_udc_disable_auto_suspend(void)
--{
--	jz_clk_reg_clear_bits(JZ_REG_CLOCK_GATE, JZ_CLOCK_GATE_UDC);
--}
--EXPORT_SYMBOL_GPL(jz4740_clock_udc_disable_auto_suspend);
--
--void jz4740_clock_udc_enable_auto_suspend(void)
--{
--	jz_clk_reg_set_bits(JZ_REG_CLOCK_GATE, JZ_CLOCK_GATE_UDC);
--}
--EXPORT_SYMBOL_GPL(jz4740_clock_udc_enable_auto_suspend);
--
- void jz4740_clock_suspend(void)
- {
- 	jz_clk_reg_set_bits(JZ_REG_CLOCK_GATE,
-diff --git a/drivers/clk/ingenic/jz4740-cgu.c b/drivers/clk/ingenic/jz4740-cgu.c
-index 0209ed6..0e692ed 100644
---- a/drivers/clk/ingenic/jz4740-cgu.c
-+++ b/drivers/clk/ingenic/jz4740-cgu.c
-@@ -26,6 +26,7 @@
- #define CGU_REG_CPCCR		0x00
- #define CGU_REG_LCR		0x04
- #define CGU_REG_CPPCR		0x10
-+#define CGU_REG_CLKGR		0x20
- #define CGU_REG_SCR		0x24
- #define CGU_REG_I2SCDR		0x60
- #define CGU_REG_LPCDR		0x64
-@@ -47,6 +48,9 @@
- /* bits within the LCR register */
- #define LCR_SLEEP		(1 << 0)
- 
-+/* bits within the CLKGR register */
-+#define CLKGR_UDC		(1 << 11)
+ IRQCHIP_DECLARE(jz4740_intc, "ingenic,jz4740-intc", intc_1chip_of_init);
 +
- static struct ingenic_cgu *cgu;
- 
- static const s8 pll_od_encoding[4] = {
-@@ -242,3 +246,21 @@ void jz4740_clock_set_wait_mode(enum jz4740_wait_mode mode)
- 
- 	writel(lcr, cgu->base + CGU_REG_LCR);
- }
-+
-+void jz4740_clock_udc_disable_auto_suspend(void)
++static int __init intc_2chip_of_init(struct device_node *node,
++	struct device_node *parent)
 +{
-+	uint32_t clkgr = readl(cgu->base + CGU_REG_CLKGR);
-+
-+	clkgr &= ~CLKGR_UDC;
-+	writel(clkgr, cgu->base + CGU_REG_CLKGR);
++	return ingenic_intc_of_init(node, 2);
 +}
-+EXPORT_SYMBOL_GPL(jz4740_clock_udc_disable_auto_suspend);
-+
-+void jz4740_clock_udc_enable_auto_suspend(void)
-+{
-+	uint32_t clkgr = readl(cgu->base + CGU_REG_CLKGR);
-+
-+	clkgr |= CLKGR_UDC;
-+	writel(clkgr, cgu->base + CGU_REG_CLKGR);
-+}
-+EXPORT_SYMBOL_GPL(jz4740_clock_udc_enable_auto_suspend);
++IRQCHIP_DECLARE(jz4770_intc, "ingenic,jz4770-intc", intc_2chip_of_init);
++IRQCHIP_DECLARE(jz4775_intc, "ingenic,jz4775-intc", intc_2chip_of_init);
++IRQCHIP_DECLARE(jz4780_intc, "ingenic,jz4780-intc", intc_2chip_of_init);
 -- 
 2.4.1

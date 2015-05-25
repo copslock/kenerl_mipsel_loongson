@@ -1,41 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 May 2015 20:15:22 +0200 (CEST)
-Received: from resqmta-ch2-05v.sys.comcast.net ([69.252.207.37]:60485 "EHLO
-        resqmta-ch2-05v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007138AbbEYSPUIe8vD (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 25 May 2015 20:15:20 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 May 2015 20:16:15 +0200 (CEST)
+Received: from resqmta-ch2-11v.sys.comcast.net ([69.252.207.43]:34516 "EHLO
+        resqmta-ch2-11v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007134AbbEYSQMuYv3e (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 25 May 2015 20:16:12 +0200
 Received: from resomta-ch2-08v.sys.comcast.net ([69.252.207.104])
-        by resqmta-ch2-05v.sys.comcast.net with comcast
-        id YJF61q0012Fh1PH01JFFA8; Mon, 25 May 2015 18:15:15 +0000
+        by resqmta-ch2-11v.sys.comcast.net with comcast
+        id YJG91q0022Fh1PH01JG9kJ; Mon, 25 May 2015 18:16:09 +0000
 Received: from [192.168.1.13] ([69.251.155.187])
         by resomta-ch2-08v.sys.comcast.net with comcast
-        id YJFE1q00P42s2jH01JFFfz; Mon, 25 May 2015 18:15:15 +0000
-Message-ID: <556366AE.6030001@gentoo.org>
-Date:   Mon, 25 May 2015 14:15:10 -0400
+        id YJG91q00842s2jH01JG9ms; Mon, 25 May 2015 18:16:09 +0000
+Message-ID: <556366E4.70407@gentoo.org>
+Date:   Mon, 25 May 2015 14:16:04 -0400
 From:   Joshua Kinard <kumba@gentoo.org>
 User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:31.0) Gecko/20100101 Thunderbird/31.6.0
 MIME-Version: 1.0
 To:     Ralf Baechle <ralf@linux-mips.org>
 CC:     Linux MIPS List <linux-mips@linux-mips.org>
-Subject: [PATCH v2 1/2]: MIPS: Xtalk: Update xwidget.h with known Xtalk device
- numbers
+Subject: [PATCH v2 2/2]: MIPS: IP27: Xtalk detection cleanups
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=comcast.net;
-        s=q20140121; t=1432577715;
-        bh=B8O7nq1qoyyuxzPBNTv/ijqzkOD6W1atTxwJxUrqPxs=;
+        s=q20140121; t=1432577769;
+        bh=Nn2PXT0Di9HuR6QsAvtk1dp7VEgmUnR1gmPdajGSR30=;
         h=Received:Received:Message-ID:Date:From:MIME-Version:To:Subject:
          Content-Type;
-        b=wc8Ar7HqZku+dAfrHG8vyVLjJ4oCSJnlpHWW01TeBz+LjrdNFM72ECSH8Ft91xotT
-         Nsb1FYModh0qcKbynSuEt6mUBypdzXbO0HTKqkbESArN30KUpba/JVYmfuG+a5A062
-         ZGhPX9Ffpx0DyvtiO6+R1t1WnaIS0BnnRSTxeE65WAbayDj1gcACd7QLtInJSEpGOp
-         wy+eRZcNdY5azlyU2Fg1u1ZnXurMiVUmUnSg4c38Cevn3R9kEn0A6CpnNk7e/5jDaU
-         8kx4Jm2O576b0r9/NyzVgEKNxgtLEkfN89shlFu2/bAP2cZZ+4Ppn16PN+SYXpYwF+
-         W38qLBJ14GYaA==
+        b=VfsefBjZDRgTLLOpOGmyoOT0/bQnFjqax7MI1EO7a1DUY0Clu6fPc3D1okVcM9bEp
+         6RoIRlU+gHio269PZwFcxcIbV2bUq5lTQ3T30Ii6lnvulCd5bTarCrKPQLjPyfMXSc
+         TekkdZk+8q3yhFaFi0+FlDIlzYa4CKztIZeD8y+mNHRVbCQRz7cKfInbdqm9/rv36p
+         XpBPjj6RX7ifwO3I3uSMAdqtP/Q/9w7mlPo7/WuJ7Kj/mY2O66l6cxLWpDsX+aKdDa
+         K4XkwU8+//g/NN3gkswbRrLwcChKQYZ96PI8bRadLm5TV+5rlSpJWGTqNSITGhOWuh
+         o0sKMCqGdbipQ==
 Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47654
+X-archive-position: 47655
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -54,140 +53,156 @@ X-list: linux-mips
 
 From: Joshua Kinard <kumba@gentoo.org>
 
-This is the first patch of two to clean up/update the Xtalk detection
+This is the second patch of two to clean up/update the Xtalk detection
 code used by IP27 with some of the code used in the IP30 port.
 
-This specific patch adds Xtalk widget manufacturer and widget device
-numbers to arch/mips/include/asm/xtalk/widget.h
+This specific patch replaces some of the IP27 Xtalk detection code with
+methods used in the IP30 port, and converts the Xtalk devices into
+platform devices.
 
 Signed-off-by: Joshua Kinard <kumba@gentoo.org>
 ---
- arch/mips/include/asm/xtalk/xwidget.h |  112 ++++++++++++++++++++++++
- 1 file changed, 112 insertions(+)
+ arch/mips/include/asm/pci.h |    3 +++
+ arch/mips/pci/pci.c         |   10 ++++++++--
+ 2 files changed, 11 insertions(+), 2 deletions(-)
 
 This version corrects several issues detected by checkpatch.pl.
 
-linux-mips-xtalk-updates.patch
-diff --git a/arch/mips/include/asm/xtalk/xwidget.h b/arch/mips/include/asm/xtalk/xwidget.h
-index 32e4e88..24f121d 100644
---- a/arch/mips/include/asm/xtalk/xwidget.h
-+++ b/arch/mips/include/asm/xtalk/xwidget.h
-@@ -84,6 +84,118 @@
- #define WIDGET_LLP_MAXBURST		0x000003ff
- #define WIDGET_LLP_MAXBURST_SHFT	0
+linux-mips-ip27-xtalk-cleanup.patch
+diff --git a/arch/mips/sgi-ip27/ip27-xtalk.c b/arch/mips/sgi-ip27/ip27-xtalk.c
+index 20f582a..c262208 100644
+--- a/arch/mips/sgi-ip27/ip27-xtalk.c
++++ b/arch/mips/sgi-ip27/ip27-xtalk.c
+@@ -9,38 +9,55 @@
  
-+/* Xtalk Widget Device Mfgr Nums */
-+#define WIDGET_XBOW_MFGR_NUM	0x0      /* IP30 XBow Chip */
-+#define WIDGET_XXBOW_MFGR_NUM	0x0      /* IP35 Xbow + XBridge Chip */
-+#define WIDGET_ODYS_MFGR_NUM	0x023    /* Odyssey / VPro GFX */
-+#define WIDGET_TPU_MFGR_NUM	0x024    /* Tensor Processor Unit */
-+#define WIDGET_XBRDG_MFGR_NUM	0x024    /* IP35 XBridge Chip */
-+#define WIDGET_HEART_MFGR_NUM	0x036    /* IP30 HEART Chip */
-+#define WIDGET_BRIDG_MFGR_NUM	0x036    /* PCI Bridge */
-+#define WIDGET_HUB_MFGR_NUM	0x036    /* IP27 Hub Chip */
-+#define WIDGET_BDRCK_MFGR_NUM	0x036    /* IP35 Bedrock Chip */
-+#define WIDGET_IMPCT_MFGR_NUM	0x2aa    /* HQ4 / Impact GFX */
-+#define WIDGET_KONA_MFGR_NUM	0x2aa    /* InfiniteReality3 / Kona GFX */
-+#define WIDGET_NULL_MFGR_NUM	-1       /* NULL */
+ #include <linux/kernel.h>
+ #include <linux/smp.h>
++#include <linux/platform_device.h>
 +
-+/* Xtalk Widget Device Part Nums */
-+#define WIDGET_XBOW_PART_NUM	0x0000
-+#define WIDGET_HEART_PART_NUM	0xc001
-+#define WIDGET_BRIDG_PART_NUM	0xc002
-+#define WIDGET_IMPCT_PART_NUM	0xc003
-+#define WIDGET_ODYS_PART_NUM	0xc013
-+#define WIDGET_HUB_PART_NUM	0xc101
-+#define WIDGET_KONA_PART_NUM	0xc102
-+#define WIDGET_BDRCK_PART_NUM	0xc110
-+#define WIDGET_TPU_PART_NUM	0xc202
-+#define WIDGET_XXBOW_PART_NUM	0xd000
-+#define WIDGET_XBRDG_PART_NUM	0xd002
-+#define WIDGET_NULL_PART_NUM	-1
+ #include <asm/sn/types.h>
+ #include <asm/sn/klconfig.h>
+ #include <asm/sn/hub.h>
+ #include <asm/pci/bridge.h>
+ #include <asm/xtalk/xtalk.h>
++#include <asm/xtalk/xwidget.h>
+ 
+-
+-#define XBOW_WIDGET_PART_NUM	0x0
+-#define XXBOW_WIDGET_PART_NUM	0xd000	/* Xbow in Xbridge */
+ #define BASE_XBOW_PORT		8     /* Lowest external port */
+ 
+ extern int bridge_probe(nasid_t nasid, int widget, int masterwid);
+ 
+ static int probe_one_port(nasid_t nasid, int widget, int masterwid)
+ {
+-	widgetreg_t		widget_id;
+-	xwidget_part_num_t	partnum;
++	const struct widget_ident *res;
++	u32 wid_id, wid_part, wid_mfgr, wid_rev;
+ 
+-	widget_id = *(volatile widgetreg_t *)
++	wid_id = *(volatile widgetreg_t *)
+ 		(RAW_NODE_SWIN_BASE(nasid, widget) + WIDGET_ID);
+-	partnum = XWIDGET_PART_NUM(widget_id);
+ 
+-	printk(KERN_INFO "Cpu %d, Nasid 0x%x, widget 0x%x (partnum 0x%x) is ",
+-			smp_processor_id(), nasid, widget, partnum);
++	wid_mfgr = XWIDGET_MFG_NUM(wid_id);
++	wid_part = XWIDGET_PART_NUM(wid_id);
++	wid_rev = XWIDGET_REV_NUM(wid_id);
 +
-+/* For Xtalk Widget identification */
-+struct widget_ident {
-+	u32 mfgr;
-+	u32 part;
-+	char *name;
-+	char *revs[16];
-+};
++	for (res = widget_idents; res->name; res++)
++		if ((res->mfgr == wid_mfgr) &&
++			(res->part == wid_part))
++			break;
 +
-+/* Known Xtalk Widgets */
-+static const struct widget_ident __initconst widget_idents[] = {
-+	{
-+		WIDGET_XBOW_MFGR_NUM,
-+		WIDGET_XBOW_PART_NUM,
-+		"xbow",
-+		{NULL, "1.0", "1.1", "1.2", "1.3", "2.0", NULL},
-+	},
-+	{
-+		WIDGET_HEART_MFGR_NUM,
-+		WIDGET_HEART_PART_NUM,
-+		"heart",
-+		{NULL, "A", "B", "C", "D", "E", "F", NULL},
-+	},
-+	{
-+		WIDGET_BRIDG_MFGR_NUM,
-+		WIDGET_BRIDG_PART_NUM,
-+		"bridge",
-+		{NULL, "A", "B", "C", "D", NULL},
-+	},
-+	{
-+		WIDGET_IMPCT_MFGR_NUM,
-+		WIDGET_IMPCT_PART_NUM,
-+		"impact",
-+		{NULL, "A", "B", NULL},
-+	},
-+	{
-+		WIDGET_ODYS_MFGR_NUM,
-+		WIDGET_ODYS_PART_NUM,
-+		"odyssey",
-+		{NULL, "A", "B", NULL},
-+	},
-+	{
-+		WIDGET_HUB_MFGR_NUM,
-+		WIDGET_HUB_PART_NUM,
-+		"hub",
-+		{NULL, "1.0", "2.0", "2.1", "2.2", "2.3", "2.4", NULL},
-+	},
-+	{
-+		WIDGET_KONA_MFGR_NUM,
-+		WIDGET_KONA_PART_NUM,
-+		"kona",
-+		{NULL},
-+	},
-+	{
-+		WIDGET_BDRCK_MFGR_NUM,
-+		WIDGET_BDRCK_PART_NUM,
-+		"bedrock",
-+		{NULL, "1.0", "1.1", NULL},
-+	},
-+	{
-+		WIDGET_TPU_MFGR_NUM,
-+		WIDGET_TPU_PART_NUM,
-+		"tpu",
-+		{"0", NULL},
-+	},
-+	{
-+		WIDGET_XXBOW_MFGR_NUM,
-+		WIDGET_XXBOW_PART_NUM,
-+		"xxbow",
-+		{NULL, "1.0", "2.0", NULL},
-+	},
-+	{
-+		WIDGET_XBRDG_MFGR_NUM,
-+		WIDGET_XBRDG_PART_NUM,
-+		"xbridge",
-+		{NULL, "A", "B", NULL},
-+	},
-+	{
-+		WIDGET_NULL_MFGR_NUM,
-+		WIDGET_NULL_PART_NUM,
-+		NULL,
-+		{NULL},
++	if (res->name == NULL) {
++		pr_info("xtalk:%d unknown widget 0x%08x\n", widget, wid_id);
++		return -ENODEV;
 +	}
-+};
+ 
+-	switch (partnum) {
+-	case BRIDGE_WIDGET_PART_NUM:
+-	case XBRIDGE_WIDGET_PART_NUM:
++	pr_info("Cpu %d, Nasid 0x%x, widget 0x%x (part 0x%x) is ",
++		smp_processor_id(), nasid, widget, wid_part);
 +
- /*
-  * according to the crosstalk spec, only 32-bits access to the widget
-  * configuration registers is allowed.	some widgets may allow 64-bits
++	switch (wid_part) {
++	case WIDGET_BRIDG_PART_NUM:
++	case WIDGET_XBRDG_PART_NUM:
+ 		bridge_probe(nasid, widget, masterwid);
+ 		break;
+ 	default:
+-		break;
++		if (platform_device_register_simple(res->name, widget, NULL, 0))
++			pr_info("xtalk:%d %s widget (rev %s) registered as "
++				"platform device.\n", widget, res->name,
++				(res->revs[wid_rev] ?
++				 res->revs[wid_rev] : "unknown"));
+ 	}
+ 
+ 	return 0;
+@@ -103,8 +120,8 @@ void xtalk_probe_node(cnodeid_t nid)
+ {
+ 	volatile u64		hubreg;
+ 	nasid_t			nasid;
+-	xwidget_part_num_t	partnum;
+-	widgetreg_t		widget_id;
++	const struct widget_ident *res;
++	u32 wid_id, wid_part, wid_mfgr, wid_rev;
+ 
+ 	nasid = COMPACT_TO_NASID_NODEID(nid);
+ 	hubreg = REMOTE_HUB_L(nasid, IIO_LLP_CSR);
+@@ -113,23 +130,41 @@ void xtalk_probe_node(cnodeid_t nid)
+ 	if (!(hubreg & IIO_LLP_CSR_IS_UP))
+ 		return;
+ 
+-	widget_id = *(volatile widgetreg_t *)
++	wid_id = *(volatile widgetreg_t *)
+ 		       (RAW_NODE_SWIN_BASE(nasid, 0x0) + WIDGET_ID);
+-	partnum = XWIDGET_PART_NUM(widget_id);
++	wid_mfgr = XWIDGET_MFG_NUM(wid_id);
++	wid_part = XWIDGET_PART_NUM(wid_id);
++	wid_rev = XWIDGET_REV_NUM(wid_id);
++
++	for (res = widget_idents; res->name; res++)
++		if ((res->mfgr == wid_mfgr) &&
++			(res->part == wid_part))
++			break;
++
++	if (res->name == NULL) {
++		pr_info("xtalk:%d unknown widget 0x%08x\n", 0x0, wid_id);
++		goto out;
++	}
+ 
+-	printk(KERN_INFO "Cpu %d, Nasid 0x%x: partnum 0x%x is ",
+-			smp_processor_id(), nasid, partnum);
++	pr_info("Cpu %d, Nasid 0x%x, wid_part 0x%x (part 0x%x) is ",
++		smp_processor_id(), nasid, 0x0, wid_part);
+ 
+-	switch (partnum) {
+-	case BRIDGE_WIDGET_PART_NUM:
+-		bridge_probe(nasid, 0x8, 0xa);
++	switch (wid_part) {
++	case WIDGET_BRIDG_PART_NUM:
++		bridge_probe(nasid, 0x8, 0xa);  /* XXX: Fix! */
+ 		break;
+-	case XBOW_WIDGET_PART_NUM:
+-	case XXBOW_WIDGET_PART_NUM:
++	case WIDGET_XBOW_PART_NUM:
++	case WIDGET_XXBOW_PART_NUM:
+ 		xbow_probe(nasid);
+ 		break;
+ 	default:
+-		printk(" unknown widget??\n");
+-		break;
++		if (platform_device_register_simple(res->name, 0x0, NULL, 0))
++			pr_info("xtalk:%d %s widget (rev %s) registered as "
++				"as platform device.\n", 0x0, res->name,
++				(res->revs[wid_rev] ?
++				 res->revs[wid_rev] : "unknown"));
+ 	}
++
++out:
++	return;
+ }

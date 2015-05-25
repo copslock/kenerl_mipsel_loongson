@@ -1,70 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 May 2015 09:59:39 +0200 (CEST)
-Received: from mail-pd0-f172.google.com ([209.85.192.172]:35188 "EHLO
-        mail-pd0-f172.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007058AbbEYH7fU2hQk (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 25 May 2015 09:59:35 +0200
-Received: by pdea3 with SMTP id a3so64972668pde.2
-        for <linux-mips@linux-mips.org>; Mon, 25 May 2015 00:59:31 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:in-reply-to:references:date
-         :message-id:subject:from:to:cc:content-type;
-        bh=4M/S/QFrtu7g+q4nPZcfmDncun1+8gaMO/ZoK8/wk9A=;
-        b=GpdoSFPyIFsk7d4i3bVPDsAKtDLWxenNjLmy9Agp3HKOKW6cQT3lY+HxclsSr8BqNR
-         YNEOBazE297foak22FG0HYXg8PwwhfClv7gDIl7dmlOdBdUivpB+y1MDgENSMMErQRoW
-         2TsYFTkNAwkyOZ4sS3bGeEkcAnXjosa6J1eG0mjN0QvqYaRW+cUKKG1/rYD/a77To7eH
-         z2cWkTeC0R1KjsFwMShcBhFhwLjgwYHrG8v1QyHXaAWa9aT0FoR4yAq+WjorABBSAttJ
-         w4FBKy2mAU+b4vZR1blMgyU1QxlT80+o8l8BWlPi3qMgkiKS2MVelfhVqo2Af+UDQKt+
-         711A==
-X-Gm-Message-State: ALoCoQmo8teH9c3FdIfwZ8h03quObLM92UBCURWjzTbOZ4/aqPxFBMDcEBab4/XASI+N7YGY76/Q
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 May 2015 13:03:58 +0200 (CEST)
+Received: from hauke-m.de ([5.39.93.123]:43175 "EHLO hauke-m.de"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27007108AbbEYLDwwBPL5 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 25 May 2015 13:03:52 +0200
+Received: from [192.168.178.24] (p508B6210.dip0.t-ipconnect.de [80.139.98.16])
+        by hauke-m.de (Postfix) with ESMTPSA id A274820200;
+        Mon, 25 May 2015 13:03:54 +0200 (CEST)
+Message-ID: <5563019A.2050702@hauke-m.de>
+Date:   Mon, 25 May 2015 13:03:54 +0200
+From:   Hauke Mehrtens <hauke@hauke-m.de>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.7.0
 MIME-Version: 1.0
-X-Received: by 10.68.68.166 with SMTP id x6mr37286586pbt.161.1432540771558;
- Mon, 25 May 2015 00:59:31 -0700 (PDT)
-Received: by 10.66.135.44 with HTTP; Mon, 25 May 2015 00:59:31 -0700 (PDT)
-X-Originating-IP: [153.142.246.119]
-In-Reply-To: <1432309875-9712-1-git-send-email-paul.burton@imgtec.com>
-References: <1432309875-9712-1-git-send-email-paul.burton@imgtec.com>
-Date:   Mon, 25 May 2015 02:59:31 -0500
-Message-ID: <CAOS_Y6TRN2b5PGxWdO6SD5W2Wmo33Z88DeHw7Jrxw4TzzVYLcA@mail.gmail.com>
-Subject: Re: [PATCH 00/15] MIPS Malta DT Conversion
-From:   Rob Landley <rob@landley.net>
-To:     Paul Burton <paul.burton@imgtec.com>
-Cc:     linux-mips@linux-mips.org,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Pawel Moll <pawel.moll@arm.com>,
+To:     Paul Burton <paul.burton@imgtec.com>, linux-mips@linux-mips.org
+CC:     Ian Campbell <ijc+devicetree@hellion.org.uk>,
+        Kumar Gala <galak@codeaurora.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
         Mark Rutland <mark.rutland@arm.com>,
-        Ian Campbell <ijc+devicetree@hellion.org.uk>,
-        Kumar Gala <galak@codeaurora.org>, Jiri Slaby <jslaby@suse.cz>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
-        Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        James Hogan <james.hogan@imgtec.com>,
-        "Steven J. Hill" <Steven.Hill@imgtec.com>,
-        Hannes Reinecke <hare@suse.de>,
-        Andrew Bresticker <abrestic@chromium.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Pawel Moll <pawel.moll@arm.com>,
         Ralf Baechle <ralf@linux-mips.org>,
-        Qais Yousef <qais.yousef@imgtec.com>,
-        linux-serial@vger.kernel.org,
+        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
+        Joshua Kinard <kumba@gentoo.org>,
+        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
+        Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>,
+        linux-kernel@vger.kernel.org,
         Markos Chandras <markos.chandras@imgtec.com>,
-        Christoph Hellwig <hch@lst.de>, Michal Marek <mmarek@suse.cz>,
-        Jason Cooper <jason@lakedaemon.net>,
-        "David S. Miller" <davem@davemloft.net>,
-        Bart Van Assche <bvanassche@acm.org>,
-        Jeffrey Deans <jeffrey.deans@imgtec.com>,
-        David Daney <david.daney@cavium.com>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <rob@landley.net>
+        Andreas Herrmann <andreas.herrmann@caviumnetworks.com>
+Subject: Re: [PATCH v5 36/37] MIPS: ingenic: initial JZ4780 support
+References: <1432480307-23789-1-git-send-email-paul.burton@imgtec.com> <1432480307-23789-37-git-send-email-paul.burton@imgtec.com>
+In-Reply-To: <1432480307-23789-37-git-send-email-paul.burton@imgtec.com>
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
+Return-Path: <hauke@hauke-m.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47647
+X-archive-position: 47648
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rob@landley.net
+X-original-sender: hauke@hauke-m.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -77,24 +51,295 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, May 22, 2015 at 10:50 AM, Paul Burton <paul.burton@imgtec.com> wrote:
-> This series begins converting the MIPS Malta board to use device tree,
-> which is done with a few goals in mind:
->
->   - To modernise the Malta board support, providing a cleaner example to
->     people referencing it when bringing up new boards and reducing the
->     amount of code they need to write.
->
->   - To make the code at the board level more generic with the eventual
->     aim of sharing it between multiple boards & allowing for
->     multi-platform kernel binaries. Although this series doesn't result
->     in the kernel reaching those goals, it is a step in that direction.
->
->   - To result in a more maintainable kernel through a combination of the
->     above.
+On 05/24/2015 05:11 PM, Paul Burton wrote:
+> Support the Ingenic JZ4780 SoC using the existing code under
+> arch/mips/jz4740 now that it has been generalised sufficiently.
+> 
+> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+> Cc: Ian Campbell <ijc+devicetree@hellion.org.uk>
+> Cc: Kumar Gala <galak@codeaurora.org>
+> Cc: Lars-Peter Clausen <lars@metafoo.de>
+> Cc: Mark Rutland <mark.rutland@arm.com>
+> Cc: Pawel Moll <pawel.moll@arm.com>
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: Rob Herring <robh+dt@kernel.org>
+> Cc: devicetree@vger.kernel.org
+> Cc: linux-mips@linux-mips.org
+> ---
+> 
+> Changes in v5:
+> - Disable the UARTs by default, so that devices can enable only the ones
+>   they actually expose.
+> 
+> Changes in v4: None
+> Changes in v3:
+> - Rebase, dropping serial.h & relocating behind CONFIG_MACH_INGENIC.
+> 
+> Changes in v2: None
+> 
+>  arch/mips/boot/dts/ingenic/jz4780.dtsi             | 111 +++++++++++++++++++++
+>  arch/mips/include/asm/cpu-type.h                   |   2 +-
+>  .../asm/mach-jz4740/cpu-feature-overrides.h        |   3 -
+>  arch/mips/include/asm/mach-jz4740/irq.h            |   4 +
+>  arch/mips/jz4740/Kconfig                           |   6 ++
+>  arch/mips/jz4740/Makefile                          |   4 +-
+>  arch/mips/jz4740/setup.c                           |   3 +
+>  arch/mips/jz4740/time.c                            |   7 +-
+>  8 files changed, 134 insertions(+), 6 deletions(-)
+>  create mode 100644 arch/mips/boot/dts/ingenic/jz4780.dtsi
+> 
+> diff --git a/arch/mips/boot/dts/ingenic/jz4780.dtsi b/arch/mips/boot/dts/ingenic/jz4780.dtsi
+> new file mode 100644
+> index 0000000..65389f6
+> --- /dev/null
+> +++ b/arch/mips/boot/dts/ingenic/jz4780.dtsi
+> @@ -0,0 +1,111 @@
+> +#include <dt-bindings/clock/jz4780-cgu.h>
+> +
+> +/ {
+> +	#address-cells = <1>;
+> +	#size-cells = <1>;
+> +	compatible = "ingenic,jz4780";
+> +
+> +	cpuintc: interrupt-controller {
+> +		#address-cells = <0>;
+> +		#interrupt-cells = <1>;
+> +		interrupt-controller;
+> +		compatible = "mti,cpu-interrupt-controller";
+> +	};
+> +
+> +	intc: interrupt-controller@10001000 {
+> +		compatible = "ingenic,jz4780-intc";
+> +		reg = <0x10001000 0x50>;
+> +
+> +		interrupt-controller;
+> +		#interrupt-cells = <1>;
+> +
+> +		interrupt-parent = <&cpuintc>;
+> +		interrupts = <2>;
+> +	};
+> +
+> +	ext: ext {
+> +		compatible = "fixed-clock";
+> +		#clock-cells = <0>;
+> +	};
+> +
+> +	rtc: rtc {
+> +		compatible = "fixed-clock";
+> +		#clock-cells = <0>;
+> +		clock-frequency = <32768>;
+> +	};
+> +
+> +	cgu: jz4780-cgu@10000000 {
+> +		compatible = "ingenic,jz4780-cgu";
+> +		reg = <0x10000000 0x100>;
+> +
+> +		clocks = <&ext>, <&rtc>;
+> +		clock-names = "ext", "rtc";
+> +
+> +		#clock-cells = <1>;
+> +	};
+> +
+> +	uart0: serial@10030000 {
+> +		compatible = "ingenic,jz4780-uart";
+> +		reg = <0x10030000 0x100>;
+> +
+> +		interrupt-parent = <&intc>;
+> +		interrupts = <51>;
+> +
+> +		clocks = <&ext>, <&cgu JZ4780_CLK_UART0>;
+> +		clock-names = "baud", "module";
+> +
+> +		status = "disabled";
+> +	};
+> +
+> +	uart1: serial@10031000 {
+> +		compatible = "ingenic,jz4780-uart";
+> +		reg = <0x10031000 0x100>;
+> +
+> +		interrupt-parent = <&intc>;
+> +		interrupts = <50>;
+> +
+> +		clocks = <&ext>, <&cgu JZ4780_CLK_UART1>;
+> +		clock-names = "baud", "module";
+> +
+> +		status = "disabled";
+> +	};
+> +
+> +	uart2: serial@10032000 {
+> +		compatible = "ingenic,jz4780-uart";
+> +		reg = <0x10032000 0x100>;
+> +
+> +		interrupt-parent = <&intc>;
+> +		interrupts = <49>;
+> +
+> +		clocks = <&ext>, <&cgu JZ4780_CLK_UART2>;
+> +		clock-names = "baud", "module";
+> +
+> +		status = "disabled";
+> +	};
+> +
+> +	uart3: serial@10033000 {
+> +		compatible = "ingenic,jz4780-uart";
+> +		reg = <0x10033000 0x100>;
+> +
+> +		interrupt-parent = <&intc>;
+> +		interrupts = <48>;
+> +
+> +		clocks = <&ext>, <&cgu JZ4780_CLK_UART3>;
+> +		clock-names = "baud", "module";
+> +
+> +		status = "disabled";
+> +	};
+> +
+> +	uart4: serial@10034000 {
+> +		compatible = "ingenic,jz4780-uart";
+> +		reg = <0x10034000 0x100>;
+> +
+> +		interrupt-parent = <&intc>;
+> +		interrupts = <34>;
+> +
+> +		clocks = <&ext>, <&cgu JZ4780_CLK_UART4>;
+> +		clock-names = "baud", "module";
+> +
+> +		status = "disabled";
+> +	};
+> +};
+> diff --git a/arch/mips/include/asm/cpu-type.h b/arch/mips/include/asm/cpu-type.h
+> index 33f3cab..d41e8e2 100644
+> --- a/arch/mips/include/asm/cpu-type.h
+> +++ b/arch/mips/include/asm/cpu-type.h
+> @@ -32,12 +32,12 @@ static inline int __pure __get_cpu_type(const int cpu_type)
+>  	case CPU_4KC:
+>  	case CPU_ALCHEMY:
+>  	case CPU_PR4450:
+> -	case CPU_JZRISC:
+>  #endif
+>  
+>  #if defined(CONFIG_SYS_HAS_CPU_MIPS32_R1) || \
+>      defined(CONFIG_SYS_HAS_CPU_MIPS32_R2)
+>  	case CPU_4KEC:
+> +	case CPU_JZRISC:
+>  #endif
+>  
+>  #ifdef CONFIG_SYS_HAS_CPU_MIPS32_R2
+> diff --git a/arch/mips/include/asm/mach-jz4740/cpu-feature-overrides.h b/arch/mips/include/asm/mach-jz4740/cpu-feature-overrides.h
+> index a225baa..0933f94 100644
+> --- a/arch/mips/include/asm/mach-jz4740/cpu-feature-overrides.h
+> +++ b/arch/mips/include/asm/mach-jz4740/cpu-feature-overrides.h
+> @@ -12,8 +12,6 @@
+>  #define cpu_has_3k_cache	0
+>  #define cpu_has_4k_cache	1
+>  #define cpu_has_tx39_cache	0
+> -#define cpu_has_fpu		0
+> -#define cpu_has_32fpr	0
+>  #define cpu_has_counter		0
+>  #define cpu_has_watch		1
+>  #define cpu_has_divec		1
+> @@ -34,7 +32,6 @@
+>  #define cpu_has_ic_fills_f_dc	0
+>  #define cpu_has_pindexed_dcache 0
+>  #define cpu_has_mips32r1	1
+> -#define cpu_has_mips32r2	0
+>  #define cpu_has_mips64r1	0
+>  #define cpu_has_mips64r2	0
+>  #define cpu_has_dsp		0
+> diff --git a/arch/mips/include/asm/mach-jz4740/irq.h b/arch/mips/include/asm/mach-jz4740/irq.h
+> index b218f76..9b439fc 100644
+> --- a/arch/mips/include/asm/mach-jz4740/irq.h
+> +++ b/arch/mips/include/asm/mach-jz4740/irq.h
+> @@ -21,6 +21,8 @@
+>  
+>  #ifdef CONFIG_MACH_JZ4740
+>  # define NR_INTC_IRQS	32
+> +#else
+> +# define NR_INTC_IRQS	64
+>  #endif
+>  
+>  /* 1st-level interrupts */
+> @@ -48,6 +50,8 @@
+>  #define JZ4740_IRQ_IPU		JZ4740_IRQ(29)
+>  #define JZ4740_IRQ_LCD		JZ4740_IRQ(30)
+>  
+> +#define JZ4780_IRQ_TCU2		JZ4740_IRQ(25)
+> +
+>  /* 2nd-level interrupts */
+>  #define JZ4740_IRQ_DMA(x)	(JZ4740_IRQ(NR_INTC_IRQS) + (x))
+>  
+> diff --git a/arch/mips/jz4740/Kconfig b/arch/mips/jz4740/Kconfig
+> index dff0966..21adcea 100644
+> --- a/arch/mips/jz4740/Kconfig
+> +++ b/arch/mips/jz4740/Kconfig
+> @@ -12,3 +12,9 @@ endchoice
+>  config MACH_JZ4740
+>  	bool
+>  	select SYS_HAS_CPU_MIPS32_R1
+> +
+> +config MACH_JZ4780
+> +	bool
+> +	select MIPS_CPU_SCACHE
+> +	select SYS_HAS_CPU_MIPS32_R2
+> +	select SYS_SUPPORTS_HIGHMEM
+> diff --git a/arch/mips/jz4740/Makefile b/arch/mips/jz4740/Makefile
+> index 89ce401..39d70bd 100644
+> --- a/arch/mips/jz4740/Makefile
+> +++ b/arch/mips/jz4740/Makefile
+> @@ -5,7 +5,9 @@
+>  # Object file lists.
+>  
+>  obj-y += prom.o time.o reset.o setup.o \
+> -	gpio.o platform.o timer.o
+> +	platform.o timer.o
+> +
+> +obj-$(CONFIG_MACH_JZ4740) += gpio.o
+>  
+>  CFLAGS_setup.o = -I$(src)/../../../scripts/dtc/libfdt
+>  
+> diff --git a/arch/mips/jz4740/setup.c b/arch/mips/jz4740/setup.c
+> index 1bed3cb..510fc0d 100644
+> --- a/arch/mips/jz4740/setup.c
+> +++ b/arch/mips/jz4740/setup.c
+> @@ -83,6 +83,9 @@ arch_initcall(populate_machine);
+>  
+>  const char *get_system_type(void)
+>  {
+> +	if (config_enabled(CONFIG_MACH_JZ4780))
+> +		return "JZ4780";
+> +
+>  	return "JZ4740";
+>  }
 
-How would I go about testing this under qemu?
+Shouldn't this be provided by device tree, now it depends on your kernel
+config.
 
-(Especially the "more than 256 megs ram" part. :)
+>  
+> diff --git a/arch/mips/jz4740/time.c b/arch/mips/jz4740/time.c
+> index 9172553..7ab47fe 100644
+> --- a/arch/mips/jz4740/time.c
+> +++ b/arch/mips/jz4740/time.c
+> @@ -102,7 +102,12 @@ static struct clock_event_device jz4740_clockevent = {
+>  	.set_next_event = jz4740_clockevent_set_next,
+>  	.set_mode = jz4740_clockevent_set_mode,
+>  	.rating = 200,
+> +#ifdef CONFIG_MACH_JZ4740
+>  	.irq = JZ4740_IRQ_TCU0,
+> +#endif
+> +#ifdef CONFIG_MACH_JZ4780
+> +	.irq = JZ4780_IRQ_TCU2,
+> +#endif
+>  };
 
-Rob
+same here.
+
+>  
+>  static struct irqaction timer_irqaction = {
+> @@ -144,7 +149,7 @@ void __init plat_time_init(void)
+>  
+>  	sched_clock_register(jz4740_read_sched_clock, 16, clk_rate);
+>  
+> -	setup_irq(JZ4740_IRQ_TCU0, &timer_irqaction);
+> +	setup_irq(jz4740_clockevent.irq, &timer_irqaction);
+>  
+>  	ctrl = JZ_TIMER_CTRL_PRESCALE_16 | JZ_TIMER_CTRL_SRC_EXT;
+>  
+> 

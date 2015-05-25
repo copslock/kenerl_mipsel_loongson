@@ -1,48 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 May 2015 00:40:31 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:34037 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27006587AbbEXWk1ZV5Dv (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 25 May 2015 00:40:27 +0200
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id DC11CB7BAFA21;
-        Sun, 24 May 2015 23:40:19 +0100 (IST)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Sun, 24 May 2015 23:38:19 +0100
-Received: from localhost (192.168.159.138) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Sun, 24 May
- 2015 23:38:18 +0100
-From:   Paul Burton <paul.burton@imgtec.com>
-To:     <linux-mips@linux-mips.org>
-CC:     <linux-kernel@vger.kernel.org>,
-        Brian Norris <computersforpeace@gmail.com>,
-        Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
-        Paul Burton <paul.burton@imgtec.com>,
-        Ian Campbell <ijc+devicetree@hellion.org.uk>,
-        Kumar Gala <galak@codeaurora.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Pawel Moll <pawel.moll@arm.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Rob Herring <robh+dt@kernel.org>, <devicetree@vger.kernel.org>
-Subject: [PATCH v6 07/37] MIPS: JZ4740: probe CPU interrupt controller via DT
-Date:   Sun, 24 May 2015 23:37:42 +0100
-Message-ID: <1432507062-2853-1-git-send-email-paul.burton@imgtec.com>
-X-Mailer: git-send-email 2.4.1
-In-Reply-To: <5561EB79.30209@cogentembedded.com>
-References: <5561EB79.30209@cogentembedded.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 May 2015 06:15:32 +0200 (CEST)
+Received: from resqmta-ch2-08v.sys.comcast.net ([69.252.207.40]:47611 "EHLO
+        resqmta-ch2-08v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007331AbbEYEP1emBaI (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 25 May 2015 06:15:27 +0200
+Received: from resomta-ch2-11v.sys.comcast.net ([69.252.207.107])
+        by resqmta-ch2-08v.sys.comcast.net with comcast
+        id Y4FN1q0022Ka2Q5014FNcR; Mon, 25 May 2015 04:15:22 +0000
+Received: from [192.168.1.13] ([69.251.155.187])
+        by resomta-ch2-11v.sys.comcast.net with comcast
+        id Y4FM1q00442s2jH014FM4H; Mon, 25 May 2015 04:15:22 +0000
+Message-ID: <5562A1D9.2080400@gentoo.org>
+Date:   Mon, 25 May 2015 00:15:21 -0400
+From:   Joshua Kinard <kumba@gentoo.org>
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:31.0) Gecko/20100101 Thunderbird/31.6.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.159.138]
-Return-Path: <Paul.Burton@imgtec.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+CC:     Linux MIPS List <linux-mips@linux-mips.org>
+Subject: [PATCH]: MIPS: oprofile: Distinguish R14000 from R12000
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=comcast.net;
+        s=q20140121; t=1432527322;
+        bh=l9864fywMa5zLbtvxdL65MowX7o7/euupcQJ5jS5JSE=;
+        h=Received:Received:Message-ID:Date:From:MIME-Version:To:Subject:
+         Content-Type;
+        b=Cbu+IUVf7KJMOHuOzojUu/qKzg2tuht870uaGv1WIrD4kp6A8D+sy01nPtRdY37Dw
+         woaVUryfq/l6lGxgKFvBALUwTai2xsBWMLiaGIQFhNbEJsy9V+65Pu0axAvVxjz3CI
+         7+NJIOb4qiuHMnTTGVC1NHfOC5z+k7hkpQkckrIcJLjSNDf39rRBeinpvywk2rL5e4
+         wBnly/jgTMeRYLuwN2KUa7zmqF7f1TMNa2HfMw6F/9YAoURDoa3Jaex7E6Xo7+3oeV
+         /7iwyvmf4W2B9HvJTqV5Oi4YR/3wJ0Uy7uACuhZmtL3z1hmje3wmuq7WDGaOmkXXAC
+         PD5f+L7I+2ocg==
+Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47641
+X-archive-position: 47642
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@imgtec.com
+X-original-sender: kumba@gentoo.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,80 +51,33 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Use the generic irqchip_init function to probe irqchip drivers using DT,
-and add the appropriate node to the JZ4740 devicetree in place of the
-call to mips_cpu_irq_init.
+From: Joshua Kinard <kumba@gentoo.org>
 
-Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-Cc: Ian Campbell <ijc+devicetree@hellion.org.uk>
-Cc: Kumar Gala <galak@codeaurora.org>
-Cc: Lars-Peter Clausen <lars@metafoo.de>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Pawel Moll <pawel.moll@arm.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Rob Herring <robh+dt@kernel.org>
-Cc: devicetree@vger.kernel.org
-Cc: linux-mips@linux-mips.org
+Currently, arch/mips/oprofile/op_model_mipsxx.c treats an R14000 as an
+R12000.  This patch distinguishes one from the other.
+
+Signed-off-by: Joshua Kinard <kumba@gentoo.org>
 ---
+ op_model_mipsxx.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-Changes in v6:
-- Rename cpuintc DT node interrupt-controller@0.
-
-Changes in v5: None
-Changes in v4: None
-Changes in v3:
-- Rebase.
-
-Changes in v2: None
-
- arch/mips/boot/dts/ingenic/jz4740.dtsi | 7 +++++++
- arch/mips/jz4740/irq.c                 | 4 ++--
- 2 files changed, 9 insertions(+), 2 deletions(-)
-
-diff --git a/arch/mips/boot/dts/ingenic/jz4740.dtsi b/arch/mips/boot/dts/ingenic/jz4740.dtsi
-index c538691f..dd3642f 100644
---- a/arch/mips/boot/dts/ingenic/jz4740.dtsi
-+++ b/arch/mips/boot/dts/ingenic/jz4740.dtsi
-@@ -2,4 +2,11 @@
- 	#address-cells = <1>;
- 	#size-cells = <1>;
- 	compatible = "ingenic,jz4740";
+linux-mips-oprofile-fix-r14k.patch
+diff --git a/arch/mips/oprofile/op_model_mipsxx.c b/arch/mips/oprofile/op_model_mipsxx.c
+index 6a6e2cc..75f1967 100644
+--- a/arch/mips/oprofile/op_model_mipsxx.c
++++ b/arch/mips/oprofile/op_model_mipsxx.c
+@@ -408,10 +408,13 @@ static int __init mipsxx_init(void)
+ 		break;
+ 
+ 	case CPU_R12000:
+-	case CPU_R14000:
+ 		op_model_mipsxx_ops.cpu_type = "mips/r12000";
+ 		break;
+ 
++	case CPU_R14000:
++		op_model_mipsxx_ops.cpu_type = "mips/r14000";
++		break;
 +
-+	cpuintc: interrupt-controller@0 {
-+		#address-cells = <0>;
-+		#interrupt-cells = <1>;
-+		interrupt-controller;
-+		compatible = "mti,cpu-interrupt-controller";
-+	};
- };
-diff --git a/arch/mips/jz4740/irq.c b/arch/mips/jz4740/irq.c
-index 97206b3..3ec90875 100644
---- a/arch/mips/jz4740/irq.c
-+++ b/arch/mips/jz4740/irq.c
-@@ -18,6 +18,7 @@
- #include <linux/types.h>
- #include <linux/interrupt.h>
- #include <linux/ioport.h>
-+#include <linux/irqchip.h>
- #include <linux/timex.h>
- #include <linux/slab.h>
- #include <linux/delay.h>
-@@ -27,7 +28,6 @@
- 
- #include <asm/io.h>
- #include <asm/mipsregs.h>
--#include <asm/irq_cpu.h>
- 
- #include <asm/mach-jz4740/base.h>
- #include <asm/mach-jz4740/irq.h>
-@@ -84,7 +84,7 @@ void __init arch_init_irq(void)
- 	struct irq_chip_generic *gc;
- 	struct irq_chip_type *ct;
- 
--	mips_cpu_irq_init();
-+	irqchip_init();
- 
- 	jz_intc_base = ioremap(JZ4740_INTC_BASE_ADDR, 0x14);
- 
--- 
-2.4.1
+ 	case CPU_R16000:
+ 		op_model_mipsxx_ops.cpu_type = "mips/r16000";
+ 		break;

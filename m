@@ -1,40 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 May 2015 06:43:57 +0200 (CEST)
-Received: from resqmta-ch2-03v.sys.comcast.net ([69.252.207.35]:51538 "EHLO
-        resqmta-ch2-03v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27006523AbbEYEnxwA1ZJ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 25 May 2015 06:43:53 +0200
-Received: from resomta-ch2-16v.sys.comcast.net ([69.252.207.112])
-        by resqmta-ch2-03v.sys.comcast.net with comcast
-        id Y4jp1q0022S2Q5R014jpR0; Mon, 25 May 2015 04:43:49 +0000
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 May 2015 07:14:16 +0200 (CEST)
+Received: from resqmta-ch2-05v.sys.comcast.net ([69.252.207.37]:57214 "EHLO
+        resqmta-ch2-05v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006523AbbEYFOM6QkJb (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 25 May 2015 07:14:12 +0200
+Received: from resomta-ch2-07v.sys.comcast.net ([69.252.207.103])
+        by resqmta-ch2-05v.sys.comcast.net with comcast
+        id Y5E81q0012EPM31015E87V; Mon, 25 May 2015 05:14:08 +0000
 Received: from [192.168.1.13] ([69.251.155.187])
-        by resomta-ch2-16v.sys.comcast.net with comcast
-        id Y4jo1q00442s2jH014jolS; Mon, 25 May 2015 04:43:49 +0000
-Message-ID: <5562A883.1010703@gentoo.org>
-Date:   Mon, 25 May 2015 00:43:47 -0400
+        by resomta-ch2-07v.sys.comcast.net with comcast
+        id Y5E81q00442s2jH015E8g1; Mon, 25 May 2015 05:14:08 +0000
+Message-ID: <5562AF9F.3090900@gentoo.org>
+Date:   Mon, 25 May 2015 01:14:07 -0400
 From:   Joshua Kinard <kumba@gentoo.org>
 User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:31.0) Gecko/20100101 Thunderbird/31.6.0
 MIME-Version: 1.0
 To:     Ralf Baechle <ralf@linux-mips.org>
 CC:     Linux MIPS List <linux-mips@linux-mips.org>
-Subject: [PATCH]: MIPS: R12000: Enable branch prediction global history
+Subject: [PATCH 1/2]: Xtalk: Update xwidget.h with known Xtalk device numbers
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=comcast.net;
-        s=q20140121; t=1432529029;
-        bh=0vdrgoX34YCc7ayijRQKnzAgCVJPB1ef1JPW+V7PSg4=;
+        s=q20140121; t=1432530848;
+        bh=bxGquJCsrd15AupZHsRtK6gR+8HTDbZsn7DVxgN3Ikk=;
         h=Received:Received:Message-ID:Date:From:MIME-Version:To:Subject:
          Content-Type;
-        b=sRW9L9UaxGLuhj1SY8cRJ4aF/R2K0EfBknra451NpNgclJoUV7AiP8GDU9Dmyphq1
-         97mMfQoLPajrkPOXqkaqy2+8OCrEuBHTI0GKglmQsFScicy1mY2J06/eB8zglCud7c
-         Egssg4REA3Sz2bPUsZPZ6F9M4w0cC5udk0lu2rKtY4eRrWi9NXY2o5vX3/67ZQHox4
-         vtKglraw8OThgqCXyEyONC4L9VutDdygtYP2kWNg7xwwC2/+wVHeE1g8fbSX2tY+gl
-         SyEJSDH+IklVWaxHzjO+7gL3RKhzTYRxh5QVd+aeDMe6Ika09XTVo7E72/JsqkXdup
-         UeUDinbzcZFTQ==
+        b=Ou1drypxqP+BFHra8HVXrNIXulw80rz6BuLn7eDbT53UO+mSxEDd4/B4e40RLceEV
+         9d80qxRhbPGBcWyLSv1IwLUI00oDO50KEt/GlZrTbhd60HTUuykLR8Brr7fLFHn7aQ
+         ivX8SdMIqvAr8nSKPoLeBWqI1GpBrfdG7/bhJvRZ65hczsmc0SmvGybxum4AXMbyKB
+         bW+LjkOfekP4r+RIRwtUJpo10ihmpCJUk8QHT88ubEC+pg8fFds6LwUstuD1Vx/wXA
+         6HkJpCn5rYprI8lF3Ux7HJ5bgk4SYXPUt9qE1O+3cGqivzEiVIbgNXjcIKKIYnGMnB
+         D6M4j5a3UZYiA==
 Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47643
+X-archive-position: 47644
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -53,125 +53,138 @@ X-list: linux-mips
 
 From: Joshua Kinard <kumba@gentoo.org>
 
-The R12000 added a new feature to enhance branch prediction called
-"global history".  Per the Vr10000 Series User Manual (U10278EJ4V0UM),
-Coprocessor 0, Diagnostic Register (22):
+This is the first patch of two to clean up/update the Xtalk detection
+code used by IP27 with some of the code used in the IP30 port.
 
-"""
-If bit 26 is set, branch prediction uses all eight bits of the global
-history register.  If bit 26 is not set, then bits 25:23 specify a count
-of the number of bits of global history to be used. Thus if bits 26:23
-are all zero, global history is disabled.
-
-The global history contains a record of the taken/not-taken status of
-recently executed branches, and when used is XOR'ed with the PC of a
-branch being predicted to produce a hashed value for indexing the BPT.
-Some programs with small "working set of conditional branches" benefit
-significantly from the use of such hashing, some see slight performance
-degradation.
-"""
-
-This patch enables global history on R12000 CPUs and up by setting bit
-26 in the branch prediction diagnostic register (CP0 $22) to '1'.  Bits
-25:23 are left alone so that all eight bits of the global history
-register are available for branch prediction.
+This specific patch adds Xtalk widget manufacturer and widget device
+numbers to arch/mips/include/asm/xtalk/widget.h
 
 Signed-off-by: Joshua Kinard <kumba@gentoo.org>
 ---
- arch/mips/include/asm/cpu-features.h |    3 +++
- arch/mips/include/asm/cpu.h          |    1 +
- arch/mips/include/asm/mipsregs.h     |   13 +++++++++++++
- arch/mips/kernel/cpu-probe.c         |    8 ++++++--
- 4 files changed, 23 insertions(+), 2 deletions(-)
+ arch/mips/include/asm/xtalk/xwidget.h |  112 ++++++++++++++++++++++++
+ 1 file changed, 112 insertions(+)
 
-linux-mips-r12k-branch-ghistory.patch
-diff --git a/arch/mips/include/asm/cpu-features.h b/arch/mips/include/asm/cpu-features.h
-index 5aeaf19..f25de77 100644
---- a/arch/mips/include/asm/cpu-features.h
-+++ b/arch/mips/include/asm/cpu-features.h
-@@ -108,6 +108,9 @@
- #ifndef cpu_has_llsc
- #define cpu_has_llsc		(cpu_data[0].options & MIPS_CPU_LLSC)
- #endif
-+#ifndef cpu_has_bp_ghist
-+#define cpu_has_bp_ghist	(cpu_data[0].options & MIPS_CPU_BP_GHIST)
-+#endif
- #ifndef kernel_uses_llsc
- #define kernel_uses_llsc	cpu_has_llsc
- #endif
-diff --git a/arch/mips/include/asm/cpu.h b/arch/mips/include/asm/cpu.h
-index e3adca1..76154ba 100644
---- a/arch/mips/include/asm/cpu.h
-+++ b/arch/mips/include/asm/cpu.h
-@@ -379,6 +379,7 @@ enum cpu_type_enum {
- #define MIPS_CPU_RW_LLB		0x1000000000ull /* LLADDR/LLB writes are allowed */
- #define MIPS_CPU_XPA		0x2000000000ull /* CPU supports Extended Physical Addressing */
- #define MIPS_CPU_CDMM		0x4000000000ull	/* CPU has Common Device Memory Map */
-+#define MIPS_CPU_BP_GHIST	0x8000000000ull /* R12K+ Branch Prediction Global History */
+linux-mips-xtalk-updates.patch
+diff --git a/arch/mips/include/asm/xtalk/xwidget.h b/arch/mips/include/asm/xtalk/xwidget.h
+index 32e4e88..4fbd229 100644
+--- a/arch/mips/include/asm/xtalk/xwidget.h
++++ b/arch/mips/include/asm/xtalk/xwidget.h
+@@ -84,6 +84,118 @@
+ #define WIDGET_LLP_MAXBURST		0x000003ff
+ #define WIDGET_LLP_MAXBURST_SHFT	0
  
- /*
-  * CPU ASE encodings
-diff --git a/arch/mips/include/asm/mipsregs.h b/arch/mips/include/asm/mipsregs.h
-index 764e275..c04271a 100644
---- a/arch/mips/include/asm/mipsregs.h
-+++ b/arch/mips/include/asm/mipsregs.h
-@@ -685,6 +685,15 @@
- #define TX39_CONF_DRSIZE_SHIFT	0
- #define TX39_CONF_DRSIZE_MASK	0x00000003
- 
-+/*
-+ * Interesting Bits in the R10K CP0 Branch Diagnostic Register
-+ */
-+/* Disable Branch Target Address Cache */
-+#define R10K_DIAG_D_BTAC	(_ULCAST_(1) << 27)
-+/* Enable Branch Prediction Global History */
-+#define R10K_DIAG_E_GHIST	(_ULCAST_(1) << 26)
-+/* Disable Branch Return Cache */
-+#define R10K_DIAG_D_BRC 	(_ULCAST_(1) << 22)
- 
- /*
-  * Coprocessor 1 (FPU) register names
-@@ -1247,6 +1256,10 @@ do {									\
- #define read_c0_diag()		__read_32bit_c0_register($22, 0)
- #define write_c0_diag(val)	__write_32bit_c0_register($22, 0, val)
- 
-+/* R10K CP0 Branch Diagnostic register is 64bits wide */
-+#define read_c0_r10k_diag()	__read_64bit_c0_register($22, 0)
-+#define write_c0_r10k_diag(val)	__write_64bit_c0_register($22, 0, val)
++/* Xtalk Widget Device Mfgr Nums */
++#define WIDGET_XBOW_MFGR_NUM	0x0      /* IP30 XBow Chip */
++#define WIDGET_XXBOW_MFGR_NUM	0x0      /* IP35 Xbow + XBridge Chip */
++#define WIDGET_ODYS_MFGR_NUM	0x023    /* Odyssey / VPro GFX */
++#define WIDGET_TPU_MFGR_NUM	0x024    /* Tensor Processor Unit */
++#define WIDGET_XBRDG_MFGR_NUM	0x024    /* IP35 XBridge Chip */
++#define WIDGET_HEART_MFGR_NUM	0x036    /* IP30 HEART Chip */
++#define WIDGET_BRIDG_MFGR_NUM	0x036    /* PCI Bridge */
++#define WIDGET_HUB_MFGR_NUM	0x036    /* IP27 Hub Chip */
++#define WIDGET_BDRCK_MFGR_NUM	0x036    /* IP35 Bedrock Chip */
++#define WIDGET_IMPCT_MFGR_NUM	0x2aa    /* HQ4 / Impact GFX */
++#define WIDGET_KONA_MFGR_NUM	0x2aa    /* InfiniteReality3 / Kona GFX */
++#define WIDGET_NULL_MFGR_NUM	-1       /* NULL */
 +
- #define read_c0_diag1()		__read_32bit_c0_register($22, 1)
- #define write_c0_diag1(val)	__write_32bit_c0_register($22, 1, val)
- 
-diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
-index e36515d..7c0fffd 100644
---- a/arch/mips/kernel/cpu-probe.c
-+++ b/arch/mips/kernel/cpu-probe.c
-@@ -946,7 +946,7 @@ static inline void cpu_probe_legacy(struct cpuinfo_mips *c, unsigned int cpu)
- 		c->options = MIPS_CPU_TLB | MIPS_CPU_4K_CACHE | MIPS_CPU_4KEX |
- 			     MIPS_CPU_FPU | MIPS_CPU_32FPR |
- 			     MIPS_CPU_COUNTER | MIPS_CPU_WATCH |
--			     MIPS_CPU_LLSC;
-+			     MIPS_CPU_LLSC | MIPS_CPU_BP_GHIST;
- 		c->tlbsize = 64;
- 		break;
- 	case PRID_IMP_R14000:
-@@ -961,7 +961,7 @@ static inline void cpu_probe_legacy(struct cpuinfo_mips *c, unsigned int cpu)
- 		c->options = MIPS_CPU_TLB | MIPS_CPU_4K_CACHE | MIPS_CPU_4KEX |
- 			     MIPS_CPU_FPU | MIPS_CPU_32FPR |
- 			     MIPS_CPU_COUNTER | MIPS_CPU_WATCH |
--			     MIPS_CPU_LLSC;
-+			     MIPS_CPU_LLSC | MIPS_CPU_BP_GHIST;
- 		c->tlbsize = 64;
- 		break;
- 	case PRID_IMP_LOONGSON_64:  /* Loongson-2/3 */
-@@ -1479,6 +1479,10 @@ void cpu_probe(void)
- 	else
- 		cpu_set_nofpu_opts(c);
- 
-+	if (c->options & MIPS_CPU_BP_GHIST)
-+		write_c0_r10k_diag(read_c0_r10k_diag() |
-+				   R10K_DIAG_E_GHIST);
++/* Xtalk Widget Device Part Nums */
++#define WIDGET_XBOW_PART_NUM	0x0000
++#define WIDGET_HEART_PART_NUM	0xc001
++#define WIDGET_BRIDG_PART_NUM	0xc002
++#define WIDGET_IMPCT_PART_NUM	0xc003
++#define WIDGET_ODYS_PART_NUM	0xc013
++#define WIDGET_HUB_PART_NUM	0xc101
++#define WIDGET_KONA_PART_NUM	0xc102
++#define WIDGET_BDRCK_PART_NUM	0xc110
++#define WIDGET_TPU_PART_NUM	0xc202
++#define WIDGET_XXBOW_PART_NUM	0xd000
++#define WIDGET_XBRDG_PART_NUM	0xd002
++#define WIDGET_NULL_PART_NUM	-1
 +
- 	if (cpu_has_mips_r2_r6) {
- 		c->srsets = ((read_c0_srsctl() >> 26) & 0x0f) + 1;
- 		/* R2 has Performance Counter Interrupt indicator */
++/* For Xtalk Widget identification */
++struct widget_ident {
++	u32 mfgr;
++	u32 part;
++	char *name;
++	char *revs[16];
++};
++
++/* Known Xtalk Widgets */
++static const __initdata struct widget_ident widget_idents[] = {
++	{
++		WIDGET_XBOW_MFGR_NUM,
++		WIDGET_XBOW_PART_NUM,
++		"xbow",
++		{NULL, "1.0", "1.1", "1.2", "1.3", "2.0", NULL},
++	},
++	{
++		WIDGET_HEART_MFGR_NUM,
++		WIDGET_HEART_PART_NUM,
++		"heart",
++		{NULL, "A", "B", "C", "D", "E", "F", NULL},
++	},
++	{
++		WIDGET_BRIDG_MFGR_NUM,
++		WIDGET_BRIDG_PART_NUM,
++		"bridge",
++		{NULL, "A", "B", "C", "D", NULL},
++	},
++	{
++		WIDGET_IMPCT_MFGR_NUM,
++		WIDGET_IMPCT_PART_NUM,
++		"impact",
++		{NULL, "A", "B", NULL},
++	},
++	{
++		WIDGET_ODYS_MFGR_NUM,
++		WIDGET_ODYS_PART_NUM,
++		"odyssey",
++		{NULL, "A", "B", NULL},
++	},
++	{
++		WIDGET_HUB_MFGR_NUM,
++		WIDGET_HUB_PART_NUM,
++		"hub",
++		{NULL, "1.0", "2.0", "2.1", "2.2", "2.3", "2.4", NULL},
++	},
++	{
++		WIDGET_KONA_MFGR_NUM,
++		WIDGET_KONA_PART_NUM,
++		"kona",
++		{NULL},
++	},
++	{
++		WIDGET_BDRCK_MFGR_NUM,
++		WIDGET_BDRCK_PART_NUM,
++		"bedrock",
++		{NULL, "1.0", "1.1", NULL},
++	},
++	{
++		WIDGET_TPU_MFGR_NUM,
++		WIDGET_TPU_PART_NUM,
++		"tpu",
++		{"0", NULL},
++	},
++	{
++		WIDGET_XXBOW_MFGR_NUM,
++		WIDGET_XXBOW_PART_NUM,
++		"xxbow",
++		{NULL, "1.0", "2.0", NULL},
++	},
++	{
++		WIDGET_XBRDG_MFGR_NUM,
++		WIDGET_XBRDG_PART_NUM,
++		"xbridge",
++		{NULL, "A", "B", NULL},
++	},
++	{
++		WIDGET_NULL_MFGR_NUM,
++		WIDGET_NULL_PART_NUM,
++		NULL,
++		{NULL},
++	}
++};
++
+ /*
+  * according to the crosstalk spec, only 32-bits access to the widget
+  * configuration registers is allowed.	some widgets may allow 64-bits

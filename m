@@ -1,45 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 May 2015 18:45:40 +0200 (CEST)
-Received: from resqmta-po-05v.sys.comcast.net ([96.114.154.164]:59298 "EHLO
-        resqmta-po-05v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007134AbbEYQpgAmzsL (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 25 May 2015 18:45:36 +0200
-Received: from resomta-po-06v.sys.comcast.net ([96.114.154.230])
-        by resqmta-po-05v.sys.comcast.net with comcast
-        id YGlR1q0054yXVJQ01GlYut; Mon, 25 May 2015 16:45:32 +0000
-Received: from [192.168.1.13] ([69.251.155.187])
-        by resomta-po-06v.sys.comcast.net with comcast
-        id YGlW1q00P42s2jH01GlX37; Mon, 25 May 2015 16:45:32 +0000
-Message-ID: <556351A6.9080007@gentoo.org>
-Date:   Mon, 25 May 2015 12:45:26 -0400
-From:   Joshua Kinard <kumba@gentoo.org>
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:31.0) Gecko/20100101 Thunderbird/31.6.0
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 May 2015 19:54:10 +0200 (CEST)
+Received: from arrakis.dune.hu ([78.24.191.176]:59920 "EHLO arrakis.dune.hu"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27007134AbbEYRyJeRBnG (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 25 May 2015 19:54:09 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by arrakis.dune.hu (Postfix) with ESMTP id AAF5F2815AD;
+        Mon, 25 May 2015 19:52:43 +0200 (CEST)
+X-Virus-Scanned: at arrakis.dune.hu
+Received: from newshaker64.lan (dslb-088-073-027-024.088.073.pools.vodafone-ip.de [88.73.27.24])
+        by arrakis.dune.hu (Postfix) with ESMTPSA id BDFA72803EE;
+        Mon, 25 May 2015 19:52:41 +0200 (CEST)
+From:   Jonas Gorski <jogo@openwrt.org>
 To:     linux-mips@linux-mips.org
-Subject: Re: [PATCH]: MIPS: PCI: Add pre_enable hook, minor readability fixes
-References: <5562B60D.3050507@gentoo.org> <55631F26.6080108@cogentembedded.com>
-In-Reply-To: <55631F26.6080108@cogentembedded.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=comcast.net;
-        s=q20140121; t=1432572332;
-        bh=ixk9N0lBqhpBIHvPRgZ0xKiG/p+TUFrQXnxhQd4Tj4I=;
-        h=Received:Received:Message-ID:Date:From:MIME-Version:To:Subject:
-         Content-Type;
-        b=YGRZnfbASxZi5OU9ttbqFRTKiOBZr54+Dl+AkhLMvb6RsR6Oucs7fRcfkzQRDRFpm
-         44tvgWFRG5X28Mgkf4fhq6pW8GuS8cn1/JwgUQX6//NCV2SHmxP+b8vS6bTYGDmQGj
-         1ZFTMOApAu5NdPFVkBRhK+yFWhmm6zT1L1kDYiJr+zufpsV2RcMY6EGDS4r+z2idvA
-         u+ZG9Ibqhag0cXU3RqCfi+qIySVreViCKbXKv1qBH6tFwWDAKMs1YAcIr1epThEQUI
-         CuHx52Cw3ccOh9cTmytRFY04EnG3sAKMVhBpC66+nl9fVnsUl+pvQTHPnqjeWwMX7u
-         e53W0SxJwwSHA==
-Return-Path: <kumba@gentoo.org>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        John Crispin <blogic@openwrt.org>
+Subject: [PATCH] MIPS: ralink: fix clearing the illegal access interrupt
+Date:   Mon, 25 May 2015 19:53:54 +0200
+Message-Id: <1432576434-25962-1-git-send-email-jogo@openwrt.org>
+X-Mailer: git-send-email 1.7.10.4
+Return-Path: <jogo@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47651
+X-archive-position: 47652
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kumba@gentoo.org
+X-original-sender: jogo@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,50 +39,33 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 05/25/2015 09:09, Sergei Shtylyov wrote:
-> Hello.
-> 
-> On 5/25/2015 8:41 AM, Joshua Kinard wrote:
-> 
->> From: Joshua Kinard <kumba@gentoo.org>
-> 
->> This patch adds a hook "pre_enable", to the core MIPS PCI code.  It is
->> used by the IP30 Port to setup the PCI resources prior to probing the
->> BRIDGE and detecting available PCI devices.  It also adds some minor
->> whitespace to improve readability.
-> 
->> Signed-off-by: Joshua Kinard <kumba@gentoo.org>
-> [...]
-> 
->> diff --git a/arch/mips/pci/pci.c b/arch/mips/pci/pci.c
->> index b8a0bf5..af17c16 100644
->> --- a/arch/mips/pci/pci.c
->> +++ b/arch/mips/pci/pci.c
->> @@ -261,14 +261,19 @@ static int pcibios_enable_resources(struct pci_dev
->> *dev, int mask)
->>       u16 cmd, old_cmd;
->>       int idx;
->>       struct resource *r;
->> +    struct pci_controller *hose = (struct pci_controller *)dev->sysdata;
->>
->>       pci_read_config_word(dev, PCI_COMMAND, &cmd);
->>       old_cmd = cmd;
->> -    for (idx=0; idx < PCI_NUM_RESOURCES; idx++) {
->> +    for (idx = 0; idx < PCI_NUM_RESOURCES; idx++) {
->>           /* Only set up the requested stuff */
->> -        if (!(mask & (1<<idx)))
->> +        if (!(mask & (1 << idx)))
->>               continue;
->>
->> +        if(hose->pre_enable)
->> +            if(hose->pre_enable(hose, dev, idx) < 0)
-> 
->    Space required after *if*; please run your patches thru scripts/checkpatch.pl.
-> 
-> WBR, Sergei
+Due to a typo the illegal access interrupt is never cleared in by
+the interupt handler, causing an effective deadlock on the first
+illegal access.
 
-Whoops, thanks for catching that!  I cleaned up a lot of the original IP30 code
-and added a lot of the needed whitespace, but I apparently missed this bit.
-I'll send a v2 shortly.
+This was broken since the code was introduced in 5433acd81e87 ("MIPS:
+ralink: add illegal access driver"), but only exposed when the Kconfig
+symbol was added, thus enabling the code.
 
---J
+Cc: <stable@vger.kernel.org>  [3.18+]
+Fixes: a7b7aad383c ("MIPS: ralink: add missing symbol for RALINK_ILL_ACC")
+Signed-off-by: Jonas Gorski <jogo@openwrt.org>
+---
+ arch/mips/ralink/ill_acc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/mips/ralink/ill_acc.c b/arch/mips/ralink/ill_acc.c
+index e20b02e..e10d10b 100644
+--- a/arch/mips/ralink/ill_acc.c
++++ b/arch/mips/ralink/ill_acc.c
+@@ -41,7 +41,7 @@ static irqreturn_t ill_acc_irq_handler(int irq, void *_priv)
+ 		addr, (type >> ILL_ACC_OFF_S) & ILL_ACC_OFF_M,
+ 		type & ILL_ACC_LEN_M);
+ 
+-	rt_memc_w32(REG_ILL_ACC_TYPE, REG_ILL_ACC_TYPE);
++	rt_memc_w32(ILL_INT_STATUS, REG_ILL_ACC_TYPE);
+ 
+ 	return IRQ_HANDLED;
+ }
+-- 
+1.7.10.4

@@ -1,44 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 May 2015 13:03:58 +0200 (CEST)
-Received: from hauke-m.de ([5.39.93.123]:43175 "EHLO hauke-m.de"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27007108AbbEYLDwwBPL5 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 25 May 2015 13:03:52 +0200
-Received: from [192.168.178.24] (p508B6210.dip0.t-ipconnect.de [80.139.98.16])
-        by hauke-m.de (Postfix) with ESMTPSA id A274820200;
-        Mon, 25 May 2015 13:03:54 +0200 (CEST)
-Message-ID: <5563019A.2050702@hauke-m.de>
-Date:   Mon, 25 May 2015 13:03:54 +0200
-From:   Hauke Mehrtens <hauke@hauke-m.de>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.7.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 May 2015 15:10:08 +0200 (CEST)
+Received: from mail-lb0-f180.google.com ([209.85.217.180]:33933 "EHLO
+        mail-lb0-f180.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012589AbbEYNKDYAMwH (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 25 May 2015 15:10:03 +0200
+Received: by lbcmx3 with SMTP id mx3so51467014lbc.1
+        for <linux-mips@linux-mips.org>; Mon, 25 May 2015 06:10:00 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:message-id:date:from:user-agent:mime-version:to
+         :cc:subject:references:in-reply-to:content-type
+         :content-transfer-encoding;
+        bh=BgON4L4UExFYEYY0F8eh6dHuYIBfG8xcxvfQjnY6fPs=;
+        b=P8aZ0Q+whejee8AS/g34GfmDdsGMCmWQX+HyI+toOU+VxErZA0K+AWzP44ppVSRyYv
+         4w8PaL9coX6f0FWvdY4spgZDmWc5qzagk8ExGjzmzMpEc0gGFQEa/IRaIza6kriK1JPr
+         fiOEBL8s+A1r2t8ZhE55Lji3oo0juMe5y8wVk3CwRE2z97hBDSCA6gPDUaKWBIdtJnG1
+         4Mh6NQ2zR52qEMhI6RHS/jfT+YerRXQZLtPvRwpxjGtXCpxoasrWprpbhriYB4ndaz5N
+         4J4u2+l7PlM4u7MEygnfKy6MhgNg93mHRWquIkDcdWnYxVXbkmOFiK2HnVGRYhv6WBlP
+         sIWQ==
+X-Gm-Message-State: ALoCoQl01s1dnKIyZehZLzCn/uk2JEgRRQaCzeo8I4F9kHolR25gBJzjiFJmFjaNB1S/QsiT54y0
+X-Received: by 10.112.124.166 with SMTP id mj6mr18438014lbb.104.1432559400382;
+        Mon, 25 May 2015 06:10:00 -0700 (PDT)
+Received: from [192.168.3.154] (ppp31-148.pppoe.mtu-net.ru. [81.195.31.148])
+        by mx.google.com with ESMTPSA id f4sm2360313lae.18.2015.05.25.06.09.58
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 25 May 2015 06:09:59 -0700 (PDT)
+Message-ID: <55631F26.6080108@cogentembedded.com>
+Date:   Mon, 25 May 2015 16:09:58 +0300
+From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:31.0) Gecko/20100101 Thunderbird/31.7.0
 MIME-Version: 1.0
-To:     Paul Burton <paul.burton@imgtec.com>, linux-mips@linux-mips.org
-CC:     Ian Campbell <ijc+devicetree@hellion.org.uk>,
-        Kumar Gala <galak@codeaurora.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Pawel Moll <pawel.moll@arm.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
-        Joshua Kinard <kumba@gentoo.org>,
-        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
-        Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>,
-        linux-kernel@vger.kernel.org,
-        Markos Chandras <markos.chandras@imgtec.com>,
-        Andreas Herrmann <andreas.herrmann@caviumnetworks.com>
-Subject: Re: [PATCH v5 36/37] MIPS: ingenic: initial JZ4780 support
-References: <1432480307-23789-1-git-send-email-paul.burton@imgtec.com> <1432480307-23789-37-git-send-email-paul.burton@imgtec.com>
-In-Reply-To: <1432480307-23789-37-git-send-email-paul.burton@imgtec.com>
-Content-Type: text/plain; charset=windows-1252
+To:     Joshua Kinard <kumba@gentoo.org>,
+        Ralf Baechle <ralf@linux-mips.org>
+CC:     Linux MIPS List <linux-mips@linux-mips.org>
+Subject: Re: [PATCH]: MIPS: PCI: Add pre_enable hook, minor readability fixes
+References: <5562B60D.3050507@gentoo.org>
+In-Reply-To: <5562B60D.3050507@gentoo.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <hauke@hauke-m.de>
+Return-Path: <sergei.shtylyov@cogentembedded.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47648
+X-archive-position: 47649
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hauke@hauke-m.de
+X-original-sender: sergei.shtylyov@cogentembedded.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,295 +58,42 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 05/24/2015 05:11 PM, Paul Burton wrote:
-> Support the Ingenic JZ4780 SoC using the existing code under
-> arch/mips/jz4740 now that it has been generalised sufficiently.
-> 
-> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-> Cc: Ian Campbell <ijc+devicetree@hellion.org.uk>
-> Cc: Kumar Gala <galak@codeaurora.org>
-> Cc: Lars-Peter Clausen <lars@metafoo.de>
-> Cc: Mark Rutland <mark.rutland@arm.com>
-> Cc: Pawel Moll <pawel.moll@arm.com>
-> Cc: Ralf Baechle <ralf@linux-mips.org>
-> Cc: Rob Herring <robh+dt@kernel.org>
-> Cc: devicetree@vger.kernel.org
-> Cc: linux-mips@linux-mips.org
-> ---
-> 
-> Changes in v5:
-> - Disable the UARTs by default, so that devices can enable only the ones
->   they actually expose.
-> 
-> Changes in v4: None
-> Changes in v3:
-> - Rebase, dropping serial.h & relocating behind CONFIG_MACH_INGENIC.
-> 
-> Changes in v2: None
-> 
->  arch/mips/boot/dts/ingenic/jz4780.dtsi             | 111 +++++++++++++++++++++
->  arch/mips/include/asm/cpu-type.h                   |   2 +-
->  .../asm/mach-jz4740/cpu-feature-overrides.h        |   3 -
->  arch/mips/include/asm/mach-jz4740/irq.h            |   4 +
->  arch/mips/jz4740/Kconfig                           |   6 ++
->  arch/mips/jz4740/Makefile                          |   4 +-
->  arch/mips/jz4740/setup.c                           |   3 +
->  arch/mips/jz4740/time.c                            |   7 +-
->  8 files changed, 134 insertions(+), 6 deletions(-)
->  create mode 100644 arch/mips/boot/dts/ingenic/jz4780.dtsi
-> 
-> diff --git a/arch/mips/boot/dts/ingenic/jz4780.dtsi b/arch/mips/boot/dts/ingenic/jz4780.dtsi
-> new file mode 100644
-> index 0000000..65389f6
-> --- /dev/null
-> +++ b/arch/mips/boot/dts/ingenic/jz4780.dtsi
-> @@ -0,0 +1,111 @@
-> +#include <dt-bindings/clock/jz4780-cgu.h>
-> +
-> +/ {
-> +	#address-cells = <1>;
-> +	#size-cells = <1>;
-> +	compatible = "ingenic,jz4780";
-> +
-> +	cpuintc: interrupt-controller {
-> +		#address-cells = <0>;
-> +		#interrupt-cells = <1>;
-> +		interrupt-controller;
-> +		compatible = "mti,cpu-interrupt-controller";
-> +	};
-> +
-> +	intc: interrupt-controller@10001000 {
-> +		compatible = "ingenic,jz4780-intc";
-> +		reg = <0x10001000 0x50>;
-> +
-> +		interrupt-controller;
-> +		#interrupt-cells = <1>;
-> +
-> +		interrupt-parent = <&cpuintc>;
-> +		interrupts = <2>;
-> +	};
-> +
-> +	ext: ext {
-> +		compatible = "fixed-clock";
-> +		#clock-cells = <0>;
-> +	};
-> +
-> +	rtc: rtc {
-> +		compatible = "fixed-clock";
-> +		#clock-cells = <0>;
-> +		clock-frequency = <32768>;
-> +	};
-> +
-> +	cgu: jz4780-cgu@10000000 {
-> +		compatible = "ingenic,jz4780-cgu";
-> +		reg = <0x10000000 0x100>;
-> +
-> +		clocks = <&ext>, <&rtc>;
-> +		clock-names = "ext", "rtc";
-> +
-> +		#clock-cells = <1>;
-> +	};
-> +
-> +	uart0: serial@10030000 {
-> +		compatible = "ingenic,jz4780-uart";
-> +		reg = <0x10030000 0x100>;
-> +
-> +		interrupt-parent = <&intc>;
-> +		interrupts = <51>;
-> +
-> +		clocks = <&ext>, <&cgu JZ4780_CLK_UART0>;
-> +		clock-names = "baud", "module";
-> +
-> +		status = "disabled";
-> +	};
-> +
-> +	uart1: serial@10031000 {
-> +		compatible = "ingenic,jz4780-uart";
-> +		reg = <0x10031000 0x100>;
-> +
-> +		interrupt-parent = <&intc>;
-> +		interrupts = <50>;
-> +
-> +		clocks = <&ext>, <&cgu JZ4780_CLK_UART1>;
-> +		clock-names = "baud", "module";
-> +
-> +		status = "disabled";
-> +	};
-> +
-> +	uart2: serial@10032000 {
-> +		compatible = "ingenic,jz4780-uart";
-> +		reg = <0x10032000 0x100>;
-> +
-> +		interrupt-parent = <&intc>;
-> +		interrupts = <49>;
-> +
-> +		clocks = <&ext>, <&cgu JZ4780_CLK_UART2>;
-> +		clock-names = "baud", "module";
-> +
-> +		status = "disabled";
-> +	};
-> +
-> +	uart3: serial@10033000 {
-> +		compatible = "ingenic,jz4780-uart";
-> +		reg = <0x10033000 0x100>;
-> +
-> +		interrupt-parent = <&intc>;
-> +		interrupts = <48>;
-> +
-> +		clocks = <&ext>, <&cgu JZ4780_CLK_UART3>;
-> +		clock-names = "baud", "module";
-> +
-> +		status = "disabled";
-> +	};
-> +
-> +	uart4: serial@10034000 {
-> +		compatible = "ingenic,jz4780-uart";
-> +		reg = <0x10034000 0x100>;
-> +
-> +		interrupt-parent = <&intc>;
-> +		interrupts = <34>;
-> +
-> +		clocks = <&ext>, <&cgu JZ4780_CLK_UART4>;
-> +		clock-names = "baud", "module";
-> +
-> +		status = "disabled";
-> +	};
-> +};
-> diff --git a/arch/mips/include/asm/cpu-type.h b/arch/mips/include/asm/cpu-type.h
-> index 33f3cab..d41e8e2 100644
-> --- a/arch/mips/include/asm/cpu-type.h
-> +++ b/arch/mips/include/asm/cpu-type.h
-> @@ -32,12 +32,12 @@ static inline int __pure __get_cpu_type(const int cpu_type)
->  	case CPU_4KC:
->  	case CPU_ALCHEMY:
->  	case CPU_PR4450:
-> -	case CPU_JZRISC:
->  #endif
->  
->  #if defined(CONFIG_SYS_HAS_CPU_MIPS32_R1) || \
->      defined(CONFIG_SYS_HAS_CPU_MIPS32_R2)
->  	case CPU_4KEC:
-> +	case CPU_JZRISC:
->  #endif
->  
->  #ifdef CONFIG_SYS_HAS_CPU_MIPS32_R2
-> diff --git a/arch/mips/include/asm/mach-jz4740/cpu-feature-overrides.h b/arch/mips/include/asm/mach-jz4740/cpu-feature-overrides.h
-> index a225baa..0933f94 100644
-> --- a/arch/mips/include/asm/mach-jz4740/cpu-feature-overrides.h
-> +++ b/arch/mips/include/asm/mach-jz4740/cpu-feature-overrides.h
-> @@ -12,8 +12,6 @@
->  #define cpu_has_3k_cache	0
->  #define cpu_has_4k_cache	1
->  #define cpu_has_tx39_cache	0
-> -#define cpu_has_fpu		0
-> -#define cpu_has_32fpr	0
->  #define cpu_has_counter		0
->  #define cpu_has_watch		1
->  #define cpu_has_divec		1
-> @@ -34,7 +32,6 @@
->  #define cpu_has_ic_fills_f_dc	0
->  #define cpu_has_pindexed_dcache 0
->  #define cpu_has_mips32r1	1
-> -#define cpu_has_mips32r2	0
->  #define cpu_has_mips64r1	0
->  #define cpu_has_mips64r2	0
->  #define cpu_has_dsp		0
-> diff --git a/arch/mips/include/asm/mach-jz4740/irq.h b/arch/mips/include/asm/mach-jz4740/irq.h
-> index b218f76..9b439fc 100644
-> --- a/arch/mips/include/asm/mach-jz4740/irq.h
-> +++ b/arch/mips/include/asm/mach-jz4740/irq.h
-> @@ -21,6 +21,8 @@
->  
->  #ifdef CONFIG_MACH_JZ4740
->  # define NR_INTC_IRQS	32
-> +#else
-> +# define NR_INTC_IRQS	64
->  #endif
->  
->  /* 1st-level interrupts */
-> @@ -48,6 +50,8 @@
->  #define JZ4740_IRQ_IPU		JZ4740_IRQ(29)
->  #define JZ4740_IRQ_LCD		JZ4740_IRQ(30)
->  
-> +#define JZ4780_IRQ_TCU2		JZ4740_IRQ(25)
-> +
->  /* 2nd-level interrupts */
->  #define JZ4740_IRQ_DMA(x)	(JZ4740_IRQ(NR_INTC_IRQS) + (x))
->  
-> diff --git a/arch/mips/jz4740/Kconfig b/arch/mips/jz4740/Kconfig
-> index dff0966..21adcea 100644
-> --- a/arch/mips/jz4740/Kconfig
-> +++ b/arch/mips/jz4740/Kconfig
-> @@ -12,3 +12,9 @@ endchoice
->  config MACH_JZ4740
->  	bool
->  	select SYS_HAS_CPU_MIPS32_R1
-> +
-> +config MACH_JZ4780
-> +	bool
-> +	select MIPS_CPU_SCACHE
-> +	select SYS_HAS_CPU_MIPS32_R2
-> +	select SYS_SUPPORTS_HIGHMEM
-> diff --git a/arch/mips/jz4740/Makefile b/arch/mips/jz4740/Makefile
-> index 89ce401..39d70bd 100644
-> --- a/arch/mips/jz4740/Makefile
-> +++ b/arch/mips/jz4740/Makefile
-> @@ -5,7 +5,9 @@
->  # Object file lists.
->  
->  obj-y += prom.o time.o reset.o setup.o \
-> -	gpio.o platform.o timer.o
-> +	platform.o timer.o
-> +
-> +obj-$(CONFIG_MACH_JZ4740) += gpio.o
->  
->  CFLAGS_setup.o = -I$(src)/../../../scripts/dtc/libfdt
->  
-> diff --git a/arch/mips/jz4740/setup.c b/arch/mips/jz4740/setup.c
-> index 1bed3cb..510fc0d 100644
-> --- a/arch/mips/jz4740/setup.c
-> +++ b/arch/mips/jz4740/setup.c
-> @@ -83,6 +83,9 @@ arch_initcall(populate_machine);
->  
->  const char *get_system_type(void)
->  {
-> +	if (config_enabled(CONFIG_MACH_JZ4780))
-> +		return "JZ4780";
-> +
->  	return "JZ4740";
->  }
+Hello.
 
-Shouldn't this be provided by device tree, now it depends on your kernel
-config.
+On 5/25/2015 8:41 AM, Joshua Kinard wrote:
 
->  
-> diff --git a/arch/mips/jz4740/time.c b/arch/mips/jz4740/time.c
-> index 9172553..7ab47fe 100644
-> --- a/arch/mips/jz4740/time.c
-> +++ b/arch/mips/jz4740/time.c
-> @@ -102,7 +102,12 @@ static struct clock_event_device jz4740_clockevent = {
->  	.set_next_event = jz4740_clockevent_set_next,
->  	.set_mode = jz4740_clockevent_set_mode,
->  	.rating = 200,
-> +#ifdef CONFIG_MACH_JZ4740
->  	.irq = JZ4740_IRQ_TCU0,
-> +#endif
-> +#ifdef CONFIG_MACH_JZ4780
-> +	.irq = JZ4780_IRQ_TCU2,
-> +#endif
->  };
+> From: Joshua Kinard <kumba@gentoo.org>
 
-same here.
+> This patch adds a hook "pre_enable", to the core MIPS PCI code.  It is
+> used by the IP30 Port to setup the PCI resources prior to probing the
+> BRIDGE and detecting available PCI devices.  It also adds some minor
+> whitespace to improve readability.
 
->  
->  static struct irqaction timer_irqaction = {
-> @@ -144,7 +149,7 @@ void __init plat_time_init(void)
->  
->  	sched_clock_register(jz4740_read_sched_clock, 16, clk_rate);
->  
-> -	setup_irq(JZ4740_IRQ_TCU0, &timer_irqaction);
-> +	setup_irq(jz4740_clockevent.irq, &timer_irqaction);
->  
->  	ctrl = JZ_TIMER_CTRL_PRESCALE_16 | JZ_TIMER_CTRL_SRC_EXT;
->  
-> 
+> Signed-off-by: Joshua Kinard <kumba@gentoo.org>
+[...]
+
+> diff --git a/arch/mips/pci/pci.c b/arch/mips/pci/pci.c
+> index b8a0bf5..af17c16 100644
+> --- a/arch/mips/pci/pci.c
+> +++ b/arch/mips/pci/pci.c
+> @@ -261,14 +261,19 @@ static int pcibios_enable_resources(struct pci_dev *dev, int mask)
+>   	u16 cmd, old_cmd;
+>   	int idx;
+>   	struct resource *r;
+> +	struct pci_controller *hose = (struct pci_controller *)dev->sysdata;
+>
+>   	pci_read_config_word(dev, PCI_COMMAND, &cmd);
+>   	old_cmd = cmd;
+> -	for (idx=0; idx < PCI_NUM_RESOURCES; idx++) {
+> +	for (idx = 0; idx < PCI_NUM_RESOURCES; idx++) {
+>   		/* Only set up the requested stuff */
+> -		if (!(mask & (1<<idx)))
+> +		if (!(mask & (1 << idx)))
+>   			continue;
+>
+> +		if(hose->pre_enable)
+> +			if(hose->pre_enable(hose, dev, idx) < 0)
+
+    Space required after *if*; please run your patches thru scripts/checkpatch.pl.
+
+WBR, Sergei

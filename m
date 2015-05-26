@@ -1,34 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 May 2015 17:46:16 +0200 (CEST)
-Received: from iolanthe.rowland.org ([192.131.102.54]:49719 "HELO
-        iolanthe.rowland.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with SMTP id S27007089AbbEZPqOCV9TE (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 26 May 2015 17:46:14 +0200
-Received: (qmail 2958 invoked by uid 2102); 26 May 2015 11:46:14 -0400
-Received: from localhost (sendmail-bs@127.0.0.1)
-  by localhost with SMTP; 26 May 2015 11:46:14 -0400
-Date:   Tue, 26 May 2015 11:46:14 -0400 (EDT)
-From:   Alan Stern <stern@rowland.harvard.edu>
-X-X-Sender: stern@iolanthe.rowland.org
-To:     Ben Hutchings <ben@decadent.org.uk>
-cc:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>,
-        David Daney <david.daney@cavium.com>,
-        Chandrakala Chavva <cchavva@caviumnetworks.com>,
-        Paul Martin <paul.martin@codethink.co.uk>
-Subject: Re: [PATCH v2] MIPS: Octeon: Set OHCI and EHCI MMIO byte order to
- match CPU
-In-Reply-To: <1432582049.12412.134.camel@decadent.org.uk>
-Message-ID: <Pine.LNX.4.44L0.1505261136070.1519-100000@iolanthe.rowland.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 May 2015 20:42:59 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:37675 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27007242AbbEZSm6aFakQ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 26 May 2015 20:42:58 +0200
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id C0BED176A14B5;
+        Tue, 26 May 2015 19:42:51 +0100 (IST)
+Received: from hhmail02.hh.imgtec.org (10.100.10.20) by KLMAIL01.kl.imgtec.org
+ (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Tue, 26 May
+ 2015 19:42:55 +0100
+Received: from laptop.hh.imgtec.org (10.100.200.175) by hhmail02.hh.imgtec.org
+ (10.100.10.20) with Microsoft SMTP Server (TLS) id 14.3.224.2; Tue, 26 May
+ 2015 19:42:54 +0100
+From:   Ezequiel Garcia <ezequiel.garcia@imgtec.com>
+To:     <linux-kernel@vger.kernel.org>, <linux-mips@linux-mips.org>,
+        "Daniel Lezcano" <daniel.lezcano@linaro.org>,
+        <devicetree@vger.kernel.org>
+CC:     Thomas Gleixner <tglx@linutronix.de>,
+        Andrew Bresticker <abrestic@chromium.org>,
+        James Hartley <james.hartley@imgtec.com>,
+        <Govindraj.Raja@imgtec.com>, <Damien.Horsley@imgtec.com>,
+        James Hogan <james.hogan@imgtec.com>,
+        Ezequiel Garcia <ezequiel.garcia@imgtec.com>
+Subject: [PATCH v2 2/7] clocksource: mips-gic: Add missing error returns checks
+Date:   Tue, 26 May 2015 15:39:03 -0300
+Message-ID: <1432665548-16024-3-git-send-email-ezequiel.garcia@imgtec.com>
+X-Mailer: git-send-email 2.3.3
+In-Reply-To: <1432665548-16024-1-git-send-email-ezequiel.garcia@imgtec.com>
+References: <1432665548-16024-1-git-send-email-ezequiel.garcia@imgtec.com>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <stern+557d4684@rowland.harvard.edu>
+Content-Type: text/plain
+X-Originating-IP: [10.100.200.175]
+Return-Path: <Ezequiel.Garcia@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47670
+X-archive-position: 47671
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: stern@rowland.harvard.edu
+X-original-sender: ezequiel.garcia@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -41,39 +52,59 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, 25 May 2015, Ben Hutchings wrote:
+This commit adds the required checks on the functions that return
+an error. Some of them are not critical, so only a warning is
+printed.
 
-> The Octeon OHCI is now supported by the ohci-platform driver, and
-> USB_OCTEON_OHCI is marked as deprecated.  However, it is currently
-> still necessary to enable it in order to select
-> USB_OHCI_BIG_ENDIAN_MMIO.  Make CPU_CAVIUM_OCTEON select that as well,
-> so that USB_OCTEON_OHCI is really obsolete.
+Reviewed-by: Andrew Bresticker <abrestic@chromium.org>
+Signed-off-by: Ezequiel Garcia <ezequiel.garcia@imgtec.com>
+---
+ drivers/clocksource/mips-gic-timer.c | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
-Good catch.
-
-> The old ohci-octeon and ehci-octeon drivers also only enabled big-endian
-> MMIO in case the CPU was big-endian.
-
-This is true in the current kernel as well.  [eo]hci-platform.c enables
-big-endian MMIO only if the appropriate flag is set in the platform
-data or OF properties.
-
->  Make the selections of
-> USB_EHCI_BIG_ENDIAN_MMIO and USB_OHCI_BIG_ENDIAN_MMIO conditional, to
-> match this.
-
-I'm not sure you want to do this.  [eo]hci-platform.c will fail with an 
-error if the platform/OF data has the big-endian flag set but 
-CONFIG_USB_[EO]HCI_BIG_ENDIAN_MMIO isn't defined.
-
-> Fixes: 2193dda5eec6 ("USB: host: Remove ehci-octeon and ohci-octeon drivers")
-> Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
-> ---
-> v2: Make selections conditional
-> 
-> This is also untested; I'm just comparing the old and new code.
-
-Is there anyone who can test this with both big-endian and 
-little-endian hardware?
-
-Alan Stern
+diff --git a/drivers/clocksource/mips-gic-timer.c b/drivers/clocksource/mips-gic-timer.c
+index 913585d..c4352f0 100644
+--- a/drivers/clocksource/mips-gic-timer.c
++++ b/drivers/clocksource/mips-gic-timer.c
+@@ -100,12 +100,18 @@ static struct notifier_block gic_cpu_nb = {
+ 
+ static int gic_clockevent_init(void)
+ {
++	int ret;
++
+ 	if (!cpu_has_counter || !gic_frequency)
+ 		return -ENXIO;
+ 
+-	setup_percpu_irq(gic_timer_irq, &gic_compare_irqaction);
++	ret = setup_percpu_irq(gic_timer_irq, &gic_compare_irqaction);
++	if (ret < 0)
++		return ret;
+ 
+-	register_cpu_notifier(&gic_cpu_nb);
++	ret = register_cpu_notifier(&gic_cpu_nb);
++	if (ret < 0)
++		pr_warn("GIC: Unable to register CPU notifier\n");
+ 
+ 	gic_clockevent_cpu_init(this_cpu_ptr(&gic_clockevent_device));
+ 
+@@ -125,13 +131,17 @@ static struct clocksource gic_clocksource = {
+ 
+ static void __init __gic_clocksource_init(void)
+ {
++	int ret;
++
+ 	/* Set clocksource mask. */
+ 	gic_clocksource.mask = CLOCKSOURCE_MASK(gic_get_count_width());
+ 
+ 	/* Calculate a somewhat reasonable rating value. */
+ 	gic_clocksource.rating = 200 + gic_frequency / 10000000;
+ 
+-	clocksource_register_hz(&gic_clocksource, gic_frequency);
++	ret = clocksource_register_hz(&gic_clocksource, gic_frequency);
++	if (ret < 0)
++		pr_warn("GIC: Unable to register clocksource\n");
+ 
+ 	gic_clockevent_init();
+ 
+-- 
+2.3.3

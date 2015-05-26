@@ -1,41 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 May 2015 00:09:42 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:10681 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27007054AbbEZWJkf61Ux (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 27 May 2015 00:09:40 +0200
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 793732E08124B;
-        Tue, 26 May 2015 23:09:33 +0100 (IST)
-Received: from hhmail02.hh.imgtec.org (10.100.10.20) by KLMAIL01.kl.imgtec.org
- (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Tue, 26 May
- 2015 23:04:33 +0100
-Received: from laptop.hh.imgtec.org (10.100.200.175) by hhmail02.hh.imgtec.org
- (10.100.10.20) with Microsoft SMTP Server (TLS) id 14.3.224.2; Tue, 26 May
- 2015 23:04:32 +0100
-From:   Ezequiel Garcia <ezequiel.garcia@imgtec.com>
-To:     <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>,
-        "Mike Turquette" <mturquette@linaro.org>, <sboyd@codeaurora.org>
-CC:     Andrew Bresticker <abrestic@chromium.org>,
-        James Hartley <james.hartley@imgtec.com>,
-        James Hogan <james.hogan@imgtec.com>, <cernekee@chromium.org>,
-        <Govindraj.Raja@imgtec.com>, <Damien.Horsley@imgtec.com>,
-        Ezequiel Garcia <ezequiel.garcia@imgtec.com>
-Subject: [PATCH 0/3] clk: pistachio: Assorted fixes
-Date:   Tue, 26 May 2015 19:01:06 -0300
-Message-ID: <1432677669-29581-1-git-send-email-ezequiel.garcia@imgtec.com>
-X-Mailer: git-send-email 2.3.3
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.100.200.175]
-Return-Path: <Ezequiel.Garcia@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 May 2015 01:33:59 +0200 (CEST)
+Received: from youngberry.canonical.com ([91.189.89.112]:47036 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007054AbbEZXd5OT2Og (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 27 May 2015 01:33:57 +0200
+Received: from 1.general.kamal.us.vpn ([10.172.68.52] helo=fourier)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:DHE_RSA_AES_128_CBC_SHA1:16)
+        (Exim 4.76)
+        (envelope-from <kamal@canonical.com>)
+        id 1YxOM6-0000wf-Rs; Tue, 26 May 2015 23:33:55 +0000
+Received: from kamal by fourier with local (Exim 4.82)
+        (envelope-from <kamal@whence.com>)
+        id 1YxOM4-0006Rc-L1; Tue, 26 May 2015 16:33:52 -0700
+From:   Kamal Mostafa <kamal@canonical.com>
+To:     Huacai Chen <chenhc@lemote.com>
+Cc:     "Steven J. Hill" <Steven.Hill@imgtec.com>,
+        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Kamal Mostafa <kamal@canonical.com>,
+        kernel-team@lists.ubuntu.com
+Subject: [3.13.y-ckt stable] Patch "MIPS: Hibernate: flush TLB entries earlier" has been added to staging queue
+Date:   Tue, 26 May 2015 16:33:52 -0700
+Message-Id: <1432683232-24729-1-git-send-email-kamal@canonical.com>
+X-Mailer: git-send-email 1.9.1
+X-Extended-Stable: 3.13
+Return-Path: <kamal@canonical.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47685
+X-archive-position: 47686
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ezequiel.garcia@imgtec.com
+X-original-sender: kamal@canonical.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,34 +45,24 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This patchset contains a few fixes for the Pistachio
-clock driver.
+This is a note to let you know that I have just added a patch titled
 
-This is based on the series "clk: pistachio: Assorted changes"
-(http://permalink.gmane.org/gmane.linux.kernel/1960107). I've dropped
-the patches related to the fractional and integer PLLs rate change
-and left only the fixes, as the rest might need some polishing.
+    MIPS: Hibernate: flush TLB entries earlier
 
-Here's a brief summary of the patches:
+to the linux-3.13.y-queue branch of the 3.13.y-ckt extended stable tree 
+which can be found at:
 
-Patches 1 and 2 clean up the PLL lock handling.
+    http://kernel.ubuntu.com/git/ubuntu/linux.git/log/?h=linux-3.13.y-queue
 
-Patch 3 adds some very useful sanity checks on integer and fractions PLL
-set_rate(), to make sure the parameters are modified only when it's legal
-to do so.
+This patch is scheduled to be released in version 3.13.11-ckt21.
 
-None of these are really urgent fixes so this is all v4.2 material.
-Hope we are still in time!
+If you, or anyone else, feels it should not be added to this tree, please 
+reply to this email.
 
-Ezequiel Garcia (2):
-  clk: pistachio: Add a pll_lock() helper for clarity
-  clk: pistachio: Lock the PLL when enabled upon rate change
+For more information about the 3.13.y-ckt tree, see
+https://wiki.ubuntu.com/Kernel/Dev/ExtendedStable
 
-Kevin Cernekee (1):
-  clk: pistachio: Add sanity checks on PLL configuration
+Thanks.
+-Kamal
 
- drivers/clk/pistachio/clk-pll.c | 115 ++++++++++++++++++++++++++++++++--------
- 1 file changed, 93 insertions(+), 22 deletions(-)
-
--- 
-2.3.3
+------

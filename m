@@ -1,44 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 May 2015 21:28:41 +0200 (CEST)
-Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:58353 "EHLO
-        shadbolt.e.decadent.org.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007134AbbEYT2jZayi- (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 25 May 2015 21:28:39 +0200
-Received: from dab-ntm1-h-25-4.dab.02.net ([82.132.229.168] helo=deadeye)
-        by shadbolt.decadent.org.uk with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.84)
-        (envelope-from <ben@decadent.org.uk>)
-        id 1Ywy3E-0001Lb-Fp; Mon, 25 May 2015 20:28:41 +0100
-Received: from ben by deadeye with local (Exim 4.85)
-        (envelope-from <ben@decadent.org.uk>)
-        id 1Ywy2k-0001ev-HE; Mon, 25 May 2015 20:28:10 +0100
-Message-ID: <1432582079.12412.135.camel@decadent.org.uk>
-Subject: [PATCH v2] MIPS: Octeon: Set OHCI and EHCI MMIO byte order to match
- CPU
-From:   Ben Hutchings <ben@decadent.org.uk>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Alan Stern <stern@rowland.harvard.edu>, linux-mips@linux-mips.org,
-        David Daney <david.daney@cavium.com>,
-        Chandrakala Chavva <cchavva@caviumnetworks.com>,
-        Paul Martin <paul.martin@codethink.co.uk>
-Date:   Mon, 25 May 2015 20:27:59 +0100
-In-Reply-To: <1432580495.12412.126.camel@decadent.org.uk>
-References: <1432580495.12412.126.camel@decadent.org.uk>
-Content-Type: multipart/signed; micalg="pgp-sha512";
-        protocol="application/pgp-signature"; boundary="=-r+tARUa2xs820qXt7wN9"
-X-Mailer: Evolution 3.12.9-1+b1 
-Mime-Version: 1.0
-X-SA-Exim-Connect-IP: 82.132.229.168
-X-SA-Exim-Mail-From: ben@decadent.org.uk
-X-SA-Exim-Scanned: No (on shadbolt.decadent.org.uk); SAEximRunCond expanded to false
-Return-Path: <ben@decadent.org.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 May 2015 09:26:58 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:21179 "EHLO
+        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S27006997AbbEZH04vJoJt (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 26 May 2015 09:26:56 +0200
+Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
+        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id F1CCF41F8E14;
+        Tue, 26 May 2015 08:26:53 +0100 (BST)
+Received: from mailapp01.imgtec.com ([10.100.180.242])
+  by imgpgp01.kl.imgtec.org (PGP Universal service);
+  Tue, 26 May 2015 08:26:53 +0100
+X-PGP-Universal: processed;
+        by imgpgp01.kl.imgtec.org on Tue, 26 May 2015 08:26:53 +0100
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id BE3B1EA2DA81A;
+        Tue, 26 May 2015 08:26:51 +0100 (IST)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Tue, 26 May 2015 08:25:50 +0100
+Received: from localhost (192.168.159.140) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Tue, 26 May
+ 2015 08:25:49 +0100
+Date:   Tue, 26 May 2015 08:25:48 +0100
+From:   Paul Burton <paul.burton@imgtec.com>
+To:     Hauke Mehrtens <hauke@hauke-m.de>
+CC:     <linux-mips@linux-mips.org>,
+        Ian Campbell <ijc+devicetree@hellion.org.uk>,
+        Kumar Gala <galak@codeaurora.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Pawel Moll <pawel.moll@arm.com>,
+        "Ralf Baechle" <ralf@linux-mips.org>,
+        Rob Herring <robh+dt@kernel.org>, <devicetree@vger.kernel.org>,
+        Joshua Kinard <kumba@gentoo.org>,
+        "Leonid Yegoshin" <Leonid.Yegoshin@imgtec.com>,
+        Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>,
+        <linux-kernel@vger.kernel.org>,
+        Markos Chandras <markos.chandras@imgtec.com>,
+        Andreas Herrmann <andreas.herrmann@caviumnetworks.com>
+Subject: Re: [PATCH v5 36/37] MIPS: ingenic: initial JZ4780 support
+Message-ID: <20150526072548.GS13811@NP-P-BURTON>
+References: <1432480307-23789-1-git-send-email-paul.burton@imgtec.com>
+ <1432480307-23789-37-git-send-email-paul.burton@imgtec.com>
+ <5563019A.2050702@hauke-m.de>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="ISKrrfpKsPiF35CV"
+Content-Disposition: inline
+In-Reply-To: <5563019A.2050702@hauke-m.de>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+X-Originating-IP: [192.168.159.140]
+X-ESG-ENCRYPT-TAG: b93fcccb
+Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47659
+X-archive-position: 47660
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ben@decadent.org.uk
+X-original-sender: paul.burton@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,96 +71,80 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-
---=-r+tARUa2xs820qXt7wN9
-Content-Type: text/plain; charset="UTF-8"
+--ISKrrfpKsPiF35CV
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-The Octeon OHCI is now supported by the ohci-platform driver, and
-USB_OCTEON_OHCI is marked as deprecated.  However, it is currently
-still necessary to enable it in order to select
-USB_OHCI_BIG_ENDIAN_MMIO.  Make CPU_CAVIUM_OCTEON select that as well,
-so that USB_OCTEON_OHCI is really obsolete.
+On Mon, May 25, 2015 at 01:03:54PM +0200, Hauke Mehrtens wrote:
+> > diff --git a/arch/mips/jz4740/setup.c b/arch/mips/jz4740/setup.c
+> > index 1bed3cb..510fc0d 100644
+> > --- a/arch/mips/jz4740/setup.c
+> > +++ b/arch/mips/jz4740/setup.c
+> > @@ -83,6 +83,9 @@ arch_initcall(populate_machine);
+> > =20
+> >  const char *get_system_type(void)
+> >  {
+> > +	if (config_enabled(CONFIG_MACH_JZ4780))
+> > +		return "JZ4780";
+> > +
+> >  	return "JZ4740";
+> >  }
+>=20
+> Shouldn't this be provided by device tree, now it depends on your kernel
+> config.
 
-The old ohci-octeon and ehci-octeon drivers also only enabled big-endian
-MMIO in case the CPU was big-endian.  Make the selections of
-USB_EHCI_BIG_ENDIAN_MMIO and USB_OHCI_BIG_ENDIAN_MMIO conditional, to
-match this.
+At some point, when the kernel is generic enough that one binary works
+across multiple SoCs, yes definitely. Even better might be to detect it
+at runtime. The kernel can currently only be built for a single SoC
+though, so the code as-is works just fine & gets things working on the
+CI20 without making an already lengthy patchset longer than it needs to
+be.
 
-Fixes: 2193dda5eec6 ("USB: host: Remove ehci-octeon and ohci-octeon drivers=
-")
-Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
----
-v2: Make selections conditional
+> > diff --git a/arch/mips/jz4740/time.c b/arch/mips/jz4740/time.c
+> > index 9172553..7ab47fe 100644
+> > --- a/arch/mips/jz4740/time.c
+> > +++ b/arch/mips/jz4740/time.c
+> > @@ -102,7 +102,12 @@ static struct clock_event_device jz4740_clockevent=
+ =3D {
+> >  	.set_next_event =3D jz4740_clockevent_set_next,
+> >  	.set_mode =3D jz4740_clockevent_set_mode,
+> >  	.rating =3D 200,
+> > +#ifdef CONFIG_MACH_JZ4740
+> >  	.irq =3D JZ4740_IRQ_TCU0,
+> > +#endif
+> > +#ifdef CONFIG_MACH_JZ4780
+> > +	.irq =3D JZ4780_IRQ_TCU2,
+> > +#endif
+> >  };
+>=20
+> same here.
 
-This is also untested; I'm just comparing the old and new code.
+Same response :)
 
-Ben.
+Thanks,
+    Paul
 
- arch/mips/Kconfig        | 4 ++--
- drivers/usb/host/Kconfig | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index d5c81b4..4b43459 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -1568,7 +1568,8 @@ config CPU_CAVIUM_OCTEON
- 	select WEAK_ORDERING
- 	select CPU_SUPPORTS_HIGHMEM
- 	select CPU_SUPPORTS_HUGEPAGES
--	select USB_EHCI_BIG_ENDIAN_MMIO
-+	select USB_EHCI_BIG_ENDIAN_MMIO if CPU_BIG_ENDIAN
-+	select USB_OHCI_BIG_ENDIAN_MMIO if CPU_BIG_ENDIAN
- 	select MIPS_L1_CACHE_SHIFT_7
- 	help
- 	  The Cavium Octeon processor is a highly integrated chip containing
---- a/drivers/usb/host/Kconfig
-+++ b/drivers/usb/host/Kconfig
-@@ -295,7 +295,7 @@ config USB_OCTEON_EHCI
- 	bool "Octeon on-chip EHCI support (DEPRECATED)"
- 	depends on CAVIUM_OCTEON_SOC
- 	default n
--	select USB_EHCI_BIG_ENDIAN_MMIO
-+	select USB_EHCI_BIG_ENDIAN_MMIO if CPU_BIG_ENDIAN
- 	select USB_EHCI_HCD_PLATFORM
- 	help
- 	  This option is deprecated now and the driver was removed, use
-@@ -568,7 +568,7 @@ config USB_OCTEON_OHCI
- 	bool "Octeon on-chip OHCI support (DEPRECATED)"
- 	depends on CAVIUM_OCTEON_SOC
- 	default USB_OCTEON_EHCI
--	select USB_OHCI_BIG_ENDIAN_MMIO
-+	select USB_OHCI_BIG_ENDIAN_MMIO if CPU_BIG_ENDIAN
- 	select USB_OHCI_LITTLE_ENDIAN
- 	select USB_OHCI_HCD_PLATFORM
- 	help
-
---=20
-Ben Hutchings
-Design a system any fool can use, and only a fool will want to use it.
-
-
---=-r+tARUa2xs820qXt7wN9
+--ISKrrfpKsPiF35CV
 Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
+Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQIVAwUAVWN3yue/yOyVhhEJAQrOgQ/+KDwbb9kQVsKDZSLnib2mLthsTUbdSzRN
-1+/TDVj7Fqua3BMPKkiLYuuHxypHjgBkfhX6uoUNFdzeGv985AXpfOBIxZ5Cywum
-8wRpJAKNLyWKO1CKDId23m4xGv1BRx7pY2JYCjc6Qkfk6M3x4L5cy/JTjBAC7kF/
-X51/R53z1ITPTTogNpFcXc0A/SdE3q4OCgmPCe7sHkOu1AJGINsgcuY3XMbu3JSU
-Rk0Fq+YgpKyHw0mK+0NtZKLCmoWDzZKjU6fbUlecRdZgZVtUyV0LYnrAhjvw45+G
-PfRKFDTWjXFBBhlrhC++Yr7HTFiy5PwJPW10yweqqPqnd7HKRzhLFR+6v7RAeWNl
-XooZ6bJBMWbKjW6tidIDWOV5bgKqJpn5chS5FXEyGAhEivHhAnH9oRPk/PQOdAFg
-TPK9HsSZLqUlnK/VJ7uaTR0brxgXVPhrgDJFOs79iWURFYH/RNdEWRg+jy945c8h
-bNLGtJYCuXZurrc7YrbGCFavSRYg36N27Vf4UTUepyDQVK4cHSNqh6rixzL+/f8J
-SJM55CN4q59KXZaEZXaefv4pd2LVxoZjhRls41XueiZHSSuCsyuR75J8R/DfMjnz
-iM3L6RTK4bpeFivXWlfWY52ZUK6v2oh3Qdke5isFLw6TBYxkAUDiD2eBZa6Ts8Fa
-nJbO0Bcsg2U=
-=Zpi7
+iQIcBAEBCAAGBQJVZB/3AAoJENzvn0paErs5TjQP/3jxzdlliT7qvgmEycMweXzh
+h706mxyUxYhg2PzAzH7XMqFXGUShi/vy6RZkp0Sj1b8A4nnvpISQWXpC+V8mooAJ
+xyxVuZFvVRdDMLcKD/Rw9a4k2kgsOdwkIaLSmqLUN+HAMbjCl5kzpvTGBrQh8Rwi
+dwMl/hB/9rHf4dX4YbMXwgy2e3iBHoeNzfkCC5To5NC5yiDnO0dZRskMOlKS4LE2
+lwgxMJcO7aMGs6Q/nRE8TocVYi+4GLRl9dnPSu4hag8PZokd91yF+ZmAuuXwa97u
+stW5SHIcdABgPPbdsyXSUlbw4mguohY1ZQYXvKXrE11Acpl3FpWn74LUvx+I1qtg
+2NNbIsj4Iklm0KltwouNdZuFMBM1AZweJ7vNmOaOWP3KV0fNA7WtxdBVGYCOtLvv
+qsCJ3Y6t8i8s9JKJ1/7C4HKlDnSercgYG81nMprnPr16dcUtAyHchj/uPB0BBPgW
+RInzipmWTMO8K7+0VrvU3gModh290VkuMgFtl9iIVT+wMhdqb+Y/BKThZTYC69OB
+GxyIwVqB2xN2qVT1n6ZKRbSBL8JvQRhWxIANabpHR21IH9buzuRobjOrqq8pugtT
+Z5nRoKDGG3iZoZbPLVA5JGZSmj1n+vQ4v3woI+084FVIVCa92eHRbLYDeFilCT5h
+A6l+tI8FbTYEsnO+t7Sn
+=Huf8
 -----END PGP SIGNATURE-----
 
---=-r+tARUa2xs820qXt7wN9--
+--ISKrrfpKsPiF35CV--

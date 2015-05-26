@@ -1,47 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 May 2015 22:27:06 +0200 (CEST)
-Received: from mail-ig0-f180.google.com ([209.85.213.180]:38454 "EHLO
-        mail-ig0-f180.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007283AbbEZU1EwSbKY convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 26 May 2015 22:27:04 +0200
-Received: by igcau1 with SMTP id au1so62717440igc.1;
-        Tue, 26 May 2015 13:27:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type:content-transfer-encoding;
-        bh=IIWheii2gXIw05Bp8O7jJoymHW2p50fUzF4QM2rSins=;
-        b=NA9YU3arVc/J8LmGp9DyIb9etM4UcsRsky641WsD32VkB1OyRpad7lshzX9dIKolMt
-         plPAhc8FLwaPx+KqUQSYaRSO7X2Dp+u4Q0G7uCY9fHt+0U7zAIcPFs36Ny/sl9DDDSMf
-         GKtD+vqDGLO0lv1LK3G3iQz2K79O7UTqF0yW8h35usFjJ4rnYP8/vnN00u7fLbrXOAWH
-         p6fEX2+Q6TQ8aWYtKQznM3smkPGUFh1uWdtCYZ2CGXa+y9d+ZbVYT/I0vRdJjP3xG/Ug
-         P6kkIZ1kq0SUwQrFcILY5O4ZhipEgDvfbI7ZHQgJJkSxACWdIkpk9V+qLi1Z6M0CIVIQ
-         gq8w==
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 May 2015 23:27:18 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:34682 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27007343AbbEZV1QgGJi9 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 26 May 2015 23:27:16 +0200
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 44CE4786234B7;
+        Tue, 26 May 2015 22:27:09 +0100 (IST)
+Received: from hhmail02.hh.imgtec.org (10.100.10.20) by KLMAIL01.kl.imgtec.org
+ (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Tue, 26 May
+ 2015 22:26:09 +0100
+Received: from laptop.hh.imgtec.org (10.100.200.175) by hhmail02.hh.imgtec.org
+ (10.100.10.20) with Microsoft SMTP Server (TLS) id 14.3.224.2; Tue, 26 May
+ 2015 22:26:07 +0100
+From:   Ezequiel Garcia <ezequiel.garcia@imgtec.com>
+To:     <linux-kernel@vger.kernel.org>, <linux-mips@linux-mips.org>,
+        "Daniel Lezcano" <daniel.lezcano@linaro.org>,
+        <devicetree@vger.kernel.org>
+CC:     Thomas Gleixner <tglx@linutronix.de>,
+        Andrew Bresticker <abrestic@chromium.org>,
+        James Hartley <james.hartley@imgtec.com>,
+        <Govindraj.Raja@imgtec.com>, <Damien.Horsley@imgtec.com>,
+        James Hogan <james.hogan@imgtec.com>,
+        Ezequiel Garcia <ezequiel.garcia@imgtec.com>
+Subject: [PATCH v3 5/7] clocksource: Add Pistachio SoC general purpose timer binding document
+Date:   Tue, 26 May 2015 18:22:50 -0300
+Message-ID: <1432675370-17944-1-git-send-email-ezequiel.garcia@imgtec.com>
+X-Mailer: git-send-email 2.3.3
+In-Reply-To: <1432665671-16102-1-git-send-email-ezequiel.garcia@imgtec.com>
+References: <1432665671-16102-1-git-send-email-ezequiel.garcia@imgtec.com>
 MIME-Version: 1.0
-X-Received: by 10.50.138.74 with SMTP id qo10mr32255707igb.39.1432672021601;
- Tue, 26 May 2015 13:27:01 -0700 (PDT)
-Received: by 10.107.36.73 with HTTP; Tue, 26 May 2015 13:27:01 -0700 (PDT)
-In-Reply-To: <1429732713-9366-1-git-send-email-riproute@gmail.com>
-References: <1429732713-9366-1-git-send-email-riproute@gmail.com>
-Date:   Tue, 26 May 2015 22:27:01 +0200
-Message-ID: <CACna6rxeu42D5YaOJEOikDSnFmCzuzW=NzbDS+=u4ysHKXh2HQ@mail.gmail.com>
-Subject: Re: [PATCH] MIPS: BCM47XX: Support Luxul XWR-1750 board
-From:   =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
-To:     Dan Haab <riproute@gmail.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        Hauke Mehrtens <hauke@hauke-m.de>, Dan Haab <dhaab@luxul.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-Return-Path: <zajec5@gmail.com>
+Content-Type: text/plain
+X-Originating-IP: [10.100.200.175]
+Return-Path: <Ezequiel.Garcia@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47680
+X-archive-position: 47681
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: zajec5@gmail.com
+X-original-sender: ezequiel.garcia@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,9 +52,54 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 22 April 2015 at 21:58, Dan Haab <riproute@gmail.com> wrote:
-> From: Dan Haab <dhaab@luxul.com>
->
-> Signed-off-by: Dan Haab <dhaab@luxul.com>
+Add a device-tree binding document for the clocksource driver provided
+by Pistachio SoC general purpose timers.
 
-Acked-by: Rafał Miłecki <zajec5@gmail.com>
+Reviewed-by: Andrew Bresticker <abrestic@chromium.org>
+Signed-off-by: Ezequiel Garcia <ezequiel.garcia@imgtec.com>
+---
+Changes from v2:
+ * Fix spacing for consistency as pointed out by Sergei.
+Changes from v1:
+ * No changes.
+
+ .../bindings/timer/img,pistachio-gptimer.txt       | 28 ++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/timer/img,pistachio-gptimer.txt
+
+diff --git a/Documentation/devicetree/bindings/timer/img,pistachio-gptimer.txt b/Documentation/devicetree/bindings/timer/img,pistachio-gptimer.txt
+new file mode 100644
+index 0000000..7afce80
+--- /dev/null
++++ b/Documentation/devicetree/bindings/timer/img,pistachio-gptimer.txt
+@@ -0,0 +1,28 @@
++* Pistachio general-purpose timer based clocksource
++
++Required properties:
++ - compatible: "img,pistachio-gptimer".
++ - reg: Address range of the timer registers.
++ - interrupts: An interrupt for each of the four timers
++ - clocks: Should contain a clock specifier for each entry in clock-names
++ - clock-names: Should contain the following entries:
++                "sys", interface clock
++                "slow", slow counter clock
++                "fast", fast counter clock
++ - img,cr-periph: Must contain a phandle to the peripheral control
++		  syscon node.
++
++Example:
++	timer: timer@18102000 {
++		compatible = "img,pistachio-gptimer";
++		reg = <0x18102000 0x100>;
++		interrupts = <GIC_SHARED 60 IRQ_TYPE_LEVEL_HIGH>,
++			     <GIC_SHARED 61 IRQ_TYPE_LEVEL_HIGH>,
++			     <GIC_SHARED 62 IRQ_TYPE_LEVEL_HIGH>,
++			     <GIC_SHARED 63 IRQ_TYPE_LEVEL_HIGH>;
++		clocks = <&clk_periph PERIPH_CLK_COUNTER_FAST>,
++		         <&clk_periph PERIPH_CLK_COUNTER_SLOW>,
++			 <&cr_periph SYS_CLK_TIMER>;
++		clock-names = "fast", "slow", "sys";
++		img,cr-periph = <&cr_periph>;
++	};
+-- 
+2.3.3

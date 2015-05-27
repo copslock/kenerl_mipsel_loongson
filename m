@@ -1,48 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 May 2015 19:37:28 +0200 (CEST)
-Received: from mail-pa0-f51.google.com ([209.85.220.51]:36004 "EHLO
-        mail-pa0-f51.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007267AbbE0Rh03NDxH (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 27 May 2015 19:37:26 +0200
-Received: by paza2 with SMTP id a2so2867323paz.3;
-        Wed, 27 May 2015 10:37:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=MOaMvdLgJZocKGKQPCTqGI/11ueU2hL/ozYxjlmAwNA=;
-        b=cIE+y51avzVSBz6FIvawZ3w9u+sTbEmm/H1gRps77mlVZnQhKP9u+8vN5wh8Wxud6F
-         3f9NWAhy28T83BkddfI1tOO3ESOhCoSIlL95QpeCVsBB3oKU5OCSzhjlsF+o6iXvVJlv
-         mVqQkgxaLMjOrRTVH5ecWBOqL/BfVmsw4Yt9B22LVI9jrMhedhwaZYQcYild609jJJzi
-         snXs3AdX++eZO2i3l7Jyl3g0l0c/Y2eT+TMyjf4I7sb5BPAozSI9HDI7jT8gw2PzPd9u
-         ruLiQOS9k8SUeTNLWrecXiDpKrSNe8s3yEe2nZewVDouXzIOxtb2RYMjLaubzQtYUUnv
-         lGnw==
-X-Received: by 10.70.89.199 with SMTP id bq7mr59679153pdb.168.1432748243214;
-        Wed, 27 May 2015 10:37:23 -0700 (PDT)
-Received: from [10.12.156.244] (5520-maca-inet1-outside.broadcom.com. [216.31.211.11])
-        by mx.google.com with ESMTPSA id qz3sm16896238pab.19.2015.05.27.10.37.21
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 27 May 2015 10:37:22 -0700 (PDT)
-Message-ID: <556600B5.70402@gmail.com>
-Date:   Wed, 27 May 2015 10:36:53 -0700
-From:   Florian Fainelli <f.fainelli@gmail.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.7.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 May 2015 19:50:09 +0200 (CEST)
+Received: from mail.o-t.ch ([217.197.209.32]:41925 "EHLO mail.o-t.ch"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27007267AbbE0RuHjiBp9 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 27 May 2015 19:50:07 +0200
+Received: from [10.0.2.16] (84-75-126-50.dclient.hispeed.ch [84.75.126.50])
+        (Authenticated sender: lf@o-t.ch)
+        by mail.o-t.ch (Postfix) with ESMTPSA id A51371803F1;
+        Wed, 27 May 2015 19:50:00 +0200 (CEST)
+Message-ID: <556603C8.5010502@libres.ch>
+Date:   Wed, 27 May 2015 19:50:00 +0200
+From:   Laurent Fasnacht <l@libres.ch>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.2.0
 MIME-Version: 1.0
-To:     Petri Gynther <pgynther@google.com>, linux-mips@linux-mips.org
-CC:     ralf@linux-mips.org, cernekee@gmail.com
-Subject: Re: [PATCH] MIPS: BMIPS: fix bmips_wr_vec()
-References: <20150527062508.CD24722020B@puck.mtv.corp.google.com>
-In-Reply-To: <20150527062508.CD24722020B@puck.mtv.corp.google.com>
-Content-Type: text/plain; charset=utf-8
+To:     linux-mips@linux-mips.org
+CC:     trivial@kernel.org
+Subject: [PATCH] MIPS: ath79: fix build problem if CONFIG_BLK_DEV_INITRD is
+ not set
+Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
-Return-Path: <f.fainelli@gmail.com>
+Return-Path: <l@libres.ch>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47694
+X-archive-position: 47695
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: f.fainelli@gmail.com
+X-original-sender: l@libres.ch
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,38 +39,38 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 26/05/15 23:25, Petri Gynther wrote:
-> bmips_wr_vec() copies exception vector code from start to dst.
-> 
-> The call to dma_cache_wback() needs to flush (end-start) bytes,
-> starting at dst, from write-back cache to memory.
-> 
-> Signed-off-by: Petri Gynther <pgynther@google.com>
+initrd_start is defined in init/do_mounts_initrd.c, which is only
+included in kernel if CONFIG_BLK_DEV_INITRD=y.
 
-Acked-by: Florian Fainelli <f.fainelli@gmail.com>
-Fixes: df0ac8a406718 ("MIPS: BMIPS: Add SMP support code for
-BMIPS43xx/BMIPS5000")
-CC: stable@vger.kernel.org # 3.4+
+Signed-off-by: Laurent Fasnacht <l@libres.ch>
+---
+ arch/mips/ath79/prom.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-> ---
->  arch/mips/kernel/smp-bmips.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/mips/kernel/smp-bmips.c b/arch/mips/kernel/smp-bmips.c
-> index fd528d7..336708a 100644
-> --- a/arch/mips/kernel/smp-bmips.c
-> +++ b/arch/mips/kernel/smp-bmips.c
-> @@ -444,7 +444,7 @@ struct plat_smp_ops bmips5000_smp_ops = {
->  static void bmips_wr_vec(unsigned long dst, char *start, char *end)
->  {
->  	memcpy((void *)dst, start, end - start);
-> -	dma_cache_wback((unsigned long)start, end - start);
-> +	dma_cache_wback(dst, end - start);
->  	local_flush_icache_range(dst, dst + (end - start));
->  	instruction_hazard();
->  }
-> 
-
-
+diff --git a/arch/mips/ath79/prom.c b/arch/mips/ath79/prom.c
+index e1fe630..597899a 100644
+--- a/arch/mips/ath79/prom.c
++++ b/arch/mips/ath79/prom.c
+@@ -1,6 +1,7 @@
+ /*
+  *  Atheros AR71XX/AR724X/AR913X specific prom routines
+  *
++ *  Copyright (C) 2015 Laurent Fasnacht <l@libres.ch>
+  *  Copyright (C) 2008-2010 Gabor Juhos <juhosg@openwrt.org>
+  *  Copyright (C) 2008 Imre Kaloz <kaloz@openwrt.org>
+  *
+@@ -25,12 +26,14 @@ void __init prom_init(void)
+ {
+ 	fw_init_cmdline();
+ +#ifdef CONFIG_BLK_DEV_INITRD
+ 	/* Read the initrd address from the firmware environment */
+ 	initrd_start = fw_getenvl("initrd_start");
+ 	if (initrd_start) {
+ 		initrd_start = KSEG0ADDR(initrd_start);
+ 		initrd_end = initrd_start + fw_getenvl("initrd_size");
+ 	}
++#endif
+ }
+  void __init prom_free_prom_memory(void)
 -- 
-Florian
+2.0.4

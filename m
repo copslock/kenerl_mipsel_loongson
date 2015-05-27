@@ -1,17 +1,13 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 May 2015 15:09:46 +0200 (CEST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 May 2015 15:15:06 +0200 (CEST)
 Received: (from localhost user: 'macro', uid#1010) by eddie.linux-mips.org
-        with ESMTP id S27007221AbbE0NJpJWE0z (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 27 May 2015 15:09:45 +0200
-Date:   Wed, 27 May 2015 14:09:45 +0100 (BST)
+        with ESMTP id S27007221AbbE0NPDgsSsC (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 27 May 2015 15:15:03 +0200
+Date:   Wed, 27 May 2015 14:15:03 +0100 (BST)
 From:   "Maciej W. Rozycki" <macro@linux-mips.org>
-To:     James Hogan <james.hogan@imgtec.com>
-cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Joshua Kinard <kumba@gentoo.org>, linux-mips@linux-mips.org
-Subject: Re: [PATCH RFC v2 01/10] MIPS: Add SysRq operation to dump TLBs on
- all CPUs
-In-Reply-To: <alpine.LFD.2.11.1505261230020.11225@eddie.linux-mips.org>
-Message-ID: <alpine.LFD.2.11.1505271407470.21603@eddie.linux-mips.org>
-References: <1432025438-26431-1-git-send-email-james.hogan@imgtec.com> <1432025438-26431-2-git-send-email-james.hogan@imgtec.com> <556240DE.1050003@gentoo.org> <alpine.LFD.2.11.1505261230020.11225@eddie.linux-mips.org>
+To:     Ralf Baechle <ralf@linux-mips.org>
+cc:     James Hogan <james.hogan@imgtec.com>, linux-mips@linux-mips.org
+Subject: [PATCH 0/3] MIPS: tlb-r3k: TLB handling fixes
+Message-ID: <alpine.LFD.2.11.1505261431090.11225@eddie.linux-mips.org>
 User-Agent: Alpine 2.11 (LFD 23 2013-08-11)
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
@@ -19,7 +15,7 @@ Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47688
+X-archive-position: 47689
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -36,12 +32,15 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, 26 May 2015, Maciej W. Rozycki wrote:
+Hi Ralf,
 
->  James, I think what you proposed is good enough for TLB diagnostics (I'm 
-> not sure if dumping EntryLo0 and EntryLo1 registers has any use, but it 
-> surely does not hurt either).
+ This is a bunch of fixes for R3k TLB handlers the need for which I 
+discovered while testing James's recent `dump_tlb' improvements.  
+Especially 1/3 is important as it corrects an initialisation issue that 
+may be lethal in some cases; it may be worth backporting.
 
- And BTW, please update Documentation/sysrq.txt accordingly!
+ Please apply.
+
+ Thanks,
 
   Maciej

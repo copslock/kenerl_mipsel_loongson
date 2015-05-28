@@ -1,40 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 May 2015 20:59:15 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:32996 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27007632AbbE1S7Mayw7O (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 28 May 2015 20:59:12 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.9/8.14.8) with ESMTP id t4SIxD3M012568;
-        Thu, 28 May 2015 20:59:13 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.9/8.14.9/Submit) id t4SIxD1t012567;
-        Thu, 28 May 2015 20:59:13 +0200
-Date:   Thu, 28 May 2015 20:59:13 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Petri Gynther <pgynther@google.com>
-Cc:     Kevin Cernekee <cernekee@gmail.com>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        Florian Fainelli <f.fainelli@gmail.com>
-Subject: Re: [PATCH] MIPS: BMIPS: fix bmips_wr_vec()
-Message-ID: <20150528185913.GF7012@linux-mips.org>
-References: <20150527062508.CD24722020B@puck.mtv.corp.google.com>
- <20150528164037.GB7012@linux-mips.org>
- <CAJiQ=7Djh9_hponDG6bCMEhw7m0G=Sb8JeCLXCVATNNaGDWWZg@mail.gmail.com>
- <CAGXr9JG3R24nScXTCNuoViAdBac02-XWuYCbBzxQ=6xub3g4TA@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 May 2015 22:37:32 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:30233 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27007644AbbE1Uhawvavz (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 28 May 2015 22:37:30 +0200
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 294F7BCC5CA;
+        Thu, 28 May 2015 21:37:24 +0100 (IST)
+Received: from hhmail02.hh.imgtec.org (10.100.10.20) by KLMAIL01.kl.imgtec.org
+ (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Thu, 28 May
+ 2015 21:37:27 +0100
+Received: from BAMAIL02.ba.imgtec.org (10.20.40.28) by hhmail02.hh.imgtec.org
+ (10.100.10.20) with Microsoft SMTP Server (TLS) id 14.3.224.2; Thu, 28 May
+ 2015 21:37:27 +0100
+Received: from [127.0.1.1] (10.20.3.79) by bamail02.ba.imgtec.org
+ (10.20.40.28) with Microsoft SMTP Server id 14.3.174.1; Thu, 28 May 2015
+ 13:37:23 -0700
+Subject: [PATCH] MIPS: bugfix of local_r4k_flush_icache_range - added L2
+ flush
+From:   Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+To:     <linux-mips@linux-mips.org>, <david.daney@cavium.com>,
+        <cernekee@gmail.com>, <linux-kernel@vger.kernel.org>,
+        <ralf@linux-mips.org>, <macro@codesourcery.com>,
+        <markos.chandras@imgtec.com>, <kumba@gentoo.org>
+Date:   Thu, 28 May 2015 13:37:24 -0700
+Message-ID: <20150528203724.28800.63700.stgit@ubuntu-yegoshin>
+User-Agent: StGit/0.17.1-dirty
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAGXr9JG3R24nScXTCNuoViAdBac02-XWuYCbBzxQ=6xub3g4TA@mail.gmail.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <ralf@linux-mips.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Return-Path: <Leonid.Yegoshin@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47717
+X-archive-position: 47718
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: Leonid.Yegoshin@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,57 +49,35 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, May 28, 2015 at 11:25:45AM -0700, Petri Gynther wrote:
+This function is used to flush code used in NMI and EJTAG debug exceptions.
+However, during that exceptions the Status.ERL bit is set, which means
+that code runs as UNCACHABLE. So, flush code down to memory is needed.
 
-> On Thu, May 28, 2015 at 9:47 AM, Kevin Cernekee <cernekee@gmail.com> wrote:
-> > On Thu, May 28, 2015 at 9:40 AM, Ralf Baechle <ralf@linux-mips.org> wrote:
-> >> On Tue, May 26, 2015 at 11:25:08PM -0700, Petri Gynther wrote:
-> >>
-> >>> bmips_wr_vec() copies exception vector code from start to dst.
-> >>>
-> >>> The call to dma_cache_wback() needs to flush (end-start) bytes,
-> >>> starting at dst, from write-back cache to memory.
-> >>>
-> >>> Signed-off-by: Petri Gynther <pgynther@google.com>
-> >>> ---
-> >>>  arch/mips/kernel/smp-bmips.c | 2 +-
-> >>>  1 file changed, 1 insertion(+), 1 deletion(-)
-> >>>
-> >>> diff --git a/arch/mips/kernel/smp-bmips.c b/arch/mips/kernel/smp-bmips.c
-> >>> index fd528d7..336708a 100644
-> >>> --- a/arch/mips/kernel/smp-bmips.c
-> >>> +++ b/arch/mips/kernel/smp-bmips.c
-> >>> @@ -444,7 +444,7 @@ struct plat_smp_ops bmips5000_smp_ops = {
-> >>>  static void bmips_wr_vec(unsigned long dst, char *start, char *end)
-> >>>  {
-> >>>       memcpy((void *)dst, start, end - start);
-> >>> -     dma_cache_wback((unsigned long)start, end - start);
-> >>> +     dma_cache_wback(dst, end - start);
-> >>
-> >> dma_cache_wback is a guess what - DMA function.  It doesn't handle
-> >> I-caches at all and on some platforms might actually do nothing at all.
-> >> or use other optimizations that only work for DMA buffers and it's not
-> >> SMP aware - nor will it.  So if it ever worked for your case then just
-> >> because you're lucky.  This really should use flush_icache_range which
-> >> also conveniently for your code takes an end pointer as argument.
-> >
-> > This flush isn't intended to handle I$.  It is intended to flush the
-> > newly written code all the way out to DRAM (not just to L2) so that it
-> > can be executed through an uncached kseg1 alias.  On initial boot, a
-> > BMIPS secondary CPU comes up with its I$ disabled (5000) or in an
-> > uninitialized state (43xx).
-> 
-> Just wondering if we should just use:
-> r4k_blast_dcache()
-> r4k_blast_scache()
-> 
-> here instead? r4k_blast_dcache() is currently exported, but
-> r4k_blast_scache() is not.
+Signed-off-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+---
+ arch/mips/mm/c-r4k.c |   10 +---------
+ 1 file changed, 1 insertion(+), 9 deletions(-)
 
-There's simply no user of r4k_blast_scache() outside of c-r4k.c so far
-but I don't mind exporting the function.  But Kevin has already
-convinced me that this is a special use for which none of the existing
-functions fits well and it certainly isn't worth to invent a new flush
-function for this use, so I've applied your patch.
-
-  Ralf
+diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
+index 0dbb65a51ce5..9f0299bb9a2a 100644
+--- a/arch/mips/mm/c-r4k.c
++++ b/arch/mips/mm/c-r4k.c
+@@ -666,17 +666,9 @@ static inline void local_r4k_flush_icache_range(unsigned long start, unsigned lo
+ 			break;
+ 		}
+ 	}
+-#ifdef CONFIG_EVA
+-	/*
+-	 * Due to all possible segment mappings, there might cache aliases
+-	 * caused by the bootloader being in non-EVA mode, and the CPU switching
+-	 * to EVA during early kernel init. It's best to flush the scache
+-	 * to avoid having secondary cores fetching stale data and lead to
+-	 * kernel crashes.
+-	 */
++
+ 	bc_wback_inv(start, (end - start));
+ 	__sync();
+-#endif
+ }
+ 
+ static inline void local_r4k_flush_icache_range_ipi(void *args)

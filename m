@@ -1,42 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 May 2015 22:37:32 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:30233 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27007644AbbE1Uhawvavz (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 28 May 2015 22:37:30 +0200
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 294F7BCC5CA;
-        Thu, 28 May 2015 21:37:24 +0100 (IST)
-Received: from hhmail02.hh.imgtec.org (10.100.10.20) by KLMAIL01.kl.imgtec.org
- (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Thu, 28 May
- 2015 21:37:27 +0100
-Received: from BAMAIL02.ba.imgtec.org (10.20.40.28) by hhmail02.hh.imgtec.org
- (10.100.10.20) with Microsoft SMTP Server (TLS) id 14.3.224.2; Thu, 28 May
- 2015 21:37:27 +0100
-Received: from [127.0.1.1] (10.20.3.79) by bamail02.ba.imgtec.org
- (10.20.40.28) with Microsoft SMTP Server id 14.3.174.1; Thu, 28 May 2015
- 13:37:23 -0700
-Subject: [PATCH] MIPS: bugfix of local_r4k_flush_icache_range - added L2
- flush
-From:   Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-To:     <linux-mips@linux-mips.org>, <david.daney@cavium.com>,
-        <cernekee@gmail.com>, <linux-kernel@vger.kernel.org>,
-        <ralf@linux-mips.org>, <macro@codesourcery.com>,
-        <markos.chandras@imgtec.com>, <kumba@gentoo.org>
-Date:   Thu, 28 May 2015 13:37:24 -0700
-Message-ID: <20150528203724.28800.63700.stgit@ubuntu-yegoshin>
-User-Agent: StGit/0.17.1-dirty
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 May 2015 01:47:10 +0200 (CEST)
+Received: (from localhost user: 'macro', uid#1010) by eddie.linux-mips.org
+        with ESMTP id S27007351AbbE1XrHh3Xig (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 29 May 2015 01:47:07 +0200
+Date:   Fri, 29 May 2015 00:47:07 +0100 (BST)
+From:   "Maciej W. Rozycki" <macro@linux-mips.org>
+To:     James Hogan <james.hogan@imgtec.com>
+cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: Re: [PATCH v2 03/10] MIPS: mipsregs.h: Add EntryLo bit definitions
+In-Reply-To: <1432025438-26431-4-git-send-email-james.hogan@imgtec.com>
+Message-ID: <alpine.LFD.2.11.1505290009160.26459@eddie.linux-mips.org>
+References: <1432025438-26431-1-git-send-email-james.hogan@imgtec.com> <1432025438-26431-4-git-send-email-james.hogan@imgtec.com>
+User-Agent: Alpine 2.11 (LFD 23 2013-08-11)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Return-Path: <Leonid.Yegoshin@imgtec.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47718
+X-archive-position: 47719
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Leonid.Yegoshin@imgtec.com
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,35 +34,78 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This function is used to flush code used in NMI and EJTAG debug exceptions.
-However, during that exceptions the Status.ERL bit is set, which means
-that code runs as UNCACHABLE. So, flush code down to memory is needed.
+On Tue, 19 May 2015, James Hogan wrote:
 
-Signed-off-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
----
- arch/mips/mm/c-r4k.c |   10 +---------
- 1 file changed, 1 insertion(+), 9 deletions(-)
+> Add definitions for EntryLo register bits in mipsregs.h. The R4000
+> compatible ones are prefixed MIPS_ENTRYLO_ and the R3000 compatible ones
+> are prefixed R3K_ENTRYLO_.
 
-diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
-index 0dbb65a51ce5..9f0299bb9a2a 100644
---- a/arch/mips/mm/c-r4k.c
-+++ b/arch/mips/mm/c-r4k.c
-@@ -666,17 +666,9 @@ static inline void local_r4k_flush_icache_range(unsigned long start, unsigned lo
- 			break;
- 		}
- 	}
--#ifdef CONFIG_EVA
--	/*
--	 * Due to all possible segment mappings, there might cache aliases
--	 * caused by the bootloader being in non-EVA mode, and the CPU switching
--	 * to EVA during early kernel init. It's best to flush the scache
--	 * to avoid having secondary cores fetching stale data and lead to
--	 * kernel crashes.
--	 */
-+
- 	bc_wback_inv(start, (end - start));
- 	__sync();
--#endif
- }
- 
- static inline void local_r4k_flush_icache_range_ipi(void *args)
+ I think the convention for macros in <asm/mipsregs.h> has been to omit 
+the MIPS_ prefix for generic definitions.  The prefix is meant for MIPS32 
+and MIPS64 architecture processor properties.  The bits in EntryLo0/1 have 
+been like this since forever, with the exception of the R3k/R6k/R8k 
+oddballs.  So I think they can be treated as generic.  Of course the R3K_ 
+prefix is right with R3k-specific definitions.
+
+ OTOH, the EntryHi.EHINV bit has only been added with (non-legacy) MIPS 
+architecture processors, so MIPS_ENTRYHI_EHINV is the right choice 
+(although its placement is unfortunate, buried within the "Bits in the 
+MIPS32/64 PRA coprocessor 0 config registers 1 and above." section).
+
+> diff --git a/arch/mips/include/asm/mipsregs.h b/arch/mips/include/asm/mipsregs.h
+> index 764e2756b54d..3b5a145af659 100644
+> --- a/arch/mips/include/asm/mipsregs.h
+> +++ b/arch/mips/include/asm/mipsregs.h
+> @@ -589,6 +589,28 @@
+>  /*  EntryHI bit definition */
+>  #define MIPS_ENTRYHI_EHINV	(_ULCAST_(1) << 10)
+>  
+> +/* R3000 EntryLo bit definitions */
+> +#define R3K_ENTRYLO_G		(_ULCAST_(1) << 8)
+> +#define R3K_ENTRYLO_V		(_ULCAST_(1) << 9)
+> +#define R3K_ENTRYLO_D		(_ULCAST_(1) << 10)
+> +#define R3K_ENTRYLO_N		(_ULCAST_(1) << 11)
+> +
+> +/* R4000 compatible EntryLo bit definitions */
+> +#define MIPS_ENTRYLO_G		(_ULCAST_(1) << 0)
+> +#define MIPS_ENTRYLO_V		(_ULCAST_(1) << 1)
+> +#define MIPS_ENTRYLO_D		(_ULCAST_(1) << 2)
+> +#define MIPS_ENTRYLO_C_SHIFT	3
+> +#define MIPS_ENTRYLO_C		(_ULCAST_(7) << MIPS_ENTRYLO_C_SHIFT)
+
+ Please drop the MIPS_ prefix here then, e.g.:
+
+#define ENTRYLO_G		(_ULCAST_(1) << 0)
+
+> +#ifdef CONFIG_64BIT
+> +/* as read by dmfc0 */
+> +#define MIPS_ENTRYLO_XI		(_ULCAST_(1) << 62)
+> +#define MIPS_ENTRYLO_RI		(_ULCAST_(1) << 63)
+> +#else
+> +/* as read by mfc0 */
+> +#define MIPS_ENTRYLO_XI		(_ULCAST_(1) << 30)
+> +#define MIPS_ENTRYLO_RI		(_ULCAST_(1) << 31)
+> +#endif
+> +
+
+ These do need to keep the prefix however, because these have only been 
+added with MIPS32/MIPS64 processors.  This also means they need its own 
+explanatory heading.
+
+ And then put the generic (or R4k) bits first, followed by the R3k bits, 
+followed by the MIPS32/64 bits.  See how it's been done for the Status 
+register (disregard the odd ST0_ prefix, it's another legacy) and the 
+Config register.
+
+ Like with MIPS_ENTRYHI_EHINV I think the placement of these new additions 
+is also unfortunate.  No need for you to fix the former, unless you're 
+keen to, but with this new stuff I suggest that you put it right at the 
+top, to keep the definitions grouped by the function (MMU in this case) 
+and roughly in the numeric order by register ID.  So that'll be 
+immediately before stuff for PageMask.
+
+ Thanks for your patience and sorry to be a pain, but this file has had a 
+tendency to become a mess.  Maybe we need to put a note explaining the 
+rules at the top.
+
+  Maciej

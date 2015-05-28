@@ -1,29 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 May 2015 13:53:48 +0200 (CEST)
-Received: from e06smtp15.uk.ibm.com ([195.75.94.111]:52294 "EHLO
-        e06smtp15.uk.ibm.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27007601AbbE1LxA21bUx (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 28 May 2015 13:53:00 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 May 2015 13:54:07 +0200 (CEST)
+Received: from e06smtp11.uk.ibm.com ([195.75.94.107]:57935 "EHLO
+        e06smtp11.uk.ibm.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27012935AbbE1LxBwVFHh (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 28 May 2015 13:53:01 +0200
 Received: from /spool/local
-        by e06smtp15.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        by e06smtp11.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
         for <linux-mips@linux-mips.org> from <dingel@linux.vnet.ibm.com>;
-        Thu, 28 May 2015 12:52:57 +0100
-Received: from d06dlp03.portsmouth.uk.ibm.com (9.149.20.15)
-        by e06smtp15.uk.ibm.com (192.168.101.145) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        Thu, 28 May 2015 12:52:54 +0100
-Received: from b06cxnps3074.portsmouth.uk.ibm.com (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
-        by d06dlp03.portsmouth.uk.ibm.com (Postfix) with ESMTP id 11FE61B08061;
-        Thu, 28 May 2015 12:53:46 +0100 (BST)
-Received: from d06av03.portsmouth.uk.ibm.com (d06av03.portsmouth.uk.ibm.com [9.149.37.213])
-        by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id t4SBqrgX17629218;
-        Thu, 28 May 2015 11:52:53 GMT
-Received: from d06av03.portsmouth.uk.ibm.com (localhost [127.0.0.1])
-        by d06av03.portsmouth.uk.ibm.com (8.14.4/8.14.4/NCO v10.0 AVout) with ESMTP id t4SBqlpv002643;
-        Thu, 28 May 2015 05:52:53 -0600
+        Thu, 28 May 2015 12:52:59 +0100
+Received: from d06dlp02.portsmouth.uk.ibm.com (9.149.20.14)
+        by e06smtp11.uk.ibm.com (192.168.101.141) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        Thu, 28 May 2015 12:52:55 +0100
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
+        by d06dlp02.portsmouth.uk.ibm.com (Postfix) with ESMTP id 6C0D3219005C;
+        Thu, 28 May 2015 12:52:35 +0100 (BST)
+Received: from d06av12.portsmouth.uk.ibm.com (d06av12.portsmouth.uk.ibm.com [9.149.37.247])
+        by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id t4SBqtZQ24182932;
+        Thu, 28 May 2015 11:52:55 GMT
+Received: from d06av12.portsmouth.uk.ibm.com (localhost [127.0.0.1])
+        by d06av12.portsmouth.uk.ibm.com (8.14.4/8.14.4/NCO v10.0 AVout) with ESMTP id t4SBqle7008642;
+        Thu, 28 May 2015 05:52:54 -0600
 Received: from tuxmaker.boeblingen.de.ibm.com (tuxmaker.boeblingen.de.ibm.com [9.152.85.9])
-        by d06av03.portsmouth.uk.ibm.com (8.14.4/8.14.4/NCO v10.0 AVin) with ESMTP id t4SBqkMO002624;
+        by d06av12.portsmouth.uk.ibm.com (8.14.4/8.14.4/NCO v10.0 AVin) with ESMTP id t4SBqk8X008601;
         Thu, 28 May 2015 05:52:46 -0600
 Received: by tuxmaker.boeblingen.de.ibm.com (Postfix, from userid 2944)
-        id 44F7D1224458; Thu, 28 May 2015 13:52:46 +0200 (CEST)
+        id 3B4371224439; Thu, 28 May 2015 13:52:46 +0200 (CEST)
 From:   Dominik Dingel <dingel@linux.vnet.ibm.com>
 To:     linux-kernel@vger.kernel.org
 Cc:     Russell King <linux@arm.linux.org.uk>,
@@ -65,20 +65,20 @@ Cc:     Russell King <linux@arm.linux.org.uk>,
         linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
         linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
         linux-mm@kvack.org
-Subject: [PATCH 5/5] s390/mm: forward check for huge pmds to pmd_large()
-Date:   Thu, 28 May 2015 13:52:37 +0200
-Message-Id: <1432813957-46874-6-git-send-email-dingel@linux.vnet.ibm.com>
+Subject: [PATCH 2/5] mm/hugetlb: remove unused arch hook prepare/release_hugepage
+Date:   Thu, 28 May 2015 13:52:34 +0200
+Message-Id: <1432813957-46874-3-git-send-email-dingel@linux.vnet.ibm.com>
 X-Mailer: git-send-email 2.3.7
 In-Reply-To: <1432813957-46874-1-git-send-email-dingel@linux.vnet.ibm.com>
 References: <1432813957-46874-1-git-send-email-dingel@linux.vnet.ibm.com>
 X-TM-AS-MML: disable
 X-Content-Scanned: Fidelis XPS MAILER
-x-cbid: 15052811-0021-0000-0000-00000412AE02
+x-cbid: 15052811-0041-0000-0000-00000494C300
 Return-Path: <dingel@linux.vnet.ibm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47703
+X-archive-position: 47704
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -95,29 +95,49 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-We already do the check in pmd_large, so we can just forward the call.
+With s390 dropping support for emulated hugepages, the last user of
+arch_prepare_hugepage and arch_release_hugepage is gone.
 
 Acked-by: Martin Schwidefsky <schwidefsky@de.ibm.com>
 Signed-off-by: Dominik Dingel <dingel@linux.vnet.ibm.com>
 ---
- arch/s390/mm/hugetlbpage.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ mm/hugetlb.c | 10 ----------
+ 1 file changed, 10 deletions(-)
 
-diff --git a/arch/s390/mm/hugetlbpage.c b/arch/s390/mm/hugetlbpage.c
-index 999616b..a4b2f5e 100644
---- a/arch/s390/mm/hugetlbpage.c
-+++ b/arch/s390/mm/hugetlbpage.c
-@@ -135,10 +135,7 @@ pte_t *huge_pte_offset(struct mm_struct *mm, unsigned long addr)
- 
- int pmd_huge(pmd_t pmd)
- {
--	if (!MACHINE_HAS_HPAGE)
--		return 0;
--
--	return !!(pmd_val(pmd) & _SEGMENT_ENTRY_LARGE);
-+	return pmd_large(pmd);
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index 290984b..a97958e 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -917,7 +917,6 @@ static void update_and_free_page(struct hstate *h, struct page *page)
+ 		destroy_compound_gigantic_page(page, huge_page_order(h));
+ 		free_gigantic_page(page, huge_page_order(h));
+ 	} else {
+-		arch_release_hugepage(page);
+ 		__free_pages(page, huge_page_order(h));
+ 	}
  }
+@@ -1102,10 +1101,6 @@ static struct page *alloc_fresh_huge_page_node(struct hstate *h, int nid)
+ 						__GFP_REPEAT|__GFP_NOWARN,
+ 		huge_page_order(h));
+ 	if (page) {
+-		if (arch_prepare_hugepage(page)) {
+-			__free_pages(page, huge_page_order(h));
+-			return NULL;
+-		}
+ 		prep_new_huge_page(h, page, nid);
+ 	}
  
- int pud_huge(pud_t pud)
+@@ -1257,11 +1252,6 @@ static struct page *alloc_buddy_huge_page(struct hstate *h, int nid)
+ 			htlb_alloc_mask(h)|__GFP_COMP|__GFP_THISNODE|
+ 			__GFP_REPEAT|__GFP_NOWARN, huge_page_order(h));
+ 
+-	if (page && arch_prepare_hugepage(page)) {
+-		__free_pages(page, huge_page_order(h));
+-		page = NULL;
+-	}
+-
+ 	spin_lock(&hugetlb_lock);
+ 	if (page) {
+ 		INIT_LIST_HEAD(&page->lru);
 -- 
 2.3.7

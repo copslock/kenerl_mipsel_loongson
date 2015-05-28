@@ -1,32 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 May 2015 17:38:10 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:59504 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 May 2015 18:40:37 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:59794 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27013045AbbE1PiJDqADv (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 28 May 2015 17:38:09 +0200
+        id S27013045AbbE1QkgHVkRu (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 28 May 2015 18:40:36 +0200
 Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.9/8.14.8) with ESMTP id t4SFcAQq008494;
-        Thu, 28 May 2015 17:38:10 +0200
+        by scotty.linux-mips.net (8.14.9/8.14.8) with ESMTP id t4SGebTT009933;
+        Thu, 28 May 2015 18:40:37 +0200
 Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.9/8.14.9/Submit) id t4SFc9fC008493;
-        Thu, 28 May 2015 17:38:09 +0200
-Date:   Thu, 28 May 2015 17:38:09 +0200
+        by scotty.linux-mips.net (8.14.9/8.14.9/Submit) id t4SGebG2009932;
+        Thu, 28 May 2015 18:40:37 +0200
+Date:   Thu, 28 May 2015 18:40:37 +0200
 From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Laurent Fasnacht <l@libres.ch>
-Cc:     linux-mips@linux-mips.org, trivial@kernel.org
-Subject: Re: [PATCH] MIPS: ath79: fix build problem if CONFIG_BLK_DEV_INITRD
- is not set
-Message-ID: <20150528153808.GA7012@linux-mips.org>
-References: <556603C8.5010502@libres.ch>
+To:     Petri Gynther <pgynther@google.com>
+Cc:     linux-mips@linux-mips.org, cernekee@gmail.com, f.fainelli@gmail.com
+Subject: Re: [PATCH] MIPS: BMIPS: fix bmips_wr_vec()
+Message-ID: <20150528164037.GB7012@linux-mips.org>
+References: <20150527062508.CD24722020B@puck.mtv.corp.google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <556603C8.5010502@libres.ch>
+In-Reply-To: <20150527062508.CD24722020B@puck.mtv.corp.google.com>
 User-Agent: Mutt/1.5.23 (2014-03-12)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47707
+X-archive-position: 47708
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -43,54 +42,34 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, May 27, 2015 at 07:50:00PM +0200, Laurent Fasnacht wrote:
+On Tue, May 26, 2015 at 11:25:08PM -0700, Petri Gynther wrote:
 
-> initrd_start is defined in init/do_mounts_initrd.c, which is only
-> included in kernel if CONFIG_BLK_DEV_INITRD=y.
+> bmips_wr_vec() copies exception vector code from start to dst.
 > 
-> Signed-off-by: Laurent Fasnacht <l@libres.ch>
+> The call to dma_cache_wback() needs to flush (end-start) bytes,
+> starting at dst, from write-back cache to memory.
+> 
+> Signed-off-by: Petri Gynther <pgynther@google.com>
 > ---
->  arch/mips/ath79/prom.c | 3 +++
->  1 file changed, 3 insertions(+)
+>  arch/mips/kernel/smp-bmips.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/arch/mips/ath79/prom.c b/arch/mips/ath79/prom.c
-> index e1fe630..597899a 100644
-> --- a/arch/mips/ath79/prom.c
-> +++ b/arch/mips/ath79/prom.c
-> @@ -1,6 +1,7 @@
->  /*
->   *  Atheros AR71XX/AR724X/AR913X specific prom routines
->   *
-> + *  Copyright (C) 2015 Laurent Fasnacht <l@libres.ch>
->   *  Copyright (C) 2008-2010 Gabor Juhos <juhosg@openwrt.org>
->   *  Copyright (C) 2008 Imre Kaloz <kaloz@openwrt.org>
->   *
-> @@ -25,12 +26,14 @@ void __init prom_init(void)
+> diff --git a/arch/mips/kernel/smp-bmips.c b/arch/mips/kernel/smp-bmips.c
+> index fd528d7..336708a 100644
+> --- a/arch/mips/kernel/smp-bmips.c
+> +++ b/arch/mips/kernel/smp-bmips.c
+> @@ -444,7 +444,7 @@ struct plat_smp_ops bmips5000_smp_ops = {
+>  static void bmips_wr_vec(unsigned long dst, char *start, char *end)
 >  {
->  	fw_init_cmdline();
-XXX
->  +#ifdef CONFIG_BLK_DEV_INITRD
->  	/* Read the initrd address from the firmware environment */
->  	initrd_start = fw_getenvl("initrd_start");
->  	if (initrd_start) {
->  		initrd_start = KSEG0ADDR(initrd_start);
->  		initrd_end = initrd_start + fw_getenvl("initrd_size");
->  	}
-> +#endif
->  }
-XXX
->   void __init prom_free_prom_memory(void)
+>  	memcpy((void *)dst, start, end - start);
+> -	dma_cache_wback((unsigned long)start, end - start);
+> +	dma_cache_wback(dst, end - start);
 
-This patch is corrupt.  Please check how you send out your patches.
-The lines which I marked with XXX should be blank lines containing just
-one space character.  Instead the lines were removed and the space
-inserted into the following line.  Because this patch is trivial I
-fix that manually but please sort our your patch submission process
-for the future.
-
-Also note that adding two lines in most jurisdictions doesn't constitute
-something copyrightable, adding a copyright notice or not.
-
-Thanks,
+dma_cache_wback is a guess what - DMA function.  It doesn't handle
+I-caches at all and on some platforms might actually do nothing at all.
+or use other optimizations that only work for DMA buffers and it's not
+SMP aware - nor will it.  So if it ever worked for your case then just
+because you're lucky.  This really should use flush_icache_range which
+also conveniently for your code takes an end pointer as argument.
 
   Ralf

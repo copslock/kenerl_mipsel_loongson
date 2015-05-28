@@ -1,29 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 May 2015 13:52:56 +0200 (CEST)
-Received: from e06smtp14.uk.ibm.com ([195.75.94.110]:38131 "EHLO
-        e06smtp14.uk.ibm.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27007586AbbE1Lwy3RVbA (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 28 May 2015 13:52:54 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 May 2015 13:53:13 +0200 (CEST)
+Received: from e06smtp16.uk.ibm.com ([195.75.94.112]:54026 "EHLO
+        e06smtp16.uk.ibm.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27012437AbbE1Lwzp9WxN (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 28 May 2015 13:52:55 +0200
 Received: from /spool/local
-        by e06smtp14.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        by e06smtp16.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
         for <linux-mips@linux-mips.org> from <dingel@linux.vnet.ibm.com>;
-        Thu, 28 May 2015 12:52:51 +0100
-Received: from d06dlp02.portsmouth.uk.ibm.com (9.149.20.14)
-        by e06smtp14.uk.ibm.com (192.168.101.144) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        Thu, 28 May 2015 12:52:53 +0100
+Received: from d06dlp01.portsmouth.uk.ibm.com (9.149.20.13)
+        by e06smtp16.uk.ibm.com (192.168.101.146) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
         Thu, 28 May 2015 12:52:50 +0100
-Received: from b06cxnps4075.portsmouth.uk.ibm.com (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
-        by d06dlp02.portsmouth.uk.ibm.com (Postfix) with ESMTP id E3275219004D;
-        Thu, 28 May 2015 12:52:29 +0100 (BST)
-Received: from d06av11.portsmouth.uk.ibm.com (d06av11.portsmouth.uk.ibm.com [9.149.37.252])
-        by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id t4SBqnRu24576042;
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
+        by d06dlp01.portsmouth.uk.ibm.com (Postfix) with ESMTP id D9CA617D8079;
+        Thu, 28 May 2015 12:53:44 +0100 (BST)
+Received: from d06av05.portsmouth.uk.ibm.com (d06av05.portsmouth.uk.ibm.com [9.149.37.229])
+        by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id t4SBqnTu24969440;
         Thu, 28 May 2015 11:52:49 GMT
-Received: from d06av11.portsmouth.uk.ibm.com (localhost [127.0.0.1])
-        by d06av11.portsmouth.uk.ibm.com (8.14.4/8.14.4/NCO v10.0 AVout) with ESMTP id t4SBqkMn020356;
+Received: from d06av05.portsmouth.uk.ibm.com (localhost [127.0.0.1])
+        by d06av05.portsmouth.uk.ibm.com (8.14.4/8.14.4/NCO v10.0 AVout) with ESMTP id t4SBqkPT025011;
         Thu, 28 May 2015 05:52:49 -0600
 Received: from tuxmaker.boeblingen.de.ibm.com (tuxmaker.boeblingen.de.ibm.com [9.152.85.9])
-        by d06av11.portsmouth.uk.ibm.com (8.14.4/8.14.4/NCO v10.0 AVin) with ESMTP id t4SBqk7I020343;
+        by d06av05.portsmouth.uk.ibm.com (8.14.4/8.14.4/NCO v10.0 AVin) with ESMTP id t4SBqk88025001;
         Thu, 28 May 2015 05:52:46 -0600
 Received: by tuxmaker.boeblingen.de.ibm.com (Postfix, from userid 2944)
-        id 3E5861224459; Thu, 28 May 2015 13:52:46 +0200 (CEST)
+        id 394701224081; Thu, 28 May 2015 13:52:46 +0200 (CEST)
 From:   Dominik Dingel <dingel@linux.vnet.ibm.com>
 To:     linux-kernel@vger.kernel.org
 Cc:     Russell King <linux@arm.linux.org.uk>,
@@ -65,20 +65,20 @@ Cc:     Russell King <linux@arm.linux.org.uk>,
         linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
         linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
         linux-mm@kvack.org
-Subject: [PATCH 3/5] mm/hugetlb: remove arch_prepare/release_hugepage from arch headers
-Date:   Thu, 28 May 2015 13:52:35 +0200
-Message-Id: <1432813957-46874-4-git-send-email-dingel@linux.vnet.ibm.com>
+Subject: [PATCH 1/5] s390/mm: make hugepages_supported a boot time decision
+Date:   Thu, 28 May 2015 13:52:33 +0200
+Message-Id: <1432813957-46874-2-git-send-email-dingel@linux.vnet.ibm.com>
 X-Mailer: git-send-email 2.3.7
 In-Reply-To: <1432813957-46874-1-git-send-email-dingel@linux.vnet.ibm.com>
 References: <1432813957-46874-1-git-send-email-dingel@linux.vnet.ibm.com>
 X-TM-AS-MML: disable
 X-Content-Scanned: Fidelis XPS MAILER
-x-cbid: 15052811-0017-0000-0000-00000438AD39
+x-cbid: 15052811-0025-0000-0000-00000559570B
 Return-Path: <dingel@linux.vnet.ibm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47700
+X-archive-position: 47701
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -95,223 +95,72 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Nobody used these hooks so they were removed from common code,
-and can now be removed from the architectures.
+By dropping support for hugepages on machines which do not have
+the hardware feature EDAT1, we fix a potential s390 KVM bug.
+
+The bug would happen if a guest is backed by hugetlbfs (not supported currently),
+but does not get pagetables with PGSTE.
+This would lead to random memory overwrites.
 
 Acked-by: Martin Schwidefsky <schwidefsky@de.ibm.com>
 Signed-off-by: Dominik Dingel <dingel@linux.vnet.ibm.com>
 ---
- arch/arm/include/asm/hugetlb.h     | 9 ---------
- arch/arm64/include/asm/hugetlb.h   | 9 ---------
- arch/ia64/include/asm/hugetlb.h    | 9 ---------
- arch/metag/include/asm/hugetlb.h   | 9 ---------
- arch/mips/include/asm/hugetlb.h    | 9 ---------
- arch/powerpc/include/asm/hugetlb.h | 9 ---------
- arch/sh/include/asm/hugetlb.h      | 9 ---------
- arch/sparc/include/asm/hugetlb.h   | 9 ---------
- arch/tile/include/asm/hugetlb.h    | 9 ---------
- arch/x86/include/asm/hugetlb.h     | 9 ---------
- 10 files changed, 90 deletions(-)
+ arch/s390/include/asm/page.h | 8 ++++----
+ arch/s390/kernel/setup.c     | 2 ++
+ arch/s390/mm/pgtable.c       | 2 ++
+ 3 files changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm/include/asm/hugetlb.h b/arch/arm/include/asm/hugetlb.h
-index 31bb7dc..7d26f6c 100644
---- a/arch/arm/include/asm/hugetlb.h
-+++ b/arch/arm/include/asm/hugetlb.h
-@@ -63,15 +63,6 @@ static inline pte_t huge_pte_wrprotect(pte_t pte)
- 	return pte_wrprotect(pte);
- }
+diff --git a/arch/s390/include/asm/page.h b/arch/s390/include/asm/page.h
+index 53eacbd..0844b78 100644
+--- a/arch/s390/include/asm/page.h
++++ b/arch/s390/include/asm/page.h
+@@ -17,7 +17,10 @@
+ #define PAGE_DEFAULT_ACC	0
+ #define PAGE_DEFAULT_KEY	(PAGE_DEFAULT_ACC << 4)
  
--static inline int arch_prepare_hugepage(struct page *page)
--{
--	return 0;
--}
--
--static inline void arch_release_hugepage(struct page *page)
--{
--}
--
- static inline void arch_clear_hugepage_flags(struct page *page)
- {
- 	clear_bit(PG_dcache_clean, &page->flags);
-diff --git a/arch/arm64/include/asm/hugetlb.h b/arch/arm64/include/asm/hugetlb.h
-index 734c17e..2fd9b14 100644
---- a/arch/arm64/include/asm/hugetlb.h
-+++ b/arch/arm64/include/asm/hugetlb.h
-@@ -96,15 +96,6 @@ static inline pte_t huge_pte_wrprotect(pte_t pte)
- 	return pte_wrprotect(pte);
- }
+-#define HPAGE_SHIFT	20
++#include <asm/setup.h>
++#ifndef __ASSEMBLY__
++
++extern unsigned int HPAGE_SHIFT;
+ #define HPAGE_SIZE	(1UL << HPAGE_SHIFT)
+ #define HPAGE_MASK	(~(HPAGE_SIZE - 1))
+ #define HUGETLB_PAGE_ORDER	(HPAGE_SHIFT - PAGE_SHIFT)
+@@ -27,9 +30,6 @@
+ #define ARCH_HAS_PREPARE_HUGEPAGE
+ #define ARCH_HAS_HUGEPAGE_CLEAR_FLUSH
  
--static inline int arch_prepare_hugepage(struct page *page)
--{
--	return 0;
--}
+-#include <asm/setup.h>
+-#ifndef __ASSEMBLY__
 -
--static inline void arch_release_hugepage(struct page *page)
--{
--}
--
- static inline void arch_clear_hugepage_flags(struct page *page)
+ static inline void storage_key_init_range(unsigned long start, unsigned long end)
  {
- 	clear_bit(PG_dcache_clean, &page->flags);
-diff --git a/arch/ia64/include/asm/hugetlb.h b/arch/ia64/include/asm/hugetlb.h
-index ff1377b..ef65f02 100644
---- a/arch/ia64/include/asm/hugetlb.h
-+++ b/arch/ia64/include/asm/hugetlb.h
-@@ -65,15 +65,6 @@ static inline pte_t huge_ptep_get(pte_t *ptep)
- 	return *ptep;
- }
+ #if PAGE_DEFAULT_KEY
+diff --git a/arch/s390/kernel/setup.c b/arch/s390/kernel/setup.c
+index a5ea8bc..9ac282b 100644
+--- a/arch/s390/kernel/setup.c
++++ b/arch/s390/kernel/setup.c
+@@ -915,6 +915,8 @@ void __init setup_arch(char **cmdline_p)
+ 	 */
+ 	setup_hwcaps();
  
--static inline int arch_prepare_hugepage(struct page *page)
--{
--	return 0;
--}
--
--static inline void arch_release_hugepage(struct page *page)
--{
--}
--
- static inline void arch_clear_hugepage_flags(struct page *page)
- {
- }
-diff --git a/arch/metag/include/asm/hugetlb.h b/arch/metag/include/asm/hugetlb.h
-index f730b39..905ed42 100644
---- a/arch/metag/include/asm/hugetlb.h
-+++ b/arch/metag/include/asm/hugetlb.h
-@@ -67,15 +67,6 @@ static inline pte_t huge_ptep_get(pte_t *ptep)
- 	return *ptep;
- }
++	HPAGE_SHIFT = MACHINE_HAS_HPAGE ? 20 : 0;
++
+ 	/*
+ 	 * Create kernel page tables and switch to virtual addressing.
+ 	 */
+diff --git a/arch/s390/mm/pgtable.c b/arch/s390/mm/pgtable.c
+index b2c1542..f76791e 100644
+--- a/arch/s390/mm/pgtable.c
++++ b/arch/s390/mm/pgtable.c
+@@ -36,6 +36,8 @@
+ #endif
  
--static inline int arch_prepare_hugepage(struct page *page)
--{
--	return 0;
--}
--
--static inline void arch_release_hugepage(struct page *page)
--{
--}
--
- static inline void arch_clear_hugepage_flags(struct page *page)
- {
- }
-diff --git a/arch/mips/include/asm/hugetlb.h b/arch/mips/include/asm/hugetlb.h
-index 4a5bb54..982bc06 100644
---- a/arch/mips/include/asm/hugetlb.h
-+++ b/arch/mips/include/asm/hugetlb.h
-@@ -110,15 +110,6 @@ static inline pte_t huge_ptep_get(pte_t *ptep)
- 	return *ptep;
- }
  
--static inline int arch_prepare_hugepage(struct page *page)
--{
--	return 0;
--}
--
--static inline void arch_release_hugepage(struct page *page)
--{
--}
--
- static inline void arch_clear_hugepage_flags(struct page *page)
++unsigned int HPAGE_SHIFT;
++
+ unsigned long *crst_table_alloc(struct mm_struct *mm)
  {
- }
-diff --git a/arch/powerpc/include/asm/hugetlb.h b/arch/powerpc/include/asm/hugetlb.h
-index 4bbd3c8..7eac89b 100644
---- a/arch/powerpc/include/asm/hugetlb.h
-+++ b/arch/powerpc/include/asm/hugetlb.h
-@@ -168,15 +168,6 @@ static inline pte_t huge_ptep_get(pte_t *ptep)
- 	return *ptep;
- }
- 
--static inline int arch_prepare_hugepage(struct page *page)
--{
--	return 0;
--}
--
--static inline void arch_release_hugepage(struct page *page)
--{
--}
--
- static inline void arch_clear_hugepage_flags(struct page *page)
- {
- }
-diff --git a/arch/sh/include/asm/hugetlb.h b/arch/sh/include/asm/hugetlb.h
-index b788a9b..ef489a5 100644
---- a/arch/sh/include/asm/hugetlb.h
-+++ b/arch/sh/include/asm/hugetlb.h
-@@ -79,15 +79,6 @@ static inline pte_t huge_ptep_get(pte_t *ptep)
- 	return *ptep;
- }
- 
--static inline int arch_prepare_hugepage(struct page *page)
--{
--	return 0;
--}
--
--static inline void arch_release_hugepage(struct page *page)
--{
--}
--
- static inline void arch_clear_hugepage_flags(struct page *page)
- {
- 	clear_bit(PG_dcache_clean, &page->flags);
-diff --git a/arch/sparc/include/asm/hugetlb.h b/arch/sparc/include/asm/hugetlb.h
-index 3130d76..139e711 100644
---- a/arch/sparc/include/asm/hugetlb.h
-+++ b/arch/sparc/include/asm/hugetlb.h
-@@ -78,15 +78,6 @@ static inline pte_t huge_ptep_get(pte_t *ptep)
- 	return *ptep;
- }
- 
--static inline int arch_prepare_hugepage(struct page *page)
--{
--	return 0;
--}
--
--static inline void arch_release_hugepage(struct page *page)
--{
--}
--
- static inline void arch_clear_hugepage_flags(struct page *page)
- {
- }
-diff --git a/arch/tile/include/asm/hugetlb.h b/arch/tile/include/asm/hugetlb.h
-index 1abd00c..2fac5be 100644
---- a/arch/tile/include/asm/hugetlb.h
-+++ b/arch/tile/include/asm/hugetlb.h
-@@ -94,15 +94,6 @@ static inline pte_t huge_ptep_get(pte_t *ptep)
- 	return *ptep;
- }
- 
--static inline int arch_prepare_hugepage(struct page *page)
--{
--	return 0;
--}
--
--static inline void arch_release_hugepage(struct page *page)
--{
--}
--
- static inline void arch_clear_hugepage_flags(struct page *page)
- {
- }
-diff --git a/arch/x86/include/asm/hugetlb.h b/arch/x86/include/asm/hugetlb.h
-index dab7a3a..f8a29d2 100644
---- a/arch/x86/include/asm/hugetlb.h
-+++ b/arch/x86/include/asm/hugetlb.h
-@@ -80,15 +80,6 @@ static inline pte_t huge_ptep_get(pte_t *ptep)
- 	return *ptep;
- }
- 
--static inline int arch_prepare_hugepage(struct page *page)
--{
--	return 0;
--}
--
--static inline void arch_release_hugepage(struct page *page)
--{
--}
--
- static inline void arch_clear_hugepage_flags(struct page *page)
- {
- }
+ 	struct page *page = alloc_pages(GFP_KERNEL, ALLOC_ORDER);
 -- 
 2.3.7

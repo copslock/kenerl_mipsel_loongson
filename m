@@ -1,34 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 May 2015 20:36:41 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:32777 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 May 2015 20:59:15 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:32996 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27007627AbbE1SgjTTKry (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 28 May 2015 20:36:39 +0200
+        id S27007632AbbE1S7Mayw7O (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 28 May 2015 20:59:12 +0200
 Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.9/8.14.8) with ESMTP id t4SIafpe012125;
-        Thu, 28 May 2015 20:36:41 +0200
+        by scotty.linux-mips.net (8.14.9/8.14.8) with ESMTP id t4SIxD3M012568;
+        Thu, 28 May 2015 20:59:13 +0200
 Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.9/8.14.9/Submit) id t4SIafR1012124;
-        Thu, 28 May 2015 20:36:41 +0200
-Date:   Thu, 28 May 2015 20:36:40 +0200
+        by scotty.linux-mips.net (8.14.9/8.14.9/Submit) id t4SIxD1t012567;
+        Thu, 28 May 2015 20:59:13 +0200
+Date:   Thu, 28 May 2015 20:59:13 +0200
 From:   Ralf Baechle <ralf@linux-mips.org>
-To:     "Maciej W. Rozycki" <macro@linux-mips.org>
-Cc:     linux-mips@linux-mips.org
-Subject: Re: [PATCH] MIPS: strnlen_user.S: Fix a CPU_DADDI_WORKAROUNDS
- regression
-Message-ID: <20150528183640.GE7012@linux-mips.org>
-References: <alpine.LFD.2.11.1505271631400.21603@eddie.linux-mips.org>
- <20150528171817.GD7012@linux-mips.org>
- <alpine.LFD.2.11.1505281829400.21603@eddie.linux-mips.org>
+To:     Petri Gynther <pgynther@google.com>
+Cc:     Kevin Cernekee <cernekee@gmail.com>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        Florian Fainelli <f.fainelli@gmail.com>
+Subject: Re: [PATCH] MIPS: BMIPS: fix bmips_wr_vec()
+Message-ID: <20150528185913.GF7012@linux-mips.org>
+References: <20150527062508.CD24722020B@puck.mtv.corp.google.com>
+ <20150528164037.GB7012@linux-mips.org>
+ <CAJiQ=7Djh9_hponDG6bCMEhw7m0G=Sb8JeCLXCVATNNaGDWWZg@mail.gmail.com>
+ <CAGXr9JG3R24nScXTCNuoViAdBac02-XWuYCbBzxQ=6xub3g4TA@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <alpine.LFD.2.11.1505281829400.21603@eddie.linux-mips.org>
+In-Reply-To: <CAGXr9JG3R24nScXTCNuoViAdBac02-XWuYCbBzxQ=6xub3g4TA@mail.gmail.com>
 User-Agent: Mutt/1.5.23 (2014-03-12)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47716
+X-archive-position: 47717
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,81 +47,57 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, May 28, 2015 at 06:51:27PM +0100, Maciej W. Rozycki wrote:
+On Thu, May 28, 2015 at 11:25:45AM -0700, Petri Gynther wrote:
 
-> On Thu, 28 May 2015, Ralf Baechle wrote:
+> On Thu, May 28, 2015 at 9:47 AM, Kevin Cernekee <cernekee@gmail.com> wrote:
+> > On Thu, May 28, 2015 at 9:40 AM, Ralf Baechle <ralf@linux-mips.org> wrote:
+> >> On Tue, May 26, 2015 at 11:25:08PM -0700, Petri Gynther wrote:
+> >>
+> >>> bmips_wr_vec() copies exception vector code from start to dst.
+> >>>
+> >>> The call to dma_cache_wback() needs to flush (end-start) bytes,
+> >>> starting at dst, from write-back cache to memory.
+> >>>
+> >>> Signed-off-by: Petri Gynther <pgynther@google.com>
+> >>> ---
+> >>>  arch/mips/kernel/smp-bmips.c | 2 +-
+> >>>  1 file changed, 1 insertion(+), 1 deletion(-)
+> >>>
+> >>> diff --git a/arch/mips/kernel/smp-bmips.c b/arch/mips/kernel/smp-bmips.c
+> >>> index fd528d7..336708a 100644
+> >>> --- a/arch/mips/kernel/smp-bmips.c
+> >>> +++ b/arch/mips/kernel/smp-bmips.c
+> >>> @@ -444,7 +444,7 @@ struct plat_smp_ops bmips5000_smp_ops = {
+> >>>  static void bmips_wr_vec(unsigned long dst, char *start, char *end)
+> >>>  {
+> >>>       memcpy((void *)dst, start, end - start);
+> >>> -     dma_cache_wback((unsigned long)start, end - start);
+> >>> +     dma_cache_wback(dst, end - start);
+> >>
+> >> dma_cache_wback is a guess what - DMA function.  It doesn't handle
+> >> I-caches at all and on some platforms might actually do nothing at all.
+> >> or use other optimizations that only work for DMA buffers and it's not
+> >> SMP aware - nor will it.  So if it ever worked for your case then just
+> >> because you're lucky.  This really should use flush_icache_range which
+> >> also conveniently for your code takes an end pointer as argument.
+> >
+> > This flush isn't intended to handle I$.  It is intended to flush the
+> > newly written code all the way out to DRAM (not just to L2) so that it
+> > can be executed through an uncached kseg1 alias.  On initial boot, a
+> > BMIPS secondary CPU comes up with its I$ disabled (5000) or in an
+> > uninitialized state (43xx).
 > 
-> > >  The jump to the delay slot combined with the unusual register usage 
-> > > convention taken here made it trickier than it would normally be to make a 
-> > > fix that does not regress -- in terms of code size -- unaffected microMIPS 
-> > > systems.  I tried several versions and eventually I came up with this one 
-> > > that I believe produces the best code in all cases, at the cost of these 
-> > > #ifdefs.  I hope they are acceptable.
-> > 
-> > I think it's all a hint to rewrite the thing in a language that
-> > transparently handles the DADDIU issue.  Such as C.  Which would also
-> > make using a better algorithm easier.
+> Just wondering if we should just use:
+> r4k_blast_dcache()
+> r4k_blast_scache()
 > 
->  Probably.  One concern that bothers me is the ability of GCC to make 
-> alternative entry points into frameless leaf functions.
-> 
->  Here we have `__strnlen_kernel_asm' that falls through to 
-> `__strnlen_kernel_nocheck_asm'.  That's a nice optimisation (we could 
-> probably schedule that `move $v0, $a0' into its preceding delay slot too, 
-> even though one might consider it hilarious to have a function's entry 
-> point in a delay slot).
-> 
->  It would likely be lost in a conversion to C.  But perhaps GCC can get 
-> better, or maybe it already has?  I haven't been tracking what's been 
-> happening recently on that front.
-> 
->  What I have in mind is that given:
-> 
-> bar() { blah; }
-> 
-> foo() { blah_blah; bar(); }
-> 
-> in a single compilation unit, rather than making `foo' tail-jump to `bar' 
-> GCC would inline `bar' into `foo' entirely and merely export an additional 
-> `bar' entry point in the middle of `foo', where the original body of `bar' 
-> begins.
+> here instead? r4k_blast_dcache() is currently exported, but
+> r4k_blast_scache() is not.
 
-In this particular case we might move the access_ok() in to the
-strnlen_user function, something like:
-
-static inline long strnlen_user(const char __user *s, long n)
-{
-        long res;
-
-        might_fault();
-
-	if (!access_ok(VERIFY_READ, s, 0))
-		return 0;
-
-        if (segment_eq(get_fs(), get_ds())) {
-                __asm__ __volatile__(
-                        "move\t$4, %1\n\t"
-                        "move\t$5, %2\n\t"
-                        __MODULE_JAL(__strnlen_kernel_nocheck_asm)
-                        "move\t%0, $2"
-                        : "=r" (res)
-                        : "r" (s), "r" (n)
-                        : "$2", "$4", "$5", __UA_t0, "$31");
-        } else {
-                __asm__ __volatile__(
-                        "move\t$4, %1\n\t"
-                        "move\t$5, %2\n\t"
-                        __MODULE_JAL(__strnlen_kernel_nocheck_asm)
-                        "move\t%0, $2"
-                        : "=r" (res)
-                        : "r" (s), "r" (n)
-                        : "$2", "$4", "$5", __UA_t0, "$31");
-        }
-
-        return res;
-}
-
-I'd not be surprised if GCC can optimize that better than the existing
-code.
+There's simply no user of r4k_blast_scache() outside of c-r4k.c so far
+but I don't mind exporting the function.  But Kevin has already
+convinced me that this is a special use for which none of the existing
+functions fits well and it certainly isn't worth to invent a new flush
+function for this use, so I've applied your patch.
 
   Ralf

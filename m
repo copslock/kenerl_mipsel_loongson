@@ -1,29 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 May 2015 16:15:03 +0200 (CEST)
-Received: from hauke-m.de ([5.39.93.123]:46133 "EHLO hauke-m.de"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 May 2015 16:59:39 +0200 (CEST)
+Received: from hauke-m.de ([5.39.93.123]:46159 "EHLO hauke-m.de"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27007679AbbE2OPCKXgAn (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 29 May 2015 16:15:02 +0200
-Received: from [192.168.0.100] (ip-109-43-81-189.web.vodafone.de [109.43.81.189])
-        by hauke-m.de (Postfix) with ESMTPSA id 8496C20200;
-        Fri, 29 May 2015 16:14:53 +0200 (CEST)
-Message-ID: <5568743F.4000505@hauke-m.de>
-Date:   Fri, 29 May 2015 16:14:23 +0200
+        id S27007676AbbE2O7h5XAqQ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 29 May 2015 16:59:37 +0200
+Received: from [192.168.0.100] (ip-109-43-61-233.web.vodafone.de [109.43.61.233])
+        by hauke-m.de (Postfix) with ESMTPSA id 019D420267;
+        Fri, 29 May 2015 16:59:39 +0200 (CEST)
+Message-ID: <55687EDA.9070909@hauke-m.de>
+Date:   Fri, 29 May 2015 16:59:38 +0200
 From:   Hauke Mehrtens <hauke@hauke-m.de>
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Icedove/31.7.0
 MIME-Version: 1.0
-To:     =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-CC:     Arend van Spriel <arend@broadcom.com>
-Subject: Re: [PATCH] MAINTAINERS: Add Broadcom BCM47xx entry
-References: <1432877966-5820-1-git-send-email-zajec5@gmail.com>
-In-Reply-To: <1432877966-5820-1-git-send-email-zajec5@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
+To:     Arend van Spriel <arend@broadcom.com>,
+        Ralf Baechle <ralf@linux-mips.org>
+CC:     linux-mips@linux-mips.org, Hante Meuleman <meuleman@broadcom.com>
+Subject: Re: [PATCH V2] mips: bcm47xx: allow retrieval of complete nvram contents
+References: <1432214843-16057-1-git-send-email-arend@broadcom.com>
+In-Reply-To: <1432214843-16057-1-git-send-email-arend@broadcom.com>
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
 Return-Path: <hauke@hauke-m.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47727
+X-archive-position: 47728
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -40,32 +40,188 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 05/29/2015 07:39 AM, Rafał Miłecki wrote:
-> Signed-off-by: Rafał Miłecki <zajec5@gmail.com>
 
-Acked-by: Hauke Mehrtens <hauke@hauke-m.de>
 
-> ---
->  MAINTAINERS | 8 ++++++++
->  1 file changed, 8 insertions(+)
+On 05/21/2015 03:27 PM, Arend van Spriel wrote:
+> From: Hante Meuleman <meuleman@broadcom.com>
 > 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 474bcb6..643dc00 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -2161,6 +2161,14 @@ F:	arch/mips/bcm3384/*
->  F:	arch/mips/include/asm/mach-bcm3384/*
->  F:	arch/mips/kernel/*bmips*
+> Host platforms such as routers supported by OpenWrt can
+> support NVRAM reading directly from internal NVRAM store.
+> The brcmfmac for one requires the complete nvram contents
+> to select what needs to be sent to wireless device.
+> 
+> Reviewed-by: Arend Van Spriel <arend@broadcom.com>
+> Reviewed-by: Franky (Zhenhui) Lin <frankyl@broadcom.com>
+> Reviewed-by: Pieter-Paul Giesberts <pieterpg@broadcom.com>
+> Reviewed-by: Daniel (Deognyoun) Kim <dekim@broadcom.com>
+> Signed-off-by: Hante Meuleman <meuleman@broadcom.com>
+> Signed-off-by: Arend van Spriel <arend@broadcom.com>
+> ---
+> Change log:
+> -----------
+> V2:	- correct header length for nvram_find_and_copy().
+> 	- get rid of 'NVRAM_SPACE - 2' magic.
+> ---
+>  arch/mips/bcm47xx/nvram.c     | 61 ++++++++++++++++++++++++++++++++-----------
+>  include/linux/bcm47xx_nvram.h | 15 +++++++++++
+>  2 files changed, 61 insertions(+), 15 deletions(-)
+> 
+> diff --git a/arch/mips/bcm47xx/nvram.c b/arch/mips/bcm47xx/nvram.c
+> index 95d028c..f4f62d3 100644
+> --- a/arch/mips/bcm47xx/nvram.c
+> +++ b/arch/mips/bcm47xx/nvram.c
+> @@ -94,17 +94,22 @@ static int nvram_find_and_copy(void __iomem *iobase, u32 lim)
+>  	return -ENXIO;
 >  
-> +BROADCOM BCM47XX MIPS ARCHITECTURE
-> +M:	Hauke Mehrtens <hauke@hauke-m.de>
-> +M:	Rafał Miłecki <zajec5@gmail.com>
-> +L:	linux-mips@linux-mips.org
-> +S:	Maintained
-> +F:	arch/mips/bcm47xx/*
-> +F:	arch/mips/include/asm/mach-bcm47xx/*
+>  found:
+> -	if (header->len > size)
+> -		pr_err("The nvram size accoridng to the header seems to be bigger than the partition on flash\n");
+> -	if (header->len > NVRAM_SPACE)
+> -		pr_err("nvram on flash (%i bytes) is bigger than the reserved space in memory, will just copy the first %i bytes\n",
+> -		       header->len, NVRAM_SPACE - 1);
+> -
+>  	src = (u32 *)header;
+>  	dst = (u32 *)nvram_buf;
+>  	for (i = 0; i < sizeof(struct nvram_header); i += 4)
+>  		*dst++ = __raw_readl(src++);
+> -	for (; i < header->len && i < NVRAM_SPACE && i < size; i += 4)
+> +	header = (struct nvram_header *)nvram_buf;
+> +	if (header->len > size) {
+> +		pr_err("The nvram size according to the header seems to be bigger than the partition on flash\n");
+
+Thanks for fixing a typo. ;-)
+
+> +		header->len = size;
+
+I haven't seen this error case, I just added it to be save.
+
+> +	}
+> +	if (header->len >= NVRAM_SPACE) {
+> +		pr_err("nvram on flash (%i bytes) is bigger than the reserved space in memory, will just copy the first %i bytes\n",
+> +		       header->len, NVRAM_SPACE - 1);
+> +		header->len = NVRAM_SPACE - 1;
+> +	}
+
+After fixing the length the header is better, but it also contains a
+CRC, which is still wrong, but we ignore it and I do not think we have
+to check.
+
+I still think that the best approach would be to remove the nvram header
+and add a extra variable storing the actual size of the nvram buf. I
+also think this would make some of this code easier.
+
+> +	/* proceed reading data after header */
+> +	for (; i < header->len; i += 4)
+>  		*dst++ = readl(src++);
+>  	nvram_buf[NVRAM_SPACE - 1] = '\0';
+>  
+> @@ -139,6 +144,7 @@ static int nvram_init(void)
+>  #ifdef CONFIG_MTD
+>  	struct mtd_info *mtd;
+>  	struct nvram_header header;
+> +	struct nvram_header *pheader;
+>  	size_t bytes_read;
+>  	int err;
+>  
+> @@ -147,20 +153,21 @@ static int nvram_init(void)
+>  		return -ENODEV;
+>  
+>  	err = mtd_read(mtd, 0, sizeof(header), &bytes_read, (uint8_t *)&header);
+> -	if (!err && header.magic == NVRAM_MAGIC) {
+> -		u8 *dst = (uint8_t *)nvram_buf;
+> -		size_t len = header.len;
+> -
+> -		if (len >= NVRAM_SPACE) {
+> -			len = NVRAM_SPACE - 1;
+> +	if (!err && header.magic == NVRAM_MAGIC &&
+> +	    header.len > sizeof(header)) {
+> +		if (header.len >= NVRAM_SPACE) {
+>  			pr_err("nvram on flash (%i bytes) is bigger than the reserved space in memory, will just copy the first %i bytes\n",
+> -				header.len, len);
+> +				header.len, NVRAM_SPACE);
+> +			header.len = NVRAM_SPACE - 1;
+>  		}
+>  
+> -		err = mtd_read(mtd, 0, len, &bytes_read, dst);
+> +		err = mtd_read(mtd, 0, header.len, &bytes_read,
+> +			       (u8 *)nvram_buf);
+>  		if (err)
+>  			return err;
+>  
+> +		pheader = (struct nvram_header *)nvram_buf;
+> +		pheader->len = header.len;
+>  		return 0;
+>  	}
+>  #endif
+> @@ -219,3 +226,27 @@ int bcm47xx_nvram_gpio_pin(const char *name)
+>  	return -ENOENT;
+>  }
+>  EXPORT_SYMBOL(bcm47xx_nvram_gpio_pin);
 > +
->  BROADCOM BCM5301X ARM ARCHITECTURE
->  M:	Hauke Mehrtens <hauke@hauke-m.de>
->  L:	linux-arm-kernel@lists.infradead.org
+> +char *bcm47xx_nvram_get_contents(size_t *nvram_size)
+> +{
+> +	int err;
+> +	char *nvram;
+> +	struct nvram_header *header;
+> +
+> +	if (!nvram_buf[0]) {
+> +		err = nvram_init();
+> +		if (err)
+> +			return NULL;
+> +	}
+> +
+> +	header = (struct nvram_header *)nvram_buf;
+> +	*nvram_size = header->len - sizeof(struct nvram_header);
+> +	nvram = vmalloc(*nvram_size);
+> +	if (!nvram)
+> +		return NULL;
+> +	memcpy(nvram, &nvram_buf[sizeof(struct nvram_header)], *nvram_size);
+
+I have no real opinion if we need to copy it or provide a pointer to the
+nvram buf. I trust brcmfmac that it does not screw around with this
+data. ;-)
+
+> +
+> +	return nvram;
+> +}
+> +EXPORT_SYMBOL(bcm47xx_nvram_get_contents);
+> +
+> diff --git a/include/linux/bcm47xx_nvram.h b/include/linux/bcm47xx_nvram.h
+> index b12b07e..c73927c 100644
+> --- a/include/linux/bcm47xx_nvram.h
+> +++ b/include/linux/bcm47xx_nvram.h
+> @@ -10,11 +10,17 @@
+>  
+>  #include <linux/types.h>
+>  #include <linux/kernel.h>
+> +#include <linux/vmalloc.h>
+>  
+>  #ifdef CONFIG_BCM47XX
+>  int bcm47xx_nvram_init_from_mem(u32 base, u32 lim);
+>  int bcm47xx_nvram_getenv(const char *name, char *val, size_t val_len);
+>  int bcm47xx_nvram_gpio_pin(const char *name);
+> +char *bcm47xx_nvram_get_contents(size_t *val_len);
+> +static inline void bcm47xx_nvram_release_contents(char *nvram)
+> +{
+> +	vfree(nvram);
+> +};
+>  #else
+>  static inline int bcm47xx_nvram_init_from_mem(u32 base, u32 lim)
+>  {
+> @@ -29,6 +35,15 @@ static inline int bcm47xx_nvram_gpio_pin(const char *name)
+>  {
+>  	return -ENOTSUPP;
+>  };
+> +
+> +static inline char *bcm47xx_nvram_get_contents(size_t *val_len)
+> +{
+> +	return NULL;
+> +};
+> +
+> +static inline void bcm47xx_nvram_release_contents(char *nvram)
+> +{
+> +};
+>  #endif
+>  
+>  #endif /* __BCM47XX_NVRAM_H */
 > 

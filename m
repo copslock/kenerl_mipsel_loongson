@@ -1,42 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 May 2015 23:41:04 +0200 (CEST)
-Received: from mail-gw2-out.broadcom.com ([216.31.210.63]:31007 "EHLO
-        mail-gw2-out.broadcom.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007717AbbE2VlCeykVy (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 29 May 2015 23:41:02 +0200
-X-IronPort-AV: E=Sophos;i="5.13,519,1427785200"; 
-   d="scan'208";a="66170919"
-Received: from irvexchcas08.broadcom.com (HELO IRVEXCHCAS08.corp.ad.broadcom.com) ([10.9.208.57])
-  by mail-gw2-out.broadcom.com with ESMTP; 29 May 2015 14:52:17 -0700
-Received: from IRVEXCHSMTP2.corp.ad.broadcom.com (10.9.207.52) by
- IRVEXCHCAS08.corp.ad.broadcom.com (10.9.208.57) with Microsoft SMTP Server
- (TLS) id 14.3.235.1; Fri, 29 May 2015 14:40:51 -0700
-Received: from mail-sj1-12.sj.broadcom.com (10.10.10.20) by
- IRVEXCHSMTP2.corp.ad.broadcom.com (10.9.207.52) with Microsoft SMTP Server id
- 14.3.235.1; Fri, 29 May 2015 14:40:51 -0700
-Received: from [10.176.128.60] (xl-bun-02.bun.broadcom.com [10.176.128.60])     by
- mail-sj1-12.sj.broadcom.com (Postfix) with ESMTP id 6FE7D27A82;        Fri, 29 May
- 2015 14:40:51 -0700 (PDT)
-Message-ID: <5568DCE2.1060206@broadcom.com>
-Date:   Fri, 29 May 2015 23:40:50 +0200
-From:   Arend van Spriel <arend@broadcom.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686 (x86_64); en-US; rv:1.9.2.24) Gecko/20111103 Lightning/1.0b2 Thunderbird/3.1.16
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 30 May 2015 07:00:34 +0200 (CEST)
+Received: from resqmta-ch2-02v.sys.comcast.net ([69.252.207.34]:56037 "EHLO
+        resqmta-ch2-02v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006531AbbE3FAcVlCUw (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 30 May 2015 07:00:32 +0200
+Received: from resomta-ch2-16v.sys.comcast.net ([69.252.207.112])
+        by resqmta-ch2-02v.sys.comcast.net with comcast
+        id a50U1q0052S2Q5R0150UUu; Sat, 30 May 2015 05:00:28 +0000
+Received: from [192.168.1.13] ([69.251.155.187])
+        by resomta-ch2-16v.sys.comcast.net with comcast
+        id a50T1q00F42s2jH0150THr; Sat, 30 May 2015 05:00:28 +0000
+Message-ID: <556943D9.7020502@gentoo.org>
+Date:   Sat, 30 May 2015 01:00:09 -0400
+From:   Joshua Kinard <kumba@gentoo.org>
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:31.0) Gecko/20100101 Thunderbird/31.6.0
 MIME-Version: 1.0
-To:     Hauke Mehrtens <hauke@hauke-m.de>
-CC:     <linux-mips@linux-mips.org>
-Subject: Re: [PATCH V2] mips: bcm47xx: allow retrieval of complete nvram contents
-References: <1432214843-16057-1-git-send-email-arend@broadcom.com> <55687EDA.9070909@hauke-m.de> <55689A67.9070904@broadcom.com> <5568AF66.3070403@broadcom.com> <5568B391.6050402@hauke-m.de> <5568B969.6020502@broadcom.com> <5568BCD9.8090002@hauke-m.de>
-In-Reply-To: <5568BCD9.8090002@hauke-m.de>
-Content-Type: text/plain; charset="windows-1252"; format=flowed
+To:     Linux MIPS List <linux-mips@linux-mips.org>
+CC:     Ralf Baechle <ralf@linux-mips.org>,
+        "Maciej W. Rozycki" <macro@linux-mips.org>
+Subject: IP27: R14000: Unexpected General Exception in cpu_set_fpu_fcsr_mask()
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
-Return-Path: <arend@broadcom.com>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=comcast.net;
+        s=q20140121; t=1432962028;
+        bh=gZptEOolLtzqZt12dbRUAXDO8HxhKFUtCGV1bBnIZ28=;
+        h=Received:Received:Message-ID:Date:From:MIME-Version:To:Subject:
+         Content-Type;
+        b=obftUl6Idi73uZYdfIahPTkYsPGXoKUq8idYZTZbO0UVBC4MHdTUlXBoPNkP5g6N8
+         VffF/xU+LMu8cISAsdcHJdKpEaJO0IebY5jldMlS4cJpUuoJRqQSWaIJh841paCPJE
+         1BIqsAEN9E6x2YZf+UA7N1gpGA8h/FJh/e3TLIu9t244Pjk2FymzAqr9JJNGF9esRs
+         hDZa+lGVV9muxBG9LdZYLq0y9nZVH+rTAY1G00TjQNioJ57RPoqAozaWhFWlTHUL5P
+         t7oe97u1hKp12tvi+bj/HL1S1pIMevdwikPFPXxRSCiLxG/t6vW8XJuGt6b0vRZmdw
+         YPxO4UX9RNTyA==
+Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47734
+X-archive-position: 47735
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arend@broadcom.com
+X-original-sender: kumba@gentoo.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,118 +52,51 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 05/29/15 21:24, Hauke Mehrtens wrote:
->
->
-> On 05/29/2015 09:09 PM, Arend van Spriel wrote:
->> On 05/29/15 20:44, Hauke Mehrtens wrote:
->>>
->>>
->>> On 05/29/2015 08:26 PM, Arend van Spriel wrote:
->>>> On 05/29/15 18:57, Arend van Spriel wrote:
->>>>> On 05/29/15 16:59, Hauke Mehrtens wrote:
->>>>>>
->>>>>>
->>>>>> On 05/21/2015 03:27 PM, Arend van Spriel wrote:
->>>>>>> From: Hante Meuleman<meuleman@broadcom.com>
->>>>>>>
->>>>>>> Host platforms such as routers supported by OpenWrt can
->>>>>>> support NVRAM reading directly from internal NVRAM store.
->>>>>>> The brcmfmac for one requires the complete nvram contents
->>>>>>> to select what needs to be sent to wireless device.
->>>>>>>
->>>>>>> Reviewed-by: Arend Van Spriel<arend@broadcom.com>
->>>>>>> Reviewed-by: Franky (Zhenhui) Lin<frankyl@broadcom.com>
->>>>>>> Reviewed-by: Pieter-Paul Giesberts<pieterpg@broadcom.com>
->>>>>>> Reviewed-by: Daniel (Deognyoun) Kim<dekim@broadcom.com>
->>>>>>> Signed-off-by: Hante Meuleman<meuleman@broadcom.com>
->>>>>>> Signed-off-by: Arend van Spriel<arend@broadcom.com>
->>>>>>> ---
->>>>>>> Change log:
->>>>>>> -----------
->>>>>>> V2: - correct header length for nvram_find_and_copy().
->>>>>>> - get rid of 'NVRAM_SPACE - 2' magic.
->>>>>>> ---
->>>>>>> arch/mips/bcm47xx/nvram.c | 61
->>>>>>> ++++++++++++++++++++++++++++++++-----------
->>>>>>> include/linux/bcm47xx_nvram.h | 15 +++++++++++
->>>>>>> 2 files changed, 61 insertions(+), 15 deletions(-)
->>>>>>>
->>>>>>> diff --git a/arch/mips/bcm47xx/nvram.c b/arch/mips/bcm47xx/nvram.c
->>>>>>> index 95d028c..f4f62d3 100644
->>>>>>> --- a/arch/mips/bcm47xx/nvram.c
->>>>>>> +++ b/arch/mips/bcm47xx/nvram.c
->>>>>>> @@ -94,17 +94,22 @@ static int nvram_find_and_copy(void __iomem
->>>>>>> *iobase, u32 lim)
->>>>>>> return -ENXIO;
->>>>>>>
->>>>>>> found:
->>>>>>> - if (header->len>   size)
->>>>>>> - pr_err("The nvram size accoridng to the header seems to be bigger
->>>>>>> than the partition on flash\n");
->>>>>>> - if (header->len>   NVRAM_SPACE)
->>>>>>> - pr_err("nvram on flash (%i bytes) is bigger than the reserved space
->>>>>>> in memory, will just copy the first %i bytes\n",
->>>>>>> - header->len, NVRAM_SPACE - 1);
->>>>>>> -
->>>>>>> src = (u32 *)header;
->>>>>>> dst = (u32 *)nvram_buf;
->>>>>>> for (i = 0; i<   sizeof(struct nvram_header); i += 4)
->>>>>>> *dst++ = __raw_readl(src++);
->>>>>>> - for (; i<   header->len&&   i<   NVRAM_SPACE&&   i<   size; i += 4)
->>>>>>> + header = (struct nvram_header *)nvram_buf;
->>>>>>> + if (header->len>   size) {
->>>>>>> + pr_err("The nvram size according to the header seems to be bigger
->>>>>>> than the partition on flash\n");
->>>>>>
->>>>>> Thanks for fixing a typo. ;-)
->>>>>>
->>>>>>> + header->len = size;
->>>>>>
->>>>>> I haven't seen this error case, I just added it to be save.
->>>>>
->>>>> It does seem an unlikely error case. At least it would probably been
->>>>> noticed during production writing the content to flash.
->>>>>
->>>>>>> + }
->>>>>>> + if (header->len>= NVRAM_SPACE) {
->>>>>>> + pr_err("nvram on flash (%i bytes) is bigger than the reserved space
->>>>>>> in memory, will just copy the first %i bytes\n",
->>>>>>> + header->len, NVRAM_SPACE - 1);
->>>>>>> + header->len = NVRAM_SPACE - 1;
->>>>>>> + }
->>>>>>
->>>>>> After fixing the length the header is better, but it also contains a
->>>>>> CRC, which is still wrong, but we ignore it and I do not think we have
->>>>>> to check.
->>>>>>
->>>>>> I still think that the best approach would be to remove the nvram
->>>>>> header
->>>>>> and add a extra variable storing the actual size of the nvram buf. I
->>>>>> also think this would make some of this code easier.
->>>>>
->>>>> Let's do that then.
->>>>
->>>> Hi Hauke,
->>>>
->>>> Forgot to ask. What is the reason for using the fixed nvram space. Could
->>>> we allocate it using vzalloc()?
->>>
->>> On mips this is needed very early in the boot process at least for the
->>> older SoCs using ssb. In this state we can not allocate memory.
->>
->> I suspected that, but wanted to be sure.
->>
->
-> We tried to use some kind of allocation mechanism, because the nvram
-> partitions of different devices have different sizes. The older devices
-> mostly have small partitions and the newer ons bigger. With the arm SoCs
-> we do not need the nvram so early and can use some normal allocation
-> mechanism.
+Booting a recent kernel on an IP27 system with R14K nodeboards causes the PROM
+to bail:
 
-Yes, but that means that static buffer sits there doing nothing or could 
-that be put under Kconfig and only be used for the devices needing early 
-access.
+ttyS0:
+Command Monitor.  Type "exit" to return to the menu.
+>> bootp(): console=ttyS0,9600 root=/dev/md0
+Setting $netaddr to 192.168.1.x (from server )
+Obtaining  from server
+9036672+495920 entry: 0xa800000000689300
 
-Regards,
-Arend
+MMC:
+2A 000: *** General Exception on node 0
+2A 000: *** EPC: 0xa800000000022178 (0xa800000000022178)
+2A 000: *** Press ENTER to continue.
+2A 000: POD MSC Unc> why
+2A 000:  EPC    : 0xa800000000022178 (0xa800000000022178)
+2A 000:  ERREPC : 0xffffffffbfc00ee0 (0xc00000001fc00ee0)
+2A 000:  CACERR : 0x00000000d6d7ff21
+2A 000:  Status : 0x0000000024407c80
+2A 000:  BadVA  : 0x0000000000000000 (0x0)
+2A 000:  RA     : 0xa8000000008771cc (0xa8000000008771cc)
+2A 000:  SP     : 0xa80000000081be00
+2A 000:  A0     : 0x00000000000051a1
+2A 000:  Cause  : 0x000000000000c03c (INT:87------ <Float Pt. Exc>)
+2A 000:  Reason : 242 (Unexpected General Exception.)
+2A 000:  POD mode was called from: 0xc00000001fc027ec (0xc00000001fc027ec)
+2A 000: POD MSC Unc>
+
+Address 0xa800000022178 centers around line 85 in 4.1.0-rc4's
+arch/mips/cpu-probe.c:
+
+85:         write_32bit_cp1_register(CP1_STATUS, fcsr0);
+    a80000000002216c:       3c020003        lui     v0,0x3
+    a800000000022170:       3445ffff        ori     a1,v0,0xffff
+    a800000000022174:       00851024        and     v0,a0,a1
+--> a800000000022178:       44c2f800        ctc1    v0,$31
+    a80000000002217c:       00000000        nop
+
+Looks like cpu_set_fpu_fcsr_mask() was added in April sometime:
+
+http://git.linux-mips.org/cgit/ralf/linux.git/commit/arch/mips/kernel/cpu-probe.c?id=9b26616c8d9dae53fbac7f7cb2c6dd1308102976
+
+Not sure what else can be gleaned.  Seems this version of the R14K (v1.4)
+doesn't like that FCSR mask.  Don't recall the Octane complaining about this,
+but I'll try to double-check tomorrow.  It's got a newer rev of R14K silicon.
+Might be an errata.
+
+--J

@@ -1,12 +1,12 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 31 May 2015 01:56:12 +0200 (CEST)
-Received: from smtp2-g21.free.fr ([212.27.42.2]:14006 "EHLO smtp2-g21.free.fr"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 31 May 2015 01:57:03 +0200 (CEST)
+Received: from smtp2-g21.free.fr ([212.27.42.2]:15052 "EHLO smtp2-g21.free.fr"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27006760AbbE3X4LCH2o4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 31 May 2015 01:56:11 +0200
+        id S27006760AbbE3X5CPSbt4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 31 May 2015 01:57:02 +0200
 Received: from localhost.localdomain (unknown [78.54.178.112])
         (Authenticated sender: albeu)
-        by smtp2-g21.free.fr (Postfix) with ESMTPA id 7F2484B0026;
-        Sun, 31 May 2015 01:54:06 +0200 (CEST)
+        by smtp2-g21.free.fr (Postfix) with ESMTPA id D0A0B4B0026;
+        Sun, 31 May 2015 01:54:57 +0200 (CEST)
 From:   Alban Bedel <albeu@free.fr>
 To:     linux-mips@linux-mips.org
 Cc:     Rob Herring <robh+dt@kernel.org>, Pawel Moll <pawel.moll@arm.com>,
@@ -21,9 +21,9 @@ Cc:     Rob Herring <robh+dt@kernel.org>, Pawel Moll <pawel.moll@arm.com>,
         Qais Yousef <qais.yousef@imgtec.com>,
         Gabor Juhos <juhosg@openwrt.org>, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH v4 04/12] devicetree: Add bindings for the ATH79 interrupt controllers
-Date:   Sun, 31 May 2015 01:52:27 +0200
-Message-Id: <1433029955-7346-5-git-send-email-albeu@free.fr>
+Subject: [PATCH v4 05/12] devicetree: Add bindings for the ATH79 MISC interrupt controllers
+Date:   Sun, 31 May 2015 01:52:28 +0200
+Message-Id: <1433029955-7346-6-git-send-email-albeu@free.fr>
 X-Mailer: git-send-email 2.0.0
 In-Reply-To: <1433029955-7346-1-git-send-email-albeu@free.fr>
 References: <1433029955-7346-1-git-send-email-albeu@free.fr>
@@ -31,7 +31,7 @@ Return-Path: <albeu@free.fr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47740
+X-archive-position: 47741
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -51,61 +51,46 @@ X-list: linux-mips
 Signed-off-by: Alban Bedel <albeu@free.fr>
 ---
 v2: * Fixed the node names to respect ePAPR
-    * Removed the unneeded @0 on the node name
 ---
- .../interrupt-controller/qca,ath79-cpu-intc.txt    | 44 ++++++++++++++++++++++
- 1 file changed, 44 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/interrupt-controller/qca,ath79-cpu-intc.txt
+ .../interrupt-controller/qca,ath79-misc-intc.txt   | 30 ++++++++++++++++++++++
+ 1 file changed, 30 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/interrupt-controller/qca,ath79-misc-intc.txt
 
-diff --git a/Documentation/devicetree/bindings/interrupt-controller/qca,ath79-cpu-intc.txt b/Documentation/devicetree/bindings/interrupt-controller/qca,ath79-cpu-intc.txt
+diff --git a/Documentation/devicetree/bindings/interrupt-controller/qca,ath79-misc-intc.txt b/Documentation/devicetree/bindings/interrupt-controller/qca,ath79-misc-intc.txt
 new file mode 100644
-index 0000000..aabce78
+index 0000000..391717a
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/interrupt-controller/qca,ath79-cpu-intc.txt
-@@ -0,0 +1,44 @@
-+Binding for Qualcomm Atheros AR7xxx/AR9XXX CPU interrupt controller
++++ b/Documentation/devicetree/bindings/interrupt-controller/qca,ath79-misc-intc.txt
+@@ -0,0 +1,30 @@
++Binding for Qualcomm Atheros AR7xxx/AR9XXX MISC interrupt controller
 +
-+On most SoC the IRQ controller need to flush the DDR FIFO before running
-+the interrupt handler of some devices. This is configured using the
-+qca,ddr-wb-channels and qca,ddr-wb-channel-interrupts properties.
++The MISC interrupt controller is a secondary controller for lower priority
++interrupt.
 +
 +Required Properties:
-+
-+- compatible: has to be "qca,<soctype>-cpu-intc", "qca,ar7100-cpu-intc"
++- compatible: has to be "qca,<soctype>-cpu-intc", "qca,ar7100-misc-intc"
 +  as fallback
++- reg: Base address and size of the controllers memory area
++- interrupt-parent: phandle of the parent interrupt controller.
++- interrupts: Interrupt specifier for the controllers interrupt.
 +- interrupt-controller : Identifies the node as an interrupt controller
 +- #interrupt-cells : Specifies the number of cells needed to encode interrupt
-+		     source, should be 1 for intc
++		     source, should be 1
 +
 +Please refer to interrupts.txt in this directory for details of the common
 +Interrupt Controllers bindings used by client devices.
 +
-+Optional Properties:
-+
-+- qca,ddr-wb-channel-interrupts: List of the interrupts needing a write
-+  buffer flush
-+- qca,ddr-wb-channels: List of phandles to the write buffer channels for
-+  each interrupt. If qca,ddr-wb-channel-interrupts is not present the interrupt
-+  default to the entry's index.
-+
 +Example:
 +
-+	interrupt-controller {
-+		compatible = "qca,ar9132-cpu-intc", "qca,ar7100-cpu-intc";
++	interrupt-controller@18060010 {
++		compatible = "qca,ar9132-misc-intc", qca,ar7100-misc-intc";
++		reg = <0x18060010 0x4>;
++
++		interrupt-parent = <&cpuintc>;
++		interrupts = <6>;
 +
 +		interrupt-controller;
 +		#interrupt-cells = <1>;
-+
-+		qca,ddr-wb-channel-interrupts = <2>, <3>, <4>, <5>;
-+		qca,ddr-wb-channels = <&ddr_ctrl 3>, <&ddr_ctrl 2>,
-+					<&ddr_ctrl 0>, <&ddr_ctrl 1>;
-+	};
-+
-+	...
-+
-+	ddr_ctrl: memory-controller@18000000 {
-+		...
-+		#qca,ddr-wb-channel-cells = <1>;
 +	};
 -- 
 2.0.0

@@ -1,12 +1,12 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 31 May 2015 01:54:41 +0200 (CEST)
-Received: from smtp2-g21.free.fr ([212.27.42.2]:11652 "EHLO smtp2-g21.free.fr"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 31 May 2015 01:55:23 +0200 (CEST)
+Received: from smtp2-g21.free.fr ([212.27.42.2]:12790 "EHLO smtp2-g21.free.fr"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27006760AbbE3XyjuRqU4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 31 May 2015 01:54:39 +0200
+        id S27007721AbbE3XzV0YB74 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 31 May 2015 01:55:21 +0200
 Received: from localhost.localdomain (unknown [78.54.178.112])
         (Authenticated sender: albeu)
-        by smtp2-g21.free.fr (Postfix) with ESMTPA id 432934B0163;
-        Sun, 31 May 2015 01:52:35 +0200 (CEST)
+        by smtp2-g21.free.fr (Postfix) with ESMTPA id E1E854B00DF;
+        Sun, 31 May 2015 01:53:16 +0200 (CEST)
 From:   Alban Bedel <albeu@free.fr>
 To:     linux-mips@linux-mips.org
 Cc:     Rob Herring <robh+dt@kernel.org>, Pawel Moll <pawel.moll@arm.com>,
@@ -21,9 +21,9 @@ Cc:     Rob Herring <robh+dt@kernel.org>, Pawel Moll <pawel.moll@arm.com>,
         Qais Yousef <qais.yousef@imgtec.com>,
         Gabor Juhos <juhosg@openwrt.org>, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH v4 02/12] MIPS: ath79: Add basic device tree support
-Date:   Sun, 31 May 2015 01:52:25 +0200
-Message-Id: <1433029955-7346-3-git-send-email-albeu@free.fr>
+Subject: [PATCH v4 03/12] devicetree: Add bindings for the ATH79 DDR controllers
+Date:   Sun, 31 May 2015 01:52:26 +0200
+Message-Id: <1433029955-7346-4-git-send-email-albeu@free.fr>
 X-Mailer: git-send-email 2.0.0
 In-Reply-To: <1433029955-7346-1-git-send-email-albeu@free.fr>
 References: <1433029955-7346-1-git-send-email-albeu@free.fr>
@@ -31,7 +31,7 @@ Return-Path: <albeu@free.fr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47738
+X-archive-position: 47739
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,114 +48,61 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add the bare minimum to load a device tree.
+The DDR controller of the ARxxx and AR9xxx families provides an
+interface to flush the FIFO between various devices and the DDR.
+This is mainly used by the IRQ controller to flush the FIFO before
+running the interrupt handler of such devices.
 
 Signed-off-by: Alban Bedel <albeu@free.fr>
 ---
-v3: * Removed the empty Builtin devicetree menu
+v2: * Fix the node names to respect ePAPR
+v3: * Fix some typos
+    * Really fix the node names this time
 ---
- arch/mips/Kconfig           |  1 +
- arch/mips/ath79/machtypes.h |  1 +
- arch/mips/ath79/setup.c     | 27 ++++++++++++++++++++++++++-
- 3 files changed, 28 insertions(+), 1 deletion(-)
+ .../memory-controllers/ath79-ddr-controller.txt    | 35 ++++++++++++++++++++++
+ 1 file changed, 35 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/memory-controllers/ath79-ddr-controller.txt
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 874bbaf..772312d 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -133,6 +133,7 @@ config ATH79
- 	select SYS_SUPPORTS_BIG_ENDIAN
- 	select SYS_SUPPORTS_MIPS16
- 	select SYS_SUPPORTS_ZBOOT
-+	select USE_OF
- 	help
- 	  Support for the Atheros AR71XX/AR724X/AR913X SoCs.
- 
-diff --git a/arch/mips/ath79/machtypes.h b/arch/mips/ath79/machtypes.h
-index 2625405..a13db3d 100644
---- a/arch/mips/ath79/machtypes.h
-+++ b/arch/mips/ath79/machtypes.h
-@@ -15,6 +15,7 @@
- #include <asm/mips_machine.h>
- 
- enum ath79_mach_type {
-+	ATH79_MACH_GENERIC_OF = -1,	/* Device tree board */
- 	ATH79_MACH_GENERIC = 0,
- 	ATH79_MACH_AP121,		/* Atheros AP121 reference board */
- 	ATH79_MACH_AP136_010,		/* Atheros AP136-010 reference board */
-diff --git a/arch/mips/ath79/setup.c b/arch/mips/ath79/setup.c
-index 74f1af7..01a644f 100644
---- a/arch/mips/ath79/setup.c
-+++ b/arch/mips/ath79/setup.c
-@@ -17,12 +17,16 @@
- #include <linux/bootmem.h>
- #include <linux/err.h>
- #include <linux/clk.h>
-+#include <linux/of_platform.h>
-+#include <linux/of_fdt.h>
- 
- #include <asm/bootinfo.h>
- #include <asm/idle.h>
- #include <asm/time.h>		/* for mips_hpt_frequency */
- #include <asm/reboot.h>		/* for _machine_{restart,halt} */
- #include <asm/mips_machine.h>
-+#include <asm/prom.h>
-+#include <asm/fw/fw.h>
- 
- #include <asm/mach-ath79/ath79.h>
- #include <asm/mach-ath79/ar71xx_regs.h>
-@@ -194,8 +198,19 @@ unsigned int get_c0_compare_int(void)
- 
- void __init plat_mem_setup(void)
- {
-+	unsigned long fdt_start;
+diff --git a/Documentation/devicetree/bindings/memory-controllers/ath79-ddr-controller.txt b/Documentation/devicetree/bindings/memory-controllers/ath79-ddr-controller.txt
+new file mode 100644
+index 0000000..efe35a06
+--- /dev/null
++++ b/Documentation/devicetree/bindings/memory-controllers/ath79-ddr-controller.txt
+@@ -0,0 +1,35 @@
++Binding for Qualcomm  Atheros AR7xxx/AR9xxx DDR controller
 +
- 	set_io_port_base(KSEG1);
- 
-+	/* Get the position of the FDT passed by the bootloader */
-+	fdt_start = fw_getenvl("fdt_start");
-+	if (fdt_start)
-+		__dt_setup_arch((void *)KSEG0ADDR(fdt_start));
-+#ifdef CONFIG_BUILTIN_DTB
-+	else
-+		__dt_setup_arch(__dtb_start);
-+#endif
++The DDR controller of the ARxxx and AR9xxx families provides an interface
++to flush the FIFO between various devices and the DDR. This is mainly used
++by the IRQ controller to flush the FIFO before running the interrupt handler
++of such devices.
 +
- 	ath79_reset_base = ioremap_nocache(AR71XX_RESET_BASE,
- 					   AR71XX_RESET_SIZE);
- 	ath79_pll_base = ioremap_nocache(AR71XX_PLL_BASE,
-@@ -203,7 +218,8 @@ void __init plat_mem_setup(void)
- 	ath79_ddr_ctrl_init();
- 
- 	ath79_detect_sys_type();
--	detect_memory_region(0, ATH79_MEM_SIZE_MIN, ATH79_MEM_SIZE_MAX);
-+	if (mips_machtype != ATH79_MACH_GENERIC_OF)
-+		detect_memory_region(0, ATH79_MEM_SIZE_MIN, ATH79_MEM_SIZE_MAX);
- 
- 	_machine_restart = ath79_restart;
- 	_machine_halt = ath79_halt;
-@@ -235,6 +251,10 @@ void __init plat_time_init(void)
- 
- static int __init ath79_setup(void)
- {
-+	of_platform_populate(NULL, of_default_bus_match_table, NULL, NULL);
-+	if  (mips_machtype == ATH79_MACH_GENERIC_OF)
-+		return 0;
++Required properties:
 +
- 	ath79_gpio_init();
- 	ath79_register_uart();
- 	ath79_register_wdt();
-@@ -246,6 +266,11 @@ static int __init ath79_setup(void)
- 
- arch_initcall(ath79_setup);
- 
-+void __init device_tree_init(void)
-+{
-+	unflatten_and_copy_device_tree();
-+}
++- compatible: has to be "qca,<soc-type>-ddr-controller",
++  "qca,[ar7100|ar7240]-ddr-controller" as fallback.
++  On SoC with PCI support "qca,ar7100-ddr-controller" should be used as
++  fallback, otherwise "qca,ar7240-ddr-controller" should be used.
++- reg: Base address and size of the controllers memory area
++- #qca,ddr-wb-channel-cells: has to be 1, the index of the write buffer
++  channel
 +
- static void __init ath79_generic_init(void)
- {
- 	/* Nothing to do */
++Example:
++
++	ddr_ctrl: memory-controller@18000000 {
++		compatible = "qca,ar9132-ddr-controller",
++				"qca,ar7240-ddr-controller";
++		reg = <0x18000000 0x100>;
++
++		#qca,ddr-wb-channel-cells = <1>;
++	};
++
++	...
++
++	interrupt-controller {
++		...
++		qca,ddr-wb-channel-interrupts = <2>, <3>, <4>, <5>;
++		qca,ddr-wb-channels = <&ddr_ctrl 3>, <&ddr_ctrl 2>,
++					<&ddr_ctrl 0>, <&ddr_ctrl 1>;
++	};
 -- 
 2.0.0

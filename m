@@ -1,47 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 31 May 2015 23:40:45 +0200 (CEST)
-Received: from mail-la0-f43.google.com ([209.85.215.43]:36567 "EHLO
-        mail-la0-f43.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007881AbbEaVkm6Bki4 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 31 May 2015 23:40:42 +0200
-Received: by laei3 with SMTP id i3so1197686lae.3
-        for <linux-mips@linux-mips.org>; Sun, 31 May 2015 14:40:36 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:from:to:subject:date:message-id:organization
-         :user-agent:mime-version:content-transfer-encoding:content-type;
-        bh=aXrTLNkSxFjAQKwWPYp1zKqXlqZlXWBxreMkTlbEnn8=;
-        b=LnKg0AbdpZiWnznO1awagshsqrPfXd+KvUoCIGtaI/LKj2htXSsxD/rSYenRPIGHle
-         nEaeLt/FZT3b6z8l+qs9mF2ocw3ZQw6PnYO7+3GgAIJkTUZFj1QtURz4p7y+0Rpfqb5r
-         FEgMTiF/rsF10q11eZaV2ZRc556cOeLm9TTY+D0/TBf+6ifIl1YYYPhQrB7L/7tifKqR
-         R0N7gdFV7kSdSgpZYLX4mAddYEo8K2drDM4nbbrMs6zc2tDrtFgHdawWJEF3bEdaLZYn
-         Qd/+gSR8ZguDRS5oJ829dNo0IFfHvr75jbfxz1biAITt+zzffFyVXPoSA51MUMCX3Wz/
-         vULg==
-X-Gm-Message-State: ALoCoQmtHdadx80q1SFHyd2i6UoumekGxLZtxP64R9nK5M0Ri6ivw3cLeV7mVRWIrrQ7WyBfQocV
-X-Received: by 10.112.135.131 with SMTP id ps3mr17916713lbb.84.1433108436048;
-        Sun, 31 May 2015 14:40:36 -0700 (PDT)
-Received: from wasted.cogentembedded.com (ppp27-48.pppoe.mtu-net.ru. [81.195.27.48])
-        by mx.google.com with ESMTPSA id yh3sm3628203lab.44.2015.05.31.14.40.33
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Sun, 31 May 2015 14:40:34 -0700 (PDT)
-From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-To:     ralf@linux-mips.org, linux-mips@linux-mips.org
-Subject: [PATCH v2] MIPS: get rid of 'kgdb_early_setup' cruft
-Date:   Mon, 01 Jun 2015 00:40:32 +0300
-Message-ID: <3490915.phQRzDMC3E@wasted.cogentembedded.com>
-Organization: Cogent Embedded Inc.
-User-Agent: KMail/4.14.7 (Linux/3.19.8-100.fc20.x86_64; KDE/4.14.7; x86_64; ; )
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 31 May 2015 23:55:30 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:45397 "EHLO
+        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007881AbbEaVz1g2po4 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 31 May 2015 23:55:27 +0200
+Received: from localhost (p33062-ipbffx02marunouchi.tokyo.ocn.ne.jp [220.96.46.62])
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id A8784B68;
+        Sun, 31 May 2015 21:55:18 +0000 (UTC)
+Date:   Mon, 1 Jun 2015 06:49:43 +0900
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Paul Burton <paul.burton@imgtec.com>
+Cc:     linux-mips@linux-mips.org, Jiri Slaby <jslaby@suse.cz>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        linux-serial@vger.kernel.org,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Peter Hurley <peter@hurleysoftware.com>,
+        Alan Cox <alan@linux.intel.com>, linux-kernel@vger.kernel.org,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Ricardo Ribalda Delgado <ricardo.ribalda@gmail.com>,
+        Tony Lindgren <tony@atomide.com>,
+        John Crispin <blogic@openwrt.org>
+Subject: Re: [PATCH v5 34/37] serial: 8250_ingenic: support for Ingenic SoC
+ UARTs
+Message-ID: <20150531214943.GA17410@kroah.com>
+References: <1432480307-23789-1-git-send-email-paul.burton@imgtec.com>
+ <1432480307-23789-35-git-send-email-paul.burton@imgtec.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-Return-Path: <sergei.shtylyov@cogentembedded.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1432480307-23789-35-git-send-email-paul.burton@imgtec.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47752
+X-archive-position: 47753
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sergei.shtylyov@cogentembedded.com
+X-original-sender: gregkh@linuxfoundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,118 +50,18 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Commit 854700115ecf ([MIPS] kgdb: add arch support for the kernel's kgdb core)
-added the 'kgdb_early_setup' flag to avoid  calling trap_init() and init_IRQ()
-the second time, however the code that called these functions earlier,  from
-kgdb_arch_init(), had been already removed by that  time,  so the flag never
-served any useful purpose. Remove the related code along with ugly #ifdef'ery
-at last.
+On Sun, May 24, 2015 at 04:11:44PM +0100, Paul Burton wrote:
+> Introduce a driver suitable for use with the UARTs present in
+> Ingenic SoCs such as the JZ4740 & JZ4780. These are described as being
+> ns16550 compatible but aren't quite - they require the setting of an
+> extra bit in the FCR register to enable the UART module. The serial_out
+> implementation is the same as that in arch/mips/jz4740/serial.c - which
+> will shortly be removed.
+> 
+> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: Jiri Slaby <jslaby@suse.cz>
+> Cc: Lars-Peter Clausen <lars@metafoo.de>
+> Cc: linux-serial@vger.kernel.org
 
-Signed-off-by: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-
----
-The patch is against the recent Linus' repo.  Tell me if you want it to be
-rebased against some MIPS repo...
-
-Changes in version 2:
-- fixed typo in the summary.
-
- arch/mips/include/asm/kgdb.h |    1 -
- arch/mips/kernel/irq.c       |   15 ---------------
- arch/mips/kernel/kgdb.c      |    4 ----
- arch/mips/kernel/traps.c     |    6 ------
- 4 files changed, 26 deletions(-)
-
-Index: linux/arch/mips/include/asm/kgdb.h
-===================================================================
---- linux.orig/arch/mips/include/asm/kgdb.h
-+++ linux/arch/mips/include/asm/kgdb.h
-@@ -33,7 +33,6 @@
- #define CACHE_FLUSH_IS_SAFE	0
- 
- extern void arch_kgdb_breakpoint(void);
--extern int kgdb_early_setup;
- extern void *saved_vectors[32];
- extern void handle_exception(struct pt_regs *regs);
- extern void breakinst(void);
-Index: linux/arch/mips/kernel/irq.c
-===================================================================
---- linux.orig/arch/mips/kernel/irq.c
-+++ linux/arch/mips/kernel/irq.c
-@@ -19,16 +19,11 @@
- #include <linux/sched.h>
- #include <linux/seq_file.h>
- #include <linux/kallsyms.h>
--#include <linux/kgdb.h>
- #include <linux/ftrace.h>
- 
- #include <linux/atomic.h>
- #include <asm/uaccess.h>
- 
--#ifdef CONFIG_KGDB
--int kgdb_early_setup;
--#endif
--
- static DECLARE_BITMAP(irq_map, NR_IRQS);
- 
- int allocate_irqno(void)
-@@ -93,20 +88,10 @@ void __init init_IRQ(void)
- {
- 	int i;
- 
--#ifdef CONFIG_KGDB
--	if (kgdb_early_setup)
--		return;
--#endif
--
- 	for (i = 0; i < NR_IRQS; i++)
- 		irq_set_noprobe(i);
- 
- 	arch_init_irq();
--
--#ifdef CONFIG_KGDB
--	if (!kgdb_early_setup)
--		kgdb_early_setup = 1;
--#endif
- }
- 
- #ifdef DEBUG_STACKOVERFLOW
-Index: linux/arch/mips/kernel/kgdb.c
-===================================================================
---- linux.orig/arch/mips/kernel/kgdb.c
-+++ linux/arch/mips/kernel/kgdb.c
-@@ -378,10 +378,6 @@ int kgdb_arch_handle_exception(int vecto
- 
- struct kgdb_arch arch_kgdb_ops;
- 
--/*
-- * We use kgdb_early_setup so that functions we need to call now don't
-- * cause trouble when called again later.
-- */
- int kgdb_arch_init(void)
- {
- 	union mips_instruction insn = {
-Index: linux/arch/mips/kernel/traps.c
-===================================================================
---- linux.orig/arch/mips/kernel/traps.c
-+++ linux/arch/mips/kernel/traps.c
-@@ -29,7 +29,6 @@
- #include <linux/bootmem.h>
- #include <linux/interrupt.h>
- #include <linux/ptrace.h>
--#include <linux/kgdb.h>
- #include <linux/kdebug.h>
- #include <linux/kprobes.h>
- #include <linux/notifier.h>
-@@ -2184,11 +2183,6 @@ void __init trap_init(void)
- 
- 	check_wait();
- 
--#if defined(CONFIG_KGDB)
--	if (kgdb_early_setup)
--		return; /* Already done */
--#endif
--
- 	if (cpu_has_veic || cpu_has_vint) {
- 		unsigned long size = 0x200 + VECTORSPACING*64;
- 		ebase = (unsigned long)
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>

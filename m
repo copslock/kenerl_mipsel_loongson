@@ -1,46 +1,88 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Jun 2015 08:00:28 +0200 (CEST)
-Received: from resqmta-ch2-02v.sys.comcast.net ([69.252.207.34]:38119 "EHLO
-        resqmta-ch2-02v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27006819AbbFAGAWwEKe4 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 1 Jun 2015 08:00:22 +0200
-Received: from resomta-ch2-05v.sys.comcast.net ([69.252.207.101])
-        by resqmta-ch2-02v.sys.comcast.net with comcast
-        id au0B1q0022Bo0NV01u0BxK; Mon, 01 Jun 2015 06:00:11 +0000
-Received: from [192.168.1.13] ([69.251.155.187])
-        by resomta-ch2-05v.sys.comcast.net with comcast
-        id au0A1q00F42s2jH01u0Bzo; Mon, 01 Jun 2015 06:00:11 +0000
-Message-ID: <556BF4EA.8040605@gentoo.org>
-Date:   Mon, 01 Jun 2015 02:00:10 -0400
-From:   Joshua Kinard <kumba@gentoo.org>
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:31.0) Gecko/20100101 Thunderbird/31.7.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Jun 2015 09:36:14 +0200 (CEST)
+Received: from e06smtp11.uk.ibm.com ([195.75.94.107]:40356 "EHLO
+        e06smtp11.uk.ibm.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27006840AbbFAHgMyVH44 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 1 Jun 2015 09:36:12 +0200
+Received: from /spool/local
+        by e06smtp11.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <linux-mips@linux-mips.org> from <borntraeger@de.ibm.com>;
+        Mon, 1 Jun 2015 08:36:05 +0100
+Received: from d06dlp03.portsmouth.uk.ibm.com (9.149.20.15)
+        by e06smtp11.uk.ibm.com (192.168.101.141) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        Mon, 1 Jun 2015 08:36:01 +0100
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
+        by d06dlp03.portsmouth.uk.ibm.com (Postfix) with ESMTP id 4B9851B0807D;
+        Mon,  1 Jun 2015 08:36:55 +0100 (BST)
+Received: from d06av05.portsmouth.uk.ibm.com (d06av05.portsmouth.uk.ibm.com [9.149.37.229])
+        by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id t517a1Y821627092;
+        Mon, 1 Jun 2015 07:36:01 GMT
+Received: from d06av05.portsmouth.uk.ibm.com (localhost [127.0.0.1])
+        by d06av05.portsmouth.uk.ibm.com (8.14.4/8.14.4/NCO v10.0 AVout) with ESMTP id t517Zw7k028390;
+        Mon, 1 Jun 2015 01:36:01 -0600
+Received: from oc1450873852.ibm.com (dyn-9-152-224-118.boeblingen.de.ibm.com [9.152.224.118])
+        by d06av05.portsmouth.uk.ibm.com (8.14.4/8.14.4/NCO v10.0 AVin) with ESMTP id t517ZvRx028372;
+        Mon, 1 Jun 2015 01:35:57 -0600
+Message-ID: <556C0B5D.40205@de.ibm.com>
+Date:   Mon, 01 Jun 2015 09:35:57 +0200
+From:   Christian Borntraeger <borntraeger@de.ibm.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.6.0
 MIME-Version: 1.0
-To:     linux-mips@linux-mips.org
-CC:     Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: IP30: SMP, Almost there!
-References: <55597B21.4010704@gentoo.org> <556142C5.7090206@gentoo.org> <556BE8C2.8050404@gentoo.org>
-In-Reply-To: <556BE8C2.8050404@gentoo.org>
-Content-Type: text/plain; charset=utf-8
+To:     Dominik Dingel <dingel@linux.vnet.ibm.com>,
+        linux-kernel@vger.kernel.org
+CC:     Russell King <linux@arm.linux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        James Hogan <james.hogan@imgtec.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        linux390@de.ibm.com, "David S. Miller" <davem@davemloft.net>,
+        Chris Metcalf <cmetcalf@ezchip.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Zhang Zhen <zhenzhang.zhang@huawei.com>,
+        David Rientjes <rientjes@google.com>,
+        "Aneesh Kumar K.V" <aneesh.kumar@linux.vnet.ibm.com>,
+        Nathan Lynch <nathan_lynch@mentor.com>,
+        Andy Lutomirski <luto@amacapital.net>,
+        Michael Holzheu <holzheu@linux.vnet.ibm.com>,
+        Hugh Dickins <hughd@google.com>,
+        Naoya Horiguchi <n-horiguchi@ah.jp.nec.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        "Jason J. Herne" <jjherne@linux.vnet.ibm.com>,
+        Davidlohr Bueso <dave@stgolabs.net>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Luiz Capitulino <lcapitulino@redhat.com>,
+        Mike Kravetz <mike.kravetz@oracle.com>,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        linux-metag@vger.kernel.org, linux-mips@linux-mips.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-mm@kvack.org
+Subject: Re: [PATCH 0/5] Remove s390 sw-emulated hugepages and cleanup
+References: <1432813957-46874-1-git-send-email-dingel@linux.vnet.ibm.com>
+In-Reply-To: <1432813957-46874-1-git-send-email-dingel@linux.vnet.ibm.com>
+Content-Type: text/plain; charset=iso-8859-15
 Content-Transfer-Encoding: 7bit
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=comcast.net;
-        s=q20140121; t=1433138411;
-        bh=2fw7ie1Ffisg0Or3CfaJcydPGvpbxPkAyHyCCrQAY5E=;
-        h=Received:Received:Message-ID:Date:From:MIME-Version:To:Subject:
-         Content-Type;
-        b=gJmZjh4j0j9rkNj8yGlwrzC/s/A+/4WNJiB3pMDOqb/LpFM6h/VAJYiXq1Kcb5jUj
-         Chz6nq42vMfbSlt2Y44sSDuT7tr651btOzB3SaN5IUFejV1zfIpaVx3aEQID/U2ytc
-         0v+0hVV5+6XLwsFRvPEwljI8b8EHwRp/rYsPLb8ZGF1CW8Yeq8px28wP6OdQwzvCyQ
-         6KsMhz1Kdr6cIwrYnYgxQVDG4xKkq5O32tUjLO14h0DXvs8gOX7mpb41VHEkOE1Sw2
-         K9pa7XMs0rf51BRmwQIXiLmSdmynp3R/MPT+usaULspPp7mQ4OClHRKLYuc3OhYaE2
-         e3iWiXFLQCQiQ==
-Return-Path: <kumba@gentoo.org>
+X-TM-AS-MML: disable
+X-Content-Scanned: Fidelis XPS MAILER
+x-cbid: 15060107-0041-0000-0000-0000049E36A0
+Return-Path: <borntraeger@de.ibm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47758
+X-archive-position: 47759
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kumba@gentoo.org
+X-original-sender: borntraeger@de.ibm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,61 +95,26 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 06/01/2015 01:08, Joshua Kinard wrote:
-> On 05/23/2015 23:17, Joshua Kinard wrote:
->> On 05/18/2015 01:39, Joshua Kinard wrote:
->>> So I've gotten the second CPU in Octane to "tick" again...somehow.  I am
->>> certain someone's cat went missing in the process...
->>
->> So, yeah, the problem appears to be specific to the R14000 CPU module.  I
->> swapped in an R12K dual CPU module, and after a little bit of tinkering to
->> revert a few hacks and clean up the code, it boots into SMP, mounts the
->> userland, and has successfully sync'ed a Gentoo Portage tree w/o annihilating
->> the XFS filesystem or the MD RAID5 array.  Even compiled a few C files.
->>
-> [snip]
->>
->> I even got the IRQs to be fanned out across both CPUs.  Well, primarily the
->> qla1280 drivers.  They randomly hop between both CPUs, but no ill effects so far.
->>
->> But if I boot that *same* working kernel on an R14000 dual module, I get handed
->> an IBE as soon as the userland mounts.  The only documented differences that I
->> can find on the R14000 is that it supports DDR memory, being able to do memory
->> operations on the rising edge and falling edge of each clock.  Not sure if that
->> matters to the kernel at all, but I know of nothing else that describes the
->> R14K's internals, such as if there's some new bit in CP0 config,
->> branch-diagnostic, status, etc, that might explain why these IBE's are happening.
->>
->> Guess I need to hunt down my old dual R10K module next and verify that works
->> fine...
->>
->> Also, is there a way to hardcode the cca=5 setting for IP30?  Maybe it needs to
->> be a hidden Kconfig item?.  I tried setting cpu->writecombine in cpu-probe.c,
->> but no dice there.  If I boot an SMP kernel on dual R12K's w/o cca=5, I'll get
->> one or two pretty-specific oopses.  The one I did grab complains about bad
->> spinlock magic in the core tty driver somewhere.  I can transcribe that oops
->> later on if interested.
+Am 28.05.2015 um 13:52 schrieb Dominik Dingel:
+> Hi everyone,
 > 
-> So far, the problem looks to have been blindly assigning all 64 HEART IRQs to
-> 'handle_level_irq', including the SMP IPI IRQs.  I fixed that by assigning the
-> four IPI IRQs and four unused debug IRQs to 'handle_percpu_irq'.  So far, no
-> bus errors, even on R14000.  Also successfully tested 16KB PAGE_SIZE and no bus
-> errors.  Next, 64KB PAGE_SIZE w/ CONFIG_TRANSPARENT_HUGEPAGE, which was pretty
-> good at triggering bus errors.
-> 
-> </jinx>
+> there is a potential bug with KVM and hugetlbfs if the hardware does not
+> support hugepages (EDAT1).
+> We fix this by making EDAT1 a hard requirement for hugepages and 
+> therefore removing and simplifying code.
 
-CONFIG_TRANSPARENT_HUGEPAGE + HUGETLBFS is still not quite right on R14K CPUs.
- I can very easily trip up bus errors with that config by running 'sync', 'ls',
-or 'swapon'/'swapoff' in rapid succession in a minimal bash shell
-(init=/bin/bash).  But this was doable even with a single R14K module, so it
-has to be a different problem.
+The cleanup itself is nice and probably the right thing to do. 
+Emulating large pages makes the code more complex and asks for
+trouble (as outlined above)
 
-At least 16KB and 64KB PAGE_SIZE seem to work well enough now.  Progress!
+The only downside that I see is that z/VM as of today does not
+announce EDAT1 for its guests so the "emulated" large pages for
+hugetlbfs would be useful in that case. The current code allocates
+the page table only once and shares it for all mappers - which is
+useful for some big databases that spawn hundreds of processes with
+shared mappings of several hundred GBs. In these cases we do save
+a decent amount of page table memory. 
 
-Also, is there a clear-cut explanation of the difference between
-read[bwlq]/write[bwlq] and the raw/__raw/____raw variants?  Which is safe to
-use in machine code (like in the SMP or IRQ setup code) versus elsewhere?  Any
-warnings, gotchas, etc one has to be aware of?
+Not sure if that case is actually important, though.
 
---J
+Christian

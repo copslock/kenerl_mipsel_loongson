@@ -1,39 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Jun 2015 07:18:03 +0200 (CEST)
-Received: from resqmta-ch2-10v.sys.comcast.net ([69.252.207.42]:54474 "EHLO
-        resqmta-ch2-10v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27006825AbbFAFSAt6xa4 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 1 Jun 2015 07:18:00 +0200
-Received: from resomta-ch2-04v.sys.comcast.net ([69.252.207.100])
-        by resqmta-ch2-10v.sys.comcast.net with comcast
-        id atHs1q0022AWL2D01tHsv1; Mon, 01 Jun 2015 05:17:52 +0000
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Jun 2015 08:00:28 +0200 (CEST)
+Received: from resqmta-ch2-02v.sys.comcast.net ([69.252.207.34]:38119 "EHLO
+        resqmta-ch2-02v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006819AbbFAGAWwEKe4 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 1 Jun 2015 08:00:22 +0200
+Received: from resomta-ch2-05v.sys.comcast.net ([69.252.207.101])
+        by resqmta-ch2-02v.sys.comcast.net with comcast
+        id au0B1q0022Bo0NV01u0BxK; Mon, 01 Jun 2015 06:00:11 +0000
 Received: from [192.168.1.13] ([69.251.155.187])
-        by resomta-ch2-04v.sys.comcast.net with comcast
-        id atHr1q00642s2jH01tHrpM; Mon, 01 Jun 2015 05:17:52 +0000
-Message-ID: <556BEAFE.9030400@gentoo.org>
-Date:   Mon, 01 Jun 2015 01:17:50 -0400
+        by resomta-ch2-05v.sys.comcast.net with comcast
+        id au0A1q00F42s2jH01u0Bzo; Mon, 01 Jun 2015 06:00:11 +0000
+Message-ID: <556BF4EA.8040605@gentoo.org>
+Date:   Mon, 01 Jun 2015 02:00:10 -0400
 From:   Joshua Kinard <kumba@gentoo.org>
 User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:31.0) Gecko/20100101 Thunderbird/31.7.0
 MIME-Version: 1.0
-To:     Linux MIPS List <linux-mips@linux-mips.org>
-Subject: CONFIG_64BIT && CONFIG_MIPS_HUGE_TLB_SUPPORT build broken
+To:     linux-mips@linux-mips.org
+CC:     Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: IP30: SMP, Almost there!
+References: <55597B21.4010704@gentoo.org> <556142C5.7090206@gentoo.org> <556BE8C2.8050404@gentoo.org>
+In-Reply-To: <556BE8C2.8050404@gentoo.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=comcast.net;
-        s=q20140121; t=1433135872;
-        bh=a2TpBB3Vo3WZW28zNxSN4I991xZzdH9PM1tHP6SLaaQ=;
+        s=q20140121; t=1433138411;
+        bh=2fw7ie1Ffisg0Or3CfaJcydPGvpbxPkAyHyCCrQAY5E=;
         h=Received:Received:Message-ID:Date:From:MIME-Version:To:Subject:
          Content-Type;
-        b=p4nrZWOymlmhuikMVhZ3X+9fiyPs9BAH65dbFyeL7Usa53cQ8j4sRmTN9dxZEex1s
-         OTgN89Fi9r2Nue8/BOtgDQtm7uGlQXOvNN2b0oAJ0YbikH1RO5o31DjSj5Ndjgm0qa
-         yCknPJ5ZFiIoe9lzgVX2LYzhJn0EJW/F2/UjnCvIpCOnE6ADX1Y/HBs9KYX+5eNmro
-         5AC4rz9im67PmVy3nhO4F+fNPYzfM5EtJXlMU3yFX8qOCri3wz2xZGGVYTdCxEuC5v
-         3jhXp1SIyXSDtyjNRY6GeEvJlmAlTteXfuuHnCpqEe125kmxSmhs3G14ZglX+ok27f
-         VjmolwFWHyGXA==
+        b=gJmZjh4j0j9rkNj8yGlwrzC/s/A+/4WNJiB3pMDOqb/LpFM6h/VAJYiXq1Kcb5jUj
+         Chz6nq42vMfbSlt2Y44sSDuT7tr651btOzB3SaN5IUFejV1zfIpaVx3aEQID/U2ytc
+         0v+0hVV5+6XLwsFRvPEwljI8b8EHwRp/rYsPLb8ZGF1CW8Yeq8px28wP6OdQwzvCyQ
+         6KsMhz1Kdr6cIwrYnYgxQVDG4xKkq5O32tUjLO14h0DXvs8gOX7mpb41VHEkOE1Sw2
+         K9pa7XMs0rf51BRmwQIXiLmSdmynp3R/MPT+usaULspPp7mQ4OClHRKLYuc3OhYaE2
+         e3iWiXFLQCQiQ==
 Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47757
+X-archive-position: 47758
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -50,85 +53,61 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Looks like this particular build configuration has problems:
+On 06/01/2015 01:08, Joshua Kinard wrote:
+> On 05/23/2015 23:17, Joshua Kinard wrote:
+>> On 05/18/2015 01:39, Joshua Kinard wrote:
+>>> So I've gotten the second CPU in Octane to "tick" again...somehow.  I am
+>>> certain someone's cat went missing in the process...
+>>
+>> So, yeah, the problem appears to be specific to the R14000 CPU module.  I
+>> swapped in an R12K dual CPU module, and after a little bit of tinkering to
+>> revert a few hacks and clean up the code, it boots into SMP, mounts the
+>> userland, and has successfully sync'ed a Gentoo Portage tree w/o annihilating
+>> the XFS filesystem or the MD RAID5 array.  Even compiled a few C files.
+>>
+> [snip]
+>>
+>> I even got the IRQs to be fanned out across both CPUs.  Well, primarily the
+>> qla1280 drivers.  They randomly hop between both CPUs, but no ill effects so far.
+>>
+>> But if I boot that *same* working kernel on an R14000 dual module, I get handed
+>> an IBE as soon as the userland mounts.  The only documented differences that I
+>> can find on the R14000 is that it supports DDR memory, being able to do memory
+>> operations on the rising edge and falling edge of each clock.  Not sure if that
+>> matters to the kernel at all, but I know of nothing else that describes the
+>> R14K's internals, such as if there's some new bit in CP0 config,
+>> branch-diagnostic, status, etc, that might explain why these IBE's are happening.
+>>
+>> Guess I need to hunt down my old dual R10K module next and verify that works
+>> fine...
+>>
+>> Also, is there a way to hardcode the cca=5 setting for IP30?  Maybe it needs to
+>> be a hidden Kconfig item?.  I tried setting cpu->writecombine in cpu-probe.c,
+>> but no dice there.  If I boot an SMP kernel on dual R12K's w/o cca=5, I'll get
+>> one or two pretty-specific oopses.  The one I did grab complains about bad
+>> spinlock magic in the core tty driver somewhere.  I can transcribe that oops
+>> later on if interested.
+> 
+> So far, the problem looks to have been blindly assigning all 64 HEART IRQs to
+> 'handle_level_irq', including the SMP IPI IRQs.  I fixed that by assigning the
+> four IPI IRQs and four unused debug IRQs to 'handle_percpu_irq'.  So far, no
+> bus errors, even on R14000.  Also successfully tested 16KB PAGE_SIZE and no bus
+> errors.  Next, 64KB PAGE_SIZE w/ CONFIG_TRANSPARENT_HUGEPAGE, which was pretty
+> good at triggering bus errors.
+> 
+> </jinx>
 
-  CC      arch/mips/kernel/cpu-probe.o
-In file included from ./arch/mips/include/asm/io.h:27:0,
-                 from include/linux/io.h:22,
-                 from ./arch/mips/include/asm/mips-cm.h:14,
-                 from ./arch/mips/include/asm/smp-ops.h:16,
-                 from ./arch/mips/include/asm/smp.h:21,
-                 from include/linux/smp.h:59,
-                 from ./arch/mips/include/asm/cpu-type.h:12,
-                 from ./arch/mips/include/asm/timex.h:19,
-                 from include/linux/timex.h:65,
-                 from include/linux/sched.h:19,
-                 from include/linux/ptrace.h:5,
-                 from arch/mips/kernel/cpu-probe.c:16:
-./arch/mips/include/asm/pgtable-bits.h:164:0: error: "_PAGE_GLOBAL_SHIFT"
-redefined [-Werror]
- #define _PAGE_GLOBAL_SHIFT (_PAGE_MODIFIED_SHIFT + 1)
- ^
-./arch/mips/include/asm/pgtable-bits.h:141:0: note: this is the location of the
-previous definition
- #define _PAGE_GLOBAL_SHIFT (_PAGE_SPLITTING_SHIFT + 1)
- ^
-cc1: all warnings being treated as errors
-scripts/Makefile.build:258: recipe for target 'arch/mips/kernel/cpu-probe.o' failed
-make[2]: *** [arch/mips/kernel/cpu-probe.o] Error 1
-scripts/Makefile.build:403: recipe for target 'arch/mips/kernel' failed
-make[1]: *** [arch/mips/kernel] Error 2
-Makefile:946: recipe for target 'arch/mips' failed
-make: *** [arch/mips] Error 2
+CONFIG_TRANSPARENT_HUGEPAGE + HUGETLBFS is still not quite right on R14K CPUs.
+ I can very easily trip up bus errors with that config by running 'sync', 'ls',
+or 'swapon'/'swapoff' in rapid succession in a minimal bash shell
+(init=/bin/bash).  But this was doable even with a single R14K module, so it
+has to be a different problem.
 
+At least 16KB and 64KB PAGE_SIZE seem to work well enough now.  Progress!
 
-Caused by these two blocks:
-
-   #if defined(CONFIG_64BIT) && defined(CONFIG_MIPS_HUGE_TLB_SUPPORT)
-   /* Huge TLB page */
-   #define _PAGE_HUGE_SHIFT        (_PAGE_MODIFIED_SHIFT + 1)
-   #define _PAGE_HUGE              (1 << _PAGE_HUGE_SHIFT)
-   #define _PAGE_SPLITTING_SHIFT   (_PAGE_HUGE_SHIFT + 1)
-   #define _PAGE_SPLITTING         (1 << _PAGE_SPLITTING_SHIFT)
-
-   /* Only R2 or newer cores have the XI bit */
-   #ifdef CONFIG_CPU_MIPSR2
-   #define _PAGE_NO_EXEC_SHIFT     (_PAGE_SPLITTING_SHIFT + 1)
-   #else
--> #define _PAGE_GLOBAL_SHIFT      (_PAGE_SPLITTING_SHIFT + 1)
-   #define _PAGE_GLOBAL            (1 << _PAGE_GLOBAL_SHIFT)
-   #endif  /* CONFIG_CPU_MIPSR2 */
-
-   #endif  /* CONFIG_64BIT && CONFIG_MIPS_HUGE_TLB_SUPPORT */
-
-And ...
-
-   #ifdef CONFIG_CPU_MIPSR2
-   /* XI - page cannot be executed */
-   #ifndef _PAGE_NO_EXEC_SHIFT
-   #define _PAGE_NO_EXEC_SHIFT     (_PAGE_MODIFIED_SHIFT + 1)
-   #endif
-   #define _PAGE_NO_EXEC           (cpu_has_rixi ? (1 << _PAGE_NO_EXEC_SHIFT) : 0)
-
-   /* RI - page cannot be read */
-   #define _PAGE_READ_SHIFT        (_PAGE_NO_EXEC_SHIFT + 1)
-   #define _PAGE_READ              (cpu_has_rixi ? 0 : (1 << _PAGE_READ_SHIFT))
-   #define _PAGE_NO_READ_SHIFT     _PAGE_READ_SHIFT
-   #define _PAGE_NO_READ           (cpu_has_rixi ? (1 << _PAGE_READ_SHIFT) : 0)
-
-   #define _PAGE_GLOBAL_SHIFT      (_PAGE_NO_READ_SHIFT + 1)
-   #define _PAGE_GLOBAL            (1 << _PAGE_GLOBAL_SHIFT)
-
-   #else   /* !CONFIG_CPU_MIPSR2 */
--> #define _PAGE_GLOBAL_SHIFT      (_PAGE_MODIFIED_SHIFT + 1)
-   #define _PAGE_GLOBAL            (1 << _PAGE_GLOBAL_SHIFT)
-   #endif  /* CONFIG_CPU_MIPSR2 */
-
-
-Since this is dealing with R2 stuff, not sure what the best fix is.  Looks like
-this is the problem commit:
-
-http://git.linux-mips.org/cgit/ralf/linux.git/commit/arch/mips/include/asm/pgtable-bits.h?id=be0c37c985eddc46d0d67543898c086f60460e2e
-
+Also, is there a clear-cut explanation of the difference between
+read[bwlq]/write[bwlq] and the raw/__raw/____raw variants?  Which is safe to
+use in machine code (like in the SMP or IRQ setup code) versus elsewhere?  Any
+warnings, gotchas, etc one has to be aware of?
 
 --J

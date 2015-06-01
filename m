@@ -1,32 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Jun 2015 21:32:14 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:46659 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Jun 2015 21:53:51 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:46914 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27026886AbbFATcMbBg54 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 1 Jun 2015 21:32:12 +0200
+        id S27026890AbbFATxs5I0b4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 1 Jun 2015 21:53:48 +0200
 Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.9/8.14.8) with ESMTP id t51JW8NT003259;
-        Mon, 1 Jun 2015 21:32:08 +0200
+        by scotty.linux-mips.net (8.14.9/8.14.8) with ESMTP id t51JrgR4003652;
+        Mon, 1 Jun 2015 21:53:42 +0200
 Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.9/8.14.9/Submit) id t51JW8sd003258;
-        Mon, 1 Jun 2015 21:32:08 +0200
-Date:   Mon, 1 Jun 2015 21:32:08 +0200
+        by scotty.linux-mips.net (8.14.9/8.14.9/Submit) id t51JrdOg003651;
+        Mon, 1 Jun 2015 21:53:39 +0200
+Date:   Mon, 1 Jun 2015 21:53:39 +0200
 From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Joshua Kinard <kumba@gentoo.org>
-Cc:     linux-mips@linux-mips.org
-Subject: Re: IP30: SMP, Almost there?
-Message-ID: <20150601193208.GA29986@linux-mips.org>
-References: <55597B21.4010704@gentoo.org>
- <556142C5.7090206@gentoo.org>
+To:     Valentin Rothberg <valentinrothberg@gmail.com>
+Cc:     Paul Bolle <pebolle@tiscali.nl>,
+        Andreas Ruprecht <andreas.ruprecht@fau.de>,
+        hengelein Stefan <stefan.hengelein@fau.de>, tglx@linutronix.de,
+        jason@lakedaemon.net, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: MIPS/IRQCHIP: some remainders of IRQ_CPU
+Message-ID: <20150601195339.GB29986@linux-mips.org>
+References: <CAD3Xx4K_qq-FZPymp4Ss7rG2FC4iK3TF1sJnBMO+7haMFN_wFg@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <556142C5.7090206@gentoo.org>
+In-Reply-To: <CAD3Xx4K_qq-FZPymp4Ss7rG2FC4iK3TF1sJnBMO+7haMFN_wFg@mail.gmail.com>
 User-Agent: Mutt/1.5.23 (2014-03-12)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47766
+X-archive-position: 47767
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -43,34 +46,38 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sat, May 23, 2015 at 11:17:25PM -0400, Joshua Kinard wrote:
+On Mon, Jun 01, 2015 at 04:51:48PM +0200, Valentin Rothberg wrote:
 
-> I even got the IRQs to be fanned out across both CPUs.  Well, primarily the
-> qla1280 drivers.  They randomly hop between both CPUs, but no ill effects so far.
+> Hi Ralf,
 > 
-> But if I boot that *same* working kernel on an R14000 dual module, I get handed
-> an IBE as soon as the userland mounts.  The only documented differences that I
-> can find on the R14000 is that it supports DDR memory, being able to do memory
-> operations on the rising edge and falling edge of each clock.  Not sure if that
-> matters to the kernel at all, but I know of nothing else that describes the
-> R14K's internals, such as if there's some new bit in CP0 config,
-> branch-diagnostic, status, etc, that might explain why these IBE's are happening.
+> your commit 1f1786e60b53 ("MIPS/IRQCHIP: Move irq_chip from arch/mips
+> to drivers/irqchip.") is in today's linux-next tree (i.e.,
+> next-20150601).  It renames the Kconfig option IRQ_CPU to
+> IRQ_MIPS_CPU, but misses to rename a few Kconfig selects (see git
+> grep) in arch/mips.
 > 
-> Guess I need to hunt down my old dual R10K module next and verify that works
-> fine...
+> If you agree, I can send a trivial patch that renames those remainders?
+
+sed -i -e 's@\bIRQ_CPU\b@IRQ_MIPS_CPU@' $(git grep -l -w IRQ_CPU)
+
+or something like that.
+
+> I detected the issue with ./scripts/checkkconfigsymbols.py by diffing
+> the last and today's linux tree.
 > 
-> Also, is there a way to hardcode the cca=5 setting for IP30?  Maybe it needs to
-> be a hidden Kconfig item?.  I tried setting cpu->writecombine in cpu-probe.c,
-> but no dice there.  If I boot an SMP kernel on dual R12K's w/o cca=5, I'll get
-> one or two pretty-specific oopses.  The one I did grab complains about bad
-> spinlock magic in the core tty driver somewhere.  I can transcribe that oops
-> later on if interested.
+> Some advertisement for a small tool I started a few month a go, which
+> is made for such cases.  With vgrep [1] you can grep for symbols in
+> the current directory tree and afterwards open specific lines in your
+> editor.  It's more or less a comfortable wrapper around (git) grep.  I
+> use it a lot to study source code as well as to manage code changes.
+> The most prominent user I know is Greg KH who uses it as a replacement
+> for cgvg.
+> 
+> Kind regards,
+>  Valentin
+> 
+> [1] https://github.com/vrothberg/vgrep
 
-Can you insert something like:
-
-  printk("c0_config: %08x\n", read_c0_config());
-
-into a kernel and boot it without cca=5?  I'm really curious what the
-startup CCA is.
+Thanks for reporting!
 
   Ralf

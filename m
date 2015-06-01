@@ -1,31 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Jun 2015 18:15:50 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:45738 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Jun 2015 21:32:14 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:46659 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27007995AbbFAQPscc804 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 1 Jun 2015 18:15:48 +0200
+        id S27026886AbbFATcMbBg54 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 1 Jun 2015 21:32:12 +0200
 Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.9/8.14.8) with ESMTP id t51GFi2v031816;
-        Mon, 1 Jun 2015 18:15:44 +0200
+        by scotty.linux-mips.net (8.14.9/8.14.8) with ESMTP id t51JW8NT003259;
+        Mon, 1 Jun 2015 21:32:08 +0200
 Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.9/8.14.9/Submit) id t51GFitJ031815;
-        Mon, 1 Jun 2015 18:15:44 +0200
-Date:   Mon, 1 Jun 2015 18:15:44 +0200
+        by scotty.linux-mips.net (8.14.9/8.14.9/Submit) id t51JW8sd003258;
+        Mon, 1 Jun 2015 21:32:08 +0200
+Date:   Mon, 1 Jun 2015 21:32:08 +0200
 From:   Ralf Baechle <ralf@linux-mips.org>
 To:     Joshua Kinard <kumba@gentoo.org>
-Cc:     Linux MIPS List <linux-mips@linux-mips.org>
-Subject: Re: [PATCH]: MIPS: oprofile: Distinguish R14000 from R12000
-Message-ID: <20150601161544.GC26432@linux-mips.org>
-References: <5562A1D9.2080400@gentoo.org>
+Cc:     linux-mips@linux-mips.org
+Subject: Re: IP30: SMP, Almost there?
+Message-ID: <20150601193208.GA29986@linux-mips.org>
+References: <55597B21.4010704@gentoo.org>
+ <556142C5.7090206@gentoo.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <5562A1D9.2080400@gentoo.org>
+In-Reply-To: <556142C5.7090206@gentoo.org>
 User-Agent: Mutt/1.5.23 (2014-03-12)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47765
+X-archive-position: 47766
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -42,47 +43,34 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, May 25, 2015 at 12:15:21AM -0400, Joshua Kinard wrote:
+On Sat, May 23, 2015 at 11:17:25PM -0400, Joshua Kinard wrote:
 
-> From: Joshua Kinard <kumba@gentoo.org>
+> I even got the IRQs to be fanned out across both CPUs.  Well, primarily the
+> qla1280 drivers.  They randomly hop between both CPUs, but no ill effects so far.
 > 
-> Currently, arch/mips/oprofile/op_model_mipsxx.c treats an R14000 as an
-> R12000.  This patch distinguishes one from the other.
+> But if I boot that *same* working kernel on an R14000 dual module, I get handed
+> an IBE as soon as the userland mounts.  The only documented differences that I
+> can find on the R14000 is that it supports DDR memory, being able to do memory
+> operations on the rising edge and falling edge of each clock.  Not sure if that
+> matters to the kernel at all, but I know of nothing else that describes the
+> R14K's internals, such as if there's some new bit in CP0 config,
+> branch-diagnostic, status, etc, that might explain why these IBE's are happening.
 > 
-> Signed-off-by: Joshua Kinard <kumba@gentoo.org>
-> ---
->  op_model_mipsxx.c |    5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
+> Guess I need to hunt down my old dual R10K module next and verify that works
+> fine...
 > 
-> linux-mips-oprofile-fix-r14k.patch
-> diff --git a/arch/mips/oprofile/op_model_mipsxx.c b/arch/mips/oprofile/op_model_mipsxx.c
-> index 6a6e2cc..75f1967 100644
-> --- a/arch/mips/oprofile/op_model_mipsxx.c
-> +++ b/arch/mips/oprofile/op_model_mipsxx.c
-> @@ -408,10 +408,13 @@ static int __init mipsxx_init(void)
->  		break;
->  
->  	case CPU_R12000:
-> -	case CPU_R14000:
->  		op_model_mipsxx_ops.cpu_type = "mips/r12000";
->  		break;
->  
-> +	case CPU_R14000:
-> +		op_model_mipsxx_ops.cpu_type = "mips/r14000";
-> +		break;
-> +
+> Also, is there a way to hardcode the cca=5 setting for IP30?  Maybe it needs to
+> be a hidden Kconfig item?.  I tried setting cpu->writecombine in cpu-probe.c,
+> but no dice there.  If I boot an SMP kernel on dual R12K's w/o cca=5, I'll get
+> one or two pretty-specific oopses.  The one I did grab complains about bad
+> spinlock magic in the core tty driver somewhere.  I can transcribe that oops
+> later on if interested.
 
-Note the string returned here is exported to userland which uses it
-to lookup event and unit_mask definitions in /usr/share/oprofile.
-In other words without changes to userland oprofile you've just broken
-R14000 oprofile support.
+Can you insert something like:
 
-Due to the large number of such files it is only acceptable to add new
-such files for CPUs that differ significantly from other CPUs.  This
-is not the case for the R14000 which supports the same events as the
-R12000, so this patch is wrong, sorry.
+  printk("c0_config: %08x\n", read_c0_config());
 
-I don't want to think about what the mixing R10000 and R12000/R14000
-in a single system means for using oprofile ...
+into a kernel and boot it without cca=5?  I'm really curious what the
+startup CCA is.
 
   Ralf

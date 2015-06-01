@@ -1,88 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Jun 2015 09:36:14 +0200 (CEST)
-Received: from e06smtp11.uk.ibm.com ([195.75.94.107]:40356 "EHLO
-        e06smtp11.uk.ibm.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27006840AbbFAHgMyVH44 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 1 Jun 2015 09:36:12 +0200
-Received: from /spool/local
-        by e06smtp11.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <linux-mips@linux-mips.org> from <borntraeger@de.ibm.com>;
-        Mon, 1 Jun 2015 08:36:05 +0100
-Received: from d06dlp03.portsmouth.uk.ibm.com (9.149.20.15)
-        by e06smtp11.uk.ibm.com (192.168.101.141) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        Mon, 1 Jun 2015 08:36:01 +0100
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
-        by d06dlp03.portsmouth.uk.ibm.com (Postfix) with ESMTP id 4B9851B0807D;
-        Mon,  1 Jun 2015 08:36:55 +0100 (BST)
-Received: from d06av05.portsmouth.uk.ibm.com (d06av05.portsmouth.uk.ibm.com [9.149.37.229])
-        by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id t517a1Y821627092;
-        Mon, 1 Jun 2015 07:36:01 GMT
-Received: from d06av05.portsmouth.uk.ibm.com (localhost [127.0.0.1])
-        by d06av05.portsmouth.uk.ibm.com (8.14.4/8.14.4/NCO v10.0 AVout) with ESMTP id t517Zw7k028390;
-        Mon, 1 Jun 2015 01:36:01 -0600
-Received: from oc1450873852.ibm.com (dyn-9-152-224-118.boeblingen.de.ibm.com [9.152.224.118])
-        by d06av05.portsmouth.uk.ibm.com (8.14.4/8.14.4/NCO v10.0 AVin) with ESMTP id t517ZvRx028372;
-        Mon, 1 Jun 2015 01:35:57 -0600
-Message-ID: <556C0B5D.40205@de.ibm.com>
-Date:   Mon, 01 Jun 2015 09:35:57 +0200
-From:   Christian Borntraeger <borntraeger@de.ibm.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.6.0
-MIME-Version: 1.0
-To:     Dominik Dingel <dingel@linux.vnet.ibm.com>,
-        linux-kernel@vger.kernel.org
-CC:     Russell King <linux@arm.linux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Jun 2015 10:07:14 +0200 (CEST)
+Received: from mga09.intel.com ([134.134.136.24]:20643 "EHLO mga09.intel.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27006840AbbFAIHLzKdy4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 1 Jun 2015 10:07:11 +0200
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orsmga102.jf.intel.com with ESMTP; 01 Jun 2015 01:07:02 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.13,531,1427785200"; 
+   d="scan'208";a="734800408"
+Received: from gerry-dev.bj.intel.com ([10.238.158.61])
+  by fmsmga002.fm.intel.com with ESMTP; 01 Jun 2015 01:06:57 -0700
+From:   Jiang Liu <jiang.liu@linux.intel.com>
+To:     Thomas Gleixner <tglx@linutronix.de>,
+        Bjorn Helgaas <bhelgaas@google.com>,
         Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        linux390@de.ibm.com, "David S. Miller" <davem@davemloft.net>,
-        Chris Metcalf <cmetcalf@ezchip.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Zhang Zhen <zhenzhang.zhang@huawei.com>,
-        David Rientjes <rientjes@google.com>,
-        "Aneesh Kumar K.V" <aneesh.kumar@linux.vnet.ibm.com>,
-        Nathan Lynch <nathan_lynch@mentor.com>,
-        Andy Lutomirski <luto@amacapital.net>,
-        Michael Holzheu <holzheu@linux.vnet.ibm.com>,
-        Hugh Dickins <hughd@google.com>,
-        Naoya Horiguchi <n-horiguchi@ah.jp.nec.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        "Jason J. Herne" <jjherne@linux.vnet.ibm.com>,
-        Davidlohr Bueso <dave@stgolabs.net>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Luiz Capitulino <lcapitulino@redhat.com>,
-        Mike Kravetz <mike.kravetz@oracle.com>,
-        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
-        linux-metag@vger.kernel.org, linux-mips@linux-mips.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-mm@kvack.org
-Subject: Re: [PATCH 0/5] Remove s390 sw-emulated hugepages and cleanup
-References: <1432813957-46874-1-git-send-email-dingel@linux.vnet.ibm.com>
-In-Reply-To: <1432813957-46874-1-git-send-email-dingel@linux.vnet.ibm.com>
-Content-Type: text/plain; charset=iso-8859-15
-Content-Transfer-Encoding: 7bit
-X-TM-AS-MML: disable
-X-Content-Scanned: Fidelis XPS MAILER
-x-cbid: 15060107-0041-0000-0000-0000049E36A0
-Return-Path: <borntraeger@de.ibm.com>
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Yinghai Lu <yinghai@kernel.org>,
+        Borislav Petkov <bp@alien8.de>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Jonas Gorski <jogo@openwrt.org>,
+        Aleksey Makarov <aleksey.makarov@auriga.com>,
+        David Daney <david.daney@cavium.com>,
+        Christoph Lameter <cl@linux.com>
+Cc:     Jiang Liu <jiang.liu@linux.intel.com>,
+        Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+        Tony Luck <tony.luck@intel.com>, x86@kernel.org,
+        linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-mips@linux-mips.org
+Subject: [Patch v3 21/36] mips, irq: Use access helper irq_data_get_affinity_mask()
+Date:   Mon,  1 Jun 2015 16:05:30 +0800
+Message-Id: <1433145945-789-22-git-send-email-jiang.liu@linux.intel.com>
+X-Mailer: git-send-email 1.7.10.4
+In-Reply-To: <1433145945-789-1-git-send-email-jiang.liu@linux.intel.com>
+References: <1433145945-789-1-git-send-email-jiang.liu@linux.intel.com>
+Return-Path: <jiang.liu@linux.intel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47759
+X-archive-position: 47760
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: borntraeger@de.ibm.com
+X-original-sender: jiang.liu@linux.intel.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -95,26 +56,93 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Am 28.05.2015 um 13:52 schrieb Dominik Dingel:
-> Hi everyone,
-> 
-> there is a potential bug with KVM and hugetlbfs if the hardware does not
-> support hugepages (EDAT1).
-> We fix this by making EDAT1 a hard requirement for hugepages and 
-> therefore removing and simplifying code.
+Use access helper irq_data_get_affinity_mask() to hide implementation
+details of struct irq_desc.
 
-The cleanup itself is nice and probably the right thing to do. 
-Emulating large pages makes the code more complex and asks for
-trouble (as outlined above)
+Signed-off-by: Jiang Liu <jiang.liu@linux.intel.com>
+---
+ arch/mips/bcm63xx/irq.c              |    2 +-
+ arch/mips/cavium-octeon/octeon-irq.c |   14 ++++++++------
+ arch/mips/pmcs-msp71xx/msp_irq_cic.c |    3 ++-
+ 3 files changed, 11 insertions(+), 8 deletions(-)
 
-The only downside that I see is that z/VM as of today does not
-announce EDAT1 for its guests so the "emulated" large pages for
-hugetlbfs would be useful in that case. The current code allocates
-the page table only once and shares it for all mappers - which is
-useful for some big databases that spawn hundreds of processes with
-shared mappings of several hundred GBs. In these cases we do save
-a decent amount of page table memory. 
-
-Not sure if that case is actually important, though.
-
-Christian
+diff --git a/arch/mips/bcm63xx/irq.c b/arch/mips/bcm63xx/irq.c
+index e3e808a6c542..02983b90826d 100644
+--- a/arch/mips/bcm63xx/irq.c
++++ b/arch/mips/bcm63xx/irq.c
+@@ -60,7 +60,7 @@ static inline int enable_irq_for_cpu(int cpu, struct irq_data *d,
+ 	if (m)
+ 		enable &= cpumask_test_cpu(cpu, m);
+ 	else if (irqd_affinity_was_set(d))
+-		enable &= cpumask_test_cpu(cpu, d->affinity);
++		enable &= cpumask_test_cpu(cpu, irq_data_get_affinity_mask(d));
+ #endif
+ 	return enable;
+ }
+diff --git a/arch/mips/cavium-octeon/octeon-irq.c b/arch/mips/cavium-octeon/octeon-irq.c
+index 10f762557b92..0643ae614284 100644
+--- a/arch/mips/cavium-octeon/octeon-irq.c
++++ b/arch/mips/cavium-octeon/octeon-irq.c
+@@ -225,13 +225,14 @@ static int next_cpu_for_irq(struct irq_data *data)
+ 
+ #ifdef CONFIG_SMP
+ 	int cpu;
+-	int weight = cpumask_weight(data->affinity);
++	struct cpumask *mask = irq_data_get_affinity_mask(data);
++	int weight = cpumask_weight(mask);
+ 	struct octeon_ciu_chip_data *cd = irq_data_get_irq_chip_data(data);
+ 
+ 	if (weight > 1) {
+ 		cpu = cd->current_cpu;
+ 		for (;;) {
+-			cpu = cpumask_next(cpu, data->affinity);
++			cpu = cpumask_next(cpu, mask);
+ 			if (cpu >= nr_cpu_ids) {
+ 				cpu = -1;
+ 				continue;
+@@ -240,7 +241,7 @@ static int next_cpu_for_irq(struct irq_data *data)
+ 			}
+ 		}
+ 	} else if (weight == 1) {
+-		cpu = cpumask_first(data->affinity);
++		cpu = cpumask_first(mask);
+ 	} else {
+ 		cpu = smp_processor_id();
+ 	}
+@@ -710,16 +711,17 @@ static void octeon_irq_cpu_offline_ciu(struct irq_data *data)
+ {
+ 	int cpu = smp_processor_id();
+ 	cpumask_t new_affinity;
++	struct cpumask *mask = irq_data_get_affinity_mask(data);
+ 
+-	if (!cpumask_test_cpu(cpu, data->affinity))
++	if (!cpumask_test_cpu(cpu, mask))
+ 		return;
+ 
+-	if (cpumask_weight(data->affinity) > 1) {
++	if (cpumask_weight(mask) > 1) {
+ 		/*
+ 		 * It has multi CPU affinity, just remove this CPU
+ 		 * from the affinity set.
+ 		 */
+-		cpumask_copy(&new_affinity, data->affinity);
++		cpumask_copy(&new_affinity, mask);
+ 		cpumask_clear_cpu(cpu, &new_affinity);
+ 	} else {
+ 		/* Otherwise, put it on lowest numbered online CPU. */
+diff --git a/arch/mips/pmcs-msp71xx/msp_irq_cic.c b/arch/mips/pmcs-msp71xx/msp_irq_cic.c
+index 1207ec4dfb77..8b9cf6463040 100644
+--- a/arch/mips/pmcs-msp71xx/msp_irq_cic.c
++++ b/arch/mips/pmcs-msp71xx/msp_irq_cic.c
+@@ -88,7 +88,8 @@ static void unmask_cic_irq(struct irq_data *d)
+ 	* Make sure we have IRQ affinity.  It may have changed while
+ 	* we were processing the IRQ.
+ 	*/
+-	if (!cpumask_test_cpu(smp_processor_id(), d->affinity))
++	if (!cpumask_test_cpu(smp_processor_id(),
++			      irq_data_get_affinity_mask(d)))
+ 		return;
+ #endif
+ 
+-- 
+1.7.10.4

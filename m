@@ -1,35 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Jun 2015 21:53:51 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:46914 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Jun 2015 22:17:00 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:47156 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27026890AbbFATxs5I0b4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 1 Jun 2015 21:53:48 +0200
+        id S27026889AbbFAUQ60yfD4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 1 Jun 2015 22:16:58 +0200
 Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.9/8.14.8) with ESMTP id t51JrgR4003652;
-        Mon, 1 Jun 2015 21:53:42 +0200
+        by scotty.linux-mips.net (8.14.9/8.14.8) with ESMTP id t51KGsei004176;
+        Mon, 1 Jun 2015 22:16:54 +0200
 Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.9/8.14.9/Submit) id t51JrdOg003651;
-        Mon, 1 Jun 2015 21:53:39 +0200
-Date:   Mon, 1 Jun 2015 21:53:39 +0200
+        by scotty.linux-mips.net (8.14.9/8.14.9/Submit) id t51KGsp1004175;
+        Mon, 1 Jun 2015 22:16:54 +0200
+Date:   Mon, 1 Jun 2015 22:16:54 +0200
 From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Valentin Rothberg <valentinrothberg@gmail.com>
-Cc:     Paul Bolle <pebolle@tiscali.nl>,
-        Andreas Ruprecht <andreas.ruprecht@fau.de>,
-        hengelein Stefan <stefan.hengelein@fau.de>, tglx@linutronix.de,
-        jason@lakedaemon.net, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: MIPS/IRQCHIP: some remainders of IRQ_CPU
-Message-ID: <20150601195339.GB29986@linux-mips.org>
-References: <CAD3Xx4K_qq-FZPymp4Ss7rG2FC4iK3TF1sJnBMO+7haMFN_wFg@mail.gmail.com>
+To:     "Maciej W. Rozycki" <macro@linux-mips.org>
+Cc:     Joshua Kinard <kumba@gentoo.org>,
+        Linux MIPS List <linux-mips@linux-mips.org>
+Subject: Re: IP27: R14000: Unexpected General Exception in
+ cpu_set_fpu_fcsr_mask()
+Message-ID: <20150601201653.GC29986@linux-mips.org>
+References: <556943D9.7020502@gentoo.org>
+ <alpine.LFD.2.11.1506010025410.22908@eddie.linux-mips.org>
+ <556BCA01.1070208@gentoo.org>
+ <alpine.LFD.2.11.1506011218590.22908@eddie.linux-mips.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAD3Xx4K_qq-FZPymp4Ss7rG2FC4iK3TF1sJnBMO+7haMFN_wFg@mail.gmail.com>
+In-Reply-To: <alpine.LFD.2.11.1506011218590.22908@eddie.linux-mips.org>
 User-Agent: Mutt/1.5.23 (2014-03-12)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47767
+X-archive-position: 47768
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,38 +47,32 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Jun 01, 2015 at 04:51:48PM +0200, Valentin Rothberg wrote:
+On Mon, Jun 01, 2015 at 12:27:52PM +0100, Maciej W. Rozycki wrote:
 
-> Hi Ralf,
+> > >  Can you please try this diagnostic patch and report the value of FCSR 
+> > > printed ("FCSR is:"), and also tell me if the exception has now gone too?  
+> > > 
+> > >  I'll submit the final fix, properly annotated, if your testing confirms 
+> > > my diagnosis.
+> > 
+> > That got it to boot again.  I added CPU ID to the printk as well, and got some
+> > odd output from one of the CPUs:
+> > 
+> > # dmesg | grep FCSR
+> > [    0.000000] CPU0: FCSR is: 00000000
+> > [    0.319158] CPU1: FCSR is: 00000000
+> > [    0.364971] CPU2: FCSR is: ffffffffa8000000
+> > [    0.404854] CPU3: FCSR is: 00000000
 > 
-> your commit 1f1786e60b53 ("MIPS/IRQCHIP: Move irq_chip from arch/mips
-> to drivers/irqchip.") is in today's linux-next tree (i.e.,
-> next-20150601).  It renames the Kconfig option IRQ_CPU to
-> IRQ_MIPS_CPU, but misses to rename a few Kconfig selects (see git
-> grep) in arch/mips.
-> 
-> If you agree, I can send a trivial patch that renames those remainders?
+>  The value reported for CPU2 merely shows FCC[7,5,3] bits set, nothing 
+> really odd about that, the CPU may well have come out of reset like this.  
+> Neither of the values reported though actually corresponds to the symptom 
+> you saw, can you double-check you didn't make a typo in your modification 
+> to `printk'?
 
-sed -i -e 's@\bIRQ_CPU\b@IRQ_MIPS_CPU@' $(git grep -l -w IRQ_CPU)
-
-or something like that.
-
-> I detected the issue with ./scripts/checkkconfigsymbols.py by diffing
-> the last and today's linux tree.
-> 
-> Some advertisement for a small tool I started a few month a go, which
-> is made for such cases.  With vgrep [1] you can grep for symbols in
-> the current directory tree and afterwards open specific lines in your
-> editor.  It's more or less a comfortable wrapper around (git) grep.  I
-> use it a lot to study source code as well as to manage code changes.
-> The most prominent user I know is Greg KH who uses it as a replacement
-> for cgvg.
-> 
-> Kind regards,
->  Valentin
-> 
-> [1] https://github.com/vrothberg/vgrep
-
-Thanks for reporting!
+Maciej, I don't see why the code is so careful about not trampeling
+over any bits that may be set on bootup.  I think we should rather fully
+initialize all the exception bits to zero to have the FPU in a known good
+state.
 
   Ralf

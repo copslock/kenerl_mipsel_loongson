@@ -1,40 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Jun 2015 22:17:04 +0200 (CEST)
-Received: from mail1.windriver.com ([147.11.146.13]:60969 "EHLO
-        mail1.windriver.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27007106AbbFBURCFtrFc (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 2 Jun 2015 22:17:02 +0200
-Received: from ALA-HCA.corp.ad.wrs.com (ala-hca.corp.ad.wrs.com [147.11.189.40])
-        by mail1.windriver.com (8.15.1/8.15.1) with ESMTPS id t52KGRxn014533
-        (version=TLSv1 cipher=AES128-SHA bits=128 verify=FAIL);
-        Tue, 2 Jun 2015 13:16:27 -0700 (PDT)
-Received: from yow-lpgnfs-02.corp.ad.wrs.com (128.224.149.8) by
- ALA-HCA.corp.ad.wrs.com (147.11.189.40) with Microsoft SMTP Server id
- 14.3.224.2; Tue, 2 Jun 2015 13:16:27 -0700
-From:   Paul Gortmaker <paul.gortmaker@windriver.com>
-To:     <linux-kernel@vger.kernel.org>
-CC:     Paul Gortmaker <paul.gortmaker@windriver.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Russell King <linux@arm.linux.org.uk>,
-        Rusty Russell <rusty@rustcorp.com.au>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-mips@linux-mips.org>, <x86@kernel.org>
-Subject: [PATCH 0/4] Relocate module code from init.h to module.h
-Date:   Tue, 2 Jun 2015 16:16:04 -0400
-Message-ID: <1433276168-21550-1-git-send-email-paul.gortmaker@windriver.com>
-X-Mailer: git-send-email 2.2.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Jun 2015 22:36:28 +0200 (CEST)
+Received: from resqmta-ch2-08v.sys.comcast.net ([69.252.207.40]:50275 "EHLO
+        resqmta-ch2-08v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27026897AbbFBUgZKstq6 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 2 Jun 2015 22:36:25 +0200
+Received: from resomta-ch2-14v.sys.comcast.net ([69.252.207.110])
+        by resqmta-ch2-08v.sys.comcast.net with comcast
+        id bYbj1q0062PT3Qt01YcJmC; Tue, 02 Jun 2015 20:36:18 +0000
+Received: from [192.168.1.13] ([69.251.155.187])
+        by resomta-ch2-14v.sys.comcast.net with comcast
+        id bYcH1q00k42s2jH01YcJvQ; Tue, 02 Jun 2015 20:36:18 +0000
+Message-ID: <556E13BB.3070708@gentoo.org>
+Date:   Tue, 02 Jun 2015 16:36:11 -0400
+From:   Joshua Kinard <kumba@gentoo.org>
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:31.0) Gecko/20100101 Thunderbird/31.7.0
 MIME-Version: 1.0
-Content-Type: text/plain
-Return-Path: <Paul.Gortmaker@windriver.com>
+To:     "Maciej W. Rozycki" <macro@linux-mips.org>,
+        Ralf Baechle <ralf@linux-mips.org>
+CC:     linux-mips@linux-mips.org
+Subject: Re: [PATCH] MIPS: Avoid an FPE exception in FCSR mask probing
+References: <alpine.LFD.2.11.1506021739230.6751@eddie.linux-mips.org>
+In-Reply-To: <alpine.LFD.2.11.1506021739230.6751@eddie.linux-mips.org>
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=comcast.net;
+        s=q20140121; t=1433277378;
+        bh=PYvqfiWnqE+jJajLGTdup2T1hssQDtMIq014IiJCcQQ=;
+        h=Received:Received:Message-ID:Date:From:MIME-Version:To:Subject:
+         Content-Type;
+        b=f2/xlKBz2yq3aHdBcRyqlIB7CJZaUm+GXAOnuuf3/Zi58HEG94emW5HJ1HIdxCBUi
+         42TzEwL7c0T75wR64eLq56AdWYFcmlEROBJzGE5GIFtFF1Z5+Zsft4LlMSJ6isduhX
+         ku8wtFuoS73dPX05ZdqTNTrJshQt28nKMl05U6iaWARMD/06hXVcvwjuNWMwUUYeq+
+         lfdLHilDRtWpGyKQnvD3B8l/ub3nJyagDNLqGUTd2fFzDPwZ5QEhF8CPWE5pGn7OG+
+         G0Qfr3KxxJEw2OQuPVd+4JGi8WV6y2KTY8PWl5AWeXF4X9UlHROTZb8d3D+BEVTrLO
+         5/oauvK98ORJg==
+Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47806
+X-archive-position: 47807
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.gortmaker@windriver.com
+X-original-sender: kumba@gentoo.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,71 +54,33 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-What started as a removal of no longer required include <linux/init.h>
-due to the earlier __cpuinit and __devinit removal led to the observation
-that some module specfic support was living in init.h itself, thus
-preventing the full removal from introducing compile regressions.
+On 06/02/2015 12:50, Maciej W. Rozycki wrote:
+> Use the default FCSR value in mask probing, avoiding an FPE exception 
+> where reset has left any exception enable and their corresponding cause 
+> bits set and the register is then rewritten with these bits active.
+> 
+> Signed-off-by: Maciej W. Rozycki <macro@linux-mips.org>
+> ---
+> linux-mips-fcsr-mask-fix.diff
+> Index: linux-org-test/arch/mips/kernel/cpu-probe.c
+> ===================================================================
+> --- linux-org-test.orig/arch/mips/kernel/cpu-probe.c	2015-06-01 00:43:32.000000000 +0100
+> +++ linux-org-test/arch/mips/kernel/cpu-probe.c	2015-06-02 12:14:10.088786000 +0100
+> @@ -74,13 +74,12 @@ static inline void cpu_set_fpu_fcsr_mask
+>  {
+>  	unsigned long sr, mask, fcsr, fcsr0, fcsr1;
+>  
+> +	fcsr = c->fpu_csr31;
+>  	mask = FPU_CSR_ALL_X | FPU_CSR_ALL_E | FPU_CSR_ALL_S | FPU_CSR_RM;
+>  
+>  	sr = read_c0_status();
+>  	__enable_fpu(FPU_AS_IS);
+>  
+> -	fcsr = read_32bit_cp1_register(CP1_STATUS);
+> -
+>  	fcsr0 = fcsr & mask;
+>  	write_32bit_cp1_register(CP1_STATUS, fcsr0);
+>  	fcsr0 = read_32bit_cp1_register(CP1_STATUS);
+> 
 
-This series of commits includes the final relocation of the modular
-init code from <init.h> to <module.h> -- we do this because modular
-users will always be users of init functionality, but users of init
-functionality are not necessarily always modules.  Once done, the
-trivial one line removals can be finalized at any time, a bit at a
-time, through maintainer trees etc.
-
-In order to do that, a couple of final things that this will uncover
-are fixed up here -- things that weren't easily categorized into any
-of the other previous series leading up to this final one.  The
-previous groupings of commits that get us to this final series are:
-
-1: [PATCH 00/11] Delete new __cpuinit users and then delete stubs
-   https://lkml.kernel.org/r/1430174880-27958-1-git-send-email-paul.gortmaker@windriver.com
-
-2: [PATCH 00/11] Fix implicit includes of <module.h> that will break.                                                                                                                    
-   https://lkml.kernel.org/r/1430444867-22342-1-git-send-email-paul.gortmaker@windriver.com>
-
-3: [PATCH 00/15] Replace module_init with device_initcall in non modules                                                                                                                 
-   https://lkml.kernel.org/r/1432860493-23831-1-git-send-email-paul.gortmaker@windriver.com
-
-4: [PATCH 00/11] Replace module_init with an alternate initcall in non modules                                                                                                           
-   https://lkml.kernel.org/r/1433120052-18281-1-git-send-email-paul.gortmaker@windriver.com
-
-5: [PATCH 0/7] Introduce builtin_driver and use it for non-modular code
-   https://lkml.kernel.org/r/1431287385-1526-1-git-send-email-paul.gortmaker@windriver.com>
-
-This group of six is factored out from what was a previously larger series[1]
-so that there is a common theme and lower patch count to ease review.  Setting
-aside the trivial one line include <linux/init.h> removals for later also
-greatly reduces the series size and makes all six parts more manageable.
-
-Paul.
-
-[1] http://lkml.kernel.org/r/1390339396-3479-1-git-send-email-paul.gortmaker@windriver.com
-
----
-
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Russell King <linux@arm.linux.org.uk>
-Cc: Rusty Russell <rusty@rustcorp.com.au>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-mips@linux-mips.org
-Cc: x86@kernel.org
-
-Paul Gortmaker (4):
-  x86: replace __init_or_module with __init in non-modular vsmp_64.c
-  arm: fix implicit #include <linux/init.h> in entry asm.
-  mips: make loongsoon serial driver explicitly modular
-  module: relocate module_init from init.h to module.h
-
- arch/arm/kernel/entry-armv.S       |  2 +
- arch/mips/loongson/common/serial.c |  9 +++-
- arch/x86/kernel/vsmp_64.c          |  2 +-
- include/linux/init.h               | 78 -----------------------------------
- include/linux/module.h             | 84 ++++++++++++++++++++++++++++++++++++++
- 5 files changed, 94 insertions(+), 81 deletions(-)
-
--- 
-2.2.1
+Tested-by: Joshua Kinard <kumba@gentoo.org>

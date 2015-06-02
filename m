@@ -1,41 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Jun 2015 00:43:20 +0200 (CEST)
-Received: from mail1.windriver.com ([147.11.146.13]:64253 "EHLO
-        mail1.windriver.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27026906AbbFBWnSmM1ZC (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 3 Jun 2015 00:43:18 +0200
-Received: from ALA-HCA.corp.ad.wrs.com (ala-hca.corp.ad.wrs.com [147.11.189.40])
-        by mail1.windriver.com (8.15.1/8.15.1) with ESMTPS id t52Mh5mn015880
-        (version=TLSv1 cipher=AES128-SHA bits=128 verify=FAIL);
-        Tue, 2 Jun 2015 15:43:06 -0700 (PDT)
-Received: from yow-pgortmak-d1 (128.224.56.57) by ALA-HCA.corp.ad.wrs.com
- (147.11.189.40) with Microsoft SMTP Server id 14.3.224.2; Tue, 2 Jun 2015
- 15:43:05 -0700
-Received: by yow-pgortmak-d1 (Postfix, from userid 1000)        id AB5A3E1D2E7; Tue,
-  2 Jun 2015 18:43:04 -0400 (EDT)
-Date:   Tue, 2 Jun 2015 18:43:04 -0400
-From:   Paul Gortmaker <paul.gortmaker@windriver.com>
-To:     Paul Bolle <pebolle@tiscali.nl>
-CC:     <linux-kernel@vger.kernel.org>, Ralf Baechle <ralf@linux-mips.org>,
-        <linux-mips@linux-mips.org>
-Subject: Re: [PATCH 3/4] mips: make loongsoon serial driver explicitly modular
-Message-ID: <20150602224304.GH29898@windriver.com>
-References: <1433276168-21550-1-git-send-email-paul.gortmaker@windriver.com>
- <1433276168-21550-4-git-send-email-paul.gortmaker@windriver.com>
- <1433281628.2361.93.camel@x220>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <1433281628.2361.93.camel@x220>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <Paul.Gortmaker@windriver.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Jun 2015 00:47:03 +0200 (CEST)
+Received: from mail-qk0-f173.google.com ([209.85.220.173]:34256 "EHLO
+        mail-qk0-f173.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27026906AbbFBWrBeYo0C (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 3 Jun 2015 00:47:01 +0200
+Received: by qkoo18 with SMTP id o18so110061851qko.1;
+        Tue, 02 Jun 2015 15:46:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=sender:from:to:cc:subject:date:message-id:in-reply-to:references;
+        bh=KAJdLrffVXop1/OXjQ1+pCWZqgwowqjgGfNOvEO+Ly4=;
+        b=KJDBM51mWvIVWtN+3WEYMBapz6qs4FoMvH+80CNxIirRx9sSdxlIpsoV1UkptVUre0
+         R2MuyGnz3ovhojfJkMOT46kEItnu0QX4mlsAhtzdwtlngrCkoReeUlLofrOJtRh/4jXK
+         SnOSVW35ORM2DHYzp5pTZHyg4KzzF65e9yV9KvuRCShjVxVV+Xsz0DZkI1jkreZV+62q
+         57mojX2LaWHXIAva1ODPNvgKj3bW5q8GV4hEdOIgGSppbWnl8CvNwHNCZFjZOIIFXcOe
+         8Qgby/wPeFcKbf3NOHg2x+qlpYQ2wzmBVqY5NEBBz+94Kw2gjM1D3vsWgxtjhl3Aq50A
+         vMyw==
+X-Received: by 10.55.18.144 with SMTP id 16mr51649842qks.17.1433285215667;
+        Tue, 02 Jun 2015 15:46:55 -0700 (PDT)
+Received: from rob-hp-laptop.corp.google.com ([2620:0:1000:fd86:99a5:7f6a:c368:4023])
+        by mx.google.com with ESMTPSA id c20sm8169085qka.21.2015.06.02.15.46.54
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Tue, 02 Jun 2015 15:46:54 -0700 (PDT)
+From:   Rob Herring <robh@kernel.org>
+To:     devicetree@vger.kernel.org, Grant Likely <grant.likely@linaro.org>,
+        Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-kernel@vger.kernel.org,
+        Pantelis Antoniou <pantelis.antoniou@konsulko.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Rob Herring <robh@kernel.org>, linux-mips@linux-mips.org
+Subject: [PATCH 1/3] MIPS: prepare for user enabling of CONFIG_OF
+Date:   Tue,  2 Jun 2015 17:46:42 -0500
+Message-Id: <1433285204-4307-2-git-send-email-robh@kernel.org>
+X-Mailer: git-send-email 2.1.0
+In-Reply-To: <1433285204-4307-1-git-send-email-robh@kernel.org>
+References: <1433285204-4307-1-git-send-email-robh@kernel.org>
+Return-Path: <robherring2@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47813
+X-archive-position: 47814
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.gortmaker@windriver.com
+X-original-sender: robh@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,24 +55,43 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-[Re: [PATCH 3/4] mips: make loongsoon serial driver explicitly modular] On 02/06/2015 (Tue 23:47) Paul Bolle wrote:
+In preparation to allow users to enable DeviceTree without arch or
+machine selecting it, we need to fix build errors on MIPS. When
+CONFIG_OF is enabled, device_tree_init cannot be resolved. This is
+trivially fixed by using CONFIG_USE_OF instead of CONFIG_OF for prom.h.
 
-> On Tue, 2015-06-02 at 16:16 -0400, Paul Gortmaker wrote:
-> > +static void __init serial_exit(void)
-> 
-> s/__init/__exit/
+Signed-off-by: Rob Herring <robh@kernel.org>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: linux-mips@linux-mips.org
+---
+ arch/mips/include/asm/prom.h | 2 +-
+ arch/mips/kernel/prom.c      | 1 +
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-Argh, yes thanks for spotting that copy-n-waste error.  Will fix.
-
-Paul.
---
-
-> 
-> > +{
-> > +	platform_device_unregister(&uart8250_device);
-> > +}
-> > +module_exit(serial_exit);
-> 
-> 
-> Paul Bolle
-> 
+diff --git a/arch/mips/include/asm/prom.h b/arch/mips/include/asm/prom.h
+index 8ebc2aa..0b4b668 100644
+--- a/arch/mips/include/asm/prom.h
++++ b/arch/mips/include/asm/prom.h
+@@ -11,7 +11,7 @@
+ #ifndef __ASM_PROM_H
+ #define __ASM_PROM_H
+ 
+-#ifdef CONFIG_OF
++#ifdef CONFIG_USE_OF
+ #include <linux/bug.h>
+ #include <linux/io.h>
+ #include <linux/types.h>
+diff --git a/arch/mips/kernel/prom.c b/arch/mips/kernel/prom.c
+index e303cb1..b130033 100644
+--- a/arch/mips/kernel/prom.c
++++ b/arch/mips/kernel/prom.c
+@@ -18,6 +18,7 @@
+ #include <linux/of_fdt.h>
+ #include <linux/of_platform.h>
+ 
++#include <asm/bootinfo.h>
+ #include <asm/page.h>
+ #include <asm/prom.h>
+ 
+-- 
+2.1.0

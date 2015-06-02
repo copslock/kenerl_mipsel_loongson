@@ -1,43 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Jun 2015 22:36:28 +0200 (CEST)
-Received: from resqmta-ch2-08v.sys.comcast.net ([69.252.207.40]:50275 "EHLO
-        resqmta-ch2-08v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27026897AbbFBUgZKstq6 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 2 Jun 2015 22:36:25 +0200
-Received: from resomta-ch2-14v.sys.comcast.net ([69.252.207.110])
-        by resqmta-ch2-08v.sys.comcast.net with comcast
-        id bYbj1q0062PT3Qt01YcJmC; Tue, 02 Jun 2015 20:36:18 +0000
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Jun 2015 22:55:37 +0200 (CEST)
+Received: from resqmta-ch2-11v.sys.comcast.net ([69.252.207.43]:53557 "EHLO
+        resqmta-ch2-11v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008077AbbFBUzgBZzl6 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 2 Jun 2015 22:55:36 +0200
+Received: from resomta-ch2-04v.sys.comcast.net ([69.252.207.100])
+        by resqmta-ch2-11v.sys.comcast.net with comcast
+        id bYvP1q0032AWL2D01YvVZ5; Tue, 02 Jun 2015 20:55:29 +0000
 Received: from [192.168.1.13] ([69.251.155.187])
-        by resomta-ch2-14v.sys.comcast.net with comcast
-        id bYcH1q00k42s2jH01YcJvQ; Tue, 02 Jun 2015 20:36:18 +0000
-Message-ID: <556E13BB.3070708@gentoo.org>
-Date:   Tue, 02 Jun 2015 16:36:11 -0400
+        by resomta-ch2-04v.sys.comcast.net with comcast
+        id bYvU1q00l42s2jH01YvVSH; Tue, 02 Jun 2015 20:55:29 +0000
+Message-ID: <556E183A.70707@gentoo.org>
+Date:   Tue, 02 Jun 2015 16:55:22 -0400
 From:   Joshua Kinard <kumba@gentoo.org>
 User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:31.0) Gecko/20100101 Thunderbird/31.7.0
 MIME-Version: 1.0
-To:     "Maciej W. Rozycki" <macro@linux-mips.org>,
-        Ralf Baechle <ralf@linux-mips.org>
-CC:     linux-mips@linux-mips.org
-Subject: Re: [PATCH] MIPS: Avoid an FPE exception in FCSR mask probing
-References: <alpine.LFD.2.11.1506021739230.6751@eddie.linux-mips.org>
-In-Reply-To: <alpine.LFD.2.11.1506021739230.6751@eddie.linux-mips.org>
-Content-Type: text/plain; charset=windows-1252
+To:     Ralf Baechle <ralf@linux-mips.org>
+CC:     Linux MIPS List <linux-mips@linux-mips.org>
+Subject: [PATCH] MIPS: c-r4k: Fix typo in probe_scache()
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=comcast.net;
-        s=q20140121; t=1433277378;
-        bh=PYvqfiWnqE+jJajLGTdup2T1hssQDtMIq014IiJCcQQ=;
+        s=q20140121; t=1433278529;
+        bh=3NoA8bJ0g6xyJJAw4cv926SWlKGDjrexkMoFcnZHMRQ=;
         h=Received:Received:Message-ID:Date:From:MIME-Version:To:Subject:
          Content-Type;
-        b=f2/xlKBz2yq3aHdBcRyqlIB7CJZaUm+GXAOnuuf3/Zi58HEG94emW5HJ1HIdxCBUi
-         42TzEwL7c0T75wR64eLq56AdWYFcmlEROBJzGE5GIFtFF1Z5+Zsft4LlMSJ6isduhX
-         ku8wtFuoS73dPX05ZdqTNTrJshQt28nKMl05U6iaWARMD/06hXVcvwjuNWMwUUYeq+
-         lfdLHilDRtWpGyKQnvD3B8l/ub3nJyagDNLqGUTd2fFzDPwZ5QEhF8CPWE5pGn7OG+
-         G0Qfr3KxxJEw2OQuPVd+4JGi8WV6y2KTY8PWl5AWeXF4X9UlHROTZb8d3D+BEVTrLO
-         5/oauvK98ORJg==
+        b=r+hP62/50kywzhgTPXa3lUuUs6oTFzgshfwAWaa/bZ/Rxc3Fa+nvqwTZsFHTp8Sij
+         ya3iODTfwqm2ycx5R2eTAIpSU3+Cl/Br26eBFpZ5smbBFwgfSU/IlUzrQplDlACBN3
+         +O3zYq3099xaFrAPrs1wblbvUtucw8Qj3JSVqBUR+YtUpY1qQM1h3ttcrMsSNFjVQd
+         ILTfrZH36ffjfBRvHmb4H+G+8B17bMLEX4oP3GB88AnAlfHPUpt4WaJJu1jcsLDDYg
+         9fSnEDzdxkeRL78Dq9O9UYEQiBamxJ219e0HnCbJxpxJ3qqBBHKVR1UbogL0f3FKwA
+         X6cIo9T82+isA==
 Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47807
+X-archive-position: 47808
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -54,33 +51,26 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 06/02/2015 12:50, Maciej W. Rozycki wrote:
-> Use the default FCSR value in mask probing, avoiding an FPE exception 
-> where reset has left any exception enable and their corresponding cause 
-> bits set and the register is then rewritten with these bits active.
-> 
-> Signed-off-by: Maciej W. Rozycki <macro@linux-mips.org>
-> ---
-> linux-mips-fcsr-mask-fix.diff
-> Index: linux-org-test/arch/mips/kernel/cpu-probe.c
-> ===================================================================
-> --- linux-org-test.orig/arch/mips/kernel/cpu-probe.c	2015-06-01 00:43:32.000000000 +0100
-> +++ linux-org-test/arch/mips/kernel/cpu-probe.c	2015-06-02 12:14:10.088786000 +0100
-> @@ -74,13 +74,12 @@ static inline void cpu_set_fpu_fcsr_mask
->  {
->  	unsigned long sr, mask, fcsr, fcsr0, fcsr1;
->  
-> +	fcsr = c->fpu_csr31;
->  	mask = FPU_CSR_ALL_X | FPU_CSR_ALL_E | FPU_CSR_ALL_S | FPU_CSR_RM;
->  
->  	sr = read_c0_status();
->  	__enable_fpu(FPU_AS_IS);
->  
-> -	fcsr = read_32bit_cp1_register(CP1_STATUS);
-> -
->  	fcsr0 = fcsr & mask;
->  	write_32bit_cp1_register(CP1_STATUS, fcsr0);
->  	fcsr0 = read_32bit_cp1_register(CP1_STATUS);
-> 
+From: Joshua Kinard <kumba@gentoo.org>
 
-Tested-by: Joshua Kinard <kumba@gentoo.org>
+Fixes a typo in arch/mips/mm/c-r4k.c's probe_scache().
+
+Signed-off-by: Joshua Kinard <kumba@gentoo.org>
+---
+ arch/mips/mm/c-r4k.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+linux-mips-fix-probe_scache-typo.patch
+diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
+index 0dbb65a..2e03ab1 100644
+--- a/arch/mips/mm/c-r4k.c
++++ b/arch/mips/mm/c-r4k.c
+@@ -1372,7 +1372,7 @@ static int probe_scache(void)
+ 	scache_size = addr;
+ 	c->scache.linesz = 16 << ((config & R4K_CONF_SB) >> 22);
+ 	c->scache.ways = 1;
+-	c->dcache.waybit = 0;		/* does not matter */
++	c->scache.waybit = 0;		/* does not matter */
+ 
+ 	return 1;
+ }

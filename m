@@ -1,90 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Jun 2015 09:47:06 +0200 (CEST)
-Received: from e06smtp16.uk.ibm.com ([195.75.94.112]:43860 "EHLO
-        e06smtp16.uk.ibm.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27006736AbbFBHrEmOrV4 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 2 Jun 2015 09:47:04 +0200
-Received: from /spool/local
-        by e06smtp16.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <linux-mips@linux-mips.org> from <dingel@linux.vnet.ibm.com>;
-        Tue, 2 Jun 2015 08:46:54 +0100
-Received: from d06dlp01.portsmouth.uk.ibm.com (9.149.20.13)
-        by e06smtp16.uk.ibm.com (192.168.101.146) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        Tue, 2 Jun 2015 08:46:52 +0100
-Received: from b06cxnps4075.portsmouth.uk.ibm.com (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
-        by d06dlp01.portsmouth.uk.ibm.com (Postfix) with ESMTP id E21E217D8062;
-        Tue,  2 Jun 2015 08:47:49 +0100 (BST)
-Received: from d06av03.portsmouth.uk.ibm.com (d06av03.portsmouth.uk.ibm.com [9.149.37.213])
-        by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id t527kpW57405802;
-        Tue, 2 Jun 2015 07:46:51 GMT
-Received: from d06av03.portsmouth.uk.ibm.com (localhost [127.0.0.1])
-        by d06av03.portsmouth.uk.ibm.com (8.14.4/8.14.4/NCO v10.0 AVout) with ESMTP id t527kjAW019389;
-        Tue, 2 Jun 2015 01:46:51 -0600
-Received: from BR9TG4T3.de.ibm.com (sig-9-84-2-37.evts.de.ibm.com [9.84.2.37])
-        by d06av03.portsmouth.uk.ibm.com (8.14.4/8.14.4/NCO v10.0 AVin) with ESMTP id t527kg45019291;
-        Tue, 2 Jun 2015 01:46:42 -0600
-Date:   Tue, 2 Jun 2015 09:46:40 +0200
-From:   Dominik Dingel <dingel@linux.vnet.ibm.com>
-To:     Christian Borntraeger <borntraeger@de.ibm.com>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>
-Cc:     linux-kernel@vger.kernel.org,
-        Russell King <linux@arm.linux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        linux390@de.ibm.com, "David S. Miller" <davem@davemloft.net>,
-        Chris Metcalf <cmetcalf@ezchip.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Zhang Zhen <zhenzhang.zhang@huawei.com>,
-        David Rientjes <rientjes@google.com>,
-        "Aneesh Kumar K.V" <aneesh.kumar@linux.vnet.ibm.com>,
-        Nathan Lynch <nathan_lynch@mentor.com>,
-        Andy Lutomirski <luto@amacapital.net>,
-        Michael Holzheu <holzheu@linux.vnet.ibm.com>,
-        Hugh Dickins <hughd@google.com>,
-        Naoya Horiguchi <n-horiguchi@ah.jp.nec.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        "Jason J. Herne" <jjherne@linux.vnet.ibm.com>,
-        Davidlohr Bueso <dave@stgolabs.net>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Luiz Capitulino <lcapitulino@redhat.com>,
-        Mike Kravetz <mike.kravetz@oracle.com>,
-        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
-        linux-metag@vger.kernel.org, linux-mips@linux-mips.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org
-Subject: Re: [PATCH 0/5] Remove s390 sw-emulated hugepages and cleanup
-Message-ID: <20150602094640.4fedc046@BR9TG4T3.de.ibm.com>
-In-Reply-To: <556C0B5D.40205@de.ibm.com>
-References: <1432813957-46874-1-git-send-email-dingel@linux.vnet.ibm.com>
-        <556C0B5D.40205@de.ibm.com>
-Followup-To: linux-mm@kvack.org
-Organization: IBM
-X-Mailer: Claws Mail 3.9.3 (GTK+ 2.24.23; x86_64-pc-linux-gnu)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Jun 2015 09:58:01 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:32024 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27006788AbbFBH57Jrqo4 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 2 Jun 2015 09:57:59 +0200
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 09ACB94551FEF;
+        Tue,  2 Jun 2015 01:09:37 +0100 (IST)
+Received: from hhmail02.hh.imgtec.org (10.100.10.20) by KLMAIL01.kl.imgtec.org
+ (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Tue, 2 Jun
+ 2015 01:09:38 +0100
+Received: from BAMAIL02.ba.imgtec.org (10.20.40.28) by hhmail02.hh.imgtec.org
+ (10.100.10.20) with Microsoft SMTP Server (TLS) id 14.3.224.2; Tue, 2 Jun
+ 2015 01:09:36 +0100
+Received: from [127.0.1.1] (10.20.3.79) by bamail02.ba.imgtec.org
+ (10.20.40.28) with Microsoft SMTP Server (TLS) id 14.3.174.1; Mon, 1 Jun 2015
+ 17:09:34 -0700
+Subject: [PATCH 1/3] MIPS: R6: Use lightweight SYNC instruction in smp_*
+ memory barriers
+From:   Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+To:     <linux-mips@linux-mips.org>, <benh@kernel.crashing.org>,
+        <will.deacon@arm.com>, <linux-kernel@vger.kernel.org>,
+        <ralf@linux-mips.org>, <markos.chandras@imgtec.com>,
+        <macro@linux-mips.org>, <Steven.Hill@imgtec.com>,
+        <alexander.h.duyck@redhat.com>, <davem@davemloft.net>
+Date:   Mon, 1 Jun 2015 17:09:34 -0700
+Message-ID: <20150602000934.6668.43645.stgit@ubuntu-yegoshin>
+In-Reply-To: <20150602000818.6668.76632.stgit@ubuntu-yegoshin>
+References: <20150602000818.6668.76632.stgit@ubuntu-yegoshin>
+User-Agent: StGit/0.17.1-dirty
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-TM-AS-MML: disable
-X-Content-Scanned: Fidelis XPS MAILER
-x-cbid: 15060207-0025-0000-0000-0000056C922B
-Return-Path: <dingel@linux.vnet.ibm.com>
+X-Originating-IP: [10.20.3.79]
+Return-Path: <Leonid.Yegoshin@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47774
+X-archive-position: 47775
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dingel@linux.vnet.ibm.com
+X-original-sender: Leonid.Yegoshin@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -97,42 +53,112 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, 01 Jun 2015 09:35:57 +0200
-Christian Borntraeger <borntraeger@de.ibm.com> wrote:
+This instructions were specifically designed to work for smp_*() sort of
+memory barriers in MIPS R2/R3/R5 and R6.
 
-> Am 28.05.2015 um 13:52 schrieb Dominik Dingel:
-> > Hi everyone,
-> > 
-> > there is a potential bug with KVM and hugetlbfs if the hardware does not
-> > support hugepages (EDAT1).
-> > We fix this by making EDAT1 a hard requirement for hugepages and 
-> > therefore removing and simplifying code.
-> 
-> The cleanup itself is nice and probably the right thing to do. 
-> Emulating large pages makes the code more complex and asks for
-> trouble (as outlined above)
-> 
-> The only downside that I see is that z/VM as of today does not
-> announce EDAT1 for its guests so the "emulated" large pages for
-> hugetlbfs would be useful in that case. The current code allocates
-> the page table only once and shares it for all mappers - which is
-> useful for some big databases that spawn hundreds of processes with
-> shared mappings of several hundred GBs. In these cases we do save
-> a decent amount of page table memory. 
+Unfortunately, it's description is very cryptic and is done in HW engineering
+style which prevents use of it by SW. This instructions are not mandatory but
+there is a mandatory requirement - if not implemented, then a regular MIPS
+SYNC 0 must be used instead.
 
-To limit the damage done, we could always allocate page tables with pgstes for that case.
-That would allow one guest manipulating another guests storage keys,
-but at least would prevent random memory overwrites in the host.
+The reason for this change is - SYNC 0 is a heavvy-weighted in many CPUs, it may
+disrupt other cores pipelines etc.
 
-Another thing we could do, make software emulated large pages a kernel config option
-and only if KVM is not selected allow it, visa versa.
+Due to concern about verification of old MIPS R2 compatible cores of other
+vendors it is enforced only for MIPS R6 and other MIPS32/64 R2/R5 processors
+have it configurable.
 
-@Martin what do you think?
+Signed-off-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+---
+ arch/mips/Kconfig               |   22 ++++++++++++++++++++++
+ arch/mips/include/asm/barrier.h |    6 ++++++
+ 2 files changed, 28 insertions(+)
 
-Thanks,
-	Dominik
-
-> Not sure if that case is actually important, though.
-> 
-> Christian
-> 
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index be384d6a58bb..c7d0cacece3d 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -1347,6 +1347,7 @@ config CPU_MIPS32_R2
+ 	select CPU_SUPPORTS_32BIT_KERNEL
+ 	select CPU_SUPPORTS_HIGHMEM
+ 	select CPU_SUPPORTS_MSA
++	select CPU_SUPPORTS_MIPS_LIGHTWEIGHT_SYNC
+ 	select HAVE_KVM
+ 	help
+ 	  Choose this option to build a kernel for release 2 or later of the
+@@ -1365,6 +1366,8 @@ config CPU_MIPS32_R6
+ 	select GENERIC_CSUM
+ 	select HAVE_KVM
+ 	select MIPS_O32_FP64_SUPPORT
++	select CPU_SUPPORTS_MIPS_LIGHTWEIGHT_SYNC
++	select WEAK_REORDERING_BEYOND_LLSC
+ 	help
+ 	  Choose this option to build a kernel for release 6 or later of the
+ 	  MIPS32 architecture.  New MIPS processors, starting with the Warrior
+@@ -1399,6 +1402,7 @@ config CPU_MIPS64_R2
+ 	select CPU_SUPPORTS_HIGHMEM
+ 	select CPU_SUPPORTS_HUGEPAGES
+ 	select CPU_SUPPORTS_MSA
++	select CPU_SUPPORTS_MIPS_LIGHTWEIGHT_SYNC
+ 	help
+ 	  Choose this option to build a kernel for release 2 or later of the
+ 	  MIPS64 architecture.  Many modern embedded systems with a 64-bit
+@@ -1415,6 +1419,8 @@ config CPU_MIPS64_R6
+ 	select CPU_SUPPORTS_HIGHMEM
+ 	select CPU_SUPPORTS_MSA
+ 	select GENERIC_CSUM
++	select CPU_SUPPORTS_MIPS_LIGHTWEIGHT_SYNC
++	select WEAK_REORDERING_BEYOND_LLSC
+ 	help
+ 	  Choose this option to build a kernel for release 6 or later of the
+ 	  MIPS64 architecture.  New MIPS processors, starting with the Warrior
+@@ -1876,6 +1882,20 @@ config WEAK_ORDERING
+ #
+ config WEAK_REORDERING_BEYOND_LLSC
+ 	bool
++
++config MIPS_LIGHTWEIGHT_SYNC
++	bool "CPU lightweight SYNC instruction for weak reordering"
++	depends on CPU_SUPPORTS_MIPS_LIGHTWEIGHT_SYNC && WEAK_ORDERING
++	default y if CPU_MIPSR6
++	help
++	  This option enforces a use of "lightweight sync" instructions
++	  for SMP (multi-CPU) memory barriers. This instructions are much
++	  more faster than a traditional "SYNC 0".
++
++	  If that instructions are not implemented in processor then it is
++	  converted to generic "SYNC 0".
++
++	  If you unsure, say N here, it may slightly decrease your performance
+ endmenu
+ 
+ #
+@@ -1928,6 +1948,8 @@ config CPU_SUPPORTS_HUGEPAGES
+ 	bool
+ config CPU_SUPPORTS_UNCACHED_ACCELERATED
+ 	bool
++config CPU_SUPPORTS_MIPS_LIGHTWEIGHT_SYNC
++	bool
+ config MIPS_PGD_C0_CONTEXT
+ 	bool
+ 	default y if 64BIT && CPU_MIPSR2 && !CPU_XLP
+diff --git a/arch/mips/include/asm/barrier.h b/arch/mips/include/asm/barrier.h
+index 2b8bbbcb9be0..d2a63abfc7c6 100644
+--- a/arch/mips/include/asm/barrier.h
++++ b/arch/mips/include/asm/barrier.h
+@@ -96,9 +96,15 @@
+ #  define smp_rmb()	barrier()
+ #  define smp_wmb()	__syncw()
+ # else
++#  ifdef CONFIG_MIPS_LIGHTWEIGHT_SYNC
++#  define smp_mb()      __asm__ __volatile__("sync 0x10" : : :"memory")
++#  define smp_rmb()     __asm__ __volatile__("sync 0x13" : : :"memory")
++#  define smp_wmb()     __asm__ __volatile__("sync 0x4" : : :"memory")
++#  else
+ #  define smp_mb()	__asm__ __volatile__("sync" : : :"memory")
+ #  define smp_rmb()	__asm__ __volatile__("sync" : : :"memory")
+ #  define smp_wmb()	__asm__ __volatile__("sync" : : :"memory")
++#  endif
+ # endif
+ #else
+ #define smp_mb()	barrier()

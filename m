@@ -1,44 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Jun 2015 21:19:32 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:58565 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27026874AbbFBTT3g-C94 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 2 Jun 2015 21:19:29 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.9/8.14.8) with ESMTP id t52JJFWt030688;
-        Tue, 2 Jun 2015 21:19:15 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.9/8.14.9/Submit) id t52JJBpc030687;
-        Tue, 2 Jun 2015 21:19:11 +0200
-Date:   Tue, 2 Jun 2015 21:19:11 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Joshua Kinard <kumba@gentoo.org>
-Cc:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
-        linux-mips@linux-mips.org, will.deacon@arm.com,
-        linux-kernel@vger.kernel.org, benh@kernel.crashing.org,
-        markos.chandras@imgtec.com, macro@linux-mips.org,
-        Steven.Hill@imgtec.com, alexander.h.duyck@redhat.com,
-        davem@davemloft.net
-Subject: Re: [PATCH 0/3] MIPS: SMP memory barriers: lightweight sync,
- acquire-release
-Message-ID: <20150602191910.GO29986@linux-mips.org>
-References: <20150602000818.6668.76632.stgit@ubuntu-yegoshin>
- <556D6C31.3070500@gentoo.org>
- <20150602095920.GD29986@linux-mips.org>
- <556DFD1A.7070802@gentoo.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Jun 2015 22:16:40 +0200 (CEST)
+Received: from mail.windriver.com ([147.11.1.11]:35531 "EHLO
+        mail.windriver.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27007106AbbFBUQiy8zGc (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 2 Jun 2015 22:16:38 +0200
+Received: from ALA-HCA.corp.ad.wrs.com (ala-hca.corp.ad.wrs.com [147.11.189.40])
+        by mail.windriver.com (8.15.1/8.15.1) with ESMTPS id t52KGWlT024249
+        (version=TLSv1 cipher=AES128-SHA bits=128 verify=FAIL);
+        Tue, 2 Jun 2015 13:16:32 -0700 (PDT)
+Received: from yow-lpgnfs-02.corp.ad.wrs.com (128.224.149.8) by
+ ALA-HCA.corp.ad.wrs.com (147.11.189.40) with Microsoft SMTP Server id
+ 14.3.224.2; Tue, 2 Jun 2015 13:16:32 -0700
+From:   Paul Gortmaker <paul.gortmaker@windriver.com>
+To:     <linux-kernel@vger.kernel.org>
+CC:     Paul Gortmaker <paul.gortmaker@windriver.com>,
+        Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
+Subject: [PATCH 3/4] mips: make loongsoon serial driver explicitly modular
+Date:   Tue, 2 Jun 2015 16:16:07 -0400
+Message-ID: <1433276168-21550-4-git-send-email-paul.gortmaker@windriver.com>
+X-Mailer: git-send-email 2.2.1
+In-Reply-To: <1433276168-21550-1-git-send-email-paul.gortmaker@windriver.com>
+References: <1433276168-21550-1-git-send-email-paul.gortmaker@windriver.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <556DFD1A.7070802@gentoo.org>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <ralf@linux-mips.org>
+Content-Type: text/plain
+Return-Path: <Paul.Gortmaker@windriver.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47804
+X-archive-position: 47805
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: paul.gortmaker@windriver.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,26 +43,52 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Jun 02, 2015 at 02:59:38PM -0400, Joshua Kinard wrote:
+The file looks as if it is non-modular, but it piggy-backs
+off CONFIG_SERIAL_8250 which is tristate.  If set to "=m"
+we will get this after the init/module header cleanup:
 
-> >> How useful might this be for older hardware, such as the R10k CPUs?  Just
-> >> fallbacks to the old sync insn?
-> > 
-> > The R10000 family is strongly ordered so there is no SYNC instruction
-> > required in the entire kernel even though some Origin hardware documentation
-> > incorrectly claims otherwise.
-> 
-> So no benefits even in the speculative execution case on noncoherent hardware
-> like IP28 and IP32?
+arch/mips/loongson/common/serial.c:76:1: error: data definition has no type or storage class [-Werror]
+arch/mips/loongson/common/serial.c:76:1: error: type defaults to 'int' in declaration of 'device_initcall' [-Werror=implicit-int]
+arch/mips/loongson/common/serial.c:76:1: error: parameter names (without types) in function declaration [-Werror]
+arch/mips/loongson/common/serial.c:58:19: error: 'serial_init' defined but not used [-Werror=unused-function]
+cc1: all warnings being treated as errors
+make[3]: *** [arch/mips/loongson/common/serial.o] Error 1
 
-That's handled entirely differently by using a CACHE BARRIER instruction,
-something which is specific to the R10000-family.  It's also used
-differently by putting once such instruction at the end of every basic
-block that might result in speculatively dirty cache lines.
+Make it clearly modular, and add a module_exit function,
+so that we avoid the above breakage.
 
-Note that these systems affected by this speculation issue are all
-non-coherent uniprocessor systems while Leonid's patch matters for
-SMP kernels; the primitives he's changed will not genrate any code for
-a !CONFIG_SMP kernel.
+Reported-by: kbuild test robot <fengguang.wu@intel.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: linux-mips@linux-mips.org
+Signed-off-by: Paul Gortmaker <paul.gortmaker@windriver.com>
+---
+ arch/mips/loongson/common/serial.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-  Ralf
+diff --git a/arch/mips/loongson/common/serial.c b/arch/mips/loongson/common/serial.c
+index c23fa1373729..ffefc1cb2612 100644
+--- a/arch/mips/loongson/common/serial.c
++++ b/arch/mips/loongson/common/serial.c
+@@ -11,7 +11,7 @@
+  */
+ 
+ #include <linux/io.h>
+-#include <linux/init.h>
++#include <linux/module.h>
+ #include <linux/serial_8250.h>
+ 
+ #include <asm/bootinfo.h>
+@@ -108,5 +108,10 @@ static int __init serial_init(void)
+ 
+ 	return platform_device_register(&uart8250_device);
+ }
++module_init(serial_init);
+ 
+-device_initcall(serial_init);
++static void __init serial_exit(void)
++{
++	platform_device_unregister(&uart8250_device);
++}
++module_exit(serial_exit);
+-- 
+2.2.1

@@ -1,35 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Jun 2015 23:12:00 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:60082 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27008094AbbFBVL6sqrT6 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 2 Jun 2015 23:11:58 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.9/8.14.8) with ESMTP id t52LBvkU000506;
-        Tue, 2 Jun 2015 23:11:57 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.9/8.14.9/Submit) id t52LBuIv000505;
-        Tue, 2 Jun 2015 23:11:56 +0200
-Date:   Tue, 2 Jun 2015 23:11:56 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Joshua Kinard <kumba@gentoo.org>
-Cc:     Linux MIPS List <linux-mips@linux-mips.org>
-Subject: Re: [PATCH] MIPS: c-r4k: Fix typo in probe_scache()
-Message-ID: <20150602211156.GQ29986@linux-mips.org>
-References: <556E183A.70707@gentoo.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <556E183A.70707@gentoo.org>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Jun 2015 23:47:20 +0200 (CEST)
+Received: from lb3-smtp-cloud6.xs4all.net ([194.109.24.31]:53741 "EHLO
+        lb3-smtp-cloud6.xs4all.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008094AbbFBVrQ0qxLk (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 2 Jun 2015 23:47:16 +0200
+Received: from [192.168.10.106] ([83.160.161.190])
+        by smtp-cloud6.xs4all.net with ESMTP
+        id bZn81q00D46mmVf01ZnAAt; Tue, 02 Jun 2015 23:47:11 +0200
+Message-ID: <1433281628.2361.93.camel@x220>
+Subject: Re: [PATCH 3/4] mips: make loongsoon serial driver explicitly
+ modular
+From:   Paul Bolle <pebolle@tiscali.nl>
+To:     Paul Gortmaker <paul.gortmaker@windriver.com>
+Cc:     linux-kernel@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
+        linux-mips@linux-mips.org
+Date:   Tue, 02 Jun 2015 23:47:08 +0200
+In-Reply-To: <1433276168-21550-4-git-send-email-paul.gortmaker@windriver.com>
+References: <1433276168-21550-1-git-send-email-paul.gortmaker@windriver.com>
+         <1433276168-21550-4-git-send-email-paul.gortmaker@windriver.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.10.4 (3.10.4-4.fc20) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Return-Path: <pebolle@tiscali.nl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47809
+X-archive-position: 47810
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: pebolle@tiscali.nl
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -42,14 +42,15 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Jun 02, 2015 at 04:55:22PM -0400, Joshua Kinard wrote:
+On Tue, 2015-06-02 at 16:16 -0400, Paul Gortmaker wrote:
+> +static void __init serial_exit(void)
 
-> From: Joshua Kinard <kumba@gentoo.org>
-> 
-> Fixes a typo in arch/mips/mm/c-r4k.c's probe_scache().
+s/__init/__exit/
 
-Wow, this one must be very, very antique.
+> +{
+> +	platform_device_unregister(&uart8250_device);
+> +}
+> +module_exit(serial_exit);
 
-Thanks!
 
-  Ralf
+Paul Bolle

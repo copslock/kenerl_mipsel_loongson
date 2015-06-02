@@ -1,21 +1,13 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Jun 2015 18:15:39 +0200 (CEST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Jun 2015 18:51:04 +0200 (CEST)
 Received: (from localhost user: 'macro', uid#1010) by eddie.linux-mips.org
-        with ESMTP id S27007056AbbFBQPhFRkJ4 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 2 Jun 2015 18:15:37 +0200
-Date:   Tue, 2 Jun 2015 17:15:37 +0100 (BST)
+        with ESMTP id S27007050AbbFBQu7ZqEY4 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 2 Jun 2015 18:50:59 +0200
+Date:   Tue, 2 Jun 2015 17:50:59 +0100 (BST)
 From:   "Maciej W. Rozycki" <macro@linux-mips.org>
-To:     James Hogan <james.hogan@imgtec.com>
-cc:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
-        linux-mips@linux-mips.org, benh@kernel.crashing.org,
-        will.deacon@arm.com, linux-kernel@vger.kernel.org,
-        Ralf Baechle <ralf@linux-mips.org>, markos.chandras@imgtec.com,
-        Steven.Hill@imgtec.com, alexander.h.duyck@redhat.com,
-        "David S. Miller" <davem@davemloft.net>
-Subject: Re: [PATCH 1/3] MIPS: R6: Use lightweight SYNC instruction in smp_*
- memory barriers
-In-Reply-To: <556D8A03.9080201@imgtec.com>
-Message-ID: <alpine.LFD.2.11.1506021709420.6751@eddie.linux-mips.org>
-References: <20150602000818.6668.76632.stgit@ubuntu-yegoshin> <20150602000934.6668.43645.stgit@ubuntu-yegoshin> <556D8A03.9080201@imgtec.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+cc:     Joshua Kinard <kumba@gentoo.org>, linux-mips@linux-mips.org
+Subject: [PATCH] MIPS: Avoid an FPE exception in FCSR mask probing
+Message-ID: <alpine.LFD.2.11.1506021739230.6751@eddie.linux-mips.org>
 User-Agent: Alpine 2.11 (LFD 23 2013-08-11)
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
@@ -23,7 +15,7 @@ Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47794
+X-archive-position: 47795
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -40,27 +32,29 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, 2 Jun 2015, James Hogan wrote:
+Use the default FCSR value in mask probing, avoiding an FPE exception 
+where reset has left any exception enable and their corresponding cause 
+bits set and the register is then rewritten with these bits active.
 
-> > diff --git a/arch/mips/include/asm/barrier.h b/arch/mips/include/asm/barrier.h
-> > index 2b8bbbcb9be0..d2a63abfc7c6 100644
-> > --- a/arch/mips/include/asm/barrier.h
-> > +++ b/arch/mips/include/asm/barrier.h
-> > @@ -96,9 +96,15 @@
-> >  #  define smp_rmb()	barrier()
-> >  #  define smp_wmb()	__syncw()
-> >  # else
-> > +#  ifdef CONFIG_MIPS_LIGHTWEIGHT_SYNC
-> > +#  define smp_mb()      __asm__ __volatile__("sync 0x10" : : :"memory")
-> > +#  define smp_rmb()     __asm__ __volatile__("sync 0x13" : : :"memory")
-> > +#  define smp_wmb()     __asm__ __volatile__("sync 0x4" : : :"memory")
-> 
-> binutils appears to support the sync_mb, sync_rmb, sync_wmb aliases
-> since version 2.21. Can we safely use them?
-
- I suggest that we don't -- we still officially support binutils 2.12 and 
-have other places where we even use `.word' to insert instructions current 
-versions of binutils properly handle.  It may be worth noting in a comment 
-though that these encodings correspond to these operations that you named.
-
-  Maciej
+Signed-off-by: Maciej W. Rozycki <macro@linux-mips.org>
+---
+linux-mips-fcsr-mask-fix.diff
+Index: linux-org-test/arch/mips/kernel/cpu-probe.c
+===================================================================
+--- linux-org-test.orig/arch/mips/kernel/cpu-probe.c	2015-06-01 00:43:32.000000000 +0100
++++ linux-org-test/arch/mips/kernel/cpu-probe.c	2015-06-02 12:14:10.088786000 +0100
+@@ -74,13 +74,12 @@ static inline void cpu_set_fpu_fcsr_mask
+ {
+ 	unsigned long sr, mask, fcsr, fcsr0, fcsr1;
+ 
++	fcsr = c->fpu_csr31;
+ 	mask = FPU_CSR_ALL_X | FPU_CSR_ALL_E | FPU_CSR_ALL_S | FPU_CSR_RM;
+ 
+ 	sr = read_c0_status();
+ 	__enable_fpu(FPU_AS_IS);
+ 
+-	fcsr = read_32bit_cp1_register(CP1_STATUS);
+-
+ 	fcsr0 = fcsr & mask;
+ 	write_32bit_cp1_register(CP1_STATUS, fcsr0);
+ 	fcsr0 = read_32bit_cp1_register(CP1_STATUS);

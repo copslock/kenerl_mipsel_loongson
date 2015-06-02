@@ -1,46 +1,90 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Jun 2015 09:06:34 +0200 (CEST)
-Received: from resqmta-ch2-10v.sys.comcast.net ([69.252.207.42]:51243 "EHLO
-        resqmta-ch2-10v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007004AbbFBHGcFztf4 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 2 Jun 2015 09:06:32 +0200
-Received: from resomta-ch2-12v.sys.comcast.net ([69.252.207.108])
-        by resqmta-ch2-10v.sys.comcast.net with comcast
-        id bHX61q0022LrikM01HX6ma; Tue, 02 Jun 2015 05:31:06 +0000
-Received: from [192.168.1.13] ([69.251.155.187])
-        by resomta-ch2-12v.sys.comcast.net with comcast
-        id bHX51q00C42s2jH01HX57U; Tue, 02 Jun 2015 05:31:06 +0000
-Message-ID: <556D3F96.1070607@gentoo.org>
-Date:   Tue, 02 Jun 2015 01:31:02 -0400
-From:   Joshua Kinard <kumba@gentoo.org>
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:31.0) Gecko/20100101 Thunderbird/31.7.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Jun 2015 09:47:06 +0200 (CEST)
+Received: from e06smtp16.uk.ibm.com ([195.75.94.112]:43860 "EHLO
+        e06smtp16.uk.ibm.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27006736AbbFBHrEmOrV4 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 2 Jun 2015 09:47:04 +0200
+Received: from /spool/local
+        by e06smtp16.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <linux-mips@linux-mips.org> from <dingel@linux.vnet.ibm.com>;
+        Tue, 2 Jun 2015 08:46:54 +0100
+Received: from d06dlp01.portsmouth.uk.ibm.com (9.149.20.13)
+        by e06smtp16.uk.ibm.com (192.168.101.146) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        Tue, 2 Jun 2015 08:46:52 +0100
+Received: from b06cxnps4075.portsmouth.uk.ibm.com (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+        by d06dlp01.portsmouth.uk.ibm.com (Postfix) with ESMTP id E21E217D8062;
+        Tue,  2 Jun 2015 08:47:49 +0100 (BST)
+Received: from d06av03.portsmouth.uk.ibm.com (d06av03.portsmouth.uk.ibm.com [9.149.37.213])
+        by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id t527kpW57405802;
+        Tue, 2 Jun 2015 07:46:51 GMT
+Received: from d06av03.portsmouth.uk.ibm.com (localhost [127.0.0.1])
+        by d06av03.portsmouth.uk.ibm.com (8.14.4/8.14.4/NCO v10.0 AVout) with ESMTP id t527kjAW019389;
+        Tue, 2 Jun 2015 01:46:51 -0600
+Received: from BR9TG4T3.de.ibm.com (sig-9-84-2-37.evts.de.ibm.com [9.84.2.37])
+        by d06av03.portsmouth.uk.ibm.com (8.14.4/8.14.4/NCO v10.0 AVin) with ESMTP id t527kg45019291;
+        Tue, 2 Jun 2015 01:46:42 -0600
+Date:   Tue, 2 Jun 2015 09:46:40 +0200
+From:   Dominik Dingel <dingel@linux.vnet.ibm.com>
+To:     Christian Borntraeger <borntraeger@de.ibm.com>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>
+Cc:     linux-kernel@vger.kernel.org,
+        Russell King <linux@arm.linux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        James Hogan <james.hogan@imgtec.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        linux390@de.ibm.com, "David S. Miller" <davem@davemloft.net>,
+        Chris Metcalf <cmetcalf@ezchip.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Zhang Zhen <zhenzhang.zhang@huawei.com>,
+        David Rientjes <rientjes@google.com>,
+        "Aneesh Kumar K.V" <aneesh.kumar@linux.vnet.ibm.com>,
+        Nathan Lynch <nathan_lynch@mentor.com>,
+        Andy Lutomirski <luto@amacapital.net>,
+        Michael Holzheu <holzheu@linux.vnet.ibm.com>,
+        Hugh Dickins <hughd@google.com>,
+        Naoya Horiguchi <n-horiguchi@ah.jp.nec.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        "Jason J. Herne" <jjherne@linux.vnet.ibm.com>,
+        Davidlohr Bueso <dave@stgolabs.net>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Luiz Capitulino <lcapitulino@redhat.com>,
+        Mike Kravetz <mike.kravetz@oracle.com>,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        linux-metag@vger.kernel.org, linux-mips@linux-mips.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org
+Subject: Re: [PATCH 0/5] Remove s390 sw-emulated hugepages and cleanup
+Message-ID: <20150602094640.4fedc046@BR9TG4T3.de.ibm.com>
+In-Reply-To: <556C0B5D.40205@de.ibm.com>
+References: <1432813957-46874-1-git-send-email-dingel@linux.vnet.ibm.com>
+        <556C0B5D.40205@de.ibm.com>
+Followup-To: linux-mm@kvack.org
+Organization: IBM
+X-Mailer: Claws Mail 3.9.3 (GTK+ 2.24.23; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     linux-mips@linux-mips.org
-Subject: Re: IP30: SMP, Almost there?
-References: <55597B21.4010704@gentoo.org> <556142C5.7090206@gentoo.org> <20150601193208.GA29986@linux-mips.org>
-In-Reply-To: <20150601193208.GA29986@linux-mips.org>
-Content-Type: text/plain; charset=windows-1252
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=comcast.net;
-        s=q20140121; t=1433223066;
-        bh=yPPcLuY27cp7CzkJYnOMjHByJSKXtWVtFgh4X2rYKyk=;
-        h=Received:Received:Message-ID:Date:From:MIME-Version:To:Subject:
-         Content-Type;
-        b=JJl5rDv/AQbHMuKnwJg6EnhCpyKL19o4x6ANOVSosepxZM8sWlKDbrCFHW8aG0ubc
-         9DSKZHNcXX88MYX5ggERe0JK/16mwoiOZOyviJik8yjFDHUA8xQ6ljKPNfyNx8ZZCI
-         wCisM3JJAZcCbV++Y3C9BjuLrJS4orFQKOdZfoZ2sKNogG54uV2XZ93g8zWvGmVFeo
-         +k4wNHnSxhDSINIGWWttyBIUExOVXj9TZpapDp/TdjG4OzRuH18ZoOqAKYC8MALyp+
-         rkmYhflp8Q1gdarIEnWb2DKUwuJ3L7+osGxtSjkUy5c+jaX3cz91lDGfSJBF03pk6l
-         KK+7lP/2nRuqA==
-Return-Path: <kumba@gentoo.org>
+X-TM-AS-MML: disable
+X-Content-Scanned: Fidelis XPS MAILER
+x-cbid: 15060207-0025-0000-0000-0000056C922B
+Return-Path: <dingel@linux.vnet.ibm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47773
+X-archive-position: 47774
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kumba@gentoo.org
+X-original-sender: dingel@linux.vnet.ibm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,52 +97,42 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 06/01/2015 15:32, Ralf Baechle wrote:
-> On Sat, May 23, 2015 at 11:17:25PM -0400, Joshua Kinard wrote:
-> 
->> I even got the IRQs to be fanned out across both CPUs.  Well, primarily the
->> qla1280 drivers.  They randomly hop between both CPUs, but no ill effects so far.
->>
->> But if I boot that *same* working kernel on an R14000 dual module, I get handed
->> an IBE as soon as the userland mounts.  The only documented differences that I
->> can find on the R14000 is that it supports DDR memory, being able to do memory
->> operations on the rising edge and falling edge of each clock.  Not sure if that
->> matters to the kernel at all, but I know of nothing else that describes the
->> R14K's internals, such as if there's some new bit in CP0 config,
->> branch-diagnostic, status, etc, that might explain why these IBE's are happening.
->>
->> Guess I need to hunt down my old dual R10K module next and verify that works
->> fine...
->>
->> Also, is there a way to hardcode the cca=5 setting for IP30?  Maybe it needs to
->> be a hidden Kconfig item?.  I tried setting cpu->writecombine in cpu-probe.c,
->> but no dice there.  If I boot an SMP kernel on dual R12K's w/o cca=5, I'll get
->> one or two pretty-specific oopses.  The one I did grab complains about bad
->> spinlock magic in the core tty driver somewhere.  I can transcribe that oops
->> later on if interested.
-> 
-> Can you insert something like:
-> 
->   printk("c0_config: %08x\n", read_c0_config());
-> 
-> into a kernel and boot it without cca=5?  I'm really curious what the
-> startup CCA is.
-> 
->   Ralf
+On Mon, 01 Jun 2015 09:35:57 +0200
+Christian Borntraeger <borntraeger@de.ibm.com> wrote:
 
-It's cca=3 as the default.  Wasn't there a patch long ago that made that the
-default?
+> Am 28.05.2015 um 13:52 schrieb Dominik Dingel:
+> > Hi everyone,
+> > 
+> > there is a potential bug with KVM and hugetlbfs if the hardware does not
+> > support hugepages (EDAT1).
+> > We fix this by making EDAT1 a hard requirement for hugepages and 
+> > therefore removing and simplifying code.
+> 
+> The cleanup itself is nice and probably the right thing to do. 
+> Emulating large pages makes the code more complex and asks for
+> trouble (as outlined above)
+> 
+> The only downside that I see is that z/VM as of today does not
+> announce EDAT1 for its guests so the "emulated" large pages for
+> hugetlbfs would be useful in that case. The current code allocates
+> the page table only once and shares it for all mappers - which is
+> useful for some big databases that spawn hundreds of processes with
+> shared mappings of several hundred GBs. In these cases we do save
+> a decent amount of page table memory. 
 
-                       D
-              I   D    S     S   S  B S S  E   P  P C D   K
-              C   C  0 D 0   C   S  E K B  C   M  E T N   0
-             -----------------------------------------------
-             xxx xxx x x xx xxx xxx x x x xxxx xx x x xx xxx
-0x6c1ab3a3   011 011 0 0 00 011 010 1 0 1 1001 11 0 1 00 011    no cca
-0x6c1ab3a5   011 011 0 0 00 011 010 1 0 1 1001 11 0 1 00 101    cca=5
+To limit the damage done, we could always allocate page tables with pgstes for that case.
+That would allow one guest manipulating another guests storage keys,
+but at least would prevent random memory overwrites in the host.
 
+Another thing we could do, make software emulated large pages a kernel config option
+and only if KVM is not selected allow it, visa versa.
 
-I think cca=4 also works okay, but I have to test it a bit more.  Which is the
-better one to stick with?
+@Martin what do you think?
 
---J
+Thanks,
+	Dominik
+
+> Not sure if that case is actually important, though.
+> 
+> Christian
+> 

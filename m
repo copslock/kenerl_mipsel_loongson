@@ -1,41 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Jun 2015 08:51:31 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:50824 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27006736AbbFBGv26Q5K4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 2 Jun 2015 08:51:28 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.9/8.14.8) with ESMTP id t526pNCX014402;
-        Tue, 2 Jun 2015 08:51:24 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.9/8.14.9/Submit) id t526pNkG014401;
-        Tue, 2 Jun 2015 08:51:23 +0200
-Date:   Tue, 2 Jun 2015 08:51:23 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Joshua Kinard <kumba@gentoo.org>
-Cc:     "Maciej W. Rozycki" <macro@linux-mips.org>,
-        Linux MIPS List <linux-mips@linux-mips.org>
-Subject: Re: IP27: R14000: Unexpected General Exception in
- cpu_set_fpu_fcsr_mask()
-Message-ID: <20150602065122.GE26432@linux-mips.org>
-References: <556943D9.7020502@gentoo.org>
- <alpine.LFD.2.11.1506010025410.22908@eddie.linux-mips.org>
- <556BCA01.1070208@gentoo.org>
- <alpine.LFD.2.11.1506011218590.22908@eddie.linux-mips.org>
- <556D378C.8060503@gentoo.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Jun 2015 09:06:34 +0200 (CEST)
+Received: from resqmta-ch2-10v.sys.comcast.net ([69.252.207.42]:51243 "EHLO
+        resqmta-ch2-10v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007004AbbFBHGcFztf4 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 2 Jun 2015 09:06:32 +0200
+Received: from resomta-ch2-12v.sys.comcast.net ([69.252.207.108])
+        by resqmta-ch2-10v.sys.comcast.net with comcast
+        id bHX61q0022LrikM01HX6ma; Tue, 02 Jun 2015 05:31:06 +0000
+Received: from [192.168.1.13] ([69.251.155.187])
+        by resomta-ch2-12v.sys.comcast.net with comcast
+        id bHX51q00C42s2jH01HX57U; Tue, 02 Jun 2015 05:31:06 +0000
+Message-ID: <556D3F96.1070607@gentoo.org>
+Date:   Tue, 02 Jun 2015 01:31:02 -0400
+From:   Joshua Kinard <kumba@gentoo.org>
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:31.0) Gecko/20100101 Thunderbird/31.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <556D378C.8060503@gentoo.org>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <ralf@linux-mips.org>
+To:     Ralf Baechle <ralf@linux-mips.org>
+CC:     linux-mips@linux-mips.org
+Subject: Re: IP30: SMP, Almost there?
+References: <55597B21.4010704@gentoo.org> <556142C5.7090206@gentoo.org> <20150601193208.GA29986@linux-mips.org>
+In-Reply-To: <20150601193208.GA29986@linux-mips.org>
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=comcast.net;
+        s=q20140121; t=1433223066;
+        bh=yPPcLuY27cp7CzkJYnOMjHByJSKXtWVtFgh4X2rYKyk=;
+        h=Received:Received:Message-ID:Date:From:MIME-Version:To:Subject:
+         Content-Type;
+        b=JJl5rDv/AQbHMuKnwJg6EnhCpyKL19o4x6ANOVSosepxZM8sWlKDbrCFHW8aG0ubc
+         9DSKZHNcXX88MYX5ggERe0JK/16mwoiOZOyviJik8yjFDHUA8xQ6ljKPNfyNx8ZZCI
+         wCisM3JJAZcCbV++Y3C9BjuLrJS4orFQKOdZfoZ2sKNogG54uV2XZ93g8zWvGmVFeo
+         +k4wNHnSxhDSINIGWWttyBIUExOVXj9TZpapDp/TdjG4OzRuH18ZoOqAKYC8MALyp+
+         rkmYhflp8Q1gdarIEnWb2DKUwuJ3L7+osGxtSjkUy5c+jaX3cz91lDGfSJBF03pk6l
+         KK+7lP/2nRuqA==
+Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47772
+X-archive-position: 47773
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: kumba@gentoo.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,46 +53,52 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Jun 02, 2015 at 12:56:44AM -0400, Joshua Kinard wrote:
+On 06/01/2015 15:32, Ralf Baechle wrote:
+> On Sat, May 23, 2015 at 11:17:25PM -0400, Joshua Kinard wrote:
+> 
+>> I even got the IRQs to be fanned out across both CPUs.  Well, primarily the
+>> qla1280 drivers.  They randomly hop between both CPUs, but no ill effects so far.
+>>
+>> But if I boot that *same* working kernel on an R14000 dual module, I get handed
+>> an IBE as soon as the userland mounts.  The only documented differences that I
+>> can find on the R14000 is that it supports DDR memory, being able to do memory
+>> operations on the rising edge and falling edge of each clock.  Not sure if that
+>> matters to the kernel at all, but I know of nothing else that describes the
+>> R14K's internals, such as if there's some new bit in CP0 config,
+>> branch-diagnostic, status, etc, that might explain why these IBE's are happening.
+>>
+>> Guess I need to hunt down my old dual R10K module next and verify that works
+>> fine...
+>>
+>> Also, is there a way to hardcode the cca=5 setting for IP30?  Maybe it needs to
+>> be a hidden Kconfig item?.  I tried setting cpu->writecombine in cpu-probe.c,
+>> but no dice there.  If I boot an SMP kernel on dual R12K's w/o cca=5, I'll get
+>> one or two pretty-specific oopses.  The one I did grab complains about bad
+>> spinlock magic in the core tty driver somewhere.  I can transcribe that oops
+>> later on if interested.
+> 
+> Can you insert something like:
+> 
+>   printk("c0_config: %08x\n", read_c0_config());
+> 
+> into a kernel and boot it without cca=5?  I'm really curious what the
+> startup CCA is.
+> 
+>   Ralf
 
-> >>>  I'll submit the final fix, properly annotated, if your testing confirms 
-> >>> my diagnosis.
-> >>
-> >> That got it to boot again.  I added CPU ID to the printk as well, and got some
-> >> odd output from one of the CPUs:
-> >>
-> >> # dmesg | grep FCSR
-> >> [    0.000000] CPU0: FCSR is: 00000000
-> >> [    0.319158] CPU1: FCSR is: 00000000
-> >> [    0.364971] CPU2: FCSR is: ffffffffa8000000
-> >> [    0.404854] CPU3: FCSR is: 00000000
-> > 
-> >  The value reported for CPU2 merely shows FCC[7,5,3] bits set, nothing 
-> > really odd about that, the CPU may well have come out of reset like this.  
-> > Neither of the values reported though actually corresponds to the symptom 
-> > you saw, can you double-check you didn't make a typo in your modification 
-> > to `printk'?
-> 
-> I commented on it being odd because out of four CPUs, #2 was coming up with a
-> sign-extended value, twice (I tested two reboot cycles, same both times).  I'm
-> not fully knowledgable of IP27 hardware, and am probably one of the few on the
-> planet in possession of R14K node boards, so this might be a quirk of these
-> specific nodes.  Would need others to test to verify, I guess.
-> 
-> Could always turn on heavy diags and poke through the verbose MSC reporting if
-> needed.
-> 
-> As for a typo, nope:
-> 
-> 	__enable_fpu(FPU_AS_IS);
-> 
-> 	fcsr = read_32bit_cp1_register(CP1_STATUS);
-> ->	pr_info("CPU%d: FCSR is: %08lx\n", smp_processor_id(), fcsr);
-> 	fcsr &= ~mask;
+It's cca=3 as the default.  Wasn't there a patch long ago that made that the
+default?
 
-Maciej, I think the variables sr, mask, fcsr, fcsr0 and fcsr1 should
-become unsigned ints; they all represent 32 bit CPU registers.  Also
-read_32bit_cp1_register() return a signed int.  A signed int probably
-would make more sense here.
+                       D
+              I   D    S     S   S  B S S  E   P  P C D   K
+              C   C  0 D 0   C   S  E K B  C   M  E T N   0
+             -----------------------------------------------
+             xxx xxx x x xx xxx xxx x x x xxxx xx x x xx xxx
+0x6c1ab3a3   011 011 0 0 00 011 010 1 0 1 1001 11 0 1 00 011    no cca
+0x6c1ab3a5   011 011 0 0 00 011 010 1 0 1 1001 11 0 1 00 101    cca=5
 
-  Ralf
+
+I think cca=4 also works okay, but I have to test it a bit more.  Which is the
+better one to stick with?
+
+--J

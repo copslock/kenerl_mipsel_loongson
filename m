@@ -1,36 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Jun 2015 10:24:16 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:37470 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Jun 2015 10:26:47 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:37596 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27026919AbbFCIYNilu3v (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 3 Jun 2015 10:24:13 +0200
+        id S27026922AbbFCI0pylxBP (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 3 Jun 2015 10:26:45 +0200
 Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.9/8.14.8) with ESMTP id t538OBvS012876;
-        Wed, 3 Jun 2015 10:24:11 +0200
+        by scotty.linux-mips.net (8.14.9/8.14.8) with ESMTP id t538QeqI012984;
+        Wed, 3 Jun 2015 10:26:40 +0200
 Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.9/8.14.9/Submit) id t538OA6X012874;
-        Wed, 3 Jun 2015 10:24:10 +0200
-Date:   Wed, 3 Jun 2015 10:24:10 +0200
+        by scotty.linux-mips.net (8.14.9/8.14.9/Submit) id t538QcT2012983;
+        Wed, 3 Jun 2015 10:26:38 +0200
+Date:   Wed, 3 Jun 2015 10:26:38 +0200
 From:   Ralf Baechle <ralf@linux-mips.org>
 To:     Rob Herring <robh@kernel.org>
-Cc:     devicetree@vger.kernel.org, Grant Likely <grant.likely@linaro.org>,
-        linux-kernel@vger.kernel.org,
-        Pantelis Antoniou <pantelis.antoniou@konsulko.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        linux-mips@linux-mips.org
-Subject: Re: [PATCH 1/3] MIPS: prepare for user enabling of CONFIG_OF
-Message-ID: <20150603082410.GI9839@linux-mips.org>
-References: <1433285204-4307-1-git-send-email-robh@kernel.org>
- <1433285204-4307-2-git-send-email-robh@kernel.org>
+Cc:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Grant Likely <grant.likely@linaro.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        linux-mips@linux-mips.org, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH] of: clean-up unnecessary libfdt include paths
+Message-ID: <20150603082638.GJ9839@linux-mips.org>
+References: <1433308225-13874-1-git-send-email-robh@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1433285204-4307-2-git-send-email-robh@kernel.org>
+In-Reply-To: <1433308225-13874-1-git-send-email-robh@kernel.org>
 User-Agent: Mutt/1.5.23 (2014-03-12)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47828
+X-archive-position: 47829
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,14 +47,31 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Jun 02, 2015 at 05:46:42PM -0500, Rob Herring wrote:
+On Wed, Jun 03, 2015 at 12:10:25AM -0500, Rob Herring wrote:
+> Date:   Wed,  3 Jun 2015 00:10:25 -0500
+> From: Rob Herring <robh@kernel.org>
+> To: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+> Cc: Grant Likely <grant.likely@linaro.org>, Rob Herring <robh@kernel.org>,
+>  Ralf Baechle <ralf@linux-mips.org>, Benjamin Herrenschmidt
+>  <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>, Michael
+>  Ellerman <mpe@ellerman.id.au>, linux-mips@linux-mips.org,
+>  linuxppc-dev@lists.ozlabs.org
+> Subject: [PATCH] of: clean-up unnecessary libfdt include paths
+> 
+> With the latest dtc import include fixups, it is no longer necessary to
+> add explicit include paths to use libfdt. Remove these across the
+> kernel.
+> 
+> Signed-off-by: Rob Herring <robh@kernel.org>
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> Cc: Paul Mackerras <paulus@samba.org>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Grant Likely <grant.likely@linaro.org>
+> Cc: linux-mips@linux-mips.org
+> Cc: linuxppc-dev@lists.ozlabs.org
 
-> In preparation to allow users to enable DeviceTree without arch or
-> machine selecting it, we need to fix build errors on MIPS. When
-> CONFIG_OF is enabled, device_tree_init cannot be resolved. This is
-> trivially fixed by using CONFIG_USE_OF instead of CONFIG_OF for prom.h.
-
-Want to take this through your tree?  If so,
+For the MIPS bits;
 
 Acked-by: Ralf Baechle <ralf@linux-mips.org>
 

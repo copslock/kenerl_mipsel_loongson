@@ -1,31 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Jun 2015 10:07:03 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:37019 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Jun 2015 10:21:28 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:37343 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27007169AbbFCIHBm3UBx (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 3 Jun 2015 10:07:01 +0200
+        id S27012161AbbFCIV0NQHHx (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 3 Jun 2015 10:21:26 +0200
 Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.9/8.14.8) with ESMTP id t53870PQ012472;
-        Wed, 3 Jun 2015 10:07:00 +0200
+        by scotty.linux-mips.net (8.14.9/8.14.8) with ESMTP id t538LPMk012815;
+        Wed, 3 Jun 2015 10:21:25 +0200
 Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.9/8.14.9/Submit) id t53870cM012471;
-        Wed, 3 Jun 2015 10:07:00 +0200
-Date:   Wed, 3 Jun 2015 10:07:00 +0200
+        by scotty.linux-mips.net (8.14.9/8.14.9/Submit) id t538LPQ9012814;
+        Wed, 3 Jun 2015 10:21:25 +0200
+Date:   Wed, 3 Jun 2015 10:21:25 +0200
 From:   Ralf Baechle <ralf@linux-mips.org>
 To:     Joshua Kinard <kumba@gentoo.org>
 Cc:     Linux MIPS List <linux-mips@linux-mips.org>
-Subject: Re: [PATCH] MIPS: IP27: Update/restructure CPU overrides
-Message-ID: <20150603080700.GG9839@linux-mips.org>
-References: <556E2833.8060407@gentoo.org>
+Subject: Re: [PATCH v3] MIPS: R12000: Enable branch prediction global history
+Message-ID: <20150603082124.GH9839@linux-mips.org>
+References: <556E2C6D.6070802@gentoo.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <556E2833.8060407@gentoo.org>
+In-Reply-To: <556E2C6D.6070802@gentoo.org>
 User-Agent: Mutt/1.5.23 (2014-03-12)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47826
+X-archive-position: 47827
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -42,51 +42,41 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Jun 02, 2015 at 06:03:31PM -0400, Joshua Kinard wrote:
+On Tue, Jun 02, 2015 at 06:21:33PM -0400, Joshua Kinard wrote:
 
 > From: Joshua Kinard <kumba@gentoo.org>
 > 
-> Inspired by Maciej's recent patch to update DEC cpu-feature-overrides.h,
-> I updated IP27's as well to disable features known to not apply to the
-> IP27 platform or the R10K-series of CPUs.
+> The R12000 added a new feature to enhance branch prediction called
+> "global history".  Per the Vr10000 Series User Manual (U10278EJ4V0UM),
+> Coprocessor 0, Diagnostic Register (22):
 > 
-> Before:
->    text    data     bss     dec     hex filename
-> 8616648  463200  472240 9552088  91c0d8 vmlinux
+> """
+> If bit 26 is set, branch prediction uses all eight bits of the global
+> history register.  If bit 26 is not set, then bits 25:23 specify a count
+> of the number of bits of global history to be used. Thus if bits 26:23
+> are all zero, global history is disabled.
 > 
-> After:
->    text    data     bss     dec     hex filename
-> 8592256  471392  472240 9535888  918190 vmlinux
+> The global history contains a record of the taken/not-taken status of
+> recently executed branches, and when used is XOR'ed with the PC of a
+> branch being predicted to produce a hashed value for indexing the BPT.
+> Some programs with small "working set of conditional branches" benefit
+> significantly from the use of such hashing, some see slight performance
+> degradation.
+> """
 > 
-> I believe the increase in the size of the data section is for the same
-> reasons as in the DEC patch.
-> 
-> Signed-off-by: Joshua Kinard <kumba@gentoo.org>
-> ---
->  arch/mips/include/asm/mach-ip27/cpu-feature-overrides.h |   92 ++++++----
->  1 file changed, 57 insertions(+), 35 deletions(-)
-> 
-> The number of changes is due to restructuring the file to be similar to
-> IP30's, so that eventually, all of the SGI platforms will have a similar
-> look to their cpu-feature-overrides.h file, making it easier to update
-> in the future.  I'll also send one for IP32 shortly, as that needs some
-> more careful updating due to the various CPUs it supports.
+> This patch enables global history on R12000 CPUs and up by setting bit
+> 26 in the branch prediction diagnostic register (CP0 $22) to '1'.  Bits
+> 25:23 are left alone so that all eight bits of the global history
+> register are available for branch prediction.
 
-Kernel bloat due to incomplete overrides.h files is a well known problem.
-It's also somewhat hard problem since writing one requires intimate
-knowledge of the CPU.  That used to be easy for the classic discrete
-CPUs but with synthesizable cores many options can differ between
-instances of that core.  Anyway, the solution I'm thinking off should
-be no more complex that for example saying
+Will apply but could you also submit a patch to set cpu_has_bp_ghist to
+0/1 as applicable in all cpu-feature-overrides.h?
 
-#include <asm/cpus/r4000.h>
-#include <asm/cpus/r4600.h>
-#include <asm/cpus/r5000.h>
+Also the manual suggests this CPU feature may not always be neneficial
+for performance so I'm wondering if we should add a way to modify it
+at runtime.
 
-for an IP22.  Or something similarly obvious.
-
-Patch queued for 4.2.
-
-Thanks!
+I'm curious, have you checked the default setting of the global history
+on kernel entry?
 
   Ralf

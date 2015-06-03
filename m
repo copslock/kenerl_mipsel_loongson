@@ -1,36 +1,74 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Jun 2015 14:20:25 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:57550 "EHLO
-        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007004AbbFCMUWaoS0B (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 3 Jun 2015 14:20:22 +0200
-Received: from localhost (p33062-ipbffx02marunouchi.tokyo.ocn.ne.jp [220.96.46.62])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id F3413AE7;
-        Wed,  3 Jun 2015 12:20:14 +0000 (UTC)
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Paul Burton <paul.burton@imgtec.com>,
-        Markos Chandras <markos.chandras@imgtec.com>,
-        Matthew Fortune <matthew.fortune@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: [PATCH 4.0 122/148] MIPS: fix FP mode selection in lieu of .MIPS.abiflags data
-Date:   Wed,  3 Jun 2015 21:09:52 +0900
-Message-Id: <20150603114210.701244562@linuxfoundation.org>
-X-Mailer: git-send-email 2.4.2
-In-Reply-To: <20150603114205.337615117@linuxfoundation.org>
-References: <20150603114205.337615117@linuxfoundation.org>
-User-Agent: quilt/0.64
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Jun 2015 17:45:06 +0200 (CEST)
+Received: from mail-qg0-f52.google.com ([209.85.192.52]:35283 "EHLO
+        mail-qg0-f52.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007836AbbFCPpEPS5Gt (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 3 Jun 2015 17:45:04 +0200
+Received: by qgg60 with SMTP id 60so5501179qgg.2
+        for <linux-mips@linux-mips.org>; Wed, 03 Jun 2015 08:44:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type;
+        bh=mYH+CDRTicgKD3FuwRtzNSczzKAZThztlj1APAuf2UI=;
+        b=V/NK0gz2bBSFoeegc9wc113/RfMY7ZWrDOrc/4DE2DeL3f3lJHVjsDkSuJCC9r1dGU
+         VNxDOPLIIJ+kgKxn6z9fmFveHHZTnM0BHM6tX5HsxeJiRPHpuZ1eFnsm8fr+ik8f/dIk
+         ci9OCzAy14r4A/Iy2KvN6wMaOkjKDRMJhuzoK841s69rSXjg55uDBo8XuS9hNEc7rr2J
+         G9WH4YVWh+X33JF8TDPud/v9By4DiY4s4B0U84OXnUytSgZHDxvEuKp8ssaXA/8Z5KiR
+         n5W8DRY4LYhTqcSw3B8r8TNPwVSVaimhTvRfT7dJNPBd/IcNtynAs2uOrepUTrbi9Y02
+         QtJA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type;
+        bh=mYH+CDRTicgKD3FuwRtzNSczzKAZThztlj1APAuf2UI=;
+        b=Mb310E+sqPNStToLCjhWUqz2LTWVmgJu5AP18CQwbWhyNarRyeqf9YVCW3QyB3Bv7G
+         ZEGsjRv6Hb8kWwvGIFWKxJ3iHKZoM8YHjvA7JZ8K/pRA3WegdDatIHQCp06CaCzgNKpw
+         xg45K0jSzUB61KMpZv6FF82oJGlSoF2rdcS1Y=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:sender:in-reply-to:references:date
+         :message-id:subject:from:to:cc:content-type;
+        bh=mYH+CDRTicgKD3FuwRtzNSczzKAZThztlj1APAuf2UI=;
+        b=jh6uG9mh6BkpsWw8+Y3AC8chudhfyKWl17OPO2HjNjVdq30pklW16Orqw42sZHI6Yt
+         NvdpZe6yAn+UZyJmhcHEUXz5K4OCKgNfpgoxwNgOikRVW/jhG+AKUpMMj42ZJ/sK8sya
+         v2SeaOSNSMBDv3wp3XOoKSYDBoWuKIOf1HGoHlDX11UzoZbcGDYp/yv7Wy8ia3aOfgq7
+         yo/iZllonNwwAF6mZSw4wLnvBkPBnfotTXGUiUT/zHCD6TiLoeDly1ohu8Pb60ZdUwi/
+         nNQmOIr9LFZ585sG3MfH3O3DwPkFQWZoiwvAhZggW2nlroX1nMXnVT6aqrsd5FSD8Jk0
+         +XBw==
+X-Gm-Message-State: ALoCoQmUKcOyJHVVz5uVtZdTlAMvhMrTTeGOIzXi0vzOzSNyQOq9sAPNKDjxu8UkLhkkqcY1EDal
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-15
-Return-Path: <gregkh@linuxfoundation.org>
+X-Received: by 10.55.41.17 with SMTP id p17mr60162824qkh.86.1433346298376;
+ Wed, 03 Jun 2015 08:44:58 -0700 (PDT)
+Received: by 10.140.19.17 with HTTP; Wed, 3 Jun 2015 08:44:58 -0700 (PDT)
+In-Reply-To: <556E99B4.6090307@ti.com>
+References: <1428444258-25852-1-git-send-email-abrestic@chromium.org>
+        <CAL1qeaE0+aMLBgk8SKgJ3fXm==M2-Z_yEPYNVZ0yxSee-p7YOw@mail.gmail.com>
+        <5549083F.8080505@imgtec.com>
+        <5550C06D.2010409@ti.com>
+        <556E99B4.6090307@ti.com>
+Date:   Wed, 3 Jun 2015 08:44:58 -0700
+X-Google-Sender-Auth: OTmA451TL6nxmPr4Z7AZGwhQza4
+Message-ID: <CAL1qeaFdcqUoivOkBjbGEtMovDow08_j68k+Z7mxrY==OAhAWA@mail.gmail.com>
+Subject: Re: [PATCH V2 0/3] Pistachio USB2.0 PHY
+From:   Andrew Bresticker <abrestic@chromium.org>
+To:     Kishon Vijay Abraham I <kishon@ti.com>
+Cc:     1428444258-25852-1-git-send-email-abrestic@chromium.org,
+        Linux-MIPS <linux-mips@linux-mips.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        James Hartley <james.hartley@imgtec.com>,
+        Damien Horsley <Damien.Horsley@imgtec.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <abrestic@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47830
+X-archive-position: 47831
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
+X-original-sender: abrestic@chromium.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,108 +81,42 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-4.0-stable review patch.  If anyone has any objections, please let me know.
+On Tue, Jun 2, 2015 at 11:07 PM, Kishon Vijay Abraham I <kishon@ti.com> wrote:
+>
+>
+> On Monday 11 May 2015 08:15 PM, Kishon Vijay Abraham I wrote:
+>>
+>>
+>>
+>> On Tuesday 05 May 2015 11:43 PM, Ezequiel Garcia wrote:
+>>>
+>>> Hi Kishon,
+>>>
+>>>>
+>>>> This series adds support for the USB2.0 PHY present on the IMG Pistachio
+>>>> SoC.
+>>>>
+>>>> Based on mips-for-linux-next and tested on the IMG Pistachio BuB.  If
+>>>> possible,
+>>>> I'd like this to go through the MIPS tree with Kishon's ACK.
+>>>>
+>>>
+>>> Tested-by: Ezequiel Garcia <ezequiel.garcia@imgtec.com>
+>>>
+>>> Can we have your Ack for this series so Ralf can pick it?
+>>
+>>
+>> sure..
+>>
+>> Acked-by: Kishon Vijay Abraham I <kishon@ti.com>
+>
+>
+> I'm not sure if this has been merged yet. But this will cause conflicts with
+> other PHY patches in Makefile and Kconfig when linus merges to his tree. I'd
+> prefer the phy patches go in PHY tree itself.
 
-------------------
+It doesn't look like Ralf has picked these up, so if you want to take
+them through your tree, that would be great.
 
-From: Paul Burton <paul.burton@imgtec.com>
-
-commit 620b155034570f577470cf5309f741bac6a6e32b upstream.
-
-Commit 46490b572544 ("MIPS: kernel: elf: Improve the overall ABI and FPU
-mode checks") reworked the ELF FP ABI mode selection logic, but when
-CONFIG_MIPS_O32_FP64_SUPPORT is enabled it breaks the use of binaries
-which have no PT_MIPS_ABIFLAGS program header & associated
-.MIPS.abiflags section.
-
-A default mode is selected based upon whether the ELF contains MIPS32 or
-MIPS64 code, but that selection is made in arch_elf_pt_proc.
-arch_elf_pt_proc only executes when a PT_MIPS_ABIFLAGS program header is
-found. If one is not found then arch_elf_pt_proc is never called, and no
-default overall_fp_mode value is selected. When arch_check_elf is
-called, both abi0 & abi1 are MIPS_ABI_FP_UNKNOWN which leads to both
-prog_req & interp_req being set to none_req. none_req matches none of
-the conditions for mode selection at the end of arch_check_elf, so
-overall_fp_mode is left untouched. Finally once mips_set_personality_fp
-is called the BUG() in the default case is then hit & the kernel likely
-panics.
-
-Fix this by moving the selection of a default overall mode to the start
-of arch_check_elf, which runs once per ELF executed regardless of
-whether it has a PT_MIPS_ABIFLAGS program header.
-
-Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-Cc: Markos Chandras <markos.chandras@imgtec.com>
-Cc: Matthew Fortune <matthew.fortune@imgtec.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
-Patchwork: http://patchwork.linux-mips.org/patch/9978/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
----
- arch/mips/kernel/elf.c |   32 +++++++++++++++++---------------
- 1 file changed, 17 insertions(+), 15 deletions(-)
-
---- a/arch/mips/kernel/elf.c
-+++ b/arch/mips/kernel/elf.c
-@@ -76,14 +76,6 @@ int arch_elf_pt_proc(void *_ehdr, void *
- 
- 	/* Lets see if this is an O32 ELF */
- 	if (ehdr32->e_ident[EI_CLASS] == ELFCLASS32) {
--		/* FR = 1 for N32 */
--		if (ehdr32->e_flags & EF_MIPS_ABI2)
--			state->overall_fp_mode = FP_FR1;
--		else
--			/* Set a good default FPU mode for O32 */
--			state->overall_fp_mode = cpu_has_mips_r6 ?
--				FP_FRE : FP_FR0;
--
- 		if (ehdr32->e_flags & EF_MIPS_FP64) {
- 			/*
- 			 * Set MIPS_ABI_FP_OLD_64 for EF_MIPS_FP64. We will override it
-@@ -104,9 +96,6 @@ int arch_elf_pt_proc(void *_ehdr, void *
- 				  (char *)&abiflags,
- 				  sizeof(abiflags));
- 	} else {
--		/* FR=1 is really the only option for 64-bit */
--		state->overall_fp_mode = FP_FR1;
--
- 		if (phdr64->p_type != PT_MIPS_ABIFLAGS)
- 			return 0;
- 		if (phdr64->p_filesz < sizeof(abiflags))
-@@ -147,6 +136,7 @@ int arch_check_elf(void *_ehdr, bool has
- 	struct elf32_hdr *ehdr = _ehdr;
- 	struct mode_req prog_req, interp_req;
- 	int fp_abi, interp_fp_abi, abi0, abi1, max_abi;
-+	bool is_mips64;
- 
- 	if (!config_enabled(CONFIG_MIPS_O32_FP64_SUPPORT))
- 		return 0;
-@@ -162,10 +152,22 @@ int arch_check_elf(void *_ehdr, bool has
- 		abi0 = abi1 = fp_abi;
- 	}
- 
--	/* ABI limits. O32 = FP_64A, N32/N64 = FP_SOFT */
--	max_abi = ((ehdr->e_ident[EI_CLASS] == ELFCLASS32) &&
--		   (!(ehdr->e_flags & EF_MIPS_ABI2))) ?
--		MIPS_ABI_FP_64A : MIPS_ABI_FP_SOFT;
-+	is_mips64 = (ehdr->e_ident[EI_CLASS] == ELFCLASS64) ||
-+		    (ehdr->e_flags & EF_MIPS_ABI2);
-+
-+	if (is_mips64) {
-+		/* MIPS64 code always uses FR=1, thus the default is easy */
-+		state->overall_fp_mode = FP_FR1;
-+
-+		/* Disallow access to the various FPXX & FP64 ABIs */
-+		max_abi = MIPS_ABI_FP_SOFT;
-+	} else {
-+		/* Default to a mode capable of running code expecting FR=0 */
-+		state->overall_fp_mode = cpu_has_mips_r6 ? FP_FRE : FP_FR0;
-+
-+		/* Allow all ABIs we know about */
-+		max_abi = MIPS_ABI_FP_64A;
-+	}
- 
- 	if ((abi0 > max_abi && abi0 != MIPS_ABI_FP_UNKNOWN) ||
- 	    (abi1 > max_abi && abi1 != MIPS_ABI_FP_UNKNOWN))
+Thanks,
+Andrew

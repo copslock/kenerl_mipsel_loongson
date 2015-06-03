@@ -1,31 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Jun 2015 10:21:28 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:37343 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Jun 2015 10:24:16 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:37470 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27012161AbbFCIV0NQHHx (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 3 Jun 2015 10:21:26 +0200
+        id S27026919AbbFCIYNilu3v (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 3 Jun 2015 10:24:13 +0200
 Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.9/8.14.8) with ESMTP id t538LPMk012815;
-        Wed, 3 Jun 2015 10:21:25 +0200
+        by scotty.linux-mips.net (8.14.9/8.14.8) with ESMTP id t538OBvS012876;
+        Wed, 3 Jun 2015 10:24:11 +0200
 Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.9/8.14.9/Submit) id t538LPQ9012814;
-        Wed, 3 Jun 2015 10:21:25 +0200
-Date:   Wed, 3 Jun 2015 10:21:25 +0200
+        by scotty.linux-mips.net (8.14.9/8.14.9/Submit) id t538OA6X012874;
+        Wed, 3 Jun 2015 10:24:10 +0200
+Date:   Wed, 3 Jun 2015 10:24:10 +0200
 From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Joshua Kinard <kumba@gentoo.org>
-Cc:     Linux MIPS List <linux-mips@linux-mips.org>
-Subject: Re: [PATCH v3] MIPS: R12000: Enable branch prediction global history
-Message-ID: <20150603082124.GH9839@linux-mips.org>
-References: <556E2C6D.6070802@gentoo.org>
+To:     Rob Herring <robh@kernel.org>
+Cc:     devicetree@vger.kernel.org, Grant Likely <grant.likely@linaro.org>,
+        linux-kernel@vger.kernel.org,
+        Pantelis Antoniou <pantelis.antoniou@konsulko.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        linux-mips@linux-mips.org
+Subject: Re: [PATCH 1/3] MIPS: prepare for user enabling of CONFIG_OF
+Message-ID: <20150603082410.GI9839@linux-mips.org>
+References: <1433285204-4307-1-git-send-email-robh@kernel.org>
+ <1433285204-4307-2-git-send-email-robh@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <556E2C6D.6070802@gentoo.org>
+In-Reply-To: <1433285204-4307-2-git-send-email-robh@kernel.org>
 User-Agent: Mutt/1.5.23 (2014-03-12)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47827
+X-archive-position: 47828
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -42,41 +47,15 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Jun 02, 2015 at 06:21:33PM -0400, Joshua Kinard wrote:
+On Tue, Jun 02, 2015 at 05:46:42PM -0500, Rob Herring wrote:
 
-> From: Joshua Kinard <kumba@gentoo.org>
-> 
-> The R12000 added a new feature to enhance branch prediction called
-> "global history".  Per the Vr10000 Series User Manual (U10278EJ4V0UM),
-> Coprocessor 0, Diagnostic Register (22):
-> 
-> """
-> If bit 26 is set, branch prediction uses all eight bits of the global
-> history register.  If bit 26 is not set, then bits 25:23 specify a count
-> of the number of bits of global history to be used. Thus if bits 26:23
-> are all zero, global history is disabled.
-> 
-> The global history contains a record of the taken/not-taken status of
-> recently executed branches, and when used is XOR'ed with the PC of a
-> branch being predicted to produce a hashed value for indexing the BPT.
-> Some programs with small "working set of conditional branches" benefit
-> significantly from the use of such hashing, some see slight performance
-> degradation.
-> """
-> 
-> This patch enables global history on R12000 CPUs and up by setting bit
-> 26 in the branch prediction diagnostic register (CP0 $22) to '1'.  Bits
-> 25:23 are left alone so that all eight bits of the global history
-> register are available for branch prediction.
+> In preparation to allow users to enable DeviceTree without arch or
+> machine selecting it, we need to fix build errors on MIPS. When
+> CONFIG_OF is enabled, device_tree_init cannot be resolved. This is
+> trivially fixed by using CONFIG_USE_OF instead of CONFIG_OF for prom.h.
 
-Will apply but could you also submit a patch to set cpu_has_bp_ghist to
-0/1 as applicable in all cpu-feature-overrides.h?
+Want to take this through your tree?  If so,
 
-Also the manual suggests this CPU feature may not always be neneficial
-for performance so I'm wondering if we should add a way to modify it
-at runtime.
-
-I'm curious, have you checked the default setting of the global history
-on kernel entry?
+Acked-by: Ralf Baechle <ralf@linux-mips.org>
 
   Ralf

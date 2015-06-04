@@ -1,50 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Jun 2015 19:03:24 +0200 (CEST)
-Received: from mail-wg0-f45.google.com ([74.125.82.45]:35033 "EHLO
-        mail-wg0-f45.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007837AbbFDRDVj1vWO (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 4 Jun 2015 19:03:21 +0200
-Received: by wgme6 with SMTP id e6so38507256wgm.2;
-        Thu, 04 Jun 2015 10:03:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:sender:in-reply-to:references:from:date:message-id
-         :subject:to:cc:content-type;
-        bh=XS4vB+22Dh5jLHAcy2j2QS6OwLw/x/Ms4n8fMPjSH3M=;
-        b=Q+h/t84lWvmQoJmvRJZtmllBhG8BEBMVO1Lfj5ot2JOqk8akXglET545a3D8n3XryW
-         xFmqW5nCxzHi57jGP6F5EKxO5h59umFFavdXv578qD2qMaoQa7cfNa4nMYY8tahhc1wK
-         FKPs4JOwjViSR+pCxqXuBYvFc9ZHe/X5UlNEK9xBUOeWavB8Rjr3LFDYCnlLNDrKe6tN
-         MLi9BN1a32H/OfOKTPCNPooGkxTUZeKJh0lA4L7GoHjCRLUE1ykLW0d65QmesxtjALNK
-         518D0tDHrzZA3HFA4zrjIP/zrtnLnNkueDWatKxS1T83QuY75/nPv5oI4k/8W471Tleq
-         dzeg==
-X-Received: by 10.180.210.235 with SMTP id mx11mr9282444wic.95.1433437396403;
- Thu, 04 Jun 2015 10:03:16 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 10.180.82.130 with HTTP; Thu, 4 Jun 2015 10:02:55 -0700 (PDT)
-In-Reply-To: <20150604102032.DF5B4140280@ozlabs.org>
-References: <1433308225-13874-1-git-send-email-robh@kernel.org> <20150604102032.DF5B4140280@ozlabs.org>
-From:   Rob Herring <robh@kernel.org>
-Date:   Thu, 4 Jun 2015 12:02:55 -0500
-X-Google-Sender-Auth: XbA79KAzBeXxVX9-nFzA42R70q4
-Message-ID: <CAL_JsqKTNiVqZoPHn-UCPXMkddruNbywwiA2nwLkfbzaziXFBg@mail.gmail.com>
-Subject: Re: of: clean-up unnecessary libfdt include paths
-To:     Michael Ellerman <mpe@ellerman.id.au>
-Cc:     "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Linux-MIPS <linux-mips@linux-mips.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Grant Likely <grant.likely@linaro.org>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <robherring2@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Jun 2015 20:40:30 +0200 (CEST)
+Received: from shards.monkeyblade.net ([149.20.54.216]:43773 "EHLO
+        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008230AbbFDSk3AwTtx (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 4 Jun 2015 20:40:29 +0200
+Received: from localhost (74-93-104-98-Washington.hfc.comcastbusiness.net [74.93.104.98])
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id 08BE5588D80;
+        Thu,  4 Jun 2015 11:40:24 -0700 (PDT)
+Date:   Thu, 04 Jun 2015 11:40:21 -0700 (PDT)
+Message-Id: <20150604.114021.2198304591433879318.davem@davemloft.net>
+To:     markos.chandras@imgtec.com
+Cc:     linux-mips@linux-mips.org, netdev@vger.kernel.org,
+        ast@plumgrid.com, dborkman@redhat.com, hannes@stressinduktion.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/6] MIPS/BPF fixes for 4.3
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <1433415376-20952-1-git-send-email-markos.chandras@imgtec.com>
+References: <1433415376-20952-1-git-send-email-markos.chandras@imgtec.com>
+X-Mailer: Mew version 6.6 on Emacs 24.5 / Mule 6.0 (HANACHIRUSATO)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Thu, 04 Jun 2015 11:40:24 -0700 (PDT)
+Return-Path: <davem@davemloft.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47862
+X-archive-position: 47864
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: robh@kernel.org
+X-original-sender: davem@davemloft.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -57,34 +43,8 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Jun 4, 2015 at 5:20 AM, Michael Ellerman <mpe@ellerman.id.au> wrote:
-> On Wed, 2015-03-06 at 05:10:25 UTC, Rob Herring wrote:
->> With the latest dtc import include fixups, it is no longer necessary to
->> add explicit include paths to use libfdt. Remove these across the
->> kernel.
->
-> What are the "latest dtc import include fixups" ?
 
-Changing the scripts/dtc/libfdt/libfdt.h includes from <> to "". The
-import script does this now and the recent import in my for-next tree
-has this. I'll clarify this in the commit message.
+I think your Subject meant to say "fixes for 4.2" right?
 
->
->> diff --git a/arch/powerpc/kernel/Makefile b/arch/powerpc/kernel/Makefile
->> index c1ebbda..c16e836 100644
->> --- a/arch/powerpc/kernel/Makefile
->> +++ b/arch/powerpc/kernel/Makefile
->> @@ -2,7 +2,6 @@
->>  # Makefile for the linux kernel.
->>  #
->>
->> -CFLAGS_prom.o                = -I$(src)/../../../scripts/dtc/libfdt
->>  CFLAGS_ptrace.o              += -DUTS_MACHINE='"$(UTS_MACHINE)"'
->>
->>  subdir-ccflags-$(CONFIG_PPC_WERROR) := -Werror
->
-> Acked-by: Michael Ellerman <mpe@ellerman.id.au>
-
-Thanks.
-
-Rob
+Because we're currently finishing up 4.1.x and the next merge
+window will be for 4.2.x

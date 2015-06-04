@@ -1,15 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Jun 2015 06:13:04 +0200 (CEST)
-Received: from mga11.intel.com ([192.55.52.93]:55476 "EHLO mga11.intel.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Jun 2015 06:16:15 +0200 (CEST)
+Received: from mga09.intel.com ([134.134.136.24]:27781 "EHLO mga09.intel.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27006587AbbFDENCRSmXn (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 4 Jun 2015 06:13:02 +0200
+        id S27006587AbbFDEQOEpson (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 4 Jun 2015 06:16:14 +0200
 Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga102.fm.intel.com with ESMTP; 03 Jun 2015 21:12:54 -0700
+  by orsmga102.jf.intel.com with ESMTP; 03 Jun 2015 21:16:08 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.13,549,1427785200"; 
-   d="scan'208";a="736800210"
+   d="scan'208";a="736801592"
 Received: from gerry-dev.bj.intel.com ([10.238.158.61])
-  by fmsmga002.fm.intel.com with ESMTP; 03 Jun 2015 21:12:50 -0700
+  by fmsmga002.fm.intel.com with ESMTP; 03 Jun 2015 21:16:03 -0700
 From:   Jiang Liu <jiang.liu@linux.intel.com>
 To:     Thomas Gleixner <tglx@linutronix.de>,
         Bjorn Helgaas <bhelgaas@google.com>,
@@ -20,20 +20,15 @@ To:     Thomas Gleixner <tglx@linutronix.de>,
         Yinghai Lu <yinghai@kernel.org>,
         Borislav Petkov <bp@alien8.de>,
         Ralf Baechle <ralf@linux-mips.org>,
-        Sergey Ryazanov <ryazanov.s.a@gmail.com>,
-        Aleksey Makarov <aleksey.makarov@auriga.com>,
-        David Daney <david.daney@cavium.com>,
-        Christoph Lameter <cl@linux.com>,
-        John Crispin <blogic@openwrt.org>,
-        Andrew Bresticker <abrestic@chromium.org>
+        Sergey Ryazanov <ryazanov.s.a@gmail.com>
 Cc:     Jiang Liu <jiang.liu@linux.intel.com>,
         Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
         Tony Luck <tony.luck@intel.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
         linux-acpi@vger.kernel.org, linux-mips@linux-mips.org
-Subject: [RFT v2 03/48] MIPS, irq: Use irq_desc_get_xxx() to avoid redundant lookup of irq_desc
-Date:   Thu,  4 Jun 2015 12:13:13 +0800
-Message-Id: <1433391238-19471-4-git-send-email-jiang.liu@linux.intel.com>
+Subject: [RFT v2 25/48] mips, irq: Prepare for killing the first parameter 'irq' of irq_flow_handler_t
+Date:   Thu,  4 Jun 2015 12:13:35 +0800
+Message-Id: <1433391238-19471-26-git-send-email-jiang.liu@linux.intel.com>
 X-Mailer: git-send-email 1.7.10.4
 In-Reply-To: <1433391238-19471-1-git-send-email-jiang.liu@linux.intel.com>
 References: <1433391238-19471-1-git-send-email-jiang.liu@linux.intel.com>
@@ -41,7 +36,7 @@ Return-Path: <jiang.liu@linux.intel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47837
+X-archive-position: 47838
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -58,128 +53,82 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Use irq_desc_get_xxx() to avoid redundant lookup of irq_desc while we
-already have a pointer to corresponding irq_desc.
-
-Note: this patch has been queued by Ralf Baechle <ralf@linux-mips.org>.
+Change irq flow handlers to prepare for killing the first parameter 'irq'
+of irq_flow_handler_t.
 
 Signed-off-by: Jiang Liu <jiang.liu@linux.intel.com>
 ---
- arch/mips/ath25/ar2315.c             |    2 +-
- arch/mips/ath25/ar5312.c             |    2 +-
- arch/mips/cavium-octeon/octeon-irq.c |    4 +++-
- arch/mips/pci/pci-ar2315.c           |    2 +-
- arch/mips/pci/pci-ar71xx.c           |    2 +-
- arch/mips/pci/pci-ar724x.c           |    2 +-
- arch/mips/pci/pci-rt3883.c           |    2 +-
- arch/mips/ralink/irq.c               |    2 +-
- 8 files changed, 10 insertions(+), 8 deletions(-)
+ arch/mips/alchemy/devboards/bcsr.c |    3 ++-
+ arch/mips/ath79/irq.c              |    9 ++++++---
+ arch/mips/pci/pci-rt3883.c         |    4 +---
+ 3 files changed, 9 insertions(+), 7 deletions(-)
 
-diff --git a/arch/mips/ath25/ar2315.c b/arch/mips/ath25/ar2315.c
-index 2befa7d766a6..8742e1cee492 100644
---- a/arch/mips/ath25/ar2315.c
-+++ b/arch/mips/ath25/ar2315.c
-@@ -76,7 +76,7 @@ static void ar2315_misc_irq_handler(unsigned irq, struct irq_desc *desc)
- 	unsigned nr, misc_irq = 0;
- 
- 	if (pending) {
--		struct irq_domain *domain = irq_get_handler_data(irq);
-+		struct irq_domain *domain = irq_desc_get_handler_data(desc);
- 
- 		nr = __ffs(pending);
- 		misc_irq = irq_find_mapping(domain, nr);
-diff --git a/arch/mips/ath25/ar5312.c b/arch/mips/ath25/ar5312.c
-index b6887f75144c..094b938fd603 100644
---- a/arch/mips/ath25/ar5312.c
-+++ b/arch/mips/ath25/ar5312.c
-@@ -80,7 +80,7 @@ static void ar5312_misc_irq_handler(unsigned irq, struct irq_desc *desc)
- 	unsigned nr, misc_irq = 0;
- 
- 	if (pending) {
--		struct irq_domain *domain = irq_get_handler_data(irq);
-+		struct irq_domain *domain = irq_desc_get_handler_data(desc);
- 
- 		nr = __ffs(pending);
- 		misc_irq = irq_find_mapping(domain, nr);
-diff --git a/arch/mips/cavium-octeon/octeon-irq.c b/arch/mips/cavium-octeon/octeon-irq.c
-index 0643ae614284..18bf3dcb9d1b 100644
---- a/arch/mips/cavium-octeon/octeon-irq.c
-+++ b/arch/mips/cavium-octeon/octeon-irq.c
-@@ -699,7 +699,9 @@ static void octeon_irq_ciu_gpio_ack(struct irq_data *data)
- 
- static void octeon_irq_handle_trigger(unsigned int irq, struct irq_desc *desc)
+diff --git a/arch/mips/alchemy/devboards/bcsr.c b/arch/mips/alchemy/devboards/bcsr.c
+index c98c9ea3372c..8d6ea369bde4 100644
+--- a/arch/mips/alchemy/devboards/bcsr.c
++++ b/arch/mips/alchemy/devboards/bcsr.c
+@@ -85,8 +85,9 @@ EXPORT_SYMBOL_GPL(bcsr_mod);
+ /*
+  * DB1200/PB1200 CPLD IRQ muxer
+  */
+-static void bcsr_csc_handler(unsigned int irq, struct irq_desc *d)
++static void bcsr_csc_handler(unsigned int __irq, struct irq_desc *d)
  {
--	if (irq_get_trigger_type(irq) & IRQ_TYPE_EDGE_BOTH)
-+	struct irq_data *data = irq_desc_get_irq_data(desc);
-+
-+	if (irqd_get_trigger_type(data) & IRQ_TYPE_EDGE_BOTH)
- 		handle_edge_irq(irq, desc);
- 	else
- 		handle_level_irq(irq, desc);
-diff --git a/arch/mips/pci/pci-ar2315.c b/arch/mips/pci/pci-ar2315.c
-index 07a18228e63a..dadb30306a0a 100644
---- a/arch/mips/pci/pci-ar2315.c
-+++ b/arch/mips/pci/pci-ar2315.c
-@@ -320,7 +320,7 @@ static int ar2315_pci_host_setup(struct ar2315_pci_ctrl *apc)
++	unsigned int irq = irq_desc_get_irq(d);
+ 	unsigned short bisr = __raw_readw(bcsr_virt + BCSR_REG_INTSTAT);
  
- static void ar2315_pci_irq_handler(unsigned irq, struct irq_desc *desc)
+ 	disable_irq_nosync(irq);
+diff --git a/arch/mips/ath79/irq.c b/arch/mips/ath79/irq.c
+index 6adae366f11a..1b6620b0c057 100644
+--- a/arch/mips/ath79/irq.c
++++ b/arch/mips/ath79/irq.c
+@@ -120,8 +120,9 @@ static void __init ath79_misc_irq_init(void)
+ 	irq_set_chained_handler(ATH79_CPU_IRQ(6), ath79_misc_irq_handler);
+ }
+ 
+-static void ar934x_ip2_irq_dispatch(unsigned int irq, struct irq_desc *desc)
++static void ar934x_ip2_irq_dispatch(unsigned int __irq, struct irq_desc *desc)
  {
--	struct ar2315_pci_ctrl *apc = irq_get_handler_data(irq);
-+	struct ar2315_pci_ctrl *apc = irq_desc_get_handler_data(desc);
- 	u32 pending = ar2315_pci_reg_read(apc, AR2315_PCI_ISR) &
- 		      ar2315_pci_reg_read(apc, AR2315_PCI_IMR);
- 	unsigned pci_irq = 0;
-diff --git a/arch/mips/pci/pci-ar71xx.c b/arch/mips/pci/pci-ar71xx.c
-index 9e62ad31d4b5..dac6a07c45bf 100644
---- a/arch/mips/pci/pci-ar71xx.c
-+++ b/arch/mips/pci/pci-ar71xx.c
-@@ -232,7 +232,7 @@ static void ar71xx_pci_irq_handler(unsigned int irq, struct irq_desc *desc)
- 	void __iomem *base = ath79_reset_base;
- 	u32 pending;
++	unsigned int irq = irq_desc_get_irq(desc);
+ 	u32 status;
  
--	apc = irq_get_handler_data(irq);
-+	apc = irq_desc_get_handler_data(desc);
+ 	disable_irq_nosync(irq);
+@@ -153,8 +154,9 @@ static void ar934x_ip2_irq_init(void)
+ 	irq_set_chained_handler(ATH79_CPU_IRQ(2), ar934x_ip2_irq_dispatch);
+ }
  
- 	pending = __raw_readl(base + AR71XX_RESET_REG_PCI_INT_STATUS) &
- 		  __raw_readl(base + AR71XX_RESET_REG_PCI_INT_ENABLE);
-diff --git a/arch/mips/pci/pci-ar724x.c b/arch/mips/pci/pci-ar724x.c
-index a1b7d2a1b0d5..0af362b5af92 100644
---- a/arch/mips/pci/pci-ar724x.c
-+++ b/arch/mips/pci/pci-ar724x.c
-@@ -231,7 +231,7 @@ static void ar724x_pci_irq_handler(unsigned int irq, struct irq_desc *desc)
- 	void __iomem *base;
- 	u32 pending;
+-static void qca955x_ip2_irq_dispatch(unsigned int irq, struct irq_desc *desc)
++static void qca955x_ip2_irq_dispatch(unsigned int __irq, struct irq_desc *desc)
+ {
++	unsigned int irq = irq_desc_get_irq(desc);
+ 	u32 status;
  
--	apc = irq_get_handler_data(irq);
-+	apc = irq_desc_get_handler_data(desc);
- 	base = apc->ctrl_base;
+ 	disable_irq_nosync(irq);
+@@ -181,8 +183,9 @@ enable:
+ 	enable_irq(irq);
+ }
  
- 	pending = __raw_readl(base + AR724X_PCI_REG_INT_STATUS) &
+-static void qca955x_ip3_irq_dispatch(unsigned int irq, struct irq_desc *desc)
++static void qca955x_ip3_irq_dispatch(unsigned int __irq, struct irq_desc *desc)
+ {
++	unsigned int irq = irq_desc_get_irq(desc);
+ 	u32 status;
+ 
+ 	disable_irq_nosync(irq);
 diff --git a/arch/mips/pci/pci-rt3883.c b/arch/mips/pci/pci-rt3883.c
-index ec9be8ca4ada..80fafe646e74 100644
+index 80fafe646e74..67d483206d6c 100644
 --- a/arch/mips/pci/pci-rt3883.c
 +++ b/arch/mips/pci/pci-rt3883.c
-@@ -134,7 +134,7 @@ static void rt3883_pci_irq_handler(unsigned int irq, struct irq_desc *desc)
- 	struct rt3883_pci_controller *rpc;
- 	u32 pending;
+@@ -147,9 +147,7 @@ static void rt3883_pci_irq_handler(unsigned int irq, struct irq_desc *desc)
+ 	while (pending) {
+ 		unsigned bit = __ffs(pending);
  
--	rpc = irq_get_handler_data(irq);
-+	rpc = irq_desc_get_handler_data(desc);
- 
- 	pending = rt3883_pci_r32(rpc, RT3883_PCI_REG_PCIINT) &
- 		  rt3883_pci_r32(rpc, RT3883_PCI_REG_PCIENA);
-diff --git a/arch/mips/ralink/irq.c b/arch/mips/ralink/irq.c
-index 7cf91b92e9d1..da301e0a2f1f 100644
---- a/arch/mips/ralink/irq.c
-+++ b/arch/mips/ralink/irq.c
-@@ -100,7 +100,7 @@ static void ralink_intc_irq_handler(unsigned int irq, struct irq_desc *desc)
- 	u32 pending = rt_intc_r32(INTC_REG_STATUS0);
- 
- 	if (pending) {
--		struct irq_domain *domain = irq_get_handler_data(irq);
-+		struct irq_domain *domain = irq_desc_get_handler_data(desc);
- 		generic_handle_irq(irq_find_mapping(domain, __ffs(pending)));
- 	} else {
- 		spurious_interrupt();
+-		irq = irq_find_mapping(rpc->irq_domain, bit);
+-		generic_handle_irq(irq);
+-
++		generic_handle_irq(irq_find_mapping(rpc->irq_domain, bit));
+ 		pending &= ~BIT(bit);
+ 	}
+ }
 -- 
 1.7.10.4

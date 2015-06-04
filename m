@@ -1,41 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Jun 2015 13:17:53 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:13514 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27007440AbbFDLRvtZKqN (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 4 Jun 2015 13:17:51 +0200
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 010735FE7F0F8;
-        Thu,  4 Jun 2015 12:17:44 +0100 (IST)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Thu, 4 Jun 2015 12:17:46 +0100
-Received: from [192.168.154.48] (192.168.154.48) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Thu, 4 Jun
- 2015 12:17:45 +0100
-Message-ID: <557033D9.6000006@imgtec.com>
-Date:   Thu, 4 Jun 2015 12:17:45 +0100
-From:   Markos Chandras <Markos.Chandras@imgtec.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.7.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Jun 2015 14:15:39 +0200 (CEST)
+Received: from mail-yh0-f47.google.com ([209.85.213.47]:34323 "EHLO
+        mail-yh0-f47.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008192AbbFDMPgaMQWV (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 4 Jun 2015 14:15:36 +0200
+Received: by yhom41 with SMTP id m41so9308960yho.1;
+        Thu, 04 Jun 2015 05:15:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc:content-type;
+        bh=rL/gfuupOnU+ee7RF4+FCoI2OIUfb1lWzDrIGBAjRZ8=;
+        b=LlClhtkhEe9EZ4t5OHcTXuiGXIPEwuyfok2o3DSkgbYay7XPel5MOPJdiXoUv7NYgy
+         9lUj2nz5AkZUucNHoDxxI/k59EI+sMnH7Qzn7SAsr+o8uuFHPufDaVUALApfTc6TEZBn
+         7Ylj/GwLdkL+v8AHGlIUGt057YuhFbD8WP09pO6XojjKVfZrC6l7R2KWM9oYNCjI3wJa
+         RxFxPnPpmSqRtzeUTO5/RwFgJ0zw74qQ2LDBN89ytI35Rdv+zl/chlLYxGtBOsIpOw22
+         bS5vH7PVbHtnVEg3hMWgGH8zqORfhy8/A9zHTOQRynTV+UjrJTqMDUd4SKhU+pynF0c9
+         sBQA==
+X-Received: by 10.236.43.180 with SMTP id l40mr25971250yhb.185.1433420130586;
+ Thu, 04 Jun 2015 05:15:30 -0700 (PDT)
 MIME-Version: 1.0
-To:     <linux-mips@linux-mips.org>
-CC:     "Steven J. Hill" <Steven.Hill@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [PATCH] MIPS: asm: pgtable-bits: Add R6 support for PTE RI/XI
- bits
-References: <1432907032-16689-1-git-send-email-markos.chandras@imgtec.com>
-In-Reply-To: <1432907032-16689-1-git-send-email-markos.chandras@imgtec.com>
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.154.48]
-Return-Path: <Markos.Chandras@imgtec.com>
+Received: by 10.13.210.193 with HTTP; Thu, 4 Jun 2015 05:15:10 -0700 (PDT)
+In-Reply-To: <1433391238-19471-4-git-send-email-jiang.liu@linux.intel.com>
+References: <1433391238-19471-1-git-send-email-jiang.liu@linux.intel.com> <1433391238-19471-4-git-send-email-jiang.liu@linux.intel.com>
+From:   Sergey Ryazanov <ryazanov.s.a@gmail.com>
+Date:   Thu, 4 Jun 2015 15:15:10 +0300
+Message-ID: <CAHNKnsQfxRrG_gzVUyCkxj5svRcS-znGZWLf+R14_guJH0MO1g@mail.gmail.com>
+Subject: Re: [RFT v2 03/48] MIPS, irq: Use irq_desc_get_xxx() to avoid
+ redundant lookup of irq_desc
+To:     Jiang Liu <jiang.liu@linux.intel.com>
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Yinghai Lu <yinghai@kernel.org>,
+        Borislav Petkov <bp@alien8.de>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Aleksey Makarov <aleksey.makarov@auriga.com>,
+        David Daney <david.daney@cavium.com>,
+        Christoph Lameter <cl@linux.com>,
+        John Crispin <blogic@openwrt.org>,
+        Andrew Bresticker <abrestic@chromium.org>,
+        Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+        Tony Luck <tony.luck@intel.com>, x86@kernel.org,
+        open list <linux-kernel@vger.kernel.org>,
+        linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org,
+        Linux MIPS <linux-mips@linux-mips.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <ryazanov.s.a@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47856
+X-archive-position: 47857
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Markos.Chandras@imgtec.com
+X-original-sender: ryazanov.s.a@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,28 +69,27 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 05/29/2015 02:43 PM, Markos Chandras wrote:
-> Commit be0c37c985ed ("MIPS: Rearrange PTE bits into fixed positions.")
-> rearranged the PTE bits into fixed positions in preparation for the XPA
-> support. However, this patch broke R6 since it only took R2 cores
-> into consideration for the RI/XI bits leading to boot failures. We fix
-> this by adding the missing CONFIG_CPU_MIPSR6 definitions
-> 
-> Fixes: be0c37c985ed ("MIPS: Rearrange PTE bits into fixed positions.")
-> Cc: Steven J. Hill <Steven.Hill@imgtec.com>
-> Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+2015-06-04 7:13 GMT+03:00 Jiang Liu <jiang.liu@linux.intel.com>:
+> Use irq_desc_get_xxx() to avoid redundant lookup of irq_desc while we
+> already have a pointer to corresponding irq_desc.
+>
+> Note: this patch has been queued by Ralf Baechle <ralf@linux-mips.org>.
+>
+> Signed-off-by: Jiang Liu <jiang.liu@linux.intel.com>
 > ---
-> This is a bugfix for a bug introduced in 4.1-rc1. Can we please have
-> this patch in 4.1?
-> ---
+>  arch/mips/ath25/ar2315.c             |    2 +-
+>  arch/mips/ath25/ar5312.c             |    2 +-
+>  arch/mips/cavium-octeon/octeon-irq.c |    4 +++-
+>  arch/mips/pci/pci-ar2315.c           |    2 +-
+>  arch/mips/pci/pci-ar71xx.c           |    2 +-
+>  arch/mips/pci/pci-ar724x.c           |    2 +-
+>  arch/mips/pci/pci-rt3883.c           |    2 +-
+>  arch/mips/ralink/irq.c               |    2 +-
+>  8 files changed, 10 insertions(+), 8 deletions(-)
+>
+For ath25 (AR231x/AR5312) changes
 
-Ralf,
-
-I see you merged this patch (thanks!) but it's in the wrong branch it
-seems. It's not in the 4.1-fixes I think. Can you please schedule this
-patch for 4.1 since it's a bugfix? Otherwise R6 won't even boot in 4.1.
-
-Thank you
+Acked-by: Sergey Ryazanov <ryazanov.s.a@gmail.com>
 
 -- 
-markos
+Sergey

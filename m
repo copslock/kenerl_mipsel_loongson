@@ -1,46 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Jun 2015 08:45:27 +0200 (CEST)
-Received: from down.free-electrons.com ([37.187.137.238]:46734 "EHLO
-        mail.free-electrons.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27007339AbbFDGpY3p8BR convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 4 Jun 2015 08:45:24 +0200
-Received: by mail.free-electrons.com (Postfix, from userid 106)
-        id 9E8B486B; Thu,  4 Jun 2015 08:45:32 +0200 (CEST)
-Received: from bbrezillon (vau75-h06-212-194-151-225.dsl.sta.abo.bbox.fr [212.194.151.225])
-        by mail.free-electrons.com (Postfix) with ESMTPSA id B959C2439;
-        Thu,  4 Jun 2015 08:44:50 +0200 (CEST)
-Date:   Thu, 4 Jun 2015 08:44:34 +0200
-From:   Boris Brezillon <boris.brezillon@free-electrons.com>
-To:     Stephen Boyd <sboyd@codeaurora.org>
-Cc:     Mike Turquette <mturquette@linaro.org>, linux-clk@vger.kernel.org,
-        Mikko Perttunen <mikko.perttunen@kapsi.fi>,
-        Tomeu Vizoso <tomeu.vizoso@collabora.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Tony Lindgren <tony@atomide.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Emilio L??pez <emilio@elopez.com.ar>,
-        Maxime Ripard <maxime.ripard@free-electrons.com>,
-        Tero Kristo <t-kristo@ti.com>, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-omap@vger.kernel.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH v3] clk: change clk_ops' ->determine_rate() prototype
-Message-ID: <20150604084434.48939141@bbrezillon>
-In-Reply-To: <20150603233728.GA490@codeaurora.org>
-References: <1432138345-19044-1-git-send-email-boris.brezillon@free-electrons.com>
-        <20150603233728.GA490@codeaurora.org>
-X-Mailer: Claws Mail 3.9.3 (GTK+ 2.24.23; x86_64-pc-linux-gnu)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-Return-Path: <boris.brezillon@free-electrons.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Jun 2015 08:56:11 +0200 (CEST)
+Received: from smtpbgbr1.qq.com ([54.207.19.206]:36420 "EHLO smtpbgbr1.qq.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27007206AbbFDG4IxfwRR (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 4 Jun 2015 08:56:08 +0200
+X-QQ-mid: bizesmtp2t1433400926t892t302
+Received: from localhost.localdomain (unknown [222.92.8.142])
+        by esmtp4.qq.com (ESMTP) with 
+        id ; Thu, 04 Jun 2015 14:55:02 +0800 (CST)
+X-QQ-SSF: 01100000002000F0FK52B00A0000000
+X-QQ-FEAT: /peYvah/M2WrrR/HAcXUUdcMMPln0EEoxMCqmpYoXpxUk6gGPOCJynmnRvQL9
+        QV8i//I4jB4WuXEharSgGfrH09hlxQRR+GyWYSujnyBnDK2UT0TlphLpcUvBCjrt3s7czHl
+        B07s7adqtnYHDXwHAK5wc8I88ehV/jh2ZDGGeXT1WdHqRXrWguIw+ClcQiU6ZF2SLW+c5hd
+        Gb8jyXwLbPGnqcqPc7pq56p0fc+GlEcOHronqI0JfUPQQrQtRGu4w
+X-QQ-GoodBg: 0
+From:   Huacai Chen <chenhc@lemote.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     John Crispin <john@phrozen.org>,
+        "Steven J. Hill" <Steven.Hill@imgtec.com>,
+        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        Huacai Chen <chenhc@lemote.com>
+Subject: [PATCH] MIPS: Loongson-3: Fix a cpu-hotplug issue in loongson3_ipi_interrupt()
+Date:   Thu,  4 Jun 2015 14:53:47 +0800
+Message-Id: <1433400827-27684-1-git-send-email-chenhc@lemote.com>
+X-Mailer: git-send-email 1.7.7.3
+X-QQ-SENDSIZE: 520
+X-QQ-Bgrelay: 1
+Return-Path: <chenhc@lemote.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47843
+X-archive-position: 47844
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: boris.brezillon@free-electrons.com
+X-original-sender: chenhc@lemote.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,90 +47,30 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Stefen,
+setup_per_cpu_areas() only setup __per_cpu_offset[] for each possible
+cpu, but loongson_sysconf.nr_cpus can be greater than possible cpus
+(due to reserved_cpus_mask). So in loongson3_ipi_interrupt(), percpu
+access will touch the original varible in .data..percpu section which
+has been freed. Without this patch, cpu-hotplug will cause memery
+corruption.
 
-On Wed, 3 Jun 2015 16:37:28 -0700
-Stephen Boyd <sboyd@codeaurora.org> wrote:
+Signed-off-by: Huacai Chen <chenhc@lemote.com>
+---
+ arch/mips/loongson/loongson-3/smp.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
-> On 05/20, Boris Brezillon wrote:
-> > Clock rates are stored in an unsigned long field, but ->determine_rate()
-> > (which returns a rounded rate from a requested one) returns a long
-> > value (errors are reported using negative error codes), which can lead
-> > to long overflow if the clock rate exceed 2Ghz.
-> > 
-> > Change ->determine_rate() prototype to return 0 or an error code, and pass
-> > a pointer to a clk_rate_request structure containing the expected target
-> > rate and the rate constraints imposed by clk users.
-> > 
-> > The clk_rate_request structure might be extended in the future to contain
-> > other kind of constraints like the rounding policy, the maximum clock
-> > inaccuracy or other things that are not yet supported by the CCF
-> > (power consumption constraints ?).
-> > 
-> > Signed-off-by: Boris Brezillon <boris.brezillon@free-electrons.com>
-> > 
-> > CC: Jonathan Corbet <corbet@lwn.net>
-> > CC: Tony Lindgren <tony@atomide.com>
-> > CC: Ralf Baechle <ralf@linux-mips.org>
-> > CC: "Emilio López" <emilio@elopez.com.ar>
-> > CC: Maxime Ripard <maxime.ripard@free-electrons.com>
-> > CC: Tero Kristo <t-kristo@ti.com>
-> > CC: linux-doc@vger.kernel.org
-> > CC: linux-kernel@vger.kernel.org
-> > CC: linux-arm-kernel@lists.infradead.org
-> > CC: linux-omap@vger.kernel.org
-> > CC: linux-mips@linux-mips.org
-> > ---
-> > 
-> > Hi Stephen,
-> > 
-> > This patch is based on clk-next and contains the changes you suggested
-> > in your previous review.
-> > 
-> > It was tested on sama5d4 and compile tested on several ARM platforms
-> > (those enabled in multi_v7_defconfig).
-> > 
-> 
-> Thanks. I think we should wait until the next -rc1 drops to apply the
-> patch for the next merge window. That will make it least likely to conflict
-> with other trees, and we can provide it on a stable branch should there
-> be clock providers going through other trees somewhere. Please
-> remind me if I forget.
-
-No problem.
-
-> 
-> > @@ -1186,15 +1191,21 @@ EXPORT_SYMBOL_GPL(__clk_determine_rate);
-> >   */
-> >  unsigned long __clk_round_rate(struct clk *clk, unsigned long rate)
-> >  {
-> > -	unsigned long min_rate;
-> > -	unsigned long max_rate;
-> > +
-> > +	struct clk_rate_request req;
-> > +	int ret;
-> >  
-> >  	if (!clk)
-> >  		return 0;
-> >  
-> > -	clk_core_get_boundaries(clk->core, &min_rate, &max_rate);
-> > +	clk_core_get_boundaries(clk->core, &req.min_rate, &req.max_rate);
-> > +	req.rate = rate;
-> > +
-> > +	ret = clk_core_round_rate_nolock(clk->core, &req);
-> > +	if (ret)
-> > +		return ret;
-> 
-> This returns a negative int for unsigned long. Is that intentional?
-
-Nope, should be replaced by 'return 0;'.
-
-Thanks,
-
-Boris
-
-
+diff --git a/arch/mips/loongson/loongson-3/smp.c b/arch/mips/loongson/loongson-3/smp.c
+index e3c68b5..509877c 100644
+--- a/arch/mips/loongson/loongson-3/smp.c
++++ b/arch/mips/loongson/loongson-3/smp.c
+@@ -272,7 +272,7 @@ void loongson3_ipi_interrupt(struct pt_regs *regs)
+ 	if (action & SMP_ASK_C0COUNT) {
+ 		BUG_ON(cpu != 0);
+ 		c0count = read_c0_count();
+-		for (i = 1; i < loongson_sysconf.nr_cpus; i++)
++		for (i = 1; i < num_possible_cpus(); i++)
+ 			per_cpu(core0_c0count, i) = c0count;
+ 	}
+ }
 -- 
-Boris Brezillon, Free Electrons
-Embedded Linux and Kernel engineering
-http://free-electrons.com
+1.7.7.3

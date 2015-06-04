@@ -1,52 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Jun 2015 01:37:37 +0200 (CEST)
-Received: from smtp.codeaurora.org ([198.145.29.96]:44831 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27008094AbbFCXhc0c94H (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 4 Jun 2015 01:37:32 +0200
-Received: from smtp.codeaurora.org (localhost [127.0.0.1])
-        by smtp.codeaurora.org (Postfix) with ESMTP id E23D1141761;
-        Wed,  3 Jun 2015 23:37:29 +0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 486)
-        id D0A38141770; Wed,  3 Jun 2015 23:37:29 +0000 (UTC)
-Received: from localhost (i-global254.qualcomm.com [199.106.103.254])
-        (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: sboyd@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 06F39141761;
-        Wed,  3 Jun 2015 23:37:28 +0000 (UTC)
-Date:   Wed, 3 Jun 2015 16:37:28 -0700
-From:   Stephen Boyd <sboyd@codeaurora.org>
-To:     Boris Brezillon <boris.brezillon@free-electrons.com>
-Cc:     Mike Turquette <mturquette@linaro.org>, linux-clk@vger.kernel.org,
-        Mikko Perttunen <mikko.perttunen@kapsi.fi>,
-        Tomeu Vizoso <tomeu.vizoso@collabora.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Tony Lindgren <tony@atomide.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Emilio L??pez <emilio@elopez.com.ar>,
-        Maxime Ripard <maxime.ripard@free-electrons.com>,
-        Tero Kristo <t-kristo@ti.com>, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-omap@vger.kernel.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH v3] clk: change clk_ops' ->determine_rate() prototype
-Message-ID: <20150603233728.GA490@codeaurora.org>
-References: <1432138345-19044-1-git-send-email-boris.brezillon@free-electrons.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Jun 2015 02:42:15 +0200 (CEST)
+Received: from mail-wi0-f169.google.com ([209.85.212.169]:34891 "EHLO
+        mail-wi0-f169.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008096AbbFDAmOADXLp (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 4 Jun 2015 02:42:14 +0200
+Received: by wiga1 with SMTP id a1so31420306wig.0;
+        Wed, 03 Jun 2015 17:42:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type;
+        bh=GNcUR7B9cWcJtpECrD7q56HYm8xHUJzsOb1TgLJcfiY=;
+        b=lQjq9vn/xtRztCSXqwYzg470HoCmoAR4gNZgSfHTAEO8P+VT0VcH7oU0siKXc79YB6
+         mZvjd4kIQJ+oeOryj3kYChl/jpucxHYJ+MQkpZ+gLKq6/+GjcW1NsM5TDGQ46Ru09z7R
+         IcKFF/VTz5+OIGgkPo+xc+keKNl2xmsc4vQOQEnhL8DEhz2jKJxJJqGqj7KyE8syLrJu
+         eUob6Ip6BcHlluCGs1buNpgNEuM6EaTlyx517LuA0vy5zOqxR0mnCfhZQRLH8031e3MF
+         3a8WuPpdn/8FZx7RxL0j9sB2zWFD9io1052mcQfuaQ+pVPAL6gKiFOZCe0xsIwBIeuR/
+         MzwQ==
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1432138345-19044-1-git-send-email-boris.brezillon@free-electrons.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Virus-Scanned: ClamAV using ClamSMTP
-Return-Path: <sboyd@codeaurora.org>
+X-Received: by 10.180.38.68 with SMTP id e4mr2422123wik.32.1433378528808; Wed,
+ 03 Jun 2015 17:42:08 -0700 (PDT)
+Received: by 10.28.11.4 with HTTP; Wed, 3 Jun 2015 17:42:08 -0700 (PDT)
+In-Reply-To: <20150603062308.GL26432@linux-mips.org>
+References: <20150603062308.GL26432@linux-mips.org>
+Date:   Thu, 4 Jun 2015 08:42:08 +0800
+Message-ID: <CAAhV-H4_35Hv_A_LQQe027E9hmfcSGcTppLPN5-AZq7ePHRDUQ@mail.gmail.com>
+Subject: Re: ADMIN: Patchwork outage
+From:   Huacai Chen <chenhuacai@gmail.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     Linux MIPS Mailing List <linux-mips@linux-mips.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <chenhuacai@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47834
+X-archive-position: 47835
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sboyd@codeaurora.org
+X-original-sender: chenhuacai@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,74 +50,22 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 05/20, Boris Brezillon wrote:
-> Clock rates are stored in an unsigned long field, but ->determine_rate()
-> (which returns a rounded rate from a requested one) returns a long
-> value (errors are reported using negative error codes), which can lead
-> to long overflow if the clock rate exceed 2Ghz.
-> 
-> Change ->determine_rate() prototype to return 0 or an error code, and pass
-> a pointer to a clk_rate_request structure containing the expected target
-> rate and the rate constraints imposed by clk users.
-> 
-> The clk_rate_request structure might be extended in the future to contain
-> other kind of constraints like the rounding policy, the maximum clock
-> inaccuracy or other things that are not yet supported by the CCF
-> (power consumption constraints ?).
-> 
-> Signed-off-by: Boris Brezillon <boris.brezillon@free-electrons.com>
-> 
-> CC: Jonathan Corbet <corbet@lwn.net>
-> CC: Tony Lindgren <tony@atomide.com>
-> CC: Ralf Baechle <ralf@linux-mips.org>
-> CC: "Emilio López" <emilio@elopez.com.ar>
-> CC: Maxime Ripard <maxime.ripard@free-electrons.com>
-> CC: Tero Kristo <t-kristo@ti.com>
-> CC: linux-doc@vger.kernel.org
-> CC: linux-kernel@vger.kernel.org
-> CC: linux-arm-kernel@lists.infradead.org
-> CC: linux-omap@vger.kernel.org
-> CC: linux-mips@linux-mips.org
-> ---
-> 
-> Hi Stephen,
-> 
-> This patch is based on clk-next and contains the changes you suggested
-> in your previous review.
-> 
-> It was tested on sama5d4 and compile tested on several ARM platforms
-> (those enabled in multi_v7_defconfig).
-> 
+Hi, Ralf
 
-Thanks. I think we should wait until the next -rc1 drops to apply the
-patch for the next merge window. That will make it least likely to conflict
-with other trees, and we can provide it on a stable branch should there
-be clock providers going through other trees somewhere. Please
-remind me if I forget.
+Should we resend the patches which have been submitted in last month?
 
-> @@ -1186,15 +1191,21 @@ EXPORT_SYMBOL_GPL(__clk_determine_rate);
->   */
->  unsigned long __clk_round_rate(struct clk *clk, unsigned long rate)
->  {
-> -	unsigned long min_rate;
-> -	unsigned long max_rate;
-> +
-> +	struct clk_rate_request req;
-> +	int ret;
->  
->  	if (!clk)
->  		return 0;
->  
-> -	clk_core_get_boundaries(clk->core, &min_rate, &max_rate);
-> +	clk_core_get_boundaries(clk->core, &req.min_rate, &req.max_rate);
-> +	req.rate = rate;
-> +
-> +	ret = clk_core_round_rate_nolock(clk->core, &req);
-> +	if (ret)
-> +		return ret;
+Huacai
 
-This returns a negative int for unsigned long. Is that intentional?
-
--- 
-Qualcomm Innovation Center, Inc. is a member of Code Aurora Forum,
-a Linux Foundation Collaborative Project
+On Wed, Jun 3, 2015 at 2:23 PM, Ralf Baechle <ralf@linux-mips.org> wrote:
+> Hi,
+>
+> patchwork became one of the victims of the lmo upgrade on the weekend.
+> Right now the web user interface of patchwork is functional but it
+> doesn't accept new emails from the web.  That shouldn't be too much
+> of an issue because you all submitted your patches in time so they
+> made it into patchwork before the deadline ;-)  Anything submitted
+> later sits safely in the list archives which will be fed to patchwork
+> once the issue is sorted.
+>
+>   Ralf
+>

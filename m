@@ -1,36 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 Jun 2015 17:03:14 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:53451 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27007519AbbFEPDJxeFJG (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 5 Jun 2015 17:03:09 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.9/8.14.8) with ESMTP id t55F38WE006690;
-        Fri, 5 Jun 2015 17:03:08 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.9/8.14.9/Submit) id t55F373o006689;
-        Fri, 5 Jun 2015 17:03:07 +0200
-Date:   Fri, 5 Jun 2015 17:03:07 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Subject: Re: [PATCH -next] MIPS: traps: Add missing include file
-Message-ID: <20150605150307.GQ14871@linux-mips.org>
-References: <1433514585-26380-1-git-send-email-linux@roeck-us.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 Jun 2015 23:18:44 +0200 (CEST)
+Received: (from localhost user: 'macro', uid#1010) by eddie.linux-mips.org
+        with ESMTP id S27007514AbbFEVSllIQfA (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 5 Jun 2015 23:18:41 +0200
+Date:   Fri, 5 Jun 2015 22:18:41 +0100 (BST)
+From:   "Maciej W. Rozycki" <macro@linux-mips.org>
+To:     Ralf Baechle <ralf@linux-mips.org>
+cc:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
+        linux-mips@linux-mips.org, benh@kernel.crashing.org,
+        will.deacon@arm.com, linux-kernel@vger.kernel.org,
+        markos.chandras@imgtec.com, Steven.Hill@imgtec.com,
+        alexander.h.duyck@redhat.com,
+        "David S. Miller" <davem@davemloft.net>
+Subject: Re: [PATCH 1/3] MIPS: R6: Use lightweight SYNC instruction in smp_*
+ memory barriers
+In-Reply-To: <20150605131046.GD26432@linux-mips.org>
+Message-ID: <alpine.LFD.2.11.1506052209520.7979@eddie.linux-mips.org>
+References: <20150602000818.6668.76632.stgit@ubuntu-yegoshin> <20150602000934.6668.43645.stgit@ubuntu-yegoshin> <20150605131046.GD26432@linux-mips.org>
+User-Agent: Alpine 2.11 (LFD 23 2013-08-11)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1433514585-26380-1-git-send-email-linux@roeck-us.net>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <ralf@linux-mips.org>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47889
+X-archive-position: 47890
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,8 +40,14 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Jun 05, 2015 at 07:29:45AM -0700, Guenter Roeck wrote:
+On Fri, 5 Jun 2015, Ralf Baechle wrote:
 
-Thanks, I folded your fix into the original patch.
+> do you have an R4000 / R4600 / R5000 / R7000 / SiByte system at hand to
+> test this?
 
-  Ralf
+ I should be able to check R4400 (that is virtually the same as R4000) 
+next week or so.  As to SiByte -- not before next month I'm afraid.  I 
+don't have access to any of the other processors you named.  You may 
+want to find a better person if you want to accept this change soon.
+
+  Maciej

@@ -1,42 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 Jun 2015 10:26:59 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:10172 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27007354AbbFEI05fsFeO (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 5 Jun 2015 10:26:57 +0200
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id C6C9786870881;
-        Fri,  5 Jun 2015 09:26:49 +0100 (IST)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Fri, 5 Jun 2015 09:26:51 +0100
-Received: from [192.168.154.48] (192.168.154.48) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Fri, 5 Jun
- 2015 09:26:51 +0100
-Message-ID: <55715D4B.9020703@imgtec.com>
-Date:   Fri, 5 Jun 2015 09:26:51 +0100
-From:   Markos Chandras <Markos.Chandras@imgtec.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.7.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 Jun 2015 10:34:20 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:50488 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S27007455AbbFEIeSvq1OO (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 5 Jun 2015 10:34:18 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.9/8.14.8) with ESMTP id t558YDDR030621;
+        Fri, 5 Jun 2015 10:34:13 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.9/8.14.9/Submit) id t558Y96o030620;
+        Fri, 5 Jun 2015 10:34:09 +0200
+Date:   Fri, 5 Jun 2015 10:34:09 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Jiang Liu <jiang.liu@linux.intel.com>
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Yinghai Lu <yinghai@kernel.org>,
+        Borislav Petkov <bp@alien8.de>,
+        Sergey Ryazanov <ryazanov.s.a@gmail.com>,
+        Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+        Tony Luck <tony.luck@intel.com>, x86@kernel.org,
+        linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-mips@linux-mips.org
+Subject: Re: [RFT v2 25/48] mips, irq: Prepare for killing the first
+ parameter 'irq' of irq_flow_handler_t
+Message-ID: <20150605083408.GU26432@linux-mips.org>
+References: <1433391238-19471-1-git-send-email-jiang.liu@linux.intel.com>
+ <1433391238-19471-26-git-send-email-jiang.liu@linux.intel.com>
 MIME-Version: 1.0
-To:     Alexei Starovoitov <ast@plumgrid.com>, <linux-mips@linux-mips.org>
-CC:     <netdev@vger.kernel.org>, "David S. Miller" <davem@davemloft.net>,
-        "Daniel Borkmann" <dborkman@redhat.com>,
-        Hannes Frederic Sowa <hannes@stressinduktion.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 0/6] MIPS/BPF fixes for 4.3
-References: <1433415376-20952-1-git-send-email-markos.chandras@imgtec.com> <557081A6.5010407@plumgrid.com>
-In-Reply-To: <557081A6.5010407@plumgrid.com>
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.154.48]
-Return-Path: <Markos.Chandras@imgtec.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1433391238-19471-26-git-send-email-jiang.liu@linux.intel.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47875
+X-archive-position: 47876
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Markos.Chandras@imgtec.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,35 +56,6 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 06/04/2015 05:49 PM, Alexei Starovoitov wrote:
-> On 6/4/15 3:56 AM, Markos Chandras wrote:
->> Here are some fixes for MIPS/BPF. The first 5 patches do some cleanup
->> and lay the groundwork for the final one which introduces assembly
->> helpers
->> for MIPS and MIPS64. The goal is to speed up certain operations that do
->> not need to go through the common C functions. This also makes the
->> test_bpf
->> testsuite happy with all 60 tests passing. This is based in 4.1-rc6.
-> 
-> looks like these patches actually fix two real bugs, right?
-> If so, I think you probably want them in 'net' tree ?
+Acked-by: Ralf Baechle <ralf@linux-mips.org>
 
-I was thinking to have them in the MIPS tree to be honest. The original
-MIPS/BPF went via the MIPS tree as well. It also makes it easier for me
-to work with Ralf on minor fixes, merge conflicts etc.
-
-> 
-> Different arch maintainers take different stance towards bpf jit
-> changes. x86, arm and s390 are ok with them going through Dave's trees,
-> since often there are dependencies on bpf core parts.
-> So please state clearly what tree you want these patches to go in.
-> 
-> btw, in the net-next tree bpf testsuite has 246 tests and the last
-> ten are very stressful for JITs.
-
-Interesting. Thanks. I will rebase my tree shortly after 4.2-rc1 then
-and run the testsuite again. I will post a v2 if I spot more problems
-with it.
-
--- 
-markos
+  Ralf

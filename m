@@ -1,46 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 06 Jun 2015 01:34:15 +0200 (CEST)
-Received: from resqmta-ch2-02v.sys.comcast.net ([69.252.207.34]:53149 "EHLO
-        resqmta-ch2-02v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27009385AbbFEXeOGpZFr (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 6 Jun 2015 01:34:14 +0200
-Received: from resomta-ch2-13v.sys.comcast.net ([69.252.207.109])
-        by resqmta-ch2-02v.sys.comcast.net with comcast
-        id cnZw1q0032N9P4d01na7tf; Fri, 05 Jun 2015 23:34:07 +0000
-Received: from [192.168.1.13] ([69.251.155.187])
-        by resomta-ch2-13v.sys.comcast.net with comcast
-        id cna61q00D42s2jH01na6t5; Fri, 05 Jun 2015 23:34:07 +0000
-Message-ID: <557231DD.8090006@gentoo.org>
-Date:   Fri, 05 Jun 2015 19:33:49 -0400
-From:   Joshua Kinard <kumba@gentoo.org>
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:31.0) Gecko/20100101 Thunderbird/31.7.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 06 Jun 2015 12:10:15 +0200 (CEST)
+Received: from mail-wi0-f172.google.com ([209.85.212.172]:37341 "EHLO
+        mail-wi0-f172.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007369AbbFFKKOWnjsP (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 6 Jun 2015 12:10:14 +0200
+Received: by wifx6 with SMTP id x6so42088260wif.0;
+        Sat, 06 Jun 2015 03:10:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id:mime-version:content-type
+         :content-transfer-encoding;
+        bh=/p2grg09y+hC+IdhIqGkNbFvU/j7JEOn9t6xdAXSABE=;
+        b=BHy7imvZ0OOnG+X/oS0BInYeLUnCjg1SCpuggceXaqTDSSvJMAbaO52aSPwn+KDGLr
+         Bjc8ZB48VXNSxfltX8aOthRhD5khBKgXi087dL8U5+R64u8a08skS+u0HzsiKPjNZAzk
+         HI8uu+yg/pEimxKNHCM+hEjj1XbuDgR89wDSPVvCx8TKtls+tLz8bKpLtNx/xSrobH5o
+         RtzeRC2ZNwMrMisql8cmSTq9EnUjgHMfMf4jkF7R1crYj07hv1i3J9mllGph21foD9+L
+         tXsjXxRWgDqEGfMug8K2c9R06nP/9XQ6m8latjaQcbEXNi233JNtXc4dXCJY4NryLgLd
+         16fA==
+X-Received: by 10.181.13.241 with SMTP id fb17mr4641988wid.13.1433585409090;
+        Sat, 06 Jun 2015 03:10:09 -0700 (PDT)
+Received: from linux-tdhb.lan (ip-194-187-74-233.konfederacka.maverick.com.pl. [194.187.74.233])
+        by mx.google.com with ESMTPSA id hn7sm14444276wjc.16.2015.06.06.03.10.07
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Sat, 06 Jun 2015 03:10:08 -0700 (PDT)
+From:   =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
+To:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
+Cc:     Hauke Mehrtens <hauke@hauke-m.de>,
+        Arend van Spriel <arend@broadcom.com>,
+        Hante Meuleman <meuleman@broadcom.com>,
+        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
+Subject: [PATCH] MIPS: BCM47XX: Add helper variable for storing NVRAM length
+Date:   Sat,  6 Jun 2015 12:09:47 +0200
+Message-Id: <1433585387-30548-1-git-send-email-zajec5@gmail.com>
+X-Mailer: git-send-email 1.8.4.5
 MIME-Version: 1.0
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     Linux MIPS List <linux-mips@linux-mips.org>
-Subject: Re: [PATCH v2 2/2]: MIPS: IP27: Xtalk detection cleanups
-References: <556366E4.70407@gentoo.org> <20150605114127.GC26432@linux-mips.org>
-In-Reply-To: <20150605114127.GC26432@linux-mips.org>
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=comcast.net;
-        s=q20140121; t=1433547247;
-        bh=MaPzGJLAPOyeyctqWtZyg4he2nwZ4SVxb+NhvGbMVKA=;
-        h=Received:Received:Message-ID:Date:From:MIME-Version:To:Subject:
-         Content-Type;
-        b=FDeythS+vP+zNefPUZiV49chSRPlumJfEDgXdYYL64+TE5YXzqjP61GKJkW7xlnrP
-         x9KqyNt2RlxUdAJGf9dSxAJA4S+r85SKf+hSFGgU7Ckl0w6l+K2LHQX6FEa57940xN
-         UoNkIyy1WvR+DbcwfBPzQIxESRm8kufYqfC+z4NB94u7f2ebBsAuPkfwess8dBMR2n
-         tJ+l04crgjr5qgsxP/fwZF5Dxgd+NUqBZjDXgR0Utb94fsfWJZ+37XJixcpHXGN/n/
-         DTXXCqGnbc42IUezX+mfakq1k1SQBGk01fawo99yNPeuz/+jdkOpNk+29+c+CeN1Co
-         YRgdIGqwiAzFA==
-Return-Path: <kumba@gentoo.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Return-Path: <zajec5@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47891
+X-archive-position: 47892
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kumba@gentoo.org
+X-original-sender: zajec5@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,47 +56,121 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 06/05/2015 07:41, Ralf Baechle wrote:
-> On Mon, May 25, 2015 at 02:16:04PM -0400, Joshua Kinard wrote:
-> 
->> From: Joshua Kinard <kumba@gentoo.org>
->>
->> This is the second patch of two to clean up/update the Xtalk detection
->> code used by IP27 with some of the code used in the IP30 port.
->>
->> This specific patch replaces some of the IP27 Xtalk detection code with
->> methods used in the IP30 port, and converts the Xtalk devices into
->> platform devices.
-> 
-> Hm...  that all is good cleanup but registration as platform device doesn't
-> help if there's no matching platform driver.  I assume you have something
-> like that as part of your yet unpublished patches?
+This simplifies code just a bit (also maybe makes it a bit more
+intuitive?) and will allow us to stop storing header which holds some
+data we never use.
 
-Kinda yeah.  It appears the original IP27 Xtalk code was only looking for
-BRIDGE chips to identify and enumerate additional PCI buses.  At the time I
-made this change, I modified a spare Impact board to fit the Onyx2 and
-installed it.  It can boot the PROM on it and get a console, just the only odd
-bit is the Onyx2's PROM never expected an Impact board, so it only says
-"Welcome to", and nothing else at the bottom.
+Signed-off-by: Rafał Miłecki <zajec5@gmail.com>
+---
+ arch/mips/bcm47xx/nvram.c | 37 ++++++++++++++++---------------------
+ 1 file changed, 16 insertions(+), 21 deletions(-)
 
-Linux sees the Impact board installed in the slot, but, for some reason, it was
-not connecting the board to the impact driver and running the impact_probe
-function, where I was anticipating additional errors to crop up.  I gave up at
-that point and haven't had the time to finish chasing it down.  It's that, or
-someone needs to help me write a driver for the InfiniteReality boards,
-codename "Kona" :)
-
-But the changes should enable IP27 to probe for XIO devices that don't have a
-BRIDGE chip in front of them, which right now, is only the Impact (that I know
-of).  I'm keeping an eye on eBay for other archaic XIO boards that may need
-testing.  Just picked up an Onyx2 HD Video board of some kind.  I think it's
-got a BRIDGE chip, though, so it might be PCI-based.
-
-Impact itself needs more work before I can send that in.  I've been using
-Stan's very original driver with some code clean-ups done by "Tanzy" in 2009
-for the Octane, and then IP28 has a separate version from Peter Fuerst.  Those
-need to be merged together so a single driver can work for both systems.
-
-Same for Odyssey/VPro on Octane and maybe, IP35, but that's WAY down the road...
-
---J
+diff --git a/arch/mips/bcm47xx/nvram.c b/arch/mips/bcm47xx/nvram.c
+index 2ed762e..9ccdce8 100644
+--- a/arch/mips/bcm47xx/nvram.c
++++ b/arch/mips/bcm47xx/nvram.c
+@@ -35,6 +35,7 @@ struct nvram_header {
+ };
+ 
+ static char nvram_buf[NVRAM_SPACE];
++static size_t nvram_len;
+ static const u32 nvram_sizes[] = {0x8000, 0xF000, 0x10000};
+ 
+ static u32 find_nvram_size(void __iomem *end)
+@@ -60,7 +61,7 @@ static int nvram_find_and_copy(void __iomem *iobase, u32 lim)
+ 	u32 *src, *dst;
+ 	u32 size;
+ 
+-	if (nvram_buf[0]) {
++	if (nvram_len) {
+ 		pr_warn("nvram already initialized\n");
+ 		return -EEXIST;
+ 	}
+@@ -99,17 +100,18 @@ found:
+ 	for (i = 0; i < sizeof(struct nvram_header); i += 4)
+ 		*dst++ = __raw_readl(src++);
+ 	header = (struct nvram_header *)nvram_buf;
+-	if (header->len > size) {
++	nvram_len = header->len;
++	if (nvram_len > size) {
+ 		pr_err("The nvram size according to the header seems to be bigger than the partition on flash\n");
+-		header->len = size;
++		nvram_len = size;
+ 	}
+-	if (header->len >= NVRAM_SPACE) {
++	if (nvram_len >= NVRAM_SPACE) {
+ 		pr_err("nvram on flash (%i bytes) is bigger than the reserved space in memory, will just copy the first %i bytes\n",
+ 		       header->len, NVRAM_SPACE - 1);
+-		header->len = NVRAM_SPACE - 1;
++		nvram_len = NVRAM_SPACE - 1;
+ 	}
+ 	/* proceed reading data after header */
+-	for (; i < header->len; i += 4)
++	for (; i < nvram_len; i += 4)
+ 		*dst++ = readl(src++);
+ 	nvram_buf[NVRAM_SPACE - 1] = '\0';
+ 
+@@ -144,7 +146,6 @@ static int nvram_init(void)
+ #ifdef CONFIG_MTD
+ 	struct mtd_info *mtd;
+ 	struct nvram_header header;
+-	struct nvram_header *pheader;
+ 	size_t bytes_read;
+ 	int err;
+ 
+@@ -155,20 +156,16 @@ static int nvram_init(void)
+ 	err = mtd_read(mtd, 0, sizeof(header), &bytes_read, (uint8_t *)&header);
+ 	if (!err && header.magic == NVRAM_MAGIC &&
+ 	    header.len > sizeof(header)) {
+-		if (header.len >= NVRAM_SPACE) {
++		nvram_len = header.len;
++		if (nvram_len >= NVRAM_SPACE) {
+ 			pr_err("nvram on flash (%i bytes) is bigger than the reserved space in memory, will just copy the first %i bytes\n",
+ 				header.len, NVRAM_SPACE);
+-			header.len = NVRAM_SPACE - 1;
++			nvram_len = NVRAM_SPACE - 1;
+ 		}
+ 
+-		err = mtd_read(mtd, 0, header.len, &bytes_read,
++		err = mtd_read(mtd, 0, nvram_len, &nvram_len,
+ 			       (u8 *)nvram_buf);
+-		if (err)
+-			return err;
+-
+-		pheader = (struct nvram_header *)nvram_buf;
+-		pheader->len = header.len;
+-		return 0;
++		return err;
+ 	}
+ #endif
+ 
+@@ -183,7 +180,7 @@ int bcm47xx_nvram_getenv(const char *name, char *val, size_t val_len)
+ 	if (!name)
+ 		return -EINVAL;
+ 
+-	if (!nvram_buf[0]) {
++	if (!nvram_len) {
+ 		err = nvram_init();
+ 		if (err)
+ 			return err;
+@@ -231,16 +228,14 @@ char *bcm47xx_nvram_get_contents(size_t *nvram_size)
+ {
+ 	int err;
+ 	char *nvram;
+-	struct nvram_header *header;
+ 
+-	if (!nvram_buf[0]) {
++	if (!nvram_len) {
+ 		err = nvram_init();
+ 		if (err)
+ 			return NULL;
+ 	}
+ 
+-	header = (struct nvram_header *)nvram_buf;
+-	*nvram_size = header->len - sizeof(struct nvram_header);
++	*nvram_size = nvram_len - sizeof(struct nvram_header);
+ 	nvram = vmalloc(*nvram_size);
+ 	if (!nvram)
+ 		return NULL;
+-- 
+1.8.4.5

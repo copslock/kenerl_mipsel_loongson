@@ -1,62 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 08 Jun 2015 12:12:03 +0200 (CEST)
-Received: from mail-lb0-f174.google.com ([209.85.217.174]:33833 "EHLO
-        mail-lb0-f174.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007675AbbFHKMCJsw6I convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 8 Jun 2015 12:12:02 +0200
-Received: by lbcmx3 with SMTP id mx3so77422503lbc.1;
-        Mon, 08 Jun 2015 03:11:56 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 08 Jun 2015 15:14:54 +0200 (CEST)
+Received: from mail-wi0-f176.google.com ([209.85.212.176]:38206 "EHLO
+        mail-wi0-f176.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008316AbbFHNOwf891V (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 8 Jun 2015 15:14:52 +0200
+Received: by wibdq8 with SMTP id dq8so84849571wib.1
+        for <linux-mips@linux-mips.org>; Mon, 08 Jun 2015 06:14:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=date:from:to:cc:subject:message-id:in-reply-to:references
-         :mime-version:content-type:content-transfer-encoding;
-        bh=u4fAxx9h4dRiRSztcMb2Qju7+AL4l0kUZdhnooLTFsc=;
-        b=SlBLgf455vsCeGyLJfJX//VsXwgATJZfGnh2VhB2gVK5YJ5ywsWZZ6DAmCndoOmyT+
-         m9M1/3KT6u1sJJaWzVl2kbQANbk3sjnWr3uHl3ec9vWkx5l7/B2VYylRlftNKcaDEdiv
-         0LDVW30jPychwJmzaAUC+jMsJ8EU4eiYh0OM0PbBCJlEtV01zdLB2CT9nJ1vT0IfO6C5
-         OoRZX+9qynqaLpEVyuVzXzrcPnB7bgIComhp3j58K9DEoRgTu7Y6vuMnHnoTDfYq6GXp
-         9WQTME6m9seRW7xiSPmjAkU1ImbhIMNPWDY+G1+IR+ChHjt0yLD2tsgeig4lb9d8NIb6
-         81Yw==
-X-Received: by 10.152.88.99 with SMTP id bf3mr15543431lab.97.1433758316693;
-        Mon, 08 Jun 2015 03:11:56 -0700 (PDT)
-Received: from flare (t35.niisi.ras.ru. [193.232.173.35])
-        by mx.google.com with ESMTPSA id yc3sm540489lbb.6.2015.06.08.03.11.54
+        h=message-id:date:from:mime-version:to:subject:content-type
+         :content-transfer-encoding;
+        bh=tr6MQebOl177re8kJjSNhQQFK6xtOAs66B8Wp3aawr8=;
+        b=JM4iNOIAKKJBzNkzHkObYE++N1plUkV2qVip85d09i4FGCSdJM3Oed3EHx0eWPv3o4
+         BkWuM76SSckpvkZwFqLA4g/8wFGnyqCMGQFTLqHCZzCYpMalxNANttpFDzaue+pxsZiI
+         ofXhfxmDoksJcTFduoIdozje8CROxoksnfzx4qGLklx9+WZERax5CykxcHOzCSr2ANDY
+         UaUt9l+H4rxPdawi4nDaT+vr2kx4ZtF3njax+B0Mo2a5P+fHOIqktf3CYGO3tkrGCd2g
+         Gmz8XEnJOD4cXMEz3cD8BBV2QsEuOdJfhmF18PBXyy+nabT21hEYKgasfF/IBc0jk1ZG
+         ZHJA==
+X-Received: by 10.180.107.38 with SMTP id gz6mr21980392wib.63.1433769287338;
+        Mon, 08 Jun 2015 06:14:47 -0700 (PDT)
+Received: from localhost ([47.59.123.37])
+        by mx.google.com with ESMTPSA id ha4sm1006509wib.0.2015.06.08.06.14.46
+        for <linux-mips@linux-mips.org>
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 08 Jun 2015 03:11:55 -0700 (PDT)
-Date:   Mon, 8 Jun 2015 13:17:58 +0300
-From:   Antony Pavlov <antonynpavlov@gmail.com>
-To:     Alban Bedel <albeu@free.fr>
-Cc:     linux-mips@linux-mips.org, Rob Herring <robh+dt@kernel.org>,
-        Pawel Moll <pawel.moll@arm.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ian Campbell <ijc+devicetree@hellion.org.uk>,
-        Kumar Gala <galak@codeaurora.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Andrew Bresticker <abrestic@chromium.org>,
-        Qais Yousef <qais.yousef@imgtec.com>,
-        Gabor Juhos <juhosg@openwrt.org>, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 12/12] MIPS: Add basic support for the TL-WR1043ND
- version 1
-Message-Id: <20150608131758.9d76be074998ea3de0e976a4@gmail.com>
-In-Reply-To: <1433031506-7984-5-git-send-email-albeu@free.fr>
-References: <1433029955-7346-1-git-send-email-albeu@free.fr>
-        <1433031506-7984-5-git-send-email-albeu@free.fr>
-X-Mailer: Sylpheed 3.5.0beta1 (GTK+ 2.24.25; i586-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-Return-Path: <antonynpavlov@gmail.com>
+        Mon, 08 Jun 2015 06:14:47 -0700 (PDT)
+Message-ID: <55759543.1010408@gmail.com>
+Date:   Mon, 08 Jun 2015 15:14:43 +0200
+From:   Xose Vazquez Perez <xose.vazquez@gmail.com>
+MIME-Version: 1.0
+To:     linux-mips@linux-mips.org
+Subject: Generic kernel features that need architecture(mips) support
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Return-Path: <xose.vazquez@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47903
+X-archive-position: 47904
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: antonynpavlov@gmail.com
+X-original-sender: xose.vazquez@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -69,94 +52,61 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sun, 31 May 2015 02:18:26 +0200
-Alban Bedel <albeu@free.fr> wrote:
+Hi,
 
-> Add a DTS for TL-WR1043ND version 1 and allow to have it built in the
-> kernel to circumvent the broken u-boot found on these boards.
-> Currently only the UART, LEDs and buttons are supported.
-> 
-> Signed-off-by: Alban Bedel <albeu@free.fr>
-
-> --- /dev/null
-> +++ b/arch/mips/boot/dts/qca/ar9132.dtsi
+If there is anything wrong, please report it in this thread:
+https://marc.info/?t=143332955700003
 
 
-> +++ b/arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts
-> @@ -0,0 +1,112 @@
-> +/dts-v1/;
-> +
-> +#include <dt-bindings/gpio/gpio.h>
-> +#include <dt-bindings/input/input.h>
-> +
-> +#include "ar9132.dtsi"
-> +
-> +/ {
-> +	compatible = "tplink,tl-wr1043nd-v1", "qca,ar9132";
-> +	model = "TP-Link TL-WR1043ND Version 1";
-> +
-> +	alias {
-> +		serial0 = "/ahb/apb/uart@18020000";
-> +	};
-> +
-> +	memory@0 {
-> +		device_type = "memory";
-> +		reg = <0x0 0x2000000>;
-> +	};
-> +
-> +	extosc: oscillator {
-> +		compatible = "fixed-clock";
-> +		#clock-cells = <0>;
-> +		clock-frequency = <40000000>;
-> +	};
-> +
-> +	ahb {
-> +		apb {
-> +			uart@18020000 {
-> +				status = "okay";
-> +			};
-> +
-> +			pll-controller@18050000 {
-> +				clocks = <&extosc>;
+The meaning of entries in the tables is:
 
-IMHO AR9132 SoC can't work without external oscilator.
+    | ok |  # feature supported by the architecture
+    |TODO|  # feature not yet supported by the architecture
+    | .. |  # feature cannot be supported by the hardware
 
-Can we just move basic extosc declaration to SoC dt file (ar9132.dtsi)?
-So board dt file ar9132_tl_wr1043nd_v1.dts will contain only oscilator
-clock frequency value.
-
-E.g.
-
-ar9132.dtsi:
-============
-
-	extosc: oscillator {
-		compatible = "fixed-clock";
-		#clock-cells = <0>;
-		clock-frequency = <40000000>;
-	};
-...
-	ahb {
-		apb {
-
-...
-
-			pll-controller@18050000 {
-...
-				clocks = <&extosc>;
-...
-
-
-
-ar9132_tl_wr1043nd_v1.dts:
-==========================
-
-...
-	&extosc {
-		clock-frequency = <40000000>;
-	};
-
-
--- 
-Best regards,
-  Antony Pavlov
+#
+# Kernel feature support matrix of the 'mips' architecture:
+#
+      core/ BPF-JIT              :  ok  |                        HAVE_BPF_JIT #  arch supports BPF JIT optimizations
+      core/ generic-idle-thread  :  ok  |             GENERIC_SMP_IDLE_THREAD #  arch makes use of the generic SMP idle thread facility
+      core/ jump-labels          :  ok  |                HAVE_ARCH_JUMP_LABEL #  arch supports live patched, high efficiency branches
+      core/ tracehook            :  ok  |                 HAVE_ARCH_TRACEHOOK #  arch supports tracehook (ptrace) register handling APIs
+     debug/ kgdb                 :  ok  |                      HAVE_ARCH_KGDB #  arch supports the kGDB kernel debugger
+     debug/ kprobes              :  ok  |                        HAVE_KPROBES #  arch supports live patched kernel probe
+     debug/ kretprobes           :  ok  |                     HAVE_KRETPROBES #  arch supports kernel function-return probes
+     debug/ stackprotector       :  ok  |              HAVE_CC_STACKPROTECTOR #  arch supports compiler driven stack overflow protection
+        io/ dma-api-debug        :  ok  |                  HAVE_DMA_API_DEBUG #  arch supports DMA debug facilities
+        io/ dma-contiguous       :  ok  |                 HAVE_DMA_CONTIGUOUS #  arch supports the DMA CMA (continuous memory allocator)
+        io/ dma_map_attrs        :  ok  |                      HAVE_DMA_ATTRS #  arch provides dma_*map*_attrs() APIs
+   locking/ lockdep              :  ok  |                     LOCKDEP_SUPPORT #  arch supports the runtime locking correctness debug facility
+   seccomp/ seccomp-filter       :  ok  |            HAVE_ARCH_SECCOMP_FILTER #  arch supports seccomp filters
+      time/ arch-tick-broadcast  :  ok  |             ARCH_HAS_TICK_BROADCAST #  arch provides tick_broadcast()
+      time/ clockevents          :  ok  |                 GENERIC_CLOCKEVENTS #  arch support generic clock events
+      time/ context-tracking     :  ok  |               HAVE_CONTEXT_TRACKING #  arch supports context tracking for NO_HZ_FULL
+      time/ irq-time-acct        :  ok  |            HAVE_IRQ_TIME_ACCOUNTING #  arch supports precise IRQ time accounting
+      time/ modern-timekeeping   :  ok  |            !ARCH_USES_GETTIMEOFFSET #  arch does not use arch_gettimeoffset() anymore
+      time/ virt-cpuacct         :  ok  |            HAVE_VIRT_CPU_ACCOUNTING #  arch supports precise virtual CPU time accounting
+        vm/ ELF-ASLR             :  ok  |              ARCH_HAS_ELF_RANDOMIZE #  arch randomizes the stack, heap and binary images of ELF binaries
+        vm/ numa-memblock        :  ok  |              HAVE_MEMBLOCK_NODE_MAP #  arch supports NUMA aware memblocks
+        vm/ pmdp_splitting_flush :  ok  |    __HAVE_ARCH_PMDP_SPLITTING_FLUSH #  arch supports the pmdp_splitting_flush() VM API
+        vm/ THP                  :  ok  |      HAVE_ARCH_TRANSPARENT_HUGEPAGE #  arch supports transparent hugepages
+     debug/ gcov-profile-all     : TODO |           ARCH_HAS_GCOV_PROFILE_ALL #  arch supports whole-kernel GCOV code coverage profiling
+     debug/ KASAN                : TODO |                     HAVE_ARCH_KASAN #  arch supports the KASAN runtime memory checker
+     debug/ kprobes-on-ftrace    : TODO |              HAVE_KPROBES_ON_FTRACE #  arch supports combined kprobes and ftrace live patching
+     debug/ optprobes            : TODO |                      HAVE_OPTPROBES #  arch supports live patched optprobes
+     debug/ uprobes              : TODO |               ARCH_SUPPORTS_UPROBES #  arch supports live patched user probes
+     debug/ user-ret-profiler    : TODO |           HAVE_USER_RETURN_NOTIFIER #  arch supports user-space return from system call profiler
+        io/ sg-chain             : TODO |                   ARCH_HAS_SG_CHAIN #  arch supports chained scatter-gather lists
+       lib/ strncasecmp          : TODO |             __HAVE_ARCH_STRNCASECMP #  arch provides an optimized strncasecmp() function
+   locking/ cmpxchg-local        : TODO |                  HAVE_CMPXCHG_LOCAL #  arch supports the this_cpu_cmpxchg() API
+   locking/ queued-rwlocks       : TODO |             ARCH_USE_QUEUED_RWLOCKS #  arch supports queued rwlocks
+   locking/ queued-spinlocks     : TODO |           ARCH_USE_QUEUED_SPINLOCKS #  arch supports queued spinlocks
+   locking/ rwsem-optimized      : TODO |               Optimized asm/rwsem.h #  arch provides optimized rwsem APIs
+      perf/ kprobes-event        : TODO |      HAVE_REGS_AND_STACK_ACCESS_API #  arch supports kprobes with perf events
+      perf/ perf-regs            : TODO |                      HAVE_PERF_REGS #  arch supports perf events register access
+      perf/ perf-stackdump       : TODO |           HAVE_PERF_USER_STACK_DUMP #  arch supports perf events stack dumps
+     sched/ numa-balancing       : TODO |        ARCH_SUPPORTS_NUMA_BALANCING #  arch supports NUMA balancing
+        vm/ huge-vmap            : TODO |                 HAVE_ARCH_HUGE_VMAP #  arch supports the ioremap_pud_enabled() and ioremap_pmd_enabled() VM APIs
+        vm/ ioremap_prot         : TODO |                   HAVE_IOREMAP_PROT #  arch has ioremap_prot()
+        vm/ PG_uncached          : TODO |               ARCH_USES_PG_UNCACHED #  arch supports the PG_uncached page flag
+        vm/ pte_special          : TODO |             __HAVE_ARCH_PTE_SPECIAL #  arch supports the pte_special()/pte_mkspecial() VM APIs

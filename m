@@ -1,39 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Jun 2015 12:28:20 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:42536 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27006853AbbFJK2RyapkN (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 10 Jun 2015 12:28:17 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.15.1/8.14.8) with ESMTP id t5AASCOP000580;
-        Wed, 10 Jun 2015 12:28:13 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.15.1/8.15.1/Submit) id t5AAS5lb000579;
-        Wed, 10 Jun 2015 12:28:05 +0200
-Date:   Wed, 10 Jun 2015 12:28:05 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-Cc:     linux-mips@linux-mips.org, david.daney@cavium.com,
-        cernekee@gmail.com, linux-kernel@vger.kernel.org,
-        macro@codesourcery.com, markos.chandras@imgtec.com,
-        kumba@gentoo.org
-Subject: Re: [PATCH] MIPS: bugfix of local_r4k_flush_icache_range - added L2
- flush
-Message-ID: <20150610102805.GF2753@linux-mips.org>
-References: <20150528203724.28800.63700.stgit@ubuntu-yegoshin>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Jun 2015 14:57:13 +0200 (CEST)
+Received: from mail-wg0-f41.google.com ([74.125.82.41]:36646 "EHLO
+        mail-wg0-f41.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006891AbbFJM5KXBXzX (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 10 Jun 2015 14:57:10 +0200
+Received: by wgbgq6 with SMTP id gq6so35157185wgb.3;
+        Wed, 10 Jun 2015 05:57:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=sender:message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding;
+        bh=jC6RISbj3mdqZo9GeZ7kfjTytHvHnXxQalc/HlY5Uyc=;
+        b=musdlCy1uoO1GbZj5p26GYuXOzpKuZ8eOe6hDBOjXHjsDJOzniDQXbANHVEdNLEExm
+         kqH6gX57fD4nAoj5fbTUgghMMWtvnDPSlBh2NllbTxias9vqiGrVtmSNFHDwTsGfH3K2
+         e5n9yplcvn6zoBg+VLAWqwD3YVqCpmvsKe2LJb/gA0my4RyfjeCOkYP0KSFas22NfdCV
+         ZRRu493GF9QkZFCcVwFAZG/ZfELI04wLczZ3kginy0cN9qg0cA7IILizKSRiEkqYv/h7
+         CaBVEJGQUNS/dny8dZAEKpb0ycKHGrW4TRDxh6WCwv+gITkX5me0ZIeFofzJ1wgTaNJq
+         blHA==
+X-Received: by 10.194.3.77 with SMTP id a13mr6123029wja.104.1433941025137;
+        Wed, 10 Jun 2015 05:57:05 -0700 (PDT)
+Received: from ?IPv6:2a01:4240:53f0:43fb::cbb? (b.b.c.0.0.0.0.0.0.0.0.0.0.0.0.0.b.f.3.4.0.f.3.5.0.4.2.4.1.0.a.2.v6.cust.nbox.cz. [2a01:4240:53f0:43fb::cbb])
+        by mx.google.com with ESMTPSA id m10sm7834612wib.17.2015.06.10.05.57.03
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 10 Jun 2015 05:57:04 -0700 (PDT)
+Message-ID: <5578341E.3020709@suse.cz>
+Date:   Wed, 10 Jun 2015 14:57:02 +0200
+From:   Jiri Slaby <jslaby@suse.cz>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20150528203724.28800.63700.stgit@ubuntu-yegoshin>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <ralf@linux-mips.org>
+To:     James Hogan <james.hogan@imgtec.com>,
+        stable <stable@vger.kernel.org>
+CC:     Nicholas Mc Guire <hofrat@osadl.org>,
+        Gleb Natapov <gleb@kernel.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Ralf Baechle <ralf@linux-mips.org>, kvm@vger.kernel.org,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] MIPS: KVM: do not sign extend on unsigned MMIO load
+References: <1431002870-30098-1-git-send-email-hofrat@osadl.org> <554CC530.20906@imgtec.com> <5575536E.8080608@imgtec.com>
+In-Reply-To: <5575536E.8080608@imgtec.com>
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
+Return-Path: <jirislaby@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47911
+X-archive-position: 47912
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: jslaby@suse.cz
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,69 +60,51 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, May 28, 2015 at 01:37:24PM -0700, Leonid Yegoshin wrote:
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
 
-> This function is used to flush code used in NMI and EJTAG debug exceptions.
-> However, during that exceptions the Status.ERL bit is set, which means
-> that code runs as UNCACHABLE. So, flush code down to memory is needed.
+On 06/08/2015, 10:33 AM, James Hogan wrote:
+> Hi stable folk,
 > 
-> Signed-off-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-> ---
->  arch/mips/mm/c-r4k.c |   10 +---------
->  1 file changed, 1 insertion(+), 9 deletions(-)
+> On 08/05/15 15:16, James Hogan wrote:
+>> On 07/05/15 13:47, Nicholas Mc Guire wrote:
+>>> Fix possible unintended sign extension in unsigned MMIO loads
+>>> by casting to uint16_t in the case of mmio_needed != 2.
+>>> 
+>>> Signed-off-by: Nicholas Mc Guire <hofrat@osadl.org>
+>> 
+>> Looks good to me. I wrote an MMIO test to reproduce the issue,
+>> and this fixes it.
+>> 
+>> Reviewed-by: James Hogan <james.hogan@imgtec.com> Tested-by:
+>> James Hogan <james.hogan@imgtec.com>
+>> 
+>> It looks suitable for stable too (3.10+).
 > 
-> diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
-> index 0dbb65a51ce5..9f0299bb9a2a 100644
-> --- a/arch/mips/mm/c-r4k.c
-> +++ b/arch/mips/mm/c-r4k.c
-> @@ -666,17 +666,9 @@ static inline void local_r4k_flush_icache_range(unsigned long start, unsigned lo
->  			break;
->  		}
->  	}
-> -#ifdef CONFIG_EVA
-> -	/*
-> -	 * Due to all possible segment mappings, there might cache aliases
-> -	 * caused by the bootloader being in non-EVA mode, and the CPU switching
-> -	 * to EVA during early kernel init. It's best to flush the scache
-> -	 * to avoid having secondary cores fetching stale data and lead to
-> -	 * kernel crashes.
-> -	 */
-> +
->  	bc_wback_inv(start, (end - start));
->  	__sync();
-> -#endif
->  }
+> This has reached mainline, commit
+> ed9244e6c534612d2b5ae47feab2f55a0d4b4ced
+> 
+> Please could it be added to stable (3.10+).
 
-I was wondering why there was a cache flush at all so I dove into git
-history and found:
+Applied to 3.12. Thanks.
 
-commit 4676f9359fa5190ee6f42bbf2c27d28beb14d26a
-Author: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-Date:   Tue Jan 21 09:48:48 2014 +0000
+- -- 
+js
+suse labs
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
 
-    MIPS: mm: c-r4k: Flush scache to avoid cache aliases
-    
-    There is a chance for the secondary cache to have memory
-    aliases. This can happen if the bootloader is in a non-EVA mode
-    (or even in EVA mode but with different mapping from the kernel)
-    and the kernel switching to EVA afterwards. It's best to flush
-    the icache to avoid having the secondary CPUs fetching stale
-    data from it.
-    
-    Signed-off-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-    Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
-
-flush_icache_range() really only is meant to deal with I-cache coherency
-issues as they appear during normal kernel operation, that is code is
-modified and will be executed from RAM.  I doesn't know about aliases
-and it's not meant to know.
-
-As I understand you only need this on startup.  Making this function work
-for your special use results in a performance penalty for every other user
-of this function.
-
-How about reverting this commit and calling __flush_cache_all() to
-make sure your kernel code gets flushed out to the other end of the
-universe - or memory, what ever comes first?
-
-  Ralf
+iQIcBAEBCAAGBQJVeDQcAAoJEL0lsQQGtHBJ7q4P/3Q7y1FHwPKDhsdIdyyRypR6
+OXaH/6eNzpBhvSngP1gnx9MiyESTYihFVlRJsV6hYYzRcippnU0BP88dx9ntYrc1
+Accbhj/PPYcMqfCnYdL80Kxt9EomeuxEDcCdbp8twnReTt44xNAGHePiNh9GrhjG
+VKBMralyyjymtwyamCGb2W2aLNhxELIG3gXJTb7Q7E071LVeqQA6g+VNQ2QHwFYq
+FkJexePsLu/j3zVxH+rsQPJA6E1oKfUJb3jQHAtZHAH95Um0r8T4jUVSgFhyk3r6
+9tlkazL3P8Iui6lxbrV1vNCPAhhucY7PmX99uGhdroKJOKDCDPsVOKyJbxeHrUBR
+3zrMpB9x2uXd6WpDLDfL+bI8bCG6NVXZPGgSd7P+r/UbNuZ6VBNSVdqlWUeoMWGR
+ZS+HFMxVOiNplYudCTdLbJDLhm2XCWeW2lqszll/8Nk1c1FZkl8YbgpmdXfutKeU
+LQfUfS4tr0AQ7BqXf3bPUGrSGZO7e1V5R4gAa+Yqo6ZjDOj20AjYvs0oW4ubgLg8
+OJrHcJDLkEKrMDIZ7qpRZxyz56yrOgcfVbYB1fudXaV+e38t+kO0sujdNSJnHK8h
+T3kfa96QW2gOi7Cys1o2OaQboY2wFxK3/YefX3Jn+N7tGedKUwF4IYHtj17YqX1/
+8BkHSZZ9HQsJqyRAXBux
+=qlvA
+-----END PGP SIGNATURE-----

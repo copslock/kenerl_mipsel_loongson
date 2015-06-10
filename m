@@ -1,38 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Jun 2015 18:00:05 +0200 (CEST)
-Received: from casper.infradead.org ([85.118.1.10]:41359 "EHLO
-        casper.infradead.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27008049AbbFJQAEGAgAu convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 10 Jun 2015 18:00:04 +0200
-Received: from 178-85-85-44.dynamic.upc.nl ([178.85.85.44] helo=twins)
-        by casper.infradead.org with esmtpsa (Exim 4.80.1 #2 (Red Hat Linux))
-        id 1Z2iQ6-0003Jw-QQ; Wed, 10 Jun 2015 16:00:02 +0000
-Received: by twins (Postfix, from userid 1000)
-        id 5CE701254D760; Wed, 10 Jun 2015 18:00:00 +0200 (CEST)
-Message-ID: <1433952000.1495.56.camel@twins>
-Subject: Re: HAVE_CMPXCHG_LOCAL arch support.
-From:   Peter Zijlstra <peterz@infradead.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Jun 2015 18:36:55 +0200 (CEST)
+Received: from mail-wg0-f49.google.com ([74.125.82.49]:33812 "EHLO
+        mail-wg0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008014AbbFJQgyLiDd4 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 10 Jun 2015 18:36:54 +0200
+Received: by wgv5 with SMTP id 5so40090687wgv.1;
+        Wed, 10 Jun 2015 09:36:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=message-id:date:from:mime-version:to:cc:subject:references
+         :in-reply-to:content-type:content-transfer-encoding;
+        bh=5MgrV9MH6qvZVltvsgdbe2hOcAl7nFcLnFhVx8PQZj8=;
+        b=sDDe3WKmjm9/Ys01doQt/AFfpR9rr5OtMmcfBjPBTdFgxZHq/nxlp+d3b/zyVpDru/
+         0j/5iUcSNlXHcbK3krYrLs1V/8F2clCBrbgVFVG2UyRn2WBDu0kcrUs59Z9GX0KP4zFT
+         Pka/cQdZzMe+9syqwbuL6htscgKq0wG6bzJTQYPjhw2Gad+IkfqE3GtPYkwlUq1bgW5A
+         UDzKCTwPKtOV9mSW5ckjxsEaJiVkd5HIQXRahhaQFJc9Pn/A5UUxLGGBQrSBgflW7lD4
+         XchpPT64aO4BLBNXlzfoDD+w8lZBf553WguiMfgM6gqSHn0u9ntFgCQYz4B+bX8dALWX
+         R1HA==
+X-Received: by 10.194.157.168 with SMTP id wn8mr7551974wjb.79.1433954209014;
+        Wed, 10 Jun 2015 09:36:49 -0700 (PDT)
+Received: from localhost ([47.60.122.142])
+        by mx.google.com with ESMTPSA id nb9sm8713700wic.10.2015.06.10.09.36.48
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 10 Jun 2015 09:36:48 -0700 (PDT)
+Message-ID: <5578679D.2030307@gmail.com>
+Date:   Wed, 10 Jun 2015 18:36:45 +0200
+From:   Xose Vazquez Perez <xose.vazquez@gmail.com>
+MIME-Version: 1.0
 To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Xose Vazquez Perez <xose.vazquez@gmail.com>,
-        linux-arch@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org, Ingo Molnar <mingo@redhat.com>
-Date:   Wed, 10 Jun 2015 18:00:00 +0200
-In-Reply-To: <20150610155709.GH2753@linux-mips.org>
-References: <55759543.1010408@gmail.com>
-         <20150610145804.GG2753@linux-mips.org>
-         <20150610155709.GH2753@linux-mips.org>
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: 8BIT
-X-Mailer: Evolution 3.10.4-0ubuntu2 
-Mime-Version: 1.0
-Return-Path: <peterz@infradead.org>
+CC:     linux-mips@linux-mips.org, Ingo Molnar <mingo@kernel.org>,
+        linux-arch@vger.kernel.org, linux-api@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>
+Subject: Re: Generic kernel features that need architecture(mips) support
+References: <55759543.1010408@gmail.com> <20150610145804.GG2753@linux-mips.org>
+In-Reply-To: <20150610145804.GG2753@linux-mips.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Return-Path: <xose.vazquez@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47920
+X-archive-position: 47921
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: peterz@infradead.org
+X-original-sender: xose.vazquez@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,39 +56,10 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, 2015-06-10 at 17:57 +0200, Ralf Baechle wrote:
-> On Wed, Jun 10, 2015 at 04:58:04PM +0200, Ralf Baechle wrote:
-> 
-> > On Mon, Jun 08, 2015 at 03:14:43PM +0200, Xose Vazquez Perez wrote:
-> > 
-> > > If there is anything wrong, please report it in this thread:
-> > > https://marc.info/?t=143332955700003
-> > 
-> > 
-> > >    locking/ cmpxchg-local        : TODO |                  HAVE_CMPXCHG_LOCAL #  arch supports the this_cpu_cmpxchg() API
-> > 
-> > This one was easy - we have the functions in the code just no "select
-> > HAVE_CMPXCHG_LOCAL" Kconfig.
-> 
-> Something's wrong there.  The new file
-> Documentation/features/locking/cmpxchg-local/arch-support.txt in linux-next
-> claims correctly that only s390 and x86 define HAVE_CMPXCHG_LOCAL.  And a
-> git grep -w cmpxchg_local finds that in addition to these alpha, arm, arm64,
-> avr32, blackfin, c6x, frv, ia64, m32r, m68k, mips, parisc, powerpc, sparc,
-> unicore32 and xtensa define cmpxchg_local.
-> 
-> These architectures seem to not define cmpxchg_local in their arch/ dir:
-> 
->   arc cris hexagon metag microblaze mn10300 nios2 openrisc score sh tile um
-> 
-> Microblaze and nios2 include <asm-generic/cmpxchg.h> into their arch
-> cmpxchg.h so they get a definition of these functions but don't define
-> HAVE_CMPXCHG_LOCAL.  Peter Zijlstra said it the local versions are ~ 20
-> cycles faster on x86 than the "global" version.  But I've found one user
-> of cmpxchg_local, mm/vmstat.c and one user of cmpxchg64_local,
-> drivers/iommu/intel-iommu.c.  Sure, fixing the issue was trivial for me
-> on MIPS but is having cmpxchg{,64}_local actually worth it?  
+On 06/10/2015 04:58 PM, Ralf Baechle wrote:
 
-If you traverse the obfuscation chain a little, you'll find that
-local_cmpxchg() is implemented using cmpxchg_local(), and there are a
-few more users of that.
+> How are the documentation files in Documentation/features/ maintained?
+> They were automatically generated so I wonder if I have to take care
+> of anything.
+
+CC: Ingo and related ml.

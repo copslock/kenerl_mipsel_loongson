@@ -1,24 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Jun 2015 21:21:38 +0200 (CEST)
-Received: from prod-mail-xrelay02.akamai.com ([72.246.2.14]:52411 "EHLO
-        prod-mail-xrelay02.akamai.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008051AbbFKTVhL0ylx (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 11 Jun 2015 21:21:37 +0200
-Received: from prod-mail-xrelay02.akamai.com (localhost [127.0.0.1])
-        by postfix.imss70 (Postfix) with ESMTP id 0E1522879E;
-        Thu, 11 Jun 2015 19:21:31 +0000 (GMT)
-Received: from prod-mail-relay07.akamai.com (prod-mail-relay07.akamai.com [172.17.121.112])
-        by prod-mail-xrelay02.akamai.com (Postfix) with ESMTP id E065A28616;
-        Thu, 11 Jun 2015 19:21:30 +0000 (GMT)
-Received: from [172.28.12.164] (bos-lp6ds.kendall.corp.akamai.com [172.28.12.164])
-        by prod-mail-relay07.akamai.com (Postfix) with ESMTP id DA08B8008D;
-        Thu, 11 Jun 2015 19:21:30 +0000 (GMT)
-Message-ID: <5579DFBA.80809@akamai.com>
-Date:   Thu, 11 Jun 2015 15:21:30 -0400
-From:   Eric B Munson <emunson@akamai.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.6.0
-MIME-Version: 1.0
-To:     Andrew Morton <akpm@linux-foundation.org>
-CC:     Shuah Khan <shuahkh@osg.samsung.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Jun 2015 21:34:34 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:37023 "EHLO
+        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008088AbbFKTecgPY0y (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 11 Jun 2015 21:34:32 +0200
+Received: from akpm3.mtv.corp.google.com (unknown [216.239.45.65])
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 45974ABF;
+        Thu, 11 Jun 2015 19:34:25 +0000 (UTC)
+Date:   Thu, 11 Jun 2015 12:34:24 -0700
+From:   Andrew Morton <akpm@linux-foundation.org>
+To:     Eric B Munson <emunson@akamai.com>
+Cc:     Shuah Khan <shuahkh@osg.samsung.com>,
         Michal Hocko <mhocko@suse.cz>,
         Michael Kerrisk <mtk.manpages@gmail.com>,
         linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
@@ -28,19 +19,24 @@ CC:     Shuah Khan <shuahkh@osg.samsung.com>,
         linux-arch@vger.kernel.org, linux-api@vger.kernel.org
 Subject: Re: [RESEND PATCH V2 0/3] Allow user to request memory to be locked
  on page fault
-References: <1433942810-7852-1-git-send-email-emunson@akamai.com> <20150610145929.b22be8647887ea7091b09ae1@linux-foundation.org>
-In-Reply-To: <20150610145929.b22be8647887ea7091b09ae1@linux-foundation.org>
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 8bit
-Return-Path: <emunson@akamai.com>
+Message-Id: <20150611123424.4bb07cffd0e5bb146cc92231@linux-foundation.org>
+In-Reply-To: <5579DFBA.80809@akamai.com>
+References: <1433942810-7852-1-git-send-email-emunson@akamai.com>
+        <20150610145929.b22be8647887ea7091b09ae1@linux-foundation.org>
+        <5579DFBA.80809@akamai.com>
+X-Mailer: Sylpheed 3.4.1 (GTK+ 2.24.23; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <akpm@linux-foundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47930
+X-archive-position: 47931
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: emunson@akamai.com
+X-original-sender: akpm@linux-foundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,108 +49,58 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
------BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA1
+On Thu, 11 Jun 2015 15:21:30 -0400 Eric B Munson <emunson@akamai.com> wrote:
 
-On 06/10/2015 05:59 PM, Andrew Morton wrote:
-> On Wed, 10 Jun 2015 09:26:47 -0400 Eric B Munson
-> <emunson@akamai.com> wrote:
-> 
->> mlock() allows a user to control page out of program memory, but
->> this comes at the cost of faulting in the entire mapping when it
->> is
-> 
-> s/mapping/locked area/
+> > Ditto mlockall(MCL_ONFAULT) followed by munlock().  I'm not sure
+> > that even makes sense but the behaviour should be understood and
+> > tested.
+>
+> I have extended the kselftest for lock-on-fault to try both of these
+> scenarios and they work as expected.  The VMA is split and the VM
+> flags are set appropriately for the resulting VMAs.
 
-Done.
+munlock() should do vma merging as well.  I *think* we implemented
+that.  More tests for you to add ;)
 
-> 
->> allocated.  For large mappings where the entire area is not
->> necessary this is not ideal.
->> 
->> This series introduces new flags for mmap() and mlockall() that
->> allow a user to specify that the covered are should not be paged
->> out, but only after the memory has been used the first time.
-> 
-> The comparison with MCL_FUTURE is hiding over in the 2/3 changelog.
->  It's important so let's copy it here.
-> 
-> : MCL_ONFAULT is preferrable to MCL_FUTURE for the use cases
-> enumerated : in the previous patch becuase MCL_FUTURE will behave
-> as if each mapping : was made with MAP_LOCKED, causing the entire
-> mapping to be faulted in : when new space is allocated or mapped.
-> MCL_ONFAULT allows the user to : delay the fault in cost of any
-> given page until it is actually needed, : but then guarantees that
-> that page will always be resident.
+How are you testing the vma merging and splitting, btw?  Parsing
+the profcs files?
 
-Done
-
+> > What's missing here is a syscall to set VM_LOCKONFAULT on an
+> > arbitrary range of memory - mlock() for lock-on-fault.  It's a
+> > shame that mlock() didn't take a `mode' argument.  Perhaps we
+> > should add such a syscall - that would make the mmap flag unneeded
+> > but I suppose it should be kept for symmetry.
 > 
-> I *think* it all looks OK.  I'd like someone else to go over it
-> also if poss.
-> 
-> 
-> I guess the 2/3 changelog should have something like
-> 
-> : munlockall() will clear MCL_ONFAULT on all vma's in the process's
-> VM.
+> Do you want such a system call as part of this set?  I would need some
+> time to make sure I had thought through all the possible corners one
+> could get into with such a call, so it would delay a V3 quite a bit.
+> Otherwise I can send a V3 out immediately.
 
-Done
+I think the way to look at this is to pretend that mm/mlock.c doesn't
+exist and ask "how should we design these features".
 
-> 
-> It's pretty obvious, but the manpage delta should make this clear
-> also.
+And that would be:
 
-Done
+- mmap() takes a `flags' argument: MAP_LOCKED|MAP_LOCKONFAULT.
 
-> 
-> 
-> Also the changelog(s) and manpage delta should explain that
-> munlock() clears MCL_ONFAULT.
+- mlock() takes a `flags' argument.  Presently that's
+  MLOCK_LOCKED|MLOCK_LOCKONFAULT.
 
-Done
+- munlock() takes a `flags' arument.  MLOCK_LOCKED|MLOCK_LOCKONFAULT
+  to specify which flags are being cleared.
 
-> 
-> And now I'm wondering what happens if userspace does 
-> mmap(MAP_LOCKONFAULT) and later does munlock() on just part of
-> that region.  Does the vma get split?  Is this tested?  Should also
-> be in the changelogs and manpage.
-> 
-> Ditto mlockall(MCL_ONFAULT) followed by munlock().  I'm not sure
-> that even makes sense but the behaviour should be understood and
-> tested.
+- mlockall() and munlockall() ditto.
 
-I have extended the kselftest for lock-on-fault to try both of these
-scenarios and they work as expected.  The VMA is split and the VM
-flags are set appropriately for the resulting VMAs.
 
-> 
-> 
-> What's missing here is a syscall to set VM_LOCKONFAULT on an
-> arbitrary range of memory - mlock() for lock-on-fault.  It's a
-> shame that mlock() didn't take a `mode' argument.  Perhaps we
-> should add such a syscall - that would make the mmap flag unneeded
-> but I suppose it should be kept for symmetry.
+IOW, LOCKED and LOCKEDONFAULT are treated identically and independently.
 
-Do you want such a system call as part of this set?  I would need some
-time to make sure I had thought through all the possible corners one
-could get into with such a call, so it would delay a V3 quite a bit.
-Otherwise I can send a V3 out immediately.
+Now, that's how we would have designed all this on day one.  And I
+think we can do this now, by adding new mlock2() and munlock2()
+syscalls.  And we may as well deprecate the old mlock() and munlock(),
+not that this matters much.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
+*should* we do this?  I'm thinking "yes" - it's all pretty simple
+boilerplate and wrappers and such, and it gets the interface correct,
+and extensible.
 
-iQIcBAEBAgAGBQJVed+3AAoJELbVsDOpoOa9eHwP+gO8QmNdUKN55wiTLxXdFTRo
-TTm62MJ3Yk45+JJ+8xI1POMSUVEBAX7pxnL8TpNPmwp+UF6IQT/hAnnEFNud8/aQ
-5bAxU9a5fRO6Q5533woaVpYfXZXwXAla+37MGQziL7O0VEi2aQ9abX7AKnkjmXwq
-e1Fc3vutAycNCzSxg42GwZxqHw83TYztyv3C4Cc7lShbCezABYvaDvXcUZkGwhjG
-KJxSPYS2E0nv0MEy995P0L0H1A/KHq6mCOFFKQw6aVbPDs8J/0RhvQIlp/BBCPMV
-TqDVxMBpTpdWs6reJnUZpouKBTA11KTvUA2HBVn5B14u2V7Np+NBpLKH2DUqAP2v
-Gyg4Nj0MknqB1rutaBjHjI0ZefrWK5o+zWAVKZs+wtq9WkmCvTYWp505XnlJO+qo
-1CEnab2kX8P74UYcsJUrJxAtxc94t6oLh305KnJheQUdcx/ZNKboB2vl1+np10jj
-oZLmP2RfajZoPojPZ/bI6mj9Ffqf/Ptau+kLQ56G1IuVmQRi4ZgQ9D1+BILXyKHi
-uycKovcHVffiQ+z1Ama2b4wP1t5yjNdxBH0oV1KMeScCxfyYHPFuDBe36Krjo8FO
-dDMyibNIRJMX6SeYNIRni40Eafon5h21I95/yWxUaq0FGBZ1NuuSTofxAA53wJJz
-f0FUI7f53Oxk9EKk8nfg
-=gfVJ
------END PGP SIGNATURE-----
+What do others think?

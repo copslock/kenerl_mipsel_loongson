@@ -1,46 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Jun 2015 21:55:57 +0200 (CEST)
-Received: from prod-mail-xrelay07.akamai.com ([72.246.2.115]:16764 "EHLO
-        prod-mail-xrelay07.akamai.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008088AbbFKTzyCj5Gy (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 11 Jun 2015 21:55:54 +0200
-Received: from prod-mail-xrelay07.akamai.com (localhost.localdomain [127.0.0.1])
-        by postfix.imss70 (Postfix) with ESMTP id 14340487AF;
-        Thu, 11 Jun 2015 19:55:48 +0000 (GMT)
-Received: from prod-mail-relay06.akamai.com (prod-mail-relay06.akamai.com [172.17.120.126])
-        by prod-mail-xrelay07.akamai.com (Postfix) with ESMTP id F261B4873B;
-        Thu, 11 Jun 2015 19:55:47 +0000 (GMT)
-Received: from [172.28.12.164] (bos-lp6ds.kendall.corp.akamai.com [172.28.12.164])
-        by prod-mail-relay06.akamai.com (Postfix) with ESMTP id E6FA8203B;
-        Thu, 11 Jun 2015 19:55:47 +0000 (GMT)
-Message-ID: <5579E7C3.2020601@akamai.com>
-Date:   Thu, 11 Jun 2015 15:55:47 -0400
-From:   Eric B Munson <emunson@akamai.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.6.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Jun 2015 10:02:22 +0200 (CEST)
+Received: from bastet.se.axis.com ([195.60.68.11]:34163 "EHLO
+        bastet.se.axis.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27007004AbbFLICTY0HIW (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 12 Jun 2015 10:02:19 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by bastet.se.axis.com (Postfix) with ESMTP id D07A1180A2;
+        Fri, 12 Jun 2015 10:02:12 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at bastet.se.axis.com
+Received: from bastet.se.axis.com ([IPv6:::ffff:127.0.0.1])
+        by localhost (bastet.se.axis.com [::ffff:127.0.0.1]) (amavisd-new, port 10024)
+        with LMTP id bGE9S8hDIktK; Fri, 12 Jun 2015 10:02:12 +0200 (CEST)
+Received: from boulder.se.axis.com (boulder.se.axis.com [10.0.2.104])
+        by bastet.se.axis.com (Postfix) with ESMTP id 864F718125;
+        Fri, 12 Jun 2015 10:02:11 +0200 (CEST)
+Received: from boulder.se.axis.com (localhost [127.0.0.1])
+        by postfix.imss71 (Postfix) with ESMTP id 6D21612C6;
+        Fri, 12 Jun 2015 10:02:11 +0200 (CEST)
+Received: from thoth.se.axis.com (thoth.se.axis.com [10.0.2.173])
+        by boulder.se.axis.com (Postfix) with ESMTP id 61C3CC8D;
+        Fri, 12 Jun 2015 10:02:11 +0200 (CEST)
+Received: from xmail2.se.axis.com (xmail2.se.axis.com [10.0.5.74])
+        by thoth.se.axis.com (Postfix) with ESMTP id 5C36A34005;
+        Fri, 12 Jun 2015 10:02:11 +0200 (CEST)
+Received: from lnxrabinv.se.axis.com (10.88.144.1) by xmail2.se.axis.com
+ (10.0.5.74) with Microsoft SMTP Server (TLS) id 8.3.342.0; Fri, 12 Jun 2015
+ 10:02:11 +0200
+From:   Rabin Vincent <rabin.vincent@axis.com>
+To:     <ralf@linux-mips.org>
+CC:     <linux-mips@linux-mips.org>, <tglx@linutronix.de>,
+        <jason@lakedaemon.net>, <abrestic@chromium.org>,
+        Rabin Vincent <rabinv@axis.com>
+Subject: [PATCH] irqchip: mips-gic: don't nest calls to do_IRQ()
+Date:   Fri, 12 Jun 2015 10:01:56 +0200
+Message-ID: <1434096116-16750-1-git-send-email-rabin.vincent@axis.com>
+X-Mailer: git-send-email 1.7.10.4
 MIME-Version: 1.0
-To:     Andrew Morton <akpm@linux-foundation.org>
-CC:     Shuah Khan <shuahkh@osg.samsung.com>,
-        Michal Hocko <mhocko@suse.cz>,
-        Michael Kerrisk <mtk.manpages@gmail.com>,
-        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mips@linux-mips.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org, linux-mm@kvack.org,
-        linux-arch@vger.kernel.org, linux-api@vger.kernel.org
-Subject: Re: [RESEND PATCH V2 0/3] Allow user to request memory to be locked
- on page fault
-References: <1433942810-7852-1-git-send-email-emunson@akamai.com>       <20150610145929.b22be8647887ea7091b09ae1@linux-foundation.org>  <5579DFBA.80809@akamai.com> <20150611123424.4bb07cffd0e5bb146cc92231@linux-foundation.org>
-In-Reply-To: <20150611123424.4bb07cffd0e5bb146cc92231@linux-foundation.org>
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 8bit
-Return-Path: <emunson@akamai.com>
+Content-Type: text/plain
+Return-Path: <rabin.vincent@axis.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47932
+X-archive-position: 47933
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: emunson@akamai.com
+X-original-sender: rabin.vincent@axis.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,95 +57,84 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
------BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA1
+The GIC chained handlers use do_IRQ() to call the subhandlers.  This
+means that irq_enter() calls get nested, which leads to preempt count
+looking like we're in nested interrupts, which in turn leads to all
+system time being accounted as IRQ time in account_system_time().
 
-On 06/11/2015 03:34 PM, Andrew Morton wrote:
-> On Thu, 11 Jun 2015 15:21:30 -0400 Eric B Munson
-> <emunson@akamai.com> wrote:
-> 
->>> Ditto mlockall(MCL_ONFAULT) followed by munlock().  I'm not
->>> sure that even makes sense but the behaviour should be
->>> understood and tested.
->> 
->> I have extended the kselftest for lock-on-fault to try both of
->> these scenarios and they work as expected.  The VMA is split and
->> the VM flags are set appropriately for the resulting VMAs.
-> 
-> munlock() should do vma merging as well.  I *think* we implemented 
-> that.  More tests for you to add ;)
+Fix it by using generic_handle_irq().  Since these same functions are
+used in some systems (if cpu_has_veic) from a low-level vectored
+interrupt handler which does not go throught do_IRQ(), we need to do it
+conditionally.
 
-I will add a test for this as well.  But the code is in place to merge
-VMAs IIRC.
+Signed-off-by: Rabin Vincent <rabin.vincent@axis.com>
+---
+ drivers/irqchip/irq-mips-gic.c |   21 ++++++++++++++-------
+ 1 file changed, 14 insertions(+), 7 deletions(-)
 
-> 
-> How are you testing the vma merging and splitting, btw?  Parsing 
-> the profcs files?
-
-To show the VMA split happened, I dropped a printk in mlock_fixup()
-and the user space test simply checks that unlocked pages are not
-marked as unevictable.  The test does not parse maps or smaps for
-actual VMA layout.  Given that we want to check the merging of VMAs as
-well I will add this.
-
-> 
->>> What's missing here is a syscall to set VM_LOCKONFAULT on an 
->>> arbitrary range of memory - mlock() for lock-on-fault.  It's a 
->>> shame that mlock() didn't take a `mode' argument.  Perhaps we 
->>> should add such a syscall - that would make the mmap flag
->>> unneeded but I suppose it should be kept for symmetry.
->> 
->> Do you want such a system call as part of this set?  I would need
->> some time to make sure I had thought through all the possible
->> corners one could get into with such a call, so it would delay a
->> V3 quite a bit. Otherwise I can send a V3 out immediately.
-> 
-> I think the way to look at this is to pretend that mm/mlock.c
-> doesn't exist and ask "how should we design these features".
-> 
-> And that would be:
-> 
-> - mmap() takes a `flags' argument: MAP_LOCKED|MAP_LOCKONFAULT.
-> 
-> - mlock() takes a `flags' argument.  Presently that's 
-> MLOCK_LOCKED|MLOCK_LOCKONFAULT.
-> 
-> - munlock() takes a `flags' arument.
-> MLOCK_LOCKED|MLOCK_LOCKONFAULT to specify which flags are being
-> cleared.
-> 
-> - mlockall() and munlockall() ditto.
-> 
-> 
-> IOW, LOCKED and LOCKEDONFAULT are treated identically and
-> independently.
-> 
-> Now, that's how we would have designed all this on day one.  And I 
-> think we can do this now, by adding new mlock2() and munlock2() 
-> syscalls.  And we may as well deprecate the old mlock() and
-> munlock(), not that this matters much.
-> 
-> *should* we do this?  I'm thinking "yes" - it's all pretty simple 
-> boilerplate and wrappers and such, and it gets the interface
-> correct, and extensible.
-> 
-> What do others think?
-> 
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
-
-iQIcBAEBAgAGBQJVeefAAAoJELbVsDOpoOa9930P/j32OhsgPdxt8pmlYddpHBJg
-PJ4EOYZLoNJ0bWAoePRAQvb9Rd0UumXukkQKVdFCFW72QfMPkjqyMWWOA5BZ6dYl
-q3h3FTzcnAtVHG7bqFheV+Ie9ZX0dplTmuGlqTZzEIVePry9VXzqp9BADbWn3bVR
-ucq1CFikyEB2yu8pMtykJmEaz4CO7fzCHz6oB7RNX5oHElWmi9AieuUr5eAw6enQ
-6ofuNy/N3rTCwcjeRfdL7Xhs6vn62u4nw1Jey6l9hBQUx/ujMktKcn4VwkDXIYCi
-+h7lfXWruqOuC+lspBRJO7OL2e6nRdedpDWJypeUGcKXokxB2FEB25Yu31K9sk/8
-jDfaKNqmcfgOseLHb+DjJqG6nq9lsUhozg8C17SJpT8qFwQ8q7iJe+1GhUF1EBsL
-+DpqLU56geBY6fyIfurOfp/4Hsx2u1KzezkEnMYT/8LkbGwqbq7Zj4rquLMSHCUt
-uG5j0MuhmP8/Fuf8OMsIHHUMjBHRjH4rTyaCKxNj3T8uSuLfcnIqEZiJu2qaSA8l
-PxpQ6yy2szw9lDxPvxLnh8Rkx+SGEc1ciamyppDTI4LQRiCjMQ7bHAKo0RwAaPJL
-ZSHrdlDnUHrYTnd0EZwg0peh8AgkROgxna/pLpfQTeW1g3erqPfbI0Ab8N0cu5j0
-8+qA5C+DeSjaMAoMskTG
-=82B8
------END PGP SIGNATURE-----
+diff --git a/drivers/irqchip/irq-mips-gic.c b/drivers/irqchip/irq-mips-gic.c
+index 57f09cb..269c235 100644
+--- a/drivers/irqchip/irq-mips-gic.c
++++ b/drivers/irqchip/irq-mips-gic.c
+@@ -271,7 +271,7 @@ int gic_get_c0_fdc_int(void)
+ 				  GIC_LOCAL_TO_HWIRQ(GIC_LOCAL_INT_FDC));
+ }
+ 
+-static void gic_handle_shared_int(void)
++static void gic_handle_shared_int(bool chained)
+ {
+ 	unsigned int i, intr, virq;
+ 	unsigned long *pcpu_mask;
+@@ -299,7 +299,10 @@ static void gic_handle_shared_int(void)
+ 	while (intr != gic_shared_intrs) {
+ 		virq = irq_linear_revmap(gic_irq_domain,
+ 					 GIC_SHARED_TO_HWIRQ(intr));
+-		do_IRQ(virq);
++		if (chained)
++			generic_handle_irq(virq);
++		else
++			do_IRQ(virq);
+ 
+ 		/* go to next pending bit */
+ 		bitmap_clear(pending, intr, 1);
+@@ -431,7 +434,7 @@ static struct irq_chip gic_edge_irq_controller = {
+ #endif
+ };
+ 
+-static void gic_handle_local_int(void)
++static void gic_handle_local_int(bool chained)
+ {
+ 	unsigned long pending, masked;
+ 	unsigned int intr, virq;
+@@ -445,7 +448,10 @@ static void gic_handle_local_int(void)
+ 	while (intr != GIC_NUM_LOCAL_INTRS) {
+ 		virq = irq_linear_revmap(gic_irq_domain,
+ 					 GIC_LOCAL_TO_HWIRQ(intr));
+-		do_IRQ(virq);
++		if (chained)
++			generic_handle_irq(virq);
++		else
++			do_IRQ(virq);
+ 
+ 		/* go to next pending bit */
+ 		bitmap_clear(&pending, intr, 1);
+@@ -509,13 +515,14 @@ static struct irq_chip gic_all_vpes_local_irq_controller = {
+ 
+ static void __gic_irq_dispatch(void)
+ {
+-	gic_handle_local_int();
+-	gic_handle_shared_int();
++	gic_handle_local_int(false);
++	gic_handle_shared_int(false);
+ }
+ 
+ static void gic_irq_dispatch(unsigned int irq, struct irq_desc *desc)
+ {
+-	__gic_irq_dispatch();
++	gic_handle_local_int(true);
++	gic_handle_shared_int(true);
+ }
+ 
+ #ifdef CONFIG_MIPS_GIC_IPI
+-- 
+1.7.10.4

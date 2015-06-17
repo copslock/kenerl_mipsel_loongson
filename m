@@ -1,17 +1,17 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Jun 2015 12:14:08 +0200 (CEST)
-Received: from smtpbg298.qq.com ([184.105.67.102]:35523 "EHLO smtpbg298.qq.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Jun 2015 12:14:29 +0200 (CEST)
+Received: from smtpbg298.qq.com ([184.105.67.102]:46391 "EHLO smtpbg298.qq.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27007688AbbFQKODD7xXp (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 17 Jun 2015 12:14:03 +0200
-X-QQ-mid: bizesmtp4t1434536026t783t141
+        id S27007818AbbFQKOGgp6pp (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 17 Jun 2015 12:14:06 +0200
+X-QQ-mid: bizesmtp4t1434536032t335t049
 Received: from software.domain.org (unknown [222.92.8.142])
         by esmtp4.qq.com (ESMTP) with 
-        id ; Wed, 17 Jun 2015 18:13:37 +0800 (CST)
-X-QQ-SSF: 01100000000000F0F632
-X-QQ-FEAT: 9NFkmNiL4hcjoa71a/cEtH7uSW8RDAIRiiTMJaFB/UtUSokOb3tlLr7OXSVMh
-        2MeONtuzxvajbaoxQj0gtdKAokks3a4G2jNXAUvnNGx8Wk+hjO4m3NLpbQYxTT2KS65rU75
-        SLGEwn4Cng4ibpkfPjs/SV3M7QJbuofWSopHki9C3etT3G/BADqsbODpP08U6wkq17mXugF
-        kQ4PBWIDsARf58E8VC7SsGo5X+2iHzjcUM//J60EjZROMEGjxc1oB
+        id ; Wed, 17 Jun 2015 18:13:51 +0800 (CST)
+X-QQ-SSF: 01100000002000F0F742000A0000000
+X-QQ-FEAT: 9NFkmNiL4hdfE73Rrueiaqg/QNKc1JXCjFw5yDPi/+dN4EDKOAahp1X9zWLAz
+        xRrbtYJ7/Ot+RAA51XPNIJeAyj86dfnCK/V7mE9SpdhkFMgYKQwn62rNHh7c93DkjJNL3kb
+        6Y9Tmno5Xm+xGEAQG/1s4yAI63iMVsHmhM3UdnBpoubapV36bcGRb8QSuPf3zpIcwSA2gcc
+        64fPlDqvDUzcjscY9niF05bdxguZ899xwQ0z+EMWJ7E2aWEHo9sN5+yPLdsCNM20=
 X-QQ-GoodBg: 0
 From:   Binbin Zhou <zhoubb@lemote.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
@@ -22,18 +22,20 @@ Cc:     John Crispin <john@phrozen.org>,
         Kelvin Cheung <keguang.zhang@gmail.com>,
         Binbin Zhou <zhoubb@lemote.com>, Chunbo Cui <cuicb@lemote.com>,
         Huacai Chen <chenhc@lemote.com>
-Subject: [PATCH v2 0/8] MIPS: Loongson: Add the Loongson-1A processor support
-Date:   Wed, 17 Jun 2015 18:32:38 +0800
-Message-Id: <1434537166-5385-1-git-send-email-zhoubb@lemote.com>
+Subject: [PATCH v2 2/8] MIPS: Loongson: Add Loongson-1A Kconfig options
+Date:   Wed, 17 Jun 2015 18:32:40 +0800
+Message-Id: <1434537166-5385-3-git-send-email-zhoubb@lemote.com>
 X-Mailer: git-send-email 1.9.0
+In-Reply-To: <1434537166-5385-1-git-send-email-zhoubb@lemote.com>
+References: <1434537166-5385-1-git-send-email-zhoubb@lemote.com>
 X-QQ-SENDSIZE: 520
-X-QQ-FName: 1E5127FA464641E1AC9A6D5131DC015C
-X-QQ-LocalIP: 163.177.66.155
+X-QQ-FName: A30F4AF172BD46FAAF64F0205EF71FF0
+X-QQ-LocalIP: 127.0.0.1
 Return-Path: <zhoubb@lemote.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47950
+X-archive-position: 47951
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -50,64 +52,78 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The Loongson 1A is similar with Loongson 1B, which is a 32-bit SoC.
-It implements the MIPS32 release 2 instruction set.
-
-They share the same PRID, so we rewrite the PRID_REV_LOONGSON1B to
-PRID_REV_LOONGSON1A_1B, and use their CPU macros to distinguish.
-
-However, Loongson 1A has a bug that the pll register can't be read,
-so we set the cpu clk in the inline command line.
-
-The command line format is cpu_clk=osc_clk,cpu_mul, the osc_clk standby cpu clock
-and the cpu_mul repect the clock multiplier.
-
-For example, we use the command is cpu_clk=33333333,8
-
-Changes since v1
-----------------
-
-According commit c908656a7531771ae7642990a7c5f3c7307bd612 
-(MIPS: Loongson: Naming style cleanup and rework) to fix the naming style.
-
-Binbin Zhou(8):
- MIPS: Loongson: Add basic Loongson-1A CPU support
- MIPS: Loongson: Add Loongson-1A Kconfig options
- MIPS: Loongson: Add platform devices for Loongson-1A/1B
- MIPS: Loongson: Add loongson-1A board support
- MIPS: Loongson-1A: Workaround for pll register can't be read
- MIPS: Loongson-1A: Add IRQ type setting support
- MIPS: Loongson-1A: Enable SPARSEMEN and HIGHMEM
- MIPS: Loongson: Add a Loongson-1A default config file
+Added Kconfig options include: Loongson-1A CPU and machine definition,
+CPU cache features, 32-bit kernel and early printk support.
 
 Signed-off-by: Chunbo Cui <cuicb@lemote.com>
 Signed-off-by: Binbin Zhou <zhoubb@lemote.com>
 Signed-off-by: Huacai Chen <chenhc@lemote.com>
+---
+ arch/mips/Kconfig            | 11 +++++++++++
+ arch/mips/loongson32/Kconfig | 20 ++++++++++++++++++++
+ 2 files changed, 31 insertions(+)
+
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index cf09f42..0918915 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -1327,6 +1327,14 @@ config CPU_LOONGSON2F
+ 	  have a similar programming interface with FPGA northbridge used in
+ 	  Loongson2E.
+ 
++config CPU_LOONGSON1A
++	bool "Loongson 1A"
++	depends on SYS_HAS_CPU_LOONGSON1A
++	select CPU_LOONGSON1
++	help
++	  The Loongson 1A is a 32-bit SoC, which implements the MIPS32
++	  release 2 instruction set.
++
+ config CPU_LOONGSON1B
+ 	bool "Loongson 1B"
+ 	depends on SYS_HAS_CPU_LOONGSON1B
+@@ -1770,6 +1778,9 @@ config SYS_HAS_CPU_LOONGSON2F
+ 	select CPU_SUPPORTS_ADDRWINCFG if 64BIT
+ 	select CPU_SUPPORTS_UNCACHED_ACCELERATED
+ 
++config SYS_HAS_CPU_LOONGSON1A
++	bool
++
+ config SYS_HAS_CPU_LOONGSON1B
+ 	bool
+ 
+diff --git a/arch/mips/loongson32/Kconfig b/arch/mips/loongson32/Kconfig
+index 7704f20..741867c 100644
+--- a/arch/mips/loongson32/Kconfig
++++ b/arch/mips/loongson32/Kconfig
+@@ -1,8 +1,28 @@
+ if MACH_LOONGSON32
+ 
++config ZONE_DMA
++	prompt "Zone DMA"
++	bool
++
+ choice
+ 	prompt "Machine Type"
+ 
++config LOONGSON1_LS1A
++	bool "Loongson LS1A board"
++	select CEVT_R4K
++	select CSRC_R4K
++	select SYS_HAS_CPU_LOONGSON1A
++	select DMA_NONCOHERENT
++	select BOOT_ELF32
++	select IRQ_MIPS_CPU
++	select SYS_SUPPORTS_32BIT_KERNEL
++	select SYS_SUPPORTS_LITTLE_ENDIAN
++	select SYS_SUPPORTS_HIGHMEM
++	select SYS_SUPPORTS_MIPS16
++	select SYS_HAS_EARLY_PRINTK
++	select USE_GENERIC_EARLY_PRINTK_8250
++	select COMMON_CLK
++
+ config LOONGSON1_LS1B
+ 	bool "Loongson LS1B board"
+ 	select CEVT_R4K if !MIPS_EXTERNAL_TIMER
 -- 
- arch/mips/Kconfig                                 |  11 +++++
- arch/mips/configs/ls1a_defconfig                  | 136 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- arch/mips/include/asm/cpu-type.h                  |   3 +-
- arch/mips/include/asm/cpu.h                       |   2 +-
- arch/mips/include/asm/mach-loongson32/irq.h       |   1 +
- arch/mips/include/asm/mach-loongson32/loongson1.h | 177 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++------------
- arch/mips/include/asm/mach-loongson32/platform.h  |  11 +++++
- arch/mips/include/asm/sparsemem.h                 |   6 ++-
- arch/mips/kernel/cpu-probe.c                      |   6 ++-
- arch/mips/loongson32/Kconfig                      |  21 ++++++++++
- arch/mips/loongson32/Makefile                     |   6 +++
- arch/mips/loongson32/Platform                     |   1 +
- arch/mips/loongson32/common/irq.c                 |  46 +++++++++++++++++++++
- arch/mips/loongson32/common/platform.c            | 298 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++--
- arch/mips/loongson32/common/reset.c               |   6 +++
- arch/mips/loongson32/common/setup.c               |  45 ++++++++++++++++++++-
- arch/mips/loongson32/common/time.c                |  11 +++++
- arch/mips/loongson32/ls1a/Makefile                |   5 +++
- arch/mips/loongson32/ls1a/board.c                 | 107 ++++++++++++++++++++++++++++++++++++++++++++++++
- arch/mips/mm/c-r4k.c                              |   7 ++++
- drivers/clk/clk-ls1x.c                            |  19 +++++++--
- 21 files changed, 886 insertions(+), 39 deletions(-)
- create mode 100644 arch/mips/configs/ls1a_defconfig
- create mode 100644 arch/mips/loongson32/ls1a/Makefile
- create mode 100644 arch/mips/loongson32/ls1a/board.c
---
 1.9.0

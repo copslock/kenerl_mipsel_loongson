@@ -1,64 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Jun 2015 23:40:27 +0200 (CEST)
-Received: from smtp.codeaurora.org ([198.145.29.96]:54334 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27008070AbbFRVkYSymJp (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 18 Jun 2015 23:40:24 +0200
-Received: from smtp.codeaurora.org (localhost [127.0.0.1])
-        by smtp.codeaurora.org (Postfix) with ESMTP id 0D7111408DE;
-        Thu, 18 Jun 2015 21:40:22 +0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 486)
-        id E0F321408E3; Thu, 18 Jun 2015 21:40:21 +0000 (UTC)
-Received: from [10.134.64.202] (i-global254.qualcomm.com [199.106.103.254])
-        (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: sboyd@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 3EA901408DE;
-        Thu, 18 Jun 2015 21:40:20 +0000 (UTC)
-Message-ID: <55833AC2.5080700@codeaurora.org>
-Date:   Thu, 18 Jun 2015 14:40:18 -0700
-From:   Stephen Boyd <sboyd@codeaurora.org>
-User-Agent: Mozilla/5.0 (X11; Linux i686 on x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.7.0
-MIME-Version: 1.0
-To:     Guenter Roeck <linux@roeck-us.net>
-CC:     linux-kernel@vger.kernel.org, linux-m32r-ja@ml.linux-m32r.org,
-        linux-mips@linux-mips.org, linux-efi@vger.kernel.org,
-        linux-ia64@vger.kernel.org, Heiko Stuebner <heiko@sntech.de>,
-        Len Brown <len.brown@intel.com>, linux-xtensa@linux-xtensa.org,
-        Pavel Machek <pavel@ucw.cz>, devel@driverdev.osuosl.org,
-        linux-s390@vger.kernel.org, lguest@lists.ozlabs.org,
-        linux-c6x-dev@linux-c6x.org, linux-hexagon@vger.kernel.org,
-        linux-sh@vger.kernel.org, Alexander Graf <agraf@suse.de>,
-        linux-acpi@vger.kernel.org,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        xen-devel@lists.xenproject.org, devicetree@vger.kernel.org,
-        user-mode-linux-devel@lists.sourceforge.net,
-        linux-pm@vger.kernel.org,
-        adi-buildroot-devel@lists.sourceforge.net,
-        linux-m68k@lists.linux-m68k.org, linux-am33-list@redhat.com,
-        linux-tegra@vger.kernel.org,
-        openipmi-developer@lists.sourceforge.net,
-        linux-metag@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-parisc@vger.kernel.org, linux-cris-kernel@axis.com,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        linux-alpha@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Romain Perier <romain.perier@gmail.com>,
-        linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH 01/44] kernel: Add support for poweroff handler call chain
-References: <1412659726-29957-1-git-send-email-linux@roeck-us.net> <1412659726-29957-2-git-send-email-linux@roeck-us.net> <55821936.4040704@codeaurora.org> <20150618153003.GA19224@roeck-us.net>
-In-Reply-To: <20150618153003.GA19224@roeck-us.net>
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: ClamAV using ClamSMTP
-Return-Path: <sboyd@codeaurora.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Jun 2015 01:07:01 +0200 (CEST)
+Received: from mail-pa0-f48.google.com ([209.85.220.48]:35114 "EHLO
+        mail-pa0-f48.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008955AbbFRXG7tgoQD (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 19 Jun 2015 01:06:59 +0200
+Received: by pacyx8 with SMTP id yx8so70897337pac.2
+        for <linux-mips@linux-mips.org>; Thu, 18 Jun 2015 16:06:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id;
+        bh=4DgWIyY/G/h8NgNkyjMJXBO2MVfWuLtxolpQPy7lRPc=;
+        b=bIe1PW2+m4IporKJ7rxmDYDZKnNzScFQyZaoD2lVC/DvGrdzyTo6KmtwBTeYGHS/x0
+         6iQVcFbWpwT+5uhNHE12MEtKyLE7hqli/PTkE7TWGWVrkHLh1pWCwGkaxF9wl8FRgRWf
+         7nMQk//w6iOsxakfBkZIXwfnSRxuYMh/tRU88g7iJ9tPYnBnE3hfL6TS7PzOafzM7KyE
+         73VOXILCjdTbt3k3C+iU74hBDTky2feVbwJgbkqLV7t2DjZc2FC3PodCJAN7ei567RkG
+         Bulp8Cde7S9x1j2/7uNq7ImbIQlbPaHuBAQFSv+/3BOa+mtHysvRrzlSSxQ+/7xQtB46
+         O80w==
+X-Received: by 10.70.63.1 with SMTP id c1mr25368839pds.88.1434668813721;
+        Thu, 18 Jun 2015 16:06:53 -0700 (PDT)
+Received: from ld-irv-0074.broadcom.com (5520-maca-inet1-outside.broadcom.com. [216.31.211.11])
+        by mx.google.com with ESMTPSA id mp3sm9108163pbc.8.2015.06.18.16.06.52
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Thu, 18 Jun 2015 16:06:52 -0700 (PDT)
+From:   Brian Norris <computersforpeace@gmail.com>
+To:     Kevin Cernekee <cernekee@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>
+Cc:     <bcm-kernel-feedback-list@broadcom.com>,
+        Brian Norris <computersforpeace@gmail.com>,
+        Gregory Fong <gregory.0xf0@gmail.com>,
+        <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>
+Subject: [PATCH] irqchip: bcm7120-l2: use of_io_request_and_map() to claim iomem
+Date:   Thu, 18 Jun 2015 16:05:25 -0700
+Message-Id: <1434668725-24058-1-git-send-email-computersforpeace@gmail.com>
+X-Mailer: git-send-email 1.9.1
+Return-Path: <computersforpeace@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47974
+X-archive-position: 47975
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sboyd@codeaurora.org
+X-original-sender: computersforpeace@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -71,26 +55,55 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 06/18/2015 08:30 AM, Guenter Roeck wrote:
-> On Wed, Jun 17, 2015 at 06:04:54PM -0700, Stephen Boyd wrote:
-> [ ... ]
->> What happened to this series? I want to add shutdown support to my
->> platform and I need to write a register on the PMIC in one driver to
->> configure it for shutdown instead of restart and then write an MMIO
->> register to tell the PMIC to actually do the shutdown in another driver.
->> It seems that the notifier solves this case for me, albeit with the
->> slight complication that I need to order the two with some priority.
->>
-> Can you use the .shutdown driver callback instead ?
->
-> I see other drivers use that, and check for system_state == SYSTEM_POWER_OFF
-> to power off the hardware.
->
+This way, the IO resources will show up in /proc/iomem, and we can make
+sure no other drivers are trying to claim these register regions.
 
-Yes I think that will work. I'll still have to hook pm_power_off() for
-the mmio register, but I guess that's ok and I don't need to worry about
-this series then.
+Signed-off-by: Brian Norris <computersforpeace@gmail.com>
+---
+ drivers/irqchip/irq-bcm7120-l2.c | 19 ++++++++++---------
+ 1 file changed, 10 insertions(+), 9 deletions(-)
 
+diff --git a/drivers/irqchip/irq-bcm7120-l2.c b/drivers/irqchip/irq-bcm7120-l2.c
+index 3ba5cc780fcb..299d4de2deb5 100644
+--- a/drivers/irqchip/irq-bcm7120-l2.c
++++ b/drivers/irqchip/irq-bcm7120-l2.c
+@@ -142,10 +142,10 @@ static int __init bcm7120_l2_intc_iomap_7120(struct device_node *dn,
+ {
+ 	int ret;
+ 
+-	data->map_base[0] = of_iomap(dn, 0);
+-	if (!data->map_base[0]) {
++	data->map_base[0] = of_io_request_and_map(dn, 0, dn->full_name);
++	if (IS_ERR(data->map_base[0])) {
+ 		pr_err("unable to map registers\n");
+-		return -ENOMEM;
++		return PTR_ERR(data->map_base[0]);
+ 	}
+ 
+ 	data->pair_base[0] = data->map_base[0];
+@@ -178,16 +178,17 @@ static int __init bcm7120_l2_intc_iomap_3380(struct device_node *dn,
+ 
+ 	for (gc_idx = 0; gc_idx < MAX_WORDS; gc_idx++) {
+ 		unsigned int map_idx = gc_idx * 2;
+-		void __iomem *en = of_iomap(dn, map_idx + 0);
+-		void __iomem *stat = of_iomap(dn, map_idx + 1);
+-		void __iomem *base = min(en, stat);
++		void __iomem *en, *stat, *base;
++
++		en = of_io_request_and_map(dn, map_idx + 0, "irq-en");
++		stat = of_io_request_and_map(dn, map_idx + 1, "irq-stat");
++		if (IS_ERR(en) || IS_ERR(stat))
++			break;
+ 
++		base = min(en, stat);
+ 		data->map_base[map_idx + 0] = en;
+ 		data->map_base[map_idx + 1] = stat;
+ 
+-		if (!base)
+-			break;
+-
+ 		data->pair_base[gc_idx] = base;
+ 		data->en_offset[gc_idx] = en - base;
+ 		data->stat_offset[gc_idx] = stat - base;
 -- 
-Qualcomm Innovation Center, Inc. is a member of Code Aurora Forum,
-a Linux Foundation Collaborative Project
+1.9.1

@@ -1,48 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Jun 2015 01:07:01 +0200 (CEST)
-Received: from mail-pa0-f48.google.com ([209.85.220.48]:35114 "EHLO
-        mail-pa0-f48.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008955AbbFRXG7tgoQD (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 19 Jun 2015 01:06:59 +0200
-Received: by pacyx8 with SMTP id yx8so70897337pac.2
-        for <linux-mips@linux-mips.org>; Thu, 18 Jun 2015 16:06:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id;
-        bh=4DgWIyY/G/h8NgNkyjMJXBO2MVfWuLtxolpQPy7lRPc=;
-        b=bIe1PW2+m4IporKJ7rxmDYDZKnNzScFQyZaoD2lVC/DvGrdzyTo6KmtwBTeYGHS/x0
-         6iQVcFbWpwT+5uhNHE12MEtKyLE7hqli/PTkE7TWGWVrkHLh1pWCwGkaxF9wl8FRgRWf
-         7nMQk//w6iOsxakfBkZIXwfnSRxuYMh/tRU88g7iJ9tPYnBnE3hfL6TS7PzOafzM7KyE
-         73VOXILCjdTbt3k3C+iU74hBDTky2feVbwJgbkqLV7t2DjZc2FC3PodCJAN7ei567RkG
-         Bulp8Cde7S9x1j2/7uNq7ImbIQlbPaHuBAQFSv+/3BOa+mtHysvRrzlSSxQ+/7xQtB46
-         O80w==
-X-Received: by 10.70.63.1 with SMTP id c1mr25368839pds.88.1434668813721;
-        Thu, 18 Jun 2015 16:06:53 -0700 (PDT)
-Received: from ld-irv-0074.broadcom.com (5520-maca-inet1-outside.broadcom.com. [216.31.211.11])
-        by mx.google.com with ESMTPSA id mp3sm9108163pbc.8.2015.06.18.16.06.52
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Thu, 18 Jun 2015 16:06:52 -0700 (PDT)
-From:   Brian Norris <computersforpeace@gmail.com>
-To:     Kevin Cernekee <cernekee@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>
-Cc:     <bcm-kernel-feedback-list@broadcom.com>,
-        Brian Norris <computersforpeace@gmail.com>,
-        Gregory Fong <gregory.0xf0@gmail.com>,
-        <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH] irqchip: bcm7120-l2: use of_io_request_and_map() to claim iomem
-Date:   Thu, 18 Jun 2015 16:05:25 -0700
-Message-Id: <1434668725-24058-1-git-send-email-computersforpeace@gmail.com>
-X-Mailer: git-send-email 1.9.1
-Return-Path: <computersforpeace@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Jun 2015 04:07:55 +0200 (CEST)
+Received: from chaos.universe-factory.net ([37.72.148.22]:37694 "EHLO
+        chaos.universe-factory.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27005162AbbFSCHx1xjd6 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 19 Jun 2015 04:07:53 +0200
+Received: from [IPv6:fd1b:c28a:2fd6:0:b08e:2965:c7f8:e048] (unknown [IPv6:fd1b:c28a:2fd6:0:b08e:2965:c7f8:e048])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by chaos.universe-factory.net (Postfix) with ESMTPSA id EA659189D47;
+        Fri, 19 Jun 2015 04:07:52 +0200 (CEST)
+To:     musl@lists.openwall.com, linux-mips@linux-mips.org,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>
+From:   Matthias Schiffer <mschiffer@universe-factory.net>
+Subject: musl-libc/MIPS: detached thread exit broken since kernel commit
+ 46e12c07b
+X-Enigmail-Draft-Status: N1110
+Message-ID: <55837978.7020801@universe-factory.net>
+Date:   Fri, 19 Jun 2015 04:07:52 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+ Thunderbird/38.0.1
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature";
+ boundary="2Qrjcblkhk9LKAh8GTXHGx3Dh8s5o1Vtq"
+Return-Path: <mschiffer@universe-factory.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47975
+X-archive-position: 47976
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: computersforpeace@gmail.com
+X-original-sender: mschiffer@universe-factory.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,55 +44,54 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This way, the IO resources will show up in /proc/iomem, and we can make
-sure no other drivers are trying to claim these register regions.
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--2Qrjcblkhk9LKAh8GTXHGx3Dh8s5o1Vtq
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Brian Norris <computersforpeace@gmail.com>
----
- drivers/irqchip/irq-bcm7120-l2.c | 19 ++++++++++---------
- 1 file changed, 10 insertions(+), 9 deletions(-)
+Hi,
+I've come across the issue that applications with detached threads
+(using pthread_detach or a pthread_attr_t with
+pthread_attr_setdetachstate) will segfault using musl-libc on MIPS as
+soon as the detached thread exits. As far as I can tell, the underlying
+issue is the following:
 
-diff --git a/drivers/irqchip/irq-bcm7120-l2.c b/drivers/irqchip/irq-bcm7120-l2.c
-index 3ba5cc780fcb..299d4de2deb5 100644
---- a/drivers/irqchip/irq-bcm7120-l2.c
-+++ b/drivers/irqchip/irq-bcm7120-l2.c
-@@ -142,10 +142,10 @@ static int __init bcm7120_l2_intc_iomap_7120(struct device_node *dn,
- {
- 	int ret;
- 
--	data->map_base[0] = of_iomap(dn, 0);
--	if (!data->map_base[0]) {
-+	data->map_base[0] = of_io_request_and_map(dn, 0, dn->full_name);
-+	if (IS_ERR(data->map_base[0])) {
- 		pr_err("unable to map registers\n");
--		return -ENOMEM;
-+		return PTR_ERR(data->map_base[0]);
- 	}
- 
- 	data->pair_base[0] = data->map_base[0];
-@@ -178,16 +178,17 @@ static int __init bcm7120_l2_intc_iomap_3380(struct device_node *dn,
- 
- 	for (gc_idx = 0; gc_idx < MAX_WORDS; gc_idx++) {
- 		unsigned int map_idx = gc_idx * 2;
--		void __iomem *en = of_iomap(dn, map_idx + 0);
--		void __iomem *stat = of_iomap(dn, map_idx + 1);
--		void __iomem *base = min(en, stat);
-+		void __iomem *en, *stat, *base;
-+
-+		en = of_io_request_and_map(dn, map_idx + 0, "irq-en");
-+		stat = of_io_request_and_map(dn, map_idx + 1, "irq-stat");
-+		if (IS_ERR(en) || IS_ERR(stat))
-+			break;
- 
-+		base = min(en, stat);
- 		data->map_base[map_idx + 0] = en;
- 		data->map_base[map_idx + 1] = stat;
- 
--		if (!base)
--			break;
--
- 		data->pair_base[gc_idx] = base;
- 		data->en_offset[gc_idx] = en - base;
- 		data->stat_offset[gc_idx] = stat - base;
--- 
-1.9.1
+To clean up after itself, the finishing thread will call __unmapself,
+which will unmap the thread's own stack and call the exit syscall
+directly after that, without accessing the now unmapped stack.
+
+This worked fine in 2012, when pthread support for MIPS was implemented
+in musl. It seems to have been broken by kernel commit 46e12c07b "MIPS:
+O32 / 32-bit: Always copy 4 stack arguments." (also in 2012) which made
+the kernel unconditionally copy 4 stack arguments, even when the syscall
+doesn't even use the arguments.
+
+I guess this would be reasonably easy to fix up in musl, but let's also
+get the linux-mips people's opinions, as that commit obviously broke the
+kernel ABI...
+
+
+--2Qrjcblkhk9LKAh8GTXHGx3Dh8s5o1Vtq
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQIcBAEBCgAGBQJVg3l4AAoJEBbvP2TLIB2cA+AP/i2svAhs7B62wUPA5qXCnYKk
+Yr1gLGh8tL9YygB8NJ800BGZXqp45fuwH/49nHDuIdTyjRK8riF6qXaLqgo3Ig6X
+F5ZIE8QF5r4Lf1iW72W9NlHDDw079aeMcR6NLfXdojaakC3IUT/yMrNSkfCydUyw
+5T2V4o3004uHuIsaARyN56YevrM2rqGdx8YxC4o7/QJ9gySehsWUOI9EO4NSZvgg
+O8Omjig2IlMwAWnsqmtw9SLUcyBK8Yqbp628IOgYLuDXfkYLTERf0CgEh14vIexZ
+JWnadBxKvkYmdvBMQqbQ9ynUCO29COm75p5l5U8iwFhVlPZHvIo61eyOJfLH8lgj
+2EADhYSJGCT4UnbIMytSr9h1gxivSILL9QIyAOKF7d9im72vFNr3dD7Gim08Nyxn
+oLuc/CdIRQWXIqdwCqnPB0C85Jeso6pM2t5XFLY4IUQYtAYEG6fSz1zEG/zaRQPd
+6L3HLH0lQC927iAnOg72etdgjT+8c6BKrx8mo5vnt2u0CtEZrcTL7h1WFQxN3s02
+E/l4qMNNGXjTaCwC60bjXytVNZNXHB6sL463g4u2nt3SLgNvuLWIPkAq2MfPEz58
+5VN3RP5Uaj1OtYkrEXjJQ1Yk2EnocSbt1hO4nxyQjEtyeB2JinTsLwW8dY776B1a
+jv/R/+nPFy0MEV0BqF5W
+=/zA2
+-----END PGP SIGNATURE-----
+
+--2Qrjcblkhk9LKAh8GTXHGx3Dh8s5o1Vtq--

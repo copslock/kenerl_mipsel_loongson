@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Jun 2015 22:49:28 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:41633 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Jun 2015 22:49:48 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:41688 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008582AbbFSUt0VpfhT (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 19 Jun 2015 22:49:26 +0200
+        by eddie.linux-mips.org with ESMTP id S27009021AbbFSUtbYcyMT (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 19 Jun 2015 22:49:31 +0200
 Received: from localhost (c-50-170-35-168.hsd1.wa.comcast.net [50.170.35.168])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 0101FBEE;
-        Fri, 19 Jun 2015 20:49:19 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 833A9BF9;
+        Fri, 19 Jun 2015 20:49:25 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         stable@vger.kernel.org, James Hogan <james.hogan@imgtec.com>,
         Ralf Baechle <ralf@linux-mips.org>,
         Adam Jiang <jiang.adam@gmail.com>, linux-mips@linux-mips.org
-Subject: [PATCH 3.14 31/44] MIPS: Fix enabling of DEBUG_STACKOVERFLOW
-Date:   Fri, 19 Jun 2015 13:36:30 -0700
-Message-Id: <20150619203557.207505742@linuxfoundation.org>
+Subject: [PATCH 3.10 20/29] MIPS: Fix enabling of DEBUG_STACKOVERFLOW
+Date:   Fri, 19 Jun 2015 13:36:40 -0700
+Message-Id: <20150619203558.086460269@linuxfoundation.org>
 X-Mailer: git-send-email 2.4.4
-In-Reply-To: <20150619203556.192033912@linuxfoundation.org>
-References: <20150619203556.192033912@linuxfoundation.org>
+In-Reply-To: <20150619203557.356558223@linuxfoundation.org>
+References: <20150619203557.356558223@linuxfoundation.org>
 User-Agent: quilt/0.64
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -25,7 +25,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47986
+X-archive-position: 47987
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -42,7 +42,7 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-3.14-stable review patch.  If anyone has any objections, please let me know.
+3.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 

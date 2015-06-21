@@ -1,42 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 20 Jun 2015 16:11:47 +0200 (CEST)
-Received: from www.linutronix.de ([62.245.132.108]:33591 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27006852AbbFTOLqPxyRX (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 20 Jun 2015 16:11:46 +0200
-Received: from localhost ([127.0.0.1])
-        by Galois.linutronix.de with esmtps (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:256)
-        (Exim 4.80)
-        (envelope-from <tglx@linutronix.de>)
-        id 1Z6JUj-00006K-LH; Sat, 20 Jun 2015 16:11:41 +0200
-Date:   Sat, 20 Jun 2015 16:11:44 +0200 (CEST)
-From:   Thomas Gleixner <tglx@linutronix.de>
-To:     Brian Norris <computersforpeace@gmail.com>
-cc:     Florian Fainelli <f.fainelli@gmail.com>,
-        Gregory Fong <gregory.0xf0@gmail.com>,
-        bcm-kernel-feedback-list@broadcom.com,
-        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        Kevin Cernekee <cernekee@gmail.com>,
-        Jason Cooper <jason@lakedaemon.net>
-Subject: Re: [PATCH 1/2] genirq: add chip_{suspend,resume} PM support to
- irq_chip
-In-Reply-To: <1434756403-379-1-git-send-email-computersforpeace@gmail.com>
-Message-ID: <alpine.DEB.2.11.1506201605290.4107@nanos>
-References: <20150619224123.GL4917@ld-irv-0074> <1434756403-379-1-git-send-email-computersforpeace@gmail.com>
-User-Agent: Alpine 2.11 (DEB 23 2013-08-11)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 21 Jun 2015 15:26:26 +0200 (CEST)
+Received: from mail-wi0-f181.google.com ([209.85.212.181]:35376 "EHLO
+        mail-wi0-f181.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007168AbbFUN0ZJEj1K (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 21 Jun 2015 15:26:25 +0200
+Received: by wiga1 with SMTP id a1so54829951wig.0;
+        Sun, 21 Jun 2015 06:26:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id:mime-version:content-type
+         :content-transfer-encoding;
+        bh=Z1TimR/3+B+ddbV6Ye2Uz/Wb5GQrBCLDzn3EjfyQrQY=;
+        b=o0MUmjfbmsVOm76bgcMqlBjmm5vruB5ALod0jQhUbFTR0TeQuTOs/sjJtFC5ixDhWn
+         t8FR6LRsXdJE14J+TngTZcLEoflHEa40VQiK/nwI5lCODttmkctAb8GGilFA5aVeodBh
+         Yj2XAWeWayVrH4yZNbKZLoPCtHqRbtYmx7601SP3S4dvz+Btm7ENDVDYeq9cDvWTz4im
+         O9UWZdOLVF8anoC6pprbJcbHM6B8DQwEsMVE03fJCbP2lACfcXDKhsxeFnlLNBkyvzoP
+         q4aVgVZhwhPTeWDgh3CZcAbQJMJysNL+b7z1sos6P3g2uBkl6mh/06s0TcEWGGZ8wir5
+         K9zA==
+X-Received: by 10.180.84.202 with SMTP id b10mr23504493wiz.23.1434893179988;
+        Sun, 21 Jun 2015 06:26:19 -0700 (PDT)
+Received: from linux-tdhb.lan (ip-194-187-74-233.konfederacka.maverick.com.pl. [194.187.74.233])
+        by mx.google.com with ESMTPSA id i6sm25759518wjf.29.2015.06.21.06.26.18
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 21 Jun 2015 06:26:19 -0700 (PDT)
+From:   =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
+To:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
+Cc:     Hauke Mehrtens <hauke@hauke-m.de>,
+        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
+Subject: [PATCH] MIPS: BCM47xx: Simplify handling SPROM revisions
+Date:   Sun, 21 Jun 2015 15:25:49 +0200
+Message-Id: <1434893149-16134-1-git-send-email-zajec5@gmail.com>
+X-Mailer: git-send-email 1.8.4.5
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
-Return-Path: <tglx@linutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Return-Path: <zajec5@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47994
+X-archive-position: 47995
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tglx@linutronix.de
+X-original-sender: zajec5@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,49 +54,104 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, 19 Jun 2015, Brian Norris wrote:
-> This patch adds a second set of suspend/resume hooks to irq_chip, this
-> time to represent *chip* suspend/resume, rather than IRQ suspend/resume.
-> These callbacks will always be called for an irqchip and are based on
-> the per-chip irq_chip_generic struct, rather than the per-IRQ irq_data
-> struct.
+After the big SPROM cleanup moving code to the bcm47xx_sprom_fill_auto
+we ended up with few tiny functions, two of them being identical. Let's
+get rid of these [12]-liners.
+This also stops extracting higher SPROM revisions as revision 1. Now we
+have that function nicely handling revisions we don't need it.
 
-There is no per-chip irq_chip_generic struct. It's only there if the
-irq chip has been instantiated as a generic chip.
+Signed-off-by: Rafał Miłecki <zajec5@gmail.com>
+---
+ arch/mips/bcm47xx/sprom.c | 53 ++++++++---------------------------------------
+ 1 file changed, 9 insertions(+), 44 deletions(-)
+
+diff --git a/arch/mips/bcm47xx/sprom.c b/arch/mips/bcm47xx/sprom.c
+index b0d62e7..2d5c7a7 100644
+--- a/arch/mips/bcm47xx/sprom.c
++++ b/arch/mips/bcm47xx/sprom.c
+@@ -200,6 +200,9 @@ static void bcm47xx_sprom_fill_auto(struct ssb_sprom *sprom,
+ 	const char *pre = prefix;
+ 	bool fb = fallback;
  
->  /**
->   * struct irq_chip - hardware interrupt chip descriptor
->   *
-> @@ -317,6 +319,12 @@ static inline irq_hw_number_t irqd_to_hwirq(struct irq_data *d)
->   * @irq_suspend:	function called from core code on suspend once per chip
->   * @irq_resume:		function called from core code on resume once per chip
->   * @irq_pm_shutdown:	function called from core code on shutdown once per chip
-> + * @chip_suspend:	function called from core code on suspend once per
-> + *			chip; for handling chip details even when no interrupts
-> + *			are in use
-> + * @chip_resume:	function called from core code on resume once per chip;
-> + *			for handling chip details even when no interrupts are
-> + *			in use
->   * @irq_calc_mask:	Optional function to set irq_data.mask for special cases
->   * @irq_print_chip:	optional to print special chip info in show_interrupts
->   * @irq_request_resources:	optional to request resources before calling
-> @@ -357,6 +365,8 @@ struct irq_chip {
->  	void		(*irq_suspend)(struct irq_data *data);
->  	void		(*irq_resume)(struct irq_data *data);
->  	void		(*irq_pm_shutdown)(struct irq_data *data);
-> +	void		(*chip_suspend)(struct irq_chip_generic *gc);
-> +	void		(*chip_resume)(struct irq_chip_generic *gc);
-
-I really don't want to set a precedent for random (*foo)(*bar)
-callbacks.
++	/* Broadcom extracts it for rev 8+ but it was found on 2 and 4 too */
++	ENTRY(0xfffffffe, u16, pre, "devid", dev_id, 0, fallback);
++
+ 	ENTRY(0xfffffffe, u16, pre, "boardrev", board_rev, 0, true);
+ 	ENTRY(0xfffffffe, u32, pre, "boardflags", boardflags, 0, fb);
+ 	ENTRY(0xfffffff0, u32, pre, "boardflags2", boardflags2, 0, fb);
+@@ -412,27 +415,6 @@ static void bcm47xx_sprom_fill_auto(struct ssb_sprom *sprom,
+ }
+ #undef ENTRY /* It's specififc, uses local variable, don't use it (again). */
  
-> +
-> +		if (ct->chip.chip_suspend)
-> +			ct->chip.chip_suspend(gc);
-
-So wouldn't it be the more intuitive solution to make this a callback
-in the struct gc itself?
-
-Thanks,
-
-	tglx
+-static void bcm47xx_fill_sprom_r1234589(struct ssb_sprom *sprom,
+-					const char *prefix, bool fallback)
+-{
+-	nvram_read_u16(prefix, NULL, "devid", &sprom->dev_id, 0, fallback);
+-	nvram_read_alpha2(prefix, "ccode", sprom->alpha2, fallback);
+-}
+-
+-static void bcm47xx_fill_sprom_r3(struct ssb_sprom *sprom, const char *prefix,
+-				  bool fallback)
+-{
+-	nvram_read_leddc(prefix, "leddc", &sprom->leddc_on_time,
+-			 &sprom->leddc_off_time, fallback);
+-}
+-
+-static void bcm47xx_fill_sprom_r4589(struct ssb_sprom *sprom,
+-				     const char *prefix, bool fallback)
+-{
+-	nvram_read_leddc(prefix, "leddc", &sprom->leddc_on_time,
+-			 &sprom->leddc_off_time, fallback);
+-}
+-
+ static void bcm47xx_fill_sprom_path_r4589(struct ssb_sprom *sprom,
+ 					  const char *prefix, bool fallback)
+ {
+@@ -589,39 +571,22 @@ void bcm47xx_fill_sprom(struct ssb_sprom *sprom, const char *prefix,
+ 
+ 	nvram_read_u8(prefix, NULL, "sromrev", &sprom->revision, 0, fallback);
+ 
++	/* Entries requiring custom functions */
++	nvram_read_alpha2(prefix, "ccode", sprom->alpha2, fallback);
++	if (sprom->revision >= 3)
++		nvram_read_leddc(prefix, "leddc", &sprom->leddc_on_time,
++				 &sprom->leddc_off_time, fallback);
++
+ 	switch (sprom->revision) {
+-	case 1:
+-		bcm47xx_fill_sprom_r1234589(sprom, prefix, fallback);
+-		break;
+-	case 2:
+-		bcm47xx_fill_sprom_r1234589(sprom, prefix, fallback);
+-		break;
+-	case 3:
+-		bcm47xx_fill_sprom_r1234589(sprom, prefix, fallback);
+-		bcm47xx_fill_sprom_r3(sprom, prefix, fallback);
+-		break;
+ 	case 4:
+ 	case 5:
+-		bcm47xx_fill_sprom_r1234589(sprom, prefix, fallback);
+-		bcm47xx_fill_sprom_r4589(sprom, prefix, fallback);
+ 		bcm47xx_fill_sprom_path_r4589(sprom, prefix, fallback);
+ 		bcm47xx_fill_sprom_path_r45(sprom, prefix, fallback);
+ 		break;
+ 	case 8:
+-		bcm47xx_fill_sprom_r1234589(sprom, prefix, fallback);
+-		bcm47xx_fill_sprom_r4589(sprom, prefix, fallback);
+-		bcm47xx_fill_sprom_path_r4589(sprom, prefix, fallback);
+-		break;
+ 	case 9:
+-		bcm47xx_fill_sprom_r1234589(sprom, prefix, fallback);
+-		bcm47xx_fill_sprom_r4589(sprom, prefix, fallback);
+ 		bcm47xx_fill_sprom_path_r4589(sprom, prefix, fallback);
+ 		break;
+-	default:
+-		pr_warn("Unsupported SPROM revision %d detected. Will extract v1\n",
+-			sprom->revision);
+-		sprom->revision = 1;
+-		bcm47xx_fill_sprom_r1234589(sprom, prefix, fallback);
+ 	}
+ 
+ 	bcm47xx_sprom_fill_auto(sprom, prefix, fallback);
+-- 
+1.8.4.5

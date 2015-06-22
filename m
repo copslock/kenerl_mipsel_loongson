@@ -1,47 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 21 Jun 2015 15:26:26 +0200 (CEST)
-Received: from mail-wi0-f181.google.com ([209.85.212.181]:35376 "EHLO
-        mail-wi0-f181.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007168AbbFUN0ZJEj1K (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 21 Jun 2015 15:26:25 +0200
-Received: by wiga1 with SMTP id a1so54829951wig.0;
-        Sun, 21 Jun 2015 06:26:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:mime-version:content-type
-         :content-transfer-encoding;
-        bh=Z1TimR/3+B+ddbV6Ye2Uz/Wb5GQrBCLDzn3EjfyQrQY=;
-        b=o0MUmjfbmsVOm76bgcMqlBjmm5vruB5ALod0jQhUbFTR0TeQuTOs/sjJtFC5ixDhWn
-         t8FR6LRsXdJE14J+TngTZcLEoflHEa40VQiK/nwI5lCODttmkctAb8GGilFA5aVeodBh
-         Yj2XAWeWayVrH4yZNbKZLoPCtHqRbtYmx7601SP3S4dvz+Btm7ENDVDYeq9cDvWTz4im
-         O9UWZdOLVF8anoC6pprbJcbHM6B8DQwEsMVE03fJCbP2lACfcXDKhsxeFnlLNBkyvzoP
-         q4aVgVZhwhPTeWDgh3CZcAbQJMJysNL+b7z1sos6P3g2uBkl6mh/06s0TcEWGGZ8wir5
-         K9zA==
-X-Received: by 10.180.84.202 with SMTP id b10mr23504493wiz.23.1434893179988;
-        Sun, 21 Jun 2015 06:26:19 -0700 (PDT)
-Received: from linux-tdhb.lan (ip-194-187-74-233.konfederacka.maverick.com.pl. [194.187.74.233])
-        by mx.google.com with ESMTPSA id i6sm25759518wjf.29.2015.06.21.06.26.18
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Sun, 21 Jun 2015 06:26:19 -0700 (PDT)
-From:   =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
-To:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Cc:     Hauke Mehrtens <hauke@hauke-m.de>,
-        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
-Subject: [PATCH] MIPS: BCM47xx: Simplify handling SPROM revisions
-Date:   Sun, 21 Jun 2015 15:25:49 +0200
-Message-Id: <1434893149-16134-1-git-send-email-zajec5@gmail.com>
-X-Mailer: git-send-email 1.8.4.5
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Return-Path: <zajec5@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Jun 2015 06:14:29 +0200 (CEST)
+Received: from userp1040.oracle.com ([156.151.31.81]:49737 "EHLO
+        userp1040.oracle.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27006533AbbFVEO13v0Uy (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 22 Jun 2015 06:14:27 +0200
+Received: from aserv0021.oracle.com (aserv0021.oracle.com [141.146.126.233])
+        by userp1040.oracle.com (Sentrion-MTA-4.3.2/Sentrion-MTA-4.3.2) with ESMTP id t5M4EFU2008103
+        (version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
+        Mon, 22 Jun 2015 04:14:16 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by aserv0021.oracle.com (8.13.8/8.13.8) with ESMTP id t5M4EDhc003164
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=FAIL);
+        Mon, 22 Jun 2015 04:14:13 GMT
+Received: from abhmp0018.oracle.com (abhmp0018.oracle.com [141.146.116.24])
+        by aserv0122.oracle.com (8.13.8/8.13.8) with ESMTP id t5M4EDB4029882;
+        Mon, 22 Jun 2015 04:14:13 GMT
+Received: from lappy.hsd1.nh.comcast.net (/10.154.108.26)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Sun, 21 Jun 2015 21:14:13 -0700
+From:   Sasha Levin <sasha.levin@oracle.com>
+To:     stable@vger.kernel.org, stable-commits@vger.kernel.org
+Cc:     Markos Chandras <markos.chandras@imgtec.com>,
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
+        Sasha Levin <sasha.levin@oracle.com>
+Subject: [added to the 3.18 stable tree] MIPS: unaligned: Fix regular load/store instruction emulation for EVA
+Date:   Mon, 22 Jun 2015 00:13:17 -0400
+Message-Id: <1434946411-9021-51-git-send-email-sasha.levin@oracle.com>
+X-Mailer: git-send-email 2.1.0
+In-Reply-To: <1434946411-9021-1-git-send-email-sasha.levin@oracle.com>
+References: <1434946411-9021-1-git-send-email-sasha.levin@oracle.com>
+X-Source-IP: aserv0021.oracle.com [141.146.126.233]
+Return-Path: <sasha.levin@oracle.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 47995
+X-archive-position: 47996
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: zajec5@gmail.com
+X-original-sender: sasha.levin@oracle.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,104 +50,122 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-After the big SPROM cleanup moving code to the bcm47xx_sprom_fill_auto
-we ended up with few tiny functions, two of them being identical. Let's
-get rid of these [12]-liners.
-This also stops extracting higher SPROM revisions as revision 1. Now we
-have that function nicely handling revisions we don't need it.
+From: Markos Chandras <markos.chandras@imgtec.com>
 
-Signed-off-by: Rafał Miłecki <zajec5@gmail.com>
+This patch has been added to the 3.18 stable tree. If you have any
+objections, please let us know.
+
+===============
+
+[ Upstream commit 6eae35485b26f9e51ab896eb8a936bed9908fdf6 ]
+
+When emulating a regular lh/lw/lhu/sh/sw we need to use the appropriate
+instruction if we are in EVA mode. This is necessary for userspace
+applications which trigger alignment exceptions. In such case, the
+userspace load/store instruction needs to be emulated with the correct
+eva/non-eva instruction by the kernel emulator.
+
+Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+Fixes: c1771216ab48 ("MIPS: kernel: unaligned: Handle unaligned accesses for EVA")
+Cc: <stable@vger.kernel.org> # v3.15+
+Cc: linux-mips@linux-mips.org
+Patchwork: https://patchwork.linux-mips.org/patch/9503/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: Sasha Levin <sasha.levin@oracle.com>
 ---
- arch/mips/bcm47xx/sprom.c | 53 ++++++++---------------------------------------
- 1 file changed, 9 insertions(+), 44 deletions(-)
+ arch/mips/kernel/unaligned.c | 52 +++++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 47 insertions(+), 5 deletions(-)
 
-diff --git a/arch/mips/bcm47xx/sprom.c b/arch/mips/bcm47xx/sprom.c
-index b0d62e7..2d5c7a7 100644
---- a/arch/mips/bcm47xx/sprom.c
-+++ b/arch/mips/bcm47xx/sprom.c
-@@ -200,6 +200,9 @@ static void bcm47xx_sprom_fill_auto(struct ssb_sprom *sprom,
- 	const char *pre = prefix;
- 	bool fb = fallback;
+diff --git a/arch/mips/kernel/unaligned.c b/arch/mips/kernel/unaligned.c
+index e11906d..91d5006 100644
+--- a/arch/mips/kernel/unaligned.c
++++ b/arch/mips/kernel/unaligned.c
+@@ -564,7 +564,15 @@ static void emulate_load_store_insn(struct pt_regs *regs,
+ 		if (!access_ok(VERIFY_READ, addr, 2))
+ 			goto sigbus;
  
-+	/* Broadcom extracts it for rev 8+ but it was found on 2 and 4 too */
-+	ENTRY(0xfffffffe, u16, pre, "devid", dev_id, 0, fallback);
+-		LoadHW(addr, value, res);
++		if (config_enabled(CONFIG_EVA)) {
++			if (segment_eq(get_fs(), get_ds()))
++				LoadHW(addr, value, res);
++			else
++				LoadHWE(addr, value, res);
++		} else {
++			LoadHW(addr, value, res);
++		}
 +
- 	ENTRY(0xfffffffe, u16, pre, "boardrev", board_rev, 0, true);
- 	ENTRY(0xfffffffe, u32, pre, "boardflags", boardflags, 0, fb);
- 	ENTRY(0xfffffff0, u32, pre, "boardflags2", boardflags2, 0, fb);
-@@ -412,27 +415,6 @@ static void bcm47xx_sprom_fill_auto(struct ssb_sprom *sprom,
- }
- #undef ENTRY /* It's specififc, uses local variable, don't use it (again). */
+ 		if (res)
+ 			goto fault;
+ 		compute_return_epc(regs);
+@@ -575,7 +583,15 @@ static void emulate_load_store_insn(struct pt_regs *regs,
+ 		if (!access_ok(VERIFY_READ, addr, 4))
+ 			goto sigbus;
  
--static void bcm47xx_fill_sprom_r1234589(struct ssb_sprom *sprom,
--					const char *prefix, bool fallback)
--{
--	nvram_read_u16(prefix, NULL, "devid", &sprom->dev_id, 0, fallback);
--	nvram_read_alpha2(prefix, "ccode", sprom->alpha2, fallback);
--}
--
--static void bcm47xx_fill_sprom_r3(struct ssb_sprom *sprom, const char *prefix,
--				  bool fallback)
--{
--	nvram_read_leddc(prefix, "leddc", &sprom->leddc_on_time,
--			 &sprom->leddc_off_time, fallback);
--}
--
--static void bcm47xx_fill_sprom_r4589(struct ssb_sprom *sprom,
--				     const char *prefix, bool fallback)
--{
--	nvram_read_leddc(prefix, "leddc", &sprom->leddc_on_time,
--			 &sprom->leddc_off_time, fallback);
--}
--
- static void bcm47xx_fill_sprom_path_r4589(struct ssb_sprom *sprom,
- 					  const char *prefix, bool fallback)
- {
-@@ -589,39 +571,22 @@ void bcm47xx_fill_sprom(struct ssb_sprom *sprom, const char *prefix,
- 
- 	nvram_read_u8(prefix, NULL, "sromrev", &sprom->revision, 0, fallback);
- 
-+	/* Entries requiring custom functions */
-+	nvram_read_alpha2(prefix, "ccode", sprom->alpha2, fallback);
-+	if (sprom->revision >= 3)
-+		nvram_read_leddc(prefix, "leddc", &sprom->leddc_on_time,
-+				 &sprom->leddc_off_time, fallback);
+-		LoadW(addr, value, res);
++		if (config_enabled(CONFIG_EVA)) {
++			if (segment_eq(get_fs(), get_ds()))
++				LoadW(addr, value, res);
++			else
++				LoadWE(addr, value, res);
++		} else {
++			LoadW(addr, value, res);
++		}
 +
- 	switch (sprom->revision) {
--	case 1:
--		bcm47xx_fill_sprom_r1234589(sprom, prefix, fallback);
--		break;
--	case 2:
--		bcm47xx_fill_sprom_r1234589(sprom, prefix, fallback);
--		break;
--	case 3:
--		bcm47xx_fill_sprom_r1234589(sprom, prefix, fallback);
--		bcm47xx_fill_sprom_r3(sprom, prefix, fallback);
--		break;
- 	case 4:
- 	case 5:
--		bcm47xx_fill_sprom_r1234589(sprom, prefix, fallback);
--		bcm47xx_fill_sprom_r4589(sprom, prefix, fallback);
- 		bcm47xx_fill_sprom_path_r4589(sprom, prefix, fallback);
- 		bcm47xx_fill_sprom_path_r45(sprom, prefix, fallback);
- 		break;
- 	case 8:
--		bcm47xx_fill_sprom_r1234589(sprom, prefix, fallback);
--		bcm47xx_fill_sprom_r4589(sprom, prefix, fallback);
--		bcm47xx_fill_sprom_path_r4589(sprom, prefix, fallback);
--		break;
- 	case 9:
--		bcm47xx_fill_sprom_r1234589(sprom, prefix, fallback);
--		bcm47xx_fill_sprom_r4589(sprom, prefix, fallback);
- 		bcm47xx_fill_sprom_path_r4589(sprom, prefix, fallback);
- 		break;
--	default:
--		pr_warn("Unsupported SPROM revision %d detected. Will extract v1\n",
--			sprom->revision);
--		sprom->revision = 1;
--		bcm47xx_fill_sprom_r1234589(sprom, prefix, fallback);
- 	}
+ 		if (res)
+ 			goto fault;
+ 		compute_return_epc(regs);
+@@ -586,7 +602,15 @@ static void emulate_load_store_insn(struct pt_regs *regs,
+ 		if (!access_ok(VERIFY_READ, addr, 2))
+ 			goto sigbus;
  
- 	bcm47xx_sprom_fill_auto(sprom, prefix, fallback);
+-		LoadHWU(addr, value, res);
++		if (config_enabled(CONFIG_EVA)) {
++			if (segment_eq(get_fs(), get_ds()))
++				LoadHWU(addr, value, res);
++			else
++				LoadHWUE(addr, value, res);
++		} else {
++			LoadHWU(addr, value, res);
++		}
++
+ 		if (res)
+ 			goto fault;
+ 		compute_return_epc(regs);
+@@ -645,7 +669,16 @@ static void emulate_load_store_insn(struct pt_regs *regs,
+ 
+ 		compute_return_epc(regs);
+ 		value = regs->regs[insn.i_format.rt];
+-		StoreHW(addr, value, res);
++
++		if (config_enabled(CONFIG_EVA)) {
++			if (segment_eq(get_fs(), get_ds()))
++				StoreHW(addr, value, res);
++			else
++				StoreHWE(addr, value, res);
++		} else {
++			StoreHW(addr, value, res);
++		}
++
+ 		if (res)
+ 			goto fault;
+ 		break;
+@@ -656,7 +689,16 @@ static void emulate_load_store_insn(struct pt_regs *regs,
+ 
+ 		compute_return_epc(regs);
+ 		value = regs->regs[insn.i_format.rt];
+-		StoreW(addr, value, res);
++
++		if (config_enabled(CONFIG_EVA)) {
++			if (segment_eq(get_fs(), get_ds()))
++				StoreW(addr, value, res);
++			else
++				StoreWE(addr, value, res);
++		} else {
++			StoreW(addr, value, res);
++		}
++
+ 		if (res)
+ 			goto fault;
+ 		break;
 -- 
-1.8.4.5
+2.1.0

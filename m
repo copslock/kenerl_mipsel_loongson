@@ -1,32 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Jun 2015 15:25:45 +0200 (CEST)
-Received: from ip4-83-240-67-251.cust.nbox.cz ([83.240.67.251]:46859 "EHLO
-        ip4-83-240-18-248.cust.nbox.cz" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27007400AbbFWNZoSFevh (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 23 Jun 2015 15:25:44 +0200
-Received: from ku by ip4-83-240-18-248.cust.nbox.cz with local (Exim 4.85)
-        (envelope-from <jslaby@suse.cz>)
-        id 1Z7OCj-0007oS-EU; Tue, 23 Jun 2015 15:25:33 +0200
-From:   Jiri Slaby <jslaby@suse.cz>
-To:     stable@vger.kernel.org
-Cc:     James Hogan <james.hogan@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Adam Jiang <jiang.adam@gmail.com>, linux-mips@linux-mips.org,
-        Jiri Slaby <jslaby@suse.cz>
-Subject: [patch added to the 3.12 stable tree] MIPS: Fix enabling of DEBUG_STACKOVERFLOW
-Date:   Tue, 23 Jun 2015 15:25:18 +0200
-Message-Id: <1435065933-29907-16-git-send-email-jslaby@suse.cz>
-X-Mailer: git-send-email 2.4.3
-In-Reply-To: <1435065933-29907-1-git-send-email-jslaby@suse.cz>
-References: <1435065933-29907-1-git-send-email-jslaby@suse.cz>
-Return-Path: <jslaby@suse.cz>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Jun 2015 16:07:34 +0200 (CEST)
+Received: from ec2-54-201-57-178.us-west-2.compute.amazonaws.com ([54.201.57.178]:53289
+        "EHLO ip-172-31-12-36.us-west-2.compute.internal"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S27008947AbbFWOHbzojeh (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 23 Jun 2015 16:07:31 +0200
+Received: by ip-172-31-12-36.us-west-2.compute.internal (Postfix, from userid 1001)
+        id 2491B40215; Tue, 23 Jun 2015 14:05:48 +0000 (UTC)
+Date:   Tue, 23 Jun 2015 14:05:48 +0000
+From:   dwalker@fifo99.com
+To:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        masami.hiramatsu.pt@hitachi.com, david.daney@cavium.com
+Subject: kexec crash kernel running with watchdog enabled
+Message-ID: <20150623140548.GA15591@fifo99.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <dwalker@fifo99.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48009
+X-archive-position: 48010
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jslaby@suse.cz
+X-original-sender: dwalker@fifo99.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -39,46 +37,39 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: James Hogan <james.hogan@imgtec.com>
 
-This patch has been added to the 3.12 stable tree. If you have any
-objections, please let us know.
+Hi,
 
-===============
+There was a commit in kernel/panic.c which altered when the kexec crash kernel is executed,
 
-commit 5f35b9cd553fd64415b563497d05a563c988dbd6 upstream.
+commit f06e5153f4ae2e2f3b0300f0e260e40cb7fefd45
+Author: Masami Hiramatsu <masami.hiramatsu.pt@hitachi.com>
+Date:   Fri Jun 6 14:37:07 2014 -0700
 
-Commit 334c86c494b9 ("MIPS: IRQ: Add stackoverflow detection") added
-kernel stack overflow detection, however it only enabled it conditional
-upon the preprocessor definition DEBUG_STACKOVERFLOW, which is never
-actually defined. The Kconfig option is called DEBUG_STACKOVERFLOW,
-which manifests to the preprocessor as CONFIG_DEBUG_STACKOVERFLOW, so
-switch it to using that definition instead.
+    kernel/panic.c: add "crash_kexec_post_notifiers" option for kdump after panic_notifers
 
-Fixes: 334c86c494b9 ("MIPS: IRQ: Add stackoverflow detection")
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Adam Jiang <jiang.adam@gmail.com>
-Cc: linux-mips@linux-mips.org
-Patchwork: http://patchwork.linux-mips.org/patch/10531/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Jiri Slaby <jslaby@suse.cz>
----
- arch/mips/kernel/irq.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/mips/kernel/irq.c b/arch/mips/kernel/irq.c
-index d1fea7a054be..7479d8d847a6 100644
---- a/arch/mips/kernel/irq.c
-+++ b/arch/mips/kernel/irq.c
-@@ -110,7 +110,7 @@ void __init init_IRQ(void)
- #endif
- }
- 
--#ifdef DEBUG_STACKOVERFLOW
-+#ifdef CONFIG_DEBUG_STACKOVERFLOW
- static inline void check_stack_overflow(void)
- {
- 	unsigned long sp;
--- 
-2.4.3
+This made it possible for smp_send_stop() to be executed prior to calling the kexec crash
+kernel.
+
+The issue is that smp_send_stop() offlines the cores, and other code depend on the cores being online.
+
+In my case on Octeon here's an example,
+
+panic()
+ crash_kexec()
+  machine_crash_shutdown()
+   octeon_generic_shutdown()
+
+Inside octeon_generic_shutdown() the Octeon watchdog is shutdown for_each_online_cpu(), but since
+most of the cpu's already got offlined in smp_send_stop() it means the watchdog is still alive on
+those cores. This results in a reboot during the crash kernel execution.
+
+Another example seem to be in default_machine_crash_shutdown() where crash_kexec_prepare_cpus() depends
+on an IPI for saving the registers on different cores. However, the cpu's are all offlined with
+interrupts disabled so they won't be running those IPI's in this case.
+
+I'm looking for any advice on how this should be fixed, or if it's already fixed. I'm not going to be
+submitting a patch so if anyone wants to submit one feel free to do so.
+
+Daniel

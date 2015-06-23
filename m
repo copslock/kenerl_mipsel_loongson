@@ -1,42 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Jun 2015 15:04:26 +0200 (CEST)
-Received: from cantor2.suse.de ([195.135.220.15]:40077 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27006932AbbFWNEYnZXPS (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 23 Jun 2015 15:04:24 +0200
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (charybdis-ext.suse.de [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id AF68FAAB4;
-        Tue, 23 Jun 2015 13:04:23 +0000 (UTC)
-Message-ID: <55895956.5020707@suse.cz>
-Date:   Tue, 23 Jun 2015 15:04:22 +0200
-From:   Vlastimil Babka <vbabka@suse.cz>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.6.0
-MIME-Version: 1.0
-To:     Eric B Munson <emunson@akamai.com>
-CC:     Andrew Morton <akpm@linux-foundation.org>,
-        Shuah Khan <shuahkh@osg.samsung.com>,
-        Michal Hocko <mhocko@suse.cz>,
-        Michael Kerrisk <mtk.manpages@gmail.com>,
-        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mips@linux-mips.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org, linux-mm@kvack.org,
-        linux-arch@vger.kernel.org, linux-api@vger.kernel.org
-Subject: Re: [RESEND PATCH V2 0/3] Allow user to request memory to be locked
- on page fault
-References: <1433942810-7852-1-git-send-email-emunson@akamai.com> <20150610145929.b22be8647887ea7091b09ae1@linux-foundation.org> <5579DFBA.80809@akamai.com> <20150611123424.4bb07cffd0e5bb146cc92231@linux-foundation.org> <557ACAFC.90608@suse.cz> <20150615144356.GB12300@akamai.com>
-In-Reply-To: <20150615144356.GB12300@akamai.com>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <vbabka@suse.cz>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Jun 2015 15:25:45 +0200 (CEST)
+Received: from ip4-83-240-67-251.cust.nbox.cz ([83.240.67.251]:46859 "EHLO
+        ip4-83-240-18-248.cust.nbox.cz" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S27007400AbbFWNZoSFevh (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 23 Jun 2015 15:25:44 +0200
+Received: from ku by ip4-83-240-18-248.cust.nbox.cz with local (Exim 4.85)
+        (envelope-from <jslaby@suse.cz>)
+        id 1Z7OCj-0007oS-EU; Tue, 23 Jun 2015 15:25:33 +0200
+From:   Jiri Slaby <jslaby@suse.cz>
+To:     stable@vger.kernel.org
+Cc:     James Hogan <james.hogan@imgtec.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Adam Jiang <jiang.adam@gmail.com>, linux-mips@linux-mips.org,
+        Jiri Slaby <jslaby@suse.cz>
+Subject: [patch added to the 3.12 stable tree] MIPS: Fix enabling of DEBUG_STACKOVERFLOW
+Date:   Tue, 23 Jun 2015 15:25:18 +0200
+Message-Id: <1435065933-29907-16-git-send-email-jslaby@suse.cz>
+X-Mailer: git-send-email 2.4.3
+In-Reply-To: <1435065933-29907-1-git-send-email-jslaby@suse.cz>
+References: <1435065933-29907-1-git-send-email-jslaby@suse.cz>
+Return-Path: <jslaby@suse.cz>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48008
+X-archive-position: 48009
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vbabka@suse.cz
+X-original-sender: jslaby@suse.cz
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,69 +39,46 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 06/15/2015 04:43 PM, Eric B Munson wrote:
->> Note that the semantic of MAP_LOCKED can be subtly surprising:
->>
->> "mlock(2) fails if the memory range cannot get populated to guarantee
->> that no future major faults will happen on the range.
->> mmap(MAP_LOCKED) on the other hand silently succeeds even if the
->> range was populated only
->> partially."
->>
->> ( from http://marc.info/?l=linux-mm&m=143152790412727&w=2 )
->>
->> So MAP_LOCKED can silently behave like MAP_LOCKONFAULT. While
->> MAP_LOCKONFAULT doesn't suffer from such problem, I wonder if that's
->> sufficient reason not to extend mmap by new mlock() flags that can
->> be instead applied to the VMA after mmapping, using the proposed
->> mlock2() with flags. So I think instead we could deprecate
->> MAP_LOCKED more prominently. I doubt the overhead of calling the
->> extra syscall matters here?
->
-> We could talk about retiring the MAP_LOCKED flag but I suspect that
-> would get significantly more pushback than adding a new mmap flag.
+From: James Hogan <james.hogan@imgtec.com>
 
-Oh no we can't "retire" as in remove the flag, ever. Just not continue 
-the way of mmap() flags related to mlock().
+This patch has been added to the 3.12 stable tree. If you have any
+objections, please let us know.
 
-> Likely that the overhead does not matter in most cases, but presumably
-> there are cases where it does (as we have a MAP_LOCKED flag today).
-> Even with the proposed new system calls I think we should have the
-> MAP_LOCKONFAULT for parity with MAP_LOCKED.
+===============
 
-I'm not convinced, but it's not a major issue.
+commit 5f35b9cd553fd64415b563497d05a563c988dbd6 upstream.
 
->>
->>> - mlock() takes a `flags' argument.  Presently that's
->>>    MLOCK_LOCKED|MLOCK_LOCKONFAULT.
->>>
->>> - munlock() takes a `flags' arument.  MLOCK_LOCKED|MLOCK_LOCKONFAULT
->>>    to specify which flags are being cleared.
->>>
->>> - mlockall() and munlockall() ditto.
->>>
->>>
->>> IOW, LOCKED and LOCKEDONFAULT are treated identically and independently.
->>>
->>> Now, that's how we would have designed all this on day one.  And I
->>> think we can do this now, by adding new mlock2() and munlock2()
->>> syscalls.  And we may as well deprecate the old mlock() and munlock(),
->>> not that this matters much.
->>>
->>> *should* we do this?  I'm thinking "yes" - it's all pretty simple
->>> boilerplate and wrappers and such, and it gets the interface correct,
->>> and extensible.
->>
->> If the new LOCKONFAULT functionality is indeed desired (I haven't
->> still decided myself) then I agree that would be the cleanest way.
->
-> Do you disagree with the use cases I have listed or do you think there
-> is a better way of addressing those cases?
+Commit 334c86c494b9 ("MIPS: IRQ: Add stackoverflow detection") added
+kernel stack overflow detection, however it only enabled it conditional
+upon the preprocessor definition DEBUG_STACKOVERFLOW, which is never
+actually defined. The Kconfig option is called DEBUG_STACKOVERFLOW,
+which manifests to the preprocessor as CONFIG_DEBUG_STACKOVERFLOW, so
+switch it to using that definition instead.
 
-I'm somewhat sceptical about the security one. Are security sensitive 
-buffers that large to matter? The performance one is more convincing and 
-I don't see a better way, so OK.
+Fixes: 334c86c494b9 ("MIPS: IRQ: Add stackoverflow detection")
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Adam Jiang <jiang.adam@gmail.com>
+Cc: linux-mips@linux-mips.org
+Patchwork: http://patchwork.linux-mips.org/patch/10531/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: Jiri Slaby <jslaby@suse.cz>
+---
+ arch/mips/kernel/irq.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
->
->>
->>> What do others think?
+diff --git a/arch/mips/kernel/irq.c b/arch/mips/kernel/irq.c
+index d1fea7a054be..7479d8d847a6 100644
+--- a/arch/mips/kernel/irq.c
++++ b/arch/mips/kernel/irq.c
+@@ -110,7 +110,7 @@ void __init init_IRQ(void)
+ #endif
+ }
+ 
+-#ifdef DEBUG_STACKOVERFLOW
++#ifdef CONFIG_DEBUG_STACKOVERFLOW
+ static inline void check_stack_overflow(void)
+ {
+ 	unsigned long sp;
+-- 
+2.4.3

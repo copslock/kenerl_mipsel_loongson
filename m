@@ -1,62 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Aug 2015 14:55:03 +0200 (CEST)
-Received: from youngberry.canonical.com ([91.189.89.112]:60204 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011934AbbHKMzBaOUMh (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 11 Aug 2015 14:55:01 +0200
-Received: from 1.general.henrix.uk.vpn ([10.172.192.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_128_CBC_SHA1:16)
-        (Exim 4.76)
-        (envelope-from <luis.henriques@canonical.com>)
-        id 1ZP951-0005Jo-PG; Tue, 11 Aug 2015 12:54:59 +0000
-From:   Luis Henriques <luis.henriques@canonical.com>
-To:     Markos Chandras <markos.chandras@imgtec.com>
-Cc:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
-        Luis Henriques <luis.henriques@canonical.com>,
-        kernel-team@lists.ubuntu.com
-Subject: [3.16.y-ckt stable] Patch "MIPS: kernel: traps: Fix broken indentation" has been added to staging queue
-Date:   Tue, 11 Aug 2015 13:54:59 +0100
-Message-Id: <1439297699-28559-1-git-send-email-luis.henriques@canonical.com>
-X-Mailer: git-send-email 2.1.4
-X-Extended-Stable: 3.16
-Return-Path: <luis.henriques@canonical.com>
-X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
-X-Orcpt: rfc822;linux-mips@linux-mips.org
-Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48767
-X-ecartis-version: Ecartis v1.0.0
-Sender: linux-mips-bounce@linux-mips.org
-Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: luis.henriques@canonical.com
-Precedence: bulk
-List-help: <mailto:ecartis@linux-mips.org?Subject=help>
-List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
-List-software: Ecartis version 1.0.0
-List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
-X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
-List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
-List-owner: <mailto:ralf@linux-mips.org>
-List-post: <mailto:linux-mips@linux-mips.org>
-List-archive: <http://www.linux-mips.org/archives/linux-mips/>
-X-list: linux-mips
+From: Markos Chandras <markos.chandras@imgtec.com>
+Date: Wed, 24 Jun 2015 09:29:20 +0100
+Subject: MIPS: kernel: traps: Fix broken indentation
+Message-ID: <20150624082920.RuoaMOEps9TsA80th9ypK_a1aW21SBlFNTU37LSM1oc@z>
 
-This is a note to let you know that I have just added a patch titled
+commit 761b4493bbb7b614387794f39e3969716e9e0215 upstream.
 
-    MIPS: kernel: traps: Fix broken indentation
+Fix broken indentation caused by the SMTC removal
+commit b633648c5ad3cfbda0b3daea50d2135d44899259
+("MIPS: MT: Remove SMTC support")
 
-to the linux-3.16.y-queue branch of the 3.16.y-ckt extended stable tree 
-which can be found at:
+Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+Fixes: b633648c5ad3c ("MIPS: MT: Remove SMTC support")
+Cc: linux-mips@linux-mips.org
+Patchwork: https://patchwork.linux-mips.org/patch/10581/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: Luis Henriques <luis.henriques@canonical.com>
+---
+ arch/mips/kernel/traps.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-    http://kernel.ubuntu.com/git/ubuntu/linux.git/log/?h=linux-3.16.y-queue
+diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
+index 51706d6dd5b0..c65062a6ff23 100644
+--- a/arch/mips/kernel/traps.c
++++ b/arch/mips/kernel/traps.c
+@@ -1931,10 +1931,10 @@ void per_cpu_trap_init(bool is_boot_cpu)
+ 	BUG_ON(current->mm);
+ 	enter_lazy_tlb(&init_mm, current);
 
-This patch is scheduled to be released in version 3.16.7-ckt16.
-
-If you, or anyone else, feels it should not be added to this tree, please 
-reply to this email.
-
-For more information about the 3.16.y-ckt tree, see
-https://wiki.ubuntu.com/Kernel/Dev/ExtendedStable
-
-Thanks.
--Luis
-
-------
+-		/* Boot CPU's cache setup in setup_arch(). */
+-		if (!is_boot_cpu)
+-			cpu_cache_init();
+-		tlb_init();
++	/* Boot CPU's cache setup in setup_arch(). */
++	if (!is_boot_cpu)
++		cpu_cache_init();
++	tlb_init();
+ 	TLBMISS_HANDLER_SETUP();
+ }

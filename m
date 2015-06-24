@@ -1,48 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Jun 2015 11:47:45 +0200 (CEST)
-Received: from cantor2.suse.de ([195.135.220.15]:36627 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27006156AbbFXJrnhcmRl (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 24 Jun 2015 11:47:43 +0200
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay1.suse.de (charybdis-ext.suse.de [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id 1B47BAC6B;
-        Wed, 24 Jun 2015 09:47:43 +0000 (UTC)
-Date:   Wed, 24 Jun 2015 11:47:42 +0200
-From:   Michal Hocko <mhocko@suse.cz>
-To:     Vlastimil Babka <vbabka@suse.cz>
-Cc:     Eric B Munson <emunson@akamai.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mips@linux-mips.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org, linux-mm@kvack.org,
-        linux-arch@vger.kernel.org, linux-api@vger.kernel.org
-Subject: Re: [RESEND PATCH V2 1/3] Add mmap flag to request pages are locked
- after page fault
-Message-ID: <20150624094742.GD32756@dhcp22.suse.cz>
-References: <1433942810-7852-1-git-send-email-emunson@akamai.com>
- <1433942810-7852-2-git-send-email-emunson@akamai.com>
- <20150618152907.GG5858@dhcp22.suse.cz>
- <20150618203048.GB2329@akamai.com>
- <20150619145708.GG4913@dhcp22.suse.cz>
- <20150619164333.GD2329@akamai.com>
- <20150622123826.GF4430@dhcp22.suse.cz>
- <20150622141806.GE2329@akamai.com>
- <558954DD.4060405@suse.cz>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Jun 2015 18:33:32 +0200 (CEST)
+Received: from ec2-54-201-57-178.us-west-2.compute.amazonaws.com ([54.201.57.178]:53345
+        "EHLO ip-172-31-12-36.us-west-2.compute.internal"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S27007583AbbFXQd1rEkpu (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 24 Jun 2015 18:33:27 +0200
+Received: by ip-172-31-12-36.us-west-2.compute.internal (Postfix, from userid 1001)
+        id C7A96407AA; Wed, 24 Jun 2015 16:31:41 +0000 (UTC)
+Date:   Wed, 24 Jun 2015 16:31:41 +0000
+From:   dwalker@fifo99.com
+To:     Masami Hiramatsu <masami.hiramatsu.pt@hitachi.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        david.daney@cavium.com, d.hatayama@jp.fujitsu.com,
+        vgoyal@redhat.com, hidehiro.kawai.ez@hitachi.com,
+        ebiederm@xmission.com, linux-kernel@vger.kernel.org
+Subject: Re: kexec crash kernel running with watchdog enabled
+Message-ID: <20150624163141.GA20456@fifo99.com>
+References: <20150623140548.GA15591@fifo99.com>
+ <558A53C0.5030700@hitachi.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <558954DD.4060405@suse.cz>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <mhocko@suse.cz>
+In-Reply-To: <558A53C0.5030700@hitachi.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <dwalker@fifo99.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48022
+X-archive-position: 48023
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mhocko@suse.cz
+X-original-sender: dwalker@fifo99.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,48 +43,57 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue 23-06-15 14:45:17, Vlastimil Babka wrote:
-> On 06/22/2015 04:18 PM, Eric B Munson wrote:
-> >On Mon, 22 Jun 2015, Michal Hocko wrote:
-> >
-> >>On Fri 19-06-15 12:43:33, Eric B Munson wrote:
-[...]
-> >>>My thought on detecting was that someone might want to know if they had
-> >>>a VMA that was VM_LOCKED but had not been made present becuase of a
-> >>>failure in mmap.  We don't have a way today, but adding VM_LOCKONFAULT
-> >>>is at least explicit about what is happening which would make detecting
-> >>>the VM_LOCKED but not present state easier.
-> >>
-> >>One could use /proc/<pid>/pagemap to query the residency.
+On Wed, Jun 24, 2015 at 03:52:48PM +0900, Masami Hiramatsu wrote:
+> Hi,
 > 
-> I think that's all too much complex scenario for a little gain. If someone
-> knows that mmap(MAP_LOCKED|MAP_POPULATE) is not perfect, he should either
-> mlock() separately from mmap(), or fault the range manually with a for loop.
-> Why try to detect if the corner case was hit?
-
-No idea. I have just offered a way to do that. I do not think it is
-anyhow useful but who knows... I do agree that the mlock should be used
-for the full mlock semantic.
-
-> >>>This assumes that
-> >>>MAP_FAULTPOPULATE does not translate to a VMA flag, but it sounds like
-> >>>it would have to.
-> >>
-> >>Yes, it would have to have a VM flag for the vma.
+> On 2015/06/23 23:05, dwalker@fifo99.com wrote:
+> > 
+> > Hi,
+> > 
+> > There was a commit in kernel/panic.c which altered when the kexec crash kernel is executed,
+> > 
+> > commit f06e5153f4ae2e2f3b0300f0e260e40cb7fefd45
+> > Author: Masami Hiramatsu <masami.hiramatsu.pt@hitachi.com>
+> > Date:   Fri Jun 6 14:37:07 2014 -0700
+> > 
+> >     kernel/panic.c: add "crash_kexec_post_notifiers" option for kdump after panic_notifers
+> > 
+> > 
+> > This made it possible for smp_send_stop() to be executed prior to calling the kexec crash
+> > kernel.
+> > 
+> > The issue is that smp_send_stop() offlines the cores, and other code depend on the cores being online.
+> > 
+> > In my case on Octeon here's an example,
+> > 
+> > panic()
+> >  crash_kexec()
+> >   machine_crash_shutdown()
+> >    octeon_generic_shutdown()
+> > 
+> > Inside octeon_generic_shutdown() the Octeon watchdog is shutdown for_each_online_cpu(), but since
+> > most of the cpu's already got offlined in smp_send_stop() it means the watchdog is still alive on
+> > those cores. This results in a reboot during the crash kernel execution.
 > 
-> So with your approach, VM_LOCKED flag is enough, right? The new MAP_ /
-> MLOCK_ flags just cause setting VM_LOCKED to not fault the whole vma, but
-> otherwise nothing changes.
+> Ah, I see.
+> 
+> > Another example seem to be in default_machine_crash_shutdown() where crash_kexec_prepare_cpus() depends
+> > on an IPI for saving the registers on different cores. However, the cpu's are all offlined with
+> > interrupts disabled so they won't be running those IPI's in this case.
+> > 
+> > I'm looking for any advice on how this should be fixed, or if it's already fixed. I'm not going to be
+> > submitting a patch so if anyone wants to submit one feel free to do so.
+> 
+> Hmm, IMHO, when the cpu goes to offline in appropriate way(smp_send_stop), it should stop
+> watchdog timer on the offlined cpu too.
+> Or, you can also register crash handler which stops all watchdogs, but it's a bit tricky.
+> 
 
-VM_FAULTPOPULATE would have to be sticky to prevent from other
-speculative poppulation of the mapping. I mean, is it OK to have a new
-mlock semantic (on fault) which might still populate&lock memory which
-hasn't been faulted directly? Who knows what kind of speculative things
-we will do in the future and then find out that the semantic of
-lock-on-fault is not usable anymore.
+That doesn't really fix all the issue tho. As I was explaining generic MIPS code depends on the cpu's
+effectively being online for crash data collection (with an IPI). This issue may effect other architectures also,
+because smp_send_stop() offlines the cpu on other architectures also. I haven't surveyed the other architectures
+enough to know what issue could happen from this tho.
 
-[...]
+Is it possible to move the smp_send_stop() below the notifiers ? I'm just throwing out ideas.
 
--- 
-Michal Hocko
-SUSE Labs
+Daniel

@@ -1,30 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Jun 2015 16:07:34 +0200 (CEST)
-Received: from ec2-54-201-57-178.us-west-2.compute.amazonaws.com ([54.201.57.178]:53289
-        "EHLO ip-172-31-12-36.us-west-2.compute.internal"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27008947AbbFWOHbzojeh (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 23 Jun 2015 16:07:31 +0200
-Received: by ip-172-31-12-36.us-west-2.compute.internal (Postfix, from userid 1001)
-        id 2491B40215; Tue, 23 Jun 2015 14:05:48 +0000 (UTC)
-Date:   Tue, 23 Jun 2015 14:05:48 +0000
-From:   dwalker@fifo99.com
-To:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        masami.hiramatsu.pt@hitachi.com, david.daney@cavium.com
-Subject: kexec crash kernel running with watchdog enabled
-Message-ID: <20150623140548.GA15591@fifo99.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <dwalker@fifo99.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Jun 2015 08:08:55 +0200 (CEST)
+Received: from mail-pd0-f175.google.com ([209.85.192.175]:33088 "EHLO
+        mail-pd0-f175.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006697AbbFXGIxbgjBs (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 24 Jun 2015 08:08:53 +0200
+Received: by pdjn11 with SMTP id n11so23283053pdj.0;
+        Tue, 23 Jun 2015 23:08:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id;
+        bh=R/QCjmjeHW3RJWtH8jkYVD1PhNXj79hMDXfcNK7ICc0=;
+        b=mW7xqqrDGjbDu9dWu8xuHf4Vq4XAwdrH0cf6fpPB/rDGQqrzU65ig3MecddYlYUO57
+         nIOCYytXrXS2fQ9AnPJoPmckzlpnUwFH0Rj5PKld3aSrFO2CsnNUljVm3EZMLtfWUlmw
+         M0ZySoOwPWSBXb7Fc+73vTeeWzhy3nDEBZ4Is2D/ic6CNnFSBC1dKBEv4OQbkRn+NOuK
+         nhTJZq02Ozhj+dCx/4qzizfq9e3AdA5bobF19qM4VDEgQwciNTHuSsvxe7HHln/3cx2R
+         eXEZeu2cbsR7XTb2DTXruYLoiVNvbjWCGgnMUGs8sKLFMpnG76E839ZYK1f/sM1JN7Pj
+         J9pA==
+X-Received: by 10.66.222.72 with SMTP id qk8mr76524859pac.7.1435126127135;
+        Tue, 23 Jun 2015 23:08:47 -0700 (PDT)
+Received: from praha.local.private ([211.255.134.165])
+        by mx.google.com with ESMTPSA id cd10sm25396180pac.7.2015.06.23.23.08.44
+        (version=TLSv1 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Tue, 23 Jun 2015 23:08:46 -0700 (PDT)
+From:   Jaedon Shin <jaedon.shin@gmail.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     Kevin Cernekee <cernekee@gmail.com>, linux-mips@linux-mips.org,
+        devicetree@vger.kernel.org, Jaedon Shin <jaedon.shin@gmail.com>
+Subject: [PATCH 0/4] MIPS: BMIPS: dts: add NAND device nodes for bcm7xxx platforms
+Date:   Wed, 24 Jun 2015 15:08:30 +0900
+Message-Id: <cover.1435124524.git.jaedon.shin@gmail.com>
+X-Mailer: git-send-email 2.4.4
+Return-Path: <jaedon.shin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48010
+X-archive-position: 48011
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dwalker@fifo99.com
+X-original-sender: jaedon.shin@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -37,39 +50,25 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+Hi all,
 
-Hi,
+This patch series contain changing device nodes of the bcm7xxx platforms.
 
-There was a commit in kernel/panic.c which altered when the kexec crash kernel is executed,
+Jaedon Shin (4):
+  MIPS: BMIPS: bcm7346: add nodes for NAND
+  MIPS: BMIPS: bcm7358: add nodes for NAND
+  MIPS: BMIPS: bcm7360: add nodes for NAND
+  MIPS: BMIPS: bcm7362: add nodes for NAND
 
-commit f06e5153f4ae2e2f3b0300f0e260e40cb7fefd45
-Author: Masami Hiramatsu <masami.hiramatsu.pt@hitachi.com>
-Date:   Fri Jun 6 14:37:07 2014 -0700
+ arch/mips/boot/dts/brcm/bcm7346.dtsi      | 22 ++++++++++++++++++++++
+ arch/mips/boot/dts/brcm/bcm7358.dtsi      | 22 ++++++++++++++++++++++
+ arch/mips/boot/dts/brcm/bcm7360.dtsi      | 22 ++++++++++++++++++++++
+ arch/mips/boot/dts/brcm/bcm7362.dtsi      | 22 ++++++++++++++++++++++
+ arch/mips/boot/dts/brcm/bcm97346dbsmb.dts | 23 +++++++++++++++++++++++
+ arch/mips/boot/dts/brcm/bcm97358svmb.dts  | 23 +++++++++++++++++++++++
+ arch/mips/boot/dts/brcm/bcm97360svmb.dts  | 23 +++++++++++++++++++++++
+ arch/mips/boot/dts/brcm/bcm97362svmb.dts  | 23 +++++++++++++++++++++++
+ 8 files changed, 180 insertions(+)
 
-    kernel/panic.c: add "crash_kexec_post_notifiers" option for kdump after panic_notifers
-
-
-This made it possible for smp_send_stop() to be executed prior to calling the kexec crash
-kernel.
-
-The issue is that smp_send_stop() offlines the cores, and other code depend on the cores being online.
-
-In my case on Octeon here's an example,
-
-panic()
- crash_kexec()
-  machine_crash_shutdown()
-   octeon_generic_shutdown()
-
-Inside octeon_generic_shutdown() the Octeon watchdog is shutdown for_each_online_cpu(), but since
-most of the cpu's already got offlined in smp_send_stop() it means the watchdog is still alive on
-those cores. This results in a reboot during the crash kernel execution.
-
-Another example seem to be in default_machine_crash_shutdown() where crash_kexec_prepare_cpus() depends
-on an IPI for saving the registers on different cores. However, the cpu's are all offlined with
-interrupts disabled so they won't be running those IPI's in this case.
-
-I'm looking for any advice on how this should be fixed, or if it's already fixed. I'm not going to be
-submitting a patch so if anyone wants to submit one feel free to do so.
-
-Daniel
+-- 
+2.4.4

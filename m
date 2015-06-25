@@ -1,59 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Jun 2015 16:46:56 +0200 (CEST)
-Received: from prod-mail-xrelay02.akamai.com ([72.246.2.14]:41470 "EHLO
-        prod-mail-xrelay02.akamai.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27009224AbbFYOqyOPtcM (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 25 Jun 2015 16:46:54 +0200
-Received: from prod-mail-xrelay02.akamai.com (localhost [127.0.0.1])
-        by postfix.imss70 (Postfix) with ESMTP id 365AD28A4F;
-        Thu, 25 Jun 2015 14:46:48 +0000 (GMT)
-Received: from prod-mail-relay07.akamai.com (prod-mail-relay07.akamai.com [172.17.121.112])
-        by prod-mail-xrelay02.akamai.com (Postfix) with ESMTP id 0D30D28A35;
-        Thu, 25 Jun 2015 14:46:48 +0000 (GMT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=akamai.com; s=a1;
-        t=1435243608; bh=goxaldKPTv+lVE5Zj4wVfl/8fFyWBkTT/poegIbVYqw=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=hFm9S68OD++LDwRekM5KkKW7Moidk0/KYBEmz791KOQcEjFQK/Kxq9kl83wJU8EFj
-         3WXNrsO6rjjTq50bMv2b3Vfm2IGTBuDRrQKzc8EBKfFsBRkpchMu2RoHrbevwsOJ1F
-         LlkBnw6rFRitexVJjN+rwcdyBIc69Ckg5Daom0ns=
-Received: from akamai.com (unknown [172.28.12.253])
-        by prod-mail-relay07.akamai.com (Postfix) with ESMTP id 099AF80087;
-        Thu, 25 Jun 2015 14:46:48 +0000 (GMT)
-Date:   Thu, 25 Jun 2015 10:46:47 -0400
-From:   Eric B Munson <emunson@akamai.com>
-To:     Michal Hocko <mhocko@suse.cz>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mips@linux-mips.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org, linux-mm@kvack.org,
-        linux-arch@vger.kernel.org, linux-api@vger.kernel.org
-Subject: Re: [RESEND PATCH V2 1/3] Add mmap flag to request pages are locked
- after page fault
-Message-ID: <20150625144647.GG2329@akamai.com>
-References: <1433942810-7852-1-git-send-email-emunson@akamai.com>
- <1433942810-7852-2-git-send-email-emunson@akamai.com>
- <20150618152907.GG5858@dhcp22.suse.cz>
- <20150618203048.GB2329@akamai.com>
- <20150619145708.GG4913@dhcp22.suse.cz>
- <20150619164333.GD2329@akamai.com>
- <20150622123826.GF4430@dhcp22.suse.cz>
- <20150622141806.GE2329@akamai.com>
- <20150624085013.GB32756@dhcp22.suse.cz>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Jun 2015 22:18:17 +0200 (CEST)
+Received: from ec2-54-201-57-178.us-west-2.compute.amazonaws.com ([54.201.57.178]:53427
+        "EHLO ip-172-31-12-36.us-west-2.compute.internal"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S27009456AbbFYUSPpfjV0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 25 Jun 2015 22:18:15 +0200
+Received: by ip-172-31-12-36.us-west-2.compute.internal (Postfix, from userid 1001)
+        id A7803407AE; Thu, 25 Jun 2015 20:16:26 +0000 (UTC)
+Date:   Thu, 25 Jun 2015 20:16:26 +0000
+From:   dwalker@fifo99.com
+To:     "Eric W. Biederman" <ebiederm@xmission.com>
+Cc:     Masami Hiramatsu <masami.hiramatsu.pt@hitachi.com>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        david.daney@cavium.com, d.hatayama@jp.fujitsu.com,
+        vgoyal@redhat.com, hidehiro.kawai.ez@hitachi.com,
+        linux-kernel@vger.kernel.org
+Subject: Re: kexec crash kernel running with watchdog enabled
+Message-ID: <20150625201626.GA24392@fifo99.com>
+References: <20150623140548.GA15591@fifo99.com>
+ <558A53C0.5030700@hitachi.com>
+ <20150624163141.GA20456@fifo99.com>
+ <87fv5hc9z8.fsf@x220.int.ebiederm.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="APlYHCtpeOhspHkB"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20150624085013.GB32756@dhcp22.suse.cz>
+In-Reply-To: <87fv5hc9z8.fsf@x220.int.ebiederm.org>
 User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <emunson@akamai.com>
+Return-Path: <dwalker@fifo99.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48031
+X-archive-position: 48032
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: emunson@akamai.com
+X-original-sender: dwalker@fifo99.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -66,151 +46,69 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+On Wed, Jun 24, 2015 at 12:06:03PM -0500, Eric W. Biederman wrote:
+> dwalker@fifo99.com writes:
+> 
+> > On Wed, Jun 24, 2015 at 03:52:48PM +0900, Masami Hiramatsu wrote:
+> >> Hi,
+> >> 
+> >> On 2015/06/23 23:05, dwalker@fifo99.com wrote:
+> >> > 
+> >> > Hi,
+> >> > 
+> >> > There was a commit in kernel/panic.c which altered when the kexec crash kernel is executed,
+> >> > 
+> >> > commit f06e5153f4ae2e2f3b0300f0e260e40cb7fefd45
+> >> > Author: Masami Hiramatsu <masami.hiramatsu.pt@hitachi.com>
+> >> > Date:   Fri Jun 6 14:37:07 2014 -0700
+> >> > 
+> >> >     kernel/panic.c: add "crash_kexec_post_notifiers" option for kdump after panic_notifers
+> >> > 
+> >> > 
+> >> > This made it possible for smp_send_stop() to be executed prior to calling the kexec crash
+> >> > kernel.
+> >> > 
+> >> > The issue is that smp_send_stop() offlines the cores, and other code depend on the cores being online.
+> >> > 
+> >> > In my case on Octeon here's an example,
+> >> > 
+> >> > panic()
+> >> >  crash_kexec()
+> >> >   machine_crash_shutdown()
+> >> >    octeon_generic_shutdown()
+> >> > 
+> >> > Inside octeon_generic_shutdown() the Octeon watchdog is shutdown for_each_online_cpu(), but since
+> >> > most of the cpu's already got offlined in smp_send_stop() it means the watchdog is still alive on
+> >> > those cores. This results in a reboot during the crash kernel execution.
+> >> 
+> >> Ah, I see.
+> >> 
+> >> > Another example seem to be in default_machine_crash_shutdown() where crash_kexec_prepare_cpus() depends
+> >> > on an IPI for saving the registers on different cores. However, the cpu's are all offlined with
+> >> > interrupts disabled so they won't be running those IPI's in this case.
+> >> > 
+> >> > I'm looking for any advice on how this should be fixed, or if it's already fixed. I'm not going to be
+> >> > submitting a patch so if anyone wants to submit one feel free to do so.
+> >> 
+> >> Hmm, IMHO, when the cpu goes to offline in appropriate way(smp_send_stop), it should stop
+> >> watchdog timer on the offlined cpu too.
+> >> Or, you can also register crash handler which stops all watchdogs, but it's a bit tricky.
+> >> 
+> >
+> > That doesn't really fix all the issue tho. As I was explaining generic MIPS code depends on the cpu's
+> > effectively being online for crash data collection (with an IPI). This issue may effect other architectures also,
+> > because smp_send_stop() offlines the cpu on other architectures also. I haven't surveyed the other architectures
+> > enough to know what issue could happen from this tho.
+> >
+> > Is it possible to move the smp_send_stop() below the notifiers ? I'm
+> > just throwing out ideas.
+> 
+> In general if you want reliability don't pass the kernel command line to
+> run the panic notifiers.
 
---APlYHCtpeOhspHkB
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Wed, 24 Jun 2015, Michal Hocko wrote:
+We use the panic notifiers to "fail over" , or switch to a working machine. We could do
+that in the crash kernel, but we would have to wait several seconds which is too long. Do
+you know of a more stable way to accomplish that ?
 
-> On Mon 22-06-15 10:18:06, Eric B Munson wrote:
-> > On Mon, 22 Jun 2015, Michal Hocko wrote:
-> >=20
-> > > On Fri 19-06-15 12:43:33, Eric B Munson wrote:
-> [...]
-> > > > Are you objecting to the addition of the VMA flag VM_LOCKONFAULT, o=
-r the
-> > > > new MAP_LOCKONFAULT flag (or both)?=20
-> > >=20
-> > > I thought the MAP_FAULTPOPULATE (or any other better name) would
-> > > directly translate into VM_FAULTPOPULATE and wouldn't be tight to the
-> > > locked semantic. We already have VM_LOCKED for that. The direct effect
-> > > of the flag would be to prevent from population other than the direct
-> > > page fault - including any speculative actions like fault around or
-> > > read-ahead.
-> >=20
-> > I like the ability to control other speculative population, but I am not
-> > sure about overloading it with the VM_LOCKONFAULT case.  Here is my
-> > concern.  If we are using VM_FAULTPOPULATE | VM_LOCKED to denote
-> > LOCKONFAULT, how can we tell the difference between someone that wants
-> > to avoid read-ahead and wants to use mlock()?
->=20
-> Not sure I understand. Something like?
-> addr =3D mmap(VM_FAULTPOPULATE) # To prevent speculative mappings into th=
-e vma
-> [...]
-> mlock(addr, len) # Now I want the full mlock semantic
-
-So this leaves us without the LOCKONFAULT semantics?  That is not at all
-what I am looking for.  What I want is a way to express 3 possible
-states of a VMA WRT locking, locked (populated and all pages on the
-unevictable LRU), lock on fault (populated by page fault, pages that are
-present are on the unevictable LRU, newly faulted pages are added to
-same), and not locked.
-
->=20
-> and the later to have the full mlock semantic and populate the given
-> area regardless of VM_FAULTPOPULATE being set on the vma? This would
-> be an interesting question because mlock man page clearly states the
-> semantic and that is to _always_ populate or fail. So I originally
-> thought that it would obey VM_FAULTPOPULATE but this needs a more
-> thinking.
->=20
-> > This might lead to some
-> > interesting states with mlock() and munlock() that take flags.  For
-> > instance, using VM_LOCKONFAULT mlock(MLOCK_ONFAULT) followed by
-> > munlock(MLOCK_LOCKED) leaves the VMAs in the same state with
-> > VM_LOCKONFAULT set.=20
->=20
-> This is really confusing. Let me try to rephrase that. So you have
-> mlock(addr, len, MLOCK_ONFAULT)
-> munlock(addr, len, MLOCK_LOCKED)
->=20
-> IIUC you would expect the vma still being MLOCK_ONFAULT, right? Isn't
-> that behavior strange and unexpected? First of all, munlock has
-> traditionally dropped the lock on the address range (e.g. what should
-> happen if you did plain old munlock(addr, len)). But even without
-> that. You are trying to unlock something that hasn't been locked the
-> same way. So I would expect -EINVAL at least, if the two modes should be
-> really represented by different flags.
-
-I would expect it to remain MLOCK_LOCKONFAULT because the user requested
-munlock(addr, len, MLOCK_LOCKED).  It is not currently an error to
-unlock memory that is not locked.  We do this because we do not require
-the user track what areas are locked.  It is acceptable to have a mostly
-locked area with holes unlocked with a single call to munlock that spans
-the entire area.  The same semantics should hold for munlock with flags.
-If I have an area with MLOCK_LOCKED and MLOCK_ONFAULT interleaved, it
-should be acceptable to clear the MLOCK_ONFAULT flag from those areas
-with a single munlock call that spans the area.
-
-On top of continuing with munlock semantics, the implementation would
-need the ability to rollback an munlock call if it failed after altering
-VMAs.  If we have the same interleaved area as before and we go to
-return -EINVAL the first time we hit an area that was MLOCK_LOCKED, how
-do we restore the state of the VMAs we have already processed, and
-possibly merged/split?
->=20
-> Or did you mean the both types of lock like:
-> mlock(addr, len, MLOCK_ONFAULT) | mmap(MAP_LOCKONFAULT)
-> mlock(addr, len, MLOCK_LOCKED)
-> munlock(addr, len, MLOCK_LOCKED)
->=20
-> and that should keep MLOCK_ONFAULT?
-> This sounds even more weird to me because that means that the vma in
-> question would be locked by two different mechanisms. MLOCK_LOCKED with
-> the "always populate" semantic would rule out MLOCK_ONFAULT so what
-> would be the meaning of the other flag then? Also what should regular
-> munlock(addr, len) without flags unlock? Both?
-
-This is indeed confusing and not what I was trying to illustrate, but
-since you bring it up.  mlockall() currently clears all flags and then
-sets the new flags with each subsequent call.  mlock2 would use that
-same behavior, if LOCKED was specified for a ONFAULT region, that region
-would become LOCKED and vice versa.
-
-I have the new system call set ready, I am waiting to post for rc1 so I
-can run the benchmarks again on a base more stable than the middle of a
-merge window.  We should wait to hash out implementations until the code
-is up rather than talk past eachother here.
-
->=20
-> > If we use VM_FAULTPOPULATE, the same pair of calls
-> > would clear VM_LOCKED, but leave VM_FAULTPOPULATE.  It may not matter in
-> > the end, but I am concerned about the subtleties here.
->=20
-> This sounds like the proper behavior to me. munlock should simply always
-> drop VM_LOCKED and the VM_FAULTPOPULATE can live its separate life.
->=20
-> Btw. could you be more specific about semantic of m{un}lock(addr, len, fl=
-ags)
-> you want to propose? The more I think about that the more I am unclear
-> about it, especially munlock behavior and possible flags.
-> --=20
-> Michal Hocko
-> SUSE Labs
-
---APlYHCtpeOhspHkB
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
-
-iQIcBAEBAgAGBQJVjBRXAAoJELbVsDOpoOa9KZ0P/jLKjirBJ2okZdWKtpp6678q
-uc0FyNGrZ+4/mRSy1NXL/QoHENiPkf/6/xNLD37kf19QXFrAPq9xIyudiHJNoYrI
-VieISrU48NF2l5AX/23xmAHMuQsOEllnxD2Z8tbzYBWYwhVsyekXxFcfV9IjBIJW
-o+tao1pK9hxtUKe6iZ2iYeIQ7WBPIyodKAkGlRU+e4eC5FTvJhzAWzE3SptRnBO1
-j7u1bd5Y2GuLDSdSRFbwH1g3yfjW4NhGAGVxytlMiDAEASNxO1qtxQqkAIrMIlnO
-VyMyfiWiZGlR9jlnO0jQxDgTNn+q9Hd2YAycKfq0ESAmo5lf0mqYCt22PvYbTbH6
-hlAu3LOZs5Y7HCaCcuKYeIIyjcapAxpqkthY+BgbORKwyK7u2lK8B9NnGj4NZEZW
-C3Wchy60VlT8Veru3qvzfyBZkMH+mlvZ6BKNKWgC3kgX4nnQ5DiEVYkEFoegzSJB
-78wQ2dwvZXjG+ruK4SKNnN3FFxUFFoM8zMPTVwi+ox2LjN981xmFe/W7eG2kai9J
-Ji7645+7JvHnszsfAO+dYeoDgVpVQBJ1lqc7F9W5iw8AA4NoNNEbg62K/YsoF1ox
-uHM6I5sIzZE9AG5Rkxtw0j9cu9p9OyCWoXE1XHn7zHGsJPUSM9BWMvLKncr1PDeU
-H0enY59wKDqXZvkTmSg1
-=GTBQ
------END PGP SIGNATURE-----
-
---APlYHCtpeOhspHkB--
+Daniel

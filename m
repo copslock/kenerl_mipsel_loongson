@@ -1,40 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 27 Jun 2015 01:13:28 +0200 (CEST)
-Received: from mail-la0-f48.google.com ([209.85.215.48]:36367 "EHLO
-        mail-la0-f48.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008992AbbFZXN1C8bFL (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 27 Jun 2015 01:13:27 +0200
-Received: by lacny3 with SMTP id ny3so71563711lac.3;
-        Fri, 26 Jun 2015 16:13:21 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 27 Jun 2015 01:16:24 +0200 (CEST)
+Received: from mail-la0-f45.google.com ([209.85.215.45]:35857 "EHLO
+        mail-la0-f45.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27009529AbbFZXQVYZtpL (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 27 Jun 2015 01:16:21 +0200
+Received: by lacny3 with SMTP id ny3so71608381lac.3;
+        Fri, 26 Jun 2015 16:16:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=date:from:message-id:to:cc:subject:in-reply-to:references
          :mime-version:content-type:content-transfer-encoding;
-        bh=reNL0ASO2UNSQ2a8muX7otmK99Rc5katkNO7rUib/zA=;
-        b=rvQKgARLUe+KRryWu81jNeQYW+y4z6xz555RilBpm8fu7IV9//KUTs/KCtXX8CqCIM
-         tw/VqqSup4kUrYgaLqskHzn1sszaxPdZYwPKHe2xU+nDLeTHqMzbRzvayi5S3lHoqIy/
-         ysjmlMCotS0me8+4Zo7EfZW7KT/jvGDZTIO/sT9HKVS73A06aiglJqLKytrIrwvO3gGC
-         sjRSRWTzwrWsSzL2qvORZjPA+dm5hKJKAjk2f4VLimadQuWYt73vJ3uxAR8PlHWrhBpl
-         FBZ+ijQEbcHvVlEpral9SpK3vLHA4ChYrbMkagibFpToH7hR9oFI6m2GyS1gweWRkkDi
-         VrgA==
-X-Received: by 10.152.7.7 with SMTP id f7mr3764884laa.106.1435360401535;
-        Fri, 26 Jun 2015 16:13:21 -0700 (PDT)
+        bh=ptZV3GiumCI1taFo59N69Y2JNvw66h06rPBMmXEq/H8=;
+        b=P2ORo2FB4DrjlAIT2Bnycv09C9Bay3dN6DHZP9ZEUH+6byGIY5bzBYc6mpJO+qD0Nc
+         5Nf70d/bL3JefO85+4EDiooxD0WwOvMFGyQkL5nWftlvM20vwsTCTTclI9gjxSYX5Bth
+         LEL9jVChEWj+P2n/yebFEVAybfp/J43nqqe1hbysWpevSkte35nUm3DwHZTUzFBwDarS
+         HW/H1122pWopqGxdjt4RQuuaCdXRQ8LjSvjBRFGRAoPadORUyNRCPiuj4yrUueumTbbI
+         DYdymeZXfqyphFbyTHePFVEWRvj+Z3qFqNovumfm3P19dlRHMUT1LdxQPsfBZaX1e5/9
+         giZA==
+X-Received: by 10.112.137.99 with SMTP id qh3mr3753639lbb.108.1435360576132;
+        Fri, 26 Jun 2015 16:16:16 -0700 (PDT)
 Received: from rsa.internal.lan ([217.25.229.52])
-        by mx.google.com with ESMTPSA id h4sm3959169laf.33.2015.06.26.16.13.19
+        by mx.google.com with ESMTPSA id cq1sm6314003lad.18.2015.06.26.16.16.14
         (version=TLSv1.1 cipher=RC4-SHA bits=128/128);
-        Fri, 26 Jun 2015 16:13:20 -0700 (PDT)
-Date:   Sat, 27 Jun 2015 02:13:35 +0300
+        Fri, 26 Jun 2015 16:16:15 -0700 (PDT)
+Date:   Sat, 27 Jun 2015 02:16:30 +0300
 From:   Sergey Ryazanov <ryazanov.s.a@gmail.com>
 X-Priority: 3 (Normal)
-Message-ID: <1788792448.20150627021335@gmail.com>
+Message-ID: <441261391.20150627021630@gmail.com>
 To:     Thomas Gleixner <tglx@linutronix.de>
-CC:     linux-kernel@vger.kernel.org, Julia.Lawall@lip6.fr,
-        rmk+kernel@arm.linux.org.uk, tglx@linutronix.de,
-        ralf@linux-mips.org, mingo@kernel.org, hpa@zytor.com,
-        wsa@the-dreams.de, linux-tip-commits@vger.kernel.org,
+CC:     rmk+kernel@arm.linux.org.uk, ralf@linux-mips.org,
+        linux-kernel@vger.kernel.org, mingo@kernel.org,
+        Julia.Lawall@lip6.fr, hpa@zytor.com, tglx@linutronix.de,
+        linux-tip-commits@vger.kernel.org,
         Linux MIPS <linux-mips@linux-mips.org>
-Subject: Re: [tip:irq/urgent] MIPS/pci: Fix race in installing chained IRQ handler
-In-Reply-To: <tip-746ad9a7a1fef789a9f579441b4a7b686fa85aa2@git.kernel.org>
-References: <tip-746ad9a7a1fef789a9f579441b4a7b686fa85aa2@git.kernel.org>
+Subject: Re: [tip:irq/urgent] MIPS/ath25: Fix race in installing chained IRQ handler
+In-Reply-To: <tip-08ece35e7dcc24591e27089029f1fea14e76d1fa@git.kernel.org>
+References: <tip-08ece35e7dcc24591e27089029f1fea14e76d1fa@git.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
@@ -42,7 +42,7 @@ Return-Path: <ryazanov.s.a@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48039
+X-archive-position: 48040
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -61,17 +61,14 @@ X-list: linux-mips
 
 Hello Thomas,
 
-Friday, June 26, 2015, 10:48:30 PM, you wrote:
-> MIPS/pci: Fix race in installing chained IRQ handler
+Friday, June 26, 2015, 10:48:13 PM, you wrote:
+> MIPS/ath25: Fix race in installing chained IRQ handler
 
 > Fix a race where a pending interrupt could be received and the handler
 > called before the handler's data has been setup, by converting to
 > irq_set_chained_handler_and_data().
 
 Reviewed-by: Sergey Ryazanov <ryazanov.s.a@gmail.com>
-
-Though  it's  nearly impossible to trigger a race here, since SoC boot
-up with disabled PCI interrupts.
 
 -- 
 Sergey

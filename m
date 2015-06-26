@@ -1,39 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Jun 2015 20:34:56 +0200 (CEST)
-Received: from ec2-54-201-57-178.us-west-2.compute.amazonaws.com ([54.201.57.178]:53476
-        "EHLO ip-172-31-12-36.us-west-2.compute.internal"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27009207AbbFZSeygtndG (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 26 Jun 2015 20:34:54 +0200
-Received: by ip-172-31-12-36.us-west-2.compute.internal (Postfix, from userid 1001)
-        id BBB06407AA; Fri, 26 Jun 2015 18:33:02 +0000 (UTC)
-Date:   Fri, 26 Jun 2015 18:33:02 +0000
-From:   dwalker@fifo99.com
-To:     Hidehiro Kawai <hidehiro.kawai.ez@hitachi.com>
-Cc:     Masami Hiramatsu <masami.hiramatsu.pt@hitachi.com>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        david.daney@cavium.com, d.hatayama@jp.fujitsu.com,
-        vgoyal@redhat.com, ebiederm@xmission.com,
-        linux-kernel@vger.kernel.org
-Subject: Re: kexec crash kernel running with watchdog enabled
-Message-ID: <20150626183302.GA26853@fifo99.com>
-References: <20150623140548.GA15591@fifo99.com>
- <558A53C0.5030700@hitachi.com>
- <20150624163141.GA20456@fifo99.com>
- <558CA488.4030400@hitachi.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Jun 2015 22:53:31 +0200 (CEST)
+Received: from mail-gw3-out.broadcom.com ([216.31.210.64]:24246 "EHLO
+        mail-gw3-out.broadcom.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27009422AbbFZUx34gjfG (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 26 Jun 2015 22:53:29 +0200
+X-IronPort-AV: E=Sophos;i="5.13,686,1427785200"; 
+   d="scan'208";a="68377321"
+Received: from irvexchcas08.broadcom.com (HELO IRVEXCHCAS08.corp.ad.broadcom.com) ([10.9.208.57])
+  by mail-gw3-out.broadcom.com with ESMTP; 26 Jun 2015 14:07:07 -0700
+Received: from IRVEXCHSMTP3.corp.ad.broadcom.com (10.9.207.53) by
+ IRVEXCHCAS08.corp.ad.broadcom.com (10.9.208.57) with Microsoft SMTP Server
+ (TLS) id 14.3.235.1; Fri, 26 Jun 2015 13:53:13 -0700
+Received: from mail-irva-13.broadcom.com (10.10.10.20) by
+ IRVEXCHSMTP3.corp.ad.broadcom.com (10.9.207.53) with Microsoft SMTP Server id
+ 14.3.235.1; Fri, 26 Jun 2015 13:53:13 -0700
+Received: from [10.12.156.244] (fainelli-linux [10.12.156.244]) by
+ mail-irva-13.broadcom.com (Postfix) with ESMTP id A4CA940FE5;  Fri, 26 Jun
+ 2015 13:51:13 -0700 (PDT)
+Message-ID: <558DBB61.6090904@broadcom.com>
+Date:   Fri, 26 Jun 2015 13:51:45 -0700
+From:   Florian Fainelli <fainelli@broadcom.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <558CA488.4030400@hitachi.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <dwalker@fifo99.com>
+To:     Brian Norris <computersforpeace@gmail.com>,
+        Kevin Cernekee <cernekee@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        "Thomas Gleixner" <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>
+CC:     <bcm-kernel-feedback-list@broadcom.com>,
+        Gregory Fong <gregory.0xf0@gmail.com>,
+        <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] irqchip: bcm7120-l2: use of_io_request_and_map() to claim
+ iomem
+References: <1434668725-24058-1-git-send-email-computersforpeace@gmail.com>
+In-Reply-To: <1434668725-24058-1-git-send-email-computersforpeace@gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Return-Path: <fainelli@broadcom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48037
+X-archive-position: 48038
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dwalker@fifo99.com
+X-original-sender: fainelli@broadcom.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,102 +56,62 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Jun 26, 2015 at 10:02:00AM +0900, Hidehiro Kawai wrote:
-> Hi,
+On 18/06/15 16:05, Brian Norris wrote:
+> This way, the IO resources will show up in /proc/iomem, and we can make
+> sure no other drivers are trying to claim these register regions.
 > 
-> (2015/06/25 1:31), dwalker@fifo99.com wrote:
-> > On Wed, Jun 24, 2015 at 03:52:48PM +0900, Masami Hiramatsu wrote:
-> >> Hi,
-> >>
-> >> On 2015/06/23 23:05, dwalker@fifo99.com wrote:
-> >>>
-> >>> Hi,
-> >>>
-> >>> There was a commit in kernel/panic.c which altered when the kexec crash kernel is executed,
-> >>>
-> >>> commit f06e5153f4ae2e2f3b0300f0e260e40cb7fefd45
-> >>> Author: Masami Hiramatsu <masami.hiramatsu.pt@hitachi.com>
-> >>> Date:   Fri Jun 6 14:37:07 2014 -0700
-> >>>
-> >>>     kernel/panic.c: add "crash_kexec_post_notifiers" option for kdump after panic_notifers
-> >>>
-> >>>
-> >>> This made it possible for smp_send_stop() to be executed prior to calling the kexec crash
-> >>> kernel.
-> >>>
-> >>> The issue is that smp_send_stop() offlines the cores, and other code depend on the cores being online.
-> >>>
-> >>> In my case on Octeon here's an example,
-> >>>
-> >>> panic()
-> >>>  crash_kexec()
-> >>>   machine_crash_shutdown()
-> >>>    octeon_generic_shutdown()
-> >>>
-> >>> Inside octeon_generic_shutdown() the Octeon watchdog is shutdown for_each_online_cpu(), but since
-> >>> most of the cpu's already got offlined in smp_send_stop() it means the watchdog is still alive on
-> >>> those cores. This results in a reboot during the crash kernel execution.
-> >>
-> >> Ah, I see.
-> >>
-> >>> Another example seem to be in default_machine_crash_shutdown() where crash_kexec_prepare_cpus() depends
-> >>> on an IPI for saving the registers on different cores. However, the cpu's are all offlined with
-> >>> interrupts disabled so they won't be running those IPI's in this case.
-> >>>
-> >>> I'm looking for any advice on how this should be fixed, or if it's already fixed. I'm not going to be
-> >>> submitting a patch so if anyone wants to submit one feel free to do so.
-> >>
-> >> Hmm, IMHO, when the cpu goes to offline in appropriate way(smp_send_stop), it should stop
-> >> watchdog timer on the offlined cpu too.
-> >> Or, you can also register crash handler which stops all watchdogs, but it's a bit tricky.
-> >>
-> > 
-> > That doesn't really fix all the issue tho. As I was explaining generic MIPS code depends on the cpu's
-> > effectively being online for crash data collection (with an IPI). This issue may effect other architectures also,
-> > because smp_send_stop() offlines the cpu on other architectures also. I haven't surveyed the other architectures
-> > enough to know what issue could happen from this tho.
-> > 
-> > Is it possible to move the smp_send_stop() below the notifiers ? I'm just throwing out ideas.
+> Signed-off-by: Brian Norris <computersforpeace@gmail.com>
+
+Reviewed-by: Florian Fainelli <f.fainelli@gmail.com>
+
+> ---
+>  drivers/irqchip/irq-bcm7120-l2.c | 19 ++++++++++---------
+>  1 file changed, 10 insertions(+), 9 deletions(-)
 > 
-> No, that doesn't works.  Some notifiers assume that they run in
-> single core mode.
-> 
-> Another possible solution is to add notifiers just after
-> machine_crash_shutdown() like this:
-> 
-> void panic(const char *fmt, ...)
-> ...
-> -	if (!crash_kexec_post_notifiers)
-> -		crash_kexec(NULL);
-> +	crash_kexec(NULL, buf);
-> 
->   and
-> 
-> -void crash_kexec(struct pt_regs *regs)
-> +void crash_kexec(struct pt_regs *regs, char *msg)
->  ...
->  		if (kexec_crash_image) {
->  			struct pt_regs fixed_regs;
+> diff --git a/drivers/irqchip/irq-bcm7120-l2.c b/drivers/irqchip/irq-bcm7120-l2.c
+> index 3ba5cc780fcb..299d4de2deb5 100644
+> --- a/drivers/irqchip/irq-bcm7120-l2.c
+> +++ b/drivers/irqchip/irq-bcm7120-l2.c
+> @@ -142,10 +142,10 @@ static int __init bcm7120_l2_intc_iomap_7120(struct device_node *dn,
+>  {
+>  	int ret;
 >  
->  			crash_setup_regs(&fixed_regs, regs);
->  			crash_save_vmcoreinfo();
->  			machine_crash_shutdown(&fixed_regs);
-> +			if (crash_kexec_post_notifiers) {
-> +				kmsg_dump(KMSG_DUMP_PANIC);
-> +				atomic_notifier_call_chain(&panic_notifier_list, 0, msg);
-> +			}
->                         machine_kexec(kexec_crash_image);
+> -	data->map_base[0] = of_iomap(dn, 0);
+> -	if (!data->map_base[0]) {
+> +	data->map_base[0] = of_io_request_and_map(dn, 0, dn->full_name);
+> +	if (IS_ERR(data->map_base[0])) {
+>  		pr_err("unable to map registers\n");
+> -		return -ENOMEM;
+> +		return PTR_ERR(data->map_base[0]);
+>  	}
+>  
+>  	data->pair_base[0] = data->map_base[0];
+> @@ -178,16 +178,17 @@ static int __init bcm7120_l2_intc_iomap_3380(struct device_node *dn,
+>  
+>  	for (gc_idx = 0; gc_idx < MAX_WORDS; gc_idx++) {
+>  		unsigned int map_idx = gc_idx * 2;
+> -		void __iomem *en = of_iomap(dn, map_idx + 0);
+> -		void __iomem *stat = of_iomap(dn, map_idx + 1);
+> -		void __iomem *base = min(en, stat);
+> +		void __iomem *en, *stat, *base;
+> +
+> +		en = of_io_request_and_map(dn, map_idx + 0, "irq-en");
+> +		stat = of_io_request_and_map(dn, map_idx + 1, "irq-stat");
+> +		if (IS_ERR(en) || IS_ERR(stat))
+> +			break;
+>  
+> +		base = min(en, stat);
+>  		data->map_base[map_idx + 0] = en;
+>  		data->map_base[map_idx + 1] = stat;
+>  
+> -		if (!base)
+> -			break;
+> -
+>  		data->pair_base[gc_idx] = base;
+>  		data->en_offset[gc_idx] = en - base;
+>  		data->stat_offset[gc_idx] = stat - base;
 > 
-> Most of archs stop other cores in machine_crash_shutdown(),
-> so it will work well.  Furthermore, it simplifies the special
-> case where crash_kexec() is called without entering panic().
-> 
-> However, we need some tweaks for sh and s390 cases.  As for sh,
-> it seems not to stop other cores in the crash_kexec() sequence
-> (kdump support is incompleted?).  For s390, smp_send_stop() is
-> called in machine_kexec() but not machine_crash_shutdown().
 
-You could add an ifdef into the __setup() to filter out s390 and sh, until we figure out what
-to do there. So the "crash_kexec_post_notifiers" wouldn't be available for those platforms.
 
-Daniel
+-- 
+Florian

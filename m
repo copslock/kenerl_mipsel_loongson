@@ -1,37 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Jul 2015 13:14:17 +0200 (CEST)
-Received: from mail-pd0-f175.google.com ([209.85.192.175]:34651 "EHLO
-        mail-pd0-f175.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012612AbbGFLNByufze (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 6 Jul 2015 13:13:01 +0200
-Received: by pdbep18 with SMTP id ep18so104418314pdb.1
-        for <linux-mips@linux-mips.org>; Mon, 06 Jul 2015 04:12:56 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Jul 2015 13:14:33 +0200 (CEST)
+Received: from mail-pa0-f54.google.com ([209.85.220.54]:32807 "EHLO
+        mail-pa0-f54.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010581AbbGFLNGiVpDe (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 6 Jul 2015 13:13:06 +0200
+Received: by pacws9 with SMTP id ws9so95457428pac.0
+        for <linux-mips@linux-mips.org>; Mon, 06 Jul 2015 04:13:01 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:in-reply-to:references;
-        bh=EooNiQE3iRZCWJ7fJueBtbNOIAjjZ2vkYygJr+DSxTI=;
-        b=Rkgzsfh8iRxe9yt0ehk72kIzP4npZRyaF0LhDBFad90OnSm8xflg8KrC1gEu8gFeu/
-         wsx376M+jsxxef09MXs2Fb3wPnih6MDI+2xek/OU3BbxyjkFW6W5B2Msv2cm3u7bt1qk
-         j7Y3Ma2LpSdqCbsih9NFiomP9p37G8QMpgfO54ObZngCIYTTn9C262uWIAZm/M4hp2jm
-         OQAhFSeWWeOnx0ocrd2SIJWSbBz75XwDM/Po9Y+o58KWYiyf5VSKOllMhh0THshBpVyY
-         IxVg9bd791u/4uArnmrRtY6GTuWWVio1itV2jixxw4P6l3h3YUyeQDV0gSvaHERnlxgs
-         NmZA==
-X-Gm-Message-State: ALoCoQmlHx5Pi4PHay3K3yosGd/BMfDUxDqpTjixTP/DRBRZAo/9NNVGLfVjbDWr2A95IY0OU9Ak
-X-Received: by 10.68.241.69 with SMTP id wg5mr2251736pbc.120.1436181176249;
-        Mon, 06 Jul 2015 04:12:56 -0700 (PDT)
+        bh=a0yR2nJJ5cveD5tTi8DzaB3qS7bCHOXXFE/AoCbWCbg=;
+        b=Uu/PhmjBsJqlPODbEK6MdOeWNqgmnaCJ3jyEZtSpOo0iW96uHzmI3bvFVTF+nklZQN
+         djOvLOtC9Ak/7ABWXzaR1UaNI8wK7rvVAg348SS1lHppTyPmz1K9qijVSYmkY3gc3onE
+         h9a5XtiYkR6hdrPZpRqIXcCk3wu2CUuzJ7rbbb9B7J2i2zKramxszK0sPy1XxN9d7WMK
+         XENhs7t0vqt/UfW7QEUripLlKCWM0+usRlT4eCfVHjJR3OZ0Z3iGd+n898jTj+R2z7O5
+         /sySegRE1L93t3bXi5OBL8GY2W9/QB3aiagRz8RHOChRcdmJUFu8OUeeEDPoHUiSB75U
+         Eq+A==
+X-Gm-Message-State: ALoCoQmQNVV+G12XUyxCKwnISASdOcSekUOtt0LAAdobKtr9/7+kpUNIhbzSTY5beUVOAe3HQIxZ
+X-Received: by 10.66.123.81 with SMTP id ly17mr105665740pab.31.1436181180969;
+        Mon, 06 Jul 2015 04:13:00 -0700 (PDT)
 Received: from localhost ([122.171.186.190])
-        by mx.google.com with ESMTPSA id hf7sm17873595pbc.66.2015.07.06.04.12.54
+        by mx.google.com with ESMTPSA id s1sm17903496pda.54.2015.07.06.04.12.59
         (version=TLSv1.2 cipher=RC4-SHA bits=128/128);
-        Mon, 06 Jul 2015 04:12:55 -0700 (PDT)
+        Mon, 06 Jul 2015 04:13:00 -0700 (PDT)
 From:   Viresh Kumar <viresh.kumar@linaro.org>
 To:     Daniel Lezcano <daniel.lezcano@linaro.org>,
         linux-mips@linux-mips.org, ralf@linux-mips.org
 Cc:     linaro-kernel@lists.linaro.org,
         Thomas Gleixner <tglx@linutronix.de>,
-        Viresh Kumar <viresh.kumar@linaro.org>
-Subject: [PATCH 06/14] MIPS/cevt-gt641xx: Migrate to new 'set-state' interface
-Date:   Mon,  6 Jul 2015 16:41:57 +0530
-Message-Id: <88ca9bdbc1fe5723807f8e61333f455af18694de.1436180306.git.viresh.kumar@linaro.org>
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        James Hogan <james.hogan@imgtec.com>,
+        Andrew Bresticker <abrestic@chromium.org>,
+        Qais Yousef <qais.yousef@imgtec.com>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+Subject: [PATCH 07/14] MIPS/cevt-r4k: Migrate to new 'set-state' interface
+Date:   Mon,  6 Jul 2015 16:41:58 +0530
+Message-Id: <cc71e2a4cdc16660a59919f22358d159f4bd2ccf.1436180306.git.viresh.kumar@linaro.org>
 X-Mailer: git-send-email 2.4.0
 In-Reply-To: <cover.1436180306.git.viresh.kumar@linaro.org>
 References: <cover.1436180306.git.viresh.kumar@linaro.org>
@@ -41,7 +46,7 @@ Return-Path: <viresh.kumar@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48071
+X-archive-position: 48072
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -58,105 +63,64 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Migrate cevt-gt641xx driver to the new 'set-state' interface provided by
+Migrate cevt-4k driver to the new 'set-state' interface provided by
 clockevents core, the earlier 'set-mode' interface is marked obsolete
 now.
 
 This also enables us to implement callbacks for new states of clockevent
 devices, for example: ONESHOT_STOPPED.
 
+We weren't doing anything in the ->set_mode() callback. So, this patch
+doesn't provide any set-state callbacks.
+
 Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: James Hogan <james.hogan@imgtec.com>
+Cc: Andrew Bresticker <abrestic@chromium.org>
+Cc: Qais Yousef <qais.yousef@imgtec.com>
+Cc: Jason Cooper <jason@lakedaemon.net>
+Cc: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
 Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 ---
- arch/mips/kernel/cevt-gt641xx.c | 57 ++++++++++++++++++++++++++++-------------
- 1 file changed, 39 insertions(+), 18 deletions(-)
+ arch/mips/include/asm/cevt-r4k.h | 1 -
+ arch/mips/kernel/cevt-r4k.c      | 7 -------
+ 2 files changed, 8 deletions(-)
 
-diff --git a/arch/mips/kernel/cevt-gt641xx.c b/arch/mips/kernel/cevt-gt641xx.c
-index f069460751ab..66040051151d 100644
---- a/arch/mips/kernel/cevt-gt641xx.c
-+++ b/arch/mips/kernel/cevt-gt641xx.c
-@@ -64,8 +64,7 @@ static int gt641xx_timer0_set_next_event(unsigned long delta,
- 	return 0;
+diff --git a/arch/mips/include/asm/cevt-r4k.h b/arch/mips/include/asm/cevt-r4k.h
+index f0edf6fcd002..2e13a038d260 100644
+--- a/arch/mips/include/asm/cevt-r4k.h
++++ b/arch/mips/include/asm/cevt-r4k.h
+@@ -21,7 +21,6 @@ DECLARE_PER_CPU(struct clock_event_device, mips_clockevent_device);
+ 
+ void mips_event_handler(struct clock_event_device *dev);
+ int c0_compare_int_usable(void);
+-void mips_set_clock_mode(enum clock_event_mode, struct clock_event_device *);
+ irqreturn_t c0_compare_interrupt(int, void *);
+ 
+ extern struct irqaction c0_compare_irqaction;
+diff --git a/arch/mips/kernel/cevt-r4k.c b/arch/mips/kernel/cevt-r4k.c
+index d70c4d893219..dd41d797e39f 100644
+--- a/arch/mips/kernel/cevt-r4k.c
++++ b/arch/mips/kernel/cevt-r4k.c
+@@ -28,12 +28,6 @@ static int mips_next_event(unsigned long delta,
+ 	return res;
  }
  
--static void gt641xx_timer0_set_mode(enum clock_event_mode mode,
--				    struct clock_event_device *evt)
-+static int gt641xx_timer0_shutdown(struct clock_event_device *evt)
- {
- 	u32 ctrl;
+-void mips_set_clock_mode(enum clock_event_mode mode,
+-				struct clock_event_device *evt)
+-{
+-	/* Nothing to do ...  */
+-}
+-
+ DEFINE_PER_CPU(struct clock_event_device, mips_clockevent_device);
+ int cp0_timer_irq_installed;
  
-@@ -73,21 +72,39 @@ static void gt641xx_timer0_set_mode(enum clock_event_mode mode,
+@@ -212,7 +206,6 @@ int r4k_clockevent_init(void)
+ 	cd->irq			= irq;
+ 	cd->cpumask		= cpumask_of(cpu);
+ 	cd->set_next_event	= mips_next_event;
+-	cd->set_mode		= mips_set_clock_mode;
+ 	cd->event_handler	= mips_event_handler;
  
- 	ctrl = GT_READ(GT_TC_CONTROL_OFS);
- 	ctrl &= ~(GT_TC_CONTROL_ENTC0_MSK | GT_TC_CONTROL_SELTC0_MSK);
-+	GT_WRITE(GT_TC_CONTROL_OFS, ctrl);
-+
-+	raw_spin_unlock(&gt641xx_timer_lock);
-+	return 0;
-+}
-+
-+static int gt641xx_timer0_set_oneshot(struct clock_event_device *evt)
-+{
-+	u32 ctrl;
-+
-+	raw_spin_lock(&gt641xx_timer_lock);
-+
-+	ctrl = GT_READ(GT_TC_CONTROL_OFS);
-+	ctrl &= ~GT_TC_CONTROL_SELTC0_MSK;
-+	ctrl |= GT_TC_CONTROL_ENTC0_MSK;
-+	GT_WRITE(GT_TC_CONTROL_OFS, ctrl);
-+
-+	raw_spin_unlock(&gt641xx_timer_lock);
-+	return 0;
-+}
- 
--	switch (mode) {
--	case CLOCK_EVT_MODE_PERIODIC:
--		ctrl |= GT_TC_CONTROL_ENTC0_MSK | GT_TC_CONTROL_SELTC0_MSK;
--		break;
--	case CLOCK_EVT_MODE_ONESHOT:
--		ctrl |= GT_TC_CONTROL_ENTC0_MSK;
--		break;
--	default:
--		break;
--	}
-+static int gt641xx_timer0_set_periodic(struct clock_event_device *evt)
-+{
-+	u32 ctrl;
-+
-+	raw_spin_lock(&gt641xx_timer_lock);
- 
-+	ctrl = GT_READ(GT_TC_CONTROL_OFS);
-+	ctrl |= GT_TC_CONTROL_ENTC0_MSK | GT_TC_CONTROL_SELTC0_MSK;
- 	GT_WRITE(GT_TC_CONTROL_OFS, ctrl);
- 
- 	raw_spin_unlock(&gt641xx_timer_lock);
-+	return 0;
- }
- 
- static void gt641xx_timer0_event_handler(struct clock_event_device *dev)
-@@ -95,12 +112,16 @@ static void gt641xx_timer0_event_handler(struct clock_event_device *dev)
- }
- 
- static struct clock_event_device gt641xx_timer0_clockevent = {
--	.name		= "gt641xx-timer0",
--	.features	= CLOCK_EVT_FEAT_PERIODIC | CLOCK_EVT_FEAT_ONESHOT,
--	.irq		= GT641XX_TIMER0_IRQ,
--	.set_next_event = gt641xx_timer0_set_next_event,
--	.set_mode	= gt641xx_timer0_set_mode,
--	.event_handler	= gt641xx_timer0_event_handler,
-+	.name			= "gt641xx-timer0",
-+	.features		= CLOCK_EVT_FEAT_PERIODIC |
-+				  CLOCK_EVT_FEAT_ONESHOT,
-+	.irq			= GT641XX_TIMER0_IRQ,
-+	.set_next_event		= gt641xx_timer0_set_next_event,
-+	.set_state_shutdown	= gt641xx_timer0_shutdown,
-+	.set_state_periodic	= gt641xx_timer0_set_periodic,
-+	.set_state_oneshot	= gt641xx_timer0_set_oneshot,
-+	.tick_resume		= gt641xx_timer0_shutdown,
-+	.event_handler		= gt641xx_timer0_event_handler,
- };
- 
- static irqreturn_t gt641xx_timer0_interrupt(int irq, void *dev_id)
+ 	clockevents_register_device(cd);
 -- 
 2.4.0

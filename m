@@ -1,31 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Jul 2015 22:30:00 +0200 (CEST)
-Received: from mail-la0-f49.google.com ([209.85.215.49]:32836 "EHLO
-        mail-la0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27013228AbbGFU36ouhdM (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 6 Jul 2015 22:29:58 +0200
-Received: by laar3 with SMTP id r3so170370469laa.0
-        for <linux-mips@linux-mips.org>; Mon, 06 Jul 2015 13:29:53 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Jul 2015 22:52:12 +0200 (CEST)
+Received: from mail-la0-f44.google.com ([209.85.215.44]:33576 "EHLO
+        mail-la0-f44.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27013327AbbGFUwJilnCM (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 6 Jul 2015 22:52:09 +0200
+Received: by laar3 with SMTP id r3so171017866laa.0
+        for <linux-mips@linux-mips.org>; Mon, 06 Jul 2015 13:52:04 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:message-id:date:from:organization:user-agent
          :mime-version:to:cc:subject:references:in-reply-to:content-type
          :content-transfer-encoding;
-        bh=U9OS8OAaLqGWxi4HOH+8RW5OJs9aE9JAWp4vfTGVsEI=;
-        b=lyGuy+C+b7kTZtUwplaJ8IJ8Hxe+bqwI99+STpDDhpuVjIMRXfvO+T0RJ03UcdA3LR
-         5/wZlrJj1oyk/Xfpm6FGRwT0TDtIkBMtwExmPwLCk10f5jmBj1Kz4hPm7yvfIXvMiyOC
-         edyeLrl9LyHfvqPmz1gks5zDG9ZLmrlFSjwbecE8QyygoMvYdDtWgLZHkQ209CZAuFzC
-         Q6IOnFubEIHTd+yomVrvFc3FhoKmkCz3xiBd1jU70i1VGNza62amfjTDKXLh1nrwjAn5
-         WbYC+Jh/SYBzGMaTlLjVwV6Ci6LJ2ec86tXcBd3hgvPgHOIXXt21B66J4YdaOqSLsFCx
-         njjA==
-X-Gm-Message-State: ALoCoQnR3GSE8YvLEbdt9FacEEVTVq3Xv4nEIv0K/tDV0rDzBJw8jbGyJCHQogwUfFf/JCeVwS9L
-X-Received: by 10.152.36.161 with SMTP id r1mr656239laj.88.1436214593231;
-        Mon, 06 Jul 2015 13:29:53 -0700 (PDT)
+        bh=2SbsowVdy+yiPk69sDwXQHPGHXnpTNttaZfCgNlWDZ0=;
+        b=A+aeOKN18LLMwtxaKT21m/9Vd8vsfJ7b9xGx8BYBQefJ3LPnPnqmqdD8s+HB5q6hKS
+         BOv7cpVpdeKjPdEJKavXIwcHnXUi8HrAAM+bYWVzIhoeyBEved2sRi4o0d8Swo/knL/Z
+         VM7axgWj7lM7fri7/J0+rlk8UI9NJLgrF6n0qhJYN0IL2JCBYkMTdghH9zZXgiCSvt0z
+         PgdppOsBJEg7bJJDqenpKOtn+1orJre0QkJGVD7Tbmh+LZWpF4RhiVMStN3VYEdlqmBu
+         Q5zjaOGXdlIkUayYCfcGCrzn+2+w2kAdenEJrJ5gAPsGGpP7hR+P1g0BVU0RoaJkpeAC
+         Sinw==
+X-Gm-Message-State: ALoCoQm+Gn1DFCps7+LKwg+T5+m0N927huBCwG+XJW+fS9zRXvE0UPpBwJ/zkokR1l4JNwV7kppg
+X-Received: by 10.112.164.35 with SMTP id yn3mr678940lbb.91.1436215924155;
+        Mon, 06 Jul 2015 13:52:04 -0700 (PDT)
 Received: from wasted.cogentembedded.com (ppp83-237-249-53.pppoe.mtu-net.ru. [83.237.249.53])
-        by mx.google.com with ESMTPSA id o8sm5032086laf.7.2015.07.06.13.29.51
+        by mx.google.com with ESMTPSA id cu1sm5060186lbb.28.2015.07.06.13.52.02
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 06 Jul 2015 13:29:52 -0700 (PDT)
-Message-ID: <559AE53E.6070909@cogentembedded.com>
-Date:   Mon, 06 Jul 2015 23:29:50 +0300
+        Mon, 06 Jul 2015 13:52:03 -0700 (PDT)
+Message-ID: <559AEA71.3020502@cogentembedded.com>
+Date:   Mon, 06 Jul 2015 23:52:01 +0300
 From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
 Organization: Cogent Embedded
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.7.0
@@ -35,21 +35,29 @@ To:     Viresh Kumar <viresh.kumar@linaro.org>,
         linux-mips@linux-mips.org, ralf@linux-mips.org
 CC:     linaro-kernel@lists.linaro.org,
         Thomas Gleixner <tglx@linutronix.de>,
-        James Hogan <james.hogan@imgtec.com>,
         Andrew Bresticker <abrestic@chromium.org>,
-        Qais Yousef <qais.yousef@imgtec.com>,
+        Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>,
+        Hongliang Tao <taohl@lemote.com>,
+        Huacai Chen <chenhc@lemote.com>,
+        James Hogan <james.hogan@imgtec.com>,
         Jason Cooper <jason@lakedaemon.net>,
-        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-Subject: Re: [PATCH 07/14] MIPS/cevt-r4k: Migrate to new 'set-state' interface
-References: <cover.1436180306.git.viresh.kumar@linaro.org> <cc71e2a4cdc16660a59919f22358d159f4bd2ccf.1436180306.git.viresh.kumar@linaro.org> <559AC4E0.80205@cogentembedded.com> <559AC7F7.9080600@cogentembedded.com>
-In-Reply-To: <559AC7F7.9080600@cogentembedded.com>
+        Kelvin Cheung <keguang.zhang@gmail.com>,
+        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
+        Manuel Lauss <manuel.lauss@gmail.com>,
+        Michael Opdenacker <michael.opdenacker@free-electrons.com>,
+        Paul Burton <paul.burton@imgtec.com>,
+        Qais Yousef <qais.yousef@imgtec.com>,
+        Valentin Rothberg <valentinrothberg@gmail.com>
+Subject: Re: [PATCH 00/14] MIPS: Migrate clockevent drivers to 'set-state'
+References: <cover.1436180306.git.viresh.kumar@linaro.org>
+In-Reply-To: <cover.1436180306.git.viresh.kumar@linaro.org>
 Content-Type: text/plain; charset=windows-1252; format=flowed
 Content-Transfer-Encoding: 7bit
 Return-Path: <sergei.shtylyov@cogentembedded.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48088
+X-archive-position: 48089
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -66,26 +74,28 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 07/06/2015 09:24 PM, Sergei Shtylyov wrote:
+On 07/06/2015 02:11 PM, Viresh Kumar wrote:
 
->>> Migrate cevt-4k driver to the new 'set-state' interface provided by
->>> clockevents core, the earlier 'set-mode' interface is marked obsolete
->>> now.
+> This series migrates MIPS clockevent drivers (present in arch/mips/
+> directory), to the new set-state interface. This would enable these
+> drivers to use new states (like: ONESHOT_STOPPED, etc.) of a clockevent
+> device (if required), as the set-mode interface is marked obsolete now
+> and wouldn't be expanded to handle new states.
 
->>> This also enables us to implement callbacks for new states of clockevent
->>> devices, for example: ONESHOT_STOPPED.
+> Rebased over: v4.2-rc1
 
->>> We weren't doing anything in the ->set_mode() callback. So, this patch
->>> doesn't provide any set-state callbacks.
+> Following patches:
+>    MIPS/alchemy/time: Migrate to new 'set-state' interface
+>    MIPS/jazz/timer: Migrate to new 'set-state' interface
+>    MIPS/cevt-r4k: Migrate to new 'set-state' interface
+>    MIPS/sgi-ip27/timer: Migrate to new 'set-state' interface
+>    MIPS/sni/time: Migrate to new 'set-state' interface
 
->>     The code in __clockevents_switch_state() looks like it's going to oops as
->> you're not implementing set_state_oneshot()...
+> must be integrated to mainline kernel via clockevents tree, because of
+> dependency on:
+>    352370adb058 ("clockevents: Allow set-state callbacks to be optional")
 
->     In fact, clockevents_sanity_check() should return -EINVAL in this case,
-> and so the kernel crash even earlier, duyr to BUG_ON() in
-> clockevents_register_device().
-
-    tglx has turned my attention the pre-requisite patch, and I have finally 
-found it in the archives. I'm now OK with the patches I  considered broken.
+    I had a hard time finding this by ID, since it hasn't landed in any 
+official trees still.
 
 WBR, Sergei

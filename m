@@ -1,55 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Jul 2015 13:12:33 +0200 (CEST)
-Received: from mail-pa0-f42.google.com ([209.85.220.42]:34557 "EHLO
-        mail-pa0-f42.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010581AbbGFLMcFQfAe (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 6 Jul 2015 13:12:32 +0200
-Received: by pabvl15 with SMTP id vl15so94136096pab.1
-        for <linux-mips@linux-mips.org>; Mon, 06 Jul 2015 04:12:26 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Jul 2015 13:12:49 +0200 (CEST)
+Received: from mail-pa0-f53.google.com ([209.85.220.53]:33559 "EHLO
+        mail-pa0-f53.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011152AbbGFLMhBJVTe (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 6 Jul 2015 13:12:37 +0200
+Received: by pacws9 with SMTP id ws9so95451146pac.0
+        for <linux-mips@linux-mips.org>; Mon, 06 Jul 2015 04:12:31 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=yq8vbvCcNedfuP27btajbn4cMs3yKXxZ6vhgfzM9vjY=;
-        b=E6gyIfLMf5MXshHne8YrsmOWt8qZygqrKuY5U+cbx4Ts7AROaIcdX3XuiaNaO9ZEh8
-         ckuJwmezvfpcfel6l6lM/edt4wstmCzvfu4tLIch/bj5xow+g0ahgYJtDvcvrhjM4G0N
-         TAYNZ4i1K77PivA3TAyg6WKNnd0edsfeFEd6oRgylHoE0j7JkX+sKAbg96pwbaDT9NvO
-         +dyNIXfhjC6qa/4bwwl6n3iAGm3UrpG0VgTuOQ4FN3z64nwNIfa35WfB7z9Teoyx4kuT
-         IAY8j9O2gypqdB6sM1VJgsyPTVh6GdsN3rj2XyIT95xRfGRLvz/zO1ES9ryRTZTl5hbQ
-         pNzw==
-X-Gm-Message-State: ALoCoQmzs/pyuAfKnOsYbWOSH3MY68wWFdmmYQ7drA8N8uzkJkb6JfZJMAflLjymyL//t4d0wA0k
-X-Received: by 10.66.161.135 with SMTP id xs7mr106601831pab.154.1436181145826;
-        Mon, 06 Jul 2015 04:12:25 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:in-reply-to:references;
+        bh=FKIsDLBvJNNTgDK55j+9I7XJvBVOOEqFjzIhsXxXln8=;
+        b=BtrArTjkVU2tjnI8rwYb1XWT/pBOn+z6ttd8diR1sfIpUtKemV/70ey+sWvxuLy3G3
+         mCtGbKIYaVUkkA+4XgvMSy8D2bpUSkhys0yOX55G0OV/QLdmiVc8CMKlN5logQ36i9AG
+         f1EC3HFVfbkNou9DZUPhyMB31sI2mRx6MmkXyx363s7dCZ6Y8/8MN9T7jqIChe2b/Ree
+         U6R2JbVo9zrn3Ha4AESfBbO1tigKb1moTRsZDJGul08cm/bWR5WHzkVpdHQiLl76B2AT
+         V1iDOdUdhMv3fIkfMDDCEMw2hq4R/xSk0AG1RQeNGP3VFvN0EIjJn1eGTSws+uttGs6x
+         muGA==
+X-Gm-Message-State: ALoCoQlzwU3Q80BupFMAwvHFqk5S/2KpKwFjBQLq5CiCu+d2MtphtPQZL0+VyaP8b8u++zRsEMY4
+X-Received: by 10.70.41.78 with SMTP id d14mr105286587pdl.35.1436181151015;
+        Mon, 06 Jul 2015 04:12:31 -0700 (PDT)
 Received: from localhost ([122.171.186.190])
-        by mx.google.com with ESMTPSA id bn5sm17865810pbc.82.2015.07.06.04.12.24
+        by mx.google.com with ESMTPSA id qo6sm17961570pab.23.2015.07.06.04.12.29
         (version=TLSv1.2 cipher=RC4-SHA bits=128/128);
-        Mon, 06 Jul 2015 04:12:24 -0700 (PDT)
+        Mon, 06 Jul 2015 04:12:30 -0700 (PDT)
 From:   Viresh Kumar <viresh.kumar@linaro.org>
 To:     Daniel Lezcano <daniel.lezcano@linaro.org>,
         linux-mips@linux-mips.org, ralf@linux-mips.org
 Cc:     linaro-kernel@lists.linaro.org,
         Thomas Gleixner <tglx@linutronix.de>,
         Viresh Kumar <viresh.kumar@linaro.org>,
-        Andrew Bresticker <abrestic@chromium.org>,
-        Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>,
-        Hongliang Tao <taohl@lemote.com>,
-        Huacai Chen <chenhc@lemote.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Kelvin Cheung <keguang.zhang@gmail.com>,
-        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
-        Manuel Lauss <manuel.lauss@gmail.com>,
-        Michael Opdenacker <michael.opdenacker@free-electrons.com>,
-        Paul Burton <paul.burton@imgtec.com>,
-        Qais Yousef <qais.yousef@imgtec.com>,
-        Valentin Rothberg <valentinrothberg@gmail.com>
-Subject: [PATCH 00/14] MIPS: Migrate clockevent drivers to 'set-state'
-Date:   Mon,  6 Jul 2015 16:41:51 +0530
-Message-Id: <cover.1436180306.git.viresh.kumar@linaro.org>
+        Manuel Lauss <manuel.lauss@gmail.com>
+Subject: [PATCH 01/14] MIPS/alchemy/time: Migrate to new 'set-state' interface
+Date:   Mon,  6 Jul 2015 16:41:52 +0530
+Message-Id: <7b140cad62ca40bc9dbe6678c34b6b5d42848a0d.1436180306.git.viresh.kumar@linaro.org>
 X-Mailer: git-send-email 2.4.0
+In-Reply-To: <cover.1436180306.git.viresh.kumar@linaro.org>
+References: <cover.1436180306.git.viresh.kumar@linaro.org>
+In-Reply-To: <cover.1436180306.git.viresh.kumar@linaro.org>
+References: <cover.1436180306.git.viresh.kumar@linaro.org>
 Return-Path: <viresh.kumar@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48065
+X-archive-position: 48066
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -66,86 +59,46 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Guys,
+Migrate alchemy driver to the new 'set-state' interface provided by
+clockevents core, the earlier 'set-mode' interface is marked obsolete
+now.
 
-This series migrates MIPS clockevent drivers (present in arch/mips/
-directory), to the new set-state interface. This would enable these
-drivers to use new states (like: ONESHOT_STOPPED, etc.) of a clockevent
-device (if required), as the set-mode interface is marked obsolete now
-and wouldn't be expanded to handle new states.
+This also enables us to implement callbacks for new states of clockevent
+devices, for example: ONESHOT_STOPPED.
 
-Rebased over: v4.2-rc1
+We weren't doing anything in the ->set_mode() callback. So, this patch
+doesn't provide any set-state callbacks.
 
-Following patches:
-  MIPS/alchemy/time: Migrate to new 'set-state' interface
-  MIPS/jazz/timer: Migrate to new 'set-state' interface
-  MIPS/cevt-r4k: Migrate to new 'set-state' interface
-  MIPS/sgi-ip27/timer: Migrate to new 'set-state' interface
-  MIPS/sni/time: Migrate to new 'set-state' interface
-
-must be integrated to mainline kernel via clockevents tree, because of
-dependency on:
-  352370adb058 ("clockevents: Allow set-state callbacks to be optional")
-
-
-Other patches don't have this dependency and can be pushed via platform
-specific trees, if Maintainers want it that way.
-
-This has been build/boot tested by two bots on various platforms for few
-days now, not sure if we had a good coverage for MIPS though:
-
-- kernelci, http://kernelci.org/
-- 0-DAY kernel test infrastructure, kbuild test robot
-
-
-Cc: Andrew Bresticker <abrestic@chromium.org>
-Cc: Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>
-Cc: Hongliang Tao <taohl@lemote.com>
-Cc: Huacai Chen <chenhc@lemote.com>
-Cc: James Hogan <james.hogan@imgtec.com>
-Cc: Jason Cooper <jason@lakedaemon.net>
-Cc: Kelvin Cheung <keguang.zhang@gmail.com>
-Cc: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-Cc: Manuel Lauss <manuel.lauss@gmail.com>
-Cc: Michael Opdenacker <michael.opdenacker@free-electrons.com>
-Cc: Paul Burton <paul.burton@imgtec.com>
-Cc: Qais Yousef <qais.yousef@imgtec.com>
 Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Valentin Rothberg <valentinrothberg@gmail.com>
+Cc: Manuel Lauss <manuel.lauss@gmail.com>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+---
+ arch/mips/alchemy/common/time.c | 6 ------
+ 1 file changed, 6 deletions(-)
 
-Viresh Kumar (14):
-  MIPS/alchemy/time: Migrate to new 'set-state' interface
-  MIPS/jazz/timer: Migrate to new 'set-state' interface
-  MIPS/jz4740/time: Migrate to new 'set-state' interface
-  MIPS/cevt-bcm1480: Migrate to new 'set-state' interface
-  MIPS/cevt-ds1287: Migrate to new 'set-state' interface
-  MIPS/cevt-gt641xx: Migrate to new 'set-state' interface
-  MIPS/cevt-r4k: Migrate to new 'set-state' interface
-  MIPS/cevt-sb1250: Migrate to new 'set-state' interface
-  MIPS/cevt-txx9: Migrate to new 'set-state' interface
-  MIPS/loongson64/timer: Migrate to new 'set-state' interface
-  MIPS/loongsoon32/time: Migrate to new 'set-state' interface
-  MIPS/ralink/rt3352: Migrate to new 'set-state' interface
-  MIPS/sgi-ip27/timer: Migrate to new 'set-state' interface
-  MIPS/sni/time: Migrate to new 'set-state' interface
-
- arch/mips/alchemy/common/time.c                   |   6 --
- arch/mips/include/asm/cevt-r4k.h                  |   1 -
- arch/mips/jazz/irq.c                              |   7 --
- arch/mips/jz4740/time.c                           |  46 +++++----
- arch/mips/kernel/cevt-bcm1480.c                   |  44 ++++----
- arch/mips/kernel/cevt-ds1287.c                    |  37 ++++---
- arch/mips/kernel/cevt-gt641xx.c                   |  57 +++++++----
- arch/mips/kernel/cevt-r4k.c                       |   7 --
- arch/mips/kernel/cevt-sb1250.c                    |  45 +++++----
- arch/mips/kernel/cevt-txx9.c                      |  81 +++++++++------
- arch/mips/loongson32/common/time.c                |  57 ++++++-----
- arch/mips/loongson64/common/cs5536/cs5536_mfgpt.c |  46 ++++-----
- arch/mips/loongson64/loongson-3/hpet.c            | 116 +++++++++++++---------
- arch/mips/ralink/cevt-rt3352.c                    |  59 +++++------
- arch/mips/sgi-ip27/ip27-timer.c                   |   7 --
- arch/mips/sni/time.c                              |  49 ++++-----
- 16 files changed, 359 insertions(+), 306 deletions(-)
-
+diff --git a/arch/mips/alchemy/common/time.c b/arch/mips/alchemy/common/time.c
+index 50e17e13c18b..f99d3ec17a45 100644
+--- a/arch/mips/alchemy/common/time.c
++++ b/arch/mips/alchemy/common/time.c
+@@ -69,11 +69,6 @@ static int au1x_rtcmatch2_set_next_event(unsigned long delta,
+ 	return 0;
+ }
+ 
+-static void au1x_rtcmatch2_set_mode(enum clock_event_mode mode,
+-				    struct clock_event_device *cd)
+-{
+-}
+-
+ static irqreturn_t au1x_rtcmatch2_irq(int irq, void *dev_id)
+ {
+ 	struct clock_event_device *cd = dev_id;
+@@ -86,7 +81,6 @@ static struct clock_event_device au1x_rtcmatch2_clockdev = {
+ 	.features	= CLOCK_EVT_FEAT_ONESHOT,
+ 	.rating		= 1500,
+ 	.set_next_event = au1x_rtcmatch2_set_next_event,
+-	.set_mode	= au1x_rtcmatch2_set_mode,
+ 	.cpumask	= cpu_all_mask,
+ };
+ 
 -- 
 2.4.0

@@ -1,49 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Jul 2015 12:36:46 +0200 (CEST)
-Received: from mail-oi0-f42.google.com ([209.85.218.42]:36706 "EHLO
-        mail-oi0-f42.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010117AbbGFKgnPvr5e (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 6 Jul 2015 12:36:43 +0200
-Received: by oiaf66 with SMTP id f66so82883464oia.3
-        for <linux-mips@linux-mips.org>; Mon, 06 Jul 2015 03:36:37 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Jul 2015 13:12:33 +0200 (CEST)
+Received: from mail-pa0-f42.google.com ([209.85.220.42]:34557 "EHLO
+        mail-pa0-f42.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010581AbbGFLMcFQfAe (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 6 Jul 2015 13:12:32 +0200
+Received: by pabvl15 with SMTP id vl15so94136096pab.1
+        for <linux-mips@linux-mips.org>; Mon, 06 Jul 2015 04:12:26 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:in-reply-to:references:date
-         :message-id:subject:from:to:cc:content-type;
-        bh=oEreES7K2rcN4rykfE78+tquvIIEQ60dXJqwKshG8M4=;
-        b=lFqiHp9hw6hAILXeLpTEzDfmAtg518wVCGQw+aZ9PxBlRUr4xvQK90wqwdDiMPX5cv
-         H4ypUlZ2xPGk8Xr7XyGCBXYTZgFfHnCdO3afvGTiXrDoSL6KS3lk7bp6hzTJcBwiOXSk
-         AsIUZuxhdK4plU6nhcL+5XNPCVQbi1khv3MTK/ZPkmbAkNjIvUZcfae8mFldUe7pq/Kt
-         Q3Ofjo7J9izJi2sSmaEbXsSQTdzI1Tz1rP/GpVWLNjMd98iKOyWSOa7Xdm4qJnKh2ge8
-         jsUtqkIbUROWaVQNo5fX50mMxSh4s4hdyX+s5Ya0NyF2q4ysxYNJGoyktF18tWr4g5Zl
-         eUaA==
-X-Gm-Message-State: ALoCoQkDJDNaFuMKasIxmosQp2mnznWeIYyzt6q9TjxrTOnj1DOY9/jzYZpiCjMX+4us7Fr/GycE
-MIME-Version: 1.0
-X-Received: by 10.202.65.67 with SMTP id o64mr5104543oia.45.1436178997182;
- Mon, 06 Jul 2015 03:36:37 -0700 (PDT)
-Received: by 10.182.204.41 with HTTP; Mon, 6 Jul 2015 03:36:37 -0700 (PDT)
-In-Reply-To: <1435914709-15092-1-git-send-email-albeu@free.fr>
-References: <1435914709-15092-1-git-send-email-albeu@free.fr>
-Date:   Mon, 6 Jul 2015 12:36:37 +0200
-Message-ID: <CACRpkdbS8mTLN0de6neJNk=+0VBNZOwhzT-18CSS8n=uwLGa1A@mail.gmail.com>
-Subject: Re: [PATCH 0/2] MIPS: ath79: Move the GPIO driver to drivers/gpio
-From:   Linus Walleij <linus.walleij@linaro.org>
-To:     Alban Bedel <albeu@free.fr>
-Cc:     "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Alexandre Courbot <gnurou@gmail.com>,
-        Gabor Juhos <juhosg@openwrt.org>,
-        Linux MIPS <linux-mips@linux-mips.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <linus.walleij@linaro.org>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=yq8vbvCcNedfuP27btajbn4cMs3yKXxZ6vhgfzM9vjY=;
+        b=E6gyIfLMf5MXshHne8YrsmOWt8qZygqrKuY5U+cbx4Ts7AROaIcdX3XuiaNaO9ZEh8
+         ckuJwmezvfpcfel6l6lM/edt4wstmCzvfu4tLIch/bj5xow+g0ahgYJtDvcvrhjM4G0N
+         TAYNZ4i1K77PivA3TAyg6WKNnd0edsfeFEd6oRgylHoE0j7JkX+sKAbg96pwbaDT9NvO
+         +dyNIXfhjC6qa/4bwwl6n3iAGm3UrpG0VgTuOQ4FN3z64nwNIfa35WfB7z9Teoyx4kuT
+         IAY8j9O2gypqdB6sM1VJgsyPTVh6GdsN3rj2XyIT95xRfGRLvz/zO1ES9ryRTZTl5hbQ
+         pNzw==
+X-Gm-Message-State: ALoCoQmzs/pyuAfKnOsYbWOSH3MY68wWFdmmYQ7drA8N8uzkJkb6JfZJMAflLjymyL//t4d0wA0k
+X-Received: by 10.66.161.135 with SMTP id xs7mr106601831pab.154.1436181145826;
+        Mon, 06 Jul 2015 04:12:25 -0700 (PDT)
+Received: from localhost ([122.171.186.190])
+        by mx.google.com with ESMTPSA id bn5sm17865810pbc.82.2015.07.06.04.12.24
+        (version=TLSv1.2 cipher=RC4-SHA bits=128/128);
+        Mon, 06 Jul 2015 04:12:24 -0700 (PDT)
+From:   Viresh Kumar <viresh.kumar@linaro.org>
+To:     Daniel Lezcano <daniel.lezcano@linaro.org>,
+        linux-mips@linux-mips.org, ralf@linux-mips.org
+Cc:     linaro-kernel@lists.linaro.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        Andrew Bresticker <abrestic@chromium.org>,
+        Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>,
+        Hongliang Tao <taohl@lemote.com>,
+        Huacai Chen <chenhc@lemote.com>,
+        James Hogan <james.hogan@imgtec.com>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Kelvin Cheung <keguang.zhang@gmail.com>,
+        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
+        Manuel Lauss <manuel.lauss@gmail.com>,
+        Michael Opdenacker <michael.opdenacker@free-electrons.com>,
+        Paul Burton <paul.burton@imgtec.com>,
+        Qais Yousef <qais.yousef@imgtec.com>,
+        Valentin Rothberg <valentinrothberg@gmail.com>
+Subject: [PATCH 00/14] MIPS: Migrate clockevent drivers to 'set-state'
+Date:   Mon,  6 Jul 2015 16:41:51 +0530
+Message-Id: <cover.1436180306.git.viresh.kumar@linaro.org>
+X-Mailer: git-send-email 2.4.0
+Return-Path: <viresh.kumar@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48064
+X-archive-position: 48065
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linus.walleij@linaro.org
+X-original-sender: viresh.kumar@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,24 +66,86 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Jul 3, 2015 at 11:11 AM, Alban Bedel <albeu@free.fr> wrote:
+Hi Guys,
 
-> as requested when I posted the ATH79 OF support serie, here is the move of
-> the GPIO driver to the GPIO drivers directory. While at it I also removed
-> the custom pinmux API as it not used by any board.
+This series migrates MIPS clockevent drivers (present in arch/mips/
+directory), to the new set-state interface. This would enable these
+drivers to use new states (like: ONESHOT_STOPPED, etc.) of a clockevent
+device (if required), as the set-mode interface is marked obsolete now
+and wouldn't be expanded to handle new states.
 
-First:
-Acked-by: Linus Walleij <linus.walleij@linaro.org>
+Rebased over: v4.2-rc1
 
-Please apply to the MIPS tree, because it is better to have all
-GPIO mess collected in one place than spread out over the kernel.
+Following patches:
+  MIPS/alchemy/time: Migrate to new 'set-state' interface
+  MIPS/jazz/timer: Migrate to new 'set-state' interface
+  MIPS/cevt-r4k: Migrate to new 'set-state' interface
+  MIPS/sgi-ip27/timer: Migrate to new 'set-state' interface
+  MIPS/sni/time: Migrate to new 'set-state' interface
 
-Admittedly not having it in "my" folder makes me sloppy and not try to
-push for modernizing the GPIO driver(s)...
+must be integrated to mainline kernel via clockevents tree, because of
+dependency on:
+  352370adb058 ("clockevents: Allow set-state callbacks to be optional")
 
-This driver could use some modernization and platform cleanup though.
-I'll comment on the move patch for reference, don't see it as any blocker,
-more as a TODO list.
 
-Yours,
-Linus Walleij
+Other patches don't have this dependency and can be pushed via platform
+specific trees, if Maintainers want it that way.
+
+This has been build/boot tested by two bots on various platforms for few
+days now, not sure if we had a good coverage for MIPS though:
+
+- kernelci, http://kernelci.org/
+- 0-DAY kernel test infrastructure, kbuild test robot
+
+
+Cc: Andrew Bresticker <abrestic@chromium.org>
+Cc: Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>
+Cc: Hongliang Tao <taohl@lemote.com>
+Cc: Huacai Chen <chenhc@lemote.com>
+Cc: James Hogan <james.hogan@imgtec.com>
+Cc: Jason Cooper <jason@lakedaemon.net>
+Cc: Kelvin Cheung <keguang.zhang@gmail.com>
+Cc: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+Cc: Manuel Lauss <manuel.lauss@gmail.com>
+Cc: Michael Opdenacker <michael.opdenacker@free-electrons.com>
+Cc: Paul Burton <paul.burton@imgtec.com>
+Cc: Qais Yousef <qais.yousef@imgtec.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Valentin Rothberg <valentinrothberg@gmail.com>
+
+Viresh Kumar (14):
+  MIPS/alchemy/time: Migrate to new 'set-state' interface
+  MIPS/jazz/timer: Migrate to new 'set-state' interface
+  MIPS/jz4740/time: Migrate to new 'set-state' interface
+  MIPS/cevt-bcm1480: Migrate to new 'set-state' interface
+  MIPS/cevt-ds1287: Migrate to new 'set-state' interface
+  MIPS/cevt-gt641xx: Migrate to new 'set-state' interface
+  MIPS/cevt-r4k: Migrate to new 'set-state' interface
+  MIPS/cevt-sb1250: Migrate to new 'set-state' interface
+  MIPS/cevt-txx9: Migrate to new 'set-state' interface
+  MIPS/loongson64/timer: Migrate to new 'set-state' interface
+  MIPS/loongsoon32/time: Migrate to new 'set-state' interface
+  MIPS/ralink/rt3352: Migrate to new 'set-state' interface
+  MIPS/sgi-ip27/timer: Migrate to new 'set-state' interface
+  MIPS/sni/time: Migrate to new 'set-state' interface
+
+ arch/mips/alchemy/common/time.c                   |   6 --
+ arch/mips/include/asm/cevt-r4k.h                  |   1 -
+ arch/mips/jazz/irq.c                              |   7 --
+ arch/mips/jz4740/time.c                           |  46 +++++----
+ arch/mips/kernel/cevt-bcm1480.c                   |  44 ++++----
+ arch/mips/kernel/cevt-ds1287.c                    |  37 ++++---
+ arch/mips/kernel/cevt-gt641xx.c                   |  57 +++++++----
+ arch/mips/kernel/cevt-r4k.c                       |   7 --
+ arch/mips/kernel/cevt-sb1250.c                    |  45 +++++----
+ arch/mips/kernel/cevt-txx9.c                      |  81 +++++++++------
+ arch/mips/loongson32/common/time.c                |  57 ++++++-----
+ arch/mips/loongson64/common/cs5536/cs5536_mfgpt.c |  46 ++++-----
+ arch/mips/loongson64/loongson-3/hpet.c            | 116 +++++++++++++---------
+ arch/mips/ralink/cevt-rt3352.c                    |  59 +++++------
+ arch/mips/sgi-ip27/ip27-timer.c                   |   7 --
+ arch/mips/sni/time.c                              |  49 ++++-----
+ 16 files changed, 359 insertions(+), 306 deletions(-)
+
+-- 
+2.4.0

@@ -1,41 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Jul 2015 13:15:31 +0200 (CEST)
-Received: from mail-pd0-f180.google.com ([209.85.192.180]:33828 "EHLO
-        mail-pd0-f180.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012726AbbGFLNU5hyae (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 6 Jul 2015 13:13:20 +0200
-Received: by pdbep18 with SMTP id ep18so104422685pdb.1
-        for <linux-mips@linux-mips.org>; Mon, 06 Jul 2015 04:13:15 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Jul 2015 13:15:47 +0200 (CEST)
+Received: from mail-pa0-f46.google.com ([209.85.220.46]:36471 "EHLO
+        mail-pa0-f46.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011908AbbGFLNZpXxle (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 6 Jul 2015 13:13:25 +0200
+Received: by pacgz10 with SMTP id gz10so20279567pac.3
+        for <linux-mips@linux-mips.org>; Mon, 06 Jul 2015 04:13:20 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:in-reply-to:references;
-        bh=ex1CDqkhNhoelG7lAA/gIlKslmI/L7O7FwvDSUCzDqk=;
-        b=LUNwixPv6Be8by7zQ0zOvq7g99VAc+xON0/J5rM5GTJ6Sunb1nDFjUJ33+87Yl0bfJ
-         iXWUbwN4JLTOoLO9rf0UC5UJgnkBKexJzI1ADkrjEaVIuPH0X2yTm65ZB7jACjITPLyh
-         gIWQqL0CSikQ5htM3hAHj3+tawRbisMZnq3ftpvABA2+wfwYQ5tEoswW2Y2JfzxfclrB
-         hzZUdi9cMBRlg8Ztpfmb6nKNrk/0mw97ULumVIF7O9NfGNxVACZ7quOdLtJETWPRVcy4
-         vaEjGeM4wOL7R4o/VK0Y192zYlb1i28c9MRRmBAmHvkjTGOJq+T572nH3SSRvsO10vil
-         gQsA==
-X-Gm-Message-State: ALoCoQkZCD8FNLvyFcc0BoF8o0VQ4trGjzSp8nBD8Ko6mY3SkgKcvPBzJE3Q7iqNSK9N7+8wwFfI
-X-Received: by 10.68.129.134 with SMTP id nw6mr103632362pbb.109.1436181195254;
-        Mon, 06 Jul 2015 04:13:15 -0700 (PDT)
+        bh=oE8rhY97JcLdZi5OhZ4S9+wIzAGeAJVw8p+PhBxiGlQ=;
+        b=OT4n2crk0gOacx8vNIrDAmWKA/dJrJZXxdy12ULkoXS4bDZn5FYuLGcLh9HDxXsZlk
+         /2SapUpl7FCyOadwO7bhXRo4U7QGJ0kv8NocJear5WsSpnsISWZ1+dG6kvqVxQHGvtoQ
+         Kf3h8XfjcrWRNbtvPK3KLq0VCzwYZczcpTdoHWkRDDnj0sUVFFT8nrBYrfsenyAAS1QG
+         cHmSbFuEViDT/qgAbTFTwqvKNWAaCm/Iecb4zVNbBsPnNMBTWrenCTcoqSTtSY1x6+z8
+         2sTmGDSv7g7E7d+Bp+ZyQl2KOPMn9kabwgARB6mOJJ7PX1RdZfThTQWDzCwG/x9eeS+C
+         /81A==
+X-Gm-Message-State: ALoCoQnOnbXZlFzEvHWwk8HHqcvBSsWylRYoBRt+1bYzMmZzdcf6poxyIzAePGsBcB/TXtkmG7dE
+X-Received: by 10.66.236.70 with SMTP id us6mr104174284pac.39.1436181200091;
+        Mon, 06 Jul 2015 04:13:20 -0700 (PDT)
 Received: from localhost ([122.171.186.190])
-        by mx.google.com with ESMTPSA id pb6sm17872685pbc.75.2015.07.06.04.13.13
+        by mx.google.com with ESMTPSA id a10sm17902912pdn.57.2015.07.06.04.13.18
         (version=TLSv1.2 cipher=RC4-SHA bits=128/128);
-        Mon, 06 Jul 2015 04:13:14 -0700 (PDT)
+        Mon, 06 Jul 2015 04:13:19 -0700 (PDT)
 From:   Viresh Kumar <viresh.kumar@linaro.org>
 To:     Daniel Lezcano <daniel.lezcano@linaro.org>,
         linux-mips@linux-mips.org, ralf@linux-mips.org
 Cc:     linaro-kernel@lists.linaro.org,
         Thomas Gleixner <tglx@linutronix.de>,
         Viresh Kumar <viresh.kumar@linaro.org>,
-        Huacai Chen <chenhc@lemote.com>,
-        Michael Opdenacker <michael.opdenacker@free-electrons.com>,
-        Hongliang Tao <taohl@lemote.com>,
-        Valentin Rothberg <valentinrothberg@gmail.com>
-Subject: [PATCH 10/14] MIPS/loongson64/timer: Migrate to new 'set-state' interface
-Date:   Mon,  6 Jul 2015 16:42:01 +0530
-Message-Id: <fc1e2f7d8a257ab03f93a57552de47ac84c1b374.1436180306.git.viresh.kumar@linaro.org>
+        Kelvin Cheung <keguang.zhang@gmail.com>,
+        Huacai Chen <chenhc@lemote.com>
+Subject: [PATCH 11/14] MIPS/loongsoon32/time: Migrate to new 'set-state' interface
+Date:   Mon,  6 Jul 2015 16:42:02 +0530
+Message-Id: <ae6c62c9e355d50f2fe0a7c9ba1c0fe65f7c6325.1436180306.git.viresh.kumar@linaro.org>
 X-Mailer: git-send-email 2.4.0
 In-Reply-To: <cover.1436180306.git.viresh.kumar@linaro.org>
 References: <cover.1436180306.git.viresh.kumar@linaro.org>
@@ -45,7 +43,7 @@ Return-Path: <viresh.kumar@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48075
+X-archive-position: 48076
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -62,7 +60,7 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Migrate loongson driver to the new 'set-state' interface provided by
+Migrate loongsoon32 driver to the new 'set-state' interface provided by
 clockevents core, the earlier 'set-mode' interface is marked obsolete
 now.
 
@@ -70,219 +68,90 @@ This also enables us to implement callbacks for new states of clockevent
 devices, for example: ONESHOT_STOPPED.
 
 Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Kelvin Cheung <keguang.zhang@gmail.com>
 Cc: Huacai Chen <chenhc@lemote.com>
-Cc: Michael Opdenacker <michael.opdenacker@free-electrons.com>
-Cc: Hongliang Tao <taohl@lemote.com>
-Cc: Valentin Rothberg <valentinrothberg@gmail.com>
 Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 ---
- arch/mips/loongson64/common/cs5536/cs5536_mfgpt.c |  46 ++++-----
- arch/mips/loongson64/loongson-3/hpet.c            | 116 +++++++++++++---------
- 2 files changed, 92 insertions(+), 70 deletions(-)
+ arch/mips/loongson32/common/time.c | 57 +++++++++++++++++++++++---------------
+ 1 file changed, 34 insertions(+), 23 deletions(-)
 
-diff --git a/arch/mips/loongson64/common/cs5536/cs5536_mfgpt.c b/arch/mips/loongson64/common/cs5536/cs5536_mfgpt.c
-index 12c75db23420..2f4b30f06b19 100644
---- a/arch/mips/loongson64/common/cs5536/cs5536_mfgpt.c
-+++ b/arch/mips/loongson64/common/cs5536/cs5536_mfgpt.c
-@@ -51,40 +51,36 @@ void enable_mfgpt0_counter(void)
+diff --git a/arch/mips/loongson32/common/time.c b/arch/mips/loongson32/common/time.c
+index df0f850d6a5f..0996b025eeef 100644
+--- a/arch/mips/loongson32/common/time.c
++++ b/arch/mips/loongson32/common/time.c
+@@ -126,26 +126,34 @@ static irqreturn_t ls1x_clockevent_isr(int irq, void *devid)
+ 	return IRQ_HANDLED;
  }
- EXPORT_SYMBOL(enable_mfgpt0_counter);
  
--static void init_mfgpt_timer(enum clock_event_mode mode,
--			     struct clock_event_device *evt)
-+static int mfgpt_timer_set_periodic(struct clock_event_device *evt)
+-static void ls1x_clockevent_set_mode(enum clock_event_mode mode,
+-				     struct clock_event_device *cd)
++static int ls1x_clockevent_set_state_periodic(struct clock_event_device *cd)
  {
- 	raw_spin_lock(&mfgpt_lock);
- 
+ 	raw_spin_lock(&ls1x_timer_lock);
 -	switch (mode) {
 -	case CLOCK_EVT_MODE_PERIODIC:
--		outw(COMPARE, MFGPT0_CMP2);	/* set comparator2 */
--		outw(0, MFGPT0_CNT);	/* set counter to 0 */
--		enable_mfgpt0_counter();
--		break;
--
--	case CLOCK_EVT_MODE_SHUTDOWN:
--	case CLOCK_EVT_MODE_UNUSED:
--		if (evt->mode == CLOCK_EVT_MODE_PERIODIC ||
--		    evt->mode == CLOCK_EVT_MODE_ONESHOT)
--			disable_mfgpt0_counter();
--		break;
--
--	case CLOCK_EVT_MODE_ONESHOT:
--		/* The oneshot mode have very high deviation, Not use it! */
--		break;
--
+-		ls1x_pwmtimer_set_period(ls1x_jiffies_per_tick);
+-		ls1x_pwmtimer_restart();
 -	case CLOCK_EVT_MODE_RESUME:
--		/* Nothing to do here */
+-		__raw_writel(INT_EN | CNT_EN, timer_base + PWM_CTRL);
+-		break;
+-	case CLOCK_EVT_MODE_ONESHOT:
+-	case CLOCK_EVT_MODE_SHUTDOWN:
+-		__raw_writel(__raw_readl(timer_base + PWM_CTRL) & ~CNT_EN,
+-			     timer_base + PWM_CTRL);
+-		break;
+-	default:
 -		break;
 -	}
-+	outw(COMPARE, MFGPT0_CMP2);	/* set comparator2 */
-+	outw(0, MFGPT0_CNT);		/* set counter to 0 */
-+	enable_mfgpt0_counter();
++	ls1x_pwmtimer_set_period(ls1x_jiffies_per_tick);
++	ls1x_pwmtimer_restart();
++	__raw_writel(INT_EN | CNT_EN, timer_base + PWM_CTRL);
+ 	raw_spin_unlock(&ls1x_timer_lock);
 +
- 	raw_spin_unlock(&mfgpt_lock);
 +	return 0;
 +}
 +
-+static int mfgpt_timer_shutdown(struct clock_event_device *evt)
++static int ls1x_clockevent_tick_resume(struct clock_event_device *cd)
 +{
-+	if (clockevent_state_periodic(evt) || clockevent_state_oneshot(evt)) {
-+		raw_spin_lock(&mfgpt_lock);
-+		disable_mfgpt0_counter();
-+		raw_spin_unlock(&mfgpt_lock);
-+	}
++	raw_spin_lock(&ls1x_timer_lock);
++	__raw_writel(INT_EN | CNT_EN, timer_base + PWM_CTRL);
++	raw_spin_unlock(&ls1x_timer_lock);
++
++	return 0;
++}
++
++static int ls1x_clockevent_set_state_shutdown(struct clock_event_device *cd)
++{
++	raw_spin_lock(&ls1x_timer_lock);
++	__raw_writel(__raw_readl(timer_base + PWM_CTRL) & ~CNT_EN,
++		     timer_base + PWM_CTRL);
++	raw_spin_unlock(&ls1x_timer_lock);
 +
 +	return 0;
  }
  
- static struct clock_event_device mfgpt_clockevent = {
- 	.name = "mfgpt",
- 	.features = CLOCK_EVT_FEAT_PERIODIC,
--	.set_mode = init_mfgpt_timer,
-+
-+	/* The oneshot mode have very high deviation, don't use it! */
-+	.set_state_shutdown = mfgpt_timer_shutdown,
-+	.set_state_periodic = mfgpt_timer_set_periodic,
- 	.irq = CS5536_MFGPT_INTR,
+ static int ls1x_clockevent_set_next(unsigned long evt,
+@@ -160,12 +168,15 @@ static int ls1x_clockevent_set_next(unsigned long evt,
+ }
+ 
+ static struct clock_event_device ls1x_clockevent = {
+-	.name		= "ls1x-pwmtimer",
+-	.features	= CLOCK_EVT_FEAT_PERIODIC,
+-	.rating		= 300,
+-	.irq		= LS1X_TIMER_IRQ,
+-	.set_next_event	= ls1x_clockevent_set_next,
+-	.set_mode	= ls1x_clockevent_set_mode,
++	.name			= "ls1x-pwmtimer",
++	.features		= CLOCK_EVT_FEAT_PERIODIC,
++	.rating			= 300,
++	.irq			= LS1X_TIMER_IRQ,
++	.set_next_event		= ls1x_clockevent_set_next,
++	.set_state_shutdown	= ls1x_clockevent_set_state_shutdown,
++	.set_state_periodic	= ls1x_clockevent_set_state_periodic,
++	.set_state_oneshot	= ls1x_clockevent_set_state_shutdown,
++	.tick_resume		= ls1x_clockevent_tick_resume,
  };
  
-diff --git a/arch/mips/loongson64/loongson-3/hpet.c b/arch/mips/loongson64/loongson-3/hpet.c
-index 5c21cd3bd339..950096e8d7cd 100644
---- a/arch/mips/loongson64/loongson-3/hpet.c
-+++ b/arch/mips/loongson64/loongson-3/hpet.c
-@@ -78,55 +78,77 @@ static void hpet_enable_legacy_int(void)
- 	/* Do nothing on Loongson-3 */
- }
- 
--static void hpet_set_mode(enum clock_event_mode mode,
--				struct clock_event_device *evt)
-+static int hpet_set_state_periodic(struct clock_event_device *evt)
- {
--	int cfg = 0;
-+	int cfg;
- 
- 	spin_lock(&hpet_lock);
--	switch (mode) {
--	case CLOCK_EVT_MODE_PERIODIC:
--		pr_info("set clock event to periodic mode!\n");
--		/* stop counter */
--		hpet_stop_counter();
--
--		/* enables the timer0 to generate a periodic interrupt */
--		cfg = hpet_read(HPET_T0_CFG);
--		cfg &= ~HPET_TN_LEVEL;
--		cfg |= HPET_TN_ENABLE | HPET_TN_PERIODIC |
--				HPET_TN_SETVAL | HPET_TN_32BIT;
--		hpet_write(HPET_T0_CFG, cfg);
--
--		/* set the comparator */
--		hpet_write(HPET_T0_CMP, HPET_COMPARE_VAL);
--		udelay(1);
--		hpet_write(HPET_T0_CMP, HPET_COMPARE_VAL);
--
--		/* start counter */
--		hpet_start_counter();
--		break;
--	case CLOCK_EVT_MODE_SHUTDOWN:
--	case CLOCK_EVT_MODE_UNUSED:
--		cfg = hpet_read(HPET_T0_CFG);
--		cfg &= ~HPET_TN_ENABLE;
--		hpet_write(HPET_T0_CFG, cfg);
--		break;
--	case CLOCK_EVT_MODE_ONESHOT:
--		pr_info("set clock event to one shot mode!\n");
--		cfg = hpet_read(HPET_T0_CFG);
--		/* set timer0 type
--		 * 1 : periodic interrupt
--		 * 0 : non-periodic(oneshot) interrupt
--		 */
--		cfg &= ~HPET_TN_PERIODIC;
--		cfg |= HPET_TN_ENABLE | HPET_TN_32BIT;
--		hpet_write(HPET_T0_CFG, cfg);
--		break;
--	case CLOCK_EVT_MODE_RESUME:
--		hpet_enable_legacy_int();
--		break;
--	}
-+
-+	pr_info("set clock event to periodic mode!\n");
-+	/* stop counter */
-+	hpet_stop_counter();
-+
-+	/* enables the timer0 to generate a periodic interrupt */
-+	cfg = hpet_read(HPET_T0_CFG);
-+	cfg &= ~HPET_TN_LEVEL;
-+	cfg |= HPET_TN_ENABLE | HPET_TN_PERIODIC | HPET_TN_SETVAL |
-+		HPET_TN_32BIT;
-+	hpet_write(HPET_T0_CFG, cfg);
-+
-+	/* set the comparator */
-+	hpet_write(HPET_T0_CMP, HPET_COMPARE_VAL);
-+	udelay(1);
-+	hpet_write(HPET_T0_CMP, HPET_COMPARE_VAL);
-+
-+	/* start counter */
-+	hpet_start_counter();
-+
-+	spin_unlock(&hpet_lock);
-+	return 0;
-+}
-+
-+static int hpet_set_state_shutdown(struct clock_event_device *evt)
-+{
-+	int cfg;
-+
-+	spin_lock(&hpet_lock);
-+
-+	cfg = hpet_read(HPET_T0_CFG);
-+	cfg &= ~HPET_TN_ENABLE;
-+	hpet_write(HPET_T0_CFG, cfg);
-+
- 	spin_unlock(&hpet_lock);
-+	return 0;
-+}
-+
-+static int hpet_set_state_oneshot(struct clock_event_device *evt)
-+{
-+	int cfg;
-+
-+	spin_lock(&hpet_lock);
-+
-+	pr_info("set clock event to one shot mode!\n");
-+	cfg = hpet_read(HPET_T0_CFG);
-+	/*
-+	 * set timer0 type
-+	 * 1 : periodic interrupt
-+	 * 0 : non-periodic(oneshot) interrupt
-+	 */
-+	cfg &= ~HPET_TN_PERIODIC;
-+	cfg |= HPET_TN_ENABLE | HPET_TN_32BIT;
-+	hpet_write(HPET_T0_CFG, cfg);
-+
-+	spin_unlock(&hpet_lock);
-+	return 0;
-+}
-+
-+static int hpet_tick_resume(struct clock_event_device *evt)
-+{
-+	spin_lock(&hpet_lock);
-+	hpet_enable_legacy_int();
-+	spin_unlock(&hpet_lock);
-+
-+	return 0;
- }
- 
- static int hpet_next_event(unsigned long delta,
-@@ -207,6 +229,10 @@ void __init setup_hpet_timer(void)
- 	cd->rating = 320;
- 	cd->features = CLOCK_EVT_FEAT_PERIODIC | CLOCK_EVT_FEAT_ONESHOT;
- 	cd->set_mode = hpet_set_mode;
-+	cd->set_state_shutdown = hpet_set_state_shutdown;
-+	cd->set_state_periodic = hpet_set_state_periodic;
-+	cd->set_state_oneshot = hpet_set_state_oneshot;
-+	cd->tick_resume = hpet_tick_resume;
- 	cd->set_next_event = hpet_next_event;
- 	cd->irq = HPET_T0_IRQ;
- 	cd->cpumask = cpumask_of(cpu);
+ static struct irqaction ls1x_pwmtimer_irqaction = {
 -- 
 2.4.0

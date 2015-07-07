@@ -1,26 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Jul 2015 20:24:26 +0200 (CEST)
-Received: from youngberry.canonical.com ([91.189.89.112]:51621 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Jul 2015 20:24:42 +0200 (CEST)
+Received: from youngberry.canonical.com ([91.189.89.112]:51695 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27013454AbbGGSYPeNulC (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Jul 2015 20:24:15 +0200
+        by eddie.linux-mips.org with ESMTP id S27013455AbbGGSYWX8FEp (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Jul 2015 20:24:22 +0200
 Received: from 1.general.kamal.us.vpn ([10.172.68.52] helo=fourier)
         by youngberry.canonical.com with esmtpsa (TLS1.0:DHE_RSA_AES_128_CBC_SHA1:16)
         (Exim 4.76)
         (envelope-from <kamal@canonical.com>)
-        id 1ZCXXT-0001ui-11; Tue, 07 Jul 2015 18:24:15 +0000
+        id 1ZCXXZ-0001w2-5H; Tue, 07 Jul 2015 18:24:21 +0000
 Received: from kamal by fourier with local (Exim 4.82)
         (envelope-from <kamal@whence.com>)
-        id 1ZCXXQ-0002SH-Q2; Tue, 07 Jul 2015 11:24:12 -0700
+        id 1ZCXXW-0002TF-Tt; Tue, 07 Jul 2015 11:24:18 -0700
 From:   Kamal Mostafa <kamal@canonical.com>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
         kernel-team@lists.ubuntu.com
-Cc:     Jonas Gorski <jogo@openwrt.org>, linux-mips@linux-mips.org,
-        John Crispin <blogic@openwrt.org>,
+Cc:     James Hogan <james.hogan@imgtec.com>,
         Ralf Baechle <ralf@linux-mips.org>,
+        Adam Jiang <jiang.adam@gmail.com>, linux-mips@linux-mips.org,
         Kamal Mostafa <kamal@canonical.com>
-Subject: [PATCH 3.19.y-ckt 054/102] MIPS: ralink: Fix clearing the illegal access interrupt
-Date:   Tue,  7 Jul 2015 11:22:44 -0700
-Message-Id: <1436293412-9033-55-git-send-email-kamal@canonical.com>
+Subject: [PATCH 3.19.y-ckt 065/102] MIPS: Fix enabling of DEBUG_STACKOVERFLOW
+Date:   Tue,  7 Jul 2015 11:22:55 -0700
+Message-Id: <1436293412-9033-66-git-send-email-kamal@canonical.com>
 X-Mailer: git-send-email 1.9.1
 In-Reply-To: <1436293412-9033-1-git-send-email-kamal@canonical.com>
 References: <1436293412-9033-1-git-send-email-kamal@canonical.com>
@@ -29,7 +29,7 @@ Return-Path: <kamal@canonical.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48101
+X-archive-position: 48102
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -50,41 +50,41 @@ X-list: linux-mips
 
 ------------------
 
-From: Jonas Gorski <jogo@openwrt.org>
+From: James Hogan <james.hogan@imgtec.com>
 
-commit 9dd6f1c166bc6e7b582f6203f2dc023ec65e3ed5 upstream.
+commit 5f35b9cd553fd64415b563497d05a563c988dbd6 upstream.
 
-Due to a typo the illegal access interrupt is never cleared in by
-the interupt handler, causing an effective deadlock on the first
-illegal access.
+Commit 334c86c494b9 ("MIPS: IRQ: Add stackoverflow detection") added
+kernel stack overflow detection, however it only enabled it conditional
+upon the preprocessor definition DEBUG_STACKOVERFLOW, which is never
+actually defined. The Kconfig option is called DEBUG_STACKOVERFLOW,
+which manifests to the preprocessor as CONFIG_DEBUG_STACKOVERFLOW, so
+switch it to using that definition instead.
 
-This was broken since the code was introduced in 5433acd81e87 ("MIPS:
-ralink: add illegal access driver"), but only exposed when the Kconfig
-symbol was added, thus enabling the code.
-
-Fixes: a7b7aad383c ("MIPS: ralink: add missing symbol for RALINK_ILL_ACC")
-Signed-off-by: Jonas Gorski <jogo@openwrt.org>
+Fixes: 334c86c494b9 ("MIPS: IRQ: Add stackoverflow detection")
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Adam Jiang <jiang.adam@gmail.com>
 Cc: linux-mips@linux-mips.org
-Cc: John Crispin <blogic@openwrt.org>
-Patchwork: https://patchwork.linux-mips.org/patch/10172/
+Patchwork: http://patchwork.linux-mips.org/patch/10531/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Kamal Mostafa <kamal@canonical.com>
 ---
- arch/mips/ralink/ill_acc.c | 2 +-
+ arch/mips/kernel/irq.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/mips/ralink/ill_acc.c b/arch/mips/ralink/ill_acc.c
-index e20b02e..e10d10b 100644
---- a/arch/mips/ralink/ill_acc.c
-+++ b/arch/mips/ralink/ill_acc.c
-@@ -41,7 +41,7 @@ static irqreturn_t ill_acc_irq_handler(int irq, void *_priv)
- 		addr, (type >> ILL_ACC_OFF_S) & ILL_ACC_OFF_M,
- 		type & ILL_ACC_LEN_M);
- 
--	rt_memc_w32(REG_ILL_ACC_TYPE, REG_ILL_ACC_TYPE);
-+	rt_memc_w32(ILL_INT_STATUS, REG_ILL_ACC_TYPE);
- 
- 	return IRQ_HANDLED;
+diff --git a/arch/mips/kernel/irq.c b/arch/mips/kernel/irq.c
+index d2bfbc2..be15e52 100644
+--- a/arch/mips/kernel/irq.c
++++ b/arch/mips/kernel/irq.c
+@@ -109,7 +109,7 @@ void __init init_IRQ(void)
+ #endif
  }
+ 
+-#ifdef DEBUG_STACKOVERFLOW
++#ifdef CONFIG_DEBUG_STACKOVERFLOW
+ static inline void check_stack_overflow(void)
+ {
+ 	unsigned long sp;
 -- 
 1.9.1

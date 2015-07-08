@@ -1,55 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Jul 2015 15:23:10 +0200 (CEST)
-Received: from prod-mail-xrelay02.akamai.com ([72.246.2.14]:37020 "EHLO
-        prod-mail-xrelay02.akamai.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010430AbbGHNXJLSbUC (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 8 Jul 2015 15:23:09 +0200
-Received: from prod-mail-xrelay02.akamai.com (localhost [127.0.0.1])
-        by postfix.imss70 (Postfix) with ESMTP id 2732928EF9;
-        Wed,  8 Jul 2015 13:23:03 +0000 (GMT)
-Received: from prod-mail-relay07.akamai.com (prod-mail-relay07.akamai.com [172.17.121.112])
-        by prod-mail-xrelay02.akamai.com (Postfix) with ESMTP id F1BDD28EF8;
-        Wed,  8 Jul 2015 13:23:02 +0000 (GMT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=akamai.com; s=a1;
-        t=1436361783; bh=d11g5zz9OatcQXuEJTbm0pCbFxylyvltnNy9/SCYESg=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=qgIvIKv9Oo4wLL9RsnnfRL5h6RxV6AZCA+IMe6UQV6uljzby2Ypa9IElAC7yJI5fZ
-         UW57b+Pc115OAFvwduD8zynOYQytK2S/XqWpFWWv0x+ugESRgQMqpC+/0NLqzJYBpR
-         NjjtOnpnWsgjFTop16+gvf6peOoHqhLEtpYqyp+Q=
-Received: from akamai.com (lappy-486.kendall.corp.akamai.com [172.28.12.253])
-        by prod-mail-relay07.akamai.com (Postfix) with ESMTP id E7E3380085;
-        Wed,  8 Jul 2015 13:23:02 +0000 (GMT)
-Date:   Wed, 8 Jul 2015 09:23:02 -0400
-From:   Eric B Munson <emunson@akamai.com>
-To:     Andrew Morton <akpm@linux-foundation.org>
-Cc:     Shuah Khan <shuahkh@osg.samsung.com>,
-        Michal Hocko <mhocko@suse.cz>,
-        Michael Kerrisk <mtk.manpages@gmail.com>,
-        Vlastimil Babka <vbabka@suse.cz>, linux-alpha@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        linux-mm@kvack.org, linux-arch@vger.kernel.org,
-        linux-api@vger.kernel.org
-Subject: Re: [PATCH V3 0/5] Allow user to request memory to be locked on page
- fault
-Message-ID: <20150708132302.GB4669@akamai.com>
-References: <1436288623-13007-1-git-send-email-emunson@akamai.com>
- <20150707141613.f945c98279dcb71c9743d5f2@linux-foundation.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Jul 2015 15:45:58 +0200 (CEST)
+Received: from mail-lb0-f180.google.com ([209.85.217.180]:36273 "EHLO
+        mail-lb0-f180.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010457AbbGHNp4dNwed (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 8 Jul 2015 15:45:56 +0200
+Received: by lbbpo10 with SMTP id po10so56436412lbb.3
+        for <linux-mips@linux-mips.org>; Wed, 08 Jul 2015 06:45:50 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:subject:to:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-type
+         :content-transfer-encoding;
+        bh=GCezas/So5b8phmg4IJ3Iu41bJSQOYXjHiR/wV0y5W8=;
+        b=AjANZn8ugnpZiuuNb6/L5TBKaVlFGkDwi5ZnFTTyywYfL0rEE1TGjGQ2pKSCULyu73
+         9rT2Gq+8NEWqQ49/y7Wvlus4v5C8rzb0j/dBS/AYWVCqSSspVuAKP+/wl9WC2nmlgrPa
+         c4WokalbO39s/SXkUYbJin83UdZl20T2gn4Kp4n7QHOJVgP6DP3W526Hv681j8u1zJ7P
+         x/SHIQIAHWZXHpdCGhfDkP8ImA2ah9+81Tq71ZE+vZF8ilRlU1a8GjjUbMzfMQTUCuWg
+         gIt4EtvLIa8c/PM6Rl6gKkNJpQvRzhP0JdfrnPf4/DbMODy0ttT9BXQozilcpfyTdSHK
+         WJ8w==
+X-Gm-Message-State: ALoCoQkq8EPN7AUukb4cbG8QfhnGK2MGD+7Ie2C84DMtfLOhU6asJtyZ9LB6bsf7mXEj+hE5SIqx
+X-Received: by 10.112.162.70 with SMTP id xy6mr9751715lbb.122.1436363150705;
+        Wed, 08 Jul 2015 06:45:50 -0700 (PDT)
+Received: from [192.168.3.154] (ppp83-237-253-206.pppoe.mtu-net.ru. [83.237.253.206])
+        by smtp.gmail.com with ESMTPSA id tp10sm648182lbb.4.2015.07.08.06.45.48
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 08 Jul 2015 06:45:49 -0700 (PDT)
+Subject: Re: [PATCH] MIPS, IRQCHIP: Move i8259 irqchip driver to
+ drivers/irqchip.
+To:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>
+References: <20150708124608.GS18167@linux-mips.org>
+From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Message-ID: <559D298C.4020302@cogentembedded.com>
+Date:   Wed, 8 Jul 2015 16:45:48 +0300
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:38.0) Gecko/20100101
+ Thunderbird/38.0.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="3uo+9/B/ebqu+fSQ"
-Content-Disposition: inline
-In-Reply-To: <20150707141613.f945c98279dcb71c9743d5f2@linux-foundation.org>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <emunson@akamai.com>
+In-Reply-To: <20150708124608.GS18167@linux-mips.org>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sergei.shtylyov@cogentembedded.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48120
+X-archive-position: 48121
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: emunson@akamai.com
+X-original-sender: sergei.shtylyov@cogentembedded.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -62,72 +60,131 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+Hello.
 
---3uo+9/B/ebqu+fSQ
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On 7/8/2015 3:46 PM, Ralf Baechle wrote:
 
-On Tue, 07 Jul 2015, Andrew Morton wrote:
+>   arch/mips/Kconfig           |   4 -
+>   arch/mips/kernel/Makefile   |   1 -
+>   arch/mips/kernel/i8259.c    | 384 --------------------------------------------
+>   drivers/irqchip/Kconfig     |   4 +
+>   drivers/irqchip/Makefile    |   1 +
+>   drivers/irqchip/irq-i8259.c | 383 +++++++++++++++++++++++++++++++++++++++++++
+>   6 files changed, 388 insertions(+), 389 deletions(-)
 
-> On Tue,  7 Jul 2015 13:03:38 -0400 Eric B Munson <emunson@akamai.com> wro=
-te:
->=20
-> > mlock() allows a user to control page out of program memory, but this
-> > comes at the cost of faulting in the entire mapping when it is
-> > allocated.  For large mappings where the entire area is not necessary
-> > this is not ideal.  Instead of forcing all locked pages to be present
-> > when they are allocated, this set creates a middle ground.  Pages are
-> > marked to be placed on the unevictable LRU (locked) when they are first
-> > used, but they are not faulted in by the mlock call.
-> >=20
-> > This series introduces a new mlock() system call that takes a flags
-> > argument along with the start address and size.  This flags argument
-> > gives the caller the ability to request memory be locked in the
-> > traditional way, or to be locked after the page is faulted in.  New
-> > calls are added for munlock() and munlockall() which give the called a
-> > way to specify which flags are supposed to be cleared.  A new MCL flag
-> > is added to mirror the lock on fault behavior from mlock() in
-> > mlockall().  Finally, a flag for mmap() is added that allows a user to
-> > specify that the covered are should not be paged out, but only after the
-> > memory has been used the first time.
->=20
-> Thanks for sticking with this.  Adding new syscalls is a bit of a
-> hassle but I do think we end up with a better interface - the existing
-> mlock/munlock/mlockall interfaces just aren't appropriate for these
-> things.
->=20
-> I don't know whether these syscalls should be documented via new
-> manpages, or if we should instead add them to the existing
-> mlock/munlock/mlockall manpages.  Michael, could you please advise?
->=20
+[...]
 
-Thanks for adding the series.  I owe you several updates (getting the
-new syscall right for all architectures and a set of tests for the new
-syscalls).  Would you prefer a new pair of patches or I update this set?
+> diff --git a/drivers/irqchip/irq-i8259.c b/drivers/irqchip/irq-i8259.c
+> new file mode 100644
+> index 0000000..a29638a
+> --- /dev/null
+> +++ b/drivers/irqchip/irq-i8259.c
+> @@ -0,0 +1,383 @@
+> +/*
+> + * This file is subject to the terms and conditions of the GNU General Public
+> + * License.  See the file "COPYING" in the main directory of this archive
+> + * for more details.
+> + *
+> + * Code to handle x86 style IRQs plus some generic interrupt stuff.
+> + *
+> + * Copyright (C) 1992 Linus Torvalds
+> + * Copyright (C) 1994 - 2000 Ralf Baechle
+> + */
+> +#include <linux/delay.h>
+> +#include <linux/init.h>
+> +#include <linux/ioport.h>
+> +#include <linux/interrupt.h>
+> +#include <linux/irqchip.h>
+> +#include <linux/irqdomain.h>
+> +#include <linux/kernel.h>
+> +#include <linux/of_irq.h>
+> +#include <linux/spinlock.h>
+> +#include <linux/syscore_ops.h>
+> +#include <linux/irq.h>
+> +
+> +#include <asm/i8259.h>
+> +#include <asm/io.h>
+> +
+> +/*
+> + * This is the 'legacy' 8259A Programmable Interrupt Controller,
+> + * present in the majority of PC/AT boxes.
+> + * plus some generic x86 specific things if generic specifics makes
+> + * any sense at all.
+> + * this file should become arch/i386/kernel/irq.c when the old irq.c
+> + * moves to arch independent land
 
-Eric
+    This comment doesn't make sense anymore, does it?
 
---3uo+9/B/ebqu+fSQ
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+> +static struct irq_chip i8259A_chip = {
+> +	.name			= "XT-PIC",
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
+    This name is wrong, wrong, wrong. XT only had single 8259 (and is not 
+supported by Linux anyway) while jhere we drive the AT specific two cascaded 
+8259s (which is just wrong in my opinion as well).
 
-iQIcBAEBAgAGBQJVnSQ2AAoJELbVsDOpoOa9jHcP/RLEmYajmHZ/hRFflieosbLl
-xfDDa3xIpZh7VCBCdjAu96XR7jc5Af66dF7GpeB2Vqv/PAI739slpzUqyaXSdEK9
-1HpgGkjAHYagYa/BSLRpmDCYKGph2zWsKEUK0xrCaRKbAwytEk2rw863ZoFHM4tv
-sftQYCqhB5bkdEQuVu4Hl9D7k9CnrshKl5rURSe+Ub5nj44W47IUyjFugRDi1eRO
-WbddZd8e9av7Qte7l1rtQMxch/L4WM5LICujQx9FrNiz0Cb/flG6v3JvW1G50fym
-NINBwp64GAbE4jYxpvn5zvIHc9IU8G1As6B7tcXTBzPnjx1zQQuxP7pTmpVoAsVQ
-dhJndlDWt3RhdcPz2QDtd9EbUvDdyeLmeyWciB1cx7CZbxnwzqiSXMVzswEqbXiq
-RPTEON/PJ3IsyeQ1Pi/Ygnf/LQVwQtYAut+fZZKUIEofARkUGf6V2ReWDdrBB2t5
-zdOL4Qgr+GNGpaPqp3kr+vcF7ouIFa7ldH7OblI9yqQHufVFX8slDLtial6j4xXa
-D6oU0KUJCjusSpSTbm+KxFPuaC1O+v4lit/GoMvIcdFC6CS5a/hZK+e1QNfOFCh3
-uwVDY1DpI0Qq4ESNAFgjyf/HgiKZUPwvTy5zeq42esGbvhBHgIl62NCrk96JYCoO
-nkBCH/HT50sOYD+mO/s8
-=+7yp
------END PGP SIGNATURE-----
+> +	.irq_mask		= disable_8259A_irq,
+> +	.irq_disable		= disable_8259A_irq,
+> +	.irq_unmask		= enable_8259A_irq,
+> +	.irq_mask_ack		= mask_and_ack_8259A,
 
---3uo+9/B/ebqu+fSQ--
+    I have always thought 8259 was the "fast-EOI" class interrupt chip, I've 
+never quite understood all this mask-and-ACK type handling for 8259...
+
+[...]
+> +/*
+> + * Careful! The 8259A is a fragile beast, it pretty
+> + * much _has_ to be done exactly like this (mask it
+> + * first, _then_ send the EOI, and the order of EOI
+> + * to the two 8259s is important!
+> + */
+> +static void mask_and_ack_8259A(struct irq_data *d)
+> +{
+[...]
+> +handle_real_irq:
+> +	if (irq & 8) {
+> +		inb(PIC_SLAVE_IMR);	/* DUMMY - (do we need this?) */
+
+    Hardly.
+
+> +		outb(cached_slave_mask, PIC_SLAVE_IMR);
+> +		outb(0x60+(irq&7), PIC_SLAVE_CMD);/* 'Specific EOI' to slave */
+
+   Need spaces around ops.
+
+> +		outb(0x60+PIC_CASCADE_IR, PIC_MASTER_CMD); /* 'Specific EOI' to master-IRQ2 */
+> +	} else {
+> +		inb(PIC_MASTER_IMR);	/* DUMMY - (do we need this?) */
+> +		outb(cached_master_mask, PIC_MASTER_IMR);
+> +		outb(0x60+irq, PIC_MASTER_CMD); /* 'Specific EOI to master */
+
+    Same here...
+
+> +	}
+> +	raw_spin_unlock_irqrestore(&i8259A_lock, flags);
+> +	return;
+
+> +	{
+> +		static int spurious_irq_mask;
+> +		/*
+> +		 * At this point we can be sure the IRQ is spurious,
+> +		 * lets ACK and report it. [once per IRQ]
+
+    There's no point in ACKing spurious interrupt, if my memory serves. The 
+in-srvice register doesn't have the bit set, so no need to clear it.
+
+> +		 */
+> +		if (!(spurious_irq_mask & irqmask)) {
+> +			printk(KERN_DEBUG "spurious 8259A interrupt: IRQ%d.\n", irq);
+> +			spurious_irq_mask |= irqmask;
+> +		}
+> +		atomic_inc(&irq_err_count);
+> +		/*
+> +		 * Theoretically we do not have to handle this IRQ,
+> +		 * but in Linux this does not cause problems and is
+> +		 * simpler for us.
+> +		 */
+> +		goto handle_real_irq;
+
+    Hum... only because it doesn't cause issues?
+
+WBR, Sergei

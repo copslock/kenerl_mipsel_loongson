@@ -1,22 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Jul 2015 09:32:18 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:60539 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Jul 2015 09:34:44 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:60607 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27009398AbbGHHcQLEIDW (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 8 Jul 2015 09:32:16 +0200
+        by eddie.linux-mips.org with ESMTP id S27009398AbbGHHemykmyW (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 8 Jul 2015 09:34:42 +0200
 Received: from localhost (unknown [209.136.236.87])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id E8BDDBA2;
-        Wed,  8 Jul 2015 07:32:09 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id CFAD0BA1;
+        Wed,  8 Jul 2015 07:34:36 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         stable@vger.kernel.org, James Hogan <james.hogan@imgtec.com>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 3.10 12/14] MIPS: Fix KVM guest fixmap address
-Date:   Wed,  8 Jul 2015 00:31:52 -0700
-Message-Id: <20150708073102.852848566@linuxfoundation.org>
+Subject: [PATCH 3.14 20/30] MIPS: Fix KVM guest fixmap address
+Date:   Wed,  8 Jul 2015 00:34:19 -0700
+Message-Id: <20150708073204.555239167@linuxfoundation.org>
 X-Mailer: git-send-email 2.4.5
-In-Reply-To: <20150708073102.284623533@linuxfoundation.org>
-References: <20150708073102.284623533@linuxfoundation.org>
+In-Reply-To: <20150708073155.841723465@linuxfoundation.org>
+References: <20150708073155.841723465@linuxfoundation.org>
 User-Agent: quilt/0.64
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ISO-8859-15
@@ -24,7 +24,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48109
+X-archive-position: 48110
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -41,7 +41,7 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-3.10-stable review patch.  If anyone has any objections, please let me know.
+3.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -69,7 +69,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/arch/mips/include/asm/mach-generic/spaces.h
 +++ b/arch/mips/include/asm/mach-generic/spaces.h
-@@ -90,7 +90,11 @@
+@@ -94,7 +94,11 @@
  #endif
  
  #ifndef FIXADDR_TOP

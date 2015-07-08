@@ -1,34 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Jul 2015 09:37:01 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:32950 "EHLO
-        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27009504AbbGHHg7qpUJW (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 8 Jul 2015 09:36:59 +0200
-Received: from localhost (unknown [209.136.236.87])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id D75A9BA2;
-        Wed,  8 Jul 2015 07:36:53 +0000 (UTC)
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, James Hogan <james.hogan@imgtec.com>,
-        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.1 43/56] MIPS: Fix KVM guest fixmap address
-Date:   Wed,  8 Jul 2015 00:35:32 -0700
-Message-Id: <20150708073240.232827400@linuxfoundation.org>
-X-Mailer: git-send-email 2.4.5
-In-Reply-To: <20150708073237.780280770@linuxfoundation.org>
-References: <20150708073237.780280770@linuxfoundation.org>
-User-Agent: quilt/0.64
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Jul 2015 10:55:39 +0200 (CEST)
+Received: from smtp4-g21.free.fr ([212.27.42.4]:44796 "EHLO smtp4-g21.free.fr"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27009407AbbGHIziYncJW (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 8 Jul 2015 10:55:38 +0200
+Received: from tock (unknown [176.0.10.208])
+        (Authenticated sender: albeu)
+        by smtp4-g21.free.fr (Postfix) with ESMTPSA id 249934C80F2;
+        Wed,  8 Jul 2015 10:55:26 +0200 (CEST)
+Date:   Wed, 8 Jul 2015 10:55:14 +0200
+From:   Alban <albeu@free.fr>
+To:     Sergey Ryazanov <ryazanov.s.a@gmail.com>
+Cc:     Aban Bedel <albeu@free.fr>,
+        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Alexandre Courbot <gnurou@gmail.com>,
+        Gabor Juhos <juhosg@openwrt.org>,
+        Linux MIPS <linux-mips@linux-mips.org>,
+        open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 1/2] MIPS: ath79: Remove the unused GPIO function API
+Message-ID: <20150708105514.1156aba3@tock>
+In-Reply-To: <CAHNKnsSgyzQu5uxZHu80X9MRQ5sJ+WEBatv9599QYxBsty66pg@mail.gmail.com>
+References: <1435914709-15092-1-git-send-email-albeu@free.fr>
+        <1435914709-15092-2-git-send-email-albeu@free.fr>
+        <CAHNKnsSgyzQu5uxZHu80X9MRQ5sJ+WEBatv9599QYxBsty66pg@mail.gmail.com>
+X-Mailer: Claws Mail 3.9.3 (GTK+ 2.24.23; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-15
-Return-Path: <gregkh@linuxfoundation.org>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <albeu@free.fr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48112
+X-archive-position: 48113
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
+X-original-sender: albeu@free.fr
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -41,43 +49,19 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-4.1-stable review patch.  If anyone has any objections, please let me know.
+On Sat, 4 Jul 2015 19:58:32 +0300
+Sergey Ryazanov <ryazanov.s.a@gmail.com> wrote:
 
-------------------
+> 2015-07-03 12:11 GMT+03:00 Alban Bedel <albeu@free.fr>:
+> > To prepare moving the GPIO driver to drivers/gpio remove the
+> > platform specific pinmux API. As it is not used by any board,
+> > and such functionality should better be implemented using the
+> > pinmux subsystem just removing it seems to be the best option.
+> >
+> For reference: OpenWRT uses this functions to activate UART.
 
-From: James Hogan <james.hogan@imgtec.com>
+The pinctrl-single driver should be usable for all SoC where this code
+was used. I haven't tried it yet, but it should only be a matter of
+writing the DTS down.
 
-commit 8e748c8d09a9314eedb5c6367d9acfaacddcdc88 upstream.
-
-KVM guest kernels for trap & emulate run in user mode, with a modified
-set of kernel memory segments. However the fixmap address is still in
-the normal KSeg3 region at 0xfffe0000 regardless, causing problems when
-cache alias handling makes use of them when handling copy on write.
-
-Therefore define FIXADDR_TOP as 0x7ffe0000 in the guest kernel mapped
-region when CONFIG_KVM_GUEST is defined.
-
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/9887/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
----
- arch/mips/include/asm/mach-generic/spaces.h |    4 ++++
- 1 file changed, 4 insertions(+)
-
---- a/arch/mips/include/asm/mach-generic/spaces.h
-+++ b/arch/mips/include/asm/mach-generic/spaces.h
-@@ -94,7 +94,11 @@
- #endif
- 
- #ifndef FIXADDR_TOP
-+#ifdef CONFIG_KVM_GUEST
-+#define FIXADDR_TOP		((unsigned long)(long)(int)0x7ffe0000)
-+#else
- #define FIXADDR_TOP		((unsigned long)(long)(int)0xfffe0000)
- #endif
-+#endif
- 
- #endif /* __ASM_MACH_GENERIC_SPACES_H */
+Alban

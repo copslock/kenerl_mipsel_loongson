@@ -1,43 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Jul 2015 18:59:52 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:50973 "EHLO
-        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010827AbbGHQ7tPKmr- (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 8 Jul 2015 18:59:49 +0200
-Received: from localhost (c-67-161-9-76.hsd1.ca.comcast.net [67.161.9.76])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 61C5CABA;
-        Wed,  8 Jul 2015 16:59:42 +0000 (UTC)
-Date:   Wed, 8 Jul 2015 10:00:08 -0700
-From:   Andrew Morton <akpm@linux-foundation.org>
-To:     Eric B Munson <emunson@akamai.com>
-Cc:     Shuah Khan <shuahkh@osg.samsung.com>,
-        Michal Hocko <mhocko@suse.cz>,
-        Michael Kerrisk <mtk.manpages@gmail.com>,
-        Vlastimil Babka <vbabka@suse.cz>, linux-alpha@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        linux-mm@kvack.org, linux-arch@vger.kernel.org,
-        linux-api@vger.kernel.org
-Subject: Re: [PATCH V3 0/5] Allow user to request memory to be locked on
- page fault
-Message-Id: <20150708100008.e8a000ec.akpm@linux-foundation.org>
-In-Reply-To: <20150708132302.GB4669@akamai.com>
-References: <1436288623-13007-1-git-send-email-emunson@akamai.com>
-        <20150707141613.f945c98279dcb71c9743d5f2@linux-foundation.org>
-        <20150708132302.GB4669@akamai.com>
-X-Mailer: Sylpheed 2.7.1 (GTK+ 2.18.9; x86_64-redhat-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Jul 2015 20:07:48 +0200 (CEST)
+Received: from smtp.codeaurora.org ([198.145.29.96]:35127 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27010837AbbGHSHq2mR0T (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 8 Jul 2015 20:07:46 +0200
+Received: from smtp.codeaurora.org (localhost [127.0.0.1])
+        by smtp.codeaurora.org (Postfix) with ESMTP id 00BA514133C;
+        Wed,  8 Jul 2015 18:07:44 +0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 486)
+        id DE8B51413A6; Wed,  8 Jul 2015 18:07:43 +0000 (UTC)
+Received: from [10.134.64.202] (i-global254.qualcomm.com [199.106.103.254])
+        (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: sboyd@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id E3A1A14133C;
+        Wed,  8 Jul 2015 18:07:42 +0000 (UTC)
+Message-ID: <559D66EE.4060707@codeaurora.org>
+Date:   Wed, 08 Jul 2015 11:07:42 -0700
+From:   Stephen Boyd <sboyd@codeaurora.org>
+User-Agent: Mozilla/5.0 (X11; Linux i686 on x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.7.0
+MIME-Version: 1.0
+To:     Boris Brezillon <boris.brezillon@free-electrons.com>
+CC:     Mike Turquette <mturquette@baylibre.com>,
+        linux-clk@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+        Tony Lindgren <tony@atomide.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        =?UTF-8?B?RW1pbGlvIEzDs3Bleg==?= <emilio@elopez.com.ar>,
+        Maxime Ripard <maxime.ripard@free-electrons.com>,
+        Tero Kristo <t-kristo@ti.com>,
+        Peter De Schrijver <pdeschrijver@nvidia.com>,
+        Prashant Gaikwad <pgaikwad@nvidia.com>,
+        Stephen Warren <swarren@wwwdotorg.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Alexandre Courbot <gnurou@gmail.com>,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+        linux-mips@linux-mips.org, linux-tegra@vger.kernel.org
+Subject: Re: [PATCH v5] clk: change clk_ops' ->determine_rate() prototype
+References: <1436294888-25752-1-git-send-email-boris.brezillon@free-electrons.com>      <20150708005748.GG30412@codeaurora.org> <20150708110005.704c49ff@bbrezillon>
+In-Reply-To: <20150708110005.704c49ff@bbrezillon>
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
-Return-Path: <akpm@linux-foundation.org>
+X-Virus-Scanned: ClamAV using ClamSMTP
+Return-Path: <sboyd@codeaurora.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48125
+X-archive-position: 48126
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: akpm@linux-foundation.org
+X-original-sender: sboyd@codeaurora.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,16 +62,31 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, 8 Jul 2015 09:23:02 -0400 Eric B Munson <emunson@akamai.com> wrote:
+On 07/08/2015 02:00 AM, Boris Brezillon wrote:
+> Hi Stephen,
+>
+> On Tue, 7 Jul 2015 17:57:48 -0700
+> Stephen Boyd <sboyd@codeaurora.org> wrote:
+>
+>> On 07/07, Boris Brezillon wrote:
+>>>
+>>>  	} else {
+>>>  		pr_err("clk: clk_composite_determine_rate function called, but no mux or rate callback set!\n");
+>>> +		req->rate = 0;
+>>>  		return 0;
+>> Shouldn't this return an error now? And then assigning req->rate
+>> wouldn't be necessary. Sorry I must have missed this last round.
+>>
+> Actually I wanted to keep the existing behavior: return a 0 rate (not
+> an error) when there is no mux or rate ops.
+>
+> That's something we can change afterwards, but it might reveals
+> new bugs if some users are checking for a 0 rate to detect errors.
+>
 
-> > I don't know whether these syscalls should be documented via new
-> > manpages, or if we should instead add them to the existing
-> > mlock/munlock/mlockall manpages.  Michael, could you please advise?
-> > 
-> 
-> Thanks for adding the series.  I owe you several updates (getting the
-> new syscall right for all architectures and a set of tests for the new
-> syscalls).  Would you prefer a new pair of patches or I update this set?
+Ok. Care to send the patch now to do that while we're thinking about it?
+We can test it out for a month or two.
 
-It doesn't matter much.  I guess a full update will be more convenient
-at your end.
+-- 
+Qualcomm Innovation Center, Inc. is a member of Code Aurora Forum,
+a Linux Foundation Collaborative Project

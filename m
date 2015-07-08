@@ -1,55 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Jul 2015 20:07:48 +0200 (CEST)
-Received: from smtp.codeaurora.org ([198.145.29.96]:35127 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27010837AbbGHSHq2mR0T (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 8 Jul 2015 20:07:46 +0200
-Received: from smtp.codeaurora.org (localhost [127.0.0.1])
-        by smtp.codeaurora.org (Postfix) with ESMTP id 00BA514133C;
-        Wed,  8 Jul 2015 18:07:44 +0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 486)
-        id DE8B51413A6; Wed,  8 Jul 2015 18:07:43 +0000 (UTC)
-Received: from [10.134.64.202] (i-global254.qualcomm.com [199.106.103.254])
-        (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: sboyd@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id E3A1A14133C;
-        Wed,  8 Jul 2015 18:07:42 +0000 (UTC)
-Message-ID: <559D66EE.4060707@codeaurora.org>
-Date:   Wed, 08 Jul 2015 11:07:42 -0700
-From:   Stephen Boyd <sboyd@codeaurora.org>
-User-Agent: Mozilla/5.0 (X11; Linux i686 on x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.7.0
-MIME-Version: 1.0
-To:     Boris Brezillon <boris.brezillon@free-electrons.com>
-CC:     Mike Turquette <mturquette@baylibre.com>,
-        linux-clk@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
-        Tony Lindgren <tony@atomide.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Jul 2015 20:11:29 +0200 (CEST)
+Received: from smtp4-g21.free.fr ([212.27.42.4]:4339 "EHLO smtp4-g21.free.fr"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27010837AbbGHSL1lLXcT (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 8 Jul 2015 20:11:27 +0200
+Received: from localhost.localdomain (unknown [176.0.10.208])
+        (Authenticated sender: albeu)
+        by smtp4-g21.free.fr (Postfix) with ESMTPA id 8909D4C80AF;
+        Wed,  8 Jul 2015 20:11:19 +0200 (CEST)
+From:   Alban Bedel <albeu@free.fr>
+To:     linux-mips@linux-mips.org
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Ralf Baechle <ralf@linux-mips.org>,
-        =?UTF-8?B?RW1pbGlvIEzDs3Bleg==?= <emilio@elopez.com.ar>,
-        Maxime Ripard <maxime.ripard@free-electrons.com>,
-        Tero Kristo <t-kristo@ti.com>,
-        Peter De Schrijver <pdeschrijver@nvidia.com>,
-        Prashant Gaikwad <pgaikwad@nvidia.com>,
-        Stephen Warren <swarren@wwwdotorg.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Alexandre Courbot <gnurou@gmail.com>,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-mips@linux-mips.org, linux-tegra@vger.kernel.org
-Subject: Re: [PATCH v5] clk: change clk_ops' ->determine_rate() prototype
-References: <1436294888-25752-1-git-send-email-boris.brezillon@free-electrons.com>      <20150708005748.GG30412@codeaurora.org> <20150708110005.704c49ff@bbrezillon>
-In-Reply-To: <20150708110005.704c49ff@bbrezillon>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: ClamAV using ClamSMTP
-Return-Path: <sboyd@codeaurora.org>
+        Andrew Bresticker <abrestic@chromium.org>,
+        Qais Yousef <qais.yousef@imgtec.com>,
+        linux-kernel@vger.kernel.org, Alban Bedel <albeu@free.fr>
+Subject: [PATCH] MIPS: ath79: irq: Remove the include of drivers/irqchip/irqchip.h
+Date:   Wed,  8 Jul 2015 20:11:11 +0200
+Message-Id: <1436379071-31574-1-git-send-email-albeu@free.fr>
+X-Mailer: git-send-email 2.0.0
+Return-Path: <albeu@free.fr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48126
+X-archive-position: 48127
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sboyd@codeaurora.org
+X-original-sender: albeu@free.fr
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -62,31 +39,45 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 07/08/2015 02:00 AM, Boris Brezillon wrote:
-> Hi Stephen,
->
-> On Tue, 7 Jul 2015 17:57:48 -0700
-> Stephen Boyd <sboyd@codeaurora.org> wrote:
->
->> On 07/07, Boris Brezillon wrote:
->>>
->>>  	} else {
->>>  		pr_err("clk: clk_composite_determine_rate function called, but no mux or rate callback set!\n");
->>> +		req->rate = 0;
->>>  		return 0;
->> Shouldn't this return an error now? And then assigning req->rate
->> wouldn't be necessary. Sorry I must have missed this last round.
->>
-> Actually I wanted to keep the existing behavior: return a 0 rate (not
-> an error) when there is no mux or rate ops.
->
-> That's something we can change afterwards, but it might reveals
-> new bugs if some users are checking for a 0 rate to detect errors.
->
+We shouldn't include irqchip.h from outside of the drivers/irqchip
+directory. The irq driver should idealy be there, however this not
+trivial at the moment. We still need to support platforms without DT
+support and the interface to the DDR controller still use a custom
+arch specific API.
 
-Ok. Care to send the patch now to do that while we're thinking about it?
-We can test it out for a month or two.
+For now just redefine the IRQCHIP_DECLARE macro to avoid the cross
+tree include.
 
+Signed-off-by: Alban Bedel <albeu@free.fr>
+---
+ arch/mips/ath79/irq.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/arch/mips/ath79/irq.c b/arch/mips/ath79/irq.c
+index afb0096..c5ad737 100644
+--- a/arch/mips/ath79/irq.c
++++ b/arch/mips/ath79/irq.c
+@@ -17,7 +17,6 @@
+ #include <linux/interrupt.h>
+ #include <linux/irqchip.h>
+ #include <linux/of_irq.h>
+-#include "../../../drivers/irqchip/irqchip.h"
+ 
+ #include <asm/irq_cpu.h>
+ #include <asm/mipsregs.h>
+@@ -272,6 +271,13 @@ asmlinkage void plat_irq_dispatch(void)
+ }
+ 
+ #ifdef CONFIG_IRQCHIP
++/*
++ * We cannot use the IRQCHIP_DECLARE macro that lives in
++ * drivers/irqchip, so we're forced to roll our own. Not very nice,
++ * but should do until this code is moved to drivers/irqchip.
++ */
++#define IRQCHIP_DECLARE(name, compat, fn) OF_DECLARE_2(irqchip, name, compat, fn)
++
+ static int misc_map(struct irq_domain *d, unsigned int irq, irq_hw_number_t hw)
+ {
+ 	irq_set_chip_and_handler(irq, &ath79_misc_irq_chip, handle_level_irq);
 -- 
-Qualcomm Innovation Center, Inc. is a member of Code Aurora Forum,
-a Linux Foundation Collaborative Project
+2.0.0

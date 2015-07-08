@@ -1,44 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Jul 2015 20:28:37 +0200 (CEST)
-Received: from arrakis.dune.hu ([78.24.191.176]:35237 "EHLO arrakis.dune.hu"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Jul 2015 21:23:57 +0200 (CEST)
+Received: from tex.lwn.net ([70.33.254.29]:55079 "EHLO vena.lwn.net"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27010879AbbGHS2f7ZezM (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 8 Jul 2015 20:28:35 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by arrakis.dune.hu (Postfix) with ESMTP id 7D7BB28BDA7;
-        Wed,  8 Jul 2015 20:28:15 +0200 (CEST)
-X-Virus-Scanned: at arrakis.dune.hu
-Received: from mail-qk0-f182.google.com (mail-qk0-f182.google.com [209.85.220.182])
-        by arrakis.dune.hu (Postfix) with ESMTPSA id AD65B28436A;
-        Wed,  8 Jul 2015 20:28:12 +0200 (CEST)
-Received: by qkbp125 with SMTP id p125so169330223qkb.2;
-        Wed, 08 Jul 2015 11:28:24 -0700 (PDT)
-X-Received: by 10.55.18.27 with SMTP id c27mr18554955qkh.84.1436380104722;
- Wed, 08 Jul 2015 11:28:24 -0700 (PDT)
+        id S27010858AbbGHTXyfATd3 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 8 Jul 2015 21:23:54 +0200
+Received: from lwn.net (localhost.localdomain [127.0.0.1])
+        (using TLSv1 with cipher AES128-SHA (128/128 bits))
+        (No client certificate requested)
+        by vena.lwn.net (Postfix) with ESMTP id 666E81540042;
+        Wed,  8 Jul 2015 13:23:52 -0600 (MDT)
+Date:   Wed, 8 Jul 2015 13:23:51 -0600
+From:   Jonathan Corbet <corbet@lwn.net>
+To:     Eric B Munson <emunson@akamai.com>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        Michal Hocko <mhocko@suse.cz>,
+        Vlastimil Babka <vbabka@suse.cz>, linux-alpha@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        linux-mm@kvack.org, linux-arch@vger.kernel.org,
+        linux-api@vger.kernel.org
+Subject: Re: [PATCH V3 3/5] mm: mlock: Introduce VM_LOCKONFAULT and add
+ mlock flags to enable it
+Message-ID: <20150708132351.61c13db6@lwn.net>
+In-Reply-To: <1436288623-13007-4-git-send-email-emunson@akamai.com>
+References: <1436288623-13007-1-git-send-email-emunson@akamai.com>
+        <1436288623-13007-4-git-send-email-emunson@akamai.com>
+Organization: LWN.net
 MIME-Version: 1.0
-Received: by 10.140.82.200 with HTTP; Wed, 8 Jul 2015 11:28:05 -0700 (PDT)
-In-Reply-To: <1436379071-31574-1-git-send-email-albeu@free.fr>
-References: <1436379071-31574-1-git-send-email-albeu@free.fr>
-From:   Jonas Gorski <jogo@openwrt.org>
-Date:   Wed, 8 Jul 2015 20:28:05 +0200
-Message-ID: <CAOiHx=kDKETVHDeNKM-_7nUZJmWHyPSyUSWfwLtsJA2HG+hV1A@mail.gmail.com>
-Subject: Re: [PATCH] MIPS: ath79: irq: Remove the include of drivers/irqchip/irqchip.h
-To:     Alban Bedel <albeu@free.fr>
-Cc:     MIPS Mailing List <linux-mips@linux-mips.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Andrew Bresticker <abrestic@chromium.org>,
-        Qais Yousef <qais.yousef@imgtec.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <jogo@openwrt.org>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 8bit
+Return-Path: <corbet@lwn.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48128
+X-archive-position: 48129
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jogo@openwrt.org
+X-original-sender: corbet@lwn.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,39 +50,26 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Jul 8, 2015 at 8:11 PM, Alban Bedel <albeu@free.fr> wrote:
-> We shouldn't include irqchip.h from outside of the drivers/irqchip
-> directory. The irq driver should idealy be there, however this not
-> trivial at the moment. We still need to support platforms without DT
-> support and the interface to the DDR controller still use a custom
-> arch specific API.
->
-> For now just redefine the IRQCHIP_DECLARE macro to avoid the cross
-> tree include.
->
-> Signed-off-by: Alban Bedel <albeu@free.fr>
+On Tue,  7 Jul 2015 13:03:41 -0400
+Eric B Munson <emunson@akamai.com> wrote:
 
-The define was moved into linux/irqchip.h in
-91e20b5040c67c51aad88cf87db4305c5bd7f79d, so all you can/need to do is
-...
-> ---
->  arch/mips/ath79/irq.c | 8 +++++++-
->  1 file changed, 7 insertions(+), 1 deletion(-)
->
-> diff --git a/arch/mips/ath79/irq.c b/arch/mips/ath79/irq.c
-> index afb0096..c5ad737 100644
-> --- a/arch/mips/ath79/irq.c
-> +++ b/arch/mips/ath79/irq.c
-> @@ -17,7 +17,6 @@
->  #include <linux/interrupt.h>
->  #include <linux/irqchip.h>
->  #include <linux/of_irq.h>
-> -#include "../../../drivers/irqchip/irqchip.h"
->
->  #include <asm/irq_cpu.h>
->  #include <asm/mipsregs.h>
+> This patch introduces the ability to request that pages are not
+> pre-faulted, but are placed on the unevictable LRU when they are finally
+> faulted in.  This can be done area at a time via the
+> mlock2(MLOCK_ONFAULT) or the mlockall(MCL_ONFAULT) system calls.  These
+> calls can be undone via munlock2(MLOCK_ONFAULT) or
+> munlockall2(MCL_ONFAULT).
 
-this removal ;)
+Quick, possibly dumb question: I've been beating my head against these for
+a little bit, and I can't figure out what's supposed to happen in this
+case:
 
+	mlock2(addr, len, MLOCK_ONFAULT);
+	munlock2(addr, len, MLOCK_LOCKED);
 
-Jonas
+It looks to me like it will clear VM_LOCKED without actually unlocking any
+pages.  Is that the intended result?
+
+Thanks,
+
+jon

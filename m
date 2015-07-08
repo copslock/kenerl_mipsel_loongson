@@ -1,39 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Jul 2015 17:41:15 +0200 (CEST)
-Received: from youngberry.canonical.com ([91.189.89.112]:58539 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010447AbbGHPlOBk9Pr (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 8 Jul 2015 17:41:14 +0200
-Received: from [10.172.68.52] (helo=fourier)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:DHE_RSA_AES_128_CBC_SHA1:16)
-        (Exim 4.76)
-        (envelope-from <kamal@canonical.com>)
-        id 1ZCrTE-00054c-AA; Wed, 08 Jul 2015 15:41:12 +0000
-Received: from kamal by fourier with local (Exim 4.82)
-        (envelope-from <kamal@whence.com>)
-        id 1ZCrTC-0006o6-2R; Wed, 08 Jul 2015 08:41:10 -0700
-From:   Kamal Mostafa <kamal@canonical.com>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        kernel-team@lists.ubuntu.com
-Cc:     James Hogan <james.hogan@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Adam Jiang <jiang.adam@gmail.com>, linux-mips@linux-mips.org,
-        Kamal Mostafa <kamal@canonical.com>
-Subject: [PATCH 3.13.y-ckt 39/56] MIPS: Fix enabling of DEBUG_STACKOVERFLOW
-Date:   Wed,  8 Jul 2015 08:40:20 -0700
-Message-Id: <1436370037-25874-40-git-send-email-kamal@canonical.com>
-X-Mailer: git-send-email 1.9.1
-In-Reply-To: <1436370037-25874-1-git-send-email-kamal@canonical.com>
-References: <1436370037-25874-1-git-send-email-kamal@canonical.com>
-X-Extended-Stable: 3.13
-Return-Path: <kamal@canonical.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Jul 2015 18:38:40 +0200 (CEST)
+Received: from mail-la0-f52.google.com ([209.85.215.52]:34219 "EHLO
+        mail-la0-f52.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010243AbbGHQijTG2B- (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 8 Jul 2015 18:38:39 +0200
+Received: by lagx9 with SMTP id x9so229153878lag.1
+        for <linux-mips@linux-mips.org>; Wed, 08 Jul 2015 09:38:33 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:message-id:date:from:organization:user-agent
+         :mime-version:to:subject:references:in-reply-to:content-type
+         :content-transfer-encoding;
+        bh=Q6Kze5reNlRD2JFezAlnTpThtzGYXChwGMtqaOJ8iEw=;
+        b=lCah8EP/MsUoY0Xe2DG6+nLXwoatB0blU8xG5Rq33w32exVthj+8V/zVp81tEQodNC
+         WvakKdLb16pEE9X4kLyYq2I50YSB+PkAVVnQVDzk2LXA6LCgiX9KxLETBAHsuZaxuGe8
+         Q74GjPQNacj4W2Ao/XoqoLD6VnDWEJJMRJoQCUEJdjFOys5ofs8Blsis/j5XluSkCX4A
+         i3Ued/GbmD1Us9sv0QwohTlix7mwK4F3agcqiHMdrWG5cYqC1EguBaEvYSzvk1KVU2Wi
+         UWJCOJnqzROAy1YGicTsvdL0vOkjg0HePRnVZcK86869GJEa+PMUVsc8ae6mkfb1caTX
+         GpYQ==
+X-Gm-Message-State: ALoCoQlpzBYB76urUdtXn25A3rDY9hDqo3oMVsGIkDYqzJ7Yfft0LyaOgz1yjVleSQXftoUvsxpS
+X-Received: by 10.152.121.99 with SMTP id lj3mr10187118lab.37.1436373513902;
+        Wed, 08 Jul 2015 09:38:33 -0700 (PDT)
+Received: from wasted.cogentembedded.com (ppp27-103.pppoe.mtu-net.ru. [81.195.27.103])
+        by smtp.gmail.com with ESMTPSA id km9sm763894lbb.44.2015.07.08.09.38.31
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 08 Jul 2015 09:38:32 -0700 (PDT)
+Message-ID: <559D5206.80209@cogentembedded.com>
+Date:   Wed, 08 Jul 2015 19:38:30 +0300
+From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Organization: Cogent Embedded
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.7.0
+MIME-Version: 1.0
+To:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>
+Subject: Re: [PATCH] MIPS, IRQCHIP: Move i8259 irqchip driver to drivers/irqchip.
+References: <20150708124608.GS18167@linux-mips.org>
+In-Reply-To: <20150708124608.GS18167@linux-mips.org>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sergei.shtylyov@cogentembedded.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48123
+X-archive-position: 48124
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kamal@canonical.com
+X-original-sender: sergei.shtylyov@cogentembedded.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,45 +59,19 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-3.13.11-ckt23 -stable review patch.  If anyone has any objections, please let me know.
+On 07/08/2015 03:46 PM, Ralf Baechle wrote:
 
-------------------
+    I don't see any signoffs.
 
-From: James Hogan <james.hogan@imgtec.com>
+>   arch/mips/Kconfig           |   4 -
+>   arch/mips/kernel/Makefile   |   1 -
+>   arch/mips/kernel/i8259.c    | 384 --------------------------------------------
+>   drivers/irqchip/Kconfig     |   4 +
+>   drivers/irqchip/Makefile    |   1 +
+>   drivers/irqchip/irq-i8259.c | 383 +++++++++++++++++++++++++++++++++++++++++++
 
-commit 5f35b9cd553fd64415b563497d05a563c988dbd6 upstream.
+    Please use the -M switch with 'git format-patch'.
 
-Commit 334c86c494b9 ("MIPS: IRQ: Add stackoverflow detection") added
-kernel stack overflow detection, however it only enabled it conditional
-upon the preprocessor definition DEBUG_STACKOVERFLOW, which is never
-actually defined. The Kconfig option is called DEBUG_STACKOVERFLOW,
-which manifests to the preprocessor as CONFIG_DEBUG_STACKOVERFLOW, so
-switch it to using that definition instead.
+>   6 files changed, 388 insertions(+), 389 deletions(-)
 
-Fixes: 334c86c494b9 ("MIPS: IRQ: Add stackoverflow detection")
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Adam Jiang <jiang.adam@gmail.com>
-Cc: linux-mips@linux-mips.org
-Patchwork: http://patchwork.linux-mips.org/patch/10531/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Kamal Mostafa <kamal@canonical.com>
----
- arch/mips/kernel/irq.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/mips/kernel/irq.c b/arch/mips/kernel/irq.c
-index d1fea7a..7479d8d 100644
---- a/arch/mips/kernel/irq.c
-+++ b/arch/mips/kernel/irq.c
-@@ -110,7 +110,7 @@ void __init init_IRQ(void)
- #endif
- }
- 
--#ifdef DEBUG_STACKOVERFLOW
-+#ifdef CONFIG_DEBUG_STACKOVERFLOW
- static inline void check_stack_overflow(void)
- {
- 	unsigned long sp;
--- 
-1.9.1
+WBR, Sergei

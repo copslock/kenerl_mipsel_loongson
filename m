@@ -1,38 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Jul 2015 13:44:01 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:47320 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27009759AbbGILn7vKP8w (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 9 Jul 2015 13:43:59 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.15.1/8.14.8) with ESMTP id t69Bhw2n001539;
-        Thu, 9 Jul 2015 13:43:58 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.15.1/8.15.1/Submit) id t69BhwXI001538;
-        Thu, 9 Jul 2015 13:43:58 +0200
-Date:   Thu, 9 Jul 2015 13:43:58 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Markos Chandras <Markos.Chandras@imgtec.com>
-Cc:     linux-mips@linux-mips.org
-Subject: Re: [PATCH 02/19] MIPS: Add cases for CPU_I6400
-Message-ID: <20150709114358.GC31002@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Jul 2015 18:05:38 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:38541 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27009999AbbGIQFgUum3m (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 9 Jul 2015 18:05:36 +0200
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 48227A03F9313;
+        Thu,  9 Jul 2015 17:05:27 +0100 (IST)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Thu, 9 Jul 2015 17:05:30 +0100
+Received: from [192.168.154.48] (192.168.154.48) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Thu, 9 Jul
+ 2015 17:05:29 +0100
+Subject: Re: [PATCH 05/19] MIPS: asm: mips-cm: Implement mips_cm_revision
+To:     Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
+        <linux-mips@linux-mips.org>
 References: <1436434853-30001-1-git-send-email-markos.chandras@imgtec.com>
- <1436434853-30001-3-git-send-email-markos.chandras@imgtec.com>
- <20150709100340.GB31002@linux-mips.org>
- <559E499E.1040504@imgtec.com>
+ <1436434853-30001-6-git-send-email-markos.chandras@imgtec.com>
+ <559E5662.3010800@cogentembedded.com>
+CC:     Paul Burton <paul.burton@imgtec.com>
+From:   Markos Chandras <Markos.Chandras@imgtec.com>
+Message-ID: <559E9BC9.5050700@imgtec.com>
+Date:   Thu, 9 Jul 2015 17:05:29 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+ Thunderbird/38.0.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <559E499E.1040504@imgtec.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <ralf@linux-mips.org>
+In-Reply-To: <559E5662.3010800@cogentembedded.com>
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.154.48]
+Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48162
+X-archive-position: 48163
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: Markos.Chandras@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,49 +50,64 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Jul 09, 2015 at 11:14:54AM +0100, Markos Chandras wrote:
-
-> On 07/09/2015 11:03 AM, Ralf Baechle wrote:
-> > On Thu, Jul 09, 2015 at 10:40:36AM +0100, Markos Chandras wrote:
-> > 
-> >> index d41e8e284825..abee2bfd10dc 100644
-> >> --- a/arch/mips/include/asm/cpu-type.h
-> >> +++ b/arch/mips/include/asm/cpu-type.h
-> >> @@ -77,6 +77,10 @@ static inline int __pure __get_cpu_type(const int cpu_type)
-> >>  	 */
-> >>  #endif
-> >>  
-> >> +#ifdef CONFIG_SYS_HAS_CPU_MIPS64_R6
-> >> +	case CPU_I6400:
-> >> +#endif
-> >> +
-> > 
-> > To ensure best possible optimization you may want to introduce a new
-> > CPU type CPU_I6400 in Kconfig then change above code segment to
-> > 
-> > #ifdef CONFIG_SYS_HAS_CPU_I6400
-> > 	case CPU_I6400:
-> > #endif
-> > 
+On 07/09/2015 12:09 PM, Sergei Shtylyov wrote:
+> On 7/9/2015 12:40 PM, Markos Chandras wrote:
 > 
-> Why? That function uses MIPS32_XX and MIPS64_XX in other places as well.
+>> From: Paul Burton <paul.burton@imgtec.com>
+> 
+>> Provide a function to trivially return the version of the CM present in
+>> the system, or 0 if no CM is present. The mips_cm_revision() will be
+>> used later on to determine the CM register width, so it must not use
+>> the regular CM accessors to read the revision register since that will
+>> lead to build failures due to recursive inlines.
+> 
+>> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+>> Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+>> ---
+>>   arch/mips/include/asm/mips-cm.h | 29 +++++++++++++++++++++++++++++
+>>   1 file changed, 29 insertions(+)
+> 
+>> diff --git a/arch/mips/include/asm/mips-cm.h
+>> b/arch/mips/include/asm/mips-cm.h
+>> index edc7ee95269e..29ff74a629f6 100644
+>> --- a/arch/mips/include/asm/mips-cm.h
+>> +++ b/arch/mips/include/asm/mips-cm.h
+>> @@ -189,6 +189,13 @@ BUILD_CM_Cx_R_(tcid_8_priority,    0x80)
+>>   #define CM_GCR_REV_MINOR_SHF            0
+>>   #define CM_GCR_REV_MINOR_MSK            (_ULCAST_(0xff) << 0)
+>>
+>> +#define CM_ENCODE_REV(major, minor) \
+>> +        ((major << CM_GCR_REV_MAJOR_SHF) | \
+>> +         ((minor) << CM_GCR_REV_MINOR_SHF))
+> 
+>    Enclosing 'minor' into parens and not enclosing 'major' doesn't look
+> very consistent... :-)
 
-This is one matters a lot for optimization by GCC.
+Ok I will fix it
 
-Currently you're ok for as long as The I6400 stays the sole CPU wrapped
-by #ifdef CONFIG_SYS_HAS_CPU_MIPS64_R6.  As soon as another CPU becomes
-does the same optimization will suffer.
+> 
+> [...]
+>> @@ -324,4 +331,26 @@ static inline int mips_cm_l2sync(void)
+>>       return 0;
+>>   }
+>>
+>> +/**
+>> + * mips_cm_revision - return CM revision
+>> + *
+>> + * Returns the revision of the CM, from GCR_REV, or 0 if no CM is
+>> present.
+>> + * The return value should be checked against the CM_REV_* macros.
+>> + */
+>> +static inline int mips_cm_revision(void)
+>> +{
+>> +    static int mips_cm_revision_nr = -1;
+> 
+>    Won't this variable be allocated per source file (including this
+> header)?
 
-Example:
+I will drop the static variable since the implementation changed
+overtime and there is no need to call mips_cm_revision() so often anymore.
 
-#ifdef CONFIG_SYS_HAS_CPU_MIPS32_R1
-        case CPU_4KC:
-        case CPU_ALCHEMY:
-        case CPU_PR4450:
-#endif
 
-GCC is clever enough these days to figure out that __get_cpu_type() will
-only return certain values so it will do some optimization but the best
-case of course is if __get_cpu_type() returns one value only.
-
-  Ralf
+-- 
+markos

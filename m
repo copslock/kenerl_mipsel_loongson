@@ -1,24 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Jul 2015 11:44:01 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:15944 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Jul 2015 11:44:18 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:60940 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27009935AbbGIJlmNOQth (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 9 Jul 2015 11:41:42 +0200
+        with ESMTP id S27009936AbbGIJloQrVEh (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 9 Jul 2015 11:41:44 +0200
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 753C0BCAF6C3
-        for <linux-mips@linux-mips.org>; Thu,  9 Jul 2015 10:41:34 +0100 (IST)
+        by Websense Email Security Gateway with ESMTPS id 13960B82B0140;
+        Thu,  9 Jul 2015 10:41:36 +0100 (IST)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
  KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Thu, 9 Jul 2015 10:41:36 +0100
+ 14.3.195.1; Thu, 9 Jul 2015 10:41:38 +0100
 Received: from mchandras-linux.le.imgtec.org (192.168.154.48) by
  LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.210.2; Thu, 9 Jul 2015 10:41:35 +0100
+ 14.3.210.2; Thu, 9 Jul 2015 10:41:37 +0100
 From:   Markos Chandras <markos.chandras@imgtec.com>
 To:     <linux-mips@linux-mips.org>
 CC:     Markos Chandras <markos.chandras@imgtec.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Andrew Bresticker <abrestic@chromium.org>,
         Paul Burton <paul.burton@imgtec.com>
-Subject: [PATCH 09/19] MIPS: Add platform callback before initializing the L2 cache
-Date:   Thu, 9 Jul 2015 10:40:43 +0100
-Message-ID: <1436434853-30001-10-git-send-email-markos.chandras@imgtec.com>
+Subject: [PATCH 10/19] MIPS: asm: mips-cm: Extend CM accessors for 64-bit CPUs
+Date:   Thu, 9 Jul 2015 10:40:44 +0100
+Message-ID: <1436434853-30001-11-git-send-email-markos.chandras@imgtec.com>
 X-Mailer: git-send-email 2.4.5
 In-Reply-To: <1436434853-30001-1-git-send-email-markos.chandras@imgtec.com>
 References: <1436434853-30001-1-git-send-email-markos.chandras@imgtec.com>
@@ -29,7 +32,7 @@ Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48146
+X-archive-position: 48147
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,78 +49,124 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Allow platforms to perform platform-specific steps before configuring
-the L2 cache. This is necessary for platforms with CM3 since the L2
-parameters no longer live in the Config2 register.
+Previously, the CM accessors were only accessing CM registers as u32
+types instead of using the native CM register with. However, newer CMs
+may actually be 64-bit on MIPS64 cores. Fortunately, current 64-bit CMs
+(CM3) hold all the useful configuration bits in the lower half of the
+64-bit registers (at least most of them) so they can still be accessed
+using the current 32-bit accessors. However, accessing the CM registers
+using their native width can result to performance improvements since
+only one instruction is used to read/write them instead of treating
+them as register pairs. This is mostly true for CM components like GIC
+and CPC but for consistency reasons we do the same thing on the CM
+registers as well.
 
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Jason Cooper <jason@lakedaemon.net>
+Cc: Andrew Bresticker <abrestic@chromium.org>
 Cc: Paul Burton <paul.burton@imgtec.com>
 Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
 ---
- arch/mips/kernel/mips-cm.c       |  7 +++++++
- arch/mips/mm/sc-mips.c           | 10 ++++++++++
- arch/mips/mti-malta/malta-init.c |  7 +++++++
- 3 files changed, 24 insertions(+)
+ arch/mips/include/asm/mips-cm.h | 48 +++++++++++++++++++++++++++++++++++++----
+ arch/mips/kernel/mips-cm.c      |  4 ++++
+ 2 files changed, 48 insertions(+), 4 deletions(-)
 
+diff --git a/arch/mips/include/asm/mips-cm.h b/arch/mips/include/asm/mips-cm.h
+index a832de2739ad..273b89a685d5 100644
+--- a/arch/mips/include/asm/mips-cm.h
++++ b/arch/mips/include/asm/mips-cm.h
+@@ -33,6 +33,20 @@ extern void __iomem *mips_cm_l2sync_base;
+  */
+ extern phys_addr_t __mips_cm_phys_base(void);
+ 
++/*
++ * mips_cm_is64 - determine CM register width
++ *
++ * The CM register width is processor and CM specific. A 64-bit processor
++ * usually has a 64-bit CM and a 32-bit one has a 32-bit CM but a 64-bit
++ * processor could come with a 32-bit CM. Moreover, accesses on 64-bit CMs
++ * can be done either using regular 64-bit load/store instructions, or 32-bit
++ * load/store instruction on 32-bit register pairs. We opt for using 64-bit
++ * accesses on 64-bit CMs and processors and 32-bit in any other case.
++ *
++ * It's set to 0 for 32-bit accesses and 1 for 64-bit accesses.
++ */
++extern int mips_cm_is64;
++
+ /**
+  * mips_cm_probe - probe for a Coherence Manager
+  *
+@@ -90,20 +104,46 @@ static inline bool mips_cm_has_l2sync(void)
+ 
+ /* Macros to ease the creation of register access functions */
+ #define BUILD_CM_R_(name, off)					\
+-static inline u32 __iomem *addr_gcr_##name(void)		\
++static inline unsigned long __iomem *addr_gcr_##name(void)	\
+ {								\
+-	return (u32 __iomem *)(mips_cm_base + (off));		\
++	return (unsigned long __iomem *)(mips_cm_base + (off));	\
+ }								\
+ 								\
+-static inline u32 read_gcr_##name(void)				\
++static inline u32 read32_gcr_##name(void)			\
+ {								\
+ 	return __raw_readl(addr_gcr_##name());			\
++}								\
++								\
++static inline u64 read64_gcr_##name(void)			\
++{								\
++	return __raw_readq(addr_gcr_##name());			\
++}								\
++								\
++static inline unsigned long read_gcr_##name(void)		\
++{								\
++	if (mips_cm_is64)					\
++		return read64_gcr_##name();			\
++	else							\
++		return read32_gcr_##name();			\
+ }
+ 
+ #define BUILD_CM__W(name, off)					\
+-static inline void write_gcr_##name(u32 value)			\
++static inline void write32_gcr_##name(u32 value)		\
+ {								\
+ 	__raw_writel(value, addr_gcr_##name());			\
++}								\
++								\
++static inline void write64_gcr_##name(u64 value)		\
++{								\
++	__raw_writeq(value, addr_gcr_##name());			\
++}								\
++								\
++static inline void write_gcr_##name(unsigned long value)	\
++{								\
++	if (mips_cm_is64)					\
++		write64_gcr_##name(value);			\
++	else							\
++		write32_gcr_##name(value);			\
+ }
+ 
+ #define BUILD_CM_RW(name, off)					\
 diff --git a/arch/mips/kernel/mips-cm.c b/arch/mips/kernel/mips-cm.c
-index 85bbe9b96759..42602f30949f 100644
+index 42602f30949f..7e460e09661a 100644
 --- a/arch/mips/kernel/mips-cm.c
 +++ b/arch/mips/kernel/mips-cm.c
-@@ -81,6 +81,13 @@ int mips_cm_probe(void)
- 	phys_addr_t addr;
- 	u32 base_reg;
+@@ -15,6 +15,7 @@
  
-+	/*
-+	 * No need to probe again if we have already been
-+	 * here before.
-+	 */
-+	if (mips_cm_base)
-+		return 0;
-+
- 	addr = mips_cm_phys_base();
- 	BUG_ON((addr & CM_GCR_BASE_GCRBASE_MSK) != addr);
- 	if (!addr)
-diff --git a/arch/mips/mm/sc-mips.c b/arch/mips/mm/sc-mips.c
-index 5fa452e8cff9..53ea8391f9bb 100644
---- a/arch/mips/mm/sc-mips.c
-+++ b/arch/mips/mm/sc-mips.c
-@@ -123,6 +123,10 @@ static int __init mips_sc_probe_cm3(void)
- 	return 1;
- }
+ void __iomem *mips_cm_base;
+ void __iomem *mips_cm_l2sync_base;
++int mips_cm_is64;
  
-+void __weak platform_early_l2_init(void)
-+{
-+}
-+
- static inline int __init mips_sc_probe(void)
+ phys_addr_t __mips_cm_phys_base(void)
  {
- 	struct cpuinfo_mips *c = &current_cpu_data;
-@@ -132,6 +136,12 @@ static inline int __init mips_sc_probe(void)
- 	/* Mark as not present until probe completed */
- 	c->scache.flags |= MIPS_CACHE_NOT_PRESENT;
+@@ -124,5 +125,8 @@ int mips_cm_probe(void)
+ 	/* probe for an L2-only sync region */
+ 	mips_cm_probe_l2sync();
  
-+	/*
-+	 * Do we need some platform specific probing before
-+	 * we configure L2?
-+	 */
-+	platform_early_l2_init();
++	/* determine register width for this CM */
++	mips_cm_is64 = cpu_has_64bits && (mips_cm_revision() >= CM_REV_CM3);
 +
- 	if (mips_cm_revision() >= CM_REV_CM3)
- 		return mips_sc_probe_cm3();
- 
-diff --git a/arch/mips/mti-malta/malta-init.c b/arch/mips/mti-malta/malta-init.c
-index cec3e187c48f..53c24784a2f7 100644
---- a/arch/mips/mti-malta/malta-init.c
-+++ b/arch/mips/mti-malta/malta-init.c
-@@ -303,3 +303,10 @@ mips_pci_controller:
- 	if (!register_vsmp_smp_ops())
- 		return;
+ 	return 0;
  }
-+
-+void platform_early_l2_init(void)
-+{
-+	/* L2 configuration lives in the CM3 */
-+	if (mips_cm_revision() >= CM_REV_CM3)
-+		mips_cm_probe();
-+}
 -- 
 2.4.5

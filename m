@@ -1,23 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Jul 2015 11:45:17 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:35086 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Jul 2015 11:45:35 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:39215 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27009961AbbGIJlwp0Mph (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 9 Jul 2015 11:41:52 +0200
+        with ESMTP id S27009596AbbGIJlyIRlGh (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 9 Jul 2015 11:41:54 +0200
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 2CFB5DDDCBFB2
-        for <linux-mips@linux-mips.org>; Thu,  9 Jul 2015 10:41:44 +0100 (IST)
+        by Websense Email Security Gateway with ESMTPS id 73B5D3912237F;
+        Thu,  9 Jul 2015 10:41:45 +0100 (IST)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
  KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Thu, 9 Jul 2015 10:41:45 +0100
+ 14.3.195.1; Thu, 9 Jul 2015 10:41:47 +0100
 Received: from mchandras-linux.le.imgtec.org (192.168.154.48) by
  LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.210.2; Thu, 9 Jul 2015 10:41:45 +0100
+ 14.3.210.2; Thu, 9 Jul 2015 10:41:46 +0100
 From:   Markos Chandras <markos.chandras@imgtec.com>
 To:     <linux-mips@linux-mips.org>
-CC:     Markos Chandras <markos.chandras@imgtec.com>
-Subject: [PATCH 13/19] MIPS: kernel: mips-cm: Add support for reporting CM cache errors
-Date:   Thu, 9 Jul 2015 10:40:47 +0100
-Message-ID: <1436434853-30001-14-git-send-email-markos.chandras@imgtec.com>
+CC:     Markos Chandras <markos.chandras@imgtec.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Andrew Bresticker <abrestic@chromium.org>,
+        Paul Burton <paul.burton@imgtec.com>
+Subject: [PATCH 14/19] drivers: irqchip: irq-mips-gic: Extend GIC accessors for 64-bit CMs
+Date:   Thu, 9 Jul 2015 10:40:48 +0100
+Message-ID: <1436434853-30001-15-git-send-email-markos.chandras@imgtec.com>
 X-Mailer: git-send-email 2.4.5
 In-Reply-To: <1436434853-30001-1-git-send-email-markos.chandras@imgtec.com>
 References: <1436434853-30001-1-git-send-email-markos.chandras@imgtec.com>
@@ -28,7 +32,7 @@ Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48150
+X-archive-position: 48151
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,424 +49,322 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The CM cache error reporting code is not Malta specific and as such it
-should live in the mips-cm.c file. Moreover, CM2 and CM3 differ in the
-way cache errors are being recorded to the registers so extend the
-previous code to add support for the CM3 as well.
+Previously, the GIC accessors were only accessing u32 registers but
+newer CMs may actually be 64-bit on MIPS64 cores. As a result of which,
+extended these accessors to support 64-bit reads and writes.
 
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Jason Cooper <jason@lakedaemon.net>
+Cc: Andrew Bresticker <abrestic@chromium.org>
+Cc: Paul Burton <paul.burton@imgtec.com>
 Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
 ---
- arch/mips/include/asm/mips-cm.h |   9 ++
- arch/mips/kernel/mips-cm.c      | 244 ++++++++++++++++++++++++++++++++++++++++
- arch/mips/mti-malta/malta-int.c | 112 +-----------------
- 3 files changed, 254 insertions(+), 111 deletions(-)
+ drivers/irqchip/irq-mips-gic.c   | 119 ++++++++++++++++++++++++---------------
+ include/linux/irqchip/mips-gic.h |  10 +++-
+ 2 files changed, 83 insertions(+), 46 deletions(-)
 
-diff --git a/arch/mips/include/asm/mips-cm.h b/arch/mips/include/asm/mips-cm.h
-index 273b89a685d5..4810379349d3 100644
---- a/arch/mips/include/asm/mips-cm.h
-+++ b/arch/mips/include/asm/mips-cm.h
-@@ -48,6 +48,15 @@ extern phys_addr_t __mips_cm_phys_base(void);
- extern int mips_cm_is64;
+diff --git a/drivers/irqchip/irq-mips-gic.c b/drivers/irqchip/irq-mips-gic.c
+index 4400edd1a6c7..29c494691b71 100644
+--- a/drivers/irqchip/irq-mips-gic.c
++++ b/drivers/irqchip/irq-mips-gic.c
+@@ -42,20 +42,46 @@ static struct irq_chip gic_level_irq_controller, gic_edge_irq_controller;
  
- /**
-+ * mips_cm_error_report - Report CM cache errors
-+ */
-+#ifdef CONFIG_MIPS_CM
-+extern void mips_cm_error_report(void);
-+#else
-+static inline void mips_cm_error_report(void) {}
-+#endif
-+
-+/**
-  * mips_cm_probe - probe for a Coherence Manager
-  *
-  * Attempt to detect the presence of a Coherence Manager. Returns 0 if a CM
-diff --git a/arch/mips/kernel/mips-cm.c b/arch/mips/kernel/mips-cm.c
-index 37a9885ef0da..20f36cc9161e 100644
---- a/arch/mips/kernel/mips-cm.c
-+++ b/arch/mips/kernel/mips-cm.c
-@@ -17,6 +17,125 @@ void __iomem *mips_cm_base;
- void __iomem *mips_cm_l2sync_base;
- int mips_cm_is64;
+ static void __gic_irq_dispatch(void);
  
-+static char *cm2_tr[8] = {
-+	"mem",	"gcr",	"gic",	"mmio",
-+	"0x04", "cpc", "0x06", "0x07"
-+};
-+
-+/* CM3 Tag ECC transation type */
-+static char *cm3_tr[16] = {
-+	[0x0] = "ReqNoData",
-+	[0x1] = "0x1",
-+	[0x2] = "ReqWData",
-+	[0x3] = "0x3",
-+	[0x4] = "IReqNoResp",
-+	[0x5] = "IReqWResp",
-+	[0x6] = "IReqNoRespDat",
-+	[0x7] = "IReqWRespDat",
-+	[0x8] = "RespNoData",
-+	[0x9] = "RespDataFol",
-+	[0xa] = "RespWData",
-+	[0xb] = "RespDataOnly",
-+	[0xc] = "IRespNoData",
-+	[0xd] = "IRespDataFol",
-+	[0xe] = "IRespWData",
-+	[0xf] = "IRespDataOnly"
-+};
-+
-+static char *cm2_cmd[32] = {
-+	[0x00] = "0x00",
-+	[0x01] = "Legacy Write",
-+	[0x02] = "Legacy Read",
-+	[0x03] = "0x03",
-+	[0x04] = "0x04",
-+	[0x05] = "0x05",
-+	[0x06] = "0x06",
-+	[0x07] = "0x07",
-+	[0x08] = "Coherent Read Own",
-+	[0x09] = "Coherent Read Share",
-+	[0x0a] = "Coherent Read Discard",
-+	[0x0b] = "Coherent Ready Share Always",
-+	[0x0c] = "Coherent Upgrade",
-+	[0x0d] = "Coherent Writeback",
-+	[0x0e] = "0x0e",
-+	[0x0f] = "0x0f",
-+	[0x10] = "Coherent Copyback",
-+	[0x11] = "Coherent Copyback Invalidate",
-+	[0x12] = "Coherent Invalidate",
-+	[0x13] = "Coherent Write Invalidate",
-+	[0x14] = "Coherent Completion Sync",
-+	[0x15] = "0x15",
-+	[0x16] = "0x16",
-+	[0x17] = "0x17",
-+	[0x18] = "0x18",
-+	[0x19] = "0x19",
-+	[0x1a] = "0x1a",
-+	[0x1b] = "0x1b",
-+	[0x1c] = "0x1c",
-+	[0x1d] = "0x1d",
-+	[0x1e] = "0x1e",
-+	[0x1f] = "0x1f"
-+};
-+
-+/* CM3 Tag ECC command type */
-+static char *cm3_cmd[16] = {
-+	[0x0] = "Legacy Read",
-+	[0x1] = "Legacy Write",
-+	[0x2] = "Coherent Read Own",
-+	[0x3] = "Coherent Read Share",
-+	[0x4] = "Coherent Read Discard",
-+	[0x5] = "Coherent Evicted",
-+	[0x6] = "Coherent Upgrade",
-+	[0x7] = "Coherent Upgrade for Store Conditional",
-+	[0x8] = "Coherent Writeback",
-+	[0x9] = "Coherent Write Invalidate",
-+	[0xa] = "0xa",
-+	[0xb] = "0xb",
-+	[0xc] = "0xc",
-+	[0xd] = "0xd",
-+	[0xe] = "0xe",
-+	[0xf] = "0xf"
-+};
-+
-+/* CM3 Tag ECC command group */
-+static char *cm3_cmd_group[8] = {
-+	[0x0] = "Normal",
-+	[0x1] = "Registers",
-+	[0x2] = "TLB",
-+	[0x3] = "0x3",
-+	[0x4] = "L1I",
-+	[0x5] = "L1D",
-+	[0x6] = "L3",
-+	[0x7] = "L2"
-+};
-+
-+static char *cm2_core[8] = {
-+	"Invalid/OK",	"Invalid/Data",
-+	"Shared/OK",	"Shared/Data",
-+	"Modified/OK",	"Modified/Data",
-+	"Exclusive/OK", "Exclusive/Data"
-+};
-+
-+static char *cm2_causes[32] = {
-+	"None", "GC_WR_ERR", "GC_RD_ERR", "COH_WR_ERR",
-+	"COH_RD_ERR", "MMIO_WR_ERR", "MMIO_RD_ERR", "0x07",
-+	"0x08", "0x09", "0x0a", "0x0b",
-+	"0x0c", "0x0d", "0x0e", "0x0f",
-+	"0x10", "0x11", "0x12", "0x13",
-+	"0x14", "0x15", "0x16", "INTVN_WR_ERR",
-+	"INTVN_RD_ERR", "0x19", "0x1a", "0x1b",
-+	"0x1c", "0x1d", "0x1e", "0x1f"
-+};
-+
-+static char *cm3_causes[32] = {
-+	"0x0", "MP_CORRECTABLE_ECC_ERR", "MP_REQUEST_DECODE_ERR",
-+	"MP_UNCORRECTABLE_ECC_ERR", "MP_PARITY_ERR", "MP_COHERENCE_ERR",
-+	"CMBIU_REQUEST_DECODE_ERR", "CMBIU_PARITY_ERR", "CMBIU_AXI_RESP_ERR",
-+	"0x9", "RBI_BUS_ERR", "0xb", "0xc", "0xd", "0xe", "0xf", "0x10",
-+	"0x11", "0x12", "0x13", "0x14", "0x15", "0x16", "0x17", "0x18",
-+	"0x19", "0x1a", "0x1b", "0x1c", "0x1d", "0x1e", "0x1f"
-+};
-+
- phys_addr_t __mips_cm_phys_base(void)
+-static inline unsigned int gic_read(unsigned int reg)
++static inline u32 gic_read32(unsigned int reg)
  {
- 	u32 config3 = read_c0_config3();
-@@ -130,3 +249,128 @@ int mips_cm_probe(void)
- 
- 	return 0;
+ 	return __raw_readl(gic_base + reg);
  }
-+
-+void mips_cm_error_report(void)
-+{
-+	unsigned long revision = mips_cm_revision();
-+	/*
-+	 * CM3 has a 64-bit Error cause register with 0:57 containing the error
-+	 * info and 63:58 the error type. For old CMs, everything is contained
-+	 * in a single 32-bit register (0:26 and 31:27 respectively). Even
-+	 * though the cm_error is u64, we will simply ignore the upper word
-+	 * for CM2.
-+	 */
-+	u64 cm_error = read_gcr_error_cause();
-+	int cm_error_cause_sft = CM_GCR_ERROR_CAUSE_ERRTYPE_SHF +
-+				 ((revision >= CM_REV_CM3) ? 31 : 0);
-+	unsigned long cm_addr = read_gcr_error_addr();
-+	unsigned long cm_other = read_gcr_error_mult();
-+	int ocause, cause;
-+	char buf[256];
-+
-+	if (!mips_cm_present())
-+		return;
-+
-+	cause = cm_error >> cm_error_cause_sft;
-+
-+	if (!cause)
-+		/* All good */
-+		return;
-+
-+	ocause = cm_other >> CM_GCR_ERROR_MULT_ERR2ND_SHF;
-+	if (revision < CM_REV_CM3) { /* CM2 */
-+		if (cause < 16) {
-+			unsigned long cca_bits = (cm_error >> 15) & 7;
-+			unsigned long tr_bits = (cm_error >> 12) & 7;
-+			unsigned long cmd_bits = (cm_error >> 7) & 0x1f;
-+			unsigned long stag_bits = (cm_error >> 3) & 15;
-+			unsigned long sport_bits = (cm_error >> 0) & 7;
-+
-+			snprintf(buf, sizeof(buf),
-+				 "CCA=%lu TR=%s MCmd=%s STag=%lu "
-+				 "SPort=%lu\n", cca_bits, cm2_tr[tr_bits],
-+				 cm2_cmd[cmd_bits], stag_bits, sport_bits);
-+		} else {
-+			/* glob state & sresp together */
-+			unsigned long c3_bits = (cm_error >> 18) & 7;
-+			unsigned long c2_bits = (cm_error >> 15) & 7;
-+			unsigned long c1_bits = (cm_error >> 12) & 7;
-+			unsigned long c0_bits = (cm_error >> 9) & 7;
-+			unsigned long sc_bit = (cm_error >> 8) & 1;
-+			unsigned long cmd_bits = (cm_error >> 3) & 0x1f;
-+			unsigned long sport_bits = (cm_error >> 0) & 7;
-+
-+			snprintf(buf, sizeof(buf),
-+				 "C3=%s C2=%s C1=%s C0=%s SC=%s "
-+				 "MCmd=%s SPort=%lu\n",
-+				 cm2_core[c3_bits], cm2_core[c2_bits],
-+				 cm2_core[c1_bits], cm2_core[c0_bits],
-+				 sc_bit ? "True" : "False",
-+				 cm2_cmd[cmd_bits], sport_bits);
-+		}
-+			pr_err("CM_ERROR=%08llx %s <%s>\n", cm_error,
-+			       cm2_causes[cause], buf);
-+		pr_err("CM_ADDR =%08lx\n", cm_addr);
-+		pr_err("CM_OTHER=%08lx %s\n", cm_other, cm2_causes[ocause]);
-+	} else { /* CM3 */
-+	/* Used by cause == {1,2,3} */
-+		unsigned long core_id_bits = (cm_error >> 22) & 0xf;
-+		unsigned long vp_id_bits = (cm_error >> 18) & 0xf;
-+		unsigned long cmd_bits = (cm_error >> 14) & 0xf;
-+		unsigned long cmd_group_bits = (cm_error >> 11) & 0xf;
-+		unsigned long cm3_cca_bits = (cm_error >> 8) & 7;
-+		unsigned long mcp_bits = (cm_error >> 5) & 0xf;
-+		unsigned long cm3_tr_bits = (cm_error >> 1) & 0xf;
-+		unsigned long sched_bit = cm_error & 0x1;
-+
-+		if (cause == 1 || cause == 3) { /* Tag ECC */
-+			unsigned long tag_ecc = (cm_error >> 57) & 0x1;
-+			unsigned long tag_way_bits = (cm_error >> 29) & 0xffff;
-+			unsigned long dword_bits = (cm_error >> 49) & 0xff;
-+			unsigned long data_way_bits = (cm_error >> 45) & 0xf;
-+			unsigned long data_sets_bits = (cm_error >> 29) & 0xfff;
-+			unsigned long bank_bit = (cm_error >> 28) & 0x1;
-+			snprintf(buf, sizeof(buf),
-+				 "%s ECC Error: Way=%lu (DWORD=%lu, Sets=%lu)"
-+				 "Bank=%lu CoreID=%lu VPID=%lu Command=%s"
-+				 "Command Group=%s CCA=%lu MCP=%d"
-+				 "Transaction type=%s Scheduler=%lu\n",
-+				 tag_ecc ? "TAG" : "DATA",
-+				 tag_ecc ? (unsigned long)ffs(tag_way_bits) - 1 :
-+				 data_way_bits, bank_bit, dword_bits,
-+				 data_sets_bits,
-+				 core_id_bits, vp_id_bits,
-+				 cm3_cmd[cmd_bits],
-+				 cm3_cmd_group[cmd_group_bits],
-+				 cm3_cca_bits, 1 << mcp_bits,
-+				 cm3_tr[cm3_tr_bits], sched_bit);
-+		} else if (cause == 2) {
-+			unsigned long data_error_type = (cm_error >> 41) & 0xfff;
-+			unsigned long data_decode_cmd = (cm_error >> 37) & 0xf;
-+			unsigned long data_decode_group = (cm_error >> 34) & 0x7;
-+			unsigned long data_decode_destination_id = (cm_error >> 28) & 0x3f;
-+
-+			snprintf(buf, sizeof(buf),
-+				 "Decode Request Error: Type=%lu, Command=%lu"
-+				 "Command Group=%lu Destination ID=%lu"
-+				 "CoreID=%lu VPID=%lu Command=%s"
-+				 "Command Group=%s CCA=%lu MCP=%d"
-+				 "Transaction type=%s Scheduler=%lu\n",
-+				 data_error_type, data_decode_cmd,
-+				 data_decode_group, data_decode_destination_id,
-+				 core_id_bits, vp_id_bits,
-+				 cm3_cmd[cmd_bits],
-+				 cm3_cmd_group[cmd_group_bits],
-+				 cm3_cca_bits, 1 << mcp_bits,
-+				 cm3_tr[cm3_tr_bits], sched_bit);
-+		}
-+
-+		pr_err("CM_ERROR=%llx %s <%s>\n", cm_error,
-+		       cm3_causes[cause], buf);
-+		pr_err("CM_ADDR =%lx\n", cm_addr);
-+		pr_err("CM_OTHER=%lx %s\n", cm_other, cm3_causes[ocause]);
-+	}
-+
-+	/* reprime cause register */
-+	write_gcr_error_cause(0);
+ 
+-static inline void gic_write(unsigned int reg, unsigned int val)
++static inline u64 gic_read64(unsigned int reg)
+ {
+-	__raw_writel(val, gic_base + reg);
++	return __raw_readq(gic_base + reg);
+ }
+ 
+-static inline void gic_update_bits(unsigned int reg, unsigned int mask,
+-				   unsigned int val)
++static inline unsigned long gic_read(unsigned int reg)
+ {
+-	unsigned int regval;
++	if (!mips_cm_is64)
++		return gic_read32(reg);
++	else
++		return gic_read64(reg);
 +}
-diff --git a/arch/mips/mti-malta/malta-int.c b/arch/mips/mti-malta/malta-int.c
-index d1392f8f5811..f05aa841f8fb 100644
---- a/arch/mips/mti-malta/malta-int.c
-+++ b/arch/mips/mti-malta/malta-int.c
-@@ -382,122 +382,12 @@ void malta_be_init(void)
- 	/* Could change CM error mask register. */
- }
++
++static inline void gic_write32(unsigned int reg, u32 val)
++{
++	return __raw_writel(val, gic_base + reg);
++}
++
++static inline void gic_write64(unsigned int reg, u64 val)
++{
++	return __raw_writeq(val, gic_base + reg);
++}
++
++static inline void gic_write(unsigned int reg, unsigned long val)
++{
++	if (!mips_cm_is64)
++		return gic_write32(reg, (u32)val);
++	else
++		return gic_write64(reg, (u64)val);
++}
++
++static inline void gic_update_bits(unsigned int reg, unsigned long mask,
++				   unsigned long val)
++{
++	unsigned long regval;
  
--
--static char *tr[8] = {
--	"mem",	"gcr",	"gic",	"mmio",
--	"0x04", "0x05", "0x06", "0x07"
--};
--
--static char *mcmd[32] = {
--	[0x00] = "0x00",
--	[0x01] = "Legacy Write",
--	[0x02] = "Legacy Read",
--	[0x03] = "0x03",
--	[0x04] = "0x04",
--	[0x05] = "0x05",
--	[0x06] = "0x06",
--	[0x07] = "0x07",
--	[0x08] = "Coherent Read Own",
--	[0x09] = "Coherent Read Share",
--	[0x0a] = "Coherent Read Discard",
--	[0x0b] = "Coherent Ready Share Always",
--	[0x0c] = "Coherent Upgrade",
--	[0x0d] = "Coherent Writeback",
--	[0x0e] = "0x0e",
--	[0x0f] = "0x0f",
--	[0x10] = "Coherent Copyback",
--	[0x11] = "Coherent Copyback Invalidate",
--	[0x12] = "Coherent Invalidate",
--	[0x13] = "Coherent Write Invalidate",
--	[0x14] = "Coherent Completion Sync",
--	[0x15] = "0x15",
--	[0x16] = "0x16",
--	[0x17] = "0x17",
--	[0x18] = "0x18",
--	[0x19] = "0x19",
--	[0x1a] = "0x1a",
--	[0x1b] = "0x1b",
--	[0x1c] = "0x1c",
--	[0x1d] = "0x1d",
--	[0x1e] = "0x1e",
--	[0x1f] = "0x1f"
--};
--
--static char *core[8] = {
--	"Invalid/OK",	"Invalid/Data",
--	"Shared/OK",	"Shared/Data",
--	"Modified/OK",	"Modified/Data",
--	"Exclusive/OK", "Exclusive/Data"
--};
--
--static char *causes[32] = {
--	"None", "GC_WR_ERR", "GC_RD_ERR", "COH_WR_ERR",
--	"COH_RD_ERR", "MMIO_WR_ERR", "MMIO_RD_ERR", "0x07",
--	"0x08", "0x09", "0x0a", "0x0b",
--	"0x0c", "0x0d", "0x0e", "0x0f",
--	"0x10", "0x11", "0x12", "0x13",
--	"0x14", "0x15", "0x16", "INTVN_WR_ERR",
--	"INTVN_RD_ERR", "0x19", "0x1a", "0x1b",
--	"0x1c", "0x1d", "0x1e", "0x1f"
--};
--
- int malta_be_handler(struct pt_regs *regs, int is_fixup)
+ 	regval = gic_read(reg);
+ 	regval &= ~mask;
+@@ -66,40 +92,40 @@ static inline void gic_update_bits(unsigned int reg, unsigned int mask,
+ static inline void gic_reset_mask(unsigned int intr)
  {
- 	/* This duplicates the handling in do_be which seems wrong */
- 	int retval = is_fixup ? MIPS_BE_FIXUP : MIPS_BE_FATAL;
- 
--	if (mips_cm_present()) {
--		unsigned long cm_error = read_gcr_error_cause();
--		unsigned long cm_addr = read_gcr_error_addr();
--		unsigned long cm_other = read_gcr_error_mult();
--		unsigned long cause, ocause;
--		char buf[256];
--
--		cause = cm_error & CM_GCR_ERROR_CAUSE_ERRTYPE_MSK;
--		if (cause != 0) {
--			cause >>= CM_GCR_ERROR_CAUSE_ERRTYPE_SHF;
--			if (cause < 16) {
--				unsigned long cca_bits = (cm_error >> 15) & 7;
--				unsigned long tr_bits = (cm_error >> 12) & 7;
--				unsigned long cmd_bits = (cm_error >> 7) & 0x1f;
--				unsigned long stag_bits = (cm_error >> 3) & 15;
--				unsigned long sport_bits = (cm_error >> 0) & 7;
--
--				snprintf(buf, sizeof(buf),
--					 "CCA=%lu TR=%s MCmd=%s STag=%lu "
--					 "SPort=%lu\n",
--					 cca_bits, tr[tr_bits], mcmd[cmd_bits],
--					 stag_bits, sport_bits);
--			} else {
--				/* glob state & sresp together */
--				unsigned long c3_bits = (cm_error >> 18) & 7;
--				unsigned long c2_bits = (cm_error >> 15) & 7;
--				unsigned long c1_bits = (cm_error >> 12) & 7;
--				unsigned long c0_bits = (cm_error >> 9) & 7;
--				unsigned long sc_bit = (cm_error >> 8) & 1;
--				unsigned long cmd_bits = (cm_error >> 3) & 0x1f;
--				unsigned long sport_bits = (cm_error >> 0) & 7;
--				snprintf(buf, sizeof(buf),
--					 "C3=%s C2=%s C1=%s C0=%s SC=%s "
--					 "MCmd=%s SPort=%lu\n",
--					 core[c3_bits], core[c2_bits],
--					 core[c1_bits], core[c0_bits],
--					 sc_bit ? "True" : "False",
--					 mcmd[cmd_bits], sport_bits);
--			}
--
--			ocause = (cm_other & CM_GCR_ERROR_MULT_ERR2ND_MSK) >>
--				 CM_GCR_ERROR_MULT_ERR2ND_SHF;
--
--			pr_err("CM_ERROR=%08lx %s <%s>\n", cm_error,
--			       causes[cause], buf);
--			pr_err("CM_ADDR =%08lx\n", cm_addr);
--			pr_err("CM_OTHER=%08lx %s\n", cm_other, causes[ocause]);
--
--			/* reprime cause register */
--			write_gcr_error_cause(0);
--		}
--	}
-+	mips_cm_error_report();
- 
- 	return retval;
+ 	gic_write(GIC_REG(SHARED, GIC_SH_RMASK) + GIC_INTR_OFS(intr),
+-		  1 << GIC_INTR_BIT(intr));
++		  1ul << GIC_INTR_BIT(intr));
  }
+ 
+ static inline void gic_set_mask(unsigned int intr)
+ {
+ 	gic_write(GIC_REG(SHARED, GIC_SH_SMASK) + GIC_INTR_OFS(intr),
+-		  1 << GIC_INTR_BIT(intr));
++		  1ul << GIC_INTR_BIT(intr));
+ }
+ 
+ static inline void gic_set_polarity(unsigned int intr, unsigned int pol)
+ {
+ 	gic_update_bits(GIC_REG(SHARED, GIC_SH_SET_POLARITY) +
+-			GIC_INTR_OFS(intr), 1 << GIC_INTR_BIT(intr),
+-			pol << GIC_INTR_BIT(intr));
++			GIC_INTR_OFS(intr), 1ul << GIC_INTR_BIT(intr),
++			(unsigned long)pol << GIC_INTR_BIT(intr));
+ }
+ 
+ static inline void gic_set_trigger(unsigned int intr, unsigned int trig)
+ {
+ 	gic_update_bits(GIC_REG(SHARED, GIC_SH_SET_TRIGGER) +
+-			GIC_INTR_OFS(intr), 1 << GIC_INTR_BIT(intr),
+-			trig << GIC_INTR_BIT(intr));
++			GIC_INTR_OFS(intr), 1ul << GIC_INTR_BIT(intr),
++			(unsigned long)trig << GIC_INTR_BIT(intr));
+ }
+ 
+ static inline void gic_set_dual_edge(unsigned int intr, unsigned int dual)
+ {
+ 	gic_update_bits(GIC_REG(SHARED, GIC_SH_SET_DUAL) + GIC_INTR_OFS(intr),
+-			1 << GIC_INTR_BIT(intr),
+-			dual << GIC_INTR_BIT(intr));
++			1ul << GIC_INTR_BIT(intr),
++			(unsigned long)dual << GIC_INTR_BIT(intr));
+ }
+ 
+ static inline void gic_map_to_pin(unsigned int intr, unsigned int pin)
+ {
+-	gic_write(GIC_REG(SHARED, GIC_SH_INTR_MAP_TO_PIN_BASE) +
+-		  GIC_SH_MAP_TO_PIN(intr), GIC_MAP_TO_PIN_MSK | pin);
++	gic_write32(GIC_REG(SHARED, GIC_SH_INTR_MAP_TO_PIN_BASE) +
++		    GIC_SH_MAP_TO_PIN(intr), GIC_MAP_TO_PIN_MSK | pin);
+ }
+ 
+ static inline void gic_map_to_vpe(unsigned int intr, unsigned int vpe)
+@@ -115,9 +141,9 @@ cycle_t gic_read_count(void)
+ 	unsigned int hi, hi2, lo;
+ 
+ 	do {
+-		hi = gic_read(GIC_REG(SHARED, GIC_SH_COUNTER_63_32));
+-		lo = gic_read(GIC_REG(SHARED, GIC_SH_COUNTER_31_00));
+-		hi2 = gic_read(GIC_REG(SHARED, GIC_SH_COUNTER_63_32));
++		hi = gic_read32(GIC_REG(SHARED, GIC_SH_COUNTER_63_32));
++		lo = gic_read32(GIC_REG(SHARED, GIC_SH_COUNTER_31_00));
++		hi2 = gic_read32(GIC_REG(SHARED, GIC_SH_COUNTER_63_32));
+ 	} while (hi2 != hi);
+ 
+ 	return (((cycle_t) hi) << 32) + lo;
+@@ -136,9 +162,9 @@ unsigned int gic_get_count_width(void)
+ 
+ void gic_write_compare(cycle_t cnt)
+ {
+-	gic_write(GIC_REG(VPE_LOCAL, GIC_VPE_COMPARE_HI),
++	gic_write32(GIC_REG(VPE_LOCAL, GIC_VPE_COMPARE_HI),
+ 				(int)(cnt >> 32));
+-	gic_write(GIC_REG(VPE_LOCAL, GIC_VPE_COMPARE_LO),
++	gic_write32(GIC_REG(VPE_LOCAL, GIC_VPE_COMPARE_LO),
+ 				(int)(cnt & 0xffffffff));
+ }
+ 
+@@ -148,10 +174,10 @@ void gic_write_cpu_compare(cycle_t cnt, int cpu)
+ 
+ 	local_irq_save(flags);
+ 
+-	gic_write(GIC_REG(VPE_LOCAL, GIC_VPE_OTHER_ADDR), cpu);
+-	gic_write(GIC_REG(VPE_OTHER, GIC_VPE_COMPARE_HI),
++	gic_write32(GIC_REG(VPE_LOCAL, GIC_VPE_OTHER_ADDR), cpu);
++	gic_write32(GIC_REG(VPE_OTHER, GIC_VPE_COMPARE_HI),
+ 				(int)(cnt >> 32));
+-	gic_write(GIC_REG(VPE_OTHER, GIC_VPE_COMPARE_LO),
++	gic_write32(GIC_REG(VPE_OTHER, GIC_VPE_COMPARE_LO),
+ 				(int)(cnt & 0xffffffff));
+ 
+ 	local_irq_restore(flags);
+@@ -161,8 +187,8 @@ cycle_t gic_read_compare(void)
+ {
+ 	unsigned int hi, lo;
+ 
+-	hi = gic_read(GIC_REG(VPE_LOCAL, GIC_VPE_COMPARE_HI));
+-	lo = gic_read(GIC_REG(VPE_LOCAL, GIC_VPE_COMPARE_LO));
++	hi = gic_read32(GIC_REG(VPE_LOCAL, GIC_VPE_COMPARE_HI));
++	lo = gic_read32(GIC_REG(VPE_LOCAL, GIC_VPE_COMPARE_LO));
+ 
+ 	return (((cycle_t) hi) << 32) + lo;
+ }
+@@ -197,7 +223,7 @@ static bool gic_local_irq_is_routable(int intr)
+ 	if (cpu_has_veic)
+ 		return true;
+ 
+-	vpe_ctl = gic_read(GIC_REG(VPE_LOCAL, GIC_VPE_CTL));
++	vpe_ctl = gic_read32(GIC_REG(VPE_LOCAL, GIC_VPE_CTL));
+ 	switch (intr) {
+ 	case GIC_LOCAL_INT_TIMER:
+ 		return vpe_ctl & GIC_VPE_CTL_TIMER_RTBL_MSK;
+@@ -273,7 +299,7 @@ int gic_get_c0_fdc_int(void)
+ 
+ static void gic_handle_shared_int(bool chained)
+ {
+-	unsigned int i, intr, virq;
++	unsigned int i, intr, virq, gic_reg_step = mips_cm_is64 ? 8 : 4;
+ 	unsigned long *pcpu_mask;
+ 	unsigned long pending_reg, intrmask_reg;
+ 	DECLARE_BITMAP(pending, GIC_MAX_INTRS);
+@@ -288,8 +314,8 @@ static void gic_handle_shared_int(bool chained)
+ 	for (i = 0; i < BITS_TO_LONGS(gic_shared_intrs); i++) {
+ 		pending[i] = gic_read(pending_reg);
+ 		intrmask[i] = gic_read(intrmask_reg);
+-		pending_reg += 0x4;
+-		intrmask_reg += 0x4;
++		pending_reg += gic_reg_step;
++		intrmask_reg += gic_reg_step;
+ 	}
+ 
+ 	bitmap_and(pending, pending, intrmask, gic_shared_intrs);
+@@ -439,8 +465,8 @@ static void gic_handle_local_int(bool chained)
+ 	unsigned long pending, masked;
+ 	unsigned int intr, virq;
+ 
+-	pending = gic_read(GIC_REG(VPE_LOCAL, GIC_VPE_PEND));
+-	masked = gic_read(GIC_REG(VPE_LOCAL, GIC_VPE_MASK));
++	pending = gic_read32(GIC_REG(VPE_LOCAL, GIC_VPE_PEND));
++	masked = gic_read32(GIC_REG(VPE_LOCAL, GIC_VPE_MASK));
+ 
+ 	bitmap_and(&pending, &pending, &masked, GIC_NUM_LOCAL_INTRS);
+ 
+@@ -463,14 +489,14 @@ static void gic_mask_local_irq(struct irq_data *d)
+ {
+ 	int intr = GIC_HWIRQ_TO_LOCAL(d->hwirq);
+ 
+-	gic_write(GIC_REG(VPE_LOCAL, GIC_VPE_RMASK), 1 << intr);
++	gic_write32(GIC_REG(VPE_LOCAL, GIC_VPE_RMASK), 1 << intr);
+ }
+ 
+ static void gic_unmask_local_irq(struct irq_data *d)
+ {
+ 	int intr = GIC_HWIRQ_TO_LOCAL(d->hwirq);
+ 
+-	gic_write(GIC_REG(VPE_LOCAL, GIC_VPE_SMASK), 1 << intr);
++	gic_write32(GIC_REG(VPE_LOCAL, GIC_VPE_SMASK), 1 << intr);
+ }
+ 
+ static struct irq_chip gic_local_irq_controller = {
+@@ -488,7 +514,7 @@ static void gic_mask_local_irq_all_vpes(struct irq_data *d)
+ 	spin_lock_irqsave(&gic_lock, flags);
+ 	for (i = 0; i < gic_vpes; i++) {
+ 		gic_write(GIC_REG(VPE_LOCAL, GIC_VPE_OTHER_ADDR), i);
+-		gic_write(GIC_REG(VPE_OTHER, GIC_VPE_RMASK), 1 << intr);
++		gic_write32(GIC_REG(VPE_OTHER, GIC_VPE_RMASK), 1 << intr);
+ 	}
+ 	spin_unlock_irqrestore(&gic_lock, flags);
+ }
+@@ -502,7 +528,7 @@ static void gic_unmask_local_irq_all_vpes(struct irq_data *d)
+ 	spin_lock_irqsave(&gic_lock, flags);
+ 	for (i = 0; i < gic_vpes; i++) {
+ 		gic_write(GIC_REG(VPE_LOCAL, GIC_VPE_OTHER_ADDR), i);
+-		gic_write(GIC_REG(VPE_OTHER, GIC_VPE_SMASK), 1 << intr);
++		gic_write32(GIC_REG(VPE_OTHER, GIC_VPE_SMASK), 1 << intr);
+ 	}
+ 	spin_unlock_irqrestore(&gic_lock, flags);
+ }
+@@ -667,27 +693,32 @@ static int gic_local_irq_domain_map(struct irq_domain *d, unsigned int virq,
+ 
+ 		switch (intr) {
+ 		case GIC_LOCAL_INT_WD:
+-			gic_write(GIC_REG(VPE_OTHER, GIC_VPE_WD_MAP), val);
++			gic_write32(GIC_REG(VPE_OTHER, GIC_VPE_WD_MAP), val);
+ 			break;
+ 		case GIC_LOCAL_INT_COMPARE:
+-			gic_write(GIC_REG(VPE_OTHER, GIC_VPE_COMPARE_MAP), val);
++			gic_write32(GIC_REG(VPE_OTHER, GIC_VPE_COMPARE_MAP),
++				    val);
+ 			break;
+ 		case GIC_LOCAL_INT_TIMER:
+ 			/* CONFIG_MIPS_CMP workaround (see __gic_init) */
+ 			val = GIC_MAP_TO_PIN_MSK | timer_cpu_pin;
+-			gic_write(GIC_REG(VPE_OTHER, GIC_VPE_TIMER_MAP), val);
++			gic_write32(GIC_REG(VPE_OTHER, GIC_VPE_TIMER_MAP),
++				    val);
+ 			break;
+ 		case GIC_LOCAL_INT_PERFCTR:
+-			gic_write(GIC_REG(VPE_OTHER, GIC_VPE_PERFCTR_MAP), val);
++			gic_write32(GIC_REG(VPE_OTHER, GIC_VPE_PERFCTR_MAP),
++				    val);
+ 			break;
+ 		case GIC_LOCAL_INT_SWINT0:
+-			gic_write(GIC_REG(VPE_OTHER, GIC_VPE_SWINT0_MAP), val);
++			gic_write32(GIC_REG(VPE_OTHER, GIC_VPE_SWINT0_MAP),
++				    val);
+ 			break;
+ 		case GIC_LOCAL_INT_SWINT1:
+-			gic_write(GIC_REG(VPE_OTHER, GIC_VPE_SWINT1_MAP), val);
++			gic_write32(GIC_REG(VPE_OTHER, GIC_VPE_SWINT1_MAP),
++				    val);
+ 			break;
+ 		case GIC_LOCAL_INT_FDC:
+-			gic_write(GIC_REG(VPE_OTHER, GIC_VPE_FDC_MAP), val);
++			gic_write32(GIC_REG(VPE_OTHER, GIC_VPE_FDC_MAP), val);
+ 			break;
+ 		default:
+ 			pr_err("Invalid local IRQ %d\n", intr);
+@@ -792,7 +823,7 @@ static void __init __gic_init(unsigned long gic_base_addr,
+ 		 */
+ 		if (IS_ENABLED(CONFIG_MIPS_CMP) &&
+ 		    gic_local_irq_is_routable(GIC_LOCAL_INT_TIMER)) {
+-			timer_cpu_pin = gic_read(GIC_REG(VPE_LOCAL,
++			timer_cpu_pin = gic_read32(GIC_REG(VPE_LOCAL,
+ 							 GIC_VPE_TIMER_MAP)) &
+ 					GIC_MAP_MSK;
+ 			irq_set_chained_handler(MIPS_CPU_IRQ_BASE +
+diff --git a/include/linux/irqchip/mips-gic.h b/include/linux/irqchip/mips-gic.h
+index 9b1ad3734911..10e4a9073019 100644
+--- a/include/linux/irqchip/mips-gic.h
++++ b/include/linux/irqchip/mips-gic.h
+@@ -45,8 +45,14 @@
+ #define GIC_SH_REVISIONID_OFS		0x0020
+ 
+ /* Convert an interrupt number to a byte offset/bit for multi-word registers */
+-#define GIC_INTR_OFS(intr)		(((intr) / 32) * 4)
+-#define GIC_INTR_BIT(intr)		((intr) % 32)
++#define GIC_INTR_OFS(intr) ({				\
++	unsigned bits = mips_cm_is64 ? 64 : 32;		\
++	unsigned reg_idx = (intr) / bits;		\
++	unsigned reg_width = bits / 8;			\
++							\
++	reg_idx * reg_width;				\
++})
++#define GIC_INTR_BIT(intr)		((intr) % (mips_cm_is64 ? 64 : 32))
+ 
+ /* Polarity : Reset Value is always 0 */
+ #define GIC_SH_SET_POLARITY_OFS		0x0100
 -- 
 2.4.5

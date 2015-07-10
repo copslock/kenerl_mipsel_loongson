@@ -1,30 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Jul 2015 17:03:56 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:58921 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Jul 2015 17:04:13 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:12169 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27010124AbbGJPDav2Utp (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 10 Jul 2015 17:03:30 +0200
+        with ESMTP id S27010210AbbGJPDqOIUrp (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 10 Jul 2015 17:03:46 +0200
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 165B81818153A;
-        Fri, 10 Jul 2015 16:03:22 +0100 (IST)
+        by Websense Email Security Gateway with ESMTPS id EA09461CD79F3;
+        Fri, 10 Jul 2015 16:03:36 +0100 (IST)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
  KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Fri, 10 Jul 2015 16:03:24 +0100
+ 14.3.195.1; Fri, 10 Jul 2015 16:03:39 +0100
 Received: from localhost (10.100.200.2) by LEMAIL01.le.imgtec.org
  (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Fri, 10 Jul
- 2015 16:03:23 +0100
+ 2015 16:03:38 +0100
 From:   Paul Burton <paul.burton@imgtec.com>
 To:     <linux-mips@linux-mips.org>
 CC:     Matthew Fortune <matthew.fortune@imgtec.com>,
         Paul Burton <paul.burton@imgtec.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        "Zubair Lutfullah Kakakhel" <Zubair.Kakakhel@imgtec.com>,
+        Alex Smith <alex@alex-smith.me.uk>,
         <linux-kernel@vger.kernel.org>,
+        Michal Nazarewicz <mina86@mina86.com>,
         Richard Weinberger <richard@nod.at>,
-        James Hogan <james.hogan@imgtec.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
         Andy Lutomirski <luto@amacapital.net>,
+        "Daniel Borkmann" <dborkman@redhat.com>,
+        Markos Chandras <markos.chandras@imgtec.com>,
+        Frederic Weisbecker <fweisbec@gmail.com>,
         Ralf Baechle <ralf@linux-mips.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
         "Maciej W. Rozycki" <macro@codesourcery.com>
-Subject: [PATCH 09/16] MIPS: indicate FP mode in sigcontext sc_used_math
-Date:   Fri, 10 Jul 2015 16:00:18 +0100
-Message-ID: <1436540426-10021-10-git-send-email-paul.burton@imgtec.com>
+Subject: [PATCH 10/16] MIPS: add definitions for extended context
+Date:   Fri, 10 Jul 2015 16:00:19 +0100
+Message-ID: <1436540426-10021-11-git-send-email-paul.burton@imgtec.com>
 X-Mailer: git-send-email 2.4.4
 In-Reply-To: <1436540426-10021-1-git-send-email-paul.burton@imgtec.com>
 References: <1436540426-10021-1-git-send-email-paul.burton@imgtec.com>
@@ -35,7 +43,7 @@ Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48185
+X-archive-position: 48186
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -52,96 +60,178 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The sc_used_math field of struct sigcontext & its variants has
-traditionally been used as a boolean value indicating only whether or
-not floating point context is saved within the sigcontext. With various
-supported FP modes & the ability to switch between them this information
-will no longer be enough to decode the meaning of the data stored in the
-sc_fpregs fields of struct sigcontext.
+The context introduced by MSA needs to be saved around signals. However,
+we can't increase the size of struct sigcontext because that will change
+the offset of the signal mask in struct sigframe or struct ucontext.
+This patch instead places the new context immediately after the struct
+sigframe for traditional signals, or similarly after struct ucontext for
+RT signals. The layout of struct sigframe & struct ucontext is identical
+from their sigcontext fields onwards, so the offset from the sigcontext
+to the extended context will always be the same regardless of the type
+of signal.
 
-To make that possible 3 bits are defined within sc_used_math:
+Userland will be able to search through the extended context by using
+the magic values to detect which types of context are present. Any
+unrecognised context can be skipped over using the size field of struct
+extcontext. Once the magic value END_EXTCONTEXT_MAGIC is seen it is
+known that there are no further extended context structures to examine.
 
-  - Bit 0 (USED_FP) represents whether FP was used, essentially
-    providing the boolean flag which sc_used_math as a whole provided
-    previously.
+This approach is somewhat similar to that taken by ARM to save VFP &
+other context at the end of struct ucontext.
 
-  - Bit 1 (USED_FR1) provides the value of the Status.FR bit at the time
-    the FP context was saved.
-
-  - Bit 2 (USED_HYBRID_FPRS) indicates whether the FP context was saved
-    under the hybrid FPR scheme. Essentially, when set the odd singles
-    are located in bits 63:32 of the preceding even indexed sc_fpregs
-    element.
-
-Any userland that tests whether the sc_used_math field is zero or
-non-zero will continue to function as expected. Having said that, I
-could not find any userland which uses the sc_used_math field at all.
+Userland can determine whether extended context is present by checking
+for the USED_EXTCONTEXT bit in the sc_used_math field of struct
+sigcontext. Whilst this could potentially change the historic semantics
+of sc_used_math if further extended context which does not imply FP
+context were to be introduced in the future, I have been unable to find
+any userland code making use of sc_used_math at all. Using one of the
+fields described as unused in struct sigcontext was considered, but the
+kernel does not already write to those fields so there would be no
+guarantee of the field being clear on older kernels. Other alternatives
+would be to have userland check the kernel version, or to have a HWCAP
+bit indicating presence of extended context. However there is a desire
+to have the context & information required to decode it be self
+contained such that, for example, debuggers could decode the saved
+context easily.
 
 Signed-off-by: Paul Burton <paul.burton@imgtec.com>
 ---
 
- arch/mips/include/uapi/asm/sigcontext.h |  9 +++++++++
- arch/mips/kernel/signal.c               | 15 +++++++++++----
- 2 files changed, 20 insertions(+), 4 deletions(-)
+ arch/mips/include/asm/Kbuild            |  1 -
+ arch/mips/include/uapi/asm/sigcontext.h |  3 ++
+ arch/mips/include/uapi/asm/ucontext.h   | 65 +++++++++++++++++++++++++++++++++
+ arch/mips/kernel/signal.c               | 13 +++++++
+ 4 files changed, 81 insertions(+), 1 deletion(-)
+ create mode 100644 arch/mips/include/uapi/asm/ucontext.h
 
+diff --git a/arch/mips/include/asm/Kbuild b/arch/mips/include/asm/Kbuild
+index 526539c..18e8b8d 100644
+--- a/arch/mips/include/asm/Kbuild
++++ b/arch/mips/include/asm/Kbuild
+@@ -16,6 +16,5 @@ generic-y += sections.h
+ generic-y += segment.h
+ generic-y += serial.h
+ generic-y += trace_clock.h
+-generic-y += ucontext.h
+ generic-y += user.h
+ generic-y += xor.h
 diff --git a/arch/mips/include/uapi/asm/sigcontext.h b/arch/mips/include/uapi/asm/sigcontext.h
-index ae78902..f28facd 100644
+index f28facd..80db06c 100644
 --- a/arch/mips/include/uapi/asm/sigcontext.h
 +++ b/arch/mips/include/uapi/asm/sigcontext.h
-@@ -12,6 +12,15 @@
- #include <linux/types.h>
- #include <asm/sgidefs.h>
+@@ -21,6 +21,9 @@
+ /* FR=1, but with odd singles in bits 63:32 of preceding even double */
+ #define USED_HYBRID_FPRS	(1 << 2)
  
-+/* scalar FP context was used */
-+#define USED_FP			(1 << 0)
-+
-+/* the value of Status.FR when context was saved */
-+#define USED_FR1		(1 << 1)
-+
-+/* FR=1, but with odd singles in bits 63:32 of preceding even double */
-+#define USED_HYBRID_FPRS	(1 << 2)
++/* extended context was used, see struct extcontext for details */
++#define USED_EXTCONTEXT		(1 << 3)
 +
  #if _MIPS_SIM == _MIPS_SIM_ABI32
  
  struct sigcontext {
+diff --git a/arch/mips/include/uapi/asm/ucontext.h b/arch/mips/include/uapi/asm/ucontext.h
+new file mode 100644
+index 0000000..2320144
+--- /dev/null
++++ b/arch/mips/include/uapi/asm/ucontext.h
+@@ -0,0 +1,65 @@
++#ifndef __MIPS_UAPI_ASM_UCONTEXT_H
++#define __MIPS_UAPI_ASM_UCONTEXT_H
++
++/**
++ * struct extcontext - extended context header structure
++ * @magic:	magic value identifying the type of extended context
++ * @size:	the size in bytes of the enclosing structure
++ *
++ * Extended context structures provide context which does not fit within struct
++ * sigcontext. They are placed sequentially in memory at the end of struct
++ * ucontext and struct sigframe, with each extended context structure beginning
++ * with a header defined by this struct. The type of context represented is
++ * indicated by the magic field. Userland may check each extended context
++ * structure against magic values that it recognises. The size field allows any
++ * unrecognised context to be skipped, allowing for future expansion. The end
++ * of the extended context data is indicated by the magic value
++ * END_EXTCONTEXT_MAGIC.
++ */
++struct extcontext {
++	unsigned int		magic;
++	unsigned int		size;
++};
++
++/**
++ * struct msa_extcontext - MSA extended context structure
++ * @ext:	the extended context header, with magic == MSA_EXTCONTEXT_MAGIC
++ * @wr:		the most significant 64 bits of each MSA vector register
++ * @csr:	the value of the MSA control & status register
++ *
++ * If MSA context is live for a task at the time a signal is delivered to it,
++ * this structure will hold the MSA context of the task as it was prior to the
++ * signal delivery.
++ */
++struct msa_extcontext {
++	struct extcontext	ext;
++#define MSA_EXTCONTEXT_MAGIC	0x784d5341	/* xMSA */
++
++	unsigned long long	wr[32];
++	unsigned int		csr;
++};
++
++#define END_EXTCONTEXT_MAGIC	0x78454e44	/* xEND */
++
++/**
++ * struct ucontext - user context structure
++ * @uc_flags:
++ * @uc_link:
++ * @uc_stack:
++ * @uc_mcontext:	holds basic processor state
++ * @uc_sigmask:
++ * @uc_extcontext:	holds extended processor state
++ */
++struct ucontext {
++	/* Historic fields matching asm-generic */
++	unsigned long		uc_flags;
++	struct ucontext		*uc_link;
++	stack_t			uc_stack;
++	struct sigcontext	uc_mcontext;
++	sigset_t		uc_sigmask;
++
++	/* Extended context structures may follow ucontext */
++	unsigned long long	uc_extcontext[0];
++};
++
++#endif /* __MIPS_UAPI_ASM_UCONTEXT_H */
 diff --git a/arch/mips/kernel/signal.c b/arch/mips/kernel/signal.c
-index 5b28f67..de0b451 100644
+index de0b451..4e626ca 100644
 --- a/arch/mips/kernel/signal.c
 +++ b/arch/mips/kernel/signal.c
-@@ -133,9 +133,16 @@ int protected_save_fp_context(void __user *sc)
- 	unsigned int used;
- 	int err;
- 
--	used = !!used_math();
-+	used = used_math() ? USED_FP : 0;
-+	if (used) {
-+		if (!test_thread_flag(TIF_32BIT_FPREGS))
-+			used |= USED_FR1;
-+		if (test_thread_flag(TIF_HYBRID_FPREGS))
-+			used |= USED_HYBRID_FPRS;
-+	}
+@@ -47,8 +47,11 @@ static int (*restore_fp_context)(void __user *sc);
+ struct sigframe {
+ 	u32 sf_ass[4];		/* argument save space for o32 */
+ 	u32 sf_pad[2];		/* Was: signal trampoline */
 +
- 	err = __put_user(used, used_math);
--	if (err || !used)
-+	if (err || !(used & USED_FP))
- 		return err;
++	/* Matches struct ucontext from its uc_mcontext field onwards */
+ 	struct sigcontext sf_sc;
+ 	sigset_t sf_mask;
++	unsigned long long sf_extcontext[0];
+ };
  
- 	/*
-@@ -177,13 +184,13 @@ int protected_restore_fp_context(void __user *sc)
- 	int err, sig, tmp __maybe_unused;
+ struct rt_sigframe {
+@@ -686,6 +689,16 @@ static int smp_restore_fp_context(void __user *sc)
  
- 	err = __get_user(used, used_math);
--	conditional_used_math(used);
-+	conditional_used_math(used & USED_FP);
- 
- 	/*
- 	 * The signal handler may have used FPU; give it up if the program
- 	 * doesn't want it following sigreturn.
- 	 */
--	if (err || !used)
-+	if (err || !(used & USED_FP))
- 		lose_fpu(0);
- 	if (err)
- 		return err;
+ static int signal_setup(void)
+ {
++	/*
++	 * The offset from sigcontext to extended context should be the same
++	 * regardless of the type of signal, such that userland can always know
++	 * where to look if it wishes to find the extended context structures.
++	 */
++	BUILD_BUG_ON((offsetof(struct sigframe, sf_extcontext) -
++		      offsetof(struct sigframe, sf_sc)) !=
++		     (offsetof(struct rt_sigframe, rs_uc.uc_extcontext) -
++		      offsetof(struct rt_sigframe, rs_uc.uc_mcontext)));
++
+ #ifdef CONFIG_SMP
+ 	/* For now just do the cpu_has_fpu check when the functions are invoked */
+ 	save_fp_context = smp_save_fp_context;
 -- 
 2.4.4

@@ -1,46 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Jul 2015 17:01:09 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:9511 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Jul 2015 17:01:28 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:14258 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27009964AbbGJPBHsOVLp (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 10 Jul 2015 17:01:07 +0200
+        with ESMTP id S27010008AbbGJPBYo4pTp (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 10 Jul 2015 17:01:24 +0200
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id D68316F8F7978;
-        Fri, 10 Jul 2015 16:00:58 +0100 (IST)
+        by Websense Email Security Gateway with ESMTPS id 429DB8DC27D9F;
+        Fri, 10 Jul 2015 16:01:16 +0100 (IST)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
  KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Fri, 10 Jul 2015 16:01:01 +0100
+ 14.3.195.1; Fri, 10 Jul 2015 16:01:18 +0100
 Received: from localhost (10.100.200.2) by LEMAIL01.le.imgtec.org
  (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Fri, 10 Jul
- 2015 16:01:00 +0100
+ 2015 16:01:17 +0100
 From:   Paul Burton <paul.burton@imgtec.com>
 To:     <linux-mips@linux-mips.org>
 CC:     Matthew Fortune <matthew.fortune@imgtec.com>,
         Paul Burton <paul.burton@imgtec.com>,
-        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
-        Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        Daniel Borkmann <dborkman@redhat.com>,
-        Huacai Chen <chenhc@lemote.com>,
-        "Maciej W. Rozycki" <macro@linux-mips.org>,
-        Alex Smith <alex@alex-smith.me.uk>,
-        Michal Nazarewicz <mina86@mina86.com>,
-        "Maciej W. Rozycki" <macro@codesourcery.com>,
-        Markos Chandras <markos.chandras@imgtec.com>,
-        Frederic Weisbecker <fweisbec@gmail.com>,
-        "Ralf Baechle" <ralf@linux-mips.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Andy Lutomirski <luto@amacapital.net>,
-        Manuel Lauss <manuel.lauss@gmail.com>,
-        Kees Cook <keescook@chromium.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        <linux-kernel@vger.kernel.org>,
-        Richard Weinberger <richard@nod.at>,
-        David Daney <david.daney@cavium.com>
-Subject: [PATCH 00/16] MSA vector context signal handling & HWCAPs
-Date:   Fri, 10 Jul 2015 16:00:09 +0100
-Message-ID: <1436540426-10021-1-git-send-email-paul.burton@imgtec.com>
+        Ralf Baechle <ralf@linux-mips.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: [PATCH 01/16] MIPS: remove outdated comments in sigcontext.h
+Date:   Fri, 10 Jul 2015 16:00:10 +0100
+Message-ID: <1436540426-10021-2-git-send-email-paul.burton@imgtec.com>
 X-Mailer: git-send-email 2.4.4
+In-Reply-To: <1436540426-10021-1-git-send-email-paul.burton@imgtec.com>
+References: <1436540426-10021-1-git-send-email-paul.burton@imgtec.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [10.100.200.2]
@@ -48,7 +31,7 @@ Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48176
+X-archive-position: 48177
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -65,52 +48,40 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This series provides the final bits of support for MSA as far as
-userland that isn't a debugger goes. In order to preserve backwards
-compatibility it saves the extended vector context after the end of the
-sigframe or ucontext, at a fixed offset. A bit set in sigcontext's
-sc_used_math field indicates to userland (and to the kernel on
-sigreturn) that the extended context is present.
+The offsets to various fields within struct sigcontext are declared
+using asm-offsets.c these days, so drop the outdated comment that talks
+about keeping in sync with a no longer present file.
 
-With these final bits in, the presence of MSA support is indicated via a
-HWCAP bit that userland may check for.
+Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+---
 
-Paul Burton (16):
-  MIPS: remove outdated comments in sigcontext.h
-  MIPS: simplify EVA FP context handling code
-  MIPS: add offsets to sigcontext FP fields to struct mips_abi
-  MIPS: use struct mips_abi offsets to save FP context
-  MIPS: move FP usage checks into protected_{save,restore}_fp_context
-  MIPS: skip odd double FP registers when copying FP32 sigcontext
-  MIPS: use common FP sigcontext code for O32 compat
-  MIPS: remove unused {get,put}_sigset functions
-  MIPS: indicate FP mode in sigcontext sc_used_math
-  MIPS: add definitions for extended context
-  MIPS: save MSA extended context around signals
-  MIPS: AT_HWCAP aux vector infrastructure
-  MIPS: advertise MIPSr6 via HWCAP when appropriate
-  MIPS: advertise MSA support via HWCAP when present
-  MIPS: require O32 FP64 support for MIPS64 with O32 compat
-  MIPS: drop EXPERIMENTAL tag from O32+FP64 & MSA
+ arch/mips/include/uapi/asm/sigcontext.h | 7 -------
+ 1 file changed, 7 deletions(-)
 
- arch/mips/Kconfig                       |   5 +-
- arch/mips/include/asm/Kbuild            |   1 -
- arch/mips/include/asm/abi.h             |   4 +
- arch/mips/include/asm/elf.h             |   4 +-
- arch/mips/include/asm/signal.h          |   3 +
- arch/mips/include/uapi/asm/hwcap.h      |   8 +
- arch/mips/include/uapi/asm/sigcontext.h |  19 +-
- arch/mips/include/uapi/asm/ucontext.h   |  65 +++++
- arch/mips/kernel/asm-offsets.c          |  11 -
- arch/mips/kernel/cpu-probe.c            |   7 +
- arch/mips/kernel/r4k_fpu.S              | 372 +++++++++++++-------------
- arch/mips/kernel/signal-common.h        |   9 +
- arch/mips/kernel/signal.c               | 446 ++++++++++++++++++++++++--------
- arch/mips/kernel/signal32.c             | 207 +--------------
- arch/mips/kernel/signal_n32.c           |   6 +-
- 15 files changed, 666 insertions(+), 501 deletions(-)
- create mode 100644 arch/mips/include/uapi/asm/hwcap.h
- create mode 100644 arch/mips/include/uapi/asm/ucontext.h
-
+diff --git a/arch/mips/include/uapi/asm/sigcontext.h b/arch/mips/include/uapi/asm/sigcontext.h
+index 6c9906f..ae78902 100644
+--- a/arch/mips/include/uapi/asm/sigcontext.h
++++ b/arch/mips/include/uapi/asm/sigcontext.h
+@@ -14,10 +14,6 @@
+ 
+ #if _MIPS_SIM == _MIPS_SIM_ABI32
+ 
+-/*
+- * Keep this struct definition in sync with the sigcontext fragment
+- * in arch/mips/tools/offset.c
+- */
+ struct sigcontext {
+ 	unsigned int		sc_regmask;	/* Unused */
+ 	unsigned int		sc_status;	/* Unused */
+@@ -45,9 +41,6 @@ struct sigcontext {
+ 
+ #include <linux/posix_types.h>
+ /*
+- * Keep this struct definition in sync with the sigcontext fragment
+- * in arch/mips/tools/offset.c
+- *
+  * Warning: this structure illdefined with sc_badvaddr being just an unsigned
+  * int so it was changed to unsigned long in 2.6.0-test1.  This may break
+  * binary compatibility - no prisoners.
 -- 
 2.4.4

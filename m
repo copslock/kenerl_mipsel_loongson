@@ -1,183 +1,203 @@
-From: Boris Brezillon <boris.brezillon@free-electrons.com>
-Date: Thu, 9 Jul 2015 12:20:21 +0200
-Subject: [PATCH] clk: fix some determine_rate implementations
-Message-ID: <20150709102021.E_nfeehPddAf8EnE_gtEXHNv603zB8CfJZSPMjExGFc@z>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Jul 2015 10:29:28 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:64946 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27009073AbbGJI30xhIYv (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 10 Jul 2015 10:29:26 +0200
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id D5E43D373C40C;
+        Fri, 10 Jul 2015 09:29:18 +0100 (IST)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Fri, 10 Jul 2015 09:29:20 +0100
+Received: from mchandras-linux.le.imgtec.org (192.168.154.48) by
+ LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
+ 14.3.210.2; Fri, 10 Jul 2015 09:29:19 +0100
+From:   Markos Chandras <markos.chandras@imgtec.com>
+To:     <linux-mips@linux-mips.org>
+CC:     Markos Chandras <markos.chandras@imgtec.com>,
+        <stable@vger.kernel.org>
+Subject: [PATCH v2] MIPS: mm: c-r4k: Fix cache flushing for MT cores
+Date:   Fri, 10 Jul 2015 09:29:10 +0100
+Message-ID: <1436516950-13980-1-git-send-email-markos.chandras@imgtec.com>
+X-Mailer: git-send-email 2.4.5
+In-Reply-To: <1435746639-7019-1-git-send-email-markos.chandras@imgtec.com>
+References: <1435746639-7019-1-git-send-email-markos.chandras@imgtec.com>
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Originating-IP: [192.168.154.48]
+Return-Path: <Markos.Chandras@imgtec.com>
+X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
+X-Orcpt: rfc822;linux-mips@linux-mips.org
+Original-Recipient: rfc822;linux-mips@linux-mips.org
+X-archive-position: 48168
+X-ecartis-version: Ecartis v1.0.0
+Sender: linux-mips-bounce@linux-mips.org
+Errors-to: linux-mips-bounce@linux-mips.org
+X-original-sender: markos.chandras@imgtec.com
+Precedence: bulk
+List-help: <mailto:ecartis@linux-mips.org?Subject=help>
+List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
+List-software: Ecartis version 1.0.0
+List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
+X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
+List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
+List-owner: <mailto:ralf@linux-mips.org>
+List-post: <mailto:linux-mips@linux-mips.org>
+List-archive: <http://www.linux-mips.org/archives/linux-mips/>
+X-list: linux-mips
 
-Some determine_rate implementations are not returning an error when then
-failed to adapt the rate according to the rate request.
-Fix them so that they return an error instead of silently returning 0.
+MT_SMP is not the only SMP option for MT cores. The MT_SMP option
+allows more than one VPE per core to appear as a secondary CPU in the
+system. Because of how CM works, it propagates the address-based
+cache ops to the secondary cores but not the index-based ones.
+Because of that, the code does not use IPIs to flush the L1 caches on
+secondary cores because the CM would have done that already. However,
+the CM functionality is independent of the type of SMP kernel so even in
+non-MT kernels, IPIs are not necessary. As a result of which, we change
+the conditional to depend on the CM presence. Moreover, since VPEs on
+the same core share the same L1 caches, there is no need to send an
+IPI on all of them so we calculate a suitable cpumask with only one
+VPE per core.
 
-Signed-off-by: Boris Brezillon <boris.brezillon@free-electrons.com>
+Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+Cc: <stable@vger.kernel.org> # 3.15+
 ---
- arch/mips/alchemy/common/clock.c    |  4 ++++
- drivers/clk/clk-composite.c         |  3 +--
- drivers/clk/clk.c                   | 15 ++++++---------
- drivers/clk/hisilicon/clk-hi3620.c  |  2 +-
- drivers/clk/mmp/clk-mix.c           |  5 ++++-
- drivers/clk/sunxi/clk-factors.c     |  6 ++++--
- drivers/clk/sunxi/clk-sun6i-ar100.c |  3 +++
- drivers/clk/sunxi/clk-sunxi.c       |  6 ++++--
- 8 files changed, 27 insertions(+), 17 deletions(-)
+Changes since v1:
+- Include <asm/mips-cm.h> header
+---
+ arch/mips/include/asm/smp.h |  1 +
+ arch/mips/kernel/smp.c      | 44 +++++++++++++++++++++++++++++++++++++++++++-
+ arch/mips/mm/c-r4k.c        | 14 +++++++++++---
+ 3 files changed, 55 insertions(+), 4 deletions(-)
 
-diff --git a/arch/mips/alchemy/common/clock.c
-b/arch/mips/alchemy/common/clock.c index 0b4cf3e..7cc3eed 100644
---- a/arch/mips/alchemy/common/clock.c
-+++ b/arch/mips/alchemy/common/clock.c
-@@ -469,9 +469,13 @@ static int alchemy_clk_fgcs_detr(struct clk_hw *hw,
- 		}
- 	}
+diff --git a/arch/mips/include/asm/smp.h b/arch/mips/include/asm/smp.h
+index 2b25d1ba1ea0..16f1ea9ab191 100644
+--- a/arch/mips/include/asm/smp.h
++++ b/arch/mips/include/asm/smp.h
+@@ -23,6 +23,7 @@
+ extern int smp_num_siblings;
+ extern cpumask_t cpu_sibling_map[];
+ extern cpumask_t cpu_core_map[];
++extern cpumask_t cpu_foreign_map;
  
-+	if (br < 0)
-+		return br;
+ #define raw_smp_processor_id() (current_thread_info()->cpu)
+ 
+diff --git a/arch/mips/kernel/smp.c b/arch/mips/kernel/smp.c
+index faa46ebd9dda..d0744cc77ea7 100644
+--- a/arch/mips/kernel/smp.c
++++ b/arch/mips/kernel/smp.c
+@@ -63,6 +63,13 @@ EXPORT_SYMBOL(cpu_sibling_map);
+ cpumask_t cpu_core_map[NR_CPUS] __read_mostly;
+ EXPORT_SYMBOL(cpu_core_map);
+ 
++/*
++ * A logcal cpu mask containing only one VPE per core to
++ * reduce the number of IPIs on large MT systems.
++ */
++cpumask_t cpu_foreign_map __read_mostly;
++EXPORT_SYMBOL(cpu_foreign_map);
 +
- 	req->best_parent_rate = bpr;
- 	req->best_parent_hw = __clk_get_hw(bpc);
- 	req->rate = br;
-+
- 	return 0;
+ /* representing cpus for which sibling maps can be computed */
+ static cpumask_t cpu_sibling_setup_map;
+ 
+@@ -103,6 +110,29 @@ static inline void set_cpu_core_map(int cpu)
+ 	}
  }
  
-diff --git a/drivers/clk/clk-composite.c b/drivers/clk/clk-composite.c
-index 9e69f34..35ac062 100644
---- a/drivers/clk/clk-composite.c
-+++ b/drivers/clk/clk-composite.c
-@@ -125,8 +125,7 @@ static int clk_composite_determine_rate(struct
-clk_hw *hw, return mux_ops->determine_rate(mux_hw, req);
- 	} else {
- 		pr_err("clk: clk_composite_determine_rate function
-called, but no mux or rate callback set!\n");
--		req->rate = 0;
--		return 0;
-+		return -EINVAL;
- 	}
++/*
++ * Calculate a new cpu_foreign_map mask whenever a
++ * new cpu appears or disappears.
++ */
++static inline void calculate_cpu_foreign_map(void)
++{
++	int i, k, core_present;
++	cpumask_t temp_foreign_map;
++
++	/* Re-calculate the mask */
++	for_each_online_cpu(i) {
++		core_present = 0;
++		for_each_cpu(k, &temp_foreign_map)
++			if (cpu_data[i].package == cpu_data[k].package &&
++			    cpu_data[i].core == cpu_data[k].core)
++				core_present = 1;
++		if (!core_present)
++			cpumask_set_cpu(i, &temp_foreign_map);
++	}
++
++	cpumask_copy(&cpu_foreign_map, &temp_foreign_map);
++}
++
+ struct plat_smp_ops *mp_ops;
+ EXPORT_SYMBOL(mp_ops);
+ 
+@@ -146,6 +176,8 @@ asmlinkage void start_secondary(void)
+ 	set_cpu_sibling_map(cpu);
+ 	set_cpu_core_map(cpu);
+ 
++	calculate_cpu_foreign_map();
++
+ 	cpumask_set_cpu(cpu, &cpu_callin_map);
+ 
+ 	synchronise_count_slave(cpu);
+@@ -173,9 +205,18 @@ void __irq_entry smp_call_function_interrupt(void)
+ static void stop_this_cpu(void *dummy)
+ {
+ 	/*
+-	 * Remove this CPU:
++	 * Remove this CPU. Be a bit slow here and
++	 * set the bits for every online CPU so we don't miss
++	 * any IPI whilst taking this VPE down.
+ 	 */
++
++	cpumask_copy(&cpu_foreign_map, cpu_online_mask);
++
++	/* Make it visible to every other CPU */
++	smp_mb();
++
+ 	set_cpu_online(smp_processor_id(), false);
++	calculate_cpu_foreign_map();
+ 	local_irq_disable();
+ 	while (1);
  }
+@@ -197,6 +238,7 @@ void __init smp_prepare_cpus(unsigned int max_cpus)
+ 	mp_ops->prepare_cpus(max_cpus);
+ 	set_cpu_sibling_map(0);
+ 	set_cpu_core_map(0);
++	calculate_cpu_foreign_map();
+ #ifndef CONFIG_HOTPLUG_CPU
+ 	init_cpu_present(cpu_possible_mask);
+ #endif
+diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
+index 375ccf678e9d..fbea4432f3f2 100644
+--- a/arch/mips/mm/c-r4k.c
++++ b/arch/mips/mm/c-r4k.c
+@@ -37,6 +37,7 @@
+ #include <asm/cacheflush.h> /* for run_uncached() */
+ #include <asm/traps.h>
+ #include <asm/dma-coherence.h>
++#include <asm/mips-cm.h>
  
-diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
-index c182d8a..d67d9b4 100644
---- a/drivers/clk/clk.c
-+++ b/drivers/clk/clk.c
-@@ -447,24 +447,18 @@ clk_mux_determine_rate_flags(struct clk_hw *hw,
-struct clk_rate_request *req, 
- 	/* if NO_REPARENT flag set, pass through to current parent */
- 	if (core->flags & CLK_SET_RATE_NO_REPARENT) {
--		parent = core->parent;
-+		best_parent = core->parent;
- 		if (core->flags & CLK_SET_RATE_PARENT) {
--			ret = __clk_determine_rate(parent ?
-parent->hw : NULL,
-+			ret = __clk_determine_rate(best_parent ?
-best_parent->hw : NULL, &parent_req);
- 			if (ret)
- 				return ret;
+ /*
+  * Special Variant of smp_call_function for use by cache functions:
+@@ -51,9 +52,16 @@ static inline void r4k_on_each_cpu(void (*func) (void *info), void *info)
+ {
+ 	preempt_disable();
  
- 			best = parent_req.rate;
--			req->best_parent_hw = parent->hw;
--			req->best_parent_rate = best;
--		} else if (parent) {
-+		} else if (best_parent) {
- 			best = clk_core_get_rate_nolock(parent);
--			req->best_parent_hw = parent->hw;
--			req->best_parent_rate = best;
- 		} else {
- 			best = clk_core_get_rate_nolock(core);
--			req->best_parent_hw = NULL;
--			req->best_parent_rate = 0;
- 		}
- 
- 		goto out;
-@@ -493,6 +487,9 @@ clk_mux_determine_rate_flags(struct clk_hw *hw,
-struct clk_rate_request *req, }
- 	}
- 
-+	if (!best_parent)
-+		return -EINVAL;
-+
- out:
- 	if (best_parent)
- 		req->best_parent_hw = best_parent->hw;
-diff --git a/drivers/clk/hisilicon/clk-hi3620.c
-b/drivers/clk/hisilicon/clk-hi3620.c index a0674ba..c84ec86 100644
---- a/drivers/clk/hisilicon/clk-hi3620.c
-+++ b/drivers/clk/hisilicon/clk-hi3620.c
-@@ -316,7 +316,7 @@ static int mmc_clk_determine_rate(struct clk_hw *hw,
- 		req->rate = 180000000;
- 		req->best_parent_rate = 1440000000;
- 	}
--	return 0;
-+	return -EINVAL;
+-#ifndef CONFIG_MIPS_MT_SMP
+-	smp_call_function(func, info, 1);
+-#endif
++	/*
++	 * The Coherent Manager propagates address-based cache ops to other
++	 * cores but not index-based ops. However, r4k_on_each_cpu is used
++	 * in both cases so there is no easy way to tell what kind of op is
++	 * executed to the other cores. The best we can probably do is
++	 * to restrict that call when a CM is not present because both
++	 * CM-based SMP protocols (CMP & CPS) restrict index-based cache ops.
++	 */
++	if (!mips_cm_present())
++		smp_call_function_many(&cpu_foreign_map, func, info, 1);
+ 	func(info);
+ 	preempt_enable();
  }
- 
- static u32 mmc_clk_delay(u32 val, u32 para, u32 off, u32 len)
-diff --git a/drivers/clk/mmp/clk-mix.c b/drivers/clk/mmp/clk-mix.c
-index 7a37432..665cb67 100644
---- a/drivers/clk/mmp/clk-mix.c
-+++ b/drivers/clk/mmp/clk-mix.c
-@@ -218,7 +218,7 @@ static int mmp_clk_mix_determine_rate(struct clk_hw
-*hw, parent = NULL;
- 	mix_rate_best = 0;
- 	parent_rate_best = 0;
--	gap_best = req->rate;
-+	gap_best = ULONG_MAX;
- 	parent_best = NULL;
- 
- 	if (mix->table) {
-@@ -262,6 +262,9 @@ static int mmp_clk_mix_determine_rate(struct clk_hw
-*hw, }
- 
- found:
-+	if (!parent_best)
-+		return -EINVAL;
-+
- 	req->best_parent_rate = parent_rate_best;
- 	req->best_parent_hw = __clk_get_hw(parent_best);
- 	req->rate = mix_rate_best;
-diff --git a/drivers/clk/sunxi/clk-factors.c
-b/drivers/clk/sunxi/clk-factors.c index 7a48587..94e2570 100644
---- a/drivers/clk/sunxi/clk-factors.c
-+++ b/drivers/clk/sunxi/clk-factors.c
-@@ -107,8 +107,10 @@ static int clk_factors_determine_rate(struct
-clk_hw *hw, }
- 	}
- 
--	if (best_parent)
--		req->best_parent_hw = __clk_get_hw(best_parent);
-+	if (!best_parent)
-+		return -EINVAL;
-+
-+	req->best_parent_hw = __clk_get_hw(best_parent);
- 	req->best_parent_rate = best;
- 	req->rate = best_child_rate;
- 
-diff --git a/drivers/clk/sunxi/clk-sun6i-ar100.c
-b/drivers/clk/sunxi/clk-sun6i-ar100.c index d70c1ea..21b076e 100644
---- a/drivers/clk/sunxi/clk-sun6i-ar100.c
-+++ b/drivers/clk/sunxi/clk-sun6i-ar100.c
-@@ -105,6 +105,9 @@ static int ar100_determine_rate(struct clk_hw *hw,
- 		}
- 	}
- 
-+	if (best_rate < 0)
-+		return best_rate;
-+
- 	req->rate = best_rate;
- 
- 	return 0;
-diff --git a/drivers/clk/sunxi/clk-sunxi.c
-b/drivers/clk/sunxi/clk-sunxi.c index d0f72a1..0e15165 100644
---- a/drivers/clk/sunxi/clk-sunxi.c
-+++ b/drivers/clk/sunxi/clk-sunxi.c
-@@ -146,8 +146,10 @@ static int sun6i_ahb1_clk_determine_rate(struct
-clk_hw *hw, }
- 	}
- 
--	if (best_parent)
--		req->best_parent_hw = __clk_get_hw(best_parent);
-+	if (!best_parent)
-+		return -EINVAL;
-+
-+	req->best_parent_hw = __clk_get_hw(best_parent);
- 	req->best_parent_rate = best;
- 	req->rate = best_child_rate;
- 
 -- 
-1.9.1
+2.4.5

@@ -1,42 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Jul 2015 17:53:40 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:29099 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27010210AbbGJPxjHnVg1 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 10 Jul 2015 17:53:39 +0200
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 984B5E6ADB34A;
-        Fri, 10 Jul 2015 16:53:30 +0100 (IST)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Fri, 10 Jul 2015 16:53:33 +0100
-Received: from localhost (10.100.200.189) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Fri, 10 Jul
- 2015 16:53:32 +0100
-From:   Paul Burton <paul.burton@imgtec.com>
-To:     <linux-mips@linux-mips.org>
-CC:     Paul Burton <paul.burton@imgtec.com>,
-        <linux-kernel@vger.kernel.org>,
-        James Hogan <james.hogan@imgtec.com>,
-        Markos Chandras <markos.chandras@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 2/2] MIPS: malta: use generic platform_maar_init
-Date:   Fri, 10 Jul 2015 16:52:39 +0100
-Message-ID: <1436543559-26886-3-git-send-email-paul.burton@imgtec.com>
-X-Mailer: git-send-email 2.4.4
-In-Reply-To: <1436543559-26886-1-git-send-email-paul.burton@imgtec.com>
-References: <1436543559-26886-1-git-send-email-paul.burton@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Jul 2015 18:11:37 +0200 (CEST)
+Received: from tex.lwn.net ([70.33.254.29]:32769 "EHLO vena.lwn.net"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27010892AbbGJQLgE7zG1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 10 Jul 2015 18:11:36 +0200
+Received: from lwn.net (localhost.localdomain [127.0.0.1])
+        (using TLSv1 with cipher AES128-SHA (128/128 bits))
+        (No client certificate requested)
+        by vena.lwn.net (Postfix) with ESMTP id EC8811540042;
+        Fri, 10 Jul 2015 10:11:31 -0600 (MDT)
+Date:   Fri, 10 Jul 2015 10:11:18 -0600
+From:   Jonathan Corbet <corbet@lwn.net>
+To:     Eric B Munson <emunson@akamai.com>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        Michal Hocko <mhocko@suse.cz>,
+        Vlastimil Babka <vbabka@suse.cz>, linux-alpha@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        linux-mm@kvack.org, linux-arch@vger.kernel.org,
+        linux-api@vger.kernel.org
+Subject: Re: [PATCH V3 3/5] mm: mlock: Introduce VM_LOCKONFAULT and add
+ mlock flags to enable it
+Message-ID: <20150710101118.5d04d627@lwn.net>
+In-Reply-To: <20150709184635.GE4669@akamai.com>
+References: <1436288623-13007-1-git-send-email-emunson@akamai.com>
+        <1436288623-13007-4-git-send-email-emunson@akamai.com>
+        <20150708132351.61c13db6@lwn.net>
+        <20150708203456.GC4669@akamai.com>
+        <20150708151750.75e65859@lwn.net>
+        <20150709184635.GE4669@akamai.com>
+Organization: LWN.net
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.100.200.189]
-Return-Path: <Paul.Burton@imgtec.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 8bit
+Return-Path: <corbet@lwn.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48195
+X-archive-position: 48196
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@imgtec.com
+X-original-sender: corbet@lwn.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,53 +54,22 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The default implementation of platform_maar_init is sufficient for Malta
-boards where we want to allow speculation in the regions of memory
-corresponding to DDR & disallow it elsewhere. Drop the custom
-implementation such that the default is used, reducing the duplication
-of information provided by the Malta platform code.
+On Thu, 9 Jul 2015 14:46:35 -0400
+Eric B Munson <emunson@akamai.com> wrote:
 
-Signed-off-by: Paul Burton <paul.burton@imgtec.com>
----
+> > One other question...if I call mlock2(MLOCK_ONFAULT) on a range that
+> > already has resident pages, I believe that those pages will not be locked
+> > until they are reclaimed and faulted back in again, right?  I suspect that
+> > could be surprising to users.  
+> 
+> That is the case.  I am looking into what it would take to find only the
+> present pages in a range and lock them, if that is the behavior that is
+> preferred I can include it in the updated series.
 
- arch/mips/mti-malta/malta-memory.c | 25 -------------------------
- 1 file changed, 25 deletions(-)
+For whatever my $0.02 is worth, I think that should be done.  Otherwise
+the mlock2() interface is essentially nondeterministic; you'll never
+really know if a specific page is locked or not.
 
-diff --git a/arch/mips/mti-malta/malta-memory.c b/arch/mips/mti-malta/malta-memory.c
-index b769657..dadeb83 100644
---- a/arch/mips/mti-malta/malta-memory.c
-+++ b/arch/mips/mti-malta/malta-memory.c
-@@ -179,31 +179,6 @@ void __init prom_free_prom_memory(void)
- 	}
- }
- 
--unsigned platform_maar_init(unsigned num_pairs)
--{
--	phys_addr_t mem_end = (physical_memsize & ~0xffffull) - 1;
--	struct maar_config cfg[] = {
--		/* DRAM preceding I/O */
--		{ 0x00000000, 0x0fffffff, MIPS_MAAR_S },
--
--		/* DRAM following I/O */
--		{ 0x20000000, mem_end, MIPS_MAAR_S },
--
--		/* DRAM alias in upper half of physical */
--		{ 0x80000000, 0x80000000 + mem_end, MIPS_MAAR_S },
--	};
--	unsigned i, num_cfg = ARRAY_SIZE(cfg);
--
--	/* If DRAM fits before I/O, drop the region following it */
--	if (physical_memsize <= 0x10000000) {
--		num_cfg--;
--		for (i = 1; i < num_cfg; i++)
--			cfg[i] = cfg[i + 1];
--	}
--
--	return maar_config(cfg, num_cfg, num_pairs);
--}
--
- phys_addr_t mips_cdmm_phys_base(void)
- {
- 	/* This address is "typically unused" */
--- 
-2.4.4
+Thanks,
+
+jon

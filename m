@@ -1,39 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Jul 2015 11:13:05 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:19723 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27009073AbbGJJNDSSxIv (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 10 Jul 2015 11:13:03 +0200
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 84DFE26A3D542
-        for <linux-mips@linux-mips.org>; Fri, 10 Jul 2015 10:12:55 +0100 (IST)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Fri, 10 Jul 2015 10:12:57 +0100
-Received: from mchandras-linux.le.imgtec.org (192.168.154.48) by
- LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.210.2; Fri, 10 Jul 2015 10:12:56 +0100
-From:   Markos Chandras <markos.chandras@imgtec.com>
-To:     <linux-mips@linux-mips.org>
-CC:     Paul Burton <paul.burton@imgtec.com>,
-        Markos Chandras <markos.chandras@imgtec.com>
-Subject: [PATCH v2 05/19] MIPS: asm: mips-cm: Implement mips_cm_revision
-Date:   Fri, 10 Jul 2015 10:12:52 +0100
-Message-ID: <1436519572-29407-1-git-send-email-markos.chandras@imgtec.com>
-X-Mailer: git-send-email 2.4.5
-In-Reply-To: <1436434853-30001-6-git-send-email-markos.chandras@imgtec.com>
-References: <1436434853-30001-6-git-send-email-markos.chandras@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Jul 2015 13:40:01 +0200 (CEST)
+Received: from mail7.hitachi.co.jp ([133.145.228.42]:44429 "EHLO
+        mail7.hitachi.co.jp" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27009557AbbGJLj4ofmMT (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 10 Jul 2015 13:39:56 +0200
+Received: from mlsv5.hitachi.co.jp (unknown [133.144.234.166])
+        by mail7.hitachi.co.jp (Postfix) with ESMTP id 888D1B1D385;
+        Fri, 10 Jul 2015 20:39:54 +0900 (JST)
+Received: from mfilter05.hitachi.co.jp by mlsv5.hitachi.co.jp (8.13.1/8.13.1) id t6ABdscK001978; Fri, 10 Jul 2015 20:39:54 +0900
+Received: from vshuts02.hitachi.co.jp (vshuts02.hitachi.co.jp [10.201.6.84])
+        by mfilter05.hitachi.co.jp (Switch-3.3.4/Switch-3.3.4) with ESMTP id t6ABdq2h019859;
+        Fri, 10 Jul 2015 20:39:53 +0900
+Received: from hsdlmain.sdl.hitachi.co.jp (unknown [133.144.14.194])
+        by vshuts02.hitachi.co.jp (Postfix) with ESMTP id 9E5D0490041;
+        Fri, 10 Jul 2015 20:39:52 +0900 (JST)
+Received: from hsdlvgate2.sdl.hitachi.co.jp by hsdlmain.sdl.hitachi.co.jp (8.13.8/3.7W11021512) id t6ABdq03008822; Fri, 10 Jul 2015 20:39:52 +0900
+X-AuditID: 85900ec0-9f5ccb9000001a57-6b-559faef188b9
+Received: from sdl99w.sdl.hitachi.co.jp (sdl99w.yrl.intra.hitachi.co.jp [133.144.14.250])
+        by hsdlvgate2.sdl.hitachi.co.jp (Symantec Mail Security) with ESMTP id 8E318236561;
+        Fri, 10 Jul 2015 20:39:29 +0900 (JST)
+Received: from mailb.sdl.hitachi.co.jp (sdl99b.yrl.intra.hitachi.co.jp [133.144.14.197])
+        by sdl99w.sdl.hitachi.co.jp (Postfix) with ESMTP id 1107253C21A;
+        Fri, 10 Jul 2015 20:39:52 +0900 (JST)
+Received: from [10.198.219.30] (unknown [10.198.219.30])
+        by mailb.sdl.hitachi.co.jp (Postfix) with ESMTP id C0FB5495B93;
+        Fri, 10 Jul 2015 20:39:51 +0900 (JST)
+X-Mailbox-Line: From nobody Fri Jul 10 20:33:31 2015
+Subject: [PATCH 1/3] panic: Disable crash_kexec_post_notifiers if kdump is
+ not available
+To:     Andrew Morton <akpm@linux-foundation.org>,
+        "Eric W. Biederman" <ebiederm@xmission.com>,
+        Vivek Goyal <vgoyal@redhat.com>
+From:   Hidehiro Kawai <hidehiro.kawai.ez@hitachi.com>
+Cc:     linux-mips@linux-mips.org, Baoquan He <bhe@redhat.com>,
+        linux-sh@vger.kernel.org, linux-s390@vger.kernel.org,
+        kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Ingo Molnar <mingo@kernel.org>,
+        HATAYAMA Daisuke <d.hatayama@jp.fujitsu.com>,
+        Masami Hiramatsu <masami.hiramatsu.pt@hitachi.com>,
+        Daniel Walker <dwalker@fifo99.com>,
+        linuxppc-dev@lists.ozlabs.org, linux-metag@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+Date:   Fri, 10 Jul 2015 20:33:31 +0900
+Message-ID: <20150710113331.4368.63745.stgit@softrs>
+In-Reply-To: <20150710113331.4368.10495.stgit@softrs>
+References: <20150710113331.4368.10495.stgit@softrs>
+User-Agent: StGit/0.16
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.154.48]
-Return-Path: <Markos.Chandras@imgtec.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Brightmail-Tracker: AAAAAA==
+Return-Path: <hidehiro.kawai.ez@hitachi.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48169
+X-archive-position: 48170
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: markos.chandras@imgtec.com
+X-original-sender: hidehiro.kawai.ez@hitachi.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,60 +70,36 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Paul Burton <paul.burton@imgtec.com>
+You can call panic notifiers and kmsg dumpers before kdump by
+specifying "crash_kexec_post_notifiers" as a boot parameter.
+However, it doesn't make sense if kdump is not available.  In that
+case, disable "crash_kexec_post_notifiers" boot parameter so that
+you can't change the value of the parameter.
 
-Provide a function to trivially return the version of the CM present in
-the system, or 0 if no CM is present. The mips_cm_revision() will be
-used later on to determine the CM register width, so it must not use
-the regular CM accessors to read the revision register since that will
-lead to build failures due to recursive inlines.
-
-Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+Signed-off-by: Hidehiro Kawai <hidehiro.kawai.ez@hitachi.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Eric Biederman <ebiederm@xmission.com>
+Cc: Vivek Goyal <vgoyal@redhat.com>
 ---
-Changes since v1
-- Fix comments to be kerneldoc friendly
-- Drop static variable and add missing parens
----
- arch/mips/include/asm/mips-cm.h | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+ kernel/panic.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/mips/include/asm/mips-cm.h b/arch/mips/include/asm/mips-cm.h
-index edc7ee95269e..c70ba21e62f0 100644
---- a/arch/mips/include/asm/mips-cm.h
-+++ b/arch/mips/include/asm/mips-cm.h
-@@ -189,6 +189,13 @@ BUILD_CM_Cx_R_(tcid_8_priority,	0x80)
- #define CM_GCR_REV_MINOR_SHF			0
- #define CM_GCR_REV_MINOR_MSK			(_ULCAST_(0xff) << 0)
+diff --git a/kernel/panic.c b/kernel/panic.c
+index 04e91ff..5252331 100644
+--- a/kernel/panic.c
++++ b/kernel/panic.c
+@@ -502,12 +502,14 @@ __visible void __stack_chk_fail(void)
+ core_param(pause_on_oops, pause_on_oops, int, 0644);
+ core_param(panic_on_warn, panic_on_warn, int, 0644);
  
-+#define CM_ENCODE_REV(major, minor) \
-+		(((major) << CM_GCR_REV_MAJOR_SHF) | \
-+		 ((minor) << CM_GCR_REV_MINOR_SHF))
-+
-+#define CM_REV_CM2				CM_ENCODE_REV(6, 0)
-+#define CM_REV_CM3				CM_ENCODE_REV(8, 0)
-+
- /* GCR_ERROR_CAUSE register fields */
- #define CM_GCR_ERROR_CAUSE_ERRTYPE_SHF		27
- #define CM_GCR_ERROR_CAUSE_ERRTYPE_MSK		(_ULCAST_(0x1f) << 27)
-@@ -324,4 +331,18 @@ static inline int mips_cm_l2sync(void)
++#ifdef CONFIG_CRASH_DUMP
+ static int __init setup_crash_kexec_post_notifiers(char *s)
+ {
+ 	crash_kexec_post_notifiers = true;
  	return 0;
  }
+ early_param("crash_kexec_post_notifiers", setup_crash_kexec_post_notifiers);
++#endif
  
-+/**
-+ * mips_cm_revision() - return CM revision
-+ *
-+ * Return: The revision of the CM, from GCR_REV, or 0 if no CM is present. The
-+ * return value should be checked against the CM_REV_* macros.
-+ */
-+static inline int mips_cm_revision(void)
-+{
-+	if (!mips_cm_present())
-+		return 0;
-+
-+	return read_gcr_rev();
-+}
-+
- #endif /* __MIPS_ASM_MIPS_CM_H__ */
--- 
-2.4.5
+ static int __init oops_setup(char *s)
+ {

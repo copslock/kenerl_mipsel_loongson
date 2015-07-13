@@ -1,39 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Jul 2015 22:49:48 +0200 (CEST)
-Received: from www.linutronix.de ([62.245.132.108]:57017 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27011092AbbGMUqTQab9V (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 13 Jul 2015 22:46:19 +0200
-Received: from localhost ([127.0.0.1] helo=[127.0.1.1])
-        by Galois.linutronix.de with esmtp (Exim 4.80)
-        (envelope-from <tglx@linutronix.de>)
-        id 1ZEkcD-0006Wu-44; Mon, 13 Jul 2015 22:46:17 +0200
-Message-Id: <20150713200715.463697490@linutronix.de>
-User-Agent: quilt/0.63-1
-Date:   Mon, 13 Jul 2015 20:46:10 -0000
-From:   Thomas Gleixner <tglx@linutronix.de>
-To:     LKML <linux-kernel@vger.kernel.org>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Jul 2015 22:51:08 +0200 (CEST)
+Received: from mail3-relais-sop.national.inria.fr ([192.134.164.104]:26808
+        "EHLO mail3-relais-sop.national.inria.fr" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011028AbbGMUvDzCi8V (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 13 Jul 2015 22:51:03 +0200
+X-IronPort-AV: E=Sophos;i="5.15,465,1432591200"; 
+   d="scan'208";a="139912912"
+Received: from ip-65-111-68-50.unsi.net (HELO hadrien.local) ([65.111.68.50])
+  by mail3-relais-sop.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-SHA; 13 Jul 2015 22:50:57 +0200
+Date:   Mon, 13 Jul 2015 16:50:49 -0400 (EDT)
+From:   Julia Lawall <julia.lawall@lip6.fr>
+X-X-Sender: jll@hadrien
+To:     Thomas Gleixner <tglx@linutronix.de>
+cc:     LKML <linux-kernel@vger.kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
         Jiang Liu <jiang.liu@linux.intel.com>,
-        linux-mips@linux-mips.org, Julia Lawall <Julia.Lawall@lip6.fr>
-Subject: [patch 12/12] MIPS/PCI/rt3883: Prepare rt3883_pci_irq_handler for irq
- argument removal
-References: <20150713200602.799079101@linutronix.de>
+        linux-mips@linux-mips.org,
+        Russell King <rmk+kernel@arm.linux.org.uk>,
+        Julia Lawall <Julia.Lawall@lip6.fr>
+Subject: Re: [patch 04/12] MIPS/pci-rt3883: Consolidate chained IRQ handler
+ install/remove
+In-Reply-To: <20150713200714.765131309@linutronix.de>
+Message-ID: <alpine.DEB.2.10.1507131650110.13108@hadrien>
+References: <20150713200602.799079101@linutronix.de> <20150713200714.765131309@linutronix.de>
+User-Agent: Alpine 2.10 (DEB 1266 2009-07-14)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-15
-Content-Disposition: inline;
- filename=MIPS-PCI-rt3883--Prepare-rt3883_pci_irq_handler-for-irq-argument-removal.patch
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001,URIBL_BLOCKED=0.001
-Return-Path: <tglx@linutronix.de>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <julia.lawall@lip6.fr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48244
+X-archive-position: 48245
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tglx@linutronix.de
+X-original-sender: julia.lawall@lip6.fr
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,42 +46,46 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The irq argument of most interrupt flow handlers is unused or merily
-used instead of a local variable. The handlers which need the irq
-argument can retrieve the irq number from the irq descriptor.
 
-Search and update was done with coccinelle and the invaluable help of
-Julia Lawall.
 
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: Julia Lawall <Julia.Lawall@lip6.fr>
-Cc: Jiang Liu <jiang.liu@linux.intel.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
----
----
- arch/mips/pci/pci-rt3883.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+On Mon, 13 Jul 2015, Thomas Gleixner wrote:
 
-Index: tip/arch/mips/pci/pci-rt3883.c
-===================================================================
---- tip.orig/arch/mips/pci/pci-rt3883.c
-+++ tip/arch/mips/pci/pci-rt3883.c
-@@ -129,7 +129,7 @@ static void rt3883_pci_write_cfg32(struc
- 	rt3883_pci_w32(rpc, val, RT3883_PCI_REG_CFGDATA);
- }
- 
--static void rt3883_pci_irq_handler(unsigned int irq, struct irq_desc *desc)
-+static void rt3883_pci_irq_handler(unsigned int __irq, struct irq_desc *desc)
- {
- 	struct rt3883_pci_controller *rpc;
- 	u32 pending;
-@@ -145,7 +145,7 @@ static void rt3883_pci_irq_handler(unsig
- 	}
- 
- 	while (pending) {
--		unsigned bit = __ffs(pending);
-+		unsigned irq, bit = __ffs(pending);
- 
- 		irq = irq_find_mapping(rpc->irq_domain, bit);
- 		generic_handle_irq(irq);
+> Chained irq handlers usually set up handler data as well. We now have
+> a function to set both under irq_desc->lock. Replace the two calls
+> with one.
+
+Are the original calls remaining?  If so, should there be a semantic patch
+in the kernel to check for this, in case people ut the two calls in teh
+future.
+
+julia
+
+>
+> Search and conversion was done with coccinelle.
+>
+> Reported-by: Russell King <rmk+kernel@arm.linux.org.uk>
+> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Julia Lawall <Julia.Lawall@lip6.fr>
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: linux-mips@linux-mips.org
+> ---
+>  arch/mips/pci/pci-rt3883.c |    3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+>
+> Index: tip/arch/mips/pci/pci-rt3883.c
+> ===================================================================
+> --- tip.orig/arch/mips/pci/pci-rt3883.c
+> +++ tip/arch/mips/pci/pci-rt3883.c
+> @@ -225,8 +225,7 @@ static int rt3883_pci_irq_init(struct de
+>  		return -ENODEV;
+>  	}
+>
+> -	irq_set_handler_data(irq, rpc);
+> -	irq_set_chained_handler(irq, rt3883_pci_irq_handler);
+> +	irq_set_chained_handler_and_data(irq, rt3883_pci_irq_handler, rpc);
+>
+>  	return 0;
+>  }
+>
+>
+>

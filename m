@@ -1,15 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Jul 2015 22:46:24 +0200 (CEST)
-Received: from www.linutronix.de ([62.245.132.108]:56949 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Jul 2015 22:46:41 +0200 (CEST)
+Received: from www.linutronix.de ([62.245.132.108]:56956 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27011028AbbGMUqB23QOV (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 13 Jul 2015 22:46:01 +0200
+        with ESMTP id S27011067AbbGMUqDFza7V (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 13 Jul 2015 22:46:03 +0200
 Received: from localhost ([127.0.0.1] helo=[127.0.1.1])
         by Galois.linutronix.de with esmtp (Exim 4.80)
         (envelope-from <tglx@linutronix.de>)
-        id 1ZEkbw-0006V5-2M; Mon, 13 Jul 2015 22:46:00 +0200
-Message-Id: <20150713200714.511675588@linutronix.de>
+        id 1ZEkbx-0006VB-Le; Mon, 13 Jul 2015 22:46:01 +0200
+Message-Id: <20150713200714.607700691@linutronix.de>
 User-Agent: quilt/0.63-1
-Date:   Mon, 13 Jul 2015 20:45:53 -0000
+Date:   Mon, 13 Jul 2015 20:45:55 -0000
 From:   Thomas Gleixner <tglx@linutronix.de>
 To:     LKML <linux-kernel@vger.kernel.org>
 Cc:     Ralf Baechle <ralf@linux-mips.org>,
@@ -17,13 +17,13 @@ Cc:     Ralf Baechle <ralf@linux-mips.org>,
         linux-mips@linux-mips.org,
         Russell King <rmk+kernel@arm.linux.org.uk>,
         Julia Lawall <Julia.Lawall@lip6.fr>
-Subject: [patch 01/12] MIPS/jz4740: Consolidate chained IRQ handler
+Subject: [patch 02/12] MIPS/pci-ar71xx: Consolidate chained IRQ handler
  install/remove
 References: <20150713200602.799079101@linutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ISO-8859-15
 Content-Disposition: inline;
- filename=MIPS-jz4740-Consolidate-chained-IRQ-handler-install-.patch
+ filename=MIPS-pci-ar71xx-Consolidate-chained-IRQ-handler-inst.patch
 X-Linutronix-Spam-Score: -1.0
 X-Linutronix-Spam-Level: -
 X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001,URIBL_BLOCKED=0.001
@@ -31,7 +31,7 @@ Return-Path: <tglx@linutronix.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48233
+X-archive-position: 48234
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -60,21 +60,21 @@ Cc: Julia Lawall <Julia.Lawall@lip6.fr>
 Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
 ---
- arch/mips/jz4740/gpio.c |    4 ++--
+ arch/mips/pci/pci-ar71xx.c |    4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-Index: tip/arch/mips/jz4740/gpio.c
+Index: tip/arch/mips/pci/pci-ar71xx.c
 ===================================================================
---- tip.orig/arch/mips/jz4740/gpio.c
-+++ tip/arch/mips/jz4740/gpio.c
-@@ -423,8 +423,8 @@ static void jz4740_gpio_chip_init(struct
- 	chip->base = ioremap(JZ4740_GPIO_BASE_ADDR + (id * 0x100), 0x100);
+--- tip.orig/arch/mips/pci/pci-ar71xx.c
++++ tip/arch/mips/pci/pci-ar71xx.c
+@@ -312,8 +312,8 @@ static void ar71xx_pci_irq_init(struct a
+ 		irq_set_chip_data(i, apc);
+ 	}
  
- 	chip->irq = JZ4740_IRQ_INTC_GPIO(id);
--	irq_set_handler_data(chip->irq, chip);
--	irq_set_chained_handler(chip->irq, jz_gpio_irq_demux_handler);
-+	irq_set_chained_handler_and_data(chip->irq,
-+					 jz_gpio_irq_demux_handler, chip);
+-	irq_set_handler_data(apc->irq, apc);
+-	irq_set_chained_handler(apc->irq, ar71xx_pci_irq_handler);
++	irq_set_chained_handler_and_data(apc->irq, ar71xx_pci_irq_handler,
++					 apc);
+ }
  
- 	gc = irq_alloc_generic_chip(chip->gpio_chip.label, 1, chip->irq_base,
- 		chip->base, handle_level_irq);
+ static void ar71xx_pci_reset(void)

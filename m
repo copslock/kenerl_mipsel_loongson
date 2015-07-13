@@ -1,44 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Jul 2015 22:26:33 +0200 (CEST)
-Received: from ec2-54-201-57-178.us-west-2.compute.amazonaws.com ([54.201.57.178]:46769
-        "EHLO ip-172-31-12-36.us-west-2.compute.internal"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27011028AbbGMU0cQ9BFV (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 13 Jul 2015 22:26:32 +0200
-Received: by ip-172-31-12-36.us-west-2.compute.internal (Postfix, from userid 1001)
-        id 19441407F3; Mon, 13 Jul 2015 20:26:11 +0000 (UTC)
-Date:   Mon, 13 Jul 2015 20:26:11 +0000
-From:   dwalker@fifo99.com
-To:     "Eric W. Biederman" <ebiederm@xmission.com>
-Cc:     Hidehiro Kawai <hidehiro.kawai.ez@hitachi.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Vivek Goyal <vgoyal@redhat.com>, linux-mips@linux-mips.org,
-        Baoquan He <bhe@redhat.com>, linux-sh@vger.kernel.org,
-        linux-s390@vger.kernel.org, kexec@lists.infradead.org,
-        linux-kernel@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
-        HATAYAMA Daisuke <d.hatayama@jp.fujitsu.com>,
-        Masami Hiramatsu <masami.hiramatsu.pt@hitachi.com>,
-        linuxppc-dev@lists.ozlabs.org, linux-metag@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 1/3] panic: Disable crash_kexec_post_notifiers if kdump
- is not available
-Message-ID: <20150713202611.GA16525@fifo99.com>
-References: <20150710113331.4368.10495.stgit@softrs>
- <20150710113331.4368.63745.stgit@softrs>
- <87wpy82kqf.fsf@x220.int.ebiederm.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87wpy82kqf.fsf@x220.int.ebiederm.org>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <dwalker@fifo99.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Jul 2015 22:30:57 +0200 (CEST)
+Received: from smtp.codeaurora.org ([198.145.29.96]:50784 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27009967AbbGMUazNQcXV (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 13 Jul 2015 22:30:55 +0200
+Received: from smtp.codeaurora.org (localhost [127.0.0.1])
+        by smtp.codeaurora.org (Postfix) with ESMTP id 3C112140365;
+        Mon, 13 Jul 2015 20:30:53 +0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 486)
+        id 1FD0B140371; Mon, 13 Jul 2015 20:30:53 +0000 (UTC)
+Received: from sboyd-linux.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+        (using TLSv1.1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: sboyd@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 51818140365;
+        Mon, 13 Jul 2015 20:30:51 +0000 (UTC)
+From:   Stephen Boyd <sboyd@codeaurora.org>
+To:     Mike Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@codeaurora.org>
+Cc:     linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org,
+        Manuel Lauss <manuel.lauss@gmail.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Linux-MIPS <linux-mips@linux-mips.org>
+Subject: [PATCH] MIPS: Alchemy: Include clk.h
+Date:   Mon, 13 Jul 2015 13:30:50 -0700
+Message-Id: <1436819450-16440-1-git-send-email-sboyd@codeaurora.org>
+X-Mailer: git-send-email 2.3.0.rc1.33.g42e4583
+X-Virus-Scanned: ClamAV using ClamSMTP
+Return-Path: <sboyd@codeaurora.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48230
+X-archive-position: 48231
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dwalker@fifo99.com
+X-original-sender: sboyd@codeaurora.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,17 +47,34 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Jul 10, 2015 at 08:41:28AM -0500, Eric W. Biederman wrote:
-> Hidehiro Kawai <hidehiro.kawai.ez@hitachi.com> writes:
-> 
-> > You can call panic notifiers and kmsg dumpers before kdump by
-> > specifying "crash_kexec_post_notifiers" as a boot parameter.
-> > However, it doesn't make sense if kdump is not available.  In that
-> > case, disable "crash_kexec_post_notifiers" boot parameter so that
-> > you can't change the value of the parameter.
-> 
-> Nacked-by: "Eric W. Biederman" <ebiederm@xmission.com>
+This clock provider uses the consumer API, so include clk.h
+explicitly.
 
-I think it would make sense if he just replaced "kdump" with "kexec".
+Cc: Manuel Lauss <manuel.lauss@gmail.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Linux-MIPS <linux-mips@linux-mips.org>
+Signed-off-by: Stephen Boyd <sboyd@codeaurora.org>
+---
 
-Daniel
+Please ack so this can go through the clk tree. We're removing
+the include of clk.h in clk-provider.h so that the consumer
+and provider APIs are clearly split.
+
+ arch/mips/alchemy/common/clock.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/mips/alchemy/common/clock.c b/arch/mips/alchemy/common/clock.c
+index 6e46abe0dac6..5168c4dca1ca 100644
+--- a/arch/mips/alchemy/common/clock.c
++++ b/arch/mips/alchemy/common/clock.c
+@@ -35,6 +35,7 @@
+ 
+ #include <linux/init.h>
+ #include <linux/io.h>
++#include <linux/clk.h>
+ #include <linux/clk-provider.h>
+ #include <linux/clkdev.h>
+ #include <linux/slab.h>
+-- 
+The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,
+a Linux Foundation Collaborative Project

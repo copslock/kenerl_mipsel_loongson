@@ -1,40 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Jul 2015 18:15:15 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:40985 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27010459AbbGMQPNOiVy8 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 13 Jul 2015 18:15:13 +0200
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 3EEC57108342;
-        Mon, 13 Jul 2015 17:15:04 +0100 (IST)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Mon, 13 Jul 2015 17:15:07 +0100
-Received: from localhost (10.100.200.70) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Mon, 13 Jul
- 2015 17:15:06 +0100
-From:   Paul Burton <paul.burton@imgtec.com>
-To:     <linux-mips@linux-mips.org>
-CC:     Paul Burton <paul.burton@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: [PATCH 2/2] MIPS: drop CONFIG_RUNTIME_DEBUG & debug.h
-Date:   Mon, 13 Jul 2015 17:14:22 +0100
-Message-ID: <1436804062-30041-2-git-send-email-paul.burton@imgtec.com>
-X-Mailer: git-send-email 2.4.5
-In-Reply-To: <1436804062-30041-1-git-send-email-paul.burton@imgtec.com>
-References: <1436804062-30041-1-git-send-email-paul.burton@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Jul 2015 20:35:36 +0200 (CEST)
+Received: from mail-wi0-f169.google.com ([209.85.212.169]:34227 "EHLO
+        mail-wi0-f169.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010659AbbGMSfe45890 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 13 Jul 2015 20:35:34 +0200
+Received: by wibud3 with SMTP id ud3so37187313wib.1
+        for <linux-mips@linux-mips.org>; Mon, 13 Jul 2015 11:35:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc:content-type;
+        bh=mNz0sbM31F25o3BT2ZvjVjjSJUkp6GLmqTPCWr+eQYA=;
+        b=YyDVY5iB7mP61wgPFSvY3RWVrzHI9XjPgw+1egLn2Lo5sT4D4cLVgYZ8DYiyhR+6aw
+         H8crkJ+dm9On4DkeiNCJk6GTUuGoM6K/jaKI+yA1Gv/p4i9Aju2OZpxKlOjBgUXqUl3F
+         IYpU9DpjKR3HjYpDgJsa9MRgjZnM9iLSMtgSCS7MWftdkIgGl526wRe9XxaqbpN342Ef
+         HEpwVy7oAcbNYkufsJiTZ6HxD8CkYv/+XF+U63TL9ZU14Y+bkaAYCYxbs60P7gb2zbUS
+         Z8zTbh0qZ+o0lmdvSTAhmF6hFanpRLSAU0VkmLMlh64LmTdPi/a5HRNopmNuhOVJu9jv
+         mEZg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc:content-type;
+        bh=mNz0sbM31F25o3BT2ZvjVjjSJUkp6GLmqTPCWr+eQYA=;
+        b=GN/+4mPMUf/qE4JSG873pqFlat8PovBBuL5ThBUmKns2Ay0jFNoplJDsm3zqAo+xWE
+         rACcjzJkdHMDBXeDZUcI+vn1B9wI9aHbbUYt25ZLeMT6i+8uLbmAowZ3n3WEmm5Tkemx
+         PF14qjewKEw0JxPW0ro8/CQ7d1iC3fVetxOb2H9euSeG6QqG8lwvW88A5YhcAOzJTu6+
+         PV+kDWP+v13nwyceR7Fw1DpGCFvimPIJa26ti6ZVld9peCIuQwzFMsTHVPs2dhrGwq5I
+         C6iTOW+PxepWhACnrO7KJUmiZNMpVWm1PjwVbxK02keQtW5f4U0bkXaqDV0nNlMAzgNO
+         3CdA==
+X-Gm-Message-State: ALoCoQl9W+LyQUVjX2oyM+swpueKOdO+tUF0IXdBI0EgK1Me+4j1rWXBjz9Nd1jeOriCdHys5WeA
+X-Received: by 10.194.87.102 with SMTP id w6mr12347243wjz.111.1436812529563;
+ Mon, 13 Jul 2015 11:35:29 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.100.200.70]
-Return-Path: <Paul.Burton@imgtec.com>
+Received: by 10.28.210.74 with HTTP; Mon, 13 Jul 2015 11:35:09 -0700 (PDT)
+In-Reply-To: <20150713032303.D49801402B1@ozlabs.org>
+References: <20150712220211.7166.42035.stgit@bhelgaas-glaptop2.roam.corp.google.com>
+ <20150713032303.D49801402B1@ozlabs.org>
+From:   Bjorn Helgaas <bhelgaas@google.com>
+Date:   Mon, 13 Jul 2015 13:35:09 -0500
+Message-ID: <CAErSpo52Kk0c=1UHQzxntJc3ph_CX8vcY+QdULBKv-HGUHBK9Q@mail.gmail.com>
+Subject: Re: [3/3] IRQ: Print "unexpected IRQ" messages consistently across architectures
+To:     Michael Ellerman <mpe@ellerman.id.au>
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Linux-Arch <linux-arch@vger.kernel.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        linux-am33-list@redhat.com,
+        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+        linux-c6x-dev@linux-c6x.org, linux-parisc@vger.kernel.org,
+        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+        "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
+        adi-buildroot-devel@lists.sourceforge.net,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        linux-m68k@lists.linux-m68k.org, linux-alpha@vger.kernel.org,
+        "x86@kernel.org" <x86@kernel.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <bhelgaas@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48228
+X-archive-position: 48229
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@imgtec.com
+X-original-sender: bhelgaas@google.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,90 +75,45 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The debug.h header provided some MIPS-specific debug macros, which are
-no longer used at all. Remove them.
+On Sun, Jul 12, 2015 at 10:23 PM, Michael Ellerman <mpe@ellerman.id.au> wrote:
+> On Sun, 2015-12-07 at 22:02:11 UTC, Bjorn Helgaas wrote:
+>> Many architectures use a variant of "unexpected IRQ trap at vector %x" to
+>> log unexpected IRQs.  This is confusing because (a) it prints the Linux IRQ
+>> number, but "vector" more often refers to a CPU vector number, and (b) it
+>> prints the IRQ number in hex with no base indication, while Linux IRQ
+>> numbers are usually printed in decimal.
+>>
+>> Print the same text ("unexpected IRQ %d") across all architectures.
+>>
+>> No functional change other than the output text.
+>
+> There's already a fallback version in asm-generic, so shouldn't you instead
+> just delete all the versions that are identical to that?
+>
+> eg. on powerpc we have:
+>
+>>  static inline void ack_bad_irq(unsigned int irq)
+>>  {
+>> -     printk(KERN_CRIT "unexpected IRQ trap at vector %02x\n", irq);
+>> +     printk(KERN_CRIT "unexpected IRQ %d\n", irq);
+>>  }
+>
+> And the generic version is:
+>
+>>  #ifndef ack_bad_irq
+>>  static inline void ack_bad_irq(unsigned int irq)
+>>  {
+>> -     printk(KERN_CRIT "unexpected IRQ trap at vector %02x\n", irq);
+>> +     printk(KERN_CRIT "unexpected IRQ %d\n", irq);
+>>  }
+>>  #endif
+>
+> So we can just delete the powerpc version?
 
-Signed-off-by: Paul Burton <paul.burton@imgtec.com>
----
+Wow, I really didn't do my homework here.  Not only is there a generic
+version already, but there's also print_irq_desc(), which prints way
+more information than any of the ack_bad_irq() implementations.
 
- arch/mips/Kconfig.debug       |  9 --------
- arch/mips/include/asm/debug.h | 48 -------------------------------------------
- 2 files changed, 57 deletions(-)
- delete mode 100644 arch/mips/include/asm/debug.h
+I'll try again :)
 
-diff --git a/arch/mips/Kconfig.debug b/arch/mips/Kconfig.debug
-index 3a2b775..e250524 100644
---- a/arch/mips/Kconfig.debug
-+++ b/arch/mips/Kconfig.debug
-@@ -87,15 +87,6 @@ config SB1XXX_CORELIS
- 	  Select compile flags that produce code that can be processed by the
- 	  Corelis mksym utility and UDB Emulator.
- 
--config RUNTIME_DEBUG
--	bool "Enable run-time debugging"
--	depends on DEBUG_KERNEL
--	help
--	  If you say Y here, some debugging macros will do run-time checking.
--	  If you say N here, those macros will mostly turn to no-ops.  See
--	  arch/mips/include/asm/debug.h for debugging macros.
--	  If unsure, say N.
--
- config DEBUG_ZBOOT
- 	bool "Enable compressed kernel support debugging"
- 	depends on DEBUG_KERNEL && SYS_SUPPORTS_ZBOOT
-diff --git a/arch/mips/include/asm/debug.h b/arch/mips/include/asm/debug.h
-deleted file mode 100644
-index 1fd5a2b..0000000
---- a/arch/mips/include/asm/debug.h
-+++ /dev/null
-@@ -1,48 +0,0 @@
--/*
-- * Debug macros for run-time debugging.
-- * Turned on/off with CONFIG_RUNTIME_DEBUG option.
-- *
-- * Copyright (C) 2001 MontaVista Software Inc.
-- * Author: Jun Sun, jsun@mvista.com or jsun@junsun.net
-- *
-- * This program is free software; you can redistribute  it and/or modify it
-- * under  the terms of  the GNU General  Public License as published by the
-- * Free Software Foundation;  either version 2 of the  License, or (at your
-- * option) any later version.
-- *
-- */
--
--#ifndef _ASM_DEBUG_H
--#define _ASM_DEBUG_H
--
--
--/*
-- * run-time macros for catching spurious errors.  Eable CONFIG_RUNTIME_DEBUG in
-- * kernel hacking config menu to use them.
-- *
-- * Use them as run-time debugging aid.  NEVER USE THEM AS ERROR HANDLING CODE!!!
-- */
--
--#ifdef CONFIG_RUNTIME_DEBUG
--
--#include <linux/kernel.h>
--
--#define db_assert(x)  if (!(x)) { \
--	panic("assertion failed at %s:%d: %s", __FILE__, __LINE__, #x); }
--#define db_warn(x)  if (!(x)) { \
--	printk(KERN_WARNING "warning at %s:%d: %s", __FILE__, __LINE__, #x); }
--#define db_verify(x, y) db_assert(x y)
--#define db_verify_warn(x, y) db_warn(x y)
--#define db_run(x)  do { x; } while (0)
--
--#else
--
--#define db_assert(x)
--#define db_warn(x)
--#define db_verify(x, y) x
--#define db_verify_warn(x, y) x
--#define db_run(x)
--
--#endif
--
--#endif /* _ASM_DEBUG_H */
--- 
-2.4.5
+Bjorn

@@ -1,61 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Jul 2015 09:14:50 +0200 (CEST)
-Received: from mail-oi0-f52.google.com ([209.85.218.52]:34116 "EHLO
-        mail-oi0-f52.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008613AbbGMHOsmEA0q (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 13 Jul 2015 09:14:48 +0200
-Received: by oiab3 with SMTP id b3so129619794oia.1
-        for <linux-mips@linux-mips.org>; Mon, 13 Jul 2015 00:14:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc:content-type;
-        bh=3P7fOsl13nMBjqfNiiX3RuhvTgQbJu69vSXdLWBq1uU=;
-        b=lSI9bswGDHxgGdWhjaekvO7I8M3JMPKRoppWW2XhPzveDbdxfD569vbMPEHw5zQ6ak
-         qvXOsmLToHgTB09AH6BOqzKQn97AEPbXz8MDF3KzK/YG1W/uTNYERxFJ4GeUXZzCI+CZ
-         z29oIXKHGSxX72GmU8yrGgkLGNVPOyhlsqhi7iWosNIJgX7qIkRTYO/9SabBx03PmtV5
-         C/V0UjOYAOdAx5hvvxL31POE0S4JpfcUsREhKknWIn0oNzv8nvcw5zgKuXE7egrY7hrP
-         tR3fuUNixPBr3oNMYqwU3hV6oCuUd7Y/LupdRszmnsF62VJwGsYT2xHEkdE2VzFE5TV7
-         FHdw==
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Jul 2015 11:01:01 +0200 (CEST)
+Received: from devils.ext.ti.com ([198.47.26.153]:53345 "EHLO
+        devils.ext.ti.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27007236AbbGMJA6a30pX (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 13 Jul 2015 11:00:58 +0200
+Received: from dflxv15.itg.ti.com ([128.247.5.124])
+        by devils.ext.ti.com (8.13.7/8.13.7) with ESMTP id t6D90er8032564;
+        Mon, 13 Jul 2015 04:00:40 -0500
+Received: from DFLE73.ent.ti.com (dfle73.ent.ti.com [128.247.5.110])
+        by dflxv15.itg.ti.com (8.14.3/8.13.8) with ESMTP id t6D90d8A022628;
+        Mon, 13 Jul 2015 04:00:39 -0500
+Received: from dlep32.itg.ti.com (157.170.170.100) by DFLE73.ent.ti.com
+ (128.247.5.110) with Microsoft SMTP Server id 14.3.224.2; Mon, 13 Jul 2015
+ 04:00:18 -0500
+Received: from [172.22.0.0] (ileax41-snat.itg.ti.com [10.172.224.153])  by
+ dlep32.itg.ti.com (8.14.3/8.13.8) with ESMTP id t6D90WZK027579;        Mon, 13 Jul
+ 2015 04:00:33 -0500
+Message-ID: <55A37E51.7080803@ti.com>
+Date:   Mon, 13 Jul 2015 12:01:05 +0300
+From:   Tero Kristo <t-kristo@ti.com>
+User-Agent: Mozilla/5.0 (X11; Linux i686; rv:31.0) Gecko/20100101 Thunderbird/31.7.0
 MIME-Version: 1.0
-X-Received: by 10.182.196.72 with SMTP id ik8mr29035273obc.36.1436771682739;
- Mon, 13 Jul 2015 00:14:42 -0700 (PDT)
-Received: by 10.60.168.5 with HTTP; Mon, 13 Jul 2015 00:14:42 -0700 (PDT)
-In-Reply-To: <20150712220211.7166.42035.stgit@bhelgaas-glaptop2.roam.corp.google.com>
-References: <20150712215559.7166.33068.stgit@bhelgaas-glaptop2.roam.corp.google.com>
-        <20150712220211.7166.42035.stgit@bhelgaas-glaptop2.roam.corp.google.com>
-Date:   Mon, 13 Jul 2015 09:14:42 +0200
-X-Google-Sender-Auth: 7R0N7i4z0f4c4ksmekqFkKUYq28
-Message-ID: <CAMuHMdWW3uHLm=rwQ8cmhxGff8vwFDx7_-eSmiy3dndpDKk35Q@mail.gmail.com>
-Subject: Re: [PATCH 3/3] IRQ: Print "unexpected IRQ" messages consistently
- across architectures
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-To:     Bjorn Helgaas <bhelgaas@google.com>
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Linux-Arch <linux-arch@vger.kernel.org>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        "moderated list:PANASONIC MN10300..." <linux-am33-list@redhat.com>,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        linux-c6x-dev@linux-c6x.org,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        "adi-buildroot-devel@lists.sourceforge.net" 
-        <adi-buildroot-devel@lists.sourceforge.net>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        linux-m68k <linux-m68k@lists.linux-m68k.org>,
-        alpha <linux-alpha@vger.kernel.org>,
-        "the arch/x86 maintainers" <x86@kernel.org>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <geert.uytterhoeven@gmail.com>
+To:     Stephen Boyd <sboyd@codeaurora.org>,
+        Boris Brezillon <boris.brezillon@free-electrons.com>
+CC:     Mike Turquette <mturquette@baylibre.com>,
+        <linux-clk@vger.kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+        Tony Lindgren <tony@atomide.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        =?windows-1252?Q?Emilio_L=F3pez?= <emilio@elopez.com.ar>,
+        Maxime Ripard <maxime.ripard@free-electrons.com>,
+        Peter De Schrijver <pdeschrijver@nvidia.com>,
+        Prashant Gaikwad <pgaikwad@nvidia.com>,
+        Stephen Warren <swarren@wwwdotorg.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Alexandre Courbot <gnurou@gmail.com>,
+        <linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-omap@vger.kernel.org>, <linux-mips@linux-mips.org>,
+        <linux-tegra@vger.kernel.org>
+Subject: Re: [PATCH v5] clk: change clk_ops' ->determine_rate() prototype
+References: <1436294888-25752-1-git-send-email-boris.brezillon@free-electrons.com> <20150708005748.GG30412@codeaurora.org>
+In-Reply-To: <20150708005748.GG30412@codeaurora.org>
+Content-Type: text/plain; charset="windows-1252"; format=flowed
+Content-Transfer-Encoding: 8bit
+Return-Path: <t-kristo@ti.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48216
+X-archive-position: 48217
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: t-kristo@ti.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -68,36 +63,104 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Jul 13, 2015 at 12:02 AM, Bjorn Helgaas <bhelgaas@google.com> wrote:
-> Many architectures use a variant of "unexpected IRQ trap at vector %x" to
-> log unexpected IRQs.  This is confusing because (a) it prints the Linux IRQ
-> number, but "vector" more often refers to a CPU vector number, and (b) it
-> prints the IRQ number in hex with no base indication, while Linux IRQ
-> numbers are usually printed in decimal.
+On 07/08/2015 03:57 AM, Stephen Boyd wrote:
+> On 07/07, Boris Brezillon wrote:
+>> Clock rates are stored in an unsigned long field, but ->determine_rate()
+>> (which returns a rounded rate from a requested one) returns a long
+>> value (errors are reported using negative error codes), which can lead
+>> to long overflow if the clock rate exceed 2Ghz.
+>>
+>> Change ->determine_rate() prototype to return 0 or an error code, and pass
+>> a pointer to a clk_rate_request structure containing the expected target
+>> rate and the rate constraints imposed by clk users.
+>>
+>> The clk_rate_request structure might be extended in the future to contain
+>> other kind of constraints like the rounding policy, the maximum clock
+>> inaccuracy or other things that are not yet supported by the CCF
+>> (power consumption constraints ?).
+>>
+>> Signed-off-by: Boris Brezillon <boris.brezillon@free-electrons.com>
+>>
+>> CC: Jonathan Corbet <corbet@lwn.net>
+>> CC: Tony Lindgren <tony@atomide.com>
+>> CC: Ralf Baechle <ralf@linux-mips.org>
+>> CC: "Emilio López" <emilio@elopez.com.ar>
+>> CC: Maxime Ripard <maxime.ripard@free-electrons.com>
+>> CC: Tero Kristo <t-kristo@ti.com>
+>> CC: Peter De Schrijver <pdeschrijver@nvidia.com>
+>> CC: Prashant Gaikwad <pgaikwad@nvidia.com>
+>> CC: Stephen Warren <swarren@wwwdotorg.org>
+>> CC: Thierry Reding <thierry.reding@gmail.com>
+>> CC: Alexandre Courbot <gnurou@gmail.com>
+>> CC: linux-doc@vger.kernel.org
+>> CC: linux-kernel@vger.kernel.org
+>> CC: linux-arm-kernel@lists.infradead.org
+>> CC: linux-omap@vger.kernel.org
+>> CC: linux-mips@linux-mips.org
+>> CC: linux-tegra@vger.kernel.org
+>>
+>> ---
 >
-> Print the same text ("unexpected IRQ %d") across all architectures.
+> I'll throw this patch into -next now to see if any other problems
+> shake out. I'm hoping we get some more acks though, so it'll be
+> on it's own branch and become immutable in a week or so. One
+> question below.
+
+Gave this patch a quick test on the boards I have access to, and didn't 
+notice any obvious problems.
+
+So, for the TI parts:
+
+Acked-by: Tero Kristo <t-kristo@ti.com>
+
 >
-> No functional change other than the output text.
+>> diff --git a/drivers/clk/clk-composite.c b/drivers/clk/clk-composite.c
+>> index 616f5ae..9e69f34 100644
+>> --- a/drivers/clk/clk-composite.c
+>> +++ b/drivers/clk/clk-composite.c
+>> @@ -99,33 +99,33 @@ static long clk_composite_determine_rate(struct clk_hw *hw, unsigned long rate,
+>>
+>>   			parent_rate = __clk_get_rate(parent);
+>>
+>> -			tmp_rate = rate_ops->round_rate(rate_hw, rate,
+>> +			tmp_rate = rate_ops->round_rate(rate_hw, req->rate,
+>>   							&parent_rate);
+>>   			if (tmp_rate < 0)
+>>   				continue;
+>>
+>> -			rate_diff = abs(rate - tmp_rate);
+>> +			rate_diff = abs(req->rate - tmp_rate);
+>>
+>> -			if (!rate_diff || !*best_parent_p
+>> +			if (!rate_diff || !req->best_parent_hw
+>>   				       || best_rate_diff > rate_diff) {
+>> -				*best_parent_p = __clk_get_hw(parent);
+>> -				*best_parent_rate = parent_rate;
+>> +				req->best_parent_hw = __clk_get_hw(parent);
+>> +				req->best_parent_rate = parent_rate;
+>>   				best_rate_diff = rate_diff;
+>>   				best_rate = tmp_rate;
+>>   			}
+>>
+>>   			if (!rate_diff)
+>> -				return rate;
+>> +				return 0;
+>>   		}
+>>
+>> -		return best_rate;
+>> +		req->rate = best_rate;
+>> +		return 0;
+>>   	} else if (mux_hw && mux_ops && mux_ops->determine_rate) {
+>>   		__clk_hw_set_clk(mux_hw, hw);
+>> -		return mux_ops->determine_rate(mux_hw, rate, min_rate,
+>> -					       max_rate, best_parent_rate,
+>> -					       best_parent_p);
+>> +		return mux_ops->determine_rate(mux_hw, req);
+>>   	} else {
+>>   		pr_err("clk: clk_composite_determine_rate function called, but no mux or rate callback set!\n");
+>> +		req->rate = 0;
+>>   		return 0;
 >
-> Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-> ---
-
-Thanks!
-
->  arch/m68k/include/asm/hardirq.h    |    2 +-
-
-For m68k:
-Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
-
-And it looks like m68k can switch to the asm-generic version afterwards...
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+> Shouldn't this return an error now? And then assigning req->rate
+> wouldn't be necessary. Sorry I must have missed this last round.
+>

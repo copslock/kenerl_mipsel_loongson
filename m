@@ -1,62 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Jul 2015 19:12:50 +0200 (CEST)
-Received: from out02.mta.xmission.com ([166.70.13.232]:47222 "EHLO
-        out02.mta.xmission.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010570AbbGNRMtWarAn (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 14 Jul 2015 19:12:49 +0200
-Received: from in01.mta.xmission.com ([166.70.13.51])
-        by out02.mta.xmission.com with esmtps (TLS1.2:DHE_RSA_AES_128_CBC_SHA1:128)
-        (Exim 4.82)
-        (envelope-from <ebiederm@xmission.com>)
-        id 1ZF3l1-0005pO-7S; Tue, 14 Jul 2015 11:12:39 -0600
-Received: from 67-3-205-90.omah.qwest.net ([67.3.205.90] helo=x220.int.ebiederm.org.xmission.com)
-        by in01.mta.xmission.com with esmtpsa (TLS1.2:DHE_RSA_AES_128_CBC_SHA1:128)
-        (Exim 4.82)
-        (envelope-from <ebiederm@xmission.com>)
-        id 1ZF3l0-0000nQ-8t; Tue, 14 Jul 2015 11:12:38 -0600
-From:   ebiederm@xmission.com (Eric W. Biederman)
-To:     Vivek Goyal <vgoyal@redhat.com>
-Cc:     dwalker@fifo99.com, Hidehiro Kawai <hidehiro.kawai.ez@hitachi.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linux-mips@linux-mips.org, Baoquan He <bhe@redhat.com>,
-        linux-sh@vger.kernel.org, linux-s390@vger.kernel.org,
-        kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
-        Ingo Molnar <mingo@kernel.org>,
-        HATAYAMA Daisuke <d.hatayama@jp.fujitsu.com>,
-        Masami Hiramatsu <masami.hiramatsu.pt@hitachi.com>,
-        linuxppc-dev@lists.ozlabs.org, linux-metag@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org
-References: <20150710113331.4368.10495.stgit@softrs>
-        <20150710113331.4368.63745.stgit@softrs>
-        <87wpy82kqf.fsf@x220.int.ebiederm.org>
-        <20150713202611.GA16525@fifo99.com>
-        <87h9p7r0we.fsf@x220.int.ebiederm.org>
-        <20150714135919.GA18333@fifo99.com>
-        <20150714150208.GD10792@redhat.com>
-        <20150714153430.GA18766@fifo99.com> <20150714154040.GA3912@redhat.com>
-        <20150714154833.GA18883@fifo99.com>
-        <20150714161612.GH10792@redhat.com>
-Date:   Tue, 14 Jul 2015 12:06:15 -0500
-In-Reply-To: <20150714161612.GH10792@redhat.com> (Vivek Goyal's message of
-        "Tue, 14 Jul 2015 12:16:12 -0400")
-Message-ID: <87a8uyoeig.fsf@x220.int.ebiederm.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.3 (gnu/linux)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Jul 2015 19:13:36 +0200 (CEST)
+Received: from mail-qk0-f169.google.com ([209.85.220.169]:34630 "EHLO
+        mail-qk0-f169.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010567AbbGNRNcUcyXn (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 14 Jul 2015 19:13:32 +0200
+Received: by qkcl188 with SMTP id l188so10859481qkc.1
+        for <linux-mips@linux-mips.org>; Tue, 14 Jul 2015 10:13:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type;
+        bh=jSngEnxc6x0vZFsn2ueCboIvWuQvsHfzY8uuOn1pRqI=;
+        b=GspA7tM1K7Qd6D/Q12vYmyql+l/JtssQeexdR/mDO5ODcur9rAr0gsB9A15GPqUToP
+         NXBOSOo/Y31F1DeccrNaWAGAmh6ZdvTU5nb86pbXvLX+4EGQTi6HwQRWxBXPuAQhb0EK
+         lvdTqMhntP8i/G604CHyMoyHldxv5jQN4kvP5vjHjQLlwRyno06cvlssnJ3pIiAlt2ar
+         snwsGVjV+aVtfepVNA7uFeY8IY9rR4zJLTfPik88Y3Ep1YXcndOgeOPols5/hLaC8DV/
+         VkKyi9ldLAODnaaK+Ljl3vsepfe3Mixy5cZWzAWlW0zIce6XtozwFv8C1w4EKUCuwDRA
+         5Jwg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type;
+        bh=jSngEnxc6x0vZFsn2ueCboIvWuQvsHfzY8uuOn1pRqI=;
+        b=O8FSQ6iHu9hXQUEWQ1OR31v0lMN3fDrEHKuc+x8Pd4JnN1lD/NBJy8v8k5RT/fZmxu
+         pf1Q4p50B+XTwqeoMTil1qepAgKehRCA2wmMuecYVqsl11yTNEv1SO+pcaPx+GnqcTCz
+         Oj+lN2YAkewqaKbX5DhI0/v5Ki0YS8+kXA2kU=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:sender:in-reply-to:references:date
+         :message-id:subject:from:to:cc:content-type;
+        bh=jSngEnxc6x0vZFsn2ueCboIvWuQvsHfzY8uuOn1pRqI=;
+        b=CEHfw+k1wNqpEZNFos0+IZ0yLJuEKVPRur+QeEWMEdARS5xtoNC+m638dreEGM0boh
+         AgG6y7yOdXttzkJRsU/5R7finD5cOgafFBFX7g67QGqbMa61wMT+JRCDPEkam/c7HKev
+         ebbqjsZNfk1X3axYhgExBguSu8BWtVvLlBL8ItJIjSDM+K8laktizFSs/aBTDFS82NPb
+         syZraBOHA9iGjNHVPkid7GvMCvc5HLDdxLDeS+ByyNFXSGVWHU7wx5CRMiD1a8xO4z5D
+         9GOT5qbYWXVzDlyOdMweX/0zz/oiZzIW+g6L9o/u1kOlsnJswBAiBebr6boGpGoNA3/a
+         /iSw==
+X-Gm-Message-State: ALoCoQlFy8S2lUNAhXnRkiPHEAZmQ/O787S8zLUIUvelcbivVblavKXEJCpcLi3YTB7u9skG2mIS
 MIME-Version: 1.0
-Content-Type: text/plain
-X-XM-AID: U2FsdGVkX19T4t1UIQWdOp69jV3E/lWhRdk0v7cFLF4=
-X-SA-Exim-Connect-IP: 67.3.205.90
-X-SA-Exim-Mail-From: ebiederm@xmission.com
-Subject: Re: [PATCH 1/3] panic: Disable crash_kexec_post_notifiers if kdump is not available
-X-SA-Exim-Version: 4.2.1 (built Wed, 24 Sep 2014 11:00:52 -0600)
-X-SA-Exim-Scanned: Yes (on in01.mta.xmission.com)
-Return-Path: <ebiederm@xmission.com>
+X-Received: by 10.140.81.40 with SMTP id e37mr25946223qgd.75.1436894006445;
+ Tue, 14 Jul 2015 10:13:26 -0700 (PDT)
+Received: by 10.140.19.98 with HTTP; Tue, 14 Jul 2015 10:13:26 -0700 (PDT)
+In-Reply-To: <20150714164647.1541.42503.stgit@bhelgaas-glaptop2.roam.corp.google.com>
+References: <20150714164142.1541.92710.stgit@bhelgaas-glaptop2.roam.corp.google.com>
+        <20150714164647.1541.42503.stgit@bhelgaas-glaptop2.roam.corp.google.com>
+Date:   Tue, 14 Jul 2015 10:13:26 -0700
+X-Google-Sender-Auth: UI2-Od8aJ59-K0FWGDVrWRAsbkI
+Message-ID: <CAL1qeaFvRAqJ7pHkP-ELFV7b7BzxgnT=nUjv9Ae2WnSLBzw64g@mail.gmail.com>
+Subject: Re: [PATCH v2 4/8] MIPS: Remove "weak" from get_c0_perfcount_int() declaration
+From:   Andrew Bresticker <abrestic@chromium.org>
+To:     Bjorn Helgaas <bhelgaas@google.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Linux-MIPS <linux-mips@linux-mips.org>,
+        James Hogan <james.hogan@imgtec.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <abrestic@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48292
+X-archive-position: 48293
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ebiederm@xmission.com
+X-original-sender: abrestic@chromium.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -69,88 +75,27 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Vivek Goyal <vgoyal@redhat.com> writes:
+Hi Bjorn,
 
-> On Tue, Jul 14, 2015 at 03:48:33PM +0000, dwalker@fifo99.com wrote:
->> On Tue, Jul 14, 2015 at 11:40:40AM -0400, Vivek Goyal wrote:
->> > On Tue, Jul 14, 2015 at 03:34:30PM +0000, dwalker@fifo99.com wrote:
->> > > On Tue, Jul 14, 2015 at 11:02:08AM -0400, Vivek Goyal wrote:
->> > > > On Tue, Jul 14, 2015 at 01:59:19PM +0000, dwalker@fifo99.com wrote:
->> > > > > On Mon, Jul 13, 2015 at 08:19:45PM -0500, Eric W. Biederman wrote:
->> > > > > > dwalker@fifo99.com writes:
->> > > > > > 
->> > > > > > > On Fri, Jul 10, 2015 at 08:41:28AM -0500, Eric W. Biederman wrote:
->> > > > > > >> Hidehiro Kawai <hidehiro.kawai.ez@hitachi.com> writes:
->> > > > > > >> 
->> > > > > > >> > You can call panic notifiers and kmsg dumpers before kdump by
->> > > > > > >> > specifying "crash_kexec_post_notifiers" as a boot parameter.
->> > > > > > >> > However, it doesn't make sense if kdump is not available.  In that
->> > > > > > >> > case, disable "crash_kexec_post_notifiers" boot parameter so that
->> > > > > > >> > you can't change the value of the parameter.
->> > > > > > >> 
->> > > > > > >> Nacked-by: "Eric W. Biederman" <ebiederm@xmission.com>
->> > > > > > >
->> > > > > > > I think it would make sense if he just replaced "kdump" with "kexec".
->> > > > > > 
->> > > > > > It would be less insane, however it still makes no sense as without
->> > > > > > kexec on panic support crash_kexec is a noop.  So the value of the
->> > > > > > seeting makes no difference.
->> > > > > 
->> > > > > Can you explain more, I don't really understand what you mean. Are you suggesting
->> > > > > the whole "crash_kexec_post_notifiers" feature has no value ?
->> > > > 
->> > > > Daniel,
->> > > > 
->> > > > BTW, why are you using crash_kexec_post_notifiers commandline? Why not
->> > > > without it?
->> > > 
->> > > It was explained in the prior thread but to rehash, the notifiers are used to do a switch
->> > > over from the crashed machine to another redundant machine.
->> > 
->> > So why not detect failure using polling or issue notifications from second
->> > kernel.
->> > 
->> > IOW, expecting that a crashed machine will be able to deliver notification
->> > reliably is falwed to begin with, IMHO.
->> 
->> It's flawed to think you can kexec, but you still do it right ? I've not gotten into
->> the deep details of this switching process, but that's how this interface is used.
+On Tue, Jul 14, 2015 at 9:46 AM, Bjorn Helgaas <bhelgaas@google.com> wrote:
+> Weak header file declarations are error-prone because they make every
+> definition weak, and the linker chooses one based on link order (see
+> 10629d711ed7 ("PCI: Remove __weak annotation from pcibios_get_phb_of_node
+> decl")).
 >
-> Sure. But the deal here is that users of interface know that sometimes it
-> can be unreliable. And in the absence of more reliable mechanism, somewhat
-> less reliable mechanism is fine. 
+> get_c0_perfcount_int() is defined in several files.  Every definition is
+> weak, so I assume Kconfig prevents two or more from being included.  The
+> callers contain identical default code used when get_c0_perfcount_int()
+> isn't defined at all.
 >
->>  
->> > If a machine is failing, there are high chance it can't deliver you the
->> > notification. Detecting that failure suing some kind of polling mechanism
->> > might be more reliable. And it will make even kdump mechanism more
->> > reliable so that it does not have to run panic notifiers after the crash.
->> 
->> I think what your suggesting is that my company should change how it's hardware works
->> and that's not really an option for me. This isn't a simple thing like checking over the
->> network if the machine is down or not, this is way more complex hardware design.
+> Add a weak get_c0_perfcount_int() definition with the default code and
+> remove the weak annotation from the declaration.
 >
-> That means you are ready to live with an unreliable design. There might be
-> cases where notifier does not get run properly and you will not do switch
-> despite the fact that OS has failed. I was just trying to nudge you in
-> a direction which could be more reliable mechanism.
+> Then the platform implementations will be strong and will override the weak
+> default.  If multiple platforms are ever configured in, we'll get a link
+> error instead of calling a random platform's implementation.
+>
+> Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+> CC: Andrew Bresticker <abrestic@chromium.org>
 
-Sigh I see some deep confusion going on here.
-
-The panic notifiers are just that panic notifiers.  They have not been
-nor should they be tied to kexec.   If those notifiers force a switch
-over of between machines I fail to see why you would care if it was
-kexec or another panic situation that is forcing that switchover.
-
-Now if you want a reliable design, I strongly recommend as I have been
-recommending for the 15 years that magic failover code be placed in
-either the new kernel or a stub that preceedes the new kernel.
-
-That gives the greatest reliabilty we know how to engineer, and it lets
-you do whatever you need to do.
-
-Especially if it is not desirable for the panic notifiers to run without
-the presence of kexec, I very strongly recommend not using them at all
-and just writing a stub of code that can run before a new kernel starts.
-
-Eric
+Reviewed-by: Andrew Bresticker <abrestic@chromium.org>

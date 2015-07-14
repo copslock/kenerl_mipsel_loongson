@@ -1,48 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Jul 2015 18:47:15 +0200 (CEST)
-Received: from mail-ob0-f179.google.com ([209.85.214.179]:32964 "EHLO
-        mail-ob0-f179.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27009874AbbGNQqsp1ZJn (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 14 Jul 2015 18:46:48 +0200
-Received: by obbgp5 with SMTP id gp5so9779024obb.0
-        for <linux-mips@linux-mips.org>; Tue, 14 Jul 2015 09:46:42 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Jul 2015 18:47:35 +0200 (CEST)
+Received: from mail-oi0-f47.google.com ([209.85.218.47]:35706 "EHLO
+        mail-oi0-f47.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010458AbbGNQqzIh6Pn (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 14 Jul 2015 18:46:55 +0200
+Received: by oihq81 with SMTP id q81so10504192oih.2
+        for <linux-mips@linux-mips.org>; Tue, 14 Jul 2015 09:46:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20120113;
         h=subject:to:from:cc:date:message-id:in-reply-to:references
          :user-agent:mime-version:content-type:content-transfer-encoding;
-        bh=QlxCA5dVj+O/9VIu1MVb6K1G81w5KZvtCW+Cnx/LJn4=;
-        b=gT3HnrnArnJLTpddYCii41ahUiev+N8mGT91oL/RUHV6Pmpta/c9uqLx34qREZjo8m
-         wZeeojGB9xOGvEejo9at9TxUqErhzIbCn2fKF2HEepGvuI29pdhcDMCJk88zVFdUcRu7
-         onhNzz6H/ztZkJ9IX6o03GJAivoT+gJg0TQfhJQXCbPpyoLkuW7nEzeZLMkaJSohv9eD
-         YZwWl3V63eqGaQzG+wrUfg1u8aHy8mkiioY9hp/rPQrVzDlSuFfI/dQSVGn7tRGctsrp
-         6bK6qPspvIuYUFQXg88HTVZd8l2JdZcSM8p8kTwQj312biYaH2stoctkfS+3XkPbMbvA
-         U05A==
+        bh=aIS9flF4QbS+BFARct9CSQZ4PlPXT7VTuMO3W/lCGxY=;
+        b=bo9HA1wQbDGnbtlyaL4yyZjE7yudUi91/oWAKIIqvBjyb6prg/lLFiC17FSiqfEVSl
+         3e8OPc/hRmw/dUzRnfx0icid/d3BVu6Cr6gTkWrUTqAgMkiyvbF4r2oR+8t6D6s0AmAH
+         IiUefR5fWApIle36wdHCD82Wlrm5OVlU52c9QDymEqJro/HPMN5ocra7b7mjq8qYk3My
+         tWS1rK2Fw0AqITjnxIZdKDy8GIVXPuDVC+5ZrwZr2FLdK2+nH7D/hFimDsYAKHJFkRUQ
+         oxVEMgPHjmHiaDaTu+MpEd8A/6vrFi+w206mym53sRdmI77UZlk7C9595iYg5nPLGzkn
+         xXuQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:subject:to:from:cc:date:message-id:in-reply-to
          :references:user-agent:mime-version:content-type
          :content-transfer-encoding;
-        bh=QlxCA5dVj+O/9VIu1MVb6K1G81w5KZvtCW+Cnx/LJn4=;
-        b=b5a9PMMQzJ2/QFENvdk9QXfDEXXMxomfSN8m3ZB5Qn6fG8VLHFktE6e5r3eYVILFJC
-         xl1t65D2JRiobsa9sCc0bYF9DMNzxWfcHAddUZ3O3KU0EpjcY6YtblpmFaP+eNfewj3E
-         mp5u+py70FUf606zc21YLEeozvS4MyommD+LWYjUVNmoE0Qvqk4pC6cRTwrj8rVuqInK
-         QkUyQSVG+GA6QkywfaDDMMCSaTJMc25vJTbAg2i4bc9lJJBJ/aSsA5ryuOOKkZhoNGWU
-         xp2Niim+4+qaXMy70xllvBeRTjiX+dPhBNB37a2G8ABquQjiIkCnDyJa6PCmL+wE+9TQ
-         o7tw==
-X-Gm-Message-State: ALoCoQm1emazkAOAP7QKtxz1bLzzpmmsU6trRMNjLmSolkjGtrPATo8A2mU0ucei79K5a3bKnG+o
-X-Received: by 10.60.62.235 with SMTP id b11mr37792942oes.18.1436892401982;
-        Tue, 14 Jul 2015 09:46:41 -0700 (PDT)
+        bh=aIS9flF4QbS+BFARct9CSQZ4PlPXT7VTuMO3W/lCGxY=;
+        b=eGJTeLMkZlNdPlP03Cw6G/WkWV9pqUJBYmLtHDlJm2hzHDDyOOHzBe64EjXzPd8FY0
+         lJn/bvd+5ZRqkn074J3M6ngbRVMzVjfATm+H5F+/y37RTanx1u93AVmnXosuUdwoy6lo
+         UJiRYWFESn+jeEoMwWuIuOad7ZU6ao+myniRoOW21iGOnHRwIv6MHTQqpOaVFibuBJF2
+         Ilz14nNOoXRmYR6g9VwxuF+W0U4jZZmtPIRmZYgtz3BnZd2DShjDVeewzroddYq5CNRh
+         uzoCBLCZfqsLvTYnpUOg3K+m3DXbzDXFLdLv5RFgER1BTYkr4yskhI1oqRQ1WZuP87FR
+         bLvQ==
+X-Gm-Message-State: ALoCoQmPG3vJcqO8nCw5RawoaKZBAFKKRrKXWiJk9x4WvK9egk8t8ivtWSETf1cH4ezln4RtTlq0
+X-Received: by 10.202.104.155 with SMTP id o27mr10313146oik.19.1436892409531;
+        Tue, 14 Jul 2015 09:46:49 -0700 (PDT)
 Received: from localhost ([69.71.1.1])
-        by smtp.gmail.com with ESMTPSA id mg19sm743127oeb.10.2015.07.14.09.46.39
+        by smtp.gmail.com with ESMTPSA id x82sm752546oie.19.2015.07.14.09.46.48
         (version=TLSv1.2 cipher=RC4-SHA bits=128/128);
-        Tue, 14 Jul 2015 09:46:40 -0700 (PDT)
-Subject: [PATCH v2 3/8] MIPS: MT: Remove "weak" from vpe_run() declaration
+        Tue, 14 Jul 2015 09:46:48 -0700 (PDT)
+Subject: [PATCH v2 4/8] MIPS: Remove "weak" from get_c0_perfcount_int()
+ declaration
 To:     Ralf Baechle <ralf@linux-mips.org>
 From:   Bjorn Helgaas <bhelgaas@google.com>
 Cc:     Andrew Bresticker <abrestic@chromium.org>,
         linux-mips@linux-mips.org, James Hogan <james.hogan@imgtec.com>,
         linux-kernel@vger.kernel.org
-Date:   Tue, 14 Jul 2015 11:46:38 -0500
-Message-ID: <20150714164638.1541.68971.stgit@bhelgaas-glaptop2.roam.corp.google.com>
+Date:   Tue, 14 Jul 2015 11:46:47 -0500
+Message-ID: <20150714164647.1541.42503.stgit@bhelgaas-glaptop2.roam.corp.google.com>
 In-Reply-To: <20150714164142.1541.92710.stgit@bhelgaas-glaptop2.roam.corp.google.com>
 References: <20150714164142.1541.92710.stgit@bhelgaas-glaptop2.roam.corp.google.com>
 User-Agent: StGit/0.16
@@ -53,7 +54,7 @@ Return-Path: <bhelgaas@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48286
+X-archive-position: 48287
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -75,52 +76,103 @@ definition weak, and the linker chooses one based on link order (see
 10629d711ed7 ("PCI: Remove __weak annotation from pcibios_get_phb_of_node
 decl")).
 
-That's not a problem for vpe_run() because Kconfig ensures there's exactly
-one definition if we build vpe.o:
+get_c0_perfcount_int() is defined in several files.  Every definition is
+weak, so I assume Kconfig prevents two or more from being included.  The
+callers contain identical default code used when get_c0_perfcount_int()
+isn't defined at all.
 
-  - vpe_run() is defined in arch/mips/kernel/vpe-mt.c if
-    CONFIG_MIPS_VPE_LOADER_MT=y
+Add a weak get_c0_perfcount_int() definition with the default code and
+remove the weak annotation from the declaration.
 
-  - vpe_run() is defined in arch/mips/mti-malta/malta-amon.c if
-    CONFIG_MIPS_VPE_LOADER_CMP=y
+Then the platform implementations will be strong and will override the weak
+default.  If multiple platforms are ever configured in, we'll get a link
+error instead of calling a random platform's implementation.
 
-  - CONFIG_MIPS_VPE_LOADER_MT and CONFIG_MIPS_VPE_LOADER_CMP cannot both be
-    set (MIPS_VPE_LOADER_CMP depends on MIPS_VPE_LOADER && MIPS_CMP;
-    MIPS_VPE_LOADER_MT depends on MIPS_VPE_LOADER && !MIPS_CMP)
-
-Remove "weak" from the vpe_run() declaration and don't test whether
-vpe_run() is defined.
-
-Simplification-by: James Hogan <james.hogan@imgtec.com>
 Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+CC: Andrew Bresticker <abrestic@chromium.org>
 ---
- arch/mips/include/asm/vpe.h |    2 +-
- arch/mips/kernel/vpe.c      |    2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ arch/mips/include/asm/time.h         |    2 +-
+ arch/mips/kernel/perf_event_mipsxx.c |    7 +------
+ arch/mips/kernel/time.c              |    9 ++++++++-
+ arch/mips/oprofile/op_model_mipsxx.c |    8 +-------
+ 4 files changed, 11 insertions(+), 15 deletions(-)
 
-diff --git a/arch/mips/include/asm/vpe.h b/arch/mips/include/asm/vpe.h
-index 7849f39..80e70db 100644
---- a/arch/mips/include/asm/vpe.h
-+++ b/arch/mips/include/asm/vpe.h
-@@ -122,7 +122,7 @@ void release_vpe(struct vpe *v);
- void *alloc_progmem(unsigned long len);
- void release_progmem(void *ptr);
+diff --git a/arch/mips/include/asm/time.h b/arch/mips/include/asm/time.h
+index 8ab2874..ce6a7d5 100644
+--- a/arch/mips/include/asm/time.h
++++ b/arch/mips/include/asm/time.h
+@@ -46,7 +46,7 @@ extern unsigned int mips_hpt_frequency;
+  * so it lives here.
+  */
+ extern int (*perf_irq)(void);
+-extern int __weak get_c0_perfcount_int(void);
++extern int get_c0_perfcount_int(void);
  
--int __weak vpe_run(struct vpe *v);
-+int vpe_run(struct vpe *v);
- void cleanup_tc(struct tc *tc);
+ /*
+  * Initialize the calling CPU's compare interrupt as clockevent device
+diff --git a/arch/mips/kernel/perf_event_mipsxx.c b/arch/mips/kernel/perf_event_mipsxx.c
+index cc1b6fa..c126b1c 100644
+--- a/arch/mips/kernel/perf_event_mipsxx.c
++++ b/arch/mips/kernel/perf_event_mipsxx.c
+@@ -1682,12 +1682,7 @@ init_hw_perf_events(void)
+ 		counters = counters_total_to_per_cpu(counters);
+ #endif
  
- int __init vpe_module_init(void);
-diff --git a/arch/mips/kernel/vpe.c b/arch/mips/kernel/vpe.c
-index 11da314..1fd05b5 100644
---- a/arch/mips/kernel/vpe.c
-+++ b/arch/mips/kernel/vpe.c
-@@ -827,7 +827,7 @@ static int vpe_release(struct inode *inode, struct file *filp)
+-	if (get_c0_perfcount_int)
+-		irq = get_c0_perfcount_int();
+-	else if (cp0_perfcount_irq >= 0)
+-		irq = MIPS_CPU_IRQ_BASE + cp0_perfcount_irq;
+-	else
+-		irq = -1;
++	irq = get_c0_perfcount_int();
  
- 	hdr = (Elf_Ehdr *) v->pbuffer;
- 	if (memcmp(hdr->e_ident, ELFMAG, SELFMAG) == 0) {
--		if ((vpe_elfload(v) >= 0) && vpe_run) {
-+		if (vpe_elfload(v) >= 0) {
- 			vpe_run(v);
- 		} else {
- 			pr_warn("VPE loader: ELF load failed.\n");
+ 	mipspmu.map_raw_event = mipsxx_pmu_map_raw_event;
+ 
+diff --git a/arch/mips/kernel/time.c b/arch/mips/kernel/time.c
+index 8d01709..6fff600 100644
+--- a/arch/mips/kernel/time.c
++++ b/arch/mips/kernel/time.c
+@@ -27,6 +27,7 @@
+ #include <asm/cpu-type.h>
+ #include <asm/div64.h>
+ #include <asm/time.h>
++#include <asm/irq.h>
+ 
+ /*
+  * forward reference
+@@ -55,9 +56,15 @@ static int null_perf_irq(void)
+ }
+ 
+ int (*perf_irq)(void) = null_perf_irq;
+-
+ EXPORT_SYMBOL(perf_irq);
+ 
++int __weak get_c0_perfcount_int(void)
++{
++	if (cp0_perfcount_irq >= 0)
++		return MIPS_CPU_IRQ_BASE + cp0_perfcount_irq;
++	return -1;
++}
++
+ /*
+  * time_init() - it does the following things.
+  *
+diff --git a/arch/mips/oprofile/op_model_mipsxx.c b/arch/mips/oprofile/op_model_mipsxx.c
+index 6a6e2cc..c0cffa9 100644
+--- a/arch/mips/oprofile/op_model_mipsxx.c
++++ b/arch/mips/oprofile/op_model_mipsxx.c
+@@ -438,13 +438,7 @@ static int __init mipsxx_init(void)
+ 	save_perf_irq = perf_irq;
+ 	perf_irq = mipsxx_perfcount_handler;
+ 
+-	if (get_c0_perfcount_int)
+-		perfcount_irq = get_c0_perfcount_int();
+-	else if (cp0_perfcount_irq >= 0)
+-		perfcount_irq = MIPS_CPU_IRQ_BASE + cp0_perfcount_irq;
+-	else
+-		perfcount_irq = -1;
+-
++	perfcount_irq = get_c0_perfcount_int();
+ 	if (perfcount_irq >= 0)
+ 		return request_irq(perfcount_irq, mipsxx_perfcount_int,
+ 				   IRQF_PERCPU | IRQF_NOBALANCING |

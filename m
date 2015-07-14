@@ -1,47 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Jul 2015 18:46:23 +0200 (CEST)
-Received: from mail-ob0-f176.google.com ([209.85.214.176]:35881 "EHLO
-        mail-ob0-f176.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010458AbbGNQqWcbikn (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 14 Jul 2015 18:46:22 +0200
-Received: by obnw1 with SMTP id w1so9692027obn.3
-        for <linux-mips@linux-mips.org>; Tue, 14 Jul 2015 09:46:16 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Jul 2015 18:46:39 +0200 (CEST)
+Received: from mail-ob0-f171.google.com ([209.85.214.171]:34450 "EHLO
+        mail-ob0-f171.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010563AbbGNQqa2cBNn (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 14 Jul 2015 18:46:30 +0200
+Received: by obre1 with SMTP id e1so9761473obr.1
+        for <linux-mips@linux-mips.org>; Tue, 14 Jul 2015 09:46:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20120113;
-        h=subject:to:from:cc:date:message-id:user-agent:mime-version
-         :content-type:content-transfer-encoding;
-        bh=7QvHLx7l8N5Co2gaUPSmhYDD5Wgi0dSjg26A6Ak2yCo=;
-        b=f0LSCw7okwqqZyHU9ArP8PDyKqk2/A1RQq6HHkz+2YVNdwkOnaoRSY61vbOITYsS6c
-         aqsipDMLIeJBammwE3u9F77CW5EsrLrAHIoagX4yerOvxnYt/+3hZ2mMggeSQ8Y23xMb
-         zkvNv/dBMZc+TBELGI14UZUsuSnFRCHuna1irZbTpr1PrylLYzToOUNODNKLwn4cXTap
-         gsBuYvOI60PtPdvuy0LeNOleqjRp4XixLWI1wfzqjyRF2DpxJl+rbZODwoD0kOi4WZpY
-         ++UfWxJ1d5AR4f+5muxDAeQBs0In9a7+SQJ5C9MVVKb172SOn1eq1v+pKcSiByRKzP1z
-         u+WA==
+        h=subject:to:from:cc:date:message-id:in-reply-to:references
+         :user-agent:mime-version:content-type:content-transfer-encoding;
+        bh=frFMa945be/kjc/1NRmhzivX66vnoefjuT12peQJMJg=;
+        b=IDk4TRLrmptWy9Es1fVhDU2OajVOYgzTx7VEQhmu3PLpJHOiZ87J4YhBmUYLRf6zTf
+         G+99AnCYJLoOsZmhXMTJ+pSlpDOoBqOpLFjjpisDD8vny7cNAL3Nqvk4KGENXW3UziDR
+         UbUue7QdF5X2exnt7LiTP92Oot5f3EBpmO7Tius9i/QsaLGm5hd/mu37EwiyNddxyewp
+         8/Ls3WBch5W+QX84d6k+AIbZMTpFa9qZElVcvatMHvIMHm70BTGj740p3rtDg8Z+0nBC
+         3DdkK/Olu52zmFrUDz9JPJgRk1Xm4m+PuEaIpmKYt9Et5ToI4JT7VYtZU4Uc6irHwDDK
+         FBqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
-        h=x-gm-message-state:subject:to:from:cc:date:message-id:user-agent
-         :mime-version:content-type:content-transfer-encoding;
-        bh=7QvHLx7l8N5Co2gaUPSmhYDD5Wgi0dSjg26A6Ak2yCo=;
-        b=K45nG8A+KWs4pbBcIAO/3i3m29MLMHTd9nQ1THBSVaW7EaJNAEUa2CVxFf0D7NfZkd
-         9yfiv3jNjt4dS8y1KQbTN5ytbQP0mIzcKTRRKdGwK0SnWvs2o5e07ecrl9BqXmrU/ZXZ
-         oisZ9gEtlB7gYlXM4T1K+nRnu8sjJi0gPlmSXHKEJcDXrDRou3/RUznv6MNrK1MyYC62
-         fCLVL3ElYZzwUYN4v7oYXsie1f1KTszq6iD9KWEbuZmfj2wMpg8doYOqjrf1i5AO1bfN
-         GzGfzAR80x0VjSl4SpF7nQjqlcebeljTDdb2ixpy1hgQB2CZIWaApuiaod4plRau8gTG
-         4GaQ==
-X-Gm-Message-State: ALoCoQlj01ykNIAuj5XDxk0ffDbj8WpATxodTtn4aNtK2SFOjlg64S9Iv9MXz3H+Ut3t1vgG1Jws
-X-Received: by 10.182.247.102 with SMTP id yd6mr35641836obc.39.1436892376533;
-        Tue, 14 Jul 2015 09:46:16 -0700 (PDT)
+        h=x-gm-message-state:subject:to:from:cc:date:message-id:in-reply-to
+         :references:user-agent:mime-version:content-type
+         :content-transfer-encoding;
+        bh=frFMa945be/kjc/1NRmhzivX66vnoefjuT12peQJMJg=;
+        b=DCpNDhNP9FKuitT0byWQ0ohweg48z74/t8BMOjPbSHLNdJ8N6Wx8UABHATbjN8ocZM
+         sbXbHnoTpAjvGKc0Y9DD2wVd9mhpr7oAMpDPacrt1TEOkS4zvZ6V1Qr/UF4r97eXSweQ
+         88aSnXDlcld6R4FymLWPDIUrL4al6RVZtv2VnIKsutQdBIL3jMyK/RDXU1U6BUmCHz2O
+         roOkdbQodDBboISwE7ygTtkhEFjp4dR5ZPtt1dXyw3AI9djq1G97hC+iaAp+8g7KeX0V
+         QB3I3Uns8F9hJgzcVsUE/LyQcyUXG9Yy4RNW22PHSA/sPVG6toTGYBvO3XcgCxX4xIWg
+         7ZEg==
+X-Gm-Message-State: ALoCoQmBi9c7eAC9kD3zhCL8F7epaSdU1sg3NwyoxOBXo2QOSwU/IDtH1IsW27slSgTicaPrrJYK
+X-Received: by 10.60.141.42 with SMTP id rl10mr35492629oeb.25.1436892384622;
+        Tue, 14 Jul 2015 09:46:24 -0700 (PDT)
 Received: from localhost ([69.71.1.1])
-        by smtp.gmail.com with ESMTPSA id fh3sm748121obb.23.2015.07.14.09.46.14
+        by smtp.gmail.com with ESMTPSA id v83sm752974oie.17.2015.07.14.09.46.22
         (version=TLSv1.2 cipher=RC4-SHA bits=128/128);
-        Tue, 14 Jul 2015 09:46:15 -0700 (PDT)
-Subject: [PATCH v2 0/8] Remove "weak" usage
+        Tue, 14 Jul 2015 09:46:23 -0700 (PDT)
+Subject: [PATCH v2 1/8] MIPS: CPC: Remove "weak" from mips_cpc_phys_base()
+ and make it static
 To:     Ralf Baechle <ralf@linux-mips.org>
 From:   Bjorn Helgaas <bhelgaas@google.com>
 Cc:     Andrew Bresticker <abrestic@chromium.org>,
         linux-mips@linux-mips.org, James Hogan <james.hogan@imgtec.com>,
         linux-kernel@vger.kernel.org
-Date:   Tue, 14 Jul 2015 11:46:13 -0500
-Message-ID: <20150714164142.1541.92710.stgit@bhelgaas-glaptop2.roam.corp.google.com>
+Date:   Tue, 14 Jul 2015 11:46:21 -0500
+Message-ID: <20150714164621.1541.84773.stgit@bhelgaas-glaptop2.roam.corp.google.com>
+In-Reply-To: <20150714164142.1541.92710.stgit@bhelgaas-glaptop2.roam.corp.google.com>
+References: <20150714164142.1541.92710.stgit@bhelgaas-glaptop2.roam.corp.google.com>
 User-Agent: StGit/0.16
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -50,7 +54,7 @@ Return-Path: <bhelgaas@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48283
+X-archive-position: 48284
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -67,51 +71,57 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-These patches don't fix any problem I'm aware of, but I think they make the
-code easier to analyze, and they reduce the likelihood of issues if MIPS
-ever builds a multi-platform kernel.
+There's only one implementation of mips_cpc_phys_base(), and it's only used
+within the same file, so it doesn't need to be weak, and it doesn't need an
+extern declaration.
 
-Weak function declarations in header files are hard to use safely because
-they make every definition weak.  If the linker sees multiple weak
-definitions, it silently chooses one based on link order.  That's not a
-very obvious criterion, and it can easily lead to running the wrong
-version.
+Remove the extern mips_cpc_phys_base() declaration and make it static.
 
-These patches remove the weak attribute from function declarations and
-rework the code to match.  I don't have any of these platforms, so I can't
-test them, but my intent is that these should cause no functional change.
-
-Changes from v1-v2:
-  - Rework vpe_run() patch to simply drop "weak" and the test for definition
-  - #include <asm/irq.h> in kernel/time.c instead of #ifdef MIPS_CPU_IRQ_BASE
-  - Add Reviewed-by from James for unchanged patches
-
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+CC: linux-mips@linux-mips.org
 ---
+ arch/mips/include/asm/mips-cpc.h |   10 ----------
+ arch/mips/kernel/mips-cpc.c      |    9 ++++++++-
+ 2 files changed, 8 insertions(+), 11 deletions(-)
 
-Bjorn Helgaas (8):
-      MIPS: CPC: Remove "weak" from mips_cpc_phys_base() and make it static
-      MIPS: Remove "weak" from platform_maar_init() declaration
-      MIPS: MT: Remove "weak" from vpe_run() declaration
-      MIPS: Remove "weak" from get_c0_perfcount_int() declaration
-      MIPS: Remove "weak" from get_c0_compare_int() declaration
-      MIPS: Remove "weak" from get_c0_fdc_int() declaration
-      MIPS: Remove "weak" from mips_cdmm_phys_base() declaration
-      MIPS: Remove "__weak" definition from arch-specific linkage.h
-
-
- arch/mips/include/asm/cdmm.h         |    4 ++--
- arch/mips/include/asm/irq.h          |    2 +-
- arch/mips/include/asm/linkage.h      |    1 -
- arch/mips/include/asm/maar.h         |    2 +-
- arch/mips/include/asm/mips-cpc.h     |   10 ----------
- arch/mips/include/asm/time.h         |    4 ++--
- arch/mips/include/asm/vpe.h          |    2 +-
- arch/mips/kernel/cevt-r4k.c          |   11 +++++++----
- arch/mips/kernel/mips-cpc.c          |    9 ++++++++-
- arch/mips/kernel/perf_event_mipsxx.c |    7 +------
- arch/mips/kernel/time.c              |    9 ++++++++-
- arch/mips/kernel/vpe.c               |    2 +-
- arch/mips/oprofile/op_model_mipsxx.c |    8 +-------
- drivers/bus/mips_cdmm.c              |   14 +++++++++++++-
- drivers/tty/mips_ejtag_fdc.c         |    9 ++++++---
- 15 files changed, 52 insertions(+), 42 deletions(-)
+diff --git a/arch/mips/include/asm/mips-cpc.h b/arch/mips/include/asm/mips-cpc.h
+index 1cebe8c..f386f32 100644
+--- a/arch/mips/include/asm/mips-cpc.h
++++ b/arch/mips/include/asm/mips-cpc.h
+@@ -28,16 +28,6 @@ extern void __iomem *mips_cpc_base;
+ extern phys_addr_t mips_cpc_default_phys_base(void);
+ 
+ /**
+- * mips_cpc_phys_base - retrieve the physical base address of the CPC
+- *
+- * This function returns the physical base address of the Cluster Power
+- * Controller memory mapped registers, or 0 if no Cluster Power Controller
+- * is present. It may be overriden by individual platforms which determine
+- * this address in a different way.
+- */
+-extern phys_addr_t __weak mips_cpc_phys_base(void);
+-
+-/**
+  * mips_cpc_probe - probe for a Cluster Power Controller
+  *
+  * Attempt to detect the presence of a Cluster Power Controller. Returns 0 if
+diff --git a/arch/mips/kernel/mips-cpc.c b/arch/mips/kernel/mips-cpc.c
+index 1196450..7e9ea9b 100644
+--- a/arch/mips/kernel/mips-cpc.c
++++ b/arch/mips/kernel/mips-cpc.c
+@@ -21,7 +21,14 @@ static DEFINE_PER_CPU_ALIGNED(spinlock_t, cpc_core_lock);
+ 
+ static DEFINE_PER_CPU_ALIGNED(unsigned long, cpc_core_lock_flags);
+ 
+-phys_addr_t __weak mips_cpc_phys_base(void)
++/**
++ * mips_cpc_phys_base - retrieve the physical base address of the CPC
++ *
++ * This function returns the physical base address of the Cluster Power
++ * Controller memory mapped registers, or 0 if no Cluster Power Controller
++ * is present.
++ */
++static phys_addr_t mips_cpc_phys_base(void)
+ {
+ 	u32 cpc_base;
+ 

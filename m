@@ -1,38 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Jul 2015 15:57:02 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:47187 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Jul 2015 15:59:44 +0200 (CEST)
+Received: from ec2-54-201-57-178.us-west-2.compute.amazonaws.com ([54.201.57.178]:46824
+        "EHLO ip-172-31-12-36.us-west-2.compute.internal"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27009775AbbGNN5AFsa-u (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 14 Jul 2015 15:57:00 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.15.1/8.14.8) with ESMTP id t6EDuwgi032248;
-        Tue, 14 Jul 2015 15:56:58 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.15.1/8.15.1/Submit) id t6EDuu7R032247;
-        Tue, 14 Jul 2015 15:56:56 +0200
-Date:   Tue, 14 Jul 2015 15:56:56 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Paul Burton <paul.burton@imgtec.com>
-Cc:     linux-mips@linux-mips.org,
-        Matthew Fortune <matthew.fortune@imgtec.com>,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 01/16] MIPS: remove outdated comments in sigcontext.h
-Message-ID: <20150714135656.GA30463@linux-mips.org>
-References: <1436540426-10021-1-git-send-email-paul.burton@imgtec.com>
- <1436540426-10021-2-git-send-email-paul.burton@imgtec.com>
+        id S27009828AbbGNN7m39QFu (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 14 Jul 2015 15:59:42 +0200
+Received: by ip-172-31-12-36.us-west-2.compute.internal (Postfix, from userid 1001)
+        id D927A4086C; Tue, 14 Jul 2015 13:59:19 +0000 (UTC)
+Date:   Tue, 14 Jul 2015 13:59:19 +0000
+From:   dwalker@fifo99.com
+To:     "Eric W. Biederman" <ebiederm@xmission.com>
+Cc:     Hidehiro Kawai <hidehiro.kawai.ez@hitachi.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Vivek Goyal <vgoyal@redhat.com>, linux-mips@linux-mips.org,
+        Baoquan He <bhe@redhat.com>, linux-sh@vger.kernel.org,
+        linux-s390@vger.kernel.org, kexec@lists.infradead.org,
+        linux-kernel@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
+        HATAYAMA Daisuke <d.hatayama@jp.fujitsu.com>,
+        Masami Hiramatsu <masami.hiramatsu.pt@hitachi.com>,
+        linuxppc-dev@lists.ozlabs.org, linux-metag@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 1/3] panic: Disable crash_kexec_post_notifiers if kdump
+ is not available
+Message-ID: <20150714135919.GA18333@fifo99.com>
+References: <20150710113331.4368.10495.stgit@softrs>
+ <20150710113331.4368.63745.stgit@softrs>
+ <87wpy82kqf.fsf@x220.int.ebiederm.org>
+ <20150713202611.GA16525@fifo99.com>
+ <87h9p7r0we.fsf@x220.int.ebiederm.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1436540426-10021-2-git-send-email-paul.burton@imgtec.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <ralf@linux-mips.org>
+In-Reply-To: <87h9p7r0we.fsf@x220.int.ebiederm.org>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <dwalker@fifo99.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48273
+X-archive-position: 48274
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: dwalker@fifo99.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,14 +53,27 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Jul 10, 2015 at 04:00:10PM +0100, Paul Burton wrote:
+On Mon, Jul 13, 2015 at 08:19:45PM -0500, Eric W. Biederman wrote:
+> dwalker@fifo99.com writes:
+> 
+> > On Fri, Jul 10, 2015 at 08:41:28AM -0500, Eric W. Biederman wrote:
+> >> Hidehiro Kawai <hidehiro.kawai.ez@hitachi.com> writes:
+> >> 
+> >> > You can call panic notifiers and kmsg dumpers before kdump by
+> >> > specifying "crash_kexec_post_notifiers" as a boot parameter.
+> >> > However, it doesn't make sense if kdump is not available.  In that
+> >> > case, disable "crash_kexec_post_notifiers" boot parameter so that
+> >> > you can't change the value of the parameter.
+> >> 
+> >> Nacked-by: "Eric W. Biederman" <ebiederm@xmission.com>
+> >
+> > I think it would make sense if he just replaced "kdump" with "kexec".
+> 
+> It would be less insane, however it still makes no sense as without
+> kexec on panic support crash_kexec is a noop.  So the value of the
+> seeting makes no difference.
 
-> The offsets to various fields within struct sigcontext are declared
-> using asm-offsets.c these days, so drop the outdated comment that talks
-> about keeping in sync with a no longer present file.
+Can you explain more, I don't really understand what you mean. Are you suggesting
+the whole "crash_kexec_post_notifiers" feature has no value ?
 
-What's outdated is the path but the offsets still need to be extracted
-by asm-offset.c and that requires the field names to be kept in sync
-in both files.
-
-  Ralf
+Daniel

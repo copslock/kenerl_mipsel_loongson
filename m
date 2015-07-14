@@ -1,47 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Jul 2015 14:21:37 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:41685 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27009286AbbGNMVgYWfo0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 14 Jul 2015 14:21:36 +0200
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id F390C698E1018;
-        Tue, 14 Jul 2015 13:21:27 +0100 (IST)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Tue, 14 Jul 2015 13:21:30 +0100
-Received: from [192.168.154.48] (192.168.154.48) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Tue, 14 Jul
- 2015 13:21:29 +0100
-Subject: Re: [PATCH v2 14/19] drivers: irqchip: irq-mips-gic: Extend GIC
- accessors for 64-bit CMs
-To:     Jonas Gorski <jogo@openwrt.org>
-References: <1436434853-30001-15-git-send-email-markos.chandras@imgtec.com>
- <1436865969-2977-1-git-send-email-markos.chandras@imgtec.com>
- <CAOiHx=nk21aCw-ZFQJDrPX2W29e5GNZ1s5huFwpJ8b0+88BrTw@mail.gmail.com>
-CC:     MIPS Mailing List <linux-mips@linux-mips.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Andrew Bresticker <abrestic@chromium.org>,
-        Paul Burton <paul.burton@imgtec.com>
-From:   Markos Chandras <Markos.Chandras@imgtec.com>
-Message-ID: <55A4FEC9.5050706@imgtec.com>
-Date:   Tue, 14 Jul 2015 13:21:29 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.0.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Jul 2015 14:22:04 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:46479 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S27009844AbbGNMWA62gI0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 14 Jul 2015 14:22:00 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.15.1/8.14.8) with ESMTP id t6ECLxxp030277;
+        Tue, 14 Jul 2015 14:21:59 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.15.1/8.15.1/Submit) id t6ECLsEU030276;
+        Tue, 14 Jul 2015 14:21:54 +0200
+Date:   Tue, 14 Jul 2015 14:21:54 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Stephen Boyd <sboyd@codeaurora.org>
+Cc:     Mike Turquette <mturquette@baylibre.com>,
+        linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org,
+        Manuel Lauss <manuel.lauss@gmail.com>,
+        Linux-MIPS <linux-mips@linux-mips.org>
+Subject: Re: [PATCH] MIPS: Alchemy: Include clk.h
+Message-ID: <20150714122154.GA30195@linux-mips.org>
+References: <1436819450-16440-1-git-send-email-sboyd@codeaurora.org>
 MIME-Version: 1.0
-In-Reply-To: <CAOiHx=nk21aCw-ZFQJDrPX2W29e5GNZ1s5huFwpJ8b0+88BrTw@mail.gmail.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.154.48]
-Return-Path: <Markos.Chandras@imgtec.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1436819450-16440-1-git-send-email-sboyd@codeaurora.org>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48269
+X-archive-position: 48270
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Markos.Chandras@imgtec.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,24 +45,21 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 07/14/2015 12:57 PM, Jonas Gorski wrote:
-> Hi,
-> 
-> On Tue, Jul 14, 2015 at 11:26 AM, Markos Chandras
-> <markos.chandras@imgtec.com> wrote:
->> Previously, the GIC accessors were only accessing u32 registers but
->> newer CMs may actually be 64-bit on MIPS64 cores. As a result of which,
->> extended these accessors to support 64-bit reads and writes.
-> 
-> Have you tested this with a 32-bit build? IIRC the *q accessors are
-> only available on 64-bit builds.
-> 
-> 
-> Jonas
-> 
-Yes but mips_cm_is64 is 0 for 32-bit kernels (see
-https://patchwork.linux-mips.org/patch/10707/) so it does not matter.
-but mips implements *q for 32-bit in arch/mips/include/asm/io.h anyway
+On Mon, Jul 13, 2015 at 01:30:50PM -0700, Stephen Boyd wrote:
 
--- 
-markos
+> This clock provider uses the consumer API, so include clk.h
+> explicitly.
+> 
+> Cc: Manuel Lauss <manuel.lauss@gmail.com>
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: Linux-MIPS <linux-mips@linux-mips.org>
+> Signed-off-by: Stephen Boyd <sboyd@codeaurora.org>
+> ---
+> 
+> Please ack so this can go through the clk tree. We're removing
+> the include of clk.h in clk-provider.h so that the consumer
+> and provider APIs are clearly split.
+
+Acked-by: Ralf Baechle <ralf@linux-mips.org>
+
+  Ralf

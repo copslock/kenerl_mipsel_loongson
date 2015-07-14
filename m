@@ -1,45 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Jul 2015 10:45:28 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:19211 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27008889AbbGNIp0ZGaqx (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 14 Jul 2015 10:45:26 +0200
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id A63F8A675CCAA;
-        Tue, 14 Jul 2015 09:45:18 +0100 (IST)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Tue, 14 Jul 2015 09:45:20 +0100
-Received: from [192.168.154.48] (192.168.154.48) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Tue, 14 Jul
- 2015 09:45:20 +0100
-Subject: Re: [PATCH v2 10/19] MIPS: asm: mips-cm: Extend CM accessors for
- 64-bit CPUs
-To:     Paul Burton <paul.burton@imgtec.com>
-References: <1436434853-30001-11-git-send-email-markos.chandras@imgtec.com>
- <1436861652-2063-1-git-send-email-markos.chandras@imgtec.com>
- <20150714083019.GD2519@NP-P-BURTON> <20150714083539.GF2519@NP-P-BURTON>
-CC:     <linux-mips@linux-mips.org>, Thomas Gleixner <tglx@linutronix.de>,
-        "Jason Cooper" <jason@lakedaemon.net>,
-        Andrew Bresticker <abrestic@chromium.org>
-From:   Markos Chandras <Markos.Chandras@imgtec.com>
-Message-ID: <55A4CC20.7040902@imgtec.com>
-Date:   Tue, 14 Jul 2015 09:45:20 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.0.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Jul 2015 10:55:56 +0200 (CEST)
+Received: from mail-wi0-f181.google.com ([209.85.212.181]:38900 "EHLO
+        mail-wi0-f181.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008889AbbGNIzz1ILcx (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 14 Jul 2015 10:55:55 +0200
+Received: by wicmv11 with SMTP id mv11so8348610wic.1;
+        Tue, 14 Jul 2015 01:55:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc:content-type;
+        bh=+My4a8HYjOaFCJWBUaQ1VCP2h+49nSkxWYGeUtjkf7w=;
+        b=AEgjRWLXx7dycq87P4dbQiEETJTM0y0w9Yq90MUmaVu6JNZc7LC0C0ahOTqHYnEG7t
+         qZHHdNdvNvC0FLS8OghVqrYA6ovkf8iuWJ8Lic7m+ft6W2sNG5aVsAuh+QckuryFKfa3
+         YeqFiDqolTs7Y4d/vNL+/Y+K7kxnPA+GLLJDLd9wXl+s+slkIgYmjKwKDLCKp70WHj/a
+         DPJj5ZPybarBEZK/U6pBpXtWdRETbHYbChhCxYUmQinUSfQhIMPQqksnEOJeCQbpJ2CZ
+         XN8WOR8da3xrvPdjVR92JLWP78WhnKhnizxzSVnrwZGwN1slh3N5AIvIcOjowQhBjov8
+         vIuw==
+X-Received: by 10.194.172.8 with SMTP id ay8mr17534058wjc.106.1436864147798;
+ Tue, 14 Jul 2015 01:55:47 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20150714083539.GF2519@NP-P-BURTON>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.154.48]
-Return-Path: <Markos.Chandras@imgtec.com>
+Received: by 10.194.248.193 with HTTP; Tue, 14 Jul 2015 01:55:08 -0700 (PDT)
+In-Reply-To: <alpine.DEB.2.11.1507141012360.20072@nanos>
+References: <20150713200602.799079101@linutronix.de> <20150713200715.113667554@linutronix.de>
+ <CAOLZvyEEzWRU2RoMODPg13TMgi9jLGOUmp=AuBUA230KmgKODQ@mail.gmail.com> <alpine.DEB.2.11.1507141012360.20072@nanos>
+From:   Manuel Lauss <manuel.lauss@gmail.com>
+Date:   Tue, 14 Jul 2015 10:55:08 +0200
+Message-ID: <CAOLZvyHxZdphtT6rw73=J-_HnFueNcmtxMCHZ-K=JsJt+UHKkg@mail.gmail.com>
+Subject: Re: [patch 08/12] MIPS/alchemy: Remove pointless irqdisable/enable
+To:     Thomas Gleixner <tglx@linutronix.de>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Jiang Liu <jiang.liu@linux.intel.com>,
+        Linux-MIPS <linux-mips@linux-mips.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <manuel.lauss@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48261
+X-archive-position: 48262
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Markos.Chandras@imgtec.com
+X-original-sender: manuel.lauss@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,44 +54,64 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 07/14/2015 09:35 AM, Paul Burton wrote:
-> On Tue, Jul 14, 2015 at 09:30:19AM +0100, Paul Burton wrote:
->> On Tue, Jul 14, 2015 at 09:14:12AM +0100, Markos Chandras wrote:
->>> Previously, the CM accessors were only accessing CM registers as u32
->>> types instead of using the native CM register with. However, newer CMs
->>> may actually be 64-bit on MIPS64 cores. Fortunately, current 64-bit CMs
->>> (CM3) hold all the useful configuration bits in the lower half of the
->>> 64-bit registers (at least most of them) so they can still be accessed
->>> using the current 32-bit accessors.
->>>
->>> Cc: Thomas Gleixner <tglx@linutronix.de>
->>> Cc: Jason Cooper <jason@lakedaemon.net>
->>> Cc: Andrew Bresticker <abrestic@chromium.org>
->>> Cc: Paul Burton <paul.burton@imgtec.com>
->>> Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
->>> ---
->>> Changes since v1
->>> - Use 32-bit CM I/O on 32-bit kernels
+On Tue, Jul 14, 2015 at 10:16 AM, Thomas Gleixner <tglx@linutronix.de> wrote:
+> On Tue, 14 Jul 2015, Manuel Lauss wrote:
+>
+>> On Mon, Jul 13, 2015 at 10:46 PM, Thomas Gleixner <tglx@linutronix.de> wrote:
+>> > bcsr_csc_handler() is a cascading interrupt handler. It has a
+>> > disable_irq_nosync()/enable_irq() pair around the generic_handle_irq()
+>> > call. The value of this disable/enable is zero because its a complete
+>> > noop:
+>> >
+>> > disable_irq_nosync() merily increments the disable count without
+>> > actually masking the interrupt. enable_irq() soleley decrements the
+>> > disable count without touching the interrupt chip. The interrupt
+>> > cannot arrive again because the complete call chain runs with
+>> > interrupts disabled.
+>> >
+>> > Remove it.
 >>
->> A concern I have, but haven't yet drank enough coffee to think through
->> fully, is whether this will work on big endian systems. These are 64b
->> addresses and you're writing 32b to their addresses which I suspect may
->> go horribly wrong.
-> 
-> Should be:
-> 
-> "These are 64b registers and you're writing 32b to their addresses"
-> 
-> Apparently I haven't drunk enouugh coffee to formulate sentences yet
-> either ;)
-> 
+>> Is there another patch this one depends on?  The DB1300 board doesn't
+>
+> No.
+>
+>> boot (i.e. interrupts from the cpld aren't serviced) with this patch applied:
+>> (irq 136 is the first serviced by the bcsr cpld):
+>>
+>> irq 136: nobody cared (try booting with the "irqpoll" option)
+>
+> That's weird. Looking deeper, enable_irq() actually calls
+> chip->unmask() unconditionally. So it seems the chip is sensitive to
+> that.
+>
+> Does the following patch on top fix things again?
+>
 > Thanks,
->     Paul
-> 
+>
+>         tglx
+> ----
+> diff --git a/arch/mips/alchemy/devboards/bcsr.c b/arch/mips/alchemy/devboards/bcsr.c
+> index 3a24f2d6ecfd..ec47abe580c6 100644
+> --- a/arch/mips/alchemy/devboards/bcsr.c
+> +++ b/arch/mips/alchemy/devboards/bcsr.c
+> @@ -88,8 +88,11 @@ EXPORT_SYMBOL_GPL(bcsr_mod);
+>  static void bcsr_csc_handler(unsigned int irq, struct irq_desc *d)
+>  {
+>         unsigned short bisr = __raw_readw(bcsr_virt + BCSR_REG_INTSTAT);
+> +       struct irq_chip *chip = irq_desc_get_chip(d);
+>
+> +       chained_irq_enter(chip, d);
+>         generic_handle_irq(bcsr_csc_base + __ffs(bisr));
+> +       chained_irq_exit(chip, d);
+>  }
+>
+>  static void bcsr_irq_mask(struct irq_data *d)
 
-The HW team told me that the CM regs can be accessed in LE-pair format
-even on big-endian cores in the sense that bit0 of a 64-bit CM reg will
-always be on the lower address. I have never tested that really.
 
--- 
-markos
+Yes.  Add #include <linux/irqchip/chained_irq.h> on top and it works again.
+This hardware is problematic, an older variant with identical verilog
+code in the cpld's
+irq unit works fine without this.
+
+Thanks,
+    Manuel

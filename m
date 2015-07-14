@@ -1,58 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Jul 2015 18:16:19 +0200 (CEST)
-Received: from mx1.redhat.com ([209.132.183.28]:39055 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27009269AbbGNQQSFwckY (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 14 Jul 2015 18:16:18 +0200
-Received: from int-mx11.intmail.prod.int.phx2.redhat.com (int-mx11.intmail.prod.int.phx2.redhat.com [10.5.11.24])
-        by mx1.redhat.com (Postfix) with ESMTPS id 68A1F3672AE;
-        Tue, 14 Jul 2015 16:16:13 +0000 (UTC)
-Received: from horse.redhat.com (dhcp-25-235.bos.redhat.com [10.18.25.235])
-        by int-mx11.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with ESMTP id t6EGGCRs004145;
-        Tue, 14 Jul 2015 12:16:12 -0400
-Received: by horse.redhat.com (Postfix, from userid 10451)
-        id 2A2602022D5; Tue, 14 Jul 2015 12:16:12 -0400 (EDT)
-Date:   Tue, 14 Jul 2015 12:16:12 -0400
-From:   Vivek Goyal <vgoyal@redhat.com>
-To:     dwalker@fifo99.com
-Cc:     "Eric W. Biederman" <ebiederm@xmission.com>,
-        Hidehiro Kawai <hidehiro.kawai.ez@hitachi.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linux-mips@linux-mips.org, Baoquan He <bhe@redhat.com>,
-        linux-sh@vger.kernel.org, linux-s390@vger.kernel.org,
-        kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
-        Ingo Molnar <mingo@kernel.org>,
-        HATAYAMA Daisuke <d.hatayama@jp.fujitsu.com>,
-        Masami Hiramatsu <masami.hiramatsu.pt@hitachi.com>,
-        linuxppc-dev@lists.ozlabs.org, linux-metag@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 1/3] panic: Disable crash_kexec_post_notifiers if kdump
- is not available
-Message-ID: <20150714161612.GH10792@redhat.com>
-References: <20150710113331.4368.10495.stgit@softrs>
- <20150710113331.4368.63745.stgit@softrs>
- <87wpy82kqf.fsf@x220.int.ebiederm.org>
- <20150713202611.GA16525@fifo99.com>
- <87h9p7r0we.fsf@x220.int.ebiederm.org>
- <20150714135919.GA18333@fifo99.com>
- <20150714150208.GD10792@redhat.com>
- <20150714153430.GA18766@fifo99.com>
- <20150714154040.GA3912@redhat.com>
- <20150714154833.GA18883@fifo99.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Jul 2015 18:46:23 +0200 (CEST)
+Received: from mail-ob0-f176.google.com ([209.85.214.176]:35881 "EHLO
+        mail-ob0-f176.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010458AbbGNQqWcbikn (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 14 Jul 2015 18:46:22 +0200
+Received: by obnw1 with SMTP id w1so9692027obn.3
+        for <linux-mips@linux-mips.org>; Tue, 14 Jul 2015 09:46:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=subject:to:from:cc:date:message-id:user-agent:mime-version
+         :content-type:content-transfer-encoding;
+        bh=7QvHLx7l8N5Co2gaUPSmhYDD5Wgi0dSjg26A6Ak2yCo=;
+        b=f0LSCw7okwqqZyHU9ArP8PDyKqk2/A1RQq6HHkz+2YVNdwkOnaoRSY61vbOITYsS6c
+         aqsipDMLIeJBammwE3u9F77CW5EsrLrAHIoagX4yerOvxnYt/+3hZ2mMggeSQ8Y23xMb
+         zkvNv/dBMZc+TBELGI14UZUsuSnFRCHuna1irZbTpr1PrylLYzToOUNODNKLwn4cXTap
+         gsBuYvOI60PtPdvuy0LeNOleqjRp4XixLWI1wfzqjyRF2DpxJl+rbZODwoD0kOi4WZpY
+         ++UfWxJ1d5AR4f+5muxDAeQBs0In9a7+SQJ5C9MVVKb172SOn1eq1v+pKcSiByRKzP1z
+         u+WA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:subject:to:from:cc:date:message-id:user-agent
+         :mime-version:content-type:content-transfer-encoding;
+        bh=7QvHLx7l8N5Co2gaUPSmhYDD5Wgi0dSjg26A6Ak2yCo=;
+        b=K45nG8A+KWs4pbBcIAO/3i3m29MLMHTd9nQ1THBSVaW7EaJNAEUa2CVxFf0D7NfZkd
+         9yfiv3jNjt4dS8y1KQbTN5ytbQP0mIzcKTRRKdGwK0SnWvs2o5e07ecrl9BqXmrU/ZXZ
+         oisZ9gEtlB7gYlXM4T1K+nRnu8sjJi0gPlmSXHKEJcDXrDRou3/RUznv6MNrK1MyYC62
+         fCLVL3ElYZzwUYN4v7oYXsie1f1KTszq6iD9KWEbuZmfj2wMpg8doYOqjrf1i5AO1bfN
+         GzGfzAR80x0VjSl4SpF7nQjqlcebeljTDdb2ixpy1hgQB2CZIWaApuiaod4plRau8gTG
+         4GaQ==
+X-Gm-Message-State: ALoCoQlj01ykNIAuj5XDxk0ffDbj8WpATxodTtn4aNtK2SFOjlg64S9Iv9MXz3H+Ut3t1vgG1Jws
+X-Received: by 10.182.247.102 with SMTP id yd6mr35641836obc.39.1436892376533;
+        Tue, 14 Jul 2015 09:46:16 -0700 (PDT)
+Received: from localhost ([69.71.1.1])
+        by smtp.gmail.com with ESMTPSA id fh3sm748121obb.23.2015.07.14.09.46.14
+        (version=TLSv1.2 cipher=RC4-SHA bits=128/128);
+        Tue, 14 Jul 2015 09:46:15 -0700 (PDT)
+Subject: [PATCH v2 0/8] Remove "weak" usage
+To:     Ralf Baechle <ralf@linux-mips.org>
+From:   Bjorn Helgaas <bhelgaas@google.com>
+Cc:     Andrew Bresticker <abrestic@chromium.org>,
+        linux-mips@linux-mips.org, James Hogan <james.hogan@imgtec.com>,
+        linux-kernel@vger.kernel.org
+Date:   Tue, 14 Jul 2015 11:46:13 -0500
+Message-ID: <20150714164142.1541.92710.stgit@bhelgaas-glaptop2.roam.corp.google.com>
+User-Agent: StGit/0.16
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20150714154833.GA18883@fifo99.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-X-Scanned-By: MIMEDefang 2.68 on 10.5.11.24
-Return-Path: <vgoyal@redhat.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Return-Path: <bhelgaas@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48282
+X-archive-position: 48283
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vgoyal@redhat.com
+X-original-sender: bhelgaas@google.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -65,69 +67,51 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Jul 14, 2015 at 03:48:33PM +0000, dwalker@fifo99.com wrote:
-> On Tue, Jul 14, 2015 at 11:40:40AM -0400, Vivek Goyal wrote:
-> > On Tue, Jul 14, 2015 at 03:34:30PM +0000, dwalker@fifo99.com wrote:
-> > > On Tue, Jul 14, 2015 at 11:02:08AM -0400, Vivek Goyal wrote:
-> > > > On Tue, Jul 14, 2015 at 01:59:19PM +0000, dwalker@fifo99.com wrote:
-> > > > > On Mon, Jul 13, 2015 at 08:19:45PM -0500, Eric W. Biederman wrote:
-> > > > > > dwalker@fifo99.com writes:
-> > > > > > 
-> > > > > > > On Fri, Jul 10, 2015 at 08:41:28AM -0500, Eric W. Biederman wrote:
-> > > > > > >> Hidehiro Kawai <hidehiro.kawai.ez@hitachi.com> writes:
-> > > > > > >> 
-> > > > > > >> > You can call panic notifiers and kmsg dumpers before kdump by
-> > > > > > >> > specifying "crash_kexec_post_notifiers" as a boot parameter.
-> > > > > > >> > However, it doesn't make sense if kdump is not available.  In that
-> > > > > > >> > case, disable "crash_kexec_post_notifiers" boot parameter so that
-> > > > > > >> > you can't change the value of the parameter.
-> > > > > > >> 
-> > > > > > >> Nacked-by: "Eric W. Biederman" <ebiederm@xmission.com>
-> > > > > > >
-> > > > > > > I think it would make sense if he just replaced "kdump" with "kexec".
-> > > > > > 
-> > > > > > It would be less insane, however it still makes no sense as without
-> > > > > > kexec on panic support crash_kexec is a noop.  So the value of the
-> > > > > > seeting makes no difference.
-> > > > > 
-> > > > > Can you explain more, I don't really understand what you mean. Are you suggesting
-> > > > > the whole "crash_kexec_post_notifiers" feature has no value ?
-> > > > 
-> > > > Daniel,
-> > > > 
-> > > > BTW, why are you using crash_kexec_post_notifiers commandline? Why not
-> > > > without it?
-> > > 
-> > > It was explained in the prior thread but to rehash, the notifiers are used to do a switch
-> > > over from the crashed machine to another redundant machine.
-> > 
-> > So why not detect failure using polling or issue notifications from second
-> > kernel.
-> > 
-> > IOW, expecting that a crashed machine will be able to deliver notification
-> > reliably is falwed to begin with, IMHO.
-> 
-> It's flawed to think you can kexec, but you still do it right ? I've not gotten into
-> the deep details of this switching process, but that's how this interface is used.
+These patches don't fix any problem I'm aware of, but I think they make the
+code easier to analyze, and they reduce the likelihood of issues if MIPS
+ever builds a multi-platform kernel.
 
-Sure. But the deal here is that users of interface know that sometimes it
-can be unreliable. And in the absence of more reliable mechanism, somewhat
-less reliable mechanism is fine. 
+Weak function declarations in header files are hard to use safely because
+they make every definition weak.  If the linker sees multiple weak
+definitions, it silently chooses one based on link order.  That's not a
+very obvious criterion, and it can easily lead to running the wrong
+version.
 
->  
-> > If a machine is failing, there are high chance it can't deliver you the
-> > notification. Detecting that failure suing some kind of polling mechanism
-> > might be more reliable. And it will make even kdump mechanism more
-> > reliable so that it does not have to run panic notifiers after the crash.
-> 
-> I think what your suggesting is that my company should change how it's hardware works
-> and that's not really an option for me. This isn't a simple thing like checking over the
-> network if the machine is down or not, this is way more complex hardware design.
+These patches remove the weak attribute from function declarations and
+rework the code to match.  I don't have any of these platforms, so I can't
+test them, but my intent is that these should cause no functional change.
 
-That means you are ready to live with an unreliable design. There might be
-cases where notifier does not get run properly and you will not do switch
-despite the fact that OS has failed. I was just trying to nudge you in
-a direction which could be more reliable mechanism.
+Changes from v1-v2:
+  - Rework vpe_run() patch to simply drop "weak" and the test for definition
+  - #include <asm/irq.h> in kernel/time.c instead of #ifdef MIPS_CPU_IRQ_BASE
+  - Add Reviewed-by from James for unchanged patches
 
-Thanks
-Vivek
+---
+
+Bjorn Helgaas (8):
+      MIPS: CPC: Remove "weak" from mips_cpc_phys_base() and make it static
+      MIPS: Remove "weak" from platform_maar_init() declaration
+      MIPS: MT: Remove "weak" from vpe_run() declaration
+      MIPS: Remove "weak" from get_c0_perfcount_int() declaration
+      MIPS: Remove "weak" from get_c0_compare_int() declaration
+      MIPS: Remove "weak" from get_c0_fdc_int() declaration
+      MIPS: Remove "weak" from mips_cdmm_phys_base() declaration
+      MIPS: Remove "__weak" definition from arch-specific linkage.h
+
+
+ arch/mips/include/asm/cdmm.h         |    4 ++--
+ arch/mips/include/asm/irq.h          |    2 +-
+ arch/mips/include/asm/linkage.h      |    1 -
+ arch/mips/include/asm/maar.h         |    2 +-
+ arch/mips/include/asm/mips-cpc.h     |   10 ----------
+ arch/mips/include/asm/time.h         |    4 ++--
+ arch/mips/include/asm/vpe.h          |    2 +-
+ arch/mips/kernel/cevt-r4k.c          |   11 +++++++----
+ arch/mips/kernel/mips-cpc.c          |    9 ++++++++-
+ arch/mips/kernel/perf_event_mipsxx.c |    7 +------
+ arch/mips/kernel/time.c              |    9 ++++++++-
+ arch/mips/kernel/vpe.c               |    2 +-
+ arch/mips/oprofile/op_model_mipsxx.c |    8 +-------
+ drivers/bus/mips_cdmm.c              |   14 +++++++++++++-
+ drivers/tty/mips_ejtag_fdc.c         |    9 ++++++---
+ 15 files changed, 52 insertions(+), 42 deletions(-)

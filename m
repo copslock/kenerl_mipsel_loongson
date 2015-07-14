@@ -1,53 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Jul 2015 12:47:59 +0200 (CEST)
-Received: from down.free-electrons.com ([37.187.137.238]:51493 "EHLO
-        mail.free-electrons.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27009345AbbGNKr4rfg0n (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 14 Jul 2015 12:47:56 +0200
-Received: by mail.free-electrons.com (Postfix, from userid 106)
-        id C8FB45BE; Tue, 14 Jul 2015 12:47:58 +0200 (CEST)
-Received: from bbrezillon (col31-4-88-188-80-5.fbx.proxad.net [88.188.80.5])
-        by mail.free-electrons.com (Postfix) with ESMTPSA id A999016D;
-        Tue, 14 Jul 2015 12:47:57 +0200 (CEST)
-Date:   Tue, 14 Jul 2015 12:47:48 +0200
-From:   Boris Brezillon <boris.brezillon@free-electrons.com>
-To:     Stephen Boyd <sboyd@codeaurora.org>
-Cc:     Mike Turquette <mturquette@baylibre.com>,
-        linux-clk@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
-        Tony Lindgren <tony@atomide.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Emilio =?UTF-8?B?TMOzcGV6?= <emilio@elopez.com.ar>,
-        Maxime Ripard <maxime.ripard@free-electrons.com>,
-        Tero Kristo <t-kristo@ti.com>,
-        Peter De Schrijver <pdeschrijver@nvidia.com>,
-        Prashant Gaikwad <pgaikwad@nvidia.com>,
-        Stephen Warren <swarren@wwwdotorg.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Alexandre Courbot <gnurou@gmail.com>,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-mips@linux-mips.org, linux-tegra@vger.kernel.org
-Subject: Re: [PATCH v5] clk: change clk_ops' ->determine_rate() prototype
-Message-ID: <20150714124748.55dd6213@bbrezillon>
-In-Reply-To: <20150713230217.GI30412@codeaurora.org>
-References: <1436294888-25752-1-git-send-email-boris.brezillon@free-electrons.com>
-        <20150708005748.GG30412@codeaurora.org>
-        <20150708110005.704c49ff@bbrezillon>
-        <559D66EE.4060707@codeaurora.org>
-        <20150709223938.19450e75@bbrezillon>
-        <20150713230217.GI30412@codeaurora.org>
-X-Mailer: Claws Mail 3.9.3 (GTK+ 2.24.23; x86_64-pc-linux-gnu)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Jul 2015 13:58:24 +0200 (CEST)
+Received: from arrakis.dune.hu ([78.24.191.176]:57437 "EHLO arrakis.dune.hu"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27009249AbbGNL6WeX1U0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 14 Jul 2015 13:58:22 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by arrakis.dune.hu (Postfix) with ESMTP id 79F78284DFE
+        for <linux-mips@linux-mips.org>; Tue, 14 Jul 2015 13:57:59 +0200 (CEST)
+X-Virus-Scanned: at arrakis.dune.hu
+Received: from mail-qg0-f53.google.com (mail-qg0-f53.google.com [209.85.192.53])
+        by arrakis.dune.hu (Postfix) with ESMTPSA id 2A422280906
+        for <linux-mips@linux-mips.org>; Tue, 14 Jul 2015 13:57:53 +0200 (CEST)
+Received: by qgef3 with SMTP id f3so2880973qge.0
+        for <linux-mips@linux-mips.org>; Tue, 14 Jul 2015 04:58:14 -0700 (PDT)
+X-Received: by 10.55.41.229 with SMTP id p98mr33570072qkp.99.1436875094325;
+ Tue, 14 Jul 2015 04:58:14 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <boris.brezillon@free-electrons.com>
+Received: by 10.140.82.200 with HTTP; Tue, 14 Jul 2015 04:57:54 -0700 (PDT)
+In-Reply-To: <1436865969-2977-1-git-send-email-markos.chandras@imgtec.com>
+References: <1436434853-30001-15-git-send-email-markos.chandras@imgtec.com> <1436865969-2977-1-git-send-email-markos.chandras@imgtec.com>
+From:   Jonas Gorski <jogo@openwrt.org>
+Date:   Tue, 14 Jul 2015 13:57:54 +0200
+Message-ID: <CAOiHx=nk21aCw-ZFQJDrPX2W29e5GNZ1s5huFwpJ8b0+88BrTw@mail.gmail.com>
+Subject: Re: [PATCH v2 14/19] drivers: irqchip: irq-mips-gic: Extend GIC
+ accessors for 64-bit CMs
+To:     Markos Chandras <markos.chandras@imgtec.com>
+Cc:     MIPS Mailing List <linux-mips@linux-mips.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Andrew Bresticker <abrestic@chromium.org>,
+        Paul Burton <paul.burton@imgtec.com>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <jogo@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48267
+X-archive-position: 48268
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: boris.brezillon@free-electrons.com
+X-original-sender: jogo@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -60,72 +51,16 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, 13 Jul 2015 16:02:18 -0700
-Stephen Boyd <sboyd@codeaurora.org> wrote:
+Hi,
 
-> On 07/09, Boris Brezillon wrote:
-> > Hi Stephen,
-> > 
-> > On Wed, 08 Jul 2015 11:07:42 -0700
-> > Stephen Boyd <sboyd@codeaurora.org> wrote:
-> > 
-> > > On 07/08/2015 02:00 AM, Boris Brezillon wrote:
-> > > > Hi Stephen,
-> > > >
-> > > > On Tue, 7 Jul 2015 17:57:48 -0700
-> > > > Stephen Boyd <sboyd@codeaurora.org> wrote:
-> > > >
-> > > >> On 07/07, Boris Brezillon wrote:
-> > > >>>
-> > > >>>  	} else {
-> > > >>>  		pr_err("clk: clk_composite_determine_rate function called, but no mux or rate callback set!\n");
-> > > >>> +		req->rate = 0;
-> > > >>>  		return 0;
-> > > >> Shouldn't this return an error now? And then assigning req->rate
-> > > >> wouldn't be necessary. Sorry I must have missed this last round.
-> > > >>
-> > > > Actually I wanted to keep the existing behavior: return a 0 rate (not
-> > > > an error) when there is no mux or rate ops.
-> > > >
-> > > > That's something we can change afterwards, but it might reveals
-> > > > new bugs if some users are checking for a 0 rate to detect errors.
-> > > >
-> > > 
-> > > Ok. Care to send the patch now to do that while we're thinking about it?
-> > > We can test it out for a month or two.
-> > > 
-> > 
-> > Here is a patch modifying a few drivers to return errors instead of a 0
-> > rate. Feel free to squash it in the previous one if you think this is
-> > better.
-> > 
-> > Best Regards,
-> > 
-> > Boris
-> > 
-> > --- >8 ---
-> > 
-> > From dca9c28301042cf19dad4b1e4555cdb7c1063745 Mon Sep 17 00:00:00 2001
-> > From: Boris Brezillon <boris.brezillon@free-electrons.com>
-> > Date: Thu, 9 Jul 2015 12:20:21 +0200
-> > Subject: [PATCH] clk: fix some determine_rate implementations
-> > 
-> > Some determine_rate implementations are not returning an error when then
-> > failed to adapt the rate according to the rate request.
-> > Fix them so that they return an error instead of silently returning 0.
-> > 
-> > Signed-off-by: Boris Brezillon <boris.brezillon@free-electrons.com>
-> 
-> The linewrap is seriously messed up here. Please fix your mailer
-> next time. I had to hand edit the patch to get it to apply. I've
-> applied this in top of the original patch as a different commit,
-> in case we need to revert it later.
+On Tue, Jul 14, 2015 at 11:26 AM, Markos Chandras
+<markos.chandras@imgtec.com> wrote:
+> Previously, the GIC accessors were only accessing u32 registers but
+> newer CMs may actually be 64-bit on MIPS64 cores. As a result of which,
+> extended these accessors to support 64-bit reads and writes.
 
-Sorry about that, I forgot to remove the line wrapper when copying the
-content of the patch into my mailer :-/.
+Have you tested this with a 32-bit build? IIRC the *q accessors are
+only available on 64-bit builds.
 
 
--- 
-Boris Brezillon, Free Electrons
-Embedded Linux and Kernel engineering
-http://free-electrons.com
+Jonas

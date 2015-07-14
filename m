@@ -1,42 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Jul 2015 10:14:24 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:45050 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27009239AbbGNIOW4aXh4 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 14 Jul 2015 10:14:22 +0200
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id D1064681D3205;
-        Tue, 14 Jul 2015 09:14:14 +0100 (IST)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Tue, 14 Jul 2015 09:14:16 +0100
-Received: from mchandras-linux.le.imgtec.org (192.168.154.48) by
- LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.210.2; Tue, 14 Jul 2015 09:14:16 +0100
-From:   Markos Chandras <markos.chandras@imgtec.com>
-To:     <linux-mips@linux-mips.org>
-CC:     Markos Chandras <markos.chandras@imgtec.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Andrew Bresticker <abrestic@chromium.org>,
-        Paul Burton <paul.burton@imgtec.com>
-Subject: [PATCH v2 10/19] MIPS: asm: mips-cm: Extend CM accessors for 64-bit CPUs
-Date:   Tue, 14 Jul 2015 09:14:12 +0100
-Message-ID: <1436861652-2063-1-git-send-email-markos.chandras@imgtec.com>
-X-Mailer: git-send-email 2.4.5
-In-Reply-To: <1436434853-30001-11-git-send-email-markos.chandras@imgtec.com>
-References: <1436434853-30001-11-git-send-email-markos.chandras@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Jul 2015 10:16:48 +0200 (CEST)
+Received: from www.linutronix.de ([62.245.132.108]:59223 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27008889AbbGNIQrk0fB4 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 14 Jul 2015 10:16:47 +0200
+Received: from localhost ([127.0.0.1])
+        by Galois.linutronix.de with esmtps (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:256)
+        (Exim 4.80)
+        (envelope-from <tglx@linutronix.de>)
+        id 1ZEvOO-0002XO-IF; Tue, 14 Jul 2015 10:16:44 +0200
+Date:   Tue, 14 Jul 2015 10:16:37 +0200 (CEST)
+From:   Thomas Gleixner <tglx@linutronix.de>
+To:     Manuel Lauss <manuel.lauss@gmail.com>
+cc:     LKML <linux-kernel@vger.kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Jiang Liu <jiang.liu@linux.intel.com>,
+        Linux-MIPS <linux-mips@linux-mips.org>
+Subject: Re: [patch 08/12] MIPS/alchemy: Remove pointless irqdisable/enable
+In-Reply-To: <CAOLZvyEEzWRU2RoMODPg13TMgi9jLGOUmp=AuBUA230KmgKODQ@mail.gmail.com>
+Message-ID: <alpine.DEB.2.11.1507141012360.20072@nanos>
+References: <20150713200602.799079101@linutronix.de> <20150713200715.113667554@linutronix.de> <CAOLZvyEEzWRU2RoMODPg13TMgi9jLGOUmp=AuBUA230KmgKODQ@mail.gmail.com>
+User-Agent: Alpine 2.11 (DEB 23 2013-08-11)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.154.48]
-Return-Path: <Markos.Chandras@imgtec.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Linutronix-Spam-Score: -1.0
+X-Linutronix-Spam-Level: -
+X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001,URIBL_BLOCKED=0.001
+Return-Path: <tglx@linutronix.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48255
+X-archive-position: 48256
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: markos.chandras@imgtec.com
+X-original-sender: tglx@linutronix.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,122 +46,54 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Previously, the CM accessors were only accessing CM registers as u32
-types instead of using the native CM register with. However, newer CMs
-may actually be 64-bit on MIPS64 cores. Fortunately, current 64-bit CMs
-(CM3) hold all the useful configuration bits in the lower half of the
-64-bit registers (at least most of them) so they can still be accessed
-using the current 32-bit accessors.
+On Tue, 14 Jul 2015, Manuel Lauss wrote:
 
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Jason Cooper <jason@lakedaemon.net>
-Cc: Andrew Bresticker <abrestic@chromium.org>
-Cc: Paul Burton <paul.burton@imgtec.com>
-Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
----
-Changes since v1
-- Use 32-bit CM I/O on 32-bit kernels
----
- arch/mips/include/asm/mips-cm.h | 48 +++++++++++++++++++++++++++++++++++++----
- arch/mips/kernel/mips-cm.c      |  4 ++++
- 2 files changed, 48 insertions(+), 4 deletions(-)
+> On Mon, Jul 13, 2015 at 10:46 PM, Thomas Gleixner <tglx@linutronix.de> wrote:
+> > bcsr_csc_handler() is a cascading interrupt handler. It has a
+> > disable_irq_nosync()/enable_irq() pair around the generic_handle_irq()
+> > call. The value of this disable/enable is zero because its a complete
+> > noop:
+> >
+> > disable_irq_nosync() merily increments the disable count without
+> > actually masking the interrupt. enable_irq() soleley decrements the
+> > disable count without touching the interrupt chip. The interrupt
+> > cannot arrive again because the complete call chain runs with
+> > interrupts disabled.
+> >
+> > Remove it.
+> 
+> Is there another patch this one depends on?  The DB1300 board doesn't
 
-diff --git a/arch/mips/include/asm/mips-cm.h b/arch/mips/include/asm/mips-cm.h
-index ca3f2c963fbd..46cc0c69b77c 100644
---- a/arch/mips/include/asm/mips-cm.h
-+++ b/arch/mips/include/asm/mips-cm.h
-@@ -33,6 +33,20 @@ extern void __iomem *mips_cm_l2sync_base;
-  */
- extern phys_addr_t __mips_cm_phys_base(void);
- 
-+/*
-+ * mips_cm_is64 - determine CM register width
-+ *
-+ * The CM register width is processor and CM specific. A 64-bit processor
-+ * usually has a 64-bit CM and a 32-bit one has a 32-bit CM but a 64-bit
-+ * processor could come with a 32-bit CM. Moreover, accesses on 64-bit CMs
-+ * can be done either using regular 64-bit load/store instructions, or 32-bit
-+ * load/store instruction on 32-bit register pairs. We opt for using 64-bit
-+ * accesses on 64-bit CMs and kernels and 32-bit in any other case.
-+ *
-+ * It's set to 0 for 32-bit accesses and 1 for 64-bit accesses.
-+ */
-+extern int mips_cm_is64;
-+
- /**
-  * mips_cm_probe - probe for a Coherence Manager
-  *
-@@ -90,20 +104,46 @@ static inline bool mips_cm_has_l2sync(void)
- 
- /* Macros to ease the creation of register access functions */
- #define BUILD_CM_R_(name, off)					\
--static inline u32 __iomem *addr_gcr_##name(void)		\
-+static inline unsigned long __iomem *addr_gcr_##name(void)	\
- {								\
--	return (u32 __iomem *)(mips_cm_base + (off));		\
-+	return (unsigned long __iomem *)(mips_cm_base + (off));	\
- }								\
- 								\
--static inline u32 read_gcr_##name(void)				\
-+static inline u32 read32_gcr_##name(void)			\
- {								\
- 	return __raw_readl(addr_gcr_##name());			\
-+}								\
-+								\
-+static inline u64 read64_gcr_##name(void)			\
-+{								\
-+	return __raw_readq(addr_gcr_##name());			\
-+}								\
-+								\
-+static inline unsigned long read_gcr_##name(void)		\
-+{								\
-+	if (mips_cm_is64)					\
-+		return read64_gcr_##name();			\
-+	else							\
-+		return read32_gcr_##name();			\
- }
- 
- #define BUILD_CM__W(name, off)					\
--static inline void write_gcr_##name(u32 value)			\
-+static inline void write32_gcr_##name(u32 value)		\
- {								\
- 	__raw_writel(value, addr_gcr_##name());			\
-+}								\
-+								\
-+static inline void write64_gcr_##name(u64 value)		\
-+{								\
-+	__raw_writeq(value, addr_gcr_##name());			\
-+}								\
-+								\
-+static inline void write_gcr_##name(unsigned long value)	\
-+{								\
-+	if (mips_cm_is64)					\
-+		write64_gcr_##name(value);			\
-+	else							\
-+		write32_gcr_##name(value);			\
- }
- 
- #define BUILD_CM_RW(name, off)					\
-diff --git a/arch/mips/kernel/mips-cm.c b/arch/mips/kernel/mips-cm.c
-index 42602f30949f..3d2cb6f47898 100644
---- a/arch/mips/kernel/mips-cm.c
-+++ b/arch/mips/kernel/mips-cm.c
-@@ -15,6 +15,7 @@
- 
- void __iomem *mips_cm_base;
- void __iomem *mips_cm_l2sync_base;
-+int mips_cm_is64;
- 
- phys_addr_t __mips_cm_phys_base(void)
+No.
+
+> boot (i.e. interrupts from the cpld aren't serviced) with this patch applied:
+> (irq 136 is the first serviced by the bcsr cpld):
+> 
+> irq 136: nobody cared (try booting with the "irqpoll" option)
+
+That's weird. Looking deeper, enable_irq() actually calls
+chip->unmask() unconditionally. So it seems the chip is sensitive to
+that.
+
+Does the following patch on top fix things again?
+
+Thanks,
+
+	tglx
+----
+diff --git a/arch/mips/alchemy/devboards/bcsr.c b/arch/mips/alchemy/devboards/bcsr.c
+index 3a24f2d6ecfd..ec47abe580c6 100644
+--- a/arch/mips/alchemy/devboards/bcsr.c
++++ b/arch/mips/alchemy/devboards/bcsr.c
+@@ -88,8 +88,11 @@ EXPORT_SYMBOL_GPL(bcsr_mod);
+ static void bcsr_csc_handler(unsigned int irq, struct irq_desc *d)
  {
-@@ -124,5 +125,8 @@ int mips_cm_probe(void)
- 	/* probe for an L2-only sync region */
- 	mips_cm_probe_l2sync();
+ 	unsigned short bisr = __raw_readw(bcsr_virt + BCSR_REG_INTSTAT);
++	struct irq_chip *chip = irq_desc_get_chip(d);
  
-+	/* determine register width for this CM */
-+	mips_cm_is64 = config_enabled(CONFIG_64BIT) && (mips_cm_revision() >= CM_REV_CM3);
-+
- 	return 0;
++	chained_irq_enter(chip, d);
+ 	generic_handle_irq(bcsr_csc_base + __ffs(bisr));
++	chained_irq_exit(chip, d);
  }
--- 
-2.4.5
+ 
+ static void bcsr_irq_mask(struct irq_data *d)

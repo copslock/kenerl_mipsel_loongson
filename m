@@ -1,42 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Jul 2015 11:26:24 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:17066 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27009239AbbGNJ0WfMMa2 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 14 Jul 2015 11:26:22 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Jul 2015 11:27:33 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:36559 "EHLO
+        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S27009552AbbGNJ13WnG82 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 14 Jul 2015 11:27:29 +0200
+Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
+        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id CCB2741F8E15;
+        Tue, 14 Jul 2015 10:27:23 +0100 (BST)
+Received: from mailapp01.imgtec.com ([10.100.180.242])
+  by imgpgp01.kl.imgtec.org (PGP Universal service);
+  Tue, 14 Jul 2015 10:27:23 +0100
+X-PGP-Universal: processed;
+        by imgpgp01.kl.imgtec.org on Tue, 14 Jul 2015 10:27:23 +0100
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 72F2C23A88BFC;
-        Tue, 14 Jul 2015 10:26:13 +0100 (IST)
+        by Websense Email Security Gateway with ESMTPS id 75A7B4D119A3D;
+        Tue, 14 Jul 2015 10:27:21 +0100 (IST)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
  KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Tue, 14 Jul 2015 10:26:15 +0100
-Received: from mchandras-linux.le.imgtec.org (192.168.154.48) by
- LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.210.2; Tue, 14 Jul 2015 10:26:14 +0100
-From:   Markos Chandras <markos.chandras@imgtec.com>
-To:     <linux-mips@linux-mips.org>
-CC:     Markos Chandras <markos.chandras@imgtec.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Andrew Bresticker <abrestic@chromium.org>,
-        Paul Burton <paul.burton@imgtec.com>
-Subject: [PATCH v2 14/19] drivers: irqchip: irq-mips-gic: Extend GIC accessors for 64-bit CMs
-Date:   Tue, 14 Jul 2015 10:26:09 +0100
-Message-ID: <1436865969-2977-1-git-send-email-markos.chandras@imgtec.com>
-X-Mailer: git-send-email 2.4.5
-In-Reply-To: <1436434853-30001-15-git-send-email-markos.chandras@imgtec.com>
-References: <1436434853-30001-15-git-send-email-markos.chandras@imgtec.com>
+ 14.3.195.1; Tue, 14 Jul 2015 10:27:23 +0100
+Received: from [192.168.154.110] (192.168.154.110) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Tue, 14 Jul
+ 2015 10:27:23 +0100
+Message-ID: <55A4D601.8070604@imgtec.com>
+Date:   Tue, 14 Jul 2015 10:27:29 +0100
+From:   James Hogan <james.hogan@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.7.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.154.48]
-Return-Path: <Markos.Chandras@imgtec.com>
+To:     "Maciej W. Rozycki" <macro@linux-mips.org>,
+        Joshua Kinard <kumba@gentoo.org>
+CC:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
+Subject: Re: [PATCH RFC v2 01/10] MIPS: Add SysRq operation to dump TLBs on
+ all CPUs
+References: <1432025438-26431-1-git-send-email-james.hogan@imgtec.com> <1432025438-26431-2-git-send-email-james.hogan@imgtec.com> <556240DE.1050003@gentoo.org> <alpine.LFD.2.11.1505261230020.11225@eddie.linux-mips.org>
+In-Reply-To: <alpine.LFD.2.11.1505261230020.11225@eddie.linux-mips.org>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature";
+        boundary="KpIeTahnMb4rGQaFf1IHBuXd0Uvbfhgsa"
+X-Originating-IP: [192.168.154.110]
+X-ESG-ENCRYPT-TAG: e4aa9c8
+Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48264
+X-archive-position: 48265
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: markos.chandras@imgtec.com
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,334 +58,108 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Previously, the GIC accessors were only accessing u32 registers but
-newer CMs may actually be 64-bit on MIPS64 cores. As a result of which,
-extended these accessors to support 64-bit reads and writes.
+--KpIeTahnMb4rGQaFf1IHBuXd0Uvbfhgsa
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: quoted-printable
 
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Jason Cooper <jason@lakedaemon.net>
-Cc: Andrew Bresticker <abrestic@chromium.org>
-Cc: Paul Burton <paul.burton@imgtec.com>
-Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
----
-Changes since v1:
-- Use 32-bit I/O for VPE_{OTHER,LOCAL} RMASK register
----
- drivers/irqchip/irq-mips-gic.c   | 121 ++++++++++++++++++++++++---------------
- include/linux/irqchip/mips-gic.h |  10 +++-
- 2 files changed, 84 insertions(+), 47 deletions(-)
+On 26/05/15 12:58, Maciej W. Rozycki wrote:
+> On Sun, 24 May 2015, Joshua Kinard wrote:
+>=20
+>>> Add a MIPS specific SysRq operation to dump the TLB entries on all CP=
+Us,
+>>> using the 'x' trigger key.
+>>
+>> Thought: Would it make sense to split apart the data such that one Sys=
+Rq key
+>> dumps the CP0 registers of all CPUs, and another dumps the TLB info?
+>=20
+>  That would be a large separate project, probing a CPU for its implemen=
+ted=20
+> CP0 registers is a complex matter.
+>=20
+>  I did it for GDB and a bare-iron debug stub a few years ago and back t=
+hen=20
+> there were IIRC 53 register subsets already defined for MIPS architectu=
+re=20
+> processors, wired to various, sometimes overlapping feature bits of CP0=
+=20
+> Config registers, and now there are more.  Plus legacy processors requi=
+re=20
+> fixed register maps according to CP0.PRId.
+>=20
+>  James, I think what you proposed is good enough for TLB diagnostics (I=
+'m=20
+> not sure if dumping EntryLo0 and EntryLo1 registers has any use, but it=
+=20
+> surely does not hurt either).
+>=20
+>>> +	pr_info("CPU%d:\n", smp_processor_id());
+>>> +	pr_info("Index	: %0x\n", read_c0_index());
+>>> +	pr_info("Pagemask: %0x\n", read_c0_pagemask());
+>>> +	pr_info("EntryHi : %0*lx\n", field, read_c0_entryhi());
+>>> +	pr_info("EntryLo0: %0*lx\n", field, read_c0_entrylo0());
+>>> +	pr_info("EntryLo1: %0*lx\n", field, read_c0_entrylo1());
+>>> +	pr_info("Wired   : %0x\n", read_c0_wired());
+>>> +	pr_info("Pagegrain: %0x\n", read_c0_pagegrain());
+>=20
+>  Please capitalise these consistently: PageMask and PageGrain.
+>=20
+>> The older CPUs, like the R10000 don't have a PageGrain register I beli=
+eve (at
+>> least R10K doesn't),  Does that need to be stuffed behind a conditiona=
+l?  Also,
+>> R10K (and newer?) CPUs have a FrameMask CP0 register ($21).  Linux cur=
+rently
+>> scribbles a 0 to the writable bits, though, so I'm not sure if it matt=
+ers.
+>=20
+>  First of all I suggest that this part is split off into separate small=
+=20
+> helper functions within dump_tlb.c and r3k_dump_tlb.c.  This code is no=
+t=20
+> performance-critical, so the overhead of an extra function call isn't o=
+f=20
+> a concern.
+>=20
+>  Then R3k processors have Index, EntryHi and EntryLo (rather than=20
+> EntryLo0) registers only; some Toshiba processors have Wired too (cf.=20
+> `r3k_have_wired_reg').
+>=20
+>  And for the R4k-style TLB the PageGrain register does need to be probe=
+d=20
+> for.  I think including FrameMask would be good too, that shouldn't be =
 
-diff --git a/drivers/irqchip/irq-mips-gic.c b/drivers/irqchip/irq-mips-gic.c
-index 4400edd1a6c7..aa4ef46ee196 100644
---- a/drivers/irqchip/irq-mips-gic.c
-+++ b/drivers/irqchip/irq-mips-gic.c
-@@ -42,20 +42,46 @@ static struct irq_chip gic_level_irq_controller, gic_edge_irq_controller;
- 
- static void __gic_irq_dispatch(void);
- 
--static inline unsigned int gic_read(unsigned int reg)
-+static inline u32 gic_read32(unsigned int reg)
- {
- 	return __raw_readl(gic_base + reg);
- }
- 
--static inline void gic_write(unsigned int reg, unsigned int val)
-+static inline u64 gic_read64(unsigned int reg)
- {
--	__raw_writel(val, gic_base + reg);
-+	return __raw_readq(gic_base + reg);
- }
- 
--static inline void gic_update_bits(unsigned int reg, unsigned int mask,
--				   unsigned int val)
-+static inline unsigned long gic_read(unsigned int reg)
- {
--	unsigned int regval;
-+	if (!mips_cm_is64)
-+		return gic_read32(reg);
-+	else
-+		return gic_read64(reg);
-+}
-+
-+static inline void gic_write32(unsigned int reg, u32 val)
-+{
-+	return __raw_writel(val, gic_base + reg);
-+}
-+
-+static inline void gic_write64(unsigned int reg, u64 val)
-+{
-+	return __raw_writeq(val, gic_base + reg);
-+}
-+
-+static inline void gic_write(unsigned int reg, unsigned long val)
-+{
-+	if (!mips_cm_is64)
-+		return gic_write32(reg, (u32)val);
-+	else
-+		return gic_write64(reg, (u64)val);
-+}
-+
-+static inline void gic_update_bits(unsigned int reg, unsigned long mask,
-+				   unsigned long val)
-+{
-+	unsigned long regval;
- 
- 	regval = gic_read(reg);
- 	regval &= ~mask;
-@@ -66,40 +92,40 @@ static inline void gic_update_bits(unsigned int reg, unsigned int mask,
- static inline void gic_reset_mask(unsigned int intr)
- {
- 	gic_write(GIC_REG(SHARED, GIC_SH_RMASK) + GIC_INTR_OFS(intr),
--		  1 << GIC_INTR_BIT(intr));
-+		  1ul << GIC_INTR_BIT(intr));
- }
- 
- static inline void gic_set_mask(unsigned int intr)
- {
- 	gic_write(GIC_REG(SHARED, GIC_SH_SMASK) + GIC_INTR_OFS(intr),
--		  1 << GIC_INTR_BIT(intr));
-+		  1ul << GIC_INTR_BIT(intr));
- }
- 
- static inline void gic_set_polarity(unsigned int intr, unsigned int pol)
- {
- 	gic_update_bits(GIC_REG(SHARED, GIC_SH_SET_POLARITY) +
--			GIC_INTR_OFS(intr), 1 << GIC_INTR_BIT(intr),
--			pol << GIC_INTR_BIT(intr));
-+			GIC_INTR_OFS(intr), 1ul << GIC_INTR_BIT(intr),
-+			(unsigned long)pol << GIC_INTR_BIT(intr));
- }
- 
- static inline void gic_set_trigger(unsigned int intr, unsigned int trig)
- {
- 	gic_update_bits(GIC_REG(SHARED, GIC_SH_SET_TRIGGER) +
--			GIC_INTR_OFS(intr), 1 << GIC_INTR_BIT(intr),
--			trig << GIC_INTR_BIT(intr));
-+			GIC_INTR_OFS(intr), 1ul << GIC_INTR_BIT(intr),
-+			(unsigned long)trig << GIC_INTR_BIT(intr));
- }
- 
- static inline void gic_set_dual_edge(unsigned int intr, unsigned int dual)
- {
- 	gic_update_bits(GIC_REG(SHARED, GIC_SH_SET_DUAL) + GIC_INTR_OFS(intr),
--			1 << GIC_INTR_BIT(intr),
--			dual << GIC_INTR_BIT(intr));
-+			1ul << GIC_INTR_BIT(intr),
-+			(unsigned long)dual << GIC_INTR_BIT(intr));
- }
- 
- static inline void gic_map_to_pin(unsigned int intr, unsigned int pin)
- {
--	gic_write(GIC_REG(SHARED, GIC_SH_INTR_MAP_TO_PIN_BASE) +
--		  GIC_SH_MAP_TO_PIN(intr), GIC_MAP_TO_PIN_MSK | pin);
-+	gic_write32(GIC_REG(SHARED, GIC_SH_INTR_MAP_TO_PIN_BASE) +
-+		    GIC_SH_MAP_TO_PIN(intr), GIC_MAP_TO_PIN_MSK | pin);
- }
- 
- static inline void gic_map_to_vpe(unsigned int intr, unsigned int vpe)
-@@ -115,9 +141,9 @@ cycle_t gic_read_count(void)
- 	unsigned int hi, hi2, lo;
- 
- 	do {
--		hi = gic_read(GIC_REG(SHARED, GIC_SH_COUNTER_63_32));
--		lo = gic_read(GIC_REG(SHARED, GIC_SH_COUNTER_31_00));
--		hi2 = gic_read(GIC_REG(SHARED, GIC_SH_COUNTER_63_32));
-+		hi = gic_read32(GIC_REG(SHARED, GIC_SH_COUNTER_63_32));
-+		lo = gic_read32(GIC_REG(SHARED, GIC_SH_COUNTER_31_00));
-+		hi2 = gic_read32(GIC_REG(SHARED, GIC_SH_COUNTER_63_32));
- 	} while (hi2 != hi);
- 
- 	return (((cycle_t) hi) << 32) + lo;
-@@ -136,9 +162,9 @@ unsigned int gic_get_count_width(void)
- 
- void gic_write_compare(cycle_t cnt)
- {
--	gic_write(GIC_REG(VPE_LOCAL, GIC_VPE_COMPARE_HI),
-+	gic_write32(GIC_REG(VPE_LOCAL, GIC_VPE_COMPARE_HI),
- 				(int)(cnt >> 32));
--	gic_write(GIC_REG(VPE_LOCAL, GIC_VPE_COMPARE_LO),
-+	gic_write32(GIC_REG(VPE_LOCAL, GIC_VPE_COMPARE_LO),
- 				(int)(cnt & 0xffffffff));
- }
- 
-@@ -148,10 +174,10 @@ void gic_write_cpu_compare(cycle_t cnt, int cpu)
- 
- 	local_irq_save(flags);
- 
--	gic_write(GIC_REG(VPE_LOCAL, GIC_VPE_OTHER_ADDR), cpu);
--	gic_write(GIC_REG(VPE_OTHER, GIC_VPE_COMPARE_HI),
-+	gic_write32(GIC_REG(VPE_LOCAL, GIC_VPE_OTHER_ADDR), cpu);
-+	gic_write32(GIC_REG(VPE_OTHER, GIC_VPE_COMPARE_HI),
- 				(int)(cnt >> 32));
--	gic_write(GIC_REG(VPE_OTHER, GIC_VPE_COMPARE_LO),
-+	gic_write32(GIC_REG(VPE_OTHER, GIC_VPE_COMPARE_LO),
- 				(int)(cnt & 0xffffffff));
- 
- 	local_irq_restore(flags);
-@@ -161,8 +187,8 @@ cycle_t gic_read_compare(void)
- {
- 	unsigned int hi, lo;
- 
--	hi = gic_read(GIC_REG(VPE_LOCAL, GIC_VPE_COMPARE_HI));
--	lo = gic_read(GIC_REG(VPE_LOCAL, GIC_VPE_COMPARE_LO));
-+	hi = gic_read32(GIC_REG(VPE_LOCAL, GIC_VPE_COMPARE_HI));
-+	lo = gic_read32(GIC_REG(VPE_LOCAL, GIC_VPE_COMPARE_LO));
- 
- 	return (((cycle_t) hi) << 32) + lo;
- }
-@@ -197,7 +223,7 @@ static bool gic_local_irq_is_routable(int intr)
- 	if (cpu_has_veic)
- 		return true;
- 
--	vpe_ctl = gic_read(GIC_REG(VPE_LOCAL, GIC_VPE_CTL));
-+	vpe_ctl = gic_read32(GIC_REG(VPE_LOCAL, GIC_VPE_CTL));
- 	switch (intr) {
- 	case GIC_LOCAL_INT_TIMER:
- 		return vpe_ctl & GIC_VPE_CTL_TIMER_RTBL_MSK;
-@@ -273,7 +299,7 @@ int gic_get_c0_fdc_int(void)
- 
- static void gic_handle_shared_int(bool chained)
- {
--	unsigned int i, intr, virq;
-+	unsigned int i, intr, virq, gic_reg_step = mips_cm_is64 ? 8 : 4;
- 	unsigned long *pcpu_mask;
- 	unsigned long pending_reg, intrmask_reg;
- 	DECLARE_BITMAP(pending, GIC_MAX_INTRS);
-@@ -288,8 +314,8 @@ static void gic_handle_shared_int(bool chained)
- 	for (i = 0; i < BITS_TO_LONGS(gic_shared_intrs); i++) {
- 		pending[i] = gic_read(pending_reg);
- 		intrmask[i] = gic_read(intrmask_reg);
--		pending_reg += 0x4;
--		intrmask_reg += 0x4;
-+		pending_reg += gic_reg_step;
-+		intrmask_reg += gic_reg_step;
- 	}
- 
- 	bitmap_and(pending, pending, intrmask, gic_shared_intrs);
-@@ -439,8 +465,8 @@ static void gic_handle_local_int(bool chained)
- 	unsigned long pending, masked;
- 	unsigned int intr, virq;
- 
--	pending = gic_read(GIC_REG(VPE_LOCAL, GIC_VPE_PEND));
--	masked = gic_read(GIC_REG(VPE_LOCAL, GIC_VPE_MASK));
-+	pending = gic_read32(GIC_REG(VPE_LOCAL, GIC_VPE_PEND));
-+	masked = gic_read32(GIC_REG(VPE_LOCAL, GIC_VPE_MASK));
- 
- 	bitmap_and(&pending, &pending, &masked, GIC_NUM_LOCAL_INTRS);
- 
-@@ -463,14 +489,14 @@ static void gic_mask_local_irq(struct irq_data *d)
- {
- 	int intr = GIC_HWIRQ_TO_LOCAL(d->hwirq);
- 
--	gic_write(GIC_REG(VPE_LOCAL, GIC_VPE_RMASK), 1 << intr);
-+	gic_write32(GIC_REG(VPE_LOCAL, GIC_VPE_RMASK), 1 << intr);
- }
- 
- static void gic_unmask_local_irq(struct irq_data *d)
- {
- 	int intr = GIC_HWIRQ_TO_LOCAL(d->hwirq);
- 
--	gic_write(GIC_REG(VPE_LOCAL, GIC_VPE_SMASK), 1 << intr);
-+	gic_write32(GIC_REG(VPE_LOCAL, GIC_VPE_SMASK), 1 << intr);
- }
- 
- static struct irq_chip gic_local_irq_controller = {
-@@ -488,7 +514,7 @@ static void gic_mask_local_irq_all_vpes(struct irq_data *d)
- 	spin_lock_irqsave(&gic_lock, flags);
- 	for (i = 0; i < gic_vpes; i++) {
- 		gic_write(GIC_REG(VPE_LOCAL, GIC_VPE_OTHER_ADDR), i);
--		gic_write(GIC_REG(VPE_OTHER, GIC_VPE_RMASK), 1 << intr);
-+		gic_write32(GIC_REG(VPE_OTHER, GIC_VPE_RMASK), 1 << intr);
- 	}
- 	spin_unlock_irqrestore(&gic_lock, flags);
- }
-@@ -502,7 +528,7 @@ static void gic_unmask_local_irq_all_vpes(struct irq_data *d)
- 	spin_lock_irqsave(&gic_lock, flags);
- 	for (i = 0; i < gic_vpes; i++) {
- 		gic_write(GIC_REG(VPE_LOCAL, GIC_VPE_OTHER_ADDR), i);
--		gic_write(GIC_REG(VPE_OTHER, GIC_VPE_SMASK), 1 << intr);
-+		gic_write32(GIC_REG(VPE_OTHER, GIC_VPE_SMASK), 1 << intr);
- 	}
- 	spin_unlock_irqrestore(&gic_lock, flags);
- }
-@@ -622,7 +648,7 @@ static void __init gic_basic_init(void)
- 		for (j = 0; j < GIC_NUM_LOCAL_INTRS; j++) {
- 			if (!gic_local_irq_is_routable(j))
- 				continue;
--			gic_write(GIC_REG(VPE_OTHER, GIC_VPE_RMASK), 1 << j);
-+			gic_write32(GIC_REG(VPE_OTHER, GIC_VPE_RMASK), 1 << j);
- 		}
- 	}
- }
-@@ -667,27 +693,32 @@ static int gic_local_irq_domain_map(struct irq_domain *d, unsigned int virq,
- 
- 		switch (intr) {
- 		case GIC_LOCAL_INT_WD:
--			gic_write(GIC_REG(VPE_OTHER, GIC_VPE_WD_MAP), val);
-+			gic_write32(GIC_REG(VPE_OTHER, GIC_VPE_WD_MAP), val);
- 			break;
- 		case GIC_LOCAL_INT_COMPARE:
--			gic_write(GIC_REG(VPE_OTHER, GIC_VPE_COMPARE_MAP), val);
-+			gic_write32(GIC_REG(VPE_OTHER, GIC_VPE_COMPARE_MAP),
-+				    val);
- 			break;
- 		case GIC_LOCAL_INT_TIMER:
- 			/* CONFIG_MIPS_CMP workaround (see __gic_init) */
- 			val = GIC_MAP_TO_PIN_MSK | timer_cpu_pin;
--			gic_write(GIC_REG(VPE_OTHER, GIC_VPE_TIMER_MAP), val);
-+			gic_write32(GIC_REG(VPE_OTHER, GIC_VPE_TIMER_MAP),
-+				    val);
- 			break;
- 		case GIC_LOCAL_INT_PERFCTR:
--			gic_write(GIC_REG(VPE_OTHER, GIC_VPE_PERFCTR_MAP), val);
-+			gic_write32(GIC_REG(VPE_OTHER, GIC_VPE_PERFCTR_MAP),
-+				    val);
- 			break;
- 		case GIC_LOCAL_INT_SWINT0:
--			gic_write(GIC_REG(VPE_OTHER, GIC_VPE_SWINT0_MAP), val);
-+			gic_write32(GIC_REG(VPE_OTHER, GIC_VPE_SWINT0_MAP),
-+				    val);
- 			break;
- 		case GIC_LOCAL_INT_SWINT1:
--			gic_write(GIC_REG(VPE_OTHER, GIC_VPE_SWINT1_MAP), val);
-+			gic_write32(GIC_REG(VPE_OTHER, GIC_VPE_SWINT1_MAP),
-+				    val);
- 			break;
- 		case GIC_LOCAL_INT_FDC:
--			gic_write(GIC_REG(VPE_OTHER, GIC_VPE_FDC_MAP), val);
-+			gic_write32(GIC_REG(VPE_OTHER, GIC_VPE_FDC_MAP), val);
- 			break;
- 		default:
- 			pr_err("Invalid local IRQ %d\n", intr);
-@@ -792,7 +823,7 @@ static void __init __gic_init(unsigned long gic_base_addr,
- 		 */
- 		if (IS_ENABLED(CONFIG_MIPS_CMP) &&
- 		    gic_local_irq_is_routable(GIC_LOCAL_INT_TIMER)) {
--			timer_cpu_pin = gic_read(GIC_REG(VPE_LOCAL,
-+			timer_cpu_pin = gic_read32(GIC_REG(VPE_LOCAL,
- 							 GIC_VPE_TIMER_MAP)) &
- 					GIC_MAP_MSK;
- 			irq_set_chained_handler(MIPS_CPU_IRQ_BASE +
-diff --git a/include/linux/irqchip/mips-gic.h b/include/linux/irqchip/mips-gic.h
-index 9b1ad3734911..10e4a9073019 100644
---- a/include/linux/irqchip/mips-gic.h
-+++ b/include/linux/irqchip/mips-gic.h
-@@ -45,8 +45,14 @@
- #define GIC_SH_REVISIONID_OFS		0x0020
- 
- /* Convert an interrupt number to a byte offset/bit for multi-word registers */
--#define GIC_INTR_OFS(intr)		(((intr) / 32) * 4)
--#define GIC_INTR_BIT(intr)		((intr) % 32)
-+#define GIC_INTR_OFS(intr) ({				\
-+	unsigned bits = mips_cm_is64 ? 64 : 32;		\
-+	unsigned reg_idx = (intr) / bits;		\
-+	unsigned reg_width = bits / 8;			\
-+							\
-+	reg_idx * reg_width;				\
-+})
-+#define GIC_INTR_BIT(intr)		((intr) % (mips_cm_is64 ? 64 : 32))
- 
- /* Polarity : Reset Value is always 0 */
- #define GIC_SH_SET_POLARITY_OFS		0x0100
--- 
-2.4.5
+> difficult (switch on `current_cpu_type'?).
+
+Thanks for all the feedback Joshua and Maciej, and sorry for the delay
+getting back to this. I think I've addressed it all now, so I'll submit
+a second patchset soon.
+
+Cheers
+James
+
+
+--KpIeTahnMb4rGQaFf1IHBuXd0Uvbfhgsa
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQIcBAEBAgAGBQJVpNYBAAoJEGwLaZPeOHZ6apEQAIHr5cGU76LoveFSca3a7ZNY
+telAN45YcfOV3paKMLM9I2kpsQLu8FUEjQT3ML4N0ocGFoFu8nBF97RbQ2WMWSID
+VHJ6/FNdLQyOunfsCSydcrdiiD3oobtU8LzCuZIzwARzg+abYfl3/VJLjsjn3Um4
+yD97PrdhN1+DhEWg1ztSC9kjars6CMQrFkt41wBr28W0hWH74atBWQ4zI/4wZU0D
+/9VIxT30bhBeec32Qsaqvcbwotksm+Wq/+LD9fhM+UtOA6EJWH7LficpODu8hnpg
+Ymts011JuczGLNH659pELi8Onney1rhn2BD4xvmwAoageLcaEXdIosmX4sSURQrZ
+xyXvV2fyCGSaSo3WdY91yRhR13/yX2mKpTSsrGGyyX6cg4HK7uCbfc8plIXkFdwZ
+Ccg3QgUUj7SS5xcSoRbBk+vdrfh0FGYUCNheBypdgi5hCsOTZZ9nmqBA9wMLX9GQ
+oHh/Pr5ADUFTTCKVeepBZNzWA4+iEDa1EN8B7KL1zdONePuJV8xCG79IBzWe/bfC
+tgkIZlXOzclxSgm8POVAZVoCWJHWT0Azj8v+YU2OIMi3xNETdfJJeJrtkHfciaRq
+2VGqorfoHY15WgRnsHUcoRb7ucuZ3rpnR5QzamdwSqAQXjIvq2TmQxeiePow3jvF
+DzaeLhNk65BDgeezftyU
+=58zu
+-----END PGP SIGNATURE-----
+
+--KpIeTahnMb4rGQaFf1IHBuXd0Uvbfhgsa--

@@ -1,40 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Jul 2015 17:19:42 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:7048 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27011208AbbGOPR7ojSwK (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 15 Jul 2015 17:17:59 +0200
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 25190AF11B255;
-        Wed, 15 Jul 2015 16:17:50 +0100 (IST)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Wed, 15 Jul 2015 16:17:53 +0100
-Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
- LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.210.2; Wed, 15 Jul 2015 16:17:52 +0100
-From:   James Hogan <james.hogan@imgtec.com>
-To:     Ralf Baechle <ralf@linux-mips.org>,
-        "Maciej W. Rozycki" <macro@linux-mips.org>,
-        <linux-mips@linux-mips.org>
-CC:     James Hogan <james.hogan@imgtec.com>
-Subject: [PATCH 6/6] MIPS: Rearrange ENTRYLO field definitions
-Date:   Wed, 15 Jul 2015 16:17:47 +0100
-Message-ID: <1436973467-3877-7-git-send-email-james.hogan@imgtec.com>
-X-Mailer: git-send-email 2.3.6
-In-Reply-To: <1436973467-3877-1-git-send-email-james.hogan@imgtec.com>
-References: <1436973467-3877-1-git-send-email-james.hogan@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Jul 2015 18:09:39 +0200 (CEST)
+Received: from bh-25.webhostbox.net ([208.91.199.152]:35276 "EHLO
+        bh-25.webhostbox.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27011192AbbGOQJiBL030 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 15 Jul 2015 18:09:38 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=roeck-us.net; s=default;
+        h=Content-Type:MIME-Version:Message-ID:Subject:Cc:To:From:Date; bh=y2rCBu2/OiG5vwXqz6gpoxAcVb3EGxqN3PWftvCBKmU=;
+        b=gd1+PZihIaQSnIII02H3F9e36nrahAIoVBXRNi4r9Z3qS05YThqZWjSpCxZ8vH4m5Cr9ScNNH7XBqHRiL2STkcsVItKArCUbZwAdkuYYsiOjIxGpFW1/F8namFcyfQukhvbs7EI1RQdik/9L/vt5d96XOQcm409wMPA4NIcNATQ=;
+Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:40639 helo=localhost)
+        by bh-25.webhostbox.net with esmtpa (Exim 4.85)
+        (envelope-from <linux@roeck-us.net>)
+        id 1ZFPFI-00419D-CB; Wed, 15 Jul 2015 16:09:20 +0000
+Date:   Wed, 15 Jul 2015 09:09:18 -0700
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Paul Burton <paul.burton@imgtec.com>
+Cc:     linux-next@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
+        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
+Subject: Crash in -next due to 'MIPS: Move FP usage checks into
+ protected_{save, restore}_fp_context'
+Message-ID: <20150715160918.GA27653@roeck-us.net>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.154.110]
-Return-Path: <James.Hogan@imgtec.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.23 (2014-03-12)
+X-Authenticated_sender: guenter@roeck-us.net
+X-OutGoing-Spam-Status: No, score=-1.0
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - bh-25.webhostbox.net
+X-AntiAbuse: Original Domain - linux-mips.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - roeck-us.net
+X-Get-Message-Sender-Via: bh-25.webhostbox.net: authenticated_id: guenter@roeck-us.net
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+Return-Path: <linux@roeck-us.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48313
+X-archive-position: 48314
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: linux@roeck-us.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,149 +54,52 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The generic field definitions (i.e. present before MIPS32/MIPS64) in
-mipsregs.h are conventionally not prefixed with MIPS_, so rename the
-recently added MIPS_ENTRYLO_* definitions for the G, V, D, and C fields
-to ENTRYLO_*. Also rearrange to put the EntryLo and EntryHi definitions
-in the right place in the file.
+Hi,
 
-Fixes: 8ab6abcb6aa4 ("MIPS: mipsregs.h: Add EntryLo bit definitions")
-Reported-by: Maciej W. Rozycki <macro@linux-mips.org>
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Maciej W. Rozycki <macro@linux-mips.org>
-Cc: linux-mips@linux-mips.org
+my qemu test for mipsel crashes with next-20150715 as follows.
+
+...
+Btrfs loaded
+console [netcon0] enabled
+netconsole: network logging started
+Freeing unused kernel memory: 284K (808f9000 - 80940000)
+Kernel panic - not syncing: Attempted to kill init! exitcode=0x00000008
+
+Bisect points to commit 'MIPS: Move FP usage checks into protected_{save,
+restore}_fp_context'. Bisect log is as follows.
+
+The problem is not seen with bit endian qemu test.
+
+Please let me know if there is anything I can do to help debugging
+this problem.
+
+Thanks,
+Guenter
 ---
- arch/mips/include/asm/mipsregs.h | 52 +++++++++++++++++++++-------------------
- arch/mips/lib/dump_tlb.c         | 18 +++++++-------
- 2 files changed, 36 insertions(+), 34 deletions(-)
 
-diff --git a/arch/mips/include/asm/mipsregs.h b/arch/mips/include/asm/mipsregs.h
-index c5b0956a8530..922c1c435d8b 100644
---- a/arch/mips/include/asm/mipsregs.h
-+++ b/arch/mips/include/asm/mipsregs.h
-@@ -112,6 +112,30 @@
- #define CP0_TX39_CACHE	$7
- 
- 
-+/* Generic EntryLo bit definitions */
-+#define ENTRYLO_G		(_ULCAST_(1) << 0)
-+#define ENTRYLO_V		(_ULCAST_(1) << 1)
-+#define ENTRYLO_D		(_ULCAST_(1) << 2)
-+#define ENTRYLO_C_SHIFT		3
-+#define ENTRYLO_C		(_ULCAST_(7) << ENTRYLO_C_SHIFT)
-+
-+/* R3000 EntryLo bit definitions */
-+#define R3K_ENTRYLO_G		(_ULCAST_(1) << 8)
-+#define R3K_ENTRYLO_V		(_ULCAST_(1) << 9)
-+#define R3K_ENTRYLO_D		(_ULCAST_(1) << 10)
-+#define R3K_ENTRYLO_N		(_ULCAST_(1) << 11)
-+
-+/* MIPS32/64 EntryLo bit definitions */
-+#ifdef CONFIG_64BIT
-+/* as read by dmfc0 */
-+#define MIPS_ENTRYLO_XI		(_ULCAST_(1) << 62)
-+#define MIPS_ENTRYLO_RI		(_ULCAST_(1) << 63)
-+#else
-+/* as read by mfc0 */
-+#define MIPS_ENTRYLO_XI		(_ULCAST_(1) << 30)
-+#define MIPS_ENTRYLO_RI		(_ULCAST_(1) << 31)
-+#endif
-+
- /*
-  * Values for PageMask register
-  */
-@@ -203,6 +227,9 @@
- #define PG_ESP		(_ULCAST_(1) <<	 28)
- #define PG_IEC		(_ULCAST_(1) <<  27)
- 
-+/* MIPS32/64 EntryHI bit definitions */
-+#define MIPS_ENTRYHI_EHINV	(_ULCAST_(1) << 10)
-+
- /*
-  * R4x00 interrupt enable / cause bits
-  */
-@@ -586,31 +613,6 @@
- #define MIPS_MAAR_S		(_ULCAST_(1) << 1)
- #define MIPS_MAAR_V		(_ULCAST_(1) << 0)
- 
--/*  EntryHI bit definition */
--#define MIPS_ENTRYHI_EHINV	(_ULCAST_(1) << 10)
--
--/* R3000 EntryLo bit definitions */
--#define R3K_ENTRYLO_G		(_ULCAST_(1) << 8)
--#define R3K_ENTRYLO_V		(_ULCAST_(1) << 9)
--#define R3K_ENTRYLO_D		(_ULCAST_(1) << 10)
--#define R3K_ENTRYLO_N		(_ULCAST_(1) << 11)
--
--/* R4000 compatible EntryLo bit definitions */
--#define MIPS_ENTRYLO_G		(_ULCAST_(1) << 0)
--#define MIPS_ENTRYLO_V		(_ULCAST_(1) << 1)
--#define MIPS_ENTRYLO_D		(_ULCAST_(1) << 2)
--#define MIPS_ENTRYLO_C_SHIFT	3
--#define MIPS_ENTRYLO_C		(_ULCAST_(7) << MIPS_ENTRYLO_C_SHIFT)
--#ifdef CONFIG_64BIT
--/* as read by dmfc0 */
--#define MIPS_ENTRYLO_XI		(_ULCAST_(1) << 62)
--#define MIPS_ENTRYLO_RI		(_ULCAST_(1) << 63)
--#else
--/* as read by mfc0 */
--#define MIPS_ENTRYLO_XI		(_ULCAST_(1) << 30)
--#define MIPS_ENTRYLO_RI		(_ULCAST_(1) << 31)
--#endif
--
- /* CMGCRBase bit definitions */
- #define MIPS_CMGCRB_BASE	11
- #define MIPS_CMGCRF_BASE	(~_ULCAST_((1 << MIPS_CMGCRB_BASE) - 1))
-diff --git a/arch/mips/lib/dump_tlb.c b/arch/mips/lib/dump_tlb.c
-index 64f90f626681..92a37319efbe 100644
---- a/arch/mips/lib/dump_tlb.c
-+++ b/arch/mips/lib/dump_tlb.c
-@@ -114,7 +114,7 @@ static void dump_tlb(int first, int last)
- 		 * leave only a single G bit set after a machine check exception
- 		 * due to duplicate TLB entry.
- 		 */
--		if (!((entrylo0 | entrylo1) & MIPS_ENTRYLO_G) &&
-+		if (!((entrylo0 | entrylo1) & ENTRYLO_G) &&
- 		    (entryhi & 0xff) != asid)
- 			continue;
- 
-@@ -123,8 +123,8 @@ static void dump_tlb(int first, int last)
- 		 */
- 		printk("Index: %2d pgmask=%s ", i, msk2str(pagemask));
- 
--		c0 = (entrylo0 & MIPS_ENTRYLO_C) >> MIPS_ENTRYLO_C_SHIFT;
--		c1 = (entrylo1 & MIPS_ENTRYLO_C) >> MIPS_ENTRYLO_C_SHIFT;
-+		c0 = (entrylo0 & ENTRYLO_C) >> ENTRYLO_C_SHIFT;
-+		c1 = (entrylo1 & ENTRYLO_C) >> ENTRYLO_C_SHIFT;
- 
- 		printk("va=%0*lx asid=%02lx\n",
- 		       vwidth, (entryhi & ~0x1fffUL),
-@@ -141,9 +141,9 @@ static void dump_tlb(int first, int last)
- 			       (entrylo0 & MIPS_ENTRYLO_XI) ? 1 : 0);
- 		printk("pa=%0*llx c=%d d=%d v=%d g=%d] [",
- 		       pwidth, pa, c0,
--		       (entrylo0 & MIPS_ENTRYLO_D) ? 1 : 0,
--		       (entrylo0 & MIPS_ENTRYLO_V) ? 1 : 0,
--		       (entrylo0 & MIPS_ENTRYLO_G) ? 1 : 0);
-+		       (entrylo0 & ENTRYLO_D) ? 1 : 0,
-+		       (entrylo0 & ENTRYLO_V) ? 1 : 0,
-+		       (entrylo0 & ENTRYLO_G) ? 1 : 0);
- 		/* RI/XI are in awkward places, so mask them off separately */
- 		pa = entrylo1 & ~(MIPS_ENTRYLO_RI | MIPS_ENTRYLO_XI);
- 		if (xpa)
-@@ -155,9 +155,9 @@ static void dump_tlb(int first, int last)
- 			       (entrylo1 & MIPS_ENTRYLO_XI) ? 1 : 0);
- 		printk("pa=%0*llx c=%d d=%d v=%d g=%d]\n",
- 		       pwidth, pa, c1,
--		       (entrylo1 & MIPS_ENTRYLO_D) ? 1 : 0,
--		       (entrylo1 & MIPS_ENTRYLO_V) ? 1 : 0,
--		       (entrylo1 & MIPS_ENTRYLO_G) ? 1 : 0);
-+		       (entrylo1 & ENTRYLO_D) ? 1 : 0,
-+		       (entrylo1 & ENTRYLO_V) ? 1 : 0,
-+		       (entrylo1 & ENTRYLO_G) ? 1 : 0);
- 	}
- 	printk("\n");
- 
--- 
-2.3.6
+# bad: [f4d61b2d73c1e4964ad68df238af5005485469af] Add linux-next specific files for 20150715
+# good: [bc0195aad0daa2ad5b0d76cce22b167bc3435590] Linux 4.2-rc2
+git bisect start 'HEAD' 'v4.2-rc2'
+# bad: [897f492ee766d354b949f3838cbfda8978cfd3cd] Merge remote-tracking branch 'crypto/master'
+git bisect bad 897f492ee766d354b949f3838cbfda8978cfd3cd
+# bad: [687fe9993e4fbe728113086eb9525360465694e6] Merge remote-tracking branch 'mips/mips-for-linux-next'
+git bisect bad 687fe9993e4fbe728113086eb9525360465694e6
+# good: [a06e5ae4e8d6d5846809e94d0d45afcc5a9eaf35] Merge remote-tracking branch 'omap/for-next'
+git bisect good a06e5ae4e8d6d5846809e94d0d45afcc5a9eaf35
+# good: [badbfaedef0876d3cffb3264512aaec8cc162c61] Merge remote-tracking branch 'tegra/for-next'
+git bisect good badbfaedef0876d3cffb3264512aaec8cc162c61
+# bad: [88841d986cebe1207a47cd7422f5069b2616b194] MIPS: Advertise MSA support via HWCAP when present
+git bisect bad 88841d986cebe1207a47cd7422f5069b2616b194
+# good: [7c1f7b83170bc14a3e461a9b5595fcecf857da70] MIPS: octeon: Replace the homebrewn flow handler
+git bisect good 7c1f7b83170bc14a3e461a9b5595fcecf857da70
+# good: [186a699fdf6f0866ca980bcf5e79f54922fe52c2] MIPS: Introduce accessors for MSA vector registers
+git bisect good 186a699fdf6f0866ca980bcf5e79f54922fe52c2
+# bad: [1793cdaa84ed5c4025a36793f350b07b49555b57] MIPS: Skip odd double FP registers when copying FP32 sigcontext
+git bisect bad 1793cdaa84ed5c4025a36793f350b07b49555b57
+# good: [8a6bb0ab74eaca5f2a4e60f94df2ea5b08cdfd63] MIPS: Simplify EVA FP context handling code
+git bisect good 8a6bb0ab74eaca5f2a4e60f94df2ea5b08cdfd63
+# good: [6f47ebd751531249fe0e2b4d3afdfcbf9f66dbd8] MIPS: Use struct mips_abi offsets to save FP context
+git bisect good 6f47ebd751531249fe0e2b4d3afdfcbf9f66dbd8
+# bad: [fa3156ca734cb65f23df0f844433e75ea1da37f3] MIPS: Move FP usage checks into protected_{save, restore}_fp_context
+git bisect bad fa3156ca734cb65f23df0f844433e75ea1da37f3
+# first bad commit: [fa3156ca734cb65f23df0f844433e75ea1da37f3] MIPS: Move FP usage checks into protected_{save, restore}_fp_context

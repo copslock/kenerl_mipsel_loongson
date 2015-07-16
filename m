@@ -1,25 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Jul 2015 16:30:23 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:27720 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Jul 2015 17:43:45 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:57185 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27010433AbbGPOaTRJ2B0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 16 Jul 2015 16:30:19 +0200
+        with ESMTP id S27010713AbbGPPnntpKSh (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 16 Jul 2015 17:43:43 +0200
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id DF6F0DFA50FBE;
-        Thu, 16 Jul 2015 15:30:10 +0100 (IST)
+        by Websense Email Security Gateway with ESMTPS id 57966EB629F22
+        for <linux-mips@linux-mips.org>; Thu, 16 Jul 2015 16:43:35 +0100 (IST)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
  KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Thu, 16 Jul 2015 15:30:13 +0100
+ 14.3.195.1; Thu, 16 Jul 2015 16:43:37 +0100
 Received: from mchandras-linux.le.imgtec.org (192.168.154.48) by
  LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.210.2; Thu, 16 Jul 2015 15:30:12 +0100
+ 14.3.210.2; Thu, 16 Jul 2015 16:43:37 +0100
 From:   Markos Chandras <markos.chandras@imgtec.com>
 To:     <linux-mips@linux-mips.org>
-CC:     Markos Chandras <markos.chandras@imgtec.com>,
-        <stable@vger.kernel.org>
-Subject: [PATCH v2] MIPS: include: fpu.h: Allow 64-bit FPU on a 64-bit MIPS R6 CPU
-Date:   Thu, 16 Jul 2015 15:30:04 +0100
-Message-ID: <1437057004-13821-1-git-send-email-markos.chandras@imgtec.com>
+CC:     Markos Chandras <markos.chandras@imgtec.com>
+Subject: [PATCH v2] MIPS: math-emu: ieee754int.h: Fix indentation
+Date:   Thu, 16 Jul 2015 16:43:33 +0100
+Message-ID: <1437061413-8385-1-git-send-email-markos.chandras@imgtec.com>
 X-Mailer: git-send-email 2.4.5
+In-Reply-To: <1437049656-4436-1-git-send-email-markos.chandras@imgtec.com>
+References: <1437049656-4436-1-git-send-email-markos.chandras@imgtec.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [192.168.154.48]
@@ -27,7 +28,7 @@ Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48329
+X-archive-position: 48330
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -44,32 +45,41 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Commit 6134d94923d0 ("MIPS: asm: fpu: Allow 64-bit FPU on MIPS32 R6")
-added support for 64-bit FPU on a 32-bit MIPS R6 processor but it missed
-the 64-bit CPU case leading to FPU failures when requesting FR=1 mode
-(which is always the case for MIPS R6 userland) when running a 32-bit
-kernel on a 64-bit CPU. We also fix the MIPS R2 case.
+Fix indentation for the final 'else' blocks.
 
-Cc: <stable@vger.kernel.org> # 4.0+
-Fixes: 6134d94923d0 ("MIPS: asm: fpu: Allow 64-bit FPU on MIPS32 R6")
-Reviewed-by: Paul Burton <paul.burton@imgtec.com>
 Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
 ---
- arch/mips/include/asm/fpu.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Changes since v1:
+- Fix one more case
+---
+ arch/mips/math-emu/ieee754int.h | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/mips/include/asm/fpu.h b/arch/mips/include/asm/fpu.h
-index 084780b355aa..1b0625189835 100644
---- a/arch/mips/include/asm/fpu.h
-+++ b/arch/mips/include/asm/fpu.h
-@@ -74,7 +74,7 @@ static inline int __enable_fpu(enum fpu_mode mode)
- 		goto fr_common;
- 
- 	case FPU_64BIT:
--#if !(defined(CONFIG_CPU_MIPS32_R2) || defined(CONFIG_CPU_MIPS32_R6) \
-+#if !(defined(CONFIG_CPU_MIPSR2) || defined(CONFIG_CPU_MIPSR6) \
-       || defined(CONFIG_64BIT))
- 		/* we only have a 32-bit FPU */
- 		return SIGFPE;
+diff --git a/arch/mips/math-emu/ieee754int.h b/arch/mips/math-emu/ieee754int.h
+index 05389d5e3a93..6383e2c5c1ad 100644
+--- a/arch/mips/math-emu/ieee754int.h
++++ b/arch/mips/math-emu/ieee754int.h
+@@ -65,8 +65,8 @@ static inline int ieee754_class_nan(int xc)
+ 			vc = IEEE754_CLASS_INF;				\
+ 		else if (vm & SP_MBIT(SP_FBITS-1))			\
+ 			vc = IEEE754_CLASS_SNAN;			\
+-	else								\
+-		vc = IEEE754_CLASS_QNAN;				\
++		else							\
++			vc = IEEE754_CLASS_QNAN;			\
+ 	} else if (ve == SP_EMIN-1+SP_EBIAS) {				\
+ 		if (vm) {						\
+ 			ve = SP_EMIN;					\
+@@ -105,8 +105,8 @@ static inline int ieee754_class_nan(int xc)
+ 		if (vm) {						\
+ 			ve = DP_EMIN;					\
+ 			vc = IEEE754_CLASS_DNORM;			\
+-	} else								\
+-		vc = IEEE754_CLASS_ZERO;				\
++		} else							\
++			vc = IEEE754_CLASS_ZERO;			\
+ 	} else {							\
+ 		ve -= DP_EBIAS;						\
+ 		vm |= DP_HIDDEN_BIT;					\
 -- 
 2.4.5

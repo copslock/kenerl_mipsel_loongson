@@ -1,49 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Jul 2015 06:12:35 +0200 (CEST)
-Received: from ozlabs.org ([103.22.144.67]:49855 "EHLO ozlabs.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27007865AbbGPEMeWt5QB (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 16 Jul 2015 06:12:34 +0200
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by ozlabs.org (Postfix) with ESMTPSA id E2AEC140281;
-        Thu, 16 Jul 2015 14:12:29 +1000 (AEST)
-Message-ID: <1437019949.28475.6.camel@ellerman.id.au>
-Subject: Re: [3/3] IRQ: Print "unexpected IRQ" messages consistently across
- architectures
-From:   Michael Ellerman <mpe@ellerman.id.au>
-To:     Bjorn Helgaas <bhelgaas@google.com>
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Linux-Arch <linux-arch@vger.kernel.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        linux-am33-list@redhat.com,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        linux-c6x-dev@linux-c6x.org, linux-parisc@vger.kernel.org,
-        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
-        "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
-        adi-buildroot-devel@lists.sourceforge.net,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        linux-m68k@lists.linux-m68k.org, linux-alpha@vger.kernel.org,
-        "x86@kernel.org" <x86@kernel.org>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-Date:   Thu, 16 Jul 2015 14:12:29 +1000
-In-Reply-To: <CAErSpo52Kk0c=1UHQzxntJc3ph_CX8vcY+QdULBKv-HGUHBK9Q@mail.gmail.com>
-References: <20150712220211.7166.42035.stgit@bhelgaas-glaptop2.roam.corp.google.com>
-         <20150713032303.D49801402B1@ozlabs.org>
-         <CAErSpo52Kk0c=1UHQzxntJc3ph_CX8vcY+QdULBKv-HGUHBK9Q@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.12.10-0ubuntu1~14.10.1 
-Mime-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Jul 2015 10:42:33 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:61035 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27009433AbbGPImcVYFy1 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 16 Jul 2015 10:42:32 +0200
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id BEEC8467FD43F;
+        Thu, 16 Jul 2015 09:42:24 +0100 (IST)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Thu, 16 Jul 2015 09:42:26 +0100
+Received: from [192.168.154.48] (192.168.154.48) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Thu, 16 Jul
+ 2015 09:42:25 +0100
+Subject: Re: compile failure linux 3.10 with gcc 4.9.3 for mips
+To:     Reinoud Koornstra <reinoudkoornstra@gmail.com>
+References: <CAAA5faEN3MmWACoT2g2+9aOj1C=vj7UcNxd3Lez_K4_sCS8jBQ@mail.gmail.com>
+ <55A613C6.3040505@imgtec.com>
+ <CAAA5faHubPyT8D+QYB_M+qyCo-rRzPDO3fSH1HtSXCfCTj40HA@mail.gmail.com>
+CC:     <linux-mips@linux-mips.org>
+From:   Markos Chandras <Markos.Chandras@imgtec.com>
+Message-ID: <55A76E71.8090909@imgtec.com>
+Date:   Thu, 16 Jul 2015 09:42:25 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+ Thunderbird/38.0.1
+MIME-Version: 1.0
+In-Reply-To: <CAAA5faHubPyT8D+QYB_M+qyCo-rRzPDO3fSH1HtSXCfCTj40HA@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Return-Path: <mpe@ellerman.id.au>
+X-Originating-IP: [192.168.154.48]
+Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48321
+X-archive-position: 48322
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mpe@ellerman.id.au
+X-original-sender: Markos.Chandras@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,50 +49,16 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, 2015-07-13 at 13:35 -0500, Bjorn Helgaas wrote:
-> On Sun, Jul 12, 2015 at 10:23 PM, Michael Ellerman <mpe@ellerman.id.au> wrote:
-> > On Sun, 2015-12-07 at 22:02:11 UTC, Bjorn Helgaas wrote:
-> >> Many architectures use a variant of "unexpected IRQ trap at vector %x" to
-> >> log unexpected IRQs.  This is confusing because (a) it prints the Linux IRQ
-> >> number, but "vector" more often refers to a CPU vector number, and (b) it
-> >> prints the IRQ number in hex with no base indication, while Linux IRQ
-> >> numbers are usually printed in decimal.
-> >>
-> >> Print the same text ("unexpected IRQ %d") across all architectures.
-> >>
-> >> No functional change other than the output text.
-> >
-> > There's already a fallback version in asm-generic, so shouldn't you instead
-> > just delete all the versions that are identical to that?
-> >
-> > eg. on powerpc we have:
-> >
-> >>  static inline void ack_bad_irq(unsigned int irq)
-> >>  {
-> >> -     printk(KERN_CRIT "unexpected IRQ trap at vector %02x\n", irq);
-> >> +     printk(KERN_CRIT "unexpected IRQ %d\n", irq);
-> >>  }
-> >
-> > And the generic version is:
-> >
-> >>  #ifndef ack_bad_irq
-> >>  static inline void ack_bad_irq(unsigned int irq)
-> >>  {
-> >> -     printk(KERN_CRIT "unexpected IRQ trap at vector %02x\n", irq);
-> >> +     printk(KERN_CRIT "unexpected IRQ %d\n", irq);
-> >>  }
-> >>  #endif
-> >
-> > So we can just delete the powerpc version?
+On 07/15/2015 08:56 PM, Reinoud Koornstra wrote:
+> Thanks for your answer.
+> Is this patch going in upstream
+> Thanks,
 > 
-> Wow, I really didn't do my homework here.  Not only is there a generic
-> version already, but there's also print_irq_desc(), which prints way
-> more information than any of the ack_bad_irq() implementations.
+> Reinoud
+> 
 
-Even better :)
+It's already upstream just not in 3.10. A more recent kernel should
+compile fine with your toolchain.
 
-> I'll try again :)
-
-Thanks.
-
-cheers
+-- 
+markos

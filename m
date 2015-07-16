@@ -1,42 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Jul 2015 03:12:03 +0200 (CEST)
-Received: from youngberry.canonical.com ([91.189.89.112]:38704 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011337AbbGPBMBC0UMj (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 16 Jul 2015 03:12:01 +0200
-Received: from 1.general.kamal.us.vpn ([10.172.68.52] helo=fourier)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:DHE_RSA_AES_128_CBC_SHA1:16)
-        (Exim 4.76)
-        (envelope-from <kamal@canonical.com>)
-        id 1ZFXiN-0007hk-4P; Thu, 16 Jul 2015 01:11:55 +0000
-Received: from kamal by fourier with local (Exim 4.82)
-        (envelope-from <kamal@whence.com>)
-        id 1ZFXiK-0002mM-RW; Wed, 15 Jul 2015 18:11:52 -0700
-From:   Kamal Mostafa <kamal@canonical.com>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        kernel-team@lists.ubuntu.com
-Cc:     Ben Hutchings <ben@decadent.org.uk>,
-        Alan Stern <stern@rowland.harvard.edu>,
-        linux-mips@linux-mips.org, David Daney <david.daney@cavium.com>,
-        Chandrakala Chavva <cchavva@caviumnetworks.com>,
-        Paul Martin <paul.martin@codethink.co.uk>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Kamal Mostafa <kamal@canonical.com>
-Subject: [PATCH 3.19.y-ckt 234/251] MIPS: Octeon: Set OHCI and EHCI MMIO byte order to match CPU
-Date:   Wed, 15 Jul 2015 18:09:15 -0700
-Message-Id: <1437008972-9140-235-git-send-email-kamal@canonical.com>
-X-Mailer: git-send-email 1.9.1
-In-Reply-To: <1437008972-9140-1-git-send-email-kamal@canonical.com>
-References: <1437008972-9140-1-git-send-email-kamal@canonical.com>
-X-Extended-Stable: 3.19
-Return-Path: <kamal@canonical.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Jul 2015 06:12:35 +0200 (CEST)
+Received: from ozlabs.org ([103.22.144.67]:49855 "EHLO ozlabs.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27007865AbbGPEMeWt5QB (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 16 Jul 2015 06:12:34 +0200
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by ozlabs.org (Postfix) with ESMTPSA id E2AEC140281;
+        Thu, 16 Jul 2015 14:12:29 +1000 (AEST)
+Message-ID: <1437019949.28475.6.camel@ellerman.id.au>
+Subject: Re: [3/3] IRQ: Print "unexpected IRQ" messages consistently across
+ architectures
+From:   Michael Ellerman <mpe@ellerman.id.au>
+To:     Bjorn Helgaas <bhelgaas@google.com>
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Linux-Arch <linux-arch@vger.kernel.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        linux-am33-list@redhat.com,
+        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+        linux-c6x-dev@linux-c6x.org, linux-parisc@vger.kernel.org,
+        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+        "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
+        adi-buildroot-devel@lists.sourceforge.net,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        linux-m68k@lists.linux-m68k.org, linux-alpha@vger.kernel.org,
+        "x86@kernel.org" <x86@kernel.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Date:   Thu, 16 Jul 2015 14:12:29 +1000
+In-Reply-To: <CAErSpo52Kk0c=1UHQzxntJc3ph_CX8vcY+QdULBKv-HGUHBK9Q@mail.gmail.com>
+References: <20150712220211.7166.42035.stgit@bhelgaas-glaptop2.roam.corp.google.com>
+         <20150713032303.D49801402B1@ozlabs.org>
+         <CAErSpo52Kk0c=1UHQzxntJc3ph_CX8vcY+QdULBKv-HGUHBK9Q@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.12.10-0ubuntu1~14.10.1 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Return-Path: <mpe@ellerman.id.au>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48320
+X-archive-position: 48321
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kamal@canonical.com
+X-original-sender: mpe@ellerman.id.au
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,75 +56,50 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-3.19.8-ckt4 -stable review patch.  If anyone has any objections, please let me know.
+On Mon, 2015-07-13 at 13:35 -0500, Bjorn Helgaas wrote:
+> On Sun, Jul 12, 2015 at 10:23 PM, Michael Ellerman <mpe@ellerman.id.au> wrote:
+> > On Sun, 2015-12-07 at 22:02:11 UTC, Bjorn Helgaas wrote:
+> >> Many architectures use a variant of "unexpected IRQ trap at vector %x" to
+> >> log unexpected IRQs.  This is confusing because (a) it prints the Linux IRQ
+> >> number, but "vector" more often refers to a CPU vector number, and (b) it
+> >> prints the IRQ number in hex with no base indication, while Linux IRQ
+> >> numbers are usually printed in decimal.
+> >>
+> >> Print the same text ("unexpected IRQ %d") across all architectures.
+> >>
+> >> No functional change other than the output text.
+> >
+> > There's already a fallback version in asm-generic, so shouldn't you instead
+> > just delete all the versions that are identical to that?
+> >
+> > eg. on powerpc we have:
+> >
+> >>  static inline void ack_bad_irq(unsigned int irq)
+> >>  {
+> >> -     printk(KERN_CRIT "unexpected IRQ trap at vector %02x\n", irq);
+> >> +     printk(KERN_CRIT "unexpected IRQ %d\n", irq);
+> >>  }
+> >
+> > And the generic version is:
+> >
+> >>  #ifndef ack_bad_irq
+> >>  static inline void ack_bad_irq(unsigned int irq)
+> >>  {
+> >> -     printk(KERN_CRIT "unexpected IRQ trap at vector %02x\n", irq);
+> >> +     printk(KERN_CRIT "unexpected IRQ %d\n", irq);
+> >>  }
+> >>  #endif
+> >
+> > So we can just delete the powerpc version?
+> 
+> Wow, I really didn't do my homework here.  Not only is there a generic
+> version already, but there's also print_irq_desc(), which prints way
+> more information than any of the ack_bad_irq() implementations.
 
-------------------
+Even better :)
 
-From: Ben Hutchings <ben@decadent.org.uk>
+> I'll try again :)
 
-commit df115f3ee9ea703e1209392cd08f8d6783244721 upstream.
+Thanks.
 
-The Octeon OHCI is now supported by the ohci-platform driver, and
-USB_OCTEON_OHCI is marked as deprecated.  However, it is currently
-still necessary to enable it in order to select
-USB_OHCI_BIG_ENDIAN_MMIO.  Make CPU_CAVIUM_OCTEON select that as well,
-so that USB_OCTEON_OHCI is really obsolete.
-
-The old ohci-octeon and ehci-octeon drivers also only enabled big-endian
-MMIO in case the CPU was big-endian.  Make the selections of
-USB_EHCI_BIG_ENDIAN_MMIO and USB_OHCI_BIG_ENDIAN_MMIO conditional, to
-match this.
-
-Fixes: 2193dda5eec6 ("USB: host: Remove ehci-octeon and ohci-octeon drivers")
-Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
-Cc: Alan Stern <stern@rowland.harvard.edu>
-Cc: linux-mips@linux-mips.org
-Cc: David Daney <david.daney@cavium.com>
-Cc: Chandrakala Chavva <cchavva@caviumnetworks.com>
-Cc: Paul Martin <paul.martin@codethink.co.uk>
-Patchwork: https://patchwork.linux-mips.org/patch/10178/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Kamal Mostafa <kamal@canonical.com>
----
- arch/mips/Kconfig        | 3 ++-
- drivers/usb/host/Kconfig | 4 ++--
- 2 files changed, 4 insertions(+), 3 deletions(-)
-
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 843713c..2a50476 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -1484,7 +1484,8 @@ config CPU_CAVIUM_OCTEON
- 	select WEAK_ORDERING
- 	select CPU_SUPPORTS_HIGHMEM
- 	select CPU_SUPPORTS_HUGEPAGES
--	select USB_EHCI_BIG_ENDIAN_MMIO
-+	select USB_EHCI_BIG_ENDIAN_MMIO if CPU_BIG_ENDIAN
-+	select USB_OHCI_BIG_ENDIAN_MMIO if CPU_BIG_ENDIAN
- 	select MIPS_L1_CACHE_SHIFT_7
- 	help
- 	  The Cavium Octeon processor is a highly integrated chip containing
-diff --git a/drivers/usb/host/Kconfig b/drivers/usb/host/Kconfig
-index fafc628..c87e6e7 100644
---- a/drivers/usb/host/Kconfig
-+++ b/drivers/usb/host/Kconfig
-@@ -295,7 +295,7 @@ config USB_OCTEON_EHCI
- 	bool "Octeon on-chip EHCI support (DEPRECATED)"
- 	depends on CAVIUM_OCTEON_SOC
- 	default n
--	select USB_EHCI_BIG_ENDIAN_MMIO
-+	select USB_EHCI_BIG_ENDIAN_MMIO if CPU_BIG_ENDIAN
- 	select USB_EHCI_HCD_PLATFORM
- 	help
- 	  This option is deprecated now and the driver was removed, use
-@@ -582,7 +582,7 @@ config USB_OCTEON_OHCI
- 	bool "Octeon on-chip OHCI support (DEPRECATED)"
- 	depends on CAVIUM_OCTEON_SOC
- 	default USB_OCTEON_EHCI
--	select USB_OHCI_BIG_ENDIAN_MMIO
-+	select USB_OHCI_BIG_ENDIAN_MMIO if CPU_BIG_ENDIAN
- 	select USB_OHCI_LITTLE_ENDIAN
- 	select USB_OHCI_HCD_PLATFORM
- 	help
--- 
-1.9.1
+cheers

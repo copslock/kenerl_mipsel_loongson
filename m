@@ -1,42 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Jul 2015 10:42:33 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:61035 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Jul 2015 14:24:31 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:24651 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27009433AbbGPImcVYFy1 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 16 Jul 2015 10:42:32 +0200
+        with ESMTP id S27010433AbbGPMY3wJtHY (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 16 Jul 2015 14:24:29 +0200
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id BEEC8467FD43F;
-        Thu, 16 Jul 2015 09:42:24 +0100 (IST)
+        by Websense Email Security Gateway with ESMTPS id 85D4C7C03DF32;
+        Thu, 16 Jul 2015 13:24:21 +0100 (IST)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
  KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Thu, 16 Jul 2015 09:42:26 +0100
-Received: from [192.168.154.48] (192.168.154.48) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Thu, 16 Jul
- 2015 09:42:25 +0100
-Subject: Re: compile failure linux 3.10 with gcc 4.9.3 for mips
-To:     Reinoud Koornstra <reinoudkoornstra@gmail.com>
-References: <CAAA5faEN3MmWACoT2g2+9aOj1C=vj7UcNxd3Lez_K4_sCS8jBQ@mail.gmail.com>
- <55A613C6.3040505@imgtec.com>
- <CAAA5faHubPyT8D+QYB_M+qyCo-rRzPDO3fSH1HtSXCfCTj40HA@mail.gmail.com>
-CC:     <linux-mips@linux-mips.org>
-From:   Markos Chandras <Markos.Chandras@imgtec.com>
-Message-ID: <55A76E71.8090909@imgtec.com>
-Date:   Thu, 16 Jul 2015 09:42:25 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.0.1
+ 14.3.195.1; Thu, 16 Jul 2015 13:24:23 +0100
+Received: from mchandras-linux.le.imgtec.org (192.168.154.48) by
+ LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
+ 14.3.210.2; Thu, 16 Jul 2015 13:24:23 +0100
+From:   Markos Chandras <markos.chandras@imgtec.com>
+To:     <linux-mips@linux-mips.org>
+CC:     Markos Chandras <markos.chandras@imgtec.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>
+Subject: [PATCH] drivers: irqchip: irq-mips-gic: Print some GIC setup information to aid debugging
+Date:   Thu, 16 Jul 2015 13:24:11 +0100
+Message-ID: <1437049451-4096-1-git-send-email-markos.chandras@imgtec.com>
+X-Mailer: git-send-email 2.4.5
 MIME-Version: 1.0
-In-Reply-To: <CAAA5faHubPyT8D+QYB_M+qyCo-rRzPDO3fSH1HtSXCfCTj40HA@mail.gmail.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 X-Originating-IP: [192.168.154.48]
 Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48322
+X-archive-position: 48323
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Markos.Chandras@imgtec.com
+X-original-sender: markos.chandras@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,16 +45,51 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 07/15/2015 08:56 PM, Reinoud Koornstra wrote:
-> Thanks for your answer.
-> Is this patch going in upstream
-> Thanks,
-> 
-> Reinoud
-> 
+Print total number of GIC IRQs and those allocated for IPIs in case we
+are routing IPIs via GIC. Since this is not critical information we use
+pr_debug() so it won't spam the normal bootlog.
 
-It's already upstream just not in 3.10. A more recent kernel should
-compile fine with your toolchain.
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Jason Cooper <jason@lakedaemon.net>
+Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+---
+ drivers/irqchip/irq-mips-gic.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
+diff --git a/drivers/irqchip/irq-mips-gic.c b/drivers/irqchip/irq-mips-gic.c
+index 7fbbe8787660..4d83da8fe854 100644
+--- a/drivers/irqchip/irq-mips-gic.c
++++ b/drivers/irqchip/irq-mips-gic.c
+@@ -797,6 +797,21 @@ static const struct irq_domain_ops gic_irq_domain_ops = {
+ 	.xlate = gic_irq_domain_xlate,
+ };
+ 
++static void __init gic_print_status(void)
++{
++	int i;
++
++	pr_debug("GIC IRQS:%d\n", gic_shared_intrs);
++	if (config_enabled(CONFIG_MIPS_GIC_IPI)) {
++		for (i = 0; i < nr_cpu_ids; i++) {
++			pr_debug("GIC call IPI:%d (CPU%d)\n",
++				 gic_call_int_base + i, i);
++			pr_debug("GIC resched IPI:%d (CPU%d)\n",
++				 gic_resched_int_base + i, i);
++		}
++	}
++}
++
+ static void __init __gic_init(unsigned long gic_base_addr,
+ 			      unsigned long gic_addrspace_size,
+ 			      unsigned int cpu_vec, unsigned int irqbase,
+@@ -859,6 +874,8 @@ static void __init __gic_init(unsigned long gic_base_addr,
+ 	gic_basic_init();
+ 
+ 	gic_ipi_init();
++
++	gic_print_status();
+ }
+ 
+ void __init gic_init(unsigned long gic_base_addr,
 -- 
-markos
+2.4.5

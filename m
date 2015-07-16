@@ -1,52 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Jul 2015 14:44:17 +0200 (CEST)
-Received: from mail-oi0-f46.google.com ([209.85.218.46]:32805 "EHLO
-        mail-oi0-f46.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010450AbbGPMoPh2L4G (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 16 Jul 2015 14:44:15 +0200
-Received: by oige126 with SMTP id e126so49328810oig.0
-        for <linux-mips@linux-mips.org>; Thu, 16 Jul 2015 05:44:10 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:in-reply-to:references:date
-         :message-id:subject:from:to:cc:content-type;
-        bh=cVYNOYn4+fT8AgWQEd+PYzTfmvNjdUM+Nx4SZ1RuPs0=;
-        b=RPDcbEimGxg3e1WHbyxY19ZQjrcQiT2bytDYulwtkDc39exjXaYtKisdAUSavBa4jl
-         FJnjImFKN+0W8rCa8UqHH01XCbGzoNQZrzyfQRBUZeBMzugToUCputlqe9l8PF3JS8QV
-         N+gY1p+iUyPwIRybcTO0eA7aCrcx7G0NsCtJT5dSsjrnp6BznleZeRRu7pQQLgnVaiAN
-         WcFpxB3zvxrGSSSb4swrj1Xw25EQZ6eBFyiWXi71salGJTpex2DIoYkigJ4Wra/0Prb2
-         1zvG3psYOE2mgRYTdtj6YbBaCkijI9z7hOfJaXbYgSY1rcbvA4VG5PE5TyUF7RU2t5I+
-         yk6A==
-X-Gm-Message-State: ALoCoQln/PorvyVEPS/I+5jdBZj9OQjJwWmRSXqJEeX5PCb2s0PEo97lsH6ea+8bNbDtjzTXUNTt
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Jul 2015 15:07:02 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:37617 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27010450AbbGPNHAwVzCG (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 16 Jul 2015 15:07:00 +0200
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 87B58538CF6DA
+        for <linux-mips@linux-mips.org>; Thu, 16 Jul 2015 14:06:52 +0100 (IST)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Thu, 16 Jul 2015 14:06:55 +0100
+Received: from mchandras-linux.le.imgtec.org (192.168.154.48) by
+ LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
+ 14.3.210.2; Thu, 16 Jul 2015 14:06:54 +0100
+From:   Markos Chandras <markos.chandras@imgtec.com>
+To:     <linux-mips@linux-mips.org>
+Subject: [PATCH] MIPS: math-emu: cp1emu: Fix closing bracket for the d_fmt case
+Date:   Thu, 16 Jul 2015 14:06:45 +0100
+Message-ID: <1437052005-14520-1-git-send-email-markos.chandras@imgtec.com>
+X-Mailer: git-send-email 2.4.5
 MIME-Version: 1.0
-X-Received: by 10.202.213.21 with SMTP id m21mr8199791oig.26.1437050649997;
- Thu, 16 Jul 2015 05:44:09 -0700 (PDT)
-Received: by 10.182.204.41 with HTTP; Thu, 16 Jul 2015 05:44:09 -0700 (PDT)
-In-Reply-To: <CAHNKnsSgyzQu5uxZHu80X9MRQ5sJ+WEBatv9599QYxBsty66pg@mail.gmail.com>
-References: <1435914709-15092-1-git-send-email-albeu@free.fr>
-        <1435914709-15092-2-git-send-email-albeu@free.fr>
-        <CAHNKnsSgyzQu5uxZHu80X9MRQ5sJ+WEBatv9599QYxBsty66pg@mail.gmail.com>
-Date:   Thu, 16 Jul 2015 14:44:09 +0200
-Message-ID: <CACRpkdYgavq09dshgLZdo75KyuFwc4Cg0MosVgQN2KxW6VJt2w@mail.gmail.com>
-Subject: Re: [PATCH 1/2] MIPS: ath79: Remove the unused GPIO function API
-From:   Linus Walleij <linus.walleij@linaro.org>
-To:     Sergey Ryazanov <ryazanov.s.a@gmail.com>
-Cc:     Alban Bedel <albeu@free.fr>,
-        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Alexandre Courbot <gnurou@gmail.com>,
-        Gabor Juhos <juhosg@openwrt.org>,
-        Linux MIPS <linux-mips@linux-mips.org>,
-        open list <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <linus.walleij@linaro.org>
+Content-Type: text/plain
+X-Originating-IP: [192.168.154.48]
+Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48327
+X-archive-position: 48328
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linus.walleij@linaro.org
+X-original-sender: markos.chandras@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,19 +42,32 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sat, Jul 4, 2015 at 6:58 PM, Sergey Ryazanov <ryazanov.s.a@gmail.com> wrote:
-> 2015-07-03 12:11 GMT+03:00 Alban Bedel <albeu@free.fr>:
->> To prepare moving the GPIO driver to drivers/gpio remove the
->> platform specific pinmux API. As it is not used by any board,
->> and such functionality should better be implemented using the
->> pinmux subsystem just removing it seems to be the best option.
->>
-> For reference: OpenWRT uses this functions to activate UART.
+The double format (d_fmt) case uses an opening bracket which then
+closes at the end of the word format (w_fmt). This can be rather confusing
+so add the closing bracket at the end of the d_fmt case and use another one
+for the w_fmt one.
 
-OpenWRT is wholeheartedly and warmly welcome to work upstream,
-I will help whenever I can.
+Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+---
+ arch/mips/math-emu/cp1emu.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-I have seen their patch stack and it makes me sad :(
-
-Yours,
-Linus Walleij
+diff --git a/arch/mips/math-emu/cp1emu.c b/arch/mips/math-emu/cp1emu.c
+index 712f17a2ecf2..cd858953a783 100644
+--- a/arch/mips/math-emu/cp1emu.c
++++ b/arch/mips/math-emu/cp1emu.c
+@@ -2021,8 +2021,11 @@ dcopuop:
+ 			break;
+ 		}
+ 		break;
++	}
++
++	case w_fmt: {
++		union ieee754dp fs;
+ 
+-	case w_fmt:
+ 		switch (MIPSInst_FUNC(ir)) {
+ 		case fcvts_op:
+ 			/* convert word to single precision real */
+-- 
+2.4.5

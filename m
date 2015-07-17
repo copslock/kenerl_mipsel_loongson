@@ -1,67 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Sep 2015 00:26:42 +0200 (CEST)
-Received: from youngberry.canonical.com ([91.189.89.112]:41858 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008674AbbIUW0AX5iuN (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 22 Sep 2015 00:26:00 +0200
-Received: from 1.general.kamal.us.vpn ([10.172.68.52] helo=fourier)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:DHE_RSA_AES_128_CBC_SHA1:16)
-        (Exim 4.76)
-        (envelope-from <kamal@canonical.com>)
-        id 1Ze9X5-0006mx-Je; Mon, 21 Sep 2015 22:25:59 +0000
-Received: from kamal by fourier with local (Exim 4.82)
-        (envelope-from <kamal@whence.com>)
-        id 1Ze9X3-0004Py-DB; Mon, 21 Sep 2015 15:25:57 -0700
-From:   Kamal Mostafa <kamal@canonical.com>
-To:     James Hogan <james.hogan@imgtec.com>
-Cc:     Paul Burton <paul.burton@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        "Maciej W. Rozycki" <macro@linux-mips.org>,
-        linux-mips@linux-mips.org, Kamal Mostafa <kamal@canonical.com>,
-        kernel-team@lists.ubuntu.com
-Subject: [3.19.y-ckt stable] Patch "MIPS: Malta: Don't reinitialise RTC" has been added to staging queue
-Date:   Mon, 21 Sep 2015 15:25:56 -0700
-Message-Id: <1442874356-16945-1-git-send-email-kamal@canonical.com>
-X-Mailer: git-send-email 1.9.1
-X-Extended-Stable: 3.19
-Return-Path: <kamal@canonical.com>
-X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
-X-Orcpt: rfc822;linux-mips@linux-mips.org
-Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49257
-X-ecartis-version: Ecartis v1.0.0
-Sender: linux-mips-bounce@linux-mips.org
-Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kamal@canonical.com
-Precedence: bulk
-List-help: <mailto:ecartis@linux-mips.org?Subject=help>
-List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
-List-software: Ecartis version 1.0.0
-List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
-X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
-List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
-List-owner: <mailto:ralf@linux-mips.org>
-List-post: <mailto:linux-mips@linux-mips.org>
-List-archive: <http://www.linux-mips.org/archives/linux-mips/>
-X-list: linux-mips
+From: James Hogan <james.hogan@imgtec.com>
+Date: Fri, 17 Jul 2015 15:54:41 +0100
+Subject: MIPS: Malta: Don't reinitialise RTC
+Message-ID: <20150717145441.vmyNa4GOieVtYHCtyOagmcZ6FUWd0LVhdTkD6DumL54@z>
 
-This is a note to let you know that I have just added a patch titled
+commit 106eccb4d20f35ebc58ff2286c170d9e79c5ff68 upstream.
 
-    MIPS: Malta: Don't reinitialise RTC
+On Malta, since commit a87ea88d8f6c ("MIPS: Malta: initialise the RTC at
+boot"), the RTC is reinitialised and forced into binary coded decimal
+(BCD) mode during init, even if the bootloader has already initialised
+it, and may even have already put it into binary mode (as YAMON does).
+This corrupts the current time, can result in the RTC seconds being an
+invalid BCD (e.g. 0x1a..0x1f) for up to 6 seconds, as well as confusing
+YAMON for a while after reset, enough for it to report timeouts when
+attempting to load from TFTP (it actually uses the RTC in that code).
 
-to the linux-3.19.y-queue branch of the 3.19.y-ckt extended stable tree 
-which can be found at:
+Therefore only initialise the RTC to the extent that is necessary so
+that Linux avoids interfering with the bootloader setup, while also
+allowing it to estimate the CPU frequency without hanging, without a
+bootloader necessarily having done anything with the RTC (for example
+when the kernel is loaded via EJTAG).
 
-    http://kernel.ubuntu.com/git/ubuntu/linux.git/log/?h=linux-3.19.y-queue
+The divider control is configured for a 32KHZ reference clock if
+necessary, and the SET bit of the RTC_CONTROL register is cleared if
+necessary without changing any other bits (this bit will be set when
+coming out of reset if the battery has been disconnected).
 
-This patch is scheduled to be released in version 3.19.8-ckt7.
+Fixes: a87ea88d8f6c ("MIPS: Malta: initialise the RTC at boot")
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Reviewed-by: Paul Burton <paul.burton@imgtec.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Maciej W. Rozycki <macro@linux-mips.org>
+Cc: linux-mips@linux-mips.org
+Patchwork: https://patchwork.linux-mips.org/patch/10739/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: Kamal Mostafa <kamal@canonical.com>
+---
+ arch/mips/mti-malta/malta-time.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
-If you, or anyone else, feels it should not be added to this tree, please 
-reply to this email.
+diff --git a/arch/mips/mti-malta/malta-time.c b/arch/mips/mti-malta/malta-time.c
+index ce02dbd..644ecce 100644
+--- a/arch/mips/mti-malta/malta-time.c
++++ b/arch/mips/mti-malta/malta-time.c
+@@ -147,14 +147,17 @@ unsigned int get_c0_compare_int(void)
 
-For more information about the 3.19.y-ckt tree, see
-https://wiki.ubuntu.com/Kernel/Dev/ExtendedStable
+ static void __init init_rtc(void)
+ {
+-	/* stop the clock whilst setting it up */
+-	CMOS_WRITE(RTC_SET | RTC_24H, RTC_CONTROL);
++	unsigned char freq, ctrl;
 
-Thanks.
--Kamal
+-	/* 32KHz time base */
+-	CMOS_WRITE(RTC_REF_CLCK_32KHZ, RTC_FREQ_SELECT);
++	/* Set 32KHz time base if not already set */
++	freq = CMOS_READ(RTC_FREQ_SELECT);
++	if ((freq & RTC_DIV_CTL) != RTC_REF_CLCK_32KHZ)
++		CMOS_WRITE(RTC_REF_CLCK_32KHZ, RTC_FREQ_SELECT);
 
-------
+-	/* start the clock */
+-	CMOS_WRITE(RTC_24H, RTC_CONTROL);
++	/* Ensure SET bit is clear so RTC can run */
++	ctrl = CMOS_READ(RTC_CONTROL);
++	if (ctrl & RTC_SET)
++		CMOS_WRITE(ctrl & ~RTC_SET, RTC_CONTROL);
+ }
+
+ void __init plat_time_init(void)
+--
+1.9.1

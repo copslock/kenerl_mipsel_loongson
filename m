@@ -1,37 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Jul 2015 11:22:02 +0200 (CEST)
-Received: from www.linutronix.de ([62.245.132.108]:47349 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27009572AbbGQJWBIAGnH (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 17 Jul 2015 11:22:01 +0200
-Received: from localhost ([127.0.0.1])
-        by Galois.linutronix.de with esmtps (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:256)
-        (Exim 4.80)
-        (envelope-from <tglx@linutronix.de>)
-        id 1ZG1qC-00018T-GD; Fri, 17 Jul 2015 11:22:00 +0200
-Date:   Fri, 17 Jul 2015 11:21:51 +0200 (CEST)
-From:   Thomas Gleixner <tglx@linutronix.de>
-To:     Markos Chandras <markos.chandras@imgtec.com>
-cc:     linux-mips@linux-mips.org, Jason Cooper <jason@lakedaemon.net>
-Subject: Re: [PATCH] drivers: irqchip: irq-mips-gic: Print some GIC setup
- information to aid debugging
-In-Reply-To: <1437049451-4096-1-git-send-email-markos.chandras@imgtec.com>
-Message-ID: <alpine.DEB.2.11.1507171121000.18576@nanos>
-References: <1437049451-4096-1-git-send-email-markos.chandras@imgtec.com>
-User-Agent: Alpine 2.11 (DEB 23 2013-08-11)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Jul 2015 11:36:16 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:52950 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27009681AbbGQJgOthpwb (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 17 Jul 2015 11:36:14 +0200
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 9D44278BF7479;
+        Fri, 17 Jul 2015 10:36:06 +0100 (IST)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Fri, 17 Jul 2015 10:36:08 +0100
+Received: from mchandras-linux.le.imgtec.org (192.168.154.48) by
+ LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
+ 14.3.210.2; Fri, 17 Jul 2015 10:36:08 +0100
+From:   Markos Chandras <markos.chandras@imgtec.com>
+To:     <linux-mips@linux-mips.org>
+CC:     Markos Chandras <markos.chandras@imgtec.com>,
+        <stable@vger.kernel.org>
+Subject: [PATCH] MIPS: math-emu: cp1emu: Allow m{f,t}hc emulation on MIPS R6
+Date:   Fri, 17 Jul 2015 10:36:03 +0100
+Message-ID: <1437125763-12527-1-git-send-email-markos.chandras@imgtec.com>
+X-Mailer: git-send-email 2.4.5
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
-Return-Path: <tglx@linutronix.de>
+Content-Type: text/plain
+X-Originating-IP: [192.168.154.48]
+Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48337
+X-archive-position: 48338
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tglx@linutronix.de
+X-original-sender: markos.chandras@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,10 +44,36 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, 16 Jul 2015, Markos Chandras wrote:
+The mfhc/mthc instructions are supported on MIPS R6 so emulate
+them if needed.
 
-The proper mailinglist for IRQCHIP DRIVERS is LKML!
+Cc: <stable@vger.kernel.org> # 4.0+
+Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+---
+ arch/mips/math-emu/cp1emu.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Thanks,
-
-	tglx
+diff --git a/arch/mips/math-emu/cp1emu.c b/arch/mips/math-emu/cp1emu.c
+index 712f17a2ecf2..70e88efee45b 100644
+--- a/arch/mips/math-emu/cp1emu.c
++++ b/arch/mips/math-emu/cp1emu.c
+@@ -1137,7 +1137,7 @@ emul:
+ 			break;
+ 
+ 		case mfhc_op:
+-			if (!cpu_has_mips_r2)
++			if (!cpu_has_mips_r2_r6)
+ 				goto sigill;
+ 
+ 			/* copregister rd -> gpr[rt] */
+@@ -1148,7 +1148,7 @@ emul:
+ 			break;
+ 
+ 		case mthc_op:
+-			if (!cpu_has_mips_r2)
++			if (!cpu_has_mips_r2_r6)
+ 				goto sigill;
+ 
+ 			/* copregister rd <- gpr[rt] */
+-- 
+2.4.5

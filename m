@@ -1,31 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Jul 2015 17:52:22 +0200 (CEST)
-Received: from faui40.informatik.uni-erlangen.de ([131.188.34.40]:54048 "EHLO
-        faui40.informatik.uni-erlangen.de" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010724AbbGPPwUj7fOh (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 16 Jul 2015 17:52:20 +0200
-Received: from faui49t (faui49t.informatik.uni-erlangen.de [131.188.42.17])
-        by faui40.informatik.uni-erlangen.de (Postfix) with SMTP id AF96F58C4AE;
-        Thu, 16 Jul 2015 17:52:18 +0200 (CEST)
-Received: by faui49t (sSMTP sendmail emulation); Thu, 16 Jul 2015 17:52:18 +0200
-From:   Andreas Ruprecht <andreas.ruprecht@fau.de>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        Jonas Rabenstein <jonas.rabenstein@studium.uni-erlangen.de>,
-        valentinrothberg@gmail.com, stefan.hengelein@fau.de,
-        pebolle@tiscali.nl, Andreas Ruprecht <andreas.ruprecht@fau.de>
-Subject: [PATCH] MIPS: sibyte: Fix Kconfig dependencies of SIBYTE_BUS_WATCHER
-Date:   Thu, 16 Jul 2015 17:52:11 +0200
-Message-Id: <1437061931-24754-1-git-send-email-andreas.ruprecht@fau.de>
-X-Mailer: git-send-email 1.9.1
-Return-Path: <andreas.ruprecht@fau.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Jul 2015 09:56:51 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:35480 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S27009468AbbGQH4tx8NCd (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 17 Jul 2015 09:56:49 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.15.1/8.14.8) with ESMTP id t6H7ul88009800;
+        Fri, 17 Jul 2015 09:56:47 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.15.1/8.15.1/Submit) id t6H7ujF3009799;
+        Fri, 17 Jul 2015 09:56:45 +0200
+Date:   Fri, 17 Jul 2015 09:56:45 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Markos Chandras <markos.chandras@imgtec.com>
+Cc:     linux-mips@linux-mips.org
+Subject: Re: [PATCH] MIPS: Kconfig: Drop the EXPERIMENTAL tag from MIPS R6
+Message-ID: <20150717075645.GA9084@linux-mips.org>
+References: <1437049486-4170-1-git-send-email-markos.chandras@imgtec.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1437049486-4170-1-git-send-email-markos.chandras@imgtec.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48331
+X-archive-position: 48333
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: andreas.ruprecht@fau.de
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -38,40 +42,6 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Commit 6793f55cbc84 ("MIPS: sibyte: Amend dependencies for
-SIBYTE_BUS_WATCHER") changed the dependencies for
-SIBYTE_BUS_WATCHER to make it visible only if SIBYTE_BCM112X
-or SIBYTE_SB1250 are enabled.
+Queued for 4.3.  Thanks!
 
-In the code in arch/mips/sibyte/common/bus_watcher, however,
-a #if defined() check suggests that this functionality should
-also be available for SIBYTE_BCM1x55 and SIBYTE_BCM1x80.
-
-Make it selectable by extending the dependencies of
-SIBYTE_BUS_WATCHER in arch/mips/sibyte/Kconfig.
-
-Reported-by: Jonas Rabenstein <jonas.rabenstein@studium.uni-erlangen.de>
-Signed-off-by: Andreas Ruprecht <andreas.ruprecht@fau.de>
----
-I found this inconsistency using the undertaker and
-undertaker-checkpatch tools (https://undertaker.cs.fau.de/).
-
- arch/mips/sibyte/Kconfig | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/arch/mips/sibyte/Kconfig b/arch/mips/sibyte/Kconfig
-index cb9a095..707b884 100644
---- a/arch/mips/sibyte/Kconfig
-+++ b/arch/mips/sibyte/Kconfig
-@@ -143,7 +143,8 @@ config SIBYTE_CFE_CONSOLE
- config SIBYTE_BUS_WATCHER
- 	bool "Support for Bus Watcher statistics"
- 	depends on SIBYTE_SB1xxx_SOC && \
--		(SIBYTE_BCM112X || SIBYTE_SB1250)
-+		(SIBYTE_BCM112X || SIBYTE_SB1250 || \
-+		 SIBYTE_BCM1x55 || SIBYTE_BCM1x80)
- 	help
- 	  Handle and keep statistics on the bus error interrupts (COR_ECC,
- 	  BAD_ECC, IO_BUS).
--- 
-1.9.1
+  Ralf

@@ -1,65 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Sep 2015 00:26:20 +0200 (CEST)
-Received: from youngberry.canonical.com ([91.189.89.112]:41855 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007076AbbIUW0AX5iuN (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 22 Sep 2015 00:26:00 +0200
-Received: from 1.general.kamal.us.vpn ([10.172.68.52] helo=fourier)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:DHE_RSA_AES_128_CBC_SHA1:16)
-        (Exim 4.76)
-        (envelope-from <kamal@canonical.com>)
-        id 1Ze9X4-0006mr-RD; Mon, 21 Sep 2015 22:25:59 +0000
-Received: from kamal by fourier with local (Exim 4.82)
-        (envelope-from <kamal@whence.com>)
-        id 1Ze9X2-0004P1-KL; Mon, 21 Sep 2015 15:25:56 -0700
-From:   Kamal Mostafa <kamal@canonical.com>
-To:     Felix Fietkau <nbd@openwrt.org>
-Cc:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
-        Kamal Mostafa <kamal@canonical.com>,
-        kernel-team@lists.ubuntu.com
-Subject: [3.19.y-ckt stable] Patch "MIPS: Fix sched_getaffinity with MT FPAFF enabled" has been added to staging queue
-Date:   Mon, 21 Sep 2015 15:25:56 -0700
-Message-Id: <1442874356-16893-1-git-send-email-kamal@canonical.com>
-X-Mailer: git-send-email 1.9.1
-X-Extended-Stable: 3.19
-Return-Path: <kamal@canonical.com>
-X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
-X-Orcpt: rfc822;linux-mips@linux-mips.org
-Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49256
-X-ecartis-version: Ecartis v1.0.0
-Sender: linux-mips-bounce@linux-mips.org
-Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kamal@canonical.com
-Precedence: bulk
-List-help: <mailto:ecartis@linux-mips.org?Subject=help>
-List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
-List-software: Ecartis version 1.0.0
-List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
-X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
-List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
-List-owner: <mailto:ralf@linux-mips.org>
-List-post: <mailto:linux-mips@linux-mips.org>
-List-archive: <http://www.linux-mips.org/archives/linux-mips/>
-X-list: linux-mips
+From: Felix Fietkau <nbd@openwrt.org>
+Date: Sun, 19 Jul 2015 00:38:41 +0200
+Subject: MIPS: Fix sched_getaffinity with MT FPAFF enabled
+Message-ID: <20150718223841.Q3ZbSeGIXp62Hn0LtJBjOo2HviXgKPFOK_uci6z6e2E@z>
 
-This is a note to let you know that I have just added a patch titled
+commit 1d62d737555e1378eb62a8bba26644f7d97139d2 upstream.
 
-    MIPS: Fix sched_getaffinity with MT FPAFF enabled
+p->thread.user_cpus_allowed is zero-initialized and is only filled on
+the first sched_setaffinity call.
 
-to the linux-3.19.y-queue branch of the 3.19.y-ckt extended stable tree 
-which can be found at:
+To avoid adding overhead in the task initialization codepath, simply OR
+the returned mask in sched_getaffinity with p->cpus_allowed.
 
-    http://kernel.ubuntu.com/git/ubuntu/linux.git/log/?h=linux-3.19.y-queue
+Signed-off-by: Felix Fietkau <nbd@openwrt.org>
+Cc: linux-mips@linux-mips.org
+Patchwork: https://patchwork.linux-mips.org/patch/10740/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: Kamal Mostafa <kamal@canonical.com>
+---
+ arch/mips/kernel/mips-mt-fpaff.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-This patch is scheduled to be released in version 3.19.8-ckt7.
+diff --git a/arch/mips/kernel/mips-mt-fpaff.c b/arch/mips/kernel/mips-mt-fpaff.c
+index 362bb37..116c67a 100644
+--- a/arch/mips/kernel/mips-mt-fpaff.c
++++ b/arch/mips/kernel/mips-mt-fpaff.c
+@@ -154,7 +154,7 @@ asmlinkage long mipsmt_sys_sched_getaffinity(pid_t pid, unsigned int len,
+ 				      unsigned long __user *user_mask_ptr)
+ {
+ 	unsigned int real_len;
+-	cpumask_t mask;
++	cpumask_t allowed, mask;
+ 	int retval;
+ 	struct task_struct *p;
 
-If you, or anyone else, feels it should not be added to this tree, please 
-reply to this email.
+@@ -173,7 +173,8 @@ asmlinkage long mipsmt_sys_sched_getaffinity(pid_t pid, unsigned int len,
+ 	if (retval)
+ 		goto out_unlock;
 
-For more information about the 3.19.y-ckt tree, see
-https://wiki.ubuntu.com/Kernel/Dev/ExtendedStable
+-	cpumask_and(&mask, &p->thread.user_cpus_allowed, cpu_possible_mask);
++	cpumask_or(&allowed, &p->thread.user_cpus_allowed, &p->cpus_allowed);
++	cpumask_and(&mask, &allowed, cpu_active_mask);
 
-Thanks.
--Kamal
-
-------
+ out_unlock:
+ 	read_unlock(&tasklist_lock);
+--
+1.9.1

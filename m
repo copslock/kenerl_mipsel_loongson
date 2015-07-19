@@ -1,26 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 19 Jul 2015 00:38:44 +0200 (CEST)
-Received: from static.88-198-24-112.clients.your-server.de ([88.198.24.112]:39552
-        "EHLO nbd.name" rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org
-        with ESMTP id S27009935AbbGRWimtOHYH (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 19 Jul 2015 00:38:42 +0200
-Received: by nf-2.local (Postfix, from userid 501)
-        id 82DAAF1F93B7; Sun, 19 Jul 2015 00:38:41 +0200 (CEST)
-From:   Felix Fietkau <nbd@openwrt.org>
-To:     linux-mips@linux-mips.org
-Cc:     ralf@linux-mips.org
-Subject: [PATCH] MIPS: kernel: fix sched_getaffinity with MT FPAFF enabled
-Date:   Sun, 19 Jul 2015 00:38:41 +0200
-Message-Id: <1437259121-81263-1-git-send-email-nbd@openwrt.org>
-X-Mailer: git-send-email 2.2.2
-Return-Path: <nbd@nbd.name>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 19 Jul 2015 02:22:32 +0200 (CEST)
+Received: from mail-wi0-f178.google.com ([209.85.212.178]:35728 "EHLO
+        mail-wi0-f178.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011087AbbGSAW2N10XZ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 19 Jul 2015 02:22:28 +0200
+Received: by wibxm9 with SMTP id xm9so64596918wib.0;
+        Sat, 18 Jul 2015 17:22:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:sender:in-reply-to:references:from:date:message-id
+         :subject:to:cc:content-type;
+        bh=3NGujuSRVfooRqfOgZKnhWhlglcqkT6NrZMY8ULujqA=;
+        b=plndmh/cJgLr5+CHo2Pqh8sWMu3ukEufExGHbnNzlXK3kde3cr4CV+raX23igTorCI
+         lB9J4eVyJn4Z1ba0pi11KPp4dE6o1qEolWDhglUlwWuf11A5cw4mVwoYx51yEIhvUyed
+         0XD2vs1FrQsvabbfBP0sJt4U3+9LBSyYU4ihzq87tI6Unm722GUiuUrwhFpvvkvTElsg
+         yH6GWl5GDCiJzZsRmEThKq+9uztBdnby2H0oWbOR+QQN6pGsvWQy4aiHhYPmMqaE3lRa
+         woLgUp6MPzNzsoSh2DBvT5ALHlTXcFA61ZhRSpN21NKKmLIqWVC0DEQ60qlbhZfawgYq
+         R7tg==
+X-Received: by 10.194.172.8 with SMTP id ay8mr41979763wjc.106.1437265342835;
+ Sat, 18 Jul 2015 17:22:22 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 10.194.236.38 with HTTP; Sat, 18 Jul 2015 17:21:53 -0700 (PDT)
+In-Reply-To: <1436540426-10021-5-git-send-email-paul.burton@imgtec.com>
+References: <1436540426-10021-1-git-send-email-paul.burton@imgtec.com> <1436540426-10021-5-git-send-email-paul.burton@imgtec.com>
+From:   Paul Gortmaker <paul.gortmaker@windriver.com>
+Date:   Sat, 18 Jul 2015 20:21:53 -0400
+X-Google-Sender-Auth: 4RDI3XboQowl75N78VoIJhkUfQE
+Message-ID: <CAP=VYLr-DAi0TGuDiSZSeceKQ=Bb6Z9UXNZ=eBKVeP0g1SpOhg@mail.gmail.com>
+Subject: Re: [PATCH 04/16] MIPS: use struct mips_abi offsets to save FP context
+To:     Paul Burton <paul.burton@imgtec.com>
+Cc:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        Matthew Fortune <matthew.fortune@imgtec.com>,
+        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Richard Weinberger <richard@nod.at>,
+        James Hogan <james.hogan@imgtec.com>,
+        Andy Lutomirski <luto@amacapital.net>,
+        Markos Chandras <markos.chandras@imgtec.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Manuel Lauss <manuel.lauss@gmail.com>,
+        "Maciej W. Rozycki" <macro@codesourcery.com>,
+        "linux-next@vger.kernel.org" <linux-next@vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <paul.gortmaker@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48344
+X-archive-position: 48345
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: nbd@openwrt.org
+X-original-sender: paul.gortmaker@windriver.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -33,40 +63,33 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-p->thread.user_cpus_allowed is zero-initialized and is only filled on
-the first sched_setaffinity call.
+On Fri, Jul 10, 2015 at 11:00 AM, Paul Burton <paul.burton@imgtec.com> wrote:
+> When saving FP state to struct sigcontext, make use of the offsets
+> provided by struct mips_abi to obtain appropriate addresses for the
+> sc_fpregs & sc_fpc_csr fields of the sigcontext. This is done only for
+> the native struct sigcontext in this patch (ie. for O32 in CONFIG_32BIT
+> kernels or for N64 in CONFIG_64BIT kernels) but is done in preparation
+> for sharing this code with compat ABIs in further patches.
+>
+> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+> ---
+>
+>  arch/mips/kernel/r4k_fpu.S       | 151 +++++++++++++++++++++------------------
+>  arch/mips/kernel/signal-common.h |   6 ++
+>  arch/mips/kernel/signal.c        |  85 +++++++++++++++-------
+>  3 files changed, 145 insertions(+), 97 deletions(-)
+>
 
-To avoid adding overhead in the task initialization codepath, simply OR
-the returned mask in sched_getaffinity with p->cpus_allowed.
+ The current version of this in linux-next picked up a booger in transit.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Felix Fietkau <nbd@openwrt.org>
----
- arch/mips/kernel/mips-mt-fpaff.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+$ git show 6775b4ea74d5922e5310b7b7a902a8fbe61a0c9d|diffstat
+ arch/mips/kernel/r4k_fpu.S       |  151 ++++++++++++++++++++-------------------
+ arch/mips/kernel/signal-common.h |    6 +
+ arch/mips/kernel/signal.c        |   85 ++++++++++++++-------
+ index.html                       |   16 ++++
+ 4 files changed, 161 insertions(+), 97 deletions(-)
 
-diff --git a/arch/mips/kernel/mips-mt-fpaff.c b/arch/mips/kernel/mips-mt-fpaff.c
-index 3e4491a..789d7bf 100644
---- a/arch/mips/kernel/mips-mt-fpaff.c
-+++ b/arch/mips/kernel/mips-mt-fpaff.c
-@@ -154,7 +154,7 @@ asmlinkage long mipsmt_sys_sched_getaffinity(pid_t pid, unsigned int len,
- 				      unsigned long __user *user_mask_ptr)
- {
- 	unsigned int real_len;
--	cpumask_t mask;
-+	cpumask_t allowed, mask;
- 	int retval;
- 	struct task_struct *p;
- 
-@@ -173,7 +173,8 @@ asmlinkage long mipsmt_sys_sched_getaffinity(pid_t pid, unsigned int len,
- 	if (retval)
- 		goto out_unlock;
- 
--	cpumask_and(&mask, &p->thread.user_cpus_allowed, cpu_possible_mask);
-+	cpumask_or(&allowed, &p->thread.user_cpus_allowed, &p->cpus_allowed);
-+	cpumask_and(&mask, &allowed, cpu_active_mask);
- 
- out_unlock:
- 	read_unlock(&tasklist_lock);
--- 
-2.2.2
+Guessing it happened at Ralf's end.
+
+Paul.
+--

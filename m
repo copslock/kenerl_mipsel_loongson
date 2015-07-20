@@ -1,15 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Jul 2015 14:09:34 +0200 (CEST)
-Received: from szxga02-in.huawei.com ([119.145.14.65]:57123 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Jul 2015 14:09:52 +0200 (CEST)
+Received: from szxga02-in.huawei.com ([119.145.14.65]:57507 "EHLO
         szxga02-in.huawei.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011604AbbGTMJAMIEWy (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 20 Jul 2015 14:09:00 +0200
-Received: from 172.24.1.47 (EHLO szxeml432-hub.china.huawei.com) ([172.24.1.47])
+        by eddie.linux-mips.org with ESMTP id S27011628AbbGTMJSH0pPy (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 20 Jul 2015 14:09:18 +0200
+Received: from 172.24.1.49 (EHLO szxeml432-hub.china.huawei.com) ([172.24.1.49])
         by szxrg02-dlp.huawei.com (MOS 4.3.7-GA FastPath queued)
-        with ESMTP id COZ21653;
-        Mon, 20 Jul 2015 20:05:32 +0800 (CST)
+        with ESMTP id COZ21644;
+        Mon, 20 Jul 2015 20:05:29 +0800 (CST)
 Received: from localhost.localdomain (10.175.100.166) by
  szxeml432-hub.china.huawei.com (10.82.67.209) with Microsoft SMTP Server id
- 14.3.158.1; Mon, 20 Jul 2015 20:05:24 +0800
+ 14.3.158.1; Mon, 20 Jul 2015 20:05:13 +0800
 From:   Yijing Wang <wangyijing@huawei.com>
 To:     Bjorn Helgaas <bhelgaas@google.com>
 CC:     <linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
@@ -29,12 +29,10 @@ CC:     <linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
         Arnd Bergmann <arnd@arndb.de>,
         Geert Uytterhoeven <geert@linux-m68k.org>,
         Yijing Wang <wangyijing@huawei.com>
-Subject: [PATCH part3 v12 08/10] PCI: Introduce common pci_domain_nr() and remove platform specific code
-Date:   Mon, 20 Jul 2015 20:01:16 +0800
-Message-ID: <1437393678-4077-9-git-send-email-wangyijing@huawei.com>
+Subject: [PATCH part3 v12 00/10] Cleanup platform pci_domain_nr()
+Date:   Mon, 20 Jul 2015 20:01:08 +0800
+Message-ID: <1437393678-4077-1-git-send-email-wangyijing@huawei.com>
 X-Mailer: git-send-email 1.7.1
-In-Reply-To: <1437393678-4077-1-git-send-email-wangyijing@huawei.com>
-References: <1437393678-4077-1-git-send-email-wangyijing@huawei.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [10.175.100.166]
@@ -43,7 +41,7 @@ Return-Path: <wangyijing@huawei.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48356
+X-archive-position: 48357
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -60,292 +58,85 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Now pci_host_bridge holds the domain number, we could
-introduce common pci_domain_nr(), and remove platform specific code.
+This series is splitted out from previous patchset
+"Refine PCI scan interfaces and make generic pci host bridge".
+It try to clean up all platform pci_domain_nr(), save domain
+in pci_host_bridge, so we could get domain number from the
+common interface. 
 
-Signed-off-by: Yijing Wang <wangyijing@huawei.com>
----
- arch/alpha/include/asm/pci.h      |    2 --
- arch/ia64/include/asm/pci.h       |    1 -
- arch/microblaze/include/asm/pci.h |    2 --
- arch/microblaze/pci/pci-common.c  |   11 -----------
- arch/mips/include/asm/pci.h       |    2 --
- arch/powerpc/include/asm/pci.h    |    2 --
- arch/powerpc/kernel/pci-common.c  |   11 -----------
- arch/s390/include/asm/pci.h       |    1 -
- arch/s390/pci/pci.c               |    6 ------
- arch/sh/include/asm/pci.h         |    2 --
- arch/sparc/include/asm/pci_64.h   |    1 -
- arch/sparc/kernel/pci.c           |   17 -----------------
- arch/tile/include/asm/pci.h       |    2 --
- arch/x86/include/asm/pci.h        |    6 ------
- drivers/pci/pci.c                 |    8 ++++++++
- include/linux/pci.h               |    7 +------
- 16 files changed, 9 insertions(+), 72 deletions(-)
+v11->v12:
+  Introduce wrap function pci_create_root_bus_generic()
+  and pci_create_root_bus_generic() for arm/arm64 which
+  enable CONFIG_PCI_DOMAINS_GENERIC.
+  Rebased this series based 4.2-rc1
 
-diff --git a/arch/alpha/include/asm/pci.h b/arch/alpha/include/asm/pci.h
-index 98f2eee..1f50c81 100644
---- a/arch/alpha/include/asm/pci.h
-+++ b/arch/alpha/include/asm/pci.h
-@@ -79,8 +79,6 @@ static inline int pci_get_legacy_ide_irq(struct pci_dev *dev, int channel)
- 	return channel ? 15 : 14;
- }
- 
--#define pci_domain_nr(bus) ((struct pci_controller *)(bus)->sysdata)->index
--
- static inline int pci_proc_domain(struct pci_bus *bus)
- {
- 	struct pci_controller *hose = bus->sysdata;
-diff --git a/arch/ia64/include/asm/pci.h b/arch/ia64/include/asm/pci.h
-index 36d2c1e..ba6c40a 100644
---- a/arch/ia64/include/asm/pci.h
-+++ b/arch/ia64/include/asm/pci.h
-@@ -80,7 +80,6 @@ struct pci_controller {
- 
- 
- #define PCI_CONTROLLER(busdev) ((struct pci_controller *) busdev->sysdata)
--#define pci_domain_nr(busdev)    (PCI_CONTROLLER(busdev)->segment)
- 
- extern struct pci_ops pci_root_ops;
- 
-diff --git a/arch/microblaze/include/asm/pci.h b/arch/microblaze/include/asm/pci.h
-index dc9eb66..a452163 100644
---- a/arch/microblaze/include/asm/pci.h
-+++ b/arch/microblaze/include/asm/pci.h
-@@ -42,8 +42,6 @@
-  */
- #define pcibios_assign_all_busses()	0
- 
--extern int pci_domain_nr(struct pci_bus *bus);
--
- /* Decide whether to display the domain number in /proc */
- extern int pci_proc_domain(struct pci_bus *bus);
- 
-diff --git a/arch/microblaze/pci/pci-common.c b/arch/microblaze/pci/pci-common.c
-index d232c8a..6f64908 100644
---- a/arch/microblaze/pci/pci-common.c
-+++ b/arch/microblaze/pci/pci-common.c
-@@ -123,17 +123,6 @@ unsigned long pci_address_to_pio(phys_addr_t address)
- }
- EXPORT_SYMBOL_GPL(pci_address_to_pio);
- 
--/*
-- * Return the domain number for this bus.
-- */
--int pci_domain_nr(struct pci_bus *bus)
--{
--	struct pci_controller *hose = pci_bus_to_host(bus);
--
--	return hose->global_number;
--}
--EXPORT_SYMBOL(pci_domain_nr);
--
- /* This routine is meant to be used early during boot, when the
-  * PCI bus numbers have not yet been assigned, and you need to
-  * issue PCI config cycles to an OF device.
-diff --git a/arch/mips/include/asm/pci.h b/arch/mips/include/asm/pci.h
-index 98c31e5..8757775 100644
---- a/arch/mips/include/asm/pci.h
-+++ b/arch/mips/include/asm/pci.h
-@@ -114,8 +114,6 @@ struct pci_dev;
- extern unsigned int PCI_DMA_BUS_IS_PHYS;
- 
- #ifdef CONFIG_PCI_DOMAINS
--#define pci_domain_nr(bus) ((struct pci_controller *)(bus)->sysdata)->index
--
- static inline int pci_proc_domain(struct pci_bus *bus)
- {
- 	struct pci_controller *hose = bus->sysdata;
-diff --git a/arch/powerpc/include/asm/pci.h b/arch/powerpc/include/asm/pci.h
-index 3453bd8..f83b8c8 100644
---- a/arch/powerpc/include/asm/pci.h
-+++ b/arch/powerpc/include/asm/pci.h
-@@ -73,8 +73,6 @@ extern struct dma_map_ops *get_pci_dma_ops(void);
- 
- #endif /* CONFIG_PPC64 */
- 
--extern int pci_domain_nr(struct pci_bus *bus);
--
- /* Decide whether to display the domain number in /proc */
- extern int pci_proc_domain(struct pci_bus *bus);
- 
-diff --git a/arch/powerpc/kernel/pci-common.c b/arch/powerpc/kernel/pci-common.c
-index 3e398c8..42928a0 100644
---- a/arch/powerpc/kernel/pci-common.c
-+++ b/arch/powerpc/kernel/pci-common.c
-@@ -196,17 +196,6 @@ unsigned long pci_address_to_pio(phys_addr_t address)
- }
- EXPORT_SYMBOL_GPL(pci_address_to_pio);
- 
--/*
-- * Return the domain number for this bus.
-- */
--int pci_domain_nr(struct pci_bus *bus)
--{
--	struct pci_controller *hose = pci_bus_to_host(bus);
--
--	return hose->global_number;
--}
--EXPORT_SYMBOL(pci_domain_nr);
--
- /* This routine is meant to be used early during boot, when the
-  * PCI bus numbers have not yet been assigned, and you need to
-  * issue PCI config cycles to an OF device.
-diff --git a/arch/s390/include/asm/pci.h b/arch/s390/include/asm/pci.h
-index a648338..fe605b5 100644
---- a/arch/s390/include/asm/pci.h
-+++ b/arch/s390/include/asm/pci.h
-@@ -20,7 +20,6 @@
- 
- void __iomem *pci_iomap(struct pci_dev *, int, unsigned long);
- void pci_iounmap(struct pci_dev *, void __iomem *);
--int pci_domain_nr(struct pci_bus *);
- int pci_proc_domain(struct pci_bus *);
- 
- #define ZPCI_BUS_NR			0	/* default bus number */
-diff --git a/arch/s390/pci/pci.c b/arch/s390/pci/pci.c
-index b9ac2f5..86acba4 100644
---- a/arch/s390/pci/pci.c
-+++ b/arch/s390/pci/pci.c
-@@ -101,12 +101,6 @@ static struct zpci_dev *get_zdev_by_bus(struct pci_bus *bus)
- 	return (bus && bus->sysdata) ? (struct zpci_dev *) bus->sysdata : NULL;
- }
- 
--int pci_domain_nr(struct pci_bus *bus)
--{
--	return ((struct zpci_dev *) bus->sysdata)->domain;
--}
--EXPORT_SYMBOL_GPL(pci_domain_nr);
--
- int pci_proc_domain(struct pci_bus *bus)
- {
- 	return pci_domain_nr(bus);
-diff --git a/arch/sh/include/asm/pci.h b/arch/sh/include/asm/pci.h
-index e343dbd..9d44611 100644
---- a/arch/sh/include/asm/pci.h
-+++ b/arch/sh/include/asm/pci.h
-@@ -91,8 +91,6 @@ extern void pcibios_set_master(struct pci_dev *dev);
- /* Board-specific fixup routines. */
- int pcibios_map_platform_irq(const struct pci_dev *dev, u8 slot, u8 pin);
- 
--#define pci_domain_nr(bus) ((struct pci_channel *)(bus)->sysdata)->index
--
- static inline int pci_proc_domain(struct pci_bus *bus)
- {
- 	struct pci_channel *hose = bus->sysdata;
-diff --git a/arch/sparc/include/asm/pci_64.h b/arch/sparc/include/asm/pci_64.h
-index 022d160..229b4f6 100644
---- a/arch/sparc/include/asm/pci_64.h
-+++ b/arch/sparc/include/asm/pci_64.h
-@@ -33,7 +33,6 @@
- 
- /* Return the index of the PCI controller for device PDEV. */
- 
--int pci_domain_nr(struct pci_bus *bus);
- static inline int pci_proc_domain(struct pci_bus *bus)
- {
- 	return 1;
-diff --git a/arch/sparc/kernel/pci.c b/arch/sparc/kernel/pci.c
-index 1e957de..79c6941 100644
---- a/arch/sparc/kernel/pci.c
-+++ b/arch/sparc/kernel/pci.c
-@@ -886,23 +886,6 @@ int pcibus_to_node(struct pci_bus *pbus)
- EXPORT_SYMBOL(pcibus_to_node);
- #endif
- 
--/* Return the domain number for this pci bus */
--
--int pci_domain_nr(struct pci_bus *pbus)
--{
--	struct pci_pbm_info *pbm = pbus->sysdata;
--	int ret;
--
--	if (!pbm) {
--		ret = -ENXIO;
--	} else {
--		ret = pbm->index;
--	}
--
--	return ret;
--}
--EXPORT_SYMBOL(pci_domain_nr);
--
- #ifdef CONFIG_PCI_MSI
- int arch_setup_msi_irq(struct pci_dev *pdev, struct msi_desc *desc)
- {
-diff --git a/arch/tile/include/asm/pci.h b/arch/tile/include/asm/pci.h
-index dfedd7a..23a726e 100644
---- a/arch/tile/include/asm/pci.h
-+++ b/arch/tile/include/asm/pci.h
-@@ -199,8 +199,6 @@ int __init pcibios_init(void);
- 
- void pcibios_fixup_bus(struct pci_bus *bus);
- 
--#define pci_domain_nr(bus) (((struct pci_controller *)(bus)->sysdata)->index)
--
- /*
-  * This decides whether to display the domain number in /proc.
-  */
-diff --git a/arch/x86/include/asm/pci.h b/arch/x86/include/asm/pci.h
-index 4625943..1ff7869 100644
---- a/arch/x86/include/asm/pci.h
-+++ b/arch/x86/include/asm/pci.h
-@@ -29,12 +29,6 @@ extern int noioapicreroute;
- #ifdef CONFIG_PCI
- 
- #ifdef CONFIG_PCI_DOMAINS
--static inline int pci_domain_nr(struct pci_bus *bus)
--{
--	struct pci_sysdata *sd = bus->sysdata;
--	return sd->domain;
--}
--
- static inline int pci_proc_domain(struct pci_bus *bus)
- {
- 	return pci_domain_nr(bus);
-diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index 79d01e4..0074420 100644
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -4476,6 +4476,14 @@ static void pci_no_domains(void)
- }
- 
- #ifdef CONFIG_PCI_DOMAINS
-+int pci_domain_nr(struct pci_bus *bus)
-+{
-+	struct pci_host_bridge *host = pci_find_host_bridge(bus);
-+
-+	return host->domain;
-+}
-+EXPORT_SYMBOL(pci_domain_nr);
-+
- #ifdef CONFIG_PCI_DOMAINS_GENERIC
- static atomic_t __domain_nr = ATOMIC_INIT(-1);
- 
-diff --git a/include/linux/pci.h b/include/linux/pci.h
-index 4524592..6b4789c 100644
---- a/include/linux/pci.h
-+++ b/include/linux/pci.h
-@@ -1319,6 +1319,7 @@ void pci_cfg_access_unlock(struct pci_dev *dev);
-  */
- #ifdef CONFIG_PCI_DOMAINS
- extern int pci_domains_supported;
-+int pci_domain_nr(struct pci_bus *bus);
- #else
- enum { pci_domains_supported = 0 };
- static inline int pci_domain_nr(struct pci_bus *bus) { return 0; }
-@@ -1330,12 +1331,6 @@ static inline int pci_proc_domain(struct pci_bus *bus) { return 0; }
-  * architecture does not need custom management of PCI
-  * domains then this implementation will be used
-  */
--#ifdef CONFIG_PCI_DOMAINS_GENERIC
--static inline int pci_domain_nr(struct pci_bus *bus)
--{
--	return bus->domain_nr;
--}
--#endif
- 
- /* some architectures require additional setup to direct VGA traffic */
- typedef int (*arch_set_vga_state_t)(struct pci_dev *pdev, bool decode,
--- 
-1.7.1
+Yijing Wang (10):
+  PCI: Save domain in pci_host_bridge
+  PCI: Move pci_bus_assign_domain_nr() declaration into
+    drivers/pci/pci.h
+  PCI: Remove declaration for pci_get_new_domain_nr()
+  PCI: Introduce pci_host_assign_domain_nr() to assign domain
+  powerpc/PCI: Rename pcibios_root_bridge_prepare() to
+    pcibios_root_bus_prepare()
+  PCI: Make pci_host_bridge hold sysdata in drvdata
+  PCI: Create pci host bridge prior to root bus
+  PCI: Introduce common pci_domain_nr() and remove platform specific
+    code
+  PCI: Remove pci_bus_assign_domain_nr()
+  IA64/PCI: Fix build warning found by kbuild test
+
+ arch/alpha/include/asm/pci.h             |    2 -
+ arch/alpha/kernel/pci.c                  |    4 +-
+ arch/alpha/kernel/sys_nautilus.c         |    2 +-
+ arch/arm/kernel/bios32.c                 |    2 +-
+ arch/arm/mach-dove/pcie.c                |    2 +-
+ arch/arm/mach-iop13xx/pci.c              |    4 +-
+ arch/arm/mach-mv78xx0/pcie.c             |    2 +-
+ arch/arm/mach-orion5x/pci.c              |    4 +-
+ arch/frv/mb93090-mb00/pci-vdk.c          |    3 +-
+ arch/ia64/include/asm/pci.h              |    1 -
+ arch/ia64/pci/pci.c                      |    6 +-
+ arch/ia64/sn/kernel/io_acpi_init.c       |    6 +-
+ arch/ia64/sn/kernel/io_init.c            |    6 +-
+ arch/m68k/coldfire/pci.c                 |    2 +-
+ arch/microblaze/include/asm/pci.h        |    2 -
+ arch/microblaze/pci/pci-common.c         |   15 +----
+ arch/mips/include/asm/pci.h              |    2 -
+ arch/mips/pci/pci.c                      |    4 +-
+ arch/mn10300/unit-asb2305/pci.c          |    3 +-
+ arch/powerpc/include/asm/machdep.h       |    2 +-
+ arch/powerpc/include/asm/pci.h           |    2 -
+ arch/powerpc/kernel/pci-common.c         |   21 ++-----
+ arch/powerpc/platforms/pseries/pci.c     |    2 +-
+ arch/powerpc/platforms/pseries/pseries.h |    2 +-
+ arch/powerpc/platforms/pseries/setup.c   |    2 +-
+ arch/s390/include/asm/pci.h              |    1 -
+ arch/s390/pci/pci.c                      |   10 +---
+ arch/sh/drivers/pci/pci.c                |    4 +-
+ arch/sh/include/asm/pci.h                |    2 -
+ arch/sparc/include/asm/pci_64.h          |    1 -
+ arch/sparc/kernel/leon_pci.c             |    2 +-
+ arch/sparc/kernel/pci.c                  |   21 +------
+ arch/sparc/kernel/pcic.c                 |    2 +-
+ arch/tile/include/asm/pci.h              |    2 -
+ arch/tile/kernel/pci.c                   |    4 +-
+ arch/tile/kernel/pci_gx.c                |    4 +-
+ arch/unicore32/kernel/pci.c              |    2 +-
+ arch/x86/include/asm/pci.h               |    6 --
+ arch/x86/pci/acpi.c                      |    6 +-
+ arch/x86/pci/common.c                    |    2 +-
+ arch/xtensa/kernel/pci.c                 |    2 +-
+ drivers/parisc/dino.c                    |    2 +-
+ drivers/parisc/lba_pci.c                 |    2 +-
+ drivers/pci/host/pci-versatile.c         |    3 +-
+ drivers/pci/host/pci-xgene.c             |    2 +-
+ drivers/pci/host/pcie-designware.c       |    2 +-
+ drivers/pci/host/pcie-iproc.c            |    2 +-
+ drivers/pci/host/pcie-xilinx.c           |    2 +-
+ drivers/pci/hotplug/ibmphp_core.c        |    2 +-
+ drivers/pci/pci.c                        |   31 ++++++++--
+ drivers/pci/pci.h                        |    1 +
+ drivers/pci/probe.c                      |   92 +++++++++++++++++-------------
+ drivers/pci/xen-pcifront.c               |    2 +-
+ include/linux/pci.h                      |   39 ++++++-------
+ 54 files changed, 161 insertions(+), 195 deletions(-)

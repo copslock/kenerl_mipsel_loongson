@@ -1,42 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 19 Jul 2015 23:16:58 +0200 (CEST)
-Received: from arrakis.dune.hu ([78.24.191.176]:55173 "EHLO arrakis.dune.hu"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27010887AbbGSVQ4ZW5L4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 19 Jul 2015 23:16:56 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by arrakis.dune.hu (Postfix) with ESMTP id 25D5128BB92;
-        Sun, 19 Jul 2015 23:16:28 +0200 (CEST)
-X-Virus-Scanned: at arrakis.dune.hu
-Received: from mail-qg0-f43.google.com (mail-qg0-f43.google.com [209.85.192.43])
-        by arrakis.dune.hu (Postfix) with ESMTPSA id 6988F28B738;
-        Sun, 19 Jul 2015 23:16:25 +0200 (CEST)
-Received: by qgeu79 with SMTP id u79so10104081qge.1;
-        Sun, 19 Jul 2015 14:16:49 -0700 (PDT)
-X-Received: by 10.55.41.229 with SMTP id p98mr40009907qkp.99.1437340609436;
- Sun, 19 Jul 2015 14:16:49 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Jul 2015 08:25:24 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:45934 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S27010604AbbGTGZWGVVtH (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 20 Jul 2015 08:25:22 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.15.1/8.14.8) with ESMTP id t6K6PIWS016691;
+        Mon, 20 Jul 2015 08:25:18 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.15.1/8.15.1/Submit) id t6K6PBrr016690;
+        Mon, 20 Jul 2015 08:25:11 +0200
+Date:   Mon, 20 Jul 2015 08:25:11 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Jonathan Corbet <corbet@lwn.net>
+Cc:     James Hogan <james.hogan@imgtec.com>,
+        "Maciej W. Rozycki" <macro@linux-mips.org>,
+        linux-mips@linux-mips.org, linux-doc@vger.kernel.org
+Subject: Re: [PATCH 1/6] Documentation/sysrq.txt: Mention MIPS TLB dump (x)
+Message-ID: <20150720062511.GA16627@linux-mips.org>
+References: <1436973467-3877-1-git-send-email-james.hogan@imgtec.com>
+ <1436973467-3877-2-git-send-email-james.hogan@imgtec.com>
 MIME-Version: 1.0
-Received: by 10.140.82.200 with HTTP; Sun, 19 Jul 2015 14:16:30 -0700 (PDT)
-In-Reply-To: <CAL_JsqKwQHqUauyOxYg2PF4rBy1DC_UC9s8orWuXUsxMf66bMA@mail.gmail.com>
-References: <1437309769-8382-1-git-send-email-jogo@openwrt.org> <CAL_JsqKwQHqUauyOxYg2PF4rBy1DC_UC9s8orWuXUsxMf66bMA@mail.gmail.com>
-From:   Jonas Gorski <jogo@openwrt.org>
-Date:   Sun, 19 Jul 2015 23:16:30 +0200
-Message-ID: <CAOiHx=mChjd5sMDat2qPW73Hjjxoqs11s5SoHz+9AxV0K7MiYA@mail.gmail.com>
-Subject: Re: [PATCH] MIPS: fix build with CONFIG_OF=y for non OF-enabled targets
-To:     Rob Herring <robh@kernel.org>
-Cc:     Linux-MIPS <linux-mips@linux-mips.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Grant Likely <grant.likely@linaro.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <jogo@openwrt.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1436973467-3877-2-git-send-email-james.hogan@imgtec.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48350
+X-archive-position: 48351
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jogo@openwrt.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,18 +45,39 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sun, Jul 19, 2015 at 11:06 PM, Rob Herring <robh@kernel.org> wrote:
-> On Sun, Jul 19, 2015 at 7:42 AM, Jonas Gorski <jogo@openwrt.org> wrote:
->> Commit 01306aeadd75 ("MIPS: prepare for user enabling of CONFIG_OF")
->> changed the guards in asm/prom.h from CONFIG_OF to CONFIG_USE_OF, but
->> missed the actual function declarations in kernel/prom.c, which have
->> additional dependencies.
->
-> Just curious, what machine do you hit this on?
+Jonathan,
 
-bcm63xx without my local WIP OF-patches applied, but still CONFIG_OF=y
-in the .config. So more accidentally found than intentionally OF
-enabled.
+On Wed, Jul 15, 2015 at 04:17:42PM +0100, James Hogan wrote:
 
+> Commit d1e9a4f54735 ("MIPS: Add SysRq operation to dump TLBs on all
+> CPUs") added the 'x' sysrq key for dumping MIPS TLB entries, but didn't
+> document it in Documentation/sysrq.txt.
+> 
+> Add mention of the MIPS use of the 'x' SysRq key.
+> 
+> Reported-by: Maciej W. Rozycki <macro@linux-mips.org>
+> Signed-off-by: James Hogan <james.hogan@imgtec.com>
+> Cc: Maciej W. Rozycki <macro@linux-mips.org>
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: Jonathan Corbet <corbet@lwn.net>
+> Cc: linux-mips@linux-mips.org
+> Cc: linux-doc@vger.kernel.org
+> ---
+>  Documentation/sysrq.txt | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/Documentation/sysrq.txt b/Documentation/sysrq.txt
+> index 0e307c94809a..267f39386f99 100644
+> --- a/Documentation/sysrq.txt
+> +++ b/Documentation/sysrq.txt
+> @@ -119,6 +119,7 @@ On all -  write a character to /proc/sysrq-trigger.  e.g.:
+>  
+>  'x'	- Used by xmon interface on ppc/powerpc platforms.
+>            Show global PMU Registers on sparc64.
+> +          Dump all TLB entries on MIPS.
+>  
+>  'y'	- Show global CPU Registers [SPARC-64 specific]
 
-Jonas
+ok to funnel this through the MIPS tree?
+
+  Ralf

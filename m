@@ -1,31 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Jul 2015 23:36:36 +0200 (CEST)
-Received: from mail-pa0-f47.google.com ([209.85.220.47]:34026 "EHLO
-        mail-pa0-f47.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011141AbbGUVgfOpfE1 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 21 Jul 2015 23:36:35 +0200
-Received: by pacan13 with SMTP id an13so127754425pac.1
-        for <linux-mips@linux-mips.org>; Tue, 21 Jul 2015 14:36:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-type:content-disposition:in-reply-to:user-agent;
-        bh=R324c+xIo2660RSidstmeHO/G0ayfQ9zsL43ScRH8Hw=;
-        b=Z7t9F0l9azyP/b+lzR40cILAczzD4MYF/waaRqpkybwUkq1UV/63mMRH2vf12h48wX
-         32LcPKd1LxCGFqhArGfzPzKkStbt8h21lvzmwgKg3Yzf5p8+c1MzenUEPHqMHlTXIi8p
-         7b0VC2atawZmWX1mNZJVcsviKJFi2RknfKToqML1lHtkTUSDzADonPJ2nSw8WCfaIdew
-         f0+Jy+Hn/64x+tKTKXtVa6jSbjDxnR/p7uDLJCDyB1pBDNtfWPFe7eSjWMs3S8fZvX4x
-         rPVbv4YXtI4m89HlPjXBqbZJ/oSG3yNFuzY/lniaB6G9myFl07ZGJaLnGlUxfNEXgr5U
-         926A==
-X-Received: by 10.66.236.167 with SMTP id uv7mr75557299pac.134.1437514588745;
-        Tue, 21 Jul 2015 14:36:28 -0700 (PDT)
-Received: from google.com ([2620:0:1000:1301:41a8:58f7:736b:734a])
-        by smtp.gmail.com with ESMTPSA id j4sm29216672pdg.64.2015.07.21.14.36.27
-        (version=TLSv1.2 cipher=RC4-SHA bits=128/128);
-        Tue, 21 Jul 2015 14:36:28 -0700 (PDT)
-Date:   Tue, 21 Jul 2015 14:36:25 -0700
-From:   Brian Norris <computersforpeace@gmail.com>
-To:     Florian Fainelli <f.fainelli@gmail.com>
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Jul 2015 23:58:18 +0200 (CEST)
+Received: from www.linutronix.de ([62.245.132.108]:36391 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27010761AbbGUV6RK50E1 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 21 Jul 2015 23:58:17 +0200
+Received: from localhost ([127.0.0.1])
+        by Galois.linutronix.de with esmtps (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:256)
+        (Exim 4.80)
+        (envelope-from <tglx@linutronix.de>)
+        id 1ZHfYD-0007up-44; Tue, 21 Jul 2015 23:58:13 +0200
+Date:   Tue, 21 Jul 2015 23:58:01 +0200 (CEST)
+From:   Thomas Gleixner <tglx@linutronix.de>
+To:     Florian Fainelli <fainelli@broadcom.com>
+cc:     Florian Fainelli <f.fainelli@gmail.com>,
+        Brian Norris <computersforpeace@gmail.com>,
         Gregory Fong <gregory.0xf0@gmail.com>,
         bcm-kernel-feedback-list@broadcom.com,
         linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
@@ -33,25 +20,25 @@ Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Jason Cooper <jason@lakedaemon.net>
 Subject: Re: [PATCH 1/2] genirq: add chip_{suspend,resume} PM support to
  irq_chip
-Message-ID: <20150721213625.GO24125@google.com>
-References: <20150619224123.GL4917@ld-irv-0074>
- <1434756403-379-1-git-send-email-computersforpeace@gmail.com>
- <alpine.DEB.2.11.1506201605290.4107@nanos>
- <55AE8E5D.8020700@gmail.com>
+In-Reply-To: <55AEB91C.1020202@broadcom.com>
+Message-ID: <alpine.DEB.2.11.1507212343270.18576@nanos>
+References: <20150619224123.GL4917@ld-irv-0074> <1434756403-379-1-git-send-email-computersforpeace@gmail.com> <alpine.DEB.2.11.1506201605290.4107@nanos> <55AE8E5D.8020700@gmail.com> <alpine.DEB.2.11.1507212316530.18576@nanos>
+ <55AEB91C.1020202@broadcom.com>
+User-Agent: Alpine 2.11 (DEB 23 2013-08-11)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <55AE8E5D.8020700@gmail.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <computersforpeace@gmail.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Linutronix-Spam-Score: -1.0
+X-Linutronix-Spam-Level: -
+X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+Return-Path: <tglx@linutronix.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48374
+X-archive-position: 48375
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: computersforpeace@gmail.com
+X-original-sender: tglx@linutronix.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -64,32 +51,41 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Florian, Thomas,
-
-On Tue, Jul 21, 2015 at 11:24:29AM -0700, Florian Fainelli wrote:
-> On 20/06/15 07:11, Thomas Gleixner wrote:
-> > On Fri, 19 Jun 2015, Brian Norris wrote:
-...
-> > I really don't want to set a precedent for random (*foo)(*bar)
-> > callbacks.
-> >  
-> >> +
-> >> +		if (ct->chip.chip_suspend)
-> >> +			ct->chip.chip_suspend(gc);
+On Tue, 21 Jul 2015, Florian Fainelli wrote:
+> On 21/07/15 14:23, Thomas Gleixner wrote:
+> > I just read back on the problem report which was mentioned in the
+> > changelog:
 > > 
-> > So wouldn't it be the more intuitive solution to make this a callback
-> > in the struct gc itself?
+> > "It's not a problem with patch 7, exactly, it's a problem with the
+> >  irqchip driver which handles the UART interrupt mask (irq-bcm7120-l2.c).
+> >  The problem is that with a trimmed down device tree (such as the one
+> >  found at arch/arm/boot/dts/bcm7445-bcm97445svmb.dtb), none of the child
+> >  interrupts of the 'irq0_intc' node are described -- we don't have device
+> >  tree nodes for them yet -- but we still require saving and restoring the
+> >  forwarding mask (see 'brcm,int-fwd-mask') in order for the UART
+> >  interrupts to continue operating."
+> > 
+> > So you are trying to work around a flaw in the device tree by adding
+> > random callbacks to the core kernel?
 > 
-> Brian can correct me, but his approach is more generic, if there is
-> another irqchip driver needing a similar infrastructure, this would be
-> already there, and directly usable. Maybe all we need to is to change
-> the chip_suspend/resume arguments to pass a reference to irq_chip instead?
+> Not quite, you could have your interrupt controller node declared in
+> Device Tree, but have no "interrupts" property referencing it because:
+> 
+> - the hardware is just not there, but you inherit a common Device Tree
+> skleten (*.dtsi)
+> - you could have Device Tree overlays which may or may not be loaded as
+> a result of finding expansion boards etc...
 
-I believe Thomas is right. We could just make these into
-irq_chip_generic callbacks, which would probably be the right
-abstraction level. Wouldn't be much code change from this submission,
-AFAICT.
+So if no hardware is there which uses any of those interrupts, then
+WHY is it a problem at all?
 
-(Sorry for dropping the ball on this one.)
+If it's a requirement that these registers must be restored (once, not
+per irq), then I can see that it'd be nice to do that from the core.
 
-Brian
+Though that core suspend/resume function is generic chip specific. So
+it does not make any sense to force it into struct irq_chip because we
+have no core infrastructure to deal with it.
+
+Thanks,
+
+	tglx

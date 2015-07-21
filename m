@@ -1,54 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Jul 2015 20:26:33 +0200 (CEST)
-Received: from mail-pd0-f181.google.com ([209.85.192.181]:35187 "EHLO
-        mail-pd0-f181.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011417AbbGUS0bApuRl (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 21 Jul 2015 20:26:31 +0200
-Received: by pdrg1 with SMTP id g1so124555093pdr.2
-        for <linux-mips@linux-mips.org>; Tue, 21 Jul 2015 11:26:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=+99wxfmf720HzyEfuvXa7ns0aPFuWa4WPs6Bh5Xfqh0=;
-        b=tA1TE5tNi3ZfPUP24CFmgrK8OXyw3FZSTDsrqsxD1UEv8tS5NzTSfNH0L17mp33Vtl
-         3ERDTHgAHlQyI2iA21j30dRF8VOdbS0+Svchj5AWRPaSLKiIuunNJXT/6QMiMNQAgS8r
-         z5E/tH4ElGFj4KlnZ5FKJfMiFkdP2YztG1CYK9tEPLhq885DCCi4/QaKoudj0GEZmMKH
-         c+Pwf/zH5/gNtfEf/ys3e2nJ4v3p+bRW7Rx3aoTUVoGoD9zWTayTrSY2PPrlhcnXs03m
-         VWv4BNfU4fIMJ/wjSC6pEe1PwwBm6wyOZ6e7a1G+1L9KSVSvMjSwh+03/d0v9vSD9/4d
-         1qTA==
-X-Received: by 10.70.53.99 with SMTP id a3mr75894776pdp.169.1437503184835;
-        Tue, 21 Jul 2015 11:26:24 -0700 (PDT)
-Received: from [10.12.156.244] (5520-maca-inet1-outside.broadcom.com. [216.31.211.11])
-        by smtp.googlemail.com with ESMTPSA id db1sm28766083pdb.50.2015.07.21.11.26.22
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 21 Jul 2015 11:26:23 -0700 (PDT)
-Message-ID: <55AE8E5D.8020700@gmail.com>
-Date:   Tue, 21 Jul 2015 11:24:29 -0700
-From:   Florian Fainelli <f.fainelli@gmail.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.7.0
-MIME-Version: 1.0
-To:     Thomas Gleixner <tglx@linutronix.de>,
-        Brian Norris <computersforpeace@gmail.com>
-CC:     Florian Fainelli <f.fainelli@gmail.com>,
-        Gregory Fong <gregory.0xf0@gmail.com>,
-        bcm-kernel-feedback-list@broadcom.com,
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Jul 2015 21:59:50 +0200 (CEST)
+Received: from prod-mail-xrelay02.akamai.com ([72.246.2.14]:34995 "EHLO
+        prod-mail-xrelay02.akamai.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011507AbbGUT7sn5xjx (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 21 Jul 2015 21:59:48 +0200
+Received: from prod-mail-xrelay02.akamai.com (localhost [127.0.0.1])
+        by postfix.imss70 (Postfix) with ESMTP id 7737429172;
+        Tue, 21 Jul 2015 19:59:42 +0000 (GMT)
+Received: from prod-mail-relay06.akamai.com (prod-mail-relay06.akamai.com [172.17.120.126])
+        by prod-mail-xrelay02.akamai.com (Postfix) with ESMTP id 3E75C29174;
+        Tue, 21 Jul 2015 19:59:42 +0000 (GMT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=akamai.com; s=a1;
+        t=1437508782; bh=LEMIMiVLuhXKI8l/E/gAnFmWZbiV4ZgYNAEXYXXEfZY=;
+        h=From:To:Cc:Subject:Date:From;
+        b=rvxVhDDEodh1srhJ7yu2gRlL0V77ZXhKO9J1QSrwh7YNShYVDUsE1ZBo8UxC7vEwD
+         kUi5XAa1LnVG88l/dR580Ehfy3qnCacWXI4A6zRHrPzF3L4Zwg9B/1ExAPO7bS9M5B
+         5I37ZwvtQdND0pHcpUh8EEgkbj0BIRMm92xWtnt4=
+Received: from bos-lp6ds.kendall.corp.akamai.com (bos-lp6ds.kendall.corp.akamai.com [172.28.12.165])
+        by prod-mail-relay06.akamai.com (Postfix) with ESMTP id 35E922092;
+        Tue, 21 Jul 2015 19:59:42 +0000 (GMT)
+From:   Eric B Munson <emunson@akamai.com>
+To:     Andrew Morton <akpm@linux-foundation.org>
+Cc:     Eric B Munson <emunson@akamai.com>,
+        Shuah Khan <shuahkh@osg.samsung.com>,
+        Michal Hocko <mhocko@suse.cz>,
+        Michael Kerrisk <mtk.manpages@gmail.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Jonathan Corbet <corbet@lwn.net>, linux-alpha@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        Kevin Cernekee <cernekee@gmail.com>,
-        Jason Cooper <jason@lakedaemon.net>
-Subject: Re: [PATCH 1/2] genirq: add chip_{suspend,resume} PM support to irq_chip
-References: <20150619224123.GL4917@ld-irv-0074> <1434756403-379-1-git-send-email-computersforpeace@gmail.com> <alpine.DEB.2.11.1506201605290.4107@nanos>
-In-Reply-To: <alpine.DEB.2.11.1506201605290.4107@nanos>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Return-Path: <f.fainelli@gmail.com>
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        linux-mm@kvack.org, linux-arch@vger.kernel.org,
+        linux-api@vger.kernel.org
+Subject: [PATCH V4 0/6] Allow user to request memory to be locked on page fault
+Date:   Tue, 21 Jul 2015 15:59:35 -0400
+Message-Id: <1437508781-28655-1-git-send-email-emunson@akamai.com>
+X-Mailer: git-send-email 1.9.1
+Return-Path: <emunson@akamai.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48366
+X-archive-position: 48367
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: f.fainelli@gmail.com
+X-original-sender: emunson@akamai.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -61,56 +56,250 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 20/06/15 07:11, Thomas Gleixner wrote:
-> On Fri, 19 Jun 2015, Brian Norris wrote:
->> This patch adds a second set of suspend/resume hooks to irq_chip, this
->> time to represent *chip* suspend/resume, rather than IRQ suspend/resume.
->> These callbacks will always be called for an irqchip and are based on
->> the per-chip irq_chip_generic struct, rather than the per-IRQ irq_data
->> struct.
-> 
-> There is no per-chip irq_chip_generic struct. It's only there if the
-> irq chip has been instantiated as a generic chip.
->  
->>  /**
->>   * struct irq_chip - hardware interrupt chip descriptor
->>   *
->> @@ -317,6 +319,12 @@ static inline irq_hw_number_t irqd_to_hwirq(struct irq_data *d)
->>   * @irq_suspend:	function called from core code on suspend once per chip
->>   * @irq_resume:		function called from core code on resume once per chip
->>   * @irq_pm_shutdown:	function called from core code on shutdown once per chip
->> + * @chip_suspend:	function called from core code on suspend once per
->> + *			chip; for handling chip details even when no interrupts
->> + *			are in use
->> + * @chip_resume:	function called from core code on resume once per chip;
->> + *			for handling chip details even when no interrupts are
->> + *			in use
->>   * @irq_calc_mask:	Optional function to set irq_data.mask for special cases
->>   * @irq_print_chip:	optional to print special chip info in show_interrupts
->>   * @irq_request_resources:	optional to request resources before calling
->> @@ -357,6 +365,8 @@ struct irq_chip {
->>  	void		(*irq_suspend)(struct irq_data *data);
->>  	void		(*irq_resume)(struct irq_data *data);
->>  	void		(*irq_pm_shutdown)(struct irq_data *data);
->> +	void		(*chip_suspend)(struct irq_chip_generic *gc);
->> +	void		(*chip_resume)(struct irq_chip_generic *gc);
-> 
-> I really don't want to set a precedent for random (*foo)(*bar)
-> callbacks.
->  
->> +
->> +		if (ct->chip.chip_suspend)
->> +			ct->chip.chip_suspend(gc);
-> 
-> So wouldn't it be the more intuitive solution to make this a callback
-> in the struct gc itself?
+mlock() allows a user to control page out of program memory, but this
+comes at the cost of faulting in the entire mapping when it is
+allocated.  For large mappings where the entire area is not necessary
+this is not ideal.  Instead of forcing all locked pages to be present
+when they are allocated, this set creates a middle ground.  Pages are
+marked to be placed on the unevictable LRU (locked) when they are first
+used, but they are not faulted in by the mlock call.
 
-Brian can correct me, but his approach is more generic, if there is
-another irqchip driver needing a similar infrastructure, this would be
-already there, and directly usable. Maybe all we need to is to change
-the chip_suspend/resume arguments to pass a reference to irq_chip instead?
+This series introduces a new mlock() system call that takes a flags
+argument along with the start address and size.  This flags argument
+gives the caller the ability to request memory be locked in the
+traditional way, or to be locked after the page is faulted in.  New
+calls are added for munlock() and munlockall() which give the called a
+way to specify which flags are supposed to be cleared.  A new MCL flag
+is added to mirror the lock on fault behavior from mlock() in
+mlockall().  Finally, a flag for mmap() is added that allows a user to
+specify that the covered are should not be paged out, but only after the
+memory has been used the first time.
 
-I can go ahead and rewrite that part of the patch to make this is
-exclusively located to the irq_chip_generic structure instead.
---
-Florian
+There are two main use cases that this set covers.  The first is the
+security focussed mlock case.  A buffer is needed that cannot be written
+to swap.  The maximum size is known, but on average the memory used is
+significantly less than this maximum.  With lock on fault, the buffer
+is guaranteed to never be paged out without consuming the maximum size
+every time such a buffer is created.
+
+The second use case is focussed on performance.  Portions of a large
+file are needed and we want to keep the used portions in memory once
+accessed.  This is the case for large graphical models where the path
+through the graph is not known until run time.  The entire graph is
+unlikely to be used in a given invocation, but once a node has been
+used it needs to stay resident for further processing.  Given these
+constraints we have a number of options.  We can potentially waste a
+large amount of memory by mlocking the entire region (this can also
+cause a significant stall at startup as the entire file is read in).
+We can mlock every page as we access them without tracking if the page
+is already resident but this introduces large overhead for each access.
+The third option is mapping the entire region with PROT_NONE and using
+a signal handler for SIGSEGV to mprotect(PROT_READ) and mlock() the
+needed page.  Doing this page at a time adds a significant performance
+penalty.  Batching can be used to mitigate this overhead, but in order
+to safely avoid trying to mprotect pages outside of the mapping, the
+boundaries of each mapping to be used in this way must be tracked and
+available to the signal handler.  This is precisely what the mm system
+in the kernel should already be doing.
+
+For mlock(MLOCK_ONFAULT) and mmap(MAP_LOCKONFAULT) the user is charged
+against RLIMIT_MEMLOCK as if mlock(MLOCK_LOCKED) or mmap(MAP_LOCKED) was
+used, so when the VMA is created not when the pages are faulted in.  For
+mlockall(MCL_ONFAULT) the user is charged as if MCL_FUTURE was used.
+This decision was made to keep the accounting checks out of the page
+fault path.
+
+To illustrate the benefit of this set I wrote a test program that mmaps
+a 5 GB file filled with random data and then makes 15,000,000 accesses
+to random addresses in that mapping.  The test program was run 20 times
+for each setup.  Results are reported for two program portions, setup
+and execution.  The setup phase is calling mmap and optionally mlock on
+the entire region.  For most experiments this is trivial, but it
+highlights the cost of faulting in the entire region.  Results are
+averages across the 20 runs in milliseconds.
+
+mmap with mlock(MLOCK_LOCKED) on entire range:
+Setup avg:      8228.666
+Processing avg: 8274.257
+
+mmap with mlock(MLOCK_LOCKED) before each access:
+Setup avg:      0.113
+Processing avg: 90993.552
+
+mmap with PROT_NONE and signal handler and batch size of 1 page:
+With the default value in max_map_count, this gets ENOMEM as I attempt
+to change the permissions, after upping the sysctl significantly I get:
+Setup avg:      0.058
+Processing avg: 69488.073
+
+mmap with PROT_NONE and signal handler and batch size of 8 pages:
+Setup avg:      0.068
+Processing avg: 38204.116
+
+mmap with PROT_NONE and signal handler and batch size of 16 pages:
+Setup avg:      0.044
+Processing avg: 29671.180
+
+mmap with mlock(MLOCK_ONFAULT) on entire range:
+Setup avg:      0.189
+Processing avg: 17904.899
+
+The signal handler in the batch cases faulted in memory in two steps to
+avoid having to know the start and end of the faulting mapping.  The
+first step covers the page that caused the fault as we know that it will
+be possible to lock.  The second step speculatively tries to mlock and
+mprotect the batch size - 1 pages that follow.  There may be a clever
+way to avoid this without having the program track each mapping to be
+covered by this handeler in a globally accessible structure, but I could
+not find it.  It should be noted that with a large enough batch size
+this two step fault handler can still cause the program to crash if it
+reaches far beyond the end of the mapping.
+
+These results show that if the developer knows that a majority of the
+mapping will be used, it is better to try and fault it in at once,
+otherwise MAP_LOCKONFAULT is significantly faster.
+
+The performance cost of these patches are minimal on the two benchmarks
+I have tested (stream and kernbench).  The following are the average
+values across 20 runs of stream and 10 runs of kernbench after a warmup
+run whose results were discarded.
+
+Avg throughput in MB/s from stream using 1000000 element arrays
+Test     4.2-rc1      4.2-rc1+lock-on-fault
+Copy:    10,566.5     10,421
+Scale:   10,685       10,503.5
+Add:     12,044.1     11,814.2
+Triad:   12,064.8     11,846.3
+
+Kernbench optimal load
+                 4.2-rc1  4.2-rc1+lock-on-fault
+Elapsed Time     78.453   78.991
+User Time        64.2395  65.2355
+System Time      9.7335   9.7085
+Context Switches 22211.5  22412.1
+Sleeps           14965.3  14956.1
+
+---
+Changes from V3:
+Ensure that pages present when mlock2(MLOCK_ONFAULT) is called are locked
+Ensure that VM_LOCKONFAULT is handled in cases that used to only check VM_LOCKED
+Add tests for new system calls
+Add missing syscall entries, fix NR_syscalls on multiple arch's
+Add missing MAP_LOCKONFAULT for tile
+
+Changes from V2:
+Added new system calls for mlock, munlock, and munlockall with added
+flags arguments for controlling how memory is locked or unlocked.
+
+Eric B Munson (6):
+  mm: mlock: Refactor mlock, munlock, and munlockall code
+  mm: mlock: Add new mlock, munlock, and munlockall system calls
+  mm: gup: Add mm_lock_present()
+  mm: mlock: Introduce VM_LOCKONFAULT and add mlock flags to enable it
+  mm: mmap: Add mmap flag to request VM_LOCKONFAULT
+  selftests: vm: Add tests for lock on fault
+
+ arch/alpha/include/asm/unistd.h             |   2 +-
+ arch/alpha/include/uapi/asm/mman.h          |   5 +
+ arch/alpha/include/uapi/asm/unistd.h        |   3 +
+ arch/alpha/kernel/systbls.S                 |   3 +
+ arch/arm/include/asm/unistd.h               |   2 +-
+ arch/arm/include/uapi/asm/unistd.h          |   3 +
+ arch/arm/kernel/calls.S                     |   3 +
+ arch/arm64/include/asm/unistd32.h           |   6 +
+ arch/avr32/include/uapi/asm/unistd.h        |   3 +
+ arch/avr32/kernel/syscall_table.S           |   3 +
+ arch/blackfin/include/uapi/asm/unistd.h     |   3 +
+ arch/blackfin/mach-common/entry.S           |   3 +
+ arch/cris/arch-v10/kernel/entry.S           |   3 +
+ arch/cris/arch-v32/kernel/entry.S           |   3 +
+ arch/frv/kernel/entry.S                     |   3 +
+ arch/ia64/include/asm/unistd.h              |   2 +-
+ arch/ia64/include/uapi/asm/unistd.h         |   3 +
+ arch/ia64/kernel/entry.S                    |   3 +
+ arch/m32r/kernel/entry.S                    |   3 +
+ arch/m32r/kernel/syscall_table.S            |   3 +
+ arch/m68k/include/asm/unistd.h              |   2 +-
+ arch/m68k/include/uapi/asm/unistd.h         |   3 +
+ arch/m68k/kernel/syscalltable.S             |   3 +
+ arch/microblaze/include/uapi/asm/unistd.h   |   3 +
+ arch/microblaze/kernel/syscall_table.S      |   3 +
+ arch/mips/include/uapi/asm/mman.h           |   8 +
+ arch/mips/include/uapi/asm/unistd.h         |  21 +-
+ arch/mips/kernel/scall32-o32.S              |   3 +
+ arch/mips/kernel/scall64-64.S               |   3 +
+ arch/mips/kernel/scall64-n32.S              |   3 +
+ arch/mips/kernel/scall64-o32.S              |   3 +
+ arch/mn10300/kernel/entry.S                 |   3 +
+ arch/parisc/include/uapi/asm/mman.h         |   5 +
+ arch/parisc/include/uapi/asm/unistd.h       |   5 +-
+ arch/powerpc/include/uapi/asm/mman.h        |   5 +
+ arch/powerpc/include/uapi/asm/unistd.h      |   3 +
+ arch/s390/include/uapi/asm/unistd.h         |   5 +-
+ arch/s390/kernel/compat_wrapper.c           |   3 +
+ arch/s390/kernel/syscalls.S                 |   3 +
+ arch/sh/kernel/syscalls_32.S                |   3 +
+ arch/sparc/include/uapi/asm/mman.h          |   5 +
+ arch/sparc/include/uapi/asm/unistd.h        |   5 +-
+ arch/sparc/kernel/systbls_32.S              |   2 +-
+ arch/sparc/kernel/systbls_64.S              |   4 +-
+ arch/tile/include/uapi/asm/mman.h           |   9 +
+ arch/x86/entry/syscalls/syscall_32.tbl      |   3 +
+ arch/x86/entry/syscalls/syscall_64.tbl      |   3 +
+ arch/xtensa/include/uapi/asm/mman.h         |   8 +
+ arch/xtensa/include/uapi/asm/unistd.h       |  10 +-
+ drivers/gpu/drm/drm_vm.c                    |   8 +-
+ fs/proc/task_mmu.c                          |   3 +-
+ include/linux/mm.h                          |   2 +
+ include/linux/mman.h                        |   3 +-
+ include/linux/syscalls.h                    |   4 +
+ include/uapi/asm-generic/mman.h             |   5 +
+ include/uapi/asm-generic/unistd.h           |   8 +-
+ kernel/events/core.c                        |   2 +
+ kernel/events/uprobes.c                     |   2 +-
+ kernel/fork.c                               |   2 +-
+ kernel/sys_ni.c                             |   3 +
+ mm/debug.c                                  |   1 +
+ mm/gup.c                                    | 175 +++++++-
+ mm/huge_memory.c                            |   3 +-
+ mm/hugetlb.c                                |   4 +-
+ mm/internal.h                               |   5 +-
+ mm/ksm.c                                    |   2 +-
+ mm/madvise.c                                |   4 +-
+ mm/memory.c                                 |   5 +-
+ mm/mlock.c                                  | 159 +++++--
+ mm/mmap.c                                   |  32 +-
+ mm/mremap.c                                 |   6 +-
+ mm/msync.c                                  |   2 +-
+ mm/rmap.c                                   |  12 +-
+ mm/shmem.c                                  |   2 +-
+ mm/swap.c                                   |   3 +-
+ mm/vmscan.c                                 |   2 +-
+ tools/testing/selftests/vm/Makefile         |   3 +
+ tools/testing/selftests/vm/lock-on-fault.c  | 344 +++++++++++++++
+ tools/testing/selftests/vm/mlock2-tests.c   | 621 ++++++++++++++++++++++++++++
+ tools/testing/selftests/vm/on-fault-limit.c |  47 +++
+ tools/testing/selftests/vm/run_vmtests      |  33 ++
+ 81 files changed, 1604 insertions(+), 104 deletions(-)
+ create mode 100644 tools/testing/selftests/vm/lock-on-fault.c
+ create mode 100644 tools/testing/selftests/vm/mlock2-tests.c
+ create mode 100644 tools/testing/selftests/vm/on-fault-limit.c
+
+Cc: Shuah Khan <shuahkh@osg.samsung.com>
+Cc: Michal Hocko <mhocko@suse.cz>
+Cc: Michael Kerrisk <mtk.manpages@gmail.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: linux-alpha@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-mips@linux-mips.org
+Cc: linux-parisc@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: sparclinux@vger.kernel.org
+Cc: linux-xtensa@linux-xtensa.org
+Cc: linux-mm@kvack.org
+Cc: linux-arch@vger.kernel.org
+Cc: linux-api@vger.kernel.org
+
+-- 
+1.9.1

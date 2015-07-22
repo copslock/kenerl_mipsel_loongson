@@ -1,26 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Jul 2015 16:32:28 +0200 (CEST)
-Received: from a23-79-238-175.deploy.static.akamaitechnologies.com ([23.79.238.175]:49040
-        "EHLO prod-mail-xrelay07.akamai.com" rhost-flags-OK-FAIL-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011028AbbGVOc0gt0h9 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 22 Jul 2015 16:32:26 +0200
-Received: from prod-mail-xrelay07.akamai.com (localhost.localdomain [127.0.0.1])
-        by postfix.imss70 (Postfix) with ESMTP id CFB1E4D76A;
-        Wed, 22 Jul 2015 14:33:01 +0000 (GMT)
-Received: from prod-mail-relay06.akamai.com (prod-mail-relay06.akamai.com [172.17.120.126])
-        by prod-mail-xrelay07.akamai.com (Postfix) with ESMTP id B64184D476;
-        Wed, 22 Jul 2015 14:33:01 +0000 (GMT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=akamai.com; s=a1;
-        t=1437575581; bh=HLB3XgVghmfpn1TAvUbKuS6UQ0jnF/0hqgYWlvjsRAg=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=CfVbrEAR7O1fxeeBxWcej8n/4VlJtVEPgNfeCUQSbtC2V2Q2NhU45eBDuvgKtiEqM
-         nK4gLslKPJY8uoN0miLUbxQeFU2K7XAZd/1ZgivRfNLKZqrkPaMChMiLOd3dG1f/te
-         RQ+dwhNQFwc+qfu+cKgVQ3ox4unOk5Awry2mYnl4=
-Received: from akamai.com (lappy-486.kendall.corp.akamai.com [172.28.12.253])
-        by prod-mail-relay06.akamai.com (Postfix) with ESMTP id 5C1BB2027;
-        Wed, 22 Jul 2015 14:32:20 +0000 (GMT)
-Date:   Wed, 22 Jul 2015 10:32:20 -0400
-From:   Eric B Munson <emunson@akamai.com>
-To:     "Kirill A. Shutemov" <kirill@shutemov.name>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Jul 2015 17:45:41 +0200 (CEST)
+Received: from mail-wi0-f175.google.com ([209.85.212.175]:36468 "EHLO
+        mail-wi0-f175.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010910AbbGVPpjZQF-z (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 22 Jul 2015 17:45:39 +0200
+Received: by wicgb10 with SMTP id gb10so104223621wic.1
+        for <linux-mips@linux-mips.org>; Wed, 22 Jul 2015 08:45:33 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:dkim-signature:date:from:to:cc:subject
+         :message-id:references:mime-version:content-type:content-disposition
+         :in-reply-to:user-agent;
+        bh=WLHDMHnJdQkSrrpd1QnXE09wE6ziRH15y/IHBOOlPv4=;
+        b=dPlPrporY1hdLBRS/LFS1IuQ0Vqa8RMf8V3C1w9fLLKdQwqRWn/SM8GP9wcU+sw0/E
+         6HTt3FhQKlV4O6F2OGZDxQghPmoMZ3lxQ0Ysb+FfPYIlUkL/rGB50UAzNdtEiN/hzW57
+         vBg0lI0ZD+pIxVCpUpq7lvbTV6/BWBkpnZOrqrIq4Lo77icXYswPOXVzWrlonroJj8Xs
+         p35ehqM/2ngP9zlElEqMDwCvbLAYRnIMYxiK4EiboGedkMDu76+bx7tedaQIqSFPE5XZ
+         sEJvkPJr4wVHWGN0JF1MIaH+cm7rwyzpVCe9/NFZ+RWuhScAoDg01Tbr92VEgvvzHLNR
+         gs6w==
+X-Gm-Message-State: ALoCoQlzLhyZ5/OpVW7YE15H8f7HFus12EnNRzyHsHv/Ndts8Qp0mez0cZ2sOG/o94lgGuqP/zkv
+X-Received: by 10.194.89.5 with SMTP id bk5mr6579089wjb.144.1437579933189;
+        Wed, 22 Jul 2015 08:45:33 -0700 (PDT)
+Received: from node.shutemov.name (dsl-espbrasgw1-54f9d1-241.dhcp.inet.fi. [84.249.209.241])
+        by smtp.gmail.com with ESMTPSA id n6sm4016496wix.1.2015.07.22.08.45.31
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 22 Jul 2015 08:45:31 -0700 (PDT)
+Received: by node.shutemov.name (Postfix, from userid 1000)
+        id DCBDB40EE2; Wed, 22 Jul 2015 18:45:29 +0300 (EEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=shutemov.name;
+        s=default; t=1437579929;
+        bh=nVHXx2A6wv91qBop3I2Jkkbxog+2TiZ8V9uPkJJZ2Ss=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To;
+        b=C64G6hbBs5TCJ1oESVgJFc75h/H9e6tggqJUXn9iP0juzWT54t2kBuqj4SRvSd/zP
+         D2V0/om2RDpmq6j2bbT4Ic2Co9XR2wfnIU24biSm1yskbFMR/wrjquYEIQhqz02RcF
+         2TknQgOa5oH3SNwsRp8NgFxvDhxKm4w/K/D64TWA=
+Date:   Wed, 22 Jul 2015 18:45:29 +0300
+From:   "Kirill A. Shutemov" <kirill@shutemov.name>
+To:     Eric B Munson <emunson@akamai.com>
 Cc:     Andrew Morton <akpm@linux-foundation.org>,
         Michal Hocko <mhocko@suse.cz>,
         Vlastimil Babka <vbabka@suse.cz>,
@@ -33,25 +48,25 @@ Cc:     Andrew Morton <akpm@linux-foundation.org>,
         linux-xtensa@linux-xtensa.org, linux-mm@kvack.org,
         linux-arch@vger.kernel.org, linux-api@vger.kernel.org
 Subject: Re: [PATCH V4 5/6] mm: mmap: Add mmap flag to request VM_LOCKONFAULT
-Message-ID: <20150722143220.GB3203@akamai.com>
+Message-ID: <20150722154529.GA9107@node.dhcp.inet.fi>
 References: <1437508781-28655-1-git-send-email-emunson@akamai.com>
  <1437508781-28655-6-git-send-email-emunson@akamai.com>
  <20150722112558.GC8630@node.dhcp.inet.fi>
+ <20150722143220.GB3203@akamai.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="eJnRUKwClWJh1Khz"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20150722112558.GC8630@node.dhcp.inet.fi>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <emunson@akamai.com>
+In-Reply-To: <20150722143220.GB3203@akamai.com>
+User-Agent: Mutt/1.5.23.1 (2014-03-12)
+Return-Path: <kirill@shutemov.name>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48383
+X-archive-position: 48384
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: emunson@akamai.com
+X-original-sender: kirill@shutemov.name
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -64,50 +79,29 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+On Wed, Jul 22, 2015 at 10:32:20AM -0400, Eric B Munson wrote:
+> On Wed, 22 Jul 2015, Kirill A. Shutemov wrote:
+> 
+> > On Tue, Jul 21, 2015 at 03:59:40PM -0400, Eric B Munson wrote:
+> > > The cost of faulting in all memory to be locked can be very high when
+> > > working with large mappings.  If only portions of the mapping will be
+> > > used this can incur a high penalty for locking.
+> > > 
+> > > Now that we have the new VMA flag for the locked but not present state,
+> > > expose it as an mmap option like MAP_LOCKED -> VM_LOCKED.
+> > 
+> > What is advantage over mmap() + mlock(MLOCK_ONFAULT)?
+> 
+> There isn't one, it was added to maintain parity with the
+> mlock(MLOCK_LOCK) -> mmap(MAP_LOCKED) set.  I think not having will lead
+> to confusion because we have MAP_LOCKED so why don't we support
+> LOCKONFAULT from mmap as well.
 
---eJnRUKwClWJh1Khz
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I don't think it's ia good idea to spend bits in flags unless we have a
+reason for that.
 
-On Wed, 22 Jul 2015, Kirill A. Shutemov wrote:
-
-> On Tue, Jul 21, 2015 at 03:59:40PM -0400, Eric B Munson wrote:
-> > The cost of faulting in all memory to be locked can be very high when
-> > working with large mappings.  If only portions of the mapping will be
-> > used this can incur a high penalty for locking.
-> >=20
-> > Now that we have the new VMA flag for the locked but not present state,
-> > expose it as an mmap option like MAP_LOCKED -> VM_LOCKED.
->=20
-> What is advantage over mmap() + mlock(MLOCK_ONFAULT)?
-
-There isn't one, it was added to maintain parity with the
-mlock(MLOCK_LOCK) -> mmap(MAP_LOCKED) set.  I think not having will lead
-to confusion because we have MAP_LOCKED so why don't we support
-LOCKONFAULT from mmap as well.
+BTW, you have typo on sparc: s/0x8000/0x80000/.
 
 
---eJnRUKwClWJh1Khz
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
-
-iQIcBAEBAgAGBQJVr6l0AAoJELbVsDOpoOa98fUQANDd9dNcrulIgLSf+ajZqiUo
-50UtNRMATvsiEBAEyJ8CwGzwUBQIYwHDU9LU28NUSZCgYJpGiN+PmJ61ZaU3f63x
-Wps5ZlPg1MvY/IbHLmYTMD6UiXPa7zsAjTFNA6Fi0MwCjyLphtK6jqf8EhsoOLSo
-YFsTccyuOfqJrbk/fXi3ioNPFVIkHpwNcdL1+sYOJf3Wkf8FBBnlvEMnOSmtw7GC
-Uont1PBKFNeUNmk/sxxLDgJ0vwMx09sjfjYX+8ZOxS0E1JjeflHTSITsPeWt2/AI
-0Qm0lxu0bZ62nnt8zvBVcCAoImIjFNgNnqxQwfKfb5kYgiR0c8ZSyOOuiGxugwI/
-TKBkVU/e34Xc43UkmnseBl8SFUW1tF5eLLIvFt1apJ8ygrr4M4uIJIQV4UMSNVLG
-VEV5c08dN91BRjDesU3EJ1vtPXK6avkZokkbNWmeoIQ70wOD2KSJurs0t5dFLtBw
-t8t27CTYo/Fpg9kyLsgHzTqf4cH+L0FqVHJ4oQNU2OZvwvW5odyztgDdQV9KhEvf
-k/MNlOTNpD8idmgCBSpVeReKAWkQEwRaB5QZWP9X4axdR6r7HwGvV3lWbwBpwa5i
-LksIegF8VdBCnD8SibMXl37buy8oPlop5arIjvRHi8VMz6AhRK9OH1T/Mn0+yAIy
-yBmHM0EALawWdDffUN1r
-=GpJe
------END PGP SIGNATURE-----
-
---eJnRUKwClWJh1Khz--
+-- 
+ Kirill A. Shutemov

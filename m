@@ -1,70 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Jul 2015 13:26:09 +0200 (CEST)
-Received: from mail-wi0-f169.google.com ([209.85.212.169]:32986 "EHLO
-        mail-wi0-f169.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010721AbbGVL0HIdNsh (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 22 Jul 2015 13:26:07 +0200
-Received: by wicmv11 with SMTP id mv11so77122022wic.0
-        for <linux-mips@linux-mips.org>; Wed, 22 Jul 2015 04:26:01 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:dkim-signature:date:from:to:cc:subject
-         :message-id:references:mime-version:content-type:content-disposition
-         :in-reply-to:user-agent;
-        bh=/pwjWrgvWt3da2Ooi6Fgf1FRgPaty0dhMuVegOV9bPU=;
-        b=ALKM+dgaIqvwDl1Y4dHnprOQPT+E4c392UXccgG5R06fVo2H47Plf+vtuxTOtrly/p
-         +cUh3d0HIJhzO0VaWa+55WWGFLXskcLPnyM5JnUh9ESWBWAswtQgRdrMLuXpZVOwuQN8
-         PMNllSy6HKKHKSc3OlDwQndsFfVMCpOLNLJvqmbYtISre4BVsBBzIz5h7k1VO08hTSiI
-         cfQoakvDs25nBTFFmVgXih4qJcxHAeI8gB3Qak3xiS8M01XL2hjKdZEmFAilG0LSLsKy
-         O2t9NI9ZL1Z3ixUHT9n4GC/F54klnZGsks7qhDJzZ6Rfo7ukhd/f819Zn2ldlBWD7v2r
-         emww==
-X-Gm-Message-State: ALoCoQkwwhn7c/lmWg6du9tsVgJSQFdiw5t0bE3ZvDMXQIxrm/PtEAOZH8nT7LVob6o//YQMYO63
-X-Received: by 10.194.112.3 with SMTP id im3mr4171343wjb.54.1437564361712;
-        Wed, 22 Jul 2015 04:26:01 -0700 (PDT)
-Received: from node.shutemov.name (dsl-espbrasgw1-54f9d1-241.dhcp.inet.fi. [84.249.209.241])
-        by smtp.gmail.com with ESMTPSA id y1sm21562809wib.7.2015.07.22.04.25.59
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 22 Jul 2015 04:26:00 -0700 (PDT)
-Received: by node.shutemov.name (Postfix, from userid 1000)
-        id 6845F40EE2; Wed, 22 Jul 2015 14:25:58 +0300 (EEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=shutemov.name;
-        s=default; t=1437564358;
-        bh=T01qSVqpqXH9K8iB4w6nJOLmDAKq/BEJkuftpJ4INJ0=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To;
-        b=UGjqvocf9GiUgC1QHGl6V4T5QTAopnJCNNE+gKqXAvFYyodOlo4b1WF4j2rYrAGzw
-         FLVVNH3vJv2T1yAe7yhQMJpLTE8kccP6LOUdH5QP5vhR8ApZdGPNJiuKswEDAF/0lr
-         G6G8ax8lz13vPnT/KUEixvFTlj6O4sWqVsCsp9qw=
-Date:   Wed, 22 Jul 2015 14:25:58 +0300
-From:   "Kirill A. Shutemov" <kirill@shutemov.name>
-To:     Eric B Munson <emunson@akamai.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Jul 2015 16:05:10 +0200 (CEST)
+Received: from a23-79-238-175.deploy.static.akamaitechnologies.com ([23.79.238.175]:43663
+        "EHLO prod-mail-xrelay07.akamai.com" rhost-flags-OK-FAIL-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006568AbbGVOFIlk0Jv (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 22 Jul 2015 16:05:08 +0200
+Received: from prod-mail-xrelay07.akamai.com (localhost.localdomain [127.0.0.1])
+        by postfix.imss70 (Postfix) with ESMTP id 047E94C03E;
+        Wed, 22 Jul 2015 14:05:44 +0000 (GMT)
+Received: from prod-mail-relay07.akamai.com (prod-mail-relay07.akamai.com [172.17.121.112])
+        by prod-mail-xrelay07.akamai.com (Postfix) with ESMTP id E00A84C012;
+        Wed, 22 Jul 2015 14:05:43 +0000 (GMT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=akamai.com; s=a1;
+        t=1437573943; bh=pCuZlSjCgBkJX2FZ12NbT6LN1RiSZw1yQPJ9/ttMxPw=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=JBY7H5k1ZVvHOajj5MdZOITp344RD2z4eyX5ySwl/64gqaNfa73sGY+mqJqDiJEuL
+         oAJ9qplYXf4UBqE5MKbdF3s1ufs7WNWxX1SEaOMRcIWXFAtgaRbt0heVu2yYZHUctQ
+         tNuGGJPY+yR9HkuGSoLM6fs6qaCRuGrGYF6x6At4=
+Received: from akamai.com (unknown [172.28.12.253])
+        by prod-mail-relay07.akamai.com (Postfix) with ESMTP id 8AF1F8008A;
+        Wed, 22 Jul 2015 14:05:02 +0000 (GMT)
+Date:   Wed, 22 Jul 2015 10:05:02 -0400
+From:   Eric B Munson <emunson@akamai.com>
+To:     Vlastimil Babka <vbabka@suse.cz>
 Cc:     Andrew Morton <akpm@linux-foundation.org>,
         Michal Hocko <mhocko@suse.cz>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Paul Gortmaker <paul.gortmaker@windriver.com>,
-        Chris Metcalf <cmetcalf@ezchip.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
         Guenter Roeck <linux@roeck-us.net>,
         linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mips@linux-mips.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org, linux-mm@kvack.org,
-        linux-arch@vger.kernel.org, linux-api@vger.kernel.org
-Subject: Re: [PATCH V4 5/6] mm: mmap: Add mmap flag to request VM_LOCKONFAULT
-Message-ID: <20150722112558.GC8630@node.dhcp.inet.fi>
+        linux-arm-kernel@lists.infradead.org,
+        adi-buildroot-devel@lists.sourceforge.net,
+        linux-cris-kernel@axis.com, linux-ia64@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@linux-mips.org,
+        linux-am33-list@redhat.com, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-xtensa@linux-xtensa.org, linux-api@vger.kernel.org,
+        linux-arch@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH V4 2/6] mm: mlock: Add new mlock, munlock, and munlockall
+ system calls
+Message-ID: <20150722140502.GB2859@akamai.com>
 References: <1437508781-28655-1-git-send-email-emunson@akamai.com>
- <1437508781-28655-6-git-send-email-emunson@akamai.com>
+ <1437508781-28655-3-git-send-email-emunson@akamai.com>
+ <55AF5F5A.3000707@suse.cz>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="NDin8bjvE/0mNLFQ"
 Content-Disposition: inline
-In-Reply-To: <1437508781-28655-6-git-send-email-emunson@akamai.com>
-User-Agent: Mutt/1.5.23.1 (2014-03-12)
-Return-Path: <kirill@shutemov.name>
+In-Reply-To: <55AF5F5A.3000707@suse.cz>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <emunson@akamai.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48379
+X-archive-position: 48381
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kirill@shutemov.name
+X-original-sender: emunson@akamai.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -77,15 +71,48 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Jul 21, 2015 at 03:59:40PM -0400, Eric B Munson wrote:
-> The cost of faulting in all memory to be locked can be very high when
-> working with large mappings.  If only portions of the mapping will be
-> used this can incur a high penalty for locking.
-> 
-> Now that we have the new VMA flag for the locked but not present state,
-> expose it as an mmap option like MAP_LOCKED -> VM_LOCKED.
 
-What is advantage over mmap() + mlock(MLOCK_ONFAULT)?
+--NDin8bjvE/0mNLFQ
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
--- 
- Kirill A. Shutemov
+On Wed, 22 Jul 2015, Vlastimil Babka wrote:
+
+> On 07/21/2015 09:59 PM, Eric B Munson wrote:
+> >With the refactored mlock code, introduce new system calls for mlock,
+> >munlock, and munlockall.  The new calls will allow the user to specify
+> >what lock states are being added or cleared.  mlock2 and munlock2 are
+> >trivial at the moment, but a follow on patch will add a new mlock state
+> >making them useful.
+> >
+> >munlock2 addresses a limitation of the current implementation.  If a
+>=20
+>   ^ munlockall2?
+
+Fixed, thanks.
+
+
+--NDin8bjvE/0mNLFQ
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
+
+iQIcBAEBAgAGBQJVr6MOAAoJELbVsDOpoOa9s9sP/A7izRQp4uVnMpOwD0MxlFeD
+XcaKq8V5n3o7/BMR992hOIWBEl5/HUrJR3sRtfi42uPUYK930Ofy+mckUN6D4iiH
+EyIKyjBq6DIBcChWmlXqNBh86cb1gvkx1gTNjjOSXVIFkrjvstCRomfHd7FtDmBq
+u37dhRe0VJLAVWRRn+GvV5IEJzv20RnEgdfSw8kf+M4nO9g/59z8qe+IC3g2xLD2
+q8D1rEwwnDOeYZVSkP+dt7EVkoR/hHbDdgijEocWwpKTNih4NcH0xgfcfYFbT3j+
+MNNt3EeYAjmgZNZOL/YRbxWbnol84EdQUAZ9lfkjL/n5Pd4A4/yKduK1692DAtzD
+RDPGJ5xP9g8JHM6+xvMk66ZEMFfZpnGioXfrV+2emLq8q4P+N2zJ6PREPk7r00tO
+cbFFd/RNnVLBcCjj/1aIHG2txHVB9GVkUzj7MbHID019oC2IcQU+vFfUJcs5gexr
+ntuWehXpnANwZY+kUKZWPevnUNqWsll4ITtbG7/6L20NbBADB8EXRnIyj4MzdLMN
+x/aAITZB0qq1ad9H1pH4eXp7tnzX2b3T3HZN8+PWWhhPNBFenRFiOC4VnNT6J4aS
+pZ/DMiXv5h6h17dEX3UQK4aMUurZw7Ptaj/N16MOsxTWM0jIm4De79+TfARt58Zs
+xqZ6XgkcJBiIIcnJXw4D
+=NAcA
+-----END PGP SIGNATURE-----
+
+--NDin8bjvE/0mNLFQ--

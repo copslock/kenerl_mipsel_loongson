@@ -1,55 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Jul 2015 20:43:52 +0200 (CEST)
-Received: from prod-mail-xrelay02.akamai.com ([72.246.2.14]:60595 "EHLO
-        prod-mail-xrelay02.akamai.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011666AbbGVSnuX6Bzz (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 22 Jul 2015 20:43:50 +0200
-Received: from prod-mail-xrelay02.akamai.com (localhost [127.0.0.1])
-        by postfix.imss70 (Postfix) with ESMTP id 554B529103;
-        Wed, 22 Jul 2015 18:43:44 +0000 (GMT)
-Received: from prod-mail-relay06.akamai.com (prod-mail-relay06.akamai.com [172.17.120.126])
-        by prod-mail-xrelay02.akamai.com (Postfix) with ESMTP id 2C728290FC;
-        Wed, 22 Jul 2015 18:43:44 +0000 (GMT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=akamai.com; s=a1;
-        t=1437590624; bh=RWwBvnK4smTrl0iM8EZdYXZdIKcF4Cpucjzvo92LYIA=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=mjBHu2f8iETUj8yx3pV/jM6pvddE71BfzzypVlVOEU+pnvcqdlruDlf81KMYQDe3m
-         4xkUwdBwVIyBnKdghlK7IK4wUyV01xaG/rk8ItX3zXgTtAtjqkkPBwu6b9V4IURU/I
-         n5WSv3KAxw+hl4mSK3JSAMe/7CS12owhn9eK919Q=
-Received: from akamai.com (lappy-486.kendall.corp.akamai.com [172.28.12.253])
-        by prod-mail-relay06.akamai.com (Postfix) with ESMTP id 7ACA12027;
-        Wed, 22 Jul 2015 18:43:43 +0000 (GMT)
-Date:   Wed, 22 Jul 2015 14:43:43 -0400
-From:   Eric B Munson <emunson@akamai.com>
-To:     Vlastimil Babka <vbabka@suse.cz>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        Michal Hocko <mhocko@suse.cz>,
-        Jonathan Corbet <corbet@lwn.net>, linux-alpha@vger.kernel.org,
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Jul 2015 01:22:25 +0200 (CEST)
+Received: from mail-pd0-f169.google.com ([209.85.192.169]:32866 "EHLO
+        mail-pd0-f169.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010688AbbGVXWXs9-w1 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 23 Jul 2015 01:22:23 +0200
+Received: by pdbnt7 with SMTP id nt7so75036131pdb.0
+        for <linux-mips@linux-mips.org>; Wed, 22 Jul 2015 16:22:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references;
+        bh=xa+7xzgDvjArak/NHBNB3ZDciccYnS88joJlPijMZYs=;
+        b=dqngU4tDxx7sp40llTwWE4Km26Y1dZ3HYO3xhJRZwSBNl3JE12TWRBF2RabkSK36fp
+         AC8nTT9cdCNTKBdWmnKycW4FYxgbbgIlz5WEV57swP5aRyTnVBtiei4DxG3kARTle+dG
+         1un7X2R1aQCCofbC1A6J9W0ni1z8Kwxemn1tphbmh6QmTeq61S84B1Q80LO6eZd1BnIG
+         LsDC7P9Vmxe4k7MVfOk4MxJHCXKHOSGn2DTbZNT87UmKmKY8q/VCvprRrlNp4G2I16At
+         gJ7EuS1N0LUD05nfjUkquzu/k3WFvXEC3zuCCHhqvwrfmUIpHfBZeDCVmyCD0z/AmLtb
+         nI6w==
+X-Received: by 10.66.151.133 with SMTP id uq5mr11205033pab.7.1437607337634;
+        Wed, 22 Jul 2015 16:22:17 -0700 (PDT)
+Received: from ban.mtv.corp.google.com ([172.22.64.120])
+        by smtp.gmail.com with ESMTPSA id o7sm5249786pdi.16.2015.07.22.16.22.16
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Wed, 22 Jul 2015 16:22:16 -0700 (PDT)
+From:   Brian Norris <computersforpeace@gmail.com>
+To:     Thomas Gleixner <tglx@linutronix.de>
+Cc:     Brian Norris <computersforpeace@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Gregory Fong <gregory.0xf0@gmail.com>,
+        bcm-kernel-feedback-list@broadcom.com,
         linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        dri-devel@lists.freedesktop.org, linux-mm@kvack.org,
-        linux-arch@vger.kernel.org, linux-api@vger.kernel.org
-Subject: Re: [PATCH V4 4/6] mm: mlock: Introduce VM_LOCKONFAULT and add mlock
- flags to enable it
-Message-ID: <20150722184343.GA2351@akamai.com>
-References: <1437508781-28655-1-git-send-email-emunson@akamai.com>
- <1437508781-28655-5-git-send-email-emunson@akamai.com>
- <55AF6A73.1080500@suse.cz>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="y0ulUmNC+osPPQO6"
-Content-Disposition: inline
-In-Reply-To: <55AF6A73.1080500@suse.cz>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <emunson@akamai.com>
+        Kevin Cernekee <cernekee@chromium.org>,
+        Jason Cooper <jason@lakedaemon.net>
+Subject: [PATCH v2 1/2] genirq: add chip_{suspend,resume} PM support to irq_chip
+Date:   Wed, 22 Jul 2015 16:21:39 -0700
+Message-Id: <1437607300-40858-1-git-send-email-computersforpeace@gmail.com>
+X-Mailer: git-send-email 2.4.3.573.g4eafbef
+In-Reply-To: <1434756403-379-1-git-send-email-computersforpeace@gmail.com>
+References: <1434756403-379-1-git-send-email-computersforpeace@gmail.com>
+Return-Path: <computersforpeace@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48387
+X-archive-position: 48388
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: emunson@akamai.com
+X-original-sender: computersforpeace@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -62,140 +57,105 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+Some (admittedly odd) irqchips perform functions that are not directly
+related to any of their child IRQ lines, and therefore need to perform
+some tasks during suspend/resume regardless of whether there are
+any "installed" interrupts for the irqchip. However, the current
+generic-chip framework does not call the chip's irq_{suspend,resume}
+when there are no interrupts installed (this makes sense, because there
+are no irq_data objects for such a call to be made).
 
---y0ulUmNC+osPPQO6
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+More specifically, irq-bcm7120-l2 configures both a forwarding mask
+(which affects other top-level GIC IRQs) and a second-level interrupt
+mask (for managing its own child interrupts). The former must be
+saved/restored on suspend/resume, even when there's nothing to do for
+the latter.
 
-On Wed, 22 Jul 2015, Vlastimil Babka wrote:
+This patch adds a new set of suspend/resume hooks to irq_chip_generic,
+to help represent *chip* suspend/resume, rather than IRQ suspend/resume.
+These callbacks will always be called for an IRQ chip (regardless of the
+installed interrupts) and are based on the per-chip irq_chip_generic
+struct, rather than the per-IRQ irq_data struct.
 
-> On 07/21/2015 09:59 PM, Eric B Munson wrote:
-> >The cost of faulting in all memory to be locked can be very high when
-> >working with large mappings.  If only portions of the mapping will be
-> >used this can incur a high penalty for locking.
-> >
-> >For the example of a large file, this is the usage pattern for a large
-> >statical language model (probably applies to other statical or graphical
-> >models as well).  For the security example, any application transacting
-> >in data that cannot be swapped out (credit card data, medical records,
-> >etc).
-> >
-> >This patch introduces the ability to request that pages are not
-> >pre-faulted, but are placed on the unevictable LRU when they are finally
-> >faulted in.  This can be done area at a time via the
-> >mlock2(MLOCK_ONFAULT) or the mlockall(MCL_ONFAULT) system calls.  These
-> >calls can be undone via munlock2(MLOCK_ONFAULT) or
-> >munlockall2(MCL_ONFAULT).
-> >
-> >Applying the VM_LOCKONFAULT flag to a mapping with pages that are
-> >already present required the addition of a function in gup.c to pin all
-> >pages which are present in an address range.  It borrows heavily from
-> >__mm_populate().
-> >
-> >To keep accounting checks out of the page fault path, users are billed
-> >for the entire mapping lock as if MLOCK_LOCKED was used.
->=20
-> Hi,
->=20
-> I think you should include a complete description of which
-> transitions for vma states and mlock2/munlock2 flags applied on them
-> are valid and what they do. It will also help with the manpages.
-> You explained some to Jon in the last thread, but I think there
-> should be a canonical description in changelog (if not also
-> Documentation, if mlock is covered there).
->=20
-> For example the scenario Jon asked, what happens after a
-> mlock2(MLOCK_ONFAULT) followed by mlock2(MLOCK_LOCKED), and that the
-> answer is "nothing". Your promised code comment for
-> apply_vma_flags() doesn't suffice IMHO (and I'm not sure it's there,
-> anyway?).
+The original problem report is described in extra detail here:
+http://lkml.kernel.org/g/20150619224123.GL4917@ld-irv-0074
 
-I missed adding that comment to the code, will be there in V5 along with
-the description in the changelog.
+Signed-off-by: Brian Norris <computersforpeace@gmail.com>
+Tested-by: Florian Fainelli <f.fainelli@gmail.com>
+---
+v1: https://lkml.org/lkml/2015/6/19/760
 
->=20
-> But the more I think about the scenario and your new VM_LOCKONFAULT
-> vma flag, it seems awkward to me. Why should munlocking at all care
-> if the vma was mlocked with MLOCK_LOCKED or MLOCK_ONFAULT? In either
-> case the result is that all pages currently populated are munlocked.
-> So the flags for munlock2 should be unnecessary.
+v1 -> v2:
+  * clarify the comments on irq_chip::irq_{suspend,resume}
+  * add new suspend/resume hooks to the irq_chip_generic instead of irq_chip,
+    since that is the right level of abstraction (see v1 discussion)
 
-Say a user has a large area of interleaved MLOCK_LOCK and MLOCK_ONFAULT
-mappings and they want to unlock only the ones with MLOCK_LOCK.  With
-the current implementation, this is possible in a single system call
-that spans the entire region.  With your suggestion, the user would have
-to know what regions where locked with MLOCK_LOCK and call munlock() on
-each of them.  IMO, the way munlock2() works better mirrors the way
-munlock() currently works when called on a large area of interleaved
-locked and unlocked areas.
+ include/linux/irq.h       | 14 ++++++++++++--
+ kernel/irq/generic-chip.c |  6 ++++++
+ 2 files changed, 18 insertions(+), 2 deletions(-)
 
->=20
-> I also think VM_LOCKONFAULT is unnecessary. VM_LOCKED should be
-> enough - see how you had to handle the new flag in all places that
-> had to handle the old flag? I think the information whether mlock
-> was supposed to fault the whole vma is obsolete at the moment mlock
-> returns. VM_LOCKED should be enough for both modes, and the flag to
-> mlock2 could just control whether the pre-faulting is done.
->=20
-> So what should be IMHO enough:
-> - munlock can stay without flags
-> - mlock2 has only one new flag MLOCK_ONFAULT. If specified,
-> pre-faulting is not done, just set VM_LOCKED and mlock pages already
-> present.
-> - same with mmap(MAP_LOCKONFAULT) (need to define what happens when
-> both MAP_LOCKED and MAP_LOCKONFAULT are specified).
->=20
-> Now mlockall(MCL_FUTURE) muddles the situation in that it stores the
-> information for future VMA's in current->mm->def_flags, and this
-> def_flags would need to distinguish VM_LOCKED with population and
-> without. But that could be still solvable without introducing a new
-> vma flag everywhere.
-
-With you right up until that last paragraph.  I have been staring at
-this a while and I cannot come up a way to handle the
-mlockall(MCL_ONFAULT) without introducing a new vm flag.  It doesn't
-have to be VM_LOCKONFAULT, we could use the model that Michal Hocko
-suggested with something like VM_FAULTPOPULATE.  However, we can't
-really use this flag anywhere except the mlock code becuase we have to
-be able to distinguish a caller that wants to use MLOCK_LOCK with
-whatever control VM_FAULTPOPULATE might grant outside of mlock and a
-caller that wants MLOCK_ONFAULT.  That was a long way of saying we need
-an extra vma flag regardless.  However, if that flag only controls if
-mlock pre-populates it would work and it would do away with most of the
-places I had to touch to handle VM_LOCKONFAULT properly.
-
-I picked VM_LOCKONFAULT because it is explicit about what it is for and
-there is little risk of someone coming along in 5 years and saying "why
-not overload this flag to do this other thing completely unrelated to
-mlock?".  A flag for controling speculative population is more likely to
-be overloaded outside of mlock().
-
-If you have a sane way of handling mlockall(MCL_ONFAULT) without a new
-VMA flag, I am happy to give it a try, but I haven't been able to come
-up with one that doesn't have its own gremlins.
-
-
---y0ulUmNC+osPPQO6
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
-
-iQIcBAEBAgAGBQJVr+RfAAoJELbVsDOpoOa9Lo8QAI2s/hDJgmFpuRrJX30jlPMm
-6/tRD97fXS3oYC9RpBus/DHVlQm5yqaa+VJfiJeB8FIyL6PaX/xPgrJc8KzqUYwd
-HFPS0U949Rts5j7mmWc72K9piv3aBoC1od4x1cQfAMAMSx9uvChchnA7oGHSmSd1
-nyTuCloEBMlvPwKKgkd1nkoNhYWedi1k4/9GuhZkT/p/oKX/1bgMnffMWW+iIGzC
-NpUSBxVGlJ6TXYEM2ztigXz1HvP1mk626E+fDSulOUSd/0fq6gBoZRIeuaxYfwKX
-OIgDHsdLT0OiLqmZGB6djw1XVahKAl7DH4SIZjSaxk2Uvg8HdSjOKArF56p32jLH
-R8hotTHYR2QmyDTw+4+gUYWznEteJ8RbO7QflMVxL9vcBU1EyxZ4U4QbhIbq3fUU
-AKGQNJRuLz+jokXp3ONcmqDrUs1KzT2W4+EWV13mVY5Kvq6XQwPfqJGNUCEtM2xn
-lWguCi65D1GR9pIc+5WH0OjUhwdkS8WIkjF3Qtc1RHJdAz1e5v7AP3YYq/0d47h8
-jPNn0zR5SVGoMEG6qWXxHi+TxM77P3HyOMK0RP8ANGXsTZHSg9NMWGMxG4gsff4Y
-TFVjhVV9cmbAIOLESkg38zr7moP7ICyn3iJZ++MMeet2h0OGAIEq9rJ/+YkDL4+o
-zwuFDtZuRBDdOMyuJIzY
-=z5oU
------END PGP SIGNATURE-----
-
---y0ulUmNC+osPPQO6--
+diff --git a/include/linux/irq.h b/include/linux/irq.h
+index 92188b0225bb..9fd346e605ff 100644
+--- a/include/linux/irq.h
++++ b/include/linux/irq.h
+@@ -324,8 +324,10 @@ static inline irq_hw_number_t irqd_to_hwirq(struct irq_data *d)
+  * @irq_bus_sync_unlock:function to sync and unlock slow bus (i2c) chips
+  * @irq_cpu_online:	configure an interrupt source for a secondary CPU
+  * @irq_cpu_offline:	un-configure an interrupt source for a secondary CPU
+- * @irq_suspend:	function called from core code on suspend once per chip
+- * @irq_resume:		function called from core code on resume once per chip
++ * @irq_suspend:	function called from core code on suspend once per
++ *			chip, when one or more interrupts are installed
++ * @irq_resume:		function called from core code on resume once per chip,
++ *			when one ore more interrupts are installed
+  * @irq_pm_shutdown:	function called from core code on shutdown once per chip
+  * @irq_calc_mask:	Optional function to set irq_data.mask for special cases
+  * @irq_print_chip:	optional to print special chip info in show_interrupts
+@@ -761,6 +763,12 @@ struct irq_chip_type {
+  * @reg_base:		Register base address (virtual)
+  * @reg_readl:		Alternate I/O accessor (defaults to readl if NULL)
+  * @reg_writel:		Alternate I/O accessor (defaults to writel if NULL)
++ * @suspend:		Function called from core code on suspend once per
++ *			chip; can be useful instead of irq_chip::suspend to
++ *			handle chip details even when no interrupts are in use
++ * @resume:		Function called from core code on resume once per chip;
++ *			can be useful instead of irq_chip::suspend to handle
++ *			chip details even when no interrupts are in use
+  * @irq_base:		Interrupt base nr for this chip
+  * @irq_cnt:		Number of interrupts handled by this chip
+  * @mask_cache:		Cached mask register shared between all chip types
+@@ -787,6 +795,8 @@ struct irq_chip_generic {
+ 	void __iomem		*reg_base;
+ 	u32			(*reg_readl)(void __iomem *addr);
+ 	void			(*reg_writel)(u32 val, void __iomem *addr);
++	void			(*suspend)(struct irq_chip_generic *gc);
++	void			(*resume)(struct irq_chip_generic *gc);
+ 	unsigned int		irq_base;
+ 	unsigned int		irq_cnt;
+ 	u32			mask_cache;
+diff --git a/kernel/irq/generic-chip.c b/kernel/irq/generic-chip.c
+index 15b370daf234..abd286afbd27 100644
+--- a/kernel/irq/generic-chip.c
++++ b/kernel/irq/generic-chip.c
+@@ -553,6 +553,9 @@ static int irq_gc_suspend(void)
+ 			if (data)
+ 				ct->chip.irq_suspend(data);
+ 		}
++
++		if (gc->suspend)
++			gc->suspend(gc);
+ 	}
+ 	return 0;
+ }
+@@ -564,6 +567,9 @@ static void irq_gc_resume(void)
+ 	list_for_each_entry(gc, &gc_list, list) {
+ 		struct irq_chip_type *ct = gc->chip_types;
+ 
++		if (gc->resume)
++			gc->resume(gc);
++
+ 		if (ct->chip.irq_resume) {
+ 			struct irq_data *data = irq_gc_get_irq_data(gc);
+ 
+-- 
+2.4.3.573.g4eafbef

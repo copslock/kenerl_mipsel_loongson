@@ -1,38 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Jul 2015 04:01:59 +0200 (CEST)
-Received: from youngberry.canonical.com ([91.189.89.112]:38962 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011475AbbGWCB5gL-Zr (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 23 Jul 2015 04:01:57 +0200
-Received: from 1.general.kamal.us.vpn ([10.172.68.52] helo=fourier)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:DHE_RSA_AES_128_CBC_SHA1:16)
-        (Exim 4.76)
-        (envelope-from <kamal@canonical.com>)
-        id 1ZI5pd-0005iR-3L; Thu, 23 Jul 2015 02:01:57 +0000
-Received: from kamal by fourier with local (Exim 4.82)
-        (envelope-from <kamal@whence.com>)
-        id 1ZI5pa-0006CS-S7; Wed, 22 Jul 2015 19:01:54 -0700
-From:   Kamal Mostafa <kamal@canonical.com>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        kernel-team@lists.ubuntu.com
-Cc:     James Hogan <james.hogan@imgtec.com>, linux-mips@linux-mips.org,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Kamal Mostafa <kamal@canonical.com>
-Subject: [PATCH 3.13.y-ckt 080/132] MIPS: Fix KVM guest fixmap address
-Date:   Wed, 22 Jul 2015 18:59:58 -0700
-Message-Id: <1437616850-23266-81-git-send-email-kamal@canonical.com>
-X-Mailer: git-send-email 1.9.1
-In-Reply-To: <1437616850-23266-1-git-send-email-kamal@canonical.com>
-References: <1437616850-23266-1-git-send-email-kamal@canonical.com>
-X-Extended-Stable: 3.13
-Return-Path: <kamal@canonical.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Jul 2015 08:59:00 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:34907 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S27009645AbbGWG64JZXUI (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 23 Jul 2015 08:58:56 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.15.1/8.14.8) with ESMTP id t6N6wmXA006020;
+        Thu, 23 Jul 2015 08:58:48 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.15.1/8.15.1/Submit) id t6N6wVcG006019;
+        Thu, 23 Jul 2015 08:58:31 +0200
+Date:   Thu, 23 Jul 2015 08:58:31 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Eric B Munson <emunson@akamai.com>
+Cc:     Michael Ellerman <mpe@ellerman.id.au>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linux-mips@linux-mips.org, linux-m68k@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Michal Hocko <mhocko@suse.cz>, linux-mm@kvack.org,
+        sparclinux@vger.kernel.org, linux-arch@vger.kernel.org,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        linux-am33-list@redhat.com,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Guenter Roeck <linux@roeck-us.net>,
+        linux-xtensa@linux-xtensa.org, linux-s390@vger.kernel.org,
+        adi-buildroot-devel@lists.sourceforge.net,
+        linux-arm-kernel@lists.infradead.org, linux-cris-kernel@axis.com,
+        linux-parisc@vger.kernel.org, linux-api@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH V4 2/6] mm: mlock: Add new mlock, munlock, and munlockall
+ system calls
+Message-ID: <20150723065830.GA5919@linux-mips.org>
+References: <1437508781-28655-1-git-send-email-emunson@akamai.com>
+ <1437508781-28655-3-git-send-email-emunson@akamai.com>
+ <20150721134441.d69e4e1099bd43e56835b3c5@linux-foundation.org>
+ <1437528316.16792.7.camel@ellerman.id.au>
+ <20150722141501.GA3203@akamai.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20150722141501.GA3203@akamai.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48392
+X-archive-position: 48393
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kamal@canonical.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,46 +65,23 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-3.13.11-ckt24 -stable review patch.  If anyone has any objections, please let me know.
+On Wed, Jul 22, 2015 at 10:15:01AM -0400, Eric B Munson wrote:
 
-------------------
+> > 
+> > You haven't wired it up properly on powerpc, but I haven't mentioned it because
+> > I'd rather we did it.
+> > 
+> > cheers
+> 
+> It looks like I will be spinning a V5, so I will drop all but the x86
+> system calls additions in that version.
 
-From: James Hogan <james.hogan@imgtec.com>
+The MIPS bits are looking good however, so
 
-commit 8e748c8d09a9314eedb5c6367d9acfaacddcdc88 upstream.
+Acked-by: Ralf Baechle <ralf@linux-mips.org>
 
-KVM guest kernels for trap & emulate run in user mode, with a modified
-set of kernel memory segments. However the fixmap address is still in
-the normal KSeg3 region at 0xfffe0000 regardless, causing problems when
-cache alias handling makes use of them when handling copy on write.
+With my ack, will you keep them or maybe carry them as a separate patch?
 
-Therefore define FIXADDR_TOP as 0x7ffe0000 in the guest kernel mapped
-region when CONFIG_KVM_GUEST is defined.
+Cheers,
 
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/9887/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Kamal Mostafa <kamal@canonical.com>
----
- arch/mips/include/asm/mach-generic/spaces.h | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/arch/mips/include/asm/mach-generic/spaces.h b/arch/mips/include/asm/mach-generic/spaces.h
-index 9488fa5..afc96ec 100644
---- a/arch/mips/include/asm/mach-generic/spaces.h
-+++ b/arch/mips/include/asm/mach-generic/spaces.h
-@@ -94,7 +94,11 @@
- #endif
- 
- #ifndef FIXADDR_TOP
-+#ifdef CONFIG_KVM_GUEST
-+#define FIXADDR_TOP		((unsigned long)(long)(int)0x7ffe0000)
-+#else
- #define FIXADDR_TOP		((unsigned long)(long)(int)0xfffe0000)
- #endif
-+#endif
- 
- #endif /* __ASM_MACH_GENERIC_SPACES_H */
--- 
-1.9.1
+  Ralf

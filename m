@@ -1,39 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Jul 2015 14:35:51 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:37757 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27010617AbbGWMftTBLg8 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 23 Jul 2015 14:35:49 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.15.1/8.14.8) with ESMTP id t6NCZlSn012467;
-        Thu, 23 Jul 2015 14:35:47 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.15.1/8.15.1/Submit) id t6NCZiXu012462;
-        Thu, 23 Jul 2015 14:35:44 +0200
-Date:   Thu, 23 Jul 2015 14:35:44 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     James Hogan <james.hogan@imgtec.com>
-Cc:     linux-mips@linux-mips.org, David Daney <ddaney@caviumnetworks.com>,
-        Markos Chandras <Markos.Chandras@imgtec.com>
-Subject: Re: [PATCH 1/2] MIPS: Handle page faults of executable but
- unreadable pages correctly.
-Message-ID: <20150723123544.GH8099@linux-mips.org>
-References: <cover.1437644062.git.ralf@linux-mips.org>
- <b02d2b2d33026271c663207dc68bfa0531b16251.1437644062.git.ralf@linux-mips.org>
- <55B0BEB3.7010502@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Jul 2015 15:03:46 +0200 (CEST)
+Received: from mail-oi0-f53.google.com ([209.85.218.53]:34011 "EHLO
+        mail-oi0-f53.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27009844AbbGWNDmo8gr8 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 23 Jul 2015 15:03:42 +0200
+Received: by oigd21 with SMTP id d21so122246220oig.1
+        for <linux-mips@linux-mips.org>; Thu, 23 Jul 2015 06:03:36 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:in-reply-to:references:date
+         :message-id:subject:from:to:cc:content-type;
+        bh=7lVRm14h5PfJZjTTqjXOcBkONXsT8zoiJIztnHdzVQg=;
+        b=AbnttRE0q0opR9ihXLQffGWpY6ewP9N3nXDqSTEta+nvHV0ebZZiVd1DXuzhPTNibb
+         IvMYJrIGoy7OHYM746uHhk/p6jJsC1qpN2jOoMXyvLS+VfY/2ZHAerlf24uUUwKzka5n
+         uPRSTCOZjs972hgwVN+Y2EDOYegDWlMewazc4q5nSey+VgG41Tw18TYOcSej7PbkpiRB
+         j2AnDjJuvfgJWzvs2ovyKmSlaGjDcLgm387/MUdcW8ZjE6sHf0IR9Q3kW3ICe3lfw4jJ
+         5QGLF9gvHpBdvX/yHepsJRMkXqjt/SGYesO5obhj4WV6GKLGo4lzgNvZj+WdpzLy8BhR
+         LqeA==
+X-Gm-Message-State: ALoCoQnT2mjO8lyDrFSMG9AUuaV+hfq/9EqzuLPwTX0NvAZ4di3pbVC7BlhjZoQMQ696Xq7Zb4mc
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <55B0BEB3.7010502@imgtec.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <ralf@linux-mips.org>
+X-Received: by 10.182.230.70 with SMTP id sw6mr8057095obc.48.1437656616812;
+ Thu, 23 Jul 2015 06:03:36 -0700 (PDT)
+Received: by 10.182.204.41 with HTTP; Thu, 23 Jul 2015 06:03:36 -0700 (PDT)
+In-Reply-To: <1437586416-14735-1-git-send-email-albeu@free.fr>
+References: <1437586416-14735-1-git-send-email-albeu@free.fr>
+Date:   Thu, 23 Jul 2015 15:03:36 +0200
+Message-ID: <CACRpkdYqwOymyK31rwhe7EQnSxLFrcy3PTBvCsyK1TR+J7=EQg@mail.gmail.com>
+Subject: Re: [PATCH] MIPS: Remove most of the custom gpio.h
+From:   Linus Walleij <linus.walleij@linaro.org>
+To:     Alban Bedel <albeu@free.fr>
+Cc:     Linux MIPS <linux-mips@linux-mips.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Hauke Mehrtens <hauke@hauke-m.de>,
+        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Tejun Heo <tj@kernel.org>,
+        Alexandre Courbot <gnurou@gmail.com>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Florian Fainelli <florian@openwrt.org>,
+        Joe Perches <joe@perches.com>,
+        Daniel Walter <dwalter@google.com>,
+        Sergey Ryazanov <ryazanov.s.a@gmail.com>,
+        Huacai Chen <chenhc@lemote.com>,
+        Andrew Bresticker <abrestic@chromium.org>,
+        James Hartley <james.hartley@imgtec.com>,
+        Paul Burton <paul.burton@imgtec.com>,
+        Waldemar Brodkorb <wbx@openadk.org>,
+        James Hogan <james.hogan@imgtec.com>,
+        Tomi Valkeinen <tomi.valkeinen@ti.com>,
+        Levente Kurusa <levex@linux.com>,
+        abdoulaye berthe <berthe.ab@gmail.com>,
+        Wolfram Sang <wsa@the-dreams.de>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        linux-ide@vger.kernel.org,
+        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+        Linux Input <linux-input@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <linus.walleij@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48401
+X-archive-position: 48402
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: linus.walleij@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,34 +77,25 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Jul 23, 2015 at 11:15:15AM +0100, James Hogan wrote:
+On Wed, Jul 22, 2015 at 7:33 PM, Alban Bedel <albeu@free.fr> wrote:
 
-> On 23/07/15 10:10, Ralf Baechle wrote:
-> > Without this we end taking execeptions in an endless loop hanging the
-> > thread.
-> 
-> A little more explanation would be nice. Under what situations does this
-> occur? Does this mean any VM_EXEC and !VM_READ page can't actually be
-> faulted in without it being treated as an RI violation, or does it only
-> affect when read from kernel emulation code?
+> Currently CONFIG_ARCH_HAVE_CUSTOM_GPIO_H is defined for all MIPS
+> machines, and each machine type provides its own gpio.h. However only
+> the Alchemy machine really use the feature, all other machines only
+> use the default wrappers.
+>
+> For most machine types we can just remove the custom gpio.h, as well
+> as the custom wrappers if some exists. A few more fixes are need in
+> a few drivers as they rely on linux/gpio.h to provides some machine
+> specific definitions, or used asm/gpio.h instead of linux/gpio.h for
+> the gpio API.
+>
+> Signed-off-by: Alban Bedel <albeu@free.fr>
 
-> > -			if (!(vma->vm_flags & VM_READ)) {
-> > +			if (!(vma->vm_flags & VM_READ) &&
-> > +			    exception_epc(regs) != address) {
-> >  #if 0
-> >  				pr_notice("Cpu%d[%s:%d:%0*lx:%ld:%0*lx] RI violation\n",
-> >  					  raw_smp_processor_id(),
-> > 
-> 
+This is exactly what the kernel needs. Enjoy my:
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 
-The general idea is the change the code to treat loads of an instruction
-just like an instruction fetch.  Which is achieved by adding the second
-condition "exception_epc(regs) != address" to the if above.
-exception_epc(regs) == address means
+And feel free to merge this through the MIPS tree.
 
-It would all be easier if Linux was enabling the separate exception codes
-for read and execution failure but short of that, a test like above must
-provide if a fault was an attempted instruction fetch or happend fetching
-data.
-
-  Ralf
+Yours,
+Linus Walleij

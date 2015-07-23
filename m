@@ -1,26 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Jul 2015 18:59:56 +0200 (CEST)
-Received: from static.88-198-24-112.clients.your-server.de ([88.198.24.112]:60184
-        "EHLO nbd.name" rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org
-        with ESMTP id S27010659AbbGWQ7xxswMj (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 23 Jul 2015 18:59:53 +0200
-Received: by nf.local (Postfix, from userid 501)
-        id 90A7CF2D156E; Thu, 23 Jul 2015 18:59:52 +0200 (CEST)
-From:   Felix Fietkau <nbd@openwrt.org>
-To:     linux-mips@linux-mips.org
-Cc:     abrestic@chromium.org, ralf@linux-mips.org
-Subject: [PATCH] MIPS: export get_c0_perfcount_int()
-Date:   Thu, 23 Jul 2015 18:59:52 +0200
-Message-Id: <1437670792-6755-1-git-send-email-nbd@openwrt.org>
-X-Mailer: git-send-email 2.2.2
-Return-Path: <nbd@nbd.name>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Jul 2015 20:26:00 +0200 (CEST)
+Received: from smtp-out-104.synserver.de ([212.40.185.104]:1046 "EHLO
+        smtp-out-104.synserver.de" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010800AbbGWSZ7TnInl (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 23 Jul 2015 20:25:59 +0200
+Received: (qmail 32228 invoked by uid 0); 23 Jul 2015 18:25:58 -0000
+X-SynServer-TrustedSrc: 1
+X-SynServer-AuthUser: lars@metafoo.de
+X-SynServer-PPID: 32141
+Received: from ppp-188-174-127-204.dynamic.mnet-online.de (HELO ?192.168.178.30?) [188.174.127.204]
+  by 217.119.54.81 with AES128-SHA encrypted SMTP; 23 Jul 2015 18:25:58 -0000
+Message-ID: <55B131B1.10302@metafoo.de>
+Date:   Thu, 23 Jul 2015 20:25:53 +0200
+From:   Lars-Peter Clausen <lars@metafoo.de>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Icedove/31.7.0
+MIME-Version: 1.0
+To:     Alban Bedel <albeu@free.fr>, linux-mips@linux-mips.org
+CC:     Ralf Baechle <ralf@linux-mips.org>,
+        Hauke Mehrtens <hauke@hauke-m.de>,
+        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Tejun Heo <tj@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Alexandre Courbot <gnurou@gmail.com>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Florian Fainelli <florian@openwrt.org>,
+        Joe Perches <joe@perches.com>,
+        Daniel Walter <dwalter@google.com>,
+        Sergey Ryazanov <ryazanov.s.a@gmail.com>,
+        Huacai Chen <chenhc@lemote.com>,
+        Andrew Bresticker <abrestic@chromium.org>,
+        James Hartley <james.hartley@imgtec.com>,
+        Paul Burton <paul.burton@imgtec.com>,
+        Waldemar Brodkorb <wbx@openadk.org>,
+        James Hogan <james.hogan@imgtec.com>,
+        Tomi Valkeinen <tomi.valkeinen@ti.com>,
+        Levente Kurusa <levex@linux.com>,
+        abdoulaye berthe <berthe.ab@gmail.com>,
+        Wolfram Sang <wsa@the-dreams.de>, linux-kernel@vger.kernel.org,
+        linux-ide@vger.kernel.org, linux-gpio@vger.kernel.org,
+        linux-input@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH] MIPS: Remove most of the custom gpio.h
+References: <1437586416-14735-1-git-send-email-albeu@free.fr>
+In-Reply-To: <1437586416-14735-1-git-send-email-albeu@free.fr>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <lars@metafoo.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48405
+X-archive-position: 48406
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: nbd@openwrt.org
+X-original-sender: lars@metafoo.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -33,93 +65,25 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-get_c0_perfcount_int is tested from oprofile code. If oprofile is
-compiled as module, get_c0_perfcount_int needs to be exported, otherwise
-it cannot be resolved.
+On 07/22/2015 07:33 PM, Alban Bedel wrote:
+> diff --git a/arch/mips/jz4740/gpio.c b/arch/mips/jz4740/gpio.c
+> index 54c80d4..3dc500c 100644
+> --- a/arch/mips/jz4740/gpio.c
+> +++ b/arch/mips/jz4740/gpio.c
+> @@ -262,18 +262,6 @@ uint32_t jz_gpio_port_get_value(int port, uint32_t mask)
+>   }
+>   EXPORT_SYMBOL(jz_gpio_port_get_value);
+>
+> -int gpio_to_irq(unsigned gpio)
+> -{
+> -	return JZ4740_IRQ_GPIO(0) + gpio;
+> -}
+> -EXPORT_SYMBOL_GPL(gpio_to_irq);
 
-Fixes: a669efc4a3b4 ("MIPS: Add hook to get C0 performance counter interrupt")
-Cc: stable@vger.kernel.org # v3.19+
-Signed-off-by: Felix Fietkau <nbd@openwrt.org>
----
- arch/mips/ath79/setup.c          | 1 +
- arch/mips/lantiq/irq.c           | 1 +
- arch/mips/mti-malta/malta-time.c | 1 +
- arch/mips/mti-sead3/sead3-time.c | 1 +
- arch/mips/pistachio/time.c       | 1 +
- arch/mips/ralink/irq.c           | 1 +
- 6 files changed, 6 insertions(+)
+This need to be hooked up the gpio_to_irq() callback of the gpio_chip struct 
+of this driver rather than completely removing it. Otherwise this 
+functionality will be broken.
 
-diff --git a/arch/mips/ath79/setup.c b/arch/mips/ath79/setup.c
-index 01a644f..1ba2120 100644
---- a/arch/mips/ath79/setup.c
-+++ b/arch/mips/ath79/setup.c
-@@ -190,6 +190,7 @@ int get_c0_perfcount_int(void)
- {
- 	return ATH79_MISC_IRQ(5);
- }
-+EXPORT_SYMBOL_GPL(get_c0_perfcount_int);
- 
- unsigned int get_c0_compare_int(void)
- {
-diff --git a/arch/mips/lantiq/irq.c b/arch/mips/lantiq/irq.c
-index 6ab1057..d01ade6 100644
---- a/arch/mips/lantiq/irq.c
-+++ b/arch/mips/lantiq/irq.c
-@@ -466,6 +466,7 @@ int get_c0_perfcount_int(void)
- {
- 	return ltq_perfcount_irq;
- }
-+EXPORT_SYMBOL_GPL(get_c0_perfcount_int);
- 
- unsigned int get_c0_compare_int(void)
- {
-diff --git a/arch/mips/mti-malta/malta-time.c b/arch/mips/mti-malta/malta-time.c
-index 5625b19..e1bd9ed 100644
---- a/arch/mips/mti-malta/malta-time.c
-+++ b/arch/mips/mti-malta/malta-time.c
-@@ -154,6 +154,7 @@ int get_c0_perfcount_int(void)
- 
- 	return mips_cpu_perf_irq;
- }
-+EXPORT_SYMBOL_GPL(get_c0_perfcount_int);
- 
- unsigned int get_c0_compare_int(void)
- {
-diff --git a/arch/mips/mti-sead3/sead3-time.c b/arch/mips/mti-sead3/sead3-time.c
-index e1d6989..a120b7a 100644
---- a/arch/mips/mti-sead3/sead3-time.c
-+++ b/arch/mips/mti-sead3/sead3-time.c
-@@ -77,6 +77,7 @@ int get_c0_perfcount_int(void)
- 		return MIPS_CPU_IRQ_BASE + cp0_perfcount_irq;
- 	return -1;
- }
-+EXPORT_SYMBOL_GPL(get_c0_perfcount_int);
- 
- unsigned int get_c0_compare_int(void)
- {
-diff --git a/arch/mips/pistachio/time.c b/arch/mips/pistachio/time.c
-index 7c73fcb..8a37734 100644
---- a/arch/mips/pistachio/time.c
-+++ b/arch/mips/pistachio/time.c
-@@ -26,6 +26,7 @@ int get_c0_perfcount_int(void)
- {
- 	return gic_get_c0_perfcount_int();
- }
-+EXPORT_SYMBOL_GPL(get_c0_perfcount_int);
- 
- int get_c0_fdc_int(void)
- {
-diff --git a/arch/mips/ralink/irq.c b/arch/mips/ralink/irq.c
-index 53707aa..8c624a8 100644
---- a/arch/mips/ralink/irq.c
-+++ b/arch/mips/ralink/irq.c
-@@ -89,6 +89,7 @@ int get_c0_perfcount_int(void)
- {
- 	return rt_perfcount_irq;
- }
-+EXPORT_SYMBOL_GPL(get_c0_perfcount_int);
- 
- unsigned int get_c0_compare_int(void)
- {
--- 
-2.2.2
+Similar for other platforms which implement the function.
+
+- Lars

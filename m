@@ -1,66 +1,89 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Sep 2015 00:27:20 +0200 (CEST)
-Received: from youngberry.canonical.com ([91.189.89.112]:41873 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27009037AbbIUW0CmfivN (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 22 Sep 2015 00:26:02 +0200
-Received: from 1.general.kamal.us.vpn ([10.172.68.52] helo=fourier)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:DHE_RSA_AES_128_CBC_SHA1:16)
-        (Exim 4.76)
-        (envelope-from <kamal@canonical.com>)
-        id 1Ze9X7-0006nH-VV; Mon, 21 Sep 2015 22:26:02 +0000
-Received: from kamal by fourier with local (Exim 4.82)
-        (envelope-from <kamal@whence.com>)
-        id 1Ze9X5-0004SO-OJ; Mon, 21 Sep 2015 15:25:59 -0700
-From:   Kamal Mostafa <kamal@canonical.com>
-To:     Felix Fietkau <nbd@openwrt.org>
-Cc:     linux-mips@linux-mips.org, abrestic@chromium.org,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Kamal Mostafa <kamal@canonical.com>,
-        kernel-team@lists.ubuntu.com
-Subject: [3.19.y-ckt stable] Patch "MIPS: Export get_c0_perfcount_int()" has been added to staging queue
-Date:   Mon, 21 Sep 2015 15:25:59 -0700
-Message-Id: <1442874359-17102-1-git-send-email-kamal@canonical.com>
-X-Mailer: git-send-email 1.9.1
-X-Extended-Stable: 3.19
-Return-Path: <kamal@canonical.com>
-X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
-X-Orcpt: rfc822;linux-mips@linux-mips.org
-Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49259
-X-ecartis-version: Ecartis v1.0.0
-Sender: linux-mips-bounce@linux-mips.org
-Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kamal@canonical.com
-Precedence: bulk
-List-help: <mailto:ecartis@linux-mips.org?Subject=help>
-List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
-List-software: Ecartis version 1.0.0
-List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
-X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
-List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
-List-owner: <mailto:ralf@linux-mips.org>
-List-post: <mailto:linux-mips@linux-mips.org>
-List-archive: <http://www.linux-mips.org/archives/linux-mips/>
-X-list: linux-mips
+From: Felix Fietkau <nbd@openwrt.org>
+Date: Thu, 23 Jul 2015 18:59:52 +0200
+Subject: MIPS: Export get_c0_perfcount_int()
+Message-ID: <20150723165952.Brvtgo8IpHGdDRVxGi_2sUnVMP-fXZZdmbly60PSNyg@z>
 
-This is a note to let you know that I have just added a patch titled
+commit 0cb0985f57783c2f3c6c8ffe7e7665e80c56bd92 upstream.
 
-    MIPS: Export get_c0_perfcount_int()
+get_c0_perfcount_int is tested from oprofile code. If oprofile is
+compiled as module, get_c0_perfcount_int needs to be exported, otherwise
+it cannot be resolved.
 
-to the linux-3.19.y-queue branch of the 3.19.y-ckt extended stable tree 
-which can be found at:
+Fixes: a669efc4a3b4 ("MIPS: Add hook to get C0 performance counter interrupt")
+Signed-off-by: Felix Fietkau <nbd@openwrt.org>
+Cc: linux-mips@linux-mips.org
+Cc: abrestic@chromium.org
+Patchwork: https://patchwork.linux-mips.org/patch/10763/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+[ kamal: backport to 3.19-stable: no pistachio/time.c ]
+Signed-off-by: Kamal Mostafa <kamal@canonical.com>
+---
+ arch/mips/ath79/setup.c          | 1 +
+ arch/mips/lantiq/irq.c           | 1 +
+ arch/mips/mti-malta/malta-time.c | 1 +
+ arch/mips/mti-sead3/sead3-time.c | 1 +
+ arch/mips/ralink/irq.c           | 1 +
+ 5 files changed, 5 insertions(+)
 
-    http://kernel.ubuntu.com/git/ubuntu/linux.git/log/?h=linux-3.19.y-queue
+diff --git a/arch/mips/ath79/setup.c b/arch/mips/ath79/setup.c
+index a73c93c..c0277e9 100644
+--- a/arch/mips/ath79/setup.c
++++ b/arch/mips/ath79/setup.c
+@@ -186,6 +186,7 @@ int get_c0_perfcount_int(void)
+ {
+ 	return ATH79_MISC_IRQ(5);
+ }
++EXPORT_SYMBOL_GPL(get_c0_perfcount_int);
 
-This patch is scheduled to be released in version 3.19.8-ckt7.
+ unsigned int get_c0_compare_int(void)
+ {
+diff --git a/arch/mips/lantiq/irq.c b/arch/mips/lantiq/irq.c
+index 6ab1057..d01ade6 100644
+--- a/arch/mips/lantiq/irq.c
++++ b/arch/mips/lantiq/irq.c
+@@ -466,6 +466,7 @@ int get_c0_perfcount_int(void)
+ {
+ 	return ltq_perfcount_irq;
+ }
++EXPORT_SYMBOL_GPL(get_c0_perfcount_int);
 
-If you, or anyone else, feels it should not be added to this tree, please 
-reply to this email.
+ unsigned int get_c0_compare_int(void)
+ {
+diff --git a/arch/mips/mti-malta/malta-time.c b/arch/mips/mti-malta/malta-time.c
+index 644ecce..a6cc3ef 100644
+--- a/arch/mips/mti-malta/malta-time.c
++++ b/arch/mips/mti-malta/malta-time.c
+@@ -130,6 +130,7 @@ int get_c0_perfcount_int(void)
 
-For more information about the 3.19.y-ckt tree, see
-https://wiki.ubuntu.com/Kernel/Dev/ExtendedStable
+ 	return mips_cpu_perf_irq;
+ }
++EXPORT_SYMBOL_GPL(get_c0_perfcount_int);
 
-Thanks.
--Kamal
+ unsigned int get_c0_compare_int(void)
+ {
+diff --git a/arch/mips/mti-sead3/sead3-time.c b/arch/mips/mti-sead3/sead3-time.c
+index ec1dd24..90e303e 100644
+--- a/arch/mips/mti-sead3/sead3-time.c
++++ b/arch/mips/mti-sead3/sead3-time.c
+@@ -77,6 +77,7 @@ int get_c0_perfcount_int(void)
+ 		return MIPS_CPU_IRQ_BASE + cp0_perfcount_irq;
+ 	return -1;
+ }
++EXPORT_SYMBOL_GPL(get_c0_perfcount_int);
 
-------
+ unsigned int get_c0_compare_int(void)
+ {
+diff --git a/arch/mips/ralink/irq.c b/arch/mips/ralink/irq.c
+index 7cf91b9..199ace4 100644
+--- a/arch/mips/ralink/irq.c
++++ b/arch/mips/ralink/irq.c
+@@ -89,6 +89,7 @@ int get_c0_perfcount_int(void)
+ {
+ 	return rt_perfcount_irq;
+ }
++EXPORT_SYMBOL_GPL(get_c0_perfcount_int);
+
+ unsigned int get_c0_compare_int(void)
+ {
+--
+1.9.1

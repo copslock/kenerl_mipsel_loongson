@@ -1,60 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Jul 2015 03:21:33 +0200 (CEST)
-Received: from mail9.hitachi.co.jp ([133.145.228.44]:41786 "EHLO
-        mail9.hitachi.co.jp" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27011054AbbGXBVNZeKsa (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 24 Jul 2015 03:21:13 +0200
-Received: from mlsv7.hitachi.co.jp (unknown [133.144.234.166])
-        by mail9.hitachi.co.jp (Postfix) with ESMTP id E8808109BD82;
-        Fri, 24 Jul 2015 10:21:10 +0900 (JST)
-Received: from mfilter06.hitachi.co.jp by mlsv7.hitachi.co.jp (8.13.1/8.13.1) id t6O1LAqM001629; Fri, 24 Jul 2015 10:21:10 +0900
-Received: from vshuts02.hitachi.co.jp (vshuts02.hitachi.co.jp [10.201.6.84])
-        by mfilter06.hitachi.co.jp (Switch-3.3.4/Switch-3.3.4) with ESMTP id t6O1L9vl022877;
-        Fri, 24 Jul 2015 10:21:10 +0900
-Received: from hsdlmain.sdl.hitachi.co.jp (unknown [133.144.14.194])
-        by vshuts02.hitachi.co.jp (Postfix) with ESMTP id 50EB449004D;
-        Fri, 24 Jul 2015 10:21:09 +0900 (JST)
-Received: from hsdlvgate2.sdl.hitachi.co.jp by hsdlmain.sdl.hitachi.co.jp (8.13.8/3.7W11021512) id t6O1L9TM004726; Fri, 24 Jul 2015 10:21:09 +0900
-X-AuditID: 85900ec0-9e1cab9000001a57-6e-55b192d96968
-Received: from sdl99w.sdl.hitachi.co.jp (sdl99w.yrl.intra.hitachi.co.jp [133.144.14.250])
-        by hsdlvgate2.sdl.hitachi.co.jp (Symantec Mail Security) with ESMTP id 25823236561;
-        Fri, 24 Jul 2015 10:20:25 +0900 (JST)
-Received: from mailb.sdl.hitachi.co.jp (sdl99b.yrl.intra.hitachi.co.jp [133.144.14.197])
-        by sdl99w.sdl.hitachi.co.jp (Postfix) with ESMTP id CA3CA53C21A;
-        Fri, 24 Jul 2015 10:21:08 +0900 (JST)
-Received: from [10.198.220.54] (unknown [10.198.220.54])
-        by mailb.sdl.hitachi.co.jp (Postfix) with ESMTP id 93FB2495B93;
-        Fri, 24 Jul 2015 10:21:08 +0900 (JST)
-X-Mailbox-Line: From nobody Fri Jul 24 10:16:15 2015
-Subject: [RFC V2 PATCH 1/1] panic/x86: Replace smp_send_stop() with crash_kexec
- version
-To:     Andrew Morton <akpm@linux-foundation.org>,
-        "Eric W. Biederman" <ebiederm@xmission.com>,
-        Vivek Goyal <vgoyal@redhat.com>
-From:   Hidehiro Kawai <hidehiro.kawai.ez@hitachi.com>
-Cc:     linux-mips@linux-mips.org, Baoquan He <bhe@redhat.com>,
-        kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
-        HATAYAMA Daisuke <d.hatayama@jp.fujitsu.com>,
-        Masami Hiramatsu <masami.hiramatsu.pt@hitachi.com>,
-        Daniel Walker <dwalker@fifo99.com>,
-        Ingo Molnar <mingo@kernel.org>
-Date:   Fri, 24 Jul 2015 10:16:15 +0900
-Message-ID: <20150724011615.6834.97850.stgit@softrs>
-In-Reply-To: <20150724011615.6834.79628.stgit@softrs>
-References: <20150724011615.6834.79628.stgit@softrs>
-User-Agent: StGit/0.16
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Jul 2015 16:39:45 +0200 (CEST)
+Received: from a23-79-238-175.deploy.static.akamaitechnologies.com ([23.79.238.175]:33243
+        "EHLO prod-mail-xrelay07.akamai.com" rhost-flags-OK-FAIL-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010045AbbGXOjmr8lOG (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 24 Jul 2015 16:39:42 +0200
+Received: from prod-mail-xrelay07.akamai.com (localhost.localdomain [127.0.0.1])
+        by postfix.imss70 (Postfix) with ESMTP id 3004D47F79;
+        Fri, 24 Jul 2015 14:40:22 +0000 (GMT)
+Received: from prod-mail-relay06.akamai.com (prod-mail-relay06.akamai.com [172.17.120.126])
+        by prod-mail-xrelay07.akamai.com (Postfix) with ESMTP id 164C847F75;
+        Fri, 24 Jul 2015 14:40:22 +0000 (GMT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=akamai.com; s=a1;
+        t=1437748822; bh=1Y8OL30feOatrroErMW/c7oeoTeQepmh1PZOZsOnngM=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=qUM/fnGnReUrStF/5ABTAaKIg9uVkQWN6RlaXKrXOR+5dOGdBszpmJCkHnR7wIgwg
+         9wJEIInogl0gwVz2Ri0jg5JODyAa3iNFpW8GSwWHWXqVgnQVHpUU7vLVhYF6dodJXg
+         nv7ajeC4//J5yKSwLeNqseNUJxkCSJX+3q8GmMho=
+Received: from akamai.com (lappy-486.kendall.corp.akamai.com [172.28.12.253])
+        by prod-mail-relay06.akamai.com (Postfix) with ESMTP id 820772252;
+        Fri, 24 Jul 2015 14:39:36 +0000 (GMT)
+Date:   Fri, 24 Jul 2015 10:39:36 -0400
+From:   Eric B Munson <emunson@akamai.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     Michael Ellerman <mpe@ellerman.id.au>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linux-mips@linux-mips.org, linux-m68k@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Michal Hocko <mhocko@suse.cz>, linux-mm@kvack.org,
+        sparclinux@vger.kernel.org, linux-arch@vger.kernel.org,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        linux-am33-list@redhat.com,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Guenter Roeck <linux@roeck-us.net>,
+        linux-xtensa@linux-xtensa.org, linux-s390@vger.kernel.org,
+        adi-buildroot-devel@lists.sourceforge.net,
+        linux-arm-kernel@lists.infradead.org, linux-cris-kernel@axis.com,
+        linux-parisc@vger.kernel.org, linux-api@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH V4 2/6] mm: mlock: Add new mlock, munlock, and munlockall
+ system calls
+Message-ID: <20150724143936.GE9203@akamai.com>
+References: <1437508781-28655-1-git-send-email-emunson@akamai.com>
+ <1437508781-28655-3-git-send-email-emunson@akamai.com>
+ <20150721134441.d69e4e1099bd43e56835b3c5@linux-foundation.org>
+ <1437528316.16792.7.camel@ellerman.id.au>
+ <20150722141501.GA3203@akamai.com>
+ <20150723065830.GA5919@linux-mips.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Brightmail-Tracker: AAAAAA==
-Return-Path: <hidehiro.kawai.ez@hitachi.com>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="+JUInw4efm7IfTNU"
+Content-Disposition: inline
+In-Reply-To: <20150723065830.GA5919@linux-mips.org>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <emunson@akamai.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48409
+X-archive-position: 48410
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hidehiro.kawai.ez@hitachi.com
+X-original-sender: emunson@akamai.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -67,142 +76,58 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This patch fixes one of the problems reported by Daniel Walker
-(https://lkml.org/lkml/2015/6/24/44).
 
-If "crash_kexec_post_notifiers" boot option is specified,
-other cpus are stopped by smp_send_stop() before entering
-crash_kexec(), while usually machine_crash_shutdown() called by
-crash_kexec() does that.  This behavior change leads two problems.
+--+JUInw4efm7IfTNU
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
- Problem 1:
- Some functions in the crash_kexec() path depend on other cpus being
- still online.  If other cpus have been offlined already, they
- doesn't work properly.
+On Thu, 23 Jul 2015, Ralf Baechle wrote:
 
-  Example (MIPS OCTEON case):
-   panic()
-    crash_kexec()
-     machine_crash_shutdown()
-      octeon_generic_shutdown() // shutdown watchdog for ONLINE cpus
-     machine_kexec()
+> On Wed, Jul 22, 2015 at 10:15:01AM -0400, Eric B Munson wrote:
+>=20
+> > >=20
+> > > You haven't wired it up properly on powerpc, but I haven't mentioned =
+it because
+> > > I'd rather we did it.
+> > >=20
+> > > cheers
+> >=20
+> > It looks like I will be spinning a V5, so I will drop all but the x86
+> > system calls additions in that version.
+>=20
+> The MIPS bits are looking good however, so
+>=20
+> Acked-by: Ralf Baechle <ralf@linux-mips.org>
+>=20
+> With my ack, will you keep them or maybe carry them as a separate patch?
 
- Problem 2:
- Most of architectures stop other cpus in the machine_crash_shutdown()
- path and save register information at that time.  However, if
- smp_send_stop() is called before that, we can't save the register
- information.
+I will keep the MIPS additions as a separate patch in the series, though
+I have dropped two of the new syscalls after some discussion.  So I will
+not include your ack on the new patch.
 
-This patch solves the problem 2 by replacing smp_send_stop() in
-panic() with panic_smp_stop_cpus() which is a weak function and can be
-replaced with suitable version for crash_kexec context.  In fact,
-x86 replaces it with a function based on kdump_nmi_shootdown_cpus() to
-stop other cpus and save their states.
+Eric
 
-Please note that crash_kexec() can be called directly without
-entering panic().  A stop-other-cpus procedure is still needed
-by crash_kexec().
+--+JUInw4efm7IfTNU
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
-Changes in V2:
-- Replace smp_send_stop() call with crash_kexec version which
-  saves cpu states and cleans up VMX/SVM
-- Drop a fix for Problem 1 at this moment
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
 
-Reported-by: Daniel Walker <dwalker@fifo99.com>
-Fixes: f06e5153f4ae (kernel/panic.c: add "crash_kexec_post_notifiers" option
-Signed-off-by: Hidehiro Kawai <hidehiro.kawai.ez@hitachi.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Eric Biederman <ebiederm@xmission.com>
-Cc: Vivek Goyal <vgoyal@redhat.com>
----
- arch/x86/kernel/crash.c |   16 +++++++++++-----
- kernel/panic.c          |   29 +++++++++++++++++++++++------
- 2 files changed, 34 insertions(+), 11 deletions(-)
+iQIcBAEBAgAGBQJVsk4oAAoJELbVsDOpoOa9Eo0QAJ6eViChMf3Imw2HLUBOL+qS
+B7hozSCTuKLHaqx8QBhkjX6yqn0FIa5+TUWk76Py3JA00geQAiSWGmmZidLmdkmL
+QqZgrvi6B/hsDx4qhNk3wsTpeOtRL6JfpM0CI42Y5JO9nXvp/mpEJyHIRbrvlOtG
+GdRPYjyf1gXqwFaOJel7/GvPhRxMh0vkIr78XqNZOQovWL9cfvaUGaZmLGcLJq78
+PPYyuZ53AmNg83C8wDpgPfdgQ/L4ob+mZJIcP8purUXHpu7Xu7KbePkdoPqZ1EDT
+zRias9nrfrQQTCYaga4MM6wMa2S+iDNPq6Ae+sI6eoDyMxhjuUEi4xxHZ9HGwSIm
+Ii5cbD5//xbOHceAPuQ0lhvWH06ip6OVEXx68ACl7p46Ebi7B2jOeSyKH3UNpomS
+37NdAdUk3PlC3r3CwoPS2XXYjthQr8rVLVqoZP1wC4KxHanglXzFv+AwyLwRCQJ3
+6WevOpUmjVstR67EZBXmHMC4yVGxwF9TdC15G4coZEBw8wcLV6rC2TuK1KZw5JHR
+1yIJtZIBQmNoFkGwNWggIFsDiOasKmgUjjHY/yPPrn0MTkCy69zrnkqzoKZQEIoE
+MXYJiYfYFy7Ek7/K7u/lCjJI0X1bXk3QTmNrX5BuVzQPtV8jdzcBzl4SQhFGc7IH
+4GNpeBolyRBy2p7wt0lO
+=/Udu
+-----END PGP SIGNATURE-----
 
-diff --git a/arch/x86/kernel/crash.c b/arch/x86/kernel/crash.c
-index e068d66..913c621 100644
---- a/arch/x86/kernel/crash.c
-+++ b/arch/x86/kernel/crash.c
-@@ -130,16 +130,22 @@ static void kdump_nmi_callback(int cpu, struct pt_regs *regs)
- 	disable_local_APIC();
- }
- 
--static void kdump_nmi_shootdown_cpus(void)
-+/* Please see the comment on the weak version in kernel/panic.c */
-+void panic_smp_stop_cpus(void)
- {
-+	static int cpus_stopped;
-+
- 	in_crash_kexec = 1;
--	nmi_shootdown_cpus(kdump_nmi_callback);
- 
--	disable_local_APIC();
-+	if (!cpus_stopped) {
-+		nmi_shootdown_cpus(kdump_nmi_callback);
-+		disable_local_APIC();
-+		cpus_stopped = 1;
-+	}
- }
- 
- #else
--static void kdump_nmi_shootdown_cpus(void)
-+void panic_smp_stop_cpus(void)
- {
- 	/* There are no cpus to shootdown */
- }
-@@ -158,7 +164,7 @@ void native_machine_crash_shutdown(struct pt_regs *regs)
- 	/* The kernel is broken so disable interrupts */
- 	local_irq_disable();
- 
--	kdump_nmi_shootdown_cpus();
-+	panic_smp_stop_cpus();
- 
- 	/*
- 	 * VMCLEAR VMCSs loaded on this cpu if needed.
-diff --git a/kernel/panic.c b/kernel/panic.c
-index 04e91ff..a507637 100644
---- a/kernel/panic.c
-+++ b/kernel/panic.c
-@@ -60,6 +60,28 @@ void __weak panic_smp_self_stop(void)
- 		cpu_relax();
- }
- 
-+/*
-+ * Stop other cpus in panic.  Architecture code may override this to
-+ * with more suitable version.  Moreover, if the architecture supports
-+ * crash dump, it should also save the states of stopped cpus.
-+ *
-+ * This function should be called only once.
-+ */
-+void __weak panic_smp_stop_cpus(void)
-+{
-+	static int cpus_stopped;
-+
-+	if (!cpus_stopped) {
-+		/*
-+		 * Note smp_send_stop is the usual smp shutdown function,
-+		 * which unfortunately means it may not be hardened to
-+		 * work in a panic situation.
-+		 */
-+		smp_send_stop();
-+		cpus_stopped = 1;
-+	}
-+}
-+
- /**
-  *	panic - halt the system
-  *	@fmt: The text string to print
-@@ -120,12 +142,7 @@ void panic(const char *fmt, ...)
- 	if (!crash_kexec_post_notifiers)
- 		crash_kexec(NULL);
- 
--	/*
--	 * Note smp_send_stop is the usual smp shutdown function, which
--	 * unfortunately means it may not be hardened to work in a panic
--	 * situation.
--	 */
--	smp_send_stop();
-+	panic_smp_stop_cpus();
- 
- 	/*
- 	 * Run any panic handlers, including those that might need to
+--+JUInw4efm7IfTNU--

@@ -1,36 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Jul 2015 17:58:04 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:38319 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27010520AbbGXP6Cqbkwx (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 24 Jul 2015 17:58:02 +0200
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id DCABFAB2E1BEC
-        for <linux-mips@linux-mips.org>; Fri, 24 Jul 2015 16:57:52 +0100 (IST)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Fri, 24 Jul 2015 16:57:56 +0100
-Received: from asmith-linux.le.imgtec.org (192.168.154.115) by
- LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.210.2; Fri, 24 Jul 2015 16:57:55 +0100
-From:   Alex Smith <alex.smith@imgtec.com>
-To:     <linux-mips@linux-mips.org>
-CC:     Alex Smith <alex.smith@imgtec.com>
-Subject: [PATCH v2] MIPS: SMP: Don't increment irq_count multiple times for call function IPIs
-Date:   Fri, 24 Jul 2015 16:57:49 +0100
-Message-ID: <1437753469-9266-1-git-send-email-alex.smith@imgtec.com>
-X-Mailer: git-send-email 2.4.6
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.154.115]
-Return-Path: <Alex.Smith@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Jul 2015 23:28:56 +0200 (CEST)
+Received: from prod-mail-xrelay02.akamai.com ([72.246.2.14]:33860 "EHLO
+        prod-mail-xrelay02.akamai.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010983AbbGXV2xyh0OU (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 24 Jul 2015 23:28:53 +0200
+Received: from prod-mail-xrelay02.akamai.com (localhost [127.0.0.1])
+        by postfix.imss70 (Postfix) with ESMTP id 6DE6D298F9;
+        Fri, 24 Jul 2015 21:28:47 +0000 (GMT)
+Received: from prod-mail-relay07.akamai.com (prod-mail-relay07.akamai.com [172.17.121.112])
+        by prod-mail-xrelay02.akamai.com (Postfix) with ESMTP id 40D75298F7;
+        Fri, 24 Jul 2015 21:28:47 +0000 (GMT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=akamai.com; s=a1;
+        t=1437773327; bh=n6vKi5ysyWo5Imnkr5t5j4Eqz6vg66dF/csZOalX9F0=;
+        h=From:To:Cc:Subject:Date:From;
+        b=Sq6A/h/8N9mTCF1ktaoUh/ldXm+OWWFL2rpc6jDh6VD8MdrFPPYR18BoVEhNXh4sx
+         0YsMvPd8kXCyYHF80BrxND+hq2cSU6/5TJ3OaEXckWojCBW4mM8lm9Gn3kfDw+HSz2
+         hWshrNS1AlFIqgHep1sG7SGln6ZUcOMN09ep+8XM=
+Received: from bos-lp6ds.kendall.corp.akamai.com (unknown [172.28.12.165])
+        by prod-mail-relay07.akamai.com (Postfix) with ESMTP id 3301D8088E;
+        Fri, 24 Jul 2015 21:28:47 +0000 (GMT)
+From:   Eric B Munson <emunson@akamai.com>
+To:     Andrew Morton <akpm@linux-foundation.org>
+Cc:     Eric B Munson <emunson@akamai.com>,
+        Shuah Khan <shuahkh@osg.samsung.com>,
+        Michal Hocko <mhocko@suse.cz>,
+        Michael Kerrisk <mtk.manpages@gmail.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mips@linux-mips.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
+        linux-xtensa@linux-xtensa.org, linux-mm@kvack.org,
+        linux-arch@vger.kernel.org, linux-api@vger.kernel.org
+Subject: [PATCH V5 0/7] Allow user to request memory to be locked on page fault
+Date:   Fri, 24 Jul 2015 17:28:38 -0400
+Message-Id: <1437773325-8623-1-git-send-email-emunson@akamai.com>
+X-Mailer: git-send-email 1.9.1
+Return-Path: <emunson@akamai.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48419
+X-archive-position: 48420
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alex.smith@imgtec.com
+X-original-sender: emunson@akamai.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,272 +57,212 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The majority of SMP platforms handle their IPIs through do_IRQ()
-which calls irq_{enter/exit}(). When a call function IPI is received,
-smp_call_function_interrupt() is called which also calls
-irq_{enter,exit}(), meaning irq_count is raised twice.
+mlock() allows a user to control page out of program memory, but this
+comes at the cost of faulting in the entire mapping when it is
+allocated.  For large mappings where the entire area is not necessary
+this is not ideal.  Instead of forcing all locked pages to be present
+when they are allocated, this set creates a middle ground.  Pages are
+marked to be placed on the unevictable LRU (locked) when they are first
+used, but they are not faulted in by the mlock call.
 
-When tick broadcasting is used (which is implemented via a call
-function IPI), this incorrectly causes all CPU idle time on the core
-receiving broadcast ticks to be accounted as time spent servicing
-IRQs, as account_process_tick() will account as such if irq_count is
-greater than 1. This results in 100% CPU usage being reported on a
-core which receives its ticks via broadcast.
+This series introduces a new mlock() system call that takes a flags
+argument along with the start address and size.  This flags argument
+gives the caller the ability to request memory be locked in the
+traditional way, or to be locked after the page is faulted in.  A new
+MCL flag is added to mirror the lock on fault behavior from mlock() in
+mlockall().  Finally, a flag for mmap() is added that allows a user to
+specify that the covered are should not be paged out, but only after the
+memory has been used the first time.
 
-This patch removes the SMP smp_call_function_interrupt() wrapper which
-calls irq_{enter,exit}(). Platforms which handle their IPIs through
-do_IRQ() now call generic_smp_call_function_interrupt() directly to
-avoid incrementing irq_count a second time. Platforms which don't
-(loongson, sgi-ip27, sibyte) call generic_smp_call_function_interrupt()
-wrapped in irq_{enter,exit}().
+There are two main use cases that this set covers.  The first is the
+security focussed mlock case.  A buffer is needed that cannot be written
+to swap.  The maximum size is known, but on average the memory used is
+significantly less than this maximum.  With lock on fault, the buffer
+is guaranteed to never be paged out without consuming the maximum size
+every time such a buffer is created.
 
-Signed-off-by: Alex Smith <alex.smith@imgtec.com>
+The second use case is focussed on performance.  Portions of a large
+file are needed and we want to keep the used portions in memory once
+accessed.  This is the case for large graphical models where the path
+through the graph is not known until run time.  The entire graph is
+unlikely to be used in a given invocation, but once a node has been
+used it needs to stay resident for further processing.  Given these
+constraints we have a number of options.  We can potentially waste a
+large amount of memory by mlocking the entire region (this can also
+cause a significant stall at startup as the entire file is read in).
+We can mlock every page as we access them without tracking if the page
+is already resident but this introduces large overhead for each access.
+The third option is mapping the entire region with PROT_NONE and using
+a signal handler for SIGSEGV to mprotect(PROT_READ) and mlock() the
+needed page.  Doing this page at a time adds a significant performance
+penalty.  Batching can be used to mitigate this overhead, but in order
+to safely avoid trying to mprotect pages outside of the mapping, the
+boundaries of each mapping to be used in this way must be tracked and
+available to the signal handler.  This is precisely what the mm system
+in the kernel should already be doing.
+
+For mlock(MLOCK_ONFAULT) and mmap(MAP_LOCKONFAULT) the user is charged
+against RLIMIT_MEMLOCK as if mlock(MLOCK_LOCKED) or mmap(MAP_LOCKED) was
+used, so when the VMA is created not when the pages are faulted in.  For
+mlockall(MCL_ONFAULT) the user is charged as if MCL_FUTURE was used.
+This decision was made to keep the accounting checks out of the page
+fault path.
+
+To illustrate the benefit of this set I wrote a test program that mmaps
+a 5 GB file filled with random data and then makes 15,000,000 accesses
+to random addresses in that mapping.  The test program was run 20 times
+for each setup.  Results are reported for two program portions, setup
+and execution.  The setup phase is calling mmap and optionally mlock on
+the entire region.  For most experiments this is trivial, but it
+highlights the cost of faulting in the entire region.  Results are
+averages across the 20 runs in milliseconds.
+
+mmap with mlock(MLOCK_LOCKED) on entire range:
+Setup avg:      8228.666
+Processing avg: 8274.257
+
+mmap with mlock(MLOCK_LOCKED) before each access:
+Setup avg:      0.113
+Processing avg: 90993.552
+
+mmap with PROT_NONE and signal handler and batch size of 1 page:
+With the default value in max_map_count, this gets ENOMEM as I attempt
+to change the permissions, after upping the sysctl significantly I get:
+Setup avg:      0.058
+Processing avg: 69488.073
+mmap with PROT_NONE and signal handler and batch size of 8 pages:
+Setup avg:      0.068
+Processing avg: 38204.116
+
+mmap with PROT_NONE and signal handler and batch size of 16 pages:
+Setup avg:      0.044
+Processing avg: 29671.180
+
+mmap with mlock(MLOCK_ONFAULT) on entire range:
+Setup avg:      0.189
+Processing avg: 17904.899
+
+The signal handler in the batch cases faulted in memory in two steps to
+avoid having to know the start and end of the faulting mapping.  The
+first step covers the page that caused the fault as we know that it will
+be possible to lock.  The second step speculatively tries to mlock and
+mprotect the batch size - 1 pages that follow.  There may be a clever
+way to avoid this without having the program track each mapping to be
+covered by this handeler in a globally accessible structure, but I could
+not find it.  It should be noted that with a large enough batch size
+this two step fault handler can still cause the program to crash if it
+reaches far beyond the end of the mapping.
+
+These results show that if the developer knows that a majority of the
+mapping will be used, it is better to try and fault it in at once,
+otherwise MAP_LOCKONFAULT is significantly faster.
+
+The performance cost of these patches are minimal on the two benchmarks
+I have tested (stream and kernbench).  The following are the average
+values across 20 runs of stream and 10 runs of kernbench after a warmup
+run whose results were discarded.
+
+Avg throughput in MB/s from stream using 1000000 element arrays
+Test     4.2-rc1      4.2-rc1+lock-on-fault
+Copy:    10,566.5     10,421
+Scale:   10,685       10,503.5
+Add:     12,044.1     11,814.2
+Triad:   12,064.8     11,846.3
+
+Kernbench optimal load
+                 4.2-rc1  4.2-rc1+lock-on-fault
+Elapsed Time     78.453   78.991
+User Time        64.2395  65.2355
+System Time      9.7335   9.7085
+Context Switches 22211.5  22412.1
+Sleeps           14965.3  14956.1
+
 ---
-Changes in v2:
- - Add missing change to drivers/irqchip/irq-mips-gic.c
----
- arch/mips/cavium-octeon/smp.c         |  2 +-
- arch/mips/include/asm/smp.h           |  2 --
- arch/mips/kernel/smp-bmips.c          |  4 ++--
- arch/mips/kernel/smp.c                | 10 ----------
- arch/mips/lantiq/irq.c                |  2 +-
- arch/mips/loongson64/loongson-3/smp.c |  7 +++++--
- arch/mips/mti-malta/malta-int.c       |  2 +-
- arch/mips/netlogic/common/smp.c       |  2 +-
- arch/mips/paravirt/paravirt-smp.c     |  2 +-
- arch/mips/pmcs-msp71xx/msp_smp.c      |  2 +-
- arch/mips/sgi-ip27/ip27-irq.c         |  8 ++++++--
- arch/mips/sibyte/bcm1480/smp.c        |  9 +++++----
- arch/mips/sibyte/sb1250/smp.c         |  7 +++++--
- drivers/irqchip/irq-mips-gic.c        |  2 +-
- 14 files changed, 30 insertions(+), 31 deletions(-)
+Changes from V4:
+Drop all architectures for new sys call entries except x86[_64] and MIPS
+Drop munlock2 and munlockall2
+Make VM_LOCKONFAULT a modifier to VM_LOCKED only to simplify book keeping
+Adjust tests to match
 
-diff --git a/arch/mips/cavium-octeon/smp.c b/arch/mips/cavium-octeon/smp.c
-index 56f5d080ef9d..b7fa9ae28c36 100644
---- a/arch/mips/cavium-octeon/smp.c
-+++ b/arch/mips/cavium-octeon/smp.c
-@@ -42,7 +42,7 @@ static irqreturn_t mailbox_interrupt(int irq, void *dev_id)
- 	cvmx_write_csr(CVMX_CIU_MBOX_CLRX(coreid), action);
- 
- 	if (action & SMP_CALL_FUNCTION)
--		smp_call_function_interrupt();
-+		generic_smp_call_function_interrupt();
- 	if (action & SMP_RESCHEDULE_YOURSELF)
- 		scheduler_ipi();
- 
-diff --git a/arch/mips/include/asm/smp.h b/arch/mips/include/asm/smp.h
-index 16f1ea9ab191..03722d4326a1 100644
---- a/arch/mips/include/asm/smp.h
-+++ b/arch/mips/include/asm/smp.h
-@@ -83,8 +83,6 @@ static inline void __cpu_die(unsigned int cpu)
- extern void play_dead(void);
- #endif
- 
--extern asmlinkage void smp_call_function_interrupt(void);
--
- static inline void arch_send_call_function_single_ipi(int cpu)
- {
- 	extern struct plat_smp_ops *mp_ops;	/* private */
-diff --git a/arch/mips/kernel/smp-bmips.c b/arch/mips/kernel/smp-bmips.c
-index 336708ae5c5b..78cf8c2f1de0 100644
---- a/arch/mips/kernel/smp-bmips.c
-+++ b/arch/mips/kernel/smp-bmips.c
-@@ -284,7 +284,7 @@ static irqreturn_t bmips5000_ipi_interrupt(int irq, void *dev_id)
- 	if (action == 0)
- 		scheduler_ipi();
- 	else
--		smp_call_function_interrupt();
-+		generic_smp_call_function_interrupt();
- 
- 	return IRQ_HANDLED;
- }
-@@ -336,7 +336,7 @@ static irqreturn_t bmips43xx_ipi_interrupt(int irq, void *dev_id)
- 	if (action & SMP_RESCHEDULE_YOURSELF)
- 		scheduler_ipi();
- 	if (action & SMP_CALL_FUNCTION)
--		smp_call_function_interrupt();
-+		generic_smp_call_function_interrupt();
- 
- 	return IRQ_HANDLED;
- }
-diff --git a/arch/mips/kernel/smp.c b/arch/mips/kernel/smp.c
-index d0744cc77ea7..a31896c33716 100644
---- a/arch/mips/kernel/smp.c
-+++ b/arch/mips/kernel/smp.c
-@@ -192,16 +192,6 @@ asmlinkage void start_secondary(void)
- 	cpu_startup_entry(CPUHP_ONLINE);
- }
- 
--/*
-- * Call into both interrupt handlers, as we share the IPI for them
-- */
--void __irq_entry smp_call_function_interrupt(void)
--{
--	irq_enter();
--	generic_smp_call_function_interrupt();
--	irq_exit();
--}
--
- static void stop_this_cpu(void *dummy)
- {
- 	/*
-diff --git a/arch/mips/lantiq/irq.c b/arch/mips/lantiq/irq.c
-index 6ab10573490d..be18648cb8c8 100644
---- a/arch/mips/lantiq/irq.c
-+++ b/arch/mips/lantiq/irq.c
-@@ -293,7 +293,7 @@ static irqreturn_t ipi_resched_interrupt(int irq, void *dev_id)
- 
- static irqreturn_t ipi_call_interrupt(int irq, void *dev_id)
- {
--	smp_call_function_interrupt();
-+	generic_smp_call_function_interrupt();
- 	return IRQ_HANDLED;
- }
- 
-diff --git a/arch/mips/loongson64/loongson-3/smp.c b/arch/mips/loongson64/loongson-3/smp.c
-index 509877c6e9d9..1a4738a8f2d3 100644
---- a/arch/mips/loongson64/loongson-3/smp.c
-+++ b/arch/mips/loongson64/loongson-3/smp.c
-@@ -266,8 +266,11 @@ void loongson3_ipi_interrupt(struct pt_regs *regs)
- 	if (action & SMP_RESCHEDULE_YOURSELF)
- 		scheduler_ipi();
- 
--	if (action & SMP_CALL_FUNCTION)
--		smp_call_function_interrupt();
-+	if (action & SMP_CALL_FUNCTION) {
-+		irq_enter();
-+		generic_smp_call_function_interrupt();
-+		irq_exit();
-+	}
- 
- 	if (action & SMP_ASK_C0COUNT) {
- 		BUG_ON(cpu != 0);
-diff --git a/arch/mips/mti-malta/malta-int.c b/arch/mips/mti-malta/malta-int.c
-index d1392f8f5811..fa8f591f3713 100644
---- a/arch/mips/mti-malta/malta-int.c
-+++ b/arch/mips/mti-malta/malta-int.c
-@@ -222,7 +222,7 @@ static irqreturn_t ipi_resched_interrupt(int irq, void *dev_id)
- 
- static irqreturn_t ipi_call_interrupt(int irq, void *dev_id)
- {
--	smp_call_function_interrupt();
-+	generic_smp_call_function_interrupt();
- 
- 	return IRQ_HANDLED;
- }
-diff --git a/arch/mips/netlogic/common/smp.c b/arch/mips/netlogic/common/smp.c
-index dc3e327fbbac..f5fff228b347 100644
---- a/arch/mips/netlogic/common/smp.c
-+++ b/arch/mips/netlogic/common/smp.c
-@@ -86,7 +86,7 @@ void nlm_smp_function_ipi_handler(unsigned int irq, struct irq_desc *desc)
- {
- 	clear_c0_eimr(irq);
- 	ack_c0_eirr(irq);
--	smp_call_function_interrupt();
-+	generic_smp_call_function_interrupt();
- 	set_c0_eimr(irq);
- }
- 
-diff --git a/arch/mips/paravirt/paravirt-smp.c b/arch/mips/paravirt/paravirt-smp.c
-index 42181c7105df..f8d3e081b2eb 100644
---- a/arch/mips/paravirt/paravirt-smp.c
-+++ b/arch/mips/paravirt/paravirt-smp.c
-@@ -114,7 +114,7 @@ static irqreturn_t paravirt_reched_interrupt(int irq, void *dev_id)
- 
- static irqreturn_t paravirt_function_interrupt(int irq, void *dev_id)
- {
--	smp_call_function_interrupt();
-+	generic_smp_call_function_interrupt();
- 	return IRQ_HANDLED;
- }
- 
-diff --git a/arch/mips/pmcs-msp71xx/msp_smp.c b/arch/mips/pmcs-msp71xx/msp_smp.c
-index 10170580a2de..ffa0f7101a97 100644
---- a/arch/mips/pmcs-msp71xx/msp_smp.c
-+++ b/arch/mips/pmcs-msp71xx/msp_smp.c
-@@ -44,7 +44,7 @@ static irqreturn_t ipi_resched_interrupt(int irq, void *dev_id)
- 
- static irqreturn_t ipi_call_interrupt(int irq, void *dev_id)
- {
--	smp_call_function_interrupt();
-+	generic_smp_call_function_interrupt();
- 
- 	return IRQ_HANDLED;
- }
-diff --git a/arch/mips/sgi-ip27/ip27-irq.c b/arch/mips/sgi-ip27/ip27-irq.c
-index 3fbaef97a1b8..16ec4e12daa3 100644
---- a/arch/mips/sgi-ip27/ip27-irq.c
-+++ b/arch/mips/sgi-ip27/ip27-irq.c
-@@ -107,10 +107,14 @@ static void ip27_do_irq_mask0(void)
- 		scheduler_ipi();
- 	} else if (pend0 & (1UL << CPU_CALL_A_IRQ)) {
- 		LOCAL_HUB_CLR_INTR(CPU_CALL_A_IRQ);
--		smp_call_function_interrupt();
-+		irq_enter();
-+		generic_smp_call_function_interrupt();
-+		irq_exit();
- 	} else if (pend0 & (1UL << CPU_CALL_B_IRQ)) {
- 		LOCAL_HUB_CLR_INTR(CPU_CALL_B_IRQ);
--		smp_call_function_interrupt();
-+		irq_enter();
-+		generic_smp_call_function_interrupt();
-+		irq_exit();
- 	} else
- #endif
- 	{
-diff --git a/arch/mips/sibyte/bcm1480/smp.c b/arch/mips/sibyte/bcm1480/smp.c
-index af7d44edd9a8..4c71aea25663 100644
---- a/arch/mips/sibyte/bcm1480/smp.c
-+++ b/arch/mips/sibyte/bcm1480/smp.c
-@@ -29,8 +29,6 @@
- #include <asm/sibyte/bcm1480_regs.h>
- #include <asm/sibyte/bcm1480_int.h>
- 
--extern void smp_call_function_interrupt(void);
--
- /*
-  * These are routines for dealing with the bcm1480 smp capabilities
-  * independent of board/firmware
-@@ -184,6 +182,9 @@ void bcm1480_mailbox_interrupt(void)
- 	if (action & SMP_RESCHEDULE_YOURSELF)
- 		scheduler_ipi();
- 
--	if (action & SMP_CALL_FUNCTION)
--		smp_call_function_interrupt();
-+	if (action & SMP_CALL_FUNCTION) {
-+		irq_enter();
-+		generic_smp_call_function_interrupt();
-+		irq_exit();
-+	}
- }
-diff --git a/arch/mips/sibyte/sb1250/smp.c b/arch/mips/sibyte/sb1250/smp.c
-index c0c4b3f88a08..1cf66f5ff23d 100644
---- a/arch/mips/sibyte/sb1250/smp.c
-+++ b/arch/mips/sibyte/sb1250/smp.c
-@@ -172,6 +172,9 @@ void sb1250_mailbox_interrupt(void)
- 	if (action & SMP_RESCHEDULE_YOURSELF)
- 		scheduler_ipi();
- 
--	if (action & SMP_CALL_FUNCTION)
--		smp_call_function_interrupt();
-+	if (action & SMP_CALL_FUNCTION) {
-+		irq_enter();
-+		generic_smp_call_function_interrupt();
-+		irq_exit();
-+	}
- }
-diff --git a/drivers/irqchip/irq-mips-gic.c b/drivers/irqchip/irq-mips-gic.c
-index b7d54d428b5e..ff4be0515a0d 100644
---- a/drivers/irqchip/irq-mips-gic.c
-+++ b/drivers/irqchip/irq-mips-gic.c
-@@ -538,7 +538,7 @@ static irqreturn_t ipi_resched_interrupt(int irq, void *dev_id)
- 
- static irqreturn_t ipi_call_interrupt(int irq, void *dev_id)
- {
--	smp_call_function_interrupt();
-+	generic_smp_call_function_interrupt();
- 
- 	return IRQ_HANDLED;
- }
+Changes from V3:
+Ensure that pages present when mlock2(MLOCK_ONFAULT) is called are locked
+Ensure that VM_LOCKONFAULT is handled in cases that used to only check VM_LOCKED
+Add tests for new system calls
+Add missing syscall entries, fix NR_syscalls on multiple arch's
+Add missing MAP_LOCKONFAULT for tile
+
+Changes from V2:
+Added new system calls for mlock, munlock, and munlockall with added
+flags arguments for controlling how memory is locked or unlocked.
+
+
+Eric B Munson (7):
+  mm: mlock: Refactor mlock, munlock, and munlockall code
+  mm: mlock: Add new mlock system call
+  mm: Introduce VM_LOCKONFAULT
+  mm: mlock: Add mlock flags to enable VM_LOCKONFAULT usage
+  mm: mmap: Add mmap flag to request VM_LOCKONFAULT
+  selftests: vm: Add tests for lock on fault
+  mips: Add entry for new mlock2 syscall
+
+ arch/alpha/include/uapi/asm/mman.h          |   5 +
+ arch/mips/include/uapi/asm/mman.h           |   8 +
+ arch/mips/include/uapi/asm/unistd.h         |  15 +-
+ arch/mips/kernel/scall32-o32.S              |   1 +
+ arch/mips/kernel/scall64-64.S               |   1 +
+ arch/mips/kernel/scall64-n32.S              |   1 +
+ arch/mips/kernel/scall64-o32.S              |   1 +
+ arch/parisc/include/uapi/asm/mman.h         |   5 +
+ arch/powerpc/include/uapi/asm/mman.h        |   5 +
+ arch/sparc/include/uapi/asm/mman.h          |   5 +
+ arch/tile/include/uapi/asm/mman.h           |   9 +
+ arch/x86/entry/syscalls/syscall_32.tbl      |   1 +
+ arch/x86/entry/syscalls/syscall_64.tbl      |   1 +
+ arch/xtensa/include/uapi/asm/mman.h         |   8 +
+ drivers/gpu/drm/drm_vm.c                    |   8 +-
+ fs/proc/task_mmu.c                          |   1 +
+ include/linux/mm.h                          |   2 +
+ include/linux/mman.h                        |   3 +-
+ include/linux/syscalls.h                    |   2 +
+ include/uapi/asm-generic/mman.h             |   5 +
+ include/uapi/asm-generic/unistd.h           |   4 +-
+ kernel/events/core.c                        |   3 +-
+ kernel/fork.c                               |   2 +-
+ kernel/sys_ni.c                             |   1 +
+ mm/debug.c                                  |   1 +
+ mm/gup.c                                    |  10 +-
+ mm/huge_memory.c                            |   2 +-
+ mm/hugetlb.c                                |   4 +-
+ mm/mlock.c                                  |  77 +++--
+ mm/mmap.c                                   |  10 +-
+ mm/rmap.c                                   |   4 +-
+ tools/testing/selftests/vm/Makefile         |   3 +
+ tools/testing/selftests/vm/lock-on-fault.c  | 344 +++++++++++++++++++
+ tools/testing/selftests/vm/mlock2-tests.c   | 507 ++++++++++++++++++++++++++++
+ tools/testing/selftests/vm/on-fault-limit.c |  47 +++
+ tools/testing/selftests/vm/run_vmtests      |  33 ++
+ 36 files changed, 1093 insertions(+), 46 deletions(-)
+ create mode 100644 tools/testing/selftests/vm/lock-on-fault.c
+ create mode 100644 tools/testing/selftests/vm/mlock2-tests.c
+ create mode 100644 tools/testing/selftests/vm/on-fault-limit.c
+
+Cc: Shuah Khan <shuahkh@osg.samsung.com>
+Cc: Michal Hocko <mhocko@suse.cz>
+Cc: Michael Kerrisk <mtk.manpages@gmail.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: linux-alpha@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-mips@linux-mips.org
+Cc: linux-parisc@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: sparclinux@vger.kernel.org
+Cc: linux-xtensa@linux-xtensa.org
+Cc: linux-mm@kvack.org
+Cc: linux-arch@vger.kernel.org
+Cc: linux-api@vger.kernel.org
+
+
 -- 
-2.4.6
+1.9.1

@@ -1,67 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Sep 2015 00:26:03 +0200 (CEST)
-Received: from youngberry.canonical.com ([91.189.89.112]:41865 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27009006AbbIUW0BlmYoN (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 22 Sep 2015 00:26:01 +0200
-Received: from 1.general.kamal.us.vpn ([10.172.68.52] helo=fourier)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:DHE_RSA_AES_128_CBC_SHA1:16)
-        (Exim 4.76)
-        (envelope-from <kamal@canonical.com>)
-        id 1Ze9X7-0006n8-59; Mon, 21 Sep 2015 22:26:01 +0000
-Received: from kamal by fourier with local (Exim 4.82)
-        (envelope-from <kamal@whence.com>)
-        id 1Ze9X4-0004RW-Uw; Mon, 21 Sep 2015 15:25:58 -0700
-From:   Kamal Mostafa <kamal@canonical.com>
-To:     James Hogan <james.hogan@imgtec.com>
-Cc:     Markos Chandras <markos.chandras@imgtec.com>,
-        Leonid Yegoshin <leonid.yegoshin@imgtec.com>,
-        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
-        Kamal Mostafa <kamal@canonical.com>,
-        kernel-team@lists.ubuntu.com
-Subject: [3.19.y-ckt stable] Patch "MIPS: show_stack: Fix stack trace with EVA" has been added to staging queue
-Date:   Mon, 21 Sep 2015 15:25:58 -0700
-Message-Id: <1442874358-17048-1-git-send-email-kamal@canonical.com>
-X-Mailer: git-send-email 1.9.1
-X-Extended-Stable: 3.19
-Return-Path: <kamal@canonical.com>
-X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
-X-Orcpt: rfc822;linux-mips@linux-mips.org
-Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49255
-X-ecartis-version: Ecartis v1.0.0
-Sender: linux-mips-bounce@linux-mips.org
-Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kamal@canonical.com
-Precedence: bulk
-List-help: <mailto:ecartis@linux-mips.org?Subject=help>
-List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
-List-software: Ecartis version 1.0.0
-List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
-X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
-List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
-List-owner: <mailto:ralf@linux-mips.org>
-List-post: <mailto:linux-mips@linux-mips.org>
-List-archive: <http://www.linux-mips.org/archives/linux-mips/>
-X-list: linux-mips
+From: James Hogan <james.hogan@imgtec.com>
+Date: Mon, 27 Jul 2015 13:50:22 +0100
+Subject: MIPS: show_stack: Fix stack trace with EVA
+Message-ID: <20150727125022.b4mxa5sHHp5wtHuHjzotWA8He9IpzMtylXm5ca4JZ2I@z>
 
-This is a note to let you know that I have just added a patch titled
+commit 1e77863a51698c4319587df34171bd823691a66a upstream.
 
-    MIPS: show_stack: Fix stack trace with EVA
+The show_stack() function deals exclusively with kernel contexts, but if
+it gets called in user context with EVA enabled, show_stacktrace() will
+attempt to access the stack using EVA accesses, which will either read
+other user mapped data, or more likely cause an exception which will be
+handled by __get_user().
 
-to the linux-3.19.y-queue branch of the 3.19.y-ckt extended stable tree 
-which can be found at:
+This is easily reproduced using SysRq t to show all task states, which
+results in the following stack dump output:
 
-    http://kernel.ubuntu.com/git/ubuntu/linux.git/log/?h=linux-3.19.y-queue
+ Stack : (Bad stack address)
 
-This patch is scheduled to be released in version 3.19.8-ckt7.
+Fix by setting the current user access mode to kernel around the call to
+show_stacktrace(). This causes __get_user() to use normal loads to read
+the kernel stack.
 
-If you, or anyone else, feels it should not be added to this tree, please 
-reply to this email.
+Now we get the correct output, like this:
 
-For more information about the 3.19.y-ckt tree, see
-https://wiki.ubuntu.com/Kernel/Dev/ExtendedStable
+ Stack : 00000000 80168960 00000000 004a0000 00000000 00000000 8060016c 1f3abd0c
+           1f172cd8 8056f09c 7ff1e450 8014fc3c 00000001 806dd0b0 0000001d 00000002
+           1f17c6a0 1f17c804 1f17c6a0 8066f6e0 00000000 0000000a 00000000 00000000
+           00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+           00000000 00000000 00000000 00000000 00000000 0110e800 1f3abd6c 1f17c6a0
+           ...
 
-Thanks.
--Kamal
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Cc: Markos Chandras <markos.chandras@imgtec.com>
+Cc: Leonid Yegoshin <leonid.yegoshin@imgtec.com>
+Cc: linux-mips@linux-mips.org
+Patchwork: https://patchwork.linux-mips.org/patch/10778/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: Kamal Mostafa <kamal@canonical.com>
+---
+ arch/mips/kernel/traps.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-------
+diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
+index f4aacec..3e0e61f 100644
+--- a/arch/mips/kernel/traps.c
++++ b/arch/mips/kernel/traps.c
+@@ -190,6 +190,7 @@ static void show_stacktrace(struct task_struct *task,
+ void show_stack(struct task_struct *task, unsigned long *sp)
+ {
+ 	struct pt_regs regs;
++	mm_segment_t old_fs = get_fs();
+ 	if (sp) {
+ 		regs.regs[29] = (unsigned long)sp;
+ 		regs.regs[31] = 0;
+@@ -208,7 +209,13 @@ void show_stack(struct task_struct *task, unsigned long *sp)
+ 			prepare_frametrace(&regs);
+ 		}
+ 	}
++	/*
++	 * show_stack() deals exclusively with kernel mode, so be sure to access
++	 * the stack in the kernel (not user) address space.
++	 */
++	set_fs(KERNEL_DS);
+ 	show_stacktrace(task, &regs);
++	set_fs(old_fs);
+ }
+
+ static void show_code(unsigned int __user *pc)
+--
+1.9.1

@@ -1,53 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Jul 2015 21:44:12 +0200 (CEST)
-Received: from bh-25.webhostbox.net ([208.91.199.152]:41203 "EHLO
-        bh-25.webhostbox.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27011018AbbG0ToKqMXFX (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 27 Jul 2015 21:44:10 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=roeck-us.net; s=default;
-        h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date; bh=0BNo5qyx9irDLDoV3K7xgP10irJ8A2UgStIOnfQvwFY=;
-        b=A3BeSeMx+v5PdvEWyTDRKz8YQF00f7IYGn+YVO4SAobcqwRNRQvaxIp+1zAvRUI1mdIwekpSWwvO/IC5V5YPR2JUQRDke2f1ZGK+jYfNAp1pXN5YQ+XZYzVIaz3omtfY+bLKVkc22/Ytp11raAJXWWnhKIXshPVtEirltLqiCwE=;
-Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:55054 helo=localhost)
-        by bh-25.webhostbox.net with esmtpa (Exim 4.85)
-        (envelope-from <linux@roeck-us.net>)
-        id 1ZJoJf-003U3V-NF; Mon, 27 Jul 2015 19:44:04 +0000
-Date:   Mon, 27 Jul 2015 12:44:01 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Paul Burton <paul.burton@imgtec.com>
-Cc:     linux-next@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
-        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
-Subject: Re: Crash in -next due to 'MIPS: Move FP usage checks into
- protected_{save, restore}_fp_context'
-Message-ID: <20150727194401.GC14674@roeck-us.net>
-References: <20150715160918.GA27653@roeck-us.net>
- <20150727150652.GA1756@roeck-us.net>
- <20150727172142.GE7289@NP-P-BURTON>
- <20150727174622.GA10708@roeck-us.net>
- <20150727180442.GG7289@NP-P-BURTON>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Jul 2015 21:58:56 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:47262 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27011094AbbG0T6yTjAXX (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 27 Jul 2015 21:58:54 +0200
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 5F8E7910139F9;
+        Mon, 27 Jul 2015 20:58:44 +0100 (IST)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Mon, 27 Jul 2015 20:58:47 +0100
+Received: from localhost (10.100.200.213) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Mon, 27 Jul
+ 2015 20:58:46 +0100
+From:   Paul Burton <paul.burton@imgtec.com>
+To:     <linux-mips@linux-mips.org>
+CC:     Guenter Roeck <linux@roeck-us.net>,
+        Matthew Fortune <matthew.fortune@imgtec.com>,
+        Paul Burton <paul.burton@imgtec.com>,
+        "Peter Zijlstra" <peterz@infradead.org>,
+        Kees Cook <keescook@chromium.org>,
+        "Leonid Yegoshin" <Leonid.Yegoshin@imgtec.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Ingo Molnar <mingo@kernel.org>, <linux-kernel@vger.kernel.org>,
+        Alex Smith <alex@alex-smith.me.uk>,
+        Huacai Chen <chenhc@lemote.com>,
+        Richard Weinberger <richard@nod.at>,
+        James Hogan <james.hogan@imgtec.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Andy Lutomirski <luto@amacapital.net>,
+        "Zubair Lutfullah Kakakhel" <Zubair.Kakakhel@imgtec.com>,
+        Markos Chandras <markos.chandras@imgtec.com>,
+        Daniel Borkmann <dborkman@redhat.com>,
+        "Ralf Baechle" <ralf@linux-mips.org>,
+        Manuel Lauss <manuel.lauss@gmail.com>,
+        "Maciej W. Rozycki" <macro@codesourcery.com>,
+        "Maciej W. Rozycki" <macro@linux-mips.org>
+Subject: [PATCH v2 00/16] MSA vector context signal handling & HWCAPs
+Date:   Mon, 27 Jul 2015 12:58:11 -0700
+Message-ID: <1438027107-24420-1-git-send-email-paul.burton@imgtec.com>
+X-Mailer: git-send-email 2.4.6
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20150727180442.GG7289@NP-P-BURTON>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-X-Authenticated_sender: guenter@roeck-us.net
-X-OutGoing-Spam-Status: No, score=-1.0
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - bh-25.webhostbox.net
-X-AntiAbuse: Original Domain - linux-mips.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - roeck-us.net
-X-Get-Message-Sender-Via: bh-25.webhostbox.net: authenticated_id: guenter@roeck-us.net
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-Return-Path: <linux@roeck-us.net>
+Content-Type: text/plain
+X-Originating-IP: [10.100.200.213]
+Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48456
+X-archive-position: 48457
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linux@roeck-us.net
+X-original-sender: paul.burton@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -60,46 +63,52 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Jul 27, 2015 at 11:04:42AM -0700, Paul Burton wrote:
-> On Mon, Jul 27, 2015 at 10:46:22AM -0700, Guenter Roeck wrote:
-> > On Mon, Jul 27, 2015 at 10:21:42AM -0700, Paul Burton wrote:
-> > > On Mon, Jul 27, 2015 at 08:06:52AM -0700, Guenter Roeck wrote:
-> > > > On Wed, Jul 15, 2015 at 09:09:18AM -0700, Guenter Roeck wrote:
-> > > > > Hi,
-> > > > 
-> > > > > my qemu test for mipsel crashes with next-20150715 as follows.
-> > > > > 
-> > > > ping ... problem is still seen as of next-20150727.
-> > > 
-> > > Hi Guenter,
-> > > 
-> > > Apologies for the delay. Could you share your affected kernel
-> > > configuration & which userland you're running?
-> > > 
-> > > I've just tested with a malta_defconfig kernel & a buildroot based
-> > > initramfs without problems, and things are also fine on my physical
-> > > MIPSr6 setups. If you have any directions with which I can reproduce
-> > > this problem that would be great.
-> > > 
-> > This is with qemu in little endian mode. Big endian works fine.
-> 
-> Yup, I was using little endian in both cases. malta_defconfig is little
-> endian - sadly use of the el suffix is pretty inconsistent...
-> 
+This series provides the final bits of support for MSA as far as
+userland that isn't a debugger goes. In order to preserve backwards
+compatibility it saves the extended vector context after the end of the
+sigframe or ucontext, at a fixed offset. A bit set in sigcontext's
+sc_used_math field indicates to userland (and to the kernel on
+sigreturn) that the extended context is present.
 
-Hi Paul,
+With these final bits in, the presence of MSA support is indicated via a
+HWCAP bit that userland may check for.
 
-some more data:
+Paul Burton (16):
+  MIPS: remove outdated comments in sigcontext.h
+  MIPS: simplify EVA FP context handling code
+  MIPS: add offsets to sigcontext FP fields to struct mips_abi
+  MIPS: use struct mips_abi offsets to save FP context
+  MIPS: move FP usage checks into protected_{save,restore}_fp_context
+  MIPS: skip odd double FP registers when copying FP32 sigcontext
+  MIPS: use common FP sigcontext code for O32 compat
+  MIPS: remove unused {get,put}_sigset functions
+  MIPS: indicate FP mode in sigcontext sc_used_math
+  MIPS: add definitions for extended context
+  MIPS: save MSA extended context around signals
+  MIPS: AT_HWCAP aux vector infrastructure
+  MIPS: advertise MIPSr6 via HWCAP when appropriate
+  MIPS: advertise MSA support via HWCAP when present
+  MIPS: require O32 FP64 support for MIPS64 with O32 compat
+  MIPS: drop EXPERIMENTAL tag from O32+FP64 & MSA
 
-I tried with mipsel64, using malta_defconfig from 4.2-rc4 as starting point.
-Same failure. All releases from 3.2 up to 4.2-rc4 pass the test, linux-next
-as of today fails.
+ arch/mips/Kconfig                       |   5 +-
+ arch/mips/include/asm/Kbuild            |   1 -
+ arch/mips/include/asm/abi.h             |   4 +
+ arch/mips/include/asm/elf.h             |   4 +-
+ arch/mips/include/asm/signal.h          |   3 +
+ arch/mips/include/uapi/asm/hwcap.h      |   8 +
+ arch/mips/include/uapi/asm/sigcontext.h |  19 +-
+ arch/mips/include/uapi/asm/ucontext.h   |  65 +++++
+ arch/mips/kernel/asm-offsets.c          |  11 -
+ arch/mips/kernel/cpu-probe.c            |   7 +
+ arch/mips/kernel/r4k_fpu.S              | 372 ++++++++++++++-------------
+ arch/mips/kernel/signal-common.h        |   9 +
+ arch/mips/kernel/signal.c               | 429 +++++++++++++++++++++++++-------
+ arch/mips/kernel/signal32.c             | 207 +--------------
+ arch/mips/kernel/signal_n32.c           |   6 +-
+ 15 files changed, 660 insertions(+), 490 deletions(-)
+ create mode 100644 arch/mips/include/uapi/asm/hwcap.h
+ create mode 100644 arch/mips/include/uapi/asm/ucontext.h
 
-Here is the log:
-
-http://server.roeck-us.net:8010/builders/qemu-mipsel64-next/builds/0/steps/qemubuildcommand/logs/stdio
-
-I pushed the initramfs, configuration, and test script into rootfs/mipsel64
-of https://github.com/groeck/linux-build-test.
-
-Guenter
+-- 
+2.4.6

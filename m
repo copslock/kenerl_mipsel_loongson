@@ -1,57 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Jul 2015 15:41:34 +0200 (CEST)
-Received: from prod-mail-xrelay02.akamai.com ([72.246.2.14]:33484 "EHLO
-        prod-mail-xrelay02.akamai.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011267AbbG0Nlc4TKId (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 27 Jul 2015 15:41:32 +0200
-Received: from prod-mail-xrelay02.akamai.com (localhost [127.0.0.1])
-        by postfix.imss70 (Postfix) with ESMTP id D37632910A;
-        Mon, 27 Jul 2015 13:41:26 +0000 (GMT)
-Received: from prod-mail-relay07.akamai.com (prod-mail-relay07.akamai.com [172.17.121.112])
-        by prod-mail-xrelay02.akamai.com (Postfix) with ESMTP id B426729108;
-        Mon, 27 Jul 2015 13:41:26 +0000 (GMT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=akamai.com; s=a1;
-        t=1438004486; bh=6ZTcn0BlOfeP5Kg5kDjqMu1ahy3sj5ESSsFnXejQOt4=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=FgOnD3VFiXadnTiq7AixCjDZav2T5eJ31qbo9hdCNFhnWz8pyKQx3NlxYSD0rR+LB
-         3czGbDGHax2npXzvXY2CMcKYm2aT3fUHV2+PuKbLDm1hrcbtUNuy9FEle0CVOB/kpK
-         RD6N5eMlT/LTmmkJlG+ZRgDPQvpxTZcyygUygjqg=
-Received: from akamai.com (lappy-486.kendall.corp.akamai.com [172.28.12.253])
-        by prod-mail-relay07.akamai.com (Postfix) with ESMTP id ACC868008B;
-        Mon, 27 Jul 2015 13:41:26 +0000 (GMT)
-Date:   Mon, 27 Jul 2015 09:41:26 -0400
-From:   Eric B Munson <emunson@akamai.com>
-To:     "Kirill A. Shutemov" <kirill@shutemov.name>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        Michal Hocko <mhocko@suse.cz>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Paul Gortmaker <paul.gortmaker@windriver.com>,
-        Chris Metcalf <cmetcalf@ezchip.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mips@linux-mips.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org, linux-mm@kvack.org,
-        linux-arch@vger.kernel.org, linux-api@vger.kernel.org
-Subject: Re: [PATCH V5 5/7] mm: mmap: Add mmap flag to request VM_LOCKONFAULT
-Message-ID: <20150727134126.GB17133@akamai.com>
-References: <1437773325-8623-1-git-send-email-emunson@akamai.com>
- <1437773325-8623-6-git-send-email-emunson@akamai.com>
- <20150727073129.GE11657@node.dhcp.inet.fi>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Jul 2015 16:01:28 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:25968 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27011280AbbG0OB1MmvMd (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 27 Jul 2015 16:01:27 +0200
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 7524A41B50768;
+        Mon, 27 Jul 2015 15:01:18 +0100 (IST)
+Received: from hhmail02.hh.imgtec.org (10.100.10.20) by KLMAIL01.kl.imgtec.org
+ (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Mon, 27 Jul
+ 2015 15:01:21 +0100
+Received: from imgworks-VB.kl.imgtec.org (192.168.167.141) by
+ hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
+ 14.3.235.1; Mon, 27 Jul 2015 15:01:20 +0100
+From:   Govindraj Raja <govindraj.raja@imgtec.com>
+To:     <linux-kernel@vger.kernel.org>, <linux-mips@linux-mips.org>,
+        "Daniel Lezcano" <daniel.lezcano@linaro.org>,
+        <devicetree@vger.kernel.org>
+CC:     Thomas Gleixner <tglx@linutronix.de>,
+        Andrew Bresticker <abrestic@chromium.org>,
+        James Hartley <James.Hartley@imgtec.com>,
+        "Govindraj Raja" <Govindraj.Raja@imgtec.com>,
+        Damien Horsley <Damien.Horsley@imgtec.com>,
+        James Hogan <James.Hogan@imgtec.com>,
+        Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>,
+        Ezequiel Garcia <ezequiel.garcia@imgtec.com>
+Subject: [PATCH v4 0/7] Clocksource changes for Pistachio CPUFreq.
+Date:   Mon, 27 Jul 2015 15:00:11 +0100
+Message-ID: <1438005618-27003-1-git-send-email-govindraj.raja@imgtec.com>
+X-Mailer: git-send-email 1.9.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="H1spWtNR+x+ondvy"
-Content-Disposition: inline
-In-Reply-To: <20150727073129.GE11657@node.dhcp.inet.fi>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <emunson@akamai.com>
+Content-Type: text/plain
+X-Originating-IP: [192.168.167.141]
+Return-Path: <Govindraj.Raja@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48437
+X-archive-position: 48438
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: emunson@akamai.com
+X-original-sender: govindraj.raja@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -64,61 +52,76 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+From: Ezequiel Garcia <ezequiel.garcia@imgtec.com>
 
---H1spWtNR+x+ondvy
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+The purpose of this patchset is to support CPUFreq on Pistachio SoC.
+However, given Pistachio uses the MIPS GIC clocksource and clockevent drivers
+(clocked from the CPU), adding CPUFreq support needs some work.
 
-On Mon, 27 Jul 2015, Kirill A. Shutemov wrote:
+This patchset changes the MIPS GIC clockevent driver to update the frequency of
+the per-cpu clockevents using a clock notifier.
 
-> On Fri, Jul 24, 2015 at 05:28:43PM -0400, Eric B Munson wrote:
-> > The cost of faulting in all memory to be locked can be very high when
-> > working with large mappings.  If only portions of the mapping will be
-> > used this can incur a high penalty for locking.
-> >=20
-> > Now that we have the new VMA flag for the locked but not present state,
-> > expose it as an mmap option like MAP_LOCKED -> VM_LOCKED.
->=20
-> As I mentioned before, I don't think this interface is justified.
->=20
-> MAP_LOCKED has known issues[1]. The MAP_LOCKED problem is not necessary
-> affects MAP_LOCKONFAULT, but still.
->=20
-> Let's not add new interface unless it's demonstrably useful.
->=20
-> [1] http://lkml.kernel.org/g/20150114095019.GC4706@dhcp22.suse.cz
+Then, we add a clocksource driver for IMG Pistachio SoC, based on the 
+general purpose timers. The SoC only provides four timers, so we can't
+use them to implement the four clockevents and the clocksource.
 
-I understand and should have been more explicit.  This patch is still
-included becuase I have an internal user that wants to see it added.
-The problem discussed in the thread you point out does not affect
-MAP_LOCKONFAULT because we do not attempt to populate the region with
-MAP_LOCKONFAULT.
+However, we can use one of these timers to provide a clocksource and a
+sched clock. Given the general purpose timers are clocked from the peripheral
+system clock tree, they are not affected by CPU rate changes.
 
-As I told Vlastimil, if this is a hard NAK with the patch I can work
-with that.  Otherwise I prefer it stays.
+Patches 1 to 3 are just style cleaning and preparation work.
+Patch 4 adds the clockevent frequency update.
+Patches 5 and 6 add the new clocksource driver.
+Patch 7 introduces an option to enable the timer based clocksource on Pistachio.
+
+For CPUFreq to really work, clk driver changes are needed to support MIPS PLL
+clock rate change. Patches for this will be posted soon.
+
+This series apply on v4.2-rc3. As always, comments and feedback are welcome!
+
+Tested on Pistachio-Bring-up-Board.
+Patch series based on 4.2-rc3.
+
+Changes from v3:
+---------------
+No Changes from v2 re-posting the series again.
+
+Changes from v2:
+---------------
+   * Fix spacing for consistency as pointed out by Sergei.
+
+Changes since v1
+----------------
+
+Addressed review comments by Andrew:
+   * Fix typo
+   * Fix style issues
+   * Use readl/writel accessors instead of raw variants
+   * Drop spurious comment and of_device_id table
+   * Add a pistachio_ prefix to clocksource functions
 
 
---H1spWtNR+x+ondvy
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+Ezequiel Garcia (7):
+  clocksource: mips-gic: Enable the clock before using it
+  clocksource: mips-gic: Add missing error returns checks
+  clocksource: mips-gic: Split clocksource and clockevent initialization
+  clocksource: mips-gic: Update clockevent frequency on clock rate
+    changes
+  clocksource: Add Pistachio SoC general purpose timer binding document
+  clocksource: Add Pistachio clocksource-only driver
+  mips: pistachio: Allow to enable the external timer based clocksource
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
+ .../bindings/timer/img,pistachio-gptimer.txt       |  28 +++
+ arch/mips/Kconfig                                  |   1 +
+ arch/mips/pistachio/Kconfig                        |  13 ++
+ drivers/clocksource/Kconfig                        |   4 +
+ drivers/clocksource/Makefile                       |   1 +
+ drivers/clocksource/mips-gic-timer.c               |  65 ++++++-
+ drivers/clocksource/time-pistachio.c               | 194 +++++++++++++++++++++
+ 7 files changed, 297 insertions(+), 9 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/timer/img,pistachio-gptimer.txt
+ create mode 100644 arch/mips/pistachio/Kconfig
+ create mode 100644 drivers/clocksource/time-pistachio.c
 
-iQIcBAEBAgAGBQJVtjUGAAoJELbVsDOpoOa9FEQP/0tZqvE9r1cDWHP2fRNfVeMA
-4SA6NwWvWAlS3Jyzwqin6jEPfTp5mp9XmBs2OSFCUtRM4gheS+V0qm4UMCoUUe8V
-1biXRm6JAcqlQ9RaQsIleuwtu6rfq/VmPvyXfoh2VzHtHkfJH1es+IuzyMvN8rB2
-+dMOrDXpr0TGzV2pUXmpqvJV9XCuJJqC2EUp3ygCjCsxtir7que+hBurNHk6V37o
-SJPg+1fOfKlZC2JoH1e3nlaNa8E7Tgn3CcaS95PJGtjp3B3B/WFHyQsV7ICDCPph
-p1DS8lNn1AHvC8Ia1b9q9k6iuPVpunFRthVyXLfDtb7UVDxyDBAbBArQMlSqdS98
-7s+Am4nRAqQ4hyvCrfFbkXyplihX34uwmi263r7pAPizwJRx/ArnJk+EJK6Qclp+
-aiL2BO8PJR2vPi7BfsPSBcgd68iEeCCsOpNGD3GyQ3C5tdtZK/MaDmZm2cCdzaZg
-pWkEgj3oi8jiTD59NskpqqsmtWahucR6HVXAF6DNvZXypigq+uvnaqImEOxpOEQR
-h1zR5O8L5jnZO1BYAHpJO1+16ZAPcNa2tF20OcxsAvcGvblbFNYG1jzAE6w9FGbz
-Qr4VU8B1u/IiDGuHNroiwrTOlN7Tn7wYN0/bstOPk3UavEmg3wEuOaaQat2CU7pC
-rLymWmGP9Rc0+NgO/vMz
-=Leis
------END PGP SIGNATURE-----
-
---H1spWtNR+x+ondvy--
+-- 
+1.9.1

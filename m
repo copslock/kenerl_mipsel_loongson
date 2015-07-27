@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Jul 2015 20:17:57 +0200 (CEST)
-Received: from bh-25.webhostbox.net ([208.91.199.152]:53956 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Jul 2015 21:44:12 +0200 (CEST)
+Received: from bh-25.webhostbox.net ([208.91.199.152]:41203 "EHLO
         bh-25.webhostbox.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27011332AbbG0SR4NWIHz (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 27 Jul 2015 20:17:56 +0200
+        with ESMTP id S27011018AbbG0ToKqMXFX (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 27 Jul 2015 21:44:10 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=roeck-us.net; s=default;
-        h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date; bh=iho/16RjVdLFQOBVoPa4gH2Zag16zAr6AKuXG3bKiAc=;
-        b=Lw3J5VD5chkN0SGScBW0WPluRQ9q+KtfmJ3ZJCOeL4kHqcoswJ3W1rV4nRXXarf9kGQTVfW+K7r/9x884PbwDjLlGNea3xQQE7C/9gIa2INH2zzAFmP6hN8ebNGXs4dGzQGeAbmdv90wYiXZtLPgOPRl5GZq/pMLUgAtPKKDglU=;
-Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:54809 helo=localhost)
+        h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date; bh=0BNo5qyx9irDLDoV3K7xgP10irJ8A2UgStIOnfQvwFY=;
+        b=A3BeSeMx+v5PdvEWyTDRKz8YQF00f7IYGn+YVO4SAobcqwRNRQvaxIp+1zAvRUI1mdIwekpSWwvO/IC5V5YPR2JUQRDke2f1ZGK+jYfNAp1pXN5YQ+XZYzVIaz3omtfY+bLKVkc22/Ytp11raAJXWWnhKIXshPVtEirltLqiCwE=;
+Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:55054 helo=localhost)
         by bh-25.webhostbox.net with esmtpa (Exim 4.85)
         (envelope-from <linux@roeck-us.net>)
-        id 1ZJmyD-002iyV-7h; Mon, 27 Jul 2015 18:17:49 +0000
-Date:   Mon, 27 Jul 2015 11:17:47 -0700
+        id 1ZJoJf-003U3V-NF; Mon, 27 Jul 2015 19:44:04 +0000
+Date:   Mon, 27 Jul 2015 12:44:01 -0700
 From:   Guenter Roeck <linux@roeck-us.net>
 To:     Paul Burton <paul.burton@imgtec.com>
 Cc:     linux-next@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
         linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
 Subject: Re: Crash in -next due to 'MIPS: Move FP usage checks into
  protected_{save, restore}_fp_context'
-Message-ID: <20150727181747.GA20077@roeck-us.net>
+Message-ID: <20150727194401.GC14674@roeck-us.net>
 References: <20150715160918.GA27653@roeck-us.net>
  <20150727150652.GA1756@roeck-us.net>
  <20150727172142.GE7289@NP-P-BURTON>
@@ -43,7 +43,7 @@ Return-Path: <linux@roeck-us.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48455
+X-archive-position: 48456
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -66,7 +66,7 @@ On Mon, Jul 27, 2015 at 11:04:42AM -0700, Paul Burton wrote:
 > > > On Mon, Jul 27, 2015 at 08:06:52AM -0700, Guenter Roeck wrote:
 > > > > On Wed, Jul 15, 2015 at 09:09:18AM -0700, Guenter Roeck wrote:
 > > > > > Hi,
-> > > > > 
+> > > > 
 > > > > > my qemu test for mipsel crashes with next-20150715 as follows.
 > > > > > 
 > > > > ping ... problem is still seen as of next-20150727.
@@ -86,22 +86,20 @@ On Mon, Jul 27, 2015 at 11:04:42AM -0700, Paul Burton wrote:
 > Yup, I was using little endian in both cases. malta_defconfig is little
 > endian - sadly use of the el suffix is pretty inconsistent...
 > 
-Interesting.
 
-> > The configuration, the script to build and run the kernel, 
-> > and the root file system used are are available at
-> > https://github.com/groeck/linux-build-test, in directory
-> > rootfs/mipsel/. The log for the latest build failure is in
-> > http://server.roeck-us.net:8010/builders/qemu-mipsel-next/builds/194/steps/qemubuildcommand/logs/stdio.
-> 
-> Thanks for the pointers, I'm able to reproduce it using your config and
-> initramfs, and I'll dig into what's going on here.
-> 
-Let me know what you find. Maybe something is wrong with my configuration
-or initramfs, but it is odd that I didn't see the problem earlier.
+Hi Paul,
 
-Unfortunately I don't recall where I got the configuration from.
-Guess I should keep notes :-(.
+some more data:
 
-Thanks,
+I tried with mipsel64, using malta_defconfig from 4.2-rc4 as starting point.
+Same failure. All releases from 3.2 up to 4.2-rc4 pass the test, linux-next
+as of today fails.
+
+Here is the log:
+
+http://server.roeck-us.net:8010/builders/qemu-mipsel64-next/builds/0/steps/qemubuildcommand/logs/stdio
+
+I pushed the initramfs, configuration, and test script into rootfs/mipsel64
+of https://github.com/groeck/linux-build-test.
+
 Guenter

@@ -1,34 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Jul 2015 16:04:05 +0200 (CEST)
-Received: from mail-wi0-f171.google.com ([209.85.212.171]:35180 "EHLO
-        mail-wi0-f171.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011327AbbG0OEDvp1Td (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 27 Jul 2015 16:04:03 +0200
-Received: by wibxm9 with SMTP id xm9so114294750wib.0
-        for <linux-mips@linux-mips.org>; Mon, 27 Jul 2015 07:03:58 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-type:content-disposition:in-reply-to
-         :user-agent;
-        bh=NVtlRwEH+9fXuOZWWkQAoqqSwJSMJwMXMF4EIN9MwiI=;
-        b=aRF5Op7Nz54O6tcI8Qe2ScPuKUQPdN+bHjy8Uv6S9aNSkpBamkTm5aD3L+KxYmVG9e
-         4Y1rlDobk/guzcbtLCZZtjqUHS4iBehR8SsUbPDuEwqaQa71Zv9ehkb3/W90hlvKrahp
-         SjDARfKW0qorH/URZijCTJ5p4ASYohnAc0FWUYeGxTYX9VIvjvqTgGBx/Rkn24SlQOZB
-         10i4ccgb3hAJP/tehXUtfcmWtwlyLeKBSf8XaaHY/zcMo+o17nsbRpdPcUgqtGFNwmQa
-         ngSEdLEjTOQ671Ly7434BGhdB2V1/bYMTAOg5oTf8WGM2tDbElcCGX45oJN4QDXY9OYb
-         whmQ==
-X-Gm-Message-State: ALoCoQl32TpxY+PT2vbXqw5Vr1aQsQiBBE9iTuo8hxRcXPDFOddSpEU5v+lRTpjiRe/DxIUm2+nT
-X-Received: by 10.194.60.131 with SMTP id h3mr54229573wjr.156.1438005838509;
-        Mon, 27 Jul 2015 07:03:58 -0700 (PDT)
-Received: from node.shutemov.name (dsl-espbrasgw1-54f9d4-72.dhcp.inet.fi. [84.249.212.72])
-        by smtp.gmail.com with ESMTPSA id ib9sm28122090wjb.2.2015.07.27.07.03.56
-        (version=TLSv1.2 cipher=AES128-GCM-SHA256 bits=128/128);
-        Mon, 27 Jul 2015 07:03:57 -0700 (PDT)
-Received: by node.shutemov.name (Postfix, from userid 1000)
-        id 937B866C9FA3; Mon, 27 Jul 2015 17:03:55 +0300 (EEST)
-Date:   Mon, 27 Jul 2015 17:03:55 +0300
-From:   "Kirill A. Shutemov" <kirill@shutemov.name>
-To:     Eric B Munson <emunson@akamai.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Jul 2015 16:11:39 +0200 (CEST)
+Received: from a23-79-238-175.deploy.static.akamaitechnologies.com ([23.79.238.175]:20602
+        "EHLO prod-mail-xrelay07.akamai.com" rhost-flags-OK-FAIL-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011309AbbG0OLh67AUd (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 27 Jul 2015 16:11:37 +0200
+Received: from prod-mail-xrelay07.akamai.com (localhost.localdomain [127.0.0.1])
+        by postfix.imss70 (Postfix) with ESMTP id C8BC547FA3;
+        Mon, 27 Jul 2015 14:11:31 +0000 (GMT)
+Received: from prod-mail-relay07.akamai.com (prod-mail-relay07.akamai.com [172.17.121.112])
+        by prod-mail-xrelay07.akamai.com (Postfix) with ESMTP id A298247F7E;
+        Mon, 27 Jul 2015 14:11:31 +0000 (GMT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=akamai.com; s=a1;
+        t=1438006291; bh=ve6Wy1C18OUKWdLDfZTbZXLDIviZduESYpbxJMT4FIk=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=yKNIOI7MBuAUUq3sjHXO7MzztZ7IqNwBaV3Ud3Jnk4UFZI6qJwuIb7HuNtlsRF9wE
+         Ee2kndLTuUf1B+rEdc5qT0jz7yEbdCMGvyk0vfLS2hMXLWXmk2YfTTn4UwmGNzEqxG
+         Q/5thnIg5w9p0P9kGwoetzjWW2KMPWqlZFD79ddw=
+Received: from akamai.com (lappy-486.kendall.corp.akamai.com [172.28.12.253])
+        by prod-mail-relay07.akamai.com (Postfix) with ESMTP id 9A76A8008B;
+        Mon, 27 Jul 2015 14:11:31 +0000 (GMT)
+Date:   Mon, 27 Jul 2015 10:11:31 -0400
+From:   Eric B Munson <emunson@akamai.com>
+To:     "Kirill A. Shutemov" <kirill@shutemov.name>
 Cc:     Andrew Morton <akpm@linux-foundation.org>,
         Michal Hocko <mhocko@suse.cz>,
         Vlastimil Babka <vbabka@suse.cz>,
@@ -41,25 +33,27 @@ Cc:     Andrew Morton <akpm@linux-foundation.org>,
         linux-xtensa@linux-xtensa.org, linux-mm@kvack.org,
         linux-arch@vger.kernel.org, linux-api@vger.kernel.org
 Subject: Re: [PATCH V5 5/7] mm: mmap: Add mmap flag to request VM_LOCKONFAULT
-Message-ID: <20150727140355.GA11360@node.dhcp.inet.fi>
+Message-ID: <20150727141131.GA21664@akamai.com>
 References: <1437773325-8623-1-git-send-email-emunson@akamai.com>
  <1437773325-8623-6-git-send-email-emunson@akamai.com>
  <20150727073129.GE11657@node.dhcp.inet.fi>
  <20150727134126.GB17133@akamai.com>
+ <20150727140355.GA11360@node.dhcp.inet.fi>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="azLHFNyN32YCQGCU"
 Content-Disposition: inline
-In-Reply-To: <20150727134126.GB17133@akamai.com>
-User-Agent: Mutt/1.5.23.1 (2014-03-12)
-Return-Path: <kirill@shutemov.name>
+In-Reply-To: <20150727140355.GA11360@node.dhcp.inet.fi>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <emunson@akamai.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48446
+X-archive-position: 48447
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kirill@shutemov.name
+X-original-sender: emunson@akamai.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -72,42 +66,90 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Jul 27, 2015 at 09:41:26AM -0400, Eric B Munson wrote:
-> On Mon, 27 Jul 2015, Kirill A. Shutemov wrote:
-> 
-> > On Fri, Jul 24, 2015 at 05:28:43PM -0400, Eric B Munson wrote:
-> > > The cost of faulting in all memory to be locked can be very high when
-> > > working with large mappings.  If only portions of the mapping will be
-> > > used this can incur a high penalty for locking.
-> > > 
-> > > Now that we have the new VMA flag for the locked but not present state,
-> > > expose it as an mmap option like MAP_LOCKED -> VM_LOCKED.
-> > 
-> > As I mentioned before, I don't think this interface is justified.
-> > 
-> > MAP_LOCKED has known issues[1]. The MAP_LOCKED problem is not necessary
-> > affects MAP_LOCKONFAULT, but still.
-> > 
-> > Let's not add new interface unless it's demonstrably useful.
-> > 
-> > [1] http://lkml.kernel.org/g/20150114095019.GC4706@dhcp22.suse.cz
-> 
-> I understand and should have been more explicit.  This patch is still
-> included becuase I have an internal user that wants to see it added.
-> The problem discussed in the thread you point out does not affect
-> MAP_LOCKONFAULT because we do not attempt to populate the region with
-> MAP_LOCKONFAULT.
-> 
-> As I told Vlastimil, if this is a hard NAK with the patch I can work
-> with that.  Otherwise I prefer it stays.
 
-That's not how it works.
+--azLHFNyN32YCQGCU
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Once an ABI added to the kernel it stays there practically forever.
-Therefore it must be useful to justify maintenance cost. I don't see it
-demonstrated.
+On Mon, 27 Jul 2015, Kirill A. Shutemov wrote:
 
-So, NAK.
+> On Mon, Jul 27, 2015 at 09:41:26AM -0400, Eric B Munson wrote:
+> > On Mon, 27 Jul 2015, Kirill A. Shutemov wrote:
+> >=20
+> > > On Fri, Jul 24, 2015 at 05:28:43PM -0400, Eric B Munson wrote:
+> > > > The cost of faulting in all memory to be locked can be very high wh=
+en
+> > > > working with large mappings.  If only portions of the mapping will =
+be
+> > > > used this can incur a high penalty for locking.
+> > > >=20
+> > > > Now that we have the new VMA flag for the locked but not present st=
+ate,
+> > > > expose it as an mmap option like MAP_LOCKED -> VM_LOCKED.
+> > >=20
+> > > As I mentioned before, I don't think this interface is justified.
+> > >=20
+> > > MAP_LOCKED has known issues[1]. The MAP_LOCKED problem is not necessa=
+ry
+> > > affects MAP_LOCKONFAULT, but still.
+> > >=20
+> > > Let's not add new interface unless it's demonstrably useful.
+> > >=20
+> > > [1] http://lkml.kernel.org/g/20150114095019.GC4706@dhcp22.suse.cz
+> >=20
+> > I understand and should have been more explicit.  This patch is still
+> > included becuase I have an internal user that wants to see it added.
+> > The problem discussed in the thread you point out does not affect
+> > MAP_LOCKONFAULT because we do not attempt to populate the region with
+> > MAP_LOCKONFAULT.
+> >=20
+> > As I told Vlastimil, if this is a hard NAK with the patch I can work
+> > with that.  Otherwise I prefer it stays.
+>=20
+> That's not how it works.
 
--- 
- Kirill A. Shutemov
+I am not sure what you mean here.  I have a user that will find this
+useful and MAP_LOCKONFAULT does not suffer from the problem you point
+out.  I do not understand your NAK but thank you for explicit about it.
+
+>=20
+> Once an ABI added to the kernel it stays there practically forever.
+> Therefore it must be useful to justify maintenance cost. I don't see it
+> demonstrated.
+
+I understand this, and I get that you do not like MAP_LOCKED, but I do
+not see how your dislike for MAP_LOCKED means that this would not be
+useful.
+
+>=20
+> So, NAK.
+>=20
+
+V6 will not have the new mmap flag unless there is someone else that
+speaks up in favor of keeping it.
+
+
+--azLHFNyN32YCQGCU
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
+
+iQIcBAEBAgAGBQJVtjwTAAoJELbVsDOpoOa9cywQAMOd32FQcpI15XIUZk3SBUeg
+/oa/5375ZFZqvbJHZn4iTFt4FxbvYUJPsAkWxH92nUQjdWBleVEUKhUs+K3tEz85
+yNtsDJFuMlR07fY75oqz5LqorrMwHw1CNDXj32ADaPg+hxdPwMH9HUC2AeKIwv4E
+lOhyZdUqfgLn0uYnJNhoDSqoFENCiFvX3jZsGszbfsEljPe/PfgwIJVCZP+R9p0X
+oQ/u0MXGHLLOagPVFlXh3lkj8Q/C+/PiT8ubQUIdcsz//0E9mB+X7M+Za2hWtU6A
+QUclnufc6+D7FGwq6zVKb5AEyDg2WVuGK/jWO44a9bAlZxVpttsGaobdQoz2Xs8r
+mWZ0VQxSJIPoXFJ3ggCgJQYCQtZWOiHPfotP3w4ba6rMEP1M/AG5F7aTFEEkxPdv
+wVCDab4asBJMZHRKxlyK2KX2sXclOc9eJ1BqC1EZmNjDcrxxAwoeb1+8ZjOkeOH5
+S1bPWdotTfQemH6iJulJP+GVtjo0fUw1S+tpiapJu16NfiUvS2bjAczwjgu9pE1Y
+LW3JC/MVfD13DVSDwHEmuIelWOlRyqsiFm86FZz2pXkocSISzESCk3otqJv8f3iN
+M3xYGJIlyFxPgelUcPbkqh/G4g3+tVC4d3zhxLVfUJMUhWHZlKYr2pgNhii4Yty8
+HUDKoUVYKSp1f5/jOB+f
+=vq9F
+-----END PGP SIGNATURE-----
+
+--azLHFNyN32YCQGCU--

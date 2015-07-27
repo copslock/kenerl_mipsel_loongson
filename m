@@ -1,44 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Jul 2015 23:29:52 +0200 (CEST)
-Received: from prod-mail-xrelay02.akamai.com ([72.246.2.14]:33885 "EHLO
-        prod-mail-xrelay02.akamai.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011125AbbGXV2yEwovk (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 24 Jul 2015 23:28:54 +0200
-Received: from prod-mail-xrelay02.akamai.com (localhost [127.0.0.1])
-        by postfix.imss70 (Postfix) with ESMTP id 32CF029900;
-        Fri, 24 Jul 2015 21:28:48 +0000 (GMT)
-Received: from prod-mail-relay07.akamai.com (prod-mail-relay07.akamai.com [172.17.121.112])
-        by prod-mail-xrelay02.akamai.com (Postfix) with ESMTP id 0371B29903;
-        Fri, 24 Jul 2015 21:28:48 +0000 (GMT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=akamai.com; s=a1;
-        t=1437773328; bh=jS+fFLl8dYu6QFp77SQoDdIMt8y/vbMvRKACcmNUaKA=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=I/hEyZFuejYCmOxUJFY3E/zcUKZgL7doq9sP3640qmAy3g7ecE+/qypa+H/qq4XPz
-         zafPoHD1AEOjUxet2kLM/w46cJP836gDvkakAtF3jUuDVwpBKGBxBBfXHauKqfCrCJ
-         /+DuIl9fOfUokB4vT0BKZH83q9/rHhP8gthuLmv4=
-Received: from bos-lp6ds.kendall.corp.akamai.com (unknown [172.28.12.165])
-        by prod-mail-relay07.akamai.com (Postfix) with ESMTP id DCAF180891;
-        Fri, 24 Jul 2015 21:28:47 +0000 (GMT)
-From:   Eric B Munson <emunson@akamai.com>
-To:     Andrew Morton <akpm@linux-foundation.org>
-Cc:     Eric B Munson <emunson@akamai.com>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        linux-api@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: [PATCH V5 7/7] mips: Add entry for new mlock2 syscall
-Date:   Fri, 24 Jul 2015 17:28:45 -0400
-Message-Id: <1437773325-8623-8-git-send-email-emunson@akamai.com>
-X-Mailer: git-send-email 1.9.1
-In-Reply-To: <1437773325-8623-1-git-send-email-emunson@akamai.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Jul 2015 09:15:28 +0200 (CEST)
+Received: from mail-wi0-f178.google.com ([209.85.212.178]:35840 "EHLO
+        mail-wi0-f178.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27009603AbbG0HP0lKomA (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 27 Jul 2015 09:15:26 +0200
+Received: by wicgb10 with SMTP id gb10so98379818wic.1
+        for <linux-mips@linux-mips.org>; Mon, 27 Jul 2015 00:15:21 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-type:content-disposition:in-reply-to
+         :user-agent;
+        bh=lFugvN3zqdD5/wMdGW3hjqcVOa5LRM6ktkvxUmBQgeY=;
+        b=Xr2UKvgZ9s0yFNyqyg7HHIQt3CU7rJIxaGclNdVCWmY30v++oIhkrHneb7k12mG2bp
+         azWyAF9pObGNHkGbg02bVLhm/YZ4lklExTq9zxxeKfQSdkZ72fFIKIbpmDFX07z2LIG1
+         9UYo932/2JdPpsNdvGO/LhLI2/1/KhFvvYicAnD8ZK5SUhFJcRR0XYwsidrgK8MRWiHk
+         awZc/hQXmLWin5YOROxPj6aO1/d0tdXh/5cFa/I8tv1yS6/aka1JXaX85ACHGhnKpb6y
+         i771fmPWsgcTyIxNJbd9VFwCuFncrBq9WJVqUrAqkVEoAxnz9fzvW3GAp4wwSCgrwR+M
+         yV1Q==
+X-Gm-Message-State: ALoCoQkXGOupMIqdU4jjSiayKSc1V/NTMjyM3qzxySw+bHa+4SpLwy8yM+UeSNAE1TrcL1r4ZY4k
+X-Received: by 10.194.187.51 with SMTP id fp19mr49424181wjc.67.1437981321464;
+        Mon, 27 Jul 2015 00:15:21 -0700 (PDT)
+Received: from node.shutemov.name (dsl-espbrasgw1-54f9d4-72.dhcp.inet.fi. [84.249.212.72])
+        by smtp.gmail.com with ESMTPSA id dl10sm26225096wjb.42.2015.07.27.00.15.19
+        (version=TLSv1.2 cipher=AES128-GCM-SHA256 bits=128/128);
+        Mon, 27 Jul 2015 00:15:20 -0700 (PDT)
+Received: by node.shutemov.name (Postfix, from userid 1000)
+        id BD85B64FA637; Mon, 27 Jul 2015 10:15:18 +0300 (EEST)
+Date:   Mon, 27 Jul 2015 10:15:18 +0300
+From:   "Kirill A. Shutemov" <kirill@shutemov.name>
+To:     Eric B Munson <emunson@akamai.com>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        Michal Hocko <mhocko@suse.cz>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Jonathan Corbet <corbet@lwn.net>, linux-alpha@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        linux-arch@vger.kernel.org, linux-api@vger.kernel.org,
+        linux-mm@kvack.org
+Subject: Re: [PATCH V5 4/7] mm: mlock: Add mlock flags to enable
+ VM_LOCKONFAULT usage
+Message-ID: <20150727071518.GD11657@node.dhcp.inet.fi>
 References: <1437773325-8623-1-git-send-email-emunson@akamai.com>
-Return-Path: <emunson@akamai.com>
+ <1437773325-8623-5-git-send-email-emunson@akamai.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1437773325-8623-5-git-send-email-emunson@akamai.com>
+User-Agent: Mutt/1.5.23.1 (2014-03-12)
+Return-Path: <kirill@shutemov.name>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48423
+X-archive-position: 48425
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: emunson@akamai.com
+X-original-sender: kirill@shutemov.name
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,125 +69,66 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-A previous commit introduced the new mlock2 syscall, add entries for the
-MIPS architecture.
+On Fri, Jul 24, 2015 at 05:28:42PM -0400, Eric B Munson wrote:
+> The previous patch introduced a flag that specified pages in a VMA
+> should be placed on the unevictable LRU, but they should not be made
+> present when the area is created.  This patch adds the ability to set
+> this state via the new mlock system calls.
+> 
+> We add MLOCK_ONFAULT for mlock2 and MCL_ONFAULT for mlockall.
+> MLOCK_ONFAULT will set the VM_LOCKONFAULT flag as well as the VM_LOCKED
+> flag for the target region.  MCL_CURRENT and MCL_ONFAULT are used to
+> lock current mappings.  With MCL_CURRENT all pages are made present and
+> with MCL_ONFAULT they are locked when faulted in.  When specified with
+> MCL_FUTURE all new mappings will be marked with VM_LOCKONFAULT.
+> 
+> Currently, mlockall() clears all VMA lock flags and then sets the
+> requested flags.  For instance, if a process has MCL_FUTURE and
+> MCL_CURRENT set, but they want to clear MCL_FUTURE this would be
+> accomplished by calling mlockall(MCL_CURRENT).  This still holds with
+> the introduction of MCL_ONFAULT.  Each call to mlockall() resets all
+> VMA flags to the values specified in the current call.  The new mlock2
+> system call behaves in the same way.  If a region is locked with
+> MLOCK_ONFAULT and a user wants to force it to be populated now, a second
+> call to mlock2(MLOCK_LOCKED) will accomplish this.
+> 
+> munlock() will unconditionally clear both vma flags.  munlockall()
+> unconditionally clears for VMA flags on all VMAs and in the
+> mm->def_flags field.
+> 
+> Signed-off-by: Eric B Munson <emunson@akamai.com>
+> Cc: Michal Hocko <mhocko@suse.cz>
+> Cc: Vlastimil Babka <vbabka@suse.cz>
+> Cc: Jonathan Corbet <corbet@lwn.net>
+> Cc: "Kirill A. Shutemov" <kirill@shutemov.name>
+> Cc: linux-alpha@vger.kernel.org
+> Cc: linux-kernel@vger.kernel.org
+> Cc: linux-mips@linux-mips.org
+> Cc: linux-parisc@vger.kernel.org
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Cc: sparclinux@vger.kernel.org
+> Cc: linux-xtensa@linux-xtensa.org
+> Cc: linux-arch@vger.kernel.org
+> Cc: linux-api@vger.kernel.org
+> Cc: linux-mm@kvack.org
+> ---
+> Changes from V4:
+> * Split addition of VMA flag
+> 
+> Changes from V3:
+> * Do extensive search for VM_LOCKED and ensure that VM_LOCKONFAULT is also handled
+>  where appropriate
+>  arch/alpha/include/uapi/asm/mman.h   |  2 ++
+>  arch/mips/include/uapi/asm/mman.h    |  2 ++
+>  arch/parisc/include/uapi/asm/mman.h  |  2 ++
+>  arch/powerpc/include/uapi/asm/mman.h |  2 ++
+>  arch/sparc/include/uapi/asm/mman.h   |  2 ++
+>  arch/tile/include/uapi/asm/mman.h    |  3 +++
+>  arch/xtensa/include/uapi/asm/mman.h  |  2 ++
 
-Signed-off-by: Eric B Munson <emunson@akamai.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
-Cc: linux-api@vger.kernel.org
-Cc: linux-arch@vger.kernel.org
-Cc: linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org
----
- arch/mips/include/uapi/asm/unistd.h | 15 +++++++++------
- arch/mips/kernel/scall32-o32.S      |  1 +
- arch/mips/kernel/scall64-64.S       |  1 +
- arch/mips/kernel/scall64-n32.S      |  1 +
- arch/mips/kernel/scall64-o32.S      |  1 +
- 5 files changed, 13 insertions(+), 6 deletions(-)
+Again, you can save few lines by moving some code into mman-common.h.
 
-diff --git a/arch/mips/include/uapi/asm/unistd.h b/arch/mips/include/uapi/asm/unistd.h
-index c03088f..d0bdfaa 100644
---- a/arch/mips/include/uapi/asm/unistd.h
-+++ b/arch/mips/include/uapi/asm/unistd.h
-@@ -377,16 +377,17 @@
- #define __NR_memfd_create		(__NR_Linux + 354)
- #define __NR_bpf			(__NR_Linux + 355)
- #define __NR_execveat			(__NR_Linux + 356)
-+#define __NR_mlock2			(__NR_Linux + 357)
- 
- /*
-  * Offset of the last Linux o32 flavoured syscall
-  */
--#define __NR_Linux_syscalls		356
-+#define __NR_Linux_syscalls		357
- 
- #endif /* _MIPS_SIM == _MIPS_SIM_ABI32 */
- 
- #define __NR_O32_Linux			4000
--#define __NR_O32_Linux_syscalls		356
-+#define __NR_O32_Linux_syscalls		357
- 
- #if _MIPS_SIM == _MIPS_SIM_ABI64
- 
-@@ -711,16 +712,17 @@
- #define __NR_memfd_create		(__NR_Linux + 314)
- #define __NR_bpf			(__NR_Linux + 315)
- #define __NR_execveat			(__NR_Linux + 316)
-+#define __NR_mlock2			(__NR_Linux + 317)
- 
- /*
-  * Offset of the last Linux 64-bit flavoured syscall
-  */
--#define __NR_Linux_syscalls		316
-+#define __NR_Linux_syscalls		317
- 
- #endif /* _MIPS_SIM == _MIPS_SIM_ABI64 */
- 
- #define __NR_64_Linux			5000
--#define __NR_64_Linux_syscalls		316
-+#define __NR_64_Linux_syscalls		317
- 
- #if _MIPS_SIM == _MIPS_SIM_NABI32
- 
-@@ -1049,15 +1051,16 @@
- #define __NR_memfd_create		(__NR_Linux + 318)
- #define __NR_bpf			(__NR_Linux + 319)
- #define __NR_execveat			(__NR_Linux + 320)
-+#define __NR_mlock2			(__NR_Linux + 321)
- 
- /*
-  * Offset of the last N32 flavoured syscall
-  */
--#define __NR_Linux_syscalls		320
-+#define __NR_Linux_syscalls		321
- 
- #endif /* _MIPS_SIM == _MIPS_SIM_NABI32 */
- 
- #define __NR_N32_Linux			6000
--#define __NR_N32_Linux_syscalls		320
-+#define __NR_N32_Linux_syscalls		321
- 
- #endif /* _UAPI_ASM_UNISTD_H */
-diff --git a/arch/mips/kernel/scall32-o32.S b/arch/mips/kernel/scall32-o32.S
-index 4cc1350..b0b377a 100644
---- a/arch/mips/kernel/scall32-o32.S
-+++ b/arch/mips/kernel/scall32-o32.S
-@@ -599,3 +599,4 @@ EXPORT(sys_call_table)
- 	PTR	sys_memfd_create
- 	PTR	sys_bpf				/* 4355 */
- 	PTR	sys_execveat
-+	PTR	sys_mlock2
-diff --git a/arch/mips/kernel/scall64-64.S b/arch/mips/kernel/scall64-64.S
-index ad4d4463..97aaf51 100644
---- a/arch/mips/kernel/scall64-64.S
-+++ b/arch/mips/kernel/scall64-64.S
-@@ -436,4 +436,5 @@ EXPORT(sys_call_table)
- 	PTR	sys_memfd_create
- 	PTR	sys_bpf				/* 5315 */
- 	PTR	sys_execveat
-+	PTR	sys_mlock2
- 	.size	sys_call_table,.-sys_call_table
-diff --git a/arch/mips/kernel/scall64-n32.S b/arch/mips/kernel/scall64-n32.S
-index 446cc65..e36f21e 100644
---- a/arch/mips/kernel/scall64-n32.S
-+++ b/arch/mips/kernel/scall64-n32.S
-@@ -429,4 +429,5 @@ EXPORT(sysn32_call_table)
- 	PTR	sys_memfd_create
- 	PTR	sys_bpf
- 	PTR	compat_sys_execveat		/* 6320 */
-+	PTR	sys_mlock2
- 	.size	sysn32_call_table,.-sysn32_call_table
-diff --git a/arch/mips/kernel/scall64-o32.S b/arch/mips/kernel/scall64-o32.S
-index f543ff4..7a8b2df 100644
---- a/arch/mips/kernel/scall64-o32.S
-+++ b/arch/mips/kernel/scall64-o32.S
-@@ -584,4 +584,5 @@ EXPORT(sys32_call_table)
- 	PTR	sys_memfd_create
- 	PTR	sys_bpf				/* 4355 */
- 	PTR	compat_sys_execveat
-+	PTR	sys_mlock2
- 	.size	sys32_call_table,.-sys32_call_table
+Otherwise looks good.
+
 -- 
-1.9.1
+ Kirill A. Shutemov

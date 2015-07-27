@@ -1,64 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Aug 2015 13:13:17 +0200 (CEST)
-Received: from youngberry.canonical.com ([91.189.89.112]:52629 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012748AbbH0LMjNvoUq (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 27 Aug 2015 13:12:39 +0200
-Received: from av-217-129-142-138.netvisao.pt ([217.129.142.138] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_128_CBC_SHA1:16)
-        (Exim 4.76)
-        (envelope-from <luis.henriques@canonical.com>)
-        id 1ZUv6k-0002AP-Sd; Thu, 27 Aug 2015 11:12:39 +0000
-From:   Luis Henriques <luis.henriques@canonical.com>
-To:     James Hogan <james.hogan@imgtec.com>
-Cc:     Markos Chandras <markos.chandras@imgtec.com>,
-        Leonid Yegoshin <leonid.yegoshin@imgtec.com>,
-        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
-        Luis Henriques <luis.henriques@canonical.com>,
-        kernel-team@lists.ubuntu.com
-Subject: [3.16.y-ckt stable] Patch "MIPS: do_mcheck: Fix kernel code dump with EVA" has been added to staging queue
-Date:   Thu, 27 Aug 2015 12:12:38 +0100
-Message-Id: <1440673958-14038-1-git-send-email-luis.henriques@canonical.com>
-X-Mailer: git-send-email 2.1.4
-X-Extended-Stable: 3.16
-Return-Path: <luis.henriques@canonical.com>
-X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
-X-Orcpt: rfc822;linux-mips@linux-mips.org
-Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49045
-X-ecartis-version: Ecartis v1.0.0
-Sender: linux-mips-bounce@linux-mips.org
-Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: luis.henriques@canonical.com
-Precedence: bulk
-List-help: <mailto:ecartis@linux-mips.org?Subject=help>
-List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
-List-software: Ecartis version 1.0.0
-List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
-X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
-List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
-List-owner: <mailto:ralf@linux-mips.org>
-List-post: <mailto:linux-mips@linux-mips.org>
-List-archive: <http://www.linux-mips.org/archives/linux-mips/>
-X-list: linux-mips
+From: James Hogan <james.hogan@imgtec.com>
+Date: Mon, 27 Jul 2015 13:50:21 +0100
+Subject: MIPS: do_mcheck: Fix kernel code dump with EVA
+Message-ID: <20150727125021.2W3886gHiyyIJNH09i7aClWbrcKTacv4T16SfLVZcQM@z>
 
-This is a note to let you know that I have just added a patch titled
+commit 55c723e181ccec30fb5c672397fe69ec35967d97 upstream.
 
-    MIPS: do_mcheck: Fix kernel code dump with EVA
+If a machine check exception is raised in kernel mode, user context,
+with EVA enabled, then the do_mcheck handler will attempt to read the
+code around the EPC using EVA load instructions, i.e. as if the reads
+were from user mode. This will either read random user data if the
+process has anything mapped at the same address, or it will cause an
+exception which is handled by __get_user, resulting in this output:
 
-to the linux-3.16.y-queue branch of the 3.16.y-ckt extended stable tree 
-which can be found at:
+ Code: (Bad address in epc)
 
-    http://kernel.ubuntu.com/git/ubuntu/linux.git/log/?h=linux-3.16.y-queue
+Fix by setting the current user access mode to kernel if the saved
+register context indicates the exception was taken in kernel mode. This
+causes __get_user to use normal loads to read the kernel code.
 
-This patch is scheduled to be released in version 3.16.7-ckt17.
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Cc: Markos Chandras <markos.chandras@imgtec.com>
+Cc: Leonid Yegoshin <leonid.yegoshin@imgtec.com>
+Cc: linux-mips@linux-mips.org
+Patchwork: https://patchwork.linux-mips.org/patch/10777/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: Luis Henriques <luis.henriques@canonical.com>
+---
+ arch/mips/kernel/traps.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-If you, or anyone else, feels it should not be added to this tree, please 
-reply to this email.
+diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
+index c65062a6ff23..a47405caa0b7 100644
+--- a/arch/mips/kernel/traps.c
++++ b/arch/mips/kernel/traps.c
+@@ -1338,6 +1338,7 @@ asmlinkage void do_mcheck(struct pt_regs *regs)
+ 	const int field = 2 * sizeof(unsigned long);
+ 	int multi_match = regs->cp0_status & ST0_TS;
+ 	enum ctx_state prev_state;
++	mm_segment_t old_fs = get_fs();
 
-For more information about the 3.16.y-ckt tree, see
-https://wiki.ubuntu.com/Kernel/Dev/ExtendedStable
+ 	prev_state = exception_enter();
+ 	show_regs(regs);
+@@ -1352,8 +1353,13 @@ asmlinkage void do_mcheck(struct pt_regs *regs)
+ 		dump_tlb_all();
+ 	}
 
-Thanks.
--Luis
++	if (!user_mode(regs))
++		set_fs(KERNEL_DS);
++
+ 	show_code((unsigned int __user *) regs->cp0_epc);
 
-------
++	set_fs(old_fs);
++
+ 	/*
+ 	 * Some chips may have other causes of machine check (e.g. SB1
+ 	 * graduation timer)

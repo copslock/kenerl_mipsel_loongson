@@ -1,41 +1,72 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Jul 2015 14:51:17 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:63241 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27011247AbbG0MvCdrp20 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 27 Jul 2015 14:51:02 +0200
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id CCB837C8E77AB;
-        Mon, 27 Jul 2015 13:50:53 +0100 (IST)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Mon, 27 Jul 2015 13:50:56 +0100
-Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
- LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.210.2; Mon, 27 Jul 2015 13:50:56 +0100
-From:   James Hogan <james.hogan@imgtec.com>
-To:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
-CC:     James Hogan <james.hogan@imgtec.com>,
-        Markos Chandras <markos.chandras@imgtec.com>,
-        Leonid Yegoshin <leonid.yegoshin@imgtec.com>,
-        <stable@vger.kernel.org>
-Subject: [PATCH] MIPS: show_stack: Fix stack trace with EVA
-Date:   Mon, 27 Jul 2015 13:50:22 +0100
-Message-ID: <1438001422-20910-2-git-send-email-james.hogan@imgtec.com>
-X-Mailer: git-send-email 2.3.6
-In-Reply-To: <1438001422-20910-1-git-send-email-james.hogan@imgtec.com>
-References: <1438001422-20910-1-git-send-email-james.hogan@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Jul 2015 15:20:15 +0200 (CEST)
+Received: from mail-ob0-f176.google.com ([209.85.214.176]:35859 "EHLO
+        mail-ob0-f176.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011094AbbG0NUOV4h30 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 27 Jul 2015 15:20:14 +0200
+Received: by obnw1 with SMTP id w1so58832468obn.3
+        for <linux-mips@linux-mips.org>; Mon, 27 Jul 2015 06:20:08 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:in-reply-to:references:date
+         :message-id:subject:from:to:cc:content-type;
+        bh=9z6byQbMLQoob6PiW8nkLXYKuVIo74fP2a6+YiZr/3s=;
+        b=QWAXDzJ0mzYSs+EBPxAao9OOhKNUFxb060iyW6U3xIcID8+yb40XwVWbD4hwELDJY7
+         QISqJ0ppdwkaXorm9QYezzJUYPqz4YkqqqPS/g7tBObKfgcyzoKc3QGoDlwKTal0Arvo
+         OMN4FcrmrC/xBBWxBypM8C3ykKyuc6g/JECdEwV78Uk07rdCFgqI6sRKiBLdbJhlhanw
+         nd6wAI21HNemH3DrT+IW9BQGN/ozIAtPRzeo84djBPhYVVkVn0u1NqvZWnmrbDh+IFrC
+         +0TqPg1uPbTsi52iTQtxUZJs9m9GoeHYOMQy8YUTdw0Q5eYgZCsudNJJerL54dlMfIMh
+         Sr2g==
+X-Gm-Message-State: ALoCoQkRQfdV9FVXtsGbGp0O6UNrc3ek1/5A6GYlDZHyCSGZcgU5p1GzKC2m0C9Ga8SJs90cY6bx
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.154.110]
-Return-Path: <James.Hogan@imgtec.com>
+X-Received: by 10.60.155.97 with SMTP id vv1mr29050309oeb.15.1438003208385;
+ Mon, 27 Jul 2015 06:20:08 -0700 (PDT)
+Received: by 10.182.204.41 with HTTP; Mon, 27 Jul 2015 06:20:08 -0700 (PDT)
+In-Reply-To: <55B131B1.10302@metafoo.de>
+References: <1437586416-14735-1-git-send-email-albeu@free.fr>
+        <55B131B1.10302@metafoo.de>
+Date:   Mon, 27 Jul 2015 15:20:08 +0200
+Message-ID: <CACRpkdZon9XHSMyieGDU8F037+4TxyCq=6z5vJwQ3k6QJm6MTg@mail.gmail.com>
+Subject: Re: [PATCH] MIPS: Remove most of the custom gpio.h
+From:   Linus Walleij <linus.walleij@linaro.org>
+To:     Lars-Peter Clausen <lars@metafoo.de>
+Cc:     Alban Bedel <albeu@free.fr>,
+        Linux MIPS <linux-mips@linux-mips.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Hauke Mehrtens <hauke@hauke-m.de>,
+        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Tejun Heo <tj@kernel.org>,
+        Alexandre Courbot <gnurou@gmail.com>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Florian Fainelli <florian@openwrt.org>,
+        Joe Perches <joe@perches.com>,
+        Daniel Walter <dwalter@google.com>,
+        Sergey Ryazanov <ryazanov.s.a@gmail.com>,
+        Huacai Chen <chenhc@lemote.com>,
+        Andrew Bresticker <abrestic@chromium.org>,
+        James Hartley <james.hartley@imgtec.com>,
+        Paul Burton <paul.burton@imgtec.com>,
+        Waldemar Brodkorb <wbx@openadk.org>,
+        James Hogan <james.hogan@imgtec.com>,
+        Tomi Valkeinen <tomi.valkeinen@ti.com>,
+        Levente Kurusa <levex@linux.com>,
+        abdoulaye berthe <berthe.ab@gmail.com>,
+        Wolfram Sang <wsa@the-dreams.de>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        linux-ide@vger.kernel.org,
+        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+        Linux Input <linux-input@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <linus.walleij@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48434
+X-archive-position: 48435
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: linus.walleij@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,65 +79,38 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The show_stack() function deals exclusively with kernel contexts, but if
-it gets called in user context with EVA enabled, show_stacktrace() will
-attempt to access the stack using EVA accesses, which will either read
-other user mapped data, or more likely cause an exception which will be
-handled by __get_user().
+On Thu, Jul 23, 2015 at 8:25 PM, Lars-Peter Clausen <lars@metafoo.de> wrote:
+> On 07/22/2015 07:33 PM, Alban Bedel wrote:
+>>
+>> diff --git a/arch/mips/jz4740/gpio.c b/arch/mips/jz4740/gpio.c
+>> index 54c80d4..3dc500c 100644
+>> --- a/arch/mips/jz4740/gpio.c
+>> +++ b/arch/mips/jz4740/gpio.c
+>> @@ -262,18 +262,6 @@ uint32_t jz_gpio_port_get_value(int port, uint32_t
+>> mask)
+>>   }
+>>   EXPORT_SYMBOL(jz_gpio_port_get_value);
+>>
+>> -int gpio_to_irq(unsigned gpio)
+>> -{
+>> -       return JZ4740_IRQ_GPIO(0) + gpio;
+>> -}
+>> -EXPORT_SYMBOL_GPL(gpio_to_irq);
+>
+>
+> This need to be hooked up the gpio_to_irq() callback of the gpio_chip struct
+> of this driver rather than completely removing it. Otherwise this
+> functionality will be broken.
+>
+> Similar for other platforms which implement the function.
 
-This is easily reproduced using SysRq t to show all task states, which
-results in the following stack dump output:
+Even better is to see if we can convert the driver to
+GPIOLIB_IRQCHIP which moves the handling of IRQ mapping
+to the gpiolib core. This works for all simple cascading GPIO-with-IRQ
+controllers with a local mask register. (Not when the system intcon
+and GPIO is mashed up though.)
 
- Stack : (Bad stack address)
+But no hurry with that.
 
-Fix by setting the current user access mode to kernel around the call to
-show_stacktrace(). This causes __get_user() to use normal loads to read
-the kernel stack.
-
-Now we get the correct output, like this:
-
- Stack : 00000000 80168960 00000000 004a0000 00000000 00000000 8060016c 1f3abd0c
-           1f172cd8 8056f09c 7ff1e450 8014fc3c 00000001 806dd0b0 0000001d 00000002
-           1f17c6a0 1f17c804 1f17c6a0 8066f6e0 00000000 0000000a 00000000 00000000
-           00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
-           00000000 00000000 00000000 00000000 00000000 0110e800 1f3abd6c 1f17c6a0
-           ...
-
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Markos Chandras <markos.chandras@imgtec.com>
-Cc: Leonid Yegoshin <leonid.yegoshin@imgtec.com>
-Cc: linux-mips@linux-mips.org
-Cc: <stable@vger.kernel.org> # 3.15+
----
- arch/mips/kernel/traps.c | 7 +++++++
- 1 file changed, 7 insertions(+)
-
-diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
-index 02484d17fb6f..8ea28e6ab37d 100644
---- a/arch/mips/kernel/traps.c
-+++ b/arch/mips/kernel/traps.c
-@@ -192,6 +192,7 @@ static void show_stacktrace(struct task_struct *task,
- void show_stack(struct task_struct *task, unsigned long *sp)
- {
- 	struct pt_regs regs;
-+	mm_segment_t old_fs = get_fs();
- 	if (sp) {
- 		regs.regs[29] = (unsigned long)sp;
- 		regs.regs[31] = 0;
-@@ -210,7 +211,13 @@ void show_stack(struct task_struct *task, unsigned long *sp)
- 			prepare_frametrace(&regs);
- 		}
- 	}
-+	/*
-+	 * show_stack() deals exclusively with kernel mode, so be sure to access
-+	 * the stack in the kernel (not user) address space.
-+	 */
-+	set_fs(KERNEL_DS);
- 	show_stacktrace(task, &regs);
-+	set_fs(old_fs);
- }
- 
- static void show_code(unsigned int __user *pc)
--- 
-2.3.6
+Yours,
+Linus Walleij

@@ -1,17 +1,17 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Jul 2015 16:02:42 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:45654 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Jul 2015 16:02:58 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:12852 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27011320AbbG0OBa5A7wd (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 27 Jul 2015 16:01:30 +0200
+        with ESMTP id S27011309AbbG0OC228Nhd (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 27 Jul 2015 16:02:28 +0200
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 6007E8535210C;
-        Mon, 27 Jul 2015 15:01:22 +0100 (IST)
+        by Websense Email Security Gateway with ESMTPS id A2561E959F9B2;
+        Mon, 27 Jul 2015 15:02:19 +0100 (IST)
 Received: from hhmail02.hh.imgtec.org (10.100.10.20) by KLMAIL01.kl.imgtec.org
  (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Mon, 27 Jul
- 2015 15:01:25 +0100
+ 2015 15:02:22 +0100
 Received: from imgworks-VB.kl.imgtec.org (192.168.167.141) by
  hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
- 14.3.235.1; Mon, 27 Jul 2015 15:01:24 +0100
+ 14.3.235.1; Mon, 27 Jul 2015 15:02:22 +0100
 From:   Govindraj Raja <govindraj.raja@imgtec.com>
 To:     <linux-kernel@vger.kernel.org>, <linux-mips@linux-mips.org>,
         "Daniel Lezcano" <daniel.lezcano@linaro.org>,
@@ -24,12 +24,10 @@ CC:     Thomas Gleixner <tglx@linutronix.de>,
         James Hogan <James.Hogan@imgtec.com>,
         Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>,
         Ezequiel Garcia <ezequiel.garcia@imgtec.com>
-Subject: [PATCH v4 4/7] clocksource: mips-gic: Update clockevent frequency on clock rate changes
-Date:   Mon, 27 Jul 2015 15:00:15 +0100
-Message-ID: <1438005618-27003-5-git-send-email-govindraj.raja@imgtec.com>
+Subject: [PATCH v4 5/7] clocksource: Add Pistachio SoC general purpose timer binding document
+Date:   Mon, 27 Jul 2015 15:02:33 +0100
+Message-ID: <1438005755-27051-1-git-send-email-govindraj.raja@imgtec.com>
 X-Mailer: git-send-email 1.9.1
-In-Reply-To: <1438005618-27003-1-git-send-email-govindraj.raja@imgtec.com>
-References: <1438005618-27003-1-git-send-email-govindraj.raja@imgtec.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [192.168.167.141]
@@ -37,7 +35,7 @@ Return-Path: <Govindraj.Raja@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48442
+X-archive-position: 48443
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -56,81 +54,49 @@ X-list: linux-mips
 
 From: Ezequiel Garcia <ezequiel.garcia@imgtec.com>
 
-This commit introduces the clockevent frequency update, using
-a clock notifier. It will be used to support CPUFreq on platforms
-using MIPS GIC based clockevents.
+Add a device-tree binding document for the clocksource driver provided
+by Pistachio SoC general purpose timers.
 
+Reviewed-by: Andrew Bresticker <abrestic@chromium.org>
 Signed-off-by: Ezequiel Garcia <ezequiel.garcia@imgtec.com>
 ---
- drivers/clocksource/mips-gic-timer.c | 31 ++++++++++++++++++++++++++++++-
- 1 file changed, 30 insertions(+), 1 deletion(-)
+ .../bindings/timer/img,pistachio-gptimer.txt       | 28 ++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/timer/img,pistachio-gptimer.txt
 
-diff --git a/drivers/clocksource/mips-gic-timer.c b/drivers/clocksource/mips-gic-timer.c
-index 22a4daf..a155bec 100644
---- a/drivers/clocksource/mips-gic-timer.c
-+++ b/drivers/clocksource/mips-gic-timer.c
-@@ -79,6 +79,13 @@ static void gic_clockevent_cpu_exit(struct clock_event_device *cd)
- 	disable_percpu_irq(gic_timer_irq);
- }
- 
-+static void gic_update_frequency(void *data)
-+{
-+	unsigned long rate = (unsigned long)data;
+diff --git a/Documentation/devicetree/bindings/timer/img,pistachio-gptimer.txt b/Documentation/devicetree/bindings/timer/img,pistachio-gptimer.txt
+new file mode 100644
+index 0000000..7afce80
+--- /dev/null
++++ b/Documentation/devicetree/bindings/timer/img,pistachio-gptimer.txt
+@@ -0,0 +1,28 @@
++* Pistachio general-purpose timer based clocksource
 +
-+	clockevents_update_freq(this_cpu_ptr(&gic_clockevent_device), rate);
-+}
++Required properties:
++ - compatible: "img,pistachio-gptimer".
++ - reg: Address range of the timer registers.
++ - interrupts: An interrupt for each of the four timers
++ - clocks: Should contain a clock specifier for each entry in clock-names
++ - clock-names: Should contain the following entries:
++                "sys", interface clock
++                "slow", slow counter clock
++                "fast", fast counter clock
++ - img,cr-periph: Must contain a phandle to the peripheral control
++		  syscon node.
 +
- static int gic_cpu_notifier(struct notifier_block *nb, unsigned long action,
- 				void *data)
- {
-@@ -94,10 +101,26 @@ static int gic_cpu_notifier(struct notifier_block *nb, unsigned long action,
- 	return NOTIFY_OK;
- }
- 
-+static int gic_clk_notifier(struct notifier_block *nb, unsigned long action,
-+			    void *data)
-+{
-+	struct clk_notifier_data *cnd = data;
-+
-+	if (action == POST_RATE_CHANGE)
-+		on_each_cpu(gic_update_frequency, (void *)cnd->new_rate, 1);
-+
-+	return NOTIFY_OK;
-+}
-+
-+
- static struct notifier_block gic_cpu_nb = {
- 	.notifier_call = gic_cpu_notifier,
- };
- 
-+static struct notifier_block gic_clk_nb = {
-+	.notifier_call = gic_clk_notifier,
-+};
-+
- static int gic_clockevent_init(void)
- {
- 	int ret;
-@@ -160,6 +183,7 @@ void __init gic_clocksource_init(unsigned int frequency)
- static void __init gic_clocksource_of_init(struct device_node *node)
- {
- 	struct clk *clk;
-+	int ret;
- 
- 	if (WARN_ON(!gic_present || !node->parent ||
- 		    !of_device_is_compatible(node->parent, "mti,gic")))
-@@ -186,7 +210,12 @@ static void __init gic_clocksource_of_init(struct device_node *node)
- 	}
- 
- 	__gic_clocksource_init();
--	gic_clockevent_init();
-+
-+	ret = gic_clockevent_init();
-+	if (!ret && !IS_ERR(clk)) {
-+		if (clk_notifier_register(clk, &gic_clk_nb) < 0)
-+			pr_warn("GIC: Unable to register clock notifier\n");
-+	}
- 
- 	/* And finally start the counter */
- 	gic_start_count();
++Example:
++	timer: timer@18102000 {
++		compatible = "img,pistachio-gptimer";
++		reg = <0x18102000 0x100>;
++		interrupts = <GIC_SHARED 60 IRQ_TYPE_LEVEL_HIGH>,
++			     <GIC_SHARED 61 IRQ_TYPE_LEVEL_HIGH>,
++			     <GIC_SHARED 62 IRQ_TYPE_LEVEL_HIGH>,
++			     <GIC_SHARED 63 IRQ_TYPE_LEVEL_HIGH>;
++		clocks = <&clk_periph PERIPH_CLK_COUNTER_FAST>,
++		         <&clk_periph PERIPH_CLK_COUNTER_SLOW>,
++			 <&cr_periph SYS_CLK_TIMER>;
++		clock-names = "fast", "slow", "sys";
++		img,cr-periph = <&cr_periph>;
++	};
 -- 
 1.9.1

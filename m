@@ -1,63 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Jul 2015 09:31:39 +0200 (CEST)
-Received: from mail-wi0-f177.google.com ([209.85.212.177]:36472 "EHLO
-        mail-wi0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27009718AbbG0HbhsxVfo (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 27 Jul 2015 09:31:37 +0200
-Received: by wicgb10 with SMTP id gb10so98920910wic.1
-        for <linux-mips@linux-mips.org>; Mon, 27 Jul 2015 00:31:32 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Jul 2015 10:03:11 +0200 (CEST)
+Received: from mail-wi0-f181.google.com ([209.85.212.181]:37059 "EHLO
+        mail-wi0-f181.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27009523AbbG0IDJgMjro (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 27 Jul 2015 10:03:09 +0200
+Received: by wibud3 with SMTP id ud3so103689153wib.0;
+        Mon, 27 Jul 2015 01:03:04 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-type:content-disposition:in-reply-to
-         :user-agent;
-        bh=/ZVLsJd+e24bYYmDWQ0jv+LUP6pSo6DVfhU0bIJDDyc=;
-        b=YJsYjmUiLALMRx0lipGkUuQhP8G3uzIEDbfHMAGikPnlpEAUFSRZ0ukWaeQugXgZ5F
-         hRubDX4qtLQV+t7sETt0Th7T3wex48v0wi1P3QcM/AHcRaI7aR6LFjNMRHc1eObAPc9l
-         ewiumOrebrvMzrTS5hQOmgkVgY33lf0ojZlc5UfxUKSYdsuyeH4M7jEJtwvADMqk3ET3
-         PP6BdIfRYQYLCch3fjSadsN4kqyrfsIGxAsCTm8WrEMFh/l7rAn6Dln6TTtY4ckE6lAy
-         dRD6s5pV8s2kJ/1GwV+jzlrg+AjFLunfJjMTJOfhhzLEQ0RqFa4pje0w69tqMncRbooS
-         fBYA==
-X-Gm-Message-State: ALoCoQlQPcu2iojgk0n4q3JzGKVjKEwF4zQu72bM1ZT0DMI5iX935xoIVHKsQ4Ljptt85afALENJ
-X-Received: by 10.194.192.166 with SMTP id hh6mr49829401wjc.127.1437982292579;
-        Mon, 27 Jul 2015 00:31:32 -0700 (PDT)
-Received: from node.shutemov.name (dsl-espbrasgw1-54f9d4-72.dhcp.inet.fi. [84.249.212.72])
-        by smtp.gmail.com with ESMTPSA id df1sm12042371wib.12.2015.07.27.00.31.30
-        (version=TLSv1.2 cipher=AES128-GCM-SHA256 bits=128/128);
-        Mon, 27 Jul 2015 00:31:31 -0700 (PDT)
-Received: by node.shutemov.name (Postfix, from userid 1000)
-        id C236564FA637; Mon, 27 Jul 2015 10:31:29 +0300 (EEST)
-Date:   Mon, 27 Jul 2015 10:31:29 +0300
-From:   "Kirill A. Shutemov" <kirill@shutemov.name>
-To:     Eric B Munson <emunson@akamai.com>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        Michal Hocko <mhocko@suse.cz>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Paul Gortmaker <paul.gortmaker@windriver.com>,
-        Chris Metcalf <cmetcalf@ezchip.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mips@linux-mips.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org, linux-mm@kvack.org,
-        linux-arch@vger.kernel.org, linux-api@vger.kernel.org
-Subject: Re: [PATCH V5 5/7] mm: mmap: Add mmap flag to request VM_LOCKONFAULT
-Message-ID: <20150727073129.GE11657@node.dhcp.inet.fi>
-References: <1437773325-8623-1-git-send-email-emunson@akamai.com>
- <1437773325-8623-6-git-send-email-emunson@akamai.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1437773325-8623-6-git-send-email-emunson@akamai.com>
-User-Agent: Mutt/1.5.23.1 (2014-03-12)
-Return-Path: <kirill@shutemov.name>
+        h=from:to:cc:subject:date:message-id:in-reply-to:references;
+        bh=p5rxkl9HUh4FP8Ad2TASfEvmqMPXHvMvrdrJ5S62890=;
+        b=aTkMOTlsltVGclCcMGGYn0vfrnWW79AdTyzi/mEYpbcbeYBWWi/4RNqcQvsDXcuD4g
+         8FmnbsQz5YQVtT718bfwvxdjB8wFtLE9Xd4iMpM26JfUUlcAodV04/yX3o7wp9cAByVQ
+         b3oQhteCinBPcwIYS6mCJJEOD0It6bZHPoSXOIUFl7bEnMZ6kY6+gesr2bZ4JmEJhSBj
+         AJbFX1YzZa7Z5i9najWNTtAs4R1FbDuJ46dhiANiGAogeXvKjq9GzJHNxVkOlj7rccEK
+         vIwVWsI9dAEsgyM3FEZ6QXfiCr+CkXw+//Z5zkKMLm+IYok8RLkAaj8GQ8WoVet31Aoz
+         XA8w==
+X-Received: by 10.194.109.36 with SMTP id hp4mr56232922wjb.4.1437984184343;
+        Mon, 27 Jul 2015 01:03:04 -0700 (PDT)
+Received: from anemoi.home (ip4-83-240-67-251.cust.nbox.cz. [83.240.67.251])
+        by smtp.gmail.com with ESMTPSA id s16sm12167801wib.16.2015.07.27.01.03.03
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Mon, 27 Jul 2015 01:03:03 -0700 (PDT)
+From:   Jiri Slaby <jslaby@suse.com>
+To:     jslaby@suse.com
+Cc:     James Hogan <james.hogan@imgtec.com>, linux-mips@linux-mips.org,
+        Ralf Baechle <ralf@linux-mips.org>, Jiri Slaby <jslaby@suse.cz>
+Subject: [patch added to the 3.12 stable tree] MIPS: Fix KVM guest fixmap address
+Date:   Mon, 27 Jul 2015 10:02:07 +0200
+Message-Id: <1437984150-15702-26-git-send-email-jslaby@suse.com>
+X-Mailer: git-send-email 2.4.6
+In-Reply-To: <1437984150-15702-1-git-send-email-jslaby@suse.com>
+References: <1437984150-15702-1-git-send-email-jslaby@suse.com>
+Return-Path: <jirislaby@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48426
+X-archive-position: 48427
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kirill@shutemov.name
+X-original-sender: jslaby@suse.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -70,22 +52,47 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Jul 24, 2015 at 05:28:43PM -0400, Eric B Munson wrote:
-> The cost of faulting in all memory to be locked can be very high when
-> working with large mappings.  If only portions of the mapping will be
-> used this can incur a high penalty for locking.
-> 
-> Now that we have the new VMA flag for the locked but not present state,
-> expose it as an mmap option like MAP_LOCKED -> VM_LOCKED.
+From: James Hogan <james.hogan@imgtec.com>
 
-As I mentioned before, I don't think this interface is justified.
+This patch has been added to the 3.12 stable tree. If you have any
+objections, please let us know.
 
-MAP_LOCKED has known issues[1]. The MAP_LOCKED problem is not necessary
-affects MAP_LOCKONFAULT, but still.
+===============
 
-Let's not add new interface unless it's demonstrably useful.
+commit 8e748c8d09a9314eedb5c6367d9acfaacddcdc88 upstream.
 
-[1] http://lkml.kernel.org/g/20150114095019.GC4706@dhcp22.suse.cz
+KVM guest kernels for trap & emulate run in user mode, with a modified
+set of kernel memory segments. However the fixmap address is still in
+the normal KSeg3 region at 0xfffe0000 regardless, causing problems when
+cache alias handling makes use of them when handling copy on write.
 
+Therefore define FIXADDR_TOP as 0x7ffe0000 in the guest kernel mapped
+region when CONFIG_KVM_GUEST is defined.
+
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Cc: linux-mips@linux-mips.org
+Patchwork: https://patchwork.linux-mips.org/patch/9887/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: Jiri Slaby <jslaby@suse.cz>
+---
+ arch/mips/include/asm/mach-generic/spaces.h | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/arch/mips/include/asm/mach-generic/spaces.h b/arch/mips/include/asm/mach-generic/spaces.h
+index 9488fa5f8866..afc96ecb9004 100644
+--- a/arch/mips/include/asm/mach-generic/spaces.h
++++ b/arch/mips/include/asm/mach-generic/spaces.h
+@@ -94,7 +94,11 @@
+ #endif
+ 
+ #ifndef FIXADDR_TOP
++#ifdef CONFIG_KVM_GUEST
++#define FIXADDR_TOP		((unsigned long)(long)(int)0x7ffe0000)
++#else
+ #define FIXADDR_TOP		((unsigned long)(long)(int)0xfffe0000)
+ #endif
++#endif
+ 
+ #endif /* __ASM_MACH_GENERIC_SPACES_H */
 -- 
- Kirill A. Shutemov
+2.4.6

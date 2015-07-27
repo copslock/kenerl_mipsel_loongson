@@ -1,45 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Jul 2015 11:08:23 +0200 (CEST)
-Received: from mx2.suse.de ([195.135.220.15]:56757 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27008877AbbG0JIVtZBTn (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 27 Jul 2015 11:08:21 +0200
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay1.suse.de (charybdis-ext.suse.de [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id 94F43AAD1;
-        Mon, 27 Jul 2015 09:08:19 +0000 (UTC)
-Subject: Re: [PATCH V5 0/7] Allow user to request memory to be locked on page
- fault
-To:     Eric B Munson <emunson@akamai.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-References: <1437773325-8623-1-git-send-email-emunson@akamai.com>
-Cc:     Shuah Khan <shuahkh@osg.samsung.com>,
-        Michal Hocko <mhocko@suse.cz>,
-        Michael Kerrisk <mtk.manpages@gmail.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mips@linux-mips.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org, linux-mm@kvack.org,
-        linux-arch@vger.kernel.org, linux-api@vger.kernel.org
-From:   Vlastimil Babka <vbabka@suse.cz>
-Message-ID: <55B5F4FF.9070604@suse.cz>
-Date:   Mon, 27 Jul 2015 11:08:15 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Jul 2015 11:25:18 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:52438 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S27010445AbbG0JZQeSoF- (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 27 Jul 2015 11:25:16 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.15.1/8.14.8) with ESMTP id t6R9PB3D030292;
+        Mon, 27 Jul 2015 11:25:11 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.15.1/8.15.1/Submit) id t6R9P89J030291;
+        Mon, 27 Jul 2015 11:25:08 +0200
+Date:   Mon, 27 Jul 2015 11:25:08 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Viresh Kumar <viresh.kumar@linaro.org>
+Cc:     Daniel Lezcano <daniel.lezcano@linaro.org>,
+        linux-mips@linux-mips.org, linaro-kernel@lists.linaro.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Andrew Bresticker <abrestic@chromium.org>,
+        Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>,
+        Hongliang Tao <taohl@lemote.com>,
+        Huacai Chen <chenhc@lemote.com>,
+        James Hogan <james.hogan@imgtec.com>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Kelvin Cheung <keguang.zhang@gmail.com>,
+        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
+        Manuel Lauss <manuel.lauss@gmail.com>,
+        Michael Opdenacker <michael.opdenacker@free-electrons.com>,
+        Paul Burton <paul.burton@imgtec.com>,
+        Qais Yousef <qais.yousef@imgtec.com>,
+        Valentin Rothberg <valentinrothberg@gmail.com>
+Subject: Re: [PATCH 00/14] MIPS: Migrate clockevent drivers to 'set-state'
+Message-ID: <20150727092508.GA30226@linux-mips.org>
+References: <cover.1436180306.git.viresh.kumar@linaro.org>
+ <20150713025116.GE10415@linux>
 MIME-Version: 1.0
-In-Reply-To: <1437773325-8623-1-git-send-email-emunson@akamai.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <vbabka@suse.cz>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20150713025116.GE10415@linux>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48428
+X-archive-position: 48429
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vbabka@suse.cz
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,40 +58,11 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 07/24/2015 11:28 PM, Eric B Munson wrote:
+On Mon, Jul 13, 2015 at 08:21:16AM +0530, Viresh Kumar wrote:
 
-...
+> @Ralf: This dependency patch is applied to 4.2-rc2 now and you can
+> pick all the patches from this series.
 
-> Changes from V4:
-> Drop all architectures for new sys call entries except x86[_64] and MIPS
-> Drop munlock2 and munlockall2
-> Make VM_LOCKONFAULT a modifier to VM_LOCKED only to simplify book keeping
-> Adjust tests to match
+Cool.  I've queued the whole series for 4.3.
 
-Hi, thanks for considering my suggestions. Well, I do hope there were 
-correct as API's are hard and I'm no API expert. But since API's are 
-also impossible to change after merging, I'm sorry but I'll keep 
-pestering for one last thing. Thanks again for persisting, I do believe 
-it's for the good thing!
-
-The thing is that I still don't like that one has to call 
-mlock2(MLOCK_LOCKED) to get the equivalent of the old mlock(). Why is 
-that flag needed? We have two modes of locking now, and v5 no longer 
-treats them separately in vma flags. But having two flags gives us four 
-possible combinations, so two of them would serve nothing but to confuse 
-the programmer IMHO. What will mlock2() without flags do? What will 
-mlock2(MLOCK_LOCKED | MLOCK_ONFAULT) do? (Note I haven't studied the 
-code yet, as having agreed on the API should come first. But I did 
-suggest documenting these things more thoroughly too...)
-OK I checked now and both cases above seem to return EINVAL.
-
-So about the only point I see in MLOCK_LOCKED flag is parity with 
-MAP_LOCKED for mmap(). But as Kirill said (and me before as well) 
-MAP_LOCKED is broken anyway so we shouldn't twist the rest just of the 
-API to keep the poor thing happier in its misery.
-
-Also note that AFAICS you don't have MCL_LOCKED for mlockall() so 
-there's no full parity anyway. But please don't fix that by adding 
-MCL_LOCKED :)
-
-Thanks!
+  Ralf

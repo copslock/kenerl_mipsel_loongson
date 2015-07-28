@@ -1,48 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Jul 2015 02:51:49 +0200 (CEST)
-Received: from mail-yk0-f180.google.com ([209.85.160.180]:34506 "EHLO
-        mail-yk0-f180.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011341AbbG1AvraivBh (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 28 Jul 2015 02:51:47 +0200
-Received: by ykax123 with SMTP id x123so83768587yka.1
-        for <linux-mips@linux-mips.org>; Mon, 27 Jul 2015 17:51:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-type;
-        bh=okGgXp95S0NUpxNOkEJsOm04m2gih/rl/GyApwkqLdo=;
-        b=z8fNxcS5GTFbCP6m90NA5bi1vXtHKPb4YwgM9uF34JRBrWd2vbYef7+Z3vSX5TULRF
-         QVdg7fj4lgMpRVx0l19GJyu561OAEC2WALpSSChHgBIcG63KrnShClbB1BlCDMdiLQ7s
-         bOdpwFAVR8VRmW7zokn9+qCqTWliRYTjVq0+Ggo/pxbsULshy+KfXx6/HrhLxcY081bI
-         7M+JQTyx+ppwHJhv4ARzi8VRsDJcIB+ukZmcYliFkmVgz0jNTZfOsp47V1tuewb0jvlH
-         8kubD3cK5VBwGPT1P0voJL/SqcMog8Kl1Z/OVzkFo9mhnbJa+5LYBsL1XDCr4JRhNybU
-         hw5g==
-X-Received: by 10.13.209.7 with SMTP id t7mr33460513ywd.121.1438044701622;
- Mon, 27 Jul 2015 17:51:41 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Jul 2015 10:31:17 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:33587 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S27008738AbbG1IbPa1x3P (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 28 Jul 2015 10:31:15 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.15.1/8.14.8) with ESMTP id t6S8VEmU022411;
+        Tue, 28 Jul 2015 10:31:14 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.15.1/8.15.1/Submit) id t6S8VDEa022410;
+        Tue, 28 Jul 2015 10:31:13 +0200
+Date:   Tue, 28 Jul 2015 10:31:13 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Paul Burton <paul.burton@imgtec.com>
+Cc:     Guenter Roeck <linux@roeck-us.net>, linux-next@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
+Subject: Re: Crash in -next due to 'MIPS: Move FP usage checks into
+ protected_{save, restore}_fp_context'
+Message-ID: <20150728083113.GD30938@linux-mips.org>
+References: <20150715160918.GA27653@roeck-us.net>
+ <20150727150652.GA1756@roeck-us.net>
+ <20150727172142.GE7289@NP-P-BURTON>
+ <20150727174622.GA10708@roeck-us.net>
+ <20150727180442.GG7289@NP-P-BURTON>
+ <20150727194401.GC14674@roeck-us.net>
+ <20150727200214.GH7289@NP-P-BURTON>
 MIME-Version: 1.0
-Received: by 10.37.215.198 with HTTP; Mon, 27 Jul 2015 17:51:12 -0700 (PDT)
-In-Reply-To: <1437691941-3100-1-git-send-email-f.fainelli@gmail.com>
-References: <1437691941-3100-1-git-send-email-f.fainelli@gmail.com>
-From:   Gregory Fong <gregory.0xf0@gmail.com>
-Date:   Mon, 27 Jul 2015 17:51:12 -0700
-Message-ID: <CADtm3G5o+GRxTfgWGRTdPoAJqoDO8AGs0LLgGMS=PNimAaaDvA@mail.gmail.com>
-Subject: Re: [PATCH] irqchip: bcm7120-l2: Fix interrupt status for multiple
- parent IRQs
-To:     Florian Fainelli <f.fainelli@gmail.com>
-Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        linux-mips@linux-mips.org, Kevin Cernekee <cernekee@gmail.com>,
-        jason@lakedaemon.net, tglx@linutronix.de,
-        bcm-kernel-feedback-list <bcm-kernel-feedback-list@broadcom.com>,
-        Brian Norris <computersforpeace@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <gregory.0xf0@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20150727200214.GH7289@NP-P-BURTON>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48476
+X-archive-position: 48477
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregory.0xf0@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,54 +50,15 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Jul 23, 2015 at 3:52 PM, Florian Fainelli <f.fainelli@gmail.com> wrote:
-> Our irq-bcm7120-l2 interrupt controller driver utilizes the same handler
-> function for the different parent interrupts it services: UPG_MAIN, UPG_BSC for
-> instance.
->
-> The problem is that function reads the IRQSTAT register which can combine
-> interrupt causes for different parent interrupts, such that we can end-up in
-> the following situation:
->
-> - CPU takes an interrupt
-> - bcm7120_l2_intc_irq_handle() reads IRQSTAT
-> - generic_handle_irq() is invoked
-> - there are still pending interrupts flagged in IRQSTAT from a different parent
-> - handle_bad_irq() is invoked for these since they come from a different irq_desc/irq
->
-> In order to fix this, make sure that we always mask IRQSTAT with the
-> appropriate bits that correspond go the parent interrupt source this is coming
-> from. To simplify things, associate an unique structure per parent interrupt
-> handler to avoid multiplying the number of lookups.
->
-> Fixes: a5042de2688d ("irqchip: bcm7120-l2: Add Broadcom BCM7120-style Level 2 interrupt controller")
-> Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
+On Mon, Jul 27, 2015 at 01:02:14PM -0700, Paul Burton wrote:
 
-Acked-by: Gregory Fong <gregory.0xf0@gmail.com>
+> Ralf: can you update the patches in -next please?
 
-> ---
->  drivers/irqchip/irq-bcm7120-l2.c | 51 ++++++++++++++++++++++++++++++----------
->  1 file changed, 39 insertions(+), 12 deletions(-)
->
-> diff --git a/drivers/irqchip/irq-bcm7120-l2.c b/drivers/irqchip/irq-bcm7120-l2.c
-> index 3ba5cc780fcb..8302d45d13ac 100644
-> --- a/drivers/irqchip/irq-bcm7120-l2.c
-> +++ b/drivers/irqchip/irq-bcm7120-l2.c
-> @@ -47,14 +47,20 @@ struct bcm7120_l2_intc_data {
->         struct irq_domain *domain;
->         bool can_wake;
->         u32 irq_fwd_mask[MAX_WORDS];
-> -       u32 irq_map_mask[MAX_WORDS];
-> +       struct bcm7120_l1_intc_data *l1_data;
->         int num_parent_irqs;
->         const __be32 *map_mask_prop;
->  };
->
-> +struct bcm7120_l1_intc_data {
-> +       struct bcm7120_l2_intc_data *b;
-> +       u32 irq_map_mask[MAX_WORDS];
-> +};
+Done.  Will push in a few minutes to upstream-sfr; should make it to
+-next by tomorrow.
 
-I'm not sure the name bcm7120_l1_intc_data is a good name for this,
-but I can't think of a better one, and it really doesn't matter that
-much.
+But <rant> could you next time please send a patchset based on something
+halfway recent?  Five patches had merge conflicts, one is already upstream.
+</rant>.
+
+  Ralf

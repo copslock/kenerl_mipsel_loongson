@@ -1,36 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Jul 2015 14:51:58 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:35711 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27011319AbbG1Mvw2HQeM (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 28 Jul 2015 14:51:52 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.15.1/8.14.8) with ESMTP id t6SCpoxF027294;
-        Tue, 28 Jul 2015 14:51:50 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.15.1/8.15.1/Submit) id t6SCpn76027293;
-        Tue, 28 Jul 2015 14:51:49 +0200
-Date:   Tue, 28 Jul 2015 14:51:49 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Bert Vermeulen <bert@biot.com>, juhosg@openwrt.org
-Cc:     sameo@linux.intel.com, lee.jones@linaro.org,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mfd: Add support for CPLD chip on Mikrotik RB4xx boards
-Message-ID: <20150728125149.GE24049@linux-mips.org>
-References: <1428285076-14269-1-git-send-email-bert@biot.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Jul 2015 15:49:50 +0200 (CEST)
+Received: from prod-mail-xrelay02.akamai.com ([72.246.2.14]:33957 "EHLO
+        prod-mail-xrelay02.akamai.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011453AbbG1NtswXUoX (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 28 Jul 2015 15:49:48 +0200
+Received: from prod-mail-xrelay02.akamai.com (localhost [127.0.0.1])
+        by postfix.imss70 (Postfix) with ESMTP id E13ED290C8;
+        Tue, 28 Jul 2015 13:49:42 +0000 (GMT)
+Received: from prod-mail-relay06.akamai.com (prod-mail-relay06.akamai.com [172.17.120.126])
+        by prod-mail-xrelay02.akamai.com (Postfix) with ESMTP id B6792290C4;
+        Tue, 28 Jul 2015 13:49:42 +0000 (GMT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=akamai.com; s=a1;
+        t=1438091382; bh=mUw44tXHXXEKV3H7onqe74qU+yrX73SUZR0iMh+j2Xs=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=vKsuTosQaTbzMQJukfYec4KPUVt39HxU56gOsB6enixYC5/vEUJBg/ykULXGYVCWp
+         w/BV8kGaU6cFpQl/31H+C+VIquRDghCRsmrSRy2wMuPQUdPcnwMPNQ8FpF7kZ7dj30
+         j5+lrZYPD3KeR0/KZR+14MXkAdf/L5eBb6cZY/zE=
+Received: from akamai.com (lappy-486.kendall.corp.akamai.com [172.28.12.253])
+        by prod-mail-relay06.akamai.com (Postfix) with ESMTP id AE1FB202C;
+        Tue, 28 Jul 2015 13:49:42 +0000 (GMT)
+Date:   Tue, 28 Jul 2015 09:49:42 -0400
+From:   Eric B Munson <emunson@akamai.com>
+To:     Michal Hocko <mhocko@kernel.org>
+Cc:     Vlastimil Babka <vbabka@suse.cz>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Shuah Khan <shuahkh@osg.samsung.com>,
+        Michael Kerrisk <mtk.manpages@gmail.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mips@linux-mips.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
+        linux-xtensa@linux-xtensa.org, linux-mm@kvack.org,
+        linux-arch@vger.kernel.org, linux-api@vger.kernel.org
+Subject: Re: [PATCH V5 0/7] Allow user to request memory to be locked on page
+ fault
+Message-ID: <20150728134942.GB2407@akamai.com>
+References: <1437773325-8623-1-git-send-email-emunson@akamai.com>
+ <55B5F4FF.9070604@suse.cz>
+ <20150727133555.GA17133@akamai.com>
+ <55B63D37.20303@suse.cz>
+ <20150727145409.GB21664@akamai.com>
+ <20150728111725.GG24972@dhcp22.suse.cz>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="61jdw2sOBCFtR2d/"
 Content-Disposition: inline
-In-Reply-To: <1428285076-14269-1-git-send-email-bert@biot.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <ralf@linux-mips.org>
+In-Reply-To: <20150728111725.GG24972@dhcp22.suse.cz>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <emunson@akamai.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48487
+X-archive-position: 48488
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: emunson@akamai.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,404 +68,100 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-I still have this patch sitting in patchwork [1] waiting for a replacement
-that doesn't seem to have been posted yet.  And it's also not arch
-code so I'm dropping it
 
-  Ralf
+--61jdw2sOBCFtR2d/
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-[1] http://patchwork.linux-mips.org/patch/9716/
+On Tue, 28 Jul 2015, Michal Hocko wrote:
 
-On Mon, Apr 06, 2015 at 03:51:16AM +0200, Bert Vermeulen wrote:
-> Date:   Mon,  6 Apr 2015 03:51:16 +0200
-> From: Bert Vermeulen <bert@biot.com>
-> To: ralf@linux-mips.org, sameo@linux.intel.com, lee.jones@linaro.org,
->  linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-> Cc: Bert Vermeulen <bert@biot.com>
-> Subject: [PATCH] mfd: Add support for CPLD chip on Mikrotik RB4xx boards
-> 
-> The SPI-connected CPLD chip controls access to the main NAND flash
-> chip and five LEDs.
-> 
-> Signed-off-by: Bert Vermeulen <bert@biot.com>
-> ---
->  arch/mips/include/asm/mach-ath79/rb4xx_cpld.h |  49 +++++
->  drivers/mfd/Kconfig                           |   7 +
->  drivers/mfd/Makefile                          |   1 +
->  drivers/mfd/rb4xx-cpld.c                      | 279 ++++++++++++++++++++++++++
->  4 files changed, 336 insertions(+)
->  create mode 100644 arch/mips/include/asm/mach-ath79/rb4xx_cpld.h
->  create mode 100644 drivers/mfd/rb4xx-cpld.c
-> 
-> diff --git a/arch/mips/include/asm/mach-ath79/rb4xx_cpld.h b/arch/mips/include/asm/mach-ath79/rb4xx_cpld.h
-> new file mode 100644
-> index 0000000..40c109c
-> --- /dev/null
-> +++ b/arch/mips/include/asm/mach-ath79/rb4xx_cpld.h
-> @@ -0,0 +1,49 @@
-> +/*
-> + * SPI driver definitions for the CPLD chip on the Mikrotik RB4xx boards
-> + *
-> + * Copyright (C) 2010 Gabor Juhos <juhosg@openwrt.org>
-> + *
-> + * This file was based on the patches for Linux 2.6.27.39 published by
-> + * MikroTik for their RouterBoard 4xx series devices.
-> + *
-> + * This program is free software; you can redistribute it and/or modify it
-> + * under the terms of the GNU General Public License version 2 as published
-> + * by the Free Software Foundation.
-> + */
-> +
-> +#define CPLD_GPIO_LED1		0
-> +#define CPLD_GPIO_LED2		1
-> +#define CPLD_GPIO_LED3		2
-> +#define CPLD_GPIO_LED4		3
-> +#define CPLD_GPIO_FAN		4
-> +#define CPLD_GPIO_ALE		5
-> +#define CPLD_GPIO_CLE		6
-> +#define CPLD_GPIO_nCE		7
-> +#define CPLD_GPIO_LED5		8
-> +
-> +#define CPLD_NUM_GPIOS		9
-> +
-> +#define CPLD_CFG_LED1		BIT(CPLD_GPIO_LED1)
-> +#define CPLD_CFG_LED2		BIT(CPLD_GPIO_LED2)
-> +#define CPLD_CFG_LED3		BIT(CPLD_GPIO_LED3)
-> +#define CPLD_CFG_LED4		BIT(CPLD_GPIO_LED4)
-> +#define CPLD_CFG_FAN		BIT(CPLD_GPIO_FAN)
-> +#define CPLD_CFG_ALE		BIT(CPLD_GPIO_ALE)
-> +#define CPLD_CFG_CLE		BIT(CPLD_GPIO_CLE)
-> +#define CPLD_CFG_nCE		BIT(CPLD_GPIO_nCE)
-> +#define CPLD_CFG_LED5		BIT(CPLD_GPIO_LED5)
-> +
-> +#define CPLD_CMD_WRITE_NAND	0x08 /* send cmd, n x send data, send idle */
-> +#define CPLD_CMD_WRITE_CFG	0x09 /* send cmd, n x send cfg */
-> +#define CPLD_CMD_READ_NAND	0x0a /* send cmd, send idle, n x read data */
-> +#define CPLD_CMD_READ_FAST	0x0b /* send cmd, 4 x idle, n x read data */
-> +#define CPLD_CMD_LED5_ON	0x0c /* send cmd */
-> +#define CPLD_CMD_LED5_OFF	0x0d /* send cmd */
-> +
-> +struct rb4xx_cpld_platform_data {
-> +	unsigned gpio_base;
-> +};
-> +
-> +extern int rb4xx_cpld_read(struct spi_device *spi, unsigned char *rx_buf,
-> +			   unsigned len);
-> +extern int rb4xx_cpld_write(struct spi_device *spi, const u8 *buf, int len);
-> diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
-> index 38356e3..c4a6a4e 100644
-> --- a/drivers/mfd/Kconfig
-> +++ b/drivers/mfd/Kconfig
-> @@ -631,6 +631,13 @@ config MFD_SPMI_PMIC
->  	  Say M here if you want to include support for the SPMI PMIC
->  	  series as a module.  The module will be called "qcom-spmi-pmic".
->  
-> +config MFD_RB4XX_CPLD
-> +	tristate "MikroTik RB4XX CPLD driver"
-> +	depends on ATH79 && SPI_RB4XX
-> +	help
-> +	  Driver for the CPLD chip present on MikroTik RB4xx boards.
-> +	  It controls CPU access to NAND flash and user LEDs.
-> +
->  config MFD_RDC321X
->  	tristate "RDC R-321x southbridge"
->  	select MFD_CORE
-> diff --git a/drivers/mfd/Makefile b/drivers/mfd/Makefile
-> index 19f3d74..6cc9fe3 100644
-> --- a/drivers/mfd/Makefile
-> +++ b/drivers/mfd/Makefile
-> @@ -155,6 +155,7 @@ obj-$(CONFIG_MFD_OMAP_USB_HOST)	+= omap-usb-host.o omap-usb-tll.o
->  obj-$(CONFIG_MFD_PM8921_CORE) 	+= pm8921-core.o ssbi.o
->  obj-$(CONFIG_MFD_QCOM_RPM)	+= qcom_rpm.o
->  obj-$(CONFIG_MFD_SPMI_PMIC)	+= qcom-spmi-pmic.o
-> +obj-$(CONFIG_MFD_RB4XX_CPLD)	+= rb4xx-cpld.o
->  obj-$(CONFIG_TPS65911_COMPARATOR)	+= tps65911-comparator.o
->  obj-$(CONFIG_MFD_TPS65090)	+= tps65090.o
->  obj-$(CONFIG_MFD_AAT2870_CORE)	+= aat2870-core.o
-> diff --git a/drivers/mfd/rb4xx-cpld.c b/drivers/mfd/rb4xx-cpld.c
-> new file mode 100644
-> index 0000000..0f8de62
-> --- /dev/null
-> +++ b/drivers/mfd/rb4xx-cpld.c
-> @@ -0,0 +1,279 @@
-> +/*
-> + * SPI driver for the CPLD chip on the Mikrotik RB4xx boards
-> + *
-> + * Copyright (C) 2010 Gabor Juhos <juhosg@openwrt.org>
-> + *
-> + * This file was based on the patches for Linux 2.6.27.39 published by
-> + * MikroTik for their RouterBoard 4xx series devices.
-> + *
-> + * This program is free software; you can redistribute it and/or modify it
-> + * under the terms of the GNU General Public License version 2 as published
-> + * by the Free Software Foundation.
-> + */
-> +
-> +#include <linux/types.h>
-> +#include <linux/kernel.h>
-> +#include <linux/module.h>
-> +#include <linux/init.h>
-> +#include <linux/module.h>
-> +#include <linux/device.h>
-> +#include <linux/bitops.h>
-> +#include <linux/spi/spi.h>
-> +#include <linux/gpio.h>
-> +#include <linux/slab.h>
-> +
-> +#include <asm/mach-ath79/rb4xx_cpld.h>
-> +
-> +struct rb4xx_cpld {
-> +	struct spi_device *spi;
-> +	struct mutex lock;
-> +	struct gpio_chip chip;
-> +	unsigned int config;
-> +};
-> +
-> +static inline struct rb4xx_cpld *gpio_to_cpld(struct gpio_chip *chip)
-> +{
-> +	return container_of(chip, struct rb4xx_cpld, chip);
-> +}
-> +
-> +static int rb4xx_cpld_write_cmd(struct rb4xx_cpld *cpld, unsigned char cmd)
-> +{
-> +	struct spi_transfer t[1];
-> +	struct spi_message m;
-> +	unsigned char tx_buf[1];
-> +	int err;
-> +
-> +	spi_message_init(&m);
-> +	memset(&t, 0, sizeof(t));
-> +
-> +	t[0].tx_buf = tx_buf;
-> +	t[0].len = sizeof(tx_buf);
-> +	spi_message_add_tail(&t[0], &m);
-> +
-> +	tx_buf[0] = cmd;
-> +
-> +	err = spi_sync(cpld->spi, &m);
-> +	return err;
-> +}
-> +
-> +static int rb4xx_cpld_write_cfg(struct rb4xx_cpld *cpld, unsigned char config)
-> +{
-> +	struct spi_transfer t[1];
-> +	struct spi_message m;
-> +	unsigned char cmd[2];
-> +	int err;
-> +
-> +	spi_message_init(&m);
-> +	memset(&t, 0, sizeof(t));
-> +
-> +	t[0].tx_buf = cmd;
-> +	t[0].len = sizeof(cmd);
-> +	spi_message_add_tail(&t[0], &m);
-> +
-> +	cmd[0] = CPLD_CMD_WRITE_CFG;
-> +	cmd[1] = config;
-> +
-> +	err = spi_sync(cpld->spi, &m);
-> +	return err;
-> +}
-> +
-> +static int rb4xx_cpld_change_cfg(struct rb4xx_cpld *cpld, u32 mask, u32 value)
-> +{
-> +	unsigned int config;
-> +	int err;
-> +
-> +	config = cpld->config & ~mask;
-> +	config |= value;
-> +
-> +	if ((cpld->config ^ config) & 0xff) {
-> +		err = rb4xx_cpld_write_cfg(cpld, config);
-> +		if (err)
-> +			return err;
-> +	}
-> +
-> +	if ((cpld->config ^ config) & CPLD_CFG_LED5) {
-> +		err = rb4xx_cpld_write_cmd(cpld, (value) ? CPLD_CMD_LED5_ON :
-> +							   CPLD_CMD_LED5_OFF);
-> +		if (err)
-> +			return err;
-> +	}
-> +
-> +	cpld->config = config;
-> +	return 0;
-> +}
-> +
-> +int rb4xx_cpld_read(struct spi_device *spi, unsigned char *rx_buf, unsigned len)
-> +{
-> +	struct spi_message m;
-> +	static const unsigned char cmd[2] = { CPLD_CMD_READ_NAND, 0 };
-> +	struct spi_transfer t[2] = {
-> +		{
-> +			.tx_buf = &cmd,
-> +			.len = 2,
-> +		}, {
-> +			.rx_buf = rx_buf,
-> +			.len = len,
-> +		},
-> +	};
-> +
-> +	spi_message_init(&m);
-> +	spi_message_add_tail(&t[0], &m);
-> +	spi_message_add_tail(&t[1], &m);
-> +	return spi_sync(spi, &m);
-> +}
-> +EXPORT_SYMBOL_GPL(rb4xx_cpld_read);
-> +
-> +/* The cs_change flag indicates to the spi-rb4xx driver to use "fast mode". */
-> +int rb4xx_cpld_write(struct spi_device *spi, const u8 *buf, int len)
-> +{
-> +	struct spi_message m;
-> +	static const unsigned char cmd = CPLD_CMD_WRITE_NAND;
-> +	static const unsigned char dummy = 0x00;
-> +	struct spi_transfer t[3] = {
-> +		{
-> +			.tx_buf = &cmd,
-> +			.len = 1,
-> +		}, {
-> +			.tx_buf = buf,
-> +			.len = len,
-> +			.cs_change = 1,
-> +		}, {
-> +			.tx_buf = &dummy,
-> +			.len = 1,
-> +			.cs_change = 1,
-> +		},
-> +	};
-> +
-> +	spi_message_init(&m);
-> +	spi_message_add_tail(&t[0], &m);
-> +	spi_message_add_tail(&t[1], &m);
-> +	spi_message_add_tail(&t[2], &m);
-> +	return spi_sync(spi, &m);
-> +}
-> +EXPORT_SYMBOL_GPL(rb4xx_cpld_write);
-> +
-> +static int rb4xx_cpld_gpio_get(struct gpio_chip *chip, unsigned offset)
-> +{
-> +	struct rb4xx_cpld *cpld = gpio_to_cpld(chip);
-> +	int ret;
-> +
-> +	mutex_lock(&cpld->lock);
-> +	ret = (cpld->config >> offset) & 1;
-> +	mutex_unlock(&cpld->lock);
-> +
-> +	return ret;
-> +}
-> +
-> +static void rb4xx_cpld_gpio_set(struct gpio_chip *chip,
-> +				unsigned offset, int value)
-> +{
-> +	struct rb4xx_cpld *cpld = gpio_to_cpld(chip);
-> +
-> +	mutex_lock(&cpld->lock);
-> +	rb4xx_cpld_change_cfg(cpld, (1 << offset), !!value << offset);
-> +	mutex_unlock(&cpld->lock);
-> +}
-> +
-> +static int rb4xx_cpld_gpio_direction_input(struct gpio_chip *chip,
-> +					   unsigned offset)
-> +{
-> +	return -EOPNOTSUPP;
-> +}
-> +
-> +static int rb4xx_cpld_gpio_direction_output(struct gpio_chip *chip,
-> +					    unsigned offset, int value)
-> +{
-> +	struct rb4xx_cpld *cpld = gpio_to_cpld(chip);
-> +	int ret;
-> +
-> +	mutex_lock(&cpld->lock);
-> +	ret = rb4xx_cpld_change_cfg(cpld, (1 << offset), !!value << offset);
-> +	mutex_unlock(&cpld->lock);
-> +
-> +	return ret;
-> +}
-> +
-> +static int rb4xx_cpld_gpio_init(struct rb4xx_cpld *cpld, unsigned int base)
-> +{
-> +	int err;
-> +
-> +	cpld->chip.label = "rb4xx-cpld";
-> +	cpld->chip.base = base;
-> +	cpld->chip.ngpio = CPLD_NUM_GPIOS;
-> +	cpld->chip.can_sleep = 1;
-> +	cpld->chip.dev = &cpld->spi->dev;
-> +	cpld->chip.owner = THIS_MODULE;
-> +	cpld->chip.get = rb4xx_cpld_gpio_get;
-> +	cpld->chip.set = rb4xx_cpld_gpio_set;
-> +	cpld->chip.direction_input = rb4xx_cpld_gpio_direction_input;
-> +	cpld->chip.direction_output = rb4xx_cpld_gpio_direction_output;
-> +
-> +	err = gpiochip_add(&cpld->chip);
-> +	if (err)
-> +		dev_err(&cpld->spi->dev, "adding GPIO chip failed, error %d\n",
-> +			err);
-> +
-> +	return err;
-> +}
-> +
-> +static int rb4xx_cpld_probe(struct spi_device *spi)
-> +{
-> +	struct rb4xx_cpld *cpld;
-> +	struct rb4xx_cpld_platform_data *pdata;
-> +	int err;
-> +
-> +	pdata = spi->dev.platform_data;
-> +	if (!pdata) {
-> +		dev_dbg(&spi->dev, "no platform data\n");
-> +		return -EINVAL;
-> +	}
-> +
-> +	cpld = devm_kzalloc(&spi->dev, sizeof(*cpld), GFP_KERNEL);
-> +	if (!cpld)
-> +		return -ENOMEM;
-> +
-> +	mutex_init(&cpld->lock);
-> +	cpld->spi = spi_dev_get(spi);
-> +	dev_set_drvdata(&spi->dev, cpld);
-> +
-> +	spi->mode = SPI_MODE_0;
-> +	err = spi_setup(spi);
-> +	if (err) {
-> +		dev_err(&spi->dev, "SPI setup failed, error %d\n", err);
-> +		return err;
-> +	}
-> +
-> +	err = rb4xx_cpld_gpio_init(cpld, pdata->gpio_base);
-> +	if (err)
-> +		return err;
-> +
-> +	return 0;
-> +}
-> +
-> +static int rb4xx_cpld_remove(struct spi_device *spi)
-> +{
-> +	struct rb4xx_cpld_platform_data *pdata;
-> +	struct rb4xx_cpld *cpld;
-> +
-> +	pdata = spi->dev.platform_data;
-> +	cpld = dev_get_drvdata(&spi->dev);
-> +	mutex_destroy(&cpld->lock);
-> +
-> +	return 0;
-> +}
-> +
-> +static struct spi_driver rb4xx_cpld_driver = {
-> +	.probe = rb4xx_cpld_probe,
-> +	.remove = rb4xx_cpld_remove,
-> +	.driver = {
-> +		.name = "rb4xx-cpld",
-> +		.bus = &spi_bus_type,
-> +		.owner = THIS_MODULE,
-> +	},
-> +};
-> +
-> +module_spi_driver(rb4xx_cpld_driver);
-> +
-> +MODULE_DESCRIPTION("RB4xx CPLD driver");
-> +MODULE_AUTHOR("Gabor Juhos <juhosg@openwrt.org>");
-> +MODULE_LICENSE("GPL v2");
-> -- 
-> 1.9.1
+> [I am sorry but I didn't get to this sooner.]
+>=20
+> On Mon 27-07-15 10:54:09, Eric B Munson wrote:
+> > Now that VM_LOCKONFAULT is a modifier to VM_LOCKED and
+> > cannot be specified independentally, it might make more sense to mirror
+> > that relationship to userspace.  Which would lead to soemthing like the
+> > following:
+>=20
+> A modifier makes more sense.
+> =20
+> > To lock and populate a region:
+> > mlock2(start, len, 0);
+> >=20
+> > To lock on fault a region:
+> > mlock2(start, len, MLOCK_ONFAULT);
+> >=20
+> > If LOCKONFAULT is seen as a modifier to mlock, then having the flags
+> > argument as 0 mean do mlock classic makes more sense to me.
+> >=20
+> > To mlock current on fault only:
+> > mlockall(MCL_CURRENT | MCL_ONFAULT);
+> >=20
+> > To mlock future on fault only:
+> > mlockall(MCL_FUTURE | MCL_ONFAULT);
+> >=20
+> > To lock everything on fault:
+> > mlockall(MCL_CURRENT | MCL_FUTURE | MCL_ONFAULT);
+>=20
+> Makes sense to me. The only remaining and still tricky part would be
+> the munlock{all}(flags) behavior. What should munlock(MLOCK_ONFAULT)
+> do? Keep locked and poppulate the range or simply ignore the flag an
+> just unlock?
+>=20
+> I can see some sense to allow munlockall(MCL_FUTURE[|MLOCK_ONFAULT]),
+> munlockall(MCL_CURRENT) resp. munlockall(MCL_CURRENT|MCL_FUTURE) but
+> other combinations sound weird to me.
+>=20
+> Anyway munlock with flags opens new doors of trickiness.
+
+In the current revision there are no new munlock[all] system calls
+introduced.  munlockall() unconditionally cleared both MCL_CURRENT and
+MCL_FUTURE before the set and now unconditionally clears all three.
+munlock() does the same for VM_LOCK and VM_LOCKONFAULT.  If the user
+wants to adjust mlockall flags today, they need to call mlockall a
+second time with the new flags, this remains true for mlockall after
+this set and the same behavior is mirrored in mlock2.  The only
+remaining question I have is should we have 2 new mlockall flags so that
+the caller can explicitly set VM_LOCKONFAULT in the mm->def_flags vs
+locking all current VMAs on fault.  I ask because if the user wants to
+lock all current VMAs the old way, but all future VMAs on fault they
+have to call mlockall() twice:
+
+	mlockall(MCL_CURRENT);
+	mlockall(MCL_CURRENT | MCL_FUTURE | MCL_ONFAULT);
+
+This has the side effect of converting all the current VMAs to
+VM_LOCKONFAULT, but because they were all made present and locked in the
+first call, this should not matter in most cases.  The catch is that,
+like mmap(MAP_LOCKED), mlockall() does not communicate if mm_populate()
+fails.  This has been true of mlockall() from the beginning so I don't
+know if it needs more than an entry in the man page to clarify (which I
+will add when I add documentation for MCL_ONFAULT).  In a much less
+likely corner case, it is not possible in the current setup to request
+all current VMAs be VM_LOCKONFAULT and all future be VM_LOCKED.
+
+
+--61jdw2sOBCFtR2d/
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
+
+iQIcBAEBAgAGBQJVt4h2AAoJELbVsDOpoOa9oHIQAIcQd4UyZvk7S3Gk5qbrOB18
+DBwAWsh9b5MmgjqQJ6VY9tveNG54UTtmGIt5ToxjkoJdN+y7i0Bcen7t5sh0ZJpY
+cm7qGFkP9Mz+zp0cnwNi6SxjhmNdPZbFgcq7JPD4eXG73Guha/ov1yKGUCaE9I8z
+NhWJEDf2QaXAeTYZMAp3QsZUE2A2vGtpVvgqXfVsoFiTXdO59wFfj7ZWs7Tvd8tA
+7gFjWP2gUd3F5CxKVx7W7CujDyjqPYqjGe6GRq4RXvjgKlnzn19Dz71XM40WlQfy
+mK1jm7TyXcFLT7oxcCJfzdiy72ViZ3n+lv6QbshOBkrmbTKk+WkPcmoY84Gg05mz
+GyR0BeJ02Q/QWMPlCHTq8E+iBgRYrGXQxC7/0zjXizRCUxMoNtMbzYmEo63jHIUS
+BpiaDFIS4b48qznxLcKn1zeG6I1tiRgVcYVLWOieVBFgKG5g0ae7Gsy5FhTHwohn
+TFbs8PMRs+bZcLrY8dFFsS7/l7EBx/KZmA2Zcpj+Lcdr/LdwokV8rDN/R23spu1a
+NVMoBoBXxXuDqA1pUTVCoBimDF2U5GArsy0yjHnVWzjZNqQSh1+eTEEZp+lu6eeC
+briVmyabn8fCItemDJrAK/6RdvzbqHHri7Ny2d3GSyMPO36aM/lVN1wlF1qMZ3GA
+9sHKsbhENoi90n42sc8Q
+=YK5t
+-----END PGP SIGNATURE-----
+
+--61jdw2sOBCFtR2d/--

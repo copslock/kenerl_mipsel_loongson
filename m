@@ -1,40 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Jul 2015 11:51:34 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:34345 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Jul 2015 12:15:05 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:34603 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27010509AbbG1JvcSYAcL (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 28 Jul 2015 11:51:32 +0200
+        id S27010972AbbG1KPEImNhL (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 28 Jul 2015 12:15:04 +0200
 Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.15.1/8.14.8) with ESMTP id t6S9pUgJ023907;
-        Tue, 28 Jul 2015 11:51:30 +0200
+        by scotty.linux-mips.net (8.15.1/8.14.8) with ESMTP id t6SAF3Or024455;
+        Tue, 28 Jul 2015 12:15:03 +0200
 Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.15.1/8.15.1/Submit) id t6S9pSAr023906;
-        Tue, 28 Jul 2015 11:51:28 +0200
-Date:   Tue, 28 Jul 2015 11:51:28 +0200
+        by scotty.linux-mips.net (8.15.1/8.15.1/Submit) id t6SAF2dw024446;
+        Tue, 28 Jul 2015 12:15:02 +0200
+Date:   Tue, 28 Jul 2015 12:15:02 +0200
 From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Daniel Lezcano <daniel.lezcano@linaro.org>
-Cc:     Govindraj Raja <govindraj.raja@imgtec.com>,
-        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        devicetree@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-        Andrew Bresticker <abrestic@chromium.org>,
-        James Hartley <James.Hartley@imgtec.com>,
-        Damien Horsley <Damien.Horsley@imgtec.com>,
-        James Hogan <James.Hogan@imgtec.com>,
-        Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>,
-        Ezequiel Garcia <ezequiel.garcia@imgtec.com>
-Subject: Re: [PATCH v4 0/7] Clocksource changes for Pistachio CPUFreq.
-Message-ID: <20150728095128.GA23771@linux-mips.org>
-References: <1438005618-27003-1-git-send-email-govindraj.raja@imgtec.com>
+To:     Felix Fietkau <nbd@openwrt.org>
+Cc:     linux-mips@linux-mips.org, abrestic@chromium.org
+Subject: Re: [PATCH] MIPS: export get_c0_perfcount_int()
+Message-ID: <20150728101502.GA24049@linux-mips.org>
+References: <1437670792-6755-1-git-send-email-nbd@openwrt.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1438005618-27003-1-git-send-email-govindraj.raja@imgtec.com>
+In-Reply-To: <1437670792-6755-1-git-send-email-nbd@openwrt.org>
 User-Agent: Mutt/1.5.23 (2014-03-12)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48481
+X-archive-position: 48482
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -51,36 +42,33 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Daniel,
+On Thu, Jul 23, 2015 at 06:59:52PM +0200, Felix Fietkau wrote:
+> Date:   Thu, 23 Jul 2015 18:59:52 +0200
+> From: Felix Fietkau <nbd@openwrt.org>
+> To: linux-mips@linux-mips.org
+> Cc: abrestic@chromium.org, ralf@linux-mips.org
+> Subject: [PATCH] MIPS: export get_c0_perfcount_int()
+> 
+> get_c0_perfcount_int is tested from oprofile code. If oprofile is
+> compiled as module, get_c0_perfcount_int needs to be exported, otherwise
+> it cannot be resolved.
+> 
+> Fixes: a669efc4a3b4 ("MIPS: Add hook to get C0 performance counter interrupt")
+> Cc: stable@vger.kernel.org # v3.19+
 
-On Mon, Jul 27, 2015 at 03:00:11PM +0100, Govindraj Raja wrote:
+You didn't actually cc this email to stable@vger.kernel.org.
 
-> From: Ezequiel Garcia <ezequiel.garcia@imgtec.com>
-> 
-> The purpose of this patchset is to support CPUFreq on Pistachio SoC.
-> However, given Pistachio uses the MIPS GIC clocksource and clockevent drivers
-> (clocked from the CPU), adding CPUFreq support needs some work.
-> 
-> This patchset changes the MIPS GIC clockevent driver to update the frequency of
-> the per-cpu clockevents using a clock notifier.
-> 
-> Then, we add a clocksource driver for IMG Pistachio SoC, based on the 
-> general purpose timers. The SoC only provides four timers, so we can't
-> use them to implement the four clockevents and the clocksource.
-> 
-> However, we can use one of these timers to provide a clocksource and a
-> sched clock. Given the general purpose timers are clocked from the peripheral
-> system clock tree, they are not affected by CPU rate changes.
-> 
-> Patches 1 to 3 are just style cleaning and preparation work.
-> Patch 4 adds the clockevent frequency update.
-> Patches 5 and 6 add the new clocksource driver.
-> Patch 7 introduces an option to enable the timer based clocksource on Pistachio.
+> Signed-off-by: Felix Fietkau <nbd@openwrt.org>
+> ---
+>  arch/mips/ath79/setup.c          | 1 +
+>  arch/mips/lantiq/irq.c           | 1 +
+>  arch/mips/mti-malta/malta-time.c | 1 +
+>  arch/mips/mti-sead3/sead3-time.c | 1 +
+>  arch/mips/pistachio/time.c       | 1 +
 
-if you're happy with this series feel free to add my ack to patch 7/7
-which is the only one that touches arch/mips.
+Pistachio was merged for 4.1 so this patch won't apply to older kernels.
+You may also want to submit a separate version for those -stable kernels.
 
-Alternatively I can carry this in the MIPS tree which would have tbe
-benefit of better testing.
+Applied.
 
   Ralf

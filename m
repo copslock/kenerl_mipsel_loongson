@@ -1,34 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Jul 2015 14:34:47 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:35555 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Jul 2015 14:51:58 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:35711 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27011235AbbG1MepKaG6M (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 28 Jul 2015 14:34:45 +0200
+        id S27011319AbbG1Mvw2HQeM (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 28 Jul 2015 14:51:52 +0200
 Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.15.1/8.14.8) with ESMTP id t6SCYhLO026970;
-        Tue, 28 Jul 2015 14:34:43 +0200
+        by scotty.linux-mips.net (8.15.1/8.14.8) with ESMTP id t6SCpoxF027294;
+        Tue, 28 Jul 2015 14:51:50 +0200
 Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.15.1/8.15.1/Submit) id t6SCYgN7026969;
-        Tue, 28 Jul 2015 14:34:42 +0200
-Date:   Tue, 28 Jul 2015 14:34:42 +0200
+        by scotty.linux-mips.net (8.15.1/8.15.1/Submit) id t6SCpn76027293;
+        Tue, 28 Jul 2015 14:51:49 +0200
+Date:   Tue, 28 Jul 2015 14:51:49 +0200
 From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Stefan Tatschner <stefan@sevenbyte.org>
-Cc:     ludwig.kuerzinger@aisec.fraunhofer.de,
-        Markos Chandras <markos.chandras@imgtec.com>,
-        stable@vger.kernel.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH 6/9] MIPS: fpu.h: Allow 64-bit FPU on a 64-bit MIPS R6 CPU
-Message-ID: <20150728123442.GC24049@linux-mips.org>
-References: <1437999987-24879-1-git-send-email-stefan@sevenbyte.org>
- <1437999987-24879-6-git-send-email-stefan@sevenbyte.org>
+To:     Bert Vermeulen <bert@biot.com>, juhosg@openwrt.org
+Cc:     sameo@linux.intel.com, lee.jones@linaro.org,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mfd: Add support for CPLD chip on Mikrotik RB4xx boards
+Message-ID: <20150728125149.GE24049@linux-mips.org>
+References: <1428285076-14269-1-git-send-email-bert@biot.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1437999987-24879-6-git-send-email-stefan@sevenbyte.org>
+In-Reply-To: <1428285076-14269-1-git-send-email-bert@biot.com>
 User-Agent: Mutt/1.5.23 (2014-03-12)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48486
+X-archive-position: 48487
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,51 +43,404 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Stefan,
-
-On Mon, Jul 27, 2015 at 02:26:24PM +0200, Stefan Tatschner wrote:
-> Date:   Mon, 27 Jul 2015 14:26:24 +0200
-> From: Stefan Tatschner <stefan@sevenbyte.org>
-> To: ludwig.kuerzinger@aisec.fraunhofer.de
-> Cc: Markos Chandras <markos.chandras@imgtec.com>, stable@vger.kernel.org,
->  linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-> Subject: [PATCH 6/9] MIPS: fpu.h: Allow 64-bit FPU on a 64-bit MIPS R6 CPU
-> Content-Type: multipart/mixed; boundary="------------2.4.6"
-> 
-> 
-> Commit 6134d94923d0 ("MIPS: asm: fpu: Allow 64-bit FPU on MIPS32 R6")
-> added support for 64-bit FPU on a 32-bit MIPS R6 processor but it missed
-> the 64-bit CPU case leading to FPU failures when requesting FR=1 mode
-> (which is always the case for MIPS R6 userland) when running a 32-bit
-> kernel on a 64-bit CPU. We also fix the MIPS R2 case.
-> 
-> Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
-> Fixes: 6134d94923d0 ("MIPS: asm: fpu: Allow 64-bit FPU on MIPS32 R6")
-> Reviewed-by: Paul Burton <paul.burton@imgtec.com>
-> Cc: <stable@vger.kernel.org> # 4.0+
-> Cc: linux-mips@linux-mips.org
-> Patchwork: https://patchwork.linux-mips.org/patch/10734/
-> Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-> ---
->  arch/mips/include/asm/fpu.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-
-> diff --git a/arch/mips/include/asm/fpu.h b/arch/mips/include/asm/fpu.h
-> index 084780b..1b06251 100644
-> --- a/arch/mips/include/asm/fpu.h
-> +++ b/arch/mips/include/asm/fpu.h
-> @@ -74,7 +74,7 @@ static inline int __enable_fpu(enum fpu_mode mode)
->  		goto fr_common;
->  
->  	case FPU_64BIT:
-> -#if !(defined(CONFIG_CPU_MIPS32_R2) || defined(CONFIG_CPU_MIPS32_R6) \
-> +#if !(defined(CONFIG_CPU_MIPSR2) || defined(CONFIG_CPU_MIPSR6) \
->        || defined(CONFIG_64BIT))
->  		/* we only have a 32-bit FPU */
->  		return SIGFPE;
-
-You seem to be reflecting patch back to the linux-mips mailing list and
-other folks mentioned in patches, including myself.  Please stop that.
+I still have this patch sitting in patchwork [1] waiting for a replacement
+that doesn't seem to have been posted yet.  And it's also not arch
+code so I'm dropping it
 
   Ralf
+
+[1] http://patchwork.linux-mips.org/patch/9716/
+
+On Mon, Apr 06, 2015 at 03:51:16AM +0200, Bert Vermeulen wrote:
+> Date:   Mon,  6 Apr 2015 03:51:16 +0200
+> From: Bert Vermeulen <bert@biot.com>
+> To: ralf@linux-mips.org, sameo@linux.intel.com, lee.jones@linaro.org,
+>  linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+> Cc: Bert Vermeulen <bert@biot.com>
+> Subject: [PATCH] mfd: Add support for CPLD chip on Mikrotik RB4xx boards
+> 
+> The SPI-connected CPLD chip controls access to the main NAND flash
+> chip and five LEDs.
+> 
+> Signed-off-by: Bert Vermeulen <bert@biot.com>
+> ---
+>  arch/mips/include/asm/mach-ath79/rb4xx_cpld.h |  49 +++++
+>  drivers/mfd/Kconfig                           |   7 +
+>  drivers/mfd/Makefile                          |   1 +
+>  drivers/mfd/rb4xx-cpld.c                      | 279 ++++++++++++++++++++++++++
+>  4 files changed, 336 insertions(+)
+>  create mode 100644 arch/mips/include/asm/mach-ath79/rb4xx_cpld.h
+>  create mode 100644 drivers/mfd/rb4xx-cpld.c
+> 
+> diff --git a/arch/mips/include/asm/mach-ath79/rb4xx_cpld.h b/arch/mips/include/asm/mach-ath79/rb4xx_cpld.h
+> new file mode 100644
+> index 0000000..40c109c
+> --- /dev/null
+> +++ b/arch/mips/include/asm/mach-ath79/rb4xx_cpld.h
+> @@ -0,0 +1,49 @@
+> +/*
+> + * SPI driver definitions for the CPLD chip on the Mikrotik RB4xx boards
+> + *
+> + * Copyright (C) 2010 Gabor Juhos <juhosg@openwrt.org>
+> + *
+> + * This file was based on the patches for Linux 2.6.27.39 published by
+> + * MikroTik for their RouterBoard 4xx series devices.
+> + *
+> + * This program is free software; you can redistribute it and/or modify it
+> + * under the terms of the GNU General Public License version 2 as published
+> + * by the Free Software Foundation.
+> + */
+> +
+> +#define CPLD_GPIO_LED1		0
+> +#define CPLD_GPIO_LED2		1
+> +#define CPLD_GPIO_LED3		2
+> +#define CPLD_GPIO_LED4		3
+> +#define CPLD_GPIO_FAN		4
+> +#define CPLD_GPIO_ALE		5
+> +#define CPLD_GPIO_CLE		6
+> +#define CPLD_GPIO_nCE		7
+> +#define CPLD_GPIO_LED5		8
+> +
+> +#define CPLD_NUM_GPIOS		9
+> +
+> +#define CPLD_CFG_LED1		BIT(CPLD_GPIO_LED1)
+> +#define CPLD_CFG_LED2		BIT(CPLD_GPIO_LED2)
+> +#define CPLD_CFG_LED3		BIT(CPLD_GPIO_LED3)
+> +#define CPLD_CFG_LED4		BIT(CPLD_GPIO_LED4)
+> +#define CPLD_CFG_FAN		BIT(CPLD_GPIO_FAN)
+> +#define CPLD_CFG_ALE		BIT(CPLD_GPIO_ALE)
+> +#define CPLD_CFG_CLE		BIT(CPLD_GPIO_CLE)
+> +#define CPLD_CFG_nCE		BIT(CPLD_GPIO_nCE)
+> +#define CPLD_CFG_LED5		BIT(CPLD_GPIO_LED5)
+> +
+> +#define CPLD_CMD_WRITE_NAND	0x08 /* send cmd, n x send data, send idle */
+> +#define CPLD_CMD_WRITE_CFG	0x09 /* send cmd, n x send cfg */
+> +#define CPLD_CMD_READ_NAND	0x0a /* send cmd, send idle, n x read data */
+> +#define CPLD_CMD_READ_FAST	0x0b /* send cmd, 4 x idle, n x read data */
+> +#define CPLD_CMD_LED5_ON	0x0c /* send cmd */
+> +#define CPLD_CMD_LED5_OFF	0x0d /* send cmd */
+> +
+> +struct rb4xx_cpld_platform_data {
+> +	unsigned gpio_base;
+> +};
+> +
+> +extern int rb4xx_cpld_read(struct spi_device *spi, unsigned char *rx_buf,
+> +			   unsigned len);
+> +extern int rb4xx_cpld_write(struct spi_device *spi, const u8 *buf, int len);
+> diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
+> index 38356e3..c4a6a4e 100644
+> --- a/drivers/mfd/Kconfig
+> +++ b/drivers/mfd/Kconfig
+> @@ -631,6 +631,13 @@ config MFD_SPMI_PMIC
+>  	  Say M here if you want to include support for the SPMI PMIC
+>  	  series as a module.  The module will be called "qcom-spmi-pmic".
+>  
+> +config MFD_RB4XX_CPLD
+> +	tristate "MikroTik RB4XX CPLD driver"
+> +	depends on ATH79 && SPI_RB4XX
+> +	help
+> +	  Driver for the CPLD chip present on MikroTik RB4xx boards.
+> +	  It controls CPU access to NAND flash and user LEDs.
+> +
+>  config MFD_RDC321X
+>  	tristate "RDC R-321x southbridge"
+>  	select MFD_CORE
+> diff --git a/drivers/mfd/Makefile b/drivers/mfd/Makefile
+> index 19f3d74..6cc9fe3 100644
+> --- a/drivers/mfd/Makefile
+> +++ b/drivers/mfd/Makefile
+> @@ -155,6 +155,7 @@ obj-$(CONFIG_MFD_OMAP_USB_HOST)	+= omap-usb-host.o omap-usb-tll.o
+>  obj-$(CONFIG_MFD_PM8921_CORE) 	+= pm8921-core.o ssbi.o
+>  obj-$(CONFIG_MFD_QCOM_RPM)	+= qcom_rpm.o
+>  obj-$(CONFIG_MFD_SPMI_PMIC)	+= qcom-spmi-pmic.o
+> +obj-$(CONFIG_MFD_RB4XX_CPLD)	+= rb4xx-cpld.o
+>  obj-$(CONFIG_TPS65911_COMPARATOR)	+= tps65911-comparator.o
+>  obj-$(CONFIG_MFD_TPS65090)	+= tps65090.o
+>  obj-$(CONFIG_MFD_AAT2870_CORE)	+= aat2870-core.o
+> diff --git a/drivers/mfd/rb4xx-cpld.c b/drivers/mfd/rb4xx-cpld.c
+> new file mode 100644
+> index 0000000..0f8de62
+> --- /dev/null
+> +++ b/drivers/mfd/rb4xx-cpld.c
+> @@ -0,0 +1,279 @@
+> +/*
+> + * SPI driver for the CPLD chip on the Mikrotik RB4xx boards
+> + *
+> + * Copyright (C) 2010 Gabor Juhos <juhosg@openwrt.org>
+> + *
+> + * This file was based on the patches for Linux 2.6.27.39 published by
+> + * MikroTik for their RouterBoard 4xx series devices.
+> + *
+> + * This program is free software; you can redistribute it and/or modify it
+> + * under the terms of the GNU General Public License version 2 as published
+> + * by the Free Software Foundation.
+> + */
+> +
+> +#include <linux/types.h>
+> +#include <linux/kernel.h>
+> +#include <linux/module.h>
+> +#include <linux/init.h>
+> +#include <linux/module.h>
+> +#include <linux/device.h>
+> +#include <linux/bitops.h>
+> +#include <linux/spi/spi.h>
+> +#include <linux/gpio.h>
+> +#include <linux/slab.h>
+> +
+> +#include <asm/mach-ath79/rb4xx_cpld.h>
+> +
+> +struct rb4xx_cpld {
+> +	struct spi_device *spi;
+> +	struct mutex lock;
+> +	struct gpio_chip chip;
+> +	unsigned int config;
+> +};
+> +
+> +static inline struct rb4xx_cpld *gpio_to_cpld(struct gpio_chip *chip)
+> +{
+> +	return container_of(chip, struct rb4xx_cpld, chip);
+> +}
+> +
+> +static int rb4xx_cpld_write_cmd(struct rb4xx_cpld *cpld, unsigned char cmd)
+> +{
+> +	struct spi_transfer t[1];
+> +	struct spi_message m;
+> +	unsigned char tx_buf[1];
+> +	int err;
+> +
+> +	spi_message_init(&m);
+> +	memset(&t, 0, sizeof(t));
+> +
+> +	t[0].tx_buf = tx_buf;
+> +	t[0].len = sizeof(tx_buf);
+> +	spi_message_add_tail(&t[0], &m);
+> +
+> +	tx_buf[0] = cmd;
+> +
+> +	err = spi_sync(cpld->spi, &m);
+> +	return err;
+> +}
+> +
+> +static int rb4xx_cpld_write_cfg(struct rb4xx_cpld *cpld, unsigned char config)
+> +{
+> +	struct spi_transfer t[1];
+> +	struct spi_message m;
+> +	unsigned char cmd[2];
+> +	int err;
+> +
+> +	spi_message_init(&m);
+> +	memset(&t, 0, sizeof(t));
+> +
+> +	t[0].tx_buf = cmd;
+> +	t[0].len = sizeof(cmd);
+> +	spi_message_add_tail(&t[0], &m);
+> +
+> +	cmd[0] = CPLD_CMD_WRITE_CFG;
+> +	cmd[1] = config;
+> +
+> +	err = spi_sync(cpld->spi, &m);
+> +	return err;
+> +}
+> +
+> +static int rb4xx_cpld_change_cfg(struct rb4xx_cpld *cpld, u32 mask, u32 value)
+> +{
+> +	unsigned int config;
+> +	int err;
+> +
+> +	config = cpld->config & ~mask;
+> +	config |= value;
+> +
+> +	if ((cpld->config ^ config) & 0xff) {
+> +		err = rb4xx_cpld_write_cfg(cpld, config);
+> +		if (err)
+> +			return err;
+> +	}
+> +
+> +	if ((cpld->config ^ config) & CPLD_CFG_LED5) {
+> +		err = rb4xx_cpld_write_cmd(cpld, (value) ? CPLD_CMD_LED5_ON :
+> +							   CPLD_CMD_LED5_OFF);
+> +		if (err)
+> +			return err;
+> +	}
+> +
+> +	cpld->config = config;
+> +	return 0;
+> +}
+> +
+> +int rb4xx_cpld_read(struct spi_device *spi, unsigned char *rx_buf, unsigned len)
+> +{
+> +	struct spi_message m;
+> +	static const unsigned char cmd[2] = { CPLD_CMD_READ_NAND, 0 };
+> +	struct spi_transfer t[2] = {
+> +		{
+> +			.tx_buf = &cmd,
+> +			.len = 2,
+> +		}, {
+> +			.rx_buf = rx_buf,
+> +			.len = len,
+> +		},
+> +	};
+> +
+> +	spi_message_init(&m);
+> +	spi_message_add_tail(&t[0], &m);
+> +	spi_message_add_tail(&t[1], &m);
+> +	return spi_sync(spi, &m);
+> +}
+> +EXPORT_SYMBOL_GPL(rb4xx_cpld_read);
+> +
+> +/* The cs_change flag indicates to the spi-rb4xx driver to use "fast mode". */
+> +int rb4xx_cpld_write(struct spi_device *spi, const u8 *buf, int len)
+> +{
+> +	struct spi_message m;
+> +	static const unsigned char cmd = CPLD_CMD_WRITE_NAND;
+> +	static const unsigned char dummy = 0x00;
+> +	struct spi_transfer t[3] = {
+> +		{
+> +			.tx_buf = &cmd,
+> +			.len = 1,
+> +		}, {
+> +			.tx_buf = buf,
+> +			.len = len,
+> +			.cs_change = 1,
+> +		}, {
+> +			.tx_buf = &dummy,
+> +			.len = 1,
+> +			.cs_change = 1,
+> +		},
+> +	};
+> +
+> +	spi_message_init(&m);
+> +	spi_message_add_tail(&t[0], &m);
+> +	spi_message_add_tail(&t[1], &m);
+> +	spi_message_add_tail(&t[2], &m);
+> +	return spi_sync(spi, &m);
+> +}
+> +EXPORT_SYMBOL_GPL(rb4xx_cpld_write);
+> +
+> +static int rb4xx_cpld_gpio_get(struct gpio_chip *chip, unsigned offset)
+> +{
+> +	struct rb4xx_cpld *cpld = gpio_to_cpld(chip);
+> +	int ret;
+> +
+> +	mutex_lock(&cpld->lock);
+> +	ret = (cpld->config >> offset) & 1;
+> +	mutex_unlock(&cpld->lock);
+> +
+> +	return ret;
+> +}
+> +
+> +static void rb4xx_cpld_gpio_set(struct gpio_chip *chip,
+> +				unsigned offset, int value)
+> +{
+> +	struct rb4xx_cpld *cpld = gpio_to_cpld(chip);
+> +
+> +	mutex_lock(&cpld->lock);
+> +	rb4xx_cpld_change_cfg(cpld, (1 << offset), !!value << offset);
+> +	mutex_unlock(&cpld->lock);
+> +}
+> +
+> +static int rb4xx_cpld_gpio_direction_input(struct gpio_chip *chip,
+> +					   unsigned offset)
+> +{
+> +	return -EOPNOTSUPP;
+> +}
+> +
+> +static int rb4xx_cpld_gpio_direction_output(struct gpio_chip *chip,
+> +					    unsigned offset, int value)
+> +{
+> +	struct rb4xx_cpld *cpld = gpio_to_cpld(chip);
+> +	int ret;
+> +
+> +	mutex_lock(&cpld->lock);
+> +	ret = rb4xx_cpld_change_cfg(cpld, (1 << offset), !!value << offset);
+> +	mutex_unlock(&cpld->lock);
+> +
+> +	return ret;
+> +}
+> +
+> +static int rb4xx_cpld_gpio_init(struct rb4xx_cpld *cpld, unsigned int base)
+> +{
+> +	int err;
+> +
+> +	cpld->chip.label = "rb4xx-cpld";
+> +	cpld->chip.base = base;
+> +	cpld->chip.ngpio = CPLD_NUM_GPIOS;
+> +	cpld->chip.can_sleep = 1;
+> +	cpld->chip.dev = &cpld->spi->dev;
+> +	cpld->chip.owner = THIS_MODULE;
+> +	cpld->chip.get = rb4xx_cpld_gpio_get;
+> +	cpld->chip.set = rb4xx_cpld_gpio_set;
+> +	cpld->chip.direction_input = rb4xx_cpld_gpio_direction_input;
+> +	cpld->chip.direction_output = rb4xx_cpld_gpio_direction_output;
+> +
+> +	err = gpiochip_add(&cpld->chip);
+> +	if (err)
+> +		dev_err(&cpld->spi->dev, "adding GPIO chip failed, error %d\n",
+> +			err);
+> +
+> +	return err;
+> +}
+> +
+> +static int rb4xx_cpld_probe(struct spi_device *spi)
+> +{
+> +	struct rb4xx_cpld *cpld;
+> +	struct rb4xx_cpld_platform_data *pdata;
+> +	int err;
+> +
+> +	pdata = spi->dev.platform_data;
+> +	if (!pdata) {
+> +		dev_dbg(&spi->dev, "no platform data\n");
+> +		return -EINVAL;
+> +	}
+> +
+> +	cpld = devm_kzalloc(&spi->dev, sizeof(*cpld), GFP_KERNEL);
+> +	if (!cpld)
+> +		return -ENOMEM;
+> +
+> +	mutex_init(&cpld->lock);
+> +	cpld->spi = spi_dev_get(spi);
+> +	dev_set_drvdata(&spi->dev, cpld);
+> +
+> +	spi->mode = SPI_MODE_0;
+> +	err = spi_setup(spi);
+> +	if (err) {
+> +		dev_err(&spi->dev, "SPI setup failed, error %d\n", err);
+> +		return err;
+> +	}
+> +
+> +	err = rb4xx_cpld_gpio_init(cpld, pdata->gpio_base);
+> +	if (err)
+> +		return err;
+> +
+> +	return 0;
+> +}
+> +
+> +static int rb4xx_cpld_remove(struct spi_device *spi)
+> +{
+> +	struct rb4xx_cpld_platform_data *pdata;
+> +	struct rb4xx_cpld *cpld;
+> +
+> +	pdata = spi->dev.platform_data;
+> +	cpld = dev_get_drvdata(&spi->dev);
+> +	mutex_destroy(&cpld->lock);
+> +
+> +	return 0;
+> +}
+> +
+> +static struct spi_driver rb4xx_cpld_driver = {
+> +	.probe = rb4xx_cpld_probe,
+> +	.remove = rb4xx_cpld_remove,
+> +	.driver = {
+> +		.name = "rb4xx-cpld",
+> +		.bus = &spi_bus_type,
+> +		.owner = THIS_MODULE,
+> +	},
+> +};
+> +
+> +module_spi_driver(rb4xx_cpld_driver);
+> +
+> +MODULE_DESCRIPTION("RB4xx CPLD driver");
+> +MODULE_AUTHOR("Gabor Juhos <juhosg@openwrt.org>");
+> +MODULE_LICENSE("GPL v2");
+> -- 
+> 1.9.1

@@ -1,49 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Jul 2015 12:50:04 +0200 (CEST)
-Received: from mx2.suse.de ([195.135.220.15]:37911 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27009443AbbG2KuCsGSgy (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 29 Jul 2015 12:50:02 +0200
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (charybdis-ext.suse.de [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id 6D487ABF9;
-        Wed, 29 Jul 2015 10:50:01 +0000 (UTC)
-Subject: Re: [PATCH V5 0/7] Allow user to request memory to be locked on page
- fault
-To:     Michal Hocko <mhocko@kernel.org>,
-        Eric B Munson <emunson@akamai.com>
-References: <1437773325-8623-1-git-send-email-emunson@akamai.com>
- <55B5F4FF.9070604@suse.cz> <20150727133555.GA17133@akamai.com>
- <55B63D37.20303@suse.cz> <20150727145409.GB21664@akamai.com>
- <20150728111725.GG24972@dhcp22.suse.cz> <20150728134942.GB2407@akamai.com>
- <20150729104532.GE15801@dhcp22.suse.cz>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        Shuah Khan <shuahkh@osg.samsung.com>,
-        Michael Kerrisk <mtk.manpages@gmail.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mips@linux-mips.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org, linux-mm@kvack.org,
-        linux-arch@vger.kernel.org, linux-api@vger.kernel.org
-From:   Vlastimil Babka <vbabka@suse.cz>
-Message-ID: <55B8AFD5.3030902@suse.cz>
-Date:   Wed, 29 Jul 2015 12:49:57 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.0.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Jul 2015 15:31:33 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:40806 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S27011397AbbG2NbbzTLzy (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 29 Jul 2015 15:31:31 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.15.1/8.14.8) with ESMTP id t6TDVUDl021094
+        for <linux-mips@linux-mips.org>; Wed, 29 Jul 2015 15:31:30 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.15.1/8.15.1/Submit) id t6TDVUh5021093
+        for linux-mips@linux-mips.org; Wed, 29 Jul 2015 15:31:30 +0200
+Date:   Wed, 29 Jul 2015 15:31:29 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     linux-mips@linux-mips.org
+Subject: MIPS: Scheduler changes
+Message-ID: <20150729133129.GL24049@linux-mips.org>
 MIME-Version: 1.0
-In-Reply-To: <20150729104532.GE15801@dhcp22.suse.cz>
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-Return-Path: <vbabka@suse.cz>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48493
+X-archive-position: 48494
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vbabka@suse.cz
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,19 +39,99 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 07/29/2015 12:45 PM, Michal Hocko wrote:
->> In a much less
->> likely corner case, it is not possible in the current setup to request
->> all current VMAs be VM_LOCKONFAULT and all future be VM_LOCKED.
-> 
-> Vlastimil has already pointed that out. MCL_FUTURE doesn't clear
-> MCL_CURRENT. I was quite surprised in the beginning but it makes a
-> perfect sense. mlockall call shouldn't lead into munlocking, that would
-> be just weird. Clearing MCL_FUTURE on MCL_CURRENT makes sense on the
-> other hand because the request is explicit about _current_ memory and it
-> doesn't lead to any munlocking.
+Because the resume function in the MIPS implementation of switch_to()
+doesn't return to its original caller when a newly created thread is
+scheduled for the first time any code following the invocation of
+resume() in switch_to() will be skipped.  So far MIPS was using the
+finish_arch_switch() hook for that purpose but that function was
+originally meant for a different purpose for which it is no longer
+required and it also is used only on few platforms.  But there is no
+real reason why with some minor changes the code the code of
+finish_arch_switch() couldn't be moved into switch_to().  So do that
+preparing for removal of finish_arch_switch().
 
-Yeah after more thinking it does make some sense despite the perceived
-inconsistency, but it's definitely worth documenting properly. It also already
-covers the usecase for munlockall2(MCL_FUTURE) which IIRC you had in the earlier
-revisions...
+This probably should be tested on a number of different configurations
+with/without DSP, MSA, FPU etc. so I'm posting this for review and testing.
+
+Thanks,
+
+  Ralf
+
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+
+ arch/mips/include/asm/switch_to.h | 48 +++++++++++++++++++--------------------
+ 1 file changed, 23 insertions(+), 25 deletions(-)
+
+diff --git a/arch/mips/include/asm/switch_to.h b/arch/mips/include/asm/switch_to.h
+index 7163cd7..9733cd0 100644
+--- a/arch/mips/include/asm/switch_to.h
++++ b/arch/mips/include/asm/switch_to.h
+@@ -83,45 +83,43 @@ do {	if (cpu_has_rw_llb) {						\
+ 	}								\
+ } while (0)
+ 
++/*
++ * For newly created kernel threads switch_to() will return to
++ * ret_from_kernel_thread, newly created user threads to ret_from_fork.
++ * That is, everything following resume() will be skipped for new threads.
++ * So everything that matters to new threads should be placed before resume().
++ */
+ #define switch_to(prev, next, last)					\
+ do {									\
+-	u32 __c0_stat;							\
+ 	s32 __fpsave = FP_SAVE_NONE;					\
+ 	__mips_mt_fpaff_switch_to(prev);				\
+-	if (cpu_has_dsp)						\
++	if (cpu_has_dsp) {						\
+ 		__save_dsp(prev);					\
+-	if (cop2_present && (KSTK_STATUS(prev) & ST0_CU2)) {		\
+-		if (cop2_lazy_restore)					\
+-			KSTK_STATUS(prev) &= ~ST0_CU2;			\
+-		__c0_stat = read_c0_status();				\
+-		write_c0_status(__c0_stat | ST0_CU2);			\
+-		cop2_save(prev);					\
+-		write_c0_status(__c0_stat & ~ST0_CU2);			\
++		__restore_dsp(next);					\
++	}								\
++	if (cop2_present) {						\
++		set_c0_status(ST0_CU2);					\
++		if ((KSTK_STATUS(prev) & ST0_CU2)) {			\
++			if (cop2_lazy_restore)				\
++				KSTK_STATUS(prev) &= ~ST0_CU2;		\
++			cop2_save(prev);				\
++		}							\
++		if (KSTK_STATUS(next) & ST0_CU2 &&			\
++		    !cop2_lazy_restore) {				\
++			cop2_restore(next);				\
++		}							\
++		clear_c0_status(ST0_CU2);				\
+ 	}								\
+ 	__clear_software_ll_bit();					\
+ 	if (test_and_clear_tsk_thread_flag(prev, TIF_USEDFPU))		\
+ 		__fpsave = FP_SAVE_SCALAR;				\
+ 	if (test_and_clear_tsk_thread_flag(prev, TIF_USEDMSA))		\
+ 		__fpsave = FP_SAVE_VECTOR;				\
+-	(last) = resume(prev, next, task_thread_info(next), __fpsave);	\
+-} while (0)
+-
+-#define finish_arch_switch(prev)					\
+-do {									\
+-	u32 __c0_stat;							\
+-	if (cop2_present && !cop2_lazy_restore &&			\
+-			(KSTK_STATUS(current) & ST0_CU2)) {		\
+-		__c0_stat = read_c0_status();				\
+-		write_c0_status(__c0_stat | ST0_CU2);			\
+-		cop2_restore(current);					\
+-		write_c0_status(__c0_stat & ~ST0_CU2);			\
+-	}								\
+-	if (cpu_has_dsp)						\
+-		__restore_dsp(current);					\
+ 	if (cpu_has_userlocal)						\
+-		write_c0_userlocal(current_thread_info()->tp_value);	\
++		write_c0_userlocal(task_thread_info(next)->tp_value);	\
+ 	__restore_watch();						\
+ 	disable_msa();							\
++	(last) = resume(prev, next, task_thread_info(next), __fpsave);	\
+ } while (0)
+ 
+ #endif /* _ASM_SWITCH_TO_H */

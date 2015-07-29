@@ -1,49 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Jul 2015 04:24:49 +0200 (CEST)
-Received: from mail-ob0-f182.google.com ([209.85.214.182]:36645 "EHLO
-        mail-ob0-f182.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27006783AbbG2CYpN5xbl (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 29 Jul 2015 04:24:45 +0200
-Received: by obnw1 with SMTP id w1so98529187obn.3;
-        Tue, 28 Jul 2015 19:24:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:mime-version:content-type
-         :content-transfer-encoding;
-        bh=c2sk8rcU2ZIo12uw1iG8r/SJgTXDLCl/ee7JwcJ0Nkc=;
-        b=sQskVqcGHiASloqESHnZp+P/KZyyO8mabLK3WEaZlEjLKko+FEI5qcK512yvskAhxr
-         w3KiLyqaqmiD5nWXD5rvjolQNcdjENSmP0f3oT9d+Ndx2Pqg6kHDWxt8px0L2fTQ3k8X
-         56EnzQc/U+VW4RLN336L4Bs35tNNSiLSIYcbfQzwV4sh+GfeZq+gGWI3zgzSGkPQykAT
-         ogLS0s2tMu3aFaVbHWxH0BlHp1Kyi2OV+z5MODXPbXAqCbPI5CYzHY3s+xQbdgn04Bw+
-         P2MgWeAWDvyJJjBrZwQlGeiBehKcPGqW2tXSY+jbQbDnO6NJHupE56nrRktF+bVzBFs3
-         kcdw==
-X-Received: by 10.60.178.99 with SMTP id cx3mr39062734oec.50.1438136679175;
-        Tue, 28 Jul 2015 19:24:39 -0700 (PDT)
-Received: from bender.lan (ip68-96-94-194.oc.oc.cox.net. [68.96.94.194])
-        by smtp.gmail.com with ESMTPSA id s185sm13594484oia.21.2015.07.28.19.24.36
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Tue, 28 Jul 2015 19:24:37 -0700 (PDT)
-From:   Florian Fainelli <f.fainelli@gmail.com>
-To:     linux-mips@linux-mips.org
-Cc:     ralf@linux-mips.org, blogic@openwrt.org, noltari@gmail.com,
-        jogo@openwrt.org, Florian Fainelli <f.fainelli@gmail.com>,
-        stable@vger.kernel.org, Kevin Cernekee <cernekee@gmail.com>,
-        Nicolas Schichan <nschichan@freebox.fr>
-Subject: [PATCH] Revert "MIPS: BCM63xx: Provide a plat_post_dma_flush hook"
-Date:   Tue, 28 Jul 2015 19:24:24 -0700
-Message-Id: <1438136664-775-1-git-send-email-f.fainelli@gmail.com>
-X-Mailer: git-send-email 2.1.4
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Jul 2015 12:45:41 +0200 (CEST)
+Received: from mail-wi0-f172.google.com ([209.85.212.172]:33607 "EHLO
+        mail-wi0-f172.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010488AbbG2KpkXekky (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 29 Jul 2015 12:45:40 +0200
+Received: by wicmv11 with SMTP id mv11so213516331wic.0;
+        Wed, 29 Jul 2015 03:45:35 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-type:content-disposition:in-reply-to:user-agent;
+        bh=rYbDPxksr0XIUUFJu7dqcNdvflW0L7rtBJn15d+5csI=;
+        b=aiX2PaG3YO5MEbZKbbKilhST+N7BCTJ++rrKtDw60RV6EtZLBtfeDjxY0vE2uiLeUk
+         TwzNSTAjGH1sHOb7ODJbNL8zbkIv0gnl3/NSPlohLRmVrvcBFbY+dKMjCMy5flVDoMWO
+         LcKJEsR1oQ+wKNNfcmRvyZpZdrIUq5QdeeRdPbIr00F5h/YoM5CX0t6wkfRlsyrNQLPC
+         j2yCtZIjeQ4rg/WRIDYhni48p95URb0a3SLiUy9uZGV3txs+QIKXhKG+LEtJtXSFTLgV
+         7MEvcq06kyAUtX1tkDk4I6hgA4vKPlhzDofCkcfvx9fjinIMn2ln0N/WqZYyTzL8z9GU
+         JyFw==
+X-Received: by 10.194.104.98 with SMTP id gd2mr72039264wjb.35.1438166735137;
+        Wed, 29 Jul 2015 03:45:35 -0700 (PDT)
+Received: from localhost (bband-dyn181.95-103-48.t-com.sk. [95.103.48.181])
+        by smtp.gmail.com with ESMTPSA id iy4sm23639138wic.24.2015.07.29.03.45.33
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 29 Jul 2015 03:45:34 -0700 (PDT)
+Date:   Wed, 29 Jul 2015 12:45:32 +0200
+From:   Michal Hocko <mhocko@kernel.org>
+To:     Eric B Munson <emunson@akamai.com>
+Cc:     Vlastimil Babka <vbabka@suse.cz>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Shuah Khan <shuahkh@osg.samsung.com>,
+        Michael Kerrisk <mtk.manpages@gmail.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mips@linux-mips.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
+        linux-xtensa@linux-xtensa.org, linux-mm@kvack.org,
+        linux-arch@vger.kernel.org, linux-api@vger.kernel.org
+Subject: Re: [PATCH V5 0/7] Allow user to request memory to be locked on page
+ fault
+Message-ID: <20150729104532.GE15801@dhcp22.suse.cz>
+References: <1437773325-8623-1-git-send-email-emunson@akamai.com>
+ <55B5F4FF.9070604@suse.cz>
+ <20150727133555.GA17133@akamai.com>
+ <55B63D37.20303@suse.cz>
+ <20150727145409.GB21664@akamai.com>
+ <20150728111725.GG24972@dhcp22.suse.cz>
+ <20150728134942.GB2407@akamai.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Return-Path: <f.fainelli@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20150728134942.GB2407@akamai.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <mstsxfx@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48491
+X-archive-position: 48492
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: f.fainelli@gmail.com
+X-original-sender: mhocko@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,42 +72,103 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This reverts commit 3cf29543413207d3ab1c3f62a88c09bb46f2264e ("MIPS:
-BCM63xx: Provide a plat_post_dma_flush hook") since this commit was
-found to prevent BCM6358 (early BMIPS4350 cores) and some BCM6368
-(BMIPS4380 cores) from booting reliably.
+On Tue 28-07-15 09:49:42, Eric B Munson wrote:
+> On Tue, 28 Jul 2015, Michal Hocko wrote:
+> 
+> > [I am sorry but I didn't get to this sooner.]
+> > 
+> > On Mon 27-07-15 10:54:09, Eric B Munson wrote:
+> > > Now that VM_LOCKONFAULT is a modifier to VM_LOCKED and
+> > > cannot be specified independentally, it might make more sense to mirror
+> > > that relationship to userspace.  Which would lead to soemthing like the
+> > > following:
+> > 
+> > A modifier makes more sense.
+> >  
+> > > To lock and populate a region:
+> > > mlock2(start, len, 0);
+> > > 
+> > > To lock on fault a region:
+> > > mlock2(start, len, MLOCK_ONFAULT);
+> > > 
+> > > If LOCKONFAULT is seen as a modifier to mlock, then having the flags
+> > > argument as 0 mean do mlock classic makes more sense to me.
+> > > 
+> > > To mlock current on fault only:
+> > > mlockall(MCL_CURRENT | MCL_ONFAULT);
+> > > 
+> > > To mlock future on fault only:
+> > > mlockall(MCL_FUTURE | MCL_ONFAULT);
+> > > 
+> > > To lock everything on fault:
+> > > mlockall(MCL_CURRENT | MCL_FUTURE | MCL_ONFAULT);
+> > 
+> > Makes sense to me. The only remaining and still tricky part would be
+> > the munlock{all}(flags) behavior. What should munlock(MLOCK_ONFAULT)
+> > do? Keep locked and poppulate the range or simply ignore the flag an
+> > just unlock?
+> > 
+> > I can see some sense to allow munlockall(MCL_FUTURE[|MLOCK_ONFAULT]),
+> > munlockall(MCL_CURRENT) resp. munlockall(MCL_CURRENT|MCL_FUTURE) but
+> > other combinations sound weird to me.
+> > 
+> > Anyway munlock with flags opens new doors of trickiness.
+> 
+> In the current revision there are no new munlock[all] system calls
+> introduced.  munlockall() unconditionally cleared both MCL_CURRENT and
+> MCL_FUTURE before the set and now unconditionally clears all three.
+> munlock() does the same for VM_LOCK and VM_LOCKONFAULT. 
 
-Alvaro was able to track this down to an issue specifically located to
-devices that use the second thread (TP1) when booting. Since BCM63xx did
-not have a need for plat_post_dma_flush() hook before, let's just keep
-things the way they were.
+OK if new munlock{all}(flags) is not introduced then this is much saner
+IMO.
 
-CC: stable@vger.kernel.org
-CC: Kevin Cernekee <cernekee@gmail.com>
-CC: Nicolas Schichan <nschichan@freebox.fr>
-Reported-by: Álvaro Fernández Rojas <noltari@gmail.com>
-Reported-by: Jonas Gorski <jogo@openwrt.org>
-Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
----
- arch/mips/include/asm/mach-bcm63xx/dma-coherence.h | 10 ----------
- 1 file changed, 10 deletions(-)
- delete mode 100644 arch/mips/include/asm/mach-bcm63xx/dma-coherence.h
+> If the user
+> wants to adjust mlockall flags today, they need to call mlockall a
+> second time with the new flags, this remains true for mlockall after
+> this set and the same behavior is mirrored in mlock2. 
 
-diff --git a/arch/mips/include/asm/mach-bcm63xx/dma-coherence.h b/arch/mips/include/asm/mach-bcm63xx/dma-coherence.h
-deleted file mode 100644
-index 11d3b572b1b3..000000000000
---- a/arch/mips/include/asm/mach-bcm63xx/dma-coherence.h
-+++ /dev/null
-@@ -1,10 +0,0 @@
--#ifndef __ASM_MACH_BCM63XX_DMA_COHERENCE_H
--#define __ASM_MACH_BCM63XX_DMA_COHERENCE_H
--
--#include <asm/bmips.h>
--
--#define plat_post_dma_flush	bmips_post_dma_flush
--
--#include <asm/mach-generic/dma-coherence.h>
--
--#endif /* __ASM_MACH_BCM63XX_DMA_COHERENCE_H */
+OK, this makes sense to me.
+
+> The only
+> remaining question I have is should we have 2 new mlockall flags so that
+> the caller can explicitly set VM_LOCKONFAULT in the mm->def_flags vs
+> locking all current VMAs on fault.  I ask because if the user wants to
+> lock all current VMAs the old way, but all future VMAs on fault they
+> have to call mlockall() twice:
+> 
+> 	mlockall(MCL_CURRENT);
+> 	mlockall(MCL_CURRENT | MCL_FUTURE | MCL_ONFAULT);
+> 
+> This has the side effect of converting all the current VMAs to
+> VM_LOCKONFAULT, but because they were all made present and locked in the
+> first call, this should not matter in most cases. 
+
+I think this is OK (worth documenting though) considering that ONFAULT
+is just modifier for the current mlock* operation. The memory is locked
+the same way for both - aka once the memory is present you do not know
+whether it was done during mlock call or later during the fault.
+
+> The catch is that,
+> like mmap(MAP_LOCKED), mlockall() does not communicate if mm_populate()
+> fails.  This has been true of mlockall() from the beginning so I don't
+> know if it needs more than an entry in the man page to clarify (which I
+> will add when I add documentation for MCL_ONFAULT).
+
+Yes this is true but unlike mmap it seems fixable I guess. We do not have
+to unmap and we can downgrade mmap_sem to read and the fault so nobody
+can race with a concurent mlock.
+
+> In a much less
+> likely corner case, it is not possible in the current setup to request
+> all current VMAs be VM_LOCKONFAULT and all future be VM_LOCKED.
+
+Vlastimil has already pointed that out. MCL_FUTURE doesn't clear
+MCL_CURRENT. I was quite surprised in the beginning but it makes a
+perfect sense. mlockall call shouldn't lead into munlocking, that would
+be just weird. Clearing MCL_FUTURE on MCL_CURRENT makes sense on the
+other hand because the request is explicit about _current_ memory and it
+doesn't lead to any munlocking.
+
 -- 
-2.1.4
+Michal Hocko
+SUSE Labs

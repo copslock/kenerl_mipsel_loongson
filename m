@@ -1,50 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Jul 2015 18:31:09 +0200 (CEST)
-Received: from mail-la0-f51.google.com ([209.85.215.51]:35719 "EHLO
-        mail-la0-f51.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011693AbbG2QbHoSnGt convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 29 Jul 2015 18:31:07 +0200
-Received: by lahh5 with SMTP id h5so9623814lah.2
-        for <linux-mips@linux-mips.org>; Wed, 29 Jul 2015 09:31:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type:content-transfer-encoding;
-        bh=vSmWev2wVEbzpWNfxomRDK62az5OIUsAUzcCqGU9ygo=;
-        b=U/qXjankVW4KPfAVFxEMDXhYB1QPVE9Ywtc/Jn+ctEsrp8GHSmR01PBRl5fWVVTvvr
-         E9diumAwzQJhhtuBHPWO3OOtLrqYBjYfiFLE5VbEPAt8oH4uhF2nGuydcTrwikHHHG7q
-         KbETxX9FPbgIVjwZfpmuxdpZecEws8p4WxyiNXZaweFxLdPdJEmq1juZkBHy6nXK7u/U
-         hOLhzfSWPR6HMKFB3p+CEMaof3laQ4YTkyaXtqKbGCgMs+CJ76Qiq1HEPfyyI/KQLZSQ
-         on98a/BEz5M6G+0K9F0nGza+Mj/e/UUP552YrVdwOPlnqmNxLmJADJFFuoCJvL7QJSxV
-         fgoQ==
-MIME-Version: 1.0
-X-Received: by 10.152.18.162 with SMTP id x2mr39891487lad.73.1438187462422;
- Wed, 29 Jul 2015 09:31:02 -0700 (PDT)
-Received: by 10.112.161.233 with HTTP; Wed, 29 Jul 2015 09:31:02 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Jul 2015 03:28:13 +0200 (CEST)
+Received: from ozlabs.org ([103.22.144.67]:60180 "EHLO ozlabs.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27011600AbbG3B2L4m0DD (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 30 Jul 2015 03:28:11 +0200
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by ozlabs.org (Postfix) with ESMTPSA id 84F4F14090B;
+        Thu, 30 Jul 2015 11:28:07 +1000 (AEST)
+Message-ID: <1438219687.2374.1.camel@ellerman.id.au>
+Subject: Re: samples/kdbus/kdbus-workers.c and cross compiling MIPS
+From:   Michael Ellerman <mpe@ellerman.id.au>
+To:     Paul Gortmaker <paul.gortmaker@windriver.com>
+Cc:     dh.herrmann@googlemail.com, gregkh@linuxfoundation.org,
+        daniel@zonque.org, tixxdz@opendz.org, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org, linux-next@vger.kernel.org
+Date:   Thu, 30 Jul 2015 11:28:07 +1000
 In-Reply-To: <20150729161912.GF18685@windriver.com>
 References: <20150729161912.GF18685@windriver.com>
-Date:   Wed, 29 Jul 2015 18:31:02 +0200
-Message-ID: <CANq1E4TgWK-8JkUtOYfTOL9Dx=jWeVpA-h881TXSA3BNjp+MPw@mail.gmail.com>
-Subject: Re: samples/kdbus/kdbus-workers.c and cross compiling MIPS
-From:   David Herrmann <dh.herrmann@gmail.com>
-To:     Paul Gortmaker <paul.gortmaker@windriver.com>
-Cc:     David Herrmann <dh.herrmann@googlemail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Daniel Mack <daniel@zonque.org>,
-        Djalal Harouni <tixxdz@opendz.org>, linux-mips@linux-mips.org,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        "linux-next@vger.kernel.org" <linux-next@vger.kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-Return-Path: <dh.herrmann@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.12.11-0ubuntu3 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Return-Path: <mpe@ellerman.id.au>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48499
+X-archive-position: 48500
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dh.herrmann@gmail.com
+X-original-sender: mpe@ellerman.id.au
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -57,17 +43,14 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi
-
-On Wed, Jul 29, 2015 at 6:19 PM, Paul Gortmaker
-<paul.gortmaker@windriver.com> wrote:
+On Wed, 2015-07-29 at 12:19 -0400, Paul Gortmaker wrote:
 > Hi David,
->
+> 
 > Does it make sense to build this sample when cross compiling?
->
+> 
 > The reason I ask is that it has been breaking the linux-next build of
 > allmodconfig for a while now, with:
->
+> 
 >   HOSTCC  samples/kdbus/kdbus-workers
 > samples/kdbus/kdbus-workers.c: In function ‘prime_new’:
 > samples/kdbus/kdbus-workers.c:934:18: error: ‘__NR_memfd_create’ undeclared (first use in this function)
@@ -76,24 +59,17 @@ On Wed, Jul 29, 2015 at 6:19 PM, Paul Gortmaker
 > samples/kdbus/kdbus-workers.c:934:18: note: each undeclared identifier is reported only once for each function it appears in
 > scripts/Makefile.host:91: recipe for target 'samples/kdbus/kdbus-workers' failed
 > make[2]: *** [samples/kdbus/kdbus-workers] Error 1
+> 
+> http://kisskb.ellerman.id.au/kisskb/buildresult/12473453/
+> 
+> We recently made some changes to skip other sample/test programs when
+> cross compiling in mainline 65f6f092a6987 and f59514b6a8c5ca6dd and
+> 6a407a81a9abcf.  Maybe it makes sense to do the same here?
 
-mips does have this syscall, so I assume the problem is out-of-date
-kernel headers. You can fix this by running:
+Hi Paul,
 
-    $ make headers_install
+We also can configure kisskb to not build samples for all_modconfig, which
+avoids these sort of issues with a slight decrease in code coverage. We already
+disable samples for several other arch all_modconfigs.
 
-This will put the sanitized headers in your local kernel tree
-"./usr/". This is preferred over "/usr" as include path for the kernel
-examples, hence, everything should work fine then.
-
-The kernel samples/ directory is explicitly used for example programs
-for the kernel. Hence, I think it is quite fine to use new kernel
-features. Same applies to the selftests.
-
-I'd be fine making kdbus-workers a no-op program if __NR_memfd_create
-is not defined. But I'm not really sure that fixes real problems. I
-mean, new samples and selftests will be added by other subsystems and
-those might as well require new kernel headers.
-
-Thanks
-David
+cheers

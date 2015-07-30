@@ -1,71 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Jul 2015 22:14:49 +0200 (CEST)
-Received: from arrakis.dune.hu ([78.24.191.176]:50962 "EHLO arrakis.dune.hu"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 31 Jul 2015 01:55:18 +0200 (CEST)
+Received: from ozlabs.org ([103.22.144.67]:51963 "EHLO ozlabs.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27011809AbbG3UOqqsAAc (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 30 Jul 2015 22:14:46 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by arrakis.dune.hu (Postfix) with ESMTP id E2E2028050F;
-        Thu, 30 Jul 2015 22:14:11 +0200 (CEST)
-X-Virus-Scanned: at arrakis.dune.hu
-Received: from mail-qg0-f50.google.com (mail-qg0-f50.google.com [209.85.192.50])
-        by arrakis.dune.hu (Postfix) with ESMTPSA id 2757F28C0B1;
-        Thu, 30 Jul 2015 22:13:31 +0200 (CEST)
-Received: by qgeu79 with SMTP id u79so32530925qge.1;
-        Thu, 30 Jul 2015 13:14:03 -0700 (PDT)
-X-Received: by 10.140.146.76 with SMTP id 73mr8887416qhs.79.1438287243670;
- Thu, 30 Jul 2015 13:14:03 -0700 (PDT)
+        id S27011687AbbG3XzQXGn-r (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 31 Jul 2015 01:55:16 +0200
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by ozlabs.org (Postfix) with ESMTPSA id BE5F01402D5;
+        Fri, 31 Jul 2015 09:55:11 +1000 (AEST)
+Date:   Fri, 31 Jul 2015 09:55:11 +1000
+From:   Stephen Rothwell <sfr@canb.auug.org.au>
+To:     Paul Gortmaker <paul.gortmaker@windriver.com>
+Cc:     David Herrmann <dh.herrmann@gmail.com>,
+        David Herrmann <dh.herrmann@googlemail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Daniel Mack <daniel@zonque.org>,
+        Djalal Harouni <tixxdz@opendz.org>,
+        <linux-mips@linux-mips.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        "linux-next@vger.kernel.org" <linux-next@vger.kernel.org>,
+        Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: samples/kdbus/kdbus-workers.c and cross compiling MIPS
+Message-ID: <20150731095511.1a6f1257@canb.auug.org.au>
+In-Reply-To: <55BA4375.7010400@windriver.com>
+References: <20150729161912.GF18685@windriver.com>
+        <CANq1E4TgWK-8JkUtOYfTOL9Dx=jWeVpA-h881TXSA3BNjp+MPw@mail.gmail.com>
+        <55BA2B91.5070107@windriver.com>
+        <CANq1E4S7awCfPaNduoG8ENHmnGhR7-VT-9LvGwREZs-h8zNmzQ@mail.gmail.com>
+        <55BA4375.7010400@windriver.com>
+X-Mailer: Claws Mail 3.11.1 (GTK+ 2.24.28; i586-pc-linux-gnu)
 MIME-Version: 1.0
-Received: by 10.140.19.37 with HTTP; Thu, 30 Jul 2015 13:13:44 -0700 (PDT)
-In-Reply-To: <1438277338-7246-1-git-send-email-albeu@free.fr>
-References: <1438277338-7246-1-git-send-email-albeu@free.fr>
-From:   Jonas Gorski <jogo@openwrt.org>
-Date:   Thu, 30 Jul 2015 22:13:44 +0200
-Message-ID: <CAOiHx=n+RDN9ByPmS_7vAW85EnKvN=pQan1+AtZ4B9=fFmQJvA@mail.gmail.com>
-Subject: Re: [PATCH] MIPS: Remove all the uses of custom gpio.h
-To:     Alban Bedel <albeu@free.fr>
-Cc:     MIPS Mailing List <linux-mips@linux-mips.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Hauke Mehrtens <hauke@hauke-m.de>,
-        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Tejun Heo <tj@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Alexandre Courbot <gnurou@gmail.com>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Florian Fainelli <florian@openwrt.org>,
-        Manuel Lauss <manuel.lauss@gmail.com>,
-        Joe Perches <joe@perches.com>,
-        Daniel Walter <dwalter@google.com>,
-        Sergey Ryazanov <ryazanov.s.a@gmail.com>,
-        Huacai Chen <chenhc@lemote.com>,
-        Andrew Bresticker <abrestic@chromium.org>,
-        James Hartley <james.hartley@imgtec.com>,
-        Paul Burton <paul.burton@imgtec.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Wolfram Sang <wsa@the-dreams.de>,
-        Simon Horman <horms+renesas@verge.net.au>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Varka Bhadram <varkabhadram@gmail.com>,
-        Masanari Iida <standby24x7@gmail.com>,
-        Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        Michael Buesch <m@bues.ch>,
-        Mauro Carvalho Chehab <m.chehab@samsung.com>,
-        abdoulaye berthe <berthe.ab@gmail.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        linux-ide@vger.kernel.org,
-        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-        linux-input@vger.kernel.org,
-        Network Development <netdev@vger.kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <jogo@openwrt.org>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <sfr@canb.auug.org.au>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48508
+X-archive-position: 48509
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jogo@openwrt.org
+X-original-sender: sfr@canb.auug.org.au
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -78,179 +53,31 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi,
+Hi Paul,
 
-On Thu, Jul 30, 2015 at 7:28 PM, Alban Bedel <albeu@free.fr> wrote:
-> Currently CONFIG_ARCH_HAVE_CUSTOM_GPIO_H is defined for all MIPS
-> machines, and each machine type provides its own gpio.h. However
-> only a handful really implement the GPIO API, most just forward
-> everythings to gpiolib.
+On Thu, 30 Jul 2015 11:32:05 -0400 Paul Gortmaker <paul.gortmaker@windriver.com> wrote:
 >
-> The Alchemy machine is notable as it provides a system to allow
-> implementing the GPIO API at the board level. But it is not used by
-> any board currently supported, so it can also be removed.
->
-> For most machine types we can just remove the custom gpio.h, as well
-> as the custom wrappers if some exists. Some of the code found in
-> the wrappers must be moved to the respective GPIO driver.
->
-> A few more fixes are need in some drivers as they rely on linux/gpio.h
-> to provides some machine specific definitions, or used asm/gpio.h
-> instead of linux/gpio.h for the gpio API.
->
-> Signed-off-by: Alban Bedel <albeu@free.fr>
-> ---
->
-> This patch is based on my previous serie:
-> "MIPS: ath79: Move the GPIO driver to drivers/gpio".
->
-> It supercede my previous patch named:
-> "MIPS: Remove most of the custom gpio.h"
->
-> Compared to the previous patch:
-> * Fixed gpio_to_irq on jz4740 and rb532
-> * Cleaned up alchemy as well
-> * Removed asm/gpio.h
->
-> For testing I tried to build all mips defconfig, however my toolchain
-> couldn't handle a few configs: ip28 malta_qemu_32r6 maltasmvp_eva
-> sead3micro. If somebody can test these that would be more than welcome.
->
-> Now a few stats about the state of CONFIG_ARCH_HAVE_CUSTOM_GPIO_H
-> after appling this patch. Of the 31 supportd arch, 15 still have
-> asm/gpio.h, of these 9 are just a "#warning Include linux/gpio.h
-> instead of asm/gpio.h". So we have 6 arch left: arm, avr32, blackfin,
-> m68k, sh and unicore32. But only m68k and unicore32 really provides
-> custom wrappers, all the others only forward to gpiolib.
->
-> On the drivers side we only have 13 occurences of '#include
-> <asm/gpio.h>' left, mostly in drivers used on ARM SoC.
->
-> So the work left to phase out the legacy GPIO is really not that much
-> anymore.
->
-> Alban
-> ---
->  arch/mips/Kconfig                               |   1 -
->  arch/mips/alchemy/Kconfig                       |   7 --
->  arch/mips/alchemy/board-gpr.c                   |   1 +
->  arch/mips/alchemy/board-mtx1.c                  |   1 +
->  arch/mips/alchemy/common/Makefile               |   7 +-
->  arch/mips/alchemy/devboards/db1000.c            |   1 +
->  arch/mips/alchemy/devboards/db1300.c            |   1 +
->  arch/mips/alchemy/devboards/db1550.c            |   1 +
->  arch/mips/alchemy/devboards/pm.c                |   2 +-
->  arch/mips/ar7/gpio.c                            |  12 +-
->  arch/mips/ar7/platform.c                        |   1 -
->  arch/mips/ar7/setup.c                           |   1 -
->  arch/mips/include/asm/gpio.h                    |   6 -
->  arch/mips/include/asm/mach-ar7/ar7.h            |   4 +
->  arch/mips/include/asm/mach-ar7/gpio.h           |  41 -------
->  arch/mips/include/asm/mach-ath25/gpio.h         |  16 ---
->  arch/mips/include/asm/mach-ath79/gpio.h         |  26 -----
->  arch/mips/include/asm/mach-au1x00/gpio-au1000.h | 148 ++----------------------
->  arch/mips/include/asm/mach-au1x00/gpio.h        |  86 --------------
->  arch/mips/include/asm/mach-bcm47xx/gpio.h       |  17 ---
->  arch/mips/include/asm/mach-bcm63xx/gpio.h       |  15 ---
->  arch/mips/include/asm/mach-cavium-octeon/gpio.h |  21 ----
->  arch/mips/include/asm/mach-generic/gpio.h       |  21 ----
->  arch/mips/include/asm/mach-jz4740/gpio.h        |   2 -
->  arch/mips/include/asm/mach-lantiq/gpio.h        |  13 ---
->  arch/mips/include/asm/mach-loongson64/gpio.h    |  36 ------
->  arch/mips/include/asm/mach-pistachio/gpio.h     |  21 ----
->  arch/mips/include/asm/mach-rc32434/gpio.h       |  12 --
->  arch/mips/jz4740/gpio.c                         |  20 ++--
->  arch/mips/pci/pci-lantiq.c                      |   1 -
->  arch/mips/rb532/devices.c                       |   1 +
->  arch/mips/rb532/gpio.c                          |   6 +
->  arch/mips/txx9/generic/setup.c                  |  16 ---
->  drivers/ata/pata_rb532_cf.c                     |   3 +-
->  drivers/gpio/gpio-ath79.c                       |  32 -----
->  drivers/input/misc/rb532_button.c               |   1 +
->  drivers/net/ethernet/ti/cpmac.c                 |   2 +
->  37 files changed, 44 insertions(+), 559 deletions(-)
->  delete mode 100644 arch/mips/include/asm/gpio.h
->  delete mode 100644 arch/mips/include/asm/mach-ar7/gpio.h
->  delete mode 100644 arch/mips/include/asm/mach-ath25/gpio.h
->  delete mode 100644 arch/mips/include/asm/mach-ath79/gpio.h
->  delete mode 100644 arch/mips/include/asm/mach-au1x00/gpio.h
->  delete mode 100644 arch/mips/include/asm/mach-bcm47xx/gpio.h
->  delete mode 100644 arch/mips/include/asm/mach-bcm63xx/gpio.h
->  delete mode 100644 arch/mips/include/asm/mach-cavium-octeon/gpio.h
->  delete mode 100644 arch/mips/include/asm/mach-generic/gpio.h
->  delete mode 100644 arch/mips/include/asm/mach-lantiq/gpio.h
->  delete mode 100644 arch/mips/include/asm/mach-loongson64/gpio.h
->  delete mode 100644 arch/mips/include/asm/mach-pistachio/gpio.h
->
-> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-> index cee5f93..6cab2b8 100644
+> Well, it only shows up when we cross compile for mips.  It does not
+> seem to be showing up for any other arch (and we cover ~10 of them).
+> Nor does it show up for x86 builds.  Also note that the main linux-next
+> build machine is actually a PowerPC host.
 
-(snip)
+Actually I do my linux-next builds on an x86_64 host, and the overnight
+builds are spread between that and a PowerPC host.
 
-> diff --git a/arch/mips/ar7/gpio.c b/arch/mips/ar7/gpio.c
-> index d8dbd8f..ae29906 100644
-> --- a/arch/mips/ar7/gpio.c
-> +++ b/arch/mips/ar7/gpio.c
-> @@ -21,7 +21,7 @@
->  #include <linux/module.h>
->  #include <linux/gpio.h>
->
-> -#include <asm/mach-ar7/gpio.h>
-> +#include <asm/mach-ar7/ar7.h>
->
->  struct ar7_gpio_chip {
->         void __iomem            *regs;
-> @@ -94,9 +94,6 @@ static int titan_gpio_direction_input(struct gpio_chip *chip, unsigned gpio)
->         void __iomem *gpio_dir0 = gpch->regs + TITAN_GPIO_DIR_0;
->         void __iomem *gpio_dir1 = gpch->regs + TITAN_GPIO_DIR_1;
->
-> -       if (gpio >= TITAN_GPIO_MAX)
-> -               return -EINVAL;
-> -
+> > Please note that this is HOSTCC running, so it does *NOT* require the
+> > toolchain for your cross-compiled architecture.
+> > 
+> > Also, please tell me why your system has "linux/memfd.h" available,
+> > but __NR_memfd_create is undefined?
+> 
+> My local system is a bog standard ubuntu 14.10 and it sees it.  I dont
+> know what distro the linux-next IBM powerpc builder is based on but it
+> also sees it....
 
-This change is not in the patch description. Have you checked that
-this cannot happen? And even if so, removing that check would be
-something
-for an additional patch IMHO.
+Our build hosts are running Debian stable and Ubuntu <mumble> (I think -
+I will check on this latter).
 
->         writel(readl(gpio >> 5 ? gpio_dir1 : gpio_dir0) | (1 << (gpio & 0x1f)),
->                         gpio >> 5 ? gpio_dir1 : gpio_dir0);
->         return 0;
-> @@ -123,9 +120,6 @@ static int titan_gpio_direction_output(struct gpio_chip *chip,
->         void __iomem *gpio_dir0 = gpch->regs + TITAN_GPIO_DIR_0;
->         void __iomem *gpio_dir1 = gpch->regs + TITAN_GPIO_DIR_1;
->
-> -       if (gpio >= TITAN_GPIO_MAX)
-> -               return -EINVAL;
-> -
-
-same here.
-
->         titan_gpio_set_value(chip, gpio, value);
->         writel(readl(gpio >> 5 ? gpio_dir1 : gpio_dir0) & ~(1 <<
->                 (gpio & 0x1f)), gpio >> 5 ? gpio_dir1 : gpio_dir0);
-> @@ -141,7 +135,7 @@ static struct ar7_gpio_chip ar7_gpio_chip = {
->                 .set                    = ar7_gpio_set_value,
->                 .get                    = ar7_gpio_get_value,
->                 .base                   = 0,
-> -               .ngpio                  = AR7_GPIO_MAX,
-> +               .ngpio                  = 32,
-
-Maybe move the #define into this file here instead of replacing it
-with a magic number?
-
->         }
->  };
->
-> @@ -153,7 +147,7 @@ static struct ar7_gpio_chip titan_gpio_chip = {
->                 .set                    = titan_gpio_set_value,
->                 .get                    = titan_gpio_get_value,
->                 .base                   = 0,
-> -               .ngpio                  = TITAN_GPIO_MAX,
-> +               .ngpio                  = 51,
-
-same here.
-
-
-
-Jonas
+-- 
+Cheers,
+Stephen Rothwell                    sfr@canb.auug.org.au

@@ -1,36 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Jul 2015 03:28:13 +0200 (CEST)
-Received: from ozlabs.org ([103.22.144.67]:60180 "EHLO ozlabs.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27011600AbbG3B2L4m0DD (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 30 Jul 2015 03:28:11 +0200
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by ozlabs.org (Postfix) with ESMTPSA id 84F4F14090B;
-        Thu, 30 Jul 2015 11:28:07 +1000 (AEST)
-Message-ID: <1438219687.2374.1.camel@ellerman.id.au>
-Subject: Re: samples/kdbus/kdbus-workers.c and cross compiling MIPS
-From:   Michael Ellerman <mpe@ellerman.id.au>
-To:     Paul Gortmaker <paul.gortmaker@windriver.com>
-Cc:     dh.herrmann@googlemail.com, gregkh@linuxfoundation.org,
-        daniel@zonque.org, tixxdz@opendz.org, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org, linux-next@vger.kernel.org
-Date:   Thu, 30 Jul 2015 11:28:07 +1000
-In-Reply-To: <20150729161912.GF18685@windriver.com>
-References: <20150729161912.GF18685@windriver.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.12.11-0ubuntu3 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Return-Path: <mpe@ellerman.id.au>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Jul 2015 13:04:26 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:46203 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27010607AbbG3LEYxN7Af (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 30 Jul 2015 13:04:24 +0200
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id A0543FC34FB24
+        for <linux-mips@linux-mips.org>; Thu, 30 Jul 2015 12:04:16 +0100 (IST)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Thu, 30 Jul 2015 12:04:18 +0100
+Received: from asmith-linux.le.imgtec.org (192.168.154.115) by
+ LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
+ 14.3.210.2; Thu, 30 Jul 2015 12:04:18 +0100
+From:   Alex Smith <alex.smith@imgtec.com>
+To:     <linux-mips@linux-mips.org>
+CC:     Alex Smith <alex.smith@imgtec.com>,
+        Sadegh Abbasi <Sadegh.Abbasi@imgtec.com>
+Subject: [PATCH v2 2/3] MIPS: Add implementation of dma_map_ops.mmap()
+Date:   Thu, 30 Jul 2015 12:03:42 +0100
+Message-ID: <1438254222-15803-1-git-send-email-alex.smith@imgtec.com>
+X-Mailer: git-send-email 2.5.0
+In-Reply-To: <1437750972-3659-2-git-send-email-alex.smith@imgtec.com>
+References: <1437750972-3659-2-git-send-email-alex.smith@imgtec.com>
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Originating-IP: [192.168.154.115]
+Return-Path: <Alex.Smith@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48500
+X-archive-position: 48501
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mpe@ellerman.id.au
+X-original-sender: alex.smith@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,33 +46,84 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, 2015-07-29 at 12:19 -0400, Paul Gortmaker wrote:
-> Hi David,
-> 
-> Does it make sense to build this sample when cross compiling?
-> 
-> The reason I ask is that it has been breaking the linux-next build of
-> allmodconfig for a while now, with:
-> 
->   HOSTCC  samples/kdbus/kdbus-workers
-> samples/kdbus/kdbus-workers.c: In function ‘prime_new’:
-> samples/kdbus/kdbus-workers.c:934:18: error: ‘__NR_memfd_create’ undeclared (first use in this function)
->   p->fd = syscall(__NR_memfd_create, "prime-area", MFD_CLOEXEC);
->                   ^
-> samples/kdbus/kdbus-workers.c:934:18: note: each undeclared identifier is reported only once for each function it appears in
-> scripts/Makefile.host:91: recipe for target 'samples/kdbus/kdbus-workers' failed
-> make[2]: *** [samples/kdbus/kdbus-workers] Error 1
-> 
-> http://kisskb.ellerman.id.au/kisskb/buildresult/12473453/
-> 
-> We recently made some changes to skip other sample/test programs when
-> cross compiling in mainline 65f6f092a6987 and f59514b6a8c5ca6dd and
-> 6a407a81a9abcf.  Maybe it makes sense to do the same here?
+The generic implementation of dma_map_ops.mmap(), dma_common_mmap(),
+is not correct for non-coherent devices. It expects to be passed a
+virtual address previously returned by dma_alloc_coherent(), which for
+a non-coherent device will return a KSEG1 address. It then attempts to
+convert that virtual address to a physical address using virt_to_page()
+which will yield an incorrect address.
 
-Hi Paul,
+Also, dma_common_mmap() does not handle the DMA_ATTR_WRITE_COMBINE
+attribute, and therefore dma_mmap_writecombine() will not actually set
+the appropriate pgprot_t flags for write combining.
 
-We also can configure kisskb to not build samples for all_modconfig, which
-avoids these sort of issues with a slight decrease in code coverage. We already
-disable samples for several other arch all_modconfigs.
+This patch adds an implementation of dma_map_ops.mmap() that correctly
+handles KSEG1 addresses, and enables write combining when requested.
 
-cheers
+Signed-off-by: Alex Smith <alex.smith@imgtec.com>
+Cc: Sadegh Abbasi <Sadegh.Abbasi@imgtec.com>
+Cc: linux-mips@linux-mips.org
+---
+Ralf: Could you replace the old patch "MIPS: Add implementation of
+dma_map_ops.mmap() that handles write combining" in mips-for-linux-next
+with this patch, which fixes a problem pointed out to me that exists
+in both dma_common_mmap() and the original version of the patch I sent.
+---
+ arch/mips/mm/dma-default.c | 35 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 35 insertions(+)
+
+diff --git a/arch/mips/mm/dma-default.c b/arch/mips/mm/dma-default.c
+index eeaf0245c3b1..8f23cf08f4ba 100644
+--- a/arch/mips/mm/dma-default.c
++++ b/arch/mips/mm/dma-default.c
+@@ -194,6 +194,40 @@ static void mips_dma_free_coherent(struct device *dev, size_t size, void *vaddr,
+ 		__free_pages(page, get_order(size));
+ }
+ 
++static int mips_dma_mmap(struct device *dev, struct vm_area_struct *vma,
++	void *cpu_addr, dma_addr_t dma_addr, size_t size,
++	struct dma_attrs *attrs)
++{
++	unsigned long user_count = (vma->vm_end - vma->vm_start) >> PAGE_SHIFT;
++	unsigned long count = PAGE_ALIGN(size) >> PAGE_SHIFT;
++	unsigned long addr = (unsigned long)cpu_addr;
++	unsigned long off = vma->vm_pgoff;
++	unsigned long pfn;
++	int ret = -ENXIO;
++
++	if (!plat_device_is_coherent(dev) && !hw_coherentio)
++		addr = CAC_ADDR(addr);
++
++	pfn = page_to_pfn(virt_to_page((void *)addr));
++
++	if (dma_get_attr(DMA_ATTR_WRITE_COMBINE, attrs))
++		vma->vm_page_prot = pgprot_writecombine(vma->vm_page_prot);
++	else
++		vma->vm_page_prot = pgprot_noncached(vma->vm_page_prot);
++
++	if (dma_mmap_from_coherent(dev, vma, cpu_addr, size, &ret))
++		return ret;
++
++	if (off < count && user_count <= (count - off)) {
++		ret = remap_pfn_range(vma, vma->vm_start,
++				      pfn + off,
++				      user_count << PAGE_SHIFT,
++				      vma->vm_page_prot);
++	}
++
++	return ret;
++}
++
+ static inline void __dma_sync_virtual(void *addr, size_t size,
+ 	enum dma_data_direction direction)
+ {
+@@ -380,6 +414,7 @@ EXPORT_SYMBOL(dma_cache_sync);
+ static struct dma_map_ops mips_default_dma_map_ops = {
+ 	.alloc = mips_dma_alloc_coherent,
+ 	.free = mips_dma_free_coherent,
++	.mmap = mips_dma_mmap,
+ 	.map_page = mips_dma_map_page,
+ 	.unmap_page = mips_dma_unmap_page,
+ 	.map_sg = mips_dma_map_sg,
+-- 
+2.5.0

@@ -1,11 +1,11 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 31 Jul 2015 22:19:39 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:49904 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 31 Jul 2015 22:29:46 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:50413 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010750AbbGaUThtRpFS (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 31 Jul 2015 22:19:37 +0200
+        by eddie.linux-mips.org with ESMTP id S27010750AbbGaU3oVT9Jt (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 31 Jul 2015 22:29:44 +0200
 Received: from localhost (c-50-170-35-168.hsd1.wa.comcast.net [50.170.35.168])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 8CD1A5A7;
-        Fri, 31 Jul 2015 20:19:31 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 200C8596;
+        Fri, 31 Jul 2015 20:29:38 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -14,12 +14,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Gleb Natapov <gleb@kernel.org>,
         Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 3.14 125/125] MIPS: KVM: Do not sign extend on unsigned MMIO load
-Date:   Fri, 31 Jul 2015 12:42:05 -0700
-Message-Id: <20150731194031.534444315@linuxfoundation.org>
+Subject: [PATCH 3.10 89/89] MIPS: KVM: Do not sign extend on unsigned MMIO load
+Date:   Fri, 31 Jul 2015 12:42:11 -0700
+Message-Id: <20150731194033.508043433@linuxfoundation.org>
 X-Mailer: git-send-email 2.5.0
-In-Reply-To: <20150731194027.037807932@linuxfoundation.org>
-References: <20150731194027.037807932@linuxfoundation.org>
+In-Reply-To: <20150731194030.516335023@linuxfoundation.org>
+References: <20150731194030.516335023@linuxfoundation.org>
 User-Agent: quilt/0.64
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -27,7 +27,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48518
+X-archive-position: 48519
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -44,7 +44,7 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-3.14-stable review patch.  If anyone has any objections, please let me know.
+3.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 

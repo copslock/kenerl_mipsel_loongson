@@ -1,42 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 31 Jul 2015 18:29:30 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:35797 "EHLO
-        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011893AbbGaQ32NTeZV (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 31 Jul 2015 18:29:28 +0200
-Received: from localhost (c-50-170-35-168.hsd1.wa.comcast.net [50.170.35.168])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 2746C405;
-        Fri, 31 Jul 2015 16:29:22 +0000 (UTC)
-Date:   Fri, 31 Jul 2015 09:29:21 -0700
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Michael Ellerman <mpe@ellerman.id.au>
-Cc:     David Herrmann <dh.herrmann@gmail.com>,
-        Paul Gortmaker <paul.gortmaker@windriver.com>,
-        David Herrmann <dh.herrmann@googlemail.com>,
-        Daniel Mack <daniel@zonque.org>,
-        Djalal Harouni <tixxdz@opendz.org>, linux-mips@linux-mips.org,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        "linux-next@vger.kernel.org" <linux-next@vger.kernel.org>
-Subject: Re: samples/kdbus/kdbus-workers.c and cross compiling MIPS
-Message-ID: <20150731162921.GA6335@kroah.com>
-References: <20150729161912.GF18685@windriver.com>
- <CANq1E4TgWK-8JkUtOYfTOL9Dx=jWeVpA-h881TXSA3BNjp+MPw@mail.gmail.com>
- <55BA2B91.5070107@windriver.com>
- <CANq1E4S7awCfPaNduoG8ENHmnGhR7-VT-9LvGwREZs-h8zNmzQ@mail.gmail.com>
- <1438326061.29353.9.camel@ellerman.id.au>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1438326061.29353.9.camel@ellerman.id.au>
-User-Agent: Mutt/1.5.23+102 (2ca89bed6448) (2014-03-12)
-Return-Path: <gregkh@linuxfoundation.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 31 Jul 2015 19:04:17 +0200 (CEST)
+Received: from smtp.codeaurora.org ([198.145.29.96]:32854 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27010750AbbGaREPZsvuV (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 31 Jul 2015 19:04:15 +0200
+Received: from smtp.codeaurora.org (localhost [127.0.0.1])
+        by smtp.codeaurora.org (Postfix) with ESMTP id 3FDFE140AEE;
+        Fri, 31 Jul 2015 17:04:12 +0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 486)
+        id 2FA31140AE8; Fri, 31 Jul 2015 17:04:12 +0000 (UTC)
+Received: from sboyd-linux.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+        (using TLSv1.1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: sboyd@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 3AD70140AEE;
+        Fri, 31 Jul 2015 17:04:11 +0000 (UTC)
+From:   Stephen Boyd <sboyd@codeaurora.org>
+To:     Mike Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@codeaurora.org>
+Cc:     linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org,
+        Manuel Lauss <manuel.lauss@gmail.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Linux-MIPS <linux-mips@linux-mips.org>
+Subject: [PATCH 09/26] MIPS: alchemy: Convert to clk_hw based provider APIs
+Date:   Fri, 31 Jul 2015 10:03:49 -0700
+Message-Id: <1438362246-6664-10-git-send-email-sboyd@codeaurora.org>
+X-Mailer: git-send-email 2.3.0.rc1.33.g42e4583
+In-Reply-To: <1438362246-6664-1-git-send-email-sboyd@codeaurora.org>
+References: <1438362246-6664-1-git-send-email-sboyd@codeaurora.org>
+X-Virus-Scanned: ClamAV using ClamSMTP
+Return-Path: <sboyd@codeaurora.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48514
+X-archive-position: 48515
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
+X-original-sender: sboyd@codeaurora.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,16 +49,72 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Jul 31, 2015 at 05:01:01PM +1000, Michael Ellerman wrote:
-> It's obviously possible that some samples build with that configuration, but
-> building against another arch'es kernel headers just seems like it's asking for
-> trouble. Even if we can build the samples, they will never run correctly.
-> 
-> So I suggest we should just disable SAMPLES if we're cross compiling, full stop.
+We're removing struct clk from the clk provider API, so switch
+this code to using the clk_hw based provider APIs.
 
-Yes, that seems like a much better solution overall.  Can you send a
-patch for this?
+Cc: Manuel Lauss <manuel.lauss@gmail.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Linux-MIPS <linux-mips@linux-mips.org>
+Signed-off-by: Stephen Boyd <sboyd@codeaurora.org>
+---
+ arch/mips/alchemy/common/clock.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-thanks,
-
-greg k-h
+diff --git a/arch/mips/alchemy/common/clock.c b/arch/mips/alchemy/common/clock.c
+index 5a62b18b8500..bd34f4093cd9 100644
+--- a/arch/mips/alchemy/common/clock.c
++++ b/arch/mips/alchemy/common/clock.c
+@@ -394,7 +394,7 @@ static int alchemy_clk_fgcs_detr(struct clk_hw *hw,
+ 				 struct clk_rate_request *req,
+ 				 int scale, int maxdiv)
+ {
+-	struct clk *pc, *bpc, *free;
++	struct clk_hw *pc, *bpc, *free;
+ 	long tdv, tpr, pr, nr, br, bpr, diff, lastdiff;
+ 	int j;
+ 
+@@ -408,7 +408,7 @@ static int alchemy_clk_fgcs_detr(struct clk_hw *hw,
+ 	 * the one that gets closest to but not over the requested rate.
+ 	 */
+ 	for (j = 0; j < 7; j++) {
+-		pc = clk_get_parent_by_index(hw->clk, j);
++		pc = clk_hw_get_parent_by_index(hw, j);
+ 		if (!pc)
+ 			break;
+ 
+@@ -416,12 +416,12 @@ static int alchemy_clk_fgcs_detr(struct clk_hw *hw,
+ 		 * XXX: we would actually want clk_has_active_children()
+ 		 * but this is a good-enough approximation for now.
+ 		 */
+-		if (!__clk_is_prepared(pc)) {
++		if (!clk_hw_is_prepared(pc)) {
+ 			if (!free)
+ 				free = pc;
+ 		}
+ 
+-		pr = clk_get_rate(pc);
++		pr = clk_hw_get_rate(pc);
+ 		if (pr < req->rate)
+ 			continue;
+ 
+@@ -451,7 +451,7 @@ static int alchemy_clk_fgcs_detr(struct clk_hw *hw,
+ 			tpr = req->rate * j;
+ 			if (tpr < 0)
+ 				break;
+-			pr = clk_round_rate(free, tpr);
++			pr = clk_hw_round_rate(free, tpr);
+ 
+ 			tdv = alchemy_calc_div(req->rate, pr, scale, maxdiv,
+ 					       NULL);
+@@ -474,7 +474,7 @@ static int alchemy_clk_fgcs_detr(struct clk_hw *hw,
+ 		return br;
+ 
+ 	req->best_parent_rate = bpr;
+-	req->best_parent_hw = __clk_get_hw(bpc);
++	req->best_parent_hw = bpc;
+ 	req->rate = br;
+ 
+ 	return 0;
+-- 
+The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,
+a Linux Foundation Collaborative Project

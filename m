@@ -1,26 +1,25 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 31 Jul 2015 22:03:10 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:48971 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 31 Jul 2015 22:19:39 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:49904 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011916AbbGaUDI0N0mS (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 31 Jul 2015 22:03:08 +0200
+        by eddie.linux-mips.org with ESMTP id S27010750AbbGaUThtRpFS (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 31 Jul 2015 22:19:37 +0200
 Received: from localhost (c-50-170-35-168.hsd1.wa.comcast.net [50.170.35.168])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 292134A7;
-        Fri, 31 Jul 2015 20:03:02 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 8CD1A5A7;
+        Fri, 31 Jul 2015 20:19:31 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Aaro Koskinen <aaro.koskinen@nokia.com>,
-        David Daney <david.daney@cavium.com>,
-        Mauro Carvalho Chehab <mchehab@osg.samsung.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        linux-edac <linux-edac@vger.kernel.org>,
-        linux-mips@linux-mips.org, Borislav Petkov <bp@suse.de>
-Subject: [PATCH 4.1 256/267] EDAC, octeon: Fix broken build due to model helper renames
-Date:   Fri, 31 Jul 2015 12:41:47 -0700
-Message-Id: <20150731194011.686888848@linuxfoundation.org>
+        stable@vger.kernel.org, Nicholas Mc Guire <hofrat@osadl.org>,
+        James Hogan <james.hogan@imgtec.com>,
+        Gleb Natapov <gleb@kernel.org>,
+        Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH 3.14 125/125] MIPS: KVM: Do not sign extend on unsigned MMIO load
+Date:   Fri, 31 Jul 2015 12:42:05 -0700
+Message-Id: <20150731194031.534444315@linuxfoundation.org>
 X-Mailer: git-send-email 2.5.0
-In-Reply-To: <20150731194001.933895871@linuxfoundation.org>
-References: <20150731194001.933895871@linuxfoundation.org>
+In-Reply-To: <20150731194027.037807932@linuxfoundation.org>
+References: <20150731194027.037807932@linuxfoundation.org>
 User-Agent: quilt/0.64
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -28,7 +27,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48517
+X-archive-position: 48518
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,67 +44,42 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-4.1-stable review patch.  If anyone has any objections, please let me know.
+3.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aaro Koskinen <aaro.koskinen@nokia.com>
+From: Nicholas Mc Guire <hofrat@osadl.org>
 
-commit 75a15a7864c9e281c74a1670b10b69d1d7ff1c82 upstream.
+commit ed9244e6c534612d2b5ae47feab2f55a0d4b4ced upstream.
 
-Commit
+Fix possible unintended sign extension in unsigned MMIO loads by casting
+to uint16_t in the case of mmio_needed != 2.
 
-  debe6a623d3c ("MIPS: OCTEON: Update octeon-model.h code for new SoCs.")
-
-renamed some SoC model helper functions, but forgot to update the EDAC
-drivers resulting in build failures. Fix that.
-
-Signed-off-by: Aaro Koskinen <aaro.koskinen@nokia.com>
-Acked-by: David Daney <david.daney@cavium.com>
-Cc: Mauro Carvalho Chehab <mchehab@osg.samsung.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-edac <linux-edac@vger.kernel.org>
+Signed-off-by: Nicholas Mc Guire <hofrat@osadl.org>
+Reviewed-by: James Hogan <james.hogan@imgtec.com>
+Tested-by: James Hogan <james.hogan@imgtec.com>
+Cc: Gleb Natapov <gleb@kernel.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org
 Cc: linux-mips@linux-mips.org
-Link: http://lkml.kernel.org/r/1435747132-10954-1-git-send-email-aaro.koskinen@nokia.com
-Signed-off-by: Borislav Petkov <bp@suse.de>
+Cc: linux-kernel@vger.kernel.org
+Patchwork: https://patchwork.linux-mips.org/patch/9985/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- drivers/edac/octeon_edac-l2c.c |    2 +-
- drivers/edac/octeon_edac-lmc.c |    2 +-
- drivers/edac/octeon_edac-pc.c  |    2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+ arch/mips/kvm/kvm_mips_emul.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/edac/octeon_edac-l2c.c
-+++ b/drivers/edac/octeon_edac-l2c.c
-@@ -151,7 +151,7 @@ static int octeon_l2c_probe(struct platf
- 	l2c->ctl_name = "octeon_l2c_err";
- 
- 
--	if (OCTEON_IS_MODEL(OCTEON_FAM_1_PLUS)) {
-+	if (OCTEON_IS_OCTEON1PLUS()) {
- 		union cvmx_l2t_err l2t_err;
- 		union cvmx_l2d_err l2d_err;
- 
---- a/drivers/edac/octeon_edac-lmc.c
-+++ b/drivers/edac/octeon_edac-lmc.c
-@@ -234,7 +234,7 @@ static int octeon_lmc_edac_probe(struct
- 	layers[0].size = 1;
- 	layers[0].is_virt_csrow = false;
- 
--	if (OCTEON_IS_MODEL(OCTEON_FAM_1_PLUS)) {
-+	if (OCTEON_IS_OCTEON1PLUS()) {
- 		union cvmx_lmcx_mem_cfg0 cfg0;
- 
- 		cfg0.u64 = cvmx_read_csr(CVMX_LMCX_MEM_CFG0(0));
---- a/drivers/edac/octeon_edac-pc.c
-+++ b/drivers/edac/octeon_edac-pc.c
-@@ -73,7 +73,7 @@ static int  co_cache_error_event(struct
- 			edac_device_handle_ce(p->ed, cpu, 0, "dcache");
- 
- 		/* Clear the error indication */
--		if (OCTEON_IS_MODEL(OCTEON_FAM_2))
-+		if (OCTEON_IS_OCTEON2())
- 			write_octeon_c0_dcacheerr(1);
+--- a/arch/mips/kvm/kvm_mips_emul.c
++++ b/arch/mips/kvm/kvm_mips_emul.c
+@@ -1626,7 +1626,7 @@ kvm_mips_complete_mmio_load(struct kvm_v
+ 		if (vcpu->mmio_needed == 2)
+ 			*gpr = *(int16_t *) run->mmio.data;
  		else
- 			write_octeon_c0_dcacheerr(0);
+-			*gpr = *(int16_t *) run->mmio.data;
++			*gpr = *(uint16_t *)run->mmio.data;
+ 
+ 		break;
+ 	case 1:

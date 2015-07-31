@@ -1,72 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 31 Jul 2015 08:04:55 +0200 (CEST)
-Received: from mail-wi0-f182.google.com ([209.85.212.182]:33628 "EHLO
-        mail-wi0-f182.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010694AbbGaGEyFuCr0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 31 Jul 2015 08:04:54 +0200
-Received: by wicmv11 with SMTP id mv11so45145652wic.0;
-        Thu, 30 Jul 2015 23:04:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-type;
-        bh=F7fz2DweN0rgoYPsHURbJ3lj61hKZKYA+NvU+/4tWJc=;
-        b=c8YnwC71J1vf7AhphpmU6oOWpWKax0rc9OSXuJyjVNC00UJeUxhszoAcBJC5gDjdKD
-         lFTtxY2T+QAiABs/Vibc+ItiUuDVSV7pxxmUYW3syk7H72DiW9yUMtLIgmFpxVTJ9aJV
-         n1Ej2OgZlTAm2FTgBWfNCbx84ltlyUBTywaIWztKdCfCTQk0HTwhfzg1Q8wvf5glGczK
-         fEpFgPUWTBylXuMhs93QWsGhofQzlOuRvd1XhFq0JQUidY2klwTtTKSo+4VKJBGr+fuX
-         YPEKaZDQdMxjRX+WL38BTd6oIJNe2UaJYpUtuDXSw72wj+nFX/tviL8wn4sNJcCmWmmu
-         dEow==
-X-Received: by 10.194.123.4 with SMTP id lw4mr2146350wjb.94.1438322688893;
- Thu, 30 Jul 2015 23:04:48 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 10.194.170.170 with HTTP; Thu, 30 Jul 2015 23:04:09 -0700 (PDT)
-In-Reply-To: <1438277338-7246-1-git-send-email-albeu@free.fr>
-References: <1438277338-7246-1-git-send-email-albeu@free.fr>
-From:   Manuel Lauss <manuel.lauss@gmail.com>
-Date:   Fri, 31 Jul 2015 08:04:09 +0200
-Message-ID: <CAOLZvyFdY9z9tVd6BR4H4xnito=X5m_=71bmUr=7FHRGcB-SEw@mail.gmail.com>
-Subject: Re: [PATCH] MIPS: Remove all the uses of custom gpio.h
-To:     Alban Bedel <albeu@free.fr>
-Cc:     Linux-MIPS <linux-mips@linux-mips.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Hauke Mehrtens <hauke@hauke-m.de>,
-        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Tejun Heo <tj@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Alexandre Courbot <gnurou@gmail.com>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Florian Fainelli <florian@openwrt.org>,
-        Joe Perches <joe@perches.com>,
-        Daniel Walter <dwalter@google.com>,
-        Sergey Ryazanov <ryazanov.s.a@gmail.com>,
-        Huacai Chen <chenhc@lemote.com>,
-        Andrew Bresticker <abrestic@chromium.org>,
-        James Hartley <james.hartley@imgtec.com>,
-        Paul Burton <paul.burton@imgtec.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Wolfram Sang <wsa@the-dreams.de>,
-        Simon Horman <horms+renesas@verge.net.au>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Varka Bhadram <varkabhadram@gmail.com>,
-        Masanari Iida <standby24x7@gmail.com>,
-        Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        Michael Buesch <m@bues.ch>,
-        Mauro Carvalho Chehab <m.chehab@samsung.com>,
-        abdoulaye berthe <berthe.ab@gmail.com>,
-        LKML <linux-kernel@vger.kernel.org>, linux-ide@vger.kernel.org,
-        linux-gpio@vger.kernel.org, linux-input@vger.kernel.org,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <manuel.lauss@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 31 Jul 2015 08:54:25 +0200 (CEST)
+Received: from ozlabs.org ([103.22.144.67]:57343 "EHLO ozlabs.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27010772AbbGaGyYIlrpw (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 31 Jul 2015 08:54:24 +0200
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by ozlabs.org (Postfix) with ESMTPSA id 5749114031A;
+        Fri, 31 Jul 2015 16:54:19 +1000 (AEST)
+Message-ID: <1438325658.29353.8.camel@ellerman.id.au>
+Subject: Re: samples/kdbus/kdbus-workers.c and cross compiling MIPS
+From:   Michael Ellerman <mpe@ellerman.id.au>
+To:     Stephen Rothwell <sfr@canb.auug.org.au>
+Cc:     Paul Gortmaker <paul.gortmaker@windriver.com>,
+        David Herrmann <dh.herrmann@gmail.com>,
+        David Herrmann <dh.herrmann@googlemail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Daniel Mack <daniel@zonque.org>,
+        Djalal Harouni <tixxdz@opendz.org>, linux-mips@linux-mips.org,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        "linux-next@vger.kernel.org" <linux-next@vger.kernel.org>
+Date:   Fri, 31 Jul 2015 16:54:18 +1000
+In-Reply-To: <20150731095511.1a6f1257@canb.auug.org.au>
+References: <20150729161912.GF18685@windriver.com>
+         <CANq1E4TgWK-8JkUtOYfTOL9Dx=jWeVpA-h881TXSA3BNjp+MPw@mail.gmail.com>
+         <55BA2B91.5070107@windriver.com>
+         <CANq1E4S7awCfPaNduoG8ENHmnGhR7-VT-9LvGwREZs-h8zNmzQ@mail.gmail.com>
+         <55BA4375.7010400@windriver.com> <20150731095511.1a6f1257@canb.auug.org.au>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.12.11-0ubuntu3 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Return-Path: <mpe@ellerman.id.au>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48510
+X-archive-position: 48511
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: manuel.lauss@gmail.com
+X-original-sender: mpe@ellerman.id.au
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -79,34 +52,32 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Jul 30, 2015 at 7:28 PM, Alban Bedel <albeu@free.fr> wrote:
-> Currently CONFIG_ARCH_HAVE_CUSTOM_GPIO_H is defined for all MIPS
-> machines, and each machine type provides its own gpio.h. However
-> only a handful really implement the GPIO API, most just forward
-> everythings to gpiolib.
->
-> The Alchemy machine is notable as it provides a system to allow
-> implementing the GPIO API at the board level. But it is not used by
-> any board currently supported, so it can also be removed.
+On Fri, 2015-07-31 at 09:55 +1000, Stephen Rothwell wrote:
+> Hi Paul,
+> 
+> On Thu, 30 Jul 2015 11:32:05 -0400 Paul Gortmaker <paul.gortmaker@windriver.com> wrote:
+> >
+> > Well, it only shows up when we cross compile for mips.  It does not
+> > seem to be showing up for any other arch (and we cover ~10 of them).
+> > Nor does it show up for x86 builds.  Also note that the main linux-next
+> > build machine is actually a PowerPC host.
+> 
+> Actually I do my linux-next builds on an x86_64 host, and the overnight
+> builds are spread between that and a PowerPC host.
+> 
+> > > Please note that this is HOSTCC running, so it does *NOT* require the
+> > > toolchain for your cross-compiled architecture.
+> > > 
+> > > Also, please tell me why your system has "linux/memfd.h" available,
+> > > but __NR_memfd_create is undefined?
+> > 
+> > My local system is a bog standard ubuntu 14.10 and it sees it.  I dont
+> > know what distro the linux-next IBM powerpc builder is based on but it
+> > also sees it....
+> 
+> Our build hosts are running Debian stable and Ubuntu <mumble> (I think -
+> I will check on this latter).
 
-Threre's only out-of-tree users which I also maintain, so it's fine with me.
+The x86 builders are debian:jessie and the ppc one is currently Ubuntu 14.04.2.
 
-
->  arch/mips/alchemy/Kconfig                       |   7 --
->  arch/mips/alchemy/board-gpr.c                   |   1 +
->  arch/mips/alchemy/board-mtx1.c                  |   1 +
->  arch/mips/alchemy/common/Makefile               |   7 +-
->  arch/mips/alchemy/devboards/db1000.c            |   1 +
->  arch/mips/alchemy/devboards/db1300.c            |   1 +
->  arch/mips/alchemy/devboards/db1550.c            |   1 +
->  arch/mips/alchemy/devboards/pm.c                |   2 +-
->  arch/mips/include/asm/mach-au1x00/gpio-au1000.h | 148 ++----------------------
->  arch/mips/include/asm/mach-au1x00/gpio.h        |  86 --------------
-
-For the alchemy parts:
-
-Acked-by: Manuel Lauss <manuel.lauss@gmail.com>
-
-
--- 
-   Manuel
+cheers

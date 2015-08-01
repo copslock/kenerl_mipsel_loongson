@@ -1,37 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 31 Jul 2015 22:29:46 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:50413 "EHLO
-        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010750AbbGaU3oVT9Jt (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 31 Jul 2015 22:29:44 +0200
-Received: from localhost (c-50-170-35-168.hsd1.wa.comcast.net [50.170.35.168])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 200C8596;
-        Fri, 31 Jul 2015 20:29:38 +0000 (UTC)
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Nicholas Mc Guire <hofrat@osadl.org>,
-        James Hogan <james.hogan@imgtec.com>,
-        Gleb Natapov <gleb@kernel.org>,
-        Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
-        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 3.10 89/89] MIPS: KVM: Do not sign extend on unsigned MMIO load
-Date:   Fri, 31 Jul 2015 12:42:11 -0700
-Message-Id: <20150731194033.508043433@linuxfoundation.org>
-X-Mailer: git-send-email 2.5.0
-In-Reply-To: <20150731194030.516335023@linuxfoundation.org>
-References: <20150731194030.516335023@linuxfoundation.org>
-User-Agent: quilt/0.64
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 01 Aug 2015 14:03:42 +0200 (CEST)
+Received: from mail-gw2-out.broadcom.com ([216.31.210.63]:38797 "EHLO
+        mail-gw2-out.broadcom.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010828AbbHAMDlBeoAt (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 1 Aug 2015 14:03:41 +0200
+X-IronPort-AV: E=Sophos;i="5.15,591,1432623600"; 
+   d="scan'208";a="71359081"
+Received: from irvexchcas08.broadcom.com (HELO IRVEXCHCAS08.corp.ad.broadcom.com) ([10.9.208.57])
+  by mail-gw2-out.broadcom.com with ESMTP; 01 Aug 2015 05:22:50 -0700
+Received: from IRVEXCHSMTP2.corp.ad.broadcom.com (10.9.207.52) by
+ IRVEXCHCAS08.corp.ad.broadcom.com (10.9.208.57) with Microsoft SMTP Server
+ (TLS) id 14.3.235.1; Sat, 1 Aug 2015 05:03:32 -0700
+Received: from mail-irva-13.broadcom.com (10.10.10.20) by
+ IRVEXCHSMTP2.corp.ad.broadcom.com (10.9.207.52) with Microsoft SMTP Server id
+ 14.3.235.1; Sat, 1 Aug 2015 05:03:31 -0700
+Received: from netl-snoppy.ban.broadcom.com (unknown [10.132.128.129])  by
+ mail-irva-13.broadcom.com (Postfix) with ESMTP id 75F9340FE5;  Sat,  1 Aug
+ 2015 05:01:16 -0700 (PDT)
+From:   Jayachandran C <jchandra@broadcom.com>
+To:     <linux-mips@linux-mips.org>, <ralf@linux-mips.org>
+CC:     Jayachandran C <jchandra@broadcom.com>
+Subject: [PATCH 0/4] Netlogic updates for 4.3
+Date:   Sat, 1 Aug 2015 17:44:19 +0530
+Message-ID: <1438431263-12427-1-git-send-email-jchandra@broadcom.com>
+X-Mailer: git-send-email 1.9.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <gregkh@linuxfoundation.org>
+Content-Type: text/plain
+Return-Path: <jchandra@broadcom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48519
+X-archive-position: 48521
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
+X-original-sender: jchandra@broadcom.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,42 +46,31 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-3.10-stable review patch.  If anyone has any objections, please let me know.
+Some updates and fixes for the netlogic platform. The first patch
+is to update interrupt controller code to use chip_data. Other minor
+patches are to update dts files to use the GPIO controller (which
+now upstream) and to add NAND interrupt mapping.
 
-------------------
+JC.
 
-From: Nicholas Mc Guire <hofrat@osadl.org>
+Kamlakant Patel (3):
+  MIPS: Netlogic: Use chip_data for irq_chip methods
+  MIPS: Netlogic: add device tree entry for XLP GPIO
+  MIPS: Netlogic: enable ARCH_REQUIRE_GPIOLIB for XLP platform
 
-commit ed9244e6c534612d2b5ae47feab2f55a0d4b4ced upstream.
+Subhendu Sekhar Behera (1):
+  MIPS: Netlogic: NAND IRQ mapping
 
-Fix possible unintended sign extension in unsigned MMIO loads by casting
-to uint16_t in the case of mmio_needed != 2.
+ arch/mips/Kconfig                       |  1 +
+ arch/mips/boot/dts/netlogic/xlp_evp.dts | 12 ++++++++++++
+ arch/mips/boot/dts/netlogic/xlp_fvp.dts | 12 ++++++++++++
+ arch/mips/boot/dts/netlogic/xlp_gvp.dts | 11 +++++++++++
+ arch/mips/boot/dts/netlogic/xlp_rvp.dts | 11 +++++++++++
+ arch/mips/boot/dts/netlogic/xlp_svp.dts | 12 ++++++++++++
+ arch/mips/netlogic/common/irq.c         | 12 ++++++------
+ arch/mips/netlogic/xlp/nlm_hal.c        |  2 ++
+ arch/mips/pci/msi-xlp.c                 | 20 ++++++++++----------
+ 9 files changed, 77 insertions(+), 16 deletions(-)
 
-Signed-off-by: Nicholas Mc Guire <hofrat@osadl.org>
-Reviewed-by: James Hogan <james.hogan@imgtec.com>
-Tested-by: James Hogan <james.hogan@imgtec.com>
-Cc: Gleb Natapov <gleb@kernel.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org
-Cc: linux-mips@linux-mips.org
-Cc: linux-kernel@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/9985/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
----
- arch/mips/kvm/kvm_mips_emul.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
---- a/arch/mips/kvm/kvm_mips_emul.c
-+++ b/arch/mips/kvm/kvm_mips_emul.c
-@@ -1626,7 +1626,7 @@ kvm_mips_complete_mmio_load(struct kvm_v
- 		if (vcpu->mmio_needed == 2)
- 			*gpr = *(int16_t *) run->mmio.data;
- 		else
--			*gpr = *(int16_t *) run->mmio.data;
-+			*gpr = *(uint16_t *)run->mmio.data;
- 
- 		break;
- 	case 1:
+-- 
+1.9.1

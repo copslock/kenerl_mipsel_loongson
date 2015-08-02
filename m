@@ -1,29 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 02 Aug 2015 02:10:07 +0200 (CEST)
-Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:56771 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 02 Aug 2015 02:10:25 +0200 (CEST)
+Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:57005 "EHLO
         shadbolt.e.decadent.org.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012007AbbHBAJwzNu8y (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 2 Aug 2015 02:09:52 +0200
+        by eddie.linux-mips.org with ESMTP id S27012008AbbHBAKAoq0My (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 2 Aug 2015 02:10:00 +0200
 Received: from deadeye.wl.decadent.org.uk ([192.168.4.249] helo=deadeye)
         by shadbolt.decadent.org.uk with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.84)
         (envelope-from <ben@decadent.org.uk>)
-        id 1ZLgqX-0002cf-PD; Sun, 02 Aug 2015 01:09:45 +0100
+        id 1ZLgqf-0002cf-Tc; Sun, 02 Aug 2015 01:09:54 +0100
 Received: from ben by deadeye with local (Exim 4.86_RC4)
         (envelope-from <ben@decadent.org.uk>)
-        id 1ZLgqT-0004jD-1q; Sun, 02 Aug 2015 01:09:41 +0100
+        id 1ZLgqQ-0004bB-Rh; Sun, 02 Aug 2015 01:09:38 +0100
 Content-Type: text/plain; charset="UTF-8"
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
 From:   Ben Hutchings <ben@decadent.org.uk>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-CC:     akpm@linux-foundation.org, "Adam Jiang" <jiang.adam@gmail.com>,
-        "James Hogan" <james.hogan@imgtec.com>, linux-mips@linux-mips.org,
-        "Ralf Baechle" <ralf@linux-mips.org>
+CC:     akpm@linux-foundation.org, "Fuxin Zhang" <zhangfx@lemote.com>,
+        "Steven J. Hill" <Steven.Hill@imgtec.com>,
+        linux-mips@linux-mips.org, "Ralf Baechle" <ralf@linux-mips.org>,
+        "Huacai Chen" <chenhc@lemote.com>,
+        "Zhangjin Wu" <wuzhangjin@gmail.com>
 Date:   Sun, 02 Aug 2015 01:02:37 +0100
-Message-ID: <lsq.1438473757.611382145@decadent.org.uk>
+Message-ID: <lsq.1438473757.983092137@decadent.org.uk>
 X-Mailer: LinuxStableQueue (scripts by bwh)
-Subject: [PATCH 3.2 121/164] MIPS: Fix enabling of DEBUG_STACKOVERFLOW
+Subject: [PATCH 3.2 022/164] MIPS: Hibernate: flush TLB entries earlier
 In-Reply-To: <lsq.1438473757.687525882@decadent.org.uk>
 X-SA-Exim-Connect-IP: 192.168.4.249
 X-SA-Exim-Mail-From: ben@decadent.org.uk
@@ -32,7 +34,7 @@ Return-Path: <ben@decadent.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48527
+X-archive-position: 48528
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -53,37 +55,42 @@ X-list: linux-mips
 
 ------------------
 
-From: James Hogan <james.hogan@imgtec.com>
+From: Huacai Chen <chenhc@lemote.com>
 
-commit 5f35b9cd553fd64415b563497d05a563c988dbd6 upstream.
+commit 2a21dc7c196209d94cb570a0d340faa6c760f7f8 upstream.
 
-Commit 334c86c494b9 ("MIPS: IRQ: Add stackoverflow detection") added
-kernel stack overflow detection, however it only enabled it conditional
-upon the preprocessor definition DEBUG_STACKOVERFLOW, which is never
-actually defined. The Kconfig option is called DEBUG_STACKOVERFLOW,
-which manifests to the preprocessor as CONFIG_DEBUG_STACKOVERFLOW, so
-switch it to using that definition instead.
+We found that TLB mismatch not only happens after kernel resume, but
+also happens during snapshot restore. So move it to the beginning of
+swsusp_arch_suspend().
 
-Fixes: 334c86c494b9 ("MIPS: IRQ: Add stackoverflow detection")
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Adam Jiang <jiang.adam@gmail.com>
+Signed-off-by: Huacai Chen <chenhc@lemote.com>
+Cc: Steven J. Hill <Steven.Hill@imgtec.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: http://patchwork.linux-mips.org/patch/10531/
+Cc: Fuxin Zhang <zhangfx@lemote.com>
+Cc: Zhangjin Wu <wuzhangjin@gmail.com>
+Patchwork: https://patchwork.linux-mips.org/patch/9621/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
 ---
- arch/mips/kernel/irq.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/power/hibernate.S | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/mips/kernel/irq.c
-+++ b/arch/mips/kernel/irq.c
-@@ -111,7 +111,7 @@ void __init init_IRQ(void)
- #endif
- }
+--- a/arch/mips/power/hibernate.S
++++ b/arch/mips/power/hibernate.S
+@@ -31,6 +31,8 @@ LEAF(swsusp_arch_suspend)
+ END(swsusp_arch_suspend)
  
--#ifdef DEBUG_STACKOVERFLOW
-+#ifdef CONFIG_DEBUG_STACKOVERFLOW
- static inline void check_stack_overflow(void)
- {
- 	unsigned long sp;
+ LEAF(swsusp_arch_resume)
++	/* Avoid TLB mismatch during and after kernel resume */
++	jal local_flush_tlb_all
+ 	PTR_L t0, restore_pblist
+ 0:
+ 	PTR_L t1, PBE_ADDRESS(t0)   /* source */
+@@ -44,7 +46,6 @@ LEAF(swsusp_arch_resume)
+ 	bne t1, t3, 1b
+ 	PTR_L t0, PBE_NEXT(t0)
+ 	bnez t0, 0b
+-	jal local_flush_tlb_all /* Avoid TLB mismatch after kernel resume */
+ 	PTR_LA t0, saved_regs
+ 	PTR_L ra, PT_R31(t0)
+ 	PTR_L sp, PT_R29(t0)

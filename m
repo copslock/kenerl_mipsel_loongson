@@ -1,49 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 02 Aug 2015 02:10:42 +0200 (CEST)
-Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:57105 "EHLO
-        shadbolt.e.decadent.org.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012000AbbHBAKiBoMmy (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 2 Aug 2015 02:10:38 +0200
-Received: from deadeye.wl.decadent.org.uk ([192.168.4.249] helo=deadeye)
-        by shadbolt.decadent.org.uk with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.84)
-        (envelope-from <ben@decadent.org.uk>)
-        id 1ZLgqW-0002cl-KQ; Sun, 02 Aug 2015 01:09:44 +0100
-Received: from ben by deadeye with local (Exim 4.86_RC4)
-        (envelope-from <ben@decadent.org.uk>)
-        id 1ZLgqT-0004lt-OQ; Sun, 02 Aug 2015 01:09:41 +0100
-Content-Type: text/plain; charset="UTF-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-MIME-Version: 1.0
-From:   Ben Hutchings <ben@decadent.org.uk>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-CC:     akpm@linux-foundation.org, "David Daney" <ddaney@cavium.com>,
-        "Jiri Kosina" <jkosina@suse.cz>,
-        "Alexander Sverdlin" <alexander.sverdlin@nokia.com>,
-        "Bjorn Helgaas" <bhelgaas@google.com>,
-        "Mathias" <mathias.rulf@nokia.com>,
-        "Randy Dunlap" <rdunlap@infradead.org>,
-        "Masanari Iida" <standby24x7@gmail.com>,
-        "Rob Herring" <robh@kernel.org>, linux-mips@linux-mips.org,
-        "Ralf Baechle" <ralf@linux-mips.org>
-Date:   Sun, 02 Aug 2015 01:02:38 +0100
-Message-ID: <lsq.1438473758.722316683@decadent.org.uk>
-X-Mailer: LinuxStableQueue (scripts by bwh)
-Subject: [PATCH 3.2 154/164] MIPS: Octeon: Remove udelay() causing huge
- IRQ latency
-In-Reply-To: <lsq.1438473757.687525882@decadent.org.uk>
-X-SA-Exim-Connect-IP: 192.168.4.249
-X-SA-Exim-Mail-From: ben@decadent.org.uk
-X-SA-Exim-Scanned: No (on shadbolt.decadent.org.uk); SAEximRunCond expanded to false
-Return-Path: <ben@decadent.org.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 02 Aug 2015 10:44:49 +0200 (CEST)
+Received: from aserp1040.oracle.com ([141.146.126.69]:27189 "EHLO
+        aserp1040.oracle.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27010794AbbHBIosCxADo (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 2 Aug 2015 10:44:48 +0200
+Received: from aserv0022.oracle.com (aserv0022.oracle.com [141.146.126.234])
+        by aserp1040.oracle.com (Sentrion-MTA-4.3.2/Sentrion-MTA-4.3.2) with ESMTP id t728icTt032741
+        (version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
+        Sun, 2 Aug 2015 08:44:38 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by aserv0022.oracle.com (8.13.8/8.13.8) with ESMTP id t728ibSA029945
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=FAIL);
+        Sun, 2 Aug 2015 08:44:37 GMT
+Received: from abhmp0005.oracle.com (abhmp0005.oracle.com [141.146.116.11])
+        by userv0121.oracle.com (8.13.8/8.13.8) with ESMTP id t728ibRZ005419;
+        Sun, 2 Aug 2015 08:44:37 GMT
+Received: from yuval-net-srv-ca.us.oracle.com (/10.211.3.204)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Sun, 02 Aug 2015 01:44:37 -0700
+From:   Yuval Shaia <yuval.shaia@oracle.com>
+To:     yuval.shaia@oracle.com
+Cc:     Markos Chandras <markos.chandras@imgtec.com>,
+        <stable@vger.kernel.org> # 4.0+, linux-mips@linux-mips.org,
+        Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH 25/30] MIPS: fpu.h: Allow 64-bit FPU on a 64-bit MIPS R6 CPU
+Date:   Sun,  2 Aug 2015 01:34:21 -0700
+Message-Id: <1438504466-21888-26-git-send-email-yuval.shaia@oracle.com>
+X-Mailer: git-send-email 1.7.1
+In-Reply-To: <1438504466-21888-1-git-send-email-yuval.shaia@oracle.com>
+References: <1438504466-21888-1-git-send-email-yuval.shaia@oracle.com>
+X-Source-IP: aserv0022.oracle.com [141.146.126.234]
+Return-Path: <yuval.shaia@oracle.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48529
+X-archive-position: 48530
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ben@decadent.org.uk
+X-original-sender: yuval.shaia@oracle.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,80 +50,37 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-3.2.70-rc1 review patch.  If anyone has any objections, please let me know.
+From: Markos Chandras <markos.chandras@imgtec.com>
 
-------------------
+Commit 6134d94923d0 ("MIPS: asm: fpu: Allow 64-bit FPU on MIPS32 R6")
+added support for 64-bit FPU on a 32-bit MIPS R6 processor but it missed
+the 64-bit CPU case leading to FPU failures when requesting FR=1 mode
+(which is always the case for MIPS R6 userland) when running a 32-bit
+kernel on a 64-bit CPU. We also fix the MIPS R2 case.
 
-From: Alexander Sverdlin <alexander.sverdlin@nokia.com>
-
-commit 73bf3c2a500b2db8ac966469591196bf55afb409 upstream.
-
-udelay() in PCI/PCIe read/write callbacks cause 30ms IRQ latency on Octeon
-platforms because these operations are called from PCI_OP_READ() and
-PCI_OP_WRITE() under raw_spin_lock_irqsave().
-
-Signed-off-by: Alexander Sverdlin <alexander.sverdlin@nokia.com>
+Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+Fixes: 6134d94923d0 ("MIPS: asm: fpu: Allow 64-bit FPU on MIPS32 R6")
+Reviewed-by: Paul Burton <paul.burton@imgtec.com>
+Cc: <stable@vger.kernel.org> # 4.0+
 Cc: linux-mips@linux-mips.org
-Cc: David Daney <ddaney@cavium.com>
-Cc: Rob Herring <robh@kernel.org>
-Cc: Jiri Kosina <jkosina@suse.cz>
-Cc: Randy Dunlap <rdunlap@infradead.org>
-Cc: Masanari Iida <standby24x7@gmail.com>
-Cc: Bjorn Helgaas <bhelgaas@google.com>
-Cc: Mathias <mathias.rulf@nokia.com>
-Patchwork: https://patchwork.linux-mips.org/patch/9576/
+Patchwork: https://patchwork.linux-mips.org/patch/10734/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-[bwh: Backported to 3.2: adjust context]
-Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
 ---
- arch/mips/include/asm/octeon/pci-octeon.h | 3 ---
- arch/mips/pci/pci-octeon.c                | 6 ------
- arch/mips/pci/pcie-octeon.c               | 8 --------
- 3 files changed, 17 deletions(-)
+ arch/mips/include/asm/fpu.h |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
---- a/arch/mips/include/asm/octeon/pci-octeon.h
-+++ b/arch/mips/include/asm/octeon/pci-octeon.h
-@@ -11,9 +11,6 @@
+diff --git a/arch/mips/include/asm/fpu.h b/arch/mips/include/asm/fpu.h
+index 084780b..1b06251 100644
+--- a/arch/mips/include/asm/fpu.h
++++ b/arch/mips/include/asm/fpu.h
+@@ -74,7 +74,7 @@ static inline int __enable_fpu(enum fpu_mode mode)
+ 		goto fr_common;
  
- #include <linux/pci.h>
- 
--/* Some PCI cards require delays when accessing config space. */
--#define PCI_CONFIG_SPACE_DELAY 10000
--
- /*
-  * The physical memory base mapped by BAR1.  256MB at the end of the
-  * first 4GB.
---- a/arch/mips/pci/pci-octeon.c
-+++ b/arch/mips/pci/pci-octeon.c
-@@ -279,9 +279,6 @@ static int octeon_read_config(struct pci
- 	pci_addr.s.func = devfn & 0x7;
- 	pci_addr.s.reg = reg;
- 
--#if PCI_CONFIG_SPACE_DELAY
--	udelay(PCI_CONFIG_SPACE_DELAY);
--#endif
- 	switch (size) {
- 	case 4:
- 		*val = le32_to_cpu(cvmx_read64_uint32(pci_addr.u64));
-@@ -316,9 +313,6 @@ static int octeon_write_config(struct pc
- 	pci_addr.s.func = devfn & 0x7;
- 	pci_addr.s.reg = reg;
- 
--#if PCI_CONFIG_SPACE_DELAY
--	udelay(PCI_CONFIG_SPACE_DELAY);
--#endif
- 	switch (size) {
- 	case 4:
- 		cvmx_write64_uint32(pci_addr.u64, cpu_to_le32(val));
---- a/arch/mips/pci/pcie-octeon.c
-+++ b/arch/mips/pci/pcie-octeon.c
-@@ -1219,9 +1219,6 @@ static inline int octeon_pcie_write_conf
- 					devfn & 0x7, reg, val);
- 		return PCIBIOS_SUCCESSFUL;
- 	}
--#if PCI_CONFIG_SPACE_DELAY
--	udelay(PCI_CONFIG_SPACE_DELAY);
--#endif
- 	return PCIBIOS_FUNC_NOT_SUPPORTED;
- }
- 
+ 	case FPU_64BIT:
+-#if !(defined(CONFIG_CPU_MIPS32_R2) || defined(CONFIG_CPU_MIPS32_R6) \
++#if !(defined(CONFIG_CPU_MIPSR2) || defined(CONFIG_CPU_MIPSR6) \
+       || defined(CONFIG_64BIT))
+ 		/* we only have a 32-bit FPU */
+ 		return SIGFPE;
+-- 
+1.7.1

@@ -1,29 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Aug 2015 16:12:02 +0200 (CEST)
-Received: (from localhost user: 'macro', uid#1010) by eddie.linux-mips.org
-        with ESMTP id S27011254AbbHCOMAYveIL (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 3 Aug 2015 16:12:00 +0200
-Date:   Mon, 3 Aug 2015 15:12:00 +0100 (BST)
-From:   "Maciej W. Rozycki" <macro@linux-mips.org>
-To:     Ralf Baechle <ralf@linux-mips.org>
-cc:     James Cowgill <James.Cowgill@imgtec.com>,
-        linux-mips@linux-mips.org, stable@vger.kernel.org
-Subject: Re: [PATCH] MIPS: replace add and sub instructions in relocate_kernel.S
- with addiu
-In-Reply-To: <20150803133024.GB2843@linux-mips.org>
-Message-ID: <alpine.LFD.2.20.1508031457140.1410@eddie.linux-mips.org>
-References: <1434557570-30452-1-git-send-email-James.Cowgill@imgtec.com> <20150803133024.GB2843@linux-mips.org>
-User-Agent: Alpine 2.20 (LFD 67 2015-01-07)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Aug 2015 17:04:07 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:35134 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S27011555AbbHCPEEgeTmv (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 3 Aug 2015 17:04:04 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.15.1/8.14.8) with ESMTP id t73F426J007824;
+        Mon, 3 Aug 2015 17:04:02 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.15.1/8.15.1/Submit) id t73F41kS007823;
+        Mon, 3 Aug 2015 17:04:02 +0200
+Date:   Mon, 3 Aug 2015 17:04:01 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Bryan Wu <cooloney@gmail.com>, Richard Purdie <rpurdie@rpsys.net>,
+        Jacek Anaszewski <j.anaszewski@samsung.com>,
+        Markos Chandras <markos.chandras@imgtec.com>
+Cc:     linux-leds@vger.kernel.org, linux-mips@linux-mips.org
+Subject: [PATCH v2] LED/MIPS: Move SEAD3 LED driver to where it belongs.
+Message-ID: <20150803150401.GD2843@linux-mips.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Return-Path: <macro@linux-mips.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48544
+X-archive-position: 48545
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -36,81 +42,81 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, 3 Aug 2015, Ralf Baechle wrote:
+Fixes the following randconfig problem
 
-> > Fixes the assembler errors generated when compiling a MIPS R6 kernel with
-> > CONFIG_KEXEC on, by replacing the offending add and sub instructions with
-> > addiu instructions.
-> > 
-> > Build errors:
-> > arch/mips/kernel/relocate_kernel.S: Assembler messages:
-> > arch/mips/kernel/relocate_kernel.S:27: Error: invalid operands `dadd $16,$16,8'
-> > arch/mips/kernel/relocate_kernel.S:64: Error: invalid operands `dadd $20,$20,8'
-> > arch/mips/kernel/relocate_kernel.S:65: Error: invalid operands `dadd $18,$18,8'
-> > arch/mips/kernel/relocate_kernel.S:66: Error: invalid operands `dsub $22,$22,1'
-> > scripts/Makefile.build:294: recipe for target 'arch/mips/kernel/relocate_kernel.o' failed
-> > 
-> > Signed-off-by: James Cowgill <James.Cowgill@imgtec.com>
-> > Cc: Ralf Baechle <ralf@linux-mips.org>
-> > Cc: <stable@vger.kernel.org> # 4.0+
-> > ---
-> >  arch/mips/kernel/relocate_kernel.S | 8 ++++----
-> >  1 file changed, 4 insertions(+), 4 deletions(-)
-> > 
-> > diff --git a/arch/mips/kernel/relocate_kernel.S b/arch/mips/kernel/relocate_kernel.S
-> > index 74bab9d..c6bbf21 100644
-> > --- a/arch/mips/kernel/relocate_kernel.S
-> > +++ b/arch/mips/kernel/relocate_kernel.S
-> > @@ -24,7 +24,7 @@ LEAF(relocate_new_kernel)
-> >  
-> >  process_entry:
-> >  	PTR_L		s2, (s0)
-> > -	PTR_ADD		s0, s0, SZREG
-> > +	PTR_ADDIU	s0, s0, SZREG
-> >  
-> >  	/*
-> >  	 * In case of a kdump/crash kernel, the indirection page is not
-> > @@ -61,9 +61,9 @@ copy_word:
-> >  	/* copy page word by word */
-> >  	REG_L		s5, (s2)
-> >  	REG_S		s5, (s4)
-> > -	PTR_ADD		s4, s4, SZREG
-> > -	PTR_ADD		s2, s2, SZREG
-> > -	LONG_SUB	s6, s6, 1
-> > +	PTR_ADDIU	s4, s4, SZREG
-> > +	PTR_ADDIU	s2, s2, SZREG
-> > +	LONG_ADDIU	s6, s6, -1
-> 
-> Thanks, applied.
-> 
-> But I was wondering if maybe we should redefine the PTR_ADD, LONG_SUB etc
-> macros to expand into a signed operation for R6.  While I can't convince
-> myself it's the right and conceptually clean thing to do, I don't think
-> it'd be clearly wrong and it might help preventing numersous bugs by
-> applications that use <asm/asm.h>.  Opinions?
+leds-sead3.c:(.text+0x7dc): undefined reference to `led_classdev_unregister'
+leds-sead3.c:(.text+0x7e8): undefined reference to `led_classdev_unregister'
 
- It looks to me like missing assembly language macro implementations.  For 
-R6:
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Cc: Bryan Wu <cooloney@gmail.com>
+Cc: Richard Purdie <rpurdie@rpsys.net>
+Cc: Jacek Anaszewski <j.anaszewski@samsung.com>
+Cc: Markos Chandras <markos.chandras@imgtec.com>
+Cc: linux-leds@vger.kernel.org
+Cc: linux-mips@linux-mips.org
+---
+ arch/mips/mti-sead3/Makefile                       |  2 --
+ drivers/leds/Kconfig                               | 10 ++++++++++
+ drivers/leds/Makefile                              |  1 +
+ {arch/mips/mti-sead3 => drivers/leds}/leds-sead3.c |  1 +
+ 4 files changed, 12 insertions(+), 2 deletions(-)
 
-	dadd	$16, $16, 8
-
-should merely expand to a sequence of machine instructions like this:
-
-	addiu	$1, $0, 8
-	dadd	$16, $16, $1
-
-which for older ISA revisions would happen anyway if the third operand was 
-immediate and fell outside the signed 16-bit range.  Here the immediate 
-range simply got shrunk to 0 bits with the transition to R6.
-
- I know some people disagree, but I maintain my point of view, which is 
-consistent with how the MIPS assembly language has always been defined. 
-That helps with assembly language's backward compatibility at the source 
-level too, just as previously observed with the transition to the 
-microMIPS instruction set, where some immediate ranges were shrunk to 12 
-or 10 bits.
-
- These macros have also been a part of the user API (defined in 
-<sys/asm.h>), which is another argument in favour to fixing the assembler.
-
-  Maciej
+diff --git a/arch/mips/mti-sead3/Makefile b/arch/mips/mti-sead3/Makefile
+index 2e52cbd..7a584e0 100644
+--- a/arch/mips/mti-sead3/Makefile
++++ b/arch/mips/mti-sead3/Makefile
+@@ -12,6 +12,4 @@ obj-y				:= sead3-lcd.o sead3-display.o sead3-init.o \
+ 				   sead3-int.o sead3-platform.o sead3-reset.o \
+ 				   sead3-setup.o sead3-time.o
+ 
+-obj-y				+= leds-sead3.o
+-
+ obj-$(CONFIG_EARLY_PRINTK)	+= sead3-console.o
+diff --git a/drivers/leds/Kconfig b/drivers/leds/Kconfig
+index 9ad35f7..531729c 100644
+--- a/drivers/leds/Kconfig
++++ b/drivers/leds/Kconfig
+@@ -550,6 +550,16 @@ config LEDS_KTD2692
+ 
+ 	  Say Y to enable this driver.
+ 
++config LEDS_SEAD3
++	tristate "LED support for the MIPS SEAD 3 board"
++	depends on LEDS_CLASS && MIPS_SEAD3
++	help
++	  Say Y here to include support for the FLED and PLED LEDs on SEAD3 eval
++	  boards.
++
++	  This driver can also be built as a module. If so the module
++	  will be called leds-sead3.
++
+ comment "LED driver for blink(1) USB RGB LED is under Special HID drivers (HID_THINGM)"
+ 
+ config LEDS_BLINKM
+diff --git a/drivers/leds/Makefile b/drivers/leds/Makefile
+index 8d6a24a..a976161 100644
+--- a/drivers/leds/Makefile
++++ b/drivers/leds/Makefile
+@@ -65,6 +65,7 @@ obj-$(CONFIG_LEDS_VERSATILE)		+= leds-versatile.o
+ obj-$(CONFIG_LEDS_MENF21BMC)		+= leds-menf21bmc.o
+ obj-$(CONFIG_LEDS_PM8941_WLED)		+= leds-pm8941-wled.o
+ obj-$(CONFIG_LEDS_KTD2692)		+= leds-ktd2692.o
++obj-$(CONFIG_LEDS_SEAD3)		+= leds-sead3.o
+ 
+ # LED SPI Drivers
+ obj-$(CONFIG_LEDS_DAC124S085)		+= leds-dac124s085.o
+diff --git a/arch/mips/mti-sead3/leds-sead3.c b/drivers/leds/leds-sead3.c
+similarity index 99%
+rename from arch/mips/mti-sead3/leds-sead3.c
+rename to drivers/leds/leds-sead3.c
+index c938cee..eb97a32 100644
+--- a/arch/mips/mti-sead3/leds-sead3.c
++++ b/drivers/leds/leds-sead3.c
+@@ -59,6 +59,7 @@ static int sead3_led_remove(struct platform_device *pdev)
+ {
+ 	led_classdev_unregister(&sead3_pled);
+ 	led_classdev_unregister(&sead3_fled);
++
+ 	return 0;
+ }
+ 

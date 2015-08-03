@@ -1,44 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Aug 2015 06:58:40 +0200 (CEST)
-Received: from ozlabs.org ([103.22.144.67]:53358 "EHLO ozlabs.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27007986AbbHCE6ixNrKo (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 3 Aug 2015 06:58:38 +0200
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by ozlabs.org (Postfix) with ESMTPSA id 5B2DF1402CD;
-        Mon,  3 Aug 2015 14:58:34 +1000 (AEST)
-Message-ID: <1438577914.17319.3.camel@ellerman.id.au>
-Subject: Re: samples/kdbus/kdbus-workers.c and cross compiling MIPS
-From:   Michael Ellerman <mpe@ellerman.id.au>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     David Herrmann <dh.herrmann@gmail.com>,
-        Paul Gortmaker <paul.gortmaker@windriver.com>,
-        David Herrmann <dh.herrmann@googlemail.com>,
-        Daniel Mack <daniel@zonque.org>,
-        Djalal Harouni <tixxdz@opendz.org>, linux-mips@linux-mips.org,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        "linux-next@vger.kernel.org" <linux-next@vger.kernel.org>
-Date:   Mon, 03 Aug 2015 14:58:34 +1000
-In-Reply-To: <20150731162921.GA6335@kroah.com>
-References: <20150729161912.GF18685@windriver.com>
-         <CANq1E4TgWK-8JkUtOYfTOL9Dx=jWeVpA-h881TXSA3BNjp+MPw@mail.gmail.com>
-         <55BA2B91.5070107@windriver.com>
-         <CANq1E4S7awCfPaNduoG8ENHmnGhR7-VT-9LvGwREZs-h8zNmzQ@mail.gmail.com>
-         <1438326061.29353.9.camel@ellerman.id.au> <20150731162921.GA6335@kroah.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.12.11-0ubuntu3 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Return-Path: <mpe@ellerman.id.au>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Aug 2015 08:02:45 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:32789 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S27011102AbbHCGCnj0E7Q (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 3 Aug 2015 08:02:43 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.15.1/8.14.8) with ESMTP id t7362SpI031271;
+        Mon, 3 Aug 2015 08:02:28 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.15.1/8.15.1/Submit) id t7362HLK031262;
+        Mon, 3 Aug 2015 08:02:17 +0200
+Date:   Mon, 3 Aug 2015 08:02:17 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Andrey Konovalov <andreyknvl@google.com>
+Cc:     Russell King <linux@arm.linux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        James Hogan <james.hogan@imgtec.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        linux390@de.ibm.com, "David S. Miller" <davem@davemloft.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
+        Arnd Bergmann <arnd@arndb.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Alexander Duyck <alexander.h.duyck@redhat.com>,
+        Andre Przywara <andre.przywara@arm.com>,
+        "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>,
+        Borislav Petkov <bp@suse.de>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-metag@vger.kernel.org,
+        linux-mips@linux-mips.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-arch@vger.kernel.org, Dmitry Vyukov <dvyukov@google.com>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        Davidlohr Bueso <dave@stgolabs.net>
+Subject: Re: [PATCH v2] arch: use WRITE_ONCE/READ_ONCE in
+ smp_store_release/smp_load_acquire
+Message-ID: <20150803060217.GB16650@linux-mips.org>
+References: <1438528264-714-1-git-send-email-andreyknvl@google.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1438528264-714-1-git-send-email-andreyknvl@google.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48537
+X-archive-position: 48538
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mpe@ellerman.id.au
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,17 +70,28 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, 2015-07-31 at 09:29 -0700, Greg Kroah-Hartman wrote:
-> On Fri, Jul 31, 2015 at 05:01:01PM +1000, Michael Ellerman wrote:
-> > It's obviously possible that some samples build with that configuration, but
-> > building against another arch'es kernel headers just seems like it's asking for
-> > trouble. Even if we can build the samples, they will never run correctly.
-> > 
-> > So I suggest we should just disable SAMPLES if we're cross compiling, full stop.
-> 
-> Yes, that seems like a much better solution overall.  Can you send a
-> patch for this?
+On Sun, Aug 02, 2015 at 05:11:04PM +0200, Andrey Konovalov wrote:
 
-Yep, will do.
+> diff --git a/arch/mips/include/asm/barrier.h b/arch/mips/include/asm/barrier.h
+> index 7ecba84..752e0b8 100644
+> --- a/arch/mips/include/asm/barrier.h
+> +++ b/arch/mips/include/asm/barrier.h
+> @@ -133,12 +133,12 @@
+>  do {									\
+>  	compiletime_assert_atomic_type(*p);				\
+>  	smp_mb();							\
+> -	ACCESS_ONCE(*p) = (v);						\
+> +	WRITE_ONCE(*p, v);						\
+>  } while (0)
+>  
+>  #define smp_load_acquire(p)						\
+>  ({									\
+> -	typeof(*p) ___p1 = ACCESS_ONCE(*p);				\
+> +	typeof(*p) ___p1 = READ_ONCE(*p);				\
+>  	compiletime_assert_atomic_type(*p);				\
+>  	smp_mb();							\
+>  	___p1;								\
 
-cheers
+Acked-by: Ralf Baechle <ralf@linux-mips.org>
+
+  Ralf

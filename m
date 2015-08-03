@@ -1,30 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Aug 2015 17:50:11 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:31750 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Aug 2015 17:55:26 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:14860 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27011932AbbHCPuHmwa04 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 3 Aug 2015 17:50:07 +0200
+        with ESMTP id S27012122AbbHCPzYjPh04 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 3 Aug 2015 17:55:24 +0200
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 6379AA9ADE8D1;
-        Mon,  3 Aug 2015 16:49:58 +0100 (IST)
+        by Websense Email Security Gateway with ESMTPS id 61F6CB830A0F3;
+        Mon,  3 Aug 2015 16:55:15 +0100 (IST)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
  KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Mon, 3 Aug 2015 16:50:01 +0100
+ 14.3.195.1; Mon, 3 Aug 2015 16:55:18 +0100
 Received: from localhost (192.168.159.95) by LEMAIL01.le.imgtec.org
  (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Mon, 3 Aug
- 2015 16:50:00 +0100
+ 2015 16:55:17 +0100
 From:   Paul Burton <paul.burton@imgtec.com>
 To:     <linux-mips@linux-mips.org>
 CC:     Paul Burton <paul.burton@imgtec.com>,
-        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
-        "Maciej W. Rozycki" <macro@linux-mips.org>,
+        Rusty Russell <rusty@rustcorp.com.au>,
+        Joshua Kinard <kumba@gentoo.org>,
+        Andrew Bresticker <abrestic@chromium.org>,
+        Huacai Chen <chenhc@lemote.com>,
+        Paul Gortmaker <paul.gortmaker@windriver.com>,
+        Kevin Cernekee <cernekee@gmail.com>,
         <linux-kernel@vger.kernel.org>,
-        James Hogan <james.hogan@imgtec.com>,
-        "Markos Chandras" <markos.chandras@imgtec.com>,
+        "Maciej W. Rozycki" <macro@codesourcery.com>,
+        Markos Chandras <markos.chandras@imgtec.com>,
         Ralf Baechle <ralf@linux-mips.org>,
-        Manuel Lauss <manuel.lauss@gmail.com>
-Subject: [PATCH v3] MIPS: tidy up FPU context switching
-Date:   Mon, 3 Aug 2015 08:49:30 -0700
-Message-ID: <1438616970-24652-1-git-send-email-paul.burton@imgtec.com>
+        Alex Smith <alex.smith@imgtec.com>
+Subject: [PATCH] MIPS: c-r4k: remove cpu_foreign_map
+Date:   Mon, 3 Aug 2015 08:54:47 -0700
+Message-ID: <1438617288-25261-1-git-send-email-paul.burton@imgtec.com>
 X-Mailer: git-send-email 2.5.0
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -33,7 +37,7 @@ Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48548
+X-archive-position: 48549
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -50,193 +54,144 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Rather than saving the scalar FP or vector context in the assembly
-resume function, reuse the existing C code we have in fpu.h to do
-exactly that. This reduces duplication, results in a much easier to read
-resume function & should allow the compiler to optimise out more MSA
-code due to is_msa_enabled()/cpu_has_msa being known-zero at compile
-time for kernels without MSA support.
+Commit cccf34e9411c ("MIPS: c-r4k: Fix cache flushing for MT cores") did
+2 things:
+
+  - Introduced cpu_foreign_map to call cache maintenance functions on
+    only a single CPU within each core in the system.
+
+  - Stopped calling cache maintenance functions on non-local CPUs for
+    systems which include a MIPS Coherence Manager.
+
+Thus the introduction of cpu_foreign_map has no effect on any systems
+with a CM, since the IPIs will be avoided entirely. Thus it can only
+possibly affect other systems which have multiple logical CPUs per core,
+which appears to only be netlogic. I'm pretty certain this wasn't the
+intent, am unsure whether avoiding such cache maintenance calls is
+correct for netlogic systems and believe the overhead of calculating
+cpu_foreign_map is thus unnecessary & this code is almost certainly
+untested.
+
+This mostly reverts commit cccf34e9411c ("MIPS: c-r4k: Fix cache
+flushing for MT cores"), leaving only the change for systems with a CM.
 
 Signed-off-by: Paul Burton <paul.burton@imgtec.com>
 ---
 
-Changes in v3:
-- Rebase atop current mips-for-linux-next.
+ arch/mips/include/asm/smp.h |  1 -
+ arch/mips/kernel/smp.c      | 44 +-------------------------------------------
+ arch/mips/mm/c-r4k.c        |  2 +-
+ 3 files changed, 2 insertions(+), 45 deletions(-)
 
-Changes in v2:
-- Introduce lose_fpu_inatomic to skip the preempt_{en,dis}able calls and
-  operate on the provided struct task_struct, which should be prev
-  rather than current.
-
- arch/mips/include/asm/fpu.h       | 21 ++++++++++++--------
- arch/mips/include/asm/switch_to.h | 21 ++++----------------
- arch/mips/kernel/r4k_switch.S     | 41 +--------------------------------------
- 3 files changed, 18 insertions(+), 65 deletions(-)
-
-diff --git a/arch/mips/include/asm/fpu.h b/arch/mips/include/asm/fpu.h
-index 1b06251..9cbf383 100644
---- a/arch/mips/include/asm/fpu.h
-+++ b/arch/mips/include/asm/fpu.h
-@@ -164,25 +164,30 @@ static inline int own_fpu(int restore)
- 	return ret;
+diff --git a/arch/mips/include/asm/smp.h b/arch/mips/include/asm/smp.h
+index 03722d4..a036e1f 100644
+--- a/arch/mips/include/asm/smp.h
++++ b/arch/mips/include/asm/smp.h
+@@ -23,7 +23,6 @@
+ extern int smp_num_siblings;
+ extern cpumask_t cpu_sibling_map[];
+ extern cpumask_t cpu_core_map[];
+-extern cpumask_t cpu_foreign_map;
+ 
+ #define raw_smp_processor_id() (current_thread_info()->cpu)
+ 
+diff --git a/arch/mips/kernel/smp.c b/arch/mips/kernel/smp.c
+index a31896c..184876b 100644
+--- a/arch/mips/kernel/smp.c
++++ b/arch/mips/kernel/smp.c
+@@ -63,13 +63,6 @@ EXPORT_SYMBOL(cpu_sibling_map);
+ cpumask_t cpu_core_map[NR_CPUS] __read_mostly;
+ EXPORT_SYMBOL(cpu_core_map);
+ 
+-/*
+- * A logcal cpu mask containing only one VPE per core to
+- * reduce the number of IPIs on large MT systems.
+- */
+-cpumask_t cpu_foreign_map __read_mostly;
+-EXPORT_SYMBOL(cpu_foreign_map);
+-
+ /* representing cpus for which sibling maps can be computed */
+ static cpumask_t cpu_sibling_setup_map;
+ 
+@@ -110,29 +103,6 @@ static inline void set_cpu_core_map(int cpu)
+ 	}
  }
  
--static inline void lose_fpu(int save)
-+static inline void lose_fpu_inatomic(int save, struct task_struct *tsk)
+-/*
+- * Calculate a new cpu_foreign_map mask whenever a
+- * new cpu appears or disappears.
+- */
+-static inline void calculate_cpu_foreign_map(void)
+-{
+-	int i, k, core_present;
+-	cpumask_t temp_foreign_map;
+-
+-	/* Re-calculate the mask */
+-	for_each_online_cpu(i) {
+-		core_present = 0;
+-		for_each_cpu(k, &temp_foreign_map)
+-			if (cpu_data[i].package == cpu_data[k].package &&
+-			    cpu_data[i].core == cpu_data[k].core)
+-				core_present = 1;
+-		if (!core_present)
+-			cpumask_set_cpu(i, &temp_foreign_map);
+-	}
+-
+-	cpumask_copy(&cpu_foreign_map, &temp_foreign_map);
+-}
+-
+ struct plat_smp_ops *mp_ops;
+ EXPORT_SYMBOL(mp_ops);
+ 
+@@ -176,8 +146,6 @@ asmlinkage void start_secondary(void)
+ 	set_cpu_sibling_map(cpu);
+ 	set_cpu_core_map(cpu);
+ 
+-	calculate_cpu_foreign_map();
+-
+ 	cpumask_set_cpu(cpu, &cpu_callin_map);
+ 
+ 	synchronise_count_slave(cpu);
+@@ -195,18 +163,9 @@ asmlinkage void start_secondary(void)
+ static void stop_this_cpu(void *dummy)
  {
--	preempt_disable();
- 	if (is_msa_enabled()) {
- 		if (save) {
--			save_msa(current);
--			current->thread.fpu.fcr31 =
-+			save_msa(tsk);
-+			tsk->thread.fpu.fcr31 =
- 					read_32bit_cp1_register(CP1_STATUS);
- 		}
- 		disable_msa();
--		clear_thread_flag(TIF_USEDMSA);
-+		clear_tsk_thread_flag(tsk, TIF_USEDMSA);
- 		__disable_fpu();
- 	} else if (is_fpu_owner()) {
- 		if (save)
--			_save_fp(current);
-+			_save_fp(tsk);
- 		__disable_fpu();
- 	}
--	KSTK_STATUS(current) &= ~ST0_CU1;
--	clear_thread_flag(TIF_USEDFPU);
-+	KSTK_STATUS(tsk) &= ~ST0_CU1;
-+	clear_tsk_thread_flag(tsk, TIF_USEDFPU);
-+}
-+
-+static inline void lose_fpu(int save)
-+{
-+	preempt_disable();
-+	lose_fpu_inatomic(save, current);
+ 	/*
+-	 * Remove this CPU. Be a bit slow here and
+-	 * set the bits for every online CPU so we don't miss
+-	 * any IPI whilst taking this VPE down.
++	 * Remove this CPU:
+ 	 */
+-
+-	cpumask_copy(&cpu_foreign_map, cpu_online_mask);
+-
+-	/* Make it visible to every other CPU */
+-	smp_mb();
+-
+ 	set_cpu_online(smp_processor_id(), false);
+-	calculate_cpu_foreign_map();
+ 	local_irq_disable();
+ 	while (1);
+ }
+@@ -228,7 +187,6 @@ void __init smp_prepare_cpus(unsigned int max_cpus)
+ 	mp_ops->prepare_cpus(max_cpus);
+ 	set_cpu_sibling_map(0);
+ 	set_cpu_core_map(0);
+-	calculate_cpu_foreign_map();
+ #ifndef CONFIG_HOTPLUG_CPU
+ 	init_cpu_present(cpu_possible_mask);
+ #endif
+diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
+index 5d3a25e..54f254c 100644
+--- a/arch/mips/mm/c-r4k.c
++++ b/arch/mips/mm/c-r4k.c
+@@ -61,7 +61,7 @@ static inline void r4k_on_each_cpu(void (*func) (void *info), void *info)
+ 	 * CM-based SMP protocols (CMP & CPS) restrict index-based cache ops.
+ 	 */
+ 	if (!mips_cm_present())
+-		smp_call_function_many(&cpu_foreign_map, func, info, 1);
++		smp_call_function(func, info, 1);
+ 	func(info);
  	preempt_enable();
  }
- 
-diff --git a/arch/mips/include/asm/switch_to.h b/arch/mips/include/asm/switch_to.h
-index 9733cd0..28b5d84 100644
---- a/arch/mips/include/asm/switch_to.h
-+++ b/arch/mips/include/asm/switch_to.h
-@@ -16,29 +16,21 @@
- #include <asm/watch.h>
- #include <asm/dsp.h>
- #include <asm/cop2.h>
--#include <asm/msa.h>
-+#include <asm/fpu.h>
- 
- struct task_struct;
- 
--enum {
--	FP_SAVE_NONE	= 0,
--	FP_SAVE_VECTOR	= -1,
--	FP_SAVE_SCALAR	= 1,
--};
--
- /**
-  * resume - resume execution of a task
-  * @prev:	The task previously executed.
-  * @next:	The task to begin executing.
-  * @next_ti:	task_thread_info(next).
-- * @fp_save:	Which, if any, FP context to save for prev.
-  *
-  * This function is used whilst scheduling to save the context of prev & load
-  * the context of next. Returns prev.
-  */
- extern asmlinkage struct task_struct *resume(struct task_struct *prev,
--		struct task_struct *next, struct thread_info *next_ti,
--		s32 fp_save);
-+		struct task_struct *next, struct thread_info *next_ti);
- 
- extern unsigned int ll_bit;
- extern struct task_struct *ll_task;
-@@ -91,8 +83,8 @@ do {	if (cpu_has_rw_llb) {						\
-  */
- #define switch_to(prev, next, last)					\
- do {									\
--	s32 __fpsave = FP_SAVE_NONE;					\
- 	__mips_mt_fpaff_switch_to(prev);				\
-+	lose_fpu_inatomic(1, prev);					\
- 	if (cpu_has_dsp) {						\
- 		__save_dsp(prev);					\
- 		__restore_dsp(next);					\
-@@ -111,15 +103,10 @@ do {									\
- 		clear_c0_status(ST0_CU2);				\
- 	}								\
- 	__clear_software_ll_bit();					\
--	if (test_and_clear_tsk_thread_flag(prev, TIF_USEDFPU))		\
--		__fpsave = FP_SAVE_SCALAR;				\
--	if (test_and_clear_tsk_thread_flag(prev, TIF_USEDMSA))		\
--		__fpsave = FP_SAVE_VECTOR;				\
- 	if (cpu_has_userlocal)						\
- 		write_c0_userlocal(task_thread_info(next)->tp_value);	\
- 	__restore_watch();						\
--	disable_msa();							\
--	(last) = resume(prev, next, task_thread_info(next), __fpsave);	\
-+	(last) = resume(prev, next, task_thread_info(next));		\
- } while (0)
- 
- #endif /* _ASM_SWITCH_TO_H */
-diff --git a/arch/mips/kernel/r4k_switch.S b/arch/mips/kernel/r4k_switch.S
-index 04cbbde3..92cd051 100644
---- a/arch/mips/kernel/r4k_switch.S
-+++ b/arch/mips/kernel/r4k_switch.S
-@@ -34,7 +34,7 @@
- #ifndef USE_ALTERNATE_RESUME_IMPL
- /*
-  * task_struct *resume(task_struct *prev, task_struct *next,
-- *		       struct thread_info *next_ti, s32 fp_save)
-+ *		       struct thread_info *next_ti)
-  */
- 	.align	5
- 	LEAF(resume)
-@@ -43,45 +43,6 @@
- 	cpu_save_nonscratch a0
- 	LONG_S	ra, THREAD_REG31(a0)
- 
--	/*
--	 * Check whether we need to save any FP context. FP context is saved
--	 * iff the process has used the context with the scalar FPU or the MSA
--	 * ASE in the current time slice, as indicated by _TIF_USEDFPU and
--	 * _TIF_USEDMSA respectively. switch_to will have set fp_save
--	 * accordingly to an FP_SAVE_ enum value.
--	 */
--	beqz	a3, 2f
--
--	/*
--	 * We do. Clear the saved CU1 bit for prev, such that next time it is
--	 * scheduled it will start in userland with the FPU disabled. If the
--	 * task uses the FPU then it will be enabled again via the do_cpu trap.
--	 * This allows us to lazily restore the FP context.
--	 */
--	PTR_L	t3, TASK_THREAD_INFO(a0)
--	LONG_L	t0, ST_OFF(t3)
--	li	t1, ~ST0_CU1
--	and	t0, t0, t1
--	LONG_S	t0, ST_OFF(t3)
--
--	/* Check whether we're saving scalar or vector context. */
--	bgtz	a3, 1f
--
--	/* Save 128b MSA vector context + scalar FP control & status. */
--	.set push
--	SET_HARDFLOAT
--	cfc1	t1, fcr31
--	msa_save_all	a0
--	.set pop	/* SET_HARDFLOAT */
--
--	sw	t1, THREAD_FCR31(a0)
--	b	2f
--
--1:	/* Save 32b/64b scalar FP context. */
--	fpu_save_double a0 t0 t1		# c0_status passed in t0
--						# clobbers t1
--2:
--
- #if defined(CONFIG_CC_STACKPROTECTOR) && !defined(CONFIG_SMP)
- 	PTR_LA	t8, __stack_chk_guard
- 	LONG_L	t9, TASK_STACK_CANARY(a1)
 -- 
 2.5.0

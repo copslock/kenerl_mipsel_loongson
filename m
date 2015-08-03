@@ -1,59 +1,77 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Aug 2015 13:06:19 +0200 (CEST)
-Received: from mail4.hitachi.co.jp ([133.145.228.5]:55440 "EHLO
-        mail4.hitachi.co.jp" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27011126AbbHCLGOlB9v0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 3 Aug 2015 13:06:14 +0200
-Received: from mlsv1.hitachi.co.jp (unknown [133.144.234.166])
-        by mail4.hitachi.co.jp (Postfix) with ESMTP id 5B2532CF4C5;
-        Mon,  3 Aug 2015 20:06:09 +0900 (JST)
-Received: from mfilter06.hitachi.co.jp by mlsv1.hitachi.co.jp (8.13.1/8.13.1) id t73B69vl029248; Mon, 3 Aug 2015 20:06:09 +0900
-Received: from vshuts01.hitachi.co.jp (vshuts01.hitachi.co.jp [10.201.6.83])
-        by mfilter06.hitachi.co.jp (Switch-3.3.4/Switch-3.3.4) with ESMTP id t73B68xF022793;
-        Mon, 3 Aug 2015 20:06:08 +0900
-Received: from hsdlmain.sdl.hitachi.co.jp (unknown [133.144.14.194])
-        by vshuts01.hitachi.co.jp (Postfix) with ESMTP id C07112F003A;
-        Mon,  3 Aug 2015 20:06:07 +0900 (JST)
-Received: from hsdlvgate2.sdl.hitachi.co.jp by hsdlmain.sdl.hitachi.co.jp (8.13.8/3.7W11021512) id t73B676s000897; Mon, 3 Aug 2015 20:06:07 +0900
-X-AuditID: 85900ec0-9d7c9b9000001a57-bb-55bf4ae0c70c
-Received: from sdl99w.sdl.hitachi.co.jp (sdl99w.yrl.intra.hitachi.co.jp [133.144.14.250])
-        by hsdlvgate2.sdl.hitachi.co.jp (Symantec Mail Security) with ESMTP id 465FC236561;
-        Mon,  3 Aug 2015 20:05:04 +0900 (JST)
-Received: from mailb.sdl.hitachi.co.jp (sdl99b.yrl.intra.hitachi.co.jp [133.144.14.197])
-        by sdl99w.sdl.hitachi.co.jp (Postfix) with ESMTP id 59B4B53C218;
-        Mon,  3 Aug 2015 20:06:07 +0900 (JST)
-Received: from [10.198.220.34] (unknown [10.198.220.34])
-        by mailb.sdl.hitachi.co.jp (Postfix) with ESMTP id 2E9D1495B7E;
-        Mon,  3 Aug 2015 20:06:07 +0900 (JST)
-Message-ID: <55BF4B1F.9000602@hitachi.com>
-Date:   Mon, 03 Aug 2015 20:06:07 +0900
-From:   Hidehiro Kawai <hidehiro.kawai.ez@hitachi.com>
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:13.0) Gecko/20120604 Thunderbird/13.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Aug 2015 13:25:44 +0200 (CEST)
+Received: from mail-oi0-f47.google.com ([209.85.218.47]:33074 "EHLO
+        mail-oi0-f47.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012078AbbHCLZmfrjTE (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 3 Aug 2015 13:25:42 +0200
+Received: by oig1 with SMTP id 1so34745512oig.0
+        for <linux-mips@linux-mips.org>; Mon, 03 Aug 2015 04:25:36 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:in-reply-to:references:date
+         :message-id:subject:from:to:cc:content-type;
+        bh=BbssXS9Bt4o2l5u1tUtRfhRNYMv/8afTNgEkTJa/YVI=;
+        b=YD4cH7HLioOXm1+RNrRaYDCIx4MOiaabauEe2uimpVke2M791U0hACLLjtFZU4LTEA
+         1bgq/OxfBuKtfLqQ0E0KjsM9YxLy4JaGvwYGgTE0V6X2OSa0w3aOHI8VTMQNs/F8eXJl
+         xFcIQ8JQm15+mDRleZ1F0mjIKAnKPBDqhh+c7GjmqH//d348h6AMklVmIWgeAlRyu3Zw
+         k55BsnMzr4b34aqMxIj5wc/c8R6cxK7AGlhR3yvQUqpKAYujWco+C2Vv1Y/0TnFkD2Qh
+         zrnc0ym7X86qP4xecgOjAbzNwGbtHsdSpR4xYrohS+RrWytvdXG49UXnElktf5fUdGbO
+         yBPQ==
+X-Gm-Message-State: ALoCoQm1BlhxnH3Hy0suGg8xuJCeqIM0+1v0G7hNx4Pri3xNTOOuzgR0e4ZdNmDfzdUxKgPtWHWg
 MIME-Version: 1.0
-To:     "Eric W. Biederman" <ebiederm@xmission.com>,
-        Vivek Goyal <vgoyal@redhat.com>
-CC:     Andrew Morton <akpm@linux-foundation.org>,
-        linux-mips@linux-mips.org, Baoquan He <bhe@redhat.com>,
-        kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
-        HATAYAMA Daisuke <d.hatayama@jp.fujitsu.com>,
-        Masami Hiramatsu <masami.hiramatsu.pt@hitachi.com>,
-        Daniel Walker <dwalker@fifo99.com>,
-        Ingo Molnar <mingo@kernel.org>
-Subject: Re: [RFC V2 PATCH 0/1] kexec: crash_kexec_post_notifiers boot
- option related fixes
-References: <20150724011615.6834.79628.stgit@softrs>
-In-Reply-To: <20150724011615.6834.79628.stgit@softrs>
+X-Received: by 10.202.65.67 with SMTP id o64mr15372679oia.45.1438601136734;
+ Mon, 03 Aug 2015 04:25:36 -0700 (PDT)
+Received: by 10.182.204.100 with HTTP; Mon, 3 Aug 2015 04:25:36 -0700 (PDT)
+In-Reply-To: <20150803072332.GC16650@linux-mips.org>
+References: <1438277338-7246-1-git-send-email-albeu@free.fr>
+        <CACRpkdbUhYysC+mGuJY6Y8kd18LQLoWu+av81+ZD4UZo2nM-Yw@mail.gmail.com>
+        <20150803072332.GC16650@linux-mips.org>
+Date:   Mon, 3 Aug 2015 13:25:36 +0200
+Message-ID: <CACRpkdYk13TQXYVfG0cOvmz9RTZ717rFWax+fij7oPbaUoqpOA@mail.gmail.com>
+Subject: Re: [PATCH] MIPS: Remove all the uses of custom gpio.h
+From:   Linus Walleij <linus.walleij@linaro.org>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     Alban Bedel <albeu@free.fr>,
+        Linux MIPS <linux-mips@linux-mips.org>,
+        Hauke Mehrtens <hauke@hauke-m.de>,
+        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Tejun Heo <tj@kernel.org>,
+        Alexandre Courbot <gnurou@gmail.com>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Florian Fainelli <florian@openwrt.org>,
+        Manuel Lauss <manuel.lauss@gmail.com>,
+        Joe Perches <joe@perches.com>,
+        Daniel Walter <dwalter@google.com>,
+        Sergey Ryazanov <ryazanov.s.a@gmail.com>,
+        Huacai Chen <chenhc@lemote.com>,
+        Andrew Bresticker <abrestic@chromium.org>,
+        James Hartley <james.hartley@imgtec.com>,
+        Paul Burton <paul.burton@imgtec.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Wolfram Sang <wsa@the-dreams.de>,
+        Simon Horman <horms+renesas@verge.net.au>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Varka Bhadram <varkabhadram@gmail.com>,
+        Masanari Iida <standby24x7@gmail.com>,
+        Tomi Valkeinen <tomi.valkeinen@ti.com>,
+        Michael Buesch <m@bues.ch>,
+        Mauro Carvalho Chehab <m.chehab@samsung.com>,
+        abdoulaye berthe <berthe.ab@gmail.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        linux-ide@vger.kernel.org,
+        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+        Linux Input <linux-input@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Brightmail-Tracker: AAAAAA==
-Return-Path: <hidehiro.kawai.ez@hitachi.com>
+Return-Path: <linus.walleij@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48541
+X-archive-position: 48542
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hidehiro.kawai.ez@hitachi.com
+X-original-sender: linus.walleij@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -66,63 +84,20 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hello Eric and Vivek,
+On Mon, Aug 3, 2015 at 9:23 AM, Ralf Baechle <ralf@linux-mips.org> wrote:
+> On Mon, Aug 03, 2015 at 09:13:27AM +0200, Linus Walleij wrote:
+>
+>> Very good job being done here.
+>> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+>>
+>> I guess this better go in through the MIPS tree.
+>> Given all the OpenWRT ports using MIPS this is excellent
+>> progress for a large hobbyist community.
+>
+> Alban has posted a v2 [1] already but I take it that your Reviewed-by: applies
+> to the v2 patch as well?
 
-Do you have any comments?
+Sure thing. Green light for this.
 
-(2015/07/24 10:16), Hidehiro Kawai wrote:
-> This is a bugfix patch for crash_kexec_post_notifiers boot option
-> which allows users to call panic notifiers and kmsg dumpers before
-> kdump.
-> 
-> This fixes one of the problems reported by Daniel Walker
-> (https://lkml.org/lkml/2015/6/24/44). 
-> 
->  Problem 1:
->  If crash_kexec_post_notifiers boot option is specified, some
->  shutting down process which assume other cpus are still alive
->  don't work properly.
-> 
->  Problem 2 (addressed by this patch):
->  If crash_kexec_post_notifiers boot option is specified, register
->  information of other cpus are not saved to crash dumps.
-> 
-> Following Vivek's opinion, this patch replaces smp_send_stop()
-> in panic() with suitable version for crash_kexec which saves
-> cpu states and other things like cleaning up VMX/SVM.  Since this
-> needs architecture specific implementation and it's not so trivial,
-> this version only support for x86.  So the problem 1, known to
-> happen on MIPS/OCTEON, is not addressed now.
-> 
-> To keep the modification impact low, this patch doesn't change
-> the logic basically if crash_kexec_post_notifiers is not specified.
-> 
-> Please note that crash_kexec() can be called directly without
-> entering panic().  Stopping other cpus functionality is still
-> needed in crash_kexec().
-> 
-> Changes in V2:
-> - Replace smp_send_stop() call with crash_kexec version which
->   saves cpu states and does cleanups instead of changing execution
->   flow
-> - Drop a fix for Problem 1
-> - Drop other patches because they aren't needed anymore
-> 
-> V1: https://lkml.org/lkml/2015/7/10/316
-> 
-> ---
-> 
-> Hidehiro Kawai (1):
->       panic/x86: Replace smp_send_stop() with crash_kexec version
-> 
-> 
->  arch/x86/kernel/crash.c |   16 +++++++++++-----
->  kernel/panic.c          |   29 +++++++++++++++++++++++------
->  2 files changed, 34 insertions(+), 11 deletions(-)
-> 
-> 
-
-
--- 
-Hidehiro Kawai
-Hitachi, Ltd. Research & Development Group
+Yours,
+Linus Walleij

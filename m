@@ -1,52 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Aug 2015 05:15:40 +0200 (CEST)
-Received: from mail-yk0-f171.google.com ([209.85.160.171]:34287 "EHLO
-        mail-yk0-f171.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27009242AbbHDDPh2b1DI (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 4 Aug 2015 05:15:37 +0200
-Received: by ykax123 with SMTP id x123so127719642yka.1;
-        Mon, 03 Aug 2015 20:15:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc:content-type;
-        bh=+EtdHWkxyHou8AgnEf4wWKvdmb0WynUxLfqhRMvlQ58=;
-        b=bJeMaSWUa8j4y/fEsGyMnO5hAwT72dRVRzSwsNQ57KvcCjBSF3xNpbabrwFndbe8YG
-         k87mCJxH1DTv8wX3oFrORtVc6bg/YtNMctSH5jHhW6E8zGEZ0I0lAk5IfO6Ngz/L+Obt
-         yaFNMlC1lpQK3yYniWkTvEB8zGWVyCXe3rPnuHFRQfM5AkpWgUNYmLb3kxhMbxf2JGIL
-         XyB6YlvVYx0n2jKxFzmKirb7C8QzokQ7DwgMaL58B6WZ6dDjdlAwxk6Q8jn416A2H3Qx
-         Buy9eXZwo0twXj1Ny8zerD/K5ZBTgOfOwV2LHa4K5zbP32looQVqHfX0biqpv3NU2Dls
-         vmWw==
-MIME-Version: 1.0
-X-Received: by 10.170.210.212 with SMTP id b203mr1415488ykf.110.1438658131653;
- Mon, 03 Aug 2015 20:15:31 -0700 (PDT)
-Received: by 10.37.208.80 with HTTP; Mon, 3 Aug 2015 20:15:31 -0700 (PDT)
-In-Reply-To: <20150803152107.GE2843@linux-mips.org>
-References: <1434537166-5385-1-git-send-email-zhoubb@lemote.com>
-        <1434537166-5385-4-git-send-email-zhoubb@lemote.com>
-        <20150803152107.GE2843@linux-mips.org>
-Date:   Tue, 4 Aug 2015 11:15:31 +0800
-X-Google-Sender-Auth: 8_9ADh3n7ZFaMpufb3WAoK64PAQ
-Message-ID: <CAAhV-H74JnPwDTZ4iBsrLPQwopyGQ0f9nYS3BrfrRAmGwSacEQ@mail.gmail.com>
-Subject: Re: [PATCH v2 3/8] MIPS: Loongson: Add platform devices for Loongson-1A/1B
-From:   Huacai Chen <chenhc@lemote.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Aug 2015 10:48:07 +0200 (CEST)
+Received: from metis.ext.pengutronix.de ([92.198.50.35]:51898 "EHLO
+        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011733AbbHDIsFa5j0R (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 4 Aug 2015 10:48:05 +0200
+Received: from paszta.hi.pengutronix.de ([2001:67c:670:100:96de:80ff:fec2:9969] helo=paszta)
+        by metis.ext.pengutronix.de with esmtp (Exim 4.80)
+        (envelope-from <p.zabel@pengutronix.de>)
+        id 1ZMW20-0004rQ-E1; Tue, 04 Aug 2015 08:49:00 +0200
+Message-ID: <1438678077.3793.25.camel@pengutronix.de>
+Subject: Re: [PATCH 3/3] MIPS: ath79: Add the reset controller to the AR9132
+ dtsi
+From:   Philipp Zabel <p.zabel@pengutronix.de>
 To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Binbin Zhou <zhoubb@lemote.com>, John Crispin <john@phrozen.org>,
-        "Steven J. Hill" <Steven.Hill@imgtec.com>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>,
-        Kelvin Cheung <keguang.zhang@gmail.com>,
-        Chunbo Cui <cuicb@lemote.com>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <chenhuacai@gmail.com>
+Cc:     Alban Bedel <albeu@free.fr>, Rob Herring <robh+dt@kernel.org>,
+        Pawel Moll <pawel.moll@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ian Campbell <ijc+devicetree@hellion.org.uk>,
+        Kumar Gala <galak@codeaurora.org>, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
+Date:   Tue, 04 Aug 2015 10:47:57 +0200
+In-Reply-To: <20150803182336.GH2843@linux-mips.org>
+References: <1438622633-9407-1-git-send-email-albeu@free.fr>
+         <1438622633-9407-4-git-send-email-albeu@free.fr>
+         <20150803182336.GH2843@linux-mips.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.12.9-1+b1 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 2001:67c:670:100:96de:80ff:fec2:9969
+X-SA-Exim-Mail-From: p.zabel@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-mips@linux-mips.org
+Return-Path: <p.zabel@pengutronix.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48559
+X-archive-position: 48560
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: chenhc@lemote.com
+X-original-sender: p.zabel@pengutronix.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,17 +52,22 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Unforunately, Loongson doesn't support device-tree now.
-
-Huacai
-
-On Mon, Aug 3, 2015 at 11:21 PM, Ralf Baechle <ralf@linux-mips.org> wrote:
-> On Wed, Jun 17, 2015 at 06:32:41PM +0800, Binbin Zhou wrote:
->
->>  arch/mips/loongson32/common/platform.c            | 290 +++++++++++++++++++++-
->
-> Another lengthy platform.c file.  Have you considered putting that
-> information into a DT instead?
->
+Am Montag, den 03.08.2015, 20:23 +0200 schrieb Ralf Baechle:
+> On Mon, Aug 03, 2015 at 07:23:53PM +0200, Alban Bedel wrote:
+> 
+> Acked-by: Ralf Baechle <ralf@linux-mips.org>t
+> 
+> Philipp,
+> 
+> Feel free to take this through the reset tree.  Or I can carry this in
+> the MIPS tree which is probably better for testing.  Just lemme know.
+> 
 >   Ralf
->
+
+How about I put this on a branch for you to pull? That way I can already
+resolve the (trivial) merge conflict in drivers/reset/Makefile
+
+    git://git.pengutronix.de/git/pza/linux.git reset/ath79
+
+regards
+Philipp

@@ -1,48 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Aug 2015 02:49:09 +0200 (CEST)
-Received: from mail-io0-f171.google.com ([209.85.223.171]:34695 "EHLO
-        mail-io0-f171.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012260AbbHDAtH73ubU (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 4 Aug 2015 02:49:07 +0200
-Received: by ioea135 with SMTP id a135so2113382ioe.1;
-        Mon, 03 Aug 2015 17:49:02 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Aug 2015 05:15:40 +0200 (CEST)
+Received: from mail-yk0-f171.google.com ([209.85.160.171]:34287 "EHLO
+        mail-yk0-f171.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27009242AbbHDDPh2b1DI (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 4 Aug 2015 05:15:37 +0200
+Received: by ykax123 with SMTP id x123so127719642yka.1;
+        Mon, 03 Aug 2015 20:15:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id;
-        bh=2RjMi2ZHJkE4572jlXXZwDxEy2fLtB0BOdb/D+qHFbU=;
-        b=GdsAsWbQ7NlN5ISVt3xPfFeWFxH/s7/VBWM/3MruDaNhPD4tcCLtm52l3Tvrml7Csi
-         DDMCR6Ufr3qy1+tN08tlO3xPrJV9A6ZPRWg/+5SfMKZeXe5/irpQDeQfImiWSO0EK3Pl
-         jeCBwdQoUImQkCFh7upyhvCIRbI3aOos8TDy+bejo4W0cOMddcdCG/nFYKuxFkh66j3O
-         v91CkfgMcQzls9O2B48P7dvWlFCrkzaidslU/lmbGOkLS++ihu/dYQUtfFbQEHO1uxIC
-         4zznsC8Nnlqy+jSR3yki9sOyg0swvzdcN0wzyEKrfOeUWLRZBjM34+HRj+7aQhW8LjWJ
-         6u4g==
-X-Received: by 10.107.26.206 with SMTP id a197mr869825ioa.147.1438649342173;
-        Mon, 03 Aug 2015 17:49:02 -0700 (PDT)
-Received: from dl.caveonetworks.com (64.2.3.194.ptr.us.xo.net. [64.2.3.194])
-        by smtp.gmail.com with ESMTPSA id lp3sm205720igb.12.2015.08.03.17.49.00
-        (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Mon, 03 Aug 2015 17:49:01 -0700 (PDT)
-Received: from dl.caveonetworks.com (localhost.localdomain [127.0.0.1])
-        by dl.caveonetworks.com (8.14.5/8.14.5) with ESMTP id t740mwqo001121;
-        Mon, 3 Aug 2015 17:48:58 -0700
-Received: (from ddaney@localhost)
-        by dl.caveonetworks.com (8.14.5/8.14.5/Submit) id t740mvkL001120;
-        Mon, 3 Aug 2015 17:48:57 -0700
-From:   David Daney <ddaney.cavm@gmail.com>
-To:     linux-mips@linux-mips.org, ralf@linux-mips.org
-Cc:     David Daney <david.daney@cavium.com>, <stable@vger.kernel.org>
-Subject: [PATCH] MIPS: Make set_pte() SMP safe.
-Date:   Mon,  3 Aug 2015 17:48:43 -0700
-Message-Id: <1438649323-1082-1-git-send-email-ddaney.cavm@gmail.com>
-X-Mailer: git-send-email 1.7.11.7
-Return-Path: <ddaney.cavm@gmail.com>
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type;
+        bh=+EtdHWkxyHou8AgnEf4wWKvdmb0WynUxLfqhRMvlQ58=;
+        b=bJeMaSWUa8j4y/fEsGyMnO5hAwT72dRVRzSwsNQ57KvcCjBSF3xNpbabrwFndbe8YG
+         k87mCJxH1DTv8wX3oFrORtVc6bg/YtNMctSH5jHhW6E8zGEZ0I0lAk5IfO6Ngz/L+Obt
+         yaFNMlC1lpQK3yYniWkTvEB8zGWVyCXe3rPnuHFRQfM5AkpWgUNYmLb3kxhMbxf2JGIL
+         XyB6YlvVYx0n2jKxFzmKirb7C8QzokQ7DwgMaL58B6WZ6dDjdlAwxk6Q8jn416A2H3Qx
+         Buy9eXZwo0twXj1Ny8zerD/K5ZBTgOfOwV2LHa4K5zbP32looQVqHfX0biqpv3NU2Dls
+         vmWw==
+MIME-Version: 1.0
+X-Received: by 10.170.210.212 with SMTP id b203mr1415488ykf.110.1438658131653;
+ Mon, 03 Aug 2015 20:15:31 -0700 (PDT)
+Received: by 10.37.208.80 with HTTP; Mon, 3 Aug 2015 20:15:31 -0700 (PDT)
+In-Reply-To: <20150803152107.GE2843@linux-mips.org>
+References: <1434537166-5385-1-git-send-email-zhoubb@lemote.com>
+        <1434537166-5385-4-git-send-email-zhoubb@lemote.com>
+        <20150803152107.GE2843@linux-mips.org>
+Date:   Tue, 4 Aug 2015 11:15:31 +0800
+X-Google-Sender-Auth: 8_9ADh3n7ZFaMpufb3WAoK64PAQ
+Message-ID: <CAAhV-H74JnPwDTZ4iBsrLPQwopyGQ0f9nYS3BrfrRAmGwSacEQ@mail.gmail.com>
+Subject: Re: [PATCH v2 3/8] MIPS: Loongson: Add platform devices for Loongson-1A/1B
+From:   Huacai Chen <chenhc@lemote.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     Binbin Zhou <zhoubb@lemote.com>, John Crispin <john@phrozen.org>,
+        "Steven J. Hill" <Steven.Hill@imgtec.com>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        Kelvin Cheung <keguang.zhang@gmail.com>,
+        Chunbo Cui <cuicb@lemote.com>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <chenhuacai@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48558
+X-archive-position: 48559
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: chenhc@lemote.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,73 +59,17 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: David Daney <david.daney@cavium.com>
+Unforunately, Loongson doesn't support device-tree now.
 
-On MIPS the GLOBAL bit of the PTE must have the same value in any
-aligned pair of PTEs.  These pairs of PTEs are referred to as
-"buddies".  In a SMP system is is possible for two CPUs to be calling
-set_pte() on adjacent PTEs at the same time.  There is a race between
-setting the PTE and a different CPU setting the GLOBAL bit in its
-buddy PTE.
+Huacai
 
-This race can be observed when multiple CPUs are executing
-vmap()/vfree() at the same time.
-
-Make setting the buddy PTE's GLOBAL bit an atomic operation to close
-the race condition.
-
-The case of CONFIG_64BIT_PHYS_ADDR && CONFIG_CPU_MIPS32 is *not*
-handled.
-
-Signed-off-by: David Daney <david.daney@cavium.com>
-Cc: <stable@vger.kernel.org>
----
- arch/mips/include/asm/pgtable.h | 31 +++++++++++++++++++++++++++++++
- 1 file changed, 31 insertions(+)
-
-diff --git a/arch/mips/include/asm/pgtable.h b/arch/mips/include/asm/pgtable.h
-index 9d81067..ae85694 100644
---- a/arch/mips/include/asm/pgtable.h
-+++ b/arch/mips/include/asm/pgtable.h
-@@ -182,8 +182,39 @@ static inline void set_pte(pte_t *ptep, pte_t pteval)
- 		 * Make sure the buddy is global too (if it's !none,
- 		 * it better already be global)
- 		 */
-+#ifdef CONFIG_SMP
-+		/*
-+		 * For SMP, multiple CPUs can race, so we need to do
-+		 * this atomically.
-+		 */
-+#ifdef CONFIG_64BIT
-+#define LL_INSN "lld"
-+#define SC_INSN "scd"
-+#else /* CONFIG_32BIT */
-+#define LL_INSN "ll"
-+#define SC_INSN "sc"
-+#endif
-+		unsigned long page_global = _PAGE_GLOBAL;
-+		unsigned long tmp;
-+
-+		__asm__ __volatile__ (
-+			"	.set	push\n"
-+			"	.set	noreorder\n"
-+			"1:	" LL_INSN "	%[tmp], %[buddy]\n"
-+			"	bnez	%[tmp], 2f\n"
-+			"	 or	%[tmp], %[tmp], %[global]\n"
-+			"	" SC_INSN "	%[tmp], %[buddy]\n"
-+			"	beqz	%[tmp], 1b\n"
-+			"	 nop\n"
-+			"2:\n"
-+			"	.set pop"
-+			: [buddy] "+m" (buddy->pte),
-+			  [tmp] "=&r" (tmp)
-+			: [global] "r" (page_global));
-+#else /* !CONFIG_SMP */
- 		if (pte_none(*buddy))
- 			pte_val(*buddy) = pte_val(*buddy) | _PAGE_GLOBAL;
-+#endif /* CONFIG_SMP */
- 	}
- #endif
- }
--- 
-1.7.11.7
+On Mon, Aug 3, 2015 at 11:21 PM, Ralf Baechle <ralf@linux-mips.org> wrote:
+> On Wed, Jun 17, 2015 at 06:32:41PM +0800, Binbin Zhou wrote:
+>
+>>  arch/mips/loongson32/common/platform.c            | 290 +++++++++++++++++++++-
+>
+> Another lengthy platform.c file.  Have you considered putting that
+> information into a DT instead?
+>
+>   Ralf
+>

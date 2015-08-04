@@ -1,58 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Aug 2015 13:37:12 +0200 (CEST)
-Received: from mail-wi0-f169.google.com ([209.85.212.169]:38024 "EHLO
-        mail-wi0-f169.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012355AbbHDLhJbeDOJ convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 4 Aug 2015 13:37:09 +0200
-Received: by wibxm9 with SMTP id xm9so19729883wib.1
-        for <linux-mips@linux-mips.org>; Tue, 04 Aug 2015 04:37:04 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:in-reply-to:references:date
-         :message-id:subject:from:to:cc:content-type
-         :content-transfer-encoding;
-        bh=q362+vpJAHk9trJCj26DA0qHbbYrHLczQgt+rLkGfOs=;
-        b=MvDZRJMWmmEzs3mc7kDg5ZDgJMcbzwUA2XDn/LLZ/8sA/D2WeAg8hh9dFLbGidxaxY
-         c4y8l8LjjtkaAke6+A9EiLfxNbbHSR0TEfr2HDlQXXebojwIhuNWtXp0iuvhnD4gLFac
-         4p02ZG7n83QaDu+gC/fug3Ps6IPsFPHWi6MtHt5Q4hiEbU6F5GfreK8iVgsaUs4f1gmz
-         nuTC6XKMsU6upW96BBQlpqOICQHJVm5AcoulT59UB5ZPlGvIXLvfUlGEPrkjovDLPLSx
-         cHf2x9Tz1FE+734GwCY3TSAocrZ1wA6yyarTEBMXLUD5nBqEaiErOCXEnFVD86qjLIwV
-         kydw==
-X-Gm-Message-State: ALoCoQl+GKxnRHEVD2tlWNMrSGsbFUN+gDjW1tOMAO4uzpLoMPBfA2l+WHBx0rEoSGGgBrw3oSGe
-MIME-Version: 1.0
-X-Received: by 10.194.122.200 with SMTP id lu8mr6795386wjb.83.1438688224127;
- Tue, 04 Aug 2015 04:37:04 -0700 (PDT)
-Received: by 10.194.154.226 with HTTP; Tue, 4 Aug 2015 04:37:04 -0700 (PDT)
-In-Reply-To: <55C08425.503@linaro.org>
-References: <1438005755-27051-1-git-send-email-govindraj.raja@imgtec.com>
-        <1438005755-27051-2-git-send-email-govindraj.raja@imgtec.com>
-        <55C08425.503@linaro.org>
-Date:   Tue, 4 Aug 2015 08:37:04 -0300
-Message-ID: <CAAEAJfD1ZKCVJUv9w5Yq+hpY62pEHTbZ57t2XyUGBOgj6H8zqA@mail.gmail.com>
-Subject: Re: [PATCH v4 6/7] clocksource: Add Pistachio clocksource-only driver
-From:   Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
-To:     Daniel Lezcano <daniel.lezcano@linaro.org>
-Cc:     Govindraj Raja <govindraj.raja@imgtec.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Aug 2015 13:41:23 +0200 (CEST)
+Received: from mail7.hitachi.co.jp ([133.145.228.42]:57401 "EHLO
+        mail7.hitachi.co.jp" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27012355AbbHDLlVHvvQJ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 4 Aug 2015 13:41:21 +0200
+Received: from mlsv5.hitachi.co.jp (unknown [133.144.234.166])
+        by mail7.hitachi.co.jp (Postfix) with ESMTP id 44C14B1D383;
+        Tue,  4 Aug 2015 20:41:17 +0900 (JST)
+Received: from mfilter04.hitachi.co.jp by mlsv5.hitachi.co.jp (8.13.1/8.13.1) id t74BfHdS013191; Tue, 4 Aug 2015 20:41:17 +0900
+Received: from vshuts02.hitachi.co.jp (vshuts02.hitachi.co.jp [10.201.6.84])
+        by mfilter04.hitachi.co.jp (Switch-3.3.4/Switch-3.3.4) with ESMTP id t74BfFfD029050;
+        Tue, 4 Aug 2015 20:41:16 +0900
+Received: from GSjpTKYDCehcs31.service.hitachi.net (unknown [158.212.188.195])
+        by vshuts02.hitachi.co.jp (Postfix) with ESMTP id 7A399490059;
+        Tue,  4 Aug 2015 20:41:15 +0900 (JST)
+Received: from GSJPTKYDCEMBX31.service.hitachi.net ([169.254.4.60]) by
+ GSjpTKYDCehcs31.service.hitachi.net ([158.212.188.195]) with mapi id
+ 14.03.0224.002; Tue, 4 Aug 2015 20:41:15 +0900
+From:   =?utf-8?B?5rKz5ZCI6Iux5a6PIC8gS0FXQUnvvIxISURFSElSTw==?= 
+        <hidehiro.kawai.ez@hitachi.com>
+To:     "'Eric W. Biederman'" <ebiederm@xmission.com>
+CC:     Vivek Goyal <vgoyal@redhat.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        Baoquan He <bhe@redhat.com>,
+        "kexec@lists.infradead.org" <kexec@lists.infradead.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        linux-mips@linux-mips.org,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Andrew Bresticker <abrestic@chromium.org>,
-        James Hartley <James.Hartley@imgtec.com>,
-        Damien Horsley <Damien.Horsley@imgtec.com>,
-        James Hogan <James.Hogan@imgtec.com>,
-        Ezequiel Garcia <ezequiel.garcia@imgtec.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-Return-Path: <ezequiel@vanguardiasur.com.ar>
+        "HATAYAMA Daisuke" <d.hatayama@jp.fujitsu.com>,
+        =?utf-8?B?5bmz5p2+6ZuF5bezIC8gSElSQU1BVFXvvIxNQVNBTUk=?= 
+        <masami.hiramatsu.pt@hitachi.com>,
+        Daniel Walker <dwalker@fifo99.com>,
+        "Ingo Molnar" <mingo@kernel.org>
+Subject: RE: [RFC V2 PATCH 0/1] kexec: crash_kexec_post_notifiers boot
+ option related fixes
+Thread-Topic: [RFC V2 PATCH 0/1] kexec: crash_kexec_post_notifiers boot
+ option related fixes
+Thread-Index: AQHQzgsGDND7njYftUe3fB3L5gctF537r/GQ
+Date:   Tue, 4 Aug 2015 11:41:14 +0000
+Message-ID: <04EAB7311EE43145B2D3536183D1A84454926993@GSjpTKYDCembx31.service.hitachi.net>
+References: <20150724011615.6834.79628.stgit@softrs>
+        <55BF4B1F.9000602@hitachi.com> <877fpcfi2j.fsf@x220.int.ebiederm.org>
+In-Reply-To: <877fpcfi2j.fsf@x220.int.ebiederm.org>
+Accept-Language: ja-JP, en-US
+Content-Language: ja-JP
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.198.220.34]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Return-Path: <hidehiro.kawai.ez@hitachi.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48565
+X-archive-position: 48566
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ezequiel@vanguardiasur.com.ar
+X-original-sender: hidehiro.kawai.ez@hitachi.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -65,323 +69,21 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Daniel,
-
-Thanks for the review!
-
-On 4 August 2015 at 06:21, Daniel Lezcano <daniel.lezcano@linaro.org> wrote:
-> On 07/27/2015 04:02 PM, Govindraj Raja wrote:
->>
->> From: Ezequiel Garcia <ezequiel.garcia@imgtec.com>
->>
->> The Pistachio SoC provides four general purpose timers, and allow
->> to implement a clocksource driver.
->>
->> This driver can be used as a replacement for the MIPS GIC and MIPS R4K
->> clocksources and sched clocks, which are clocked from the CPU clock.
->>
->> Given the general purpose timers are clocked from an independent clock,
->> this new clocksource driver will be useful to introduce CPUFreq support
->> for Pistachio machines.
->>
->> Signed-off-by: Govindraj Raja <Govindraj.Raja@imgtec.com>
->> Signed-off-by: Ezequiel Garcia <ezequiel.garcia@imgtec.com>
->> ---
->>   drivers/clocksource/Kconfig          |   4 +
->>   drivers/clocksource/Makefile         |   1 +
->>   drivers/clocksource/time-pistachio.c | 194
->> +++++++++++++++++++++++++++++++++++
->>   3 files changed, 199 insertions(+)
->>   create mode 100644 drivers/clocksource/time-pistachio.c
->>
->> diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
->> index 4e57730..74e002e 100644
->> --- a/drivers/clocksource/Kconfig
->> +++ b/drivers/clocksource/Kconfig
->> @@ -111,6 +111,10 @@ config CLKSRC_LPC32XX
->>         select CLKSRC_MMIO
->>         select CLKSRC_OF
->>
->> +config CLKSRC_PISTACHIO
->> +       bool
->> +       select CLKSRC_OF
->> +
->>   config CLKSRC_STM32
->>         bool "Clocksource for STM32 SoCs" if !ARCH_STM32
->>         depends on OF && ARM && (ARCH_STM32 || COMPILE_TEST)
->> diff --git a/drivers/clocksource/Makefile b/drivers/clocksource/Makefile
->> index f228354..066337e 100644
->> --- a/drivers/clocksource/Makefile
->> +++ b/drivers/clocksource/Makefile
->> @@ -44,6 +44,7 @@ obj-$(CONFIG_FSL_FTM_TIMER)   += fsl_ftm_timer.o
->>   obj-$(CONFIG_VF_PIT_TIMER)    += vf_pit_timer.o
->>   obj-$(CONFIG_CLKSRC_QCOM)     += qcom-timer.o
->>   obj-$(CONFIG_MTK_TIMER)               += mtk_timer.o
->> +obj-$(CONFIG_CLKSRC_PISTACHIO) += time-pistachio.o
->>
->>   obj-$(CONFIG_ARM_ARCH_TIMER)          += arm_arch_timer.o
->>   obj-$(CONFIG_ARM_GLOBAL_TIMER)                += arm_global_timer.o
->> diff --git a/drivers/clocksource/time-pistachio.c
->> b/drivers/clocksource/time-pistachio.c
->> new file mode 100644
->> index 0000000..d461bd1
->> --- /dev/null
->> +++ b/drivers/clocksource/time-pistachio.c
->> @@ -0,0 +1,194 @@
->> +/*
->> + * Pistachio clocksource based on general-purpose timers
->> + *
->> + * Copyright (C) 2015 Imagination Technologies
->> + *
->> + * This file is subject to the terms and conditions of the GNU General
->> Public
->> + * License. See the file "COPYING" in the main directory of this archive
->> + * for more details.
->> + */
->> +
->> +#define pr_fmt(fmt) "%s: " fmt, __func__
->> +
->> +#include <linux/clk.h>
->> +#include <linux/clocksource.h>
->> +#include <linux/clockchips.h>
->> +#include <linux/delay.h>
->> +#include <linux/err.h>
->> +#include <linux/init.h>
->> +#include <linux/spinlock.h>
->> +#include <linux/mfd/syscon.h>
->> +#include <linux/of.h>
->> +#include <linux/of_address.h>
->> +#include <linux/platform_device.h>
->> +#include <linux/regmap.h>
->> +#include <linux/sched_clock.h>
->> +#include <linux/time.h>
->> +
->> +/* Top level reg */
->> +#define CR_TIMER_CTRL_CFG              0x00
->> +#define  TIMER_ME_GLOBAL               BIT(0)
->
->
-> extra space.
->
->> +#define CR_TIMER_REV                   0x10
->> +
->> +/* Timer specific registers */
->> +#define TIMER_CFG                      0x20
->> +#define  TIMER_ME_LOCAL                        BIT(0)
->
->
-> extra space.
->
-
-These are not extra spaces, but they are there
-to separate register definitions from bit definitions.
-Same thing is done on time-armada-370-xp.c.
-
->
->> +#define TIMER_RELOAD_VALUE             0x24
->> +#define TIMER_CURRENT_VALUE            0x28
->> +#define TIMER_CURRENT_OVERFLOW_VALUE   0x2C
->> +#define TIMER_IRQ_STATUS               0x30
->> +#define TIMER_IRQ_CLEAR                        0x34
->> +#define TIMER_IRQ_MASK                 0x38
->> +
->> +#define PERIP_TIMER_CONTROL            0x90
->> +
->> +/* Timer specific configuration Values */
->> +#define RELOAD_VALUE   0xffffffff
->> +
->> +static void __iomem *timer_base;
->> +static DEFINE_RAW_SPINLOCK(lock);
->> +
->> +static inline u32 gpt_readl(u32 offset, u32 gpt_id)
->> +{
->> +       return readl(timer_base + 0x20 * gpt_id + offset);
->> +}
->> +
->> +static inline void gpt_writel(u32 value, u32 offset, u32 gpt_id)
->> +{
->> +       writel(value, timer_base + 0x20 * gpt_id + offset);
->> +}
->> +
->> +static cycle_t pistachio_clocksource_read_cycles(struct clocksource *cs)
->> +{
->> +       u32 counter, overflw;
->> +       unsigned long flags;
->> +
->> +       raw_spin_lock_irqsave(&lock, flags);
->> +       overflw = gpt_readl(TIMER_CURRENT_OVERFLOW_VALUE, 0);
->
->
-> Why do you need to read 'overflw' here ? It is not used.
->
-
-The counter value is only refreshed after the overflow value is read.
-And they must be read in strict order, hence the ugly raw spin lock.
-Without both of these, the CPU locks up completely when reading
-the counter.
-
-Maybe a comment explaining this would help.
-
->
->> +       counter = gpt_readl(TIMER_CURRENT_VALUE, 0);
->> +       raw_spin_unlock_irqrestore(&lock, flags);
->> +
->> +       return ~(cycle_t)counter;
->> +}
->> +
->> +static u64 notrace pistachio_read_sched_clock(void)
->> +{
->> +       return pistachio_clocksource_read_cycles(NULL);
->> +}
->> +
->> +static void pistachio_clksrc_enable(int timeridx)
->> +{
->> +       u32 val;
->> +
->> +       /* Disable GPT local before loading reload value */
->> +       val = gpt_readl(TIMER_CFG, timeridx);
->> +       val &= ~TIMER_ME_LOCAL;
->> +       gpt_writel(val, TIMER_CFG, timeridx);
->> +
->> +       gpt_writel(RELOAD_VALUE, TIMER_RELOAD_VALUE, timeridx);
->> +
->> +       val = gpt_readl(TIMER_CFG, timeridx);
->> +       val |= TIMER_ME_LOCAL;
->> +       gpt_writel(val, TIMER_CFG, timeridx);
->> +}
->> +
->> +static void pistachio_clksrc_disable(int timeridx)
->> +{
->> +       u32 val;
->> +
->> +       /* Disable GPT local */
->> +       val = gpt_readl(TIMER_CFG, timeridx);
->> +       val &= ~TIMER_ME_LOCAL;
->> +       gpt_writel(val, TIMER_CFG, timeridx);
->> +}
->
->
-> Duplicate code with 'pistachio_clksrc_enable', please reuse this function in
-> the enable one.
->
-
-OK.
-
->> +
->> +static int pistachio_clocksource_enable(struct clocksource *cs)
->> +{
->> +       pistachio_clksrc_enable(0);
->> +       return 0;
->> +}
->> +
->> +static void pistachio_clocksource_disable(struct clocksource *cs)
->> +{
->> +       pistachio_clksrc_disable(0);
->> +}
->
->
-> It will be better if you don't wrap these function but use container_of to
-> retrieve the timer_base from the clocksource structure.
->
-
-I'm not sure I understand what you mean.
-We are not using clocksource_mmio and there's no driver-specific
-structure.
-
->
->> +/* Desirable clock source for pistachio platform */
->> +static struct clocksource pistachio_clocksource_gpt = {
->> +       .name           = "gptimer",
->> +       .rating         = 300,
->> +       .enable         = pistachio_clocksource_enable,
->> +       .disable        = pistachio_clocksource_disable,
->> +       .read           = pistachio_clocksource_read_cycles,
->> +       .mask           = CLOCKSOURCE_MASK(32),
->> +       .flags          = CLOCK_SOURCE_IS_CONTINUOUS |
->> +                         CLOCK_SOURCE_SUSPEND_NONSTOP,
->> +};
->> +
->> +static void __init pistachio_clksrc_of_init(struct device_node *node)
->> +{
->> +       struct clk *sys_clk, *fast_clk;
->> +       struct regmap *periph_regs;
->> +       unsigned long rate;
->> +       int ret;
->> +
->> +       timer_base = of_iomap(node, 0);
->> +       if (!timer_base) {
->> +               pr_err("cannot iomap\n");
->> +               return;
->> +       }
->> +
->> +       periph_regs = syscon_regmap_lookup_by_phandle(node,
->> "img,cr-periph");
->> +       if (IS_ERR(periph_regs)) {
->> +               pr_err("cannot get peripheral regmap (%lu)\n",
->> +                      PTR_ERR(periph_regs));
->> +               return;
->> +       }
->> +
->> +       /* Switch to using the fast counter clock */
->> +       ret = regmap_update_bits(periph_regs, PERIP_TIMER_CONTROL,
->> +                                0xf, 0x0);
->> +       if (ret)
->> +               return;
->> +
->> +       sys_clk = of_clk_get_by_name(node, "sys");
->> +       if (IS_ERR(sys_clk)) {
->> +               pr_err("clock get failed (%lu)\n", PTR_ERR(sys_clk));
->> +               return;
->> +       }
->> +
->> +       fast_clk = of_clk_get_by_name(node, "fast");
->> +       if (IS_ERR(fast_clk)) {
->> +               pr_err("clock get failed (%lu)\n", PTR_ERR(fast_clk));
->> +               return;
->> +       }
->> +
->> +       ret = clk_prepare_enable(sys_clk);
->> +       if (ret < 0) {
->> +               pr_err("failed to enable clock (%d)\n", ret);
->> +               return;
->> +       }
->> +
->> +       ret = clk_prepare_enable(fast_clk);
->> +       if (ret < 0) {
->> +               pr_err("failed to enable clock (%d)\n", ret);
->> +               clk_disable_unprepare(sys_clk);
->> +               return;
->> +       }
->> +
->> +       rate = clk_get_rate(fast_clk);
->> +
->> +       /* Disable irq's for clocksource usage */
->> +       gpt_writel(0, TIMER_IRQ_MASK, 0);
->> +       gpt_writel(0, TIMER_IRQ_MASK, 1);
->> +       gpt_writel(0, TIMER_IRQ_MASK, 2);
->> +       gpt_writel(0, TIMER_IRQ_MASK, 3);
->> +
->> +       /* Enable timer block */
->> +       writel(TIMER_ME_GLOBAL, timer_base);
->> +
->> +       sched_clock_register(pistachio_read_sched_clock, 32, rate);
->> +       clocksource_register_hz(&pistachio_clocksource_gpt, rate);
->> +}
->> +CLOCKSOURCE_OF_DECLARE(pistachio_gptimer, "img,pistachio-gptimer",
->> +                      pistachio_clksrc_of_init);
->>
->
->
-> --
->  <http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
->
-> Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-> <http://twitter.com/#!/linaroorg> Twitter |
-> <http://www.linaro.org/linaro-blog/> Blog
->
-
-
-
--- 
-Ezequiel García, VanguardiaSur
-www.vanguardiasur.com.ar
+SGVsbG8sDQoNClRoYW5rcyBmb3IgdGhlIHJlcGx5Lg0KDQo+IEZyb206IEVyaWMgVy4gQmllZGVy
+bWFuIFttYWlsdG86ZWJpZWRlcm1AeG1pc3Npb24uY29tXQ0KWy4uLl0NCj4gQSBzcGVjaWZpYyBo
+b29rIGZvciBhIHZlcnkgc3BlY2lmaWMgcHVycG9zZSB3aGVuIHRoZXJlIGlzIG5vIG90aGVyIHdh
+eQ0KPiB3ZSBjYW4gY29uc2lkZXIuDQoNClNvLCBpcyBrbXNnX2R1bXAgbGlrZSBmZWF0dXJlIGFk
+bWlzc2libGU/DQoNCj4gSWYgeW91IGRvbid0IGhhdmUgc29tZXRoaW5nIHRoYXQgZ2VuZXJhbGlz
+ZXMgd2VsbCBpbnRvIGEgZ2VuZXJhbCBwdXJwb3NlDQo+IG9wZXJhdGlvbiB0aGF0IGl0IG1ha2Vz
+IHNlbnNlIGZvciBldmVyeW9uZSB0byBjYWxsIHlvdSBjYW4gYWx3YXlzIHVzZQ0KPiB0aGUgd29y
+bGQncyBsYXJnZXN0IGFrYSB5b3UgY2FuIHJ1biBjb2RlIGJlZm9yZSB0aGUgbmV3IGtlcm5lbCBz
+dGFydHMNCj4gdGhhdCBpcyBsb2FkZWQgd2l0aCBrZXhlY19sb2FkLg0KDQpPbmUgb2Ygb3VyIHB1
+cnBvc2VzLCBub3RpZnlpbmcgIkknbSBkeWluZyIsIHdvdWxkIGJlIGFjaGlldmVkIGJ5IHB1cmdh
+dG9yeQ0KY29kZSBwcm92aWRlZCBieSBrZXhlYyBjb21tYW5kIGFzIEkgc3RhdGVkIGJlZm9yZS4g
+IFNpbmNlIHRoZSB3YXkgb2YgdGhlDQpub3RpZmljYXRpb24gd2lsbCBkaWZmZXIgZnJvbSBlYWNo
+IHZlbmRvciwgSSB0aGluayB3ZSBuZWVkIHRvIG1vZGlmeQ0KdGhlIHB1cmdhdG9yeSBjb2RlcyBw
+bHVnZ2FibGUuICBBbHNvLCBJIHRoaW5rIHdlIG5lZWQgc29tZSBwYXJhbWV0ZXINCnBhc3Npbmcg
+bWVjaGFuaXNtIHRvIHRoZSBwdXJnYXRvcnkgY29kZS4gIEZvciBleGFtcGxlLCBwYXNzaW5nIHRo
+ZSBwYW5pYw0KbWVzc2FnZSB2aWEgYm9vdCBwYXJhbWV0ZXIgdG8gc2F2ZSBpdCB0byBTRUwuICBB
+bHRob3VnaCBJJ20gbm90IHN1cmUNCndlIGNhbiBkbyB0aGF0IChJJ3ZlIG5vdCBpbnZlc3RpZ2F0
+ZWQgd2VsbCB5ZXQpLiAgSXMgdGhhdCBhY2NlcHRhYmxlPw0KDQpSZWdhcmRzLA0KS2F3YWkNCg0K

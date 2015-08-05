@@ -1,71 +1,66 @@
-From: Markos Chandras <markos.chandras@imgtec.com>
-Date: Wed, 1 Jul 2015 09:13:28 +0100
-Subject: MIPS: kernel: smp-cps: Fix 64-bit compatibility errors due to pointer
- casting
-Message-ID: <20150701081328.z7yN9u2mV3E2DrQCOn3z7T96uAWClw2ppURXe45Arz4@z>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Aug 2015 23:47:35 +0200 (CEST)
+Received: from youngberry.canonical.com ([91.189.89.112]:48415 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012588AbbHEVrRcVkiu (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 5 Aug 2015 23:47:17 +0200
+Received: from 1.general.kamal.us.vpn ([10.172.68.52] helo=fourier)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:DHE_RSA_AES_128_CBC_SHA1:16)
+        (Exim 4.76)
+        (envelope-from <kamal@canonical.com>)
+        id 1ZN6Wq-0000er-5s; Wed, 05 Aug 2015 21:47:16 +0000
+Received: from kamal by fourier with local (Exim 4.82)
+        (envelope-from <kamal@whence.com>)
+        id 1ZN6Wn-0007eD-UI; Wed, 05 Aug 2015 14:47:13 -0700
+From:   Kamal Mostafa <kamal@canonical.com>
+To:     Markos Chandras <markos.chandras@imgtec.com>
+Cc:     Paul Burton <paul.burton@imgtec.com>, linux-mips@linux-mips.org,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Kamal Mostafa <kamal@canonical.com>,
+        kernel-team@lists.ubuntu.com
+Subject: [3.19.y-ckt stable] Patch "MIPS: kernel: cps-vec: Replace 'la' macro with PTR_LA" has been added to staging queue
+Date:   Wed,  5 Aug 2015 14:47:13 -0700
+Message-Id: <1438811233-29367-1-git-send-email-kamal@canonical.com>
+X-Mailer: git-send-email 1.9.1
+X-Extended-Stable: 3.19
+Return-Path: <kamal@canonical.com>
+X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
+X-Orcpt: rfc822;linux-mips@linux-mips.org
+Original-Recipient: rfc822;linux-mips@linux-mips.org
+X-archive-position: 48608
+X-ecartis-version: Ecartis v1.0.0
+Sender: linux-mips-bounce@linux-mips.org
+Errors-to: linux-mips-bounce@linux-mips.org
+X-original-sender: kamal@canonical.com
+Precedence: bulk
+List-help: <mailto:ecartis@linux-mips.org?Subject=help>
+List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
+List-software: Ecartis version 1.0.0
+List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
+X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
+List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
+List-owner: <mailto:ralf@linux-mips.org>
+List-post: <mailto:linux-mips@linux-mips.org>
+List-archive: <http://www.linux-mips.org/archives/linux-mips/>
+X-list: linux-mips
 
-commit fd5ed3066bb2f47814fe53cdc56d11a678551ae1 upstream.
+This is a note to let you know that I have just added a patch titled
 
-Commit 1d8f1f5a780a ("MIPS: smp-cps: hotplug support") added hotplug
-support in the SMP/CPS implementation but it introduced a few build problems
-on 64-bit kernels due to pointer being casted to and from 'int' C types. We
-fix this problem by using 'unsigned long' instead which should match the size
-of the pointers in 32/64-bit kernels. Finally, we fix the comment since the
-CM base address is loaded to v1($3) instead of v0.
+    MIPS: kernel: cps-vec: Replace 'la' macro with PTR_LA
 
-Fixes the following build problems:
+to the linux-3.19.y-queue branch of the 3.19.y-ckt extended stable tree 
+which can be found at:
 
-arch/mips/kernel/smp-cps.c: In function 'wait_for_sibling_halt':
-arch/mips/kernel/smp-cps.c:366:17: error: cast from pointer to integer of
-different size [-Werror=pointer-to-int-cast]
-[...]
-arch/mips/kernel/smp-cps.c: In function 'cps_cpu_die':
-arch/mips/kernel/smp-cps.c:427:13: error: cast to pointer
-from integer of different size [-Werror=int-to-pointer-cast]
+    http://kernel.ubuntu.com/git/ubuntu/linux.git/log/?h=linux-3.19.y-queue
 
-cc1: all warnings being treated as errors
+This patch is scheduled to be released in version 3.19.8-ckt5.
 
-Fixes: 1d8f1f5a780a ("MIPS: smp-cps: hotplug support")
-Reviewed-by: Paul Burton <paul.burton@imgtec.com>
-Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
-Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/10586/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Kamal Mostafa <kamal@canonical.com>
----
- arch/mips/kernel/smp-cps.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+If you, or anyone else, feels it should not be added to this tree, please 
+reply to this email.
 
-diff --git a/arch/mips/kernel/smp-cps.c b/arch/mips/kernel/smp-cps.c
-index bed7590..81012b9 100644
---- a/arch/mips/kernel/smp-cps.c
-+++ b/arch/mips/kernel/smp-cps.c
-@@ -127,7 +127,7 @@ static void __init cps_prepare_cpus(unsigned int max_cpus)
- 	/*
- 	 * Patch the start of mips_cps_core_entry to provide:
- 	 *
--	 * v0 = CM base address
-+	 * v1 = CM base address
- 	 * s0 = kseg0 CCA
- 	 */
- 	entry_code = (u32 *)&mips_cps_core_entry;
-@@ -363,7 +363,7 @@ void play_dead(void)
+For more information about the 3.19.y-ckt tree, see
+https://wiki.ubuntu.com/Kernel/Dev/ExtendedStable
 
- static void wait_for_sibling_halt(void *ptr_cpu)
- {
--	unsigned cpu = (unsigned)ptr_cpu;
-+	unsigned cpu = (unsigned long)ptr_cpu;
- 	unsigned vpe_id = cpu_vpe_id(&cpu_data[cpu]);
- 	unsigned halted;
- 	unsigned long flags;
-@@ -424,7 +424,7 @@ static void cps_cpu_die(unsigned int cpu)
- 		 */
- 		err = smp_call_function_single(cpu_death_sibling,
- 					       wait_for_sibling_halt,
--					       (void *)cpu, 1);
-+					       (void *)(unsigned long)cpu, 1);
- 		if (err)
- 			panic("Failed to call remote sibling CPU\n");
- 	}
---
-1.9.1
+Thanks.
+-Kamal
+
+------

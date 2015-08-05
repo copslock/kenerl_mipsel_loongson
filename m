@@ -1,42 +1,117 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Aug 2015 00:49:44 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:43405 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27010939AbbHEWtmsxAz8 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 6 Aug 2015 00:49:42 +0200
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id B4339A2326313;
-        Wed,  5 Aug 2015 23:49:32 +0100 (IST)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Wed, 5 Aug 2015 23:49:36 +0100
-Received: from localhost (192.168.159.103) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Wed, 5 Aug
- 2015 23:49:36 +0100
-Date:   Wed, 5 Aug 2015 15:49:34 -0700
-From:   Paul Burton <paul.burton@imgtec.com>
-To:     Kamal Mostafa <kamal@canonical.com>
-CC:     Markos Chandras <markos.chandras@imgtec.com>,
-        <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>,
-        <kernel-team@lists.ubuntu.com>
-Subject: Re: [3.19.y-ckt stable] Patch "MIPS: kernel: cps-vec: Replace
- mips32r2 ISA level with mips64r2" has been added to staging queue
-Message-ID: <20150805224934.GE2057@NP-P-BURTON>
-References: <1438811234-29408-1-git-send-email-kamal@canonical.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-In-Reply-To: <1438811234-29408-1-git-send-email-kamal@canonical.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-X-Originating-IP: [192.168.159.103]
-Return-Path: <Paul.Burton@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Aug 2015 01:45:33 +0200 (CEST)
+Received: from mailout3.w1.samsung.com ([210.118.77.13]:26468 "EHLO
+        mailout3.w1.samsung.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011594AbbHEXpbmTJg1 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 6 Aug 2015 01:45:31 +0200
+Received: from eucpsbgm2.samsung.com (unknown [203.254.199.245])
+ by mailout3.w1.samsung.com
+ (Oracle Communications Messaging Server 7.0.5.31.0 64bit (built May  5 2014))
+ with ESMTP id <0NSM001KGVBNRA00@mailout3.w1.samsung.com>; Thu,
+ 06 Aug 2015 00:45:23 +0100 (BST)
+X-AuditID: cbfec7f5-f794b6d000001495-05-55c2a01340f7
+Received: from eusync2.samsung.com ( [203.254.199.212])
+        by eucpsbgm2.samsung.com (EUCPMTA) with SMTP id B8.61.05269.310A2C55; Thu,
+ 6 Aug 2015 00:45:23 +0100 (BST)
+Received: from [0.0.0.0] ([106.116.37.23])
+ by eusync2.samsung.com (Oracle Communications Messaging Server 7.0.5.31.0
+ 64bit (built May  5 2014))
+ with ESMTPA id <0NSM00GIBVB0S900@eusync2.samsung.com>; Thu,
+ 06 Aug 2015 00:45:22 +0100 (BST)
+Message-id: <55C2A001.2090506@samsung.com>
+Date:   Thu, 06 Aug 2015 08:45:05 +0900
+From:   Krzysztof Kozlowski <k.kozlowski@samsung.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101
+ Thunderbird/31.8.0
+MIME-version: 1.0
+To:     Shawn Lin <shawn.lin@rock-chips.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Jaehoon Chung <jh80.chung@samsung.com>,
+        Seungwon Jeon <tgih.jun@samsung.com>
+Cc:     dianders@chromium.org, linux-mips@linux-mips.org,
+        Arnd Bergmann <arnd@arndb.de>,
+        Alexandre Belloni <alexandre.belloni@free-electrons.com>,
+        Alexey Brodkin <abrodkin@synopsys.com>,
+        Stefan Agner <stefan@agner.ch>,
+        Zhou Wang <wangzhou.bry@gmail.com>,
+        Kumar Gala <galak@codeaurora.org>,
+        Alim Akhtar <alim.akhtar@samsung.com>,
+        Ian Campbell <ijc+devicetree@hellion.org.uk>,
+        Wang Long <long.wanglong@huawei.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Chaotian Jing <chaotian.jing@mediatek.com>,
+        Lukasz Majewski <l.majewski@samsung.com>,
+        Jun Nie <jun.nie@linaro.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Kevin Hao <haokexin@gmail.com>,
+        Olof Johansson <olof@lixom.net>, Ray Jui <rjui@broadcom.com>,
+        Govindraj Raja <govindraj.raja@imgtec.com>,
+        linux-samsung-soc@vger.kernel.org,
+        Heiko Stuebner <heiko@sntech.de>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Vineet Gupta <vgupta@synopsys.com>,
+        Scott Branden <sbranden@broadcom.com>,
+        Anand Moon <linux.amoon@gmail.com>,
+        linux-rockchip@lists.infradead.org,
+        Tushar Behera <trblinux@gmail.com>,
+        Pawel Moll <pawel.moll@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Mischa Jonker <mjonker@synopsys.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Javier Martinez Canillas <javier.martinez@collabora.co.uk>,
+        Vincent Yang <vincent.yang.fujitsu@gmail.com>,
+        Stephen Warren <swarren@nvidia.com>,
+        devicetree@vger.kernel.org, Kukjin Kim <kgene@kernel.org>,
+        Tomeu Vizoso <tomeu.vizoso@collabora.com>,
+        Stephen Boyd <sboyd@codeaurora.org>,
+        Russell King <linux@arm.linux.org.uk>,
+        Joachim Eastwood <manabian@gmail.com>,
+        Sjoerd Simons <sjoerd.simons@collabora.co.uk>,
+        Weijun Yang <Weijun.Yang@csr.com>,
+        Peter Griffin <peter.griffin@linaro.org>,
+        linux-arm-kernel@lists.infradead.org,
+        addy ke <addy.ke@rock-chips.com>,
+        Uwe Kleine-K?nig <u.kleine-koenig@pengutronix.de>,
+        Jean Delvare <jdelvare@suse.de>,
+        Kevin Hilman <khilman@linaro.org>,
+        Andrew Bresticker <abrestic@chromium.org>,
+        linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Zhangfei Gao <zhangfei.gao@linaro.org>,
+        Wei Xu <xuwei5@hisilicon.com>,
+        Andreas Faerber <afaerber@suse.de>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Subject: Re: [RFC PATCH v3 0/5]
+References: <1438762614-22154-1-git-send-email-shawn.lin@rock-chips.com>
+In-reply-to: <1438762614-22154-1-git-send-email-shawn.lin@rock-chips.com>
+Content-type: text/plain; charset=windows-1252
+Content-transfer-encoding: 7bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA02SYUxbZRSG/Xrv/e6ls/FSYN4MnUt1iSEZyrboiRqc0ywfiUt0kajEbKvs
+        CkRgTTuWzV9EGC6VjQ1EWGEFhEKxhUEbFgZuy7rSohtIV0cRRyltER2UKg5bmQwpZHH/3nPO
+        877vn8NR8m/wJi6v8IioLlTmK7CUvvHA+dO2hEZb5ouBLhbaw8sISm5Ps9C6EpFAiUUDJ0eb
+        JeDTX8SwXOlgIdxajmB0vAFDg32YgaHWaxgq5poYOF9XiSA67aXBMeNjYMU/y8Dw3XYEA/dV
+        YJhYwDC2VMZAS3CKhdnf0qAiMEvB4nUjgrkpKwJLYJQBd189hjPVlSzYVyoQLPhWKKj98YoE
+        OrvHWfjFLQO724yg3zOMwOBxSWCyOYLgB89fq66aDhq6ah/QEDCGWLj13XMwfc6K4cRlOwvR
+        m1/SMG8KIrgTvMBAjTPEQJnDwYC18wsWxmpKGfhj0kXB6Y5bGLqq+le7zlYhcHa8D7YePw1t
+        +u1wZcGAINQ4wMLvfw7SEBz4ioKfzSPsrtdJc8RLEbPejEhpSTkm95cqEdFNDmFSV+yiifv0
+        KQlZnvHQpHeiBZG+S/UMCVpciJwd2kYu6SZY0t52D5PA+W6WlNpDzDtbsqSvHRLz846K6hfS
+        D0pz/VE/q/JuPTbztxsXo7FkLeI4gd8pmKpf0qK4VblRGPFewFok5eS8AQn6oX/R+nAPCf9c
+        1OMYJeNThB7vKRwz0/xW4eueHbE15ncI1raWNSSJ/0BoM32P1vF4IVrlpWM5ibweCdoT5Wuh
+        FO+PF67OG9eoBP4ZoX+wk41pOU+E8evBtaQ4PkMw1t2QxMooPlWYdKXE1tQqbjWHqDOI1z3S
+        ofuf0j1CNSLqW5QkFmWrNB/nFGxP1SgLNEWFOanZhwssaP1zF3uRwfGKDfEcUjwuI3uuZcoZ
+        5VHN8QIbEjhKkSgLn7RlymWHlMc/E9WHD6iL8kWNDSVztOJJ2bm+8HtyPkd5RPxUFFWi+uFV
+        wsVtKkZ767l9l3d253qVT/gjlufpvZ8s4gZfU2thxlSyM7qhb6nTk9e0uTzt5Ve19XcSnBUb
+        pW/2LOd+1N01nx7OMZqyPpRVD+4Lzd+dub0l/a1nj3k2j+wXy+KT3oWr1puR/t5f58jnb9SO
+        +bN2k6d7d2U/5fM07MnYkGjaH2p/7G1VyRJS0JpcZVoKpdYo/wOIEPJltQMAAA==
+Return-Path: <k.kozlowski@samsung.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48626
+X-archive-position: 48627
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@imgtec.com
+X-original-sender: k.kozlowski@samsung.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,89 +124,102 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Aug 05, 2015 at 02:47:14PM -0700, Kamal Mostafa wrote:
-> This is a note to let you know that I have just added a patch titled
+On 05.08.2015 17:16, Shawn Lin wrote:
+> Synopsys DesignWare mobile storage host controller supports three
+> types of transfer mode: pio, internal dma and external dma. However,
+> dw_mmc can only supports pio and internal dma now. Thus some platforms
+> using dw-mshc integrated with generic dma can't work in dma mode. So we
+> submit this patch to achieve it.
 > 
->     MIPS: kernel: cps-vec: Replace mips32r2 ISA level with mips64r2
+> And the config option, CONFIG_MMC_DW_IDMAC, was added by Will Newton
+> (commit:f95f3850) for the first version of dw_mmc and never be touched from
+> then. At that time dt-bindings hadn't been introduced into dw_mmc yet means
+> we should select CONFIG_MMC_DW_IDMAC to enable internal dma mode at compile
+> time. Nowadays, device-tree helps us to support a variety of boards with one
+> kernel. That's why we need to remove it and decide the transfer mode at runtime.
 > 
-> to the linux-3.19.y-queue branch of the 3.19.y-ckt extended stable tree 
-> which can be found at:
+> This RFC patch needs lots of ACKs. I know it's hard, but it does need someone
+> to make the running.
 > 
->     http://kernel.ubuntu.com/git/ubuntu/linux.git/log/?h=linux-3.19.y-queue
+> Patch does the following things:
+> - remove CONFIG_MMC_DW_IDMAC config option
+> - add bindings for idmac and edmac used by synopsys-dw-mshc
+>   at runtime
+> - add edmac support for synopsys-dw-mshc
 > 
-> This patch is scheduled to be released in version 3.19.8-ckt5.
+> Patch is based on next of git://git.linaro.org/people/ulf.hansson/mmc
 > 
-> If you, or anyone else, feels it should not be added to this tree, please 
-> reply to this email.
+> 
+> Changes in v3:
+> - choose transfer mode at runtime
+> - remove all CONFIG_MMC_DW_IDMAC config option
+> - add supports-idmac property for some platforms
+> 
+> Changes in v2:
+> - Fix typo of dev_info msg
+> - remove unused dmach from declaration of dw_mci_dma_slave
+> 
+> Shawn Lin (5):
+>   mmc: dw_mmc: Add external dma interface support
+>   Documentation: synopsys-dw-mshc: add bindings for idmac and edmac
+>   arm: configs: remove CONFIG_MMC_DW_IDMAC
+>   mips: configs: remove CONFIG_MMC_DW_IDMAC
+>   ARM: dts: add supports-idmac property
 
-Hi Kamal,
+Please fix the title of cover letter.
 
-This patch breaks the boot of SMP kernels on Imagination's current
-MIPS32 systems. This & the other MIPS64 related patches that were
-submitted as part of the same series do not improve things for any CPUs
-that Linux supports even as of the v4.2 cycle, so I do not believe they
-should have been marked for backport.
+You CC-ed a lot of people. Probably the whole output of git_maintainers
+which is not necessary. This means that your patches did not reach some
+of the mailing lists because of too many recipients. I received your
+patchset but I can't find it on any of the lists I subscribe.
 
-So please either drop this patch (& preferrably the other MIPS64 CPS SMP
-ones too) or also backport the series I've just submitted:
+Please CC only REAL maintainers, not committers.
 
-    http://marc.info/?l=linux-mips&m=143881461431570&w=2
+Additionally if DTS changes do not have to be introduced atomically
+please split it per sub-architecture. Of course that applies only in
+case of bisectable patches. And the patchset should preserve
+bisectability and backward compatibility (mentioned earlier).
 
-My preference would be for not backporting any of them.
+Best regards,
+Krzysztof
 
-Thanks,
-    Paul
 
-> For more information about the 3.19.y-ckt tree, see
-> https://wiki.ubuntu.com/Kernel/Dev/ExtendedStable
 > 
-> Thanks.
-> -Kamal
-> 
-> ------
-> 
-> From 22a7e30c46134b8c9978a237c6d143b59b66609a Mon Sep 17 00:00:00 2001
-> From: Markos Chandras <markos.chandras@imgtec.com>
-> Date: Wed, 1 Jul 2015 09:13:30 +0100
-> Subject: MIPS: kernel: cps-vec: Replace mips32r2 ISA level with mips64r2
-> 
-> commit 977e043d5ea1270ce985e4c165724ff91dc3c3e2 upstream.
-> 
-> mips32r2 is a subset of mips64r2, so we replace mips32r2 with mips64r2
-> in preparation for 64-bit CPS support.
-> 
-> Reviewed-by: Paul Burton <paul.burton@imgtec.com>
-> Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
-> Cc: linux-mips@linux-mips.org
-> Patchwork: https://patchwork.linux-mips.org/patch/10588/
-> Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-> Signed-off-by: Kamal Mostafa <kamal@canonical.com>
-> ---
->  arch/mips/kernel/cps-vec.S | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/mips/kernel/cps-vec.S b/arch/mips/kernel/cps-vec.S
-> index a4b2d81..bbbd88e 100644
-> --- a/arch/mips/kernel/cps-vec.S
-> +++ b/arch/mips/kernel/cps-vec.S
-> @@ -229,7 +229,7 @@ LEAF(mips_cps_core_init)
->  	 nop
-> 
->  	.set	push
-> -	.set	mips32r2
-> +	.set	mips64r2
->  	.set	mt
-> 
->  	/* Only allow 1 TC per VPE to execute... */
-> @@ -346,7 +346,7 @@ LEAF(mips_cps_boot_vpes)
->  	 nop
-> 
->  	.set	push
-> -	.set	mips32r2
-> +	.set	mips64r2
->  	.set	mt
-> 
->  1:	/* Enter VPE configuration state */
-> --
-> 1.9.1
+>  .../devicetree/bindings/mmc/synopsys-dw-mshc.txt   |  41 +++
+>  arch/arc/configs/axs101_defconfig                  |   1 -
+>  arch/arc/configs/axs103_defconfig                  |   1 -
+>  arch/arc/configs/axs103_smp_defconfig              |   1 -
+>  arch/arm/boot/dts/exynos3250-monk.dts              |   1 +
+>  arch/arm/boot/dts/exynos3250-rinato.dts            |   1 +
+>  arch/arm/boot/dts/exynos4412-odroid-common.dtsi    |   1 +
+>  arch/arm/boot/dts/exynos4412-origen.dts            |   1 +
+>  arch/arm/boot/dts/exynos4412-trats2.dts            |   1 +
+>  arch/arm/boot/dts/exynos4x12.dtsi                  |   1 +
+>  arch/arm/boot/dts/exynos5250-arndale.dts           |   2 +
+>  arch/arm/boot/dts/exynos5250-smdk5250.dts          |   2 +
+>  arch/arm/boot/dts/exynos5250-snow.dts              |   3 +
+>  arch/arm/boot/dts/exynos5250-spring.dts            |   2 +
+>  arch/arm/boot/dts/exynos5260-xyref5260.dts         |   2 +
+>  arch/arm/boot/dts/exynos5410-smdk5410.dts          |   2 +
+>  arch/arm/boot/dts/exynos5420-arndale-octa.dts      |   2 +
+>  arch/arm/boot/dts/exynos5420-peach-pit.dts         |   3 +
+>  arch/arm/boot/dts/exynos5420-smdk5420.dts          |   2 +
+>  arch/arm/boot/dts/exynos5422-odroidxu3-common.dtsi |   2 +
+>  arch/arm/boot/dts/exynos5800-peach-pi.dts          |   3 +
+>  arch/arm/boot/dts/hisi-x5hd2.dtsi                  |   2 +
+>  arch/arm/boot/dts/rk3288-evb.dtsi                  |   2 +
+>  arch/arm/boot/dts/rk3288-firefly.dtsi              |   3 +
+>  arch/arm/boot/dts/rk3288-popmetal.dts              |   2 +
+>  arch/arm/configs/exynos_defconfig                  |   1 -
+>  arch/arm/configs/hisi_defconfig                    |   1 -
+>  arch/arm/configs/lpc18xx_defconfig                 |   1 -
+>  arch/arm/configs/multi_v7_defconfig                |   1 -
+>  arch/arm/configs/zx_defconfig                      |   1 -
+>  arch/arm64/boot/dts/exynos/exynos7-espresso.dts    |   2 +
+>  arch/mips/configs/pistachio_defconfig              |   1 -
+>  drivers/mmc/host/Kconfig                           |  11 +-
+>  drivers/mmc/host/dw_mmc-pltfm.c                    |   2 +
+>  drivers/mmc/host/dw_mmc.c                          | 277 +++++++++++++++++----
+>  include/linux/mmc/dw_mmc.h                         |  28 ++-
+>  36 files changed, 338 insertions(+), 72 deletions(-)
 > 

@@ -1,47 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Aug 2015 10:35:39 +0200 (CEST)
-Received: from smtprelay2.synopsys.com ([198.182.60.111]:41596 "EHLO
-        smtprelay.synopsys.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27011503AbbHEIf3ybchu convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 5 Aug 2015 10:35:29 +0200
-Received: from dc8secmta2.synopsys.com (dc8secmta2.synopsys.com [10.13.218.202])
-        by smtprelay.synopsys.com (Postfix) with ESMTP id 5D51B10C0164;
-        Wed,  5 Aug 2015 01:35:20 -0700 (PDT)
-Received: from dc8secmta2.internal.synopsys.com (dc8secmta2.internal.synopsys.com [127.0.0.1])
-        by dc8secmta2.internal.synopsys.com (Service) with ESMTP id F21D9A4102;
-        Wed,  5 Aug 2015 01:35:19 -0700 (PDT)
-Received: from mailhost.synopsys.com (mailhost1.synopsys.com [10.12.238.239])
-        by dc8secmta2.internal.synopsys.com (Service) with ESMTP id EDDDAA4112;
-        Wed,  5 Aug 2015 01:35:18 -0700 (PDT)
-Received: from mailhost.synopsys.com (localhost [127.0.0.1])
-        by mailhost.synopsys.com (Postfix) with ESMTP id 9AAF6431;
-        Wed,  5 Aug 2015 01:35:18 -0700 (PDT)
-Received: from us01wehtc1.internal.synopsys.com (us01wehtc1-vip.internal.synopsys.com [10.12.239.236])
-        by mailhost.synopsys.com (Postfix) with ESMTP id BC2A8427;
-        Wed,  5 Aug 2015 01:35:15 -0700 (PDT)
-Received: from IN01WEHTCB.internal.synopsys.com (10.144.199.106) by
- us01wehtc1.internal.synopsys.com (10.12.239.235) with Microsoft SMTP Server
- (TLS) id 14.3.195.1; Wed, 5 Aug 2015 01:34:58 -0700
-Received: from IN01WEMBXB.internal.synopsys.com ([169.254.4.157]) by
- IN01WEHTCB.internal.synopsys.com ([::1]) with mapi id 14.03.0195.001; Wed, 5
- Aug 2015 14:04:55 +0530
-From:   Vineet Gupta <Vineet.Gupta1@synopsys.com>
-To:     Shawn Lin <shawn.lin@rock-chips.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Aug 2015 10:43:40 +0200 (CEST)
+Received: from regular1.263xmail.com ([211.150.99.135]:55375 "EHLO
+        regular1.263xmail.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008877AbbHEInfqRFLu (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 5 Aug 2015 10:43:35 +0200
+Received: from shawn.lin?rock-chips.com (unknown [192.168.167.226])
+        by regular1.263xmail.com (Postfix) with SMTP id EEA6C19945;
+        Wed,  5 Aug 2015 16:43:30 +0800 (CST)
+X-263anti-spam: KSV:0;
+X-MAIL-GRAY: 0
+X-MAIL-DELIVERY: 1
+X-KSVirus-check: 0
+X-ABS-CHECKED: 4
+X-ADDR-CHECKED: 0
+Received: from [172.16.12.109] (localhost.localdomain [127.0.0.1])
+        by smtp.263.net (Postfix) with ESMTP id AB53A130441;
+        Wed,  5 Aug 2015 16:43:20 +0800 (CST)
+X-RL-SENDER: shawn.lin@rock-chips.com
+X-FST-TO: srinivas.kandagatla@linaro.org
+X-SENDER-IP: 58.22.7.114
+X-LOGIN-NAME: shawn.lin@rock-chips.com
+X-UNIQUE-TAG: <e50c054e8b33b3e34a3b560d18d7f3a9>
+X-ATTACHMENT-NUM: 0
+X-SENDER: lintao@rock-chips.com
+X-DNS-TYPE: 0
+Received: from [172.16.12.109] (unknown [58.22.7.114])
+        by smtp.263.net (Postfix) whith ESMTP id 177775IA2Z0;
+        Wed, 05 Aug 2015 16:43:30 +0800 (CST)
+Subject: Re: [RFC PATCH v3 2/5] Documentation: synopsys-dw-mshc: add bindings
+ for idmac and edmac
+To:     Krzysztof Kozlowski <k.kozlowski@samsung.com>,
         Ulf Hansson <ulf.hansson@linaro.org>,
         Jaehoon Chung <jh80.chung@samsung.com>,
-        "Seungwon Jeon" <tgih.jun@samsung.com>
-CC:     "dianders@chromium.org" <dianders@chromium.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        Arnd Bergmann <arnd@arndb.de>,
+        Seungwon Jeon <tgih.jun@samsung.com>
+References: <1438762614-22154-1-git-send-email-shawn.lin@rock-chips.com>
+ <1438762672-22243-1-git-send-email-shawn.lin@rock-chips.com>
+ <55C1C8E9.1060808@samsung.com>
+Cc:     shawn.lin@rock-chips.com, dianders@chromium.org,
+        linux-mips@linux-mips.org, Arnd Bergmann <arnd@arndb.de>,
         Alexandre Belloni <alexandre.belloni@free-electrons.com>,
-        Alexey Brodkin <Alexey.Brodkin@synopsys.com>,
+        Alexey Brodkin <abrodkin@synopsys.com>,
         Stefan Agner <stefan@agner.ch>,
         Zhou Wang <wangzhou.bry@gmail.com>,
         Kumar Gala <galak@codeaurora.org>,
-        "Alim Akhtar" <alim.akhtar@samsung.com>,
+        Alim Akhtar <alim.akhtar@samsung.com>,
         Ian Campbell <ijc+devicetree@hellion.org.uk>,
         Wang Long <long.wanglong@huawei.com>,
-        "Rob Herring" <robh+dt@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
         Chaotian Jing <chaotian.jing@mediatek.com>,
         Lukasz Majewski <l.majewski@samsung.com>,
         Jun Nie <jun.nie@linaro.org>,
@@ -49,17 +53,14 @@ CC:     "dianders@chromium.org" <dianders@chromium.org>,
         Kevin Hao <haokexin@gmail.com>,
         Olof Johansson <olof@lixom.net>, Ray Jui <rjui@broadcom.com>,
         Govindraj Raja <govindraj.raja@imgtec.com>,
-        "linux-samsung-soc@vger.kernel.org" 
-        <linux-samsung-soc@vger.kernel.org>,
+        linux-samsung-soc@vger.kernel.org,
         Heiko Stuebner <heiko@sntech.de>,
         "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
         Geert Uytterhoeven <geert+renesas@glider.be>,
-        Vineet Gupta <Vineet.Gupta1@synopsys.com>,
-        "Scott Branden" <sbranden@broadcom.com>,
+        Vineet Gupta <vgupta@synopsys.com>,
+        Scott Branden <sbranden@broadcom.com>,
         Anand Moon <linux.amoon@gmail.com>,
-        "linux-rockchip@lists.infradead.org" 
-        <linux-rockchip@lists.infradead.org>,
-        Krzysztof Kozlowski <k.kozlowski@samsung.com>,
+        linux-rockchip@lists.infradead.org,
         Tushar Behera <trblinux@gmail.com>,
         Pawel Moll <pawel.moll@arm.com>,
         Will Deacon <will.deacon@arm.com>,
@@ -68,54 +69,44 @@ CC:     "dianders@chromium.org" <dianders@chromium.org>,
         Javier Martinez Canillas <javier.martinez@collabora.co.uk>,
         Vincent Yang <vincent.yang.fujitsu@gmail.com>,
         Stephen Warren <swarren@nvidia.com>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        Kukjin Kim <kgene@kernel.org>,
+        devicetree@vger.kernel.org, Kukjin Kim <kgene@kernel.org>,
         Tomeu Vizoso <tomeu.vizoso@collabora.com>,
         Stephen Boyd <sboyd@codeaurora.org>,
         Russell King <linux@arm.linux.org.uk>,
-        "Joachim Eastwood" <manabian@gmail.com>,
+        Joachim Eastwood <manabian@gmail.com>,
         Sjoerd Simons <sjoerd.simons@collabora.co.uk>,
         Weijun Yang <Weijun.Yang@csr.com>,
-        "Peter Griffin" <peter.griffin@linaro.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
+        Peter Griffin <peter.griffin@linaro.org>,
+        linux-arm-kernel@lists.infradead.org,
         addy ke <addy.ke@rock-chips.com>,
         Uwe Kleine-K?nig <u.kleine-koenig@pengutronix.de>,
         Jean Delvare <jdelvare@suse.de>,
         Kevin Hilman <khilman@linaro.org>,
         Andrew Bresticker <abrestic@chromium.org>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
         Zhangfei Gao <zhangfei.gao@linaro.org>,
-        "Wei Xu" <xuwei5@hisilicon.com>,
+        Wei Xu <xuwei5@hisilicon.com>,
         Andreas Faerber <afaerber@suse.de>,
         Mark Rutland <mark.rutland@arm.com>,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        Alexey Brodkin <Alexey.Brodkin@synopsys.com>
-Subject: Re: [RFC PATCH v3 3/5] arm: configs: remove CONFIG_MMC_DW_IDMAC
-Thread-Topic: [RFC PATCH v3 3/5] arm: configs: remove CONFIG_MMC_DW_IDMAC
-Thread-Index: AQHQz1fY0OtxIPRfiEOAXke6l6D2tg==
-Date:   Wed, 5 Aug 2015 08:34:54 +0000
-Message-ID: <C2D7FE5348E1B147BCA15975FBA23075665B111F@IN01WEMBXB.internal.synopsys.com>
-References: <1438762614-22154-1-git-send-email-shawn.lin@rock-chips.com>
- <1438762690-22286-1-git-send-email-shawn.lin@rock-chips.com>
-Accept-Language: en-US, en-IN
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.12.197.191]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+From:   Shawn Lin <shawn.lin@rock-chips.com>
+Message-ID: <55C1CCA8.7040304@rock-chips.com>
+Date:   Wed, 5 Aug 2015 16:43:20 +0800
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; rv:38.0) Gecko/20100101
+ Thunderbird/38.1.0
 MIME-Version: 1.0
-Return-Path: <Vineet.Gupta1@synopsys.com>
+In-Reply-To: <55C1C8E9.1060808@samsung.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Return-Path: <shawn.lin@rock-chips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48584
+X-archive-position: 48585
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Vineet.Gupta1@synopsys.com
+X-original-sender: shawn.lin@rock-chips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -128,18 +119,99 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wednesday 05 August 2015 01:52 PM, Shawn Lin wrote:
-> DesignWare MMC Controller's transfer mode should be decided
-> at runtime instead of compile-time. So we remove this config
-> option, and elaborate more in Documentation(synopsys-dw-mshc).
+在 2015/8/5 16:27, Krzysztof Kozlowski 写道:
+> On 05.08.2015 17:17, Shawn Lin wrote:
+>> synopsys-dw-mshc supports three types of transfer mode. We add bindings
+>> and description for how to use them at runtime. Without idmac and edmac
+>> property, pio is the default transfer mode. Make sure that Idmac and emdac
+>> should not be used simultaneously.
+>>
+>> Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
+>> ---
+>>
+>> Changes in v3: None
+>> Changes in v2: None
+>>
+>>   .../devicetree/bindings/mmc/synopsys-dw-mshc.txt   | 41 ++++++++++++++++++++++
+>>   1 file changed, 41 insertions(+)
+>>
+>> diff --git a/Documentation/devicetree/bindings/mmc/synopsys-dw-mshc.txt b/Documentation/devicetree/bindings/mmc/synopsys-dw-mshc.txt
+>> index 346c609..30369cb 100644
+>> --- a/Documentation/devicetree/bindings/mmc/synopsys-dw-mshc.txt
+>> +++ b/Documentation/devicetree/bindings/mmc/synopsys-dw-mshc.txt
+>> @@ -75,6 +75,25 @@ Optional properties:
+>>   * vmmc-supply: The phandle to the regulator to use for vmmc.  If this is
+>>     specified we'll defer probe until we can find this regulator.
+>>   
+>> +* supports-idmac: Enables support for internal DMAC block within the Synopsys
+>> +  Designware Mobile Storage IP block. If supports-idmac property is present, then
+>> +  we MUST NOT add supports-edmac property since we'd assume that dw-mshc IP is
+>> +  integrated with only one type of dma master.
+>> +
+>> +* supports-edmac: Enables support for external DMAC block outside the Synopsys
+>> +  Designware Mobile Storage IP block. If supports-edmac property is present, then
+>> +  we MUST NOT add supports-idmac property since we'd assume that dw-mshc IP is
+>> +  integrated with only one type of dma master.
+>> +
+>> +  (Without "supports-idmac" and "supports-edmac", use PIO as default transfer mode)
+> Aren't you breaking here backward compatibility with existing DTB?
 >
-> Modify these files:
-> arch/arc/configs/axs101_defconfig
-> arch/arc/configs/axs103_defconfig
-> arch/arc/configs/axs103_smp_defconfig
+> Best regards,
+> Krzysztof
 
-While you remove the config option from ARC defconfigs, you fail to add the
-corresponding DT glue in ARC files (like you did for ARM). The pointer to DT is
-contained in corresponding defconfig. Please fix that .
+  Thanks, Krzysztof.
+  I guess you mean that I should keep existing DTB w/o these two 
+properties work fine using idmac?
+>> +
+>> +* dmas: List of DMA specifiers with the controller specific format as described
+>> +  in the generic DMA client binding. This property should be combined with
+>> +  supports-edmac. Refer to dma.txt for details.
+>> +
+>> +* dma-names: DMA request names. Must be "rx-tx". And This property should be
+>> +  combined with supports-edmac. Refer to dma.txt for details.
+>> +
+>>   Aliases:
+>>   
+>>   - All the MSHC controller nodes should be represented in the aliases node using
+>> @@ -95,6 +114,8 @@ board specific portions as listed below.
+>>   		#size-cells = <0>;
+>>   	};
+>>   
+>> +[board specific internal DMA resources]
+>> +
+>>   	dwmmc0@12200000 {
+>>   		clock-frequency = <400000000>;
+>>   		clock-freq-min-max = <400000 200000000>;
+>> @@ -106,4 +127,24 @@ board specific portions as listed below.
+>>   		bus-width = <8>;
+>>   		cap-mmc-highspeed;
+>>   		cap-sd-highspeed;
+>> +		supports-idmac;
+>>   	};
+>> +
+>> +[board specific generic DMA request binding]
+>> +
+>> +	dwmmc0@12200000 {
+>> +		clock-frequency = <400000000>;
+>> +		clock-freq-min-max = <400000 200000000>;
+>> +		num-slots = <1>;
+>> +		broken-cd;
+>> +		fifo-depth = <0x80>;
+>> +		card-detect-delay = <200>;
+>> +		vmmc-supply = <&buck8>;
+>> +		bus-width = <8>;
+>> +		cap-mmc-highspeed;
+>> +		cap-sd-highspeed;
+>> +		supports-edmac;
+>> +		dmas = <&pdma 12>;
+>> +		dma-names = "rx-tx";
+>> +	};
+>> +
+>>
+>
+>
+>
 
--Vineet
+
+-- 
+Shawn Lin

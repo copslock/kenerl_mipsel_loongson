@@ -1,44 +1,66 @@
-From: Markos Chandras <markos.chandras@imgtec.com>
-Date: Wed, 1 Jul 2015 09:13:32 +0100
-Subject: MIPS: kernel: cps-vec: Replace KSEG0 with CKSEG0
-Message-ID: <20150701081332.70W4d3Wg3VGuVb3EqxogyrifWg0eqC8LqbqhmdStVH0@z>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Aug 2015 23:48:47 +0200 (CEST)
+Received: from youngberry.canonical.com ([91.189.89.112]:48433 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012613AbbHEVrTnijLu (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 5 Aug 2015 23:47:19 +0200
+Received: from 1.general.kamal.us.vpn ([10.172.68.52] helo=fourier)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:DHE_RSA_AES_128_CBC_SHA1:16)
+        (Exim 4.76)
+        (envelope-from <kamal@canonical.com>)
+        id 1ZN6Wt-0000fQ-Aw; Wed, 05 Aug 2015 21:47:19 +0000
+Received: from kamal by fourier with local (Exim 4.82)
+        (envelope-from <kamal@whence.com>)
+        id 1ZN6Wr-0007gs-2n; Wed, 05 Aug 2015 14:47:17 -0700
+From:   Kamal Mostafa <kamal@canonical.com>
+To:     Markos Chandras <markos.chandras@imgtec.com>
+Cc:     Paul Burton <paul.burton@imgtec.com>, linux-mips@linux-mips.org,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Kamal Mostafa <kamal@canonical.com>,
+        kernel-team@lists.ubuntu.com
+Subject: [3.19.y-ckt stable] Patch "MIPS: cps-vec: Use macros for various arithmetics and memory operations" has been added to staging queue
+Date:   Wed,  5 Aug 2015 14:47:16 -0700
+Message-Id: <1438811236-29532-1-git-send-email-kamal@canonical.com>
+X-Mailer: git-send-email 1.9.1
+X-Extended-Stable: 3.19
+Return-Path: <kamal@canonical.com>
+X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
+X-Orcpt: rfc822;linux-mips@linux-mips.org
+Original-Recipient: rfc822;linux-mips@linux-mips.org
+X-archive-position: 48612
+X-ecartis-version: Ecartis v1.0.0
+Sender: linux-mips-bounce@linux-mips.org
+Errors-to: linux-mips-bounce@linux-mips.org
+X-original-sender: kamal@canonical.com
+Precedence: bulk
+List-help: <mailto:ecartis@linux-mips.org?Subject=help>
+List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
+List-software: Ecartis version 1.0.0
+List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
+X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
+List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
+List-owner: <mailto:ralf@linux-mips.org>
+List-post: <mailto:linux-mips@linux-mips.org>
+List-archive: <http://www.linux-mips.org/archives/linux-mips/>
+X-list: linux-mips
 
-commit 717f14255a52ad445d6f0eca7d0f22f59d6ba1f8 upstream.
+This is a note to let you know that I have just added a patch titled
 
-In preparation for 64-bit CPS support, we replace KSEG0 with CKSEG0
-so 64-bit kernels can be supported.
+    MIPS: cps-vec: Use macros for various arithmetics and memory operations
 
-Reviewed-by: Paul Burton <paul.burton@imgtec.com>
-Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
-Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/10590/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Kamal Mostafa <kamal@canonical.com>
----
- arch/mips/kernel/cps-vec.S | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+to the linux-3.19.y-queue branch of the 3.19.y-ckt extended stable tree 
+which can be found at:
 
-diff --git a/arch/mips/kernel/cps-vec.S b/arch/mips/kernel/cps-vec.S
-index 21f714a..2f95568 100644
---- a/arch/mips/kernel/cps-vec.S
-+++ b/arch/mips/kernel/cps-vec.S
-@@ -107,7 +107,7 @@ not_nmi:
- 	mul	t1, t1, t0
- 	mul	t1, t1, t2
+    http://kernel.ubuntu.com/git/ubuntu/linux.git/log/?h=linux-3.19.y-queue
 
--	li	a0, KSEG0
-+	li	a0, CKSEG0
- 	add	a1, a0, t1
- 1:	cache	Index_Store_Tag_I, 0(a0)
- 	add	a0, a0, t0
-@@ -134,7 +134,7 @@ icache_done:
- 	mul	t1, t1, t0
- 	mul	t1, t1, t2
+This patch is scheduled to be released in version 3.19.8-ckt5.
 
--	li	a0, KSEG0
-+	li	a0, CKSEG0
- 	addu	a1, a0, t1
- 	subu	a1, a1, t0
- 1:	cache	Index_Store_Tag_D, 0(a0)
---
-1.9.1
+If you, or anyone else, feels it should not be added to this tree, please 
+reply to this email.
+
+For more information about the 3.19.y-ckt tree, see
+https://wiki.ubuntu.com/Kernel/Dev/ExtendedStable
+
+Thanks.
+-Kamal
+
+------

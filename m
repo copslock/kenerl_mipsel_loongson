@@ -1,11 +1,11 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Aug 2015 11:12:22 +0200 (CEST)
-Received: from lucky1.263xmail.com ([211.157.147.130]:59266 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Aug 2015 11:36:39 +0200 (CEST)
+Received: from lucky1.263xmail.com ([211.157.147.131]:36740 "EHLO
         lucky1.263xmail.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27011077AbbHEJMUOu67u (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 5 Aug 2015 11:12:20 +0200
-Received: from shawn.lin?rock-chips.com (unknown [192.168.167.172])
-        by lucky1.263xmail.com (Postfix) with SMTP id CB78F1E3294;
-        Wed,  5 Aug 2015 17:12:03 +0800 (CST)
+        with ESMTP id S27011077AbbHEJghrwZd3 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 5 Aug 2015 11:36:37 +0200
+Received: from shawn.lin?rock-chips.com (unknown [192.168.167.131])
+        by lucky1.263xmail.com (Postfix) with SMTP id BC41485A13;
+        Wed,  5 Aug 2015 17:25:56 +0800 (CST)
 X-263anti-spam: KSV:0;
 X-MAIL-GRAY: 1
 X-MAIL-DELIVERY: 0
@@ -13,95 +13,104 @@ X-KSVirus-check: 0
 X-ABS-CHECKED: 4
 X-ADDR-CHECKED: 0
 Received: from [172.16.12.109] (localhost.localdomain [127.0.0.1])
-        by smtp.263.net (Postfix) with ESMTP id 9B39D47F;
-        Wed,  5 Aug 2015 17:11:47 +0800 (CST)
+        by smtp.263.net (Postfix) with ESMTP id 3F1A045B;
+        Wed,  5 Aug 2015 17:25:44 +0800 (CST)
 X-RL-SENDER: shawn.lin@rock-chips.com
-X-FST-TO: srinivas.kandagatla@linaro.org
+X-FST-TO: zhangfei.gao@linaro.org
 X-SENDER-IP: 58.22.7.114
 X-LOGIN-NAME: shawn.lin@rock-chips.com
-X-UNIQUE-TAG: <08d5ef7ec68483989ffc7b93a8ae30d6>
+X-UNIQUE-TAG: <84097c6d7ac537200d1db60eef162cc3>
 X-ATTACHMENT-NUM: 0
 X-SENDER: lintao@rock-chips.com
 X-DNS-TYPE: 0
 Received: from [172.16.12.109] (unknown [58.22.7.114])
-        by smtp.263.net (Postfix) whith ESMTP id 7783BGT14P;
-        Wed, 05 Aug 2015 17:12:00 +0800 (CST)
-Subject: Re: [RFC PATCH v3 1/5] mmc: dw_mmc: Add external dma interface
- support
-To:     =?UTF-8?Q?Heiko_St=c3=bcbner?= <heiko@sntech.de>
+        by smtp.263.net (Postfix) whith ESMTP id 18429OA0LC;
+        Wed, 05 Aug 2015 17:25:53 +0800 (CST)
+Subject: Re: [RFC PATCH v3 5/5] ARM: dts: add supports-idmac property
+To:     Alexey Brodkin <Alexey.Brodkin@synopsys.com>
 References: <1438762614-22154-1-git-send-email-shawn.lin@rock-chips.com>
- <1438762648-22202-1-git-send-email-shawn.lin@rock-chips.com>
- <8177347.dLpRuMxaEU@diego>
-Cc:     shawn.lin@rock-chips.com, Ulf Hansson <ulf.hansson@linaro.org>,
-        Jaehoon Chung <jh80.chung@samsung.com>,
-        Seungwon Jeon <tgih.jun@samsung.com>, dianders@chromium.org,
-        linux-mips@linux-mips.org, Arnd Bergmann <arnd@arndb.de>,
-        Alexandre Belloni <alexandre.belloni@free-electrons.com>,
-        Alexey Brodkin <abrodkin@synopsys.com>,
-        Stefan Agner <stefan@agner.ch>,
-        Zhou Wang <wangzhou.bry@gmail.com>,
-        Kumar Gala <galak@codeaurora.org>,
-        Alim Akhtar <alim.akhtar@samsung.com>,
-        Ian Campbell <ijc+devicetree@hellion.org.uk>,
-        Wang Long <long.wanglong@huawei.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Chaotian Jing <chaotian.jing@mediatek.com>,
-        Lukasz Majewski <l.majewski@samsung.com>,
-        Jun Nie <jun.nie@linaro.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Kevin Hao <haokexin@gmail.com>,
-        Olof Johansson <olof@lixom.net>, Ray Jui <rjui@broadcom.com>,
-        Govindraj Raja <govindraj.raja@imgtec.com>,
-        linux-samsung-soc@vger.kernel.org,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Vin eet Gupta <vgupta@synopsys.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        Anand Moon <linux.amoon@gmail.com>,
-        linux-rockchip@lists.infradead.org,
-        Krzysztof Kozlowski <k.kozlowski@samsung.com>,
-        Tushar Behera <trblinux@gmail.com>,
-        Pawel Moll <pawel.moll@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Mischa Jonker <mjonker@synopsys.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Javier Martinez Canillas <javier.martinez@collabora.co.uk>,
-        Vincent Yang <vincent.yang.fujitsu@gmail.com>,
-        Stephen Warren <swarren@nvidia.com>,
-        devicetree@vger.kernel.org, Kukjin Kim <kgene@kernel.org>,
-        Tomeu Vizoso <tomeu.vizoso@collabora.com>,
-        Stephen Boyd <sboyd@codeaurora.org>,
-        Russell King <linux@arm.linux.org.uk>,
-        Joachim Eastwood <manabian@gmail.com>,
-        Sjoerd Simons <sjoerd.simons@collabora.co.uk>,
-        Weijun Yang <Weijun.Yang@csr.com>,
-        Peter Griffin <peter.griffin@linaro.org>,
-        linux-arm-kernel@lists.infradead.org,
-        addy ke <addy.ke@rock-chips.com>,
-        Uwe Kleine-K?nig <u.kleine-koenig@pengutronix.de>,
-        Jean Delvare <jdelvare@suse.de>,
-        Kevin Hilman <khilman@linaro.org>,
-        Andrew Bresticker <abrestic@chromium.org>,
-        linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Zhangfei Gao <zhangfei.gao@linaro.org>,
-        Wei Xu <xuwei5@hisilicon.com>,
-        Andreas Faerber <afaerber@suse.de>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+ <1438762730-22368-1-git-send-email-shawn.lin@rock-chips.com>
+ <1438764734.3504.9.camel@synopsys.com>
+Cc:     shawn.lin@rock-chips.com,
+        "dianders@chromium.org" <dianders@chromium.org>,
+        "wangzhou.bry@gmail.com" <wangzhou.bry@gmail.com>,
+        "tomeu.vizoso@collabora.com" <tomeu.vizoso@collabora.com>,
+        "pawel.moll@arm.com" <pawel.moll@arm.com>,
+        "javier.martinez@collabora.co.uk" <javier.martinez@collabora.co.uk>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-rockchip@lists.infradead.org" 
+        <linux-rockchip@lists.infradead.org>,
+        "haokexin@gmail.com" <haokexin@gmail.com>,
+        "stefan@agner.ch" <stefan@agner.ch>,
+        "addy.ke@rock-chips.com" <addy.ke@rock-chips.com>,
+        "galak@codeaurora.org" <galak@codeaurora.org>,
+        "olof@lixom.net" <olof@lixom.net>,
+        "long.wanglong@huawei.com" <long.wanglong@huawei.com>,
+        "peter.griffin@linaro.org" <peter.griffin@linaro.org>,
+        "mark.rutland@arm.com" <mark.rutland@arm.com>,
+        "mjonker@synopsys.com" <mjonker@synopsys.com>,
+        "xuwei5@hisilicon.com" <xuwei5@hisilicon.com>,
+        "tgih.jun@samsung.com" <tgih.jun@samsung.com>,
+        "govindraj.raja@imgtec.com" <govindraj.raja@imgtec.com>,
+        "will.deacon@arm.com" <will.deacon@arm.com>,
+        "k.kozlowski@samsung.com" <k.kozlowski@samsung.com>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        "chaotian.jing@mediatek.com" <chaotian.jing@mediatek.com>,
+        "trblinux@gmail.com" <trblinux@gmail.com>,
+        Vineet Gupta <Vineet.Gupta1@synopsys.com>,
+        "swarren@nvidia.com" <swarren@nvidia.com>,
+        "ulf.hansson@linaro.org" <ulf.hansson@linaro.org>,
+        "rafael.j.wysocki@intel.com" <rafael.j.wysocki@intel.com>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "arnd@arndb.de" <arnd@arndb.de>,
+        "heiko@sntech.de" <heiko@sntech.de>,
+        "ijc+devicetree@hellion.org.uk" <ijc+devicetree@hellion.org.uk>,
+        "vincent.yang.fujitsu@gmail.com" <vincent.yang.fujitsu@gmail.com>,
+        "sboyd@codeaurora.org" <sboyd@codeaurora.org>,
+        "Weijun.Yang@csr.com" <Weijun.Yang@csr.com>,
+        "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
+        "linux@arm.linux.org.uk" <linux@arm.linux.org.uk>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "khilman@linaro.org" <khilman@linaro.org>,
+        "abrestic@chromium.org" <abrestic@chromium.org>,
+        "srinivas.kandagatla@linaro.org" <srinivas.kandagatla@linaro.org>,
+        "l.majewski@samsung.com" <l.majewski@samsung.com>,
+        "jdelvare@suse.de" <jdelvare@suse.de>,
+        "alim.akhtar@samsung.com" <alim.akhtar@samsung.com>,
+        "alexandre.belloni@free-electrons.com" 
+        <alexandre.belloni@free-electrons.com>,
+        "kgene@kernel.org" <kgene@kernel.org>,
+        "linux-samsung-soc@vger.kernel.org" 
+        <linux-samsung-soc@vger.kernel.org>,
+        "rjui@broadcom.com" <rjui@broadcom.com>,
+        "jh80.chung@samsung.com" <jh80.chung@samsung.com>,
+        "linux.amoon@gmail.com" <linux.amoon@gmail.com>,
+        "sbranden@broadcom.com" <sbranden@broadcom.com>,
+        "sjoerd.simons@collabora.co.uk" <sjoerd.simons@collabora.co.uk>,
+        "afaerber@suse.de" <afaerber@suse.de>,
+        "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "geert+renesas@glider.be" <geert+renesas@glider.be>,
+        "jun.nie@linaro.org" <jun.nie@linaro.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        "manabian@gmail.com" <manabian@gmail.com>,
+        "ralf@linux-mips.org" <ralf@linux-mips.org>,
+        "u.kleine-koenig@pengutronix.de" <u.kleine-koenig@pengutronix.de>,
+        "zhangfei.gao@linaro.org" <zhangfei.gao@linaro.org>
 From:   Shawn Lin <shawn.lin@rock-chips.com>
-Message-ID: <55C1D356.5030302@rock-chips.com>
-Date:   Wed, 5 Aug 2015 17:11:50 +0800
+Message-ID: <55C1D69B.4060308@rock-chips.com>
+Date:   Wed, 5 Aug 2015 17:25:47 +0800
 User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; rv:38.0) Gecko/20100101
  Thunderbird/38.1.0
 MIME-Version: 1.0
-In-Reply-To: <8177347.dLpRuMxaEU@diego>
+In-Reply-To: <1438764734.3504.9.camel@synopsys.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Return-Path: <shawn.lin@rock-chips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48591
+X-archive-position: 48592
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -118,75 +127,58 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-在 2015/8/5 16:49, Heiko Stübner 写道:
-> Am Mittwoch, 5. August 2015, 16:17:28 schrieb Shawn Lin:
->> DesignWare MMC Controller can supports two types of DMA
->> mode: external dma and internal dma. We get a RK312x platform
->> integrated dw_mmc and ARM pl330 dma controller. This patch add
->> edmac ops to support these platforms. I've tested it on RK312x
->> platform with edmac mode and RK3288 platform with idmac mode.
+在 2015/8/5 16:52, Alexey Brodkin 写道:
+> Hi Shawn,
+>
+> On Wed, 2015-08-05 at 16:18 +0800, Shawn Lin wrote:
+>> DesignWare MMC Controller's transfer mode should be decided
+>> at runtime instead of compile-time. Add "supports-idmac" for
+>> all platforms that use internal dma mode to enable this feature
+>> at runtime.
 >>
 >> Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
->>
 >> ---
-> [...]
->
->> diff --git a/include/linux/mmc/dw_mmc.h b/include/linux/mmc/dw_mmc.h
->> index 5be9767..6c1c7ea 100644
->> --- a/include/linux/mmc/dw_mmc.h
->> +++ b/include/linux/mmc/dw_mmc.h
->> @@ -16,6 +16,7 @@
 >>
->>   #include <linux/scatterlist.h>
->>   #include <linux/mmc/core.h>
->> +#include <linux/dmaengine.h>
+>> Changes in v3: None
+>> Changes in v2: None
 >>
->>   #define MAX_MCI_SLOTS	2
->>
->> @@ -40,6 +41,17 @@ enum {
->>
->>   struct mmc_data;
->>
->> +enum {
->> +	TRANS_MODE_PIO = 0,
->> +	TRANS_MODE_IDMAC,
->> +	TRANS_MODE_EDMAC
->> +};
->> +
->> +struct dw_mci_dma_slave {
->> +	struct dma_chan *ch;
->> +	enum dma_transfer_direction direction;
->> +};
->> +
->>   /**
->>    * struct dw_mci - MMC controller state shared between all slots
->>    * @lock: Spinlock protecting the queue and associated data.
->> @@ -147,17 +159,23 @@ struct dw_mci {
->>
->>   	/* DMA interface members*/
->>   	int			use_dma;
->> +	int			trans_mode;
-> you're introducing this new trans_mode, but we have "use_dma" already.
+>>   arch/arm/boot/dts/exynos3250-monk.dts              | 1 +
+>>   arch/arm/boot/dts/exynos3250-rinato.dts            | 1 +
+>>   arch/arm/boot/dts/exynos4412-odroid-common.dtsi    | 1 +
+>>   arch/arm/boot/dts/exynos4412-origen.dts            | 1 +
+>>   arch/arm/boot/dts/exynos4412-trats2.dts            | 1 +
+>>   arch/arm/boot/dts/exynos4x12.dtsi                  | 1 +
+>>   arch/arm/boot/dts/exynos5250-arndale.dts           | 2 ++
+>>   arch/arm/boot/dts/exynos5250-smdk5250.dts          | 2 ++
+>>   arch/arm/boot/dts/exynos5250-snow.dts              | 3 +++
+>>   arch/arm/boot/dts/exynos5250-spring.dts            | 2 ++
+>>   arch/arm/boot/dts/exynos5260-xyref5260.dts         | 2 ++
+>>   arch/arm/boot/dts/exynos5410-smdk5410.dts          | 2 ++
+>>   arch/arm/boot/dts/exynos5420-arndale-octa.dts      | 2 ++
+>>   arch/arm/boot/dts/exynos5420-peach-pit.dts         | 3 +++
+>>   arch/arm/boot/dts/exynos5420-smdk5420.dts          | 2 ++
+>>   arch/arm/boot/dts/exynos5422-odroidxu3-common.dtsi | 2 ++
+>>   arch/arm/boot/dts/exynos5800-peach-pi.dts          | 3 +++
+>>   arch/arm/boot/dts/hisi-x5hd2.dtsi                  | 2 ++
+>>   arch/arm/boot/dts/rk3288-evb.dtsi                  | 2 ++
+>>   arch/arm/boot/dts/rk3288-firefly.dtsi              | 3 +++
+>>   arch/arm/boot/dts/rk3288-popmetal.dts              | 2 ++
+>>   arch/arm64/boot/dts/exynos/exynos7-espresso.dts    | 2 ++
+>>   22 files changed, 42 insertions(+)
+> I'm wondering if you're going to care about other platforms
+> that use DW MMC?
 >
-> So you could just define
->
-> enum {
-> 	TRANS_DMA_PIO = 0,
-> 	TRANS_DMA_IDMAC,
-> 	TRANS_DMA_EDMAC
-> };
->
-> and fill use_dma appropriately. "0" is meaning PIO already, which I also did fix
-> up some days ago in "[PATCH] mmc: dw_mmc: fix pio mode when internal dmac is
-> enabled" [0].
-    I  agree.  "trans_mode" is redundant here since it does the same 
-work as "use_dma" to some degree.
-    Thanks.
->
-> Heiko
->
-> [0] https://lkml.org/lkml/2015/8/3/407
->
+> Just grep for "snps,dw-mshc", "altr,socfpga-dw-mshc",
+> "img,pistachio-dw-mshc" and you'll see more dt* files to
+> be updated.
+   Thanks,  Alexey.
+   Yes,  I missed some ARC dt*  files just as Vineet told me. It will be 
+fixed in v4.
+   Btw, I cannot find "img,pistachio-dw-mshc" in 4.2.0-rc3. And no more 
+"dw-mshc" or "dwmmc"
+   is found.
+
+> -Alexey
 >
 >
 

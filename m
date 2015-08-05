@@ -1,62 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Aug 2015 19:17:00 +0200 (CEST)
-Received: from out02.mta.xmission.com ([166.70.13.232]:37974 "EHLO
-        out02.mta.xmission.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012329AbbHERQ53fgvg convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 5 Aug 2015 19:16:57 +0200
-Received: from in01.mta.xmission.com ([166.70.13.51])
-        by out02.mta.xmission.com with esmtps (TLS1.2:DHE_RSA_AES_128_CBC_SHA1:128)
-        (Exim 4.82)
-        (envelope-from <ebiederm@xmission.com>)
-        id 1ZN2J7-0001bZ-LM; Wed, 05 Aug 2015 11:16:49 -0600
-Received: from 97-119-22-40.omah.qwest.net ([97.119.22.40] helo=x220.int.ebiederm.org.xmission.com)
-        by in01.mta.xmission.com with esmtpsa (TLS1.2:DHE_RSA_AES_128_CBC_SHA1:128)
-        (Exim 4.82)
-        (envelope-from <ebiederm@xmission.com>)
-        id 1ZN2J6-0003Tb-Ai; Wed, 05 Aug 2015 11:16:49 -0600
-From:   ebiederm@xmission.com (Eric W. Biederman)
-To:     =?utf-8?B?5rKz5ZCI6Iux5a6PIC8gS0FXQUnvvIxISURFSElSTw==?= 
-        <hidehiro.kawai.ez@hitachi.com>
-Cc:     Vivek Goyal <vgoyal@redhat.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        "linux-mips\@linux-mips.org" <linux-mips@linux-mips.org>,
-        Baoquan He <bhe@redhat.com>,
-        "kexec\@lists.infradead.org" <kexec@lists.infradead.org>,
-        "linux-kernel\@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "HATAYAMA Daisuke" <d.hatayama@jp.fujitsu.com>,
-        =?utf-8?B?5bmz5p2+6ZuF?=
-         =?utf-8?B?5bezIC8gSElSQU1BVFXvvIxNQVNBTUk=?= 
-        <masami.hiramatsu.pt@hitachi.com>,
-        Daniel Walker <dwalker@fifo99.com>,
-        "Ingo Molnar" <mingo@kernel.org>
-References: <20150724011615.6834.79628.stgit@softrs>
-        <55BF4B1F.9000602@hitachi.com> <877fpcfi2j.fsf@x220.int.ebiederm.org>
-        <04EAB7311EE43145B2D3536183D1A84454926993@GSjpTKYDCembx31.service.hitachi.net>
-Date:   Wed, 05 Aug 2015 12:10:06 -0500
-In-Reply-To: <04EAB7311EE43145B2D3536183D1A84454926993@GSjpTKYDCembx31.service.hitachi.net>
-        (=?utf-8?B?Iuays+WQiOiLseWujw==?= / =?utf-8?Q?KAWAI=EF=BC=8CHIDEHIRO=22's?=
- message of "Tue, 4 Aug 2015 11:41:14
-        +0000")
-Message-ID: <87io8tvez5.fsf@x220.int.ebiederm.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.3 (gnu/linux)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Aug 2015 22:26:18 +0200 (CEST)
+Received: from mail-ig0-f175.google.com ([209.85.213.175]:37772 "EHLO
+        mail-ig0-f175.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012582AbbHEU0P4F6xJ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 5 Aug 2015 22:26:15 +0200
+Received: by igbpg9 with SMTP id pg9so40920077igb.0
+        for <linux-mips@linux-mips.org>; Wed, 05 Aug 2015 13:26:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type;
+        bh=yKkfLTV6edDeY/RBSgi6XFcMCnH3UjwOevX91zgEU8w=;
+        b=e+cbdzDlU5O4nD6VDDwfkMAPG2V/Wgq39IybyAtjk4mssaevCDtiLlwKDNKoj1zFom
+         6fNKz5gmH3a2Gl2MemxLsCzMJfF6FElYrDCCX11iJld6pC8kxSDB2yI0lXOQsKXlczAD
+         pgoUBect2XdwZ7cdJRM7b4C/ug22JOEQTTww2e+tPPm86RVxkr2tI5zwDo7nzSqtte6H
+         SlNnWtSEWkzL9CjCO9xTjRp0sW0dKa8Ve72bYRCpHy5z8LyeL6499KKHs2Y/OIiMmIQZ
+         HQlffbO7vFVk1A932oY/0PJf3v2k/Lyy7Vjms4CFCIJ8rihy9qGlL4l36eCCOa9PwIC/
+         zWuQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type;
+        bh=yKkfLTV6edDeY/RBSgi6XFcMCnH3UjwOevX91zgEU8w=;
+        b=O7OalrVUPEoeA4pphn37fgUswu4riovSrQBs6lPXPpVFxENdrcuSiACfdoOy0emLwl
+         C/3hGFSZB428xD33x1TyF5NteHSuMeGVL6LPGXBJl5fW0DyHZGwIi/aA6Gz50RCLR/md
+         WMWzf8I1bQlA3vN72blD3xgJetybW5fIi8bfs=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:sender:in-reply-to:references:date
+         :message-id:subject:from:to:cc:content-type;
+        bh=yKkfLTV6edDeY/RBSgi6XFcMCnH3UjwOevX91zgEU8w=;
+        b=Tuf0ACpkrCexddn7fGqJY/dwPzV4LHdyipETXSmoNWohEYLIQGhgPAVvzLJQwIrXPY
+         fgDIyuUwCTrdA6XdWlc97zgkdc2GjQHPNaq8D2RjNKjfosqINPC60Ni8GFuL5Pd/TZql
+         4QhO+ZB00/51YhRVMhD2CYz2GuiRvJ2zcoCYPtAaVGEcSMey8pSPrAt3dfUkW7frTaT4
+         QmffyhO/wPgQ1ugJzv8EIQjSlWFxQ46VzHqjxE48AT0Qz9mWhZ02SuaA5hLf6VyvCQrI
+         gtldN1uyEm1jt4hU4I34aCLvrLYUInq+texPgdyCc3bnEM/n0Vc3cR0ZPFk96q72UKmd
+         mfbQ==
+X-Gm-Message-State: ALoCoQmSsAm+t90x00UoDS97Fv3NKB7d1YHCLAzqhten8I/6jrwCKpYEpgWxDxBbIUOIit1SP68H
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8BIT
-X-XM-AID: U2FsdGVkX18RPZC33dA55LTTOfLKiKElNPZ8H7AUiII=
-X-SA-Exim-Connect-IP: 97.119.22.40
-X-SA-Exim-Mail-From: ebiederm@xmission.com
-Subject: Re: [RFC V2 PATCH 0/1] kexec: crash_kexec_post_notifiers boot option related fixes
-X-SA-Exim-Version: 4.2.1 (built Wed, 24 Sep 2014 11:00:52 -0600)
-X-SA-Exim-Scanned: Yes (on in01.mta.xmission.com)
-Return-Path: <ebiederm@xmission.com>
+X-Received: by 10.50.66.197 with SMTP id h5mr1300716igt.81.1438806369775; Wed,
+ 05 Aug 2015 13:26:09 -0700 (PDT)
+Received: by 10.64.60.130 with HTTP; Wed, 5 Aug 2015 13:26:09 -0700 (PDT)
+In-Reply-To: <1438789735-4643-1-git-send-email-james.hogan@imgtec.com>
+References: <1438789735-4643-1-git-send-email-james.hogan@imgtec.com>
+Date:   Wed, 5 Aug 2015 13:26:09 -0700
+X-Google-Sender-Auth: trxKmAXLjteCIDrRIX5RxHvNmlA
+Message-ID: <CAGXu5jJd4EH37B51zxphYkwp6RBOkYuwiGNr7C6nJK2q=JE79A@mail.gmail.com>
+Subject: Re: [PATCH 0/7] test_user_copy improvements
+From:   Kees Cook <keescook@chromium.org>
+To:     James Hogan <james.hogan@imgtec.com>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        Andrew Morton <akpm@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <keescook@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48605
+X-archive-position: 48606
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ebiederm@xmission.com
+X-original-sender: keescook@chromium.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -69,50 +74,55 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-"河合英宏 / KAWAI，HIDEHIRO"  <hidehiro.kawai.ez@hitachi.com> writes:
-
-> Hello,
+On Wed, Aug 5, 2015 at 8:48 AM, James Hogan <james.hogan@imgtec.com> wrote:
+> These patches extend the test_user_copy test module to handle lots more
+> cases of user accessors which architectures can override separately, and
+> in particular those which are important for checking the MIPS Enhanced
+> Virtual Addressing (EVA) implementations, which need to handle
+> overlapping user and kernel address spaces, with special instructions
+> for accessing user address space from kernel mode.
 >
-> Thanks for the reply.
+> - Checking that kernel pointers are accepted when user address limit is
+>   set to KERNEL_DS, as done by the kernel when it internally invokes
+>   system calls with kernel pointers.
+> - Checking of the unchecked accessors (which don't call access_ok()).
+>   Some of the tests are special cased for EVA at the moment which has
+>   stricter hardware guarantees for bad user accesses than other
+>   configurations.
+> - Checking of other sets of user accessors, including the inatomic user
+>   copies, copy_in_user, clear_user, the user string accessors, and the
+>   user checksum functions, all of which need special handling in arch
+>   code with EVA.
 >
->> From: Eric W. Biederman [mailto:ebiederm@xmission.com]
-> [...]
->> A specific hook for a very specific purpose when there is no other way
->> we can consider.
+> Tested on MIPS with and without EVA, and on x86_64.
 >
-> So, is kmsg_dump like feature admissible?
+> James Hogan (7):
+>   test_user_copy: Check legit kernel accesses
+>   test_user_copy: Check unchecked accessors
+>   test_user_copy: Check __clear_user()/clear_user()
+>   test_user_copy: Check __copy_in_user()/copy_in_user()
+>   test_user_copy: Check __copy_{to,from}_user_inatomic()
+>   test_user_copy: Check user string accessors
+>   test_user_copy: Check user checksum functions
 >
->> If you don't have something that generalises well into a general purpose
->> operation that it makes sense for everyone to call you can always use
->> the world's largest aka you can run code before the new kernel starts
->> that is loaded with kexec_load.
+>  lib/test_user_copy.c | 221 +++++++++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 221 insertions(+)
 >
-> One of our purposes, notifying "I'm dying", would be achieved by purgatory
-> code provided by kexec command as I stated before.  Since the way of the
-> notification will differ from each vendor, I think we need to modify
-> the purgatory codes pluggable.  Also, I think we need some parameter
-> passing mechanism to the purgatory code.  For example, passing the panic
-> message via boot parameter to save it to SEL.  Although I'm not sure
-> we can do that (I've not investigated well yet).  Is that acceptable?
+> Cc: Kees Cook <keescook@chromium.org>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
 
-I think the address of panic message is available in crash notes.  If
-not that is very reasonable to add.
+Ooooh! Nice! This is great, thank you. :) Great to hear it helped find
+a bug too. :)
 
-Updating the SEL from purgatory after purgatory has validated the
-checksums of the crash handling code is acceptable.
+I'm wondering if we need to macro-ize any of these. Probably not, but
+it just feels like there's a lot of repeated stuff now. But I think
+it's a bit of an illusion since each test is ever so slightly
+different from the others.
 
-All that is desired is to run as little code as possible in a kernel
-that is known broken.  Once the checksums have verified things in
-purgatory you should be in good shape, and there is no possibility of
-relying on broken infrastructure because that code simply is not present
-in purgatory.
+Acked-by: Kees Cook <keescook@chromium.org>
 
-We already have a few early_printk style drivers in purgatory and I
-don't the code to update the SEL would be much worse.
+-Kees
 
-On the flip side there are enough firmware bugs that I personally would
-not want to rely on firmware code running properly when the machine is
-in a known broken state, so I don't want the SEL update to be
-unconditional.
-
-Eric
+-- 
+Kees Cook
+Chrome OS Security

@@ -1,65 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Oct 2015 16:35:39 +0200 (CEST)
-Received: from youngberry.canonical.com ([91.189.89.112]:60086 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010698AbbJUOfC5Vm31 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 21 Oct 2015 16:35:02 +0200
-Received: from av-217-129-142-138.netvisao.pt ([217.129.142.138] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_128_CBC_SHA1:16)
-        (Exim 4.76)
-        (envelope-from <luis.henriques@canonical.com>)
-        id 1ZouTm-0004OV-KK; Wed, 21 Oct 2015 14:35:02 +0000
-From:   Luis Henriques <luis.henriques@canonical.com>
-To:     Paul Burton <paul.burton@imgtec.com>
-Cc:     Markos Chandras <markos.chandras@imgtec.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Luis Henriques <luis.henriques@canonical.com>,
-        kernel-team@lists.ubuntu.com
-Subject: [3.16.y-ckt stable] Patch "MIPS: CPS: #ifdef on CONFIG_MIPS_MT_SMP rather than CONFIG_MIPS_MT" has been added to staging queue
-Date:   Wed, 21 Oct 2015 15:35:02 +0100
-Message-Id: <1445438102-30928-1-git-send-email-luis.henriques@canonical.com>
-X-Mailer: git-send-email 2.1.4
-X-Extended-Stable: 3.16
-Return-Path: <luis.henriques@canonical.com>
-X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
-X-Orcpt: rfc822;linux-mips@linux-mips.org
-Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49629
-X-ecartis-version: Ecartis v1.0.0
-Sender: linux-mips-bounce@linux-mips.org
-Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: luis.henriques@canonical.com
-Precedence: bulk
-List-help: <mailto:ecartis@linux-mips.org?Subject=help>
-List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
-List-software: Ecartis version 1.0.0
-List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
-X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
-List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
-List-owner: <mailto:ralf@linux-mips.org>
-List-post: <mailto:linux-mips@linux-mips.org>
-List-archive: <http://www.linux-mips.org/archives/linux-mips/>
-X-list: linux-mips
+From: Paul Burton <paul.burton@imgtec.com>
+Date: Wed, 5 Aug 2015 15:42:38 -0700
+Subject: MIPS: CPS: #ifdef on CONFIG_MIPS_MT_SMP rather than CONFIG_MIPS_MT
+Message-ID: <20150805224238.JLbePY4DSdnsM5iIa1AHl3ubCcQwzIjn8epEucI2IXs@z>
 
-This is a note to let you know that I have just added a patch titled
+commit 7a63076d9a31a6c2073da45021eeb4f89d2a8b56 upstream.
 
-    MIPS: CPS: #ifdef on CONFIG_MIPS_MT_SMP rather than CONFIG_MIPS_MT
+The CONFIG_MIPS_MT symbol can be selected by CONFIG_MIPS_VPE_LOADER in
+addition to CONFIG_MIPS_MT_SMP. We only want MT code in the CPS SMP boot
+vector if we're using MT for SMP. Thus switch the config symbol we ifdef
+against to CONFIG_MIPS_MT_SMP.
 
-to the linux-3.16.y-queue branch of the 3.16.y-ckt extended stable tree 
-which can be found at:
+Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+Cc: Markos Chandras <markos.chandras@imgtec.com>
+Cc: James Hogan <james.hogan@imgtec.com>
+Cc: linux-mips@linux-mips.org
+Cc: linux-kernel@vger.kernel.org
+Patchwork: https://patchwork.linux-mips.org/patch/10867/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+[ luis: backported to 3.16: adjusted context ]
+Signed-off-by: Luis Henriques <luis.henriques@canonical.com>
+---
+ arch/mips/kernel/cps-vec.S | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-    http://kernel.ubuntu.com/git/ubuntu/linux.git/log/?h=linux-3.16.y-queue
+diff --git a/arch/mips/kernel/cps-vec.S b/arch/mips/kernel/cps-vec.S
+index acd9bd6daf99..05a96be42075 100644
+--- a/arch/mips/kernel/cps-vec.S
++++ b/arch/mips/kernel/cps-vec.S
+@@ -224,7 +224,7 @@ LEAF(excep_ejtag)
+ 	END(excep_ejtag)
 
-This patch is scheduled to be released in version 3.16.7-ckt19.
+ LEAF(mips_cps_core_init)
+-#ifdef CONFIG_MIPS_MT
++#ifdef CONFIG_MIPS_MT_SMP
+ 	/* Check that the core implements the MT ASE */
+ 	has_mt	t0, 3f
 
-If you, or anyone else, feels it should not be added to this tree, please 
-reply to this email.
+@@ -310,7 +310,7 @@ LEAF(mips_cps_boot_vpes)
 
-For more information about the 3.16.y-ckt tree, see
-https://wiki.ubuntu.com/Kernel/Dev/ExtendedStable
+ 	/* Calculate this VPEs ID. If the core doesn't support MT use 0 */
+ 	li	t9, 0
+-#ifdef CONFIG_MIPS_MT
++#ifdef CONFIG_MIPS_MT_SMP
+ 	has_mt	t6, 1f
 
-Thanks.
--Luis
+ 	/* Find the number of VPEs present in the core */
+@@ -338,7 +338,7 @@ LEAF(mips_cps_boot_vpes)
+ 	lw	t7, COREBOOTCFG_VPECONFIG(t0)
+ 	addu	v0, v0, t7
 
-------
+-#ifdef CONFIG_MIPS_MT
++#ifdef CONFIG_MIPS_MT_SMP
+
+ 	/* If the core doesn't support MT then return */
+ 	bnez	t6, 1f
+@@ -451,7 +451,7 @@ LEAF(mips_cps_boot_vpes)
+
+ 2:	.set	pop
+
+-#endif /* CONFIG_MIPS_MT */
++#endif /* CONFIG_MIPS_MT_SMP */
+
+ 	/* Return */
+ 	jr	ra

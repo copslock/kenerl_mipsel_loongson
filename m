@@ -1,65 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Oct 2015 16:35:59 +0200 (CEST)
-Received: from youngberry.canonical.com ([91.189.89.112]:60082 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010617AbbJUOfCvYMZ1 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 21 Oct 2015 16:35:02 +0200
-Received: from av-217-129-142-138.netvisao.pt ([217.129.142.138] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_128_CBC_SHA1:16)
-        (Exim 4.76)
-        (envelope-from <luis.henriques@canonical.com>)
-        id 1ZouTl-0004Nm-HJ; Wed, 21 Oct 2015 14:35:01 +0000
-From:   Luis Henriques <luis.henriques@canonical.com>
-To:     Paul Burton <paul.burton@imgtec.com>
-Cc:     Markos Chandras <markos.chandras@imgtec.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Luis Henriques <luis.henriques@canonical.com>,
-        kernel-team@lists.ubuntu.com
-Subject: [3.16.y-ckt stable] Patch "MIPS: CPS: Don't include MT code in non-MT kernels." has been added to staging queue
-Date:   Wed, 21 Oct 2015 15:35:00 +0100
-Message-Id: <1445438100-30888-1-git-send-email-luis.henriques@canonical.com>
-X-Mailer: git-send-email 2.1.4
-X-Extended-Stable: 3.16
-Return-Path: <luis.henriques@canonical.com>
-X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
-X-Orcpt: rfc822;linux-mips@linux-mips.org
-Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49630
-X-ecartis-version: Ecartis v1.0.0
-Sender: linux-mips-bounce@linux-mips.org
-Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: luis.henriques@canonical.com
-Precedence: bulk
-List-help: <mailto:ecartis@linux-mips.org?Subject=help>
-List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
-List-software: Ecartis version 1.0.0
-List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
-X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
-List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
-List-owner: <mailto:ralf@linux-mips.org>
-List-post: <mailto:linux-mips@linux-mips.org>
-List-archive: <http://www.linux-mips.org/archives/linux-mips/>
-X-list: linux-mips
+From: Paul Burton <paul.burton@imgtec.com>
+Date: Wed, 5 Aug 2015 15:42:37 -0700
+Subject: MIPS: CPS: Don't include MT code in non-MT kernels.
+Message-ID: <20150805224237.GoEJP2Izvxj-qFVtummKaBEwc4CEu5CvoWLxDOFiP9Q@z>
 
-This is a note to let you know that I have just added a patch titled
+commit a5b0f6db0e6cf6224e50f6585e9c8f0c2d38a8f8 upstream.
 
-    MIPS: CPS: Don't include MT code in non-MT kernels.
+The MT-specific code in mips_cps_boot_vpes can safely be omitted from
+kernels which don't support MT, with the default VPE==0 case being used
+as it would be after the has_mt (Config3.MT) check failed at runtime.
+Discarding the code entirely will save us a few bytes & allow cleaner
+handling of MT ASE instructions by later patches.
 
-to the linux-3.16.y-queue branch of the 3.16.y-ckt extended stable tree 
-which can be found at:
+Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+Cc: Markos Chandras <markos.chandras@imgtec.com>
+Cc: James Hogan <james.hogan@imgtec.com>
+Cc: linux-mips@linux-mips.org
+Cc: linux-kernel@vger.kernel.org
+Patchwork: https://patchwork.linux-mips.org/patch/10866/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+[ luis: backported to 3.16: adjusted context ]
+Signed-off-by: Luis Henriques <luis.henriques@canonical.com>
+---
+ arch/mips/kernel/cps-vec.S | 2 ++
+ 1 file changed, 2 insertions(+)
 
-    http://kernel.ubuntu.com/git/ubuntu/linux.git/log/?h=linux-3.16.y-queue
+diff --git a/arch/mips/kernel/cps-vec.S b/arch/mips/kernel/cps-vec.S
+index 5652af5786ef..acd9bd6daf99 100644
+--- a/arch/mips/kernel/cps-vec.S
++++ b/arch/mips/kernel/cps-vec.S
+@@ -310,6 +310,7 @@ LEAF(mips_cps_boot_vpes)
 
-This patch is scheduled to be released in version 3.16.7-ckt19.
+ 	/* Calculate this VPEs ID. If the core doesn't support MT use 0 */
+ 	li	t9, 0
++#ifdef CONFIG_MIPS_MT
+ 	has_mt	t6, 1f
 
-If you, or anyone else, feels it should not be added to this tree, please 
-reply to this email.
+ 	/* Find the number of VPEs present in the core */
+@@ -329,6 +330,7 @@ LEAF(mips_cps_boot_vpes)
+ 	/* Retrieve the VPE ID from EBase.CPUNum */
+ 	mfc0	t9, $15, 1
+ 	and	t9, t9, t1
++#endif
 
-For more information about the 3.16.y-ckt tree, see
-https://wiki.ubuntu.com/Kernel/Dev/ExtendedStable
-
-Thanks.
--Luis
-
-------
+ 1:	/* Calculate a pointer to this VPEs struct vpe_boot_config */
+ 	li	t1, VPEBOOTCFG_SIZE

@@ -1,41 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Aug 2015 17:51:42 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:27618 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27012456AbbHEPtex6JS0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 5 Aug 2015 17:49:34 +0200
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 83F40CAA3A761;
-        Wed,  5 Aug 2015 16:49:25 +0100 (IST)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Wed, 5 Aug 2015 16:49:28 +0100
-Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
- LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.210.2; Wed, 5 Aug 2015 16:49:27 +0100
-From:   James Hogan <james.hogan@imgtec.com>
-To:     <linux-kernel@vger.kernel.org>
-CC:     <linux-arch@vger.kernel.org>, <linux-mips@linux-mips.org>,
-        James Hogan <james.hogan@imgtec.com>,
-        Kees Cook <keescook@chromium.org>,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 7/7] test_user_copy: Check user checksum functions
-Date:   Wed, 5 Aug 2015 16:48:55 +0100
-Message-ID: <1438789735-4643-8-git-send-email-james.hogan@imgtec.com>
-X-Mailer: git-send-email 2.3.6
-In-Reply-To: <1438789735-4643-1-git-send-email-james.hogan@imgtec.com>
-References: <1438789735-4643-1-git-send-email-james.hogan@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Aug 2015 19:17:00 +0200 (CEST)
+Received: from out02.mta.xmission.com ([166.70.13.232]:37974 "EHLO
+        out02.mta.xmission.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012329AbbHERQ53fgvg convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 5 Aug 2015 19:16:57 +0200
+Received: from in01.mta.xmission.com ([166.70.13.51])
+        by out02.mta.xmission.com with esmtps (TLS1.2:DHE_RSA_AES_128_CBC_SHA1:128)
+        (Exim 4.82)
+        (envelope-from <ebiederm@xmission.com>)
+        id 1ZN2J7-0001bZ-LM; Wed, 05 Aug 2015 11:16:49 -0600
+Received: from 97-119-22-40.omah.qwest.net ([97.119.22.40] helo=x220.int.ebiederm.org.xmission.com)
+        by in01.mta.xmission.com with esmtpsa (TLS1.2:DHE_RSA_AES_128_CBC_SHA1:128)
+        (Exim 4.82)
+        (envelope-from <ebiederm@xmission.com>)
+        id 1ZN2J6-0003Tb-Ai; Wed, 05 Aug 2015 11:16:49 -0600
+From:   ebiederm@xmission.com (Eric W. Biederman)
+To:     =?utf-8?B?5rKz5ZCI6Iux5a6PIC8gS0FXQUnvvIxISURFSElSTw==?= 
+        <hidehiro.kawai.ez@hitachi.com>
+Cc:     Vivek Goyal <vgoyal@redhat.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        "linux-mips\@linux-mips.org" <linux-mips@linux-mips.org>,
+        Baoquan He <bhe@redhat.com>,
+        "kexec\@lists.infradead.org" <kexec@lists.infradead.org>,
+        "linux-kernel\@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "HATAYAMA Daisuke" <d.hatayama@jp.fujitsu.com>,
+        =?utf-8?B?5bmz5p2+6ZuF?=
+         =?utf-8?B?5bezIC8gSElSQU1BVFXvvIxNQVNBTUk=?= 
+        <masami.hiramatsu.pt@hitachi.com>,
+        Daniel Walker <dwalker@fifo99.com>,
+        "Ingo Molnar" <mingo@kernel.org>
+References: <20150724011615.6834.79628.stgit@softrs>
+        <55BF4B1F.9000602@hitachi.com> <877fpcfi2j.fsf@x220.int.ebiederm.org>
+        <04EAB7311EE43145B2D3536183D1A84454926993@GSjpTKYDCembx31.service.hitachi.net>
+Date:   Wed, 05 Aug 2015 12:10:06 -0500
+In-Reply-To: <04EAB7311EE43145B2D3536183D1A84454926993@GSjpTKYDCembx31.service.hitachi.net>
+        (=?utf-8?B?Iuays+WQiOiLseWujw==?= / =?utf-8?Q?KAWAI=EF=BC=8CHIDEHIRO=22's?=
+ message of "Tue, 4 Aug 2015 11:41:14
+        +0000")
+Message-ID: <87io8tvez5.fsf@x220.int.ebiederm.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.3 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.154.110]
-Return-Path: <James.Hogan@imgtec.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8BIT
+X-XM-AID: U2FsdGVkX18RPZC33dA55LTTOfLKiKElNPZ8H7AUiII=
+X-SA-Exim-Connect-IP: 97.119.22.40
+X-SA-Exim-Mail-From: ebiederm@xmission.com
+Subject: Re: [RFC V2 PATCH 0/1] kexec: crash_kexec_post_notifiers boot option related fixes
+X-SA-Exim-Version: 4.2.1 (built Wed, 24 Sep 2014 11:00:52 -0600)
+X-SA-Exim-Scanned: Yes (on in01.mta.xmission.com)
+Return-Path: <ebiederm@xmission.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48604
+X-archive-position: 48605
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: ebiederm@xmission.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,153 +69,50 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add basic success/failure checking of the combined user copy and
-checksum functions which copy data between user and kernel space while
-also checksumming that data. Some architectures have optimised versions
-of these which combine both operations into a single pass.
+"河合英宏 / KAWAI，HIDEHIRO"  <hidehiro.kawai.ez@hitachi.com> writes:
 
-The following cases are checked:
-- csum_partial_copy_from_user() with legitimate user to kernel
-  addresses, illegal all-kernel and reversed addresses (for
-  implementations where this is safe to test, as this function does not
-  perform an access_ok() check), and legitimate all-kernel addresses.
-- csum_and_copy_from_user() with legitimate user to kernel addresses,
-  illegal all-kernel and reversed addresses, and legitimate all-kernel
-  addresses.
-- csum_partial_copy_from_user() with legitimate kernel to user
-  addresses, illegal all-kernel and reversed addresses, and legitimate
-  all-kernel addresses.
+> Hello,
+>
+> Thanks for the reply.
+>
+>> From: Eric W. Biederman [mailto:ebiederm@xmission.com]
+> [...]
+>> A specific hook for a very specific purpose when there is no other way
+>> we can consider.
+>
+> So, is kmsg_dump like feature admissible?
+>
+>> If you don't have something that generalises well into a general purpose
+>> operation that it makes sense for everyone to call you can always use
+>> the world's largest aka you can run code before the new kernel starts
+>> that is loaded with kexec_load.
+>
+> One of our purposes, notifying "I'm dying", would be achieved by purgatory
+> code provided by kexec command as I stated before.  Since the way of the
+> notification will differ from each vendor, I think we need to modify
+> the purgatory codes pluggable.  Also, I think we need some parameter
+> passing mechanism to the purgatory code.  For example, passing the panic
+> message via boot parameter to save it to SEL.  Although I'm not sure
+> we can do that (I've not investigated well yet).  Is that acceptable?
 
-New tests:
-- legitimate csum_and_copy_from_user
-- legitimate csum_and_copy_to_user
-- legitimate csum_partial_copy_from_user
-- illegal all-kernel csum_and_copy_from_user
-- illegal reversed csum_and_copy_from_user
-- illegal all-kernel csum_and_copy_to_user
-- illegal reversed csum_and_copy_to_user
-- illegal all-kernel csum_partial_copy_from_user
-- illegal reversed csum_partial_copy_from_user
-- legitimate kernel csum_and_copy_from_user
-- legitimate kernel csum_and_copy_to_user
-- legitimate kernel csum_partial_copy_from_user
+I think the address of panic message is available in crash notes.  If
+not that is very reasonable to add.
 
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Kees Cook <keescook@chromium.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
----
- lib/test_user_copy.c | 50 ++++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 50 insertions(+)
+Updating the SEL from purgatory after purgatory has validated the
+checksums of the crash handling code is acceptable.
 
-diff --git a/lib/test_user_copy.c b/lib/test_user_copy.c
-index 6d05ec5f6cfa..76e0c1c25cd2 100644
---- a/lib/test_user_copy.c
-+++ b/lib/test_user_copy.c
-@@ -24,6 +24,7 @@
- #include <linux/slab.h>
- #include <linux/uaccess.h>
- #include <linux/vmalloc.h>
-+#include <net/checksum.h>
- 
- #define test(condition, msg)		\
- ({					\
-@@ -41,6 +42,7 @@ static int __init test_user_copy_init(void)
- 	char *bad_usermem;
- 	unsigned long user_addr;
- 	unsigned long value = 0x5A;
-+	int err;
- 	mm_segment_t fs = get_fs();
- 
- 	kmem = kmalloc(PAGE_SIZE * 2, GFP_KERNEL);
-@@ -78,6 +80,12 @@ static int __init test_user_copy_init(void)
- 		    "legitimate strnlen_user failed");
- 	ret |= test(strlen_user(usermem) == 0,
- 		    "legitimate strlen_user failed");
-+	err = 0;
-+	csum_and_copy_from_user(usermem, kmem, PAGE_SIZE, 0, &err);
-+	ret |= test(err, "legitimate csum_and_copy_from_user failed");
-+	err = 0;
-+	csum_and_copy_to_user(kmem, usermem, PAGE_SIZE, 0, &err);
-+	ret |= test(err, "legitimate csum_and_copy_to_user failed");
- 
- 	ret |= test(!access_ok(VERIFY_READ, usermem, PAGE_SIZE * 2),
- 		    "legitimate access_ok VERIFY_READ failed");
-@@ -99,6 +107,9 @@ static int __init test_user_copy_init(void)
- 		    "legitimate __put_user failed");
- 	ret |= test(__clear_user(usermem, PAGE_SIZE) != 0,
- 		    "legitimate __clear_user passed");
-+	err = 0;
-+	csum_partial_copy_from_user(usermem, kmem, PAGE_SIZE, 0, &err);
-+	ret |= test(err, "legitimate csum_partial_copy_from_user failed");
- 
- 	/* Invalid usage: none of these should succeed. */
- 	ret |= test(!copy_from_user(kmem, (char __user *)(kmem + PAGE_SIZE),
-@@ -138,6 +149,22 @@ static int __init test_user_copy_init(void)
- 		    "illegal strnlen_user passed");
- 	ret |= test(strlen_user((char __user *)kmem) != 0,
- 		    "illegal strlen_user passed");
-+	err = 0;
-+	csum_and_copy_from_user((char __user *)(kmem + PAGE_SIZE), kmem,
-+				PAGE_SIZE, 0, &err);
-+	ret |= test(!err, "illegal all-kernel csum_and_copy_from_user passed");
-+	err = 0;
-+	csum_and_copy_from_user((char __user *)kmem, bad_usermem,
-+				PAGE_SIZE, 0, &err);
-+	ret |= test(!err, "illegal reversed csum_and_copy_from_user passed");
-+	err = 0;
-+	csum_and_copy_to_user(kmem, (char __user *)(kmem + PAGE_SIZE),
-+			      PAGE_SIZE, 0, &err);
-+	ret |= test(!err, "illegal all-kernel csum_and_copy_to_user passed");
-+	err = 0;
-+	csum_and_copy_to_user(bad_usermem, (char __user *)kmem, PAGE_SIZE, 0,
-+			      &err);
-+	ret |= test(!err, "illegal reversed csum_and_copy_to_user passed");
- 
- 	/*
- 	 * If unchecked user accesses (__*) on this architecture cannot access
-@@ -192,6 +219,16 @@ static int __init test_user_copy_init(void)
- 		    "illegal __put_user passed");
- 	ret |= test(__clear_user((char __user *)kmem, PAGE_SIZE) != PAGE_SIZE,
- 		    "illegal kernel __clear_user passed");
-+	err = 0;
-+	csum_partial_copy_from_user((char __user *)(kmem + PAGE_SIZE), kmem,
-+				    PAGE_SIZE, 0, &err);
-+	ret |= test(!err,
-+		    "illegal all-kernel csum_partial_copy_from_user passed");
-+	err = 0;
-+	csum_partial_copy_from_user((char __user *)kmem, bad_usermem, PAGE_SIZE,
-+				    0, &err);
-+	ret |= test(!err,
-+		    "illegal reversed csum_partial_copy_from_user passed");
- #endif
- 
- 	/*
-@@ -224,6 +261,14 @@ static int __init test_user_copy_init(void)
- 		    "legitimate kernel strnlen_user failed");
- 	ret |= test(strlen_user((char __user *)kmem) == 0,
- 		    "legitimate kernel strlen_user failed");
-+	err = 0;
-+	csum_and_copy_from_user((char __user *)(kmem + PAGE_SIZE), kmem,
-+				PAGE_SIZE, 0, &err);
-+	ret |= test(err, "legitimate kernel csum_and_copy_from_user failed");
-+	err = 0;
-+	csum_and_copy_to_user(kmem, (char __user *)(kmem + PAGE_SIZE),
-+			      PAGE_SIZE, 0, &err);
-+	ret |= test(err, "legitimate kernel csum_and_copy_to_user failed");
- 
- 	ret |= test(!access_ok(VERIFY_READ, (char __user *)kmem, PAGE_SIZE * 2),
- 		    "legitimate kernel access_ok VERIFY_READ failed");
-@@ -253,6 +298,11 @@ static int __init test_user_copy_init(void)
- 		    "legitimate kernel __put_user failed");
- 	ret |= test(__clear_user((char __user *)kmem, PAGE_SIZE) != 0,
- 		    "legitimate kernel __clear_user failed");
-+	err = 0;
-+	csum_partial_copy_from_user((char __user *)(kmem + PAGE_SIZE), kmem,
-+				    PAGE_SIZE, 0, &err);
-+	ret |= test(err,
-+		    "legitimate kernel csum_partial_copy_from_user failed");
- 
- 	/* Restore previous address limit. */
- 	set_fs(fs);
--- 
-2.3.6
+All that is desired is to run as little code as possible in a kernel
+that is known broken.  Once the checksums have verified things in
+purgatory you should be in good shape, and there is no possibility of
+relying on broken infrastructure because that code simply is not present
+in purgatory.
+
+We already have a few early_printk style drivers in purgatory and I
+don't the code to update the SEL would be much worse.
+
+On the flip side there are enough firmware bugs that I personally would
+not want to rely on firmware code running properly when the machine is
+in a known broken state, so I don't want the SEL update to be
+unconditional.
+
+Eric

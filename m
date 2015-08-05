@@ -1,26 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Aug 2015 17:42:46 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:63381 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Aug 2015 17:43:02 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:27851 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27012327AbbHEPmROzdL0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 5 Aug 2015 17:42:17 +0200
+        with ESMTP id S27012329AbbHEPmVFzb80 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 5 Aug 2015 17:42:21 +0200
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 3557D39385C39;
-        Wed,  5 Aug 2015 16:42:08 +0100 (IST)
+        by Websense Email Security Gateway with ESMTPS id 025B51BBDC06D;
+        Wed,  5 Aug 2015 16:42:12 +0100 (IST)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
  KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Wed, 5 Aug 2015 16:42:11 +0100
+ 14.3.195.1; Wed, 5 Aug 2015 16:42:15 +0100
 Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
  LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.210.2; Wed, 5 Aug 2015 16:42:10 +0100
+ 14.3.210.2; Wed, 5 Aug 2015 16:42:14 +0100
 From:   James Hogan <james.hogan@imgtec.com>
 To:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
 CC:     James Hogan <james.hogan@imgtec.com>,
         Markos Chandras <markos.chandras@imgtec.com>,
         Paul Burton <paul.burton@imgtec.com>,
         "Leonid Yegoshin" <leonid.yegoshin@imgtec.com>
-Subject: [PATCH 2/3] MIPS: uaccess: Take EVA into account in __copy_from_user()
-Date:   Wed, 5 Aug 2015 16:41:38 +0100
-Message-ID: <1438789299-1608-3-git-send-email-james.hogan@imgtec.com>
+Subject: [PATCH 3/3] MIPS: uaccess: Take EVA into account in [__]clear_user
+Date:   Wed, 5 Aug 2015 16:41:39 +0100
+Message-ID: <1438789299-1608-4-git-send-email-james.hogan@imgtec.com>
 X-Mailer: git-send-email 2.3.6
 In-Reply-To: <1438789299-1608-1-git-send-email-james.hogan@imgtec.com>
 References: <1438789299-1608-1-git-send-email-james.hogan@imgtec.com>
@@ -31,7 +31,7 @@ Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48595
+X-archive-position: 48596
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,36 +48,13 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-When EVA is in use, __copy_from_user() was unconditionally using the EVA
-instructions to read the user address space, however this can also be
-used for kernel access. If the address isn't a valid user address it
-will cause an address error or TLB exception, and if it is then user
-memory may be read instead of kernel memory.
+__clear_user() (and clear_user() which uses it), always access the user
+mode address space, which results in EVA store instructions when EVA is
+enabled even if the current user address limit is KERNEL_DS.
 
-For example in the following stack trace from Linux v3.10 (changes since
-then will prevent this particular one still happening) kernel_sendmsg()
-set the user address limit to KERNEL_DS, and tcp_sendmsg() goes on to
-use __copy_from_user() with a kernel address in KSeg0.
-
-[<8002d434>] __copy_fromuser_common+0x10c/0x254
-[<805710e0>] tcp_sendmsg+0x5f4/0xf00
-[<804e8e3c>] sock_sendmsg+0x78/0xa0
-[<804e8f28>] kernel_sendmsg+0x24/0x38
-[<804ee0f8>] sock_no_sendpage+0x70/0x7c
-[<8017c820>] pipe_to_sendpage+0x80/0x98
-[<8017c6b0>] splice_from_pipe_feed+0xa8/0x198
-[<8017cc54>] __splice_from_pipe+0x4c/0x8c
-[<8017e844>] splice_from_pipe+0x58/0x78
-[<8017e884>] generic_splice_sendpage+0x20/0x2c
-[<8017d690>] do_splice_from+0xb4/0x110
-[<8017d710>] direct_splice_actor+0x24/0x30
-[<8017d394>] splice_direct_to_actor+0xd8/0x208
-[<8017d51c>] do_splice_direct+0x58/0x7c
-[<8014eaf4>] do_sendfile+0x1dc/0x39c
-[<8014f82c>] SyS_sendfile+0x90/0xf8
-
-Add the eva_kernel_access() check in __copy_from_user() like the one in
-copy_from_user().
+Fix this by adding a new symbol __bzero_kernel for the normal kernel
+address space bzero in EVA mode, and call that from __clear_user() if
+eva_kernel_access().
 
 Signed-off-by: James Hogan <james.hogan@imgtec.com>
 Cc: Ralf Baechle <ralf@linux-mips.org>
@@ -89,31 +66,86 @@ Cc: linux-mips@linux-mips.org
 I've not Cc'd stable on this patch as eva_kernel_access() was only added
 in 4.2. I'll submit a backport once it is merged.
 ---
- arch/mips/include/asm/uaccess.h | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ arch/mips/include/asm/uaccess.h | 32 ++++++++++++++++++++++----------
+ arch/mips/kernel/mips_ksyms.c   |  2 ++
+ arch/mips/lib/memset.S          |  2 ++
+ 3 files changed, 26 insertions(+), 10 deletions(-)
 
 diff --git a/arch/mips/include/asm/uaccess.h b/arch/mips/include/asm/uaccess.h
-index 3f959c01bfdb..5014e187df23 100644
+index 5014e187df23..2e3b3991cf0b 100644
 --- a/arch/mips/include/asm/uaccess.h
 +++ b/arch/mips/include/asm/uaccess.h
-@@ -1122,9 +1122,15 @@ extern size_t __copy_in_user_eva(void *__to, const void *__from, size_t __n);
- 	__cu_to = (to);							\
- 	__cu_from = (from);						\
- 	__cu_len = (n);							\
--	might_fault();							\
--	__cu_len = __invoke_copy_from_user(__cu_to, __cu_from,		\
--					   __cu_len);			\
-+	if (eva_kernel_access()) {					\
-+		__cu_len = __invoke_copy_from_kernel(__cu_to,		\
-+						     __cu_from,		\
-+						     __cu_len);		\
-+	} else {							\
-+		might_fault();						\
-+		__cu_len = __invoke_copy_from_user(__cu_to, __cu_from,	\
-+						   __cu_len);		\
-+	}								\
- 	__cu_len;							\
- })
+@@ -1235,16 +1235,28 @@ __clear_user(void __user *addr, __kernel_size_t size)
+ {
+ 	__kernel_size_t res;
+ 
+-	might_fault();
+-	__asm__ __volatile__(
+-		"move\t$4, %1\n\t"
+-		"move\t$5, $0\n\t"
+-		"move\t$6, %2\n\t"
+-		__MODULE_JAL(__bzero)
+-		"move\t%0, $6"
+-		: "=r" (res)
+-		: "r" (addr), "r" (size)
+-		: "$4", "$5", "$6", __UA_t0, __UA_t1, "$31");
++	if (eva_kernel_access()) {
++		__asm__ __volatile__(
++			"move\t$4, %1\n\t"
++			"move\t$5, $0\n\t"
++			"move\t$6, %2\n\t"
++			__MODULE_JAL(__bzero_kernel)
++			"move\t%0, $6"
++			: "=r" (res)
++			: "r" (addr), "r" (size)
++			: "$4", "$5", "$6", __UA_t0, __UA_t1, "$31");
++	} else {
++		might_fault();
++		__asm__ __volatile__(
++			"move\t$4, %1\n\t"
++			"move\t$5, $0\n\t"
++			"move\t$6, %2\n\t"
++			__MODULE_JAL(__bzero)
++			"move\t%0, $6"
++			: "=r" (res)
++			: "r" (addr), "r" (size)
++			: "$4", "$5", "$6", __UA_t0, __UA_t1, "$31");
++	}
+ 
+ 	return res;
+ }
+diff --git a/arch/mips/kernel/mips_ksyms.c b/arch/mips/kernel/mips_ksyms.c
+index 291af0b5c482..e2b6ab74643d 100644
+--- a/arch/mips/kernel/mips_ksyms.c
++++ b/arch/mips/kernel/mips_ksyms.c
+@@ -17,6 +17,7 @@
+ #include <asm/fpu.h>
+ #include <asm/msa.h>
+ 
++extern void *__bzero_kernel(void *__s, size_t __count);
+ extern void *__bzero(void *__s, size_t __count);
+ extern long __strncpy_from_kernel_nocheck_asm(char *__to,
+ 					      const char *__from, long __len);
+@@ -64,6 +65,7 @@ EXPORT_SYMBOL(__copy_from_user_eva);
+ EXPORT_SYMBOL(__copy_in_user_eva);
+ EXPORT_SYMBOL(__copy_to_user_eva);
+ EXPORT_SYMBOL(__copy_user_inatomic_eva);
++EXPORT_SYMBOL(__bzero_kernel);
+ #endif
+ EXPORT_SYMBOL(__bzero);
+ EXPORT_SYMBOL(__strncpy_from_kernel_nocheck_asm);
+diff --git a/arch/mips/lib/memset.S b/arch/mips/lib/memset.S
+index b8e63fd00375..8f0019a2e5c8 100644
+--- a/arch/mips/lib/memset.S
++++ b/arch/mips/lib/memset.S
+@@ -283,6 +283,8 @@ LEAF(memset)
+ 1:
+ #ifndef CONFIG_EVA
+ FEXPORT(__bzero)
++#else
++FEXPORT(__bzero_kernel)
+ #endif
+ 	__BUILD_BZERO LEGACY_MODE
  
 -- 
 2.3.6

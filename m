@@ -1,76 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Aug 2015 18:23:26 +0200 (CEST)
-Received: from mail-ig0-f169.google.com ([209.85.213.169]:34593 "EHLO
-        mail-ig0-f169.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012667AbbHFQXYkvmwB (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 6 Aug 2015 18:23:24 +0200
-Received: by igk11 with SMTP id 11so14846254igk.1
-        for <linux-mips@linux-mips.org>; Thu, 06 Aug 2015 09:23:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc:content-type;
-        bh=K2zQktrOnf0983HDbB08wGYRSFSZVotPvOsVzmcUfjk=;
-        b=gTwFTLqNMLx9IlNjHq47yHlGEO7HWTu/kWrW6untnNG+XyDJsq/DLOKiLhIXxDDXzJ
-         kCCkeelcz6M1U4S3Phlp3Xwlb8ra6N2hRo0rtCgXCi/YrxUGWauZwGQZDxeP2USZSXya
-         LK1pbOElyG6InR98+zgv+CLd28eIpmHHy/fZ3IlSkNuzgt+yE824lJaaQcMCfmFMcTcd
-         xxz4TEw2seMxhwvtwsOvFjwRvrrgJ36NPFpR9Yi0VMbPBLfQ6K4/1wmaW5CJZOtKxT0e
-         dm9OgSL4Km32Pv3DL9ducFwiTIqSa2YXmGWHVz6agcNJLwS7BNGaoAMM2dpIFgmkyhI2
-         EcKg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc:content-type;
-        bh=K2zQktrOnf0983HDbB08wGYRSFSZVotPvOsVzmcUfjk=;
-        b=BBZzz2w6A2gXhW414J0tgONi/J5C1zNvwWREkhX3GNTQZcKyXG/yW5n812CSn8Z6bm
-         Zitzu4OcWKtFgvoN0S1C/c/vRPa8DeaL/k574FCWGZhuO0nGig68HsCVDJ7vFCLk7l7F
-         MHNE2c1lMLI3SXnsbRTdWaY7R076Cvhu2rQ+w=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:sender:in-reply-to:references:date
-         :message-id:subject:from:to:cc:content-type;
-        bh=K2zQktrOnf0983HDbB08wGYRSFSZVotPvOsVzmcUfjk=;
-        b=R9ep8LRWISZrsvDnH56gJR+g84A/geiQLCAsSaJM5tI79XnDPvqxzkKqltQDKcjF27
-         9mhgIJRR4RhjuNqBi5LpNqpVZIdzWPVBZFcC7eH47O8Yfd83D6DhCnpjg7XANuVm/WTl
-         CD762p38CosZThcH9ivVWAGzJTz9DJY54MwNvWLR7uImfkHkG5U09WIUXUsqyyarXMhz
-         cnmLJpuijnDNcDYlpyjs4VnaBcZ1J+7VOH4sVyByTFIIcMLmljw5iwJOT14szD5yRjLh
-         Jkpi9nRowLrSjPyAdbkvHryVyi/7isJqPPpvUtKeS3cGgPu71iZz4vh8nS/m1t0runU/
-         uMfg==
-X-Gm-Message-State: ALoCoQkdB/MFvpyJRjGIx8svIKemZQkYI05rL5+rjuGIZd37Vhl8JZxx2p6SthufOIJU2RIRz7JU
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Aug 2015 18:28:54 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:8090 "EHLO
+        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S27012693AbbHFQ2wHnmpY (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 6 Aug 2015 18:28:52 +0200
+Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
+        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id BFF4C41F8E13;
+        Thu,  6 Aug 2015 17:28:46 +0100 (BST)
+Received: from mailapp01.imgtec.com ([10.100.180.241])
+  by imgpgp01.kl.imgtec.org (PGP Universal service);
+  Thu, 06 Aug 2015 17:28:46 +0100
+X-PGP-Universal: processed;
+        by imgpgp01.kl.imgtec.org on Thu, 06 Aug 2015 17:28:46 +0100
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id F21EF8B39FF4;
+        Thu,  6 Aug 2015 17:28:42 +0100 (IST)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Thu, 6 Aug 2015 17:28:46 +0100
+Received: from [192.168.154.110] (192.168.154.110) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Thu, 6 Aug
+ 2015 17:28:45 +0100
+Subject: Re: [PATCH 0/7] test_user_copy improvements
+To:     Kees Cook <keescook@chromium.org>
+References: <1438789735-4643-1-git-send-email-james.hogan@imgtec.com>
+ <CAGXu5jJd4EH37B51zxphYkwp6RBOkYuwiGNr7C6nJK2q=JE79A@mail.gmail.com>
+CC:     LKML <linux-kernel@vger.kernel.org>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        Andrew Morton <akpm@linux-foundation.org>
+From:   James Hogan <james.hogan@imgtec.com>
+X-Enigmail-Draft-Status: N1110
+Message-ID: <55C38B30.5030405@imgtec.com>
+Date:   Thu, 6 Aug 2015 17:28:32 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+ Thunderbird/38.1.0
 MIME-Version: 1.0
-X-Received: by 10.50.138.73 with SMTP id qo9mr4873028igb.64.1438878198876;
- Thu, 06 Aug 2015 09:23:18 -0700 (PDT)
-Received: by 10.64.236.98 with HTTP; Thu, 6 Aug 2015 09:23:18 -0700 (PDT)
-In-Reply-To: <1438868614-7672-3-git-send-email-govindraj.raja@imgtec.com>
-References: <1438868614-7672-1-git-send-email-govindraj.raja@imgtec.com>
-        <1438868614-7672-3-git-send-email-govindraj.raja@imgtec.com>
-Date:   Thu, 6 Aug 2015 09:23:18 -0700
-X-Google-Sender-Auth: Ijye1rTubDR2ZDwzgXizo4Y-qvk
-Message-ID: <CAL1qeaEEndYJc7kVW9hgEZYGnVs8tFBy7y0sObiS8GVj=ta88w@mail.gmail.com>
-Subject: Re: [PATCH 2/6] clk: pistachio: Fix override of clk-pll settings from
- boot loader
-From:   Andrew Bresticker <abrestic@chromium.org>
-To:     Govindraj Raja <govindraj.raja@imgtec.com>
-Cc:     Linux-MIPS <linux-mips@linux-mips.org>, linux-clk@vger.kernel.org,
-        Mike Turquette <mturquette@linaro.org>,
-        Stephen Boyd <sboyd@codeaurora.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Zdenko Pulitika <zdenko.pulitika@imgtec.com>,
-        Kevin Cernekee <cernekee@chromium.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        James Hartley <James.Hartley@imgtec.com>,
-        Damien Horsley <Damien.Horsley@imgtec.com>,
-        James Hogan <James.Hogan@imgtec.com>,
-        Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <abrestic@google.com>
+In-Reply-To: <CAGXu5jJd4EH37B51zxphYkwp6RBOkYuwiGNr7C6nJK2q=JE79A@mail.gmail.com>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature";
+        boundary="pSjgpWuB5QAVeNG7kw5WspEfp6siBa50O"
+X-Originating-IP: [192.168.154.110]
+X-ESG-ENCRYPT-TAG: f107b6f
+Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48689
+X-archive-position: 48690
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: abrestic@chromium.org
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -83,31 +62,98 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Govindraj,
+--pSjgpWuB5QAVeNG7kw5WspEfp6siBa50O
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Aug 6, 2015 at 6:43 AM, Govindraj Raja
-<govindraj.raja@imgtec.com> wrote:
-> From: Zdenko Pulitika <zdenko.pulitika@imgtec.com>
->
-> Pll enable callbacks are overriding PLL mode (int/frac) and
-> Noise reduction (on/off) settings set by the boot loader which
-> results in the incorrect clock rate.
+Hi Kees,
 
-Please be consistent about how "PLL" is written out.  Since it's an
-acronym, it should be in caps.
+On 05/08/15 21:26, Kees Cook wrote:
+> On Wed, Aug 5, 2015 at 8:48 AM, James Hogan <james.hogan@imgtec.com> wr=
+ote:
+>> These patches extend the test_user_copy test module to handle lots mor=
+e
+>> cases of user accessors which architectures can override separately, a=
+nd
+>> in particular those which are important for checking the MIPS Enhanced=
 
-> PLL mode and noise reduction are defined by the DSMPD and DACPD bits
-> of the pll control register. Pll .enable() callbacks enable pll
-> by deasserting all power-down bits of the pll control register,
-> including DSMPD and DACPD bits, which is not necessary since
-> these bits don't actually enable/disable pll.
->
-> This commit fixes the problem by removing DSMPD and DACPD bits
-> from the "pll enable" mask.
->
-> Signed-off-by: Zdenko Pulitika <zdenko.pulitika@imgtec.com>
-> Signed-off-by: Govindraj Raja <govindraj.raja@imgtec.com>
+>> Virtual Addressing (EVA) implementations, which need to handle
+>> overlapping user and kernel address spaces, with special instructions
+>> for accessing user address space from kernel mode.
+>>
+>> - Checking that kernel pointers are accepted when user address limit i=
+s
+>>   set to KERNEL_DS, as done by the kernel when it internally invokes
+>>   system calls with kernel pointers.
+>> - Checking of the unchecked accessors (which don't call access_ok()).
+>>   Some of the tests are special cased for EVA at the moment which has
+>>   stricter hardware guarantees for bad user accesses than other
+>>   configurations.
+>> - Checking of other sets of user accessors, including the inatomic use=
+r
+>>   copies, copy_in_user, clear_user, the user string accessors, and the=
 
-Otherwise,
+>>   user checksum functions, all of which need special handling in arch
+>>   code with EVA.
+>>
+>> Tested on MIPS with and without EVA, and on x86_64.
+>>
+>> James Hogan (7):
+>>   test_user_copy: Check legit kernel accesses
+>>   test_user_copy: Check unchecked accessors
+>>   test_user_copy: Check __clear_user()/clear_user()
+>>   test_user_copy: Check __copy_in_user()/copy_in_user()
+>>   test_user_copy: Check __copy_{to,from}_user_inatomic()
+>>   test_user_copy: Check user string accessors
+>>   test_user_copy: Check user checksum functions
+>>
+>>  lib/test_user_copy.c | 221 ++++++++++++++++++++++++++++++++++++++++++=
++++++++++
+>>  1 file changed, 221 insertions(+)
+>>
+>> Cc: Kees Cook <keescook@chromium.org>
+>> Cc: Andrew Morton <akpm@linux-foundation.org>
+>=20
+> Ooooh! Nice! This is great, thank you. :) Great to hear it helped find
+> a bug too. :)
+>=20
+> I'm wondering if we need to macro-ize any of these. Probably not, but
+> it just feels like there's a lot of repeated stuff now. But I think
+> it's a bit of an illusion since each test is ever so slightly
+> different from the others.
 
-Reviewed-by: Andrew Bresitcker <abrestic@chromium.org>
+Yeh, I wondered that too, but I agree they're all slightly different in
+their requirements so it'd just end up confusing things.
+
+>=20
+> Acked-by: Kees Cook <keescook@chromium.org>
+
+Thanks!
+
+James
+
+
+--pSjgpWuB5QAVeNG7kw5WspEfp6siBa50O
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQIcBAEBAgAGBQJVw4sxAAoJEGwLaZPeOHZ60TYQALZHVpKGUHKd/ATy5gxfqq8+
+DM12XcxjOhP2Adzl8StQ+sF6TSHf5K9fyqul5NLrj5k4Vk9mnITcxJ4BVNTpTurh
+cIuvcrcdunDYOH30mlAAnl2XYULl96Oi94gu0PbMLGNgdTugqJ9s5xP4i2zAKJKv
+GzqzkHnLvrphtZ3FKP4ZF0XXjWmsBBnzBSWcDlgRDfdkx1MiSIBBGUA3yjja39AH
+YM1Zjuo5Dn7A1ABi+fECvofM7C12T1nQiaaxNUwpkYnUZW1S8HS4TVqb+EgAlzL2
+jEZEzo3KzuiKaIqF9IELkEOtMYne/Of6IIXtSDoPiiDaJblBfFU+WtzorV7dttMk
+6h4037fnEPBJHmDHy8hyltmzeMcJFQDSwpIkIgbdahMHPEtXNZbncvD5TaojAixP
+E6KCBsazjUguCGm4sPk3hhTPZTwS5rsK1sA72Zn38J3FHwzoJLYYf9wYih9w162P
+0UImDGAYS/1LIiWIl4aPEjQ1xITlw/IqY7Up8y8Z5LLO0GjXfja8iHr62BpfKAM1
+LqP0N9D+g6S6T5b4vImPHM4lrPh1k9pNVX4IHFjm7bNHMc5BJLaOQvVo06JT4rMv
+hHHnSl6hlzX3EfSXrh2HfSnej01OXur0nOKcNPJSfxMx/pIJs1MejpqfsSx0MgiC
+D6szhs9/VIhNSzWidoeE
+=OHbs
+-----END PGP SIGNATURE-----
+
+--pSjgpWuB5QAVeNG7kw5WspEfp6siBa50O--

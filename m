@@ -1,75 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Aug 2015 18:37:14 +0200 (CEST)
-Received: from mail-ig0-f177.google.com ([209.85.213.177]:35648 "EHLO
-        mail-ig0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012684AbbHFQhLnvX7Y (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 6 Aug 2015 18:37:11 +0200
-Received: by igr7 with SMTP id 7so14795282igr.0
-        for <linux-mips@linux-mips.org>; Thu, 06 Aug 2015 09:37:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc:content-type;
-        bh=7AcY7eb67Klxmu3g83eJ127OWhNiRlw7LBmKfwsMlto=;
-        b=Ep/+YtkA+KUijSYheeKLTBFljEzQKJWQBsykyxKkeef3Nc5mDGPyvjBBzprvpEpOIk
-         O09cDjGtG3R3a3k32EO7KEkBIroJ1mDbaWThGbDu0q1E/1FvNETwQnu8aXFXPD2OuRDf
-         za+k+TrvgsOkann6Uo7XNJniyQiZGUaDIa2L5c40MzeKFYVTrLq2Pdm4hxflua2ndDaH
-         4qQdvZi/4rimUPED+oqpnUF4JySqKxJ1ywbtOGE0pNO091/zpAgYLei5ftcrgXNmatsU
-         deXeFEJjQ54rBavaUY7sgw/osaBy7aTmdEvrWOPeKpUl0AY5UImDysiXlkrp4nlUhFfV
-         AXyw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc:content-type;
-        bh=7AcY7eb67Klxmu3g83eJ127OWhNiRlw7LBmKfwsMlto=;
-        b=Awo6z/UW25Q7j7Wv60vanGm2iMj4iVEhLuDvx00/pSwsbh6H/VLtd4VUjTBqV8Pi3z
-         Vi+fErQmfl/ud5AGgQgFUFN3DKPXSeRB/qY4cAfjSYbdWOsIAxnLcJ2z2MCtFHmqN2Vc
-         QhipDh7B4fvUCsMTkfYgCRGzJSOuBIofPP9FE=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:sender:in-reply-to:references:date
-         :message-id:subject:from:to:cc:content-type;
-        bh=7AcY7eb67Klxmu3g83eJ127OWhNiRlw7LBmKfwsMlto=;
-        b=SOdFY+5idpgtDoTWrObkuTWRB4RyDOmqg5kfhH/ECDJ0Ziprh8YEGojzz0cWCQ7fPJ
-         7kSi8AMOirQ2vDasclrmG/uw4Q2nDrcwU3udS8zxuTF8kcXy93Ct2+2L0ZoFL0nniigH
-         2Amu+kJf7dKKF/Ef0+avGsnC+6WPkA6BdTk4Jo8LgPldKeWsb67sxtOPZnrYH4UraYK9
-         wb0b4mV34eIqrKsLSXAZULFzkuMQu0DHuskJAdQKhaZxvpqNrqGq3oCgMQgueOnlPavh
-         luzF36bN4MoyYVP2HBWt8+n3gLOp1h2csn3CRiiHMNNdPg5rk4I+fIkPagG4JLtGSnyp
-         agQg==
-X-Gm-Message-State: ALoCoQkcJKhsHUc/bGH60+E6KqnFH5D4r0Cpzd2Mcc/BD8H5tgI9+QJHjCXOCB4QEG8RZznKK0An
-MIME-Version: 1.0
-X-Received: by 10.50.138.73 with SMTP id qo9mr4979553igb.64.1438879025967;
- Thu, 06 Aug 2015 09:37:05 -0700 (PDT)
-Received: by 10.64.236.98 with HTTP; Thu, 6 Aug 2015 09:37:05 -0700 (PDT)
-In-Reply-To: <1438868890-7810-1-git-send-email-govindraj.raja@imgtec.com>
-References: <1438868890-7810-1-git-send-email-govindraj.raja@imgtec.com>
-Date:   Thu, 6 Aug 2015 09:37:05 -0700
-X-Google-Sender-Auth: Lxmp2cd49QSW4RQk259JFTJxECI
-Message-ID: <CAL1qeaHLqj+vicU8FbxSnJW81STP4uPbOMnM5m42ecBJu1Vokg@mail.gmail.com>
-Subject: Re: [PATCH 6/6] clk: pistachio: correct critical clock list
-From:   Andrew Bresticker <abrestic@chromium.org>
-To:     Govindraj Raja <govindraj.raja@imgtec.com>
-Cc:     Linux-MIPS <linux-mips@linux-mips.org>, linux-clk@vger.kernel.org,
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Aug 2015 18:50:43 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:40966 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27012684AbbHFQulnvX7Y (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 6 Aug 2015 18:50:41 +0200
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id E63E91D2571E8;
+        Thu,  6 Aug 2015 17:50:32 +0100 (IST)
+Received: from hhmail02.hh.imgtec.org (10.100.10.20) by KLMAIL01.kl.imgtec.org
+ (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Thu, 6 Aug
+ 2015 17:50:35 +0100
+Received: from hhmail02.hh.imgtec.org ([::1]) by hhmail02.hh.imgtec.org
+ ([::1]) with mapi id 14.03.0235.001; Thu, 6 Aug 2015 17:50:35 +0100
+From:   Govindraj Raja <Govindraj.Raja@imgtec.com>
+To:     Andrew Bresticker <abrestic@chromium.org>
+CC:     Linux-MIPS <linux-mips@linux-mips.org>,
+        "linux-clk@vger.kernel.org" <linux-clk@vger.kernel.org>,
         Mike Turquette <mturquette@linaro.org>,
         Stephen Boyd <sboyd@codeaurora.org>,
         Michael Turquette <mturquette@baylibre.com>,
-        Zdenko Pulitika <zdenko.pulitika@imgtec.com>,
+        Zdenko Pulitika <Zdenko.Pulitika@imgtec.com>,
         Kevin Cernekee <cernekee@chromium.org>,
         Ralf Baechle <ralf@linux-mips.org>,
         James Hartley <James.Hartley@imgtec.com>,
         Damien Horsley <Damien.Horsley@imgtec.com>,
         James Hogan <James.Hogan@imgtec.com>,
-        Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>,
-        Ezequiel Garcia <ezequiel.garcia@imgtec.com>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <abrestic@google.com>
+        "Ezequiel Garcia" <ezequiel@vanguardiasur.com.ar>,
+        Ezequiel Garcia <Ezequiel.Garcia@imgtec.com>
+Subject: RE: [PATCH 6/6] clk: pistachio: correct critical clock list
+Thread-Topic: [PATCH 6/6] clk: pistachio: correct critical clock list
+Thread-Index: AQHQ0E6JN63wcJK3mkquGAwJ9h83np3/GuGAgAAUKPA=
+Date:   Thu, 6 Aug 2015 16:50:34 +0000
+Message-ID: <4BF5E8683E87FC4DA89822A5A3EB60CB6F2313@hhmail02.hh.imgtec.org>
+References: <1438868890-7810-1-git-send-email-govindraj.raja@imgtec.com>
+ <CAL1qeaHLqj+vicU8FbxSnJW81STP4uPbOMnM5m42ecBJu1Vokg@mail.gmail.com>
+In-Reply-To: <CAL1qeaHLqj+vicU8FbxSnJW81STP4uPbOMnM5m42ecBJu1Vokg@mail.gmail.com>
+Accept-Language: en-US
+Content-Language: en-AU
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [192.168.167.98]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Return-Path: <Govindraj.Raja@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48693
+X-archive-position: 48694
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: abrestic@chromium.org
+X-original-sender: Govindraj.Raja@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -82,25 +63,29 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Govindraj,
-
-On Thu, Aug 6, 2015 at 6:48 AM, Govindraj Raja
-<govindraj.raja@imgtec.com> wrote:
-> From: "Damien.Horsley" <Damien.Horsley@imgtec.com>
->
-> Current critical clock list for pistachio enables
-> only mips and sys clocks by default but there also
-> other clocks that are not claimed by anyone and
-> needs to be enabled by default.
->
-> This patch updates the critical clocks that needs
-> to enabled by default.
->
-> Add a separate struct to distinguish the critical clocks
-> one is core clock(mips) and others are from periph_clk_*
->
-> Reviewed-by: Andrew Bresticker <abrestic@chromium.org>
-> Signed-off-by: Ezequiel Garcia <ezequiel.garcia@imgtec.com>
-> Signed-off-by: Damien.Horsley <Damien.Horsley@imgtec.com>
-
-Since you're the one sending the patch, you should include your Signed-off-by.
+SGkgQW5kcmV3LA0KDQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IGFicmVz
+dGljQGdvb2dsZS5jb20gW21haWx0bzphYnJlc3RpY0Bnb29nbGUuY29tXSBPbiBCZWhhbGYgT2Yg
+QW5kcmV3DQo+IEJyZXN0aWNrZXINCj4gU2VudDogMDYgQXVndXN0IDIwMTUgMDU6MzcgUE0NCj4g
+VG86IEdvdmluZHJhaiBSYWphDQo+IENjOiBMaW51eC1NSVBTOyBsaW51eC1jbGtAdmdlci5rZXJu
+ZWwub3JnOyBNaWtlIFR1cnF1ZXR0ZTsgU3RlcGhlbiBCb3lkOw0KPiBNaWNoYWVsIFR1cnF1ZXR0
+ZTsgWmRlbmtvIFB1bGl0aWthOyBLZXZpbiBDZXJuZWtlZTsgUmFsZiBCYWVjaGxlOyBKYW1lcyBI
+YXJ0bGV5Ow0KPiBEYW1pZW4gSG9yc2xleTsgSmFtZXMgSG9nYW47IEV6ZXF1aWVsIEdhcmNpYTsg
+RXplcXVpZWwgR2FyY2lhDQo+IFN1YmplY3Q6IFJlOiBbUEFUQ0ggNi82XSBjbGs6IHBpc3RhY2hp
+bzogY29ycmVjdCBjcml0aWNhbCBjbG9jayBsaXN0DQo+IA0KPiBHb3ZpbmRyYWosDQo+IA0KPiBP
+biBUaHUsIEF1ZyA2LCAyMDE1IGF0IDY6NDggQU0sIEdvdmluZHJhaiBSYWphIDxnb3ZpbmRyYWou
+cmFqYUBpbWd0ZWMuY29tPg0KPiB3cm90ZToNCj4gPiBGcm9tOiAiRGFtaWVuLkhvcnNsZXkiIDxE
+YW1pZW4uSG9yc2xleUBpbWd0ZWMuY29tPg0KPiA+DQo+ID4gQ3VycmVudCBjcml0aWNhbCBjbG9j
+ayBsaXN0IGZvciBwaXN0YWNoaW8gZW5hYmxlcyBvbmx5IG1pcHMgYW5kIHN5cw0KPiA+IGNsb2Nr
+cyBieSBkZWZhdWx0IGJ1dCB0aGVyZSBhbHNvIG90aGVyIGNsb2NrcyB0aGF0IGFyZSBub3QgY2xh
+aW1lZCBieQ0KPiA+IGFueW9uZSBhbmQgbmVlZHMgdG8gYmUgZW5hYmxlZCBieSBkZWZhdWx0Lg0K
+PiA+DQo+ID4gVGhpcyBwYXRjaCB1cGRhdGVzIHRoZSBjcml0aWNhbCBjbG9ja3MgdGhhdCBuZWVk
+cyB0byBlbmFibGVkIGJ5DQo+ID4gZGVmYXVsdC4NCj4gPg0KPiA+IEFkZCBhIHNlcGFyYXRlIHN0
+cnVjdCB0byBkaXN0aW5ndWlzaCB0aGUgY3JpdGljYWwgY2xvY2tzIG9uZSBpcyBjb3JlDQo+ID4g
+Y2xvY2sobWlwcykgYW5kIG90aGVycyBhcmUgZnJvbSBwZXJpcGhfY2xrXyoNCj4gPg0KPiA+IFJl
+dmlld2VkLWJ5OiBBbmRyZXcgQnJlc3RpY2tlciA8YWJyZXN0aWNAY2hyb21pdW0ub3JnPg0KPiA+
+IFNpZ25lZC1vZmYtYnk6IEV6ZXF1aWVsIEdhcmNpYSA8ZXplcXVpZWwuZ2FyY2lhQGltZ3RlYy5j
+b20+DQo+ID4gU2lnbmVkLW9mZi1ieTogRGFtaWVuLkhvcnNsZXkgPERhbWllbi5Ib3JzbGV5QGlt
+Z3RlYy5jb20+DQo+IA0KPiBTaW5jZSB5b3UncmUgdGhlIG9uZSBzZW5kaW5nIHRoZSBwYXRjaCwg
+eW91IHNob3VsZCBpbmNsdWRlIHlvdXIgU2lnbmVkLW9mZi1ieS4NCg0KVGhhbmtzIGZvciB0aGUg
+cmV2aWV3LCBJIHdpbGwgZml4IHRoZSBjb21tZW50cyBhbmQgcG9zdCB2Mi4NCg0KLS0NClRoYW5r
+cywNCkdvdmluZHJhai5SDQoNCg==

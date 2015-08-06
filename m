@@ -1,16 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Aug 2015 01:56:14 +0200 (CEST)
-Received: from mail-bn1on0099.outbound.protection.outlook.com ([157.56.110.99]:45312
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Aug 2015 02:00:36 +0200 (CEST)
+Received: from mail-bn1bon0098.outbound.protection.outlook.com ([157.56.111.98]:30037
         "EHLO na01-bn1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27012460AbbHEX4MEvpH1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 6 Aug 2015 01:56:12 +0200
+        id S27012460AbbHFAAe1z-e1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 6 Aug 2015 02:00:34 +0200
+Received: from BY1PR0701MB1722.namprd07.prod.outlook.com (10.162.111.141) by
+ BY1PR0701MB1658.namprd07.prod.outlook.com (10.162.110.20) with Microsoft SMTP
+ Server (TLS) id 15.1.225.19; Thu, 6 Aug 2015 00:00:26 +0000
 Authentication-Results: spf=none (sender IP is )
  smtp.mailfrom=David.Daney@caviumnetworks.com; 
 Received: from dl.caveonetworks.com (64.2.3.194) by
- CY1PR0701MB1725.namprd07.prod.outlook.com (10.163.21.14) with Microsoft SMTP
- Server (TLS) id 15.1.225.19; Wed, 5 Aug 2015 23:56:00 +0000
-Message-ID: <55C2A28C.7000809@caviumnetworks.com>
-Date:   Wed, 5 Aug 2015 16:55:56 -0700
+ BY1PR0701MB1722.namprd07.prod.outlook.com (10.162.111.141) with Microsoft
+ SMTP Server (TLS) id 15.1.225.19; Thu, 6 Aug 2015 00:00:20 +0000
+Message-ID: <55C2A38F.6000708@caviumnetworks.com>
+Date:   Wed, 5 Aug 2015 17:00:15 -0700
 From:   David Daney <ddaney@caviumnetworks.com>
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
 MIME-Version: 1.0
@@ -29,64 +32,64 @@ CC:     <daniel.sanders@imgtec.com>, <linux-mips@linux-mips.org>,
         <luto@amacapital.net>, <dahi@linux.vnet.ibm.com>,
         <markos.chandras@imgtec.com>, <eunb.song@samsung.com>,
         <kumba@gentoo.org>
-Subject: Re: [PATCH v4 3/3] MIPS: set stack/data protection as non-executable
-References: <20150805234348.20722.71740.stgit@ubuntu-yegoshin> <20150805234936.20722.60927.stgit@ubuntu-yegoshin>
-In-Reply-To: <20150805234936.20722.60927.stgit@ubuntu-yegoshin>
+Subject: Re: [PATCH v4 0/3] MIPS executable stack protection
+References: <20150805234348.20722.71740.stgit@ubuntu-yegoshin>
+In-Reply-To: <20150805234348.20722.71740.stgit@ubuntu-yegoshin>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Originating-IP: [64.2.3.194]
-X-ClientProxiedBy: SN2PR07CA009.namprd07.prod.outlook.com (10.255.174.26) To
- CY1PR0701MB1725.namprd07.prod.outlook.com (25.163.21.14)
-X-Microsoft-Exchange-Diagnostics: 1;CY1PR0701MB1725;2:Dp9pcG06iwPKb9q7EVdKf9lt7jQV53k9/VSXrjkjx8e7IY44Cg1YEYWsSLwAjhhp/xNYA+aax0k/JJA/osS8ez8iAoUzpa4s0sXbC7eGfLYRZ2IwM6essegmvtNPs/t+UnwOTLHGpvt98PdrzkJwwhNTx4LM1IPlkh7J+fsTMyU=;3:YoqeXZw20A+unD4aW9MzAvYCG0qkfx1zHciv1YD+wxIvHH9G4B0OZ9gaIosRD7yjYhdNQl5nQYkNMj9xJMEI49uVNA9AoffgTm8YUfvmboBjgnKcpFm16B9+YOHxItEsy2yPEBm1HtDHJl+RI+ypiQ==;25:wv75ZvHS6y68YAhKn1zZFsdL1W9tVbSLYr4NMzyXHHw6gTjYB9sWZ96rghb9Bz1LmbPu1mqzXca4rySqD9rDM9o/c4b0y0wGMf5c4VIrUzOWso87wZzKmyHFPf77E1OheFKvb8RUNFds7muqtJWvyFIPDcUDRuz7AITjDsCTxgco3DuR1bplQx43K2iIImUK0JI+t9ZEK7aSgcrVQDojoP8ec7hYxrmws6xB0QuiX8dkhEKI8h46xo4CM5NdfNeEwGsLdINiAUZLCZuu0tEcZw==
-X-Microsoft-Antispam: UriScan:;BCL:0;PCL:0;RULEID:;SRVR:CY1PR0701MB1725;
-X-Microsoft-Exchange-Diagnostics: 1;CY1PR0701MB1725;20:7u2NfbcRADGyk9n3xPpHvgKsiZ8+eOd0Bw0SG2D/rgZHb8CL382BmxLoF6jEeVf/nq9Fv3OwQOg6WLD+VcBSjleVVQ634k9eB2MVQ/A+LsP8Pvi5lDzq8rrNmmXlf4pLnIIROZVVXg67YyQaajiR5l4zaXP9g8oJEXGQDF1ll4G/D3SvztiD91L3Ukb7HMUE9lgVD7BK6wR2iLbUI2HvRwe7Hh+ZYVW59d7s4m6CYcr986KsSXm55/7OJqwi2AFDfsP3vq1W1KstNQKzaE+mX2OrZXdn3wAANiqPEQgJbyouizBTI3j/ekeQNRyXp3AwEd6O2y5Mn/jO4wS3kNmh0sigMY9VQd8S9dScU3LJ/Z7+k3N+4sYlyBux2mIDILDDv+X7Z5aoFeHgWcRn/l2DP0XrNistwmqrv7ww/UrFLtjQ/jZl3MuFTUSrNBMBoAGnMqzokJbEr5/+EkG6+xP9suPDe8cjdSbTGUulPYieLTW1c43BaEe7Zrr18cOInIm+oN/Ahy8euj48jZJTT/ZwvwSPAJw1iD5NE64ucTpQkkovHDYAbSAlg5Mh3vKOhq9+tt0TcD8fBRy7jmbTu4a0d8XFitrmIE3s51oseBSD6sc=;4:YVNluMLKLEoa7q84iCVAvbp0bLACGvp7oKTD2itLWN71Z8q4LffzLxXYJdvXFFyhDHSno1Ru+pDn9kqOzrmua6Wk+PIibN46+StqrvSqohEXOI2N3SKR151+m3EN09qPbbep+ra4kYUA+bsBXbMQorrclv6qwI6RlmuqzOB7WgSOmL4ci692xhPPZ+ZaX1slMDIKpdY9vTvM5HM2EFSxpY9uHGyeYen7OBvJou46mgjeQe+T+18Bv8aYUCgTSHw+omjaqpM8w1cosPBPVIzlcVMH63XeQHadEHivmiWXn78=
-X-Microsoft-Antispam-PRVS: <CY1PR0701MB172543221B42353F6C3368C49A750@CY1PR0701MB1725.namprd07.prod.outlook.com>
+X-ClientProxiedBy: BLUPR07CA071.namprd07.prod.outlook.com (25.160.24.26) To
+ BY1PR0701MB1722.namprd07.prod.outlook.com (25.162.111.141)
+X-Microsoft-Exchange-Diagnostics: 1;BY1PR0701MB1722;2:YAnmggAG9HS3y0AEnhCj60ypoDxVCoWqEQawlxMyvvjsomOZroP3Nf3tcrao+bdWd7aGXooABsFqjOolPBcyvNnPT+pn6uf1pRrDEUNXITEB5ASD7kwFjBLWAN5UnXKRMZQnxW1QgFAG27aTvzvi0O7gXSTpTAXE+HRIKdFNwhE=;3:lOGQv7AxBUdtxerxkpJAALI9EvCPmCUchHiizNqjOxC8WT+jiF/CvsbnpIV721rBYZZPUzcaEI3/9/xAu+0h+/F7UuI9KlxN7/fE/Gv01L0wysBoTcqOI4iuQS/mW0EQZKGPPsgluTHCaQgFsWZWJQ==;25:II/+zGwj5VrWVhqG/Pj13z5o1nP53gqVNT6Ozho9bnoKJ1nfeLT8xIDDGerr1RtDDm8w87igZydrbf13h6rZc9lgQm99GXHc4yNFLLOe1niNrPmUZuZF9rDMbxrj3S7c3U/YZTL5S/EoqOuC9GoxmTY3WMi63plAecXCvWZigexgGwsgxSKy5srl6fwT9TI1DbWWBzQPFCm232FOoR7zkimW7qteau2UsR1vf81WkQSRNgYiDEf5fagO34kPrRPHTo4syVJ+9kXB3AYEPHWutg==
+X-Microsoft-Antispam: UriScan:;BCL:0;PCL:0;RULEID:;SRVR:BY1PR0701MB1722;UriScan:;BCL:0;PCL:0;RULEID:;SRVR:BY1PR0701MB1658;
+X-Microsoft-Exchange-Diagnostics: 1;BY1PR0701MB1722;20:Jl/1rOjlNZP7ko64tbtOdL+Ocp3MtKdP52tsrpVtaiWVMWON5n3ssim5NkOXDKlFW2TaA2b/EfDSOZvnQrAtN1mFqo3iJA+c2ehxHjLEmZTs0OFE+hgygYHHaG/HEzAMsNscmNL0jtwrYscIOEMYq/hpjugBLM2MB8iQA2zwalUW2Vow57g37NozVp8Ckg/KSC4MiAk99IdLYrVZv56yGEn8cz4WdPP2SKaJbaNrEhParIaaPNzKyyVD/l1uvCp+EjfG+/DL9zq+XNMbsHKfGwsDGKK8UPaQXwKbjyCsKLvtb6saQmzbucp8MHmUzF57H8hTk5gplKj7bW4OgVn5mthjzBxV3CQO/Z3J8H0Ys3NlQ5RkO2k9KK3OiN59GBpLWeF35dtlrO0YRdNDWjM+Hf8kj6Wtx5YLOt9OIx713zAzPVhe2hQ66wIT1B3F25Hc41cVJqW4YfeexXzXBLHZhPgvvewj4YavhGXeK3qx2n1vv5mP67uc1fKPeyRj0Tc7kKKO4n6F3GwQzlCuqOgIiskNkMJdBKIC9xS3VlaSQkiEGTHyU4XCgY6epi4WF4DeCKkOHe0MQRmcp13asKe4QKMg4f1pTvIhlvOgLFBwzwc=;4:qNHCLIDrpwQua0fBkIN4EKbbQlt6zXYKLcW/1tZatuIpzNhk05hVl+8kILnD9DP/YNHzp3VL8rSKzoNSY20TmW4ZvBoSOcS9q7t+BrT6whsxA1jndower01Z4Zsif67/eVpv8k1TTCCGOt9LjQIlUDjjD3BrdHFBa+7HD5SF5ogpHvc86/j+1qV9VhGEynOZ57WO8ffaeh0E+oHktJdpXB8aRogLJArHPXc+O8QncP5kn9q1ywz2S38G7cKNMVhyi60UMMz6E13ylJdyiM3tjlWbbINHhcuJLbTNgLTlNT0=
+X-Microsoft-Antispam-PRVS: <BY1PR0701MB1722AE455172352E81E3746D9A740@BY1PR0701MB1722.namprd07.prod.outlook.com>
 X-Exchange-Antispam-Report-Test: UriScan:;
-X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(601004)(5005006)(3002001);SRVR:CY1PR0701MB1725;BCL:0;PCL:0;RULEID:;SRVR:CY1PR0701MB1725;
-X-Forefront-PRVS: 06592CCE58
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(6009001)(377454003)(24454002)(189002)(479174004)(199003)(5001960100002)(77156002)(110136002)(54356999)(106356001)(65816999)(76176999)(4001540100001)(50986999)(97736004)(36756003)(87266999)(23676002)(92566002)(68736005)(64126003)(4001350100001)(2950100001)(77096005)(5001860100001)(5001830100001)(81156007)(122386002)(64706001)(40100003)(66066001)(69596002)(80316001)(19580405001)(83506001)(65806001)(65956001)(189998001)(105586002)(42186005)(53416004)(47776003)(50466002)(46102003)(101416001)(33656002)(19580395003)(59896002)(62966003)(87976001);DIR:OUT;SFP:1101;SCL:1;SRVR:CY1PR0701MB1725;H:dl.caveonetworks.com;FPR:;SPF:None;PTR:InfoNoRecords;MX:1;A:1;LANG:en;
+X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(601004)(5005006)(3002001);SRVR:BY1PR0701MB1722;BCL:0;PCL:0;RULEID:;SRVR:BY1PR0701MB1722;
+X-Forefront-PRVS: 06607E485E
+X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(6009001)(199003)(479174004)(377454003)(189002)(24454002)(4001350100001)(77156002)(42186005)(64126003)(83506001)(50986999)(5001830100001)(5001860100001)(81156007)(80316001)(97736004)(53416004)(23676002)(65816999)(47776003)(54356999)(4001540100001)(87976001)(64706001)(65806001)(65956001)(101416001)(76176999)(66066001)(87266999)(50466002)(92566002)(77096005)(2950100001)(5001960100002)(69596002)(59896002)(105586002)(106356001)(189998001)(62966003)(36756003)(33656002)(46102003)(40100003)(68736005)(122386002)(110136002);DIR:OUT;SFP:1101;SCL:1;SRVR:BY1PR0701MB1722;H:dl.caveonetworks.com;FPR:;SPF:None;PTR:InfoNoRecords;A:1;MX:1;LANG:en;
 Received-SPF: None (protection.outlook.com: caviumnetworks.com does not
  designate permitted sender hosts)
-X-Microsoft-Exchange-Diagnostics: =?utf-8?B?MTtDWTFQUjA3MDFNQjE3MjU7MjM6NzdyYWNJRk92UllxU2VUN0xCaTlSOG9E?=
- =?utf-8?B?VEpoWWZKWjl6dm00WmN3OHBXZG05WkxLaU9TYVcxWEFUVWx5VytLeFB2YWhk?=
- =?utf-8?B?TGtXRkZqZExKUUIwRElhOVp2djFqOWRMY1YzbjRCYXI0K3QwNWo5ZWFGNFk3?=
- =?utf-8?B?ODZ5aUxVUXNpWHRzcWg1YWY5MmxnckJrTDdJczFZSkk3ckROMG81UGY3S05q?=
- =?utf-8?B?VWRRdEJKNFFsVjNuaFBac3FXYytaSGNrZVM3YmZlb0VjQlRTak94Zm9iQitK?=
- =?utf-8?B?a1JCakhNeWlVR0c5VVFpU1E1emdORkZMUlZHSU4xQjM5czF6U2NEQWtMY09Z?=
- =?utf-8?B?SEJXK1FLTW1jek1IZFBPa0NxUnRSbjVHYzJmY2p6QlNjNldPbUxmZzJsMnda?=
- =?utf-8?B?RWEzN0tab0E0UGtPdjRsSDZhRDV2QWVpdnRWanhGNkQwNzN4OVBiTlRZeEt5?=
- =?utf-8?B?NkdiRUJ5c2c1WTVVZTYyYTJ4Tzl3TjM3cGVLVDVSK2VtVmtqQlZVN2thZDhS?=
- =?utf-8?B?R2Q5eFkreWRUMVJtSzN1dUlnSmJMU0lLZnVvek9MVzRwNzJ2T2p4UUJWZGJC?=
- =?utf-8?B?bFFhdGlGbk1EQ0tkNFFBR3lwUW1FZ2NOc0xlQ1hxcmNySkxQQW1ZZlZuM1ZR?=
- =?utf-8?B?R09lZlZ4cHIvN3o0ZWRUNTFSNWk3OTlDQW50YXlVY0l2RUN0UWVRcE1pVmlY?=
- =?utf-8?B?WFUyMzRuWHhJRFkzSFcyTVI1bzJvaGhPdGNSZ3RUY3YrQUF2UE1yQlM4ajRV?=
- =?utf-8?B?NzN5MjhqcFlURnB5WFlQTDhhdTA2ZXA5YTM5SnVWaUM4TVl5Qy9sRkxzWXNQ?=
- =?utf-8?B?OENpMVpEWGpIb3hsUGZqUmhDUkRSRy9mbDQwcTIySHU1enpMazN2ajkzZTNs?=
- =?utf-8?B?eldTT093TEZ3OUZINmtSM09yb3FZcC9XbkVlZ2E1bC9UcytDLzlOaVpyK2tI?=
- =?utf-8?B?UU0xVEZBekozTVlsUmNxWTM1SzQ3UW1VTUU4QTlDZk5iSUhmZlJ5T2JvaHU0?=
- =?utf-8?B?LzYrMkN6VWpEbjMrczAxSURTNmNaT3ZDeE1yK2lsMUZjenE4Y2NXMW12WE1O?=
- =?utf-8?B?dU5uMHVpejlabXR5QVRsdjJBaEFxYVBFejZLZ2I2d0ZTd1hmTWZzVmluNTJa?=
- =?utf-8?B?SkVHWkljR29ubWhmWkYzK09ySFNYTGF4dHZGaVFPZ3h0ajY2SlBESHAyMDBL?=
- =?utf-8?B?TlZVandUdE9EQ2M5WHZhUjY1R2EyU29kM1lub1JJV0RzMXl2dThNTlV1bHg0?=
- =?utf-8?B?T0U4NGJZZ2czQjczYTJxbXhGSTBraHVIcFU2VmE5eWkxZkFQYmJKNUZzZklP?=
- =?utf-8?B?aHRzQ0xLZ2l4UTlGK1VKMHV0NktWcTYrRFY1M3JHa09Tb3grS1ZGNFlPdW5I?=
- =?utf-8?B?eVFnb2VSeXZuallhMFkvSVo3Q0Q5Rm9EUm9DKzk2T0V1SnhKM3JYNmx5UklI?=
- =?utf-8?B?WkxJRHp5NEtNYXRaSnFnRWdtYlJXajlyTWVuak4xajlrd296V3UyK0FpVVNu?=
- =?utf-8?B?VkJtQzI3MnNQSFhqdmZQaFByeFlGcDV6YTQzNDNVM0NWQmdnYkgySEY4dTYy?=
- =?utf-8?B?SFJOaHVBRXgrTzVpSkJQb3ByUlZDMHk3NldKZFc2YnVSTk5KblJKUmR2QWt0?=
- =?utf-8?B?ZVdiM3RKTjVraFBuaGRjaStLdHVDY3VkN3FtUTNMRGV3d0s2TDAxbTdGWS9V?=
- =?utf-8?B?TitLZkg2RUlpWTluWFlkMnZRVVJ0Y2F0Q0lYU0Z2MFZIOGRleEw0SExIV3hM?=
- =?utf-8?Q?Z0HlQ4FT3qNR5KuST0sivF5X2+ABvcEceCQ8g/8=3D?=
-X-Microsoft-Exchange-Diagnostics: 1;CY1PR0701MB1725;5:3MFHtZt6zKffINYLXHtcUgSWaV4sBUespuK20RDL+HXh0gNJzn+VAXMG6EY59EqyHMqK895JcPTmvRWXSFB/JTTXzWDvTwGbLTuxjqOk75xiPwiqXNgbYxcVR95V1q3OXWNDDbGo1vDkGqW+wK9LYQ==;24:nBh8N81LdlUat3GoiNco7k87xiqKFKOWKbVFBUl+ktoO6qneojRI6DSyKuFs0ey0uL7rfrkTZkJP6fuPFNO9ju24LN5I45UIk54OBWMqqLU=;20:cxAZQJ/ZXYvUwkBdykgiVhRLD58L/FjXw1myhUU3mCSMJF4cqqsdAHCyuLTFRZrHidL22/uFnj6KH9E6rCM01g==
-X-OriginatorOrg: caviumnetworks.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Aug 2015 23:56:00.4142 (UTC)
+X-Microsoft-Exchange-Diagnostics: =?utf-8?B?MTtCWTFQUjA3MDFNQjE3MjI7MjM6c3gxWnk1VG82eVRVTzhZN2V5cW5TR0cv?=
+ =?utf-8?B?U0RpZk5GU3ZaNmo2Wi96ZjBabXRvZFZuTnFOVzg0aW1ZWloxaUMyRlh4Qk1R?=
+ =?utf-8?B?SkRteldyb3FWOHJQNDU2cmRQdWE0UXlHZGdNYUgveHl0cDhIY2loaTBLSE1h?=
+ =?utf-8?B?Z3cwZHgzQkh0SHdUUmRVd1NnT0p3dDRjTDVwRS9wOXRtd1YrTUFWVlBmMXZY?=
+ =?utf-8?B?V0RmT0lReEZlVDRaNjRhOE9sbTRBamRQaXdpZlk0Zy9wdFRpWHhpK3lZbTY5?=
+ =?utf-8?B?cStSTWVFL28rNmpLOFNraUVleUl5N2lLZko1U25JbGk2bW5DcitMU1JXNTdn?=
+ =?utf-8?B?N2ZTYU4rcU03em5lZGtOOEFacTY4UFRBckcwZ3JwZUtCRXp5WHZJWlNtQmVk?=
+ =?utf-8?B?bk5BTnVXRUNjQ1g3aHJlUjBjS3pjTkpPOFZ4aVJSOWJKalg5aVpFTVZHci9a?=
+ =?utf-8?B?V0RJRHZtRWp6L3luVVlFU09xT0VzaVFpVFdybEZMM09XY3RUdmxlQ204bm4y?=
+ =?utf-8?B?N0JGL0x2cDF4TDMvV2tEN3VRQzQ3bWU3NG9yUW1FR1c4QTNuTi9GUVkvdThG?=
+ =?utf-8?B?Ums3bEE1cENrR2Q1KzdOQXBFeld6YnFLaDU4VnBGVERoZXEwNndUdmtVbnYw?=
+ =?utf-8?B?L3FhSEwzSTNZV1M1SG50UjRUeWlPNFlYa3JWdEdEZmtvaXVYVDFnKzQ3WVF4?=
+ =?utf-8?B?ZkNCZTB0NmhkRGlJR1J2emptNWZGaWhaQkNpSzdpa1VQRDNTeldYZm93cXJh?=
+ =?utf-8?B?eGx4RGtZZzc3c2tPaHY0Tk9UZGpWMWJHcWVtWXd4d1FZRXhkaks4RDdVSmsx?=
+ =?utf-8?B?ZnZpNGs4QXN0bzZscVdPVHlNK2JMTit3RDdxSXlPNmlvWkl1TkxaVmd5endp?=
+ =?utf-8?B?a1VZbE9EYUVlWFA0b256Y1A5Rmh4b1phUVpKbTZMb25GL3BLK0Jvckx4STRs?=
+ =?utf-8?B?YmUybWVKbCt4TG1ITkNpQ1BtU2w1dS8vS1ZjMlJvdW1lWlB0djhUR1FYTWhP?=
+ =?utf-8?B?bEoyeXdSN0lBL3J0ZHJKNG1SQTNqY1pRRlovOEZlOUtELzRMdVNIOVJ4RTVB?=
+ =?utf-8?B?eGg4MEdNRDRyUGROOTVyQVJFdllkRGZ6ZXZrWmxYV1hxdjhpeGNwOHdCRDVm?=
+ =?utf-8?B?eXcwbmVFQjVsTi9rSENUVlk2bU9WM0F0NHZhdTZFazVSSWsrbHhVRmlONE1P?=
+ =?utf-8?B?eTk1RVJ1Ly9LamU3OFQ0L3d2aHU4VFhlUExBUTlpVmNkWFNsSGc2bTJEUUxK?=
+ =?utf-8?B?Zko3enRRQ3BlYS9LTFI2cjhEU3lOa0I0MXlUWDZhSWFqQjR5dnBFMkd4VGZo?=
+ =?utf-8?B?SFVMQllabTUrOGZuTHplMXFkZU5sOVFKdDdySVowWWJQV2JrUTYycHY4bHp4?=
+ =?utf-8?B?b3JlOHhhcGlNN0RWb055VEhLbGk2Y3ljbVpyZnpRcUhGQ0R2aHdac1U0UU5t?=
+ =?utf-8?B?VE5YM29WNHg1WHlvRjNXUk9hYkV3RExLVDVKQVlwbmN1bDlQTHZLUnMwSytZ?=
+ =?utf-8?B?RkpwM2tybUQ5aThwL3BCenBFZkkzbzQvRHFreURkMU9EaUNrMHlEMCs3Kzh0?=
+ =?utf-8?B?SGZPQWdGQU9kc0hQVUVFQ0lWSVV5T29lY3lreHNvWGJkMU9PM1lwYlNUUDZ1?=
+ =?utf-8?B?TlVwUVBoNDZsU2FodVlRb0taVCtRdHRVdWZCZXliZStmdE5kT0srcXlUN1dm?=
+ =?utf-8?Q?yoNCae16mGC9hucSoFQYlXiRQ3SamSO2ez5j1Xbv4?=
+X-Microsoft-Exchange-Diagnostics: 1;BY1PR0701MB1722;5:x2SLNXkjjaZKZpaQDIx3hS/nourenYxH3TtCBwt3+T60IAj1Xh3SK9Q6BCsfQS9a4C55qF539J17+Elbqr3BvGJ8hXk3NjSHn9nE2KgAfLU1UHcL0srM3sbcFpHbypcWW+f4+lXg5xoBtuWalwhrsA==;24:/+OICex9n2tGcShpQ4L4bLVrT9ZlvNf6KTNTXpwsrCfYngQXW1eXPyyvMFMMHk/EK/9TW7S/f8G3F37CfBEhXy9zLyK4Jdh9A94obGc5rRM=;20:ZfjK+kKsUcDJNIbZdf91neOAVmowpH0mG1W5KaXCS5q/5nd+6bucWnkTo6CP2ntqL3EshrhaHRCmjRoSleQzmQ==
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Aug 2015 00:00:20.0820 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY1PR0701MB1725
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY1PR0701MB1722
+X-Microsoft-Exchange-Diagnostics: 1;BY1PR0701MB1658;2:3B16xQMceFq+tDBD4/oKSUZcqYpMFLyU/oq7fTHGnxf3wgvjq32YA+ONd/hEM1pecmY6ULIQRCYK2LFbqnszgSuP0rbMcnPQXWZp78QIl1iaPrmSw3FV/aVnjgmfXBd1x829yumV7JUwciR9Ze0fb2g5ALnN6FDLi4zDQicCsvQ=;3:vG5E0bi0ajlZMPVDhkS+RyxCMs1as8xLClxULlWVYI5ELqpVnrxQvI1DcGN7eu8xhcUKjXx64OITiX99m4CUu3m9yuVIbiKgD0Oasj8H+07NJckY5jIx/BsrV31zUZwblIVs/6dMePmGYEgBvSGGFg==;25:SJkQrGLfZ2ltBCBekA+rSrDxaLaBoa1kQ+SMXQnbu0ii27mZPVo/d1usyjgeAPXM0QjH3h6cwH/W98nb0R54OQrMiZDld0PRoXrKy0Fn0aYSrLbCDI9N/aJdymkoWzaoUhUZLgqVzLoSYhq86JRGBhomfjQcIJfnXvdbhzTTXXBNq6lpbTV/Y8jUnWUkPOVWrGd2GfvgAWxdivcKLVWD6d0T4MiS9eQDc9ujcprOaniymAkCsSp+5tOHq5dfbG7zmP5gvNyKuuv9LiOph482gg==;23:pWFcsS84anxCu1vS1ur0eiCfQ/txRSGXE1VwcX6WcXrIbN6egDp/0tXXWvr11coXo4l54vTWGRq3vyqU+IJdCdJOjcRZMHssaam970ZrXvxoeXyu876z+WJaRlulVRtFjjnqW1+jwDcR0gSbb4ruGHKKB9GmqaLLsi55RqDUSg2KpEZTbj2amXv8LW0rrkP0UHdnzvk3/e6ka3pEqPMRCyolLeN4b6xoAOB1BiOIO3uRlXUknWbCoW3nsydGDO4K
+X-OriginatorOrg: caviumnetworks.com
 Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48634
+X-archive-position: 48635
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -104,38 +107,86 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 On 08/05/2015 04:49 PM, Leonid Yegoshin wrote:
-> This is a last step of 3 patches which shift FPU emulation out of
-> stack into protected area. So, it disables a default executable stack.
+> The following series implements an executable stack protection in MIPS.
 >
+> It sets up a per-thread 'VDSO' page and appropriate TLB support.
+> Page is set write-protected from user and is maintained via kernel VA.
+> MIPS FPU emulation is shifted to new page and stack is relieved for
+> execute protection as is as all data pages in default setup during ELF
+> binary initialization.
 
-NAK.
+Does it handle nested emulation?
 
-You cannot change the default.
-
-If you want a non-executable stack, the program has to request it with 
-the proper annotations in its ELF file.
-
-David Daney.
+   1) Emulation started on instruction in main program flow, we are 
+about to re-enter user space..
 
 
-> Additionally, it sets a default data area non-executable protection.
+   2) Asynchronous signal is received.
+
+
+   3) Return to user space.  Where do we go?  Is it the signal handler 
+or the instruction emulation?
+
+If we go to the signal handler and it needs emulation, what happens?
+
+David Daney
+
+
+
+> The real protection is controlled by GLIBC and
+> it can do stack protected now as it is done in other architectures and
+> I learned today that GLIBC team is ready for this.
 >
-> Signed-off-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+> Note: actual execute-protection depends from HW capability, of course.
+>
+> This patch is required for MIPS32/64 R2 emulation on MIPS R6 architecture.
+> Without it 'ssh-keygen' crashes pretty fast on attempt to execute instruction
+> in stack.
+>
+> v2 changes:
+>      - Added an optimization during mmap switch - doesn't switch if the same
+>        thread is rescheduled and other threads don't intervene (Peter Zijlstra)
+>      - Fixed uMIPS support (Paul Burton)
+>      - Added unwinding of VDSO emulation stack at signal handler invocation,
+>        hiding an emulation page (Andy Lutomirski note in other patch comments)
+>
+> V3 change: heavy preemption friendly.
+>
+> V4 changes:
+>      - Fixed bug in supplementary TLB flush (change KVA to user address space)
+>      - Rebased to 4.X kernel
 > ---
->   arch/mips/include/asm/page.h |    2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> diff --git a/arch/mips/include/asm/page.h b/arch/mips/include/asm/page.h
-> index 89dd7fed1a57..0b6cec4a1b80 100644
-> --- a/arch/mips/include/asm/page.h
-> +++ b/arch/mips/include/asm/page.h
-> @@ -228,7 +228,7 @@ extern int __virt_addr_valid(const volatile void *kaddr);
->   #define virt_addr_valid(kaddr)						\
->   	__virt_addr_valid((const volatile void *) (kaddr))
+> Leonid Yegoshin (3):
+>        MIPS: mips_flush_cache_range is added
+>        MIPS: Setup an instruction emulation in VDSO protected page instead of user stack
+>        MIPS: set stack/data protection as non-executable
 >
-> -#define VM_DATA_DEFAULT_FLAGS	(VM_READ | VM_WRITE | VM_EXEC | \
-> +#define VM_DATA_DEFAULT_FLAGS	(VM_READ | VM_WRITE | \
->   				 VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
 >
->   #define UNCAC_ADDR(addr)	((addr) - PAGE_OFFSET + UNCAC_BASE)
+>   arch/mips/include/asm/cacheflush.h    |    3 +
+>   arch/mips/include/asm/fpu_emulator.h  |    2
+>   arch/mips/include/asm/mmu.h           |    3 +
+>   arch/mips/include/asm/page.h          |    2
+>   arch/mips/include/asm/processor.h     |    2
+>   arch/mips/include/asm/switch_to.h     |   14 +++
+>   arch/mips/include/asm/thread_info.h   |    3 +
+>   arch/mips/include/asm/tlbmisc.h       |    1
+>   arch/mips/include/asm/vdso.h          |    3 +
+>   arch/mips/kernel/mips-r2-to-r6-emul.c |   10 +-
+>   arch/mips/kernel/process.c            |    7 ++
+>   arch/mips/kernel/signal.c             |    4 +
+>   arch/mips/kernel/vdso.c               |   44 +++++++++
+>   arch/mips/math-emu/cp1emu.c           |    8 +-
+>   arch/mips/math-emu/dsemul.c           |  154 +++++++++++++++++++++++++++------
+>   arch/mips/mm/c-octeon.c               |    8 ++
+>   arch/mips/mm/c-r3k.c                  |    8 ++
+>   arch/mips/mm/c-r4k.c                  |   43 +++++++++
+>   arch/mips/mm/c-tx39.c                 |    9 ++
+>   arch/mips/mm/cache.c                  |    4 +
+>   arch/mips/mm/fault.c                  |    5 +
+>   arch/mips/mm/tlb-r4k.c                |   42 +++++++++
+>   22 files changed, 343 insertions(+), 36 deletions(-)
+>
+> --
+> Signature
 >

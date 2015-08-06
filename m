@@ -1,51 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Aug 2015 17:02:31 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:6767 "EHLO
-        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27012609AbbHFPCa3cIm8 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 6 Aug 2015 17:02:30 +0200
-Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
-        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id CD0FD41F8E13;
-        Thu,  6 Aug 2015 16:02:24 +0100 (BST)
-Received: from mailapp01.imgtec.com ([10.100.180.242])
-  by imgpgp01.kl.imgtec.org (PGP Universal service);
-  Thu, 06 Aug 2015 16:02:24 +0100
-X-PGP-Universal: processed;
-        by imgpgp01.kl.imgtec.org on Thu, 06 Aug 2015 16:02:24 +0100
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id DC01BAB500817;
-        Thu,  6 Aug 2015 16:02:21 +0100 (IST)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Thu, 6 Aug 2015 16:02:24 +0100
-Received: from [192.168.154.110] (192.168.154.110) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Thu, 6 Aug
- 2015 16:02:23 +0100
-Subject: Re: [PATCH 0/7] test_user_copy improvements
-To:     Andrew Morton <akpm@linux-foundation.org>
-References: <1438789735-4643-1-git-send-email-james.hogan@imgtec.com>
-CC:     <linux-kernel@vger.kernel.org>, <linux-arch@vger.kernel.org>,
-        <linux-mips@linux-mips.org>, Kees Cook <keescook@chromium.org>
-From:   James Hogan <james.hogan@imgtec.com>
-Message-ID: <55C376F3.4070907@imgtec.com>
-Date:   Thu, 6 Aug 2015 16:02:11 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.1.0
-MIME-Version: 1.0
-In-Reply-To: <1438789735-4643-1-git-send-email-james.hogan@imgtec.com>
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature";
-        boundary="jVbHoIG19HtkTtAts8n4SM5ltNSdaPnEj"
-X-Originating-IP: [192.168.154.110]
-X-ESG-ENCRYPT-TAG: e4aa9c8
-Return-Path: <James.Hogan@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Aug 2015 17:51:22 +0200 (CEST)
+Received: from youngberry.canonical.com ([91.189.89.112]:58627 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012635AbbHFPvUTR017 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 6 Aug 2015 17:51:20 +0200
+Received: from 1.general.kamal.us.vpn ([10.172.68.52])
+        by youngberry.canonical.com with esmtpsa (TLS1.0:DHE_RSA_AES_128_CBC_SHA1:16)
+        (Exim 4.76)
+        (envelope-from <kamal@canonical.com>)
+        id 1ZNNRv-00032N-Bl; Thu, 06 Aug 2015 15:51:19 +0000
+Message-ID: <1438876276.12629.5.camel@fourier>
+Subject: Re: [3.19.y-ckt stable] Patch "MIPS: kernel: cps-vec: Replace
+ mips32r2 ISA level with mips64r2" has been added to staging queue
+From:   Kamal Mostafa <kamal@canonical.com>
+To:     Paul Burton <paul.burton@imgtec.com>
+Cc:     Markos Chandras <markos.chandras@imgtec.com>,
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
+        kernel-team@lists.ubuntu.com
+Date:   Thu, 06 Aug 2015 08:51:16 -0700
+In-Reply-To: <20150805224934.GE2057@NP-P-BURTON>
+References: <1438811234-29408-1-git-send-email-kamal@canonical.com>
+         <20150805224934.GE2057@NP-P-BURTON>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.10.4-0ubuntu2 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Return-Path: <kamal@canonical.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48686
+X-archive-position: 48687
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: kamal@canonical.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,84 +45,99 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---jVbHoIG19HtkTtAts8n4SM5ltNSdaPnEj
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: quoted-printable
+On Wed, 2015-08-05 at 15:49 -0700, Paul Burton wrote:
+> On Wed, Aug 05, 2015 at 02:47:14PM -0700, Kamal Mostafa wrote:
+> > This is a note to let you know that I have just added a patch titled
+> >     MIPS: kernel: cps-vec: Replace mips32r2 ISA level with mips64r2
+> > to the linux-3.19.y-queue 
 
-Hi Andrew,
-
-On 05/08/15 16:48, James Hogan wrote:
-> These patches extend the test_user_copy test module to handle lots more=
-
-> cases of user accessors which architectures can override separately, an=
-d
-> in particular those which are important for checking the MIPS Enhanced
-> Virtual Addressing (EVA) implementations, which need to handle
-> overlapping user and kernel address spaces, with special instructions
-> for accessing user address space from kernel mode.
->=20
-> - Checking that kernel pointers are accepted when user address limit is=
-
->   set to KERNEL_DS, as done by the kernel when it internally invokes
->   system calls with kernel pointers.
-> - Checking of the unchecked accessors (which don't call access_ok()).
->   Some of the tests are special cased for EVA at the moment which has
->   stricter hardware guarantees for bad user accesses than other
->   configurations.
-> - Checking of other sets of user accessors, including the inatomic user=
-
->   copies, copy_in_user, clear_user, the user string accessors, and the
->   user checksum functions, all of which need special handling in arch
->   code with EVA.
->=20
-> Tested on MIPS with and without EVA, and on x86_64.
-
-Could you drop these patches for -mm for the moment please. I'll get a
-v2 to fix the build problems out tomorrow now.
-
-Cheers
-James
-
->=20
-> James Hogan (7):
->   test_user_copy: Check legit kernel accesses
->   test_user_copy: Check unchecked accessors
->   test_user_copy: Check __clear_user()/clear_user()
->   test_user_copy: Check __copy_in_user()/copy_in_user()
->   test_user_copy: Check __copy_{to,from}_user_inatomic()
->   test_user_copy: Check user string accessors
->   test_user_copy: Check user checksum functions
->=20
->  lib/test_user_copy.c | 221 +++++++++++++++++++++++++++++++++++++++++++=
-++++++++
->  1 file changed, 221 insertions(+)
->=20
-> Cc: Kees Cook <keescook@chromium.org>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
->=20
+> Hi Kamal,
+> 
+> This patch breaks the boot of SMP kernels on Imagination's current
+> MIPS32 systems. This & the other MIPS64 related patches that were
+> submitted as part of the same series do not improve things for any CPUs
+> that Linux supports even as of the v4.2 cycle, so I do not believe they
+> should have been marked for backport.
+> 
+> So please either drop this patch (& preferrably the other MIPS64 CPS SMP
+> ones too)
 
 
---jVbHoIG19HtkTtAts8n4SM5ltNSdaPnEj
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
+Hi Paul-
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+Thanks for the heads-up!  Please confirm that these are the specific
+commits to be dropped / not-applied to stable:
 
-iQIcBAEBAgAGBQJVw3bzAAoJEGwLaZPeOHZ6eR8P/jQMVAymZRXZWsXolh06E3SX
-fcT96OEuBjA/cHI7SLdTHKo7bhcrjqFLA6fC6jsV/5gMObYC2juEtnXBnObuxEKF
-RBZeihDYmhvYJAlf/l14PtVfcSwlFTmWSJdOsEQMwQqMAtn4gxY9Hmta8IkSXhaF
-RKc/DIdCTfkh2bUNJpxEPTLGhoKM5b1SodEkH9nScuAeZngx/Ge+LT+XIvZ+TU+d
-/9vUVWN4cT6nLcF7d+4SbaCXOL64Xbs+RVCPwGpIy/Joj55C6XZjAb/86feuL+CZ
-6egBQDhr/8NgQWl9p/YyUHSHKyapZj5SUjCgoI3CHuVr1pdXvvRxjq84i/nqvlvq
-0/cHxOYM7Z64qa7oan4NvlUNvGJndbfJ0B08xf5WW76EQIUPHD+ikqCaHZrdaFQV
-qsiknKHGjNhdJ+LPqAcvnqa7vVRp0yTinFYdiABZyyMkXELqMVD8ysEH9sCSJEFV
-EvFwJB7piWsBv5bnEy6Tl2zl5IdNJWG/cCSa3tCHe0dEb8IDFeVM+NyuqOeYvusV
-YiWmSOICgWpAyAzyQWlTieX6z01uLPwUczlweM8TwSyLUPtFt0cw01oQG9FLVUL2
-yG+k32gvnYP42tLLoUUQKOTuxchkXfOfnfWOD+8XAYUncpjjikqhSW0SzqGwJ1jn
-mwRMtK4GnD184uvwhsXt
-=XQs+
------END PGP SIGNATURE-----
+b677bc0 MIPS: cps-vec: Use macros for various arithmetics and memory operations
+717f142 MIPS: kernel: cps-vec: Replace KSEG0 with CKSEG0
+0586ac7 MIPS: kernel: cps-vec: Use ta0-ta3 pseudo-registers for 64-bit
+977e043 MIPS: kernel: cps-vec: Replace mips32r2 ISA level with mips64r2
+81a02e3 MIPS: kernel: cps-vec: Replace 'la' macro with PTR_LA
+fd5ed30 MIPS: kernel: smp-cps: Fix 64-bit compatibility errors due to pointer casting
 
---jVbHoIG19HtkTtAts8n4SM5ltNSdaPnEj--
+ -Kamal
+
+
+>  or also backport the series I've just submitted:
+> 
+>     http://marc.info/?l=linux-mips&m=143881461431570&w=2
+> 
+> My preference would be for not backporting any of them.
+> 
+> Thanks,
+>     Paul
+> 
+> > For more information about the 3.19.y-ckt tree, see
+> > https://wiki.ubuntu.com/Kernel/Dev/ExtendedStable
+> > 
+> > Thanks.
+> > -Kamal
+> > 
+> > ------
+> > 
+> > From 22a7e30c46134b8c9978a237c6d143b59b66609a Mon Sep 17 00:00:00 2001
+> > From: Markos Chandras <markos.chandras@imgtec.com>
+> > Date: Wed, 1 Jul 2015 09:13:30 +0100
+> > Subject: MIPS: kernel: cps-vec: Replace mips32r2 ISA level with mips64r2
+> > 
+> > commit 977e043d5ea1270ce985e4c165724ff91dc3c3e2 upstream.
+> > 
+> > mips32r2 is a subset of mips64r2, so we replace mips32r2 with mips64r2
+> > in preparation for 64-bit CPS support.
+> > 
+> > Reviewed-by: Paul Burton <paul.burton@imgtec.com>
+> > Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+> > Cc: linux-mips@linux-mips.org
+> > Patchwork: https://patchwork.linux-mips.org/patch/10588/
+> > Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+> > Signed-off-by: Kamal Mostafa <kamal@canonical.com>
+> > ---
+> >  arch/mips/kernel/cps-vec.S | 4 ++--
+> >  1 file changed, 2 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/arch/mips/kernel/cps-vec.S b/arch/mips/kernel/cps-vec.S
+> > index a4b2d81..bbbd88e 100644
+> > --- a/arch/mips/kernel/cps-vec.S
+> > +++ b/arch/mips/kernel/cps-vec.S
+> > @@ -229,7 +229,7 @@ LEAF(mips_cps_core_init)
+> >  	 nop
+> > 
+> >  	.set	push
+> > -	.set	mips32r2
+> > +	.set	mips64r2
+> >  	.set	mt
+> > 
+> >  	/* Only allow 1 TC per VPE to execute... */
+> > @@ -346,7 +346,7 @@ LEAF(mips_cps_boot_vpes)
+> >  	 nop
+> > 
+> >  	.set	push
+> > -	.set	mips32r2
+> > +	.set	mips64r2
+> >  	.set	mt
+> > 
+> >  1:	/* Enter VPE configuration state */
+> > --
+> > 1.9.1
+> > 
+> 

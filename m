@@ -1,51 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Aug 2015 18:31:12 +0200 (CEST)
-Received: from mail-io0-f172.google.com ([209.85.223.172]:34887 "EHLO
-        mail-io0-f172.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012684AbbHFQbKEhTZY (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 6 Aug 2015 18:31:10 +0200
-Received: by iodd187 with SMTP id d187so86548706iod.2
-        for <linux-mips@linux-mips.org>; Thu, 06 Aug 2015 09:31:04 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Aug 2015 18:35:38 +0200 (CEST)
+Received: from mail-ig0-f170.google.com ([209.85.213.170]:38478 "EHLO
+        mail-ig0-f170.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012684AbbHFQfgUMsPY (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 6 Aug 2015 18:35:36 +0200
+Received: by iggf3 with SMTP id f3so15156800igg.1
+        for <linux-mips@linux-mips.org>; Thu, 06 Aug 2015 09:35:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20120113;
         h=mime-version:sender:in-reply-to:references:date:message-id:subject
          :from:to:cc:content-type;
-        bh=+NqvHG8dRPfWzEIYuIK5+8vzrDeNUkeN3KlfPKioVEg=;
-        b=On3rkbdQCga5NEPMc5lxPT4c5F9ZXDNrhl4O9V7hicpl+3rrDgwlj3evqbwA75e15y
-         pa8xh1/Ba6LRynaMuZV9OXbQrt79sSXIdYSfiE2zJvN6y/pLc5I3qXFwmx659BK3CAXB
-         cYM4CARLMwYDakhQiJmhHzt7TbVvKhAqrmH5HKd06BebybjFQvAKBgbROU4R/qFudUCl
-         +asm+zqo6/xvbBPc9z2hT+uyk+A3HbxDouFntKzCW0UaXsS96xvLh7GIcm+NsK5ejWAU
-         hUcK4+x9eFcoOXrMF4usn/3WWE+VRwJ/nkcDn9427VJXZdLG3qDz3yRIYLCW1WVn0Qk2
-         l2Dw==
+        bh=xXK7qddqEulsui7HmRcna0irGjW0+Rh83M7SHjXmerM=;
+        b=P9/lHbiNpy2XZgad2nRCBKC6WYUcwF1SMK+s+vtP4ft8cN36Tw2b9mMWHRbrp9bS7t
+         PkPn28vPWL74af76xjPtdKAa/AnSzzblcs978UCVkzJu6LTv+Ucw46kgcH11i2kmeRhX
+         KnyAFiDjI4Gyb3EL2ACkADP3KUy7bZf0Npf2o3eautA+PNDK6d14MeEfH4livQd2lUou
+         WZ/HSoMgQuHHydY3nYxGdogiLBiCyWgPi+G/ghNCp/VdYxC7LSni/PywIKVM3Cc7f5Kz
+         RedCBHcr/NPXJiCG9TSZ5aYHhooNGIAuhcul1fKrU39TwfFdLABU+et9gbg2KaNxLV+r
+         eS9w==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=mime-version:sender:in-reply-to:references:date:message-id:subject
          :from:to:cc:content-type;
-        bh=+NqvHG8dRPfWzEIYuIK5+8vzrDeNUkeN3KlfPKioVEg=;
-        b=WhtO5ooaOLxHbqDiWDuoNxQFBQlGgCgH9C1/JpW6Ge04qqxzdTG8cAFZ1SjcDSpGgf
-         GniENx8O/03HxXrUQKa+YhOPpTc8Tky9EcHaT3GrZewiAH99Y6tepgrY1qtuiFnw4IvL
-         XE9jN708/2iPRyBcMR8YgWA2PJKwwZKQdoSqg=
+        bh=xXK7qddqEulsui7HmRcna0irGjW0+Rh83M7SHjXmerM=;
+        b=NUrPJqUJ9mpU2JFst9lDFesb517+z3EzLS9XdniIbd6SnejrCVJOk7BTynroeCo74U
+         sUMd8zmw/8J3elUzxH7nm4APQ9yfWEVGTVhJx5S+s8GgYwWgMFMH8MdYF6pdm7sJPakM
+         OfJwGIe/8R2syjtX/s8Sre+TUrOA1PAfWLwUU=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:mime-version:sender:in-reply-to:references:date
          :message-id:subject:from:to:cc:content-type;
-        bh=+NqvHG8dRPfWzEIYuIK5+8vzrDeNUkeN3KlfPKioVEg=;
-        b=ka5osxHcZlcsD+7RNg2NmQfBKW3h/9VlHXb+gocb4ry72n0/GTefzUd7lI/HEX7CL/
-         ku+McMBcpxNZ0z9k9oYwfjAIvFzJ1W+Vdh1o9XjkS8XolCxkPjt2UqX7WihadO/iIAmo
-         w7pAOlTP70MYGH3c+hNQEQ3APPEZ3P0KhQaG1ZmyPT7b11Z7DlOlaJWqTQFubxmWiRVS
-         OMIVHIRuFfWGsLI6vMouFKA7wWwipV6DTXpWPpHC66nGi9WDMX8DmQ8sU4qkk3TJjUHV
-         bvU/ZNq8iHlE9PWVDkhqBzZrStAMVQUp22icyV+78Xx/CRi6LkfP6jttBgVbdt654TFq
-         NXmQ==
-X-Gm-Message-State: ALoCoQn//WSLRILddhfasWHmdctlzvMlq4uliseyuIwjTuHur6sXOZF0PKlbZm8GU1DWPeHzRl4x
+        bh=xXK7qddqEulsui7HmRcna0irGjW0+Rh83M7SHjXmerM=;
+        b=X3XN6R24A+FMhYscz1lGgVgHk4IrRbqBiyG9AQp/7L4OR+4mJM6iHubEXSjK+OBhTa
+         /o3CoVATtyVPYo6+mYU80lcUQg1XNNnQvy7q+v/0JBuODS7PhLsRylOQb1zrQxnjfryA
+         wacgP/spKtjYk3eHTjm43mi2aZR8uIVnagEQfztwF1+HcK726zS93doUxFRydUywTVPr
+         J0mH271HkT1TDGyL6kqUr1m2LxutUddCOnTPcvFYYYmVgi9kiM40ezfJXtJ1zHMEHSoD
+         2kXdj8SLfYP9RfWIIDNkKHQzo3Ezn4IYDW7HdEF9E7uDb2f1kbeIR43io93y6IsrziOh
+         0KDQ==
+X-Gm-Message-State: ALoCoQlWb1CXs3GtiI01t3rXALGtvpvzXR4OgMYfEraJ4rLTmLiBOGNN16FtkHBs2DB6BxW3HQdb
 MIME-Version: 1.0
-X-Received: by 10.107.137.195 with SMTP id t64mr1319619ioi.150.1438878664378;
- Thu, 06 Aug 2015 09:31:04 -0700 (PDT)
-Received: by 10.64.236.98 with HTTP; Thu, 6 Aug 2015 09:31:04 -0700 (PDT)
-In-Reply-To: <1438868811-7769-1-git-send-email-govindraj.raja@imgtec.com>
-References: <1438868811-7769-1-git-send-email-govindraj.raja@imgtec.com>
-Date:   Thu, 6 Aug 2015 09:31:04 -0700
-X-Google-Sender-Auth: MBApity2Z7a0J5HDpy3OiB4jqKs
-Message-ID: <CAL1qeaG5+cB1Hw-s-p_9_zM5TK6ZOeNrMP5oAspbrgsY=_V89g@mail.gmail.com>
-Subject: Re: [PATCH 5/6] pistachio: pll: Fix vco calculation in .set_rate (fractional)
+X-Received: by 10.50.138.73 with SMTP id qo9mr4967527igb.64.1438878930629;
+ Thu, 06 Aug 2015 09:35:30 -0700 (PDT)
+Received: by 10.64.236.98 with HTTP; Thu, 6 Aug 2015 09:35:30 -0700 (PDT)
+In-Reply-To: <1438868614-7672-5-git-send-email-govindraj.raja@imgtec.com>
+References: <1438868614-7672-1-git-send-email-govindraj.raja@imgtec.com>
+        <1438868614-7672-5-git-send-email-govindraj.raja@imgtec.com>
+Date:   Thu, 6 Aug 2015 09:35:30 -0700
+X-Google-Sender-Auth: xqq8TuKOFwNxSXdbBW8gz4Z5rR0
+Message-ID: <CAL1qeaG8bP4EKEHONAEpd+8CeNBDs=NPTrPzp8nfAAiV=gGzzA@mail.gmail.com>
+Subject: Re: [PATCH 4/6] clk: pistachio: Set operating mode in .set_rate
 From:   Andrew Bresticker <abrestic@chromium.org>
 To:     Govindraj Raja <govindraj.raja@imgtec.com>
 Cc:     Linux-MIPS <linux-mips@linux-mips.org>, linux-clk@vger.kernel.org,
@@ -64,7 +65,7 @@ Return-Path: <abrestic@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48691
+X-archive-position: 48692
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -83,15 +84,18 @@ X-list: linux-mips
 
 Govindraj,
 
-On Thu, Aug 6, 2015 at 6:46 AM, Govindraj Raja
+On Thu, Aug 6, 2015 at 6:43 AM, Govindraj Raja
 <govindraj.raja@imgtec.com> wrote:
 > From: Zdenko Pulitika <zdenko.pulitika@imgtec.com>
 >
-> Vco was calculated based on the current operating mode which
-> makes no sense because .set_rate is setting operating mode. Instead,
-> vco should be calculated using pll settings that are about to be set.
+> This commit sets operating mode of fractional pll based on
+> the value of the fractional divider. Currently it assumes that
+> the pll will always be configured in fractional mode which may not be
+> the case. This may result in the wrong output frequency.
 >
 > Signed-off-by: Zdenko Pulitika <zdenko.pulitika@imgtec.com>
 > Signed-off-by: Govindraj Raja <govindraj.raja@imgtec.com>
 
-Shouldn't this be squashed with patch 3/6?
+This seems like it should also be squashed with patch 3/6 (i.e. there
+need only be a single patch to add integer-mode support to fractional
+PLLs).

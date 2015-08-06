@@ -1,68 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Aug 2015 11:06:11 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:4653 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27011498AbbHFJGAIx14m convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 6 Aug 2015 11:06:00 +0200
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id D92B6F6B77EC4;
-        Thu,  6 Aug 2015 10:05:51 +0100 (IST)
-Received: from hhmail02.hh.imgtec.org (10.100.10.20) by KLMAIL01.kl.imgtec.org
- (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Thu, 6 Aug
- 2015 10:05:54 +0100
-Received: from hhmail02.hh.imgtec.org ([::1]) by hhmail02.hh.imgtec.org
- ([::1]) with mapi id 14.03.0235.001; Thu, 6 Aug 2015 10:05:53 +0100
-From:   Govindraj Raja <Govindraj.Raja@imgtec.com>
-To:     Shawn Lin <shawn.lin@rock-chips.com>,
-        "jh80.chung@samsung.com" <jh80.chung@samsung.com>,
-        "ulf.hansson@linaro.org" <ulf.hansson@linaro.org>
-CC:     "heiko@sntech.de" <heiko@sntech.de>,
-        "dianders@chromium.org" <dianders@chromium.org>,
-        "Vineet.Gupta1@synopsys.com" <Vineet.Gupta1@synopsys.com>,
-        Wei Xu <xuwei5@hisilicon.com>,
-        Joachim Eastwood <manabian@gmail.com>,
-        Alexey Brodkin <abrodkin@synopsys.com>,
-        Kukjin Kim <kgene@kernel.org>,
-        Krzysztof Kozlowski <k.kozlowski@samsung.com>,
-        "Russell King" <linux@arm.linux.org.uk>,
-        Jun Nie <jun.nie@linaro.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-samsung-soc@vger.kernel.org" 
-        <linux-samsung-soc@vger.kernel.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-rockchip@lists.infradead.org" 
-        <linux-rockchip@lists.infradead.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
-Subject: RE: [RFC PATCH v4 3/9] mips: pistachio_defconfig: remove
- CONFIG_MMC_DW_IDMAC
-Thread-Topic: [RFC PATCH v4 3/9] mips: pistachio_defconfig: remove
- CONFIG_MMC_DW_IDMAC
-Thread-Index: AQHQ0BP2PCCF4JHEHkmAEqxPWqqN2J3+rXJw
-Date:   Thu, 6 Aug 2015 09:05:52 +0000
-Message-ID: <4BF5E8683E87FC4DA89822A5A3EB60CB6F2001@hhmail02.hh.imgtec.org>
-References: <1438843469-23807-1-git-send-email-shawn.lin@rock-chips.com>
- <1438843515-23935-1-git-send-email-shawn.lin@rock-chips.com>
-In-Reply-To: <1438843515-23935-1-git-send-email-shawn.lin@rock-chips.com>
-Accept-Language: en-US
-Content-Language: en-AU
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [192.168.167.98]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Aug 2015 11:50:21 +0200 (CEST)
+Received: from bh-25.webhostbox.net ([208.91.199.152]:40598 "EHLO
+        bh-25.webhostbox.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27011315AbbHFJuURw9-U (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 6 Aug 2015 11:50:20 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=roeck-us.net; s=default;
+        h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date; bh=9cfcp3i06WxSzxr40UfN6GR8nDps0OLZb3kLSYpp8cQ=;
+        b=MvZltvnLefCsmoe/3E4ryo5+hg0l1jr72fxeje8mCaTygxktXbusPkBFD7F1ELrk5fVeOQUNjrzanYLyV3G7wDQb+xJkZx9T1xhn491avvb7neBBjZaKk8kvTrE6BwPszzwYSGfGOK7ERhuM4EuwGxtVdttX/aSVXRwARZ4Z3g4=;
+Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:32933 helo=localhost)
+        by bh-25.webhostbox.net with esmtpa (Exim 4.85)
+        (envelope-from <linux@roeck-us.net>)
+        id 1ZNHoS-000P8D-UY; Thu, 06 Aug 2015 09:50:13 +0000
+Date:   Thu, 6 Aug 2015 02:50:09 -0700
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     James Hogan <james.hogan@imgtec.com>
+Cc:     linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-mips@linux-mips.org, Kees Cook <keescook@chromium.org>,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH 0/7] test_user_copy improvements
+Message-ID: <20150806095009.GA8498@roeck-us.net>
+References: <1438789735-4643-1-git-send-email-james.hogan@imgtec.com>
 MIME-Version: 1.0
-Return-Path: <Govindraj.Raja@imgtec.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1438789735-4643-1-git-send-email-james.hogan@imgtec.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+X-Authenticated_sender: guenter@roeck-us.net
+X-OutGoing-Spam-Status: No, score=-1.0
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - bh-25.webhostbox.net
+X-AntiAbuse: Original Domain - linux-mips.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - roeck-us.net
+X-Get-Message-Sender-Via: bh-25.webhostbox.net: authenticated_id: guenter@roeck-us.net
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+Return-Path: <linux@roeck-us.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48669
+X-archive-position: 48670
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Govindraj.Raja@imgtec.com
+X-original-sender: linux@roeck-us.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -75,38 +56,52 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+Hi James,
 
+On Wed, Aug 05, 2015 at 04:48:48PM +0100, James Hogan wrote:
+> These patches extend the test_user_copy test module to handle lots more
+> cases of user accessors which architectures can override separately, and
+> in particular those which are important for checking the MIPS Enhanced
+> Virtual Addressing (EVA) implementations, which need to handle
+> overlapping user and kernel address spaces, with special instructions
+> for accessing user address space from kernel mode.
+> 
+> - Checking that kernel pointers are accepted when user address limit is
+>   set to KERNEL_DS, as done by the kernel when it internally invokes
+>   system calls with kernel pointers.
+> - Checking of the unchecked accessors (which don't call access_ok()).
+>   Some of the tests are special cased for EVA at the moment which has
+>   stricter hardware guarantees for bad user accesses than other
+>   configurations.
+> - Checking of other sets of user accessors, including the inatomic user
+>   copies, copy_in_user, clear_user, the user string accessors, and the
+>   user checksum functions, all of which need special handling in arch
+>   code with EVA.
+> 
+> Tested on MIPS with and without EVA, and on x86_64.
+> 
+The series causes several build failures with other architectures.
 
-> -----Original Message-----
-> From: Shawn Lin [mailto:shawn.lin@rock-chips.com]
-> Sent: 06 August 2015 07:45 AM
-> To: jh80.chung@samsung.com; ulf.hansson@linaro.org
-> Cc: heiko@sntech.de; dianders@chromium.org; Vineet.Gupta1@synopsys.com;
-> Wei Xu; Joachim Eastwood; Alexey Brodkin; Kukjin Kim; Krzysztof Kozlowski;
-> Russell King; Jun Nie; Ralf Baechle; Govindraj Raja; linux-arm-
-> kernel@lists.infradead.org; linux-samsung-soc@vger.kernel.org; linux-
-> mips@linux-mips.org; linux-mmc@vger.kernel.org; linux-
-> kernel@vger.kernel.org; linux-rockchip@lists.infradead.org;
-> devicetree@vger.kernel.org; Shawn Lin
-> Subject: [RFC PATCH v4 3/9] mips: pistachio_defconfig: remove
-> CONFIG_MMC_DW_IDMAC
-> 
-> DesignWare MMC Controller's transfer mode should be decided at runtime
-> instead of compile-time. So we remove this config option and read dw_mmc's
-> register to select DMA master.
-> 
-> Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
-> ---
-> 
-> Changes in v4: None
-> Changes in v3: None
-> Changes in v2: None
-> 
->  arch/mips/configs/pistachio_defconfig | 1 -
->  1 file changed, 1 deletion(-)
+From next-20150806:
 
-Acked-by: Govindraj Raja <govindraj.raja@imgtec.com>
+Build results:
+	total: 152 pass: 138 fail: 14
+Failed builds:
+	alpha:allmodconfig (*)
+	arm:allmodconfig (*)
+	arm:omap2plus_defconfig
+	arm64:allmodconfig
+	i386:allyesconfig (*)
+	i386:allmodconfig (*)
+	m68k:defconfig (*)
+	m68k:allmodconfig (*)
+	m68k:sun3_defconfig (*)
+	mips:allmodconfig
+	parisc:allmodconfig
+	s390:allmodconfig
+	sparc32:allmodconfig (*)
+	xtensa:allmodconfig (*)
 
---
-Thanks,
-Govindraj.R
+The builds marked with (*) fail because of your patch series.
+
+Guenter

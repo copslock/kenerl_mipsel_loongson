@@ -1,13 +1,13 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Aug 2015 12:43:48 +0200 (CEST)
-Received: from mail.base45.de ([80.241.61.77]:55356 "EHLO mail.base45.de"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Aug 2015 12:44:04 +0200 (CEST)
+Received: from mail.base45.de ([80.241.61.77]:59172 "EHLO mail.base45.de"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27011159AbbHFKnrE1Fof (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 6 Aug 2015 12:43:47 +0200
+        id S27011616AbbHFKnug6GVf (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 6 Aug 2015 12:43:50 +0200
 Received: from [2a02:8109:8c40:8f4:25c6:6559:8c26:7eb] (helo=lazus.fritz.box)
         by mail.base45.de with esmtpsa (TLS1.2:RSA_AES_128_CBC_SHA256:128)
         (Exim 4.82)
         (envelope-from <lynxis@fe80.eu>)
-        id 1ZNIe6-0007Cx-Ho; Thu, 06 Aug 2015 12:43:35 +0200
+        id 1ZNIeC-0007Cx-1y; Thu, 06 Aug 2015 12:43:41 +0200
 From:   Alexander Couzens <lynxis@fe80.eu>
 To:     linux-mips@linux-mips.org
 Cc:     Ralf Baechle <ralf@linux-mips.org>, Alban Bedel <albeu@free.fr>,
@@ -17,15 +17,17 @@ Cc:     Ralf Baechle <ralf@linux-mips.org>, Alban Bedel <albeu@free.fr>,
         Ian Campbell <ijc+devicetree@hellion.org.uk>,
         Kumar Gala <galak@codeaurora.org>, devicetree@vger.kernel.org,
         Alexander Couzens <lynxis@fe80.eu>
-Subject: [PATCH 1/2] MIPS: ath79: set irq ACK handler for ar7100-misc-intc irq chip
-Date:   Thu,  6 Aug 2015 12:43:24 +0200
-Message-Id: <1438857805-18443-1-git-send-email-lynxis@fe80.eu>
+Subject: [PATCH 2/2] MIPS: ath79: add irq chip ar7240-misc-intc
+Date:   Thu,  6 Aug 2015 12:43:25 +0200
+Message-Id: <1438857805-18443-2-git-send-email-lynxis@fe80.eu>
 X-Mailer: git-send-email 2.5.0
+In-Reply-To: <1438857805-18443-1-git-send-email-lynxis@fe80.eu>
+References: <1438857805-18443-1-git-send-email-lynxis@fe80.eu>
 Return-Path: <lynxis@fe80.eu>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48672
+X-archive-position: 48673
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -42,36 +44,74 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+The ar7240 misc irq chip use ack handler instead of ack_mask handler.
+All new ath79 SoCs use the ar7240 misc irq chip
+
 Signed-off-by: Alexander Couzens <lynxis@fe80.eu>
 ---
- arch/mips/ath79/irq.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ .../interrupt-controller/qca,ath79-misc-intc.txt       | 18 +++++++++++++++++-
+ arch/mips/ath79/irq.c                                  |  9 +++++++++
+ 2 files changed, 26 insertions(+), 1 deletion(-)
 
+diff --git a/Documentation/devicetree/bindings/interrupt-controller/qca,ath79-misc-intc.txt b/Documentation/devicetree/bindings/interrupt-controller/qca,ath79-misc-intc.txt
+index 391717a..56ccaf3 100644
+--- a/Documentation/devicetree/bindings/interrupt-controller/qca,ath79-misc-intc.txt
++++ b/Documentation/devicetree/bindings/interrupt-controller/qca,ath79-misc-intc.txt
+@@ -4,7 +4,7 @@ The MISC interrupt controller is a secondary controller for lower priority
+ interrupt.
+ 
+ Required Properties:
+-- compatible: has to be "qca,<soctype>-cpu-intc", "qca,ar7100-misc-intc"
++- compatible: has to be "qca,<soctype>-cpu-intc", "qca,ar{7100,7240}-misc-intc"
+   as fallback
+ - reg: Base address and size of the controllers memory area
+ - interrupt-parent: phandle of the parent interrupt controller.
+@@ -13,6 +13,9 @@ Required Properties:
+ - #interrupt-cells : Specifies the number of cells needed to encode interrupt
+ 		     source, should be 1
+ 
++Compatible fallback depends on the SoC. Use ar7100 for ar71xx and ar913x,
++use ar7240 for all other SoCs.
++
+ Please refer to interrupts.txt in this directory for details of the common
+ Interrupt Controllers bindings used by client devices.
+ 
+@@ -28,3 +31,16 @@ Example:
+ 		interrupt-controller;
+ 		#interrupt-cells = <1>;
+ 	};
++
++Another example:
++
++	interrupt-controller@18060010 {
++		compatible = "qca,ar9331-misc-intc", qca,ar7240-misc-intc";
++		reg = <0x18060010 0x4>;
++
++		interrupt-parent = <&cpuintc>;
++		interrupts = <6>;
++
++		interrupt-controller;
++		#interrupt-cells = <1>;
++	};
 diff --git a/arch/mips/ath79/irq.c b/arch/mips/ath79/irq.c
-index afb0096..dc76fa1 100644
+index dc76fa1..bcb2fb32 100644
 --- a/arch/mips/ath79/irq.c
 +++ b/arch/mips/ath79/irq.c
-@@ -303,13 +303,20 @@ static int __init ath79_misc_intc_of_init(
- 	__raw_writel(0, base + AR71XX_RESET_REG_MISC_INT_ENABLE);
- 	__raw_writel(0, base + AR71XX_RESET_REG_MISC_INT_STATUS);
- 
--
- 	irq_set_chained_handler(irq, ath79_misc_irq_handler);
- 
- 	return 0;
+@@ -315,8 +315,17 @@ static int __init ar7100_misc_intc_of_init(
+ 	return ath79_misc_intc_of_init(node, parent);
  }
--IRQCHIP_DECLARE(ath79_misc_intc, "qca,ar7100-misc-intc",
--		ath79_misc_intc_of_init);
-+
-+static int __init ar7100_misc_intc_of_init(
+ 
++static int __init ar7240_misc_intc_of_init(
 +	struct device_node *node, struct device_node *parent)
 +{
-+	ath79_misc_irq_chip.irq_mask_ack = ar71xx_misc_irq_mask;
++	ath79_misc_irq_chip.irq_ack = ar724x_misc_irq_ack;
 +	return ath79_misc_intc_of_init(node, parent);
 +}
 +
-+IRQCHIP_DECLARE(ar7100_misc_intc, "qca,ar7100-misc-intc",
-+		ar7100_misc_intc_of_init);
+ IRQCHIP_DECLARE(ar7100_misc_intc, "qca,ar7100-misc-intc",
+ 		ar7100_misc_intc_of_init);
++IRQCHIP_DECLARE(ar7240_misc_intc, "qca,ar7240-misc-intc",
++		ar7240_misc_intc_of_init);
  
  static int __init ar79_cpu_intc_of_init(
  	struct device_node *node, struct device_node *parent)

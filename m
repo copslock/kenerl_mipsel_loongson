@@ -1,11 +1,11 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Aug 2015 08:49:04 +0200 (CEST)
-Received: from lucky1.263xmail.com ([211.157.147.131]:50078 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Aug 2015 08:49:21 +0200 (CEST)
+Received: from lucky1.263xmail.com ([211.157.147.133]:35834 "EHLO
         lucky1.263xmail.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27011159AbbHFGsnZi2Qk (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 6 Aug 2015 08:48:43 +0200
-Received: from shawn.lin?rock-chips.com (unknown [192.168.167.87])
-        by lucky1.263xmail.com (Postfix) with SMTP id 0A8AB8581C;
-        Thu,  6 Aug 2015 14:48:40 +0800 (CST)
+        with ESMTP id S27011154AbbHFGtNgRR1k (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 6 Aug 2015 08:49:13 +0200
+Received: from shawn.lin?rock-chips.com (unknown [192.168.167.158])
+        by lucky1.263xmail.com (Postfix) with SMTP id 4D66E4AB7D;
+        Thu,  6 Aug 2015 14:49:08 +0800 (CST)
 X-263anti-spam: KSV:0;
 X-MAIL-GRAY: 1
 X-MAIL-DELIVERY: 0
@@ -13,19 +13,19 @@ X-KSVirus-check: 0
 X-ABS-CHECKED: 4
 X-ADDR-CHECKED: 0
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-        by smtp.263.net (Postfix) with ESMTP id 598D843FB;
-        Thu,  6 Aug 2015 14:48:38 +0800 (CST)
+        by smtp.263.net (Postfix) with ESMTP id 047082A95C;
+        Thu,  6 Aug 2015 14:49:00 +0800 (CST)
 X-RL-SENDER: shawn.lin@rock-chips.com
 X-FST-TO: jh80.chung@samsung.com
 X-SENDER-IP: 58.22.7.114
 X-LOGIN-NAME: shawn.lin@rock-chips.com
-X-UNIQUE-TAG: <ce4e0ca36a91744fed2b6f0be7afdf9d>
+X-UNIQUE-TAG: <20bae4d1f189f540db1dd4bdac8ff107>
 X-ATTACHMENT-NUM: 0
 X-SENDER: lintao@rock-chips.com
 X-DNS-TYPE: 0
 Received: from localhost.localdomain (unknown [58.22.7.114])
-        by smtp.263.net (Postfix) whith ESMTP id 22822FASU1H;
-        Thu, 06 Aug 2015 14:48:40 +0800 (CST)
+        by smtp.263.net (Postfix) whith ESMTP id 22639BEPZIV;
+        Thu, 06 Aug 2015 14:49:04 +0800 (CST)
 From:   Shawn Lin <shawn.lin@rock-chips.com>
 To:     jh80.chung@samsung.com, ulf.hansson@linaro.org
 Cc:     heiko@sntech.de, dianders@chromium.org, Vineet.Gupta1@synopsys.com,
@@ -43,9 +43,9 @@ Cc:     heiko@sntech.de, dianders@chromium.org, Vineet.Gupta1@synopsys.com,
         linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-rockchip@lists.infradead.org, devicetree@vger.kernel.org,
         Shawn Lin <shawn.lin@rock-chips.com>
-Subject: [RFC PATCH v4 3/9] mips: pistachio_defconfig: remove CONFIG_MMC_DW_IDMAC
-Date:   Thu,  6 Aug 2015 14:45:15 +0800
-Message-Id: <1438843515-23935-1-git-send-email-shawn.lin@rock-chips.com>
+Subject: [RFC PATCH v4 5/9] arm: exynos_defconfig: remove CONFIG_MMC_DW_IDMAC
+Date:   Thu,  6 Aug 2015 14:45:39 +0800
+Message-Id: <1438843539-24017-1-git-send-email-shawn.lin@rock-chips.com>
 X-Mailer: git-send-email 1.8.0
 In-Reply-To: <1438843469-23807-1-git-send-email-shawn.lin@rock-chips.com>
 References: <1438843469-23807-1-git-send-email-shawn.lin@rock-chips.com>
@@ -53,7 +53,7 @@ Return-Path: <shawn.lin@rock-chips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48654
+X-archive-position: 48655
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -81,20 +81,20 @@ Changes in v4: None
 Changes in v3: None
 Changes in v2: None
 
- arch/mips/configs/pistachio_defconfig | 1 -
+ arch/arm/configs/exynos_defconfig | 1 -
  1 file changed, 1 deletion(-)
 
-diff --git a/arch/mips/configs/pistachio_defconfig b/arch/mips/configs/pistachio_defconfig
-index 1646cce..013c62c 100644
---- a/arch/mips/configs/pistachio_defconfig
-+++ b/arch/mips/configs/pistachio_defconfig
-@@ -257,7 +257,6 @@ CONFIG_MMC=y
- CONFIG_MMC_BLOCK_MINORS=16
- CONFIG_MMC_TEST=m
+diff --git a/arch/arm/configs/exynos_defconfig b/arch/arm/configs/exynos_defconfig
+index 9504e77..7e4af6e 100644
+--- a/arch/arm/configs/exynos_defconfig
++++ b/arch/arm/configs/exynos_defconfig
+@@ -161,7 +161,6 @@ CONFIG_MMC_SDHCI=y
+ CONFIG_MMC_SDHCI_S3C=y
+ CONFIG_MMC_SDHCI_S3C_DMA=y
  CONFIG_MMC_DW=y
 -CONFIG_MMC_DW_IDMAC=y
- CONFIG_NEW_LEDS=y
- CONFIG_LEDS_CLASS=y
+ CONFIG_MMC_DW_EXYNOS=y
  CONFIG_RTC_CLASS=y
+ CONFIG_RTC_DRV_MAX77686=y
 -- 
 2.3.7

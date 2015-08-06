@@ -1,95 +1,144 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Aug 2015 03:08:12 +0200 (CEST)
-Received: from mail-bl2on0084.outbound.protection.outlook.com ([65.55.169.84]:35376
-        "EHLO na01-bl2-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27012535AbbHFBILAfwSx (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 6 Aug 2015 03:08:11 +0200
-Authentication-Results: spf=none (sender IP is )
- smtp.mailfrom=David.Daney@caviumnetworks.com; 
-Received: from dl.caveonetworks.com (64.2.3.194) by
- BN3PR0701MB1718.namprd07.prod.outlook.com (10.163.39.17) with Microsoft SMTP
- Server (TLS) id 15.1.225.19; Thu, 6 Aug 2015 01:07:59 +0000
-Message-ID: <55C2B36C.20001@caviumnetworks.com>
-Date:   Wed, 5 Aug 2015 18:07:56 -0700
-From:   David Daney <ddaney@caviumnetworks.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
-MIME-Version: 1.0
-To:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-CC:     Paul Burton <paul.burton@imgtec.com>, <daniel.sanders@imgtec.com>,
-        <linux-mips@linux-mips.org>, <cernekee@gmail.com>,
-        <Zubair.Kakakhel@imgtec.com>, <geert+renesas@glider.be>,
-        <david.daney@cavium.com>, <peterz@infradead.org>,
-        <heiko.carstens@de.ibm.com>, <paul.gortmaker@windriver.com>,
-        <behanw@converseincode.com>, <macro@linux-mips.org>,
-        <cl@linux.com>, <pkarat@mvista.com>, <linux@roeck-us.net>,
-        <tkhai@yandex.ru>, <james.hogan@imgtec.com>,
-        <alexinbeijing@gmail.com>, <rusty@rustcorp.com.au>,
-        <Steven.Hill@imgtec.com>, <lars.persson@axis.com>,
-        <aleksey.makarov@auriga.com>, <linux-kernel@vger.kernel.org>,
-        <ralf@linux-mips.org>, <luto@amacapital.net>,
-        <dahi@linux.vnet.ibm.com>, <markos.chandras@imgtec.com>,
-        <eunb.song@samsung.com>, <kumba@gentoo.org>
-Subject: Re: [PATCH v4 3/3] MIPS: set stack/data protection as non-executable
-References: <20150805234348.20722.71740.stgit@ubuntu-yegoshin> <20150805234936.20722.60927.stgit@ubuntu-yegoshin> <20150805235543.GG2057@NP-P-BURTON> <55C2A50A.50805@imgtec.com> <55C2A6FE.1020003@caviumnetworks.com> <55C2A91B.1090704@imgtec.com> <55C2AC5B.50408@caviumnetworks.com> <55C2AE7B.4040805@imgtec.com>
-In-Reply-To: <55C2AE7B.4040805@imgtec.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [64.2.3.194]
-X-ClientProxiedBy: BLUPR07CA080.namprd07.prod.outlook.com (25.160.24.35) To
- BN3PR0701MB1718.namprd07.prod.outlook.com (25.163.39.17)
-X-Microsoft-Exchange-Diagnostics: 1;BN3PR0701MB1718;2:c6O6G86z4yz0V6kDn5/RHfY2/P9dDlNWGpqIb2uaesJH2Jqqo9dw8S3Wbrf9xdIluqusSFxvuT0FHZz2M/7Qp4i2Lo9HCZuCjVeiC/TTKVvw06IXoXY2lvA3ZIlARJ3zRenRtK7T0cGUVIKfkSL4p6ufvKqGYb4s7xEIbRriTf8=;3:nFeoDTIEbqOGklkc9sOclWekmOdaTPMzzPBQvvqLNDUAEgevSkzusBvSN0t6L0BijFh7ajnf0eWWcCveb2KTcwTOrWyYnZEJs/ybdO+SFaEJbZC0OCptZrV3c9aKOkbCe6aP5xrwpqI9R31Zw0CsHw==;25:zdEQgNxUKr74JSillIkb8dTOJxNz0ZqCzrYlWepytorzf4rCcJOsn6tmSqf8CGpY2EvUr2NouFHGIlnCgHz5E8VSDuO+6opl7XYIA//+JOh2u0z8e4GrdC/SJp5d4mh8jqOFmMOGFmcIr4hAf7ummNcAMRiVdH9gqFuwekYRI9PakeyiGJexT3IWov4K48jAbrwbYwc9mh7JSluWzlDYHeuUyjYkkmj4WJ8hGGZ0p3mzH6Yie1s0N3BbIvJttydBKeo05Fv8KAMF3Hq4NzZr3Q==
-X-Microsoft-Antispam: UriScan:;BCL:0;PCL:0;RULEID:;SRVR:BN3PR0701MB1718;
-X-Microsoft-Exchange-Diagnostics: 1;BN3PR0701MB1718;20:g9uTfO9xNNppP7lb8384TUePCeKpsltpz0egGpF9egsZUHMQHdngscqQV7IZiHZX38/0Ojg+mUlzwa7mMcpagCpRQVqePuKA5vD8jVHsjEb94jxLNIS77zMZLcASsIlnih2RPaumggihUeW5IrhWKoEw4/ibg/HfmFqD2I/+025fx9xKmtyLanPHOHzKVpIsiiGJ5VvVpaNE14xxWpUeJCk9PhocgSNj7f7l3SSgiAHh+Tr22HQAMhTPiMPrX0qivrQQwyXqyyLDKEs5jLPboPmEKcZe17604J4kUdDfND+dKM2o54jkuSPCnbcvnK0N9eHjOt//OYFBPdm+pqwaR1lQaEG0dveXzo4VaM00fyy31sIY7iZbiw2/3flk6czv9TesUCqAOOM2aIoJBBDtOFN5T6TbUOoZdPU7RvkgK5LQ1nrVzr6cnqFu/tyC7G59w7B8KMGBuIo4v5pPqtsH3RJywyQTGU4h35ucD6vDYTr+7jVM/oKeXRKbiMwzNIx0FfpBqICb+37faVZbG2rK9zKkHOTaBJGijFFkHEGkXmTS3jWiFMwNd3PxYSb+OHnY4cgeyQdt8MRne2CoKAtqQ7cDHO/U945AicJRJxITAjA=;4:caDV/RseOomGmZXcDZEBWI1XUValSrRzoYUvPHiiXiC0CrPFDKFrHuL68jxbjlSho+SFjhhuJ5zNFKgQr5vNJ+qlDtgfeFy6ey9oIDQBfG0qGBdREZHf9btnS/LaMoHj05AyV4r6fYiL7+lSiI3gpQif0jL8RJTdWZDn1Zee62wsYkG8ZmohyZSAUorXzsDF4b7LbyghOwaUwv4HTk4lGVs7f5S/8PGlzI0/iMhH7Q7dd8OD+SjXX6SPDtaWd4pUAqcvDmx6QEsQDl4v4dg99VtGl2Tf+s4Q93w2aGsLxYY=
-X-Microsoft-Antispam-PRVS: <BN3PR0701MB17181333D1C3E401BA24C1979A740@BN3PR0701MB1718.namprd07.prod.outlook.com>
-X-Exchange-Antispam-Report-Test: UriScan:;
-X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(601004)(5005006)(3002001);SRVR:BN3PR0701MB1718;BCL:0;PCL:0;RULEID:;SRVR:BN3PR0701MB1718;
-X-Forefront-PRVS: 06607E485E
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(6009001)(24454002)(189002)(199003)(479174004)(377454003)(69596002)(83506001)(47776003)(19580395003)(64706001)(50466002)(65806001)(65956001)(5001860100001)(5001830100001)(81156007)(66066001)(4001540100001)(4001350100001)(97736004)(87976001)(77156002)(62966003)(33656002)(77096005)(64126003)(68736005)(2950100001)(50986999)(76176999)(54356999)(101416001)(65816999)(93886004)(189998001)(46102003)(23676002)(42186005)(5001960100002)(92566002)(53416004)(40100003)(105586002)(106356001)(122386002)(110136002)(36756003);DIR:OUT;SFP:1101;SCL:1;SRVR:BN3PR0701MB1718;H:dl.caveonetworks.com;FPR:;SPF:None;PTR:InfoNoRecords;MX:1;A:1;LANG:en;
-Received-SPF: None (protection.outlook.com: caviumnetworks.com does not
- designate permitted sender hosts)
-X-Microsoft-Exchange-Diagnostics: =?utf-8?B?MTtCTjNQUjA3MDFNQjE3MTg7MjM6WWd5K0dDM2t3d3JTZXdqODBpY3RYa3hP?=
- =?utf-8?B?aFZ3NFl0YkdpbHFER3hZV05VYjRZV0Q1MWh1NE13cHplcmoxd2hpTUtQaFpM?=
- =?utf-8?B?NnRtWEZFVk1wSXZUYUlGU1piOUhTSkNWQ0xNcWhGTWV3UnE3eTJiM01TUWto?=
- =?utf-8?B?b3R4M0NXUkkzOVpJVXlrZkluRXJSMDQvaktkNGNMcTEycHl5VHRTdWRiU3pG?=
- =?utf-8?B?bXk3M1FvN2hSY0MzQS9BOEtTb0hNcFd3RjMyTW44anVQK3ZxbzJ6MXlTUTZJ?=
- =?utf-8?B?N3dFUUtoUkIzNUg3OGlMTnA4ZFVXQnVPSFR2R0pCdWhNaE00VnkraXc4aVBv?=
- =?utf-8?B?Zk45L0tQN053dnA1a0hCSGd1YitYU3YxUXNyVXNFWkFoU0FlRldYWCtZNnlX?=
- =?utf-8?B?QzdwdzhSNGsvRUFselN6TFAzZktUTTcrMWxhU2lFWTJzUDVXYndncDdJakp5?=
- =?utf-8?B?TzRXM0NvQnVlQkhTTHAwSWozSnpmZ3lRV0RNLzNSTmFnTEthRFVPQ0NoVldG?=
- =?utf-8?B?RS9iaW13UmhGalR6aVdURi9aS2xuemNVOTBwTGI0RG1Gc241Uzl0VnRRYUR4?=
- =?utf-8?B?R3R1QndtbTVBMytjSjlLRlc3c3BDQVRLQlFqZkFCSHJwVldiS3dvK3Jyd3R2?=
- =?utf-8?B?aUVVWmZWbWtsM0NZZmd6ais2U3YyTmIxWGtnMWpvTS92dlBIc1oyNHZiS2kz?=
- =?utf-8?B?SndvS3pVVmt0WEZEUitkU2tBVkl1aVlnTVc0bWtKOXUrUlkzTG5STTNKVnZT?=
- =?utf-8?B?dms5bWV3VTlBOVhJblZmdG9jTXVYanZIRisrVGtGVFRET29hRmFINFI2dHQ5?=
- =?utf-8?B?SGllejN5VlUyMW1zNktvQk5kVzRkdkNIRXFXTUJUZ3N4K3BoT3VkMlpxeXJO?=
- =?utf-8?B?QnRpZXE2UW1QdlpTajhyRmlyc3M2eEpkQUpRNWpVamprb1UrUUtPcVpFL0ZC?=
- =?utf-8?B?WThHMTB1dnhPaUs0MFlvdFlsMElFNFUwZlBVNmRSS3UwbEVIRWZqcnd0YUMv?=
- =?utf-8?B?Q3FBQXRRYWFsTS9WK1E5N01rUk9LUWZQVUc4amQrdDhOZnpIZVdKWUp3SjlR?=
- =?utf-8?B?NVp2ckhTNEYyd0hKMFBmNTI1WThhZjJpQUpuRGRjeWdmWm01bCtwalhpWXNK?=
- =?utf-8?B?aU1NQUV2ektiQ0Q5cUJ4R2VKSkVnV29vOWNGb08wWjRIbnM1ejNyS0k4cUFO?=
- =?utf-8?B?WGQ5alFOc0hzZk9rd1hjVlFvVXV6cEp6UnF2bHhITGNSOE1CYkFrYUw4SDla?=
- =?utf-8?B?NVZHc2t4NDgzMmI4WTlNdE91VkduVFhDa1M2ejQzUGhTeHFnc0pRL25SRlJ6?=
- =?utf-8?B?RU9DMkJ1ZEZrSzNxaEZHTXhwd05idk81OXBoOS9XSXRGWFVLdE9tb1NDRWhq?=
- =?utf-8?B?MXJsYS9PdEhhWmdiZzZUV3V5VzRqbVFYZ0N6c05ndFB3WTZSNEt3WUdpd1VI?=
- =?utf-8?B?Vjg0VkNaV0tGczlHTU5JWmJHelQvaHQzWXRwOTBLUVBua2JuUDBkU2JBeGQ2?=
- =?utf-8?B?WlgyZHNPN1BydXpzTG1QM0N5MSt6S1hoZ2pRaG5WUzZKY051SU9RZGtuVDF5?=
- =?utf-8?B?QlZWRTgrSVpQdWVVOGNJWkF3NE1mWWw2UHNjam1SNlRvMEozdjZicmxnM1Nk?=
- =?utf-8?B?cDd3SjRvWER4cFpSOWwwTmhaSWVQaGRuSVU4dFplNHRYQ0QwV1VYdElaMVEx?=
- =?utf-8?Q?0XZrdmfoXIFZQE12o2hs=3D?=
-X-Microsoft-Exchange-Diagnostics: 1;BN3PR0701MB1718;5:pK1lU3PWndwyfd5atOPU6ov1TlpwJoOJtliRIdSL63pLGQN+8se1Ibz2i1KQpyksM9Dg5qhJOjiU6km6G4acOPITSW++vWe2z/srKN8wh74TL/4Hh0OBH1U/pytyz2YfMKhwCncUhbOx75WiU2FXQA==;24:nmb/uZY6Kjm0QcL9t8/jh1qRJjp6bXxz4dnudHSl5IRb94NbXUMoXCwUcjoHWrRZ94aPwgZRj11kd8ijsL7EpitrsaRostQIsd1PpmJ/dOg=;20:EENBWLCjA/ANbwnFmyH+VdSq3+jMR1c/acqJKkozw5tx5djkRpewrqh75pjpe5PeH7bK+RObLHPtcJjkXqcJwA==
-X-OriginatorOrg: caviumnetworks.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Aug 2015 01:07:59.7487 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN3PR0701MB1718
-Return-Path: <David.Daney@caviumnetworks.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Aug 2015 03:47:33 +0200 (CEST)
+Received: from mailout2.samsung.com ([203.254.224.25]:47095 "EHLO
+        mailout2.samsung.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27012535AbbHFBrbIDcKQ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 6 Aug 2015 03:47:31 +0200
+Received: from epcpsbgr2.samsung.com
+ (u142.gpu120.samsung.co.kr [203.254.230.142])
+ by mailout2.samsung.com (Oracle Communications Messaging Server 7.0.5.31.0
+ 64bit (built May  5 2014))
+ with ESMTP id <0NSN01R3Q0YYH500@mailout2.samsung.com>; Thu,
+ 06 Aug 2015 10:47:22 +0900 (KST)
+Received: from epcpsbgm2new.samsung.com ( [172.20.52.113])
+        by epcpsbgr2.samsung.com (EPCPMTA) with SMTP id 0F.BF.28411.AACB2C55; Thu,
+ 6 Aug 2015 10:47:22 +0900 (KST)
+X-AuditID: cbfee68e-f79c56d000006efb-16-55c2bcaae64d
+Received: from epmmp1.local.host ( [203.254.227.16])
+        by epcpsbgm2new.samsung.com (EPCPMTA) with SMTP id 68.66.07062.9ACB2C55; Thu,
+ 6 Aug 2015 10:47:22 +0900 (KST)
+Received: from [10.252.81.186] by mmp1.samsung.com
+ (Oracle Communications Messaging Server 7.0.5.31.0 64bit (built May  5 2014))
+ with ESMTPA id <0NSN004JU0YXY060@mmp1.samsung.com>; Thu,
+ 06 Aug 2015 10:47:21 +0900 (KST)
+Message-id: <55C2BCA9.5080202@samsung.com>
+Date:   Thu, 06 Aug 2015 10:47:21 +0900
+From:   Jaehoon Chung <jh80.chung@samsung.com>
+User-Agent: Mozilla/5.0 (X11; Linux i686; rv:31.0) Gecko/20100101
+ Thunderbird/31.7.0
+MIME-version: 1.0
+To:     Shawn Lin <shawn.lin@rock-chips.com>,
+        Krzysztof Kozlowski <k.kozlowski@samsung.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Seungwon Jeon <tgih.jun@samsung.com>
+Cc:     dianders@chromium.org, linux-mips@linux-mips.org,
+        Arnd Bergmann <arnd@arndb.de>,
+        Alexandre Belloni <alexandre.belloni@free-electrons.com>,
+        Alexey Brodkin <abrodkin@synopsys.com>,
+        Stefan Agner <stefan@agner.ch>,
+        Zhou Wang <wangzhou.bry@gmail.com>,
+        Kumar Gala <galak@codeaurora.org>,
+        Alim Akhtar <alim.akhtar@samsung.com>,
+        Ian Campbell <ijc+devicetree@hellion.org.uk>,
+        Wang Long <long.wanglong@huawei.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Chaotian Jing <chaotian.jing@mediatek.com>,
+        Lukasz Majewski <l.majewski@samsung.com>,
+        Jun Nie <jun.nie@linaro.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Kevin Hao <haokexin@gmail.com>,
+        Olof Johansson <olof@lixom.net>, Ray Jui <rjui@broadcom.com>,
+        Govindraj Raja <govindraj.raja@imgtec.com>,
+        linux-samsung-soc@vger.kernel.org,
+        Heiko Stuebner <heiko@sntech.de>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Vineet Gupta <vgupta@synopsys.com>,
+        Scott Branden <sbranden@broadcom.com>,
+        Anand Moon <linux.amoon@gmail.com>,
+        linux-rockchip@lists.infradead.org,
+        Tushar Behera <trblinux@gmail.com>,
+        Pawel Moll <pawel.moll@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Mischa Jonker <mjonker@synopsys.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Javier Martinez Canillas <javier.martinez@collabora.co.uk>,
+        Vincent Yang <vincent.yang.fujitsu@gmail.com>,
+        Stephen Warren <swarren@nvidia.com>,
+        devicetree@vger.kernel.org, Kukjin Kim <kgene@kernel.org>,
+        Tomeu Vizoso <tomeu.vizoso@collabora.com>,
+        Stephen Boyd <sboyd@codeaurora.org>,
+        Russell King <linux@arm.linux.org.uk>,
+        Joachim Eastwood <manabian@gmail.com>,
+        Sjoerd Simons <sjoerd.simons@collabora.co.uk>,
+        Weijun Yang <Weijun.Yang@csr.com>,
+        Peter Griffin <peter.griffin@linaro.org>,
+        linux-arm-kernel@lists.infradead.org,
+        addy ke <addy.ke@rock-chips.com>,
+        Uwe Kleine-K?nig <u.kleine-koenig@pengutronix.de>,
+        Kevin Hilman <khilman@linaro.org>,
+        Andrew Bresticker <abrestic@chromium.org>,
+        linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Zhangfei Gao <zhangfei.gao@linaro.org>,
+        Wei Xu <xuwei5@hisilicon.com>,
+        Andreas Faerber <afaerber@suse.de>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        CPGS <cpgs@samsung.com>
+Subject: Re: [RFC PATCH v3 0/5]
+References: <1438762614-22154-1-git-send-email-shawn.lin@rock-chips.com>
+ <55C2A001.2090506@samsung.com> <55C2AE1C.7080502@rock-chips.com>
+In-reply-to: <55C2AE1C.7080502@rock-chips.com>
+Content-type: text/plain; charset=utf-8
+Content-transfer-encoding: 7bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA01Ta0yTVxjO6Xcr3Ug+UNwZZoGQ6TIdVRDYu0CMyX7sW8ySJYuX7A8UaMAM
+        sLZgRrY4FpgydVwKC6wiMJG2sAKl1QmCWLpSiNhOaOTiZlt6URgUHCqXEeha6zL/PTnP9STn
+        8InIR3Q0/0RBoVhaIMqLowWkZnvSqfj2fuOR/drF3dC2tImg9L6XAaV/lQelOhmUT7TwwNn4
+        Kw2bcjMDS8qLCCYeNNEwZ3wXmkxWCizKQRoqF36m4PIlOYI1r50E82MnBX7XPAXWv9oQDG1I
+        4KpnhoH52QSodM8T8Pw3NYKFGT0CnXuCAtvNBhqqfpQzYPJXIlh2+gmo/32AB53dDxj4wxYO
+        JpsGQd+kFUHr5BgPHC2rCO5MPg246jpI0NZvkeBW+xgY738bvD/pafjulomBtbsXSFj8xYPg
+        T08XBXXDPgrOms0U6DvPMTBVV0bBE8cYARUd4zRoa/oCXdU1CIY7joHxuosEVWMiDCy3IvA1
+        DzEw9/cICZ6hWgKmNfeYQwe5llU7wWkaNYgrK71Icxv/yBGncFho7lLJGMnZKn7gcZuPJ0mu
+        5+FVxN3sbaA4j24McdWWeK5X8ZDh2lTPaM59uZvhykw+6tPYzwVp2eK8E6fF0n0HMwS55TdU
+        jOTZ3i+dK9eYEmSOPY/C+JhNwt0LDhTCO/A9exd9Hgn4kawa4dm+O+R/os6udV6IaEV4ddz1
+        UuVE2K/qf6EKZ/dg74KcF8Qkuwvrl27TQUyz7+EbK8MvzqPYo/hufflLfQReq7GTwaDtrArh
+        BmsvFSQIdioC97hSgngbG4P7RjqZUNsFhJdvzxBBIowV4tFBd6CBHzC8g2tr80PeGKzX+Iig
+        HrNVr2Hz3BU6tIjFKzVGMqjH7FtYZyBCV3sTD6qnyCq0Q/HKJsX/qYpXUpsR0Y6ixJIsiSwz
+        R5oolInyZUUFOcKsk/k6FHj+o1uPKnrQtCHViFg+ins93KkxHomkRKdlxflGlBwYUU1ER2Wd
+        DPyYgsL0hAMpiZCclHwg8f0PUuLeCM+IXv8sks0RFYq/EIslYmm6tChPLDMiHj8sugQRbmW7
+        7/7OLvuKsGl+ZxjZbCj6MEL8yYhg+Nb094c8+59fqU/NtmVLrX5nfKbStXE827B1LCXzo0yh
+        c5/qeovdrfh6dpcnzfuNioqV8dvO5KapLKZtT7WHm4q//firU91z5+KPD5yRnV03WKYcjHRg
+        NEOt7Ul/slic2knsPgwxcaQsV5Swh5DKRP8Ct8Plu/kDAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAA2WTe0xbZRjG8/XcClJz6MZ2ZCaQymKcFmjH5SURMGrmSWQLmUOXRcUjnAAZ
+        LdjCdP4zIqjI2LgaLmOMyaVjK7d2bNy2ZQUK4TagGSAKFMplEyoO2UAIYAubLvr99X7P+/ze
+        J/m+vEJMrKdchTHKBF6l5GIlpCPevWmhpVdbDGHevSYGKhc3ECTfn6GgYmtFAMk6NaQOlQrA
+        XHyDhI1sIwWLFekIhkYvkfDQ8BpcausjoLfiLgkZC5cJuHghG8HqzDgOxjkzAVtT8wT0/VaJ
+        oH09HsqmJymYfyCDDMs8Bo9bryBYmNQj0FmGCDA1FZGQ+WM2BW1bGQiWzFsY5N+7LYDqulEK
+        fjGJoM2kRdA83IegfHhAABOlKwi6hv+0UXlVONTmb+JguWKlYLDFA2YK9CR8e6uNgtWeszj8
+        fm0awa/TNQTkdVgJ+M5oJEBf/T0FI3kpBPwxMYDB+apBEmpzmm1ZWTkIOqo+AkP9FA6aYjnc
+        XipHYC1pp+Dho04cpttzMfhZ20+9FcSWroxjrLZYi9iU5HSSXV/LRmzhRC/JXkgawFnT+XMC
+        dmNuGGcbxsoQ29RYRLDTugHEZvVK2cbCMYqt1CyTrOViHcWmtFmJUPcTSejNaJ6L5FXuvDIi
+        LjJGGRUoef+D8HfCff28ZVJZAPhL3JWcgg+UvBsSKj0UE2v7SYn7KS420SaFcmq1xCvo/xPC
+        jh2SwjPwuPTwsaP/MHLv/5zPtCg69aaGil9+/Svzk+tUEjK6pyEHIUP7MNU1fwl26j1M/3gN
+        mYYchWK6HDErg1NPL2bEbGlacLtLRB9gZhaytwmc3s/oF++Q9pqk32BuPunY1l3oD5me/NSn
+        fmdmNWcctw/aTWsQU9TXSNgbGD3izDRM+dnrXbQb09xZTe2knUXM0p1JzN5woD2Z7rsWW4LQ
+        BrzK5OYqdlg3Rq+1YpmILnwuo/BfV+FzrhKEXUUMHx8Rr/48SiFX8l96qjmFOlEZ5RkRp9Ch
+        7YWZ3deAWpveMyBaiCROIrPWECYmuFPq0woDYoSYZLdoMdUmiSK501/zqrhwVWIsrzYgX9sj
+        ZGGuLhFxtvVTJoTLDvr4yQPk/jKQH/SX7BV5+ejCxHQUl8Cf5Pl4XvWMEwgdXJPQuf1xh9fX
+        8ut31bwc2BosvhciZo5Kc46kejy+tddpvevkXPdL/en3jY8ub37SoOU9GoLXRnTXxhyTz3T+
+        IJz1/aZgecUw2xRk1Zg+bQ7dM+41ktaV6FOGzjh93Or6iqS4vt3ti5A6l8zrwZbigh7n4IAX
+        Hrj99HbMvlqnIzcG5zpGS16U4OpoTnYAU6m5vwG4GvBjRgQAAA==
+DLP-Filter: Pass
+X-MTR:  20000000000000000@CPGS
+X-CFilter-Loop: Reflected
+Return-Path: <jh80.chung@samsung.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48644
+X-archive-position: 48645
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: jh80.chung@samsung.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -102,54 +151,122 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 08/05/2015 05:46 PM, Leonid Yegoshin wrote:
-> On 08/05/2015 05:37 PM, David Daney wrote:
->> This just means that your userspace is broken.
+Hi,
+
+On 08/06/2015 09:45 AM, Shawn Lin wrote:
+> On 2015/8/6 7:45, Krzysztof Kozlowski wrote:
+>> On 05.08.2015 17:16, Shawn Lin wrote:
+>>> Synopsys DesignWare mobile storage host controller supports three
+>>> types of transfer mode: pio, internal dma and external dma. However,
+>>> dw_mmc can only supports pio and internal dma now. Thus some platforms
+>>> using dw-mshc integrated with generic dma can't work in dma mode. So we
+>>> submit this patch to achieve it.
+>>>
+>>> And the config option, CONFIG_MMC_DW_IDMAC, was added by Will Newton
+>>> (commit:f95f3850) for the first version of dw_mmc and never be touched from
+>>> then. At that time dt-bindings hadn't been introduced into dw_mmc yet means
+>>> we should select CONFIG_MMC_DW_IDMAC to enable internal dma mode at compile
+>>> time. Nowadays, device-tree helps us to support a variety of boards with one
+>>> kernel. That's why we need to remove it and decide the transfer mode at runtime.
+>>>
+>>> This RFC patch needs lots of ACKs. I know it's hard, but it does need someone
+>>> to make the running.
+>>>
+>>> Patch does the following things:
+>>> - remove CONFIG_MMC_DW_IDMAC config option
+>>> - add bindings for idmac and edmac used by synopsys-dw-mshc
+>>>    at runtime
+>>> - add edmac support for synopsys-dw-mshc
+>>>
+>>> Patch is based on next of git://git.linaro.org/people/ulf.hansson/mmc
+>>>
+>>>
+>>> Changes in v3:
+>>> - choose transfer mode at runtime
+>>> - remove all CONFIG_MMC_DW_IDMAC config option
+>>> - add supports-idmac property for some platforms
+>>>
+>>> Changes in v2:
+>>> - Fix typo of dev_info msg
+>>> - remove unused dmach from declaration of dw_mci_dma_slave
+>>>
+>>> Shawn Lin (5):
+>>>    mmc: dw_mmc: Add external dma interface support
+>>>    Documentation: synopsys-dw-mshc: add bindings for idmac and edmac
+>>>    arm: configs: remove CONFIG_MMC_DW_IDMAC
+>>>    mips: configs: remove CONFIG_MMC_DW_IDMAC
+>>>    ARM: dts: add supports-idmac property
+>> Please fix the title of cover letter.
 >>
->> If GLibC cannot do the right thing then it should be fixed.
->
-> Let's skip this until you explain how to create a fully
-> non-executable-stack process.
+>> You CC-ed a lot of people. Probably the whole output of git_maintainers
+>> which is not necessary. This means that your patches did not reach some
+>> of the mailing lists because of too many recipients. I received your
+>> patchset but I can't find it on any of the lists I subscribe.
+>>
+>> Please CC only REAL maintainers, not committers.
+> 
+> Right, not the whole output of "cc" by patchman automatically should be involved
+> in the  iteration of this patch. I will omit them from this loop  in v4.
 
-Build almost any program with a gcc/glibc from a recent Cavium SDK 
-toolchain.
+As Krzysztof mentioned, I can't read these patchset at mailing list.
+I will check these after resend..It's helpful to me for checking patches.
 
-Something like this:
+Best Regards,
+Jaehoon Chung
 
-   mips64-octeon-linux-gnu-gcc -o myprogram myprogram.c
-
-
->
+> 
+>>
+>> Additionally if DTS changes do not have to be introduced atomically
+>> please split it per sub-architecture. Of course that applies only in
+>> case of bisectable patches. And the patchset should preserve
+>> bisectability and backward compatibility (mentioned earlier).
+> 
+> okay, it will be split for each sub-architecture.
+> Thanks, Krzysztof. It's helpful.
+>> Best regards,
+>> Krzysztof
 >>
 >>
->> You cannot change the default setting for executable stack just
->> because you have created a broken userspace.
->
-> Please give me at least one example, one existing application which
-> would suffer.
-
-Anything compiled with gcj that uses java.lang.reflect.Method.invoke()
-
-Anything that uses gcc nested functions.
-
-Anything that uses libffi
-
-Where an older toolchain that doesn't set PT_GNU_STACK was used.
-
->
-> I remember that people already wrote here that this kind of apps (which
-> is based on eXecutable stack and doesn't announce it in PT_GNU_STACK)
-> need to be eliminated.
->
+>>>   .../devicetree/bindings/mmc/synopsys-dw-mshc.txt   |  41 +++
+>>>   arch/arc/configs/axs101_defconfig                  |   1 -
+>>>   arch/arc/configs/axs103_defconfig                  |   1 -
+>>>   arch/arc/configs/axs103_smp_defconfig              |   1 -
+>>>   arch/arm/boot/dts/exynos3250-monk.dts              |   1 +
+>>>   arch/arm/boot/dts/exynos3250-rinato.dts            |   1 +
+>>>   arch/arm/boot/dts/exynos4412-odroid-common.dtsi    |   1 +
+>>>   arch/arm/boot/dts/exynos4412-origen.dts            |   1 +
+>>>   arch/arm/boot/dts/exynos4412-trats2.dts            |   1 +
+>>>   arch/arm/boot/dts/exynos4x12.dtsi                  |   1 +
+>>>   arch/arm/boot/dts/exynos5250-arndale.dts           |   2 +
+>>>   arch/arm/boot/dts/exynos5250-smdk5250.dts          |   2 +
+>>>   arch/arm/boot/dts/exynos5250-snow.dts              |   3 +
+>>>   arch/arm/boot/dts/exynos5250-spring.dts            |   2 +
+>>>   arch/arm/boot/dts/exynos5260-xyref5260.dts         |   2 +
+>>>   arch/arm/boot/dts/exynos5410-smdk5410.dts          |   2 +
+>>>   arch/arm/boot/dts/exynos5420-arndale-octa.dts      |   2 +
+>>>   arch/arm/boot/dts/exynos5420-peach-pit.dts         |   3 +
+>>>   arch/arm/boot/dts/exynos5420-smdk5420.dts          |   2 +
+>>>   arch/arm/boot/dts/exynos5422-odroidxu3-common.dtsi |   2 +
+>>>   arch/arm/boot/dts/exynos5800-peach-pi.dts          |   3 +
+>>>   arch/arm/boot/dts/hisi-x5hd2.dtsi                  |   2 +
+>>>   arch/arm/boot/dts/rk3288-evb.dtsi                  |   2 +
+>>>   arch/arm/boot/dts/rk3288-firefly.dtsi              |   3 +
+>>>   arch/arm/boot/dts/rk3288-popmetal.dts              |   2 +
+>>>   arch/arm/configs/exynos_defconfig                  |   1 -
+>>>   arch/arm/configs/hisi_defconfig                    |   1 -
+>>>   arch/arm/configs/lpc18xx_defconfig                 |   1 -
+>>>   arch/arm/configs/multi_v7_defconfig                |   1 -
+>>>   arch/arm/configs/zx_defconfig                      |   1 -
+>>>   arch/arm64/boot/dts/exynos/exynos7-espresso.dts    |   2 +
+>>>   arch/mips/configs/pistachio_defconfig              |   1 -
+>>>   drivers/mmc/host/Kconfig                           |  11 +-
+>>>   drivers/mmc/host/dw_mmc-pltfm.c                    |   2 +
+>>>   drivers/mmc/host/dw_mmc.c                          | 277 +++++++++++++++++----
+>>>   include/linux/mmc/dw_mmc.h                         |  28 ++-
+>>>   36 files changed, 338 insertions(+), 72 deletions(-)
+>>>
 >>
->> The ability of legacy userspace to continue functioning cannot be
->> sacrificed.
 >>
->
-> Not at any price.
->
-> However, this switch is a separate patch from others. It can be not
-> applied or it can be applied, depending from prevailing mind - what is
-> more significant, some (unknown) app or non-executable stack protection.
->
-> - Leonid.
+>>
+> 
+> 

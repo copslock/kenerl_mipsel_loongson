@@ -1,55 +1,74 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Aug 2015 18:28:54 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:8090 "EHLO
-        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27012693AbbHFQ2wHnmpY (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 6 Aug 2015 18:28:52 +0200
-Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
-        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id BFF4C41F8E13;
-        Thu,  6 Aug 2015 17:28:46 +0100 (BST)
-Received: from mailapp01.imgtec.com ([10.100.180.241])
-  by imgpgp01.kl.imgtec.org (PGP Universal service);
-  Thu, 06 Aug 2015 17:28:46 +0100
-X-PGP-Universal: processed;
-        by imgpgp01.kl.imgtec.org on Thu, 06 Aug 2015 17:28:46 +0100
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id F21EF8B39FF4;
-        Thu,  6 Aug 2015 17:28:42 +0100 (IST)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Thu, 6 Aug 2015 17:28:46 +0100
-Received: from [192.168.154.110] (192.168.154.110) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Thu, 6 Aug
- 2015 17:28:45 +0100
-Subject: Re: [PATCH 0/7] test_user_copy improvements
-To:     Kees Cook <keescook@chromium.org>
-References: <1438789735-4643-1-git-send-email-james.hogan@imgtec.com>
- <CAGXu5jJd4EH37B51zxphYkwp6RBOkYuwiGNr7C6nJK2q=JE79A@mail.gmail.com>
-CC:     LKML <linux-kernel@vger.kernel.org>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        Andrew Morton <akpm@linux-foundation.org>
-From:   James Hogan <james.hogan@imgtec.com>
-X-Enigmail-Draft-Status: N1110
-Message-ID: <55C38B30.5030405@imgtec.com>
-Date:   Thu, 6 Aug 2015 17:28:32 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Aug 2015 18:31:12 +0200 (CEST)
+Received: from mail-io0-f172.google.com ([209.85.223.172]:34887 "EHLO
+        mail-io0-f172.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012684AbbHFQbKEhTZY (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 6 Aug 2015 18:31:10 +0200
+Received: by iodd187 with SMTP id d187so86548706iod.2
+        for <linux-mips@linux-mips.org>; Thu, 06 Aug 2015 09:31:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type;
+        bh=+NqvHG8dRPfWzEIYuIK5+8vzrDeNUkeN3KlfPKioVEg=;
+        b=On3rkbdQCga5NEPMc5lxPT4c5F9ZXDNrhl4O9V7hicpl+3rrDgwlj3evqbwA75e15y
+         pa8xh1/Ba6LRynaMuZV9OXbQrt79sSXIdYSfiE2zJvN6y/pLc5I3qXFwmx659BK3CAXB
+         cYM4CARLMwYDakhQiJmhHzt7TbVvKhAqrmH5HKd06BebybjFQvAKBgbROU4R/qFudUCl
+         +asm+zqo6/xvbBPc9z2hT+uyk+A3HbxDouFntKzCW0UaXsS96xvLh7GIcm+NsK5ejWAU
+         hUcK4+x9eFcoOXrMF4usn/3WWE+VRwJ/nkcDn9427VJXZdLG3qDz3yRIYLCW1WVn0Qk2
+         l2Dw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type;
+        bh=+NqvHG8dRPfWzEIYuIK5+8vzrDeNUkeN3KlfPKioVEg=;
+        b=WhtO5ooaOLxHbqDiWDuoNxQFBQlGgCgH9C1/JpW6Ge04qqxzdTG8cAFZ1SjcDSpGgf
+         GniENx8O/03HxXrUQKa+YhOPpTc8Tky9EcHaT3GrZewiAH99Y6tepgrY1qtuiFnw4IvL
+         XE9jN708/2iPRyBcMR8YgWA2PJKwwZKQdoSqg=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:sender:in-reply-to:references:date
+         :message-id:subject:from:to:cc:content-type;
+        bh=+NqvHG8dRPfWzEIYuIK5+8vzrDeNUkeN3KlfPKioVEg=;
+        b=ka5osxHcZlcsD+7RNg2NmQfBKW3h/9VlHXb+gocb4ry72n0/GTefzUd7lI/HEX7CL/
+         ku+McMBcpxNZ0z9k9oYwfjAIvFzJ1W+Vdh1o9XjkS8XolCxkPjt2UqX7WihadO/iIAmo
+         w7pAOlTP70MYGH3c+hNQEQ3APPEZ3P0KhQaG1ZmyPT7b11Z7DlOlaJWqTQFubxmWiRVS
+         OMIVHIRuFfWGsLI6vMouFKA7wWwipV6DTXpWPpHC66nGi9WDMX8DmQ8sU4qkk3TJjUHV
+         bvU/ZNq8iHlE9PWVDkhqBzZrStAMVQUp22icyV+78Xx/CRi6LkfP6jttBgVbdt654TFq
+         NXmQ==
+X-Gm-Message-State: ALoCoQn//WSLRILddhfasWHmdctlzvMlq4uliseyuIwjTuHur6sXOZF0PKlbZm8GU1DWPeHzRl4x
 MIME-Version: 1.0
-In-Reply-To: <CAGXu5jJd4EH37B51zxphYkwp6RBOkYuwiGNr7C6nJK2q=JE79A@mail.gmail.com>
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature";
-        boundary="pSjgpWuB5QAVeNG7kw5WspEfp6siBa50O"
-X-Originating-IP: [192.168.154.110]
-X-ESG-ENCRYPT-TAG: f107b6f
-Return-Path: <James.Hogan@imgtec.com>
+X-Received: by 10.107.137.195 with SMTP id t64mr1319619ioi.150.1438878664378;
+ Thu, 06 Aug 2015 09:31:04 -0700 (PDT)
+Received: by 10.64.236.98 with HTTP; Thu, 6 Aug 2015 09:31:04 -0700 (PDT)
+In-Reply-To: <1438868811-7769-1-git-send-email-govindraj.raja@imgtec.com>
+References: <1438868811-7769-1-git-send-email-govindraj.raja@imgtec.com>
+Date:   Thu, 6 Aug 2015 09:31:04 -0700
+X-Google-Sender-Auth: MBApity2Z7a0J5HDpy3OiB4jqKs
+Message-ID: <CAL1qeaG5+cB1Hw-s-p_9_zM5TK6ZOeNrMP5oAspbrgsY=_V89g@mail.gmail.com>
+Subject: Re: [PATCH 5/6] pistachio: pll: Fix vco calculation in .set_rate (fractional)
+From:   Andrew Bresticker <abrestic@chromium.org>
+To:     Govindraj Raja <govindraj.raja@imgtec.com>
+Cc:     Linux-MIPS <linux-mips@linux-mips.org>, linux-clk@vger.kernel.org,
+        Mike Turquette <mturquette@linaro.org>,
+        Stephen Boyd <sboyd@codeaurora.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Zdenko Pulitika <zdenko.pulitika@imgtec.com>,
+        Kevin Cernekee <cernekee@chromium.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        James Hartley <James.Hartley@imgtec.com>,
+        Damien Horsley <Damien.Horsley@imgtec.com>,
+        James Hogan <James.Hogan@imgtec.com>,
+        Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <abrestic@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48690
+X-archive-position: 48691
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: abrestic@chromium.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -62,98 +81,17 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---pSjgpWuB5QAVeNG7kw5WspEfp6siBa50O
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Govindraj,
 
-Hi Kees,
+On Thu, Aug 6, 2015 at 6:46 AM, Govindraj Raja
+<govindraj.raja@imgtec.com> wrote:
+> From: Zdenko Pulitika <zdenko.pulitika@imgtec.com>
+>
+> Vco was calculated based on the current operating mode which
+> makes no sense because .set_rate is setting operating mode. Instead,
+> vco should be calculated using pll settings that are about to be set.
+>
+> Signed-off-by: Zdenko Pulitika <zdenko.pulitika@imgtec.com>
+> Signed-off-by: Govindraj Raja <govindraj.raja@imgtec.com>
 
-On 05/08/15 21:26, Kees Cook wrote:
-> On Wed, Aug 5, 2015 at 8:48 AM, James Hogan <james.hogan@imgtec.com> wr=
-ote:
->> These patches extend the test_user_copy test module to handle lots mor=
-e
->> cases of user accessors which architectures can override separately, a=
-nd
->> in particular those which are important for checking the MIPS Enhanced=
-
->> Virtual Addressing (EVA) implementations, which need to handle
->> overlapping user and kernel address spaces, with special instructions
->> for accessing user address space from kernel mode.
->>
->> - Checking that kernel pointers are accepted when user address limit i=
-s
->>   set to KERNEL_DS, as done by the kernel when it internally invokes
->>   system calls with kernel pointers.
->> - Checking of the unchecked accessors (which don't call access_ok()).
->>   Some of the tests are special cased for EVA at the moment which has
->>   stricter hardware guarantees for bad user accesses than other
->>   configurations.
->> - Checking of other sets of user accessors, including the inatomic use=
-r
->>   copies, copy_in_user, clear_user, the user string accessors, and the=
-
->>   user checksum functions, all of which need special handling in arch
->>   code with EVA.
->>
->> Tested on MIPS with and without EVA, and on x86_64.
->>
->> James Hogan (7):
->>   test_user_copy: Check legit kernel accesses
->>   test_user_copy: Check unchecked accessors
->>   test_user_copy: Check __clear_user()/clear_user()
->>   test_user_copy: Check __copy_in_user()/copy_in_user()
->>   test_user_copy: Check __copy_{to,from}_user_inatomic()
->>   test_user_copy: Check user string accessors
->>   test_user_copy: Check user checksum functions
->>
->>  lib/test_user_copy.c | 221 ++++++++++++++++++++++++++++++++++++++++++=
-+++++++++
->>  1 file changed, 221 insertions(+)
->>
->> Cc: Kees Cook <keescook@chromium.org>
->> Cc: Andrew Morton <akpm@linux-foundation.org>
->=20
-> Ooooh! Nice! This is great, thank you. :) Great to hear it helped find
-> a bug too. :)
->=20
-> I'm wondering if we need to macro-ize any of these. Probably not, but
-> it just feels like there's a lot of repeated stuff now. But I think
-> it's a bit of an illusion since each test is ever so slightly
-> different from the others.
-
-Yeh, I wondered that too, but I agree they're all slightly different in
-their requirements so it'd just end up confusing things.
-
->=20
-> Acked-by: Kees Cook <keescook@chromium.org>
-
-Thanks!
-
-James
-
-
---pSjgpWuB5QAVeNG7kw5WspEfp6siBa50O
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQIcBAEBAgAGBQJVw4sxAAoJEGwLaZPeOHZ60TYQALZHVpKGUHKd/ATy5gxfqq8+
-DM12XcxjOhP2Adzl8StQ+sF6TSHf5K9fyqul5NLrj5k4Vk9mnITcxJ4BVNTpTurh
-cIuvcrcdunDYOH30mlAAnl2XYULl96Oi94gu0PbMLGNgdTugqJ9s5xP4i2zAKJKv
-GzqzkHnLvrphtZ3FKP4ZF0XXjWmsBBnzBSWcDlgRDfdkx1MiSIBBGUA3yjja39AH
-YM1Zjuo5Dn7A1ABi+fECvofM7C12T1nQiaaxNUwpkYnUZW1S8HS4TVqb+EgAlzL2
-jEZEzo3KzuiKaIqF9IELkEOtMYne/Of6IIXtSDoPiiDaJblBfFU+WtzorV7dttMk
-6h4037fnEPBJHmDHy8hyltmzeMcJFQDSwpIkIgbdahMHPEtXNZbncvD5TaojAixP
-E6KCBsazjUguCGm4sPk3hhTPZTwS5rsK1sA72Zn38J3FHwzoJLYYf9wYih9w162P
-0UImDGAYS/1LIiWIl4aPEjQ1xITlw/IqY7Up8y8Z5LLO0GjXfja8iHr62BpfKAM1
-LqP0N9D+g6S6T5b4vImPHM4lrPh1k9pNVX4IHFjm7bNHMc5BJLaOQvVo06JT4rMv
-hHHnSl6hlzX3EfSXrh2HfSnej01OXur0nOKcNPJSfxMx/pIJs1MejpqfsSx0MgiC
-D6szhs9/VIhNSzWidoeE
-=OHbs
------END PGP SIGNATURE-----
-
---pSjgpWuB5QAVeNG7kw5WspEfp6siBa50O--
+Shouldn't this be squashed with patch 3/6?

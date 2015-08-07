@@ -1,47 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Aug 2015 16:01:48 +0200 (CEST)
-Received: from foss.arm.com ([217.140.101.70]:53271 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27011765AbbHGOBqQPSzI (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 7 Aug 2015 16:01:46 +0200
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5A2A575;
-        Fri,  7 Aug 2015 07:01:40 -0700 (PDT)
-Received: from leverpostej (usa-sjc-imap-foss1.foss.arm.com [10.72.51.249])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id F26F43F318;
-        Fri,  7 Aug 2015 07:01:36 -0700 (PDT)
-Date:   Fri, 7 Aug 2015 15:01:06 +0100
-From:   Mark Rutland <mark.rutland@arm.com>
-To:     David Daney <ddaney.cavm@gmail.com>, grant.likely@linaro.org,
-        rob.herring@linaro.org
-Cc:     "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        David Daney <david.daney@cavium.com>,
-        Tomasz Nowicki <tomasz.nowicki@linaro.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Aug 2015 16:54:20 +0200 (CEST)
+Received: from out5-smtp.messagingengine.com ([66.111.4.29]:33737 "EHLO
+        out5-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012265AbbHGOyShYs20 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 7 Aug 2015 16:54:18 +0200
+Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
+        by mailout.nyi.internal (Postfix) with ESMTP id A969820306
+        for <linux-mips@linux-mips.org>; Fri,  7 Aug 2015 10:54:17 -0400 (EDT)
+Received: from frontend2 ([10.202.2.161])
+  by compute1.internal (MEProxy); Fri, 07 Aug 2015 10:54:17 -0400
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; d=slimlogic.co.uk;
+         h=cc:content-type:date:from:in-reply-to:message-id:mime-version
+        :references:subject:to:x-sasl-enc:x-sasl-enc; s=mesmtp; bh=pJTZK
+        3VjcM6PoVveSxLeD+PFw0k=; b=UlSg19iApuZ4ACUqBDGtB8YHHwJb3vHVYs0HM
+        OQq39Ns0xfetOUVnMCQ5gYS5pYkW3GBs3n5qSwHxKdf9fzgW9dy8N/woM68bZ1KX
+        /Qo2yAGCsRf3TGhYIzfkSo3uu6n9+J9t1uH5wwEeCB4l8mIHc+dRbi8Dr1M2+xDg
+        +AzvTM=
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:content-type:date:from:in-reply-to
+        :message-id:mime-version:references:subject:to:x-sasl-enc
+        :x-sasl-enc; s=smtpout; bh=pJTZK3VjcM6PoVveSxLeD+PFw0k=; b=ZxjHo
+        250G/QXMSqA3wd9U3ISh2RV/vI0iSYS59cuRHM77JSAJmzFW8W8nyGsvdsfNeCOU
+        MvsXrcWoC05+ZCiLaB48ydIWYLjyD7y1I/8RuhlohnlRsdM4Vg/FhpWQsB+/7/wv
+        Cd0Ju9dIIojyeSHOmjuGrbjUrJqH25tYJNlCVI=
+X-Sasl-enc: 74bmpBXYtO7JJ1gVmpu46wL8ZtBPiMG3BN2LPwu/oHZE 1438959257
+Received: from localhost (host-92-22-10-194.as13285.net [92.22.10.194])
+        by mail.messagingengine.com (Postfix) with ESMTPA id EF75A68015A;
+        Fri,  7 Aug 2015 10:54:16 -0400 (EDT)
+Date:   Fri, 7 Aug 2015 15:54:14 +0100
+From:   Graeme Gregory <gg@slimlogic.co.uk>
+To:     David Daney <ddaney.cavm@gmail.com>
+Cc:     netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
+        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
         Robert Richter <rrichter@cavium.com>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        Tomasz Nowicki <tomasz.nowicki@linaro.org>,
         Sunil Goutham <sgoutham@cavium.com>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>, deviectree@vger.kernel.org
+        linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
+        David Daney <david.daney@cavium.com>
 Subject: Re: [PATCH 2/2] net, thunder, bgx: Add support for ACPI binding.
-Message-ID: <20150807140106.GE7646@leverpostej>
+Message-ID: <20150807145414.GA5468@xora-haswell.xora.org.uk>
 References: <1438907590-29649-1-git-send-email-ddaney.cavm@gmail.com>
  <1438907590-29649-3-git-send-email-ddaney.cavm@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <1438907590-29649-3-git-send-email-ddaney.cavm@gmail.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <mark.rutland@arm.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <gg@slimlogic.co.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48713
+X-archive-position: 48714
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mark.rutland@arm.com
+X-original-sender: gg@slimlogic.co.uk
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,7 +66,7 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Aug 07, 2015 at 01:33:10AM +0100, David Daney wrote:
+On Thu, Aug 06, 2015 at 05:33:10PM -0700, David Daney wrote:
 > From: David Daney <david.daney@cavium.com>
 > 
 > Find out which PHYs belong to which BGX instance in the ACPI way.
@@ -120,12 +132,45 @@ On Fri, Aug 07, 2015 at 01:33:10AM +0100, David Daney wrote:
 > +	"local-mac-address",
 > +	"address",
 > +};
+> +
+> +static int acpi_get_mac_address(struct acpi_device *adev, u8 *dst)
+> +{
+> +	const union acpi_object *prop;
+> +	u64 mac_val;
+> +	u8 mac[ETH_ALEN];
+> +	int i, j;
+> +	int ret;
+> +
+> +	for (i = 0; i < ARRAY_SIZE(addr_propnames); i++) {
+> +		ret = acpi_dev_get_property(adev, addr_propnames[i],
+> +					    ACPI_TYPE_INTEGER, &prop);
 
-If these are going to be generally necessary, then we should get them
-adopted as standardised _DSD properties (ideally just one of them).
+Shouldn't this be trying to use device_property_read_* API and making
+the DT/ACPI path the same where possible?
 
-[...]
+Graeme
 
+> +		if (ret)
+> +			continue;
+> +
+> +		mac_val = prop->integer.value;
+> +
+> +		if (mac_val & (~0ULL << 48))
+> +			continue;	/* more than 6 bytes */
+> +
+> +		for (j = 0; j < ARRAY_SIZE(mac); j++)
+> +			mac[j] = (u8)(mac_val >> (8 * j));
+> +		if (!is_valid_ether_addr(mac))
+> +			continue;
+> +
+> +		memcpy(dst, mac, ETH_ALEN);
+> +
+> +		return 0;
+> +	}
+> +
+> +	return ret ? ret : -EINVAL;
+> +}
+> +
 > +static acpi_status bgx_acpi_register_phy(acpi_handle handle,
 > +					 u32 lvl, void *context, void **rv)
 > +{
@@ -150,9 +195,79 @@ adopted as standardised _DSD properties (ideally just one of them).
 > +
 > +	if (acpi_dev_get_property(args.adev, "phy-channel", ACPI_TYPE_INTEGER, &prop))
 > +		goto out;
-
-Likewise for any inter-device properties, so that we can actually handle
-them in a generic fashion, and avoid / learn from the mistakes we've
-already handled with DT.
-
-Mark.
+> +
+> +	phy_id = prop->integer.value;
+> +
+> +	phy_dev = bus_find_device(&mdio_bus_type, NULL, (void *)&phy_id,
+> +				  bgx_match_phy_id);
+> +	if (!phy_dev)
+> +		goto out;
+> +
+> +	bgx->lmac[bgx->lmac_count].phydev = to_phy_device(phy_dev);
+> +out:
+> +	bgx->lmac_count++;
+> +	return AE_OK;
+> +}
+> +
+> +static acpi_status bgx_acpi_match_id(acpi_handle handle, u32 lvl,
+> +				     void *context, void **ret_val)
+> +{
+> +	struct acpi_buffer string = { ACPI_ALLOCATE_BUFFER, NULL };
+> +	struct bgx *bgx = context;
+> +	char bgx_sel[5];
+> +
+> +	snprintf(bgx_sel, 5, "BGX%d", bgx->bgx_id);
+> +	if (ACPI_FAILURE(acpi_get_name(handle, ACPI_SINGLE_NAME, &string))) {
+> +		pr_warn("Invalid link device\n");
+> +		return AE_OK;
+> +	}
+> +
+> +	if (strncmp(string.pointer, bgx_sel, 4))
+> +		return AE_OK;
+> +
+> +	acpi_walk_namespace(ACPI_TYPE_DEVICE, handle, 1,
+> +			    bgx_acpi_register_phy, NULL, bgx, NULL);
+> +
+> +	kfree(string.pointer);
+> +	return AE_CTRL_TERMINATE;
+> +}
+> +
+> +static int bgx_init_acpi_phy(struct bgx *bgx)
+> +{
+> +	acpi_get_devices(NULL, bgx_acpi_match_id, bgx, (void **)NULL);
+> +	return 0;
+> +}
+> +
+> +#else
+> +
+> +static int bgx_init_acpi_phy(struct bgx *bgx)
+> +{
+> +	return -ENODEV;
+> +}
+> +
+> +#endif /* CONFIG_ACPI */
+> +
+>  #if IS_ENABLED(CONFIG_OF_MDIO)
+>  
+>  static int bgx_init_of_phy(struct bgx *bgx)
+> @@ -882,7 +1010,12 @@ static int bgx_init_of_phy(struct bgx *bgx)
+>  
+>  static int bgx_init_phy(struct bgx *bgx)
+>  {
+> -	return bgx_init_of_phy(bgx);
+> +	int err = bgx_init_of_phy(bgx);
+> +
+> +	if (err != -ENODEV)
+> +		return err;
+> +
+> +	return bgx_init_acpi_phy(bgx);
+>  }
+>  
+>  static int bgx_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+> -- 
+> 1.9.1
+> 
+> --
+> To unsubscribe from this list: send the line "unsubscribe linux-acpi" in
+> the body of a message to majordomo@vger.kernel.org
+> More majordomo info at  http://vger.kernel.org/majordomo-info.html

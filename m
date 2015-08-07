@@ -1,15 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Aug 2015 19:52:09 +0200 (CEST)
-Received: from foss.arm.com ([217.140.101.70]:54227 "EHLO foss.arm.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Aug 2015 19:54:38 +0200 (CEST)
+Received: from foss.arm.com ([217.140.101.70]:54246 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27013301AbbHGRwIAARby (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 7 Aug 2015 19:52:08 +0200
+        id S27013301AbbHGRygmcJsy (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 7 Aug 2015 19:54:36 +0200
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D258175;
-        Fri,  7 Aug 2015 10:52:01 -0700 (PDT)
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5D8FC75;
+        Fri,  7 Aug 2015 10:54:31 -0700 (PDT)
 Received: from leverpostej (usa-sjc-imap-foss1.foss.arm.com [10.72.51.249])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7388C3F23A;
-        Fri,  7 Aug 2015 10:51:58 -0700 (PDT)
-Date:   Fri, 7 Aug 2015 18:51:27 +0100
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 00FF63F23A;
+        Fri,  7 Aug 2015 10:54:27 -0700 (PDT)
+Date:   Fri, 7 Aug 2015 18:53:53 +0100
 From:   Mark Rutland <mark.rutland@arm.com>
 To:     David Daney <ddaney@caviumnetworks.com>
 Cc:     David Daney <ddaney.cavm@gmail.com>,
@@ -26,9 +26,9 @@ Cc:     David Daney <ddaney.cavm@gmail.com>,
         Sunil Goutham <sgoutham@cavium.com>,
         "linux-arm-kernel@lists.infradead.org" 
         <linux-arm-kernel@lists.infradead.org>,
-        "devicetree@vger.kernel.org" <deviectree@vger.kernel.org>
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
 Subject: Re: [PATCH 2/2] net, thunder, bgx: Add support for ACPI binding.
-Message-ID: <20150807175127.GB12013@leverpostej>
+Message-ID: <20150807175353.GA31122@leverpostej>
 References: <1438907590-29649-1-git-send-email-ddaney.cavm@gmail.com>
  <1438907590-29649-3-git-send-email-ddaney.cavm@gmail.com>
  <20150807140106.GE7646@leverpostej>
@@ -37,12 +37,12 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <55C4ECC6.7050908@caviumnetworks.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
+user-agent: Mutt/1.5.21 (2010-09-15)
 Return-Path: <mark.rutland@arm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48724
+X-archive-position: 48725
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -61,6 +61,8 @@ X-list: linux-mips
 
 [Correcting the devicetree list address, which I typo'd in my original
 reply]
+
+[resending to _really_ correct the address, apologies for the spam]
 
 > >> +static const char * const addr_propnames[] = {
 > >> +	"mac-address",

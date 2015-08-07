@@ -1,35 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Aug 2015 23:34:38 +0200 (CEST)
-Received: from mail-la0-f54.google.com ([209.85.215.54]:33403 "EHLO
-        mail-la0-f54.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012892AbbHGVe34C0V3 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 7 Aug 2015 23:34:29 +0200
-Received: by labjt7 with SMTP id jt7so56921058lab.0;
-        Fri, 07 Aug 2015 14:34:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        bh=VY70DvepuurHRa3Pal9poXEC3xy2jEVjSu+3vU2FQs0=;
-        b=LJnqiSBadMtCk1MHhmsSVu14ZdlvaudoBA+hFDJgW63zSx+ar+5N/6HOAFPnBFsDTj
-         KLJ8msMmJ85tpHZHYo6+VWJKJkSdPXU9NfEsOAY3CrRlx7qMTxK0NIFksk0QW+Sq8hn4
-         DqgIHLE9zdw3Tp1+lbHkjlagmJmJI5eeXhZvvXnSFocSKgG3TwSDK1e//jwE1YMnAn6G
-         FL/T6+uAxT41IF10wpH5Ze/gJ46bpVL1xXtXbS74U6YVmjSCjhKQf4OmU2d9fNyODx0P
-         sMpg/J1s8okIA2/BQ3qUyvPwPAk383OphHNug3hYwHwYt8+Ve3NSmK0rgaBCjZOqrvCJ
-         NNTg==
-MIME-Version: 1.0
-X-Received: by 10.152.9.37 with SMTP id w5mr6015751laa.43.1438983264471; Fri,
- 07 Aug 2015 14:34:24 -0700 (PDT)
-Received: by 10.152.133.168 with HTTP; Fri, 7 Aug 2015 14:34:24 -0700 (PDT)
-In-Reply-To: <1438843590-24101-1-git-send-email-shawn.lin@rock-chips.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 08 Aug 2015 01:38:23 +0200 (CEST)
+Received: from lucky1.263xmail.com ([211.157.147.132]:34147 "EHLO
+        lucky1.263xmail.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27012768AbbHGXiTRmXPV (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 8 Aug 2015 01:38:19 +0200
+Received: from shawn.lin?rock-chips.com (unknown [192.168.167.131])
+        by lucky1.263xmail.com (Postfix) with SMTP id B383C56203;
+        Sat,  8 Aug 2015 07:38:02 +0800 (CST)
+X-263anti-spam: KSV:0;
+X-MAIL-GRAY: 1
+X-MAIL-DELIVERY: 0
+X-KSVirus-check: 0
+X-ABS-CHECKED: 4
+X-ADDR-CHECKED: 0
+Received: from [192.168.1.101] (localhost.localdomain [127.0.0.1])
+        by smtp.263.net (Postfix) with ESMTP id F11093F1;
+        Sat,  8 Aug 2015 07:37:58 +0800 (CST)
+X-RL-SENDER: shawn.lin@rock-chips.com
+X-FST-TO: devicetree@vger.kernel.org
+X-SENDER-IP: 220.200.5.85
+X-LOGIN-NAME: shawn.lin@rock-chips.com
+X-UNIQUE-TAG: <1f5e89bb24f2a987bef396515e21db8a>
+X-ATTACHMENT-NUM: 0
+X-SENDER: lintao@rock-chips.com
+X-DNS-TYPE: 0
+Received: from [192.168.1.101] (unknown [220.200.5.85])
+        by smtp.263.net (Postfix) whith ESMTP id 20840ZYJPVX;
+        Sat, 08 Aug 2015 07:38:01 +0800 (CST)
+Subject: Re: [RFC PATCH v4 1/9] mmc: dw_mmc: Add external dma interface
+ support
+To:     Joachim Eastwood <manabian@gmail.com>
 References: <1438843469-23807-1-git-send-email-shawn.lin@rock-chips.com>
-        <1438843590-24101-1-git-send-email-shawn.lin@rock-chips.com>
-Date:   Fri, 7 Aug 2015 23:34:24 +0200
-Message-ID: <CAGhQ9VxkFk19HGtToUm8bOU62Z8S0_dMqciUiNfJry-Jb5YF=Q@mail.gmail.com>
-Subject: Re: [RFC PATCH v4 7/9] arm: lpc18xx_defconfig: remove CONFIG_MMC_DW_IDMAC
-From:   Joachim Eastwood <manabian@gmail.com>
-To:     Shawn Lin <shawn.lin@rock-chips.com>
-Cc:     jh80.chung@samsung.com, Ulf Hansson <ulf.hansson@linaro.org>,
-        =?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>,
+ <1438843491-23853-1-git-send-email-shawn.lin@rock-chips.com>
+ <CAGhQ9VxUYvgGD=K3J3cQ0CNpCC-RfGE9cxhBHnTeAU2CmWkiKA@mail.gmail.com>
+Cc:     lintao@rock-chips.com, jh80.chung@samsung.com,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        =?UTF-8?Q?Heiko_St=c3=bcbner?= <heiko@sntech.de>,
         Doug Anderson <dianders@chromium.org>,
         Vineet.Gupta1@synopsys.com, Wei Xu <xuwei5@hisilicon.com>,
         Alexey Brodkin <abrodkin@synopsys.com>,
@@ -45,16 +50,24 @@ Cc:     jh80.chung@samsung.com, Ulf Hansson <ulf.hansson@linaro.org>,
         linux-mmc@vger.kernel.org,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         linux-rockchip@lists.infradead.org, devicetree@vger.kernel.org
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <manabian@gmail.com>
+From:   Shawn Lin <shawn.lin@rock-chips.com>
+Message-ID: <55C54153.2070709@rock-chips.com>
+Date:   Sat, 8 Aug 2015 07:37:55 +0800
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; rv:38.0) Gecko/20100101
+ Thunderbird/38.1.0
+MIME-Version: 1.0
+In-Reply-To: <CAGhQ9VxUYvgGD=K3J3cQ0CNpCC-RfGE9cxhBHnTeAU2CmWkiKA@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Return-Path: <shawn.lin@rock-chips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48728
+X-archive-position: 48729
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: manabian@gmail.com
+X-original-sender: shawn.lin@rock-chips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -67,36 +80,126 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 6 August 2015 at 08:46, Shawn Lin <shawn.lin@rock-chips.com> wrote:
-> DesignWare MMC Controller's transfer mode should be decided
-> at runtime instead of compile-time. So we remove this config
-> option and read dw_mmc's register to select DMA master.
+在 2015/8/8 5:32, Joachim Eastwood 写道:
+> Hi Shawn,
 >
-> Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
+> On 6 August 2015 at 08:44, Shawn Lin <shawn.lin@rock-chips.com> wrote:
+>> DesignWare MMC Controller can supports two types of DMA
+>> mode: external dma and internal dma. We get a RK312x platform
+>> integrated dw_mmc and ARM pl330 dma controller. This patch add
+>> edmac ops to support these platforms. I've tested it on RK312x
+>> platform with edmac mode and RK3288 platform with idmac mode.
+>>
+>> Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
+>
+>> @@ -2256,26 +2373,30 @@ static irqreturn_t dw_mci_interrupt(int irq, void *dev_id)
+>>
+>>          }
+>>
+>> -#ifdef CONFIG_MMC_DW_IDMAC
+>> -       /* Handle DMA interrupts */
+>> -       if (host->dma_64bit_address == 1) {
+>> -               pending = mci_readl(host, IDSTS64);
+>> -               if (pending & (SDMMC_IDMAC_INT_TI | SDMMC_IDMAC_INT_RI)) {
+>> -                       mci_writel(host, IDSTS64, SDMMC_IDMAC_INT_TI |
+>> -                                                       SDMMC_IDMAC_INT_RI);
+>> -                       mci_writel(host, IDSTS64, SDMMC_IDMAC_INT_NI);
+>> -                       host->dma_ops->complete(host);
+>> -               }
+>> -       } else {
+>> -               pending = mci_readl(host, IDSTS);
+>> -               if (pending & (SDMMC_IDMAC_INT_TI | SDMMC_IDMAC_INT_RI)) {
+>> -                       mci_writel(host, IDSTS, SDMMC_IDMAC_INT_TI |
+>> -                                                       SDMMC_IDMAC_INT_RI);
+>> -                       mci_writel(host, IDSTS, SDMMC_IDMAC_INT_NI);
+>> -                       host->dma_ops->complete(host);
+>> +       if (host->use_dma == TRANS_MODE_IDMAC) {
+>
+> Doing:
+> if (host->use_dma != TRANS_MODE_IDMAC)
+>      return IRQ_HANDLED;
+>
 
-Acked-by: Joachim Eastwood <manabian@gmail.com>
+Okay.
 
->  arch/arm/configs/lpc18xx_defconfig | 1 -
->  1 file changed, 1 deletion(-)
+> Could save you the extra level of identation you add below.
 >
-> diff --git a/arch/arm/configs/lpc18xx_defconfig b/arch/arm/configs/lpc18xx_defconfig
-> index 1c47f86..b7e8cda 100644
-> --- a/arch/arm/configs/lpc18xx_defconfig
-> +++ b/arch/arm/configs/lpc18xx_defconfig
-> @@ -119,7 +119,6 @@ CONFIG_USB_EHCI_HCD=y
->  CONFIG_USB_EHCI_ROOT_HUB_TT=y
->  CONFIG_MMC=y
->  CONFIG_MMC_DW=y
-> -CONFIG_MMC_DW_IDMAC=y
->  CONFIG_NEW_LEDS=y
->  CONFIG_LEDS_CLASS=y
->  CONFIG_LEDS_PCA9532=y
-> --
-> 2.3.7
+>> +               /* Handle DMA interrupts */
+>> +               if (host->dma_64bit_address == 1) {
+>> +                       pending = mci_readl(host, IDSTS64);
+>> +                       if (pending & (SDMMC_IDMAC_INT_TI |
+>> +                                      SDMMC_IDMAC_INT_RI)) {
+>> +                               mci_writel(host, IDSTS64,
+>> +                                          SDMMC_IDMAC_INT_TI |
+>> +                                          SDMMC_IDMAC_INT_RI);
+>> +                               mci_writel(host, IDSTS64, SDMMC_IDMAC_INT_NI);
+>> +                               host->dma_ops->complete((void *)host);
+>> +                       }
+>> +               } else {
+>> +                       pending = mci_readl(host, IDSTS);
+>> +                       if (pending & (SDMMC_IDMAC_INT_TI |
+>> +                                      SDMMC_IDMAC_INT_RI)) {
+>> +                               mci_writel(host, IDSTS,
+>> +                                          SDMMC_IDMAC_INT_TI |
+>> +                                          SDMMC_IDMAC_INT_RI);
+>> +                               mci_writel(host, IDSTS, SDMMC_IDMAC_INT_NI);
+>> +                               host->dma_ops->complete((void *)host);
+>> +                       }
+>>                  }
+>>          }
+>> -#endif
+>>
+>>          return IRQ_HANDLED;
+>>   }
 >
 >
-> --
-> To unsubscribe from this list: send the line "unsubscribe linux-kernel" in
-> the body of a message to majordomo@vger.kernel.org
-> More majordomo info at  http://vger.kernel.org/majordomo-info.html
-> Please read the FAQ at  http://www.tux.org/lkml/
+>> @@ -2437,6 +2567,21 @@ static void dw_mci_cleanup_slot(struct dw_mci_slot *slot, unsigned int id)
+>>   static void dw_mci_init_dma(struct dw_mci *host)
+>>   {
+>>          int addr_config;
+>> +       int trans_mode;
+>> +       struct device *dev = host->dev;
+>> +       struct device_node *np = dev->of_node;
+>> +
+>> +       /* Check tansfer mode */
+>> +       trans_mode = (mci_readl(host, HCON) >> 16) & 0x3;
+>
+> I think it would be nice if you could add some defines for 16 and 0x03
+> or add a macro like SDMMC_GET_FCNT() that is in dw_mmc.h.
+>
+
+yes, it's better to avoid magic number for register operation to make
+others understand w/o checking databook for details. And might more than 
+one (e.g "Check ADDR_CONFIG bit in HCON to find IDMAC address bus 
+width") should be modified.
+
+Although one patch only do one thing, I will drop by to make it in v5.
+
+>> +       if (trans_mode == 0) {
+>> +               trans_mode = TRANS_MODE_IDMAC;
+>> +       } else if (trans_mode == 1 || trans_mode == 2) {
+>> +               trans_mode = TRANS_MODE_EDMAC;
+>> +       } else {
+>> +               trans_mode = TRANS_MODE_PIO;
+>> +               goto no_dma;
+>> +       }
+>> +
+>>          /* Check ADDR_CONFIG bit in HCON to find IDMAC address bus width */
+>>          addr_config = (mci_readl(host, HCON) >> 27) & 0x01;
+>
+> I'll try to get this patch tested on my lpc18xx platform soon.
+> btw, the HCON reg on lpc18xx reads as 0x00e42cc1 (address 0x40004070).
+>
+
+yes, HCON[17:16] is 2b'00 means your lpc18xx use IDMAC.
+
+>
+> regard,
+> Joachim Eastwood
+>
+>
+>
+
+
+-- 
+Shawn Lin

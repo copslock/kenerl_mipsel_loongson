@@ -1,17 +1,17 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Aug 2015 18:21:34 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:46356 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Aug 2015 18:21:52 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:28501 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27012337AbbHGQU7E1jOx (ORCPT
+        with ESMTP id S27012306AbbHGQU7xMCQx (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Fri, 7 Aug 2015 18:20:59 +0200
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 352F69A68D485;
+        by Websense Email Security Gateway with ESMTPS id A8FDD394687B0;
         Fri,  7 Aug 2015 17:20:50 +0100 (IST)
 Received: from hhmail02.hh.imgtec.org (10.100.10.20) by KLMAIL01.kl.imgtec.org
  (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Fri, 7 Aug
  2015 17:20:53 +0100
 Received: from imgworks-VB.kl.imgtec.org (192.168.167.141) by
  hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
- 14.3.235.1; Fri, 7 Aug 2015 17:20:52 +0100
+ 14.3.235.1; Fri, 7 Aug 2015 17:20:53 +0100
 From:   Govindraj Raja <govindraj.raja@imgtec.com>
 To:     <linux-mips@linux-mips.org>, <linux-clk@vger.kernel.org>,
         Stephen Boyd <sboyd@codeaurora.org>,
@@ -26,9 +26,9 @@ CC:     Zdenko Pulitika <zdenko.pulitika@imgtec.com>,
         James Hogan <James.Hogan@imgtec.com>,
         "Ezequiel Garcia" <ezequiel@vanguardiasur.com.ar>,
         Govindraj Raja <govindraj.raja@imgtec.com>
-Subject: [PATCH v2 2/4] clk: pistachio: Fix override of clk-pll settings from boot loader
-Date:   Fri, 7 Aug 2015 17:20:11 +0100
-Message-ID: <1438964413-18876-3-git-send-email-govindraj.raja@imgtec.com>
+Subject: [PATCH v2 3/4] clk: pistachio: Fix PLL rate calculation in integer mode
+Date:   Fri, 7 Aug 2015 17:20:12 +0100
+Message-ID: <1438964413-18876-4-git-send-email-govindraj.raja@imgtec.com>
 X-Mailer: git-send-email 1.9.1
 In-Reply-To: <1438964413-18876-1-git-send-email-govindraj.raja@imgtec.com>
 References: <1438964413-18876-1-git-send-email-govindraj.raja@imgtec.com>
@@ -39,7 +39,7 @@ Return-Path: <Govindraj.Raja@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48719
+X-archive-position: 48720
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -58,48 +58,110 @@ X-list: linux-mips
 
 From: Zdenko Pulitika <zdenko.pulitika@imgtec.com>
 
-PLL enable callbacks are overriding PLL mode (int/frac) and
-Noise reduction (on/off) settings set by the boot loader which
-results in the incorrect clock rate.
+.recalc_rate callback for the fractional PLL doesn't take operating
+mode into account when calculating PLL rate. This results in
+the incorrect PLL rates when PLL is operating in integer mode.
 
-PLL mode and noise reduction are defined by the DSMPD and DACPD bits
-of the PLL control register. PLL .enable() callbacks enable PLL
-by deasserting all power-down bits of the PLL control register,
-including DSMPD and DACPD bits, which is not necessary since
-these bits don't actually enable/disable PLL.
+Operating mode of fractional PLL is based on the value of the
+fractional divider. Currently it assumes that the PLL will always
+be configured in fractional mode which may not be
+the case. This may result in the wrong output frequency.
 
-This commit fixes the problem by removing DSMPD and DACPD bits
-from the "PLL enable" mask.
+Also vco was calculated based on the current operating mode which
+makes no sense because .set_rate is setting operating mode. Instead,
+vco should be calculated using PLL settings that are about to be set.
 
-Reviewed-by: Andrew Bresitcker <abrestic@chromium.org>
 Signed-off-by: Zdenko Pulitika <zdenko.pulitika@imgtec.com>
 Signed-off-by: Govindraj Raja <govindraj.raja@imgtec.com>
 ---
- drivers/clk/pistachio/clk-pll.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/clk/pistachio/clk-pll.c | 46 +++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 44 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/clk/pistachio/clk-pll.c b/drivers/clk/pistachio/clk-pll.c
-index 68066ef..9a38a2b 100644
+index 9a38a2b..5554fa4 100644
 --- a/drivers/clk/pistachio/clk-pll.c
 +++ b/drivers/clk/pistachio/clk-pll.c
-@@ -134,8 +134,7 @@ static int pll_gf40lp_frac_enable(struct clk_hw *hw)
- 	u32 val;
+@@ -65,6 +65,10 @@
+ #define MIN_OUTPUT_FRAC			12000000UL
+ #define MAX_OUTPUT_FRAC			1600000000UL
  
- 	val = pll_readl(pll, PLL_CTRL3);
--	val &= ~(PLL_FRAC_CTRL3_PD | PLL_FRAC_CTRL3_DACPD |
--		 PLL_FRAC_CTRL3_DSMPD | PLL_FRAC_CTRL3_FOUTPOSTDIVPD |
-+	val &= ~(PLL_FRAC_CTRL3_PD | PLL_FRAC_CTRL3_FOUTPOSTDIVPD |
- 		 PLL_FRAC_CTRL3_FOUT4PHASEPD | PLL_FRAC_CTRL3_FOUTVCOPD);
- 	pll_writel(pll, val, PLL_CTRL3);
++/* Fractional PLL operating modes */
++#define PLL_MODE_INT			1
++#define PLL_MODE_FRAC			0
++
+ struct pistachio_clk_pll {
+ 	struct clk_hw hw;
+ 	void __iomem *base;
+@@ -99,6 +103,29 @@ static inline struct pistachio_clk_pll *to_pistachio_pll(struct clk_hw *hw)
+ 	return container_of(hw, struct pistachio_clk_pll, hw);
+ }
  
-@@ -277,7 +276,7 @@ static int pll_gf40lp_laint_enable(struct clk_hw *hw)
- 	u32 val;
++static inline u32 pll_frac_get_mode(struct clk_hw *hw)
++{
++	struct pistachio_clk_pll *pll = to_pistachio_pll(hw);
++	u32 val;
++
++	val = pll_readl(pll, PLL_CTRL3) & PLL_FRAC_CTRL3_DSMPD;
++	return val ? PLL_MODE_INT : PLL_MODE_FRAC;
++}
++
++static inline void pll_frac_set_mode(struct clk_hw *hw, u32 mode)
++{
++	struct pistachio_clk_pll *pll = to_pistachio_pll(hw);
++	u32 val;
++
++	val = pll_readl(pll, PLL_CTRL3);
++	if (mode == PLL_MODE_INT)
++		val |= PLL_FRAC_CTRL3_DSMPD | PLL_FRAC_CTRL3_DACPD;
++	else
++		val &= ~(PLL_FRAC_CTRL3_DSMPD | PLL_FRAC_CTRL3_DACPD);
++
++	pll_writel(pll, val, PLL_CTRL3);
++}
++
+ static struct pistachio_pll_rate_table *
+ pll_get_params(struct pistachio_clk_pll *pll, unsigned long fref,
+ 	       unsigned long fout)
+@@ -180,7 +207,11 @@ static int pll_gf40lp_frac_set_rate(struct clk_hw *hw, unsigned long rate,
+ 	if (!params || !params->refdiv)
+ 		return -EINVAL;
  
- 	val = pll_readl(pll, PLL_CTRL1);
--	val &= ~(PLL_INT_CTRL1_PD | PLL_INT_CTRL1_DSMPD |
-+	val &= ~(PLL_INT_CTRL1_PD |
- 		 PLL_INT_CTRL1_FOUTPOSTDIVPD | PLL_INT_CTRL1_FOUTVCOPD);
- 	pll_writel(pll, val, PLL_CTRL1);
+-	vco = div64_u64(params->fref * params->fbdiv, params->refdiv);
++	/* calculate vco */
++	vco = params->fref;
++	vco *= (params->fbdiv << 24) + params->frac;
++	vco = div64_u64(vco, params->refdiv << 24);
++
+ 	if (vco < MIN_VCO_FRAC_FRAC || vco > MAX_VCO_FRAC_FRAC)
+ 		pr_warn("%s: VCO %llu is out of range %lu..%lu\n", name, vco,
+ 			MIN_VCO_FRAC_FRAC, MAX_VCO_FRAC_FRAC);
+@@ -224,6 +255,12 @@ static int pll_gf40lp_frac_set_rate(struct clk_hw *hw, unsigned long rate,
+ 		(params->postdiv2 << PLL_FRAC_CTRL2_POSTDIV2_SHIFT);
+ 	pll_writel(pll, val, PLL_CTRL2);
  
++	/* set operating mode */
++	if (params->frac)
++		pll_frac_set_mode(hw, PLL_MODE_FRAC);
++	else
++		pll_frac_set_mode(hw, PLL_MODE_INT);
++
+ 	if (enabled)
+ 		pll_lock(pll);
+ 
+@@ -247,8 +284,13 @@ static unsigned long pll_gf40lp_frac_recalc_rate(struct clk_hw *hw,
+ 		PLL_FRAC_CTRL2_POSTDIV2_MASK;
+ 	frac = (val >> PLL_FRAC_CTRL2_FRAC_SHIFT) & PLL_FRAC_CTRL2_FRAC_MASK;
+ 
++	/* get operating mode (int/frac) and calculate rate accordingly */
+ 	rate = parent_rate;
+-	rate *= (fbdiv << 24) + frac;
++	if (pll_frac_get_mode(hw) == PLL_MODE_FRAC)
++		rate *= (fbdiv << 24) + frac;
++	else
++		rate *= (fbdiv << 24);
++
+ 	rate = do_div_round_closest(rate, (prediv * postdiv1 * postdiv2) << 24);
+ 
+ 	return rate;
 -- 
 1.9.1

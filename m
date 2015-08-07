@@ -1,59 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Aug 2015 16:54:20 +0200 (CEST)
-Received: from out5-smtp.messagingengine.com ([66.111.4.29]:33737 "EHLO
-        out5-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012265AbbHGOyShYs20 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 7 Aug 2015 16:54:18 +0200
-Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
-        by mailout.nyi.internal (Postfix) with ESMTP id A969820306
-        for <linux-mips@linux-mips.org>; Fri,  7 Aug 2015 10:54:17 -0400 (EDT)
-Received: from frontend2 ([10.202.2.161])
-  by compute1.internal (MEProxy); Fri, 07 Aug 2015 10:54:17 -0400
-DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; d=slimlogic.co.uk;
-         h=cc:content-type:date:from:in-reply-to:message-id:mime-version
-        :references:subject:to:x-sasl-enc:x-sasl-enc; s=mesmtp; bh=pJTZK
-        3VjcM6PoVveSxLeD+PFw0k=; b=UlSg19iApuZ4ACUqBDGtB8YHHwJb3vHVYs0HM
-        OQq39Ns0xfetOUVnMCQ5gYS5pYkW3GBs3n5qSwHxKdf9fzgW9dy8N/woM68bZ1KX
-        /Qo2yAGCsRf3TGhYIzfkSo3uu6n9+J9t1uH5wwEeCB4l8mIHc+dRbi8Dr1M2+xDg
-        +AzvTM=
-DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:content-type:date:from:in-reply-to
-        :message-id:mime-version:references:subject:to:x-sasl-enc
-        :x-sasl-enc; s=smtpout; bh=pJTZK3VjcM6PoVveSxLeD+PFw0k=; b=ZxjHo
-        250G/QXMSqA3wd9U3ISh2RV/vI0iSYS59cuRHM77JSAJmzFW8W8nyGsvdsfNeCOU
-        MvsXrcWoC05+ZCiLaB48ydIWYLjyD7y1I/8RuhlohnlRsdM4Vg/FhpWQsB+/7/wv
-        Cd0Ju9dIIojyeSHOmjuGrbjUrJqH25tYJNlCVI=
-X-Sasl-enc: 74bmpBXYtO7JJ1gVmpu46wL8ZtBPiMG3BN2LPwu/oHZE 1438959257
-Received: from localhost (host-92-22-10-194.as13285.net [92.22.10.194])
-        by mail.messagingengine.com (Postfix) with ESMTPA id EF75A68015A;
-        Fri,  7 Aug 2015 10:54:16 -0400 (EDT)
-Date:   Fri, 7 Aug 2015 15:54:14 +0100
-From:   Graeme Gregory <gg@slimlogic.co.uk>
-To:     David Daney <ddaney.cavm@gmail.com>
-Cc:     netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
-        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        Robert Richter <rrichter@cavium.com>,
-        Tomasz Nowicki <tomasz.nowicki@linaro.org>,
-        Sunil Goutham <sgoutham@cavium.com>,
-        linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
-        David Daney <david.daney@cavium.com>
-Subject: Re: [PATCH 2/2] net, thunder, bgx: Add support for ACPI binding.
-Message-ID: <20150807145414.GA5468@xora-haswell.xora.org.uk>
-References: <1438907590-29649-1-git-send-email-ddaney.cavm@gmail.com>
- <1438907590-29649-3-git-send-email-ddaney.cavm@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Aug 2015 17:14:48 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:38051 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27011662AbbHGPOqETiZ0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 7 Aug 2015 17:14:46 +0200
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id ADE5DBC8CDFA9;
+        Fri,  7 Aug 2015 16:14:36 +0100 (IST)
+Received: from hhmail02.hh.imgtec.org (10.100.10.20) by KLMAIL01.kl.imgtec.org
+ (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Fri, 7 Aug
+ 2015 16:14:39 +0100
+Received: from hhmail02.hh.imgtec.org ([::1]) by hhmail02.hh.imgtec.org
+ ([::1]) with mapi id 14.03.0235.001; Fri, 7 Aug 2015 16:14:39 +0100
+From:   Govindraj Raja <Govindraj.Raja@imgtec.com>
+To:     Daniel Lezcano <daniel.lezcano@linaro.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+CC:     Thomas Gleixner <tglx@linutronix.de>,
+        Andrew Bresticker <abrestic@chromium.org>,
+        James Hartley <James.Hartley@imgtec.com>,
+        "Damien Horsley" <Damien.Horsley@imgtec.com>,
+        James Hogan <James.Hogan@imgtec.com>,
+        Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>,
+        Ezequiel Garcia <Ezequiel.Garcia@imgtec.com>
+Subject: RE: [PATCH v5 6/7] clocksource: Add Pistachio clocksource-only
+ driver
+Thread-Topic: [PATCH v5 6/7] clocksource: Add Pistachio clocksource-only
+ driver
+Thread-Index: AQHQ0DowIj92zDyCIEa7yxK/5E3b8Z4ARlOAgABdXMA=
+Date:   Fri, 7 Aug 2015 15:14:38 +0000
+Message-ID: <4BF5E8683E87FC4DA89822A5A3EB60CB6F25D2@hhmail02.hh.imgtec.org>
+References: <1438860138-31718-1-git-send-email-govindraj.raja@imgtec.com>
+ <55C48841.3050902@linaro.org>
+In-Reply-To: <55C48841.3050902@linaro.org>
+Accept-Language: en-US
+Content-Language: en-AU
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [192.168.167.98]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1438907590-29649-3-git-send-email-ddaney.cavm@gmail.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <gg@slimlogic.co.uk>
+Return-Path: <Govindraj.Raja@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48714
+X-archive-position: 48715
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gg@slimlogic.co.uk
+X-original-sender: Govindraj.Raja@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -66,208 +62,101 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Aug 06, 2015 at 05:33:10PM -0700, David Daney wrote:
-> From: David Daney <david.daney@cavium.com>
-> 
-> Find out which PHYs belong to which BGX instance in the ACPI way.
-> 
-> Set the MAC address of the device as provided by ACPI tables. This is
-> similar to the implementation for devicetree in
-> of_get_mac_address(). The table is searched for the device property
-> entries "mac-address", "local-mac-address" and "address" in that
-> order. The address is provided in a u64 variable and must contain a
-> valid 6 bytes-len mac addr.
-> 
-> Based on code from: Narinder Dhillon <ndhillon@cavium.com>
->                     Tomasz Nowicki <tomasz.nowicki@linaro.org>
->                     Robert Richter <rrichter@cavium.com>
-> 
-> Signed-off-by: Tomasz Nowicki <tomasz.nowicki@linaro.org>
-> Signed-off-by: Robert Richter <rrichter@cavium.com>
-> Signed-off-by: David Daney <david.daney@cavium.com>
-> ---
->  drivers/net/ethernet/cavium/thunder/thunder_bgx.c | 137 +++++++++++++++++++++-
->  1 file changed, 135 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/cavium/thunder/thunder_bgx.c b/drivers/net/ethernet/cavium/thunder/thunder_bgx.c
-> index 615b2af..2056583 100644
-> --- a/drivers/net/ethernet/cavium/thunder/thunder_bgx.c
-> +++ b/drivers/net/ethernet/cavium/thunder/thunder_bgx.c
-> @@ -6,6 +6,7 @@
->   * as published by the Free Software Foundation.
->   */
->  
-> +#include <linux/acpi.h>
->  #include <linux/module.h>
->  #include <linux/interrupt.h>
->  #include <linux/pci.h>
-> @@ -26,7 +27,7 @@
->  struct lmac {
->  	struct bgx		*bgx;
->  	int			dmac;
-> -	unsigned char		mac[ETH_ALEN];
-> +	u8			mac[ETH_ALEN];
->  	bool			link_up;
->  	int			lmacid; /* ID within BGX */
->  	int			lmacid_bd; /* ID on board */
-> @@ -835,6 +836,133 @@ static void bgx_get_qlm_mode(struct bgx *bgx)
->  	}
->  }
->  
-> +#ifdef CONFIG_ACPI
-> +
-> +static int bgx_match_phy_id(struct device *dev, void *data)
-> +{
-> +	struct phy_device *phydev = to_phy_device(dev);
-> +	u32 *phy_id = data;
-> +
-> +	if (phydev->addr == *phy_id)
-> +		return 1;
-> +
-> +	return 0;
-> +}
-> +
-> +static const char * const addr_propnames[] = {
-> +	"mac-address",
-> +	"local-mac-address",
-> +	"address",
-> +};
-> +
-> +static int acpi_get_mac_address(struct acpi_device *adev, u8 *dst)
-> +{
-> +	const union acpi_object *prop;
-> +	u64 mac_val;
-> +	u8 mac[ETH_ALEN];
-> +	int i, j;
-> +	int ret;
-> +
-> +	for (i = 0; i < ARRAY_SIZE(addr_propnames); i++) {
-> +		ret = acpi_dev_get_property(adev, addr_propnames[i],
-> +					    ACPI_TYPE_INTEGER, &prop);
-
-Shouldn't this be trying to use device_property_read_* API and making
-the DT/ACPI path the same where possible?
-
-Graeme
-
-> +		if (ret)
-> +			continue;
-> +
-> +		mac_val = prop->integer.value;
-> +
-> +		if (mac_val & (~0ULL << 48))
-> +			continue;	/* more than 6 bytes */
-> +
-> +		for (j = 0; j < ARRAY_SIZE(mac); j++)
-> +			mac[j] = (u8)(mac_val >> (8 * j));
-> +		if (!is_valid_ether_addr(mac))
-> +			continue;
-> +
-> +		memcpy(dst, mac, ETH_ALEN);
-> +
-> +		return 0;
-> +	}
-> +
-> +	return ret ? ret : -EINVAL;
-> +}
-> +
-> +static acpi_status bgx_acpi_register_phy(acpi_handle handle,
-> +					 u32 lvl, void *context, void **rv)
-> +{
-> +	struct acpi_reference_args args;
-> +	const union acpi_object *prop;
-> +	struct bgx *bgx = context;
-> +	struct acpi_device *adev;
-> +	struct device *phy_dev;
-> +	u32 phy_id;
-> +
-> +	if (acpi_bus_get_device(handle, &adev))
-> +		goto out;
-> +
-> +	SET_NETDEV_DEV(&bgx->lmac[bgx->lmac_count].netdev, &bgx->pdev->dev);
-> +
-> +	acpi_get_mac_address(adev, bgx->lmac[bgx->lmac_count].mac);
-> +
-> +	bgx->lmac[bgx->lmac_count].lmacid = bgx->lmac_count;
-> +
-> +	if (acpi_dev_get_property_reference(adev, "phy-handle", 0, &args))
-> +		goto out;
-> +
-> +	if (acpi_dev_get_property(args.adev, "phy-channel", ACPI_TYPE_INTEGER, &prop))
-> +		goto out;
-> +
-> +	phy_id = prop->integer.value;
-> +
-> +	phy_dev = bus_find_device(&mdio_bus_type, NULL, (void *)&phy_id,
-> +				  bgx_match_phy_id);
-> +	if (!phy_dev)
-> +		goto out;
-> +
-> +	bgx->lmac[bgx->lmac_count].phydev = to_phy_device(phy_dev);
-> +out:
-> +	bgx->lmac_count++;
-> +	return AE_OK;
-> +}
-> +
-> +static acpi_status bgx_acpi_match_id(acpi_handle handle, u32 lvl,
-> +				     void *context, void **ret_val)
-> +{
-> +	struct acpi_buffer string = { ACPI_ALLOCATE_BUFFER, NULL };
-> +	struct bgx *bgx = context;
-> +	char bgx_sel[5];
-> +
-> +	snprintf(bgx_sel, 5, "BGX%d", bgx->bgx_id);
-> +	if (ACPI_FAILURE(acpi_get_name(handle, ACPI_SINGLE_NAME, &string))) {
-> +		pr_warn("Invalid link device\n");
-> +		return AE_OK;
-> +	}
-> +
-> +	if (strncmp(string.pointer, bgx_sel, 4))
-> +		return AE_OK;
-> +
-> +	acpi_walk_namespace(ACPI_TYPE_DEVICE, handle, 1,
-> +			    bgx_acpi_register_phy, NULL, bgx, NULL);
-> +
-> +	kfree(string.pointer);
-> +	return AE_CTRL_TERMINATE;
-> +}
-> +
-> +static int bgx_init_acpi_phy(struct bgx *bgx)
-> +{
-> +	acpi_get_devices(NULL, bgx_acpi_match_id, bgx, (void **)NULL);
-> +	return 0;
-> +}
-> +
-> +#else
-> +
-> +static int bgx_init_acpi_phy(struct bgx *bgx)
-> +{
-> +	return -ENODEV;
-> +}
-> +
-> +#endif /* CONFIG_ACPI */
-> +
->  #if IS_ENABLED(CONFIG_OF_MDIO)
->  
->  static int bgx_init_of_phy(struct bgx *bgx)
-> @@ -882,7 +1010,12 @@ static int bgx_init_of_phy(struct bgx *bgx)
->  
->  static int bgx_init_phy(struct bgx *bgx)
->  {
-> -	return bgx_init_of_phy(bgx);
-> +	int err = bgx_init_of_phy(bgx);
-> +
-> +	if (err != -ENODEV)
-> +		return err;
-> +
-> +	return bgx_init_acpi_phy(bgx);
->  }
->  
->  static int bgx_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
-> -- 
-> 1.9.1
-> 
-> --
-> To unsubscribe from this list: send the line "unsubscribe linux-acpi" in
-> the body of a message to majordomo@vger.kernel.org
-> More majordomo info at  http://vger.kernel.org/majordomo-info.html
+SGkgRGFuaWVsLA0KDQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IERhbmll
+bCBMZXpjYW5vIFttYWlsdG86ZGFuaWVsLmxlemNhbm9AbGluYXJvLm9yZ10NCj4gU2VudDogMDcg
+QXVndXN0IDIwMTUgMTE6MjggQU0NCj4gVG86IEdvdmluZHJhaiBSYWphOyBsaW51eC1rZXJuZWxA
+dmdlci5rZXJuZWwub3JnOyBsaW51eC1taXBzQGxpbnV4LW1pcHMub3JnOw0KPiBkZXZpY2V0cmVl
+QHZnZXIua2VybmVsLm9yZw0KPiBDYzogVGhvbWFzIEdsZWl4bmVyOyBBbmRyZXcgQnJlc3RpY2tl
+cjsgSmFtZXMgSGFydGxleTsgRGFtaWVuIEhvcnNsZXk7IEphbWVzDQo+IEhvZ2FuOyBFemVxdWll
+bCBHYXJjaWE7IEV6ZXF1aWVsIEdhcmNpYQ0KPiBTdWJqZWN0OiBSZTogW1BBVENIIHY1IDYvN10g
+Y2xvY2tzb3VyY2U6IEFkZCBQaXN0YWNoaW8gY2xvY2tzb3VyY2Utb25seSBkcml2ZXINCj4gDQo+
+IE9uIDA4LzA2LzIwMTUgMDE6MjIgUE0sIEdvdmluZHJhaiBSYWphIHdyb3RlOg0KPiA+IEZyb206
+IEV6ZXF1aWVsIEdhcmNpYSA8ZXplcXVpZWwuZ2FyY2lhQGltZ3RlYy5jb20+DQo+ID4NCj4gPiBU
+aGUgUGlzdGFjaGlvIFNvQyBwcm92aWRlcyBmb3VyIGdlbmVyYWwgcHVycG9zZSB0aW1lcnMsIGFu
+ZCBhbGxvdyB0bw0KPiA+IGltcGxlbWVudCBhIGNsb2Nrc291cmNlIGRyaXZlci4NCj4gPg0KPiA+
+IFRoaXMgZHJpdmVyIGNhbiBiZSB1c2VkIGFzIGEgcmVwbGFjZW1lbnQgZm9yIHRoZSBNSVBTIEdJ
+QyBhbmQgTUlQUyBSNEsNCj4gPiBjbG9ja3NvdXJjZXMgYW5kIHNjaGVkIGNsb2Nrcywgd2hpY2gg
+YXJlIGNsb2NrZWQgZnJvbSB0aGUgQ1BVIGNsb2NrLg0KPiA+DQo+ID4gR2l2ZW4gdGhlIGdlbmVy
+YWwgcHVycG9zZSB0aW1lcnMgYXJlIGNsb2NrZWQgZnJvbSBhbiBpbmRlcGVuZGVudA0KPiA+IGNs
+b2NrLCB0aGlzIG5ldyBjbG9ja3NvdXJjZSBkcml2ZXIgd2lsbCBiZSB1c2VmdWwgdG8gaW50cm9k
+dWNlIENQVUZyZXENCj4gPiBzdXBwb3J0IGZvciBQaXN0YWNoaW8gbWFjaGluZXMuDQo+ID4NCj4g
+PiBTaWduZWQtb2ZmLWJ5OiBFemVxdWllbCBHYXJjaWEgPGV6ZXF1aWVsLmdhcmNpYUBpbWd0ZWMu
+Y29tPg0KPiA+IFNpZ25lZC1vZmYtYnk6IEdvdmluZHJhaiBSYWphIDxnb3ZpbmRyYWoucmFqYUBp
+bWd0ZWMuY29tPg0KPiA+IC0tLQ0KPiA+DQo+ID4gY2hhbmdlcyBmcm9tIHY0DQo+ID4gLS0tLS0t
+LS0tLS0tLS0tLQ0KPiA+IEZpeGVzIGNvbW1lbnRzIGZyb20gRGFuaWVsIGFzIGRpY3Vzc2VkIGlu
+IGJlbG93IHRocmVhZDoNCj4gPiBodHRwOi8vcGF0Y2h3b3JrLmxpbnV4LW1pcHMub3JnL3BhdGNo
+LzEwNzg0Lw0KPiA+DQo+ID4NCj4gPiAgIGRyaXZlcnMvY2xvY2tzb3VyY2UvS2NvbmZpZyAgICAg
+ICAgICB8ICAgNSArDQo+ID4gICBkcml2ZXJzL2Nsb2Nrc291cmNlL01ha2VmaWxlICAgICAgICAg
+fCAgIDEgKw0KPiA+ICAgZHJpdmVycy9jbG9ja3NvdXJjZS90aW1lLXBpc3RhY2hpby5jIHwgMjE2
+DQo+ICsrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrDQo+ID4gICAzIGZpbGVzIGNo
+YW5nZWQsIDIyMiBpbnNlcnRpb25zKCspDQo+ID4gICBjcmVhdGUgbW9kZSAxMDA2NDQgZHJpdmVy
+cy9jbG9ja3NvdXJjZS90aW1lLXBpc3RhY2hpby5jDQo+ID4NCj4gPiBkaWZmIC0tZ2l0IGEvZHJp
+dmVycy9jbG9ja3NvdXJjZS9LY29uZmlnIGIvZHJpdmVycy9jbG9ja3NvdXJjZS9LY29uZmlnDQo+
+IA0KPiBbIC4uLiBdDQo+IA0KPiA+IGluZGV4IDRlNTc3MzAuLmU2NDI4MjUgMTAwNjQ0DQo+ID4g
+LS0tIGEvZHJpdmVycy9jbG9ja3NvdXJjZS9LY29uZmlnDQo+ID4gKysrIGIvZHJpdmVycy9jbG9j
+a3NvdXJjZS9LY29uZmlnDQo+ID4gQEAgLTExMSw2ICsxMTEsMTEgQEAgY29uZmlnIENMS1NSQ19M
+UEMzMlhYDQo+ID4gICAJc2VsZWN0IENMS1NSQ19NTUlPDQo+ID4gICAJc2VsZWN0IENMS1NSQ19P
+Rg0KPiA+DQo+ID4gK2NvbmZpZyBDTEtTUkNfUElTVEFDSElPDQo+ID4gKwlib29sDQo+ID4gKwlk
+ZWZhdWx0IHkgaWYgTUFDSF9QSVNUQUNISU8NCj4gDQo+IFlvdSBkb24ndCBuZWVkIHRvIGFkZCB0
+aGlzIGNvbmRpdGlvbi4NCg0KT2sgZmluZS4gV2lsbCByZW1vdmUgaXQuDQoNCj4gDQo+ID4gKwlz
+ZWxlY3QgQ0xLU1JDX09GDQo+IA0KPiBbIC4uLiBdDQo+IA0KPiA+ICsNCj4gPiArc3RydWN0IHBp
+c3RhY2hpb19jbG9ja3NvdXJjZSBwY3NfZ3B0Ow0KPiANCj4gc3RhdGljLg0KPiANCg0KT2suDQoN
+Cj4gPiArI2RlZmluZSB0b19waXN0YWNoaW9fY2xvY2tzb3VyY2UoY3MpCVwNCj4gPiArCWNvbnRh
+aW5lcl9vZihjcywgc3RydWN0IHBpc3RhY2hpb19jbG9ja3NvdXJjZSwgY3MpDQo+ID4gKw0KPiA+
+ICtzdGF0aWMgaW5saW5lIHUzMiBncHRfcmVhZGwodm9pZCBfX2lvbWVtICpiYXNlLCB1MzIgb2Zm
+c2V0LCB1MzINCj4gPiArZ3B0X2lkKSB7DQo+ID4gKwlyZXR1cm4gcmVhZGwoYmFzZSArIDB4MjAg
+KiBncHRfaWQgKyBvZmZzZXQpOw0KPiANCj4gQXJlIHlvdSBzdXJlIG9mIHRoZSBhZGRyZXNzIGNv
+bXB1dGF0aW9uID8gSSBndWVzcyBpdCBpcyBjb3JyZWN0IGJ1dCBqdXN0IHdhbnRlZA0KPiB5b3Ug
+dG8gZG91YmxlIGNoZWNrLg0KPiANCg0KWWVzLCB0ZXN0ZWQgaXQgb24gUGlzdGFjaGlvIGJyaW5n
+IHVwIGJvYXJkLg0KDQo+ID4gK30NCj4gPiArDQo+ID4gK3N0YXRpYyBpbmxpbmUgdm9pZCBncHRf
+d3JpdGVsKHZvaWQgX19pb21lbSAqYmFzZSwgdTMyIHZhbHVlLCB1MzIgb2Zmc2V0LA0KPiA+ICsJ
+CXUzMiBncHRfaWQpDQo+ID4gK3sNCj4gPiArCXdyaXRlbCh2YWx1ZSwgYmFzZSArIDB4MjAgKiBn
+cHRfaWQgKyBvZmZzZXQpOyB9DQo+ID4gKw0KPiA+ICtzdGF0aWMgY3ljbGVfdCBwaXN0YWNoaW9f
+Y2xvY2tzb3VyY2VfcmVhZF9jeWNsZXMoc3RydWN0IGNsb2Nrc291cmNlDQo+ID4gKypjcykgew0K
+PiA+ICsJc3RydWN0IHBpc3RhY2hpb19jbG9ja3NvdXJjZSAqcGNzID0gdG9fcGlzdGFjaGlvX2Ns
+b2Nrc291cmNlKGNzKTsNCj4gPiArCXUzMiBjb3VudGVyLCBvdmVyZmx3Ow0KPiA+ICsJdW5zaWdu
+ZWQgbG9uZyBmbGFnczsNCj4gPiArDQo+ID4gKwkvKiBUaGUgY291bnRlciB2YWx1ZSBpcyBvbmx5
+IHJlZnJlc2hlZCBhZnRlciB0aGUgb3ZlcmZsb3cgdmFsdWUgaXMgcmVhZC4NCj4gPiArCSAqIEFu
+ZCB0aGV5IG11c3QgYmUgcmVhZCBpbiBzdHJpY3Qgb3JkZXIsIGhlbmNlIHJhdyBzcGluIGxvY2sg
+YWRkZWQuDQo+ID4gKwkgKi8NCj4gDQo+IG5pdDogZXh0cmEgY2FycmlhZ2UgcmV0dXJuIGFuZCBj
+b21tZW50IGZvcm1hdDoNCj4gDQo+IAkvKg0KPiAJICogYmxhYmxhDQo+IAkgKi8NCj4gDQoNCk9r
+Lg0KDQo+ID4gKwlyYXdfc3Bpbl9sb2NrX2lycXNhdmUoJnBjcy0+bG9jaywgZmxhZ3MpOw0KPiA+
+ICsJb3ZlcmZsdyA9IGdwdF9yZWFkbChwY3MtPmJhc2UsIFRJTUVSX0NVUlJFTlRfT1ZFUkZMT1df
+VkFMVUUsDQo+IDApOw0KPiA+ICsJY291bnRlciA9IGdwdF9yZWFkbChwY3MtPmJhc2UsIFRJTUVS
+X0NVUlJFTlRfVkFMVUUsIDApOw0KPiA+ICsJcmF3X3NwaW5fdW5sb2NrX2lycXJlc3RvcmUoJnBj
+cy0+bG9jaywgZmxhZ3MpOw0KPiA+ICsNCj4gPiArCXJldHVybiB+KGN5Y2xlX3QpY291bnRlcjsN
+Cj4gPiArfQ0KPiA+ICsNCj4gPiArc3RhdGljIHU2NCBub3RyYWNlIHBpc3RhY2hpb19yZWFkX3Nj
+aGVkX2Nsb2NrKHZvaWQpIHsNCj4gPiArCXJldHVybiBwaXN0YWNoaW9fY2xvY2tzb3VyY2VfcmVh
+ZF9jeWNsZXMoJnBjc19ncHQuY3MpOw0KPiANCj4gQ2FuIHlvdSBkb3VibGUgY2hlY2sgdGhlIHUz
+MiBjYXN0IHRvIGN5Y2xlX3QgcmV0dXJuaW5nIGEgdTY0IGZyb20gdGhpcyBmdW5jdGlvbiA/DQo+
+IA0KDQpTb3JyeSBJIGRpZG4ndCBnZXQgeW91IG92ZXIgdGhpcyBjb21tZW50Lg0KDQpBRkFJVSwN
+Cg0KZnJvbSBpbmNsdWRlL2xpbnV4L3R5cGVzLmgNClsuLl0NCg0KLyogY2xvY2tzb3VyY2UgY3lj
+bGUgYmFzZSB0eXBlICovDQp0eXBlZGVmIHU2NCBjeWNsZV90Ow0KDQpbLi5dDQoNCkRpZCB5b3Ug
+bWVhbiB0byBjaGVjayB0aGlzPw0KDQo+ID4gK30NCj4gPiArDQo+ID4gK3N0YXRpYyB2b2lkIHBp
+c3RhY2hpb19jbGtzcmNfc2V0X21vZGUoc3RydWN0IGNsb2Nrc291cmNlICpjcywgaW50IHRpbWVy
+aWR4LA0KPiA+ICsJCQlpbnQgZW5hYmxlKQ0KPiA+ICt7DQo+ID4gKwlzdHJ1Y3QgcGlzdGFjaGlv
+X2Nsb2Nrc291cmNlICpwY3MgPSB0b19waXN0YWNoaW9fY2xvY2tzb3VyY2UoY3MpOw0KPiA+ICsJ
+dTMyIHZhbDsNCj4gPiArDQo+ID4gKwl2YWwgPSBncHRfcmVhZGwocGNzLT5iYXNlLCBUSU1FUl9D
+RkcsIHRpbWVyaWR4KTsNCj4gPiArCWlmIChlbmFibGUpDQo+ID4gKwkJdmFsIHw9IFRJTUVSX01F
+X0xPQ0FMOw0KPiA+ICsJZWxzZQ0KPiA+ICsJCXZhbCAmPSB+VElNRVJfTUVfTE9DQUw7DQo+ID4g
+Kw0KPiA+ICsJZ3B0X3dyaXRlbChwY3MtPmJhc2UsIHZhbCwgVElNRVJfQ0ZHLCB0aW1lcmlkeCk7
+IH0NCj4gPiArDQo+ID4gK3N0YXRpYyB2b2lkIHBpc3RhY2hpb19jbGtzcmNfZW5hYmxlKHN0cnVj
+dCBjbG9ja3NvdXJjZSAqY3MsIGludA0KPiA+ICt0aW1lcmlkeCkgew0KPiA+ICsJc3RydWN0IHBp
+c3RhY2hpb19jbG9ja3NvdXJjZSAqcGNzID0gdG9fcGlzdGFjaGlvX2Nsb2Nrc291cmNlKGNzKTsN
+Cj4gPiArDQo+ID4gKwkvKiBEaXNhYmxlIEdQVCBsb2NhbCBiZWZvcmUgbG9hZGluZyByZWxvYWQg
+dmFsdWUgKi8NCj4gPiArCXBpc3RhY2hpb19jbGtzcmNfc2V0X21vZGUoY3MsIHRpbWVyaWR4LCBm
+YWxzZSk7DQo+ID4gKwlncHRfd3JpdGVsKHBjcy0+YmFzZSwgUkVMT0FEX1ZBTFVFLCBUSU1FUl9S
+RUxPQURfVkFMVUUsDQo+IHRpbWVyaWR4KTsNCj4gPiArCXBpc3RhY2hpb19jbGtzcmNfc2V0X21v
+ZGUoY3MsIHRpbWVyaWR4LCB0cnVlKTsgfQ0KPiA+ICsNCj4gPiArc3RhdGljIHZvaWQgcGlzdGFj
+aGlvX2Nsa3NyY19kaXNhYmxlKHN0cnVjdCBjbG9ja3NvdXJjZSAqY3MsIGludA0KPiA+ICt0aW1l
+cmlkeCkgew0KPiA+ICsJLyogRGlzYWJsZSBHUFQgbG9jYWwgKi8NCj4gPiArCXBpc3RhY2hpb19j
+bGtzcmNfc2V0X21vZGUoY3MsIHRpbWVyaWR4LCBmYWxzZSk7IH0NCj4gPiArDQo+ID4gK3N0YXRp
+YyBpbnQgcGlzdGFjaGlvX2Nsb2Nrc291cmNlX2VuYWJsZShzdHJ1Y3QgY2xvY2tzb3VyY2UgKmNz
+KSB7DQo+ID4gKwlwaXN0YWNoaW9fY2xrc3JjX2VuYWJsZShjcywgMCk7DQo+ID4gKwlyZXR1cm4g
+MDsNCj4gPiArfQ0KPiA+ICsNCj4gPiArc3RhdGljIHZvaWQgcGlzdGFjaGlvX2Nsb2Nrc291cmNl
+X2Rpc2FibGUoc3RydWN0IGNsb2Nrc291cmNlICpjcykgew0KPiA+ICsJcGlzdGFjaGlvX2Nsa3Ny
+Y19kaXNhYmxlKGNzLCAwKTsNCj4gPiArfQ0KPiA+ICsNCj4gPiArLyogRGVzaXJhYmxlIGNsb2Nr
+IHNvdXJjZSBmb3IgcGlzdGFjaGlvIHBsYXRmb3JtICovIHN0cnVjdA0KPiA+ICtwaXN0YWNoaW9f
+Y2xvY2tzb3VyY2UgcGNzX2dwdCA9IHsNCj4gDQo+IHN0YXRpYy4NCg0KT2suDQoNClBvc3Rpbmcg
+djYgYWRkcmVzc2luZyB0aGVzZSBjb21tZW50cy4NCg0KLS0NClRoYW5rcy4NCkdvdmluZHJhai5S
+DQo=

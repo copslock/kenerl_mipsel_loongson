@@ -1,10 +1,10 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 09 Aug 2015 00:10:35 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:41315 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 09 Aug 2015 00:10:52 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:41316 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011577AbbHHWKbaHaZf (ORCPT
+        by eddie.linux-mips.org with ESMTP id S27011619AbbHHWKbm7kkf (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Sun, 9 Aug 2015 00:10:31 +0200
 Received: from localhost (c-50-170-35-168.hsd1.wa.comcast.net [50.170.35.168])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 9FD43279;
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 00A78409;
         Sat,  8 Aug 2015 22:10:24 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
@@ -12,9 +12,9 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         stable@vger.kernel.org,
         Markos Chandras <markos.chandras@imgtec.com>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.1 012/123] MIPS: Fix erroneous JR emulation for MIPS R6
-Date:   Sat,  8 Aug 2015 15:08:10 -0700
-Message-Id: <20150808220718.265353690@linuxfoundation.org>
+Subject: [PATCH 4.1 013/123] MIPS: c-r4k: Fix cache flushing for MT cores
+Date:   Sat,  8 Aug 2015 15:08:11 -0700
+Message-Id: <20150808220718.304261727@linuxfoundation.org>
 X-Mailer: git-send-email 2.5.0
 In-Reply-To: <20150808220717.771230091@linuxfoundation.org>
 References: <20150808220717.771230091@linuxfoundation.org>
@@ -25,7 +25,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48736
+X-archive-position: 48737
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,35 +48,153 @@ X-list: linux-mips
 
 From: Markos Chandras <markos.chandras@imgtec.com>
 
-commit 143fefc8f315cd10e046e6860913c421c3385cb1 upstream.
+commit cccf34e9411c41b0cbfb41980fe55fc8e7c98fd2 upstream.
 
-Commit 5f9f41c474befb4ebbc40b27f65bb7d649241581 ("MIPS: kernel: Prepare
-the JR instruction for emulation on MIPS R6") added support for
-emulating the JR instruction on MIPS R6 cores but that introduced a bug
-which could be triggered when hitting a JALR opcode because the code used
-the wrong field in the 'r_format' struct to determine the instruction
-opcode. This lead to crashes because an emulated JALR instruction was
-treated as a JR one when the R6 emulator was turned off.
+MT_SMP is not the only SMP option for MT cores. The MT_SMP option
+allows more than one VPE per core to appear as a secondary CPU in the
+system. Because of how CM works, it propagates the address-based
+cache ops to the secondary cores but not the index-based ones.
+Because of that, the code does not use IPIs to flush the L1 caches on
+secondary cores because the CM would have done that already. However,
+the CM functionality is independent of the type of SMP kernel so even in
+non-MT kernels, IPIs are not necessary. As a result of which, we change
+the conditional to depend on the CM presence. Moreover, since VPEs on
+the same core share the same L1 caches, there is no need to send an
+IPI on all of them so we calculate a suitable cpumask with only one
+VPE per core.
 
-Fixes: 5f9f41c474be ("MIPS: kernel: Prepare the JR instruction for emulation on MIPS R6")
 Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/10583/
+Patchwork: https://patchwork.linux-mips.org/patch/10654/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/math-emu/cp1emu.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/include/asm/smp.h |    1 +
+ arch/mips/kernel/smp.c      |   44 +++++++++++++++++++++++++++++++++++++++++++-
+ arch/mips/mm/c-r4k.c        |   14 +++++++++++---
+ 3 files changed, 55 insertions(+), 4 deletions(-)
 
---- a/arch/mips/math-emu/cp1emu.c
-+++ b/arch/mips/math-emu/cp1emu.c
-@@ -451,7 +451,7 @@ static int isBranchInstr(struct pt_regs
- 			/* Fall through */
- 		case jr_op:
- 			/* For R6, JR already emulated in jalr_op */
--			if (NO_R6EMU && insn.r_format.opcode == jr_op)
-+			if (NO_R6EMU && insn.r_format.func == jr_op)
- 				break;
- 			*contpc = regs->regs[insn.r_format.rs];
- 			return 1;
+--- a/arch/mips/include/asm/smp.h
++++ b/arch/mips/include/asm/smp.h
+@@ -23,6 +23,7 @@
+ extern int smp_num_siblings;
+ extern cpumask_t cpu_sibling_map[];
+ extern cpumask_t cpu_core_map[];
++extern cpumask_t cpu_foreign_map;
+ 
+ #define raw_smp_processor_id() (current_thread_info()->cpu)
+ 
+--- a/arch/mips/kernel/smp.c
++++ b/arch/mips/kernel/smp.c
+@@ -63,6 +63,13 @@ EXPORT_SYMBOL(cpu_sibling_map);
+ cpumask_t cpu_core_map[NR_CPUS] __read_mostly;
+ EXPORT_SYMBOL(cpu_core_map);
+ 
++/*
++ * A logcal cpu mask containing only one VPE per core to
++ * reduce the number of IPIs on large MT systems.
++ */
++cpumask_t cpu_foreign_map __read_mostly;
++EXPORT_SYMBOL(cpu_foreign_map);
++
+ /* representing cpus for which sibling maps can be computed */
+ static cpumask_t cpu_sibling_setup_map;
+ 
+@@ -103,6 +110,29 @@ static inline void set_cpu_core_map(int
+ 	}
+ }
+ 
++/*
++ * Calculate a new cpu_foreign_map mask whenever a
++ * new cpu appears or disappears.
++ */
++static inline void calculate_cpu_foreign_map(void)
++{
++	int i, k, core_present;
++	cpumask_t temp_foreign_map;
++
++	/* Re-calculate the mask */
++	for_each_online_cpu(i) {
++		core_present = 0;
++		for_each_cpu(k, &temp_foreign_map)
++			if (cpu_data[i].package == cpu_data[k].package &&
++			    cpu_data[i].core == cpu_data[k].core)
++				core_present = 1;
++		if (!core_present)
++			cpumask_set_cpu(i, &temp_foreign_map);
++	}
++
++	cpumask_copy(&cpu_foreign_map, &temp_foreign_map);
++}
++
+ struct plat_smp_ops *mp_ops;
+ EXPORT_SYMBOL(mp_ops);
+ 
+@@ -146,6 +176,8 @@ asmlinkage void start_secondary(void)
+ 	set_cpu_sibling_map(cpu);
+ 	set_cpu_core_map(cpu);
+ 
++	calculate_cpu_foreign_map();
++
+ 	cpumask_set_cpu(cpu, &cpu_callin_map);
+ 
+ 	synchronise_count_slave(cpu);
+@@ -173,9 +205,18 @@ void __irq_entry smp_call_function_inter
+ static void stop_this_cpu(void *dummy)
+ {
+ 	/*
+-	 * Remove this CPU:
++	 * Remove this CPU. Be a bit slow here and
++	 * set the bits for every online CPU so we don't miss
++	 * any IPI whilst taking this VPE down.
+ 	 */
++
++	cpumask_copy(&cpu_foreign_map, cpu_online_mask);
++
++	/* Make it visible to every other CPU */
++	smp_mb();
++
+ 	set_cpu_online(smp_processor_id(), false);
++	calculate_cpu_foreign_map();
+ 	local_irq_disable();
+ 	while (1);
+ }
+@@ -197,6 +238,7 @@ void __init smp_prepare_cpus(unsigned in
+ 	mp_ops->prepare_cpus(max_cpus);
+ 	set_cpu_sibling_map(0);
+ 	set_cpu_core_map(0);
++	calculate_cpu_foreign_map();
+ #ifndef CONFIG_HOTPLUG_CPU
+ 	init_cpu_present(cpu_possible_mask);
+ #endif
+--- a/arch/mips/mm/c-r4k.c
++++ b/arch/mips/mm/c-r4k.c
+@@ -37,6 +37,7 @@
+ #include <asm/cacheflush.h> /* for run_uncached() */
+ #include <asm/traps.h>
+ #include <asm/dma-coherence.h>
++#include <asm/mips-cm.h>
+ 
+ /*
+  * Special Variant of smp_call_function for use by cache functions:
+@@ -51,9 +52,16 @@ static inline void r4k_on_each_cpu(void
+ {
+ 	preempt_disable();
+ 
+-#ifndef CONFIG_MIPS_MT_SMP
+-	smp_call_function(func, info, 1);
+-#endif
++	/*
++	 * The Coherent Manager propagates address-based cache ops to other
++	 * cores but not index-based ops. However, r4k_on_each_cpu is used
++	 * in both cases so there is no easy way to tell what kind of op is
++	 * executed to the other cores. The best we can probably do is
++	 * to restrict that call when a CM is not present because both
++	 * CM-based SMP protocols (CMP & CPS) restrict index-based cache ops.
++	 */
++	if (!mips_cm_present())
++		smp_call_function_many(&cpu_foreign_map, func, info, 1);
+ 	func(info);
+ 	preempt_enable();
+ }

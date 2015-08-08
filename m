@@ -1,54 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 08 Aug 2015 13:26:38 +0200 (CEST)
-Received: from mout.kundenserver.de ([212.227.126.130]:54675 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27009202AbbHHL0hH1sjw (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 8 Aug 2015 13:26:37 +0200
-Received: from wuerfel.localnet ([149.172.15.242]) by mrelayeu.kundenserver.de
- (mreue003) with ESMTPSA (Nemesis) id 0LhzeA-1Z2Ql62xec-00n6ve; Sat, 08 Aug
- 2015 13:26:26 +0200
-From:   Arnd Bergmann <arnd@arndb.de>
-To:     linux-arm-kernel@lists.infradead.org
-Cc:     Robert Richter <robert.richter@caviumnetworks.com>,
-        Tomasz Nowicki <tomasz.nowicki@linaro.org>,
-        linux-mips@linux-mips.org, David Daney <david.daney@cavium.com>,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, David Daney <ddaney.cavm@gmail.com>,
-        Sunil Goutham <sgoutham@cavium.com>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: Re: [PATCH 2/2] net, thunder, bgx: Add support for ACPI binding.
-Date:   Sat, 08 Aug 2015 13:26:23 +0200
-Message-ID: <2414262.jivbxTLuUW@wuerfel>
-User-Agent: KMail/4.11.5 (Linux/3.16.0-10-generic; KDE/4.11.5; x86_64; ; )
-In-Reply-To: <20150807104320.GQ1820@rric.localhost>
-References: <1438907590-29649-1-git-send-email-ddaney.cavm@gmail.com> <55C467A0.4020601@linaro.org> <20150807104320.GQ1820@rric.localhost>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 08 Aug 2015 13:34:56 +0200 (CEST)
+Received: from mail-lb0-f172.google.com ([209.85.217.172]:33516 "EHLO
+        mail-lb0-f172.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010184AbbHHLeyQqy6q (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 8 Aug 2015 13:34:54 +0200
+Received: by lbbyj8 with SMTP id yj8so73397986lbb.0
+        for <linux-mips@linux-mips.org>; Sat, 08 Aug 2015 04:34:48 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:subject:to:references:cc:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-type
+         :content-transfer-encoding;
+        bh=CNWc1BNFPE058Trmw1+Rjd2vuL24+yRtHtq0cNya3NQ=;
+        b=Nu3oSUtVoCDgUs6nss/AO+Pzt00xNzSS9JWGR+Yc/ovKOl5ZhvmA4p0+jF7Zjokc8L
+         KXZv6ZDct7Ula2V2fLwGXvUl4Oad0m+UJXGFg5YG+aXVUfOLFIxy8DuM2APrvHkFD6qT
+         DlBru68c/da0gpe950oOLGszrZAIKWYqJo/3Zw+loq6x2p5Hj1nUerJXGu1vEmK0Ln64
+         UmWQn+lBBY7h+MWYh6W4KWkBm4+OBB27n5SpZzuwvmG01zkVoXbBCaf7UXj4FdrgRw9x
+         PJzTWhe8jiZmg4UmgHUH9JJjJAE5mVl0IvZBHPI444PTD3g63C5ShBDskfYqmM8d9ymr
+         k5DA==
+X-Gm-Message-State: ALoCoQlTKfqepxEuNxjLZ4YPgvKD178u3sEUHaOVV8Zpp1GJpJy48Z6HFW0TNl4IinTOg1nc923y
+X-Received: by 10.112.150.4 with SMTP id ue4mr12539629lbb.26.1439033688757;
+        Sat, 08 Aug 2015 04:34:48 -0700 (PDT)
+Received: from [192.168.3.154] (ppp25-243.pppoe.mtu-net.ru. [81.195.25.243])
+        by smtp.gmail.com with ESMTPSA id a9sm2792981laf.12.2015.08.08.04.34.46
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Sat, 08 Aug 2015 04:34:47 -0700 (PDT)
+Subject: Re: [PATCH v2 4/4] clk: pistachio: correct critical clock list
+To:     Govindraj Raja <govindraj.raja@imgtec.com>,
+        linux-mips@linux-mips.org, linux-clk@vger.kernel.org,
+        Stephen Boyd <sboyd@codeaurora.org>,
+        Michael Turquette <mturquette@baylibre.com>
+References: <1438964413-18876-1-git-send-email-govindraj.raja@imgtec.com>
+ <1438964413-18876-5-git-send-email-govindraj.raja@imgtec.com>
+Cc:     Zdenko Pulitika <zdenko.pulitika@imgtec.com>,
+        Kevin Cernekee <cernekee@chromium.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Andrew Bresticker <abrestic@chromium.org>,
+        James Hartley <James.Hartley@imgtec.com>,
+        Damien Horsley <Damien.Horsley@imgtec.com>,
+        James Hogan <James.Hogan@imgtec.com>,
+        Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>,
+        Ezequiel Garcia <ezequiel.garcia@imgtec.com>
+From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Message-ID: <55C5E956.5060308@cogentembedded.com>
+Date:   Sat, 8 Aug 2015 14:34:46 +0300
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:38.0) Gecko/20100101
+ Thunderbird/38.1.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-X-Provags-ID:  V03:K0:ngwOWlh6U5rmCmjpmPat7MfXSuqz6+M7HE+AE1ReOaKc2WD+Gku
- ZMTVON6lJtS+ji68LWLJzMA2cjFB5gVQzOiIlsq4q9y9rR2nmtzruxsUhtsUrk/bTNPE+HK
- 2ayJCgY/8xONZx4VyyRuG4+45xNTmZDCkuHwYhEseGYwb87KBVomRPdaLSHPicJ5h3qwZRC
- mY2fYT/zsHBM04r7ve3Uw==
-X-UI-Out-Filterresults: notjunk:1;V01:K0:Zc8F4WS4RUY=:rxHDZoUigrMugXopqyiFVP
- uAPMuBFNqAeXyTHuPYvGU7fzc7oMcnK02Kq5A41fKSXEelEgllcjZzy6tXtWcX8Q6rRAQUEIs
- OkYmBc7fTSVf6EPxQ+uN9ods6i2Ej1U/wZ+WRXPqW3+Ch5Vedt9AlQc6j/mvz9fwPtgOhwmlx
- N3HsXPYROwdXmpQsAJW0M2+GlYv5zgjFgt4SwdsTtlAluV5a7fJPxlv/nN4JmaO08XcPlvnXs
- iE3FCZLfZMKy0UVU9a/MtrhWJ4wH7w6dVBDgP17aH0YcohOxMEGEBGYvHFuIv08Odl/VhAANO
- 21E0oadBeU/O0eQqSv2gIs4A4V+y0O47fCnIpuhd282VixFgKv1QYwz7evki5seV2MJ1XKbS5
- ZatE47NWuSjaMHgTi0bOTO+bKueTfz7eYsF79nrAOCLAfy2yj4Vwe4tvL/Mf0YJj1HyXTIx67
- PBXROF8SNf76zuISqZGkIcLu0FChGWC6/YRlExLtmlFrj00YKWpoAYAQl+zZFcA1G0rCy4j8i
- KPVhusOUkDPQqHYbbYxDiURS36h0MwqQJYJKGlChlsDagQDDf+OKLW/6tltVw2DZzKOfH0d0z
- abLIuEKU5Nw+gZmQ6GHhuAkrVhsmTPQiKU8efIDHqVHwUv5TkTcmb+SGS1sQZAGsoxciQqY/4
- yXaR5zWpCyAjIsl88Ticjfz0cZ2zkei7eCzAhMQOg6/iJKTZYcH8QvZLlLahH5Il+J+1Ov68G
- utVtzDxj2MnVCYrW
-Return-Path: <arnd@arndb.de>
+In-Reply-To: <1438964413-18876-5-git-send-email-govindraj.raja@imgtec.com>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sergei.shtylyov@cogentembedded.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48734
+X-archive-position: 48735
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arnd@arndb.de
+X-original-sender: sergei.shtylyov@cogentembedded.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -61,32 +70,32 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Friday 07 August 2015 12:43:20 Robert Richter wrote:
-> 
-> I would not pollute bgx_probe() with acpi and dt specifics, and instead
-> keep bgx_init_phy(). The typical design pattern for this is:
-> 
-> static int bgx_init_phy(struct bgx *bgx)
-> {
-> #ifdef CONFIG_ACPI
->         if (!acpi_disabled)
->                 return bgx_init_acpi_phy(bgx);
-> #endif
->         return bgx_init_of_phy(bgx);
-> }
-> 
-> This adds acpi runtime detection (acpi=no), does not call dt code in
-> case of acpi, and saves the #else for bgx_init_acpi_phy().
-> 
+Hello.
 
-What you should really do is to use the same function for both,
-using the generic device properties API. If that is not possible,
-explain in a comment why not.
+On 8/7/2015 7:20 PM, Govindraj Raja wrote:
 
-Aside from that, if you do have to use compile-time conditionals,
-use 'if (IS_ENABLED(CONFIG_ACPI) && !acpi_disabled)' instead of
-#ifdef, for readability. The compiler will produce the same binary,
-but also give helpful warnings about incorrect code that you don't
-get with #ifdef.
+> From: "Damien.Horsley" <Damien.Horsley@imgtec.com>
 
-	Arnd
+> Current critical clock list for pistachio enables
+> only mips and sys clocks by default but there also
+                                                ^ are
+
+> other clocks that are not claimed by anyone and
+> needs to be enabled by default.
+
+> This patch updates the critical clocks that needs
+> to enabled by default.
+     ^ be
+
+> Add a separate struct to distinguish the critical clocks
+
+    Need colon here.
+
+> one is core clock(mips) and others are from periph_clk_*
+
+> Reviewed-by: Andrew Bresticker <abrestic@chromium.org>
+> Signed-off-by: Ezequiel Garcia <ezequiel.garcia@imgtec.com>
+> Signed-off-by: Damien.Horsley <Damien.Horsley@imgtec.com>
+> Signed-off-by: Govindraj Raja <govindraj.raja@imgtec.com>
+
+MBR, Sergei

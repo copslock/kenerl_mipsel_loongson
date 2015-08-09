@@ -1,33 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 09 Aug 2015 14:21:14 +0200 (CEST)
-Received: from hauke-m.de ([5.39.93.123]:38101 "EHLO hauke-m.de"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 09 Aug 2015 22:14:59 +0200 (CEST)
+Received: from hauke-m.de ([5.39.93.123]:38245 "EHLO hauke-m.de"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27009776AbbHIMVMagR8P (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 9 Aug 2015 14:21:12 +0200
+        id S27011855AbbHIUO521x6j (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 9 Aug 2015 22:14:57 +0200
 Received: from [192.168.178.24] (p5DE948B6.dip0.t-ipconnect.de [93.233.72.182])
-        by hauke-m.de (Postfix) with ESMTPSA id D1CD4100733;
-        Sun,  9 Aug 2015 14:21:11 +0200 (CEST)
-Message-ID: <55C745B7.3040002@hauke-m.de>
-Date:   Sun, 09 Aug 2015 14:21:11 +0200
+        by hauke-m.de (Postfix) with ESMTPSA id E8EEB100733;
+        Sun,  9 Aug 2015 22:14:56 +0200 (CEST)
+Message-ID: <55C7B4C0.7060903@hauke-m.de>
+Date:   Sun, 09 Aug 2015 22:14:56 +0200
 From:   Hauke Mehrtens <hauke@hauke-m.de>
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.8.0
 MIME-Version: 1.0
-To:     Alban Bedel <albeu@free.fr>, linux-mips@linux-mips.org,
-        Ralf Baechle <ralf@linux-mips.org>
-CC:     Andrew Bresticker <abrestic@chromium.org>,
-        Qais Yousef <qais.yousef@imgtec.com>,
-        Wolfram Sang <wsa@the-dreams.de>,
-        Sergey Ryazanov <ryazanov.s.a@gmail.com>,
-        Gabor Juhos <juhosg@openwrt.org>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 5/5] MIPS: ath79: Use the common clk API
-References: <1429446604-15403-1-git-send-email-albeu@free.fr> <1429446604-15403-6-git-send-email-albeu@free.fr>
-In-Reply-To: <1429446604-15403-6-git-send-email-albeu@free.fr>
-Content-Type: text/plain; charset=windows-1252
+To:     Ralf Baechle <ralf@linux-mips.org>
+CC:     Andrzej Hajda <a.hajda@samsung.com>,
+        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
+Subject: Re: [PATCH 04/31] arch/mips/bcm47xx: use kmemdup rather than duplicating
+ its implementation
+References: <1438934377-4922-1-git-send-email-a.hajda@samsung.com> <1438934377-4922-5-git-send-email-a.hajda@samsung.com>
+In-Reply-To: <1438934377-4922-5-git-send-email-a.hajda@samsung.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Return-Path: <hauke@hauke-m.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48743
+X-archive-position: 48744
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -44,25 +44,12 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 04/19/2015 02:30 PM, Alban Bedel wrote:
-> Make the code simpler and open the way for device tree clocks.
+On 08/07/2015 09:59 AM, Andrzej Hajda wrote:
+> The patch was generated using fixed coccinelle semantic patch
+> scripts/coccinelle/api/memdup.cocci [1].
 > 
-> Signed-off-by: Alban Bedel <albeu@free.fr>
-> ---
->  arch/mips/Kconfig       |  1 +
->  arch/mips/ath79/clock.c | 29 ++---------------------------
->  2 files changed, 3 insertions(+), 27 deletions(-)
+> [1]: http://permalink.gmane.org/gmane.linux.kernel/2014320
 > 
+> Signed-off-by: Andrzej Hajda <a.hajda@samsung.com>
 
-I think this should be send at least to stable 4.1, because it fixes a
-linking problem we are seeing in OpenWrt.
-
-ath79 does not export clk_set_rate() and clk_round_rate(), but some
-drivers are using it and they are not using the inline dummy method,
-because CONFIG_HAVE_CLK is set for ath79.
-
-ERROR: "clk_set_rate" [drivers/usb/phy/phy-generic.ko] undefined!
-ERROR: "clk_round_rate" [drivers/media/v4l2-core/videodev.ko] undefined!
-ERROR: "clk_set_rate" [drivers/media/v4l2-core/videodev.ko] undefined!
-
-Hauke
+Acked-by: Hauke Mehrtens <hauke@hauke-m.de>

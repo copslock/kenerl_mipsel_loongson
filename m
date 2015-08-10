@@ -1,40 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Aug 2015 20:22:19 +0200 (CEST)
-Received: from smtp6-g21.free.fr ([212.27.42.6]:26750 "EHLO smtp6-g21.free.fr"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27010825AbbHJSWRor5CK (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 10 Aug 2015 20:22:17 +0200
-Received: from tock (unknown [85.176.44.210])
-        (Authenticated sender: albeu)
-        by smtp6-g21.free.fr (Postfix) with ESMTPSA id 2676482260;
-        Mon, 10 Aug 2015 20:15:47 +0200 (CEST)
-Date:   Mon, 10 Aug 2015 20:22:01 +0200
-From:   Alban <albeu@free.fr>
-To:     Alexander Couzens <lynxis@fe80.eu>
-Cc:     Aban Bedel <albeu@free.fr>, linux-mips@linux-mips.org,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Pawel Moll <pawel.moll@arm.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ian Campbell <ijc+devicetree@hellion.org.uk>,
-        Kumar Gala <galak@codeaurora.org>, devicetree@vger.kernel.org
-Subject: Re: [PATCH 2/2] MIPS: ath79: add irq chip ar7240-misc-intc
-Message-ID: <20150810202201.5e813285@tock>
-In-Reply-To: <1438857805-18443-2-git-send-email-lynxis@fe80.eu>
-References: <1438857805-18443-1-git-send-email-lynxis@fe80.eu>
-        <1438857805-18443-2-git-send-email-lynxis@fe80.eu>
-X-Mailer: Claws Mail 3.9.3 (GTK+ 2.24.23; x86_64-pc-linux-gnu)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Aug 2015 20:36:46 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:48304 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27010825AbbHJSgo0YDca (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 10 Aug 2015 20:36:44 +0200
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id F3146583556A6;
+        Mon, 10 Aug 2015 19:36:34 +0100 (IST)
+Received: from hhmail02.hh.imgtec.org (10.100.10.20) by KLMAIL01.kl.imgtec.org
+ (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Mon, 10 Aug
+ 2015 19:36:38 +0100
+Received: from BAMAIL02.ba.imgtec.org (10.20.40.28) by hhmail02.hh.imgtec.org
+ (10.100.10.20) with Microsoft SMTP Server (TLS) id 14.3.235.1; Mon, 10 Aug
+ 2015 19:36:37 +0100
+Received: from [10.20.3.79] (10.20.3.79) by bamail02.ba.imgtec.org
+ (10.20.40.28) with Microsoft SMTP Server (TLS) id 14.3.174.1; Mon, 10 Aug
+ 2015 11:36:33 -0700
+Message-ID: <55C8EF32.5010807@imgtec.com>
+Date:   Mon, 10 Aug 2015 11:36:34 -0700
+From:   Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.2.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+To:     "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+        <linux-kernel@vger.kernel.org>
+CC:     <stable@vger.kernel.org>,
+        Markos Chandras <markos.chandras@imgtec.com>,
+        <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: [4.1,013/123] MIPS: c-r4k: Fix cache flushing for MT cores
+References: <20150808220718.304261727@linuxfoundation.org>
+In-Reply-To: <20150808220718.304261727@linuxfoundation.org>
+Content-Type: text/plain; charset="windows-1252"; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <albeu@free.fr>
+X-Originating-IP: [10.20.3.79]
+Return-Path: <Leonid.Yegoshin@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48749
+X-archive-position: 48750
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: albeu@free.fr
+X-original-sender: Leonid.Yegoshin@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,36 +52,79 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu,  6 Aug 2015 12:43:25 +0200
-Alexander Couzens <lynxis@fe80.eu> wrote:
+On 08/08/2015 03:08 PM, gregkh@linuxfoundation.org wrote:
+> 4.1-stable review patch.  If anyone has any objections, please let me know.
+>
+>
+Yes, I have objection. Please look into excepts from my mail exchange 
+with Markos:
 
-> The ar7240 misc irq chip use ack handler instead of ack_mask handler.
-> All new ath79 SoCs use the ar7240 misc irq chip
+> On 06/25/2015 03:59 AM, Markos Chandras wrote:
+>
+>> @@ -51,9 +51,8 @@ static inline void r4k_on_each_cpu(void (*func) (void *info), void *info)
+>>   {
+>>   	preempt_disable();
+>>   
+>> -#ifndef CONFIG_MIPS_MT_SMP
+>> -	smp_call_function(func, info, 1);
+>> -#endif
+>> +	if (config_enabled(CONFIG_SMP))
+>> +		smp_call_function_many(&cpu_foreign_map, func, info, 1);
+>>   	func(info);
+>>   	preempt_enable();
+>>   }
+>
+> You can NOT do this because r4k_on_each_cpu() is still used for 
+> non-MIPS/IMG processors for SAFE INDEX cache flushes - 
+> cpu_has_safe_index_cacheops (it is not safe in CM/CM2/CM3 environment).
+>
+>
+> And a little explanation and history:
+>
+> The function r4k_on_each_cpu() can NOT be used simultaneously for 
+> index cacheops and address cacheops because both have a different 
+> rules in applying in other cores and that is different in inter-core 
+> HW blocks of various vendors. CM propogates address cacheops from 
+> core-to-core (no IPI calls are needed) but another vendors may do not 
+> - this is indicated by CONFIG_MIPS_MT_SMP (and a dropped now 
+> CONFIG_MIPS_MT_SMTC).
+>
+> Unfortunately, before 2.6.35.9 this function was used for index 
+> cacheops too in any kernel and that is WRONG, at least for CM-based 
+> systems.
+> So, I splitted index and address cacheops and wrote a functions 
+> r4k_indexop_on_each_cpu and put it in use in at least in dlm-2.6.35.9 
+> and it finally made a way to dev-linux-mti-3.6. This is a famous patch 
+> named:
+>
+>     MIPS: Cache flush functions are reworked.
+>
+>     This patch is a preparation for EVA support in kernel.
+>
+>     However, it also fixes a bug then index cacheop was not ran
+>     on multiple CPUs with unsafe index cacheops (flush_cache_vmap,
+>     flush_icache_range, flush_cache_range, __flush_cache_all).
+>
+>     Additionally, it optimizes a usage of index and address cacheops for
+>     address range flushes depending from address range size.
+>
+>     Because of that reasons it is a separate patch from EVA support.
+>
+>     Signed-off-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+>     Signed-off-by: Steven J. Hill <Steven.Hill@imgtec.com>
+>     (cherry picked from commit 6b05dd71da1136fbad0ce642790c4c99343f05e7)
+>
 
-except the ar913x family according to the later documentation.
+(history is skipped)
 
-[...]
+Note: the replacement of
 
-> --- a/arch/mips/ath79/irq.c
-> +++ b/arch/mips/ath79/irq.c
-> @@ -315,8 +315,17 @@ static int __init ar7100_misc_intc_of_init(
->  	return ath79_misc_intc_of_init(node, parent);
->  }
->  
-> +static int __init ar7240_misc_intc_of_init(
-> +	struct device_node *node, struct device_node *parent)
-> +{
-> +	ath79_misc_irq_chip.irq_ack = ar724x_misc_irq_ack;
-> +	return ath79_misc_intc_of_init(node, parent);
-> +}
-> +
->  IRQCHIP_DECLARE(ar7100_misc_intc, "qca,ar7100-misc-intc",
->  		ar7100_misc_intc_of_init);
-> +IRQCHIP_DECLARE(ar7240_misc_intc, "qca,ar7240-misc-intc",
-> +		ar7240_misc_intc_of_init);
+     if (config_enabled(CONFIG_SMP))
 
-It would be better to keep the same formatting as the surrounding code.
-Could you keep the IRQCHIP_DECLARE() together with the init function
-and remove the extra blank line?
+to
+if (!mips_cm_present())
 
-Alban
+doesn't solve a problem - in CM-based environment the index cache ops 
+MUST be delivered to other core via IPI.
+
+- Leonid.

@@ -1,39 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Aug 2015 21:05:04 +0200 (CEST)
-Received: from mail-ob0-f178.google.com ([209.85.214.178]:35661 "EHLO
-        mail-ob0-f178.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010825AbbHJTFCq3i5a (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 10 Aug 2015 21:05:02 +0200
-Received: by obbop1 with SMTP id op1so131518822obb.2
-        for <linux-mips@linux-mips.org>; Mon, 10 Aug 2015 12:04:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:date:message-id:subject:from:to:content-type;
-        bh=egknVD6hwOkDzNcp3irHlObxNGXGVbloxdlN5i+I+SQ=;
-        b=lVAs5e9+R2PYwF9JoR3jEtU04cUmG1qQNSXN/mVSEv0m6fJue2u7gIsPka2/7v5BMv
-         7aTEbNL5nTAlkbqvd2NpHkx6smgnfSIzbFN+rBUMFh/BJ7yLN/9nnls1gKO06RTw6rXl
-         pEpyE+KsCjOHCTqgytk+Poabi8FdeuZ67tUNAmHiZBF5dTzg4bxacFrgRgfAR2MKqqUA
-         Ir/O7lzpErV/yOumN5tYu3m4SGroEIeLU4jg4Ym1ZVuDmLfgLy8maEgFmADoN4wJqIFR
-         J/4L4RsNw6skn2krRLbzMzFOY4TpISdXW5l5XbrM0QpgGqexJjabhIkUtT/yG4Nkl/ZU
-         O/Dw==
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Aug 2015 21:12:15 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:57057 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27010825AbbHJTMNreR1a (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 10 Aug 2015 21:12:13 +0200
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id B5956FD0C8A1;
+        Mon, 10 Aug 2015 20:12:04 +0100 (IST)
+Received: from hhmail02.hh.imgtec.org (10.100.10.20) by KLMAIL01.kl.imgtec.org
+ (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Mon, 10 Aug
+ 2015 20:12:08 +0100
+Received: from BAMAIL02.ba.imgtec.org (10.20.40.28) by hhmail02.hh.imgtec.org
+ (10.100.10.20) with Microsoft SMTP Server (TLS) id 14.3.235.1; Mon, 10 Aug
+ 2015 20:12:07 +0100
+Received: from [10.20.3.79] (10.20.3.79) by bamail02.ba.imgtec.org
+ (10.20.40.28) with Microsoft SMTP Server (TLS) id 14.3.174.1; Mon, 10 Aug
+ 2015 12:12:05 -0700
+Message-ID: <55C8F785.5020605@imgtec.com>
+Date:   Mon, 10 Aug 2015 12:12:05 -0700
+From:   Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.2.0
 MIME-Version: 1.0
-X-Received: by 10.182.252.234 with SMTP id zv10mr9619541obc.68.1439233497114;
- Mon, 10 Aug 2015 12:04:57 -0700 (PDT)
-Received: by 10.60.118.137 with HTTP; Mon, 10 Aug 2015 12:04:57 -0700 (PDT)
-Date:   Tue, 11 Aug 2015 03:04:57 +0800
-Message-ID: <CAKcpw6XSffSzv+5yQMRUaP0FdM-tG444wL75HffstdwLqvfQ9w@mail.gmail.com>
-Subject: what's the status of little endian support of Octeon?
-From:   YunQiang Su <wzssyqa@gmail.com>
-To:     linux-mips <linux-mips@linux-mips.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <wzssyqa@gmail.com>
+To:     "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>
+CC:     <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>,
+        Markos Chandras <markos.chandras@imgtec.com>,
+        <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: [4.1,013/123] MIPS: c-r4k: Fix cache flushing for MT cores
+References: <20150808220718.304261727@linuxfoundation.org> <55C8EF32.5010807@imgtec.com> <20150810184953.GA19646@kroah.com>
+In-Reply-To: <20150810184953.GA19646@kroah.com>
+Content-Type: text/plain; charset="windows-1252"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.20.3.79]
+Return-Path: <Leonid.Yegoshin@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48752
+X-archive-position: 48753
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wzssyqa@gmail.com
+X-original-sender: Leonid.Yegoshin@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,18 +51,21 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-I am wondering about the what the status of Little endian support of
-Octeon in upstream kernel,
-aka Linus tree.
+On 08/10/2015 11:49 AM, gregkh@linuxfoundation.org wrote:
+> On Mon, Aug 10, 2015 at 11:36:34AM -0700, Leonid Yegoshin wrote:
+>>
+> So, this is broken in Linus's tree too?
 
-If not, any plan?
+Yes.
 
-Octeon II:
-       Supported now?
+>    Or is it fixed there, and if
+> so, what is the git commit id?
 
-Octeon III:
-       Supported now?
-       How about the FPU?
+There is no an accepted fix. My old patch is in
 
--- 
-YunQiang Su
+https://git.linux-mips.org/cgit/yegoshin/mips.git/commit/?id=98f6c462eb5319a4dcb3830f902c48141f38cd12
+
+It was a precursor for my EVA set of patches since2.6.35.9 but was never 
+accepted and was lost during redesign of EVA by Markos.
+
+- Leonid.

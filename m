@@ -1,66 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Aug 2015 03:24:22 +0200 (CEST)
-Received: from irl-smtp01.263.net ([54.76.167.174]:37812 "EHLO
-        irl-smtp01.263.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27010776AbbHKBYU6ZvM7 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 11 Aug 2015 03:24:20 +0200
-Received: from [172.16.12.109] (localhost.localdomain [127.0.0.1])
-        by irl-smtp01.263.net (Postfix) with ESMTP id 94B15834E8;
-        Tue, 11 Aug 2015 09:22:02 +0800 (CST)
-X-RL-SENDER: shawn.lin@rock-chips.com
-X-FST-TO: stripathi@apm.com
-X-SENDER-IP: 58.22.7.114
-X-LOGIN-NAME: shawn.lin@rock-chips.com
-X-UNIQUE-TAG: <f92721998042678c475dac4b690f5fd2>
-X-ATTACHMENT-NUM: 0
-X-SENDER: lintao@rock-chips.com
-X-DNS-TYPE: 0
-Received: from [172.16.12.109] (unknown [58.22.7.114])
-        by irl-smtp01.263.net (Postfix) whith ESMTP id 11729CQISUG;
-        Tue, 11 Aug 2015 09:22:01 +0800 (CST)
-Subject: Re: [PATCH] mmc: sdhci-of-arasan: Add the support for sdhci-5.1
-To:     jh80.chung@samsung.com, ulf.hansson@linaro.org
-References: <1439255696-3263-1-git-send-email-shawn.lin@rock-chips.com>
-Cc:     lintao@rock-chips.com, heiko@sntech.de, dianders@chromium.org,
-        Vineet.Gupta1@synopsys.com, Wei Xu <xuwei5@hisilicon.com>,
-        Joachim Eastwood <manabian@gmail.com>,
-        Alexey Brodkin <abrodkin@synopsys.com>,
-        Kukjin Kim <kgene@kernel.org>,
-        Krzysztof Kozlowski <k.kozlowski@samsung.com>,
-        Russell King <linux@arm.linux.org.uk>,
-        Jun Nie <jun.nie@linaro.org>, Arnd Bergmann <arnd@arndb.de>,
-        Zhou Wang <wangzhou1@hisilicon.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Govindraj Raja <govindraj.raja@imgtec.com>,
-        linux-arm-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-rockchip@lists.infradead.org, devicetree@vger.kernel.org,
-        Rob Herring <robh+dt@kernel.org>,
-        Pawel Moll <pawel.moll@arm.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ian Campbell <ijc+devicetree@hellion.org.uk>,
-        Kumar Gala <galak@codeaurora.org>,
-        Michal Simek <michal.simek@xilinx.com>,
-        =?UTF-8?Q?S=c3=b6ren_Brinkmann?= <soren.brinkmann@xilinx.com>,
-        Suman Tripathi <stripathi@apm.com>
-From:   Shawn Lin <shawn.lin@rock-chips.com>
-Message-ID: <55C94E2F.5000907@rock-chips.com>
-Date:   Tue, 11 Aug 2015 09:21:51 +0800
-User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; rv:38.0) Gecko/20100101
- Thunderbird/38.1.0
-MIME-Version: 1.0
-In-Reply-To: <1439255696-3263-1-git-send-email-shawn.lin@rock-chips.com>
-Content-Type: text/plain; charset=gbk; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <lintao@rock-chips.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Aug 2015 09:59:22 +0200 (CEST)
+Received: from demumfd001.nsn-inter.net ([93.183.12.32]:42266 "EHLO
+        demumfd001.nsn-inter.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010977AbbHKH7VRw6e9 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 11 Aug 2015 09:59:21 +0200
+Received: from demuprx016.emea.nsn-intra.net ([10.150.129.55])
+        by demumfd001.nsn-inter.net (8.15.1/8.15.1) with ESMTPS id t7B7xFmm008933
+        (version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
+        Tue, 11 Aug 2015 07:59:15 GMT
+Received: from localhost.localdomain ([10.144.34.184])
+        by demuprx016.emea.nsn-intra.net (8.12.11.20060308/8.12.11) with ESMTP id t7B7xEBN017671;
+        Tue, 11 Aug 2015 09:59:15 +0200
+From:   Aaro Koskinen <aaro.koskinen@nokia.com>
+To:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: [PATCH] MIPS: OCTEON: fix management port MII address on Kontron S1901
+Date:   Tue, 11 Aug 2015 10:56:28 +0300
+Message-Id: <1439279788-2050-1-git-send-email-aaro.koskinen@nokia.com>
+X-Mailer: git-send-email 2.4.3
+X-purgate-type: clean
+X-purgate-Ad: Categorized by eleven eXpurgate (R) http://www.eleven.de
+X-purgate: clean
+X-purgate: This mail is considered clean (visit http://www.eleven.de for further information)
+X-purgate-size: 1954
+X-purgate-ID: 151667::1439279955-00007F5C-AD92F6CC/0/0
+Return-Path: <aaro.koskinen@nokia.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48763
+X-archive-position: 48764
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: shawn.lin@rock-chips.com
+X-original-sender: aaro.koskinen@nokia.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -73,57 +43,52 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 2015/8/11 9:14, Shawn Lin wrote:
-> This patch adds the quirks and compatible string in sdhci-of-arasan.c
-> to support sdhci-arasan5.1 version of controller.
->
+Management port MII address is incorrect on Kontron S1901 resulting
+in broken networking. Fix by providing definitions for the in-tree DT
+pruning code.
 
-Sorry for wrong send-email ops, pls ignore this patch :(
+Signed-off-by: Aaro Koskinen <aaro.koskinen@nokia.com>
+---
+ arch/mips/cavium-octeon/executive/cvmx-helper-board.c | 6 ++++++
+ arch/mips/include/asm/octeon/cvmx-bootinfo.h          | 2 ++
+ 2 files changed, 8 insertions(+)
 
-> Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
-> ---
->
->   Documentation/devicetree/bindings/mmc/arasan,sdhci.txt | 2 +-
->   drivers/mmc/host/sdhci-of-arasan.c                     | 4 ++++
->   2 files changed, 5 insertions(+), 1 deletion(-)
->
-> diff --git a/Documentation/devicetree/bindings/mmc/arasan,sdhci.txt b/Documentation/devicetree/bindings/mmc/arasan,sdhci.txt
-> index 7e94903..da541c3 100644
-> --- a/Documentation/devicetree/bindings/mmc/arasan,sdhci.txt
-> +++ b/Documentation/devicetree/bindings/mmc/arasan,sdhci.txt
-> @@ -9,7 +9,7 @@ Device Tree Bindings for the Arasan SDHCI Controller
->
->   Required Properties:
->     - compatible: Compatibility string. Must be 'arasan,sdhci-8.9a' or
-> -                'arasan,sdhci-4.9a'
-> +                'arasan,sdhci-4.9a' or 'arasan,sdhci-5.1'
->     - reg: From mmc bindings: Register location and length.
->     - clocks: From clock bindings: Handles to clock inputs.
->     - clock-names: From clock bindings: Tuple including "clk_xin" and "clk_ahb"
-> diff --git a/drivers/mmc/host/sdhci-of-arasan.c b/drivers/mmc/host/sdhci-of-arasan.c
-> index ef5a7d2..c9012f5 100644
-> --- a/drivers/mmc/host/sdhci-of-arasan.c
-> +++ b/drivers/mmc/host/sdhci-of-arasan.c
-> @@ -175,6 +175,9 @@ static int sdhci_arasan_probe(struct platform_device *pdev)
->   	if (of_device_is_compatible(pdev->dev.of_node, "arasan,sdhci-4.9a")) {
->   		host->quirks |= SDHCI_QUIRK_NO_HISPD_BIT;
->   		host->quirks2 |= SDHCI_QUIRK2_HOST_NO_CMD23;
-> +	} else if (of_device_is_compatible(pdev->dev.of_node,
-> +					   "arasan,sdhci-5.1")) {
-> +		host->quirks |= SDHCI_QUIRK_CAP_CLOCK_BASE_BROKEN;
->   	}
->
->   	sdhci_get_of_property(pdev);
-> @@ -217,6 +220,7 @@ static int sdhci_arasan_remove(struct platform_device *pdev)
->
->   static const struct of_device_id sdhci_arasan_of_match[] = {
->   	{ .compatible = "arasan,sdhci-8.9a" },
-> +	{ .compatible = "arasan,sdhci-5.1" },
->   	{ .compatible = "arasan,sdhci-4.9a" },
->   	{ }
->   };
->
-
-
+diff --git a/arch/mips/cavium-octeon/executive/cvmx-helper-board.c b/arch/mips/cavium-octeon/executive/cvmx-helper-board.c
+index 9eb0fee..36e30d6 100644
+--- a/arch/mips/cavium-octeon/executive/cvmx-helper-board.c
++++ b/arch/mips/cavium-octeon/executive/cvmx-helper-board.c
+@@ -195,6 +195,12 @@ int cvmx_helper_board_get_mii_address(int ipd_port)
+ 			return 8;
+ 		else
+ 			return -1;
++	case CVMX_BOARD_TYPE_KONTRON_S1901:
++		if (ipd_port == CVMX_HELPER_BOARD_MGMT_IPD_PORT)
++			return 1;
++		else
++			return -1;
++
+ 	}
+ 
+ 	/* Some unknown board. Somebody forgot to update this function... */
+diff --git a/arch/mips/include/asm/octeon/cvmx-bootinfo.h b/arch/mips/include/asm/octeon/cvmx-bootinfo.h
+index c373d95..d92cf59 100644
+--- a/arch/mips/include/asm/octeon/cvmx-bootinfo.h
++++ b/arch/mips/include/asm/octeon/cvmx-bootinfo.h
+@@ -284,6 +284,7 @@ enum cvmx_board_types_enum {
+ 	CVMX_BOARD_TYPE_CUST_PRIVATE_MIN = 20001,
+ 	CVMX_BOARD_TYPE_UBNT_E100 = 20002,
+ 	CVMX_BOARD_TYPE_CUST_DSR1000N = 20006,
++	CVMX_BOARD_TYPE_KONTRON_S1901 = 21901,
+ 	CVMX_BOARD_TYPE_CUST_PRIVATE_MAX = 30000,
+ 
+ 	/* The remaining range is reserved for future use. */
+@@ -384,6 +385,7 @@ static inline const char *cvmx_board_type_to_string(enum
+ 		ENUM_BRD_TYPE_CASE(CVMX_BOARD_TYPE_CUST_PRIVATE_MIN)
+ 		ENUM_BRD_TYPE_CASE(CVMX_BOARD_TYPE_UBNT_E100)
+ 		ENUM_BRD_TYPE_CASE(CVMX_BOARD_TYPE_CUST_DSR1000N)
++		ENUM_BRD_TYPE_CASE(CVMX_BOARD_TYPE_KONTRON_S1901)
+ 		ENUM_BRD_TYPE_CASE(CVMX_BOARD_TYPE_CUST_PRIVATE_MAX)
+ 	}
+ 	return "Unsupported Board";
 -- 
-Shawn Lin
+2.4.3

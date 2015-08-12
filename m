@@ -1,11 +1,11 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Aug 2015 09:18:28 +0200 (CEST)
-Received: from bombadil.infradead.org ([198.137.202.9]:35298 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Aug 2015 09:18:49 +0200 (CEST)
+Received: from bombadil.infradead.org ([198.137.202.9]:35309 "EHLO
         bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012092AbbHLHKNjqdmj (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 12 Aug 2015 09:10:13 +0200
+        by eddie.linux-mips.org with ESMTP id S27011012AbbHLHKQXsL0j (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 12 Aug 2015 09:10:16 +0200
 Received: from p5de57192.dip0.t-ipconnect.de ([93.229.113.146] helo=localhost)
         by bombadil.infradead.org with esmtpsa (Exim 4.80.1 #2 (Red Hat Linux))
-        id 1ZPQAo-0002Co-MK; Wed, 12 Aug 2015 07:10:07 +0000
+        id 1ZPQAr-0002W6-IW; Wed, 12 Aug 2015 07:10:09 +0000
 From:   Christoph Hellwig <hch@lst.de>
 To:     torvalds@linux-foundation.org, axboe@kernel.dk
 Cc:     dan.j.williams@intel.com, vgupta@synopsys.com,
@@ -19,9 +19,9 @@ Cc:     dan.j.williams@intel.com, vgupta@synopsys.com,
         linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
         sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
         linux-nvdimm@ml01.01.org, linux-media@vger.kernel.org
-Subject: [PATCH 30/31] intel-iommu: handle page-less SG entries
-Date:   Wed, 12 Aug 2015 09:05:49 +0200
-Message-Id: <1439363150-8661-31-git-send-email-hch@lst.de>
+Subject: [PATCH 31/31] dma-mapping-common: skip kmemleak checks for page-less SG entries
+Date:   Wed, 12 Aug 2015 09:05:50 +0200
+Message-Id: <1439363150-8661-32-git-send-email-hch@lst.de>
 X-Mailer: git-send-email 1.9.1
 In-Reply-To: <1439363150-8661-1-git-send-email-hch@lst.de>
 References: <1439363150-8661-1-git-send-email-hch@lst.de>
@@ -31,7 +31,7 @@ Return-Path: <BATV+598c32ccc3a9ece13a58+4371+infradead.org+hch@bombadil.srs.infr
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48806
+X-archive-position: 48807
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,24 +48,27 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Just remove a BUG_ON, the code handles them just fine as-is.
-
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- drivers/iommu/intel-iommu.c | 1 -
- 1 file changed, 1 deletion(-)
+ include/asm-generic/dma-mapping-common.h | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/iommu/intel-iommu.c b/drivers/iommu/intel-iommu.c
-index 3541d65..ae10573 100644
---- a/drivers/iommu/intel-iommu.c
-+++ b/drivers/iommu/intel-iommu.c
-@@ -3622,7 +3622,6 @@ static int intel_nontranslate_map_sg(struct device *hddev,
- 	struct scatterlist *sg;
+diff --git a/include/asm-generic/dma-mapping-common.h b/include/asm-generic/dma-mapping-common.h
+index 940d5ec..afc3eaf 100644
+--- a/include/asm-generic/dma-mapping-common.h
++++ b/include/asm-generic/dma-mapping-common.h
+@@ -51,8 +51,10 @@ static inline int dma_map_sg_attrs(struct device *dev, struct scatterlist *sg,
+ 	int i, ents;
+ 	struct scatterlist *s;
  
- 	for_each_sg(sglist, sg, nelems, i) {
--		BUG_ON(!sg_page(sg));
- 		sg->dma_address = sg_phys(sg);
- 		sg->dma_length = sg->length;
- 	}
+-	for_each_sg(sg, s, nents, i)
+-		kmemcheck_mark_initialized(sg_virt(s), s->length);
++	for_each_sg(sg, s, nents, i) {
++		if (sg_has_page(s))
++			kmemcheck_mark_initialized(sg_virt(s), s->length);
++	}
+ 	BUG_ON(!valid_dma_direction(dir));
+ 	ents = ops->map_sg(dev, sg, nents, dir, attrs);
+ 	BUG_ON(ents < 0);
 -- 
 1.9.1

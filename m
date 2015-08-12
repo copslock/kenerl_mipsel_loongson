@@ -1,11 +1,11 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Aug 2015 09:12:49 +0200 (CEST)
-Received: from bombadil.infradead.org ([198.137.202.9]:34945 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Aug 2015 09:13:06 +0200 (CEST)
+Received: from bombadil.infradead.org ([198.137.202.9]:34968 "EHLO
         bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011433AbbHLHJTvK8mj (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 12 Aug 2015 09:09:19 +0200
+        by eddie.linux-mips.org with ESMTP id S27011611AbbHLHJXi87xj (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 12 Aug 2015 09:09:23 +0200
 Received: from p5de57192.dip0.t-ipconnect.de ([93.229.113.146] helo=localhost)
         by bombadil.infradead.org with esmtpsa (Exim 4.80.1 #2 (Red Hat Linux))
-        id 1ZPQ9w-0001dl-Vh; Wed, 12 Aug 2015 07:09:13 +0000
+        id 1ZPQ9z-0001es-RX; Wed, 12 Aug 2015 07:09:16 +0000
 From:   Christoph Hellwig <hch@lst.de>
 To:     torvalds@linux-foundation.org, axboe@kernel.dk
 Cc:     dan.j.williams@intel.com, vgupta@synopsys.com,
@@ -19,9 +19,9 @@ Cc:     dan.j.williams@intel.com, vgupta@synopsys.com,
         linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
         sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
         linux-nvdimm@ml01.01.org, linux-media@vger.kernel.org
-Subject: [PATCH 12/31] mn10300: handle page-less SG entries
-Date:   Wed, 12 Aug 2015 09:05:31 +0200
-Message-Id: <1439363150-8661-13-git-send-email-hch@lst.de>
+Subject: [PATCH 13/31] sparc/ldc: handle page-less SG entries
+Date:   Wed, 12 Aug 2015 09:05:32 +0200
+Message-Id: <1439363150-8661-14-git-send-email-hch@lst.de>
 X-Mailer: git-send-email 1.9.1
 In-Reply-To: <1439363150-8661-1-git-send-email-hch@lst.de>
 References: <1439363150-8661-1-git-send-email-hch@lst.de>
@@ -31,7 +31,7 @@ Return-Path: <BATV+598c32ccc3a9ece13a58+4371+infradead.org+hch@bombadil.srs.infr
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48788
+X-archive-position: 48789
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,29 +48,43 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Just remove a BUG_ON, the code handles them just fine as-is.
+Use
+
+    sg_phys(sg) & PAGE_MASK
+
+instead of
+
+    page_to_pfn(sg_page(sg)) << PAGE_SHIFT
+
+to get at the page-aligned physical address ofa SG entry, so that
+we don't require a page backing for SG entries.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- arch/mn10300/include/asm/dma-mapping.h | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ arch/sparc/kernel/ldc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/mn10300/include/asm/dma-mapping.h b/arch/mn10300/include/asm/dma-mapping.h
-index a18abfc..b1b1050 100644
---- a/arch/mn10300/include/asm/dma-mapping.h
-+++ b/arch/mn10300/include/asm/dma-mapping.h
-@@ -57,11 +57,8 @@ int dma_map_sg(struct device *dev, struct scatterlist *sglist, int nents,
- 	BUG_ON(!valid_dma_direction(direction));
- 	WARN_ON(nents == 0 || sglist[0].length == 0);
+diff --git a/arch/sparc/kernel/ldc.c b/arch/sparc/kernel/ldc.c
+index 1ae5eb1..0a29974 100644
+--- a/arch/sparc/kernel/ldc.c
++++ b/arch/sparc/kernel/ldc.c
+@@ -2051,7 +2051,7 @@ static void fill_cookies(struct cookie_state *sp, unsigned long pa,
  
--	for_each_sg(sglist, sg, nents, i) {
--		BUG_ON(!sg_page(sg));
--
-+	for_each_sg(sglist, sg, nents, i)
- 		sg->dma_address = sg_phys(sg);
--	}
+ static int sg_count_one(struct scatterlist *sg)
+ {
+-	unsigned long base = page_to_pfn(sg_page(sg)) << PAGE_SHIFT;
++	unsigned long base = sg_phys(sg) & PAGE_MASK;
+ 	long len = sg->length;
  
- 	mn10300_dcache_flush_inv();
- 	return nents;
+ 	if ((sg->offset | len) & (8UL - 1))
+@@ -2114,7 +2114,7 @@ int ldc_map_sg(struct ldc_channel *lp,
+ 	state.nc = 0;
+ 
+ 	for_each_sg(sg, s, num_sg, i) {
+-		fill_cookies(&state, page_to_pfn(sg_page(s)) << PAGE_SHIFT,
++		fill_cookies(&state, sg_phys(s) & PAGE_MASK,
+ 			     s->offset, s->length);
+ 	}
+ 
 -- 
 1.9.1

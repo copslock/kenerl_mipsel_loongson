@@ -1,40 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Aug 2015 18:01:10 +0200 (CEST)
-Received: from mail-io0-f180.google.com ([209.85.223.180]:36719 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Aug 2015 18:05:24 +0200 (CEST)
+Received: from mail-io0-f180.google.com ([209.85.223.180]:34052 "EHLO
         mail-io0-f180.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012348AbbHLQBIl7enh (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 12 Aug 2015 18:01:08 +0200
-Received: by iodv127 with SMTP id v127so8689168iod.3
-        for <linux-mips@linux-mips.org>; Wed, 12 Aug 2015 09:01:02 -0700 (PDT)
+        by eddie.linux-mips.org with ESMTP id S27012263AbbHLQFW3Swzh (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 12 Aug 2015 18:05:22 +0200
+Received: by iodb91 with SMTP id b91so24520165iod.1
+        for <linux-mips@linux-mips.org>; Wed, 12 Aug 2015 09:05:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=mime-version:sender:in-reply-to:references:date:message-id:subject
          :from:to:cc:content-type;
-        bh=uE+jlzjQ6ahipSG8Nj+bY6dbWKdWRTbXaVBH8/czOsk=;
-        b=EWGoKlkvIHr3rbeEbqmfEVEfwBfTuwmKbXcie9HqS6GBRUIhTJj8H3YeacvEyke3xW
-         EXqkqwUax179k+jv0ouv6A6kxbr3m15JimhcbvKlBMHO+8fxdEitdX8s/pouZ9fw55pK
-         R0/6uxTeBM0akE9PI7dA8deKMKm3H5VEJJjjUcnzhV1s4/PXIBKyBBrwn+zbr1RtXDIs
-         AVWJkPgxBzICco6QNR2YueQqUJnU771+DJEaT3xVrmv3npsfTFLiKF6OxWnnWDVNCvPP
-         U97fUWnCyI0USs75jOv1/35gVcLfAs+NNSma76KYz00dHEtEBDMwQF4YDb8qm+9b/wtk
-         6Utw==
+        bh=MJzZL+CgMUY3GKm3z8wa7otA0jR+vzieLcQ/5SMgzCw=;
+        b=kkRRSsFoxIgSo1Bdk5Nf7Qd9PT5CZnku1e2US7Qyl67N8W8T6l8sw2TGRk3JQq+orD
+         unGyut8KkW8nSP/+sHKJZ9pr8yEi5u1NWYdyChPLptQq1wr3t0S86QVr9le8ffBISLCj
+         pVsu4LHPq/9xSWTbOuf3stzG85HzlrGlfJMc07Uz61mFENyv85ps9FWjUawvjR1RuymI
+         Kkpdb2pxKS7bs1PqDf+KKlSdl38uKGfF7XkZTyk2Gb/peUH31XlUifWHo1dZI7nGwFwB
+         1M/BxvpCJvILSJCkPizNDUyMkQF3jCwhQDzxUpo2zH4m/hEWM6CifvSsYJXMKziMe58s
+         pQUQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linux-foundation.org; s=google;
         h=mime-version:sender:in-reply-to:references:date:message-id:subject
          :from:to:cc:content-type;
-        bh=uE+jlzjQ6ahipSG8Nj+bY6dbWKdWRTbXaVBH8/czOsk=;
-        b=Fk/NseaDldn9TyxCB7uoVACB5708PV8X3ygwx8tsPokEDvqev0eVnWQAiNGfBNhVwc
-         MB2HrPJIObht4uqCHoVrxUft3IiicZkFTemzOZopeXeTXAoMC1lsFrovvK0UbxZT5JxT
-         lSmu8lqZvviynCMBLmLmR5aT9e9PFcN8gQ5bA=
+        bh=MJzZL+CgMUY3GKm3z8wa7otA0jR+vzieLcQ/5SMgzCw=;
+        b=CIH6VHeEYKQEZR6ycpamm1sYQdzNAvDu4IfBfFaAHPyoUdawGq8YuoAYg8JKjFvKi/
+         ISCpUT3kA22ttz7Ts6qZ2qoIVNxIe0i/+vGjSY+2RlSisZMfHUa693/kWh2uMM87TLht
+         JvVLGTH3430jAnnGE9wUoFngZHFAD96MXL0Ww=
 MIME-Version: 1.0
-X-Received: by 10.107.8.216 with SMTP id h85mr25749970ioi.89.1439395262441;
- Wed, 12 Aug 2015 09:01:02 -0700 (PDT)
-Received: by 10.36.219.130 with HTTP; Wed, 12 Aug 2015 09:01:02 -0700 (PDT)
-In-Reply-To: <1439363150-8661-30-git-send-email-hch@lst.de>
+X-Received: by 10.107.8.216 with SMTP id h85mr25771845ioi.89.1439395516038;
+ Wed, 12 Aug 2015 09:05:16 -0700 (PDT)
+Received: by 10.36.219.130 with HTTP; Wed, 12 Aug 2015 09:05:15 -0700 (PDT)
+In-Reply-To: <1439363150-8661-32-git-send-email-hch@lst.de>
 References: <1439363150-8661-1-git-send-email-hch@lst.de>
-        <1439363150-8661-30-git-send-email-hch@lst.de>
-Date:   Wed, 12 Aug 2015 09:01:02 -0700
-X-Google-Sender-Auth: eZaVXoqdsc3fijjVhhGuuPDmGqg
-Message-ID: <CA+55aFxsH9Lde7wqZi555vqfH2uxeQqC9cjeca9L6Wr=XpyzXA@mail.gmail.com>
-Subject: Re: [PATCH 29/31] parisc: handle page-less SG entries
+        <1439363150-8661-32-git-send-email-hch@lst.de>
+Date:   Wed, 12 Aug 2015 09:05:15 -0700
+X-Google-Sender-Auth: 1lgZvIhI2y3w_A-MYzUfqFXbHCI
+Message-ID: <CA+55aFxfZM81HNfo2ysfhGwrhx6GX-+F--+jLFmMVv+Z0id2rw@mail.gmail.com>
+Subject: Re: [PATCH 31/31] dma-mapping-common: skip kmemleak checks for
+ page-less SG entries
 From:   Linus Torvalds <torvalds@linux-foundation.org>
 To:     Christoph Hellwig <hch@lst.de>
 Cc:     Jens Axboe <axboe@kernel.dk>,
@@ -66,7 +67,7 @@ Return-Path: <linus971@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48821
+X-archive-position: 48822
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -84,31 +85,24 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 On Wed, Aug 12, 2015 at 12:05 AM, Christoph Hellwig <hch@lst.de> wrote:
-> Make all cache invalidation conditional on sg_has_page() and use
-> sg_phys to get the physical address directly.
+> +       for_each_sg(sg, s, nents, i) {
+> +               if (sg_has_page(s))
+> +                       kmemcheck_mark_initialized(sg_virt(s), s->length);
+> +       }
 
-So this worries me a bit (I'm just reacting to one random patch in the series).
+[ Again, I'm responding to one random patch - this pattern was in
+other patches too.  ]
 
-The reason?
+A question: do we actually expect to mix page-less and pageful SG
+entries in the same SG list?
 
-I think this wants a big honking comment somewhere saying "non-sg_page
-accesses are not necessarily cache coherent").
+How does that happen?
 
-Now, I don't think that's _wrong_, but it's an important distinction:
-if you look up pages in the page tables directly, there's a very
-subtle difference between then saving just the pfn and saving the
-"struct page" of the result.
+(I'm not saying it can't, I'm just wondering where people expect this
+to happen).
 
-On sane architectures, this whole cache flushing thing doesn't matter.
-Which just means that it's going to be even more subtle on the odd
-broken ones..
+IOW, maybe it would be valid to have a rule saying "a SG list is
+either all pageful or pageless, never mixed", and then have the "if"
+statement outside the loop rather than inside.
 
-I'm assuming that anybody who wants to use the page-less
-scatter-gather lists always does so on memory that isn't actually
-virtually mapped at all, or only does so on sane architectures that
-are cache coherent at a physical level, but I'd like that assumption
-*documented* somewhere.
-
-(And maybe it is, and I just didn't get to that patch yet)
-
-                   Linus
+                      Linus

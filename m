@@ -1,11 +1,11 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Aug 2015 09:13:42 +0200 (CEST)
-Received: from bombadil.infradead.org ([198.137.202.9]:35005 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Aug 2015 09:13:59 +0200 (CEST)
+Received: from bombadil.infradead.org ([198.137.202.9]:35022 "EHLO
         bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011932AbbHLHJ2hV8Cj (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 12 Aug 2015 09:09:28 +0200
+        by eddie.linux-mips.org with ESMTP id S27012011AbbHLHJb1B-pj (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 12 Aug 2015 09:09:31 +0200
 Received: from p5de57192.dip0.t-ipconnect.de ([93.229.113.146] helo=localhost)
         by bombadil.infradead.org with esmtpsa (Exim 4.80.1 #2 (Red Hat Linux))
-        id 1ZPQA5-0001gv-J2; Wed, 12 Aug 2015 07:09:22 +0000
+        id 1ZPQA8-0001hl-Ek; Wed, 12 Aug 2015 07:09:24 +0000
 From:   Christoph Hellwig <hch@lst.de>
 To:     torvalds@linux-foundation.org, axboe@kernel.dk
 Cc:     dan.j.williams@intel.com, vgupta@synopsys.com,
@@ -19,9 +19,9 @@ Cc:     dan.j.williams@intel.com, vgupta@synopsys.com,
         linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
         sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
         linux-nvdimm@ml01.01.org, linux-media@vger.kernel.org
-Subject: [PATCH 15/31] sparc32/iommu: handle page-less SG entries
-Date:   Wed, 12 Aug 2015 09:05:34 +0200
-Message-Id: <1439363150-8661-16-git-send-email-hch@lst.de>
+Subject: [PATCH 16/31] s390: handle page-less SG entries
+Date:   Wed, 12 Aug 2015 09:05:35 +0200
+Message-Id: <1439363150-8661-17-git-send-email-hch@lst.de>
 X-Mailer: git-send-email 1.9.1
 In-Reply-To: <1439363150-8661-1-git-send-email-hch@lst.de>
 References: <1439363150-8661-1-git-send-email-hch@lst.de>
@@ -31,7 +31,7 @@ Return-Path: <BATV+598c32ccc3a9ece13a58+4371+infradead.org+hch@bombadil.srs.infr
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48791
+X-archive-position: 48792
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,90 +48,70 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Pass a PFN to iommu_get_one instad of calculating it locall from a
-page structure so that we don't need pages for every address we can
-DMA to or from.
-
-Also further restrict the cache flushing as we now have a non-highmem
-way of not kernel virtual mapped physical addresses.
+Use sg_phys() instead of page_to_phys(sg_page(sg)) so that we don't
+require a page structure for all DMA memory.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- arch/sparc/mm/iommu.c | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+ arch/s390/pci/pci_dma.c | 20 ++++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
 
-diff --git a/arch/sparc/mm/iommu.c b/arch/sparc/mm/iommu.c
-index 491511d..3ed53d7 100644
---- a/arch/sparc/mm/iommu.c
-+++ b/arch/sparc/mm/iommu.c
-@@ -174,7 +174,7 @@ static void iommu_flush_iotlb(iopte_t *iopte, unsigned int niopte)
+diff --git a/arch/s390/pci/pci_dma.c b/arch/s390/pci/pci_dma.c
+index 6fd8d58..aae5a47 100644
+--- a/arch/s390/pci/pci_dma.c
++++ b/arch/s390/pci/pci_dma.c
+@@ -272,14 +272,13 @@ int dma_set_mask(struct device *dev, u64 mask)
+ }
+ EXPORT_SYMBOL_GPL(dma_set_mask);
+ 
+-static dma_addr_t s390_dma_map_pages(struct device *dev, struct page *page,
+-				     unsigned long offset, size_t size,
++static dma_addr_t s390_dma_map_phys(struct device *dev, unsigned long pa,
++				     size_t size,
+ 				     enum dma_data_direction direction,
+ 				     struct dma_attrs *attrs)
+ {
+ 	struct zpci_dev *zdev = get_zdev(to_pci_dev(dev));
+ 	unsigned long nr_pages, iommu_page_index;
+-	unsigned long pa = page_to_phys(page) + offset;
+ 	int flags = ZPCI_PTE_VALID;
+ 	dma_addr_t dma_addr;
+ 
+@@ -301,7 +300,7 @@ static dma_addr_t s390_dma_map_pages(struct device *dev, struct page *page,
+ 
+ 	if (!dma_update_trans(zdev, pa, dma_addr, size, flags)) {
+ 		atomic64_add(nr_pages, &zdev->mapped_pages);
+-		return dma_addr + (offset & ~PAGE_MASK);
++		return dma_addr + (pa & ~PAGE_MASK);
  	}
+ 
+ out_free:
+@@ -312,6 +311,16 @@ out_err:
+ 	return DMA_ERROR_CODE;
  }
  
--static u32 iommu_get_one(struct device *dev, struct page *page, int npages)
-+static u32 iommu_get_one(struct device *dev, unsigned long pfn, int npages)
- {
- 	struct iommu_struct *iommu = dev->archdata.iommu;
- 	int ioptex;
-@@ -183,7 +183,7 @@ static u32 iommu_get_one(struct device *dev, struct page *page, int npages)
++static dma_addr_t s390_dma_map_pages(struct device *dev, struct page *page,
++				     unsigned long offset, size_t size,
++				     enum dma_data_direction direction,
++				     struct dma_attrs *attrs)
++{
++	unsigned long pa = page_to_phys(page) + offset;
++
++	return s390_dma_map_phys(dev, pa, size, direction, attrs);
++}
++
+ static void s390_dma_unmap_pages(struct device *dev, dma_addr_t dma_addr,
+ 				 size_t size, enum dma_data_direction direction,
+ 				 struct dma_attrs *attrs)
+@@ -384,8 +393,7 @@ static int s390_dma_map_sg(struct device *dev, struct scatterlist *sg,
  	int i;
  
- 	/* page color = pfn of page */
--	ioptex = bit_map_string_get(&iommu->usemap, npages, page_to_pfn(page));
-+	ioptex = bit_map_string_get(&iommu->usemap, npages, pfn);
- 	if (ioptex < 0)
- 		panic("iommu out");
- 	busa0 = iommu->start + (ioptex << PAGE_SHIFT);
-@@ -192,11 +192,11 @@ static u32 iommu_get_one(struct device *dev, struct page *page, int npages)
- 	busa = busa0;
- 	iopte = iopte0;
- 	for (i = 0; i < npages; i++) {
--		iopte_val(*iopte) = MKIOPTE(page_to_pfn(page), IOPERM);
-+		iopte_val(*iopte) = MKIOPTE(pfn, IOPERM);
- 		iommu_invalidate_page(iommu->regs, busa);
- 		busa += PAGE_SIZE;
- 		iopte++;
--		page++;
-+		pfn++;
- 	}
- 
- 	iommu_flush_iotlb(iopte0, npages);
-@@ -214,7 +214,7 @@ static u32 iommu_get_scsi_one(struct device *dev, char *vaddr, unsigned int len)
- 	off = (unsigned long)vaddr & ~PAGE_MASK;
- 	npages = (off + len + PAGE_SIZE-1) >> PAGE_SHIFT;
- 	page = virt_to_page((unsigned long)vaddr & PAGE_MASK);
--	busa = iommu_get_one(dev, page, npages);
-+	busa = iommu_get_one(dev, page_to_pfn(page), npages);
- 	return busa + off;
- }
- 
-@@ -243,7 +243,7 @@ static void iommu_get_scsi_sgl_gflush(struct device *dev, struct scatterlist *sg
- 	while (sz != 0) {
- 		--sz;
- 		n = (sg->length + sg->offset + PAGE_SIZE-1) >> PAGE_SHIFT;
--		sg->dma_address = iommu_get_one(dev, sg_page(sg), n) + sg->offset;
-+		sg->dma_address = iommu_get_one(dev, sg_pfn(sg), n) + sg->offset;
- 		sg->dma_length = sg->length;
- 		sg = sg_next(sg);
- 	}
-@@ -264,7 +264,8 @@ static void iommu_get_scsi_sgl_pflush(struct device *dev, struct scatterlist *sg
- 		 * XXX Is this a good assumption?
- 		 * XXX What if someone else unmaps it here and races us?
- 		 */
--		if ((page = (unsigned long) page_address(sg_page(sg))) != 0) {
-+		if (sg_has_page(sg) &&
-+		    (page = (unsigned long) page_address(sg_page(sg))) != 0) {
- 			for (i = 0; i < n; i++) {
- 				if (page != oldpage) {	/* Already flushed? */
- 					flush_page_for_dma(page);
-@@ -274,7 +275,7 @@ static void iommu_get_scsi_sgl_pflush(struct device *dev, struct scatterlist *sg
- 			}
- 		}
- 
--		sg->dma_address = iommu_get_one(dev, sg_page(sg), n) + sg->offset;
-+		sg->dma_address = iommu_get_one(dev, sg_pfn(sg), n) + sg->offset;
- 		sg->dma_length = sg->length;
- 		sg = sg_next(sg);
- 	}
+ 	for_each_sg(sg, s, nr_elements, i) {
+-		struct page *page = sg_page(s);
+-		s->dma_address = s390_dma_map_pages(dev, page, s->offset,
++		s->dma_address = s390_dma_map_phys(dev, sg_phys(s),
+ 						    s->length, dir, NULL);
+ 		if (!dma_mapping_error(dev, s->dma_address)) {
+ 			s->dma_length = s->length;
 -- 
 1.9.1

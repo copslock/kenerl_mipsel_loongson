@@ -1,61 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Aug 2015 14:42:58 +0200 (CEST)
-Received: from mail-wi0-f182.google.com ([209.85.212.182]:37558 "EHLO
-        mail-wi0-f182.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012348AbbHLMm45p3kZ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 12 Aug 2015 14:42:56 +0200
-Received: by wibhh20 with SMTP id hh20so26945858wib.0
-        for <linux-mips@linux-mips.org>; Wed, 12 Aug 2015 05:42:51 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:message-id:date:from:user-agent:mime-version:to
-         :cc:subject:references:in-reply-to:content-type
-         :content-transfer-encoding;
-        bh=3t1xKSTRoEwhUlfn5TnXO5ayka59UgmQwzSIO9gz3vs=;
-        b=j8Lzz5sgbo9pGkZubDb7eaFLoo4KeV+rd38r/almyD4TRsBm//dK0DP8M+nBZzqc0H
-         p9uxe4TBP+5EUs3XrrkgthmGv2d3Sgl9m7hUV7di9jp3LIPMPL/w7rq7g+X7iPD7Try/
-         jufUScAAUAg43J7izHPcGntYiOdeoRRwhfp7zcI1T7gCedfzOv8cjvV79BQPwRJW7MlM
-         WlyL/pFCw/aVOhK6VxzW36resvHxLKmO00seU6+vCtLdpFee5vJFUxv610hQbw9z2Iey
-         ebq4PYJ82ICUTbTjka3cOaxTJQMxiE2bmd0aJ1yVVXaqQVbQotEPwGvb9TOuz51MM5Nu
-         Mj1A==
-X-Gm-Message-State: ALoCoQkXmpmOsdJOZ91ZZESWtqON/mL5dBUy8zpaTLWL3Vb+sdBVIQ0wmwlIjDBbla7dRDefD4rU
-X-Received: by 10.194.238.193 with SMTP id vm1mr66723109wjc.57.1439383371204;
-        Wed, 12 Aug 2015 05:42:51 -0700 (PDT)
-Received: from [10.0.0.5] ([207.232.55.62])
-        by smtp.googlemail.com with ESMTPSA id hn2sm7777363wjc.45.2015.08.12.05.42.48
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Wed, 12 Aug 2015 05:42:50 -0700 (PDT)
-Message-ID: <55CB3F47.3000902@plexistor.com>
-Date:   Wed, 12 Aug 2015 15:42:47 +0300
-From:   Boaz Harrosh <boaz@plexistor.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.7.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Aug 2015 16:31:49 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:18938 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27011049AbbHLObq2r7bm convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 12 Aug 2015 16:31:46 +0200
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 0A1E0C0BC7390;
+        Wed, 12 Aug 2015 15:31:37 +0100 (IST)
+Received: from hhmail02.hh.imgtec.org (10.100.10.20) by KLMAIL01.kl.imgtec.org
+ (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Wed, 12 Aug
+ 2015 15:31:40 +0100
+Received: from hhmail02.hh.imgtec.org ([::1]) by hhmail02.hh.imgtec.org
+ ([::1]) with mapi id 14.03.0235.001; Wed, 12 Aug 2015 15:31:39 +0100
+From:   Govindraj Raja <Govindraj.Raja@imgtec.com>
+To:     "Andrew Bresticker (abrestic@chromium.org)" <abrestic@chromium.org>,
+        Zdenko Pulitika <Zdenko.Pulitika@imgtec.com>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        "linux-clk@vger.kernel.org" <linux-clk@vger.kernel.org>,
+        Stephen Boyd <sboyd@codeaurora.org>,
+        "Michael Turquette" <mturquette@baylibre.com>
+CC:     Kevin Cernekee <cernekee@chromium.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Andrew Bresticker <abrestic@chromium.org>,
+        "James Hartley" <James.Hartley@imgtec.com>,
+        Damien Horsley <Damien.Horsley@imgtec.com>,
+        James Hogan <James.Hogan@imgtec.com>,
+        "Ezequiel Garcia" <ezequiel@vanguardiasur.com.ar>
+Subject: RE: [PATCH v2 1/4] clk: pistachio: Fix 32bit integer overflows
+Thread-Topic: [PATCH v2 1/4] clk: pistachio: Fix 32bit integer overflows
+Thread-Index: AQHQ0S0HaQ7/iHpTdkijImGpgOKz/J4FVvoAgAMcL5A=
+Date:   Wed, 12 Aug 2015 14:31:38 +0000
+Message-ID: <4BF5E8683E87FC4DA89822A5A3EB60CB6F32EA@hhmail02.hh.imgtec.org>
+References: <1438964413-18876-1-git-send-email-govindraj.raja@imgtec.com>
+ <1438964413-18876-2-git-send-email-govindraj.raja@imgtec.com>
+ <E3EE94C54B0A8346A2210452C2C8281D288B1B8C@hhmail02.hh.imgtec.org>
+In-Reply-To: <E3EE94C54B0A8346A2210452C2C8281D288B1B8C@hhmail02.hh.imgtec.org>
+Accept-Language: en-US
+Content-Language: en-AU
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [192.168.167.98]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-To:     Christoph Hellwig <hch@lst.de>, torvalds@linux-foundation.org,
-        axboe@kernel.dk
-CC:     linux-mips@linux-mips.org, linux-ia64@vger.kernel.org,
-        linux-nvdimm@ml01.01.org, dhowells@redhat.com,
-        sparclinux@vger.kernel.org, egtvedt@samfundet.no,
-        linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
-        x86@kernel.org, dwmw2@infradead.org, hskinnemoen@gmail.com,
-        linux-xtensa@linux-xtensa.org, grundler@parisc-linux.org,
-        realmz6@gmail.com, alex.williamson@redhat.com,
-        linux-metag@vger.kernel.org, monstr@monstr.eu,
-        linux-parisc@vger.kernel.org, vgupta@synopsys.com,
-        linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
-        linux-media@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Subject: Re: RFC: prepare for struct scatterlist entries without page backing
-References: <1439363150-8661-1-git-send-email-hch@lst.de>
-In-Reply-To: <1439363150-8661-1-git-send-email-hch@lst.de>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Return-Path: <boaz@plexistor.com>
+Return-Path: <Govindraj.Raja@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48817
+X-archive-position: 48818
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: boaz@plexistor.com
+X-original-sender: Govindraj.Raja@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -68,72 +63,84 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 08/12/2015 10:05 AM, Christoph Hellwig wrote:
-> Dan Williams started to look into addressing I/O to and from
-> Persistent Memory in his series from June:
+Hi Andrew,
+
+> -----Original Message-----
+> From: Zdenko Pulitika
+> Sent: 10 August 2015 04:56 PM
+> To: Govindraj Raja; linux-mips@linux-mips.org; linux-clk@vger.kernel.org;
+> Stephen Boyd; Michael Turquette
+> Cc: Kevin Cernekee; Ralf Baechle; Andrew Bresticker; James Hartley; Damien
+> Horsley; James Hogan; Ezequiel Garcia
+> Subject: RE: [PATCH v2 1/4] clk: pistachio: Fix 32bit integer overflows
 > 
-> 	http://thread.gmane.org/gmane.linux.kernel.cross-arch/27944
+> Govindraj,
 > 
-> I've started looking into DMA mapping of these SGLs specifically instead
-> of the map_pfn method in there.  In addition to supporting NVDIMM backed
-> I/O I also suspect this would be highly useful for media drivers that
-> go through nasty hoops to be able to DMA from/to their ioremapped regions,
-> with vb2_dc_get_userptr in drivers/media/v4l2-core/videobuf2-dma-contig.c
-> being a prime example for the unsafe hacks currently used.
+> > -----Original Message-----
+> > From: Govindraj Raja
+> > Sent: 07 August 2015 17:20
+> > To: linux-mips@linux-mips.org; linux-clk@vger.kernel.org; Stephen
+> > Boyd; Michael Turquette
+> > Cc: Zdenko Pulitika; Kevin Cernekee; Ralf Baechle; Andrew Bresticker;
+> > James Hartley; Govindraj Raja; Damien Horsley; James Hogan; Ezequiel
+> > Garcia; Govindraj Raja
+> > Subject: [PATCH v2 1/4] clk: pistachio: Fix 32bit integer overflows
+> >
+> > From: Zdenko Pulitika <zdenko.pulitika@imgtec.com>
+> >
+> > This commit fixes 32bit integer overflows throughout the pll driver (i.e.
+> > wherever the result of integer multiplication may exceed the range of u32).
+> >
+> > One of the functions affected by this problem is .recalc_rate. It
+> > returns incorrect rate for some pll settings (not for all though)
+> > which in turn results in the incorrect rate setup of pll's child clocks.
+> >
+> > Signed-off-by: Zdenko Pulitika <zdenko.pulitika@imgtec.com>
+> > Signed-off-by: Govindraj Raja <govindraj.raja@imgtec.com>
+> > ---
+> >  drivers/clk/pistachio/clk-pll.c | 26 ++++++++++++--------------
+> >  1 file changed, 12 insertions(+), 14 deletions(-)
+> >
+> > diff --git a/drivers/clk/pistachio/clk-pll.c
+> > b/drivers/clk/pistachio/clk-pll.c index e17dada..68066ef 100644
+> > --- a/drivers/clk/pistachio/clk-pll.c
+> > +++ b/drivers/clk/pistachio/clk-pll.c
+> > @@ -88,12 +88,10 @@ static inline void pll_lock(struct pistachio_clk_pll *pll)
+> >  		cpu_relax();
+> >  }
+> >
+> > -static inline u32 do_div_round_closest(u64 dividend, u32 divisor)
+
+[...]
+
+
+> > 1.9.1
 > 
+> [Zdenko Pulitika] Reverting pll_rate_table members from 64 to 32 bit re-
+> introduces multiplication overflow issue.
+> We can either 1) keep 64bit members in pll_rate_table and forget about overflow
+> or 2) have 32 bit members but then we need to type cast them to u64 in every
+> multiplication expression which may overflow. In my opinion, first solution is
+> safer and nicer, 2nd will result in ugly typecasts throughout the code and, more
+> importantly, there's a risk of overflow bug being repeated if somebody wishes to
+> modify/upgrade the existing code.
 
-The support I have suggested and submitted for zone-less sections.
-(In my add_persistent_memory() patchset)
+Like Zdenko pointed out some operations in pll calculation may overflow without 
+converting the struct pistachio_pll_rate_table members to long 
 
-Would work perfectly well and transparent for all such multimedia cases.
-(All hacks removed). In fact I have loaded pmem (with-pages) on a VRAM
-a few times and it is great easy fun. (I wanted to experiment with cached
-memory over a pcie)
+For example in below code snippet operation:
 
-> It turns out most DMA mapping implementation can handle SGLs without
-> page structures with some fairly simple mechanical work.  Most of it
-> is just about consistently using sg_phys.  For implementations that
-> need to flush caches we need a new helper that skips these cache
-> flushes if a entry doesn't have a kernel virtual address.
-> 
-> However the ccio (parisc) and sba_iommu (parisc & ia64) IOMMUs seem
-> to be operate mostly on virtual addresses.  It's a fairly odd concept
-> that I don't fully grasp, so I'll need some help with those if we want
-> to bring this forward.
-> 
-> Additional this series skips ARM entirely for now.  The reason is
-> that most arm implementations of the .map_sg operation just iterate
-> over all entries and call ->map_page for it, which means we'd need
-> to convert those to a ->map_pfn similar to Dan's previous approach.
-> 
+[..]
 
-All this endless work for nothing more than uglyfing the Kernel, and
-It will never end. When a real and fully working solution is right
-here for more then a year.
+params->fref * params->fbdiv
 
-If you are really up for a deep audit and a mammoth testing effort,
-why not do a more worthy, and order of magnitude smaller work and support
-2M and 1G variable sized "pages". All the virtual-vs-phisical-vs-caching
-just works.
+[..]
 
-Most of the core work is there. Block layer and lots of other subsytems
-already support sending a single page-pointer with bvec_offset bvec_len
-bigger then 4K. Other system will be small fixes sprinkled around but
-not at all this endless stream of subsystem after another of patches.
-And for why.
+So to be on safer side it's better to have the original code [1].
 
-The novelty of pages is the section object, the section is reached
-from page* from virtual as well as physical planes. And is a center
-that translate from all plains to all plains. You keep this concept
-only make 2M-page sections and 1G-page sections.
+--
+Thanks,
+Govindraj.R
 
-It is a bit of work but is worth while, and accelerating tremendously
-lots of workloads. Not like this abomination which only branches
-things more and more, and making things fatter and slower.
-
-It all feels like a typhoon, the inertia of tones and tons of
-men hours work, in a huge wave. How will you ever stop such a
-rushing mass. I'm trying to dock under but, surly it makes me sad.
-
-Thanks
-Boaz
+[1]:
+http://patchwork.linux-mips.org/patch/10888/

@@ -1,68 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Aug 2015 13:52:12 +0200 (CEST)
-Received: from e06smtp10.uk.ibm.com ([195.75.94.106]:55472 "EHLO
-        e06smtp10.uk.ibm.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27011669AbbHLLwJeBtsz (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 12 Aug 2015 13:52:09 +0200
-Received: from /spool/local
-        by e06smtp10.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <linux-mips@linux-mips.org> from <sebott@linux.vnet.ibm.com>;
-        Wed, 12 Aug 2015 12:52:03 +0100
-Received: from d06dlp03.portsmouth.uk.ibm.com (9.149.20.15)
-        by e06smtp10.uk.ibm.com (192.168.101.140) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        Wed, 12 Aug 2015 12:52:02 +0100
-X-Helo: d06dlp03.portsmouth.uk.ibm.com
-X-MailFrom: sebott@linux.vnet.ibm.com
-X-RcptTo: linux-mips@linux-mips.org
-Received: from b06cxnps4075.portsmouth.uk.ibm.com (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
-        by d06dlp03.portsmouth.uk.ibm.com (Postfix) with ESMTP id 29B231B0806E
-        for <linux-mips@linux-mips.org>; Wed, 12 Aug 2015 12:53:28 +0100 (BST)
-Received: from d06av12.portsmouth.uk.ibm.com (d06av12.portsmouth.uk.ibm.com [9.149.37.247])
-        by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id t7CBq1Fl21561588
-        for <linux-mips@linux-mips.org>; Wed, 12 Aug 2015 11:52:02 GMT
-Received: from d06av12.portsmouth.uk.ibm.com (localhost [127.0.0.1])
-        by d06av12.portsmouth.uk.ibm.com (8.14.4/8.14.4/NCO v10.0 AVout) with ESMTP id t7CBpx4a015261
-        for <linux-mips@linux-mips.org>; Wed, 12 Aug 2015 05:52:01 -0600
-Received: from dyn-9-152-212-141.boeblingen.de.ibm.com (dyn-9-152-212-141.boeblingen.de.ibm.com [9.152.212.141])
-        by d06av12.portsmouth.uk.ibm.com (8.14.4/8.14.4/NCO v10.0 AVin) with ESMTP id t7CBpw8W015203
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
-        Wed, 12 Aug 2015 05:51:58 -0600
-Date:   Wed, 12 Aug 2015 13:51:58 +0200 (CEST)
-From:   Sebastian Ott <sebott@linux.vnet.ibm.com>
-X-X-Sender: sebott@denkbrett
-To:     Christoph Hellwig <hch@lst.de>
-cc:     torvalds@linux-foundation.org, axboe@kernel.dk,
-        dan.j.williams@intel.com, vgupta@synopsys.com,
-        hskinnemoen@gmail.com, egtvedt@samfundet.no, realmz6@gmail.com,
-        dhowells@redhat.com, monstr@monstr.eu, x86@kernel.org,
-        dwmw2@infradead.org, alex.williamson@redhat.com,
-        grundler@parisc-linux.org, linux-kernel@vger.kernel.org,
-        linux-arch@vger.kernel.org, linux-alpha@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-metag@vger.kernel.org,
-        linux-mips@linux-mips.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        linux-nvdimm@ml01.01.org, linux-media@vger.kernel.org
-Subject: Re: [PATCH 16/31] s390: handle page-less SG entries
-In-Reply-To: <1439363150-8661-17-git-send-email-hch@lst.de>
-Message-ID: <alpine.LFD.2.11.1508121350090.1732@denkbrett>
-References: <1439363150-8661-1-git-send-email-hch@lst.de> <1439363150-8661-17-git-send-email-hch@lst.de>
-User-Agent: Alpine 2.11 (LFD 23 2013-08-11)
-Organization: =?ISO-8859-15?Q?=22IBM_Deutschland_Research_&_Development_GmbH_=2F_Vorsitzende_des_Aufsichtsrats=3A_Martina_Koederitz_Gesch=E4ftsf=FChrung=3A_Dirk_Wittkopp_Sitz_der_Gesellschaft=3A_B=F6blingen_=2F_Registergericht?=
- =?ISO-8859-15?Q?=3A_Amtsgericht_Stuttgart=2C_HRB_243294=22?=
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Aug 2015 14:42:58 +0200 (CEST)
+Received: from mail-wi0-f182.google.com ([209.85.212.182]:37558 "EHLO
+        mail-wi0-f182.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012348AbbHLMm45p3kZ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 12 Aug 2015 14:42:56 +0200
+Received: by wibhh20 with SMTP id hh20so26945858wib.0
+        for <linux-mips@linux-mips.org>; Wed, 12 Aug 2015 05:42:51 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:message-id:date:from:user-agent:mime-version:to
+         :cc:subject:references:in-reply-to:content-type
+         :content-transfer-encoding;
+        bh=3t1xKSTRoEwhUlfn5TnXO5ayka59UgmQwzSIO9gz3vs=;
+        b=j8Lzz5sgbo9pGkZubDb7eaFLoo4KeV+rd38r/almyD4TRsBm//dK0DP8M+nBZzqc0H
+         p9uxe4TBP+5EUs3XrrkgthmGv2d3Sgl9m7hUV7di9jp3LIPMPL/w7rq7g+X7iPD7Try/
+         jufUScAAUAg43J7izHPcGntYiOdeoRRwhfp7zcI1T7gCedfzOv8cjvV79BQPwRJW7MlM
+         WlyL/pFCw/aVOhK6VxzW36resvHxLKmO00seU6+vCtLdpFee5vJFUxv610hQbw9z2Iey
+         ebq4PYJ82ICUTbTjka3cOaxTJQMxiE2bmd0aJ1yVVXaqQVbQotEPwGvb9TOuz51MM5Nu
+         Mj1A==
+X-Gm-Message-State: ALoCoQkXmpmOsdJOZ91ZZESWtqON/mL5dBUy8zpaTLWL3Vb+sdBVIQ0wmwlIjDBbla7dRDefD4rU
+X-Received: by 10.194.238.193 with SMTP id vm1mr66723109wjc.57.1439383371204;
+        Wed, 12 Aug 2015 05:42:51 -0700 (PDT)
+Received: from [10.0.0.5] ([207.232.55.62])
+        by smtp.googlemail.com with ESMTPSA id hn2sm7777363wjc.45.2015.08.12.05.42.48
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Wed, 12 Aug 2015 05:42:50 -0700 (PDT)
+Message-ID: <55CB3F47.3000902@plexistor.com>
+Date:   Wed, 12 Aug 2015 15:42:47 +0300
+From:   Boaz Harrosh <boaz@plexistor.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.7.0
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-TM-AS-MML: disable
-X-Content-Scanned: Fidelis XPS MAILER
-x-cbid: 15081211-0041-0000-0000-0000053BC8E3
-Return-Path: <sebott@linux.vnet.ibm.com>
+To:     Christoph Hellwig <hch@lst.de>, torvalds@linux-foundation.org,
+        axboe@kernel.dk
+CC:     linux-mips@linux-mips.org, linux-ia64@vger.kernel.org,
+        linux-nvdimm@ml01.01.org, dhowells@redhat.com,
+        sparclinux@vger.kernel.org, egtvedt@samfundet.no,
+        linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
+        x86@kernel.org, dwmw2@infradead.org, hskinnemoen@gmail.com,
+        linux-xtensa@linux-xtensa.org, grundler@parisc-linux.org,
+        realmz6@gmail.com, alex.williamson@redhat.com,
+        linux-metag@vger.kernel.org, monstr@monstr.eu,
+        linux-parisc@vger.kernel.org, vgupta@synopsys.com,
+        linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
+        linux-media@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Subject: Re: RFC: prepare for struct scatterlist entries without page backing
+References: <1439363150-8661-1-git-send-email-hch@lst.de>
+In-Reply-To: <1439363150-8661-1-git-send-email-hch@lst.de>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Return-Path: <boaz@plexistor.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48816
+X-archive-position: 48817
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sebott@linux.vnet.ibm.com
+X-original-sender: boaz@plexistor.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -75,83 +68,72 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, 12 Aug 2015, Christoph Hellwig wrote:
-
-> Use sg_phys() instead of page_to_phys(sg_page(sg)) so that we don't
-> require a page structure for all DMA memory.
+On 08/12/2015 10:05 AM, Christoph Hellwig wrote:
+> Dan Williams started to look into addressing I/O to and from
+> Persistent Memory in his series from June:
 > 
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
-
-Acked-by: Sebastian Ott <sebott@linux.vnet.ibm.com>
-
-
-> ---
->  arch/s390/pci/pci_dma.c | 20 ++++++++++++++------
->  1 file changed, 14 insertions(+), 6 deletions(-)
+> 	http://thread.gmane.org/gmane.linux.kernel.cross-arch/27944
 > 
-> diff --git a/arch/s390/pci/pci_dma.c b/arch/s390/pci/pci_dma.c
-> index 6fd8d58..aae5a47 100644
-> --- a/arch/s390/pci/pci_dma.c
-> +++ b/arch/s390/pci/pci_dma.c
-> @@ -272,14 +272,13 @@ int dma_set_mask(struct device *dev, u64 mask)
->  }
->  EXPORT_SYMBOL_GPL(dma_set_mask);
->  
-> -static dma_addr_t s390_dma_map_pages(struct device *dev, struct page *page,
-> -				     unsigned long offset, size_t size,
-> +static dma_addr_t s390_dma_map_phys(struct device *dev, unsigned long pa,
-> +				     size_t size,
->  				     enum dma_data_direction direction,
->  				     struct dma_attrs *attrs)
->  {
->  	struct zpci_dev *zdev = get_zdev(to_pci_dev(dev));
->  	unsigned long nr_pages, iommu_page_index;
-> -	unsigned long pa = page_to_phys(page) + offset;
->  	int flags = ZPCI_PTE_VALID;
->  	dma_addr_t dma_addr;
->  
-> @@ -301,7 +300,7 @@ static dma_addr_t s390_dma_map_pages(struct device *dev, struct page *page,
->  
->  	if (!dma_update_trans(zdev, pa, dma_addr, size, flags)) {
->  		atomic64_add(nr_pages, &zdev->mapped_pages);
-> -		return dma_addr + (offset & ~PAGE_MASK);
-> +		return dma_addr + (pa & ~PAGE_MASK);
->  	}
->  
->  out_free:
-> @@ -312,6 +311,16 @@ out_err:
->  	return DMA_ERROR_CODE;
->  }
->  
-> +static dma_addr_t s390_dma_map_pages(struct device *dev, struct page *page,
-> +				     unsigned long offset, size_t size,
-> +				     enum dma_data_direction direction,
-> +				     struct dma_attrs *attrs)
-> +{
-> +	unsigned long pa = page_to_phys(page) + offset;
-> +
-> +	return s390_dma_map_phys(dev, pa, size, direction, attrs);
-> +}
-> +
->  static void s390_dma_unmap_pages(struct device *dev, dma_addr_t dma_addr,
->  				 size_t size, enum dma_data_direction direction,
->  				 struct dma_attrs *attrs)
-> @@ -384,8 +393,7 @@ static int s390_dma_map_sg(struct device *dev, struct scatterlist *sg,
->  	int i;
->  
->  	for_each_sg(sg, s, nr_elements, i) {
-> -		struct page *page = sg_page(s);
-> -		s->dma_address = s390_dma_map_pages(dev, page, s->offset,
-> +		s->dma_address = s390_dma_map_phys(dev, sg_phys(s),
->  						    s->length, dir, NULL);
->  		if (!dma_mapping_error(dev, s->dma_address)) {
->  			s->dma_length = s->length;
-> -- 
-> 1.9.1
+> I've started looking into DMA mapping of these SGLs specifically instead
+> of the map_pfn method in there.  In addition to supporting NVDIMM backed
+> I/O I also suspect this would be highly useful for media drivers that
+> go through nasty hoops to be able to DMA from/to their ioremapped regions,
+> with vb2_dc_get_userptr in drivers/media/v4l2-core/videobuf2-dma-contig.c
+> being a prime example for the unsafe hacks currently used.
 > 
-> --
-> To unsubscribe from this list: send the line "unsubscribe linux-kernel" in
-> the body of a message to majordomo@vger.kernel.org
-> More majordomo info at  http://vger.kernel.org/majordomo-info.html
-> Please read the FAQ at  http://www.tux.org/lkml/
+
+The support I have suggested and submitted for zone-less sections.
+(In my add_persistent_memory() patchset)
+
+Would work perfectly well and transparent for all such multimedia cases.
+(All hacks removed). In fact I have loaded pmem (with-pages) on a VRAM
+a few times and it is great easy fun. (I wanted to experiment with cached
+memory over a pcie)
+
+> It turns out most DMA mapping implementation can handle SGLs without
+> page structures with some fairly simple mechanical work.  Most of it
+> is just about consistently using sg_phys.  For implementations that
+> need to flush caches we need a new helper that skips these cache
+> flushes if a entry doesn't have a kernel virtual address.
 > 
+> However the ccio (parisc) and sba_iommu (parisc & ia64) IOMMUs seem
+> to be operate mostly on virtual addresses.  It's a fairly odd concept
+> that I don't fully grasp, so I'll need some help with those if we want
+> to bring this forward.
+> 
+> Additional this series skips ARM entirely for now.  The reason is
+> that most arm implementations of the .map_sg operation just iterate
+> over all entries and call ->map_page for it, which means we'd need
+> to convert those to a ->map_pfn similar to Dan's previous approach.
+> 
+
+All this endless work for nothing more than uglyfing the Kernel, and
+It will never end. When a real and fully working solution is right
+here for more then a year.
+
+If you are really up for a deep audit and a mammoth testing effort,
+why not do a more worthy, and order of magnitude smaller work and support
+2M and 1G variable sized "pages". All the virtual-vs-phisical-vs-caching
+just works.
+
+Most of the core work is there. Block layer and lots of other subsytems
+already support sending a single page-pointer with bvec_offset bvec_len
+bigger then 4K. Other system will be small fixes sprinkled around but
+not at all this endless stream of subsystem after another of patches.
+And for why.
+
+The novelty of pages is the section object, the section is reached
+from page* from virtual as well as physical planes. And is a center
+that translate from all plains to all plains. You keep this concept
+only make 2M-page sections and 1G-page sections.
+
+It is a bit of work but is worth while, and accelerating tremendously
+lots of workloads. Not like this abomination which only branches
+things more and more, and making things fatter and slower.
+
+It all feels like a typhoon, the inertia of tones and tons of
+men hours work, in a huge wave. How will you ever stop such a
+rushing mass. I'm trying to dock under but, surly it makes me sad.
+
+Thanks
+Boaz

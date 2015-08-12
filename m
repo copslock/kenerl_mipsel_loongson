@@ -1,41 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Aug 2015 22:50:24 +0200 (CEST)
-Received: from shards.monkeyblade.net ([149.20.54.216]:46444 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012670AbbHKUuVfr0qB (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 11 Aug 2015 22:50:21 +0200
-Received: from localhost (74-93-104-98-Washington.hfc.comcastbusiness.net [74.93.104.98])
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id DBA8B5891ED;
-        Tue, 11 Aug 2015 13:50:19 -0700 (PDT)
-Date:   Tue, 11 Aug 2015 13:50:19 -0700 (PDT)
-Message-Id: <20150811.135019.576312282566025940.davem@davemloft.net>
-To:     robert.richter@caviumnetworks.com
-Cc:     ddaney@caviumnetworks.com, ddaney.cavm@gmail.com,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mips@linux-mips.org, tomasz.nowicki@linaro.org,
-        sgoutham@cavium.com, linux-arm-kernel@lists.infradead.org,
-        linux-acpi@vger.kernel.org, mark.rutland@arm.com,
-        rafael@kernel.org, david.daney@cavium.com
-Subject: Re: [PATCH v2 0/2] net: thunder: Add ACPI support.
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20150811201237.GW4914@rric.localhost>
-References: <20150811.114908.1384923604512568161.davem@davemloft.net>
-        <55CA5567.9010002@caviumnetworks.com>
-        <20150811201237.GW4914@rric.localhost>
-X-Mailer: Mew version 6.6 on Emacs 24.5 / Mule 6.0 (HANACHIRUSATO)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Tue, 11 Aug 2015 13:50:20 -0700 (PDT)
-Return-Path: <davem@davemloft.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Aug 2015 09:08:58 +0200 (CEST)
+Received: from bombadil.infradead.org ([198.137.202.9]:34767 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010209AbbHLHI5Iuonj (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 12 Aug 2015 09:08:57 +0200
+Received: from p5de57192.dip0.t-ipconnect.de ([93.229.113.146] helo=localhost)
+        by bombadil.infradead.org with esmtpsa (Exim 4.80.1 #2 (Red Hat Linux))
+        id 1ZPQ9Q-0001RU-Vr; Wed, 12 Aug 2015 07:08:41 +0000
+From:   Christoph Hellwig <hch@lst.de>
+To:     torvalds@linux-foundation.org, axboe@kernel.dk
+Cc:     dan.j.williams@intel.com, vgupta@synopsys.com,
+        hskinnemoen@gmail.com, egtvedt@samfundet.no, realmz6@gmail.com,
+        dhowells@redhat.com, monstr@monstr.eu, x86@kernel.org,
+        dwmw2@infradead.org, alex.williamson@redhat.com,
+        grundler@parisc-linux.org, linux-kernel@vger.kernel.org,
+        linux-arch@vger.kernel.org, linux-alpha@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-metag@vger.kernel.org,
+        linux-mips@linux-mips.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        linux-nvdimm@ml01.01.org, linux-media@vger.kernel.org
+Subject: [PATCH 01/31] scatterlist: add sg_pfn and sg_has_page helpers
+Date:   Wed, 12 Aug 2015 09:05:20 +0200
+Message-Id: <1439363150-8661-2-git-send-email-hch@lst.de>
+X-Mailer: git-send-email 1.9.1
+In-Reply-To: <1439363150-8661-1-git-send-email-hch@lst.de>
+References: <1439363150-8661-1-git-send-email-hch@lst.de>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org
+        See http://www.infradead.org/rpr.html
+Return-Path: <BATV+598c32ccc3a9ece13a58+4371+infradead.org+hch@bombadil.srs.infradead.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48775
+X-archive-position: 48776
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: davem@davemloft.net
+X-original-sender: hch@lst.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,23 +48,31 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Robert Richter <robert.richter@caviumnetworks.com>
-Date: Tue, 11 Aug 2015 22:12:37 +0200
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+---
+ include/linux/scatterlist.h | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-> On 11.08.15 13:04:55, David Daney wrote:
->> >In the future it might be better structured to try and get the OF
->> >node, and if that fails then try and use the ACPI method to obtain
->> >these values.
->> 
->> Our current approach, as you can see in the patch, is the opposite.  If ACPI
->> is being used, prefer that over the OF device tree.
->> 
->> You seem to be recommending precedence for OF.  It should be consistent
->> across all drivers/sub-systems, so do you really think that OF before ACPI
->> is the way to go?
-> 
-> If ACPI is enabled then no OF function may be called at all.
-
-That makes no sense to me at all.
-
-If ACPI is enabled, the OF routines should return no nodes etc.
+diff --git a/include/linux/scatterlist.h b/include/linux/scatterlist.h
+index 9b1ef0c..b1056bf 100644
+--- a/include/linux/scatterlist.h
++++ b/include/linux/scatterlist.h
+@@ -230,6 +230,16 @@ static inline dma_addr_t sg_phys(struct scatterlist *sg)
+ 	return page_to_phys(sg_page(sg)) + sg->offset;
+ }
+ 
++static inline unsigned long sg_pfn(struct scatterlist *sg)
++{
++	return page_to_pfn(sg_page(sg));
++}
++
++static inline bool sg_has_page(struct scatterlist *sg)
++{
++	return true;
++}
++
+ /**
+  * sg_virt - Return virtual address of an sg entry
+  * @sg:      SG entry
+-- 
+1.9.1

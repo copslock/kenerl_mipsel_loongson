@@ -1,40 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Aug 2015 16:40:38 +0200 (CEST)
-Received: from verein.lst.de ([213.95.11.211]:38601 "EHLO newverein.lst.de"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27012053AbbHMOkhmGIKv (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 13 Aug 2015 16:40:37 +0200
-Received: by newverein.lst.de (Postfix, from userid 2407)
-        id B632D691EC; Thu, 13 Aug 2015 16:40:36 +0200 (CEST)
-Date:   Thu, 13 Aug 2015 16:40:36 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Aug 2015 17:07:50 +0200 (CEST)
+Received: from bombadil.infradead.org ([198.137.202.9]:46913 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012053AbbHMPHtUOIfv (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 13 Aug 2015 17:07:49 +0200
+Received: from p5de57d0c.dip0.t-ipconnect.de ([93.229.125.12] helo=localhost)
+        by bombadil.infradead.org with esmtpsa (Exim 4.80.1 #2 (Red Hat Linux))
+        id 1ZPu5q-0000t2-Rd; Thu, 13 Aug 2015 15:06:59 +0000
 From:   Christoph Hellwig <hch@lst.de>
-To:     Boaz Harrosh <boaz@plexistor.com>
-Cc:     Christoph Hellwig <hch@lst.de>, torvalds@linux-foundation.org,
-        axboe@kernel.dk, linux-mips@linux-mips.org,
-        linux-ia64@vger.kernel.org, linux-nvdimm@ml01.01.org,
-        dhowells@redhat.com, sparclinux@vger.kernel.org,
-        egtvedt@samfundet.no, linux-arch@vger.kernel.org,
-        linux-s390@vger.kernel.org, x86@kernel.org, dwmw2@infradead.org,
-        hskinnemoen@gmail.com, linux-xtensa@linux-xtensa.org,
-        grundler@parisc-linux.org, realmz6@gmail.com,
-        alex.williamson@redhat.com, linux-metag@vger.kernel.org,
-        monstr@monstr.eu, linux-parisc@vger.kernel.org,
-        vgupta@synopsys.com, linux-kernel@vger.kernel.org,
-        linux-alpha@vger.kernel.org, linux-media@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org
-Subject: Re: RFC: prepare for struct scatterlist entries without page
-        backing
-Message-ID: <20150813144036.GB17375@lst.de>
-References: <1439363150-8661-1-git-send-email-hch@lst.de> <55CB3F47.3000902@plexistor.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <55CB3F47.3000902@plexistor.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-Return-Path: <hch@lst.de>
+To:     akpm@linux-foundation.org
+Cc:     arnd@arndb.de, linux@arm.linux.org.uk, catalin.marinas@arm.com,
+        will.deacon@arm.com, ysato@users.sourceforge.jp, monstr@monstr.eu,
+        jonas@southpole.se, cmetcalf@ezchip.com, gxt@mprc.pku.edu.cn,
+        x86@kernel.org, linux-alpha@vger.kernel.org,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-mips@linux-mips.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: provide more common DMA API functions
+Date:   Thu, 13 Aug 2015 17:04:03 +0200
+Message-Id: <1439478248-15183-1-git-send-email-hch@lst.de>
+X-Mailer: git-send-email 1.9.1
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org
+        See http://www.infradead.org/rpr.html
+Return-Path: <BATV+a1229740eb3c8dbf1894+4372+infradead.org+hch@bombadil.srs.infradead.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48863
+X-archive-position: 48864
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -51,22 +43,11 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Aug 12, 2015 at 03:42:47PM +0300, Boaz Harrosh wrote:
-> The support I have suggested and submitted for zone-less sections.
-> (In my add_persistent_memory() patchset)
->
-> Would work perfectly well and transparent for all such multimedia cases.
-> (All hacks removed). In fact I have loaded pmem (with-pages) on a VRAM
-> a few times and it is great easy fun. (I wanted to experiment with cached
-> memory over a pcie)
+Since 2009 we have a nice asm-generic header implementing lots of DMA API
+functions for architectures using struct dma_map_ops, but unfortunately
+it's still missing a lot of APIs that all architectures still have to
+duplicate.
 
-And everyone agree that it was both buggy and incomplete.
-
-Dan has done a respin of the page backed nvdimm work with most of
-these comments addressed.
-
-I have to say I hate both pfn-based I/O [1] and page backed nvdimms with
-passion, so we're looking into the lesser evil with an open mind.
-
-[1] not the SGL part posted here, which I think is quite sane.  The bio
-    side is much worse, though.
+This series consolidates the remaining functions, although we still
+need arch opt outs for two of them as a few architectures have very
+non-standard implementations.

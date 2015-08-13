@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Aug 2015 09:59:49 +0200 (CEST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Aug 2015 10:00:08 +0200 (CEST)
 Received: (from localhost user: 'mchandras' uid#10145 fake: STDIN
         (mchandras@eddie.linux-mips.org)) by eddie.linux-mips.org
-        id S27012010AbbHMH6qR-Fa4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 13 Aug 2015 09:58:46 +0200
+        id S27012027AbbHMH6r3Avb4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 13 Aug 2015 09:58:47 +0200
 From:   Markos Chandras <markos.chandras@imgtec.com>
 To:     <linux-mips@linux-mips.org>
 Cc:     Markos Chandras <markos.chandras@imgtec.com>
-Subject: [PATCH 05/10] MIPS: math-emu: Add support for the MIPS R6 MADDF FPU instruction
-Date:   Thu, 13 Aug 2015 09:56:31 +0200
-Message-Id: <1439452596-16759-6-git-send-email-markos.chandras@imgtec.com>
+Subject: [PATCH 06/10] MIPS: math-emu: Add support for the MIPS R6 MSUBF FPU instruction
+Date:   Thu, 13 Aug 2015 09:56:32 +0200
+Message-Id: <1439452596-16759-7-git-send-email-markos.chandras@imgtec.com>
 X-Mailer: git-send-email 2.4.3
 In-Reply-To: <1439452596-16759-1-git-send-email-markos.chandras@imgtec.com>
 References: <1439452596-16759-1-git-send-email-markos.chandras@imgtec.com>
@@ -16,7 +16,7 @@ Return-Path: <mchandras@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48836
+X-archive-position: 48837
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -34,47 +34,47 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 MIPS R6 introduced the following instruction:
-Floating Point Fused Multiply Add:
-MADDF.fmt To perform a fused multiply-add of FP values.
+Floating Point Fused Multiply Subtract:
+MSUBF.fmt To perform a fused multiply-subtract of FP values.
 
-MADDF.fmt: FPR[fd] = FPR[fd] + (FPR[fs] x FPR[ft])
+MSUBF.fmt: FPR[fd] = FPR[fd] - (FPR[fs] x FPR[ft])
 
 Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
 ---
  arch/mips/math-emu/Makefile   |   4 +-
- arch/mips/math-emu/cp1emu.c   |  26 +++++
- arch/mips/math-emu/dp_maddf.c | 265 ++++++++++++++++++++++++++++++++++++++++++
- arch/mips/math-emu/ieee754.h  |   5 +
- arch/mips/math-emu/sp_maddf.c | 255 ++++++++++++++++++++++++++++++++++++++++
- 5 files changed, 553 insertions(+), 2 deletions(-)
- create mode 100644 arch/mips/math-emu/dp_maddf.c
- create mode 100644 arch/mips/math-emu/sp_maddf.c
+ arch/mips/math-emu/cp1emu.c   |  26 ++++
+ arch/mips/math-emu/dp_msubf.c | 269 ++++++++++++++++++++++++++++++++++++++++++
+ arch/mips/math-emu/ieee754.h  |   4 +
+ arch/mips/math-emu/sp_msubf.c | 258 ++++++++++++++++++++++++++++++++++++++++
+ 5 files changed, 559 insertions(+), 2 deletions(-)
+ create mode 100644 arch/mips/math-emu/dp_msubf.c
+ create mode 100644 arch/mips/math-emu/sp_msubf.c
 
 diff --git a/arch/mips/math-emu/Makefile b/arch/mips/math-emu/Makefile
-index 2e5f96275c38..c40816f86a7a 100644
+index c40816f86a7a..0037690521ee 100644
 --- a/arch/mips/math-emu/Makefile
 +++ b/arch/mips/math-emu/Makefile
 @@ -4,9 +4,9 @@
  
  obj-y	+= cp1emu.o ieee754dp.o ieee754sp.o ieee754.o \
  	   dp_div.o dp_mul.o dp_sub.o dp_add.o dp_fsp.o dp_cmp.o dp_simple.o \
--	   dp_tint.o dp_fint.o \
-+	   dp_tint.o dp_fint.o dp_maddf.o \
+-	   dp_tint.o dp_fint.o dp_maddf.o \
++	   dp_tint.o dp_fint.o dp_maddf.o dp_msubf.o \
  	   sp_div.o sp_mul.o sp_sub.o sp_add.o sp_fdp.o sp_cmp.o sp_simple.o \
--	   sp_tint.o sp_fint.o \
-+	   sp_tint.o sp_fint.o sp_maddf.o \
+-	   sp_tint.o sp_fint.o sp_maddf.o \
++	   sp_tint.o sp_fint.o sp_maddf.o sp_msubf.o \
  	   dsemul.o
  
  lib-y	+= ieee754d.o \
 diff --git a/arch/mips/math-emu/cp1emu.c b/arch/mips/math-emu/cp1emu.c
-index 66d9a78d03ad..68646fa563d8 100644
+index 68646fa563d8..69da5a89e72c 100644
 --- a/arch/mips/math-emu/cp1emu.c
 +++ b/arch/mips/math-emu/cp1emu.c
-@@ -1747,6 +1747,19 @@ static int fpu_emu(struct pt_regs *xcp, struct mips_fpu_struct *ctx,
- 				rv.w = 0;
+@@ -1760,6 +1760,19 @@ static int fpu_emu(struct pt_regs *xcp, struct mips_fpu_struct *ctx,
  			break;
+ 		}
  
-+		case fmaddf_op: {
++		case fmsubf_op: {
 +			union ieee754sp ft, fs, fd;
 +
 +			if (!cpu_has_mips_r6)
@@ -83,18 +83,18 @@ index 66d9a78d03ad..68646fa563d8 100644
 +			SPFROMREG(ft, MIPSInst_FT(ir));
 +			SPFROMREG(fs, MIPSInst_FS(ir));
 +			SPFROMREG(fd, MIPSInst_FD(ir));
-+			rv.s = ieee754sp_maddf(fd, fs, ft);
++			rv.s = ieee754sp_msubf(fd, fs, ft);
 +			break;
 +		}
 +
  		case fabs_op:
  			handler.u = ieee754sp_abs;
  			goto scopuop;
-@@ -1967,6 +1980,19 @@ copcsr:
- 				rv.l = 0;
+@@ -1993,6 +2006,19 @@ copcsr:
  			break;
+ 		}
  
-+		case fmaddf_op: {
++		case fmsubf_op: {
 +			union ieee754dp ft, fs, fd;
 +
 +			if (!cpu_has_mips_r6)
@@ -103,23 +103,23 @@ index 66d9a78d03ad..68646fa563d8 100644
 +			DPFROMREG(ft, MIPSInst_FT(ir));
 +			DPFROMREG(fs, MIPSInst_FS(ir));
 +			DPFROMREG(fd, MIPSInst_FD(ir));
-+			rv.d = ieee754dp_maddf(fd, fs, ft);
++			rv.d = ieee754dp_msubf(fd, fs, ft);
 +			break;
 +		}
 +
  		case fabs_op:
  			handler.u = ieee754dp_abs;
  			goto dcopuop;
-diff --git a/arch/mips/math-emu/dp_maddf.c b/arch/mips/math-emu/dp_maddf.c
+diff --git a/arch/mips/math-emu/dp_msubf.c b/arch/mips/math-emu/dp_msubf.c
 new file mode 100644
-index 000000000000..119eda9fa1ea
+index 000000000000..12241262f856
 --- /dev/null
-+++ b/arch/mips/math-emu/dp_maddf.c
-@@ -0,0 +1,265 @@
++++ b/arch/mips/math-emu/dp_msubf.c
+@@ -0,0 +1,269 @@
 +/*
 + * IEEE754 floating point arithmetic
-+ * double precision: MADDF.f (Fused Multiply Add)
-+ * MADDF.fmt: FPR[fd] = FPR[fd] + (FPR[fs] x FPR[ft])
++ * double precision: MSUB.f (Fused Multiply Subtract)
++ * MSUBF.fmt: FPR[fd] = FPR[fd] - (FPR[fs] x FPR[ft])
 + *
 + * MIPS floating point support
 + * Copyright (C) 2015 Imagination Technologies, Ltd.
@@ -132,7 +132,7 @@ index 000000000000..119eda9fa1ea
 +
 +#include "ieee754dp.h"
 +
-+union ieee754dp ieee754dp_maddf(union ieee754dp z, union ieee754dp x,
++union ieee754dp ieee754dp_msubf(union ieee754dp z, union ieee754dp x,
 +				union ieee754dp y)
 +{
 +	int re;
@@ -323,7 +323,11 @@ index 000000000000..119eda9fa1ea
 +	}
 +	assert(rm & (DP_HIDDEN_BIT << 3));
 +
-+	/* And now the addition */
++	/* And now the subtraction */
++
++	/* flip sign of r and handle as add */
++	rs ^= 1;
++
 +	assert(zm & DP_HIDDEN_BIT);
 +
 +	/*
@@ -382,38 +386,37 @@ index 000000000000..119eda9fa1ea
 +	return ieee754dp_format(zs, ze, zm);
 +}
 diff --git a/arch/mips/math-emu/ieee754.h b/arch/mips/math-emu/ieee754.h
-index a5ca108ce467..4e025f9e220c 100644
+index 4e025f9e220c..8c780190a059 100644
 --- a/arch/mips/math-emu/ieee754.h
 +++ b/arch/mips/math-emu/ieee754.h
-@@ -75,6 +75,9 @@ int ieee754sp_cmp(union ieee754sp x, union ieee754sp y, int cop, int sig);
+@@ -77,6 +77,8 @@ union ieee754sp ieee754sp_sqrt(union ieee754sp x);
  
- union ieee754sp ieee754sp_sqrt(union ieee754sp x);
- 
-+union ieee754sp ieee754sp_maddf(union ieee754sp z, union ieee754sp x,
+ union ieee754sp ieee754sp_maddf(union ieee754sp z, union ieee754sp x,
+ 				union ieee754sp y);
++union ieee754sp ieee754sp_msubf(union ieee754sp z, union ieee754sp x,
 +				union ieee754sp y);
-+
+ 
  /*
   * double precision (often aka double)
- */
-@@ -99,6 +102,8 @@ int ieee754dp_cmp(union ieee754dp x, union ieee754dp y, int cop, int sig);
+@@ -104,6 +106,8 @@ union ieee754dp ieee754dp_sqrt(union ieee754dp x);
  
- union ieee754dp ieee754dp_sqrt(union ieee754dp x);
- 
-+union ieee754dp ieee754dp_maddf(union ieee754dp z, union ieee754dp x,
+ union ieee754dp ieee754dp_maddf(union ieee754dp z, union ieee754dp x,
+ 				union ieee754dp y);
++union ieee754dp ieee754dp_msubf(union ieee754dp z, union ieee754dp x,
 +				union ieee754dp y);
  
  
  /* 5 types of floating point number
-diff --git a/arch/mips/math-emu/sp_maddf.c b/arch/mips/math-emu/sp_maddf.c
+diff --git a/arch/mips/math-emu/sp_msubf.c b/arch/mips/math-emu/sp_msubf.c
 new file mode 100644
-index 000000000000..dd1dd83e34eb
+index 000000000000..81c38b980d69
 --- /dev/null
-+++ b/arch/mips/math-emu/sp_maddf.c
-@@ -0,0 +1,255 @@
++++ b/arch/mips/math-emu/sp_msubf.c
+@@ -0,0 +1,258 @@
 +/*
 + * IEEE754 floating point arithmetic
-+ * single precision: MADDF.f (Fused Multiply Add)
-+ * MADDF.fmt: FPR[fd] = FPR[fd] + (FPR[fs] x FPR[ft])
++ * single precision: MSUB.f (Fused Multiply Subtract)
++ * MSUBF.fmt: FPR[fd] = FPR[fd] - (FPR[fs] x FPR[ft])
 + *
 + * MIPS floating point support
 + * Copyright (C) 2015 Imagination Technologies, Ltd.
@@ -426,7 +429,7 @@ index 000000000000..dd1dd83e34eb
 +
 +#include "ieee754sp.h"
 +
-+union ieee754sp ieee754sp_maddf(union ieee754sp z, union ieee754sp x,
++union ieee754sp ieee754sp_msubf(union ieee754sp z, union ieee754sp x,
 +				union ieee754sp y)
 +{
 +	int re;
@@ -547,7 +550,7 @@ index 000000000000..dd1dd83e34eb
 +			return z;
 +		else if (zc == IEEE754_CLASS_INF)
 +			return ieee754sp_inf(zs);
-+		/* fall through to real computations */
++		/* fall through to real compuation */
 +	}
 +
 +	/* Finally get to do some computation */
@@ -609,7 +612,10 @@ index 000000000000..dd1dd83e34eb
 +	}
 +	assert(rm & (SP_HIDDEN_BIT << 3));
 +
-+	/* And now the addition */
++	/* And now the subtraction */
++
++	/* Flip sign of r and handle as add */
++	rs ^= 1;
 +
 +	assert(zm & SP_HIDDEN_BIT);
 +
@@ -642,7 +648,7 @@ index 000000000000..dd1dd83e34eb
 +		zm = zm + rm;
 +
 +		if (zm >> (SP_FBITS + 1 + 3)) { /* carry out */
-+			SPXSRSX1();
++			SPXSRSX1(); /* shift preserving sticky */
 +		}
 +	} else {
 +		if (zm >= rm) {

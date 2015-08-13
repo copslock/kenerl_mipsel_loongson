@@ -1,63 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Sep 2015 12:37:59 +0200 (CEST)
-Received: from youngberry.canonical.com ([91.189.89.112]:52074 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007455AbbICKh5toG20 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 3 Sep 2015 12:37:57 +0200
-Received: from av-217-129-142-138.netvisao.pt ([217.129.142.138] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_128_CBC_SHA1:16)
-        (Exim 4.76)
-        (envelope-from <luis.henriques@canonical.com>)
-        id 1ZXRu0-0002Sl-15; Thu, 03 Sep 2015 10:37:56 +0000
-From:   Luis Henriques <luis.henriques@canonical.com>
-To:     Markos Chandras <markos.chandras@imgtec.com>
-Cc:     James Hogan <james.hogan@imgtec.com>, linux-mips@linux-mips.org,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Luis Henriques <luis.henriques@canonical.com>,
-        kernel-team@lists.ubuntu.com
-Subject: [3.16.y-ckt stable] Patch "MIPS: Fix seccomp syscall argument for MIPS64" has been added to staging queue
-Date:   Thu,  3 Sep 2015 11:37:55 +0100
-Message-Id: <1441276675-15190-1-git-send-email-luis.henriques@canonical.com>
-X-Mailer: git-send-email 2.1.4
-X-Extended-Stable: 3.16
-Return-Path: <luis.henriques@canonical.com>
-X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
-X-Orcpt: rfc822;linux-mips@linux-mips.org
-Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49097
-X-ecartis-version: Ecartis v1.0.0
-Sender: linux-mips-bounce@linux-mips.org
-Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: luis.henriques@canonical.com
-Precedence: bulk
-List-help: <mailto:ecartis@linux-mips.org?Subject=help>
-List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
-List-software: Ecartis version 1.0.0
-List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
-X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
-List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
-List-owner: <mailto:ralf@linux-mips.org>
-List-post: <mailto:linux-mips@linux-mips.org>
-List-archive: <http://www.linux-mips.org/archives/linux-mips/>
-X-list: linux-mips
+From: Markos Chandras <markos.chandras@imgtec.com>
+Date: Thu, 13 Aug 2015 08:47:59 +0100
+Subject: MIPS: Fix seccomp syscall argument for MIPS64
+Message-ID: <20150813074759.yVOxX6207gw58BTQ2ulxp8UMUFdXbdtLji_neiyohD0@z>
 
-This is a note to let you know that I have just added a patch titled
+commit 9f161439e4104b641a7bfb9b89581d801159fec8 upstream.
 
-    MIPS: Fix seccomp syscall argument for MIPS64
+Commit 4c21b8fd8f14 ("MIPS: seccomp: Handle indirect system calls (o32)")
+fixed indirect system calls on O32 but it also introduced a bug for MIPS64
+where it erroneously modified the v0 (syscall) register with the assumption
+that the sycall offset hasn't been taken into consideration. This breaks
+seccomp on MIPS64 n64 and n32 ABIs. We fix this by replacing the addition
+with a move instruction.
 
-to the linux-3.16.y-queue branch of the 3.16.y-ckt extended stable tree 
-which can be found at:
+Fixes: 4c21b8fd8f14 ("MIPS: seccomp: Handle indirect system calls (o32)")
+Reviewed-by: James Hogan <james.hogan@imgtec.com>
+Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+Cc: linux-mips@linux-mips.org
+Patchwork: https://patchwork.linux-mips.org/patch/10951/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: Luis Henriques <luis.henriques@canonical.com>
+---
+ arch/mips/kernel/scall64-64.S  | 2 +-
+ arch/mips/kernel/scall64-n32.S | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-    http://kernel.ubuntu.com/git/ubuntu/linux.git/log/?h=linux-3.16.y-queue
+diff --git a/arch/mips/kernel/scall64-64.S b/arch/mips/kernel/scall64-64.S
+index be2fedd4ae33..b204352a7d56 100644
+--- a/arch/mips/kernel/scall64-64.S
++++ b/arch/mips/kernel/scall64-64.S
+@@ -80,7 +80,7 @@ syscall_trace_entry:
+ 	SAVE_STATIC
+ 	move	s0, t2
+ 	move	a0, sp
+-	daddiu	a1, v0, __NR_64_Linux
++	move	a1, v0
+ 	jal	syscall_trace_enter
 
-This patch is scheduled to be released in version 3.16.7-ckt17.
+ 	bltz	v0, 2f			# seccomp failed? Skip syscall
+diff --git a/arch/mips/kernel/scall64-n32.S b/arch/mips/kernel/scall64-n32.S
+index c1dbcda4b816..47dd5f9016c1 100644
+--- a/arch/mips/kernel/scall64-n32.S
++++ b/arch/mips/kernel/scall64-n32.S
+@@ -72,7 +72,7 @@ n32_syscall_trace_entry:
+ 	SAVE_STATIC
+ 	move	s0, t2
+ 	move	a0, sp
+-	daddiu	a1, v0, __NR_N32_Linux
++	move	a1, v0
+ 	jal	syscall_trace_enter
 
-If you, or anyone else, feels it should not be added to this tree, please 
-reply to this email.
-
-For more information about the 3.16.y-ckt tree, see
-https://wiki.ubuntu.com/Kernel/Dev/ExtendedStable
-
-Thanks.
--Luis
-
-------
+ 	bltz	v0, 2f			# seccomp failed? Skip syscall

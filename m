@@ -1,50 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Aug 2015 22:42:55 +0200 (CEST)
-Received: from hall.aurel32.net ([195.154.112.97]:32808 "EHLO hall.aurel32.net"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27012193AbbHMUmwVNMUn (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 13 Aug 2015 22:42:52 +0200
-Received: from [2001:7c0:dc15:72:2db:dfff:fe14:52d] (helo=ohm.rr44.fr)
-        by hall.aurel32.net with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.84)
-        (envelope-from <aurelien@aurel32.net>)
-        id 1ZPzKq-0006MK-1A; Thu, 13 Aug 2015 22:42:48 +0200
-Received: from aurel32 by ohm.rr44.fr with local (Exim 4.84)
-        (envelope-from <aurelien@aurel32.net>)
-        id 1ZPzKp-0006UP-3l; Thu, 13 Aug 2015 22:42:47 +0200
-Date:   Thu, 13 Aug 2015 22:42:46 +0200
-From:   Aurelien Jarno <aurelien@aurel32.net>
-To:     Markos Chandras <markos.chandras@imgtec.com>
-Cc:     linux-mips@linux-mips.org, netdev@vger.kernel.org,
-        "David S. Miller" <davem@davemloft.net>,
-        Alexei Starovoitov <ast@plumgrid.com>,
-        Daniel Borkmann <dborkman@redhat.com>,
-        Hannes Frederic Sowa <hannes@stressinduktion.org>,
-        linux-kernel@vger.kernel.org, debian-kernel@lists.debian.org
-Subject: Re: [PATCH 6/6] MIPS: net: BPF: Introduce BPF ASM helpers
-Message-ID: <20150813204246.GA24857@aurel32.net>
-Mail-Followup-To: Markos Chandras <markos.chandras@imgtec.com>,
-        linux-mips@linux-mips.org, netdev@vger.kernel.org,
-        "David S. Miller" <davem@davemloft.net>,
-        Alexei Starovoitov <ast@plumgrid.com>,
-        Daniel Borkmann <dborkman@redhat.com>,
-        Hannes Frederic Sowa <hannes@stressinduktion.org>,
-        linux-kernel@vger.kernel.org, debian-kernel@lists.debian.org
-References: <1433415376-20952-1-git-send-email-markos.chandras@imgtec.com>
- <1433415376-20952-7-git-send-email-markos.chandras@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Aug 2015 01:40:57 +0200 (CEST)
+Received: from mail-ig0-f173.google.com ([209.85.213.173]:37184 "EHLO
+        mail-ig0-f173.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012527AbbHMXk4Pm0G8 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 14 Aug 2015 01:40:56 +0200
+Received: by igui7 with SMTP id i7so1768077igu.0
+        for <linux-mips@linux-mips.org>; Thu, 13 Aug 2015 16:40:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc:content-type;
+        bh=vTL2IXuqnqLA++USP56jW/7pYah8VewfUDyHdNH/oDQ=;
+        b=h3gBVMzomFXURFaINghXyy7klsjFshQClHLeTCV1ANarytaNen9I3ZXl9PSnROfK77
+         Pp+r8g5xSZo8V6EmZDMKgR8/Kxk+EO6iF3YgzVZbgU3zp+zFD7DdmspxcQy0IUSTm6Vs
+         3gSVy1OnIk+Ztep9ThpQ3tUCdJDbtmwWonQnW1Eez0TWUOyxaSBVsDDXPyS6w2DVj1Ds
+         4UH19/pmntR9kJB6jsp1/nlwCav+ULT8yJ1owPjMTDi8zFwhMKxETSA3/cxDkBkqHrxt
+         M6ykYT7Vhj+K9LEutaFk2hyt0AQTz21zrII/lTA1YMwKE3q6Ad44Jbj2xeWN9miEeFin
+         LBBg==
+X-Received: by 10.50.64.244 with SMTP id r20mr30317522igs.33.1439509250185;
+ Thu, 13 Aug 2015 16:40:50 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1433415376-20952-7-git-send-email-markos.chandras@imgtec.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <aurelien@aurel32.net>
+Received: by 10.79.18.132 with HTTP; Thu, 13 Aug 2015 16:40:30 -0700 (PDT)
+In-Reply-To: <20150813143528.GC17183@lst.de>
+References: <1439363150-8661-1-git-send-email-hch@lst.de> <55CB3F47.3000902@plexistor.com>
+ <CAGRGNgUKkaPnyvn30DXyNpdiXQzS6J=1+mQ3ick8C8=bhx_RHA@mail.gmail.com> <20150813143528.GC17183@lst.de>
+From:   Julian Calaby <julian.calaby@gmail.com>
+Date:   Fri, 14 Aug 2015 09:40:30 +1000
+Message-ID: <CAGRGNgWXO9fYSf5YxPM9atSCmUdHB_WDB=n8zd=7eWK1GaJU4A@mail.gmail.com>
+Subject: Re: RFC: prepare for struct scatterlist entries without page backing
+To:     Christoph Hellwig <hch@lst.de>
+Cc:     Boaz Harrosh <boaz@plexistor.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        axboe@kernel.dk, linux-mips@linux-mips.org,
+        linux-ia64@vger.kernel.org, linux-nvdimm@ml01.01.org,
+        David Howells <dhowells@redhat.com>,
+        sparclinux <sparclinux@vger.kernel.org>,
+        Hans-Christian Egtvedt <egtvedt@samfundet.no>,
+        linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
+        x86@kernel.org, David Woodhouse <dwmw2@infradead.org>,
+        =?UTF-8?Q?H=C3=A5vard_Skinnemoen?= <hskinnemoen@gmail.com>,
+        linux-xtensa@linux-xtensa.org, grundler@parisc-linux.org,
+        Miao Steven <realmz6@gmail.com>, alex.williamson@redhat.com,
+        linux-metag@vger.kernel.org, Michal Simek <monstr@monstr.eu>,
+        linux-parisc@vger.kernel.org, vgupta@synopsys.com,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        linux-alpha@vger.kernel.org,
+        Linux Media Mailing List <linux-media@vger.kernel.org>,
+        linuxppc-dev@lists.ozlabs.org
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <julian.calaby@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48876
+X-archive-position: 48877
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aurelien@aurel32.net
+X-original-sender: julian.calaby@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -57,51 +68,44 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 2015-06-04 11:56, Markos Chandras wrote:
-> This commit introduces BPF ASM helpers for MIPS and MIPS64 kernels.
-> The purpose of this patch is to twofold:
-> 
-> 1) We are now able to handle negative offsets instead of either
-> falling back to the interpreter or to simply not do anything and
-> bail out.
-> 
-> 2) Optimize reads from the packet header instead of calling the C
-> helpers
-> 
-> Because of this patch, we are now able to get rid of quite a bit of
-> code in the JIT generation process by using MIPS optimized assembly
-> code. The new assembly code makes the test_bpf testsuite happy with
-> all 60 test passing successfully compared to the previous
-> implementation where 2 tests were failing.
-> Doing some basic analysis in the results between the old
-> implementation and the new one we can obtain the following
-> summary running current mainline on an ER8 board (+/- 30us delta is
-> ignored to prevent noise from kernel scheduling or IRQ latencies):
-> 
-> Summary: 22 tests are faster, 7 are slower and 47 saw no improvement
-> 
-> with the most notable improvement being the tcpdump tests. The 7 tests
-> that seem to be a bit slower is because they all follow the slow path
-> (bpf_internal_load_pointer_neg_helper) which is meant to be slow so
-> that's not a problem.
-> 
-> Cc: netdev@vger.kernel.org
-> Cc: "David S. Miller" <davem@davemloft.net>
-> Cc: Alexei Starovoitov <ast@plumgrid.com>
-> Cc: Daniel Borkmann <dborkman@redhat.com>
-> Cc: Hannes Frederic Sowa <hannes@stressinduktion.org>
-> Cc: linux-kernel@vger.kernel.org
-> Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
-> ---
-> I have uploaded the script and the bpf result files in my LMO webspace
-> in case you want to have a look. I didn't paste them in here because they
-> are nearly 200 lines. Simply download all 3 files and run './bpf_analysis.py'
+Hi Christoph,
 
-This patch relies on R2 instructions, and thus the Linux kernel fails to
-build when targetting non-R2 CPUs. See for example:
+On Fri, Aug 14, 2015 at 12:35 AM, Christoph Hellwig <hch@lst.de> wrote:
+> On Thu, Aug 13, 2015 at 09:37:37AM +1000, Julian Calaby wrote:
+>> I.e. ~90% of this patch set seems to be just mechanically dropping
+>> BUG_ON()s and converting open coded stuff to use accessor functions
+>> (which should be macros or get inlined, right?) - and the remaining
+>> bit is not flushing if we don't have a physical page somewhere.
+>
+> Which is was 90%.  By lines changed most actually is the diffs for
+> the cache flushing.
 
-https://buildd.debian.org/status/fetch.php?pkg=linux&arch=mipsel&ver=4.2%7Erc6-1%7Eexp1&stamp=1439480000
+I was talking in terms of changes made, not lines changed: by my
+recollection, about a third of the patches didn't touch flush calls
+and most of the lines changed looked like refactoring so that making
+the flush call conditional would be easier.
+
+I guess it smelled like you were doing lots of distinct changes in a
+single patch and I got my numbers wrong.
+
+>> Would it make sense to split this patch set into a few bits: one to
+>> drop all the useless BUG_ON()s, one to convert all the open coded
+>> stuff to accessor functions, then another to do the actual page-less
+>> sg stuff?
+>
+> Without the ifs the BUG_ON() actually are useful to assert we
+> never feed the sort of physical addresses we can't otherwise support,
+> so I don't think that part is doable.
+
+My point is that there's a couple of patches that only remove
+BUG_ON()s, which implies that for that particular driver it doesn't
+matter if there's a physical page or not, so therefore that code is
+purely "documentation".
+
+Thanks,
 
 -- 
-Aurelien Jarno                          GPG: 4096R/1DDD8C9B
-aurelien@aurel32.net                 http://www.aurel32.net
+Julian Calaby
+
+Email: julian.calaby@gmail.com
+Profile: http://www.google.com/profiles/julian.calaby/

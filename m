@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Aug 2015 10:00:49 +0200 (CEST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Aug 2015 10:01:06 +0200 (CEST)
 Received: (from localhost user: 'mchandras' uid#10145 fake: STDIN
         (mchandras@eddie.linux-mips.org)) by eddie.linux-mips.org
-        id S27012157AbbHMH7AZYG64 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 13 Aug 2015 09:59:00 +0200
+        id S27012166AbbHMH7CFDS94 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 13 Aug 2015 09:59:02 +0200
 From:   Markos Chandras <markos.chandras@imgtec.com>
 To:     <linux-mips@linux-mips.org>
 Cc:     Markos Chandras <markos.chandras@imgtec.com>
-Subject: [PATCH 08/10] MIPS: math-emu: Add support for the MIPS R6 CLASS FPU instruction
-Date:   Thu, 13 Aug 2015 09:56:34 +0200
-Message-Id: <1439452596-16759-9-git-send-email-markos.chandras@imgtec.com>
+Subject: [PATCH 09/10] MIPS: math-emu: Add support for the MIPS R6 MIN{,A} FPU instruction
+Date:   Thu, 13 Aug 2015 09:56:35 +0200
+Message-Id: <1439452596-16759-10-git-send-email-markos.chandras@imgtec.com>
 X-Mailer: git-send-email 2.4.3
 In-Reply-To: <1439452596-16759-1-git-send-email-markos.chandras@imgtec.com>
 References: <1439452596-16759-1-git-send-email-markos.chandras@imgtec.com>
@@ -16,7 +16,7 @@ Return-Path: <mchandras@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48839
+X-archive-position: 48840
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -34,90 +34,121 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 MIPS R6 introduced the following instruction:
-Stores in fd a bit mask reflecting the floating-point class of the
-floating point scalar value fs.
+Scalar Floating-Point Minimum and
+Scalar Floating-Point argument with Minimum Absolute Value
 
-CLASS.fmt: FPR[fd] = class(FPR[fs])
+MIN.fmt writes the minimum value of the inputs fs and ft to the
+destination fd.
+MINA.fmt takes input arguments fs and ft and writes the argument with
+the minimum absolute value to the destination fd.
 
 Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
 ---
- arch/mips/math-emu/Makefile       |  4 +--
- arch/mips/math-emu/cp1emu.c       | 24 +++++++++++++++++
- arch/mips/math-emu/dp_2008class.c | 55 +++++++++++++++++++++++++++++++++++++++
- arch/mips/math-emu/ieee754.h      |  2 ++
- arch/mips/math-emu/sp_2008class.c | 55 +++++++++++++++++++++++++++++++++++++++
- 5 files changed, 138 insertions(+), 2 deletions(-)
- create mode 100644 arch/mips/math-emu/dp_2008class.c
- create mode 100644 arch/mips/math-emu/sp_2008class.c
+ arch/mips/math-emu/Makefile  |   4 +-
+ arch/mips/math-emu/cp1emu.c  |  48 ++++++++++
+ arch/mips/math-emu/dp_fmin.c | 213 +++++++++++++++++++++++++++++++++++++++++++
+ arch/mips/math-emu/ieee754.h |   4 +
+ arch/mips/math-emu/sp_fmin.c | 213 +++++++++++++++++++++++++++++++++++++++++++
+ 5 files changed, 480 insertions(+), 2 deletions(-)
+ create mode 100644 arch/mips/math-emu/dp_fmin.c
+ create mode 100644 arch/mips/math-emu/sp_fmin.c
 
 diff --git a/arch/mips/math-emu/Makefile b/arch/mips/math-emu/Makefile
-index 0037690521ee..ea8db2607d07 100644
+index ea8db2607d07..b9946322804e 100644
 --- a/arch/mips/math-emu/Makefile
 +++ b/arch/mips/math-emu/Makefile
 @@ -4,9 +4,9 @@
  
  obj-y	+= cp1emu.o ieee754dp.o ieee754sp.o ieee754.o \
  	   dp_div.o dp_mul.o dp_sub.o dp_add.o dp_fsp.o dp_cmp.o dp_simple.o \
--	   dp_tint.o dp_fint.o dp_maddf.o dp_msubf.o \
-+	   dp_tint.o dp_fint.o dp_maddf.o dp_msubf.o dp_2008class.o \
+-	   dp_tint.o dp_fint.o dp_maddf.o dp_msubf.o dp_2008class.o \
++	   dp_tint.o dp_fint.o dp_maddf.o dp_msubf.o dp_2008class.o dp_fmin.o \
  	   sp_div.o sp_mul.o sp_sub.o sp_add.o sp_fdp.o sp_cmp.o sp_simple.o \
--	   sp_tint.o sp_fint.o sp_maddf.o sp_msubf.o \
-+	   sp_tint.o sp_fint.o sp_maddf.o sp_msubf.o sp_2008class.o \
+-	   sp_tint.o sp_fint.o sp_maddf.o sp_msubf.o sp_2008class.o \
++	   sp_tint.o sp_fint.o sp_maddf.o sp_msubf.o sp_2008class.o sp_fmin.o \
  	   dsemul.o
  
  lib-y	+= ieee754d.o \
 diff --git a/arch/mips/math-emu/cp1emu.c b/arch/mips/math-emu/cp1emu.c
-index 6b09b37ff50a..cdebeb14a7d0 100644
+index cdebeb14a7d0..18532d284bdf 100644
 --- a/arch/mips/math-emu/cp1emu.c
 +++ b/arch/mips/math-emu/cp1emu.c
-@@ -1785,6 +1785,18 @@ static int fpu_emu(struct pt_regs *xcp, struct mips_fpu_struct *ctx,
- 			goto copcsr;
+@@ -1797,6 +1797,30 @@ static int fpu_emu(struct pt_regs *xcp, struct mips_fpu_struct *ctx,
+ 			break;
  		}
  
-+		case fclass_op: {
-+			union ieee754sp fs;
++		case fmin_op: {
++			union ieee754sp fs, ft;
 +
 +			if (!cpu_has_mips_r6)
 +				return SIGILL;
 +
++			SPFROMREG(ft, MIPSInst_FT(ir));
 +			SPFROMREG(fs, MIPSInst_FS(ir));
-+			rv.w = ieee754sp_2008class(fs);
-+			rfmt = w_fmt;
++			rv.s = ieee754sp_fmin(fs, ft);
++			break;
++		}
++
++		case fmina_op: {
++			union ieee754sp fs, ft;
++
++			if (!cpu_has_mips_r6)
++				return SIGILL;
++
++			SPFROMREG(ft, MIPSInst_FT(ir));
++			SPFROMREG(fs, MIPSInst_FS(ir));
++			rv.s = ieee754sp_fmina(fs, ft);
 +			break;
 +		}
 +
  		case fabs_op:
  			handler.u = ieee754sp_abs;
  			goto scopuop;
-@@ -2043,6 +2055,18 @@ copcsr:
- 			goto copcsr;
+@@ -2067,6 +2091,30 @@ copcsr:
+ 			break;
  		}
  
-+		case fclass_op: {
-+			union ieee754dp fs;
++		case fmin_op: {
++			union ieee754dp fs, ft;
 +
 +			if (!cpu_has_mips_r6)
 +				return SIGILL;
 +
++			DPFROMREG(ft, MIPSInst_FT(ir));
 +			DPFROMREG(fs, MIPSInst_FS(ir));
-+			rv.w = ieee754dp_2008class(fs);
-+			rfmt = w_fmt;
++			rv.d = ieee754dp_fmin(fs, ft);
++			break;
++		}
++
++		case fmina_op: {
++			union ieee754dp fs, ft;
++
++			if (!cpu_has_mips_r6)
++				return SIGILL;
++
++			DPFROMREG(ft, MIPSInst_FT(ir));
++			DPFROMREG(fs, MIPSInst_FS(ir));
++			rv.d = ieee754dp_fmina(fs, ft);
 +			break;
 +		}
 +
  		case fabs_op:
  			handler.u = ieee754dp_abs;
  			goto dcopuop;
-diff --git a/arch/mips/math-emu/dp_2008class.c b/arch/mips/math-emu/dp_2008class.c
+diff --git a/arch/mips/math-emu/dp_fmin.c b/arch/mips/math-emu/dp_fmin.c
 new file mode 100644
-index 000000000000..9dc39fc4835e
+index 000000000000..c1072b0dfb95
 --- /dev/null
-+++ b/arch/mips/math-emu/dp_2008class.c
-@@ -0,0 +1,55 @@
++++ b/arch/mips/math-emu/dp_fmin.c
+@@ -0,0 +1,213 @@
 +/*
 + * IEEE754 floating point arithmetic
-+ * double precision: CLASS.f
-+ * FPR[fd] = class(FPR[fs])
++ * double precision: MIN{,A}.f
++ * MIN : Scalar Floating-Point Minimum
++ * MINA: Scalar Floating-Point argument with Minimum Absolute Value
++ *
++ * MIN.D : FPR[fd] = minNum(FPR[fs],FPR[ft])
++ * MINA.D: FPR[fd] = maxNumMag(FPR[fs],FPR[ft])
 + *
 + * MIPS floating point support
 + * Copyright (C) 2015 Imagination Technologies, Ltd.
@@ -130,75 +161,235 @@ index 000000000000..9dc39fc4835e
 +
 +#include "ieee754dp.h"
 +
-+int ieee754dp_2008class(union ieee754dp x)
++union ieee754dp ieee754dp_fmin(union ieee754dp x, union ieee754dp y)
 +{
 +	COMPXDP;
++	COMPYDP;
 +
 +	EXPLODEXDP;
++	EXPLODEYDP;
++
++	FLUSHXDP;
++	FLUSHYDP;
++
++	ieee754_clearcx();
++
++	switch (CLPAIR(xc, yc)) {
++	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_SNAN):
++	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_SNAN):
++	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_SNAN):
++	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_SNAN):
++	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_SNAN):
++		return ieee754dp_nanxcpt(y);
++
++	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_SNAN):
++	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_QNAN):
++	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_ZERO):
++	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_NORM):
++	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_DNORM):
++	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_INF):
++		return ieee754dp_nanxcpt(x);
++
++	/* numbers are preferred to NaNs */
++	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_QNAN):
++	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_QNAN):
++	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_QNAN):
++	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_QNAN):
++		return x;
++
++	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_QNAN):
++	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_ZERO):
++	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_NORM):
++	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_DNORM):
++	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_INF):
++		return y;
 +
 +	/*
-+	 * 10 bit mask as follows:
-+	 *
-+	 * bit0 = SNAN
-+	 * bit1 = QNAN
-+	 * bit2 = -INF
-+	 * bit3 = -NORM
-+	 * bit4 = -DNORM
-+	 * bit5 = -ZERO
-+	 * bit6 = INF
-+	 * bit7 = NORM
-+	 * bit8 = DNORM
-+	 * bit9 = ZERO
++	 * Infinity and zero handling
 +	 */
++	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_ZERO):
++	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_NORM):
++	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_DNORM):
++	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_ZERO):
++	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_ZERO):
++		return xs ? x : y;
 +
-+	switch(xc) {
-+	case IEEE754_CLASS_SNAN:
-+		return 0x01;
-+	case IEEE754_CLASS_QNAN:
-+		return 0x02;
-+	case IEEE754_CLASS_INF:
-+		return 0x04 << (xs ? 0 : 4);
-+	case IEEE754_CLASS_NORM:
-+		return 0x08 << (xs ? 0 : 4);
-+	case IEEE754_CLASS_DNORM:
-+		return 0x10 << (xs ? 0 : 4);
-+	case IEEE754_CLASS_ZERO:
-+		return 0x20 << (xs ? 0 : 4);
-+	default:
-+		pr_err("Unknown class: %d\n", xc);
-+		return 0;
++	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_INF):
++	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_INF):
++	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_INF):
++	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_INF):
++	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_NORM):
++	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_DNORM):
++		return ys ? y : x;
++
++	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_ZERO):
++		if (xs == ys)
++			return x;
++		return ieee754dp_zero(1);
++
++	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_DNORM):
++		DPDNORMX;
++
++	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_DNORM):
++		DPDNORMY;
++		break;
++
++	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_NORM):
++		DPDNORMX;
 +	}
++
++	/* Finally get to do some computation */
++
++	assert(xm & DP_HIDDEN_BIT);
++	assert(ym & DP_HIDDEN_BIT);
++
++	/* Compare signs */
++	if (xs > ys)
++		return x;
++	else if (xs < ys)
++		return y;
++
++	/* Compare exponent */
++	if (xe > ye)
++		return y;
++	else if (xe < ye)
++		return x;
++
++	/* Compare mantissa */
++	if (xm <= ym)
++		return x;
++	return y;
++}
++
++union ieee754dp ieee754dp_fmina(union ieee754dp x, union ieee754dp y)
++{
++	COMPXDP;
++	COMPYDP;
++
++	EXPLODEXDP;
++	EXPLODEYDP;
++
++	FLUSHXDP;
++	FLUSHYDP;
++
++	ieee754_clearcx();
++
++	switch (CLPAIR(xc, yc)) {
++	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_SNAN):
++	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_SNAN):
++	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_SNAN):
++	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_SNAN):
++	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_SNAN):
++		return ieee754dp_nanxcpt(y);
++
++	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_SNAN):
++	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_QNAN):
++	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_ZERO):
++	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_NORM):
++	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_DNORM):
++	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_INF):
++		return ieee754dp_nanxcpt(x);
++
++	/* numbers are preferred to NaNs */
++	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_QNAN):
++	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_QNAN):
++	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_QNAN):
++	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_QNAN):
++		return x;
++
++	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_QNAN):
++	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_ZERO):
++	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_NORM):
++	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_DNORM):
++	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_INF):
++		return y;
++
++	/*
++	 * Infinity and zero handling
++	 */
++	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_ZERO):
++	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_NORM):
++	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_DNORM):
++	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_ZERO):
++	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_ZERO):
++		return x;
++
++	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_INF):
++	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_INF):
++	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_INF):
++	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_INF):
++	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_NORM):
++	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_DNORM):
++		return y;
++
++	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_ZERO):
++		if (xs == ys)
++			return x;
++		return ieee754dp_zero(1);
++
++	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_DNORM):
++		DPDNORMX;
++
++	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_DNORM):
++		DPDNORMY;
++		break;
++
++	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_NORM):
++		DPDNORMX;
++	}
++
++	/* Finally get to do some computation */
++
++	assert(xm & DP_HIDDEN_BIT);
++	assert(ym & DP_HIDDEN_BIT);
++
++	/* Compare exponent */
++	if (xe > ye)
++		return y;
++	else if (xe < ye)
++		return x;
++
++	/* Compare mantissa */
++	if (xm <= ym)
++		return x;
++	return y;
 +}
 diff --git a/arch/mips/math-emu/ieee754.h b/arch/mips/math-emu/ieee754.h
-index 8c780190a059..3b833eac48f5 100644
+index 3b833eac48f5..6a16357a1ddd 100644
 --- a/arch/mips/math-emu/ieee754.h
 +++ b/arch/mips/math-emu/ieee754.h
-@@ -79,6 +79,7 @@ union ieee754sp ieee754sp_maddf(union ieee754sp z, union ieee754sp x,
- 				union ieee754sp y);
+@@ -80,6 +80,8 @@ union ieee754sp ieee754sp_maddf(union ieee754sp z, union ieee754sp x,
  union ieee754sp ieee754sp_msubf(union ieee754sp z, union ieee754sp x,
  				union ieee754sp y);
-+int ieee754sp_2008class(union ieee754sp x);
+ int ieee754sp_2008class(union ieee754sp x);
++union ieee754sp ieee754sp_fmin(union ieee754sp x, union ieee754sp y);
++union ieee754sp ieee754sp_fmina(union ieee754sp x, union ieee754sp y);
  
  /*
   * double precision (often aka double)
-@@ -108,6 +109,7 @@ union ieee754dp ieee754dp_maddf(union ieee754dp z, union ieee754dp x,
- 				union ieee754dp y);
+@@ -110,6 +112,8 @@ union ieee754dp ieee754dp_maddf(union ieee754dp z, union ieee754dp x,
  union ieee754dp ieee754dp_msubf(union ieee754dp z, union ieee754dp x,
  				union ieee754dp y);
-+int ieee754dp_2008class(union ieee754dp x);
+ int ieee754dp_2008class(union ieee754dp x);
++union ieee754dp ieee754dp_fmin(union ieee754dp x, union ieee754dp y);
++union ieee754dp ieee754dp_fmina(union ieee754dp x, union ieee754dp y);
  
  
  /* 5 types of floating point number
-diff --git a/arch/mips/math-emu/sp_2008class.c b/arch/mips/math-emu/sp_2008class.c
+diff --git a/arch/mips/math-emu/sp_fmin.c b/arch/mips/math-emu/sp_fmin.c
 new file mode 100644
-index 000000000000..ff62606a1465
+index 000000000000..4eb1bb9e9dec
 --- /dev/null
-+++ b/arch/mips/math-emu/sp_2008class.c
-@@ -0,0 +1,55 @@
++++ b/arch/mips/math-emu/sp_fmin.c
+@@ -0,0 +1,213 @@
 +/*
 + * IEEE754 floating point arithmetic
-+ * single precision: CLASS.f
-+ * FPR[fd] = class(FPR[fs])
++ * single precision: MIN{,A}.f
++ * MIN : Scalar Floating-Point Minimum
++ * MINA: Scalar Floating-Point argument with Minimum Absolute Value
++ *
++ * MIN.S : FPR[fd] = minNum(FPR[fs],FPR[ft])
++ * MINA.S: FPR[fd] = maxNumMag(FPR[fs],FPR[ft])
 + *
 + * MIPS floating point support
 + * Copyright (C) 2015 Imagination Technologies, Ltd.
@@ -211,44 +402,198 @@ index 000000000000..ff62606a1465
 +
 +#include "ieee754sp.h"
 +
-+int ieee754sp_2008class(union ieee754sp x)
++union ieee754sp ieee754sp_fmin(union ieee754sp x, union ieee754sp y)
 +{
 +	COMPXSP;
++	COMPYSP;
 +
 +	EXPLODEXSP;
++	EXPLODEYSP;
++
++	FLUSHXSP;
++	FLUSHYSP;
++
++	ieee754_clearcx();
++
++	switch (CLPAIR(xc, yc)) {
++	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_SNAN):
++	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_SNAN):
++	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_SNAN):
++	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_SNAN):
++	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_SNAN):
++		return ieee754sp_nanxcpt(y);
++
++	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_SNAN):
++	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_QNAN):
++	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_ZERO):
++	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_NORM):
++	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_DNORM):
++	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_INF):
++		return ieee754sp_nanxcpt(x);
++
++	/* numbers are preferred to NaNs */
++	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_QNAN):
++	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_QNAN):
++	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_QNAN):
++	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_QNAN):
++		return x;
++
++	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_QNAN):
++	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_ZERO):
++	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_NORM):
++	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_DNORM):
++	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_INF):
++		return y;
 +
 +	/*
-+	 * 10 bit mask as follows:
-+	 *
-+	 * bit0 = SNAN
-+	 * bit1 = QNAN
-+	 * bit2 = -INF
-+	 * bit3 = -NORM
-+	 * bit4 = -DNORM
-+	 * bit5 = -ZERO
-+	 * bit6 = INF
-+	 * bit7 = NORM
-+	 * bit8 = DNORM
-+	 * bit9 = ZERO
++	 * Infinity and zero handling
 +	 */
++	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_ZERO):
++	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_NORM):
++	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_DNORM):
++	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_ZERO):
++	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_ZERO):
++		return xs ? x : y;
 +
-+	switch(xc) {
-+	case IEEE754_CLASS_SNAN:
-+		return 0x01;
-+	case IEEE754_CLASS_QNAN:
-+		return 0x02;
-+	case IEEE754_CLASS_INF:
-+		return 0x04 << (xs ? 0 : 4);
-+	case IEEE754_CLASS_NORM:
-+		return 0x08 << (xs ? 0 : 4);
-+	case IEEE754_CLASS_DNORM:
-+		return 0x10 << (xs ? 0 : 4);
-+	case IEEE754_CLASS_ZERO:
-+		return 0x20 << (xs ? 0 : 4);
-+	default:
-+		pr_err("Unknown class: %d\n", xc);
-+		return 0;
++	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_INF):
++	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_INF):
++	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_INF):
++	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_INF):
++	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_NORM):
++	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_DNORM):
++		return ys ? y : x;
++
++	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_ZERO):
++		if (xs == ys)
++			return x;
++		return ieee754sp_zero(1);
++
++	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_DNORM):
++		SPDNORMX;
++
++	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_DNORM):
++		SPDNORMY;
++		break;
++
++	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_NORM):
++		SPDNORMX;
 +	}
++
++	/* Finally get to do some computation */
++
++	assert(xm & SP_HIDDEN_BIT);
++	assert(ym & SP_HIDDEN_BIT);
++
++	/* Compare signs */
++	if (xs > ys)
++		return x;
++	else if (xs < ys)
++		return y;
++
++	/* Compare exponent */
++	if (xe > ye)
++		return y;
++	else if (xe < ye)
++		return x;
++
++	/* Compare mantissa */
++	if (xm <= ym)
++		return x;
++	return y;
++}
++
++union ieee754sp ieee754sp_fmina(union ieee754sp x, union ieee754sp y)
++{
++	COMPXSP;
++	COMPYSP;
++
++	EXPLODEXSP;
++	EXPLODEYSP;
++
++	FLUSHXSP;
++	FLUSHYSP;
++
++	ieee754_clearcx();
++
++	switch (CLPAIR(xc, yc)) {
++	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_SNAN):
++	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_SNAN):
++	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_SNAN):
++	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_SNAN):
++	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_SNAN):
++		return ieee754sp_nanxcpt(y);
++
++	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_SNAN):
++	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_QNAN):
++	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_ZERO):
++	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_NORM):
++	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_DNORM):
++	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_INF):
++		return ieee754sp_nanxcpt(x);
++
++	/* numbers are preferred to NaNs */
++	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_QNAN):
++	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_QNAN):
++	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_QNAN):
++	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_QNAN):
++		return x;
++
++	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_QNAN):
++	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_ZERO):
++	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_NORM):
++	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_DNORM):
++	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_INF):
++		return y;
++
++	/*
++	 * Infinity and zero handling
++	 */
++	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_ZERO):
++	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_NORM):
++	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_DNORM):
++	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_ZERO):
++	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_ZERO):
++		return x;
++
++	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_INF):
++	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_INF):
++	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_INF):
++	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_INF):
++	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_NORM):
++	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_DNORM):
++		return y;
++
++	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_ZERO):
++		if (xs == ys)
++			return x;
++		return ieee754sp_zero(1);
++
++	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_DNORM):
++		SPDNORMX;
++
++	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_DNORM):
++		SPDNORMY;
++		break;
++
++	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_NORM):
++		SPDNORMX;
++	}
++
++	/* Finally get to do some computation */
++
++	assert(xm & SP_HIDDEN_BIT);
++	assert(ym & SP_HIDDEN_BIT);
++
++	/* Compare exponent */
++	if (xe > ye)
++		return y;
++	else if (xe < ye)
++		return x;
++
++	/* Compare mantissa */
++	if (xm <= ym)
++		return x;
++	return y;
 +}
 -- 
 2.5.0

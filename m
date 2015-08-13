@@ -1,25 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Aug 2015 09:59:31 +0200 (CEST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Aug 2015 09:59:49 +0200 (CEST)
 Received: (from localhost user: 'mchandras' uid#10145 fake: STDIN
         (mchandras@eddie.linux-mips.org)) by eddie.linux-mips.org
-        id S27012009AbbHMH6mO8eT4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 13 Aug 2015 09:58:42 +0200
+        id S27012010AbbHMH6qR-Fa4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 13 Aug 2015 09:58:46 +0200
 From:   Markos Chandras <markos.chandras@imgtec.com>
 To:     <linux-mips@linux-mips.org>
 Cc:     Markos Chandras <markos.chandras@imgtec.com>
-Subject: [PATCH 04/10] MIPS: math-emu: cp1emu: Add support for the MIPS R6 SELNEZ FPU instruction
-Date:   Thu, 13 Aug 2015 09:56:30 +0200
-Message-Id: <1439452596-16759-5-git-send-email-markos.chandras@imgtec.com>
+Subject: [PATCH 05/10] MIPS: math-emu: Add support for the MIPS R6 MADDF FPU instruction
+Date:   Thu, 13 Aug 2015 09:56:31 +0200
+Message-Id: <1439452596-16759-6-git-send-email-markos.chandras@imgtec.com>
 X-Mailer: git-send-email 2.4.3
 In-Reply-To: <1439452596-16759-1-git-send-email-markos.chandras@imgtec.com>
 References: <1439452596-16759-1-git-send-email-markos.chandras@imgtec.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
 Return-Path: <mchandras@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48835
+X-archive-position: 48836
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -37,55 +34,636 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 MIPS R6 introduced the following instruction:
-SELNEZ.fmt: FPR[fd]  FPR[ft].bit0 ? FPR[fs] : 0
+Floating Point Fused Multiply Add:
+MADDF.fmt To perform a fused multiply-add of FP values.
 
-Add support for emulating the single and double precision
-formats of the said instruction.
+MADDF.fmt: FPR[fd] = FPR[fd] + (FPR[fs] x FPR[ft])
 
 Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
 ---
- arch/mips/math-emu/cp1emu.c | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ arch/mips/math-emu/Makefile   |   4 +-
+ arch/mips/math-emu/cp1emu.c   |  26 +++++
+ arch/mips/math-emu/dp_maddf.c | 265 ++++++++++++++++++++++++++++++++++++++++++
+ arch/mips/math-emu/ieee754.h  |   5 +
+ arch/mips/math-emu/sp_maddf.c | 255 ++++++++++++++++++++++++++++++++++++++++
+ 5 files changed, 553 insertions(+), 2 deletions(-)
+ create mode 100644 arch/mips/math-emu/dp_maddf.c
+ create mode 100644 arch/mips/math-emu/sp_maddf.c
 
+diff --git a/arch/mips/math-emu/Makefile b/arch/mips/math-emu/Makefile
+index 2e5f96275c38..c40816f86a7a 100644
+--- a/arch/mips/math-emu/Makefile
++++ b/arch/mips/math-emu/Makefile
+@@ -4,9 +4,9 @@
+ 
+ obj-y	+= cp1emu.o ieee754dp.o ieee754sp.o ieee754.o \
+ 	   dp_div.o dp_mul.o dp_sub.o dp_add.o dp_fsp.o dp_cmp.o dp_simple.o \
+-	   dp_tint.o dp_fint.o \
++	   dp_tint.o dp_fint.o dp_maddf.o \
+ 	   sp_div.o sp_mul.o sp_sub.o sp_add.o sp_fdp.o sp_cmp.o sp_simple.o \
+-	   sp_tint.o sp_fint.o \
++	   sp_tint.o sp_fint.o sp_maddf.o \
+ 	   dsemul.o
+ 
+ lib-y	+= ieee754d.o \
 diff --git a/arch/mips/math-emu/cp1emu.c b/arch/mips/math-emu/cp1emu.c
-index 9cb46e1f8d8f..66d9a78d03ad 100644
+index 66d9a78d03ad..68646fa563d8 100644
 --- a/arch/mips/math-emu/cp1emu.c
 +++ b/arch/mips/math-emu/cp1emu.c
-@@ -1736,6 +1736,17 @@ static int fpu_emu(struct pt_regs *xcp, struct mips_fpu_struct *ctx,
- 				SPFROMREG(rv.s, MIPSInst_FS(ir));
+@@ -1747,6 +1747,19 @@ static int fpu_emu(struct pt_regs *xcp, struct mips_fpu_struct *ctx,
+ 				rv.w = 0;
  			break;
  
-+		case fselnez_op:
++		case fmaddf_op: {
++			union ieee754sp ft, fs, fd;
++
 +			if (!cpu_has_mips_r6)
 +				return SIGILL;
 +
-+			SPFROMREG(rv.s, MIPSInst_FT(ir));
-+			if (rv.w & 0x1)
-+				SPFROMREG(rv.s, MIPSInst_FS(ir));
-+			else
-+				rv.w = 0;
++			SPFROMREG(ft, MIPSInst_FT(ir));
++			SPFROMREG(fs, MIPSInst_FS(ir));
++			SPFROMREG(fd, MIPSInst_FD(ir));
++			rv.s = ieee754sp_maddf(fd, fs, ft);
 +			break;
++		}
 +
  		case fabs_op:
  			handler.u = ieee754sp_abs;
  			goto scopuop;
-@@ -1945,6 +1956,17 @@ copcsr:
- 				DPFROMREG(rv.d, MIPSInst_FS(ir));
+@@ -1967,6 +1980,19 @@ copcsr:
+ 				rv.l = 0;
  			break;
  
-+		case fselnez_op:
++		case fmaddf_op: {
++			union ieee754dp ft, fs, fd;
++
 +			if (!cpu_has_mips_r6)
 +				return SIGILL;
 +
-+			DPFROMREG(rv.d, MIPSInst_FT(ir));
-+			if (rv.l & 0x1)
-+				DPFROMREG(rv.d, MIPSInst_FS(ir));
-+			else
-+				rv.l = 0;
++			DPFROMREG(ft, MIPSInst_FT(ir));
++			DPFROMREG(fs, MIPSInst_FS(ir));
++			DPFROMREG(fd, MIPSInst_FD(ir));
++			rv.d = ieee754dp_maddf(fd, fs, ft);
 +			break;
++		}
 +
  		case fabs_op:
  			handler.u = ieee754dp_abs;
  			goto dcopuop;
+diff --git a/arch/mips/math-emu/dp_maddf.c b/arch/mips/math-emu/dp_maddf.c
+new file mode 100644
+index 000000000000..119eda9fa1ea
+--- /dev/null
++++ b/arch/mips/math-emu/dp_maddf.c
+@@ -0,0 +1,265 @@
++/*
++ * IEEE754 floating point arithmetic
++ * double precision: MADDF.f (Fused Multiply Add)
++ * MADDF.fmt: FPR[fd] = FPR[fd] + (FPR[fs] x FPR[ft])
++ *
++ * MIPS floating point support
++ * Copyright (C) 2015 Imagination Technologies, Ltd.
++ * Author: Markos Chandras <markos.chandras@imgtec.com>
++ *
++ *  This program is free software; you can distribute it and/or modify it
++ *  under the terms of the GNU General Public License as published by the
++ *  Free Software Foundation; version 2 of the License.
++ */
++
++#include "ieee754dp.h"
++
++union ieee754dp ieee754dp_maddf(union ieee754dp z, union ieee754dp x,
++				union ieee754dp y)
++{
++	int re;
++	int rs;
++	u64 rm;
++	unsigned lxm;
++	unsigned hxm;
++	unsigned lym;
++	unsigned hym;
++	u64 lrm;
++	u64 hrm;
++	u64 t;
++	u64 at;
++	int s;
++
++	COMPXDP;
++	COMPYDP;
++
++	u64 zm; int ze; int zs __maybe_unused; int zc;
++
++	EXPLODEXDP;
++	EXPLODEYDP;
++	EXPLODEDP(z, zc, zs, ze, zm)
++
++	FLUSHXDP;
++	FLUSHYDP;
++	FLUSHDP(z, zc, zs, ze, zm);
++
++	ieee754_clearcx();
++
++	switch (zc) {
++	case IEEE754_CLASS_SNAN:
++		ieee754_setcx(IEEE754_INVALID_OPERATION);
++		return ieee754dp_nanxcpt(z);
++	case IEEE754_CLASS_DNORM:
++		DPDNORMx(zm, ze);
++	/* QNAN is handled separately below */
++	}
++
++	switch (CLPAIR(xc, yc)) {
++	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_SNAN):
++	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_SNAN):
++	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_SNAN):
++	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_SNAN):
++	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_SNAN):
++		return ieee754dp_nanxcpt(y);
++
++	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_SNAN):
++	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_QNAN):
++	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_ZERO):
++	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_NORM):
++	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_DNORM):
++	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_INF):
++		return ieee754dp_nanxcpt(x);
++
++	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_QNAN):
++	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_QNAN):
++	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_QNAN):
++	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_QNAN):
++		return y;
++
++	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_QNAN):
++	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_ZERO):
++	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_NORM):
++	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_DNORM):
++	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_INF):
++		return x;
++
++
++	/*
++	 * Infinity handling
++	 */
++	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_ZERO):
++	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_INF):
++		if (zc == IEEE754_CLASS_QNAN)
++			return z;
++		ieee754_setcx(IEEE754_INVALID_OPERATION);
++		return ieee754dp_indef();
++
++	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_INF):
++	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_INF):
++	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_NORM):
++	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_DNORM):
++	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_INF):
++		if (zc == IEEE754_CLASS_QNAN)
++			return z;
++		return ieee754dp_inf(xs ^ ys);
++
++	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_ZERO):
++	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_NORM):
++	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_DNORM):
++	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_ZERO):
++	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_ZERO):
++		if (zc == IEEE754_CLASS_INF)
++			return ieee754dp_inf(zs);
++		/* Multiplication is 0 so just return z */
++		return z;
++
++	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_DNORM):
++		DPDNORMX;
++
++	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_DNORM):
++		if (zc == IEEE754_CLASS_QNAN)
++			return z;
++		else if (zc == IEEE754_CLASS_INF)
++			return ieee754dp_inf(zs);
++		DPDNORMY;
++		break;
++
++	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_NORM):
++		if (zc == IEEE754_CLASS_QNAN)
++			return z;
++		else if (zc == IEEE754_CLASS_INF)
++			return ieee754dp_inf(zs);
++		DPDNORMX;
++		break;
++
++	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_NORM):
++		if (zc == IEEE754_CLASS_QNAN)
++			return z;
++		else if (zc == IEEE754_CLASS_INF)
++			return ieee754dp_inf(zs);
++		/* fall through to real computations */
++	}
++
++	/* Finally get to do some computation */
++
++	/*
++	 * Do the multiplication bit first
++	 *
++	 * rm = xm * ym, re = xe + ye basically
++	 *
++	 * At this point xm and ym should have been normalized.
++	 */
++	assert(xm & DP_HIDDEN_BIT);
++	assert(ym & DP_HIDDEN_BIT);
++
++	re = xe + ye;
++	rs = xs ^ ys;
++
++	/* shunt to top of word */
++	xm <<= 64 - (DP_FBITS + 1);
++	ym <<= 64 - (DP_FBITS + 1);
++
++	/*
++	 * Multiply 32 bits xm, ym to give high 32 bits rm with stickness.
++	 */
++
++	/* 32 * 32 => 64 */
++#define DPXMULT(x, y)	((u64)(x) * (u64)y)
++
++	lxm = xm;
++	hxm = xm >> 32;
++	lym = ym;
++	hym = ym >> 32;
++
++	lrm = DPXMULT(lxm, lym);
++	hrm = DPXMULT(hxm, hym);
++
++	t = DPXMULT(lxm, hym);
++
++	at = lrm + (t << 32);
++	hrm += at < lrm;
++	lrm = at;
++
++	hrm = hrm + (t >> 32);
++
++	t = DPXMULT(hxm, lym);
++
++	at = lrm + (t << 32);
++	hrm += at < lrm;
++	lrm = at;
++
++	hrm = hrm + (t >> 32);
++
++	rm = hrm | (lrm != 0);
++
++	/*
++	 * Sticky shift down to normal rounding precision.
++	 */
++	if ((s64) rm < 0) {
++		rm = (rm >> (64 - (DP_FBITS + 1 + 3))) |
++		     ((rm << (DP_FBITS + 1 + 3)) != 0);
++			re++;
++	} else {
++		rm = (rm >> (64 - (DP_FBITS + 1 + 3 + 1))) |
++		     ((rm << (DP_FBITS + 1 + 3 + 1)) != 0);
++	}
++	assert(rm & (DP_HIDDEN_BIT << 3));
++
++	/* And now the addition */
++	assert(zm & DP_HIDDEN_BIT);
++
++	/*
++	 * Provide guard,round and stick bit space.
++	 */
++	zm <<= 3;
++
++	if (ze > re) {
++		/*
++		 * Have to shift y fraction right to align.
++		 */
++		s = ze - re;
++		rm = XDPSRS(rm, s);
++		re += s;
++	} else if (re > ze) {
++		/*
++		 * Have to shift x fraction right to align.
++		 */
++		s = re - ze;
++		zm = XDPSRS(zm, s);
++		ze += s;
++	}
++	assert(ze == re);
++	assert(ze <= DP_EMAX);
++
++	if (zs == rs) {
++		/*
++		 * Generate 28 bit result of adding two 27 bit numbers
++		 * leaving result in xm, xs and xe.
++		 */
++		zm = zm + rm;
++
++		if (zm >> (DP_FBITS + 1 + 3)) { /* carry out */
++			zm = XDPSRS1(zm);
++			ze++;
++		}
++	} else {
++		if (zm >= rm) {
++			zm = zm - rm;
++		} else {
++			zm = rm - zm;
++			zs = rs;
++		}
++		if (zm == 0)
++			return ieee754dp_zero(ieee754_csr.rm == FPU_CSR_RD);
++
++		/*
++		 * Normalize to rounding precision.
++		 */
++		while ((zm >> (DP_FBITS + 3)) == 0) {
++			zm <<= 1;
++			ze--;
++		}
++	}
++
++	return ieee754dp_format(zs, ze, zm);
++}
+diff --git a/arch/mips/math-emu/ieee754.h b/arch/mips/math-emu/ieee754.h
+index a5ca108ce467..4e025f9e220c 100644
+--- a/arch/mips/math-emu/ieee754.h
++++ b/arch/mips/math-emu/ieee754.h
+@@ -75,6 +75,9 @@ int ieee754sp_cmp(union ieee754sp x, union ieee754sp y, int cop, int sig);
+ 
+ union ieee754sp ieee754sp_sqrt(union ieee754sp x);
+ 
++union ieee754sp ieee754sp_maddf(union ieee754sp z, union ieee754sp x,
++				union ieee754sp y);
++
+ /*
+  * double precision (often aka double)
+ */
+@@ -99,6 +102,8 @@ int ieee754dp_cmp(union ieee754dp x, union ieee754dp y, int cop, int sig);
+ 
+ union ieee754dp ieee754dp_sqrt(union ieee754dp x);
+ 
++union ieee754dp ieee754dp_maddf(union ieee754dp z, union ieee754dp x,
++				union ieee754dp y);
+ 
+ 
+ /* 5 types of floating point number
+diff --git a/arch/mips/math-emu/sp_maddf.c b/arch/mips/math-emu/sp_maddf.c
+new file mode 100644
+index 000000000000..dd1dd83e34eb
+--- /dev/null
++++ b/arch/mips/math-emu/sp_maddf.c
+@@ -0,0 +1,255 @@
++/*
++ * IEEE754 floating point arithmetic
++ * single precision: MADDF.f (Fused Multiply Add)
++ * MADDF.fmt: FPR[fd] = FPR[fd] + (FPR[fs] x FPR[ft])
++ *
++ * MIPS floating point support
++ * Copyright (C) 2015 Imagination Technologies, Ltd.
++ * Author: Markos Chandras <markos.chandras@imgtec.com>
++ *
++ *  This program is free software; you can distribute it and/or modify it
++ *  under the terms of the GNU General Public License as published by the
++ *  Free Software Foundation; version 2 of the License.
++ */
++
++#include "ieee754sp.h"
++
++union ieee754sp ieee754sp_maddf(union ieee754sp z, union ieee754sp x,
++				union ieee754sp y)
++{
++	int re;
++	int rs;
++	unsigned rm;
++	unsigned short lxm;
++	unsigned short hxm;
++	unsigned short lym;
++	unsigned short hym;
++	unsigned lrm;
++	unsigned hrm;
++	unsigned t;
++	unsigned at;
++	int s;
++
++	COMPXSP;
++	COMPYSP;
++	u32 zm; int ze; int zs __maybe_unused; int zc;
++
++	EXPLODEXSP;
++	EXPLODEYSP;
++	EXPLODESP(z, zc, zs, ze, zm)
++
++	FLUSHXSP;
++	FLUSHYSP;
++	FLUSHSP(z, zc, zs, ze, zm);
++
++	ieee754_clearcx();
++
++	switch (zc) {
++	case IEEE754_CLASS_SNAN:
++		ieee754_setcx(IEEE754_INVALID_OPERATION);
++		return ieee754sp_nanxcpt(z);
++	case IEEE754_CLASS_DNORM:
++		SPDNORMx(zm, ze);
++	/* QNAN is handled separately below */
++	}
++
++	switch (CLPAIR(xc, yc)) {
++	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_SNAN):
++	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_SNAN):
++	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_SNAN):
++	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_SNAN):
++	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_SNAN):
++		return ieee754sp_nanxcpt(y);
++
++	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_SNAN):
++	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_QNAN):
++	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_ZERO):
++	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_NORM):
++	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_DNORM):
++	case CLPAIR(IEEE754_CLASS_SNAN, IEEE754_CLASS_INF):
++		return ieee754sp_nanxcpt(x);
++
++	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_QNAN):
++	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_QNAN):
++	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_QNAN):
++	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_QNAN):
++		return y;
++
++	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_QNAN):
++	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_ZERO):
++	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_NORM):
++	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_DNORM):
++	case CLPAIR(IEEE754_CLASS_QNAN, IEEE754_CLASS_INF):
++		return x;
++
++	/*
++	 * Infinity handling
++	 */
++	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_ZERO):
++	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_INF):
++		if (zc == IEEE754_CLASS_QNAN)
++			return z;
++		ieee754_setcx(IEEE754_INVALID_OPERATION);
++		return ieee754sp_indef();
++
++	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_INF):
++	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_INF):
++	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_NORM):
++	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_DNORM):
++	case CLPAIR(IEEE754_CLASS_INF, IEEE754_CLASS_INF):
++		if (zc == IEEE754_CLASS_QNAN)
++			return z;
++		return ieee754sp_inf(xs ^ ys);
++
++	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_ZERO):
++	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_NORM):
++	case CLPAIR(IEEE754_CLASS_ZERO, IEEE754_CLASS_DNORM):
++	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_ZERO):
++	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_ZERO):
++		if (zc == IEEE754_CLASS_INF)
++			return ieee754sp_inf(zs);
++		/* Multiplication is 0 so just return z */
++		return z;
++
++	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_DNORM):
++		SPDNORMX;
++
++	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_DNORM):
++		if (zc == IEEE754_CLASS_QNAN)
++			return z;
++		else if (zc == IEEE754_CLASS_INF)
++			return ieee754sp_inf(zs);
++		SPDNORMY;
++		break;
++
++	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_NORM):
++		if (zc == IEEE754_CLASS_QNAN)
++			return z;
++		else if (zc == IEEE754_CLASS_INF)
++			return ieee754sp_inf(zs);
++		SPDNORMX;
++		break;
++
++	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_NORM):
++		if (zc == IEEE754_CLASS_QNAN)
++			return z;
++		else if (zc == IEEE754_CLASS_INF)
++			return ieee754sp_inf(zs);
++		/* fall through to real computations */
++	}
++
++	/* Finally get to do some computation */
++
++	/*
++	 * Do the multiplication bit first
++	 *
++	 * rm = xm * ym, re = xe + ye basically
++	 *
++	 * At this point xm and ym should have been normalized.
++	 */
++
++	/* rm = xm * ym, re = xe+ye basically */
++	assert(xm & SP_HIDDEN_BIT);
++	assert(ym & SP_HIDDEN_BIT);
++
++	re = xe + ye;
++	rs = xs ^ ys;
++
++	/* shunt to top of word */
++	xm <<= 32 - (SP_FBITS + 1);
++	ym <<= 32 - (SP_FBITS + 1);
++
++	/*
++	 * Multiply 32 bits xm, ym to give high 32 bits rm with stickness.
++	 */
++	lxm = xm & 0xffff;
++	hxm = xm >> 16;
++	lym = ym & 0xffff;
++	hym = ym >> 16;
++
++	lrm = lxm * lym;	/* 16 * 16 => 32 */
++	hrm = hxm * hym;	/* 16 * 16 => 32 */
++
++	t = lxm * hym; /* 16 * 16 => 32 */
++	at = lrm + (t << 16);
++	hrm += at < lrm;
++	lrm = at;
++	hrm = hrm + (t >> 16);
++
++	t = hxm * lym; /* 16 * 16 => 32 */
++	at = lrm + (t << 16);
++	hrm += at < lrm;
++	lrm = at;
++	hrm = hrm + (t >> 16);
++
++	rm = hrm | (lrm != 0);
++
++	/*
++	 * Sticky shift down to normal rounding precision.
++	 */
++	if ((int) rm < 0) {
++		rm = (rm >> (32 - (SP_FBITS + 1 + 3))) |
++		    ((rm << (SP_FBITS + 1 + 3)) != 0);
++		re++;
++	} else {
++		rm = (rm >> (32 - (SP_FBITS + 1 + 3 + 1))) |
++		     ((rm << (SP_FBITS + 1 + 3 + 1)) != 0);
++	}
++	assert(rm & (SP_HIDDEN_BIT << 3));
++
++	/* And now the addition */
++
++	assert(zm & SP_HIDDEN_BIT);
++
++	/*
++	 * Provide guard,round and stick bit space.
++	 */
++	zm <<= 3;
++
++	if (ze > re) {
++		/*
++		 * Have to shift y fraction right to align.
++		 */
++		s = ze - re;
++		SPXSRSYn(s);
++	} else if (re > ze) {
++		/*
++		 * Have to shift x fraction right to align.
++		 */
++		s = re - ze;
++		SPXSRSYn(s);
++	}
++	assert(ze == re);
++	assert(ze <= SP_EMAX);
++
++	if (zs == rs) {
++		/*
++		 * Generate 28 bit result of adding two 27 bit numbers
++		 * leaving result in zm, zs and ze.
++		 */
++		zm = zm + rm;
++
++		if (zm >> (SP_FBITS + 1 + 3)) { /* carry out */
++			SPXSRSX1();
++		}
++	} else {
++		if (zm >= rm) {
++			zm = zm - rm;
++		} else {
++			zm = rm - zm;
++			zs = rs;
++		}
++		if (zm == 0)
++			return ieee754sp_zero(ieee754_csr.rm == FPU_CSR_RD);
++
++		/*
++		 * Normalize in extended single precision
++		 */
++		while ((zm >> (SP_MBITS + 3)) == 0) {
++			zm <<= 1;
++			ze--;
++		}
++
++	}
++	return ieee754sp_format(zs, ze, zm);
++}
 -- 
 2.5.0

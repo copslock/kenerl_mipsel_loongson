@@ -1,19 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Aug 2015 19:46:01 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:56686 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Aug 2015 19:53:11 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:56757 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27006209AbbHNRpkZEBe1 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 14 Aug 2015 19:45:40 +0200
+        by eddie.linux-mips.org with ESMTP id S27006209AbbHNRxIyVCh1 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 14 Aug 2015 19:53:08 +0200
 Received: from localhost (c-50-170-35-168.hsd1.wa.comcast.net [50.170.35.168])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 56EA3895;
-        Fri, 14 Aug 2015 17:45:34 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 491F88A6;
+        Fri, 14 Aug 2015 17:53:02 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Felix Fietkau <nbd@openwrt.org>,
+        stable@vger.kernel.org, David Daney <david.daney@cavium.com>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 3.10 02/35] MIPS: Fix sched_getaffinity with MT FPAFF enabled
-Date:   Fri, 14 Aug 2015 10:44:40 -0700
-Message-Id: <20150814174353.927713078@linuxfoundation.org>
+Subject: [PATCH 3.10 03/35] MIPS: Make set_pte() SMP safe.
+Date:   Fri, 14 Aug 2015 10:44:41 -0700
+Message-Id: <20150814174353.957695441@linuxfoundation.org>
 X-Mailer: git-send-email 2.5.0
 In-Reply-To: <20150814174353.835241087@linuxfoundation.org>
 References: <20150814174353.835241087@linuxfoundation.org>
@@ -24,7 +24,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48907
+X-archive-position: 48908
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,44 +45,75 @@ X-list: linux-mips
 
 ------------------
 
-From: Felix Fietkau <nbd@openwrt.org>
+From: David Daney <david.daney@cavium.com>
 
-commit 1d62d737555e1378eb62a8bba26644f7d97139d2 upstream.
+commit 46011e6ea39235e4aca656673c500eac81a07a17 upstream.
 
-p->thread.user_cpus_allowed is zero-initialized and is only filled on
-the first sched_setaffinity call.
+On MIPS the GLOBAL bit of the PTE must have the same value in any
+aligned pair of PTEs.  These pairs of PTEs are referred to as
+"buddies".  In a SMP system is is possible for two CPUs to be calling
+set_pte() on adjacent PTEs at the same time.  There is a race between
+setting the PTE and a different CPU setting the GLOBAL bit in its
+buddy PTE.
 
-To avoid adding overhead in the task initialization codepath, simply OR
-the returned mask in sched_getaffinity with p->cpus_allowed.
+This race can be observed when multiple CPUs are executing
+vmap()/vfree() at the same time.
 
-Signed-off-by: Felix Fietkau <nbd@openwrt.org>
+Make setting the buddy PTE's GLOBAL bit an atomic operation to close
+the race condition.
+
+The case of CONFIG_64BIT_PHYS_ADDR && CONFIG_CPU_MIPS32 is *not*
+handled.
+
+Signed-off-by: David Daney <david.daney@cavium.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/10740/
+Patchwork: https://patchwork.linux-mips.org/patch/10835/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/kernel/mips-mt-fpaff.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ arch/mips/include/asm/pgtable.h |   31 +++++++++++++++++++++++++++++++
+ 1 file changed, 31 insertions(+)
 
---- a/arch/mips/kernel/mips-mt-fpaff.c
-+++ b/arch/mips/kernel/mips-mt-fpaff.c
-@@ -154,7 +154,7 @@ asmlinkage long mipsmt_sys_sched_getaffi
- 				      unsigned long __user *user_mask_ptr)
- {
- 	unsigned int real_len;
--	cpumask_t mask;
-+	cpumask_t allowed, mask;
- 	int retval;
- 	struct task_struct *p;
- 
-@@ -173,7 +173,8 @@ asmlinkage long mipsmt_sys_sched_getaffi
- 	if (retval)
- 		goto out_unlock;
- 
--	cpumask_and(&mask, &p->thread.user_cpus_allowed, cpu_possible_mask);
-+	cpumask_or(&allowed, &p->thread.user_cpus_allowed, &p->cpus_allowed);
-+	cpumask_and(&mask, &allowed, cpu_active_mask);
- 
- out_unlock:
- 	read_unlock(&tasklist_lock);
+--- a/arch/mips/include/asm/pgtable.h
++++ b/arch/mips/include/asm/pgtable.h
+@@ -150,8 +150,39 @@ static inline void set_pte(pte_t *ptep,
+ 		 * Make sure the buddy is global too (if it's !none,
+ 		 * it better already be global)
+ 		 */
++#ifdef CONFIG_SMP
++		/*
++		 * For SMP, multiple CPUs can race, so we need to do
++		 * this atomically.
++		 */
++#ifdef CONFIG_64BIT
++#define LL_INSN "lld"
++#define SC_INSN "scd"
++#else /* CONFIG_32BIT */
++#define LL_INSN "ll"
++#define SC_INSN "sc"
++#endif
++		unsigned long page_global = _PAGE_GLOBAL;
++		unsigned long tmp;
++
++		__asm__ __volatile__ (
++			"	.set	push\n"
++			"	.set	noreorder\n"
++			"1:	" LL_INSN "	%[tmp], %[buddy]\n"
++			"	bnez	%[tmp], 2f\n"
++			"	 or	%[tmp], %[tmp], %[global]\n"
++			"	" SC_INSN "	%[tmp], %[buddy]\n"
++			"	beqz	%[tmp], 1b\n"
++			"	 nop\n"
++			"2:\n"
++			"	.set pop"
++			: [buddy] "+m" (buddy->pte),
++			  [tmp] "=&r" (tmp)
++			: [global] "r" (page_global));
++#else /* !CONFIG_SMP */
+ 		if (pte_none(*buddy))
+ 			pte_val(*buddy) = pte_val(*buddy) | _PAGE_GLOBAL;
++#endif /* CONFIG_SMP */
+ 	}
+ #endif
+ }

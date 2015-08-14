@@ -1,42 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Aug 2015 17:59:14 +0200 (CEST)
-Received: from arrakis.dune.hu ([78.24.191.176]:54020 "EHLO arrakis.dune.hu"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27011859AbbHNP7MKAa7r (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 14 Aug 2015 17:59:12 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by arrakis.dune.hu (Postfix) with ESMTP id 0FA1128089D;
-        Fri, 14 Aug 2015 17:58:24 +0200 (CEST)
-X-Virus-Scanned: at arrakis.dune.hu
-Received: from mail-lb0-f173.google.com (mail-lb0-f173.google.com [209.85.217.173])
-        by arrakis.dune.hu (Postfix) with ESMTPSA id 8C53628BC31;
-        Fri, 14 Aug 2015 17:58:18 +0200 (CEST)
-Received: by lbcbn3 with SMTP id bn3so47817788lbc.2;
-        Fri, 14 Aug 2015 08:59:00 -0700 (PDT)
-X-Received: by 10.112.50.177 with SMTP id d17mr44275234lbo.18.1439567940771;
- Fri, 14 Aug 2015 08:59:00 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Aug 2015 18:17:52 +0200 (CEST)
+Received: from mail-wi0-f176.google.com ([209.85.212.176]:37530 "EHLO
+        mail-wi0-f176.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011859AbbHNQRu4QoDr (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 14 Aug 2015 18:17:50 +0200
+Received: by wibhh20 with SMTP id hh20so26181935wib.0
+        for <linux-mips@linux-mips.org>; Fri, 14 Aug 2015 09:17:45 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:in-reply-to:references:date
+         :message-id:subject:from:to:cc:content-type;
+        bh=o6NDt3QsPNeeIa6eBBGWwEhoGPRTlpza83UIE1Lk27s=;
+        b=deFn19nYEjxKlOD0Rpu5vHKUCcr1XQ2v3aQCka+0eL/uftkORK6FneQB8w1sIXqF1E
+         HBxk45vsUgieqZTudseUAiES55kr22j3B+HwXSsfMwlAAU779V732FFR1TNsEfD24GfX
+         PkCHwDsCIBUWFOSAY1mI4BWE7v3C6ThAagrltsuO4og/JTeucjizJjipcbgaL1AjR0v5
+         YPmeMU69GZBhuFaZQww5vvCoR/4D+7SkiMjlZLGVFnagATbm8c8MUnMSoFFjcjt+Lj8C
+         Dr8L3/ML70Klx4kqPhoz/vzBYxp1H9+ia3ZSawQpO/UlmxDSnAzhlG72/NDLAO/ftE6s
+         2qNw==
+X-Gm-Message-State: ALoCoQnDXLDdxWvHYcZhea94pJ2OK4cN5ciRhp6Y/2UntmYZ/FP2ViTnHCIbQTi1n2uOf5ShEX3j
 MIME-Version: 1.0
-Received: by 10.25.143.76 with HTTP; Fri, 14 Aug 2015 08:58:41 -0700 (PDT)
-In-Reply-To: <55CE0179.3010205@broadcom.com>
-References: <55CB03D2.6080404@broadcom.com> <55CE0179.3010205@broadcom.com>
-From:   Jonas Gorski <jogo@openwrt.org>
-Date:   Fri, 14 Aug 2015 17:58:41 +0200
-Message-ID: <CAOiHx=nX_nNYNZ-1s2uPFM-zEmoZSySvMYzUA2q=RjYZOiRJ8A@mail.gmail.com>
-Subject: Re: [4.2-rc4] recurring build issue
-To:     Arend van Spriel <arend@broadcom.com>
-Cc:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "Maciej W. Rozycki" <macro@linux-mips.org>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Ralf Baechle <ralf@linux-mips.org>
+X-Received: by 10.180.86.137 with SMTP id p9mr8506119wiz.38.1439569065569;
+ Fri, 14 Aug 2015 09:17:45 -0700 (PDT)
+Received: by 10.27.127.196 with HTTP; Fri, 14 Aug 2015 09:17:45 -0700 (PDT)
+In-Reply-To: <20150813.211155.1774898831276303437.davem@davemloft.net>
+References: <20150813143150.GA17183@lst.de>
+        <CAA9_cmcNA__N_yVTKsEqLAKBuoL-hx73t6opdsmb7w-0qKXaWg@mail.gmail.com>
+        <1439524760.8421.23.camel@HansenPartnership.com>
+        <20150813.211155.1774898831276303437.davem@davemloft.net>
+Date:   Fri, 14 Aug 2015 09:17:45 -0700
+Message-ID: <CAPcyv4idztwrtr5wBQkiTSNT8L3HWf8zk9webheQAmunLD7cBw@mail.gmail.com>
+Subject: Re: [PATCH 29/31] parisc: handle page-less SG entries
+From:   Dan Williams <dan.j.williams@intel.com>
+To:     David Miller <davem@davemloft.net>
+Cc:     Jej B <James.Bottomley@hansenpartnership.com>,
+        Christoph Hellwig <hch@lst.de>,
+        "torvalds@linux-foundation.org" <torvalds@linux-foundation.org>,
+        linux-mips@linux-mips.org, linux-ia64@vger.kernel.org,
+        linux-nvdimm <linux-nvdimm@ml01.01.org>, dhowells@redhat.com,
+        sparclinux@vger.kernel.org, egtvedt@samfundet.no,
+        linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
+        X86 ML <x86@kernel.org>, David Woodhouse <dwmw2@infradead.org>,
+        hskinnemoen@gmail.com, linux-xtensa@linux-xtensa.org,
+        grundler@parisc-linux.org, realmz6@gmail.com,
+        alex.williamson@redhat.com, linux-metag@vger.kernel.org,
+        Jens Axboe <axboe@kernel.dk>, Michal Simek <monstr@monstr.eu>,
+        linux-parisc@vger.kernel.org, vgupta@synopsys.com,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        linux-alpha@vger.kernel.org, linux-media@vger.kernel.org,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Content-Type: text/plain; charset=UTF-8
-Return-Path: <jogo@openwrt.org>
+Return-Path: <dan.j.williams@intel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48895
+X-archive-position: 48896
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jogo@openwrt.org
+X-original-sender: dan.j.williams@intel.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,39 +69,37 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Aug 14, 2015 at 4:55 PM, Arend van Spriel <arend@broadcom.com> wrote:
-> + LKML
-
-Huh, didn't know Florian is LKML ;-)
-
-> On 08/12/2015 10:29 AM, Arend van Spriel wrote:
->>
->> A while ago we faced a build issue for MIPS architecture (see attached
->> config) and someone (forgot who) provided reference to following patch
->> which fixed the issue so I applied it in our repo.
->>
->> commit cd532e6356425fef41f25c31411867cf80d7541b
->> Author: Maciej W. Rozycki <macro@linux-mips.org>
->> Date:   Sun May 3 10:36:19 2015 +0100
->>
->>      MIPS: pgtable-bits.h: Correct _PAGE_GLOBAL_SHIFT build failure
->>
->>      Correct a build failure introduced by be0c37c9 [MIPS: Rearrange PTE
->> bits
->>      into fixed positions.]:
->>
->> With a merge of 4.2-rc4 those changes were lost and the build issue was
->> back. Is there any chance the patch will be posted upstream in some
->> form. For now I reapplied the patch, but would like to get rid of that
->> type of maintenance.
+On Thu, Aug 13, 2015 at 9:11 PM, David Miller <davem@davemloft.net> wrote:
+> From: James Bottomley <James.Bottomley@HansenPartnership.com>
+>> At least on some PA architectures, you have to be very careful.
+>> Improperly managed, multiple aliases will cause the system to crash
+>> (actually a machine check in the cache chequerboard). For the most
+>> temperamental systems, we need the cache line flushed and the alias
+>> mapping ejected from the TLB cache before we access the same page at an
+>> inequivalent alias.
 >
+> Also, I want to mention that on sparc64 we manage the cache aliasing
+> state in the page struct.
 >
-> Ping? Any reaction from mips community? My knowledge about MIPS architecture
-> is next to nil so try to avoid fiddling with it myself.
+> Until a page is mapped into userspace, we just record the most recent
+> cpu to store into that page with kernel side mappings.  Once the page
+> ends up being mapped or the cpu doing kernel side stores changes, we
+> actually perform the cache flush.
+>
+> Generally speaking, I think that all actual physical memory the kernel
+> operates on should have a struct page backing it.  So this whole
+> discussion of operating on physical memory in scatter lists without
+> backing page structs feels really foreign to me.
 
-@Ralf, any reason for not having applied
-http://patchwork.linux-mips.org/patch/9960/ ? Or just slipped to the
-cracks?
+So the only way for page-less pfns to enter the system is through the
+->direct_access() method provided by a pmem device's struct
+block_device_operations.  Architectures that require struct page for
+cache management to must disable ->direct_access() in this case.
 
+If an arch still wants to support pmem+DAX then it needs something
+like this patchset (feedback welcome) to map pmem pfns:
 
-Jonas
+https://lkml.org/lkml/2015/8/12/970
+
+Effectively this would disable ->direct_access() on /dev/pmem0, but
+permit ->direct_access() on /dev/pmem0m.

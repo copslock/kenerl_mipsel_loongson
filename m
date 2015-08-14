@@ -1,25 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Aug 2015 19:45:44 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:56246 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Aug 2015 19:46:01 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:56686 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012275AbbHNRnMNn0n1 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 14 Aug 2015 19:43:12 +0200
+        by eddie.linux-mips.org with ESMTP id S27006209AbbHNRpkZEBe1 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 14 Aug 2015 19:45:40 +0200
 Received: from localhost (c-50-170-35-168.hsd1.wa.comcast.net [50.170.35.168])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 57060899;
-        Fri, 14 Aug 2015 17:43:06 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 56EA3895;
+        Fri, 14 Aug 2015 17:45:34 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, James Hogan <james.hogan@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Markos Chandras <markos.chandras@imgtec.com>,
-        Leonid Yegoshin <leonid.yegoshin@imgtec.com>,
-        linux-mips@linux-mips.org
-Subject: [PATCH 4.1 09/84] MIPS: Flush RPS on kernel entry with EVA
-Date:   Fri, 14 Aug 2015 10:41:37 -0700
-Message-Id: <20150814174210.494583828@linuxfoundation.org>
+        stable@vger.kernel.org, Felix Fietkau <nbd@openwrt.org>,
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH 3.10 02/35] MIPS: Fix sched_getaffinity with MT FPAFF enabled
+Date:   Fri, 14 Aug 2015 10:44:40 -0700
+Message-Id: <20150814174353.927713078@linuxfoundation.org>
 X-Mailer: git-send-email 2.5.0
-In-Reply-To: <20150814174210.214822912@linuxfoundation.org>
-References: <20150814174210.214822912@linuxfoundation.org>
+In-Reply-To: <20150814174353.835241087@linuxfoundation.org>
+References: <20150814174353.835241087@linuxfoundation.org>
 User-Agent: quilt/0.64
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -27,7 +24,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48906
+X-archive-position: 48907
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -44,66 +41,48 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-4.1-stable review patch.  If anyone has any objections, please let me know.
+3.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Hogan <james.hogan@imgtec.com>
+From: Felix Fietkau <nbd@openwrt.org>
 
-commit 3aff47c062b944a5e1f9af56a37a23f5295628fc upstream.
+commit 1d62d737555e1378eb62a8bba26644f7d97139d2 upstream.
 
-When EVA is enabled, flush the Return Prediction Stack (RPS) present on
-some MIPS cores on entry to the kernel from user mode.
+p->thread.user_cpus_allowed is zero-initialized and is only filled on
+the first sched_setaffinity call.
 
-This is important specifically for interAptiv with EVA enabled,
-otherwise kernel mode RPS mispredicts may trigger speculative fetches of
-user return addresses, which may be sensitive in the kernel address
-space due to EVA's overlapping user/kernel address spaces.
+To avoid adding overhead in the task initialization codepath, simply OR
+the returned mask in sched_getaffinity with p->cpus_allowed.
 
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Markos Chandras <markos.chandras@imgtec.com>
-Cc: Leonid Yegoshin <leonid.yegoshin@imgtec.com>
+Signed-off-by: Felix Fietkau <nbd@openwrt.org>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/10812/
+Patchwork: https://patchwork.linux-mips.org/patch/10740/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/include/asm/stackframe.h |   25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+ arch/mips/kernel/mips-mt-fpaff.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/arch/mips/include/asm/stackframe.h
-+++ b/arch/mips/include/asm/stackframe.h
-@@ -152,6 +152,31 @@
- 		.set	noreorder
- 		bltz	k0, 8f
- 		 move	k1, sp
-+#ifdef CONFIG_EVA
-+		/*
-+		 * Flush interAptiv's Return Prediction Stack (RPS) by writing
-+		 * EntryHi. Toggling Config7.RPS is slower and less portable.
-+		 *
-+		 * The RPS isn't automatically flushed when exceptions are
-+		 * taken, which can result in kernel mode speculative accesses
-+		 * to user addresses if the RPS mispredicts. That's harmless
-+		 * when user and kernel share the same address space, but with
-+		 * EVA the same user segments may be unmapped to kernel mode,
-+		 * even containing sensitive MMIO regions or invalid memory.
-+		 *
-+		 * This can happen when the kernel sets the return address to
-+		 * ret_from_* and jr's to the exception handler, which looks
-+		 * more like a tail call than a function call. If nested calls
-+		 * don't evict the last user address in the RPS, it will
-+		 * mispredict the return and fetch from a user controlled
-+		 * address into the icache.
-+		 *
-+		 * More recent EVA-capable cores with MAAR to restrict
-+		 * speculative accesses aren't affected.
-+		 */
-+		MFC0	k0, CP0_ENTRYHI
-+		MTC0	k0, CP0_ENTRYHI
-+#endif
- 		.set	reorder
- 		/* Called from user mode, new stack. */
- 		get_saved_sp
+--- a/arch/mips/kernel/mips-mt-fpaff.c
++++ b/arch/mips/kernel/mips-mt-fpaff.c
+@@ -154,7 +154,7 @@ asmlinkage long mipsmt_sys_sched_getaffi
+ 				      unsigned long __user *user_mask_ptr)
+ {
+ 	unsigned int real_len;
+-	cpumask_t mask;
++	cpumask_t allowed, mask;
+ 	int retval;
+ 	struct task_struct *p;
+ 
+@@ -173,7 +173,8 @@ asmlinkage long mipsmt_sys_sched_getaffi
+ 	if (retval)
+ 		goto out_unlock;
+ 
+-	cpumask_and(&mask, &p->thread.user_cpus_allowed, cpu_possible_mask);
++	cpumask_or(&allowed, &p->thread.user_cpus_allowed, &p->cpus_allowed);
++	cpumask_and(&mask, &allowed, cpu_active_mask);
+ 
+ out_unlock:
+ 	read_unlock(&tasklist_lock);

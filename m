@@ -1,62 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Aug 2015 18:17:52 +0200 (CEST)
-Received: from mail-wi0-f176.google.com ([209.85.212.176]:37530 "EHLO
-        mail-wi0-f176.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011859AbbHNQRu4QoDr (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 14 Aug 2015 18:17:50 +0200
-Received: by wibhh20 with SMTP id hh20so26181935wib.0
-        for <linux-mips@linux-mips.org>; Fri, 14 Aug 2015 09:17:45 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:in-reply-to:references:date
-         :message-id:subject:from:to:cc:content-type;
-        bh=o6NDt3QsPNeeIa6eBBGWwEhoGPRTlpza83UIE1Lk27s=;
-        b=deFn19nYEjxKlOD0Rpu5vHKUCcr1XQ2v3aQCka+0eL/uftkORK6FneQB8w1sIXqF1E
-         HBxk45vsUgieqZTudseUAiES55kr22j3B+HwXSsfMwlAAU779V732FFR1TNsEfD24GfX
-         PkCHwDsCIBUWFOSAY1mI4BWE7v3C6ThAagrltsuO4og/JTeucjizJjipcbgaL1AjR0v5
-         YPmeMU69GZBhuFaZQww5vvCoR/4D+7SkiMjlZLGVFnagATbm8c8MUnMSoFFjcjt+Lj8C
-         Dr8L3/ML70Klx4kqPhoz/vzBYxp1H9+ia3ZSawQpO/UlmxDSnAzhlG72/NDLAO/ftE6s
-         2qNw==
-X-Gm-Message-State: ALoCoQnDXLDdxWvHYcZhea94pJ2OK4cN5ciRhp6Y/2UntmYZ/FP2ViTnHCIbQTi1n2uOf5ShEX3j
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Aug 2015 19:43:01 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:56109 "EHLO
+        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006209AbbHNRm74xQb1 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 14 Aug 2015 19:42:59 +0200
+Received: from localhost (c-50-170-35-168.hsd1.wa.comcast.net [50.170.35.168])
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id A8ABB323;
+        Fri, 14 Aug 2015 17:42:53 +0000 (UTC)
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, James Cowgill <James.Cowgill@imgtec.com>,
+        Markos Chandras <markos.chandras@imgtec.com>,
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH 4.1 01/84] MIPS: unaligned: Fix build error on big endian R6 kernels
+Date:   Fri, 14 Aug 2015 10:41:29 -0700
+Message-Id: <20150814174210.260199305@linuxfoundation.org>
+X-Mailer: git-send-email 2.5.0
+In-Reply-To: <20150814174210.214822912@linuxfoundation.org>
+References: <20150814174210.214822912@linuxfoundation.org>
+User-Agent: quilt/0.64
 MIME-Version: 1.0
-X-Received: by 10.180.86.137 with SMTP id p9mr8506119wiz.38.1439569065569;
- Fri, 14 Aug 2015 09:17:45 -0700 (PDT)
-Received: by 10.27.127.196 with HTTP; Fri, 14 Aug 2015 09:17:45 -0700 (PDT)
-In-Reply-To: <20150813.211155.1774898831276303437.davem@davemloft.net>
-References: <20150813143150.GA17183@lst.de>
-        <CAA9_cmcNA__N_yVTKsEqLAKBuoL-hx73t6opdsmb7w-0qKXaWg@mail.gmail.com>
-        <1439524760.8421.23.camel@HansenPartnership.com>
-        <20150813.211155.1774898831276303437.davem@davemloft.net>
-Date:   Fri, 14 Aug 2015 09:17:45 -0700
-Message-ID: <CAPcyv4idztwrtr5wBQkiTSNT8L3HWf8zk9webheQAmunLD7cBw@mail.gmail.com>
-Subject: Re: [PATCH 29/31] parisc: handle page-less SG entries
-From:   Dan Williams <dan.j.williams@intel.com>
-To:     David Miller <davem@davemloft.net>
-Cc:     Jej B <James.Bottomley@hansenpartnership.com>,
-        Christoph Hellwig <hch@lst.de>,
-        "torvalds@linux-foundation.org" <torvalds@linux-foundation.org>,
-        linux-mips@linux-mips.org, linux-ia64@vger.kernel.org,
-        linux-nvdimm <linux-nvdimm@ml01.01.org>, dhowells@redhat.com,
-        sparclinux@vger.kernel.org, egtvedt@samfundet.no,
-        linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
-        X86 ML <x86@kernel.org>, David Woodhouse <dwmw2@infradead.org>,
-        hskinnemoen@gmail.com, linux-xtensa@linux-xtensa.org,
-        grundler@parisc-linux.org, realmz6@gmail.com,
-        alex.williamson@redhat.com, linux-metag@vger.kernel.org,
-        Jens Axboe <axboe@kernel.dk>, Michal Simek <monstr@monstr.eu>,
-        linux-parisc@vger.kernel.org, vgupta@synopsys.com,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        linux-alpha@vger.kernel.org, linux-media@vger.kernel.org,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Content-Type: text/plain; charset=UTF-8
-Return-Path: <dan.j.williams@intel.com>
+Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48896
+X-archive-position: 48897
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dan.j.williams@intel.com
+X-original-sender: gregkh@linuxfoundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -69,37 +42,44 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Aug 13, 2015 at 9:11 PM, David Miller <davem@davemloft.net> wrote:
-> From: James Bottomley <James.Bottomley@HansenPartnership.com>
->> At least on some PA architectures, you have to be very careful.
->> Improperly managed, multiple aliases will cause the system to crash
->> (actually a machine check in the cache chequerboard). For the most
->> temperamental systems, we need the cache line flushed and the alias
->> mapping ejected from the TLB cache before we access the same page at an
->> inequivalent alias.
->
-> Also, I want to mention that on sparc64 we manage the cache aliasing
-> state in the page struct.
->
-> Until a page is mapped into userspace, we just record the most recent
-> cpu to store into that page with kernel side mappings.  Once the page
-> ends up being mapped or the cpu doing kernel side stores changes, we
-> actually perform the cache flush.
->
-> Generally speaking, I think that all actual physical memory the kernel
-> operates on should have a struct page backing it.  So this whole
-> discussion of operating on physical memory in scatter lists without
-> backing page structs feels really foreign to me.
+4.1-stable review patch.  If anyone has any objections, please let me know.
 
-So the only way for page-less pfns to enter the system is through the
-->direct_access() method provided by a pmem device's struct
-block_device_operations.  Architectures that require struct page for
-cache management to must disable ->direct_access() in this case.
+------------------
 
-If an arch still wants to support pmem+DAX then it needs something
-like this patchset (feedback welcome) to map pmem pfns:
+From: James Cowgill <James.Cowgill@imgtec.com>
 
-https://lkml.org/lkml/2015/8/12/970
+commit 531a6d599f4304156236ebdd531aaa80be61868d upstream.
 
-Effectively this would disable ->direct_access() on /dev/pmem0, but
-permit ->direct_access() on /dev/pmem0m.
+Commit eeb538950367 ("MIPS: unaligned: Prevent EVA instructions on kernel
+unaligned accesses") renamed the Load* and Store* defines in unaligned.c
+to _Load* and _Store* as part of its fix. One define was missed out which
+causes big endian R6 kernels to fail to build.
+
+arch/mips/kernel/unaligned.c:880:35:
+error: implicit declaration of function '_StoreDW'
+ #define StoreDW(addr, value, res) _StoreDW(addr, value, res)
+                                   ^
+
+Signed-off-by: James Cowgill <James.Cowgill@imgtec.com>
+Fixes: eeb538950367 ("MIPS: unaligned: Prevent EVA instructions on kernel unaligned accesses")
+Cc: Markos Chandras <markos.chandras@imgtec.com>
+Cc: linux-mips@linux-mips.org
+Patchwork: https://patchwork.linux-mips.org/patch/10575/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+---
+ arch/mips/kernel/unaligned.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+--- a/arch/mips/kernel/unaligned.c
++++ b/arch/mips/kernel/unaligned.c
+@@ -438,7 +438,7 @@ do {
+ 		: "memory");                                \
+ } while(0)
+ 
+-#define     StoreDW(addr, value, res) \
++#define     _StoreDW(addr, value, res) \
+ do {                                                        \
+ 		__asm__ __volatile__ (                      \
+ 			".set\tpush\n\t"		    \

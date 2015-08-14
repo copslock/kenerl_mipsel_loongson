@@ -1,20 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Aug 2015 19:44:31 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:56230 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Aug 2015 19:44:48 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:56235 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012214AbbHNRnKqk821 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 14 Aug 2015 19:43:10 +0200
+        by eddie.linux-mips.org with ESMTP id S27012224AbbHNRnLKsbu1 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 14 Aug 2015 19:43:11 +0200
 Received: from localhost (c-50-170-35-168.hsd1.wa.comcast.net [50.170.35.168])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id D9C7D8DC;
-        Fri, 14 Aug 2015 17:43:04 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 454468A6;
+        Fri, 14 Aug 2015 17:43:05 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Felix Fietkau <nbd@openwrt.org>,
-        linux-mips@linux-mips.org, abrestic@chromium.org,
-        Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.1 05/84] MIPS: Export get_c0_perfcount_int()
-Date:   Fri, 14 Aug 2015 10:41:33 -0700
-Message-Id: <20150814174210.376974649@linuxfoundation.org>
+        stable@vger.kernel.org, James Hogan <james.hogan@imgtec.com>,
+        Markos Chandras <markos.chandras@imgtec.com>,
+        Leonid Yegoshin <leonid.yegoshin@imgtec.com>,
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH 4.1 06/84] MIPS: do_mcheck: Fix kernel code dump with EVA
+Date:   Fri, 14 Aug 2015 10:41:34 -0700
+Message-Id: <20150814174210.407430905@linuxfoundation.org>
 X-Mailer: git-send-email 2.5.0
 In-Reply-To: <20150814174210.214822912@linuxfoundation.org>
 References: <20150814174210.214822912@linuxfoundation.org>
@@ -25,7 +26,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48902
+X-archive-position: 48903
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,88 +47,56 @@ X-list: linux-mips
 
 ------------------
 
-From: Felix Fietkau <nbd@openwrt.org>
+From: James Hogan <james.hogan@imgtec.com>
 
-commit 0cb0985f57783c2f3c6c8ffe7e7665e80c56bd92 upstream.
+commit 55c723e181ccec30fb5c672397fe69ec35967d97 upstream.
 
-get_c0_perfcount_int is tested from oprofile code. If oprofile is
-compiled as module, get_c0_perfcount_int needs to be exported, otherwise
-it cannot be resolved.
+If a machine check exception is raised in kernel mode, user context,
+with EVA enabled, then the do_mcheck handler will attempt to read the
+code around the EPC using EVA load instructions, i.e. as if the reads
+were from user mode. This will either read random user data if the
+process has anything mapped at the same address, or it will cause an
+exception which is handled by __get_user, resulting in this output:
 
-Fixes: a669efc4a3b4 ("MIPS: Add hook to get C0 performance counter interrupt")
-Signed-off-by: Felix Fietkau <nbd@openwrt.org>
+ Code: (Bad address in epc)
+
+Fix by setting the current user access mode to kernel if the saved
+register context indicates the exception was taken in kernel mode. This
+causes __get_user to use normal loads to read the kernel code.
+
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Cc: Markos Chandras <markos.chandras@imgtec.com>
+Cc: Leonid Yegoshin <leonid.yegoshin@imgtec.com>
 Cc: linux-mips@linux-mips.org
-Cc: abrestic@chromium.org
-Patchwork: https://patchwork.linux-mips.org/patch/10763/
+Patchwork: https://patchwork.linux-mips.org/patch/10777/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/ath79/setup.c          |    1 +
- arch/mips/lantiq/irq.c           |    1 +
- arch/mips/mti-malta/malta-time.c |    1 +
- arch/mips/mti-sead3/sead3-time.c |    1 +
- arch/mips/pistachio/time.c       |    1 +
- arch/mips/ralink/irq.c           |    1 +
- 6 files changed, 6 insertions(+)
+ arch/mips/kernel/traps.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/arch/mips/ath79/setup.c
-+++ b/arch/mips/ath79/setup.c
-@@ -186,6 +186,7 @@ int get_c0_perfcount_int(void)
- {
- 	return ATH79_MISC_IRQ(5);
- }
-+EXPORT_SYMBOL_GPL(get_c0_perfcount_int);
+--- a/arch/mips/kernel/traps.c
++++ b/arch/mips/kernel/traps.c
+@@ -1518,6 +1518,7 @@ asmlinkage void do_mcheck(struct pt_regs
+ 	const int field = 2 * sizeof(unsigned long);
+ 	int multi_match = regs->cp0_status & ST0_TS;
+ 	enum ctx_state prev_state;
++	mm_segment_t old_fs = get_fs();
  
- unsigned int get_c0_compare_int(void)
- {
---- a/arch/mips/lantiq/irq.c
-+++ b/arch/mips/lantiq/irq.c
-@@ -466,6 +466,7 @@ int get_c0_perfcount_int(void)
- {
- 	return ltq_perfcount_irq;
- }
-+EXPORT_SYMBOL_GPL(get_c0_perfcount_int);
+ 	prev_state = exception_enter();
+ 	show_regs(regs);
+@@ -1539,8 +1540,13 @@ asmlinkage void do_mcheck(struct pt_regs
+ 		dump_tlb_all();
+ 	}
  
- unsigned int get_c0_compare_int(void)
- {
---- a/arch/mips/mti-malta/malta-time.c
-+++ b/arch/mips/mti-malta/malta-time.c
-@@ -148,6 +148,7 @@ int get_c0_perfcount_int(void)
++	if (!user_mode(regs))
++		set_fs(KERNEL_DS);
++
+ 	show_code((unsigned int __user *) regs->cp0_epc);
  
- 	return mips_cpu_perf_irq;
- }
-+EXPORT_SYMBOL_GPL(get_c0_perfcount_int);
- 
- unsigned int get_c0_compare_int(void)
- {
---- a/arch/mips/mti-sead3/sead3-time.c
-+++ b/arch/mips/mti-sead3/sead3-time.c
-@@ -77,6 +77,7 @@ int get_c0_perfcount_int(void)
- 		return MIPS_CPU_IRQ_BASE + cp0_perfcount_irq;
- 	return -1;
- }
-+EXPORT_SYMBOL_GPL(get_c0_perfcount_int);
- 
- unsigned int get_c0_compare_int(void)
- {
---- a/arch/mips/pistachio/time.c
-+++ b/arch/mips/pistachio/time.c
-@@ -26,6 +26,7 @@ int get_c0_perfcount_int(void)
- {
- 	return gic_get_c0_perfcount_int();
- }
-+EXPORT_SYMBOL_GPL(get_c0_perfcount_int);
- 
- void __init plat_time_init(void)
- {
---- a/arch/mips/ralink/irq.c
-+++ b/arch/mips/ralink/irq.c
-@@ -89,6 +89,7 @@ int get_c0_perfcount_int(void)
- {
- 	return rt_perfcount_irq;
- }
-+EXPORT_SYMBOL_GPL(get_c0_perfcount_int);
- 
- unsigned int get_c0_compare_int(void)
- {
++	set_fs(old_fs);
++
+ 	/*
+ 	 * Some chips may have other causes of machine check (e.g. SB1
+ 	 * graduation timer)

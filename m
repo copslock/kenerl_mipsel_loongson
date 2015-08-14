@@ -1,19 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Aug 2015 19:43:20 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:56120 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Aug 2015 19:43:38 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:56163 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011805AbbHNRnAi0dC1 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 14 Aug 2015 19:43:00 +0200
+        by eddie.linux-mips.org with ESMTP id S27012177AbbHNRnEHaoD1 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 14 Aug 2015 19:43:04 +0200
 Received: from localhost (c-50-170-35-168.hsd1.wa.comcast.net [50.170.35.168])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id B4C268A6;
-        Fri, 14 Aug 2015 17:42:54 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 3DB1E895;
+        Fri, 14 Aug 2015 17:42:58 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, David Daney <david.daney@cavium.com>,
+        stable@vger.kernel.org, James Cowgill <James.Cowgill@imgtec.com>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.1 10/84] MIPS: Make set_pte() SMP safe.
-Date:   Fri, 14 Aug 2015 10:41:38 -0700
-Message-Id: <20150814174210.523622530@linuxfoundation.org>
+Subject: [PATCH 4.1 02/84] MIPS: Replace add and sub instructions in relocate_kernel.S with addiu
+Date:   Fri, 14 Aug 2015 10:41:30 -0700
+Message-Id: <20150814174210.288958357@linuxfoundation.org>
 X-Mailer: git-send-email 2.5.0
 In-Reply-To: <20150814174210.214822912@linuxfoundation.org>
 References: <20150814174210.214822912@linuxfoundation.org>
@@ -24,7 +24,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48898
+X-archive-position: 48899
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,75 +45,53 @@ X-list: linux-mips
 
 ------------------
 
-From: David Daney <david.daney@cavium.com>
+From: James Cowgill <James.Cowgill@imgtec.com>
 
-commit 46011e6ea39235e4aca656673c500eac81a07a17 upstream.
+commit a4504755e7dc8d43ed2a934397032691cd03adf7 upstream.
 
-On MIPS the GLOBAL bit of the PTE must have the same value in any
-aligned pair of PTEs.  These pairs of PTEs are referred to as
-"buddies".  In a SMP system is is possible for two CPUs to be calling
-set_pte() on adjacent PTEs at the same time.  There is a race between
-setting the PTE and a different CPU setting the GLOBAL bit in its
-buddy PTE.
+Fixes the assembler errors generated when compiling a MIPS R6 kernel with
+CONFIG_KEXEC on, by replacing the offending add and sub instructions with
+addiu instructions.
 
-This race can be observed when multiple CPUs are executing
-vmap()/vfree() at the same time.
+Build errors:
+arch/mips/kernel/relocate_kernel.S: Assembler messages:
+arch/mips/kernel/relocate_kernel.S:27: Error: invalid operands `dadd $16,$16,8'
+arch/mips/kernel/relocate_kernel.S:64: Error: invalid operands `dadd $20,$20,8'
+arch/mips/kernel/relocate_kernel.S:65: Error: invalid operands `dadd $18,$18,8'
+arch/mips/kernel/relocate_kernel.S:66: Error: invalid operands `dsub $22,$22,1'
+scripts/Makefile.build:294: recipe for target 'arch/mips/kernel/relocate_kernel.o' failed
 
-Make setting the buddy PTE's GLOBAL bit an atomic operation to close
-the race condition.
-
-The case of CONFIG_64BIT_PHYS_ADDR && CONFIG_CPU_MIPS32 is *not*
-handled.
-
-Signed-off-by: David Daney <david.daney@cavium.com>
+Signed-off-by: James Cowgill <James.Cowgill@imgtec.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/10835/
+Patchwork: https://patchwork.linux-mips.org/patch/10558/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/include/asm/pgtable.h |   31 +++++++++++++++++++++++++++++++
- 1 file changed, 31 insertions(+)
+ arch/mips/kernel/relocate_kernel.S |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/arch/mips/include/asm/pgtable.h
-+++ b/arch/mips/include/asm/pgtable.h
-@@ -182,8 +182,39 @@ static inline void set_pte(pte_t *ptep,
- 		 * Make sure the buddy is global too (if it's !none,
- 		 * it better already be global)
- 		 */
-+#ifdef CONFIG_SMP
-+		/*
-+		 * For SMP, multiple CPUs can race, so we need to do
-+		 * this atomically.
-+		 */
-+#ifdef CONFIG_64BIT
-+#define LL_INSN "lld"
-+#define SC_INSN "scd"
-+#else /* CONFIG_32BIT */
-+#define LL_INSN "ll"
-+#define SC_INSN "sc"
-+#endif
-+		unsigned long page_global = _PAGE_GLOBAL;
-+		unsigned long tmp;
-+
-+		__asm__ __volatile__ (
-+			"	.set	push\n"
-+			"	.set	noreorder\n"
-+			"1:	" LL_INSN "	%[tmp], %[buddy]\n"
-+			"	bnez	%[tmp], 2f\n"
-+			"	 or	%[tmp], %[tmp], %[global]\n"
-+			"	" SC_INSN "	%[tmp], %[buddy]\n"
-+			"	beqz	%[tmp], 1b\n"
-+			"	 nop\n"
-+			"2:\n"
-+			"	.set pop"
-+			: [buddy] "+m" (buddy->pte),
-+			  [tmp] "=&r" (tmp)
-+			: [global] "r" (page_global));
-+#else /* !CONFIG_SMP */
- 		if (pte_none(*buddy))
- 			pte_val(*buddy) = pte_val(*buddy) | _PAGE_GLOBAL;
-+#endif /* CONFIG_SMP */
- 	}
- #endif
- }
+--- a/arch/mips/kernel/relocate_kernel.S
++++ b/arch/mips/kernel/relocate_kernel.S
+@@ -24,7 +24,7 @@ LEAF(relocate_new_kernel)
+ 
+ process_entry:
+ 	PTR_L		s2, (s0)
+-	PTR_ADD		s0, s0, SZREG
++	PTR_ADDIU	s0, s0, SZREG
+ 
+ 	/*
+ 	 * In case of a kdump/crash kernel, the indirection page is not
+@@ -61,9 +61,9 @@ copy_word:
+ 	/* copy page word by word */
+ 	REG_L		s5, (s2)
+ 	REG_S		s5, (s4)
+-	PTR_ADD		s4, s4, SZREG
+-	PTR_ADD		s2, s2, SZREG
+-	LONG_SUB	s6, s6, 1
++	PTR_ADDIU	s4, s4, SZREG
++	PTR_ADDIU	s2, s2, SZREG
++	LONG_ADDIU	s6, s6, -1
+ 	beq		s6, zero, process_entry
+ 	b		copy_word
+ 	b		process_entry

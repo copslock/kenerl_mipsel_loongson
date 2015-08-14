@@ -1,19 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Aug 2015 19:43:38 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:56163 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Aug 2015 19:43:56 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:56207 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012177AbbHNRnEHaoD1 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 14 Aug 2015 19:43:04 +0200
+        by eddie.linux-mips.org with ESMTP id S27012182AbbHNRnJYWPy1 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 14 Aug 2015 19:43:09 +0200
 Received: from localhost (c-50-170-35-168.hsd1.wa.comcast.net [50.170.35.168])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 3DB1E895;
-        Fri, 14 Aug 2015 17:42:58 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 84B09323;
+        Fri, 14 Aug 2015 17:43:03 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, James Cowgill <James.Cowgill@imgtec.com>,
-        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.1 02/84] MIPS: Replace add and sub instructions in relocate_kernel.S with addiu
-Date:   Fri, 14 Aug 2015 10:41:30 -0700
-Message-Id: <20150814174210.288958357@linuxfoundation.org>
+        stable@vger.kernel.org, James Hogan <james.hogan@imgtec.com>,
+        Paul Burton <paul.burton@imgtec.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        "Maciej W. Rozycki" <macro@linux-mips.org>,
+        linux-mips@linux-mips.org
+Subject: [PATCH 4.1 03/84] MIPS: Malta: Dont reinitialise RTC
+Date:   Fri, 14 Aug 2015 10:41:31 -0700
+Message-Id: <20150814174210.317680509@linuxfoundation.org>
 X-Mailer: git-send-email 2.5.0
 In-Reply-To: <20150814174210.214822912@linuxfoundation.org>
 References: <20150814174210.214822912@linuxfoundation.org>
@@ -24,7 +27,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48899
+X-archive-position: 48900
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,53 +48,67 @@ X-list: linux-mips
 
 ------------------
 
-From: James Cowgill <James.Cowgill@imgtec.com>
+From: James Hogan <james.hogan@imgtec.com>
 
-commit a4504755e7dc8d43ed2a934397032691cd03adf7 upstream.
+commit 106eccb4d20f35ebc58ff2286c170d9e79c5ff68 upstream.
 
-Fixes the assembler errors generated when compiling a MIPS R6 kernel with
-CONFIG_KEXEC on, by replacing the offending add and sub instructions with
-addiu instructions.
+On Malta, since commit a87ea88d8f6c ("MIPS: Malta: initialise the RTC at
+boot"), the RTC is reinitialised and forced into binary coded decimal
+(BCD) mode during init, even if the bootloader has already initialised
+it, and may even have already put it into binary mode (as YAMON does).
+This corrupts the current time, can result in the RTC seconds being an
+invalid BCD (e.g. 0x1a..0x1f) for up to 6 seconds, as well as confusing
+YAMON for a while after reset, enough for it to report timeouts when
+attempting to load from TFTP (it actually uses the RTC in that code).
 
-Build errors:
-arch/mips/kernel/relocate_kernel.S: Assembler messages:
-arch/mips/kernel/relocate_kernel.S:27: Error: invalid operands `dadd $16,$16,8'
-arch/mips/kernel/relocate_kernel.S:64: Error: invalid operands `dadd $20,$20,8'
-arch/mips/kernel/relocate_kernel.S:65: Error: invalid operands `dadd $18,$18,8'
-arch/mips/kernel/relocate_kernel.S:66: Error: invalid operands `dsub $22,$22,1'
-scripts/Makefile.build:294: recipe for target 'arch/mips/kernel/relocate_kernel.o' failed
+Therefore only initialise the RTC to the extent that is necessary so
+that Linux avoids interfering with the bootloader setup, while also
+allowing it to estimate the CPU frequency without hanging, without a
+bootloader necessarily having done anything with the RTC (for example
+when the kernel is loaded via EJTAG).
 
-Signed-off-by: James Cowgill <James.Cowgill@imgtec.com>
+The divider control is configured for a 32KHZ reference clock if
+necessary, and the SET bit of the RTC_CONTROL register is cleared if
+necessary without changing any other bits (this bit will be set when
+coming out of reset if the battery has been disconnected).
+
+Fixes: a87ea88d8f6c ("MIPS: Malta: initialise the RTC at boot")
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Reviewed-by: Paul Burton <paul.burton@imgtec.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Maciej W. Rozycki <macro@linux-mips.org>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/10558/
+Patchwork: https://patchwork.linux-mips.org/patch/10739/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/kernel/relocate_kernel.S |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/mips/mti-malta/malta-time.c |   15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
---- a/arch/mips/kernel/relocate_kernel.S
-+++ b/arch/mips/kernel/relocate_kernel.S
-@@ -24,7 +24,7 @@ LEAF(relocate_new_kernel)
+--- a/arch/mips/mti-malta/malta-time.c
++++ b/arch/mips/mti-malta/malta-time.c
+@@ -165,14 +165,17 @@ unsigned int get_c0_compare_int(void)
  
- process_entry:
- 	PTR_L		s2, (s0)
--	PTR_ADD		s0, s0, SZREG
-+	PTR_ADDIU	s0, s0, SZREG
+ static void __init init_rtc(void)
+ {
+-	/* stop the clock whilst setting it up */
+-	CMOS_WRITE(RTC_SET | RTC_24H, RTC_CONTROL);
++	unsigned char freq, ctrl;
  
- 	/*
- 	 * In case of a kdump/crash kernel, the indirection page is not
-@@ -61,9 +61,9 @@ copy_word:
- 	/* copy page word by word */
- 	REG_L		s5, (s2)
- 	REG_S		s5, (s4)
--	PTR_ADD		s4, s4, SZREG
--	PTR_ADD		s2, s2, SZREG
--	LONG_SUB	s6, s6, 1
-+	PTR_ADDIU	s4, s4, SZREG
-+	PTR_ADDIU	s2, s2, SZREG
-+	LONG_ADDIU	s6, s6, -1
- 	beq		s6, zero, process_entry
- 	b		copy_word
- 	b		process_entry
+-	/* 32KHz time base */
+-	CMOS_WRITE(RTC_REF_CLCK_32KHZ, RTC_FREQ_SELECT);
++	/* Set 32KHz time base if not already set */
++	freq = CMOS_READ(RTC_FREQ_SELECT);
++	if ((freq & RTC_DIV_CTL) != RTC_REF_CLCK_32KHZ)
++		CMOS_WRITE(RTC_REF_CLCK_32KHZ, RTC_FREQ_SELECT);
+ 
+-	/* start the clock */
+-	CMOS_WRITE(RTC_24H, RTC_CONTROL);
++	/* Ensure SET bit is clear so RTC can run */
++	ctrl = CMOS_READ(RTC_CONTROL);
++	if (ctrl & RTC_SET)
++		CMOS_WRITE(ctrl & ~RTC_SET, RTC_CONTROL);
+ }
+ 
+ void __init plat_time_init(void)

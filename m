@@ -1,61 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 16 Aug 2015 23:10:54 +0200 (CEST)
-Received: from mail-yk0-f175.google.com ([209.85.160.175]:33562 "EHLO
-        mail-yk0-f175.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012016AbbHPVKwcw7Om convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 16 Aug 2015 23:10:52 +0200
-Received: by ykll84 with SMTP id l84so46860626ykl.0
-        for <linux-mips@linux-mips.org>; Sun, 16 Aug 2015 14:10:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc:content-type:content-transfer-encoding;
-        bh=2WT5CW223/Sv/jf9wZyACzoF1kxtE6LoDjfPejjAyME=;
-        b=gh1FYe9182EezcI8AlnONJ1AK7cYyKn+5rpCikiXySpem4EbzHII75opY1hGGqXkKZ
-         WBGKCpzaKdfwTe0W4rQihhfRGfEMsJ39/vADngPpPDp3U8ibVWlqfHIB0rvBpUlYmu/C
-         P/dOu4s/wDqgOWLyNIilnQjKCOY5c/+l30pbdisnGU9vC09VP0O9LFaD2zRXLXRQ3TGE
-         1PhLxaImoyCx6C2fg5sqxQxzto7S+FNFYqEMzJOE82ZEfjoMn2Q7B7P2MzdAgL/uOfsE
-         4fgdygzria8qNPZmBljgDbIeShZqALLJA990KjxOHtlHfVT5vq+vPZKlW7MwAisB2L8l
-         BOxA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc:content-type:content-transfer-encoding;
-        bh=2WT5CW223/Sv/jf9wZyACzoF1kxtE6LoDjfPejjAyME=;
-        b=JydQodlWYG9k2Wl4Btlgv6EXH5O9ceZPlakEY6tbrdKeTa7NZUVenQSv48dJgdPI1l
-         vmw99Ix2IZ7efR8ikzI7fk1xfH7i6trodIxrI4x9mJCFSPRtwxJjLXvgLzuIApqq5xOz
-         1prb3FdOFCDXduL96i8X/tb6MMUaJLzhCM06A=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:sender:in-reply-to:references:date
-         :message-id:subject:from:to:cc:content-type
-         :content-transfer-encoding;
-        bh=2WT5CW223/Sv/jf9wZyACzoF1kxtE6LoDjfPejjAyME=;
-        b=jZ2CAovB/XMT1lRGumXSQlMAOo6Fx4ZYbcz/sHPzBB9OhuL5UDKNwdMfgIxcIy9Deq
-         5ESMAiOeYbU9FW6sB5C3SbEc+T8Mii/g6U+Bx9B11b8rOrec929E2/1HJfn/lgA8VkUE
-         zr94omM9BtOeCYKnxJijOTlv5tYoN7HLYqyWLrVc0M2O9dtkzyHKKIOooYGSzFIsSXcC
-         8WqmaktcCDaNo6e67btVW6OBtO5e1wu2Z0UtnNlrUCWrq+FGE2DwZ3ti4KGuTV3/1UaA
-         0AV2RRD4hWwKJ/K9Ex3Hv6HWDiYOaeRR2jtFxAEj7ujHXWwc6S0Nxbegc+xt76IGDUl0
-         J5JA==
-X-Gm-Message-State: ALoCoQlmZPUNiAkwpqFu3rGBzYfdzKy8dGsCPV8LcciRTVeutBEoDyF/aVJQgYyYZdcenIXx/d64
-MIME-Version: 1.0
-X-Received: by 10.13.229.197 with SMTP id o188mr2950384ywe.30.1439759446540;
- Sun, 16 Aug 2015 14:10:46 -0700 (PDT)
-Received: by 10.37.209.129 with HTTP; Sun, 16 Aug 2015 14:10:46 -0700 (PDT)
-In-Reply-To: <1522710.BT6Gc0L6oH@diego>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Aug 2015 03:11:25 +0200 (CEST)
+Received: from regular1.263xmail.com ([211.150.99.135]:59021 "EHLO
+        regular1.263xmail.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011348AbbHQBLWU1ukL (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 17 Aug 2015 03:11:22 +0200
+Received: from shawn.lin?rock-chips.com (unknown [192.168.167.156])
+        by regular1.263xmail.com (Postfix) with SMTP id 07D3A1AEEE;
+        Mon, 17 Aug 2015 09:11:17 +0800 (CST)
+X-263anti-spam: KSV:0;
+X-MAIL-GRAY: 0
+X-MAIL-DELIVERY: 1
+X-KSVirus-check: 0
+X-ABS-CHECKED: 4
+X-ADDR-CHECKED: 0
+Received: from [172.16.12.109] (localhost.localdomain [127.0.0.1])
+        by smtp.263.net (Postfix) with ESMTP id 8F3F910DA8;
+        Mon, 17 Aug 2015 09:11:07 +0800 (CST)
+X-RL-SENDER: shawn.lin@rock-chips.com
+X-FST-TO: linux-arm-kernel@lists.infradead.org
+X-SENDER-IP: 58.22.7.114
+X-LOGIN-NAME: shawn.lin@rock-chips.com
+X-UNIQUE-TAG: <4da1c4643422331f0fa9f279e10d6705>
+X-SENDER: lintao@rock-chips.com
+X-DNS-TYPE: 0
+Received: from [172.16.12.109] (unknown [58.22.7.114])
+        by smtp.263.net (Postfix) whith ESMTP id 1871241K3LE;
+        Mon, 17 Aug 2015 09:11:13 +0800 (CST)
+Subject: Re: [RFC PATCH v5 1/9] mmc: dw_mmc: Add external dma interface
+ support
+To:     =?UTF-8?Q?Heiko_St=c3=bcbner?= <heiko@sntech.de>
 References: <1439541232-30100-1-git-send-email-shawn.lin@rock-chips.com>
-        <1439541275-30146-1-git-send-email-shawn.lin@rock-chips.com>
-        <1522710.BT6Gc0L6oH@diego>
-Date:   Sun, 16 Aug 2015 14:10:46 -0700
-X-Google-Sender-Auth: _T2fWDI0HfknlA6gcqusr3Xp8DM
-Message-ID: <CAD=FV=W1dzqoJuJtJsD5TPKmSBpUbBcifGz654o9x8J1rX6-GQ@mail.gmail.com>
-Subject: Re: [RFC PATCH v5 1/9] mmc: dw_mmc: Add external dma interface support
-From:   Doug Anderson <dianders@chromium.org>
-To:     =?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>
-Cc:     Shawn Lin <shawn.lin@rock-chips.com>,
-        Jaehoon Chung <jh80.chung@samsung.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Vineet.Gupta1@synopsys.com, Wei Xu <xuwei5@hisilicon.com>,
+ <1439541275-30146-1-git-send-email-shawn.lin@rock-chips.com>
+ <1522710.BT6Gc0L6oH@diego>
+Cc:     shawn.lin@rock-chips.com, jh80.chung@samsung.com,
+        ulf.hansson@linaro.org, Vineet.Gupta1@synopsys.com,
+        Wei Xu <xuwei5@hisilicon.com>,
         Joachim Eastwood <manabian@gmail.com>,
         Alexey Brodkin <abrodkin@synopsys.com>,
         Kukjin Kim <kgene@kernel.org>,
@@ -65,26 +43,29 @@ Cc:     Shawn Lin <shawn.lin@rock-chips.com>,
         Jun Nie <jun.nie@linaro.org>,
         Ralf Baechle <ralf@linux-mips.org>,
         Govindraj Raja <govindraj.raja@imgtec.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        linux-samsung-soc <linux-samsung-soc@vger.kernel.org>,
-        linux-mips@linux-mips.org,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "open list:ARM/Rockchip SoC..." <linux-rockchip@lists.infradead.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-Return-Path: <dianders@google.com>
+        Arnd Bergmann <arnd@arndb.de>, dianders@chromium.org,
+        linux-samsung-soc@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-rockchip@lists.infradead.org, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+From:   Shawn Lin <shawn.lin@rock-chips.com>
+Message-ID: <55D134AB.80403@rock-chips.com>
+Date:   Mon, 17 Aug 2015 09:11:07 +0800
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; rv:38.0) Gecko/20100101
+ Thunderbird/38.1.0
+MIME-Version: 1.0
+In-Reply-To: <1522710.BT6Gc0L6oH@diego>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Return-Path: <shawn.lin@rock-chips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48916
+X-archive-position: 48917
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dianders@chromium.org
+X-original-sender: shawn.lin@rock-chips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -97,9 +78,7 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Heiko,
-
-On Fri, Aug 14, 2015 at 3:13 PM, Heiko Stübner <heiko@sntech.de> wrote:
+在 2015/8/15 6:13, Heiko Stübner 写道:
 > Hi Shawn,
 >
 > Am Freitag, 14. August 2015, 16:34:35 schrieb Shawn Lin:
@@ -119,25 +98,112 @@ On Fri, Aug 14, 2015 at 3:13 PM, Heiko Stübner <heiko@sntech.de> wrote:
 >
 > I guess I overlooked just some tiny detail, but to me the dma channel ids seem
 > correct after all. Maybe you have any hints what I'm doing wrong?
+>
 
-If I were a guessing man (which I'm not), I'd guess that perhaps
-you're running into troubles with our friend the PL330.
+Thanks, HeiKo.
 
-There appear to be strange issues with the PL330 on Rockchip SoCs.  I
-was only peripherally involved with them, but I know at least about
-some of the patches in our tree, like:
+yes, I'm running a quite older low-end Rockchip soc w/o idma.
 
-https://chromium-review.googlesource.com/237607
-FROMLIST: DMA: pl330: support burst mode for dev-to-mem and mem-to-dev transmit
+Hmm... from your failure to read CSR, I think generic DMA of Radxa Rock 
+was not runing properly. Your dma channel ids is correct, but it 
+certainly work on my platform。 I will try to find a Radxa Rock to 
+re-test my patch ASAP.
 
-https://chromium-review.googlesource.com/237393
-CHROMIUM: dmaengine: pl330: support quirks for some broken
 
-https://chromium-review.googlesource.com/237396
-CHROMIUM: dmaengine: pl330: add quirk for broken no flushp
 
-https://chromium-review.googlesource.com/237394
-CHROMIUM: ARM: dts: rockchip: Add broken-no-flushp into rk3288.dtsi
+> diff --git a/arch/arm/boot/dts/rk3xxx.dtsi b/arch/arm/boot/dts/rk3xxx.dtsi
+> index 4497d28..92d7156 100644
+> --- a/arch/arm/boot/dts/rk3xxx.dtsi
+> +++ b/arch/arm/boot/dts/rk3xxx.dtsi
+> @@ -217,6 +217,8 @@
+>                  interrupts = <GIC_SPI 23 IRQ_TYPE_LEVEL_HIGH>;
+>                  clocks = <&cru HCLK_SDMMC>, <&cru SCLK_SDMMC>;
+>                  clock-names = "biu", "ciu";
+> +             dmas = <&dmac2 1>;
+> +             dma-names = "rx-tx";
+>                  fifo-depth = <256>;
+>                  status = "disabled";
+>          };
+> @@ -227,6 +229,8 @@
+>                  interrupts = <GIC_SPI 24 IRQ_TYPE_LEVEL_HIGH>;
+>                  clocks = <&cru HCLK_SDIO>, <&cru SCLK_SDIO>;
+>                  clock-names = "biu", "ciu";
+> +             dmas = <&dmac2 3>;
+> +             dma-names = "rx-tx";
+>                  fifo-depth = <256>;
+>                  status = "disabled";
+>          };
+> @@ -237,6 +241,8 @@
+>                  interrupts = <GIC_SPI 25 IRQ_TYPE_LEVEL_HIGH>;
+>                  clocks = <&cru HCLK_EMMC>, <&cru SCLK_EMMC>;
+>                  clock-names = "biu", "ciu";
+> +             dmas = <&dmac2 4>;
+> +             dma-names = "rx-tx";
+>                  fifo-depth = <256>;
+>                  status = "disabled";
+>          };
+>
+>
+> [...]
+>
+>> diff --git a/drivers/mmc/host/dw_mmc.c b/drivers/mmc/host/dw_mmc.c
+>> index fcbf552..e01ead3 100644
+>> --- a/drivers/mmc/host/dw_mmc.c
+>> +++ b/drivers/mmc/host/dw_mmc.c
+>> @@ -2517,8 +2642,23 @@ static void dw_mci_cleanup_slot(struct dw_mci_slot
+>> *slot, unsigned int id) static void dw_mci_init_dma(struct dw_mci *host)
+>>   {
+>>   	int addr_config;
+>> +	int trans_mode;
+>> +	struct device *dev = host->dev;
+>> +	struct device_node *np = dev->of_node;
+>> +
+>> +	/* Check tansfer mode */
+>> +	trans_mode = SDMMC_GET_TRANS_MODE(mci_readl(host, HCON));
+>> +	if (trans_mode == 0) {
+>> +		trans_mode = TRANS_MODE_IDMAC;
+>> +	} else if (trans_mode == 1 || trans_mode == 2) {
+>> +		trans_mode = TRANS_MODE_EDMAC;
+>> +	} else {
+>> +		trans_mode = TRANS_MODE_PIO;
+>> +		goto no_dma;
+>> +	}
+>> +
+>>   	/* Check ADDR_CONFIG bit in HCON to find IDMAC address bus width */
+>> -	addr_config = (mci_readl(host, HCON) >> 27) & 0x01;
+>> +	addr_config = SDMMC_GET_ADDR_CONFIG(mci_readl(host, HCON));
+>>
+>>   	if (addr_config == 1) {
+>>   		/* host supports IDMAC in 64-bit address mode */
+>
+> I guess the idmac address size checking block
+>
+>          /* Check ADDR_CONFIG bit in HCON to find IDMAC address bus width */
+>          addr_config = SDMMC_GET_ADDR_CONFIG(mci_readl(host, HCON));
+>
+>          if (addr_config == 1) {
+>                  /* host supports IDMAC in 64-bit address mode */
+>                  host->dma_64bit_address = 1;
+>                  dev_info(host->dev, "IDMAC supports 64-bit address mode.\n");
+>                  if (!dma_set_mask(host->dev, DMA_BIT_MASK(64)))
+>                          dma_set_coherent_mask(host->dev, DMA_BIT_MASK(64));
+>          } else {
+>                  /* host supports IDMAC in 32-bit address mode */
+>                  host->dma_64bit_address = 0;
+>                  dev_info(host->dev, "IDMAC supports 32-bit address mode.\n");
+>          }
+>
+> could either live inside the trans_mode == 0 conditional above or get its own
+> if (trans_mode == 0) conditional. Either way I guess it should not talk about
+> idmac when either pio or extdmac are used.
+>
+>
+> Thanks
+> Heiko
+>
+>
+>
 
-https://chromium-review.googlesource.com/242063
-CHROMIUM: ASoC: rockchip_i2s: modify DMA max burst to 1
+
+-- 
+Shawn Lin

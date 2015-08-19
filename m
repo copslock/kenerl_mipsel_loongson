@@ -1,36 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Aug 2015 16:03:27 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:30167 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27012245AbbHROD0ZyqFj (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 18 Aug 2015 16:03:26 +0200
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 89B2E8F615796
-        for <linux-mips@linux-mips.org>; Tue, 18 Aug 2015 15:03:18 +0100 (IST)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Tue, 18 Aug 2015 15:03:20 +0100
-Received: from asmith-linux.le.imgtec.org (192.168.154.115) by
- LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.210.2; Tue, 18 Aug 2015 15:03:19 +0100
-From:   Alex Smith <alex.smith@imgtec.com>
-To:     <linux-mips@linux-mips.org>
-CC:     Alex Smith <alex.smith@imgtec.com>
-Subject: [PATCH] MIPS: Fix alignment of quiet build output for vmlinuz link
-Date:   Tue, 18 Aug 2015 15:03:10 +0100
-Message-ID: <1439906590-9475-1-git-send-email-alex.smith@imgtec.com>
-X-Mailer: git-send-email 2.5.0
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.154.115]
-Return-Path: <Alex.Smith@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Aug 2015 04:32:35 +0200 (CEST)
+Received: from mail-pa0-f46.google.com ([209.85.220.46]:33920 "EHLO
+        mail-pa0-f46.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006509AbbHSCceAPi10 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 19 Aug 2015 04:32:34 +0200
+Received: by paccq16 with SMTP id cq16so102258148pac.1
+        for <linux-mips@linux-mips.org>; Tue, 18 Aug 2015 19:32:27 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:message-id:subject:from:to:cc:date:content-type
+         :mime-version:content-transfer-encoding;
+        bh=MaLCWifzPZd2dqOKq0F/PXJjPTU/zB7gzlo9aC/Vciw=;
+        b=HV+hV+HKspuYMdI2j5C5rCSkhaGei9+1JYMbIz6U7sqJehDC8652cwamxmXvec+iYV
+         Iksr+RW+5loBPeYj/wBsOjLAsdLzOgQVmMlqG8lt0iV986UdpbbXWnX95YrGuvdCQ7XO
+         Zq3At5hxuKzDdEStmZSSVRZRs/oOOXO5+AGeiq0Kkj1fURCQaM5VTGWFD0gv8+XS8oSK
+         lu4R2SFkVEFnxNtvTov7ocWpKvZ5YXNnqNSvZHWsbzPI9g+1CYBH2c/bVlVIu3ZIXcKN
+         6EIFMMT0oGto05qLBHEbPPqhp/7Jtt8GOVqBg9KZi+3EUZR7+razanYeIjK6MvDKshIu
+         DIFA==
+X-Gm-Message-State: ALoCoQlk1U/jMWGdD2tV74Vg/RtKLzeRNn5qlN2acXuU5S9wlL+Xv4E+juz0JDNIjpsWth0pvp7F
+X-Received: by 10.68.220.199 with SMTP id py7mr19893904pbc.150.1439951547658;
+        Tue, 18 Aug 2015 19:32:27 -0700 (PDT)
+Received: from phoenix.local (118-171-143-134.dynamic.hinet.net. [118.171.143.134])
+        by smtp.gmail.com with ESMTPSA id fs13sm19610697pdb.29.2015.08.18.19.32.25
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 18 Aug 2015 19:32:26 -0700 (PDT)
+Message-ID: <1439951543.14674.1.camel@ingics.com>
+Subject: [PATCH] firmware: broadcom: bcm47xx_nvram: Fix module license
+From:   Axel Lin <axel.lin@ingics.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     Hauke Mehrtens <hauke@hauke-m.de>,
+        =?gb2312?Q?Rafa=810=920_Mi=810=920ecki?= <zajec5@gmail.com>,
+        Paul Walmsley <paul@pwsan.com>, linux-mips@linux-mips.org
+Date:   Wed, 19 Aug 2015 10:32:23 +0800
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.12.10-0ubuntu1~14.10.1 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Return-Path: <axel.lin@ingics.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48939
+X-archive-position: 48940
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alex.smith@imgtec.com
+X-original-sender: axel.lin@ingics.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,27 +56,20 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The "LD vmlinuz" line in the quiet build output is misaligned with the
-rest of the output. Fix this.
-
-Signed-off-by: Alex Smith <alex.smith@imgtec.com>
-Cc: linux-mips@linux-mips.org
+Signed-off-by: Axel Lin <axel.lin@ingics.com>
 ---
- arch/mips/boot/compressed/Makefile | 2 +-
+ drivers/firmware/broadcom/bcm47xx_nvram.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/mips/boot/compressed/Makefile b/arch/mips/boot/compressed/Makefile
-index dc91bde10d62..d5bdee115f22 100644
---- a/arch/mips/boot/compressed/Makefile
-+++ b/arch/mips/boot/compressed/Makefile
-@@ -78,7 +78,7 @@ endif
+diff --git a/drivers/firmware/broadcom/bcm47xx_nvram.c b/drivers/firmware/broadcom/bcm47xx_nvram.c
+index 87add3f..e415945 100644
+--- a/drivers/firmware/broadcom/bcm47xx_nvram.c
++++ b/drivers/firmware/broadcom/bcm47xx_nvram.c
+@@ -245,4 +245,4 @@ char *bcm47xx_nvram_get_contents(size_t *nvram_size)
+ }
+ EXPORT_SYMBOL(bcm47xx_nvram_get_contents);
  
- vmlinuzobjs-y += $(obj)/piggy.o
- 
--quiet_cmd_zld = LD	$@
-+quiet_cmd_zld = LD      $@
-       cmd_zld = $(LD) $(LDFLAGS) -Ttext $(VMLINUZ_LOAD_ADDRESS) -T $< $(vmlinuzobjs-y) -o $@
- quiet_cmd_strip = STRIP	  $@
-       cmd_strip = $(STRIP) -s $@
+-MODULE_LICENSE("GPLv2");
++MODULE_LICENSE("GPL v2");
 -- 
-2.5.0
+2.1.0

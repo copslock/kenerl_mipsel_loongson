@@ -1,49 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Aug 2015 04:32:35 +0200 (CEST)
-Received: from mail-pa0-f46.google.com ([209.85.220.46]:33920 "EHLO
-        mail-pa0-f46.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27006509AbbHSCceAPi10 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 19 Aug 2015 04:32:34 +0200
-Received: by paccq16 with SMTP id cq16so102258148pac.1
-        for <linux-mips@linux-mips.org>; Tue, 18 Aug 2015 19:32:27 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:message-id:subject:from:to:cc:date:content-type
-         :mime-version:content-transfer-encoding;
-        bh=MaLCWifzPZd2dqOKq0F/PXJjPTU/zB7gzlo9aC/Vciw=;
-        b=HV+hV+HKspuYMdI2j5C5rCSkhaGei9+1JYMbIz6U7sqJehDC8652cwamxmXvec+iYV
-         Iksr+RW+5loBPeYj/wBsOjLAsdLzOgQVmMlqG8lt0iV986UdpbbXWnX95YrGuvdCQ7XO
-         Zq3At5hxuKzDdEStmZSSVRZRs/oOOXO5+AGeiq0Kkj1fURCQaM5VTGWFD0gv8+XS8oSK
-         lu4R2SFkVEFnxNtvTov7ocWpKvZ5YXNnqNSvZHWsbzPI9g+1CYBH2c/bVlVIu3ZIXcKN
-         6EIFMMT0oGto05qLBHEbPPqhp/7Jtt8GOVqBg9KZi+3EUZR7+razanYeIjK6MvDKshIu
-         DIFA==
-X-Gm-Message-State: ALoCoQlk1U/jMWGdD2tV74Vg/RtKLzeRNn5qlN2acXuU5S9wlL+Xv4E+juz0JDNIjpsWth0pvp7F
-X-Received: by 10.68.220.199 with SMTP id py7mr19893904pbc.150.1439951547658;
-        Tue, 18 Aug 2015 19:32:27 -0700 (PDT)
-Received: from phoenix.local (118-171-143-134.dynamic.hinet.net. [118.171.143.134])
-        by smtp.gmail.com with ESMTPSA id fs13sm19610697pdb.29.2015.08.18.19.32.25
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 18 Aug 2015 19:32:26 -0700 (PDT)
-Message-ID: <1439951543.14674.1.camel@ingics.com>
-Subject: [PATCH] firmware: broadcom: bcm47xx_nvram: Fix module license
-From:   Axel Lin <axel.lin@ingics.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Hauke Mehrtens <hauke@hauke-m.de>,
-        =?gb2312?Q?Rafa=810=920_Mi=810=920ecki?= <zajec5@gmail.com>,
-        Paul Walmsley <paul@pwsan.com>, linux-mips@linux-mips.org
-Date:   Wed, 19 Aug 2015 10:32:23 +0800
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.12.10-0ubuntu1~14.10.1 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Return-Path: <axel.lin@ingics.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Aug 2015 10:08:17 +0200 (CEST)
+Received: from verein.lst.de ([213.95.11.211]:59557 "EHLO newverein.lst.de"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27010644AbbHSIIQCEGOg (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 19 Aug 2015 10:08:16 +0200
+Received: by newverein.lst.de (Postfix, from userid 2407)
+        id B4750691F8; Wed, 19 Aug 2015 10:08:14 +0200 (CEST)
+Date:   Wed, 19 Aug 2015 10:08:14 +0200
+From:   Christoph Hellwig <hch@lst.de>
+To:     Ingo Molnar <mingo@kernel.org>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        Christoph Hellwig <hch@lst.de>, arnd@arndb.de,
+        linux@arm.linux.org.uk, catalin.marinas@arm.com,
+        will.deacon@arm.com, ysato@users.sourceforge.jp, monstr@monstr.eu,
+        jonas@southpole.se, cmetcalf@ezchip.com, gxt@mprc.pku.edu.cn,
+        x86@kernel.org, linux-alpha@vger.kernel.org,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-mips@linux-mips.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: provide more common DMA API functions V2
+Message-ID: <20150819080814.GA18115@lst.de>
+References: <1439795216-32189-1-git-send-email-hch@lst.de> <20150817142429.95a3965e0b35d0f35d3c4cfe@linux-foundation.org> <20150818053825.GA20771@lst.de> <20150817224552.43d7267d.akpm@linux-foundation.org> <20150818075107.GA31884@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20150818075107.GA31884@gmail.com>
+User-Agent: Mutt/1.5.17 (2007-11-01)
+Return-Path: <hch@lst.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48940
+X-archive-position: 48941
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: axel.lin@ingics.com
+X-original-sender: hch@lst.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,20 +47,24 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Signed-off-by: Axel Lin <axel.lin@ingics.com>
----
- drivers/firmware/broadcom/bcm47xx_nvram.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On Tue, Aug 18, 2015 at 09:51:07AM +0200, Ingo Molnar wrote:
+> I.e. shouldn't this be:
+> 
+> > I'll merge these 5 patches for 4.4.  That means I'll release them into 
+> > linux-next after 4.2 is released.
+> >
+> > [...]
+> > 
+> > Linus will be releasing 4.2 in 1-2 weeks and until then, linux-next is supposed 
+> > to contain only 4.3 material.  Once 4.2 is released and the 4.3 merge window 
+> > opens, linux-next is open for 4.4 material.
+> 
+> ?
 
-diff --git a/drivers/firmware/broadcom/bcm47xx_nvram.c b/drivers/firmware/broadcom/bcm47xx_nvram.c
-index 87add3f..e415945 100644
---- a/drivers/firmware/broadcom/bcm47xx_nvram.c
-+++ b/drivers/firmware/broadcom/bcm47xx_nvram.c
-@@ -245,4 +245,4 @@ char *bcm47xx_nvram_get_contents(size_t *nvram_size)
- }
- EXPORT_SYMBOL(bcm47xx_nvram_get_contents);
- 
--MODULE_LICENSE("GPLv2");
-+MODULE_LICENSE("GPL v2");
--- 
-2.1.0
+That would make a lot more sense.  But also be said as I intended
+these as the simple part of the dma work I'd like to get into 4.3.
+
+Andrew, if you think it's not 4.3 material I'd rather keep them in
+my git tree for now so that I can stack additional patches I have
+in progress on top.  A non-git based tree like yours is unfortunately
+very bad for patches that are dependencies for others.

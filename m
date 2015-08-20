@@ -1,49 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Aug 2015 03:10:01 +0200 (CEST)
-Received: from ozlabs.org ([103.22.144.67]:57605 "EHLO ozlabs.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27012824AbbHTBJ7uU0tr (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 20 Aug 2015 03:09:59 +0200
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by ozlabs.org (Postfix) with ESMTPSA id 0929414010F;
-        Thu, 20 Aug 2015 11:09:56 +1000 (AEST)
-Message-ID: <1440032995.13406.6.camel@ellerman.id.au>
-Subject: Re: provide more common DMA API functions V2
-From:   Michael Ellerman <mpe@ellerman.id.au>
-To:     Stephen Rothwell <sfr@canb.auug.org.au>
-Cc:     Andrew Morton <akpm@linux-foundation.org>, jonas@southpole.se,
-        linux-ia64@vger.kernel.org, monstr@monstr.eu,
-        linux@arm.linux.org.uk, ysato@users.sourceforge.jp, arnd@arndb.de,
-        linux-mips@linux-mips.org, linux-sh@vger.kernel.org,
-        catalin.marinas@arm.com, x86@kernel.org, will.deacon@arm.com,
-        linux-kernel@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
-        cmetcalf@ezchip.com, linux-alpha@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-hexagon@vger.kernel.org,
-        linux-s390@vger.kernel.org, gxt@mprc.pku.edu.cn,
-        linuxppc-dev@lists.ozlabs.org, Christoph Hellwig <hch@lst.de>
-Date:   Thu, 20 Aug 2015 11:09:55 +1000
-In-Reply-To: <20150820095233.30bb9689@canb.auug.org.au>
-References: <1439795216-32189-1-git-send-email-hch@lst.de>
-         <20150817142429.95a3965e0b35d0f35d3c4cfe@linux-foundation.org>
-         <20150818053825.GA20771@lst.de>
-         <20150817224552.43d7267d.akpm@linux-foundation.org>
-         <20150818075107.GA31884@gmail.com> <20150819080814.GA18115@lst.de>
-         <20150819143656.3a38eb538ffac60386e1224a@linux-foundation.org>
-         <20150820095233.30bb9689@canb.auug.org.au>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.12.11-0ubuntu3 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Return-Path: <mpe@ellerman.id.au>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Aug 2015 10:44:01 +0200 (CEST)
+Received: from regular1.263xmail.com ([211.150.99.132]:53716 "EHLO
+        regular1.263xmail.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010932AbbHTIn7JaNKB (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 20 Aug 2015 10:43:59 +0200
+Received: from shawn.lin?rock-chips.com (unknown [192.168.167.130])
+        by regular1.263xmail.com (Postfix) with SMTP id 5D0D19753;
+        Thu, 20 Aug 2015 16:43:52 +0800 (CST)
+X-263anti-spam: KSV:0;
+X-MAIL-GRAY: 0
+X-MAIL-DELIVERY: 1
+X-KSVirus-check: 0
+X-ABS-CHECKED: 4
+X-ADDR-CHECKED: 0
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+        by smtp.263.net (Postfix) with ESMTP id 6E5C046A;
+        Thu, 20 Aug 2015 16:43:47 +0800 (CST)
+X-RL-SENDER: shawn.lin@rock-chips.com
+X-FST-TO: jh80.chung@samsung.com
+X-SENDER-IP: 58.22.7.114
+X-LOGIN-NAME: shawn.lin@rock-chips.com
+X-UNIQUE-TAG: <f1e3e26955dd3e5aebfbe5b25198d0fa>
+X-ATTACHMENT-NUM: 0
+X-SENDER: lintao@rock-chips.com
+X-DNS-TYPE: 0
+Received: from localhost.localdomain (unknown [58.22.7.114])
+        by smtp.263.net (Postfix) whith ESMTP id 94898TJZYT;
+        Thu, 20 Aug 2015 16:43:51 +0800 (CST)
+From:   Shawn Lin <shawn.lin@rock-chips.com>
+To:     jh80.chung@samsung.com, ulf.hansson@linaro.org
+Cc:     Vineet.Gupta1@synopsys.com, Wei Xu <xuwei5@hisilicon.com>,
+        Joachim Eastwood <manabian@gmail.com>,
+        Alexey Brodkin <abrodkin@synopsys.com>,
+        Kukjin Kim <kgene@kernel.org>,
+        Krzysztof Kozlowski <k.kozlowski@samsung.com>,
+        Russell King <linux@arm.linux.org.uk>,
+        Zhangfei Gao <zhangfei.gao@linaro.org>,
+        Jun Nie <jun.nie@linaro.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Govindraj Raja <govindraj.raja@imgtec.com>,
+        Arnd Bergmann <arnd@arndb.de>, heiko@sntech.de,
+        dianders@chromium.org, linux-samsung-soc@vger.kernel.org,
+        linux-mips@linux-mips.org, linux-mmc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-rockchip@lists.infradead.org,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        Shawn Lin <shawn.lin@rock-chips.com>
+Subject: [RFC PATCH v6 0/9] Add external dma support for Synopsys MSHC
+Date:   Thu, 20 Aug 2015 16:43:24 +0800
+Message-Id: <1440060204-26203-1-git-send-email-shawn.lin@rock-chips.com>
+X-Mailer: git-send-email 1.8.0
+Return-Path: <shawn.lin@rock-chips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48953
+X-archive-position: 48954
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mpe@ellerman.id.au
+X-original-sender: shawn.lin@rock-chips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,30 +69,124 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, 2015-08-20 at 09:52 +1000, Stephen Rothwell wrote:
-> Hi Andrew (sorry, I can't tell who made the incorrect statement below
-> that I am replying to),
-> 
-> On Wed, 19 Aug 2015 14:36:56 -0700 Andrew Morton <akpm@linux-foundation.org> wrote:
-> >
-> > On Wed, 19 Aug 2015 10:08:14 +0200 Christoph Hellwig <hch@lst.de> wrote:
-> > 
-> > > On Tue, Aug 18, 2015 at 09:51:07AM +0200, Ingo Molnar wrote:
-> > > > I.e. shouldn't this be:
-> > > > 
-> > > > > I'll merge these 5 patches for 4.4.  That means I'll release them into 
-> > > > > linux-next after 4.2 is released.
-> > > > >
-> > > > > [...]
-> > > > > 
-> > > > > Linus will be releasing 4.2 in 1-2 weeks and until then, linux-next is supposed 
-> > > > > to contain only 4.3 material.  Once 4.2 is released and the 4.3 merge window 
-> > > > > opens, linux-next is open for 4.4 material.
-> 
-> Just to be clear: the above should read "Once 4.2 is released and the
-> 4.3 merge window *closes* (i.e. v4.3-rc1 is released), linux-next is
-> open for 4.4 material".
 
-/me registers www.whatdamnkernelversionareweuptoagain.com
+Synopsys DesignWare mobile storage host controller supports three
+types of transfer mode: pio, internal dma and external dma. However,
+dw_mmc can only supports pio and internal dma now. Thus some platforms
+using dw-mshc integrated with generic dma can't work in dma mode. So we
+submit this patch to achieve it.
 
-cheers
+And the config option, CONFIG_MMC_DW_IDMAC, was added by Will Newton
+(commit:f95f3850) for the first version of dw_mmc and never be touched since
+then. At that time dt-bindings hadn't been introduced into dw_mmc yet means
+we should select CONFIG_MMC_DW_IDMAC to enable internal dma mode at compile
+time. Nowadays, device-tree helps us to support a variety of boards with one
+kernel. That's why we need to remove it and decide the transfer mode by reading
+dw_mmc's HCON reg at runtime.
+
+This RFC patch needs lots of ACKs. I know it's hard, but it does need someone
+to make the running.
+
+Patch does the following things:
+- remove CONFIG_MMC_DW_IDMAC config option
+- add bindings for edmac used by synopsys-dw-mshc
+  at runtime
+- add edmac support for synopsys-dw-mshc
+
+Patch v1~v4 is based on next of git://git.linaro.org/people/ulf.hansson/mmc
+Patch v5~v6 is rebased on dw-mmc-for-ulf-v4.2 of https://github.com/jh80chung/dw-mmc.git
+
+Test emmc throughput on my platform with edmac support and without edmac support(pio only)
+iozone -L64 -S32 -azecwI -+n -r4k -r64k -r128k -s1g -i0 -i1 -i2 -f datafile -Rb out.xls > /mnt/result.txt
+(light cpu loading, Direct IO, fixed line size, all pattern recycle, 1GB data in total)
+ ___________________________________________________________
+|                   external dma mode                       |
+|-----------------------------------------------------------|
+|blksz | Random Read | Random Write | Seq Read   | Seq Write|
+|-----------------------------------------------------------|
+|4kB   |  13953kB/s  |    8602kB/s  | 13672kB/s  |  9785kB/s|
+|-----------------------------------------------------------|
+|64kB  |  46058kB/s  |   24794kB/s  | 48058kB/s  | 25418kB/s|
+|-----------------------------------------------------------|
+|128kB |  57026kB/s  |   35117kB/s  | 57375kB/s  | 35183kB/s|
+|-----------------------------------------------------------|
+                           VS
+ ___________________________________________________________
+|                          pio mode                         |
+|-----------------------------------------------------------|
+|blksz | Random Read  | Random Write | Seq Read  | Seq Write|
+|-----------------------------------------------------------|
+|4kB   |  11720kB/s   |    8644kB/s  | 11549kB/s |  9624kB/s|
+|-----------------------------------------------------------|
+|64kB  |  21869kB/s   |   24414kB/s  | 22031kB/s | 27986kB/s|
+|-----------------------------------------------------------|
+|128kB |  23718kB/s   |   34495kB/s  | 24698kB/s | 34637kB/s|
+|-----------------------------------------------------------|
+
+
+Changes in v6:
+- add trans_mode condition for IDMAC initialization
+  suggested by Heiko
+- re-test my patch on rk3188 platform and update commit msg
+- update performance of pio vs edmac in cover letter
+
+Changes in v5:
+- add the title of cover letter
+- fix typo of comment
+- add macro for reading HCON register
+- add "Acked-by: Krzysztof Kozlowski <k.kozlowski@samsung.com>" for exynos_defconfig patch
+- add "Acked-by: Vineet Gupta <vgupta@synopsys.com>" for axs10x_defconfig patch
+- add "Acked-by: Govindraj Raja <govindraj.raja@imgtec.com>" and
+  "Acked-by: Ralf Baechle <ralf@linux-mips.org>" for pistachio_defconfig patch
+- add "Acked-by: Joachim Eastwood <manabian@gmail.com>" for lpc18xx_defconfig patch
+- add "Acked-by: Wei Xu <xuwei5@hisilicon.com>" for hisi_defconfig patch
+- rebase on "https://github.com/jh80chung/dw-mmc.git tags/dw-mmc-for-ulf-v4.2" for merging easily
+
+Changes in v4:
+- remove "host->trans_mode" and use "host->use_dma" to indicate
+  transfer mode.
+- remove all bt-bindings' changes since we don't need new properities.
+- check transfer mode at runtime by reading HCON reg
+- spilt defconfig changes for each sub-architecture
+- fix the title of cover letter
+- reuse some code for reducing code size
+
+Changes in v3:
+- choose transfer mode at runtime
+- remove all CONFIG_MMC_DW_IDMAC config option
+- add supports-idmac property for some platforms
+
+Changes in v2:
+- Fix typo of dev_info msg
+- remove unused dmach from declaration of dw_mci_dma_slave
+
+Shawn Lin (9):
+  mmc: dw_mmc: Add external dma interface support
+  Documentation: synopsys-dw-mshc: add bindings for idmac and edmac
+  mips: pistachio_defconfig: remove CONFIG_MMC_DW_IDMAC
+  arc: axs10x_defconfig: remove CONFIG_MMC_DW_IDMAC
+  arm: exynos_defconfig: remove CONFIG_MMC_DW_IDMAC
+  arm: hisi_defconfig: remove CONFIG_MMC_DW_IDMAC
+  arm: lpc18xx_defconfig: remove CONFIG_MMC_DW_IDMAC
+  arm: multi_v7_defconfig: remove CONFIG_MMC_DW_IDMAC
+  arm: zx_defconfig: remove CONFIG_MMC_DW_IDMAC
+
+ .../devicetree/bindings/mmc/synopsys-dw-mshc.txt   |  25 ++
+ arch/arc/configs/axs101_defconfig                  |   1 -
+ arch/arc/configs/axs103_defconfig                  |   1 -
+ arch/arc/configs/axs103_smp_defconfig              |   1 -
+ arch/arm/configs/exynos_defconfig                  |   1 -
+ arch/arm/configs/hisi_defconfig                    |   1 -
+ arch/arm/configs/lpc18xx_defconfig                 |   1 -
+ arch/arm/configs/multi_v7_defconfig                |   1 -
+ arch/arm/configs/zx_defconfig                      |   1 -
+ arch/mips/configs/pistachio_defconfig              |   1 -
+ drivers/mmc/host/Kconfig                           |  11 +-
+ drivers/mmc/host/dw_mmc-pltfm.c                    |   2 +
+ drivers/mmc/host/dw_mmc.c                          | 264 +++++++++++++++++----
+ drivers/mmc/host/dw_mmc.h                          |   5 +
+ include/linux/mmc/dw_mmc.h                         |  27 ++-
+ 15 files changed, 267 insertions(+), 76 deletions(-)
+
+-- 
+2.3.7

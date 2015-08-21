@@ -1,44 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Aug 2015 15:22:23 +0200 (CEST)
-Received: from mail-lb0-f182.google.com ([209.85.217.182]:34303 "EHLO
-        mail-lb0-f182.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011549AbbHUNWWBXI01 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 21 Aug 2015 15:22:22 +0200
-Received: by lbbtg9 with SMTP id tg9so43705980lbb.1;
-        Fri, 21 Aug 2015 06:22:15 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Aug 2015 19:03:16 +0200 (CEST)
+Received: from mail-ig0-f169.google.com ([209.85.213.169]:36229 "EHLO
+        mail-ig0-f169.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006795AbbHURDOlyA8T (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 21 Aug 2015 19:03:14 +0200
+Received: by igcse8 with SMTP id se8so4752005igc.1
+        for <linux-mips@linux-mips.org>; Fri, 21 Aug 2015 10:03:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :content-type;
-        bh=pJ8RWNC4zgfw68BJrXKU7bw9PzaYLvKX/wq+KG22U6A=;
-        b=zjeqF4Whz7D0t5+AjUZncmDdkw8sVsvSqv8xtpOKkX/NjLCXvc9+NkYhZgB04pzuiv
-         ClWZrpYOzj1W9ROn65Kdc8wk2xr86HtErnwYgaO+ORowAJprnty7T6HDfKDV+3Qg/Wky
-         G2kGwUSHvL8bv1KgdZ5oUApShuv7U9U3MPZancZzpEgWI0nn50eIxTMytkZRccJPmLFK
-         np6X+HVghuepzsgu5sJRZfww1WbRfifboILk0llibF/NYM1x/WrAxnaidnlUxC0ep7nt
-         kP+nPMkyiFgWB6bAh9Ezz9ftTqRDw/J0H9/PlO4kNLrLQxyGXNQY5a2Zoaq6e+vqie/1
-         ZyqQ==
-X-Received: by 10.152.120.74 with SMTP id la10mr7665987lab.37.1440163334931;
- Fri, 21 Aug 2015 06:22:14 -0700 (PDT)
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding;
+        bh=FsMa4nJqruvZi8B+W034hkg/IZ7jcZjnNJN/YGQcyEg=;
+        b=zh1CbVym516tZ+4tY3G6Vej5I2vN+3hxlPcjQAfGBxg/Ue4KivMhxAUCzj5isV293F
+         ks5sLA/5qfLfh4JPYSECyVb4cVImyfe27qXhTUV6pOfYsxEArTfkbI6PTDHHMjnl72QH
+         ORNprc+PZ89VW7NzyPWYqyQVBvWbskMoR5AVii7g0QTdc1oKo+Z7PrfB3Fz1Jk+M2Ba0
+         2CSkiVEP3OAV4iNPXMIMEDocrp05GSUTDqM7eHJ7ZkdWP68tuKfndvDi2MUwGG0TJzX7
+         FHqd9lOzRM+SRm3/n+80wC1ak3bsplDIYnzrjwKU3rDelYkRxPDCKAMCx0Hsmlah3EGZ
+         33Og==
+X-Received: by 10.50.78.98 with SMTP id a2mr3621011igx.87.1440176588631;
+        Fri, 21 Aug 2015 10:03:08 -0700 (PDT)
+Received: from dl.caveonetworks.com (64.2.3.194.ptr.us.xo.net. [64.2.3.194])
+        by smtp.googlemail.com with ESMTPSA id z7sm2166600ige.22.2015.08.21.10.03.06
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Fri, 21 Aug 2015 10:03:07 -0700 (PDT)
+Message-ID: <55D759CA.7060409@gmail.com>
+Date:   Fri, 21 Aug 2015 10:03:06 -0700
+From:   David Daney <ddaney.cavm@gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
 MIME-Version: 1.0
-Received: by 10.25.198.212 with HTTP; Fri, 21 Aug 2015 06:21:45 -0700 (PDT)
-In-Reply-To: <CAD3Xx4+C1H+8AaLXbBLOKuKNysdjge0W0pxVkuLti8zE=gNdTA@mail.gmail.com>
-References: <CAD3Xx4+C1H+8AaLXbBLOKuKNysdjge0W0pxVkuLti8zE=gNdTA@mail.gmail.com>
-From:   Valentin Rothberg <valentinrothberg@gmail.com>
-Date:   Fri, 21 Aug 2015 15:21:45 +0200
-Message-ID: <CAD3Xx4JvLHuxSVAcnJe2CXnxEU1vL8y0QxzAtXf=tVNa8RcLHA@mail.gmail.com>
-Subject: Re: mips: MT: ptrace.c: undefined MIPS_MT_SMTC
-To:     ralf@linux-mips.org, Paul Bolle <pebolle@tiscali.nl>,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        Andreas Ruprecht <andreas.ruprecht@fau.de>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <valentinrothberg@gmail.com>
+To:     Markos Chandras <markos.chandras@imgtec.com>
+CC:     linux-mips@linux-mips.org
+Subject: Re: [PATCH 2/2] MIPS: kernel: signal: Drop unused arguments for traditional
+ signal handlers
+References: <1440071122-24971-1-git-send-email-markos.chandras@imgtec.com> <1440071122-24971-3-git-send-email-markos.chandras@imgtec.com>
+In-Reply-To: <1440071122-24971-3-git-send-email-markos.chandras@imgtec.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <ddaney.cavm@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48979
+X-archive-position: 48980
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: valentinrothberg@gmail.com
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,26 +56,40 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Jul 31, 2015 at 8:42 PM, Valentin Rothberg
-<valentinrothberg@gmail.com> wrote:
-> Hi Ralf,
+On 08/20/2015 04:45 AM, Markos Chandras wrote:
+> Traditional signal handlers (ie !SA_SIGINFO) only need only argument
+> holding the signal number so we drop the additional arguments and fix
+> the related comments. We also update the comments for the SA_SIGINFO
+> case where the second argument is a pointer to a siginfo_t structure.
 >
-> your commit 23c59ee7e541 ("MIPS: Add uprobes support.") is in today's
-> linux-next tree (i.e., next-20150731) and it adds the following lines
-> of code to arch/mips/kernel/ptrace.c:
+> Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+> ---
+>   arch/mips/kernel/signal.c     | 6 +-----
+>   arch/mips/kernel/signal32.c   | 6 +-----
+>   arch/mips/kernel/signal_n32.c | 2 +-
+>   3 files changed, 3 insertions(+), 11 deletions(-)
 >
-> +#ifdef CONFIG_MIPS_MT_SMTC
-> +       REG_OFFSET_NAME(c0_tcstatus, cp0_tcstatus),
-> +#endif
->
-> The Kconfig option MIPS_MT_SMTC has been removed by commit
-> b633648c5ad3 ("MIPS: MT: Remove SMTC support") so that the upper
-> #ifdef block cannot be compiled.  Is this intentional or can the block
-> be removed or should the option be substituted to something else?
->
-> I detected the issue with scripts/checkkconfigsymbols.py.
->
-> Kind regards,
->  Valentin
+> diff --git a/arch/mips/kernel/signal.c b/arch/mips/kernel/signal.c
+> index be3ac5f7cbbb..3a125331bf8b 100644
+> --- a/arch/mips/kernel/signal.c
+> +++ b/arch/mips/kernel/signal.c
+> @@ -683,15 +683,11 @@ static int setup_frame(void *sig_return, struct ksignal *ksig,
+>   	 * Arguments to signal handler:
+>   	 *
+>   	 *   a0 = signal number
+> -	 *   a1 = 0 (should be cause)
+> -	 *   a2 = pointer to struct sigcontext
+>   	 *
+>   	 * $25 and c0_epc point to the signal handler, $29 points to the
+>   	 * struct sigframe.
+>   	 */
+>   	regs->regs[ 4] = ksig->sig;
+> -	regs->regs[ 5] = 0;
+> -	regs->regs[ 6] = (unsigned long) &frame->sf_sc;
 
-Ping.
+This changes the kernel ABI.
+
+Have you tested this change against all userspace applications that use 
+signals to make sure it doesn't break anything?
+
+David Daney

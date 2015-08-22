@@ -1,25 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 22 Aug 2015 11:40:59 +0200 (CEST)
-Received: from bh-25.webhostbox.net ([208.91.199.152]:36855 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 22 Aug 2015 23:34:51 +0200 (CEST)
+Received: from bh-25.webhostbox.net ([208.91.199.152]:48413 "EHLO
         bh-25.webhostbox.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27008923AbbHVJk5x7xu- (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 22 Aug 2015 11:40:57 +0200
+        with ESMTP id S27013080AbbHVVetm5cBS (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 22 Aug 2015 23:34:49 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=roeck-us.net; s=default;
-        h=Message-Id:Date:Subject:Cc:To:From; bh=bKPrIMUURRSfpcna7AP8uzjU+b/+AbYzIWsm0uWOKGE=;
-        b=iVDIlea6ow6etUPGo5gtrdEn+rXocpHK9hCQdL/htTCQGtyFwiaMkLZZGIQjAg6tSDfvE0iEyVvTZV9kB8Gk39oXjF/s2uUJOSlsMhNaE91pDZu1uD7RrqR1SMC2QRLQnamCJ8I6VvUDpzD8QAulMcX5ceVOk5RgwSyEvqS59Gg=;
-Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:48374 helo=localhost)
+        h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date; bh=pTWoat1fwLCls+1evXYVD6rhqu9nbU6qkGnHm68t4ro=;
+        b=8j48XW+6nsDosOA13TYaNGYMg+XLRDPXqKvVbeux1381vRNJnr4zaY++Tc1Uq+npJEZMkV6Py4gtXgDBFMwfeZo+w4FBZ9NPi9WSqMJb8A3clrUlTM6CquQfJXkwkkkBraGMUO5biyPzrhaWwgxiHweHhrApQHZxTPG88syWjJo=;
+Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:57594 helo=localhost)
         by bh-25.webhostbox.net with esmtpa (Exim 4.85)
         (envelope-from <linux@roeck-us.net>)
-        id 1ZT5IA-0048XD-Gq; Sat, 22 Aug 2015 09:40:50 +0000
+        id 1ZTGQz-001iDR-5S; Sat, 22 Aug 2015 21:34:42 +0000
+Date:   Sat, 22 Aug 2015 14:34:34 -0700
 From:   Guenter Roeck <linux@roeck-us.net>
 To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        Guenter Roeck <linux@roeck-us.net>,
-        Ezequiel Garcia <ezequiel.garcia@imgtec.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>
-Subject: [PATCH -next] mips: Enable common clock framework for malta and sead3
-Date:   Sat, 22 Aug 2015 02:40:41 -0700
-Message-Id: <1440236441-10815-1-git-send-email-linux@roeck-us.net>
-X-Mailer: git-send-email 2.1.4
+Cc:     Huacai Chen <chenhc@lemote.com>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: mips: Fix console output for Fulong2e system
+Message-ID: <20150822213434.GA14985@roeck-us.net>
+References: <1438927036-1435-1-git-send-email-linux@roeck-us.net>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1438927036-1435-1-git-send-email-linux@roeck-us.net>
+User-Agent: Mutt/1.5.23 (2014-03-12)
 X-Authenticated_sender: guenter@roeck-us.net
 X-OutGoing-Spam-Status: No, score=-1.0
 X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
@@ -35,7 +38,7 @@ Return-Path: <linux@roeck-us.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48981
+X-archive-position: 48982
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -52,49 +55,43 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Since commit e69b3d70ac57 ("CLOCKSOURCE: mips-gic: Update clockevent
-frequency on clock rate changes"), malta_defconfig and sead3_defconfig
-fail to build as follows.
+On Thu, Aug 06, 2015 at 10:57:16PM -0700, Guenter Roeck wrote:
+> Commit 3adeb2566b9b ("MIPS: Loongson: Improve LEFI firmware interface")
+> made the number of UARTs dynamic if LEFI_FIRMWARE_INTERFACE is configured.
+> Unfortunately, it did not initialize the number of UARTs if
+> LEFI_FIRMWARE_INTERFACE is not configured. As a result, the Fulong2e
+> system has no console.
+> 
+> Fixes: 3adeb2566b9b ("MIPS: Loongson: Improve LEFI firmware interface")
+> Cc: Huacai Chen <chenhc@lemote.com>
+> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 
-drivers/clocksource/mips-gic-timer.c: In function 'gic_clk_notifier':
-drivers/clocksource/mips-gic-timer.c:102:16:
-	error: 'POST_RATE_CHANGE' undeclared
-drivers/clocksource/mips-gic-timer.c:103:48:
-	error: dereferencing pointer to incomplete type
-drivers/clocksource/mips-gic-timer.c: In function 'gic_clocksource_of_init':
-drivers/clocksource/mips-gic-timer.c:209:3:
-	error: implicit declaration of function 'clk_notifier_register'
+Hello Ralf,
 
-Fix by enabling COMMON_CLK for both configurations. Build tested for
-malta_defconfig and sead3_defconfig. Tested with qemu malta emulation.
+please let me know if anything is wrong with this patch.
+Should I resend with Huacai Chen's Ack and capital MIPS in the subject line ?
 
-Fixes: e69b3d70ac57 ("CLOCKSOURCE: mips-gic: Update clockevent frequency on clock rate changes")
-Cc: Ezequiel Garcia <ezequiel.garcia@imgtec.com>
-Cc: Daniel Lezcano <daniel.lezcano@linaro.org>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
----
- arch/mips/Kconfig | 2 ++
- 1 file changed, 2 insertions(+)
+Thanks,
+Guenter
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 09b8fe95aeb0..7af84b4d3269 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -409,6 +409,7 @@ config MIPS_MALTA
- 	select CEVT_R4K
- 	select CSRC_R4K
- 	select CLKSRC_MIPS_GIC
-+	select COMMON_CLK
- 	select DMA_MAYBE_COHERENT
- 	select GENERIC_ISA_DMA
- 	select HAVE_PCSPKR_PLATFORM
-@@ -459,6 +460,7 @@ config MIPS_SEAD3
- 	select CEVT_R4K
- 	select CSRC_R4K
- 	select CLKSRC_MIPS_GIC
-+	select COMMON_CLK
- 	select CPU_MIPSR2_IRQ_VI
- 	select CPU_MIPSR2_IRQ_EI
- 	select DMA_NONCOHERENT
--- 
-2.1.4
+> ---
+> Never mind my earlier e-mail, I figured it out.
+> Should be a candidate for stable (v3.19+, ie v4.1 in practice).
+> 
+>  arch/mips/loongson64/common/env.c | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/arch/mips/loongson64/common/env.c b/arch/mips/loongson64/common/env.c
+> index f6c44dd332e2..d6d07ad56180 100644
+> --- a/arch/mips/loongson64/common/env.c
+> +++ b/arch/mips/loongson64/common/env.c
+> @@ -64,6 +64,9 @@ void __init prom_init_env(void)
+>  	}
+>  	if (memsize == 0)
+>  		memsize = 256;
+> +
+> +	loongson_sysconf.nr_uarts = 1;
+> +
+>  	pr_info("memsize=%u, highmemsize=%u\n", memsize, highmemsize);
+>  #else
+>  	struct boot_params *boot_p;

@@ -1,49 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Aug 2015 19:03:16 +0200 (CEST)
-Received: from mail-ig0-f169.google.com ([209.85.213.169]:36229 "EHLO
-        mail-ig0-f169.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27006795AbbHURDOlyA8T (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 21 Aug 2015 19:03:14 +0200
-Received: by igcse8 with SMTP id se8so4752005igc.1
-        for <linux-mips@linux-mips.org>; Fri, 21 Aug 2015 10:03:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=FsMa4nJqruvZi8B+W034hkg/IZ7jcZjnNJN/YGQcyEg=;
-        b=zh1CbVym516tZ+4tY3G6Vej5I2vN+3hxlPcjQAfGBxg/Ue4KivMhxAUCzj5isV293F
-         ks5sLA/5qfLfh4JPYSECyVb4cVImyfe27qXhTUV6pOfYsxEArTfkbI6PTDHHMjnl72QH
-         ORNprc+PZ89VW7NzyPWYqyQVBvWbskMoR5AVii7g0QTdc1oKo+Z7PrfB3Fz1Jk+M2Ba0
-         2CSkiVEP3OAV4iNPXMIMEDocrp05GSUTDqM7eHJ7ZkdWP68tuKfndvDi2MUwGG0TJzX7
-         FHqd9lOzRM+SRm3/n+80wC1ak3bsplDIYnzrjwKU3rDelYkRxPDCKAMCx0Hsmlah3EGZ
-         33Og==
-X-Received: by 10.50.78.98 with SMTP id a2mr3621011igx.87.1440176588631;
-        Fri, 21 Aug 2015 10:03:08 -0700 (PDT)
-Received: from dl.caveonetworks.com (64.2.3.194.ptr.us.xo.net. [64.2.3.194])
-        by smtp.googlemail.com with ESMTPSA id z7sm2166600ige.22.2015.08.21.10.03.06
-        (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Fri, 21 Aug 2015 10:03:07 -0700 (PDT)
-Message-ID: <55D759CA.7060409@gmail.com>
-Date:   Fri, 21 Aug 2015 10:03:06 -0700
-From:   David Daney <ddaney.cavm@gmail.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
-MIME-Version: 1.0
-To:     Markos Chandras <markos.chandras@imgtec.com>
-CC:     linux-mips@linux-mips.org
-Subject: Re: [PATCH 2/2] MIPS: kernel: signal: Drop unused arguments for traditional
- signal handlers
-References: <1440071122-24971-1-git-send-email-markos.chandras@imgtec.com> <1440071122-24971-3-git-send-email-markos.chandras@imgtec.com>
-In-Reply-To: <1440071122-24971-3-git-send-email-markos.chandras@imgtec.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <ddaney.cavm@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 22 Aug 2015 11:40:59 +0200 (CEST)
+Received: from bh-25.webhostbox.net ([208.91.199.152]:36855 "EHLO
+        bh-25.webhostbox.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27008923AbbHVJk5x7xu- (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 22 Aug 2015 11:40:57 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=roeck-us.net; s=default;
+        h=Message-Id:Date:Subject:Cc:To:From; bh=bKPrIMUURRSfpcna7AP8uzjU+b/+AbYzIWsm0uWOKGE=;
+        b=iVDIlea6ow6etUPGo5gtrdEn+rXocpHK9hCQdL/htTCQGtyFwiaMkLZZGIQjAg6tSDfvE0iEyVvTZV9kB8Gk39oXjF/s2uUJOSlsMhNaE91pDZu1uD7RrqR1SMC2QRLQnamCJ8I6VvUDpzD8QAulMcX5ceVOk5RgwSyEvqS59Gg=;
+Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:48374 helo=localhost)
+        by bh-25.webhostbox.net with esmtpa (Exim 4.85)
+        (envelope-from <linux@roeck-us.net>)
+        id 1ZT5IA-0048XD-Gq; Sat, 22 Aug 2015 09:40:50 +0000
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        Guenter Roeck <linux@roeck-us.net>,
+        Ezequiel Garcia <ezequiel.garcia@imgtec.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>
+Subject: [PATCH -next] mips: Enable common clock framework for malta and sead3
+Date:   Sat, 22 Aug 2015 02:40:41 -0700
+Message-Id: <1440236441-10815-1-git-send-email-linux@roeck-us.net>
+X-Mailer: git-send-email 2.1.4
+X-Authenticated_sender: guenter@roeck-us.net
+X-OutGoing-Spam-Status: No, score=-1.0
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - bh-25.webhostbox.net
+X-AntiAbuse: Original Domain - linux-mips.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - roeck-us.net
+X-Get-Message-Sender-Via: bh-25.webhostbox.net: authenticated_id: guenter@roeck-us.net
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+Return-Path: <linux@roeck-us.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48980
+X-archive-position: 48981
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: linux@roeck-us.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,40 +52,49 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 08/20/2015 04:45 AM, Markos Chandras wrote:
-> Traditional signal handlers (ie !SA_SIGINFO) only need only argument
-> holding the signal number so we drop the additional arguments and fix
-> the related comments. We also update the comments for the SA_SIGINFO
-> case where the second argument is a pointer to a siginfo_t structure.
->
-> Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
-> ---
->   arch/mips/kernel/signal.c     | 6 +-----
->   arch/mips/kernel/signal32.c   | 6 +-----
->   arch/mips/kernel/signal_n32.c | 2 +-
->   3 files changed, 3 insertions(+), 11 deletions(-)
->
-> diff --git a/arch/mips/kernel/signal.c b/arch/mips/kernel/signal.c
-> index be3ac5f7cbbb..3a125331bf8b 100644
-> --- a/arch/mips/kernel/signal.c
-> +++ b/arch/mips/kernel/signal.c
-> @@ -683,15 +683,11 @@ static int setup_frame(void *sig_return, struct ksignal *ksig,
->   	 * Arguments to signal handler:
->   	 *
->   	 *   a0 = signal number
-> -	 *   a1 = 0 (should be cause)
-> -	 *   a2 = pointer to struct sigcontext
->   	 *
->   	 * $25 and c0_epc point to the signal handler, $29 points to the
->   	 * struct sigframe.
->   	 */
->   	regs->regs[ 4] = ksig->sig;
-> -	regs->regs[ 5] = 0;
-> -	regs->regs[ 6] = (unsigned long) &frame->sf_sc;
+Since commit e69b3d70ac57 ("CLOCKSOURCE: mips-gic: Update clockevent
+frequency on clock rate changes"), malta_defconfig and sead3_defconfig
+fail to build as follows.
 
-This changes the kernel ABI.
+drivers/clocksource/mips-gic-timer.c: In function 'gic_clk_notifier':
+drivers/clocksource/mips-gic-timer.c:102:16:
+	error: 'POST_RATE_CHANGE' undeclared
+drivers/clocksource/mips-gic-timer.c:103:48:
+	error: dereferencing pointer to incomplete type
+drivers/clocksource/mips-gic-timer.c: In function 'gic_clocksource_of_init':
+drivers/clocksource/mips-gic-timer.c:209:3:
+	error: implicit declaration of function 'clk_notifier_register'
 
-Have you tested this change against all userspace applications that use 
-signals to make sure it doesn't break anything?
+Fix by enabling COMMON_CLK for both configurations. Build tested for
+malta_defconfig and sead3_defconfig. Tested with qemu malta emulation.
 
-David Daney
+Fixes: e69b3d70ac57 ("CLOCKSOURCE: mips-gic: Update clockevent frequency on clock rate changes")
+Cc: Ezequiel Garcia <ezequiel.garcia@imgtec.com>
+Cc: Daniel Lezcano <daniel.lezcano@linaro.org>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+---
+ arch/mips/Kconfig | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 09b8fe95aeb0..7af84b4d3269 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -409,6 +409,7 @@ config MIPS_MALTA
+ 	select CEVT_R4K
+ 	select CSRC_R4K
+ 	select CLKSRC_MIPS_GIC
++	select COMMON_CLK
+ 	select DMA_MAYBE_COHERENT
+ 	select GENERIC_ISA_DMA
+ 	select HAVE_PCSPKR_PLATFORM
+@@ -459,6 +460,7 @@ config MIPS_SEAD3
+ 	select CEVT_R4K
+ 	select CSRC_R4K
+ 	select CLKSRC_MIPS_GIC
++	select COMMON_CLK
+ 	select CPU_MIPSR2_IRQ_VI
+ 	select CPU_MIPSR2_IRQ_EI
+ 	select DMA_NONCOHERENT
+-- 
+2.1.4

@@ -1,35 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Aug 2015 11:10:17 +0200 (CEST)
-Received: from mx2.suse.de ([195.135.220.15]:55262 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27009611AbbHXJJ5aafFI (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 24 Aug 2015 11:09:57 +0200
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-X-Amavis-Alert: BAD HEADER SECTION, Duplicate header field: "References"
-Received: from relay2.suse.de (charybdis-ext.suse.de [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id 50269ACFB;
-        Mon, 24 Aug 2015 09:09:57 +0000 (UTC)
-From:   Jiri Slaby <jslaby@suse.cz>
-To:     stable@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org, David Daney <david.daney@cavium.com>,
-        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
-        Jiri Slaby <jslaby@suse.cz>
-Subject: [PATCH 3.12 34/82] MIPS: Make set_pte() SMP safe.
-Date:   Mon, 24 Aug 2015 11:08:54 +0200
-Message-Id: <91aca3568d86896a14121f1635abb77554cbead6.1440407339.git.jslaby@suse.cz>
-X-Mailer: git-send-email 2.5.0
-In-Reply-To: <be9382caaa4c843d86ce5d107bd41dfcc722d395.1440407339.git.jslaby@suse.cz>
-References: <be9382caaa4c843d86ce5d107bd41dfcc722d395.1440407339.git.jslaby@suse.cz>
-In-Reply-To: <cover.1440407339.git.jslaby@suse.cz>
-References: <cover.1440407339.git.jslaby@suse.cz>
-Return-Path: <jslaby@suse.cz>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Aug 2015 14:39:31 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:44008 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27007225AbbHXMjaJ03Or (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 24 Aug 2015 14:39:30 +0200
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 6B187DC155A24;
+        Mon, 24 Aug 2015 13:39:21 +0100 (IST)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Mon, 24 Aug 2015 13:39:23 +0100
+Received: from qyousef-linux.le.imgtec.org (192.168.154.94) by
+ LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
+ 14.3.210.2; Mon, 24 Aug 2015 13:39:22 +0100
+From:   Qais Yousef <qais.yousef@imgtec.com>
+To:     <alsa-devel@alsa-project.org>
+CC:     Qais Yousef <qais.yousef@imgtec.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Marc Zyngier <marc.zyngier@arm.com>,
+        <linux-kernel@vger.kernel.org>, <linux-mips@linux-mips.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Pawel Moll <pawel.moll@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ian Campbell <ijc+devicetree@hellion.org.uk>,
+        Kumar Gala <galak@codeaurora.org>,
+        <devicetree@vger.kernel.org>, Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
+Subject: [PATCH 00/10] Add support for img AXD audio hardware decoder
+Date:   Mon, 24 Aug 2015 13:39:09 +0100
+Message-ID: <1440419959-14315-1-git-send-email-qais.yousef@imgtec.com>
+X-Mailer: git-send-email 2.1.0
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Originating-IP: [192.168.154.94]
+Return-Path: <Qais.Yousef@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48997
+X-archive-position: 48998
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jslaby@suse.cz
+X-original-sender: qais.yousef@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -42,82 +55,98 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: David Daney <david.daney@cavium.com>
+This patch series adds AXD Alsa Compress Offload SoC driver.
 
-3.12-stable review patch.  If anyone has any objections, please let me know.
+AXD is an audio hardware based on MIPS architecture that supports decoding,
+encoding, GEQ, resampling, mixing and synchronisation. At the moment only
+decoding support is added in hope to add the rest of the functionality on
+top of that once this is accepted.
 
-===============
+I divided the files into separate patches by functionality in hope it'll
+make the reviewing process easier. Worth noting that a lot of the cmd interface
+helper funtions in patch 7 are not used yet but will be as support for more
+functionality is added later.
 
-commit 46011e6ea39235e4aca656673c500eac81a07a17 upstream.
+At the moment this code has been tested on Pistachio SoC using gstreamer patched
+with the code in this link
 
-On MIPS the GLOBAL bit of the PTE must have the same value in any
-aligned pair of PTEs.  These pairs of PTEs are referred to as
-"buddies".  In a SMP system is is possible for two CPUs to be calling
-set_pte() on adjacent PTEs at the same time.  There is a race between
-setting the PTE and a different CPU setting the GLOBAL bit in its
-buddy PTE.
+	https://bugzilla.gnome.org/show_bug.cgi?id=743192
 
-This race can be observed when multiple CPUs are executing
-vmap()/vfree() at the same time.
+Qais Yousef (10):
+  irqchip: irq-mips-gic: export gic_send_ipi
+  dt: add img,axd.txt device tree binding document
+  ALSA: add AXD Audio Processing IP alsa driver
+  ALSA: axd: add fw binary header manipulation files
+  ALSA: axd: add buffers manipulation files
+  ALSA: axd: add basic files for sending/receiving axd cmds
+  ALSA: axd: add cmd interface helper functions
+  ALSA: axd: add low level AXD platform setup files
+  ALSA: axd: add alsa compress offload operations
+  ALSA: axd: add Makefile
 
-Make setting the buddy PTE's GLOBAL bit an atomic operation to close
-the race condition.
+ .../devicetree/bindings/sound/img,axd.txt          |   34 +
+ drivers/irqchip/irq-mips-gic.c                     |    1 +
+ sound/soc/Kconfig                                  |    1 +
+ sound/soc/Makefile                                 |    1 +
+ sound/soc/img/Kconfig                              |   11 +
+ sound/soc/img/Makefile                             |    1 +
+ sound/soc/img/axd/Makefile                         |   13 +
+ sound/soc/img/axd/axd_alsa_ops.c                   |  211 ++
+ sound/soc/img/axd/axd_api.h                        |  649 ++++
+ sound/soc/img/axd/axd_buffers.c                    |  243 ++
+ sound/soc/img/axd/axd_buffers.h                    |   74 +
+ sound/soc/img/axd/axd_cmds.c                       |  102 +
+ sound/soc/img/axd/axd_cmds.h                       |  532 ++++
+ sound/soc/img/axd/axd_cmds_config.c                | 1235 ++++++++
+ sound/soc/img/axd/axd_cmds_decoder_config.c        |  422 +++
+ sound/soc/img/axd/axd_cmds_info.c                  | 1249 ++++++++
+ sound/soc/img/axd/axd_cmds_internal.c              | 3264 ++++++++++++++++++++
+ sound/soc/img/axd/axd_cmds_internal.h              |  317 ++
+ sound/soc/img/axd/axd_cmds_pipes.c                 | 1387 +++++++++
+ sound/soc/img/axd/axd_hdr.c                        |   64 +
+ sound/soc/img/axd/axd_hdr.h                        |   24 +
+ sound/soc/img/axd/axd_module.c                     |  742 +++++
+ sound/soc/img/axd/axd_module.h                     |   83 +
+ sound/soc/img/axd/axd_platform.h                   |   35 +
+ sound/soc/img/axd/axd_platform_mips.c              |  416 +++
+ 25 files changed, 11111 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/sound/img,axd.txt
+ create mode 100644 sound/soc/img/Kconfig
+ create mode 100644 sound/soc/img/Makefile
+ create mode 100644 sound/soc/img/axd/Makefile
+ create mode 100644 sound/soc/img/axd/axd_alsa_ops.c
+ create mode 100644 sound/soc/img/axd/axd_api.h
+ create mode 100644 sound/soc/img/axd/axd_buffers.c
+ create mode 100644 sound/soc/img/axd/axd_buffers.h
+ create mode 100644 sound/soc/img/axd/axd_cmds.c
+ create mode 100644 sound/soc/img/axd/axd_cmds.h
+ create mode 100644 sound/soc/img/axd/axd_cmds_config.c
+ create mode 100644 sound/soc/img/axd/axd_cmds_decoder_config.c
+ create mode 100644 sound/soc/img/axd/axd_cmds_info.c
+ create mode 100644 sound/soc/img/axd/axd_cmds_internal.c
+ create mode 100644 sound/soc/img/axd/axd_cmds_internal.h
+ create mode 100644 sound/soc/img/axd/axd_cmds_pipes.c
+ create mode 100644 sound/soc/img/axd/axd_hdr.c
+ create mode 100644 sound/soc/img/axd/axd_hdr.h
+ create mode 100644 sound/soc/img/axd/axd_module.c
+ create mode 100644 sound/soc/img/axd/axd_module.h
+ create mode 100644 sound/soc/img/axd/axd_platform.h
+ create mode 100644 sound/soc/img/axd/axd_platform_mips.c
 
-The case of CONFIG_64BIT_PHYS_ADDR && CONFIG_CPU_MIPS32 is *not*
-handled.
-
-Signed-off-by: David Daney <david.daney@cavium.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Jason Cooper <jason@lakedaemon.net>
+Cc: Marc Zyngier <marc.zyngier@arm.com>
+Cc: linux-kernel@vger.kernel.org
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/10835/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Jiri Slaby <jslaby@suse.cz>
----
- arch/mips/include/asm/pgtable.h | 31 +++++++++++++++++++++++++++++++
- 1 file changed, 31 insertions(+)
-
-diff --git a/arch/mips/include/asm/pgtable.h b/arch/mips/include/asm/pgtable.h
-index 008324d1c261..b15495367d5c 100644
---- a/arch/mips/include/asm/pgtable.h
-+++ b/arch/mips/include/asm/pgtable.h
-@@ -150,8 +150,39 @@ static inline void set_pte(pte_t *ptep, pte_t pteval)
- 		 * Make sure the buddy is global too (if it's !none,
- 		 * it better already be global)
- 		 */
-+#ifdef CONFIG_SMP
-+		/*
-+		 * For SMP, multiple CPUs can race, so we need to do
-+		 * this atomically.
-+		 */
-+#ifdef CONFIG_64BIT
-+#define LL_INSN "lld"
-+#define SC_INSN "scd"
-+#else /* CONFIG_32BIT */
-+#define LL_INSN "ll"
-+#define SC_INSN "sc"
-+#endif
-+		unsigned long page_global = _PAGE_GLOBAL;
-+		unsigned long tmp;
-+
-+		__asm__ __volatile__ (
-+			"	.set	push\n"
-+			"	.set	noreorder\n"
-+			"1:	" LL_INSN "	%[tmp], %[buddy]\n"
-+			"	bnez	%[tmp], 2f\n"
-+			"	 or	%[tmp], %[tmp], %[global]\n"
-+			"	" SC_INSN "	%[tmp], %[buddy]\n"
-+			"	beqz	%[tmp], 1b\n"
-+			"	 nop\n"
-+			"2:\n"
-+			"	.set pop"
-+			: [buddy] "+m" (buddy->pte),
-+			  [tmp] "=&r" (tmp)
-+			: [global] "r" (page_global));
-+#else /* !CONFIG_SMP */
- 		if (pte_none(*buddy))
- 			pte_val(*buddy) = pte_val(*buddy) | _PAGE_GLOBAL;
-+#endif /* CONFIG_SMP */
- 	}
- #endif
- }
+Cc: Rob Herring <robh+dt@kernel.org>
+Cc: Pawel Moll <pawel.moll@arm.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Ian Campbell <ijc+devicetree@hellion.org.uk>
+Cc: Kumar Gala <galak@codeaurora.org>
+Cc: devicetree@vger.kernel.org
+Cc: Liam Girdwood <lgirdwood@gmail.com>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Jaroslav Kysela <perex@perex.cz>
+Cc: Takashi Iwai <tiwai@suse.com>
 -- 
-2.5.0
+2.1.0

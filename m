@@ -1,11 +1,11 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Aug 2015 03:29:04 +0200 (CEST)
-Received: from regular1.263xmail.com ([211.150.99.133]:38270 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Aug 2015 03:29:20 +0200 (CEST)
+Received: from regular1.263xmail.com ([211.150.99.137]:33471 "EHLO
         regular1.263xmail.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007033AbbHXB20j-kQ8 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 24 Aug 2015 03:28:26 +0200
-Received: from shawn.lin?rock-chips.com (unknown [192.168.167.229])
-        by regular1.263xmail.com (Postfix) with SMTP id 3EC2D8177;
-        Mon, 24 Aug 2015 09:28:24 +0800 (CST)
+        by eddie.linux-mips.org with ESMTP id S27011249AbbHXB2vmYN48 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 24 Aug 2015 03:28:51 +0200
+Received: from shawn.lin?rock-chips.com (unknown [192.168.167.84])
+        by regular1.263xmail.com (Postfix) with SMTP id 3B7D182AD;
+        Mon, 24 Aug 2015 09:28:49 +0800 (CST)
 X-263anti-spam: KSV:0;
 X-MAIL-GRAY: 0
 X-MAIL-DELIVERY: 1
@@ -13,19 +13,19 @@ X-KSVirus-check: 0
 X-ABS-CHECKED: 4
 X-ADDR-CHECKED: 0
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-        by smtp.263.net (Postfix) with ESMTP id 3F258486;
-        Mon, 24 Aug 2015 09:28:20 +0800 (CST)
+        by smtp.263.net (Postfix) with ESMTP id 30E9E1EAB3;
+        Mon, 24 Aug 2015 09:28:40 +0800 (CST)
 X-RL-SENDER: shawn.lin@rock-chips.com
 X-FST-TO: jh80.chung@samsung.com
 X-SENDER-IP: 58.22.7.114
 X-LOGIN-NAME: shawn.lin@rock-chips.com
-X-UNIQUE-TAG: <55645b0183202777bccb58fcd5d6cef2>
+X-UNIQUE-TAG: <81d02b88c17d046e7d10a10ebada440b>
 X-ATTACHMENT-NUM: 0
 X-SENDER: lintao@rock-chips.com
 X-DNS-TYPE: 0
 Received: from localhost.localdomain (unknown [58.22.7.114])
-        by smtp.263.net (Postfix) whith ESMTP id 29809MT33R3;
-        Mon, 24 Aug 2015 09:28:23 +0800 (CST)
+        by smtp.263.net (Postfix) whith ESMTP id 13661HM2X9L;
+        Mon, 24 Aug 2015 09:28:47 +0800 (CST)
 From:   Shawn Lin <shawn.lin@rock-chips.com>
 To:     jh80.chung@samsung.com, ulf.hansson@linaro.org
 Cc:     Vineet.Gupta1@synopsys.com, Wei Xu <xuwei5@hisilicon.com>,
@@ -44,9 +44,9 @@ Cc:     Vineet.Gupta1@synopsys.com, Wei Xu <xuwei5@hisilicon.com>,
         linux-kernel@vger.kernel.org, linux-rockchip@lists.infradead.org,
         devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         Shawn Lin <shawn.lin@rock-chips.com>
-Subject: [RFC PATCH v7 09/10] arm: multi_v7_defconfig: remove CONFIG_MMC_DW_IDMAC
-Date:   Mon, 24 Aug 2015 09:27:43 +0800
-Message-Id: <1440379663-24767-1-git-send-email-shawn.lin@rock-chips.com>
+Subject: [RFC PATCH v7 10/10] arm: zx_defconfig: remove CONFIG_MMC_DW_IDMAC
+Date:   Mon, 24 Aug 2015 09:28:04 +0800
+Message-Id: <1440379684-24811-1-git-send-email-shawn.lin@rock-chips.com>
 X-Mailer: git-send-email 1.8.0
 In-Reply-To: <1440379479-24308-1-git-send-email-shawn.lin@rock-chips.com>
 References: <1440379479-24308-1-git-send-email-shawn.lin@rock-chips.com>
@@ -54,7 +54,7 @@ Return-Path: <shawn.lin@rock-chips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48992
+X-archive-position: 48993
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -85,20 +85,20 @@ Changes in v4: None
 Changes in v3: None
 Changes in v2: None
 
- arch/arm/configs/multi_v7_defconfig | 1 -
+ arch/arm/configs/zx_defconfig | 1 -
  1 file changed, 1 deletion(-)
 
-diff --git a/arch/arm/configs/multi_v7_defconfig b/arch/arm/configs/multi_v7_defconfig
-index 5fd8df6..a3734b5 100644
---- a/arch/arm/configs/multi_v7_defconfig
-+++ b/arch/arm/configs/multi_v7_defconfig
-@@ -520,7 +520,6 @@ CONFIG_MMC_ATMELMCI=y
- CONFIG_MMC_MVSDIO=y
- CONFIG_MMC_SDHI=y
+diff --git a/arch/arm/configs/zx_defconfig b/arch/arm/configs/zx_defconfig
+index b200bb0..ab683fb 100644
+--- a/arch/arm/configs/zx_defconfig
++++ b/arch/arm/configs/zx_defconfig
+@@ -83,7 +83,6 @@ CONFIG_MMC=y
+ CONFIG_MMC_UNSAFE_RESUME=y
+ CONFIG_MMC_BLOCK_MINORS=16
  CONFIG_MMC_DW=y
 -CONFIG_MMC_DW_IDMAC=y
- CONFIG_MMC_DW_PLTFM=y
- CONFIG_MMC_DW_EXYNOS=y
- CONFIG_MMC_DW_ROCKCHIP=y
+ CONFIG_EXT2_FS=y
+ CONFIG_EXT4_FS=y
+ CONFIG_EXT4_FS_POSIX_ACL=y
 -- 
 2.3.7

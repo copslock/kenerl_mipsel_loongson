@@ -1,48 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 22 Aug 2015 23:34:51 +0200 (CEST)
-Received: from bh-25.webhostbox.net ([208.91.199.152]:48413 "EHLO
-        bh-25.webhostbox.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27013080AbbHVVetm5cBS (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 22 Aug 2015 23:34:49 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=roeck-us.net; s=default;
-        h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date; bh=pTWoat1fwLCls+1evXYVD6rhqu9nbU6qkGnHm68t4ro=;
-        b=8j48XW+6nsDosOA13TYaNGYMg+XLRDPXqKvVbeux1381vRNJnr4zaY++Tc1Uq+npJEZMkV6Py4gtXgDBFMwfeZo+w4FBZ9NPi9WSqMJb8A3clrUlTM6CquQfJXkwkkkBraGMUO5biyPzrhaWwgxiHweHhrApQHZxTPG88syWjJo=;
-Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:57594 helo=localhost)
-        by bh-25.webhostbox.net with esmtpa (Exim 4.85)
-        (envelope-from <linux@roeck-us.net>)
-        id 1ZTGQz-001iDR-5S; Sat, 22 Aug 2015 21:34:42 +0000
-Date:   Sat, 22 Aug 2015 14:34:34 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Huacai Chen <chenhc@lemote.com>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: mips: Fix console output for Fulong2e system
-Message-ID: <20150822213434.GA14985@roeck-us.net>
-References: <1438927036-1435-1-git-send-email-linux@roeck-us.net>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1438927036-1435-1-git-send-email-linux@roeck-us.net>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-X-Authenticated_sender: guenter@roeck-us.net
-X-OutGoing-Spam-Status: No, score=-1.0
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - bh-25.webhostbox.net
-X-AntiAbuse: Original Domain - linux-mips.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - roeck-us.net
-X-Get-Message-Sender-Via: bh-25.webhostbox.net: authenticated_id: guenter@roeck-us.net
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-Return-Path: <linux@roeck-us.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Aug 2015 03:26:08 +0200 (CEST)
+Received: from regular1.263xmail.com ([211.150.99.133]:36772 "EHLO
+        regular1.263xmail.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006948AbbHXB0Ekd9d8 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 24 Aug 2015 03:26:04 +0200
+Received: from shawn.lin?rock-chips.com (unknown [192.168.167.225])
+        by regular1.263xmail.com (Postfix) with SMTP id 3DC5F83A8;
+        Mon, 24 Aug 2015 09:25:55 +0800 (CST)
+X-263anti-spam: KSV:0;
+X-MAIL-GRAY: 0
+X-MAIL-DELIVERY: 1
+X-KSVirus-check: 0
+X-ABS-CHECKED: 4
+X-ADDR-CHECKED: 0
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+        by smtp.263.net (Postfix) with ESMTP id D19B2483;
+        Mon, 24 Aug 2015 09:25:48 +0800 (CST)
+X-RL-SENDER: shawn.lin@rock-chips.com
+X-FST-TO: jh80.chung@samsung.com
+X-SENDER-IP: 58.22.7.114
+X-LOGIN-NAME: shawn.lin@rock-chips.com
+X-UNIQUE-TAG: <7114be86192ad5d40619ff4fa785e8b9>
+X-ATTACHMENT-NUM: 0
+X-SENDER: lintao@rock-chips.com
+X-DNS-TYPE: 0
+Received: from localhost.localdomain (unknown [58.22.7.114])
+        by smtp.263.net (Postfix) whith ESMTP id 26464RVJIMW;
+        Mon, 24 Aug 2015 09:25:51 +0800 (CST)
+From:   Shawn Lin <shawn.lin@rock-chips.com>
+To:     jh80.chung@samsung.com, ulf.hansson@linaro.org
+Cc:     Vineet.Gupta1@synopsys.com, Wei Xu <xuwei5@hisilicon.com>,
+        Joachim Eastwood <manabian@gmail.com>,
+        Alexey Brodkin <abrodkin@synopsys.com>,
+        Kukjin Kim <kgene@kernel.org>,
+        Krzysztof Kozlowski <k.kozlowski@samsung.com>,
+        Russell King <linux@arm.linux.org.uk>,
+        Zhangfei Gao <zhangfei.gao@linaro.org>,
+        Jun Nie <jun.nie@linaro.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Govindraj Raja <govindraj.raja@imgtec.com>,
+        Arnd Bergmann <arnd@arndb.de>, heiko@sntech.de,
+        dianders@chromium.org, linux-samsung-soc@vger.kernel.org,
+        linux-mips@linux-mips.org, linux-mmc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-rockchip@lists.infradead.org,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        Shawn Lin <shawn.lin@rock-chips.com>
+Subject: [RFC PATCH v7 0/10] Add external dma support for Synopsys MSHC
+Date:   Mon, 24 Aug 2015 09:24:39 +0800
+Message-Id: <1440379479-24308-1-git-send-email-shawn.lin@rock-chips.com>
+X-Mailer: git-send-email 1.8.0
+Return-Path: <shawn.lin@rock-chips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48982
+X-archive-position: 48983
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linux@roeck-us.net
+X-original-sender: shawn.lin@rock-chips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,43 +69,131 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Aug 06, 2015 at 10:57:16PM -0700, Guenter Roeck wrote:
-> Commit 3adeb2566b9b ("MIPS: Loongson: Improve LEFI firmware interface")
-> made the number of UARTs dynamic if LEFI_FIRMWARE_INTERFACE is configured.
-> Unfortunately, it did not initialize the number of UARTs if
-> LEFI_FIRMWARE_INTERFACE is not configured. As a result, the Fulong2e
-> system has no console.
-> 
-> Fixes: 3adeb2566b9b ("MIPS: Loongson: Improve LEFI firmware interface")
-> Cc: Huacai Chen <chenhc@lemote.com>
-> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 
-Hello Ralf,
+Synopsys DesignWare mobile storage host controller supports three
+types of transfer mode: pio, internal dma and external dma. However,
+dw_mmc can only supports pio and internal dma now. Thus some platforms
+using dw-mshc integrated with generic dma can't work in dma mode. So we
+submit this patch to achieve it.
 
-please let me know if anything is wrong with this patch.
-Should I resend with Huacai Chen's Ack and capital MIPS in the subject line ?
+And the config option, CONFIG_MMC_DW_IDMAC, was added by Will Newton
+(commit:f95f3850) for the first version of dw_mmc and never be touched since
+then. At that time dt-bindings hadn't been introduced into dw_mmc yet means
+we should select CONFIG_MMC_DW_IDMAC to enable internal dma mode at compile
+time. Nowadays, device-tree helps us to support a variety of boards with one
+kernel. That's why we need to remove it and decide the transfer mode by reading
+dw_mmc's HCON reg at runtime.
 
-Thanks,
-Guenter
+This RFC patch needs lots of ACKs. I know it's hard, but it does need someone
+to make the running.
 
-> ---
-> Never mind my earlier e-mail, I figured it out.
-> Should be a candidate for stable (v3.19+, ie v4.1 in practice).
-> 
->  arch/mips/loongson64/common/env.c | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/arch/mips/loongson64/common/env.c b/arch/mips/loongson64/common/env.c
-> index f6c44dd332e2..d6d07ad56180 100644
-> --- a/arch/mips/loongson64/common/env.c
-> +++ b/arch/mips/loongson64/common/env.c
-> @@ -64,6 +64,9 @@ void __init prom_init_env(void)
->  	}
->  	if (memsize == 0)
->  		memsize = 256;
-> +
-> +	loongson_sysconf.nr_uarts = 1;
-> +
->  	pr_info("memsize=%u, highmemsize=%u\n", memsize, highmemsize);
->  #else
->  	struct boot_params *boot_p;
+Patch does the following things:
+- remove CONFIG_MMC_DW_IDMAC config option
+- add bindings for edmac used by synopsys-dw-mshc
+  at runtime
+- add edmac support for synopsys-dw-mshc
+
+Patch is based on next of git://git.linaro.org/people/ulf.hansson/mmc
+
+Test emmc throughput on my platform with edmac support and without edmac support(pio only)
+iozone -L64 -S32 -azecwI -+n -r4k -r64k -r128k -s1g -i0 -i1 -i2 -f datafile -Rb out.xls > /mnt/result.txt
+(light cpu loading, Direct IO, fixed line size, all pattern recycle, 1GB data in total)
+ ___________________________________________________________
+|                   external dma mode                       |
+|-----------------------------------------------------------|
+|blksz | Random Read | Random Write | Seq Read   | Seq Write|
+|-----------------------------------------------------------|
+|4kB   |  13953kB/s  |    8602kB/s  | 13672kB/s  |  9785kB/s|
+|-----------------------------------------------------------|
+|64kB  |  46058kB/s  |   24794kB/s  | 48058kB/s  | 25418kB/s|
+|-----------------------------------------------------------|
+|128kB |  57026kB/s  |   35117kB/s  | 57375kB/s  | 35183kB/s|
+|-----------------------------------------------------------|
+                           VS
+ ___________________________________________________________
+|                          pio mode                         |
+|-----------------------------------------------------------|
+|blksz | Random Read  | Random Write | Seq Read  | Seq Write|
+|-----------------------------------------------------------|
+|4kB   |  11720kB/s   |    8644kB/s  | 11549kB/s |  9624kB/s|
+|-----------------------------------------------------------|
+|64kB  |  21869kB/s   |   24414kB/s  | 22031kB/s | 27986kB/s|
+|-----------------------------------------------------------|
+|128kB |  23718kB/s   |   34495kB/s  | 24698kB/s | 34637kB/s|
+|-----------------------------------------------------------|
+
+
+Changes in v7:
+- rebased on Ulf's next
+- combine condition state
+- elaborate more about DMA_INTERFACE
+- define some macro for DMA_INERFACE value
+- spilt HCON ops' changes into another patch
+
+Changes in v6:
+- add trans_mode condition for IDMAC initialization
+  suggested by Heiko
+- re-test my patch on rk3188 platform and update commit msg
+- update performance of pio vs edmac in cover letter
+
+Changes in v5:
+- add the title of cover letter
+- fix typo of comment
+- add macro for reading HCON register
+- add "Acked-by: Krzysztof Kozlowski <k.kozlowski@samsung.com>" for exynos_defconfig patch
+- add "Acked-by: Vineet Gupta <vgupta@synopsys.com>" for axs10x_defconfig patch
+- add "Acked-by: Govindraj Raja <govindraj.raja@imgtec.com>" and
+  "Acked-by: Ralf Baechle <ralf@linux-mips.org>" for pistachio_defconfig patch
+- add "Acked-by: Joachim Eastwood <manabian@gmail.com>" for lpc18xx_defconfig patch
+- add "Acked-by: Wei Xu <xuwei5@hisilicon.com>" for hisi_defconfig patch
+- rebase on "https://github.com/jh80chung/dw-mmc.git tags/dw-mmc-for-ulf-v4.2" for merging easily
+
+Changes in v4:
+- remove "host->trans_mode" and use "host->use_dma" to indicate
+  transfer mode.
+- remove all bt-bindings' changes since we don't need new properities.
+- check transfer mode at runtime by reading HCON reg
+- spilt defconfig changes for each sub-architecture
+- fix the title of cover letter
+- reuse some code for reducing code size
+
+Changes in v3:
+- choose transfer mode at runtime
+- remove all CONFIG_MMC_DW_IDMAC config option
+- add supports-idmac property for some platforms
+
+Changes in v2:
+- Fix typo of dev_info msg
+- remove unused dmach from declaration of dw_mci_dma_slave
+
+Shawn Lin (10):
+  mmc: dw_mmc: Add external dma interface support
+  mmc: dw_mmc: use macro for HCON register operations
+  Documentation: synopsys-dw-mshc: add bindings for idmac and edmac
+  mips: pistachio_defconfig: remove CONFIG_MMC_DW_IDMAC
+  arc: axs10x_defconfig: remove CONFIG_MMC_DW_IDMAC
+  arm: exynos_defconfig: remove CONFIG_MMC_DW_IDMAC
+  arm: hisi_defconfig: remove CONFIG_MMC_DW_IDMAC
+  arm: lpc18xx_defconfig: remove CONFIG_MMC_DW_IDMAC
+  arm: multi_v7_defconfig: remove CONFIG_MMC_DW_IDMAC
+  arm: zx_defconfig: remove CONFIG_MMC_DW_IDMAC
+
+ .../devicetree/bindings/mmc/synopsys-dw-mshc.txt   |  25 ++
+ arch/arc/configs/axs101_defconfig                  |   1 -
+ arch/arc/configs/axs103_defconfig                  |   1 -
+ arch/arc/configs/axs103_smp_defconfig              |   1 -
+ arch/arm/configs/exynos_defconfig                  |   1 -
+ arch/arm/configs/hisi_defconfig                    |   1 -
+ arch/arm/configs/lpc18xx_defconfig                 |   1 -
+ arch/arm/configs/multi_v7_defconfig                |   1 -
+ arch/arm/configs/zx_defconfig                      |   1 -
+ arch/mips/configs/pistachio_defconfig              |   1 -
+ drivers/mmc/host/Kconfig                           |  11 +-
+ drivers/mmc/host/dw_mmc-pltfm.c                    |   2 +
+ drivers/mmc/host/dw_mmc.c                          | 277 +++++++++++++++++----
+ drivers/mmc/host/dw_mmc.h                          |   9 +
+ include/linux/mmc/dw_mmc.h                         |  23 +-
+ 15 files changed, 283 insertions(+), 73 deletions(-)
+
+-- 
+2.3.7

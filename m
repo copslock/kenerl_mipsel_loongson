@@ -1,43 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Aug 2015 10:01:18 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:39827 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27007070AbbHXIBQgLg6H (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 24 Aug 2015 10:01:16 +0200
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id BE67C41BBAF73;
-        Mon, 24 Aug 2015 09:01:08 +0100 (IST)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Mon, 24 Aug 2015 09:01:10 +0100
-Received: from [192.168.154.168] (192.168.154.168) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Mon, 24 Aug
- 2015 09:01:09 +0100
-Subject: Re: [PATCH 2/2] MIPS: kernel: signal: Drop unused arguments for
- traditional signal handlers
-To:     David Daney <ddaney.cavm@gmail.com>
-References: <1440071122-24971-1-git-send-email-markos.chandras@imgtec.com>
- <1440071122-24971-3-git-send-email-markos.chandras@imgtec.com>
- <55D759CA.7060409@gmail.com>
-CC:     <linux-mips@linux-mips.org>
-From:   Markos Chandras <Markos.Chandras@imgtec.com>
-Message-ID: <55DACF45.9050209@imgtec.com>
-Date:   Mon, 24 Aug 2015 09:01:09 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.2.0
-MIME-Version: 1.0
-In-Reply-To: <55D759CA.7060409@gmail.com>
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.154.168]
-Return-Path: <Markos.Chandras@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Aug 2015 11:10:01 +0200 (CEST)
+Received: from mx2.suse.de ([195.135.220.15]:55258 "EHLO mx2.suse.de"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27008090AbbHXJJ44dgeI (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 24 Aug 2015 11:09:56 +0200
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+X-Amavis-Alert: BAD HEADER SECTION, Duplicate header field: "References"
+Received: from relay2.suse.de (charybdis-ext.suse.de [195.135.220.254])
+        by mx2.suse.de (Postfix) with ESMTP id 9C79BAD8C;
+        Mon, 24 Aug 2015 09:09:56 +0000 (UTC)
+From:   Jiri Slaby <jslaby@suse.cz>
+To:     stable@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, Felix Fietkau <nbd@openwrt.org>,
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
+        Jiri Slaby <jslaby@suse.cz>
+Subject: [PATCH 3.12 33/82] MIPS: Fix sched_getaffinity with MT FPAFF enabled
+Date:   Mon, 24 Aug 2015 11:08:53 +0200
+Message-Id: <6e20868a1250ebafdc59e05b4c84bd3aab82f82d.1440407339.git.jslaby@suse.cz>
+X-Mailer: git-send-email 2.5.0
+In-Reply-To: <be9382caaa4c843d86ce5d107bd41dfcc722d395.1440407339.git.jslaby@suse.cz>
+References: <be9382caaa4c843d86ce5d107bd41dfcc722d395.1440407339.git.jslaby@suse.cz>
+In-Reply-To: <cover.1440407339.git.jslaby@suse.cz>
+References: <cover.1440407339.git.jslaby@suse.cz>
+Return-Path: <jslaby@suse.cz>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 48995
+X-archive-position: 48996
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Markos.Chandras@imgtec.com
+X-original-sender: jslaby@suse.cz
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,48 +42,51 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 08/21/2015 06:03 PM, David Daney wrote:
-> On 08/20/2015 04:45 AM, Markos Chandras wrote:
->> Traditional signal handlers (ie !SA_SIGINFO) only need only argument
->> holding the signal number so we drop the additional arguments and fix
->> the related comments. We also update the comments for the SA_SIGINFO
->> case where the second argument is a pointer to a siginfo_t structure.
->>
->> Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
->> ---
->>   arch/mips/kernel/signal.c     | 6 +-----
->>   arch/mips/kernel/signal32.c   | 6 +-----
->>   arch/mips/kernel/signal_n32.c | 2 +-
->>   3 files changed, 3 insertions(+), 11 deletions(-)
->>
->> diff --git a/arch/mips/kernel/signal.c b/arch/mips/kernel/signal.c
->> index be3ac5f7cbbb..3a125331bf8b 100644
->> --- a/arch/mips/kernel/signal.c
->> +++ b/arch/mips/kernel/signal.c
->> @@ -683,15 +683,11 @@ static int setup_frame(void *sig_return, struct
->> ksignal *ksig,
->>        * Arguments to signal handler:
->>        *
->>        *   a0 = signal number
->> -     *   a1 = 0 (should be cause)
->> -     *   a2 = pointer to struct sigcontext
->>        *
->>        * $25 and c0_epc point to the signal handler, $29 points to the
->>        * struct sigframe.
->>        */
->>       regs->regs[ 4] = ksig->sig;
->> -    regs->regs[ 5] = 0;
->> -    regs->regs[ 6] = (unsigned long) &frame->sf_sc;
-> 
-> This changes the kernel ABI.
-> 
-> Have you tested this change against all userspace applications that use
-> signals to make sure it doesn't break anything?
-> 
-> David Daney
+From: Felix Fietkau <nbd@openwrt.org>
 
-i am confident there is no userland application that uses inline asm to
-fetch additional arguments from (*sa_handler) when using !SA_SIGINFO
+3.12-stable review patch.  If anyone has any objections, please let me know.
 
+===============
+
+commit 1d62d737555e1378eb62a8bba26644f7d97139d2 upstream.
+
+p->thread.user_cpus_allowed is zero-initialized and is only filled on
+the first sched_setaffinity call.
+
+To avoid adding overhead in the task initialization codepath, simply OR
+the returned mask in sched_getaffinity with p->cpus_allowed.
+
+Signed-off-by: Felix Fietkau <nbd@openwrt.org>
+Cc: linux-mips@linux-mips.org
+Patchwork: https://patchwork.linux-mips.org/patch/10740/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: Jiri Slaby <jslaby@suse.cz>
+---
+ arch/mips/kernel/mips-mt-fpaff.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/arch/mips/kernel/mips-mt-fpaff.c b/arch/mips/kernel/mips-mt-fpaff.c
+index cb098628aee8..ca16964a2b5e 100644
+--- a/arch/mips/kernel/mips-mt-fpaff.c
++++ b/arch/mips/kernel/mips-mt-fpaff.c
+@@ -154,7 +154,7 @@ asmlinkage long mipsmt_sys_sched_getaffinity(pid_t pid, unsigned int len,
+ 				      unsigned long __user *user_mask_ptr)
+ {
+ 	unsigned int real_len;
+-	cpumask_t mask;
++	cpumask_t allowed, mask;
+ 	int retval;
+ 	struct task_struct *p;
+ 
+@@ -173,7 +173,8 @@ asmlinkage long mipsmt_sys_sched_getaffinity(pid_t pid, unsigned int len,
+ 	if (retval)
+ 		goto out_unlock;
+ 
+-	cpumask_and(&mask, &p->thread.user_cpus_allowed, cpu_possible_mask);
++	cpumask_or(&allowed, &p->thread.user_cpus_allowed, &p->cpus_allowed);
++	cpumask_and(&mask, &allowed, cpu_active_mask);
+ 
+ out_unlock:
+ 	read_unlock(&tasklist_lock);
 -- 
-markos
+2.5.0

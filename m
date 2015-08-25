@@ -1,45 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Aug 2015 22:16:03 +0200 (CEST)
-Received: from bh-25.webhostbox.net ([208.91.199.152]:52197 "EHLO
-        bh-25.webhostbox.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27013212AbbHYUQBxp7-I (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 25 Aug 2015 22:16:01 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=roeck-us.net; s=default;
-        h=Message-Id:Date:Subject:Cc:To:From; bh=Edd1NNRH1ToJsOySGJMlB0G4D1AMV0VqcbQy7c4PwUg=;
-        b=fndMYUlfrpg9nDIbpddqmSAh6G7ArPQaRn1kD5qsZtzsHqzugzv2VZTXfD++nKVgGyZyIp/5UsY3xEUNCi2x0f1Bc1oRcxjUjlorsCxfZFJq9RASABIRRgx6tBAOO0mndachVILQp7fUb5lo4rWA97xPkNgJBSibRJNtJ1szwhE=;
-Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:39806 helo=localhost)
-        by bh-25.webhostbox.net with esmtpa (Exim 4.85)
-        (envelope-from <linux@roeck-us.net>)
-        id 1ZUKdM-000Kze-Q8; Tue, 25 Aug 2015 20:15:54 +0000
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Christoph Hellwig <hch@lst.de>
-Subject: [PATCH v2 -next] MIPS: Netlogic: Fix build error
-Date:   Tue, 25 Aug 2015 13:15:51 -0700
-Message-Id: <1440533751-26147-1-git-send-email-linux@roeck-us.net>
-X-Mailer: git-send-email 2.1.4
-X-Authenticated_sender: guenter@roeck-us.net
-X-OutGoing-Spam-Status: No, score=-1.0
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - bh-25.webhostbox.net
-X-AntiAbuse: Original Domain - linux-mips.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - roeck-us.net
-X-Get-Message-Sender-Via: bh-25.webhostbox.net: authenticated_id: guenter@roeck-us.net
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-Return-Path: <linux@roeck-us.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Aug 2015 22:38:52 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:63614 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27007488AbbHYUivG8vhQ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 25 Aug 2015 22:38:51 +0200
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 89F1017AEF7CA;
+        Tue, 25 Aug 2015 21:38:41 +0100 (IST)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Tue, 25 Aug 2015 21:38:45 +0100
+Received: from localhost (192.168.159.134) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Tue, 25 Aug
+ 2015 21:38:43 +0100
+Date:   Tue, 25 Aug 2015 13:38:42 -0700
+From:   Paul Burton <paul.burton@imgtec.com>
+To:     Markos Chandras <Markos.Chandras@imgtec.com>
+CC:     David Daney <ddaney.cavm@gmail.com>, <linux-mips@linux-mips.org>
+Subject: Re: [PATCH 2/2] MIPS: kernel: signal: Drop unused arguments for
+ traditional signal handlers
+Message-ID: <20150825203842.GA27406@NP-P-BURTON>
+References: <1440071122-24971-1-git-send-email-markos.chandras@imgtec.com>
+ <1440071122-24971-3-git-send-email-markos.chandras@imgtec.com>
+ <55D759CA.7060409@gmail.com>
+ <55DACF45.9050209@imgtec.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+In-Reply-To: <55DACF45.9050209@imgtec.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+X-Originating-IP: [192.168.159.134]
+Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49013
+X-archive-position: 49014
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linux@roeck-us.net
+X-original-sender: paul.burton@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,35 +50,61 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The variable 'ret' is no longer used in nlm_dma_alloc_coherent()
-and causes the following build error.
+On Mon, Aug 24, 2015 at 09:01:09AM +0100, Markos Chandras wrote:
+> On 08/21/2015 06:03 PM, David Daney wrote:
+> > On 08/20/2015 04:45 AM, Markos Chandras wrote:
+> >> Traditional signal handlers (ie !SA_SIGINFO) only need only argument
+> >> holding the signal number so we drop the additional arguments and fix
+> >> the related comments. We also update the comments for the SA_SIGINFO
+> >> case where the second argument is a pointer to a siginfo_t structure.
+> >>
+> >> Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+> >> ---
+> >>   arch/mips/kernel/signal.c     | 6 +-----
+> >>   arch/mips/kernel/signal32.c   | 6 +-----
+> >>   arch/mips/kernel/signal_n32.c | 2 +-
+> >>   3 files changed, 3 insertions(+), 11 deletions(-)
+> >>
+> >> diff --git a/arch/mips/kernel/signal.c b/arch/mips/kernel/signal.c
+> >> index be3ac5f7cbbb..3a125331bf8b 100644
+> >> --- a/arch/mips/kernel/signal.c
+> >> +++ b/arch/mips/kernel/signal.c
+> >> @@ -683,15 +683,11 @@ static int setup_frame(void *sig_return, struct
+> >> ksignal *ksig,
+> >>        * Arguments to signal handler:
+> >>        *
+> >>        *   a0 = signal number
+> >> -     *   a1 = 0 (should be cause)
+> >> -     *   a2 = pointer to struct sigcontext
+> >>        *
+> >>        * $25 and c0_epc point to the signal handler, $29 points to the
+> >>        * struct sigframe.
+> >>        */
+> >>       regs->regs[ 4] = ksig->sig;
+> >> -    regs->regs[ 5] = 0;
+> >> -    regs->regs[ 6] = (unsigned long) &frame->sf_sc;
+> > 
+> > This changes the kernel ABI.
+> > 
+> > Have you tested this change against all userspace applications that use
+> > signals to make sure it doesn't break anything?
+> > 
+> > David Daney
+> 
+> i am confident there is no userland application that uses inline asm to
+> fetch additional arguments from (*sa_handler) when using !SA_SIGINFO
+> 
+> -- 
+> markos
 
-arch/mips/netlogic/common/nlm-dma.c: In function 'nlm_dma_alloc_coherent':
-arch/mips/netlogic/common/nlm-dma.c:50:8: error: unused variable 'ret'
+I'm not sure where you get the idea that you'd need inline asm to use
+the a1/a2 values - you'd just need to declare the extra parameters to
+your signal handling function.
 
-Fixes: e4d0d18739dc ("dma-mapping: consolidate dma_{alloc,free}_{attrs,coherent}")
-Cc: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
----
-Previous version was based on next-20150824 and got it all wrong.
-It might make sense to merge this into Andrew's tree, or even into
-the offending patch.
+This does seem like a scary change! I'm pretty confident you haven't
+actually checked every bit of userland code. Would we perhaps be better
+off leaving the registers set (which is a trivial cost) and document the
+behaviour instead?
 
- arch/mips/netlogic/common/nlm-dma.c | 2 --
- 1 file changed, 2 deletions(-)
-
-diff --git a/arch/mips/netlogic/common/nlm-dma.c b/arch/mips/netlogic/common/nlm-dma.c
-index 3e4f3bb1cf59..3758715d4ab6 100644
---- a/arch/mips/netlogic/common/nlm-dma.c
-+++ b/arch/mips/netlogic/common/nlm-dma.c
-@@ -47,8 +47,6 @@ static char *nlm_swiotlb;
- static void *nlm_dma_alloc_coherent(struct device *dev, size_t size,
- 	dma_addr_t *dma_handle, gfp_t gfp, struct dma_attrs *attrs)
- {
--	void *ret;
--
- 	/* ignore region specifiers */
- 	gfp &= ~(__GFP_DMA | __GFP_DMA32 | __GFP_HIGHMEM);
- 
--- 
-2.1.4
+Thanks,
+    Paul

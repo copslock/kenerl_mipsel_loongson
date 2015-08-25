@@ -1,37 +1,76 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Aug 2015 09:38:40 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:38347 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27011194AbbHYHii6en5x (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 25 Aug 2015 09:38:38 +0200
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 521DB8DF41E77;
-        Tue, 25 Aug 2015 08:38:30 +0100 (IST)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Tue, 25 Aug 2015 08:38:32 +0100
-Received: from mchandras-linux.le.imgtec.org (192.168.154.168) by
- LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.210.2; Tue, 25 Aug 2015 08:38:31 +0100
-From:   Markos Chandras <markos.chandras@imgtec.com>
-To:     <linux-mips@linux-mips.org>
-CC:     Markos Chandras <markos.chandras@imgtec.com>,
-        David Daney <david.daney@cavium.com>
-Subject: [PATCH] MIPS: asm: pgtable.h: Remove local LL/SC preprocessor variants
-Date:   Tue, 25 Aug 2015 08:38:26 +0100
-Message-ID: <1440488306-25374-1-git-send-email-markos.chandras@imgtec.com>
-X-Mailer: git-send-email 2.5.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Aug 2015 16:32:17 +0200 (CEST)
+Received: from mail-oi0-f48.google.com ([209.85.218.48]:33410 "EHLO
+        mail-oi0-f48.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27013180AbbHYOcPYwq6U (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 25 Aug 2015 16:32:15 +0200
+Received: by oieu205 with SMTP id u205so31280706oie.0
+        for <linux-mips@linux-mips.org>; Tue, 25 Aug 2015 07:32:09 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:in-reply-to:references:date
+         :message-id:subject:from:to:cc:content-type;
+        bh=jGQhOqwCPjBzXyfOJKHsM/LF8zXqLj7DA+yiB7B/qbs=;
+        b=fgJSfUW8vKT/jtKPtVAepGgHGMNBZr+dWAqjpqtEa8DZXNwr7tgcOH1oGUY+F1ymz4
+         2GjqPYAEVLQYkFtvdMPlW6s2fe9StgXh2MMkAB8Z1xn1Bk19kfHWAErmE6HVNZUQ15/+
+         xST/WDrhSQzAlkozi/d5HEKR7hEgmWlXZXmVntvwlaMECa+yh2OriqRVS4ciLDDZbQwV
+         R6655Jm3GrW7kjekZjT+GHjVaFZ1ziNeHw2x7HX7gL0wjyMs6DwLcOlOQKfcTgcYqm7x
+         zXqwKYGJKNDnrD68UUdm5vZUXGDpy02T6PZm9MmCLMf/vvdEhbVHNvOhnvoY8xX+ukub
+         l1og==
+X-Gm-Message-State: ALoCoQmuFMwVp0CfPEnT8Z1jmBm3MUd6rkWD7E+fzKdsNoP2xBjWlhy6U8b9KaFaXztpZyjh2SW+
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.154.168]
-Return-Path: <Markos.Chandras@imgtec.com>
+X-Received: by 10.202.22.132 with SMTP id 4mr3935957oiw.45.1440513129345; Tue,
+ 25 Aug 2015 07:32:09 -0700 (PDT)
+Received: by 10.182.245.73 with HTTP; Tue, 25 Aug 2015 07:32:09 -0700 (PDT)
+In-Reply-To: <1438678305-25524-1-git-send-email-albeu@free.fr>
+References: <1438678305-25524-1-git-send-email-albeu@free.fr>
+Date:   Tue, 25 Aug 2015 16:32:09 +0200
+Message-ID: <CACRpkdYB7dJM8LNBqSt6sLm4xLdoVPvWEQ+Rix6=ihfoz2q_2g@mail.gmail.com>
+Subject: Re: [PATCH v3] MIPS: Remove all the uses of custom gpio.h
+From:   Linus Walleij <linus.walleij@linaro.org>
+To:     Alban Bedel <albeu@free.fr>
+Cc:     Linux MIPS <linux-mips@linux-mips.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Hauke Mehrtens <hauke@hauke-m.de>,
+        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Tejun Heo <tj@kernel.org>,
+        Alexandre Courbot <gnurou@gmail.com>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Florian Fainelli <florian@openwrt.org>,
+        Manuel Lauss <manuel.lauss@gmail.com>,
+        Joe Perches <joe@perches.com>,
+        Daniel Walter <dwalter@google.com>,
+        Sergey Ryazanov <ryazanov.s.a@gmail.com>,
+        Huacai Chen <chenhc@lemote.com>,
+        James Hartley <james.hartley@imgtec.com>,
+        Andrew Bresticker <abrestic@chromium.org>,
+        Paul Burton <paul.burton@imgtec.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Brian Norris <computersforpeace@gmail.com>,
+        Varka Bhadram <varkabhadram@gmail.com>,
+        Wolfram Sang <wsa@the-dreams.de>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Simon Horman <horms+renesas@verge.net.au>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Masanari Iida <standby24x7@gmail.com>,
+        Mauro Carvalho Chehab <m.chehab@samsung.com>,
+        Michael Buesch <m@bues.ch>,
+        abdoulaye berthe <berthe.ab@gmail.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        linux-ide@vger.kernel.org,
+        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+        Linux Input <linux-input@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <linus.walleij@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49009
+X-archive-position: 49010
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: markos.chandras@imgtec.com
+X-original-sender: linus.walleij@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,53 +83,29 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-We already have 32/64-bit variants for the LL/SC instructions in
-asm/bitops.h so make use of them and remove the local variants
-from pgtable.h
+On Tue, Aug 4, 2015 at 10:50 AM, Alban Bedel <albeu@free.fr> wrote:
 
-Cc: David Daney <david.daney@cavium.com>
-Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
----
- arch/mips/include/asm/pgtable.h | 12 +++---------
- 1 file changed, 3 insertions(+), 9 deletions(-)
+> Currently CONFIG_ARCH_HAVE_CUSTOM_GPIO_H is defined for all MIPS
+> machines, and each machine type provides its own gpio.h. However
+> only a handful really implement the GPIO API, most just forward
+> everythings to gpiolib.
+>
+> The Alchemy machine is notable as it provides a system to allow
+> implementing the GPIO API at the board level. But it is not used by
+> any board currently supported, so it can also be removed.
+>
+> For most machine types we can just remove the custom gpio.h, as well
+> as the custom wrappers if some exists. Some of the code found in
+> the wrappers must be moved to the respective GPIO driver.
+>
+> A few more fixes are need in some drivers as they rely on linux/gpio.h
+> to provides some machine specific definitions, or used asm/gpio.h
+> instead of linux/gpio.h for the gpio API.
+>
+> Signed-off-by: Alban Bedel <albeu@free.fr>
 
-diff --git a/arch/mips/include/asm/pgtable.h b/arch/mips/include/asm/pgtable.h
-index ae8569475264..e02777e8563e 100644
---- a/arch/mips/include/asm/pgtable.h
-+++ b/arch/mips/include/asm/pgtable.h
-@@ -10,6 +10,7 @@
- 
- #include <linux/mm_types.h>
- #include <linux/mmzone.h>
-+#include <asm/bitops.h>
- #ifdef CONFIG_32BIT
- #include <asm/pgtable-32.h>
- #endif
-@@ -187,23 +188,16 @@ static inline void set_pte(pte_t *ptep, pte_t pteval)
- 		 * For SMP, multiple CPUs can race, so we need to do
- 		 * this atomically.
- 		 */
--#ifdef CONFIG_64BIT
--#define LL_INSN "lld"
--#define SC_INSN "scd"
--#else /* CONFIG_32BIT */
--#define LL_INSN "ll"
--#define SC_INSN "sc"
--#endif
- 		unsigned long page_global = _PAGE_GLOBAL;
- 		unsigned long tmp;
- 
- 		__asm__ __volatile__ (
- 			"	.set	push\n"
- 			"	.set	noreorder\n"
--			"1:	" LL_INSN "	%[tmp], %[buddy]\n"
-+			"1:	" __LL "%[tmp], %[buddy]\n"
- 			"	bnez	%[tmp], 2f\n"
- 			"	 or	%[tmp], %[tmp], %[global]\n"
--			"	" SC_INSN "	%[tmp], %[buddy]\n"
-+			"	" __SC "%[tmp], %[buddy]\n"
- 			"	beqz	%[tmp], 1b\n"
- 			"	 nop\n"
- 			"2:\n"
--- 
-2.5.0
+I bet I already ACKed this but anyways:
+Acked-by: Linus Walleij <linus.walleij@linaro.org>
+
+Yours,
+Linus Walleij

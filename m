@@ -1,20 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Aug 2015 20:36:54 +0200 (CEST)
-Received: from smtp.codeaurora.org ([198.145.29.96]:56503 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Aug 2015 20:37:12 +0200 (CEST)
+Received: from smtp.codeaurora.org ([198.145.29.96]:56524 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27012107AbbHZSgiC9Baz (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 26 Aug 2015 20:36:38 +0200
+        with ESMTP id S27012942AbbHZSglMIbIz (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 26 Aug 2015 20:36:41 +0200
 Received: from smtp.codeaurora.org (localhost [127.0.0.1])
-        by smtp.codeaurora.org (Postfix) with ESMTP id 3CCD8141316;
-        Wed, 26 Aug 2015 18:36:37 +0000 (UTC)
+        by smtp.codeaurora.org (Postfix) with ESMTP id 6A628141321;
+        Wed, 26 Aug 2015 18:36:40 +0000 (UTC)
 Received: by smtp.codeaurora.org (Postfix, from userid 486)
-        id 1F523141319; Wed, 26 Aug 2015 18:36:37 +0000 (UTC)
+        id 4E467141320; Wed, 26 Aug 2015 18:36:40 +0000 (UTC)
 Received: from localhost (i-global254.qualcomm.com [199.106.103.254])
         (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: sboyd@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 75105141318;
-        Wed, 26 Aug 2015 18:36:36 +0000 (UTC)
-Date:   Wed, 26 Aug 2015 11:36:35 -0700
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 5265F14131B;
+        Wed, 26 Aug 2015 18:36:39 +0000 (UTC)
+Date:   Wed, 26 Aug 2015 11:36:38 -0700
 From:   Stephen Boyd <sboyd@codeaurora.org>
 To:     Govindraj Raja <Govindraj.Raja@imgtec.com>
 Cc:     linux-mips@linux-mips.org, linux-clk@vger.kernel.org,
@@ -29,22 +29,22 @@ Cc:     linux-mips@linux-mips.org, linux-clk@vger.kernel.org,
         Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>,
         Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
         stable@vger.kernel.org
-Subject: Re: [PATCH v6 2/4] clk: pistachio: Fix override of clk-pll settings
- from boot loader
-Message-ID: <20150826183635.GP19120@codeaurora.org>
+Subject: Re: [PATCH v6 3/4] clk: pistachio: Fix PLL rate calculation in
+ integer mode
+Message-ID: <20150826183638.GQ19120@codeaurora.org>
 References: <1440605500-13274-1-git-send-email-Govindraj.Raja@imgtec.com>
- <1440605500-13274-3-git-send-email-Govindraj.Raja@imgtec.com>
+ <1440605500-13274-4-git-send-email-Govindraj.Raja@imgtec.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1440605500-13274-3-git-send-email-Govindraj.Raja@imgtec.com>
+In-Reply-To: <1440605500-13274-4-git-send-email-Govindraj.Raja@imgtec.com>
 User-Agent: Mutt/1.5.21 (2010-09-15)
 X-Virus-Scanned: ClamAV using ClamSMTP
 Return-Path: <sboyd@codeaurora.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49033
+X-archive-position: 49034
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -64,22 +64,22 @@ X-list: linux-mips
 On 08/26, Govindraj Raja wrote:
 > From: Zdenko Pulitika <zdenko.pulitika@imgtec.com>
 > 
-> PLL enable callbacks are overriding PLL mode (int/frac) and
-> Noise reduction (on/off) settings set by the boot loader which
-> results in the incorrect clock rate.
+> .recalc_rate callback for the fractional PLL doesn't take operating
+> mode into account when calculating PLL rate. This results in
+> the incorrect PLL rates when PLL is operating in integer mode.
 > 
-> PLL mode and noise reduction are defined by the DSMPD and DACPD bits
-> of the PLL control register. PLL .enable() callbacks enable PLL
-> by deasserting all power-down bits of the PLL control register,
-> including DSMPD and DACPD bits, which is not necessary since
-> these bits don't actually enable/disable PLL.
+> Operating mode of fractional PLL is based on the value of the
+> fractional divider. Currently it assumes that the PLL will always
+> be configured in fractional mode which may not be
+> the case. This may result in the wrong output frequency.
 > 
-> This commit fixes the problem by removing DSMPD and DACPD bits
-> from the "PLL enable" mask.
+> Also vco was calculated based on the current operating mode which
+> makes no sense because .set_rate is setting operating mode. Instead,
+> vco should be calculated using PLL settings that are about to be set.
 > 
 > Fixes: 43049b0c83f17("CLK: Pistachio: Add PLL driver")
 > Cc: <stable@vger.kernel.org> # 4.1
-> Reviewed-by: Andrew Bresitcker <abrestic@chromium.org>
+> Reviewed-by: Andrew Bresticker <abrestic@chromium.org>
 > Signed-off-by: Zdenko Pulitika <zdenko.pulitika@imgtec.com>
 > Signed-off-by: Govindraj Raja <govindraj.raja@imgtec.com>
 > ---

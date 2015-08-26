@@ -1,52 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Aug 2015 18:13:20 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:41188 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27013242AbbHZQMORDkJd (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 26 Aug 2015 18:12:14 +0200
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 00D74B45834D9;
-        Wed, 26 Aug 2015 17:12:05 +0100 (IST)
-Received: from hhmail02.hh.imgtec.org (10.100.10.20) by KLMAIL01.kl.imgtec.org
- (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Wed, 26 Aug
- 2015 17:12:08 +0100
-Received: from imgworks-VB.kl.imgtec.org (192.168.167.141) by
- hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
- 14.3.235.1; Wed, 26 Aug 2015 17:12:07 +0100
-From:   Govindraj Raja <Govindraj.Raja@imgtec.com>
-To:     <linux-mips@linux-mips.org>, <linux-clk@vger.kernel.org>,
-        Stephen Boyd <sboyd@codeaurora.org>,
-        Michael Turquette <mturquette@baylibre.com>
-CC:     Zdenko Pulitika <zdenko.pulitika@imgtec.com>,
-        Kevin Cernekee <cernekee@chromium.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        "Andrew Bresticker" <abrestic@chromium.org>,
-        James Hartley <James.Hartley@imgtec.com>,
-        Govindraj Raja <Govindraj.Raja@imgtec.com>,
-        Damien Horsley <Damien.Horsley@imgtec.com>,
-        James Hogan <James.Hogan@imgtec.com>,
-        "Ezequiel Garcia" <ezequiel@vanguardiasur.com.ar>,
-        Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
-        <stable@vger.kernel.org>,
-        "Ezequiel Garcia" <ezequiel.garcia@imgtec.com>,
-        Govindraj Raja <govindraj.raja@imgtec.com>
-Subject: [PATCH v6 4/4] clk: pistachio: correct critical clock list
-Date:   Wed, 26 Aug 2015 17:11:40 +0100
-Message-ID: <1440605500-13274-5-git-send-email-Govindraj.Raja@imgtec.com>
-X-Mailer: git-send-email 1.9.1
-In-Reply-To: <1440605500-13274-1-git-send-email-Govindraj.Raja@imgtec.com>
-References: <1440605500-13274-1-git-send-email-Govindraj.Raja@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Aug 2015 19:10:31 +0200 (CEST)
+Received: from smtp.gentoo.org ([140.211.166.183]:59486 "EHLO smtp.gentoo.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27007866AbbHZRK3Swyts (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 26 Aug 2015 19:10:29 +0200
+Received: from vapier (localhost [127.0.0.1])
+        by smtp.gentoo.org (Postfix) with SMTP id A5238340B3F;
+        Wed, 26 Aug 2015 17:10:17 +0000 (UTC)
+Date:   Wed, 26 Aug 2015 13:10:17 -0400
+From:   Mike Frysinger <vapier@gentoo.org>
+To:     Joseph Myers <joseph@codesourcery.com>
+Cc:     libc-alpha@sourceware.org, linux-mips@linux-mips.org
+Subject: Re: [PATCH] mips: siginfo.h: add SIGSYS details [BZ #18863]
+Message-ID: <20150826171017.GD3116@vapier>
+Mail-Followup-To: Joseph Myers <joseph@codesourcery.com>,
+        libc-alpha@sourceware.org, linux-mips@linux-mips.org
+References: <1440563342-5411-1-git-send-email-vapier@gentoo.org>
+ <alpine.DEB.2.10.1508260918240.26898@digraph.polyomino.org.uk>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.167.141]
-Return-Path: <Govindraj.Raja@imgtec.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="oJ71EGRlYNjSvfq7"
+Content-Disposition: inline
+In-Reply-To: <alpine.DEB.2.10.1508260918240.26898@digraph.polyomino.org.uk>
+Return-Path: <vapier@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49026
+X-archive-position: 49027
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Govindraj.Raja@imgtec.com
+X-original-sender: vapier@gentoo.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,79 +42,55 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: "Damien.Horsley" <Damien.Horsley@imgtec.com>
 
-Current critical clock list for pistachio enables
-only mips and sys clocks by default but there are
-also other clocks that are not claimed by anyone and
-needs to be enabled by default.
+--oJ71EGRlYNjSvfq7
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-This patch updates the critical clocks that need
-to be enabled by default.
+On 26 Aug 2015 09:30, Joseph Myers wrote:
+> On Wed, 26 Aug 2015, Mike Frysinger wrote:
+> > Linux 3.13 added SIGSYS details to siginfo_t; update glibc's copy to
+> > keep in sync with it.
+> >=20
+> > 2015-08-25  Mike Frysinger  <vapier@gentoo.org>
+> >=20
+> > 	[BZ #18863]
+> > 	* sysdeps/unix/sysv/linux/mips/bits/siginfo.h (siginfo_t): Add _sigsys.
+> > 	(si_call_addr): Define.
+> > 	(si_syscall): Define.
+> > 	(si_arch): Define.
+>=20
+> OK.  CC to linux-mips because I see that the MIPS implementation of=20
+> copy_siginfo_to_user32 doesn't handle __SI_SYS, unlike arm64 at least, so=
+=20
+> I suspect this won't in fact work for n32 or for o32 with a 64-bit kernel.
 
-Add a separate struct to distinguish the critical clocks
-as listed:
-1.) core clocks:
-	a.) mips clock
-2.) peripheral system clocks:
-	a.) sys clock
-	b.) sys_bus clock
-	c.) DDR clock
-	d.) ROM clock
+i'm getting reports of seccomp misbehavior on mips already which is what
+started me down this glibc path.  i suspect the original port was tested
+against o32 kernels only.
+-mike
 
-Fixes: b35d7c33419c("CLK: Pistachio: Register core clocks")
-Cc: <stable@vger.kernel.org> # 4.1
-Reviewed-by: Andrew Bresticker <abrestic@chromium.org>
-Signed-off-by: Ezequiel Garcia <ezequiel.garcia@imgtec.com>
-Signed-off-by: Damien.Horsley <Damien.Horsley@imgtec.com>
-Signed-off-by: Govindraj Raja <govindraj.raja@imgtec.com>
----
- drivers/clk/pistachio/clk-pistachio.c | 19 ++++++++++++++-----
- 1 file changed, 14 insertions(+), 5 deletions(-)
+--oJ71EGRlYNjSvfq7
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
-diff --git a/drivers/clk/pistachio/clk-pistachio.c b/drivers/clk/pistachio/clk-pistachio.c
-index 8c0fe88..c4ceb5e 100644
---- a/drivers/clk/pistachio/clk-pistachio.c
-+++ b/drivers/clk/pistachio/clk-pistachio.c
-@@ -159,9 +159,15 @@ PNAME(mux_debug) = { "mips_pll_mux", "rpu_v_pll_mux",
- 		     "wifi_pll_mux", "bt_pll_mux" };
- static u32 mux_debug_idx[] = { 0x0, 0x1, 0x2, 0x4, 0x8, 0x10 };
- 
--static unsigned int pistachio_critical_clks[] __initdata = {
--	CLK_MIPS,
--	CLK_PERIPH_SYS,
-+static unsigned int pistachio_critical_clks_core[] __initdata = {
-+	CLK_MIPS
-+};
-+
-+static unsigned int pistachio_critical_clks_sys[] __initdata = {
-+	PERIPH_CLK_SYS,
-+	PERIPH_CLK_SYS_BUS,
-+	PERIPH_CLK_DDR,
-+	PERIPH_CLK_ROM,
- };
- 
- static void __init pistachio_clk_init(struct device_node *np)
-@@ -193,8 +199,8 @@ static void __init pistachio_clk_init(struct device_node *np)
- 
- 	pistachio_clk_register_provider(p);
- 
--	pistachio_clk_force_enable(p, pistachio_critical_clks,
--				   ARRAY_SIZE(pistachio_critical_clks));
-+	pistachio_clk_force_enable(p, pistachio_critical_clks_core,
-+				   ARRAY_SIZE(pistachio_critical_clks_core));
- }
- CLK_OF_DECLARE(pistachio_clk, "img,pistachio-clk", pistachio_clk_init);
- 
-@@ -261,6 +267,9 @@ static void __init pistachio_clk_periph_init(struct device_node *np)
- 				    ARRAY_SIZE(pistachio_periph_gates));
- 
- 	pistachio_clk_register_provider(p);
-+
-+	pistachio_clk_force_enable(p, pistachio_critical_clks_sys,
-+				   ARRAY_SIZE(pistachio_critical_clks_sys));
- }
- CLK_OF_DECLARE(pistachio_clk_periph, "img,pistachio-clk-periph",
- 	       pistachio_clk_periph_init);
--- 
-1.9.1
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQIcBAEBCAAGBQJV3fL5AAoJEEFjO5/oN/WBwYUP/jF24AWcXXzo6k4d3kmuSTA+
+oq/NGGNRq48GPWdb/u/aL6jdYbArAg9t9cjTbcmacNBOyvVTb5AEO/qQiBAZtPXK
+h/y5NzujyhUd0VP+fS9OemsJ4JD3ZlWycdgFcQTbuFej833+X0fcvptfoQ7BofAX
+E0H/UKp2IiS6j1Tmwp4TiYSnJeuEF1xw44U5rCuoZF0d0mL20e10yBGaimrAP+jN
+DYw6ehcyHjNDay6DGURG8Ad8HnnJpz4ikD5h7zWHJv9lIO5W6M1mmJRviWVRv59h
+XKONUth5LNDb5xgdmIEyezqGJh3Gx85LeUSaoKP3wgNdag19yloAvkdLfRDz3ROa
+UPmrZUDmuqoyoRNIYbknFHjKXgEWvEdqted4PkWsf0H+WNr+TbFemgDkeJyA0kKP
+4BV9j2qMHVUYWqhc2y8A6IfHkzbF6mHogztCo9isTu+YGefE62Vq9tZ4SpC3BOWW
+mpGqBSh4LnWB7IIOuQOcvFabnvbjaLtBHLslfMh/UYlCaoMuXmV94Hj9595sd/wM
+ZYQ+hVK2CXGs0nEWTgOgGanB2eMBNFn+n0W0lmq6Mk2Kr47ubIMHWHTH5MyXOv1E
+UoKF3fNGxNGNyD8S9mXx4FJBHjtVkj4/MHQol3dcUkRTrruc64QUQ+LruTejI8Fz
+bCiHR4bCQWqWNjhjIgFH
+=dX7z
+-----END PGP SIGNATURE-----
+
+--oJ71EGRlYNjSvfq7--

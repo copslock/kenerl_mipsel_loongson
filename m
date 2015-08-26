@@ -1,53 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Aug 2015 20:05:02 +0200 (CEST)
-Received: from mezzanine.sirena.org.uk ([106.187.55.193]:38401 "EHLO
-        mezzanine.sirena.org.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007131AbbHZSFAUfBqL (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 26 Aug 2015 20:05:00 +0200
-Received: from cpc11-sgyl31-2-0-cust672.sgyl.cable.virginm.net ([94.175.94.161] helo=debutante)
-        by mezzanine.sirena.org.uk with esmtpsa (TLS1.2:RSA_AES_128_CBC_SHA1:128)
-        (Exim 4.80)
-        (envelope-from <broonie@sirena.org.uk>)
-        id 1ZUf3v-0006P7-OD; Wed, 26 Aug 2015 18:04:40 +0000
-Received: from broonie by debutante with local (Exim 4.86)
-        (envelope-from <broonie@sirena.org.uk>)
-        id 1ZUf3s-0004Yi-MY; Wed, 26 Aug 2015 19:04:36 +0100
-Date:   Wed, 26 Aug 2015 19:04:36 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Qais Yousef <qais.yousef@imgtec.com>
-Cc:     alsa-devel@alsa-project.org, Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Marc Zyngier <marc.zyngier@arm.com>,
-        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        Rob Herring <robh+dt@kernel.org>,
-        Pawel Moll <pawel.moll@arm.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ian Campbell <ijc+devicetree@hellion.org.uk>,
-        Kumar Gala <galak@codeaurora.org>, devicetree@vger.kernel.org,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
-Message-ID: <20150826180436.GC28760@sirena.org.uk>
-References: <1440419959-14315-1-git-send-email-qais.yousef@imgtec.com>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="LwW0XdcUbUexiWVK"
-Content-Disposition: inline
-In-Reply-To: <1440419959-14315-1-git-send-email-qais.yousef@imgtec.com>
-X-Cookie: Victory uber allies!
-User-Agent: Mutt/1.5.23 (2014-03-12)
-X-SA-Exim-Connect-IP: 94.175.94.161
-X-SA-Exim-Mail-From: broonie@sirena.org.uk
-Subject: Re: [PATCH 00/10] Add support for img AXD audio hardware decoder
-X-SA-Exim-Version: 4.2.1 (built Mon, 26 Dec 2011 16:24:06 +0000)
-X-SA-Exim-Scanned: Yes (on mezzanine.sirena.org.uk)
-Return-Path: <broonie@sirena.org.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Aug 2015 20:24:36 +0200 (CEST)
+Received: from a23-79-238-179.deploy.static.akamaitechnologies.com ([23.79.238.179]:28270
+        "EHLO prod-mail-xrelay05.akamai.com" rhost-flags-OK-FAIL-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007623AbbHZSYeDBUNM (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 26 Aug 2015 20:24:34 +0200
+Received: from prod-mail-xrelay05.akamai.com (localhost.localdomain [127.0.0.1])
+        by postfix.imss70 (Postfix) with ESMTP id 0052C47B53;
+        Wed, 26 Aug 2015 18:24:28 +0000 (GMT)
+Received: from prod-mail-relay11.akamai.com (prod-mail-relay11.akamai.com [172.27.118.250])
+        by prod-mail-xrelay05.akamai.com (Postfix) with ESMTP id DCE6247411;
+        Wed, 26 Aug 2015 18:24:27 +0000 (GMT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=akamai.com; s=a1;
+        t=1440613467; bh=m+PakvdpWkv4pk11xxtDS98s0HohF4VYVXYHFaTmMyg=;
+        h=From:To:Cc:Subject:Date:From;
+        b=Gs5dRrsTkW/Y8AaoZqzYEJ3i3+Wcb72ffFrx7yeMpJhMCrRl8LW+Rin7+MFLHJ1Cu
+         d3Agm3ja3GhqpSbQkRNtOodrKsXX6ulv42ufX3QoupkB46wTmUVsRWFKto+aR89Xhf
+         BCmZbM4B5sLZWrfUTTAH9aivM/CnVv/rxePmw5VU=
+Received: from bos-lp6ds.kendall.corp.akamai.com (bos-lp6ds.kendall.corp.akamai.com [172.28.12.119])
+        by prod-mail-relay11.akamai.com (Postfix) with ESMTP id C824D2026;
+        Wed, 26 Aug 2015 18:24:27 +0000 (GMT)
+From:   Eric B Munson <emunson@akamai.com>
+To:     Andrew Morton <akpm@linux-foundation.org>
+Cc:     Eric B Munson <emunson@akamai.com>,
+        Shuah Khan <shuahkh@osg.samsung.com>,
+        Michal Hocko <mhocko@suse.cz>,
+        Michael Kerrisk <mtk.manpages@gmail.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Andrea Arcangeli <aarcange@redhat.com>,
+        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mips@linux-mips.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
+        linux-xtensa@linux-xtensa.org, linux-mm@kvack.org,
+        linux-arch@vger.kernel.org, linux-api@vger.kernel.org
+Subject: [PATCH v8 0/6] Allow user to request memory to be locked on page fault
+Date:   Wed, 26 Aug 2015 14:24:19 -0400
+Message-Id: <1440613465-30393-1-git-send-email-emunson@akamai.com>
+X-Mailer: git-send-email 1.9.1
+Return-Path: <emunson@akamai.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49028
+X-archive-position: 49029
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: broonie@kernel.org
+X-original-sender: emunson@akamai.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -60,43 +58,222 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+mlock() allows a user to control page out of program memory, but this
+comes at the cost of faulting in the entire mapping when it is
+allocated.  For large mappings where the entire area is not necessary
+this is not ideal.  Instead of forcing all locked pages to be present
+when they are allocated, this set creates a middle ground.  Pages are
+marked to be placed on the unevictable LRU (locked) when they are first
+used, but they are not faulted in by the mlock call.
 
---LwW0XdcUbUexiWVK
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+This series introduces a new mlock() system call that takes a flags
+argument along with the start address and size.  This flags argument
+gives the caller the ability to request memory be locked in the
+traditional way, or to be locked after the page is faulted in.  A new
+MCL flag is added to mirror the lock on fault behavior from mlock() in
+mlockall().
 
-On Mon, Aug 24, 2015 at 01:39:09PM +0100, Qais Yousef wrote:
+There are two main use cases that this set covers.  The first is the
+security focussed mlock case.  A buffer is needed that cannot be written
+to swap.  The maximum size is known, but on average the memory used is
+significantly less than this maximum.  With lock on fault, the buffer
+is guaranteed to never be paged out without consuming the maximum size
+every time such a buffer is created.
 
-> Qais Yousef (10):
->   irqchip: irq-mips-gic: export gic_send_ipi
->   dt: add img,axd.txt device tree binding document
->   ALSA: add AXD Audio Processing IP alsa driver
->   ALSA: axd: add fw binary header manipulation files
->   ALSA: axd: add buffers manipulation files
->   ALSA: axd: add basic files for sending/receiving axd cmds
->   ALSA: axd: add cmd interface helper functions
->   ALSA: axd: add low level AXD platform setup files
->   ALSA: axd: add alsa compress offload operations
->   ALSA: axd: add Makefile
+The second use case is focussed on performance.  Portions of a large
+file are needed and we want to keep the used portions in memory once
+accessed.  This is the case for large graphical models where the path
+through the graph is not known until run time.  The entire graph is
+unlikely to be used in a given invocation, but once a node has been
+used it needs to stay resident for further processing.  Given these
+constraints we have a number of options.  We can potentially waste a
+large amount of memory by mlocking the entire region (this can also
+cause a significant stall at startup as the entire file is read in).
+We can mlock every page as we access them without tracking if the page
+is already resident but this introduces large overhead for each access.
+The third option is mapping the entire region with PROT_NONE and using
+a signal handler for SIGSEGV to mprotect(PROT_READ) and mlock() the
+needed page.  Doing this page at a time adds a significant performance
+penalty.  Batching can be used to mitigate this overhead, but in order
+to safely avoid trying to mprotect pages outside of the mapping, the
+boundaries of each mapping to be used in this way must be tracked and
+available to the signal handler.  This is precisely what the mm system
+in the kernel should already be doing.
 
-Please try to use subject lines matching the style for the subsystem, I
-very nearly deleted this unread because it looks like an ALSA patch
-series, not an ASoC one.
+For mlock(MLOCK_ONFAULT) the user is charged against RLIMIT_MEMLOCK as
+if mlock(MLOCK_LOCKED) or mmap(MAP_LOCKED) was used, so when the VMA is
+created not when the pages are faulted in.  For mlockall(MCL_ONFAULT)
+the user is charged as if MCL_FUTURE was used.  This decision was made
+to keep the accounting checks out of the page fault path.
 
---LwW0XdcUbUexiWVK
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+To illustrate the benefit of this set I wrote a test program that mmaps
+a 5 GB file filled with random data and then makes 15,000,000 accesses
+to random addresses in that mapping.  The test program was run 20 times
+for each setup.  Results are reported for two program portions, setup
+and execution.  The setup phase is calling mmap and optionally mlock on
+the entire region.  For most experiments this is trivial, but it
+highlights the cost of faulting in the entire region.  Results are
+averages across the 20 runs in milliseconds.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+mmap with mlock(MLOCK_LOCKED) on entire range:
+Setup avg:      8228.666
+Processing avg: 8274.257
 
-iQEcBAEBCAAGBQJV3f+zAAoJECTWi3JdVIfQDD0H/Rv5PJHlXTHPut//XcmWFdjW
-ZEbb8EbNzBiGp9uhsOSs5ERfBEVi1CjDDaizb0rfaOyI/y1X+0alRsl4oaOV/Xi1
-aJ50s3o23cUg21eaB6i1tUtX2vm07vEVbwgEAiOa7nXiKL3nhTg0//DgC4//zedE
-gB7X1qKLBw7aah0PRMBDkVIQP2hEDwockP5Jp6MS9TTBFWA/EuADWfxtbOmKepbz
-vC9LQIksBz3Pdy3PNuQy5aSH9irdGllVP7Fca2aEfk4LJ0a2q/wUoJUTrnsh3MJy
-6pvbTMHNf85EqD1guc3CuI/jb1wPfsJwkeFzmujW9iHRxT9Bv7AkaDT7+InBrNc=
-=9Ye+
------END PGP SIGNATURE-----
+mmap with mlock(MLOCK_LOCKED) before each access:
+Setup avg:      0.113
+Processing avg: 90993.552
 
---LwW0XdcUbUexiWVK--
+mmap with PROT_NONE and signal handler and batch size of 1 page:
+With the default value in max_map_count, this gets ENOMEM as I attempt
+to change the permissions, after upping the sysctl significantly I get:
+Setup avg:      0.058
+Processing avg: 69488.073
+mmap with PROT_NONE and signal handler and batch size of 8 pages:
+Setup avg:      0.068
+Processing avg: 38204.116
+
+mmap with PROT_NONE and signal handler and batch size of 16 pages:
+Setup avg:      0.044
+Processing avg: 29671.180
+
+mmap with mlock(MLOCK_ONFAULT) on entire range:
+Setup avg:      0.189
+Processing avg: 17904.899
+
+The signal handler in the batch cases faulted in memory in two steps to
+avoid having to know the start and end of the faulting mapping.  The
+first step covers the page that caused the fault as we know that it will
+be possible to lock.  The second step speculatively tries to mlock and
+mprotect the batch size - 1 pages that follow.  There may be a clever
+way to avoid this without having the program track each mapping to be
+covered by this handeler in a globally accessible structure, but I could
+not find it.  It should be noted that with a large enough batch size
+this two step fault handler can still cause the program to crash if it
+reaches far beyond the end of the mapping.
+
+These results show that if the developer knows that a majority of the
+mapping will be used, it is better to try and fault it in at once,
+otherwise mlock(MLOCK_ONFAULT) is significantly faster.
+
+The performance cost of these patches are minimal on the two benchmarks
+I have tested (stream and kernbench).  The following are the average
+values across 20 runs of stream and 10 runs of kernbench after a warmup
+run whose results were discarded.
+
+Avg throughput in MB/s from stream using 1000000 element arrays
+Test     4.2-rc1      4.2-rc1+lock-on-fault
+Copy:    10,566.5     10,421
+Scale:   10,685       10,503.5
+Add:     12,044.1     11,814.2
+Triad:   12,064.8     11,846.3
+
+Kernbench optimal load
+                 4.2-rc1  4.2-rc1+lock-on-fault
+Elapsed Time     78.453   78.991
+User Time        64.2395  65.2355
+System Time      9.7335   9.7085
+Context Switches 22211.5  22412.1
+Sleeps           14965.3  14956.1
+
+---
+Changes from V7:
+* Do not expose the VM_LOCKONFAULT flag to userspace via proc
+* Fix mlock2 self tests
+
+Changes from V6:
+* Bump the x86 system call number to avoid collision with userfaultfd
+* Fix FOLL_POPULATE and FOLL_MLOCK usage when mmap is called with
+ MAP_POPULATE
+* Add documentation for the proc smaps change
+* checkpatch fixes
+
+Changes from V5:
+Drop MLOCK_LOCKED flag
+* MLOCK_ONFAULT and MCL_ONFAULT are treated as a modifier to other locking
+ operations, mirroring the relationship between VM_LOCKED and
+ VM_LOCKONFAULT
+* Drop mmap flag and related tests
+* Fix clearing of MCL_CURRENT when mlockall is called with MCL_FUTURE,
+ mlockall behavoir now matches the old behavior WRT to ordering
+
+Changes from V4:
+Drop all architectures for new sys call entries except x86[_64] and MIPS
+Drop munlock2 and munlockall2
+Make VM_LOCKONFAULT a modifier to VM_LOCKED only to simplify book keeping
+Adjust tests to match
+
+Changes from V3:
+Ensure that pages present when mlock2(MLOCK_ONFAULT) is called are locked
+Ensure that VM_LOCKONFAULT is handled in cases that used to only check VM_LOCKED
+Add tests for new system calls
+Add missing syscall entries, fix NR_syscalls on multiple arch's
+Add missing MAP_LOCKONFAULT for tile
+
+Changes from V2:
+Added new system calls for mlock, munlock, and munlockall with added
+flags arguments for controlling how memory is locked or unlocked.
+
+Eric B Munson (6):
+  mm: mlock: Refactor mlock, munlock, and munlockall code
+  mm: mlock: Add new mlock system call
+  mm: Introduce VM_LOCKONFAULT
+  mm: mlock: Add mlock flags to enable VM_LOCKONFAULT usage
+  selftests: vm: Add tests for lock on fault
+  mips: Add entry for new mlock2 syscall
+
+ arch/alpha/include/uapi/asm/mman.h          |   3 +
+ arch/mips/include/uapi/asm/mman.h           |   6 +
+ arch/mips/include/uapi/asm/unistd.h         |  15 +-
+ arch/mips/kernel/scall32-o32.S              |   1 +
+ arch/mips/kernel/scall64-64.S               |   1 +
+ arch/mips/kernel/scall64-n32.S              |   1 +
+ arch/mips/kernel/scall64-o32.S              |   1 +
+ arch/parisc/include/uapi/asm/mman.h         |   3 +
+ arch/powerpc/include/uapi/asm/mman.h        |   1 +
+ arch/sparc/include/uapi/asm/mman.h          |   1 +
+ arch/tile/include/uapi/asm/mman.h           |   1 +
+ arch/x86/entry/syscalls/syscall_32.tbl      |   1 +
+ arch/x86/entry/syscalls/syscall_64.tbl      |   1 +
+ arch/xtensa/include/uapi/asm/mman.h         |   6 +
+ include/linux/mm.h                          |   5 +
+ include/linux/syscalls.h                    |   2 +
+ include/uapi/asm-generic/mman-common.h      |   5 +
+ include/uapi/asm-generic/mman.h             |   1 +
+ include/uapi/asm-generic/unistd.h           |   4 +-
+ kernel/fork.c                               |   2 +-
+ kernel/sys_ni.c                             |   1 +
+ mm/debug.c                                  |   1 +
+ mm/gup.c                                    |  10 +-
+ mm/huge_memory.c                            |   2 +-
+ mm/hugetlb.c                                |   4 +-
+ mm/mlock.c                                  |  86 +++-
+ mm/mmap.c                                   |   2 +-
+ mm/rmap.c                                   |   6 +-
+ tools/testing/selftests/vm/Makefile         |   2 +
+ tools/testing/selftests/vm/mlock2-tests.c   | 737 ++++++++++++++++++++++++++++
+ tools/testing/selftests/vm/on-fault-limit.c |  47 ++
+ tools/testing/selftests/vm/run_vmtests      |  22 +
+ 32 files changed, 941 insertions(+), 40 deletions(-)
+ create mode 100644 tools/testing/selftests/vm/mlock2-tests.c
+ create mode 100644 tools/testing/selftests/vm/on-fault-limit.c
+
+Cc: Shuah Khan <shuahkh@osg.samsung.com>
+Cc: Michal Hocko <mhocko@suse.cz>
+Cc: Michael Kerrisk <mtk.manpages@gmail.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Andrea Arcangeli <aarcange@redhat.com>
+Cc: linux-alpha@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-mips@linux-mips.org
+Cc: linux-parisc@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: sparclinux@vger.kernel.org
+Cc: linux-xtensa@linux-xtensa.org
+Cc: linux-mm@kvack.org
+Cc: linux-arch@vger.kernel.org
+Cc: linux-api@vger.kernel.org
+
+-- 
+1.9.1

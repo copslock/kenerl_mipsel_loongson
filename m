@@ -1,35 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Aug 2015 19:10:31 +0200 (CEST)
-Received: from smtp.gentoo.org ([140.211.166.183]:59486 "EHLO smtp.gentoo.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27007866AbbHZRK3Swyts (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 26 Aug 2015 19:10:29 +0200
-Received: from vapier (localhost [127.0.0.1])
-        by smtp.gentoo.org (Postfix) with SMTP id A5238340B3F;
-        Wed, 26 Aug 2015 17:10:17 +0000 (UTC)
-Date:   Wed, 26 Aug 2015 13:10:17 -0400
-From:   Mike Frysinger <vapier@gentoo.org>
-To:     Joseph Myers <joseph@codesourcery.com>
-Cc:     libc-alpha@sourceware.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH] mips: siginfo.h: add SIGSYS details [BZ #18863]
-Message-ID: <20150826171017.GD3116@vapier>
-Mail-Followup-To: Joseph Myers <joseph@codesourcery.com>,
-        libc-alpha@sourceware.org, linux-mips@linux-mips.org
-References: <1440563342-5411-1-git-send-email-vapier@gentoo.org>
- <alpine.DEB.2.10.1508260918240.26898@digraph.polyomino.org.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Aug 2015 20:05:02 +0200 (CEST)
+Received: from mezzanine.sirena.org.uk ([106.187.55.193]:38401 "EHLO
+        mezzanine.sirena.org.uk" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007131AbbHZSFAUfBqL (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 26 Aug 2015 20:05:00 +0200
+Received: from cpc11-sgyl31-2-0-cust672.sgyl.cable.virginm.net ([94.175.94.161] helo=debutante)
+        by mezzanine.sirena.org.uk with esmtpsa (TLS1.2:RSA_AES_128_CBC_SHA1:128)
+        (Exim 4.80)
+        (envelope-from <broonie@sirena.org.uk>)
+        id 1ZUf3v-0006P7-OD; Wed, 26 Aug 2015 18:04:40 +0000
+Received: from broonie by debutante with local (Exim 4.86)
+        (envelope-from <broonie@sirena.org.uk>)
+        id 1ZUf3s-0004Yi-MY; Wed, 26 Aug 2015 19:04:36 +0100
+Date:   Wed, 26 Aug 2015 19:04:36 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     Qais Yousef <qais.yousef@imgtec.com>
+Cc:     alsa-devel@alsa-project.org, Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Marc Zyngier <marc.zyngier@arm.com>,
+        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        Rob Herring <robh+dt@kernel.org>,
+        Pawel Moll <pawel.moll@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ian Campbell <ijc+devicetree@hellion.org.uk>,
+        Kumar Gala <galak@codeaurora.org>, devicetree@vger.kernel.org,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
+Message-ID: <20150826180436.GC28760@sirena.org.uk>
+References: <1440419959-14315-1-git-send-email-qais.yousef@imgtec.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="oJ71EGRlYNjSvfq7"
+        protocol="application/pgp-signature"; boundary="LwW0XdcUbUexiWVK"
 Content-Disposition: inline
-In-Reply-To: <alpine.DEB.2.10.1508260918240.26898@digraph.polyomino.org.uk>
-Return-Path: <vapier@gentoo.org>
+In-Reply-To: <1440419959-14315-1-git-send-email-qais.yousef@imgtec.com>
+X-Cookie: Victory uber allies!
+User-Agent: Mutt/1.5.23 (2014-03-12)
+X-SA-Exim-Connect-IP: 94.175.94.161
+X-SA-Exim-Mail-From: broonie@sirena.org.uk
+Subject: Re: [PATCH 00/10] Add support for img AXD audio hardware decoder
+X-SA-Exim-Version: 4.2.1 (built Mon, 26 Dec 2011 16:24:06 +0000)
+X-SA-Exim-Scanned: Yes (on mezzanine.sirena.org.uk)
+Return-Path: <broonie@sirena.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49027
+X-archive-position: 49028
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vapier@gentoo.org
+X-original-sender: broonie@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,54 +61,42 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 
---oJ71EGRlYNjSvfq7
-Content-Type: text/plain; charset=utf-8
+--LwW0XdcUbUexiWVK
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On 26 Aug 2015 09:30, Joseph Myers wrote:
-> On Wed, 26 Aug 2015, Mike Frysinger wrote:
-> > Linux 3.13 added SIGSYS details to siginfo_t; update glibc's copy to
-> > keep in sync with it.
-> >=20
-> > 2015-08-25  Mike Frysinger  <vapier@gentoo.org>
-> >=20
-> > 	[BZ #18863]
-> > 	* sysdeps/unix/sysv/linux/mips/bits/siginfo.h (siginfo_t): Add _sigsys.
-> > 	(si_call_addr): Define.
-> > 	(si_syscall): Define.
-> > 	(si_arch): Define.
->=20
-> OK.  CC to linux-mips because I see that the MIPS implementation of=20
-> copy_siginfo_to_user32 doesn't handle __SI_SYS, unlike arm64 at least, so=
-=20
-> I suspect this won't in fact work for n32 or for o32 with a 64-bit kernel.
+On Mon, Aug 24, 2015 at 01:39:09PM +0100, Qais Yousef wrote:
 
-i'm getting reports of seccomp misbehavior on mips already which is what
-started me down this glibc path.  i suspect the original port was tested
-against o32 kernels only.
--mike
+> Qais Yousef (10):
+>   irqchip: irq-mips-gic: export gic_send_ipi
+>   dt: add img,axd.txt device tree binding document
+>   ALSA: add AXD Audio Processing IP alsa driver
+>   ALSA: axd: add fw binary header manipulation files
+>   ALSA: axd: add buffers manipulation files
+>   ALSA: axd: add basic files for sending/receiving axd cmds
+>   ALSA: axd: add cmd interface helper functions
+>   ALSA: axd: add low level AXD platform setup files
+>   ALSA: axd: add alsa compress offload operations
+>   ALSA: axd: add Makefile
 
---oJ71EGRlYNjSvfq7
+Please try to use subject lines matching the style for the subsystem, I
+very nearly deleted this unread because it looks like an ALSA patch
+series, not an ASoC one.
+
+--LwW0XdcUbUexiWVK
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQIcBAEBCAAGBQJV3fL5AAoJEEFjO5/oN/WBwYUP/jF24AWcXXzo6k4d3kmuSTA+
-oq/NGGNRq48GPWdb/u/aL6jdYbArAg9t9cjTbcmacNBOyvVTb5AEO/qQiBAZtPXK
-h/y5NzujyhUd0VP+fS9OemsJ4JD3ZlWycdgFcQTbuFej833+X0fcvptfoQ7BofAX
-E0H/UKp2IiS6j1Tmwp4TiYSnJeuEF1xw44U5rCuoZF0d0mL20e10yBGaimrAP+jN
-DYw6ehcyHjNDay6DGURG8Ad8HnnJpz4ikD5h7zWHJv9lIO5W6M1mmJRviWVRv59h
-XKONUth5LNDb5xgdmIEyezqGJh3Gx85LeUSaoKP3wgNdag19yloAvkdLfRDz3ROa
-UPmrZUDmuqoyoRNIYbknFHjKXgEWvEdqted4PkWsf0H+WNr+TbFemgDkeJyA0kKP
-4BV9j2qMHVUYWqhc2y8A6IfHkzbF6mHogztCo9isTu+YGefE62Vq9tZ4SpC3BOWW
-mpGqBSh4LnWB7IIOuQOcvFabnvbjaLtBHLslfMh/UYlCaoMuXmV94Hj9595sd/wM
-ZYQ+hVK2CXGs0nEWTgOgGanB2eMBNFn+n0W0lmq6Mk2Kr47ubIMHWHTH5MyXOv1E
-UoKF3fNGxNGNyD8S9mXx4FJBHjtVkj4/MHQol3dcUkRTrruc64QUQ+LruTejI8Fz
-bCiHR4bCQWqWNjhjIgFH
-=dX7z
+iQEcBAEBCAAGBQJV3f+zAAoJECTWi3JdVIfQDD0H/Rv5PJHlXTHPut//XcmWFdjW
+ZEbb8EbNzBiGp9uhsOSs5ERfBEVi1CjDDaizb0rfaOyI/y1X+0alRsl4oaOV/Xi1
+aJ50s3o23cUg21eaB6i1tUtX2vm07vEVbwgEAiOa7nXiKL3nhTg0//DgC4//zedE
+gB7X1qKLBw7aah0PRMBDkVIQP2hEDwockP5Jp6MS9TTBFWA/EuADWfxtbOmKepbz
+vC9LQIksBz3Pdy3PNuQy5aSH9irdGllVP7Fca2aEfk4LJ0a2q/wUoJUTrnsh3MJy
+6pvbTMHNf85EqD1guc3CuI/jb1wPfsJwkeFzmujW9iHRxT9Bv7AkaDT7+InBrNc=
+=9Ye+
 -----END PGP SIGNATURE-----
 
---oJ71EGRlYNjSvfq7--
+--LwW0XdcUbUexiWVK--

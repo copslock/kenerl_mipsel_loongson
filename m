@@ -1,17 +1,17 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Aug 2015 18:13:02 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:9801 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Aug 2015 18:13:20 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:41188 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27013244AbbHZQMLew0Dd (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 26 Aug 2015 18:12:11 +0200
+        with ESMTP id S27013242AbbHZQMORDkJd (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 26 Aug 2015 18:12:14 +0200
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id F3250255AA575;
-        Wed, 26 Aug 2015 17:12:01 +0100 (IST)
+        by Websense Email Security Gateway with ESMTPS id 00D74B45834D9;
+        Wed, 26 Aug 2015 17:12:05 +0100 (IST)
 Received: from hhmail02.hh.imgtec.org (10.100.10.20) by KLMAIL01.kl.imgtec.org
  (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Wed, 26 Aug
- 2015 17:12:05 +0100
+ 2015 17:12:08 +0100
 Received: from imgworks-VB.kl.imgtec.org (192.168.167.141) by
  hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
- 14.3.235.1; Wed, 26 Aug 2015 17:12:04 +0100
+ 14.3.235.1; Wed, 26 Aug 2015 17:12:07 +0100
 From:   Govindraj Raja <Govindraj.Raja@imgtec.com>
 To:     <linux-mips@linux-mips.org>, <linux-clk@vger.kernel.org>,
         Stephen Boyd <sboyd@codeaurora.org>,
@@ -27,10 +27,11 @@ CC:     Zdenko Pulitika <zdenko.pulitika@imgtec.com>,
         "Ezequiel Garcia" <ezequiel@vanguardiasur.com.ar>,
         Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
         <stable@vger.kernel.org>,
-        "Govindraj Raja" <govindraj.raja@imgtec.com>
-Subject: [PATCH v6 3/4] clk: pistachio: Fix PLL rate calculation in integer mode
-Date:   Wed, 26 Aug 2015 17:11:39 +0100
-Message-ID: <1440605500-13274-4-git-send-email-Govindraj.Raja@imgtec.com>
+        "Ezequiel Garcia" <ezequiel.garcia@imgtec.com>,
+        Govindraj Raja <govindraj.raja@imgtec.com>
+Subject: [PATCH v6 4/4] clk: pistachio: correct critical clock list
+Date:   Wed, 26 Aug 2015 17:11:40 +0100
+Message-ID: <1440605500-13274-5-git-send-email-Govindraj.Raja@imgtec.com>
 X-Mailer: git-send-email 1.9.1
 In-Reply-To: <1440605500-13274-1-git-send-email-Govindraj.Raja@imgtec.com>
 References: <1440605500-13274-1-git-send-email-Govindraj.Raja@imgtec.com>
@@ -41,7 +42,7 @@ Return-Path: <Govindraj.Raja@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49025
+X-archive-position: 49026
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -58,117 +59,79 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Zdenko Pulitika <zdenko.pulitika@imgtec.com>
+From: "Damien.Horsley" <Damien.Horsley@imgtec.com>
 
-.recalc_rate callback for the fractional PLL doesn't take operating
-mode into account when calculating PLL rate. This results in
-the incorrect PLL rates when PLL is operating in integer mode.
+Current critical clock list for pistachio enables
+only mips and sys clocks by default but there are
+also other clocks that are not claimed by anyone and
+needs to be enabled by default.
 
-Operating mode of fractional PLL is based on the value of the
-fractional divider. Currently it assumes that the PLL will always
-be configured in fractional mode which may not be
-the case. This may result in the wrong output frequency.
+This patch updates the critical clocks that need
+to be enabled by default.
 
-Also vco was calculated based on the current operating mode which
-makes no sense because .set_rate is setting operating mode. Instead,
-vco should be calculated using PLL settings that are about to be set.
+Add a separate struct to distinguish the critical clocks
+as listed:
+1.) core clocks:
+	a.) mips clock
+2.) peripheral system clocks:
+	a.) sys clock
+	b.) sys_bus clock
+	c.) DDR clock
+	d.) ROM clock
 
-Fixes: 43049b0c83f17("CLK: Pistachio: Add PLL driver")
+Fixes: b35d7c33419c("CLK: Pistachio: Register core clocks")
 Cc: <stable@vger.kernel.org> # 4.1
 Reviewed-by: Andrew Bresticker <abrestic@chromium.org>
-Signed-off-by: Zdenko Pulitika <zdenko.pulitika@imgtec.com>
+Signed-off-by: Ezequiel Garcia <ezequiel.garcia@imgtec.com>
+Signed-off-by: Damien.Horsley <Damien.Horsley@imgtec.com>
 Signed-off-by: Govindraj Raja <govindraj.raja@imgtec.com>
 ---
- drivers/clk/pistachio/clk-pll.c | 48 +++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 46 insertions(+), 2 deletions(-)
+ drivers/clk/pistachio/clk-pistachio.c | 19 ++++++++++++++-----
+ 1 file changed, 14 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/clk/pistachio/clk-pll.c b/drivers/clk/pistachio/clk-pll.c
-index 9a38a2b..c9b4598 100644
---- a/drivers/clk/pistachio/clk-pll.c
-+++ b/drivers/clk/pistachio/clk-pll.c
-@@ -65,6 +65,12 @@
- #define MIN_OUTPUT_FRAC			12000000UL
- #define MAX_OUTPUT_FRAC			1600000000UL
+diff --git a/drivers/clk/pistachio/clk-pistachio.c b/drivers/clk/pistachio/clk-pistachio.c
+index 8c0fe88..c4ceb5e 100644
+--- a/drivers/clk/pistachio/clk-pistachio.c
++++ b/drivers/clk/pistachio/clk-pistachio.c
+@@ -159,9 +159,15 @@ PNAME(mux_debug) = { "mips_pll_mux", "rpu_v_pll_mux",
+ 		     "wifi_pll_mux", "bt_pll_mux" };
+ static u32 mux_debug_idx[] = { 0x0, 0x1, 0x2, 0x4, 0x8, 0x10 };
  
-+/* Fractional PLL operating modes */
-+enum pll_mode {
-+	PLL_MODE_FRAC,
-+	PLL_MODE_INT,
+-static unsigned int pistachio_critical_clks[] __initdata = {
+-	CLK_MIPS,
+-	CLK_PERIPH_SYS,
++static unsigned int pistachio_critical_clks_core[] __initdata = {
++	CLK_MIPS
 +};
 +
- struct pistachio_clk_pll {
- 	struct clk_hw hw;
- 	void __iomem *base;
-@@ -99,6 +105,29 @@ static inline struct pistachio_clk_pll *to_pistachio_pll(struct clk_hw *hw)
- 	return container_of(hw, struct pistachio_clk_pll, hw);
++static unsigned int pistachio_critical_clks_sys[] __initdata = {
++	PERIPH_CLK_SYS,
++	PERIPH_CLK_SYS_BUS,
++	PERIPH_CLK_DDR,
++	PERIPH_CLK_ROM,
+ };
+ 
+ static void __init pistachio_clk_init(struct device_node *np)
+@@ -193,8 +199,8 @@ static void __init pistachio_clk_init(struct device_node *np)
+ 
+ 	pistachio_clk_register_provider(p);
+ 
+-	pistachio_clk_force_enable(p, pistachio_critical_clks,
+-				   ARRAY_SIZE(pistachio_critical_clks));
++	pistachio_clk_force_enable(p, pistachio_critical_clks_core,
++				   ARRAY_SIZE(pistachio_critical_clks_core));
  }
+ CLK_OF_DECLARE(pistachio_clk, "img,pistachio-clk", pistachio_clk_init);
  
-+static inline enum pll_mode pll_frac_get_mode(struct clk_hw *hw)
-+{
-+	struct pistachio_clk_pll *pll = to_pistachio_pll(hw);
-+	u32 val;
-+
-+	val = pll_readl(pll, PLL_CTRL3) & PLL_FRAC_CTRL3_DSMPD;
-+	return val ? PLL_MODE_INT : PLL_MODE_FRAC;
-+}
-+
-+static inline void pll_frac_set_mode(struct clk_hw *hw, enum pll_mode mode)
-+{
-+	struct pistachio_clk_pll *pll = to_pistachio_pll(hw);
-+	u32 val;
-+
-+	val = pll_readl(pll, PLL_CTRL3);
-+	if (mode == PLL_MODE_INT)
-+		val |= PLL_FRAC_CTRL3_DSMPD | PLL_FRAC_CTRL3_DACPD;
-+	else
-+		val &= ~(PLL_FRAC_CTRL3_DSMPD | PLL_FRAC_CTRL3_DACPD);
-+
-+	pll_writel(pll, val, PLL_CTRL3);
-+}
-+
- static struct pistachio_pll_rate_table *
- pll_get_params(struct pistachio_clk_pll *pll, unsigned long fref,
- 	       unsigned long fout)
-@@ -180,7 +209,11 @@ static int pll_gf40lp_frac_set_rate(struct clk_hw *hw, unsigned long rate,
- 	if (!params || !params->refdiv)
- 		return -EINVAL;
+@@ -261,6 +267,9 @@ static void __init pistachio_clk_periph_init(struct device_node *np)
+ 				    ARRAY_SIZE(pistachio_periph_gates));
  
--	vco = div64_u64(params->fref * params->fbdiv, params->refdiv);
-+	/* calculate vco */
-+	vco = params->fref;
-+	vco *= (params->fbdiv << 24) + params->frac;
-+	vco = div64_u64(vco, params->refdiv << 24);
+ 	pistachio_clk_register_provider(p);
 +
- 	if (vco < MIN_VCO_FRAC_FRAC || vco > MAX_VCO_FRAC_FRAC)
- 		pr_warn("%s: VCO %llu is out of range %lu..%lu\n", name, vco,
- 			MIN_VCO_FRAC_FRAC, MAX_VCO_FRAC_FRAC);
-@@ -224,6 +257,12 @@ static int pll_gf40lp_frac_set_rate(struct clk_hw *hw, unsigned long rate,
- 		(params->postdiv2 << PLL_FRAC_CTRL2_POSTDIV2_SHIFT);
- 	pll_writel(pll, val, PLL_CTRL2);
- 
-+	/* set operating mode */
-+	if (params->frac)
-+		pll_frac_set_mode(hw, PLL_MODE_FRAC);
-+	else
-+		pll_frac_set_mode(hw, PLL_MODE_INT);
-+
- 	if (enabled)
- 		pll_lock(pll);
- 
-@@ -247,8 +286,13 @@ static unsigned long pll_gf40lp_frac_recalc_rate(struct clk_hw *hw,
- 		PLL_FRAC_CTRL2_POSTDIV2_MASK;
- 	frac = (val >> PLL_FRAC_CTRL2_FRAC_SHIFT) & PLL_FRAC_CTRL2_FRAC_MASK;
- 
-+	/* get operating mode (int/frac) and calculate rate accordingly */
- 	rate = parent_rate;
--	rate *= (fbdiv << 24) + frac;
-+	if (pll_frac_get_mode(hw) == PLL_MODE_FRAC)
-+		rate *= (fbdiv << 24) + frac;
-+	else
-+		rate *= (fbdiv << 24);
-+
- 	rate = do_div_round_closest(rate, (prediv * postdiv1 * postdiv2) << 24);
- 
- 	return rate;
++	pistachio_clk_force_enable(p, pistachio_critical_clks_sys,
++				   ARRAY_SIZE(pistachio_critical_clks_sys));
+ }
+ CLK_OF_DECLARE(pistachio_clk_periph, "img,pistachio-clk-periph",
+ 	       pistachio_clk_periph_init);
 -- 
 1.9.1

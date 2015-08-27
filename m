@@ -1,45 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Aug 2015 19:57:27 +0200 (CEST)
-Received: from mail.efficios.com ([78.47.125.74]:52671 "EHLO mail.efficios.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Aug 2015 00:09:20 +0200 (CEST)
+Received: from smtp.gentoo.org ([140.211.166.183]:34208 "EHLO smtp.gentoo.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27006526AbbH0R5Z5vj2k (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 27 Aug 2015 19:57:25 +0200
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by mail.efficios.com (Postfix) with ESMTP id 4E417340427;
-        Thu, 27 Aug 2015 17:57:21 +0000 (UTC)
-Received: from mail.efficios.com ([127.0.0.1])
-        by localhost (evm-mail-1.efficios.com [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id Qzt2EGcroFJj; Thu, 27 Aug 2015 17:57:15 +0000 (UTC)
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by mail.efficios.com (Postfix) with ESMTP id C677734040E;
-        Thu, 27 Aug 2015 17:57:15 +0000 (UTC)
-X-Virus-Scanned: amavisd-new at efficios.com
-Received: from mail.efficios.com ([127.0.0.1])
-        by localhost (evm-mail-1.efficios.com [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id TGYwqW80I0Kh; Thu, 27 Aug 2015 17:57:15 +0000 (UTC)
-Received: from thinkos.internal.efficios.com (cable-192.222.213.99.electronicbox.net [192.222.213.99])
-        by mail.efficios.com (Postfix) with ESMTPSA id C701F3403FE;
-        Thu, 27 Aug 2015 17:57:14 +0000 (UTC)
-From:   Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-To:     Andrew Morton <akpm@linux-foundation.org>,
-        linux-api@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org,
-        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: [RFC PATCH 4/9] mips: allocate sys_membarrier system call number
-Date:   Thu, 27 Aug 2015 13:56:50 -0400
-Message-Id: <1440698215-8355-5-git-send-email-mathieu.desnoyers@efficios.com>
-X-Mailer: git-send-email 2.1.4
-In-Reply-To: <1440698215-8355-1-git-send-email-mathieu.desnoyers@efficios.com>
-References: <1440698215-8355-1-git-send-email-mathieu.desnoyers@efficios.com>
-Return-Path: <mathieu.desnoyers@efficios.com>
+        id S27007618AbbH0WJNv9708 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 28 Aug 2015 00:09:13 +0200
+Received: from vapier (localhost [127.0.0.1])
+        by smtp.gentoo.org (Postfix) with SMTP id 8A331340AD7;
+        Thu, 27 Aug 2015 22:09:04 +0000 (UTC)
+Date:   Thu, 27 Aug 2015 18:09:04 -0400
+From:   Mike Frysinger <vapier@gentoo.org>
+To:     Markos Chandras <Markos.Chandras@imgtec.com>
+Cc:     Joseph Myers <joseph@codesourcery.com>, libc-alpha@sourceware.org,
+        linux-mips@linux-mips.org, kumba@gentoo.org
+Subject: Re: [PATCH] mips: siginfo.h: add SIGSYS details [BZ #18863]
+Message-ID: <20150827220904.GD29734@vapier>
+Mail-Followup-To: Markos Chandras <Markos.Chandras@imgtec.com>,
+        Joseph Myers <joseph@codesourcery.com>, libc-alpha@sourceware.org,
+        linux-mips@linux-mips.org, kumba@gentoo.org
+References: <1440563342-5411-1-git-send-email-vapier@gentoo.org>
+ <alpine.DEB.2.10.1508260918240.26898@digraph.polyomino.org.uk>
+ <20150826171017.GD3116@vapier>
+ <55DEC3B9.1070105@imgtec.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="zCKi3GIZzVBPywwA"
+Content-Disposition: inline
+In-Reply-To: <55DEC3B9.1070105@imgtec.com>
+Return-Path: <vapier@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49057
+X-archive-position: 49058
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mathieu.desnoyers@efficios.com
+X-original-sender: vapier@gentoo.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,124 +46,75 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-[ Untested on this architecture. To try it out: fetch linux-next/akpm,
-  apply this patch, build/run a membarrier-enabled kernel, and do make
-  kselftest. ]
 
-Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-CC: Andrew Morton <akpm@linux-foundation.org>
-CC: linux-api@vger.kernel.org
-CC: Ralf Baechle <ralf@linux-mips.org>
-CC: linux-mips@linux-mips.org
----
- arch/mips/include/uapi/asm/unistd.h | 15 +++++++++------
- arch/mips/kernel/scall32-o32.S      |  1 +
- arch/mips/kernel/scall64-64.S       |  1 +
- arch/mips/kernel/scall64-n32.S      |  1 +
- arch/mips/kernel/scall64-o32.S      |  1 +
- 5 files changed, 13 insertions(+), 6 deletions(-)
+--zCKi3GIZzVBPywwA
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/arch/mips/include/uapi/asm/unistd.h b/arch/mips/include/uapi/asm/unistd.h
-index d0bdfaa..b107983 100644
---- a/arch/mips/include/uapi/asm/unistd.h
-+++ b/arch/mips/include/uapi/asm/unistd.h
-@@ -378,16 +378,17 @@
- #define __NR_bpf			(__NR_Linux + 355)
- #define __NR_execveat			(__NR_Linux + 356)
- #define __NR_mlock2			(__NR_Linux + 357)
-+#define __NR_membarrier			(__NR_Linux + 358)
- 
- /*
-  * Offset of the last Linux o32 flavoured syscall
-  */
--#define __NR_Linux_syscalls		357
-+#define __NR_Linux_syscalls		358
- 
- #endif /* _MIPS_SIM == _MIPS_SIM_ABI32 */
- 
- #define __NR_O32_Linux			4000
--#define __NR_O32_Linux_syscalls		357
-+#define __NR_O32_Linux_syscalls		358
- 
- #if _MIPS_SIM == _MIPS_SIM_ABI64
- 
-@@ -713,16 +714,17 @@
- #define __NR_bpf			(__NR_Linux + 315)
- #define __NR_execveat			(__NR_Linux + 316)
- #define __NR_mlock2			(__NR_Linux + 317)
-+#define __NR_membarrier			(__NR_Linux + 318)
- 
- /*
-  * Offset of the last Linux 64-bit flavoured syscall
-  */
--#define __NR_Linux_syscalls		317
-+#define __NR_Linux_syscalls		318
- 
- #endif /* _MIPS_SIM == _MIPS_SIM_ABI64 */
- 
- #define __NR_64_Linux			5000
--#define __NR_64_Linux_syscalls		317
-+#define __NR_64_Linux_syscalls		318
- 
- #if _MIPS_SIM == _MIPS_SIM_NABI32
- 
-@@ -1052,15 +1054,16 @@
- #define __NR_bpf			(__NR_Linux + 319)
- #define __NR_execveat			(__NR_Linux + 320)
- #define __NR_mlock2			(__NR_Linux + 321)
-+#define __NR_membarrier			(__NR_Linux + 322)
- 
- /*
-  * Offset of the last N32 flavoured syscall
-  */
--#define __NR_Linux_syscalls		321
-+#define __NR_Linux_syscalls		322
- 
- #endif /* _MIPS_SIM == _MIPS_SIM_NABI32 */
- 
- #define __NR_N32_Linux			6000
--#define __NR_N32_Linux_syscalls		321
-+#define __NR_N32_Linux_syscalls		322
- 
- #endif /* _UAPI_ASM_UNISTD_H */
-diff --git a/arch/mips/kernel/scall32-o32.S b/arch/mips/kernel/scall32-o32.S
-index b0b377a..9265542 100644
---- a/arch/mips/kernel/scall32-o32.S
-+++ b/arch/mips/kernel/scall32-o32.S
-@@ -600,3 +600,4 @@ EXPORT(sys_call_table)
- 	PTR	sys_bpf				/* 4355 */
- 	PTR	sys_execveat
- 	PTR	sys_mlock2
-+	PTR	sys_membarrier
-diff --git a/arch/mips/kernel/scall64-64.S b/arch/mips/kernel/scall64-64.S
-index f12eb03..79d4fb0 100644
---- a/arch/mips/kernel/scall64-64.S
-+++ b/arch/mips/kernel/scall64-64.S
-@@ -437,4 +437,5 @@ EXPORT(sys_call_table)
- 	PTR	sys_bpf				/* 5315 */
- 	PTR	sys_execveat
- 	PTR	sys_mlock2
-+	PTR	sys_membarrier
- 	.size	sys_call_table,.-sys_call_table
-diff --git a/arch/mips/kernel/scall64-n32.S b/arch/mips/kernel/scall64-n32.S
-index ecdd65a..235892a 100644
---- a/arch/mips/kernel/scall64-n32.S
-+++ b/arch/mips/kernel/scall64-n32.S
-@@ -430,4 +430,5 @@ EXPORT(sysn32_call_table)
- 	PTR	sys_bpf
- 	PTR	compat_sys_execveat		/* 6320 */
- 	PTR	sys_mlock2
-+	PTR	sys_membarrier
- 	.size	sysn32_call_table,.-sysn32_call_table
-diff --git a/arch/mips/kernel/scall64-o32.S b/arch/mips/kernel/scall64-o32.S
-index 7a8b2df..c051bd3 100644
---- a/arch/mips/kernel/scall64-o32.S
-+++ b/arch/mips/kernel/scall64-o32.S
-@@ -585,4 +585,5 @@ EXPORT(sys32_call_table)
- 	PTR	sys_bpf				/* 4355 */
- 	PTR	compat_sys_execveat
- 	PTR	sys_mlock2
-+	PTR	sys_membarrier
- 	.size	sys32_call_table,.-sys32_call_table
--- 
-1.9.1
+On 27 Aug 2015 09:00, Markos Chandras wrote:
+> On 08/26/2015 06:10 PM, Mike Frysinger wrote:
+> > On 26 Aug 2015 09:30, Joseph Myers wrote:
+> >> On Wed, 26 Aug 2015, Mike Frysinger wrote:
+> >>> Linux 3.13 added SIGSYS details to siginfo_t; update glibc's copy to
+> >>> keep in sync with it.
+> >>>
+> >>> 2015-08-25  Mike Frysinger  <vapier@gentoo.org>
+> >>>
+> >>> 	[BZ #18863]
+> >>> 	* sysdeps/unix/sysv/linux/mips/bits/siginfo.h (siginfo_t): Add _sigs=
+ys.
+> >>> 	(si_call_addr): Define.
+> >>> 	(si_syscall): Define.
+> >>> 	(si_arch): Define.
+> >>
+> >> OK.  CC to linux-mips because I see that the MIPS implementation of=20
+> >> copy_siginfo_to_user32 doesn't handle __SI_SYS, unlike arm64 at least,=
+ so=20
+> >> I suspect this won't in fact work for n32 or for o32 with a 64-bit ker=
+nel.
+> >=20
+> > i'm getting reports of seccomp misbehavior on mips already which is what
+> > started me down this glibc path.  i suspect the original port was tested
+> > against o32 kernels only.
+> > -mike
+> >=20
+>=20
+> I have recently tested mips64 n64/n32 with the testsuite from libseccomp
+> and that led me to this fix
+>=20
+> https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/commit/?i=
+d=3D9f161439e4104b641a7bfb9b89581d801159fec8
+>=20
+> if you are aware of other problems (and perhaps a test to trigger them)
+> that could be kernel related let me know
+
+i was waiting on kumba to file a bug, and recover my mips box when i got
+local access to it again to check another report.  but if libseccomp is
+passing its unittests now as n64/n32 userland, i think that should cover
+things.
+-mike
+
+--zCKi3GIZzVBPywwA
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQIcBAEBCAAGBQJV34qAAAoJEEFjO5/oN/WBs6YQAIb/EIy7Xe3OWgdsuEdvdpBI
+mV5l6PDGicoGoxVwiSDbcIsOaiGaTI4FHyet9FWV90C5P/pnUu5jCdCK/SgCnkjP
+MIBZDwYsQVbo9P5wFATsMk4fZ1wX01sbi3YfbSgYw9ZZ9BSGZyJM1JXhaYWEnQ3x
+hbvNRHAipw9IToXUJ59Vc8F+ZQKyUsgacbLy7ljL/7eAia93/sVklrAdo8Om/yBs
+HF5RYngdMOY+FWKRxW3DcdXrh7RcWNydjooxKqI1HdI9TB/OspHBkU3wv7gY+/7E
+0DMrE5irvsQggHGQhs87gWKdcyXoIgxLMsnc4GvnQx2vYK5tTCkjNY33d+gOaDAr
+in9KD27nr7QkI6gn7UljN1m6REfCpmGm4ZzFx2jbFK9cMG8RaWzEqWKwnqTr3CnW
+E257yHAESuDYZGPG+iG2fngSLJ1JcI5ZlqlFiiFffJt5DKOdyQ1AfNg7XJFgi9M8
+bB8X//+4vGSYH9VrJndu6gSQ8CnWl6FLqrmZ4xyZ97P6q3iSBxZvFVz84hagHoyy
+/v0biMUdKhUFfW+lwzJAY4pmLaDKyfvvkSFnBuA9/hkETGC6aDBTVnTE0OeY6yiN
+OJ6x08hwz7mIOQ4qhTFYcL3q++554FZU8wRDOYv+NkfYrQuSOJMbsXfICvLxfVNX
+6HhF6O0L7sCsfPypFIwm
+=HDGg
+-----END PGP SIGNATURE-----
+
+--zCKi3GIZzVBPywwA--

@@ -1,41 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Aug 2015 17:40:50 +0200 (CEST)
-Received: from userp1040.oracle.com ([156.151.31.81]:50220 "EHLO
-        userp1040.oracle.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27013057AbbH0Pjjkp6Nx (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 27 Aug 2015 17:39:39 +0200
-Received: from aserv0021.oracle.com (aserv0021.oracle.com [141.146.126.233])
-        by userp1040.oracle.com (Sentrion-MTA-4.3.2/Sentrion-MTA-4.3.2) with ESMTP id t7RFdQBK019021
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Aug 2015 17:41:06 +0200 (CEST)
+Received: from aserp1040.oracle.com ([141.146.126.69]:20589 "EHLO
+        aserp1040.oracle.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27013069AbbH0PjlQohex (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 27 Aug 2015 17:39:41 +0200
+Received: from userv0021.oracle.com (userv0021.oracle.com [156.151.31.71])
+        by aserp1040.oracle.com (Sentrion-MTA-4.3.2/Sentrion-MTA-4.3.2) with ESMTP id t7RFdTgo019200
         (version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
-        Thu, 27 Aug 2015 15:39:27 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by aserv0021.oracle.com (8.13.8/8.13.8) with ESMTP id t7RFdPVu014336
+        Thu, 27 Aug 2015 15:39:29 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by userv0021.oracle.com (8.13.8/8.13.8) with ESMTP id t7RFdSt3032316
         (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=FAIL);
-        Thu, 27 Aug 2015 15:39:25 GMT
+        Thu, 27 Aug 2015 15:39:28 GMT
 Received: from abhmp0011.oracle.com (abhmp0011.oracle.com [141.146.116.17])
-        by aserv0121.oracle.com (8.13.8/8.13.8) with ESMTP id t7RFdPGl008223;
-        Thu, 27 Aug 2015 15:39:25 GMT
+        by userv0121.oracle.com (8.13.8/8.13.8) with ESMTP id t7RFdRmk001864;
+        Thu, 27 Aug 2015 15:39:28 GMT
 Received: from lappy.us.oracle.com (/10.154.183.228)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Thu, 27 Aug 2015 08:39:25 -0700
+        with ESMTP ; Thu, 27 Aug 2015 08:39:26 -0700
 From:   Sasha Levin <sasha.levin@oracle.com>
 To:     stable@vger.kernel.org, stable-commits@vger.kernel.org
 Cc:     James Hogan <james.hogan@imgtec.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
         Markos Chandras <markos.chandras@imgtec.com>,
         Leonid Yegoshin <leonid.yegoshin@imgtec.com>,
-        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
-        Sasha Levin <sasha.levin@oracle.com>
-Subject: [added to the 3.18 stable tree] MIPS: show_stack: Fix stack trace with EVA
-Date:   Thu, 27 Aug 2015 11:37:22 -0400
-Message-Id: <1440689954-10813-4-git-send-email-sasha.levin@oracle.com>
+        linux-mips@linux-mips.org, Sasha Levin <sasha.levin@oracle.com>
+Subject: [added to the 3.18 stable tree] MIPS: Flush RPS on kernel entry with EVA
+Date:   Thu, 27 Aug 2015 11:37:23 -0400
+Message-Id: <1440689954-10813-5-git-send-email-sasha.levin@oracle.com>
 X-Mailer: git-send-email 2.1.4
 In-Reply-To: <1440689954-10813-1-git-send-email-sasha.levin@oracle.com>
 References: <1440689954-10813-1-git-send-email-sasha.levin@oracle.com>
-X-Source-IP: aserv0021.oracle.com [141.146.126.233]
+X-Source-IP: userv0021.oracle.com [156.151.31.71]
 Return-Path: <sasha.levin@oracle.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49055
+X-archive-position: 49056
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -59,69 +59,64 @@ objections, please let us know.
 
 ===============
 
-[ Upstream commit 1e77863a51698c4319587df34171bd823691a66a ]
+[ Upstream commit 3aff47c062b944a5e1f9af56a37a23f5295628fc ]
 
-The show_stack() function deals exclusively with kernel contexts, but if
-it gets called in user context with EVA enabled, show_stacktrace() will
-attempt to access the stack using EVA accesses, which will either read
-other user mapped data, or more likely cause an exception which will be
-handled by __get_user().
+When EVA is enabled, flush the Return Prediction Stack (RPS) present on
+some MIPS cores on entry to the kernel from user mode.
 
-This is easily reproduced using SysRq t to show all task states, which
-results in the following stack dump output:
-
- Stack : (Bad stack address)
-
-Fix by setting the current user access mode to kernel around the call to
-show_stacktrace(). This causes __get_user() to use normal loads to read
-the kernel stack.
-
-Now we get the correct output, like this:
-
- Stack : 00000000 80168960 00000000 004a0000 00000000 00000000 8060016c 1f3abd0c
-           1f172cd8 8056f09c 7ff1e450 8014fc3c 00000001 806dd0b0 0000001d 00000002
-           1f17c6a0 1f17c804 1f17c6a0 8066f6e0 00000000 0000000a 00000000 00000000
-           00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
-           00000000 00000000 00000000 00000000 00000000 0110e800 1f3abd6c 1f17c6a0
-           ...
+This is important specifically for interAptiv with EVA enabled,
+otherwise kernel mode RPS mispredicts may trigger speculative fetches of
+user return addresses, which may be sensitive in the kernel address
+space due to EVA's overlapping user/kernel address spaces.
 
 Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: Markos Chandras <markos.chandras@imgtec.com>
 Cc: Leonid Yegoshin <leonid.yegoshin@imgtec.com>
 Cc: linux-mips@linux-mips.org
-Cc: <stable@vger.kernel.org> # 3.15+
-Patchwork: https://patchwork.linux-mips.org/patch/10778/
+Cc: <stable@vger.kernel.org> # 3.15.x-
+Patchwork: https://patchwork.linux-mips.org/patch/10812/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Sasha Levin <sasha.levin@oracle.com>
 ---
- arch/mips/kernel/traps.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ arch/mips/include/asm/stackframe.h | 25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
-diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
-index 0c02c05..f506c53 100644
---- a/arch/mips/kernel/traps.c
-+++ b/arch/mips/kernel/traps.c
-@@ -190,6 +190,7 @@ static void show_stacktrace(struct task_struct *task,
- void show_stack(struct task_struct *task, unsigned long *sp)
- {
- 	struct pt_regs regs;
-+	mm_segment_t old_fs = get_fs();
- 	if (sp) {
- 		regs.regs[29] = (unsigned long)sp;
- 		regs.regs[31] = 0;
-@@ -208,7 +209,13 @@ void show_stack(struct task_struct *task, unsigned long *sp)
- 			prepare_frametrace(&regs);
- 		}
- 	}
-+	/*
-+	 * show_stack() deals exclusively with kernel mode, so be sure to access
-+	 * the stack in the kernel (not user) address space.
-+	 */
-+	set_fs(KERNEL_DS);
- 	show_stacktrace(task, &regs);
-+	set_fs(old_fs);
- }
- 
- static void show_code(unsigned int __user *pc)
+diff --git a/arch/mips/include/asm/stackframe.h b/arch/mips/include/asm/stackframe.h
+index b188c79..0562a24 100644
+--- a/arch/mips/include/asm/stackframe.h
++++ b/arch/mips/include/asm/stackframe.h
+@@ -152,6 +152,31 @@
+ 		.set	noreorder
+ 		bltz	k0, 8f
+ 		 move	k1, sp
++#ifdef CONFIG_EVA
++		/*
++		 * Flush interAptiv's Return Prediction Stack (RPS) by writing
++		 * EntryHi. Toggling Config7.RPS is slower and less portable.
++		 *
++		 * The RPS isn't automatically flushed when exceptions are
++		 * taken, which can result in kernel mode speculative accesses
++		 * to user addresses if the RPS mispredicts. That's harmless
++		 * when user and kernel share the same address space, but with
++		 * EVA the same user segments may be unmapped to kernel mode,
++		 * even containing sensitive MMIO regions or invalid memory.
++		 *
++		 * This can happen when the kernel sets the return address to
++		 * ret_from_* and jr's to the exception handler, which looks
++		 * more like a tail call than a function call. If nested calls
++		 * don't evict the last user address in the RPS, it will
++		 * mispredict the return and fetch from a user controlled
++		 * address into the icache.
++		 *
++		 * More recent EVA-capable cores with MAAR to restrict
++		 * speculative accesses aren't affected.
++		 */
++		MFC0	k0, CP0_ENTRYHI
++		MTC0	k0, CP0_ENTRYHI
++#endif
+ 		.set	reorder
+ 		/* Called from user mode, new stack. */
+ 		get_saved_sp
 -- 
 2.1.4

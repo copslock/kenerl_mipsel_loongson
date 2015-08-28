@@ -1,48 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Aug 2015 03:30:27 +0200 (CEST)
-Received: from mail-pa0-f49.google.com ([209.85.220.49]:33800 "EHLO
-        mail-pa0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27013231AbbH1BaSqOxKj (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 28 Aug 2015 03:30:18 +0200
-Received: by pabzx8 with SMTP id zx8so43950790pab.1;
-        Thu, 27 Aug 2015 18:30:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id;
-        bh=TDY35R3wzYcIVB9qpoGtMSqHsQ3i5wDDeQYBy3FdgX0=;
-        b=xyGm3bVOqZQM1MMeoxo6dW1XGGYfNKF9XItmjK8sX0mXKLyp12rDjhba1jHZxjIGCv
-         Sp+DAAyhaG8nX+g75pgafspZRqfh1jmnpB83QhmZT4NeK1KAoGRKal/RzH/MscIZ0FLi
-         XCk3Zbf1GKTZAlXNze/5gi7B9vNpnho13FfFqT5Q3a0Olnz/NQLPlaTE+hkaj+eapOnG
-         Yv3yiGqpM8u7Qf8ZS10ommMNmrCHl94sAOsfAFvfTy6cCOiDWuJCkdYR1hri9Hki0AV8
-         +w+bmly3sm2ZOBKnvLvvSYOQC7dQC72VeBAr80bKSVETjBlZYbd8+IPqTSQpfK3DSOBv
-         v2bA==
-X-Received: by 10.66.141.231 with SMTP id rr7mr11205804pab.11.1440725412755;
-        Thu, 27 Aug 2015 18:30:12 -0700 (PDT)
-Received: from gregory-irv-00.broadcom.com (5520-maca-inet1-outside.broadcom.com. [216.31.211.11])
-        by smtp.gmail.com with ESMTPSA id hy5sm3778919pac.22.2015.08.27.18.30.11
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Thu, 27 Aug 2015 18:30:12 -0700 (PDT)
-From:   Gregory Fong <gregory.0xf0@gmail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Gregory Fong <gregory.0xf0@gmail.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Aug 2015 04:00:22 +0200 (CEST)
+Received: from smtprelay0075.hostedemail.com ([216.40.44.75]:43320 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S27007623AbbH1CAUa0RKj (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 28 Aug 2015 04:00:20 +0200
+Received: from filter.hostedemail.com (unknown [216.40.38.60])
+        by smtprelay02.hostedemail.com (Postfix) with ESMTP id 726EF12BA13;
+        Fri, 28 Aug 2015 02:00:18 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-HE-Tag: fish05_1f92bbe37cb0c
+X-Filterd-Recvd-Size: 3482
+Received: from joe-X200MA.home (pool-173-51-221-2.lsanca.fios.verizon.net [173.51.221.2])
+        (Authenticated sender: joe@perches.com)
+        by omf09.hostedemail.com (Postfix) with ESMTPA;
+        Fri, 28 Aug 2015 02:00:16 +0000 (UTC)
+Message-ID: <1440727215.11525.122.camel@perches.com>
+Subject: Re: [PATCH] MIPS: BCM63XX: Use pr_* instead of printk
+From:   Joe Perches <joe@perches.com>
+To:     Gregory Fong <gregory.0xf0@gmail.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
         Florian Fainelli <f.fainelli@gmail.com>,
         Jonas Gorski <jogo@openwrt.org>,
         Rusty Russell <rusty@rustcorp.com.au>,
         Nicolas Schichan <nschichan@freebox.fr>,
-        linux-mips@linux-mips.org (open list:MIPS),
-        linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH] MIPS: BCM63XX: Use pr_* instead of printk
-Date:   Thu, 27 Aug 2015 18:30:02 -0700
-Message-Id: <1440725410-2082-1-git-send-email-gregory.0xf0@gmail.com>
-X-Mailer: git-send-email 1.9.1
-Return-Path: <gregory.0xf0@gmail.com>
+        "open list:MIPS" <linux-mips@linux-mips.org>,
+        open list <linux-kernel@vger.kernel.org>
+Date:   Thu, 27 Aug 2015 19:00:15 -0700
+In-Reply-To: <1440725410-2082-1-git-send-email-gregory.0xf0@gmail.com>
+References: <1440725410-2082-1-git-send-email-gregory.0xf0@gmail.com>
+Content-Type: text/plain; charset="ISO-8859-1"
+X-Mailer: Evolution 3.12.11-0ubuntu3 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Return-Path: <joe@perches.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49059
+X-archive-position: 49060
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregory.0xf0@gmail.com
+X-original-sender: joe@perches.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,170 +52,76 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Signed-off-by: Gregory Fong <gregory.0xf0@gmail.com>
-Cc: Florian Fainelli <f.fainelli@gmail.com>
-Cc: Jonas Gorski <jogo@openwrt.org>
----
- arch/mips/bcm63xx/boards/board_bcm963xx.c | 11 ++++++-----
- arch/mips/bcm63xx/cpu.c                   |  6 +++---
- arch/mips/bcm63xx/dev-pcmcia.c            |  2 +-
- arch/mips/bcm63xx/irq.c                   |  2 +-
- arch/mips/bcm63xx/setup.c                 |  8 ++++----
- arch/mips/bcm63xx/timer.c                 |  2 +-
- 6 files changed, 16 insertions(+), 15 deletions(-)
+On Thu, 2015-08-27 at 18:30 -0700, Gregory Fong wrote:
+>
 
-diff --git a/arch/mips/bcm63xx/boards/board_bcm963xx.c b/arch/mips/bcm63xx/boards/board_bcm963xx.c
-index 33727e7..7e001d3 100644
---- a/arch/mips/bcm63xx/boards/board_bcm963xx.c
-+++ b/arch/mips/bcm63xx/boards/board_bcm963xx.c
-@@ -7,6 +7,8 @@
-  * Copyright (C) 2008 Florian Fainelli <florian@openwrt.org>
-  */
- 
-+#define pr_fmt(fmt) "board_bcm963xx: " fmt
-+
- #include <linux/init.h>
- #include <linux/kernel.h>
- #include <linux/string.h>
-@@ -31,7 +33,6 @@
- 
- #include <uapi/linux/bcm933xx_hcs.h>
- 
--#define PFX	"board_bcm963xx: "
- 
- #define HCS_OFFSET_128K			0x20000
- 
-@@ -740,7 +741,7 @@ int bcm63xx_get_fallback_sprom(struct ssb_bus *bus, struct ssb_sprom *out)
- 		memcpy(out, &bcm63xx_sprom, sizeof(struct ssb_sprom));
- 		return 0;
- 	} else {
--		printk(KERN_ERR PFX "unable to fill SPROM for given bustype.\n");
-+		pr_err("unable to fill SPROM for given bustype.\n");
- 		return -EINVAL;
- 	}
- }
-@@ -784,7 +785,7 @@ void __init board_prom_init(void)
- 			 cfe[5], cfe[6], cfe[7], cfe[8], cfe[9]);
- 	else
- 		strcpy(cfe_version, "unknown");
--	printk(KERN_INFO PFX "CFE version: %s\n", cfe_version);
-+	pr_info("CFE version: %s\n", cfe_version);
- 
- 	bcm63xx_nvram_init(boot_addr + BCM963XX_NVRAM_OFFSET);
- 
-@@ -808,7 +809,7 @@ void __init board_prom_init(void)
- 		char name[17];
- 		memcpy(name, board_name, 16);
- 		name[16] = 0;
--		printk(KERN_ERR PFX "unknown bcm963xx board: %s\n",
-+		pr_err("unknown bcm963xx board: %s\n",
- 		       name);
- 		return;
- 	}
-@@ -854,7 +855,7 @@ void __init board_setup(void)
- {
- 	if (!board.name[0])
- 		panic("unable to detect bcm963xx board");
--	printk(KERN_INFO PFX "board name: %s\n", board.name);
-+	pr_info("board name: %s\n", board.name);
- 
- 	/* make sure we're running on expected cpu */
- 	if (bcm63xx_get_cpu_id() != board.expected_cpu_id)
-diff --git a/arch/mips/bcm63xx/cpu.c b/arch/mips/bcm63xx/cpu.c
-index 307ec8b..57dfe7c 100644
---- a/arch/mips/bcm63xx/cpu.c
-+++ b/arch/mips/bcm63xx/cpu.c
-@@ -376,10 +376,10 @@ void __init bcm63xx_cpu_init(void)
- 	bcm63xx_cpu_freq = detect_cpu_clock();
- 	bcm63xx_memory_size = detect_memory_size();
- 
--	printk(KERN_INFO "Detected Broadcom 0x%04x CPU revision %02x\n",
-+	pr_info("Detected Broadcom 0x%04x CPU revision %02x\n",
- 	       bcm63xx_cpu_id, bcm63xx_cpu_rev);
--	printk(KERN_INFO "CPU frequency is %u MHz\n",
-+	pr_info("CPU frequency is %u MHz\n",
- 	       bcm63xx_cpu_freq / 1000000);
--	printk(KERN_INFO "%uMB of RAM installed\n",
-+	pr_info("%uMB of RAM installed\n",
- 	       bcm63xx_memory_size >> 20);
- }
-diff --git a/arch/mips/bcm63xx/dev-pcmcia.c b/arch/mips/bcm63xx/dev-pcmcia.c
-index a551bab..9496cd2 100644
---- a/arch/mips/bcm63xx/dev-pcmcia.c
-+++ b/arch/mips/bcm63xx/dev-pcmcia.c
-@@ -139,6 +139,6 @@ int __init bcm63xx_pcmcia_register(void)
- 	return platform_device_register(&bcm63xx_pcmcia_device);
- 
- out_err:
--	printk(KERN_ERR "unable to set pcmcia chip select\n");
-+	pr_err("unable to set pcmcia chip select\n");
- 	return ret;
- }
-diff --git a/arch/mips/bcm63xx/irq.c b/arch/mips/bcm63xx/irq.c
-index e3e808a..99d3d14 100644
---- a/arch/mips/bcm63xx/irq.c
-+++ b/arch/mips/bcm63xx/irq.c
-@@ -311,7 +311,7 @@ static int bcm63xx_external_irq_set_type(struct irq_data *d,
- 		break;
- 
- 	default:
--		printk(KERN_ERR "bogus flow type combination given !\n");
-+		pr_err("bogus flow type combination given !\n");
- 		return -EINVAL;
- 	}
- 
-diff --git a/arch/mips/bcm63xx/setup.c b/arch/mips/bcm63xx/setup.c
-index 240fb4f..2be9caa 100644
---- a/arch/mips/bcm63xx/setup.c
-+++ b/arch/mips/bcm63xx/setup.c
-@@ -24,7 +24,7 @@
- 
- void bcm63xx_machine_halt(void)
- {
--	printk(KERN_INFO "System halted\n");
-+	pr_info("System halted\n");
- 	while (1)
- 		;
- }
-@@ -34,7 +34,7 @@ static void bcm6348_a1_reboot(void)
- 	u32 reg;
- 
- 	/* soft reset all blocks */
--	printk(KERN_INFO "soft-resetting all blocks ...\n");
-+	pr_info("soft-resetting all blocks ...\n");
- 	reg = bcm_perf_readl(PERF_SOFTRESET_REG);
- 	reg &= ~SOFTRESET_6348_ALL;
- 	bcm_perf_writel(reg, PERF_SOFTRESET_REG);
-@@ -46,7 +46,7 @@ static void bcm6348_a1_reboot(void)
- 	mdelay(10);
- 
- 	/* Jump to the power on address. */
--	printk(KERN_INFO "jumping to reset vector.\n");
-+	pr_info("jumping to reset vector.\n");
- 	/* set high vectors (base at 0xbfc00000 */
- 	set_c0_status(ST0_BEV | ST0_ERL);
- 	/* run uncached in kseg0 */
-@@ -110,7 +110,7 @@ void bcm63xx_machine_reboot(void)
- 	if (BCMCPU_IS_6348() && (bcm63xx_get_cpu_rev() == 0xa1))
- 		bcm6348_a1_reboot();
- 
--	printk(KERN_INFO "triggering watchdog soft-reset...\n");
-+	pr_info("triggering watchdog soft-reset...\n");
- 	if (BCMCPU_IS_6328()) {
- 		bcm_wdt_writel(1, WDT_SOFTRESET_REG);
- 	} else {
-diff --git a/arch/mips/bcm63xx/timer.c b/arch/mips/bcm63xx/timer.c
-index 5f11359..bedc497 100644
---- a/arch/mips/bcm63xx/timer.c
-+++ b/arch/mips/bcm63xx/timer.c
-@@ -195,7 +195,7 @@ int bcm63xx_timer_init(void)
- 	irq = bcm63xx_get_irq_number(IRQ_TIMER);
- 	ret = request_irq(irq, timer_interrupt, 0, "bcm63xx_timer", NULL);
- 	if (ret) {
--		printk(KERN_ERR "bcm63xx_timer: failed to register irq\n");
-+		pr_err("bcm63xx_timer: failed to register irq\n");
- 		return ret;
- 	}
- 
--- 
-1.9.1
+If you ever do more of these, here are a few trivial style notes:
+
+> diff --git a/arch/mips/bcm63xx/boards/board_bcm963xx.c b/arch/mips/bcm63xx/boards/board_bcm963xx.c
+
+> +#define pr_fmt(fmt) "board_bcm963xx: " fmt
+
+Using:
+
+#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+
+is more common
+
+> @@ -740,7 +741,7 @@ int bcm63xx_get_fallback_sprom(struct ssb_bus *bus, struct ssb_sprom *out)
+>  		memcpy(out, &bcm63xx_sprom, sizeof(struct ssb_sprom));
+>  		return 0;
+>  	} else {
+> -		printk(KERN_ERR PFX "unable to fill SPROM for given bustype.\n");
+> +		pr_err("unable to fill SPROM for given bustype.\n");
+
+The periods at the end of logging lines are generally
+superfluous and can be removed.
+
+> @@ -808,7 +809,7 @@ void __init board_prom_init(void)
+>  		char name[17];
+>  		memcpy(name, board_name, 16);
+>  		name[16] = 0;
+> -		printk(KERN_ERR PFX "unknown bcm963xx board: %s\n",
+> +		pr_err("unknown bcm963xx board: %s\n",
+>  		       name);
+
+It's nicer to unwrap lines where appropriate:
+
+		pr_err("unknown bcm963xx board: %s\n", name);
+
+> diff --git a/arch/mips/bcm63xx/cpu.c b/arch/mips/bcm63xx/cpu.c
+[]
+> @@ -376,10 +376,10 @@ void __init bcm63xx_cpu_init(void)
+>  	bcm63xx_cpu_freq = detect_cpu_clock();
+>  	bcm63xx_memory_size = detect_memory_size();
+>  
+> -	printk(KERN_INFO "Detected Broadcom 0x%04x CPU revision %02x\n",
+> +	pr_info("Detected Broadcom 0x%04x CPU revision %02x\n",
+>  	       bcm63xx_cpu_id, bcm63xx_cpu_rev);
+
+It's nicer to reflow alignment for the entire statement to
+keep the subsequent line arguments at the open parenthesis:
+
+	pr_info("Detected Broadcom 0x%04x CPU revision %02x\n",
+ 		bcm63xx_cpu_id, bcm63xx_cpu_rev);
+
+> +	pr_info("CPU frequency is %u MHz\n",
+>  	       bcm63xx_cpu_freq / 1000000);
+
+	pr_info("CPU frequency is %u MHz\n", bcm63xx_cpu_freq / 1000000);
+
+etc...
+
+> diff --git a/arch/mips/bcm63xx/timer.c b/arch/mips/bcm63xx/timer.c
+[]
+> @@ -195,7 +195,7 @@ int bcm63xx_timer_init(void)
+>  	irq = bcm63xx_get_irq_number(IRQ_TIMER);
+>  	ret = request_irq(irq, timer_interrupt, 0, "bcm63xx_timer", NULL);
+>  	if (ret) {
+> -		printk(KERN_ERR "bcm63xx_timer: failed to register irq\n");
+> +		pr_err("bcm63xx_timer: failed to register irq\n");
+
+It's sometimes nicer to change embedded function names
+to use "%s: ", __func__
+
+		pr_err("%s: failed to register irq\n", __func__);

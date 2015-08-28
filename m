@@ -1,51 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Aug 2015 16:06:30 +0200 (CEST)
-Received: from mail.efficios.com ([78.47.125.74]:60397 "EHLO mail.efficios.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27006585AbbH1OG2kh4jC (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 28 Aug 2015 16:06:28 +0200
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by mail.efficios.com (Postfix) with ESMTP id 135C5340240;
-        Fri, 28 Aug 2015 14:06:24 +0000 (UTC)
-Received: from mail.efficios.com ([127.0.0.1])
-        by localhost (evm-mail-1.efficios.com [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id FD8c1MhfUPXB; Fri, 28 Aug 2015 14:06:14 +0000 (UTC)
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by mail.efficios.com (Postfix) with ESMTP id EC55E340366;
-        Fri, 28 Aug 2015 14:06:13 +0000 (UTC)
-X-Virus-Scanned: amavisd-new at efficios.com
-Received: from mail.efficios.com ([127.0.0.1])
-        by localhost (evm-mail-1.efficios.com [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id 9Tm5LI0HSWG8; Fri, 28 Aug 2015 14:06:13 +0000 (UTC)
-Received: from evm-mail-1.efficios.com (evm-mail-1.efficios.com [78.47.125.74])
-        by mail.efficios.com (Postfix) with ESMTP id BA4BB340240;
-        Fri, 28 Aug 2015 14:06:13 +0000 (UTC)
-Date:   Fri, 28 Aug 2015 14:06:12 +0000 (UTC)
-From:   Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        linux-api <linux-api@vger.kernel.org>,
-        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
-Message-ID: <815178017.30970.1440770772982.JavaMail.zimbra@efficios.com>
-In-Reply-To: <20150828074034.GA22604@linux-mips.org>
-References: <1440698215-8355-1-git-send-email-mathieu.desnoyers@efficios.com> <1440698215-8355-5-git-send-email-mathieu.desnoyers@efficios.com> <20150828074034.GA22604@linux-mips.org>
-Subject: Re: [RFC PATCH 4/9] mips: allocate sys_membarrier system call
- number
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Aug 2015 16:22:43 +0200 (CEST)
+Received: from www.linutronix.de ([62.245.132.108]:36269 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27006585AbbH1OWmUYo8C (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 28 Aug 2015 16:22:42 +0200
+Received: from localhost ([127.0.0.1])
+        by Galois.linutronix.de with esmtps (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:256)
+        (Exim 4.80)
+        (envelope-from <tglx@linutronix.de>)
+        id 1ZVKY9-00054t-D0; Fri, 28 Aug 2015 16:22:37 +0200
+Date:   Fri, 28 Aug 2015 16:22:08 +0200 (CEST)
+From:   Thomas Gleixner <tglx@linutronix.de>
+To:     Qais Yousef <qais.yousef@imgtec.com>
+cc:     Marc Zyngier <marc.zyngier@arm.com>,
+        "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>,
+        Jason Cooper <jason@lakedaemon.net>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        Mark Rutland <Mark.Rutland@arm.com>,
+        Jiang Liu <jiang.liu@linux.intel.com>,
+        Mark Brown <broonie@kernel.org>,
+        Lisa Parratt <Lisa.Parratt@imgtec.com>
+Subject: Re: [PATCH 01/10] irqchip: irq-mips-gic: export gic_send_ipi
+In-Reply-To: <55E03A2B.3070805@imgtec.com>
+Message-ID: <alpine.DEB.2.11.1508281619311.15006@nanos>
+References: <1440419959-14315-1-git-send-email-qais.yousef@imgtec.com> <1440419959-14315-2-git-send-email-qais.yousef@imgtec.com> <alpine.DEB.2.11.1508241447100.3873@nanos> <55DB15EB.3090109@imgtec.com> <55DB1CD2.5030300@arm.com> <55DB29B5.3010202@imgtec.com>
+ <alpine.DEB.2.11.1508241656280.3873@nanos> <55DB48C9.7010508@imgtec.com> <55DB519D.2090203@arm.com> <55DDA1C4.4070301@imgtec.com> <alpine.DEB.2.11.1508261427280.15006@nanos> <55DDD3E3.7070009@imgtec.com> <alpine.DEB.2.11.1508261701430.15006@nanos>
+ <55DDDE3C.8030609@imgtec.com> <alpine.DEB.2.11.1508262101450.15006@nanos> <55E03A2B.3070805@imgtec.com>
+User-Agent: Alpine 2.11 (DEB 23 2013-08-11)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [78.47.125.74]
-X-Mailer: Zimbra 8.6.0_GA_1178 (ZimbraWebClient - FF40 (Linux)/8.6.0_GA_1178)
-Thread-Topic: mips: allocate sys_membarrier system call number
-Thread-Index: BIZvjBuqQXs18scgct95Dl4bm+8eDw==
-Return-Path: <compudj@efficios.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Linutronix-Spam-Score: -1.0
+X-Linutronix-Spam-Level: -
+X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+Return-Path: <tglx@linutronix.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49063
+X-archive-position: 49064
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mathieu.desnoyers@efficios.com
+X-original-sender: tglx@linutronix.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,37 +53,63 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
------ On Aug 28, 2015, at 3:40 AM, Ralf Baechle ralf@linux-mips.org wrote:
-
-> On Thu, Aug 27, 2015 at 01:56:50PM -0400, Mathieu Desnoyers wrote:
+On Fri, 28 Aug 2015, Qais Yousef wrote:
+> Thanks a lot for the detailed explanation. I wasn't looking for a quick and
+> dirty solution but my view of the problem is much simpler than yours so my
+> idea of a solution would look quick and dirty. I have a better appreciation of
+> the problem now and a way to approach it :-)
 > 
->> [ Untested on this architecture. To try it out: fetch linux-next/akpm,
->>   apply this patch, build/run a membarrier-enabled kernel, and do make
->>   kselftest. ]
->> 
->> Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
->> CC: Andrew Morton <akpm@linux-foundation.org>
->> CC: linux-api@vger.kernel.org
->> CC: Ralf Baechle <ralf@linux-mips.org>
->> CC: linux-mips@linux-mips.org
->> ---
->>  arch/mips/include/uapi/asm/unistd.h | 15 +++++++++------
->>  arch/mips/kernel/scall32-o32.S      |  1 +
->>  arch/mips/kernel/scall64-64.S       |  1 +
->>  arch/mips/kernel/scall64-n32.S      |  1 +
->>  arch/mips/kernel/scall64-o32.S      |  1 +
->>  5 files changed, 13 insertions(+), 6 deletions(-)
+> From DT point of view are we OK with this form then
 > 
-> Looking good assuming there is no compat syscall required.
+>     coprocessor {
+>             interrupt-source = <&intc INT_SPEC COP_HWAFFINITY>;
+>             interrupt-sink = <&intc INT_SPEC CPU_HWAFFINITY>;
+>     }
+> 
+> and if the root controller sends normal IPI as it sends normal device
+> interrupts then interrupt-sink can be a standard interrupts property (like in
+> my case)
+> 
+>     coprocessor {
+>             interrupt-source = <&intc INT_SPEC COP_HWAFFINITY>;
+>             interrupts = <INT_SPEC>;
+>     }
+> 
+> Does this look right to you? Is there something else that needs to be covered
+> still?
 
-Indeed, sys_membarrier only takes two integer arguments, so no
-compat syscall is required.
+I'm not an DT wizard. I leave that to the DT experts.
+ 
+> One more thing I can think of now is that the coprocessor will need the raw
+> irq numbers that are picked by linux so that it can use them to trigger the
+> IPI. Are we ok to add a function that returns this raw irq number (as opposed
+> to linux irq number) directly from DT? The way this is communicated to the
+> coprocessor will be platform specific.
 
-Thanks!
+Why do you want that to be hacked into DT? 
 
-Mathieu
+> >     To configure your coprocessor proper, we need a translation
+> >     mechanism from the linux interrupt number to the magic value which
+> >     needs to be written into the trigger register when the coprocessor
+> >     wants to send an interrupt or an IPI.
+> > 
+> >     int irq_get_irq_hwcfg(unsigned int irq, struct irq_hwcfg *cfg);
+> > 
+> >     struct irq_hwcfg needs to be defined, but it might look like this:
+> > 
+> >       {
+> > 	/* Generic fields */
+> > 	x;
+> > 	...
+> > 	union {
+> > 	      mips_gic;
+> > 	      ...
+> > 	};
+> >       };
 
--- 
-Mathieu Desnoyers
-EfficiOS Inc.
-http://www.efficios.com
+That function provides you the information which you have to hand over
+to your coprocessor firmware.
+
+Thanks,
+
+	tglx

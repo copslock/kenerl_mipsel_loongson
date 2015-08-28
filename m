@@ -1,59 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Aug 2015 16:33:00 +0200 (CEST)
-Received: from mail-wi0-f179.google.com ([209.85.212.179]:35208 "EHLO
-        mail-wi0-f179.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007749AbbH1Oc6SSzTE (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 28 Aug 2015 16:32:58 +0200
-Received: by wicne3 with SMTP id ne3so21283673wic.0
-        for <linux-mips@linux-mips.org>; Fri, 28 Aug 2015 07:32:53 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-type:content-disposition:in-reply-to:user-agent;
-        bh=/hfZdLNqN4kS9p6ea+oMZa8UpSdpkqGZEX1MQ4JLGp8=;
-        b=AdX/LxUeghnlTYSFKLpsW++wjP/b2laCREsAVb8XA41tFx3RtA1Neg48rALaGv2DXR
-         bx87xQIjQU8usSv44mex/Zdps0rdkXwwKn/Q6Tu2ROUPYnWl0pQWLyOfXNBZ5PsiDtrx
-         D8HiA+lAgAcphfa/G+7ZKaXLCdhmx0FcH7eNBTKPkuct3dK/ElzT2LzcX7KjXjvuVBdw
-         a8ICtKin6Y1oeKCNVMkPDeEV0hmkxlDblZZrlJf0g8Kb/WAPIaMrH8fSOjRKQRg/cQk+
-         7H5QCls8mr4Z4tFmWEYyeUCsi99KpxuObvUQoWNbg0gI134RVcPs4z4vDOjL7Xl19qBR
-         RG8g==
-X-Received: by 10.194.108.5 with SMTP id hg5mr12443307wjb.25.1440772373144;
-        Fri, 28 Aug 2015 07:32:53 -0700 (PDT)
-Received: from localhost (nat1.scz.suse.com. [213.151.88.250])
-        by smtp.gmail.com with ESMTPSA id jr5sm8344634wjc.14.2015.08.28.07.32.52
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 28 Aug 2015 07:32:52 -0700 (PDT)
-Date:   Fri, 28 Aug 2015 16:32:51 +0200
-From:   Michal Hocko <mhocko@kernel.org>
-To:     Eric B Munson <emunson@akamai.com>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Jonathan Corbet <corbet@lwn.net>,
-        "Kirill A. Shutemov" <kirill@shutemov.name>,
-        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mips@linux-mips.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org, linux-arch@vger.kernel.org,
-        linux-api@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v8 4/6] mm: mlock: Add mlock flags to enable
- VM_LOCKONFAULT usage
-Message-ID: <20150828143251.GF5301@dhcp22.suse.cz>
-References: <1440613465-30393-1-git-send-email-emunson@akamai.com>
- <1440613465-30393-5-git-send-email-emunson@akamai.com>
- <20150828143130.GE5301@dhcp22.suse.cz>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Aug 2015 17:12:22 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:17692 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27006585AbbH1PMU6wy7E (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 28 Aug 2015 17:12:20 +0200
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 9D8594E13F1AD;
+        Fri, 28 Aug 2015 16:12:12 +0100 (IST)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Fri, 28 Aug 2015 16:12:15 +0100
+Received: from [192.168.154.94] (192.168.154.94) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Fri, 28 Aug
+ 2015 16:12:14 +0100
+Subject: Re: [PATCH 01/10] irqchip: irq-mips-gic: export gic_send_ipi
+To:     Thomas Gleixner <tglx@linutronix.de>
+References: <1440419959-14315-1-git-send-email-qais.yousef@imgtec.com>
+ <1440419959-14315-2-git-send-email-qais.yousef@imgtec.com>
+ <alpine.DEB.2.11.1508241447100.3873@nanos> <55DB15EB.3090109@imgtec.com>
+ <55DB1CD2.5030300@arm.com> <55DB29B5.3010202@imgtec.com>
+ <alpine.DEB.2.11.1508241656280.3873@nanos> <55DB48C9.7010508@imgtec.com>
+ <55DB519D.2090203@arm.com> <55DDA1C4.4070301@imgtec.com>
+ <alpine.DEB.2.11.1508261427280.15006@nanos> <55DDD3E3.7070009@imgtec.com>
+ <alpine.DEB.2.11.1508261701430.15006@nanos> <55DDDE3C.8030609@imgtec.com>
+ <alpine.DEB.2.11.1508262101450.15006@nanos> <55E03A2B.3070805@imgtec.com>
+ <alpine.DEB.2.11.1508281619311.15006@nanos>
+CC:     Marc Zyngier <marc.zyngier@arm.com>,
+        "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>,
+        Jason Cooper <jason@lakedaemon.net>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        Mark Rutland <Mark.Rutland@arm.com>,
+        Jiang Liu <jiang.liu@linux.intel.com>,
+        Mark Brown <broonie@kernel.org>,
+        Lisa Parratt <Lisa.Parratt@imgtec.com>
+From:   Qais Yousef <qais.yousef@imgtec.com>
+Message-ID: <55E07A4E.1070309@imgtec.com>
+Date:   Fri, 28 Aug 2015 16:12:14 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+ Thunderbird/38.2.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20150828143130.GE5301@dhcp22.suse.cz>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <mstsxfx@gmail.com>
+In-Reply-To: <alpine.DEB.2.11.1508281619311.15006@nanos>
+Content-Type: text/plain; charset="windows-1252"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.154.94]
+Return-Path: <Qais.Yousef@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49066
+X-archive-position: 49067
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mhocko@kernel.org
+X-original-sender: qais.yousef@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -66,31 +64,33 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri 28-08-15 16:31:30, Michal Hocko wrote:
-> On Wed 26-08-15 14:24:23, Eric B Munson wrote:
-> > The previous patch introduced a flag that specified pages in a VMA
-> > should be placed on the unevictable LRU, but they should not be made
-> > present when the area is created.  This patch adds the ability to set
-> > this state via the new mlock system calls.
-> > 
-> > We add MLOCK_ONFAULT for mlock2 and MCL_ONFAULT for mlockall.
-> > MLOCK_ONFAULT will set the VM_LOCKONFAULT modifier for VM_LOCKED.
-> > MCL_ONFAULT should be used as a modifier to the two other mlockall
-> > flags.  When used with MCL_CURRENT, all current mappings will be marked
-> > with VM_LOCKED | VM_LOCKONFAULT.  When used with MCL_FUTURE, the
-> > mm->def_flags will be marked with VM_LOCKED | VM_LOCKONFAULT.  When used
-> > with both MCL_CURRENT and MCL_FUTURE, all current mappings and
-> > mm->def_flags will be marked with VM_LOCKED | VM_LOCKONFAULT.
-> > 
-> > Prior to this patch, mlockall() will unconditionally clear the
-> > mm->def_flags any time it is called without MCL_FUTURE.  This behavior
-> > is maintained after adding MCL_ONFAULT.  If a call to
-> > mlockall(MCL_FUTURE) is followed by mlockall(MCL_CURRENT), the
-> > mm->def_flags will be cleared and new VMAs will be unlocked.  This
-> > remains true with or without MCL_ONFAULT in either mlockall()
-> > invocation.
+On 08/28/2015 03:22 PM, Thomas Gleixner wrote:
+>>>      To configure your coprocessor proper, we need a translation
+>>>      mechanism from the linux interrupt number to the magic value which
+>>>      needs to be written into the trigger register when the coprocessor
+>>>      wants to send an interrupt or an IPI.
+>>>
+>>>      int irq_get_irq_hwcfg(unsigned int irq, struct irq_hwcfg *cfg);
+>>>
+>>>      struct irq_hwcfg needs to be defined, but it might look like this:
+>>>
+>>>        {
+>>> 	/* Generic fields */
+>>> 	x;
+>>> 	...
+>>> 	union {
+>>> 	      mips_gic;
+>>> 	      ...
+>>> 	};
+>>>        };
+> That function provides you the information which you have to hand over
+> to your coprocessor firmware.
+>
+>
 
-Btw. I think we really want a man page for this new mlock call.
--- 
-Michal Hocko
-SUSE Labs
+Of course!
+
+* me slapping myself on the back *
+
+Thanks,
+Qais

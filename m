@@ -1,43 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 31 Aug 2015 06:20:16 +0200 (CEST)
-Received: from bh-25.webhostbox.net ([208.91.199.152]:52162 "EHLO
-        bh-25.webhostbox.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27006764AbbHaEUOHoBk2 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 31 Aug 2015 06:20:14 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=roeck-us.net; s=default;
-        h=Message-Id:Date:Subject:Cc:To:From; bh=1XQeb5HPBj2szmvNdSdCUpTJF3tmp7q68sHPPbTYlEE=;
-        b=Ejtx7Qkt4MpGQlvSZtx68UTqDm3otLOTM/1GImV2ZjiBZ+8ST8B2OZopozEOnJcEre/LGxMWeS/yo2txzvdRrVv80U5gclA99OXUOuHRwS6khvaw6hJ5n0NjQdsTHUDGoNyPmXDgwS+SU693bZtaMUy0tAxqDQ/+DonssSfkuqk=;
-Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:41924 helo=localhost)
-        by bh-25.webhostbox.net with esmtpa (Exim 4.85)
-        (envelope-from <linux@roeck-us.net>)
-        id 1ZWGZg-0021rn-Ox; Mon, 31 Aug 2015 04:20:05 +0000
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Huacai Chen <chenhc@lemote.com>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org, Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH v2] MIPS: Fix console output for Fulong2e system
-Date:   Sun, 30 Aug 2015 21:19:58 -0700
-Message-Id: <1440994798-14032-1-git-send-email-linux@roeck-us.net>
-X-Mailer: git-send-email 2.1.4
-X-Authenticated_sender: guenter@roeck-us.net
-X-OutGoing-Spam-Status: No, score=-1.0
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - bh-25.webhostbox.net
-X-AntiAbuse: Original Domain - linux-mips.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - roeck-us.net
-X-Get-Message-Sender-Via: bh-25.webhostbox.net: authenticated_id: guenter@roeck-us.net
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-Return-Path: <linux@roeck-us.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 31 Aug 2015 06:51:07 +0200 (CEST)
+Received: from mail-pa0-f51.google.com ([209.85.220.51]:33457 "EHLO
+        mail-pa0-f51.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006764AbbHaEvGTTiZe (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 31 Aug 2015 06:51:06 +0200
+Received: by padhy3 with SMTP id hy3so21207377pad.0;
+        Sun, 30 Aug 2015 21:51:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=date:from:to:cc:subject:message-id:mime-version:content-type
+         :content-disposition:user-agent;
+        bh=JiqjfPaeJ8H2B92E8tQYNa57e2DM/v4pHxg8sIYbOkU=;
+        b=lvlKDvgWdM/f2EUvQGSvcMZutTpoCDJZ/Pw+tihGGRtkzgXHYA0uv+rQbleisl447w
+         kEFQXtI0hjEqebogg4ZqccUwSVg6eDiKJKidPUeVOeBq0qEry7QfWwnd6FQ+xWI1bwt9
+         0hqVeivEjZSbjpq98czjgeXlREJrN/vHTdqn2SDTdIP6UZpOWABpX+1sqM6DkMhPiMPD
+         Iy8TTw4UD0x5LcOgtXkwIZbLOql9YIOKXoXEccIX6gRu2TnmLf6mLERAK8f3LOBalZvr
+         tNxhNK3i1tPttd6YRepOFZxsPZKvWpNZK7XLbNZksXglnLdx1jDtbTg63+etJQZYxgbr
+         +nyw==
+X-Received: by 10.69.26.161 with SMTP id iz1mr34669114pbd.17.1440996660030;
+        Sun, 30 Aug 2015 21:51:00 -0700 (PDT)
+Received: from yggdrasil.local (42-73-176-21.EMOME-IP.hinet.net. [42.73.176.21])
+        by smtp.gmail.com with ESMTPSA id j5sm12880799pdi.7.2015.08.30.21.50.56
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 30 Aug 2015 21:50:59 -0700 (PDT)
+Date:   Mon, 31 Aug 2015 12:50:52 +0800
+From:   Tony Wu <tung7970@gmail.com>
+To:     Alexander Sverdlin <alexander.sverdlin@nokia.com>
+Cc:     linux-mips@linux-mips.org, David Daney <david.daney@cavium.com>,
+        Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>,
+        Huacai Chen <chenhc@lemote.com>,
+        Andreas Herrmann <andreas.herrmann@caviumnetworks.com>,
+        Joe Perches <joe@perches.com>,
+        "Steven J. Hill" <Steven.Hill@imgtec.com>,
+        Yusuf Khan <yusuf.khan@nokia.com>,
+        Michael Kreuzer <michael.kreuzer@nokia.com>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Ralf Baechle <ralf@linux-mips.org>
+Subject: initrd support broken in mips kernel 4.2
+Message-ID: <20150831122702-tung7970@googlemail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <tung7970@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49070
+X-archive-position: 49071
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linux@roeck-us.net
+X-original-sender: tung7970@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,36 +62,38 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Commit 3adeb2566b9b ("MIPS: Loongson: Improve LEFI firmware interface")
-made the number of UARTs dynamic if LEFI_FIRMWARE_INTERFACE is configured.
-Unfortunately, it did not initialize the number of UARTs if
-LEFI_FIRMWARE_INTERFACE is not configured. As a result, the Fulong2e
-system has no console.
+Hello,
 
-Fixes: 3adeb2566b9b ("MIPS: Loongson: Improve LEFI firmware interface")
-Acked-by: Huacai Chen <chenhc@lemote.com>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
----
-v2: Changed subject to 'MIPS'
-    Added Acked-by:
-    Rebased to v4.2 and re-tested with qemu
+Commit a6335fa11 (MIPS: bootmem: Don't use memory holes for page bitmap) 
+crashes kernel with a initramfs unpacking error when initrd is enabled. 
 
- arch/mips/loongson64/common/env.c | 3 +++
- 1 file changed, 3 insertions(+)
+---- error message ----
+Unpacking initramfs...
+Initramfs unpacking failed: junk in compressed archive
+BUG: Bad page state in process swapper  pfn:00261
+page:81004c20 count:0 mapcount:-127 mapping:  (null) index:0x2
+flags: 0x0()
+page dumped because: nonzero mapcount
+CPU: 0 PID: 1 Comm: swapper Not tainted 4.2.0+ #1782
+-----------------------
 
-diff --git a/arch/mips/loongson64/common/env.c b/arch/mips/loongson64/common/env.c
-index f6c44dd332e2..d6d07ad56180 100644
---- a/arch/mips/loongson64/common/env.c
-+++ b/arch/mips/loongson64/common/env.c
-@@ -64,6 +64,9 @@ void __init prom_init_env(void)
- 	}
- 	if (memsize == 0)
- 		memsize = 256;
-+
-+	loongson_sysconf.nr_uarts = 1;
-+
- 	pr_info("memsize=%u, highmemsize=%u\n", memsize, highmemsize);
- #else
- 	struct boot_params *boot_p;
--- 
-2.1.4
+The modified logic in bootmem_init does not guarantee mapstart to be placed 
+after initrd_end. mapstart is set to the maximum of reserved_end and
+start. In case initrd_end is greater than reserved_end, mapstart is placed
+before initrd_end, and causes initramfs unpacking error.
+
+----- bootmem_init ---
+                if (end <= reserved_end)
+                        continue;
++#ifdef CONFIG_BLK_DEV_INITRD
++               /* mapstart should be after initrd_end */
++               if (initrd_end && end <= (unsigned long)PFN_UP(__pa(initrd_end)))
++                       continue;
++#endif
+                if (start >= mapstart)
+                        continue;
+                mapstart = max(reserved_end, start);
+-----------------------
+
+Thanks,
+Tony

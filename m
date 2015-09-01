@@ -1,12 +1,12 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Sep 2015 17:24:31 +0200 (CEST)
-Received: from smtp2-g21.free.fr ([212.27.42.2]:37236 "EHLO smtp2-g21.free.fr"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Sep 2015 17:24:52 +0200 (CEST)
+Received: from smtp2-g21.free.fr ([212.27.42.2]:38092 "EHLO smtp2-g21.free.fr"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27013086AbbIAPYSVKxjI (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 1 Sep 2015 17:24:18 +0200
+        id S27007013AbbIAPYaizOY8 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 1 Sep 2015 17:24:30 +0200
 Received: from tock.adnet.avionic-design.de (unknown [78.54.126.133])
         (Authenticated sender: albeu)
-        by smtp2-g21.free.fr (Postfix) with ESMTPA id 0DC4F4B0114;
-        Tue,  1 Sep 2015 17:24:04 +0200 (CEST)
+        by smtp2-g21.free.fr (Postfix) with ESMTPA id 354794B0113;
+        Tue,  1 Sep 2015 17:24:18 +0200 (CEST)
 From:   Alban Bedel <albeu@free.fr>
 To:     linux-mips@linux-mips.org
 Cc:     Rob Herring <robh+dt@kernel.org>, Pawel Moll <pawel.moll@arm.com>,
@@ -17,9 +17,9 @@ Cc:     Rob Herring <robh+dt@kernel.org>, Pawel Moll <pawel.moll@arm.com>,
         Kishon Vijay Abraham I <kishon@ti.com>,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         Alban Bedel <albeu@free.fr>
-Subject: [PATCH 3/4] MIPS: ath79: Add the EHCI controller and USB phy to the AR9132 dtsi
-Date:   Tue,  1 Sep 2015 17:23:13 +0200
-Message-Id: <1441120994-31476-4-git-send-email-albeu@free.fr>
+Subject: [PATCH 4/4] MIPS: ath79: Enable the USB port on the TL-WR1043ND
+Date:   Tue,  1 Sep 2015 17:23:14 +0200
+Message-Id: <1441120994-31476-5-git-send-email-albeu@free.fr>
 X-Mailer: git-send-email 2.0.0
 In-Reply-To: <1441120994-31476-1-git-send-email-albeu@free.fr>
 References: <1441120994-31476-1-git-send-email-albeu@free.fr>
@@ -27,7 +27,7 @@ Return-Path: <albeu@free.fr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49077
+X-archive-position: 49078
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,48 +46,23 @@ X-list: linux-mips
 
 Signed-off-by: Alban Bedel <albeu@free.fr>
 ---
- arch/mips/boot/dts/qca/ar9132.dtsi | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
+ arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/mips/boot/dts/qca/ar9132.dtsi b/arch/mips/boot/dts/qca/ar9132.dtsi
-index fb7734e..665ee84 100644
---- a/arch/mips/boot/dts/qca/ar9132.dtsi
-+++ b/arch/mips/boot/dts/qca/ar9132.dtsi
-@@ -125,6 +125,21 @@
+diff --git a/arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts b/arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts
+index 003015a..cd51199 100644
+--- a/arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts
++++ b/arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts
+@@ -35,6 +35,10 @@
  			};
  		};
  
 +		ehci@1b000100 {
-+			compatible = "qca,ar7100-ehci", "generic-ehci";
-+			reg = <0x1b000100 0x100>;
-+
-+			interrupts = <3>;
-+			resets = <&rst 5>;
-+
-+			has-transaction-translator;
-+
-+			phy-names = "usb";
-+			phys = <&usb_phy>;
-+
-+			status = "disabled";
++			status = "okay";
 +		};
 +
  		spi@1f000000 {
- 			compatible = "qca,ar9132-spi", "qca,ar7100-spi";
- 			reg = <0x1f000000 0x10>;
-@@ -138,4 +153,13 @@
- 			#size-cells = <0>;
- 		};
- 	};
-+
-+	usb_phy: usb-phy {
-+		compatible = "qca,ar7100-usb-phy";
-+
-+		reset-names = "usb-phy", "usb-suspend-override";
-+		resets = <&rst 4>, <&rst 3>;
-+
-+		#phy-cells = <0>;
-+	};
- };
+ 			status = "okay";
+ 			num-cs = <1>;
 -- 
 2.0.0

@@ -1,32 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Sep 2015 11:38:29 +0200 (CEST)
-Received: from smtp2-g21.free.fr ([212.27.42.2]:64514 "EHLO smtp2-g21.free.fr"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27006771AbbIAJi1y0bIL (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 1 Sep 2015 11:38:27 +0200
-Received: from tock.adnet.avionic-design.de (unknown [78.54.126.133])
-        (Authenticated sender: albeu)
-        by smtp2-g21.free.fr (Postfix) with ESMTPA id 7EE9A4B000C;
-        Tue,  1 Sep 2015 11:38:18 +0200 (CEST)
-From:   Alban Bedel <albeu@free.fr>
-To:     linux-gpio@vger.kernel.org
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        Alexandre Courbot <gnurou@gmail.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Gabor Juhos <juhosg@openwrt.org>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org, Alban Bedel <albeu@free.fr>
-Subject: [PATCH] gpio: ath79: Convert to the state container design pattern
-Date:   Tue,  1 Sep 2015 11:38:02 +0200
-Message-Id: <1441100282-13584-1-git-send-email-albeu@free.fr>
-X-Mailer: git-send-email 2.0.0
-Return-Path: <albeu@free.fr>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Sep 2015 16:11:47 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:3864 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27007213AbbIAOLnf1fbe (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 1 Sep 2015 16:11:43 +0200
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 9A4D8401302B6;
+        Tue,  1 Sep 2015 15:11:34 +0100 (IST)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Tue, 1 Sep 2015 15:11:37 +0100
+Received: from [192.168.154.168] (192.168.154.168) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Tue, 1 Sep
+ 2015 15:11:36 +0100
+Subject: Re: [PATCH v2] MIPS: Fix console output for Fulong2e system
+To:     Guenter Roeck <linux@roeck-us.net>,
+        Ralf Baechle <ralf@linux-mips.org>
+References: <1440994798-14032-1-git-send-email-linux@roeck-us.net>
+CC:     Huacai Chen <chenhc@lemote.com>, <linux-mips@linux-mips.org>,
+        <linux-kernel@vger.kernel.org>
+From:   Markos Chandras <Markos.Chandras@imgtec.com>
+X-Enigmail-Draft-Status: N1110
+Message-ID: <55E5B218.2050506@imgtec.com>
+Date:   Tue, 1 Sep 2015 15:11:36 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+ Thunderbird/38.2.0
+MIME-Version: 1.0
+In-Reply-To: <1440994798-14032-1-git-send-email-linux@roeck-us.net>
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.154.168]
+Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49072
+X-archive-position: 49073
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: albeu@free.fr
+X-original-sender: Markos.Chandras@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -39,245 +50,19 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Turn the ath79 driver into a true driver supporting multiple
-instances. While at it also removed unneed includes and make use of
-the BIT() macro.
+On 08/31/2015 05:19 AM, Guenter Roeck wrote:
+> Commit 3adeb2566b9b ("MIPS: Loongson: Improve LEFI firmware interface")
+> made the number of UARTs dynamic if LEFI_FIRMWARE_INTERFACE is configured.
+> Unfortunately, it did not initialize the number of UARTs if
+> LEFI_FIRMWARE_INTERFACE is not configured. As a result, the Fulong2e
+> system has no console.
+> 
+> Fixes: 3adeb2566b9b ("MIPS: Loongson: Improve LEFI firmware interface")
+> Acked-by: Huacai Chen <chenhc@lemote.com>
+> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+> ---
 
-Signed-off-by: Alban Bedel <albeu@free.fr>
----
+Tested-by: Markos Chandras <markos.chandras@imgtec.com>
 
-This patch apply on top of my previous MIPS GPIO patches that are pending
-for 4.3, so it might be better to take it thru the MIPS tree.
-
-Alban
-
----
- drivers/gpio/gpio-ath79.c | 129 +++++++++++++++++++++++-----------------------
- 1 file changed, 65 insertions(+), 64 deletions(-)
-
-diff --git a/drivers/gpio/gpio-ath79.c b/drivers/gpio/gpio-ath79.c
-index 03b9953..e5827a5 100644
---- a/drivers/gpio/gpio-ath79.c
-+++ b/drivers/gpio/gpio-ath79.c
-@@ -12,61 +12,51 @@
-  *  by the Free Software Foundation.
-  */
- 
--#include <linux/kernel.h>
--#include <linux/init.h>
--#include <linux/module.h>
--#include <linux/types.h>
--#include <linux/spinlock.h>
--#include <linux/io.h>
--#include <linux/ioport.h>
--#include <linux/gpio.h>
-+#include <linux/gpio/driver.h>
- #include <linux/platform_data/gpio-ath79.h>
- #include <linux/of_device.h>
- 
- #include <asm/mach-ath79/ar71xx_regs.h>
- 
--static void __iomem *ath79_gpio_base;
--static u32 ath79_gpio_count;
--static DEFINE_SPINLOCK(ath79_gpio_lock);
-+struct ath79_gpio_ctrl {
-+	struct gpio_chip chip;
-+	void __iomem *base;
-+	spinlock_t lock;
-+};
- 
--static void __ath79_gpio_set_value(unsigned gpio, int value)
--{
--	void __iomem *base = ath79_gpio_base;
--
--	if (value)
--		__raw_writel(1 << gpio, base + AR71XX_GPIO_REG_SET);
--	else
--		__raw_writel(1 << gpio, base + AR71XX_GPIO_REG_CLEAR);
--}
--
--static int __ath79_gpio_get_value(unsigned gpio)
--{
--	return (__raw_readl(ath79_gpio_base + AR71XX_GPIO_REG_IN) >> gpio) & 1;
--}
--
--static int ath79_gpio_get_value(struct gpio_chip *chip, unsigned offset)
--{
--	return __ath79_gpio_get_value(offset);
--}
-+#define to_ath79_gpio_ctrl(c) container_of(c, struct ath79_gpio_ctrl, chip)
- 
- static void ath79_gpio_set_value(struct gpio_chip *chip,
--				  unsigned offset, int value)
-+				unsigned gpio, int value)
- {
--	__ath79_gpio_set_value(offset, value);
-+	struct ath79_gpio_ctrl *ctrl = to_ath79_gpio_ctrl(chip);
-+
-+	if (value)
-+		__raw_writel(BIT(gpio), ctrl->base + AR71XX_GPIO_REG_SET);
-+	else
-+		__raw_writel(BIT(gpio), ctrl->base + AR71XX_GPIO_REG_CLEAR);
-+}
-+
-+static int ath79_gpio_get_value(struct gpio_chip *chip, unsigned gpio)
-+{
-+	struct ath79_gpio_ctrl *ctrl = to_ath79_gpio_ctrl(chip);
-+
-+	return (__raw_readl(ctrl->base + AR71XX_GPIO_REG_IN) >> gpio) & 1;
- }
- 
- static int ath79_gpio_direction_input(struct gpio_chip *chip,
- 				       unsigned offset)
- {
--	void __iomem *base = ath79_gpio_base;
-+	struct ath79_gpio_ctrl *ctrl = to_ath79_gpio_ctrl(chip);
- 	unsigned long flags;
- 
--	spin_lock_irqsave(&ath79_gpio_lock, flags);
-+	spin_lock_irqsave(&ctrl->lock, flags);
- 
--	__raw_writel(__raw_readl(base + AR71XX_GPIO_REG_OE) & ~(1 << offset),
--		     base + AR71XX_GPIO_REG_OE);
-+	__raw_writel(
-+		__raw_readl(ctrl->base + AR71XX_GPIO_REG_OE) & ~BIT(offset),
-+		ctrl->base + AR71XX_GPIO_REG_OE);
- 
--	spin_unlock_irqrestore(&ath79_gpio_lock, flags);
-+	spin_unlock_irqrestore(&ctrl->lock, flags);
- 
- 	return 0;
- }
-@@ -74,35 +64,37 @@ static int ath79_gpio_direction_input(struct gpio_chip *chip,
- static int ath79_gpio_direction_output(struct gpio_chip *chip,
- 					unsigned offset, int value)
- {
--	void __iomem *base = ath79_gpio_base;
-+	struct ath79_gpio_ctrl *ctrl = to_ath79_gpio_ctrl(chip);
- 	unsigned long flags;
- 
--	spin_lock_irqsave(&ath79_gpio_lock, flags);
-+	spin_lock_irqsave(&ctrl->lock, flags);
- 
- 	if (value)
--		__raw_writel(1 << offset, base + AR71XX_GPIO_REG_SET);
-+		__raw_writel(BIT(offset), ctrl->base + AR71XX_GPIO_REG_SET);
- 	else
--		__raw_writel(1 << offset, base + AR71XX_GPIO_REG_CLEAR);
-+		__raw_writel(BIT(offset), ctrl->base + AR71XX_GPIO_REG_CLEAR);
- 
--	__raw_writel(__raw_readl(base + AR71XX_GPIO_REG_OE) | (1 << offset),
--		     base + AR71XX_GPIO_REG_OE);
-+	__raw_writel(
-+		__raw_readl(ctrl->base + AR71XX_GPIO_REG_OE) | BIT(offset),
-+		ctrl->base + AR71XX_GPIO_REG_OE);
- 
--	spin_unlock_irqrestore(&ath79_gpio_lock, flags);
-+	spin_unlock_irqrestore(&ctrl->lock, flags);
- 
- 	return 0;
- }
- 
- static int ar934x_gpio_direction_input(struct gpio_chip *chip, unsigned offset)
- {
--	void __iomem *base = ath79_gpio_base;
-+	struct ath79_gpio_ctrl *ctrl = to_ath79_gpio_ctrl(chip);
- 	unsigned long flags;
- 
--	spin_lock_irqsave(&ath79_gpio_lock, flags);
-+	spin_lock_irqsave(&ctrl->lock, flags);
- 
--	__raw_writel(__raw_readl(base + AR71XX_GPIO_REG_OE) | (1 << offset),
--		     base + AR71XX_GPIO_REG_OE);
-+	__raw_writel(
-+		__raw_readl(ctrl->base + AR71XX_GPIO_REG_OE) | BIT(offset),
-+		ctrl->base + AR71XX_GPIO_REG_OE);
- 
--	spin_unlock_irqrestore(&ath79_gpio_lock, flags);
-+	spin_unlock_irqrestore(&ctrl->lock, flags);
- 
- 	return 0;
- }
-@@ -110,25 +102,26 @@ static int ar934x_gpio_direction_input(struct gpio_chip *chip, unsigned offset)
- static int ar934x_gpio_direction_output(struct gpio_chip *chip, unsigned offset,
- 					int value)
- {
--	void __iomem *base = ath79_gpio_base;
-+	struct ath79_gpio_ctrl *ctrl = to_ath79_gpio_ctrl(chip);
- 	unsigned long flags;
- 
--	spin_lock_irqsave(&ath79_gpio_lock, flags);
-+	spin_lock_irqsave(&ctrl->lock, flags);
- 
- 	if (value)
--		__raw_writel(1 << offset, base + AR71XX_GPIO_REG_SET);
-+		__raw_writel(BIT(offset), ctrl->base + AR71XX_GPIO_REG_SET);
- 	else
--		__raw_writel(1 << offset, base + AR71XX_GPIO_REG_CLEAR);
-+		__raw_writel(BIT(offset), ctrl->base + AR71XX_GPIO_REG_CLEAR);
- 
--	__raw_writel(__raw_readl(base + AR71XX_GPIO_REG_OE) & ~(1 << offset),
--		     base + AR71XX_GPIO_REG_OE);
-+	__raw_writel(
-+		__raw_readl(ctrl->base + AR71XX_GPIO_REG_OE) & BIT(offset),
-+		ctrl->base + AR71XX_GPIO_REG_OE);
- 
--	spin_unlock_irqrestore(&ath79_gpio_lock, flags);
-+	spin_unlock_irqrestore(&ctrl->lock, flags);
- 
- 	return 0;
- }
- 
--static struct gpio_chip ath79_gpio_chip = {
-+static const struct gpio_chip ath79_gpio_chip = {
- 	.label			= "ath79",
- 	.get			= ath79_gpio_get_value,
- 	.set			= ath79_gpio_set_value,
-@@ -147,10 +140,16 @@ static int ath79_gpio_probe(struct platform_device *pdev)
- {
- 	struct ath79_gpio_platform_data *pdata = pdev->dev.platform_data;
- 	struct device_node *np = pdev->dev.of_node;
-+	struct ath79_gpio_ctrl *ctrl;
- 	struct resource *res;
-+	u32 ath79_gpio_count;
- 	bool oe_inverted;
- 	int err;
- 
-+	ctrl = devm_kzalloc(&pdev->dev, sizeof(*ctrl), GFP_KERNEL);
-+	if (!ctrl)
-+		return -ENOMEM;
-+
- 	if (np) {
- 		err = of_property_read_u32(np, "ngpios", &ath79_gpio_count);
- 		if (err) {
-@@ -171,19 +170,21 @@ static int ath79_gpio_probe(struct platform_device *pdev)
- 	}
- 
- 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	ath79_gpio_base = devm_ioremap_nocache(
-+	ctrl->base = devm_ioremap_nocache(
- 		&pdev->dev, res->start, resource_size(res));
--	if (!ath79_gpio_base)
-+	if (!ctrl->base)
- 		return -ENOMEM;
- 
--	ath79_gpio_chip.dev = &pdev->dev;
--	ath79_gpio_chip.ngpio = ath79_gpio_count;
-+	spin_lock_init(&ctrl->lock);
-+	memcpy(&ctrl->chip, &ath79_gpio_chip, sizeof(ctrl->chip));
-+	ctrl->chip.dev = &pdev->dev;
-+	ctrl->chip.ngpio = ath79_gpio_count;
- 	if (oe_inverted) {
--		ath79_gpio_chip.direction_input = ar934x_gpio_direction_input;
--		ath79_gpio_chip.direction_output = ar934x_gpio_direction_output;
-+		ctrl->chip.direction_input = ar934x_gpio_direction_input;
-+		ctrl->chip.direction_output = ar934x_gpio_direction_output;
- 	}
- 
--	err = gpiochip_add(&ath79_gpio_chip);
-+	err = gpiochip_add(&ctrl->chip);
- 	if (err) {
- 		dev_err(&pdev->dev,
- 			"cannot add AR71xx GPIO chip, error=%d", err);
 -- 
-2.0.0
+markos

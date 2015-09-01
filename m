@@ -1,43 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Sep 2015 16:11:47 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:3864 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27007213AbbIAOLnf1fbe (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 1 Sep 2015 16:11:43 +0200
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 9A4D8401302B6;
-        Tue,  1 Sep 2015 15:11:34 +0100 (IST)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Tue, 1 Sep 2015 15:11:37 +0100
-Received: from [192.168.154.168] (192.168.154.168) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Tue, 1 Sep
- 2015 15:11:36 +0100
-Subject: Re: [PATCH v2] MIPS: Fix console output for Fulong2e system
-To:     Guenter Roeck <linux@roeck-us.net>,
-        Ralf Baechle <ralf@linux-mips.org>
-References: <1440994798-14032-1-git-send-email-linux@roeck-us.net>
-CC:     Huacai Chen <chenhc@lemote.com>, <linux-mips@linux-mips.org>,
-        <linux-kernel@vger.kernel.org>
-From:   Markos Chandras <Markos.Chandras@imgtec.com>
-X-Enigmail-Draft-Status: N1110
-Message-ID: <55E5B218.2050506@imgtec.com>
-Date:   Tue, 1 Sep 2015 15:11:36 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.2.0
-MIME-Version: 1.0
-In-Reply-To: <1440994798-14032-1-git-send-email-linux@roeck-us.net>
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.154.168]
-Return-Path: <Markos.Chandras@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Sep 2015 17:23:40 +0200 (CEST)
+Received: from smtp2-g21.free.fr ([212.27.42.2]:34283 "EHLO smtp2-g21.free.fr"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27007039AbbIAPXjJdaXU (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 1 Sep 2015 17:23:39 +0200
+Received: from tock.adnet.avionic-design.de (unknown [78.54.126.133])
+        (Authenticated sender: albeu)
+        by smtp2-g21.free.fr (Postfix) with ESMTPA id C9F904B00AA;
+        Tue,  1 Sep 2015 17:23:24 +0200 (CEST)
+From:   Alban Bedel <albeu@free.fr>
+To:     linux-mips@linux-mips.org
+Cc:     Rob Herring <robh+dt@kernel.org>, Pawel Moll <pawel.moll@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ian Campbell <ijc+devicetree@hellion.org.uk>,
+        Kumar Gala <galak@codeaurora.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Alban Bedel <albeu@free.fr>
+Subject: [PATCH 0/4] MIPS: ath79: Add USB support on the TL-WR1043ND
+Date:   Tue,  1 Sep 2015 17:23:10 +0200
+Message-Id: <1441120994-31476-1-git-send-email-albeu@free.fr>
+X-Mailer: git-send-email 2.0.0
+Return-Path: <albeu@free.fr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49073
+X-archive-position: 49074
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Markos.Chandras@imgtec.com
+X-original-sender: albeu@free.fr
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,19 +42,29 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 08/31/2015 05:19 AM, Guenter Roeck wrote:
-> Commit 3adeb2566b9b ("MIPS: Loongson: Improve LEFI firmware interface")
-> made the number of UARTs dynamic if LEFI_FIRMWARE_INTERFACE is configured.
-> Unfortunately, it did not initialize the number of UARTs if
-> LEFI_FIRMWARE_INTERFACE is not configured. As a result, the Fulong2e
-> system has no console.
-> 
-> Fixes: 3adeb2566b9b ("MIPS: Loongson: Improve LEFI firmware interface")
-> Acked-by: Huacai Chen <chenhc@lemote.com>
-> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-> ---
+Hi,
 
-Tested-by: Markos Chandras <markos.chandras@imgtec.com>
+this serie add a driver for the USB phy on the ATH79 SoCs and enable the
+USB port on the TL-WR1043ND. The phy controller is really trivial as it
+only use reset lines.
+
+Alban
+
+Alban Bedel (4):
+  devicetree: Add bindings for the ATH79 USB phy
+  phy: Add a driver for the ATH79 USB phy
+  MIPS: ath79: Add the EHCI controller and USB phy to the AR9132 dtsi
+  MIPS: ath79: Enable the USB port on the TL-WR1043ND
+
+ .../devicetree/bindings/phy/phy-ath79-usb.txt      |  18 ++++
+ arch/mips/boot/dts/qca/ar9132.dtsi                 |  24 +++++
+ arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts   |   4 +
+ drivers/phy/Kconfig                                |   8 ++
+ drivers/phy/Makefile                               |   1 +
+ drivers/phy/phy-ath79-usb.c                        | 115 +++++++++++++++++++++
+ 6 files changed, 170 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/phy/phy-ath79-usb.txt
+ create mode 100644 drivers/phy/phy-ath79-usb.c
 
 -- 
-markos
+2.0.0

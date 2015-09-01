@@ -1,12 +1,12 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Sep 2015 17:23:40 +0200 (CEST)
-Received: from smtp2-g21.free.fr ([212.27.42.2]:34283 "EHLO smtp2-g21.free.fr"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Sep 2015 17:23:56 +0200 (CEST)
+Received: from smtp2-g21.free.fr ([212.27.42.2]:34971 "EHLO smtp2-g21.free.fr"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27007039AbbIAPXjJdaXU (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 1 Sep 2015 17:23:39 +0200
+        id S27013079AbbIAPXvZI0bg (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 1 Sep 2015 17:23:51 +0200
 Received: from tock.adnet.avionic-design.de (unknown [78.54.126.133])
         (Authenticated sender: albeu)
-        by smtp2-g21.free.fr (Postfix) with ESMTPA id C9F904B00AA;
-        Tue,  1 Sep 2015 17:23:24 +0200 (CEST)
+        by smtp2-g21.free.fr (Postfix) with ESMTPA id 023F84B005D;
+        Tue,  1 Sep 2015 17:23:38 +0200 (CEST)
 From:   Alban Bedel <albeu@free.fr>
 To:     linux-mips@linux-mips.org
 Cc:     Rob Herring <robh+dt@kernel.org>, Pawel Moll <pawel.moll@arm.com>,
@@ -17,15 +17,17 @@ Cc:     Rob Herring <robh+dt@kernel.org>, Pawel Moll <pawel.moll@arm.com>,
         Kishon Vijay Abraham I <kishon@ti.com>,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         Alban Bedel <albeu@free.fr>
-Subject: [PATCH 0/4] MIPS: ath79: Add USB support on the TL-WR1043ND
-Date:   Tue,  1 Sep 2015 17:23:10 +0200
-Message-Id: <1441120994-31476-1-git-send-email-albeu@free.fr>
+Subject: [PATCH 1/4] devicetree: Add bindings for the ATH79 USB phy
+Date:   Tue,  1 Sep 2015 17:23:11 +0200
+Message-Id: <1441120994-31476-2-git-send-email-albeu@free.fr>
 X-Mailer: git-send-email 2.0.0
+In-Reply-To: <1441120994-31476-1-git-send-email-albeu@free.fr>
+References: <1441120994-31476-1-git-send-email-albeu@free.fr>
 Return-Path: <albeu@free.fr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49074
+X-archive-position: 49075
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -42,29 +44,35 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi,
-
-this serie add a driver for the USB phy on the ATH79 SoCs and enable the
-USB port on the TL-WR1043ND. The phy controller is really trivial as it
-only use reset lines.
-
-Alban
-
-Alban Bedel (4):
-  devicetree: Add bindings for the ATH79 USB phy
-  phy: Add a driver for the ATH79 USB phy
-  MIPS: ath79: Add the EHCI controller and USB phy to the AR9132 dtsi
-  MIPS: ath79: Enable the USB port on the TL-WR1043ND
-
- .../devicetree/bindings/phy/phy-ath79-usb.txt      |  18 ++++
- arch/mips/boot/dts/qca/ar9132.dtsi                 |  24 +++++
- arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts   |   4 +
- drivers/phy/Kconfig                                |   8 ++
- drivers/phy/Makefile                               |   1 +
- drivers/phy/phy-ath79-usb.c                        | 115 +++++++++++++++++++++
- 6 files changed, 170 insertions(+)
+Signed-off-by: Alban Bedel <albeu@free.fr>
+---
+ .../devicetree/bindings/phy/phy-ath79-usb.txt          | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
  create mode 100644 Documentation/devicetree/bindings/phy/phy-ath79-usb.txt
- create mode 100644 drivers/phy/phy-ath79-usb.c
 
+diff --git a/Documentation/devicetree/bindings/phy/phy-ath79-usb.txt b/Documentation/devicetree/bindings/phy/phy-ath79-usb.txt
+new file mode 100644
+index 0000000..cafe219
+--- /dev/null
++++ b/Documentation/devicetree/bindings/phy/phy-ath79-usb.txt
+@@ -0,0 +1,18 @@
++* Atheros AR71XX/9XXX USB PHY
++
++Required properties:
++- compatible: "qca,ar7100-usb-phy"
++- #phys-cells: should be 0
++- reset-names: "usb-phy"[, "usb-suspend-override"]
++- resets: references to the reset controllers
++
++Example:
++
++	usb-phy {
++		compatible = "qca,ar7100-usb-phy";
++
++		reset-names = "usb-phy", "usb-suspend-override";
++		resets = <&rst 4>, <&rst 3>;
++
++		#phy-cells = <0>;
++	};
 -- 
 2.0.0

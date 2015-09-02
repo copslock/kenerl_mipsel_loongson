@@ -1,63 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Sep 2015 14:12:20 +0200 (CEST)
-Received: from pmta2.delivery5.ore.mailhop.org ([54.186.218.12]:57154 "EHLO
-        pmta2.delivery5.ore.mailhop.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008153AbbIBMMSUwPxQ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Sep 2015 14:12:18 +0200
-Received: from io (unknown [173.50.93.239])
-        by outbound2.ore.mailhop.org (Halon Mail Gateway) with ESMTPSA;
-        Wed,  2 Sep 2015 12:12:23 +0000 (UTC)
-Received: from io.lakedaemon.net (localhost [127.0.0.1])
-        by io (Postfix) with ESMTP id AA16D8011D;
-        Wed,  2 Sep 2015 12:12:09 +0000 (UTC)
-X-DKIM: OpenDKIM Filter v2.6.8 io AA16D8011D
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lakedaemon.net;
-        s=mail; t=1441195929;
-        bh=PX7tbP5z6zgp6qnzZT3wBos+h0NpAx0v7suveIHyoCk=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To;
-        b=tY8Vacsa5m7t4aZeracHiwCe6fNSnjmFvnVPxG8//lQVawEqRM3oauBzz7m3Rzh8K
-         Cs0DLyXi1P5y7K2hysEiL84EjaDDDHK7ihkVQqci78X+Wwo7JVXtK6LA/bPa9DdsL/
-         m2YiiPTM+w3UJlfnJV8AqQbOSMI3Yl/Rh0l3HuX5/W09Q030+dy4083LPdLRxuCkWd
-         V5DNi4MDPgjFRiogvH/JjHvJCYlcqMGKYFquJ/HVsQTaIYS9HdZxOkhuT5+ziORsRg
-         nme93Li9g8nFG/x50aJ/tpUCjXyp2ydmMt7gwaXSYT5jWrf4PSzX9PDo3NcwpXrief
-         nrp2ByAVbQn6A==
-Date:   Wed, 2 Sep 2015 12:12:09 +0000
-From:   Jason Cooper <jason@lakedaemon.net>
-To:     Marc Zyngier <marc.zyngier@arm.com>
-Cc:     Qais Yousef <qais.yousef@imgtec.com>,
-        Mark Rutland <Mark.Rutland@arm.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Sep 2015 15:25:58 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:39895 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27008202AbbIBNZ46aXiX (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Sep 2015 15:25:56 +0200
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 9EF4A22374DDE;
+        Wed,  2 Sep 2015 14:25:48 +0100 (IST)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Wed, 2 Sep 2015 14:25:50 +0100
+Received: from [192.168.154.94] (192.168.154.94) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Wed, 2 Sep
+ 2015 14:25:50 +0100
+Subject: Re: [PATCH 01/10] irqchip: irq-mips-gic: export gic_send_ipi
+To:     Marc Zyngier <marc.zyngier@arm.com>,
+        Mark Rutland <Mark.Rutland@arm.com>
+References: <1440419959-14315-1-git-send-email-qais.yousef@imgtec.com>
+ <1440419959-14315-2-git-send-email-qais.yousef@imgtec.com>
+ <alpine.DEB.2.11.1508241447100.3873@nanos> <55DB15EB.3090109@imgtec.com>
+ <55DB1CD2.5030300@arm.com> <55DB29B5.3010202@imgtec.com>
+ <alpine.DEB.2.11.1508241656280.3873@nanos> <55DB48C9.7010508@imgtec.com>
+ <55DB519D.2090203@arm.com> <55DDA1C4.4070301@imgtec.com>
+ <alpine.DEB.2.11.1508261427280.15006@nanos> <55DDD3E3.7070009@imgtec.com>
+ <alpine.DEB.2.11.1508261701430.15006@nanos> <55DDDE3C.8030609@imgtec.com>
+ <alpine.DEB.2.11.1508262101450.15006@nanos> <55E03A2B.3070805@imgtec.com>
+ <alpine.DEB.2.11.1508281619311.15006@nanos> <55E6C250.50100@imgtec.com>
+ <55E6C788.2000405@arm.com> <55E6D40C.5060708@imgtec.com>
+ <55E6E349.3020907@arm.com>
+CC:     Thomas Gleixner <tglx@linutronix.de>,
         "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>,
+        Jason Cooper <jason@lakedaemon.net>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
         Jiang Liu <jiang.liu@linux.intel.com>,
         Mark Brown <broonie@kernel.org>,
         Lisa Parratt <Lisa.Parratt@imgtec.com>
-Subject: Re: [PATCH 01/10] irqchip: irq-mips-gic: export gic_send_ipi
-Message-ID: <20150902121209.GA10628@io.lakedaemon.net>
-References: <55DDA1C4.4070301@imgtec.com>
- <alpine.DEB.2.11.1508261427280.15006@nanos>
- <55DDD3E3.7070009@imgtec.com>
- <alpine.DEB.2.11.1508261701430.15006@nanos>
- <55DDDE3C.8030609@imgtec.com>
- <alpine.DEB.2.11.1508262101450.15006@nanos>
- <55E03A2B.3070805@imgtec.com>
- <alpine.DEB.2.11.1508281619311.15006@nanos>
- <55E6C250.50100@imgtec.com>
- <55E6C788.2000405@arm.com>
+From:   Qais Yousef <qais.yousef@imgtec.com>
+Message-ID: <55E6F8DE.7040308@imgtec.com>
+Date:   Wed, 2 Sep 2015 14:25:50 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+ Thunderbird/38.2.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <55E6C788.2000405@arm.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <jason@lakedaemon.net>
+In-Reply-To: <55E6E349.3020907@arm.com>
+Content-Type: text/plain; charset="windows-1252"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.154.94]
+Return-Path: <Qais.Yousef@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49084
+X-archive-position: 49085
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jason@lakedaemon.net
+X-original-sender: qais.yousef@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -70,63 +66,28 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Sep 02, 2015 at 10:55:20AM +0100, Marc Zyngier wrote:
-> On 02/09/15 10:33, Qais Yousef wrote:
-> > On 08/28/2015 03:22 PM, Thomas Gleixner wrote:
-> >> On Fri, 28 Aug 2015, Qais Yousef wrote:
-> >>> Thanks a lot for the detailed explanation. I wasn't looking for a quick and
-> >>> dirty solution but my view of the problem is much simpler than yours so my
-> >>> idea of a solution would look quick and dirty. I have a better appreciation of
-> >>> the problem now and a way to approach it :-)
-> >>>
-> >>>  From DT point of view are we OK with this form then
-> >>>
-> >>>      coprocessor {
-> >>>              interrupt-source = <&intc INT_SPEC COP_HWAFFINITY>;
-> >>>              interrupt-sink = <&intc INT_SPEC CPU_HWAFFINITY>;
-> >>>      }
-> >>>
-> >>> and if the root controller sends normal IPI as it sends normal device
-> >>> interrupts then interrupt-sink can be a standard interrupts property (like in
-> >>> my case)
-> >>>
-> >>>      coprocessor {
-> >>>              interrupt-source = <&intc INT_SPEC COP_HWAFFINITY>;
-> >>>              interrupts = <INT_SPEC>;
-> >>>      }
-> >>>
-> >>> Does this look right to you? Is there something else that needs to be covered
-> >>> still?
-> >> I'm not an DT wizard. I leave that to the DT experts.
-> >>   
-> > 
-> > Hi Marc Zyngier, Mark Rutland,
-> > 
-> > Any comments about the DT binding for the IPIs?
-> > 
-> > To recap, the proposal which is based on Marc Zyngier's is to use 
-> > interrupt-source to represent an IPI from Linux CPU to a coprocessor and 
-> > interrupt-sink to receive an IPI from coprocessor to Linux CPU. 
-> > Hopefully the description above is self explanatory. Please let me know 
-> > if you need more info. Thomas covered the routing, synthesising, and 
-> > requesting parts in the core code. The remaining (high level) issue is 
-> > how to describe the IPIs in DT.
-> 
-> I'm definitely *not* a DT expert! ;-) My initial binding proposal was
-> only for wired interrupts, not for IPIs. There is definitely some common
-> aspects, except for one part:
-> 
-> Who decides on the IPI number? So far, we've avoided encoding IPI
-> numbers in the DT just like we don't encode MSIs, because they are
-> programmable things. My feeling is that we shouldn't put the IPI number
-> in the DT because the rest of the kernel uses them as well and could
-> decide to use this particular IPI number for its own use: *clash*.
+On 09/02/2015 12:53 PM, Marc Zyngier wrote:
+> On 02/09/15 11:48, Qais Yousef wrote:
+>> It's worth noting in the light of this that INT_SPEC should be optional
+>> since for hardware similar to mine there's not much to tell the
+>> controller if it's all dynamic except where we want the IPI to be routed
+>> to - the INT_SPEC is implicitly defined by the notion it's an IPI.
+> Well, I'd think that the INT_SPEC should say that it is an IPI, and I
+> don't believe we should omit it. On the ARM GIC side, our interrupts are
+> typed (type 0 is a normal wired interrupt, type 1 a per-cpu interrupt,
+> and we could allocate type 2 to identify an IPI).
 
-Agree.  The best way I've found to design DT bindings is to imagine
-providing the DT to something other than Linux.  The DT should *only* be
-describing the hardware.  As such, I think we should be describing the
-connection here, and leaving the assignment up to the OS.
+I didn't mean to omit it completely, but just being optional so it's 
+specified if the intc needs this info only. I'm assuming that INT_SPEC 
+is interrupt controller specific. If not, then ignore me :-)
 
-thx,
+>
+> But we do need to identify it properly, as we should be able to cover
+> both IPIs and normal wired interrupts.
 
-Jason.
+I'm a bit confused here. What do you mean by normal wired interrupts? I 
+thought this DT binding is only to describe IPIs that needs reserving 
+and routing. What am I missing?
+
+Thanks,
+Qais

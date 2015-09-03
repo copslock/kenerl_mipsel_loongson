@@ -1,13 +1,13 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Sep 2015 05:34:35 +0200 (CEST)
-Received: from mail.base45.de ([80.241.61.77]:51931 "EHLO mail.base45.de"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Sep 2015 05:34:54 +0200 (CEST)
+Received: from mail.base45.de ([80.241.61.77]:34850 "EHLO mail.base45.de"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27006948AbbICDedb44Tw (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S27007179AbbICDed7X3Iw (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Thu, 3 Sep 2015 05:34:33 +0200
 Received: from port-92-195-113-129.dynamic.qsc.de ([92.195.113.129] helo=lazus.yip)
         by mail.base45.de with esmtpsa (TLS1.2:RSA_AES_128_CBC_SHA256:128)
         (Exim 4.82)
         (envelope-from <lynxis@fe80.eu>)
-        id 1ZXLIB-0002XO-Qh; Thu, 03 Sep 2015 05:34:28 +0200
+        id 1ZXLID-0002XO-9g; Thu, 03 Sep 2015 05:34:29 +0200
 From:   Alexander Couzens <lynxis@fe80.eu>
 To:     linux-mips@linux-mips.org
 Cc:     Ralf Baechle <ralf@linux-mips.org>, Alban Bedel <albeu@free.fr>,
@@ -17,15 +17,17 @@ Cc:     Ralf Baechle <ralf@linux-mips.org>, Alban Bedel <albeu@free.fr>,
         Ian Campbell <ijc+devicetree@hellion.org.uk>,
         Kumar Gala <galak@codeaurora.org>, devicetree@vger.kernel.org,
         Alexander Couzens <lynxis@fe80.eu>
-Subject: [PATCH 0/2] ath79 misc irq controller
-Date:   Thu,  3 Sep 2015 05:34:20 +0200
-Message-Id: <1441251262-13335-1-git-send-email-lynxis@fe80.eu>
+Subject: [PATCH 1/2] MIPS: ath79: set missing irq ack handler for ar7100-misc-intc irq chip
+Date:   Thu,  3 Sep 2015 05:34:21 +0200
+Message-Id: <1441251262-13335-2-git-send-email-lynxis@fe80.eu>
 X-Mailer: git-send-email 2.5.1
+In-Reply-To: <1441251262-13335-1-git-send-email-lynxis@fe80.eu>
+References: <1441251262-13335-1-git-send-email-lynxis@fe80.eu>
 Return-Path: <lynxis@fe80.eu>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49089
+X-archive-position: 49090
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -42,26 +44,37 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Alban,
+The irq ack handler was forgotten while introducing OF support.
+Only ar71xx and ar933x based devices require it.
 
-I've done the requested changes.
+Signed-off-by: Alexander Couzens <lynxis@fe80.eu>
+---
+ arch/mips/ath79/irq.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-Best,
-Alex
-
-v2:
- move new IRQ_DECLARE just behind the new init for ar7100
- don't remove newline
- add log line when setup ar7100 misc irq controller
- improve commit message for missing irq ack handler
-
-Alexander Couzens (2):
-  MIPS: ath79: set missing irq ack handler for ar7100-misc-intc irq chip
-  MIPS: ath79: add irq chip ar7240-misc-intc
-
- .../interrupt-controller/qca,ath79-misc-intc.txt   | 18 ++++++++++++++++-
- arch/mips/ath79/irq.c                              | 23 ++++++++++++++++++++--
- 2 files changed, 38 insertions(+), 3 deletions(-)
-
+diff --git a/arch/mips/ath79/irq.c b/arch/mips/ath79/irq.c
+index afb0096..1917f55 100644
+--- a/arch/mips/ath79/irq.c
++++ b/arch/mips/ath79/irq.c
+@@ -308,8 +308,17 @@ static int __init ath79_misc_intc_of_init(
+ 
+ 	return 0;
+ }
+-IRQCHIP_DECLARE(ath79_misc_intc, "qca,ar7100-misc-intc",
+-		ath79_misc_intc_of_init);
++
++static int __init ar7100_misc_intc_of_init(
++	struct device_node *node, struct device_node *parent)
++{
++	pr_info("IRQ: Setup ar7100 misc IRQ controller from devicetree.\n");
++	ath79_misc_irq_chip.irq_mask_ack = ar71xx_misc_irq_mask;
++	return ath79_misc_intc_of_init(node, parent);
++}
++
++IRQCHIP_DECLARE(ar7100_misc_intc, "qca,ar7100-misc-intc",
++		ar7100_misc_intc_of_init);
+ 
+ static int __init ar79_cpu_intc_of_init(
+ 	struct device_node *node, struct device_node *parent)
 -- 
 2.4.0

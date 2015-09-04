@@ -1,52 +1,80 @@
-From: Markos Chandras <markos.chandras@imgtec.com>
-Date: Thu, 13 Aug 2015 08:47:59 +0100
-Subject: MIPS: Fix seccomp syscall argument for MIPS64
-Message-ID: <20150813074759.yVOxX6207gw58BTQ2ulxp8UMUFdXbdtLji_neiyohD0@z>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Sep 2015 14:29:38 +0200 (CEST)
+Received: from smtp4-g21.free.fr ([212.27.42.4]:22855 "EHLO smtp4-g21.free.fr"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27013139AbbIDM3gR0hgK (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 4 Sep 2015 14:29:36 +0200
+Received: from localhost.localdomain (unknown [78.54.106.103])
+        (Authenticated sender: albeu)
+        by smtp4-g21.free.fr (Postfix) with ESMTPA id 7BCDB4C80E6;
+        Fri,  4 Sep 2015 14:29:26 +0200 (CEST)
+From:   Alban Bedel <albeu@free.fr>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     Paul Burton <paul.burton@imgtec.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Brian Norris <computersforpeace@gmail.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        Alban Bedel <albeu@free.fr>
+Subject: [PATCH] MIPS: Fix the build on jz4740 after removing the custom gpio.h
+Date:   Fri,  4 Sep 2015 14:29:16 +0200
+Message-Id: <1441369756-20887-1-git-send-email-albeu@free.fr>
+X-Mailer: git-send-email 2.0.0
+Return-Path: <albeu@free.fr>
+X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
+X-Orcpt: rfc822;linux-mips@linux-mips.org
+Original-Recipient: rfc822;linux-mips@linux-mips.org
+X-archive-position: 49099
+X-ecartis-version: Ecartis v1.0.0
+Sender: linux-mips-bounce@linux-mips.org
+Errors-to: linux-mips-bounce@linux-mips.org
+X-original-sender: albeu@free.fr
+Precedence: bulk
+List-help: <mailto:ecartis@linux-mips.org?Subject=help>
+List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
+List-software: Ecartis version 1.0.0
+List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
+X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
+List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
+List-owner: <mailto:ralf@linux-mips.org>
+List-post: <mailto:linux-mips@linux-mips.org>
+List-archive: <http://www.linux-mips.org/archives/linux-mips/>
+X-list: linux-mips
 
-commit 9f161439e4104b641a7bfb9b89581d801159fec8 upstream.
+Somehow the wrong version of the patch to remove the use of custom
+gpio.h on mips has been merged. This patch add the missing fixes for a
+build error on jz4740 because linux/gpio.h doesn't provide any machine
+specfics definitions anymore.
 
-Commit 4c21b8fd8f14 ("MIPS: seccomp: Handle indirect system calls (o32)")
-fixed indirect system calls on O32 but it also introduced a bug for MIPS64
-where it erroneously modified the v0 (syscall) register with the assumption
-that the sycall offset hasn't been taken into consideration. This breaks
-seccomp on MIPS64 n64 and n32 ABIs. We fix this by replacing the addition
-with a move instruction.
-
-Fixes: 4c21b8fd8f14 ("MIPS: seccomp: Handle indirect system calls (o32)")
-Reviewed-by: James Hogan <james.hogan@imgtec.com>
-Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
-Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/10951/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Luis Henriques <luis.henriques@canonical.com>
+Signed-off-by: Alban Bedel <albeu@free.fr>
 ---
- arch/mips/kernel/scall64-64.S  | 2 +-
- arch/mips/kernel/scall64-n32.S | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ arch/mips/jz4740/board-qi_lb60.c | 1 +
+ arch/mips/jz4740/gpio.c          | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/arch/mips/kernel/scall64-64.S b/arch/mips/kernel/scall64-64.S
-index be2fedd4ae33..b204352a7d56 100644
---- a/arch/mips/kernel/scall64-64.S
-+++ b/arch/mips/kernel/scall64-64.S
-@@ -80,7 +80,7 @@ syscall_trace_entry:
- 	SAVE_STATIC
- 	move	s0, t2
- 	move	a0, sp
--	daddiu	a1, v0, __NR_64_Linux
-+	move	a1, v0
- 	jal	syscall_trace_enter
-
- 	bltz	v0, 2f			# seccomp failed? Skip syscall
-diff --git a/arch/mips/kernel/scall64-n32.S b/arch/mips/kernel/scall64-n32.S
-index c1dbcda4b816..47dd5f9016c1 100644
---- a/arch/mips/kernel/scall64-n32.S
-+++ b/arch/mips/kernel/scall64-n32.S
-@@ -72,7 +72,7 @@ n32_syscall_trace_entry:
- 	SAVE_STATIC
- 	move	s0, t2
- 	move	a0, sp
--	daddiu	a1, v0, __NR_N32_Linux
-+	move	a1, v0
- 	jal	syscall_trace_enter
-
- 	bltz	v0, 2f			# seccomp failed? Skip syscall
+diff --git a/arch/mips/jz4740/board-qi_lb60.c b/arch/mips/jz4740/board-qi_lb60.c
+index 4e62bf8..459cb01 100644
+--- a/arch/mips/jz4740/board-qi_lb60.c
++++ b/arch/mips/jz4740/board-qi_lb60.c
+@@ -26,6 +26,7 @@
+ #include <linux/power/jz4740-battery.h>
+ #include <linux/power/gpio-charger.h>
+ 
++#include <asm/mach-jz4740/gpio.h>
+ #include <asm/mach-jz4740/jz4740_fb.h>
+ #include <asm/mach-jz4740/jz4740_mmc.h>
+ #include <asm/mach-jz4740/jz4740_nand.h>
+diff --git a/arch/mips/jz4740/gpio.c b/arch/mips/jz4740/gpio.c
+index 6cd69fd..3866263 100644
+--- a/arch/mips/jz4740/gpio.c
++++ b/arch/mips/jz4740/gpio.c
+@@ -28,6 +28,7 @@
+ #include <linux/seq_file.h>
+ 
+ #include <asm/mach-jz4740/base.h>
++#include <asm/mach-jz4740/gpio.h>
+ 
+ #define JZ4740_GPIO_BASE_A (32*0)
+ #define JZ4740_GPIO_BASE_B (32*1)
+-- 
+2.0.0

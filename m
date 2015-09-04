@@ -1,24 +1,25 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Sep 2015 15:10:24 +0200 (CEST)
-Received: from youngberry.canonical.com ([91.189.89.112]:60573 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Sep 2015 15:10:41 +0200 (CEST)
+Received: from youngberry.canonical.com ([91.189.89.112]:60576 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27013560AbbIDNJ3eqdFK (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 4 Sep 2015 15:09:29 +0200
+        by eddie.linux-mips.org with ESMTP id S27013563AbbIDNJaZuT-K (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 4 Sep 2015 15:09:30 +0200
 Received: from av-217-129-142-138.netvisao.pt ([217.129.142.138] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_128_CBC_SHA1:16)
         (Exim 4.76)
         (envelope-from <luis.henriques@canonical.com>)
-        id 1ZXqkC-0006VA-Mg; Fri, 04 Sep 2015 13:09:28 +0000
+        id 1ZXqkD-0006VK-I3; Fri, 04 Sep 2015 13:09:29 +0000
 From:   Luis Henriques <luis.henriques@canonical.com>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
         kernel-team@lists.ubuntu.com
 Cc:     James Hogan <james.hogan@imgtec.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
         Markos Chandras <markos.chandras@imgtec.com>,
         Leonid Yegoshin <leonid.yegoshin@imgtec.com>,
-        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
+        linux-mips@linux-mips.org,
         Luis Henriques <luis.henriques@canonical.com>
-Subject: [PATCH 3.16.y-ckt 053/130] MIPS: show_stack: Fix stack trace with EVA
-Date:   Fri,  4 Sep 2015 14:07:21 +0100
-Message-Id: <1441372118-5933-54-git-send-email-luis.henriques@canonical.com>
+Subject: [PATCH 3.16.y-ckt 054/130] MIPS: Flush RPS on kernel entry with EVA
+Date:   Fri,  4 Sep 2015 14:07:22 +0100
+Message-Id: <1441372118-5933-55-git-send-email-luis.henriques@canonical.com>
 X-Mailer: git-send-email 2.1.4
 In-Reply-To: <1441372118-5933-1-git-send-email-luis.henriques@canonical.com>
 References: <1441372118-5933-1-git-send-email-luis.henriques@canonical.com>
@@ -27,7 +28,7 @@ Return-Path: <luis.henriques@canonical.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49103
+X-archive-position: 49104
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -50,66 +51,61 @@ X-list: linux-mips
 
 From: James Hogan <james.hogan@imgtec.com>
 
-commit 1e77863a51698c4319587df34171bd823691a66a upstream.
+commit 3aff47c062b944a5e1f9af56a37a23f5295628fc upstream.
 
-The show_stack() function deals exclusively with kernel contexts, but if
-it gets called in user context with EVA enabled, show_stacktrace() will
-attempt to access the stack using EVA accesses, which will either read
-other user mapped data, or more likely cause an exception which will be
-handled by __get_user().
+When EVA is enabled, flush the Return Prediction Stack (RPS) present on
+some MIPS cores on entry to the kernel from user mode.
 
-This is easily reproduced using SysRq t to show all task states, which
-results in the following stack dump output:
-
- Stack : (Bad stack address)
-
-Fix by setting the current user access mode to kernel around the call to
-show_stacktrace(). This causes __get_user() to use normal loads to read
-the kernel stack.
-
-Now we get the correct output, like this:
-
- Stack : 00000000 80168960 00000000 004a0000 00000000 00000000 8060016c 1f3abd0c
-           1f172cd8 8056f09c 7ff1e450 8014fc3c 00000001 806dd0b0 0000001d 00000002
-           1f17c6a0 1f17c804 1f17c6a0 8066f6e0 00000000 0000000a 00000000 00000000
-           00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
-           00000000 00000000 00000000 00000000 00000000 0110e800 1f3abd6c 1f17c6a0
-           ...
+This is important specifically for interAptiv with EVA enabled,
+otherwise kernel mode RPS mispredicts may trigger speculative fetches of
+user return addresses, which may be sensitive in the kernel address
+space due to EVA's overlapping user/kernel address spaces.
 
 Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: Markos Chandras <markos.chandras@imgtec.com>
 Cc: Leonid Yegoshin <leonid.yegoshin@imgtec.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/10778/
+Patchwork: https://patchwork.linux-mips.org/patch/10812/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Luis Henriques <luis.henriques@canonical.com>
 ---
- arch/mips/kernel/traps.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ arch/mips/include/asm/stackframe.h | 25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
-diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
-index a47405caa0b7..027fefba8b96 100644
---- a/arch/mips/kernel/traps.c
-+++ b/arch/mips/kernel/traps.c
-@@ -189,6 +189,7 @@ static void show_stacktrace(struct task_struct *task,
- void show_stack(struct task_struct *task, unsigned long *sp)
- {
- 	struct pt_regs regs;
-+	mm_segment_t old_fs = get_fs();
- 	if (sp) {
- 		regs.regs[29] = (unsigned long)sp;
- 		regs.regs[31] = 0;
-@@ -207,7 +208,13 @@ void show_stack(struct task_struct *task, unsigned long *sp)
- 			prepare_frametrace(&regs);
- 		}
- 	}
-+	/*
-+	 * show_stack() deals exclusively with kernel mode, so be sure to access
-+	 * the stack in the kernel (not user) address space.
-+	 */
-+	set_fs(KERNEL_DS);
- 	show_stacktrace(task, &regs);
-+	set_fs(old_fs);
- }
- 
- static void show_code(unsigned int __user *pc)
+diff --git a/arch/mips/include/asm/stackframe.h b/arch/mips/include/asm/stackframe.h
+index b188c797565c..0562a24dc615 100644
+--- a/arch/mips/include/asm/stackframe.h
++++ b/arch/mips/include/asm/stackframe.h
+@@ -152,6 +152,31 @@
+ 		.set	noreorder
+ 		bltz	k0, 8f
+ 		 move	k1, sp
++#ifdef CONFIG_EVA
++		/*
++		 * Flush interAptiv's Return Prediction Stack (RPS) by writing
++		 * EntryHi. Toggling Config7.RPS is slower and less portable.
++		 *
++		 * The RPS isn't automatically flushed when exceptions are
++		 * taken, which can result in kernel mode speculative accesses
++		 * to user addresses if the RPS mispredicts. That's harmless
++		 * when user and kernel share the same address space, but with
++		 * EVA the same user segments may be unmapped to kernel mode,
++		 * even containing sensitive MMIO regions or invalid memory.
++		 *
++		 * This can happen when the kernel sets the return address to
++		 * ret_from_* and jr's to the exception handler, which looks
++		 * more like a tail call than a function call. If nested calls
++		 * don't evict the last user address in the RPS, it will
++		 * mispredict the return and fetch from a user controlled
++		 * address into the icache.
++		 *
++		 * More recent EVA-capable cores with MAAR to restrict
++		 * speculative accesses aren't affected.
++		 */
++		MFC0	k0, CP0_ENTRYHI
++		MTC0	k0, CP0_ENTRYHI
++#endif
+ 		.set	reorder
+ 		/* Called from user mode, new stack. */
+ 		get_saved_sp

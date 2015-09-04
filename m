@@ -1,22 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Sep 2015 15:11:01 +0200 (CEST)
-Received: from youngberry.canonical.com ([91.189.89.112]:60606 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Sep 2015 15:11:18 +0200 (CEST)
+Received: from youngberry.canonical.com ([91.189.89.112]:60971 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27013567AbbIDNJfPLS9K (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 4 Sep 2015 15:09:35 +0200
+        by eddie.linux-mips.org with ESMTP id S27013558AbbIDNKXXGlmK (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 4 Sep 2015 15:10:23 +0200
 Received: from av-217-129-142-138.netvisao.pt ([217.129.142.138] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_128_CBC_SHA1:16)
         (Exim 4.76)
         (envelope-from <luis.henriques@canonical.com>)
-        id 1ZXqkH-0006Vt-QD; Fri, 04 Sep 2015 13:09:33 +0000
+        id 1ZXql4-0006eQ-L4; Fri, 04 Sep 2015 13:10:22 +0000
 From:   Luis Henriques <luis.henriques@canonical.com>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
         kernel-team@lists.ubuntu.com
-Cc:     David Daney <david.daney@cavium.com>, linux-mips@linux-mips.org,
-        Ralf Baechle <ralf@linux-mips.org>,
+Cc:     Markos Chandras <markos.chandras@imgtec.com>,
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
         Luis Henriques <luis.henriques@canonical.com>
-Subject: [PATCH 3.16.y-ckt 059/130] MIPS: Make set_pte() SMP safe.
-Date:   Fri,  4 Sep 2015 14:07:27 +0100
-Message-Id: <1441372118-5933-60-git-send-email-luis.henriques@canonical.com>
+Subject: [PATCH 3.16.y-ckt 114/130] MIPS: Fix seccomp syscall argument for MIPS64
+Date:   Fri,  4 Sep 2015 14:08:22 +0100
+Message-Id: <1441372118-5933-115-git-send-email-luis.henriques@canonical.com>
 X-Mailer: git-send-email 2.1.4
 In-Reply-To: <1441372118-5933-1-git-send-email-luis.henriques@canonical.com>
 References: <1441372118-5933-1-git-send-email-luis.henriques@canonical.com>
@@ -25,7 +25,7 @@ Return-Path: <luis.henriques@canonical.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49105
+X-archive-position: 49106
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,76 +46,52 @@ X-list: linux-mips
 
 ------------------
 
-From: David Daney <david.daney@cavium.com>
+From: Markos Chandras <markos.chandras@imgtec.com>
 
-commit 46011e6ea39235e4aca656673c500eac81a07a17 upstream.
+commit 9f161439e4104b641a7bfb9b89581d801159fec8 upstream.
 
-On MIPS the GLOBAL bit of the PTE must have the same value in any
-aligned pair of PTEs.  These pairs of PTEs are referred to as
-"buddies".  In a SMP system is is possible for two CPUs to be calling
-set_pte() on adjacent PTEs at the same time.  There is a race between
-setting the PTE and a different CPU setting the GLOBAL bit in its
-buddy PTE.
+Commit 4c21b8fd8f14 ("MIPS: seccomp: Handle indirect system calls (o32)")
+fixed indirect system calls on O32 but it also introduced a bug for MIPS64
+where it erroneously modified the v0 (syscall) register with the assumption
+that the sycall offset hasn't been taken into consideration. This breaks
+seccomp on MIPS64 n64 and n32 ABIs. We fix this by replacing the addition
+with a move instruction.
 
-This race can be observed when multiple CPUs are executing
-vmap()/vfree() at the same time.
-
-Make setting the buddy PTE's GLOBAL bit an atomic operation to close
-the race condition.
-
-The case of CONFIG_64BIT_PHYS_ADDR && CONFIG_CPU_MIPS32 is *not*
-handled.
-
-Signed-off-by: David Daney <david.daney@cavium.com>
+Fixes: 4c21b8fd8f14 ("MIPS: seccomp: Handle indirect system calls (o32)")
+Reviewed-by: James Hogan <james.hogan@imgtec.com>
+Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/10835/
+Patchwork: https://patchwork.linux-mips.org/patch/10951/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Luis Henriques <luis.henriques@canonical.com>
 ---
- arch/mips/include/asm/pgtable.h | 31 +++++++++++++++++++++++++++++++
- 1 file changed, 31 insertions(+)
+ arch/mips/kernel/scall64-64.S  | 2 +-
+ arch/mips/kernel/scall64-n32.S | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/mips/include/asm/pgtable.h b/arch/mips/include/asm/pgtable.h
-index 539ddd148bbb..784b58cdab3e 100644
---- a/arch/mips/include/asm/pgtable.h
-+++ b/arch/mips/include/asm/pgtable.h
-@@ -152,8 +152,39 @@ static inline void set_pte(pte_t *ptep, pte_t pteval)
- 		 * Make sure the buddy is global too (if it's !none,
- 		 * it better already be global)
- 		 */
-+#ifdef CONFIG_SMP
-+		/*
-+		 * For SMP, multiple CPUs can race, so we need to do
-+		 * this atomically.
-+		 */
-+#ifdef CONFIG_64BIT
-+#define LL_INSN "lld"
-+#define SC_INSN "scd"
-+#else /* CONFIG_32BIT */
-+#define LL_INSN "ll"
-+#define SC_INSN "sc"
-+#endif
-+		unsigned long page_global = _PAGE_GLOBAL;
-+		unsigned long tmp;
-+
-+		__asm__ __volatile__ (
-+			"	.set	push\n"
-+			"	.set	noreorder\n"
-+			"1:	" LL_INSN "	%[tmp], %[buddy]\n"
-+			"	bnez	%[tmp], 2f\n"
-+			"	 or	%[tmp], %[tmp], %[global]\n"
-+			"	" SC_INSN "	%[tmp], %[buddy]\n"
-+			"	beqz	%[tmp], 1b\n"
-+			"	 nop\n"
-+			"2:\n"
-+			"	.set pop"
-+			: [buddy] "+m" (buddy->pte),
-+			  [tmp] "=&r" (tmp)
-+			: [global] "r" (page_global));
-+#else /* !CONFIG_SMP */
- 		if (pte_none(*buddy))
- 			pte_val(*buddy) = pte_val(*buddy) | _PAGE_GLOBAL;
-+#endif /* CONFIG_SMP */
- 	}
- #endif
- }
+diff --git a/arch/mips/kernel/scall64-64.S b/arch/mips/kernel/scall64-64.S
+index be2fedd4ae33..b204352a7d56 100644
+--- a/arch/mips/kernel/scall64-64.S
++++ b/arch/mips/kernel/scall64-64.S
+@@ -80,7 +80,7 @@ syscall_trace_entry:
+ 	SAVE_STATIC
+ 	move	s0, t2
+ 	move	a0, sp
+-	daddiu	a1, v0, __NR_64_Linux
++	move	a1, v0
+ 	jal	syscall_trace_enter
+ 
+ 	bltz	v0, 2f			# seccomp failed? Skip syscall
+diff --git a/arch/mips/kernel/scall64-n32.S b/arch/mips/kernel/scall64-n32.S
+index c1dbcda4b816..47dd5f9016c1 100644
+--- a/arch/mips/kernel/scall64-n32.S
++++ b/arch/mips/kernel/scall64-n32.S
+@@ -72,7 +72,7 @@ n32_syscall_trace_entry:
+ 	SAVE_STATIC
+ 	move	s0, t2
+ 	move	a0, sp
+-	daddiu	a1, v0, __NR_N32_Linux
++	move	a1, v0
+ 	jal	syscall_trace_enter
+ 
+ 	bltz	v0, 2f			# seccomp failed? Skip syscall

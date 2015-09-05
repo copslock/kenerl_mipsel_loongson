@@ -1,39 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 05 Sep 2015 21:29:50 +0200 (CEST)
-Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:39438 "EHLO
-        shadbolt.e.decadent.org.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007600AbbIET3tL4V4C (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 5 Sep 2015 21:29:49 +0200
-Received: from dab-yat1-h-48-9.dab.02.net ([82.132.215.124] helo=deadeye)
-        by shadbolt.decadent.org.uk with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.84)
-        (envelope-from <ben@decadent.org.uk>)
-        id 1ZYJ9o-0006Nh-8d
-        for linux-mips@linux-mips.org; Sat, 05 Sep 2015 20:29:48 +0100
-Received: from ben by deadeye with local (Exim 4.86)
-        (envelope-from <ben@decadent.org.uk>)
-        id 1ZYJ9b-0004Mp-Gl
-        for linux-mips@linux-mips.org; Sat, 05 Sep 2015 20:29:35 +0100
-Message-ID: <1441481368.15927.0.camel@decadent.org.uk>
-Subject: [PATCH] MIPS: BPF: Disable JIT on R3000 (MIPS-I)
-From:   Ben Hutchings <ben@decadent.org.uk>
-To:     linux-mips@linux-mips.org
-Date:   Sat, 05 Sep 2015 20:29:28 +0100
-Content-Type: multipart/signed; micalg="pgp-sha512";
-        protocol="application/pgp-signature"; boundary="=-a2Mb50HiA7RBkyHSuVQZ"
-X-Mailer: Evolution 3.16.3-1 
-Mime-Version: 1.0
-X-SA-Exim-Connect-IP: 82.132.215.124
-X-SA-Exim-Mail-From: ben@decadent.org.uk
-X-SA-Exim-Scanned: No (on shadbolt.decadent.org.uk); SAEximRunCond expanded to false
-Return-Path: <ben@decadent.org.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 05 Sep 2015 22:01:04 +0200 (CEST)
+Received: from mx1.redhat.com ([209.132.183.28]:34667 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27007600AbbIEUBCaiKCC (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 5 Sep 2015 22:01:02 +0200
+Received: from int-mx13.intmail.prod.int.phx2.redhat.com (int-mx13.intmail.prod.int.phx2.redhat.com [10.5.11.26])
+        by mx1.redhat.com (Postfix) with ESMTPS id C874F2D1243;
+        Sat,  5 Sep 2015 20:00:59 +0000 (UTC)
+Received: from congress.bos.jonmasters.org (ovpn-113-63.phx2.redhat.com [10.3.113.63])
+        by int-mx13.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with ESMTP id t85K0v4C010985;
+        Sat, 5 Sep 2015 16:00:57 -0400
+Message-ID: <55EB49E5.5040206@redhat.com>
+Date:   Sat, 05 Sep 2015 16:00:37 -0400
+From:   Jon Masters <jcm@redhat.com>
+Organization: Red Hat, Inc.
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.3.0
+MIME-Version: 1.0
+To:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        David Daney <ddaney@caviumnetworks.com>
+CC:     Mark Rutland <mark.rutland@arm.com>,
+        David Daney <ddaney.cavm@gmail.com>,
+        "grant.likely@linaro.org" <grant.likely@linaro.org>,
+        "rob.herring@linaro.org" <rob.herring@linaro.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        David Daney <david.daney@cavium.com>,
+        Tomasz Nowicki <tomasz.nowicki@linaro.org>,
+        Robert Richter <rrichter@cavium.com>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        Sunil Goutham <sgoutham@cavium.com>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+Subject: _DSD standardization note (WAS: Re: [PATCH 2/2] net, thunder, bgx:
+ Add support for ACPI binding.)
+References: <1438907590-29649-1-git-send-email-ddaney.cavm@gmail.com>   <1438907590-29649-3-git-send-email-ddaney.cavm@gmail.com>       <20150807140106.GE7646@leverpostej>     <55C4ECC6.7050908@caviumnetworks.com>   <20150807175127.GB12013@leverpostej>    <CAJZ5v0gc=bo3ayO7aWq19Hh_205YC52wqXGbbM5vxR1atXm+oA@mail.gmail.com>    <55C5494D.5010903@caviumnetworks.com> <CAJZ5v0iNqRsrpwzWY5o97R1S+Dr-CzRPg3Cymt1q4v5gvABCQA@mail.gmail.com>
+In-Reply-To: <CAJZ5v0iNqRsrpwzWY5o97R1S+Dr-CzRPg3Cymt1q4v5gvABCQA@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.68 on 10.5.11.26
+Return-Path: <jcm@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49114
+X-archive-position: 49115
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ben@decadent.org.uk
+X-original-sender: jcm@redhat.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,57 +61,60 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+Following up on this thread after finally seeing it...figured I would
+send something just for the archive mainly (we discussed this in person
+recently at a few different events and I think are aligned already).
 
---=-a2Mb50HiA7RBkyHSuVQZ
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On 08/07/2015 08:28 PM, Rafael J. Wysocki wrote:
+> Hi David,
+> 
+> On Sat, Aug 8, 2015 at 2:11 AM, David Daney <ddaney@caviumnetworks.com> wrote:
+>> On 08/07/2015 05:05 PM, Rafael J. Wysocki wrote:
+> 
+> [cut]
+> 
+>>>
+>>> It is actually useful to people as far as I can say.
+>>>
+>>> Also, if somebody is going to use properties with ACPI, why whould
+>>> they use a different set of properties with DT?
 
-The JIT does not include the load delay slots required by MIPS-I
-processors.
+Generally speaking, if there's a net new thing to handle, there is of
+course no particular problem with using DT as an inspiration, but we
+need to be conscious of the fact that Linux isn't the only Operating
+System that may need to support these bindings, so the correct thing (as
+stated by many of you, and below, and in person also recently - so we
+are aligned) is to get this (the MAC address binding for _DSD in ACPI)
+standardized properly through UEFI where everyone who has a vest OS
+interest beyond Linux can also have their own involvement as well. As
+discussed, that doesn't make it part of ACPI6.0, just a binding.
 
-Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
----
- arch/mips/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+FWIW I made a decision on the Red Hat end that in our guidelines to
+partners for ARM RHEL(SA - Server for ARM) builds we would not generally
+endorse any use of _DSD, with the exception of the MAC address binding
+being discussed here. In that case, I realized I had not been fully
+prescriptive enough with the vendors building early hw in that I should
+have realized this would happen and have required that they do this the
+right way. MAC IP should be more sophisticated such that it can handle
+being reset even after the firmware has loaded its MAC address(es).
+Platform flash storage separate from UEFI variable storage (which is
+being abused to contain too much now that DXE drivers then load into the
+ACPI tables prior to exiting Boot Services, etc.) should contain the
+actual MAC address(es), as it is done on other arches, and it should not
+be necessary to communicate this via ACPI tables to begin with (that's a
+cost saving embedded concept that should not happen on server systems in
+the general case). I have already had several unannounced future designs
+adjusted in light of this _DSD usage.
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 199a835..7ff9cba 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -12,7 +12,7 @@ config MIPS
- 	select HAVE_ARCH_KGDB
- 	select HAVE_ARCH_SECCOMP_FILTER
- 	select HAVE_ARCH_TRACEHOOK
--	select HAVE_BPF_JIT if !CPU_MICROMIPS
-+	select HAVE_BPF_JIT if !CPU_MICROMIPS && !CPU_R3000
- 	select ARCH_HAVE_CUSTOM_GPIO_H
- 	select HAVE_FUNCTION_TRACER
- 	select HAVE_DYNAMIC_FTRACE
---=20
-Ben Hutchings
-friends: People who know you well, but like you anyway.
+In the case of providing MAC address information (only) by _DSD, I
+connected the initial ARMv8 SoC silicon vendors who needed to use such a
+hack to ensure they were using the same properties, and will followup
+off list to ensure Cavium are looped into that. But, we do need to get
+the _DSD property for MAC address provision standardized through UEFI
+properly as an official binding rather than just a link on the website,
+and then we need to be extremely careful not to grow any further
+dependence upon _DSD elsewhere. Generally, if you're using that approach
+on a server system (other than for this MAC case), your firmware or
+design (or both) need to be modified to not use _DSD.
 
-
---=-a2Mb50HiA7RBkyHSuVQZ
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
-
-iQIVAwUAVetCmOe/yOyVhhEJAQpXNhAAi4GWCPzgagNUQPiit/cVDo+kQ3mvQIA9
-VbXmoqVvt1Z4+WMxyPUz2UXcX1m3mlCu7afZjaHgu6gpYLxl4F9r7OR6I4DEQHXD
-UqZvNLLIuTbW5En8wuYkyOmKVSNWBR+i4m2Pp3UCwSVRMaaIOSFVC9rGQQHJm8M2
-F2IHyXEY2V80mhk8d0tvH+yQoJfHeF3jf4Jj4nX1ee3zPJt3ZSbe+3utekGF4RR0
-YDO58xsxIIzJYP7iNG8HOywOSDbideSv0gV7dSGDJ71yhcy0iJ3o4ozspy80EGyL
-f8ChokLGWT5q6b8Z1GMOTUh6OTEuI/Nrs7uynvW42a8hdrvwJ0/QtWHy8cqeEPms
-KisCNC+jLd1cPT726C+VQeolRv/1O4S2IbYQjKSKNdyZXvlzoBhHpW1/9iQ4WgSZ
-ILzH/x06Q2BM+yINvMGXebiVfgELsaEFxxZ9kCPQnOnzLAeB2N2jyBYLEBba3JD/
-m1e1o/DEns1cAOxxfhOqUQmkM0GeyQ0/shnq0YN8cb++Tyo0n6veUO2I0SUCH60v
-p9QKVIgHLTGy3vVKVcimJ2E0U/1ROU/mkjVBZD7BEK7F7GPILvVW4HRb9NGh01zy
-TrfeIEGmDg/vr9dsZIrRpsenuZLPR/IWo4NfVr1dowhCyrO3cqR/9T38/thrp+Bp
-stmvvTNobd4=
-=BOnp
------END PGP SIGNATURE-----
-
---=-a2Mb50HiA7RBkyHSuVQZ--
+Jon.

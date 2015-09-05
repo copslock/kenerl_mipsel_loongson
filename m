@@ -1,33 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 05 Sep 2015 18:47:50 +0200 (CEST)
-Received: from hall.aurel32.net ([195.154.112.97]:44908 "EHLO hall.aurel32.net"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27007701AbbIEQrsSKe4O (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 5 Sep 2015 18:47:48 +0200
-Received: from [37.162.190.121] (helo=ohm.rr44.fr)
-        by hall.aurel32.net with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 05 Sep 2015 21:29:50 +0200 (CEST)
+Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:39438 "EHLO
+        shadbolt.e.decadent.org.uk" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007600AbbIET3tL4V4C (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 5 Sep 2015 21:29:49 +0200
+Received: from dab-yat1-h-48-9.dab.02.net ([82.132.215.124] helo=deadeye)
+        by shadbolt.decadent.org.uk with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.84)
-        (envelope-from <aurelien@aurel32.net>)
-        id 1ZYGd1-0007PS-LH; Sat, 05 Sep 2015 18:47:47 +0200
-Received: from aurel32 by ohm.rr44.fr with local (Exim 4.84)
-        (envelope-from <aurelien@aurel32.net>)
-        id 1ZYGcn-0001UG-Kl; Sat, 05 Sep 2015 18:47:33 +0200
-From:   Aurelien Jarno <aurelien@aurel32.net>
+        (envelope-from <ben@decadent.org.uk>)
+        id 1ZYJ9o-0006Nh-8d
+        for linux-mips@linux-mips.org; Sat, 05 Sep 2015 20:29:48 +0100
+Received: from ben by deadeye with local (Exim 4.86)
+        (envelope-from <ben@decadent.org.uk>)
+        id 1ZYJ9b-0004Mp-Gl
+        for linux-mips@linux-mips.org; Sat, 05 Sep 2015 20:29:35 +0100
+Message-ID: <1441481368.15927.0.camel@decadent.org.uk>
+Subject: [PATCH] MIPS: BPF: Disable JIT on R3000 (MIPS-I)
+From:   Ben Hutchings <ben@decadent.org.uk>
 To:     linux-mips@linux-mips.org
-Cc:     Aurelien Jarno <aurelien@aurel32.net>,
-        Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH] MIPS: idle: add case for CPU_5KE
-Date:   Sat,  5 Sep 2015 18:47:31 +0200
-Message-Id: <1441471651-5677-1-git-send-email-aurelien@aurel32.net>
-X-Mailer: git-send-email 2.1.4
-Return-Path: <aurelien@aurel32.net>
+Date:   Sat, 05 Sep 2015 20:29:28 +0100
+Content-Type: multipart/signed; micalg="pgp-sha512";
+        protocol="application/pgp-signature"; boundary="=-a2Mb50HiA7RBkyHSuVQZ"
+X-Mailer: Evolution 3.16.3-1 
+Mime-Version: 1.0
+X-SA-Exim-Connect-IP: 82.132.215.124
+X-SA-Exim-Mail-From: ben@decadent.org.uk
+X-SA-Exim-Scanned: No (on shadbolt.decadent.org.uk); SAEximRunCond expanded to false
+Return-Path: <ben@decadent.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49113
+X-archive-position: 49114
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aurelien@aurel32.net
+X-original-sender: ben@decadent.org.uk
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -40,28 +46,57 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-While the 5KE processors have never been taped out, they exists though
-a CP0.PRId and experimental RTLs or QEMU implementations. Add a case
-entry in the idle code, as they can use the standard idle loop like the
-5K processors.
 
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Aurelien Jarno <aurelien@aurel32.net>
+--=-a2Mb50HiA7RBkyHSuVQZ
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+The JIT does not include the load delay slots required by MIPS-I
+processors.
+
+Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
 ---
- arch/mips/kernel/idle.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/mips/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/mips/kernel/idle.c b/arch/mips/kernel/idle.c
-index e4f62b7..3453370 100644
---- a/arch/mips/kernel/idle.c
-+++ b/arch/mips/kernel/idle.c
-@@ -155,6 +155,7 @@ void __init check_wait(void)
- 	case CPU_4KEC:
- 	case CPU_4KSC:
- 	case CPU_5KC:
-+	case CPU_5KE:
- 	case CPU_25KF:
- 	case CPU_PR4450:
- 	case CPU_BMIPS3300:
--- 
-2.1.4
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 199a835..7ff9cba 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -12,7 +12,7 @@ config MIPS
+ 	select HAVE_ARCH_KGDB
+ 	select HAVE_ARCH_SECCOMP_FILTER
+ 	select HAVE_ARCH_TRACEHOOK
+-	select HAVE_BPF_JIT if !CPU_MICROMIPS
++	select HAVE_BPF_JIT if !CPU_MICROMIPS && !CPU_R3000
+ 	select ARCH_HAVE_CUSTOM_GPIO_H
+ 	select HAVE_FUNCTION_TRACER
+ 	select HAVE_DYNAMIC_FTRACE
+--=20
+Ben Hutchings
+friends: People who know you well, but like you anyway.
+
+
+--=-a2Mb50HiA7RBkyHSuVQZ
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
+
+iQIVAwUAVetCmOe/yOyVhhEJAQpXNhAAi4GWCPzgagNUQPiit/cVDo+kQ3mvQIA9
+VbXmoqVvt1Z4+WMxyPUz2UXcX1m3mlCu7afZjaHgu6gpYLxl4F9r7OR6I4DEQHXD
+UqZvNLLIuTbW5En8wuYkyOmKVSNWBR+i4m2Pp3UCwSVRMaaIOSFVC9rGQQHJm8M2
+F2IHyXEY2V80mhk8d0tvH+yQoJfHeF3jf4Jj4nX1ee3zPJt3ZSbe+3utekGF4RR0
+YDO58xsxIIzJYP7iNG8HOywOSDbideSv0gV7dSGDJ71yhcy0iJ3o4ozspy80EGyL
+f8ChokLGWT5q6b8Z1GMOTUh6OTEuI/Nrs7uynvW42a8hdrvwJ0/QtWHy8cqeEPms
+KisCNC+jLd1cPT726C+VQeolRv/1O4S2IbYQjKSKNdyZXvlzoBhHpW1/9iQ4WgSZ
+ILzH/x06Q2BM+yINvMGXebiVfgELsaEFxxZ9kCPQnOnzLAeB2N2jyBYLEBba3JD/
+m1e1o/DEns1cAOxxfhOqUQmkM0GeyQ0/shnq0YN8cb++Tyo0n6veUO2I0SUCH60v
+p9QKVIgHLTGy3vVKVcimJ2E0U/1ROU/mkjVBZD7BEK7F7GPILvVW4HRb9NGh01zy
+TrfeIEGmDg/vr9dsZIrRpsenuZLPR/IWo4NfVr1dowhCyrO3cqR/9T38/thrp+Bp
+stmvvTNobd4=
+=BOnp
+-----END PGP SIGNATURE-----
+
+--=-a2Mb50HiA7RBkyHSuVQZ--

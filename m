@@ -1,43 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Sep 2015 20:03:36 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:25716 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27008177AbbIJSDe1mOCV (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 10 Sep 2015 20:03:34 +0200
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 4F820433FD574;
-        Thu, 10 Sep 2015 19:03:25 +0100 (IST)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Thu, 10 Sep 2015 19:03:28 +0100
-Received: from localhost (192.168.159.168) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Thu, 10 Sep
- 2015 19:03:25 +0100
-Date:   Thu, 10 Sep 2015 11:03:23 -0700
-From:   Paul Burton <paul.burton@imgtec.com>
-To:     <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
-CC:     Markos Chandras <markos.chandras@imgtec.com>,
-        <stable@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        James Hogan <james.hogan@imgtec.com>,
-        "Ralf Baechle" <ralf@linux-mips.org>
-Subject: Re: [PATCH 6/6] MIPS: CPS: drop .set mips64r2 directives
-Message-ID: <20150910180323.GA22682@NP-P-BURTON>
-References: <1438814560-19821-1-git-send-email-paul.burton@imgtec.com>
- <1438814560-19821-7-git-send-email-paul.burton@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 Sep 2015 01:49:37 +0200 (CEST)
+Received: from ec2-54-201-57-178.us-west-2.compute.amazonaws.com ([54.201.57.178]:50368
+        "EHLO ip-172-31-12-36.us-west-2.compute.internal"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S27013363AbbIJXtfk2GNM (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 11 Sep 2015 01:49:35 +0200
+Received: by ip-172-31-12-36.us-west-2.compute.internal (Postfix, from userid 1001)
+        id E9D8941060; Thu, 10 Sep 2015 23:46:39 +0000 (UTC)
+Date:   Thu, 10 Sep 2015 16:46:39 -0700
+From:   dwalker@fifo99.com
+To:     Markos Chandras <Markos.Chandras@imgtec.com>
+Cc:     alex.smith@imgtec.com, linux-mips@linux-mips.org
+Subject: Re: mips VDSO
+Message-ID: <20150910234639.GA31499@fifo99.com>
+References: <20150909164309.GB27534@fifo99.com>
+ <55F13BDA.3030304@imgtec.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1438814560-19821-7-git-send-email-paul.burton@imgtec.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-X-Originating-IP: [192.168.159.168]
-Return-Path: <Paul.Burton@imgtec.com>
+In-Reply-To: <55F13BDA.3030304@imgtec.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <dwalker@fifo99.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49155
+X-archive-position: 49156
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@imgtec.com
+X-original-sender: dwalker@fifo99.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,57 +40,21 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Ralf: is there a reason you've only applied patch 1 of this series?
+On Thu, Sep 10, 2015 at 09:14:18AM +0100, Markos Chandras wrote:
+> On 09/09/2015 05:43 PM, dwalker@fifo99.com wrote:
+> > Hi,
+> > 
+> > I was wondering if you've made any progress on this? I was also interested in implementing a faster gettimeofday()
+> > for mips.
+> > 
+> > Daniel
+> > 
+> Hi,
+> 
+> I am currently reviewing Alex's VSDO implementation and I will post it
+> to this list within the next couple of weeks.
 
-v4.2 is broken because these didn't get in (despite being submitted well
-before the release), and master is still broken because they still
-haven't gotten in. If there's a reason you didn't merge them please let
-me know, otherwise please can we get them in ASAP.
 
-Thanks,
-    Paul
+Great .. I look forward to your post. I'll ping you in a couple week if I don't see anything.
 
-On Wed, Aug 05, 2015 at 03:42:40PM -0700, Paul Burton wrote:
-> Commit 977e043d5ea1 ("MIPS: kernel: cps-vec: Replace mips32r2 ISA level
-> with mips64r2") leads to .set mips64r2 directives being present in 32
-> bit (ie. CONFIG_32BIT=y) kernels. This is incorrect & leads to MIPS64
-> instructions being emitted by the assembler when expanding
-> pseudo-instructions. For example the "move" instruction can legitimately
-> be expanded to a "daddu". This causes problems when the kernel is run on
-> a MIPS32 CPU, as CONFIG_32BIT kernels of course often are...
-> 
-> Fix this by dropping the .set <ISA> directives entirely now that Kconfig
-> should be ensuring that kernels including this code are built with a
-> suitable -march= compiler flag.
-> 
-> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-> Cc: Markos Chandras <markos.chandras@imgtec.com>
-> Cc: <stable@vger.kernel.org> # 3.16+
-> ---
-> 
->  arch/mips/kernel/cps-vec.S | 2 --
->  1 file changed, 2 deletions(-)
-> 
-> diff --git a/arch/mips/kernel/cps-vec.S b/arch/mips/kernel/cps-vec.S
-> index 209ded1..763d8b7 100644
-> --- a/arch/mips/kernel/cps-vec.S
-> +++ b/arch/mips/kernel/cps-vec.S
-> @@ -229,7 +229,6 @@ LEAF(mips_cps_core_init)
->  	has_mt	t0, 3f
->  
->  	.set	push
-> -	.set	mips64r2
->  	.set	mt
->  
->  	/* Only allow 1 TC per VPE to execute... */
-> @@ -348,7 +347,6 @@ LEAF(mips_cps_boot_vpes)
->  	 nop
->  
->  	.set	push
-> -	.set	mips64r2
->  	.set	mt
->  
->  1:	/* Enter VPE configuration state */
-> -- 
-> 2.5.0
-> 
+Daniel

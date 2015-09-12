@@ -1,35 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 12 Sep 2015 00:50:48 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:55568 "EHLO
-        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008155AbbIKWurElJbx (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 12 Sep 2015 00:50:47 +0200
-Received: from localhost (unknown [104.135.11.194])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id C6880F7A;
-        Fri, 11 Sep 2015 22:50:40 +0000 (UTC)
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, James Hogan <james.hogan@imgtec.com>,
-        Markos Chandras <markos.chandras@imgtec.com>,
-        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.1 39/78] MIPS: Fix seccomp syscall argument for MIPS64
-Date:   Fri, 11 Sep 2015 15:49:40 -0700
-Message-Id: <20150911224611.852997581@linuxfoundation.org>
-X-Mailer: git-send-email 2.5.1
-In-Reply-To: <20150911224606.758437370@linuxfoundation.org>
-References: <20150911224606.758437370@linuxfoundation.org>
-User-Agent: quilt/0.64
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 12 Sep 2015 08:13:10 +0200 (CEST)
+Received: from static.88-198-24-112.clients.your-server.de ([88.198.24.112]:40171
+        "EHLO nbd.name" rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org
+        with ESMTP id S27007342AbbILGNIW7DFy (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 12 Sep 2015 08:13:08 +0200
+Subject: Re: [PATCH 6/6] MIPS: CPS: drop .set mips64r2 directives
+To:     Paul Burton <paul.burton@imgtec.com>, ralf@linux-mips.org,
+        linux-mips@linux-mips.org
+References: <1438814560-19821-1-git-send-email-paul.burton@imgtec.com>
+ <1438814560-19821-7-git-send-email-paul.burton@imgtec.com>
+ <20150910180323.GA22682@NP-P-BURTON>
+Cc:     Markos Chandras <markos.chandras@imgtec.com>,
+        stable@vger.kernel.org, linux-kernel@vger.kernel.org,
+        James Hogan <james.hogan@imgtec.com>
+From:   John Crispin <john@phrozen.org>
+Message-ID: <55F3C273.3030704@phrozen.org>
+Date:   Sat, 12 Sep 2015 08:13:07 +0200
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:38.0)
+ Gecko/20100101 Thunderbird/38.2.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-15
-Return-Path: <gregkh@linuxfoundation.org>
+In-Reply-To: <20150910180323.GA22682@NP-P-BURTON>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Return-Path: <john@phrozen.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49160
+X-archive-position: 49161
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
+X-original-sender: john@phrozen.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -42,53 +42,65 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-4.1-stable review patch.  If anyone has any objections, please let me know.
+Hi Paul,
 
-------------------
+--> http://www.linux-mips.org/archives/linux-mips/2015-09/msg00057.html
 
-From: Markos Chandras <markos.chandras@imgtec.com>
+	John
 
-commit 9f161439e4104b641a7bfb9b89581d801159fec8 upstream.
-
-Commit 4c21b8fd8f14 ("MIPS: seccomp: Handle indirect system calls (o32)")
-fixed indirect system calls on O32 but it also introduced a bug for MIPS64
-where it erroneously modified the v0 (syscall) register with the assumption
-that the sycall offset hasn't been taken into consideration. This breaks
-seccomp on MIPS64 n64 and n32 ABIs. We fix this by replacing the addition
-with a move instruction.
-
-Fixes: 4c21b8fd8f14 ("MIPS: seccomp: Handle indirect system calls (o32)")
-Reviewed-by: James Hogan <james.hogan@imgtec.com>
-Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
-Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/10951/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
----
- arch/mips/kernel/scall64-64.S  |    2 +-
- arch/mips/kernel/scall64-n32.S |    2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
-
---- a/arch/mips/kernel/scall64-64.S
-+++ b/arch/mips/kernel/scall64-64.S
-@@ -80,7 +80,7 @@ syscall_trace_entry:
- 	SAVE_STATIC
- 	move	s0, t2
- 	move	a0, sp
--	daddiu	a1, v0, __NR_64_Linux
-+	move	a1, v0
- 	jal	syscall_trace_enter
- 
- 	bltz	v0, 2f			# seccomp failed? Skip syscall
---- a/arch/mips/kernel/scall64-n32.S
-+++ b/arch/mips/kernel/scall64-n32.S
-@@ -72,7 +72,7 @@ n32_syscall_trace_entry:
- 	SAVE_STATIC
- 	move	s0, t2
- 	move	a0, sp
--	daddiu	a1, v0, __NR_N32_Linux
-+	move	a1, v0
- 	jal	syscall_trace_enter
- 
- 	bltz	v0, 2f			# seccomp failed? Skip syscall
+On 10/09/2015 20:03, Paul Burton wrote:
+> Ralf: is there a reason you've only applied patch 1 of this series?
+> 
+> v4.2 is broken because these didn't get in (despite being submitted well
+> before the release), and master is still broken because they still
+> haven't gotten in. If there's a reason you didn't merge them please let
+> me know, otherwise please can we get them in ASAP.
+> 
+> Thanks,
+>     Paul
+> 
+> On Wed, Aug 05, 2015 at 03:42:40PM -0700, Paul Burton wrote:
+>> Commit 977e043d5ea1 ("MIPS: kernel: cps-vec: Replace mips32r2 ISA level
+>> with mips64r2") leads to .set mips64r2 directives being present in 32
+>> bit (ie. CONFIG_32BIT=y) kernels. This is incorrect & leads to MIPS64
+>> instructions being emitted by the assembler when expanding
+>> pseudo-instructions. For example the "move" instruction can legitimately
+>> be expanded to a "daddu". This causes problems when the kernel is run on
+>> a MIPS32 CPU, as CONFIG_32BIT kernels of course often are...
+>>
+>> Fix this by dropping the .set <ISA> directives entirely now that Kconfig
+>> should be ensuring that kernels including this code are built with a
+>> suitable -march= compiler flag.
+>>
+>> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+>> Cc: Markos Chandras <markos.chandras@imgtec.com>
+>> Cc: <stable@vger.kernel.org> # 3.16+
+>> ---
+>>
+>>  arch/mips/kernel/cps-vec.S | 2 --
+>>  1 file changed, 2 deletions(-)
+>>
+>> diff --git a/arch/mips/kernel/cps-vec.S b/arch/mips/kernel/cps-vec.S
+>> index 209ded1..763d8b7 100644
+>> --- a/arch/mips/kernel/cps-vec.S
+>> +++ b/arch/mips/kernel/cps-vec.S
+>> @@ -229,7 +229,6 @@ LEAF(mips_cps_core_init)
+>>  	has_mt	t0, 3f
+>>  
+>>  	.set	push
+>> -	.set	mips64r2
+>>  	.set	mt
+>>  
+>>  	/* Only allow 1 TC per VPE to execute... */
+>> @@ -348,7 +347,6 @@ LEAF(mips_cps_boot_vpes)
+>>  	 nop
+>>  
+>>  	.set	push
+>> -	.set	mips64r2
+>>  	.set	mt
+>>  
+>>  1:	/* Enter VPE configuration state */
+>> -- 
+>> 2.5.0
+>>
+> 

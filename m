@@ -1,15 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 12 Sep 2015 18:27:08 +0200 (CEST)
-Received: from arrakis.dune.hu ([78.24.191.176]:53289 "EHLO arrakis.dune.hu"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 12 Sep 2015 18:27:24 +0200 (CEST)
+Received: from arrakis.dune.hu ([78.24.191.176]:53294 "EHLO arrakis.dune.hu"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27012207AbbILQ0p0bp-i (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 12 Sep 2015 18:26:45 +0200
+        id S27011669AbbILQ0u6BoYi (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 12 Sep 2015 18:26:50 +0200
 Received: from localhost (localhost [127.0.0.1])
-        by arrakis.dune.hu (Postfix) with ESMTP id 0778B28C131;
-        Sat, 12 Sep 2015 18:25:31 +0200 (CEST)
+        by arrakis.dune.hu (Postfix) with ESMTP id B4A4428C088;
+        Sat, 12 Sep 2015 18:25:37 +0200 (CEST)
 X-Virus-Scanned: at arrakis.dune.hu
 Received: from localhost.localdomain (dslb-088-073-016-160.088.073.pools.vodafone-ip.de [88.73.16.160])
-        by arrakis.dune.hu (Postfix) with ESMTPSA id EBE5828C12E;
-        Sat, 12 Sep 2015 18:25:18 +0200 (CEST)
+        by arrakis.dune.hu (Postfix) with ESMTPSA id 2AFBD28C134;
+        Sat, 12 Sep 2015 18:25:20 +0200 (CEST)
 From:   Jonas Gorski <jogo@openwrt.org>
 To:     linux-mips@linux-mips.org
 Cc:     Ralf Baechle <ralf@linux-mips.org>,
@@ -22,9 +22,9 @@ Cc:     Ralf Baechle <ralf@linux-mips.org>,
         Jayachandran C <jchandra@broadcom.com>,
         Andrew Bresticker <abrestic@chromium.org>,
         James Hartley <james.hartley@imgtec.com>
-Subject: [PATCH 2/3] MIPS: make the kernel arguments from dtb available
-Date:   Sat, 12 Sep 2015 18:26:13 +0200
-Message-Id: <1442075174-30414-3-git-send-email-jogo@openwrt.org>
+Subject: [PATCH 3/3] MIPS: make MIPS_CMDLINE_DTB default
+Date:   Sat, 12 Sep 2015 18:26:14 +0200
+Message-Id: <1442075174-30414-4-git-send-email-jogo@openwrt.org>
 X-Mailer: git-send-email 2.1.4
 In-Reply-To: <1442075174-30414-1-git-send-email-jogo@openwrt.org>
 References: <1442075174-30414-1-git-send-email-jogo@openwrt.org>
@@ -32,7 +32,7 @@ Return-Path: <jogo@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49174
+X-archive-position: 49175
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -49,93 +49,100 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Similar to how arm allows using selecting between bootloader arguments,
-dtb arguments and both, allow to select them on mips. But since we have
-less control over the place of the dtb do not modify it but instead use
-the boot_command_line for merging them.
+Seval of-enabled machines (bmips, lantiq, xlp, pistachio, ralink) copied
+the arguments from dtb to arcs_command_line to prevent the kernel from
+overwriting them.
 
-The default is "use bootloader arguments" to keep the current behaviour
-as default.
+Since there is now an option to keep the dtb arguments, default to the
+new option remove the "backup" to arcs_command_line in case of USE_OF is
+enabled, except for those platforms that still take the bootloader
+arguments or do not use any at all.
 
 Signed-off-by: Jonas Gorski <jogo@openwrt.org>
 ---
- arch/mips/Kconfig        | 16 ++++++++++++++++
- arch/mips/kernel/setup.c | 24 +++++++++++++++++-------
- 2 files changed, 33 insertions(+), 7 deletions(-)
+ arch/mips/Kconfig           | 3 +++
+ arch/mips/bmips/setup.c     | 1 -
+ arch/mips/lantiq/prom.c     | 2 --
+ arch/mips/netlogic/xlp/dt.c | 1 -
+ arch/mips/pistachio/init.c  | 1 -
+ arch/mips/ralink/of.c       | 2 --
+ 6 files changed, 3 insertions(+), 7 deletions(-)
 
 diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 10fcd93..3753437 100644
+index 3753437..703142b 100644
 --- a/arch/mips/Kconfig
 +++ b/arch/mips/Kconfig
-@@ -2728,6 +2728,22 @@ choice
- 		  if you don't intend to always append a DTB.
- endchoice
+@@ -2730,6 +2730,9 @@ endchoice
  
-+choice
-+	prompt "Kernel command line type" if !CMDLINE_OVERRIDE
-+	default MIPS_CMDLINE_FROM_BOOTLOADER
-+
-+	config MIPS_CMDLINE_FROM_DTB
-+		depends on USE_OF
-+		bool "Dtb kernel arguments if available"
-+
-+	config MIPS_CMDLINE_DTB_EXTEND
-+		depends on USE_OF
-+		bool "Extend dtb kernel arguments with bootloader arguments"
-+
-+	config MIPS_CMDLINE_FROM_BOOTLOADER
-+		bool "Bootloader kernel arguments if available"
-+endchoice
-+
- endmenu
+ choice
+ 	prompt "Kernel command line type" if !CMDLINE_OVERRIDE
++	default MIPS_CMDLINE_FROM_DTB if USE_OF && !ATh79 && !MACH_INGENIC && \
++					 !MIPS_MALTA && !MIPS_SEAD3 && \
++					 !CAVIUM_OCTEON_SOC
+ 	default MIPS_CMDLINE_FROM_BOOTLOADER
  
- config LOCKDEP_SUPPORT
-diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
-index 35b8316..2f33bbf 100644
---- a/arch/mips/kernel/setup.c
-+++ b/arch/mips/kernel/setup.c
-@@ -608,6 +608,10 @@ static void __init request_crashkernel(struct resource *res)
+ 	config MIPS_CMDLINE_FROM_DTB
+diff --git a/arch/mips/bmips/setup.c b/arch/mips/bmips/setup.c
+index 526ec27..5b16d29 100644
+--- a/arch/mips/bmips/setup.c
++++ b/arch/mips/bmips/setup.c
+@@ -157,7 +157,6 @@ void __init plat_mem_setup(void)
+ 		panic("no dtb found");
+ 
+ 	__dt_setup_arch(dtb);
+-	strlcpy(arcs_cmdline, boot_command_line, COMMAND_LINE_SIZE);
+ 
+ 	for (q = bmips_quirk_list; q->quirk_fn; q++) {
+ 		if (of_flat_dt_is_compatible(of_get_flat_dt_root(),
+diff --git a/arch/mips/lantiq/prom.c b/arch/mips/lantiq/prom.c
+index 0db099e..297bcaa 100644
+--- a/arch/mips/lantiq/prom.c
++++ b/arch/mips/lantiq/prom.c
+@@ -77,8 +77,6 @@ void __init plat_mem_setup(void)
+ 	 * parsed resulting in our memory appearing
+ 	 */
+ 	__dt_setup_arch(__dtb_start);
+-
+-	strlcpy(arcs_cmdline, boot_command_line, COMMAND_LINE_SIZE);
  }
- #endif /* !defined(CONFIG_KEXEC)  */
  
-+#define USE_PROM_CMDLINE	IS_ENABLED(CONFIG_MIPS_CMDLINE_FROM_BOOTLOADER)
-+#define USE_DTB_CMDLINE		IS_ENABLED(CONFIG_MIPS_CMDLINE_FROM_DTB)
-+#define EXTEND_WITH_PROM	IS_ENABLED(CONFIG_MIPS_CMDLINE_EXTEND)
-+
- static void __init arch_mem_init(char **cmdline_p)
+ void __init device_tree_init(void)
+diff --git a/arch/mips/netlogic/xlp/dt.c b/arch/mips/netlogic/xlp/dt.c
+index a625bdb..856a6e6 100644
+--- a/arch/mips/netlogic/xlp/dt.c
++++ b/arch/mips/netlogic/xlp/dt.c
+@@ -87,7 +87,6 @@ void __init *xlp_dt_init(void *fdtp)
+ void __init xlp_early_init_devtree(void)
  {
- 	struct memblock_region *reg;
-@@ -632,18 +636,24 @@ static void __init arch_mem_init(char **cmdline_p)
- 	pr_info("Determined physical RAM map:\n");
- 	print_memory_map();
+ 	__dt_setup_arch(xlp_fdt_blob);
+-	strlcpy(arcs_cmdline, boot_command_line, COMMAND_LINE_SIZE);
+ }
  
--#ifdef CONFIG_CMDLINE_BOOL
--#ifdef CONFIG_CMDLINE_OVERRIDE
-+#if defined(CONFIG_CMDLINE_BOOL) && defined(CONFIG_CMDLINE_OVERRIDE)
- 	strlcpy(boot_command_line, builtin_cmdline, COMMAND_LINE_SIZE);
- #else
-+	if ((USE_PROM_CMDLINE && arcs_cmdline[0]) ||
-+	    (USE_DTB_CMDLINE && !boot_command_line[0]))
-+		strlcpy(boot_command_line, arcs_cmdline, COMMAND_LINE_SIZE);
-+
-+	if (EXTEND_WITH_PROM && arcs_cmdline[0]) {
-+		strlcat(boot_command_line, " ", COMMAND_LINE_SIZE);
-+		strlcat(boot_command_line, arcs_cmdline, COMMAND_LINE_SIZE);
-+	}
-+
-+#if defined(CONFIG_CMDLINE_BOOL)
- 	if (builtin_cmdline[0]) {
--		strlcat(arcs_cmdline, " ", COMMAND_LINE_SIZE);
--		strlcat(arcs_cmdline, builtin_cmdline, COMMAND_LINE_SIZE);
-+		strlcat(boot_command_line, " ", COMMAND_LINE_SIZE);
-+		strlcat(boot_command_line, builtin_cmdline, COMMAND_LINE_SIZE);
- 	}
--	strlcpy(boot_command_line, arcs_cmdline, COMMAND_LINE_SIZE);
- #endif
--#else
--	strlcpy(boot_command_line, arcs_cmdline, COMMAND_LINE_SIZE);
- #endif
- 	strlcpy(command_line, boot_command_line, COMMAND_LINE_SIZE);
+ void __init device_tree_init(void)
+diff --git a/arch/mips/pistachio/init.c b/arch/mips/pistachio/init.c
+index 8bd8ebb..96ba2cc 100644
+--- a/arch/mips/pistachio/init.c
++++ b/arch/mips/pistachio/init.c
+@@ -58,7 +58,6 @@ void __init plat_mem_setup(void)
+ 		panic("Device-tree not present");
  
+ 	__dt_setup_arch((void *)fw_arg1);
+-	strlcpy(arcs_cmdline, boot_command_line, COMMAND_LINE_SIZE);
+ 
+ 	plat_setup_iocoherency();
+ }
+diff --git a/arch/mips/ralink/of.c b/arch/mips/ralink/of.c
+index 0d30dcd..f9eda5d 100644
+--- a/arch/mips/ralink/of.c
++++ b/arch/mips/ralink/of.c
+@@ -74,8 +74,6 @@ void __init plat_mem_setup(void)
+ 	 */
+ 	__dt_setup_arch(__dtb_start);
+ 
+-	strlcpy(arcs_cmdline, boot_command_line, COMMAND_LINE_SIZE);
+-
+ 	of_scan_flat_dt(early_init_dt_find_memory, NULL);
+ 	if (memory_dtb)
+ 		of_scan_flat_dt(early_init_dt_scan_memory, NULL);
 -- 
 2.1.4

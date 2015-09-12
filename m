@@ -1,50 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 12 Sep 2015 21:02:19 +0200 (CEST)
-Received: from arrakis.dune.hu ([78.24.191.176]:57053 "EHLO arrakis.dune.hu"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 13 Sep 2015 01:12:41 +0200 (CEST)
+Received: from wtarreau.pck.nerim.net ([62.212.114.60]:9296 "EHLO 1wt.eu"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27008270AbbILTCRLCRJO (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 12 Sep 2015 21:02:17 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by arrakis.dune.hu (Postfix) with ESMTP id 3711028C088;
-        Sat, 12 Sep 2015 21:01:07 +0200 (CEST)
-X-Virus-Scanned: at arrakis.dune.hu
-Received: from mail-la0-f53.google.com (mail-la0-f53.google.com [209.85.215.53])
-        by arrakis.dune.hu (Postfix) with ESMTPSA id 712B428C14D;
-        Sat, 12 Sep 2015 21:00:59 +0200 (CEST)
-Received: by lanb10 with SMTP id b10so65078981lan.3;
-        Sat, 12 Sep 2015 12:02:06 -0700 (PDT)
-X-Received: by 10.152.23.167 with SMTP id n7mr4897594laf.18.1442084526512;
- Sat, 12 Sep 2015 12:02:06 -0700 (PDT)
+        id S27008253AbbILXMjZf6TO (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 13 Sep 2015 01:12:39 +0200
+Message-Id: <20150912225608.028958489@1wt.eu>
+User-Agent: quilt/0.63-1
+Date:   Sun, 13 Sep 2015 00:56:40 +0200
+From:   Willy Tarreau <w@1wt.eu>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Lars Persson <larper@axis.com>, linux-mips@linux-mips.org,
+        paul.burton@imgtec.com, Ralf Baechle <ralf@linux-mips.org>,
+        Ben Hutchings <ben@decadent.org.uk>, Willy Tarreau <w@1wt.eu>
+Subject: [PATCH 2.6.32 34/62] MIPS: Fix race condition in lazy cache flushing.
 MIME-Version: 1.0
-Received: by 10.25.147.1 with HTTP; Sat, 12 Sep 2015 12:01:46 -0700 (PDT)
-In-Reply-To: <55F474A4.4030308@hauke-m.de>
-References: <1442075174-30414-1-git-send-email-jogo@openwrt.org>
- <1442075174-30414-4-git-send-email-jogo@openwrt.org> <55F474A4.4030308@hauke-m.de>
-From:   Jonas Gorski <jogo@openwrt.org>
-Date:   Sat, 12 Sep 2015 21:01:46 +0200
-Message-ID: <CAOiHx==akNOMTcySJF+b5h6+a9=neU8bJ8yqixUrDVzcPSciSA@mail.gmail.com>
-Subject: Re: [PATCH 3/3] MIPS: make MIPS_CMDLINE_DTB default
-To:     Hauke Mehrtens <hauke@hauke-m.de>
-Cc:     MIPS Mailing List <linux-mips@linux-mips.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Kevin Cernekee <cernekee@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        John Crispin <blogic@openwrt.org>,
-        Ganesan Ramalingam <ganesanr@broadcom.com>,
-        Jayachandran C <jchandra@broadcom.com>,
-        Andrew Bresticker <abrestic@chromium.org>,
-        James Hartley <james.hartley@imgtec.com>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <jogo@openwrt.org>
+Content-Type: text/plain; charset=ISO-8859-15
+In-Reply-To: <08d3b586eb2e764308c3de9ee398a17c@local>
+Return-Path: <w@1wt.eu>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49177
+X-archive-position: 49178
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jogo@openwrt.org
+X-original-sender: w@1wt.eu
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -57,40 +36,156 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sat, Sep 12, 2015 at 8:53 PM, Hauke Mehrtens <hauke@hauke-m.de> wrote:
-> On 09/12/2015 06:26 PM, Jonas Gorski wrote:
->> Seval of-enabled machines (bmips, lantiq, xlp, pistachio, ralink) copied
->> the arguments from dtb to arcs_command_line to prevent the kernel from
->> overwriting them.
->>
->> Since there is now an option to keep the dtb arguments, default to the
->> new option remove the "backup" to arcs_command_line in case of USE_OF is
->> enabled, except for those platforms that still take the bootloader
->> arguments or do not use any at all.
->>
->> Signed-off-by: Jonas Gorski <jogo@openwrt.org>
->> ---
->>  arch/mips/Kconfig           | 3 +++
->>  arch/mips/bmips/setup.c     | 1 -
->>  arch/mips/lantiq/prom.c     | 2 --
->>  arch/mips/netlogic/xlp/dt.c | 1 -
->>  arch/mips/pistachio/init.c  | 1 -
->>  arch/mips/ralink/of.c       | 2 --
->>  6 files changed, 3 insertions(+), 7 deletions(-)
->>
->> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
->> index 3753437..703142b 100644
->> --- a/arch/mips/Kconfig
->> +++ b/arch/mips/Kconfig
->> @@ -2730,6 +2730,9 @@ endchoice
->>
->>  choice
->>       prompt "Kernel command line type" if !CMDLINE_OVERRIDE
->> +     default MIPS_CMDLINE_FROM_DTB if USE_OF && !ATh79 && !MACH_INGENIC && \
->
-> ATh79 does not exist, ATH79 does.
+2.6.32-longterm review patch.  If anyone has any objections, please let me know.
 
-Indeed. Maybe I should learn to use the caps-lock key ;). Will fix it for v2.
+------------------
 
+From: Lars Persson <lars.persson@axis.com>
 
-Jonas
+commit 4d46a67a3eb827ccf1125959936fd51ba318dabc upstream.
+
+The lazy cache flushing implemented in the MIPS kernel suffers from a
+race condition that is exposed by do_set_pte() in mm/memory.c.
+
+A pre-condition is a file-system that writes to the page from the CPU
+in its readpage method and then calls flush_dcache_page(). One example
+is ubifs. Another pre-condition is that the dcache flush is postponed
+in __flush_dcache_page().
+
+Upon a page fault for an executable mapping not existing in the
+page-cache, the following will happen:
+1. Write to the page
+2. flush_dcache_page
+3. flush_icache_page
+4. set_pte_at
+5. update_mmu_cache (commits the flush of a dcache-dirty page)
+
+Between steps 4 and 5 another thread can hit the same page and it will
+encounter a valid pte. Because the data still is in the L1 dcache the CPU
+will fetch stale data from L2 into the icache and execute garbage.
+
+This fix moves the commit of the cache flush to step 3 to close the
+race window. It also reduces the amount of flushes on non-executable
+mappings because we never enter __flush_dcache_page() for non-aliasing
+CPUs.
+
+Regressions can occur in drivers that mistakenly relies on the
+flush_dcache_page() in get_user_pages() for DMA operations.
+
+[ralf@linux-mips.org: Folded in patch 9346 to fix highmem issue.]
+
+Signed-off-by: Lars Persson <larper@axis.com>
+Cc: linux-mips@linux-mips.org
+Cc: paul.burton@imgtec.com
+Cc: linux-kernel@vger.kernel.org
+Patchwork: https://patchwork.linux-mips.org/patch/9346/
+Patchwork: https://patchwork.linux-mips.org/patch/9738/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
+(cherry picked from commit 6bde6a3df0b4c8680d51c987d446b0ff2d6df0a6)
+
+Signed-off-by: Willy Tarreau <w@1wt.eu>
+---
+ arch/mips/include/asm/cacheflush.h | 38 +++++++++++++++++++++++---------------
+ arch/mips/mm/cache.c               | 12 ++++++++++++
+ 2 files changed, 35 insertions(+), 15 deletions(-)
+
+diff --git a/arch/mips/include/asm/cacheflush.h b/arch/mips/include/asm/cacheflush.h
+index 03b1d69..2211f24 100644
+--- a/arch/mips/include/asm/cacheflush.h
++++ b/arch/mips/include/asm/cacheflush.h
+@@ -29,6 +29,20 @@
+  *  - flush_icache_all() flush the entire instruction cache
+  *  - flush_data_cache_page() flushes a page from the data cache
+  */
++
++ /*
++ * This flag is used to indicate that the page pointed to by a pte
++ * is dirty and requires cleaning before returning it to the user.
++ */
++#define PG_dcache_dirty			PG_arch_1
++
++#define Page_dcache_dirty(page)		\
++	test_bit(PG_dcache_dirty, &(page)->flags)
++#define SetPageDcacheDirty(page)	\
++	set_bit(PG_dcache_dirty, &(page)->flags)
++#define ClearPageDcacheDirty(page)	\
++	clear_bit(PG_dcache_dirty, &(page)->flags)
++
+ extern void (*flush_cache_all)(void);
+ extern void (*__flush_cache_all)(void);
+ extern void (*flush_cache_mm)(struct mm_struct *mm);
+@@ -37,12 +51,14 @@ extern void (*flush_cache_range)(struct vm_area_struct *vma,
+ 	unsigned long start, unsigned long end);
+ extern void (*flush_cache_page)(struct vm_area_struct *vma, unsigned long page, unsigned long pfn);
+ extern void __flush_dcache_page(struct page *page);
++extern void __flush_icache_page(struct vm_area_struct *vma, struct page *page);
+ 
+ static inline void flush_dcache_page(struct page *page)
+ {
+-	if (cpu_has_dc_aliases || !cpu_has_ic_fills_f_dc)
++	if (cpu_has_dc_aliases)
+ 		__flush_dcache_page(page);
+-
++	else if (!cpu_has_ic_fills_f_dc)
++		SetPageDcacheDirty(page);
+ }
+ 
+ #define flush_dcache_mmap_lock(mapping)		do { } while (0)
+@@ -60,6 +76,11 @@ static inline void flush_anon_page(struct vm_area_struct *vma,
+ static inline void flush_icache_page(struct vm_area_struct *vma,
+ 	struct page *page)
+ {
++	if (!cpu_has_ic_fills_f_dc && (vma->vm_flags & VM_EXEC) &&
++	    Page_dcache_dirty(page)) {
++		__flush_icache_page(vma, page);
++		ClearPageDcacheDirty(page);
++	}
+ }
+ 
+ extern void (*flush_icache_range)(unsigned long start, unsigned long end);
+@@ -94,19 +115,6 @@ extern void (*flush_icache_all)(void);
+ extern void (*local_flush_data_cache_page)(void * addr);
+ extern void (*flush_data_cache_page)(unsigned long addr);
+ 
+-/*
+- * This flag is used to indicate that the page pointed to by a pte
+- * is dirty and requires cleaning before returning it to the user.
+- */
+-#define PG_dcache_dirty			PG_arch_1
+-
+-#define Page_dcache_dirty(page)		\
+-	test_bit(PG_dcache_dirty, &(page)->flags)
+-#define SetPageDcacheDirty(page)	\
+-	set_bit(PG_dcache_dirty, &(page)->flags)
+-#define ClearPageDcacheDirty(page)	\
+-	clear_bit(PG_dcache_dirty, &(page)->flags)
+-
+ /* Run kernel code uncached, useful for cache probing functions. */
+ unsigned long run_uncached(void *func);
+ 
+diff --git a/arch/mips/mm/cache.c b/arch/mips/mm/cache.c
+index 694d51f..37603a4 100644
+--- a/arch/mips/mm/cache.c
++++ b/arch/mips/mm/cache.c
+@@ -113,6 +113,18 @@ void __flush_anon_page(struct page *page, unsigned long vmaddr)
+ 
+ EXPORT_SYMBOL(__flush_anon_page);
+ 
++void __flush_icache_page(struct vm_area_struct *vma, struct page *page)
++{
++	unsigned long addr;
++
++	if (PageHighMem(page))
++		return;
++
++	addr = (unsigned long) page_address(page);
++	flush_data_cache_page(addr);
++}
++EXPORT_SYMBOL_GPL(__flush_icache_page);
++
+ void __update_cache(struct vm_area_struct *vma, unsigned long address,
+ 	pte_t pte)
+ {
+-- 
+1.7.12.2.21.g234cd45.dirty

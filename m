@@ -1,47 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Sep 2015 17:55:25 +0200 (CEST)
-Received: from mailout2.samsung.com ([203.254.224.25]:60987 "EHLO
-        mailout2.samsung.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27013799AbbINPyHftmHM (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 14 Sep 2015 17:54:07 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Sep 2015 17:55:45 +0200 (CEST)
+Received: from mailout3.samsung.com ([203.254.224.33]:50817 "EHLO
+        mailout3.samsung.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27013801AbbINPyQxPXUM (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 14 Sep 2015 17:54:16 +0200
 Received: from epcpsbgm2new.samsung.com (epcpsbgm2 [203.254.230.27])
- by mailout2.samsung.com
+ by mailout3.samsung.com
  (Oracle Communications Messaging Server 7.0.5.31.0 64bit (built May  5 2014))
- with ESMTP id <0NUO00YTEC5M9M20@mailout2.samsung.com>; Tue,
- 15 Sep 2015 00:53:46 +0900 (KST)
-X-AuditID: cbfee61b-f79d56d0000048c5-80-55f6ed89dc4a
+ with ESMTP id <0NUO00DZEC66YN30@mailout3.samsung.com>; Tue,
+ 15 Sep 2015 00:54:10 +0900 (KST)
+X-AuditID: cbfee61b-f79d56d0000048c5-94-55f6eda210a9
 Received: from epmmp2 ( [203.254.227.17])       by epcpsbgm2new.samsung.com (EPCPMTA)
- with SMTP id C7.A4.18629.98DE6F55; Tue, 15 Sep 2015 00:53:46 +0900 (KST)
+ with SMTP id AA.A4.18629.2ADE6F55; Tue, 15 Sep 2015 00:54:10 +0900 (KST)
 Received: from AMDC1976.DIGITAL.local ([106.120.53.102])
  by mmp2.samsung.com (Oracle Communications Messaging Server 7.0.5.31.0 64bit
  (built May  5 2014)) with ESMTPA id <0NUO00D6QC2RXC60@mmp2.samsung.com>; Tue,
- 15 Sep 2015 00:53:45 +0900 (KST)
+ 15 Sep 2015 00:54:10 +0900 (KST)
 From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
 To:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org,
-        b.zolnierkie@samsung.com,
-        Markos Chandras <markos.chandras@imgtec.com>
-Subject: [RFT PATCH] mips: malta_qemu_32r6_defconfig: convert to use libata
- PATA drivers
-Date:   Mon, 14 Sep 2015 17:51:51 +0200
-Message-id: <1442245918-27631-10-git-send-email-b.zolnierkie@samsung.com>
+        b.zolnierkie@samsung.com, Paul Burton <paul.burton@imgtec.com>,
+        Markos Chandras <markos.chandras@imgtec.com>,
+        "Steven J. Hill" <Steven.Hill@imgtec.com>
+Subject: [RFT PATCH] mips: maltasmvp_eva_defconfig: convert to use libata PATA
+ drivers
+Date:   Mon, 14 Sep 2015 17:51:53 +0200
+Message-id: <1442245918-27631-12-git-send-email-b.zolnierkie@samsung.com>
 X-Mailer: git-send-email 1.9.1
 In-reply-to: <1442245918-27631-1-git-send-email-b.zolnierkie@samsung.com>
 References: <1442245918-27631-1-git-send-email-b.zolnierkie@samsung.com>
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFuplluLIzCtJLcpLzFFi42I5/e+xoG7X22+hBi+fMFtsnLGe1eLYjkdM
-        Fpd3zWGzmDB1ErvF59vbWS0u7VFxYPPo2XmG0ePoyrVMHn1bVjF6fN4kF8ASxWWTkpqTWZZa
-        pG+XwJWxaPVkxoLbvBWfV2xkbmC8yt3FyMkhIWAicaF3OROELSZx4d56ti5GLg4hgVmMEpcf
-        3WGCcH4xSjxv/MYCUsUmYCUxsX0VI4gtIuAoMbHvJDNIEbNAK6PEx03fwRLCAlESZzedYwax
-        WQRUJbpvnwWzeQU8Jaafn8cOsU5O4uSxyawgNidQ/NPLt2C2kICHxP1rJ5gmMPIuYGRYxSiR
-        WpBcUJyUnmuUl1quV5yYW1yal66XnJ+7iREcSM+kdzAe3uV+iFGAg1GJh1fx/tdQIdbEsuLK
-        3EOMEhzMSiK81ae/hQrxpiRWVqUW5ccXleakFh9ilOZgURLnlV35LFRIID2xJDU7NbUgtQgm
-        y8TBKdXAaHNOk2Whv7eP8fOcww/3tITX/nw9ZYPKdpfrKlF/vdhb7l0XLT8atDFmrhnjw8Of
-        f8+4eee5SEby75qNf+7+OP5xl0QST2HK6uy4WcufbetNtnAMntZY4+ly6XKVpuaURc6GzqXB
-        14SV1MQfz3/AmmOol9gV8WKahqCcUWCe4PFvi7ers8yKVmIpzkg01GIuKk4EAOADYl4gAgAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprOLMWRmVeSWpSXmKPExsVy+t9jQd1Fb7+FGnxtkrbYOGM9q8WxHY+Y
+        LC7vmsNmMWHqJHaLz7e3s1rc37eR3eLSHhWLvvZL7A4cHj07zzB6HF25lsmjb8sqRo/Pm+QC
+        WKK4bFJSczLLUov07RK4MtZO+8ResIyv4vjRG+wNjFN5uhg5OSQETCR6zr1khrDFJC7cW8/W
+        xcjFISQwi1Fi9Yx/rBDOL0aJ82s2MIFUsQlYSUxsX8UIYosIOEpM7DvJDFLELHCLUeLt/kns
+        IAlhgQiJc7+3sILYLAKqEjeu3mADsXkFPCWO9fxhgVgnJ3Hy2GSwGk6g+KeXb8FsIQEPifvX
+        TjBNYORdwMiwilEitSC5oDgpPdcoL7Vcrzgxt7g0L10vOT93EyM4uJ5J72A8vMv9EKMAB6MS
+        D6/i/a+hQqyJZcWVuYcYJTiYlUR4q09/CxXiTUmsrEotyo8vKs1JLT7EKM3BoiTOK7vyWaiQ
+        QHpiSWp2ampBahFMlomDU6qBcV3id6/Iw6aBXzt5z+sYPnK913hYiMvb6tTHP9/ip7K+9S4J
+        +HX7aOOJj3du26wodWNav+pMyZeP5ou+/9gVPclg/RGr0GpPl/P6OyVfpuxZxDf14AQV+TDW
+        y5v3F+pvid0XLCds1uK17vx+jofRh1WWnHafvvmJUbLGp8cu/P1l52cEueY0TFNiKc5INNRi
+        LipOBAASWVBiKgIAAA==
 Return-Path: <b.zolnierkie@samsung.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49191
+X-archive-position: 49192
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -71,23 +73,25 @@ in use:
 
 * having duplicate drivers for same hardware confuses users
 
-This patch converts malta_qemu_32r6_defconfig to use libata
-PATA drivers.
+This patch converts maltasmvp_eva_defconfig to use libata PATA
+drivers.
 
+Cc: Paul Burton <paul.burton@imgtec.com>
 Cc: Markos Chandras <markos.chandras@imgtec.com>
+Cc: Steven J. Hill <Steven.Hill@imgtec.com>
 Signed-off-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
 ---
 Untested.
 If you have affected hardware please test.  Thank you.
 
- arch/mips/configs/malta_qemu_32r6_defconfig | 11 +++++------
+ arch/mips/configs/maltasmvp_eva_defconfig | 11 +++++------
  1 file changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/arch/mips/configs/malta_qemu_32r6_defconfig b/arch/mips/configs/malta_qemu_32r6_defconfig
-index 4bce1f8..7f50dd6 100644
---- a/arch/mips/configs/malta_qemu_32r6_defconfig
-+++ b/arch/mips/configs/malta_qemu_32r6_defconfig
-@@ -80,15 +80,14 @@ CONFIG_NET_CLS_IND=y
+diff --git a/arch/mips/configs/maltasmvp_eva_defconfig b/arch/mips/configs/maltasmvp_eva_defconfig
+index c83338a..2774ef0 100644
+--- a/arch/mips/configs/maltasmvp_eva_defconfig
++++ b/arch/mips/configs/maltasmvp_eva_defconfig
+@@ -85,15 +85,14 @@ CONFIG_NET_CLS_IND=y
  CONFIG_DEVTMPFS=y
  CONFIG_BLK_DEV_LOOP=y
  CONFIG_BLK_DEV_CRYPTOLOOP=m

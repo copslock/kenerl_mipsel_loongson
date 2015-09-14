@@ -1,46 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Sep 2015 17:53:53 +0200 (CEST)
-Received: from mailout4.samsung.com ([203.254.224.34]:57868 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Sep 2015 17:54:11 +0200 (CEST)
+Received: from mailout4.samsung.com ([203.254.224.34]:32946 "EHLO
         mailout4.samsung.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27013794AbbINPxJO0VCM (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 14 Sep 2015 17:53:09 +0200
-Received: from epcpsbgm2new.samsung.com (epcpsbgm2 [203.254.230.27])
+        with ESMTP id S27013790AbbINPxSz0xuM (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 14 Sep 2015 17:53:18 +0200
+Received: from epcpsbgm1new.samsung.com (epcpsbgm1 [203.254.230.26])
  by mailout4.samsung.com
  (Oracle Communications Messaging Server 7.0.5.31.0 64bit (built May  5 2014))
- with ESMTP id <0NUO01T2GC4EG520@mailout4.samsung.com>; Tue,
- 15 Sep 2015 00:53:02 +0900 (KST)
-X-AuditID: cbfee61b-f79d56d0000048c5-58-55f6ed5e3cf0
-Received: from epmmp2 ( [203.254.227.17])       by epcpsbgm2new.samsung.com (EPCPMTA)
- with SMTP id 13.A4.18629.E5DE6F55; Tue, 15 Sep 2015 00:53:02 +0900 (KST)
+ with ESMTP id <0NUO01T2IC4OG520@mailout4.samsung.com>; Tue,
+ 15 Sep 2015 00:53:12 +0900 (KST)
+X-AuditID: cbfee61a-f79a06d000005c6f-36-55f6ed68da1e
+Received: from epmmp2 ( [203.254.227.17])       by epcpsbgm1new.samsung.com (EPCPMTA)
+ with SMTP id CF.8E.23663.86DE6F55; Tue, 15 Sep 2015 00:53:12 +0900 (KST)
 Received: from AMDC1976.DIGITAL.local ([106.120.53.102])
  by mmp2.samsung.com (Oracle Communications Messaging Server 7.0.5.31.0 64bit
  (built May  5 2014)) with ESMTPA id <0NUO00D6QC2RXC60@mmp2.samsung.com>; Tue,
- 15 Sep 2015 00:53:02 +0900 (KST)
+ 15 Sep 2015 00:53:12 +0900 (KST)
 From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
 To:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org,
-        b.zolnierkie@samsung.com, Huacai Chen <chenhc@lemote.com>
-Subject: [RFT PATCH] mips: lemote2f_defconfig: convert to use libata PATA
- drivers
-Date:   Mon, 14 Sep 2015 17:51:47 +0200
-Message-id: <1442245918-27631-6-git-send-email-b.zolnierkie@samsung.com>
+        b.zolnierkie@samsung.com, Paul Burton <paul.burton@imgtec.com>,
+        Markos Chandras <markos.chandras@imgtec.com>
+Subject: [RFT PATCH] mips: malta_defconfig: convert to use libata PATA drivers
+Date:   Mon, 14 Sep 2015 17:51:48 +0200
+Message-id: <1442245918-27631-7-git-send-email-b.zolnierkie@samsung.com>
 X-Mailer: git-send-email 1.9.1
 In-reply-to: <1442245918-27631-1-git-send-email-b.zolnierkie@samsung.com>
 References: <1442245918-27631-1-git-send-email-b.zolnierkie@samsung.com>
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFupgluLIzCtJLcpLzFFi42I5/e+xoG7c22+hBm97uC02zljPajG/aQOb
-        xbEdj5gsLu+aw2YxYeokdotLe1Qc2DxmnzvH5nF05Vomj74tqxg9Pm+SC2CJ4rJJSc3JLEst
-        0rdL4Mr48529oJW/4vfi/WwNjNd4uhg5OCQETCTmvnHsYuQEMsUkLtxbz9bFyMUhJDCLUeLM
-        7n/sEM4vRol526YxglSxCVhJTGxfBWaLCDhKTOw7yQxiMwtUSMzd9YgVZKiwQLDEq7fJICaL
-        gKrE+juxIBW8Ah4Sj/+cY4HYJSdx8thkVhCbU8BT4tPLt2C2EFDN/WsnmCYw8i5gZFjFKJFa
-        kFxQnJSea5SXWq5XnJhbXJqXrpecn7uJERw+z6R3MB7e5X6IUYCDUYmHV/H+11Ah1sSy4src
-        Q4wSHMxKIrzVp7+FCvGmJFZWpRblxxeV5qQWH2KU5mBREueVXfksVEggPbEkNTs1tSC1CCbL
-        xMEp1cA4f6GHkhTH28sCm77dWibPd+lAyn7riCVW03ZHhm5befqat9wmwYSXT+P27UjdHMHY
-        72E7O9TM4qtqB291xb+Ni/Yvi6x7ynh89b6HWzW2nbd6/2ZefGFX/8xvM9dP26VewSuaXViv
-        p/7LYenG2S8PdU9892bpiSZz/cxTivptBZkPz97mtb9Wo8RSnJFoqMVcVJwIAMyFFQ8bAgAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprALMWRmVeSWpSXmKPExsVy+t9jQd2Mt99CDT7+l7XYOGM9q8WxHY+Y
+        LC7vmsNmMWHqJHaLz7e3s1rc37eR3eLSHhUHdo+enWcYPY6uXMvk0bdlFaPH501yASxRXDYp
+        qTmZZalF+nYJXBkvjtxkLPjFW3Gp+SJ7A+Mb7i5GTg4JAROJfZfeMkHYYhIX7q1nA7GFBGYx
+        Svy4ktLFyAVk/2KU6Pxwlh0kwSZgJTGxfRUjiC0i4Cgxse8kM4jNLLCWUWLx4nwQW1jAT+Ln
+        vilgg1gEVCV+vloEtoBXwENi5ZZD7BDL5CROHpvMCmJzCnhKfHr5lhVisYfE/WsnmCYw8i5g
+        ZFjFKJFakFxQnJSea5iXWq5XnJhbXJqXrpecn7uJERxOz6R2MB7c5X6IUYCDUYmHV+H+11Ah
+        1sSy4srcQ4wSHMxKIrzVp7+FCvGmJFZWpRblxxeV5qQWH2KU5mBREueVXfksVEggPbEkNTs1
+        tSC1CCbLxMEp1cAoz/8mfL3w0ZuLrxUrzm9SSKxX5ms9/9TrxK8rkjMD/p1xkn123z8zfv4h
+        RWuP9R+vW8+/H/Dd6FaNnubWDSs8nrru+3l2pk2A/vMd03t45qUvYlVezcF0R6Nfb7emj8r0
+        sEOL0v7f/OnHnxkgOS+EZULh9cWMrXEblk79tyKvxts7VPuJjJCMEktxRqKhFnNRcSIAVj0C
+        XiMCAAA=
 Return-Path: <b.zolnierkie@samsung.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49186
+X-archive-position: 49187
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -70,45 +71,44 @@ in use:
 
 * having duplicate drivers for same hardware confuses users
 
-This patch converts lemote2f_defconfig to use libata PATA
+This patch converts malta_defconfig to use libata PATA
 drivers.
 
-PS This platform uses CS5536 chipset which (due to historical
-reasons) has basic support in AMD/nVidia PATA host driver and
-full support in a newer CS5536 PATA one (pata_cs5536).  Thus
-most likely this platform should switch to using the latter
-host driver.
-
-Cc: Huacai Chen <chenhc@lemote.com>
+Cc: Paul Burton <paul.burton@imgtec.com>
+Cc: Markos Chandras <markos.chandras@imgtec.com>
 Signed-off-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
 ---
 Build tested only.
 If you have affected hardware please test.  Thank you.
 
- arch/mips/configs/lemote2f_defconfig | 11 +++--------
- 1 file changed, 3 insertions(+), 8 deletions(-)
+ arch/mips/configs/malta_defconfig | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/arch/mips/configs/lemote2f_defconfig b/arch/mips/configs/lemote2f_defconfig
-index 54cc385..004cf52 100644
---- a/arch/mips/configs/lemote2f_defconfig
-+++ b/arch/mips/configs/lemote2f_defconfig
-@@ -108,16 +108,11 @@ CONFIG_BLK_DEV_LOOP=y
- CONFIG_BLK_DEV_CRYPTOLOOP=m
+diff --git a/arch/mips/configs/malta_defconfig b/arch/mips/configs/malta_defconfig
+index 61a4460..5afb484 100644
+--- a/arch/mips/configs/malta_defconfig
++++ b/arch/mips/configs/malta_defconfig
+@@ -241,14 +241,11 @@ CONFIG_BLK_DEV_NBD=m
  CONFIG_BLK_DEV_RAM=y
- CONFIG_BLK_DEV_RAM_SIZE=8192
--# CONFIG_MISC_DEVICES is not set
+ CONFIG_CDROM_PKTCDVD=m
+ CONFIG_ATA_OVER_ETH=m
 -CONFIG_IDE=y
--CONFIG_IDE_TASK_IOCTL=y
--# CONFIG_IDEPCI_PCIBUS_ORDER is not set
--CONFIG_BLK_DEV_AMD74XX=y
--CONFIG_SCSI=m
--CONFIG_BLK_DEV_SD=m
-+CONFIG_BLK_DEV_SD=y
+-CONFIG_BLK_DEV_IDECD=y
+-CONFIG_IDE_GENERIC=y
+ CONFIG_RAID_ATTRS=m
+ CONFIG_BLK_DEV_SD=y
+ CONFIG_CHR_DEV_ST=m
+ CONFIG_CHR_DEV_OSST=m
+-CONFIG_BLK_DEV_SR=m
++CONFIG_BLK_DEV_SR=y
+ CONFIG_BLK_DEV_SR_VENDOR=y
  CONFIG_CHR_DEV_SG=m
--CONFIG_SCSI_MULTI_LUN=y
- # CONFIG_SCSI_LOWLEVEL is not set
-+CONFIG_ATA=y
-+CONFIG_PATA_AMD=y
+ CONFIG_SCSI_CONSTANTS=y
+@@ -265,6 +262,7 @@ CONFIG_AIC7XXX_RESET_DELAY_MS=15000
+ # CONFIG_AIC7XXX_DEBUG_ENABLE is not set
+ CONFIG_ATA=y
+ CONFIG_ATA_PIIX=y
++CONFIG_PATA_LEGACY=y
  CONFIG_MD=y
  CONFIG_BLK_DEV_MD=m
  CONFIG_MD_LINEAR=m

@@ -1,45 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Sep 2015 17:56:20 +0200 (CEST)
-Received: from mailout1.samsung.com ([203.254.224.24]:36992 "EHLO
-        mailout1.samsung.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27013800AbbINPzA1IdqM (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 14 Sep 2015 17:55:00 +0200
-Received: from epcpsbgm2new.samsung.com (epcpsbgm2 [203.254.230.27])
- by mailout1.samsung.com
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Sep 2015 17:56:45 +0200 (CEST)
+Received: from mailout4.samsung.com ([203.254.224.34]:49627 "EHLO
+        mailout4.samsung.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27013803AbbINPzNb1LyM (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 14 Sep 2015 17:55:13 +0200
+Received: from epcpsbgm1new.samsung.com (epcpsbgm1 [203.254.230.26])
+ by mailout4.samsung.com
  (Oracle Communications Messaging Server 7.0.5.31.0 64bit (built May  5 2014))
- with ESMTP id <0NUO00AG9C7EJ6B0@mailout1.samsung.com>; Tue,
- 15 Sep 2015 00:54:50 +0900 (KST)
-X-AuditID: cbfee61b-f79d56d0000048c5-c1-55f6edcaf3c0
-Received: from epmmp2 ( [203.254.227.17])       by epcpsbgm2new.samsung.com (EPCPMTA)
- with SMTP id 09.B4.18629.ACDE6F55; Tue, 15 Sep 2015 00:54:50 +0900 (KST)
+ with ESMTP id <0NUO00884C6NPZC0@mailout4.samsung.com>; Tue,
+ 15 Sep 2015 00:54:23 +0900 (KST)
+X-AuditID: cbfee61a-f79a06d000005c6f-7b-55f6edaf4d4d
+Received: from epmmp2 ( [203.254.227.17])       by epcpsbgm1new.samsung.com (EPCPMTA)
+ with SMTP id 87.9E.23663.FADE6F55; Tue, 15 Sep 2015 00:54:23 +0900 (KST)
 Received: from AMDC1976.DIGITAL.local ([106.120.53.102])
  by mmp2.samsung.com (Oracle Communications Messaging Server 7.0.5.31.0 64bit
  (built May  5 2014)) with ESMTPA id <0NUO00D6QC2RXC60@mmp2.samsung.com>; Tue,
- 15 Sep 2015 00:54:50 +0900 (KST)
+ 15 Sep 2015 00:54:23 +0900 (KST)
 From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
 To:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org,
-        b.zolnierkie@samsung.com
-Subject: [RFT PATCH] mips: mpc30x_defconfig: convert to use libata PATA drivers
-Date:   Mon, 14 Sep 2015 17:51:56 +0200
-Message-id: <1442245918-27631-15-git-send-email-b.zolnierkie@samsung.com>
+        b.zolnierkie@samsung.com, Paul Burton <paul.burton@imgtec.com>,
+        Markos Chandras <markos.chandras@imgtec.com>,
+        "Steven J. Hill" <Steven.Hill@imgtec.com>
+Subject: [RFT PATCH] mips: maltaup_defconfig: convert to use libata PATA drivers
+Date:   Mon, 14 Sep 2015 17:51:54 +0200
+Message-id: <1442245918-27631-13-git-send-email-b.zolnierkie@samsung.com>
 X-Mailer: git-send-email 1.9.1
 In-reply-to: <1442245918-27631-1-git-send-email-b.zolnierkie@samsung.com>
 References: <1442245918-27631-1-git-send-email-b.zolnierkie@samsung.com>
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrPJMWRmVeSWpSXmKPExsVy+t9jQd1Tb7+FGmx+aWGxccZ6VotjOx4x
-        WVzeNYfNYsLUSewWl/aoOLB6HF25lsmjb8sqRo/Pm+QCmKO4bFJSczLLUov07RK4Mro7X7EW
-        /OGp2PQ7tIHxLVcXIweHhICJxL99eV2MnECmmMSFe+vZuhi5OIQEZjFKNK3fzQ7h/GKU2HDo
-        MxtIFZuAlcTE9lWMILaIgKPExL6TzCA2s0C4xLmvV5hAbGEBf4ltz1rB4iwCqhJbOjaxgSzj
-        FfCU6J/jDLFMTuLkscmsIDYnUPjTy7dgtpCAh8T9ayeYJjDyLmBkWMUokVqQXFCclJ5rlJda
-        rlecmFtcmpeul5yfu4kRHCzPpHcwHt7lfohRgINRiYdX8f7XUCHWxLLiytxDjBIczEoivNWn
-        v4UK8aYkVlalFuXHF5XmpBYfYpTmYFES55Vd+SxUSCA9sSQ1OzW1ILUIJsvEwSnVwCi32urE
-        iZ7NCRPt9XLlvmQ2VxrOuabu+Oav2drJLcyTSq/vq5zwxb2o5U3CqT1yOYkzluxdfKd2ZeqG
-        Z3p5ztbB7VOORT72XuszNX13ymz5t9vFZbZbPltovmfR9JqkJ5edtyuGyifs/Z3NbqjqeOO5
-        8DWzPX1t285G60fvbpRualm43F/+1jwlluKMREMt5qLiRAABH/NCEgIAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprGLMWRmVeSWpSXmKPExsVy+t9jQd31b7+FGlzdqG2xccZ6VotjOx4x
+        WVzeNYfNYsLUSewWn29vZ7W4v28ju8WlPSoWfe2X2B04PHp2nmH0OLpyLZNH35ZVjB6fN8kF
+        sERx2aSk5mSWpRbp2yVwZaza1MdS0M1X8fTADJYGxh/cXYycHBICJhL3/nWzQdhiEhfurQey
+        uTiEBGYxSjxeu5odwvnFKHG2+SArSBWbgJXExPZVjCC2iICjxMS+k8wgRcwCtxgl3u6fBNTB
+        wSEsECCx6nc0SA2LgKpEx+WdYBt4BTwl+qfvYITYJidx8thksJmcQPFPL9+C2UICHhL3r51g
+        msDIu4CRYRWjRGpBckFxUnquYV5quV5xYm5xaV66XnJ+7iZGcGg9k9rBeHCX+yFGAQ5GJR5e
+        hftfQ4VYE8uKK3MPMUpwMCuJ8Faf/hYqxJuSWFmVWpQfX1Sak1p8iFGag0VJnFd25bNQIYH0
+        xJLU7NTUgtQimCwTB6dUA6PR52k2sQ9Wnj1QI7rWPvE9G9cyf13vv30LtTnbRFJmf+7Vj+l+
+        7jPt19Rlx/msp60M4povyTAxrPmK3U3WTs1ta865HjL2sTTnqNJMmnP6x9H7PsH/eZlmGbXs
+        3uyZfGbp+mMa755OUdzkGZiwdrND+dYnfnfnrDkmGafYyjJLSn8/y5+q0zOUWIozEg21mIuK
+        EwGzr6lfKQIAAA==
 Return-Path: <b.zolnierkie@samsung.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49194
+X-archive-position: 49195
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -69,38 +72,44 @@ in use:
 
 * having duplicate drivers for same hardware confuses users
 
-This patch converts mpc30x_defconfig to use libata PATA
+This patch converts maltaup_defconfig to use libata PATA
 drivers.
 
-PS This platform still uses "ide0=base[,ctl[,irq]]" hack in
-its defconfig.  The hack itself has been removed in 2008 and
-this platform should be converted to using PATA platform host
-driver (pata_platform) instead.
-
+Cc: Paul Burton <paul.burton@imgtec.com>
+Cc: Markos Chandras <markos.chandras@imgtec.com>
+Cc: Steven J. Hill <Steven.Hill@imgtec.com>
 Signed-off-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
 ---
 Build tested only.
 If you have affected hardware please test.  Thank you.
 
- arch/mips/configs/mpc30x_defconfig | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/mips/configs/maltaup_defconfig | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/arch/mips/configs/mpc30x_defconfig b/arch/mips/configs/mpc30x_defconfig
-index 7a34660..a2c045f 100644
---- a/arch/mips/configs/mpc30x_defconfig
-+++ b/arch/mips/configs/mpc30x_defconfig
-@@ -27,9 +27,9 @@ CONFIG_INET_XFRM_MODE_BEET=m
- CONFIG_NETWORK_SECMARK=y
- CONFIG_CONNECTOR=m
- CONFIG_ATA_OVER_ETH=m
--# CONFIG_MISC_DEVICES is not set
+diff --git a/arch/mips/configs/maltaup_defconfig b/arch/mips/configs/maltaup_defconfig
+index 6234464..9bbd221 100644
+--- a/arch/mips/configs/maltaup_defconfig
++++ b/arch/mips/configs/maltaup_defconfig
+@@ -80,15 +80,14 @@ CONFIG_NET_CLS_IND=y
+ CONFIG_DEVTMPFS=y
+ CONFIG_BLK_DEV_LOOP=y
+ CONFIG_BLK_DEV_CRYPTOLOOP=m
 -CONFIG_IDE=y
--CONFIG_IDE_GENERIC=y
-+CONFIG_BLK_DEV_SD=y
+-# CONFIG_IDE_PROC_FS is not set
+-# CONFIG_IDEPCI_PCIBUS_ORDER is not set
+-CONFIG_BLK_DEV_GENERIC=y
+-CONFIG_BLK_DEV_PIIX=y
+-CONFIG_SCSI=y
+ CONFIG_BLK_DEV_SD=y
+ CONFIG_CHR_DEV_SG=y
+ # CONFIG_SCSI_LOWLEVEL is not set
 +CONFIG_ATA=y
-+CONFIG_PATA_LEGACY=y
++CONFIG_ATA_PIIX=y
++CONFIG_PATA_OLDPIIX=y
++CONFIG_PATA_MPIIX=y
++CONFIG_ATA_GENERIC=y
  CONFIG_NETDEVICES=y
- # CONFIG_NETDEV_1000 is not set
- # CONFIG_NETDEV_10000 is not set
+ # CONFIG_NET_VENDOR_3COM is not set
+ # CONFIG_NET_VENDOR_ADAPTEC is not set
 -- 
 1.9.1

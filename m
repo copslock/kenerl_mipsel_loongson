@@ -1,32 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Sep 2015 10:10:52 +0200 (CEST)
-Received: from mailout3.samsung.com ([203.254.224.33]:40841 "EHLO
-        mailout3.samsung.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27007750AbbIOIKuLyyFT (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 15 Sep 2015 10:10:50 +0200
-Received: from epcpsbgr3.samsung.com
- (u143.gpu120.samsung.co.kr [203.254.230.143])
- by mailout3.samsung.com (Oracle Communications Messaging Server 7.0.5.31.0
- 64bit (built May  5 2014))
- with ESMTP id <0NUP01Q4KLDU2JD0@mailout3.samsung.com>; Tue,
- 15 Sep 2015 17:10:42 +0900 (KST)
-Received: from epcpsbgm2new.samsung.com ( [172.20.52.116])
-        by epcpsbgr3.samsung.com (EPCPMTA) with SMTP id E1.70.24422.282D7F55; Tue,
- 15 Sep 2015 17:10:42 +0900 (KST)
-X-AuditID: cbfee68f-f793b6d000005f66-5b-55f7d28210c2
-Received: from epmmp2 ( [203.254.227.17])       by epcpsbgm2new.samsung.com (EPCPMTA)
- with SMTP id 98.3F.18629.182D7F55; Tue, 15 Sep 2015 17:10:42 +0900 (KST)
-Received: from [10.252.81.186] by mmp2.samsung.com
- (Oracle Communications Messaging Server 7.0.5.31.0 64bit (built May  5 2014))
- with ESMTPA id <0NUP00KWKLDT9NB0@mmp2.samsung.com>; Tue,
- 15 Sep 2015 17:10:41 +0900 (KST)
-Message-id: <55F7D281.6080103@samsung.com>
-Date:   Tue, 15 Sep 2015 17:10:41 +0900
-From:   Jaehoon Chung <jh80.chung@samsung.com>
-User-Agent: Mozilla/5.0 (X11; Linux i686; rv:31.0) Gecko/20100101
- Thunderbird/31.7.0
-MIME-version: 1.0
-To:     Shawn Lin <shawn.lin@rock-chips.com>, ulf.hansson@linaro.org
-Cc:     Vineet.Gupta1@synopsys.com, Wei Xu <xuwei5@hisilicon.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Sep 2015 10:52:38 +0200 (CEST)
+Received: from lucky1.263xmail.com ([211.157.147.133]:39523 "EHLO
+        lucky1.263xmail.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27007750AbbIOIwezT-3N (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 15 Sep 2015 10:52:34 +0200
+Received: from shawn.lin?rock-chips.com (unknown [192.168.167.78])
+        by lucky1.263xmail.com (Postfix) with SMTP id 37D824C303;
+        Tue, 15 Sep 2015 16:52:23 +0800 (CST)
+X-263anti-spam: KSV:0;
+X-MAIL-GRAY: 1
+X-MAIL-DELIVERY: 0
+X-KSVirus-check: 0
+X-ABS-CHECKED: 4
+X-ADDR-CHECKED: 0
+Received: from [172.16.12.109] (localhost.localdomain [127.0.0.1])
+        by smtp.263.net (Postfix) with ESMTP id 84F3F28E4A;
+        Tue, 15 Sep 2015 16:52:08 +0800 (CST)
+X-RL-SENDER: shawn.lin@rock-chips.com
+X-FST-TO: cpgs@samsung.com
+X-SENDER-IP: 58.22.7.114
+X-LOGIN-NAME: shawn.lin@rock-chips.com
+X-UNIQUE-TAG: <0739e38414b09ac356942093170525f6>
+X-ATTACHMENT-NUM: 0
+X-SENDER: lintao@rock-chips.com
+X-DNS-TYPE: 0
+Received: from [172.16.12.109] (unknown [58.22.7.114])
+        by smtp.263.net (Postfix) whith ESMTP id 3520CEEYGJ;
+        Tue, 15 Sep 2015 16:52:17 +0800 (CST)
+Subject: Re: [RFC PATCH v7 01/10] mmc: dw_mmc: Add external dma interface
+ support
+To:     Jaehoon Chung <jh80.chung@samsung.com>, ulf.hansson@linaro.org
+References: <1440379479-24308-1-git-send-email-shawn.lin@rock-chips.com>
+ <1440379536-24400-1-git-send-email-shawn.lin@rock-chips.com>
+ <55F7D214.6020100@samsung.com>
+Cc:     shawn.lin@rock-chips.com, Vineet.Gupta1@synopsys.com,
+        Wei Xu <xuwei5@hisilicon.com>,
         Joachim Eastwood <manabian@gmail.com>,
         Alexey Brodkin <abrodkin@synopsys.com>,
         Kukjin Kim <kgene@kernel.org>,
@@ -42,56 +49,24 @@ Cc:     Vineet.Gupta1@synopsys.com, Wei Xu <xuwei5@hisilicon.com>,
         linux-kernel@vger.kernel.org, linux-rockchip@lists.infradead.org,
         devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         CPGS <cpgs@samsung.com>
-Subject: Re: [RFC PATCH v7 02/10] mmc: dw_mmc: use macro for HCON register
- operations
-References: <1440379479-24308-1-git-send-email-shawn.lin@rock-chips.com>
- <1440379554-24444-1-git-send-email-shawn.lin@rock-chips.com>
-In-reply-to: <1440379554-24444-1-git-send-email-shawn.lin@rock-chips.com>
-Content-type: text/plain; charset=windows-1252
-Content-transfer-encoding: 7bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA02Sa0hTYRjHeXfOztmk5XE6e5MusLJIak6n9nZFPwRHiAhEDSly2vGujU2l
-        PpS3wi7iygvI1HQooeayZqlLSZ2aocu7ZunMvGWpH8zyUqTtOCK//d6H3/s8/wceHibUcp14
-        kXHxjDJOHiMmbPBKB4/4I6l9K/7SzAkRShucJtGfrDck+mo8hIpau7jo3eNmAq1Oj+FoY2KO
-        i0qnPpNobtYNqSfnMKSfHOKi/lcFBHqQm0Wi1g01QN/HNzCU1/2ag0b6Baj+fRdAfQ370ehU
-        FRe16wJRyjcdhqbacjD0obKH9Ib0rbQMgv79KwvQ+cm9OG3QmEl6svA5SWcYTIDWV9wl6NGh
-        BoJuK9dx6OrSJPqPphGnM19UALp26BFGv2hcAvSSfs952yCbk1eYmMhERul6Otgm4uOQiVAM
-        2F+bLxkhkoHZ9h7g8yDlAdcffgFWdoQ9Y1UEy0KqDMBB081/Tn3nIucesLHUNQCaX64B62Mc
-        wLmC+xzWElAucFw3j7OMU86wSPeWZJmgDsPa5fZNR0QFQFPeHdzq28HV7DEL83gOlDfUFzmw
-        ZYya5cKWuiiW7alAuKgr41pnpQP4LLUKsD6f8oU5P0kWMUoCP/W6WL/uhdWVCxirQyqbD5+Y
-        czFrHAouZxs3R0FqN9Q3Yda9dsLmsmH8AXDUbAmk+d9Vs6VrMcAqgIhRhCpUIeFKmUQlj1Ul
-        xIVLQq/G6oHlcjrXZ9R1wNx0wggoHhBvE1xIX/EXcuWJquuxRuBpCfEQcxKFXrUcW1z8ZTeZ
-        lzvy9PCUuR895iXeIdA6rfkJqXB5PBPNMApGeVmZEMOojIDD4zslg5aTYBcOtR0tRwLyAtMl
-        5sJjp4s69oVkhOm89TO3B8MGpTIp36egJMWgJX/4HTAwYluxz/zZVb+k5PHu4xebZQv5TzVA
-        rzyjdh1R1wRFXwq+ITpY07o2TJ/SLvneb5799rXziqlNISw2/DIumpylsVFJ50rtqneXk5nb
-        BwIFYlwVIXdzwZQq+V+y/gM/NAMAAA==
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrPKsWRmVeSWpSXmKPExsVy+t9jQd2mS99DDVb/47JovvqU3eLvpGPs
-        Fi8PaVrMP3KO1eLssoNsFj+e3mOx+P/oNavFkicP2S1evzC06H/8mtli0+NrrBaXd81hs5gw
-        dRK7xZH//YwWnx78Z7aYcX4fk8Xty7wWu6+fY7S4tEfF4s6T9awWx9eGWzS+Wsts8eToFGaL
-        m2susDtIeLQ097B5/P41idFjdsNFFo+ds+6yezyeu5Hdo2fnGUaPTas62TzuXNvD5nF05Vom
-        j81L6j3+ztrP4tG3ZRWjx/Zr85g9tuz/zOjxeZNcAH9UA6NNRmpiSmqRQmpecn5KZl66rZJ3
-        cLxzvKmZgaGuoaWFuZJCXmJuqq2Si0+ArltmDjAglBTKEnNKgUIBicXFSvp2mCaEhrjpWsA0
-        Ruj6hgTB9RgZoIGENYwZt66dYSu4IlzxZvFttgbGu/xdjJwcEgImErtPf2SCsMUkLtxbz9bF
-        yMUhJDCLUeLu1p+MEM4DRonXc7rBqngFtCQerH3DAmKzCKhKzF97gh3EZhPQkdj+7ThYjahA
-        mMSZGR0sEPWCEj8m3wOyOThEBBwkNs0XAQkzC7xglTi8IwvEFhYIl/i4dgUrxK52RokNTesZ
-        Qeo5BTwlpnxlBzGZBfQk7l/UgmiVl9i85i3zBEagIxEWzEKomoWkagEj8ypGidSC5ILipPRc
-        o7zUcr3ixNzi0rx0veT83E2M4MT2THoH4+Fd7ocYBTgYlXh4I9q/hwqxJpYVV+YeYpTgYFYS
-        4Z2/GyjEm5JYWZValB9fVJqTWnyI0RQYAhOZpUST84FJN68k3tDYxMzI0sjc0MLI2FxJnFd2
-        5bNQIYH0xJLU7NTUgtQimD4mDk6pBsY5M3kWJous2qW5+dCn94sYzr35zs/DfNTqz/qNs7Jr
-        vpWWztvKWztzzpItHyT23bzB4Cz2SJj9auOKx5/uTsgo8nvp4twQlZgdW9yrX5QtZVnnqCA+
-        fQODF6+WTJrCorsiDtZ3Gf+H1HZ5ey+sn/8rQCvnynbP3wpe/rdlJz4wYlDZ/HXtqQ9KLMUZ
-        iYZazEXFiQAEsgDOggMAAA==
-DLP-Filter: Pass
-X-MTR:  20000000000000000@CPGS
-X-CFilter-Loop: Reflected
-Return-Path: <jh80.chung@samsung.com>
+From:   Shawn Lin <shawn.lin@rock-chips.com>
+Message-ID: <55F7DC37.70903@rock-chips.com>
+Date:   Tue, 15 Sep 2015 16:52:07 +0800
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; rv:38.0) Gecko/20100101
+ Thunderbird/38.2.0
+MIME-Version: 1.0
+In-Reply-To: <55F7D214.6020100@samsung.com>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <shawn.lin@rock-chips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49199
+X-archive-position: 49200
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jh80.chung@samsung.com
+X-original-sender: shawn.lin@rock-chips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -104,76 +79,279 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi, Shawn.
+On 2015/9/15 16:08, Jaehoon Chung wrote:
+> Hi, Shawn.
+>
 
-Looks good to me.
+[...]
 
-Acked-by: Jaehoon Chung <jh80.chung@samsung.com>
+>> -config MMC_DW_IDMAC
+>> -	bool "Internal DMAC interface"
+>> -	depends on MMC_DW
+>> -	help
+>> -	  This selects support for the internal DMAC block within the Synopsys
+>> -	  Designware Mobile Storage IP block. This disables the external DMA
+>> -	  interface.
+>> +	  PIO, internal DMA mode and external DMA mode.
+>
+> In future, i will add the quirk for broken IDMAC.
+> This patch is absolutely depended on HCON register, but some IP can be broken it.
+> how about?
+>
 
-Best Regards,
-Jaehoon Chung
+That's fine to add broken IDMAC if some IP can support reading tranfer 
+mode from HCON.(I check IP 270a and 240a, they supports)
 
-On 08/24/2015 10:25 AM, Shawn Lin wrote:
-> This patch add some macros for HCON register operations
-> to make code more readable.
-> 
-> Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
-> ---
-> 
-> Changes in v7: None
-> Changes in v6: None
-> Changes in v5: None
-> Changes in v4: None
-> Changes in v3: None
-> Changes in v2: None
-> 
->  drivers/mmc/host/dw_mmc.c | 6 +++---
->  drivers/mmc/host/dw_mmc.h | 3 +++
->  2 files changed, 6 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/mmc/host/dw_mmc.c b/drivers/mmc/host/dw_mmc.c
-> index 9c91983..0a3c63c 100644
-> --- a/drivers/mmc/host/dw_mmc.c
-> +++ b/drivers/mmc/host/dw_mmc.c
-> @@ -2678,7 +2678,7 @@ static void dw_mci_init_dma(struct dw_mci *host)
->  		* Check ADDR_CONFIG bit in HCON to find
->  		* IDMAC address bus width
->  		*/
-> -		addr_config = (mci_readl(host, HCON) >> 27) & 0x01;
-> +		addr_config = SDMMC_GET_ADDR_CONFIG(mci_readl(host, HCON));
->  
->  		if (addr_config == 1) {
->  			/* host supports IDMAC in 64-bit address mode */
-> @@ -3060,7 +3060,7 @@ int dw_mci_probe(struct dw_mci *host)
->  	 * Get the host data width - this assumes that HCON has been set with
->  	 * the correct values.
->  	 */
-> -	i = (mci_readl(host, HCON) >> 7) & 0x7;
-> +	i = SDMMC_GET_HDATA_WIDTH(mci_readl(host, HCON));
->  	if (!i) {
->  		host->push_data = dw_mci_push_data16;
->  		host->pull_data = dw_mci_pull_data16;
-> @@ -3142,7 +3142,7 @@ int dw_mci_probe(struct dw_mci *host)
->  	if (host->pdata->num_slots)
->  		host->num_slots = host->pdata->num_slots;
->  	else
-> -		host->num_slots = ((mci_readl(host, HCON) >> 1) & 0x1F) + 1;
-> +		host->num_slots = SDMMC_GET_SLOT_NUM(mci_readl(host, HCON));
->  
->  	/*
->  	 * Enable interrupts for command done, data over, data empty,
-> diff --git a/drivers/mmc/host/dw_mmc.h b/drivers/mmc/host/dw_mmc.h
-> index 811d467..f2a88d4 100644
-> --- a/drivers/mmc/host/dw_mmc.h
-> +++ b/drivers/mmc/host/dw_mmc.h
-> @@ -154,6 +154,9 @@
->  #define DMA_INTERFACE_GDMA		(0x2)
->  #define DMA_INTERFACE_NODMA		(0x3)
->  #define SDMMC_GET_TRANS_MODE(x)		(((x)>>16) & 0x3)
-> +#define SDMMC_GET_SLOT_NUM(x)		((((x)>>1) & 0x1F) + 1)
-> +#define SDMMC_GET_HDATA_WIDTH(x)	(((x)>>7) & 0x7)
-> +#define SDMMC_GET_ADDR_CONFIG(x)	(((x)>>27) & 0x1)
->  /* Internal DMAC interrupt defines */
->  #define SDMMC_IDMAC_INT_AI		BIT(9)
->  #define SDMMC_IDMAC_INT_NI		BIT(8)
-> 
+>>
+>>   config MMC_DW_PLTFM
+>>   	tristate "Synopsys Designware MCI Support as platform device"
+
+[...]
+
+>> +static void dw_mci_edmac_stop_dma(struct dw_mci *host)
+>> +{
+>> +	dmaengine_terminate_all(host->dms->ch);
+>
+> Does it need not to check "return value"?
+>
+
+Doesn't need. dmaengine_terminate_all return -ENOSYS if sub-dma drivers 
+doesn't implement terminate_all hook. Then nearly all the sub-dma 
+drivers always return 0(success) . That's why none of mmc host drivers 
+to check the return value here.
+
+>> +}
+>> +
+>> +static int dw_mci_edmac_start_dma(struct dw_mci *host,
+>> +					    unsigned int sg_len)
+>> +{
+>> +	struct dma_slave_config cfg;
+>> +	struct dma_async_tx_descriptor *desc = NULL;
+>> +	struct scatterlist *sgl = host->data->sg;
+>> +	const u32 mszs[] = {1, 4, 8, 16, 32, 64, 128, 256};
+>> +	u32 sg_elems = host->data->sg_len;
+>> +	u32 fifoth_val;
+>> +	u32 fifo_offset = host->fifo_reg - host->regs;
+>> +	int ret = 0;
+>> +
+>> +	/* Set external dma config: burst size, burst width */
+>> +	cfg.dst_addr = (dma_addr_t)(host->phy_regs + fifo_offset);
+>> +	cfg.src_addr = cfg.dst_addr;
+>> +	cfg.dst_addr_width = DMA_SLAVE_BUSWIDTH_4_BYTES;
+>> +	cfg.src_addr_width = DMA_SLAVE_BUSWIDTH_4_BYTES;
+>> +
+>> +	/* Match burst msize with external dma config */
+>> +	fifoth_val = mci_readl(host, FIFOTH);
+>> +	cfg.dst_maxburst = mszs[(fifoth_val >> 28) & 0x7];
+>> +	cfg.src_maxburst = cfg.dst_maxburst;
+>
+> The above configuration needs to set it at every time?
+>
+
+I think so. We call dw_mci_adjust_fifoth to make
+configuraton more reasonable every time. So this setting correlates to
+the fifoth calculated by dw_mci_adjust_fifoth.
+
+>> +
+>> +	if (host->data->flags & MMC_DATA_WRITE)
+>> +		cfg.direction = DMA_MEM_TO_DEV;
+>> +	else /* MMC_DATA_READ */
+>
+> Can be removed the comment.
+>
+
+okay.
+
+>> +		cfg.direction = DMA_DEV_TO_MEM;
+>> +
+>> +	ret = dmaengine_slave_config(host->dms->ch, &cfg);
+
+[...]
+
+>> +			mmc->max_segs = 64;
+>> +			mmc->max_blk_size = 65536;
+>> +			mmc->max_blk_count = 65535;
+>> +			mmc->max_req_size =
+>> +					mmc->max_blk_size * mmc->max_blk_count;
+>> +			mmc->max_seg_size = mmc->max_req_size;
+>
+>
+> WARNING: suspect code indent for conditional statements (8, 24)
+> #349: FILE: drivers/mmc/host/dw_mmc.c:2599:
+
+Sorry, but I can't find it?
+
+./scripts/checkpatch.pl -f drivers/mmc/host/dw_mmc.c
+total: 0 errors, 0 warnings, 3310 lines checked
+
+drivers/mmc/host/dw_mmc.c has no obvious style problems and is ready for 
+submission.
+
+> +       } else if (host->use_dma == TRANS_MODE_EDMAC) {
+> +                       mmc->max_segs = 64;
+>
+>
+>>   	} else {
+
+[...]
+
+>> +	*/
+>
+> trans_mode can't take HCON value, but trans_mode reassigned to "TRANS_MODE_IDMAC" or "TRANS_MODE_EDMAC"..
+> It's reassigned to host->use_dma...why can't use the host->use_dma?
+>
+> Your code..
+>
+> 1. trans_mode <- HCON value
+> 2. Check trans_mode which interface use.
+> 	then trans_mode <- TRANS_MODE_IDMAC/EDMAC/PIO
+> 3. host->use_dma <- trans_mode
+>
+> isn't?
+>
+> It can be replaced to "host->use_dma" instead of "trans_mode".
+>
+
+yep, I intented to introduce a variable to make others clear the
+mismatch meaning of databook. If you feel ok, I will remove trans_mode 
+in v8. :)
+
+>> +	trans_mode = SDMMC_GET_TRANS_MODE(mci_readl(host, HCON));
+>> +	if (trans_mode == DMA_INTERFACE_IDMA) {
+
+[...]
+
+>>
+>>   	if (!host->dma_ops)
+>>   		goto no_dma;
+>
+> This checking seems unnecessary, after applied your code.
+>
+
+Ahh... that's right, thanks for pointing it out.
+
+> Best Regards,
+> Jaehoon Chung
+>
+>> @@ -2562,12 +2733,12 @@ static void dw_mci_init_dma(struct dw_mci *host)
+>>   		goto no_dma;
+>>   	}
+>>
+>> -	host->use_dma = 1;
+>> +	host->use_dma = trans_mode;
+>>   	return;
+>>
+>>   no_dma:
+>>   	dev_info(host->dev, "Using PIO mode.\n");
+>> -	host->use_dma = 0;
+>> +	host->use_dma = trans_mode;
+>>   }
+>>
+>>   static bool dw_mci_ctrl_reset(struct dw_mci *host, u32 reset)
+>> @@ -2650,10 +2821,9 @@ static bool dw_mci_reset(struct dw_mci *host)
+>>   		}
+>>   	}
+>>
+>> -#if IS_ENABLED(CONFIG_MMC_DW_IDMAC)
+>> -	/* It is also recommended that we reset and reprogram idmac */
+>> -	dw_mci_idmac_reset(host);
+>> -#endif
+>> +	if (host->use_dma == TRANS_MODE_IDMAC)
+>> +		/* It is also recommended that we reset and reprogram idmac */
+>> +		dw_mci_idmac_reset(host);
+>>
+>>   	ret = true;
+>>
+>> @@ -3067,6 +3237,9 @@ EXPORT_SYMBOL(dw_mci_remove);
+>>    */
+>>   int dw_mci_suspend(struct dw_mci *host)
+>>   {
+>> +	if (host->use_dma && host->dma_ops->exit)
+>> +		host->dma_ops->exit(host);
+>> +
+>>   	return 0;
+>>   }
+>>   EXPORT_SYMBOL(dw_mci_suspend);
+>> diff --git a/drivers/mmc/host/dw_mmc.h b/drivers/mmc/host/dw_mmc.h
+>> index 8ce4674..811d467 100644
+>> --- a/drivers/mmc/host/dw_mmc.h
+>> +++ b/drivers/mmc/host/dw_mmc.h
+>> @@ -148,6 +148,12 @@
+>>   #define SDMMC_SET_FIFOTH(m, r, t)	(((m) & 0x7) << 28 | \
+>>   					 ((r) & 0xFFF) << 16 | \
+>>   					 ((t) & 0xFFF))
+>> +/* HCON register defines */
+>> +#define DMA_INTERFACE_IDMA		(0x0)
+>> +#define DMA_INTERFACE_DWDMA		(0x1)
+>> +#define DMA_INTERFACE_GDMA		(0x2)
+>> +#define DMA_INTERFACE_NODMA		(0x3)
+>> +#define SDMMC_GET_TRANS_MODE(x)		(((x)>>16) & 0x3)
+>>   /* Internal DMAC interrupt defines */
+>>   #define SDMMC_IDMAC_INT_AI		BIT(9)
+>>   #define SDMMC_IDMAC_INT_NI		BIT(8)
+>> diff --git a/include/linux/mmc/dw_mmc.h b/include/linux/mmc/dw_mmc.h
+>> index 134c574..f67b2ec 100644
+>> --- a/include/linux/mmc/dw_mmc.h
+>> +++ b/include/linux/mmc/dw_mmc.h
+>> @@ -16,6 +16,7 @@
+>>
+>>   #include <linux/scatterlist.h>
+>>   #include <linux/mmc/core.h>
+>> +#include <linux/dmaengine.h>
+>>
+>>   #define MAX_MCI_SLOTS	2
+>>
+>> @@ -40,6 +41,17 @@ enum {
+>>
+>>   struct mmc_data;
+>>
+>> +enum {
+>> +	TRANS_MODE_PIO = 0,
+>> +	TRANS_MODE_IDMAC,
+>> +	TRANS_MODE_EDMAC
+>> +};
+>> +
+>> +struct dw_mci_dma_slave {
+>> +	struct dma_chan *ch;
+>> +	enum dma_transfer_direction direction;
+>> +};
+>> +
+>>   /**
+>>    * struct dw_mci - MMC controller state shared between all slots
+>>    * @lock: Spinlock protecting the queue and associated data.
+>> @@ -154,7 +166,14 @@ struct dw_mci {
+>>   	dma_addr_t		sg_dma;
+>>   	void			*sg_cpu;
+>>   	const struct dw_mci_dma_ops	*dma_ops;
+>> +	/* For idmac */
+>>   	unsigned int		ring_size;
+>> +
+>> +	/* For edmac */
+>> +	struct dw_mci_dma_slave *dms;
+>> +	/* Registers's physical base address */
+>> +	void                    *phy_regs;
+>> +
+>>   	u32			cmd_status;
+>>   	u32			data_status;
+>>   	u32			stop_cmdr;
+>> @@ -208,8 +227,8 @@ struct dw_mci {
+>>   struct dw_mci_dma_ops {
+>>   	/* DMA Ops */
+>>   	int (*init)(struct dw_mci *host);
+>> -	void (*start)(struct dw_mci *host, unsigned int sg_len);
+>> -	void (*complete)(struct dw_mci *host);
+>> +	int (*start)(struct dw_mci *host, unsigned int sg_len);
+>> +	void (*complete)(void *host);
+>>   	void (*stop)(struct dw_mci *host);
+>>   	void (*cleanup)(struct dw_mci *host);
+>>   	void (*exit)(struct dw_mci *host);
+>>
+>
+>
+>
+>
+
+
+-- 
+Best Regards
+Shawn Lin

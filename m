@@ -1,27 +1,25 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Sep 2015 11:07:20 +0200 (CEST)
-Received: from mail.kernel.org ([198.145.29.136]:38927 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Sep 2015 11:12:32 +0200 (CEST)
+Received: from mail.kernel.org ([198.145.29.136]:40741 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27007750AbbIOJHSOerRN (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 15 Sep 2015 11:07:18 +0200
+        id S27007812AbbIOJMapx3GN (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 15 Sep 2015 11:12:30 +0200
 Received: from mail.kernel.org (localhost [127.0.0.1])
-        by mail.kernel.org (Postfix) with ESMTP id 192A420723;
-        Tue, 15 Sep 2015 09:07:15 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTP id A6F67207D3;
+        Tue, 15 Sep 2015 09:12:27 +0000 (UTC)
 Received: from localhost.localdomain (unknown [183.247.163.231])
         (using TLSv1.2 with cipher AES128-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id CEFC82069D;
-        Tue, 15 Sep 2015 09:07:09 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 95345207DB;
+        Tue, 15 Sep 2015 09:12:24 +0000 (UTC)
 From:   lizf@kernel.org
 To:     stable@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org, Huacai Chen <chenhc@lemote.com>,
-        "Steven J. Hill" <Steven.Hill@imgtec.com>,
-        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>,
+Cc:     linux-kernel@vger.kernel.org, James Hogan <james.hogan@imgtec.com>,
         Ralf Baechle <ralf@linux-mips.org>,
+        Adam Jiang <jiang.adam@gmail.com>, linux-mips@linux-mips.org,
         Zefan Li <lizefan@huawei.com>
-Subject: [PATCH 3.4 035/146] MIPS: Hibernate: flush TLB entries earlier
-Date:   Tue, 15 Sep 2015 17:02:30 +0800
-Message-Id: <1442307861-32031-35-git-send-email-lizf@kernel.org>
+Subject: [PATCH 3.4 127/146] MIPS: Fix enabling of DEBUG_STACKOVERFLOW
+Date:   Tue, 15 Sep 2015 17:04:02 +0800
+Message-Id: <1442307861-32031-127-git-send-email-lizf@kernel.org>
 X-Mailer: git-send-email 1.9.1
 In-Reply-To: <1442307787-31952-1-git-send-email-lizf@kernel.org>
 References: <1442307787-31952-1-git-send-email-lizf@kernel.org>
@@ -30,7 +28,7 @@ Return-Path: <lizf@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49201
+X-archive-position: 49202
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,51 +45,46 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Huacai Chen <chenhc@lemote.com>
+From: James Hogan <james.hogan@imgtec.com>
 
 3.4.109-rc1 review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 
-commit a843d00d038b11267279e3b5388222320f9ddc1d upstream.
+commit 5f35b9cd553fd64415b563497d05a563c988dbd6 upstream.
 
-We found that TLB mismatch not only happens after kernel resume, but
-also happens during snapshot restore. So move it to the beginning of
-swsusp_arch_suspend().
+Commit 334c86c494b9 ("MIPS: IRQ: Add stackoverflow detection") added
+kernel stack overflow detection, however it only enabled it conditional
+upon the preprocessor definition DEBUG_STACKOVERFLOW, which is never
+actually defined. The Kconfig option is called DEBUG_STACKOVERFLOW,
+which manifests to the preprocessor as CONFIG_DEBUG_STACKOVERFLOW, so
+switch it to using that definition instead.
 
-Signed-off-by: Huacai Chen <chenhc@lemote.com>
-Cc: Steven J. Hill <Steven.Hill@imgtec.com>
+Fixes: 334c86c494b9 ("MIPS: IRQ: Add stackoverflow detection")
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Adam Jiang <jiang.adam@gmail.com>
 Cc: linux-mips@linux-mips.org
-Cc: Fuxin Zhang <zhangfx@lemote.com>
-Cc: Zhangjin Wu <wuzhangjin@gmail.com>
-Patchwork: https://patchwork.linux-mips.org/patch/9621/
+Patchwork: http://patchwork.linux-mips.org/patch/10531/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Zefan Li <lizefan@huawei.com>
 ---
- arch/mips/power/hibernate.S | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/mips/kernel/irq.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/mips/power/hibernate.S b/arch/mips/power/hibernate.S
-index 5bf34ec..2ca1735 100644
---- a/arch/mips/power/hibernate.S
-+++ b/arch/mips/power/hibernate.S
-@@ -31,6 +31,8 @@ LEAF(swsusp_arch_suspend)
- END(swsusp_arch_suspend)
+diff --git a/arch/mips/kernel/irq.c b/arch/mips/kernel/irq.c
+index a5aa43d..9cd8cbf 100644
+--- a/arch/mips/kernel/irq.c
++++ b/arch/mips/kernel/irq.c
+@@ -110,7 +110,7 @@ void __init init_IRQ(void)
+ #endif
+ }
  
- LEAF(swsusp_arch_resume)
-+	/* Avoid TLB mismatch during and after kernel resume */
-+	jal local_flush_tlb_all
- 	PTR_L t0, restore_pblist
- 0:
- 	PTR_L t1, PBE_ADDRESS(t0)   /* source */
-@@ -44,7 +46,6 @@ LEAF(swsusp_arch_resume)
- 	bne t1, t3, 1b
- 	PTR_L t0, PBE_NEXT(t0)
- 	bnez t0, 0b
--	jal local_flush_tlb_all /* Avoid TLB mismatch after kernel resume */
- 	PTR_LA t0, saved_regs
- 	PTR_L ra, PT_R31(t0)
- 	PTR_L sp, PT_R29(t0)
+-#ifdef DEBUG_STACKOVERFLOW
++#ifdef CONFIG_DEBUG_STACKOVERFLOW
+ static inline void check_stack_overflow(void)
+ {
+ 	unsigned long sp;
 -- 
 1.9.1

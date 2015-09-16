@@ -1,63 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Sep 2015 08:46:46 +0200 (CEST)
-Received: from lucky1.263xmail.com ([211.157.147.132]:54637 "EHLO
-        lucky1.263xmail.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27006729AbbIPGqFo16LJ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 16 Sep 2015 08:46:05 +0200
-Received: from shawn.lin?rock-chips.com (unknown [192.168.167.224])
-        by lucky1.263xmail.com (Postfix) with SMTP id 1F49458D52;
-        Wed, 16 Sep 2015 14:46:02 +0800 (CST)
-X-263anti-spam: KSV:0;
-X-MAIL-GRAY: 1
-X-MAIL-DELIVERY: 0
-X-KSVirus-check: 0
-X-ABS-CHECKED: 4
-X-ADDR-CHECKED: 0
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-        by smtp.263.net (Postfix) with ESMTP id 88B8510F0;
-        Wed, 16 Sep 2015 14:45:56 +0800 (CST)
-X-RL-SENDER: shawn.lin@rock-chips.com
-X-FST-TO: jh80.chung@samsung.com
-X-SENDER-IP: 58.22.7.114
-X-LOGIN-NAME: shawn.lin@rock-chips.com
-X-UNIQUE-TAG: <fa0c3bc257877fd8c311f1d09b1d2dc4>
-X-ATTACHMENT-NUM: 0
-X-SENDER: lintao@rock-chips.com
-X-DNS-TYPE: 0
-Received: from localhost.localdomain (unknown [58.22.7.114])
-        by smtp.263.net (Postfix) whith ESMTP id 1642QGHMW9;
-        Wed, 16 Sep 2015 14:45:59 +0800 (CST)
-From:   Shawn Lin <shawn.lin@rock-chips.com>
-To:     jh80.chung@samsung.com, ulf.hansson@linaro.org
-Cc:     Vineet.Gupta1@synopsys.com, Wei Xu <xuwei5@hisilicon.com>,
-        Joachim Eastwood <manabian@gmail.com>,
-        Alexey Brodkin <abrodkin@synopsys.com>,
-        Kukjin Kim <kgene@kernel.org>,
-        Krzysztof Kozlowski <k.kozlowski@samsung.com>,
-        Russell King <linux@arm.linux.org.uk>,
-        Jun Nie <jun.nie@linaro.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Govindraj Raja <govindraj.raja@imgtec.com>,
-        Arnd Bergmann <arnd@arndb.de>, heiko@sntech.de,
-        dianders@chromium.org, linux-samsung-soc@vger.kernel.org,
-        linux-mips@linux-mips.org, linux-mmc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-rockchip@lists.infradead.org,
-        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        Shawn Lin <shawn.lin@rock-chips.com>
-Subject: [RFC PATCH v8 10/10] arm: zx_defconfig: remove CONFIG_MMC_DW_IDMAC
-Date:   Wed, 16 Sep 2015 14:43:28 +0800
-Message-Id: <1442385808-1433-1-git-send-email-shawn.lin@rock-chips.com>
-X-Mailer: git-send-email 1.8.0
-In-Reply-To: <1442385625-26775-1-git-send-email-shawn.lin@rock-chips.com>
-References: <1442385625-26775-1-git-send-email-shawn.lin@rock-chips.com>
-Return-Path: <shawn.lin@rock-chips.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Sep 2015 13:37:15 +0200 (CEST)
+Received: from mail-wi0-f170.google.com ([209.85.212.170]:36790 "EHLO
+        mail-wi0-f170.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008008AbbIPLhNjy40L (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 16 Sep 2015 13:37:13 +0200
+Received: by wicgb1 with SMTP id gb1so69630165wic.1
+        for <linux-mips@linux-mips.org>; Wed, 16 Sep 2015 04:37:08 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=vUbYNSQuBPRdlvl4xeku3gVYRnQwgra+aizkg3L2tpk=;
+        b=Hg23dM3Jaqc+6MjXyfQnxH3P1Zx2wVH20+I/zT4YyDATPiOZTLBnB6n6OMY+uZEoSD
+         sUgUx3sOOTYevexDxpqJQ31cNB4STidqM/wFUvlxoMWw/4rVHWUvBLtlEgjAHoczitnK
+         AOk9F67NXM08HM79t7udb1J+rzhXyuznmrOwMPN19e3SWQTMAmVUVWEyErNSLs7Rp7U3
+         bO6fF/lQp/LDETA2YWbcn1qMfFJEbLmnEGolSjinVfdfDSZR2QoHi/FO43QDrAKMISEA
+         nMgXznlSlXjFIAHDDk+CbA+rykg1/dZyIhGMx4ENVtMnobUl8tB/89QbKNIMgz3Rauzl
+         RehA==
+X-Gm-Message-State: ALoCoQntsJbEPful5aZ9j/NG+NvamtGHmzon4zD34TYId8XA59rfZbEro5DjqaNKEXps0xtLEbtg
+X-Received: by 10.180.24.102 with SMTP id t6mr18340142wif.83.1442403428217;
+        Wed, 16 Sep 2015 04:37:08 -0700 (PDT)
+Received: from alex-pc.localdomain (host81-147-157-240.range81-147.btcentralplus.com. [81.147.157.240])
+        by smtp.gmail.com with ESMTPSA id qq4sm26112430wjc.14.2015.09.16.04.37.06
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Wed, 16 Sep 2015 04:37:07 -0700 (PDT)
+From:   Alex Smith <alex@alex-smith.me.uk>
+To:     linux-mtd@lists.infradead.org
+Cc:     Alex Smith <alex@alex-smith.me.uk>,
+        Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Brian Norris <computersforpeace@gmail.com>,
+        Paul Burton <paul.burton@imgtec.com>,
+        Niklas Cassel <niklas.cassel@axis.com>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mips@linux-mips.org
+Subject: [PATCH v6 0/4] mtd: nand: jz4780: Add NAND and BCH drivers
+Date:   Wed, 16 Sep 2015 12:36:53 +0100
+Message-Id: <1442403417-5288-1-git-send-email-alex@alex-smith.me.uk>
+X-Mailer: git-send-email 2.5.2
+Return-Path: <alex@alex-smith.me.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49221
+X-archive-position: 49222
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: shawn.lin@rock-chips.com
+X-original-sender: alex@alex-smith.me.uk
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -70,35 +57,41 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-DesignWare MMC Controller's transfer mode should be decided
-at runtime instead of compile-time. So we remove this config
-option and read dw_mmc's register to select DMA master.
+Hi,
 
-Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
----
+This series adds support for the BCH controller and NAND devices on
+the Ingenic JZ4780 SoC.
 
-Changes in v8: None
-Changes in v7: None
-Changes in v6: None
-Changes in v5: None
-Changes in v4: None
-Changes in v3: None
-Changes in v2: None
+Tested on the MIPS Creator Ci20 board. All dependencies are now in
+mainline.
 
- arch/arm/configs/zx_defconfig | 1 -
- 1 file changed, 1 deletion(-)
+This version of the series is based on 4.3-rc1.
 
-diff --git a/arch/arm/configs/zx_defconfig b/arch/arm/configs/zx_defconfig
-index b200bb0..ab683fb 100644
---- a/arch/arm/configs/zx_defconfig
-+++ b/arch/arm/configs/zx_defconfig
-@@ -83,7 +83,6 @@ CONFIG_MMC=y
- CONFIG_MMC_UNSAFE_RESUME=y
- CONFIG_MMC_BLOCK_MINORS=16
- CONFIG_MMC_DW=y
--CONFIG_MMC_DW_IDMAC=y
- CONFIG_EXT2_FS=y
- CONFIG_EXT4_FS=y
- CONFIG_EXT4_FS_POSIX_ACL=y
+Review and feedback welcome.
+
+Thanks,
+Alex
+
+Alex Smith (4):
+  mtd: nand: increase ready wait timeout and report timeouts
+  dt-bindings: binding for jz4780-{nand,bch}
+  mtd: nand: jz4780: driver for NAND devices on JZ4780 SoCs
+  MIPS: dts: jz4780/ci20: Add NEMC, BCH and NAND device tree nodes
+
+ .../bindings/mtd/ingenic,jz4780-nand.txt           |  57 ++++
+ arch/mips/boot/dts/ingenic/ci20.dts                |  51 +++
+ arch/mips/boot/dts/ingenic/jz4780.dtsi             |  26 ++
+ drivers/mtd/nand/Kconfig                           |   7 +
+ drivers/mtd/nand/Makefile                          |   1 +
+ drivers/mtd/nand/jz4780_bch.c                      | 348 +++++++++++++++++++
+ drivers/mtd/nand/jz4780_bch.h                      |  42 +++
+ drivers/mtd/nand/jz4780_nand.c                     | 375 +++++++++++++++++++++
+ drivers/mtd/nand/nand_base.c                       |  33 +-
+ 9 files changed, 927 insertions(+), 13 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/mtd/ingenic,jz4780-nand.txt
+ create mode 100644 drivers/mtd/nand/jz4780_bch.c
+ create mode 100644 drivers/mtd/nand/jz4780_bch.h
+ create mode 100644 drivers/mtd/nand/jz4780_nand.c
+
 -- 
-2.3.7
+2.5.2

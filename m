@@ -1,52 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Sep 2015 13:37:33 +0200 (CEST)
-Received: from mail-wi0-f182.google.com ([209.85.212.182]:37589 "EHLO
-        mail-wi0-f182.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008431AbbIPLhad9PDL (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 16 Sep 2015 13:37:30 +0200
-Received: by wicfx3 with SMTP id fx3so66152446wic.0
-        for <linux-mips@linux-mips.org>; Wed, 16 Sep 2015 04:37:25 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=FfM3119SkUJvfCmlUSGg56bT9pdbhKsLSjdmUqiSI30=;
-        b=jQVhi4PLcEkSzeDrOESQb/sGvyhq/7iuB1LDCP6aHHyZ24+ST5G7JFhmqoq7xCeoAw
-         ntA5WJBATZTNErygGYy5xyYYB6c0tjxM9mrZrV2emj7OC47YRIQVnLvi3KId+ZPwuzlB
-         Yo0BLb6/bIwJTbbSRkm01m/E2QKV3KhcgmKTfl65NIN9uRbjuHsXU0VLI/OXZApWDNHz
-         sBudiABl0Trh8v2l/KFtxXr+2/ttaXbUJhAY/BUjwf51gYpd3qAmPso+QgfNJweQKWwj
-         x9HYmDPk7DAHL2H4M5pYCWFg7K0UKMccNExeWrCV0jMOjHvmAXLqFQ2yUJvh8EGxkyPa
-         hrBw==
-X-Gm-Message-State: ALoCoQm50Nn5IfIr4F1Pbfvi7zn7fh7ctRZIRNd6oqpiVrcujyvJ+fq7iO7jr5kwBi2yab0RWwSx
-X-Received: by 10.180.188.169 with SMTP id gb9mr17292647wic.44.1442403445285;
-        Wed, 16 Sep 2015 04:37:25 -0700 (PDT)
-Received: from alex-pc.localdomain (host81-147-157-240.range81-147.btcentralplus.com. [81.147.157.240])
-        by smtp.gmail.com with ESMTPSA id qq4sm26112430wjc.14.2015.09.16.04.37.23
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Wed, 16 Sep 2015 04:37:24 -0700 (PDT)
-From:   Alex Smith <alex@alex-smith.me.uk>
-To:     linux-mtd@lists.infradead.org
-Cc:     Alex Smith <alex.smith@imgtec.com>,
-        Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>,
-        David Woodhouse <dwmw2@infradead.org>,
-        Brian Norris <computersforpeace@gmail.com>,
-        Paul Burton <paul.burton@imgtec.com>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mips@linux-mips.org
-Subject: [PATCH v6 4/4] MIPS: dts: jz4780/ci20: Add NEMC, BCH and NAND device tree nodes
-Date:   Wed, 16 Sep 2015 12:36:57 +0100
-Message-Id: <1442403417-5288-5-git-send-email-alex@alex-smith.me.uk>
-X-Mailer: git-send-email 2.5.2
-In-Reply-To: <1442403417-5288-1-git-send-email-alex@alex-smith.me.uk>
-References: <1442403417-5288-1-git-send-email-alex@alex-smith.me.uk>
-Return-Path: <alex@alex-smith.me.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Sep 2015 17:05:16 +0200 (CEST)
+Received: from mail.efficios.com ([78.47.125.74]:36042 "EHLO mail.efficios.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27008998AbbIPPFOjRr0h (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 16 Sep 2015 17:05:14 +0200
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by mail.efficios.com (Postfix) with ESMTP id CB6CA34016A;
+        Wed, 16 Sep 2015 15:05:08 +0000 (UTC)
+Received: from mail.efficios.com ([127.0.0.1])
+        by localhost (evm-mail-1.efficios.com [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id bgq_Nfck3C4f; Wed, 16 Sep 2015 15:04:59 +0000 (UTC)
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by mail.efficios.com (Postfix) with ESMTP id 4A93A34020D;
+        Wed, 16 Sep 2015 15:04:59 +0000 (UTC)
+X-Virus-Scanned: amavisd-new at efficios.com
+Received: from mail.efficios.com ([127.0.0.1])
+        by localhost (evm-mail-1.efficios.com [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id WYWyotrzc7tl; Wed, 16 Sep 2015 15:04:59 +0000 (UTC)
+Received: from evm-mail-1.efficios.com (evm-mail-1.efficios.com [78.47.125.74])
+        by mail.efficios.com (Postfix) with ESMTP id 2102C34016A;
+        Wed, 16 Sep 2015 15:04:59 +0000 (UTC)
+Date:   Wed, 16 Sep 2015 15:04:58 +0000 (UTC)
+From:   Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-kernel@vger.kernel.org,
+        linux-mips <linux-mips@linux-mips.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linux-api <linux-api@vger.kernel.org>
+Message-ID: <1089832901.9282.1442415898500.JavaMail.zimbra@efficios.com>
+In-Reply-To: <1441642556-30972-3-git-send-email-mathieu.desnoyers@efficios.com>
+References: <1441642556-30972-1-git-send-email-mathieu.desnoyers@efficios.com> <1441642556-30972-3-git-send-email-mathieu.desnoyers@efficios.com>
+Subject: Re: [PATCH v2 2/9] mips: allocate sys_membarrier system call number
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [78.47.125.74]
+X-Mailer: Zimbra 8.6.0_GA_1178 (ZimbraWebClient - FF40 (Linux)/8.6.0_GA_1178)
+Thread-Topic: mips: allocate sys_membarrier system call number
+Thread-Index: gLVOhhrEOL1/t6TvqhdvlZ4vb9l9mw==
+Return-Path: <compudj@efficios.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49223
+X-archive-position: 49224
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alex@alex-smith.me.uk
+X-original-sender: mathieu.desnoyers@efficios.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,132 +58,138 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Alex Smith <alex.smith@imgtec.com>
+----- On Sep 7, 2015, at 12:15 PM, Mathieu Desnoyers mathieu.desnoyers@efficios.com wrote:
 
-Add device tree nodes for the NEMC and BCH to the JZ4780 device tree,
-and make use of them in the Ci20 device tree to add a node for the
-board's NAND.
+> Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+> Acked-by: Ralf Baechle <ralf@linux-mips.org>
+> CC: Andrew Morton <akpm@linux-foundation.org>
+> CC: linux-api@vger.kernel.org
+> CC: linux-mips@linux-mips.org
 
-Note that since the pinctrl driver is not yet upstream, this includes
-neither pin configuration nor busy/write-protect GPIO pins for the
-NAND. Use of the NAND relies on the boot loader to have left the pins
-configured in a usable state, which should be the case when booted
-from the NAND.
+Hi,
 
-Signed-off-by: Alex Smith <alex.smith@imgtec.com>
-Cc: Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>
-Cc: David Woodhouse <dwmw2@infradead.org>
-Cc: Brian Norris <computersforpeace@gmail.com>
-Cc: Paul Burton <paul.burton@imgtec.com>
-Cc: linux-mtd@lists.infradead.org
-Cc: devicetree@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Cc: linux-mips@linux-mips.org
----
-v5 -> v6:
- - No change.
+FYI, sys_membarrier has been merged upstream in Linux 4.3-rc1. Feel free
+to wire up this system call on MIPS.
 
-v4 -> v5:
- - New patch adding DT nodes for the NAND so that the driver can be
-   tested.
----
- arch/mips/boot/dts/ingenic/ci20.dts    | 51 ++++++++++++++++++++++++++++++++++
- arch/mips/boot/dts/ingenic/jz4780.dtsi | 26 +++++++++++++++++
- 2 files changed, 77 insertions(+)
+Thanks!
 
-diff --git a/arch/mips/boot/dts/ingenic/ci20.dts b/arch/mips/boot/dts/ingenic/ci20.dts
-index 9fcb9e7..c0c8a64 100644
---- a/arch/mips/boot/dts/ingenic/ci20.dts
-+++ b/arch/mips/boot/dts/ingenic/ci20.dts
-@@ -42,3 +42,54 @@
- &uart4 {
- 	status = "okay";
- };
-+
-+&nemc {
-+	status = "okay";
-+
-+	nand: nand@1 {
-+		compatible = "ingenic,jz4780-nand";
-+		reg = <1 0 0x1000000>;
-+
-+		ingenic,nemc-tAS = <10>;
-+		ingenic,nemc-tAH = <5>;
-+		ingenic,nemc-tBP = <10>;
-+		ingenic,nemc-tAW = <15>;
-+		ingenic,nemc-tSTRV = <100>;
-+
-+		ingenic,bch-controller = <&bch>;
-+		ingenic,ecc-size = <1024>;
-+		ingenic,ecc-strength = <24>;
-+
-+		#address-cells = <2>;
-+		#size-cells = <2>;
-+
-+		partition@0 {
-+			label = "u-boot-spl";
-+			reg = <0x0 0x0 0x0 0x800000>;
-+		};
-+
-+		partition@0x800000 {
-+			label = "u-boot";
-+			reg = <0x0 0x800000 0x0 0x200000>;
-+		};
-+
-+		partition@0xa00000 {
-+			label = "u-boot-env";
-+			reg = <0x0 0xa00000 0x0 0x200000>;
-+		};
-+
-+		partition@0xc00000 {
-+			label = "boot";
-+			reg = <0x0 0xc00000 0x0 0x4000000>;
-+		};
-+
-+		partition@0x8c00000 {
-+			label = "system";
-+			reg = <0x0 0x4c00000 0x1 0xfb400000>;
-+		};
-+	};
-+};
-+
-+&bch {
-+	status = "okay";
-+};
-diff --git a/arch/mips/boot/dts/ingenic/jz4780.dtsi b/arch/mips/boot/dts/ingenic/jz4780.dtsi
-index 65389f6..b868b42 100644
---- a/arch/mips/boot/dts/ingenic/jz4780.dtsi
-+++ b/arch/mips/boot/dts/ingenic/jz4780.dtsi
-@@ -108,4 +108,30 @@
- 
- 		status = "disabled";
- 	};
-+
-+	nemc: nemc@13410000 {
-+		compatible = "ingenic,jz4780-nemc";
-+		reg = <0x13410000 0x10000>;
-+		#address-cells = <2>;
-+		#size-cells = <1>;
-+		ranges = <1 0 0x1b000000 0x1000000
-+			  2 0 0x1a000000 0x1000000
-+			  3 0 0x19000000 0x1000000
-+			  4 0 0x18000000 0x1000000
-+			  5 0 0x17000000 0x1000000
-+			  6 0 0x16000000 0x1000000>;
-+
-+		clocks = <&cgu JZ4780_CLK_NEMC>;
-+
-+		status = "disabled";
-+	};
-+
-+	bch: bch@134d0000 {
-+		compatible = "ingenic,jz4780-bch";
-+		reg = <0x134d0000 0x10000>;
-+
-+		clocks = <&cgu JZ4780_CLK_BCH>;
-+
-+		status = "disabled";
-+	};
- };
+Mathieu
+
+> ---
+> arch/mips/include/uapi/asm/unistd.h | 15 +++++++++------
+> arch/mips/kernel/scall32-o32.S      |  1 +
+> arch/mips/kernel/scall64-64.S       |  1 +
+> arch/mips/kernel/scall64-n32.S      |  1 +
+> arch/mips/kernel/scall64-o32.S      |  1 +
+> 5 files changed, 13 insertions(+), 6 deletions(-)
+> 
+> diff --git a/arch/mips/include/uapi/asm/unistd.h
+> b/arch/mips/include/uapi/asm/unistd.h
+> index d0bdfaa..b107983 100644
+> --- a/arch/mips/include/uapi/asm/unistd.h
+> +++ b/arch/mips/include/uapi/asm/unistd.h
+> @@ -378,16 +378,17 @@
+> #define __NR_bpf			(__NR_Linux + 355)
+> #define __NR_execveat			(__NR_Linux + 356)
+> #define __NR_mlock2			(__NR_Linux + 357)
+> +#define __NR_membarrier			(__NR_Linux + 358)
+> 
+> /*
+>  * Offset of the last Linux o32 flavoured syscall
+>  */
+> -#define __NR_Linux_syscalls		357
+> +#define __NR_Linux_syscalls		358
+> 
+> #endif /* _MIPS_SIM == _MIPS_SIM_ABI32 */
+> 
+> #define __NR_O32_Linux			4000
+> -#define __NR_O32_Linux_syscalls		357
+> +#define __NR_O32_Linux_syscalls		358
+> 
+> #if _MIPS_SIM == _MIPS_SIM_ABI64
+> 
+> @@ -713,16 +714,17 @@
+> #define __NR_bpf			(__NR_Linux + 315)
+> #define __NR_execveat			(__NR_Linux + 316)
+> #define __NR_mlock2			(__NR_Linux + 317)
+> +#define __NR_membarrier			(__NR_Linux + 318)
+> 
+> /*
+>  * Offset of the last Linux 64-bit flavoured syscall
+>  */
+> -#define __NR_Linux_syscalls		317
+> +#define __NR_Linux_syscalls		318
+> 
+> #endif /* _MIPS_SIM == _MIPS_SIM_ABI64 */
+> 
+> #define __NR_64_Linux			5000
+> -#define __NR_64_Linux_syscalls		317
+> +#define __NR_64_Linux_syscalls		318
+> 
+> #if _MIPS_SIM == _MIPS_SIM_NABI32
+> 
+> @@ -1052,15 +1054,16 @@
+> #define __NR_bpf			(__NR_Linux + 319)
+> #define __NR_execveat			(__NR_Linux + 320)
+> #define __NR_mlock2			(__NR_Linux + 321)
+> +#define __NR_membarrier			(__NR_Linux + 322)
+> 
+> /*
+>  * Offset of the last N32 flavoured syscall
+>  */
+> -#define __NR_Linux_syscalls		321
+> +#define __NR_Linux_syscalls		322
+> 
+> #endif /* _MIPS_SIM == _MIPS_SIM_NABI32 */
+> 
+> #define __NR_N32_Linux			6000
+> -#define __NR_N32_Linux_syscalls		321
+> +#define __NR_N32_Linux_syscalls		322
+> 
+> #endif /* _UAPI_ASM_UNISTD_H */
+> diff --git a/arch/mips/kernel/scall32-o32.S b/arch/mips/kernel/scall32-o32.S
+> index b0b377a..9265542 100644
+> --- a/arch/mips/kernel/scall32-o32.S
+> +++ b/arch/mips/kernel/scall32-o32.S
+> @@ -600,3 +600,4 @@ EXPORT(sys_call_table)
+> 	PTR	sys_bpf				/* 4355 */
+> 	PTR	sys_execveat
+> 	PTR	sys_mlock2
+> +	PTR	sys_membarrier
+> diff --git a/arch/mips/kernel/scall64-64.S b/arch/mips/kernel/scall64-64.S
+> index f12eb03..79d4fb0 100644
+> --- a/arch/mips/kernel/scall64-64.S
+> +++ b/arch/mips/kernel/scall64-64.S
+> @@ -437,4 +437,5 @@ EXPORT(sys_call_table)
+> 	PTR	sys_bpf				/* 5315 */
+> 	PTR	sys_execveat
+> 	PTR	sys_mlock2
+> +	PTR	sys_membarrier
+> 	.size	sys_call_table,.-sys_call_table
+> diff --git a/arch/mips/kernel/scall64-n32.S b/arch/mips/kernel/scall64-n32.S
+> index ecdd65a..235892a 100644
+> --- a/arch/mips/kernel/scall64-n32.S
+> +++ b/arch/mips/kernel/scall64-n32.S
+> @@ -430,4 +430,5 @@ EXPORT(sysn32_call_table)
+> 	PTR	sys_bpf
+> 	PTR	compat_sys_execveat		/* 6320 */
+> 	PTR	sys_mlock2
+> +	PTR	sys_membarrier
+> 	.size	sysn32_call_table,.-sysn32_call_table
+> diff --git a/arch/mips/kernel/scall64-o32.S b/arch/mips/kernel/scall64-o32.S
+> index 7a8b2df..c051bd3 100644
+> --- a/arch/mips/kernel/scall64-o32.S
+> +++ b/arch/mips/kernel/scall64-o32.S
+> @@ -585,4 +585,5 @@ EXPORT(sys32_call_table)
+> 	PTR	sys_bpf				/* 4355 */
+> 	PTR	compat_sys_execveat
+> 	PTR	sys_mlock2
+> +	PTR	sys_membarrier
+> 	.size	sys32_call_table,.-sys32_call_table
+> --
+> 1.9.1
+
 -- 
-2.5.2
+Mathieu Desnoyers
+EfficiOS Inc.
+http://www.efficios.com

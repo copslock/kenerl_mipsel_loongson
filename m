@@ -1,11 +1,11 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Sep 2015 08:45:05 +0200 (CEST)
-Received: from lucky1.263xmail.com ([211.157.147.130]:57804 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Sep 2015 08:45:22 +0200 (CEST)
+Received: from lucky1.263xmail.com ([211.157.147.131]:33002 "EHLO
         lucky1.263xmail.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27007390AbbIPGooofe3J (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 16 Sep 2015 08:44:44 +0200
-Received: from shawn.lin?rock-chips.com (unknown [192.168.167.226])
-        by lucky1.263xmail.com (Postfix) with SMTP id 96CA21E5DB3;
-        Wed, 16 Sep 2015 14:44:38 +0800 (CST)
+        with ESMTP id S27007446AbbIPGpAsAujJ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 16 Sep 2015 08:45:00 +0200
+Received: from shawn.lin?rock-chips.com (unknown [192.168.167.225])
+        by lucky1.263xmail.com (Postfix) with SMTP id 6B50386E4A;
+        Wed, 16 Sep 2015 14:44:57 +0800 (CST)
 X-263anti-spam: KSV:0;
 X-MAIL-GRAY: 1
 X-MAIL-DELIVERY: 0
@@ -13,19 +13,19 @@ X-KSVirus-check: 0
 X-ABS-CHECKED: 4
 X-ADDR-CHECKED: 0
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-        by smtp.263.net (Postfix) with ESMTP id D7F0E17EB5A;
-        Wed, 16 Sep 2015 14:44:35 +0800 (CST)
+        by smtp.263.net (Postfix) with ESMTP id A023B44E;
+        Wed, 16 Sep 2015 14:44:50 +0800 (CST)
 X-RL-SENDER: shawn.lin@rock-chips.com
 X-FST-TO: jh80.chung@samsung.com
 X-SENDER-IP: 58.22.7.114
 X-LOGIN-NAME: shawn.lin@rock-chips.com
-X-UNIQUE-TAG: <d8694254dee0351d932eee0b2d19fe2a>
+X-UNIQUE-TAG: <0f1c168eef990f0623b045c144b8f0d7>
 X-ATTACHMENT-NUM: 0
 X-SENDER: lintao@rock-chips.com
 X-DNS-TYPE: 0
 Received: from localhost.localdomain (unknown [58.22.7.114])
-        by smtp.263.net (Postfix) whith ESMTP id 7608WJRHDH;
-        Wed, 16 Sep 2015 14:44:38 +0800 (CST)
+        by smtp.263.net (Postfix) whith ESMTP id 19613ZZJVF0;
+        Wed, 16 Sep 2015 14:44:57 +0800 (CST)
 From:   Shawn Lin <shawn.lin@rock-chips.com>
 To:     jh80.chung@samsung.com, ulf.hansson@linaro.org
 Cc:     Vineet.Gupta1@synopsys.com, Wei Xu <xuwei5@hisilicon.com>,
@@ -43,9 +43,9 @@ Cc:     Vineet.Gupta1@synopsys.com, Wei Xu <xuwei5@hisilicon.com>,
         linux-kernel@vger.kernel.org, linux-rockchip@lists.infradead.org,
         devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         Shawn Lin <shawn.lin@rock-chips.com>
-Subject: [RFC PATCH v8 04/10] mips: pistachio_defconfig: remove CONFIG_MMC_DW_IDMAC
-Date:   Wed, 16 Sep 2015 14:42:05 +0800
-Message-Id: <1442385725-30114-1-git-send-email-shawn.lin@rock-chips.com>
+Subject: [RFC PATCH v8 05/10] arc: axs10x_defconfig: remove CONFIG_MMC_DW_IDMAC
+Date:   Wed, 16 Sep 2015 14:42:20 +0800
+Message-Id: <1442385740-32198-1-git-send-email-shawn.lin@rock-chips.com>
 X-Mailer: git-send-email 1.8.0
 In-Reply-To: <1442385625-26775-1-git-send-email-shawn.lin@rock-chips.com>
 References: <1442385625-26775-1-git-send-email-shawn.lin@rock-chips.com>
@@ -53,7 +53,7 @@ Return-Path: <shawn.lin@rock-chips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49215
+X-archive-position: 49216
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -75,8 +75,7 @@ at runtime instead of compile-time. So we remove this config
 option and read dw_mmc's register to select DMA master.
 
 Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
-Acked-by: Govindraj Raja <govindraj.raja@imgtec.com>
-Acked-by: Ralf Baechle <ralf@linux-mips.org>
+Acked-by: Vineet Gupta <vgupta@synopsys.com>
 ---
 
 Changes in v8: None
@@ -87,20 +86,46 @@ Changes in v4: None
 Changes in v3: None
 Changes in v2: None
 
- arch/mips/configs/pistachio_defconfig | 1 -
- 1 file changed, 1 deletion(-)
+ arch/arc/configs/axs101_defconfig     | 1 -
+ arch/arc/configs/axs103_defconfig     | 1 -
+ arch/arc/configs/axs103_smp_defconfig | 1 -
+ 3 files changed, 3 deletions(-)
 
-diff --git a/arch/mips/configs/pistachio_defconfig b/arch/mips/configs/pistachio_defconfig
-index 642b509..8b74291 100644
---- a/arch/mips/configs/pistachio_defconfig
-+++ b/arch/mips/configs/pistachio_defconfig
-@@ -257,7 +257,6 @@ CONFIG_MMC=y
- CONFIG_MMC_BLOCK_MINORS=16
- CONFIG_MMC_TEST=m
+diff --git a/arch/arc/configs/axs101_defconfig b/arch/arc/configs/axs101_defconfig
+index 562dac6..c92c0ef 100644
+--- a/arch/arc/configs/axs101_defconfig
++++ b/arch/arc/configs/axs101_defconfig
+@@ -89,7 +89,6 @@ CONFIG_MMC=y
+ CONFIG_MMC_SDHCI=y
+ CONFIG_MMC_SDHCI_PLTFM=y
  CONFIG_MMC_DW=y
 -CONFIG_MMC_DW_IDMAC=y
- CONFIG_NEW_LEDS=y
- CONFIG_LEDS_CLASS=y
- CONFIG_RTC_CLASS=y
+ # CONFIG_IOMMU_SUPPORT is not set
+ CONFIG_EXT3_FS=y
+ CONFIG_EXT4_FS=y
+diff --git a/arch/arc/configs/axs103_defconfig b/arch/arc/configs/axs103_defconfig
+index 83a6d8d..cfac24e 100644
+--- a/arch/arc/configs/axs103_defconfig
++++ b/arch/arc/configs/axs103_defconfig
+@@ -95,7 +95,6 @@ CONFIG_MMC=y
+ CONFIG_MMC_SDHCI=y
+ CONFIG_MMC_SDHCI_PLTFM=y
+ CONFIG_MMC_DW=y
+-CONFIG_MMC_DW_IDMAC=y
+ # CONFIG_IOMMU_SUPPORT is not set
+ CONFIG_EXT3_FS=y
+ CONFIG_EXT4_FS=y
+diff --git a/arch/arc/configs/axs103_smp_defconfig b/arch/arc/configs/axs103_smp_defconfig
+index f1e1c84..9922a11 100644
+--- a/arch/arc/configs/axs103_smp_defconfig
++++ b/arch/arc/configs/axs103_smp_defconfig
+@@ -96,7 +96,6 @@ CONFIG_MMC=y
+ CONFIG_MMC_SDHCI=y
+ CONFIG_MMC_SDHCI_PLTFM=y
+ CONFIG_MMC_DW=y
+-CONFIG_MMC_DW_IDMAC=y
+ # CONFIG_IOMMU_SUPPORT is not set
+ CONFIG_EXT3_FS=y
+ CONFIG_EXT4_FS=y
 -- 
 2.3.7

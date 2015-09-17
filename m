@@ -1,37 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Sep 2015 18:51:11 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:5644 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27008168AbbIQQufh-ByP (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 17 Sep 2015 18:50:35 +0200
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 2A6B71F755377;
-        Thu, 17 Sep 2015 17:50:27 +0100 (IST)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Thu, 17 Sep 2015 17:50:29 +0100
-Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
- LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.210.2; Thu, 17 Sep 2015 17:50:28 +0100
-From:   James Hogan <james.hogan@imgtec.com>
-To:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
-CC:     James Hogan <james.hogan@imgtec.com>,
-        Markos Chandras <markos.chandras@imgtec.com>
-Subject: [PATCH 0/2] Fix FTLB detection on R6
-Date:   Thu, 17 Sep 2015 17:49:19 +0100
-Message-ID: <1442508561-12260-1-git-send-email-james.hogan@imgtec.com>
-X-Mailer: git-send-email 2.4.6
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Sep 2015 21:02:21 +0200 (CEST)
+Received: from smtp.codeaurora.org ([198.145.29.96]:60071 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27013912AbbIQTCP67X0U (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 17 Sep 2015 21:02:15 +0200
+Received: from smtp.codeaurora.org (localhost [127.0.0.1])
+        by smtp.codeaurora.org (Postfix) with ESMTP id CC3FD1414C1;
+        Thu, 17 Sep 2015 19:02:14 +0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 486)
+        id BDC1A1415C6; Thu, 17 Sep 2015 19:02:14 +0000 (UTC)
+Received: from sboyd-linux.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+        (using TLSv1.1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: sboyd@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 0B10E1415BD;
+        Thu, 17 Sep 2015 19:02:14 +0000 (UTC)
+From:   Stephen Boyd <sboyd@codeaurora.org>
+To:     Andy Gross <agross@codeaurora.org>
+Cc:     linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Bjorn Andersson <bjorn.andersson@sonymobile.com>,
+        Hauke Mehrtens <hauke@hauke-m.de>,
+        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>,
+        Paul Walmsley <paul@pwsan.com>, linux-mips@linux-mips.org
+Subject: [PATCH v2 3/3] FIRMWARE: bcm47xx_nvram: Use __ioread32_copy() instead of open-coding
+Date:   Thu, 17 Sep 2015 12:02:11 -0700
+Message-Id: <1442516531-16071-4-git-send-email-sboyd@codeaurora.org>
+X-Mailer: git-send-email 2.6.0.rc2.11.g3da0120
+In-Reply-To: <1442516531-16071-1-git-send-email-sboyd@codeaurora.org>
+References: <1442516531-16071-1-git-send-email-sboyd@codeaurora.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.154.110]
-Return-Path: <James.Hogan@imgtec.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: ClamAV using ClamSMTP
+Return-Path: <sboyd@codeaurora.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49230
+X-archive-position: 49231
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: sboyd@codeaurora.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,27 +54,55 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-These patches fix FTLB detection on R6 cores. Currently an FTLB will be
-assumed to exist, so if not then the setting of the FTLB page size will
-likely fail during boot.
+Now that we have a generic library function for this, replace the
+open-coded instance.
 
-The first patch adds cpu_has_ftlb, based on Config.MT (MMU type), which
-distinguishes a traditional TLB from a VTLB+FTLB configuration.
-
-The second patch fixes the probe logic to use cpu_has_ftlb for R6.
-
-James Hogan (2):
-  MIPS: cpu-features: Add cpu_has_ftlb
-  MIPS: Fix FTLB detection for R6
-
- arch/mips/include/asm/cpu-features.h |  3 +++
- arch/mips/include/asm/cpu.h          |  1 +
- arch/mips/include/asm/mipsregs.h     |  2 ++
- arch/mips/kernel/cpu-probe.c         | 23 ++++++++++++++---------
- 4 files changed, 20 insertions(+), 9 deletions(-)
-
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Markos Chandras <markos.chandras@imgtec.com>
+Cc: Hauke Mehrtens <hauke@hauke-m.de>
+Cc: Rafał Miłecki <zajec5@gmail.com>
+Cc: Paul Walmsley <paul@pwsan.com>
 Cc: linux-mips@linux-mips.org
+Signed-off-by: Stephen Boyd <sboyd@codeaurora.org>
+---
+ drivers/firmware/broadcom/bcm47xx_nvram.c | 11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/firmware/broadcom/bcm47xx_nvram.c b/drivers/firmware/broadcom/bcm47xx_nvram.c
+index e41594510b97..8f46e6e394b1 100644
+--- a/drivers/firmware/broadcom/bcm47xx_nvram.c
++++ b/drivers/firmware/broadcom/bcm47xx_nvram.c
+@@ -56,9 +56,7 @@ static u32 find_nvram_size(void __iomem *end)
+ static int nvram_find_and_copy(void __iomem *iobase, u32 lim)
+ {
+ 	struct nvram_header __iomem *header;
+-	int i;
+ 	u32 off;
+-	u32 *src, *dst;
+ 	u32 size;
+ 
+ 	if (nvram_len) {
+@@ -95,10 +93,7 @@ static int nvram_find_and_copy(void __iomem *iobase, u32 lim)
+ 	return -ENXIO;
+ 
+ found:
+-	src = (u32 *)header;
+-	dst = (u32 *)nvram_buf;
+-	for (i = 0; i < sizeof(struct nvram_header); i += 4)
+-		*dst++ = __raw_readl(src++);
++	__ioread32_copy(nvram_buf, header, sizeof(*header) / 4);
+ 	header = (struct nvram_header *)nvram_buf;
+ 	nvram_len = header->len;
+ 	if (nvram_len > size) {
+@@ -111,8 +106,8 @@ found:
+ 		nvram_len = NVRAM_SPACE - 1;
+ 	}
+ 	/* proceed reading data after header */
+-	for (; i < nvram_len; i += 4)
+-		*dst++ = readl(src++);
++	__ioread32_copy(nvram_buf + sizeof(*header), header + 1,
++			DIV_ROUND_UP(nvram_len / 4));
+ 	nvram_buf[NVRAM_SPACE - 1] = '\0';
+ 
+ 	return 0;
 -- 
-2.4.6
+The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,
+a Linux Foundation Collaborative Project

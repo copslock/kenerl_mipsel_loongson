@@ -1,43 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Sep 2015 21:19:30 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:44584 "EHLO
-        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27013662AbbIRTT0kJ4ja (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 18 Sep 2015 21:19:26 +0200
-Received: from akpm3.mtv.corp.google.com (unknown [216.239.45.65])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id EB3ACBD7;
-        Fri, 18 Sep 2015 19:19:19 +0000 (UTC)
-Date:   Fri, 18 Sep 2015 12:19:19 -0700
-From:   Andrew Morton <akpm@linux-foundation.org>
-To:     Andi Kleen <andi@firstfloor.org>
-Cc:     Stephen Boyd <sboyd@codeaurora.org>,
-        Andy Gross <agross@codeaurora.org>,
-        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-soc@vger.kernel.org,
-        linux-mips@linux-mips.org, Hauke Mehrtens <hauke@hauke-m.de>,
-        Paul Walmsley <paul@pwsan.com>,
-        =?UTF-8?Q?Rafa=C5=82_Mi=C5=82ecki?= <zajec5@gmail.com>,
-        Bjorn Andersson <bjorn.andersson@sonymobile.com>
-Subject: Re: [PATCH 0/3] Add __ioread32_copy() and use it
-Message-Id: <20150918121919.fa20552946703ae772d636e9@linux-foundation.org>
-In-Reply-To: <20150916025546.GE1747@two.firstfloor.org>
-References: <1442346089-32077-1-git-send-email-sboyd@codeaurora.org>
-        <20150915155815.5a41a8dc537610ab44d8d3dc@linux-foundation.org>
-        <20150916023219.GD1747@two.firstfloor.org>
-        <20150915195031.0a1756a2.akpm@linux-foundation.org>
-        <20150916025546.GE1747@two.firstfloor.org>
-X-Mailer: Sylpheed 3.4.1 (GTK+ 2.24.23; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <akpm@linux-foundation.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Sep 2015 23:06:00 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:57126 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27008679AbbIRVF6ctAtD (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 18 Sep 2015 23:05:58 +0200
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 48D51CF549894;
+        Fri, 18 Sep 2015 22:05:49 +0100 (IST)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Fri, 18 Sep 2015 22:05:52 +0100
+Received: from localhost (192.168.159.178) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Fri, 18 Sep
+ 2015 22:05:51 +0100
+Date:   Fri, 18 Sep 2015 14:05:49 -0700
+From:   Paul Burton <paul.burton@imgtec.com>
+To:     Jacek Anaszewski <j.anaszewski@samsung.com>
+CC:     Ralf Baechle <ralf@linux-mips.org>, Bryan Wu <cooloney@gmail.com>,
+        "Richard Purdie" <rpurdie@rpsys.net>,
+        Markos Chandras <markos.chandras@imgtec.com>,
+        <linux-leds@vger.kernel.org>, <linux-mips@linux-mips.org>
+Subject: Re: [PATCH v2] LED/MIPS: Move SEAD3 LED driver to where it belongs.
+Message-ID: <20150918210549.GD16992@NP-P-BURTON>
+References: <20150803150401.GD2843@linux-mips.org>
+ <55FA7BA0.4080706@samsung.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+In-Reply-To: <55FA7BA0.4080706@samsung.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+X-Originating-IP: [192.168.159.178]
+Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49239
+X-archive-position: 49240
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: akpm@linux-foundation.org
+X-original-sender: paul.burton@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,34 +50,31 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, 16 Sep 2015 04:55:46 +0200 Andi Kleen <andi@firstfloor.org> wrote:
-
-> > Under what circumstances will the compiler (or linker?) do this? 
+On Thu, Sep 17, 2015 at 10:36:48AM +0200, Jacek Anaszewski wrote:
+> Hi Ralf,
 > 
-> Compiler.
+> This patch got stuck somewhere in my mailbox and just
+> recently showed up to my eyes again, so I applied it to v4.3-rc1, but when
+> tried to compile-test it, I got following errors:
 > 
-> > LTO enabled?
-> 
-> Yes it's for LTO.  The optimization allows the compiler to drop unused
-> functions, which is very popular with users (a lot use it to get smaller
-> kernel images)
-> 
+> arch/mips/kernel/signal.c: In function 'sc_to_extcontext':
+> arch/mips/kernel/signal.c:143:12: error: 'struct ucontext' has no member
+> named 'uc_extcontext'
+>   return &uc->uc_extcontext;
+>             ^
 
-Does this look truthful and complete?
+<snip...>
 
+> Compilation succeeds with v4.2-rc8.
+> Is it a known issue?
 
---- a/include/linux/compiler-gcc.h~a
-+++ a/include/linux/compiler-gcc.h
-@@ -205,7 +205,10 @@
- 
- #if GCC_VERSION >= 40600
- /*
-- * Tell the optimizer that something else uses this function or variable.
-+ * When used with Link Time Optimization, gcc can optimize away C functions or
-+ * variables which are referenced only from assembly code.  __visible tells the
-+ * optimizer that something else uses this function or variable, thus preventing
-+ * this.
-  */
- #define __visible	__attribute__((externally_visible))
- #endif
-_
+Hi Jacek,
+
+The patches adding the MSA extended context added a MIPS-specific
+ucontext.h, where we were previously were using the generic one. Kbuild
+doesn't automatically remove the old generated header that includes the
+generic version, so could you try either cleaning your working tree or
+removing arch/mips/include/generated and trying again?
+
+Thanks,
+    Paul

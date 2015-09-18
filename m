@@ -1,41 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Sep 2015 23:45:06 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:54566 "EHLO
-        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008745AbbIQVpFIWbnG (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 17 Sep 2015 23:45:05 +0200
-Received: from akpm3.mtv.corp.google.com (unknown [216.239.45.65])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 103AFBE8;
-        Thu, 17 Sep 2015 21:44:56 +0000 (UTC)
-Date:   Thu, 17 Sep 2015 14:44:55 -0700
-From:   Andrew Morton <akpm@linux-foundation.org>
-To:     Andy Gross <agross@codeaurora.org>
-Cc:     Stephen Boyd <sboyd@codeaurora.org>, linux-kernel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-soc@vger.kernel.org,
-        linux-mips@linux-mips.org, Hauke Mehrtens <hauke@hauke-m.de>,
-        Paul Walmsley <paul@pwsan.com>,
-        =?UTF-8?Q?Rafa=C5=82_?= =?UTF-8?Q?Mi=C5=82ecki?= 
-        <zajec5@gmail.com>,
-        Bjorn Andersson <bjorn.andersson@sonymobile.com>
-Subject: Re: [PATCH v2 0/3] Add __ioread32_copy() and use it
-Message-Id: <20150917144455.8b414be4f89688bbdca39692@linux-foundation.org>
-In-Reply-To: <20150917214218.GA6003@qualcomm.com>
-References: <1442516531-16071-1-git-send-email-sboyd@codeaurora.org>
-        <20150917125651.d7ab504539016a149ea871e6@linux-foundation.org>
-        <20150917214218.GA6003@qualcomm.com>
-X-Mailer: Sylpheed 3.4.1 (GTK+ 2.24.23; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Sep 2015 18:56:27 +0200 (CEST)
+Received: (from localhost user: 'macro', uid#1010) by eddie.linux-mips.org
+        with ESMTP id S27013698AbbIRQ4YyKRoJ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 18 Sep 2015 18:56:24 +0200
+Date:   Fri, 18 Sep 2015 17:56:24 +0100 (BST)
+From:   "Maciej W. Rozycki" <macro@linux-mips.org>
+To:     Luis Machado <lgustavo@codesourcery.com>
+cc:     gdb-patches@sourceware.org, linux-mips@linux-mips.org
+Subject: Re: [PATCH] Expect SI_KERNEL si_code for a MIPS software breakpoint
+ trap
+In-Reply-To: <1442592647-3051-1-git-send-email-lgustavo@codesourcery.com>
+Message-ID: <alpine.LFD.2.20.1509181729100.10647@eddie.linux-mips.org>
+References: <1442592647-3051-1-git-send-email-lgustavo@codesourcery.com>
+User-Agent: Alpine 2.20 (LFD 67 2015-01-07)
+MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <akpm@linux-foundation.org>
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49235
+X-archive-position: 49236
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: akpm@linux-foundation.org
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,15 +35,36 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, 17 Sep 2015 16:42:18 -0500 Andy Gross <agross@codeaurora.org> wrote:
+Hi Luis,
 
-> > ho hum.  I think I'll go with plan B: merge just "lib: iomap_copy: Add
-> > __ioread32_copy()" and send that into Linus promptly.  That way you
-> > guys can sort out the driver patches in the usual fashion.
-> > 
+> I tracked this down to the lack of a proper definition of what MIPS' kernel
+> returns in the si_code for a software breakpoint trap.
 > 
-> I just pulled in the original 8 patches and rebased.  My plans were to stage
-> those in linux-next through my for-next.  Then add those on top just like you
-> specified.  But i could go either way.
+> Though i did not find documentation about this, tests showed that we should
+> check for SI_KERNEL, just like i386. I've cc-ed Maciej, just to be sure this
+> is indeed correct.
 
-OK, please do that.
+ Hmm, the MIPS/Linux port does not set any particular code for SIGTRAP, 
+all such signals will have the SI_KERNEL default, so you may well return 
+TRUE unconditionally.
+
+ I'm not convinced however that it is safe to assume all SIGTRAPs come 
+from breakpoints -- this signal is sent by the kernel for both BREAK and 
+trap (multiple mnemonics, e.g. TEQ, TGEI, etc.) instructions which may 
+have been placed throughout code for some reason, for example to serve as 
+cheap assertion checks.
+
+ Is there a separate check made afterwards like `bpstat_explains_signal' 
+to validate the source of the signal here?
+
+ Perhaps we should make it a part of the ABI and teach MIPS/Linux about 
+the breakpoint encoding used by GDB, which is `BREAK 5' (aka BRK_SSTEPBP 
+in kernel-speak, a misnomer I'm afraid), and make it set `si_code' to 
+TRAP_BRKPT, as expected.  This won't fix history of course, but at least 
+it will make debugging a little bit easier to handle in the future.  
+Cc-ing `linux-mips' for further input.
+
+ I was wondering where these SIGTRAPs come from too BTW, thanks for 
+investigating it.  And thanks for the heads-up!
+
+  Maciej

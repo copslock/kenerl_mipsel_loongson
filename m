@@ -1,78 +1,66 @@
-From: David Daney <david.daney@cavium.com>
-Date: Mon, 3 Aug 2015 17:48:43 -0700
-Subject: MIPS: Make set_pte() SMP safe.
-Message-ID: <20150804004843.BlX-Zud0_h6Jz3Vp0gNY4rtYWQyiJuwKBvjotNhw0sE@z>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Sep 2015 00:28:12 +0200 (CEST)
+Received: from youngberry.canonical.com ([91.189.89.112]:42066 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27009080AbbIUW0cla8RN (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 22 Sep 2015 00:26:32 +0200
+Received: from 1.general.kamal.us.vpn ([10.172.68.52] helo=fourier)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:DHE_RSA_AES_128_CBC_SHA1:16)
+        (Exim 4.76)
+        (envelope-from <kamal@canonical.com>)
+        id 1Ze9Xa-0006re-1j; Mon, 21 Sep 2015 22:26:30 +0000
+Received: from kamal by fourier with local (Exim 4.82)
+        (envelope-from <kamal@whence.com>)
+        id 1Ze9XX-0004vs-RY; Mon, 21 Sep 2015 15:26:27 -0700
+From:   Kamal Mostafa <kamal@canonical.com>
+To:     Markos Chandras <markos.chandras@imgtec.com>
+Cc:     James Hogan <james.hogan@imgtec.com>, linux-mips@linux-mips.org,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Kamal Mostafa <kamal@canonical.com>,
+        kernel-team@lists.ubuntu.com
+Subject: [3.19.y-ckt stable] Patch "MIPS: Fix seccomp syscall argument for MIPS64" has been added to staging queue
+Date:   Mon, 21 Sep 2015 15:26:27 -0700
+Message-Id: <1442874387-18930-1-git-send-email-kamal@canonical.com>
+X-Mailer: git-send-email 1.9.1
+X-Extended-Stable: 3.19
+Return-Path: <kamal@canonical.com>
+X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
+X-Orcpt: rfc822;linux-mips@linux-mips.org
+Original-Recipient: rfc822;linux-mips@linux-mips.org
+X-archive-position: 49262
+X-ecartis-version: Ecartis v1.0.0
+Sender: linux-mips-bounce@linux-mips.org
+Errors-to: linux-mips-bounce@linux-mips.org
+X-original-sender: kamal@canonical.com
+Precedence: bulk
+List-help: <mailto:ecartis@linux-mips.org?Subject=help>
+List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
+List-software: Ecartis version 1.0.0
+List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
+X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
+List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
+List-owner: <mailto:ralf@linux-mips.org>
+List-post: <mailto:linux-mips@linux-mips.org>
+List-archive: <http://www.linux-mips.org/archives/linux-mips/>
+X-list: linux-mips
 
-commit 46011e6ea39235e4aca656673c500eac81a07a17 upstream.
+This is a note to let you know that I have just added a patch titled
 
-On MIPS the GLOBAL bit of the PTE must have the same value in any
-aligned pair of PTEs.  These pairs of PTEs are referred to as
-"buddies".  In a SMP system is is possible for two CPUs to be calling
-set_pte() on adjacent PTEs at the same time.  There is a race between
-setting the PTE and a different CPU setting the GLOBAL bit in its
-buddy PTE.
+    MIPS: Fix seccomp syscall argument for MIPS64
 
-This race can be observed when multiple CPUs are executing
-vmap()/vfree() at the same time.
+to the linux-3.19.y-queue branch of the 3.19.y-ckt extended stable tree 
+which can be found at:
 
-Make setting the buddy PTE's GLOBAL bit an atomic operation to close
-the race condition.
+    http://kernel.ubuntu.com/git/ubuntu/linux.git/log/?h=linux-3.19.y-queue
 
-The case of CONFIG_64BIT_PHYS_ADDR && CONFIG_CPU_MIPS32 is *not*
-handled.
+This patch is scheduled to be released in version 3.19.8-ckt7.
 
-Signed-off-by: David Daney <david.daney@cavium.com>
-Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/10835/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Kamal Mostafa <kamal@canonical.com>
----
- arch/mips/include/asm/pgtable.h | 31 +++++++++++++++++++++++++++++++
- 1 file changed, 31 insertions(+)
+If you, or anyone else, feels it should not be added to this tree, please 
+reply to this email.
 
-diff --git a/arch/mips/include/asm/pgtable.h b/arch/mips/include/asm/pgtable.h
-index 845016d..4ec91d5 100644
---- a/arch/mips/include/asm/pgtable.h
-+++ b/arch/mips/include/asm/pgtable.h
-@@ -187,8 +187,39 @@ static inline void set_pte(pte_t *ptep, pte_t pteval)
- 		 * Make sure the buddy is global too (if it's !none,
- 		 * it better already be global)
- 		 */
-+#ifdef CONFIG_SMP
-+		/*
-+		 * For SMP, multiple CPUs can race, so we need to do
-+		 * this atomically.
-+		 */
-+#ifdef CONFIG_64BIT
-+#define LL_INSN "lld"
-+#define SC_INSN "scd"
-+#else /* CONFIG_32BIT */
-+#define LL_INSN "ll"
-+#define SC_INSN "sc"
-+#endif
-+		unsigned long page_global = _PAGE_GLOBAL;
-+		unsigned long tmp;
-+
-+		__asm__ __volatile__ (
-+			"	.set	push\n"
-+			"	.set	noreorder\n"
-+			"1:	" LL_INSN "	%[tmp], %[buddy]\n"
-+			"	bnez	%[tmp], 2f\n"
-+			"	 or	%[tmp], %[tmp], %[global]\n"
-+			"	" SC_INSN "	%[tmp], %[buddy]\n"
-+			"	beqz	%[tmp], 1b\n"
-+			"	 nop\n"
-+			"2:\n"
-+			"	.set pop"
-+			: [buddy] "+m" (buddy->pte),
-+			  [tmp] "=&r" (tmp)
-+			: [global] "r" (page_global));
-+#else /* !CONFIG_SMP */
- 		if (pte_none(*buddy))
- 			pte_val(*buddy) = pte_val(*buddy) | _PAGE_GLOBAL;
-+#endif /* CONFIG_SMP */
- 	}
- #endif
- }
---
-1.9.1
+For more information about the 3.19.y-ckt tree, see
+https://wiki.ubuntu.com/Kernel/Dev/ExtendedStable
+
+Thanks.
+-Kamal
+
+------

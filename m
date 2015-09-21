@@ -1,59 +1,66 @@
-From: James Hogan <james.hogan@imgtec.com>
-Date: Mon, 27 Jul 2015 13:50:21 +0100
-Subject: MIPS: do_mcheck: Fix kernel code dump with EVA
-Message-ID: <20150727125021.SuuZ95e5doVOsg9fJ6DHkf9ckbnqmYEDRpQWMuqKL0o@z>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Sep 2015 00:27:20 +0200 (CEST)
+Received: from youngberry.canonical.com ([91.189.89.112]:41873 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27009037AbbIUW0CmfivN (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 22 Sep 2015 00:26:02 +0200
+Received: from 1.general.kamal.us.vpn ([10.172.68.52] helo=fourier)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:DHE_RSA_AES_128_CBC_SHA1:16)
+        (Exim 4.76)
+        (envelope-from <kamal@canonical.com>)
+        id 1Ze9X7-0006nH-VV; Mon, 21 Sep 2015 22:26:02 +0000
+Received: from kamal by fourier with local (Exim 4.82)
+        (envelope-from <kamal@whence.com>)
+        id 1Ze9X5-0004SO-OJ; Mon, 21 Sep 2015 15:25:59 -0700
+From:   Kamal Mostafa <kamal@canonical.com>
+To:     Felix Fietkau <nbd@openwrt.org>
+Cc:     linux-mips@linux-mips.org, abrestic@chromium.org,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Kamal Mostafa <kamal@canonical.com>,
+        kernel-team@lists.ubuntu.com
+Subject: [3.19.y-ckt stable] Patch "MIPS: Export get_c0_perfcount_int()" has been added to staging queue
+Date:   Mon, 21 Sep 2015 15:25:59 -0700
+Message-Id: <1442874359-17102-1-git-send-email-kamal@canonical.com>
+X-Mailer: git-send-email 1.9.1
+X-Extended-Stable: 3.19
+Return-Path: <kamal@canonical.com>
+X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
+X-Orcpt: rfc822;linux-mips@linux-mips.org
+Original-Recipient: rfc822;linux-mips@linux-mips.org
+X-archive-position: 49259
+X-ecartis-version: Ecartis v1.0.0
+Sender: linux-mips-bounce@linux-mips.org
+Errors-to: linux-mips-bounce@linux-mips.org
+X-original-sender: kamal@canonical.com
+Precedence: bulk
+List-help: <mailto:ecartis@linux-mips.org?Subject=help>
+List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
+List-software: Ecartis version 1.0.0
+List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
+X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
+List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
+List-owner: <mailto:ralf@linux-mips.org>
+List-post: <mailto:linux-mips@linux-mips.org>
+List-archive: <http://www.linux-mips.org/archives/linux-mips/>
+X-list: linux-mips
 
-commit 55c723e181ccec30fb5c672397fe69ec35967d97 upstream.
+This is a note to let you know that I have just added a patch titled
 
-If a machine check exception is raised in kernel mode, user context,
-with EVA enabled, then the do_mcheck handler will attempt to read the
-code around the EPC using EVA load instructions, i.e. as if the reads
-were from user mode. This will either read random user data if the
-process has anything mapped at the same address, or it will cause an
-exception which is handled by __get_user, resulting in this output:
+    MIPS: Export get_c0_perfcount_int()
 
- Code: (Bad address in epc)
+to the linux-3.19.y-queue branch of the 3.19.y-ckt extended stable tree 
+which can be found at:
 
-Fix by setting the current user access mode to kernel if the saved
-register context indicates the exception was taken in kernel mode. This
-causes __get_user to use normal loads to read the kernel code.
+    http://kernel.ubuntu.com/git/ubuntu/linux.git/log/?h=linux-3.19.y-queue
 
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Markos Chandras <markos.chandras@imgtec.com>
-Cc: Leonid Yegoshin <leonid.yegoshin@imgtec.com>
-Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/10777/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Kamal Mostafa <kamal@canonical.com>
----
- arch/mips/kernel/traps.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+This patch is scheduled to be released in version 3.19.8-ckt7.
 
-diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
-index c3b41e2..f4aacec 100644
---- a/arch/mips/kernel/traps.c
-+++ b/arch/mips/kernel/traps.c
-@@ -1423,6 +1423,7 @@ asmlinkage void do_mcheck(struct pt_regs *regs)
- 	const int field = 2 * sizeof(unsigned long);
- 	int multi_match = regs->cp0_status & ST0_TS;
- 	enum ctx_state prev_state;
-+	mm_segment_t old_fs = get_fs();
+If you, or anyone else, feels it should not be added to this tree, please 
+reply to this email.
 
- 	prev_state = exception_enter();
- 	show_regs(regs);
-@@ -1444,8 +1445,13 @@ asmlinkage void do_mcheck(struct pt_regs *regs)
- 		dump_tlb_all();
- 	}
+For more information about the 3.19.y-ckt tree, see
+https://wiki.ubuntu.com/Kernel/Dev/ExtendedStable
 
-+	if (!user_mode(regs))
-+		set_fs(KERNEL_DS);
-+
- 	show_code((unsigned int __user *) regs->cp0_epc);
+Thanks.
+-Kamal
 
-+	set_fs(old_fs);
-+
- 	/*
- 	 * Some chips may have other causes of machine check (e.g. SB1
- 	 * graduation timer)
---
-1.9.1
+------

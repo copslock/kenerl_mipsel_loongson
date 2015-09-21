@@ -1,40 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 Sep 2015 19:12:23 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:2038 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27008158AbbIURMWF9mRX (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 21 Sep 2015 19:12:22 +0200
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id BF8EC3F455B2B;
-        Mon, 21 Sep 2015 18:12:12 +0100 (IST)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Mon, 21 Sep 2015 18:12:16 +0100
-Received: from localhost (192.168.159.181) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Mon, 21 Sep
- 2015 18:12:15 +0100
-Date:   Mon, 21 Sep 2015 10:12:13 -0700
-From:   Paul Burton <paul.burton@imgtec.com>
-To:     Aaro Koskinen <aaro.koskinen@nokia.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-CC:     David Daney <ddaney.cavm@gmail.com>, <linux-mips@linux-mips.org>
-Subject: Re: [BISECTED] Linux 4.3-rc1 boot regression on OCTEON
-Message-ID: <20150921171213.GA25587@NP-P-BURTON>
-References: <20150915143850.GO1199@ak-desktop.emea.nsn-net.net>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-In-Reply-To: <20150915143850.GO1199@ak-desktop.emea.nsn-net.net>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-X-Originating-IP: [192.168.159.181]
-Return-Path: <Paul.Burton@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Sep 2015 00:26:03 +0200 (CEST)
+Received: from youngberry.canonical.com ([91.189.89.112]:41865 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27009006AbbIUW0BlmYoN (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 22 Sep 2015 00:26:01 +0200
+Received: from 1.general.kamal.us.vpn ([10.172.68.52] helo=fourier)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:DHE_RSA_AES_128_CBC_SHA1:16)
+        (Exim 4.76)
+        (envelope-from <kamal@canonical.com>)
+        id 1Ze9X7-0006n8-59; Mon, 21 Sep 2015 22:26:01 +0000
+Received: from kamal by fourier with local (Exim 4.82)
+        (envelope-from <kamal@whence.com>)
+        id 1Ze9X4-0004RW-Uw; Mon, 21 Sep 2015 15:25:58 -0700
+From:   Kamal Mostafa <kamal@canonical.com>
+To:     James Hogan <james.hogan@imgtec.com>
+Cc:     Markos Chandras <markos.chandras@imgtec.com>,
+        Leonid Yegoshin <leonid.yegoshin@imgtec.com>,
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
+        Kamal Mostafa <kamal@canonical.com>,
+        kernel-team@lists.ubuntu.com
+Subject: [3.19.y-ckt stable] Patch "MIPS: show_stack: Fix stack trace with EVA" has been added to staging queue
+Date:   Mon, 21 Sep 2015 15:25:58 -0700
+Message-Id: <1442874358-17048-1-git-send-email-kamal@canonical.com>
+X-Mailer: git-send-email 1.9.1
+X-Extended-Stable: 3.19
+Return-Path: <kamal@canonical.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49254
+X-archive-position: 49255
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@imgtec.com
+X-original-sender: kamal@canonical.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,28 +44,24 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Sep 15, 2015 at 05:38:50PM +0300, Aaro Koskinen wrote:
-> Hi,
-> 
-> OCTEON+/OCTEON II fails to boot with 4.3-rc1. Bisected to:
-> 
-> 1a3d59579b9f436da038f377309cf2270c76318e is the first bad commit
-> commit 1a3d59579b9f436da038f377309cf2270c76318e
-> Author: Paul Burton <paul.burton@imgtec.com>
-> Date:   Mon Aug 3 08:49:30 2015 -0700
-> 
->     MIPS: Tidy up FPU context switching
+This is a note to let you know that I have just added a patch titled
 
-Hi Aaro,
+    MIPS: show_stack: Fix stack trace with EVA
 
-Sorry about that! This patch I've just submitted should fix it up:
+to the linux-3.19.y-queue branch of the 3.19.y-ckt extended stable tree 
+which can be found at:
 
-    http://marc.info/?l=linux-mips&m=144285532009315&w=2
+    http://kernel.ubuntu.com/git/ubuntu/linux.git/log/?h=linux-3.19.y-queue
 
-Let me know if not.
+This patch is scheduled to be released in version 3.19.8-ckt7.
 
-Ralf: can we get those 2 FP fixes (11166 & 11167 in patchwork) into v4.3
-      please?
+If you, or anyone else, feels it should not be added to this tree, please 
+reply to this email.
 
-Thanks,
-    Paul
+For more information about the 3.19.y-ckt tree, see
+https://wiki.ubuntu.com/Kernel/Dev/ExtendedStable
+
+Thanks.
+-Kamal
+
+------

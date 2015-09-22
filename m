@@ -1,26 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Sep 2015 19:53:57 +0200 (CEST)
-Received: from youngberry.canonical.com ([91.189.89.112]:53210 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Sep 2015 19:54:13 +0200 (CEST)
+Received: from youngberry.canonical.com ([91.189.89.112]:53214 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008792AbbIVRxhAuDEU (ORCPT
+        by eddie.linux-mips.org with ESMTP id S27008798AbbIVRxhOQKyU (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Tue, 22 Sep 2015 19:53:37 +0200
 Received: from 1.general.kamal.us.vpn ([10.172.68.52] helo=fourier)
         by youngberry.canonical.com with esmtpsa (TLS1.0:DHE_RSA_AES_128_CBC_SHA1:16)
         (Exim 4.76)
         (envelope-from <kamal@canonical.com>)
-        id 1ZeRl2-0000vC-4W; Tue, 22 Sep 2015 17:53:36 +0000
+        id 1ZeRl2-0000vJ-Ks; Tue, 22 Sep 2015 17:53:36 +0000
 Received: from kamal by fourier with local (Exim 4.82)
         (envelope-from <kamal@whence.com>)
-        id 1ZeRkz-0000bB-Sp; Tue, 22 Sep 2015 10:53:33 -0700
+        id 1ZeRl0-0000bS-Dx; Tue, 22 Sep 2015 10:53:34 -0700
 From:   Kamal Mostafa <kamal@canonical.com>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
         kernel-team@lists.ubuntu.com
 Cc:     James Hogan <james.hogan@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        "Maciej W. Rozycki" <macro@linux-mips.org>,
-        linux-mips@linux-mips.org, Kamal Mostafa <kamal@canonical.com>
-Subject: [PATCH 3.19.y-ckt 031/102] MIPS: Malta: Don't reinitialise RTC
-Date:   Tue, 22 Sep 2015 10:51:27 -0700
-Message-Id: <1442944358-1248-32-git-send-email-kamal@canonical.com>
+        Markos Chandras <markos.chandras@imgtec.com>,
+        Leonid Yegoshin <leonid.yegoshin@imgtec.com>,
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
+        Kamal Mostafa <kamal@canonical.com>
+Subject: [PATCH 3.19.y-ckt 032/102] MIPS: do_mcheck: Fix kernel code dump with EVA
+Date:   Tue, 22 Sep 2015 10:51:28 -0700
+Message-Id: <1442944358-1248-33-git-send-email-kamal@canonical.com>
 X-Mailer: git-send-email 1.9.1
 In-Reply-To: <1442944358-1248-1-git-send-email-kamal@canonical.com>
 References: <1442944358-1248-1-git-send-email-kamal@canonical.com>
@@ -29,7 +30,7 @@ Return-Path: <kamal@canonical.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49293
+X-archive-position: 49294
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -52,68 +53,57 @@ X-list: linux-mips
 
 From: James Hogan <james.hogan@imgtec.com>
 
-commit 106eccb4d20f35ebc58ff2286c170d9e79c5ff68 upstream.
+commit 55c723e181ccec30fb5c672397fe69ec35967d97 upstream.
 
-On Malta, since commit a87ea88d8f6c ("MIPS: Malta: initialise the RTC at
-boot"), the RTC is reinitialised and forced into binary coded decimal
-(BCD) mode during init, even if the bootloader has already initialised
-it, and may even have already put it into binary mode (as YAMON does).
-This corrupts the current time, can result in the RTC seconds being an
-invalid BCD (e.g. 0x1a..0x1f) for up to 6 seconds, as well as confusing
-YAMON for a while after reset, enough for it to report timeouts when
-attempting to load from TFTP (it actually uses the RTC in that code).
+If a machine check exception is raised in kernel mode, user context,
+with EVA enabled, then the do_mcheck handler will attempt to read the
+code around the EPC using EVA load instructions, i.e. as if the reads
+were from user mode. This will either read random user data if the
+process has anything mapped at the same address, or it will cause an
+exception which is handled by __get_user, resulting in this output:
 
-Therefore only initialise the RTC to the extent that is necessary so
-that Linux avoids interfering with the bootloader setup, while also
-allowing it to estimate the CPU frequency without hanging, without a
-bootloader necessarily having done anything with the RTC (for example
-when the kernel is loaded via EJTAG).
+ Code: (Bad address in epc)
 
-The divider control is configured for a 32KHZ reference clock if
-necessary, and the SET bit of the RTC_CONTROL register is cleared if
-necessary without changing any other bits (this bit will be set when
-coming out of reset if the battery has been disconnected).
+Fix by setting the current user access mode to kernel if the saved
+register context indicates the exception was taken in kernel mode. This
+causes __get_user to use normal loads to read the kernel code.
 
-Fixes: a87ea88d8f6c ("MIPS: Malta: initialise the RTC at boot")
 Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Reviewed-by: Paul Burton <paul.burton@imgtec.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Maciej W. Rozycki <macro@linux-mips.org>
+Cc: Markos Chandras <markos.chandras@imgtec.com>
+Cc: Leonid Yegoshin <leonid.yegoshin@imgtec.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/10739/
+Patchwork: https://patchwork.linux-mips.org/patch/10777/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Kamal Mostafa <kamal@canonical.com>
 ---
- arch/mips/mti-malta/malta-time.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ arch/mips/kernel/traps.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/arch/mips/mti-malta/malta-time.c b/arch/mips/mti-malta/malta-time.c
-index ce02dbd..644ecce 100644
---- a/arch/mips/mti-malta/malta-time.c
-+++ b/arch/mips/mti-malta/malta-time.c
-@@ -147,14 +147,17 @@ unsigned int get_c0_compare_int(void)
+diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
+index c3b41e2..f4aacec 100644
+--- a/arch/mips/kernel/traps.c
++++ b/arch/mips/kernel/traps.c
+@@ -1423,6 +1423,7 @@ asmlinkage void do_mcheck(struct pt_regs *regs)
+ 	const int field = 2 * sizeof(unsigned long);
+ 	int multi_match = regs->cp0_status & ST0_TS;
+ 	enum ctx_state prev_state;
++	mm_segment_t old_fs = get_fs();
  
- static void __init init_rtc(void)
- {
--	/* stop the clock whilst setting it up */
--	CMOS_WRITE(RTC_SET | RTC_24H, RTC_CONTROL);
-+	unsigned char freq, ctrl;
+ 	prev_state = exception_enter();
+ 	show_regs(regs);
+@@ -1444,8 +1445,13 @@ asmlinkage void do_mcheck(struct pt_regs *regs)
+ 		dump_tlb_all();
+ 	}
  
--	/* 32KHz time base */
--	CMOS_WRITE(RTC_REF_CLCK_32KHZ, RTC_FREQ_SELECT);
-+	/* Set 32KHz time base if not already set */
-+	freq = CMOS_READ(RTC_FREQ_SELECT);
-+	if ((freq & RTC_DIV_CTL) != RTC_REF_CLCK_32KHZ)
-+		CMOS_WRITE(RTC_REF_CLCK_32KHZ, RTC_FREQ_SELECT);
++	if (!user_mode(regs))
++		set_fs(KERNEL_DS);
++
+ 	show_code((unsigned int __user *) regs->cp0_epc);
  
--	/* start the clock */
--	CMOS_WRITE(RTC_24H, RTC_CONTROL);
-+	/* Ensure SET bit is clear so RTC can run */
-+	ctrl = CMOS_READ(RTC_CONTROL);
-+	if (ctrl & RTC_SET)
-+		CMOS_WRITE(ctrl & ~RTC_SET, RTC_CONTROL);
- }
- 
- void __init plat_time_init(void)
++	set_fs(old_fs);
++
+ 	/*
+ 	 * Some chips may have other causes of machine check (e.g. SB1
+ 	 * graduation timer)
 -- 
 1.9.1

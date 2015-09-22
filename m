@@ -1,44 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Sep 2015 12:25:06 +0200 (CEST)
-Received: from www.linutronix.de ([62.245.132.108]:40974 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27007645AbbIVKZCeE-iK (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 22 Sep 2015 12:25:02 +0200
-Received: from localhost ([127.0.0.1])
-        by Galois.linutronix.de with esmtps (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:256)
-        (Exim 4.80)
-        (envelope-from <tglx@linutronix.de>)
-        id 1ZeKkw-00071X-6s; Tue, 22 Sep 2015 12:25:02 +0200
-Date:   Tue, 22 Sep 2015 12:24:26 +0200 (CEST)
-From:   Thomas Gleixner <tglx@linutronix.de>
-To:     Alexander Couzens <lynxis@fe80.eu>
-cc:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
-        Alban Bedel <albeu@free.fr>, Rob Herring <robh+dt@kernel.org>,
-        Pawel Moll <pawel.moll@arm.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ian Campbell <ijc+devicetree@hellion.org.uk>,
-        Kumar Gala <galak@codeaurora.org>, devicetree@vger.kernel.org,
-        Jason Cooper <jason@lakedaemon.net>,
-        Marc Zyngier <marc.zyngier@arm.com>,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] MIPS: ath79: add irq chip ar7240-misc-intc
-In-Reply-To: <1442636780-2891-3-git-send-email-lynxis@fe80.eu>
-Message-ID: <alpine.DEB.2.11.1509221223280.5606@nanos>
-References: <1442636780-2891-1-git-send-email-lynxis@fe80.eu> <1442636780-2891-3-git-send-email-lynxis@fe80.eu>
-User-Agent: Alpine 2.11 (DEB 23 2013-08-11)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Sep 2015 12:34:54 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:37233 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S27008337AbbIVKewYtlQa (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 22 Sep 2015 12:34:52 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.15.2/8.14.8) with ESMTP id t8MAYnJX011132;
+        Tue, 22 Sep 2015 12:34:49 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.15.2/8.15.2/Submit) id t8MAYnWq011131;
+        Tue, 22 Sep 2015 12:34:49 +0200
+Date:   Tue, 22 Sep 2015 12:34:49 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Paul Burton <paul.burton@imgtec.com>
+Cc:     Aaro Koskinen <aaro.koskinen@nokia.com>,
+        David Daney <ddaney.cavm@gmail.com>, linux-mips@linux-mips.org
+Subject: Re: [BISECTED] Linux 4.3-rc1 boot regression on OCTEON
+Message-ID: <20150922103448.GD10284@linux-mips.org>
+References: <20150915143850.GO1199@ak-desktop.emea.nsn-net.net>
+ <20150921171213.GA25587@NP-P-BURTON>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001,URIBL_BLOCKED=0.001
-Return-Path: <tglx@linutronix.de>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20150921171213.GA25587@NP-P-BURTON>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49270
+X-archive-position: 49271
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tglx@linutronix.de
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,20 +44,33 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sat, 19 Sep 2015, Alexander Couzens wrote:
+On Mon, Sep 21, 2015 at 10:12:13AM -0700, Paul Burton wrote:
 
-> The ar7240 misc irq chip use ack handler
-> instead of ack_mask handler. All new ath79 chips use
-> the ar7240 misc irq chip
+> On Tue, Sep 15, 2015 at 05:38:50PM +0300, Aaro Koskinen wrote:
+> > Hi,
+> > 
+> > OCTEON+/OCTEON II fails to boot with 4.3-rc1. Bisected to:
+> > 
+> > 1a3d59579b9f436da038f377309cf2270c76318e is the first bad commit
+> > commit 1a3d59579b9f436da038f377309cf2270c76318e
+> > Author: Paul Burton <paul.burton@imgtec.com>
+> > Date:   Mon Aug 3 08:49:30 2015 -0700
+> > 
+> >     MIPS: Tidy up FPU context switching
 > 
-> Signed-off-by: Alexander Couzens <lynxis@fe80.eu>
-> Acked-by: Alban Bedel <albeu@free.fr>
-> ---
->  .../interrupt-controller/qca,ath79-misc-intc.txt     | 20 ++++++++++++++++++--
->  arch/mips/ath79/irq.c                                | 10 ++++++++++
+> Hi Aaro,
+> 
+> Sorry about that! This patch I've just submitted should fix it up:
+> 
+>     http://marc.info/?l=linux-mips&m=144285532009315&w=2
+> 
+> Let me know if not.
+> 
+> Ralf: can we get those 2 FP fixes (11166 & 11167 in patchwork) into v4.3
+>       please?
 
-That driver should probably move into drivers/irqchip.
+Applied, thanks!
 
-Other than that.
+And btw, this also means I'm back from my vaction.
 
-Acked-by: Thomas Gleixner <tglx@linutronix.de>
+  Ralf

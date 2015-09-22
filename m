@@ -1,27 +1,25 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Sep 2015 19:54:32 +0200 (CEST)
-Received: from youngberry.canonical.com ([91.189.89.112]:53223 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Sep 2015 19:54:48 +0200 (CEST)
+Received: from youngberry.canonical.com ([91.189.89.112]:53228 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008799AbbIVRxiBfk5U (ORCPT
+        by eddie.linux-mips.org with ESMTP id S27008802AbbIVRxiVZ7qU (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Tue, 22 Sep 2015 19:53:38 +0200
 Received: from 1.general.kamal.us.vpn ([10.172.68.52] helo=fourier)
         by youngberry.canonical.com with esmtpsa (TLS1.0:DHE_RSA_AES_128_CBC_SHA1:16)
         (Exim 4.76)
         (envelope-from <kamal@canonical.com>)
-        id 1ZeRl3-0000vS-8E; Tue, 22 Sep 2015 17:53:37 +0000
+        id 1ZeRl3-0000vq-OR; Tue, 22 Sep 2015 17:53:37 +0000
 Received: from kamal by fourier with local (Exim 4.82)
         (envelope-from <kamal@whence.com>)
-        id 1ZeRl0-0000bZ-Vl; Tue, 22 Sep 2015 10:53:34 -0700
+        id 1ZeRl1-0000bt-HV; Tue, 22 Sep 2015 10:53:35 -0700
 From:   Kamal Mostafa <kamal@canonical.com>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
         kernel-team@lists.ubuntu.com
-Cc:     James Hogan <james.hogan@imgtec.com>,
-        Markos Chandras <markos.chandras@imgtec.com>,
-        Leonid Yegoshin <leonid.yegoshin@imgtec.com>,
-        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
+Cc:     Felix Fietkau <nbd@openwrt.org>, linux-mips@linux-mips.org,
+        abrestic@chromium.org, Ralf Baechle <ralf@linux-mips.org>,
         Kamal Mostafa <kamal@canonical.com>
-Subject: [PATCH 3.19.y-ckt 033/102] MIPS: show_stack: Fix stack trace with EVA
-Date:   Tue, 22 Sep 2015 10:51:29 -0700
-Message-Id: <1442944358-1248-34-git-send-email-kamal@canonical.com>
+Subject: [PATCH 3.19.y-ckt 034/102] MIPS: Export get_c0_perfcount_int()
+Date:   Tue, 22 Sep 2015 10:51:30 -0700
+Message-Id: <1442944358-1248-35-git-send-email-kamal@canonical.com>
 X-Mailer: git-send-email 1.9.1
 In-Reply-To: <1442944358-1248-1-git-send-email-kamal@canonical.com>
 References: <1442944358-1248-1-git-send-email-kamal@canonical.com>
@@ -30,7 +28,7 @@ Return-Path: <kamal@canonical.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49295
+X-archive-position: 49296
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -51,70 +49,89 @@ X-list: linux-mips
 
 ------------------
 
-From: James Hogan <james.hogan@imgtec.com>
+From: Felix Fietkau <nbd@openwrt.org>
 
-commit 1e77863a51698c4319587df34171bd823691a66a upstream.
+commit 0cb0985f57783c2f3c6c8ffe7e7665e80c56bd92 upstream.
 
-The show_stack() function deals exclusively with kernel contexts, but if
-it gets called in user context with EVA enabled, show_stacktrace() will
-attempt to access the stack using EVA accesses, which will either read
-other user mapped data, or more likely cause an exception which will be
-handled by __get_user().
+get_c0_perfcount_int is tested from oprofile code. If oprofile is
+compiled as module, get_c0_perfcount_int needs to be exported, otherwise
+it cannot be resolved.
 
-This is easily reproduced using SysRq t to show all task states, which
-results in the following stack dump output:
-
- Stack : (Bad stack address)
-
-Fix by setting the current user access mode to kernel around the call to
-show_stacktrace(). This causes __get_user() to use normal loads to read
-the kernel stack.
-
-Now we get the correct output, like this:
-
- Stack : 00000000 80168960 00000000 004a0000 00000000 00000000 8060016c 1f3abd0c
-           1f172cd8 8056f09c 7ff1e450 8014fc3c 00000001 806dd0b0 0000001d 00000002
-           1f17c6a0 1f17c804 1f17c6a0 8066f6e0 00000000 0000000a 00000000 00000000
-           00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
-           00000000 00000000 00000000 00000000 00000000 0110e800 1f3abd6c 1f17c6a0
-           ...
-
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Markos Chandras <markos.chandras@imgtec.com>
-Cc: Leonid Yegoshin <leonid.yegoshin@imgtec.com>
+Fixes: a669efc4a3b4 ("MIPS: Add hook to get C0 performance counter interrupt")
+Signed-off-by: Felix Fietkau <nbd@openwrt.org>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/10778/
+Cc: abrestic@chromium.org
+Patchwork: https://patchwork.linux-mips.org/patch/10763/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+[ kamal: backport to 3.19-stable: no pistachio/time.c ]
 Signed-off-by: Kamal Mostafa <kamal@canonical.com>
 ---
- arch/mips/kernel/traps.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ arch/mips/ath79/setup.c          | 1 +
+ arch/mips/lantiq/irq.c           | 1 +
+ arch/mips/mti-malta/malta-time.c | 1 +
+ arch/mips/mti-sead3/sead3-time.c | 1 +
+ arch/mips/ralink/irq.c           | 1 +
+ 5 files changed, 5 insertions(+)
 
-diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
-index f4aacec..3e0e61f 100644
---- a/arch/mips/kernel/traps.c
-+++ b/arch/mips/kernel/traps.c
-@@ -190,6 +190,7 @@ static void show_stacktrace(struct task_struct *task,
- void show_stack(struct task_struct *task, unsigned long *sp)
+diff --git a/arch/mips/ath79/setup.c b/arch/mips/ath79/setup.c
+index a73c93c..c0277e9 100644
+--- a/arch/mips/ath79/setup.c
++++ b/arch/mips/ath79/setup.c
+@@ -186,6 +186,7 @@ int get_c0_perfcount_int(void)
  {
- 	struct pt_regs regs;
-+	mm_segment_t old_fs = get_fs();
- 	if (sp) {
- 		regs.regs[29] = (unsigned long)sp;
- 		regs.regs[31] = 0;
-@@ -208,7 +209,13 @@ void show_stack(struct task_struct *task, unsigned long *sp)
- 			prepare_frametrace(&regs);
- 		}
- 	}
-+	/*
-+	 * show_stack() deals exclusively with kernel mode, so be sure to access
-+	 * the stack in the kernel (not user) address space.
-+	 */
-+	set_fs(KERNEL_DS);
- 	show_stacktrace(task, &regs);
-+	set_fs(old_fs);
+ 	return ATH79_MISC_IRQ(5);
  }
++EXPORT_SYMBOL_GPL(get_c0_perfcount_int);
  
- static void show_code(unsigned int __user *pc)
+ unsigned int get_c0_compare_int(void)
+ {
+diff --git a/arch/mips/lantiq/irq.c b/arch/mips/lantiq/irq.c
+index 6ab1057..d01ade6 100644
+--- a/arch/mips/lantiq/irq.c
++++ b/arch/mips/lantiq/irq.c
+@@ -466,6 +466,7 @@ int get_c0_perfcount_int(void)
+ {
+ 	return ltq_perfcount_irq;
+ }
++EXPORT_SYMBOL_GPL(get_c0_perfcount_int);
+ 
+ unsigned int get_c0_compare_int(void)
+ {
+diff --git a/arch/mips/mti-malta/malta-time.c b/arch/mips/mti-malta/malta-time.c
+index 644ecce..a6cc3ef 100644
+--- a/arch/mips/mti-malta/malta-time.c
++++ b/arch/mips/mti-malta/malta-time.c
+@@ -130,6 +130,7 @@ int get_c0_perfcount_int(void)
+ 
+ 	return mips_cpu_perf_irq;
+ }
++EXPORT_SYMBOL_GPL(get_c0_perfcount_int);
+ 
+ unsigned int get_c0_compare_int(void)
+ {
+diff --git a/arch/mips/mti-sead3/sead3-time.c b/arch/mips/mti-sead3/sead3-time.c
+index ec1dd24..90e303e 100644
+--- a/arch/mips/mti-sead3/sead3-time.c
++++ b/arch/mips/mti-sead3/sead3-time.c
+@@ -77,6 +77,7 @@ int get_c0_perfcount_int(void)
+ 		return MIPS_CPU_IRQ_BASE + cp0_perfcount_irq;
+ 	return -1;
+ }
++EXPORT_SYMBOL_GPL(get_c0_perfcount_int);
+ 
+ unsigned int get_c0_compare_int(void)
+ {
+diff --git a/arch/mips/ralink/irq.c b/arch/mips/ralink/irq.c
+index 7cf91b9..199ace4 100644
+--- a/arch/mips/ralink/irq.c
++++ b/arch/mips/ralink/irq.c
+@@ -89,6 +89,7 @@ int get_c0_perfcount_int(void)
+ {
+ 	return rt_perfcount_irq;
+ }
++EXPORT_SYMBOL_GPL(get_c0_perfcount_int);
+ 
+ unsigned int get_c0_compare_int(void)
+ {
 -- 
 1.9.1

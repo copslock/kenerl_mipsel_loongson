@@ -1,46 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Sep 2015 21:10:05 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:54260 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Sep 2015 21:16:20 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:46315 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27009093AbbIVTJ6zZzLP (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 22 Sep 2015 21:09:58 +0200
+        with ESMTP id S27008792AbbIVTQTTC5ZP (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 22 Sep 2015 21:16:19 +0200
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id CFF9380607F9C;
-        Tue, 22 Sep 2015 20:09:48 +0100 (IST)
+        by Websense Email Security Gateway with ESMTPS id 94A7784E6623C;
+        Tue, 22 Sep 2015 20:16:09 +0100 (IST)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
  KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Tue, 22 Sep 2015 20:09:52 +0100
+ 14.3.195.1; Tue, 22 Sep 2015 20:14:26 +0100
 Received: from localhost (192.168.159.189) by LEMAIL01.le.imgtec.org
  (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Tue, 22 Sep
- 2015 20:09:50 +0100
+ 2015 20:14:25 +0100
+Date:   Tue, 22 Sep 2015 12:14:24 -0700
 From:   Paul Burton <paul.burton@imgtec.com>
-To:     <linux-mips@linux-mips.org>
-CC:     Paul Burton <paul.burton@imgtec.com>,
-        Rusty Russell <rusty@rustcorp.com.au>,
-        "Steven J. Hill" <Steven.Hill@imgtec.com>,
-        "Andrew Bresticker" <abrestic@chromium.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        David Hildenbrand <dahi@linux.vnet.ibm.com>,
-        <linux-kernel@vger.kernel.org>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
+To:     Thomas Gleixner <tglx@linutronix.de>
+CC:     <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>,
+        Jason Cooper <jason@lakedaemon.net>,
         James Hogan <james.hogan@imgtec.com>,
         Markos Chandras <markos.chandras@imgtec.com>,
-        Ingo Molnar <mingo@kernel.org>,
         Ralf Baechle <ralf@linux-mips.org>,
-        Alex Smith <alex.smith@imgtec.com>
-Subject: [PATCH 2/2] MIPS: initialise MAARs on secondary CPUs
-Date:   Tue, 22 Sep 2015 12:08:48 -0700
-Message-ID: <1442948929-15862-3-git-send-email-paul.burton@imgtec.com>
-X-Mailer: git-send-email 2.5.3
-In-Reply-To: <1442948929-15862-1-git-send-email-paul.burton@imgtec.com>
-References: <1442948929-15862-1-git-send-email-paul.burton@imgtec.com>
+        "Marc Zyngier" <marc.zyngier@arm.com>
+Subject: Re: [PATCH 0/3] MIPS GIC fixes
+Message-ID: <20150922191424.GC29903@NP-P-BURTON>
+References: <1442946551-27893-1-git-send-email-paul.burton@imgtec.com>
+ <alpine.DEB.2.11.1509222106100.5606@nanos>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+In-Reply-To: <alpine.DEB.2.11.1509222106100.5606@nanos>
+User-Agent: Mutt/1.5.23 (2014-03-12)
 X-Originating-IP: [192.168.159.189]
 Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49333
+X-archive-position: 49334
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -57,133 +52,36 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-MAARs should be initialised on each CPU (or rather, core) in the system
-in order to achieve consistent behaviour & performance. Previously they
-have only been initialised on the boot CPU which leads to performance
-problems if tasks are later scheduled on a secondary CPU, particularly
-if those tasks make use of unaligned vector accesses where some CPUs
-don't handle any cases in hardware for non-speculative memory regions.
-Fix this by recording the MAAR configuration from the boot CPU and
-applying it to secondary CPUs as part of their bringup.
+On Tue, Sep 22, 2015 at 09:07:15PM +0200, Thomas Gleixner wrote:
+> On Tue, 22 Sep 2015, Paul Burton wrote:
+> 
+> > This series fixes a couple of problems with the MIPS GIC support,
+> > impacting systems with the 64 bit CM3 and those with multithreading and
+> > non-contiguous numbering for VP(E)s across cores.
+> > 
+> > Paul Burton (3):
+> >   MIPS: CM: provide a function to map from CPU to VP ID
+> >   irqchip: mips-gic: convert CPU numbers to VP IDs
+> >   irqchip: mips-gic: fix pending & mask reads for MIPS64 with 32b GIC
+> 
+> I assume that's a bugfix scheduled for 4.3.
+> 
+> Ralf, if so, please ship it through the MIPS tree with my Acked-by for
+> the irqchip parts.
+> 
+> Thanks,
+> 
+> 	tglx
 
-Reported-by: Doug Gilmore <doug.gilmore@imgtec.com>
-Signed-off-by: Paul Burton <paul.burton@imgtec.com>
----
+Hi Thomas,
 
- arch/mips/include/asm/maar.h |  9 +++++++++
- arch/mips/kernel/smp.c       |  2 ++
- arch/mips/mm/init.c          | 28 +++++++++++++++++++++++++---
- 3 files changed, 36 insertions(+), 3 deletions(-)
+These are fixes but to the best of my knowledge the only currently
+supported system it would break is multicore I6400 on Malta, which only
+exists in emulation at the moment. So it's probably not a huge deal to
+get this into v4.3. If it's easy though, absolutely go ahead :)
 
-diff --git a/arch/mips/include/asm/maar.h b/arch/mips/include/asm/maar.h
-index b02891f..21d9607 100644
---- a/arch/mips/include/asm/maar.h
-+++ b/arch/mips/include/asm/maar.h
-@@ -66,6 +66,15 @@ static inline void write_maar_pair(unsigned idx, phys_addr_t lower,
- }
- 
- /**
-+ * maar_init() - initialise MAARs
-+ *
-+ * Performs initialisation of MAARs for the current CPU, making use of the
-+ * platforms implementation of platform_maar_init where necessary and
-+ * duplicating the setup it provides on secondary CPUs.
-+ */
-+extern void maar_init(void);
-+
-+/**
-  * struct maar_config - MAAR configuration data
-  * @lower:	The lowest address that the MAAR pair will affect. Must be
-  *		aligned to a 2^16 byte boundary.
-diff --git a/arch/mips/kernel/smp.c b/arch/mips/kernel/smp.c
-index a31896c..bd4385a 100644
---- a/arch/mips/kernel/smp.c
-+++ b/arch/mips/kernel/smp.c
-@@ -42,6 +42,7 @@
- #include <asm/mmu_context.h>
- #include <asm/time.h>
- #include <asm/setup.h>
-+#include <asm/maar.h>
- 
- cpumask_t cpu_callin_map;		/* Bitmask of started secondaries */
- 
-@@ -157,6 +158,7 @@ asmlinkage void start_secondary(void)
- 	mips_clockevent_init();
- 	mp_ops->init_secondary();
- 	cpu_report();
-+	maar_init();
- 
- 	/*
- 	 * XXX parity protection should be folded in here when it's converted
-diff --git a/arch/mips/mm/init.c b/arch/mips/mm/init.c
-index cbef5c2..5f3c5b1 100644
---- a/arch/mips/mm/init.c
-+++ b/arch/mips/mm/init.c
-@@ -44,6 +44,7 @@
- #include <asm/pgalloc.h>
- #include <asm/tlb.h>
- #include <asm/fixmap.h>
-+#include <asm/maar.h>
- 
- /*
-  * We have up to 8 empty zeroed pages so we can map one of the right colour
-@@ -370,10 +371,14 @@ unsigned __weak platform_maar_init(unsigned num_pairs)
- 	return num_configured;
- }
- 
--static void maar_init(void)
-+void maar_init(void)
- {
- 	unsigned num_maars, used, i;
- 	phys_addr_t lower, upper, attr;
-+	static struct {
-+		struct maar_config cfgs[3];
-+		unsigned used;
-+	} recorded = { { { 0 } }, 0 };
- 
- 	if (!cpu_has_maar)
- 		return;
-@@ -386,8 +391,14 @@ static void maar_init(void)
- 	/* MAARs should be in pairs */
- 	WARN_ON(num_maars % 2);
- 
--	/* Configure the required MAARs */
--	used = platform_maar_init(num_maars / 2);
-+	/* Set MAARs using values we recorded already */
-+	if (recorded.used) {
-+		used = maar_config(recorded.cfgs, recorded.used, num_maars / 2);
-+		BUG_ON(used != recorded.used);
-+	} else {
-+		/* Configure the required MAARs */
-+		used = platform_maar_init(num_maars / 2);
-+	}
- 
- 	/* Disable any further MAARs */
- 	for (i = (used * 2); i < num_maars; i++) {
-@@ -397,6 +408,9 @@ static void maar_init(void)
- 		back_to_back_c0_hazard();
- 	}
- 
-+	if (recorded.used)
-+		return;
-+
- 	pr_info("MAAR configuration:\n");
- 	for (i = 0; i < num_maars; i += 2) {
- 		write_c0_maari(i);
-@@ -423,6 +437,14 @@ static void maar_init(void)
- 			pr_cont(" speculate");
- 
- 		pr_cont("\n");
-+
-+		/* Record the setup for use on secondary CPUs */
-+		if (used <= ARRAY_SIZE(recorded.cfgs)) {
-+			recorded.cfgs[recorded.used].lower = lower;
-+			recorded.cfgs[recorded.used].upper = upper;
-+			recorded.cfgs[recorded.used].attrs = attr;
-+			recorded.used++;
-+		}
- 	}
- }
- 
--- 
-2.5.3
+I'll aim to be clearer when submitting future fixes about where they
+apply.
+
+Thanks,
+    Paul

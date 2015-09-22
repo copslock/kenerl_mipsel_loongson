@@ -1,33 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Sep 2015 12:34:54 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:37233 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Sep 2015 17:43:57 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:38358 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27008337AbbIVKewYtlQa (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 22 Sep 2015 12:34:52 +0200
+        id S27008688AbbIVPnznvOi0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 22 Sep 2015 17:43:55 +0200
 Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.15.2/8.14.8) with ESMTP id t8MAYnJX011132;
-        Tue, 22 Sep 2015 12:34:49 +0200
+        by scotty.linux-mips.net (8.15.2/8.14.8) with ESMTP id t8MFhqvD016440;
+        Tue, 22 Sep 2015 17:43:52 +0200
 Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.15.2/8.15.2/Submit) id t8MAYnWq011131;
-        Tue, 22 Sep 2015 12:34:49 +0200
-Date:   Tue, 22 Sep 2015 12:34:49 +0200
+        by scotty.linux-mips.net (8.15.2/8.15.2/Submit) id t8MFhphE016439;
+        Tue, 22 Sep 2015 17:43:51 +0200
+Date:   Tue, 22 Sep 2015 17:43:51 +0200
 From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Paul Burton <paul.burton@imgtec.com>
-Cc:     Aaro Koskinen <aaro.koskinen@nokia.com>,
-        David Daney <ddaney.cavm@gmail.com>, linux-mips@linux-mips.org
-Subject: Re: [BISECTED] Linux 4.3-rc1 boot regression on OCTEON
-Message-ID: <20150922103448.GD10284@linux-mips.org>
-References: <20150915143850.GO1199@ak-desktop.emea.nsn-net.net>
- <20150921171213.GA25587@NP-P-BURTON>
+To:     Andrzej Hajda <a.hajda@samsung.com>
+Cc:     linux-kernel@vger.kernel.org,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Markos Chandras <markos.chandras@imgtec.com>,
+        Chris Dearman <chris.dearman@imgtec.com>,
+        linux-mips@linux-mips.org
+Subject: Re: [PATCH 36/38] MIPS: remove invalid check
+Message-ID: <20150922154350.GA16339@linux-mips.org>
+References: <1442842450-29769-1-git-send-email-a.hajda@samsung.com>
+ <1442842450-29769-37-git-send-email-a.hajda@samsung.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20150921171213.GA25587@NP-P-BURTON>
+In-Reply-To: <1442842450-29769-37-git-send-email-a.hajda@samsung.com>
 User-Agent: Mutt/1.5.23 (2014-03-12)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49271
+X-archive-position: 49272
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -44,33 +48,19 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Sep 21, 2015 at 10:12:13AM -0700, Paul Burton wrote:
+On Mon, Sep 21, 2015 at 03:34:08PM +0200, Andrzej Hajda wrote:
 
-> On Tue, Sep 15, 2015 at 05:38:50PM +0300, Aaro Koskinen wrote:
-> > Hi,
-> > 
-> > OCTEON+/OCTEON II fails to boot with 4.3-rc1. Bisected to:
-> > 
-> > 1a3d59579b9f436da038f377309cf2270c76318e is the first bad commit
-> > commit 1a3d59579b9f436da038f377309cf2270c76318e
-> > Author: Paul Burton <paul.burton@imgtec.com>
-> > Date:   Mon Aug 3 08:49:30 2015 -0700
-> > 
-> >     MIPS: Tidy up FPU context switching
+> Unsigned values cannot be lesser than zero.
 > 
-> Hi Aaro,
+> The problem has been detected using proposed semantic patch
+> scripts/coccinelle/tests/unsigned_lesser_than_zero.cocci [1].
 > 
-> Sorry about that! This patch I've just submitted should fix it up:
-> 
->     http://marc.info/?l=linux-mips&m=144285532009315&w=2
-> 
-> Let me know if not.
-> 
-> Ralf: can we get those 2 FP fixes (11166 & 11167 in patchwork) into v4.3
->       please?
+> [1]: http://permalink.gmane.org/gmane.linux.kernel/2038576
 
-Applied, thanks!
+Chris Dearman's original commit 9318c51acd9689505850152cc98277a6d6f2d752
+([MIPS] MIPS32/MIPS64 secondary cache management) introduced these less
+than zero checks in 2.6.18.  They're fortunately entirely harmless.
 
-And btw, this also means I'm back from my vaction.
+Patch queued for 4.4.  Thanks!
 
   Ralf

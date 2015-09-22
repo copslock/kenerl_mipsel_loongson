@@ -1,16 +1,16 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Sep 2015 19:54:13 +0200 (CEST)
-Received: from youngberry.canonical.com ([91.189.89.112]:53214 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Sep 2015 19:54:32 +0200 (CEST)
+Received: from youngberry.canonical.com ([91.189.89.112]:53223 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008798AbbIVRxhOQKyU (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 22 Sep 2015 19:53:37 +0200
+        by eddie.linux-mips.org with ESMTP id S27008799AbbIVRxiBfk5U (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 22 Sep 2015 19:53:38 +0200
 Received: from 1.general.kamal.us.vpn ([10.172.68.52] helo=fourier)
         by youngberry.canonical.com with esmtpsa (TLS1.0:DHE_RSA_AES_128_CBC_SHA1:16)
         (Exim 4.76)
         (envelope-from <kamal@canonical.com>)
-        id 1ZeRl2-0000vJ-Ks; Tue, 22 Sep 2015 17:53:36 +0000
+        id 1ZeRl3-0000vS-8E; Tue, 22 Sep 2015 17:53:37 +0000
 Received: from kamal by fourier with local (Exim 4.82)
         (envelope-from <kamal@whence.com>)
-        id 1ZeRl0-0000bS-Dx; Tue, 22 Sep 2015 10:53:34 -0700
+        id 1ZeRl0-0000bZ-Vl; Tue, 22 Sep 2015 10:53:34 -0700
 From:   Kamal Mostafa <kamal@canonical.com>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
         kernel-team@lists.ubuntu.com
@@ -19,9 +19,9 @@ Cc:     James Hogan <james.hogan@imgtec.com>,
         Leonid Yegoshin <leonid.yegoshin@imgtec.com>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
         Kamal Mostafa <kamal@canonical.com>
-Subject: [PATCH 3.19.y-ckt 032/102] MIPS: do_mcheck: Fix kernel code dump with EVA
-Date:   Tue, 22 Sep 2015 10:51:28 -0700
-Message-Id: <1442944358-1248-33-git-send-email-kamal@canonical.com>
+Subject: [PATCH 3.19.y-ckt 033/102] MIPS: show_stack: Fix stack trace with EVA
+Date:   Tue, 22 Sep 2015 10:51:29 -0700
+Message-Id: <1442944358-1248-34-git-send-email-kamal@canonical.com>
 X-Mailer: git-send-email 1.9.1
 In-Reply-To: <1442944358-1248-1-git-send-email-kamal@canonical.com>
 References: <1442944358-1248-1-git-send-email-kamal@canonical.com>
@@ -30,7 +30,7 @@ Return-Path: <kamal@canonical.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49294
+X-archive-position: 49295
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -53,57 +53,68 @@ X-list: linux-mips
 
 From: James Hogan <james.hogan@imgtec.com>
 
-commit 55c723e181ccec30fb5c672397fe69ec35967d97 upstream.
+commit 1e77863a51698c4319587df34171bd823691a66a upstream.
 
-If a machine check exception is raised in kernel mode, user context,
-with EVA enabled, then the do_mcheck handler will attempt to read the
-code around the EPC using EVA load instructions, i.e. as if the reads
-were from user mode. This will either read random user data if the
-process has anything mapped at the same address, or it will cause an
-exception which is handled by __get_user, resulting in this output:
+The show_stack() function deals exclusively with kernel contexts, but if
+it gets called in user context with EVA enabled, show_stacktrace() will
+attempt to access the stack using EVA accesses, which will either read
+other user mapped data, or more likely cause an exception which will be
+handled by __get_user().
 
- Code: (Bad address in epc)
+This is easily reproduced using SysRq t to show all task states, which
+results in the following stack dump output:
 
-Fix by setting the current user access mode to kernel if the saved
-register context indicates the exception was taken in kernel mode. This
-causes __get_user to use normal loads to read the kernel code.
+ Stack : (Bad stack address)
+
+Fix by setting the current user access mode to kernel around the call to
+show_stacktrace(). This causes __get_user() to use normal loads to read
+the kernel stack.
+
+Now we get the correct output, like this:
+
+ Stack : 00000000 80168960 00000000 004a0000 00000000 00000000 8060016c 1f3abd0c
+           1f172cd8 8056f09c 7ff1e450 8014fc3c 00000001 806dd0b0 0000001d 00000002
+           1f17c6a0 1f17c804 1f17c6a0 8066f6e0 00000000 0000000a 00000000 00000000
+           00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+           00000000 00000000 00000000 00000000 00000000 0110e800 1f3abd6c 1f17c6a0
+           ...
 
 Signed-off-by: James Hogan <james.hogan@imgtec.com>
 Cc: Markos Chandras <markos.chandras@imgtec.com>
 Cc: Leonid Yegoshin <leonid.yegoshin@imgtec.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/10777/
+Patchwork: https://patchwork.linux-mips.org/patch/10778/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Kamal Mostafa <kamal@canonical.com>
 ---
- arch/mips/kernel/traps.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/mips/kernel/traps.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
 diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
-index c3b41e2..f4aacec 100644
+index f4aacec..3e0e61f 100644
 --- a/arch/mips/kernel/traps.c
 +++ b/arch/mips/kernel/traps.c
-@@ -1423,6 +1423,7 @@ asmlinkage void do_mcheck(struct pt_regs *regs)
- 	const int field = 2 * sizeof(unsigned long);
- 	int multi_match = regs->cp0_status & ST0_TS;
- 	enum ctx_state prev_state;
+@@ -190,6 +190,7 @@ static void show_stacktrace(struct task_struct *task,
+ void show_stack(struct task_struct *task, unsigned long *sp)
+ {
+ 	struct pt_regs regs;
 +	mm_segment_t old_fs = get_fs();
- 
- 	prev_state = exception_enter();
- 	show_regs(regs);
-@@ -1444,8 +1445,13 @@ asmlinkage void do_mcheck(struct pt_regs *regs)
- 		dump_tlb_all();
+ 	if (sp) {
+ 		regs.regs[29] = (unsigned long)sp;
+ 		regs.regs[31] = 0;
+@@ -208,7 +209,13 @@ void show_stack(struct task_struct *task, unsigned long *sp)
+ 			prepare_frametrace(&regs);
+ 		}
  	}
- 
-+	if (!user_mode(regs))
-+		set_fs(KERNEL_DS);
-+
- 	show_code((unsigned int __user *) regs->cp0_epc);
- 
++	/*
++	 * show_stack() deals exclusively with kernel mode, so be sure to access
++	 * the stack in the kernel (not user) address space.
++	 */
++	set_fs(KERNEL_DS);
+ 	show_stacktrace(task, &regs);
 +	set_fs(old_fs);
-+
- 	/*
- 	 * Some chips may have other causes of machine check (e.g. SB1
- 	 * graduation timer)
+ }
+ 
+ static void show_code(unsigned int __user *pc)
 -- 
 1.9.1

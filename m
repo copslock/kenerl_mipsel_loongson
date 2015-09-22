@@ -1,38 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Sep 2015 19:55:40 +0200 (CEST)
-Received: from youngberry.canonical.com ([91.189.89.112]:53439 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008780AbbIVRx4tp6dU (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 22 Sep 2015 19:53:56 +0200
-Received: from 1.general.kamal.us.vpn ([10.172.68.52] helo=fourier)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:DHE_RSA_AES_128_CBC_SHA1:16)
-        (Exim 4.76)
-        (envelope-from <kamal@canonical.com>)
-        id 1ZeRlM-00012Y-DR; Tue, 22 Sep 2015 17:53:56 +0000
-Received: from kamal by fourier with local (Exim 4.82)
-        (envelope-from <kamal@whence.com>)
-        id 1ZeRlK-0000id-7F; Tue, 22 Sep 2015 10:53:54 -0700
-From:   Kamal Mostafa <kamal@canonical.com>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        kernel-team@lists.ubuntu.com
-Cc:     Markos Chandras <markos.chandras@imgtec.com>,
-        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
-        Kamal Mostafa <kamal@canonical.com>
-Subject: [PATCH 3.19.y-ckt 068/102] MIPS: Fix seccomp syscall argument for MIPS64
-Date:   Tue, 22 Sep 2015 10:52:04 -0700
-Message-Id: <1442944358-1248-69-git-send-email-kamal@canonical.com>
-X-Mailer: git-send-email 1.9.1
-In-Reply-To: <1442944358-1248-1-git-send-email-kamal@canonical.com>
-References: <1442944358-1248-1-git-send-email-kamal@canonical.com>
-X-Extended-Stable: 3.19
-Return-Path: <kamal@canonical.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Sep 2015 20:04:33 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:42119 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S27008792AbbIVSEbLF-ZU (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 22 Sep 2015 20:04:31 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.15.2/8.14.8) with ESMTP id t8MI4SHo019128;
+        Tue, 22 Sep 2015 20:04:28 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.15.2/8.15.2/Submit) id t8MI4R78019127;
+        Tue, 22 Sep 2015 20:04:27 +0200
+Date:   Tue, 22 Sep 2015 20:04:27 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Paul Burton <paul.burton@imgtec.com>
+Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        "Kevin D. Kissell" <kevink@paralogos.com>,
+        Chris Dearman <chris.dearman@imgtec.com>
+Subject: Re: [PATCH] MIPS: allow 24Hz timer frequency
+Message-ID: <20150922180427.GC16339@linux-mips.org>
+References: <1442942199-32523-1-git-send-email-paul.burton@imgtec.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1442942199-32523-1-git-send-email-paul.burton@imgtec.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49299
+X-archive-position: 49300
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kamal@canonical.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,58 +44,28 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-3.19.8-ckt7 -stable review patch.  If anyone has any objections, please let me know.
+On Tue, Sep 22, 2015 at 10:16:39AM -0700, Paul Burton wrote:
 
-------------------
+> A boundary exists beyond which the timer frequency becomes high enough
+> that timer interrupts saturate the system and either cause it to slow to
+> a crawl or stop functioning entirely. Where that boundary lies depends
+> upon a number of factors such as the overhead of each interrupt and the
+> overall speed of the CPU, but correlates strongly with the clock
+> frequency at which the CPU runs. When running on emulators during
+> bringup or debug of a CPU that clock frequency is very low, which
+> results in the boundary at which the timer frequency becomes
+> unsustainable being very low. The current minimum of 48Hz pushes against
+> boundary in certain situations in current systems. Allow the kernel to
+> be configured for a 24Hz timer frequency in order to avoid problems on
+> such slow running systems.
 
-From: Markos Chandras <markos.chandras@imgtec.com>
+The current minimum of 48Hz in the MIPS kconfig files predates the
+rewrites to use clocksource/clockevent device in 2.6.27 or so.  The
+value of 48Hz is the lowest value at which the old time code was still
+working properly.  Afair the change was submitted by Kevin Kissel or
+Chris Dearman to improve performance on with emulated CPUs which by that
+time were running at like 500kHz (I think it was an IKOS) clock rate.
+Presumably below 48Hz the math in the kernel's time code was falling
+apart but anyway, afaics the value was derived experimentally.
 
-commit 9f161439e4104b641a7bfb9b89581d801159fec8 upstream.
-
-Commit 4c21b8fd8f14 ("MIPS: seccomp: Handle indirect system calls (o32)")
-fixed indirect system calls on O32 but it also introduced a bug for MIPS64
-where it erroneously modified the v0 (syscall) register with the assumption
-that the sycall offset hasn't been taken into consideration. This breaks
-seccomp on MIPS64 n64 and n32 ABIs. We fix this by replacing the addition
-with a move instruction.
-
-Fixes: 4c21b8fd8f14 ("MIPS: seccomp: Handle indirect system calls (o32)")
-Reviewed-by: James Hogan <james.hogan@imgtec.com>
-Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
-Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/10951/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Kamal Mostafa <kamal@canonical.com>
----
- arch/mips/kernel/scall64-64.S  | 2 +-
- arch/mips/kernel/scall64-n32.S | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/arch/mips/kernel/scall64-64.S b/arch/mips/kernel/scall64-64.S
-index ad4d4463..a6f6b76 100644
---- a/arch/mips/kernel/scall64-64.S
-+++ b/arch/mips/kernel/scall64-64.S
-@@ -80,7 +80,7 @@ syscall_trace_entry:
- 	SAVE_STATIC
- 	move	s0, t2
- 	move	a0, sp
--	daddiu	a1, v0, __NR_64_Linux
-+	move	a1, v0
- 	jal	syscall_trace_enter
- 
- 	bltz	v0, 2f			# seccomp failed? Skip syscall
-diff --git a/arch/mips/kernel/scall64-n32.S b/arch/mips/kernel/scall64-n32.S
-index 446cc65..4b20106 100644
---- a/arch/mips/kernel/scall64-n32.S
-+++ b/arch/mips/kernel/scall64-n32.S
-@@ -72,7 +72,7 @@ n32_syscall_trace_entry:
- 	SAVE_STATIC
- 	move	s0, t2
- 	move	a0, sp
--	daddiu	a1, v0, __NR_N32_Linux
-+	move	a1, v0
- 	jal	syscall_trace_enter
- 
- 	bltz	v0, 2f			# seccomp failed? Skip syscall
--- 
-1.9.1
+  Ralf

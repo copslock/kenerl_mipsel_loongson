@@ -1,26 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Sep 2015 16:49:45 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:42335 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Sep 2015 16:50:01 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:26070 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27008527AbbIWOtnid00n (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 23 Sep 2015 16:49:43 +0200
+        with ESMTP id S27008227AbbIWOttPo9Hn (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 23 Sep 2015 16:49:49 +0200
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id B902F8EE3A4A5;
-        Wed, 23 Sep 2015 15:49:34 +0100 (IST)
+        by Websense Email Security Gateway with ESMTPS id 6BAB4B565F4DF;
+        Wed, 23 Sep 2015 15:49:40 +0100 (IST)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
  KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Wed, 23 Sep 2015 15:49:37 +0100
+ 14.3.195.1; Wed, 23 Sep 2015 15:49:43 +0100
 Received: from qyousef-linux.le.imgtec.org (192.168.154.94) by
  LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.210.2; Wed, 23 Sep 2015 15:49:37 +0100
+ 14.3.210.2; Wed, 23 Sep 2015 15:49:42 +0100
 From:   Qais Yousef <qais.yousef@imgtec.com>
 To:     <linux-kernel@vger.kernel.org>, <tglx@linutronix.de>
 CC:     <marc.zyngier@arm.com>, <jason@lakedaemon.net>,
         <jiang.liu@linux.intel.com>, <linux-mips@linux-mips.org>,
         Qais Yousef <qais.yousef@imgtec.com>
-Subject: [PATCH 0/6] Implement generic IPI support mechanism
-Date:   Wed, 23 Sep 2015 15:49:12 +0100
-Message-ID: <1443019758-20620-1-git-send-email-qais.yousef@imgtec.com>
+Subject: [PATCH 1/6] irqdomain: add new IRQ_DOMAIN_FLAGS_IPI
+Date:   Wed, 23 Sep 2015 15:49:13 +0100
+Message-ID: <1443019758-20620-2-git-send-email-qais.yousef@imgtec.com>
 X-Mailer: git-send-email 2.1.0
+In-Reply-To: <1443019758-20620-1-git-send-email-qais.yousef@imgtec.com>
+References: <1443019758-20620-1-git-send-email-qais.yousef@imgtec.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [192.168.154.94]
@@ -28,7 +30,7 @@ Return-Path: <Qais.Yousef@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49338
+X-archive-position: 49339
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,38 +47,55 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This RFC series attempts to implement a generic IPI layer for reserving and sending IPI.
+This flag will be used to identify an IPI domain.
 
-It is based on the discussion in this link
+The idea is to reuse the alloc functions to allocate an IPI if it's set.
 
-	https://lkml.org/lkml/2015/8/26/713
+We could alternatively add a separate new alloc_ipi() function to struct
+domain_ops.
 
-This series deals with points #1 and #2 only. Since I'm not the irq expert, I'm hoping this
-series will give me early feedback and drive the discussion further about any potential
-tricky points.
+Signed-off-by: Qais Yousef <qais.yousef@imgtec.com>
+---
+ include/linux/irqdomain.h | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-I tried to keep changes clean and small, but since this is just an RFC I might have missed
-few things.
-
-Thomas I hope I didn't stray far from what you had in mind :-)
-
-My only testing so far is having SMP linux booting.
-
-Qais Yousef (6):
-  irqdomain: add new IRQ_DOMAIN_FLAGS_IPI
-  irqdomain: add a new send_ipi() to irq_domain_ops
-  irqdomain: add struct irq_hwcfg and helper functions
-  irq: add a new generic IPI handling code to irq core
-  irqchip: mips-gic: add a IPI hierarchy domain
-  irqchip: mips-gic: use the new generic IPI API
-
- arch/mips/kernel/smp-gic.c       |  37 ++--
- drivers/irqchip/Kconfig          |   1 +
- drivers/irqchip/irq-mips-gic.c   | 189 ++++++++++++++++++---
- include/linux/irqchip/mips-gic.h |   3 +-
- include/linux/irqdomain.h        |  67 ++++++++
- kernel/irq/irqdomain.c           | 352 +++++++++++++++++++++++++++++++++++++++
- 6 files changed, 601 insertions(+), 48 deletions(-)
-
+diff --git a/include/linux/irqdomain.h b/include/linux/irqdomain.h
+index d3ca79236fb0..9b3dc6c2a3cc 100644
+--- a/include/linux/irqdomain.h
++++ b/include/linux/irqdomain.h
+@@ -153,6 +153,9 @@ enum {
+ 	/* Core calls alloc/free recursive through the domain hierarchy. */
+ 	IRQ_DOMAIN_FLAG_AUTO_RECURSIVE	= (1 << 1),
+ 
++	/* Irq domain is an IPI domain */
++	IRQ_DOMAIN_FLAG_IPI		= (1 << 2),
++
+ 	/*
+ 	 * Flags starting from IRQ_DOMAIN_FLAG_NONCORE are reserved
+ 	 * for implementation specific purposes and ignored by the
+@@ -326,6 +329,11 @@ static inline bool irq_domain_is_hierarchy(struct irq_domain *domain)
+ {
+ 	return domain->flags & IRQ_DOMAIN_FLAG_HIERARCHY;
+ }
++
++static inline bool irq_domain_is_ipi(struct irq_domain *domain)
++{
++	return domain->flags & IRQ_DOMAIN_FLAG_IPI;
++}
+ #else	/* CONFIG_IRQ_DOMAIN_HIERARCHY */
+ static inline void irq_domain_activate_irq(struct irq_data *data) { }
+ static inline void irq_domain_deactivate_irq(struct irq_data *data) { }
+@@ -339,6 +347,11 @@ static inline bool irq_domain_is_hierarchy(struct irq_domain *domain)
+ {
+ 	return false;
+ }
++
++static inline bool irq_domain_is_ipi(struct irq_domain *domain)
++{
++	return false;
++}
+ #endif	/* CONFIG_IRQ_DOMAIN_HIERARCHY */
+ 
+ #else /* CONFIG_IRQ_DOMAIN */
 -- 
 2.1.0

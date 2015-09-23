@@ -1,41 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Sep 2015 21:33:09 +0200 (CEST)
-Received: from www.linutronix.de ([62.245.132.108]:43758 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27007527AbbIVTdIPnsDB (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 22 Sep 2015 21:33:08 +0200
-Received: from localhost ([127.0.0.1])
-        by Galois.linutronix.de with esmtps (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:256)
-        (Exim 4.80)
-        (envelope-from <tglx@linutronix.de>)
-        id 1ZeTJJ-0002n7-BU; Tue, 22 Sep 2015 21:33:05 +0200
-Date:   Tue, 22 Sep 2015 21:32:29 +0200 (CEST)
-From:   Thomas Gleixner <tglx@linutronix.de>
-To:     Paul Burton <paul.burton@imgtec.com>
-cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        Jason Cooper <jason@lakedaemon.net>,
-        James Hogan <james.hogan@imgtec.com>,
-        Markos Chandras <markos.chandras@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Marc Zyngier <marc.zyngier@arm.com>
-Subject: Re: [PATCH 0/3] MIPS GIC fixes
-In-Reply-To: <20150922191424.GC29903@NP-P-BURTON>
-Message-ID: <alpine.DEB.2.11.1509222131560.5606@nanos>
-References: <1442946551-27893-1-git-send-email-paul.burton@imgtec.com> <alpine.DEB.2.11.1509222106100.5606@nanos> <20150922191424.GC29903@NP-P-BURTON>
-User-Agent: Alpine 2.11 (DEB 23 2013-08-11)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Sep 2015 09:43:04 +0200 (CEST)
+Received: from mail-pa0-f50.google.com ([209.85.220.50]:36160 "EHLO
+        mail-pa0-f50.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007638AbbIWHnDXgzyQ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 23 Sep 2015 09:43:03 +0200
+Received: by pablk4 with SMTP id lk4so2222615pab.3;
+        Wed, 23 Sep 2015 00:42:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-type:content-disposition:in-reply-to:user-agent;
+        bh=9kFTWC7rd7NVBVTYzQLxS6oeAcg8BicS/6aAlRY3wP8=;
+        b=D93D+SpD4w206mHJI5+szGR+sZCNLYBvohxEraiNKjNHCP0K2wky6dIixgxv2uFlpb
+         uyGqTPmHG+FEvSYqUmBd/JKRHNWrGtJUopC8A4UHbFR9Mj8PFyAyDO2cIfwuCeIwC8GR
+         VbCMkT7guaF+szoliClDLuxZ8PTsb7U8USw7chacxgZqyqhmZEKUeIlKdBM/51ZfRnEg
+         iJNyGfSIC4x/yQIbbgSBO139sy1xCdN3LXFQIn8CeRkjKcj5MJRNgEqXfA21z5dTJtlR
+         +VKwpkRiAnWTskOkClR3Qt8UBgQUfn/p65G8N8mpE7Y8nL+v9TdulfTTYYNILdq5IxLo
+         3IlA==
+X-Received: by 10.66.100.168 with SMTP id ez8mr35922297pab.142.1442994177109;
+        Wed, 23 Sep 2015 00:42:57 -0700 (PDT)
+Received: from sudip-pc ([49.206.240.178])
+        by smtp.gmail.com with ESMTPSA id gq7sm6269433pac.5.2015.09.23.00.42.54
+        (version=TLSv1.2 cipher=RC4-SHA bits=128/128);
+        Wed, 23 Sep 2015 00:42:56 -0700 (PDT)
+Date:   Wed, 23 Sep 2015 13:12:08 +0530
+From:   Sudip Mukherjee <sudipm.mukherjee@gmail.com>
+To:     Stephen Rothwell <sfr@canb.auug.org.au>,
+        Paul Burton <paul.burton@imgtec.com>,
+        Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-next@vger.kernel.org, linux-kernel@vger.kernel.org,
+        "Maciej W. Rozycki" <macro@linux-mips.org>,
+        linux-mips@linux-mips.org
+Subject: Re: linux-next: Tree for Sep 23
+Message-ID: <20150923074207.GA27002@sudip-pc>
+References: <20150923142343.35797c0f@canb.auug.org.au>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
-Return-Path: <tglx@linutronix.de>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20150923142343.35797c0f@canb.auug.org.au>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <sudipm.mukherjee@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49335
+X-archive-position: 49336
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tglx@linutronix.de
+X-original-sender: sudipm.mukherjee@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,18 +59,15 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, 22 Sep 2015, Paul Burton wrote:
-> These are fixes but to the best of my knowledge the only currently
-> supported system it would break is multicore I6400 on Malta, which only
-> exists in emulation at the moment. So it's probably not a huge deal to
-> get this into v4.3. If it's easy though, absolutely go ahead :)
+On Wed, Sep 23, 2015 at 02:23:43PM +1000, Stephen Rothwell wrote:
+> Hi all,
 > 
-> I'll aim to be clearer when submitting future fixes about where they
-> apply.
+> Changes since 20150922:
+mips allmodconfig failed with the error:
+No rule to make target 'arch/mips/mm/sc-debugfs.o', needed by 'arch/mips/mm/built-in.o'
 
-Please cc me also on the mips part, so I can see the dependencies more
-clear.
+caused by:
+13ea0032658d ("MIPS: Allow L2 prefetch to be configured via debugfs")
 
-Thanks,
-
-	tglx
+regards
+sudip

@@ -1,25 +1,25 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Sep 2015 16:50:41 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:33477 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Sep 2015 16:51:04 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:9952 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27008670AbbIWOt6YZ5ln (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 23 Sep 2015 16:49:58 +0200
+        with ESMTP id S27008665AbbIWOuCNyosn (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 23 Sep 2015 16:50:02 +0200
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 4DB8AEA576B46;
-        Wed, 23 Sep 2015 15:49:48 +0100 (IST)
+        by Websense Email Security Gateway with ESMTPS id E286871DE57BA;
+        Wed, 23 Sep 2015 15:49:52 +0100 (IST)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
  KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Wed, 23 Sep 2015 15:49:51 +0100
+ 14.3.195.1; Wed, 23 Sep 2015 15:49:55 +0100
 Received: from qyousef-linux.le.imgtec.org (192.168.154.94) by
  LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.210.2; Wed, 23 Sep 2015 15:49:50 +0100
+ 14.3.210.2; Wed, 23 Sep 2015 15:49:55 +0100
 From:   Qais Yousef <qais.yousef@imgtec.com>
 To:     <linux-kernel@vger.kernel.org>, <tglx@linutronix.de>
 CC:     <marc.zyngier@arm.com>, <jason@lakedaemon.net>,
         <jiang.liu@linux.intel.com>, <linux-mips@linux-mips.org>,
         Qais Yousef <qais.yousef@imgtec.com>
-Subject: [PATCH 3/6] irqdomain: add struct irq_hwcfg and helper functions
-Date:   Wed, 23 Sep 2015 15:49:15 +0100
-Message-ID: <1443019758-20620-4-git-send-email-qais.yousef@imgtec.com>
+Subject: [PATCH 4/6] irq: add a new generic IPI handling code to irq core
+Date:   Wed, 23 Sep 2015 15:49:16 +0100
+Message-ID: <1443019758-20620-5-git-send-email-qais.yousef@imgtec.com>
 X-Mailer: git-send-email 2.1.0
 In-Reply-To: <1443019758-20620-1-git-send-email-qais.yousef@imgtec.com>
 References: <1443019758-20620-1-git-send-email-qais.yousef@imgtec.com>
@@ -30,7 +30,7 @@ Return-Path: <Qais.Yousef@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49341
+X-archive-position: 49342
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,307 +47,209 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-struct irq_hwcfg is used to describe hardware IPI setup.
+Add a generic mechanism to dynamically allocate an IPI.
 
-From ThomasG suggestion, there's generic parts and a union of hardware
-specific part. Assuming that virq and hwirq are enough to describe different
-sort of hardwares as so far they are all that was needed, I'm hoping this
-implementation will render the need for a platform specific part unnecessary.
+With this change the user can call irq_reserve_ipi() to dynamically allocate an
+IPI and use the associate virq to send one to 1 or more cpus.
 
-The idea is for the irqdomain alloc function to take a hwirq from the available
-list, do the necessary mapping to CPU(s), setting ipi_hwirq cpumask, and then
-adding this hwirq to the mapped_hwirq list in ipi_virq struct.
-
-Hopefully the code and documentation is self explanatory.
-
-Next commit implements the actual reserve, destroy, and send IPI using these functions.
+No irq_get_irq_hwcfg() as I hope we can provide an implementation without
+hardware specific part. Hopefully I'm not being too optimistic :)
 
 Signed-off-by: Qais Yousef <qais.yousef@imgtec.com>
 ---
- include/linux/irqdomain.h |  49 ++++++++++++
- kernel/irq/irqdomain.c    | 193 ++++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 242 insertions(+)
+ include/linux/irqdomain.h |   4 ++
+ kernel/irq/irqdomain.c    | 161 +++++++++++++++++++++++++++++++++++++++++++++-
+ 2 files changed, 164 insertions(+), 1 deletion(-)
 
 diff --git a/include/linux/irqdomain.h b/include/linux/irqdomain.h
-index cef9e6158be0..76a0e7aaa8df 100644
+index 76a0e7aaa8df..4bdd7b48d205 100644
 --- a/include/linux/irqdomain.h
 +++ b/include/linux/irqdomain.h
-@@ -100,6 +100,45 @@ extern struct irq_domain_ops irq_generic_chip_ops;
- struct irq_domain_chip_generic;
+@@ -329,6 +329,10 @@ extern struct ipi_virq *irq_domain_find_ipi_virq(struct irq_domain *d,
+ extern int irq_domain_ipi_virq_add_hwirq(struct ipi_virq *v,
+ 					 struct ipi_hwirq *h);
+ extern struct ipi_hwirq *irq_domain_ipi_virq_rm_hwirq(struct ipi_virq *v);
++extern unsigned int irq_reserve_ipi(struct irq_domain *domain,
++				const struct cpumask *dest, void *devid);
++extern void irq_destroy_ipi(unsigned int irq, void *devid);
++extern void irq_send_ipi(unsigned int irq, const struct cpumask *dest, void *devid);
  
- /**
-+ * struct ipi_hwirq - IPI hwirq information object
-+ * @link: Element in struct ipi_hwirq list
-+ * @hwirq: hardware irq value
-+ * @cpumask: cpumask where this hwirq is mapped to
-+ */
-+struct ipi_hwirq {
-+	struct list_head link;
-+	irq_hw_number_t hwirq;
-+	struct cpumask cpumask;
-+};
-+
-+/**
-+ * struct ipi_virq - IPI virq information object
-+ * @link: Element in struct ipi_virq list
-+ * @virq: alocated linux irq number
-+ * @cpumask: cpumask where this virq can send IPIs
-+ * @devid: devid of device owning this virq
-+ * @mapped_hwirq: list of ipi_hwirq that this virq is mapped to
-+ */
-+struct ipi_virq {
-+	struct list_head link;
-+	unsigned int virq;
-+	struct cpumask cpumask;
-+	void *devid;
-+
-+	struct list_head mapped_hwirq;
-+};
-+
-+/**
-+ * struct irq_hwcfg - IPI hardware allocation and translation object
-+ * @available_ipis: a list of hwirq that can be allocated for IPIs
-+ * @alloced_virqs: a list of virqs that were allocated and their mapping
-+ */
-+struct irq_hwcfg {
-+	struct list_head available_ipis;
-+	struct list_head alloced_virqs;
-+};
-+
-+/**
-  * struct irq_domain - Hardware interrupt number translation object
-  * @link: Element in global irq_domain list.
-  * @name: Name of interrupt domain
-@@ -137,6 +176,7 @@ struct irq_domain {
- #ifdef	CONFIG_IRQ_DOMAIN_HIERARCHY
- 	struct irq_domain *parent;
- #endif
-+	struct irq_hwcfg ipi_hwcfg;
- 
- 	/* reverse map data. The linear map gets appended to the irq_domain */
- 	irq_hw_number_t hwirq_max;
-@@ -281,6 +321,15 @@ int irq_domain_xlate_onetwocell(struct irq_domain *d, struct device_node *ctrlr,
- 			const u32 *intspec, unsigned int intsize,
- 			irq_hw_number_t *out_hwirq, unsigned int *out_type);
- 
-+/* irq_hwcfg functions */
-+extern int irq_domain_put_ipi_hwirq(struct irq_domain *d, struct ipi_hwirq *h);
-+extern struct ipi_hwirq *irq_domain_get_ipi_hwirq(struct irq_domain *d);
-+extern struct ipi_virq *irq_domain_find_ipi_virq(struct irq_domain *d,
-+						unsigned int virq);
-+extern int irq_domain_ipi_virq_add_hwirq(struct ipi_virq *v,
-+					 struct ipi_hwirq *h);
-+extern struct ipi_hwirq *irq_domain_ipi_virq_rm_hwirq(struct ipi_virq *v);
-+
  /* V2 interfaces to support hierarchy IRQ domains. */
  extern struct irq_data *irq_domain_get_irq_data(struct irq_domain *domain,
- 						unsigned int virq);
 diff --git a/kernel/irq/irqdomain.c b/kernel/irq/irqdomain.c
-index dc9d27c0c158..6d911fc8fa52 100644
+index 6d911fc8fa52..d38d78a994ca 100644
 --- a/kernel/irq/irqdomain.c
 +++ b/kernel/irq/irqdomain.c
-@@ -61,6 +61,8 @@ struct irq_domain *__irq_domain_add(struct device_node *of_node, int size,
- 	domain->revmap_size = size;
- 	domain->revmap_direct_max_irq = direct_max;
- 	irq_domain_check_hierarchy(domain);
-+	INIT_LIST_HEAD(&domain->ipi_hwcfg.available_ipis);
-+	INIT_LIST_HEAD(&domain->ipi_hwcfg.alloced_virqs);
+@@ -873,7 +873,7 @@ struct ipi_virq *irq_domain_find_ipi_virq(struct irq_domain *d,
+  * returns a pointer to ipi_virq struct on success and NULL on failure
+  */
+ static struct ipi_virq *irq_domain_alloc_ipi_virq(unsigned int virq,
+-				struct cpumask *cpumask, void *devid)
++				const struct cpumask *cpumask, void *devid)
+ {
+ 	struct ipi_virq *v;
  
- 	mutex_lock(&irq_domain_mutex);
- 	list_add(&domain->link, &irq_domain_list);
-@@ -749,6 +751,197 @@ static int irq_domain_alloc_descs(int virq, unsigned int cnt,
- 	return virq;
+@@ -942,6 +942,165 @@ struct ipi_hwirq *irq_domain_ipi_virq_rm_hwirq(struct ipi_virq *v)
+ 	return h;
  }
  
 +/**
-+ * irq_domain_put_ipi_hwirq() - return an IPI hwirq to the system
-+ * @d: IPI domain to return the hwirq to
-+ * @h: ipi_hwirq struct to be returned
++ * irq_reserve_ipi() - setup an IPI to destination cpumask
++ * @domain: IPI domain
++ * @dest: cpumask of cpus to receive the IPI
++ * @devid: devid that requested the reservation
 + *
-+ * The domain must have a set of hwirqs to be used for IPI which are allocated
-+ * by the underlying driver. This function adds this hwirq so it can be used
-+ * to reserve an IPI later.
++ * Allocate a virq that can be used to send IPI to any CPU in dest mask.
 + *
-+ * returns 0 on success and negative errno on failure
++ * On success it'll return linux irq number and 0 on failure
 + */
-+int irq_domain_put_ipi_hwirq(struct irq_domain *d, struct ipi_hwirq *h)
++unsigned int irq_reserve_ipi(struct irq_domain *domain,
++			     const struct cpumask *dest, void *devid)
 +{
-+	struct list_head *head = &d->ipi_hwcfg.available_ipis;
-+
-+	cpumask_clear(&h->cpumask);
-+	list_add_tail(&h->link, head);
-+
-+	return 0;
-+}
-+
-+/**
-+ * irq_domain_get_ipi_hwirq() - obtain an IPI hwirq from the system
-+ * @d: IPI domain to obtain the hwirq from
-+ *
-+ * The domain contains a set of hwirqs that can be used for IPIs. This function
-+ * obtains one from the available set of hwirqs.
-+ *
-+ * returns a pointer to ipi_hwirq struct on success and NULL on failure
-+ */
-+struct ipi_hwirq *irq_domain_get_ipi_hwirq(struct irq_domain *d)
-+{
-+	struct list_head *head = &d->ipi_hwcfg.available_ipis;
-+	struct ipi_hwirq *h;
-+
-+	if (list_empty(head))
-+		return NULL;
-+
-+	h = list_first_entry(head, struct ipi_hwirq, link);
-+	list_del(&h->link);
-+
-+	return h;
-+}
-+
-+/**
-+ * irq_domain_add_ipi_virq() - add an allocated virq struct to the IPI domain
-+ * @d: IPI domain to act on
-+ * @v: ipi_virq struct to add
-+ *
-+ * The domain keeps a list of allocated (reserved) IPIs. This functions adds
-+ * a newly reserved virq to this list.
-+ *
-+ * returns 0 on success and negative errno on failure
-+ */
-+static int irq_domain_add_ipi_virq(struct irq_domain *d, struct ipi_virq *v)
-+{
-+	struct list_head *head = &d->ipi_hwcfg.alloced_virqs;
-+
-+	list_add_tail(&v->link, head);
-+
-+	return 0;
-+}
-+
-+/**
-+ * irq_domain_add_ipi_virq() - remove an allocated virq struct from the IPI domain
-+ * @d: IPI domain to act on
-+ * @virq: virq to remove
-+ *
-+ * The domain keeps a list of allocated (reserved) IPIs. This functions removes
-+ * a previously added virq from this list.
-+ *
-+ * returns a pointer to ipi_virq struct on success and NULL on failure
-+ */
-+static struct ipi_virq *irq_domain_rm_ipi_virq(struct irq_domain *d,
-+					       unsigned int virq)
-+{
++	int virq, ret;
++	unsigned int nr_irqs;
 +	struct ipi_virq *v;
 +
-+	v = irq_domain_find_ipi_virq(d, virq);
-+	if (!v)
-+		return NULL;
++	if (domain == NULL)
++		domain = irq_default_domain; /* need a separate ipi_default_domain? */
 +
-+	list_del(&v->link);
-+
-+	return v;
-+}
-+
-+/**
-+ * irq_domain_find_ipi_virq() - search the IPI domain for a virq
-+ * @d: IPI domain to act on
-+ * @virq: virq number to find
-+ *
-+ * The domain keeps a list of allocated (reserved) IPIs. This functions searches
-+ * this list for a struct ipi_virq with a matching virq number
-+ *
-+ * returns a pointer to ipi_virq struct on success and NULL on failure
-+ */
-+struct ipi_virq *irq_domain_find_ipi_virq(struct irq_domain *d,
-+					  unsigned int virq)
-+{
-+	struct list_head *head = &d->ipi_hwcfg.alloced_virqs;
-+	struct ipi_virq *v;
-+
-+	list_for_each_entry(v, head, link) {
-+		if (v->virq == virq)
-+			return v;
++	if (domain == NULL) {
++		pr_warn("Must provide a valid IPI domain!\n");
++		return 0;
 +	}
 +
-+	return NULL;
-+}
++	if (!irq_domain_is_ipi(domain)) {
++		pr_warn("Not an IPI domain!\n");
++		return 0;
++	}
 +
-+/**
-+ * irq_domain_alloc_ipi_virq() - alloc a ipi_virq struct
-+ * @virq: virq number of the new ipi_virq struct
-+ * @cpumask: cpumask associated with the virq
-+ * @devid: devid whose this virq belong too
-+ *
-+ * Allocates a struct ipi_virq and initialise it
-+ *
-+ * returns a pointer to ipi_virq struct on success and NULL on failure
-+ */
-+static struct ipi_virq *irq_domain_alloc_ipi_virq(unsigned int virq,
-+				struct cpumask *cpumask, void *devid)
-+{
-+	struct ipi_virq *v;
++	if (cpumask_empty(dest)) {
++		pr_warn("Can't reserve IPI due to empty cpumask\n");
++		return 0;
++	}
 +
-+	v = kzalloc(sizeof(struct ipi_virq), GFP_KERNEL);
-+	if (!v)
-+		return NULL;
++	/* always allocate a virq per cpu */
++	nr_irqs = cpumask_weight(dest);
 +
-+	v->virq = virq;
-+	v->devid = devid;
-+	cpumask_copy(&v->cpumask, cpumask);
-+	INIT_LIST_HEAD(&v->mapped_hwirq);
++	virq = irq_domain_alloc_descs(-1, nr_irqs, 0, NUMA_NO_NODE);
++	if (virq <= 0) {
++		pr_warn("Can't reserve IPI, failed to alloc descs\n");
++		return 0;
++	}
 +
-+	return v;
-+}
++	v = irq_domain_alloc_ipi_virq(virq, dest, devid);
++	if (!v) {
++		pr_warn("Can't reserve IPI, failed to alloc ipi_virq\n");
++		goto free_descs;
++	}
 +
-+/**
-+ * irq_domain_alloc_ipi_virq() - free a ipi_virq struct
-+ * @v: pointer to the ipi_virq struct to be freed
-+ *
-+ * Frees the memory assiciated with ipi_virq struct
-+ */
-+static void irq_domain_free_ipi_virq(struct ipi_virq *v)
-+{
-+	kfree(v);
-+}
++	/* we are reusing hierarchy alloc function, should we create another one? */
++	virq = __irq_domain_alloc_irqs(domain, virq, nr_irqs, NUMA_NO_NODE,
++					v, true);
++	if (virq <= 0) {
++		pr_warn("Can't reserve IPI, failed to alloc irqs\n");
++		goto free_ipi;
++	}
 +
-+/**
-+ * irq_domain_ipi_virq_add_hwirq() - associated hwirq with a virq
-+ * @v: pointer to the ipi_virq struct
-+ * @h: pointer to the ipi_hwirq struct
-+ *
-+ * Associate a hwirq with a virq by adding it to its mapping list
-+ *
-+ * returns 0 on success and a negative errno on failure
-+ */
-+int irq_domain_ipi_virq_add_hwirq(struct ipi_virq *v,
-+				  struct ipi_hwirq *h)
-+{
-+	struct list_head *head = &v->mapped_hwirq;
++	ret = irq_domain_add_ipi_virq(domain, v);
++	if (ret) {
++		pr_warn("Can't reserve IPI, failed to add ipi_virq\n");
++		goto free_ipi;
++	}
 +
-+	list_add_tail(&h->link, head);
++	return virq;
 +
++free_ipi:
++	irq_domain_free_ipi_virq(v);
++free_descs:
++	irq_free_descs(virq, nr_irqs);
 +	return 0;
 +}
 +
 +/**
-+ * irq_domain_ipi_virq_rm_hwirq() - remove hwirq from a virq
-+ * @v: pointer to the ipi_virq struct
++ * irq_destroy_ipi() - unreserve an IPI that was previously allocated
++ * @irq: linux irq number to be destroyed
++ * @devid: devid that reserved the IPI
 + *
-+ * Removes a hwirq from the mapped hwirq list and returns it.
-+ *
-+ * returns a pointer to an associated ipi_hwirq struct on success or a NULL on
-+ * failure
++ * Return an IPI allocated with irq_reserve_ipi() to the system.
 + */
-+struct ipi_hwirq *irq_domain_ipi_virq_rm_hwirq(struct ipi_virq *v)
++void irq_destroy_ipi(unsigned int irq, void *devid)
 +{
-+	struct list_head *head = &v->mapped_hwirq;
++	struct irq_data *irq_data = irq_get_irq_data(irq);
++	struct irq_domain *domain;
++	struct ipi_virq *v;
++
++	if (!irq || !irq_data)
++		return;
++
++	domain = irq_data->domain;
++	if (WARN_ON(domain == NULL))
++		return;
++
++	if (!irq_domain_is_ipi(domain)) {
++		pr_warn("Not an IPI domain!\n");
++		return;
++	}
++
++	v = irq_domain_find_ipi_virq(domain, irq);
++	if (!v)
++		return;
++
++	if (v->devid != devid) {
++		pr_warn("Only the device that allocated the IPI can destroy it\n");
++		return;
++	}
++
++	irq_domain_free_irqs(irq, cpumask_weight(&v->cpumask));
++
++	v = irq_domain_rm_ipi_virq(domain, irq);
++	irq_domain_free_ipi_virq(v);
++}
++
++/**
++ * irq_send_ipi() - send an IPI to target CPU(s)
++ * @irq: linux irq number from irq_reserve_ipi()
++ * @dest: dest CPU(s), must be the same or a subset of the mask past to
++ *	  irq_reserve_ipi()
++ * @devid: devid that reserved the IPI
++ *
++ * Sends an IPI to all cpus in dest mask
++ */
++void irq_send_ipi(unsigned int irq, const struct cpumask *dest, void *devid)
++{
++	struct irq_data *irq_data = irq_get_irq_data(irq);
++	struct irq_domain *domain;
++	struct ipi_virq *v;
 +	struct ipi_hwirq *h;
 +
-+	if (list_empty(head))
-+		return NULL;
++	if (!irq || !irq_data)
++		return;
 +
-+	h = list_first_entry(head, struct ipi_hwirq, link);
-+	list_del(&h->link);
++	domain = irq_data->domain;
++	if (WARN_ON(domain == NULL))
++		return;
 +
-+	return h;
++	if (!irq_domain_is_ipi(domain)) {
++		pr_warn("Not an IPI domain!\n");
++		return;
++	}
++
++	v = irq_domain_find_ipi_virq(domain, irq);
++	if (!v)
++		return;
++
++	if (v->devid != devid) {
++		pr_warn("Only the device that allocated the IPI can send one\n");
++		return;
++	}
++
++	if (!cpumask_intersects(&v->cpumask, dest))
++		return;
++
++	list_for_each_entry(h, &v->mapped_hwirq, link) {
++		if (cpumask_intersects(&h->cpumask, dest))
++			domain->ops->send_ipi(h->hwirq);
++	}
 +}
 +
  #ifdef	CONFIG_IRQ_DOMAIN_HIERARCHY

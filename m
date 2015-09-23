@@ -1,25 +1,25 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Sep 2015 16:51:21 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:31768 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Sep 2015 16:51:44 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:59195 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27008675AbbIWOuE2krkn (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 23 Sep 2015 16:50:04 +0200
+        with ESMTP id S27008682AbbIWOuGmKnfn (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 23 Sep 2015 16:50:06 +0200
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 3A26963CFABE6;
-        Wed, 23 Sep 2015 15:49:55 +0100 (IST)
+        by Websense Email Security Gateway with ESMTPS id 3D1DD19ED0E52;
+        Wed, 23 Sep 2015 15:49:57 +0100 (IST)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
  KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Wed, 23 Sep 2015 15:49:58 +0100
+ 14.3.195.1; Wed, 23 Sep 2015 15:50:00 +0100
 Received: from qyousef-linux.le.imgtec.org (192.168.154.94) by
  LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.210.2; Wed, 23 Sep 2015 15:49:57 +0100
+ 14.3.210.2; Wed, 23 Sep 2015 15:49:59 +0100
 From:   Qais Yousef <qais.yousef@imgtec.com>
 To:     <linux-kernel@vger.kernel.org>, <tglx@linutronix.de>
 CC:     <marc.zyngier@arm.com>, <jason@lakedaemon.net>,
         <jiang.liu@linux.intel.com>, <linux-mips@linux-mips.org>,
         Qais Yousef <qais.yousef@imgtec.com>
-Subject: [PATCH 5/6] irqchip: mips-gic: add a IPI hierarchy domain
-Date:   Wed, 23 Sep 2015 15:49:17 +0100
-Message-ID: <1443019758-20620-6-git-send-email-qais.yousef@imgtec.com>
+Subject: [PATCH 6/6] irqchip: mips-gic: use the new generic IPI API
+Date:   Wed, 23 Sep 2015 15:49:18 +0100
+Message-ID: <1443019758-20620-7-git-send-email-qais.yousef@imgtec.com>
 X-Mailer: git-send-email 2.1.0
 In-Reply-To: <1443019758-20620-1-git-send-email-qais.yousef@imgtec.com>
 References: <1443019758-20620-1-git-send-email-qais.yousef@imgtec.com>
@@ -30,7 +30,7 @@ Return-Path: <Qais.Yousef@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49343
+X-archive-position: 49344
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,177 +47,251 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add a new ipi domain on top of the normal domain.
+Use the new IPI generic functions to implement smp IPIs.
 
-The only reason this domain needs to be hierarchal is because we need to use
-the alloc function to allocate the IPI.
+For simplicity for now, I'm reserving the IPIs from the end of the available
+hwirqs. But this could easily be changed to get a list of hwirqs to use as IPIs
+from platform code or DT.
 
-Should we make the gic IPI a completely different irqchip?
+The implementation is meant as a demonstration of using the new IPI mechanism.
+It is less efficient than before because of the added layer and the only
+advantage is we have support for generic IPI reservation scheme.
+
+How can we refactor this better?
 
 Signed-off-by: Qais Yousef <qais.yousef@imgtec.com>
 ---
- drivers/irqchip/Kconfig        |   1 +
- drivers/irqchip/irq-mips-gic.c | 101 +++++++++++++++++++++++++++++++++++++++--
- 2 files changed, 97 insertions(+), 5 deletions(-)
+ arch/mips/kernel/smp-gic.c       | 37 ++++++++---------
+ drivers/irqchip/irq-mips-gic.c   | 88 ++++++++++++++++++++++++++++++----------
+ include/linux/irqchip/mips-gic.h |  3 +-
+ 3 files changed, 85 insertions(+), 43 deletions(-)
 
-diff --git a/drivers/irqchip/Kconfig b/drivers/irqchip/Kconfig
-index 27b52c8729cd..e07593f4860d 100644
---- a/drivers/irqchip/Kconfig
-+++ b/drivers/irqchip/Kconfig
-@@ -167,6 +167,7 @@ config KEYSTONE_IRQ
+diff --git a/arch/mips/kernel/smp-gic.c b/arch/mips/kernel/smp-gic.c
+index 5f0ab5bcd01e..ef9a80df1fcc 100644
+--- a/arch/mips/kernel/smp-gic.c
++++ b/arch/mips/kernel/smp-gic.c
+@@ -20,45 +20,40 @@
  
- config MIPS_GIC
- 	bool
-+	select IRQ_DOMAIN_HIERARCHY
- 	select MIPS_CM
+ void gic_send_ipi_single(int cpu, unsigned int action)
+ {
+-	unsigned long flags;
+-	unsigned int intr;
+-	unsigned int core = cpu_data[cpu].core;
++	gic_send_ipi_mask(cpumask_of(cpu), action);
++}
  
- config INGENIC_IRQ
+-	pr_debug("CPU%d: %s cpu %d action %u status %08x\n",
+-		 smp_processor_id(), __func__, cpu, action, read_c0_status());
++void gic_send_ipi_mask(const struct cpumask *mask, unsigned int action)
++{
++	unsigned long flags;
++	unsigned int core;
++	int cpu;
+ 
+ 	local_irq_save(flags);
+ 
+ 	switch (action) {
+ 	case SMP_CALL_FUNCTION:
+-		intr = plat_ipi_call_int_xlate(cpu);
++		gic_send_call_ipi(mask);
+ 		break;
+ 
+ 	case SMP_RESCHEDULE_YOURSELF:
+-		intr = plat_ipi_resched_int_xlate(cpu);
++		gic_send_resched_ipi(mask);
+ 		break;
+ 
+ 	default:
+ 		BUG();
+ 	}
+ 
+-	gic_send_ipi(intr);
+-
+ 	if (mips_cpc_present() && (core != current_cpu_data.core)) {
+-		while (!cpumask_test_cpu(cpu, &cpu_coherent_mask)) {
+-			mips_cpc_lock_other(core);
+-			write_cpc_co_cmd(CPC_Cx_CMD_PWRUP);
+-			mips_cpc_unlock_other();
++		for_each_cpu(cpu, mask) {
++			core = cpu_data[cpu].core;
++			while (!cpumask_test_cpu(cpu, &cpu_coherent_mask)) {
++				mips_cpc_lock_other(core);
++				write_cpc_co_cmd(CPC_Cx_CMD_PWRUP);
++				mips_cpc_unlock_other();
++			}
+ 		}
+ 	}
+ 
+ 	local_irq_restore(flags);
+ }
+-
+-void gic_send_ipi_mask(const struct cpumask *mask, unsigned int action)
+-{
+-	unsigned int i;
+-
+-	for_each_cpu(i, mask)
+-		gic_send_ipi_single(i, action);
+-}
 diff --git a/drivers/irqchip/irq-mips-gic.c b/drivers/irqchip/irq-mips-gic.c
-index af2f16bb8a94..14e99ea0f963 100644
+index 14e99ea0f963..ff9b79170e2f 100644
 --- a/drivers/irqchip/irq-mips-gic.c
 +++ b/drivers/irqchip/irq-mips-gic.c
-@@ -33,6 +33,7 @@ static void __iomem *gic_base;
- static struct gic_pcpu_mask pcpu_masks[NR_CPUS];
- static DEFINE_SPINLOCK(gic_lock);
- static struct irq_domain *gic_irq_domain;
-+static struct irq_domain *gic_ipi_domain;
- static int gic_shared_intrs;
- static int gic_vpes;
+@@ -15,6 +15,7 @@
+ #include <linux/irqchip/mips-gic.h>
+ #include <linux/of_address.h>
+ #include <linux/sched.h>
++#include <linux/slab.h>
+ #include <linux/smp.h>
+ 
+ #include <asm/mips-cm.h>
+@@ -39,6 +40,7 @@ static int gic_vpes;
  static unsigned int gic_cpu_pin;
-@@ -733,7 +734,7 @@ static int gic_local_irq_domain_map(struct irq_domain *d, unsigned int virq,
+ static unsigned int timer_cpu_pin;
+ static struct irq_chip gic_level_irq_controller, gic_edge_irq_controller;
++DECLARE_BITMAP(ipi_intrs, GIC_MAX_INTRS);
+ 
+ static void __gic_irq_dispatch(void);
+ 
+@@ -264,7 +266,7 @@ static void gic_bind_eic_interrupt(int irq, int set)
+ 		  GIC_VPE_EIC_SS(irq), set);
  }
  
- static int gic_shared_irq_domain_map(struct irq_domain *d, unsigned int virq,
--				     irq_hw_number_t hw)
-+				     irq_hw_number_t hw, unsigned int vpe)
+-void gic_send_ipi(unsigned int intr)
++static void gic_send_ipi(irq_hw_number_t intr)
  {
- 	int intr = GIC_HWIRQ_TO_SHARED(hw);
- 	unsigned long flags;
-@@ -743,9 +744,8 @@ static int gic_shared_irq_domain_map(struct irq_domain *d, unsigned int virq,
- 
- 	spin_lock_irqsave(&gic_lock, flags);
- 	gic_map_to_pin(intr, gic_cpu_pin);
--	/* Map to VPE 0 by default */
--	gic_map_to_vpe(intr, 0);
--	set_bit(intr, pcpu_masks[0].pcpu_mask);
-+	gic_map_to_vpe(intr, vpe);
-+	set_bit(intr, pcpu_masks[vpe].pcpu_mask);
- 	spin_unlock_irqrestore(&gic_lock, flags);
- 
- 	return 0;
-@@ -756,7 +756,7 @@ static int gic_irq_domain_map(struct irq_domain *d, unsigned int virq,
- {
- 	if (GIC_HWIRQ_TO_LOCAL(hw) < GIC_NUM_LOCAL_INTRS)
- 		return gic_local_irq_domain_map(d, virq, hw);
--	return gic_shared_irq_domain_map(d, virq, hw);
-+	return gic_shared_irq_domain_map(d, virq, hw, 0);
+ 	gic_write(GIC_REG(SHARED, GIC_SH_WEDGE), GIC_SH_WEDGE_SET(intr));
  }
+@@ -328,8 +330,14 @@ static void gic_handle_shared_int(bool chained)
  
- static int gic_irq_domain_xlate(struct irq_domain *d, struct device_node *ctrlr,
-@@ -783,6 +783,91 @@ static const struct irq_domain_ops gic_irq_domain_ops = {
- 	.xlate = gic_irq_domain_xlate,
+ 	intr = find_first_bit(pending, gic_shared_intrs);
+ 	while (intr != gic_shared_intrs) {
+-		virq = irq_linear_revmap(gic_irq_domain,
+-					 GIC_SHARED_TO_HWIRQ(intr));
++		if (test_bit(intr, ipi_intrs)) {
++			virq = irq_linear_revmap(gic_ipi_domain,
++					GIC_SHARED_TO_HWIRQ(intr));
++		} else {
++			virq = irq_linear_revmap(gic_irq_domain,
++					GIC_SHARED_TO_HWIRQ(intr));
++		}
++
+ 		if (chained)
+ 			generic_handle_irq(virq);
+ 		else
+@@ -593,37 +601,74 @@ static struct irqaction irq_call = {
+ 	.name		= "IPI call"
  };
  
-+static int gic_ipi_domain_xlate(struct irq_domain *d, struct device_node *ctrlr,
-+				const u32 *intspec, unsigned int intsize,
-+				irq_hw_number_t *out_hwirq,
-+				unsigned int *out_type)
-+{
-+	/*
-+	 * There's nothing to translate here. hwirq is dynamically allocated and
-+	 * the irq type is always edge triggered.
-+	 * */
-+	*out_hwirq = 0;
-+	*out_type = IRQ_TYPE_EDGE_RISING;
-+
-+	return 0;
-+}
-+
-+static int gic_ipi_domain_alloc(struct irq_domain *d, unsigned int virq,
-+				unsigned int nr_irqs, void *arg)
-+{
-+	int vpe, ret;
-+	struct ipi_virq *v = arg;
-+	struct ipi_hwirq *h;
-+	irq_hw_number_t hwirq;
-+
-+	for_each_cpu(vpe, &v->cpumask) {
-+		/* we need a GIC shared hwirq for each vpe */
-+		h = irq_domain_get_ipi_hwirq(d);
-+		if (!h) {
-+			ret = -EINVAL;
-+			goto error;
-+		}
-+		cpumask_set_cpu(vpe, &h->cpumask);
-+
-+		/* add this hwirq to the virq mapping list */
-+		ret = irq_domain_ipi_virq_add_hwirq(v, h);
-+		if (ret)
-+			goto error;
-+
-+		hwirq = GIC_SHARED_TO_HWIRQ(h->hwirq);
-+		ret = irq_domain_set_hwirq_and_chip(d, virq + vpe, hwirq,
-+						NULL, NULL);
-+		if (ret)
-+			goto error;
-+
-+		ret = gic_shared_irq_domain_map(d, virq + vpe, hwirq, vpe);
-+		if (ret)
-+			goto error;
-+	}
-+
-+	return 0;
-+error:
-+	while ((h = irq_domain_ipi_virq_rm_hwirq(v))) {
-+		for_each_cpu(vpe, &h->cpumask)
-+			clear_bit(h->hwirq, pcpu_masks[vpe].pcpu_mask);
-+		irq_domain_put_ipi_hwirq(d, h);
-+	}
-+
-+	return ret;
-+}
-+
-+void gic_ipi_domain_free(struct irq_domain *d, unsigned int virq,
-+			 unsigned int nr_irqs)
-+{
-+	struct ipi_hwirq *h;
-+	struct ipi_virq *v;
-+	int vpe;
-+
-+	v = irq_domain_find_ipi_virq(d, virq);
-+	if (!v)
+-static __init void gic_ipi_init_one(unsigned int intr, int cpu,
++static __init void gic_ipi_init_one(unsigned int virq,
+ 				    struct irqaction *action)
+ {
+-	int virq = irq_create_mapping(gic_irq_domain,
+-				      GIC_SHARED_TO_HWIRQ(intr));
+-	int i;
+-
+-	gic_map_to_vpe(intr, cpu);
+-	for (i = 0; i < NR_CPUS; i++)
+-		clear_bit(intr, pcpu_masks[i].pcpu_mask);
+-	set_bit(intr, pcpu_masks[cpu].pcpu_mask);
++	int ret;
+ 
+-	irq_set_irq_type(virq, IRQ_TYPE_EDGE_RISING);
++	ret = irq_set_irq_type(virq, IRQ_TYPE_EDGE_RISING);
++	if (ret) {
++		pr_warn("Failed to set IPI irq type at %d\n", virq);
 +		return;
-+
-+	/* return all allocated hwirqs to the IPI domain */
-+	while ((h = irq_domain_ipi_virq_rm_hwirq(v))) {
-+		for_each_cpu(vpe, &h->cpumask)
-+			clear_bit(h->hwirq, pcpu_masks[vpe].pcpu_mask);
-+		irq_domain_put_ipi_hwirq(d, h);
 +	}
+ 
+ 	irq_set_handler(virq, handle_percpu_irq);
+-	setup_irq(virq, action);
++
++	ret = setup_irq(virq, action);
++	if (ret)
++		pr_warn("Failed to setup IPI at %d\n", virq);
+ }
+ 
+ static __init void gic_ipi_init(void)
+ {
+-	int i;
++	int cpu, i;
++	struct ipi_hwirq *h;
+ 
+-	/* Use last 2 * NR_CPUS interrupts as IPIs */
+-	gic_resched_int_base = gic_shared_intrs - nr_cpu_ids;
+-	gic_call_int_base = gic_resched_int_base - nr_cpu_ids;
++	/* We should get a list of hwirqs to reserve from DT or platform code */
++	for (i = 1; i <= 2 * cpumask_weight(cpu_possible_mask); i++) {
++		h = kzalloc(sizeof(struct ipi_hwirq), GFP_KERNEL);
++		if (!h)
++			goto out_kzalloc;
++		h->hwirq = gic_shared_intrs - i;
++		bitmap_set(ipi_intrs, h->hwirq, 1);
++		irq_domain_put_ipi_hwirq(gic_ipi_domain, h);
++	}
++
++	gic_resched_int_base = irq_reserve_ipi(gic_ipi_domain,
++						cpu_possible_mask, NULL);
++	if (!gic_resched_int_base)
++		goto out_kzalloc;
++	gic_call_int_base = irq_reserve_ipi(gic_ipi_domain,
++						cpu_possible_mask, NULL);
++	if (!gic_call_int_base) {
++		goto out_call;
++	}
++
++	for_each_cpu(cpu, cpu_possible_mask) {
++		gic_ipi_init_one(gic_call_int_base + cpu, &irq_call);
++		gic_ipi_init_one(gic_resched_int_base + cpu, &irq_resched);
++	}
++
++	return;
+ 
+-	for (i = 0; i < nr_cpu_ids; i++) {
+-		gic_ipi_init_one(gic_call_int_base + i, i, &irq_call);
+-		gic_ipi_init_one(gic_resched_int_base + i, i, &irq_resched);
++out_call:
++	irq_destroy_ipi(gic_resched_int_base, NULL);
++out_kzalloc:
++	while ((h = irq_domain_get_ipi_hwirq(gic_ipi_domain))) {
++		bitmap_clear(ipi_intrs, h->hwirq, 1);
++		kfree(h);
+ 	}
+ }
++
++void gic_send_resched_ipi(const struct cpumask *cpumask)
++{
++	irq_send_ipi(gic_resched_int_base, cpumask, NULL);
 +}
 +
-+static struct irq_domain_ops gic_ipi_domain_ops = {
-+	.xlate = gic_ipi_domain_xlate,
-+	.alloc = gic_ipi_domain_alloc,
-+	.free = gic_ipi_domain_free,
-+	.send_ipi = gic_send_ipi,
-+};
-+
- static void __init __gic_init(unsigned long gic_base_addr,
- 			      unsigned long gic_addrspace_size,
- 			      unsigned int cpu_vec, unsigned int irqbase,
-@@ -842,6 +927,12 @@ static void __init __gic_init(unsigned long gic_base_addr,
- 	if (!gic_irq_domain)
- 		panic("Failed to add GIC IRQ domain");
- 
-+	gic_ipi_domain = irq_domain_add_hierarchy(gic_irq_domain, IRQ_DOMAIN_FLAG_IPI,
-+						  GIC_NUM_LOCAL_INTRS + gic_shared_intrs,
-+						  NULL, &gic_ipi_domain_ops, NULL);
-+	if (!gic_ipi_domain)
-+		panic("Failed to add GIC IPI domain");
-+
- 	gic_basic_init();
- 
- 	gic_ipi_init();
++void gic_send_call_ipi(const struct cpumask *cpumask)
++{
++	irq_send_ipi(gic_call_int_base, cpumask, NULL);
++}
+ #else
+ static inline void gic_ipi_init(void)
+ {
+@@ -857,6 +902,7 @@ void gic_ipi_domain_free(struct irq_domain *d, unsigned int virq,
+ 	while ((h = irq_domain_ipi_virq_rm_hwirq(v))) {
+ 		for_each_cpu(vpe, &h->cpumask)
+ 			clear_bit(h->hwirq, pcpu_masks[vpe].pcpu_mask);
++		bitmap_clear(ipi_intrs, h->hwirq, 1);
+ 		irq_domain_put_ipi_hwirq(d, h);
+ 	}
+ }
+diff --git a/include/linux/irqchip/mips-gic.h b/include/linux/irqchip/mips-gic.h
+index 4e6861605050..57e794e7da12 100644
+--- a/include/linux/irqchip/mips-gic.h
++++ b/include/linux/irqchip/mips-gic.h
+@@ -258,7 +258,8 @@ extern void gic_write_compare(cycle_t cnt);
+ extern void gic_write_cpu_compare(cycle_t cnt, int cpu);
+ extern void gic_start_count(void);
+ extern void gic_stop_count(void);
+-extern void gic_send_ipi(unsigned int intr);
++extern void gic_send_resched_ipi(const struct cpumask *cpumask);
++extern void gic_send_call_ipi(const struct cpumask *cpumask);
+ extern unsigned int plat_ipi_call_int_xlate(unsigned int);
+ extern unsigned int plat_ipi_resched_int_xlate(unsigned int);
+ extern int gic_get_c0_compare_int(void);
 -- 
 2.1.0

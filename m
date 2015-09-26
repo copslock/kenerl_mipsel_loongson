@@ -1,34 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 25 Sep 2015 21:03:06 +0200 (CEST)
-Received: from smtp.gentoo.org ([140.211.166.183]:43804 "EHLO smtp.gentoo.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27008773AbbIYTDEanxcJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 25 Sep 2015 21:03:04 +0200
-Received: from vapier.lan (localhost [127.0.0.1])
-        by smtp.gentoo.org (Postfix) with SMTP id 0255D33BF44;
-        Fri, 25 Sep 2015 19:02:55 +0000 (UTC)
-Date:   Fri, 25 Sep 2015 15:02:56 -0400
-From:   Mike Frysinger <vapier@gentoo.org>
-To:     linux-mips@linux-mips.org, macro@linux-mips.org,
-        ralf@linux-mips.org
-Cc:     Steven.Hill@imgtec.com, stable@kernel.org
-Subject: Re: >=linux-4.1: build fails w/_PAGE_GLOBAL_SHIFT redefined errors
- in pgtable-bits.h
-Message-ID: <20150925190256.GA32577@vapier.lan>
-References: <20150911192553.GF640@vapier>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="XsQoSWH+UP9D9v3l"
-Content-Disposition: inline
-In-Reply-To: <20150911192553.GF640@vapier>
-Return-Path: <vapier@gentoo.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 26 Sep 2015 07:47:06 +0200 (CEST)
+Received: from mail-pa0-f50.google.com ([209.85.220.50]:34666 "EHLO
+        mail-pa0-f50.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006550AbbIZFrFKQ4p9 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 26 Sep 2015 07:47:05 +0200
+Received: by padhy16 with SMTP id hy16so124599983pad.1;
+        Fri, 25 Sep 2015 22:46:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id;
+        bh=CxSHunnICrwyOQIyr/7/wr7r3KSiaotZT3+p3eb2ipY=;
+        b=05uD7sNc2ZvAWz+njjG9xIC7KYrXoW0lM3VoSBPaFP/aF7tfAHMOxo9FrJhX4kSkqt
+         770m6ZHeQgKkOkmHF0NIByCZEYCPbUbXzILCR/ag1tNj8GYnaP7DvHjLU7jMMh3on31T
+         F5T0iXr79ws2KZ2pqKr8YGpmYn1ZAG+i5+I6zdwypfqO4pr7BtPfIHbzxR+74oG0sGzj
+         LSe5J6hEqkO/vt5pHEgclPpp6mA86biuUiCMGRrpxZIVB/51G2Eu8ns/CZyTDrp1sU5x
+         IIhEqyU6LyhLmgREt5xAUSbxxM8+9lpENuA9nYuG9/2HRe7Pgr8ytD54yXmq+Wysudev
+         RMqw==
+X-Received: by 10.66.234.138 with SMTP id ue10mr12455699pac.9.1443246417855;
+        Fri, 25 Sep 2015 22:46:57 -0700 (PDT)
+Received: from debian.corp.sankuai.com ([103.29.140.56])
+        by smtp.gmail.com with ESMTPSA id gt1sm7074339pbc.10.2015.09.25.22.46.55
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 25 Sep 2015 22:46:57 -0700 (PDT)
+From:   Yousong Zhou <yszhou4tech@gmail.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     "Maciej W. Rozycki" <macro@linux-mips.org>,
+        linux-mips@linux-mips.org, Yousong Zhou <yszhou4tech@gmail.com>
+Subject: [PATCH v3 0/2] Ignore __arch_swab{16,32,64} when using MIPS16
+Date:   Sat, 26 Sep 2015 13:41:41 +0800
+Message-Id: <1443246103-31122-1-git-send-email-yszhou4tech@gmail.com>
+X-Mailer: git-send-email 1.7.10.4
+Return-Path: <yszhou4tech@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49370
+X-archive-position: 49371
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vapier@gentoo.org
+X-original-sender: yszhou4tech@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -41,71 +50,23 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+v3 <- v2
 
---XsQoSWH+UP9D9v3l
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+	- Revert the previous fix that adding nomips16 attributes and assembler
+	  directives to those functions
+	- Exclude __SWAB_64_THRU_32 from the #ifdef..#endif block
 
-On 11 Sep 2015 15:25, Mike Frysinger wrote:
-> this works in linux-4.0, but starting with 4.1, i'm seeing:
->   CC      arch/mips/kernel/cpu-probe.o
-> In file included from ./arch/mips/include/asm/io.h:27:0,
->                  from ./arch/mips/include/asm/page.h:176,
->                  from include/linux/mm_types.h:15,
->                  from include/linux/sched.h:27,
->                  from include/linux/ptrace.h:5,
->                  from arch/mips/kernel/cpu-probe.c:16:
-> ./arch/mips/include/asm/pgtable-bits.h:164:0: error: "_PAGE_GLOBAL_SHIFT"=
- redefined [-Werror]
-> ./arch/mips/include/asm/pgtable-bits.h:141:0: note: this is the location =
-of the previous definition
-> cc1: all warnings being treated as errors
-> make[2]: *** [arch/mips/kernel/cpu-probe.o] Error 1
-> make[1]: *** [arch/mips/kernel] Error 2
-> make: *** [arch/mips] Error 2
->=20
-> this warning hits many times, but this one is actually fatal
->=20
-> looks like it's due to:
-> 	be0c37c985eddc46d0d67543898c086f60460e2e MIPS: Rearrange PTE bits into f=
-ixed positions.
->=20
-> my config is attached
+v2 <- v1
 
-looks like this is fixed for linux-4.3 with:
+	Also ignore __arch_swab64 instead of just __arch_swab{16,32}.
 
-commit 1cfa8de2880e5512f9037c7804ea47a79cc8232c
-Author:     Maciej W. Rozycki <macro@linux-mips.org>
-AuthorDate: Sun May 3 10:36:19 2015 +0100
-Commit:     Ralf Baechle <ralf@linux-mips.org>
-CommitDate: Sun Aug 30 13:16:40 2015 +0200
+Yousong Zhou (2):
+  Revert "MIPS: UAPI: Fix unrecognized opcode WSBH/DSBH/DSHD when using
+    MIPS16."
+  MIPS: UAPI: Ignore __arch_swab{16,32,64} when using MIPS16
 
-    MIPS: pgtable-bits.h: Correct _PAGE_GLOBAL_SHIFT build failure
+ arch/mips/include/uapi/asm/swab.h |   19 +++++++------------
+ 1 file changed, 7 insertions(+), 12 deletions(-)
 
-can that get included in linux-4.1 and linux-4.2 stable ?
--mike
-
---XsQoSWH+UP9D9v3l
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQIcBAEBCAAGBQJWBZpgAAoJEEFjO5/oN/WBLK0QAKE5pTNBttr5HUABeRncQ34z
-HvbImcuYkDfcMWgh1Q+nFAUgT+tVvyGdptNU6L2X99lM02+e5nwff/kVUcCa06ao
-oP+8Z0G5rMvS1LOSO/PlJTeug68RcMdXcwB+y8P0oI7UDYnunTdh84dLkDZVduAh
-/i2uQxVIJB0LH8oOpf9IF4JYbd5Kt2V8LUpVeJ+yj2zvcGBGHUnO6dYQET9I402V
-nSIVqXOGS5MRYAocNQdx+dflYxou6kXXmuS9N6DnP4BAqNbQ/8bMkV3JJpniSgb8
-WZNsCayIOqecUNUYrbjpEHOiCPhLM/T3K70/dtH06ErvXHqCUnvgvzmdtmC7YxQt
-6nRr8GiexhqEIa8VOGyLkOFLE50mBHtgGG2dqfAwymfbVPRkxyfTS3V6C6DLWx3A
-7rPTFl8CubUUv8p7LjERLaECv38odOQnc8CcHuZaobPd6Zn/mK8VKUd1KHDZoSp/
-Z5l4/y4V6Gsozk2H+3E1T7PcnLMz+XEdE5j8qEFmxbjZAle+E1ICqnYK9xm3zdni
-+o3wOoZTZRfzhLXHIieamIQ38LmA8isGevga3lcE3BnoSbdzUvkjSKIl3MHr2Lne
-2hkZHX1Sm516dELepq+cpa21VDTXpmmgYt88YZLfJgrWHjE+7d0msTa0QII2lDAo
-0no0gQ3z11ce5qO2+m3t
-=3Owv
------END PGP SIGNATURE-----
-
---XsQoSWH+UP9D9v3l--
+-- 
+1.7.10.4

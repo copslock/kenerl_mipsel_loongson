@@ -1,42 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 28 Sep 2015 17:04:12 +0200 (CEST)
-Received: from foss.arm.com ([217.140.101.70]:33282 "EHLO foss.arm.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 28 Sep 2015 19:12:53 +0200 (CEST)
+Received: from mail.efficios.com ([78.47.125.74]:52740 "EHLO mail.efficios.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27006770AbbI1PEKniqVv (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 28 Sep 2015 17:04:10 +0200
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7DA6728;
-        Mon, 28 Sep 2015 08:04:04 -0700 (PDT)
-Received: from [10.1.209.148] (usa-sjc-imap-foss1.foss.arm.com [10.72.51.249])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 47A353F2E5;
-        Mon, 28 Sep 2015 08:04:00 -0700 (PDT)
-Message-ID: <560956DE.60402@arm.com>
-Date:   Mon, 28 Sep 2015 16:03:58 +0100
-From:   Marc Zyngier <marc.zyngier@arm.com>
-Organization: ARM Ltd
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Icedove/31.7.0
+        id S27009113AbbI1RMuxAKuH (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 28 Sep 2015 19:12:50 +0200
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by mail.efficios.com (Postfix) with ESMTP id 87E8D3403FD;
+        Mon, 28 Sep 2015 17:12:40 +0000 (UTC)
+Received: from mail.efficios.com ([127.0.0.1])
+        by localhost (evm-mail-1.efficios.com [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id f6e08Bh4LN7G; Mon, 28 Sep 2015 17:12:32 +0000 (UTC)
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by mail.efficios.com (Postfix) with ESMTP id 7F9913404CB;
+        Mon, 28 Sep 2015 17:12:32 +0000 (UTC)
+X-Virus-Scanned: amavisd-new at efficios.com
+Received: from mail.efficios.com ([127.0.0.1])
+        by localhost (evm-mail-1.efficios.com [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id oqtRcFPkrg2C; Mon, 28 Sep 2015 17:12:32 +0000 (UTC)
+Received: from evm-mail-1.efficios.com (evm-mail-1.efficios.com [78.47.125.74])
+        by mail.efficios.com (Postfix) with ESMTP id 5970F3403FD;
+        Mon, 28 Sep 2015 17:12:32 +0000 (UTC)
+Date:   Mon, 28 Sep 2015 17:12:32 +0000 (UTC)
+From:   Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+To:     Andrew Morton <akpm@linux-foundation.org>
+Cc:     linux-kernel@vger.kernel.org,
+        linux-mips <linux-mips@linux-mips.org>,
+        linux-api <linux-api@vger.kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>
+Message-ID: <827141828.6114.1443460352159.JavaMail.zimbra@efficios.com>
+In-Reply-To: <1089832901.9282.1442415898500.JavaMail.zimbra@efficios.com>
+References: <1441642556-30972-1-git-send-email-mathieu.desnoyers@efficios.com> <1441642556-30972-3-git-send-email-mathieu.desnoyers@efficios.com> <1089832901.9282.1442415898500.JavaMail.zimbra@efficios.com>
+Subject: Re: [PATCH v2 2/9] mips: allocate sys_membarrier system call number
 MIME-Version: 1.0
-To:     Qais Yousef <qais.yousef@imgtec.com>,
-        Markos Chandras <markos.chandras@imgtec.com>
-CC:     linux-mips@linux-mips.org, alex@alex-smith.me.uk,
-        Alex Smith <alex.smith@imgtec.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/3] irqchip: irq-mips-gic: Provide function to map GIC
- user section
-References: <1443434629-14325-1-git-send-email-markos.chandras@imgtec.com> <1443435117-17144-1-git-send-email-markos.chandras@imgtec.com> <56091CA1.1030808@arm.com> <56094BCD.6000600@imgtec.com>
-In-Reply-To: <56094BCD.6000600@imgtec.com>
-Content-Type: text/plain; charset=windows-1252
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
-Return-Path: <marc.zyngier@arm.com>
+X-Originating-IP: [78.47.125.74]
+X-Mailer: Zimbra 8.6.0_GA_1178 (ZimbraWebClient - FF41 (Linux)/8.6.0_GA_1178)
+Thread-Topic: mips: allocate sys_membarrier system call number
+Thread-Index: gLVOhhrEOL1/t6TvqhdvlZ4vb9l9mzMnRVVz
+Return-Path: <compudj@efficios.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49390
+X-archive-position: 49391
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: marc.zyngier@arm.com
+X-original-sender: mathieu.desnoyers@efficios.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,65 +58,24 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 28/09/15 15:16, Qais Yousef wrote:
-> On 09/28/2015 11:55 AM, Marc Zyngier wrote:
->> On 28/09/15 11:11, Markos Chandras wrote:
->>
->>> +
->>> +	pfn = (gic_base_addr + USM_VISIBLE_SECTION_OFS) >> PAGE_SHIFT;
->>> +	return io_remap_pfn_range(vma, base, pfn, size,
->>> +				  pgprot_noncached(PAGE_READONLY));
->>
->> - Does this code have to be in the irqchip driver? It really feels out
->> of place, and I'd rather see a function that returns the mappable range
->> to the VDSO code, where the mapping would occur.
->>
-> 
-> 
-> I don't think it's a good idea either for the VDSO code to know about 
-> gic_base_addr. Maybe this function could be split to return the pfn and 
-> let the caller do io_remap_pfn_range(). Though I think it's nice to have 
-> it all there. USM stands for USer Mode - GIC wants to make some stuff 
-> visible to user mode and it puts them in that special section. So it 
-> makes sense to do it all there IMO.
+----- On Sep 16, 2015, at 11:04 AM, Mathieu Desnoyers mathieu.desnoyers@efficios.com wrote:
+>> Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+>> Acked-by: Ralf Baechle <ralf@linux-mips.org>
 
-Maybe I wasn't clear enough. My suggestion was to expose this in
-the VDSO setup code:
+[...]
 
-@@ -90,8 +133,15 @@ int arch_setup_additional_pages(struct linux_binprm *bprm, int uses_interp)
- 		goto out;
- 	}
- 
-+	/* Map GIC user page. */
-+	if (gic_size) {
-+		ret = gic_map_user_section(vma, base, gic_size);
-+		if (ret)
-+			goto out;
-+	}
-+
+Hi Andrew,
 
-This could easily be written as:
+Since I got the Acked-by from Ralf, my understanding is that he
+expects that you can pick up this patch through your tree. Please let
+me know if I need to do anything more. It's the same story for
+sparc/sparc64.
 
-	if (gic_size) {
-		struct resource gic_res;
-		ret = gic_get_usm_range(&gic_res);
-		if (ret)
-			goto out;
-		... and perform the mapping here...
-	}
+Thanks!
 
-You can also rewrite the hunks above to actually get the present/size
-information from the GIC. And if you have DT, you should be able to
-directly find the memory region there, without involving the GIC
-driver at all.
+Mathieu
 
-I don't really fancy having some userspace visible stuff in an
-interrupt controller driver, and I tend to find it nicer to split
-the responsabilities: the VDSO code deals with the userspace mapping,
-and the interrupt controller deals with interrupts.
-
-Thanks,
-
-	M.
 -- 
-Jazz is not dead. It just smells funny...
+Mathieu Desnoyers
+EfficiOS Inc.
+http://www.efficios.com

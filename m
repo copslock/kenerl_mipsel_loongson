@@ -1,40 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Sep 2015 16:27:48 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:47818 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27008853AbbI2O1qtUqrv (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 29 Sep 2015 16:27:46 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.15.2/8.14.8) with ESMTP id t8TERkLc005339;
-        Tue, 29 Sep 2015 16:27:46 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.15.2/8.15.2/Submit) id t8TERkUQ005338;
-        Tue, 29 Sep 2015 16:27:46 +0200
-Date:   Tue, 29 Sep 2015 16:27:46 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     =?iso-8859-1?Q?M=E5ns_Rullg=E5rd?= <mans@mansr.com>
-Cc:     linux-mips@linux-mips.org
-Subject: Re: [PATCH] MIPS: Use ARCH_USE_BUILTIN_BSWAP.
-Message-ID: <20150929142745.GD2505@linux-mips.org>
-References: <20150929102855.GA1319@linux-mips.org>
- <20150929115222.GA2505@linux-mips.org>
- <yw1x612tqvur.fsf@unicorn.mansr.com>
- <20150929132849.GC2505@linux-mips.org>
- <yw1x1tdhqrhn.fsf@unicorn.mansr.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Sep 2015 18:16:36 +0200 (CEST)
+Received: from www.linutronix.de ([62.245.132.108]:44584 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27008895AbbI2QQe4SqqG (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 29 Sep 2015 18:16:34 +0200
+Received: from localhost ([127.0.0.1])
+        by Galois.linutronix.de with esmtps (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:256)
+        (Exim 4.80)
+        (envelope-from <tglx@linutronix.de>)
+        id 1ZgxZp-0003tO-Bg; Tue, 29 Sep 2015 18:16:25 +0200
+Date:   Tue, 29 Sep 2015 18:15:49 +0200 (CEST)
+From:   Thomas Gleixner <tglx@linutronix.de>
+To:     Qais Yousef <qais.yousef@imgtec.com>
+cc:     Jiang Liu <jiang.liu@linux.intel.com>,
+        linux-kernel@vger.kernel.org, marc.zyngier@arm.com,
+        jason@lakedaemon.net, linux-mips@linux-mips.org
+Subject: Re: [PATCH 4/6] irq: add a new generic IPI handling code to irq
+ core
+In-Reply-To: <5603B3D1.3000405@imgtec.com>
+Message-ID: <alpine.DEB.2.11.1509291811520.4500@nanos>
+References: <1443019758-20620-1-git-send-email-qais.yousef@imgtec.com> <1443019758-20620-5-git-send-email-qais.yousef@imgtec.com> <5602D863.4040503@linux.intel.com> <5603B3D1.3000405@imgtec.com>
+User-Agent: Alpine 2.11 (DEB 23 2013-08-11)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <yw1x1tdhqrhn.fsf@unicorn.mansr.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <ralf@linux-mips.org>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Linutronix-Spam-Score: -1.0
+X-Linutronix-Spam-Level: -
+X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+Return-Path: <tglx@linutronix.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49400
+X-archive-position: 49401
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: tglx@linutronix.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,35 +46,32 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Sep 29, 2015 at 02:34:12PM +0100, Måns Rullgård wrote:
-
-> >> >>    text    data     bss     dec     hex filename
-> >> >> 3996071  155804   88992 4240867  40b5e3 vmlinux         ip22 baseline
-> >> >> 3985687  159900   88992 4234579  409d53 vmlinux         ip22 + bswap patch
-> >> >> 6913157  378552  251024 7542733  7317cd vmlinux         ip27 baseline
-> >> >> 6878581  378552  251024 7508157  7290bd vmlinux         ip27 + bswap patch
-> >> >> 5773777  268752  187424 6229953  5f0fc1 vmlinux         malta baseline
-> >> >> 5773401  268752  187424 6229577  5f0e49 vmlinux         malta + bswap patch
-> >> >
-> >> > A still unexplained effect of this patch and the reason why I have not
-> >> > committed this patch is the increase of the data size for the ip22
-> >> > configuration by 4096 bytes.  There is no change in data size expected.
-> >> > Also this affects only the test with ip22_defconfig not any of the others
-> >> > I've tried.
-> >> 
-> >> Have you checked which object file(s) the increase comes from?
-> >
-> > The data size difference is created in the final link stage.  data for
-> > all inividual .o files even vmlinux.o; only vmlinux differs.
+On Thu, 24 Sep 2015, Qais Yousef wrote:
+> The CPUs we want to send the IPI to are not Linux CPUs only. My use case is
+> about sending IPI to audio coprocessor.
+> So "dest" doesn't have to be part of Linux online CPUs, hence we need to
+> specify it so that the underlying controller will know how to map to that CPU.
+> I should have put more info in the cover letter, not just the link to the
+> discussion, apologies for that.
 > 
-> Could it be an alignment thing.  Check if the alignment of some data
-> section has changed from something smaller to 4096.
+> I'm not sure about cpu hotplug. We could call irq_destroy_ipi() when a cpu is
+> hot unplugged, but the current behaviour is to statically reserve the IPI and
+> keep them reserved. I think it makes sense to keep it this way for SMP IPIs or
+> things will get complicated.
 
-Almost.  Alignment has changed but 8k alignment of init_thread_union
-forced the linker to waste an extra 4k.
+Right. For general IPIs which are destined to all Linux CPUs we keep
+them reserved unless the facility which needs them is shut down.
 
-I always knew this could happen but never actually observed this.  Hard to
-avoid but it's yet another reason to minimize stack size which on MIPS
-may be up to 4 pages for 64 bit kernels with 4k pages.
+CPU hotplug is just disabling the IPI reception on the particular
+core, but does not change the reservation for e.g. the resched IPI.
+ 
+> For a coprocessor, if we the 'module is unloaded', I'd expect the
+> irq_destroy_ipi() to be called returning the reserved IPI to the pool.
 
-  Ralf
+For any case which shuts down a IPI based facility (coprocessor or
+general) we want to return the IPI. Otherwise we leak the IPI on
+module removal and allocate a new one on reload.
+
+Thanks,
+
+	tglx

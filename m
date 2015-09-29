@@ -1,32 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Sep 2015 12:28:58 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:46209 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27007497AbbI2K24Aqh1C (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 29 Sep 2015 12:28:56 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.15.2/8.14.8) with ESMTP id t8TAStJO001324
-        for <linux-mips@linux-mips.org>; Tue, 29 Sep 2015 12:28:55 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.15.2/8.15.2/Submit) id t8TAStNT001323
-        for linux-mips@linux-mips.org; Tue, 29 Sep 2015 12:28:55 +0200
-Date:   Tue, 29 Sep 2015 12:28:55 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     linux-mips@linux-mips.org
-Subject: [PATCH] MIPS: Use ARCH_USE_BUILTIN_BSWAP.
-Message-ID: <20150929102855.GA1319@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Sep 2015 13:11:17 +0200 (CEST)
+Received: from arroyo.ext.ti.com ([192.94.94.40]:59299 "EHLO arroyo.ext.ti.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27008006AbbI2LLPlrGLC (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 29 Sep 2015 13:11:15 +0200
+Received: from dlelxv90.itg.ti.com ([172.17.2.17])
+        by arroyo.ext.ti.com (8.13.7/8.13.7) with ESMTP id t8TBAlGF008772;
+        Tue, 29 Sep 2015 06:10:47 -0500
+Received: from DFLE72.ent.ti.com (dfle72.ent.ti.com [128.247.5.109])
+        by dlelxv90.itg.ti.com (8.14.3/8.13.8) with ESMTP id t8TBAkLo008111;
+        Tue, 29 Sep 2015 06:10:46 -0500
+Received: from dflp33.itg.ti.com (10.64.6.16) by DFLE72.ent.ti.com
+ (128.247.5.109) with Microsoft SMTP Server id 14.3.224.2; Tue, 29 Sep 2015
+ 06:10:47 -0500
+Received: from [172.24.190.79] (ileax41-snat.itg.ti.com [10.172.224.153])       by
+ dflp33.itg.ti.com (8.14.3/8.13.8) with ESMTP id t8TBAg3A007414;        Tue, 29 Sep
+ 2015 06:10:43 -0500
+Subject: Re: [PATCH 0/4] MIPS: ath79: Add USB support on the TL-WR1043ND
+To:     Arnd Bergmann <arnd@arndb.de>, Alban <albeu@free.fr>
+References: <1441120994-31476-1-git-send-email-albeu@free.fr>
+ <3589971.cbF7muh57v@wuerfel> <20150909161459.30cf580f@avionic-0020>
+ <1734684.IINudhV2s6@wuerfel>
+CC:     <linux-mips@linux-mips.org>, Rob Herring <robh+dt@kernel.org>,
+        Pawel Moll <pawel.moll@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ian Campbell <ijc+devicetree@hellion.org.uk>,
+        Kumar Gala <galak@codeaurora.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+From:   Kishon Vijay Abraham I <kishon@ti.com>
+Message-ID: <560A71B2.8050606@ti.com>
+Date:   Tue, 29 Sep 2015 16:40:42 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+ Thunderbird/38.2.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <ralf@linux-mips.org>
+In-Reply-To: <1734684.IINudhV2s6@wuerfel>
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: 7bit
+Return-Path: <kishon@ti.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49392
+X-archive-position: 49393
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: kishon@ti.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -39,83 +57,46 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-ARCH_USE_BUILTIN_BSWAP will use __builtin_bswap16(), __builtin_bswap32()
-and __builtin_bswap64() where available.  This allows better instruction
-scheduling.  On pre-R2 processors it will result in 32 bit and 64 bit
-swapping being performed in a call to a __bswapsi2() rsp. __bswapdi2()
-functions, so we add these, too.
+Hi,
 
-For a 4.2 kernel with GCC 4.9 this yields the following kernel sizes:
+On Wednesday 09 September 2015 07:51 PM, Arnd Bergmann wrote:
+> On Wednesday 09 September 2015 16:14:59 Alban wrote:
+>> On Mon, 07 Sep 2015 15:20:42 +0200
+>> Arnd Bergmann <arnd@arndb.de> wrote:
+>>
+>>> On Tuesday 01 September 2015 17:23:10 Alban Bedel wrote:
+>>>>
+>>>> this serie add a driver for the USB phy on the ATH79 SoCs and enable the
+>>>> USB port on the TL-WR1043ND. The phy controller is really trivial as it
+>>>> only use reset lines.
+>>>>
+>>>
+>>> Is this a common thing to have? If other PHY devices are like this, we
+>>> could instead add a simple generic PHY driver that just asserts all
+>>> its reset lines in the order as provided, rather than making this a
+>>> hardware specific driver that ends up getting copied several times.
+>>
+>> I don't know how common it is. However I agree that a simple driver that
+>> can start a clock and toggle a few GPIO and/or reset would make sense.
+>>
+>> However in the case of the ATH79 SoC some models have a reset line that
+>> is misused to force the PHY in sleep mode. Sadly this extra reset must
+>> be asserted for the PHY to work, so it wouldn't fit in such a generic
+>> design.
+>>
+>> Still we could have such a generic driver and let the ATH79 driver
+>> build on top of it. Honestly that's what I wanted to do, but getting
+>> generic drivers with DT support accepted is not easy. That's why I went
+>> with this driver, it is technically inferior but much easier to get
+>> considered for merging.
+> 
+> Ok, fair enough. If we end up doing a more generic driver for this,
+> we can still consider adding the compatible string there, potentially
+> with some workaround for the sleep mode.
 
-   text    data     bss     dec     hex filename
-3996071  155804   88992 4240867  40b5e3 vmlinux         ip22 baseline
-3985687  159900   88992 4234579  409d53 vmlinux         ip22 + bswap patch
-6913157  378552  251024 7542733  7317cd vmlinux         ip27 baseline
-6878581  378552  251024 7508157  7290bd vmlinux         ip27 + bswap patch
-5773777  268752  187424 6229953  5f0fc1 vmlinux         malta baseline
-5773401  268752  187424 6229577  5f0e49 vmlinux         malta + bswap patch
+hmm, makes sense to have a generic PHY driver for PHY's which doesn't
+have PHY registers to be programmed like a PHY driver which enables only
+clocks, regulators, drives gpios etc.
 
-Presumably the code size improvments yield better cache hit rate thus
-better performance compensating for the extra function call but this
-will still need to be benchmarked.
-
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
----
- arch/mips/Kconfig       |  1 +
- arch/mips/lib/Makefile  |  2 +-
- arch/mips/lib/bswapdi.c | 11 +++++++++++
- arch/mips/lib/bswapsi.c |  7 +++++++
- 4 files changed, 20 insertions(+), 1 deletion(-)
-
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index a228e34..4ccb683 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -3,6 +3,7 @@ config MIPS
- 	default y
- 	select ARCH_MIGHT_HAVE_PC_PARPORT
- 	select ARCH_MIGHT_HAVE_PC_SERIO
-+	select ARCH_USE_BUILTIN_BSWAP
- 	select HAVE_CONTEXT_TRACKING
- 	select HAVE_GENERIC_DMA_COHERENT
- 	select HAVE_IDE
-diff --git a/arch/mips/lib/Makefile b/arch/mips/lib/Makefile
-index 1e9e900..0344e57 100644
---- a/arch/mips/lib/Makefile
-+++ b/arch/mips/lib/Makefile
-@@ -15,4 +15,4 @@ obj-$(CONFIG_CPU_R3000)		+= r3k_dump_tlb.o
- obj-$(CONFIG_CPU_TX39XX)	+= r3k_dump_tlb.o
- 
- # libgcc-style stuff needed in the kernel
--obj-y += ashldi3.o ashrdi3.o cmpdi2.o lshrdi3.o ucmpdi2.o
-+obj-y += ashldi3.o ashrdi3.o bswapsi.o bswapdi.o cmpdi2.o lshrdi3.o ucmpdi2.o
-diff --git a/arch/mips/lib/bswapdi.c b/arch/mips/lib/bswapdi.c
-new file mode 100644
-index 0000000..f69c41f
---- /dev/null
-+++ b/arch/mips/lib/bswapdi.c
-@@ -0,0 +1,11 @@
-+unsigned long long __bswapdi2 (unsigned long long u)
-+{
-+	return (((u) & 0xff00000000000000ull) >> 56) |
-+	       (((u) & 0x00ff000000000000ull) >> 40) |
-+	       (((u) & 0x0000ff0000000000ull) >> 24) |
-+	       (((u) & 0x000000ff00000000ull) >>  8) |
-+	       (((u) & 0x00000000ff000000ull) <<  8) |
-+	       (((u) & 0x0000000000ff0000ull) << 24) |
-+	       (((u) & 0x000000000000ff00ull) << 40) |
-+	       (((u) & 0x00000000000000ffull) << 56);
-+}
-diff --git a/arch/mips/lib/bswapsi.c b/arch/mips/lib/bswapsi.c
-new file mode 100644
-index 0000000..2e3ba7f
---- /dev/null
-+++ b/arch/mips/lib/bswapsi.c
-@@ -0,0 +1,7 @@
-+unsigned int __bswapsi2 (unsigned int u)
-+{
-+	return (((u) & 0xff000000) >> 24) |
-+	       (((u) & 0x00ff0000) >>  8) |
-+	       (((u) & 0x0000ff00) <<  8) |
-+	       (((u) & 0x000000ff) << 24);
-+}
+Cheers
+Kishon

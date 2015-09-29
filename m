@@ -1,20 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Sep 2015 14:09:11 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:46909 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Sep 2015 15:28:53 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:47303 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27008006AbbI2MJKQk0Vf (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 29 Sep 2015 14:09:10 +0200
+        id S27008006AbbI2N2wAUFoB (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 29 Sep 2015 15:28:52 +0200
 Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.15.2/8.14.8) with ESMTP id t8TC99sq002940;
-        Tue, 29 Sep 2015 14:09:09 +0200
+        by scotty.linux-mips.net (8.15.2/8.14.8) with ESMTP id t8TDSpnQ004218;
+        Tue, 29 Sep 2015 15:28:51 +0200
 Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.15.2/8.15.2/Submit) id t8TC993k002939;
-        Tue, 29 Sep 2015 14:09:09 +0200
-Date:   Tue, 29 Sep 2015 14:09:09 +0200
+        by scotty.linux-mips.net (8.15.2/8.15.2/Submit) id t8TDSn85004217;
+        Tue, 29 Sep 2015 15:28:49 +0200
+Date:   Tue, 29 Sep 2015 15:28:49 +0200
 From:   Ralf Baechle <ralf@linux-mips.org>
 To:     =?iso-8859-1?Q?M=E5ns_Rullg=E5rd?= <mans@mansr.com>
 Cc:     linux-mips@linux-mips.org
 Subject: Re: [PATCH] MIPS: Use ARCH_USE_BUILTIN_BSWAP.
-Message-ID: <20150929120908.GB2505@linux-mips.org>
+Message-ID: <20150929132849.GC2505@linux-mips.org>
 References: <20150929102855.GA1319@linux-mips.org>
  <20150929115222.GA2505@linux-mips.org>
  <yw1x612tqvur.fsf@unicorn.mansr.com>
@@ -28,7 +28,7 @@ Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49396
+X-archive-position: 49398
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -67,6 +67,7 @@ On Tue, Sep 29, 2015 at 12:59:56PM +0100, Måns Rullgård wrote:
 > 
 > Have you checked which object file(s) the increase comes from?
 
-Working on that.
+The data size difference is created in the final link stage.  data for
+all inividual .o files even vmlinux.o; only vmlinux differs.
 
   Ralf

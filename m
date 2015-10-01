@@ -1,45 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Sep 2015 16:08:38 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:11961 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27009069AbbI3OIhjhTPK (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 30 Sep 2015 16:08:37 +0200
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id EFCBAB60636AC;
-        Wed, 30 Sep 2015 15:08:27 +0100 (IST)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Wed, 30 Sep 2015 15:08:30 +0100
-Received: from [192.168.154.94] (192.168.154.94) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Wed, 30 Sep
- 2015 15:08:30 +0100
-Subject: Re: [PATCH 0/6] Implement generic IPI support mechanism
-To:     Thomas Gleixner <tglx@linutronix.de>
-References: <1443019758-20620-1-git-send-email-qais.yousef@imgtec.com>
- <5602D958.6000003@linux.intel.com> <5603B6CA.7050601@imgtec.com>
- <alpine.DEB.2.11.1509292101420.4500@nanos> <560BE4F3.7060607@imgtec.com>
- <alpine.DEB.2.11.1509301602160.4500@nanos>
-CC:     Jiang Liu <jiang.liu@linux.intel.com>,
-        <linux-kernel@vger.kernel.org>, <marc.zyngier@arm.com>,
-        <jason@lakedaemon.net>, <linux-mips@linux-mips.org>
-From:   Qais Yousef <qais.yousef@imgtec.com>
-Message-ID: <560BECDE.7090405@imgtec.com>
-Date:   Wed, 30 Sep 2015 15:08:30 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.2.0
-MIME-Version: 1.0
-In-Reply-To: <alpine.DEB.2.11.1509301602160.4500@nanos>
-Content-Type: text/plain; charset="windows-1252"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.154.94]
-Return-Path: <Qais.Yousef@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Oct 2015 02:52:37 +0200 (CEST)
+Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:47893 "EHLO
+        shadbolt.e.decadent.org.uk" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27009320AbbJAAwfsintg (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 1 Oct 2015 02:52:35 +0200
+Received: from deadeye.wl.decadent.org.uk ([192.168.4.247] helo=deadeye)
+        by shadbolt.decadent.org.uk with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.84)
+        (envelope-from <ben@decadent.org.uk>)
+        id 1ZhS6s-0000t6-EK; Thu, 01 Oct 2015 01:52:34 +0100
+Received: from ben by deadeye with local (Exim 4.86)
+        (envelope-from <ben@decadent.org.uk>)
+        id 1ZhS6n-0003BT-Ak; Thu, 01 Oct 2015 01:52:29 +0100
+Message-ID: <1443660744.2730.19.camel@decadent.org.uk>
+Subject: [PATCH RESEND] MIPS: BPF: Disable JIT on R3000 (MIPS-I)
+From:   Ben Hutchings <ben@decadent.org.uk>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org
+Date:   Thu, 01 Oct 2015 01:52:24 +0100
+Content-Type: multipart/signed; micalg="pgp-sha512";
+        protocol="application/pgp-signature"; boundary="=-q85VFV3otLtbf1KW0LHx"
+X-Mailer: Evolution 3.16.5-1 
+Mime-Version: 1.0
+X-SA-Exim-Connect-IP: 192.168.4.247
+X-SA-Exim-Mail-From: ben@decadent.org.uk
+X-SA-Exim-Scanned: No (on shadbolt.decadent.org.uk); SAEximRunCond expanded to false
+Return-Path: <ben@decadent.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49407
+X-archive-position: 49408
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: qais.yousef@imgtec.com
+X-original-sender: ben@decadent.org.uk
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,48 +45,56 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 09/30/2015 03:03 PM, Thomas Gleixner wrote:
-> On Wed, 30 Sep 2015, Qais Yousef wrote:
->
->> On 09/29/2015 09:48 PM, Thomas Gleixner wrote:
->>> 	 Now how these hwirqs are allocated is a domain/architecture
->>> 	 specific issue.
->>>
->>> 	 x86 will just find a vector which is available on all target
->>> 	 cpus and mark it as used. That's a single hw irq number.
->>>
->>> 	 mips and others, which implement IPIs as regular hw interrupt
->>> 	 numbers, will allocate a these (consecutive) hw interrupt
->>> 	 numbers either from a reserved region or just from the
->>> 	 regular space. That's a bunch of hw irq numbers and we need
->>> 	 to come up with a proper storage format in the irqdata for
->>> 	 that. That might be
->>>
->>> 	       struct ipi_mapping {
->>> 		      unsigned int	nr_hwirqs;
->>> 		      unsigned int	cpumap[NR_CPUS];
->>> 	       };
->> Can we use NR_CPUS here? If we run in UP configuration for instance, this will
->> be one. The coprocessor could be outside the NR_CPUS range in general, no?
->>
->> How about
->>
->>                          struct ipi_mapping {
->>                                  unsigned int        nr_hwirqs;
->>                                  unsigned int        nr_cpus;
->>                                  unsigned int        *cpumap;
->>                          }
->>
->> where cpumap is dynamically allocated by the controller which has better
->> knowledge about the supported cpu range it can talk to?
-> Sure. As I said: 'That might be' ....
->   
->
 
+--=-q85VFV3otLtbf1KW0LHx
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-OK thanks. I just wanted to make sure I didn't misunderstand anything.
+The JIT does not include the load delay slots required by MIPS-I
+processors.
 
-Will try to send an updated version with all the changes soon.
+Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
+---
+ arch/mips/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Thanks,
-Qais
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 199a835..7ff9cba 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -12,7 +12,7 @@ config MIPS
+ 	select HAVE_ARCH_KGDB
+ 	select HAVE_ARCH_SECCOMP_FILTER
+ 	select HAVE_ARCH_TRACEHOOK
+-	select HAVE_BPF_JIT if !CPU_MICROMIPS
++	select HAVE_BPF_JIT if !CPU_MICROMIPS && !CPU_R3000
+ 	select ARCH_HAVE_CUSTOM_GPIO_H
+ 	select HAVE_FUNCTION_TRACER
+ 	select HAVE_DYNAMIC_FTRACE
+--=20
+Ben Hutchings
+Knowledge is power.  France is bacon.
+
+--=-q85VFV3otLtbf1KW0LHx
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
+
+iQIVAwUAVgyDyOe/yOyVhhEJAQrO2g//e9XaSoiwmSQIv0GTnsID/X1Pkabj+POA
+Q1EGHRdR0b8fj9WjTSbuwMnieNJ8KgaKDl/NMrxzMsL68s2f6vzUUb31HwJfAmk5
+ZkfrmXR1qNA2Xpfx/CZL8prLf2mZIzhRuArei/p6SQrRoErDKtf1HdEbURlZQI9l
+TLpUtYmX+Omb1hJRw7wpIox3RmJm6wKOKV3jW12OyOeBOawsLHhgz0xaoYyQS4mN
+dtKdGzLcozDbCtfsQ7mphPIfI1nJV5MS9vQc3XaRueNaVrvGsgeRcA3ebZy26zoF
+ydT16lKnt/tEPoxkd1Crd4IsreyqUwQca3HT25KZPZJ+QPCIk4n83qcrZmDFQk08
+j/fEFD1dNk1g8ALBxzS6wDT3gdxXWMlbPA1xZmmUhxd9oTJ5E48sMnVmMdrCd4rQ
+TxiFrji8YYbGsBB4S1XuMmCwPoy5fenzgce5RrizLL8JlET321GGYosOHswsA1gx
+VM/KmfYUXhxmardb/hUETGwAmfCOENj6O1cOHPYellX70t72kpF02cdy1ICXPr1R
+6Joz1tAvlP345aXSGC+Qv/xXxR2M1kamAPg6fYllxOHU0eXqY6V2tXlvLx48crvZ
+gFvEgyxebXz5ZXJ+2KonNoUZm7FzEjOAnztDS0eHed6ht89tSxrAISP7PlEsS0ER
+NBnuOK6Ni/Y=
+=rPpP
+-----END PGP SIGNATURE-----
+
+--=-q85VFV3otLtbf1KW0LHx--

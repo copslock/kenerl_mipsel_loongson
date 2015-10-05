@@ -1,46 +1,96 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Oct 2015 03:35:48 +0200 (CEST)
-Received: from resqmta-po-08v.sys.comcast.net ([96.114.154.167]:54104 "EHLO
-        resqmta-po-08v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27009480AbbJEBfqBFZY0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 5 Oct 2015 03:35:46 +0200
-Received: from resomta-po-18v.sys.comcast.net ([96.114.154.242])
-        by resqmta-po-08v.sys.comcast.net with comcast
-        id RDbc1r0085E3ZMc01DbcWb; Mon, 05 Oct 2015 01:35:36 +0000
-Received: from [192.168.1.13] ([76.106.83.43])
-        by resomta-po-18v.sys.comcast.net with comcast
-        id RDbZ1r00E0w5D3801DbaDY; Mon, 05 Oct 2015 01:35:36 +0000
-From:   Joshua Kinard <kumba@gentoo.org>
-Subject: IP27: BUG() in __mm_populate+0x58
-X-Enigmail-Draft-Status: N1110
-To:     Linux/MIPS <linux-mips@linux-mips.org>
-Cc:     Ralf Baechle <ralf@linux-mips.org>
-Message-ID: <5611D3E5.8080402@gentoo.org>
-Date:   Sun, 4 Oct 2015 21:35:33 -0400
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:38.0) Gecko/20100101
- Thunderbird/38.2.0
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=comcast.net;
-        s=q20140121; t=1444008936;
-        bh=ebLpYO60zUpv64TALhEYBkWpkPwvbFfV9o+RxE3TxAo=;
-        h=Received:Received:From:Subject:To:Message-ID:Date:MIME-Version:
-         Content-Type;
-        b=AA82Zyy4ReVkRsRapCp4+VSi3NWp9QDRgO+cbfiQ+H9IAPNcQ2yMF3UGA+rF/wAgm
-         +xoGMPuLziwvRHqrIndvOJ1p9FkdYELguRTIMmMWPcxC3JKUZ/Mti1b5tpAgfy5Xgf
-         8eDEeetEbiN6Cz5G1g82yyv6fzERhNhjrOLXSq5BGUOHch8p4s7WcQ8v4tqNmrlKcL
-         zJ7LsgJ3/5K0GxeWL9w3/VDFr/Tjo9vh6urvHvnVxcj8ircZi2XO8l+2Y00TYmqVN8
-         UVd00iKGH+xT1G6cAXFOs4d89brrjneaTMUCszgfJPq/A4+fZZcIZeB73t6iTOGApE
-         88Lk5hbTQw4cA==
-Return-Path: <kumba@gentoo.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Oct 2015 03:36:47 +0200 (CEST)
+Received: from mailout2.samsung.com ([203.254.224.25]:51741 "EHLO
+        mailout2.samsung.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27009479AbbJEBgnWPjT0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 5 Oct 2015 03:36:43 +0200
+Received: from epcpsbgr5.samsung.com
+ (u145.gpu120.samsung.co.kr [203.254.230.145])
+ by mailout2.samsung.com (Oracle Communications Messaging Server 7.0.5.31.0
+ 64bit (built May  5 2014))
+ with ESMTP id <0NVQ01BPW4GX9810@mailout2.samsung.com>; Mon,
+ 05 Oct 2015 10:36:33 +0900 (KST)
+Received: from epcpsbgm1new.samsung.com ( [172.20.52.114])
+        by epcpsbgr5.samsung.com (EPCPMTA) with SMTP id C1.2D.05385.124D1165; Mon,
+ 5 Oct 2015 10:36:33 +0900 (KST)
+X-AuditID: cbfee691-f79d66d000001509-5a-5611d421686d
+Received: from epmmp1.local.host ( [203.254.227.16])
+        by epcpsbgm1new.samsung.com (EPCPMTA) with SMTP id A0.E2.23663.024D1165; Mon,
+ 5 Oct 2015 10:36:33 +0900 (KST)
+Received: from [10.252.81.186] by mmp1.samsung.com
+ (Oracle Communications Messaging Server 7.0.5.31.0 64bit (built May  5 2014))
+ with ESMTPA id <0NVQ007144GWRT20@mmp1.samsung.com>; Mon,
+ 05 Oct 2015 10:36:32 +0900 (KST)
+Message-id: <5611D420.5080708@samsung.com>
+Date:   Mon, 05 Oct 2015 10:36:32 +0900
+From:   Jaehoon Chung <jh80.chung@samsung.com>
+User-Agent: Mozilla/5.0 (X11; Linux i686; rv:31.0) Gecko/20100101
+ Thunderbird/31.6.0
+MIME-version: 1.0
+To:     Shawn Lin <shawn.lin@rock-chips.com>, ulf.hansson@linaro.org
+Cc:     Vineet.Gupta1@synopsys.com, Wei Xu <xuwei5@hisilicon.com>,
+        Joachim Eastwood <manabian@gmail.com>,
+        Alexey Brodkin <abrodkin@synopsys.com>,
+        Kukjin Kim <kgene@kernel.org>,
+        Krzysztof Kozlowski <k.kozlowski@samsung.com>,
+        Russell King <linux@arm.linux.org.uk>,
+        Jun Nie <jun.nie@linaro.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Govindraj Raja <govindraj.raja@imgtec.com>,
+        Arnd Bergmann <arnd@arndb.de>, heiko@sntech.de,
+        dianders@chromium.org, linux-samsung-soc@vger.kernel.org,
+        linux-mips@linux-mips.org, linux-mmc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-rockchip@lists.infradead.org,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        CPGS <cpgs@samsung.com>
+Subject: Re: [RFC PATCH v8 0/10] Add external dma support for Synopsys MSHC
+References: <1442385625-26775-1-git-send-email-shawn.lin@rock-chips.com>
+ <560CF98B.7010609@samsung.com> <560E5320.6050003@rock-chips.com>
+In-reply-to: <560E5320.6050003@rock-chips.com>
+Content-type: text/plain; charset=windows-1252
+Content-transfer-encoding: 7bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprHKsWRmVeSWpSXmKPExsWyRsSkSFfximCYwZbHohbNV5+yW/yddIzd
+        4uUhTYv5R86xWpxddpDN4sfTeywW/x+9ZrVY8uQhu8XrF4YW/Y9fM1tsenyN1eLyrjlsFhOm
+        TmK3OPK/n9Hi04P/zBYzzu9jsrh9mddi9/VzjBaX9qhY3HmyntXi+Npwi8ZXa5ktnhydwuwg
+        7tHS3MPm8fvXJEaP2Q0XWTx2zrrL7vF47kZ2j56dZxg9Nq3qZPO4c20Pm8fRlWuZPDYvqff4
+        O2s/i0ffllWMHtuvzWP22LL/M6PH501yAfxRXDYpqTmZZalF+nYJXBkrDs1hKXhvXfFxyQnG
+        BsYjel2MnBwSAiYSCx9eYoGwxSQu3FvP1sXIxSEksIJRonv5MjaYov1XtrJCJJYySuz/u4wR
+        wnnAKDG17S1QhoODV0BL4v5BB5AGFgFVic+TW8Ca2QR0JLZ/O84EYosKhEk8WLeXFcTmFRCU
+        +DH5HgtIq4iAg8Sm+SIgI5kFDrBKHHt+jxGkRljAW6Lp+g+oi7qBFi+cwQyS4BTQkzgzbyvY
+        XmYg+/5FLZAws4C8xOY1b5lB6iUE+jklWpYfYIM4SEDi2+RDYMskBGQlNh1ghnhMUuLgihss
+        ExjFZiE5aRbC1FlIpi5gZF7FKJpakFxQnJReZKpXnJhbXJqXrpecn7uJEZhsTv97NnEH4/0D
+        1ocYBTgYlXh4JZIEw4RYE8uKK3MPMZoCHTGRWUo0OR+Y0vJK4g2NzYwsTE1MjY3MLc2UxHl1
+        pH8GCwmkJ5akZqemFqQWxReV5qQWH2Jk4uCUamA8a5E96T1H2bZbDQmv/lw2Tv/3bhPf0eoJ
+        otXN1Qxe+UGpItbFEUl33Te8vOXrulNA78eVmwwGC52n/97/T+23c7CDkoP8uuqvQbmN/htb
+        XQ6nmdpzxfts5oxyPPhcW3/++Tu5BoLnpr/LTzjyd1tGn5fh2Rd3+wRYVrIt2PVH5p7lp3jf
+        2cJKLMUZiYZazEXFiQA7qLJ9MQMAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrNKsWRmVeSWpSXmKPExsVy+t9jAV3FK4JhBivO8lo0X33KbvF30jF2
+        i5eHNC3mHznHanF22UE2ix9P77FY/H/0mtViyZOH7BavXxha9D9+zWyx6fE1VovLu+awWUyY
+        Oond4sj/fkaLTw/+M1vMOL+PyeL2ZV6L3dfPMVpc2qNicefJelaL42vDLRpfrWW2eHJ0CrOD
+        uEdLcw+bx+9fkxg9ZjdcZPHYOesuu8fjuRvZPXp2nmH02LSqk83jzrU9bB5HV65l8ti8pN7j
+        76z9LB59W1Yxemy/No/ZY8v+z4wenzfJBfBHNTDaZKQmpqQWKaTmJeenZOal2yp5B8c7x5ua
+        GRjqGlpamCsp5CXmptoqufgE6Lpl5gDDQEmhLDGnFCgUkFhcrKRvh2lCaIibrgVMY4Sub0gQ
+        XI+RARpIWMOYseLQHJaC99YVH5ecYGxgPKLXxcjJISFgIrH/ylZWCFtM4sK99WxdjFwcQgJL
+        GSX2/13GCOE8YJSY2vYWqIqDg1dAS+L+QQeQBhYBVYnPk1vYQGw2AR2J7d+OM4HYogJhEg/W
+        7QUbyisgKPFj8j0WkFYRAQeJTfNFQEYyCxxglTj2/B4jSI2wgLdE0/UfUIu7gRYvnMEMkuAU
+        0JM4M28r2F5mIPv+RS2QMLOAvMTmNW+ZJzAKzEKyYhZC1SwkVQsYmVcxSqQWJBcUJ6XnGual
+        lusVJ+YWl+al6yXn525iBCe0Z1I7GA/ucj/EKMDBqMTDeyBeMEyINbGsuDL3EKMEB7OSCK/O
+        YaAQb0piZVVqUX58UWlOavEhRlNgGExklhJNzgcm27ySeENjEzMjSyNzQwsjY3Mlcd4bhxjC
+        hATSE0tSs1NTC1KLYPqYODilGhg9n1WbzLi9Vbr43cO1L7xziv9o3Nx80ZBFhdm7b/lyu3kX
+        RX8VmR6SDjnltPRwlN56i9rmBd9fmDwS+v3euOP5RcXdjzy/7Xg48cmC6UkbX8+NefJY8/ZL
+        vmO7VrTdWaL2bcrFu35ebZf5nPjEpu5UudVkfbo6eVHU6Wnia69fuf1LYW/614SuRiWW4oxE
+        Qy3mouJEAJN145N+AwAA
+DLP-Filter: Pass
+X-MTR:  20000000000000000@CPGS
+X-CFilter-Loop: Reflected
+Return-Path: <jh80.chung@samsung.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49418
+X-archive-position: 49419
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kumba@gentoo.org
+X-original-sender: jh80.chung@samsung.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,82 +103,168 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+Hi, Shawn.
 
-Finally found a configuration that gets me some kind of crash output on IP27.
-I have no idea if it's the source of the lockup bug I've described in the past,
-but I've reproduced it twice in the exact same fashion (starting ntpd up on
-boot) and same Oops message:
+On 10/02/2015 06:49 PM, Shawn Lin wrote:
+> On 2015/10/1 17:14, Jaehoon Chung wrote:
+>> Dear, All.
+>>
+>> I will apply patch 01-03 at my repository on today.
+>> But i don't know better how i do about other patches relevant to config file.
+>>
+> 
+> Thanks, Jaehoon. :)
+> 
+> I guess it would be acceptable to pick the config changes, already they were acked by the soc maintainers, via dw_mmc tree when ulf merge dw_mmc tree into his mmc-tree.
 
- * Starting ntpd ...
- [ ok ]
-[   81.301036] Kernel bug detected[#1]:
-[   81.344205] CPU: 1 PID: 1288 Comm: ntpd Not tainted
-4.3.0-rc4-mipsgit-20151004 #5
-[   81.434469] task: a8000000e675d0b8 ti: a8000000e7180000 task.ti:
-a8000000e7180000
-[   81.524637] $ 0   : 0000000000000000 ffffffff94001ce0 0000000000000001
-ffffffffffff0000
-[   81.621616] $ 4   : 0000000000000000 000000007fff8000 0000000000000001
-0000000000024b80
-[   81.718600] $ 8   : 0000000000000015 000fffffffffffff 00000000007c0000
-0000000000fffffc
-[   81.815583] $12   : 000000007fb00000 0000000000000000 0000000000000004
-000000007fac0000
-[   81.912566] $16   : 0000000000000000 0000000000001000 00000000100a0000
-a8000000e6b16a80
-[   82.009549] $20   : 00000000100970d0 00000000100a0000 0000000000000004
-000000001007bf50
-[   82.106533] $24   : 00000000fa83b2da a80000000008e740
-[   82.203516] $28   : a8000000e7180000 a8000000e718fe20 0000000000000000
-a80000000013a5f0
-[   82.300501] Hi    : 0000000000000000
-[   82.343549] Lo    : 025dbd0b00000000
-[   82.386628] epc   : a8000000001306c0 __mm_populate+0x58/0x1b0
-[   82.455944] ra    : a80000000013a5f0 SyS_mlockall+0x168/0x1d0
-[   82.525154] Status: 94001ce3 KX SX UX KERNEL EXL IE
-[   82.585695] Cause : 00008034 (ExcCode 0d)
-[   82.633976] PrId  : 00000f14 (R14000)
-[   82.678076] Process ntpd (pid: 1288, threadinfo=a8000000e7180000,
-task=a8000000e675d0b8, tls=00000000775dde50)
-[   82.798615] Stack : 00000000e6b16b18 a8000000000a3c9c ffffffff94001ce1
-0000000000000000
-          0000000000000000 0000000000000000 0000000000001000 00000000100a0000
-          0000000000000000 00000000100970d0 00000000100a0000 0000000000000004
-          000000001007bf50 a80000000013a5f0 00000000100e7180 0000000010090000
-          0000000010010000 a800000000036754 0000000000000000 ffffffffb4001ce0
-          0000000000001804 0000000000d7a592 0000000000000003 ffffffffffffffff
-          fffffffffffffffe 0000000000000000 00000000107765a0 0000000000000000
-          0000000000000001 a8000000e718fe50 0000000000000000 a8000000e6c5e9e0
-          0000000000000080 0000000076860000 00000000107765c8 00000000775d69b0
-          0000000000000000 00000000100e7180 00000000100a0000 0000000000000000
-          ...
-[   83.587576] Call Trace:
-[   83.617016] [<a8000000001306c0>] __mm_populate+0x58/0x1b0
-[   83.682062] [<a80000000013a5f0>] SyS_mlockall+0x168/0x1d0
-[   83.747110] [<a800000000036754>] syscall_common+0x8/0x34
-[   83.811182]
-[   83.829091]
-Code: 00431024  00451026  0002102b <00020336> 0085902d  0092102b  1040004f
-0080b82d  0000102d
-[   83.949931] ---[ end trace c0520c07116dba81 ]---
-[   84.005644] Fatal exception: panic in 5 seconds * Starting sshd ...
-[   89.060320] Kernel panic - not syncing: Fatal exception
-[   89.125510] ---[ end Kernel panic - not syncing: Fatal exception
+Some patches didn't get the maintainer's acked-by. 
+I will wait for that..until this week. How about?
 
-GDB traces it into the actual __BUG_ON() definition in
-arch/mips/include/asm/bug.h, line 29, but looking at __mm_populate itself,
-there's these two VM_BUG_ON() calls:
+Best Regards,
+Jaehoon Chung
 
-VM_BUG_ON(start & ~PAGE_MASK);
-VM_BUG_ON(len != PAGE_ALIGN(len));
-
-I'm not sure which one is triggering here.  Kinda suspecting the second one,
-because that seems to  go with what I've seen in the past.  There's something
-off about IP27's memory management in recent kernels, though.
-
-Seems to only happen with PAGE_SIZE_64K is set.  16K and 4K boot normally, but
-will eventually lock up later on.
-
-Thoughts?
-
---J
+> 
+> 
+>> Best Regards,
+>> Jaehoon Chung
+>>
+>> On 09/16/2015 03:40 PM, Shawn Lin wrote:
+>>> Synopsys DesignWare mobile storage host controller supports three
+>>> types of transfer mode: pio, internal dma and external dma. However,
+>>> dw_mmc can only supports pio and internal dma now. Thus some platforms
+>>> using dw-mshc integrated with generic dma can't work in dma mode. So we
+>>> submit this patch to achieve it.
+>>>
+>>> And the config option, CONFIG_MMC_DW_IDMAC, was added by Will Newton
+>>> (commit:f95f3850) for the first version of dw_mmc and never be touched since
+>>> then. At that time dt-bindings hadn't been introduced into dw_mmc yet means
+>>> we should select CONFIG_MMC_DW_IDMAC to enable internal dma mode at compile
+>>> time. Nowadays, device-tree helps us to support a variety of boards with one
+>>> kernel. That's why we need to remove it and decide the transfer mode by reading
+>>> dw_mmc's HCON reg at runtime.
+>>>
+>>> This RFC patch needs lots of ACKs. I know it's hard, but it does need someone
+>>> to make the running.
+>>>
+>>> Patch does the following things:
+>>> - remove CONFIG_MMC_DW_IDMAC config option
+>>> - add bindings for edmac used by synopsys-dw-mshc
+>>>    at runtime
+>>> - add edmac support for synopsys-dw-mshc
+>>>
+>>> Patch is based on next of git://git.linaro.org/people/ulf.hansson/mmc
+>>>
+>>> Test emmc throughput on my platform with edmac support and without edmac support(pio only)
+>>> iozone -L64 -S32 -azecwI -+n -r4k -r64k -r128k -s1g -i0 -i1 -i2 -f datafile -Rb out.xls > /mnt/result.txt
+>>> (light cpu loading, Direct IO, fixed line size, all pattern recycle, 1GB data in total)
+>>>   ___________________________________________________________
+>>> |                   external dma mode                       |
+>>> |-----------------------------------------------------------|
+>>> |blksz | Random Read | Random Write | Seq Read   | Seq Write|
+>>> |-----------------------------------------------------------|
+>>> |4kB   |  13953kB/s  |    8602kB/s  | 13672kB/s  |  9785kB/s|
+>>> |-----------------------------------------------------------|
+>>> |64kB  |  46058kB/s  |   24794kB/s  | 48058kB/s  | 25418kB/s|
+>>> |-----------------------------------------------------------|
+>>> |128kB |  57026kB/s  |   35117kB/s  | 57375kB/s  | 35183kB/s|
+>>> |-----------------------------------------------------------|
+>>>                             VS
+>>>   ___________________________________________________________
+>>> |                          pio mode                         |
+>>> |-----------------------------------------------------------|
+>>> |blksz | Random Read  | Random Write | Seq Read  | Seq Write|
+>>> |-----------------------------------------------------------|
+>>> |4kB   |  11720kB/s   |    8644kB/s  | 11549kB/s |  9624kB/s|
+>>> |-----------------------------------------------------------|
+>>> |64kB  |  21869kB/s   |   24414kB/s  | 22031kB/s | 27986kB/s|
+>>> |-----------------------------------------------------------|
+>>> |128kB |  23718kB/s   |   34495kB/s  | 24698kB/s | 34637kB/s|
+>>> |-----------------------------------------------------------|
+>>>
+>>>
+>>> Changes in v8:
+>>> - remove trans_mode variable
+>>> - remove unnecessary dma_ops check
+>>> - remove unnecessary comment
+>>> - fix coding style based on latest ulf's next
+>>> - add Acked-by: Jaehoon Chung <jh80.chung@samsung.com>
+>>>    for HCON's changes
+>>>
+>>> Changes in v7:
+>>> - rebased on Ulf's next
+>>> - combine condition state
+>>> - elaborate more about DMA_INTERFACE
+>>> - define some macro for DMA_INERFACE value
+>>> - spilt HCON ops' changes into another patch
+>>>
+>>> Changes in v6:
+>>> - add trans_mode condition for IDMAC initialization
+>>>    suggested by Heiko
+>>> - re-test my patch on rk3188 platform and update commit msg
+>>> - update performance of pio vs edmac in cover letter
+>>>
+>>> Changes in v5:
+>>> - add the title of cover letter
+>>> - fix typo of comment
+>>> - add macro for reading HCON register
+>>> - add "Acked-by: Krzysztof Kozlowski <k.kozlowski@samsung.com>" for exynos_defconfig patch
+>>> - add "Acked-by: Vineet Gupta <vgupta@synopsys.com>" for axs10x_defconfig patch
+>>> - add "Acked-by: Govindraj Raja <govindraj.raja@imgtec.com>" and
+>>>    "Acked-by: Ralf Baechle <ralf@linux-mips.org>" for pistachio_defconfig patch
+>>> - add "Acked-by: Joachim Eastwood <manabian@gmail.com>" for lpc18xx_defconfig patch
+>>> - add "Acked-by: Wei Xu <xuwei5@hisilicon.com>" for hisi_defconfig patch
+>>> - rebase on "https://github.com/jh80chung/dw-mmc.git tags/dw-mmc-for-ulf-v4.2" for merging easily
+>>>
+>>> Changes in v4:
+>>> - remove "host->trans_mode" and use "host->use_dma" to indicate
+>>>    transfer mode.
+>>> - remove all bt-bindings' changes since we don't need new properities.
+>>> - check transfer mode at runtime by reading HCON reg
+>>> - spilt defconfig changes for each sub-architecture
+>>> - fix the title of cover letter
+>>> - reuse some code for reducing code size
+>>>
+>>> Changes in v3:
+>>> - choose transfer mode at runtime
+>>> - remove all CONFIG_MMC_DW_IDMAC config option
+>>> - add supports-idmac property for some platforms
+>>>
+>>> Changes in v2:
+>>> - Fix typo of dev_info msg
+>>> - remove unused dmach from declaration of dw_mci_dma_slave
+>>>
+>>> Shawn Lin (10):
+>>>    mmc: dw_mmc: Add external dma interface support
+>>>    mmc: dw_mmc: use macro for HCON register operations
+>>>    Documentation: synopsys-dw-mshc: add bindings for idmac and edmac
+>>>    mips: pistachio_defconfig: remove CONFIG_MMC_DW_IDMAC
+>>>    arc: axs10x_defconfig: remove CONFIG_MMC_DW_IDMAC
+>>>    arm: exynos_defconfig: remove CONFIG_MMC_DW_IDMAC
+>>>    arm: hisi_defconfig: remove CONFIG_MMC_DW_IDMAC
+>>>    arm: lpc18xx_defconfig: remove CONFIG_MMC_DW_IDMAC
+>>>    arm: multi_v7_defconfig: remove CONFIG_MMC_DW_IDMAC
+>>>    arm: zx_defconfig: remove CONFIG_MMC_DW_IDMAC
+>>>
+>>>   .../devicetree/bindings/mmc/synopsys-dw-mshc.txt   |  25 ++
+>>>   arch/arc/configs/axs101_defconfig                  |   1 -
+>>>   arch/arc/configs/axs103_defconfig                  |   1 -
+>>>   arch/arc/configs/axs103_smp_defconfig              |   1 -
+>>>   arch/arm/configs/exynos_defconfig                  |   1 -
+>>>   arch/arm/configs/hisi_defconfig                    |   1 -
+>>>   arch/arm/configs/lpc18xx_defconfig                 |   1 -
+>>>   arch/arm/configs/multi_v7_defconfig                |   1 -
+>>>   arch/arm/configs/zx_defconfig                      |   1 -
+>>>   arch/mips/configs/pistachio_defconfig              |   1 -
+>>>   drivers/mmc/host/Kconfig                           |  11 +-
+>>>   drivers/mmc/host/dw_mmc-pltfm.c                    |   2 +
+>>>   drivers/mmc/host/dw_mmc.c                          | 272 +++++++++++++++++----
+>>>   drivers/mmc/host/dw_mmc.h                          |   9 +
+>>>   include/linux/mmc/dw_mmc.h                         |  23 +-
+>>>   15 files changed, 276 insertions(+), 75 deletions(-)
+>>>
+>>
+>>
+>>
+>>
+> 
+> 

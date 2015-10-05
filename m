@@ -1,44 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Oct 2015 13:29:40 +0200 (CEST)
-Received: from mail-wi0-f179.google.com ([209.85.212.179]:35767 "EHLO
-        mail-wi0-f179.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27009460AbbJEL3jRY3UV (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 5 Oct 2015 13:29:39 +0200
-Received: by wicge5 with SMTP id ge5so115846018wic.0;
-        Mon, 05 Oct 2015 04:29:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id;
-        bh=XOJG50Y9QlpzBDe6bFPtQtNBGXA7+iTXpPlt1xzkNqI=;
-        b=dwNIig4YDkAnu46/vCaC/ibdidEAmwp0kAVWDBak6zxqrV1IMZ436l2nv6djnAAXwE
-         kJ4dz6xEJtodLX7GdDVT57GVVdYCx23Dy6mVj6oxRG2J6lvhhJyw76OVzL80akJF15Tx
-         zJQy6wdzR15d12lxiXMpvqb5bA7esfthoLMlfLCcadBzo18lRr/q1Wbh/vXzM42JtRQ3
-         1j/+VK7tOR3i4FWAMPbNCrjYXHaZewZbLWSEMJ/eq0BPooyZ6HzjrEb5lUQyNFfxg30m
-         LPTOr+HJVzhcAC7m08djkD4OKM/ECke/ftYa5WbmxKOJ8die4YJbSjLT1/v85l48dHqa
-         RlAQ==
-X-Received: by 10.180.101.198 with SMTP id fi6mr11762345wib.25.1444044573006;
-        Mon, 05 Oct 2015 04:29:33 -0700 (PDT)
-Received: from localhost (port-54044.pppoe.wtnet.de. [46.59.211.200])
-        by smtp.gmail.com with ESMTPSA id jd7sm4593563wjb.19.2015.10.05.04.29.32
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 05 Oct 2015 04:29:32 -0700 (PDT)
-From:   Thierry Reding <thierry.reding@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Oct 2015 13:31:15 +0200 (CEST)
+Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:41158 "EHLO
+        shadbolt.e.decadent.org.uk" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008795AbbJELbOB825V (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 5 Oct 2015 13:31:14 +0200
+Received: from deadeye.wl.decadent.org.uk ([192.168.4.247] helo=deadeye)
+        by shadbolt.decadent.org.uk with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.84)
+        (envelope-from <ben@decadent.org.uk>)
+        id 1Zj3z6-0002z7-L2; Mon, 05 Oct 2015 12:31:12 +0100
+Received: from ben by deadeye with local (Exim 4.86)
+        (envelope-from <ben@decadent.org.uk>)
+        id 1Zj3z0-0000yr-R5; Mon, 05 Oct 2015 12:31:06 +0100
+Message-ID: <1444044661.2730.286.camel@decadent.org.uk>
+Subject: Re: [PATCH] MIPS: BPF: Disable JIT on R3000 (MIPS-I)
+From:   Ben Hutchings <ben@decadent.org.uk>
 To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org,
-        Thierry Reding <thierry.reding@gmail.com>
-Subject: [PATCH] MIPS: jz4740: Add missing gpio.h include
-Date:   Mon,  5 Oct 2015 13:29:31 +0200
-Message-Id: <1444044571-11304-1-git-send-email-thierry.reding@gmail.com>
-X-Mailer: git-send-email 2.5.0
-Return-Path: <thierry.reding@gmail.com>
+Cc:     linux-mips@linux-mips.org,
+        "Maciej W. Rozycki" <macro@linux-mips.org>
+Date:   Mon, 05 Oct 2015 12:31:01 +0100
+In-Reply-To: <20151005092440.GA1389@linux-mips.org>
+References: <1441481368.15927.0.camel@decadent.org.uk>
+         <20151005092440.GA1389@linux-mips.org>
+Content-Type: multipart/signed; micalg="pgp-sha512";
+        protocol="application/pgp-signature"; boundary="=-Nw51Tpi/5x6VF1ON00Ci"
+X-Mailer: Evolution 3.16.5-1 
+Mime-Version: 1.0
+X-SA-Exim-Connect-IP: 192.168.4.247
+X-SA-Exim-Mail-From: ben@decadent.org.uk
+X-SA-Exim-Scanned: No (on shadbolt.decadent.org.uk); SAEximRunCond expanded to false
+Return-Path: <ben@decadent.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49434
+X-archive-position: 49435
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: thierry.reding@gmail.com
+X-original-sender: ben@decadent.org.uk
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,39 +49,54 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Commit 832f5dacfa0b ("MIPS: Remove all the uses of custom gpio.h") was
-incomplete in that it didn't replace any of the includes for the JZ4740
-platform and thus broke the qi_lb60_defconfig build.
 
-Signed-off-by: Thierry Reding <thierry.reding@gmail.com>
----
- arch/mips/jz4740/board-qi_lb60.c | 1 +
- arch/mips/jz4740/gpio.c          | 1 +
- 2 files changed, 2 insertions(+)
+--=-Nw51Tpi/5x6VF1ON00Ci
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/arch/mips/jz4740/board-qi_lb60.c b/arch/mips/jz4740/board-qi_lb60.c
-index 4e62bf85d0b0..f2885adda9d0 100644
---- a/arch/mips/jz4740/board-qi_lb60.c
-+++ b/arch/mips/jz4740/board-qi_lb60.c
-@@ -35,6 +35,7 @@
- 
- #include <linux/leds_pwm.h>
- 
-+#include <asm/mach-jz4740/gpio.h>
- #include <asm/mach-jz4740/platform.h>
- 
- #include "clock.h"
-diff --git a/arch/mips/jz4740/gpio.c b/arch/mips/jz4740/gpio.c
-index 6cd69fdaa1c5..386626376b18 100644
---- a/arch/mips/jz4740/gpio.c
-+++ b/arch/mips/jz4740/gpio.c
-@@ -28,6 +28,7 @@
- #include <linux/seq_file.h>
- 
- #include <asm/mach-jz4740/base.h>
-+#include <asm/mach-jz4740/gpio.h>
- 
- #define JZ4740_GPIO_BASE_A (32*0)
- #define JZ4740_GPIO_BASE_B (32*1)
--- 
-2.5.0
+On Mon, 2015-10-05 at 11:24 +0200, Ralf Baechle wrote:
+> On Sat, Sep 05, 2015 at 08:29:28PM +0100, Ben Hutchings wrote:
+>=20
+> > The JIT does not include the load delay slots required by MIPS-I
+> > processors.
+>=20
+> See 0c5d187828588dd1b36cb93b4481a8db467ef3e8 (MIPS: BPF: Fix load delay
+> slots.) for a proper fix.
+
+How about all the inlined loads (emit_load, emit_load_byte,
+emit_half_load)?
+
+> I'm wondering, how did you find this issue, are you scanning the code
+> for broken instruction sequences?
+
+No, I was already looking at the BPF JIT implementation for some other
+reason.
+
+Ben.
+
+--=20
+Ben Hutchings
+compatible: Gracefully accepts erroneous data from any source
+--=-Nw51Tpi/5x6VF1ON00Ci
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
+
+iQIVAwUAVhJfdee/yOyVhhEJAQpW4hAAnS8WCtTHy5iUEn9OFPG8jK6BbUQ1xRkY
+mun5I1IFUJcxq0FPbpcMbc2C8X7lpjziIYZB4z9A5qrdqbu7rUBJSsCGW2/9uE7G
+ueVt8UalMcJt2MobidK+mcOROytJDQQa3BZauiZTjtX9hZWFjlonjNCe7Cn3fRju
+I36tVt4mR/VvaVXwT3KODQ6MN7xa6D8fN4JBBIzHa0qAKVNffegJrHDGJkTdp12Y
+gkaeNEwp7CqV5DY962agooG6pN3G77piX9fkfwAb6QhL9Cexn82IKMlA8POHAtiR
+HlKpXNwW1vVe8F1WgumP3PSKkRC8desh1SqmFNObgUyVgNPlD2XKjvYb/mua51Zm
+KqpeYd494niN7Z7waVfo3j03jt/amW17qmj8BfK+nVV0jShT9YLBYqdCUhdHxlsM
+20ARZdhwQ4t2xdqAx/JBZc+5nThj8aybQ85pIq6lb1+Dn28sRr5Zpsr+JJEN247S
+zGCfyTCBPsgeUEzmaIVP4OWe7BIUKlZo8dkxD2vL/g7K8VsUP9VrQv8pyfqxrCGl
+2r7REktD0kDQkamAEv0qIkpEkj+XZn8CrLlesJUFNDJ5rYQ0itLPADPsAbRdJQRL
+wC6xZf3z2M1e16NbPsDTAkL+9i2QAR+o2QBIAFMae/iVQ0PlNEbol9/G2CuGt7cE
+Tykcz0njfJY=
+=0Kpy
+-----END PGP SIGNATURE-----
+
+--=-Nw51Tpi/5x6VF1ON00Ci--

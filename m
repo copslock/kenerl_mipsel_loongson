@@ -1,37 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Oct 2015 14:54:27 +0200 (CEST)
-Received: from smtp-out-240.synserver.de ([212.40.185.240]:1114 "EHLO
-        smtp-out-240.synserver.de" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27009479AbbJEMyKIM6A8 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 5 Oct 2015 14:54:10 +0200
-Received: (qmail 20694 invoked by uid 0); 5 Oct 2015 12:54:08 -0000
-X-SynServer-TrustedSrc: 1
-X-SynServer-AuthUser: lars@metafoo.de
-X-SynServer-PPID: 20471
-Received: from 149-13-247-10.c.wicklowbroadband.com (HELO ?10.128.45.80?) [149.13.247.10]
-  by 217.119.54.96 with AES128-SHA encrypted SMTP; 5 Oct 2015 12:54:06 -0000
-Message-ID: <561272EC.2080602@metafoo.de>
-Date:   Mon, 05 Oct 2015 14:54:04 +0200
-From:   Lars-Peter Clausen <lars@metafoo.de>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Icedove/31.8.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Oct 2015 15:18:16 +0200 (CEST)
+Received: from smtp2-g21.free.fr ([212.27.42.2]:8462 "EHLO smtp2-g21.free.fr"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27009506AbbJENSOR6o78 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 5 Oct 2015 15:18:14 +0200
+Received: from avionic-0020 (unknown [91.60.2.86])
+        (Authenticated sender: albeu@free.fr)
+        by smtp2-g21.free.fr (Postfix) with ESMTPSA id 5CF9C4B0049;
+        Mon,  5 Oct 2015 15:18:07 +0200 (CEST)
+Date:   Mon, 5 Oct 2015 15:18:03 +0200
+From:   Alban <albeu@free.fr>
+To:     Thierry Reding <thierry.reding@gmail.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        Alban <albeu@free.fr>
+Subject: Re: [PATCH] MIPS: jz4740: Add missing gpio.h include
+Message-ID: <20151005151803.5b5a5b40@avionic-0020>
+In-Reply-To: <1444044571-11304-1-git-send-email-thierry.reding@gmail.com>
+References: <1444044571-11304-1-git-send-email-thierry.reding@gmail.com>
+X-Mailer: Claws Mail 3.9.3 (GTK+ 2.24.23; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-To:     Thierry Reding <thierry.reding@gmail.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-CC:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] MIPS: jz4740: qi_lb60: Remove unused linux/leds_pwm.h
- include
-References: <1444048957-29486-1-git-send-email-thierry.reding@gmail.com>
-In-Reply-To: <1444048957-29486-1-git-send-email-thierry.reding@gmail.com>
-Content-Type: text/plain; charset=windows-1252
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Return-Path: <lars@metafoo.de>
+Return-Path: <albeu@free.fr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49439
+X-archive-position: 49440
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: lars@metafoo.de
+X-original-sender: albeu@free.fr
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,12 +43,13 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 10/05/2015 02:42 PM, Thierry Reding wrote:
-> The board code never sets up a leds-pwm device, so including the header
-> is not necessary.
->
-> Signed-off-by: Thierry Reding <thierry.reding@gmail.com>
+Am Mon,  5 Oct 2015 13:29:31 +0200
+schrieb Thierry Reding <thierry.reding@gmail.com>:
 
-Acked-by: Lars-Peter Clausen <lars@metafoo.de>
+> Commit 832f5dacfa0b ("MIPS: Remove all the uses of custom gpio.h") was
+> incomplete in that it didn't replace any of the includes for the JZ4740
+> platform and thus broke the qi_lb60_defconfig build.
 
-Thanks
+The fix for this break has just been merged upstream yesterday.
+
+Alban

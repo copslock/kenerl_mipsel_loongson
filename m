@@ -1,42 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Oct 2015 13:31:15 +0200 (CEST)
-Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:41158 "EHLO
-        shadbolt.e.decadent.org.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008795AbbJELbOB825V (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 5 Oct 2015 13:31:14 +0200
-Received: from deadeye.wl.decadent.org.uk ([192.168.4.247] helo=deadeye)
-        by shadbolt.decadent.org.uk with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.84)
-        (envelope-from <ben@decadent.org.uk>)
-        id 1Zj3z6-0002z7-L2; Mon, 05 Oct 2015 12:31:12 +0100
-Received: from ben by deadeye with local (Exim 4.86)
-        (envelope-from <ben@decadent.org.uk>)
-        id 1Zj3z0-0000yr-R5; Mon, 05 Oct 2015 12:31:06 +0100
-Message-ID: <1444044661.2730.286.camel@decadent.org.uk>
-Subject: Re: [PATCH] MIPS: BPF: Disable JIT on R3000 (MIPS-I)
-From:   Ben Hutchings <ben@decadent.org.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Oct 2015 13:31:33 +0200 (CEST)
+Received: from mail-wi0-f181.google.com ([209.85.212.181]:37337 "EHLO
+        mail-wi0-f181.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27009490AbbJELbYjFAcV (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 5 Oct 2015 13:31:24 +0200
+Received: by wicfx3 with SMTP id fx3so109701674wic.0;
+        Mon, 05 Oct 2015 04:31:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id;
+        bh=yMamVg8Q87/4cjANfdCzgcS87qkPLzxPJeS4cwZtPis=;
+        b=UmIcmYfMznvwBS2Dac7CAzSUoWTf+8YYXNOMUdsybVzMTL25wCsaNxJ0SgBb6JHoC5
+         mI+9xg5iiyXoAgSStprXHrypvCh2hZ7LFfImGtqS4f26YPSSBfbAsvEYDnsX/gqdWrPt
+         WpbocOINT0hD3WlVOEdGoaTBNkebdZ5z+vEQt0B+s3WrO4di9rrSvfCnFVxpVRZytpdi
+         uFynSAU/BYkc76HWEWy2VuoHUZs6YzMDpgrtBsRfBKIj3oIvnGZAhwlxWB7DAwazUtMO
+         IhYemPPVUuFJiRr+NNEl2tsWVtdpwWzx1eEYaeLqB74ZseX/RhpHUAkJ4KcqAxmYT9c6
+         Wc8Q==
+X-Received: by 10.194.113.1 with SMTP id iu1mr34742156wjb.158.1444044679215;
+        Mon, 05 Oct 2015 04:31:19 -0700 (PDT)
+Received: from localhost (port-54044.pppoe.wtnet.de. [46.59.211.200])
+        by smtp.gmail.com with ESMTPSA id bh5sm26403960wjb.42.2015.10.05.04.31.18
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 05 Oct 2015 04:31:18 -0700 (PDT)
+From:   Thierry Reding <thierry.reding@gmail.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org,
-        "Maciej W. Rozycki" <macro@linux-mips.org>
-Date:   Mon, 05 Oct 2015 12:31:01 +0100
-In-Reply-To: <20151005092440.GA1389@linux-mips.org>
-References: <1441481368.15927.0.camel@decadent.org.uk>
-         <20151005092440.GA1389@linux-mips.org>
-Content-Type: multipart/signed; micalg="pgp-sha512";
-        protocol="application/pgp-signature"; boundary="=-Nw51Tpi/5x6VF1ON00Ci"
-X-Mailer: Evolution 3.16.5-1 
-Mime-Version: 1.0
-X-SA-Exim-Connect-IP: 192.168.4.247
-X-SA-Exim-Mail-From: ben@decadent.org.uk
-X-SA-Exim-Scanned: No (on shadbolt.decadent.org.uk); SAEximRunCond expanded to false
-Return-Path: <ben@decadent.org.uk>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org,
+        Thierry Reding <thierry.reding@gmail.com>
+Subject: [PATCH] MIPS: jz4740: Use PWM lookup table
+Date:   Mon,  5 Oct 2015 13:31:17 +0200
+Message-Id: <1444044677-11518-1-git-send-email-thierry.reding@gmail.com>
+X-Mailer: git-send-email 2.5.0
+Return-Path: <thierry.reding@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49435
+X-archive-position: 49436
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ben@decadent.org.uk
+X-original-sender: thierry.reding@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,54 +51,54 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+Associate the PWM with the pwm-beeper device using a PWM lookup table.
+This will eventually allow the legacy function calls to pwm_request() to
+be removed from all consumer drivers.
 
---=-Nw51Tpi/5x6VF1ON00Ci
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Thierry Reding <thierry.reding@gmail.com>
+---
+ arch/mips/jz4740/board-qi_lb60.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-On Mon, 2015-10-05 at 11:24 +0200, Ralf Baechle wrote:
-> On Sat, Sep 05, 2015 at 08:29:28PM +0100, Ben Hutchings wrote:
->=20
-> > The JIT does not include the load delay slots required by MIPS-I
-> > processors.
->=20
-> See 0c5d187828588dd1b36cb93b4481a8db467ef3e8 (MIPS: BPF: Fix load delay
-> slots.) for a proper fix.
-
-How about all the inlined loads (emit_load, emit_load_byte,
-emit_half_load)?
-
-> I'm wondering, how did you find this issue, are you scanning the code
-> for broken instruction sequences?
-
-No, I was already looking at the BPF JIT implementation for some other
-reason.
-
-Ben.
-
---=20
-Ben Hutchings
-compatible: Gracefully accepts erroneous data from any source
---=-Nw51Tpi/5x6VF1ON00Ci
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
-
-iQIVAwUAVhJfdee/yOyVhhEJAQpW4hAAnS8WCtTHy5iUEn9OFPG8jK6BbUQ1xRkY
-mun5I1IFUJcxq0FPbpcMbc2C8X7lpjziIYZB4z9A5qrdqbu7rUBJSsCGW2/9uE7G
-ueVt8UalMcJt2MobidK+mcOROytJDQQa3BZauiZTjtX9hZWFjlonjNCe7Cn3fRju
-I36tVt4mR/VvaVXwT3KODQ6MN7xa6D8fN4JBBIzHa0qAKVNffegJrHDGJkTdp12Y
-gkaeNEwp7CqV5DY962agooG6pN3G77piX9fkfwAb6QhL9Cexn82IKMlA8POHAtiR
-HlKpXNwW1vVe8F1WgumP3PSKkRC8desh1SqmFNObgUyVgNPlD2XKjvYb/mua51Zm
-KqpeYd494niN7Z7waVfo3j03jt/amW17qmj8BfK+nVV0jShT9YLBYqdCUhdHxlsM
-20ARZdhwQ4t2xdqAx/JBZc+5nThj8aybQ85pIq6lb1+Dn28sRr5Zpsr+JJEN247S
-zGCfyTCBPsgeUEzmaIVP4OWe7BIUKlZo8dkxD2vL/g7K8VsUP9VrQv8pyfqxrCGl
-2r7REktD0kDQkamAEv0qIkpEkj+XZn8CrLlesJUFNDJ5rYQ0itLPADPsAbRdJQRL
-wC6xZf3z2M1e16NbPsDTAkL+9i2QAR+o2QBIAFMae/iVQ0PlNEbol9/G2CuGt7cE
-Tykcz0njfJY=
-=0Kpy
------END PGP SIGNATURE-----
-
---=-Nw51Tpi/5x6VF1ON00Ci--
+diff --git a/arch/mips/jz4740/board-qi_lb60.c b/arch/mips/jz4740/board-qi_lb60.c
+index f2885adda9d0..0e6ad22d265c 100644
+--- a/arch/mips/jz4740/board-qi_lb60.c
++++ b/arch/mips/jz4740/board-qi_lb60.c
+@@ -25,6 +25,7 @@
+ #include <linux/power_supply.h>
+ #include <linux/power/jz4740-battery.h>
+ #include <linux/power/gpio-charger.h>
++#include <linux/pwm.h>
+ 
+ #include <asm/mach-jz4740/jz4740_fb.h>
+ #include <asm/mach-jz4740/jz4740_mmc.h>
+@@ -399,13 +400,15 @@ static struct platform_device avt2_usb_regulator_device = {
+ 	}
+ };
+ 
++static struct pwm_lookup qi_lb60_pwm_lookup[] = {
++	PWM_LOOKUP("jz4740-pwm", 4, "pwm-beeper", NULL, 0,
++		   PWM_POLARITY_NORMAL),
++};
++
+ /* beeper */
+ static struct platform_device qi_lb60_pwm_beeper = {
+ 	.name = "pwm-beeper",
+ 	.id = -1,
+-	.dev = {
+-		.platform_data = (void *)4,
+-	},
+ };
+ 
+ /* charger */
+@@ -491,6 +494,8 @@ static int __init qi_lb60_init_platform_devices(void)
+ 		platform_device_register(&jz4740_usb_ohci_device);
+ 	}
+ 
++	pwm_add_table(qi_lb60_pwm_lookup, ARRAY_SIZE(qi_lb60_pwm_lookup));
++
+ 	return platform_add_devices(jz_platform_devices,
+ 					ARRAY_SIZE(jz_platform_devices));
+ 
+-- 
+2.5.0

@@ -1,96 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Oct 2015 03:36:47 +0200 (CEST)
-Received: from mailout2.samsung.com ([203.254.224.25]:51741 "EHLO
-        mailout2.samsung.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27009479AbbJEBgnWPjT0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 5 Oct 2015 03:36:43 +0200
-Received: from epcpsbgr5.samsung.com
- (u145.gpu120.samsung.co.kr [203.254.230.145])
- by mailout2.samsung.com (Oracle Communications Messaging Server 7.0.5.31.0
- 64bit (built May  5 2014))
- with ESMTP id <0NVQ01BPW4GX9810@mailout2.samsung.com>; Mon,
- 05 Oct 2015 10:36:33 +0900 (KST)
-Received: from epcpsbgm1new.samsung.com ( [172.20.52.114])
-        by epcpsbgr5.samsung.com (EPCPMTA) with SMTP id C1.2D.05385.124D1165; Mon,
- 5 Oct 2015 10:36:33 +0900 (KST)
-X-AuditID: cbfee691-f79d66d000001509-5a-5611d421686d
-Received: from epmmp1.local.host ( [203.254.227.16])
-        by epcpsbgm1new.samsung.com (EPCPMTA) with SMTP id A0.E2.23663.024D1165; Mon,
- 5 Oct 2015 10:36:33 +0900 (KST)
-Received: from [10.252.81.186] by mmp1.samsung.com
- (Oracle Communications Messaging Server 7.0.5.31.0 64bit (built May  5 2014))
- with ESMTPA id <0NVQ007144GWRT20@mmp1.samsung.com>; Mon,
- 05 Oct 2015 10:36:32 +0900 (KST)
-Message-id: <5611D420.5080708@samsung.com>
-Date:   Mon, 05 Oct 2015 10:36:32 +0900
-From:   Jaehoon Chung <jh80.chung@samsung.com>
-User-Agent: Mozilla/5.0 (X11; Linux i686; rv:31.0) Gecko/20100101
- Thunderbird/31.6.0
-MIME-version: 1.0
-To:     Shawn Lin <shawn.lin@rock-chips.com>, ulf.hansson@linaro.org
-Cc:     Vineet.Gupta1@synopsys.com, Wei Xu <xuwei5@hisilicon.com>,
-        Joachim Eastwood <manabian@gmail.com>,
-        Alexey Brodkin <abrodkin@synopsys.com>,
-        Kukjin Kim <kgene@kernel.org>,
-        Krzysztof Kozlowski <k.kozlowski@samsung.com>,
-        Russell King <linux@arm.linux.org.uk>,
-        Jun Nie <jun.nie@linaro.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Oct 2015 09:41:23 +0200 (CEST)
+Received: from mail-ob0-f176.google.com ([209.85.214.176]:34871 "EHLO
+        mail-ob0-f176.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008855AbbJEHlWRDCyy (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 5 Oct 2015 09:41:22 +0200
+Received: by obbzf10 with SMTP id zf10so122347964obb.2
+        for <linux-mips@linux-mips.org>; Mon, 05 Oct 2015 00:41:14 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:in-reply-to:references:date
+         :message-id:subject:from:to:cc:content-type;
+        bh=TbFaei5fFV/SJ6K3kTN5Et6SvGoxEhxu0GDvoK2YtMw=;
+        b=Plo4eNnRIKGzDS2ITyMt2Oft8WS1dKpIwMz3twvXuOP7Fj/Znb0IOnvVim2IngFCgc
+         O3/5ToBQO5/B6iWB5rzem7z3aghY/3SDJrIfstekU6gAiuCErTvE0jg2QGcJrzkr1Twi
+         kFKyVneadFUNKHwZiUwazEdB0Ro995VxPpVm4jmmGjL6YqlBDBUaBfM132JP2WaVOSV7
+         0qxU8W5nQeNjKXcSkSRdtWuImBp0T2os5zB9nL/WZTLxNmcjLjZ+f6mtq+hdHscfFntN
+         F6o9wU/3UF0CDeO6AYKgdP5HBI+vOr9Q61EGgWP+f126ZpFJ0n5g4dvPYo4pm4MW1eti
+         GgnA==
+X-Gm-Message-State: ALoCoQnseBa5qVN1DPuadDI5tU8I8yvEwNHe6HdXUFZ+Vf6M+jevoZPnK4GRFQ6PcYaLYo18iEXd
+MIME-Version: 1.0
+X-Received: by 10.60.123.2 with SMTP id lw2mr17163831oeb.2.1444030874762; Mon,
+ 05 Oct 2015 00:41:14 -0700 (PDT)
+Received: by 10.182.44.135 with HTTP; Mon, 5 Oct 2015 00:41:14 -0700 (PDT)
+In-Reply-To: <20151002085254.6a929c58@tock>
+References: <1441100282-13584-1-git-send-email-albeu@free.fr>
+        <CACRpkdbX+cMmS-j85zqhPSa8XRQHtus6HXqZrLo9b++KAHDc5g@mail.gmail.com>
+        <20151002085254.6a929c58@tock>
+Date:   Mon, 5 Oct 2015 09:41:14 +0200
+Message-ID: <CACRpkdbyWyvLQyv8abZju4zA62JP2ARgXcsrXhX5gdWBRS+L2w@mail.gmail.com>
+Subject: Re: [PATCH] gpio: ath79: Convert to the state container design pattern
+From:   Linus Walleij <linus.walleij@linaro.org>
+To:     Alban <albeu@free.fr>
+Cc:     "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+        Alexandre Courbot <gnurou@gmail.com>,
         Ralf Baechle <ralf@linux-mips.org>,
-        Govindraj Raja <govindraj.raja@imgtec.com>,
-        Arnd Bergmann <arnd@arndb.de>, heiko@sntech.de,
-        dianders@chromium.org, linux-samsung-soc@vger.kernel.org,
-        linux-mips@linux-mips.org, linux-mmc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-rockchip@lists.infradead.org,
-        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        CPGS <cpgs@samsung.com>
-Subject: Re: [RFC PATCH v8 0/10] Add external dma support for Synopsys MSHC
-References: <1442385625-26775-1-git-send-email-shawn.lin@rock-chips.com>
- <560CF98B.7010609@samsung.com> <560E5320.6050003@rock-chips.com>
-In-reply-to: <560E5320.6050003@rock-chips.com>
-Content-type: text/plain; charset=windows-1252
-Content-transfer-encoding: 7bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprHKsWRmVeSWpSXmKPExsWyRsSkSFfximCYwZbHohbNV5+yW/yddIzd
-        4uUhTYv5R86xWpxddpDN4sfTeywW/x+9ZrVY8uQhu8XrF4YW/Y9fM1tsenyN1eLyrjlsFhOm
-        TmK3OPK/n9Hi04P/zBYzzu9jsrh9mddi9/VzjBaX9qhY3HmyntXi+Npwi8ZXa5ktnhydwuwg
-        7tHS3MPm8fvXJEaP2Q0XWTx2zrrL7vF47kZ2j56dZxg9Nq3qZPO4c20Pm8fRlWuZPDYvqff4
-        O2s/i0ffllWMHtuvzWP22LL/M6PH501yAfxRXDYpqTmZZalF+nYJXBkrDs1hKXhvXfFxyQnG
-        BsYjel2MnBwSAiYSCx9eYoGwxSQu3FvP1sXIxSEksIJRonv5MjaYov1XtrJCJJYySuz/u4wR
-        wnnAKDG17S1QhoODV0BL4v5BB5AGFgFVic+TW8Ca2QR0JLZ/O84EYosKhEk8WLeXFcTmFRCU
-        +DH5HgtIq4iAg8Sm+SIgI5kFDrBKHHt+jxGkRljAW6Lp+g+oi7qBFi+cwQyS4BTQkzgzbyvY
-        XmYg+/5FLZAws4C8xOY1b5lB6iUE+jklWpYfYIM4SEDi2+RDYMskBGQlNh1ghnhMUuLgihss
-        ExjFZiE5aRbC1FlIpi5gZF7FKJpakFxQnJReZKpXnJhbXJqXrpecn7uJEZhsTv97NnEH4/0D
-        1ocYBTgYlXh4JZIEw4RYE8uKK3MPMZoCHTGRWUo0OR+Y0vJK4g2NzYwsTE1MjY3MLc2UxHl1
-        pH8GCwmkJ5akZqemFqQWxReV5qQWH2Jk4uCUamA8a5E96T1H2bZbDQmv/lw2Tv/3bhPf0eoJ
-        otXN1Qxe+UGpItbFEUl33Te8vOXrulNA78eVmwwGC52n/97/T+23c7CDkoP8uuqvQbmN/htb
-        XQ6nmdpzxfts5oxyPPhcW3/++Tu5BoLnpr/LTzjyd1tGn5fh2Rd3+wRYVrIt2PVH5p7lp3jf
-        2cJKLMUZiYZazEXFiQA7qLJ9MQMAAA==
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrNKsWRmVeSWpSXmKPExsVy+t9jAV3FK4JhBivO8lo0X33KbvF30jF2
-        i5eHNC3mHznHanF22UE2ix9P77FY/H/0mtViyZOH7BavXxha9D9+zWyx6fE1VovLu+awWUyY
-        Oond4sj/fkaLTw/+M1vMOL+PyeL2ZV6L3dfPMVpc2qNicefJelaL42vDLRpfrWW2eHJ0CrOD
-        uEdLcw+bx+9fkxg9ZjdcZPHYOesuu8fjuRvZPXp2nmH02LSqk83jzrU9bB5HV65l8ti8pN7j
-        76z9LB59W1Yxemy/No/ZY8v+z4wenzfJBfBHNTDaZKQmpqQWKaTmJeenZOal2yp5B8c7x5ua
-        GRjqGlpamCsp5CXmptoqufgE6Lpl5gDDQEmhLDGnFCgUkFhcrKRvh2lCaIibrgVMY4Sub0gQ
-        XI+RARpIWMOYseLQHJaC99YVH5ecYGxgPKLXxcjJISFgIrH/ylZWCFtM4sK99WxdjFwcQgJL
-        GSX2/13GCOE8YJSY2vYWqIqDg1dAS+L+QQeQBhYBVYnPk1vYQGw2AR2J7d+OM4HYogJhEg/W
-        7QUbyisgKPFj8j0WkFYRAQeJTfNFQEYyCxxglTj2/B4jSI2wgLdE0/UfUIu7gRYvnMEMkuAU
-        0JM4M28r2F5mIPv+RS2QMLOAvMTmNW+ZJzAKzEKyYhZC1SwkVQsYmVcxSqQWJBcUJ6XnGual
-        lusVJ+YWl+al6yXn525iBCe0Z1I7GA/ucj/EKMDBqMTDeyBeMEyINbGsuDL3EKMEB7OSCK/O
-        YaAQb0piZVVqUX58UWlOavEhRlNgGExklhJNzgcm27ySeENjEzMjSyNzQwsjY3Mlcd4bhxjC
-        hATSE0tSs1NTC1KLYPqYODilGhg9n1WbzLi9Vbr43cO1L7xziv9o3Nx80ZBFhdm7b/lyu3kX
-        RX8VmR6SDjnltPRwlN56i9rmBd9fmDwS+v3euOP5RcXdjzy/7Xg48cmC6UkbX8+NefJY8/ZL
-        vmO7VrTdWaL2bcrFu35ebZf5nPjEpu5UudVkfbo6eVHU6Wnia69fuf1LYW/614SuRiWW4oxE
-        Qy3mouJEAJN145N+AwAA
-DLP-Filter: Pass
-X-MTR:  20000000000000000@CPGS
-X-CFilter-Loop: Reflected
-Return-Path: <jh80.chung@samsung.com>
+        Gabor Juhos <juhosg@openwrt.org>,
+        Linux MIPS <linux-mips@linux-mips.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <linus.walleij@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49419
+X-archive-position: 49420
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jh80.chung@samsung.com
+X-original-sender: linus.walleij@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -103,168 +58,23 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi, Shawn.
+On Fri, Oct 2, 2015 at 8:52 AM, Alban <albeu@free.fr> wrote:
 
-On 10/02/2015 06:49 PM, Shawn Lin wrote:
-> On 2015/10/1 17:14, Jaehoon Chung wrote:
->> Dear, All.
->>
->> I will apply patch 01-03 at my repository on today.
->> But i don't know better how i do about other patches relevant to config file.
->>
-> 
-> Thanks, Jaehoon. :)
-> 
-> I guess it would be acceptable to pick the config changes, already they were acked by the soc maintainers, via dw_mmc tree when ulf merge dw_mmc tree into his mmc-tree.
+>> Would you consider sending a patch adding yourself as maintainer
+>> for this file in MAINTAINERS?
+>
+> Yes, I'll send that soon.
 
-Some patches didn't get the maintainer's acked-by. 
-I will wait for that..until this week. How about?
+Thanks!
 
-Best Regards,
-Jaehoon Chung
+> However while looking at adding IRQ support I stumbled upon the bgpio
+> API from the generic gpio driver. I think it might make more sense
+> to simply move to this API instead of doing the above cleanup. I'll
+> send a patch for this in the next days.
 
-> 
-> 
->> Best Regards,
->> Jaehoon Chung
->>
->> On 09/16/2015 03:40 PM, Shawn Lin wrote:
->>> Synopsys DesignWare mobile storage host controller supports three
->>> types of transfer mode: pio, internal dma and external dma. However,
->>> dw_mmc can only supports pio and internal dma now. Thus some platforms
->>> using dw-mshc integrated with generic dma can't work in dma mode. So we
->>> submit this patch to achieve it.
->>>
->>> And the config option, CONFIG_MMC_DW_IDMAC, was added by Will Newton
->>> (commit:f95f3850) for the first version of dw_mmc and never be touched since
->>> then. At that time dt-bindings hadn't been introduced into dw_mmc yet means
->>> we should select CONFIG_MMC_DW_IDMAC to enable internal dma mode at compile
->>> time. Nowadays, device-tree helps us to support a variety of boards with one
->>> kernel. That's why we need to remove it and decide the transfer mode by reading
->>> dw_mmc's HCON reg at runtime.
->>>
->>> This RFC patch needs lots of ACKs. I know it's hard, but it does need someone
->>> to make the running.
->>>
->>> Patch does the following things:
->>> - remove CONFIG_MMC_DW_IDMAC config option
->>> - add bindings for edmac used by synopsys-dw-mshc
->>>    at runtime
->>> - add edmac support for synopsys-dw-mshc
->>>
->>> Patch is based on next of git://git.linaro.org/people/ulf.hansson/mmc
->>>
->>> Test emmc throughput on my platform with edmac support and without edmac support(pio only)
->>> iozone -L64 -S32 -azecwI -+n -r4k -r64k -r128k -s1g -i0 -i1 -i2 -f datafile -Rb out.xls > /mnt/result.txt
->>> (light cpu loading, Direct IO, fixed line size, all pattern recycle, 1GB data in total)
->>>   ___________________________________________________________
->>> |                   external dma mode                       |
->>> |-----------------------------------------------------------|
->>> |blksz | Random Read | Random Write | Seq Read   | Seq Write|
->>> |-----------------------------------------------------------|
->>> |4kB   |  13953kB/s  |    8602kB/s  | 13672kB/s  |  9785kB/s|
->>> |-----------------------------------------------------------|
->>> |64kB  |  46058kB/s  |   24794kB/s  | 48058kB/s  | 25418kB/s|
->>> |-----------------------------------------------------------|
->>> |128kB |  57026kB/s  |   35117kB/s  | 57375kB/s  | 35183kB/s|
->>> |-----------------------------------------------------------|
->>>                             VS
->>>   ___________________________________________________________
->>> |                          pio mode                         |
->>> |-----------------------------------------------------------|
->>> |blksz | Random Read  | Random Write | Seq Read  | Seq Write|
->>> |-----------------------------------------------------------|
->>> |4kB   |  11720kB/s   |    8644kB/s  | 11549kB/s |  9624kB/s|
->>> |-----------------------------------------------------------|
->>> |64kB  |  21869kB/s   |   24414kB/s  | 22031kB/s | 27986kB/s|
->>> |-----------------------------------------------------------|
->>> |128kB |  23718kB/s   |   34495kB/s  | 24698kB/s | 34637kB/s|
->>> |-----------------------------------------------------------|
->>>
->>>
->>> Changes in v8:
->>> - remove trans_mode variable
->>> - remove unnecessary dma_ops check
->>> - remove unnecessary comment
->>> - fix coding style based on latest ulf's next
->>> - add Acked-by: Jaehoon Chung <jh80.chung@samsung.com>
->>>    for HCON's changes
->>>
->>> Changes in v7:
->>> - rebased on Ulf's next
->>> - combine condition state
->>> - elaborate more about DMA_INTERFACE
->>> - define some macro for DMA_INERFACE value
->>> - spilt HCON ops' changes into another patch
->>>
->>> Changes in v6:
->>> - add trans_mode condition for IDMAC initialization
->>>    suggested by Heiko
->>> - re-test my patch on rk3188 platform and update commit msg
->>> - update performance of pio vs edmac in cover letter
->>>
->>> Changes in v5:
->>> - add the title of cover letter
->>> - fix typo of comment
->>> - add macro for reading HCON register
->>> - add "Acked-by: Krzysztof Kozlowski <k.kozlowski@samsung.com>" for exynos_defconfig patch
->>> - add "Acked-by: Vineet Gupta <vgupta@synopsys.com>" for axs10x_defconfig patch
->>> - add "Acked-by: Govindraj Raja <govindraj.raja@imgtec.com>" and
->>>    "Acked-by: Ralf Baechle <ralf@linux-mips.org>" for pistachio_defconfig patch
->>> - add "Acked-by: Joachim Eastwood <manabian@gmail.com>" for lpc18xx_defconfig patch
->>> - add "Acked-by: Wei Xu <xuwei5@hisilicon.com>" for hisi_defconfig patch
->>> - rebase on "https://github.com/jh80chung/dw-mmc.git tags/dw-mmc-for-ulf-v4.2" for merging easily
->>>
->>> Changes in v4:
->>> - remove "host->trans_mode" and use "host->use_dma" to indicate
->>>    transfer mode.
->>> - remove all bt-bindings' changes since we don't need new properities.
->>> - check transfer mode at runtime by reading HCON reg
->>> - spilt defconfig changes for each sub-architecture
->>> - fix the title of cover letter
->>> - reuse some code for reducing code size
->>>
->>> Changes in v3:
->>> - choose transfer mode at runtime
->>> - remove all CONFIG_MMC_DW_IDMAC config option
->>> - add supports-idmac property for some platforms
->>>
->>> Changes in v2:
->>> - Fix typo of dev_info msg
->>> - remove unused dmach from declaration of dw_mci_dma_slave
->>>
->>> Shawn Lin (10):
->>>    mmc: dw_mmc: Add external dma interface support
->>>    mmc: dw_mmc: use macro for HCON register operations
->>>    Documentation: synopsys-dw-mshc: add bindings for idmac and edmac
->>>    mips: pistachio_defconfig: remove CONFIG_MMC_DW_IDMAC
->>>    arc: axs10x_defconfig: remove CONFIG_MMC_DW_IDMAC
->>>    arm: exynos_defconfig: remove CONFIG_MMC_DW_IDMAC
->>>    arm: hisi_defconfig: remove CONFIG_MMC_DW_IDMAC
->>>    arm: lpc18xx_defconfig: remove CONFIG_MMC_DW_IDMAC
->>>    arm: multi_v7_defconfig: remove CONFIG_MMC_DW_IDMAC
->>>    arm: zx_defconfig: remove CONFIG_MMC_DW_IDMAC
->>>
->>>   .../devicetree/bindings/mmc/synopsys-dw-mshc.txt   |  25 ++
->>>   arch/arc/configs/axs101_defconfig                  |   1 -
->>>   arch/arc/configs/axs103_defconfig                  |   1 -
->>>   arch/arc/configs/axs103_smp_defconfig              |   1 -
->>>   arch/arm/configs/exynos_defconfig                  |   1 -
->>>   arch/arm/configs/hisi_defconfig                    |   1 -
->>>   arch/arm/configs/lpc18xx_defconfig                 |   1 -
->>>   arch/arm/configs/multi_v7_defconfig                |   1 -
->>>   arch/arm/configs/zx_defconfig                      |   1 -
->>>   arch/mips/configs/pistachio_defconfig              |   1 -
->>>   drivers/mmc/host/Kconfig                           |  11 +-
->>>   drivers/mmc/host/dw_mmc-pltfm.c                    |   2 +
->>>   drivers/mmc/host/dw_mmc.c                          | 272 +++++++++++++++++----
->>>   drivers/mmc/host/dw_mmc.h                          |   9 +
->>>   include/linux/mmc/dw_mmc.h                         |  23 +-
->>>   15 files changed, 276 insertions(+), 75 deletions(-)
->>>
->>
->>
->>
->>
-> 
-> 
+Yeah maybe that is better. For IRQ support please use GPIOLIB_IRQCHIP
+if you can. I think I saw that OpenWRT has implemented IRQ support for
+ath79 with some outoftree patch right?
+
+Yours,
+Linus Walleij

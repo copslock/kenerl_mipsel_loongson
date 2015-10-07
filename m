@@ -1,36 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Oct 2015 09:20:35 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:51043 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27009852AbbJGHUdTESVL (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 7 Oct 2015 09:20:33 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.15.2/8.14.8) with ESMTP id t977KWfd012931;
-        Wed, 7 Oct 2015 09:20:32 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.15.2/8.15.2/Submit) id t976dFTt012197;
-        Wed, 7 Oct 2015 08:39:15 +0200
-Date:   Wed, 7 Oct 2015 08:39:15 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Silesh C V <svellattu@mvista.com>
-Cc:     Matt Redfearn <matt.redfearn@imgtec.com>, linux-mips@linux-mips.org
-Subject: Re: [RFC PATCH 0/7] Relocatable Kernel
-Message-ID: <20151007063915.GA5425@linux-mips.org>
-References: <1444038751-25105-1-git-send-email-matt.redfearn@imgtec.com>
- <CABB6SOg3CfFdqP0PopHxae=O_1vUrK=n25b7RjEzhtFEDQF32w@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Oct 2015 13:23:28 +0200 (CEST)
+Received: from mout.kundenserver.de ([212.227.17.24]:50942 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27009919AbbJGLX0qM9eF (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 7 Oct 2015 13:23:26 +0200
+Received: from wuerfel.localnet ([149.172.15.242]) by mrelayeu.kundenserver.de
+ (mreue103) with ESMTPSA (Nemesis) id 0M2XRt-1aZQ3w2M21-00sNke; Wed, 07 Oct
+ 2015 13:23:13 +0200
+From:   Arnd Bergmann <arnd@arndb.de>
+To:     linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org
+Cc:     Russell King - ARM Linux <linux@arm.linux.org.uk>,
+        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        virtualization@lists.linux-foundation.org,
+        Gerd Hoffmann <kraxel@redhat.com>,
+        Dave Airlie <airlied@redhat.com>,
+        Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: [PATCH] drm/virtio: use %llu format string form atomic64_t
+Date:   Wed, 07 Oct 2015 13:23:07 +0200
+Message-ID: <5152101.mD2bWzUJ2V@wuerfel>
+User-Agent: KMail/4.11.5 (Linux/3.16.0-10-generic; KDE/4.11.5; x86_64; ; )
+In-Reply-To: <6260324.3MlUEc3veg@wuerfel>
+References: <5082760.FgB9zHNfte@wuerfel> <20151007104502.GH21513@n2100.arm.linux.org.uk> <6260324.3MlUEc3veg@wuerfel>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CABB6SOg3CfFdqP0PopHxae=O_1vUrK=n25b7RjEzhtFEDQF32w@mail.gmail.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <ralf@linux-mips.org>
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+X-Provags-ID: V03:K0:AvyxDNPc1XGjgHit0OIRcVA+9jaWzKKYL5XY6a0ISzJCcgCBcIE
+ QyJZLuQH56JNu4fO586WOQxclbW2cfNi47o47a2zOh7Za/u5F77MOwNKj6LcYFIkdfGqFGM
+ XlsDV3ooawdvW4XQ8LoAQoZRy1dzrKC37oDqJw3qIiVkGj2FctN6fKebs8JaEZoV3J/w4rE
+ 2bVqZmLMdO/7sOdmiBP5w==
+X-UI-Out-Filterresults: notjunk:1;V01:K0:b2XksF2t8ag=:BpRm8eXRaKAvDr1BRm4cYg
+ Li3pgWjddslKpXREs70RxAUY8jrgK83pp2UKs9fCuIVVCcDxoebUo6ovqOH+GBDwRTYDN6yVP
+ xhVsBEwxBgxO3ihrgLn3vluKB6AtujwRAJwU73kC0YgT9mqD1TD8keLoIX49qkCk9R/XAJr7h
+ Oh2zNNYaPRDKsqUwRq/vQi38dwmKZNN5N8WdcEXrYFe8S+LXih0WshYAw07az9gtrhQMuSV8+
+ L/xRs42FOyqLbIcwVjuKDxyod2UuQb4GHzV965fB7I0CeG4Yc4EBqAhffkYiqCOvzYT/PdagP
+ drFlRHI5fiYNhJgk4Xpch3iVe8ervkAcWpOEtBMBJlFCcDI0HM+xin/DRoJrMZORP0LvdX6oA
+ mEkGpK3Dw7EJ+5aSO2wQQMm//igXV4KMu310WG/Umym2dfb42eWu4oCX/LYXn8TjrfMZF/g+o
+ 8RkbYQvbvAu+oBnhOJNm1xYeuqY5dMekYiECaPD1OiNg5co+7QFaYa07t7v2Qcd6OX/m0/O06
+ GCBLxQnc3vf4bdHfANRNE9nY71h+RHoXuoI6Xm+zUNoxkDmSwXepSDwFGywvwBs8ivBfF0Tjg
+ Ni7KbzDIyhAuUrAFbTNXu2U1qMauZwyLpd7BJo+/txKrjCWPgz/7xtEu2oAnBlaf9TsCYJ0Ms
+ xkAOLqOpx6Epq+ff209ldQSHXbF2pvCS1WJ77Uf+rdr2zKM4ujWLS56qr0Sag3oPi7ERSVrua
+ caqWLOytY3q39EvI
+Return-Path: <arnd@arndb.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49467
+X-archive-position: 49468
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: arnd@arndb.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,114 +60,39 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Oct 07, 2015 at 11:21:07AM +0530, Silesh C V wrote:
+On Wednesday 07 October 2015 13:04:06 Arnd Bergmann wrote:
+> On Wednesday 07 October 2015 11:45:02 Russell King - ARM Linux wrote:
+> > On Wed, Oct 07, 2015 at 12:41:21PM +0200, Arnd Bergmann wrote:
+> > > The virtgpu driver prints the last_seq variable using the %ld or
+> > > %lu format string, which does not work correctly on all architectures
+> > > and causes this compiler warning on ARM:
+> > > 
+> > > drivers/gpu/drm/virtio/virtgpu_fence.c: In function 'virtio_timeline_value_str':
+> > > drivers/gpu/drm/virtio/virtgpu_fence.c:64:22: warning: format '%lu' expects argument of type 'long unsigned int', but argument 4 has type 'long long int' [-Wformat=]
+> > >   snprintf(str, size, "%lu", atomic64_read(&fence->drv->last_seq));
+> > >                       ^
+> > > drivers/gpu/drm/virtio/virtgpu_debugfs.c: In function 'virtio_gpu_debugfs_irq_info':
+> > > drivers/gpu/drm/virtio/virtgpu_debugfs.c:37:16: warning: format '%ld' expects argument of type 'long int', but argument 3 has type 'long long int' [-Wformat=]
+> > >   seq_printf(m, "fence %ld %lld\n",
+> > >                 ^
+> > > 
+> > > In order to avoid the warnings, this changes the format strings to %llu
+> > > and adds a cast to u64, which makes it work the same way everywhere.
+> > 
+> > You have to wonder why atomic64_* functions do not use u64 types.
+> > If they're not reliant on manipulating 64-bit quantities, then what's
+> > the point of calling them atomic _64_.
+> 
+> I haven't checked all architectures, but I assume what happens is that
+> 64-bit ones just #define atomic64_t atomic_long_t, so they don't have
+> to provide three sets of functions.
 
-> Hello Matt,
-> 
-> On Mon, Oct 5, 2015 at 3:22 PM, Matt Redfearn <matt.redfearn@imgtec.com> wrote:
-> > Hi,
-> > This patch series is a prerequisite of adding KASLR support for MIPS.
-> > So far this supports 32/64 bit big/little endian CPUs and has been
-> > tested in Qemu for Malta. It has not been tested on real hardware yet.
-> > It is presented here as an early RFC for issues that people can forsee with
-> > the many platforms, memory layouts etc that it must support.
-> >
-> > Here is a description of how relocation is achieved:
-> > * Kernel is compiled & statically linked as normal (no position independent code).
-> > * The linker flag --emit-relocs is added to the linker command line, causing ld
-> >   to include additional ".rel" sections in the output elf
-> > * A tool is used to parse the ".rel" sections and create a binary table of
-> >   relocations. Each entry in the table is 32bits, comprised of a 24bit offset
-> >   and 8bit relocation type.
-> > * The table is appended to the kernel binary image, with some space in the
-> >   memory map reserved for it in the linker script
-> > * At boot, the kernel memcpy()s itself elsewhere in memory, then goes through
-> >   the table performing each relocation on the new image
-> > * If all goes well, control is passed to the entry point of the new kernel.
+scratch that, I just looked at all the architectures and found that it's
+just completely arbitrary, even within one architecture you get a mix
+of 'long' and 'long long', plus this gem from MIPS:
 
-Due to the hefty size of the generated relocs we've decided to drop some
-of the relocation information.  For one, due to a number of objects in
-the kernel that need large alignment, such as init_thread_union, the
-kernel needs at least 8k alignment anyway and that could be as large as
-64k.  So if we allow relocation to addresses that are a multiple of 64
-the KASLR address will lose a bit of entroy at the benefit of a
-significantly smaller kernel.
+static __inline__ int atomic64_add_unless(atomic64_t *v, long a, long u)
 
-Also for 64 bit objects the R_MIPS_HIGHER and R_MIPS_HIGHEST addends
-will be zero if we only allow relocation within a 4GB segment.  Which
-for many embedded systems may actually not be a limitation at all due
-to physical memory limitations.
+which truncates the result to 32 bit.
 
-The highly bloated NABI relocation format that combines three relocs
-into a single relocation record of which only one only ever seems to
-get used allows for further space saving so so do the R_MIPS_NONE
-records.
-
-I say we because I was talking a lot with Matt about the implementation
-but the code is 100% Matt's.
-
-> We (at MontaVista) also have a working KASLR implementation (albeit on
-> 3.10.x kernel on which our distribution is based) which has been/is
-> being tested only on Cavium Octeon2. We used the following approach
-> based on a compressed image(like what x86_64 does). This makes the
-> whole thing dependent on SYS_SUPPORTS_ZBOOT though.
-> 
-> During build:
-> 
-> 1. Statically link the kernel but generate relocations with
-> --emit-relocs (As you have done).
-> 2. Use the relocs hostprog (Again, derived from x86 relocs tool) to
-> parse and optimize the relocations generated after vmlinux is built.
-> The final relocation entries are of the form  (64 bit rel_offset,8bit
-> rel_type). (I see you record only the offset from start of .text in
-> the offset field, Nice way to save some space :) ).
-> 3. The final relocation information/table is compressed together with
-> vmlinux.bin to generate vmlinuz.
-> 4. We have some logic in the relocs tool to record the size of
-> vmlinux.bin so that the decompressor routine can find the start of
-> relocation table at runtime after decompression.
-> 
-> At runtime:
-> 
-> 4. The decompressor stub decompresses the vmlinux(along with the
-> relocation table) into a random location rather than to
-> VMLINUX_LOAD_ADDRESS_ULL.
-> 5. The entropy is generated using LSBs of CP0 count register.
-> 6. After decompression, a routine handle_relocations finds the start
-> of the relocation table in the decompression buffer (see 4 above) and
-> processes the relocations based on the link-load offset. (x86_64 goes
-> to the end of the buffer and works backwards using 0 as a seperator
-> between the relocation table and uncompressed vmlinux ).
-> 7. Return the load offset to arch/mips/boot/compressed/head.S.
-> 8. Based on this load offset, fixup KERNEL_ENTRY in compressed/head.S
-> and jump to that address.
-> 
-> With this approach, the only places where we needed to touch the
-> kernel proper code was
-> 
-> 1. We do not relocate the entries in ex_table at bootup but resort to
-> fixing them up runtime (I am not proud of that code :)). My initial
-> plan was to use relative entries in the ex_table  (Like what x86_64
-> has). This will make the entries not to be relocated at bootup(will
-> also make them half the size). But the compiler would not let me do
-> that because "operation combines symbols in different segments".
-> 
-> 2. The entries in kcrctab gets relocated during bootup so that during
-> module insertion a crc mismatch will arise and the module will not get
-> installed. Fixed this the PowerPC way using ARCH_RELOCATES_KCRCTAB and
-> using _text - VMLINUX_LOAD_ADDRESS as reloc_start. Maybe the relocs
-> tool could take care of this. (I see that you have not taken care of
-> this or maybe you have and I missed it).
-> 
-> There is one issue with our approach. As our objective was only KASLR,
-> the vmlinuz is linked at a constant address (and I have not made the
-> decompressor stub -fPIC) ignoring calc_vmlinuz_load_addr . To have a
-> RELOCATABLE binary, I think we will need to have a -fPIC decompressor
-> stub.
-> 
->  I have not forward ported/tested my changes on newer kernels, so I do
-> not have a RFC patch set yet.
-
-I love competing implementations.  Let the better win :-)
-
-  Ralf
+	Arnd

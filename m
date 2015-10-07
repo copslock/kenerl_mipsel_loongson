@@ -1,20 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Oct 2015 08:43:05 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:50853 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Oct 2015 09:20:35 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:51043 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27009111AbbJGGnD4FNmL (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 7 Oct 2015 08:43:03 +0200
+        id S27009852AbbJGHUdTESVL (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 7 Oct 2015 09:20:33 +0200
 Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.15.2/8.14.8) with ESMTP id t976h0TL012350;
-        Wed, 7 Oct 2015 08:43:00 +0200
+        by scotty.linux-mips.net (8.15.2/8.14.8) with ESMTP id t977KWfd012931;
+        Wed, 7 Oct 2015 09:20:32 +0200
 Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.15.2/8.15.2/Submit) id t976gxlU012349;
-        Wed, 7 Oct 2015 08:42:59 +0200
-Date:   Wed, 7 Oct 2015 08:42:59 +0200
+        by scotty.linux-mips.net (8.15.2/8.15.2/Submit) id t976dFTt012197;
+        Wed, 7 Oct 2015 08:39:15 +0200
+Date:   Wed, 7 Oct 2015 08:39:15 +0200
 From:   Ralf Baechle <ralf@linux-mips.org>
 To:     Silesh C V <svellattu@mvista.com>
 Cc:     Matt Redfearn <matt.redfearn@imgtec.com>, linux-mips@linux-mips.org
 Subject: Re: [RFC PATCH 0/7] Relocatable Kernel
-Message-ID: <20151007064259.GA12346@linux-mips.org>
+Message-ID: <20151007063915.GA5425@linux-mips.org>
 References: <1444038751-25105-1-git-send-email-matt.redfearn@imgtec.com>
  <CABB6SOg3CfFdqP0PopHxae=O_1vUrK=n25b7RjEzhtFEDQF32w@mail.gmail.com>
 MIME-Version: 1.0
@@ -26,7 +26,7 @@ Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49466
+X-archive-position: 49467
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org

@@ -1,26 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Oct 2015 19:54:07 +0200 (CEST)
-Received: from mail-ob0-f193.google.com ([209.85.214.193]:35585 "EHLO
-        mail-ob0-f193.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010178AbbJHRyGNVqTr (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 8 Oct 2015 19:54:06 +0200
-Received: by obol7 with SMTP id l7so4302516obo.2;
-        Thu, 08 Oct 2015 10:53:58 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Oct 2015 19:54:25 +0200 (CEST)
+Received: from mail-ob0-f181.google.com ([209.85.214.181]:36802 "EHLO
+        mail-ob0-f181.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010204AbbJHRyL6Gf6r (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 8 Oct 2015 19:54:11 +0200
+Received: by obcgx8 with SMTP id gx8so44417101obc.3;
+        Thu, 08 Oct 2015 10:54:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=sender:from:to:cc:subject:date:message-id;
-        bh=wHPZ5tEUaPhd8bharSaBG0QpYmxZBuQuPQokk9bz0ho=;
-        b=JjccPHFpMKSvS6AI26V+kjIcm45REfo9TQ8II4btcd4eY6j8vc+kWKl6w6pNVOE3ij
-         mNtJpLUFTpsuN8M/tMQ9YGlDopD8V2pmWZOdQwhU3oGNohZ6AWh0jZBQTkTUlheBFNdW
-         GemfMkfNKLu9DH1ilUUD+jeyLxS7DcMCoGp0JIiqHCkJ5waq9bf7sGo3gSZzZzEG0DmX
-         Qq0W+oA3BZtISdMmrsOTLnWn0HGLmSXZe5/x5z9i/ZcTw+BDhiV317zdYDlaCmAKx1ls
-         T0kXPhErpeg648FeaWAg0aVkIrL1Hlu/uVBl/Ay3OxyhQ9bBW3FWzGcPznip+VWKs7XR
-         LdtQ==
-X-Received: by 10.182.16.165 with SMTP id h5mr5485039obd.48.1444326838274;
-        Thu, 08 Oct 2015 10:53:58 -0700 (PDT)
+        h=sender:from:to:cc:subject:date:message-id:in-reply-to:references;
+        bh=/bXr62oYyILnRNZNC4eKteIS/oPdzD4KzrkW1HrFjUI=;
+        b=Cze5AY4MXwk6O9r/apGb/5Q86ZiIE7STjkXOumLxWD+gr12b84GbAZoD9DndSNq1La
+         2+wYL53LzpDo1J6IiGR5CGkDTlIuTGfjGGoc+YpnpAsmZiD5KbbyJ1EBbnUshJU/c2bv
+         UqNOCqlzJ2HWHUZQvOfay+k6uYD5Y6kFgHAF9oojZlmaS67P+RBOIwJj1rDY+AQ8i1m0
+         fErm1lMfGljSPJeKT+3rgtpKOP5XN8e0UYYcqtMgZsovskuln5etqRQY8kMaaWQXUlgv
+         h9iGORyKtq/R3BOdFHNT5YryLTtXyJh22v7Lh4vaIluPe3zXyWUQtgjWH38w9nYbGALT
+         y4tQ==
+X-Received: by 10.60.125.8 with SMTP id mm8mr5689421oeb.73.1444326844738;
+        Thu, 08 Oct 2015 10:54:04 -0700 (PDT)
 Received: from rob-hp-laptop.herring.priv (72-48-98-129.dyn.grandenetworks.net. [72.48.98.129])
-        by smtp.googlemail.com with ESMTPSA id f81sm994967oia.11.2015.10.08.10.53.57
+        by smtp.googlemail.com with ESMTPSA id f81sm994967oia.11.2015.10.08.10.54.04
         (version=TLSv1/SSLv3 cipher=OTHER);
-        Thu, 08 Oct 2015 10:53:57 -0700 (PDT)
+        Thu, 08 Oct 2015 10:54:04 -0700 (PDT)
 From:   Rob Herring <robh@kernel.org>
 To:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
 Cc:     Grant Likely <grant.likely@linaro.org>,
@@ -28,33 +28,18 @@ Cc:     Grant Likely <grant.likely@linaro.org>,
         Ian Campbell <ijc+devicetree@hellion.org.uk>,
         Geert Uytterhoeven <geert@linux-m68k.org>,
         Olof Johansson <olof@lixom.net>,
-        Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        linux-xtensa@linux-xtensa.org,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        linuxppc-dev@lists.ozlabs.org, Ley Foon Tan <lftan@altera.com>,
-        nios2-dev@lists.rocketboards.org,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        James Hogan <james.hogan@imgtec.com>,
-        linux-metag@vger.kernel.org,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        uclinux-h8-devel@lists.sourceforge.jp,
-        Russell King <linux@arm.linux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        linux-arm-kernel@lists.infradead.org,
-        Vineet Gupta <vgupta@synopsys.com>, arm@kernel.org
-Subject: [PATCH v2 00/13] Enable building all dtb files
-Date:   Thu,  8 Oct 2015 12:53:34 -0500
-Message-Id: <1444326827-3565-1-git-send-email-robh@kernel.org>
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: [PATCH v2 09/13] mips: enable building of all dtbs
+Date:   Thu,  8 Oct 2015 12:53:43 -0500
+Message-Id: <1444326827-3565-10-git-send-email-robh@kernel.org>
 X-Mailer: git-send-email 2.1.4
+In-Reply-To: <1444326827-3565-1-git-send-email-robh@kernel.org>
+References: <1444326827-3565-1-git-send-email-robh@kernel.org>
 Return-Path: <robherring2@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49470
+X-archive-position: 49471
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -71,58 +56,31 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This series enables building all the dtb files in the kernel mostly 
-independent of the kernel config. The option is only dependent on 
-COMPILE_TEST, OF, and the new OF_ALL_DTBS options. This ensures that 
-allyesconfig builds can build all dtb files although most arches have to 
-build "dtbs" target explicitly. Some arches like ARM include dtbs in the 
-default target.
+Enable building all dtb files when CONFIG_OF_ALL_DTBS is enabled. The dtbs
+are not really dependent on a platform being enabled or any other kernel
+config, so for testing coverage it is convenient to build all of the dtbs.
+This builds all dts files in the tree, not just targets listed.
 
-Arch/arm-soc maintainers, Please ack and I will take this series via the DT 
-tree.
+Signed-off-by: Rob Herring <robh@kernel.org>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: linux-mips@linux-mips.org
+---
+ arch/mips/boot/dts/Makefile | 3 +++
+ 1 file changed, 3 insertions(+)
 
-v2:
-- Add OF_ALL_DTBS option hidden behind COMPILE_TEST
-- Expand to all architectures (with more than 1 dtb)
-
-Rob
-
-
-Rob Herring (13):
-  of: add config option to enable building of all dtbs
-  arc: use common make variables for dtb builds
-  arc: enable building of all dtbs
-  arm: enable building of all dtbs
-  arm64: enable building of all dtbs
-  h8300: enable building of all dtbs
-  metag: use common make variables for dtb builds
-  metag: enable building of all dtbs
-  mips: enable building of all dtbs
-  nios2: use common make variables for dtb builds
-  nios2: enable building of all dtbs
-  powerpc: enable building of all dtbs
-  xtensa: enable building of all dtbs
-
- arch/arc/Makefile              |  2 +-
- arch/arc/boot/dts/Makefile     |  6 ++++--
- arch/arm/boot/dts/Makefile     |  3 +++
- arch/arm64/boot/dts/Makefile   |  6 ++++++
- arch/h8300/boot/dts/Makefile   |  3 +++
- arch/metag/Makefile            |  2 +-
- arch/metag/boot/dts/Makefile   |  7 +++----
- arch/mips/boot/dts/Makefile    |  3 +++
- arch/nios2/Makefile            | 10 +++++-----
- arch/nios2/boot/Makefile       | 13 +++----------
- arch/nios2/boot/dts/Makefile   |  6 ++++++
- arch/powerpc/Makefile          |  6 ++++++
- arch/powerpc/boot/Makefile     |  5 ++++-
- arch/powerpc/boot/dts/Makefile |  5 +++++
- arch/xtensa/Makefile           |  4 ++++
- arch/xtensa/boot/dts/Makefile  |  7 ++++++-
- drivers/of/Kconfig             | 10 ++++++++++
- 17 files changed, 73 insertions(+), 25 deletions(-)
- create mode 100644 arch/nios2/boot/dts/Makefile
- create mode 100644 arch/powerpc/boot/dts/Makefile
-
+diff --git a/arch/mips/boot/dts/Makefile b/arch/mips/boot/dts/Makefile
+index 778a340..bac7b8d 100644
+--- a/arch/mips/boot/dts/Makefile
++++ b/arch/mips/boot/dts/Makefile
+@@ -9,6 +9,9 @@ dts-dirs	+= ralink
+ 
+ obj-y		:= $(addsuffix /, $(dts-dirs))
+ 
++dtstree		:= $(srctree)/$(src)
++dtb-$(CONFIG_OF_ALL_DTBS) := $(patsubst $(dtstree)/%.dts,%.dtb, $(foreach d,$(dts-dirs), $(wildcard $(dtstree)/$(d)/*.dts)))
++
+ always		:= $(dtb-y)
+ subdir-y	:= $(dts-dirs)
+ clean-files	:= *.dtb *.dtb.S
 -- 
 2.1.4

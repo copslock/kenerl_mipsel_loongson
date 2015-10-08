@@ -1,49 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Oct 2015 19:54:25 +0200 (CEST)
-Received: from mail-ob0-f181.google.com ([209.85.214.181]:36802 "EHLO
-        mail-ob0-f181.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010204AbbJHRyL6Gf6r (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 8 Oct 2015 19:54:11 +0200
-Received: by obcgx8 with SMTP id gx8so44417101obc.3;
-        Thu, 08 Oct 2015 10:54:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=sender:from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=/bXr62oYyILnRNZNC4eKteIS/oPdzD4KzrkW1HrFjUI=;
-        b=Cze5AY4MXwk6O9r/apGb/5Q86ZiIE7STjkXOumLxWD+gr12b84GbAZoD9DndSNq1La
-         2+wYL53LzpDo1J6IiGR5CGkDTlIuTGfjGGoc+YpnpAsmZiD5KbbyJ1EBbnUshJU/c2bv
-         UqNOCqlzJ2HWHUZQvOfay+k6uYD5Y6kFgHAF9oojZlmaS67P+RBOIwJj1rDY+AQ8i1m0
-         fErm1lMfGljSPJeKT+3rgtpKOP5XN8e0UYYcqtMgZsovskuln5etqRQY8kMaaWQXUlgv
-         h9iGORyKtq/R3BOdFHNT5YryLTtXyJh22v7Lh4vaIluPe3zXyWUQtgjWH38w9nYbGALT
-         y4tQ==
-X-Received: by 10.60.125.8 with SMTP id mm8mr5689421oeb.73.1444326844738;
-        Thu, 08 Oct 2015 10:54:04 -0700 (PDT)
-Received: from rob-hp-laptop.herring.priv (72-48-98-129.dyn.grandenetworks.net. [72.48.98.129])
-        by smtp.googlemail.com with ESMTPSA id f81sm994967oia.11.2015.10.08.10.54.04
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Thu, 08 Oct 2015 10:54:04 -0700 (PDT)
-From:   Rob Herring <robh@kernel.org>
-To:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     Grant Likely <grant.likely@linaro.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Ian Campbell <ijc+devicetree@hellion.org.uk>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Olof Johansson <olof@lixom.net>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: [PATCH v2 09/13] mips: enable building of all dtbs
-Date:   Thu,  8 Oct 2015 12:53:43 -0500
-Message-Id: <1444326827-3565-10-git-send-email-robh@kernel.org>
-X-Mailer: git-send-email 2.1.4
-In-Reply-To: <1444326827-3565-1-git-send-email-robh@kernel.org>
-References: <1444326827-3565-1-git-send-email-robh@kernel.org>
-Return-Path: <robherring2@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Oct 2015 23:22:45 +0200 (CEST)
+Received: from mail-wi0-f177.google.com ([209.85.212.177]:38141 "EHLO
+        mail-wi0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010008AbbJHVWnHtSF2 convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 8 Oct 2015 23:22:43 +0200
+Received: by wiclk2 with SMTP id lk2so42768502wic.1
+        for <linux-mips@linux-mips.org>; Thu, 08 Oct 2015 14:22:36 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:in-reply-to:references:date
+         :message-id:subject:from:to:cc:content-type
+         :content-transfer-encoding;
+        bh=AkhnTJKQ6CGXTleaWY9Qyd6jFp3mIR3a2AV5VxxtXDo=;
+        b=k4TQ31cCXUCYOKxf4UayNzMMYWBjGO0EMuv4chYCuuA3wXxTrLyOV9zf4uxT9065HN
+         lKNQwfAFov4eBzqKbEw1bvL4qCHX+Lt0zUW4QPpnGcrthRw4sMh6F+HVY/NNQKbn0Hjw
+         1Znebf1ppwgk5DWimg1xdjXc/NbolgcyADG4CDYaQcpZF/ZnpQ8evc9IPaFQjY9eZZI/
+         ASaE/v0O5OkK2ASDV3c4FPVVXnTmojjXsjDdT6VHTSXPf+SzWU+hkwkjF2JW1pigCvR0
+         l0beKHT0qEzKB5BLJR5jMX4yil7RptRvfUBOPa59ngtnKH4kLQ4F3CbGTYpu1SAtlFUK
+         m8fw==
+X-Gm-Message-State: ALoCoQlMSRgtXiSNnoePbrG0sTgMA/DuM5H1ArOt4fOGa7md6z41uhfxqwtOSUmf+7S4YJbG+s81
+MIME-Version: 1.0
+X-Received: by 10.194.81.169 with SMTP id b9mr10509743wjy.3.1444339356604;
+ Thu, 08 Oct 2015 14:22:36 -0700 (PDT)
+Received: by 10.194.121.69 with HTTP; Thu, 8 Oct 2015 14:22:36 -0700 (PDT)
+In-Reply-To: <1444148837-10770-4-git-send-email-harvey.hunt@imgtec.com>
+References: <1444148837-10770-1-git-send-email-harvey.hunt@imgtec.com>
+        <1444148837-10770-4-git-send-email-harvey.hunt@imgtec.com>
+Date:   Thu, 8 Oct 2015 18:22:36 -0300
+Message-ID: <CAAEAJfBtOtiEEJy500-Kg8ZHm+ZGF3vL7y7xJD3a0-3CJ0w33A@mail.gmail.com>
+Subject: Re: [PATCH v7,3/3] MIPS: dts: jz4780/ci20: Add NEMC, BCH and NAND
+ device tree nodes
+From:   Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
+To:     Harvey Hunt <harvey.hunt@imgtec.com>
+Cc:     "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+        Alex Smith <alex.smith@imgtec.com>,
+        Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Brian Norris <computersforpeace@gmail.com>,
+        Paul Burton <paul.burton@imgtec.com>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        linux-mips@linux-mips.org, Alex Smith <alex@alex-smith.me.uk>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+Return-Path: <ezequiel@vanguardiasur.com.ar>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49471
+X-archive-position: 49472
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: robh@kernel.org
+X-original-sender: ezequiel@vanguardiasur.com.ar
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,31 +64,65 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Enable building all dtb files when CONFIG_OF_ALL_DTBS is enabled. The dtbs
-are not really dependent on a platform being enabled or any other kernel
-config, so for testing coverage it is convenient to build all of the dtbs.
-This builds all dts files in the tree, not just targets listed.
+On 6 October 2015 at 13:27, Harvey Hunt <harvey.hunt@imgtec.com> wrote:
+> From: Alex Smith <alex.smith@imgtec.com>
+>
+> Add device tree nodes for the NEMC and BCH to the JZ4780 device tree,
+> and make use of them in the Ci20 device tree to add a node for the
+> board's NAND.
+>
+> Note that since the pinctrl driver is not yet upstream, this includes
+> neither pin configuration nor busy/write-protect GPIO pins for the
+> NAND. Use of the NAND relies on the boot loader to have left the pins
+> configured in a usable state, which should be the case when booted
+> from the NAND.
+>
+> Signed-off-by: Alex Smith <alex.smith@imgtec.com>
+> Cc: Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>
+> Cc: David Woodhouse <dwmw2@infradead.org>
+> Cc: Brian Norris <computersforpeace@gmail.com>
+> Cc: Paul Burton <paul.burton@imgtec.com>
+> Cc: linux-mtd@lists.infradead.org
+> Cc: devicetree@vger.kernel.org
+> Cc: linux-kernel@vger.kernel.org
+> Cc: linux-mips@linux-mips.org
+> Cc: Alex Smith <alex@alex-smith.me.uk>
+> Signed-off-by: Harvey Hunt <harvey.hunt@imgtec.com>
+> ---
+> v6 -> v7:
+>  - Add nand-ecc-mode to DT.
+>  - Add nand-on-flash-bbt to DT.
+>
+> v4 -> v5:
+>  - New patch adding DT nodes for the NAND so that the driver can be
+>    tested.
+>
+>  arch/mips/boot/dts/ingenic/ci20.dts    | 54 ++++++++++++++++++++++++++++++++++
+>  arch/mips/boot/dts/ingenic/jz4780.dtsi | 26 ++++++++++++++++
+>  2 files changed, 80 insertions(+)
+>
+> diff --git a/arch/mips/boot/dts/ingenic/ci20.dts b/arch/mips/boot/dts/ingenic/ci20.dts
+> index 9fcb9e7..453f1d3 100644
+> --- a/arch/mips/boot/dts/ingenic/ci20.dts
+> +++ b/arch/mips/boot/dts/ingenic/ci20.dts
+> @@ -42,3 +42,57 @@
+>  &uart4 {
+>         status = "okay";
+>  };
+> +
+> +&nemc {
+> +       status = "okay";
+> +
+> +       nand: nand@1 {
+> +               compatible = "ingenic,jz4780-nand";
+> +               reg = <1 0 0x1000000>;
+> +
 
-Signed-off-by: Rob Herring <robh@kernel.org>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
----
- arch/mips/boot/dts/Makefile | 3 +++
- 1 file changed, 3 insertions(+)
+Why is this in the ci20.dts instead of the SoC dtsi?
 
-diff --git a/arch/mips/boot/dts/Makefile b/arch/mips/boot/dts/Makefile
-index 778a340..bac7b8d 100644
---- a/arch/mips/boot/dts/Makefile
-+++ b/arch/mips/boot/dts/Makefile
-@@ -9,6 +9,9 @@ dts-dirs	+= ralink
- 
- obj-y		:= $(addsuffix /, $(dts-dirs))
- 
-+dtstree		:= $(srctree)/$(src)
-+dtb-$(CONFIG_OF_ALL_DTBS) := $(patsubst $(dtstree)/%.dts,%.dtb, $(foreach d,$(dts-dirs), $(wildcard $(dtstree)/$(d)/*.dts)))
-+
- always		:= $(dtb-y)
- subdir-y	:= $(dts-dirs)
- clean-files	:= *.dtb *.dtb.S
+Seems at least compatible and reg is not board-specific.
+
+Thanks,
 -- 
-2.1.4
+Ezequiel García, VanguardiaSur
+www.vanguardiasur.com.ar

@@ -1,36 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Oct 2015 19:41:06 +0200 (CEST)
-Received: from emh06.mail.saunalahti.fi ([62.142.5.116]:33307 "EHLO
-        emh06.mail.saunalahti.fi" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27009984AbbJGRlE15xnU (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 7 Oct 2015 19:41:04 +0200
-Received: from blackmetal.musicnaut.iki.fi (85-76-50-28-nat.elisa-mobile.fi [85.76.50.28])
-        by emh06.mail.saunalahti.fi (Postfix) with ESMTP id 32EB56998F;
-        Wed,  7 Oct 2015 20:41:02 +0300 (EEST)
-Date:   Wed, 7 Oct 2015 20:40:00 +0300
-From:   Aaro Koskinen <aaro.koskinen@iki.fi>
-To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Cc:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
-        linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Huacai Chen <chenhc@lemote.com>
-Subject: Re: [RFT PATCH] mips: lemote2f_defconfig: convert to use libata PATA
- drivers
-Message-ID: <20151007173959.GC26187@blackmetal.musicnaut.iki.fi>
-References: <1442245918-27631-1-git-send-email-b.zolnierkie@samsung.com>
- <1442245918-27631-6-git-send-email-b.zolnierkie@samsung.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1442245918-27631-6-git-send-email-b.zolnierkie@samsung.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <aaro.koskinen@iki.fi>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Oct 2015 19:54:07 +0200 (CEST)
+Received: from mail-ob0-f193.google.com ([209.85.214.193]:35585 "EHLO
+        mail-ob0-f193.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010178AbbJHRyGNVqTr (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 8 Oct 2015 19:54:06 +0200
+Received: by obol7 with SMTP id l7so4302516obo.2;
+        Thu, 08 Oct 2015 10:53:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=sender:from:to:cc:subject:date:message-id;
+        bh=wHPZ5tEUaPhd8bharSaBG0QpYmxZBuQuPQokk9bz0ho=;
+        b=JjccPHFpMKSvS6AI26V+kjIcm45REfo9TQ8II4btcd4eY6j8vc+kWKl6w6pNVOE3ij
+         mNtJpLUFTpsuN8M/tMQ9YGlDopD8V2pmWZOdQwhU3oGNohZ6AWh0jZBQTkTUlheBFNdW
+         GemfMkfNKLu9DH1ilUUD+jeyLxS7DcMCoGp0JIiqHCkJ5waq9bf7sGo3gSZzZzEG0DmX
+         Qq0W+oA3BZtISdMmrsOTLnWn0HGLmSXZe5/x5z9i/ZcTw+BDhiV317zdYDlaCmAKx1ls
+         T0kXPhErpeg648FeaWAg0aVkIrL1Hlu/uVBl/Ay3OxyhQ9bBW3FWzGcPznip+VWKs7XR
+         LdtQ==
+X-Received: by 10.182.16.165 with SMTP id h5mr5485039obd.48.1444326838274;
+        Thu, 08 Oct 2015 10:53:58 -0700 (PDT)
+Received: from rob-hp-laptop.herring.priv (72-48-98-129.dyn.grandenetworks.net. [72.48.98.129])
+        by smtp.googlemail.com with ESMTPSA id f81sm994967oia.11.2015.10.08.10.53.57
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Thu, 08 Oct 2015 10:53:57 -0700 (PDT)
+From:   Rob Herring <robh@kernel.org>
+To:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     Grant Likely <grant.likely@linaro.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Ian Campbell <ijc+devicetree@hellion.org.uk>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Olof Johansson <olof@lixom.net>,
+        Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        linux-xtensa@linux-xtensa.org,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        linuxppc-dev@lists.ozlabs.org, Ley Foon Tan <lftan@altera.com>,
+        nios2-dev@lists.rocketboards.org,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        James Hogan <james.hogan@imgtec.com>,
+        linux-metag@vger.kernel.org,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        uclinux-h8-devel@lists.sourceforge.jp,
+        Russell King <linux@arm.linux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        linux-arm-kernel@lists.infradead.org,
+        Vineet Gupta <vgupta@synopsys.com>, arm@kernel.org
+Subject: [PATCH v2 00/13] Enable building all dtb files
+Date:   Thu,  8 Oct 2015 12:53:34 -0500
+Message-Id: <1444326827-3565-1-git-send-email-robh@kernel.org>
+X-Mailer: git-send-email 2.1.4
+Return-Path: <robherring2@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49469
+X-archive-position: 49470
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aaro.koskinen@iki.fi
+X-original-sender: robh@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,39 +71,58 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi,
+This series enables building all the dtb files in the kernel mostly 
+independent of the kernel config. The option is only dependent on 
+COMPILE_TEST, OF, and the new OF_ALL_DTBS options. This ensures that 
+allyesconfig builds can build all dtb files although most arches have to 
+build "dtbs" target explicitly. Some arches like ARM include dtbs in the 
+default target.
 
-On Mon, Sep 14, 2015 at 05:51:47PM +0200, Bartlomiej Zolnierkiewicz wrote:
-> IDE subsystem has been deprecated since 2009 and the majority
-> (if not all) of Linux distributions have switched to use
-> libata for ATA support exclusively.  However there are still
-> some users (mostly old or/and embedded non-x86 systems) that
-> have not converted from using IDE subsystem to libata PATA
-> drivers.  This doesn't seem to be good thing in the long-term
-> for Linux as while there is less and less PATA systems left
-> in use:
-> 
-> * testing efforts are divided between two subsystems
-> 
-> * having duplicate drivers for same hardware confuses users
-> 
-> This patch converts lemote2f_defconfig to use libata PATA
-> drivers.
-> 
-> PS This platform uses CS5536 chipset which (due to historical
-> reasons) has basic support in AMD/nVidia PATA host driver and
-> full support in a newer CS5536 PATA one (pata_cs5536).  Thus
-> most likely this platform should switch to using the latter
-> host driver.
-> 
-> Cc: Huacai Chen <chenhc@lemote.com>
-> Signed-off-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Arch/arm-soc maintainers, Please ack and I will take this series via the DT 
+tree.
 
-Maybe too late but:
+v2:
+- Add OF_ALL_DTBS option hidden behind COMPILE_TEST
+- Expand to all architectures (with more than 1 dtb)
 
-	Tested-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+Rob
 
-I also tested PATA_CS5536 and that works too, but it gives a slightly
-slower disk (27MB/s vs 33MB/s)...
 
-A.
+Rob Herring (13):
+  of: add config option to enable building of all dtbs
+  arc: use common make variables for dtb builds
+  arc: enable building of all dtbs
+  arm: enable building of all dtbs
+  arm64: enable building of all dtbs
+  h8300: enable building of all dtbs
+  metag: use common make variables for dtb builds
+  metag: enable building of all dtbs
+  mips: enable building of all dtbs
+  nios2: use common make variables for dtb builds
+  nios2: enable building of all dtbs
+  powerpc: enable building of all dtbs
+  xtensa: enable building of all dtbs
+
+ arch/arc/Makefile              |  2 +-
+ arch/arc/boot/dts/Makefile     |  6 ++++--
+ arch/arm/boot/dts/Makefile     |  3 +++
+ arch/arm64/boot/dts/Makefile   |  6 ++++++
+ arch/h8300/boot/dts/Makefile   |  3 +++
+ arch/metag/Makefile            |  2 +-
+ arch/metag/boot/dts/Makefile   |  7 +++----
+ arch/mips/boot/dts/Makefile    |  3 +++
+ arch/nios2/Makefile            | 10 +++++-----
+ arch/nios2/boot/Makefile       | 13 +++----------
+ arch/nios2/boot/dts/Makefile   |  6 ++++++
+ arch/powerpc/Makefile          |  6 ++++++
+ arch/powerpc/boot/Makefile     |  5 ++++-
+ arch/powerpc/boot/dts/Makefile |  5 +++++
+ arch/xtensa/Makefile           |  4 ++++
+ arch/xtensa/boot/dts/Makefile  |  7 ++++++-
+ drivers/of/Kconfig             | 10 ++++++++++
+ 17 files changed, 73 insertions(+), 25 deletions(-)
+ create mode 100644 arch/nios2/boot/dts/Makefile
+ create mode 100644 arch/powerpc/boot/dts/Makefile
+
+-- 
+2.1.4

@@ -1,57 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Oct 2015 23:22:45 +0200 (CEST)
-Received: from mail-wi0-f177.google.com ([209.85.212.177]:38141 "EHLO
-        mail-wi0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010008AbbJHVWnHtSF2 convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 8 Oct 2015 23:22:43 +0200
-Received: by wiclk2 with SMTP id lk2so42768502wic.1
-        for <linux-mips@linux-mips.org>; Thu, 08 Oct 2015 14:22:36 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:in-reply-to:references:date
-         :message-id:subject:from:to:cc:content-type
-         :content-transfer-encoding;
-        bh=AkhnTJKQ6CGXTleaWY9Qyd6jFp3mIR3a2AV5VxxtXDo=;
-        b=k4TQ31cCXUCYOKxf4UayNzMMYWBjGO0EMuv4chYCuuA3wXxTrLyOV9zf4uxT9065HN
-         lKNQwfAFov4eBzqKbEw1bvL4qCHX+Lt0zUW4QPpnGcrthRw4sMh6F+HVY/NNQKbn0Hjw
-         1Znebf1ppwgk5DWimg1xdjXc/NbolgcyADG4CDYaQcpZF/ZnpQ8evc9IPaFQjY9eZZI/
-         ASaE/v0O5OkK2ASDV3c4FPVVXnTmojjXsjDdT6VHTSXPf+SzWU+hkwkjF2JW1pigCvR0
-         l0beKHT0qEzKB5BLJR5jMX4yil7RptRvfUBOPa59ngtnKH4kLQ4F3CbGTYpu1SAtlFUK
-         m8fw==
-X-Gm-Message-State: ALoCoQlMSRgtXiSNnoePbrG0sTgMA/DuM5H1ArOt4fOGa7md6z41uhfxqwtOSUmf+7S4YJbG+s81
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Oct 2015 02:17:32 +0200 (CEST)
+Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:59926 "EHLO
+        shadbolt.e.decadent.org.uk" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007411AbbJIARan9QSS (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 9 Oct 2015 02:17:30 +0200
+Received: from deadeye.wl.decadent.org.uk ([192.168.4.247] helo=deadeye)
+        by shadbolt.decadent.org.uk with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.84)
+        (envelope-from <ben@decadent.org.uk>)
+        id 1ZkLNF-0004lB-PU; Fri, 09 Oct 2015 01:17:25 +0100
+Received: from ben by deadeye with local (Exim 4.86)
+        (envelope-from <ben@decadent.org.uk>)
+        id 1ZkLNA-00078C-IJ; Fri, 09 Oct 2015 01:17:20 +0100
+Content-Type: text/plain; charset="UTF-8"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
-X-Received: by 10.194.81.169 with SMTP id b9mr10509743wjy.3.1444339356604;
- Thu, 08 Oct 2015 14:22:36 -0700 (PDT)
-Received: by 10.194.121.69 with HTTP; Thu, 8 Oct 2015 14:22:36 -0700 (PDT)
-In-Reply-To: <1444148837-10770-4-git-send-email-harvey.hunt@imgtec.com>
-References: <1444148837-10770-1-git-send-email-harvey.hunt@imgtec.com>
-        <1444148837-10770-4-git-send-email-harvey.hunt@imgtec.com>
-Date:   Thu, 8 Oct 2015 18:22:36 -0300
-Message-ID: <CAAEAJfBtOtiEEJy500-Kg8ZHm+ZGF3vL7y7xJD3a0-3CJ0w33A@mail.gmail.com>
-Subject: Re: [PATCH v7,3/3] MIPS: dts: jz4780/ci20: Add NEMC, BCH and NAND
- device tree nodes
-From:   Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
-To:     Harvey Hunt <harvey.hunt@imgtec.com>
-Cc:     "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
-        Alex Smith <alex.smith@imgtec.com>,
-        Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>,
-        David Woodhouse <dwmw2@infradead.org>,
-        Brian Norris <computersforpeace@gmail.com>,
-        Paul Burton <paul.burton@imgtec.com>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        linux-mips@linux-mips.org, Alex Smith <alex@alex-smith.me.uk>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-Return-Path: <ezequiel@vanguardiasur.com.ar>
+From:   Ben Hutchings <ben@decadent.org.uk>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+CC:     akpm@linux-foundation.org, "Ralf Baechle" <ralf@linux-mips.org>,
+        "Felix Fietkau" <nbd@openwrt.org>, linux-mips@linux-mips.org
+Date:   Fri, 09 Oct 2015 01:12:27 +0100
+Message-ID: <lsq.1444349547.644827378@decadent.org.uk>
+X-Mailer: LinuxStableQueue (scripts by bwh)
+Subject: [PATCH 3.2 010/107] MIPS: Fix sched_getaffinity with MT FPAFF enabled
+In-Reply-To: <lsq.1444349547.316291576@decadent.org.uk>
+X-SA-Exim-Connect-IP: 192.168.4.247
+X-SA-Exim-Mail-From: ben@decadent.org.uk
+X-SA-Exim-Scanned: No (on shadbolt.decadent.org.uk); SAEximRunCond expanded to false
+Return-Path: <ben@decadent.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49472
+X-archive-position: 49473
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ezequiel@vanguardiasur.com.ar
+X-original-sender: ben@decadent.org.uk
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -64,65 +48,48 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 6 October 2015 at 13:27, Harvey Hunt <harvey.hunt@imgtec.com> wrote:
-> From: Alex Smith <alex.smith@imgtec.com>
->
-> Add device tree nodes for the NEMC and BCH to the JZ4780 device tree,
-> and make use of them in the Ci20 device tree to add a node for the
-> board's NAND.
->
-> Note that since the pinctrl driver is not yet upstream, this includes
-> neither pin configuration nor busy/write-protect GPIO pins for the
-> NAND. Use of the NAND relies on the boot loader to have left the pins
-> configured in a usable state, which should be the case when booted
-> from the NAND.
->
-> Signed-off-by: Alex Smith <alex.smith@imgtec.com>
-> Cc: Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>
-> Cc: David Woodhouse <dwmw2@infradead.org>
-> Cc: Brian Norris <computersforpeace@gmail.com>
-> Cc: Paul Burton <paul.burton@imgtec.com>
-> Cc: linux-mtd@lists.infradead.org
-> Cc: devicetree@vger.kernel.org
-> Cc: linux-kernel@vger.kernel.org
-> Cc: linux-mips@linux-mips.org
-> Cc: Alex Smith <alex@alex-smith.me.uk>
-> Signed-off-by: Harvey Hunt <harvey.hunt@imgtec.com>
-> ---
-> v6 -> v7:
->  - Add nand-ecc-mode to DT.
->  - Add nand-on-flash-bbt to DT.
->
-> v4 -> v5:
->  - New patch adding DT nodes for the NAND so that the driver can be
->    tested.
->
->  arch/mips/boot/dts/ingenic/ci20.dts    | 54 ++++++++++++++++++++++++++++++++++
->  arch/mips/boot/dts/ingenic/jz4780.dtsi | 26 ++++++++++++++++
->  2 files changed, 80 insertions(+)
->
-> diff --git a/arch/mips/boot/dts/ingenic/ci20.dts b/arch/mips/boot/dts/ingenic/ci20.dts
-> index 9fcb9e7..453f1d3 100644
-> --- a/arch/mips/boot/dts/ingenic/ci20.dts
-> +++ b/arch/mips/boot/dts/ingenic/ci20.dts
-> @@ -42,3 +42,57 @@
->  &uart4 {
->         status = "okay";
->  };
-> +
-> +&nemc {
-> +       status = "okay";
-> +
-> +       nand: nand@1 {
-> +               compatible = "ingenic,jz4780-nand";
-> +               reg = <1 0 0x1000000>;
-> +
+3.2.72-rc1 review patch.  If anyone has any objections, please let me know.
 
-Why is this in the ci20.dts instead of the SoC dtsi?
+------------------
 
-Seems at least compatible and reg is not board-specific.
+From: Felix Fietkau <nbd@openwrt.org>
 
-Thanks,
--- 
-Ezequiel García, VanguardiaSur
-www.vanguardiasur.com.ar
+commit 1d62d737555e1378eb62a8bba26644f7d97139d2 upstream.
+
+p->thread.user_cpus_allowed is zero-initialized and is only filled on
+the first sched_setaffinity call.
+
+To avoid adding overhead in the task initialization codepath, simply OR
+the returned mask in sched_getaffinity with p->cpus_allowed.
+
+Signed-off-by: Felix Fietkau <nbd@openwrt.org>
+Cc: linux-mips@linux-mips.org
+Patchwork: https://patchwork.linux-mips.org/patch/10740/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+[bwh: Backported to 3.2: also convert from obsolete cpumask API]
+Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
+---
+ arch/mips/kernel/mips-mt-fpaff.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+--- a/arch/mips/kernel/mips-mt-fpaff.c
++++ b/arch/mips/kernel/mips-mt-fpaff.c
+@@ -154,7 +154,7 @@ asmlinkage long mipsmt_sys_sched_getaffi
+ 				      unsigned long __user *user_mask_ptr)
+ {
+ 	unsigned int real_len;
+-	cpumask_t mask;
++	cpumask_t allowed, mask;
+ 	int retval;
+ 	struct task_struct *p;
+ 
+@@ -173,7 +173,8 @@ asmlinkage long mipsmt_sys_sched_getaffi
+ 	if (retval)
+ 		goto out_unlock;
+ 
+-	cpus_and(mask, p->thread.user_cpus_allowed, cpu_possible_map);
++	cpumask_or(&allowed, &p->thread.user_cpus_allowed, &p->cpus_allowed);
++	cpumask_and(&mask, &allowed, cpu_active_mask);
+ 
+ out_unlock:
+ 	read_unlock(&tasklist_lock);

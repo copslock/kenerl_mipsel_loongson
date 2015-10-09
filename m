@@ -1,40 +1,71 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Oct 2015 10:06:11 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:8701 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27009205AbbJIIGI2lNtO (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 9 Oct 2015 10:06:08 +0200
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 471893D9E3AB
-        for <linux-mips@linux-mips.org>; Fri,  9 Oct 2015 09:05:59 +0100 (IST)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Fri, 9 Oct 2015 09:06:01 +0100
-Received: from mchandras-linux.le.imgtec.org (192.168.154.37) by
- LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.210.2; Fri, 9 Oct 2015 09:06:00 +0100
-From:   Markos Chandras <markos.chandras@imgtec.com>
-To:     <linux-mips@linux-mips.org>
-CC:     Alex Smith <alex.smith@imgtec.com>,
-        Matthew Fortune <matthew.fortune@imgtec.com>,
-        Markos Chandras <markos.chandras@imgtec.com>
-Subject: [PATCH v2 1/3] MIPS: Initial implementation of a VDSO
-Date:   Fri, 9 Oct 2015 09:05:52 +0100
-Message-ID: <1444377952-21385-1-git-send-email-markos.chandras@imgtec.com>
-X-Mailer: git-send-email 2.6.1
-In-Reply-To: <1443435011-17061-1-git-send-email-markos.chandras@imgtec.com>
-References: <1443435011-17061-1-git-send-email-markos.chandras@imgtec.com>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.154.37]
-Return-Path: <Markos.Chandras@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Oct 2015 23:58:10 +0200 (CEST)
+Received: from unicorn.mansr.com ([81.2.72.234]:50500 "EHLO unicorn.mansr.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27010418AbbJIV6Hxse1w (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 9 Oct 2015 23:58:07 +0200
+Received: by unicorn.mansr.com (Postfix, from userid 51770)
+        id 41AA21538A; Fri,  9 Oct 2015 22:57:59 +0100 (BST)
+From:   Mans Rullgard <mans@mansr.com>
+To:     Sekhar Nori <nsekhar@ti.com>,
+        Kevin Hilman <khilman@deeprootsystems.com>,
+        Russell King <linux@arm.linux.org.uk>,
+        Hartley Sweeten <hsweeten@visionengravers.com>,
+        Ryan Mallon <rmallon@gmail.com>,
+        Hans Ulli Kroll <ulli.kroll@googlemail.com>,
+        Imre Kaloz <kaloz@openwrt.org>,
+        Krzysztof Halasa <khalasa@piap.pl>,
+        Eric Miao <eric.y.miao@gmail.com>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        Gregory Clement <gregory.clement@free-electrons.com>,
+        Mikael Starvik <starvik@axis.com>,
+        Jesper Nilsson <jesper.nilsson@axis.com>,
+        Michal Simek <monstr@monstr.eu>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Srinivas Kandagatla <srinivas.kandagatla@gmail.com>,
+        Maxime Coquelin <maxime.coquelin@st.com>,
+        Patrice Chotard <patrice.chotard@st.com>,
+        Stephen Warren <swarren@wwwdotorg.org>,
+        Lee Jones <lee@kernel.org>, Eric Anholt <eric@anholt.net>,
+        =?UTF-8?q?S=C3=B6ren=20Brinkmann?= <soren.brinkmann@xilinx.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Alexander Shiyan <shc_work@mail.ru>,
+        Kukjin Kim <kgene@kernel.org>,
+        Krzysztof Kozlowski <k.kozlowski@samsung.com>,
+        Carlo Caione <carlo@caione.org>,
+        Maxime Ripard <maxime.ripard@free-electrons.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Alexandre Courbot <gnurou@gmail.com>,
+        Baruch Siach <baruch@tkos.co.il>,
+        Barry Song <baohua@kernel.org>,
+        Liviu Dudau <liviu.dudau@arm.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-cris-kernel@axis.com,
+        linux-mips@linux-mips.org, linux-xtensa@linux-xtensa.org,
+        kernel@stlinux.com, linux-rpi-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-tegra@vger.kernel.org
+Subject: [PATCH] sched_clock: add data pointer argument to read callback
+Date:   Fri,  9 Oct 2015 22:57:35 +0100
+Message-Id: <1444427858-576-1-git-send-email-mans@mansr.com>
+X-Mailer: git-send-email 2.5.3
+Return-Path: <mru@mansr.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49475
+X-archive-position: 49476
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: markos.chandras@imgtec.com
+X-original-sender: mans@mansr.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,1569 +78,1376 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Alex Smith <alex.smith@imgtec.com>
+This passes a data pointer specified in the sched_clock_register()
+call to the read callback allowing simpler implementations thereof.
 
-Add an initial implementation of a proper (i.e. an ELF shared library)
-VDSO. With this commit it does not export any symbols, it only replaces
-the current signal return trampoline page. A later commit will add user
-implementations of gettimeofday()/clock_gettime().
+In this patch, existing uses of this interface are simply updated
+with a null pointer.
 
-To support both new toolchains and old ones which don't generate ABI
-flags section, we define its content manually and then use a tool
-(genvdso) to patch up the section to have the correct name and type.
-genvdso also extracts symbol offsets ({,rt_}sigreturn) needed by the
-kernel, and generates a C file containing a "struct mips_vdso_image"
-containing both the VDSO data and these offsets. This C file is
-compiled into the kernel.
-
-On 64-bit kernels we require a different VDSO for each supported ABI,
-so we may build up to 3 different VDSOs. The VDSO to use is selected by
-the mips_abi structure.
-
-A kernel/user shared data page is created and mapped below the VDSO
-image. This is currently empty, but will be used by the user time
-function implementations which are added later.
-
-[markos.chandras@imgtec.com:
-- Add more comments
-- Move abi detection in genvdso.h since it's the get_symbol function
-that needs it.
-- Add an R6 specific way to calculate the base address of VDSO in order
-to avoid the branch instruction which affects performance.
-- Do not patch .gnu.attributes since it's not needed for dynamic linking.
-- Simplify Makefile a little bit.
-- checkpatch fixes]
-
-Cc: Matthew Fortune <matthew.fortune@imgtec.com>
-Signed-off-by: Alex Smith <alex.smith@imgtec.com>
-Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+Signed-off-by: Mans Rullgard <mans@mansr.com>
 ---
-Changes since v1:
-- Reword and rearrange comments
-http://www.linux-mips.org/archives/linux-mips/2015-09/msg00315.html
----
- arch/mips/Kbuild                    |   1 +
- arch/mips/include/asm/abi.h         |   5 +-
- arch/mips/include/asm/elf.h         |   7 +
- arch/mips/include/asm/processor.h   |   8 +-
- arch/mips/include/asm/vdso.h        |  73 +++++++--
- arch/mips/include/uapi/asm/Kbuild   |   2 +-
- arch/mips/include/uapi/asm/auxvec.h |  17 +++
- arch/mips/kernel/signal.c           |  12 +-
- arch/mips/kernel/signal32.c         |   7 +-
- arch/mips/kernel/signal_n32.c       |   5 +-
- arch/mips/kernel/vdso.c             | 160 ++++++++++----------
- arch/mips/vdso/.gitignore           |   4 +
- arch/mips/vdso/Makefile             | 142 +++++++++++++++++
- arch/mips/vdso/elf.S                |  68 +++++++++
- arch/mips/vdso/genvdso.c            | 293 ++++++++++++++++++++++++++++++++++++
- arch/mips/vdso/genvdso.h            | 187 +++++++++++++++++++++++
- arch/mips/vdso/sigreturn.S          |  49 ++++++
- arch/mips/vdso/vdso.h               |  78 ++++++++++
- arch/mips/vdso/vdso.lds.S           | 100 ++++++++++++
- 19 files changed, 1094 insertions(+), 124 deletions(-)
- create mode 100644 arch/mips/include/uapi/asm/auxvec.h
- create mode 100644 arch/mips/vdso/.gitignore
- create mode 100644 arch/mips/vdso/Makefile
- create mode 100644 arch/mips/vdso/elf.S
- create mode 100644 arch/mips/vdso/genvdso.c
- create mode 100644 arch/mips/vdso/genvdso.h
- create mode 100644 arch/mips/vdso/sigreturn.S
- create mode 100644 arch/mips/vdso/vdso.h
- create mode 100644 arch/mips/vdso/vdso.lds.S
+ arch/arm/mach-davinci/time.c              |  4 ++--
+ arch/arm/mach-ep93xx/timer-ep93xx.c       |  4 ++--
+ arch/arm/mach-footbridge/dc21285-timer.c  |  4 ++--
+ arch/arm/mach-gemini/time.c               |  4 ++--
+ arch/arm/mach-integrator/integrator_cp.c  |  4 ++--
+ arch/arm/mach-ixp4xx/common.c             |  5 +++--
+ arch/arm/mach-mmp/time.c                  |  4 ++--
+ arch/arm/mach-omap1/time.c                |  4 ++--
+ arch/arm/mach-omap2/timer.c               |  4 ++--
+ arch/arm/plat-iop/time.c                  |  4 ++--
+ arch/arm/plat-omap/counter_32k.c          |  4 ++--
+ arch/arm/plat-orion/time.c                |  4 ++--
+ arch/arm/plat-versatile/sched-clock.c     |  4 ++--
+ arch/cris/arch-v32/kernel/time.c          |  4 ++--
+ arch/microblaze/kernel/timer.c            |  4 ++--
+ arch/mips/jz4740/time.c                   |  4 ++--
+ arch/mips/kernel/cevt-txx9.c              |  4 ++--
+ arch/mips/kernel/csrc-bcm1480.c           |  4 ++--
+ arch/mips/kernel/csrc-ioasic.c            |  4 ++--
+ arch/mips/kernel/csrc-r4k.c               |  5 +++--
+ arch/mips/kernel/csrc-sb1250.c            |  5 +++--
+ arch/mips/sgi-ip27/ip27-timer.c           |  4 ++--
+ arch/xtensa/kernel/time.c                 |  4 ++--
+ drivers/clocksource/arm_arch_timer.c      |  8 +++++++-
+ drivers/clocksource/arm_global_timer.c    |  4 ++--
+ drivers/clocksource/bcm2835_timer.c       |  4 ++--
+ drivers/clocksource/cadence_ttc_timer.c   |  4 ++--
+ drivers/clocksource/clksrc-dbx500-prcmu.c |  4 ++--
+ drivers/clocksource/clksrc_st_lpc.c       |  4 ++--
+ drivers/clocksource/clps711x-timer.c      |  4 ++--
+ drivers/clocksource/dw_apb_timer_of.c     |  4 ++--
+ drivers/clocksource/exynos_mct.c          |  4 ++--
+ drivers/clocksource/fsl_ftm_timer.c       |  5 +++--
+ drivers/clocksource/meson6_timer.c        |  4 ++--
+ drivers/clocksource/mxs_timer.c           |  4 ++--
+ drivers/clocksource/nomadik-mtu.c         |  4 ++--
+ drivers/clocksource/pxa_timer.c           |  4 ++--
+ drivers/clocksource/qcom-timer.c          |  4 ++--
+ drivers/clocksource/samsung_pwm_timer.c   |  4 ++--
+ drivers/clocksource/sun4i_timer.c         |  4 ++--
+ drivers/clocksource/tegra20_timer.c       |  4 ++--
+ drivers/clocksource/time-armada-370-xp.c  |  5 +++--
+ drivers/clocksource/time-lpc32xx.c        |  4 ++--
+ drivers/clocksource/time-orion.c          |  5 +++--
+ drivers/clocksource/time-pistachio.c      |  4 ++--
+ drivers/clocksource/timer-digicolor.c     |  4 ++--
+ drivers/clocksource/timer-imx-gpt.c       |  4 ++--
+ drivers/clocksource/timer-integrator-ap.c |  4 ++--
+ drivers/clocksource/timer-prima2.c        |  5 +++--
+ drivers/clocksource/timer-sp804.c         |  4 ++--
+ drivers/clocksource/timer-u300.c          |  4 ++--
+ drivers/clocksource/versatile.c           |  4 ++--
+ drivers/clocksource/vf_pit_timer.c        |  4 ++--
+ include/linux/sched_clock.h               |  4 ++--
+ kernel/time/sched_clock.c                 | 32 +++++++++++++++++++------------
+ 55 files changed, 140 insertions(+), 119 deletions(-)
 
-diff --git a/arch/mips/Kbuild b/arch/mips/Kbuild
-index dd295335891a..5c3f688a5232 100644
---- a/arch/mips/Kbuild
-+++ b/arch/mips/Kbuild
-@@ -17,6 +17,7 @@ obj- := $(platform-)
- obj-y += kernel/
- obj-y += mm/
- obj-y += net/
-+obj-y += vdso/
- 
- ifdef CONFIG_KVM
- obj-y += kvm/
-diff --git a/arch/mips/include/asm/abi.h b/arch/mips/include/asm/abi.h
-index 37f84078e78a..940760844e2f 100644
---- a/arch/mips/include/asm/abi.h
-+++ b/arch/mips/include/asm/abi.h
-@@ -11,19 +11,20 @@
- 
- #include <asm/signal.h>
- #include <asm/siginfo.h>
-+#include <asm/vdso.h>
- 
- struct mips_abi {
- 	int (* const setup_frame)(void *sig_return, struct ksignal *ksig,
- 				  struct pt_regs *regs, sigset_t *set);
--	const unsigned long	signal_return_offset;
- 	int (* const setup_rt_frame)(void *sig_return, struct ksignal *ksig,
- 				     struct pt_regs *regs, sigset_t *set);
--	const unsigned long	rt_signal_return_offset;
- 	const unsigned long	restart;
- 
- 	unsigned	off_sc_fpregs;
- 	unsigned	off_sc_fpc_csr;
- 	unsigned	off_sc_used_math;
-+
-+	struct mips_vdso_image *vdso;
- };
- 
- #endif /* _ASM_ABI_H */
-diff --git a/arch/mips/include/asm/elf.h b/arch/mips/include/asm/elf.h
-index 53b26933b12c..b01a6ff468e0 100644
---- a/arch/mips/include/asm/elf.h
-+++ b/arch/mips/include/asm/elf.h
-@@ -8,6 +8,7 @@
- #ifndef _ASM_ELF_H
- #define _ASM_ELF_H
- 
-+#include <linux/auxvec.h>
- #include <linux/fs.h>
- #include <uapi/linux/elf.h>
- 
-@@ -419,6 +420,12 @@ extern const char *__elf_platform;
- #define ELF_ET_DYN_BASE		(TASK_SIZE / 3 * 2)
- #endif
- 
-+#define ARCH_DLINFO							\
-+do {									\
-+	NEW_AUX_ENT(AT_SYSINFO_EHDR,					\
-+		    (unsigned long)current->mm->context.vdso);		\
-+} while (0)
-+
- #define ARCH_HAS_SETUP_ADDITIONAL_PAGES 1
- struct linux_binprm;
- extern int arch_setup_additional_pages(struct linux_binprm *bprm,
-diff --git a/arch/mips/include/asm/processor.h b/arch/mips/include/asm/processor.h
-index 59ee6dcf6eed..3f832c3dd8f5 100644
---- a/arch/mips/include/asm/processor.h
-+++ b/arch/mips/include/asm/processor.h
-@@ -36,12 +36,6 @@ extern unsigned int vced_count, vcei_count;
-  */
- #define HAVE_ARCH_PICK_MMAP_LAYOUT 1
- 
--/*
-- * A special page (the vdso) is mapped into all processes at the very
-- * top of the virtual memory space.
-- */
--#define SPECIAL_PAGES_SIZE PAGE_SIZE
--
- #ifdef CONFIG_32BIT
- #ifdef CONFIG_KVM_GUEST
- /* User space process size is limited to 1GB in KVM Guest Mode */
-@@ -80,7 +74,7 @@ extern unsigned int vced_count, vcei_count;
- 
- #endif
- 
--#define STACK_TOP	((TASK_SIZE & PAGE_MASK) - SPECIAL_PAGES_SIZE)
-+#define STACK_TOP	(TASK_SIZE & PAGE_MASK)
- 
+diff --git a/arch/arm/mach-davinci/time.c b/arch/arm/mach-davinci/time.c
+index 6c18445..ccc29e97 100644
+--- a/arch/arm/mach-davinci/time.c
++++ b/arch/arm/mach-davinci/time.c
+@@ -285,7 +285,7 @@ static struct clocksource clocksource_davinci = {
  /*
-  * This decides where the kernel will search for a free chunk of vm
-diff --git a/arch/mips/include/asm/vdso.h b/arch/mips/include/asm/vdso.h
-index cca56aa40ff4..db2d45be8f2e 100644
---- a/arch/mips/include/asm/vdso.h
-+++ b/arch/mips/include/asm/vdso.h
-@@ -1,29 +1,70 @@
+  * Overwrite weak default sched_clock with something more precise
+  */
+-static u64 notrace davinci_read_sched_clock(void)
++static u64 notrace davinci_read_sched_clock(void *data)
+ {
+ 	return timer32_read(&timers[TID_CLOCKSOURCE]);
+ }
+@@ -397,7 +397,7 @@ void __init davinci_timer_init(void)
+ 		       clocksource_davinci.name);
+ 
+ 	sched_clock_register(davinci_read_sched_clock, 32,
+-			  davinci_clock_tick_rate);
++			  davinci_clock_tick_rate, NULL);
+ 
+ 	/* setup clockevent */
+ 	clockevent_davinci.name = id_to_name[timers[TID_CLOCKEVENT].id];
+diff --git a/arch/arm/mach-ep93xx/timer-ep93xx.c b/arch/arm/mach-ep93xx/timer-ep93xx.c
+index e5f7911..bf3f285 100644
+--- a/arch/arm/mach-ep93xx/timer-ep93xx.c
++++ b/arch/arm/mach-ep93xx/timer-ep93xx.c
+@@ -50,7 +50,7 @@
+ #define EP93XX_TIMER123_RATE		508469
+ #define EP93XX_TIMER4_RATE		983040
+ 
+-static u64 notrace ep93xx_read_sched_clock(void)
++static u64 notrace ep93xx_read_sched_clock(void *data)
+ {
+ 	u64 ret;
+ 
+@@ -132,7 +132,7 @@ void __init ep93xx_timer_init(void)
+ 			      EP93XX_TIMER4_RATE, 200, 40,
+ 			      ep93xx_clocksource_read);
+ 	sched_clock_register(ep93xx_read_sched_clock, 40,
+-			     EP93XX_TIMER4_RATE);
++			     EP93XX_TIMER4_RATE, NULL);
+ 
+ 	/* Set up clockevent on timer 3 */
+ 	setup_irq(IRQ_EP93XX_TIMER3, &ep93xx_timer_irq);
+diff --git a/arch/arm/mach-footbridge/dc21285-timer.c b/arch/arm/mach-footbridge/dc21285-timer.c
+index 810edc7..ebc9468 100644
+--- a/arch/arm/mach-footbridge/dc21285-timer.c
++++ b/arch/arm/mach-footbridge/dc21285-timer.c
+@@ -123,7 +123,7 @@ void __init footbridge_timer_init(void)
+ 	clockevents_config_and_register(ce, rate, 0x4, 0xffffff);
+ }
+ 
+-static u64 notrace footbridge_read_sched_clock(void)
++static u64 notrace footbridge_read_sched_clock(void *data)
+ {
+ 	return ~*CSR_TIMER3_VALUE;
+ }
+@@ -136,5 +136,5 @@ void __init footbridge_sched_clock(void)
+ 	*CSR_TIMER3_CLR = 0;
+ 	*CSR_TIMER3_CNTL = TIMER_CNTL_ENABLE | TIMER_CNTL_DIV16;
+ 
+-	sched_clock_register(footbridge_read_sched_clock, 24, rate);
++	sched_clock_register(footbridge_read_sched_clock, 24, rate, NULL);
+ }
+diff --git a/arch/arm/mach-gemini/time.c b/arch/arm/mach-gemini/time.c
+index f5f18df..19d5b12 100644
+--- a/arch/arm/mach-gemini/time.c
++++ b/arch/arm/mach-gemini/time.c
+@@ -63,7 +63,7 @@
+ 
+ static unsigned int tick_rate;
+ 
+-static u64 notrace gemini_read_sched_clock(void)
++static u64 notrace gemini_read_sched_clock(void *data)
+ {
+ 	return readl(TIMER_COUNT(TIMER3_BASE));
+ }
+@@ -222,7 +222,7 @@ void __init gemini_timer_init(void)
+ 	clocksource_mmio_init(TIMER_COUNT(TIMER3_BASE),
+ 			      "gemini_clocksource", tick_rate,
+ 			      300, 32, clocksource_mmio_readl_up);
+-	sched_clock_register(gemini_read_sched_clock, 32, tick_rate);
++	sched_clock_register(gemini_read_sched_clock, 32, tick_rate, NULL);
+ 
+ 	/*
+ 	 * Setup clockevent timer (interrupt-driven.)
+diff --git a/arch/arm/mach-integrator/integrator_cp.c b/arch/arm/mach-integrator/integrator_cp.c
+index b5fb71a..2e1e856 100644
+--- a/arch/arm/mach-integrator/integrator_cp.c
++++ b/arch/arm/mach-integrator/integrator_cp.c
+@@ -223,14 +223,14 @@ static struct clcd_board clcd_data = {
+ 
+ #define REFCOUNTER (__io_address(INTEGRATOR_HDR_BASE) + 0x28)
+ 
+-static u64 notrace intcp_read_sched_clock(void)
++static u64 notrace intcp_read_sched_clock(void *data)
+ {
+ 	return readl(REFCOUNTER);
+ }
+ 
+ static void __init intcp_init_early(void)
+ {
+-	sched_clock_register(intcp_read_sched_clock, 32, 24000000);
++	sched_clock_register(intcp_read_sched_clock, 32, 24000000, NULL);
+ }
+ 
+ static void __init intcp_init_irq_of(void)
+diff --git a/arch/arm/mach-ixp4xx/common.c b/arch/arm/mach-ixp4xx/common.c
+index 1cb6f2f..16809a3 100644
+--- a/arch/arm/mach-ixp4xx/common.c
++++ b/arch/arm/mach-ixp4xx/common.c
+@@ -484,7 +484,7 @@ void __init ixp4xx_sys_init(void)
  /*
-- * This file is subject to the terms and conditions of the GNU General Public
-- * License.  See the file "COPYING" in the main directory of this archive
-- * for more details.
-+ * Copyright (C) 2015 Imagination Technologies
-+ * Author: Alex Smith <alex.smith@imgtec.com>
-  *
-- * Copyright (C) 2009 Cavium Networks
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms of the GNU General Public License as published by the
-+ * Free Software Foundation;  either version 2 of the  License, or (at your
-+ * option) any later version.
+  * sched_clock()
+  */
+-static u64 notrace ixp4xx_read_sched_clock(void)
++static u64 notrace ixp4xx_read_sched_clock(void *data)
+ {
+ 	return *IXP4XX_OSTS;
+ }
+@@ -502,7 +502,8 @@ unsigned long ixp4xx_timer_freq = IXP4XX_TIMER_FREQ;
+ EXPORT_SYMBOL(ixp4xx_timer_freq);
+ static void __init ixp4xx_clocksource_init(void)
+ {
+-	sched_clock_register(ixp4xx_read_sched_clock, 32, ixp4xx_timer_freq);
++	sched_clock_register(ixp4xx_read_sched_clock, 32, ixp4xx_timer_freq,
++			NULL);
+ 
+ 	clocksource_mmio_init(NULL, "OSTS", ixp4xx_timer_freq, 200, 32,
+ 			ixp4xx_clocksource_read);
+diff --git a/arch/arm/mach-mmp/time.c b/arch/arm/mach-mmp/time.c
+index dbc697b..20cd15f 100644
+--- a/arch/arm/mach-mmp/time.c
++++ b/arch/arm/mach-mmp/time.c
+@@ -67,7 +67,7 @@ static inline uint32_t timer_read(void)
+ 	return __raw_readl(mmp_timer_base + TMR_CVWR(1));
+ }
+ 
+-static u64 notrace mmp_read_sched_clock(void)
++static u64 notrace mmp_read_sched_clock(void *data)
+ {
+ 	return timer_read();
+ }
+@@ -194,7 +194,7 @@ void __init timer_init(int irq)
+ {
+ 	timer_config();
+ 
+-	sched_clock_register(mmp_read_sched_clock, 32, MMP_CLOCK_FREQ);
++	sched_clock_register(mmp_read_sched_clock, 32, MMP_CLOCK_FREQ, NULL);
+ 
+ 	ckevt.cpumask = cpumask_of(0);
+ 
+diff --git a/arch/arm/mach-omap1/time.c b/arch/arm/mach-omap1/time.c
+index 524977a..32e4f1e 100644
+--- a/arch/arm/mach-omap1/time.c
++++ b/arch/arm/mach-omap1/time.c
+@@ -178,7 +178,7 @@ static __init void omap_init_mpu_timer(unsigned long rate)
+  * ---------------------------------------------------------------------------
   */
  
- #ifndef __ASM_VDSO_H
- #define __ASM_VDSO_H
+-static u64 notrace omap_mpu_read_sched_clock(void)
++static u64 notrace omap_mpu_read_sched_clock(void *data)
+ {
+ 	return ~omap_mpu_timer_read(1);
+ }
+@@ -190,7 +190,7 @@ static void __init omap_init_clocksource(unsigned long rate)
+ 			"%s: can't register clocksource!\n";
  
--#include <linux/types.h>
-+#include <linux/mm_types.h>
+ 	omap_mpu_timer_start(1, ~0, 1);
+-	sched_clock_register(omap_mpu_read_sched_clock, 32, rate);
++	sched_clock_register(omap_mpu_read_sched_clock, 32, rate, NULL);
  
-+/**
-+ * struct mips_vdso_image - Details of a VDSO image.
-+ * @data: Pointer to VDSO image data (page-aligned).
-+ * @size: Size of the VDSO image data (page-aligned).
-+ * @off_sigreturn: Offset of the sigreturn() trampoline.
-+ * @off_rt_sigreturn: Offset of the rt_sigreturn() trampoline.
-+ * @mapping: Special mapping structure.
-+ *
-+ * This structure contains details of a VDSO image, including the image data
-+ * and offsets of certain symbols required by the kernel. It is generated as
-+ * part of the VDSO build process, aside from the mapping page array, which is
-+ * populated at runtime.
-+ */
-+struct mips_vdso_image {
-+	void *data;
-+	unsigned long size;
- 
--#ifdef CONFIG_32BIT
--struct mips_vdso {
--	u32 signal_trampoline[2];
--	u32 rt_signal_trampoline[2];
-+	unsigned long off_sigreturn;
-+	unsigned long off_rt_sigreturn;
-+
-+	struct vm_special_mapping mapping;
- };
--#else  /* !CONFIG_32BIT */
--struct mips_vdso {
--	u32 o32_signal_trampoline[2];
--	u32 o32_rt_signal_trampoline[2];
--	u32 rt_signal_trampoline[2];
--	u32 n32_rt_signal_trampoline[2];
-+
-+/*
-+ * The following structures are auto-generated as part of the build for each
-+ * ABI by genvdso, see arch/mips/vdso/Makefile.
-+ */
-+
-+extern struct mips_vdso_image vdso_image;
-+
-+#ifdef CONFIG_MIPS32_O32
-+extern struct mips_vdso_image vdso_image_o32;
-+#endif
-+
-+#ifdef CONFIG_MIPS32_N32
-+extern struct mips_vdso_image vdso_image_n32;
-+#endif
-+
-+/**
-+ * union mips_vdso_data - Data provided by the kernel for the VDSO.
-+ *
-+ * This structure contains data needed by functions within the VDSO. It is
-+ * populated by the kernel and mapped read-only into user memory.
-+ *
-+ * Note: Care should be taken when modifying as the layout must remain the same
-+ * for both 64- and 32-bit (for 32-bit userland on 64-bit kernel).
-+ */
-+union mips_vdso_data {
-+	struct {
-+	};
-+
-+	u8 page[PAGE_SIZE];
- };
--#endif /* CONFIG_32BIT */
- 
- #endif /* __ASM_VDSO_H */
-diff --git a/arch/mips/include/uapi/asm/Kbuild b/arch/mips/include/uapi/asm/Kbuild
-index 96fe7395ed8d..f2cf41461146 100644
---- a/arch/mips/include/uapi/asm/Kbuild
-+++ b/arch/mips/include/uapi/asm/Kbuild
-@@ -1,9 +1,9 @@
- # UAPI Header export list
- include include/uapi/asm-generic/Kbuild.asm
- 
--generic-y += auxvec.h
- generic-y += ipcbuf.h
- 
-+header-y += auxvec.h
- header-y += bitfield.h
- header-y += bitsperlong.h
- header-y += break.h
-diff --git a/arch/mips/include/uapi/asm/auxvec.h b/arch/mips/include/uapi/asm/auxvec.h
-new file mode 100644
-index 000000000000..c9c7195272c4
---- /dev/null
-+++ b/arch/mips/include/uapi/asm/auxvec.h
-@@ -0,0 +1,17 @@
-+/*
-+ * Copyright (C) 2015 Imagination Technologies
-+ * Author: Alex Smith <alex.smith@imgtec.com>
-+ *
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms of the GNU General Public License as published by the
-+ * Free Software Foundation;  either version 2 of the  License, or (at your
-+ * option) any later version.
-+ */
-+
-+#ifndef __ASM_AUXVEC_H
-+#define __ASM_AUXVEC_H
-+
-+/* Location of VDSO image. */
-+#define AT_SYSINFO_EHDR		33
-+
-+#endif /* __ASM_AUXVEC_H */
-diff --git a/arch/mips/kernel/signal.c b/arch/mips/kernel/signal.c
-index 2fec67bfc457..bf792e2839a6 100644
---- a/arch/mips/kernel/signal.c
-+++ b/arch/mips/kernel/signal.c
-@@ -36,7 +36,6 @@
- #include <asm/ucontext.h>
- #include <asm/cpu-features.h>
- #include <asm/war.h>
--#include <asm/vdso.h>
- #include <asm/dsp.h>
- #include <asm/inst.h>
- #include <asm/msa.h>
-@@ -752,16 +751,15 @@ static int setup_rt_frame(void *sig_return, struct ksignal *ksig,
- struct mips_abi mips_abi = {
- #ifdef CONFIG_TRAD_SIGNALS
- 	.setup_frame	= setup_frame,
--	.signal_return_offset = offsetof(struct mips_vdso, signal_trampoline),
- #endif
- 	.setup_rt_frame = setup_rt_frame,
--	.rt_signal_return_offset =
--		offsetof(struct mips_vdso, rt_signal_trampoline),
- 	.restart	= __NR_restart_syscall,
- 
- 	.off_sc_fpregs = offsetof(struct sigcontext, sc_fpregs),
- 	.off_sc_fpc_csr = offsetof(struct sigcontext, sc_fpc_csr),
- 	.off_sc_used_math = offsetof(struct sigcontext, sc_used_math),
-+
-+	.vdso		= &vdso_image,
+ 	if (clocksource_mmio_init(&timer->read_tim, "mpu_timer2", rate,
+ 			300, 32, clocksource_mmio_readl_down))
+diff --git a/arch/arm/mach-omap2/timer.c b/arch/arm/mach-omap2/timer.c
+index a556551..af52e10 100644
+--- a/arch/arm/mach-omap2/timer.c
++++ b/arch/arm/mach-omap2/timer.c
+@@ -374,7 +374,7 @@ static struct clocksource clocksource_gpt = {
+ 	.flags		= CLOCK_SOURCE_IS_CONTINUOUS,
  };
  
- static void handle_signal(struct ksignal *ksig, struct pt_regs *regs)
-@@ -801,11 +799,11 @@ static void handle_signal(struct ksignal *ksig, struct pt_regs *regs)
+-static u64 notrace dmtimer_read_sched_clock(void)
++static u64 notrace dmtimer_read_sched_clock(void *data)
+ {
+ 	if (clksrc.reserved)
+ 		return __omap_dm_timer_read_counter(&clksrc,
+@@ -466,7 +466,7 @@ static void __init omap2_gptimer_clocksource_init(int gptimer_id,
+ 	__omap_dm_timer_load_start(&clksrc,
+ 				   OMAP_TIMER_CTRL_ST | OMAP_TIMER_CTRL_AR, 0,
+ 				   OMAP_TIMER_NONPOSTED);
+-	sched_clock_register(dmtimer_read_sched_clock, 32, clksrc.rate);
++	sched_clock_register(dmtimer_read_sched_clock, 32, clksrc.rate, NULL);
+ 
+ 	if (clocksource_register_hz(&clocksource_gpt, clksrc.rate))
+ 		pr_err("Could not register clocksource %s\n",
+diff --git a/arch/arm/plat-iop/time.c b/arch/arm/plat-iop/time.c
+index 101e8f2..e5818f5 100644
+--- a/arch/arm/plat-iop/time.c
++++ b/arch/arm/plat-iop/time.c
+@@ -54,7 +54,7 @@ static struct clocksource iop_clocksource = {
+ /*
+  * IOP sched_clock() implementation via its clocksource.
+  */
+-static u64 notrace iop_read_sched_clock(void)
++static u64 notrace iop_read_sched_clock(void *data)
+ {
+ 	return 0xffffffffu - read_tcr1();
+ }
+@@ -158,7 +158,7 @@ void __init iop_init_time(unsigned long tick_rate)
+ {
+ 	u32 timer_ctl;
+ 
+-	sched_clock_register(iop_read_sched_clock, 32, tick_rate);
++	sched_clock_register(iop_read_sched_clock, 32, tick_rate, NULL);
+ 
+ 	ticks_per_jiffy = DIV_ROUND_CLOSEST(tick_rate, HZ);
+ 	iop_tick_rate = tick_rate;
+diff --git a/arch/arm/plat-omap/counter_32k.c b/arch/arm/plat-omap/counter_32k.c
+index 2438b96..480fb00 100644
+--- a/arch/arm/plat-omap/counter_32k.c
++++ b/arch/arm/plat-omap/counter_32k.c
+@@ -38,7 +38,7 @@
+  */
+ static void __iomem *sync32k_cnt_reg;
+ 
+-static u64 notrace omap_32k_read_sched_clock(void)
++static u64 notrace omap_32k_read_sched_clock(void *data)
+ {
+ 	return sync32k_cnt_reg ? readl_relaxed(sync32k_cnt_reg) : 0;
+ }
+@@ -109,7 +109,7 @@ int __init omap_init_clocksource_32k(void __iomem *vbase)
+ 		return ret;
  	}
  
- 	if (sig_uses_siginfo(&ksig->ka))
--		ret = abi->setup_rt_frame(vdso + abi->rt_signal_return_offset,
-+		ret = abi->setup_rt_frame(vdso + abi->vdso->off_rt_sigreturn,
- 					  ksig, regs, oldset);
- 	else
--		ret = abi->setup_frame(vdso + abi->signal_return_offset, ksig,
--				       regs, oldset);
-+		ret = abi->setup_frame(vdso + abi->vdso->off_sigreturn,
-+				       ksig, regs, oldset);
+-	sched_clock_register(omap_32k_read_sched_clock, 32, 32768);
++	sched_clock_register(omap_32k_read_sched_clock, 32, 32768, NULL);
+ 	register_persistent_clock(NULL, omap_read_persistent_clock64);
+ 	pr_info("OMAP clocksource: 32k_counter at 32768 Hz\n");
  
- 	signal_setup_done(ret, ksig, 0);
- }
-diff --git a/arch/mips/kernel/signal32.c b/arch/mips/kernel/signal32.c
-index f7e89524e316..4909639aa35b 100644
---- a/arch/mips/kernel/signal32.c
-+++ b/arch/mips/kernel/signal32.c
-@@ -31,7 +31,6 @@
- #include <asm/ucontext.h>
- #include <asm/fpu.h>
- #include <asm/war.h>
--#include <asm/vdso.h>
- #include <asm/dsp.h>
- 
- #include "signal-common.h"
-@@ -406,14 +405,12 @@ static int setup_rt_frame_32(void *sig_return, struct ksignal *ksig,
-  */
- struct mips_abi mips_abi_32 = {
- 	.setup_frame	= setup_frame_32,
--	.signal_return_offset =
--		offsetof(struct mips_vdso, o32_signal_trampoline),
- 	.setup_rt_frame = setup_rt_frame_32,
--	.rt_signal_return_offset =
--		offsetof(struct mips_vdso, o32_rt_signal_trampoline),
- 	.restart	= __NR_O32_restart_syscall,
- 
- 	.off_sc_fpregs = offsetof(struct sigcontext32, sc_fpregs),
- 	.off_sc_fpc_csr = offsetof(struct sigcontext32, sc_fpc_csr),
- 	.off_sc_used_math = offsetof(struct sigcontext32, sc_used_math),
-+
-+	.vdso		= &vdso_image_o32,
- };
-diff --git a/arch/mips/kernel/signal_n32.c b/arch/mips/kernel/signal_n32.c
-index 0d017fdcaf07..a7bc38430500 100644
---- a/arch/mips/kernel/signal_n32.c
-+++ b/arch/mips/kernel/signal_n32.c
-@@ -38,7 +38,6 @@
- #include <asm/fpu.h>
- #include <asm/cpu-features.h>
- #include <asm/war.h>
--#include <asm/vdso.h>
- 
- #include "signal-common.h"
- 
-@@ -151,11 +150,11 @@ static int setup_rt_frame_n32(void *sig_return, struct ksignal *ksig,
- 
- struct mips_abi mips_abi_n32 = {
- 	.setup_rt_frame = setup_rt_frame_n32,
--	.rt_signal_return_offset =
--		offsetof(struct mips_vdso, n32_rt_signal_trampoline),
- 	.restart	= __NR_N32_restart_syscall,
- 
- 	.off_sc_fpregs = offsetof(struct sigcontext, sc_fpregs),
- 	.off_sc_fpc_csr = offsetof(struct sigcontext, sc_fpc_csr),
- 	.off_sc_used_math = offsetof(struct sigcontext, sc_used_math),
-+
-+	.vdso		= &vdso_image_n32,
- };
-diff --git a/arch/mips/kernel/vdso.c b/arch/mips/kernel/vdso.c
-index ed2a278722a9..56cc3c4377fb 100644
---- a/arch/mips/kernel/vdso.c
-+++ b/arch/mips/kernel/vdso.c
-@@ -1,122 +1,116 @@
- /*
-- * This file is subject to the terms and conditions of the GNU General Public
-- * License.  See the file "COPYING" in the main directory of this archive
-- * for more details.
-+ * Copyright (C) 2015 Imagination Technologies
-+ * Author: Alex Smith <alex.smith@imgtec.com>
-  *
-- * Copyright (C) 2009, 2010 Cavium Networks, Inc.
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms of the GNU General Public License as published by the
-+ * Free Software Foundation;  either version 2 of the  License, or (at your
-+ * option) any later version.
+diff --git a/arch/arm/plat-orion/time.c b/arch/arm/plat-orion/time.c
+index 8085a8a..bbb5bf0 100644
+--- a/arch/arm/plat-orion/time.c
++++ b/arch/arm/plat-orion/time.c
+@@ -61,7 +61,7 @@ static u32 ticks_per_jiffy;
+  * at least 7.5ns (133MHz TCLK).
   */
  
--
--#include <linux/kernel.h>
--#include <linux/err.h>
--#include <linux/sched.h>
--#include <linux/mm.h>
--#include <linux/init.h>
- #include <linux/binfmts.h>
- #include <linux/elf.h>
--#include <linux/vmalloc.h>
--#include <linux/unistd.h>
--#include <linux/random.h>
-+#include <linux/err.h>
-+#include <linux/init.h>
-+#include <linux/mm.h>
-+#include <linux/sched.h>
-+#include <linux/slab.h>
- 
-+#include <asm/abi.h>
- #include <asm/vdso.h>
--#include <asm/uasm.h>
--#include <asm/processor.h>
-+
-+/* Kernel-provided data used by the VDSO. */
-+static union mips_vdso_data vdso_data __page_aligned_data;
- 
- /*
-- * Including <asm/unistd.h> would give use the 64-bit syscall numbers ...
-+ * Mapping for the VDSO data pages. The real pages are mapped manually, as
-+ * what we map and where within the area they are mapped is determined at
-+ * runtime.
-  */
--#define __NR_O32_sigreturn		4119
--#define __NR_O32_rt_sigreturn		4193
--#define __NR_N32_rt_sigreturn		6211
-+static struct page *no_pages[] = { NULL };
-+static struct vm_special_mapping vdso_vvar_mapping = {
-+	.name = "[vvar]",
-+	.pages = no_pages,
-+};
- 
--static struct page *vdso_page;
--
--static void __init install_trampoline(u32 *tramp, unsigned int sigreturn)
-+static void __init init_vdso_image(struct mips_vdso_image *image)
+-static u64 notrace orion_read_sched_clock(void)
++static u64 notrace orion_read_sched_clock(void *data)
  {
--	uasm_i_addiu(&tramp, 2, 0, sigreturn);	/* li v0, sigreturn */
--	uasm_i_syscall(&tramp, 0);
-+	unsigned long num_pages, i;
-+
-+	BUG_ON(!PAGE_ALIGNED(image->data));
-+	BUG_ON(!PAGE_ALIGNED(image->size));
-+
-+	num_pages = image->size / PAGE_SIZE;
-+
-+	for (i = 0; i < num_pages; i++) {
-+		image->mapping.pages[i] =
-+			virt_to_page(image->data + (i * PAGE_SIZE));
-+	}
+ 	return ~readl(timer_base + TIMER0_VAL_OFF);
+ }
+@@ -205,7 +205,7 @@ orion_time_init(void __iomem *_bridge_base, u32 _bridge_timer1_clr_mask,
+ 	/*
+ 	 * Set scale and timer for sched_clock.
+ 	 */
+-	sched_clock_register(orion_read_sched_clock, 32, tclk);
++	sched_clock_register(orion_read_sched_clock, 32, tclk, NULL);
+ 
+ 	/*
+ 	 * Setup free-running clocksource timer (interrupts
+diff --git a/arch/arm/plat-versatile/sched-clock.c b/arch/arm/plat-versatile/sched-clock.c
+index c966ae9..e71f787 100644
+--- a/arch/arm/plat-versatile/sched-clock.c
++++ b/arch/arm/plat-versatile/sched-clock.c
+@@ -26,7 +26,7 @@
+ 
+ static void __iomem *ctr;
+ 
+-static u64 notrace versatile_read_sched_clock(void)
++static u64 notrace versatile_read_sched_clock(void *data)
+ {
+ 	if (ctr)
+ 		return readl(ctr);
+@@ -37,5 +37,5 @@ static u64 notrace versatile_read_sched_clock(void)
+ void __init versatile_sched_clock_init(void __iomem *reg, unsigned long rate)
+ {
+ 	ctr = reg;
+-	sched_clock_register(versatile_read_sched_clock, 32, rate);
++	sched_clock_register(versatile_read_sched_clock, 32, rate, NULL);
+ }
+diff --git a/arch/cris/arch-v32/kernel/time.c b/arch/cris/arch-v32/kernel/time.c
+index d2a8440..efd4e38 100644
+--- a/arch/cris/arch-v32/kernel/time.c
++++ b/arch/cris/arch-v32/kernel/time.c
+@@ -245,7 +245,7 @@ static struct irqaction irq_timer = {
+ 	.dev_id = &crisv32_clockevent,
+ };
+ 
+-static u64 notrace crisv32_timer_sched_clock(void)
++static u64 notrace crisv32_timer_sched_clock(void *data)
+ {
+ 	return REG_RD(timer, timer_base, r_time);
+ }
+@@ -284,7 +284,7 @@ void __init time_init(void)
+ 	crisv32_timer_init();
+ 
+ 	sched_clock_register(crisv32_timer_sched_clock, 32,
+-			     CRISV32_TIMER_FREQ);
++			     CRISV32_TIMER_FREQ, NULL);
+ 
+ 	clocksource_mmio_init(timer_base + REG_RD_ADDR_timer_r_time,
+ 			      "crisv32-timer", CRISV32_TIMER_FREQ,
+diff --git a/arch/microblaze/kernel/timer.c b/arch/microblaze/kernel/timer.c
+index 67e2ef4..d408c83c 100644
+--- a/arch/microblaze/kernel/timer.c
++++ b/arch/microblaze/kernel/timer.c
+@@ -183,7 +183,7 @@ static __init void xilinx_clockevent_init(void)
+ 	clockevents_register_device(&clockevent_xilinx_timer);
  }
  
- static int __init init_vdso(void)
+-static u64 xilinx_clock_read(void)
++static u64 xilinx_clock_read(void *data)
  {
--	struct mips_vdso *vdso;
--
--	vdso_page = alloc_page(GFP_KERNEL);
--	if (!vdso_page)
--		panic("Cannot allocate vdso");
--
--	vdso = vmap(&vdso_page, 1, 0, PAGE_KERNEL);
--	if (!vdso)
--		panic("Cannot map vdso");
--	clear_page(vdso);
--
--	install_trampoline(vdso->rt_signal_trampoline, __NR_rt_sigreturn);
--#ifdef CONFIG_32BIT
--	install_trampoline(vdso->signal_trampoline, __NR_sigreturn);
--#else
--	install_trampoline(vdso->n32_rt_signal_trampoline,
--			   __NR_N32_rt_sigreturn);
--	install_trampoline(vdso->o32_signal_trampoline, __NR_O32_sigreturn);
--	install_trampoline(vdso->o32_rt_signal_trampoline,
--			   __NR_O32_rt_sigreturn);
-+	init_vdso_image(&vdso_image);
-+
-+#ifdef CONFIG_MIPS32_O32
-+	init_vdso_image(&vdso_image_o32);
- #endif
+ 	return read_fn(timer_baseaddr + TCR1);
+ }
+@@ -304,7 +304,7 @@ static void __init xilinx_timer_init(struct device_node *timer)
+ 	xilinx_clocksource_init();
+ 	xilinx_clockevent_init();
  
--	vunmap(vdso);
-+#ifdef CONFIG_MIPS32_N32
-+	init_vdso_image(&vdso_image_n32);
-+#endif
+-	sched_clock_register(xilinx_clock_read, 32, timer_clock_freq);
++	sched_clock_register(xilinx_clock_read, 32, timer_clock_freq, NULL);
+ }
+ 
+ CLOCKSOURCE_OF_DECLARE(xilinx_timer, "xlnx,xps-timer-1.00.a",
+diff --git a/arch/mips/jz4740/time.c b/arch/mips/jz4740/time.c
+index 1f7ca2c..ada4d47 100644
+--- a/arch/mips/jz4740/time.c
++++ b/arch/mips/jz4740/time.c
+@@ -47,7 +47,7 @@ static struct clocksource jz4740_clocksource = {
+ 	.flags = CLOCK_SOURCE_IS_CONTINUOUS,
+ };
+ 
+-static u64 notrace jz4740_read_sched_clock(void)
++static u64 notrace jz4740_read_sched_clock(void *data)
+ {
+ 	return jz4740_timer_get_count(TIMER_CLOCKSOURCE);
+ }
+@@ -155,7 +155,7 @@ void __init plat_time_init(void)
+ 	if (ret)
+ 		printk(KERN_ERR "Failed to register clocksource: %d\n", ret);
+ 
+-	sched_clock_register(jz4740_read_sched_clock, 16, clk_rate);
++	sched_clock_register(jz4740_read_sched_clock, 16, clk_rate, NULL);
+ 
+ 	setup_irq(jz4740_clockevent.irq, &timer_irqaction);
+ 
+diff --git a/arch/mips/kernel/cevt-txx9.c b/arch/mips/kernel/cevt-txx9.c
+index 537eefd..b319711 100644
+--- a/arch/mips/kernel/cevt-txx9.c
++++ b/arch/mips/kernel/cevt-txx9.c
+@@ -47,7 +47,7 @@ static struct txx9_clocksource txx9_clocksource = {
+ 	},
+ };
+ 
+-static u64 notrace txx9_read_sched_clock(void)
++static u64 notrace txx9_read_sched_clock(void *data)
+ {
+ 	return __raw_readl(&txx9_clocksource.tmrptr->trr);
+ }
+@@ -69,7 +69,7 @@ void __init txx9_clocksource_init(unsigned long baseaddr,
+ 	txx9_clocksource.tmrptr = tmrptr;
+ 
+ 	sched_clock_register(txx9_read_sched_clock, TXX9_CLOCKSOURCE_BITS,
+-			     TIMER_CLK(imbusclk));
++			     TIMER_CLK(imbusclk), NULL);
+ }
+ 
+ struct txx9_clock_event_device {
+diff --git a/arch/mips/kernel/csrc-bcm1480.c b/arch/mips/kernel/csrc-bcm1480.c
+index 7f65b53..bdbd4ee 100644
+--- a/arch/mips/kernel/csrc-bcm1480.c
++++ b/arch/mips/kernel/csrc-bcm1480.c
+@@ -38,7 +38,7 @@ struct clocksource bcm1480_clocksource = {
+ 	.flags	= CLOCK_SOURCE_IS_CONTINUOUS,
+ };
+ 
+-static u64 notrace sb1480_read_sched_clock(void)
++static u64 notrace sb1480_read_sched_clock(void *data)
+ {
+ 	return __raw_readq(IOADDR(A_SCD_ZBBUS_CYCLE_COUNT));
+ }
+@@ -53,5 +53,5 @@ void __init sb1480_clocksource_init(void)
+ 	zbbus = ((plldiv >> 1) * 50000000) + ((plldiv & 1) * 25000000);
+ 	clocksource_register_hz(cs, zbbus);
+ 
+-	sched_clock_register(sb1480_read_sched_clock, 64, zbbus);
++	sched_clock_register(sb1480_read_sched_clock, 64, zbbus, NULL);
+ }
+diff --git a/arch/mips/kernel/csrc-ioasic.c b/arch/mips/kernel/csrc-ioasic.c
+index 722f558..ab7585b 100644
+--- a/arch/mips/kernel/csrc-ioasic.c
++++ b/arch/mips/kernel/csrc-ioasic.c
+@@ -34,7 +34,7 @@ static struct clocksource clocksource_dec = {
+ 	.flags		= CLOCK_SOURCE_IS_CONTINUOUS,
+ };
+ 
+-static u64 notrace dec_ioasic_read_sched_clock(void)
++static u64 notrace dec_ioasic_read_sched_clock(void *data)
+ {
+ 	return ioasic_read(IO_REG_FCTR);
+ }
+@@ -68,7 +68,7 @@ int __init dec_ioasic_clocksource_init(void)
+ 	clocksource_dec.rating = 200 + freq / 10000000;
+ 	clocksource_register_hz(&clocksource_dec, freq);
+ 
+-	sched_clock_register(dec_ioasic_read_sched_clock, 32, freq);
++	sched_clock_register(dec_ioasic_read_sched_clock, 32, freq, NULL);
  
  	return 0;
  }
- subsys_initcall(init_vdso);
+diff --git a/arch/mips/kernel/csrc-r4k.c b/arch/mips/kernel/csrc-r4k.c
+index e5ed7ad..0269927 100644
+--- a/arch/mips/kernel/csrc-r4k.c
++++ b/arch/mips/kernel/csrc-r4k.c
+@@ -23,7 +23,7 @@ static struct clocksource clocksource_mips = {
+ 	.flags		= CLOCK_SOURCE_IS_CONTINUOUS,
+ };
  
--static unsigned long vdso_addr(unsigned long start)
--{
--	unsigned long offset = 0UL;
--
--	if (current->flags & PF_RANDOMIZE) {
--		offset = get_random_int();
--		offset <<= PAGE_SHIFT;
--		if (TASK_IS_32BIT_ADDR)
--			offset &= 0xfffffful;
--		else
--			offset &= 0xffffffful;
--	}
--
--	return STACK_TOP + offset;
--}
--
- int arch_setup_additional_pages(struct linux_binprm *bprm, int uses_interp)
+-static u64 notrace r4k_read_sched_clock(void)
++static u64 notrace r4k_read_sched_clock(void *data)
  {
--	int ret;
--	unsigned long addr;
-+	struct mips_vdso_image *image = current->thread.abi->vdso;
- 	struct mm_struct *mm = current->mm;
-+	unsigned long base, vdso_addr;
-+	struct vm_area_struct *vma;
-+	int ret;
+ 	return read_c0_count();
+ }
+@@ -38,7 +38,8 @@ int __init init_r4k_clocksource(void)
  
- 	down_write(&mm->mmap_sem);
+ 	clocksource_register_hz(&clocksource_mips, mips_hpt_frequency);
  
--	addr = vdso_addr(mm->start_stack);
--
--	addr = get_unmapped_area(NULL, addr, PAGE_SIZE, 0, 0);
--	if (IS_ERR_VALUE(addr)) {
--		ret = addr;
--		goto up_fail;
-+	base = get_unmapped_area(NULL, 0, PAGE_SIZE + image->size, 0, 0);
-+	if (IS_ERR_VALUE(base)) {
-+		ret = base;
-+		goto out;
+-	sched_clock_register(r4k_read_sched_clock, 32, mips_hpt_frequency);
++	sched_clock_register(r4k_read_sched_clock, 32, mips_hpt_frequency,
++			     NULL);
+ 
+ 	return 0;
+ }
+diff --git a/arch/mips/kernel/csrc-sb1250.c b/arch/mips/kernel/csrc-sb1250.c
+index d915652..e1b0018 100644
+--- a/arch/mips/kernel/csrc-sb1250.c
++++ b/arch/mips/kernel/csrc-sb1250.c
+@@ -54,7 +54,7 @@ struct clocksource bcm1250_clocksource = {
+ 	.flags	= CLOCK_SOURCE_IS_CONTINUOUS,
+ };
+ 
+-static u64 notrace sb1250_read_sched_clock(void)
++static u64 notrace sb1250_read_sched_clock(void *data)
+ {
+ 	return sb1250_hpt_get_cycles();
+ }
+@@ -76,5 +76,6 @@ void __init sb1250_clocksource_init(void)
+ 
+ 	clocksource_register_hz(cs, V_SCD_TIMER_FREQ);
+ 
+-	sched_clock_register(sb1250_read_sched_clock, 23, V_SCD_TIMER_FREQ);
++	sched_clock_register(sb1250_read_sched_clock, 23, V_SCD_TIMER_FREQ,
++			     NULL);
+ }
+diff --git a/arch/mips/sgi-ip27/ip27-timer.c b/arch/mips/sgi-ip27/ip27-timer.c
+index 42d6cb9..7e30956 100644
+--- a/arch/mips/sgi-ip27/ip27-timer.c
++++ b/arch/mips/sgi-ip27/ip27-timer.c
+@@ -153,7 +153,7 @@ struct clocksource hub_rt_clocksource = {
+ 	.flags	= CLOCK_SOURCE_IS_CONTINUOUS,
+ };
+ 
+-static u64 notrace hub_rt_read_sched_clock(void)
++static u64 notrace hub_rt_read_sched_clock(void *data)
+ {
+ 	return REMOTE_HUB_L(cputonasid(0), PI_RT_COUNT);
+ }
+@@ -164,7 +164,7 @@ static void __init hub_rt_clocksource_init(void)
+ 
+ 	clocksource_register_hz(cs, CYCLES_PER_SEC);
+ 
+-	sched_clock_register(hub_rt_read_sched_clock, 52, CYCLES_PER_SEC);
++	sched_clock_register(hub_rt_read_sched_clock, 52, CYCLES_PER_SEC, NULL);
+ }
+ 
+ void __init plat_time_init(void)
+diff --git a/arch/xtensa/kernel/time.c b/arch/xtensa/kernel/time.c
+index b97767d..7b896b6 100644
+--- a/arch/xtensa/kernel/time.c
++++ b/arch/xtensa/kernel/time.c
+@@ -37,7 +37,7 @@ static cycle_t ccount_read(struct clocksource *cs)
+ 	return (cycle_t)get_ccount();
+ }
+ 
+-static u64 notrace ccount_sched_clock_read(void)
++static u64 notrace ccount_sched_clock_read(void *data)
+ {
+ 	return get_ccount();
+ }
+@@ -147,7 +147,7 @@ void __init time_init(void)
+ 	clocksource_register_hz(&ccount_clocksource, ccount_freq);
+ 	local_timer_setup(0);
+ 	setup_irq(this_cpu_ptr(&ccount_timer)->evt.irq, &timer_irqaction);
+-	sched_clock_register(ccount_sched_clock_read, 32, ccount_freq);
++	sched_clock_register(ccount_sched_clock_read, 32, ccount_freq, NULL);
+ 	clocksource_of_init();
+ }
+ 
+diff --git a/drivers/clocksource/arm_arch_timer.c b/drivers/clocksource/arm_arch_timer.c
+index d6e3e49..3737be5 100644
+--- a/drivers/clocksource/arm_arch_timer.c
++++ b/drivers/clocksource/arm_arch_timer.c
+@@ -434,6 +434,11 @@ static cycle_t arch_counter_read_cc(const struct cyclecounter *cc)
+ 	return arch_timer_read_counter();
+ }
+ 
++static u64 notrace arch_counter_sched_read(void *data)
++{
++	return arch_timer_read_counter();
++}
++
+ static struct clocksource clocksource_counter = {
+ 	.name	= "arch_sys_counter",
+ 	.rating	= 400,
+@@ -482,7 +487,8 @@ static void __init arch_counter_register(unsigned type)
+ 	timecounter_init(&timecounter, &cyclecounter, start_count);
+ 
+ 	/* 56 bits minimum, so we assume worst case rollover */
+-	sched_clock_register(arch_timer_read_counter, 56, arch_timer_rate);
++	sched_clock_register(arch_counter_sched_read, 56, arch_timer_rate,
++			     NULL);
+ }
+ 
+ static void arch_timer_stop(struct clock_event_device *clk)
+diff --git a/drivers/clocksource/arm_global_timer.c b/drivers/clocksource/arm_global_timer.c
+index 29ea50a..b86a755 100644
+--- a/drivers/clocksource/arm_global_timer.c
++++ b/drivers/clocksource/arm_global_timer.c
+@@ -199,7 +199,7 @@ static struct clocksource gt_clocksource = {
+ };
+ 
+ #ifdef CONFIG_CLKSRC_ARM_GLOBAL_TIMER_SCHED_CLOCK
+-static u64 notrace gt_sched_clock_read(void)
++static u64 notrace gt_sched_clock_read(void *data)
+ {
+ 	return gt_counter_read();
+ }
+@@ -214,7 +214,7 @@ static void __init gt_clocksource_init(void)
+ 	writel(GT_CONTROL_TIMER_ENABLE, gt_base + GT_CONTROL);
+ 
+ #ifdef CONFIG_CLKSRC_ARM_GLOBAL_TIMER_SCHED_CLOCK
+-	sched_clock_register(gt_sched_clock_read, 64, gt_clk_rate);
++	sched_clock_register(gt_sched_clock_read, 64, gt_clk_rate, NULL);
+ #endif
+ 	clocksource_register_hz(&gt_clocksource, gt_clk_rate);
+ }
+diff --git a/drivers/clocksource/bcm2835_timer.c b/drivers/clocksource/bcm2835_timer.c
+index 6f28229..927a250 100644
+--- a/drivers/clocksource/bcm2835_timer.c
++++ b/drivers/clocksource/bcm2835_timer.c
+@@ -49,7 +49,7 @@ struct bcm2835_timer {
+ 
+ static void __iomem *system_clock __read_mostly;
+ 
+-static u64 notrace bcm2835_sched_read(void)
++static u64 notrace bcm2835_sched_read(void *data)
+ {
+ 	return readl_relaxed(system_clock);
+ }
+@@ -95,7 +95,7 @@ static void __init bcm2835_timer_init(struct device_node *node)
+ 		panic("Can't read clock-frequency");
+ 
+ 	system_clock = base + REG_COUNTER_LO;
+-	sched_clock_register(bcm2835_sched_read, 32, freq);
++	sched_clock_register(bcm2835_sched_read, 32, freq, NULL);
+ 
+ 	clocksource_mmio_init(base + REG_COUNTER_LO, node->name,
+ 		freq, 300, 32, clocksource_mmio_readl_up);
+diff --git a/drivers/clocksource/cadence_ttc_timer.c b/drivers/clocksource/cadence_ttc_timer.c
+index 9be6018..c0450f5 100644
+--- a/drivers/clocksource/cadence_ttc_timer.c
++++ b/drivers/clocksource/cadence_ttc_timer.c
+@@ -166,7 +166,7 @@ static cycle_t __ttc_clocksource_read(struct clocksource *cs)
+ 				TTC_COUNT_VAL_OFFSET);
+ }
+ 
+-static u64 notrace ttc_sched_clock_read(void)
++static u64 notrace ttc_sched_clock_read(void *data)
+ {
+ 	return readl_relaxed(ttc_sched_clock_val_reg);
+ }
+@@ -375,7 +375,7 @@ static void __init ttc_setup_clocksource(struct clk *clk, void __iomem *base,
+ 
+ 	ttc_sched_clock_val_reg = base + TTC_COUNT_VAL_OFFSET;
+ 	sched_clock_register(ttc_sched_clock_read, timer_width,
+-			     ttccs->ttc.freq / PRESCALE);
++			     ttccs->ttc.freq / PRESCALE, NULL);
+ }
+ 
+ static int ttc_rate_change_clockevent_cb(struct notifier_block *nb,
+diff --git a/drivers/clocksource/clksrc-dbx500-prcmu.c b/drivers/clocksource/clksrc-dbx500-prcmu.c
+index b375106..25c8b51 100644
+--- a/drivers/clocksource/clksrc-dbx500-prcmu.c
++++ b/drivers/clocksource/clksrc-dbx500-prcmu.c
+@@ -53,7 +53,7 @@ static struct clocksource clocksource_dbx500_prcmu = {
+ 
+ #ifdef CONFIG_CLKSRC_DBX500_PRCMU_SCHED_CLOCK
+ 
+-static u64 notrace dbx500_prcmu_sched_clock_read(void)
++static u64 notrace dbx500_prcmu_sched_clock_read(void *data)
+ {
+ 	if (unlikely(!clksrc_dbx500_timer_base))
+ 		return 0;
+@@ -81,7 +81,7 @@ void __init clksrc_dbx500_prcmu_init(void __iomem *base)
+ 		       clksrc_dbx500_timer_base + PRCMU_TIMER_REF);
+ 	}
+ #ifdef CONFIG_CLKSRC_DBX500_PRCMU_SCHED_CLOCK
+-	sched_clock_register(dbx500_prcmu_sched_clock_read, 32, RATE_32K);
++	sched_clock_register(dbx500_prcmu_sched_clock_read, 32, RATE_32K, NULL);
+ #endif
+ 	clocksource_register_hz(&clocksource_dbx500_prcmu, RATE_32K);
+ }
+diff --git a/drivers/clocksource/clksrc_st_lpc.c b/drivers/clocksource/clksrc_st_lpc.c
+index 65ec467..fbcb023 100644
+--- a/drivers/clocksource/clksrc_st_lpc.c
++++ b/drivers/clocksource/clksrc_st_lpc.c
+@@ -39,7 +39,7 @@ static void __init st_clksrc_reset(void)
+ 	writel_relaxed(1, ddata.base + LPC_LPT_START_OFF);
+ }
+ 
+-static u64 notrace st_clksrc_sched_clock_read(void)
++static u64 notrace st_clksrc_sched_clock_read(void *data)
+ {
+ 	return (u64)readl_relaxed(ddata.base + LPC_LPT_LSB_OFF);
+ }
+@@ -53,7 +53,7 @@ static int __init st_clksrc_init(void)
+ 
+ 	rate = clk_get_rate(ddata.clk);
+ 
+-	sched_clock_register(st_clksrc_sched_clock_read, 32, rate);
++	sched_clock_register(st_clksrc_sched_clock_read, 32, rate, NULL);
+ 
+ 	ret = clocksource_mmio_init(ddata.base + LPC_LPT_LSB_OFF,
+ 				    "clksrc-st-lpc", rate, 300, 32,
+diff --git a/drivers/clocksource/clps711x-timer.c b/drivers/clocksource/clps711x-timer.c
+index cdd86e3..a112713 100644
+--- a/drivers/clocksource/clps711x-timer.c
++++ b/drivers/clocksource/clps711x-timer.c
+@@ -26,7 +26,7 @@ enum {
+ 
+ static void __iomem *tcd;
+ 
+-static u64 notrace clps711x_sched_clock_read(void)
++static u64 notrace clps711x_sched_clock_read(void *data)
+ {
+ 	return ~readw(tcd);
+ }
+@@ -47,7 +47,7 @@ static int __init _clps711x_clksrc_init(struct clk *clock, void __iomem *base)
+ 	clocksource_mmio_init(tcd, "clps711x-clocksource", rate, 300, 16,
+ 			      clocksource_mmio_readw_down);
+ 
+-	sched_clock_register(clps711x_sched_clock_read, 16, rate);
++	sched_clock_register(clps711x_sched_clock_read, 16, rate, NULL);
+ 
+ 	return 0;
+ }
+diff --git a/drivers/clocksource/dw_apb_timer_of.c b/drivers/clocksource/dw_apb_timer_of.c
+index a19a3f6..f971245 100644
+--- a/drivers/clocksource/dw_apb_timer_of.c
++++ b/drivers/clocksource/dw_apb_timer_of.c
+@@ -106,7 +106,7 @@ static void __init add_clocksource(struct device_node *source_timer)
+ 	sched_rate = rate;
+ }
+ 
+-static u64 notrace read_sched_clock(void)
++static u64 notrace read_sched_clock(void *data)
+ {
+ 	return ~readl_relaxed(sched_io_base);
+ }
+@@ -127,7 +127,7 @@ static void __init init_sched_clock(void)
+ 		of_node_put(sched_timer);
  	}
  
--	ret = install_special_mapping(mm, addr, PAGE_SIZE,
--				      VM_READ|VM_EXEC|
--				      VM_MAYREAD|VM_MAYWRITE|VM_MAYEXEC,
--				      &vdso_page);
-+	vdso_addr = base + PAGE_SIZE;
-+
-+	vma = _install_special_mapping(mm, base, PAGE_SIZE,
-+				       VM_READ | VM_MAYREAD,
-+				       &vdso_vvar_mapping);
-+	if (IS_ERR(vma)) {
-+		ret = PTR_ERR(vma);
-+		goto out;
-+	}
- 
-+	/* Map data page. */
-+	ret = remap_pfn_range(vma, base,
-+			      virt_to_phys(&vdso_data) >> PAGE_SHIFT,
-+			      PAGE_SIZE, PAGE_READONLY);
- 	if (ret)
--		goto up_fail;
-+		goto out;
-+
-+	/* Map VDSO image. */
-+	vma = _install_special_mapping(mm, vdso_addr, image->size,
-+				       VM_READ | VM_EXEC |
-+				       VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC,
-+				       &image->mapping);
-+	if (IS_ERR(vma)) {
-+		ret = PTR_ERR(vma);
-+		goto out;
-+	}
- 
--	mm->context.vdso = (void *)addr;
-+	mm->context.vdso = (void *)vdso_addr;
-+	ret = 0;
- 
--up_fail:
-+out:
- 	up_write(&mm->mmap_sem);
- 	return ret;
+-	sched_clock_register(read_sched_clock, 32, sched_rate);
++	sched_clock_register(read_sched_clock, 32, sched_rate, NULL);
  }
--
--const char *arch_vma_name(struct vm_area_struct *vma)
--{
--	if (vma->vm_mm && vma->vm_start == (long)vma->vm_mm->context.vdso)
--		return "[vdso]";
--	return NULL;
--}
-diff --git a/arch/mips/vdso/.gitignore b/arch/mips/vdso/.gitignore
-new file mode 100644
-index 000000000000..5286a7d73d79
---- /dev/null
-+++ b/arch/mips/vdso/.gitignore
-@@ -0,0 +1,4 @@
-+*.so*
-+vdso-*image.c
-+genvdso
-+vdso*.lds
-diff --git a/arch/mips/vdso/Makefile b/arch/mips/vdso/Makefile
-new file mode 100644
-index 000000000000..9a8a6b373eb0
---- /dev/null
-+++ b/arch/mips/vdso/Makefile
-@@ -0,0 +1,142 @@
-+# Objects to go into the VDSO.
-+obj-vdso-y := elf.o sigreturn.o
-+
-+# Common compiler flags between ABIs.
-+ccflags-vdso := \
-+	$(filter -I%,$(KBUILD_CFLAGS)) \
-+	$(filter -E%,$(KBUILD_CFLAGS)) \
-+	$(filter -march=%,$(KBUILD_CFLAGS))
-+cflags-vdso := $(ccflags-vdso) \
-+	$(filter -W%,$(filter-out -Wa$(comma)%,$(KBUILD_CFLAGS))) \
-+	-O2 -g -fPIC -fno-common -fno-builtin -G 0 -DDISABLE_BRANCH_PROFILING \
-+	$(call cc-option, -fno-stack-protector)
-+aflags-vdso := $(ccflags-vdso) \
-+	$(filter -I%,$(KBUILD_CFLAGS)) \
-+	$(filter -E%,$(KBUILD_CFLAGS)) \
-+	-D__ASSEMBLY__ -Wa,-gdwarf-2
-+
-+# VDSO linker flags.
-+VDSO_LDFLAGS := \
-+	-Wl,-Bsymbolic -Wl,--no-undefined -Wl,-soname=linux-vdso.so.1 \
-+	-nostdlib -shared \
-+	$(call cc-ldoption, -Wl$(comma)--hash-style=sysv) \
-+	$(call cc-ldoption, -Wl$(comma)--build-id)
-+
-+GCOV_PROFILE := n
-+
-+#
-+# Shared build commands.
-+#
-+
-+quiet_cmd_vdsold = VDSO    $@
-+      cmd_vdsold = $(CC) $(c_flags) $(VDSO_LDFLAGS) \
-+                   -Wl,-T $(filter %.lds,$^) $(filter %.o,$^) -o $@
-+
-+hostprogs-y := genvdso
-+
-+quiet_cmd_genvdso = GENVDSO $@
-+define cmd_genvdso
-+	cp $< $(<:%.dbg=%) && \
-+	$(OBJCOPY) -S $< $(<:%.dbg=%) && \
-+	$(obj)/genvdso $< $(<:%.dbg=%) $@ $(VDSO_NAME)
-+endef
-+
-+#
-+# Build native VDSO.
-+#
-+
-+native-abi := $(filter -mabi=%,$(KBUILD_CFLAGS))
-+
-+targets += $(obj-vdso-y)
-+targets += vdso.lds vdso.so.dbg vdso.so vdso-image.c
-+
-+obj-vdso := $(obj-vdso-y:%.o=$(obj)/%.o)
-+
-+$(obj-vdso): KBUILD_CFLAGS := $(cflags-vdso) $(native-abi)
-+$(obj-vdso): KBUILD_AFLAGS := $(aflags-vdso) $(native-abi)
-+
-+$(obj)/vdso.lds: KBUILD_CPPFLAGS := $(native-abi)
-+
-+$(obj)/vdso.so.dbg: $(obj)/vdso.lds $(obj-vdso) FORCE
-+	$(call if_changed,vdsold)
-+
-+$(obj)/vdso-image.c: $(obj)/vdso.so.dbg $(obj)/genvdso FORCE
-+	$(call if_changed,genvdso)
-+
-+obj-y += vdso-image.o
-+
-+#
-+# Build O32 VDSO.
-+#
-+
-+# Define these outside the ifdef to ensure they are picked up by clean.
-+targets += $(obj-vdso-y:%.o=%-o32.o)
-+targets += vdso-o32.lds vdso-o32.so.dbg vdso-o32.so vdso-o32-image.c
-+
-+ifdef CONFIG_MIPS32_O32
-+
-+obj-vdso-o32 := $(obj-vdso-y:%.o=$(obj)/%-o32.o)
-+
-+$(obj-vdso-o32): KBUILD_CFLAGS := $(cflags-vdso) -mabi=32
-+$(obj-vdso-o32): KBUILD_AFLAGS := $(aflags-vdso) -mabi=32
-+
-+$(obj)/%-o32.o: $(src)/%.S FORCE
-+	$(call if_changed_dep,as_o_S)
-+
-+$(obj)/%-o32.o: $(src)/%.c FORCE
-+	$(call cmd,force_checksrc)
-+	$(call if_changed_rule,cc_o_c)
-+
-+$(obj)/vdso-o32.lds: KBUILD_CPPFLAGS := -mabi=32
-+$(obj)/vdso-o32.lds: $(src)/vdso.lds.S FORCE
-+	$(call if_changed_dep,cpp_lds_S)
-+
-+$(obj)/vdso-o32.so.dbg: $(obj)/vdso-o32.lds $(obj-vdso-o32) FORCE
-+	$(call if_changed,vdsold)
-+
-+$(obj)/vdso-o32-image.c: VDSO_NAME := o32
-+$(obj)/vdso-o32-image.c: $(obj)/vdso-o32.so.dbg $(obj)/genvdso FORCE
-+	$(call if_changed,genvdso)
-+
-+obj-y += vdso-o32-image.o
-+
-+endif
-+
-+#
-+# Build N32 VDSO.
-+#
-+
-+targets += $(obj-vdso-y:%.o=%-n32.o)
-+targets += vdso-n32.lds vdso-n32.so.dbg vdso-n32.so vdso-n32-image.c
-+
-+ifdef CONFIG_MIPS32_N32
-+
-+obj-vdso-n32 := $(obj-vdso-y:%.o=$(obj)/%-n32.o)
-+
-+$(obj-vdso-n32): KBUILD_CFLAGS := $(cflags-vdso) -mabi=n32
-+$(obj-vdso-n32): KBUILD_AFLAGS := $(aflags-vdso) -mabi=n32
-+
-+$(obj)/%-n32.o: $(src)/%.S FORCE
-+	$(call if_changed_dep,as_o_S)
-+
-+$(obj)/%-n32.o: $(src)/%.c FORCE
-+	$(call cmd,force_checksrc)
-+	$(call if_changed_rule,cc_o_c)
-+
-+$(obj)/vdso-n32.lds: KBUILD_CPPFLAGS := -mabi=n32
-+$(obj)/vdso-n32.lds: $(src)/vdso.lds.S FORCE
-+	$(call if_changed_dep,cpp_lds_S)
-+
-+$(obj)/vdso-n32.so.dbg: $(obj)/vdso-n32.lds $(obj-vdso-n32) FORCE
-+	$(call if_changed,vdsold)
-+
-+$(obj)/vdso-n32-image.c: VDSO_NAME := n32
-+$(obj)/vdso-n32-image.c: $(obj)/vdso-n32.so.dbg $(obj)/genvdso FORCE
-+	$(call if_changed,genvdso)
-+
-+obj-y += vdso-n32-image.o
-+
-+endif
-+
-+# FIXME: Need install rule for debug.
-+# Needs to deal with dependency for generation of dbg by cmd_genvdso...
-diff --git a/arch/mips/vdso/elf.S b/arch/mips/vdso/elf.S
-new file mode 100644
-index 000000000000..be37bbb1f061
---- /dev/null
-+++ b/arch/mips/vdso/elf.S
-@@ -0,0 +1,68 @@
-+/*
-+ * Copyright (C) 2015 Imagination Technologies
-+ * Author: Alex Smith <alex.smith@imgtec.com>
-+ *
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms of the GNU General Public License as published by the
-+ * Free Software Foundation;  either version 2 of the  License, or (at your
-+ * option) any later version.
-+ */
-+
-+#include "vdso.h"
-+
-+#include <linux/elfnote.h>
-+#include <linux/version.h>
-+
-+ELFNOTE_START(Linux, 0, "a")
-+	.long LINUX_VERSION_CODE
-+ELFNOTE_END
-+
-+/*
-+ * The .MIPS.abiflags section must be defined with the FP ABI flags set
-+ * to 'any' to be able to link with both old and new libraries.
-+ * Newer toolchains are capable of automatically generating this, but we want
-+ * to work with older toolchains as well. Therefore, we define the contents of
-+ * this section here (under different names), and then genvdso will patch
-+ * it to have the correct name and type.
-+ *
-+ * We base the .MIPS.abiflags section on preprocessor definitions rather than
-+ * CONFIG_* because we need to match the particular ABI we are building the
-+ * VDSO for.
-+ *
-+ * See https://dmz-portal.mips.com/wiki/MIPS_O32_ABI_-_FR0_and_FR1_Interlinking
-+ * for the .MIPS.abiflags section description.
-+ */
-+
-+	.section .mips_abiflags, "a"
-+	.align 3
-+__mips_abiflags:
-+	.hword	0		/* version */
-+	.byte	__mips		/* isa_level */
-+
-+	/* isa_rev */
-+#ifdef __mips_isa_rev
-+	.byte	__mips_isa_rev
-+#else
-+	.byte	0
-+#endif
-+
-+	/* gpr_size */
-+#ifdef __mips64
-+	.byte	2		/* AFL_REG_64 */
-+#else
-+	.byte	1		/* AFL_REG_32 */
-+#endif
-+
-+	/* cpr1_size */
-+#if (defined(__mips_isa_rev) && __mips_isa_rev >= 6) || defined(__mips64)
-+	.byte	2		/* AFL_REG_64 */
-+#else
-+	.byte	1		/* AFL_REG_32 */
-+#endif
-+
-+	.byte	0		/* cpr2_size (AFL_REG_NONE) */
-+	.byte	0		/* fp_abi (Val_GNU_MIPS_ABI_FP_ANY) */
-+	.word	0		/* isa_ext */
-+	.word	0		/* ases */
-+	.word	0		/* flags1 */
-+	.word	0		/* flags2 */
-diff --git a/arch/mips/vdso/genvdso.c b/arch/mips/vdso/genvdso.c
-new file mode 100644
-index 000000000000..530a36f465ce
---- /dev/null
-+++ b/arch/mips/vdso/genvdso.c
-@@ -0,0 +1,293 @@
-+/*
-+ * Copyright (C) 2015 Imagination Technologies
-+ * Author: Alex Smith <alex.smith@imgtec.com>
-+ *
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms of the GNU General Public License as published by the
-+ * Free Software Foundation;  either version 2 of the  License, or (at your
-+ * option) any later version.
-+ */
-+
-+/*
-+ * This tool is used to generate the real VDSO images from the raw image. It
-+ * first patches up the MIPS ABI flags and GNU attributes sections defined in
-+ * elf.S to have the correct name and type. It then generates a C source file
-+ * to be compiled into the kernel containing the VDSO image data and a
-+ * mips_vdso_image struct for it, including symbol offsets extracted from the
-+ * image.
-+ *
-+ * We need to be passed both a stripped and unstripped VDSO image. The stripped
-+ * image is compiled into the kernel, but we must also patch up the unstripped
-+ * image's ABI flags sections so that it can be installed and used for
-+ * debugging.
-+ */
-+
-+#include <sys/mman.h>
-+#include <sys/stat.h>
-+#include <sys/types.h>
-+
-+#include <byteswap.h>
-+#include <elf.h>
-+#include <errno.h>
-+#include <fcntl.h>
-+#include <inttypes.h>
-+#include <stdarg.h>
-+#include <stdbool.h>
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include <unistd.h>
-+
-+/* Define these in case the system elf.h is not new enough to have them. */
-+#ifndef SHT_GNU_ATTRIBUTES
-+# define SHT_GNU_ATTRIBUTES	0x6ffffff5
-+#endif
-+#ifndef SHT_MIPS_ABIFLAGS
-+# define SHT_MIPS_ABIFLAGS	0x7000002a
-+#endif
-+
-+enum {
-+	ABI_O32 = (1 << 0),
-+	ABI_N32 = (1 << 1),
-+	ABI_N64 = (1 << 2),
-+
-+	ABI_ALL = ABI_O32 | ABI_N32 | ABI_N64,
-+};
-+
-+/* Symbols the kernel requires offsets for. */
-+static struct {
-+	const char *name;
-+	const char *offset_name;
-+	unsigned int abis;
-+} vdso_symbols[] = {
-+	{ "__vdso_sigreturn", "off_sigreturn", ABI_O32 },
-+	{ "__vdso_rt_sigreturn", "off_rt_sigreturn", ABI_ALL },
-+	{}
-+};
-+
-+static const char *program_name;
-+static const char *vdso_name;
-+static unsigned char elf_class;
-+static unsigned int elf_abi;
-+static bool need_swap;
-+static FILE *out_file;
-+
-+#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
-+# define HOST_ORDER		ELFDATA2LSB
-+#elif __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
-+# define HOST_ORDER		ELFDATA2MSB
-+#endif
-+
-+#define BUILD_SWAP(bits)						\
-+	static uint##bits##_t swap_uint##bits(uint##bits##_t val)	\
-+	{								\
-+		return need_swap ? bswap_##bits(val) : val;		\
-+	}
-+
-+BUILD_SWAP(16)
-+BUILD_SWAP(32)
-+BUILD_SWAP(64)
-+
-+#define __FUNC(name, bits) name##bits
-+#define _FUNC(name, bits) __FUNC(name, bits)
-+#define FUNC(name) _FUNC(name, ELF_BITS)
-+
-+#define __ELF(x, bits) Elf##bits##_##x
-+#define _ELF(x, bits) __ELF(x, bits)
-+#define ELF(x) _ELF(x, ELF_BITS)
-+
-+/*
-+ * Include genvdso.h twice with ELF_BITS defined differently to get functions
-+ * for both ELF32 and ELF64.
-+ */
-+
-+#define ELF_BITS 64
-+#include "genvdso.h"
-+#undef ELF_BITS
-+
-+#define ELF_BITS 32
-+#include "genvdso.h"
-+#undef ELF_BITS
-+
-+static void *map_vdso(const char *path, size_t *_size)
-+{
-+	int fd;
-+	struct stat stat;
-+	void *addr;
-+	const Elf32_Ehdr *ehdr;
-+
-+	fd = open(path, O_RDWR);
-+	if (fd < 0) {
-+		fprintf(stderr, "%s: Failed to open '%s': %s\n", program_name,
-+			path, strerror(errno));
-+		return NULL;
-+	}
-+
-+	if (fstat(fd, &stat) != 0) {
-+		fprintf(stderr, "%s: Failed to stat '%s': %s\n", program_name,
-+			path, strerror(errno));
-+		return NULL;
-+	}
-+
-+	addr = mmap(NULL, stat.st_size, PROT_READ | PROT_WRITE, MAP_SHARED, fd,
-+		    0);
-+	if (addr == MAP_FAILED) {
-+		fprintf(stderr, "%s: Failed to map '%s': %s\n", program_name,
-+			path, strerror(errno));
-+		return NULL;
-+	}
-+
-+	/* ELF32/64 header formats are the same for the bits we're checking. */
-+	ehdr = addr;
-+
-+	if (memcmp(ehdr->e_ident, ELFMAG, SELFMAG) != 0) {
-+		fprintf(stderr, "%s: '%s' is not an ELF file\n", program_name,
-+			path);
-+		return NULL;
-+	}
-+
-+	elf_class = ehdr->e_ident[EI_CLASS];
-+	switch (elf_class) {
-+	case ELFCLASS32:
-+	case ELFCLASS64:
-+		break;
-+	default:
-+		fprintf(stderr, "%s: '%s' has invalid ELF class\n",
-+			program_name, path);
-+		return NULL;
-+	}
-+
-+	switch (ehdr->e_ident[EI_DATA]) {
-+	case ELFDATA2LSB:
-+	case ELFDATA2MSB:
-+		need_swap = ehdr->e_ident[EI_DATA] != HOST_ORDER;
-+		break;
-+	default:
-+		fprintf(stderr, "%s: '%s' has invalid ELF data order\n",
-+			program_name, path);
-+		return NULL;
-+	}
-+
-+	if (swap_uint16(ehdr->e_machine) != EM_MIPS) {
-+		fprintf(stderr,
-+			"%s: '%s' has invalid ELF machine (expected EM_MIPS)\n",
-+			program_name, path);
-+		return NULL;
-+	} else if (swap_uint16(ehdr->e_type) != ET_DYN) {
-+		fprintf(stderr,
-+			"%s: '%s' has invalid ELF type (expected ET_DYN)\n",
-+			program_name, path);
-+		return NULL;
-+	}
-+
-+	*_size = stat.st_size;
-+	return addr;
-+}
-+
-+static bool patch_vdso(const char *path, void *vdso)
-+{
-+	if (elf_class == ELFCLASS64)
-+		return patch_vdso64(path, vdso);
-+	else
-+		return patch_vdso32(path, vdso);
-+}
-+
-+static bool get_symbols(const char *path, void *vdso)
-+{
-+	if (elf_class == ELFCLASS64)
-+		return get_symbols64(path, vdso);
-+	else
-+		return get_symbols32(path, vdso);
-+}
-+
-+int main(int argc, char **argv)
-+{
-+	const char *dbg_vdso_path, *vdso_path, *out_path;
-+	void *dbg_vdso, *vdso;
-+	size_t dbg_vdso_size, vdso_size, i;
-+
-+	program_name = argv[0];
-+
-+	if (argc < 4 || argc > 5) {
-+		fprintf(stderr,
-+			"Usage: %s <debug VDSO> <stripped VDSO> <output file> [<name>]\n",
-+			program_name);
-+		return EXIT_FAILURE;
-+	}
-+
-+	dbg_vdso_path = argv[1];
-+	vdso_path = argv[2];
-+	out_path = argv[3];
-+	vdso_name = (argc > 4) ? argv[4] : "";
-+
-+	dbg_vdso = map_vdso(dbg_vdso_path, &dbg_vdso_size);
-+	if (!dbg_vdso)
-+		return EXIT_FAILURE;
-+
-+	vdso = map_vdso(vdso_path, &vdso_size);
-+	if (!vdso)
-+		return EXIT_FAILURE;
-+
-+	/* Patch both the VDSOs' ABI flags sections. */
-+	if (!patch_vdso(dbg_vdso_path, dbg_vdso))
-+		return EXIT_FAILURE;
-+	if (!patch_vdso(vdso_path, vdso))
-+		return EXIT_FAILURE;
-+
-+	if (msync(dbg_vdso, dbg_vdso_size, MS_SYNC) != 0) {
-+		fprintf(stderr, "%s: Failed to sync '%s': %s\n", program_name,
-+			dbg_vdso_path, strerror(errno));
-+		return EXIT_FAILURE;
-+	} else if (msync(vdso, vdso_size, MS_SYNC) != 0) {
-+		fprintf(stderr, "%s: Failed to sync '%s': %s\n", program_name,
-+			vdso_path, strerror(errno));
-+		return EXIT_FAILURE;
-+	}
-+
-+	out_file = fopen(out_path, "w");
-+	if (!out_file) {
-+		fprintf(stderr, "%s: Failed to open '%s': %s\n", program_name,
-+			out_path, strerror(errno));
-+		return EXIT_FAILURE;
-+	}
-+
-+	fprintf(out_file, "/* Automatically generated - do not edit */\n");
-+	fprintf(out_file, "#include <linux/linkage.h>\n");
-+	fprintf(out_file, "#include <linux/mm.h>\n");
-+	fprintf(out_file, "#include <asm/vdso.h>\n");
-+
-+	/* Write out the stripped VDSO data. */
-+	fprintf(out_file,
-+		"static unsigned char vdso_data[PAGE_ALIGN(%zu)] __page_aligned_data = {\n\t",
-+		vdso_size);
-+	for (i = 0; i < vdso_size; i++) {
-+		if (!(i % 10))
-+			fprintf(out_file, "\n\t");
-+		fprintf(out_file, "0x%02x, ", ((unsigned char *)vdso)[i]);
-+	}
-+	fprintf(out_file, "\n};\n");
-+
-+	/* Preallocate a page array. */
-+	fprintf(out_file,
-+		"static struct page *vdso_pages[PAGE_ALIGN(%zu) / PAGE_SIZE];\n",
-+		vdso_size);
-+
-+	fprintf(out_file, "struct mips_vdso_image vdso_image%s%s = {\n",
-+		(vdso_name[0]) ? "_" : "", vdso_name);
-+	fprintf(out_file, "\t.data = vdso_data,\n");
-+	fprintf(out_file, "\t.size = PAGE_ALIGN(%zu),\n", vdso_size);
-+	fprintf(out_file, "\t.mapping = {\n");
-+	fprintf(out_file, "\t\t.name = \"[vdso]\",\n");
-+	fprintf(out_file, "\t\t.pages = vdso_pages,\n");
-+	fprintf(out_file, "\t},\n");
-+
-+	/* Calculate and write symbol offsets to <output file> */
-+	if (!get_symbols(dbg_vdso_path, dbg_vdso)) {
-+		unlink(out_path);
-+		return EXIT_FAILURE;
-+	}
-+
-+	fprintf(out_file, "};\n");
-+
-+	return EXIT_SUCCESS;
-+}
-diff --git a/arch/mips/vdso/genvdso.h b/arch/mips/vdso/genvdso.h
-new file mode 100644
-index 000000000000..94334727059a
---- /dev/null
-+++ b/arch/mips/vdso/genvdso.h
-@@ -0,0 +1,187 @@
-+/*
-+ * Copyright (C) 2015 Imagination Technologies
-+ * Author: Alex Smith <alex.smith@imgtec.com>
-+ *
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms of the GNU General Public License as published by the
-+ * Free Software Foundation;  either version 2 of the  License, or (at your
-+ * option) any later version.
-+ */
-+
-+static inline bool FUNC(patch_vdso)(const char *path, void *vdso)
-+{
-+	const ELF(Ehdr) *ehdr = vdso;
-+	void *shdrs;
-+	ELF(Shdr) *shdr;
-+	char *shstrtab, *name;
-+	uint16_t sh_count, sh_entsize, i;
-+	unsigned int local_gotno, symtabno, gotsym;
-+	ELF(Dyn) *dyn = NULL;
-+
-+	shdrs = vdso + FUNC(swap_uint)(ehdr->e_shoff);
-+	sh_count = swap_uint16(ehdr->e_shnum);
-+	sh_entsize = swap_uint16(ehdr->e_shentsize);
-+
-+	shdr = shdrs + (sh_entsize * swap_uint16(ehdr->e_shstrndx));
-+	shstrtab = vdso + FUNC(swap_uint)(shdr->sh_offset);
-+
-+	for (i = 0; i < sh_count; i++) {
-+		shdr = shdrs + (i * sh_entsize);
-+		name = shstrtab + swap_uint32(shdr->sh_name);
-+
-+		/*
-+		 * Ensure there are no relocation sections - ld.so does not
-+		 * relocate the VDSO so if there are relocations things will
-+		 * break.
-+		 */
-+		switch (swap_uint32(shdr->sh_type)) {
-+		case SHT_REL:
-+		case SHT_RELA:
-+			fprintf(stderr,
-+				"%s: '%s' contains relocation sections\n",
-+				program_name, path);
-+			return false;
-+		case SHT_DYNAMIC:
-+			dyn = vdso + FUNC(swap_uint)(shdr->sh_offset);
-+			break;
-+		}
-+
-+		/* Check for existing sections. */
-+		if (strcmp(name, ".MIPS.abiflags") == 0) {
-+			fprintf(stderr,
-+				"%s: '%s' already contains a '.MIPS.abiflags' section\n",
-+				program_name, path);
-+			return false;
-+		}
-+
-+		if (strcmp(name, ".mips_abiflags") == 0) {
-+			strcpy(name, ".MIPS.abiflags");
-+			shdr->sh_type = swap_uint32(SHT_MIPS_ABIFLAGS);
-+			shdr->sh_entsize = shdr->sh_size;
-+		}
-+	}
-+
-+	/*
-+	 * Ensure the GOT has no entries other than the standard 2, for the same
-+	 * reason we check that there's no relocation sections above.
-+	 * The standard two entries are:
-+	 * - Lazy resolver
-+	 * - Module pointer
-+	 */
-+	if (dyn) {
-+		local_gotno = symtabno = gotsym = 0;
-+
-+		while (FUNC(swap_uint)(dyn->d_tag) != DT_NULL) {
-+			switch (FUNC(swap_uint)(dyn->d_tag)) {
-+			/*
-+			 * This member holds the number of local GOT entries.
-+			 */
-+			case DT_MIPS_LOCAL_GOTNO:
-+				local_gotno = FUNC(swap_uint)(dyn->d_un.d_val);
-+				break;
-+			/*
-+			 * This member holds the number of entries in the
-+			 * .dynsym section.
-+			 */
-+			case DT_MIPS_SYMTABNO:
-+				symtabno = FUNC(swap_uint)(dyn->d_un.d_val);
-+				break;
-+			/*
-+			 * This member holds the index of the first dynamic
-+			 * symbol table entry that corresponds to an entry in
-+			 * the GOT.
-+			 */
-+			case DT_MIPS_GOTSYM:
-+				gotsym = FUNC(swap_uint)(dyn->d_un.d_val);
-+				break;
-+			}
-+
-+			dyn++;
-+		}
-+
-+		if (local_gotno > 2 || symtabno - gotsym) {
-+			fprintf(stderr,
-+				"%s: '%s' contains unexpected GOT entries\n",
-+				program_name, path);
-+			return false;
-+		}
-+	}
-+
-+	return true;
-+}
-+
-+static inline bool FUNC(get_symbols)(const char *path, void *vdso)
-+{
-+	const ELF(Ehdr) *ehdr = vdso;
-+	void *shdrs, *symtab;
-+	ELF(Shdr) *shdr;
-+	const ELF(Sym) *sym;
-+	char *strtab, *name;
-+	uint16_t sh_count, sh_entsize, st_count, st_entsize, i, j;
-+	uint64_t offset;
-+	uint32_t flags;
-+
-+	shdrs = vdso + FUNC(swap_uint)(ehdr->e_shoff);
-+	sh_count = swap_uint16(ehdr->e_shnum);
-+	sh_entsize = swap_uint16(ehdr->e_shentsize);
-+
-+	for (i = 0; i < sh_count; i++) {
-+		shdr = shdrs + (i * sh_entsize);
-+
-+		if (swap_uint32(shdr->sh_type) == SHT_SYMTAB)
-+			break;
-+	}
-+
-+	if (i == sh_count) {
-+		fprintf(stderr, "%s: '%s' has no symbol table\n", program_name,
-+			path);
-+		return false;
-+	}
-+
-+	/* Get flags */
-+	flags = swap_uint32(ehdr->e_flags);
-+	if (elf_class == ELFCLASS64)
-+		elf_abi = ABI_N64;
-+	else if (flags & EF_MIPS_ABI2)
-+		elf_abi = ABI_N32;
-+	else
-+		elf_abi = ABI_O32;
-+
-+	/* Get symbol table. */
-+	symtab = vdso + FUNC(swap_uint)(shdr->sh_offset);
-+	st_entsize = FUNC(swap_uint)(shdr->sh_entsize);
-+	st_count = FUNC(swap_uint)(shdr->sh_size) / st_entsize;
-+
-+	/* Get string table. */
-+	shdr = shdrs + (swap_uint32(shdr->sh_link) * sh_entsize);
-+	strtab = vdso + FUNC(swap_uint)(shdr->sh_offset);
-+
-+	/* Write offsets for symbols needed by the kernel. */
-+	for (i = 0; vdso_symbols[i].name; i++) {
-+		if (!(vdso_symbols[i].abis & elf_abi))
-+			continue;
-+
-+		for (j = 0; j < st_count; j++) {
-+			sym = symtab + (j * st_entsize);
-+			name = strtab + swap_uint32(sym->st_name);
-+
-+			if (!strcmp(name, vdso_symbols[i].name)) {
-+				offset = FUNC(swap_uint)(sym->st_value);
-+
-+				fprintf(out_file,
-+					"\t.%s = 0x%" PRIx64 ",\n",
-+					vdso_symbols[i].offset_name, offset);
-+				break;
-+			}
-+		}
-+
-+		if (j == st_count) {
-+			fprintf(stderr,
-+				"%s: '%s' is missing required symbol '%s'\n",
-+				program_name, path, vdso_symbols[i].name);
-+			return false;
-+		}
-+	}
-+
-+	return true;
-+}
-diff --git a/arch/mips/vdso/sigreturn.S b/arch/mips/vdso/sigreturn.S
-new file mode 100644
-index 000000000000..715bf5993529
---- /dev/null
-+++ b/arch/mips/vdso/sigreturn.S
-@@ -0,0 +1,49 @@
-+/*
-+ * Copyright (C) 2015 Imagination Technologies
-+ * Author: Alex Smith <alex.smith@imgtec.com>
-+ *
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms of the GNU General Public License as published by the
-+ * Free Software Foundation;  either version 2 of the  License, or (at your
-+ * option) any later version.
-+ */
-+
-+#include "vdso.h"
-+
-+#include <uapi/asm/unistd.h>
-+
-+#include <asm/regdef.h>
-+#include <asm/asm.h>
-+
-+	.section	.text
-+	.cfi_sections	.debug_frame
-+
-+LEAF(__vdso_rt_sigreturn)
-+	.cfi_startproc
-+	.frame	sp, 0, ra
-+	.mask	0x00000000, 0
-+	.fmask	0x00000000, 0
-+	.cfi_signal_frame
-+
-+	li	v0, __NR_rt_sigreturn
-+	syscall
-+
-+	.cfi_endproc
-+	END(__vdso_rt_sigreturn)
-+
-+#if _MIPS_SIM == _MIPS_SIM_ABI32
-+
-+LEAF(__vdso_sigreturn)
-+	.cfi_startproc
-+	.frame	sp, 0, ra
-+	.mask	0x00000000, 0
-+	.fmask	0x00000000, 0
-+	.cfi_signal_frame
-+
-+	li	v0, __NR_sigreturn
-+	syscall
-+
-+	.cfi_endproc
-+	END(__vdso_sigreturn)
-+
-+#endif
-diff --git a/arch/mips/vdso/vdso.h b/arch/mips/vdso/vdso.h
-new file mode 100644
-index 000000000000..5dfe1e5fac14
---- /dev/null
-+++ b/arch/mips/vdso/vdso.h
-@@ -0,0 +1,78 @@
-+/*
-+ * Copyright (C) 2015 Imagination Technologies
-+ * Author: Alex Smith <alex.smith@imgtec.com>
-+ *
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms of the GNU General Public License as published by the
-+ * Free Software Foundation;  either version 2 of the  License, or (at your
-+ * option) any later version.
-+ */
-+
-+#include <asm/sgidefs.h>
-+
-+#if _MIPS_SIM != _MIPS_SIM_ABI64 && defined(CONFIG_64BIT)
-+
-+/* Building 32-bit VDSO for the 64-bit kernel. Fake a 32-bit Kconfig. */
-+#undef CONFIG_64BIT
-+#define CONFIG_32BIT 1
-+
-+#endif
-+
-+#ifndef __ASSEMBLY__
-+
-+#include <asm/asm.h>
-+#include <asm/page.h>
-+#include <asm/vdso.h>
-+
-+static inline unsigned long get_vdso_base(void)
-+{
-+	unsigned long addr;
-+
-+	/*
-+	 * We can't use cpu_has_mips_r6 since it needs the cpu_data[]
-+	 * kernel symbol.
-+	 */
-+#ifdef CONFIG_CPU_MIPSR6
-+	/*
-+	 * lapc <symbol> is an alias to addiupc reg, <symbol> - .
-+	 *
-+	 * We can't use addiupc because there is no label-label
-+	 * support for the addiupc reloc
-+	 */
-+	__asm__("lapc	%0, _start			\n"
-+		: "=r" (addr) : :);
-+#else
-+	/*
-+	 * Get the base load address of the VDSO. We have to avoid generating
-+	 * relocations and references to the GOT because ld.so does not peform
-+	 * relocations on the VDSO. We use the current offset from the VDSO base
-+	 * and perform a PC-relative branch which gives the absolute address in
-+	 * ra, and take the difference. The assembler chokes on
-+	 * "li %0, _start - .", so embed the offset as a word and branch over
-+	 * it.
-+	 *
-+	 */
-+
-+	__asm__(
-+	"	.set push				\n"
-+	"	.set noreorder				\n"
-+	"	bal	1f				\n"
-+	"	 nop					\n"
-+	"	.word	_start - .			\n"
-+	"1:	lw	%0, 0($31)			\n"
-+	"	" STR(PTR_ADDU) " %0, $31, %0		\n"
-+	"	.set pop				\n"
-+	: "=r" (addr)
-+	:
-+	: "$31");
-+#endif /* CONFIG_CPU_MIPSR6 */
-+
-+	return addr;
-+}
-+
-+static inline const union mips_vdso_data *get_vdso_data(void)
-+{
-+	return (const union mips_vdso_data *)(get_vdso_base() - PAGE_SIZE);
-+}
-+
-+#endif /* __ASSEMBLY__ */
-diff --git a/arch/mips/vdso/vdso.lds.S b/arch/mips/vdso/vdso.lds.S
-new file mode 100644
-index 000000000000..21655b6fefc5
---- /dev/null
-+++ b/arch/mips/vdso/vdso.lds.S
-@@ -0,0 +1,100 @@
-+/*
-+ * Copyright (C) 2015 Imagination Technologies
-+ * Author: Alex Smith <alex.smith@imgtec.com>
-+ *
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms of the GNU General Public License as published by the
-+ * Free Software Foundation;  either version 2 of the  License, or (at your
-+ * option) any later version.
-+ */
-+
-+#include <asm/sgidefs.h>
-+
-+#if _MIPS_SIM == _MIPS_SIM_ABI64
-+OUTPUT_FORMAT("elf64-tradlittlemips", "elf64-tradbigmips", "elf64-tradlittlemips")
-+#elif _MIPS_SIM == _MIPS_SIM_NABI32
-+OUTPUT_FORMAT("elf32-ntradlittlemips", "elf32-ntradbigmips", "elf32-ntradlittlemips")
-+#else
-+OUTPUT_FORMAT("elf32-tradlittlemips", "elf32-tradbigmips", "elf32-tradlittlemips")
-+#endif
-+
-+OUTPUT_ARCH(mips)
-+
-+SECTIONS
-+{
-+	PROVIDE(_start = .);
-+	. = SIZEOF_HEADERS;
-+
-+	/*
-+	 * In order to retain compatibility with older toolchains we provide the
-+	 * ABI flags section ourself. Newer assemblers will automatically
-+	 * generate .MIPS.abiflags sections so we discard such input sections,
-+	 * and then manually define our own section here. genvdso will patch
-+	 * this section to have the correct name/type.
-+	 */
-+	.mips_abiflags	: { *(.mips_abiflags) } 	:text :abiflags
-+
-+	.reginfo	: { *(.reginfo) }		:text :reginfo
-+
-+	.hash		: { *(.hash) }			:text
-+	.gnu.hash	: { *(.gnu.hash) }
-+	.dynsym		: { *(.dynsym) }
-+	.dynstr		: { *(.dynstr) }
-+	.gnu.version	: { *(.gnu.version) }
-+	.gnu.version_d	: { *(.gnu.version_d) }
-+	.gnu.version_r	: { *(.gnu.version_r) }
-+
-+	.note		: { *(.note.*) }		:text :note
-+
-+	.text		: { *(.text*) }			:text
-+	PROVIDE (__etext = .);
-+	PROVIDE (_etext = .);
-+	PROVIDE (etext = .);
-+
-+	.eh_frame_hdr	: { *(.eh_frame_hdr) }		:text :eh_frame_hdr
-+	.eh_frame	: { KEEP (*(.eh_frame)) }	:text
-+
-+	.dynamic	: { *(.dynamic) }		:text :dynamic
-+
-+	.rodata		: { *(.rodata*) }		:text
-+
-+	_end = .;
-+	PROVIDE(end = .);
-+
-+	/DISCARD/	: {
-+		*(.MIPS.abiflags)
-+		*(.gnu.attributes)
-+		*(.note.GNU-stack)
-+		*(.data .data.* .gnu.linkonce.d.* .sdata*)
-+		*(.bss .sbss .dynbss .dynsbss)
-+	}
-+}
-+
-+PHDRS
-+{
-+	/*
-+	 * Provide a PT_MIPS_ABIFLAGS header to assign the ABI flags section
-+	 * to. We can specify the header type directly here so no modification
-+	 * is needed later on.
-+	 */
-+	abiflags	0x70000003;
-+
-+	/*
-+	 * The ABI flags header must exist directly after the PT_INTERP header,
-+	 * so we must explicitly place the PT_MIPS_REGINFO header after it to
-+	 * stop the linker putting one in at the start.
-+	 */
-+	reginfo		0x70000000;
-+
-+	text		PT_LOAD		FLAGS(5) FILEHDR PHDRS; /* PF_R|PF_X */
-+	dynamic		PT_DYNAMIC	FLAGS(4);		/* PF_R */
-+	note		PT_NOTE		FLAGS(4);		/* PF_R */
-+	eh_frame_hdr	PT_GNU_EH_FRAME;
-+}
-+
-+VERSION
-+{
-+	LINUX_2.6 {
-+	local: *;
-+	};
-+}
+ 
+ static int num_called;
+diff --git a/drivers/clocksource/exynos_mct.c b/drivers/clocksource/exynos_mct.c
+index 029f96a..516d505 100644
+--- a/drivers/clocksource/exynos_mct.c
++++ b/drivers/clocksource/exynos_mct.c
+@@ -218,7 +218,7 @@ static struct clocksource mct_frc = {
+ 	.resume		= exynos4_frc_resume,
+ };
+ 
+-static u64 notrace exynos4_read_sched_clock(void)
++static u64 notrace exynos4_read_sched_clock(void *data)
+ {
+ 	return exynos4_read_count_32();
+ }
+@@ -243,7 +243,7 @@ static void __init exynos4_clocksource_init(void)
+ 	if (clocksource_register_hz(&mct_frc, clk_rate))
+ 		panic("%s: can't register clocksource\n", mct_frc.name);
+ 
+-	sched_clock_register(exynos4_read_sched_clock, 32, clk_rate);
++	sched_clock_register(exynos4_read_sched_clock, 32, clk_rate, NULL);
+ }
+ 
+ static void exynos4_mct_comp0_stop(void)
+diff --git a/drivers/clocksource/fsl_ftm_timer.c b/drivers/clocksource/fsl_ftm_timer.c
+index ef43469..a395e9b 100644
+--- a/drivers/clocksource/fsl_ftm_timer.c
++++ b/drivers/clocksource/fsl_ftm_timer.c
+@@ -118,7 +118,7 @@ static inline void ftm_reset_counter(void __iomem *base)
+ 	ftm_writel(0x00, base + FTM_CNT);
+ }
+ 
+-static u64 ftm_read_sched_clock(void)
++static u64 ftm_read_sched_clock(void *data)
+ {
+ 	return ftm_readl(priv->clksrc_base + FTM_CNT);
+ }
+@@ -234,7 +234,8 @@ static int __init ftm_clocksource_init(unsigned long freq)
+ 
+ 	ftm_reset_counter(priv->clksrc_base);
+ 
+-	sched_clock_register(ftm_read_sched_clock, 16, freq / (1 << priv->ps));
++	sched_clock_register(ftm_read_sched_clock, 16, freq / (1 << priv->ps),
++			     NULL);
+ 	err = clocksource_mmio_init(priv->clksrc_base + FTM_CNT, "fsl-ftm",
+ 				    freq / (1 << priv->ps), 300, 16,
+ 				    clocksource_mmio_readl_up);
+diff --git a/drivers/clocksource/meson6_timer.c b/drivers/clocksource/meson6_timer.c
+index 1fa22c4..cd6a543 100644
+--- a/drivers/clocksource/meson6_timer.c
++++ b/drivers/clocksource/meson6_timer.c
+@@ -38,7 +38,7 @@
+ 
+ static void __iomem *timer_base;
+ 
+-static u64 notrace meson6_timer_sched_read(void)
++static u64 notrace meson6_timer_sched_read(void *data)
+ {
+ 	return (u64)readl(timer_base + TIMER_ISA_VAL(CSD_ID));
+ }
+@@ -145,7 +145,7 @@ static void __init meson6_timer_init(struct device_node *node)
+ 	val |= TIMER_CSD_UNIT_1US << TIMER_INPUT_BIT(CSD_ID);
+ 	writel(val, timer_base + TIMER_ISA_MUX);
+ 
+-	sched_clock_register(meson6_timer_sched_read, 32, USEC_PER_SEC);
++	sched_clock_register(meson6_timer_sched_read, 32, USEC_PER_SEC, NULL);
+ 	clocksource_mmio_init(timer_base + TIMER_ISA_VAL(CSD_ID), node->name,
+ 			      1000 * 1000, 300, 32, clocksource_mmio_readl_up);
+ 
+diff --git a/drivers/clocksource/mxs_timer.c b/drivers/clocksource/mxs_timer.c
+index f5ce296..84d8e3d 100644
+--- a/drivers/clocksource/mxs_timer.c
++++ b/drivers/clocksource/mxs_timer.c
+@@ -206,7 +206,7 @@ static struct clocksource clocksource_mxs = {
+ 	.flags		= CLOCK_SOURCE_IS_CONTINUOUS,
+ };
+ 
+-static u64 notrace mxs_read_sched_clock_v2(void)
++static u64 notrace mxs_read_sched_clock_v2(void *data)
+ {
+ 	return ~readl_relaxed(mxs_timrot_base + HW_TIMROT_RUNNING_COUNTn(1));
+ }
+@@ -220,7 +220,7 @@ static int __init mxs_clocksource_init(struct clk *timer_clk)
+ 	else {
+ 		clocksource_mmio_init(mxs_timrot_base + HW_TIMROT_RUNNING_COUNTn(1),
+ 			"mxs_timer", c, 200, 32, clocksource_mmio_readl_down);
+-		sched_clock_register(mxs_read_sched_clock_v2, 32, c);
++		sched_clock_register(mxs_read_sched_clock_v2, 32, c, NULL);
+ 	}
+ 
+ 	return 0;
+diff --git a/drivers/clocksource/nomadik-mtu.c b/drivers/clocksource/nomadik-mtu.c
+index bc8dd44..e30faf7 100644
+--- a/drivers/clocksource/nomadik-mtu.c
++++ b/drivers/clocksource/nomadik-mtu.c
+@@ -75,7 +75,7 @@ static struct delay_timer mtu_delay_timer;
+  * local implementation which uses the clocksource to get some
+  * better resolution when scheduling the kernel.
+  */
+-static u64 notrace nomadik_read_sched_clock(void)
++static u64 notrace nomadik_read_sched_clock(void *data)
+ {
+ 	if (unlikely(!mtu_base))
+ 		return 0;
+@@ -232,7 +232,7 @@ static void __init nmdk_timer_init(void __iomem *base, int irq,
+ 		       "mtu_0");
+ 
+ #ifdef CONFIG_CLKSRC_NOMADIK_MTU_SCHED_CLOCK
+-	sched_clock_register(nomadik_read_sched_clock, 32, rate);
++	sched_clock_register(nomadik_read_sched_clock, 32, rate, NULL);
+ #endif
+ 
+ 	/* Timer 1 is used for events, register irq and clockevents */
+diff --git a/drivers/clocksource/pxa_timer.c b/drivers/clocksource/pxa_timer.c
+index 45b6a49..a9395fd 100644
+--- a/drivers/clocksource/pxa_timer.c
++++ b/drivers/clocksource/pxa_timer.c
+@@ -54,7 +54,7 @@
+ 
+ static void __iomem *timer_base;
+ 
+-static u64 notrace pxa_read_sched_clock(void)
++static u64 notrace pxa_read_sched_clock(void *data)
+ {
+ 	return timer_readl(OSCR);
+ }
+@@ -155,7 +155,7 @@ static void __init pxa_timer_common_init(int irq, unsigned long clock_tick_rate)
+ 	timer_writel(0, OIER);
+ 	timer_writel(OSSR_M0 | OSSR_M1 | OSSR_M2 | OSSR_M3, OSSR);
+ 
+-	sched_clock_register(pxa_read_sched_clock, 32, clock_tick_rate);
++	sched_clock_register(pxa_read_sched_clock, 32, clock_tick_rate, NULL);
+ 
+ 	ckevt_pxa_osmr0.cpumask = cpumask_of(0);
+ 
+diff --git a/drivers/clocksource/qcom-timer.c b/drivers/clocksource/qcom-timer.c
+index f8e09f9..2f99c80 100644
+--- a/drivers/clocksource/qcom-timer.c
++++ b/drivers/clocksource/qcom-timer.c
+@@ -164,7 +164,7 @@ static struct notifier_block msm_timer_cpu_nb = {
+ 	.notifier_call = msm_timer_cpu_notify,
+ };
+ 
+-static u64 notrace msm_sched_clock_read(void)
++static u64 notrace msm_sched_clock_read(void *data)
+ {
+ 	return msm_clocksource.read(&msm_clocksource);
+ }
+@@ -215,7 +215,7 @@ err:
+ 	res = clocksource_register_hz(cs, dgt_hz);
+ 	if (res)
+ 		pr_err("clocksource_register failed\n");
+-	sched_clock_register(msm_sched_clock_read, sched_bits, dgt_hz);
++	sched_clock_register(msm_sched_clock_read, sched_bits, dgt_hz, NULL);
+ 	msm_delay_timer.freq = dgt_hz;
+ 	register_current_timer_delay(&msm_delay_timer);
+ }
+diff --git a/drivers/clocksource/samsung_pwm_timer.c b/drivers/clocksource/samsung_pwm_timer.c
+index bc90e13..e4b7578 100644
+--- a/drivers/clocksource/samsung_pwm_timer.c
++++ b/drivers/clocksource/samsung_pwm_timer.c
+@@ -328,7 +328,7 @@ static struct clocksource samsung_clocksource = {
+  * this wraps around for now, since it is just a relative time
+  * stamp. (Inspired by U300 implementation.)
+  */
+-static u64 notrace samsung_read_sched_clock(void)
++static u64 notrace samsung_read_sched_clock(void *data)
+ {
+ 	return samsung_clocksource_read(NULL);
+ }
+@@ -355,7 +355,7 @@ static void __init samsung_clocksource_init(void)
+ 		pwm.source_reg = pwm.base + pwm.source_id * 0x0c + 0x14;
+ 
+ 	sched_clock_register(samsung_read_sched_clock,
+-						pwm.variant.bits, clock_rate);
++					pwm.variant.bits, clock_rate, NULL);
+ 
+ 	samsung_clocksource.mask = CLOCKSOURCE_MASK(pwm.variant.bits);
+ 	ret = clocksource_register_hz(&samsung_clocksource, clock_rate);
+diff --git a/drivers/clocksource/sun4i_timer.c b/drivers/clocksource/sun4i_timer.c
+index 6f3719d..0407429 100644
+--- a/drivers/clocksource/sun4i_timer.c
++++ b/drivers/clocksource/sun4i_timer.c
+@@ -141,7 +141,7 @@ static struct irqaction sun4i_timer_irq = {
+ 	.dev_id = &sun4i_clockevent,
+ };
+ 
+-static u64 notrace sun4i_timer_sched_read(void)
++static u64 notrace sun4i_timer_sched_read(void *data)
+ {
+ 	return ~readl(timer_base + TIMER_CNTVAL_REG(1));
+ }
+@@ -180,7 +180,7 @@ static void __init sun4i_timer_init(struct device_node *node)
+ 	if (of_machine_is_compatible("allwinner,sun4i-a10") ||
+ 	    of_machine_is_compatible("allwinner,sun5i-a13") ||
+ 	    of_machine_is_compatible("allwinner,sun5i-a10s"))
+-		sched_clock_register(sun4i_timer_sched_read, 32, rate);
++		sched_clock_register(sun4i_timer_sched_read, 32, rate, NULL);
+ 
+ 	clocksource_mmio_init(timer_base + TIMER_CNTVAL_REG(1), node->name,
+ 			      rate, 350, 32, clocksource_mmio_readl_down);
+diff --git a/drivers/clocksource/tegra20_timer.c b/drivers/clocksource/tegra20_timer.c
+index 6ebda11..c7c149a 100644
+--- a/drivers/clocksource/tegra20_timer.c
++++ b/drivers/clocksource/tegra20_timer.c
+@@ -104,7 +104,7 @@ static struct clock_event_device tegra_clockevent = {
+ 	.tick_resume		= tegra_timer_shutdown,
+ };
+ 
+-static u64 notrace tegra_read_sched_clock(void)
++static u64 notrace tegra_read_sched_clock(void *data)
+ {
+ 	return timer_readl(TIMERUS_CNTR_1US);
+ }
+@@ -208,7 +208,7 @@ static void __init tegra20_init_timer(struct device_node *np)
+ 		WARN(1, "Unknown clock rate");
+ 	}
+ 
+-	sched_clock_register(tegra_read_sched_clock, 32, 1000000);
++	sched_clock_register(tegra_read_sched_clock, 32, 1000000, NULL);
+ 
+ 	if (clocksource_mmio_init(timer_reg_base + TIMERUS_CNTR_1US,
+ 		"timer_us", 1000000, 300, 32, clocksource_mmio_readl_up)) {
+diff --git a/drivers/clocksource/time-armada-370-xp.c b/drivers/clocksource/time-armada-370-xp.c
+index 2162796..a13b73b 100644
+--- a/drivers/clocksource/time-armada-370-xp.c
++++ b/drivers/clocksource/time-armada-370-xp.c
+@@ -92,7 +92,7 @@ static void local_timer_ctrl_clrset(u32 clr, u32 set)
+ 		local_base + TIMER_CTRL_OFF);
+ }
+ 
+-static u64 notrace armada_370_xp_read_sched_clock(void)
++static u64 notrace armada_370_xp_read_sched_clock(void *data)
+ {
+ 	return ~readl(timer_base + TIMER0_VAL_OFF);
+ }
+@@ -290,7 +290,8 @@ static void __init armada_370_xp_timer_common_init(struct device_node *np)
+ 	/*
+ 	 * Set scale and timer for sched_clock.
+ 	 */
+-	sched_clock_register(armada_370_xp_read_sched_clock, 32, timer_clk);
++	sched_clock_register(armada_370_xp_read_sched_clock, 32, timer_clk,
++			     NULL);
+ 
+ 	clocksource_mmio_init(timer_base + TIMER0_VAL_OFF,
+ 			      "armada_370_xp_clocksource",
+diff --git a/drivers/clocksource/time-lpc32xx.c b/drivers/clocksource/time-lpc32xx.c
+index a1c06a2..045735d 100644
+--- a/drivers/clocksource/time-lpc32xx.c
++++ b/drivers/clocksource/time-lpc32xx.c
+@@ -48,7 +48,7 @@ struct lpc32xx_clock_event_ddata {
+ /* Needed for the sched clock */
+ static void __iomem *clocksource_timer_counter;
+ 
+-static u64 notrace lpc32xx_read_sched_clock(void)
++static u64 notrace lpc32xx_read_sched_clock(void *data)
+ {
+ 	return readl(clocksource_timer_counter);
+ }
+@@ -162,7 +162,7 @@ static int __init lpc32xx_clocksource_init(struct device_node *np)
+ 	}
+ 
+ 	clocksource_timer_counter = base + LPC32XX_TIMER_TC;
+-	sched_clock_register(lpc32xx_read_sched_clock, 32, rate);
++	sched_clock_register(lpc32xx_read_sched_clock, 32, rate, NULL);
+ 
+ 	return 0;
+ 
+diff --git a/drivers/clocksource/time-orion.c b/drivers/clocksource/time-orion.c
+index 0ece742..84faf88 100644
+--- a/drivers/clocksource/time-orion.c
++++ b/drivers/clocksource/time-orion.c
+@@ -39,7 +39,7 @@ static void __iomem *timer_base;
+ /*
+  * Free-running clocksource handling.
+  */
+-static u64 notrace orion_read_sched_clock(void)
++static u64 notrace orion_read_sched_clock(void *data)
+ {
+ 	return ~readl(timer_base + TIMER0_VAL);
+ }
+@@ -133,7 +133,8 @@ static void __init orion_timer_init(struct device_node *np)
+ 	clocksource_mmio_init(timer_base + TIMER0_VAL, "orion_clocksource",
+ 			      clk_get_rate(clk), 300, 32,
+ 			      clocksource_mmio_readl_down);
+-	sched_clock_register(orion_read_sched_clock, 32, clk_get_rate(clk));
++	sched_clock_register(orion_read_sched_clock, 32, clk_get_rate(clk),
++			     NULL);
+ 
+ 	/* setup timer1 as clockevent timer */
+ 	if (setup_irq(irq, &orion_clkevt_irq))
+diff --git a/drivers/clocksource/time-pistachio.c b/drivers/clocksource/time-pistachio.c
+index 18d4266..92897d8 100644
+--- a/drivers/clocksource/time-pistachio.c
++++ b/drivers/clocksource/time-pistachio.c
+@@ -86,7 +86,7 @@ static cycle_t pistachio_clocksource_read_cycles(struct clocksource *cs)
+ 	return ~(cycle_t)counter;
+ }
+ 
+-static u64 notrace pistachio_read_sched_clock(void)
++static u64 notrace pistachio_read_sched_clock(void *data)
+ {
+ 	return pistachio_clocksource_read_cycles(&pcs_gpt.cs);
+ }
+@@ -210,7 +210,7 @@ static void __init pistachio_clksrc_of_init(struct device_node *node)
+ 	writel(TIMER_ME_GLOBAL, pcs_gpt.base);
+ 
+ 	raw_spin_lock_init(&pcs_gpt.lock);
+-	sched_clock_register(pistachio_read_sched_clock, 32, rate);
++	sched_clock_register(pistachio_read_sched_clock, 32, rate, NULL);
+ 	clocksource_register_hz(&pcs_gpt.cs, rate);
+ }
+ CLOCKSOURCE_OF_DECLARE(pistachio_gptimer, "img,pistachio-gptimer",
+diff --git a/drivers/clocksource/timer-digicolor.c b/drivers/clocksource/timer-digicolor.c
+index e73947f0f..66635fc 100644
+--- a/drivers/clocksource/timer-digicolor.c
++++ b/drivers/clocksource/timer-digicolor.c
+@@ -143,7 +143,7 @@ static irqreturn_t digicolor_timer_interrupt(int irq, void *dev_id)
+ 	return IRQ_HANDLED;
+ }
+ 
+-static u64 digicolor_timer_sched_read(void)
++static u64 digicolor_timer_sched_read(void *data)
+ {
+ 	return ~readl(dc_timer_dev.base + COUNT(TIMER_B));
+ }
+@@ -183,7 +183,7 @@ static void __init digicolor_timer_init(struct device_node *node)
+ 	writel(UINT_MAX, dc_timer_dev.base + COUNT(TIMER_B));
+ 	writeb(CONTROL_ENABLE, dc_timer_dev.base + CONTROL(TIMER_B));
+ 
+-	sched_clock_register(digicolor_timer_sched_read, 32, rate);
++	sched_clock_register(digicolor_timer_sched_read, 32, rate, NULL);
+ 	clocksource_mmio_init(dc_timer_dev.base + COUNT(TIMER_B), node->name,
+ 			      rate, 340, 32, clocksource_mmio_readl_down);
+ 
+diff --git a/drivers/clocksource/timer-imx-gpt.c b/drivers/clocksource/timer-imx-gpt.c
+index 839aba9..5e387db 100644
+--- a/drivers/clocksource/timer-imx-gpt.c
++++ b/drivers/clocksource/timer-imx-gpt.c
+@@ -152,7 +152,7 @@ static void imx31_gpt_irq_acknowledge(struct imx_timer *imxtm)
+ 
+ static void __iomem *sched_clock_reg;
+ 
+-static u64 notrace mxc_read_sched_clock(void)
++static u64 notrace mxc_read_sched_clock(void *data)
+ {
+ 	return sched_clock_reg ? readl_relaxed(sched_clock_reg) : 0;
+ }
+@@ -175,7 +175,7 @@ static int __init mxc_clocksource_init(struct imx_timer *imxtm)
+ 
+ 	sched_clock_reg = reg;
+ 
+-	sched_clock_register(mxc_read_sched_clock, 32, c);
++	sched_clock_register(mxc_read_sched_clock, 32, c, NULL);
+ 	return clocksource_mmio_init(reg, "mxc_timer1", c, 200, 32,
+ 			clocksource_mmio_readl_up);
+ }
+diff --git a/drivers/clocksource/timer-integrator-ap.c b/drivers/clocksource/timer-integrator-ap.c
+index 3f59ac2..f69f5bd 100644
+--- a/drivers/clocksource/timer-integrator-ap.c
++++ b/drivers/clocksource/timer-integrator-ap.c
+@@ -31,7 +31,7 @@
+ 
+ static void __iomem * sched_clk_base;
+ 
+-static u64 notrace integrator_read_sched_clock(void)
++static u64 notrace integrator_read_sched_clock(void *data)
+ {
+ 	return -readl(sched_clk_base + TIMER_VALUE);
+ }
+@@ -54,7 +54,7 @@ static void integrator_clocksource_init(unsigned long inrate,
+ 			rate, 200, 16, clocksource_mmio_readl_down);
+ 
+ 	sched_clk_base = base;
+-	sched_clock_register(integrator_read_sched_clock, 16, rate);
++	sched_clock_register(integrator_read_sched_clock, 16, rate, NULL);
+ }
+ 
+ static unsigned long timer_reload;
+diff --git a/drivers/clocksource/timer-prima2.c b/drivers/clocksource/timer-prima2.c
+index 78de982..4f3043d 100644
+--- a/drivers/clocksource/timer-prima2.c
++++ b/drivers/clocksource/timer-prima2.c
+@@ -176,7 +176,7 @@ static struct irqaction sirfsoc_timer_irq = {
+ };
+ 
+ /* Overwrite weak default sched_clock with more precise one */
+-static u64 notrace sirfsoc_read_sched_clock(void)
++static u64 notrace sirfsoc_read_sched_clock(void *data)
+ {
+ 	return sirfsoc_timer_read(NULL);
+ }
+@@ -219,7 +219,8 @@ static void __init sirfsoc_prima2_timer_init(struct device_node *np)
+ 	BUG_ON(clocksource_register_hz(&sirfsoc_clocksource,
+ 				       PRIMA2_CLOCK_FREQ));
+ 
+-	sched_clock_register(sirfsoc_read_sched_clock, 64, PRIMA2_CLOCK_FREQ);
++	sched_clock_register(sirfsoc_read_sched_clock, 64, PRIMA2_CLOCK_FREQ,
++			     NULL);
+ 
+ 	BUG_ON(setup_irq(sirfsoc_timer_irq.irq, &sirfsoc_timer_irq));
+ 
+diff --git a/drivers/clocksource/timer-sp804.c b/drivers/clocksource/timer-sp804.c
+index 5f45b9a..a7f4f2b 100644
+--- a/drivers/clocksource/timer-sp804.c
++++ b/drivers/clocksource/timer-sp804.c
+@@ -67,7 +67,7 @@ static long __init sp804_get_clock_rate(struct clk *clk)
+ 
+ static void __iomem *sched_clock_base;
+ 
+-static u64 notrace sp804_read(void)
++static u64 notrace sp804_read(void *data)
+ {
+ 	return ~readl_relaxed(sched_clock_base + TIMER_VALUE);
+ }
+@@ -110,7 +110,7 @@ void __init __sp804_clocksource_and_sched_clock_init(void __iomem *base,
+ 
+ 	if (use_sched_clock) {
+ 		sched_clock_base = base;
+-		sched_clock_register(sp804_read, 32, rate);
++		sched_clock_register(sp804_read, 32, rate, NULL);
+ 	}
+ }
+ 
+diff --git a/drivers/clocksource/timer-u300.c b/drivers/clocksource/timer-u300.c
+index 1744b24..d653efe 100644
+--- a/drivers/clocksource/timer-u300.c
++++ b/drivers/clocksource/timer-u300.c
+@@ -344,7 +344,7 @@ static struct irqaction u300_timer_irq = {
+  * stamp. (Inspired by OMAP implementation.)
+  */
+ 
+-static u64 notrace u300_read_sched_clock(void)
++static u64 notrace u300_read_sched_clock(void *data)
+ {
+ 	return readl(u300_timer_base + U300_TIMER_APP_GPT2CC);
+ }
+@@ -384,7 +384,7 @@ static void __init u300_timer_init_of(struct device_node *np)
+ 
+ 	u300_clockevent_data.ticks_per_jiffy = DIV_ROUND_CLOSEST(rate, HZ);
+ 
+-	sched_clock_register(u300_read_sched_clock, 32, rate);
++	sched_clock_register(u300_read_sched_clock, 32, rate, NULL);
+ 
+ 	u300_delay_timer.read_current_timer = &u300_read_current_timer;
+ 	u300_delay_timer.freq = rate;
+diff --git a/drivers/clocksource/versatile.c b/drivers/clocksource/versatile.c
+index 0a26d3d..fe319c0 100644
+--- a/drivers/clocksource/versatile.c
++++ b/drivers/clocksource/versatile.c
+@@ -20,7 +20,7 @@
+ 
+ static void __iomem *versatile_sys_24mhz;
+ 
+-static u64 notrace versatile_sys_24mhz_read(void)
++static u64 notrace versatile_sys_24mhz_read(void *data)
+ {
+ 	return readl(versatile_sys_24mhz);
+ }
+@@ -34,7 +34,7 @@ static void __init versatile_sched_clock_init(struct device_node *node)
+ 
+ 	versatile_sys_24mhz = base + SYS_24MHZ;
+ 
+-	sched_clock_register(versatile_sys_24mhz_read, 32, 24000000);
++	sched_clock_register(versatile_sys_24mhz_read, 32, 24000000, NULL);
+ }
+ CLOCKSOURCE_OF_DECLARE(vexpress, "arm,vexpress-sysreg",
+ 		       versatile_sched_clock_init);
+diff --git a/drivers/clocksource/vf_pit_timer.c b/drivers/clocksource/vf_pit_timer.c
+index f07ba99..3cb1c54 100644
+--- a/drivers/clocksource/vf_pit_timer.c
++++ b/drivers/clocksource/vf_pit_timer.c
+@@ -52,7 +52,7 @@ static inline void pit_irq_acknowledge(void)
+ 	__raw_writel(PITTFLG_TIF, clkevt_base + PITTFLG);
+ }
+ 
+-static u64 pit_read_sched_clock(void)
++static u64 pit_read_sched_clock(void *data)
+ {
+ 	return ~__raw_readl(clksrc_base + PITCVAL);
+ }
+@@ -64,7 +64,7 @@ static int __init pit_clocksource_init(unsigned long rate)
+ 	__raw_writel(~0UL, clksrc_base + PITLDVAL);
+ 	__raw_writel(PITTCTRL_TEN, clksrc_base + PITTCTRL);
+ 
+-	sched_clock_register(pit_read_sched_clock, 32, rate);
++	sched_clock_register(pit_read_sched_clock, 32, rate, NULL);
+ 	return clocksource_mmio_init(clksrc_base + PITCVAL, "vf-pit", rate,
+ 			300, 32, clocksource_mmio_readl_down);
+ }
+diff --git a/include/linux/sched_clock.h b/include/linux/sched_clock.h
+index efa931c..881358e 100644
+--- a/include/linux/sched_clock.h
++++ b/include/linux/sched_clock.h
+@@ -14,7 +14,7 @@ extern void sched_clock_postinit(void);
+ static inline void sched_clock_postinit(void) { }
+ #endif
+ 
+-extern void sched_clock_register(u64 (*read)(void), int bits,
+-				 unsigned long rate);
++extern void sched_clock_register(u64 (*read)(void *), int bits,
++				 unsigned long rate, void *data);
+ 
+ #endif
+diff --git a/kernel/time/sched_clock.c b/kernel/time/sched_clock.c
+index a26036d..ccb2af9 100644
+--- a/kernel/time/sched_clock.c
++++ b/kernel/time/sched_clock.c
+@@ -27,6 +27,7 @@
+  * @sched_clock_mask:   Bitmask for two's complement subtraction of non 64bit
+  *			clocks.
+  * @read_sched_clock:	Current clock source (or dummy source when suspended).
++ * @sched_clock_data:	Pointer passed to read_sched_clock()
+  * @mult:		Multipler for scaled math conversion.
+  * @shift:		Shift value for scaled math conversion.
+  *
+@@ -39,7 +40,8 @@ struct clock_read_data {
+ 	u64 epoch_ns;
+ 	u64 epoch_cyc;
+ 	u64 sched_clock_mask;
+-	u64 (*read_sched_clock)(void);
++	u64 (*read_sched_clock)(void *);
++	void *sched_clock_data;
+ 	u32 mult;
+ 	u32 shift;
+ };
+@@ -54,6 +56,7 @@ struct clock_read_data {
+  * @wrap_kt:		Duration for which clock can run before wrapping.
+  * @rate:		Tick rate of the registered clock.
+  * @actual_read_sched_clock: Registered hardware level clock read function.
++ * @sched_clock_data:	Pointer passed to actual_read_sched_clock()
+  *
+  * The ordering of this structure has been chosen to optimize cache
+  * performance. In particular 'seq' and 'read_data[0]' (combined) should fit
+@@ -65,7 +68,8 @@ struct clock_data {
+ 	ktime_t			wrap_kt;
+ 	unsigned long		rate;
+ 
+-	u64 (*actual_read_sched_clock)(void);
++	u64 (*actual_read_sched_clock)(void *data);
++	void *sched_clock_data;
+ };
+ 
+ static struct hrtimer sched_clock_timer;
+@@ -73,7 +77,7 @@ static int irqtime = -1;
+ 
+ core_param(irqtime, irqtime, int, 0400);
+ 
+-static u64 notrace jiffy_sched_clock_read(void)
++static u64 notrace jiffy_sched_clock_read(void *data)
+ {
+ 	/*
+ 	 * We don't need to use get_jiffies_64 on 32-bit arches here
+@@ -103,8 +107,8 @@ unsigned long long notrace sched_clock(void)
+ 		seq = raw_read_seqcount(&cd.seq);
+ 		rd = cd.read_data + (seq & 1);
+ 
+-		cyc = (rd->read_sched_clock() - rd->epoch_cyc) &
+-		      rd->sched_clock_mask;
++		cyc = (rd->read_sched_clock(rd->sched_clock_data) -
++		       rd->epoch_cyc) & rd->sched_clock_mask;
+ 		res = rd->epoch_ns + cyc_to_ns(cyc, rd->mult, rd->shift);
+ 	} while (read_seqcount_retry(&cd.seq, seq));
+ 
+@@ -147,7 +151,7 @@ static void update_sched_clock(void)
+ 
+ 	rd = cd.read_data[0];
+ 
+-	cyc = cd.actual_read_sched_clock();
++	cyc = cd.actual_read_sched_clock(cd.sched_clock_data);
+ 	ns = rd.epoch_ns + cyc_to_ns((cyc - rd.epoch_cyc) & rd.sched_clock_mask, rd.mult, rd.shift);
+ 
+ 	rd.epoch_ns = ns;
+@@ -165,7 +169,8 @@ static enum hrtimer_restart sched_clock_poll(struct hrtimer *hrt)
+ }
+ 
+ void __init
+-sched_clock_register(u64 (*read)(void), int bits, unsigned long rate)
++sched_clock_register(u64 (*read)(void *), int bits, unsigned long rate,
++		     void *data)
+ {
+ 	u64 res, wrap, new_mask, new_epoch, cyc, ns;
+ 	u32 new_mult, new_shift;
+@@ -191,12 +196,14 @@ sched_clock_register(u64 (*read)(void), int bits, unsigned long rate)
+ 	rd = cd.read_data[0];
+ 
+ 	/* Update epoch for new counter and update 'epoch_ns' from old counter*/
+-	new_epoch = read();
+-	cyc = cd.actual_read_sched_clock();
++	new_epoch = read(data);
++	cyc = cd.actual_read_sched_clock(cd.sched_clock_data);
+ 	ns = rd.epoch_ns + cyc_to_ns((cyc - rd.epoch_cyc) & rd.sched_clock_mask, rd.mult, rd.shift);
+ 	cd.actual_read_sched_clock = read;
++	cd.sched_clock_data = data;
+ 
+ 	rd.read_sched_clock	= read;
++	rd.sched_clock_data	= data;
+ 	rd.sched_clock_mask	= new_mask;
+ 	rd.mult			= new_mult;
+ 	rd.shift		= new_shift;
+@@ -238,7 +245,8 @@ void __init sched_clock_postinit(void)
+ 	 * make it the final one one.
+ 	 */
+ 	if (cd.actual_read_sched_clock == jiffy_sched_clock_read)
+-		sched_clock_register(jiffy_sched_clock_read, BITS_PER_LONG, HZ);
++		sched_clock_register(jiffy_sched_clock_read, BITS_PER_LONG, HZ,
++				     NULL);
+ 
+ 	update_sched_clock();
+ 
+@@ -262,7 +270,7 @@ void __init sched_clock_postinit(void)
+  * at the end of the critical section to be sure we observe the
+  * correct copy of 'epoch_cyc'.
+  */
+-static u64 notrace suspended_sched_clock_read(void)
++static u64 notrace suspended_sched_clock_read(void *data)
+ {
+ 	unsigned long seq = raw_read_seqcount(&cd.seq);
+ 
+@@ -284,7 +292,7 @@ static void sched_clock_resume(void)
+ {
+ 	struct clock_read_data *rd = &cd.read_data[0];
+ 
+-	rd->epoch_cyc = cd.actual_read_sched_clock();
++	rd->epoch_cyc = cd.actual_read_sched_clock(cd.sched_clock_data);
+ 	hrtimer_start(&sched_clock_timer, cd.wrap_kt, HRTIMER_MODE_REL);
+ 	rd->read_sched_clock = cd.actual_read_sched_clock;
+ }
 -- 
-2.6.1
+2.5.3

@@ -1,15 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 12 Oct 2015 13:13:31 +0200 (CEST)
-Received: from arrakis.dune.hu ([78.24.191.176]:36879 "EHLO arrakis.dune.hu"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 12 Oct 2015 13:13:48 +0200 (CEST)
+Received: from arrakis.dune.hu ([78.24.191.176]:36880 "EHLO arrakis.dune.hu"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27010894AbbJLLN3gKsna (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 12 Oct 2015 13:13:29 +0200
+        id S27010915AbbJLLNaDnsCa (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 12 Oct 2015 13:13:30 +0200
 Received: from localhost (localhost [127.0.0.1])
-        by arrakis.dune.hu (Postfix) with ESMTP id 9F37128A675;
-        Mon, 12 Oct 2015 13:11:49 +0200 (CEST)
+        by arrakis.dune.hu (Postfix) with ESMTP id 0BB8E28BEDF;
+        Mon, 12 Oct 2015 13:11:52 +0200 (CEST)
 X-Virus-Scanned: at arrakis.dune.hu
 Received: from localhost.localdomain (dslb-088-073-016-160.088.073.pools.vodafone-ip.de [88.73.16.160])
-        by arrakis.dune.hu (Postfix) with ESMTPSA id A3946281070;
-        Mon, 12 Oct 2015 13:11:33 +0200 (CEST)
+        by arrakis.dune.hu (Postfix) with ESMTPSA id 09B19284375;
+        Mon, 12 Oct 2015 13:11:38 +0200 (CEST)
 From:   Jonas Gorski <jogo@openwrt.org>
 To:     linux-mips@linux-mips.org
 Cc:     Ralf Baechle <ralf@linux-mips.org>,
@@ -22,15 +22,17 @@ Cc:     Ralf Baechle <ralf@linux-mips.org>,
         Jayachandran C <jchandra@broadcom.com>,
         Andrew Bresticker <abrestic@chromium.org>,
         James Hartley <james.hartley@imgtec.com>
-Subject: [PATCH V2 0/3]  MIPS: allow keeping the dtb command line
-Date:   Mon, 12 Oct 2015 13:13:00 +0200
-Message-Id: <1444648383-22518-1-git-send-email-jogo@openwrt.org>
+Subject: [PATCH V2 1/3] MIPS: use USE_OF as the guard for appended dtb
+Date:   Mon, 12 Oct 2015 13:13:01 +0200
+Message-Id: <1444648383-22518-2-git-send-email-jogo@openwrt.org>
 X-Mailer: git-send-email 2.1.4
+In-Reply-To: <1444648383-22518-1-git-send-email-jogo@openwrt.org>
+References: <1444648383-22518-1-git-send-email-jogo@openwrt.org>
 Return-Path: <jogo@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49490
+X-archive-position: 49491
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,34 +49,30 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Currently MIPS kernel code overwrites any bootargs from devicetree
-unconditionally with the arcscmdline. Several targets work around this
-by copying the devicetree bootargs into the arcscmdline after parsing
-the device tree.
+Since OF is now a user selectable symbol, the choice for appended dtb
+support should only be visible when USE_OF is selected, as this
+indicates actual machine support for device tree in MIPS.
 
-This patchset adds a new kernel option for keeping the devicetree
-bootargs, then removes the workarounds and lets the targets instead make
-use of that option.
+Signed-off-by: Jonas Gorski <jogo@openwrt.org>
+---
+v1 -> v2:
+ * no changes
 
-Since some targets use OF but don't make use of the devicetree bootargs,
-treat them like non-OF enabled targets and only use the prom commandline.
+ arch/mips/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Changes v1 -> v2:
- * Fix ATh79 -> ATH79
-
-Jonas Gorski (3):
-  MIPS: use USE_OF as the guard for appended dtb
-  MIPS: make the kernel arguments from dtb available
-  MIPS: make MIPS_CMDLINE_DTB default
-
- arch/mips/Kconfig           | 21 ++++++++++++++++++++-
- arch/mips/bmips/setup.c     |  1 -
- arch/mips/kernel/setup.c    | 24 +++++++++++++++++-------
- arch/mips/lantiq/prom.c     |  2 --
- arch/mips/netlogic/xlp/dt.c |  1 -
- arch/mips/pistachio/init.c  |  1 -
- arch/mips/ralink/of.c       |  2 --
- 7 files changed, 37 insertions(+), 15 deletions(-)
-
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 9322d26..39a08ed 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -2700,7 +2700,7 @@ config BUILTIN_DTB
+ 	bool
+ 
+ choice
+-	prompt "Kernel appended dtb support" if OF
++	prompt "Kernel appended dtb support" if USE_OF
+ 	default MIPS_NO_APPENDED_DTB
+ 
+ 	config MIPS_NO_APPENDED_DTB
 -- 
 2.1.4

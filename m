@@ -1,42 +1,79 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 12 Oct 2015 13:14:21 +0200 (CEST)
-Received: from arrakis.dune.hu ([78.24.191.176]:36888 "EHLO arrakis.dune.hu"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27010919AbbJLLNcWwRLa (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 12 Oct 2015 13:13:32 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by arrakis.dune.hu (Postfix) with ESMTP id 20C47284375;
-        Mon, 12 Oct 2015 13:11:59 +0200 (CEST)
-X-Virus-Scanned: at arrakis.dune.hu
-Received: from localhost.localdomain (dslb-088-073-016-160.088.073.pools.vodafone-ip.de [88.73.16.160])
-        by arrakis.dune.hu (Postfix) with ESMTPSA id 5246D281480;
-        Mon, 12 Oct 2015 13:11:40 +0200 (CEST)
-From:   Jonas Gorski <jogo@openwrt.org>
-To:     linux-mips@linux-mips.org
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Kevin Cernekee <cernekee@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        John Crispin <blogic@openwrt.org>,
-        Ganesan Ramalingam <ganesanr@broadcom.com>,
-        Jayachandran C <jchandra@broadcom.com>,
-        Andrew Bresticker <abrestic@chromium.org>,
-        James Hartley <james.hartley@imgtec.com>
-Subject: [PATCH V2 3/3] MIPS: make MIPS_CMDLINE_DTB default
-Date:   Mon, 12 Oct 2015 13:13:03 +0200
-Message-Id: <1444648383-22518-4-git-send-email-jogo@openwrt.org>
-X-Mailer: git-send-email 2.1.4
-In-Reply-To: <1444648383-22518-1-git-send-email-jogo@openwrt.org>
-References: <1444648383-22518-1-git-send-email-jogo@openwrt.org>
-Return-Path: <jogo@openwrt.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 12 Oct 2015 15:02:52 +0200 (CEST)
+Received: from down.free-electrons.com ([37.187.137.238]:48929 "EHLO
+        mail.free-electrons.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S27009829AbbJLNCuF7PS4 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 12 Oct 2015 15:02:50 +0200
+Received: by mail.free-electrons.com (Postfix, from userid 110)
+        id 14B0B47BB; Mon, 12 Oct 2015 15:02:43 +0200 (CEST)
+Received: from localhost (81-67-231-93.rev.numericable.fr [81.67.231.93])
+        by mail.free-electrons.com (Postfix) with ESMTPSA id CC1F12C1;
+        Mon, 12 Oct 2015 15:02:42 +0200 (CEST)
+From:   Gregory CLEMENT <gregory.clement@free-electrons.com>
+To:     Mans Rullgard <mans@mansr.com>
+Cc:     Sekhar Nori <nsekhar@ti.com>,
+        Kevin Hilman <khilman@deeprootsystems.com>,
+        Russell King <linux@arm.linux.org.uk>,
+        Hartley Sweeten <hsweeten@visionengravers.com>,
+        Ryan Mallon <rmallon@gmail.com>,
+        Hans Ulli Kroll <ulli.kroll@googlemail.com>,
+        Imre Kaloz <kaloz@openwrt.org>,
+        Krzysztof Halasa <khalasa@piap.pl>,
+        Eric Miao <eric.y.miao@gmail.com>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        Mikael Starvik <starvik@axis.com>,
+        Jesper Nilsson <jesper.nilsson@axis.com>,
+        Michal Simek <monstr@monstr.eu>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Srinivas Kandagatla <srinivas.kandagatla@gmail.com>,
+        Maxime Coquelin <maxime.coquelin@st.com>,
+        Patrice Chotard <patrice.chotard@st.com>,
+        Stephen Warren <swarren@wwwdotorg.org>,
+        Lee Jones <lee@kernel.org>, Eric Anholt <eric@anholt.net>,
+        =?utf-8?Q?S=C3=B6ren?= Brinkmann <soren.brinkmann@xilinx.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Alexander Shiyan <shc_work@mail.ru>,
+        Kukjin Kim <kgene@kernel.org>,
+        Krzysztof Kozlowski <k.kozlowski@samsung.com>,
+        Carlo Caione <carlo@caione.org>,
+        Maxime Ripard <maxime.ripard@free-electrons.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Alexandre Courbot <gnurou@gmail.com>,
+        Baruch Siach <baruch@tkos.co.il>,
+        Barry Song <baohua@kernel.org>,
+        Liviu Dudau <liviu.dudau@arm.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-cris-kernel@axis.com,
+        linux-mips@linux-mips.org, linux-xtensa@linux-xtensa.org,
+        kernel@stlinux.com, linux-rpi-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-tegra@vger.kernel.org
+Subject: Re: [PATCH] sched_clock: add data pointer argument to read callback
+References: <1444427858-576-1-git-send-email-mans@mansr.com>
+Date:   Mon, 12 Oct 2015 15:02:42 +0200
+In-Reply-To: <1444427858-576-1-git-send-email-mans@mansr.com> (Mans Rullgard's
+        message of "Fri, 9 Oct 2015 22:57:35 +0100")
+Message-ID: <87io6c6xzh.fsf@free-electrons.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.4 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
+Return-Path: <gregory.clement@free-electrons.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49493
+X-archive-position: 49494
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jogo@openwrt.org
+X-original-sender: gregory.clement@free-electrons.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,103 +86,54 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Seval of-enabled machines (bmips, lantiq, xlp, pistachio, ralink) copied
-the arguments from dtb to arcs_command_line to prevent the kernel from
-overwriting them.
+Hi Mans,
+ 
+ On ven., oct. 09 2015, Mans Rullgard <mans@mansr.com> wrote:
 
-Since there is now an option to keep the dtb arguments, default to the
-new option remove the "backup" to arcs_command_line in case of USE_OF is
-enabled, except for those platforms that still take the bootloader
-arguments or do not use any at all.
+> This passes a data pointer specified in the sched_clock_register()
+> call to the read callback allowing simpler implementations thereof.
+>
+> In this patch, existing uses of this interface are simply updated
+> with a null pointer.
+>
+> Signed-off-by: Mans Rullgard <mans@mansr.com>
+> ---
+[...]
+> diff --git a/drivers/clocksource/time-armada-370-xp.c b/drivers/clocksource/time-armada-370-xp.c
+> index 2162796..a13b73b 100644
+> --- a/drivers/clocksource/time-armada-370-xp.c
+> +++ b/drivers/clocksource/time-armada-370-xp.c
+> @@ -92,7 +92,7 @@ static void local_timer_ctrl_clrset(u32 clr, u32 set)
+>  		local_base + TIMER_CTRL_OFF);
+>  }
+>  
+> -static u64 notrace armada_370_xp_read_sched_clock(void)
+> +static u64 notrace armada_370_xp_read_sched_clock(void *data)
+>  {
+>  	return ~readl(timer_base + TIMER0_VAL_OFF);
+>  }
+> @@ -290,7 +290,8 @@ static void __init armada_370_xp_timer_common_init(struct device_node *np)
+>  	/*
+>  	 * Set scale and timer for sched_clock.
+>  	 */
+> -	sched_clock_register(armada_370_xp_read_sched_clock, 32, timer_clk);
+> +	sched_clock_register(armada_370_xp_read_sched_clock, 32, timer_clk,
+> +			     NULL);
+>  
+>  	clocksource_mmio_init(timer_base + TIMER0_VAL_OFF,
+>  			      "armada_370_xp_clocksource",
 
-Signed-off-by: Jonas Gorski <jogo@openwrt.org>
----
-v1 -> v2:
- * ATh79 -> ATH79
+For the time-armada-370-xp.c file:
 
- arch/mips/Kconfig           | 3 +++
- arch/mips/bmips/setup.c     | 1 -
- arch/mips/lantiq/prom.c     | 2 --
- arch/mips/netlogic/xlp/dt.c | 1 -
- arch/mips/pistachio/init.c  | 1 -
- arch/mips/ralink/of.c       | 2 --
- 6 files changed, 3 insertions(+), 7 deletions(-)
+Acked-by: Gregory CLEMENT <gregory.clement@free-electrons.com>
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 6204e0b..45f0e09 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -2746,6 +2746,9 @@ endchoice
- 
- choice
- 	prompt "Kernel command line type" if !CMDLINE_OVERRIDE
-+	default MIPS_CMDLINE_FROM_DTB if USE_OF && !ATH79 && !MACH_INGENIC && \
-+					 !MIPS_MALTA && !MIPS_SEAD3 && \
-+					 !CAVIUM_OCTEON_SOC
- 	default MIPS_CMDLINE_FROM_BOOTLOADER
- 
- 	config MIPS_CMDLINE_FROM_DTB
-diff --git a/arch/mips/bmips/setup.c b/arch/mips/bmips/setup.c
-index 526ec27..5b16d29 100644
---- a/arch/mips/bmips/setup.c
-+++ b/arch/mips/bmips/setup.c
-@@ -157,7 +157,6 @@ void __init plat_mem_setup(void)
- 		panic("no dtb found");
- 
- 	__dt_setup_arch(dtb);
--	strlcpy(arcs_cmdline, boot_command_line, COMMAND_LINE_SIZE);
- 
- 	for (q = bmips_quirk_list; q->quirk_fn; q++) {
- 		if (of_flat_dt_is_compatible(of_get_flat_dt_root(),
-diff --git a/arch/mips/lantiq/prom.c b/arch/mips/lantiq/prom.c
-index 0db099e..297bcaa 100644
---- a/arch/mips/lantiq/prom.c
-+++ b/arch/mips/lantiq/prom.c
-@@ -77,8 +77,6 @@ void __init plat_mem_setup(void)
- 	 * parsed resulting in our memory appearing
- 	 */
- 	__dt_setup_arch(__dtb_start);
--
--	strlcpy(arcs_cmdline, boot_command_line, COMMAND_LINE_SIZE);
- }
- 
- void __init device_tree_init(void)
-diff --git a/arch/mips/netlogic/xlp/dt.c b/arch/mips/netlogic/xlp/dt.c
-index a625bdb..856a6e6 100644
---- a/arch/mips/netlogic/xlp/dt.c
-+++ b/arch/mips/netlogic/xlp/dt.c
-@@ -87,7 +87,6 @@ void __init *xlp_dt_init(void *fdtp)
- void __init xlp_early_init_devtree(void)
- {
- 	__dt_setup_arch(xlp_fdt_blob);
--	strlcpy(arcs_cmdline, boot_command_line, COMMAND_LINE_SIZE);
- }
- 
- void __init device_tree_init(void)
-diff --git a/arch/mips/pistachio/init.c b/arch/mips/pistachio/init.c
-index 8bd8ebb..96ba2cc 100644
---- a/arch/mips/pistachio/init.c
-+++ b/arch/mips/pistachio/init.c
-@@ -58,7 +58,6 @@ void __init plat_mem_setup(void)
- 		panic("Device-tree not present");
- 
- 	__dt_setup_arch((void *)fw_arg1);
--	strlcpy(arcs_cmdline, boot_command_line, COMMAND_LINE_SIZE);
- 
- 	plat_setup_iocoherency();
- }
-diff --git a/arch/mips/ralink/of.c b/arch/mips/ralink/of.c
-index 0d30dcd..f9eda5d 100644
---- a/arch/mips/ralink/of.c
-+++ b/arch/mips/ralink/of.c
-@@ -74,8 +74,6 @@ void __init plat_mem_setup(void)
- 	 */
- 	__dt_setup_arch(__dtb_start);
- 
--	strlcpy(arcs_cmdline, boot_command_line, COMMAND_LINE_SIZE);
--
- 	of_scan_flat_dt(early_init_dt_find_memory, NULL);
- 	if (memory_dtb)
- 		of_scan_flat_dt(early_init_dt_scan_memory, NULL);
+Thanks,
+
+Gregory
+
+
 -- 
-2.1.4
+Gregory Clement, Free Electrons
+Kernel, drivers, real-time and embedded Linux
+development, consulting, training and support.
+http://free-electrons.com

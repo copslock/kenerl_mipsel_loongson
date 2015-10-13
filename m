@@ -1,56 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Oct 2015 14:53:03 +0200 (CEST)
-Received: from mout.kundenserver.de ([212.227.126.131]:50661 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27009746AbbJMMxAasksV (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 13 Oct 2015 14:53:00 +0200
-Received: from wuerfel.localnet ([149.172.15.242]) by mrelayeu.kundenserver.de
- (mreue004) with ESMTPSA (Nemesis) id 0MTtCv-1aCYVo2FkH-00Qimh; Tue, 13 Oct
- 2015 14:52:45 +0200
-From:   Arnd Bergmann <arnd@arndb.de>
-To:     kernel-build-reports@lists.linaro.org
-Cc:     Mark Brown <broonie@kernel.org>,
-        =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        Hauke Mehrtens <hauke@hauke-m.de>,
-        Seiji Aguchi <seiji.aguchi@hds.com>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Mike Waychison <mikew@google.com>,
-        Matt Fleming <matt.fleming@intel.com>,
-        linux-mips@linux-mips.org, linaro-kernel@lists.linaro.org,
-        linux-next@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Subject: Re: next-20151013 build: 1 failures 50 warnings (next-20151013)
-Date:   Tue, 13 Oct 2015 14:52:42 +0200
-Message-ID: <10774670.W40zvvZu4L@wuerfel>
-User-Agent: KMail/4.11.5 (Linux/3.16.0-10-generic; KDE/4.11.5; x86_64; ; )
-In-Reply-To: <20151013125026.GG14956@sirena.org.uk>
-References: <E1ZlxDc-0000ea-U4@optimist> <20151013125026.GG14956@sirena.org.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Oct 2015 15:27:36 +0200 (CEST)
+Received: from www.linutronix.de ([62.245.132.108]:50957 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27010039AbbJMN1exdZhj (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 13 Oct 2015 15:27:34 +0200
+Received: from localhost ([127.0.0.1])
+        by Galois.linutronix.de with esmtps (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:256)
+        (Exim 4.80)
+        (envelope-from <tglx@linutronix.de>)
+        id 1Zlzc0-0007jW-KS; Tue, 13 Oct 2015 15:27:28 +0200
+Date:   Tue, 13 Oct 2015 15:26:52 +0200 (CEST)
+From:   Thomas Gleixner <tglx@linutronix.de>
+To:     Qais Yousef <qais.yousef@imgtec.com>
+cc:     linux-kernel@vger.kernel.org, jason@lakedaemon.net,
+        marc.zyngier@arm.com, jiang.liu@linux.intel.com,
+        ralf@linux-mips.org, linux-mips@linux-mips.org
+Subject: Re: [RFC v2 PATCH 03/14] irq: add new struct ipi_mask
+In-Reply-To: <1444731382-19313-4-git-send-email-qais.yousef@imgtec.com>
+Message-ID: <alpine.DEB.2.11.1510131517080.25029@nanos>
+References: <1444731382-19313-1-git-send-email-qais.yousef@imgtec.com> <1444731382-19313-4-git-send-email-qais.yousef@imgtec.com>
+User-Agent: Alpine 2.11 (DEB 23 2013-08-11)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-X-Provags-ID: V03:K0:MyFGi+ERUouwPtsygrQ+Mz/dS/X6vATNtmvCiy/zQGy5d6bWjQI
- OQKRf9eZthT3cvq5bviokRgSZxdXsxmNYfTqlOvYYr7LsYhEDm/mN5g1ZtsZCCgq7xDHGv5
- /1dUSq3h19O3twLwFp53NPlgU5iDuduE5DjKA9x83nW/Y/pS2uVEC0gbsIezdPm2rNJJ+lN
- DpnHBStUWa+gBefcQAMRQ==
-X-UI-Out-Filterresults: notjunk:1;V01:K0:FW0dbzghydU=:sLroajftzVFyv/wujLhYjO
- F8yHPvTGYzxUfDnZ8L/4WBQbQjwDwSJUTKC+ZTbxCiOf7kgTooHScXkDVXqYAejfZwQSVpW2+
- 9WI1P+c0jI4RHbm8WSFwoVWHlrZxVcgq0qcOC9lC9EW5M0oMkA9BXJp8ehqk4GzKx7Aeqsqg1
- 84NxSmVTbifiLjlTxz1p0CPE50mXy3h0/1Eb9KrO63sJOyuxcxC9x1fdnSgMoVzoMx8nmq1SY
- gppZrhRymYTPuXwzWasybd7G80YUV3U6hhtcvYQrErYPUa80dyI5IRLFs2OoHpVybrUutX9yu
- 2PeSw+NM/LB6Avb6XyvUJ7z+EQBB1py6VgGEDIhlcDx4iJ3fBw2ONzxekpZEhfXvbzHYNgkEO
- imuEEA+eyquOo1wswf05RJ8qr3ETdAPZ2Miaugc19OIu9OnoJz3pNnrJqze+vck3TjUTro0xj
- pfxcnKRogW9kKHGoTWirt4S8LDcn9Sfe7Cj1KBZwRFtqNgRNMt7aSA4l9e+FO2ZKH6JPDBbq+
- fTehJpoEevyLJ8Nc41q3XBS5CzqIA7NGAfj5PgVyaj/tYMPOvunlUAEuCZsfeb1I+dcYmPXXX
- u8nPGfPz02zdHPxevHDV/7wBUhs7WeQh/j3k1pbm2Yzpvl6RaOwvoA14IAnH9w65cGIOGfKth
- O5bJuCjBI2heIAe1sIjUrhdE3WQctV7RslJRhKr1hK2XCJSgJa0rGtgUjstqr7tInynfzLzow
- prptneZU40NCi1oy
-Return-Path: <arnd@arndb.de>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Linutronix-Spam-Score: -1.0
+X-Linutronix-Spam-Level: -
+X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+Return-Path: <tglx@linutronix.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49517
+X-archive-position: 49518
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arnd@arndb.de
+X-original-sender: tglx@linutronix.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -63,23 +45,60 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tuesday 13 October 2015 13:50:26 Mark Brown wrote:
-> On Tue, Oct 13, 2015 at 11:54:09AM +0100, Build bot for Mark Brown wrote:
+On Tue, 13 Oct 2015, Qais Yousef wrote:
+> cpumask is limited to NR_CPUS. introduce ipi_mask which allows us to address
+> cpu range that is higher than NR_CPUS which is required for drivers to send
+> IPIs for coprocessor that are outside Linux CPU range.
 > 
-> Today's linux-next fails to build an ARM allmodconfig due to:
+> Signed-off-by: Qais Yousef <qais.yousef@imgtec.com>
+> ---
+>  include/linux/irq.h | 15 +++++++++++++++
+>  1 file changed, 15 insertions(+)
 > 
-> >       arm-allmodconfig
-> > ../drivers/firmware/broadcom/bcm47xx_nvram.c:110:30: error: macro "DIV_ROUND_UP" requires 2 arguments, but only 1 given
-> > ../drivers/firmware/broadcom/bcm47xx_nvram.c:110:4: error: 'DIV_ROUND_UP' undeclared (first use in this function)
-> 
-> triggered by f6e734a8c16229 (MIPS: BCM47xx: Move NVRAM driver to the
-> drivers/firmware/).  Presumably this works due to an implicit inclusion
-> on MIPS.
-> 
-> I've CCed a lot of people listed in the changelog of the patch, though
-> the list there appears somewhat random - apologies if this is irrelevant
-> to you.
+> diff --git a/include/linux/irq.h b/include/linux/irq.h
+> index 11bf09288ddb..4b537e4d393b 100644
+> --- a/include/linux/irq.h
+> +++ b/include/linux/irq.h
+> @@ -125,6 +125,21 @@ enum {
+>  struct msi_desc;
+>  struct irq_domain;
+>  
+> + /**
+> + * struct ipi_mask - IPI mask information
+> + * @cpumask: bitmap of cpumasks
+> + * @nbits: number of bits in cpumask
+> + * @global: whether the mask is SMP IPI ie: subset of cpu_possible_mask or not
+> + *
+> + * ipi_mask is similar to cpumask, but it provides nbits that's configurable
+> + * rather than fixed to NR_CPUS.
+> + */
+> +struct ipi_mask {
+> +	unsigned long	*cpumask;
+> +	unsigned int	nbits;
+> +	bool		global;
+> +};
 
-I've submitted a patch yesterday, see https://lkml.org/lkml/2015/10/12/303
+Can you make that:
 
-	ARnd
+struct ipi_mask {
+	unsigned int	nbits;
+	bool		global;
+	unsigned long	cpu_bitmap[];
+};
+
+That allows you to allocate the data structure in one go. So the
+ipi_mask in irq_data_common becomes a pointer which is only filled in
+when ipi_mask is actually used.
+
+Note, I renamed cpumask to cpu_bitmap to avoid confusion with
+cpumasks.
+
+We also want a helper function
+
+   struct cpumask *irq_data_get_ipi_mask(struct irq_data *data);
+
+so we can use normal cpumask operations for the majority of cases.
+
+Thanks,
+
+	tglx

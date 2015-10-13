@@ -1,79 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 12 Oct 2015 15:02:52 +0200 (CEST)
-Received: from down.free-electrons.com ([37.187.137.238]:48929 "EHLO
-        mail.free-electrons.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27009829AbbJLNCuF7PS4 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 12 Oct 2015 15:02:50 +0200
-Received: by mail.free-electrons.com (Postfix, from userid 110)
-        id 14B0B47BB; Mon, 12 Oct 2015 15:02:43 +0200 (CEST)
-Received: from localhost (81-67-231-93.rev.numericable.fr [81.67.231.93])
-        by mail.free-electrons.com (Postfix) with ESMTPSA id CC1F12C1;
-        Mon, 12 Oct 2015 15:02:42 +0200 (CEST)
-From:   Gregory CLEMENT <gregory.clement@free-electrons.com>
-To:     Mans Rullgard <mans@mansr.com>
-Cc:     Sekhar Nori <nsekhar@ti.com>,
-        Kevin Hilman <khilman@deeprootsystems.com>,
-        Russell King <linux@arm.linux.org.uk>,
-        Hartley Sweeten <hsweeten@visionengravers.com>,
-        Ryan Mallon <rmallon@gmail.com>,
-        Hans Ulli Kroll <ulli.kroll@googlemail.com>,
-        Imre Kaloz <kaloz@openwrt.org>,
-        Krzysztof Halasa <khalasa@piap.pl>,
-        Eric Miao <eric.y.miao@gmail.com>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-        Mikael Starvik <starvik@axis.com>,
-        Jesper Nilsson <jesper.nilsson@axis.com>,
-        Michal Simek <monstr@monstr.eu>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Srinivas Kandagatla <srinivas.kandagatla@gmail.com>,
-        Maxime Coquelin <maxime.coquelin@st.com>,
-        Patrice Chotard <patrice.chotard@st.com>,
-        Stephen Warren <swarren@wwwdotorg.org>,
-        Lee Jones <lee@kernel.org>, Eric Anholt <eric@anholt.net>,
-        =?utf-8?Q?S=C3=B6ren?= Brinkmann <soren.brinkmann@xilinx.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Alexander Shiyan <shc_work@mail.ru>,
-        Kukjin Kim <kgene@kernel.org>,
-        Krzysztof Kozlowski <k.kozlowski@samsung.com>,
-        Carlo Caione <carlo@caione.org>,
-        Maxime Ripard <maxime.ripard@free-electrons.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Alexandre Courbot <gnurou@gmail.com>,
-        Baruch Siach <baruch@tkos.co.il>,
-        Barry Song <baohua@kernel.org>,
-        Liviu Dudau <liviu.dudau@arm.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-cris-kernel@axis.com,
-        linux-mips@linux-mips.org, linux-xtensa@linux-xtensa.org,
-        kernel@stlinux.com, linux-rpi-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, linux-tegra@vger.kernel.org
-Subject: Re: [PATCH] sched_clock: add data pointer argument to read callback
-References: <1444427858-576-1-git-send-email-mans@mansr.com>
-Date:   Mon, 12 Oct 2015 15:02:42 +0200
-In-Reply-To: <1444427858-576-1-git-send-email-mans@mansr.com> (Mans Rullgard's
-        message of "Fri, 9 Oct 2015 22:57:35 +0100")
-Message-ID: <87io6c6xzh.fsf@free-electrons.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.4 (gnu/linux)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Oct 2015 12:16:45 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:18144 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27006648AbbJMKQncZLvs (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 13 Oct 2015 12:16:43 +0200
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 2A7696FB04D89;
+        Tue, 13 Oct 2015 11:16:35 +0100 (IST)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Tue, 13 Oct 2015 11:16:37 +0100
+Received: from qyousef-linux.le.imgtec.org (192.168.154.94) by
+ LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
+ 14.3.210.2; Tue, 13 Oct 2015 11:16:36 +0100
+From:   Qais Yousef <qais.yousef@imgtec.com>
+To:     <linux-kernel@vger.kernel.org>
+CC:     <tglx@linutronix.de>, <jason@lakedaemon.net>,
+        <marc.zyngier@arm.com>, <jiang.liu@linux.intel.com>,
+        <ralf@linux-mips.org>, <linux-mips@linux-mips.org>,
+        Qais Yousef <qais.yousef@imgtec.com>
+Subject: [RFC v2 PATCH 00/14] Implement generic IPI support mechanism
+Date:   Tue, 13 Oct 2015 11:16:08 +0100
+Message-ID: <1444731382-19313-1-git-send-email-qais.yousef@imgtec.com>
+X-Mailer: git-send-email 2.1.0
 MIME-Version: 1.0
 Content-Type: text/plain
-Return-Path: <gregory.clement@free-electrons.com>
+X-Originating-IP: [192.168.154.94]
+Return-Path: <Qais.Yousef@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49494
+X-archive-position: 49496
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregory.clement@free-electrons.com
+X-original-sender: qais.yousef@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -86,54 +46,73 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Mans,
- 
- On ven., oct. 09 2015, Mans Rullgard <mans@mansr.com> wrote:
+This RFC series attempts to implement a generic IPI layer for reserving and sending IPIs.
 
-> This passes a data pointer specified in the sched_clock_register()
-> call to the read callback allowing simpler implementations thereof.
->
-> In this patch, existing uses of this interface are simply updated
-> with a null pointer.
->
-> Signed-off-by: Mans Rullgard <mans@mansr.com>
-> ---
-[...]
-> diff --git a/drivers/clocksource/time-armada-370-xp.c b/drivers/clocksource/time-armada-370-xp.c
-> index 2162796..a13b73b 100644
-> --- a/drivers/clocksource/time-armada-370-xp.c
-> +++ b/drivers/clocksource/time-armada-370-xp.c
-> @@ -92,7 +92,7 @@ static void local_timer_ctrl_clrset(u32 clr, u32 set)
->  		local_base + TIMER_CTRL_OFF);
->  }
->  
-> -static u64 notrace armada_370_xp_read_sched_clock(void)
-> +static u64 notrace armada_370_xp_read_sched_clock(void *data)
->  {
->  	return ~readl(timer_base + TIMER0_VAL_OFF);
->  }
-> @@ -290,7 +290,8 @@ static void __init armada_370_xp_timer_common_init(struct device_node *np)
->  	/*
->  	 * Set scale and timer for sched_clock.
->  	 */
-> -	sched_clock_register(armada_370_xp_read_sched_clock, 32, timer_clk);
-> +	sched_clock_register(armada_370_xp_read_sched_clock, 32, timer_clk,
-> +			     NULL);
->  
->  	clocksource_mmio_init(timer_base + TIMER0_VAL_OFF,
->  			      "armada_370_xp_clocksource",
+It is based on the discussion in these links
 
-For the time-armada-370-xp.c file:
+	https://lkml.org/lkml/2015/8/26/713
+	https://lkml.org/lkml/2015/9/29/875
 
-Acked-by: Gregory CLEMENT <gregory.clement@free-electrons.com>
+In summary. We need a generic IPI layer to allow driver code to send IPIs to coprocessor
+without caring about implementation details of the underlying controller.
 
-Thanks,
+Also it will help in making SMP IPI support more generic.
 
-Gregory
+The goal is to have a mechanism to dynamically reserve an IPI to destination CPUs and
+provide a single virq to send an IPI to any of these CPUs using generic irq_send_ipi()
+API.
 
+This v2 addresses the comments from v1 and implements a simpler mapping mechanism and moves
+the irq_send_ipi() to be part of irqchip instead of irqdomain.
+
+The implementation falls more natural and fits into place now (hopefully). So hopefully next
+series would be non RFC. The only thing I haven't addressed is whether we want to make
+request_percpu_irq() enable a coprocessor or defer that to the coprocessor itself.
+
+This series is based on Linus tree. I couldn't compile test it because MIPS compilation was
+broken due to other reasons. I expect some brokeness because of the introduction of
+struct irq_common_data which is not present on the 4.1 tree I was testing my code on before
+porting it to Linus tip. I will fix these issues and introduce proper accessors for accessing
+struct ipi_mask given that the concept is approved.
+
+I hope my commit messages aren't too terse.
+
+Credit goes to Thomas for spec'ing and outlining the proper way to get this new API in.
+
+Qais Yousef (14):
+  irq: add new IRQ_DOMAIN_FLAGS_IPI
+  irq: add GENERIC_IRQ_IPI Kconfig symbol
+  irq: add new struct ipi_mask
+  irq: add a new irq_send_ipi() to irq_chip
+  irq: add struct ipi_mask to irq_data
+  irq: add struct ipi_mapping and its helper functions
+  irq: add a new generic IPI reservation code to irq core
+  irq: implement irq_send_ipi
+  MIPS: add support for generic SMP IPI support
+  MIPS: make smp CMP, CPS and MT use the new generic IPI functions
+  MIPS: delete smp-gic.c
+  irqchip: mips-gic: add a IPI hierarchy domain
+  irqchip: mips-gic: implement the new irq_send_ipi
+  irqchip: mips-gic: remove IPI init code
+
+ arch/mips/Kconfig                |   6 --
+ arch/mips/include/asm/smp-ops.h  |   5 +-
+ arch/mips/kernel/Makefile        |   1 -
+ arch/mips/kernel/smp-cmp.c       |   4 +-
+ arch/mips/kernel/smp-cps.c       |   4 +-
+ arch/mips/kernel/smp-gic.c       |  64 -----------
+ arch/mips/kernel/smp-mt.c        |   2 +-
+ arch/mips/kernel/smp.c           | 117 ++++++++++++++++++++
+ drivers/irqchip/Kconfig          |   2 +
+ drivers/irqchip/irq-mips-gic.c   | 225 ++++++++++++++++++++++++---------------
+ include/linux/irq.h              |  43 ++++++++
+ include/linux/irqchip/mips-gic.h |   3 -
+ include/linux/irqdomain.h        |  19 ++++
+ kernel/irq/Kconfig               |   4 +
+ kernel/irq/irqdomain.c           |  84 +++++++++++++++
+ kernel/irq/manage.c              | 103 ++++++++++++++++++
+ 16 files changed, 517 insertions(+), 169 deletions(-)
+ delete mode 100644 arch/mips/kernel/smp-gic.c
 
 -- 
-Gregory Clement, Free Electrons
-Kernel, drivers, real-time and embedded Linux
-development, consulting, training and support.
-http://free-electrons.com
+2.1.0

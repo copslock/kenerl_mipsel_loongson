@@ -1,57 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Oct 2015 11:15:28 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:34509 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27007575AbbJNJPYDRHNm (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 14 Oct 2015 11:15:24 +0200
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 538E83BAE851E;
-        Wed, 14 Oct 2015 10:15:16 +0100 (IST)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Wed, 14 Oct 2015 10:15:18 +0100
-Received: from LEMAIL01.le.imgtec.org ([fe80::5ae:ee16:f4b9:cda9]) by
- LEMAIL01.le.imgtec.org ([fe80::5ae:ee16:f4b9:cda9%17]) with mapi id
- 14.03.0210.002; Wed, 14 Oct 2015 10:15:17 +0100
-From:   Harvey Hunt <Harvey.Hunt@imgtec.com>
-To:     Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
-CC:     "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
-        "Alex Smith" <Alex.Smith@imgtec.com>,
-        Zubair Kakakhel <Zubair.Kakakhel@imgtec.com>,
-        David Woodhouse <dwmw2@infradead.org>,
-        Brian Norris <computersforpeace@gmail.com>,
-        Paul Burton <Paul.Burton@imgtec.com>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        Alex Smith <alex@alex-smith.me.uk>
-Subject: RE: [PATCH v7,3/3] MIPS: dts: jz4780/ci20: Add NEMC, BCH and NAND
- device tree nodes
-Thread-Topic: [PATCH v7,3/3] MIPS: dts: jz4780/ci20: Add NEMC, BCH and NAND
- device tree nodes
-Thread-Index: AQHRAg91/Ek0r9ywG0W1IeF0nGQAP55qvR4w
-Date:   Wed, 14 Oct 2015 09:15:16 +0000
-Message-ID: <FAF81613212CC5449F9A43554D3E454741A3936E@LEMAIL01.le.imgtec.org>
-References: <1444148837-10770-1-git-send-email-harvey.hunt@imgtec.com>
-        <1444148837-10770-4-git-send-email-harvey.hunt@imgtec.com>
- <CAAEAJfBtOtiEEJy500-Kg8ZHm+ZGF3vL7y7xJD3a0-3CJ0w33A@mail.gmail.com>
-In-Reply-To: <CAAEAJfBtOtiEEJy500-Kg8ZHm+ZGF3vL7y7xJD3a0-3CJ0w33A@mail.gmail.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [192.168.154.54]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-MIME-Version: 1.0
-Return-Path: <Harvey.Hunt@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Oct 2015 13:28:38 +0200 (CEST)
+Received: from mail-pa0-f66.google.com ([209.85.220.66]:34544 "EHLO
+        mail-pa0-f66.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27009438AbbJNL2gXFOry (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 14 Oct 2015 13:28:36 +0200
+Received: by padda3 with SMTP id da3so3028338pad.1;
+        Wed, 14 Oct 2015 04:28:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id;
+        bh=sXIDpVp86Lf+5UnWsXJPsTZAaxH1TJc2T6E15KzzIi0=;
+        b=k5+fz7aKIZhbUM4go1PrwXtfAXi9SIqp3Fd3U9ymGDa6OfctSZTOd7k06rw8yqKCe+
+         ifOxeKesx5f/tKtv9XoniaHN72g+iy0Gkvd2XmHti6fgTOkOoaDbWxtYVhenbwOEq3+0
+         FslQ9Cvg9fl5Bz89l6+x4FhFPFVgMGD1tRBXgQUtfWS2Rt6MIYlGLD30x5GgHYm+ODoZ
+         M+vM+y1leadp74kXMSNjOaEnhjr4sS3y6YpvfRJD02vhoYMD+Mh4lh7qmBTXMSr4RcKJ
+         c/S4QwRJyPz2pSMNHJpm2FLN7LJsrA09VXb9u0qkRpys/fxInrLbD3b8qZGZ686yv2DV
+         zKZw==
+X-Received: by 10.66.144.165 with SMTP id sn5mr3326343pab.122.1444822110133;
+        Wed, 14 Oct 2015 04:28:30 -0700 (PDT)
+Received: from corellia.google.com (cpe-98-148-132-5.socal.res.rr.com. [98.148.132.5])
+        by smtp.gmail.com with ESMTPSA id po7sm9155057pbc.56.2015.10.14.04.28.28
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Wed, 14 Oct 2015 04:28:29 -0700 (PDT)
+From:   Gregory Fong <gregory.0xf0@gmail.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     Rusty Russell <rusty@rustcorp.com.au>,
+        Nicolas Schichan <nschichan@freebox.fr>,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        Gregory Fong <gregory.0xf0@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Jonas Gorski <jogo@openwrt.org>, Joe Perches <joe@perches.com>
+Subject: [PATCH v2] MIPS: BCM63XX: Use pr_* instead of printk
+Date:   Wed, 14 Oct 2015 04:27:38 -0700
+Message-Id: <1444822058-7410-1-git-send-email-gregory.0xf0@gmail.com>
+X-Mailer: git-send-email 1.9.1
+Return-Path: <gregory.0xf0@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49534
+X-archive-position: 49535
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Harvey.Hunt@imgtec.com
+X-original-sender: gregory.0xf0@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -64,52 +54,187 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-T24gOCBPY3RvYmVyIDIwMTUgYXQgMjI6MjMsIEV6ZXF1aWVsIEdhcmNpYSA8IGV6ZXF1aWVsQHZh
-bmd1YXJkaWFzdXIuY29tLmFyPiB3cm90ZToNCj5PbiA2IE9jdG9iZXIgMjAxNSBhdCAxMzoyNywg
-SGFydmV5IEh1bnQgPGhhcnZleS5odW50QGltZ3RlYy5jb20+IHdyb3RlOg0KPj4gRnJvbTogQWxl
-eCBTbWl0aCA8YWxleC5zbWl0aEBpbWd0ZWMuY29tPg0KPj4NCj4+IEFkZCBkZXZpY2UgdHJlZSBu
-b2RlcyBmb3IgdGhlIE5FTUMgYW5kIEJDSCB0byB0aGUgSlo0NzgwIGRldmljZSB0cmVlLA0KPj4g
-YW5kIG1ha2UgdXNlIG9mIHRoZW0gaW4gdGhlIENpMjAgZGV2aWNlIHRyZWUgdG8gYWRkIGEgbm9k
-ZSBmb3IgdGhlDQo+PiBib2FyZCdzIE5BTkQuDQo+Pg0KPj4gTm90ZSB0aGF0IHNpbmNlIHRoZSBw
-aW5jdHJsIGRyaXZlciBpcyBub3QgeWV0IHVwc3RyZWFtLCB0aGlzIGluY2x1ZGVzDQo+PiBuZWl0
-aGVyIHBpbiBjb25maWd1cmF0aW9uIG5vciBidXN5L3dyaXRlLXByb3RlY3QgR1BJTyBwaW5zIGZv
-ciB0aGUNCj4+IE5BTkQuIFVzZSBvZiB0aGUgTkFORCByZWxpZXMgb24gdGhlIGJvb3QgbG9hZGVy
-IHRvIGhhdmUgbGVmdCB0aGUgcGlucw0KPj4gY29uZmlndXJlZCBpbiBhIHVzYWJsZSBzdGF0ZSwg
-d2hpY2ggc2hvdWxkIGJlIHRoZSBjYXNlIHdoZW4gYm9vdGVkDQo+PiBmcm9tIHRoZSBOQU5ELg0K
-Pj4NCj4+IFNpZ25lZC1vZmYtYnk6IEFsZXggU21pdGggPGFsZXguc21pdGhAaW1ndGVjLmNvbT4N
-Cj4+IENjOiBadWJhaXIgTHV0ZnVsbGFoIEtha2FraGVsIDxadWJhaXIuS2FrYWtoZWxAaW1ndGVj
-LmNvbT4NCj4+IENjOiBEYXZpZCBXb29kaG91c2UgPGR3bXcyQGluZnJhZGVhZC5vcmc+DQo+PiBD
-YzogQnJpYW4gTm9ycmlzIDxjb21wdXRlcnNmb3JwZWFjZUBnbWFpbC5jb20+DQo+PiBDYzogUGF1
-bCBCdXJ0b24gPHBhdWwuYnVydG9uQGltZ3RlYy5jb20+DQo+PiBDYzogbGludXgtbXRkQGxpc3Rz
-LmluZnJhZGVhZC5vcmcNCj4+IENjOiBkZXZpY2V0cmVlQHZnZXIua2VybmVsLm9yZw0KPj4gQ2M6
-IGxpbnV4LWtlcm5lbEB2Z2VyLmtlcm5lbC5vcmcNCj4+IENjOiBsaW51eC1taXBzQGxpbnV4LW1p
-cHMub3JnDQo+PiBDYzogQWxleCBTbWl0aCA8YWxleEBhbGV4LXNtaXRoLm1lLnVrPg0KPj4gU2ln
-bmVkLW9mZi1ieTogSGFydmV5IEh1bnQgPGhhcnZleS5odW50QGltZ3RlYy5jb20+DQo+PiAtLS0N
-Cj4+IHY2IC0+IHY3Og0KPj4gIC0gQWRkIG5hbmQtZWNjLW1vZGUgdG8gRFQuDQo+PiAgLSBBZGQg
-bmFuZC1vbi1mbGFzaC1iYnQgdG8gRFQuDQo+Pg0KPj4gdjQgLT4gdjU6DQo+PiAgLSBOZXcgcGF0
-Y2ggYWRkaW5nIERUIG5vZGVzIGZvciB0aGUgTkFORCBzbyB0aGF0IHRoZSBkcml2ZXIgY2FuIGJl
-DQo+PiAgICB0ZXN0ZWQuDQo+Pg0KPj4gIGFyY2gvbWlwcy9ib290L2R0cy9pbmdlbmljL2NpMjAu
-ZHRzICAgIHwgNTQgKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKw0KPj4gIGFyY2gv
-bWlwcy9ib290L2R0cy9pbmdlbmljL2p6NDc4MC5kdHNpIHwgMjYgKysrKysrKysrKysrKysrKw0K
-Pj4gIDIgZmlsZXMgY2hhbmdlZCwgODAgaW5zZXJ0aW9ucygrKQ0KPj4NCj4+IGRpZmYgLS1naXQg
-YS9hcmNoL21pcHMvYm9vdC9kdHMvaW5nZW5pYy9jaTIwLmR0cyBiL2FyY2gvbWlwcy9ib290L2R0
-cy9pbmdlbmljL2NpMjAuZHRzDQo+PiBpbmRleCA5ZmNiOWU3Li40NTNmMWQzIDEwMDY0NA0KPj4g
-LS0tIGEvYXJjaC9taXBzL2Jvb3QvZHRzL2luZ2VuaWMvY2kyMC5kdHMNCj4+ICsrKyBiL2FyY2gv
-bWlwcy9ib290L2R0cy9pbmdlbmljL2NpMjAuZHRzDQo+PiBAQCAtNDIsMyArNDIsNTcgQEANCj4+
-ICAmdWFydDQgew0KPj4gICAgICAgICBzdGF0dXMgPSAib2theSI7DQo+PiAgfTsNCj4+ICsNCj4+
-ICsmbmVtYyB7DQo+PiArICAgICAgIHN0YXR1cyA9ICJva2F5IjsNCj4+ICsNCj4+ICsgICAgICAg
-bmFuZDogbmFuZEAxIHsNCj4+ICsgICAgICAgICAgICAgICBjb21wYXRpYmxlID0gImluZ2VuaWMs
-ano0NzgwLW5hbmQiOw0KPj4gKyAgICAgICAgICAgICAgIHJlZyA9IDwxIDAgMHgxMDAwMDAwPjsN
-Cj4+ICsNCj4NCj5XaHkgaXMgdGhpcyBpbiB0aGUgY2kyMC5kdHMgaW5zdGVhZCBvZiB0aGUgU29D
-IGR0c2k/DQo+DQo+U2VlbXMgYXQgbGVhc3QgY29tcGF0aWJsZSBhbmQgcmVnIGlzIG5vdCBib2Fy
-ZC1zcGVjaWZpYy4NCj4NCj5UaGFua3MsDQo+LS0gDQo+RXplcXVpZWwgR2FyY8OtYSwgVmFuZ3Vh
-cmRpYVN1cg0KPnd3dy52YW5ndWFyZGlhc3VyLmNvbS5hcg0KDQpIaSBFemVxdWllbCwNCg0KVGhl
-IG51bWJlciBvZiBOQU5EIG5vZGVzIHVuZGVyIHRoZSBORU1DIG5vZGUgaXMgYm9hcmQgc3BlY2lm
-aWMgLSBzb21lIGRldmljZXMNCmNvdWxkIGhhdmUgMiBOQU5EIGJhbmtzIGFuZCBvdGhlcnMgY291
-bGQgaGF2ZSBub25lLiBJbmNsdWRpbmcgdGhlIGNvbXBhdGlibGUNCnByb3BlcnR5IGluIGp6NDc4
-MC5kdHNpIHdvdWxkIGltcGx5IHRoYXQgYWxsIEpaNDc4MCBib2FyZHMgaGF2ZSBhdCBsZWFzdCBv
-bmUgTkFORCBiYW5rLg0KDQpUaGUgc2l6ZSBpbiB0aGUgcmVnIHByb3BlcnR5IHdvdWxkIGJlIHRo
-ZSBzYW1lIGZvciBhbGwgTkFORCBkZXZpY2VzIChhcyBpdCByZWZlcnMgdG8gdGhlDQpOQU5EIHJl
-Z2lzdGVycyksIGhvd2V2ZXIgdGhlIGJhbmsgbnVtYmVyIHdvdWxkIGJlIGRpZmZlcmVudCwgc28g
-dGhhdCBjYW4gYWxzbyBiZSBzZWVuDQphcyBib2FyZCBzcGVjaWZpYy4NCg0KVGhhbmtzLA0KDQpI
-YXJ2ZXkNCg==
+Signed-off-by: Gregory Fong <gregory.0xf0@gmail.com>
+Cc: Florian Fainelli <f.fainelli@gmail.com>
+Cc: Jonas Gorski <jogo@openwrt.org>
+Cc: Joe Perches <joe@perches.com>
+---
+v1->v2: Address Joe's comments on v1 (see
+http://lkml.iu.edu/hypermail/linux/kernel/1508.3/03472.html )
+
+ arch/mips/bcm63xx/boards/board_bcm963xx.c | 14 +++++++-------
+ arch/mips/bcm63xx/cpu.c                   | 12 ++++++------
+ arch/mips/bcm63xx/dev-pcmcia.c            |  2 +-
+ arch/mips/bcm63xx/irq.c                   |  2 +-
+ arch/mips/bcm63xx/setup.c                 |  8 ++++----
+ arch/mips/bcm63xx/timer.c                 |  2 +-
+ 6 files changed, 20 insertions(+), 20 deletions(-)
+
+diff --git a/arch/mips/bcm63xx/boards/board_bcm963xx.c b/arch/mips/bcm63xx/boards/board_bcm963xx.c
+index 33727e7..b2097c0 100644
+--- a/arch/mips/bcm63xx/boards/board_bcm963xx.c
++++ b/arch/mips/bcm63xx/boards/board_bcm963xx.c
+@@ -7,6 +7,8 @@
+  * Copyright (C) 2008 Florian Fainelli <florian@openwrt.org>
+  */
+ 
++#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
++
+ #include <linux/init.h>
+ #include <linux/kernel.h>
+ #include <linux/string.h>
+@@ -31,7 +33,6 @@
+ 
+ #include <uapi/linux/bcm933xx_hcs.h>
+ 
+-#define PFX	"board_bcm963xx: "
+ 
+ #define HCS_OFFSET_128K			0x20000
+ 
+@@ -740,7 +741,7 @@ int bcm63xx_get_fallback_sprom(struct ssb_bus *bus, struct ssb_sprom *out)
+ 		memcpy(out, &bcm63xx_sprom, sizeof(struct ssb_sprom));
+ 		return 0;
+ 	} else {
+-		printk(KERN_ERR PFX "unable to fill SPROM for given bustype.\n");
++		pr_err("unable to fill SPROM for given bustype\n");
+ 		return -EINVAL;
+ 	}
+ }
+@@ -784,7 +785,7 @@ void __init board_prom_init(void)
+ 			 cfe[5], cfe[6], cfe[7], cfe[8], cfe[9]);
+ 	else
+ 		strcpy(cfe_version, "unknown");
+-	printk(KERN_INFO PFX "CFE version: %s\n", cfe_version);
++	pr_info("CFE version: %s\n", cfe_version);
+ 
+ 	bcm63xx_nvram_init(boot_addr + BCM963XX_NVRAM_OFFSET);
+ 
+@@ -808,8 +809,7 @@ void __init board_prom_init(void)
+ 		char name[17];
+ 		memcpy(name, board_name, 16);
+ 		name[16] = 0;
+-		printk(KERN_ERR PFX "unknown bcm963xx board: %s\n",
+-		       name);
++		pr_err("unknown bcm963xx board: %s\n", name);
+ 		return;
+ 	}
+ 
+@@ -854,7 +854,7 @@ void __init board_setup(void)
+ {
+ 	if (!board.name[0])
+ 		panic("unable to detect bcm963xx board");
+-	printk(KERN_INFO PFX "board name: %s\n", board.name);
++	pr_info("board name: %s\n", board.name);
+ 
+ 	/* make sure we're running on expected cpu */
+ 	if (bcm63xx_get_cpu_id() != board.expected_cpu_id)
+@@ -910,7 +910,7 @@ int __init board_register_devices(void)
+ 		memcpy(bcm63xx_sprom.et1mac, bcm63xx_sprom.il0mac, ETH_ALEN);
+ 		if (ssb_arch_register_fallback_sprom(
+ 				&bcm63xx_get_fallback_sprom) < 0)
+-			pr_err(PFX "failed to register fallback SPROM\n");
++			pr_err("failed to register fallback SPROM\n");
+ 	}
+ #endif
+ 
+diff --git a/arch/mips/bcm63xx/cpu.c b/arch/mips/bcm63xx/cpu.c
+index 307ec8b..1c7c3fb 100644
+--- a/arch/mips/bcm63xx/cpu.c
++++ b/arch/mips/bcm63xx/cpu.c
+@@ -376,10 +376,10 @@ void __init bcm63xx_cpu_init(void)
+ 	bcm63xx_cpu_freq = detect_cpu_clock();
+ 	bcm63xx_memory_size = detect_memory_size();
+ 
+-	printk(KERN_INFO "Detected Broadcom 0x%04x CPU revision %02x\n",
+-	       bcm63xx_cpu_id, bcm63xx_cpu_rev);
+-	printk(KERN_INFO "CPU frequency is %u MHz\n",
+-	       bcm63xx_cpu_freq / 1000000);
+-	printk(KERN_INFO "%uMB of RAM installed\n",
+-	       bcm63xx_memory_size >> 20);
++	pr_info("Detected Broadcom 0x%04x CPU revision %02x\n",
++		bcm63xx_cpu_id, bcm63xx_cpu_rev);
++	pr_info("CPU frequency is %u MHz\n",
++		bcm63xx_cpu_freq / 1000000);
++	pr_info("%uMB of RAM installed\n",
++		bcm63xx_memory_size >> 20);
+ }
+diff --git a/arch/mips/bcm63xx/dev-pcmcia.c b/arch/mips/bcm63xx/dev-pcmcia.c
+index a551bab..9496cd2 100644
+--- a/arch/mips/bcm63xx/dev-pcmcia.c
++++ b/arch/mips/bcm63xx/dev-pcmcia.c
+@@ -139,6 +139,6 @@ int __init bcm63xx_pcmcia_register(void)
+ 	return platform_device_register(&bcm63xx_pcmcia_device);
+ 
+ out_err:
+-	printk(KERN_ERR "unable to set pcmcia chip select\n");
++	pr_err("unable to set pcmcia chip select\n");
+ 	return ret;
+ }
+diff --git a/arch/mips/bcm63xx/irq.c b/arch/mips/bcm63xx/irq.c
+index 1a47ec2..c961390 100644
+--- a/arch/mips/bcm63xx/irq.c
++++ b/arch/mips/bcm63xx/irq.c
+@@ -311,7 +311,7 @@ static int bcm63xx_external_irq_set_type(struct irq_data *d,
+ 		break;
+ 
+ 	default:
+-		printk(KERN_ERR "bogus flow type combination given !\n");
++		pr_err("bogus flow type combination given !\n");
+ 		return -EINVAL;
+ 	}
+ 
+diff --git a/arch/mips/bcm63xx/setup.c b/arch/mips/bcm63xx/setup.c
+index 240fb4f..2be9caa 100644
+--- a/arch/mips/bcm63xx/setup.c
++++ b/arch/mips/bcm63xx/setup.c
+@@ -24,7 +24,7 @@
+ 
+ void bcm63xx_machine_halt(void)
+ {
+-	printk(KERN_INFO "System halted\n");
++	pr_info("System halted\n");
+ 	while (1)
+ 		;
+ }
+@@ -34,7 +34,7 @@ static void bcm6348_a1_reboot(void)
+ 	u32 reg;
+ 
+ 	/* soft reset all blocks */
+-	printk(KERN_INFO "soft-resetting all blocks ...\n");
++	pr_info("soft-resetting all blocks ...\n");
+ 	reg = bcm_perf_readl(PERF_SOFTRESET_REG);
+ 	reg &= ~SOFTRESET_6348_ALL;
+ 	bcm_perf_writel(reg, PERF_SOFTRESET_REG);
+@@ -46,7 +46,7 @@ static void bcm6348_a1_reboot(void)
+ 	mdelay(10);
+ 
+ 	/* Jump to the power on address. */
+-	printk(KERN_INFO "jumping to reset vector.\n");
++	pr_info("jumping to reset vector.\n");
+ 	/* set high vectors (base at 0xbfc00000 */
+ 	set_c0_status(ST0_BEV | ST0_ERL);
+ 	/* run uncached in kseg0 */
+@@ -110,7 +110,7 @@ void bcm63xx_machine_reboot(void)
+ 	if (BCMCPU_IS_6348() && (bcm63xx_get_cpu_rev() == 0xa1))
+ 		bcm6348_a1_reboot();
+ 
+-	printk(KERN_INFO "triggering watchdog soft-reset...\n");
++	pr_info("triggering watchdog soft-reset...\n");
+ 	if (BCMCPU_IS_6328()) {
+ 		bcm_wdt_writel(1, WDT_SOFTRESET_REG);
+ 	} else {
+diff --git a/arch/mips/bcm63xx/timer.c b/arch/mips/bcm63xx/timer.c
+index 5f11359..2110359 100644
+--- a/arch/mips/bcm63xx/timer.c
++++ b/arch/mips/bcm63xx/timer.c
+@@ -195,7 +195,7 @@ int bcm63xx_timer_init(void)
+ 	irq = bcm63xx_get_irq_number(IRQ_TIMER);
+ 	ret = request_irq(irq, timer_interrupt, 0, "bcm63xx_timer", NULL);
+ 	if (ret) {
+-		printk(KERN_ERR "bcm63xx_timer: failed to register irq\n");
++		pr_err("%s: failed to register irq\n", __func__);
+ 		return ret;
+ 	}
+ 
+-- 
+1.9.1

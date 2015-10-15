@@ -1,41 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Oct 2015 12:19:34 +0200 (CEST)
-Received: from www.linutronix.de ([62.245.132.108]:60486 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27009728AbbJOKTc5mHQg (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 15 Oct 2015 12:19:32 +0200
-Received: from localhost ([127.0.0.1])
-        by Galois.linutronix.de with esmtps (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:256)
-        (Exim 4.80)
-        (envelope-from <tglx@linutronix.de>)
-        id 1ZmfdC-0007JC-S7; Thu, 15 Oct 2015 12:19:31 +0200
-Date:   Thu, 15 Oct 2015 12:18:49 +0200 (CEST)
-From:   Thomas Gleixner <tglx@linutronix.de>
-To:     Qais Yousef <qais.yousef@imgtec.com>
-cc:     Marc Zyngier <marc.zyngier@arm.com>,
-        Markos Chandras <markos.chandras@imgtec.com>,
-        linux-mips@linux-mips.org, Alex Smith <alex.smith@imgtec.com>,
-        Jason Cooper <jason@lakedaemon.net>,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/3] irqchip: irq-mips-gic: Provide function to map
- GIC user section
-In-Reply-To: <561F73D6.8040300@imgtec.com>
-Message-ID: <alpine.DEB.2.11.1510151218010.3960@nanos>
-References: <1443435117-17144-1-git-send-email-markos.chandras@imgtec.com> <1444642843-16375-1-git-send-email-markos.chandras@imgtec.com> <561B82BA.30809@arm.com> <alpine.DEB.2.11.1510121155490.6097@nanos> <561F73D6.8040300@imgtec.com>
-User-Agent: Alpine 2.11 (DEB 23 2013-08-11)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Oct 2015 20:50:30 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:33933 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27008615AbbJOSu3aPBly (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 15 Oct 2015 20:50:29 +0200
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 818F4C69135A3;
+        Thu, 15 Oct 2015 19:50:20 +0100 (IST)
+Received: from hhmail02.hh.imgtec.org (10.100.10.20) by KLMAIL01.kl.imgtec.org
+ (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Thu, 15 Oct
+ 2015 19:50:23 +0100
+Received: from BAMAIL02.ba.imgtec.org (10.20.40.28) by hhmail02.hh.imgtec.org
+ (10.100.10.20) with Microsoft SMTP Server (TLS) id 14.3.235.1; Thu, 15 Oct
+ 2015 19:50:22 +0100
+Received: from [127.0.1.1] (10.20.3.79) by bamail02.ba.imgtec.org
+ (10.20.40.28) with Microsoft SMTP Server (TLS) id 14.3.174.1; Thu, 15 Oct
+ 2015 11:50:20 -0700
+Subject: [PATCH] MIPS64: signal: n64 kernel bugfix of MIPS32 o32 ABI
+ sigaction syscall
+From:   Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+To:     <linux-mips@linux-mips.org>, <paul.burton@imgtec.com>,
+        <richard@nod.at>, <linux-kernel@vger.kernel.org>,
+        <ralf@linux-mips.org>, <luto@amacapital.net>,
+        <alex.smith@imgtec.com>, <markos.chandras@imgtec.com>
+Date:   Thu, 15 Oct 2015 11:50:20 -0700
+Message-ID: <20151015185020.37483.82586.stgit@ubuntu-yegoshin>
+User-Agent: StGit/0.17.1-dirty
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
-Return-Path: <tglx@linutronix.de>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.20.3.79]
+Return-Path: <Leonid.Yegoshin@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49562
+X-archive-position: 49563
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tglx@linutronix.de
+X-original-sender: Leonid.Yegoshin@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,15 +50,55 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, 15 Oct 2015, Qais Yousef wrote:
-> It could be refactored but the DT binding already specifies the GIC timer as a
-> subnode of GIC. Exposing this usermode register is the only thing left in the
-> register set that GIC driver wasn't dealing with.
-> 
-> Little gain in changing all of this now I think?
+MIPS32 o32 ABI sigaction() processing on MIPS64 n64 kernel was incorrectly
+set to processing aka rt_sigaction() variant only.
 
-Well, the not so little gain is clear separation and a sane design.
+Fixed.
 
-Thanks,
+Signed-off-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+---
+ arch/mips/include/asm/signal.h |   15 ++++++++++++---
+ arch/mips/kernel/signal.c      |    2 +-
+ 2 files changed, 13 insertions(+), 4 deletions(-)
 
-	tglx
+diff --git a/arch/mips/include/asm/signal.h b/arch/mips/include/asm/signal.h
+index 003e273eff4c..06fe599782df 100644
+--- a/arch/mips/include/asm/signal.h
++++ b/arch/mips/include/asm/signal.h
+@@ -11,11 +11,20 @@
+ 
+ #include <uapi/asm/signal.h>
+ 
++#ifdef CONFIG_MIPS32_COMPAT
++extern struct mips_abi mips_abi_32;
+ 
+-#ifdef CONFIG_TRAD_SIGNALS
+-#define sig_uses_siginfo(ka)	((ka)->sa.sa_flags & SA_SIGINFO)
++#define sig_uses_siginfo(ka, abi)                               \
++	(config_enabled(CONFIG_64BIT) ?                         \
++		(config_enabled(CONFIG_MIPS32_COMPAT) ?         \
++			(abi != &mips_abi_32) : 1) :            \
++		(config_enabled(CONFIG_TRAD_SIGNALS) ?          \
++			((ka)->sa.sa_flags & SA_SIGINFO) : 1) )
+ #else
+-#define sig_uses_siginfo(ka)	(1)
++#define sig_uses_siginfo(ka, abi)                               \
++	(config_enabled(CONFIG_64BIT) ? 1 :                     \
++		(config_enabled(CONFIG_TRAD_SIGNALS) ?          \
++			((ka)->sa.sa_flags & SA_SIGINFO) : 1) )
+ #endif
+ 
+ #include <asm/sigcontext.h>
+diff --git a/arch/mips/kernel/signal.c b/arch/mips/kernel/signal.c
+index bf792e2839a6..5f18d0b879e0 100644
+--- a/arch/mips/kernel/signal.c
++++ b/arch/mips/kernel/signal.c
+@@ -798,7 +798,7 @@ static void handle_signal(struct ksignal *ksig, struct pt_regs *regs)
+ 		regs->regs[0] = 0;		/* Don't deal with this again.	*/
+ 	}
+ 
+-	if (sig_uses_siginfo(&ksig->ka))
++	if (sig_uses_siginfo(&ksig->ka, abi))
+ 		ret = abi->setup_rt_frame(vdso + abi->vdso->off_rt_sigreturn,
+ 					  ksig, regs, oldset);
+ 	else

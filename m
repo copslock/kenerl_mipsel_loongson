@@ -1,44 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Oct 2015 10:11:30 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:28676 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27008898AbbJPIL2zKpgw (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 16 Oct 2015 10:11:28 +0200
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id C87BBB6C525CC;
-        Fri, 16 Oct 2015 09:11:20 +0100 (IST)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Fri, 16 Oct 2015 09:11:22 +0100
-Received: from [192.168.154.37] (192.168.154.37) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Fri, 16 Oct
- 2015 09:11:21 +0100
-Subject: Re: [PATCH] MIPS64: signal: n64 kernel bugfix of MIPS32 o32 ABI
- sigaction syscall
-To:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
-        <linux-mips@linux-mips.org>, <paul.burton@imgtec.com>,
-        <richard@nod.at>, <linux-kernel@vger.kernel.org>,
-        <ralf@linux-mips.org>, <luto@amacapital.net>,
-        <alex.smith@imgtec.com>
-References: <20151015185020.37483.82586.stgit@ubuntu-yegoshin>
-From:   Markos Chandras <Markos.Chandras@imgtec.com>
-Message-ID: <5620B129.4020008@imgtec.com>
-Date:   Fri, 16 Oct 2015 09:11:21 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.3.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Oct 2015 12:11:38 +0200 (CEST)
+Received: from mail-wi0-f169.google.com ([209.85.212.169]:34720 "EHLO
+        mail-wi0-f169.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27009350AbbJPKLgTvVod (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 16 Oct 2015 12:11:36 +0200
+Received: by wicgb1 with SMTP id gb1so2771114wic.1
+        for <linux-mips@linux-mips.org>; Fri, 16 Oct 2015 03:11:30 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:in-reply-to:references:date
+         :message-id:subject:from:to:cc:content-type;
+        bh=p9oYL5o8gBT04NGcEPow4sJmI36+Jq8hIkeSNFreQLw=;
+        b=NkeumnqDD55QlfIgKUBGsQX2vfPd8yO+GNRcILGKLkaS8EU/c6I1OmW3cBm6rQPq15
+         ypX2x9mcXWKE27h//L6rPl1DBkS6MUVX/3WJuWqv9FzcwU20WhrpQxNX/dEaxEtbYF48
+         GB8cBz5HhbkLk4bHdjjaryy9B+Mtky0PZGjepW8L21lngTy0s7wDk9J8JSkvkupokhL1
+         HdA6uc2f6SZq/evusuAZMbCxI1X8ZI5AgJl1b5bHStkORZxvD4iJqV0FlEIfGWhl2p/f
+         zpt7D1HQmj6sO+6E6lTlwReF8XD+r5pmaFQ1p1OH0zzlDlEUPiikSSaRsfiFb9W5UABr
+         RGhg==
+X-Gm-Message-State: ALoCoQmE2zvLgsGoC9r1qD5QlNl67IAZ1mnvTcKioYS+WztbhHxWOUYgvc27/KqPaD4pGOeINR6Y
 MIME-Version: 1.0
-In-Reply-To: <20151015185020.37483.82586.stgit@ubuntu-yegoshin>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.154.37]
-Return-Path: <Markos.Chandras@imgtec.com>
+X-Received: by 10.180.87.138 with SMTP id ay10mr3849569wib.12.1444990289728;
+ Fri, 16 Oct 2015 03:11:29 -0700 (PDT)
+Received: by 10.27.11.144 with HTTP; Fri, 16 Oct 2015 03:11:29 -0700 (PDT)
+In-Reply-To: <20151015084727.GG14475@jhogan-linux.le.imgtec.org>
+References: <1444148837-10770-1-git-send-email-harvey.hunt@imgtec.com>
+        <1444148837-10770-4-git-send-email-harvey.hunt@imgtec.com>
+        <20151015084727.GG14475@jhogan-linux.le.imgtec.org>
+Date:   Fri, 16 Oct 2015 11:11:29 +0100
+Message-ID: <CAOFt0_D5mO-7_cnpvm_MwvsZNv1yCFynbeA3dSw=H5hVyQbgTA@mail.gmail.com>
+Subject: Re: [PATCH v7,3/3] MIPS: dts: jz4780/ci20: Add NEMC, BCH and NAND
+ device tree nodes
+From:   Alex Smith <alex@alex-smith.me.uk>
+To:     James Hogan <james.hogan@imgtec.com>
+Cc:     Harvey Hunt <harvey.hunt@imgtec.com>,
+        linux-mtd@lists.infradead.org, Alex Smith <alex.smith@imgtec.com>,
+        Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Brian Norris <computersforpeace@gmail.com>,
+        Paul Burton <paul.burton@imgtec.com>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mips <linux-mips@linux-mips.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <alex@alex-smith.me.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49565
+X-archive-position: 49566
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Markos.Chandras@imgtec.com
+X-original-sender: alex@alex-smith.me.uk
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,64 +61,31 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 10/15/2015 07:50 PM, Leonid Yegoshin wrote:
-> MIPS32 o32 ABI sigaction() processing on MIPS64 n64 kernel was incorrectly
-> set to processing aka rt_sigaction() variant only.
-> 
-> Fixed.
-> 
-> Signed-off-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-> ---
->  arch/mips/include/asm/signal.h |   15 ++++++++++++---
->  arch/mips/kernel/signal.c      |    2 +-
->  2 files changed, 13 insertions(+), 4 deletions(-)
-> 
-> diff --git a/arch/mips/include/asm/signal.h b/arch/mips/include/asm/signal.h
-> index 003e273eff4c..06fe599782df 100644
-> --- a/arch/mips/include/asm/signal.h
-> +++ b/arch/mips/include/asm/signal.h
-> @@ -11,11 +11,20 @@
->  
->  #include <uapi/asm/signal.h>
->  
-> +#ifdef CONFIG_MIPS32_COMPAT
-> +extern struct mips_abi mips_abi_32;
->  
-> -#ifdef CONFIG_TRAD_SIGNALS
-> -#define sig_uses_siginfo(ka)	((ka)->sa.sa_flags & SA_SIGINFO)
-> +#define sig_uses_siginfo(ka, abi)                               \
-> +	(config_enabled(CONFIG_64BIT) ?                         \
-> +		(config_enabled(CONFIG_MIPS32_COMPAT) ?         \
-> +			(abi != &mips_abi_32) : 1) :            \
-> +		(config_enabled(CONFIG_TRAD_SIGNALS) ?          \
-> +			((ka)->sa.sa_flags & SA_SIGINFO) : 1) )
->  #else
-> -#define sig_uses_siginfo(ka)	(1)
-> +#define sig_uses_siginfo(ka, abi)                               \
-> +	(config_enabled(CONFIG_64BIT) ? 1 :                     \
-> +		(config_enabled(CONFIG_TRAD_SIGNALS) ?          \
-> +			((ka)->sa.sa_flags & SA_SIGINFO) : 1) )
->  #endif
->  
->  #include <asm/sigcontext.h>
-> diff --git a/arch/mips/kernel/signal.c b/arch/mips/kernel/signal.c
-> index bf792e2839a6..5f18d0b879e0 100644
-> --- a/arch/mips/kernel/signal.c
-> +++ b/arch/mips/kernel/signal.c
-> @@ -798,7 +798,7 @@ static void handle_signal(struct ksignal *ksig, struct pt_regs *regs)
->  		regs->regs[0] = 0;		/* Don't deal with this again.	*/
->  	}
->  
-> -	if (sig_uses_siginfo(&ksig->ka))
-> +	if (sig_uses_siginfo(&ksig->ka, abi))
->  		ret = abi->setup_rt_frame(vdso + abi->vdso->off_rt_sigreturn,
->  					  ksig, regs, oldset);
->  	else
-> 
+Hi James,
 
-Is this similar to
+On 15 October 2015 at 09:47, James Hogan <james.hogan@imgtec.com> wrote:
+>> diff --git a/arch/mips/boot/dts/ingenic/ci20.dts b/arch/mips/boot/dts/ingenic/ci20.dts
+>> index 9fcb9e7..453f1d3 100644
+>> --- a/arch/mips/boot/dts/ingenic/ci20.dts
+>> +++ b/arch/mips/boot/dts/ingenic/ci20.dts
+>> @@ -42,3 +42,57 @@
+>>  &uart4 {
+>>       status = "okay";
+>>  };
+>> +
+>> +&nemc {
+>> +     status = "okay";
+>> +
+>> +     nand: nand@1 {
+>> +             compatible = "ingenic,jz4780-nand";
+>
+> Isn't the NAND a micron part? This doesn't seem right. Is the device
+> driver and binding already accepted upstream with that compatible
+> string?
 
-https://www.linux-mips.org/archives/linux-mips/2015-08/msg00449.html ?
+This is the compatible string for the JZ4780 NAND driver, this patch
+is part of the series adding that. Detection of the NAND part is
+handled by the MTD subsystem.
 
--- 
-markos
+Thanks,
+Alex

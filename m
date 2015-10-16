@@ -1,54 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Oct 2015 12:11:38 +0200 (CEST)
-Received: from mail-wi0-f169.google.com ([209.85.212.169]:34720 "EHLO
-        mail-wi0-f169.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27009350AbbJPKLgTvVod (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 16 Oct 2015 12:11:36 +0200
-Received: by wicgb1 with SMTP id gb1so2771114wic.1
-        for <linux-mips@linux-mips.org>; Fri, 16 Oct 2015 03:11:30 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:in-reply-to:references:date
-         :message-id:subject:from:to:cc:content-type;
-        bh=p9oYL5o8gBT04NGcEPow4sJmI36+Jq8hIkeSNFreQLw=;
-        b=NkeumnqDD55QlfIgKUBGsQX2vfPd8yO+GNRcILGKLkaS8EU/c6I1OmW3cBm6rQPq15
-         ypX2x9mcXWKE27h//L6rPl1DBkS6MUVX/3WJuWqv9FzcwU20WhrpQxNX/dEaxEtbYF48
-         GB8cBz5HhbkLk4bHdjjaryy9B+Mtky0PZGjepW8L21lngTy0s7wDk9J8JSkvkupokhL1
-         HdA6uc2f6SZq/evusuAZMbCxI1X8ZI5AgJl1b5bHStkORZxvD4iJqV0FlEIfGWhl2p/f
-         zpt7D1HQmj6sO+6E6lTlwReF8XD+r5pmaFQ1p1OH0zzlDlEUPiikSSaRsfiFb9W5UABr
-         RGhg==
-X-Gm-Message-State: ALoCoQmE2zvLgsGoC9r1qD5QlNl67IAZ1mnvTcKioYS+WztbhHxWOUYgvc27/KqPaD4pGOeINR6Y
-MIME-Version: 1.0
-X-Received: by 10.180.87.138 with SMTP id ay10mr3849569wib.12.1444990289728;
- Fri, 16 Oct 2015 03:11:29 -0700 (PDT)
-Received: by 10.27.11.144 with HTTP; Fri, 16 Oct 2015 03:11:29 -0700 (PDT)
-In-Reply-To: <20151015084727.GG14475@jhogan-linux.le.imgtec.org>
-References: <1444148837-10770-1-git-send-email-harvey.hunt@imgtec.com>
-        <1444148837-10770-4-git-send-email-harvey.hunt@imgtec.com>
-        <20151015084727.GG14475@jhogan-linux.le.imgtec.org>
-Date:   Fri, 16 Oct 2015 11:11:29 +0100
-Message-ID: <CAOFt0_D5mO-7_cnpvm_MwvsZNv1yCFynbeA3dSw=H5hVyQbgTA@mail.gmail.com>
-Subject: Re: [PATCH v7,3/3] MIPS: dts: jz4780/ci20: Add NEMC, BCH and NAND
- device tree nodes
-From:   Alex Smith <alex@alex-smith.me.uk>
-To:     James Hogan <james.hogan@imgtec.com>
-Cc:     Harvey Hunt <harvey.hunt@imgtec.com>,
-        linux-mtd@lists.infradead.org, Alex Smith <alex.smith@imgtec.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Oct 2015 12:31:21 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:38126 "EHLO
+        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S27009913AbbJPKbTuh0mM (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 16 Oct 2015 12:31:19 +0200
+Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
+        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 8467341F8D8F;
+        Fri, 16 Oct 2015 11:31:13 +0100 (BST)
+Received: from mailapp01.imgtec.com ([10.100.180.242])
+  by imgpgp01.kl.imgtec.org (PGP Universal service);
+  Fri, 16 Oct 2015 11:31:13 +0100
+X-PGP-Universal: processed;
+        by imgpgp01.kl.imgtec.org on Fri, 16 Oct 2015 11:31:13 +0100
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 9716AB961DB43;
+        Fri, 16 Oct 2015 11:31:11 +0100 (IST)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Fri, 16 Oct 2015 11:31:13 +0100
+Received: from localhost (192.168.154.110) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Fri, 16 Oct
+ 2015 11:31:12 +0100
+Date:   Fri, 16 Oct 2015 11:31:12 +0100
+From:   James Hogan <james.hogan@imgtec.com>
+To:     Alex Smith <alex@alex-smith.me.uk>
+CC:     Harvey Hunt <harvey.hunt@imgtec.com>,
+        <linux-mtd@lists.infradead.org>,
+        Alex Smith <alex.smith@imgtec.com>,
         Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>,
         David Woodhouse <dwmw2@infradead.org>,
-        Brian Norris <computersforpeace@gmail.com>,
+        "Brian Norris" <computersforpeace@gmail.com>,
         Paul Burton <paul.burton@imgtec.com>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
         linux-mips <linux-mips@linux-mips.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <alex@alex-smith.me.uk>
+Subject: Re: [PATCH v7,3/3] MIPS: dts: jz4780/ci20: Add NEMC, BCH and NAND
+ device tree nodes
+Message-ID: <20151016103112.GB29285@jhogan-linux.le.imgtec.org>
+References: <1444148837-10770-1-git-send-email-harvey.hunt@imgtec.com>
+ <1444148837-10770-4-git-send-email-harvey.hunt@imgtec.com>
+ <20151015084727.GG14475@jhogan-linux.le.imgtec.org>
+ <CAOFt0_D5mO-7_cnpvm_MwvsZNv1yCFynbeA3dSw=H5hVyQbgTA@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="98e8jtXdkpgskNou"
+Content-Disposition: inline
+In-Reply-To: <CAOFt0_D5mO-7_cnpvm_MwvsZNv1yCFynbeA3dSw=H5hVyQbgTA@mail.gmail.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+X-Originating-IP: [192.168.154.110]
+X-ESG-ENCRYPT-TAG: e4aa9c8
+Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49566
+X-archive-position: 49567
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alex@alex-smith.me.uk
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -61,31 +68,71 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi James,
+--98e8jtXdkpgskNou
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On 15 October 2015 at 09:47, James Hogan <james.hogan@imgtec.com> wrote:
->> diff --git a/arch/mips/boot/dts/ingenic/ci20.dts b/arch/mips/boot/dts/ingenic/ci20.dts
->> index 9fcb9e7..453f1d3 100644
->> --- a/arch/mips/boot/dts/ingenic/ci20.dts
->> +++ b/arch/mips/boot/dts/ingenic/ci20.dts
->> @@ -42,3 +42,57 @@
->>  &uart4 {
->>       status = "okay";
->>  };
->> +
->> +&nemc {
->> +     status = "okay";
->> +
->> +     nand: nand@1 {
->> +             compatible = "ingenic,jz4780-nand";
->
-> Isn't the NAND a micron part? This doesn't seem right. Is the device
-> driver and binding already accepted upstream with that compatible
-> string?
+Hi Alex,
 
-This is the compatible string for the JZ4780 NAND driver, this patch
-is part of the series adding that. Detection of the NAND part is
-handled by the MTD subsystem.
+On Fri, Oct 16, 2015 at 11:11:29AM +0100, Alex Smith wrote:
+> Hi James,
+>=20
+> On 15 October 2015 at 09:47, James Hogan <james.hogan@imgtec.com> wrote:
+> >> diff --git a/arch/mips/boot/dts/ingenic/ci20.dts b/arch/mips/boot/dts/=
+ingenic/ci20.dts
+> >> index 9fcb9e7..453f1d3 100644
+> >> --- a/arch/mips/boot/dts/ingenic/ci20.dts
+> >> +++ b/arch/mips/boot/dts/ingenic/ci20.dts
+> >> @@ -42,3 +42,57 @@
+> >>  &uart4 {
+> >>       status =3D "okay";
+> >>  };
+> >> +
+> >> +&nemc {
+> >> +     status =3D "okay";
+> >> +
+> >> +     nand: nand@1 {
+> >> +             compatible =3D "ingenic,jz4780-nand";
+> >
+> > Isn't the NAND a micron part? This doesn't seem right. Is the device
+> > driver and binding already accepted upstream with that compatible
+> > string?
+>=20
+> This is the compatible string for the JZ4780 NAND driver, this patch
+> is part of the series adding that. Detection of the NAND part is
+> handled by the MTD subsystem.
 
-Thanks,
-Alex
+Right (didn't spot that it was part of a series).
+
+The node appears to describe the NAND interface itself, i.e. a part of
+the SoC, so should be in the SoC dtsi file, with overrides in the board
+file if necessary for it to work with a particular NAND part
+(potentially utilising status=3D"disabled"). Would you agree?
+
+Cheers
+James
+
+--98e8jtXdkpgskNou
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQIcBAEBCAAGBQJWINHwAAoJEGwLaZPeOHZ6sx4QAIaMMqM4IJbFIcTiKRT8vdMr
+r89sxi5SsS6VdUDZI2IlAnQYnB6rrDjZ53Wag3PbA3G9PZFA16wOQDSVCyLiyPHL
+ss/4bl2D3cIabC9I9f5vjMQcSl0/AVD/VPDXSG3yP7XNv8Jh1cMkvIXIyI7mguIc
+kaJs0mlSTStWIOGuRf98vxqv1sVuxM7vnEu59SOfM90xYYsHSoAiKuAjUpVBZHcj
+0zWifGpbwBmUIjeA2znbbJifvrKUzybxywQaRlKmYC4cpxIEsrQWVj01OLB2nZv9
+wbXBQq3xzl79LHex/180IBzqzrpVZmt5ewHZLNv1zFH82WPMFJCON6JwgI7qL5g2
+6EnXX93WVC+kLfBv8gKFqumNnZgtQCjGgM5wMzmsofhFOOdk3ymusaubVFLd0KdR
+vcgsdiq59zthDTLEZjYHQa0zE1CANNvmz89WeMUjI/58qPbE0RwXoh7VJgaZlouP
+KICMH0MKTSvaSiuKobaS/ngz5W21z5LgLmDfna73Ia+wMgFcxd0svTfhv6fA+WWg
+bobnxtujCkFXTrlQHBiRnLLNrRx1hSjuH2azLlyW9MAHRLbbfZ+x6nTUOPghZtbR
+KTOOjHKvT0yD036ZQomRS98ubfAZWbj4YoQ/tYCuBik+nvZeAh92BRA/Oa75A7bu
+eEmfb7HtPycmATK4/6Ip
+=6LZP
+-----END PGP SIGNATURE-----
+
+--98e8jtXdkpgskNou--

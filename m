@@ -1,43 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 17 Oct 2015 02:26:03 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:7523 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27007919AbbJQA0CSX9ID (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 17 Oct 2015 02:26:02 +0200
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id F329C7FE47DA8;
-        Sat, 17 Oct 2015 01:25:55 +0100 (IST)
-Received: from hhmail02.hh.imgtec.org (10.100.10.20) by KLMAIL01.kl.imgtec.org
- (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Sat, 17 Oct
- 2015 01:25:56 +0100
-Received: from BAMAIL02.ba.imgtec.org (10.20.40.28) by hhmail02.hh.imgtec.org
- (10.100.10.20) with Microsoft SMTP Server (TLS) id 14.3.235.1; Sat, 17 Oct
- 2015 01:25:56 +0100
-Received: from [127.0.1.1] (10.20.3.79) by bamail02.ba.imgtec.org
- (10.20.40.28) with Microsoft SMTP Server (TLS) id 14.3.174.1; Fri, 16 Oct
- 2015 17:25:54 -0700
-Subject: [PATCH v2] MIPS64: signal: n64 kernel bugfix of MIPS32 o32 ABI
- sigaction syscall
-From:   Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-To:     <linux-mips@linux-mips.org>, <paul.burton@imgtec.com>,
-        <richard@nod.at>, <linux-kernel@vger.kernel.org>,
-        <ralf@linux-mips.org>, <luto@amacapital.net>,
-        <alex.smith@imgtec.com>, <markos.chandras@imgtec.com>
-Date:   Fri, 16 Oct 2015 17:25:53 -0700
-Message-ID: <20151017002553.7002.69013.stgit@ubuntu-yegoshin>
-User-Agent: StGit/0.17.1-dirty
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 17 Oct 2015 04:17:54 +0200 (CEST)
+Received: from mail-qk0-f176.google.com ([209.85.220.176]:36718 "EHLO
+        mail-qk0-f176.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006523AbbJQCRwiVKlZ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 17 Oct 2015 04:17:52 +0200
+Received: by qkht68 with SMTP id t68so62164399qkh.3;
+        Fri, 16 Oct 2015 19:17:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc:content-type;
+        bh=uQul/wLI1sdUhstCpnTOGTwwaca/oWxyjuJ9MKVKrQc=;
+        b=MyqqKmDuZdsoD9Vq5jpR1FtX5p8rxa89CGDxhFCyrGhtTeGoUY9xQe7eSV6Bw1FBek
+         ZtiNK1We0T3+zurgDbPGy4/ScoeHWxJH4C+f96tqbieSjaAUIi3j5tHhq6doi/ReYib7
+         uDW2mqOn2yBmn4azqNs5pkEw5NuFPDATuw/u4q9Ow/a+QMO0ct+QEU/hrWhJWmgzGtfz
+         2hSTbQuaM/xrdRmzYL+9IujLCFHrHdzOH4SqDNKx9fPn3Nl4elgnm9QmDbDrLY91pWCw
+         bmtUIDwmx4jo00wMcmtHguSaM/UXvHVIicXOzP7iAeDzBx1im46rIzx1afOGQpN+6b63
+         E9gg==
+X-Received: by 10.55.31.232 with SMTP id n101mr22694194qkh.107.1445048262691;
+ Fri, 16 Oct 2015 19:17:42 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.20.3.79]
-Return-Path: <Leonid.Yegoshin@imgtec.com>
+Received: by 10.140.34.173 with HTTP; Fri, 16 Oct 2015 19:17:23 -0700 (PDT)
+In-Reply-To: <1445025118-13290-1-git-send-email-f.fainelli@gmail.com>
+References: <1445025118-13290-1-git-send-email-f.fainelli@gmail.com>
+From:   Kevin Cernekee <cernekee@gmail.com>
+Date:   Fri, 16 Oct 2015 19:17:23 -0700
+Message-ID: <CAJiQ=7AR7L2TgfsKpMLmdnZiy2xKCCTUzdNVqx0v5Wsku=n5Gg@mail.gmail.com>
+Subject: Re: [PATCH] MIPS: BMIPS: Enable GZIP ramdisk and timed printks
+To:     Florian Fainelli <f.fainelli@gmail.com>
+Cc:     Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        John Crispin <blogic@openwrt.org>,
+        Jonas Gorski <jogo@openwrt.org>, dragan.stancevic@gmail.com
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <cernekee@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49572
+X-archive-position: 49573
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Leonid.Yegoshin@imgtec.com
+X-original-sender: cernekee@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,55 +53,10 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-MIPS32 o32 ABI sigaction() processing on MIPS64 n64 kernel was incorrectly
-set to processing aka rt_sigaction() variant only.
+On Fri, Oct 16, 2015 at 12:51 PM, Florian Fainelli <f.fainelli@gmail.com> wrote:
+> Update bmips_be_defconfig and bmips_stb_defconfig to have GZIP ramdisk
+> support enabled by default as well was timed printks.
+>
+> Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
 
-Fixed.
---
-v2: Taken in account CONFIG vars interdependencies and conditional expression
-    simplified. As a result, the reverse problem fixed (introduced by v1).
-    Tested on all 3 ABIs.
---
----
- arch/mips/include/asm/signal.h |   12 +++++++++---
- arch/mips/kernel/signal.c      |    2 +-
- 2 files changed, 10 insertions(+), 4 deletions(-)
-
-diff --git a/arch/mips/include/asm/signal.h b/arch/mips/include/asm/signal.h
-index 003e273eff4c..2292373ff11a 100644
---- a/arch/mips/include/asm/signal.h
-+++ b/arch/mips/include/asm/signal.h
-@@ -11,11 +11,17 @@
- 
- #include <uapi/asm/signal.h>
- 
-+#ifdef CONFIG_MIPS32_COMPAT
-+extern struct mips_abi mips_abi_32;
- 
--#ifdef CONFIG_TRAD_SIGNALS
--#define sig_uses_siginfo(ka)	((ka)->sa.sa_flags & SA_SIGINFO)
-+#define sig_uses_siginfo(ka, abi)                               \
-+	((abi != &mips_abi_32) ? 1 :                            \
-+		((ka)->sa.sa_flags & SA_SIGINFO))
- #else
--#define sig_uses_siginfo(ka)	(1)
-+#define sig_uses_siginfo(ka, abi)                               \
-+	(config_enabled(CONFIG_64BIT) ? 1 :                     \
-+		(config_enabled(CONFIG_TRAD_SIGNALS) ?          \
-+			((ka)->sa.sa_flags & SA_SIGINFO) : 1) )
- #endif
- 
- #include <asm/sigcontext.h>
-diff --git a/arch/mips/kernel/signal.c b/arch/mips/kernel/signal.c
-index bf792e2839a6..5f18d0b879e0 100644
---- a/arch/mips/kernel/signal.c
-+++ b/arch/mips/kernel/signal.c
-@@ -798,7 +798,7 @@ static void handle_signal(struct ksignal *ksig, struct pt_regs *regs)
- 		regs->regs[0] = 0;		/* Don't deal with this again.	*/
- 	}
- 
--	if (sig_uses_siginfo(&ksig->ka))
-+	if (sig_uses_siginfo(&ksig->ka, abi))
- 		ret = abi->setup_rt_frame(vdso + abi->vdso->off_rt_sigreturn,
- 					  ksig, regs, oldset);
- 	else
+Reviewed-by: Kevin Cernekee <cernekee@gmail.com>

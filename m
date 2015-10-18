@@ -1,24 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 18 Oct 2015 04:52:17 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:39163 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 18 Oct 2015 04:52:34 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:39538 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27006994AbbJRCvQHTdId (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 18 Oct 2015 04:51:16 +0200
+        by eddie.linux-mips.org with ESMTP id S27006154AbbJRCwcZikTd (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 18 Oct 2015 04:52:32 +0200
 Received: from localhost (c-50-170-35-168.hsd1.wa.comcast.net [50.170.35.168])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 2170D26C;
-        Sun, 18 Oct 2015 02:51:10 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 5503192;
+        Sun, 18 Oct 2015 02:52:26 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Paul Burton <paul.burton@imgtec.com>,
-        Markos Chandras <markos.chandras@imgtec.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.2 210/258] MIPS: CPS: #ifdef on CONFIG_MIPS_MT_SMP rather than CONFIG_MIPS_MT
-Date:   Sat, 17 Oct 2015 18:58:43 -0700
-Message-Id: <20151018014739.942301287@linuxfoundation.org>
+        stable@vger.kernel.org, James Hogan <james.hogan@imgtec.com>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: [PATCH 3.10 38/54] MIPS: dma-default: Fix 32-bit fall back to GFP_DMA
+Date:   Sat, 17 Oct 2015 19:05:42 -0700
+Message-Id: <20151018020315.806141918@linuxfoundation.org>
 X-Mailer: git-send-email 2.6.1
-In-Reply-To: <20151018014729.976101177@linuxfoundation.org>
-References: <20151018014729.976101177@linuxfoundation.org>
+In-Reply-To: <20151018020314.063429128@linuxfoundation.org>
+References: <20151018020314.063429128@linuxfoundation.org>
 User-Agent: quilt/0.64
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ISO-8859-15
@@ -26,7 +24,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49581
+X-archive-position: 49582
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -43,67 +41,43 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-4.2-stable review patch.  If anyone has any objections, please let me know.
+3.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Burton <paul.burton@imgtec.com>
+From: James Hogan <james.hogan@imgtec.com>
 
-commit 7a63076d9a31a6c2073da45021eeb4f89d2a8b56 upstream.
+commit 53960059d56ecef67d4ddd546731623641a3d2d1 upstream.
 
-The CONFIG_MIPS_MT symbol can be selected by CONFIG_MIPS_VPE_LOADER in
-addition to CONFIG_MIPS_MT_SMP. We only want MT code in the CPS SMP boot
-vector if we're using MT for SMP. Thus switch the config symbol we ifdef
-against to CONFIG_MIPS_MT_SMP.
+If there is a DMA zone (usually 24bit = 16MB I believe), but no DMA32
+zone, as is the case for some 32-bit kernels, then massage_gfp_flags()
+will cause DMA memory allocated for devices with a 32..63-bit
+coherent_dma_mask to fall back to using __GFP_DMA, even though there may
+only be 32-bits of physical address available anyway.
 
-Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-Cc: Markos Chandras <markos.chandras@imgtec.com>
-Cc: James Hogan <james.hogan@imgtec.com>
+Correct that case to compare against a mask the size of phys_addr_t
+instead of always using a 64-bit mask.
+
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Fixes: a2e715a86c6d ("MIPS: DMA: Fix computation of DMA flags from device's coherent_dma_mask.")
+Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
-Cc: linux-kernel@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/10867/
+Patchwork: https://patchwork.linux-mips.org/patch/9610/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/kernel/cps-vec.S |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/mips/mm/dma-default.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/mips/kernel/cps-vec.S
-+++ b/arch/mips/kernel/cps-vec.S
-@@ -224,7 +224,7 @@ LEAF(excep_ejtag)
- 	END(excep_ejtag)
- 
- LEAF(mips_cps_core_init)
--#ifdef CONFIG_MIPS_MT
-+#ifdef CONFIG_MIPS_MT_SMP
- 	/* Check that the core implements the MT ASE */
- 	has_mt	t0, 3f
- 
-@@ -311,7 +311,7 @@ LEAF(mips_cps_boot_vpes)
- 
- 	/* Calculate this VPEs ID. If the core doesn't support MT use 0 */
- 	li	t9, 0
--#ifdef CONFIG_MIPS_MT
-+#ifdef CONFIG_MIPS_MT_SMP
- 	has_mt	ta2, 1f
- 
- 	/* Find the number of VPEs present in the core */
-@@ -339,7 +339,7 @@ LEAF(mips_cps_boot_vpes)
- 	PTR_L	ta3, COREBOOTCFG_VPECONFIG(t0)
- 	PTR_ADDU v0, v0, ta3
- 
--#ifdef CONFIG_MIPS_MT
-+#ifdef CONFIG_MIPS_MT_SMP
- 
- 	/* If the core doesn't support MT then return */
- 	bnez	ta2, 1f
-@@ -453,7 +453,7 @@ LEAF(mips_cps_boot_vpes)
- 
- 2:	.set	pop
- 
--#endif /* CONFIG_MIPS_MT */
-+#endif /* CONFIG_MIPS_MT_SMP */
- 
- 	/* Return */
- 	jr	ra
+--- a/arch/mips/mm/dma-default.c
++++ b/arch/mips/mm/dma-default.c
+@@ -91,7 +91,7 @@ static gfp_t massage_gfp_flags(const str
+ 	else
+ #endif
+ #if defined(CONFIG_ZONE_DMA) && !defined(CONFIG_ZONE_DMA32)
+-	     if (dev->coherent_dma_mask < DMA_BIT_MASK(64))
++	     if (dev->coherent_dma_mask < DMA_BIT_MASK(sizeof(phys_addr_t) * 8))
+ 		dma_flag = __GFP_DMA;
+ 	else
+ #endif

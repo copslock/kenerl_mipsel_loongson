@@ -1,55 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 17 Oct 2015 13:13:46 +0200 (CEST)
-Received: from mail-lb0-f171.google.com ([209.85.217.171]:36762 "EHLO
-        mail-lb0-f171.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008655AbbJQLNol4UqM (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 17 Oct 2015 13:13:44 +0200
-Received: by lbcao8 with SMTP id ao8so114982145lbc.3
-        for <linux-mips@linux-mips.org>; Sat, 17 Oct 2015 04:13:38 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:subject:to:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-type
-         :content-transfer-encoding;
-        bh=8TJe3H75q+WILrSq/VA0CNCSBJq2u4mgvXtNSwPER3E=;
-        b=CdjG021sou/Cr4ty1Nd4L7NzKxfIr3PtOMm3PACelafwsTvYX2cA0jqZf0NYlINwhM
-         fHIfTKLVPcz6MKP/xfHiDGRrG0u9UVu5K1KqOKVfhW7qpdYDOcepr8n6CpSKBkdYfQvK
-         DhVTuK87pIKEkQWN7+ZQ6XmYDm4KqteziXCyC6rD+Qp2fOGAPYOVxIB/IqHjHJyE3kkS
-         VjZnT/te32Q3QR28sb7JUJKA9SpowNeszgA5/jdaY2ujdOxHljDJBExyx7XHt/IvuFJL
-         GSrowitnIyfyUVkw/bvcmjfnj4QYSFzkv5o2efXUeiDqj2Bw6ja0StQhiSOWV4bU+enS
-         gzoQ==
-X-Gm-Message-State: ALoCoQnd2PCoo9rw7rOk/nHl1f3DktAkiDlRaibnHXPUK7NIzuA2Nj042qTlDcDQfS4AiVkwfoWN
-X-Received: by 10.112.171.10 with SMTP id aq10mr10233321lbc.85.1445080416964;
-        Sat, 17 Oct 2015 04:13:36 -0700 (PDT)
-Received: from [192.168.3.154] (ppp83-237-251-24.pppoe.mtu-net.ru. [83.237.251.24])
-        by smtp.gmail.com with ESMTPSA id ar7sm3560862lbc.24.2015.10.17.04.13.35
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Sat, 17 Oct 2015 04:13:36 -0700 (PDT)
-Subject: Re: [PATCH v2] MIPS64: signal: n64 kernel bugfix of MIPS32 o32 ABI
- sigaction syscall
-To:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
-        linux-mips@linux-mips.org, paul.burton@imgtec.com, richard@nod.at,
-        linux-kernel@vger.kernel.org, ralf@linux-mips.org,
-        luto@amacapital.net, alex.smith@imgtec.com,
-        markos.chandras@imgtec.com
-References: <20151017002553.7002.69013.stgit@ubuntu-yegoshin>
-From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Message-ID: <56222D5F.5080601@cogentembedded.com>
-Date:   Sat, 17 Oct 2015 14:13:35 +0300
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:38.0) Gecko/20100101
- Thunderbird/38.3.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 18 Oct 2015 04:41:16 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:38707 "EHLO
+        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006154AbbJRClOKWETd (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 18 Oct 2015 04:41:14 +0200
+Received: from localhost (c-50-170-35-168.hsd1.wa.comcast.net [50.170.35.168])
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id B71EB26C;
+        Sun, 18 Oct 2015 02:41:07 +0000 (UTC)
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, James Hogan <james.hogan@imgtec.com>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: [PATCH 4.1 161/202] MIPS: dma-default: Fix 32-bit fall back to GFP_DMA
+Date:   Sat, 17 Oct 2015 18:59:04 -0700
+Message-Id: <20151018014909.239801181@linuxfoundation.org>
+X-Mailer: git-send-email 2.6.1
+In-Reply-To: <20151018014901.946875729@linuxfoundation.org>
+References: <20151018014901.946875729@linuxfoundation.org>
+User-Agent: quilt/0.64
 MIME-Version: 1.0
-In-Reply-To: <20151017002553.7002.69013.stgit@ubuntu-yegoshin>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sergei.shtylyov@cogentembedded.com>
+Content-Type: text/plain; charset=ISO-8859-15
+Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49574
+X-archive-position: 49575
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sergei.shtylyov@cogentembedded.com
+X-original-sender: gregkh@linuxfoundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -62,22 +41,43 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hello.
+4.1-stable review patch.  If anyone has any objections, please let me know.
 
-On 10/17/2015 3:25 AM, Leonid Yegoshin wrote:
+------------------
 
-> MIPS32 o32 ABI sigaction() processing on MIPS64 n64 kernel was incorrectly
-> set to processing aka rt_sigaction() variant only.
->
-> Fixed.
-> --
-> v2: Taken in account CONFIG vars interdependencies and conditional expression
->      simplified. As a result, the reverse problem fixed (introduced by v1).
->      Tested on all 3 ABIs.
-> --
+From: James Hogan <james.hogan@imgtec.com>
 
-    You forgot to sign off this time.
+commit 53960059d56ecef67d4ddd546731623641a3d2d1 upstream.
 
-[...]
+If there is a DMA zone (usually 24bit = 16MB I believe), but no DMA32
+zone, as is the case for some 32-bit kernels, then massage_gfp_flags()
+will cause DMA memory allocated for devices with a 32..63-bit
+coherent_dma_mask to fall back to using __GFP_DMA, even though there may
+only be 32-bits of physical address available anyway.
 
-MBR, Sergei
+Correct that case to compare against a mask the size of phys_addr_t
+instead of always using a 64-bit mask.
+
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Fixes: a2e715a86c6d ("MIPS: DMA: Fix computation of DMA flags from device's coherent_dma_mask.")
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: linux-mips@linux-mips.org
+Patchwork: https://patchwork.linux-mips.org/patch/9610/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+---
+ arch/mips/mm/dma-default.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+--- a/arch/mips/mm/dma-default.c
++++ b/arch/mips/mm/dma-default.c
+@@ -100,7 +100,7 @@ static gfp_t massage_gfp_flags(const str
+ 	else
+ #endif
+ #if defined(CONFIG_ZONE_DMA) && !defined(CONFIG_ZONE_DMA32)
+-	     if (dev->coherent_dma_mask < DMA_BIT_MASK(64))
++	     if (dev->coherent_dma_mask < DMA_BIT_MASK(sizeof(phys_addr_t) * 8))
+ 		dma_flag = __GFP_DMA;
+ 	else
+ #endif

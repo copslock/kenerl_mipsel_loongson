@@ -1,22 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 18 Oct 2015 04:52:34 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:39538 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 18 Oct 2015 05:02:01 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:39678 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27006154AbbJRCwcZikTd (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 18 Oct 2015 04:52:32 +0200
+        by eddie.linux-mips.org with ESMTP id S27006994AbbJRDB7Z9dJd (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 18 Oct 2015 05:01:59 +0200
 Received: from localhost (c-50-170-35-168.hsd1.wa.comcast.net [50.170.35.168])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 5503192;
-        Sun, 18 Oct 2015 02:52:26 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 687A4360;
+        Sun, 18 Oct 2015 03:01:53 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, James Hogan <james.hogan@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: [PATCH 3.10 38/54] MIPS: dma-default: Fix 32-bit fall back to GFP_DMA
-Date:   Sat, 17 Oct 2015 19:05:42 -0700
-Message-Id: <20151018020315.806141918@linuxfoundation.org>
+        stable@vger.kernel.org, Aurelien Jarno <aurelien@aurel32.net>,
+        Markos Chandras <markos.chandras@imgtec.com>,
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH 4.2 205/258] MIPS: BPF: Avoid unreachable code on little endian
+Date:   Sat, 17 Oct 2015 18:58:38 -0700
+Message-Id: <20151018014739.714471752@linuxfoundation.org>
 X-Mailer: git-send-email 2.6.1
-In-Reply-To: <20151018020314.063429128@linuxfoundation.org>
-References: <20151018020314.063429128@linuxfoundation.org>
+In-Reply-To: <20151018014729.976101177@linuxfoundation.org>
+References: <20151018014729.976101177@linuxfoundation.org>
 User-Agent: quilt/0.64
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ISO-8859-15
@@ -24,7 +25,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49582
+X-archive-position: 49583
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -41,43 +42,53 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-3.10-stable review patch.  If anyone has any objections, please let me know.
+4.2-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Hogan <james.hogan@imgtec.com>
+From: Aurelien Jarno <aurelien@aurel32.net>
 
-commit 53960059d56ecef67d4ddd546731623641a3d2d1 upstream.
+commit faa9724a674e5e52316bb0d173aed16bd17d536c upstream.
 
-If there is a DMA zone (usually 24bit = 16MB I believe), but no DMA32
-zone, as is the case for some 32-bit kernels, then massage_gfp_flags()
-will cause DMA memory allocated for devices with a 32..63-bit
-coherent_dma_mask to fall back to using __GFP_DMA, even though there may
-only be 32-bits of physical address available anyway.
+On little endian, avoid generating the big endian version of the code
+by using #else in addition to #ifdef #endif. Also fix one alignment
+issue wrt delay slot.
 
-Correct that case to compare against a mask the size of phys_addr_t
-instead of always using a 64-bit mask.
-
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Fixes: a2e715a86c6d ("MIPS: DMA: Fix computation of DMA flags from device's coherent_dma_mask.")
-Cc: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: Aurelien Jarno <aurelien@aurel32.net>
+Reviewed-by: Markos Chandras <markos.chandras@imgtec.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/9610/
+Patchwork: https://patchwork.linux-mips.org/patch/11097/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/mm/dma-default.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/net/bpf_jit_asm.S |    8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
---- a/arch/mips/mm/dma-default.c
-+++ b/arch/mips/mm/dma-default.c
-@@ -91,7 +91,7 @@ static gfp_t massage_gfp_flags(const str
- 	else
- #endif
- #if defined(CONFIG_ZONE_DMA) && !defined(CONFIG_ZONE_DMA32)
--	     if (dev->coherent_dma_mask < DMA_BIT_MASK(64))
-+	     if (dev->coherent_dma_mask < DMA_BIT_MASK(sizeof(phys_addr_t) * 8))
- 		dma_flag = __GFP_DMA;
- 	else
- #endif
+--- a/arch/mips/net/bpf_jit_asm.S
++++ b/arch/mips/net/bpf_jit_asm.S
+@@ -151,9 +151,10 @@ NESTED(bpf_slow_path_word, (6 * SZREG),
+ 	wsbh	t0, $r_s0
+ 	jr	$r_ra
+ 	 rotr	$r_A, t0, 16
+-#endif
++#else
+ 	jr	$r_ra
+-	move	$r_A, $r_s0
++	 move	$r_A, $r_s0
++#endif
+ 
+ 	END(bpf_slow_path_word)
+ 
+@@ -162,9 +163,10 @@ NESTED(bpf_slow_path_half, (6 * SZREG),
+ #ifdef CONFIG_CPU_LITTLE_ENDIAN
+ 	jr	$r_ra
+ 	 wsbh	$r_A, $r_s0
+-#endif
++#else
+ 	jr	$r_ra
+ 	 move	$r_A, $r_s0
++#endif
+ 
+ 	END(bpf_slow_path_half)
+ 

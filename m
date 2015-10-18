@@ -1,11 +1,11 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 18 Oct 2015 04:41:40 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:38885 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 18 Oct 2015 04:42:33 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:39053 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27006195AbbJRClgajEHd (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 18 Oct 2015 04:41:36 +0200
+        by eddie.linux-mips.org with ESMTP id S27006195AbbJRCmamSrnd (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 18 Oct 2015 04:42:30 +0200
 Received: from localhost (c-50-170-35-168.hsd1.wa.comcast.net [50.170.35.168])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 9264E405;
-        Sun, 18 Oct 2015 02:41:30 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 221BD26C;
+        Sun, 18 Oct 2015 02:42:24 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -13,12 +13,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Guenter Roeck <linux@roeck-us.net>,
         Markos Chandras <markos.chandras@imgtec.com>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.1 201/202] MIPS: Fix console output for Fulong2e system
-Date:   Sat, 17 Oct 2015 18:59:44 -0700
-Message-Id: <20151018014911.035300909@linuxfoundation.org>
+Subject: [PATCH 4.2 203/258] MIPS: Fix console output for Fulong2e system
+Date:   Sat, 17 Oct 2015 18:58:36 -0700
+Message-Id: <20151018014739.609030397@linuxfoundation.org>
 X-Mailer: git-send-email 2.6.1
-In-Reply-To: <20151018014901.946875729@linuxfoundation.org>
-References: <20151018014901.946875729@linuxfoundation.org>
+In-Reply-To: <20151018014729.976101177@linuxfoundation.org>
+References: <20151018014729.976101177@linuxfoundation.org>
 User-Agent: quilt/0.64
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ISO-8859-15
@@ -26,7 +26,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49576
+X-archive-position: 49577
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -43,7 +43,7 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-4.1-stable review patch.  If anyone has any objections, please let me know.
+4.2-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -68,11 +68,11 @@ Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/loongson/common/env.c |    3 +++
+ arch/mips/loongson64/common/env.c |    3 +++
  1 file changed, 3 insertions(+)
 
---- a/arch/mips/loongson/common/env.c
-+++ b/arch/mips/loongson/common/env.c
+--- a/arch/mips/loongson64/common/env.c
++++ b/arch/mips/loongson64/common/env.c
 @@ -64,6 +64,9 @@ void __init prom_init_env(void)
  	}
  	if (memsize == 0)

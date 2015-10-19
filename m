@@ -1,50 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Oct 2015 20:45:11 +0200 (CEST)
-Received: from mail-pa0-f45.google.com ([209.85.220.45]:33986 "EHLO
-        mail-pa0-f45.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010574AbbJSSpJK1xcu (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 19 Oct 2015 20:45:09 +0200
-Received: by padhk11 with SMTP id hk11so37144052pad.1
-        for <linux-mips@linux-mips.org>; Mon, 19 Oct 2015 11:45:02 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Oct 2015 20:50:26 +0200 (CEST)
+Received: from mail-pa0-f47.google.com ([209.85.220.47]:34356 "EHLO
+        mail-pa0-f47.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007640AbbJSSuYi-Ezu (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 19 Oct 2015 20:50:24 +0200
+Received: by padhk11 with SMTP id hk11so37254200pad.1
+        for <linux-mips@linux-mips.org>; Mon, 19 Oct 2015 11:50:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20120113;
         h=from:to:cc:subject:date:message-id;
-        bh=pEnHXuylnhavUateqUYZ3RmEQ623wcbpPnkG+B7DZQU=;
-        b=P1++WAoLxPCSkz3XcjQD6V7Q+VUSN0gV8df+ReZkDFA+GTK+KBs33zzi5fmYE1INIh
-         cZtgA+ga+NvgndVFr9ofKbRHzFqDsOcDCEqcNyyXwFYAtEJKXjPbnC787pRoOTz5u0LM
-         lIZ20ssMtSkOEoPPLac1wyBvg9olCxCyp6ZZCF9Y7geoaV8txIZTsStIbs5Q6mS+SjJM
-         VE1o4oEI/vomRCCVyAwmmI1EG5j6TfZ77h3b6j88mh47cN6HQ3yC/DW9S0AC+8g69U4W
-         HqL+hw6gWoWF6szhKoW/eNb6mGzaAa/jmDZF45OLsrZLz+NzZUnPHpyHan3ak69w1ERE
-         BIgg==
+        bh=d2FBZ/que4Jhkl2yKwVtTaEzeDi3aB3OzxvCmtSvGf0=;
+        b=QG9jq/ccMBw5XMdG8QgPRuSkCWTzaxwnfOldw6tldEMleVn4duYxnNhMqiiPvD5YTa
+         z1eN1vb2Ma2kBJoD6kXiJVyF8TxQyMw+x2bGPfRzlK51UpKuOwRpohuywNbPpb1gk0UK
+         hIlrjYw+Dd8W9IYeeTwVfomm5+NcZAel/crwTLdZdLnkKAlcFjiYwb/3Pyh1OiT1Qg51
+         wojaguc245KVcn3/Yw2A8xzXUHl1v4/SA5/3BNvFkDUYLwh9DtNI+BWdzjTJIXEXb1Mw
+         RVkVTIlDuRRhXRC2hSOdKrldDcwrS5hY7erLNoC3pAEMRgR2fBSHKrMLeRupRRtU7jAn
+         4t4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=pEnHXuylnhavUateqUYZ3RmEQ623wcbpPnkG+B7DZQU=;
-        b=H2Mu5Mg7lxNmMfbMQFXvvUqyP3VBZsK/s0ta2lfpUnIG8NUFCSHcRQmOMUaxgVU9bc
-         15qNBGuXOhJlvA0mYDhQcAvDHc5B4tbNrHS/55ugXunJYtJ4h94AG5Ti7msIXPYvns3M
-         rehNbfJ0wKYz/xCaTDWX3eVAQdyW3CKmpRUPVCw1CQoJRBlnCRmzaN6JNEl7ebGy+pPg
-         sc2/agHvcsDq1Xl59kfU9ZKFU16gzMi4tDaQVBYgKeLYWbBg1Eo6P1Zwgut651IJz34e
-         DGCBR6NBBPbBEmO67bF07H8MoqUnh/x87OXfSgqed5abYaWNyDylt7ub/uLA4cuXFpxL
-         1gDw==
-X-Gm-Message-State: ALoCoQkXiiWDZyxCGVPdBad2eGzUptdJDpIz5Rzg2by2NJp5lVVa9WTKFaJrQHcJZtW7uk+lirLV
-X-Received: by 10.68.227.7 with SMTP id rw7mr5952704pbc.18.1445280302700;
-        Mon, 19 Oct 2015 11:45:02 -0700 (PDT)
+        bh=d2FBZ/que4Jhkl2yKwVtTaEzeDi3aB3OzxvCmtSvGf0=;
+        b=QM3a1rzETApkSUwfZm4t+69MScEo/rIR4rDgst7R+o9XcMMGh8pjk2drmnFo9IMfmv
+         81OejVSWLZ7pDSbBeYzt1lSp/uzAGhovvwa8LKZarW0d4sW+mnx0dCbuyk6cSBkiQtN4
+         PWsEgEdIqHIaSeFJYv+ATli6svbCTyAtjJwZjX1H5TZC1UudrthLs61VU2i0ariGHmul
+         t0WMsGAA+PIHm5zBHp3EVCdub5sa6QoeBsTanC2ZXKLJ5+cXYCYTRZP8u7WeiBtX4gVx
+         fvkYkG9B4/Efz+JPYk0/0Rm/+JxioRi3UNtGeYt+44zl5MaoFKRUMQ7BZApSfX90/QsM
+         gj2A==
+X-Gm-Message-State: ALoCoQlUVKaJ1tqShC7iDSBAeFJwcG9tfkaRjf7Ee8+Dsz5x+FAOsqQdWrhla6Brocj0IXpV9b6G
+X-Received: by 10.66.251.136 with SMTP id zk8mr36816449pac.143.1445280618890;
+        Mon, 19 Oct 2015 11:50:18 -0700 (PDT)
 Received: from slapshot.mtv.corp.google.com ([172.27.88.51])
-        by smtp.gmail.com with ESMTPSA id c4sm7771515pat.46.2015.10.19.11.45.01
+        by smtp.gmail.com with ESMTPSA id yz3sm37603470pbb.37.2015.10.19.11.50.15
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Mon, 19 Oct 2015 11:45:01 -0700 (PDT)
+        Mon, 19 Oct 2015 11:50:18 -0700 (PDT)
 From:   Petri Gynther <pgynther@google.com>
 To:     linux-mips@linux-mips.org
-Cc:     ralf@linux-mips.org, f.fainelli@gmail.com, cernekee@gmail.com,
-        Petri Gynther <pgynther@google.com>
-Subject: [PATCH] MIPS: switch BMIPS5000 to use r4k_wait_irqoff()
-Date:   Mon, 19 Oct 2015 11:44:24 -0700
-Message-Id: <1445280264-42016-1-git-send-email-pgynther@google.com>
+Cc:     ralf@linux-mips.org, Petri Gynther <pgynther@google.com>
+Subject: [PATCH] MIPS: add nmi_enter() + nmi_exit() to nmi_exception_handler()
+Date:   Mon, 19 Oct 2015 11:49:52 -0700
+Message-Id: <1445280592-43038-1-git-send-email-pgynther@google.com>
 X-Mailer: git-send-email 2.6.0.rc2.230.g3dd15c0
 Return-Path: <pgynther@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49600
+X-archive-position: 49601
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -61,60 +60,31 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-BCM7425 CPU Interface Zephyr Processor, pages 5-309 and 5-310
-BCM7428B0 CPU Interface Zephyr Processor, pages 5-337 and 5-338
-
-WAIT instruction:
-Thread enters wait state. No instructions are executed until an
-interrupt occurs. The processor's clocks are stopped if both threads
-are in idle mode.
-
-Description:
-Execution of this instruction puts the thread into wait state, an idle
-mode in which no instructions are fetched or executed. The thread remains
-in wait state until an interrupt occurs that is not masked by the
-interrupt mask field in the Status register. Then, if interrupts are
-enabled by the IE bit in the Status register, the interrupt is serviced.
-The ERET instruction returns to the instruction following the WAIT
-instruction. If interrupts are disabled, the processor resumes executing
-instructions with the next sequential instruction.
-
-Programming notes:
-The WAIT instruction should be executed while interrupts are disabled
-by the IE bit in the Status register. This avoids a potential timing
-hazard, which occurs if an interrupt is taken between testing the counter
-and executing the WAIT instruction. In this hazard case, the interrupt
-will have been completed before the WAIT instruction is executed, so
-the processor will remain indefinitely in wait state until the next
-interrupt.
+We need to enter NMI context when NMI interrupt fires.
 
 Signed-off-by: Petri Gynther <pgynther@google.com>
 ---
- arch/mips/kernel/idle.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ arch/mips/kernel/traps.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/mips/kernel/idle.c b/arch/mips/kernel/idle.c
-index ab1478d..d636c70 100644
---- a/arch/mips/kernel/idle.c
-+++ b/arch/mips/kernel/idle.c
-@@ -160,7 +160,6 @@ void __init check_wait(void)
- 	case CPU_BMIPS3300:
- 	case CPU_BMIPS4350:
- 	case CPU_BMIPS4380:
--	case CPU_BMIPS5000:
- 	case CPU_CAVIUM_OCTEON:
- 	case CPU_CAVIUM_OCTEON_PLUS:
- 	case CPU_CAVIUM_OCTEON2:
-@@ -171,7 +170,9 @@ void __init check_wait(void)
- 	case CPU_XLP:
- 		cpu_wait = r4k_wait;
- 		break;
--
-+	case CPU_BMIPS5000:
-+		cpu_wait = r4k_wait_irqoff;
-+		break;
- 	case CPU_RM7000:
- 		cpu_wait = rm7k_wait_irqoff;
- 		break;
+diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
+index fdb392b..efcedd4 100644
+--- a/arch/mips/kernel/traps.c
++++ b/arch/mips/kernel/traps.c
+@@ -1856,12 +1856,14 @@ void __noreturn nmi_exception_handler(struct pt_regs *regs)
+ {
+ 	char str[100];
+ 
++	nmi_enter();
+ 	raw_notifier_call_chain(&nmi_chain, 0, regs);
+ 	bust_spinlocks(1);
+ 	snprintf(str, 100, "CPU%d NMI taken, CP0_EPC=%lx\n",
+ 		 smp_processor_id(), regs->cp0_epc);
+ 	regs->cp0_epc = read_c0_errorepc();
+ 	die(str, regs);
++	nmi_exit();
+ }
+ 
+ #define VECTORSPACING 0x100	/* for EI/VI mode */
 -- 
 2.6.0.rc2.230.g3dd15c0

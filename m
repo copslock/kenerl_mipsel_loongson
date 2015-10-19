@@ -1,49 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Oct 2015 12:07:45 +0200 (CEST)
-Received: from mout.kundenserver.de ([212.227.17.13]:54638 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Oct 2015 12:11:20 +0200 (CEST)
+Received: from mout.kundenserver.de ([212.227.126.187]:55357 "EHLO
         mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27009878AbbJSKHnkwTr9 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 19 Oct 2015 12:07:43 +0200
+        with ESMTP id S27010247AbbJSKLSvIQE9 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 19 Oct 2015 12:11:18 +0200
 Received: from wuerfel.localnet ([134.3.118.24]) by mrelayeu.kundenserver.de
- (mreue104) with ESMTPSA (Nemesis) id 0MSa4i-1Zvmq134tQ-00RchU; Mon, 19 Oct
- 2015 12:07:01 +0200
+ (mreue004) with ESMTPSA (Nemesis) id 0MVqDE-1a3VcN2RPE-00X3I1; Mon, 19 Oct
+ 2015 12:11:03 +0200
 From:   Arnd Bergmann <arnd@arndb.de>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
+To:     linux-arm-kernel@lists.infradead.org
+Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
         Russell King - ARM Linux <linux@arm.linux.org.uk>,
-        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        Ralf Baechle <ralf@linux-mips.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        DRI Development <dri-devel@lists.freedesktop.org>,
         virtualization@lists.linux-foundation.org,
         Gerd Hoffmann <kraxel@redhat.com>,
-        Dave Airlie <airlied@redhat.com>, Arun Sharma <asharma@fb.com>
+        Dave Airlie <airlied@redhat.com>
 Subject: Re: [PATCH] drm/virtio: use %llu format string form atomic64_t
-Date:   Mon, 19 Oct 2015 12:06:56 +0200
-Message-ID: <7382069.z44JKC1I1I@wuerfel>
+Date:   Mon, 19 Oct 2015 12:11 +0200
+Message-ID: <4345582.jiHe94XBb3@wuerfel>
 User-Agent: KMail/4.11.5 (Linux/3.16.0-10-generic; KDE/4.11.5; x86_64; ; )
-In-Reply-To: <20151019093700.GC2092@linux-mips.org>
-References: <5082760.FgB9zHNfte@wuerfel> <5152101.mD2bWzUJ2V@wuerfel> <20151019093700.GC2092@linux-mips.org>
+In-Reply-To: <CAMuHMdWbzEFqVctMXTWtdBn2B+guFdphQX5nXUnHPo1szQbtPg@mail.gmail.com>
+References: <5082760.FgB9zHNfte@wuerfel> <5152101.mD2bWzUJ2V@wuerfel> <CAMuHMdWbzEFqVctMXTWtdBn2B+guFdphQX5nXUnHPo1szQbtPg@mail.gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="us-ascii"
-X-Provags-ID: V03:K0:RE4Y9XTFHw+iAt0lV17iTd+UIwVgaE39cbmbC+/IoK/Jl47DKLw
- 7IIz5jBHk3zG5B4tUeELvQ1a0wdR2SBM8qH6j6Q4oSZoL99ml2XHoaltB7cja2wCh0+24r5
- KKpwzZDyb7piknKjGsKXSbu4Qx1mRrCMwS+zNXp0yMWmIHbMvhoh3NhUip9bg0VgYNIwbdM
- FLnXlUVgjGUXoNFKaPV1Q==
-X-UI-Out-Filterresults: notjunk:1;V01:K0:OvjuPdydvm8=:8QGGJu1mdyJIty68yCYP/P
- bz1PsdatjyrVj1l7IaGSEYVDxj8JEKef4UmsQSYbuvsfsj5Cj+l4NLNv2k6gnuRQ0KqlTcQxv
- BBrtlNqIMRSPXAcUlwtsnS9vuk1ZBK2WIW/LP/Worps6YNpZMBD9jzVPGk1rUbfzWqXwwpFeN
- 02x8NJ012dJR1MPJcLLtYpJN5X2TEn0+JMJKdLZq69K6l73v2awg3QAtQc7XBwXiD0lA2WrLh
- i+AeGjXwm3Z4b59ZeLfwg9ZAmJHXxM1TroaRUpjucBXo31sR6qMOf+wRabBWzZP0mMwDt2uY+
- NMw9sOGI6Qid1plxgLEfV/CcZgvXbuJm6O1K01jkUvEmGhLGQKP4nKb7cezLjq/8E04h2IYWf
- tyHfY9nTfbYKxbucJxofT0qHiwJyalVUlgvCra32YW5474dLw7syeeBWDe62VfUGADOfrLKG7
- yh+7cZx+dA3vk4BKKtX9qIs6+MF4m0Q8xnej1fJ/MyP/kTqFZJhpzKcf9YtCdwXiE8IVjL8Z7
- u+MFDv2+Uc82RwUKBLz4ScvYC37SplROq6sLmE04JGrkNwhEMZ2viZfXDBcja4is3FU09pvNf
- vIF6BQuExVhGYPzXmQ1diZ4Yv9NOeL/S3ircwO57Y3g8vGCNeYRo/P4aYPTLfx1qy/dMUAlZj
- MzGgGQUo6mOrOoXk4SPVVlUnvYsSliWK9FuAOab5CESPbiVw5MPWJjr841X5inkvBYeUiemJx
- f7W3p3OftxTuAsQw
+X-Provags-ID: V03:K0:1AZeCkeLMYImW5awHGUYAudMCiFVii6DHvCHgEXjshjDRpxcF8H
+ A32EVcA/omZHEabr99KxU1k4UFTxIb/6fifgnZPLwdzKUZ5rZqHExEGg5TZBasAZOJpouy4
+ ddDMQW+M8YBxnsz8/0Flg0myz3DXrxwQ4+3NmA5OzrLoitv0Y5w/Ughlr/LgUdEozOdCZUR
+ /v+YPZSi5ktb6X88NhSAA==
+X-UI-Out-Filterresults: notjunk:1;V01:K0:nL1Zi8aHqPQ=:KlCVkURdhfGkF+Kp0noarr
+ 9lrV6bmG66byEJN3xdhR+1bzgiw4FS/mGshwLTSY8nDt+gHBJGFwc9umqbJDdbbgBMwGnCHsw
+ RDAvWfNwfTyyEK8LBksgLUCIhMcgO1tdF2xLn5tWurHt1/JZ7AtO11KobSLCPcZiAQv4XazD+
+ C96oLfHGFSK1k1yczozZBwjGynJQ14QDfhqbYkcHzpPpNMxWS6Nreos2xnY4G+mUQuMcyNE2D
+ F9rkBxnXk9j6YxfbnIuCtGKVttDXRzefL13eqGhfZQVqRW761FXNFJPNcU+D0A1CghlnEYHVJ
+ Ahg6H+9nkrAiG3FivsYAjlHXhn0bV6hIXX448xI6Xm8kYHYk4zlUyLxuYE8S0+Itj6A91N63b
+ AicHeaD6XX1AdAW9vQXZeRl14yjti6q9c4yTzPo3RO20ztnwqdaeZ5KAdHOvDqu68lpoyIIg8
+ rXIqlLbKTdf1DAOHqUaFecvdm/TzPgSglUddWhOmbEsv2ogykcX8ADpuFYc3Sf6GnztB9yiJm
+ cCKZwPcXL6gdQwkOOvzJQGxYo+84oSE+6IviHu5HX7C8tY4FQzjMnM4qo0Ax3BQmW/AldSmvm
+ lWqrFExg3ThBNUm6NqKad6pNQqxFEWSxzDZ4NUhbpSMHPQ7NGkwrvz/ps82BgS4LM5bYhd7Iz
+ zU3EUnIl2LscCud2tKKZmTS4hADFxtxCrAbnwyaoIM2/klTS+59+p0eNE3bL1TH5+5aKhpC18
+ RwtnK6GhuAm12kU1
 Return-Path: <arnd@arndb.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49596
+X-archive-position: 49597
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -60,34 +63,31 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Monday 19 October 2015 11:37:00 Ralf Baechle wrote:
-> On Wed, Oct 07, 2015 at 01:23:07PM +0200, Arnd Bergmann wrote:
-> 
-> > > I haven't checked all architectures, but I assume what happens is that
-> > > 64-bit ones just #define atomic64_t atomic_long_t, so they don't have
-> > > to provide three sets of functions.
-> > 
-> > scratch that, I just looked at all the architectures and found that it's
-> > just completely arbitrary, even within one architecture you get a mix
-> > of 'long' and 'long long', plus this gem from MIPS:
-> > 
+On Monday 19 October 2015 09:34:15 Geert Uytterhoeven wrote:
+> On Wed, Oct 7, 2015 at 1:23 PM, Arnd Bergmann <arnd@arndb.de> wrote:
 > > static __inline__ int atomic64_add_unless(atomic64_t *v, long a, long u)
-> > 
+> >
 > > which truncates the result to 32 bit.
 > 
-> Eh...  The result is 0/1 so nothing is truncated.  Alpha, MIPS,
-> PARISC and PowerPC are using the same prototype and x86 only differs
-> in the use of inline instead __inline__.  And anyway, that function on
-> MIPS is only built for CONFIG_64BIT.
+> Woops.
+> 
+> See also my unanswered question in "atomic64 on 32-bit vs 64-bit (was:
+> Re: Add virtio gpu driver.)", which is still valid:
+> https://lkml.org/lkml/2015/6/28/18
+> 
 
-Ah, got it. Sorry about that.
+Regarding your question of
 
-> What's wrong on MIPS is the comment describing the function's return value
-> which was changed by f24219b4e90cf70ec4a211b17fbabc725a0ddf3c (atomic: move
-> atomic_add_unless to generic code) and I've queued up a patch to fix that
-> since a few days.  I guess that was a cut and paste error from
-> __atomic_add_unless which indeed does return the old value.
+> Instead of sprinkling casts, is there any good reason why atomic64_read()
+> and atomic64_t aren't "long long" everywhere, cfr. u64?
 
-Thanks!
+
+I assume the answer is that some (all?) 64-bit architectures intentionally
+return 'long' here, in order for atomic_long_read() to return 'long' on
+all architectures, given the definitions from
+include/asm-generic/atomic-long.h
+
+We would have to either change those, or we have to pick between
+atomic_long_* or atomic64_* to have a consistent return type.
 
 	Arnd

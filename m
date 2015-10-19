@@ -1,14 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Oct 2015 12:11:20 +0200 (CEST)
-Received: from mout.kundenserver.de ([212.227.126.187]:55357 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27010247AbbJSKLSvIQE9 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 19 Oct 2015 12:11:18 +0200
-Received: from wuerfel.localnet ([134.3.118.24]) by mrelayeu.kundenserver.de
- (mreue004) with ESMTPSA (Nemesis) id 0MVqDE-1a3VcN2RPE-00X3I1; Mon, 19 Oct
- 2015 12:11:03 +0200
-From:   Arnd Bergmann <arnd@arndb.de>
-To:     linux-arm-kernel@lists.infradead.org
-Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Oct 2015 12:39:17 +0200 (CEST)
+Received: from mail-oi0-f65.google.com ([209.85.218.65]:36296 "EHLO
+        mail-oi0-f65.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010244AbbJSKjPzPn89 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 19 Oct 2015 12:39:15 +0200
+Received: by oifu187 with SMTP id u187so4010780oif.3;
+        Mon, 19 Oct 2015 03:39:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type;
+        bh=nAQ5BVEymzp2uiNRbala+FHwJQHHPb70DbHkYsi6yh0=;
+        b=pdeytEinVFsYiOmimdNVcdwj1QVHyq3O5Xadvrwu8Jhn19sUNMa4UGjSjPqYz1MOfw
+         XRocjrUm5jKT8KGVuAxjr40vEwlSlxJuqgG/vXAqjt+Ke4+joGnGjeBi9VFDaverVc44
+         bux5S6zwaJ6M/SAsFLJ4Gmq6oHe66fuRHBG+w3fNWS4jVfuZ98v7fEECetc/24QejECB
+         zK71mY1VTbWBghViwFTigmcIl9IVrGVLkS7d+4+eziHPMMb0EVonUEVTTWuhN42MpBn9
+         n1h3Nv7CMC41BsaEwCWRINiMkNPmGzzDep5HLrJI1MRwDEbrHk24ITp6j2dOKOGaob9x
+         zD+A==
+MIME-Version: 1.0
+X-Received: by 10.202.88.69 with SMTP id m66mr15353443oib.99.1445251150031;
+ Mon, 19 Oct 2015 03:39:10 -0700 (PDT)
+Received: by 10.60.34.132 with HTTP; Mon, 19 Oct 2015 03:39:09 -0700 (PDT)
+In-Reply-To: <4345582.jiHe94XBb3@wuerfel>
+References: <5082760.FgB9zHNfte@wuerfel>
+        <5152101.mD2bWzUJ2V@wuerfel>
+        <CAMuHMdWbzEFqVctMXTWtdBn2B+guFdphQX5nXUnHPo1szQbtPg@mail.gmail.com>
+        <4345582.jiHe94XBb3@wuerfel>
+Date:   Mon, 19 Oct 2015 12:39:09 +0200
+X-Google-Sender-Auth: U7wI7HzezGv9E1zGemKS1SWm7vQ
+Message-ID: <CAMuHMdUcAhocNosTB+YnQ0LiPui58ph13mrDYcE15vDjRAmscQ@mail.gmail.com>
+Subject: Re: [PATCH] drm/virtio: use %llu format string form atomic64_t
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
         Linux MIPS Mailing List <linux-mips@linux-mips.org>,
         Russell King - ARM Linux <linux@arm.linux.org.uk>,
         Ralf Baechle <ralf@linux-mips.org>,
@@ -17,40 +41,16 @@ Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
         virtualization@lists.linux-foundation.org,
         Gerd Hoffmann <kraxel@redhat.com>,
         Dave Airlie <airlied@redhat.com>
-Subject: Re: [PATCH] drm/virtio: use %llu format string form atomic64_t
-Date:   Mon, 19 Oct 2015 12:11 +0200
-Message-ID: <4345582.jiHe94XBb3@wuerfel>
-User-Agent: KMail/4.11.5 (Linux/3.16.0-10-generic; KDE/4.11.5; x86_64; ; )
-In-Reply-To: <CAMuHMdWbzEFqVctMXTWtdBn2B+guFdphQX5nXUnHPo1szQbtPg@mail.gmail.com>
-References: <5082760.FgB9zHNfte@wuerfel> <5152101.mD2bWzUJ2V@wuerfel> <CAMuHMdWbzEFqVctMXTWtdBn2B+guFdphQX5nXUnHPo1szQbtPg@mail.gmail.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-X-Provags-ID: V03:K0:1AZeCkeLMYImW5awHGUYAudMCiFVii6DHvCHgEXjshjDRpxcF8H
- A32EVcA/omZHEabr99KxU1k4UFTxIb/6fifgnZPLwdzKUZ5rZqHExEGg5TZBasAZOJpouy4
- ddDMQW+M8YBxnsz8/0Flg0myz3DXrxwQ4+3NmA5OzrLoitv0Y5w/Ughlr/LgUdEozOdCZUR
- /v+YPZSi5ktb6X88NhSAA==
-X-UI-Out-Filterresults: notjunk:1;V01:K0:nL1Zi8aHqPQ=:KlCVkURdhfGkF+Kp0noarr
- 9lrV6bmG66byEJN3xdhR+1bzgiw4FS/mGshwLTSY8nDt+gHBJGFwc9umqbJDdbbgBMwGnCHsw
- RDAvWfNwfTyyEK8LBksgLUCIhMcgO1tdF2xLn5tWurHt1/JZ7AtO11KobSLCPcZiAQv4XazD+
- C96oLfHGFSK1k1yczozZBwjGynJQ14QDfhqbYkcHzpPpNMxWS6Nreos2xnY4G+mUQuMcyNE2D
- F9rkBxnXk9j6YxfbnIuCtGKVttDXRzefL13eqGhfZQVqRW761FXNFJPNcU+D0A1CghlnEYHVJ
- Ahg6H+9nkrAiG3FivsYAjlHXhn0bV6hIXX448xI6Xm8kYHYk4zlUyLxuYE8S0+Itj6A91N63b
- AicHeaD6XX1AdAW9vQXZeRl14yjti6q9c4yTzPo3RO20ztnwqdaeZ5KAdHOvDqu68lpoyIIg8
- rXIqlLbKTdf1DAOHqUaFecvdm/TzPgSglUddWhOmbEsv2ogykcX8ADpuFYc3Sf6GnztB9yiJm
- cCKZwPcXL6gdQwkOOvzJQGxYo+84oSE+6IviHu5HX7C8tY4FQzjMnM4qo0Ax3BQmW/AldSmvm
- lWqrFExg3ThBNUm6NqKad6pNQqxFEWSxzDZ4NUhbpSMHPQ7NGkwrvz/ps82BgS4LM5bYhd7Iz
- zU3EUnIl2LscCud2tKKZmTS4hADFxtxCrAbnwyaoIM2/klTS+59+p0eNE3bL1TH5+5aKhpC18
- RwtnK6GhuAm12kU1
-Return-Path: <arnd@arndb.de>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <geert.uytterhoeven@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49597
+X-archive-position: 49598
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arnd@arndb.de
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -63,31 +63,51 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Monday 19 October 2015 09:34:15 Geert Uytterhoeven wrote:
-> On Wed, Oct 7, 2015 at 1:23 PM, Arnd Bergmann <arnd@arndb.de> wrote:
-> > static __inline__ int atomic64_add_unless(atomic64_t *v, long a, long u)
-> >
-> > which truncates the result to 32 bit.
-> 
-> Woops.
-> 
-> See also my unanswered question in "atomic64 on 32-bit vs 64-bit (was:
-> Re: Add virtio gpu driver.)", which is still valid:
-> https://lkml.org/lkml/2015/6/28/18
-> 
+On Mon, Oct 19, 2015 at 12:11 PM, Arnd Bergmann <arnd@arndb.de> wrote:
+> On Monday 19 October 2015 09:34:15 Geert Uytterhoeven wrote:
+>> On Wed, Oct 7, 2015 at 1:23 PM, Arnd Bergmann <arnd@arndb.de> wrote:
+>> > static __inline__ int atomic64_add_unless(atomic64_t *v, long a, long u)
+>> >
+>> > which truncates the result to 32 bit.
+>>
+>> Woops.
+>>
+>> See also my unanswered question in "atomic64 on 32-bit vs 64-bit (was:
+>> Re: Add virtio gpu driver.)", which is still valid:
+>> https://lkml.org/lkml/2015/6/28/18
+>>
+>
+> Regarding your question of
+>
+>> Instead of sprinkling casts, is there any good reason why atomic64_read()
+>> and atomic64_t aren't "long long" everywhere, cfr. u64?
+>
+>
+> I assume the answer is that some (all?) 64-bit architectures intentionally
+> return 'long' here, in order for atomic_long_read() to return 'long' on
+> all architectures, given the definitions from
+> include/asm-generic/atomic-long.h
+>
+> We would have to either change those, or we have to pick between
+> atomic_long_* or atomic64_* to have a consistent return type.
 
-Regarding your question of
+I guess the main reason is this comment in include/asm-generic/atomic-long.h,
+which I hadn't noticed before:
 
-> Instead of sprinkling casts, is there any good reason why atomic64_read()
-> and atomic64_t aren't "long long" everywhere, cfr. u64?
+ * Casts for parameters are avoided for existing atomic functions in order to
+ * avoid issues with cast-as-lval under gcc 4.x and other limitations that the
+ * macros of a platform may have.
 
+Still, it's a pity, as printing atomic_64 is one more place where casts are
+needed in callers.
 
-I assume the answer is that some (all?) 64-bit architectures intentionally
-return 'long' here, in order for atomic_long_read() to return 'long' on
-all architectures, given the definitions from
-include/asm-generic/atomic-long.h
+Gr{oetje,eeting}s,
 
-We would have to either change those, or we have to pick between
-atomic_long_* or atomic64_* to have a consistent return type.
+                        Geert
 
-	Arnd
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

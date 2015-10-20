@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Oct 2015 18:32:11 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:16665 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Oct 2015 18:32:30 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:62143 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27011114AbbJTQbtdZVM4 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 20 Oct 2015 18:31:49 +0200
+        with ESMTP id S27010612AbbJTQbuYKDZ4 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 20 Oct 2015 18:31:50 +0200
 Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id E3C8EB740EAE4;
-        Tue, 20 Oct 2015 17:31:40 +0100 (IST)
+        by Websense Email Security Gateway with ESMTPS id BFBBAD31C8C19;
+        Tue, 20 Oct 2015 17:31:41 +0100 (IST)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
  KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.195.1; Tue, 20 Oct 2015 17:31:43 +0100
+ 14.3.195.1; Tue, 20 Oct 2015 17:31:44 +0100
 Received: from zkakakhel-linux.le.imgtec.org (192.168.154.45) by
  LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
  14.3.210.2; Tue, 20 Oct 2015 17:31:43 +0100
@@ -16,9 +16,9 @@ From:   Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>
 To:     <ralf@linux-mips.org>, <robh+dt@kernel.org>
 CC:     <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>,
         <devicetree@vger.kernel.org>
-Subject: [PATCH_V2 1/4] dt-bindings: MIPS: Document xilfpga bindings and boot style
-Date:   Tue, 20 Oct 2015 17:30:58 +0100
-Message-ID: <1445358661-53953-2-git-send-email-Zubair.Kakakhel@imgtec.com>
+Subject: [PATCH_V2 2/4] MIPS: dt: xilfpga: Add xilfpga device tree files.
+Date:   Tue, 20 Oct 2015 17:30:59 +0100
+Message-ID: <1445358661-53953-3-git-send-email-Zubair.Kakakhel@imgtec.com>
 X-Mailer: git-send-email 1.9.1
 In-Reply-To: <1445358661-53953-1-git-send-email-Zubair.Kakakhel@imgtec.com>
 References: <1445358661-53953-1-git-send-email-Zubair.Kakakhel@imgtec.com>
@@ -29,7 +29,7 @@ Return-Path: <Zubair.Kakakhel@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49606
+X-archive-position: 49607
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,111 +46,134 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Xilfpga boots only with device-tree. Document the required properties
-and the unique boot style
+Add device tree files for the MIPSfpga platform.
+
+See Documentation/devicetree/bindings/mips/img/xilfpga.txt
+for details about MIPSfpga
 
 Signed-off-by: Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>
 
 ---
-V1->V2
-
-Reformatted to 80 char column
-Correct clock phandle description
-Added digilent,nexys4ddr to get more specific about platform
-Added compatible string in example.
+V1 -> V2
+Reformatted git log for 80 column
+Added nexys4ddr compatible
+Fixed some whitespace
+Removed a redundant status okay
 ---
- .../devicetree/bindings/mips/img/xilfpga.txt       | 83 ++++++++++++++++++++++
- 1 file changed, 83 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/mips/img/xilfpga.txt
+ arch/mips/boot/dts/Makefile                |  1 +
+ arch/mips/boot/dts/xilfpga/Makefile        |  9 ++++++
+ arch/mips/boot/dts/xilfpga/microAptiv.dtsi | 21 ++++++++++++++
+ arch/mips/boot/dts/xilfpga/nexys4ddr.dts   | 46 ++++++++++++++++++++++++++++++
+ 4 files changed, 77 insertions(+)
+ create mode 100644 arch/mips/boot/dts/xilfpga/Makefile
+ create mode 100644 arch/mips/boot/dts/xilfpga/microAptiv.dtsi
+ create mode 100644 arch/mips/boot/dts/xilfpga/nexys4ddr.dts
 
-diff --git a/Documentation/devicetree/bindings/mips/img/xilfpga.txt b/Documentation/devicetree/bindings/mips/img/xilfpga.txt
+diff --git a/arch/mips/boot/dts/Makefile b/arch/mips/boot/dts/Makefile
+index 778a340..0571ef7 100644
+--- a/arch/mips/boot/dts/Makefile
++++ b/arch/mips/boot/dts/Makefile
+@@ -6,6 +6,7 @@ dts-dirs	+= mti
+ dts-dirs	+= netlogic
+ dts-dirs	+= qca
+ dts-dirs	+= ralink
++dts-dirs	+= xilfpga
+ 
+ obj-y		:= $(addsuffix /, $(dts-dirs))
+ 
+diff --git a/arch/mips/boot/dts/xilfpga/Makefile b/arch/mips/boot/dts/xilfpga/Makefile
 new file mode 100644
-index 0000000..eaba22b
+index 0000000..913a752
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/mips/img/xilfpga.txt
-@@ -0,0 +1,83 @@
-+Imagination University Program MIPSfpga
-+=======================================
++++ b/arch/mips/boot/dts/xilfpga/Makefile
+@@ -0,0 +1,9 @@
++dtb-$(CONFIG_XILFPGA_NEXYS4DDR)	+= nexys4ddr.dtb
 +
-+Under the Imagination University Program, a microAptiv UP core has been
-+released for academic usage.
++obj-y				+= $(patsubst %.dtb, %.dtb.o, $(dtb-y))
 +
-+As we are dealing with a mips core instantiated on an FPGA, specifications
-+are fluid and can be varied in RTL.
++# Force kbuild to make empty built-in.o if necessary
++obj-				+= dummy.o
 +
-+This binding document is provided as baseline guidance for the example
-+project provided by IMG.
++always				:= $(dtb-y)
++clean-files	:= *.dtb *.dtb.S
+diff --git a/arch/mips/boot/dts/xilfpga/microAptiv.dtsi b/arch/mips/boot/dts/xilfpga/microAptiv.dtsi
+new file mode 100644
+index 0000000..81d518e
+--- /dev/null
++++ b/arch/mips/boot/dts/xilfpga/microAptiv.dtsi
+@@ -0,0 +1,21 @@
++/ {
++	#address-cells = <1>;
++	#size-cells = <1>;
++	compatible = "img,xilfpga";
 +
-+The example project runs on the Nexys4DDR board by Digilent powered by
-+the ARTIX-7 FPGA by Xilinx.
-+
-+Relevant details about the example project and the Nexys4DDR board:
-+
-+- microAptiv UP core m14Kc
-+- 50MHz clock speed
-+- 128Mbyte DDR RAM	at 0x0000_0000
-+- 8Kbyte RAM		at 0x1000_0000
-+- axi_intc		at 0x1020_0000
-+- axi_uart16550		at 0x1040_0000
-+- axi_gpio		at 0x1060_0000
-+- axi_i2c		at 0x10A0_0000
-+- custom_gpio		at 0x10C0_0000
-+- axi_ethernetlite	at 0x10E0_0000
-+- 8Kbyte BootRAM	at 0x1FC0_0000
-+
-+Required properties:
-+--------------------
-+ - compatible: Must include "img,xilfpga","digilent,nexys4ddr".
-+
-+CPU nodes:
-+----------
-+A "cpus" node is required.  Required properties:
-+ - #address-cells: Must be 1.
-+ - #size-cells: Must be 0.
-+A CPU sub-node is also required for at least CPU 0. Required properties:
-+ - device_type: Must be "cpu".
-+ - compatible: Must be "mips,m14Kc".
-+ - reg: Must be <0>.
-+ - clocks: phandle to ext clock for fixed-clock received by MIPS core.
-+
-+Example:
-+
-+	compatible = "img,xilfpga","digilent,nexys4ddr";
 +	cpus {
 +		#address-cells = <1>;
 +		#size-cells = <0>;
-+
-+		cpu0: cpu@0 {
++		cpu@0 {
 +			device_type = "cpu";
 +			compatible = "mips,m14Kc";
-+			reg = <0>;
 +			clocks	= <&ext>;
++			reg = <0>;
 +		};
 +	};
 +
 +	ext: ext {
 +		compatible = "fixed-clock";
 +		#clock-cells = <0>;
-+		clock-frequency = <50000000>;
++	};
++};
+diff --git a/arch/mips/boot/dts/xilfpga/nexys4ddr.dts b/arch/mips/boot/dts/xilfpga/nexys4ddr.dts
+new file mode 100644
+index 0000000..686ebd1
+--- /dev/null
++++ b/arch/mips/boot/dts/xilfpga/nexys4ddr.dts
+@@ -0,0 +1,46 @@
++/dts-v1/;
++
++#include "microAptiv.dtsi"
++
++/ {
++	compatible = "digilent,nexys4ddr";
++
++	memory {
++		device_type = "memory";
++		reg = <0x0 0x08000000>;
 +	};
 +
-+Boot protocol:
-+--------------
++	cpuintc: interrupt-controller@0 {
++		#address-cells = <0>;
++		#interrupt-cells = <1>;
++		interrupt-controller;
++		compatible = "mti,cpu-interrupt-controller";
++	};
 +
-+The BootRAM is a writeable "RAM" in FPGA at 0x1FC0_0000.
-+This is for easy reprogrammibility via JTAG.
++	axi_gpio: gpio@10600000 {
++		#gpio-cells = <1>;
++		compatible = "xlnx,xps-gpio-1.00.a";
++		gpio-controller;
++		reg = <0x10600000 0x10000>;
++		xlnx,all-inputs = <0x0>;
++		xlnx,dout-default = <0x0>;
++		xlnx,gpio-width = <0x16>;
++		xlnx,interrupt-present = <0x0>;
++		xlnx,is-dual = <0x0>;
++		xlnx,tri-default = <0xffffffff>;
++	} ;
 +
-+The BootRAM inializes the cache and the axi_uart peripheral.
++	axi_uart16550: serial@10400000 {
++		compatible = "ns16550a";
++		reg = <0x10400000 0x10000>;
 +
-+DDR initialiation is already handled by a HW IP block.
++		reg-shift = <2>;
++		reg-offset = <0x1000>;
 +
-+When the example project bitstream is loaded, the cpu_reset button
-+needs to be pressed.
++		clocks	= <&ext>;
++	};
++};
 +
-+The bootram initializes the cache and axi_uart.
-+Then outputs MIPSFPGA\n\r on the serial port on the Nexys4DDR board.
-+
-+At this point, the board is ready to load the Linux kernel
-+vmlinux file via JTAG.
++&ext {
++	clock-frequency = <50000000>;
++};
 -- 
 1.9.1

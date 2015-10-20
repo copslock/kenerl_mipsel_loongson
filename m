@@ -1,49 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Oct 2015 05:18:23 +0200 (CEST)
-Received: from mail-ob0-f181.google.com ([209.85.214.181]:36015 "EHLO
-        mail-ob0-f181.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27006156AbbJTDSVx2e-l (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 20 Oct 2015 05:18:21 +0200
-Received: by obcqt19 with SMTP id qt19so3811519obc.3;
-        Mon, 19 Oct 2015 20:18:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=subject:to:references:cc:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-type:content-transfer-encoding;
-        bh=kJxhLFCp5PAGiRA1L/wl5UG3oj1hOG4JgmzFvdxg9A4=;
-        b=UwSiXAVGBRQjwCmFASk0kZ4yaci9/4zcSrw8r/OMFsna7Rd3HDEsKyGTVdULJswC8k
-         4m/Ey8fda9LcrH5eVl4WyeygHyu9U+EGabfPffEvMfEUqiIboTJo5r3gO1E1k01GzB1M
-         h3oxleZwiTL9g7kdDp/uEY/sDx83s69eOf+fjDwcj8/iMkmYjLXYsXscrFRgNJwmSGTy
-         IKpxKTv+/vwSEayu4oko7KKhsnOkC7CmgvNqTAX06MoVfDrtSIckNgfQKt8RiA5kXepX
-         b2JWB4pxMaF0QfT5gLF/ZRQGIpGUnUv4RPbBoSWoz6P/Mp1X0COcaj1h7z3395QLQlT5
-         xtZQ==
-X-Received: by 10.60.47.199 with SMTP id f7mr470684oen.54.1445311094907;
-        Mon, 19 Oct 2015 20:18:14 -0700 (PDT)
-Received: from ?IPv6:2001:470:d:73f:91ab:8784:cff4:d4c5? ([2001:470:d:73f:91ab:8784:cff4:d4c5])
-        by smtp.googlemail.com with ESMTPSA id o8sm484634obi.6.2015.10.19.20.18.13
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 19 Oct 2015 20:18:13 -0700 (PDT)
-Subject: Re: [PATCH] MIPS: switch BMIPS5000 to use r4k_wait_irqoff()
-To:     Petri Gynther <pgynther@google.com>, linux-mips@linux-mips.org
-References: <1445280264-42016-1-git-send-email-pgynther@google.com>
-Cc:     ralf@linux-mips.org, cernekee@gmail.com
-From:   Florian Fainelli <f.fainelli@gmail.com>
-Message-ID: <5625B274.4010800@gmail.com>
-Date:   Mon, 19 Oct 2015 20:18:12 -0700
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Oct 2015 10:35:53 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:12425 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27009235AbbJTIftoP6tU (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 20 Oct 2015 10:35:49 +0200
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 99567CDE2258D;
+        Tue, 20 Oct 2015 09:35:41 +0100 (IST)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Tue, 20 Oct 2015 09:35:43 +0100
+Received: from [192.168.154.37] (192.168.154.37) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Tue, 20 Oct
+ 2015 09:35:42 +0100
+Subject: Re: [PATCH v3] MIPS64: signal: n64 kernel bugfix of MIPS32 o32 ABI
+ sigaction syscall
+To:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
+        <linux-mips@linux-mips.org>, <paul.burton@imgtec.com>,
+        <richard@nod.at>, <linux-kernel@vger.kernel.org>,
+        <ralf@linux-mips.org>, <luto@amacapital.net>,
+        <alex.smith@imgtec.com>, <macro@codesourcery.com>,
+        <mpe@ellerman.id.au>
+References: <20151019183955.6212.78229.stgit@ubuntu-yegoshin>
+From:   Markos Chandras <Markos.Chandras@imgtec.com>
+Message-ID: <5625FCDE.9010608@imgtec.com>
+Date:   Tue, 20 Oct 2015 09:35:42 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
  Thunderbird/38.3.0
 MIME-Version: 1.0
-In-Reply-To: <1445280264-42016-1-git-send-email-pgynther@google.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-Return-Path: <f.fainelli@gmail.com>
+In-Reply-To: <20151019183955.6212.78229.stgit@ubuntu-yegoshin>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.154.37]
+Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49602
+X-archive-position: 49603
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: f.fainelli@gmail.com
+X-original-sender: Markos.Chandras@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,67 +52,67 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Le 19/10/2015 11:44, Petri Gynther a écrit :
-> BCM7425 CPU Interface Zephyr Processor, pages 5-309 and 5-310
-> BCM7428B0 CPU Interface Zephyr Processor, pages 5-337 and 5-338
+On 10/19/2015 07:39 PM, Leonid Yegoshin wrote:
+> MIPS32 o32 ABI sigaction() processing on MIPS64 n64 kernel was incorrectly
+> set to processing aka rt_sigaction() variant only.
 > 
-> WAIT instruction:
-> Thread enters wait state. No instructions are executed until an
-> interrupt occurs. The processor's clocks are stopped if both threads
-> are in idle mode.
+> Fixed.
+> --
+> V3: Signature added.
+> v2: Taken in account CONFIG vars interdependencies and conditional expression
+>     simplified. As a result, the reverse problem fixed (introduced by v1).
+>     Tested on all 3 ABIs.
+> --
 > 
-> Description:
-> Execution of this instruction puts the thread into wait state, an idle
-> mode in which no instructions are fetched or executed. The thread remains
-> in wait state until an interrupt occurs that is not masked by the
-> interrupt mask field in the Status register. Then, if interrupts are
-> enabled by the IE bit in the Status register, the interrupt is serviced.
-> The ERET instruction returns to the instruction following the WAIT
-> instruction. If interrupts are disabled, the processor resumes executing
-> instructions with the next sequential instruction.
-> 
-> Programming notes:
-> The WAIT instruction should be executed while interrupts are disabled
-> by the IE bit in the Status register. This avoids a potential timing
-> hazard, which occurs if an interrupt is taken between testing the counter
-> and executing the WAIT instruction. In this hazard case, the interrupt
-> will have been completed before the WAIT instruction is executed, so
-> the processor will remain indefinitely in wait state until the next
-> interrupt.
-> 
-> Signed-off-by: Petri Gynther <pgynther@google.com>
-
-Reviewed-by: Florian Fainelli <f.fainelli@gmail.com>
-
+> Signed-off-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
 > ---
->  arch/mips/kernel/idle.c | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
+>  arch/mips/include/asm/signal.h |   12 +++++++++---
+>  arch/mips/kernel/signal.c      |    2 +-
+>  2 files changed, 10 insertions(+), 4 deletions(-)
 > 
-> diff --git a/arch/mips/kernel/idle.c b/arch/mips/kernel/idle.c
-> index ab1478d..d636c70 100644
-> --- a/arch/mips/kernel/idle.c
-> +++ b/arch/mips/kernel/idle.c
-> @@ -160,7 +160,6 @@ void __init check_wait(void)
->  	case CPU_BMIPS3300:
->  	case CPU_BMIPS4350:
->  	case CPU_BMIPS4380:
-> -	case CPU_BMIPS5000:
->  	case CPU_CAVIUM_OCTEON:
->  	case CPU_CAVIUM_OCTEON_PLUS:
->  	case CPU_CAVIUM_OCTEON2:
-> @@ -171,7 +170,9 @@ void __init check_wait(void)
->  	case CPU_XLP:
->  		cpu_wait = r4k_wait;
->  		break;
-> -
-> +	case CPU_BMIPS5000:
-> +		cpu_wait = r4k_wait_irqoff;
-> +		break;
->  	case CPU_RM7000:
->  		cpu_wait = rm7k_wait_irqoff;
->  		break;
+> diff --git a/arch/mips/include/asm/signal.h b/arch/mips/include/asm/signal.h
+> index 003e273eff4c..2292373ff11a 100644
+> --- a/arch/mips/include/asm/signal.h
+> +++ b/arch/mips/include/asm/signal.h
+> @@ -11,11 +11,17 @@
+>  
+>  #include <uapi/asm/signal.h>
+>  
+> +#ifdef CONFIG_MIPS32_COMPAT
+> +extern struct mips_abi mips_abi_32;
+>  
+> -#ifdef CONFIG_TRAD_SIGNALS
+> -#define sig_uses_siginfo(ka)	((ka)->sa.sa_flags & SA_SIGINFO)
+> +#define sig_uses_siginfo(ka, abi)                               \
+> +	((abi != &mips_abi_32) ? 1 :                            \
+> +		((ka)->sa.sa_flags & SA_SIGINFO))
+>  #else
+> -#define sig_uses_siginfo(ka)	(1)
+> +#define sig_uses_siginfo(ka, abi)                               \
+> +	(config_enabled(CONFIG_64BIT) ? 1 :                     \
+> +		(config_enabled(CONFIG_TRAD_SIGNALS) ?          \
+> +			((ka)->sa.sa_flags & SA_SIGINFO) : 1) )
+>  #endif
+>  
+>  #include <asm/sigcontext.h>
+> diff --git a/arch/mips/kernel/signal.c b/arch/mips/kernel/signal.c
+> index bf792e2839a6..5f18d0b879e0 100644
+> --- a/arch/mips/kernel/signal.c
+> +++ b/arch/mips/kernel/signal.c
+> @@ -798,7 +798,7 @@ static void handle_signal(struct ksignal *ksig, struct pt_regs *regs)
+>  		regs->regs[0] = 0;		/* Don't deal with this again.	*/
+>  	}
+>  
+> -	if (sig_uses_siginfo(&ksig->ka))
+> +	if (sig_uses_siginfo(&ksig->ka, abi))
+>  		ret = abi->setup_rt_frame(vdso + abi->vdso->off_rt_sigreturn,
+>  					  ksig, regs, oldset);
+>  	else
+> 
 > 
 
+What tree did you use for this patch? It does not seem to apply to
+mainline or Ralf's upstream-sfr.
 
 -- 
-Florian
+markos

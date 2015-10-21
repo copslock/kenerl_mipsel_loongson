@@ -1,48 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Oct 2015 04:40:34 +0200 (CEST)
-Received: from mail-pa0-f41.google.com ([209.85.220.41]:36607 "EHLO
-        mail-pa0-f41.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007641AbbJUCiWMA9vy (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 21 Oct 2015 04:38:22 +0200
-Received: by pacfv9 with SMTP id fv9so40955416pac.3;
-        Tue, 20 Oct 2015 19:38:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=GW3DKjhuUtbZe7TUfCEWQZnnqYJRnzp5WkNfrdhv98Y=;
-        b=p7CmmWT1Tv3cD3zSr2VyKXiUkUf3y3HSzHU8v44ouR5ZC1mY9wRDEAs2YH6Z6ZxpRP
-         bkCKlNKnBr0kc70K/Mk/5bUYKicLOtAkK/P2uW524xA+LnyRm/Tm5mLGijpI/2OfDPhi
-         gp24z60FXn/4Ymdo/TSLBdUcLScaiIbTOyulrv3AhRZhxT8TQrcAM2Dcj7lO7cu5bSuL
-         s/NewmBml7+Uuybkz+oKN/sLZ1kGQX74q5KgzwKuN5g7FJ74zk0ftl9QyJP3WOi6fTRJ
-         pmNuB83JThBeU/NZgsqxz9JvGKMUx1F2RUQo17LDXNByxQ5MC2s8kCbBmrN3tx0PAzap
-         cXHQ==
-X-Received: by 10.67.30.136 with SMTP id ke8mr7798122pad.16.1445395096582;
-        Tue, 20 Oct 2015 19:38:16 -0700 (PDT)
-Received: from praha.local.private ([211.255.134.165])
-        by smtp.gmail.com with ESMTPSA id bs3sm6137263pbd.89.2015.10.20.19.38.14
-        (version=TLSv1 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Tue, 20 Oct 2015 19:38:16 -0700 (PDT)
-From:   Jaedon Shin <jaedon.shin@gmail.com>
-To:     Wolfram Sang <wsa@the-dreams.de>,
-        Kamal Dasu <kdasu.kdev@gmail.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-Cc:     Florian Fainelli <f.fainelli@gmail.com>, linux-i2c@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-mips@linux-mips.org,
-        Jaedon Shin <jaedon.shin@gmail.com>
-Subject: [PATCH 9/9] MIPS: BMIPS: brcmstb: add I2C node for bcm7362
-Date:   Wed, 21 Oct 2015 11:37:01 +0900
-Message-Id: <1445395021-4204-10-git-send-email-jaedon.shin@gmail.com>
-X-Mailer: git-send-email 2.6.1
-In-Reply-To: <1445395021-4204-1-git-send-email-jaedon.shin@gmail.com>
-References: <1445395021-4204-1-git-send-email-jaedon.shin@gmail.com>
-Return-Path: <jaedon.shin@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Oct 2015 10:04:24 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:36603 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27008613AbbJUIETbRYhn (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 21 Oct 2015 10:04:19 +0200
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 64A9C48FFE90E
+        for <linux-mips@linux-mips.org>; Wed, 21 Oct 2015 09:04:12 +0100 (IST)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Wed, 21 Oct 2015 09:04:13 +0100
+Received: from [192.168.154.37] (192.168.154.37) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Wed, 21 Oct
+ 2015 09:04:13 +0100
+Subject: Re: Mips build errors in next-20151020
+To:     <linux-mips@linux-mips.org>
+References: <56268C80.5020903@roeck-us.net>
+From:   Markos Chandras <Markos.Chandras@imgtec.com>
+Message-ID: <562746FD.9030204@imgtec.com>
+Date:   Wed, 21 Oct 2015 09:04:13 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+ Thunderbird/38.3.0
+MIME-Version: 1.0
+In-Reply-To: <56268C80.5020903@roeck-us.net>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.154.37]
+Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49622
+X-archive-position: 49623
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jaedon.shin@gmail.com
+X-original-sender: Markos.Chandras@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,112 +46,32 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add I2C device nodes to BMIPS based BCM7362 platform.
+On 10/20/2015 07:48 PM, Guenter Roeck wrote:
+> Hi all,
+> 
+> all mips images fail to build for me in next-20151020 as follows.
+> 
+> Building mips:defconfig ... failed
+> --------------
+> Error log:
+> /tmp/cc9iCAqK.s: Assembler messages:
+> /tmp/cc9iCAqK.s:50: Error: can't resolve `_start' {*UND* section} -
+> `L0' {.text section}
+> /tmp/cc9iCAqK.s:374: Error: can't resolve `_start' {*UND* section} -
+> `L0' {.text section}
+> make[2]: *** [arch/mips/vdso/gettimeofday.o] Error 1
+> make[1]: *** [arch/mips/vdso] Error 2
+> 
+> Toolchain is "mips-poky-linux-gcc (GCC) 4.7.2".
+> 
+> Do I need a new toolchain ?
+> 
+> Thanks,
+> Guenter
+> 
+I am working on that with Ralf. seems like we are going to need
+binutils-2.25 for the VDSO code and disable it for older versions. I
+will post new patches today.
 
-Signed-off-by: Jaedon Shin <jaedon.shin@gmail.com>
----
- arch/mips/boot/dts/brcm/bcm7362.dtsi     | 52 ++++++++++++++++++++++++++++++--
- arch/mips/boot/dts/brcm/bcm97362svmb.dts | 12 ++++++++
- 2 files changed, 62 insertions(+), 2 deletions(-)
-
-diff --git a/arch/mips/boot/dts/brcm/bcm7362.dtsi b/arch/mips/boot/dts/brcm/bcm7362.dtsi
-index 6e65db86fc61..5f817be2553c 100644
---- a/arch/mips/boot/dts/brcm/bcm7362.dtsi
-+++ b/arch/mips/boot/dts/brcm/bcm7362.dtsi
-@@ -87,14 +87,32 @@
- 			compatible = "brcm,bcm7120-l2-intc";
- 			reg = <0x406600 0x8>;
- 
--			brcm,int-map-mask = <0x44>;
-+			brcm,int-map-mask = <0x44>, <0x7000000>;
- 			brcm,int-fwd-mask = <0x70000>;
- 
- 			interrupt-controller;
- 			#interrupt-cells = <1>;
- 
- 			interrupt-parent = <&periph_intc>;
--			interrupts = <56>;
-+			interrupts = <56>, <54>;
-+			interrupt-names = "upg_main", "upg_bsc";
-+		};
-+
-+		upg_aon_irq0_intc: upg_aon_irq0_intc@408b80 {
-+			compatible = "brcm,bcm7120-l2-intc";
-+			reg = <0x408b80 0x8>;
-+
-+			brcm,int-map-mask = <0x40>, <0x8000000>, <0x100000>;
-+			brcm,int-fwd-mask = <0>;
-+			brcm,irq-can-wake;
-+
-+			interrupt-controller;
-+			#interrupt-cells = <1>;
-+
-+			interrupt-parent = <&periph_intc>;
-+			interrupts = <57>, <55>, <59>;
-+			interrupt-names = "upg_main_aon", "upg_bsc_aon",
-+					  "upg_spi";
- 		};
- 
- 		sun_top_ctrl: syscon@404000 {
-@@ -144,6 +162,36 @@
- 			status = "disabled";
- 		};
- 
-+		bsca: i2c@406200 {
-+		      clock-frequency = <390000>;
-+		      compatible = "brcm,brcmstb-i2c";
-+		      interrupt-parent = <&upg_irq0_intc>;
-+		      reg = <0x406200 0x58>;
-+		      interrupts = <24>;
-+		      interrupt-names = "upg_bsca";
-+		      status = "disabled";
-+		};
-+
-+		bscb: i2c@406280 {
-+		      clock-frequency = <390000>;
-+		      compatible = "brcm,brcmstb-i2c";
-+		      interrupt-parent = <&upg_irq0_intc>;
-+		      reg = <0x406280 0x58>;
-+		      interrupts = <25>;
-+		      interrupt-names = "upg_bscb";
-+		      status = "disabled";
-+		};
-+
-+		bscd: i2c@408980 {
-+		      clock-frequency = <390000>;
-+		      compatible = "brcm,brcmstb-i2c";
-+		      interrupt-parent = <&upg_aon_irq0_intc>;
-+		      reg = <0x408980 0x58>;
-+		      interrupts = <27>;
-+		      interrupt-names = "upg_bscd";
-+		      status = "disabled";
-+		};
-+
- 		enet0: ethernet@430000 {
- 			phy-mode = "internal";
- 			phy-handle = <&phy1>;
-diff --git a/arch/mips/boot/dts/brcm/bcm97362svmb.dts b/arch/mips/boot/dts/brcm/bcm97362svmb.dts
-index 739c2ef5663b..9c99bfd1e781 100644
---- a/arch/mips/boot/dts/brcm/bcm97362svmb.dts
-+++ b/arch/mips/boot/dts/brcm/bcm97362svmb.dts
-@@ -29,6 +29,18 @@
- 	status = "okay";
- };
- 
-+&bsca {
-+	status = "okay";
-+};
-+
-+&bscb {
-+	status = "okay";
-+};
-+
-+&bscd {
-+	status = "okay";
-+};
-+
- &enet0 {
- 	status = "okay";
- };
 -- 
-2.6.1
+markos

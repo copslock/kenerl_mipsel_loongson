@@ -1,49 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Oct 2015 20:48:52 +0200 (CEST)
-Received: from bh-25.webhostbox.net ([208.91.199.152]:52759 "EHLO
-        bh-25.webhostbox.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27007325AbbJTSslGHfy0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 20 Oct 2015 20:48:41 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=roeck-us.net; s=default;
-        h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:Message-ID:Subject:From:Cc:To; bh=CXKwR+Rp5tC4HMQfLvH3pT6WMdMPb6MaNZE81v2CwHI=;
-        b=yACLnhZTJx7tCcAZ8PvG82Elwr1YASx+zJsKjfIEDzY3dtcH5rOYi7n23Dcq2C8ddE5naiEFMqTm1gfekaaKaCW7diUQ0Wqx6ioxfgNcyTxgGDLpmqV6L1vdV6I2EaZ4ADIqVrW0kc6QnOnbDXrLaDCUbSMzJiKGCjPYF6R++xM=;
-Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:44430 helo=server.roeck-us.net)
-        by bh-25.webhostbox.net with esmtpsa (TLSv1:DHE-RSA-AES128-SHA:128)
-        (Exim 4.85)
-        (envelope-from <linux@roeck-us.net>)
-        id 1Zobxa-000owM-7z; Tue, 20 Oct 2015 18:48:34 +0000
-To:     Linux MIPS Mailing List <linux-mips@linux-mips.org>
-Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-next@vger.kernel.org" <linux-next@vger.kernel.org>,
-        Alex Smith <alex.smith@imgtec.com>
-From:   Guenter Roeck <linux@roeck-us.net>
-Subject: Mips build errors in next-20151020
-Message-ID: <56268C80.5020903@roeck-us.net>
-Date:   Tue, 20 Oct 2015 11:48:32 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.3.0
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Authenticated_sender: linux@roeck-us.net
-X-OutGoing-Spam-Status: No, score=-1.0
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - bh-25.webhostbox.net
-X-AntiAbuse: Original Domain - linux-mips.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - roeck-us.net
-X-Get-Message-Sender-Via: bh-25.webhostbox.net: authenticated_id: linux@roeck-us.net
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-Return-Path: <linux@roeck-us.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Oct 2015 04:37:58 +0200 (CEST)
+Received: from mail-pa0-f48.google.com ([209.85.220.48]:34337 "EHLO
+        mail-pa0-f48.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007397AbbJUCh5N7CTy (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 21 Oct 2015 04:37:57 +0200
+Received: by padhk11 with SMTP id hk11so39489015pad.1;
+        Tue, 20 Oct 2015 19:37:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id;
+        bh=1t//3uMSAjk+KMkK6Kn50vZhvyoTifoZMgro//4Bnyw=;
+        b=0nwQpHzwTl27ZicbXWWJ32g11d+bYt7wUhMhsvxous8EbKERRJ194sp/nyrGHWR8XT
+         Kyd2aiph83mIOSUZBq4NKw2wPd8l85BD8Xqij1diJ9uqFk4wc6XdxrvxLPjR6yvgzQBl
+         xanLeQQ/CB27rtKYCh3CbYiF7h2sf0m5KB12nzgOoaulOeketZgWpGksR6FwOWE+Z/3w
+         qciBPmBot3XQmiNk1hH5JUR6GDSWnWDsh0IxGxMV8TXtK5kbzuiHcyON0dK36Rx8bWD7
+         mI1hWAfRBVAefQWZnlupciSlDyQUnt7sljvHavWJPGgDWgAA8Ey0DZV7//zEoXG94YOr
+         uHtQ==
+X-Received: by 10.68.194.133 with SMTP id hw5mr7742355pbc.25.1445395070950;
+        Tue, 20 Oct 2015 19:37:50 -0700 (PDT)
+Received: from praha.local.private ([211.255.134.165])
+        by smtp.gmail.com with ESMTPSA id bs3sm6137263pbd.89.2015.10.20.19.37.48
+        (version=TLSv1 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Tue, 20 Oct 2015 19:37:50 -0700 (PDT)
+From:   Jaedon Shin <jaedon.shin@gmail.com>
+To:     Wolfram Sang <wsa@the-dreams.de>,
+        Kamal Dasu <kdasu.kdev@gmail.com>,
+        Ralf Baechle <ralf@linux-mips.org>
+Cc:     Florian Fainelli <f.fainelli@gmail.com>, linux-i2c@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-mips@linux-mips.org,
+        Jaedon Shin <jaedon.shin@gmail.com>
+Subject: [PATCH 0/9] i2c: brcmstb: add support for BMIPS_GENERIC
+Date:   Wed, 21 Oct 2015 11:36:52 +0900
+Message-Id: <1445395021-4204-1-git-send-email-jaedon.shin@gmail.com>
+X-Mailer: git-send-email 2.6.1
+Return-Path: <jaedon.shin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49612
+X-archive-position: 49613
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linux@roeck-us.net
+X-original-sender: jaedon.shin@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,20 +55,32 @@ X-list: linux-mips
 
 Hi all,
 
-all mips images fail to build for me in next-20151020 as follows.
+This patch series adds support for BMIPS_GENERIC, and fixes running conditions.
 
-Building mips:defconfig ... failed
---------------
-Error log:
-/tmp/cc9iCAqK.s: Assembler messages:
-/tmp/cc9iCAqK.s:50: Error: can't resolve `_start' {*UND* section} - `L0' {.text section}
-/tmp/cc9iCAqK.s:374: Error: can't resolve `_start' {*UND* section} - `L0' {.text section}
-make[2]: *** [arch/mips/vdso/gettimeofday.o] Error 1
-make[1]: *** [arch/mips/vdso] Error 2
+Thanks.
 
-Toolchain is "mips-poky-linux-gcc (GCC) 4.7.2".
+Jaedon Shin (9):
+  i2c: brcmstb: make the driver buildable on BMIPS_GENERIC
+  i2c: brcmstb: fix typo in i2c-brcmstb
+  i2c: brcmstb: add missing parenthesis
+  i2c: brcmstb: enable ACK condition
+  i2c: brcmstb: fix start and stop conditions
+  MIPS: BMIPS: brcmstb: add I2C node for bcm7346
+  MIPS: BMIPS: brcmstb: add I2C node for bcm7358
+  MIPS: BMIPS: brcmstb: add I2C node for bcm7360
+  MIPS: BMIPS: brcmstb: add I2C node for bcm7362
 
-Do I need a new toolchain ?
+ arch/mips/boot/dts/brcm/bcm7346.dtsi      | 72 ++++++++++++++++++++++++++++++-
+ arch/mips/boot/dts/brcm/bcm7358.dtsi      | 62 +++++++++++++++++++++++++-
+ arch/mips/boot/dts/brcm/bcm7360.dtsi      | 62 +++++++++++++++++++++++++-
+ arch/mips/boot/dts/brcm/bcm7362.dtsi      | 52 +++++++++++++++++++++-
+ arch/mips/boot/dts/brcm/bcm97346dbsmb.dts | 20 +++++++++
+ arch/mips/boot/dts/brcm/bcm97358svmb.dts  | 16 +++++++
+ arch/mips/boot/dts/brcm/bcm97360svmb.dts  | 16 +++++++
+ arch/mips/boot/dts/brcm/bcm97362svmb.dts  | 12 ++++++
+ drivers/i2c/busses/Kconfig                |  2 +-
+ drivers/i2c/busses/i2c-brcmstb.c          | 11 +++--
+ 10 files changed, 310 insertions(+), 15 deletions(-)
 
-Thanks,
-Guenter
+-- 
+2.6.1

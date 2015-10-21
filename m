@@ -1,26 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Oct 2015 04:37:58 +0200 (CEST)
-Received: from mail-pa0-f48.google.com ([209.85.220.48]:34337 "EHLO
-        mail-pa0-f48.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007397AbbJUCh5N7CTy (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 21 Oct 2015 04:37:57 +0200
-Received: by padhk11 with SMTP id hk11so39489015pad.1;
-        Tue, 20 Oct 2015 19:37:51 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Oct 2015 04:38:17 +0200 (CEST)
+Received: from mail-pa0-f45.google.com ([209.85.220.45]:36210 "EHLO
+        mail-pa0-f45.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27009191AbbJUCh74iW-y (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 21 Oct 2015 04:37:59 +0200
+Received: by pacfv9 with SMTP id fv9so40945744pac.3;
+        Tue, 20 Oct 2015 19:37:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id;
-        bh=1t//3uMSAjk+KMkK6Kn50vZhvyoTifoZMgro//4Bnyw=;
-        b=0nwQpHzwTl27ZicbXWWJ32g11d+bYt7wUhMhsvxous8EbKERRJ194sp/nyrGHWR8XT
-         Kyd2aiph83mIOSUZBq4NKw2wPd8l85BD8Xqij1diJ9uqFk4wc6XdxrvxLPjR6yvgzQBl
-         xanLeQQ/CB27rtKYCh3CbYiF7h2sf0m5KB12nzgOoaulOeketZgWpGksR6FwOWE+Z/3w
-         qciBPmBot3XQmiNk1hH5JUR6GDSWnWDsh0IxGxMV8TXtK5kbzuiHcyON0dK36Rx8bWD7
-         mI1hWAfRBVAefQWZnlupciSlDyQUnt7sljvHavWJPGgDWgAA8Ey0DZV7//zEoXG94YOr
-         uHtQ==
-X-Received: by 10.68.194.133 with SMTP id hw5mr7742355pbc.25.1445395070950;
-        Tue, 20 Oct 2015 19:37:50 -0700 (PDT)
+        h=from:to:cc:subject:date:message-id:in-reply-to:references;
+        bh=U4tZPiPFaOKPQJ2+aso0mE0SmbALdnMqMlsviagSkiI=;
+        b=cyIS/ScQWZVvFw8Vs4Mi6LMceMpaBfc2bEEghHCvnwrLLKWCFWrHKEwpDAVMMPreAj
+         lfi0eWOKDDi4p7L8dQeFp18fPkHyijHW+hw3bdMWZKej393YxIFO0/ADA3TtgzlWzU+q
+         LNxqSkJd/ib09eLkzDx6roru/zNqqY3ccmx1qLQwJLiZyOBtzzP78AJlDersEIRouI4S
+         Y+OgeawoUQhMTkDANju06dRJ6md9H/I6VvI8xvu1ngJTqVnLX9m+gzFd4HCVyAmzZ7xl
+         fNMpeT6BUq1x9FWUyLh/w5IDU6x8hjhlIetntgMD4Lf6R/LA2bxML1ovxfXpNMmKG/on
+         Buzw==
+X-Received: by 10.67.30.136 with SMTP id ke8mr7796433pad.16.1445395073862;
+        Tue, 20 Oct 2015 19:37:53 -0700 (PDT)
 Received: from praha.local.private ([211.255.134.165])
-        by smtp.gmail.com with ESMTPSA id bs3sm6137263pbd.89.2015.10.20.19.37.48
+        by smtp.gmail.com with ESMTPSA id bs3sm6137263pbd.89.2015.10.20.19.37.51
         (version=TLSv1 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Tue, 20 Oct 2015 19:37:50 -0700 (PDT)
+        Tue, 20 Oct 2015 19:37:53 -0700 (PDT)
 From:   Jaedon Shin <jaedon.shin@gmail.com>
 To:     Wolfram Sang <wsa@the-dreams.de>,
         Kamal Dasu <kdasu.kdev@gmail.com>,
@@ -28,15 +28,17 @@ To:     Wolfram Sang <wsa@the-dreams.de>,
 Cc:     Florian Fainelli <f.fainelli@gmail.com>, linux-i2c@vger.kernel.org,
         devicetree@vger.kernel.org, linux-mips@linux-mips.org,
         Jaedon Shin <jaedon.shin@gmail.com>
-Subject: [PATCH 0/9] i2c: brcmstb: add support for BMIPS_GENERIC
-Date:   Wed, 21 Oct 2015 11:36:52 +0900
-Message-Id: <1445395021-4204-1-git-send-email-jaedon.shin@gmail.com>
+Subject: [PATCH 1/9] i2c: brcmstb: make the driver buildable on BMIPS_GENERIC
+Date:   Wed, 21 Oct 2015 11:36:53 +0900
+Message-Id: <1445395021-4204-2-git-send-email-jaedon.shin@gmail.com>
 X-Mailer: git-send-email 2.6.1
+In-Reply-To: <1445395021-4204-1-git-send-email-jaedon.shin@gmail.com>
+References: <1445395021-4204-1-git-send-email-jaedon.shin@gmail.com>
 Return-Path: <jaedon.shin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49613
+X-archive-position: 49614
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -53,34 +55,26 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi all,
+The BCM7xxx ARM and MIPS platforms share a similar hardware block for
+I2C.
 
-This patch series adds support for BMIPS_GENERIC, and fixes running conditions.
+Signed-off-by: Jaedon Shin <jaedon.shin@gmail.com>
+---
+ drivers/i2c/busses/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Thanks.
-
-Jaedon Shin (9):
-  i2c: brcmstb: make the driver buildable on BMIPS_GENERIC
-  i2c: brcmstb: fix typo in i2c-brcmstb
-  i2c: brcmstb: add missing parenthesis
-  i2c: brcmstb: enable ACK condition
-  i2c: brcmstb: fix start and stop conditions
-  MIPS: BMIPS: brcmstb: add I2C node for bcm7346
-  MIPS: BMIPS: brcmstb: add I2C node for bcm7358
-  MIPS: BMIPS: brcmstb: add I2C node for bcm7360
-  MIPS: BMIPS: brcmstb: add I2C node for bcm7362
-
- arch/mips/boot/dts/brcm/bcm7346.dtsi      | 72 ++++++++++++++++++++++++++++++-
- arch/mips/boot/dts/brcm/bcm7358.dtsi      | 62 +++++++++++++++++++++++++-
- arch/mips/boot/dts/brcm/bcm7360.dtsi      | 62 +++++++++++++++++++++++++-
- arch/mips/boot/dts/brcm/bcm7362.dtsi      | 52 +++++++++++++++++++++-
- arch/mips/boot/dts/brcm/bcm97346dbsmb.dts | 20 +++++++++
- arch/mips/boot/dts/brcm/bcm97358svmb.dts  | 16 +++++++
- arch/mips/boot/dts/brcm/bcm97360svmb.dts  | 16 +++++++
- arch/mips/boot/dts/brcm/bcm97362svmb.dts  | 12 ++++++
- drivers/i2c/busses/Kconfig                |  2 +-
- drivers/i2c/busses/i2c-brcmstb.c          | 11 +++--
- 10 files changed, 310 insertions(+), 15 deletions(-)
-
+diff --git a/drivers/i2c/busses/Kconfig b/drivers/i2c/busses/Kconfig
+index 08b86178e8fb..fd983c5b36f2 100644
+--- a/drivers/i2c/busses/Kconfig
++++ b/drivers/i2c/busses/Kconfig
+@@ -394,7 +394,7 @@ config I2C_BCM_KONA
+ 
+ config I2C_BRCMSTB
+ 	tristate "BRCM Settop I2C controller"
+-	depends on ARCH_BRCMSTB || COMPILE_TEST
++	depends on ARCH_BRCMSTB || BMIPS_GENERIC || COMPILE_TEST
+ 	default y
+ 	help
+ 	  If you say yes to this option, support will be included for the
 -- 
 2.6.1

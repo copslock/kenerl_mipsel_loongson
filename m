@@ -1,26 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Oct 2015 04:39:08 +0200 (CEST)
-Received: from mail-pa0-f46.google.com ([209.85.220.46]:34518 "EHLO
-        mail-pa0-f46.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27009552AbbJUCiIFClWy (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 21 Oct 2015 04:38:08 +0200
-Received: by padhk11 with SMTP id hk11so39493472pad.1;
-        Tue, 20 Oct 2015 19:38:02 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Oct 2015 04:39:28 +0200 (CEST)
+Received: from mail-pa0-f41.google.com ([209.85.220.41]:35058 "EHLO
+        mail-pa0-f41.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27009763AbbJUCiKk06Jy (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 21 Oct 2015 04:38:10 +0200
+Received: by pasz6 with SMTP id z6so39413426pas.2;
+        Tue, 20 Oct 2015 19:38:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=mn5tnTF58c6rIQkY/4MyNZGNzIA65+a3StSKvX/DZwE=;
-        b=ytKPazuJpi583TqBUXg1qfIcpuaefozlkNoaSf3oh6UUz4O8QPQVH3QdaJ8fj7m6za
-         bJpUczmXbG2DoxUC3xpKK6HxdzMNGMaJMFEarEi6aWIm1zbun1ECdU1e6UAzdIYxDKF7
-         Jh5gTcqHhy1AY7tYsH1ushfa4s+PbRXdJo0j/Sw7bK5I8BTGHCQQpZKjvm2BHlsWFPDJ
-         LGtOXzeMwHSLM42vYS/SfPqA4mVp5t8N8cd7Q0iqpY1LU2k1pjMbZRmdXADO7RT4esk3
-         F/05nrekkWUhZ3HD+Ct5TJHd6mnTEp06+KdHMWof7/PS+yYbzH7AkRVl6fXnbfB0gXDC
-         70FQ==
-X-Received: by 10.66.121.110 with SMTP id lj14mr7571785pab.61.1445395082365;
-        Tue, 20 Oct 2015 19:38:02 -0700 (PDT)
+        bh=tNcbt9rgMe6V1skAvgLSoL2dUCahB03tdPFH60Ylr20=;
+        b=piN9xz7IkEWBw7oxEfJ2vFIMiLV+F2LLf1X7r11usUGTojHA7iy4Q3xX0YsfK1VQhP
+         /LuVR5WIZbyqshV9SYto81vACqWJl0bydM6fUfrfzwR64qEs5xD0yvphW4Wiu9/3Q+kF
+         Zb7vdZ7bV1ScZ+D+W+peg6DdaduqykImzbnPV6UleA4Mxge3Su/AepVJCaSdLzweYy59
+         hwF688sA3JBkAtSeJdvifAUwPh+XjiLHjmBaiQRp3IeZ81w/pbYiSPXAeviQuO6t2uhS
+         eOEFXk+JI6owtNCzWSVZoG4L0hqpJl19PXLG5kIHU6QgLqqkwSEgmz4lf3dqNWodFFiG
+         goTg==
+X-Received: by 10.68.143.4 with SMTP id sa4mr7571972pbb.111.1445395085077;
+        Tue, 20 Oct 2015 19:38:05 -0700 (PDT)
 Received: from praha.local.private ([211.255.134.165])
-        by smtp.gmail.com with ESMTPSA id bs3sm6137263pbd.89.2015.10.20.19.37.59
+        by smtp.gmail.com with ESMTPSA id bs3sm6137263pbd.89.2015.10.20.19.38.02
         (version=TLSv1 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Tue, 20 Oct 2015 19:38:01 -0700 (PDT)
+        Tue, 20 Oct 2015 19:38:04 -0700 (PDT)
 From:   Jaedon Shin <jaedon.shin@gmail.com>
 To:     Wolfram Sang <wsa@the-dreams.de>,
         Kamal Dasu <kdasu.kdev@gmail.com>,
@@ -28,9 +28,9 @@ To:     Wolfram Sang <wsa@the-dreams.de>,
 Cc:     Florian Fainelli <f.fainelli@gmail.com>, linux-i2c@vger.kernel.org,
         devicetree@vger.kernel.org, linux-mips@linux-mips.org,
         Jaedon Shin <jaedon.shin@gmail.com>
-Subject: [PATCH 4/9] i2c: brcmstb: enable ACK condition
-Date:   Wed, 21 Oct 2015 11:36:56 +0900
-Message-Id: <1445395021-4204-5-git-send-email-jaedon.shin@gmail.com>
+Subject: [PATCH 5/9] i2c: brcmstb: fix start and stop conditions
+Date:   Wed, 21 Oct 2015 11:36:57 +0900
+Message-Id: <1445395021-4204-6-git-send-email-jaedon.shin@gmail.com>
 X-Mailer: git-send-email 2.6.1
 In-Reply-To: <1445395021-4204-1-git-send-email-jaedon.shin@gmail.com>
 References: <1445395021-4204-1-git-send-email-jaedon.shin@gmail.com>
@@ -38,7 +38,7 @@ Return-Path: <jaedon.shin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49617
+X-archive-position: 49618
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -55,26 +55,37 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Removes the condition of a message with under 32 bytes in length. The
-messages that do not require an ACK are I2C_M_IGNORE_NAK flag.
+Fixes conditions for RESTART, NOSTART and NOSTOP. The masks of start and
+stop is already in brcmstb_set_i2c_start_stop(). Therefore, the caller
+does not need a mask value.
 
 Signed-off-by: Jaedon Shin <jaedon.shin@gmail.com>
 ---
- drivers/i2c/busses/i2c-brcmstb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/i2c/busses/i2c-brcmstb.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/i2c/busses/i2c-brcmstb.c b/drivers/i2c/busses/i2c-brcmstb.c
-index 2d7d155029dc..53eb8b0c9bad 100644
+index 53eb8b0c9bad..dcd1209f843f 100644
 --- a/drivers/i2c/busses/i2c-brcmstb.c
 +++ b/drivers/i2c/busses/i2c-brcmstb.c
-@@ -330,7 +330,7 @@ static int brcmstb_i2c_xfer_bsc_data(struct brcmstb_i2c_dev *dev,
- 	int no_ack = pmsg->flags & I2C_M_IGNORE_NAK;
+@@ -464,7 +464,7 @@ static int brcmstb_i2c_xfer(struct i2c_adapter *adapter,
+ 			pmsg->buf ? pmsg->buf[0] : '0', pmsg->len);
  
- 	/* see if the transaction needs to check NACK conditions */
--	if (no_ack || len <= N_DATA_BYTES) {
-+	if (no_ack) {
- 		cmd = (pmsg->flags & I2C_M_RD) ? CMD_RD_NOACK
- 			: CMD_WR_NOACK;
- 		pi2creg->ctlhi_reg |= BSC_CTLHI_REG_IGNORE_ACK_MASK;
+ 		if (i < (num - 1) && (msgs[i + 1].flags & I2C_M_NOSTART))
+-			brcmstb_set_i2c_start_stop(dev, ~(COND_START_STOP));
++			brcmstb_set_i2c_start_stop(dev, 0);
+ 		else
+ 			brcmstb_set_i2c_start_stop(dev,
+ 						   COND_RESTART | COND_NOSTOP);
+@@ -485,8 +485,7 @@ static int brcmstb_i2c_xfer(struct i2c_adapter *adapter,
+ 			bytes_to_xfer = min(len, N_DATA_BYTES);
+ 
+ 			if (len <= N_DATA_BYTES && i == (num - 1))
+-				brcmstb_set_i2c_start_stop(dev,
+-							   ~(COND_START_STOP));
++				brcmstb_set_i2c_start_stop(dev, 0);
+ 
+ 			rc = brcmstb_i2c_xfer_bsc_data(dev, tmp_buf,
+ 						       bytes_to_xfer, pmsg);
 -- 
 2.6.1

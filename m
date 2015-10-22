@@ -1,45 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Oct 2015 03:12:26 +0200 (CEST)
-Received: from mail.kernel.org ([198.145.29.136]:58271 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27011312AbbJVBMYpvUXP (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 22 Oct 2015 03:12:24 +0200
-Received: from mail.kernel.org (localhost [127.0.0.1])
-        by mail.kernel.org (Postfix) with ESMTP id DF7F0208C1;
-        Thu, 22 Oct 2015 01:12:19 +0000 (UTC)
-Received: from mail-yk0-f177.google.com (mail-yk0-f177.google.com [209.85.160.177])
-        (using TLSv1.2 with cipher AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id F3D3120880;
-        Thu, 22 Oct 2015 01:12:18 +0000 (UTC)
-Received: by ykaz22 with SMTP id z22so68574245yka.2;
-        Wed, 21 Oct 2015 18:12:18 -0700 (PDT)
-X-Received: by 10.129.33.198 with SMTP id h189mr9156240ywh.287.1445476338308;
- Wed, 21 Oct 2015 18:12:18 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Oct 2015 03:56:34 +0200 (CEST)
+Received: from mail-oi0-f48.google.com ([209.85.218.48]:32941 "EHLO
+        mail-oi0-f48.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011167AbbJVB4ZrRQY5 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 22 Oct 2015 03:56:25 +0200
+Received: by oiad129 with SMTP id d129so39934884oia.0;
+        Wed, 21 Oct 2015 18:56:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=subject:to:references:cc:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-type:content-transfer-encoding;
+        bh=byy70Ik+kRPNoE/aoSzqOL83n10Xb2/l0P8dK2w6Paw=;
+        b=IPSiC9arSU5dut4e/bUKbUvkfQV9moGEZDB3eMO+lx9LRAQSGVsnvaqJIxfZfNpeqV
+         Zxa6Kssjj0EYAA9kjMDgOBRdHadsWHoKqrJlqgb480n8KR8MRbLqZ7S4owQvzY2jMhbS
+         qnNUTbmNGhu4EUKUFES+wm2lkebpgn9jSBdrPO5H02OScGAAm1bgwJhBeH7ijH3RuxCt
+         5SMOUtaJ1QsdIwPDNQmnis+QPuqcFWR5NQDnm2mKCF5VvubEYEnbBpZh7y/MUBBKyEs8
+         pSiS6Tokk6lbZBqYPHUyV718mjH6D95EkC9fQf1bO97n2yCQK5WBNuk34vMjevqbt5ir
+         wGLQ==
+X-Received: by 10.202.107.131 with SMTP id g125mr4209698oic.61.1445478979556;
+        Wed, 21 Oct 2015 18:56:19 -0700 (PDT)
+Received: from ?IPv6:2001:470:d:73f:44a6:f084:5dfa:7bd0? ([2001:470:d:73f:44a6:f084:5dfa:7bd0])
+        by smtp.googlemail.com with ESMTPSA id wf9sm4944984obc.11.2015.10.21.18.56.17
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 21 Oct 2015 18:56:18 -0700 (PDT)
+Subject: Re: [PATCH 1/9] i2c: brcmstb: make the driver buildable on
+ BMIPS_GENERIC
+To:     Jaedon Shin <jaedon.shin@gmail.com>,
+        Wolfram Sang <wsa@the-dreams.de>,
+        Kamal Dasu <kdasu.kdev@gmail.com>,
+        Ralf Baechle <ralf@linux-mips.org>
+References: <1445395021-4204-1-git-send-email-jaedon.shin@gmail.com>
+ <1445395021-4204-2-git-send-email-jaedon.shin@gmail.com>
+Cc:     linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-mips@linux-mips.org
+From:   Florian Fainelli <f.fainelli@gmail.com>
+Message-ID: <56284240.90405@gmail.com>
+Date:   Wed, 21 Oct 2015 18:56:16 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+ Thunderbird/38.3.0
 MIME-Version: 1.0
-Received: by 10.13.219.76 with HTTP; Wed, 21 Oct 2015 18:11:59 -0700 (PDT)
-In-Reply-To: <1445358661-53953-2-git-send-email-Zubair.Kakakhel@imgtec.com>
-References: <1445358661-53953-1-git-send-email-Zubair.Kakakhel@imgtec.com> <1445358661-53953-2-git-send-email-Zubair.Kakakhel@imgtec.com>
-From:   Rob Herring <robh+dt@kernel.org>
-Date:   Wed, 21 Oct 2015 20:11:59 -0500
-Message-ID: <CAL_Jsq+gYJRuCroCm2BDrEY2TjFV7cG9WcUr0nEZfBsrgzruTg@mail.gmail.com>
-Subject: Re: [PATCH_V2 1/4] dt-bindings: MIPS: Document xilfpga bindings and
- boot style
-To:     Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Linux-MIPS <linux-mips@linux-mips.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
-Content-Type: text/plain; charset=UTF-8
-X-Virus-Scanned: ClamAV using ClamSMTP
-Return-Path: <robh+dt@kernel.org>
+In-Reply-To: <1445395021-4204-2-git-send-email-jaedon.shin@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49632
+X-archive-position: 49633
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: robh+dt@kernel.org
+X-original-sender: f.fainelli@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,126 +62,33 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Oct 20, 2015 at 11:30 AM, Zubair Lutfullah Kakakhel
-<Zubair.Kakakhel@imgtec.com> wrote:
-> Xilfpga boots only with device-tree. Document the required properties
-> and the unique boot style
->
-> Signed-off-by: Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>
->
+Le 20/10/2015 19:36, Jaedon Shin a écrit :
+> The BCM7xxx ARM and MIPS platforms share a similar hardware block for
+> I2C.
+> 
+> Signed-off-by: Jaedon Shin <jaedon.shin@gmail.com>
+
+Acked-by: Florian Fainelli <f.fainelli@gmail.com>
+
 > ---
-> V1->V2
->
-> Reformatted to 80 char column
-> Correct clock phandle description
-> Added digilent,nexys4ddr to get more specific about platform
-> Added compatible string in example.
-> ---
->  .../devicetree/bindings/mips/img/xilfpga.txt       | 83 ++++++++++++++++++++++
->  1 file changed, 83 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/mips/img/xilfpga.txt
->
-> diff --git a/Documentation/devicetree/bindings/mips/img/xilfpga.txt b/Documentation/devicetree/bindings/mips/img/xilfpga.txt
-> new file mode 100644
-> index 0000000..eaba22b
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/mips/img/xilfpga.txt
-> @@ -0,0 +1,83 @@
-> +Imagination University Program MIPSfpga
-> +=======================================
-> +
-> +Under the Imagination University Program, a microAptiv UP core has been
-> +released for academic usage.
-> +
-> +As we are dealing with a mips core instantiated on an FPGA, specifications
+>  drivers/i2c/busses/Kconfig | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/i2c/busses/Kconfig b/drivers/i2c/busses/Kconfig
+> index 08b86178e8fb..fd983c5b36f2 100644
+> --- a/drivers/i2c/busses/Kconfig
+> +++ b/drivers/i2c/busses/Kconfig
+> @@ -394,7 +394,7 @@ config I2C_BCM_KONA
+>  
+>  config I2C_BRCMSTB
+>  	tristate "BRCM Settop I2C controller"
+> -	depends on ARCH_BRCMSTB || COMPILE_TEST
+> +	depends on ARCH_BRCMSTB || BMIPS_GENERIC || COMPILE_TEST
+>  	default y
+>  	help
+>  	  If you say yes to this option, support will be included for the
+> 
 
-s/mips/MIPS/
 
-> +are fluid and can be varied in RTL.
-> +
-> +This binding document is provided as baseline guidance for the example
-> +project provided by IMG.
-> +
-> +The example project runs on the Nexys4DDR board by Digilent powered by
-> +the ARTIX-7 FPGA by Xilinx.
-> +
-> +Relevant details about the example project and the Nexys4DDR board:
-> +
-> +- microAptiv UP core m14Kc
-> +- 50MHz clock speed
-> +- 128Mbyte DDR RAM     at 0x0000_0000
-> +- 8Kbyte RAM           at 0x1000_0000
-> +- axi_intc             at 0x1020_0000
-> +- axi_uart16550                at 0x1040_0000
-> +- axi_gpio             at 0x1060_0000
-> +- axi_i2c              at 0x10A0_0000
-> +- custom_gpio          at 0x10C0_0000
-> +- axi_ethernetlite     at 0x10E0_0000
-> +- 8Kbyte BootRAM       at 0x1FC0_0000
-> +
-> +Required properties:
-> +--------------------
-> + - compatible: Must include "img,xilfpga","digilent,nexys4ddr".
-
-Should be in the reverse order. Most specific comes first.
-
-> +
-> +CPU nodes:
-> +----------
-> +A "cpus" node is required.  Required properties:
-> + - #address-cells: Must be 1.
-> + - #size-cells: Must be 0.
-> +A CPU sub-node is also required for at least CPU 0. Required properties:
-> + - device_type: Must be "cpu".
-> + - compatible: Must be "mips,m14Kc".
-> + - reg: Must be <0>.
-> + - clocks: phandle to ext clock for fixed-clock received by MIPS core.
-> +
-> +Example:
-> +
-> +       compatible = "img,xilfpga","digilent,nexys4ddr";
-> +       cpus {
-> +               #address-cells = <1>;
-> +               #size-cells = <0>;
-> +
-> +               cpu0: cpu@0 {
-> +                       device_type = "cpu";
-> +                       compatible = "mips,m14Kc";
-> +                       reg = <0>;
-> +                       clocks  = <&ext>;
-> +               };
-> +       };
-> +
-> +       ext: ext {
-> +               compatible = "fixed-clock";
-> +               #clock-cells = <0>;
-> +               clock-frequency = <50000000>;
-> +       };
-> +
-> +Boot protocol:
-> +--------------
-> +
-> +The BootRAM is a writeable "RAM" in FPGA at 0x1FC0_0000.
-> +This is for easy reprogrammibility via JTAG.
-> +
-> +The BootRAM inializes the cache and the axi_uart peripheral.
-
-typo
-
-> +
-> +DDR initialiation is already handled by a HW IP block.
-
-typo
-
-> +
-> +When the example project bitstream is loaded, the cpu_reset button
-> +needs to be pressed.
-> +
-> +The bootram initializes the cache and axi_uart.
-> +Then outputs MIPSFPGA\n\r on the serial port on the Nexys4DDR board.
-> +
-> +At this point, the board is ready to load the Linux kernel
-> +vmlinux file via JTAG.
-> --
-> 1.9.1
->
+-- 
+Florian

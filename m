@@ -1,51 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Oct 2015 03:56:34 +0200 (CEST)
-Received: from mail-oi0-f48.google.com ([209.85.218.48]:32941 "EHLO
-        mail-oi0-f48.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011167AbbJVB4ZrRQY5 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 22 Oct 2015 03:56:25 +0200
-Received: by oiad129 with SMTP id d129so39934884oia.0;
-        Wed, 21 Oct 2015 18:56:19 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Oct 2015 03:57:02 +0200 (CEST)
+Received: from mail-oi0-f52.google.com ([209.85.218.52]:33946 "EHLO
+        mail-oi0-f52.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011169AbbJVB4ctHcr5 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 22 Oct 2015 03:56:32 +0200
+Received: by oies66 with SMTP id s66so39922506oie.1;
+        Wed, 21 Oct 2015 18:56:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=subject:to:references:cc:from:message-id:date:user-agent
          :mime-version:in-reply-to:content-type:content-transfer-encoding;
-        bh=byy70Ik+kRPNoE/aoSzqOL83n10Xb2/l0P8dK2w6Paw=;
-        b=IPSiC9arSU5dut4e/bUKbUvkfQV9moGEZDB3eMO+lx9LRAQSGVsnvaqJIxfZfNpeqV
-         Zxa6Kssjj0EYAA9kjMDgOBRdHadsWHoKqrJlqgb480n8KR8MRbLqZ7S4owQvzY2jMhbS
-         qnNUTbmNGhu4EUKUFES+wm2lkebpgn9jSBdrPO5H02OScGAAm1bgwJhBeH7ijH3RuxCt
-         5SMOUtaJ1QsdIwPDNQmnis+QPuqcFWR5NQDnm2mKCF5VvubEYEnbBpZh7y/MUBBKyEs8
-         pSiS6Tokk6lbZBqYPHUyV718mjH6D95EkC9fQf1bO97n2yCQK5WBNuk34vMjevqbt5ir
-         wGLQ==
-X-Received: by 10.202.107.131 with SMTP id g125mr4209698oic.61.1445478979556;
-        Wed, 21 Oct 2015 18:56:19 -0700 (PDT)
+        bh=m7czvE7NhBJ8MFBKY0fCkTjgwWvCNjh7jd0u29WcpBg=;
+        b=0kRHer8Lbm2786R6DtWHT8wYGxRx5nwSEyb3pg5qZLqxHanAjockNrFUN6P9mhN+/K
+         isBKzMkQskKStMTdBU6IyeGXeakXHMbWlW3WwWKcI0V0zUkamCkQsKAXIfyW7IYDYwkI
+         oOusSonE1WWTOQoONDGxQg0SaYYbG9EIds3TwmOI0ilh048QEo6XhuqfRwyPf9lUjif3
+         /hO7wBxmPyPN1DQ1Zcfw7dDFT4r3xvH64o4W+sYqJ9By4uo/U9WvhoIiK9wkuo67R4be
+         aPFakspBCBJBH4SX14Gbil7KBhvobvZyFhXtkmB9fsmioYUEYeRutGhDBKqVWD+g5/W0
+         cZcg==
+X-Received: by 10.202.55.212 with SMTP id e203mr8224764oia.23.1445478986920;
+        Wed, 21 Oct 2015 18:56:26 -0700 (PDT)
 Received: from ?IPv6:2001:470:d:73f:44a6:f084:5dfa:7bd0? ([2001:470:d:73f:44a6:f084:5dfa:7bd0])
-        by smtp.googlemail.com with ESMTPSA id wf9sm4944984obc.11.2015.10.21.18.56.17
+        by smtp.googlemail.com with ESMTPSA id w125sm4935336oib.22.2015.10.21.18.56.25
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 21 Oct 2015 18:56:18 -0700 (PDT)
-Subject: Re: [PATCH 1/9] i2c: brcmstb: make the driver buildable on
- BMIPS_GENERIC
+        Wed, 21 Oct 2015 18:56:26 -0700 (PDT)
+Subject: Re: [PATCH 2/9] i2c: brcmstb: fix typo in i2c-brcmstb
 To:     Jaedon Shin <jaedon.shin@gmail.com>,
         Wolfram Sang <wsa@the-dreams.de>,
         Kamal Dasu <kdasu.kdev@gmail.com>,
         Ralf Baechle <ralf@linux-mips.org>
 References: <1445395021-4204-1-git-send-email-jaedon.shin@gmail.com>
- <1445395021-4204-2-git-send-email-jaedon.shin@gmail.com>
+ <1445395021-4204-3-git-send-email-jaedon.shin@gmail.com>
 Cc:     linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
         linux-mips@linux-mips.org
 From:   Florian Fainelli <f.fainelli@gmail.com>
-Message-ID: <56284240.90405@gmail.com>
-Date:   Wed, 21 Oct 2015 18:56:16 -0700
+Message-ID: <56284248.7040603@gmail.com>
+Date:   Wed, 21 Oct 2015 18:56:24 -0700
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
  Thunderbird/38.3.0
 MIME-Version: 1.0
-In-Reply-To: <1445395021-4204-2-git-send-email-jaedon.shin@gmail.com>
+In-Reply-To: <1445395021-4204-3-git-send-email-jaedon.shin@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
 Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49633
+X-archive-position: 49634
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -63,30 +62,29 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 Le 20/10/2015 19:36, Jaedon Shin a écrit :
-> The BCM7xxx ARM and MIPS platforms share a similar hardware block for
-> I2C.
+> Fixes the "definitions" where it is spelled "defintions".
 > 
 > Signed-off-by: Jaedon Shin <jaedon.shin@gmail.com>
 
 Acked-by: Florian Fainelli <f.fainelli@gmail.com>
 
 > ---
->  drivers/i2c/busses/Kconfig | 2 +-
+>  drivers/i2c/busses/i2c-brcmstb.c | 2 +-
 >  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/drivers/i2c/busses/Kconfig b/drivers/i2c/busses/Kconfig
-> index 08b86178e8fb..fd983c5b36f2 100644
-> --- a/drivers/i2c/busses/Kconfig
-> +++ b/drivers/i2c/busses/Kconfig
-> @@ -394,7 +394,7 @@ config I2C_BCM_KONA
+> diff --git a/drivers/i2c/busses/i2c-brcmstb.c b/drivers/i2c/busses/i2c-brcmstb.c
+> index 8e9637eea512..6b8bbf99880d 100644
+> --- a/drivers/i2c/busses/i2c-brcmstb.c
+> +++ b/drivers/i2c/busses/i2c-brcmstb.c
+> @@ -41,7 +41,7 @@
+>  #define BSC_CTL_REG_INT_EN_SHIFT			6
+>  #define BSC_CTL_REG_DIV_CLK_MASK			0x00000080
 >  
->  config I2C_BRCMSTB
->  	tristate "BRCM Settop I2C controller"
-> -	depends on ARCH_BRCMSTB || COMPILE_TEST
-> +	depends on ARCH_BRCMSTB || BMIPS_GENERIC || COMPILE_TEST
->  	default y
->  	help
->  	  If you say yes to this option, support will be included for the
+> -/* BSC_IIC_ENABLE r/w enable and interrupt field defintions */
+> +/* BSC_IIC_ENABLE r/w enable and interrupt field definitions */
+>  #define BSC_IIC_EN_RESTART_MASK				0x00000040
+>  #define BSC_IIC_EN_NOSTART_MASK				0x00000020
+>  #define BSC_IIC_EN_NOSTOP_MASK				0x00000010
 > 
 
 

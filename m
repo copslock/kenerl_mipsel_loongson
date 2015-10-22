@@ -1,50 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Oct 2015 03:58:16 +0200 (CEST)
-Received: from mail-oi0-f50.google.com ([209.85.218.50]:34308 "EHLO
-        mail-oi0-f50.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011052AbbJVB51cqaE5 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 22 Oct 2015 03:57:27 +0200
-Received: by oies66 with SMTP id s66so39932188oie.1;
-        Wed, 21 Oct 2015 18:57:22 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Oct 2015 03:58:32 +0200 (CEST)
+Received: from mail-ob0-f170.google.com ([209.85.214.170]:34042 "EHLO
+        mail-ob0-f170.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011347AbbJVB5gKE4k5 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 22 Oct 2015 03:57:36 +0200
+Received: by obbda8 with SMTP id da8so56313427obb.1;
+        Wed, 21 Oct 2015 18:57:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=subject:to:references:cc:from:message-id:date:user-agent
          :mime-version:in-reply-to:content-type:content-transfer-encoding;
-        bh=WAJEFgQnIIyt7M9Ig8p66++885ok0+pd/EVYeVzqLsE=;
-        b=OxthKYePWk7fd/MfyhtUihp2nkilMcNrV2iFwUH2/Y0VGOjlfBpnWxTDTOSdJjLb/j
-         z2aFTeOe4kepsXQKPhyoYYKIcKsWEs1Gw+Vah7D0G0P5656s7wSDijkHc/SnO+o4tt49
-         +7d6Kga3hy7nmYTkZfbPAMkMQ827PT850qhx/neMhzFwCbjc6Is/wfWbvq66IuKQhZxe
-         Q/a8oh4+hQcUtJxxfliFKRT1oRREPb+9RLzMXQOXj30tbx1sgs1Lmu3slAucyKshp414
-         QnDhA2cpi8/0++Emcpl6QlxwqApgJsVdK46lv7INkwT51ul2vfk2P+nZiHecnrrBqLZL
-         30pA==
-X-Received: by 10.202.190.87 with SMTP id o84mr8273717oif.111.1445479042000;
-        Wed, 21 Oct 2015 18:57:22 -0700 (PDT)
+        bh=eDzIN0icbsm2d8ks6lCVp5iqTFYYxJpoCRazKCT5fAc=;
+        b=I8HVu5bOMGmxIEGUbRG16XggRzx4pTIgnMJfjBWE6S+3PmLv9EZ3tU4EUhxmZF3iup
+         Zu3wM+VNooWpA2xW9BgMVNECsCYPJNEewhlB7nk6hgNYDnsUz7os71wq+gqNhxr/+7+B
+         G7y0mDwPEHqTnXwWiZzfgBPu4GJ5Sc4nkHVl1U1OqqxC/wyggrhoH6qhgXJuv62U9JGS
+         0i6MpiBk+G2uh9nnQUa3f8MHtbZef44FeELMoyKa8DBGBnBuHFz2XFjSo26wgzAq3DHa
+         6O8yiLVdMUnebsXOAN6CFrk0h7F0EB3rTIcvs8oN7JnoQLD9+mKB2iKaQF6dnlczFu5h
+         mXyA==
+X-Received: by 10.182.236.66 with SMTP id us2mr5225583obc.45.1445479050298;
+        Wed, 21 Oct 2015 18:57:30 -0700 (PDT)
 Received: from ?IPv6:2001:470:d:73f:44a6:f084:5dfa:7bd0? ([2001:470:d:73f:44a6:f084:5dfa:7bd0])
-        by smtp.googlemail.com with ESMTPSA id u130sm4974793oie.2.2015.10.21.18.57.20
+        by smtp.googlemail.com with ESMTPSA id kw1sm4924447obb.28.2015.10.21.18.57.29
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 21 Oct 2015 18:57:21 -0700 (PDT)
-Subject: Re: [PATCH 8/9] MIPS: BMIPS: brcmstb: add I2C node for bcm7360
+        Wed, 21 Oct 2015 18:57:29 -0700 (PDT)
+Subject: Re: [PATCH 9/9] MIPS: BMIPS: brcmstb: add I2C node for bcm7362
 To:     Jaedon Shin <jaedon.shin@gmail.com>,
         Wolfram Sang <wsa@the-dreams.de>,
         Kamal Dasu <kdasu.kdev@gmail.com>,
         Ralf Baechle <ralf@linux-mips.org>
 References: <1445395021-4204-1-git-send-email-jaedon.shin@gmail.com>
- <1445395021-4204-9-git-send-email-jaedon.shin@gmail.com>
+ <1445395021-4204-10-git-send-email-jaedon.shin@gmail.com>
 Cc:     linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
         linux-mips@linux-mips.org
 From:   Florian Fainelli <f.fainelli@gmail.com>
-Message-ID: <56284280.9070906@gmail.com>
-Date:   Wed, 21 Oct 2015 18:57:20 -0700
+Message-ID: <56284288.8060505@gmail.com>
+Date:   Wed, 21 Oct 2015 18:57:28 -0700
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
  Thunderbird/38.3.0
 MIME-Version: 1.0
-In-Reply-To: <1445395021-4204-9-git-send-email-jaedon.shin@gmail.com>
+In-Reply-To: <1445395021-4204-10-git-send-email-jaedon.shin@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
 Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49638
+X-archive-position: 49639
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -62,22 +62,22 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 Le 20/10/2015 19:37, Jaedon Shin a écrit :
-> Add I2C device nodes to BMIPS based BCM7360 platform.
+> Add I2C device nodes to BMIPS based BCM7362 platform.
 > 
 > Signed-off-by: Jaedon Shin <jaedon.shin@gmail.com>
 
 Acked-by: Florian Fainelli <f.fainelli@gmail.com>
 
 > ---
->  arch/mips/boot/dts/brcm/bcm7360.dtsi     | 62 ++++++++++++++++++++++++++++++--
->  arch/mips/boot/dts/brcm/bcm97360svmb.dts | 16 +++++++++
->  2 files changed, 76 insertions(+), 2 deletions(-)
+>  arch/mips/boot/dts/brcm/bcm7362.dtsi     | 52 ++++++++++++++++++++++++++++++--
+>  arch/mips/boot/dts/brcm/bcm97362svmb.dts | 12 ++++++++
+>  2 files changed, 62 insertions(+), 2 deletions(-)
 > 
-> diff --git a/arch/mips/boot/dts/brcm/bcm7360.dtsi b/arch/mips/boot/dts/brcm/bcm7360.dtsi
-> index 9e1e571ba346..7e5f76040fb8 100644
-> --- a/arch/mips/boot/dts/brcm/bcm7360.dtsi
-> +++ b/arch/mips/boot/dts/brcm/bcm7360.dtsi
-> @@ -81,14 +81,32 @@
+> diff --git a/arch/mips/boot/dts/brcm/bcm7362.dtsi b/arch/mips/boot/dts/brcm/bcm7362.dtsi
+> index 6e65db86fc61..5f817be2553c 100644
+> --- a/arch/mips/boot/dts/brcm/bcm7362.dtsi
+> +++ b/arch/mips/boot/dts/brcm/bcm7362.dtsi
+> @@ -87,14 +87,32 @@
 >  			compatible = "brcm,bcm7120-l2-intc";
 >  			reg = <0x406600 0x8>;
 >  
@@ -112,7 +112,7 @@ Acked-by: Florian Fainelli <f.fainelli@gmail.com>
 >  		};
 >  
 >  		sun_top_ctrl: syscon@404000 {
-> @@ -138,6 +156,46 @@
+> @@ -144,6 +162,36 @@
 >  			status = "disabled";
 >  		};
 >  
@@ -136,16 +136,6 @@ Acked-by: Florian Fainelli <f.fainelli@gmail.com>
 > +		      status = "disabled";
 > +		};
 > +
-> +		bscc: i2c@406300 {
-> +		      clock-frequency = <390000>;
-> +		      compatible = "brcm,brcmstb-i2c";
-> +		      interrupt-parent = <&upg_irq0_intc>;
-> +		      reg = <0x406300 0x58>;
-> +		      interrupts = <26>;
-> +		      interrupt-names = "upg_bscc";
-> +		      status = "disabled";
-> +		};
-> +
 > +		bscd: i2c@408980 {
 > +		      clock-frequency = <390000>;
 > +		      compatible = "brcm,brcmstb-i2c";
@@ -159,11 +149,11 @@ Acked-by: Florian Fainelli <f.fainelli@gmail.com>
 >  		enet0: ethernet@430000 {
 >  			phy-mode = "internal";
 >  			phy-handle = <&phy1>;
-> diff --git a/arch/mips/boot/dts/brcm/bcm97360svmb.dts b/arch/mips/boot/dts/brcm/bcm97360svmb.dts
-> index eee8b0e32681..d48462e091f1 100644
-> --- a/arch/mips/boot/dts/brcm/bcm97360svmb.dts
-> +++ b/arch/mips/boot/dts/brcm/bcm97360svmb.dts
-> @@ -29,6 +29,22 @@
+> diff --git a/arch/mips/boot/dts/brcm/bcm97362svmb.dts b/arch/mips/boot/dts/brcm/bcm97362svmb.dts
+> index 739c2ef5663b..9c99bfd1e781 100644
+> --- a/arch/mips/boot/dts/brcm/bcm97362svmb.dts
+> +++ b/arch/mips/boot/dts/brcm/bcm97362svmb.dts
+> @@ -29,6 +29,18 @@
 >  	status = "okay";
 >  };
 >  
@@ -172,10 +162,6 @@ Acked-by: Florian Fainelli <f.fainelli@gmail.com>
 > +};
 > +
 > +&bscb {
-> +	status = "okay";
-> +};
-> +
-> +&bscc {
 > +	status = "okay";
 > +};
 > +

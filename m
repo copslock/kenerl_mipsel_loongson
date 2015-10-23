@@ -1,54 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Oct 2015 03:58:32 +0200 (CEST)
-Received: from mail-ob0-f170.google.com ([209.85.214.170]:34042 "EHLO
-        mail-ob0-f170.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011347AbbJVB5gKE4k5 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 22 Oct 2015 03:57:36 +0200
-Received: by obbda8 with SMTP id da8so56313427obb.1;
-        Wed, 21 Oct 2015 18:57:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=subject:to:references:cc:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-type:content-transfer-encoding;
-        bh=eDzIN0icbsm2d8ks6lCVp5iqTFYYxJpoCRazKCT5fAc=;
-        b=I8HVu5bOMGmxIEGUbRG16XggRzx4pTIgnMJfjBWE6S+3PmLv9EZ3tU4EUhxmZF3iup
-         Zu3wM+VNooWpA2xW9BgMVNECsCYPJNEewhlB7nk6hgNYDnsUz7os71wq+gqNhxr/+7+B
-         G7y0mDwPEHqTnXwWiZzfgBPu4GJ5Sc4nkHVl1U1OqqxC/wyggrhoH6qhgXJuv62U9JGS
-         0i6MpiBk+G2uh9nnQUa3f8MHtbZef44FeELMoyKa8DBGBnBuHFz2XFjSo26wgzAq3DHa
-         6O8yiLVdMUnebsXOAN6CFrk0h7F0EB3rTIcvs8oN7JnoQLD9+mKB2iKaQF6dnlczFu5h
-         mXyA==
-X-Received: by 10.182.236.66 with SMTP id us2mr5225583obc.45.1445479050298;
-        Wed, 21 Oct 2015 18:57:30 -0700 (PDT)
-Received: from ?IPv6:2001:470:d:73f:44a6:f084:5dfa:7bd0? ([2001:470:d:73f:44a6:f084:5dfa:7bd0])
-        by smtp.googlemail.com with ESMTPSA id kw1sm4924447obb.28.2015.10.21.18.57.29
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 21 Oct 2015 18:57:29 -0700 (PDT)
-Subject: Re: [PATCH 9/9] MIPS: BMIPS: brcmstb: add I2C node for bcm7362
-To:     Jaedon Shin <jaedon.shin@gmail.com>,
-        Wolfram Sang <wsa@the-dreams.de>,
-        Kamal Dasu <kdasu.kdev@gmail.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-References: <1445395021-4204-1-git-send-email-jaedon.shin@gmail.com>
- <1445395021-4204-10-git-send-email-jaedon.shin@gmail.com>
-Cc:     linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-mips@linux-mips.org
-From:   Florian Fainelli <f.fainelli@gmail.com>
-Message-ID: <56284288.8060505@gmail.com>
-Date:   Wed, 21 Oct 2015 18:57:28 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.3.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Oct 2015 03:41:40 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:53082 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27010703AbbJWBljVoUiB (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 23 Oct 2015 03:41:39 +0200
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 66ACFEB6D7B8B;
+        Fri, 23 Oct 2015 02:41:33 +0100 (IST)
+Received: from hhmail02.hh.imgtec.org (10.100.10.20) by KLMAIL01.kl.imgtec.org
+ (192.168.5.35) with Microsoft SMTP Server (TLS) id 14.3.195.1; Fri, 23 Oct
+ 2015 02:41:33 +0100
+Received: from BAMAIL02.ba.imgtec.org (10.20.40.28) by hhmail02.hh.imgtec.org
+ (10.100.10.20) with Microsoft SMTP Server (TLS) id 14.3.235.1; Fri, 23 Oct
+ 2015 02:41:33 +0100
+Received: from [10.20.3.92] (10.20.3.92) by bamail02.ba.imgtec.org
+ (10.20.40.28) with Microsoft SMTP Server (TLS) id 14.3.174.1; Thu, 22 Oct
+ 2015 18:41:31 -0700
+Message-ID: <5629904A.2070400@imgtec.com>
+Date:   Thu, 22 Oct 2015 18:41:30 -0700
+From:   Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.2.0
 MIME-Version: 1.0
-In-Reply-To: <1445395021-4204-10-git-send-email-jaedon.shin@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-Return-Path: <f.fainelli@gmail.com>
+To:     Markos Chandras <markos.chandras@imgtec.com>,
+        <linux-mips@linux-mips.org>
+CC:     Alex Smith <alex.smith@imgtec.com>, <linux-kernel@vger.kernel.org>
+Subject: Re: [v3, 3/3] MIPS: VDSO: Add implementations of gettimeofday() and
+ clock_gettime()
+References: <1445417864-31453-1-git-send-email-markos.chandras@imgtec.com>
+In-Reply-To: <1445417864-31453-1-git-send-email-markos.chandras@imgtec.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.20.3.92]
+Return-Path: <Leonid.Yegoshin@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49639
+X-archive-position: 49640
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: f.fainelli@gmail.com
+X-original-sender: Leonid.Yegoshin@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -61,119 +51,24 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Le 20/10/2015 19:37, Jaedon Shin a écrit :
-> Add I2C device nodes to BMIPS based BCM7362 platform.
-> 
-> Signed-off-by: Jaedon Shin <jaedon.shin@gmail.com>
+You can not use R4K CP0_count in SMP (multicore) without core-specific 
+adjustment.
+After first power-saving with core clock off or core down the values in 
+CP0_count
+in different cores are absolutely different.
 
-Acked-by: Florian Fainelli <f.fainelli@gmail.com>
+Until you include in system a patch like 
+http://patchwork.linux-mips.org/patch/10871/
 
-> ---
->  arch/mips/boot/dts/brcm/bcm7362.dtsi     | 52 ++++++++++++++++++++++++++++++--
->  arch/mips/boot/dts/brcm/bcm97362svmb.dts | 12 ++++++++
->  2 files changed, 62 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/mips/boot/dts/brcm/bcm7362.dtsi b/arch/mips/boot/dts/brcm/bcm7362.dtsi
-> index 6e65db86fc61..5f817be2553c 100644
-> --- a/arch/mips/boot/dts/brcm/bcm7362.dtsi
-> +++ b/arch/mips/boot/dts/brcm/bcm7362.dtsi
-> @@ -87,14 +87,32 @@
->  			compatible = "brcm,bcm7120-l2-intc";
->  			reg = <0x406600 0x8>;
->  
-> -			brcm,int-map-mask = <0x44>;
-> +			brcm,int-map-mask = <0x44>, <0x7000000>;
->  			brcm,int-fwd-mask = <0x70000>;
->  
->  			interrupt-controller;
->  			#interrupt-cells = <1>;
->  
->  			interrupt-parent = <&periph_intc>;
-> -			interrupts = <56>;
-> +			interrupts = <56>, <54>;
-> +			interrupt-names = "upg_main", "upg_bsc";
-> +		};
-> +
-> +		upg_aon_irq0_intc: upg_aon_irq0_intc@408b80 {
-> +			compatible = "brcm,bcm7120-l2-intc";
-> +			reg = <0x408b80 0x8>;
-> +
-> +			brcm,int-map-mask = <0x40>, <0x8000000>, <0x100000>;
-> +			brcm,int-fwd-mask = <0>;
-> +			brcm,irq-can-wake;
-> +
-> +			interrupt-controller;
-> +			#interrupt-cells = <1>;
-> +
-> +			interrupt-parent = <&periph_intc>;
-> +			interrupts = <57>, <55>, <59>;
-> +			interrupt-names = "upg_main_aon", "upg_bsc_aon",
-> +					  "upg_spi";
->  		};
->  
->  		sun_top_ctrl: syscon@404000 {
-> @@ -144,6 +162,36 @@
->  			status = "disabled";
->  		};
->  
-> +		bsca: i2c@406200 {
-> +		      clock-frequency = <390000>;
-> +		      compatible = "brcm,brcmstb-i2c";
-> +		      interrupt-parent = <&upg_irq0_intc>;
-> +		      reg = <0x406200 0x58>;
-> +		      interrupts = <24>;
-> +		      interrupt-names = "upg_bsca";
-> +		      status = "disabled";
-> +		};
-> +
-> +		bscb: i2c@406280 {
-> +		      clock-frequency = <390000>;
-> +		      compatible = "brcm,brcmstb-i2c";
-> +		      interrupt-parent = <&upg_irq0_intc>;
-> +		      reg = <0x406280 0x58>;
-> +		      interrupts = <25>;
-> +		      interrupt-names = "upg_bscb";
-> +		      status = "disabled";
-> +		};
-> +
-> +		bscd: i2c@408980 {
-> +		      clock-frequency = <390000>;
-> +		      compatible = "brcm,brcmstb-i2c";
-> +		      interrupt-parent = <&upg_aon_irq0_intc>;
-> +		      reg = <0x408980 0x58>;
-> +		      interrupts = <27>;
-> +		      interrupt-names = "upg_bscd";
-> +		      status = "disabled";
-> +		};
-> +
->  		enet0: ethernet@430000 {
->  			phy-mode = "internal";
->  			phy-handle = <&phy1>;
-> diff --git a/arch/mips/boot/dts/brcm/bcm97362svmb.dts b/arch/mips/boot/dts/brcm/bcm97362svmb.dts
-> index 739c2ef5663b..9c99bfd1e781 100644
-> --- a/arch/mips/boot/dts/brcm/bcm97362svmb.dts
-> +++ b/arch/mips/boot/dts/brcm/bcm97362svmb.dts
-> @@ -29,6 +29,18 @@
->  	status = "okay";
->  };
->  
-> +&bsca {
-> +	status = "okay";
-> +};
-> +
-> +&bscb {
-> +	status = "okay";
-> +};
-> +
-> +&bscd {
-> +	status = "okay";
-> +};
-> +
->  &enet0 {
->  	status = "okay";
->  };
-> 
+     "MIPS: Setup an instruction emulation in VDSO protected page 
+instead of user stack"
 
+which creates a per-thread memory and put into that memory an adjustment 
+value
+(which can be changed during re-schedule to another core), the use of 
+R4K counter is incorrect
+in SMP environment.
 
--- 
-Florian
+Note: It is also possible to setup and maintain a per-core page with 
+that value too as
+an alternative variant for adjustment.

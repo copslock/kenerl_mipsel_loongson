@@ -1,48 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Oct 2015 03:48:10 +0200 (CEST)
-Received: from mail-pa0-f47.google.com ([209.85.220.47]:33750 "EHLO
-        mail-pa0-f47.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011206AbbJWBqD1lumB (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 23 Oct 2015 03:46:03 +0200
-Received: by pabrc13 with SMTP id rc13so102334150pab.0;
-        Thu, 22 Oct 2015 18:45:57 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Oct 2015 05:58:32 +0200 (CEST)
+Received: from mail-pa0-f41.google.com ([209.85.220.41]:32894 "EHLO
+        mail-pa0-f41.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007575AbbJWD6ahlKDR (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 23 Oct 2015 05:58:30 +0200
+Received: by pabrc13 with SMTP id rc13so105483727pab.0;
+        Thu, 22 Oct 2015 20:58:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=6G0LtyCQfQ/RuI1d9KTLowM4QjBaxYmLLvzEVU9y3pg=;
-        b=xwIivhARfadbhtuFyx4cxRqYUHtjUTIJQ7spdWimxuvRFF6uPsXfMv9L5qNWTzf6e/
-         cd3KoJMZSYMbohvc2qL4VDK07FaJY8KXM/y/YJDlogeM1Xj2C8c4cjizwk+uaKMnFrSH
-         YqszfmPdj2o2Vy3vVc5HA2ZIf8ZKx0vqtN8EoaWeZg7E83yaJtNgo/WJmgOLg706oEWO
-         9e8UtsPWTkTBuwPTQipKEyzQSDxBgZXTaHxBsagzr2bb1/gKoHSH8n3jQBt9gWxNxm4n
-         i9vpnikJ6eM+9qGhNd5OxgvoUKyUTRo1j1I7onc0gvwTlv11xhO/FcugPe4u/ceiVOGG
-         Xa5w==
-X-Received: by 10.68.197.168 with SMTP id iv8mr1838497pbc.129.1445564757848;
-        Thu, 22 Oct 2015 18:45:57 -0700 (PDT)
-Received: from localhost.localdomain ([125.176.118.36])
-        by smtp.gmail.com with ESMTPSA id u10sm15955594pbs.63.2015.10.22.18.45.53
-        (version=TLSv1 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Thu, 22 Oct 2015 18:45:57 -0700 (PDT)
-From:   Jaedon Shin <jaedon.shin@gmail.com>
-To:     Tejun Heo <tj@kernel.org>, Kishon Vijay Abraham I <kishon@ti.com>,
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-type:content-disposition:in-reply-to:user-agent;
+        bh=wVPHEsgKB7aSGEwHhgBbbfq6oQ0F1xPJnMLMQskY7fA=;
+        b=rA8QX+bW3vYF/oGxS5a2R+cb79Sq7myy0jc+4uvq49m+W0USfDDVaxtIj6Nbop+kcH
+         coJxIX92A51BoQGvfB5F79mv+vt8/J5VgT8xeT+EQXyZ9UMY1xJDEbFFPq5xTcDxSOBV
+         CsFnFkpWFye7KoGFpIzsiO3BRjMDCwKzgfWbKHHUAyOHK9xM83GJE8nunQPYgZK1FyG7
+         dovV7mk9QSWIGfDUm7mQlWeiXKC4Ptp7Ak9jK6TkfAHhP/jPiR+nY5QkB3CT0NBHHa6E
+         fSIktXQLMiA1UBb3m4ObwXu4O2muqksgx44Bu/yeBd+IAKLvpy2XQvapJ3cU4K0D11zd
+         UEYg==
+X-Received: by 10.68.225.66 with SMTP id ri2mr2435229pbc.59.1445572704347;
+        Thu, 22 Oct 2015 20:58:24 -0700 (PDT)
+Received: from mtj.duckdns.org (mobile-166-171-248-169.mycingular.net. [166.171.248.169])
+        by smtp.gmail.com with ESMTPSA id pu5sm16327975pbc.58.2015.10.22.20.58.20
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Thu, 22 Oct 2015 20:58:23 -0700 (PDT)
+Date:   Fri, 23 Oct 2015 12:58:17 +0900
+From:   Tejun Heo <tj@kernel.org>
+To:     Jaedon Shin <jaedon.shin@gmail.com>
+Cc:     Kishon Vijay Abraham I <kishon@ti.com>,
         Ralf Baechle <ralf@linux-mips.org>,
         Florian Fainelli <f.fainelli@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>
-Cc:     linux-ide@vger.kernel.org, linux-mips@linux-mips.org,
-        devicetree@vger.kernel.org, Jaedon Shin <jaedon.shin@gmail.com>
-Subject: [PATCH 10/10] MIPS: BMIPS: brcmstb: add SATA nodes for bcm7362
-Date:   Fri, 23 Oct 2015 10:44:23 +0900
-Message-Id: <1445564663-66824-11-git-send-email-jaedon.shin@gmail.com>
-X-Mailer: git-send-email 2.6.2
-In-Reply-To: <1445564663-66824-1-git-send-email-jaedon.shin@gmail.com>
+        Rob Herring <robh+dt@kernel.org>, linux-ide@vger.kernel.org,
+        linux-mips@linux-mips.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH 00/10] add support SATA for BMIPS_GENERIC
+Message-ID: <20151023035817.GA18907@mtj.duckdns.org>
 References: <1445564663-66824-1-git-send-email-jaedon.shin@gmail.com>
-Return-Path: <jaedon.shin@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1445564663-66824-1-git-send-email-jaedon.shin@gmail.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+Return-Path: <htejun@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49651
+X-archive-position: 49652
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jaedon.shin@gmail.com
+X-original-sender: tj@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,79 +59,28 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add AHCI and PHY device nodes to BMIPS based BCM7362 platform.
+On Fri, Oct 23, 2015 at 10:44:13AM +0900, Jaedon Shin wrote:
+> Hi all,
+> 
+> This patch series adds support SATA for BMIPS_GENERIC.
+> 
+> Ralf,
+> I request you to drop already submitted patches for NAND device nodes.
+> It is merge conflicts with this patches.
+> http://patchwork.linux-mips.org/patch/10577/
+> http://patchwork.linux-mips.org/patch/10578/
+> http://patchwork.linux-mips.org/patch/10579/
+> http://patchwork.linux-mips.org/patch/10580/
+> 
+> Jaedon Shin (10):
+>   ata: ahci_brcmstb: make the driver buildable on BMIPS_GENERIC
+>   ata: ahch_brcmstb: add data for port offset
+>   ata: ahci_brcmstb: add support 40nm platforms
 
-Signed-off-by: Jaedon Shin <jaedon.shin@gmail.com>
----
- arch/mips/boot/dts/brcm/bcm7362.dtsi     | 40 ++++++++++++++++++++++++++++++++
- arch/mips/boot/dts/brcm/bcm97362svmb.dts |  8 +++++++
- 2 files changed, 48 insertions(+)
+ata part looks fine to me.  Let me know when the other parts get in.
+I'll apply the ata ones to libata/for-4.4.
 
-diff --git a/arch/mips/boot/dts/brcm/bcm7362.dtsi b/arch/mips/boot/dts/brcm/bcm7362.dtsi
-index 6e65db86fc61..51c58a41d2b5 100644
---- a/arch/mips/boot/dts/brcm/bcm7362.dtsi
-+++ b/arch/mips/boot/dts/brcm/bcm7362.dtsi
-@@ -189,5 +189,45 @@
- 			interrupts = <66>;
- 			status = "disabled";
- 		};
-+
-+		sata: sata@181000 {
-+			compatible = "brcm,bcm7362-ahci", "brcm,sata3-ahci";
-+			reg-names = "ahci", "top-ctrl";
-+			reg = <0x181000 0xa9c>, <0x180020 0x8>;
-+			interrupt-parent = <&periph_intc>;
-+			interrupts = <86>;
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			status = "disabled";
-+
-+			sata0: sata-port@0 {
-+				reg = <0>;
-+				phys = <&sata_phy0>;
-+			};
-+
-+			sata1: sata-port@1 {
-+				reg = <1>;
-+				phys = <&sata_phy1>;
-+			};
-+		};
-+
-+		sata_phy: sata-phy@1800000 {
-+			compatible = "brcm,bcm7362-sata-phy", "brcm,phy-sata3";
-+			reg = <0x180100 0x0eff>;
-+			reg-names = "phy";
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			status = "disabled";
-+
-+			sata_phy0: sata-phy@0 {
-+				reg = <0>;
-+				#phy-cells = <0>;
-+			};
-+
-+			sata_phy1: sata-phy@1 {
-+				reg = <1>;
-+				#phy-cells = <0>;
-+			};
-+		};
- 	};
- };
-diff --git a/arch/mips/boot/dts/brcm/bcm97362svmb.dts b/arch/mips/boot/dts/brcm/bcm97362svmb.dts
-index 739c2ef5663b..ef9a69b79bc4 100644
---- a/arch/mips/boot/dts/brcm/bcm97362svmb.dts
-+++ b/arch/mips/boot/dts/brcm/bcm97362svmb.dts
-@@ -40,3 +40,11 @@
- &ohci0 {
- 	status = "okay";
- };
-+
-+&sata {
-+	status = "okay";
-+};
-+
-+&sata_phy {
-+	status = "okay";
-+};
+Thanks.
+
 -- 
-2.6.2
+tejun

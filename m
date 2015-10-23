@@ -1,36 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Oct 2015 14:43:19 +0200 (CEST)
-Received: from demumfd001.nsn-inter.net ([93.183.12.32]:56914 "EHLO
-        demumfd001.nsn-inter.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011148AbbJWMnSRgGTl (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 23 Oct 2015 14:43:18 +0200
-Received: from demuprx016.emea.nsn-intra.net ([10.150.129.55])
-        by demumfd001.nsn-inter.net (8.15.2/8.15.2) with ESMTPS id t9NChC7X021298
-        (version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
-        Fri, 23 Oct 2015 12:43:12 GMT
-Received: from localhost.localdomain ([10.144.37.191])
-        by demuprx016.emea.nsn-intra.net (8.12.11.20060308/8.12.11) with ESMTP id t9NChBG7009939;
-        Fri, 23 Oct 2015 14:43:12 +0200
-From:   Aaro Koskinen <aaro.koskinen@nokia.com>
-To:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: [PATCH] MIPS: add LATENCYTOP support
-Date:   Fri, 23 Oct 2015 15:39:02 +0300
-Message-Id: <1445603942-24574-1-git-send-email-aaro.koskinen@nokia.com>
-X-Mailer: git-send-email 2.4.3
-X-purgate-type: clean
-X-purgate-Ad: Categorized by eleven eXpurgate (R) http://www.eleven.de
-X-purgate: clean
-X-purgate: This mail is considered clean (visit http://www.eleven.de for further information)
-X-purgate-size: 2865
-X-purgate-ID: 151667::1445604192-0000047E-23467075/0/0
-Return-Path: <aaro.koskinen@nokia.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Oct 2015 16:47:20 +0200 (CEST)
+Received: from comal.ext.ti.com ([198.47.26.152]:33745 "EHLO comal.ext.ti.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27011206AbbJWOrRc3XfZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 23 Oct 2015 16:47:17 +0200
+Received: from dlelxv90.itg.ti.com ([172.17.2.17])
+        by comal.ext.ti.com (8.13.7/8.13.7) with ESMTP id t9NEl824013712;
+        Fri, 23 Oct 2015 09:47:08 -0500
+Received: from DFLE73.ent.ti.com (dfle73.ent.ti.com [128.247.5.110])
+        by dlelxv90.itg.ti.com (8.14.3/8.13.8) with ESMTP id t9NEl86c021789;
+        Fri, 23 Oct 2015 09:47:08 -0500
+Received: from dlep33.itg.ti.com (157.170.170.75) by DFLE73.ent.ti.com
+ (128.247.5.110) with Microsoft SMTP Server id 14.3.224.2; Fri, 23 Oct 2015
+ 09:47:08 -0500
+Received: from [10.247.27.30] (ileax41-snat.itg.ti.com [10.172.224.153])        by
+ dlep33.itg.ti.com (8.14.3/8.13.8) with ESMTP id t9NEl7A1010657;        Fri, 23 Oct
+ 2015 09:47:07 -0500
+Subject: Re: [PATCH 04/10] phy: phy_brcmstb_sata: make the driver buildable on
+ BMIPS_GENERIC
+To:     Jaedon Shin <jaedon.shin@gmail.com>, Tejun Heo <tj@kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>
+References: <1445564663-66824-1-git-send-email-jaedon.shin@gmail.com>
+ <1445564663-66824-5-git-send-email-jaedon.shin@gmail.com>
+CC:     <linux-ide@vger.kernel.org>, <linux-mips@linux-mips.org>,
+        <devicetree@vger.kernel.org>
+From:   Kishon Vijay Abraham I <kishon@ti.com>
+Message-ID: <562A486B.5020500@ti.com>
+Date:   Fri, 23 Oct 2015 20:17:07 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+ Thunderbird/38.2.0
+MIME-Version: 1.0
+In-Reply-To: <1445564663-66824-5-git-send-email-jaedon.shin@gmail.com>
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: 7bit
+Return-Path: <kishon@ti.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49661
+X-archive-position: 49662
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aaro.koskinen@nokia.com
+X-original-sender: kishon@ti.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,98 +55,41 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add LATENCYTOP support for MIPS. Tested on OCTEON.
++Brian Norris
 
-Signed-off-by: Aaro Koskinen <aaro.koskinen@nokia.com>
----
- arch/mips/Kconfig             |  4 ++++
- arch/mips/kernel/stacktrace.c | 27 +++++++++++++++------------
- 2 files changed, 19 insertions(+), 12 deletions(-)
+Hi,
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index e3aa5b0..eed6614 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -2739,6 +2739,10 @@ config STACKTRACE_SUPPORT
- 	bool
- 	default y
- 
-+config HAVE_LATENCYTOP_SUPPORT
-+	bool
-+	default y
-+
- config PGTABLE_LEVELS
- 	int
- 	default 3 if 64BIT && !PAGE_SIZE_64KB
-diff --git a/arch/mips/kernel/stacktrace.c b/arch/mips/kernel/stacktrace.c
-index 1ba775d..506021f 100644
---- a/arch/mips/kernel/stacktrace.c
-+++ b/arch/mips/kernel/stacktrace.c
-@@ -12,14 +12,15 @@
-  * Save stack-backtrace addresses into a stack_trace buffer:
-  */
- static void save_raw_context_stack(struct stack_trace *trace,
--	unsigned long reg29)
-+	unsigned long reg29, int savesched)
- {
- 	unsigned long *sp = (unsigned long *)reg29;
- 	unsigned long addr;
- 
- 	while (!kstack_end(sp)) {
- 		addr = *sp++;
--		if (__kernel_text_address(addr)) {
-+		if (__kernel_text_address(addr) &&
-+		    (savesched || !in_sched_functions(addr))) {
- 			if (trace->skip > 0)
- 				trace->skip--;
- 			else
-@@ -31,7 +32,7 @@ static void save_raw_context_stack(struct stack_trace *trace,
- }
- 
- static void save_context_stack(struct stack_trace *trace,
--	struct task_struct *tsk, struct pt_regs *regs)
-+	struct task_struct *tsk, struct pt_regs *regs, int savesched)
- {
- 	unsigned long sp = regs->regs[29];
- #ifdef CONFIG_KALLSYMS
-@@ -43,20 +44,22 @@ static void save_context_stack(struct stack_trace *trace,
- 			(unsigned long)task_stack_page(tsk);
- 		if (stack_page && sp >= stack_page &&
- 		    sp <= stack_page + THREAD_SIZE - 32)
--			save_raw_context_stack(trace, sp);
-+			save_raw_context_stack(trace, sp, savesched);
- 		return;
- 	}
- 	do {
--		if (trace->skip > 0)
--			trace->skip--;
--		else
--			trace->entries[trace->nr_entries++] = pc;
--		if (trace->nr_entries >= trace->max_entries)
--			break;
-+		if (savesched || !in_sched_functions(pc)) {
-+			if (trace->skip > 0)
-+				trace->skip--;
-+			else
-+				trace->entries[trace->nr_entries++] = pc;
-+			if (trace->nr_entries >= trace->max_entries)
-+				break;
-+		}
- 		pc = unwind_stack(tsk, &sp, pc, &ra);
- 	} while (pc);
- #else
--	save_raw_context_stack(trace, sp);
-+	save_raw_context_stack(trace, sp, savesched);
- #endif
- }
- 
-@@ -82,6 +85,6 @@ void save_stack_trace_tsk(struct task_struct *tsk, struct stack_trace *trace)
- 		regs->cp0_epc = tsk->thread.reg31;
- 	} else
- 		prepare_frametrace(regs);
--	save_context_stack(trace, tsk, regs);
-+	save_context_stack(trace, tsk, regs, tsk == current);
- }
- EXPORT_SYMBOL_GPL(save_stack_trace_tsk);
--- 
-2.4.3
+On Friday 23 October 2015 07:14 AM, Jaedon Shin wrote:
+> The BCM7xxx ARM and MIPS platforms share a similar hardware block for AHCI
+> SATA3 PHY.
+> 
+> Signed-off-by: Jaedon Shin <jaedon.shin@gmail.com>
+> ---
+>  drivers/phy/Kconfig | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/phy/Kconfig b/drivers/phy/Kconfig
+> index 47da573d0bab..c83e48661fd7 100644
+> --- a/drivers/phy/Kconfig
+> +++ b/drivers/phy/Kconfig
+> @@ -364,11 +364,11 @@ config PHY_TUSB1210
+>  
+>  config PHY_BRCMSTB_SATA
+>  	tristate "Broadcom STB SATA PHY driver"
+> -	depends on ARCH_BRCMSTB
+> +	depends on ARCH_BRCMSTB || BMIPS_GENERIC
+
+Nice to see the same driver is been used across multiple platforms.
+Cc'ed Brian who is the author of brcmstb-sata.c
+
+Thanks
+Kishon
+>  	depends on OF
+>  	select GENERIC_PHY
+>  	help
+> -	  Enable this to support the SATA3 PHY on 28nm Broadcom STB SoCs.
+> +	  Enable this to support the SATA3 PHY on 28nm or 40nm Broadcom STB SoCs.
+>  	  Likely useful only with CONFIG_SATA_BRCMSTB enabled.
+>  
+>  endmenu
+> 

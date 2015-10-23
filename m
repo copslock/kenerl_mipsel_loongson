@@ -1,31 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Oct 2015 06:53:08 +0200 (CEST)
-Received: from mail-ig0-f173.google.com ([209.85.213.173]:37076 "EHLO
-        mail-ig0-f173.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008247AbbJWExHIXOrk (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 23 Oct 2015 06:53:07 +0200
-Received: by igbhv6 with SMTP id hv6so8864969igb.0;
-        Thu, 22 Oct 2015 21:53:01 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Oct 2015 06:55:05 +0200 (CEST)
+Received: from mail-ig0-f170.google.com ([209.85.213.170]:37808 "EHLO
+        mail-ig0-f170.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008345AbbJWEzDhF6dk (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 23 Oct 2015 06:55:03 +0200
+Received: by igbhv6 with SMTP id hv6so8883275igb.0;
+        Thu, 22 Oct 2015 21:54:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=mime-version:in-reply-to:references:from:date:message-id:subject:to
          :cc:content-type;
-        bh=ZHhe5zC02kAgw+QsP4UrDIveF13HsJNMdfX6jfpXPD0=;
-        b=nJakQ5C5v4gKGxeR9VMZ0rPRDcsIA8XZhqe4UvsKhysoIZvw4qwB1owJvLvhbzEm1U
-         kY0zShZ9ZEMuE6jfaz28lkpkBU3fnGjqvk5mBdnfOx65iW0jb636iWM7UlV5Xo3Sjjq2
-         MeTNxU3Q1+3eH9u6jjqh/fdv0EWGfdsYB2tfrd1DLFk5fcEU1NV9NfA3gCBJ/BwpN+Ta
-         NnAhrugElPwVvgpyUkm+/otE92+573Pnq5tTGHX6c6DoYy/mdhN3dlgZyqWaRgTu8pud
-         ZkVLzMcuEkRsXDVenvM3wPuRYByIwwuRsHCcS5FzvC8jh8T2wsIR8gyH5fVp9hpF8AQZ
-         O3/Q==
-X-Received: by 10.50.3.3 with SMTP id 3mr2244809igy.34.1445575981295; Thu, 22
- Oct 2015 21:53:01 -0700 (PDT)
+        bh=jg0Wmmj6hurvaFd2d7KM9B4hnTxePriqE1tm1iO6LuU=;
+        b=N8hiA/y27Pd8Gy+jRPNcXrBB2lfHQq0pZ6/TS9I5abQLnLXKt5lPIaKi/oElVwYSja
+         BHFarLanuSmeIzf+Up4+k1llIXLtzoXgDsQXQjyn5rzMT1Mk+gS4I6PcFNy7y5WPtIB3
+         riLemXuw2gZVQpmR6LlPMwvpUpZMlPrgXwU9om6PnzIk5jj+n17wx1A2yLauWwjSvWsn
+         7hvSkEXnWn359GJtPLN89557YtkYa/E9uq2xg4JES5sitZD+KtNfmZm7Twn6q8yIEKgD
+         I/vIkXD0TXGTPYzzQHEISRZ/Vw+kJkXH4652N2gCuhoWu1FMexCxtdyGHSdnmvJzuS3U
+         4kIg==
+X-Received: by 10.50.111.231 with SMTP id il7mr2311989igb.34.1445576098088;
+ Thu, 22 Oct 2015 21:54:58 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 10.107.8.165 with HTTP; Thu, 22 Oct 2015 21:52:21 -0700 (PDT)
-In-Reply-To: <1445564663-66824-2-git-send-email-jaedon.shin@gmail.com>
-References: <1445564663-66824-1-git-send-email-jaedon.shin@gmail.com> <1445564663-66824-2-git-send-email-jaedon.shin@gmail.com>
+Received: by 10.107.8.165 with HTTP; Thu, 22 Oct 2015 21:54:18 -0700 (PDT)
+In-Reply-To: <1445564663-66824-3-git-send-email-jaedon.shin@gmail.com>
+References: <1445564663-66824-1-git-send-email-jaedon.shin@gmail.com> <1445564663-66824-3-git-send-email-jaedon.shin@gmail.com>
 From:   Florian Fainelli <f.fainelli@gmail.com>
-Date:   Thu, 22 Oct 2015 21:52:21 -0700
-Message-ID: <CAGVrzcbzGfuzt_6CV23f+RF4gFjnc_MYO4E-huQ7PTTLyXFihA@mail.gmail.com>
-Subject: Re: [PATCH 01/10] ata: ahci_brcmstb: make the driver buildable on BMIPS_GENERIC
+Date:   Thu, 22 Oct 2015 21:54:18 -0700
+Message-ID: <CAGVrzcbdMkTVVby9V2HnZpvYB9sdo_ti_=5AvoxFO=OBvwb42Q@mail.gmail.com>
+Subject: Re: [PATCH 02/10] ata: ahch_brcmstb: add data for port offset
 To:     Jaedon Shin <jaedon.shin@gmail.com>,
         Brian Norris <computersforpeace@gmail.com>
 Cc:     Tejun Heo <tj@kernel.org>, Kishon Vijay Abraham I <kishon@ti.com>,
@@ -38,7 +38,7 @@ Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49654
+X-archive-position: 49655
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -56,35 +56,80 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 2015-10-22 18:44 GMT-07:00 Jaedon Shin <jaedon.shin@gmail.com>:
-> The BCM7xxx ARM and MIPS platforms share a similar hardware block for AHCI
-> SATA3.
+> Add data of device node for port offset.
+
+Looks good to me, some minor nits below.
+
 >
 > Signed-off-by: Jaedon Shin <jaedon.shin@gmail.com>
-
-Acked-by: Florian Fainelli <f.fainelli@gmail.com>
-
 > ---
->  drivers/ata/Kconfig | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  drivers/ata/ahci_brcmstb.c | 25 +++++++++++++++++--------
+>  1 file changed, 17 insertions(+), 8 deletions(-)
 >
-> diff --git a/drivers/ata/Kconfig b/drivers/ata/Kconfig
-> index 15e40ee62a94..8f535a88a0c7 100644
-> --- a/drivers/ata/Kconfig
-> +++ b/drivers/ata/Kconfig
-> @@ -100,7 +100,7 @@ config SATA_AHCI_PLATFORM
+> diff --git a/drivers/ata/ahci_brcmstb.c b/drivers/ata/ahci_brcmstb.c
+> index 14b7305d2ba0..8cf6f7d4798f 100644
+> --- a/drivers/ata/ahci_brcmstb.c
+> +++ b/drivers/ata/ahci_brcmstb.c
+> @@ -72,6 +72,7 @@
+>  struct brcm_ahci_priv {
+>         struct device *dev;
+>         void __iomem *top_ctrl;
+> +       u32 port_offset;
+>         u32 port_mask;
+>  };
 >
->  config AHCI_BRCMSTB
->         tristate "Broadcom STB AHCI SATA support"
-> -       depends on ARCH_BRCMSTB
-> +       depends on ARCH_BRCMSTB || BMIPS_GENERIC
->         help
->           This option enables support for the AHCI SATA3 controller found on
->           STB SoC's.
-> --
-> 2.6.2
+> @@ -110,7 +111,7 @@ static inline void brcm_sata_writereg(u32 val, void __iomem *addr)
+>  static void brcm_sata_phy_enable(struct brcm_ahci_priv *priv, int port)
+>  {
+>         void __iomem *phyctrl = priv->top_ctrl + SATA_TOP_CTRL_PHY_CTRL +
+> -                               (port * SATA_TOP_CTRL_PHY_OFFS);
+> +                               (port * priv->port_offset);
+>         void __iomem *p;
+>         u32 reg;
 >
+> @@ -139,7 +140,7 @@ static void brcm_sata_phy_enable(struct brcm_ahci_priv *priv, int port)
+>  static void brcm_sata_phy_disable(struct brcm_ahci_priv *priv, int port)
+>  {
+>         void __iomem *phyctrl = priv->top_ctrl + SATA_TOP_CTRL_PHY_CTRL +
+> -                               (port * SATA_TOP_CTRL_PHY_OFFS);
+> +                               (port * priv->port_offset);
+>         void __iomem *p;
+>         u32 reg;
+>
+> @@ -234,6 +235,13 @@ static int brcm_ahci_resume(struct device *dev)
+>  }
+>  #endif
+>
+> +static const struct of_device_id ahci_of_match[] = {
+> +       {.compatible = "brcm,bcm7445-ahci",
+> +                       .data = (void *)SATA_TOP_CTRL_PHY_OFFS},
 
+We could omit having to specify explicitly the offset here.
 
+> +       {},
+> +};
+> +MODULE_DEVICE_TABLE(of, ahci_of_match);
+> +
+>  static struct scsi_host_template ahci_platform_sht = {
+>         AHCI_SHT(DRV_NAME),
+>  };
+> @@ -241,6 +249,7 @@ static struct scsi_host_template ahci_platform_sht = {
+>  static int brcm_ahci_probe(struct platform_device *pdev)
+>  {
+>         struct device *dev = &pdev->dev;
+> +       const struct of_device_id *of_id = NULL;
+>         struct brcm_ahci_priv *priv;
+>         struct ahci_host_priv *hpriv;
+>         struct resource *res;
+> @@ -256,6 +265,12 @@ static int brcm_ahci_probe(struct platform_device *pdev)
+>         if (IS_ERR(priv->top_ctrl))
+>                 return PTR_ERR(priv->top_ctrl);
+>
+> +       of_id = of_match_node(ahci_of_match, dev->of_node);
+> +       if (!of_id)
+> +               return -EINVAL;
+> +
+> +       priv->port_offset = (u32)of_id->data;
 
--- 
-Florian
+And if of_id->data is NULL here, just default to
+SATA_TOP_CTRL_PHY_OFFS. But I have no strong preference.

@@ -1,53 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Oct 2015 23:28:14 +0200 (CEST)
-Received: from mail-pa0-f53.google.com ([209.85.220.53]:32840 "EHLO
-        mail-pa0-f53.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010009AbbJWV2Jzi6lr (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 23 Oct 2015 23:28:09 +0200
-Received: by pabrc13 with SMTP id rc13so127850331pab.0;
-        Fri, 23 Oct 2015 14:28:04 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Oct 2015 23:30:39 +0200 (CEST)
+Received: from mail-qg0-f46.google.com ([209.85.192.46]:33667 "EHLO
+        mail-qg0-f46.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010009AbbJWVahfdXQr (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 23 Oct 2015 23:30:37 +0200
+Received: by qgeo38 with SMTP id o38so77790742qge.0;
+        Fri, 23 Oct 2015 14:30:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-type:content-disposition:in-reply-to:user-agent;
-        bh=2tkr/1qXjx8ILZaB57Up7PvmX09th4i0SbEUrl2kKHA=;
-        b=WKhp5jRKIEjRlFwNVRxXB83jID51Eo2pKwIFJ7jo+5VTbqVrUJnfSnyjFlqB/EIVFj
-         X6AfpQVpxCAABLRTYhHBqJXEqaLBNbg1SSkUnHabTDmiRXDF1Whg1hG40Xtoub/eIxYg
-         kAo7Xjd1HHxz7pd/6TfjFsx8l+07vkzxoGAJDkxiRASk86g04rBYFlv6kvTi1/RvdPDj
-         Awwg7Mraf1tGr7oWcSZCLBqH/iC1rlnROT8qwV8+2kddLB6GQq0rV2iKYa+GxsXi1/V6
-         jGaRrJKE3mpnHKfmsdlvsyByNoGMKchylFTYwZpQQ18958ay/isU4Fg3VMLhNuajzV3V
-         uSJg==
-X-Received: by 10.66.144.169 with SMTP id sn9mr6471642pab.15.1445635684125;
-        Fri, 23 Oct 2015 14:28:04 -0700 (PDT)
-Received: from google.com ([2620:0:1000:1301:2c06:ba91:afc7:e14d])
-        by smtp.gmail.com with ESMTPSA id ju7sm4896658pbc.46.2015.10.23.14.28.03
-        (version=TLS1_2 cipher=AES128-SHA bits=128/128);
-        Fri, 23 Oct 2015 14:28:03 -0700 (PDT)
-Date:   Fri, 23 Oct 2015 14:28:01 -0700
-From:   Brian Norris <computersforpeace@gmail.com>
-To:     Jaedon Shin <jaedon.shin@gmail.com>
-Cc:     Tejun Heo <tj@kernel.org>, Kishon Vijay Abraham I <kishon@ti.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>, linux-ide@vger.kernel.org,
-        linux-mips@linux-mips.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH 02/10] ata: ahch_brcmstb: add data for port offset
-Message-ID: <20151023212801.GU13239@google.com>
-References: <1445564663-66824-1-git-send-email-jaedon.shin@gmail.com>
- <1445564663-66824-3-git-send-email-jaedon.shin@gmail.com>
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc:content-type;
+        bh=h4I+Y6DTGfhiI64RD+gNs8ou2MoQt5OoRGrVAYid0jE=;
+        b=WUn0NN3DwuZ1pbFTvlfWfHCPpICcTvROfMZYvImaynMtoKVtw4PiVtMxg6K0aSbumJ
+         C9lrj0XrscdXcHeE0erBzXj3KNuCZSbQXg717xJrQRkmjksjf9MWTrMepE223OI6x7M5
+         GbVRp5LuAPNWWlUkECdhNbhhyZfVVZFK3S/SHPXWtSPIMDgwL/uXTgCe5NT4WrfojgYK
+         KdTb6d+ZNVE2FflcZLrkxoTy+BKqqHPeuliZWG+730UqQQcxcN3f/wSbyWWnn8VcO460
+         l/fQCaElrOtMkZIBrikW50oRMJE82KW5pUEIlTfgNTN3yPhE5gwQAcgTlN/25yv1QAIH
+         lvbA==
+X-Received: by 10.140.150.4 with SMTP id 4mr28060916qhw.35.1445635831763; Fri,
+ 23 Oct 2015 14:30:31 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1445564663-66824-3-git-send-email-jaedon.shin@gmail.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <computersforpeace@gmail.com>
+Received: by 10.140.34.173 with HTTP; Fri, 23 Oct 2015 14:30:12 -0700 (PDT)
+In-Reply-To: <20151023203511.GN13239@google.com>
+References: <1445564663-66824-1-git-send-email-jaedon.shin@gmail.com>
+ <20151023035817.GA18907@mtj.duckdns.org> <CAGVrzcYLeoXDPkMKvAtfok1dwgGQDu06FxP05u6YiO9-nHJqqw@mail.gmail.com>
+ <20151023203511.GN13239@google.com>
+From:   Kevin Cernekee <cernekee@gmail.com>
+Date:   Fri, 23 Oct 2015 14:30:12 -0700
+Message-ID: <CAJiQ=7A6L1m3nd4UfU_EYE+LGi0mz6Jq9yy6xkfnOvJBSmsL6A@mail.gmail.com>
+Subject: Re: [PATCH 00/10] add support SATA for BMIPS_GENERIC
+To:     Brian Norris <computersforpeace@gmail.com>
+Cc:     Florian Fainelli <f.fainelli@gmail.com>, Tejun Heo <tj@kernel.org>,
+        Jaedon Shin <jaedon.shin@gmail.com>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Rob Herring <robh+dt@kernel.org>, linux-ide@vger.kernel.org,
+        Linux-MIPS <linux-mips@linux-mips.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <cernekee@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49673
+X-archive-position: 49674
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: computersforpeace@gmail.com
+X-original-sender: cernekee@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -60,102 +58,22 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Oct 23, 2015 at 10:44:15AM +0900, Jaedon Shin wrote:
-> Add data of device node for port offset.
-> 
-> Signed-off-by: Jaedon Shin <jaedon.shin@gmail.com>
-> ---
->  drivers/ata/ahci_brcmstb.c | 25 +++++++++++++++++--------
->  1 file changed, 17 insertions(+), 8 deletions(-)
-> 
-> diff --git a/drivers/ata/ahci_brcmstb.c b/drivers/ata/ahci_brcmstb.c
-> index 14b7305d2ba0..8cf6f7d4798f 100644
-> --- a/drivers/ata/ahci_brcmstb.c
-> +++ b/drivers/ata/ahci_brcmstb.c
-> @@ -72,6 +72,7 @@
->  struct brcm_ahci_priv {
->  	struct device *dev;
->  	void __iomem *top_ctrl;
-> +	u32 port_offset;
+On Fri, Oct 23, 2015 at 1:35 PM, Brian Norris
+<computersforpeace@gmail.com> wrote:
+> On Thu, Oct 22, 2015 at 09:51:30PM -0700, Florian Fainelli wrote:
+>> 2015-10-22 20:58 GMT-07:00 Tejun Heo <tj@kernel.org>:
+>> I think we have a bit too many compatible strings defined, I need to
+>> lookup tomorrow when I am back in the office which BCM7xxx started
+>> featuring a SATA3 AHCI compliant core, it might be 7420, but I am not
+>> sure
+>
+> I thought it was BCM7425, but you probably have the resources to check
+> better than I do.
 
-You're gonna need to vary more than just the port offset for 40nm vs.
-28nm, I think. See my comments on patch 3.
+It was originally introduced on 7422 A0 (40nm) and the test chip that
+preceded it.  The production rev of 7422 uses the 7425 die, so
+"BCM7425" is a good enough answer for our purposes.
 
-Brian
-
->  	u32 port_mask;
->  };
->  
-> @@ -110,7 +111,7 @@ static inline void brcm_sata_writereg(u32 val, void __iomem *addr)
->  static void brcm_sata_phy_enable(struct brcm_ahci_priv *priv, int port)
->  {
->  	void __iomem *phyctrl = priv->top_ctrl + SATA_TOP_CTRL_PHY_CTRL +
-> -				(port * SATA_TOP_CTRL_PHY_OFFS);
-> +				(port * priv->port_offset);
->  	void __iomem *p;
->  	u32 reg;
->  
-> @@ -139,7 +140,7 @@ static void brcm_sata_phy_enable(struct brcm_ahci_priv *priv, int port)
->  static void brcm_sata_phy_disable(struct brcm_ahci_priv *priv, int port)
->  {
->  	void __iomem *phyctrl = priv->top_ctrl + SATA_TOP_CTRL_PHY_CTRL +
-> -				(port * SATA_TOP_CTRL_PHY_OFFS);
-> +				(port * priv->port_offset);
->  	void __iomem *p;
->  	u32 reg;
->  
-> @@ -234,6 +235,13 @@ static int brcm_ahci_resume(struct device *dev)
->  }
->  #endif
->  
-> +static const struct of_device_id ahci_of_match[] = {
-> +	{.compatible = "brcm,bcm7445-ahci",
-> +			.data = (void *)SATA_TOP_CTRL_PHY_OFFS},
-> +	{},
-> +};
-> +MODULE_DEVICE_TABLE(of, ahci_of_match);
-> +
->  static struct scsi_host_template ahci_platform_sht = {
->  	AHCI_SHT(DRV_NAME),
->  };
-> @@ -241,6 +249,7 @@ static struct scsi_host_template ahci_platform_sht = {
->  static int brcm_ahci_probe(struct platform_device *pdev)
->  {
->  	struct device *dev = &pdev->dev;
-> +	const struct of_device_id *of_id = NULL;
->  	struct brcm_ahci_priv *priv;
->  	struct ahci_host_priv *hpriv;
->  	struct resource *res;
-> @@ -256,6 +265,12 @@ static int brcm_ahci_probe(struct platform_device *pdev)
->  	if (IS_ERR(priv->top_ctrl))
->  		return PTR_ERR(priv->top_ctrl);
->  
-> +	of_id = of_match_node(ahci_of_match, dev->of_node);
-> +	if (!of_id)
-> +		return -EINVAL;
-> +
-> +	priv->port_offset = (u32)of_id->data;
-> +
->  	brcm_sata_init(priv);
->  
->  	priv->port_mask = brcm_ahci_get_portmask(pdev, priv);
-> @@ -299,12 +314,6 @@ static int brcm_ahci_remove(struct platform_device *pdev)
->  	return 0;
->  }
->  
-> -static const struct of_device_id ahci_of_match[] = {
-> -	{.compatible = "brcm,bcm7445-ahci"},
-> -	{},
-> -};
-> -MODULE_DEVICE_TABLE(of, ahci_of_match);
-> -
->  static SIMPLE_DEV_PM_OPS(ahci_brcm_pm_ops, brcm_ahci_suspend, brcm_ahci_resume);
->  
->  static struct platform_driver brcm_ahci_driver = {
-> -- 
-> 2.6.2
-> 
-> --
-> To unsubscribe from this list: send the line "unsubscribe linux-ide" in
-> the body of a message to majordomo@vger.kernel.org
-> More majordomo info at  http://vger.kernel.org/majordomo-info.html
+BCM7420, BCM7400, and other 65nm SoCs had a ServerWorks SATA2 core on
+an internal PCI-X bus.  These ran a modified version of sata_svw.c,
+and could support QDMA.

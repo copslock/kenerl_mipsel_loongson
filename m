@@ -1,48 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Oct 2015 16:47:20 +0200 (CEST)
-Received: from comal.ext.ti.com ([198.47.26.152]:33745 "EHLO comal.ext.ti.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27011206AbbJWOrRc3XfZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 23 Oct 2015 16:47:17 +0200
-Received: from dlelxv90.itg.ti.com ([172.17.2.17])
-        by comal.ext.ti.com (8.13.7/8.13.7) with ESMTP id t9NEl824013712;
-        Fri, 23 Oct 2015 09:47:08 -0500
-Received: from DFLE73.ent.ti.com (dfle73.ent.ti.com [128.247.5.110])
-        by dlelxv90.itg.ti.com (8.14.3/8.13.8) with ESMTP id t9NEl86c021789;
-        Fri, 23 Oct 2015 09:47:08 -0500
-Received: from dlep33.itg.ti.com (157.170.170.75) by DFLE73.ent.ti.com
- (128.247.5.110) with Microsoft SMTP Server id 14.3.224.2; Fri, 23 Oct 2015
- 09:47:08 -0500
-Received: from [10.247.27.30] (ileax41-snat.itg.ti.com [10.172.224.153])        by
- dlep33.itg.ti.com (8.14.3/8.13.8) with ESMTP id t9NEl7A1010657;        Fri, 23 Oct
- 2015 09:47:07 -0500
-Subject: Re: [PATCH 04/10] phy: phy_brcmstb_sata: make the driver buildable on
- BMIPS_GENERIC
-To:     Jaedon Shin <jaedon.shin@gmail.com>, Tejun Heo <tj@kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>
-References: <1445564663-66824-1-git-send-email-jaedon.shin@gmail.com>
- <1445564663-66824-5-git-send-email-jaedon.shin@gmail.com>
-CC:     <linux-ide@vger.kernel.org>, <linux-mips@linux-mips.org>,
-        <devicetree@vger.kernel.org>
-From:   Kishon Vijay Abraham I <kishon@ti.com>
-Message-ID: <562A486B.5020500@ti.com>
-Date:   Fri, 23 Oct 2015 20:17:07 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.2.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Oct 2015 22:02:01 +0200 (CEST)
+Received: from smtp.codeaurora.org ([198.145.29.96]:48755 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27011384AbbJWUB5rKJMZ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 23 Oct 2015 22:01:57 +0200
+Received: from smtp.codeaurora.org (localhost [127.0.0.1])
+        by smtp.codeaurora.org (Postfix) with ESMTP id 4AEF513EE0C;
+        Fri, 23 Oct 2015 20:01:55 +0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 486)
+        id 3509513EF60; Fri, 23 Oct 2015 20:01:55 +0000 (UTC)
+Received: from sboyd-linux.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+        (using TLSv1.1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: sboyd@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id C08A713EE0C;
+        Fri, 23 Oct 2015 20:01:53 +0000 (UTC)
+From:   Stephen Boyd <sboyd@codeaurora.org>
+To:     Andrew Morton <akpm@linux-foundation.org>
+Cc:     linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        Andy Gross <agross@codeaurora.org>,
+        Bjorn Andersson <bjorn.andersson@sonymobile.com>,
+        Hauke Mehrtens <hauke@hauke-m.de>,
+        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>,
+        Paul Walmsley <paul@pwsan.com>, linux-mips@linux-mips.org,
+        David Howells <dhowells@redhat.com>, linux-soc@vger.kernel.org
+Subject: [PATCH v3 0/4] Add __ioread32_copy() and use it
+Date:   Fri, 23 Oct 2015 13:01:48 -0700
+Message-Id: <1445630512-10888-1-git-send-email-sboyd@codeaurora.org>
+X-Mailer: git-send-email 2.6.2.281.g6766aa3
 MIME-Version: 1.0
-In-Reply-To: <1445564663-66824-5-git-send-email-jaedon.shin@gmail.com>
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: 7bit
-Return-Path: <kishon@ti.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: ClamAV using ClamSMTP
+Return-Path: <sboyd@codeaurora.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49662
+X-archive-position: 49663
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kishon@ti.com
+X-original-sender: sboyd@codeaurora.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,41 +53,41 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-+Brian Norris
+The SMD driver is reading and writing chunks of data to iomem,
+and there's an __iowrite32_copy() function for the writing part, but
+no __ioread32_copy() function for the reading part. This series
+adds __ioread32_copy() and uses it in two places.
 
-Hi,
+This is a respin with some small fixes found with soaking in -next.
 
-On Friday 23 October 2015 07:14 AM, Jaedon Shin wrote:
-> The BCM7xxx ARM and MIPS platforms share a similar hardware block for AHCI
-> SATA3 PHY.
-> 
-> Signed-off-by: Jaedon Shin <jaedon.shin@gmail.com>
-> ---
->  drivers/phy/Kconfig | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/phy/Kconfig b/drivers/phy/Kconfig
-> index 47da573d0bab..c83e48661fd7 100644
-> --- a/drivers/phy/Kconfig
-> +++ b/drivers/phy/Kconfig
-> @@ -364,11 +364,11 @@ config PHY_TUSB1210
->  
->  config PHY_BRCMSTB_SATA
->  	tristate "Broadcom STB SATA PHY driver"
-> -	depends on ARCH_BRCMSTB
-> +	depends on ARCH_BRCMSTB || BMIPS_GENERIC
+Andrew, the patches should apply cleanly to linux-next, so I hope
+you can pick them up directly now, instead of the previous plan where
+they would go through Andy's tree.
 
-Nice to see the same driver is been used across multiple platforms.
-Cc'ed Brian who is the author of brcmstb-sata.c
+Changes from v2:
+ * Make bcm patch actually compile
+ * Add new patch for frv to avoid warnings
 
-Thanks
-Kishon
->  	depends on OF
->  	select GENERIC_PHY
->  	help
-> -	  Enable this to support the SATA3 PHY on 28nm Broadcom STB SoCs.
-> +	  Enable this to support the SATA3 PHY on 28nm or 40nm Broadcom STB SoCs.
->  	  Likely useful only with CONFIG_SATA_BRCMSTB enabled.
->  
->  endmenu
-> 
+Cc: Hauke Mehrtens <hauke@hauke-m.de>
+Cc: Rafał Miłecki <zajec5@gmail.com>
+Cc: Paul Walmsley <paul@pwsan.com>
+Cc: linux-mips@linux-mips.org
+Cc: David Howells <dhowells@redhat.com>
+Cc: linux-soc@vger.kernel.org
+
+Stephen Boyd (4):
+  frv: io: Accept const void pointers for read{b,w,l}()
+  lib: iomap_copy: Add __ioread32_copy()
+  soc: qcom: smd: Use __ioread32_copy() instead of open-coding it
+  FIRMWARE: bcm47xx_nvram: Use __ioread32_copy() instead of open-coding
+
+ arch/frv/include/asm/io.h                 | 17 ++++++++++++++---
+ drivers/firmware/broadcom/bcm47xx_nvram.c | 11 +++--------
+ drivers/soc/qcom/smd.c                    | 13 ++++---------
+ include/linux/io.h                        |  1 +
+ lib/iomap_copy.c                          | 21 +++++++++++++++++++++
+ 5 files changed, 43 insertions(+), 20 deletions(-)
+
+-- 
+The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,
+a Linux Foundation Collaborative Project

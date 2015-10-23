@@ -1,49 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Oct 2015 07:06:50 +0200 (CEST)
-Received: from mail-ig0-f180.google.com ([209.85.213.180]:34763 "EHLO
-        mail-ig0-f180.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008881AbbJWFGsi4Wrk (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 23 Oct 2015 07:06:48 +0200
-Received: by igbni9 with SMTP id ni9so27964752igb.1;
-        Thu, 22 Oct 2015 22:06:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-type;
-        bh=UzoTj763K1K7JqIQyeEfRHJkw9Y+faEg+N3ZwW7zMc4=;
-        b=jYDy6gvvofFJ8+pn7Y8ZxC1vx7qDyg9R75/S7IJ6TG6WTsO9DtzWwZ4J/pg1Dhj6ZU
-         EKD/sTqsW6HeBTvCHT1LPlFRB5SoAIuX+oB8WmzxxzHzfH9d7mV74N+eU3qMaeVkqpj9
-         Q+Pk395usbSpwv+2ydiIkWbQp2g+9nn6VO0Zb+fjIE1Vxx0PVJlLlHvRrJ238S79/HY6
-         jEi/0evQ8CSf+z/8+8F1l5hw1XGJX6aBorNRV1UQjo+4oF186xJjXYp8aU8QNBr+POWu
-         Vj/btvNZWzeFKsEP6rR9x4Y73G14APukKtfFPHb8bR2iyAdhHDlUhjD5tdkhEUDMsRVf
-         0zWg==
-X-Received: by 10.50.43.162 with SMTP id x2mr2152853igl.82.1445576802599; Thu,
- 22 Oct 2015 22:06:42 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 10.107.8.165 with HTTP; Thu, 22 Oct 2015 22:06:03 -0700 (PDT)
-In-Reply-To: <1445564663-66824-8-git-send-email-jaedon.shin@gmail.com>
-References: <1445564663-66824-1-git-send-email-jaedon.shin@gmail.com> <1445564663-66824-8-git-send-email-jaedon.shin@gmail.com>
-From:   Florian Fainelli <f.fainelli@gmail.com>
-Date:   Thu, 22 Oct 2015 22:06:03 -0700
-Message-ID: <CAGVrzcaYPv3zyV8n6Wag-b5S34C30YU=dDnHpPr7eKuut7JEvg@mail.gmail.com>
-Subject: Re: [PATCH 07/10] phy: phy_brcmstb_sata: add support 40nm platforms
-To:     Jaedon Shin <jaedon.shin@gmail.com>,
-        Brian Norris <computersforpeace@gmail.com>,
-        Kevin Cernekee <cernekee@gmail.com>
-Cc:     Tejun Heo <tj@kernel.org>, Kishon Vijay Abraham I <kishon@ti.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Rob Herring <robh+dt@kernel.org>, linux-ide@vger.kernel.org,
-        Linux-MIPS <linux-mips@linux-mips.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <f.fainelli@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Oct 2015 14:43:19 +0200 (CEST)
+Received: from demumfd001.nsn-inter.net ([93.183.12.32]:56914 "EHLO
+        demumfd001.nsn-inter.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011148AbbJWMnSRgGTl (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 23 Oct 2015 14:43:18 +0200
+Received: from demuprx016.emea.nsn-intra.net ([10.150.129.55])
+        by demumfd001.nsn-inter.net (8.15.2/8.15.2) with ESMTPS id t9NChC7X021298
+        (version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
+        Fri, 23 Oct 2015 12:43:12 GMT
+Received: from localhost.localdomain ([10.144.37.191])
+        by demuprx016.emea.nsn-intra.net (8.12.11.20060308/8.12.11) with ESMTP id t9NChBG7009939;
+        Fri, 23 Oct 2015 14:43:12 +0200
+From:   Aaro Koskinen <aaro.koskinen@nokia.com>
+To:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: [PATCH] MIPS: add LATENCYTOP support
+Date:   Fri, 23 Oct 2015 15:39:02 +0300
+Message-Id: <1445603942-24574-1-git-send-email-aaro.koskinen@nokia.com>
+X-Mailer: git-send-email 2.4.3
+X-purgate-type: clean
+X-purgate-Ad: Categorized by eleven eXpurgate (R) http://www.eleven.de
+X-purgate: clean
+X-purgate: This mail is considered clean (visit http://www.eleven.de for further information)
+X-purgate-size: 2865
+X-purgate-ID: 151667::1445604192-0000047E-23467075/0/0
+Return-Path: <aaro.koskinen@nokia.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49660
+X-archive-position: 49661
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: f.fainelli@gmail.com
+X-original-sender: aaro.koskinen@nokia.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,96 +43,98 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-2015-10-22 18:44 GMT-07:00 Jaedon Shin <jaedon.shin@gmail.com>:
-> Add offsets for 40nm BMIPS based set-top box platforms.
->
-> Signed-off-by: Jaedon Shin <jaedon.shin@gmail.com>
-> ---
->  drivers/phy/phy-brcmstb-sata.c | 21 ++++++++++++++-------
->  1 file changed, 14 insertions(+), 7 deletions(-)
->
-> diff --git a/drivers/phy/phy-brcmstb-sata.c b/drivers/phy/phy-brcmstb-sata.c
-> index 41c7535d706b..1cc80743b1b6 100644
-> --- a/drivers/phy/phy-brcmstb-sata.c
-> +++ b/drivers/phy/phy-brcmstb-sata.c
-> @@ -30,7 +30,8 @@
->  #define MAX_PORTS                                      2
->
->  /* Register offset between PHYs in PCB space */
-> -#define SATA_MDIO_REG_SPACE_SIZE                       0x1000
-> +#define SATA_MDIO_REG_28NM_SPACE_SIZE                  0x1000
-> +#define SATA_MDIO_REG_40NM_SPACE_SIZE                  0x10
->
->  struct brcm_sata_port {
->         int portnum;
-> @@ -47,7 +48,7 @@ struct brcm_sata_phy {
->         struct brcm_sata_port phys[MAX_PORTS];
->  };
->
-> -enum sata_mdio_phy_regs_28nm {
-> +enum sata_mdio_phy_regs {
->         PLL_REG_BANK_0                          = 0x50,
->         PLL_REG_BANK_0_PLLCONTROL_0             = 0x81,
->
-> @@ -85,7 +86,7 @@ static void brcm_sata_mdio_wr(void __iomem *addr, u32 bank, u32 ofs,
->  #define FMAX_VAL_DEFAULT       0x3df
->  #define FMAX_VAL_SSC           0x83
->
-> -static void brcm_sata_cfg_ssc_28nm(struct brcm_sata_port *port)
-> +static void brcm_sata_cfg_ssc(struct brcm_sata_port *port)
->  {
->         void __iomem *base = brcm_sata_phy_base(port);
->         struct brcm_sata_phy *priv = port->phy_priv;
-> @@ -116,19 +117,25 @@ static int brcm_sata_phy_init(struct phy *phy)
->  {
->         struct brcm_sata_port *port = phy_get_drvdata(phy);
->
-> -       brcm_sata_cfg_ssc_28nm(port);
-> +       brcm_sata_cfg_ssc(port);
->
->         return 0;
->  }
->
-> -static const struct phy_ops phy_ops_28nm = {
-> +static const struct phy_ops phy_ops = {
->         .init           = brcm_sata_phy_init,
->         .owner          = THIS_MODULE,
->  };
->
->  static const struct of_device_id brcm_sata_phy_of_match[] = {
->         { .compatible   = "brcm,bcm7445-sata-phy",
-> -                       .data = (void *)SATA_MDIO_REG_SPACE_SIZE },
-> +                       .data = (void *)SATA_MDIO_REG_28NM_SPACE_SIZE },
-> +       { .compatible   = "brcm,bcm7346-sata-phy",
-> +                       .data = (void *)SATA_MDIO_REG_40NM_SPACE_SIZE },
-> +       { .compatible   = "brcm,bcm7360-sata-phy",
-> +                       .data = (void *)SATA_MDIO_REG_40NM_SPACE_SIZE },
-> +       { .compatible   = "brcm,bcm7362-sata-phy",
-> +                       .data = (void *)SATA_MDIO_REG_40NM_SPACE_SIZE },
+Add LATENCYTOP support for MIPS. Tested on OCTEON.
 
-Same comment as the AHCI portion, we need to update the Device Tree
-binding document to make these new compatible strings documented
-there.
+Signed-off-by: Aaro Koskinen <aaro.koskinen@nokia.com>
+---
+ arch/mips/Kconfig             |  4 ++++
+ arch/mips/kernel/stacktrace.c | 27 +++++++++++++++------------
+ 2 files changed, 19 insertions(+), 12 deletions(-)
 
-Thank you!
-
->         {},
->  };
->  MODULE_DEVICE_TABLE(of, brcm_sata_phy_of_match);
-> @@ -185,7 +192,7 @@ static int brcm_sata_phy_probe(struct platform_device *pdev)
->                 port = &priv->phys[id];
->                 port->portnum = id;
->                 port->phy_priv = priv;
-> -               port->phy = devm_phy_create(dev, child, &phy_ops_28nm);
-> +               port->phy = devm_phy_create(dev, child, &phy_ops);
->                 port->ssc_en = of_property_read_bool(child, "brcm,enable-ssc");
->                 if (IS_ERR(port->phy)) {
->                         dev_err(dev, "failed to create PHY\n");
-> --
-> 2.6.2
->
-
-
-
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index e3aa5b0..eed6614 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -2739,6 +2739,10 @@ config STACKTRACE_SUPPORT
+ 	bool
+ 	default y
+ 
++config HAVE_LATENCYTOP_SUPPORT
++	bool
++	default y
++
+ config PGTABLE_LEVELS
+ 	int
+ 	default 3 if 64BIT && !PAGE_SIZE_64KB
+diff --git a/arch/mips/kernel/stacktrace.c b/arch/mips/kernel/stacktrace.c
+index 1ba775d..506021f 100644
+--- a/arch/mips/kernel/stacktrace.c
++++ b/arch/mips/kernel/stacktrace.c
+@@ -12,14 +12,15 @@
+  * Save stack-backtrace addresses into a stack_trace buffer:
+  */
+ static void save_raw_context_stack(struct stack_trace *trace,
+-	unsigned long reg29)
++	unsigned long reg29, int savesched)
+ {
+ 	unsigned long *sp = (unsigned long *)reg29;
+ 	unsigned long addr;
+ 
+ 	while (!kstack_end(sp)) {
+ 		addr = *sp++;
+-		if (__kernel_text_address(addr)) {
++		if (__kernel_text_address(addr) &&
++		    (savesched || !in_sched_functions(addr))) {
+ 			if (trace->skip > 0)
+ 				trace->skip--;
+ 			else
+@@ -31,7 +32,7 @@ static void save_raw_context_stack(struct stack_trace *trace,
+ }
+ 
+ static void save_context_stack(struct stack_trace *trace,
+-	struct task_struct *tsk, struct pt_regs *regs)
++	struct task_struct *tsk, struct pt_regs *regs, int savesched)
+ {
+ 	unsigned long sp = regs->regs[29];
+ #ifdef CONFIG_KALLSYMS
+@@ -43,20 +44,22 @@ static void save_context_stack(struct stack_trace *trace,
+ 			(unsigned long)task_stack_page(tsk);
+ 		if (stack_page && sp >= stack_page &&
+ 		    sp <= stack_page + THREAD_SIZE - 32)
+-			save_raw_context_stack(trace, sp);
++			save_raw_context_stack(trace, sp, savesched);
+ 		return;
+ 	}
+ 	do {
+-		if (trace->skip > 0)
+-			trace->skip--;
+-		else
+-			trace->entries[trace->nr_entries++] = pc;
+-		if (trace->nr_entries >= trace->max_entries)
+-			break;
++		if (savesched || !in_sched_functions(pc)) {
++			if (trace->skip > 0)
++				trace->skip--;
++			else
++				trace->entries[trace->nr_entries++] = pc;
++			if (trace->nr_entries >= trace->max_entries)
++				break;
++		}
+ 		pc = unwind_stack(tsk, &sp, pc, &ra);
+ 	} while (pc);
+ #else
+-	save_raw_context_stack(trace, sp);
++	save_raw_context_stack(trace, sp, savesched);
+ #endif
+ }
+ 
+@@ -82,6 +85,6 @@ void save_stack_trace_tsk(struct task_struct *tsk, struct stack_trace *trace)
+ 		regs->cp0_epc = tsk->thread.reg31;
+ 	} else
+ 		prepare_frametrace(regs);
+-	save_context_stack(trace, tsk, regs);
++	save_context_stack(trace, tsk, regs, tsk == current);
+ }
+ EXPORT_SYMBOL_GPL(save_stack_trace_tsk);
 -- 
-Florian
+2.4.3

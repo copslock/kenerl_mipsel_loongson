@@ -1,46 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Oct 2015 06:52:17 +0200 (CEST)
-Received: from mail-ig0-f170.google.com ([209.85.213.170]:35416 "EHLO
-        mail-ig0-f170.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008247AbbJWEwQWXnuk (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 23 Oct 2015 06:52:16 +0200
-Received: by igbkq10 with SMTP id kq10so9092972igb.0;
-        Thu, 22 Oct 2015 21:52:10 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Oct 2015 06:53:08 +0200 (CEST)
+Received: from mail-ig0-f173.google.com ([209.85.213.173]:37076 "EHLO
+        mail-ig0-f173.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008247AbbJWExHIXOrk (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 23 Oct 2015 06:53:07 +0200
+Received: by igbhv6 with SMTP id hv6so8864969igb.0;
+        Thu, 22 Oct 2015 21:53:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=mime-version:in-reply-to:references:from:date:message-id:subject:to
          :cc:content-type;
-        bh=24iwnOi+DL8KbUlkCSrl+M2PsqMuJPqQKCtubFZGOEs=;
-        b=F9zVr4yYiLzsAVxJ4ZUYPoK+RkOQVoWIM0UqRZiFE6iKhGdNY2eKtvlk7WRq/MZIjb
-         cVWqq7AeV7MHsNzqNkReW5lF+VtXC8hLhezglYBJINynWd+glteEanlPMgqdY2lhoc0x
-         pSKUNoi9XPib7Kdre7PGLBSRzxDb/2HnaUMwrrPiKdpikQ/V4a4Hib/kxShMa2IuTKRc
-         DOf35MjbWnKcoJ+B+perkDUpvMIgc0uzAgR8GoRPql1dVZ23OcY2Qw0xf7/hEYIfkb9Z
-         sRWpsn5262rj8n6pP7LJzfWhNjrfLZTXKFKGw+T+Mw/LNS775SrGSRxEwJcI6KS31NXw
-         LwoA==
-X-Received: by 10.50.43.162 with SMTP id x2mr2110912igl.82.1445575930130; Thu,
- 22 Oct 2015 21:52:10 -0700 (PDT)
+        bh=ZHhe5zC02kAgw+QsP4UrDIveF13HsJNMdfX6jfpXPD0=;
+        b=nJakQ5C5v4gKGxeR9VMZ0rPRDcsIA8XZhqe4UvsKhysoIZvw4qwB1owJvLvhbzEm1U
+         kY0zShZ9ZEMuE6jfaz28lkpkBU3fnGjqvk5mBdnfOx65iW0jb636iWM7UlV5Xo3Sjjq2
+         MeTNxU3Q1+3eH9u6jjqh/fdv0EWGfdsYB2tfrd1DLFk5fcEU1NV9NfA3gCBJ/BwpN+Ta
+         NnAhrugElPwVvgpyUkm+/otE92+573Pnq5tTGHX6c6DoYy/mdhN3dlgZyqWaRgTu8pud
+         ZkVLzMcuEkRsXDVenvM3wPuRYByIwwuRsHCcS5FzvC8jh8T2wsIR8gyH5fVp9hpF8AQZ
+         O3/Q==
+X-Received: by 10.50.3.3 with SMTP id 3mr2244809igy.34.1445575981295; Thu, 22
+ Oct 2015 21:53:01 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 10.107.8.165 with HTTP; Thu, 22 Oct 2015 21:51:30 -0700 (PDT)
-In-Reply-To: <20151023035817.GA18907@mtj.duckdns.org>
-References: <1445564663-66824-1-git-send-email-jaedon.shin@gmail.com> <20151023035817.GA18907@mtj.duckdns.org>
+Received: by 10.107.8.165 with HTTP; Thu, 22 Oct 2015 21:52:21 -0700 (PDT)
+In-Reply-To: <1445564663-66824-2-git-send-email-jaedon.shin@gmail.com>
+References: <1445564663-66824-1-git-send-email-jaedon.shin@gmail.com> <1445564663-66824-2-git-send-email-jaedon.shin@gmail.com>
 From:   Florian Fainelli <f.fainelli@gmail.com>
-Date:   Thu, 22 Oct 2015 21:51:30 -0700
-Message-ID: <CAGVrzcYLeoXDPkMKvAtfok1dwgGQDu06FxP05u6YiO9-nHJqqw@mail.gmail.com>
-Subject: Re: [PATCH 00/10] add support SATA for BMIPS_GENERIC
-To:     Tejun Heo <tj@kernel.org>
-Cc:     Jaedon Shin <jaedon.shin@gmail.com>,
-        Kishon Vijay Abraham I <kishon@ti.com>,
+Date:   Thu, 22 Oct 2015 21:52:21 -0700
+Message-ID: <CAGVrzcbzGfuzt_6CV23f+RF4gFjnc_MYO4E-huQ7PTTLyXFihA@mail.gmail.com>
+Subject: Re: [PATCH 01/10] ata: ahci_brcmstb: make the driver buildable on BMIPS_GENERIC
+To:     Jaedon Shin <jaedon.shin@gmail.com>,
+        Brian Norris <computersforpeace@gmail.com>
+Cc:     Tejun Heo <tj@kernel.org>, Kishon Vijay Abraham I <kishon@ti.com>,
         Ralf Baechle <ralf@linux-mips.org>,
         Rob Herring <robh+dt@kernel.org>, linux-ide@vger.kernel.org,
         Linux-MIPS <linux-mips@linux-mips.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        Brian Norris <computersforpeace@gmail.com>,
-        Kevin Cernekee <cernekee@gmail.com>
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49653
+X-archive-position: 49654
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -57,37 +55,36 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-2015-10-22 20:58 GMT-07:00 Tejun Heo <tj@kernel.org>:
-> On Fri, Oct 23, 2015 at 10:44:13AM +0900, Jaedon Shin wrote:
->> Hi all,
->>
->> This patch series adds support SATA for BMIPS_GENERIC.
->>
->> Ralf,
->> I request you to drop already submitted patches for NAND device nodes.
->> It is merge conflicts with this patches.
->> http://patchwork.linux-mips.org/patch/10577/
->> http://patchwork.linux-mips.org/patch/10578/
->> http://patchwork.linux-mips.org/patch/10579/
->> http://patchwork.linux-mips.org/patch/10580/
->>
->> Jaedon Shin (10):
->>   ata: ahci_brcmstb: make the driver buildable on BMIPS_GENERIC
->>   ata: ahch_brcmstb: add data for port offset
->>   ata: ahci_brcmstb: add support 40nm platforms
+2015-10-22 18:44 GMT-07:00 Jaedon Shin <jaedon.shin@gmail.com>:
+> The BCM7xxx ARM and MIPS platforms share a similar hardware block for AHCI
+> SATA3.
 >
-> ata part looks fine to me.  Let me know when the other parts get in.
-> I'll apply the ata ones to libata/for-4.4.
+> Signed-off-by: Jaedon Shin <jaedon.shin@gmail.com>
 
-There are a few comments coming on the ATA and Device Tree part, and I
-also would like Brian Norris (who submitted the patches) to take a
-look at these. But overall, this looks great.
+Acked-by: Florian Fainelli <f.fainelli@gmail.com>
 
-I think we have a bit too many compatible strings defined, I need to
-lookup tomorrow when I am back in the office which BCM7xxx started
-featuring a SATA3 AHCI compliant core, it might be 7420, but I am not
-sure
+> ---
+>  drivers/ata/Kconfig | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/ata/Kconfig b/drivers/ata/Kconfig
+> index 15e40ee62a94..8f535a88a0c7 100644
+> --- a/drivers/ata/Kconfig
+> +++ b/drivers/ata/Kconfig
+> @@ -100,7 +100,7 @@ config SATA_AHCI_PLATFORM
+>
+>  config AHCI_BRCMSTB
+>         tristate "Broadcom STB AHCI SATA support"
+> -       depends on ARCH_BRCMSTB
+> +       depends on ARCH_BRCMSTB || BMIPS_GENERIC
+>         help
+>           This option enables support for the AHCI SATA3 controller found on
+>           STB SoC's.
+> --
+> 2.6.2
+>
 
-Thanks!
+
+
 -- 
 Florian

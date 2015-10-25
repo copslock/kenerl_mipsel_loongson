@@ -1,47 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 25 Oct 2015 22:10:05 +0100 (CET)
-Received: from hauke-m.de ([5.39.93.123]:45748 "EHLO hauke-m.de"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27008799AbbJYVKDwn6WN (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 25 Oct 2015 22:10:03 +0100
-Received: from [192.168.178.22] (p5DE965E8.dip0.t-ipconnect.de [93.233.101.232])
-        by hauke-m.de (Postfix) with ESMTPSA id C4C8A100029;
-        Sun, 25 Oct 2015 22:10:02 +0100 (CET)
-Message-ID: <562D452A.5030906@hauke-m.de>
-Date:   Sun, 25 Oct 2015 22:10:02 +0100
-From:   Hauke Mehrtens <hauke@hauke-m.de>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Icedove/31.7.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 25 Oct 2015 22:17:19 +0100 (CET)
+Received: from mail-lf0-f46.google.com ([209.85.215.46]:35645 "EHLO
+        mail-lf0-f46.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008799AbbJYVRSqq2SN (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 25 Oct 2015 22:17:18 +0100
+Received: by lfbn126 with SMTP id n126so93826400lfb.2;
+        Sun, 25 Oct 2015 14:17:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id:mime-version:content-type
+         :content-transfer-encoding;
+        bh=PsKahuPQa6cHkZy3AoyQd5AEY3fttqsIo7oPwvqwKWY=;
+        b=BP7Wu1mXxXm3hfkDTu4CI7E0mlUlZa0hgs7eXfTeHTAHNzdT94F97CJVVSwbgFxFtN
+         90p0aynP6LxSnGESDOOGDy1uJhghA5izWhLXvSjpMD/OxOHepFQN7LTtFw6aqbGpP6bS
+         Hfa0DAlXUxZL5WixZ9rsuVSBTXrO06Sx4lx2LuRd2PoxP4xmB8PtTAJgwDyt1m+BpehF
+         opyl3hwiM56/ObBXjM+65l3m7YU+ttVa0lh724OCiHsyKnxkQth0I9Upk1S1BN43Oj25
+         +xYto1+PjGSIeJr0xPWITVdB2ymkmRedpK9zCAmZKuyz0i33/HFjGOKs8nbzojh/mkfh
+         jO3g==
+X-Received: by 10.112.144.225 with SMTP id sp1mr1882142lbb.97.1445807833383;
+        Sun, 25 Oct 2015 14:17:13 -0700 (PDT)
+Received: from linux-tdhb.lan (ip-194-187-74-233.konfederacka.maverick.com.pl. [194.187.74.233])
+        by smtp.gmail.com with ESMTPSA id 78sm5440312lfs.35.2015.10.25.14.17.12
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 25 Oct 2015 14:17:12 -0700 (PDT)
+From:   =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
+To:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
+Cc:     Hauke Mehrtens <hauke@hauke-m.de>,
+        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
+Subject: [PATCH 1/2] MIPS: BCM47xx: Support on-SoC bus in SPROM reading function
+Date:   Sun, 25 Oct 2015 22:16:47 +0100
+Message-Id: <1445807808-23257-1-git-send-email-zajec5@gmail.com>
+X-Mailer: git-send-email 1.8.4.5
 MIME-Version: 1.0
-To:     Paul Burton <paul.burton@imgtec.com>, linux-mips@linux-mips.org,
-        Ralf Baechle <ralf@linux-mips.org>
-CC:     Matthew Fortune <matthew.fortune@imgtec.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>,
-        Alex Smith <alex@alex-smith.me.uk>,
-        linux-kernel@vger.kernel.org,
-        Michal Nazarewicz <mina86@mina86.com>,
-        Richard Weinberger <richard@nod.at>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Andy Lutomirski <luto@amacapital.net>,
-        Daniel Borkmann <dborkman@redhat.com>,
-        Markos Chandras <markos.chandras@imgtec.com>,
-        Frederic Weisbecker <fweisbec@gmail.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        "Maciej W. Rozycki" <macro@codesourcery.com>
-Subject: Re: [PATCH 10/16] compile error: MIPS: add definitions for extended
- context
-References: <1436540426-10021-1-git-send-email-paul.burton@imgtec.com> <1436540426-10021-11-git-send-email-paul.burton@imgtec.com>
-In-Reply-To: <1436540426-10021-11-git-send-email-paul.burton@imgtec.com>
-Content-Type: text/plain; charset=windows-1252
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Return-Path: <hauke@hauke-m.de>
+Return-Path: <zajec5@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49679
+X-archive-position: 49680
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hauke@hauke-m.de
+X-original-sender: zajec5@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,58 +54,40 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This patch is causing a build error for me on 4.3-rc7.
+To support (extract) SPROM on Broadcom ARM devices we should separate
+SPROM code and make it a separated module. We won't want to export
+bcm47xx_fill_sprom symbol so we should support SoC SPROM in the standard
+fallback function and then modify ssb to use it.
 
-  CC      arch/mips/kernel/signal.o
-arch/mips/kernel/signal.c: In function 'sc_to_extcontext':
-arch/mips/kernel/signal.c:143:12: error: 'struct ucontext' has no member
-named 'uc_extcontext'
-  return &uc->uc_extcontext;
-            ^
-In file included from include/linux/poll.h:11:0,
-                 from include/linux/ring_buffer.h:7,
-                 from include/linux/trace_events.h:5,
-                 from include/trace/syscall.h:6,
-                 from include/linux/syscalls.h:81,
-                 from arch/mips/kernel/signal.c:26:
-arch/mips/kernel/signal.c: In function 'save_msa_extcontext':
-arch/mips/kernel/signal.c:171:40: error: dereferencing pointer to
-incomplete type 'struct msa_extcontext'
-   err = __put_user(read_msa_csr(), &msa->csr);
-                                        ^
-./arch/mips/include/asm/uaccess.h:441:15: note: in definition of macro
-'__put_user_nocheck'
-  __typeof__(*(ptr)) __pu_val;     \
-               ^
-arch/mips/kernel/signal.c:171:9: note: in expansion of macro '__put_user'
-   err = __put_user(read_msa_csr(), &msa->csr);
-         ^
-arch/mips/kernel/signal.c:186:20: error: 'MSA_EXTCONTEXT_MAGIC'
-undeclared (first use in this function)
-  err |= __put_user(MSA_EXTCONTEXT_MAGIC, &msa->ext.magic);
-                    ^
-./arch/mips/include/asm/uaccess.h:444:14: note: in definition of macro
-'__put_user_nocheck'
-  __pu_val = (x);       \
-              ^
-arch/mips/kernel/signal.c:186:9: note: in expansion of macro '__put_user'
-  err |= __put_user(MSA_EXTCONTEXT_MAGIC, &msa->ext.magic);
-         ^
-arch/mips/kernel/signal.c:186:20: note: each undeclared identifier is
-reported only once for each function it appears in
-  err |= __put_user(MSA_EXTCONTEXT_MAGIC, &msa->ext.magic);
-                    ^
-./arch/mips/include/asm/uaccess.h:444:14: note: in definition of macro
-'__put_user_nocheck'
-  __pu_val = (x);       \
-              ^
-arch/mips/kernel/signal.c:186:9: note: in expansion of macro '__put_user'
-  err |= __put_user(MSA_EXTCONTEXT_MAGIC, &msa->ext.magic);
-         ^
-.......
+Signed-off-by: Rafał Miłecki <zajec5@gmail.com>
+---
+ arch/mips/bcm47xx/sprom.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-
-When I include uapi/asm/ucontext.h instead of asm/ucontext.h in signal.c
-it compiles again.
-
-Hauke
+diff --git a/arch/mips/bcm47xx/sprom.c b/arch/mips/bcm47xx/sprom.c
+index 2d5c7a7..e19c1b9 100644
+--- a/arch/mips/bcm47xx/sprom.c
++++ b/arch/mips/bcm47xx/sprom.c
+@@ -610,14 +610,18 @@ static int bcm47xx_get_sprom_ssb(struct ssb_bus *bus, struct ssb_sprom *out)
+ {
+ 	char prefix[10];
+ 
+-	if (bus->bustype == SSB_BUSTYPE_PCI) {
++	switch (bus->bustype) {
++	case SSB_BUSTYPE_SSB:
++		bcm47xx_fill_sprom(out, NULL, false);
++		return 0;
++	case SSB_BUSTYPE_PCI:
+ 		memset(out, 0, sizeof(struct ssb_sprom));
+ 		snprintf(prefix, sizeof(prefix), "pci/%u/%u/",
+ 			 bus->host_pci->bus->number + 1,
+ 			 PCI_SLOT(bus->host_pci->devfn));
+ 		bcm47xx_fill_sprom(out, prefix, false);
+ 		return 0;
+-	} else {
++	default:
+ 		pr_warn("Unable to fill SPROM for given bustype.\n");
+ 		return -EINVAL;
+ 	}
+-- 
+1.8.4.5

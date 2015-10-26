@@ -1,63 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Oct 2015 11:50:54 +0100 (CET)
-Received: from mail-lf0-f54.google.com ([209.85.215.54]:33635 "EHLO
-        mail-lf0-f54.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27009217AbbJZKuwiRIvY (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 26 Oct 2015 11:50:52 +0100
-Received: by lffv3 with SMTP id v3so142888885lff.0
-        for <linux-mips@linux-mips.org>; Mon, 26 Oct 2015 03:50:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cogentembedded_com.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:references:cc:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-type:content-transfer-encoding;
-        bh=gfcc902YHMKJ0GyB1ikjjnzhcA81uOidab6HGNwnydY=;
-        b=EX7IgywzNzCd8QzH2PYa+ZCup4r6bEWW6ai88ryK+RWgFHijNUjfaEjFw/b1UXl4Bb
-         2lje+41u3EkFrKg5lXJb6g3N1iM3nfYGDFBqidFO9WkoWwHN7fvQ3dgMkyh12uPnHqrh
-         YP6796gjVuxgu+WjagbheVqF6sLGH5W0MjXJwUa0si4g4yOazppcf5Sz/6xuENaiKN0j
-         ApRRaB1lDO2PxeGv220xnbv4ayFI7rjJQvnmQ+J1teahJYhCReO+xObHrW+XffRWCWg9
-         9uHYh9owF8Y7REShwOFaEsLCfcNnIIFSMCQ6sJnX6hcwWZgNZ6VNtUN0yU0znbDKUBN8
-         D6/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:subject:to:references:cc:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-type
-         :content-transfer-encoding;
-        bh=gfcc902YHMKJ0GyB1ikjjnzhcA81uOidab6HGNwnydY=;
-        b=BKuDfUG/6vRS/CV5CDzjnvYL5qxF6a42+mA/wPwdZBFoh1UtsuJWRmhgr+DeuOvzjY
-         uV8a11tn2L4l4sR0eYDjzEkj/9B3z1KhXCSu5jzGV8A+ETC5AGv5QdDiySnBfpm6ngnR
-         QUNtKwypRjsBLWjpcNHzrhX9+e1WtcdEzzM9KSPAY+OtwZIBcXczUPL919HRTr9JtVpv
-         x7IzbljdZro/uE59/S4siLSrdWzCIKdQlNfusKv3k3IW26qqqeLm1JWxPuUegFAy7Paz
-         WpLTrOtF2Dej2Qs02LUlsthMCbN3Zk9l0+uetp7ojnHVe+nkZVIDhxFwi8WE+YiCcFOk
-         lyOg==
-X-Gm-Message-State: ALoCoQm4EhwqH00DIs51WPn/6ZZ9E98DPXpxnL0Fenj6hzoz/FslwDA/m6dBWmwHhrRaNR2Vt2CG
-X-Received: by 10.25.23.208 with SMTP id 77mr10928444lfx.44.1445856647127;
-        Mon, 26 Oct 2015 03:50:47 -0700 (PDT)
-Received: from [192.168.4.126] ([31.173.81.87])
-        by smtp.gmail.com with ESMTPSA id f77sm5302725lfi.3.2015.10.26.03.50.45
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 26 Oct 2015 03:50:46 -0700 (PDT)
-Subject: Re: [PATCH] MIPS: lantiq: add clk_round_rate()
-To:     Hauke Mehrtens <hauke@hauke-m.de>, ralf@linux-mips.org
-References: <1445811702-27936-1-git-send-email-hauke@hauke-m.de>
-Cc:     blogic@openwrt.org, linux-mips@linux-mips.org,
-        "# 4 . 1+" <stable@vger.kernel.org>
-From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Message-ID: <562E0585.1010801@cogentembedded.com>
-Date:   Mon, 26 Oct 2015 13:50:45 +0300
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:38.0) Gecko/20100101
- Thunderbird/38.3.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Oct 2015 12:31:50 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:46821 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27009217AbbJZLbsxkqHG (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 26 Oct 2015 12:31:48 +0100
+Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
+        by Websense Email Security Gateway with ESMTPS id 98D3F90A7E126;
+        Mon, 26 Oct 2015 11:31:40 +0000 (GMT)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
+ 14.3.195.1; Mon, 26 Oct 2015 11:31:42 +0000
+Received: from zkakakhel-linux.le.imgtec.org (192.168.154.45) by
+ LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
+ 14.3.210.2; Mon, 26 Oct 2015 11:31:42 +0000
+From:   Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>
+To:     <ralf@linux-mips.org>, <robh+dt@kernel.org>
+CC:     <Zubair.Kakakhel@imgtec.com>, <linux-mips@linux-mips.org>,
+        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>
+Subject: [PATCH_V3 0/4] MIPS: Add Xilfpga platform
+Date:   Mon, 26 Oct 2015 11:30:53 +0000
+Message-ID: <1445859057-47665-1-git-send-email-Zubair.Kakakhel@imgtec.com>
+X-Mailer: git-send-email 1.9.1
 MIME-Version: 1.0
-In-Reply-To: <1445811702-27936-1-git-send-email-hauke@hauke-m.de>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sergei.shtylyov@cogentembedded.com>
+Content-Type: text/plain
+X-Originating-IP: [192.168.154.45]
+Return-Path: <Zubair.Kakakhel@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49691
+X-archive-position: 49692
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sergei.shtylyov@cogentembedded.com
+X-original-sender: Zubair.Kakakhel@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -70,45 +44,65 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hello.
+Hi,
 
-On 10/26/2015 1:21 AM, Hauke Mehrtens wrote:
+This series is based on v4.3-rc7.
 
-> This adds a basic implementation of clk_round_rate()
-> The clk_round_rate() function is called by multiple drivers and
-> subsystems now and the lantiq clk driver is supposed to export this,
-> but doesn't do so, this causes linking problems like this one:
-> ERROR: "clk_round_rate" [drivers/media/v4l2-core/videodev.ko] undefined!
->
-> Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
-> Cc: <stable@vger.kernel.org> # 4.1+
-> ---
->   arch/mips/lantiq/clk.c | 17 +++++++++++++++++
->   1 file changed, 17 insertions(+)
->
-> diff --git a/arch/mips/lantiq/clk.c b/arch/mips/lantiq/clk.c
-> index 3fc2e6d..a0706fd 100644
-> --- a/arch/mips/lantiq/clk.c
-> +++ b/arch/mips/lantiq/clk.c
-> @@ -99,6 +99,23 @@ int clk_set_rate(struct clk *clk, unsigned long rate)
->   }
->   EXPORT_SYMBOL(clk_set_rate);
->
-> +long clk_round_rate(struct clk *clk, unsigned long rate)
-> +{
-> +	if (unlikely(!clk_good(clk)))
-> +		return 0;
-> +	if (clk->rates && *clk->rates) {
-> +		unsigned long *r = clk->rates;
-> +
-> +		while (*r && (*r != rate))
-> +			r++;
-> +		if (!*r) {
-> +			return clk->rate;
-> +		}
+Adds support for the Imagination University Program MIPSfpga platform.
 
-    {} not needed here.
+See the first dt-bindings patch for details about the platform.
 
-[...]
+These patches allow the kernel to boot with UART and gpio support.
 
-MBR, Sergei
+Acks from DT (patch 1/4) welcome.
+
+Regards,
+ZubairLK
+
+V2 -> V3
+Minor typos/nitpicks.
+Removed redundant header.
+Individual patches have changelogs.
+
+V1 -> V2
+Nothing major functional.
+Mostly cleanup. Individual patches have changelogs.
+Removed the gpio patch from this series as Linus Walleij applied it.
+
+Zubair Lutfullah Kakakhel (4):
+  dt-bindings: MIPS: Document xilfpga bindings and boot style
+  MIPS: dt: xilfpga: Add xilfpga device tree files.
+  MIPS: xilfpga: Add mipsfpga platform code
+  MIPS: Add xilfpga defconfig
+
+ .../devicetree/bindings/mips/img/xilfpga.txt       | 83 ++++++++++++++++++++++
+ arch/mips/Kbuild.platforms                         |  1 +
+ arch/mips/Kconfig                                  | 23 ++++++
+ arch/mips/boot/dts/Makefile                        |  1 +
+ arch/mips/boot/dts/xilfpga/Makefile                |  9 +++
+ arch/mips/boot/dts/xilfpga/microAptiv.dtsi         | 21 ++++++
+ arch/mips/boot/dts/xilfpga/nexys4ddr.dts           | 46 ++++++++++++
+ arch/mips/configs/xilfpga_defconfig                | 40 +++++++++++
+ arch/mips/include/asm/mach-xilfpga/irq.h           | 18 +++++
+ arch/mips/xilfpga/Kconfig                          |  9 +++
+ arch/mips/xilfpga/Makefile                         |  7 ++
+ arch/mips/xilfpga/Platform                         |  3 +
+ arch/mips/xilfpga/init.c                           | 57 +++++++++++++++
+ arch/mips/xilfpga/intc.c                           | 25 +++++++
+ arch/mips/xilfpga/time.c                           | 41 +++++++++++
+ 15 files changed, 384 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/mips/img/xilfpga.txt
+ create mode 100644 arch/mips/boot/dts/xilfpga/Makefile
+ create mode 100644 arch/mips/boot/dts/xilfpga/microAptiv.dtsi
+ create mode 100644 arch/mips/boot/dts/xilfpga/nexys4ddr.dts
+ create mode 100644 arch/mips/configs/xilfpga_defconfig
+ create mode 100644 arch/mips/include/asm/mach-xilfpga/irq.h
+ create mode 100644 arch/mips/xilfpga/Kconfig
+ create mode 100644 arch/mips/xilfpga/Makefile
+ create mode 100644 arch/mips/xilfpga/Platform
+ create mode 100644 arch/mips/xilfpga/init.c
+ create mode 100644 arch/mips/xilfpga/intc.c
+ create mode 100644 arch/mips/xilfpga/time.c
+
+-- 
+1.9.1

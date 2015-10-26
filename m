@@ -1,39 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Oct 2015 17:05:19 +0100 (CET)
-Received: from mail-vk0-f42.google.com ([209.85.213.42]:34760 "EHLO
-        mail-vk0-f42.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27009483AbbJZQFRHt5In (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 26 Oct 2015 17:05:17 +0100
-Received: by vkgs66 with SMTP id s66so41634072vkg.1
-        for <linux-mips@linux-mips.org>; Mon, 26 Oct 2015 09:05:11 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Oct 2015 18:47:39 +0100 (CET)
+Received: from mail-pa0-f50.google.com ([209.85.220.50]:35717 "EHLO
+        mail-pa0-f50.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011264AbbJZRrg2yazb (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 26 Oct 2015 18:47:36 +0100
+Received: by pasz6 with SMTP id z6so194453321pas.2;
+        Mon, 26 Oct 2015 10:47:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20120113;
-        h=mime-version:from:date:message-id:subject:to:content-type;
-        bh=e+RiJA5YzlZyjNeJrMn9v4aDH8nHrmqHQ1Dzrc/qRkU=;
-        b=qQ5/ikfozRXsREHoe03y6dYyJcxXuKstS3eFt167euXKUPNj3D/zx6b6lvnwLByB00
-         Kj+iYqnabQ9TLizRd9qAwgjXXBG4T2l7y6iApgFawyPwDUBt+c5s0bfpvp91eEKdRT1t
-         S3PNUEQXblwDOwlOxCFulN5b0q0cEzNA6/FwXO1Bt0Mf6qwFiHExHh3f0/TIR1nkfQDm
-         78OmDwJrNq/e2fbWctGfCOj25Jho+5tX85BOS39ImkgSe3xMpdm6K3p0OhhkEybspgx4
-         I8aTEGBmWDH1BGKR5NNYspVU8pxb6WVpsEB7UaITryG91dHmL3ctEZy1PFdCOr4mCKjR
-         qfFw==
-X-Received: by 10.31.130.9 with SMTP id e9mr19521925vkd.78.1445875511113; Mon,
- 26 Oct 2015 09:05:11 -0700 (PDT)
+        d=gmail.com; s=20120113;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-type:content-disposition:in-reply-to:user-agent;
+        bh=y1M0mUP7o4QIIuQv7vXtFKSwD8MUVAEZXf4/zfVD+AA=;
+        b=DG2mIjDMGoCPXJDU8IW7LNryTyJZ06jfBvMBf78Sy1xVhzWQKgwOUmDRLME00Ezbd1
+         g0YT72NQ9Ikvg1ZpXLKlacjYwuBt6ZCEH/XD72kP3dTIPAbkQ9f0EvLMjS3fYOhO1Y77
+         1JapaznntiPlsamolBuAOHyMm0HjG4YErnRAqwaAsSNox5Sqteq2+5KExpuCJCrswXTw
+         SckKEoL6Y5x1crfMjftOsosQOY9xmL7RUgoAOFZH+Kgm36D2IK8Ajg8wYoJseClI5bmi
+         xIDbAgttkBgm8ccGE3/sppHPTEDXF6GEOnKBVmAV+NJVLBjVpgJS1IVzSD2b291727/c
+         X+fQ==
+X-Received: by 10.68.255.37 with SMTP id an5mr23079197pbd.163.1445881650423;
+        Mon, 26 Oct 2015 10:47:30 -0700 (PDT)
+Received: from google.com ([2620:0:1000:1301:493:9c13:2386:b1f3])
+        by smtp.gmail.com with ESMTPSA id zn9sm35324707pac.48.2015.10.26.10.47.29
+        (version=TLS1_2 cipher=AES128-SHA bits=128/128);
+        Mon, 26 Oct 2015 10:47:29 -0700 (PDT)
+Date:   Mon, 26 Oct 2015 10:47:27 -0700
+From:   Brian Norris <computersforpeace@gmail.com>
+To:     Jaedon Shin <jaedon.shin@gmail.com>
+Cc:     Tejun Heo <tj@kernel.org>, Kishon Vijay Abraham I <kishon@ti.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>, linux-ide@vger.kernel.org,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        devicetree@vger.kernel.org
+Subject: Re: [PATCH 03/10] ata: ahci_brcmstb: add support 40nm platforms
+Message-ID: <20151026174727.GZ13239@google.com>
+References: <1445564663-66824-1-git-send-email-jaedon.shin@gmail.com>
+ <1445564663-66824-4-git-send-email-jaedon.shin@gmail.com>
+ <20151023212558.GS13239@google.com>
+ <DE776F55-6D75-4AD7-B3AA-52E45C9D99C0@gmail.com>
 MIME-Version: 1.0
-Received: by 10.31.99.198 with HTTP; Mon, 26 Oct 2015 09:04:51 -0700 (PDT)
-From:   Yegor Yefremov <yegorslists@googlemail.com>
-Date:   Mon, 26 Oct 2015 17:04:51 +0100
-Message-ID: <CAGm1_kuehh3Xe9Y+vmx6p8=+E=XOxj8ASJ2vEOU4oGo5MtvaOA@mail.gmail.com>
-Subject: Mainline support for QCA9531
-To:     linux-mips <linux-mips@linux-mips.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <yegorslists@googlemail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DE776F55-6D75-4AD7-B3AA-52E45C9D99C0@gmail.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <computersforpeace@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49701
+X-archive-position: 49702
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yegorslists@googlemail.com
+X-original-sender: computersforpeace@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,17 +63,32 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi,
+Hi Jaedon,
 
-what is the current mainline state of the QCA9531 SoC? I could only
-find some mentions of the chip:
+On Sat, Oct 24, 2015 at 01:50:54PM +0900, Jaedon Shin wrote:
+> On Oct 24, 2015, at 6:25 AM, Brian Norris <computersforpeace@gmail.com> wrote:
+> > On Fri, Oct 23, 2015 at 10:44:16AM +0900, Jaedon Shin wrote:
+> > So, your patch gets phy control 1 correct for both ports, but it doesn't
+> > get phy control 2 correct. (Or at least, even if my guess at the 40nm
+> > layout is wrong, your patch makes "port 0, phy control 2" collide with
+> > "port 1, phy control 1", which is most certainly a bug.)
+> > 
+> > Are you sure you're testing this properly? Did you try using both ports
+> > at the same time? And please, apply the same scrutiny to the PHY driver.
+> > (e.g., did you test SSC? did you test both ports?)
+> > 
+> > Brian
+> > 
+> 
+> You are right. This must be changed. 
+> 
+> I found the 28nm chipsets have four phy interface control registers. But, 
+> the the 40nm chipsets have only three registers. I did not testing with 
+> two ports at the same time. It seems we should check more.
 
-http://wiki.openwrt.org/toh/netgear/wnr2000
-https://wikidevi.com/wiki/Qualcomm_Atheros
+OK. So you don't just need more testing, you need to make sure the code
+actually matches the documentation at all. If there are only 3 PHY
+control registers for 40nm, then this driver (as patched by you) doesn't
+make any sense. It will need a much different patch than what you gave.
 
-No info about BSP or what driver are already available upstream.
-
-Thanks.
-
-Regards,
-Yegor
+Brian

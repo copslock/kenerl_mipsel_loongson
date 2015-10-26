@@ -1,56 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Oct 2015 18:47:39 +0100 (CET)
-Received: from mail-pa0-f50.google.com ([209.85.220.50]:35717 "EHLO
-        mail-pa0-f50.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011264AbbJZRrg2yazb (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 26 Oct 2015 18:47:36 +0100
-Received: by pasz6 with SMTP id z6so194453321pas.2;
-        Mon, 26 Oct 2015 10:47:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-type:content-disposition:in-reply-to:user-agent;
-        bh=y1M0mUP7o4QIIuQv7vXtFKSwD8MUVAEZXf4/zfVD+AA=;
-        b=DG2mIjDMGoCPXJDU8IW7LNryTyJZ06jfBvMBf78Sy1xVhzWQKgwOUmDRLME00Ezbd1
-         g0YT72NQ9Ikvg1ZpXLKlacjYwuBt6ZCEH/XD72kP3dTIPAbkQ9f0EvLMjS3fYOhO1Y77
-         1JapaznntiPlsamolBuAOHyMm0HjG4YErnRAqwaAsSNox5Sqteq2+5KExpuCJCrswXTw
-         SckKEoL6Y5x1crfMjftOsosQOY9xmL7RUgoAOFZH+Kgm36D2IK8Ajg8wYoJseClI5bmi
-         xIDbAgttkBgm8ccGE3/sppHPTEDXF6GEOnKBVmAV+NJVLBjVpgJS1IVzSD2b291727/c
-         X+fQ==
-X-Received: by 10.68.255.37 with SMTP id an5mr23079197pbd.163.1445881650423;
-        Mon, 26 Oct 2015 10:47:30 -0700 (PDT)
-Received: from google.com ([2620:0:1000:1301:493:9c13:2386:b1f3])
-        by smtp.gmail.com with ESMTPSA id zn9sm35324707pac.48.2015.10.26.10.47.29
-        (version=TLS1_2 cipher=AES128-SHA bits=128/128);
-        Mon, 26 Oct 2015 10:47:29 -0700 (PDT)
-Date:   Mon, 26 Oct 2015 10:47:27 -0700
-From:   Brian Norris <computersforpeace@gmail.com>
-To:     Jaedon Shin <jaedon.shin@gmail.com>
-Cc:     Tejun Heo <tj@kernel.org>, Kishon Vijay Abraham I <kishon@ti.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>, linux-ide@vger.kernel.org,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        devicetree@vger.kernel.org
-Subject: Re: [PATCH 03/10] ata: ahci_brcmstb: add support 40nm platforms
-Message-ID: <20151026174727.GZ13239@google.com>
-References: <1445564663-66824-1-git-send-email-jaedon.shin@gmail.com>
- <1445564663-66824-4-git-send-email-jaedon.shin@gmail.com>
- <20151023212558.GS13239@google.com>
- <DE776F55-6D75-4AD7-B3AA-52E45C9D99C0@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DE776F55-6D75-4AD7-B3AA-52E45C9D99C0@gmail.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <computersforpeace@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Oct 2015 21:10:19 +0100 (CET)
+Received: from hauke-m.de ([5.39.93.123]:47606 "EHLO hauke-m.de"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27011403AbbJZUKRMyhQe (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 26 Oct 2015 21:10:17 +0100
+Received: from hauke-desktop.fritz.box (pD9F60F2D.dip0.t-ipconnect.de [217.246.15.45])
+        by hauke-m.de (Postfix) with ESMTPSA id 535A5100029;
+        Mon, 26 Oct 2015 21:10:16 +0100 (CET)
+From:   Hauke Mehrtens <hauke@hauke-m.de>
+To:     ralf@linux-mips.org
+Cc:     blogic@openwrt.org, linux-mips@linux-mips.org,
+        sergei.shtylyov@cogentembedded.com,
+        Hauke Mehrtens <hauke@hauke-m.de>,
+        "# 4 . 1+" <stable@vger.kernel.org>
+Subject: [PATCH v2] MIPS: lantiq: add clk_round_rate()
+Date:   Mon, 26 Oct 2015 21:10:12 +0100
+Message-Id: <1445890212-5649-1-git-send-email-hauke@hauke-m.de>
+X-Mailer: git-send-email 2.6.1
+Return-Path: <hauke@hauke-m.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49702
+X-archive-position: 49703
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: computersforpeace@gmail.com
+X-original-sender: hauke@hauke-m.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -63,32 +37,45 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Jaedon,
+This adds a basic implementation of clk_round_rate()
+The clk_round_rate() function is called by multiple drivers and
+subsystems now and the lantiq clk driver is supposed to export this,
+but doesn't do so, this causes linking problems like this one:
+ERROR: "clk_round_rate" [drivers/media/v4l2-core/videodev.ko] undefined!
 
-On Sat, Oct 24, 2015 at 01:50:54PM +0900, Jaedon Shin wrote:
-> On Oct 24, 2015, at 6:25 AM, Brian Norris <computersforpeace@gmail.com> wrote:
-> > On Fri, Oct 23, 2015 at 10:44:16AM +0900, Jaedon Shin wrote:
-> > So, your patch gets phy control 1 correct for both ports, but it doesn't
-> > get phy control 2 correct. (Or at least, even if my guess at the 40nm
-> > layout is wrong, your patch makes "port 0, phy control 2" collide with
-> > "port 1, phy control 1", which is most certainly a bug.)
-> > 
-> > Are you sure you're testing this properly? Did you try using both ports
-> > at the same time? And please, apply the same scrutiny to the PHY driver.
-> > (e.g., did you test SSC? did you test both ports?)
-> > 
-> > Brian
-> > 
-> 
-> You are right. This must be changed. 
-> 
-> I found the 28nm chipsets have four phy interface control registers. But, 
-> the the 40nm chipsets have only three registers. I did not testing with 
-> two ports at the same time. It seems we should check more.
+Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
+Acked-by: John Crispin <blogic@openwrt.org>
+Cc: <stable@vger.kernel.org> # 4.1+
+---
+ arch/mips/lantiq/clk.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-OK. So you don't just need more testing, you need to make sure the code
-actually matches the documentation at all. If there are only 3 PHY
-control registers for 40nm, then this driver (as patched by you) doesn't
-make any sense. It will need a much different patch than what you gave.
-
-Brian
+diff --git a/arch/mips/lantiq/clk.c b/arch/mips/lantiq/clk.c
+index 3fc2e6d..fe86c50 100644
+--- a/arch/mips/lantiq/clk.c
++++ b/arch/mips/lantiq/clk.c
+@@ -99,6 +99,22 @@ int clk_set_rate(struct clk *clk, unsigned long rate)
+ }
+ EXPORT_SYMBOL(clk_set_rate);
+ 
++long clk_round_rate(struct clk *clk, unsigned long rate)
++{
++	if (unlikely(!clk_good(clk)))
++		return 0;
++	if (clk->rates && *clk->rates) {
++		unsigned long *r = clk->rates;
++
++		while (*r && (*r != rate))
++			r++;
++		if (!*r)
++			return clk->rate;
++	}
++	return rate;
++}
++EXPORT_SYMBOL(clk_round_rate);
++
+ int clk_enable(struct clk *clk)
+ {
+ 	if (unlikely(!clk_good(clk)))
+-- 
+2.6.1

@@ -1,22 +1,24 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Oct 2015 14:45:04 +0100 (CET)
-Received: from youngberry.canonical.com ([91.189.89.112]:56159 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Oct 2015 14:45:21 +0100 (CET)
+Received: from youngberry.canonical.com ([91.189.89.112]:56166 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011343AbbJZNohUmWmQ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 26 Oct 2015 14:44:37 +0100
+        by eddie.linux-mips.org with ESMTP id S27010594AbbJZNoiu8OGQ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 26 Oct 2015 14:44:38 +0100
 Received: from 1.general.henrix.uk.vpn ([10.172.192.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_128_CBC_SHA1:16)
         (Exim 4.76)
         (envelope-from <luis.henriques@canonical.com>)
-        id 1Zqi4i-0000YQ-NC; Mon, 26 Oct 2015 13:44:36 +0000
+        id 1Zqi4k-0000Yd-IZ; Mon, 26 Oct 2015 13:44:38 +0000
 From:   Luis Henriques <luis.henriques@canonical.com>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
         kernel-team@lists.ubuntu.com
-Cc:     James Hogan <james.hogan@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+Cc:     Paul Burton <paul.burton@imgtec.com>,
+        Markos Chandras <markos.chandras@imgtec.com>,
+        James Hogan <james.hogan@imgtec.com>,
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
         Luis Henriques <luis.henriques@canonical.com>
-Subject: [PATCH 3.16.y-ckt 073/104] MIPS: dma-default: Fix 32-bit fall back to GFP_DMA
-Date:   Mon, 26 Oct 2015 13:42:55 +0000
-Message-Id: <1445867006-18048-74-git-send-email-luis.henriques@canonical.com>
+Subject: [PATCH 3.16.y-ckt 075/104] MIPS: CPS: Don't include MT code in non-MT kernels.
+Date:   Mon, 26 Oct 2015 13:42:57 +0000
+Message-Id: <1445867006-18048-76-git-send-email-luis.henriques@canonical.com>
 X-Mailer: git-send-email 2.1.4
 In-Reply-To: <1445867006-18048-1-git-send-email-luis.henriques@canonical.com>
 References: <1445867006-18048-1-git-send-email-luis.henriques@canonical.com>
@@ -25,7 +27,7 @@ Return-Path: <luis.henriques@canonical.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49698
+X-archive-position: 49699
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,40 +48,46 @@ X-list: linux-mips
 
 ------------------
 
-From: James Hogan <james.hogan@imgtec.com>
+From: Paul Burton <paul.burton@imgtec.com>
 
-commit 53960059d56ecef67d4ddd546731623641a3d2d1 upstream.
+commit a5b0f6db0e6cf6224e50f6585e9c8f0c2d38a8f8 upstream.
 
-If there is a DMA zone (usually 24bit = 16MB I believe), but no DMA32
-zone, as is the case for some 32-bit kernels, then massage_gfp_flags()
-will cause DMA memory allocated for devices with a 32..63-bit
-coherent_dma_mask to fall back to using __GFP_DMA, even though there may
-only be 32-bits of physical address available anyway.
+The MT-specific code in mips_cps_boot_vpes can safely be omitted from
+kernels which don't support MT, with the default VPE==0 case being used
+as it would be after the has_mt (Config3.MT) check failed at runtime.
+Discarding the code entirely will save us a few bytes & allow cleaner
+handling of MT ASE instructions by later patches.
 
-Correct that case to compare against a mask the size of phys_addr_t
-instead of always using a 64-bit mask.
-
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Fixes: a2e715a86c6d ("MIPS: DMA: Fix computation of DMA flags from device's coherent_dma_mask.")
-Cc: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+Cc: Markos Chandras <markos.chandras@imgtec.com>
+Cc: James Hogan <james.hogan@imgtec.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/9610/
+Cc: linux-kernel@vger.kernel.org
+Patchwork: https://patchwork.linux-mips.org/patch/10866/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+[ luis: backported to 3.16: adjusted context ]
 Signed-off-by: Luis Henriques <luis.henriques@canonical.com>
 ---
- arch/mips/mm/dma-default.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/kernel/cps-vec.S | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/mips/mm/dma-default.c b/arch/mips/mm/dma-default.c
-index 44b6dff5aba2..a1087593b3c2 100644
---- a/arch/mips/mm/dma-default.c
-+++ b/arch/mips/mm/dma-default.c
-@@ -94,7 +94,7 @@ static gfp_t massage_gfp_flags(const struct device *dev, gfp_t gfp)
- 	else
- #endif
- #if defined(CONFIG_ZONE_DMA) && !defined(CONFIG_ZONE_DMA32)
--	     if (dev->coherent_dma_mask < DMA_BIT_MASK(64))
-+	     if (dev->coherent_dma_mask < DMA_BIT_MASK(sizeof(phys_addr_t) * 8))
- 		dma_flag = __GFP_DMA;
- 	else
- #endif
+diff --git a/arch/mips/kernel/cps-vec.S b/arch/mips/kernel/cps-vec.S
+index 5652af5786ef..acd9bd6daf99 100644
+--- a/arch/mips/kernel/cps-vec.S
++++ b/arch/mips/kernel/cps-vec.S
+@@ -310,6 +310,7 @@ LEAF(mips_cps_boot_vpes)
+ 
+ 	/* Calculate this VPEs ID. If the core doesn't support MT use 0 */
+ 	li	t9, 0
++#ifdef CONFIG_MIPS_MT
+ 	has_mt	t6, 1f
+ 
+ 	/* Find the number of VPEs present in the core */
+@@ -329,6 +330,7 @@ LEAF(mips_cps_boot_vpes)
+ 	/* Retrieve the VPE ID from EBase.CPUNum */
+ 	mfc0	t9, $15, 1
+ 	and	t9, t9, t1
++#endif
+ 
+ 1:	/* Calculate a pointer to this VPEs struct vpe_boot_config */
+ 	li	t1, VPEBOOTCFG_SIZE

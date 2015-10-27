@@ -1,52 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Oct 2015 07:51:32 +0100 (CET)
-Received: from mail-pa0-f46.google.com ([209.85.220.46]:36442 "EHLO
-        mail-pa0-f46.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011548AbbJ0GtTmVvI9 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 27 Oct 2015 07:49:19 +0100
-Received: by pacfv9 with SMTP id fv9so222596442pac.3;
-        Mon, 26 Oct 2015 23:49:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=G2IGmW7k6IuPWGFKv0tnyWHtXiids3OYCL+m5WK/QNc=;
-        b=WoB9i2uFShh8tEqr3eJ7rJByvqivEWfucZ3LqZaX12/KI0yvVEMcbK/lHDlQxtNLQ3
-         TOnFuIhTal2HiHB4iwpU1rL78ntvEJnQEdUYu/orsHSRS4RDGFTHN0lxG96aPc8BG/aw
-         juy8bh7n7c1hp+BTvt/vCLh5jpTX0B911kbSJYYkkygTflzOeZOmnbUh5i3N+hOHc2jg
-         COEoYtotccy6Ephk6P7QD5BKYVC6tyk+T9+rQy6VqOP0ZLRIbGj0uvGosm7AN9JO1j8Y
-         56aYIwsMUHwP+RwLpcMeqdz57TU8fyyGxXH4ff8HuuSXyO6ggLNUR6ZleCJ6nbQWw5Gn
-         TD4w==
-X-Received: by 10.66.189.68 with SMTP id gg4mr25162609pac.6.1445928554067;
-        Mon, 26 Oct 2015 23:49:14 -0700 (PDT)
-Received: from praha.local.private ([211.255.134.165])
-        by smtp.gmail.com with ESMTPSA id tt7sm1564458pab.45.2015.10.26.23.49.10
-        (version=TLSv1 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Mon, 26 Oct 2015 23:49:13 -0700 (PDT)
-From:   Jaedon Shin <jaedon.shin@gmail.com>
-To:     Brian Norris <computersforpeace@gmail.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Oct 2015 09:18:06 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.136]:44324 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27009692AbbJ0ISDyG9LA (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 27 Oct 2015 09:18:03 +0100
+Received: from mail.kernel.org (localhost [127.0.0.1])
+        by mail.kernel.org (Postfix) with ESMTP id CFBE62087B;
+        Tue, 27 Oct 2015 08:18:01 +0000 (UTC)
+Received: from mail-yk0-f170.google.com (mail-yk0-f170.google.com [209.85.160.170])
+        (using TLSv1.2 with cipher AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 639512086B;
+        Tue, 27 Oct 2015 08:18:00 +0000 (UTC)
+Received: by ykdr3 with SMTP id r3so210162616ykd.1;
+        Tue, 27 Oct 2015 01:17:59 -0700 (PDT)
+X-Received: by 10.129.51.196 with SMTP id z187mr28610713ywz.198.1445933879772;
+ Tue, 27 Oct 2015 01:17:59 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 10.13.254.65 with HTTP; Tue, 27 Oct 2015 01:17:40 -0700 (PDT)
+In-Reply-To: <1445928491-7320-4-git-send-email-jaedon.shin@gmail.com>
+References: <1445928491-7320-1-git-send-email-jaedon.shin@gmail.com> <1445928491-7320-4-git-send-email-jaedon.shin@gmail.com>
+From:   Rob Herring <robh+dt@kernel.org>
+Date:   Tue, 27 Oct 2015 03:17:40 -0500
+Message-ID: <CAL_Jsq+GngRS80_T2joPZwOB3gGnHZuuaTzXn6Tc07exAq_Fag@mail.gmail.com>
+Subject: Re: [v2 03/10] ata: ahci_brcmstb: add quick for broken phy
+To:     Jaedon Shin <jaedon.shin@gmail.com>
+Cc:     Brian Norris <computersforpeace@gmail.com>,
         Florian Fainelli <f.fainelli@gmail.com>,
         Tejun Heo <tj@kernel.org>,
         Kishon Vijay Abraham I <kishon@ti.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-Cc:     Rob Herring <robh+dt@kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
         Kevin Cernekee <cernekee@gmail.com>,
         Dragan Stancevic <dragan.stancevic@gmail.com>,
-        linux-ide@vger.kernel.org, Linux-MIPS <linux-mips@linux-mips.org>,
-        devicetree@vger.kernel.org, Jaedon Shin <jaedon.shin@gmail.com>
-Subject: [v2 10/10] MIPS: BMIPS: brcmstb: add SATA/PHY nodes for bcm7362
-Date:   Tue, 27 Oct 2015 15:48:11 +0900
-Message-Id: <1445928491-7320-11-git-send-email-jaedon.shin@gmail.com>
-X-Mailer: git-send-email 2.6.2
-In-Reply-To: <1445928491-7320-1-git-send-email-jaedon.shin@gmail.com>
-References: <1445928491-7320-1-git-send-email-jaedon.shin@gmail.com>
-Return-Path: <jaedon.shin@gmail.com>
+        "linux-ide@vger.kernel.org" <linux-ide@vger.kernel.org>,
+        Linux-MIPS <linux-mips@linux-mips.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+X-Virus-Scanned: ClamAV using ClamSMTP
+Return-Path: <robh+dt@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49714
+X-archive-position: 49715
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jaedon.shin@gmail.com
+X-original-sender: robh+dt@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,82 +57,87 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add AHCI and PHY device nodes to MIPS-based BCM7362 set-top box
-platform.
+On Tue, Oct 27, 2015 at 1:48 AM, Jaedon Shin <jaedon.shin@gmail.com> wrote:
+> Add quick for broken phy. The ARM-based 28nm chipsets have four phy
 
-Signed-off-by: Jaedon Shin <jaedon.shin@gmail.com>
----
- arch/mips/boot/dts/brcm/bcm7362.dtsi     | 42 ++++++++++++++++++++++++++++++++
- arch/mips/boot/dts/brcm/bcm97362svmb.dts |  8 ++++++
- 2 files changed, 50 insertions(+)
+I believe you mean "quirk".
 
-diff --git a/arch/mips/boot/dts/brcm/bcm7362.dtsi b/arch/mips/boot/dts/brcm/bcm7362.dtsi
-index 6e65db86fc61..53b73de9066c 100644
---- a/arch/mips/boot/dts/brcm/bcm7362.dtsi
-+++ b/arch/mips/boot/dts/brcm/bcm7362.dtsi
-@@ -189,5 +189,47 @@
- 			interrupts = <66>;
- 			status = "disabled";
- 		};
-+
-+		sata: sata@181000 {
-+			compatible = "brcm,bcm7425-ahci", "brcm,sata3-ahci";
-+			reg-names = "ahci", "top-ctrl";
-+			reg = <0x181000 0xa9c>, <0x180020 0x1c>;
-+			interrupt-parent = <&periph_intc>;
-+			interrupts = <86>;
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			brcm,broken-ncq;
-+			brcm,broken-phy;
-+			status = "disabled";
-+
-+			sata0: sata-port@0 {
-+				reg = <0>;
-+				phys = <&sata_phy0>;
-+			};
-+
-+			sata1: sata-port@1 {
-+				reg = <1>;
-+				phys = <&sata_phy1>;
-+			};
-+		};
-+
-+		sata_phy: sata-phy@1800000 {
-+			compatible = "brcm,bcm7425-sata-phy", "brcm,phy-sata3";
-+			reg = <0x180100 0x0eff>;
-+			reg-names = "phy";
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			status = "disabled";
-+
-+			sata_phy0: sata-phy@0 {
-+				reg = <0>;
-+				#phy-cells = <0>;
-+			};
-+
-+			sata_phy1: sata-phy@1 {
-+				reg = <1>;
-+				#phy-cells = <0>;
-+			};
-+		};
- 	};
- };
-diff --git a/arch/mips/boot/dts/brcm/bcm97362svmb.dts b/arch/mips/boot/dts/brcm/bcm97362svmb.dts
-index 739c2ef5663b..ef9a69b79bc4 100644
---- a/arch/mips/boot/dts/brcm/bcm97362svmb.dts
-+++ b/arch/mips/boot/dts/brcm/bcm97362svmb.dts
-@@ -40,3 +40,11 @@
- &ohci0 {
- 	status = "okay";
- };
-+
-+&sata {
-+	status = "okay";
-+};
-+
-+&sata_phy {
-+	status = "okay";
-+};
--- 
-2.6.2
+> interface control registers and each port has two registers. But, The
+
+registers, but the...
+
+> MIPS-based 40nm chipsets have three. and there are no information and
+
+s/and there/There/
+
+> documentation. The legacy version of broadcom's strict-ahci based
+> initial code did not control these registers.
+>
+> Signed-off-by: Jaedon Shin <jaedon.shin@gmail.com>
+> ---
+>  Documentation/devicetree/bindings/ata/brcm,sata-brcmstb.txt |  1 +
+
+Other than the commit message:
+
+Acked-by: Rob Herring <robh@kernel.org>
+
+>  drivers/ata/ahci_brcmstb.c                                  | 10 ++++++++++
+>  2 files changed, 11 insertions(+)
+>
+> diff --git a/Documentation/devicetree/bindings/ata/brcm,sata-brcmstb.txt b/Documentation/devicetree/bindings/ata/brcm,sata-brcmstb.txt
+> index 488a383ce202..0f0925d58188 100644
+> --- a/Documentation/devicetree/bindings/ata/brcm,sata-brcmstb.txt
+> +++ b/Documentation/devicetree/bindings/ata/brcm,sata-brcmstb.txt
+> @@ -12,6 +12,7 @@ Required properties:
+>
+>  Optional properties:
+>  - brcm,broken-ncq    : if present, NCQ is unusable
+> +- brcm,broken-phy    : if present, to control phy interface is unusable
+>
+>  Also see ahci-platform.txt.
+>
+> diff --git a/drivers/ata/ahci_brcmstb.c b/drivers/ata/ahci_brcmstb.c
+> index e53962cb48ee..c61303f7c7dc 100644
+> --- a/drivers/ata/ahci_brcmstb.c
+> +++ b/drivers/ata/ahci_brcmstb.c
+> @@ -71,6 +71,7 @@
+>
+>  enum brcm_ahci_quicks {
+>         BRCM_AHCI_QUICK_NONCQ           = BIT(0),
+> +       BRCM_AHCI_QUICK_NOPHY           = BIT(1),
+>  };
+>
+>  struct brcm_ahci_priv {
+> @@ -119,6 +120,9 @@ static void brcm_sata_phy_enable(struct brcm_ahci_priv *priv, int port)
+>         void __iomem *p;
+>         u32 reg;
+>
+> +       if (priv->quicks & BRCM_AHCI_QUICK_NOPHY)
+> +               return;
+> +
+>         /* clear PHY_DEFAULT_POWER_STATE */
+>         p = phyctrl + SATA_TOP_CTRL_PHY_CTRL_1;
+>         reg = brcm_sata_readreg(p);
+> @@ -148,6 +152,9 @@ static void brcm_sata_phy_disable(struct brcm_ahci_priv *priv, int port)
+>         void __iomem *p;
+>         u32 reg;
+>
+> +       if (priv->quicks & BRCM_AHCI_QUICK_NOPHY)
+> +               return;
+> +
+>         /* power-off the PHY digital logic */
+>         p = phyctrl + SATA_TOP_CTRL_PHY_CTRL_2;
+>         reg = brcm_sata_readreg(p);
+> @@ -297,6 +304,9 @@ static int brcm_ahci_probe(struct platform_device *pdev)
+>         if (of_property_read_bool(dev->of_node, "brcm,broken-ncq"))
+>                 priv->quicks |= BRCM_AHCI_QUICK_NONCQ;
+>
+> +       if (of_property_read_bool(dev->of_node, "brcm,broken-phy"))
+> +               priv->quicks |= BRCM_AHCI_QUICK_NOPHY;
+> +
+>         brcm_sata_init(priv);
+>         brcm_sata_quick(pdev, priv);
+>
+> --
+> 2.6.2
+>

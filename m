@@ -1,56 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Oct 2015 16:55:06 +0100 (CET)
-Received: from mail-pa0-f45.google.com ([209.85.220.45]:36183 "EHLO
-        mail-pa0-f45.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011384AbbJ0PzEqqabh (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 27 Oct 2015 16:55:04 +0100
-Received: by pacfv9 with SMTP id fv9so236358944pac.3;
-        Tue, 27 Oct 2015 08:54:58 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Oct 2015 17:35:13 +0100 (CET)
+Received: from mail-pa0-f41.google.com ([209.85.220.41]:36486 "EHLO
+        mail-pa0-f41.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011604AbbJ0QfLYkeF7 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 27 Oct 2015 17:35:11 +0100
+Received: by pacfv9 with SMTP id fv9so237331957pac.3;
+        Tue, 27 Oct 2015 09:35:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=e67tLHNZLnRUazc6SXh70DNIXv1LrHoKViNzu/u64OY=;
-        b=dSH3z+MKORt5Fb2jZz61uzNsgpePuoV8E9tQ5hLPiPyVuRCI0HFMJa5549SITFBHtT
-         WtrvZJoHLCupX5/auA8MnQiB1iYnxC1w3bc3q//wvqyDDMRX1F6wP/giZ5gYZyz5yNg4
-         2P/0ArUErYczEaYI41Frr5Jdwpw6RSSkSAixEK4kForMMJ9Sin5zsRkTVLloGY/vwwaL
-         tlJsP2ZSW5Godu0b9g4JpQVa8DJDr1WEfgxxV4Qr28S2/YO8BfUSYZcwPTkkGbJM+r+4
-         xX+VqWr9w8/r5AmSy7oYq3k6N+n7Q8f5pqrk0eY7xdyb+z3BTjoAX7h5/iERr7HHIRWH
-         tYKw==
-X-Received: by 10.68.57.208 with SMTP id k16mr48773987pbq.12.1445961298653;
-        Tue, 27 Oct 2015 08:54:58 -0700 (PDT)
-Received: from [10.12.156.244] (5520-maca-inet1-outside.broadcom.com. [216.31.211.11])
-        by smtp.googlemail.com with ESMTPSA id xu5sm38139342pab.12.2015.10.27.08.54.57
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 27 Oct 2015 08:54:58 -0700 (PDT)
-Message-ID: <562F9E29.3060806@gmail.com>
-Date:   Tue, 27 Oct 2015 08:54:17 -0700
-From:   Florian Fainelli <f.fainelli@gmail.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.8.0
-MIME-Version: 1.0
-To:     Jaedon Shin <jaedon.shin@gmail.com>,
-        Brian Norris <computersforpeace@gmail.com>,
-        Tejun Heo <tj@kernel.org>,
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-type:content-disposition:in-reply-to:user-agent;
+        bh=VkBkfh0pPzuqvQOW5TO4QXjVycTgfLHopUccjPotOeg=;
+        b=q2i0duWE053knJ8iu1mz1225eEN2xdL1U+BEAoqGXJP98X1PCpb6CaRdHDLlhtifXw
+         b/flUORnINylboCniYF2VGU4SeOJBePN4sTMPDa+0LQJN1Rm4CrnBosLeAHMEa9fyNU0
+         +o66uQiN61WS9FERHAIskDsaFKsB1TMWT1CereXwRs6LAtcHv2gRAEJDKxeUOKh1nwDW
+         BZmBcVPfyGxmT+xSQqx5leerrmzlzICrIDJpBdyocac7hz3kMaDl0gKBY33BQTR8JBAQ
+         N20bUXv/F5gvD7CeVytAhGBH+T8pZ4lwF6Qbej5knTVFao51jFD/G7EbjESIAjUN7rxj
+         310Q==
+X-Received: by 10.68.131.161 with SMTP id on1mr28968370pbb.144.1445963705449;
+        Tue, 27 Oct 2015 09:35:05 -0700 (PDT)
+Received: from google.com ([2620:0:1000:1301:69dc:8af3:1d71:215a])
+        by smtp.gmail.com with ESMTPSA id q8sm40755321pap.34.2015.10.27.09.35.04
+        (version=TLSv1.2 cipher=RC4-SHA bits=128/128);
+        Tue, 27 Oct 2015 09:35:04 -0700 (PDT)
+Date:   Tue, 27 Oct 2015 09:35:03 -0700
+From:   Brian Norris <computersforpeace@gmail.com>
+To:     Jaedon Shin <jaedon.shin@gmail.com>
+Cc:     Florian Fainelli <f.fainelli@gmail.com>, Tejun Heo <tj@kernel.org>,
         Kishon Vijay Abraham I <kishon@ti.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-CC:     Rob Herring <robh+dt@kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Rob Herring <robh+dt@kernel.org>,
         Kevin Cernekee <cernekee@gmail.com>,
         Dragan Stancevic <dragan.stancevic@gmail.com>,
         linux-ide@vger.kernel.org, Linux-MIPS <linux-mips@linux-mips.org>,
         devicetree@vger.kernel.org
-Subject: Re: [v2 03/10] ata: ahci_brcmstb: add quick for broken phy
-References: <1445928491-7320-1-git-send-email-jaedon.shin@gmail.com> <1445928491-7320-4-git-send-email-jaedon.shin@gmail.com>
-In-Reply-To: <1445928491-7320-4-git-send-email-jaedon.shin@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Return-Path: <f.fainelli@gmail.com>
+Subject: Re: [v2 02/10] ata: ahci_brcmstb: add support MIPS-based platforms
+Message-ID: <20151027163503.GR13239@google.com>
+References: <1445928491-7320-1-git-send-email-jaedon.shin@gmail.com>
+ <1445928491-7320-3-git-send-email-jaedon.shin@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1445928491-7320-3-git-send-email-jaedon.shin@gmail.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <computersforpeace@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49720
+X-archive-position: 49721
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: f.fainelli@gmail.com
+X-original-sender: computersforpeace@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -63,89 +63,68 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 26/10/15 23:48, Jaedon Shin wrote:
-> Add quick for broken phy. The ARM-based 28nm chipsets have four phy
-> interface control registers and each port has two registers. But, The
-> MIPS-based 40nm chipsets have three. and there are no information and
-> documentation. The legacy version of broadcom's strict-ahci based
-> initial code did not control these registers.
-
-Qualifying this of a broken PHY is a misnomer, this is more about the
-fact that the PHY control registers have a different layout and behavior
-on 40nm vs 28nm chips, but more importantly, do not require any kind of
-configuration.
-
+On Tue, Oct 27, 2015 at 03:48:03PM +0900, Jaedon Shin wrote:
+> The BCM7xxx ARM-based and MIPS-based platforms share a similar hardware
+> block for AHCI SATA3.
+> 
+> The BCM7425 is flagship chipset of 40nm class. Other MIPS-based 40nm
+> chipsets has same hardware block. so the compatible string may be use
+> brcm,bcm7425-ahci.
 > 
 > Signed-off-by: Jaedon Shin <jaedon.shin@gmail.com>
 > ---
->  Documentation/devicetree/bindings/ata/brcm,sata-brcmstb.txt |  1 +
->  drivers/ata/ahci_brcmstb.c                                  | 10 ++++++++++
->  2 files changed, 11 insertions(+)
+>  Documentation/devicetree/bindings/ata/brcm,sata-brcmstb.txt | 4 ++--
+>  drivers/ata/Kconfig                                         | 2 +-
+>  drivers/ata/ahci_brcmstb.c                                  | 1 +
+>  3 files changed, 4 insertions(+), 3 deletions(-)
 > 
 > diff --git a/Documentation/devicetree/bindings/ata/brcm,sata-brcmstb.txt b/Documentation/devicetree/bindings/ata/brcm,sata-brcmstb.txt
-> index 488a383ce202..0f0925d58188 100644
+> index 4650c0aff6b3..488a383ce202 100644
 > --- a/Documentation/devicetree/bindings/ata/brcm,sata-brcmstb.txt
 > +++ b/Documentation/devicetree/bindings/ata/brcm,sata-brcmstb.txt
-> @@ -12,6 +12,7 @@ Required properties:
+> @@ -4,8 +4,8 @@ SATA nodes are defined to describe on-chip Serial ATA controllers.
+>  Each SATA controller should have its own node.
 >  
->  Optional properties:
->  - brcm,broken-ncq    : if present, NCQ is unusable
-> +- brcm,broken-phy    : if present, to control phy interface is unusable
+>  Required properties:
+> -- compatible         : compatible list, may contain "brcm,bcm7445-ahci" and/or
+> -                       "brcm,sata3-ahci"
+> +- compatible         : compatible list, may contain "brcm,bcm7445-ahci" or
+> +                       "brcm,bcm7425-ahci" or "brcm,sata3-ahci"
 
-Same comment as in patch 1, this is something that can be known based on
-the compatible string, and the name of the property is misleading.
+If you're going to spin this series anyway, you might as well turn this
+into a list, with one compatible string per line. That way it's easier
+to expand if needed.
 
+Brian
+
+>  - reg                : register mappings for AHCI and SATA_TOP_CTRL
+>  - reg-names          : "ahci" and "top-ctrl"
+>  - interrupts         : interrupt mapping for SATA IRQ
+> diff --git a/drivers/ata/Kconfig b/drivers/ata/Kconfig
+> index 15e40ee62a94..8f535a88a0c7 100644
+> --- a/drivers/ata/Kconfig
+> +++ b/drivers/ata/Kconfig
+> @@ -100,7 +100,7 @@ config SATA_AHCI_PLATFORM
 >  
->  Also see ahci-platform.txt.
->  
+>  config AHCI_BRCMSTB
+>  	tristate "Broadcom STB AHCI SATA support"
+> -	depends on ARCH_BRCMSTB
+> +	depends on ARCH_BRCMSTB || BMIPS_GENERIC
+>  	help
+>  	  This option enables support for the AHCI SATA3 controller found on
+>  	  STB SoC's.
 > diff --git a/drivers/ata/ahci_brcmstb.c b/drivers/ata/ahci_brcmstb.c
-> index e53962cb48ee..c61303f7c7dc 100644
+> index a2df76698adb..e53962cb48ee 100644
 > --- a/drivers/ata/ahci_brcmstb.c
 > +++ b/drivers/ata/ahci_brcmstb.c
-> @@ -71,6 +71,7 @@
+> @@ -343,6 +343,7 @@ static int brcm_ahci_remove(struct platform_device *pdev)
 >  
->  enum brcm_ahci_quicks {
->  	BRCM_AHCI_QUICK_NONCQ		= BIT(0),
-> +	BRCM_AHCI_QUICK_NOPHY		= BIT(1),
-
-I would use something like BRCM_AHCI_SKIP_PHY_ENABLE or something like
-that to illustrate what this really is about.
-
+>  static const struct of_device_id ahci_of_match[] = {
+>  	{.compatible = "brcm,bcm7445-ahci"},
+> +	{.compatible = "brcm,bcm7425-ahci"},
+>  	{},
 >  };
->  
->  struct brcm_ahci_priv {
-> @@ -119,6 +120,9 @@ static void brcm_sata_phy_enable(struct brcm_ahci_priv *priv, int port)
->  	void __iomem *p;
->  	u32 reg;
->  
-> +	if (priv->quicks & BRCM_AHCI_QUICK_NOPHY)
-> +		return;
-> +
->  	/* clear PHY_DEFAULT_POWER_STATE */
->  	p = phyctrl + SATA_TOP_CTRL_PHY_CTRL_1;
->  	reg = brcm_sata_readreg(p);
-> @@ -148,6 +152,9 @@ static void brcm_sata_phy_disable(struct brcm_ahci_priv *priv, int port)
->  	void __iomem *p;
->  	u32 reg;
->  
-> +	if (priv->quicks & BRCM_AHCI_QUICK_NOPHY)
-> +		return;
-> +
->  	/* power-off the PHY digital logic */
->  	p = phyctrl + SATA_TOP_CTRL_PHY_CTRL_2;
->  	reg = brcm_sata_readreg(p);
-> @@ -297,6 +304,9 @@ static int brcm_ahci_probe(struct platform_device *pdev)
->  	if (of_property_read_bool(dev->of_node, "brcm,broken-ncq"))
->  		priv->quicks |= BRCM_AHCI_QUICK_NONCQ;
->  
-> +	if (of_property_read_bool(dev->of_node, "brcm,broken-phy"))
-> +		priv->quicks |= BRCM_AHCI_QUICK_NOPHY;
-> +
->  	brcm_sata_init(priv);
->  	brcm_sata_quick(pdev, priv);
->  
+>  MODULE_DEVICE_TABLE(of, ahci_of_match);
+> -- 
+> 2.6.2
 > 
-
-
--- 
-Florian

@@ -1,34 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Oct 2015 11:21:49 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:34460 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Oct 2015 15:47:52 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:35372 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27011513AbbJ0KVrpsjve (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 27 Oct 2015 11:21:47 +0100
+        id S27011384AbbJ0OruxCKS2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 27 Oct 2015 15:47:50 +0100
 Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.15.2/8.14.8) with ESMTP id t9RALiAW019531;
-        Tue, 27 Oct 2015 11:21:44 +0100
+        by scotty.linux-mips.net (8.15.2/8.14.8) with ESMTP id t9RElnnI024057;
+        Tue, 27 Oct 2015 15:47:49 +0100
 Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.15.2/8.15.2/Submit) id t9RALgI3019530;
-        Tue, 27 Oct 2015 11:21:42 +0100
-Date:   Tue, 27 Oct 2015 11:21:42 +0100
+        by scotty.linux-mips.net (8.15.2/8.15.2/Submit) id t9RElnkE024056;
+        Tue, 27 Oct 2015 15:47:49 +0100
+Date:   Tue, 27 Oct 2015 15:47:49 +0100
 From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Jaedon Shin <jaedon.shin@gmail.com>
-Cc:     Tejun Heo <tj@kernel.org>, Kishon Vijay Abraham I <kishon@ti.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>, linux-ide@vger.kernel.org,
-        linux-mips@linux-mips.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH 00/10] add support SATA for BMIPS_GENERIC
-Message-ID: <20151027102142.GD17243@linux-mips.org>
-References: <1445564663-66824-1-git-send-email-jaedon.shin@gmail.com>
+To:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+Cc:     Markos Chandras <markos.chandras@imgtec.com>,
+        linux-mips@linux-mips.org, Alex Smith <alex.smith@imgtec.com>,
+        linux-kernel@vger.kernel.org
+Subject: Re: [v3, 3/3] MIPS: VDSO: Add implementations of gettimeofday() and
+ clock_gettime()
+Message-ID: <20151027144748.GA23785@linux-mips.org>
+References: <1445417864-31453-1-git-send-email-markos.chandras@imgtec.com>
+ <5629904A.2070400@imgtec.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1445564663-66824-1-git-send-email-jaedon.shin@gmail.com>
+In-Reply-To: <5629904A.2070400@imgtec.com>
 User-Agent: Mutt/1.5.23 (2014-03-12)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49717
+X-archive-position: 49718
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,16 +46,33 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Oct 23, 2015 at 10:44:13AM +0900, Jaedon Shin wrote:
+On Thu, Oct 22, 2015 at 06:41:30PM -0700, Leonid Yegoshin wrote:
 
-> Ralf,
-> I request you to drop already submitted patches for NAND device nodes.
-> It is merge conflicts with this patches.
-> http://patchwork.linux-mips.org/patch/10577/
-> http://patchwork.linux-mips.org/patch/10578/
-> http://patchwork.linux-mips.org/patch/10579/
-> http://patchwork.linux-mips.org/patch/10580/
+> You can not use R4K CP0_count in SMP (multicore) without core-specific
+> adjustment.
+> After first power-saving with core clock off or core down the values in
+> CP0_count
+> in different cores are absolutely different.
+> 
+> Until you include in system a patch like
+> http://patchwork.linux-mips.org/patch/10871/
+> 
+>     "MIPS: Setup an instruction emulation in VDSO protected page instead of
+> user stack"
+> 
+> which creates a per-thread memory and put into that memory an adjustment
+> value
+> (which can be changed during re-schedule to another core), the use of R4K
+> counter is incorrect
+> in SMP environment.
+> 
+> Note: It is also possible to setup and maintain a per-core page with that
+> value too as
+> an alternative variant for adjustment.
 
-Done - but you can drop patches you have submitted from patchwork yourself.
+The CPU hot plugging code is supposed to resychronize the counters when
+a CPU is coming online again so that case should be handled.  Beyond that
+the r4k timer code in the kernel also doesn't support clock scaling
+so I'm ok if the VDSO series doesn't support this properly.
 
   Ralf

@@ -1,18 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Oct 2015 23:40:28 +0100 (CET)
-Received: from hauke-m.de ([5.39.93.123]:37630 "EHLO hauke-m.de"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Oct 2015 23:40:44 +0100 (CET)
+Received: from hauke-m.de ([5.39.93.123]:37632 "EHLO hauke-m.de"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27011832AbbJ1Wh6UUMgO (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S27011762AbbJ1Wh6ptEjO (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Wed, 28 Oct 2015 23:37:58 +0100
 Received: from hauke-desktop.fritz.box (p5DE94D64.dip0.t-ipconnect.de [93.233.77.100])
-        by hauke-m.de (Postfix) with ESMTPSA id CEDE6100033;
-        Wed, 28 Oct 2015 23:37:57 +0100 (CET)
+        by hauke-m.de (Postfix) with ESMTPSA id 48D5410002A;
+        Wed, 28 Oct 2015 23:37:58 +0100 (CET)
 From:   Hauke Mehrtens <hauke@hauke-m.de>
 To:     ralf@linux-mips.org
 Cc:     blogic@openwrt.org, linux-mips@linux-mips.org,
         Hauke Mehrtens <hauke.mehrtens@lantiq.com>
-Subject: [PATCH 09/15] MIPS: lantiq: add support for gphy firmware loading for ar10 and grx390
-Date:   Wed, 28 Oct 2015 23:37:38 +0100
-Message-Id: <1446071865-21936-10-git-send-email-hauke@hauke-m.de>
+Subject: [PATCH 10/15] MIPS: lantiq: add SoC detection for ar10 and grx390
+Date:   Wed, 28 Oct 2015 23:37:39 +0100
+Message-Id: <1446071865-21936-11-git-send-email-hauke@hauke-m.de>
 X-Mailer: git-send-email 2.6.1
 In-Reply-To: <1446071865-21936-1-git-send-email-hauke@hauke-m.de>
 References: <1446071865-21936-1-git-send-email-hauke@hauke-m.de>
@@ -20,7 +20,7 @@ Return-Path: <hauke@hauke-m.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49751
+X-archive-position: 49752
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -43,172 +43,91 @@ From: Hauke Mehrtens <hauke.mehrtens@lantiq.com>
 
 Signed-off-by: Hauke Mehrtens <hauke.mehrtens@lantiq.com>
 ---
- arch/mips/lantiq/xway/reset.c | 111 ++++++++++++++++++++++++++++++++++--------
- 1 file changed, 91 insertions(+), 20 deletions(-)
+ .../mips/include/asm/mach-lantiq/xway/lantiq_soc.h | 12 ++++++++++
+ arch/mips/lantiq/xway/prom.c                       | 27 ++++++++++++++++++++--
+ 2 files changed, 37 insertions(+), 2 deletions(-)
 
-diff --git a/arch/mips/lantiq/xway/reset.c b/arch/mips/lantiq/xway/reset.c
-index fe68f9a..1e23cee 100644
---- a/arch/mips/lantiq/xway/reset.c
-+++ b/arch/mips/lantiq/xway/reset.c
-@@ -22,9 +22,6 @@
+diff --git a/arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h b/arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h
+index 133336b..3ab4e98 100644
+--- a/arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h
++++ b/arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h
+@@ -36,6 +36,16 @@
+ #define SOC_ID_GRX288_2		0x00D /* v1.2 */
+ #define SOC_ID_GRX282_2		0x00E /* v1.2 */
  
- #include "../prom.h"
- 
--#define ltq_rcu_w32(x, y)	ltq_w32((x), ltq_rcu_membase + (y))
--#define ltq_rcu_r32(x)		ltq_r32(ltq_rcu_membase + (x))
--
- /* reset request register */
- #define RCU_RST_REQ		0x0010
- /* reset status register */
-@@ -32,11 +29,29 @@
- /* vr9 gphy registers */
- #define RCU_GFS_ADD0_XRX200	0x0020
- #define RCU_GFS_ADD1_XRX200	0x0068
-+/* xRX300 gphy registers */
-+#define RCU_GFS_ADD0_XRX300	0x0020
-+#define RCU_GFS_ADD1_XRX300	0x0058
-+#define RCU_GFS_ADD2_XRX300	0x00AC
-+/* xRX330 gphy registers */
-+#define RCU_GFS_ADD0_XRX330	0x0020
-+#define RCU_GFS_ADD1_XRX330	0x0058
-+#define RCU_GFS_ADD2_XRX330	0x00AC
-+#define RCU_GFS_ADD3_XRX330	0x0264
- 
- /* reboot bit */
- #define RCU_RD_GPHY0_XRX200	BIT(31)
- #define RCU_RD_SRST		BIT(30)
- #define RCU_RD_GPHY1_XRX200	BIT(29)
-+/* xRX300 bits */
-+#define RCU_RD_GPHY0_XRX300	BIT(31)
-+#define RCU_RD_GPHY1_XRX300	BIT(29)
-+#define RCU_RD_GPHY2_XRX300	BIT(28)
-+/* xRX330 bits */
-+#define RCU_RD_GPHY0_XRX330	BIT(31)
-+#define RCU_RD_GPHY1_XRX330	BIT(29)
-+#define RCU_RD_GPHY2_XRX330	BIT(28)
-+#define RCU_RD_GPHY3_XRX330	BIT(10)
- 
- /* reset cause */
- #define RCU_STAT_SHIFT		26
-@@ -47,6 +62,26 @@
- /* remapped base addr of the reset control unit */
- static void __iomem *ltq_rcu_membase;
- static struct device_node *ltq_rcu_np;
-+static DEFINE_SPINLOCK(ltq_rcu_lock);
++#define SOC_ID_ARX362		0x004
++#define SOC_ID_ARX368		0x005
++#define SOC_ID_ARX382		0x007
++#define SOC_ID_ARX388		0x008
++#define SOC_ID_URX388		0x009
++#define SOC_ID_GRX383		0x010
++#define SOC_ID_GRX369		0x011
++#define SOC_ID_GRX387		0x00F
++#define SOC_ID_GRX389		0x012
 +
-+static void ltq_rcu_w32(uint32_t val, uint32_t reg_off)
-+{
-+	ltq_w32(val, ltq_rcu_membase + reg_off);
-+}
-+
-+static uint32_t ltq_rcu_r32(uint32_t reg_off)
-+{
-+	return ltq_r32(ltq_rcu_membase + reg_off);
-+}
-+
-+static void ltq_rcu_w32_mask(uint32_t clr, uint32_t set, uint32_t reg_off)
-+{
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&ltq_rcu_lock, flags);
-+	ltq_rcu_w32((ltq_rcu_r32(reg_off) & ~(clr)) | (set), reg_off);
-+	spin_unlock_irqrestore(&ltq_rcu_lock, flags);
-+}
+  /* SoC Types */
+ #define SOC_TYPE_DANUBE		0x01
+ #define SOC_TYPE_TWINPASS	0x02
+@@ -43,6 +53,8 @@
+ #define SOC_TYPE_VR9		0x04 /* v1.1 */
+ #define SOC_TYPE_VR9_2		0x05 /* v1.2 */
+ #define SOC_TYPE_AMAZON_SE	0x06
++#define SOC_TYPE_AR10		0x07
++#define SOC_TYPE_GRX390		0x08
  
- /* This function is used by the watchdog driver */
- int ltq_reset_cause(void)
-@@ -67,15 +102,40 @@ unsigned char ltq_boot_select(void)
- 	return RCU_BOOT_SEL(val);
- }
+ /* BOOT_SEL - find what boot media we have */
+ #define BS_EXT_ROM		0x0
+diff --git a/arch/mips/lantiq/xway/prom.c b/arch/mips/lantiq/xway/prom.c
+index 248429a..6f679f9 100644
+--- a/arch/mips/lantiq/xway/prom.c
++++ b/arch/mips/lantiq/xway/prom.c
+@@ -19,8 +19,10 @@
+ #define SOC_TWINPASS	"Twinpass"
+ #define SOC_AMAZON_SE	"Amazon_SE"
+ #define SOC_AR9		"AR9"
+-#define SOC_GR9		"GR9"
+-#define SOC_VR9		"VR9"
++#define SOC_GR9		"GRX200"
++#define SOC_VR9		"xRX200"
++#define SOC_AR10	"xRX300"
++#define SOC_GRX390	"xRX330"
  
--/* reset / boot a gphy */
--static struct ltq_xrx200_gphy_reset {
-+struct ltq_gphy_reset {
- 	u32 rd;
- 	u32 addr;
--} xrx200_gphy[] = {
-+};
-+
-+/* reset / boot a gphy */
-+static struct ltq_gphy_reset xrx200_gphy[] = {
- 	{RCU_RD_GPHY0_XRX200, RCU_GFS_ADD0_XRX200},
- 	{RCU_RD_GPHY1_XRX200, RCU_GFS_ADD1_XRX200},
- };
+ #define COMP_DANUBE	"lantiq,danube"
+ #define COMP_TWINPASS	"lantiq,twinpass"
+@@ -28,6 +30,8 @@
+ #define COMP_AR9	"lantiq,ar9"
+ #define COMP_GR9	"lantiq,gr9"
+ #define COMP_VR9	"lantiq,vr9"
++#define COMP_AR10	"lantiq,ar10"
++#define COMP_GRX390	"lantiq,grx390"
  
-+/* reset / boot a gphy */
-+static struct ltq_gphy_reset xrx300_gphy[] = {
-+	{RCU_RD_GPHY0_XRX300, RCU_GFS_ADD0_XRX300},
-+	{RCU_RD_GPHY1_XRX300, RCU_GFS_ADD1_XRX300},
-+	{RCU_RD_GPHY2_XRX300, RCU_GFS_ADD2_XRX300},
-+};
-+
-+/* reset / boot a gphy */
-+static struct ltq_gphy_reset xrx330_gphy[] = {
-+	{RCU_RD_GPHY0_XRX330, RCU_GFS_ADD0_XRX330},
-+	{RCU_RD_GPHY1_XRX330, RCU_GFS_ADD1_XRX330},
-+	{RCU_RD_GPHY2_XRX330, RCU_GFS_ADD2_XRX330},
-+	{RCU_RD_GPHY3_XRX330, RCU_GFS_ADD3_XRX330},
-+};
-+
-+static void xrx200_gphy_boot_addr(struct ltq_gphy_reset *phy_regs,
-+				  dma_addr_t dev_addr)
-+{
-+	ltq_rcu_w32_mask(0, phy_regs->rd, RCU_RST_REQ);
-+	ltq_rcu_w32(dev_addr, phy_regs->addr);
-+	ltq_rcu_w32_mask(phy_regs->rd, 0,  RCU_RST_REQ);
-+}
-+
- /* reset and boot a gphy. these phys only exist on xrx200 SoC */
- int xrx200_gphy_boot(struct device *dev, unsigned int id, dma_addr_t dev_addr)
- {
-@@ -86,23 +146,34 @@ int xrx200_gphy_boot(struct device *dev, unsigned int id, dma_addr_t dev_addr)
- 		return -EINVAL;
- 	}
+ #define PART_SHIFT	12
+ #define PART_MASK	0x0FFFFFFF
+@@ -108,6 +112,25 @@ void __init ltq_soc_detect(struct ltq_soc_info *i)
+ 		i->compatible = COMP_GR9;
+ 		break;
  
--	clk = clk_get_sys("1f203000.rcu", "gphy");
--	if (IS_ERR(clk))
--		return PTR_ERR(clk);
--
--	clk_enable(clk);
--
--	if (id > 1) {
--		dev_err(dev, "%u is an invalid gphy id\n", id);
--		return -EINVAL;
-+	if (of_machine_is_compatible("lantiq,vr9")) {
-+		clk = clk_get_sys("1f203000.rcu", "gphy");
-+		if (IS_ERR(clk))
-+			return PTR_ERR(clk);
-+		clk_enable(clk);
- 	}
++	case SOC_ID_ARX362:
++	case SOC_ID_ARX368:
++	case SOC_ID_ARX382:
++	case SOC_ID_ARX388:
++	case SOC_ID_URX388:
++		i->name = SOC_AR10;
++		i->type = SOC_TYPE_AR10;
++		i->compatible = COMP_AR10;
++		break;
 +
- 	dev_info(dev, "booting GPHY%u firmware at %X\n", id, dev_addr);
- 
--	ltq_rcu_w32(ltq_rcu_r32(RCU_RST_REQ) | xrx200_gphy[id].rd,
--			RCU_RST_REQ);
--	ltq_rcu_w32(dev_addr, xrx200_gphy[id].addr);
--	ltq_rcu_w32(ltq_rcu_r32(RCU_RST_REQ) & ~xrx200_gphy[id].rd,
--			RCU_RST_REQ);
-+	if (of_machine_is_compatible("lantiq,vr9")) {
-+		if (id >= ARRAY_SIZE(xrx200_gphy)) {
-+			dev_err(dev, "%u is an invalid gphy id\n", id);
-+			return -EINVAL;
-+		}
-+		xrx200_gphy_boot_addr(&xrx200_gphy[id], dev_addr);
-+	} else if (of_machine_is_compatible("lantiq,ar10")) {
-+		if (id >= ARRAY_SIZE(xrx300_gphy)) {
-+			dev_err(dev, "%u is an invalid gphy id\n", id);
-+			return -EINVAL;
-+		}
-+		xrx200_gphy_boot_addr(&xrx300_gphy[id], dev_addr);
-+	} else if (of_machine_is_compatible("lantiq,grx390")) {
-+		if (id >= ARRAY_SIZE(xrx330_gphy)) {
-+			dev_err(dev, "%u is an invalid gphy id\n", id);
-+			return -EINVAL;
-+		}
-+		xrx200_gphy_boot_addr(&xrx330_gphy[id], dev_addr);
-+	}
- 	return 0;
- }
- 
++	case SOC_ID_GRX383:
++	case SOC_ID_GRX369:
++	case SOC_ID_GRX387:
++	case SOC_ID_GRX389:
++		i->name = SOC_GRX390;
++		i->type = SOC_TYPE_GRX390;
++		i->compatible = COMP_GRX390;
++		break;
++
+ 	default:
+ 		unreachable();
+ 		break;
 -- 
 2.6.1

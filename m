@@ -1,18 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Oct 2015 23:40:44 +0100 (CET)
-Received: from hauke-m.de ([5.39.93.123]:37632 "EHLO hauke-m.de"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Oct 2015 23:41:04 +0100 (CET)
+Received: from hauke-m.de ([5.39.93.123]:37634 "EHLO hauke-m.de"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27011762AbbJ1Wh6ptEjO (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 28 Oct 2015 23:37:58 +0100
+        id S27011836AbbJ1Wh7GP7YO (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 28 Oct 2015 23:37:59 +0100
 Received: from hauke-desktop.fritz.box (p5DE94D64.dip0.t-ipconnect.de [93.233.77.100])
-        by hauke-m.de (Postfix) with ESMTPSA id 48D5410002A;
+        by hauke-m.de (Postfix) with ESMTPSA id A8DBF100034;
         Wed, 28 Oct 2015 23:37:58 +0100 (CET)
 From:   Hauke Mehrtens <hauke@hauke-m.de>
 To:     ralf@linux-mips.org
 Cc:     blogic@openwrt.org, linux-mips@linux-mips.org,
         Hauke Mehrtens <hauke.mehrtens@lantiq.com>
-Subject: [PATCH 10/15] MIPS: lantiq: add SoC detection for ar10 and grx390
-Date:   Wed, 28 Oct 2015 23:37:39 +0100
-Message-Id: <1446071865-21936-11-git-send-email-hauke@hauke-m.de>
+Subject: [PATCH 11/15] MIPS: lantiq: add clock for mei driver
+Date:   Wed, 28 Oct 2015 23:37:40 +0100
+Message-Id: <1446071865-21936-12-git-send-email-hauke@hauke-m.de>
 X-Mailer: git-send-email 2.6.1
 In-Reply-To: <1446071865-21936-1-git-send-email-hauke@hauke-m.de>
 References: <1446071865-21936-1-git-send-email-hauke@hauke-m.de>
@@ -20,7 +20,7 @@ Return-Path: <hauke@hauke-m.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49752
+X-archive-position: 49753
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -43,91 +43,51 @@ From: Hauke Mehrtens <hauke.mehrtens@lantiq.com>
 
 Signed-off-by: Hauke Mehrtens <hauke.mehrtens@lantiq.com>
 ---
- .../mips/include/asm/mach-lantiq/xway/lantiq_soc.h | 12 ++++++++++
- arch/mips/lantiq/xway/prom.c                       | 27 ++++++++++++++++++++--
- 2 files changed, 37 insertions(+), 2 deletions(-)
+ arch/mips/lantiq/xway/sysctrl.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h b/arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h
-index 133336b..3ab4e98 100644
---- a/arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h
-+++ b/arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h
-@@ -36,6 +36,16 @@
- #define SOC_ID_GRX288_2		0x00D /* v1.2 */
- #define SOC_ID_GRX282_2		0x00E /* v1.2 */
- 
-+#define SOC_ID_ARX362		0x004
-+#define SOC_ID_ARX368		0x005
-+#define SOC_ID_ARX382		0x007
-+#define SOC_ID_ARX388		0x008
-+#define SOC_ID_URX388		0x009
-+#define SOC_ID_GRX383		0x010
-+#define SOC_ID_GRX369		0x011
-+#define SOC_ID_GRX387		0x00F
-+#define SOC_ID_GRX389		0x012
-+
-  /* SoC Types */
- #define SOC_TYPE_DANUBE		0x01
- #define SOC_TYPE_TWINPASS	0x02
-@@ -43,6 +53,8 @@
- #define SOC_TYPE_VR9		0x04 /* v1.1 */
- #define SOC_TYPE_VR9_2		0x05 /* v1.2 */
- #define SOC_TYPE_AMAZON_SE	0x06
-+#define SOC_TYPE_AR10		0x07
-+#define SOC_TYPE_GRX390		0x08
- 
- /* BOOT_SEL - find what boot media we have */
- #define BS_EXT_ROM		0x0
-diff --git a/arch/mips/lantiq/xway/prom.c b/arch/mips/lantiq/xway/prom.c
-index 248429a..6f679f9 100644
---- a/arch/mips/lantiq/xway/prom.c
-+++ b/arch/mips/lantiq/xway/prom.c
-@@ -19,8 +19,10 @@
- #define SOC_TWINPASS	"Twinpass"
- #define SOC_AMAZON_SE	"Amazon_SE"
- #define SOC_AR9		"AR9"
--#define SOC_GR9		"GR9"
--#define SOC_VR9		"VR9"
-+#define SOC_GR9		"GRX200"
-+#define SOC_VR9		"xRX200"
-+#define SOC_AR10	"xRX300"
-+#define SOC_GRX390	"xRX330"
- 
- #define COMP_DANUBE	"lantiq,danube"
- #define COMP_TWINPASS	"lantiq,twinpass"
-@@ -28,6 +30,8 @@
- #define COMP_AR9	"lantiq,ar9"
- #define COMP_GR9	"lantiq,gr9"
- #define COMP_VR9	"lantiq,vr9"
-+#define COMP_AR10	"lantiq,ar10"
-+#define COMP_GRX390	"lantiq,grx390"
- 
- #define PART_SHIFT	12
- #define PART_MASK	0x0FFFFFFF
-@@ -108,6 +112,25 @@ void __init ltq_soc_detect(struct ltq_soc_info *i)
- 		i->compatible = COMP_GR9;
- 		break;
- 
-+	case SOC_ID_ARX362:
-+	case SOC_ID_ARX368:
-+	case SOC_ID_ARX382:
-+	case SOC_ID_ARX388:
-+	case SOC_ID_URX388:
-+		i->name = SOC_AR10;
-+		i->type = SOC_TYPE_AR10;
-+		i->compatible = COMP_AR10;
-+		break;
-+
-+	case SOC_ID_GRX383:
-+	case SOC_ID_GRX369:
-+	case SOC_ID_GRX387:
-+	case SOC_ID_GRX389:
-+		i->name = SOC_GRX390;
-+		i->type = SOC_TYPE_GRX390;
-+		i->compatible = COMP_GRX390;
-+		break;
-+
- 	default:
- 		unreachable();
- 		break;
+diff --git a/arch/mips/lantiq/xway/sysctrl.c b/arch/mips/lantiq/xway/sysctrl.c
+index 55e694e..2140a2b 100644
+--- a/arch/mips/lantiq/xway/sysctrl.c
++++ b/arch/mips/lantiq/xway/sysctrl.c
+@@ -491,6 +491,7 @@ void __init ltq_soc_init(void)
+ 		clkdev_add_cgu("1e180000.etop", "ephycgu", CGU_EPHY);
+ 		clkdev_add_pmu("1e180000.etop", "ephy", 1, 0, PMU_EPHY);
+ 		clkdev_add_pmu("1e103000.sdio", NULL, 1, 0, PMU_ASE_SDIO);
++		clkdev_add_pmu("1e116000.mei", "dfe", 1, 0, PMU_DFE);
+ 	} else if (of_machine_is_compatible("lantiq,grx390")) {
+ 		clkdev_add_static(ltq_grx390_cpu_hz(), ltq_grx390_fpi_hz(),
+ 				  ltq_grx390_fpi_hz(), ltq_grx390_pp32_hz());
+@@ -512,6 +513,8 @@ void __init ltq_soc_init(void)
+ 			       PMU_PPE_DP | PMU_PPE_TC);
+ 		clkdev_add_pmu("1da00000.usif", "NULL", 1, 0, PMU_USIF);
+ 		clkdev_add_pmu("1f203000.rcu", "gphy", 1, 0, PMU_GPHY);
++		clkdev_add_pmu("1e116000.mei", "afe", 1, 2, PMU_ANALOG_DSL_AFE);
++		clkdev_add_pmu("1e116000.mei", "dfe", 1, 0, PMU_DFE);
+ 	} else if (of_machine_is_compatible("lantiq,vr9")) {
+ 		clkdev_add_static(ltq_vr9_cpu_hz(), ltq_vr9_fpi_hz(),
+ 				ltq_vr9_fpi_hz(), ltq_vr9_pp32_hz());
+@@ -533,6 +536,7 @@ void __init ltq_soc_init(void)
+ 				PMU_PPE_QSB | PMU_PPE_TOP);
+ 		clkdev_add_pmu("1f203000.rcu", "gphy", 1, 0, PMU_GPHY);
+ 		clkdev_add_pmu("1e103000.sdio", NULL, 1, 0, PMU_SDIO);
++		clkdev_add_pmu("1e116000.mei", "dfe", 1, 0, PMU_DFE);
+ 	} else if (of_machine_is_compatible("lantiq,ar9")) {
+ 		clkdev_add_static(ltq_ar9_cpu_hz(), ltq_ar9_fpi_hz(),
+ 				ltq_ar9_fpi_hz(), CLOCK_250M);
+@@ -542,11 +546,13 @@ void __init ltq_soc_init(void)
+ 		clkdev_add_pmu("1e106000.usb", "phy", 1, 0, PMU_USB1_P);
+ 		clkdev_add_pmu("1e180000.etop", "switch", 1, 0, PMU_SWITCH);
+ 		clkdev_add_pmu("1e103000.sdio", NULL, 1, 0, PMU_SDIO);
++		clkdev_add_pmu("1e116000.mei", "dfe", 1, 0, PMU_DFE);
+ 	} else {
+ 		clkdev_add_static(ltq_danube_cpu_hz(), ltq_danube_fpi_hz(),
+ 				ltq_danube_fpi_hz(), ltq_danube_pp32_hz());
+ 		clkdev_add_pmu("1e101000.usb", "ctl", 1, 0, PMU_USB0);
+ 		clkdev_add_pmu("1e101000.usb", "phy", 1, 0, PMU_USB0_P);
+ 		clkdev_add_pmu("1e103000.sdio", NULL, 1, 0, PMU_SDIO);
++		clkdev_add_pmu("1e116000.mei", "dfe", 1, 0, PMU_DFE);
+ 	}
+ }
 -- 
 2.6.1

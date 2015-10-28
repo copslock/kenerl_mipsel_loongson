@@ -1,18 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Oct 2015 23:41:54 +0100 (CET)
-Received: from hauke-m.de ([5.39.93.123]:37645 "EHLO hauke-m.de"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Oct 2015 23:42:14 +0100 (CET)
+Received: from hauke-m.de ([5.39.93.123]:37647 "EHLO hauke-m.de"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27011839AbbJ1WiAP56KO (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S27011840AbbJ1WiAhLsXO (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Wed, 28 Oct 2015 23:38:00 +0100
 Received: from hauke-desktop.fritz.box (p5DE94D64.dip0.t-ipconnect.de [93.233.77.100])
-        by hauke-m.de (Postfix) with ESMTPSA id CB0DA10002F;
-        Wed, 28 Oct 2015 23:37:59 +0100 (CET)
+        by hauke-m.de (Postfix) with ESMTPSA id 2ECA6100037;
+        Wed, 28 Oct 2015 23:38:00 +0100 (CET)
 From:   Hauke Mehrtens <hauke@hauke-m.de>
 To:     ralf@linux-mips.org
 Cc:     blogic@openwrt.org, linux-mips@linux-mips.org,
         Hauke Mehrtens <hauke.mehrtens@lantiq.com>
-Subject: [PATCH 14/15] MIPS: lantiq: add support for xRX220 SoC
-Date:   Wed, 28 Oct 2015 23:37:43 +0100
-Message-Id: <1446071865-21936-15-git-send-email-hauke@hauke-m.de>
+Subject: [PATCH 15/15] MIPS: lantiq: fix check for return value of request_mem_region()
+Date:   Wed, 28 Oct 2015 23:37:44 +0100
+Message-Id: <1446071865-21936-16-git-send-email-hauke@hauke-m.de>
 X-Mailer: git-send-email 2.6.1
 In-Reply-To: <1446071865-21936-1-git-send-email-hauke@hauke-m.de>
 References: <1446071865-21936-1-git-send-email-hauke@hauke-m.de>
@@ -20,7 +20,7 @@ Return-Path: <hauke@hauke-m.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49756
+X-archive-position: 49757
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -41,56 +41,78 @@ From: Hauke Mehrtens <hauke.mehrtens@lantiq.com>
 
 From: Hauke Mehrtens <hauke.mehrtens@lantiq.com>
 
+request_mem_region() returns a pointer and not an integer with an error
+value. A check for "< 0" on a pointer will cause problems, replace it
+with not null checks instead. This was found with sparse.
+
 Signed-off-by: Hauke Mehrtens <hauke.mehrtens@lantiq.com>
 ---
- arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h | 2 ++
- arch/mips/lantiq/xway/prom.c                        | 7 +++++++
- 2 files changed, 9 insertions(+)
+ arch/mips/lantiq/irq.c          |  8 ++++----
+ arch/mips/lantiq/xway/reset.c   |  2 +-
+ arch/mips/lantiq/xway/sysctrl.c | 12 ++++++------
+ 3 files changed, 11 insertions(+), 11 deletions(-)
 
-diff --git a/arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h b/arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h
-index 3ab4e98..dd6005b 100644
---- a/arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h
-+++ b/arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h
-@@ -35,6 +35,7 @@
- #define SOC_ID_VRX268_2		0x00C /* v1.2 */
- #define SOC_ID_GRX288_2		0x00D /* v1.2 */
- #define SOC_ID_GRX282_2		0x00E /* v1.2 */
-+#define SOC_ID_VRX220		0x000
+diff --git a/arch/mips/lantiq/irq.c b/arch/mips/lantiq/irq.c
+index 2c218c3..2e7f60c 100644
+--- a/arch/mips/lantiq/irq.c
++++ b/arch/mips/lantiq/irq.c
+@@ -369,8 +369,8 @@ int __init icu_of_init(struct device_node *node, struct device_node *parent)
+ 		if (of_address_to_resource(node, i, &res))
+ 			panic("Failed to get icu memory range");
  
- #define SOC_ID_ARX362		0x004
- #define SOC_ID_ARX368		0x005
-@@ -55,6 +56,7 @@
- #define SOC_TYPE_AMAZON_SE	0x06
- #define SOC_TYPE_AR10		0x07
- #define SOC_TYPE_GRX390		0x08
-+#define SOC_TYPE_VRX220		0x09
+-		if (request_mem_region(res.start, resource_size(&res),
+-					res.name) < 0)
++		if (!request_mem_region(res.start, resource_size(&res),
++					res.name))
+ 			pr_err("Failed to request icu memory");
  
- /* BOOT_SEL - find what boot media we have */
- #define BS_EXT_ROM		0x0
-diff --git a/arch/mips/lantiq/xway/prom.c b/arch/mips/lantiq/xway/prom.c
-index 6f679f9..a23b77ae 100644
---- a/arch/mips/lantiq/xway/prom.c
-+++ b/arch/mips/lantiq/xway/prom.c
-@@ -21,6 +21,7 @@
- #define SOC_AR9		"AR9"
- #define SOC_GR9		"GRX200"
- #define SOC_VR9		"xRX200"
-+#define SOC_VRX220	"xRX220"
- #define SOC_AR10	"xRX300"
- #define SOC_GRX390	"xRX330"
+ 		ltq_icu_membase[i] = ioremap_nocache(res.start,
+@@ -449,8 +449,8 @@ int __init icu_of_init(struct device_node *node, struct device_node *parent)
+ 		if (ret != exin_avail)
+ 			panic("failed to load external irq resources");
  
-@@ -105,6 +106,12 @@ void __init ltq_soc_detect(struct ltq_soc_info *i)
- 		i->compatible = COMP_VR9;
- 		break;
+-		if (request_mem_region(res.start, resource_size(&res),
+-							res.name) < 0)
++		if (!request_mem_region(res.start, resource_size(&res),
++							res.name))
+ 			pr_err("Failed to request eiu memory");
  
-+	case SOC_ID_VRX220:
-+		i->name = SOC_VRX220;
-+		i->type = SOC_TYPE_VRX220;
-+		i->compatible = COMP_VR9;
-+		break;
-+
- 	case SOC_ID_GRX282_2:
- 	case SOC_ID_GRX288_2:
- 		i->name = SOC_GR9;
+ 		ltq_eiu_membase = ioremap_nocache(res.start,
+diff --git a/arch/mips/lantiq/xway/reset.c b/arch/mips/lantiq/xway/reset.c
+index 1e23cee..55c278f 100644
+--- a/arch/mips/lantiq/xway/reset.c
++++ b/arch/mips/lantiq/xway/reset.c
+@@ -287,7 +287,7 @@ static int __init mips_reboot_setup(void)
+ 	if (of_address_to_resource(ltq_rcu_np, 0, &res))
+ 		panic("Failed to get rcu memory range");
+ 
+-	if (request_mem_region(res.start, resource_size(&res), res.name) < 0)
++	if (!request_mem_region(res.start, resource_size(&res), res.name))
+ 		pr_err("Failed to request rcu memory");
+ 
+ 	ltq_rcu_membase = ioremap_nocache(res.start, resource_size(&res));
+diff --git a/arch/mips/lantiq/xway/sysctrl.c b/arch/mips/lantiq/xway/sysctrl.c
+index 945f867..7ddae3e 100644
+--- a/arch/mips/lantiq/xway/sysctrl.c
++++ b/arch/mips/lantiq/xway/sysctrl.c
+@@ -421,12 +421,12 @@ void __init ltq_soc_init(void)
+ 			of_address_to_resource(np_ebu, 0, &res_ebu))
+ 		panic("Failed to get core resources");
+ 
+-	if ((request_mem_region(res_pmu.start, resource_size(&res_pmu),
+-				res_pmu.name) < 0) ||
+-		(request_mem_region(res_cgu.start, resource_size(&res_cgu),
+-				res_cgu.name) < 0) ||
+-		(request_mem_region(res_ebu.start, resource_size(&res_ebu),
+-				res_ebu.name) < 0))
++	if (!request_mem_region(res_pmu.start, resource_size(&res_pmu),
++				res_pmu.name) ||
++		!request_mem_region(res_cgu.start, resource_size(&res_cgu),
++				res_cgu.name) ||
++		!request_mem_region(res_ebu.start, resource_size(&res_ebu),
++				res_ebu.name))
+ 		pr_err("Failed to request core resources");
+ 
+ 	pmu_membase = ioremap_nocache(res_pmu.start, resource_size(&res_pmu));
 -- 
 2.6.1

@@ -1,18 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Oct 2015 23:39:21 +0100 (CET)
-Received: from hauke-m.de ([5.39.93.123]:37615 "EHLO hauke-m.de"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Oct 2015 23:39:39 +0100 (CET)
+Received: from hauke-m.de ([5.39.93.123]:37620 "EHLO hauke-m.de"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27011818AbbJ1Wh4ef6LO (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 28 Oct 2015 23:37:56 +0100
+        id S27011822AbbJ1Wh5D00CO (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 28 Oct 2015 23:37:57 +0100
 Received: from hauke-desktop.fritz.box (p5DE94D64.dip0.t-ipconnect.de [93.233.77.100])
-        by hauke-m.de (Postfix) with ESMTPSA id 1D7C0100030;
+        by hauke-m.de (Postfix) with ESMTPSA id 853BD100031;
         Wed, 28 Oct 2015 23:37:56 +0100 (CET)
 From:   Hauke Mehrtens <hauke@hauke-m.de>
 To:     ralf@linux-mips.org
 Cc:     blogic@openwrt.org, linux-mips@linux-mips.org,
         Hauke Mehrtens <hauke.mehrtens@lantiq.com>
-Subject: [PATCH 05/15] MIPS: lantiq: add clock detection for grx390 and ar10
-Date:   Wed, 28 Oct 2015 23:37:34 +0100
-Message-Id: <1446071865-21936-6-git-send-email-hauke@hauke-m.de>
+Subject: [PATCH 06/15] MIPS: lantiq: deactivate most of the devices by default
+Date:   Wed, 28 Oct 2015 23:37:35 +0100
+Message-Id: <1446071865-21936-7-git-send-email-hauke@hauke-m.de>
 X-Mailer: git-send-email 2.6.1
 In-Reply-To: <1446071865-21936-1-git-send-email-hauke@hauke-m.de>
 References: <1446071865-21936-1-git-send-email-hauke@hauke-m.de>
@@ -20,7 +20,7 @@ Return-Path: <hauke@hauke-m.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49747
+X-archive-position: 49748
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -41,218 +41,112 @@ From: Hauke Mehrtens <hauke.mehrtens@lantiq.com>
 
 From: Hauke Mehrtens <hauke.mehrtens@lantiq.com>
 
-This add detection of some clocks on the ar10 and grx390.
+When the SoC starts up most of the devices should be deactivated by the
+PMU, they should be activated when they get used by their drivers. Some
+devices should not get deactivate at startup like the serial, register
+them in a special way.
 
 Signed-off-by: Hauke Mehrtens <hauke.mehrtens@lantiq.com>
 ---
- arch/mips/lantiq/clk.h      |  11 ++++
- arch/mips/lantiq/xway/clk.c | 157 +++++++++++++++++++++++++++++++++++++++++++-
- 2 files changed, 167 insertions(+), 1 deletion(-)
+ arch/mips/lantiq/xway/sysctrl.c | 46 ++++++++++++++++++++++-------------------
+ 1 file changed, 25 insertions(+), 21 deletions(-)
 
-diff --git a/arch/mips/lantiq/clk.h b/arch/mips/lantiq/clk.h
-index 101afcb..7376ce8 100644
---- a/arch/mips/lantiq/clk.h
-+++ b/arch/mips/lantiq/clk.h
-@@ -34,12 +34,15 @@
- #define CLOCK_288M	288888888
- #define CLOCK_300M	300000000
- #define CLOCK_333M	333333333
-+#define CLOCK_360M	360000000
- #define CLOCK_393M	393215332
- #define CLOCK_400M	400000000
- #define CLOCK_432M	432000000
- #define CLOCK_450M	450000000
- #define CLOCK_500M	500000000
- #define CLOCK_600M	600000000
-+#define CLOCK_666M	666666666
-+#define CLOCK_720M	720000000
- 
- /* clock out speeds */
- #define CLOCK_32_768K	32768
-@@ -82,4 +85,12 @@ extern unsigned long ltq_vr9_cpu_hz(void);
- extern unsigned long ltq_vr9_fpi_hz(void);
- extern unsigned long ltq_vr9_pp32_hz(void);
- 
-+extern unsigned long ltq_ar10_cpu_hz(void);
-+extern unsigned long ltq_ar10_fpi_hz(void);
-+extern unsigned long ltq_ar10_pp32_hz(void);
-+
-+extern unsigned long ltq_grx390_cpu_hz(void);
-+extern unsigned long ltq_grx390_fpi_hz(void);
-+extern unsigned long ltq_grx390_pp32_hz(void);
-+
- #endif
-diff --git a/arch/mips/lantiq/xway/clk.c b/arch/mips/lantiq/xway/clk.c
-index ba58ec8..619bff7 100644
---- a/arch/mips/lantiq/xway/clk.c
-+++ b/arch/mips/lantiq/xway/clk.c
-@@ -27,7 +27,7 @@ static unsigned int ram_clocks[] = {
- 
- /* vr9, ar10/grx390 clock */
- #define CGU_SYS_XRX		0x0c
--#define CGU_IF_CLK_VR9		0x24
-+#define CGU_IF_CLK_AR10		0x24
- 
- unsigned long ltq_danube_fpi_hz(void)
- {
-@@ -194,3 +194,158 @@ unsigned long ltq_vr9_pp32_hz(void)
- 
- 	return clk;
+diff --git a/arch/mips/lantiq/xway/sysctrl.c b/arch/mips/lantiq/xway/sysctrl.c
+index 71b6c1e..01a4544 100644
+--- a/arch/mips/lantiq/xway/sysctrl.c
++++ b/arch/mips/lantiq/xway/sysctrl.c
+@@ -285,8 +285,8 @@ static int clkout_enable(struct clk *clk)
  }
-+
-+unsigned long ltq_ar10_cpu_hz(void)
-+{
-+	unsigned int clksys;
-+	int cpu_fs = (ltq_cgu_r32(CGU_SYS_XRX) >> 8) & 0x1;
-+	int freq_div = (ltq_cgu_r32(CGU_SYS_XRX) >> 4) & 0x7;
-+
-+	switch (cpu_fs) {
-+	case 0:
-+		clksys = CLOCK_500M;
-+		break;
-+	case 1:
-+		clksys = CLOCK_600M;
-+		break;
-+	default:
-+		clksys = CLOCK_500M;
-+		break;
+ 
+ /* manage the clock gates via PMU */
+-static void clkdev_add_pmu(const char *dev, const char *con,
+-					unsigned int module, unsigned int bits)
++static void clkdev_add_pmu(const char *dev, const char *con, bool deactivate,
++			   unsigned int module, unsigned int bits)
+ {
+ 	struct clk *clk = kzalloc(sizeof(struct clk), GFP_KERNEL);
+ 
+@@ -297,6 +297,10 @@ static void clkdev_add_pmu(const char *dev, const char *con,
+ 	clk->disable = pmu_disable;
+ 	clk->module = module;
+ 	clk->bits = bits;
++	if (deactivate) {
++		/* Disable it during the initialitin. Module should enable when used */
++		pmu_disable(clk);
 +	}
-+
-+	switch (freq_div) {
-+	case 0:
-+		return clksys;
-+	case 1:
-+		return clksys >> 1;
-+	case 2:
-+		return clksys >> 2;
-+	default:
-+		return clksys;
-+	}
-+}
-+
-+unsigned long ltq_ar10_fpi_hz(void)
-+{
-+	int freq_fpi = (ltq_cgu_r32(CGU_IF_CLK_AR10) >> 25) & 0xf;
-+
-+	switch (freq_fpi) {
-+	case 1:
-+		return CLOCK_300M;
-+	case 5:
-+		return CLOCK_250M;
-+	case 2:
-+		return CLOCK_150M;
-+	case 6:
-+		return CLOCK_125M;
-+
-+	default:
-+		return CLOCK_125M;
-+	}
-+}
-+
-+unsigned long ltq_ar10_pp32_hz(void)
-+{
-+	unsigned int clksys = (ltq_cgu_r32(CGU_SYS) >> 16) & 0x7;
-+	unsigned long clk;
-+
-+	switch (clksys) {
-+	case 1:
-+		clk = CLOCK_250M;
-+		break;
-+	case 4:
-+		clk = CLOCK_400M;
-+		break;
-+	default:
-+		clk = CLOCK_250M;
-+		break;
-+	}
-+
-+	return clk;
-+}
-+
-+unsigned long ltq_grx390_cpu_hz(void)
-+{
-+	unsigned int clksys;
-+	int cpu_fs = ((ltq_cgu_r32(CGU_SYS_XRX) >> 9) & 0x3);
-+	int freq_div = ((ltq_cgu_r32(CGU_SYS_XRX) >> 4) & 0x7);
-+
-+	switch (cpu_fs) {
-+	case 0:
-+		clksys = CLOCK_600M;
-+		break;
-+	case 1:
-+		clksys = CLOCK_666M;
-+		break;
-+	case 2:
-+		clksys = CLOCK_720M;
-+		break;
-+	default:
-+		clksys = CLOCK_600M;
-+		break;
-+	}
-+
-+	switch (freq_div) {
-+	case 0:
-+		return clksys;
-+	case 1:
-+		return clksys >> 1;
-+	case 2:
-+		return clksys >> 2;
-+	default:
-+		return clksys;
-+	}
-+}
-+
-+unsigned long ltq_grx390_fpi_hz(void)
-+{
-+	/* fpi clock is derived from ddr_clk */
-+	unsigned int clksys;
-+	int cpu_fs = ((ltq_cgu_r32(CGU_SYS_XRX) >> 9) & 0x3);
-+	int freq_div = ((ltq_cgu_r32(CGU_SYS_XRX)) & 0x7);
-+	switch (cpu_fs) {
-+	case 0:
-+		clksys = CLOCK_600M;
-+		break;
-+	case 1:
-+		clksys = CLOCK_666M;
-+		break;
-+	case 2:
-+		clksys = CLOCK_720M;
-+		break;
-+	default:
-+		clksys = CLOCK_600M;
-+		break;
-+	}
-+
-+	switch (freq_div) {
-+	case 1:
-+		return clksys >> 1;
-+	case 2:
-+		return clksys >> 2;
-+	default:
-+		return clksys >> 1;
-+	}
-+}
-+
-+unsigned long ltq_grx390_pp32_hz(void)
-+{
-+	unsigned int clksys = (ltq_cgu_r32(CGU_SYS) >> 16) & 0x7;
-+	unsigned long clk;
-+
-+	switch (clksys) {
-+	case 1:
-+		clk = CLOCK_250M;
-+		break;
-+	case 2:
-+		clk = CLOCK_432M;
-+		break;
-+	case 4:
-+		clk = CLOCK_400M;
-+		break;
-+	default:
-+		clk = CLOCK_250M;
-+		break;
-+	}
-+	return clk;
-+}
+ 	clkdev_add(&clk->cl);
+ }
+ 
+@@ -415,13 +419,13 @@ void __init ltq_soc_init(void)
+ 	ltq_ebu_w32(ltq_ebu_r32(LTQ_EBU_BUSCON0) & ~EBU_WRDIS, LTQ_EBU_BUSCON0);
+ 
+ 	/* add our generic xway clocks */
+-	clkdev_add_pmu("10000000.fpi", NULL, 0, PMU_FPI);
+-	clkdev_add_pmu("1e100400.serial", NULL, 0, PMU_ASC0);
+-	clkdev_add_pmu("1e100a00.gptu", NULL, 0, PMU_GPT);
+-	clkdev_add_pmu("1e100bb0.stp", NULL, 0, PMU_STP);
+-	clkdev_add_pmu("1e104100.dma", NULL, 0, PMU_DMA);
+-	clkdev_add_pmu("1e100800.spi", NULL, 0, PMU_SPI);
+-	clkdev_add_pmu("1e105300.ebu", NULL, 0, PMU_EBU);
++	clkdev_add_pmu("10000000.fpi", NULL, 0, 0, PMU_FPI);
++	clkdev_add_pmu("1e100400.serial", NULL, 0, 0, PMU_ASC0);
++	clkdev_add_pmu("1e100a00.gptu", NULL, 1, 0, PMU_GPT);
++	clkdev_add_pmu("1e100bb0.stp", NULL, 1, 0, PMU_STP);
++	clkdev_add_pmu("1e104100.dma", NULL, 1, 0, PMU_DMA);
++	clkdev_add_pmu("1e100800.spi", NULL, 1, 0, PMU_SPI);
++	clkdev_add_pmu("1e105300.ebu", NULL, 0, 0, PMU_EBU);
+ 	clkdev_add_clkout();
+ 
+ 	/* add the soc dependent clocks */
+@@ -429,11 +433,11 @@ void __init ltq_soc_init(void)
+ 		ifccr = CGU_IFCCR_VR9;
+ 		pcicr = CGU_PCICR_VR9;
+ 	} else {
+-		clkdev_add_pmu("1e180000.etop", NULL, 0, PMU_PPE);
++		clkdev_add_pmu("1e180000.etop", NULL, 1, 0, PMU_PPE);
+ 	}
+ 
+ 	if (!of_machine_is_compatible("lantiq,ase")) {
+-		clkdev_add_pmu("1e100c00.serial", NULL, 0, PMU_ASC1);
++		clkdev_add_pmu("1e100c00.serial", NULL, 0, 0, PMU_ASC1);
+ 		clkdev_add_pci();
+ 	}
+ 
+@@ -445,25 +449,25 @@ void __init ltq_soc_init(void)
+ 			clkdev_add_static(CLOCK_133M, CLOCK_133M,
+ 						CLOCK_133M, CLOCK_133M);
+ 		clkdev_add_cgu("1e180000.etop", "ephycgu", CGU_EPHY),
+-		clkdev_add_pmu("1e180000.etop", "ephy", 0, PMU_EPHY);
++		clkdev_add_pmu("1e180000.etop", "ephy", 1, 0, PMU_EPHY);
+ 	} else if (of_machine_is_compatible("lantiq,vr9")) {
+ 		clkdev_add_static(ltq_vr9_cpu_hz(), ltq_vr9_fpi_hz(),
+ 				ltq_vr9_fpi_hz(), ltq_vr9_pp32_hz());
+-		clkdev_add_pmu("1d900000.pcie", "phy", 1, PMU1_PCIE_PHY);
+-		clkdev_add_pmu("1d900000.pcie", "bus", 0, PMU_PCIE_CLK);
+-		clkdev_add_pmu("1d900000.pcie", "msi", 1, PMU1_PCIE_MSI);
+-		clkdev_add_pmu("1d900000.pcie", "pdi", 1, PMU1_PCIE_PDI);
+-		clkdev_add_pmu("1d900000.pcie", "ctl", 1, PMU1_PCIE_CTL);
+-		clkdev_add_pmu("1d900000.pcie", "ahb", 0, PMU_AHBM | PMU_AHBS);
+-		clkdev_add_pmu("1e108000.eth", NULL, 0,
++		clkdev_add_pmu("1d900000.pcie", "phy", 1, 1, PMU1_PCIE_PHY);
++		clkdev_add_pmu("1d900000.pcie", "bus", 1, 0, PMU_PCIE_CLK);
++		clkdev_add_pmu("1d900000.pcie", "msi", 1, 1, PMU1_PCIE_MSI);
++		clkdev_add_pmu("1d900000.pcie", "pdi", 1, 1, PMU1_PCIE_PDI);
++		clkdev_add_pmu("1d900000.pcie", "ctl", 1, 1, PMU1_PCIE_CTL);
++		clkdev_add_pmu("1d900000.pcie", "ahb", 1, 0, PMU_AHBM | PMU_AHBS);
++		clkdev_add_pmu("1e108000.eth", NULL, 1, 0,
+ 				PMU_SWITCH | PMU_PPE_DPLUS | PMU_PPE_DPLUM |
+ 				PMU_PPE_EMA | PMU_PPE_TC | PMU_PPE_SLL01 |
+ 				PMU_PPE_QSB | PMU_PPE_TOP);
+-		clkdev_add_pmu("1f203000.rcu", "gphy", 0, PMU_GPHY);
++		clkdev_add_pmu("1f203000.rcu", "gphy", 1, 0, PMU_GPHY);
+ 	} else if (of_machine_is_compatible("lantiq,ar9")) {
+ 		clkdev_add_static(ltq_ar9_cpu_hz(), ltq_ar9_fpi_hz(),
+ 				ltq_ar9_fpi_hz(), CLOCK_250M);
+-		clkdev_add_pmu("1e180000.etop", "switch", 0, PMU_SWITCH);
++		clkdev_add_pmu("1e180000.etop", "switch", 1, 0, PMU_SWITCH);
+ 	} else {
+ 		clkdev_add_static(ltq_danube_cpu_hz(), ltq_danube_fpi_hz(),
+ 				ltq_danube_fpi_hz(), ltq_danube_pp32_hz());
 -- 
 2.6.1

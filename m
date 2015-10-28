@@ -1,67 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Oct 2015 11:20:14 +0100 (CET)
-Received: from mail-wi0-f174.google.com ([209.85.212.174]:33239 "EHLO
-        mail-wi0-f174.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27009740AbbJ1KUMf1J4F (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 28 Oct 2015 11:20:12 +0100
-Received: by wijp11 with SMTP id p11so249119370wij.0
-        for <linux-mips@linux-mips.org>; Wed, 28 Oct 2015 03:20:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=alex-smith_me_uk.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        bh=zrpCIURtmK0bz21hjdeVooxMBV9kDwnjEbRdjrP/IFY=;
-        b=d86E/haE2riTnHCselWMuo3Hg75aXCNsX+fDSTn7hYmVbir5z0lJOyG8xgFLVl6wlf
-         /mn9u8XYFlFHEt6Fr0VUsM3metCHXMEFTxDdgpWed2c1wWhrVk35yBPqoEOxHdTPol/9
-         KpVxS60isb9nb/TMgfYSTweueb976dy5S6h3N7C4bAkzQ3Y89lr6Z+g1a7Dnt13GGPfU
-         bbYep2gYhRm4xs0V7vFXUnxol0ma2zTbnZqvHOTALnHmjQL1a2Ge3AVpWf4qXfH98rMu
-         B370wA7usouhJysj2sgm7tKlm7ZBrnrAjmp3LB9Pn1riUaTLkw7uFhIIfuIwIOCwUyUp
-         /r3Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:in-reply-to:references:date
-         :message-id:subject:from:to:cc:content-type;
-        bh=zrpCIURtmK0bz21hjdeVooxMBV9kDwnjEbRdjrP/IFY=;
-        b=TojlubGHdHn11dMMIkDZsN1vXFrSn3SQqJNSRDKyhE5gfD4C4WZtAmrI2ZxKlk/8nH
-         +KgP7yDkmPqZ7wdIp8umBxzdbydWDJMqevMnnJXvP9cZvpbLy8jo7xa6EaS9VH5zXQLa
-         ju0rJZiTEl7TRK5Of+tuI7zmxNSy39E37FfKDYf7+UiOG5tfY6coZ8i6B5DlL5m4a4J/
-         GLnlhLBJn+yqZCurVQA1xefkCpySdH2ZN94nwgFBU4S+NX1k7fi4HJIk7VYyHkxpDLeK
-         fBDz+UhWtVPw0jPU5zq6KOLBzUPlcc88IDJaBiv6DBwVlueNRqBwcHlebipwl9iZj87y
-         1Lgg==
-X-Gm-Message-State: ALoCoQm5yAjmRBl8watMyOrow0E5up3JmZXAu6UmzwaIqoc197kPSLkTZl538ZLEziP8mNw4cOUF
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Oct 2015 14:37:50 +0100 (CET)
+Received: from bastet.se.axis.com ([195.60.68.11]:44432 "EHLO
+        bastet.se.axis.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27011233AbbJ1NhskDkx5 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 28 Oct 2015 14:37:48 +0100
+Received: from localhost (localhost [127.0.0.1])
+        by bastet.se.axis.com (Postfix) with ESMTP id 4046C1819A;
+        Wed, 28 Oct 2015 14:37:42 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at bastet.se.axis.com
+Received: from bastet.se.axis.com ([IPv6:::ffff:127.0.0.1])
+        by localhost (bastet.se.axis.com [::ffff:127.0.0.1]) (amavisd-new, port 10024)
+        with LMTP id omZQ5L9J5cw2; Wed, 28 Oct 2015 14:37:39 +0100 (CET)
+Received: from boulder.se.axis.com (boulder.se.axis.com [10.0.2.104])
+        by bastet.se.axis.com (Postfix) with ESMTP id 22B041819E;
+        Wed, 28 Oct 2015 14:37:38 +0100 (CET)
+Received: from boulder.se.axis.com (localhost [127.0.0.1])
+        by postfix.imss71 (Postfix) with ESMTP id 0B806DE;
+        Wed, 28 Oct 2015 14:37:38 +0100 (CET)
+Received: from thoth.se.axis.com (thoth.se.axis.com [10.0.2.173])
+        by boulder.se.axis.com (Postfix) with ESMTP id F3357A5;
+        Wed, 28 Oct 2015 14:37:37 +0100 (CET)
+Received: from xmail2.se.axis.com (xmail2.se.axis.com [10.0.5.74])
+        by thoth.se.axis.com (Postfix) with ESMTP id F002D134059;
+        Wed, 28 Oct 2015 14:37:37 +0100 (CET)
+Received: from [10.94.49.1] (10.94.49.1) by xmail2.se.axis.com (10.0.5.74)
+ with Microsoft SMTP Server (TLS) id 8.3.342.0; Wed, 28 Oct 2015 14:37:37
+ +0100
+Message-ID: <5630CFA1.4080207@axis.com>
+Date:   Wed, 28 Oct 2015 14:37:37 +0100
+From:   Niklas Cassel <niklas.cassel@axis.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Icedove/31.8.0
 MIME-Version: 1.0
-X-Received: by 10.194.57.171 with SMTP id j11mr22365969wjq.94.1446027607065;
- Wed, 28 Oct 2015 03:20:07 -0700 (PDT)
-Received: by 10.27.11.144 with HTTP; Wed, 28 Oct 2015 03:20:06 -0700 (PDT)
-In-Reply-To: <562FF15A.1050507@imgtec.com>
-References: <1445417864-31453-1-git-send-email-markos.chandras@imgtec.com>
-        <5629904A.2070400@imgtec.com>
-        <20151027144748.GA23785@linux-mips.org>
-        <562FE29C.8040106@imgtec.com>
-        <562FE678.2030307@gmail.com>
-        <562FE96C.3070002@imgtec.com>
-        <562FF05A.508@gmail.com>
-        <562FF15A.1050507@imgtec.com>
-Date:   Wed, 28 Oct 2015 10:20:06 +0000
-Message-ID: <CAOFt0_AFnR0MF2e8rRXhz_wkiGbL2VTFy=AXpcmWTZ9_bYA=VQ@mail.gmail.com>
-Subject: Re: [v3, 3/3] MIPS: VDSO: Add implementations of gettimeofday() and clock_gettime()
-From:   Alex Smith <alex@alex-smith.me.uk>
-To:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
-        David Daney <ddaney.cavm@gmail.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Markos Chandras <markos.chandras@imgtec.com>,
-        linux-mips <linux-mips@linux-mips.org>,
-        Alex Smith <alex.smith@imgtec.com>,
-        linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <alex@alex-smith.me.uk>
+To:     <markos.chandras@imgtec.com>
+CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        <wuzhangjin@gmail.com>, <rostedt@goodmis.org>
+Subject: mips ftrace_init splat
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Return-Path: <niklas.cassel@axis.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49729
+X-archive-position: 49730
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alex@alex-smith.me.uk
+X-original-sender: niklas.cassel@axis.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -74,34 +57,68 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 27 October 2015 at 20:46, Leonid Yegoshin <Leonid.Yegoshin@imgtec.com> wrote:
-> I doesn't work in this way - a standard CP0_counter synchronization code
-> takes up to hundred milliseconds to complete with running some loop cycles
-> on two CPUs. It is clearly seen in Malta FPGA board.
->
-> Non-standard (one way sync, write CP0_counter value to memory in CPU0 before
-> CPU1 wakeup) is not precise because it can't predict how much time the CPU1
-> can spent in wakeup. Just because of HW, for exam, and SW next.
->
-> I believe, until this issue is fixed the R4K only CPU should be excluded
-> from VDSO timing acceleration.
+Hello.
 
-The VDSO code will currently use the CP0 count whenever the kernel is
-using it as its primary clocksource, aside from the case where RDHWR
-is broken as it is on old QEMUs.
+I get the following splat when booting a kernel with CONFIG_DYNAMIC_FTRACE on a mips
+without a Coherency Manager.
 
-Maybe I'm missing something but I don't see anything in the generic
-timekeeping code that handles the same clocksource being
-unsynchronised or running at a different rate on different CPUs.
 
-Given that, if you think there is an issue that prevents the VDSO from
-using it then that would surely affect the kernel as well and needs to
-be fixed separately?
+[    0.111734] ------------[ cut here ]------------
+[    0.116268] WARNING: CPU: 0 PID: 0 at kernel/smp.c:417 smp_call_function_many+0x124/0x370()
+[    0.124550] Modules linked in:
+[    0.127603] CPU: 0 PID: 0 Comm: swapper/0 Not tainted 4.3.0-rc7 #10
+[    0.133838] Stack : 00000000 00000000 8081663a 00000037 80810000 00000000 0000000b 00000000
+	  8069a4e8 80739ac7 80739fc0 00000000 00000000 80804b40 8071de60 80736638
+	  00000000 800909dc 8074832c 80748330 000001a1 00000000 806a2a40 8071dd6c
+	  8071de60 80114824 00000000 800909dc 80810000 00000082 8071dd6c 8069a4e8
+	  00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+	  ...
+[    0.169252] Call Trace:
+[    0.171700] [<80020394>] show_stack+0x94/0xb0
+[    0.176049] [<8032c3a4>] dump_stack+0x64/0x90
+[    0.180394] [<80041e7c>] warn_slowpath_common+0xa4/0xe0
+[    0.185581] [<80041edc>] warn_slowpath_null+0x24/0x30
+[    0.190615] [<800b9ea4>] smp_call_function_many+0x124/0x370
+[    0.196172] [<8003c00c>] r4k_flush_icache_range+0x26c/0x274
+[    0.201732] [<80025310>] ftrace_modify_code+0x30/0x50
+[    0.206773] [<80799d88>] ftrace_dyn_arch_init+0x58/0x6c
+[    0.211976] [<807a31e4>] ftrace_init+0x24/0x134
+[    0.216481] [<80793cb0>] start_kernel+0x50c/0x530
+[    0.221161] 
+[    0.222700] ---[ end trace cb88537fdc8fa200 ]---
+[    0.227370] ftrace: allocating 17221 entries in 34 pages
 
-If it really is necessary to prevent the VDSO from using a certain
-clocksource even though the kernel is using it, it should be a simple
-matter of setting clocksource.archdata.vdso_clock_mode to
-VDSO_CLOCK_NONE. This is how this patch stops it using the CP0 count
-when RDHWR is broken.
 
-Alex
+the splat started showing up after the following patch:
+
+cccf34e9411c ("MIPS: c-r4k: Fix cache flushing for MT cores")
+
+Looking at the call trace, the kernel has just started (only CPU0 running),
+and ftrace_init is called.
+
+ftrace_init -> local_irq_save -> ftrace_dyn_arch_init ->
+ftrace_modify_code -> flush_icache_range -> r4k_flush_icache_range ->
+r4k_on_each_cpu(local_r4k_flush_icache_range_ipi, &args);
+
+r4k_on_each_cpu calls (since the patch above) smp_call_function_many,
+with in turn has a WARN_ON_ONCE if irqs_disabled.
+
+
+One could replace flush_icache_range with flush_icache_all in all
+mips ftrace_modify_code variants, which would make the splat go away,
+but is this performance decrease acceptable?
+
+I also found an old mail mentioning this problem
+http://www.linux-mips.org/archives/linux-mips/2010-08/msg00176.html
+
+
+Interestingly, mips appears to be the only arch which implements
+ftrace_dyn_arch_init, all others just "return 0", so mips is the only arch
+that sends IPI:s in ftrace_dyn_arch_init.
+
+I'm not sure, but I think that ftrace_init -> ftrace_process_locs
+local_irq_save ->  ftrace_update_code -> __ftrace_replace_code ->
+ftrace_make_nop -> ftrace_modify_code -> flush_icache_range
+is also possible during start up,
+so refactoring away ftrace_dyn_arch_init probably won't
+make sure that we don't get the splat anymore.

@@ -1,26 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Oct 2015 20:15:14 +0100 (CET)
-Received: from hauke-m.de ([5.39.93.123]:38267 "EHLO hauke-m.de"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Oct 2015 20:16:11 +0100 (CET)
+Received: from hauke-m.de ([5.39.93.123]:38273 "EHLO hauke-m.de"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27010973AbbJ2TPMvyyZE (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 29 Oct 2015 20:15:12 +0100
+        id S27010973AbbJ2TQGcTkRE (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 29 Oct 2015 20:16:06 +0100
 Received: from hauke-desktop.fritz.box (p5DE94E6C.dip0.t-ipconnect.de [93.233.78.108])
-        by hauke-m.de (Postfix) with ESMTPSA id 00293100029;
-        Thu, 29 Oct 2015 20:15:11 +0100 (CET)
+        by hauke-m.de (Postfix) with ESMTPSA id 0801F100029;
+        Thu, 29 Oct 2015 20:16:06 +0100 (CET)
 From:   Hauke Mehrtens <hauke@hauke-m.de>
 To:     ralf@linux-mips.org
 Cc:     blogic@openwrt.org, linux-mips@linux-mips.org,
         Hauke Mehrtens <hauke.mehrtens@lantiq.com>
-Subject: [PATCH please merge into original 01/15] MIPS: lantiq: add locking for PMU register and check status afterwards
-Date:   Thu, 29 Oct 2015 20:15:03 +0100
-Message-Id: <1446146103-17178-1-git-send-email-hauke@hauke-m.de>
+Subject: [PATCH please merge into original 03/15] MIPS: lantiq: rename CGU_SYS_VR9 register
+Date:   Thu, 29 Oct 2015 20:15:59 +0100
+Message-Id: <1446146159-17228-1-git-send-email-hauke@hauke-m.de>
 X-Mailer: git-send-email 2.6.1
-In-Reply-To: <1446071865-21936-2-git-send-email-hauke@hauke-m.de>
-References: <1446071865-21936-2-git-send-email-hauke@hauke-m.de>
+In-Reply-To: <1446071865-21936-4-git-send-email-hauke@hauke-m.de>
+References: <1446071865-21936-4-git-send-email-hauke@hauke-m.de>
 Return-Path: <hauke@hauke-m.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49764
+X-archive-position: 49765
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -39,29 +39,25 @@ X-list: linux-mips
 
 From: Hauke Mehrtens <hauke.mehrtens@lantiq.com>
 
-The PMU register are accessed in a non atomic way and they could be
-accessed by different threads simultaneously, which could cause
-problems, this patch adds locking around the PMU registers. In
-addition this patch makes the function deactivating the PMU register
-wait till this setting is applied.
+This register is also used on other SoCs.
 
 Signed-off-by: Hauke Mehrtens <hauke.mehrtens@lantiq.com>
 ---
- arch/mips/lantiq/xway/sysctrl.c | 2 ++
+ arch/mips/lantiq/xway/clk.c | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/arch/mips/lantiq/xway/sysctrl.c b/arch/mips/lantiq/xway/sysctrl.c
-index c73ea3f..7c2ddbd 100644
---- a/arch/mips/lantiq/xway/sysctrl.c
-+++ b/arch/mips/lantiq/xway/sysctrl.c
+diff --git a/arch/mips/lantiq/xway/clk.c b/arch/mips/lantiq/xway/clk.c
+index 619bff7..7aa4387 100644
+--- a/arch/mips/lantiq/xway/clk.c
++++ b/arch/mips/lantiq/xway/clk.c
 @@ -4,6 +4,8 @@
   *  by the Free Software Foundation.
   *
-  *  Copyright (C) 2011-2012 John Crispin <blogic@openwrt.org>
+  *  Copyright (C) 2010 John Crispin <blogic@openwrt.org>
 + *  Copyright (C) 2013 Lei Chuanhua <Chuanhua.lei@lantiq.com>
 + *  Copyright (C) 2015 Hauke Mehrtens <hauke.mehrtens@lantiq.com>
   */
  
- #include <linux/ioport.h>
+ #include <linux/io.h>
 -- 
 2.6.1

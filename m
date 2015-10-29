@@ -1,40 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Oct 2015 23:35:14 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:52469 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27011797AbbJ2WfMtdd1D (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 29 Oct 2015 23:35:12 +0100
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.15.2/8.14.8) with ESMTP id t9TMZBAa013466;
-        Thu, 29 Oct 2015 23:35:11 +0100
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.15.2/8.15.2/Submit) id t9TMZBHJ013465;
-        Thu, 29 Oct 2015 23:35:11 +0100
-Date:   Thu, 29 Oct 2015 23:35:11 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Matthew Fortune <Matthew.Fortune@imgtec.com>
-Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Oct 2015 23:54:51 +0100 (CET)
+Received: from emh06.mail.saunalahti.fi ([62.142.5.116]:46239 "EHLO
+        emh06.mail.saunalahti.fi" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011838AbbJ2WytyaJGD (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 29 Oct 2015 23:54:49 +0100
+Received: from localhost.localdomain (85-76-112-16-nat.elisa-mobile.fi [85.76.112.16])
+        by emh06.mail.saunalahti.fi (Postfix) with ESMTP id 237E36996E;
+        Fri, 30 Oct 2015 00:54:49 +0200 (EET)
+From:   Aaro Koskinen <aaro.koskinen@iki.fi>
+To:     linux-mips@linux-mips.org,
+        Matthew Fortune <Matthew.Fortune@imgtec.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
         David Daney <ddaney.cavm@gmail.com>
-Subject: Re: old OCTEON bootloaders and .MIPS.abiflags
-Message-ID: <20151029223511.GM26009@linux-mips.org>
-References: <20151028195436.GB1838@blackmetal.musicnaut.iki.fi>
- <6D39441BF12EF246A7ABCE6654B0235361C6AA6F@LEMAIL01.le.imgtec.org>
- <20151029213544.GL26009@linux-mips.org>
- <6D39441BF12EF246A7ABCE6654B0235361C6CD52@LEMAIL01.le.imgtec.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6D39441BF12EF246A7ABCE6654B0235361C6CD52@LEMAIL01.le.imgtec.org>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <ralf@linux-mips.org>
+Subject: [PATCH v2 1/2] MIPS: vmlinux: discard .MIPS.abiflags
+Date:   Fri, 30 Oct 2015 00:54:47 +0200
+Message-Id: <1446159288-22154-1-git-send-email-aaro.koskinen@iki.fi>
+X-Mailer: git-send-email 2.4.0
+Return-Path: <aaro.koskinen@iki.fi>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49772
+X-archive-position: 49773
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: aaro.koskinen@iki.fi
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,18 +36,62 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Oct 29, 2015 at 10:15:01PM +0000, Matthew Fortune wrote:
+Discard .MIPS.abiflags from vmlinux. It's not needed and will cause
+issues e.g. with old OCTEON bootloaders that cannot tolerate
+additional program headers.
 
-> >From the first implementation of .MIPS.abiflags the linker does not invent this section
-> other than by merging input sections called .MIPS.abiflags so if the input sections
-> are DISCARD'd then you will never see a .MIPS.abiflags output section nor the associated
-> program header.
-> 
-> I'm 99% sure of the above.
+Before the patch:
 
-Great.
+$ readelf --program-headers octeon-vmlinux
 
-Aaro is going to resubmit this patch with some additional changes suggested
-by David Daney on IRC so I'm going to drop this patch.
+Elf file type is EXEC (Executable file)
+Entry point 0xffffffff815d09d0
+There are 3 program headers, starting at offset 64
 
-  Ralf
+Program Headers:
+  Type           Offset             VirtAddr           PhysAddr
+                 FileSiz            MemSiz              Flags  Align
+  ABIFLAGS       0x00000000005e77f0 0xffffffff816e67f0 0xffffffff816e67f0
+                 0x0000000000000018 0x0000000000000018  R      8
+  LOAD           0x0000000000001000 0xffffffff81100000 0xffffffff81100000
+                 0x0000000000b57f80 0x0000000001b86360  RWE    1000
+  NOTE           0x00000000004e02e0 0xffffffff815df2e0 0xffffffff815df2e0
+                 0x0000000000000024 0x0000000000000024  R      4
+
+After the patch:
+
+$ readelf --program-headers octeon-vmlinux
+
+Elf file type is EXEC (Executable file)
+Entry point 0xffffffff815d09d0
+There are 2 program headers, starting at offset 64
+
+Program Headers:
+  Type           Offset             VirtAddr           PhysAddr
+                 FileSiz            MemSiz              Flags  Align
+  LOAD           0x0000000000001000 0xffffffff81100000 0xffffffff81100000
+                 0x0000000000b57f80 0x0000000001b86360  RWE    1000
+  NOTE           0x00000000004e02e0 0xffffffff815df2e0 0xffffffff815df2e0
+                 0x0000000000000024 0x0000000000000024  R      4
+
+Suggested-by: Matthew Fortune <matthew.fortune@imgtec.com>
+Suggested-by: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+---
+ arch/mips/kernel/vmlinux.lds.S | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/mips/kernel/vmlinux.lds.S b/arch/mips/kernel/vmlinux.lds.S
+index 07d32a4..06632d6 100644
+--- a/arch/mips/kernel/vmlinux.lds.S
++++ b/arch/mips/kernel/vmlinux.lds.S
+@@ -181,6 +181,7 @@ SECTIONS
+ 	DISCARDS
+ 	/DISCARD/ : {
+ 		/* ABI crap starts here */
++		*(.MIPS.abiflags)
+ 		*(.MIPS.options)
+ 		*(.options)
+ 		*(.pdr)
+-- 
+2.4.0

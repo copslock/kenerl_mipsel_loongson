@@ -1,26 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Oct 2015 20:16:45 +0100 (CET)
-Received: from hauke-m.de ([5.39.93.123]:38278 "EHLO hauke-m.de"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Oct 2015 20:17:15 +0100 (CET)
+Received: from hauke-m.de ([5.39.93.123]:38282 "EHLO hauke-m.de"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27011566AbbJ2TQoELF5E (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 29 Oct 2015 20:16:44 +0100
+        id S27010973AbbJ2TRN5CqkE (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 29 Oct 2015 20:17:13 +0100
 Received: from hauke-desktop.fritz.box (p5DE94E6C.dip0.t-ipconnect.de [93.233.78.108])
-        by hauke-m.de (Postfix) with ESMTPSA id 8156E100029;
-        Thu, 29 Oct 2015 20:16:38 +0100 (CET)
+        by hauke-m.de (Postfix) with ESMTPSA id 4CF13100029;
+        Thu, 29 Oct 2015 20:17:13 +0100 (CET)
 From:   Hauke Mehrtens <hauke@hauke-m.de>
 To:     ralf@linux-mips.org
 Cc:     blogic@openwrt.org, linux-mips@linux-mips.org,
         Hauke Mehrtens <hauke.mehrtens@lantiq.com>
-Subject: [PATCH please merge into original 09/15] MIPS: lantiq: add support for gphy firmware loading for ar10 and grx390
-Date:   Thu, 29 Oct 2015 20:16:35 +0100
-Message-Id: <1446146195-17276-1-git-send-email-hauke@hauke-m.de>
+Subject: [PATCH please merge into original 10/15] MIPS: lantiq: add SoC detection for ar10 and grx390
+Date:   Thu, 29 Oct 2015 20:17:10 +0100
+Message-Id: <1446146230-17331-1-git-send-email-hauke@hauke-m.de>
 X-Mailer: git-send-email 2.6.1
-In-Reply-To: <1446071865-21936-10-git-send-email-hauke@hauke-m.de>
-References: <1446071865-21936-10-git-send-email-hauke@hauke-m.de>
+In-Reply-To: <1446071865-21936-11-git-send-email-hauke@hauke-m.de>
+References: <1446071865-21936-11-git-send-email-hauke@hauke-m.de>
 Return-Path: <hauke@hauke-m.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49766
+X-archive-position: 49767
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -41,13 +41,13 @@ From: Hauke Mehrtens <hauke.mehrtens@lantiq.com>
 
 Signed-off-by: Hauke Mehrtens <hauke.mehrtens@lantiq.com>
 ---
- arch/mips/lantiq/xway/reset.c | 2 ++
+ arch/mips/lantiq/xway/prom.c | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/arch/mips/lantiq/xway/reset.c b/arch/mips/lantiq/xway/reset.c
-index 55c278f..9b009ec 100644
---- a/arch/mips/lantiq/xway/reset.c
-+++ b/arch/mips/lantiq/xway/reset.c
+diff --git a/arch/mips/lantiq/xway/prom.c b/arch/mips/lantiq/xway/prom.c
+index a23b77ae..32994a9 100644
+--- a/arch/mips/lantiq/xway/prom.c
++++ b/arch/mips/lantiq/xway/prom.c
 @@ -4,6 +4,8 @@
   *  by the Free Software Foundation.
   *
@@ -56,6 +56,6 @@ index 55c278f..9b009ec 100644
 + *  Copyright (C) 2015 Hauke Mehrtens <hauke.mehrtens@lantiq.com>
   */
  
- #include <linux/init.h>
+ #include <linux/export.h>
 -- 
 2.6.1

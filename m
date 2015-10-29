@@ -1,94 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Oct 2015 03:33:05 +0100 (CET)
-Received: from mailout2.samsung.com ([203.254.224.25]:56224 "EHLO
-        mailout2.samsung.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27011815AbbJ2CcpV4Ko1 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 29 Oct 2015 03:32:45 +0100
-Received: from epcpsbgr1.samsung.com
- (u141.gpu120.samsung.co.kr [203.254.230.141])
- by mailout2.samsung.com (Oracle Communications Messaging Server 7.0.5.31.0
- 64bit (built May  5 2014))
- with ESMTP id <0NWY02KI9N2CDJ40@mailout2.samsung.com>; Thu,
- 29 Oct 2015 11:32:36 +0900 (KST)
-Received: from epcpsbgm2new.samsung.com ( [172.20.52.113])
-        by epcpsbgr1.samsung.com (EPCPMTA) with SMTP id 4A.F6.05274.34581365; Thu,
- 29 Oct 2015 11:32:35 +0900 (KST)
-X-AuditID: cbfee68d-f79ae6d00000149a-19-56318543c663
-Received: from epmmp2 ( [203.254.227.17])       by epcpsbgm2new.samsung.com (EPCPMTA)
- with SMTP id 05.C1.18629.34581365; Thu, 29 Oct 2015 11:32:35 +0900 (KST)
-Received: from [10.252.81.186] by mmp2.samsung.com
- (Oracle Communications Messaging Server 7.0.5.31.0 64bit (built May  5 2014))
- with ESMTPA id <0NWY004REN2BKK80@mmp2.samsung.com>; Thu,
- 29 Oct 2015 11:32:35 +0900 (KST)
-Message-id: <56318543.3090900@samsung.com>
-Date:   Thu, 29 Oct 2015 11:32:35 +0900
-From:   Jaehoon Chung <jh80.chung@samsung.com>
-User-Agent: Mozilla/5.0 (X11; Linux i686; rv:31.0) Gecko/20100101
- Thunderbird/31.6.0
-MIME-version: 1.0
-To:     Shawn Lin <shawn.lin@rock-chips.com>, ulf.hansson@linaro.org
-Cc:     Vineet.Gupta1@synopsys.com, Wei Xu <xuwei5@hisilicon.com>,
-        Joachim Eastwood <manabian@gmail.com>,
-        Alexey Brodkin <abrodkin@synopsys.com>,
-        Kukjin Kim <kgene@kernel.org>,
-        Krzysztof Kozlowski <k.kozlowski@samsung.com>,
-        Russell King <linux@arm.linux.org.uk>,
-        Jun Nie <jun.nie@linaro.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Govindraj Raja <govindraj.raja@imgtec.com>,
-        Arnd Bergmann <arnd@arndb.de>, heiko@sntech.de,
-        dianders@chromium.org, linux-samsung-soc@vger.kernel.org,
-        linux-mips@linux-mips.org, linux-mmc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-rockchip@lists.infradead.org,
-        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Subject: Re: [RFC PATCH v8 10/10] arm: zx_defconfig: remove CONFIG_MMC_DW_IDMAC
-References: <1442385625-26775-1-git-send-email-shawn.lin@rock-chips.com>
- <1442385808-1433-1-git-send-email-shawn.lin@rock-chips.com>
-In-reply-to: <1442385808-1433-1-git-send-email-shawn.lin@rock-chips.com>
-Content-type: text/plain; charset=utf-8
-Content-transfer-encoding: 7bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprNKsWRmVeSWpSXmKPExsWyRsSkUNe51TDMYNt+G4vmq0/ZLf5OOsZu
-        Mf/IOVaLs8sOsln8eHqPxeL/o9esFkuePGS3eP3C0KL/8Wtmi02Pr7FaXN41h81iwtRJ7BZH
-        /vczWnx68J/ZYsb5fUwWty/zWuy+fo7R4tIeFYs7T9azWhxfG27R+Gots8WTo1OYHcQ8Wpp7
-        2Dx+/5rE6DG74SKLx85Zd9k9Hs/dyO7Rs/MMo8emVZ1sHneu7WHzOLpyLZPH5iX1Hn9n7Wfx
-        6NuyitFj+7V5zB5b9n9m9Pi8SS6AP4rLJiU1J7MstUjfLoErY8PSB+wFUzkqTmyextbAeIqt
-        i5GTQ0LAROLFzstMELaYxIV764HiXBxCAisYJfo+L2CGKWo+8YAFIjGLUeJO1wRWCOcBo8TR
-        Xy3sIFW8AloSNy/+AxvFIqAq8WznJbAVbAI6Etu/HQeLiwqESTxYt5cVol5Q4sfke0BTOThE
-        BBwkNs0XAZnJLLCUVaLhZx9YvbCAv8TNDbeglrUxSlx+3AN2EqeAh8SMJ1OZQJqZBdQlpkzJ
-        BQkzC8hLbF7zlhmkXkKgnVOiedZrdoiDBCS+TT4EtkxCQFZi0wGozyQlDq64wTKBUWwWkpNm
-        IUydhWTqAkbmVYyiqQXJBcVJ6UWGesWJucWleel6yfm5mxiBaeb0v2e9OxhvH7A+xCjAwajE
-        w7vAyDBMiDWxrLgy9xCjKdARE5mlRJPzgcksryTe0NjMyMLUxNTYyNzSTEmcV1HqZ7CQQHpi
-        SWp2ampBalF8UWlOavEhRiYOTqkGRp2lc04lPinSmcTU9ELzS6lbuMicSxlTZe7c1GvwsZxj
-        tHC3RovthVbVo/nGlzim9PzRWP5VPE0tnV/16J42B/kPDdcDShaXMh2ZateysP7gtSPhWwXP
-        nEhI3vbz8q3zlxN75p2S/fH//4rD83r4L3QrlLjWnOmZ7CtzYKqyjEdbisWy7o2Ce5RYijMS
-        DbWYi4oTAU8kaxQuAwAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrBKsWRmVeSWpSXmKPExsVy+t9jQV3nVsMwg76JZhbNV5+yW/yddIzd
-        Yv6Rc6wWZ5cdZLP48fQei8X/R69ZLZY8echu8fqFoUX/49fMFpseX2O1uLxrDpvFhKmT2C2O
-        /O9ntPj04D+zxYzz+5gsbl/mtdh9/RyjxaU9KhZ3nqxntTi+Ntyi8dVaZosnR6cwO4h5tDT3
-        sHn8/jWJ0WN2w0UWj52z7rJ7PJ67kd2jZ+cZRo9NqzrZPO5c28PmcXTlWiaPzUvqPf7O2s/i
-        0bdlFaPH9mvzmD227P/M6PF5k1wAf1QDo01GamJKapFCal5yfkpmXrqtkndwvHO8qZmBoa6h
-        pYW5kkJeYm6qrZKLT4CuW2YO0P9KCmWJOaVAoYDE4mIlfTtME0JD3HQtYBojdH1DguB6jAzQ
-        QMIaxowNSx+wF0zlqDixeRpbA+Mpti5GTg4JAROJ5hMPWCBsMYkL99YDxbk4hARmMUrc6ZrA
-        CuE8YJQ4+quFHaSKV0BL4ubFf0wgNouAqsSznZfAJrEJ6Ehs/3YcLC4qECbxYN1eVoh6QYkf
-        k+8BbeDgEBFwkNg0XwRkJrPAUlaJhp99YPXCAv4SNzfcglrWxihx+XEPM0iCU8BDYsaTqUwg
-        zcwC6hJTpuSChJkF5CU2r3nLPIER6EyEFbMQqmYhqVrAyLyKUSK1ILmgOCk91ygvtVyvODG3
-        uDQvXS85P3cTIziVPZPewXh4l/shRgEORiUe3gVGhmFCrIllxZW5hxglOJiVRHilWYBCvCmJ
-        lVWpRfnxRaU5qcWHGE2BYTCRWUo0OR+YZvNK4g2NTcyMLI3MDS2MjM2VxHkvZGiECQmkJ5ak
-        ZqemFqQWwfQxcXBKNTDuT+G5wBLm+XWawR+3RwKXt+5eN5E1b7GXaEpj3DWjxgmGj836n+57
-        MHnhoZA1t1b2vqgzjY6wOlJf1hz5ZkZ2s2/ek2fKzc364VF/eqbzn2HuFfx9Jqr/eUQHZ9rW
-        wHMXVuVGCC7ZOb9n3rc7vCoynrcdknhPxho5KJ9dEJif9lM3aFaGZZoSS3FGoqEWc1FxIgAz
-        nk8qewMAAA==
-DLP-Filter: Pass
-X-MTR:  20000000000000000@CPGS
-X-CFilter-Loop: Reflected
-Return-Path: <jh80.chung@samsung.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Oct 2015 05:39:37 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.136]:48036 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27006157AbbJ2EjfKjaqx (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 29 Oct 2015 05:39:35 +0100
+Received: from mail.kernel.org (localhost [127.0.0.1])
+        by mail.kernel.org (Postfix) with ESMTP id 0FB9D209F1;
+        Thu, 29 Oct 2015 04:39:32 +0000 (UTC)
+Received: from mail-yk0-f169.google.com (mail-yk0-f169.google.com [209.85.160.169])
+        (using TLSv1.2 with cipher AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id B3A0F209EC;
+        Thu, 29 Oct 2015 04:39:29 +0000 (UTC)
+Received: by ykba4 with SMTP id a4so30924258ykb.3;
+        Wed, 28 Oct 2015 21:39:28 -0700 (PDT)
+X-Received: by 10.129.51.196 with SMTP id z187mr36481494ywz.198.1446093568983;
+ Wed, 28 Oct 2015 21:39:28 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 10.13.254.65 with HTTP; Wed, 28 Oct 2015 21:39:09 -0700 (PDT)
+In-Reply-To: <1432309875-9712-15-git-send-email-paul.burton@imgtec.com>
+References: <1432309875-9712-1-git-send-email-paul.burton@imgtec.com> <1432309875-9712-15-git-send-email-paul.burton@imgtec.com>
+From:   Rob Herring <robh+dt@kernel.org>
+Date:   Wed, 28 Oct 2015 23:39:09 -0500
+Message-ID: <CAL_JsqKrJWg=9Try=+2efz_JRGuthLSVDCdy2BQAGSdutoGvnA@mail.gmail.com>
+Subject: Re: [PATCH 14/15] MIPS: malta: setup RAM regions via DT
+To:     Paul Burton <paul.burton@imgtec.com>
+Cc:     Linux-MIPS <linux-mips@linux-mips.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        Pawel Moll <pawel.moll@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ian Campbell <ijc+devicetree@hellion.org.uk>,
+        Kumar Gala <galak@codeaurora.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        James Hogan <james.hogan@imgtec.com>,
+        Markos Chandras <markos.chandras@imgtec.com>,
+        Ralf Baechle <ralf@linux-mips.org>
+Content-Type: text/plain; charset=UTF-8
+X-Virus-Scanned: ClamAV using ClamSMTP
+Return-Path: <robh+dt@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49759
+X-archive-position: 49760
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jh80.chung@samsung.com
+X-original-sender: robh+dt@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -101,43 +57,273 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi, All.
+On Fri, May 22, 2015 at 10:51 AM, Paul Burton <paul.burton@imgtec.com> wrote:
+> Move memory configuration to be performed via device tree for the Malta
+> board. This moves more Malta specific code to malta-dtshim.c, leaving
+> the rest of the mti-malta code a little more board-agnostic. This will
+> be useful to share more code between boards, with the device tree
+> providing the board specifics as intended.
+>
+> Since we can't rely upon Malta boards running a bootloader capable of
+> handling devictrees & filling in the required information, the
+> malta_dt_shim code is extended to consume the (e)memsize variables
+> provided as part of the bootloader environment (or on the kernel command
+> line) then generate the DT memory node using the provided values.
 
-Is there any other opinion about this patch?
+IMO, I think this all belongs in a shim outside of the kernel. This is
+how ARM and powerpc generally deal with old or broken bootloaders. But
+then MIPS is such a mess of DT code with every platform doing things
+their own way.
 
+Rob
 
-Best Regards,
-Jaehoon Chung
-
-On 09/16/2015 03:43 PM, Shawn Lin wrote:
-> DesignWare MMC Controller's transfer mode should be decided
-> at runtime instead of compile-time. So we remove this config
-> option and read dw_mmc's register to select DMA master.
-> 
-> Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
+>
+> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
 > ---
-> 
-> Changes in v8: None
-> Changes in v7: None
-> Changes in v6: None
-> Changes in v5: None
-> Changes in v4: None
-> Changes in v3: None
-> Changes in v2: None
-> 
->  arch/arm/configs/zx_defconfig | 1 -
->  1 file changed, 1 deletion(-)
-> 
-> diff --git a/arch/arm/configs/zx_defconfig b/arch/arm/configs/zx_defconfig
-> index b200bb0..ab683fb 100644
-> --- a/arch/arm/configs/zx_defconfig
-> +++ b/arch/arm/configs/zx_defconfig
-> @@ -83,7 +83,6 @@ CONFIG_MMC=y
->  CONFIG_MMC_UNSAFE_RESUME=y
->  CONFIG_MMC_BLOCK_MINORS=16
->  CONFIG_MMC_DW=y
-> -CONFIG_MMC_DW_IDMAC=y
->  CONFIG_EXT2_FS=y
->  CONFIG_EXT4_FS=y
->  CONFIG_EXT4_FS_POSIX_ACL=y
-> 
+>
+>  arch/mips/boot/dts/mti/malta.dts   |   4 ++
+>  arch/mips/mti-malta/malta-dtshim.c | 104 +++++++++++++++++++++++++++++++++++++
+>  arch/mips/mti-malta/malta-memory.c |  88 -------------------------------
+>  3 files changed, 108 insertions(+), 88 deletions(-)
+>
+> diff --git a/arch/mips/boot/dts/mti/malta.dts b/arch/mips/boot/dts/mti/malta.dts
+> index 9720c66..2fe2364 100644
+> --- a/arch/mips/boot/dts/mti/malta.dts
+> +++ b/arch/mips/boot/dts/mti/malta.dts
+> @@ -1,5 +1,9 @@
+>  /dts-v1/;
+>
+> +/memreserve/ 0x00000000 0x00001000;    /* reserved */
+> +/memreserve/ 0x00001000 0x000ef000;    /* YAMON */
+> +/memreserve/ 0x000f0000 0x00010000;    /* PIIX4 ISA memory */
+> +
+>  #include <dt-bindings/interrupt-controller/irq.h>
+>  #include <dt-bindings/interrupt-controller/mips-gic.h>
+>
+> diff --git a/arch/mips/mti-malta/malta-dtshim.c b/arch/mips/mti-malta/malta-dtshim.c
+> index ca33201..9074951 100644
+> --- a/arch/mips/mti-malta/malta-dtshim.c
+> +++ b/arch/mips/mti-malta/malta-dtshim.c
+> @@ -20,6 +20,109 @@
+>
+>  static unsigned char fdt_buf[16 << 10] __initdata;
+>
+> +/* determined physical memory size, not overridden by command line args         */
+> +extern unsigned long physical_memsize;
+> +
+> +#define MAX_MEM_ARRAY_ENTRIES 1
+> +
+> +static unsigned __init gen_fdt_mem_array(__be32 *mem_array, unsigned long size)
+> +{
+> +       unsigned long size_preio;
+> +       unsigned entries;
+> +
+> +       entries = 1;
+> +       mem_array[0] = cpu_to_be32(PHYS_OFFSET);
+> +       if (config_enabled(CONFIG_EVA)) {
+> +               mem_array[1] = cpu_to_be32(PHYS_OFFSET + size);
+> +       } else {
+> +               size_preio = min_t(unsigned long, size, 256 << 20);
+> +               mem_array[1] = cpu_to_be32(PHYS_OFFSET + size_preio);
+> +       }
+> +
+> +       BUG_ON(entries > MAX_MEM_ARRAY_ENTRIES);
+> +       return entries;
+> +}
+> +
+> +static void __init append_memory(void *fdt, int root_off)
+> +{
+> +       __be32 mem_array[2 * MAX_MEM_ARRAY_ENTRIES];
+> +       unsigned long memsize;
+> +       unsigned mem_entries;
+> +       int i, err, mem_off;
+> +       char *var, param_name[10], *var_names[] = {
+> +               "ememsize", "memsize",
+> +       };
+> +
+> +       /* if a memory node already exists, leave it alone */
+> +       mem_off = fdt_path_offset(fdt, "/memory");
+> +       if (mem_off >= 0)
+> +               return;
+> +
+> +       /* find memory size from the bootloader environment */
+> +       for (i = 0; i < ARRAY_SIZE(var_names); i++) {
+> +               var = fw_getenv(var_names[i]);
+> +               if (!var)
+> +                       continue;
+> +
+> +               err = kstrtoul(var, 0, &physical_memsize);
+> +               if (!err)
+> +                       break;
+> +
+> +               pr_warn("Failed to read the '%s' env variable '%s'\n",
+> +                       var_names[i], var);
+> +       }
+> +
+> +       if (!physical_memsize) {
+> +               pr_warn("The bootloader didn't provide memsize: defaulting to 32MB\n");
+> +               physical_memsize = 32 << 20;
+> +       }
+> +
+> +       if (config_enabled(CONFIG_CPU_BIG_ENDIAN)) {
+> +               /*
+> +                * SOC-it swaps, or perhaps doesn't swap, when DMA'ing
+> +                * the last word of physical memory.
+> +                */
+> +               physical_memsize -= PAGE_SIZE;
+> +       }
+> +
+> +       /* default to using all available RAM */
+> +       memsize = physical_memsize;
+> +
+> +       /* allow the user to override the usable memory */
+> +       for (i = 0; i < ARRAY_SIZE(var_names); i++) {
+> +               snprintf(param_name, sizeof(param_name), "%s=", var_names[i]);
+> +               var = strstr(arcs_cmdline, param_name);
+> +               if (!var)
+> +                       continue;
+> +
+> +               memsize = memparse(var + strlen(param_name), NULL);
+> +       }
+> +
+> +       /* if the user says there's more RAM than we thought, believe them */
+> +       physical_memsize = max_t(unsigned long, physical_memsize, memsize);
+> +
+> +       /* append memory to the DT */
+> +       mem_off = fdt_add_subnode(fdt, root_off, "memory");
+> +       if (mem_off < 0)
+> +               panic("Unable to add memory node to DT: %d", mem_off);
+> +
+> +       err = fdt_setprop_string(fdt, mem_off, "device_type", "memory");
+> +       if (err)
+> +               panic("Unable to set memory node device_type: %d", err);
+> +
+> +       mem_entries = gen_fdt_mem_array(mem_array, physical_memsize);
+> +       err = fdt_setprop(fdt, mem_off, "reg", mem_array,
+> +                         mem_entries * 2 * sizeof(mem_array[0]));
+> +       if (err)
+> +               panic("Unable to set memory regs property: %d", err);
+> +
+> +       mem_entries = gen_fdt_mem_array(mem_array, memsize);
+> +       err = fdt_setprop(fdt, mem_off, "linux,usable-memory", mem_array,
+> +                         mem_entries * 2 * sizeof(mem_array[0]));
+> +       if (err)
+> +               panic("Unable to set linux,usable-memory property: %d", err);
+> +}
+> +
+>  static void __init remove_gic(void *fdt)
+>  {
+>         int err, gic_off, i8259_off, cpu_off;
+> @@ -118,6 +221,7 @@ void __init *malta_dt_shim(void *fdt)
+>         if (strncmp(compat, "mti,malta", len))
+>                 return fdt;
+>
+> +       append_memory(fdt_buf, root_off);
+>         remove_gic(fdt_buf);
+>
+>         err = fdt_pack(fdt_buf);
+> diff --git a/arch/mips/mti-malta/malta-memory.c b/arch/mips/mti-malta/malta-memory.c
+> index 831f583..5203241 100644
+> --- a/arch/mips/mti-malta/malta-memory.c
+> +++ b/arch/mips/mti-malta/malta-memory.c
+> @@ -32,97 +32,9 @@ static void free_init_pages_eva_malta(void *begin, void *end)
+>
+>  void __init fw_meminit(void)
+>  {
+> -       char *memsize_str, *ememsize_str = NULL, *ptr;
+> -       unsigned long memsize = 0, ememsize = 0;
+> -       unsigned long kernel_start_phys, kernel_end_phys;
+> -       static char cmdline[COMMAND_LINE_SIZE] __initdata;
+>         bool eva = config_enabled(CONFIG_EVA);
+> -       int tmp;
+>
+>         free_init_pages_eva = eva ? free_init_pages_eva_malta : NULL;
+> -
+> -       memsize_str = fw_getenv("memsize");
+> -       if (memsize_str) {
+> -               tmp = kstrtoul(memsize_str, 0, &memsize);
+> -               if (tmp)
+> -                       pr_warn("Failed to read the 'memsize' env variable.\n");
+> -       }
+> -       if (eva) {
+> -       /* Look for ememsize for EVA */
+> -               ememsize_str = fw_getenv("ememsize");
+> -               if (ememsize_str) {
+> -                       tmp = kstrtoul(ememsize_str, 0, &ememsize);
+> -                       if (tmp)
+> -                               pr_warn("Failed to read the 'ememsize' env variable.\n");
+> -               }
+> -       }
+> -       if (!memsize && !ememsize) {
+> -               pr_warn("memsize not set in YAMON, set to default (32Mb)\n");
+> -               physical_memsize = 0x02000000;
+> -       } else {
+> -               if (memsize > (256 << 20)) { /* memsize should be capped to 256M */
+> -                       pr_warn("Unsupported memsize value (0x%lx) detected! "
+> -                               "Using 0x10000000 (256M) instead\n",
+> -                               memsize);
+> -                       memsize = 256 << 20;
+> -               }
+> -               /* If ememsize is set, then set physical_memsize to that */
+> -               physical_memsize = ememsize ? : memsize;
+> -       }
+> -
+> -#ifdef CONFIG_CPU_BIG_ENDIAN
+> -       /* SOC-it swaps, or perhaps doesn't swap, when DMA'ing the last
+> -          word of physical memory */
+> -       physical_memsize -= PAGE_SIZE;
+> -#endif
+> -
+> -       /* Check the command line for a memsize directive that overrides
+> -          the physical/default amount */
+> -       strcpy(cmdline, arcs_cmdline);
+> -       ptr = strstr(cmdline, "memsize=");
+> -       if (ptr && (ptr != cmdline) && (*(ptr - 1) != ' '))
+> -               ptr = strstr(ptr, " memsize=");
+> -       /* And now look for ememsize */
+> -       if (eva) {
+> -               ptr = strstr(cmdline, "ememsize=");
+> -               if (ptr && (ptr != cmdline) && (*(ptr - 1) != ' '))
+> -                       ptr = strstr(ptr, " ememsize=");
+> -       }
+> -
+> -       if (ptr)
+> -               memsize = memparse(ptr + 8 + (eva ? 1 : 0), &ptr);
+> -       else
+> -               memsize = physical_memsize;
+> -
+> -       add_memory_region(PHYS_OFFSET, 0x00001000, BOOT_MEM_RESERVED);
+> -
+> -       /*
+> -        * YAMON may still be using the region of memory from 0x1000 to 0xfffff
+> -        * if it has started secondary CPUs.
+> -        */
+> -       add_memory_region(PHYS_OFFSET + 0x00001000, 0x000ef000,
+> -                         BOOT_MEM_ROM_DATA);
+> -
+> -       /*
+> -        * The area 0x000f0000-0x000fffff is allocated for BIOS memory by the
+> -        * south bridge and PCI access always forwarded to the ISA Bus and
+> -        * BIOSCS# is always generated.
+> -        * This mean that this area can't be used as DMA memory for PCI
+> -        * devices.
+> -        */
+> -       add_memory_region(PHYS_OFFSET + 0x000f0000, 0x00010000,
+> -                         BOOT_MEM_RESERVED);
+> -
+> -       /*
+> -        * Reserve the memory used by kernel code, and allow the rest of RAM to
+> -        * be used.
+> -        */
+> -       kernel_start_phys = PHYS_OFFSET + 0x00100000;
+> -       kernel_end_phys = PHYS_OFFSET + CPHYSADDR(PFN_ALIGN(&_end));
+> -       add_memory_region(kernel_start_phys, kernel_end_phys,
+> -                         BOOT_MEM_RESERVED);
+> -       add_memory_region(kernel_end_phys, memsize - kernel_end_phys,
+> -                         BOOT_MEM_RAM);
+>  }
+>
+>  void __init prom_free_prom_memory(void)
+> --
+> 2.4.1
+>

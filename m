@@ -1,31 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Oct 2015 23:55:09 +0100 (CET)
-Received: from emh06.mail.saunalahti.fi ([62.142.5.116]:46240 "EHLO
-        emh06.mail.saunalahti.fi" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011192AbbJ2Wyt4jaKD (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 29 Oct 2015 23:54:49 +0100
-Received: from localhost.localdomain (85-76-112-16-nat.elisa-mobile.fi [85.76.112.16])
-        by emh06.mail.saunalahti.fi (Postfix) with ESMTP id 4D627699AA;
-        Fri, 30 Oct 2015 00:54:49 +0200 (EET)
-From:   Aaro Koskinen <aaro.koskinen@iki.fi>
-To:     linux-mips@linux-mips.org,
-        Matthew Fortune <Matthew.Fortune@imgtec.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Oct 2015 14:39:34 +0100 (CET)
+Received: from mail-pa0-f42.google.com ([209.85.220.42]:33741 "EHLO
+        mail-pa0-f42.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010717AbbJ3NjcmyXB0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 30 Oct 2015 14:39:32 +0100
+Received: by padhy1 with SMTP id hy1so69131930pad.0;
+        Fri, 30 Oct 2015 06:39:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id;
+        bh=vkDqYpKSIZWZFefUebjW/l3cSvUPka2XFf4JSesT4aw=;
+        b=QWusa8nMHVfMlgPmW0Snm/gRubhthh53aViQqMQpJ1Kn3moSqKV7FmLvPPE4NrgHlp
+         mFOLHIg/5bNxolSmSFuSLkh9Z3LoCDLTl3L7E7d2j1AoPjsOZo9x1bjC8v8/Qw/FXWrd
+         ygJsBYVCbWhOxS+3UDLaZbZzp2XQiJ52ODdJN3YKufa7u7aeJMx+bWFA4PDDjZkEUdDQ
+         jEqKoyjYmxqQxzwIco5zM4FLKrPXklz6E6H9uGArb+5Qol+Cd4YADy8SYswxE1GVN2XC
+         eQ46kxBseS1snTzUnqogbwQcXUXjjxEGYMC/B2fn1gzEF1URehRLZTzW0psua0WIz3hW
+         tX8g==
+X-Received: by 10.67.14.194 with SMTP id fi2mr8919294pad.146.1446212366421;
+        Fri, 30 Oct 2015 06:39:26 -0700 (PDT)
+Received: from localhost.localdomain ([59.12.167.210])
+        by smtp.gmail.com with ESMTPSA id d13sm8391293pbu.20.2015.10.30.06.39.22
+        (version=TLSv1 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Fri, 30 Oct 2015 06:39:25 -0700 (PDT)
+From:   Jaedon Shin <jaedon.shin@gmail.com>
+To:     Brian Norris <computersforpeace@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Tejun Heo <tj@kernel.org>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
         Ralf Baechle <ralf@linux-mips.org>,
-        David Daney <ddaney.cavm@gmail.com>
-Subject: [PATCH v2 2/2] MIPS: OCTEON: omit ELF NOTE segments
-Date:   Fri, 30 Oct 2015 00:54:48 +0200
-Message-Id: <1446159288-22154-2-git-send-email-aaro.koskinen@iki.fi>
-X-Mailer: git-send-email 2.4.0
-In-Reply-To: <1446159288-22154-1-git-send-email-aaro.koskinen@iki.fi>
-References: <1446159288-22154-1-git-send-email-aaro.koskinen@iki.fi>
-Return-Path: <aaro.koskinen@iki.fi>
+        Rob Herring <robh+dt@kernel.org>
+Cc:     Kevin Cernekee <cernekee@gmail.com>,
+        Dragan Stancevic <dragan.stancevic@gmail.com>,
+        linux-ide@vger.kernel.org, Linux-MIPS <linux-mips@linux-mips.org>,
+        devicetree@vger.kernel.org, Jaedon Shin <jaedon.shin@gmail.com>
+Subject: [v3 00/10] add support SATA for BMIPS_GENERIC
+Date:   Fri, 30 Oct 2015 22:38:49 +0900
+Message-Id: <1446212339-1210-1-git-send-email-jaedon.shin@gmail.com>
+X-Mailer: git-send-email 2.6.2
+Return-Path: <jaedon.shin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49774
+X-archive-position: 49775
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aaro.koskinen@iki.fi
+X-original-sender: jaedon.shin@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -38,76 +57,49 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: David Daney <ddaney@caviumnetworks.com>
+Hi all,
 
-OCTEON Pre-SDK-1.8.1 bootloaders can not handle PT_NOTE program headers,
-so do not emit them.
+This patch series add support SATA for BMIPS_GENERIC.
 
-Before the patch:
+Changes in v3:
+- fix typo quirk instead of quick
+- disable NCQ before initialzing SATA controller endianness
+- fix misnomer controlling phy interface
+- remove brcm,broken-ncq and brcm,broken-phy properties from devicetree
+- use compatible string for quirks
+- use list for compatible strings
+- add "Acked-by:" tags
 
-$ readelf --program-headers octeon-vmlinux
+Changes in v2:
+- adds quirk for ncq
+- adds quirk for phy interface control
+- remove unused definitions in ahci_brcmstb
+- combines compatible string
 
-Elf file type is EXEC (Executable file)
-Entry point 0xffffffff815d09d0
-There are 2 program headers, starting at offset 64
+Jaedon Shin (10):
+  ata: ahci_brcmstb: add support MIPS-based platforms
+  ata: ahci_brcmstb: add quirk for broken ncq
+  ata: ahci_brcmstb: add quirk for different phy
+  ata: ahci_brcmstb: remove unused definitions
+  phy: phy_brcmstb_sata: remove duplicate definitions
+  phy: phy_brcmstb_sata: add data for phy version
+  phy: phy_brcmstb_sata: add support MIPS-based platforms
+  MIPS: BMIPS: brcmstb: add SATA/PHY nodes for bcm7425
+  MIPS: BMIPS: brcmstb: add SATA/PHY nodes for bcm7346
+  MIPS: BMIPS: brcmstb: add SATA/PHY nodes for bcm7362
 
-Program Headers:
-  Type           Offset             VirtAddr           PhysAddr
-                 FileSiz            MemSiz              Flags  Align
-  LOAD           0x0000000000001000 0xffffffff81100000 0xffffffff81100000
-                 0x0000000000b57f80 0x0000000001b86360  RWE    1000
-  NOTE           0x00000000004e02e0 0xffffffff815df2e0 0xffffffff815df2e0
-                 0x0000000000000024 0x0000000000000024  R      4
+ .../devicetree/bindings/ata/brcm,sata-brcmstb.txt  |  4 +-
+ .../bindings/phy/brcm,brcmstb-sata-phy.txt         |  1 +
+ arch/mips/boot/dts/brcm/bcm7346.dtsi               | 42 ++++++++++++++++
+ arch/mips/boot/dts/brcm/bcm7362.dtsi               | 42 ++++++++++++++++
+ arch/mips/boot/dts/brcm/bcm7425.dtsi               | 42 ++++++++++++++++
+ arch/mips/boot/dts/brcm/bcm97346dbsmb.dts          |  8 +++
+ arch/mips/boot/dts/brcm/bcm97362svmb.dts           |  8 +++
+ drivers/ata/Kconfig                                |  2 +-
+ drivers/ata/ahci_brcmstb.c                         | 58 +++++++++++++++++++++-
+ drivers/phy/Kconfig                                |  4 +-
+ drivers/phy/phy-brcmstb-sata.c                     | 47 ++++++++++++++----
+ 11 files changed, 242 insertions(+), 16 deletions(-)
 
-After the patch:
-
-$ readelf --program-headers octeon-vmlinux
-
-Elf file type is EXEC (Executable file)
-Entry point 0xffffffff815d09d0
-There are 1 program headers, starting at offset 64
-
-Program Headers:
-  Type           Offset             VirtAddr           PhysAddr
-                 FileSiz            MemSiz              Flags  Align
-  LOAD           0x0000000000001000 0xffffffff81100000 0xffffffff81100000
-                 0x0000000000b57f80 0x0000000001b86360  RWE    1000
-
-The patch was tested on DSR-1000N router.
-
-Signed-off-by: David Daney <ddaney@caviumnetworks.com>
-Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
----
- arch/mips/kernel/vmlinux.lds.S | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
-
-diff --git a/arch/mips/kernel/vmlinux.lds.S b/arch/mips/kernel/vmlinux.lds.S
-index 06632d6..cce2fcb 100644
---- a/arch/mips/kernel/vmlinux.lds.S
-+++ b/arch/mips/kernel/vmlinux.lds.S
-@@ -17,7 +17,9 @@ OUTPUT_ARCH(mips)
- ENTRY(kernel_entry)
- PHDRS {
- 	text PT_LOAD FLAGS(7);	/* RWX */
-+#ifndef CONFIG_CAVIUM_OCTEON_SOC
- 	note PT_NOTE FLAGS(4);	/* R__ */
-+#endif /* CAVIUM_OCTEON_SOC */
- }
- 
- #ifdef CONFIG_32BIT
-@@ -71,7 +73,12 @@ SECTIONS
- 		__stop___dbe_table = .;
- 	}
- 
--	NOTES :text :note
-+#ifdef CONFIG_CAVIUM_OCTEON_SOC
-+#define NOTES_HEADER
-+#else /* CONFIG_CAVIUM_OCTEON_SOC */
-+#define NOTES_HEADER :note
-+#endif /* CONFIG_CAVIUM_OCTEON_SOC */
-+	NOTES :text NOTES_HEADER
- 	.dummy : { *(.dummy) } :text
- 
- 	_sdata = .;			/* Start of data section */
 -- 
-2.4.0
+2.6.2

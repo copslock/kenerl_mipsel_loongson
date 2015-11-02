@@ -1,57 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 31 Oct 2015 16:20:37 +0100 (CET)
-Received: from mout.kundenserver.de ([212.227.126.187]:61052 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27010152AbbJaPUgFdpIA (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 31 Oct 2015 16:20:36 +0100
-Received: from wuerfel.localnet ([134.3.118.24]) by mrelayeu.kundenserver.de
- (mreue005) with ESMTPSA (Nemesis) id 0LouSd-1aQD4a0N9H-00gpY7; Sat, 31 Oct
- 2015 16:20:27 +0100
-From:   Arnd Bergmann <arnd@arndb.de>
-To:     Jaedon Shin <jaedon.shin@gmail.com>
-Cc:     Brian Norris <computersforpeace@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Tejun Heo <tj@kernel.org>,
-        Kishon Vijay Abraham I <kishon@ti.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Kevin Cernekee <cernekee@gmail.com>,
-        Dragan Stancevic <dragan.stancevic@gmail.com>,
-        linux-ide@vger.kernel.org, Linux-MIPS <linux-mips@linux-mips.org>,
-        devicetree@vger.kernel.org
-Subject: Re: [v2 06/10] phy: phy_brcmstb_sata: add data for phy version
-Date:   Sat, 31 Oct 2015 16:20:24 +0100
-Message-ID: <7143236.HOM9hXl6B3@wuerfel>
-User-Agent: KMail/4.11.5 (Linux/3.16.0-10-generic; KDE/4.11.5; x86_64; ; )
-In-Reply-To: <1445928491-7320-7-git-send-email-jaedon.shin@gmail.com>
-References: <1445928491-7320-1-git-send-email-jaedon.shin@gmail.com> <1445928491-7320-7-git-send-email-jaedon.shin@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 02 Nov 2015 21:51:00 +0100 (CET)
+Received: from mail-ig0-f180.google.com ([209.85.213.180]:33583 "EHLO
+        mail-ig0-f180.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012127AbbKBUu6btM9P (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 2 Nov 2015 21:50:58 +0100
+Received: by igvi2 with SMTP id i2so56583662igv.0
+        for <linux-mips@linux-mips.org>; Mon, 02 Nov 2015 12:50:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type;
+        bh=Y+38Bq+0gFhLLNK7MqVj/FkYZOlxRRwJqzNso9sQ0sQ=;
+        b=nap0GMirbSyjS2afA3q7Gp7lQsSMnT1St0VtnSP+NcAwtR2HvhQc7MqreDxpMi/LqB
+         4LEYKrpx3d3qSSTYZjj7J0+kJLxjRtGetAo11HGuf+j/RDV6rTVUyBC4rby2UhDqKSDu
+         pcMJ0Atafs5tUvPN/HM6SL66y0QRLdQupiamEXmJRcLfPlZ6sCGzGYFv9oRHy6/97L8r
+         Qcek8MOmon3pEVATG9SzNYWTdkk69MB1TmZwpc5DCdt9sJriYDe9M8S7XqQtVUTsWT7v
+         /vONiz/kXeB1trUYgGB9MqZATbB4/wav89xwZGU0504bnMk4XnlGcwxgzR6Qlg0VdZjj
+         4HeA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:in-reply-to:references:date
+         :message-id:subject:from:to:cc:content-type;
+        bh=Y+38Bq+0gFhLLNK7MqVj/FkYZOlxRRwJqzNso9sQ0sQ=;
+        b=EEUnmEzEmSlUEHSejK0fA0kRjkwgKsXyqqVmn5GFz69ynspONxnroZkgjlGGcxQXvp
+         XPWDlTZzOeR7+q6UpYwU3sKH8rUXpbCf0wZDwhBSNGyrMWMNssn/vj1Fj6IPYQGkDqdK
+         ExaXrMtYRpcoLVsIESgrfPnIZsnjR6+7+h8HflL5P1dvkg7z45Jv3o22ggox4SiLCTdT
+         pafEdKW5nDkOy41Jz5+g0QctNfARlQxn3TBaGaVK5ug4EwRrCv8+ncRy5xeeQJ1xzWKx
+         NQ/ZnNxQtDKnJLpWBj2XVCA0Wb1XW9Z8uVbb0LhG8WcZeLkgaBWOK3SsOGcqiwiEkesO
+         CEGg==
+X-Gm-Message-State: ALoCoQnlsyTlh9VcWKOgQ46EKKMOuJz8GroLHdhvLvD0FGwFV5AL5z7tsOE0Wff7rbweAsxwqbtV
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-X-Provags-ID: V03:K0:A+nFX0gm4ee96zFlL49m0hRYl2nxg+MbYWG8KYYLMj3ZnID8mQ0
- Fi6oVGWfTV+z6UhXuOFv3lnbXRqBAQWaj7+/gtJcfazNk4Ate7vW2zY9zo/wvcpYq0Ttg2m
- e/27wLWcv9MPIVz7Os/CrLgdr5rCwFvVz7EUmh6FvqRNQe50byLf9iYH1aW3QGM8ykVtYQf
- WpmxV+X80VxWaX1TOqpow==
-X-UI-Out-Filterresults: notjunk:1;V01:K0:9VHxN8yKt0s=:ELK5ZsxgS+uVZCDlN6vTzj
- WhOGnqlaEyZ9eQim85EV5WmOq0JCKGO1w7+qE1OvRzbKeGKK2STB+XixZOu/lgh8Hvbvi5ut1
- y6tbEwM4ccmJKVioXtsBI2zriLnQJzDLV1E4Nt53PdWj3F/Fl7i7l1u9ipTb2fJn/nWkJYTWt
- DqgmrJ7/GC4iGHuF4wdT+QhOf/A1wWDDywbqSfUdcZ/4qDwQDDdJuIfNreBgYn0HDwatOclc4
- ZyY6/D25k7h8cSve1b22SdvkIbtDfacf0xAHGemMGn4mKzJ7T7D2rpHHCo/qzk8qgczlgFLPk
- dFQlo6t5bYG43RSP4iOrGWPtrIFav3/9e7kxRHMpX7Boii9dPi+fssqyfgTkyFQpgYINikZw4
- valk6YoEX+xjWVmnBtY3+3gUSqwE2G+su/utaNUf44YvXr8EkkwOwBHVFucJtATlWUQlHx5Z7
- W/k6+wrQ+w6NA9mlEfxWG9QOn6MG/JI9dzkB5cW7pqIPYz3ox9pk55sBRW1Z2K6pLOYN0mAgb
- I2N4Gt2c7oFmZA2dLUBHahelxU4rN3Xf+cwsudkrYK8CW2z9uRKCqtxTCY8Yw1OB6pUjXLs+C
- otITgbu5b3rO3MZLr0GaCdwjR++7x5+3x2gmxhATslzAFMc3XyWHz//Lp6Tz+Zb3CWkdzFQLY
- r0mHn6yQrTrCe6A0cbKGlvavg1oUfYRYYp7QWp0G7JhmuNtbIWXJa9GdYmrXumqg82/hyi2Mg
- AxZUwFXJ0JK9Ay1C
-Return-Path: <arnd@arndb.de>
+X-Received: by 10.50.65.74 with SMTP id v10mr14825405igs.54.1446497450779;
+ Mon, 02 Nov 2015 12:50:50 -0800 (PST)
+Received: by 10.64.228.37 with HTTP; Mon, 2 Nov 2015 12:50:50 -0800 (PST)
+In-Reply-To: <1445280592-43038-1-git-send-email-pgynther@google.com>
+References: <1445280592-43038-1-git-send-email-pgynther@google.com>
+Date:   Mon, 2 Nov 2015 12:50:50 -0800
+Message-ID: <CAGXr9JH5TLxOnA2LMPdxo3Sqeigprm=KFiiM9Vu2eMOaMgC6yA@mail.gmail.com>
+Subject: Re: [PATCH] MIPS: add nmi_enter() + nmi_exit() to nmi_exception_handler()
+From:   Petri Gynther <pgynther@google.com>
+To:     linux-mips <linux-mips@linux-mips.org>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Petri Gynther <pgynther@google.com>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <pgynther@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49799
+X-archive-position: 49800
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arnd@arndb.de
+X-original-sender: pgynther@google.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -64,49 +63,57 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tuesday 27 October 2015 15:48:07 Jaedon Shin wrote:
-> 
->  static const struct of_device_id brcm_sata_phy_of_match[] = {
-> -       { .compatible   = "brcm,bcm7445-sata-phy" },
-> +       { .compatible   = "brcm,bcm7445-sata-phy",
-> +         .data = (void *)BRCM_SATA_PHY_28NM },
->         {},
->  };
->  MODULE_DEVICE_TABLE(of, brcm_sata_phy_of_match);
-> @@ -135,6 +145,7 @@ static int brcm_sata_phy_probe(struct platform_device *pdev)
+On Mon, Oct 19, 2015 at 11:49 AM, Petri Gynther <pgynther@google.com> wrote:
+>
+> We need to enter NMI context when NMI interrupt fires.
+>
+> Signed-off-by: Petri Gynther <pgynther@google.com>
+> ---
+>  arch/mips/kernel/traps.c | 2 ++
+>  1 file changed, 2 insertions(+)
+>
+> diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
+> index fdb392b..efcedd4 100644
+> --- a/arch/mips/kernel/traps.c
+> +++ b/arch/mips/kernel/traps.c
+> @@ -1856,12 +1856,14 @@ void __noreturn nmi_exception_handler(struct pt_regs *regs)
 >  {
->         struct device *dev = &pdev->dev;
->         struct device_node *dn = dev->of_node, *child;
-> +       const struct of_device_id *of_id;
->         struct brcm_sata_phy *priv;
->         struct resource *res;
->         struct phy_provider *provider;
-> @@ -154,6 +165,12 @@ static int brcm_sata_phy_probe(struct platform_device *pdev)
->         if (IS_ERR(priv->phy_base))
->                 return PTR_ERR(priv->phy_base);
->  
-> +       of_id = of_match_node(brcm_sata_phy_of_match, dn);
-> +       if (of_id)
-> +               priv->version = (enum brcm_sata_phy_version)of_id->data;
-> +       else
-> +               priv->version = BRCM_SATA_PHY_28NM;
-> +
-> 
+>         char str[100];
+>
+> +       nmi_enter();
+>         raw_notifier_call_chain(&nmi_chain, 0, regs);
+>         bust_spinlocks(1);
+>         snprintf(str, 100, "CPU%d NMI taken, CP0_EPC=%lx\n",
+>                  smp_processor_id(), regs->cp0_epc);
+>         regs->cp0_epc = read_c0_errorepc();
+>         die(str, regs);
+> +       nmi_exit();
+>  }
+>
+>  #define VECTORSPACING 0x100    /* for EI/VI mode */
+> --
+> 2.6.0.rc2.230.g3dd15c0
+>
 
-As you don't actually use that variable except to set the 'offset' for
-phy_base, it would be nicer to use a structure that you can point to:
+Any comments/concerns about this patch?
 
-struct brcm_sata_phy_data {
-	unsigned long offset;
-};
+On our systems, we have seen stack traces like this:
+<4>[158549.586000] : [<800103c0>] show_stack+0x78/0x90
+<4>[158549.586000] : [<807340a0>] dump_stack+0xd0/0x144
+<4>[158549.586000] : [<8006475c>] dequeue_task_idle+0x38/0x4c
+<4>[158549.586000] : [<80735c8c>] __schedule+0x49c/0xa68
+<4>[158549.586000] : [<80736294>] schedule+0x3c/0x9c
+<4>[158549.586000] : [<80739930>] schedule_timeout+0x144/0x254
+<4>[158549.586000] : [<800964f8>] msleep+0x40/0x54
+<4>[158549.586000] : [<80010604>] die+0x124/0x130
+<4>[158549.586000] : [<80012abc>] set_vi_handler+0x0/0x24
+<4>[158549.586000] :
+<3>[158549.586000] bad: scheduling from the idle thread!
 
-const struct brcm_sata_phy_data brcm_sata_phy_28nm = {
-	.offset = SATA_MDIO_REG_28NM_SPACE_SIZE,
-};
+80012a24 <nmi_exception_handler>:
+...
+80012ab4:       0c004138        jal     800104e0 <die>
+80012ab8:       02002821        move    a1,s0
 
-static const struct of_device_id brcm_sata_phy_of_match[] = {
-	{ .compatible   = "brcm,bcm7445-sata-phy", .data = &brcm_sata_phy_28nm },
-	{},
-};
-
-	Arnd
+80012abc <set_vi_handler>:
+...

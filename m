@@ -1,20 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Nov 2015 11:50:57 +0100 (CET)
-Received: from arrakis.dune.hu ([78.24.191.176]:37380 "EHLO arrakis.dune.hu"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Nov 2015 11:51:13 +0100 (CET)
+Received: from arrakis.dune.hu ([78.24.191.176]:37383 "EHLO arrakis.dune.hu"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27011149AbbKDKu1VnWsw (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 4 Nov 2015 11:50:27 +0100
+        id S27011153AbbKDKu3N-Qjw (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 4 Nov 2015 11:50:29 +0100
 Received: from arrakis.dune.hu (localhost [127.0.0.1])
-        by arrakis.dune.hu (Postfix) with ESMTP id 890AB280351;
-        Wed,  4 Nov 2015 11:48:36 +0100 (CET)
+        by arrakis.dune.hu (Postfix) with ESMTP id ADF4028098D;
+        Wed,  4 Nov 2015 11:48:38 +0100 (CET)
 Received: from localhost.localdomain (p548C90D8.dip0.t-ipconnect.de [84.140.144.216])
         by arrakis.dune.hu (Postfix) with ESMTPSA;
-        Wed,  4 Nov 2015 11:48:36 +0100 (CET)
+        Wed,  4 Nov 2015 11:48:38 +0100 (CET)
 From:   John Crispin <blogic@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org
-Subject: [PATCH 3/9] arch: mips: ralink: fix usb issue during frequency scaling
-Date:   Wed,  4 Nov 2015 11:50:08 +0100
-Message-Id: <1446634214-11564-3-git-send-email-blogic@openwrt.org>
+Subject: [PATCH 4/9] arch: mips: ralink: add tty detection
+Date:   Wed,  4 Nov 2015 11:50:09 +0100
+Message-Id: <1446634214-11564-4-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.10.4
 In-Reply-To: <1446634214-11564-1-git-send-email-blogic@openwrt.org>
 References: <1446634214-11564-1-git-send-email-blogic@openwrt.org>
@@ -22,7 +22,7 @@ Return-Path: <blogic@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49829
+X-archive-position: 49830
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -39,54 +39,67 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-If the USB HCD is running and the cpu is scaled too low, then the USB
-stops working. Increase the idle speed of the core to fix this if the
-kernel is built with USB support.
-
-The "magic" values are taken from the Ralink SDK Kernel.
+MT7688 has several uarts that can be used for console. There are several
+boards in the wild, that use ttyS1 or ttyS2. This patch applies a simply
+autodetection routine to figure out which ttyS the bootloader used as
+console. The uarts come up in 6 bit mode by default. The bootloader will
+have set 8 bit mode on the console. Find that 8bit tty and use it.
 
 Signed-off-by: John Crispin <blogic@openwrt.org>
 ---
- arch/mips/ralink/mt7620.c |   20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+ arch/mips/ralink/early_printk.c |   26 ++++++++++++++++++++++++++
+ 1 file changed, 26 insertions(+)
 
-diff --git a/arch/mips/ralink/mt7620.c b/arch/mips/ralink/mt7620.c
-index f3a4a08..55ddf09 100644
---- a/arch/mips/ralink/mt7620.c
-+++ b/arch/mips/ralink/mt7620.c
-@@ -37,6 +37,12 @@
- #define PMU1_CFG		0x8C
- #define DIG_SW_SEL		BIT(25)
+diff --git a/arch/mips/ralink/early_printk.c b/arch/mips/ralink/early_printk.c
+index 255d695..36c2468 100644
+--- a/arch/mips/ralink/early_printk.c
++++ b/arch/mips/ralink/early_printk.c
+@@ -25,11 +25,13 @@
+ #define MT7628_CHIP_NAME1	0x20203832
  
-+/* clock scaling */
-+#define CLKCFG_FDIV_MASK	0x1f00
-+#define CLKCFG_FDIV_USB_VAL	0x0300
-+#define CLKCFG_FFRAC_MASK	0x001f
-+#define CLKCFG_FFRAC_USB_VAL	0x0003
-+
- /* EFUSE bits */
- #define EFUSE_MT7688		0x100000
+ #define UART_REG_TX		0x04
++#define UART_REG_LCR		0x0c
+ #define UART_REG_LSR		0x14
+ #define UART_REG_LSR_RT2880	0x1c
  
-@@ -432,6 +438,20 @@ void __init ralink_clk_init(void)
- 	ralink_clk_add("10000b00.spi", sys_rate);
- 	ralink_clk_add("10000c00.uartlite", periph_rate);
- 	ralink_clk_add("10180000.wmac", xtal_rate);
-+
-+	if (IS_ENABLED(CONFIG_USB) && is_mt76x8()) {
-+		/*
-+		 * When the CPU goes into sleep mode, the BUS clock will be
-+		 * too low for USB to function properly. Adjust the busses
-+		 * fractional divider to fix this
-+		 */
-+		u32 val = rt_sysc_r32(SYSC_REG_CPU_SYS_CLKCFG);
-+
-+		val &= ~(CLKCFG_FDIV_MASK | CLKCFG_FFRAC_MASK);
-+		val |= CLKCFG_FDIV_USB_VAL | CLKCFG_FFRAC_USB_VAL;
-+
-+		rt_sysc_w32(val, SYSC_REG_CPU_SYS_CLKCFG);
-+	}
+ static __iomem void *uart_membase = (__iomem void *) KSEG1ADDR(EARLY_UART_BASE);
+ static __iomem void *chipid_membase = (__iomem void *) KSEG1ADDR(CHIPID_BASE);
++static int init_complete;
+ 
+ static inline void uart_w32(u32 val, unsigned reg)
+ {
+@@ -47,8 +49,32 @@ static inline int soc_is_mt7628(void)
+ 		(__raw_readl(chipid_membase) == MT7628_CHIP_NAME1);
  }
  
- void __init ralink_of_remap(void)
++static inline void find_uart_base(void)
++{
++	int i;
++
++	if (!soc_is_mt7628())
++		return;
++
++	for (i = 0; i < 3; i++) {
++		u32 reg = uart_r32(UART_REG_LCR + (0x100 * i));
++
++		if (!reg)
++			continue;
++
++		uart_membase = (__iomem void *) KSEG1ADDR(EARLY_UART_BASE +
++							  (0x100 * i));
++		break;
++	}
++}
++
+ void prom_putchar(unsigned char ch)
+ {
++	if (!init_complete) {
++		find_uart_base();
++		init_complete = 1;
++	}
++
+ 	if (IS_ENABLED(CONFIG_SOC_MT7621) || soc_is_mt7628()) {
+ 		uart_w32(ch, UART_TX);
+ 		while ((uart_r32(UART_REG_LSR) & UART_LSR_THRE) == 0)
 -- 
 1.7.10.4

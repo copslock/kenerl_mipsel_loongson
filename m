@@ -1,64 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Nov 2015 21:06:37 +0100 (CET)
-Received: from mail-lf0-f50.google.com ([209.85.215.50]:33605 "EHLO
-        mail-lf0-f50.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011500AbbKDUGfv8sWt (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 4 Nov 2015 21:06:35 +0100
-Received: by lfbf136 with SMTP id f136so47586849lfb.0
-        for <linux-mips@linux-mips.org>; Wed, 04 Nov 2015 12:06:30 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Nov 2015 01:51:43 +0100 (CET)
+Received: from mail-wm0-f43.google.com ([74.125.82.43]:37885 "EHLO
+        mail-wm0-f43.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012274AbbKEAvmJ6Ims (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 5 Nov 2015 01:51:42 +0100
+Received: by wmll128 with SMTP id l128so288995wml.0
+        for <linux-mips@linux-mips.org>; Wed, 04 Nov 2015 16:51:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cogentembedded_com.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:references:cc:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-type:content-transfer-encoding;
-        bh=IWIw28zkizcPeYsFtMegb0d5MjLd6Zll/nSfMewGBtY=;
-        b=EaBpoRdIiFv6kK/yjNvQ/UpFhM4RrHMhdap60q5eh6nb8gsIBtzapvliZXT8qTxUe6
-         0TxMAUfAnSuSHrv2XoExBcgm21ADbVy2gqoCMDJIwL4Btu2VU0WdzA7VchEQVqE5Un3R
-         DDQZFlvMVQCyhGgGFtpkut+BfGXm9TIh9rxlJRohidgKrx1gN0h0ubi/COyWg4iv8VXK
-         jqNlkm56+bI+3xNz68/Nt4Z4U+L90RFaHKe1myGyOIASRSeCIKmmGfMVuJl6/q3WWTon
-         DG/XAhT3lvFa/9tbC8zlTbHQtsp43gSLwf+NzxEdCDEsu5PuoQpkrYx6hLSPD+gXLfGX
-         Ph2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:subject:to:references:cc:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-type
-         :content-transfer-encoding;
-        bh=IWIw28zkizcPeYsFtMegb0d5MjLd6Zll/nSfMewGBtY=;
-        b=TOI5W2eeJln/XJ/3pX6PmU0Y4qByhIS94THDm017b/4YImW7Kr6pNxjnKhfynJtIK9
-         IXd4snRRIUTP4z+WZVxDHlhnEgoSUtrUmfQ2bUQH6GdT3b3qDhnhKMT28V4lGcicLm0L
-         L3BQhhDRt6aWNSjrx/bsZczgUY71zgdlk6wPInXDgZnwmkjn8+1fXI6L+oml23kGbZe/
-         UZ2bd2JY1dEv+/C9iwCPt7t/Y54NAWwrqD0JKpchY5XeVtkUdmnmOMSlAvhhv1o7h3ig
-         ZIj5i6UA0bXkrXAxgNwpfo8dl+3tjhWKWXpH0PNP/d4TutkNObx/+zBoEfbnmIiQT9Nz
-         rTbQ==
-X-Gm-Message-State: ALoCoQlOaksoyIv/TzzjWDwGRs1WJCUp1WqT+AS2cnahrR/PCBjU4yjjBLPX3mxCIxr4uOC4eBUc
-X-Received: by 10.25.28.131 with SMTP id c125mr679565lfc.99.1446667590326;
-        Wed, 04 Nov 2015 12:06:30 -0800 (PST)
-Received: from [192.168.4.126] ([31.173.80.130])
-        by smtp.gmail.com with ESMTPSA id r77sm5899205lfr.30.2015.11.04.12.06.28
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 04 Nov 2015 12:06:29 -0800 (PST)
-Subject: Re: [PATCH 4/4] arch: mips: lantiq: disable xbar fpi burst mode
-To:     John Crispin <blogic@openwrt.org>,
-        Ralf Baechle <ralf@linux-mips.org>
-References: <1446639256-22526-1-git-send-email-blogic@openwrt.org>
- <1446639256-22526-4-git-send-email-blogic@openwrt.org>
-Cc:     linux-mips@linux-mips.org
-From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Message-ID: <563A6545.6000704@cogentembedded.com>
-Date:   Wed, 4 Nov 2015 23:06:29 +0300
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:38.0) Gecko/20100101
- Thunderbird/38.3.0
-MIME-Version: 1.0
-In-Reply-To: <1446639256-22526-4-git-send-email-blogic@openwrt.org>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sergei.shtylyov@cogentembedded.com>
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id;
+        bh=JRkfpUfVBfZQXdOsz0BfC22Go7B7M8rixdr/F0y41o8=;
+        b=HsMYZbtS6rjXd7DG1Y26j/WVhY2TxLG4NyxHEVfPb6SL1zCBOL3oJbAXz3e8bCdXNX
+         tPSxWIVQG9HEm24jF+i22ciTAt57XRnfNYRaml3TOAS+k0qq25Hr5j+l93XbdjIyJBtp
+         N0B8uiDE4oFkFhpkVW50DGT9Et7LJ2Ha5z0xMDOLD4tqk58A70P9zKO2Oy/Sy7uwDUm2
+         n1RBf/+PP1iMLct1gaJ2GNkrrMUNzCf6RJ75wSWUJWJ8zGq5oyVm+TWsNNEfNGUmFVVy
+         vOD6QvrHYDXyhabolwcK+siKEUzDyWQuC4dMv+cMoYNestwoFg7aoUZZiUNg1VLfpsoW
+         YzFA==
+X-Received: by 10.28.217.18 with SMTP id q18mr87121wmg.10.1446684696889;
+        Wed, 04 Nov 2015 16:51:36 -0800 (PST)
+Received: from amanieu-laptop.wireless.ropemaker.crm.lan ([31.205.92.76])
+        by smtp.gmail.com with ESMTPSA id 194sm5558927wmh.19.2015.11.04.16.51.36
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Wed, 04 Nov 2015 16:51:36 -0800 (PST)
+From:   Amanieu d'Antras <amanieu@gmail.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     Oleg Nesterov <oleg@redhat.com>,
+        Amanieu d'Antras <amanieu@gmail.com>,
+        linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-api@vger.kernel.org
+Subject: [PATCH v2 00/20] Fix handling of compat_siginfo_t
+Date:   Thu,  5 Nov 2015 00:50:19 +0000
+Message-Id: <1446684640-4112-1-git-send-email-amanieu@gmail.com>
+X-Mailer: git-send-email 2.6.2
+Return-Path: <amanieu@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49842
+X-archive-position: 49843
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sergei.shtylyov@cogentembedded.com
+X-original-sender: amanieu@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -71,67 +55,78 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hello.
+The current handling of compat_siginfo_t is a mess: each architecture has its
+own implementation, all of which are incorrect in different ways. This patch
+series replaces all of the arch-specific versions with a single generic one that
+is guaranteed to produce the same results as a 32-bit kernel.
 
-On 11/4/2015 3:14 PM, John Crispin wrote:
+Most architectures are able to use the generic compat_siginfo_t, except x86 and
+MIPS. MIPS uses a slightly different compat_siginfo_t structure for ABI reasons
+but can still use the generic copy_siginfo_{to,from}_user32. x86 can't use the
+generic versions because it needs special handling for __SI_CHLD for x32 tasks.
 
-> Signed-off-by: John Crispin <blogic@openwrt.org>
-> ---
->   arch/mips/lantiq/xway/sysctrl.c |   41 +++++++++++++++++++++++++++++++++++++++
->   1 file changed, 41 insertions(+)
->
-> diff --git a/arch/mips/lantiq/xway/sysctrl.c b/arch/mips/lantiq/xway/sysctrl.c
-> index 2b15491..9147c4b 100644
-> --- a/arch/mips/lantiq/xway/sysctrl.c
-> +++ b/arch/mips/lantiq/xway/sysctrl.c
-[...]
-> @@ -179,6 +187,16 @@ static void pci_ext_disable(struct clk *clk)
->   	ltq_cgu_w32((1 << 31) | (1 << 30), pcicr);
->   }
->
-> +static void xbar_fpi_burst_disable(void)
-> +{
-> +	u32 reg;
-> +
-> +	/* bit 1 as 1 --burst; bit 1 as 0 -- single */
-> +	reg = xbar_r32(XBAR_ALWAYS_LAST);
-> +	reg &= ~XBAR_FPI_BURST_EN;
-> +	xbar_w32(reg, XBAR_ALWAYS_LAST);
-> +}
-> +
->   /* enable a clockout source */
->   static int clkout_enable(struct clk *clk)
->   {
-> @@ -328,6 +346,26 @@ void __init ltq_soc_init(void)
->   	if (!pmu_membase || !ltq_cgu_membase || !ltq_ebu_membase)
->   		panic("Failed to remap core resources");
->
-> +
+One issue that isn't resolved in this series is sending signals between a 32-bit
+process and 64-bit process. Sending a si_int will work correctly, but a si_ptr
+value will likely get corrupted due to the different layouts of the 32-bit and
+64-bit siginfo_t structures.
 
-    Why two empty lines?
+signalfd_copyinfo was also modified to properly generate data for compat tasks.
+In particular the ssi_ptr and ssi_data members need to be sign-extended to 64
+bits rather than zero-extended, since that is the behavior in 32-bit kernels.
 
-> +	if (of_machine_is_compatible("lantiq,vr9")) {
-> +		struct resource res_xbar;
-> +		struct device_node *np_xbar =
-> +		of_find_compatible_node(NULL, NULL,
-> +			"lantiq,xbar-xway");
+This series has been tested on x86_64 and arm64.
 
-    This needs to be indented more to the right and empty line needs to be 
-added afterwards.
+Changes since v1:
+- Properly copy padding bytes and avoid leaking uninitialized data to userspace
+- Fixed compile errors on mips and powerpc
+- Fixed some compiler warnings
+- Fixed some formatting issues
 
-> +		if (!np_xbar)
-> +			panic("Failed to load xbar nodes from devicetree");
-> +		if (of_address_to_resource(np_pmu, 0, &res_xbar))
-> +			panic("Failed to get xbar resources");
-> +		if (request_mem_region(res_xbar.start, resource_size(&res_xbar),
-> +			res_xbar.name) < 0)
-> +			panic("Failed to get xbar resources");
-> +
-> +		ltq_xbar_membase = ioremap_nocache(res_xbar.start,
-> +		resource_size(&res_xbar));
+Amanieu d'Antras (20):
+  compat: Add generic compat_siginfo_t
+  compat: Add generic copy_siginfo_{to,from}_user32
+  x86: Update compat_siginfo_t to be closer to the generic version
+  x86: Rewrite copy_siginfo_{to,from}_user32
+  mips: Clean up compat_siginfo_t
+  mips: Use generic copy_siginfo_{to,from}_user32
+  arm64: Use generic compat_siginfo_t
+  arm64: Use generic copy_siginfo_{to,from}_user32
+  parisc: Use generic compat_siginfo_t
+  parsic: Use generic copy_siginfo_{to,from}_user32
+  s390: Use generic compat_siginfo_t
+  s390: Use generic copy_siginfo_{to,from}_user32
+  powerpc: Use generic compat_siginfo_t
+  powerpc: Use generic copy_siginfo_{to,from}_user32
+  tile: Use generic compat_siginfo_t
+  tile: Use generic copy_siginfo_{to,from}_user32
+  sparc: Use generic compat_siginfo_t
+  sparc: Use generic copy_siginfo_{to,from}_user32
+  signalfd: Fix some issues in signalfd_copyinfo
+  signal: Remove unnecessary zero-initialization of siginfo_t
 
-    This line needs to be indented more to the right.
+ arch/arm64/include/asm/compat.h    |  59 --------
+ arch/arm64/kernel/signal32.c       |  85 -----------
+ arch/mips/include/asm/compat.h     |  63 ++++----
+ arch/mips/kernel/signal32.c        |  62 --------
+ arch/parisc/include/asm/compat.h   |  52 -------
+ arch/parisc/kernel/signal32.c      | 102 -------------
+ arch/powerpc/include/asm/compat.h  |  60 --------
+ arch/powerpc/kernel/signal_32.c    |  72 +---------
+ arch/s390/include/asm/compat.h     |  51 -------
+ arch/s390/kernel/compat_signal.c   | 102 -------------
+ arch/sparc/include/asm/compat.h    |  54 -------
+ arch/sparc/kernel/signal32.c       |  69 ---------
+ arch/tile/include/asm/compat.h     |  57 --------
+ arch/tile/kernel/compat_signal.c   |  75 ----------
+ arch/x86/include/asm/compat.h      |  39 +++--
+ arch/x86/kernel/signal_compat.c    | 285 ++++++++++++++++++++++++++++---------
+ fs/signalfd.c                      |  58 +++++---
+ include/linux/compat.h             |  66 ++++++++-
+ include/uapi/asm-generic/siginfo.h |   1 +
+ kernel/compat.c                    | 224 +++++++++++++++++++++++++++++
+ kernel/ptrace.c                    |   1 -
+ kernel/signal.c                    |  16 ++-
+ 22 files changed, 615 insertions(+), 1038 deletions(-)
 
-[...]
-
-MBR, Sergei
+-- 
+2.6.2

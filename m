@@ -1,66 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Nov 2015 12:21:38 +0100 (CET)
-Received: from conuserg012.nifty.com ([202.248.44.38]:56637 "EHLO
-        conuserg012-v.nifty.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27009483AbbKELVhHPdo7 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 5 Nov 2015 12:21:37 +0100
-Received: from beagle.diag.org (KD036012008038.au-net.ne.jp [36.12.8.38]) (authenticated)
-        by conuserg012-v.nifty.com with ESMTP id tA5BEw4v006852;
-        Thu, 5 Nov 2015 20:15:12 +0900
-X-Nifty-SrcIP: [36.12.8.38]
-From:   Masahiro Yamada <yamada.masahiro@socionext.com>
-To:     linux-kernel@vger.kernel.org,
-        Philipp Zabel <p.zabel@pengutronix.de>
-Cc:     Masahiro Yamada <yamada.masahiro@socionext.com>,
-        linux-mips@linux-mips.org,
-        Patrice Chotard <patrice.chotard@st.com>,
-        Sascha Hauer <kernel@pengutronix.de>, kernel@stlinux.com,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Eric Miao <eric.y.miao@gmail.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Michael Turquette <mturquette@linaro.org>,
-        Vishnu Patekar <vishnupatekar0510@gmail.com>,
-        Arnd Bergmann <arnd@arndb.de>, David Airlie <airlied@linux.ie>,
-        Barry Song <baohua@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        =?UTF-8?q?Terje=20Bergstr=C3=B6m?= <tbergstrom@nvidia.com>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Tuomas Tynkkynen <ttynkkynen@nvidia.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        linux-rockchip@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org,
-        Will Deacon <will.deacon@arm.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Alexandre Courbot <gnurou@gmail.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Benjamin Gaignard <benjamin.gaignard@linaro.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Mark Yao <mark.yao@rock-chips.com>,
-        Vincent Abriou <vincent.abriou@st.com>,
-        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-        Jens Kuske <jenskuske@gmail.com>,
-        Russell King <linux@arm.linux.org.uk>,
-        linux-gpio@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-tegra@vger.kernel.org,
-        Maxime Coquelin <maxime.coquelin@st.com>,
-        Srinivas Kandagatla <srinivas.kandagatla@gmail.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Mark Brown <broonie@kernel.org>,
-        Stephen Warren <swarren@wwwdotorg.org>,
-        linux-spi@vger.kernel.org, Chen-Yu Tsai <wens@csie.org>,
-        Maxime Ripard <maxime.ripard@free-electrons.com>
-Subject: [RFC PATCH 0/7] reset: make RESET_CONTROLLER a select'ed option
-Date:   Thu,  5 Nov 2015 20:15:21 +0900
-Message-Id: <1446722128-11961-1-git-send-email-yamada.masahiro@socionext.com>
-X-Mailer: git-send-email 1.9.1
-Return-Path: <yamada.masahiro@socionext.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Nov 2015 14:35:59 +0100 (CET)
+Received: from arrakis.dune.hu ([78.24.191.176]:34906 "EHLO arrakis.dune.hu"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27009483AbbKENf526Lz- (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 5 Nov 2015 14:35:57 +0100
+Received: from arrakis.dune.hu (localhost [127.0.0.1])
+        by arrakis.dune.hu (Postfix) with ESMTP id 0FCFA2803EE;
+        Thu,  5 Nov 2015 14:34:07 +0100 (CET)
+Received: from localhost.localdomain (p548C9511.dip0.t-ipconnect.de [84.140.149.17])
+        by arrakis.dune.hu (Postfix) with ESMTPSA;
+        Thu,  5 Nov 2015 14:34:07 +0100 (CET)
+From:   John Crispin <blogic@openwrt.org>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org
+Subject: [PATCH V2 4/4] arch: mips: lantiq: disable xbar fpi burst mode
+Date:   Thu,  5 Nov 2015 03:56:23 +0100
+Message-Id: <1446692183-43330-1-git-send-email-blogic@openwrt.org>
+X-Mailer: git-send-email 1.7.10.4
+Return-Path: <blogic@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49849
+X-archive-position: 49850
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yamada.masahiro@socionext.com
+X-original-sender: blogic@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -73,56 +37,85 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-When I was implementing a new reset controller for my SoCs,
-I struggled to make my sub-menu shown under the reset
-controller menu.
-I noticed the Kconfig in reset sub-system are screwed up due to two
-config options (ARCH_HAS_RESET_CONTROLLER and RESET_CONTROLLER).
+Signed-off-by: John Crispin <blogic@openwrt.org>
+---
+Changes in V2:
+* fix some whitespace/indentation breakage.
 
-I think only the former should be select'ed by relevant SoCs,
-but in fact the latter is also select'ed here and there.
-Mixing "select" to a user-configurable option is a mess.
+ arch/mips/lantiq/xway/sysctrl.c |   41 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 41 insertions(+)
 
-Finally, I started to wonder whether it could be more simpler?
-
-The first patch drops ARCH_HAS_RESET_CONTROLLER.
-RESET_CONTROLLER should be directly selected by SoCs.
-
-The rest of this series are minor clean ups in other
-sub-systems.
-I can postpone them if changes over cross sub-systems
-are not preferred.
-
-
-
-Masahiro Yamada (7):
-  reset: drop ARCH_HAS_RESET_CONTROLLER
-  spi: sunxi: remove redundant "depends on RESET_CONTROLLER"
-  spi: tegra: remove redundant "depends on RESET_CONTROLLER"
-  pinctrl: sunxi: remove redundant "depends on RESET_CONTROLLER"
-  drm/sti: replace "select RESET_CONTROLLER" with "depends on ..."
-  drm/rockchip: remove redundant "depends on RESET_CONTROLLER"
-  drm/tegra: tegra: remove redundant "depends on RESET_CONTROLLER"
-
- arch/arm/Kconfig                 |  3 +--
- arch/arm/mach-berlin/Kconfig     |  2 +-
- arch/arm/mach-imx/Kconfig        |  2 +-
- arch/arm/mach-mmp/Kconfig        |  4 ++--
- arch/arm/mach-prima2/Kconfig     |  2 +-
- arch/arm/mach-rockchip/Kconfig   |  2 +-
- arch/arm/mach-sti/Kconfig        |  1 -
- arch/arm/mach-sunxi/Kconfig      |  1 -
- arch/arm/mach-tegra/Kconfig      |  1 -
- arch/arm64/Kconfig.platforms     |  3 +--
- arch/mips/Kconfig                |  4 +---
- drivers/gpu/drm/rockchip/Kconfig |  1 -
- drivers/gpu/drm/sti/Kconfig      |  4 ++--
- drivers/gpu/drm/tegra/Kconfig    |  1 -
- drivers/pinctrl/sunxi/Kconfig    |  2 --
- drivers/reset/Kconfig            | 12 +++++++-----
- drivers/reset/sti/Kconfig        |  1 -
- drivers/spi/Kconfig              |  6 ++----
- 18 files changed, 20 insertions(+), 32 deletions(-)
-
+diff --git a/arch/mips/lantiq/xway/sysctrl.c b/arch/mips/lantiq/xway/sysctrl.c
+index 2b15491..5c66d7b 100644
+--- a/arch/mips/lantiq/xway/sysctrl.c
++++ b/arch/mips/lantiq/xway/sysctrl.c
+@@ -78,7 +78,15 @@
+ #define pmu_w32(x, y)	ltq_w32((x), pmu_membase + (y))
+ #define pmu_r32(x)	ltq_r32(pmu_membase + (x))
+ 
++#define XBAR_ALWAYS_LAST	0x430
++#define XBAR_FPI_BURST_EN	BIT(1)
++#define XBAR_AHB_BURST_EN	BIT(2)
++
++#define xbar_w32(x, y)	ltq_w32((x), ltq_xbar_membase + (y))
++#define xbar_r32(x)	ltq_r32(ltq_xbar_membase + (x))
++
+ static void __iomem *pmu_membase;
++static void __iomem *ltq_xbar_membase;
+ void __iomem *ltq_cgu_membase;
+ void __iomem *ltq_ebu_membase;
+ 
+@@ -179,6 +187,16 @@ static void pci_ext_disable(struct clk *clk)
+ 	ltq_cgu_w32((1 << 31) | (1 << 30), pcicr);
+ }
+ 
++static void xbar_fpi_burst_disable(void)
++{
++	u32 reg;
++
++	/* bit 1 as 1 --burst; bit 1 as 0 -- single */
++	reg = xbar_r32(XBAR_ALWAYS_LAST);
++	reg &= ~XBAR_FPI_BURST_EN;
++	xbar_w32(reg, XBAR_ALWAYS_LAST);
++}
++
+ /* enable a clockout source */
+ static int clkout_enable(struct clk *clk)
+ {
+@@ -328,6 +346,26 @@ void __init ltq_soc_init(void)
+ 	if (!pmu_membase || !ltq_cgu_membase || !ltq_ebu_membase)
+ 		panic("Failed to remap core resources");
+ 
++	if (of_machine_is_compatible("lantiq,vr9")) {
++		struct resource res_xbar;
++		struct device_node *np_xbar =
++				of_find_compatible_node(NULL, NULL,
++							"lantiq,xbar-xway");
++
++		if (!np_xbar)
++			panic("Failed to load xbar nodes from devicetree");
++		if (of_address_to_resource(np_pmu, 0, &res_xbar))
++			panic("Failed to get xbar resources");
++		if (request_mem_region(res_xbar.start, resource_size(&res_xbar),
++			res_xbar.name) < 0)
++			panic("Failed to get xbar resources");
++
++		ltq_xbar_membase = ioremap_nocache(res_xbar.start,
++						   resource_size(&res_xbar));
++		if (!ltq_xbar_membase)
++			panic("Failed to remap xbar resources");
++	}
++
+ 	/* make sure to unprotect the memory region where flash is located */
+ 	ltq_ebu_w32(ltq_ebu_r32(LTQ_EBU_BUSCON0) & ~EBU_WRDIS, LTQ_EBU_BUSCON0);
+ 
+@@ -385,4 +423,7 @@ void __init ltq_soc_init(void)
+ 		clkdev_add_static(ltq_danube_cpu_hz(), ltq_danube_fpi_hz(),
+ 				ltq_danube_fpi_hz(), ltq_danube_pp32_hz());
+ 	}
++
++	if (of_machine_is_compatible("lantiq,vr9"))
++		xbar_fpi_burst_disable();
+ }
 -- 
-1.9.1
+1.7.10.4

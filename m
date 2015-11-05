@@ -1,46 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Nov 2015 01:53:01 +0100 (CET)
-Received: from mail-wm0-f50.google.com ([74.125.82.50]:36906 "EHLO
-        mail-wm0-f50.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012564AbbKEAvtyjKIs (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 5 Nov 2015 01:51:49 +0100
-Received: by wmll128 with SMTP id l128so290452wml.0;
-        Wed, 04 Nov 2015 16:51:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=p6/RjJPHR0aX88KyGhxoyLFqh1GbSbaMAglpRLB3gnM=;
-        b=YiE8ovwp+HpdvttdRDvCbzeQTinJoDjyAi3zVSxX1bdLgszmqoVhCG3MLpICJP1C/i
-         pjh+j08tXAUoCXWMhL3caYA+5TkzY7YmFivj70xtJ+qvKTENvNwWWkYJ4ATRY1cDzbYn
-         veLVxZXuOErBWRFSO8cEhmdpVQ6Bqr3j3cN8ZV88hv2KpiWv8hJc76R2NrPE8zRv+Ol0
-         lUpQQwtEYnJsN5q2lz1WfqLRQ3S7F34mIApaUJjQg7ztSSkL+Zu2Jf2Jfe5527L88JIK
-         Cbd29oKOLzS7lO/aS8Nxzym5GK/q4fFFoGxlGL7zyJU3P5QcYIX3y96K/Re9cfKar0fM
-         tOiQ==
-X-Received: by 10.28.21.17 with SMTP id 17mr64929wmv.82.1446684704745;
-        Wed, 04 Nov 2015 16:51:44 -0800 (PST)
-Received: from amanieu-laptop.wireless.ropemaker.crm.lan ([31.205.92.76])
-        by smtp.gmail.com with ESMTPSA id 194sm5558927wmh.19.2015.11.04.16.51.43
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Wed, 04 Nov 2015 16:51:43 -0800 (PST)
-From:   Amanieu d'Antras <amanieu@gmail.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     Oleg Nesterov <oleg@redhat.com>,
-        Amanieu d'Antras <amanieu@gmail.com>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: [PATCH v2 06/20] mips: Use generic copy_siginfo_{to,from}_user32
-Date:   Thu,  5 Nov 2015 00:50:25 +0000
-Message-Id: <1446684640-4112-7-git-send-email-amanieu@gmail.com>
-X-Mailer: git-send-email 2.6.2
-In-Reply-To: <1446684640-4112-1-git-send-email-amanieu@gmail.com>
-References: <1446684640-4112-1-git-send-email-amanieu@gmail.com>
-Return-Path: <amanieu@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Nov 2015 12:16:41 +0100 (CET)
+Received: from conuserg012.nifty.com ([202.248.44.38]:41597 "EHLO
+        conuserg012-v.nifty.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S27009483AbbKELQjBosj7 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 5 Nov 2015 12:16:39 +0100
+Received: from beagle.diag.org (KD036012008038.au-net.ne.jp [36.12.8.38]) (authenticated)
+        by conuserg012-v.nifty.com with ESMTP id tA5BEw4w006852;
+        Thu, 5 Nov 2015 20:15:19 +0900
+X-Nifty-SrcIP: [36.12.8.38]
+From:   Masahiro Yamada <yamada.masahiro@socionext.com>
+To:     linux-kernel@vger.kernel.org,
+        Philipp Zabel <p.zabel@pengutronix.de>
+Cc:     Masahiro Yamada <yamada.masahiro@socionext.com>,
+        linux-mips@linux-mips.org,
+        Patrice Chotard <patrice.chotard@st.com>,
+        Sascha Hauer <kernel@pengutronix.de>, kernel@stlinux.com,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Eric Miao <eric.y.miao@gmail.com>,
+        Michael Turquette <mturquette@linaro.org>,
+        Arnd Bergmann <arnd@arndb.de>, Barry Song <baohua@kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Tuomas Tynkkynen <ttynkkynen@nvidia.com>,
+        linux-rockchip@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org,
+        Will Deacon <will.deacon@arm.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Alexandre Courbot <gnurou@gmail.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        Jens Kuske <jenskuske@gmail.com>,
+        Russell King <linux@arm.linux.org.uk>,
+        linux-tegra@vger.kernel.org,
+        Maxime Coquelin <maxime.coquelin@st.com>,
+        Srinivas Kandagatla <srinivas.kandagatla@gmail.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Stephen Warren <swarren@wwwdotorg.org>,
+        Chen-Yu Tsai <wens@csie.org>,
+        Maxime Ripard <maxime.ripard@free-electrons.com>
+Subject: [RFC PATCH 1/7] reset: drop ARCH_HAS_RESET_CONTROLLER
+Date:   Thu,  5 Nov 2015 20:15:22 +0900
+Message-Id: <1446722128-11961-2-git-send-email-yamada.masahiro@socionext.com>
+X-Mailer: git-send-email 1.9.1
+In-Reply-To: <1446722128-11961-1-git-send-email-yamada.masahiro@socionext.com>
+References: <1446722128-11961-1-git-send-email-yamada.masahiro@socionext.com>
+Return-Path: <yamada.masahiro@socionext.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49847
+X-archive-position: 49848
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: amanieu@gmail.com
+X-original-sender: yamada.masahiro@socionext.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,98 +65,270 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Signed-off-by: Amanieu d'Antras <amanieu@gmail.com>
----
- arch/mips/include/asm/compat.h |  3 --
- arch/mips/kernel/signal32.c    | 62 ------------------------------------------
- 2 files changed, 65 deletions(-)
+The reset sub-system is supposed to be enabled by two steps:
 
-diff --git a/arch/mips/include/asm/compat.h b/arch/mips/include/asm/compat.h
-index 29ca129..abc4fe4 100644
---- a/arch/mips/include/asm/compat.h
-+++ b/arch/mips/include/asm/compat.h
-@@ -132,9 +132,6 @@ typedef union compat_sigval {
+  - ARCH_HAS_RESET_CONTROLLER is select'ed by such sub-architectures
+    that support reset controllers
+
+  - Based on that, RESET_CONTROLLER is configured by "make menuconfig"
+    or friends.  (Note that it is a user-configurable option as it has
+    a prompt.)
+
+But, this is getting messy in spite of the intention.  Some SoC families
+(such as Tegra, sunxi, etc.) select both ARCH_HAS_RESET_CONTROLLER and
+RESET_CONTROLLER.  So, it is no longer configurable (i.e. forcibly
+select'ed) in the multi-platforms.
+
+Also, many drivers that use reset APIs are accompanied by
+"depends on RESET_CONTROLLER".
+
+Like pinctrl, clk sub-systems, reset is a fundamental feature needed
+for SoCs to work correctly.
+
+If a particular SoC supports a reset controller driver, it is very
+likely to be necessary for that SoC.
+
+So, this commit drops ARCH_HAS_RESET_CONTROLLER, making RESET_CONTROLLER
+a user-unconfigurable option.  Going forward, it should be directly
+select'ed by relevant SoCs.
+
+This change would also be useful to clean-up "depends on RESET_CONTROLLER"
+in other drivers.
+
+Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+---
+
+ arch/arm/Kconfig               |  3 +--
+ arch/arm/mach-berlin/Kconfig   |  2 +-
+ arch/arm/mach-imx/Kconfig      |  2 +-
+ arch/arm/mach-mmp/Kconfig      |  4 ++--
+ arch/arm/mach-prima2/Kconfig   |  2 +-
+ arch/arm/mach-rockchip/Kconfig |  2 +-
+ arch/arm/mach-sti/Kconfig      |  1 -
+ arch/arm/mach-sunxi/Kconfig    |  1 -
+ arch/arm/mach-tegra/Kconfig    |  1 -
+ arch/arm64/Kconfig.platforms   |  3 +--
+ arch/mips/Kconfig              |  4 +---
+ drivers/reset/Kconfig          | 12 +++++++-----
+ drivers/reset/sti/Kconfig      |  1 -
+ 13 files changed, 16 insertions(+), 22 deletions(-)
+
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index f1ed110..55af5e8 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -972,7 +972,7 @@ config ARCH_EFM32
+ config ARCH_LPC18XX
+ 	bool "NXP LPC18xx/LPC43xx"
+ 	depends on ARM_SINGLE_ARMV7M
+-	select ARCH_HAS_RESET_CONTROLLER
++	select RESET_CONTROLLER
+ 	select ARM_AMBA
+ 	select CLKSRC_LPC32XX
+ 	select PINCTRL
+@@ -983,7 +983,6 @@ config ARCH_LPC18XX
+ config ARCH_STM32
+ 	bool "STMicrolectronics STM32"
+ 	depends on ARM_SINGLE_ARMV7M
+-	select ARCH_HAS_RESET_CONTROLLER
+ 	select ARMV7M_SYSTICK
+ 	select CLKSRC_STM32
+ 	select RESET_CONTROLLER
+diff --git a/arch/arm/mach-berlin/Kconfig b/arch/arm/mach-berlin/Kconfig
+index 742d53a..1c8e301 100644
+--- a/arch/arm/mach-berlin/Kconfig
++++ b/arch/arm/mach-berlin/Kconfig
+@@ -1,6 +1,6 @@
+ menuconfig ARCH_BERLIN
+ 	bool "Marvell Berlin SoCs" if ARCH_MULTI_V7
+-	select ARCH_HAS_RESET_CONTROLLER
++	select RESET_CONTROLLER
+ 	select ARCH_REQUIRE_GPIOLIB
+ 	select ARM_GIC
+ 	select DW_APB_ICTL
+diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+index 8ceda28..7773cd7 100644
+--- a/arch/arm/mach-imx/Kconfig
++++ b/arch/arm/mach-imx/Kconfig
+@@ -58,7 +58,7 @@ config HAVE_IMX_MMDC
  
- /* Can't use the generic version because si_code and si_errno are swapped */
- #define HAVE_ARCH_COMPAT_SIGINFO_T
--#define HAVE_ARCH_COPY_SIGINFO_TO_USER32
--#define HAVE_ARCH_COPY_SIGINFO_FROM_USER32
--#define SI_PAD_SIZE32	(128/sizeof(int) - 3)
+ config HAVE_IMX_SRC
+ 	def_bool y if SMP
+-	select ARCH_HAS_RESET_CONTROLLER
++	select RESET_CONTROLLER
  
- typedef struct compat_siginfo {
- 	int si_signo;
-diff --git a/arch/mips/kernel/signal32.c b/arch/mips/kernel/signal32.c
-index f7e89524..b719aa3 100644
---- a/arch/mips/kernel/signal32.c
-+++ b/arch/mips/kernel/signal32.c
-@@ -181,68 +181,6 @@ SYSCALL_DEFINE3(32_sigaction, long, sig, const struct compat_sigaction __user *,
- 	return ret;
- }
+ config IMX_HAVE_IOMUX_V1
+ 	bool
+diff --git a/arch/arm/mach-mmp/Kconfig b/arch/arm/mach-mmp/Kconfig
+index fdbfadf..46fdb69 100644
+--- a/arch/arm/mach-mmp/Kconfig
++++ b/arch/arm/mach-mmp/Kconfig
+@@ -90,7 +90,7 @@ config MACH_MMP_DT
+ 	select PINCTRL
+ 	select PINCTRL_SINGLE
+ 	select COMMON_CLK
+-	select ARCH_HAS_RESET_CONTROLLER
++	select RESET_CONTROLLER
+ 	select CPU_MOHAWK
+ 	help
+ 	  Include support for Marvell MMP2 based platforms using
+@@ -104,7 +104,7 @@ config MACH_MMP2_DT
+ 	select PINCTRL
+ 	select PINCTRL_SINGLE
+ 	select COMMON_CLK
+-	select ARCH_HAS_RESET_CONTROLLER
++	select RESET_CONTROLLER
+ 	select CPU_PJ4
+ 	help
+ 	  Include support for Marvell MMP2 based platforms using
+diff --git a/arch/arm/mach-prima2/Kconfig b/arch/arm/mach-prima2/Kconfig
+index 9ab8932..5d03202 100644
+--- a/arch/arm/mach-prima2/Kconfig
++++ b/arch/arm/mach-prima2/Kconfig
+@@ -1,6 +1,6 @@
+ menuconfig ARCH_SIRF
+ 	bool "CSR SiRF" if ARCH_MULTI_V7
+-	select ARCH_HAS_RESET_CONTROLLER
++	select RESET_CONTROLLER
+ 	select ARCH_REQUIRE_GPIOLIB
+ 	select GENERIC_IRQ_CHIP
+ 	select NO_IOPORT_MAP
+diff --git a/arch/arm/mach-rockchip/Kconfig b/arch/arm/mach-rockchip/Kconfig
+index ae4eb7c..6990c3a 100644
+--- a/arch/arm/mach-rockchip/Kconfig
++++ b/arch/arm/mach-rockchip/Kconfig
+@@ -2,7 +2,7 @@ config ARCH_ROCKCHIP
+ 	bool "Rockchip RK2928 and RK3xxx SOCs" if ARCH_MULTI_V7
+ 	select PINCTRL
+ 	select PINCTRL_ROCKCHIP
+-	select ARCH_HAS_RESET_CONTROLLER
++	select RESET_CONTROLLER
+ 	select ARCH_REQUIRE_GPIOLIB
+ 	select ARM_AMBA
+ 	select ARM_GIC
+diff --git a/arch/arm/mach-sti/Kconfig b/arch/arm/mach-sti/Kconfig
+index 125865d..d0606e2 100644
+--- a/arch/arm/mach-sti/Kconfig
++++ b/arch/arm/mach-sti/Kconfig
+@@ -6,7 +6,6 @@ menuconfig ARCH_STI
+ 	select PINCTRL
+ 	select PINCTRL_ST
+ 	select MFD_SYSCON
+-	select ARCH_HAS_RESET_CONTROLLER
+ 	select HAVE_ARM_SCU if SMP
+ 	select ARCH_REQUIRE_GPIOLIB
+ 	select ARM_ERRATA_754322
+diff --git a/arch/arm/mach-sunxi/Kconfig b/arch/arm/mach-sunxi/Kconfig
+index 4efe2d4..60b58ca 100644
+--- a/arch/arm/mach-sunxi/Kconfig
++++ b/arch/arm/mach-sunxi/Kconfig
+@@ -1,7 +1,6 @@
+ menuconfig ARCH_SUNXI
+ 	bool "Allwinner SoCs" if ARCH_MULTI_V7
+ 	select ARCH_REQUIRE_GPIOLIB
+-	select ARCH_HAS_RESET_CONTROLLER
+ 	select CLKSRC_MMIO
+ 	select GENERIC_IRQ_CHIP
+ 	select PINCTRL
+diff --git a/arch/arm/mach-tegra/Kconfig b/arch/arm/mach-tegra/Kconfig
+index 0fa4c5f..269efaa 100644
+--- a/arch/arm/mach-tegra/Kconfig
++++ b/arch/arm/mach-tegra/Kconfig
+@@ -9,7 +9,6 @@ menuconfig ARCH_TEGRA
+ 	select HAVE_ARM_TWD if SMP
+ 	select PINCTRL
+ 	select PM_OPP
+-	select ARCH_HAS_RESET_CONTROLLER
+ 	select RESET_CONTROLLER
+ 	select SOC_BUS
+ 	select USB_ULPI if USB_PHY
+diff --git a/arch/arm64/Kconfig.platforms b/arch/arm64/Kconfig.platforms
+index bb066e0..c455540 100644
+--- a/arch/arm64/Kconfig.platforms
++++ b/arch/arm64/Kconfig.platforms
+@@ -53,7 +53,7 @@ config ARCH_QCOM
  
--int copy_siginfo_to_user32(compat_siginfo_t __user *to, const siginfo_t *from)
--{
--	int err;
+ config ARCH_ROCKCHIP
+ 	bool "Rockchip Platforms"
+-	select ARCH_HAS_RESET_CONTROLLER
++	select RESET_CONTROLLER
+ 	select ARCH_REQUIRE_GPIOLIB
+ 	select PINCTRL
+ 	select PINCTRL_ROCKCHIP
+@@ -68,7 +68,6 @@ config ARCH_SEATTLE
+ 
+ config ARCH_TEGRA
+ 	bool "NVIDIA Tegra SoC Family"
+-	select ARCH_HAS_RESET_CONTROLLER
+ 	select ARCH_REQUIRE_GPIOLIB
+ 	select CLKDEV_LOOKUP
+ 	select CLKSRC_MMIO
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index e3aa5b0..da655a0 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -119,7 +119,7 @@ config ATH25
+ 
+ config ATH79
+ 	bool "Atheros AR71XX/AR724X/AR913X based boards"
+-	select ARCH_HAS_RESET_CONTROLLER
++	select RESET_CONTROLLER
+ 	select ARCH_REQUIRE_GPIOLIB
+ 	select BOOT_RAW
+ 	select CEVT_R4K
+@@ -329,7 +329,6 @@ config LANTIQ
+ 	select USE_OF
+ 	select PINCTRL
+ 	select PINCTRL_LANTIQ
+-	select ARCH_HAS_RESET_CONTROLLER
+ 	select RESET_CONTROLLER
+ 
+ config LASAT
+@@ -555,7 +554,6 @@ config RALINK
+ 	select SYS_HAS_EARLY_PRINTK
+ 	select HAVE_MACH_CLKDEV
+ 	select CLKDEV_LOOKUP
+-	select ARCH_HAS_RESET_CONTROLLER
+ 	select RESET_CONTROLLER
+ 
+ config SGI_IP22
+diff --git a/drivers/reset/Kconfig b/drivers/reset/Kconfig
+index 0615f50..4ca3cc8 100644
+--- a/drivers/reset/Kconfig
++++ b/drivers/reset/Kconfig
+@@ -1,9 +1,5 @@
+-config ARCH_HAS_RESET_CONTROLLER
++config RESET_CONTROLLER
+ 	bool
 -
--	if (!access_ok (VERIFY_WRITE, to, sizeof(compat_siginfo_t)))
--		return -EFAULT;
--
--	/* If you change siginfo_t structure, please be sure
--	   this code is fixed accordingly.
--	   It should never copy any pad contained in the structure
--	   to avoid security leaks, but must copy the generic
--	   3 ints plus the relevant union member.
--	   This routine must convert siginfo from 64bit to 32bit as well
--	   at the same time.  */
--	err = __put_user(from->si_signo, &to->si_signo);
--	err |= __put_user(from->si_errno, &to->si_errno);
--	err |= __put_user((short)from->si_code, &to->si_code);
--	if (from->si_code < 0)
--		err |= __copy_to_user(&to->_sifields._pad, &from->_sifields._pad, SI_PAD_SIZE);
--	else {
--		switch (from->si_code >> 16) {
--		case __SI_TIMER >> 16:
--			err |= __put_user(from->si_tid, &to->si_tid);
--			err |= __put_user(from->si_overrun, &to->si_overrun);
--			err |= __put_user(from->si_int, &to->si_int);
--			break;
--		case __SI_CHLD >> 16:
--			err |= __put_user(from->si_utime, &to->si_utime);
--			err |= __put_user(from->si_stime, &to->si_stime);
--			err |= __put_user(from->si_status, &to->si_status);
--		default:
--			err |= __put_user(from->si_pid, &to->si_pid);
--			err |= __put_user(from->si_uid, &to->si_uid);
--			break;
--		case __SI_FAULT >> 16:
--			err |= __put_user((unsigned long)from->si_addr, &to->si_addr);
--			break;
--		case __SI_POLL >> 16:
--			err |= __put_user(from->si_band, &to->si_band);
--			err |= __put_user(from->si_fd, &to->si_fd);
--			break;
--		case __SI_RT >> 16: /* This is not generated by the kernel as of now.  */
--		case __SI_MESGQ >> 16:
--			err |= __put_user(from->si_pid, &to->si_pid);
--			err |= __put_user(from->si_uid, &to->si_uid);
--			err |= __put_user(from->si_int, &to->si_int);
--			break;
--		}
--	}
--	return err;
--}
--
--int copy_siginfo_from_user32(siginfo_t *to, compat_siginfo_t __user *from)
--{
--	if (copy_from_user(to, from, 3*sizeof(int)) ||
--	    copy_from_user(to->_sifields._pad,
--			   from->_sifields._pad, SI_PAD_SIZE32))
--		return -EFAULT;
--
--	return 0;
--}
--
- asmlinkage void sys32_sigreturn(nabi_no_regargs struct pt_regs regs)
- {
- 	struct sigframe32 __user *frame;
+-menuconfig RESET_CONTROLLER
+-	bool "Reset Controller Support"
+-	default y if ARCH_HAS_RESET_CONTROLLER
+ 	help
+ 	  Generic Reset Controller support.
+ 
+@@ -12,4 +8,10 @@ menuconfig RESET_CONTROLLER
+ 
+ 	  If unsure, say no.
+ 
++
++menu "Reset Controllers"
++	depends on RESET_CONTROLLER
++
+ source "drivers/reset/sti/Kconfig"
++
++endmenu
+diff --git a/drivers/reset/sti/Kconfig b/drivers/reset/sti/Kconfig
+index f8c15a3..6131785 100644
+--- a/drivers/reset/sti/Kconfig
++++ b/drivers/reset/sti/Kconfig
+@@ -2,7 +2,6 @@ if ARCH_STI
+ 
+ config STI_RESET_SYSCFG
+ 	bool
+-	select RESET_CONTROLLER
+ 
+ config STIH415_RESET
+ 	bool
 -- 
-2.6.2
+1.9.1

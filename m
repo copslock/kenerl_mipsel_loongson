@@ -1,38 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 07 Nov 2015 15:52:41 +0100 (CET)
-Received: from www.linutronix.de ([62.245.132.108]:36398 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27007496AbbKGOwjxTMzf (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 7 Nov 2015 15:52:39 +0100
-Received: from localhost ([127.0.0.1])
-        by Galois.linutronix.de with esmtps (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:256)
-        (Exim 4.80)
-        (envelope-from <tglx@linutronix.de>)
-        id 1Zv4r3-0004Vu-1z; Sat, 07 Nov 2015 15:52:33 +0100
-Date:   Sat, 7 Nov 2015 15:51:51 +0100 (CET)
-From:   Thomas Gleixner <tglx@linutronix.de>
-To:     Qais Yousef <qais.yousef@imgtec.com>
-cc:     linux-kernel@vger.kernel.org, jason@lakedaemon.net,
-        marc.zyngier@arm.com, jiang.liu@linux.intel.com,
-        ralf@linux-mips.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH 10/14] irqchip/mips-gic: Add a IPI hierarchy domain
-In-Reply-To: <1446549181-31788-11-git-send-email-qais.yousef@imgtec.com>
-Message-ID: <alpine.DEB.2.11.1511071323471.4032@nanos>
-References: <1446549181-31788-1-git-send-email-qais.yousef@imgtec.com> <1446549181-31788-11-git-send-email-qais.yousef@imgtec.com>
-User-Agent: Alpine 2.11 (DEB 23 2013-08-11)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 08 Nov 2015 06:09:54 +0100 (CET)
+Received: from mail-oi0-f48.google.com ([209.85.218.48]:36457 "EHLO
+        mail-oi0-f48.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006153AbbKHFJxHv3a0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 8 Nov 2015 06:09:53 +0100
+Received: by oiww189 with SMTP id w189so61443654oiw.3
+        for <linux-mips@linux-mips.org>; Sat, 07 Nov 2015 21:09:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=amacapital_net.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc:content-type;
+        bh=iUdq+xQlFI1K9CjZtVMtYtwpXIgIH3Ahp4jA7ZT5Mhs=;
+        b=Uf2Evya8D1Ze8Es6wvSSGY8/+kK9eJAmLWAYa6VhE1T/F4SvTivbiSZMp3yhLmeY1Q
+         rLDqzNNQbyo8KQlDkuSnQ04Q1tPx7jTY7GusZ1A/KJnAAhjtTHQLQbeS3CpqWAT5Za0U
+         W+EjO1qcWM3y4guFnV4Ex5z9TbzfLRCj+xueXXiexC6w5RB7t4DIoSXqoQLaTcAxhN35
+         fiC4XhD4IxZWZBtagesaw/omFh8WxLXkL5RjtSCi3QXKm50i+MwKjwq2jl3Nz82gbw9L
+         IEEXm1HTshqFzzLuoEkmApGXn+dtC58Tldoz2jyaISUQDmCBq0x08eY5CWXr0SEZZ+xC
+         gZMA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc:content-type;
+        bh=iUdq+xQlFI1K9CjZtVMtYtwpXIgIH3Ahp4jA7ZT5Mhs=;
+        b=GtHFPmNJlu+JEYkg3DQF20ChtzkVWjbPx8vWVbfCepvNzFl8+iC739pHlmcndbZGsT
+         dG6yL+Bjpb9wBtfS+vLLfFGKPzZaIplx0U4ZVb6nvwWTjh7V2qiuc150GAXcUMIO8apc
+         Zf6/pjXMwYcynI8HUTHWkghueU2iE5tM98RF++MWIm93VXc8pXl3ct/3E3+EGzBKRfNU
+         Z2f7fznGuIXcikXwDtSIMiKY40OQOXVwhUhBruJjUrjQ/pvcVE7TEEpmF5aG/Rkouf9n
+         WZtGyU4SSqJzFU4pDcg7lY8rkx8Tb/D73a9/HOPz8x5XaK76y5hdudUhviS+6U3VaV6A
+         5hYw==
+X-Gm-Message-State: ALoCoQkTCwWhF4TTPinYu7y0kgfv7NRG8gK/WIIHXO66lE70quAGUuaqY5PwTu4uWq1FsJFbn5LB
+X-Received: by 10.202.204.5 with SMTP id c5mr6207097oig.93.1446959387024; Sat,
+ 07 Nov 2015 21:09:47 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
-Return-Path: <tglx@linutronix.de>
+Received: by 10.202.44.71 with HTTP; Sat, 7 Nov 2015 21:09:27 -0800 (PST)
+In-Reply-To: <1446684640-4112-1-git-send-email-amanieu@gmail.com>
+References: <1446684640-4112-1-git-send-email-amanieu@gmail.com>
+From:   Andy Lutomirski <luto@amacapital.net>
+Date:   Sat, 7 Nov 2015 21:09:27 -0800
+Message-ID: <CALCETrWKK_REdX7TJO8X7jC=8k=YdgJH_txXpC4Pdzn-tukg5A@mail.gmail.com>
+Subject: Re: [PATCH v2 00/20] Fix handling of compat_siginfo_t
+To:     "Amanieu d'Antras" <amanieu@gmail.com>
+Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Oleg Nesterov <oleg@redhat.com>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+        sparclinux@vger.kernel.org,
+        Linux FS Devel <linux-fsdevel@vger.kernel.org>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        Linux API <linux-api@vger.kernel.org>,
+        Kenton Varda <kenton@sandstorm.io>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <luto@amacapital.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49867
+X-archive-position: 49868
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tglx@linutronix.de
+X-original-sender: luto@amacapital.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,151 +73,35 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, 3 Nov 2015, Qais Yousef wrote:
+On Wed, Nov 4, 2015 at 4:50 PM, Amanieu d'Antras <amanieu@gmail.com> wrote:
+> One issue that isn't resolved in this series is sending signals between a 32-bit
+> process and 64-bit process. Sending a si_int will work correctly, but a si_ptr
+> value will likely get corrupted due to the different layouts of the 32-bit and
+> 64-bit siginfo_t structures.
 
-> Add a new ipi domain on top of the normal domain.
-> 
-> MIPS GIC now supports dynamic allocation of an IPI.
+This is so screwed up it's not even funny.
 
-I don't think you make use of the power of hierarchical irq
-domains. You just whacked the current code into submission.
+A 64-bit big-endian compat calls rt_sigqueueinfo.  It passes in (among
+other things) a sigval_t.  The kernel can choose to interpret it as a
+pointer (call it p) or an integer (call it i).  Then (unsigned long)p
+= (i<<32) | [something].  If the number was an integer to begin with
+*and* user code zeroed out the mess first, then [something] will be 0.
+Regardless, p != i unless they're both zero.
 
-Let me explain it to you how that should look like and how that's
-going to make the code way simpler.
+If the result gets delivered to a signalfd, then it's plausible that
+everything could work.  If it gets delivered to a 64-bit siginfo, then
+all is well because it's in exactly the same screwed up state it was
+in when the signal gets sent.
 
-The root domain is the GIC itself. It provides an allocation mechanism
-for all GIC interrupts, global, ipi and per cpu plus the basic
-management of them.
+If, however, it's delivered to a compat task, wtf is the kernel
+supposed to do?  We're effectively supposed to convert a 64-bit
+sigval_t to a 32-bit sigval_t.  On a little-endian architecture, we
+can fudge it because it doesn't really matter whether we consider the
+pointer or the int to be authoritative.  I think that, on big-endian,
+we're screwed.
 
-So the GIC domain looks at the complete hardware irq space. Now that
-irq space is first partioned into local and shared interrupts.
+BTW, x86 has its own set of screwups here.  Somehow cr2 and error_code
+ended up as part of ucontext instead of siginfo, which makes
+absolutely no sense to me and bloats task_struct.
 
-   ------------- hwirq MAX
-
-   Shared interrupts   
-
-   ------------- hwirq 6
-
-   Local interrupts
-
-   ------------- hwirq 0
-
-So that shared interrupt space is where your device interrupts and the
-ipi interrupts come from. That local interrupt space seems to be
-hardwired, so it'd be overkill to handle that in an extra domain.
-
-I assume that that shared interrupt space is partitioned as well
-because the potential device interrupts on the SoC are hardwired. So
-the picture looks like this:
-
-   ------------- hwirq MAX
-
-   Shared assignable interrupts
-
-   ------------- hwirq X
-
-   Shared device interrupts   
-
-   ------------- hwirq 6
-
-   Local interrupts
-
-   ------------- hwirq 0
-
-
-So if we look at the resulting hierarchy it looks like this:
-
-                 |----- [IPI domain]
-  [ GIC domain] -
-                 |----- [device domain]
-
-The GIC domain manages a bitmap of the full irq space. The IPI domain
-and the device domain request N interrupts from the GIC domain at
-allocation time.
-
-So when you allocate from the device domain, you tell the parent
-domain, that this is actually a device interrupt, and from the IPI
-domain you tell it it's an IPI.
-
-So the allocator in the root domain can decide from which space of the
-bitmap to allocate.
-
-       if (device) {
-       	      hwirq = translate_from_dt(arg);
-	      if (test_and_set_bit(&allocated_irqs, hwirq))
-	      	     return -EBUSY;
-       } else {
-       	      start = first_ipi_irq;
-	      end = last_ipi_irq + 1;
-	      hwirq = bitmap_find_next_zero_area(allocated_irqs, start, end,
-       	       				  	 nrirqs, 0);
-       }
-       ....
-
-So that gives you a consecutive hw irq space for your IPI.
-
-That makes a lot of things simpler. You don't have to keep a mapping
-of the hwirq to the target cpu. You just can use the base hwirq and
-calculate the destination hwirq from there when sending an IPI
-(general Linux ones). The coprocessor one will just be a natural
-fallout.
-
-So if you have the following in the generic ipi code:
-
-void ipi_send_single(unsigned int irq, unsigned int cpu)
-{
-	struct irq_desc *desc = irq_to_desc(irq);
-	struct irq_data *data = irq_desc_get_irq_data(desc);
-	struct irq_chip *chip = irq_data_get_irq_chip(data);
-	
-	if (chip->ipi_send_single)
-		chip->ipi_send_single(data, cpu);
-	else
-		chip->ipi_send_mask(data, cpumask_of(cpu));
-}
-
-void ipi_send_mask(unsigned int irq, const struct cpumask *dest)
-{
-	struct irq_desc *desc = irq_to_desc(irq);
-	struct irq_data *data = irq_desc_get_irq_data(desc);
-	struct irq_chip *chip = irq_data_get_irq_chip(data);
-	int cpu;
-
-	if (!chip->ipi_send_mask) {
-		for_each_cpu(cpu, dest)
-			chip->ipi_send_single(data, cpu);
-	} else {
-		chip->ipi_send_mask(data, dest);
-	}
-}
-
-void ipi_send_coproc_mask(unsigned int irq, const struct ipi_mask *dest)
-{
-        Fill in the obvious code.
-}
-
-And your ipi_send_single() callback just boils down to:
-{
-    	target = data->hw_irq + cpu;
-
-	tweak_chip_regs(target);
-}
-
-Sanity checks omitted for brevity.
-
-And that whole thing works for your case and for the case where we
-only have a single per cpu interrupt descriptor allocated. The irq
-descriptor based variants are exactly the same thing.
-
-So now for the irq chips of your device and IPI domains. You can
-either set the proper GIC chip variant or in case you need some extra
-magic for one of the domains, you implement your own special chip
-which can have some of its callback implemented by the existing
-irq_***_parent() variants.
-
-That gets rid of all your extra mappings, bitmaps and whatever add ons
-you have duct taped into the existing GIC code.
-
-Thanks,
-
-	tglx
+--Andy

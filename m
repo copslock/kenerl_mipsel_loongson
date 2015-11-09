@@ -1,66 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 08 Nov 2015 06:09:54 +0100 (CET)
-Received: from mail-oi0-f48.google.com ([209.85.218.48]:36457 "EHLO
-        mail-oi0-f48.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27006153AbbKHFJxHv3a0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 8 Nov 2015 06:09:53 +0100
-Received: by oiww189 with SMTP id w189so61443654oiw.3
-        for <linux-mips@linux-mips.org>; Sat, 07 Nov 2015 21:09:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amacapital_net.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-type;
-        bh=iUdq+xQlFI1K9CjZtVMtYtwpXIgIH3Ahp4jA7ZT5Mhs=;
-        b=Uf2Evya8D1Ze8Es6wvSSGY8/+kK9eJAmLWAYa6VhE1T/F4SvTivbiSZMp3yhLmeY1Q
-         rLDqzNNQbyo8KQlDkuSnQ04Q1tPx7jTY7GusZ1A/KJnAAhjtTHQLQbeS3CpqWAT5Za0U
-         W+EjO1qcWM3y4guFnV4Ex5z9TbzfLRCj+xueXXiexC6w5RB7t4DIoSXqoQLaTcAxhN35
-         fiC4XhD4IxZWZBtagesaw/omFh8WxLXkL5RjtSCi3QXKm50i+MwKjwq2jl3Nz82gbw9L
-         IEEXm1HTshqFzzLuoEkmApGXn+dtC58Tldoz2jyaISUQDmCBq0x08eY5CWXr0SEZZ+xC
-         gZMA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc:content-type;
-        bh=iUdq+xQlFI1K9CjZtVMtYtwpXIgIH3Ahp4jA7ZT5Mhs=;
-        b=GtHFPmNJlu+JEYkg3DQF20ChtzkVWjbPx8vWVbfCepvNzFl8+iC739pHlmcndbZGsT
-         dG6yL+Bjpb9wBtfS+vLLfFGKPzZaIplx0U4ZVb6nvwWTjh7V2qiuc150GAXcUMIO8apc
-         Zf6/pjXMwYcynI8HUTHWkghueU2iE5tM98RF++MWIm93VXc8pXl3ct/3E3+EGzBKRfNU
-         Z2f7fznGuIXcikXwDtSIMiKY40OQOXVwhUhBruJjUrjQ/pvcVE7TEEpmF5aG/Rkouf9n
-         WZtGyU4SSqJzFU4pDcg7lY8rkx8Tb/D73a9/HOPz8x5XaK76y5hdudUhviS+6U3VaV6A
-         5hYw==
-X-Gm-Message-State: ALoCoQkTCwWhF4TTPinYu7y0kgfv7NRG8gK/WIIHXO66lE70quAGUuaqY5PwTu4uWq1FsJFbn5LB
-X-Received: by 10.202.204.5 with SMTP id c5mr6207097oig.93.1446959387024; Sat,
- 07 Nov 2015 21:09:47 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Nov 2015 09:09:10 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:47786 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S27012973AbbKIIJIMjUWD (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 9 Nov 2015 09:09:08 +0100
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.15.2/8.14.8) with ESMTP id tA9897uB001440;
+        Mon, 9 Nov 2015 09:09:07 +0100
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.15.2/8.15.2/Submit) id tA98960Y001439;
+        Mon, 9 Nov 2015 09:09:06 +0100
+Date:   Mon, 9 Nov 2015 09:09:06 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Petri Gynther <pgynther@google.com>
+Cc:     linux-mips <linux-mips@linux-mips.org>
+Subject: Re: [PATCH] MIPS: add nmi_enter() + nmi_exit() to
+ nmi_exception_handler()
+Message-ID: <20151109080906.GA27251@linux-mips.org>
+References: <1445280592-43038-1-git-send-email-pgynther@google.com>
+ <CAGXr9JH5TLxOnA2LMPdxo3Sqeigprm=KFiiM9Vu2eMOaMgC6yA@mail.gmail.com>
 MIME-Version: 1.0
-Received: by 10.202.44.71 with HTTP; Sat, 7 Nov 2015 21:09:27 -0800 (PST)
-In-Reply-To: <1446684640-4112-1-git-send-email-amanieu@gmail.com>
-References: <1446684640-4112-1-git-send-email-amanieu@gmail.com>
-From:   Andy Lutomirski <luto@amacapital.net>
-Date:   Sat, 7 Nov 2015 21:09:27 -0800
-Message-ID: <CALCETrWKK_REdX7TJO8X7jC=8k=YdgJH_txXpC4Pdzn-tukg5A@mail.gmail.com>
-Subject: Re: [PATCH v2 00/20] Fix handling of compat_siginfo_t
-To:     "Amanieu d'Antras" <amanieu@gmail.com>
-Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Oleg Nesterov <oleg@redhat.com>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
-        sparclinux@vger.kernel.org,
-        Linux FS Devel <linux-fsdevel@vger.kernel.org>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        Linux API <linux-api@vger.kernel.org>,
-        Kenton Varda <kenton@sandstorm.io>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <luto@amacapital.net>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAGXr9JH5TLxOnA2LMPdxo3Sqeigprm=KFiiM9Vu2eMOaMgC6yA@mail.gmail.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49868
+X-archive-position: 49869
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: luto@amacapital.net
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -73,35 +44,47 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Nov 4, 2015 at 4:50 PM, Amanieu d'Antras <amanieu@gmail.com> wrote:
-> One issue that isn't resolved in this series is sending signals between a 32-bit
-> process and 64-bit process. Sending a si_int will work correctly, but a si_ptr
-> value will likely get corrupted due to the different layouts of the 32-bit and
-> 64-bit siginfo_t structures.
+On Mon, Nov 02, 2015 at 12:50:50PM -0800, Petri Gynther wrote:
 
-This is so screwed up it's not even funny.
+> On Mon, Oct 19, 2015 at 11:49 AM, Petri Gynther <pgynther@google.com> wrote:
+> >
+> > We need to enter NMI context when NMI interrupt fires.
+> >
+> > Signed-off-by: Petri Gynther <pgynther@google.com>
+> > ---
+> >  arch/mips/kernel/traps.c | 2 ++
+> >  1 file changed, 2 insertions(+)
+> >
+> > diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
+> > index fdb392b..efcedd4 100644
+> > --- a/arch/mips/kernel/traps.c
+> > +++ b/arch/mips/kernel/traps.c
+> > @@ -1856,12 +1856,14 @@ void __noreturn nmi_exception_handler(struct pt_regs *regs)
+> >  {
+> >         char str[100];
+> >
+> > +       nmi_enter();
+> >         raw_notifier_call_chain(&nmi_chain, 0, regs);
+> >         bust_spinlocks(1);
+> >         snprintf(str, 100, "CPU%d NMI taken, CP0_EPC=%lx\n",
+> >                  smp_processor_id(), regs->cp0_epc);
+> >         regs->cp0_epc = read_c0_errorepc();
+> >         die(str, regs);
+> > +       nmi_exit();
+> >  }
+> >
+> >  #define VECTORSPACING 0x100    /* for EI/VI mode */
+> > --
+> > 2.6.0.rc2.230.g3dd15c0
+> >
+> 
+> Any comments/concerns about this patch?
 
-A 64-bit big-endian compat calls rt_sigqueueinfo.  It passes in (among
-other things) a sigval_t.  The kernel can choose to interpret it as a
-pointer (call it p) or an integer (call it i).  Then (unsigned long)p
-= (i<<32) | [something].  If the number was an integer to begin with
-*and* user code zeroed out the mess first, then [something] will be 0.
-Regardless, p != i unless they're both zero.
+Is NMI on your systems actually recoverable?  I never bothered with
+nmi_enther / nmi_exit and other fine details of the NMI implementations
+because as defined by the MIPS architecture an NMI may be pretty destructive
+and closer to a reset than what other architectures describer as their NMI.
+Think what's going to happen if it hits during any phase when $k0 / $k1
+are active.
 
-If the result gets delivered to a signalfd, then it's plausible that
-everything could work.  If it gets delivered to a 64-bit siginfo, then
-all is well because it's in exactly the same screwed up state it was
-in when the signal gets sent.
-
-If, however, it's delivered to a compat task, wtf is the kernel
-supposed to do?  We're effectively supposed to convert a 64-bit
-sigval_t to a 32-bit sigval_t.  On a little-endian architecture, we
-can fudge it because it doesn't really matter whether we consider the
-pointer or the int to be authoritative.  I think that, on big-endian,
-we're screwed.
-
-BTW, x86 has its own set of screwups here.  Somehow cr2 and error_code
-ended up as part of ucontext instead of siginfo, which makes
-absolutely no sense to me and bloats task_struct.
-
---Andy
+  Ralf

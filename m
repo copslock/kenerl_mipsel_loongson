@@ -1,73 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Nov 2015 20:08:39 +0100 (CET)
-Received: from mail-lb0-f176.google.com ([209.85.217.176]:34407 "EHLO
-        mail-lb0-f176.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27013144AbbKITIhKHyJI (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 9 Nov 2015 20:08:37 +0100
-Received: by lbbcs9 with SMTP id cs9so449023lbb.1
-        for <linux-mips@linux-mips.org>; Mon, 09 Nov 2015 11:08:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cogentembedded_com.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:references:cc:from:organization:message-id:date
-         :user-agent:mime-version:in-reply-to:content-type
-         :content-transfer-encoding;
-        bh=nOj3STvU6ca7Eiy9gfggj6XBfzWxtrhBBfnyFdzTkVo=;
-        b=wJbVG3qdTpsbu65oaL9Jsu9NcjQafPBnTxD82LqXrYsPjlKdKogQ4G1xoYwLa0Pqxb
-         7pEOux84/CVfse2wT+6vJNOw9Hpx9VtD8+Dcuf237fF5VATqaXNXddKm7dVkccX5vQgt
-         sdzsIuXgsDhimTgPLPvCYsdkePwKRuuYIRWl6Yaohbe4gHeaEsoMYOE7UghNSYGy5jKL
-         4+iYmKEVdvxHTy1ia71jPkeLHNcjoKCKgT6rvolqmlzSnf7Zu1r9NVdYW8CsaCByd1Zy
-         RQV6QDk4J3IqJ0mp/Cedbd47zuNEi2PU3GHCF8a3oO/OcYbDbTrHORt9TGXcSSiT6+7E
-         9z4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:subject:to:references:cc:from:organization
-         :message-id:date:user-agent:mime-version:in-reply-to:content-type
-         :content-transfer-encoding;
-        bh=nOj3STvU6ca7Eiy9gfggj6XBfzWxtrhBBfnyFdzTkVo=;
-        b=mNzp4eyZNfYXU2dVbT54OZeRY3vypQd6mi9YP1s6P1w+XzDTyKQwPGKsi5VG3rgRxs
-         yp84yfUL3LKgnbu69xpuWLc/xmOarQ3GctePiQgBsiekXtf5ZTOK3EIloWkM3xfW7xTa
-         nbJY9UQSYzjdklrqmGILmL6C9vTnGwmO/FgZsEGvqNWqV5U3KYAHcn+1SkBVR/c0v5iX
-         nOy02L976zabSN4PykXsdBvIVCRnnWbjaSMiEsKCi3ZmxPtEi1E0K2k96HgYI+ERzEo1
-         6YecCoicLada0HhEn7dx/993S0fYj6uckg3UoYVXYzoqlniHI4MhYCLFoFm4ajCLwSgs
-         uUHQ==
-X-Gm-Message-State: ALoCoQktlMUaHtCE7xe1lgzOSGNoqyu/CZrzcb7snIi1ueZUhiny5vtxWEgOvcsgsqLxjb72Ov0O
-X-Received: by 10.112.8.104 with SMTP id q8mr14087333lba.115.1447096111601;
-        Mon, 09 Nov 2015 11:08:31 -0800 (PST)
-Received: from wasted.cogentembedded.com ([195.16.110.94])
-        by smtp.gmail.com with ESMTPSA id e77sm2604959lfg.10.2015.11.09.11.08.30
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 09 Nov 2015 11:08:30 -0800 (PST)
-Subject: Re: [PATCH] mips: sb1250_swarm_defconfig: disable IDE subsystem
-To:     "Maciej W. Rozycki" <macro@linux-mips.org>
-References: <1442245918-27631-1-git-send-email-b.zolnierkie@samsung.com>
- <1442245918-27631-16-git-send-email-b.zolnierkie@samsung.com>
- <alpine.LFD.2.20.1511072211330.18958@eddie.linux-mips.org>
- <20151109144932.GE22591@linux-mips.org>
- <alpine.LFD.2.20.1511091559180.10231@eddie.linux-mips.org>
- <5640D8E9.7080808@cogentembedded.com>
- <alpine.LFD.2.20.1511091827480.10231@eddie.linux-mips.org>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        linux-mips@linux-mips.org, linux-ide@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Organization: Cogent Embedded
-Message-ID: <5640EF2C.40907@cogentembedded.com>
-Date:   Mon, 9 Nov 2015 22:08:28 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.3.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 10 Nov 2015 10:37:41 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:59128 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S27011244AbbKJJhjVVswS (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 10 Nov 2015 10:37:39 +0100
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.15.2/8.14.8) with ESMTP id tAA9bZES029242;
+        Tue, 10 Nov 2015 10:37:35 +0100
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.15.2/8.15.2/Submit) id tAA9bYMG029241;
+        Tue, 10 Nov 2015 10:37:34 +0100
+Date:   Tue, 10 Nov 2015 10:37:34 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Tony Wu <tung7970@gmail.com>
+Cc:     linux-mips@linux-mips.org, stable@vger.kernel.org,
+        Markos Chandras <markos.chandras@imgtec.com>
+Subject: Re: [PATCH v2] MIPS: kernel: proc: Fix typo in proc.c
+Message-ID: <20151110093733.GA29184@linux-mips.org>
+References: <20151105001612-tung7970@googlemail.com>
 MIME-Version: 1.0
-In-Reply-To: <alpine.LFD.2.20.1511091827480.10231@eddie.linux-mips.org>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sergei.shtylyov@cogentembedded.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20151105001612-tung7970@googlemail.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49880
+X-archive-position: 49881
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sergei.shtylyov@cogentembedded.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -80,33 +43,37 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 11/09/2015 09:54 PM, Maciej W. Rozycki wrote:
+On Thu, Nov 05, 2015 at 12:17:44AM +0800, Tony Wu wrote:
 
->>>    I think I've been reasonably serious about my SWARM and despite issues
->>> elsewhere the onboard PATA interface is a part of the system I've never
->>> had any with.  Yes, it's limited to PIO 3, but it's not a big deal, that's
->>> still 11MB/s (and one of the 4 generic data movers present in the SoC
->>
->>     If you measure it with something like 'hdparm -t', the real speed figures
->> in the PIO modes would disappoint you. It's usually more like 3 MB/s even in
->> PIO4...
+> Fix typo introduced in commit 515a6393dbac ("MIPS: kernel: proc:
+> Add MIPS R6 support to /proc/cpuinfo"), mips1 should be tested
+> against cpu_has_mips_1, not cpu_has_mips_r1.
+> 
+> Signed-off-by: Tony Wu <tung7970@gmail.com>
+> Cc: Markos Chandras <markos.chandras@imgtec.com>
+> Cc: <stable@vger.kernel.org> # v4.0+
+> 
+> diff --git a/arch/mips/kernel/proc.c b/arch/mips/kernel/proc.c
+> index 211fcd4..3417ce0 100644
+> --- a/arch/mips/kernel/proc.c
+> +++ b/arch/mips/kernel/proc.c
+> @@ -83,7 +83,7 @@ static int show_cpuinfo(struct seq_file *m, void *v)
+>  	}
+>  
+>  	seq_printf(m, "isa\t\t\t:"); 
+> -	if (cpu_has_mips_r1)
+> +	if (cpu_has_mips_1)
+>  		seq_printf(m, " mips1");
+>  	if (cpu_has_mips_2)
+>  		seq_printf(m, "%s", " mips2");
 
->   Well, various factors contribute to actual figures possible to achieve,
-> the physical medium transfer speed being an important one.
+Applied - but when I applied the patch I got
 
-    Yes, of course. Yet even with MWDMA2 (same wire speed as PIO4) hdparm 
-shows about an order of magnitude higher speeds, IIRC. With the UltraDMA modes 
-it becomes even higher...
+/home/ralf/src/linux/linux-mips/.git/rebase-apply/patch:8: trailing whitespace.
+	seq_printf(m, "isa\t\t\t:"); 
+warning: 1 line adds whitespace errors.
 
-> That 11MB/s
-> throughput is the maximum you can ever get on the wire in PIO 3, assuming
-> data is already available to transfer and IORDY is asserted right away
-> every cycle.
+which correct but a bit funny because the line git is complaining about
+isn't even being changed.
 
-    Yes, I figured.
-
-[...]
-
->    Maciej
-
-MBR, Sergei
+  Ralf

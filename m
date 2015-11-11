@@ -1,41 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Nov 2015 15:22:32 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:53982 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27013415AbbKKOVnCpFc0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 11 Nov 2015 15:21:43 +0100
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Websense Email Security Gateway with ESMTPS id B29861F0CF2D2;
-        Wed, 11 Nov 2015 14:21:34 +0000 (GMT)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
- 14.3.235.1; Wed, 11 Nov 2015 14:21:37 +0000
-Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
- LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.210.2; Wed, 11 Nov 2015 14:21:36 +0000
-From:   James Hogan <james.hogan@imgtec.com>
-To:     Paolo Bonzini <pbonzini@redhat.com>
-CC:     James Hogan <james.hogan@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Gleb Natapov <gleb@kernel.org>, <linux-mips@linux-mips.org>,
-        <kvm@vger.kernel.org>, <stable@vger.kernel.org>
-Subject: [PATCH 3/3] MIPS: KVM: Uninit VCPU in vcpu_create error path
-Date:   Wed, 11 Nov 2015 14:21:20 +0000
-Message-ID: <1447251680-5254-4-git-send-email-james.hogan@imgtec.com>
-X-Mailer: git-send-email 2.4.10
-In-Reply-To: <1447251680-5254-1-git-send-email-james.hogan@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Nov 2015 15:43:31 +0100 (CET)
+Received: from mx1.redhat.com ([209.132.183.28]:33808 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27011543AbbKKOn3T0qSe (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 11 Nov 2015 15:43:29 +0100
+Received: from int-mx10.intmail.prod.int.phx2.redhat.com (int-mx10.intmail.prod.int.phx2.redhat.com [10.5.11.23])
+        by mx1.redhat.com (Postfix) with ESMTPS id 359738F31A;
+        Wed, 11 Nov 2015 14:43:26 +0000 (UTC)
+Received: from [10.36.112.47] (ovpn-112-47.ams2.redhat.com [10.36.112.47])
+        by int-mx10.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with ESMTP id tABEhE3f011290
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+        Wed, 11 Nov 2015 09:43:21 -0500
+Subject: Re: [PATCH 0/3] MIPS: KVM: Misc fixes
+To:     James Hogan <james.hogan@imgtec.com>
 References: <1447251680-5254-1-git-send-email-james.hogan@imgtec.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>, Gleb Natapov <gleb@kernel.org>,
+        linux-mips@linux-mips.org, kvm@vger.kernel.org,
+        stable@vger.kernel.org
+From:   Paolo Bonzini <pbonzini@redhat.com>
+Message-ID: <56435402.2050503@redhat.com>
+Date:   Wed, 11 Nov 2015 15:43:14 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+ Thunderbird/38.3.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.154.110]
-Return-Path: <James.Hogan@imgtec.com>
+In-Reply-To: <1447251680-5254-1-git-send-email-james.hogan@imgtec.com>
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.68 on 10.5.11.23
+Return-Path: <pbonzini@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49888
+X-archive-position: 49889
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: pbonzini@redhat.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,44 +47,30 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-If either of the memory allocations in kvm_arch_vcpu_create() fail, the
-vcpu which has been allocated and kvm_vcpu_init'd doesn't get uninit'd
-in the error handling path. Add a call to kvm_vcpu_uninit() to fix this.
 
-Fixes: 669e846e6c4e ("KVM/MIPS32: MIPS arch specific APIs for KVM")
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Gleb Natapov <gleb@kernel.org>
-Cc: linux-mips@linux-mips.org
-Cc: kvm@vger.kernel.org
-Cc: <stable@vger.kernel.org> # 3.10.x-
----
- arch/mips/kvm/mips.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/arch/mips/kvm/mips.c b/arch/mips/kvm/mips.c
-index 49ff3bfc007e..b9b803facdbf 100644
---- a/arch/mips/kvm/mips.c
-+++ b/arch/mips/kvm/mips.c
-@@ -279,7 +279,7 @@ struct kvm_vcpu *kvm_arch_vcpu_create(struct kvm *kvm, unsigned int id)
- 
- 	if (!gebase) {
- 		err = -ENOMEM;
--		goto out_free_cpu;
-+		goto out_uninit_cpu;
- 	}
- 	kvm_debug("Allocated %d bytes for KVM Exception Handlers @ %p\n",
- 		  ALIGN(size, PAGE_SIZE), gebase);
-@@ -343,6 +343,9 @@ struct kvm_vcpu *kvm_arch_vcpu_create(struct kvm *kvm, unsigned int id)
- out_free_gebase:
- 	kfree(gebase);
- 
-+out_uninit_cpu:
-+	kvm_vcpu_uninit(vcpu);
-+
- out_free_cpu:
- 	kfree(vcpu);
- 
--- 
-2.4.10
+On 11/11/2015 15:21, James Hogan wrote:
+> A few misc MIPS KVM fixes for issues that have been around since the
+> code was merged in v3.10.
+> 
+> James Hogan (3):
+>   MIPS: KVM: Fix ASID restoration logic
+>   MIPS: KVM: Fix CACHE immediate offset sign extension
+>   MIPS: KVM: Uninit VCPU in vcpu_create error path
+> 
+>  arch/mips/kvm/emulate.c |  2 +-
+>  arch/mips/kvm/locore.S  | 16 ++++++++++------
+>  arch/mips/kvm/mips.c    |  5 ++++-
+>  3 files changed, 15 insertions(+), 8 deletions(-)
+> 
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: Paolo Bonzini <pbonzini@redhat.com>
+> Cc: Gleb Natapov <gleb@kernel.org>
+> Cc: linux-mips@linux-mips.org
+> Cc: kvm@vger.kernel.org
+> Cc: <stable@vger.kernel.org>
+> 
+
+Thanks, these will have to wait after the end of the merge window.
+
+Paolo

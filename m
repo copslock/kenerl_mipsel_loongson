@@ -1,67 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Dec 2015 22:25:03 +0100 (CET)
-Received: from youngberry.canonical.com ([91.189.89.112]:51547 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27013899AbbLOVYXVJzvf (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 15 Dec 2015 22:24:23 +0100
-Received: from 1.general.kamal.us.vpn ([10.172.68.52] helo=fourier)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:DHE_RSA_AES_128_CBC_SHA1:16)
-        (Exim 4.76)
-        (envelope-from <kamal@canonical.com>)
-        id 1a8x52-0005wR-Lx; Tue, 15 Dec 2015 21:24:20 +0000
-Received: from kamal by fourier with local (Exim 4.82)
-        (envelope-from <kamal@whence.com>)
-        id 1a8x50-0003K9-EV; Tue, 15 Dec 2015 13:24:18 -0800
-From:   Kamal Mostafa <kamal@canonical.com>
-To:     James Hogan <james.hogan@imgtec.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Gleb Natapov <gleb@kernel.org>, linux-mips@linux-mips.org,
-        kvm@vger.kernel.org, Kamal Mostafa <kamal@canonical.com>,
-        kernel-team@lists.ubuntu.com
-Subject: [3.19.y-ckt stable] Patch "MIPS: KVM: Uninit VCPU in vcpu_create error path" has been added to staging queue
-Date:   Tue, 15 Dec 2015 13:24:17 -0800
-Message-Id: <1450214657-12747-1-git-send-email-kamal@canonical.com>
-X-Mailer: git-send-email 1.9.1
-X-Extended-Stable: 3.19
-Return-Path: <kamal@canonical.com>
-X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
-X-Orcpt: rfc822;linux-mips@linux-mips.org
-Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50637
-X-ecartis-version: Ecartis v1.0.0
-Sender: linux-mips-bounce@linux-mips.org
-Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kamal@canonical.com
-Precedence: bulk
-List-help: <mailto:ecartis@linux-mips.org?Subject=help>
-List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
-List-software: Ecartis version 1.0.0
-List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
-X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
-List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
-List-owner: <mailto:ralf@linux-mips.org>
-List-post: <mailto:linux-mips@linux-mips.org>
-List-archive: <http://www.linux-mips.org/archives/linux-mips/>
-X-list: linux-mips
+From: James Hogan <james.hogan@imgtec.com>
+Date: Wed, 11 Nov 2015 14:21:20 +0000
+Subject: MIPS: KVM: Uninit VCPU in vcpu_create error path
+Message-ID: <20151111142120.80x9IcU_BBymd5OEM5_m9rfAEuwC_F4aDFejZ3ATG7Y@z>
 
-This is a note to let you know that I have just added a patch titled
+commit 585bb8f9a5e592f2ce7abbe5ed3112d5438d2754 upstream.
 
-    MIPS: KVM: Uninit VCPU in vcpu_create error path
+If either of the memory allocations in kvm_arch_vcpu_create() fail, the
+vcpu which has been allocated and kvm_vcpu_init'd doesn't get uninit'd
+in the error handling path. Add a call to kvm_vcpu_uninit() to fix this.
 
-to the linux-3.19.y-queue branch of the 3.19.y-ckt extended stable tree 
-which can be found at:
+Fixes: 669e846e6c4e ("KVM/MIPS32: MIPS arch specific APIs for KVM")
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Gleb Natapov <gleb@kernel.org>
+Cc: linux-mips@linux-mips.org
+Cc: kvm@vger.kernel.org
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Kamal Mostafa <kamal@canonical.com>
+---
+ arch/mips/kvm/mips.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-    http://kernel.ubuntu.com/git/ubuntu/linux.git/log/?h=linux-3.19.y-queue
+diff --git a/arch/mips/kvm/mips.c b/arch/mips/kvm/mips.c
+index a53eaf5..b7f253f 100644
+--- a/arch/mips/kvm/mips.c
++++ b/arch/mips/kvm/mips.c
+@@ -271,7 +271,7 @@ struct kvm_vcpu *kvm_arch_vcpu_create(struct kvm *kvm, unsigned int id)
 
-This patch is scheduled to be released in version 3.19.8-ckt12.
+ 	if (!gebase) {
+ 		err = -ENOMEM;
+-		goto out_free_cpu;
++		goto out_uninit_cpu;
+ 	}
+ 	kvm_debug("Allocated %d bytes for KVM Exception Handlers @ %p\n",
+ 		  ALIGN(size, PAGE_SIZE), gebase);
+@@ -335,6 +335,9 @@ struct kvm_vcpu *kvm_arch_vcpu_create(struct kvm *kvm, unsigned int id)
+ out_free_gebase:
+ 	kfree(gebase);
 
-If you, or anyone else, feels it should not be added to this tree, please 
-reply to this email.
++out_uninit_cpu:
++	kvm_vcpu_uninit(vcpu);
++
+ out_free_cpu:
+ 	kfree(vcpu);
 
-For more information about the 3.19.y-ckt tree, see
-https://wiki.ubuntu.com/Kernel/Dev/ExtendedStable
-
-Thanks.
--Kamal
-
-------
+--
+1.9.1

@@ -1,47 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Nov 2015 16:12:47 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:31915 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27012303AbbKLPMpUC8Et (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 12 Nov 2015 16:12:45 +0100
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Websense Email Security Gateway with ESMTPS id 3847180191D9B;
-        Thu, 12 Nov 2015 15:12:36 +0000 (GMT)
-Received: from HHMAIL01.hh.imgtec.org (10.100.10.19) by hhmail02.hh.imgtec.org
- (10.100.10.20) with Microsoft SMTP Server (TLS) id 14.3.235.1; Thu, 12 Nov
- 2015 15:12:39 +0000
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- HHMAIL01.hh.imgtec.org (10.100.10.19) with Microsoft SMTP Server (TLS) id
- 14.3.235.1; Thu, 12 Nov 2015 15:12:38 +0000
-Received: from [192.168.154.94] (192.168.154.94) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Thu, 12 Nov
- 2015 15:12:38 +0000
-Subject: Re: [PATCH 10/14] irqchip/mips-gic: Add a IPI hierarchy domain
-To:     Thomas Gleixner <tglx@linutronix.de>
-References: <1446549181-31788-1-git-send-email-qais.yousef@imgtec.com>
- <1446549181-31788-11-git-send-email-qais.yousef@imgtec.com>
- <alpine.DEB.2.11.1511071323471.4032@nanos>
-CC:     <linux-kernel@vger.kernel.org>, <jason@lakedaemon.net>,
-        <marc.zyngier@arm.com>, <jiang.liu@linux.intel.com>,
-        <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
-From:   Qais Yousef <qais.yousef@imgtec.com>
-Message-ID: <5644AC66.2070508@imgtec.com>
-Date:   Thu, 12 Nov 2015 15:12:38 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.3.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Nov 2015 17:25:33 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:52694 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S27012270AbbKLQZbqN2dP (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 12 Nov 2015 17:25:31 +0100
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.15.2/8.14.8) with ESMTP id tACGPU6v022469;
+        Thu, 12 Nov 2015 17:25:30 +0100
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.15.2/8.15.2/Submit) id tACGPUOf022468;
+        Thu, 12 Nov 2015 17:25:30 +0100
+Date:   Thu, 12 Nov 2015 17:25:30 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Nikola Veljkovic <Nikola.Veljkovic@imgtec.com>
+Cc:     Markos Chandras <Markos.Chandras@imgtec.com>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        Chris Dearman <Chris.Dearman@imgtec.com>,
+        Raghu Gandham <Raghu.Gandham@imgtec.com>,
+        Miodrag Dinic <Miodrag.Dinic@imgtec.com>,
+        Petar Jovanovic <Petar.Jovanovic@imgtec.com>,
+        Lazar Trsic <Lazar.Trsic@imgtec.com>
+Subject: Re: [PATCH] MIPS: personality syscall discrepancy on mips64-o32/n32
+Message-ID: <20151112162529.GF29184@linux-mips.org>
+References: <19CDB9880DBFC241860D925D8FAA94A00342EAB8@BADAG02.ba.imgtec.org>
+ <20150818125605.GA25978@mchandras-linux.le.imgtec.org>
+ <19CDB9880DBFC241860D925D8FAA94A00342F48A@BADAG02.ba.imgtec.org>
 MIME-Version: 1.0
-In-Reply-To: <alpine.DEB.2.11.1511071323471.4032@nanos>
-Content-Type: text/plain; charset="windows-1252"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.154.94]
-Return-Path: <Qais.Yousef@imgtec.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <19CDB9880DBFC241860D925D8FAA94A00342F48A@BADAG02.ba.imgtec.org>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49898
+X-archive-position: 49899
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: qais.yousef@imgtec.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,62 +50,45 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Thomas,
+On Thu, Aug 20, 2015 at 02:46:26PM +0000, Nikola Veljkovic wrote:
 
-On 11/07/2015 02:51 PM, Thomas Gleixner wrote:
-> On Tue, 3 Nov 2015, Qais Yousef wrote:
->
->> Add a new ipi domain on top of the normal domain.
->>
->> MIPS GIC now supports dynamic allocation of an IPI.
-> I don't think you make use of the power of hierarchical irq
-> domains. You just whacked the current code into submission.
->
+>  > I am not sure what the implication will be to userland with that change...
+> I could not find any code that explicitly checks for PER_LINUX[32]. Of course,
+> I might be missing something. Any suspects?
 
-This time I'm having problems digesting your suggestion. I can't see how 
-it would make things simpler to be honest.
+The one thing where it really matters is the architecture return value
+for uname, try "uname -m".  On a 32 bit kernel this will return "mips",
+on a 64 bit kernel "mips64".  This will break some software that expects
+to identify MIPS by "mips".  There's a small tool to set this personality
+flag, see ftp://ftp.linux-mips.org/pub/linux/mips/mips32/ for a year 2000
+vintage source and binary rpm.  Or also the more modern setarch(1) utility.
 
-Issues I'm seeing:
+>  > I presume you also need to fix the n32 case and then completely remove the 
+>  > sys_32_personality syscall from linux32.c. 
+> New patch below removes the syscall.
+> 
+>  > Moreover, I think you also need to fix the arch/mips/include/asm/elf.h
+>  > code to set LINUX32 for O32 and n32 (for both 32b and 64b kernels.)
+> Other archs (arm, intel) do not do that, so I think we should follow, and set 
+> PER_LINUX, but let userspace change this if it wants to. On the kernel side this
+> only affects uname. From the discussion [1] it seems like the right way to go.
+> 
+> [1] http://lists.infradead.org/pipermail/linux-arm-kernel/2012-August/114506.html
 
-     - Device domain would be identical to GIC domain and it would defer 
-everything to the parent domain except for the extra level of 
-indirection. No?
+x86 and ARM maybe but not SPARC64 which uses the exactly same code,
+see arch/sparc/kernel/sys_sparc_64.c function sparc64_personality() and
+from which this function and the mips32 utility which was named sparc32
+in a former live, were taken.
 
-     - The race condition I mentioned in my earlier email where we must 
-be told what hwirqs are available because we can't guarantee there's no 
-real device connected to it which could interfere with the operation. We 
-have always to work on a pre reserved set defined by the system. 
-Currently GIC hard codes this set, but I'll be making it a DT property 
-in the future.
+The PER_LINUX32 -> PER_LINUX translation of the return value is for antique
+programs that expect to see PER_LINUX as the return value.
 
-     - If we remove the mapping, how can a coprocessor drivers find out 
-the reverse mapping to pass the hwirq to the firmware so that it can 
-send and listen on the correct hwirqs? I have to say my current patches 
-missed dealing with this problem. Now I have something to test my rproc 
-driver on I came to realise I haven't added the function to do the 
-reverse mapping.
+> Tested changing only o32 on Android, there were no regressions:
 
-In summary. I can't see how adding the device domain would help in 
-making things simpler and without having generic explicit cpu mapping I 
-don't know how I can implement a generic reverse mapping function to get 
-the hwirq to pass to the coprocessor firmware.
+For anything that changes an established ABI - in this case for about 15 or
+16 years I'm going to be conservative at changing such an ABI.  Also Sparc64
+and PowerPC are using the exactly same wrapper.
 
-If I misunderstood your suggestion, mind rephrasing it please?
+Anyway, can you tell me more about the Android issue?
 
-I can see though if I use irq_*_alloc_parent() I can probably get rid 
-off the below since I'd be able to use gic_irq_domain all the time to do 
-the revmap.
-
-+		if (test_bit(intr, ipi_intrs)) {
-+			virq = irq_linear_revmap(gic_ipi_domain,
-+					GIC_SHARED_TO_HWIRQ(intr));
-+		} else {
-+			virq = irq_linear_revmap(gic_irq_domain,
-+					GIC_SHARED_TO_HWIRQ(intr));
-+		}
-+
-
-
-
-Thanks,
-Qais
+  Ralf

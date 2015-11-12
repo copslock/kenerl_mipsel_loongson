@@ -1,73 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Nov 2015 02:20:55 +0100 (CET)
-Received: from smtpbg202.qq.com ([184.105.206.29]:54131 "EHLO smtpbg202.qq.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27006528AbbKLBUxUqmMk (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 12 Nov 2015 02:20:53 +0100
-X-QQ-GoodBg: 0
-X-QQ-SSF: 00100000000000F0
-X-QQ-FEAT: q6FghNyWDuvVIUFcfxCo6mYHtOGCavRsbe0uSXYGaSdxk65vK5OxLQeXvFnic
-        MtHfANXBb/dDxmwkVP1rRt5DQCHXKqt0THLsx6HbJLP1swILetPh5BwpwPaHhpnVOYHAlKr
-        rnJ6N4MVtc1FMgDXKBtDjQFQNMseZAs9R3+xYoNKH7jF2ULsEUlvE229A1U8V8+HF7zRvHZ
-        yznhwlPu4g5ngi2MWMo1WWlGt6GO9QfUO6dUoNeQmVlQPFneMyE70MwjY2Kdx4JWkH6GvGY
-        GMrg==
-X-QQ-BUSINESS-ORIGIN: 2
-X-Originating-IP: 222.92.124.153
-X-QQ-STYLE: 
-X-QQ-mid: bizmailfree76t1447291176t6737
-From:   "=?utf-8?B?6ZmI5Y2O5omN?=" <chenhc@lemote.com>
-To:     "=?utf-8?B?UmFsZiBCYWVjaGxl?=" <ralf@linux-mips.org>
-Cc:     "=?utf-8?B?Sm9obiBDcmlzcGlu?=" <john@phrozen.org>,
-        "=?utf-8?B?U3RldmVuIEouIEhpbGw=?=" <Steven.Hill@imgtec.com>,
-        "=?utf-8?B?bGludXgtbWlwcw==?=" <linux-mips@linux-mips.org>,
-        "=?utf-8?B?RnV4aW4gWmhhbmc=?=" <zhangfx@lemote.com>,
-        "=?utf-8?B?d3V6aGFuZ2ppbg==?=" <wuzhangjin@gmail.com>
-Subject: Re: [PATCH V2 4/4] MIPS: Loongson: Make CPU names more clear
-Mime-Version: 1.0
-Content-Type: text/plain;
-        charset="utf-8"
-Content-Transfer-Encoding: base64
-Date:   Thu, 12 Nov 2015 09:19:36 +0800
-X-Priority: 3
-Message-ID: <tencent_09611B0047D7C6002ACDF99F@qq.com>
-X-QQ-MIME: TCMime 1.0 by Tencent
-X-Mailer: QQMail 2.x
-X-QQ-Mailer: QQMail 2.x
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Nov 2015 04:55:19 +0100 (CET)
+Received: from mail-yk0-f177.google.com ([209.85.160.177]:35267 "EHLO
+        mail-yk0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006152AbbKLDzQf6phU (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 12 Nov 2015 04:55:16 +0100
+Received: by ykba77 with SMTP id a77so81962415ykb.2;
+        Wed, 11 Nov 2015 19:55:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type;
+        bh=ALWdC+bgRKQFPTZyotAI7b09ZpOltCRFWqz+s92tLcw=;
+        b=v+YO0VoIxIgiDd1XEfWQorrg8X/GP6G70g3SrFazIFOZ0QRzSrTTt0fcTUjQ2jhsUb
+         e/Hm9yno4SGugpyTyHeinpwQsNEIRCn07/T3SfQlxZ2C/UvrEMrnQwCcFiKuCe4cw4J7
+         JKS4aA8HuYo8uFQny4lOyXVejme+5sN9RW7Qq9+ME7lZ/aMGkuTrFYBfg/hBhtGN11O5
+         eCh1mil9wvYgmDzVwXOW1P/lVV1+Bxj4caw8xG35nl6A/uHzDkz1QomE2mC93m5mx+Vb
+         /a+Mm2gOeY0rg/u1pnbL7dp/w9scK+BcXIEP/d2Irz01RhU9ENzhI+LQTNC0E92z1THh
+         O0YA==
+MIME-Version: 1.0
+X-Received: by 10.13.237.198 with SMTP id w189mr14629509ywe.211.1447300509984;
+ Wed, 11 Nov 2015 19:55:09 -0800 (PST)
+Received: by 10.37.68.212 with HTTP; Wed, 11 Nov 2015 19:55:09 -0800 (PST)
+In-Reply-To: <1444198082-24128-3-git-send-email-chenhc@lemote.com>
 References: <1444198082-24128-1-git-send-email-chenhc@lemote.com>
-        <1444198082-24128-5-git-send-email-chenhc@lemote.com>
-        <20151110111253.GB29184@linux-mips.org>
-In-Reply-To: <20151110111253.GB29184@linux-mips.org>
-X-QQ-ReplyHash: 3274114314
-X-QQ-SENDSIZE: 520
-X-QQ-Bgrelay: 1
-Return-Path: <chenhc@lemote.com>
+        <1444198082-24128-3-git-send-email-chenhc@lemote.com>
+Date:   Thu, 12 Nov 2015 11:55:09 +0800
+X-Google-Sender-Auth: yuRib605Yw9EZ3xpfhZpNmMlqoU
+Message-ID: <CAAhV-H6cQ9842jZajOVKGnwmTLA6+BQto=JHt0qrDT3vfS8uiw@mail.gmail.com>
+Subject: Re: [PATCH V2 2/4] MIPS: Loongson-3: Move chipset ACPI code from
+ drivers to arch
+From:   Huacai Chen <chenhc@lemote.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     John Crispin <john@phrozen.org>,
+        "Steven J. Hill" <Steven.Hill@imgtec.com>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        Huacai Chen <chenhc@lemote.com>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <chenhuacai@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-
-T0ssIEkgd2lsbCByZXNlbmQgdGhpcyBwYXRjaCBhZnRlciBhIGxvbmcgdGltZSwgdW50aWwg
-bm8gYXBwbGljYXRpb25zIGJlIGJyb2tlbi4NCiANCkJUVywgY2FuIHRoZXNlIHR3byBwYXRj
-aGVzIGJlIG1lcmdlZD8gb3IgZG8gdGhleSBoYXZlIHByb2JsZW1zIHRvIGJlIGZpeD8NCmh0
-dHA6Ly9wYXRjaHdvcmsubGludXgtbWlwcy5vcmcvcGF0Y2gvMTEyNzIvDQpodHRwOi8vcGF0
-Y2h3b3JrLmxpbnV4LW1pcHMub3JnL3BhdGNoLzExMjczLw0KIA0KLS0tLS0tLS0tLS0tLS0t
-LS0tIE9yaWdpbmFsIC0tLS0tLS0tLS0tLS0tLS0tLQ0KRnJvbTogICJSYWxmIEJhZWNobGUi
-PHJhbGZAbGludXgtbWlwcy5vcmc+Ow0KRGF0ZTogIFR1ZSwgTm92IDEwLCAyMDE1IDA3OjEy
-IFBNDQpUbzogICJIdWFjYWkgQ2hlbiI8Y2hlbmhjQGxlbW90ZS5jb20+Ow0KQ2M6ICAiSm9o
-biBDcmlzcGluIjxqb2huQHBocm96ZW4ub3JnPjsgIlN0ZXZlbiBKLiBIaWxsIjxTdGV2ZW4u
-SGlsbEBpbWd0ZWMuY29tPjsgImxpbnV4LW1pcHMiPGxpbnV4LW1pcHNAbGludXgtbWlwcy5v
-cmc+OyAiRnV4aW4gWmhhbmciPHpoYW5nZnhAbGVtb3RlLmNvbT47ICJ3dXpoYW5namluIjx3
-dXpoYW5namluQGdtYWlsLmNvbT47DQpTdWJqZWN0OiAgUmU6IFtQQVRDSCBWMiA0LzRdIE1J
-UFM6IExvb25nc29uOiBNYWtlIENQVSBuYW1lcyBtb3JlIGNsZWFyDQogDQpPbiBXZWQsIE9j
-dCAwNywgMjAxNSBhdCAwMjowODowMlBNICswODAwLCBIdWFjYWkgQ2hlbiB3cm90ZToNCg0K
-PiBNYWtlIG5hbWVzIGluIC9wcm9jL2NwdWluZm8gbW9yZSBodW1hbi1yZWFkYWJsZSwgU2lu
-Y2UgR0NDIHN1cHBvcnQgdGhlDQo+IG5ldy1zdHlsZSBuYW1lcyBmb3IgYSBsb25nIHRpbWUs
-IHRoaXMgbWF5IG5vdCBicmVhayAtbWFyY2g9bmF0aXZlIGFueQ0KPiBtb3JlLg0KDQpJIGRv
-IHVuZGVyc3RhbmQgd2h5IHlvdSB3YW50IHRvIG1ha2UgdGhpcyBjaGFuZ2UgLSBidXQgdGhp
-bmdzIGluIHByb2MNCmluY2x1ZGluZyBDUFUgbmFtZXMgYXJlIGludGVyZmFjZXMgYW5kIHRo
-b3NlIGFyZSBjYXN0IGluIHN0b25lLiAgWW91DQpjYW4ndCBqdXN0IGNhbGwgYSBwb3RhdG9l
-IGEgY2hlcnJ5IHRvZGF5IDotKQ0KDQpVbmxlc3MgeW91IGhhdmUgYSBnb29kIHJlYXNvbiB3
-aGljaCB3b3VsZCBpbmNsdWRlIGRlbW9uc3RyYXRpbmcgdGhhdCBpcw0Kbm90IGJyZWFraW5n
-IGFueSBleGlzdGluZyBhcHBsaWNhdGlvbiBjb2RlPw0KDQogIFJhbGY=
-X-archive-position: 49893
+X-archive-position: 49894
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -84,5 +58,68 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+Hi, Ralf,
 
-LS0t…
+Can this patch be merged? or does it have problems to be fix?
+
+Huacai
+
+On Wed, Oct 7, 2015 at 2:08 PM, Huacai Chen <chenhc@lemote.com> wrote:
+> SB700/SB710/SB800 chipset ACPI code is mostly Loongson-3 specific
+> routines rather than a "platform driver".
+>
+> Signed-off-by: Huacai Chen <chenhc@lemote.com>
+> ---
+>  arch/mips/loongson64/loongson-3/Makefile                              | 2 +-
+>  .../platform/mips => arch/mips/loongson64/loongson-3}/acpi_init.c     | 0
+>  drivers/platform/mips/Kconfig                                         | 4 ----
+>  drivers/platform/mips/Makefile                                        | 1 -
+>  4 files changed, 1 insertion(+), 6 deletions(-)
+>  rename {drivers/platform/mips => arch/mips/loongson64/loongson-3}/acpi_init.c (100%)
+>
+> diff --git a/arch/mips/loongson64/loongson-3/Makefile b/arch/mips/loongson64/loongson-3/Makefile
+> index 622fead..44bc148 100644
+> --- a/arch/mips/loongson64/loongson-3/Makefile
+> +++ b/arch/mips/loongson64/loongson-3/Makefile
+> @@ -1,7 +1,7 @@
+>  #
+>  # Makefile for Loongson-3 family machines
+>  #
+> -obj-y                  += irq.o cop2-ex.o platform.o
+> +obj-y                  += irq.o cop2-ex.o platform.o acpi_init.o
+>
+>  obj-$(CONFIG_SMP)      += smp.o
+>
+> diff --git a/drivers/platform/mips/acpi_init.c b/arch/mips/loongson64/loongson-3/acpi_init.c
+> similarity index 100%
+> rename from drivers/platform/mips/acpi_init.c
+> rename to arch/mips/loongson64/loongson-3/acpi_init.c
+> diff --git a/drivers/platform/mips/Kconfig b/drivers/platform/mips/Kconfig
+> index 125e569..b3ae30a 100644
+> --- a/drivers/platform/mips/Kconfig
+> +++ b/drivers/platform/mips/Kconfig
+> @@ -15,10 +15,6 @@ menuconfig MIPS_PLATFORM_DEVICES
+>
+>  if MIPS_PLATFORM_DEVICES
+>
+> -config MIPS_ACPI
+> -       bool
+> -       default y if LOONGSON_MACH3X
+> -
+>  config CPU_HWMON
+>         tristate "Loongson CPU HWMon Driver"
+>         depends on LOONGSON_MACH3X
+> diff --git a/drivers/platform/mips/Makefile b/drivers/platform/mips/Makefile
+> index 4341284..8dfd039 100644
+> --- a/drivers/platform/mips/Makefile
+> +++ b/drivers/platform/mips/Makefile
+> @@ -1,2 +1 @@
+> -obj-$(CONFIG_MIPS_ACPI) += acpi_init.o
+>  obj-$(CONFIG_CPU_HWMON) += cpu_hwmon.o
+> --
+> 2.4.6
+>
+>
+>
+>
+>

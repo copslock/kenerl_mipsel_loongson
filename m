@@ -1,24 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Nov 2015 01:48:21 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:30133 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Nov 2015 01:48:41 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:47015 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27013479AbbKMAr53oLYl (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 13 Nov 2015 01:47:57 +0100
+        with ESMTP id S27013461AbbKMAsKqYSsl (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 13 Nov 2015 01:48:10 +0100
 Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Websense Email Security Gateway with ESMTPS id 9554EC31F0416;
-        Fri, 13 Nov 2015 00:47:45 +0000 (GMT)
+        by Websense Email Security Gateway with ESMTPS id 27416E99AF60A;
+        Fri, 13 Nov 2015 00:48:00 +0000 (GMT)
 Received: from [10.100.200.62] (10.100.200.62) by hhmail02.hh.imgtec.org
  (10.100.10.20) with Microsoft SMTP Server id 14.3.235.1; Fri, 13 Nov 2015
- 00:47:48 +0000
-Date:   Fri, 13 Nov 2015 00:47:48 +0000
+ 00:48:03 +0000
+Date:   Fri, 13 Nov 2015 00:48:02 +0000
 From:   "Maciej W. Rozycki" <macro@imgtec.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
 CC:     Andrew Morton <akpm@linux-foundation.org>,
         Matthew Fortune <Matthew.Fortune@imgtec.com>,
         <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH 5/8] ELF: Also pass any interpreter's file header to
- `arch_check_elf'
+Subject: [PATCH 6/8] MIPS: ELF: Interpret the NAN2008 file header flag
 In-Reply-To: <alpine.DEB.2.00.1511111418430.7097@tp.orcam.me.uk>
-Message-ID: <alpine.DEB.2.00.1511130006190.7097@tp.orcam.me.uk>
+Message-ID: <alpine.DEB.2.00.1511130006250.7097@tp.orcam.me.uk>
 References: <alpine.DEB.2.00.1511111418430.7097@tp.orcam.me.uk>
 User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
 MIME-Version: 1.0
@@ -28,7 +27,7 @@ Return-Path: <Maciej.Rozycki@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49914
+X-archive-position: 49915
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,66 +44,175 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Also pass any interpreter's file header to `arch_check_elf' so that any 
-architecture handler can have a look at it if needed.
+Handle the EF_MIPS_NAN2008 ELF file header flag and refuse execution 
+where there is no support in the FPU for the NaN encoding mode requested 
+by a binary invoked.  Ensure that the setting of the bit in the binary 
+matches one in any intepreter used.  Set the thread's initial FCSR 
+contents according to the value of the EF_MIPS_NAN2008.
+
+Set the values of the FCSR ABS2008 and NAN2008 bits both to the same 
+value if possible, to take the approach taken with existing FPU hardware 
+into account.  As of now all implementations have both bits hardwired to 
+the same value, that is both are fixed at 0 or both are fixed at 1, even 
+though the architecture allows for implementations where the amount of 
+control implemented with each of these two individual bits is 
+independent of each other.
 
 Signed-off-by: Maciej W. Rozycki <macro@imgtec.com>
 ---
-linux-arch-check-elf-interp.diff
+This change relies on <https://patchwork.kernel.org/patch/7491081/> to 
+work correctly for dynamic binaries, otherwise an opposite-mode 
+interpreter will be incorrectly accepted, and worse yet enforce any 
+additional shared binaries to have their NaN mode opposite to that of the 
+main binary.  This will normally only happen for broken installations or 
+incorrectly built binaries where PT_INTERP points to the wrong dynamic 
+linker though.  Static binaries are unaffected.
+
+linux-mips-elf-nan2008.diff
 Index: linux-sfr-test/arch/mips/include/asm/elf.h
 ===================================================================
---- linux-sfr-test.orig/arch/mips/include/asm/elf.h	2015-11-10 18:06:16.547399000 +0000
-+++ linux-sfr-test/arch/mips/include/asm/elf.h	2015-11-11 02:20:02.099077000 +0000
-@@ -448,7 +448,7 @@ struct arch_elf_state {
- extern int arch_elf_pt_proc(void *ehdr, void *phdr, struct file *elf,
- 			    bool is_interp, struct arch_elf_state *state);
+--- linux-sfr-test.orig/arch/mips/include/asm/elf.h	2015-11-11 02:20:02.099077000 +0000
++++ linux-sfr-test/arch/mips/include/asm/elf.h	2015-11-11 02:20:16.030180000 +0000
+@@ -12,7 +12,6 @@
+ #include <linux/fs.h>
+ #include <uapi/linux/elf.h>
  
--extern int arch_check_elf(void *ehdr, bool has_interpreter,
-+extern int arch_check_elf(void *ehdr, bool has_interpreter, void *interp_ehdr,
+-#include <asm/cpu-info.h>
+ #include <asm/current.h>
+ 
+ /* ELF header e_flags defines. */
+@@ -44,6 +43,7 @@
+ #define EF_MIPS_OPTIONS_FIRST	0x00000080
+ #define EF_MIPS_32BITMODE	0x00000100
+ #define EF_MIPS_FP64		0x00000200
++#define EF_MIPS_NAN2008		0x00000400
+ #define EF_MIPS_ABI		0x0000f000
+ #define EF_MIPS_ARCH		0xf0000000
+ 
+@@ -305,7 +305,7 @@ do {									\
+ 									\
+ 	current->thread.abi = &mips_abi;				\
+ 									\
+-	current->thread.fpu.fcr31 = boot_cpu_data.fpu_csr31;		\
++	mips_set_personality_nan(state);				\
+ } while (0)
+ 
+ #endif /* CONFIG_32BIT */
+@@ -367,7 +367,7 @@ do {									\
+ 	else								\
+ 		current->thread.abi = &mips_abi;			\
+ 									\
+-	current->thread.fpu.fcr31 = boot_cpu_data.fpu_csr31;		\
++	mips_set_personality_nan(state);				\
+ 									\
+ 	p = personality(current->personality);				\
+ 	if (p != PER_LINUX32 && p != PER_LINUX)				\
+@@ -432,6 +432,7 @@ extern int arch_setup_additional_pages(s
+ 				       int uses_interp);
+ 
+ struct arch_elf_state {
++	int nan_2008;
+ 	int fp_abi;
+ 	int interp_fp_abi;
+ 	int overall_fp_mode;
+@@ -440,6 +441,7 @@ struct arch_elf_state {
+ #define MIPS_ABI_FP_UNKNOWN	(-1)	/* Unknown FP ABI (kernel internal) */
+ 
+ #define INIT_ARCH_ELF_STATE {			\
++	.nan_2008 = -1,				\
+ 	.fp_abi = MIPS_ABI_FP_UNKNOWN,		\
+ 	.interp_fp_abi = MIPS_ABI_FP_UNKNOWN,	\
+ 	.overall_fp_mode = -1,			\
+@@ -451,6 +453,7 @@ extern int arch_elf_pt_proc(void *ehdr, 
+ extern int arch_check_elf(void *ehdr, bool has_interpreter, void *interp_ehdr,
  			  struct arch_elf_state *state);
  
++extern void mips_set_personality_nan(struct arch_elf_state *state);
  extern void mips_set_personality_fp(struct arch_elf_state *state);
+ 
+ #endif /* _ASM_ELF_H */
 Index: linux-sfr-test/arch/mips/kernel/elf.c
 ===================================================================
---- linux-sfr-test.orig/arch/mips/kernel/elf.c	2015-11-11 02:19:56.376032000 +0000
-+++ linux-sfr-test/arch/mips/kernel/elf.c	2015-11-11 02:20:02.104077000 +0000
-@@ -128,7 +128,7 @@ int arch_elf_pt_proc(void *_ehdr, void *
- 	return 0;
+--- linux-sfr-test.orig/arch/mips/kernel/elf.c	2015-11-11 02:20:02.104077000 +0000
++++ linux-sfr-test/arch/mips/kernel/elf.c	2015-11-11 02:20:16.033179000 +0000
+@@ -11,6 +11,8 @@
+ #include <linux/elf.h>
+ #include <linux/sched.h>
+ 
++#include <asm/cpu-info.h>
++
+ /* FPU modes */
+ enum {
+ 	FP_FRE,
+@@ -135,6 +137,10 @@ int arch_check_elf(void *_ehdr, bool has
+ 		struct elf32_hdr e32;
+ 		struct elf64_hdr e64;
+ 	} *ehdr = _ehdr;
++	union {
++		struct elf32_hdr e32;
++		struct elf64_hdr e64;
++	} *iehdr = _interp_ehdr;
+ 	struct mode_req prog_req, interp_req;
+ 	int fp_abi, interp_fp_abi, abi0, abi1, max_abi;
+ 	bool elf32;
+@@ -143,6 +149,32 @@ int arch_check_elf(void *_ehdr, bool has
+ 	elf32 = ehdr->e32.e_ident[EI_CLASS] == ELFCLASS32;
+ 	flags = elf32 ? ehdr->e32.e_flags : ehdr->e64.e_flags;
+ 
++	/*
++	 * Determine the NaN personality, reject the binary if no hardware
++	 * support.  Also ensure that any interpreter matches the executable.
++	 */
++	if (flags & EF_MIPS_NAN2008) {
++		if (cpu_has_nan_2008)
++			state->nan_2008 = 1;
++		else
++			return -ENOEXEC;
++	} else {
++		if (cpu_has_nan_legacy)
++			state->nan_2008 = 0;
++		else
++			return -ENOEXEC;
++	}
++	if (has_interpreter) {
++		bool ielf32;
++		u32 iflags;
++
++		ielf32 = iehdr->e32.e_ident[EI_CLASS] == ELFCLASS32;
++		iflags = ielf32 ? iehdr->e32.e_flags : iehdr->e64.e_flags;
++
++		if ((flags ^ iflags) & EF_MIPS_NAN2008)
++			return -ELIBBAD;
++	}
++
+ 	if (!config_enabled(CONFIG_MIPS_O32_FP64_SUPPORT))
+ 		return 0;
+ 
+@@ -266,3 +298,27 @@ void mips_set_personality_fp(struct arch
+ 		BUG();
+ 	}
  }
- 
--int arch_check_elf(void *_ehdr, bool has_interpreter,
-+int arch_check_elf(void *_ehdr, bool has_interpreter, void *_interp_ehdr,
- 		   struct arch_elf_state *state)
- {
- 	union {
-Index: linux-sfr-test/fs/binfmt_elf.c
-===================================================================
---- linux-sfr-test.orig/fs/binfmt_elf.c	2015-11-10 18:08:00.126238000 +0000
-+++ linux-sfr-test/fs/binfmt_elf.c	2015-11-11 02:20:02.126077000 +0000
-@@ -490,6 +490,7 @@ static inline int arch_elf_pt_proc(struc
-  * arch_check_elf() - check an ELF executable
-  * @ehdr:	The main ELF header
-  * @has_interp:	True if the ELF has an interpreter, else false.
-+ * @interp_ehdr: The interpreter's ELF header
-  * @state:	Architecture-specific state preserved throughout the process
-  *		of loading the ELF.
-  *
-@@ -501,6 +502,7 @@ static inline int arch_elf_pt_proc(struc
-  *         with that return code.
-  */
- static inline int arch_check_elf(struct elfhdr *ehdr, bool has_interp,
-+				 struct elfhdr *interp_ehdr,
- 				 struct arch_elf_state *state)
- {
- 	/* Dummy implementation, always proceed */
-@@ -828,7 +830,9 @@ static int load_elf_binary(struct linux_
- 	 * still possible to return an error to the code that invoked
- 	 * the exec syscall.
- 	 */
--	retval = arch_check_elf(&loc->elf_ex, !!interpreter, &arch_state);
-+	retval = arch_check_elf(&loc->elf_ex,
-+				!!interpreter, &loc->interp_elf_ex,
-+				&arch_state);
- 	if (retval)
- 		goto out_free_dentry;
- 
++
++/*
++ * Select the IEEE 754 NaN encoding and ABS.fmt/NEG.fmt execution mode
++ * in FCSR according to the ELF NaN personality.
++ */
++void mips_set_personality_nan(struct arch_elf_state *state)
++{
++	struct cpuinfo_mips *c = &boot_cpu_data;
++	struct task_struct *t = current;
++
++	t->thread.fpu.fcr31 = c->fpu_csr31;
++	switch (state->nan_2008) {
++	case 0:
++		break;
++	case 1:
++		if (!(c->fpu_msk31 & FPU_CSR_NAN2008))
++			t->thread.fpu.fcr31 |= FPU_CSR_NAN2008;
++		if (!(c->fpu_msk31 & FPU_CSR_ABS2008))
++			t->thread.fpu.fcr31 |= FPU_CSR_ABS2008;
++		break;
++	default:
++		BUG();
++	}
++}

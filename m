@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Nov 2015 01:49:38 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:18881 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Nov 2015 01:49:55 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:18920 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27013534AbbKMAsrE9FBl (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 13 Nov 2015 01:48:47 +0100
+        with ESMTP id S27010674AbbKMAs4Aiisl (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 13 Nov 2015 01:48:56 +0100
 Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Websense Email Security Gateway with ESMTPS id 3AC5C5B0BDC63;
-        Fri, 13 Nov 2015 00:48:37 +0000 (GMT)
+        by Websense Email Security Gateway with ESMTPS id AE8326A93A69C;
+        Fri, 13 Nov 2015 00:48:45 +0000 (GMT)
 Received: from [10.100.200.62] (10.100.200.62) by hhmail02.hh.imgtec.org
  (10.100.10.20) with Microsoft SMTP Server id 14.3.235.1; Fri, 13 Nov 2015
- 00:48:40 +0000
-Date:   Fri, 13 Nov 2015 00:48:39 +0000
+ 00:48:49 +0000
+Date:   Fri, 13 Nov 2015 00:48:48 +0000
 From:   "Maciej W. Rozycki" <macro@imgtec.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
 CC:     Andrew Morton <akpm@linux-foundation.org>,
         Matthew Fortune <Matthew.Fortune@imgtec.com>,
         <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH] MIPS: ELF: Restructure personality macros
+Subject: [PATCH] MIPS: math-emu: Always propagate sNaN payload in quieting
 In-Reply-To: <alpine.DEB.2.00.1511111418430.7097@tp.orcam.me.uk>
-Message-ID: <alpine.DEB.2.00.1511130006430.7097@tp.orcam.me.uk>
+Message-ID: <alpine.DEB.2.00.1511130006480.7097@tp.orcam.me.uk>
 References: <alpine.DEB.2.00.1511111418430.7097@tp.orcam.me.uk>
 User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
 MIME-Version: 1.0
@@ -27,7 +27,7 @@ Return-Path: <Maciej.Rozycki@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49918
+X-archive-position: 49919
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -44,55 +44,61 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Update the ELF personality macros used for individual ABIs to make 
-actions in the same order across all of them and match formatting too.
+Propagate sNaN payload in quieting in the legacy-NaN mode as well.  If 
+clearing the quiet bit would produce infinity, then set the next lower 
+trailing significand field bit, matching the SB-1 and BMIPS5000 hardware 
+implementations.  Some other MIPS FPU hardware implementations do 
+produce the default qNaN bit pattern instead.
+
+This reverts some changes made for semantics preservation with commit 
+dc3ddf42 [MIPS: math-emu: Update sNaN quieting handlers], consequently
+bringing back most of the semantics from before commit fdffbafb [Lots of 
+FPU bug fixes from Kjeld Borch Egevang.], except from the qNaN produced 
+in the infinity case.  Previously the default qNaN bit pattern was 
+produced in that case.
 
 Signed-off-by: Maciej W. Rozycki <macro@imgtec.com>
 ---
-linux-mips-set-personality-shuffle.diff
-Index: linux-sfr-test/arch/mips/include/asm/elf.h
+linux-mips-emu-snan-legacy.diff
+Index: linux-sfr-perf132-malta-el/arch/mips/math-emu/ieee754dp.c
 ===================================================================
---- linux-sfr-test.orig/arch/mips/include/asm/elf.h	2015-11-11 02:20:23.314234000 +0000
-+++ linux-sfr-test/arch/mips/include/asm/elf.h	2015-11-11 02:20:27.589266000 +0000
-@@ -295,17 +295,16 @@ extern struct mips_abi mips_abi_n32;
+--- linux-sfr-perf132-malta-el.orig/arch/mips/math-emu/ieee754dp.c	2015-04-08 16:59:18.000000000 +0100
++++ linux-sfr-perf132-malta-el/arch/mips/math-emu/ieee754dp.c	2015-04-08 17:05:29.233752000 +0100
+@@ -54,10 +54,13 @@ union ieee754dp __cold ieee754dp_nanxcpt
+ 	assert(ieee754dp_issnan(r));
  
- #define SET_PERSONALITY2(ex, state)					\
- do {									\
--	if (personality(current->personality) != PER_LINUX)		\
--		set_personality(PER_LINUX);				\
--									\
- 	clear_thread_flag(TIF_HYBRID_FPREGS);				\
- 	set_thread_flag(TIF_32BIT_FPREGS);				\
- 									\
--	mips_set_personality_fp(state);					\
--									\
- 	current->thread.abi = &mips_abi;				\
- 									\
-+	mips_set_personality_fp(state);					\
- 	mips_set_personality_nan(state);				\
-+									\
-+	if (personality(current->personality) != PER_LINUX)		\
-+		set_personality(PER_LINUX);				\
- } while (0)
+ 	ieee754_setcx(IEEE754_INVALID_OPERATION);
+-	if (ieee754_csr.nan2008)
++	if (ieee754_csr.nan2008) {
+ 		DPMANT(r) |= DP_MBIT(DP_FBITS - 1);
+-	else
+-		r = ieee754dp_indef();
++	} else {
++		DPMANT(r) &= ~DP_MBIT(DP_FBITS - 1);
++		if (!ieee754dp_isnan(r))
++			DPMANT(r) |= DP_MBIT(DP_FBITS - 2);
++	}
  
- #endif /* CONFIG_32BIT */
-@@ -316,6 +315,7 @@ do {									\
- #define __SET_PERSONALITY32_N32()					\
- 	do {								\
- 		set_thread_flag(TIF_32BIT_ADDR);			\
-+									\
- 		current->thread.abi = &mips_abi_n32;			\
- 	} while (0)
- #else
-@@ -331,9 +331,9 @@ do {									\
- 		clear_thread_flag(TIF_HYBRID_FPREGS);			\
- 		set_thread_flag(TIF_32BIT_FPREGS);			\
- 									\
--		mips_set_personality_fp(state);				\
--									\
- 		current->thread.abi = &mips_abi_32;			\
-+									\
-+		mips_set_personality_fp(state);				\
- 	} while (0)
- #else
- #define __SET_PERSONALITY32_O32(ex, state)				\
+ 	return r;
+ }
+Index: linux-sfr-perf132-malta-el/arch/mips/math-emu/ieee754sp.c
+===================================================================
+--- linux-sfr-perf132-malta-el.orig/arch/mips/math-emu/ieee754sp.c	2015-04-08 16:59:45.000000000 +0100
++++ linux-sfr-perf132-malta-el/arch/mips/math-emu/ieee754sp.c	2015-04-08 17:05:29.235752000 +0100
+@@ -54,10 +54,13 @@ union ieee754sp __cold ieee754sp_nanxcpt
+ 	assert(ieee754sp_issnan(r));
+ 
+ 	ieee754_setcx(IEEE754_INVALID_OPERATION);
+-	if (ieee754_csr.nan2008)
++	if (ieee754_csr.nan2008) {
+ 		SPMANT(r) |= SP_MBIT(SP_FBITS - 1);
+-	else
+-		r = ieee754sp_indef();
++	} else {
++		SPMANT(r) &= ~SP_MBIT(SP_FBITS - 1);
++		if (!ieee754sp_isnan(r))
++			SPMANT(r) |= SP_MBIT(SP_FBITS - 2);
++	}
+ 
+ 	return r;
+ }

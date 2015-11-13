@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Nov 2015 01:47:01 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:65092 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Nov 2015 01:47:24 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:46495 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27012542AbbKMAqx2YQSl (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 13 Nov 2015 01:46:53 +0100
+        with ESMTP id S27013460AbbKMArC7BAgl (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 13 Nov 2015 01:47:02 +0100
 Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Websense Email Security Gateway with ESMTPS id 044449F33DCD0;
-        Fri, 13 Nov 2015 00:46:42 +0000 (GMT)
+        by Websense Email Security Gateway with ESMTPS id 1ACE684369937;
+        Fri, 13 Nov 2015 00:46:53 +0000 (GMT)
 Received: from [10.100.200.62] (10.100.200.62) by hhmail02.hh.imgtec.org
  (10.100.10.20) with Microsoft SMTP Server id 14.3.235.1; Fri, 13 Nov 2015
- 00:46:45 +0000
-Date:   Fri, 13 Nov 2015 00:46:44 +0000
+ 00:46:56 +0000
+Date:   Fri, 13 Nov 2015 00:46:55 +0000
 From:   "Maciej W. Rozycki" <macro@imgtec.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
 CC:     Andrew Morton <akpm@linux-foundation.org>,
         Matthew Fortune <Matthew.Fortune@imgtec.com>,
         <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH 1/8] MIPS: Use a union to access the ELF file header
+Subject: [PATCH 2/8] MIPS: Define the legacy-NaN and 2008-NaN features
 In-Reply-To: <alpine.DEB.2.00.1511111418430.7097@tp.orcam.me.uk>
-Message-ID: <alpine.DEB.2.00.1511130005520.7097@tp.orcam.me.uk>
+Message-ID: <alpine.DEB.2.00.1511130006010.7097@tp.orcam.me.uk>
 References: <alpine.DEB.2.00.1511111418430.7097@tp.orcam.me.uk>
 User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
 MIME-Version: 1.0
@@ -27,7 +27,7 @@ Return-Path: <Maciej.Rozycki@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49910
+X-archive-position: 49911
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -44,88 +44,60 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Rewrite `arch_elf_pt_proc' and `arch_check_elf' using a union to access 
-the ELF file header.
+Allocate CPU option bits and define macros for the legacy-NaN and 
+2008-NaN IEEE Std 754 MIPS architecture features.  Unconditionally mark 
+the legacy-NaN feature as present across hardware and emulated 
+floating-point configurations.
 
 Signed-off-by: Maciej W. Rozycki <macro@imgtec.com>
 ---
-linux-mips-elf-ehdr.diff
-Index: linux-sfr-test/arch/mips/kernel/elf.c
+linux-mips-nan-legacy.diff
+Index: linux-sfr-test/arch/mips/include/asm/cpu-features.h
 ===================================================================
---- linux-sfr-test.orig/arch/mips/kernel/elf.c	2015-09-04 22:46:08.374274000 +0100
-+++ linux-sfr-test/arch/mips/kernel/elf.c	2015-09-04 22:47:56.448146000 +0100
-@@ -68,15 +68,23 @@ static struct mode_req none_req = { true
- int arch_elf_pt_proc(void *_ehdr, void *_phdr, struct file *elf,
- 		     bool is_interp, struct arch_elf_state *state)
- {
--	struct elf32_hdr *ehdr32 = _ehdr;
-+	union {
-+		struct elf32_hdr e32;
-+		struct elf64_hdr e64;
-+	} *ehdr = _ehdr;
- 	struct elf32_phdr *phdr32 = _phdr;
- 	struct elf64_phdr *phdr64 = _phdr;
- 	struct mips_elf_abiflags_v0 abiflags;
-+	bool elf32;
-+	u32 flags;
- 	int ret;
+--- linux-sfr-test.orig/arch/mips/include/asm/cpu-features.h	2015-10-07 19:33:20.000000000 +0100
++++ linux-sfr-test/arch/mips/include/asm/cpu-features.h	2015-10-07 20:48:14.828556000 +0100
+@@ -414,4 +414,11 @@
+ # define cpu_has_small_pages	(cpu_data[0].options & MIPS_CPU_SP)
+ #endif
  
-+	elf32 = ehdr->e32.e_ident[EI_CLASS] == ELFCLASS32;
-+	flags = elf32 ? ehdr->e32.e_flags : ehdr->e64.e_flags;
++#ifndef cpu_has_nan_legacy
++#define cpu_has_nan_legacy	(cpu_data[0].options & MIPS_CPU_NAN_LEGACY)
++#endif
++#ifndef cpu_has_nan_2008
++#define cpu_has_nan_2008	(cpu_data[0].options & MIPS_CPU_NAN_2008)
++#endif
 +
- 	/* Lets see if this is an O32 ELF */
--	if (ehdr32->e_ident[EI_CLASS] == ELFCLASS32) {
--		if (ehdr32->e_flags & EF_MIPS_FP64) {
-+	if (elf32) {
-+		if (flags & EF_MIPS_FP64) {
- 			/*
- 			 * Set MIPS_ABI_FP_OLD_64 for EF_MIPS_FP64. We will override it
- 			 * later if needed
-@@ -123,10 +131,17 @@ int arch_elf_pt_proc(void *_ehdr, void *
- int arch_check_elf(void *_ehdr, bool has_interpreter,
- 		   struct arch_elf_state *state)
- {
--	struct elf32_hdr *ehdr = _ehdr;
-+	union {
-+		struct elf32_hdr e32;
-+		struct elf64_hdr e64;
-+	} *ehdr = _ehdr;
- 	struct mode_req prog_req, interp_req;
- 	int fp_abi, interp_fp_abi, abi0, abi1, max_abi;
--	bool is_mips64;
-+	bool elf32;
-+	u32 flags;
-+
-+	elf32 = ehdr->e32.e_ident[EI_CLASS] == ELFCLASS32;
-+	flags = elf32 ? ehdr->e32.e_flags : ehdr->e64.e_flags;
+ #endif /* __ASM_CPU_FEATURES_H */
+Index: linux-sfr-test/arch/mips/include/asm/cpu.h
+===================================================================
+--- linux-sfr-test.orig/arch/mips/include/asm/cpu.h	2015-10-07 19:33:20.000000000 +0100
++++ linux-sfr-test/arch/mips/include/asm/cpu.h	2015-10-07 20:48:14.831542000 +0100
+@@ -386,6 +386,8 @@ enum cpu_type_enum {
+ #define MIPS_CPU_BP_GHIST	0x8000000000ull /* R12K+ Branch Prediction Global History */
+ #define MIPS_CPU_SP		0x10000000000ull /* Small (1KB) page support */
+ #define MIPS_CPU_FTLB		0x20000000000ull /* CPU has Fixed-page-size TLB */
++#define MIPS_CPU_NAN_LEGACY	0x40000000000ull /* Legacy NaN implemented */
++#define MIPS_CPU_NAN_2008	0x80000000000ull /* 2008 NaN implemented */
  
- 	if (!config_enabled(CONFIG_MIPS_O32_FP64_SUPPORT))
- 		return 0;
-@@ -142,21 +157,18 @@ int arch_check_elf(void *_ehdr, bool has
- 		abi0 = abi1 = fp_abi;
+ /*
+  * CPU ASE encodings
+Index: linux-sfr-test/arch/mips/kernel/cpu-probe.c
+===================================================================
+--- linux-sfr-test.orig/arch/mips/kernel/cpu-probe.c	2015-10-07 19:33:20.000000000 +0100
++++ linux-sfr-test/arch/mips/kernel/cpu-probe.c	2015-10-07 20:48:14.836528000 +0100
+@@ -137,6 +137,7 @@ static void cpu_set_fpu_opts(struct cpui
  	}
  
--	is_mips64 = (ehdr->e_ident[EI_CLASS] == ELFCLASS64) ||
--		    (ehdr->e_flags & EF_MIPS_ABI2);
-+	if (elf32 && !(flags & EF_MIPS_ABI2)) {
-+		/* Default to a mode capable of running code expecting FR=0 */
-+		state->overall_fp_mode = cpu_has_mips_r6 ? FP_FRE : FP_FR0;
+ 	cpu_set_fpu_fcsr_mask(c);
++	c->options |= MIPS_CPU_NAN_LEGACY;
+ }
  
--	if (is_mips64) {
-+		/* Allow all ABIs we know about */
-+		max_abi = MIPS_ABI_FP_64A;
-+	} else {
- 		/* MIPS64 code always uses FR=1, thus the default is easy */
- 		state->overall_fp_mode = FP_FR1;
+ /*
+@@ -147,6 +148,7 @@ static void cpu_set_nofpu_opts(struct cp
+ 	c->options &= ~MIPS_CPU_FPU;
+ 	c->fpu_msk31 = mips_nofpu_msk31;
  
- 		/* Disallow access to the various FPXX & FP64 ABIs */
- 		max_abi = MIPS_ABI_FP_SOFT;
--	} else {
--		/* Default to a mode capable of running code expecting FR=0 */
--		state->overall_fp_mode = cpu_has_mips_r6 ? FP_FRE : FP_FR0;
--
--		/* Allow all ABIs we know about */
--		max_abi = MIPS_ABI_FP_64A;
- 	}
++	c->options |= MIPS_CPU_NAN_LEGACY;
+ 	cpu_set_nofpu_id(c);
+ }
  
- 	if ((abi0 > max_abi && abi0 != MIPS_ABI_FP_UNKNOWN) ||

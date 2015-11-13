@@ -1,40 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Nov 2015 00:19:43 +0100 (CET)
-Received: from youngberry.canonical.com ([91.189.89.112]:55448 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012571AbbKLXSsjXn8l (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 13 Nov 2015 00:18:48 +0100
-Received: from 1.general.kamal.us.vpn ([10.172.68.52] helo=fourier)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:DHE_RSA_AES_128_CBC_SHA1:16)
-        (Exim 4.76)
-        (envelope-from <kamal@canonical.com>)
-        id 1Zx18i-0006Py-44; Thu, 12 Nov 2015 23:18:48 +0000
-Received: from kamal by fourier with local (Exim 4.82)
-        (envelope-from <kamal@whence.com>)
-        id 1Zx18f-0000AV-TR; Thu, 12 Nov 2015 15:18:45 -0800
-From:   Kamal Mostafa <kamal@canonical.com>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        kernel-team@lists.ubuntu.com
-Cc:     Paul Burton <paul.burton@imgtec.com>,
-        Markos Chandras <markos.chandras@imgtec.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
-        Kamal Mostafa <kamal@canonical.com>
-Subject: [PATCH 3.19.y-ckt 016/155] MIPS: CPS: #ifdef on CONFIG_MIPS_MT_SMP rather than CONFIG_MIPS_MT
-Date:   Thu, 12 Nov 2015 15:16:10 -0800
-Message-Id: <1447370309-357-17-git-send-email-kamal@canonical.com>
-X-Mailer: git-send-email 1.9.1
-In-Reply-To: <1447370309-357-1-git-send-email-kamal@canonical.com>
-References: <1447370309-357-1-git-send-email-kamal@canonical.com>
-X-Extended-Stable: 3.19
-Return-Path: <kamal@canonical.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Nov 2015 01:46:43 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:50316 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27010674AbbKMAqlYcTJl (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 13 Nov 2015 01:46:41 +0100
+Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
+        by Websense Email Security Gateway with ESMTPS id 00383AB661A67;
+        Fri, 13 Nov 2015 00:46:30 +0000 (GMT)
+Received: from [10.100.200.62] (10.100.200.62) by hhmail02.hh.imgtec.org
+ (10.100.10.20) with Microsoft SMTP Server id 14.3.235.1; Fri, 13 Nov 2015
+ 00:46:34 +0000
+Date:   Fri, 13 Nov 2015 00:46:33 +0000
+From:   "Maciej W. Rozycki" <macro@imgtec.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+CC:     Andrew Morton <akpm@linux-foundation.org>,
+        Matthew Fortune <Matthew.Fortune@imgtec.com>,
+        <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>
+Subject: [PATCH 0/(8+2)] MIPS: IEEE Std 754-2008 features
+Message-ID: <alpine.DEB.2.00.1511111418430.7097@tp.orcam.me.uk>
+User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
+MIME-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+X-Originating-IP: [10.100.200.62]
+Return-Path: <Maciej.Rozycki@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49908
+X-archive-position: 49909
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kamal@canonical.com
+X-original-sender: macro@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,70 +42,45 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-3.19.8-ckt10 -stable review patch.  If anyone has any objections, please let me know.
+Hi,
 
-------------------
+ As many of you have been aware it has been a long practice for software
+using IEEE 754 floating-point arithmetic run on MIPS processors to use an
+encoding of Not-a-Number (NaN) data different to one used by software run
+on other processors.  And as of IEEE 754-2008 revision [1] this encoding
+does not follow one recommended in the standard, as specified in section
+6.2.1, where it is stated that quiet NaNs should have the first bit (d1)
+of their significand set to 1 while signalling NaNs should have that bit
+set to 0, but MIPS software interprets the two bits in the opposite
+manner.
 
-From: Paul Burton <paul.burton@imgtec.com>
+ As from revision 3.50 [2][3] the MIPS Architecture provides for 
+processors that support the IEEE 754-2008 preferred NaN encoding format. 
+As the two formats (further referred to as "legacy NaN" and "2008 NaN") 
+are incompatible to each other, the run-time environment has to provide 
+support for the two formats to help people avoid using incompatible binary 
+modules.  Here is the Linux kernel part.
 
-commit 7a63076d9a31a6c2073da45021eeb4f89d2a8b56 upstream.
+ These are 8 changes comprising the actual feature and a set of 2 extra 
+patches -- a code structure clean-up for ELF personality macros, and a 
+proposal to make sNaN bit pattern propagation more in line with the 
+current version of the said standard even for legacy-NaN implementations.
 
-The CONFIG_MIPS_MT symbol can be selected by CONFIG_MIPS_VPE_LOADER in
-addition to CONFIG_MIPS_MT_SMP. We only want MT code in the CPS SMP boot
-vector if we're using MT for SMP. Thus switch the config symbol we ifdef
-against to CONFIG_MIPS_MT_SMP.
+ The complementing glibc dynamic loader part has been posted here: 
+<http://sourceware.org/ml/libc-ports/2013-09/msg00048.html> and included 
+in FSF glibc <git://sourceware.org/git/glibc.git> with commit 9c21573c.
 
-Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-Cc: Markos Chandras <markos.chandras@imgtec.com>
-Cc: James Hogan <james.hogan@imgtec.com>
-Cc: linux-mips@linux-mips.org
-Cc: linux-kernel@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/10867/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Kamal Mostafa <kamal@canonical.com>
----
- arch/mips/kernel/cps-vec.S | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ References:
 
-diff --git a/arch/mips/kernel/cps-vec.S b/arch/mips/kernel/cps-vec.S
-index d729a5e..b38a518 100644
---- a/arch/mips/kernel/cps-vec.S
-+++ b/arch/mips/kernel/cps-vec.S
-@@ -224,7 +224,7 @@ LEAF(excep_ejtag)
- 	END(excep_ejtag)
- 
- LEAF(mips_cps_core_init)
--#ifdef CONFIG_MIPS_MT
-+#ifdef CONFIG_MIPS_MT_SMP
- 	/* Check that the core implements the MT ASE */
- 	has_mt	t0, 3f
- 
-@@ -311,7 +311,7 @@ LEAF(mips_cps_boot_vpes)
- 
- 	/* Calculate this VPEs ID. If the core doesn't support MT use 0 */
- 	li	t9, 0
--#ifdef CONFIG_MIPS_MT
-+#ifdef CONFIG_MIPS_MT_SMP
- 	has_mt	t6, 1f
- 
- 	/* Find the number of VPEs present in the core */
-@@ -339,7 +339,7 @@ LEAF(mips_cps_boot_vpes)
- 	lw	t7, COREBOOTCFG_VPECONFIG(t0)
- 	addu	v0, v0, t7
- 
--#ifdef CONFIG_MIPS_MT
-+#ifdef CONFIG_MIPS_MT_SMP
- 
- 	/* If the core doesn't support MT then return */
- 	bnez	t6, 1f
-@@ -453,7 +453,7 @@ LEAF(mips_cps_boot_vpes)
- 
- 2:	.set	pop
- 
--#endif /* CONFIG_MIPS_MT */
-+#endif /* CONFIG_MIPS_MT_SMP */
- 
- 	/* Return */
- 	jr	ra
--- 
-1.9.1
+[1] "IEEE Standard for Floating-Point Arithmetic", IEEE Computer Society,
+    IEEE Std 754-2008, 29 August 2008
+
+[2] "MIPS Architecture For Programmers, Volume I-A: Introduction to the
+    MIPS32 Architecture", MIPS Technologies, Inc., Document Number:
+    MD00082, Revision 3.50, September 20, 2012
+
+[3] "MIPS Architecture For Programmers, Volume I-A: Introduction to the
+    MIPS64 Architecture", MIPS Technologies, Inc., Document Number:
+    MD00083, Revision 3.50, September 20, 2012
+
+  Maciej

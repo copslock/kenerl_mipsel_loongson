@@ -1,48 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 14 Nov 2015 17:06:41 +0100 (CET)
-Received: from mail-vk0-f51.google.com ([209.85.213.51]:35725 "EHLO
-        mail-vk0-f51.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011586AbbKNQGjW-rCC (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 14 Nov 2015 17:06:39 +0100
-Received: by vkas68 with SMTP id s68so7789382vka.2
-        for <linux-mips@linux-mips.org>; Sat, 14 Nov 2015 08:06:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        bh=MqCx4Yjx9kFhh4QlCq+4HOP93F+2l4DhLkJbpTF5WEA=;
-        b=nq+SteKCfPJST44ZBfGaeScH0kpXH+4gcd/fPNojqooFYhBiODvk2wiZZqLPvZe6+p
-         lnl1f8FiMpV11ib+HvLAKPwhAmn5Kb43QpmfO8Whfq+KRSFjs+2+pcsEov+lPwb+d6m5
-         bgVDVvJ2/C1HGE9FYLz/skxS2unwrREbGA+ddYwSfLUnX+WF3IU65i0IQFI4neyY/V/5
-         7+8lB9ZEF0+QZjm3Am1a9uIPlu+AG/nYxG8M2zY4m8RSj+TGenzbY7R+6Sixu8nQ7USS
-         tfK7lBSH9OxmG+ZMewnluJsfTdDHpyTU/JEVzJZHl+Yd2Lskp8uR7vmHGw+BDMqpfTtt
-         Z2iQ==
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 15 Nov 2015 03:04:54 +0100 (CET)
+Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:59895 "EHLO
+        shadbolt.e.decadent.org.uk" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012337AbbKOCEwT01w0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 15 Nov 2015 03:04:52 +0100
+Received: from deadeye.wl.decadent.org.uk ([192.168.4.247] helo=deadeye)
+        by shadbolt.decadent.org.uk with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.84)
+        (envelope-from <ben@decadent.org.uk>)
+        id 1ZxmgR-0007AT-DW; Sun, 15 Nov 2015 02:04:47 +0000
+Received: from ben by deadeye with local (Exim 4.86)
+        (envelope-from <ben@decadent.org.uk>)
+        id 1ZxmgL-0000WC-8N; Sun, 15 Nov 2015 02:04:41 +0000
+Content-Type: text/plain; charset="UTF-8"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
-X-Received: by 10.31.31.23 with SMTP id f23mr3788933vkf.23.1447517193491; Sat,
- 14 Nov 2015 08:06:33 -0800 (PST)
-Received: by 10.31.16.3 with HTTP; Sat, 14 Nov 2015 08:06:33 -0800 (PST)
-In-Reply-To: <alpine.DEB.2.00.1511140411050.7097@tp.orcam.me.uk>
-References: <alpine.DEB.2.00.1511140411050.7097@tp.orcam.me.uk>
-Date:   Sat, 14 Nov 2015 08:06:33 -0800
-Message-ID: <CAJimCsE4GcizTpOgvyGrbPu80SanG1sW3UdmEnq2U=qzCxaW=w@mail.gmail.com>
-Subject: Re: [RFC] MIPS ABI Extension for IEEE Std 754 Non-Compliant Interlinking
-From:   Cary Coutant <ccoutant@gmail.com>
-To:     "Maciej W. Rozycki" <macro@imgtec.com>
-Cc:     linux-mips@linux-mips.org, libc-alpha@sourceware.org,
-        Binutils <binutils@sourceware.org>,
-        GCC Development <gcc@gcc.gnu.org>,
-        Matthew Fortune <Matthew.Fortune@imgtec.com>,
-        Daniel Sanders <Daniel.Sanders@imgtec.com>,
-        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <ccoutant@gmail.com>
+From:   Ben Hutchings <ben@decadent.org.uk>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+CC:     akpm@linux-foundation.org, "James Hogan" <james.hogan@imgtec.com>,
+        "Ralf Baechle" <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Date:   Sun, 15 Nov 2015 01:45:45 +0000
+Message-ID: <lsq.1447551945.72310369@decadent.org.uk>
+X-Mailer: LinuxStableQueue (scripts by bwh)
+Subject: [PATCH 3.2 10/60] MIPS: dma-default: Fix 32-bit fall back to GFP_DMA
+In-Reply-To: <lsq.1447551944.536641563@decadent.org.uk>
+X-SA-Exim-Connect-IP: 192.168.4.247
+X-SA-Exim-Mail-From: ben@decadent.org.uk
+X-SA-Exim-Scanned: No (on shadbolt.decadent.org.uk); SAEximRunCond expanded to false
+Return-Path: <ben@decadent.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49927
+X-archive-position: 49928
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ccoutant@gmail.com
+X-original-sender: ben@decadent.org.uk
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,39 +48,42 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-> 3.3.2 Static Linking Object Acceptance Rules
->
->  The static linker shall follow the user selection as to the linking mode
-> used, either of `strict' and `relaxed'.  The selection will be made
-> according to the usual way assumed for the environment used, which may be
-> a command-line option, a property setting, etc.
->
->  In the `strict' linking mode both `strict' and `legacy' objects can be
-> linked together.  All shall follow the same legacy-NaN or 2008-NaN ABI, as
-> denoted by the EF_MIPS_NAN2008 flag described in Section 3.1.  The value
-> of the flag shall be the same across all the objects linked together.  The
-> output of a link involving any `strict' objects shall be marked as
-> `strict'.  No `relaxed' objects shall be allowed in the same link.
->
->  In the `relaxed' linking mode any `strict', `relaxed' and `legacy'
-> objects can be linked together, regardless of the value of their
-> EF_MIPS_NAN2008 flag.  If the flag has the same value across all objects
-> linked, then the value shall be propagated to the binary produced.  The
-> output shall be marked as `relaxed'.  It is recommended that the linker
-> provides a way to warn the user whenever a `relaxed' link is made of
-> `strict' and `legacy' objects only.
+3.2.73-rc1 review patch.  If anyone has any objections, please let me know.
 
-This paragraph first says that "If the flag has the same value across
-all objects linked, then the value shall be propagated to the binary
-produced", but then says the "output shall be marked as `relaxed'."
-Are you missing an "Otherwise" there?
+------------------
 
-Early on in the document, you mention "this applies regardless of
-whether it relies on the use of NaN data or IEEE Std 754 arithmetic in
-the first place," yet your solution is only two-state. Wouldn't it be
-better to have a three-state solution where objects that do not in
-fact rely on the NaN representation at all can be marked as "don't
-care"? Such objects could always be mixed with either strict or
-relaxed objects, regardless of linking mode.
+From: James Hogan <james.hogan@imgtec.com>
 
--cary
+commit 53960059d56ecef67d4ddd546731623641a3d2d1 upstream.
+
+If there is a DMA zone (usually 24bit = 16MB I believe), but no DMA32
+zone, as is the case for some 32-bit kernels, then massage_gfp_flags()
+will cause DMA memory allocated for devices with a 32..63-bit
+coherent_dma_mask to fall back to using __GFP_DMA, even though there may
+only be 32-bits of physical address available anyway.
+
+Correct that case to compare against a mask the size of phys_addr_t
+instead of always using a 64-bit mask.
+
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Fixes: a2e715a86c6d ("MIPS: DMA: Fix computation of DMA flags from device's coherent_dma_mask.")
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: linux-mips@linux-mips.org
+Patchwork: https://patchwork.linux-mips.org/patch/9610/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
+---
+ arch/mips/mm/dma-default.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+--- a/arch/mips/mm/dma-default.c
++++ b/arch/mips/mm/dma-default.c
+@@ -67,7 +67,7 @@ static gfp_t massage_gfp_flags(const str
+ 	else
+ #endif
+ #if defined(CONFIG_ZONE_DMA) && !defined(CONFIG_ZONE_DMA32)
+-	     if (dev->coherent_dma_mask < DMA_BIT_MASK(64))
++	     if (dev->coherent_dma_mask < DMA_BIT_MASK(sizeof(phys_addr_t) * 8))
+ 		dma_flag = __GFP_DMA;
+ 	else
+ #endif

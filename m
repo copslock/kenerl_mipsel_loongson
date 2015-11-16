@@ -1,37 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Nov 2015 22:24:02 +0100 (CET)
-Received: from smtp3-g21.free.fr ([212.27.42.3]:57295 "EHLO smtp3-g21.free.fr"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Nov 2015 00:18:38 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.136]:41105 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27012828AbbKPVXZZup-t (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 16 Nov 2015 22:23:25 +0100
-Received: from localhost.localdomain (unknown [78.54.254.43])
-        (Authenticated sender: albeu)
-        by smtp3-g21.free.fr (Postfix) with ESMTPA id BA3C0A6225;
-        Mon, 16 Nov 2015 22:23:09 +0100 (CET)
-From:   Alban Bedel <albeu@free.fr>
-To:     linux-mips@linux-mips.org
-Cc:     Rob Herring <robh+dt@kernel.org>, Pawel Moll <pawel.moll@arm.com>,
+        id S27012587AbbKPXSeF3Gwc (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 17 Nov 2015 00:18:34 +0100
+Received: from mail.kernel.org (localhost [127.0.0.1])
+        by mail.kernel.org (Postfix) with ESMTP id 74C83205E1;
+        Mon, 16 Nov 2015 23:18:29 +0000 (UTC)
+Received: from rob-hp-laptop (72-48-98-129.dyn.grandenetworks.net [72.48.98.129])
+        (using TLSv1.2 with cipher AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id EBEA4204D1;
+        Mon, 16 Nov 2015 23:18:27 +0000 (UTC)
+Date:   Mon, 16 Nov 2015 17:18:25 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Alban Bedel <albeu@free.fr>
+Cc:     linux-mips@linux-mips.org, Pawel Moll <pawel.moll@arm.com>,
         Mark Rutland <mark.rutland@arm.com>,
         Ian Campbell <ijc+devicetree@hellion.org.uk>,
         Kumar Gala <galak@codeaurora.org>,
         Ralf Baechle <ralf@linux-mips.org>,
         Kishon Vijay Abraham I <kishon@ti.com>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Alban Bedel <albeu@free.fr>
-Subject: [PATCH v2 5/5] MIPS: ath79: Enable the USB port on the TL-WR1043ND
-Date:   Mon, 16 Nov 2015 22:22:04 +0100
-Message-Id: <1447708924-15076-6-git-send-email-albeu@free.fr>
-X-Mailer: git-send-email 2.0.0
-In-Reply-To: <1447708924-15076-1-git-send-email-albeu@free.fr>
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 2/5] devicetree: Add bindings for the ATH79 USB phy
+Message-ID: <20151116231825.GA18204@rob-hp-laptop>
 References: <1447708924-15076-1-git-send-email-albeu@free.fr>
-Return-Path: <albeu@free.fr>
+ <1447708924-15076-3-git-send-email-albeu@free.fr>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1447708924-15076-3-git-send-email-albeu@free.fr>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+X-Virus-Scanned: ClamAV using ClamSMTP
+Return-Path: <robh@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49955
+X-archive-position: 49956
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: albeu@free.fr
+X-original-sender: robh@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,40 +52,40 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Signed-off-by: Alban Bedel <albeu@free.fr>
----
-Changelog:
-v2: * Fix the USB controller node name to follow ePAPR
-    * Enable the USB phy as it is now disabled per default
----
- arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts | 8 ++++++++
- 1 file changed, 8 insertions(+)
+On Mon, Nov 16, 2015 at 10:22:01PM +0100, Alban Bedel wrote:
+> Signed-off-by: Alban Bedel <albeu@free.fr>
 
-diff --git a/arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts b/arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts
-index 003015a..e535ee3 100644
---- a/arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts
-+++ b/arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts
-@@ -35,6 +35,10 @@
- 			};
- 		};
- 
-+		usb@1b000100 {
-+			status = "okay";
-+		};
-+
- 		spi@1f000000 {
- 			status = "okay";
- 			num-cs = <1>;
-@@ -65,6 +69,10 @@
- 		};
- 	};
- 
-+	usb-phy {
-+		status = "okay";
-+	};
-+
- 	gpio-keys {
- 		compatible = "gpio-keys-polled";
- 		#address-cells = <1>;
--- 
-2.0.0
+Acked-by: Rob Herring <robh@kernel.org>
+
+> ---
+>  .../devicetree/bindings/phy/phy-ath79-usb.txt          | 18 ++++++++++++++++++
+>  1 file changed, 18 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/phy/phy-ath79-usb.txt
+> 
+> diff --git a/Documentation/devicetree/bindings/phy/phy-ath79-usb.txt b/Documentation/devicetree/bindings/phy/phy-ath79-usb.txt
+> new file mode 100644
+> index 0000000..cafe219
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/phy/phy-ath79-usb.txt
+> @@ -0,0 +1,18 @@
+> +* Atheros AR71XX/9XXX USB PHY
+> +
+> +Required properties:
+> +- compatible: "qca,ar7100-usb-phy"
+> +- #phys-cells: should be 0
+> +- reset-names: "usb-phy"[, "usb-suspend-override"]
+> +- resets: references to the reset controllers
+> +
+> +Example:
+> +
+> +	usb-phy {
+> +		compatible = "qca,ar7100-usb-phy";
+> +
+> +		reset-names = "usb-phy", "usb-suspend-override";
+> +		resets = <&rst 4>, <&rst 3>;
+> +
+> +		#phy-cells = <0>;
+> +	};
+> -- 
+> 2.0.0
+> 

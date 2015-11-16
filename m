@@ -1,36 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Nov 2015 14:23:36 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:54764 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27011673AbbKPNXei5J-F (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 16 Nov 2015 14:23:34 +0100
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.15.2/8.14.8) with ESMTP id tAGDNTTp014909;
-        Mon, 16 Nov 2015 14:23:29 +0100
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.15.2/8.15.2/Submit) id tAGDNSZa014908;
-        Mon, 16 Nov 2015 14:23:28 +0100
-Date:   Mon, 16 Nov 2015 14:23:28 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Brian Norris <computersforpeace@gmail.com>
-Cc:     linux-mtd@lists.infradead.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH] mtd: jz4740_nand: fix build on jz4740 after removing
- gpio.h
-Message-ID: <20151116132328.GB9425@linux-mips.org>
-References: <1447284976-96693-1-git-send-email-computersforpeace@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Nov 2015 15:34:19 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:32447 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27011673AbbKPOeR0YxPR (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 16 Nov 2015 15:34:17 +0100
+Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
+        by Websense Email Security Gateway with ESMTPS id 143619521C0C8;
+        Mon, 16 Nov 2015 14:34:09 +0000 (GMT)
+Received: from [10.100.200.62] (10.100.200.62) by hhmail02.hh.imgtec.org
+ (10.100.10.20) with Microsoft SMTP Server id 14.3.235.1; Mon, 16 Nov 2015
+ 14:34:11 +0000
+Date:   Mon, 16 Nov 2015 14:34:09 +0000
+From:   "Maciej W. Rozycki" <macro@imgtec.com>
+To:     <linux-mips@linux-mips.org>
+CC:     Ralf Baechle <ralf@linux-mips.org>,
+        Matthew Fortune <Matthew.Fortune@imgtec.com>,
+        Daniel Sanders <Daniel.Sanders@imgtec.com>,
+        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
+        <linux-kernel@vger.kernel.org>
+Subject: [RFC PATCH 0/4] MIPS: IEEE Std 754 NaN interlinking support
+Message-ID: <alpine.DEB.2.00.1511161358211.7097@tp.orcam.me.uk>
+User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1447284976-96693-1-git-send-email-computersforpeace@gmail.com>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-Return-Path: <ralf@linux-mips.org>
+Content-Type: text/plain; charset="US-ASCII"
+X-Originating-IP: [10.100.200.62]
+Return-Path: <Maciej.Rozycki@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49935
+X-archive-position: 49936
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: macro@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,30 +44,25 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Nov 11, 2015 at 03:36:16PM -0800, Brian Norris wrote:
+Hi,
 
-> Fallout from commit 832f5dacfa0b ("MIPS: Remove all the uses of custom gpio.h")
-> 
-> We see errors like this:
-> 
-> drivers/mtd/nand/jz4740_nand.c: In function 'jz_nand_detect_bank':
-> drivers/mtd/nand/jz4740_nand.c:340:9: error: 'JZ_GPIO_MEM_CS0' undeclared (first use in this function)
-> drivers/mtd/nand/jz4740_nand.c:340:9: note: each undeclared identifier is reported only once for each function it appears in
-> drivers/mtd/nand/jz4740_nand.c:359:2: error: implicit declaration of function 'jz_gpio_set_function' [-Werror=implicit-function-declaration]
-> drivers/mtd/nand/jz4740_nand.c:359:29: error: 'JZ_GPIO_FUNC_MEM_CS0' undeclared (first use in this function)
-> drivers/mtd/nand/jz4740_nand.c:399:29: error: 'JZ_GPIO_FUNC_NONE' undeclared (first use in this function)
-> drivers/mtd/nand/jz4740_nand.c: In function 'jz_nand_probe':
-> drivers/mtd/nand/jz4740_nand.c:528:13: error: 'JZ_GPIO_MEM_CS0' undeclared (first use in this function)
-> drivers/mtd/nand/jz4740_nand.c: In function 'jz_nand_remove':
-> drivers/mtd/nand/jz4740_nand.c:555:14: error: 'JZ_GPIO_MEM_CS0' undeclared (first use in this function)
-> 
-> Patched similarly to:
-> 
-> https://patchwork.linux-mips.org/patch/11089/
-> 
-> Fixes: 832f5dacfa0b ("MIPS: Remove all the uses of custom gpio.h")
-> Signed-off-by: Brian Norris <computersforpeace@gmail.com>
+ This implements the kernel part of IEEE Std 754 NaN interlinking support, 
+as per "MIPS ABI Extension for IEEE Std 754 Non-Compliant Interlinking" 
+<https://dmz-portal.mips.com/wiki/MIPS_ABI_-_NaN_Interlinking>.
 
-Looks, good, shall I funnel this upstream?
+ Four patches are included: a pair of preparatory changes, a generic one 
+to allow ports to provide their own auxiliary vector's AT_FLAGS entry 
+initialiser and one factoring out pieces of FP context maintenance code, 
+respectively, and then a pair of actual changes, implementing the NaN 
+interlinking feature proper and a prctl(2) interface to switch the 
+compliance mode dynamically respectively.
 
-  Ralf
+ These patches rely on 2008-NaN support, recently posted, having been 
+applied first.
+
+ At this point this is a request for comments only rather than an actual 
+patch submission for inclusion, as consensus about the specification has 
+to be reached first.  All feedback is welcome on the implementation and 
+I'll be happy to address any questions, comments or concerns.
+
+  Maciej

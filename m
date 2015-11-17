@@ -1,57 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Nov 2015 18:39:58 +0100 (CET)
-Received: from mail-yk0-f179.google.com ([209.85.160.179]:34167 "EHLO
-        mail-yk0-f179.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27006617AbbKRRj4xbVRA (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 18 Nov 2015 18:39:56 +0100
-Received: by ykfs79 with SMTP id s79so77827054ykf.1;
-        Wed, 18 Nov 2015 09:39:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=sender:date:from:to:cc:subject:message-id:references:mime-version
-         :content-type:content-disposition:in-reply-to:user-agent;
-        bh=vOscfTcnin0dw71O3HCsRlK7FaaxgVz6xAZ6SD49wt0=;
-        b=yXdCi+ekaqj/2we2897dMbNbS2X0we4E3O5gvJEeHj+0TbdEreqYaOgfB1KrGRo64x
-         tk1APOpVvsbfda0fJ+n6mfkAK0rPca8TELncbavMYE2+xG7RauMXIBR5n7R5K05YEggv
-         S3CgvqJSBUEQGhYq/xejM9vUPQ9qqNzLqjILLJ20tpVFv4t28hw0hOJfBkDx6LsHUiLr
-         H1LtFQir7jLygRgrs9pQjBlZyTupHITl/NnPyDqFofxJq5tBkaQUbfPLZ/Y8svILE4b0
-         K9EDJF6LCToy1SH3aUPFHVCvwX5adtuBGAXgQmjIjiukVxgWS2s3AyP+JHyLtF2yGQca
-         0MSw==
-X-Received: by 10.129.40.147 with SMTP id o141mr42277748ywo.199.1447790821605;
-        Tue, 17 Nov 2015 12:07:01 -0800 (PST)
-Received: from mtj.duckdns.org ([2620:10d:c091:200::a:4bca])
-        by smtp.gmail.com with ESMTPSA id v23sm15950749ywa.30.2015.11.17.12.06.59
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Tue, 17 Nov 2015 12:07:00 -0800 (PST)
-Date:   Tue, 17 Nov 2015 15:06:58 -0500
-From:   Tejun Heo <tj@kernel.org>
-To:     Jaedon Shin <jaedon.shin@gmail.com>
-Cc:     Brian Norris <computersforpeace@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Kishon Vijay Abraham I <kishon@ti.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Kevin Cernekee <cernekee@gmail.com>,
-        Dragan Stancevic <dragan.stancevic@gmail.com>,
-        linux-ide@vger.kernel.org, Linux-MIPS <linux-mips@linux-mips.org>,
-        devicetree@vger.kernel.org
-Subject: Re: [v4 03/10] ata: ahci_brcmstb: add quirk for different phy
-Message-ID: <20151117200658.GE22864@mtj.duckdns.org>
-References: <1446213684-2625-1-git-send-email-jaedon.shin@gmail.com>
- <1446213684-2625-4-git-send-email-jaedon.shin@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1446213684-2625-4-git-send-email-jaedon.shin@gmail.com>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-Return-Path: <htejun@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Nov 2015 18:55:59 +0100 (CET)
+Received: from smtpfb2-g21.free.fr ([212.27.42.10]:32793 "EHLO
+        smtpfb2-g21.free.fr" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27006621AbbKRRz5ZxUBA (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 18 Nov 2015 18:55:57 +0100
+Received: from smtp3-g21.free.fr (smtp3-g21.free.fr [212.27.42.3])
+        by smtpfb2-g21.free.fr (Postfix) with ESMTP id 3AF09DAC807;
+        Tue, 17 Nov 2015 20:36:05 +0100 (CET)
+Received: from localhost.localdomain (unknown [80.171.215.189])
+        (Authenticated sender: albeu)
+        by smtp3-g21.free.fr (Postfix) with ESMTPA id 4C4C6A6243;
+        Tue, 17 Nov 2015 20:35:48 +0100 (CET)
+From:   Alban Bedel <albeu@free.fr>
+To:     linux-mips@linux-mips.org
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Marc Zyngier <marc.zyngier@arm.com>,
+        Alexander Couzens <lynxis@fe80.eu>,
+        Joel Porquet <joel@porquet.org>,
+        Andrew Bresticker <abrestic@chromium.org>,
+        linux-kernel@vger.kernel.org, Alban Bedel <albeu@free.fr>
+Subject: [PATCH 4/6] MIPS: ath79: irq: Move the MISC driver to drivers/irqchip
+Date:   Tue, 17 Nov 2015 20:34:54 +0100
+Message-Id: <1447788896-15553-5-git-send-email-albeu@free.fr>
+X-Mailer: git-send-email 2.0.0
+In-Reply-To: <1447788896-15553-1-git-send-email-albeu@free.fr>
+References: <1447788896-15553-1-git-send-email-albeu@free.fr>
+Return-Path: <albeu@free.fr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49978
+X-archive-position: 49979
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tj@kernel.org
+X-original-sender: albeu@free.fr
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -64,25 +47,426 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Oct 30, 2015 at 11:01:17PM +0900, Jaedon Shin wrote:
-> Add quirk for phy interface of MIPS-based chipsets. The ARM-based
-> chipsets have four phy interface control registers and each port has two
-> registers but the MIPS-based chipsets have three. There are no
-> information and documentation.
-> 
-> The Broadcom strict-ahci based BSP of legacy version did not control
-> these registers.
-...
->  enum brcm_ahci_quirks {
->  	BRCM_AHCI_QUIRK_NONCQ		= BIT(0),
-> +	BRCM_AHCI_QUIRK_SKIP_PHY_ENABLE	= BIT(1),
->  };
+The driver stays the same but the initialization changes a bit.
+For OF boards we now get the memory map from the OF node and use
+a linear mapping instead of the legacy mapping. For legacy boards
+we still use a legacy mapping and just pass down all the parameters
+from the board init code.
 
-I see.  There's another quirk flag which actually needs to be
-persistent.  Hmm... I don't know.  Ah well, please disregard my
-previous comment.
+Signed-off-by: Alban Bedel <albeu@free.fr>
+---
+ arch/mips/ath79/irq.c                    | 163 +++------------------------
+ arch/mips/include/asm/mach-ath79/ath79.h |   3 +
+ drivers/irqchip/Makefile                 |   1 +
+ drivers/irqchip/irq-ath79-misc.c         | 182 +++++++++++++++++++++++++++++++
+ 4 files changed, 201 insertions(+), 148 deletions(-)
+ create mode 100644 drivers/irqchip/irq-ath79-misc.c
 
-Thanks.
-
+diff --git a/arch/mips/ath79/irq.c b/arch/mips/ath79/irq.c
+index 511c065..05b4514 100644
+--- a/arch/mips/ath79/irq.c
++++ b/arch/mips/ath79/irq.c
+@@ -26,90 +26,6 @@
+ #include "common.h"
+ #include "machtypes.h"
+ 
+-static void __init ath79_misc_intc_domain_init(
+-	struct device_node *node, int irq);
+-
+-static void ath79_misc_irq_handler(struct irq_desc *desc)
+-{
+-	struct irq_domain *domain = irq_desc_get_handler_data(desc);
+-	void __iomem *base = domain->host_data;
+-	u32 pending;
+-
+-	pending = __raw_readl(base + AR71XX_RESET_REG_MISC_INT_STATUS) &
+-		  __raw_readl(base + AR71XX_RESET_REG_MISC_INT_ENABLE);
+-
+-	if (!pending) {
+-		spurious_interrupt();
+-		return;
+-	}
+-
+-	while (pending) {
+-		int bit = __ffs(pending);
+-
+-		generic_handle_irq(irq_linear_revmap(domain, bit));
+-		pending &= ~BIT(bit);
+-	}
+-}
+-
+-static void ar71xx_misc_irq_unmask(struct irq_data *d)
+-{
+-	void __iomem *base = irq_data_get_irq_chip_data(d);
+-	unsigned int irq = d->hwirq;
+-	u32 t;
+-
+-	t = __raw_readl(base + AR71XX_RESET_REG_MISC_INT_ENABLE);
+-	__raw_writel(t | (1 << irq), base + AR71XX_RESET_REG_MISC_INT_ENABLE);
+-
+-	/* flush write */
+-	__raw_readl(base + AR71XX_RESET_REG_MISC_INT_ENABLE);
+-}
+-
+-static void ar71xx_misc_irq_mask(struct irq_data *d)
+-{
+-	void __iomem *base = irq_data_get_irq_chip_data(d);
+-	unsigned int irq = d->hwirq;
+-	u32 t;
+-
+-	t = __raw_readl(base + AR71XX_RESET_REG_MISC_INT_ENABLE);
+-	__raw_writel(t & ~(1 << irq), base + AR71XX_RESET_REG_MISC_INT_ENABLE);
+-
+-	/* flush write */
+-	__raw_readl(base + AR71XX_RESET_REG_MISC_INT_ENABLE);
+-}
+-
+-static void ar724x_misc_irq_ack(struct irq_data *d)
+-{
+-	void __iomem *base = irq_data_get_irq_chip_data(d);
+-	unsigned int irq = d->hwirq;
+-	u32 t;
+-
+-	t = __raw_readl(base + AR71XX_RESET_REG_MISC_INT_STATUS);
+-	__raw_writel(t & ~(1 << irq), base + AR71XX_RESET_REG_MISC_INT_STATUS);
+-
+-	/* flush write */
+-	__raw_readl(base + AR71XX_RESET_REG_MISC_INT_STATUS);
+-}
+-
+-static struct irq_chip ath79_misc_irq_chip = {
+-	.name		= "MISC",
+-	.irq_unmask	= ar71xx_misc_irq_unmask,
+-	.irq_mask	= ar71xx_misc_irq_mask,
+-};
+-
+-static void __init ath79_misc_irq_init(void)
+-{
+-	if (soc_is_ar71xx() || soc_is_ar913x())
+-		ath79_misc_irq_chip.irq_mask_ack = ar71xx_misc_irq_mask;
+-	else if (soc_is_ar724x() ||
+-		 soc_is_ar933x() ||
+-		 soc_is_ar934x() ||
+-		 soc_is_qca955x())
+-		ath79_misc_irq_chip.irq_ack = ar724x_misc_irq_ack;
+-	else
+-		BUG();
+-
+-	ath79_misc_intc_domain_init(NULL, ATH79_CPU_IRQ(6));
+-}
+ 
+ static void ar934x_ip2_irq_dispatch(struct irq_desc *desc)
+ {
+@@ -248,69 +164,6 @@ asmlinkage void plat_irq_dispatch(void)
+ 	}
+ }
+ 
+-static int misc_map(struct irq_domain *d, unsigned int irq, irq_hw_number_t hw)
+-{
+-	irq_set_chip_and_handler(irq, &ath79_misc_irq_chip, handle_level_irq);
+-	irq_set_chip_data(irq, d->host_data);
+-	return 0;
+-}
+-
+-static const struct irq_domain_ops misc_irq_domain_ops = {
+-	.xlate = irq_domain_xlate_onecell,
+-	.map = misc_map,
+-};
+-
+-static void __init ath79_misc_intc_domain_init(
+-	struct device_node *node, int irq)
+-{
+-	void __iomem *base = ath79_reset_base;
+-	struct irq_domain *domain;
+-
+-	domain = irq_domain_add_legacy(node, ATH79_MISC_IRQ_COUNT,
+-			ATH79_MISC_IRQ_BASE, 0, &misc_irq_domain_ops, base);
+-	if (!domain)
+-		panic("Failed to add MISC irqdomain");
+-
+-	/* Disable and clear all interrupts */
+-	__raw_writel(0, base + AR71XX_RESET_REG_MISC_INT_ENABLE);
+-	__raw_writel(0, base + AR71XX_RESET_REG_MISC_INT_STATUS);
+-
+-	irq_set_chained_handler_and_data(irq, ath79_misc_irq_handler, domain);
+-}
+-
+-static int __init ath79_misc_intc_of_init(
+-	struct device_node *node, struct device_node *parent)
+-{
+-	int irq;
+-
+-	irq = irq_of_parse_and_map(node, 0);
+-	if (!irq)
+-		panic("Failed to get MISC IRQ");
+-
+-	ath79_misc_intc_domain_init(node, irq);
+-	return 0;
+-}
+-
+-static int __init ar7100_misc_intc_of_init(
+-	struct device_node *node, struct device_node *parent)
+-{
+-	ath79_misc_irq_chip.irq_mask_ack = ar71xx_misc_irq_mask;
+-	return ath79_misc_intc_of_init(node, parent);
+-}
+-
+-IRQCHIP_DECLARE(ar7100_misc_intc, "qca,ar7100-misc-intc",
+-		ar7100_misc_intc_of_init);
+-
+-static int __init ar7240_misc_intc_of_init(
+-	struct device_node *node, struct device_node *parent)
+-{
+-	ath79_misc_irq_chip.irq_ack = ar724x_misc_irq_ack;
+-	return ath79_misc_intc_of_init(node, parent);
+-}
+-
+-IRQCHIP_DECLARE(ar7240_misc_intc, "qca,ar7240-misc-intc",
+-		ar7240_misc_intc_of_init);
+-
+ static int __init ar79_cpu_intc_of_init(
+ 	struct device_node *node, struct device_node *parent)
+ {
+@@ -348,6 +201,8 @@ IRQCHIP_DECLARE(ar79_cpu_intc, "qca,ar7100-cpu-intc",
+ 
+ void __init arch_init_irq(void)
+ {
++	bool misc_is_ar71xx;
++
+ 	if (mips_machtype == ATH79_MACH_GENERIC_OF) {
+ 		irqchip_init();
+ 		return;
+@@ -362,7 +217,19 @@ void __init arch_init_irq(void)
+ 	}
+ 
+ 	mips_cpu_irq_init();
+-	ath79_misc_irq_init();
++
++	if (soc_is_ar71xx() || soc_is_ar913x())
++		misc_is_ar71xx = true;
++	else if (soc_is_ar724x() ||
++		 soc_is_ar933x() ||
++		 soc_is_ar934x() ||
++		 soc_is_qca955x())
++		misc_is_ar71xx = false;
++	else
++		BUG();
++	ath79_misc_irq_init(
++		ath79_reset_base + AR71XX_RESET_REG_MISC_INT_STATUS,
++		ATH79_CPU_IRQ(6), ATH79_MISC_IRQ_BASE, misc_is_ar71xx);
+ 
+ 	if (soc_is_ar934x())
+ 		ar934x_ip2_irq_init();
+diff --git a/arch/mips/include/asm/mach-ath79/ath79.h b/arch/mips/include/asm/mach-ath79/ath79.h
+index 4eee221..ce493fc 100644
+--- a/arch/mips/include/asm/mach-ath79/ath79.h
++++ b/arch/mips/include/asm/mach-ath79/ath79.h
+@@ -143,4 +143,7 @@ static inline u32 ath79_reset_rr(unsigned reg)
+ void ath79_device_reset_set(u32 mask);
+ void ath79_device_reset_clear(u32 mask);
+ 
++void ath79_misc_irq_init(void __iomem *regs, int irq,
++			int irq_base, bool is_ar71xx);
++
+ #endif /* __ASM_MACH_ATH79_H */
+diff --git a/drivers/irqchip/Makefile b/drivers/irqchip/Makefile
+index 177f78f..a8f9075 100644
+--- a/drivers/irqchip/Makefile
++++ b/drivers/irqchip/Makefile
+@@ -1,5 +1,6 @@
+ obj-$(CONFIG_IRQCHIP)			+= irqchip.o
+ 
++obj-$(CONFIG_ATH79)			+= irq-ath79-misc.o
+ obj-$(CONFIG_ARCH_BCM2835)		+= irq-bcm2835.o
+ obj-$(CONFIG_ARCH_BCM2835)		+= irq-bcm2836.o
+ obj-$(CONFIG_ARCH_EXYNOS)		+= exynos-combiner.o
+diff --git a/drivers/irqchip/irq-ath79-misc.c b/drivers/irqchip/irq-ath79-misc.c
+new file mode 100644
+index 0000000..bd2121f1
+--- /dev/null
++++ b/drivers/irqchip/irq-ath79-misc.c
+@@ -0,0 +1,182 @@
++/*
++ *  Atheros AR71xx/AR724x/AR913x MISC interrupt controller
++ *
++ *  Copyright (C) 2015 Alban Bedel <albeu@free.fr>
++ *  Copyright (C) 2010-2011 Jaiganesh Narayanan <jnarayanan@atheros.com>
++ *  Copyright (C) 2008-2011 Gabor Juhos <juhosg@openwrt.org>
++ *  Copyright (C) 2008 Imre Kaloz <kaloz@openwrt.org>
++ *
++ *  Parts of this file are based on Atheros' 2.6.15/2.6.31 BSP
++ *
++ *  This program is free software; you can redistribute it and/or modify it
++ *  under the terms of the GNU General Public License version 2 as published
++ *  by the Free Software Foundation.
++ */
++
++#include <linux/irqchip.h>
++#include <linux/of_address.h>
++#include <linux/of_irq.h>
++
++#define AR71XX_RESET_REG_MISC_INT_STATUS	0
++#define AR71XX_RESET_REG_MISC_INT_ENABLE	4
++
++#define ATH79_MISC_IRQ_COUNT			32
++
++static void ath79_misc_irq_handler(struct irq_desc *desc)
++{
++	struct irq_domain *domain = irq_desc_get_handler_data(desc);
++	void __iomem *base = domain->host_data;
++	u32 pending;
++
++	pending = __raw_readl(base + AR71XX_RESET_REG_MISC_INT_STATUS) &
++		  __raw_readl(base + AR71XX_RESET_REG_MISC_INT_ENABLE);
++
++	if (!pending) {
++		spurious_interrupt();
++		return;
++	}
++
++	while (pending) {
++		int bit = __ffs(pending);
++
++		generic_handle_irq(irq_linear_revmap(domain, bit));
++		pending &= ~BIT(bit);
++	}
++}
++
++static void ar71xx_misc_irq_unmask(struct irq_data *d)
++{
++	void __iomem *base = irq_data_get_irq_chip_data(d);
++	unsigned int irq = d->hwirq;
++	u32 t;
++
++	t = __raw_readl(base + AR71XX_RESET_REG_MISC_INT_ENABLE);
++	__raw_writel(t | BIT(irq), base + AR71XX_RESET_REG_MISC_INT_ENABLE);
++
++	/* flush write */
++	__raw_readl(base + AR71XX_RESET_REG_MISC_INT_ENABLE);
++}
++
++static void ar71xx_misc_irq_mask(struct irq_data *d)
++{
++	void __iomem *base = irq_data_get_irq_chip_data(d);
++	unsigned int irq = d->hwirq;
++	u32 t;
++
++	t = __raw_readl(base + AR71XX_RESET_REG_MISC_INT_ENABLE);
++	__raw_writel(t & ~BIT(irq), base + AR71XX_RESET_REG_MISC_INT_ENABLE);
++
++	/* flush write */
++	__raw_readl(base + AR71XX_RESET_REG_MISC_INT_ENABLE);
++}
++
++static void ar724x_misc_irq_ack(struct irq_data *d)
++{
++	void __iomem *base = irq_data_get_irq_chip_data(d);
++	unsigned int irq = d->hwirq;
++	u32 t;
++
++	t = __raw_readl(base + AR71XX_RESET_REG_MISC_INT_STATUS);
++	__raw_writel(t & ~BIT(irq), base + AR71XX_RESET_REG_MISC_INT_STATUS);
++
++	/* flush write */
++	__raw_readl(base + AR71XX_RESET_REG_MISC_INT_STATUS);
++}
++
++static struct irq_chip ath79_misc_irq_chip = {
++	.name		= "MISC",
++	.irq_unmask	= ar71xx_misc_irq_unmask,
++	.irq_mask	= ar71xx_misc_irq_mask,
++};
++
++static int misc_map(struct irq_domain *d, unsigned int irq, irq_hw_number_t hw)
++{
++	irq_set_chip_and_handler(irq, &ath79_misc_irq_chip, handle_level_irq);
++	irq_set_chip_data(irq, d->host_data);
++	return 0;
++}
++
++static const struct irq_domain_ops misc_irq_domain_ops = {
++	.xlate = irq_domain_xlate_onecell,
++	.map = misc_map,
++};
++
++static void __init ath79_misc_intc_domain_init(
++	struct irq_domain *domain, int irq)
++{
++	void __iomem *base = domain->host_data;
++
++	/* Disable and clear all interrupts */
++	__raw_writel(0, base + AR71XX_RESET_REG_MISC_INT_ENABLE);
++	__raw_writel(0, base + AR71XX_RESET_REG_MISC_INT_STATUS);
++
++	irq_set_chained_handler_and_data(irq, ath79_misc_irq_handler, domain);
++}
++
++static int __init ath79_misc_intc_of_init(
++	struct device_node *node, struct device_node *parent)
++{
++	struct irq_domain *domain;
++	void __iomem *base;
++	int irq;
++
++	irq = irq_of_parse_and_map(node, 0);
++	if (!irq) {
++		pr_err("Failed to get MISC IRQ\n");
++		return -EINVAL;
++	}
++
++	base = of_iomap(node, 0);
++	if (!base) {
++		pr_err("Failed to get MISC IRQ registers\n");
++		return -ENOMEM;
++	}
++
++	domain = irq_domain_add_linear(node, ATH79_MISC_IRQ_COUNT,
++				&misc_irq_domain_ops, base);
++	if (!domain) {
++		pr_err("Failed to add MISC irqdomain\n");
++		return -EINVAL;
++	}
++
++	ath79_misc_intc_domain_init(domain, irq);
++	return 0;
++}
++
++static int __init ar7100_misc_intc_of_init(
++	struct device_node *node, struct device_node *parent)
++{
++	ath79_misc_irq_chip.irq_mask_ack = ar71xx_misc_irq_mask;
++	return ath79_misc_intc_of_init(node, parent);
++}
++
++IRQCHIP_DECLARE(ar7100_misc_intc, "qca,ar7100-misc-intc",
++		ar7100_misc_intc_of_init);
++
++static int __init ar7240_misc_intc_of_init(
++	struct device_node *node, struct device_node *parent)
++{
++	ath79_misc_irq_chip.irq_ack = ar724x_misc_irq_ack;
++	return ath79_misc_intc_of_init(node, parent);
++}
++
++IRQCHIP_DECLARE(ar7240_misc_intc, "qca,ar7240-misc-intc",
++		ar7240_misc_intc_of_init);
++
++void __init ath79_misc_irq_init(void __iomem *regs, int irq,
++				int irq_base, bool is_ar71xx)
++{
++	struct irq_domain *domain;
++
++	if (is_ar71xx)
++		ath79_misc_irq_chip.irq_mask_ack = ar71xx_misc_irq_mask;
++	else
++		ath79_misc_irq_chip.irq_ack = ar724x_misc_irq_ack;
++
++	domain = irq_domain_add_legacy(NULL, ATH79_MISC_IRQ_COUNT,
++			irq_base, 0, &misc_irq_domain_ops, regs);
++	if (!domain)
++		panic("Failed to create MISC irqdomain");
++
++	ath79_misc_intc_domain_init(domain, irq);
++}
 -- 
-tejun
+2.0.0

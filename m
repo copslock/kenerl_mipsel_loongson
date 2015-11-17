@@ -1,33 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Nov 2015 09:42:50 +0100 (CET)
-Received: from smtp3-g21.free.fr ([212.27.42.3]:31140 "EHLO smtp3-g21.free.fr"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27011355AbbKQImsiqQ8I (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 17 Nov 2015 09:42:48 +0100
-Received: from localhost.localdomain (unknown [176.4.134.122])
-        (Authenticated sender: albeu)
-        by smtp3-g21.free.fr (Postfix) with ESMTPA id 45E0BA623E;
-        Tue, 17 Nov 2015 09:42:31 +0100 (CET)
-From:   Alban Bedel <albeu@free.fr>
-To:     linux-mips@linux-mips.org
-Cc:     Alban Bedel <albeu@free.fr>, stable@vger.kernel.org,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Felix Fietkau <nbd@openwrt.org>,
-        Qais Yousef <qais.yousef@imgtec.com>,
-        Andrew Bresticker <abrestic@chromium.org>,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] MIPS: ath79: Fix the DDR control initialization on ar71xx and ar934x
-Date:   Tue, 17 Nov 2015 09:40:07 +0100
-Message-Id: <1447749659-9073-1-git-send-email-albeu@free.fr>
-X-Mailer: git-send-email 2.0.0
-Return-Path: <albeu@free.fr>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Nov 2015 11:08:37 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:53747 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27011355AbbKQKIfQQfRr (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 17 Nov 2015 11:08:35 +0100
+Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
+        by Websense Email Security Gateway with ESMTPS id E6EE3C0AEDE7;
+        Tue, 17 Nov 2015 10:08:26 +0000 (GMT)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
+ 14.3.235.1; Tue, 17 Nov 2015 10:08:29 +0000
+Received: from [192.168.154.94] (192.168.154.94) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Tue, 17 Nov
+ 2015 10:08:28 +0000
+From:   Qais Yousef <qais.yousef@imgtec.com>
+Subject: Re: [PATCH 10/14] irqchip/mips-gic: Add a IPI hierarchy domain
+To:     Thomas Gleixner <tglx@linutronix.de>
+References: <1446549181-31788-1-git-send-email-qais.yousef@imgtec.com>
+ <1446549181-31788-11-git-send-email-qais.yousef@imgtec.com>
+ <alpine.DEB.2.11.1511071323471.4032@nanos> <56407F3C.4060404@imgtec.com>
+ <alpine.DEB.2.11.1511161610070.3761@nanos>
+CC:     <linux-kernel@vger.kernel.org>, <jason@lakedaemon.net>,
+        <marc.zyngier@arm.com>, <jiang.liu@linux.intel.com>,
+        <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
+Message-ID: <564AFC9A.9080505@imgtec.com>
+Date:   Tue, 17 Nov 2015 10:08:26 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+ Thunderbird/38.3.0
+MIME-Version: 1.0
+In-Reply-To: <alpine.DEB.2.11.1511161610070.3761@nanos>
+Content-Type: text/plain; charset="windows-1252"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.154.94]
+Return-Path: <Qais.Yousef@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49961
+X-archive-position: 49962
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: albeu@free.fr
+X-original-sender: qais.yousef@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -40,32 +52,31 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The DDR control initialization needs to know the SoC type, however
-ath79_detect_sys_type() was called after ath79_ddr_ctrl_init().
-Reverse the order to fix the DDR control initialization on ar71xx and
-ar934x.
+On 11/16/2015 05:17 PM, Thomas Gleixner wrote:
+> On Mon, 9 Nov 2015, Qais Yousef wrote:
+>> On 11/07/2015 02:51 PM, Thomas Gleixner wrote:
+>> Generally it's hard to know whether a real device is connected to a hwirq or
+>> not. I am saving a patch where we get a set of free hwirqs from DT as only the
+>> SoC designer knows what hwirq are actually free and safe to use for IPI. I'll
+>> send this patch with the DT IPI changes or the rproc driver that I will be
+>> send once these changes are merged.
+>>
+>> The current code assumes that the last 2 * NR_CPUs hwirqs are always free to
+>> use for Linux SMP.
+> So what you're saying is that you cannot rely on the last X hwirqs
+> being available for IPIs. That's insane and to my knowledge there is
+> no hardware out there which does not reserve a consecutive IPI space.
 
-Signed-off-by: Alban Bedel <albeu@free.fr>
-CC: stable@vger.kernel.org # v4.2+
----
- arch/mips/ath79/setup.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+If I read the code you were suggesting correctly, you were trying to fit 
+the IPIs in any available non allocated area in the GIC space. What I am 
+trying to say is that we can only work on a limited subset of this space 
+that we are told explicitly it's safe to use for IPIs. Most likely it's 
+consecutive, but I don't feel brave enough to make this assumption 
+personally - maybe I'm over paranoid.. I'm more keen on anything that 
+would simplify this patch series now though.
 
-diff --git a/arch/mips/ath79/setup.c b/arch/mips/ath79/setup.c
-index 1ba2120..9a00137 100644
---- a/arch/mips/ath79/setup.c
-+++ b/arch/mips/ath79/setup.c
-@@ -216,9 +216,9 @@ void __init plat_mem_setup(void)
- 					   AR71XX_RESET_SIZE);
- 	ath79_pll_base = ioremap_nocache(AR71XX_PLL_BASE,
- 					 AR71XX_PLL_SIZE);
--	ath79_ddr_ctrl_init();
--
- 	ath79_detect_sys_type();
-+	ath79_ddr_ctrl_init();
-+
- 	if (mips_machtype != ATH79_MACH_GENERIC_OF)
- 		detect_memory_region(0, ATH79_MEM_SIZE_MIN, ATH79_MEM_SIZE_MAX);
- 
--- 
-2.0.0
+I'll do my best with the next series but maybe we'd need to iterate this 
+more than once till I get it right.
+
+Thanks,
+Qais

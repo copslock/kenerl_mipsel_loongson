@@ -1,36 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Nov 2015 17:11:34 +0100 (CET)
-Received: from smtpfb2-g21.free.fr ([212.27.42.10]:35140 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Nov 2015 17:23:27 +0100 (CET)
+Received: from smtpfb2-g21.free.fr ([212.27.42.10]:53606 "EHLO
         smtpfb2-g21.free.fr" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27005125AbbKRQLcMhtoG (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 18 Nov 2015 17:11:32 +0100
+        with ESMTP id S27014040AbbKRQXZY8cmv (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 18 Nov 2015 17:23:25 +0100
 Received: from smtp3-g21.free.fr (smtp3-g21.free.fr [212.27.42.3])
-        by smtpfb2-g21.free.fr (Postfix) with ESMTP id 547CADAC9CB;
-        Tue, 17 Nov 2015 20:36:16 +0100 (CET)
+        by smtpfb2-g21.free.fr (Postfix) with ESMTP id 1D011D8BE35;
+        Tue, 17 Nov 2015 21:52:27 +0100 (CET)
 Received: from localhost.localdomain (unknown [80.171.215.189])
         (Authenticated sender: albeu)
-        by smtp3-g21.free.fr (Postfix) with ESMTPA id 70A81A6274;
-        Tue, 17 Nov 2015 20:35:59 +0100 (CET)
+        by smtp3-g21.free.fr (Postfix) with ESMTPA id 4B24CA624F;
+        Tue, 17 Nov 2015 21:52:13 +0100 (CET)
 From:   Alban Bedel <albeu@free.fr>
 To:     linux-mips@linux-mips.org
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Marc Zyngier <marc.zyngier@arm.com>,
-        Alexander Couzens <lynxis@fe80.eu>,
-        Joel Porquet <joel@porquet.org>,
+Cc:     Alban Bedel <albeu@free.fr>, Ralf Baechle <ralf@linux-mips.org>,
+        Qais Yousef <qais.yousef@imgtec.com>,
+        Felix Fietkau <nbd@openwrt.org>,
         Andrew Bresticker <abrestic@chromium.org>,
-        linux-kernel@vger.kernel.org, Alban Bedel <albeu@free.fr>
-Subject: [PATCH 5/6] MIPS: ath79: Allow using ath79_ddr_wb_flush() from drivers
-Date:   Tue, 17 Nov 2015 20:34:55 +0100
-Message-Id: <1447788896-15553-6-git-send-email-albeu@free.fr>
+        linux-kernel@vger.kernel.org
+Subject: [PATCH 1/2] MIPS: ath79: Add a machine entry for booting OF machines
+Date:   Tue, 17 Nov 2015 21:52:00 +0100
+Message-Id: <1447793523-19430-1-git-send-email-albeu@free.fr>
 X-Mailer: git-send-email 2.0.0
-In-Reply-To: <1447788896-15553-1-git-send-email-albeu@free.fr>
-References: <1447788896-15553-1-git-send-email-albeu@free.fr>
 Return-Path: <albeu@free.fr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49970
+X-archive-position: 49971
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,39 +42,27 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Move the declaration of ath79_ddr_wb_flush() to asm/mach-ath79/ath79.h
-to allow using it from drivers. This is needed to move the CPU IRQ
-driver to drivers/irqchip.
+As I'm using a board with a broken old bootloader I hardcoded the
+mips_machtype and did't noticed that the machine entry was still
+missing.
 
 Signed-off-by: Alban Bedel <albeu@free.fr>
 ---
- arch/mips/ath79/common.h                 | 1 -
- arch/mips/include/asm/mach-ath79/ath79.h | 1 +
- 2 files changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/ath79/setup.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/arch/mips/ath79/common.h b/arch/mips/ath79/common.h
-index ca7cc19..870c6b2 100644
---- a/arch/mips/ath79/common.h
-+++ b/arch/mips/ath79/common.h
-@@ -23,7 +23,6 @@ void ath79_clocks_init(void);
- unsigned long ath79_get_sys_clk_rate(const char *id);
- 
- void ath79_ddr_ctrl_init(void);
--void ath79_ddr_wb_flush(unsigned int reg);
- 
- void ath79_gpio_init(void);
- 
-diff --git a/arch/mips/include/asm/mach-ath79/ath79.h b/arch/mips/include/asm/mach-ath79/ath79.h
-index ce493fc..22a2f56 100644
---- a/arch/mips/include/asm/mach-ath79/ath79.h
-+++ b/arch/mips/include/asm/mach-ath79/ath79.h
-@@ -115,6 +115,7 @@ static inline int soc_is_qca955x(void)
- 	return soc_is_qca9556() || soc_is_qca9558();
- }
- 
-+void ath79_ddr_wb_flush(unsigned int reg);
- void ath79_ddr_set_pci_windows(void);
- 
- extern void __iomem *ath79_pll_base;
+diff --git a/arch/mips/ath79/setup.c b/arch/mips/ath79/setup.c
+index 9a00137..8755d61 100644
+--- a/arch/mips/ath79/setup.c
++++ b/arch/mips/ath79/setup.c
+@@ -281,3 +281,8 @@ MIPS_MACHINE(ATH79_MACH_GENERIC,
+ 	     "Generic",
+ 	     "Generic AR71XX/AR724X/AR913X based board",
+ 	     ath79_generic_init);
++
++MIPS_MACHINE(ATH79_MACH_GENERIC_OF,
++	     "DTB",
++	     "Generic AR71XX/AR724X/AR913X based board (DT)",
++	     NULL);
 -- 
 2.0.0

@@ -1,39 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Nov 2015 11:31:33 +0100 (CET)
-Received: from www.linutronix.de ([62.245.132.108]:47347 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27011355AbbKQKbbd8bS- (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 17 Nov 2015 11:31:31 +0100
-Received: from localhost ([127.0.0.1])
-        by Galois.linutronix.de with esmtps (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:256)
-        (Exim 4.80)
-        (envelope-from <tglx@linutronix.de>)
-        id 1ZydXq-0006lF-FL; Tue, 17 Nov 2015 11:31:26 +0100
-Date:   Tue, 17 Nov 2015 11:30:46 +0100 (CET)
-From:   Thomas Gleixner <tglx@linutronix.de>
-To:     Qais Yousef <qais.yousef@imgtec.com>
-cc:     linux-kernel@vger.kernel.org, jason@lakedaemon.net,
-        marc.zyngier@arm.com, jiang.liu@linux.intel.com,
-        ralf@linux-mips.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH 10/14] irqchip/mips-gic: Add a IPI hierarchy domain
-In-Reply-To: <564B0064.1060202@imgtec.com>
-Message-ID: <alpine.DEB.2.11.1511171130290.3761@nanos>
-References: <1446549181-31788-1-git-send-email-qais.yousef@imgtec.com> <1446549181-31788-11-git-send-email-qais.yousef@imgtec.com> <alpine.DEB.2.11.1511071323471.4032@nanos> <5644AC66.2070508@imgtec.com> <alpine.DEB.2.11.1511161817400.3761@nanos>
- <564B0064.1060202@imgtec.com>
-User-Agent: Alpine 2.11 (DEB 23 2013-08-11)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Nov 2015 16:07:55 +0100 (CET)
+Received: from relay1.mentorg.com ([192.94.38.131]:43593 "EHLO
+        relay1.mentorg.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27012553AbbKQPHuMQFpP (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 17 Nov 2015 16:07:50 +0100
+Received: from nat-ies.mentorg.com ([192.94.31.2] helo=SVR-IES-FEM-01.mgc.mentorg.com)
+        by relay1.mentorg.com with esmtp 
+        id 1ZyhrC-0003s6-WC from joseph_myers@mentor.com ; Tue, 17 Nov 2015 07:07:43 -0800
+Received: from digraph.polyomino.org.uk (137.202.0.76) by
+ SVR-IES-FEM-01.mgc.mentorg.com (137.202.0.104) with Microsoft SMTP Server id
+ 14.3.224.2; Tue, 17 Nov 2015 15:07:41 +0000
+Received: from jsm28 (helo=localhost)   by digraph.polyomino.org.uk with
+ local-esmtp (Exim 4.82)        (envelope-from <joseph@codesourcery.com>)       id
+ 1ZyhrA-0004f7-9h; Tue, 17 Nov 2015 15:07:40 +0000
+Date:   Tue, 17 Nov 2015 15:07:40 +0000
+From:   Joseph Myers <joseph@codesourcery.com>
+X-X-Sender: jsm28@digraph.polyomino.org.uk
+To:     "Maciej W. Rozycki" <macro@imgtec.com>
+CC:     <linux-mips@linux-mips.org>, <libc-alpha@sourceware.org>,
+        <binutils@sourceware.org>, <gcc@gcc.gnu.org>,
+        Matthew Fortune <Matthew.Fortune@imgtec.com>,
+        Daniel Sanders <Daniel.Sanders@imgtec.com>,
+        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+Subject: Re: [RFC] MIPS ABI Extension for IEEE Std 754 Non-Compliant
+ Interlinking
+In-Reply-To: <alpine.DEB.2.00.1511140411050.7097@tp.orcam.me.uk>
+Message-ID: <alpine.DEB.2.10.1511171503510.14808@digraph.polyomino.org.uk>
+References: <alpine.DEB.2.00.1511140411050.7097@tp.orcam.me.uk>
+User-Agent: Alpine 2.10 (DEB 1266 2009-07-14)
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
-Return-Path: <tglx@linutronix.de>
+Content-Type: text/plain; charset="US-ASCII"
+Return-Path: <joseph_myers@mentor.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49966
+X-archive-position: 49967
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tglx@linutronix.de
+X-original-sender: joseph@codesourcery.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,18 +50,23 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, 17 Nov 2015, Qais Yousef wrote:
-> On 11/16/2015 05:24 PM, Thomas Gleixner wrote:
-> > 
-> > int ipi_get_hw_irq(int irq)
-> > {
-> > 	struct irq_data *d = irq_get_irq_data(irq);
-> > 	return d ? irqd_to_hwirq(d);
-> > }
-> >   Hmm?
-> > 
-> 
-> We need cpu as an argument too.
+On Sat, 14 Nov 2015, Maciej W. Rozycki wrote:
 
-Indeed.
- 
+>  Any or all of these options may have effects beyond propagating the IEEE
+> Std 754 compliance mode down to the assembler and the linker.  In
+> particular `-mieee=strict' is expected to guarantee code generated to
+> fully comply to IEEE Std 754 rather than only as far as NaN representation
+> is concerned.
+
+"guarantee" seems rather strong given the various known issues with (lack 
+of) Annex F support in GCC.  Do you have any actual configuration in mind 
+it would affect, MIPS-specific or otherwise?  For 
+non-architecture-specific things, -std= options for C standards 
+conformance are meant to enable whatever options are required (e.g. they 
+disable the default -ffp-contract=fast), without affecting things not 
+required by the standards by default (so they don't enable -frounding-math 
+or -fsignaling-nans, for example).
+
+-- 
+Joseph S. Myers
+joseph@codesourcery.com

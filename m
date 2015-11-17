@@ -1,40 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Nov 2015 17:48:54 +0100 (CET)
-Received: from smtpfb2-g21.free.fr ([212.27.42.10]:59898 "EHLO
-        smtpfb2-g21.free.fr" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27006607AbbKRQsw6si4I (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 18 Nov 2015 17:48:52 +0100
-Received: from smtp3-g21.free.fr (smtp3-g21.free.fr [212.27.42.3])
-        by smtpfb2-g21.free.fr (Postfix) with ESMTP id 8ADE1DAC9A9;
-        Tue, 17 Nov 2015 20:35:54 +0100 (CET)
-Received: from localhost.localdomain (unknown [80.171.215.189])
-        (Authenticated sender: albeu)
-        by smtp3-g21.free.fr (Postfix) with ESMTPA id 476CCA623D;
-        Tue, 17 Nov 2015 20:35:37 +0100 (CET)
-From:   Alban Bedel <albeu@free.fr>
-To:     linux-mips@linux-mips.org
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Nov 2015 18:19:52 +0100 (CET)
+Received: from outbound1a.ore.mailhop.org ([54.213.22.21]:53841 "EHLO
+        outbound1a.ore.mailhop.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006617AbbKRRTuqtyjI (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 18 Nov 2015 18:19:50 +0100
+Received: from io (unknown [96.238.82.161])
+        by outbound1.ore.mailhop.org (Halon Mail Gateway) with ESMTPSA;
+        Tue, 17 Nov 2015 20:03:45 +0000 (UTC)
+Received: from io.lakedaemon.net (localhost [127.0.0.1])
+        by io (Postfix) with ESMTP id EBD3B80057;
+        Tue, 17 Nov 2015 20:03:27 +0000 (UTC)
+X-DKIM: OpenDKIM Filter v2.6.8 io EBD3B80057
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lakedaemon.net;
+        s=mail; t=1447790608;
+        bh=gRo41NX0wqRGR7F67keMKtFfz40mjKoymYZSc3M/4Ak=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To;
+        b=RT3bvTvgPxTuoATgwWQhlK8EfzZtf53+5f6qFcvX8TbmCesQTyMcL8QEQtFcY6OG6
+         /z6qS1LAyaKQVg9+5Li18y0ekIQOLfXOEkGbDRHhbkfeUbHMfq5zlS68cJ47Ir3Io9
+         MpIEMVNKEbzABf/v37ujtFwnKfNeUmtkwsSSbLOxYB0VenvxQxG1QUsjFm1OAyKtRc
+         kDcRV/teHo+ko2WppJLpTAI3mf/A0n2Galii5k0PpJPlW/edohrqfBMlpkGe2mTncX
+         4bKr/BKYVSmuxyXDdi09nOxPJAbOAqyYaUy5xtNgD4Lx2s5wsf2d4wr1aNaRWv3E3V
+         MWfgunC1gP0dA==
+Date:   Tue, 17 Nov 2015 20:03:27 +0000
+From:   Jason Cooper <jason@lakedaemon.net>
+To:     Alban Bedel <albeu@free.fr>
+Cc:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>,
         Marc Zyngier <marc.zyngier@arm.com>,
         Alexander Couzens <lynxis@fe80.eu>,
         Joel Porquet <joel@porquet.org>,
         Andrew Bresticker <abrestic@chromium.org>,
-        linux-kernel@vger.kernel.org, Alban Bedel <albeu@free.fr>
-Subject: [PATCH 3/6] MIPS: ath79: irq: Prepare moving the MISC driver to drivers/irqchip
-Date:   Tue, 17 Nov 2015 20:34:53 +0100
-Message-Id: <1447788896-15553-4-git-send-email-albeu@free.fr>
-X-Mailer: git-send-email 2.0.0
-In-Reply-To: <1447788896-15553-1-git-send-email-albeu@free.fr>
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 4/6] MIPS: ath79: irq: Move the MISC driver to
+ drivers/irqchip
+Message-ID: <20151117200327.GA6520@io.lakedaemon.net>
 References: <1447788896-15553-1-git-send-email-albeu@free.fr>
-Return-Path: <albeu@free.fr>
+ <1447788896-15553-5-git-send-email-albeu@free.fr>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1447788896-15553-5-git-send-email-albeu@free.fr>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <jason@lakedaemon.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49974
+X-archive-position: 49975
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: albeu@free.fr
+X-original-sender: jason@lakedaemon.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,155 +61,40 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-To prepare moving out of the arch directory rework the MISC
-implementation to use irq domains instead of hard coded IRQ numbers.
-Also remove the uses of the ath79_reset_base global pointer in the IRQ
-methods.
+Hi Alban,
 
-Signed-off-by: Alban Bedel <albeu@free.fr>
----
- arch/mips/ath79/irq.c | 58 +++++++++++++++++++++++++--------------------------
- 1 file changed, 28 insertions(+), 30 deletions(-)
+On Tue, Nov 17, 2015 at 08:34:54PM +0100, Alban Bedel wrote:
+> The driver stays the same but the initialization changes a bit.
+> For OF boards we now get the memory map from the OF node and use
+> a linear mapping instead of the legacy mapping. For legacy boards
+> we still use a legacy mapping and just pass down all the parameters
+> from the board init code.
+> 
+> Signed-off-by: Alban Bedel <albeu@free.fr>
+> ---
+>  arch/mips/ath79/irq.c                    | 163 +++------------------------
+>  arch/mips/include/asm/mach-ath79/ath79.h |   3 +
+>  drivers/irqchip/Makefile                 |   1 +
+>  drivers/irqchip/irq-ath79-misc.c         | 182 +++++++++++++++++++++++++++++++
+>  4 files changed, 201 insertions(+), 148 deletions(-)
+>  create mode 100644 drivers/irqchip/irq-ath79-misc.c
+...
+> diff --git a/drivers/irqchip/Makefile b/drivers/irqchip/Makefile
+> index 177f78f..a8f9075 100644
+> --- a/drivers/irqchip/Makefile
+> +++ b/drivers/irqchip/Makefile
+> @@ -1,5 +1,6 @@
+>  obj-$(CONFIG_IRQCHIP)			+= irqchip.o
+>  
+> +obj-$(CONFIG_ATH79)			+= irq-ath79-misc.o
+>  obj-$(CONFIG_ARCH_BCM2835)		+= irq-bcm2835.o
+>  obj-$(CONFIG_ARCH_BCM2835)		+= irq-bcm2836.o
+>  obj-$(CONFIG_ARCH_EXYNOS)		+= exynos-combiner.o
 
-diff --git a/arch/mips/ath79/irq.c b/arch/mips/ath79/irq.c
-index 26f8d1b..511c065 100644
---- a/arch/mips/ath79/irq.c
-+++ b/arch/mips/ath79/irq.c
-@@ -26,9 +26,13 @@
- #include "common.h"
- #include "machtypes.h"
- 
-+static void __init ath79_misc_intc_domain_init(
-+	struct device_node *node, int irq);
-+
- static void ath79_misc_irq_handler(struct irq_desc *desc)
- {
--	void __iomem *base = ath79_reset_base;
-+	struct irq_domain *domain = irq_desc_get_handler_data(desc);
-+	void __iomem *base = domain->host_data;
- 	u32 pending;
- 
- 	pending = __raw_readl(base + AR71XX_RESET_REG_MISC_INT_STATUS) &
-@@ -42,15 +46,15 @@ static void ath79_misc_irq_handler(struct irq_desc *desc)
- 	while (pending) {
- 		int bit = __ffs(pending);
- 
--		generic_handle_irq(ATH79_MISC_IRQ(bit));
-+		generic_handle_irq(irq_linear_revmap(domain, bit));
- 		pending &= ~BIT(bit);
- 	}
- }
- 
- static void ar71xx_misc_irq_unmask(struct irq_data *d)
- {
--	unsigned int irq = d->irq - ATH79_MISC_IRQ_BASE;
--	void __iomem *base = ath79_reset_base;
-+	void __iomem *base = irq_data_get_irq_chip_data(d);
-+	unsigned int irq = d->hwirq;
- 	u32 t;
- 
- 	t = __raw_readl(base + AR71XX_RESET_REG_MISC_INT_ENABLE);
-@@ -62,8 +66,8 @@ static void ar71xx_misc_irq_unmask(struct irq_data *d)
- 
- static void ar71xx_misc_irq_mask(struct irq_data *d)
- {
--	unsigned int irq = d->irq - ATH79_MISC_IRQ_BASE;
--	void __iomem *base = ath79_reset_base;
-+	void __iomem *base = irq_data_get_irq_chip_data(d);
-+	unsigned int irq = d->hwirq;
- 	u32 t;
- 
- 	t = __raw_readl(base + AR71XX_RESET_REG_MISC_INT_ENABLE);
-@@ -75,8 +79,8 @@ static void ar71xx_misc_irq_mask(struct irq_data *d)
- 
- static void ar724x_misc_irq_ack(struct irq_data *d)
- {
--	unsigned int irq = d->irq - ATH79_MISC_IRQ_BASE;
--	void __iomem *base = ath79_reset_base;
-+	void __iomem *base = irq_data_get_irq_chip_data(d);
-+	unsigned int irq = d->hwirq;
- 	u32 t;
- 
- 	t = __raw_readl(base + AR71XX_RESET_REG_MISC_INT_STATUS);
-@@ -94,12 +98,6 @@ static struct irq_chip ath79_misc_irq_chip = {
- 
- static void __init ath79_misc_irq_init(void)
- {
--	void __iomem *base = ath79_reset_base;
--	int i;
--
--	__raw_writel(0, base + AR71XX_RESET_REG_MISC_INT_ENABLE);
--	__raw_writel(0, base + AR71XX_RESET_REG_MISC_INT_STATUS);
--
- 	if (soc_is_ar71xx() || soc_is_ar913x())
- 		ath79_misc_irq_chip.irq_mask_ack = ar71xx_misc_irq_mask;
- 	else if (soc_is_ar724x() ||
-@@ -110,13 +108,7 @@ static void __init ath79_misc_irq_init(void)
- 	else
- 		BUG();
- 
--	for (i = ATH79_MISC_IRQ_BASE;
--	     i < ATH79_MISC_IRQ_BASE + ATH79_MISC_IRQ_COUNT; i++) {
--		irq_set_chip_and_handler(i, &ath79_misc_irq_chip,
--					 handle_level_irq);
--	}
--
--	irq_set_chained_handler(ATH79_CPU_IRQ(6), ath79_misc_irq_handler);
-+	ath79_misc_intc_domain_init(NULL, ATH79_CPU_IRQ(6));
- }
- 
- static void ar934x_ip2_irq_dispatch(struct irq_desc *desc)
-@@ -259,6 +251,7 @@ asmlinkage void plat_irq_dispatch(void)
- static int misc_map(struct irq_domain *d, unsigned int irq, irq_hw_number_t hw)
- {
- 	irq_set_chip_and_handler(irq, &ath79_misc_irq_chip, handle_level_irq);
-+	irq_set_chip_data(irq, d->host_data);
- 	return 0;
- }
- 
-@@ -267,19 +260,14 @@ static const struct irq_domain_ops misc_irq_domain_ops = {
- 	.map = misc_map,
- };
- 
--static int __init ath79_misc_intc_of_init(
--	struct device_node *node, struct device_node *parent)
-+static void __init ath79_misc_intc_domain_init(
-+	struct device_node *node, int irq)
- {
- 	void __iomem *base = ath79_reset_base;
- 	struct irq_domain *domain;
--	int irq;
--
--	irq = irq_of_parse_and_map(node, 0);
--	if (!irq)
--		panic("Failed to get MISC IRQ");
- 
- 	domain = irq_domain_add_legacy(node, ATH79_MISC_IRQ_COUNT,
--			ATH79_MISC_IRQ_BASE, 0, &misc_irq_domain_ops, NULL);
-+			ATH79_MISC_IRQ_BASE, 0, &misc_irq_domain_ops, base);
- 	if (!domain)
- 		panic("Failed to add MISC irqdomain");
- 
-@@ -287,9 +275,19 @@ static int __init ath79_misc_intc_of_init(
- 	__raw_writel(0, base + AR71XX_RESET_REG_MISC_INT_ENABLE);
- 	__raw_writel(0, base + AR71XX_RESET_REG_MISC_INT_STATUS);
- 
-+	irq_set_chained_handler_and_data(irq, ath79_misc_irq_handler, domain);
-+}
- 
--	irq_set_chained_handler(irq, ath79_misc_irq_handler);
-+static int __init ath79_misc_intc_of_init(
-+	struct device_node *node, struct device_node *parent)
-+{
-+	int irq;
- 
-+	irq = irq_of_parse_and_map(node, 0);
-+	if (!irq)
-+		panic("Failed to get MISC IRQ");
-+
-+	ath79_misc_intc_domain_init(node, irq);
- 	return 0;
- }
- 
--- 
-2.0.0
+CONFIG_ARCH_ATH79 ?
+
+Same for the last patch in the series (cpu driver).
+
+thx,
+
+Jason.

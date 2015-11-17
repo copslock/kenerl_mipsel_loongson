@@ -1,69 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Nov 2015 19:10:28 +0100 (CET)
-Received: from mail-lf0-f44.google.com ([209.85.215.44]:35887 "EHLO
-        mail-lf0-f44.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008543AbbKRSK0SFZrA (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 18 Nov 2015 19:10:26 +0100
-Received: by lfs39 with SMTP id 39so32062286lfs.3
-        for <linux-mips@linux-mips.org>; Wed, 18 Nov 2015 10:10:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cogentembedded-com.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:references:cc:from:organization:message-id:date
-         :user-agent:mime-version:in-reply-to:content-type
-         :content-transfer-encoding;
-        bh=0R4fNusVWqsPHmTX3Te7Ba3kbgA6PUXOJfxXlPEb/S8=;
-        b=FYVlXetHou8Tt+jXB76CH01q5d9N+S21VsnlyiE7Y1lEgKZeTJBwlPEXodcOU9aTuc
-         Hhn+wLxy+xdv+6LOdGM8KBr96Nxwr6WJMxhTIFMQurXYHy4b4Z4vowJfnpxT1UkpstpW
-         NJDOGcCADWmeQz2aDHWSBFLuKaKULQ4bsEr4L52SpqsEqwf4Hs4Hh21cXKAIZ0erCBzm
-         lkLrrPbAJnqBOyEdQkInnw3HNdFcwXGYFq8bfay1jNef+g06ZbZ5IRSwonLgUf1yGoRs
-         enToQJRmMIsemF15x3z8VMGw6BJ6OR6tpYG0Z3a9i0DMde4+hAhhtKtp4Q3sP57cgvPE
-         mTew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:subject:to:references:cc:from:organization
-         :message-id:date:user-agent:mime-version:in-reply-to:content-type
-         :content-transfer-encoding;
-        bh=0R4fNusVWqsPHmTX3Te7Ba3kbgA6PUXOJfxXlPEb/S8=;
-        b=gGKvUcftzTXejfElWmmVYwyayFU/bMRV8Vh5HmlVUFfZUuZ8sSOVqBXj81wNLUdsXl
-         AXwIPeo7hfJ6fg28pX7aYUfn7GG4nsQ8KGNcnNbMtiWLsP61GGrYP1IvSMu6sP9vyTW6
-         tyj6+09gRn/uJfbEZ3PqsDQDKPvAN9SEAHMiW5xNMKPsNO8hCwnInkE4Qp54p0ahsGLT
-         pgfDvwwM4hv8l/DvpIACXewHhoa2Arh0tZQb9GkohV8lHrdTXJZ27A9Cl6hN7/0pOU8E
-         chRlHpmAnlnSZ28RpxYMHz1tpWv8LNHrxujysXbQi2sW8ohSEWxbDNyrZZfzeP8FLW2W
-         cCZw==
-X-Gm-Message-State: ALoCoQmUX9E53aTWr9s93UItSddizqyBghQ7PNrXpB5mBOihOx+bW7sg6cS3N8VioJ/IvnEdJQIf
-X-Received: by 10.25.16.158 with SMTP id 30mr1150096lfq.65.1447870220714;
-        Wed, 18 Nov 2015 10:10:20 -0800 (PST)
-Received: from wasted.cogentembedded.com ([31.173.84.30])
-        by smtp.gmail.com with ESMTPSA id l67sm592823lfd.43.2015.11.18.10.10.18
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 18 Nov 2015 10:10:19 -0800 (PST)
-Subject: Re: [PATCH 1/2] MIPS: ath79: Add a machine entry for booting OF
- machines
-To:     Alban Bedel <albeu@free.fr>, linux-mips@linux-mips.org
-References: <1447793523-19430-1-git-send-email-albeu@free.fr>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Nov 2015 19:22:02 +0100 (CET)
+Received: from smtpfb2-g21.free.fr ([212.27.42.10]:42896 "EHLO
+        smtpfb2-g21.free.fr" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27008884AbbKRSWAjH-YA (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 18 Nov 2015 19:22:00 +0100
+Received: from smtp3-g21.free.fr (smtp3-g21.free.fr [212.27.42.3])
+        by smtpfb2-g21.free.fr (Postfix) with ESMTP id 7CE28DAC954;
+        Tue, 17 Nov 2015 20:35:32 +0100 (CET)
+Received: from localhost.localdomain (unknown [80.171.215.189])
+        (Authenticated sender: albeu)
+        by smtp3-g21.free.fr (Postfix) with ESMTPA id DBEFAA626A;
+        Tue, 17 Nov 2015 20:35:14 +0100 (CET)
+From:   Alban Bedel <albeu@free.fr>
+To:     linux-mips@linux-mips.org
 Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Qais Yousef <qais.yousef@imgtec.com>,
-        Felix Fietkau <nbd@openwrt.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Marc Zyngier <marc.zyngier@arm.com>,
+        Alexander Couzens <lynxis@fe80.eu>,
+        Joel Porquet <joel@porquet.org>,
         Andrew Bresticker <abrestic@chromium.org>,
-        linux-kernel@vger.kernel.org
-From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Organization: Cogent Embedded
-Message-ID: <564CBF0A.8030205@cogentembedded.com>
-Date:   Wed, 18 Nov 2015 21:10:18 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.3.0
-MIME-Version: 1.0
-In-Reply-To: <1447793523-19430-1-git-send-email-albeu@free.fr>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sergei.shtylyov@cogentembedded.com>
+        linux-kernel@vger.kernel.org, Alban Bedel <albeu@free.fr>
+Subject: [PATCH 1/6] MIPS: ath79: Fix the size of the MISC INTC registers in ar9132.dtsi
+Date:   Tue, 17 Nov 2015 20:34:51 +0100
+Message-Id: <1447788896-15553-2-git-send-email-albeu@free.fr>
+X-Mailer: git-send-email 2.0.0
+In-Reply-To: <1447788896-15553-1-git-send-email-albeu@free.fr>
+References: <1447788896-15553-1-git-send-email-albeu@free.fr>
+Return-Path: <albeu@free.fr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49981
+X-archive-position: 49982
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sergei.shtylyov@cogentembedded.com
+X-original-sender: albeu@free.fr
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -76,19 +47,25 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hello.
+There is 2 registers that is 8 bytes long, not 4.
 
-On 11/17/2015 11:52 PM, Alban Bedel wrote:
+Signed-off-by: Alban Bedel <albeu@free.fr>
+---
+ arch/mips/boot/dts/qca/ar9132.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> As I'm using a board with a broken old bootloader I hardcoded the
-> mips_machtype and did't noticed that the machine entry was still
-
-    Didn't notice.
-
-> missing.
->
-> Signed-off-by: Alban Bedel <albeu@free.fr>
-
-[...]
-
-MBR, Sergei
+diff --git a/arch/mips/boot/dts/qca/ar9132.dtsi b/arch/mips/boot/dts/qca/ar9132.dtsi
+index 857ca48..3ad4ba9 100644
+--- a/arch/mips/boot/dts/qca/ar9132.dtsi
++++ b/arch/mips/boot/dts/qca/ar9132.dtsi
+@@ -107,7 +107,7 @@
+ 			miscintc: interrupt-controller@18060010 {
+ 				compatible = "qca,ar9132-misc-intc",
+ 					   "qca,ar7100-misc-intc";
+-				reg = <0x18060010 0x4>;
++				reg = <0x18060010 0x8>;
+ 
+ 				interrupt-parent = <&cpuintc>;
+ 				interrupts = <6>;
+-- 
+2.0.0

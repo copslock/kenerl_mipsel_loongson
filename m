@@ -1,43 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Nov 2015 19:41:19 +0100 (CET)
-Received: from www.linutronix.de ([62.245.132.108]:34214 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27006617AbbKRSlRtp0t- (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 18 Nov 2015 19:41:17 +0100
-Received: from localhost ([127.0.0.1])
-        by Galois.linutronix.de with esmtps (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:256)
-        (Exim 4.80)
-        (envelope-from <tglx@linutronix.de>)
-        id 1ZymXH-0005DK-Va; Tue, 17 Nov 2015 21:07:28 +0100
-Date:   Tue, 17 Nov 2015 21:06:47 +0100 (CET)
-From:   Thomas Gleixner <tglx@linutronix.de>
-To:     Jason Cooper <jason@lakedaemon.net>
-cc:     Alban Bedel <albeu@free.fr>, linux-mips@linux-mips.org,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Marc Zyngier <marc.zyngier@arm.com>,
-        Alexander Couzens <lynxis@fe80.eu>,
-        Joel Porquet <joel@porquet.org>,
-        Andrew Bresticker <abrestic@chromium.org>,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 4/6] MIPS: ath79: irq: Move the MISC driver to
- drivers/irqchip
-In-Reply-To: <20151117200327.GA6520@io.lakedaemon.net>
-Message-ID: <alpine.DEB.2.11.1511172106120.3761@nanos>
-References: <1447788896-15553-1-git-send-email-albeu@free.fr> <1447788896-15553-5-git-send-email-albeu@free.fr> <20151117200327.GA6520@io.lakedaemon.net>
-User-Agent: Alpine 2.11 (DEB 23 2013-08-11)
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
-Return-Path: <tglx@linutronix.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Nov 2015 03:35:24 +0100 (CET)
+Received: from mail-pa0-f50.google.com ([209.85.220.50]:35389 "EHLO
+        mail-pa0-f50.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011975AbbKSCfXIkwhC (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 19 Nov 2015 03:35:23 +0100
+Received: by pacej9 with SMTP id ej9so64366717pac.2;
+        Wed, 18 Nov 2015 18:35:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id;
+        bh=yodLIgxGclGd6o1XfiQJQqtKZkkBoWfxXsEW1JsAE34=;
+        b=RlFoD1xcSFaBcYlnjbkVhNgwEfl6GCly3P9FqVELruUBdlCxaanMvELzZOj7dpe16R
+         0CAWP7t9iyl4d7MPGLhPec7YEAo2c3SQvEws3zQzVUzH8uKQ1khitrPSVyFVPBCLt/dx
+         k4C5JIbokbUAYUn3oFoe/DhdjyeOhXI0RZhaldg8/hvomJKzdfFQTKfVGiZku71hRq/q
+         bOAxuVcC4LCh5jqHI2VccBMEVMoyUojxHPeI9eqY/FN6irQHrA3OAJn25ta8Qvxgfxv6
+         hbPVdQJMLv/+DmYnYouUmwkx0O9+0xksb6huGc5RKvLUZzUVQWwFjvDs4uy311nPaflG
+         Es3Q==
+X-Received: by 10.68.201.73 with SMTP id jy9mr7076417pbc.102.1447900517039;
+        Wed, 18 Nov 2015 18:35:17 -0800 (PST)
+Received: from praha.local.private ([211.255.134.165])
+        by smtp.gmail.com with ESMTPSA id ns1sm6719515pbc.67.2015.11.18.18.35.14
+        (version=TLS1 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Wed, 18 Nov 2015 18:35:16 -0800 (PST)
+From:   Jaedon Shin <jaedon.shin@gmail.com>
+To:     Ralf Baechle <ralf@linux-mips.org>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Linux-MIPS <linux-mips@linux-mips.org>
+Cc:     Kevin Cernekee <cernekee@gmail.com>,
+        Dragan Stancevic <dragan.stancevic@gmail.com>,
+        Jaedon Shin <jaedon.shin@gmail.com>
+Subject: [PATCH 0/7] cleanup and add device tree for BCM7xxx platforms
+Date:   Thu, 19 Nov 2015 11:34:46 +0900
+Message-Id: <1447900493-1167-1-git-send-email-jaedon.shin@gmail.com>
+X-Mailer: git-send-email 2.6.3
+Return-Path: <jaedon.shin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 49983
+X-archive-position: 49984
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tglx@linutronix.de
+X-original-sender: jaedon.shin@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,39 +53,34 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, 17 Nov 2015, Jason Cooper wrote:
-> Hi Alban,
-> 
-> On Tue, Nov 17, 2015 at 08:34:54PM +0100, Alban Bedel wrote:
-> > The driver stays the same but the initialization changes a bit.
-> > For OF boards we now get the memory map from the OF node and use
-> > a linear mapping instead of the legacy mapping. For legacy boards
-> > we still use a legacy mapping and just pass down all the parameters
-> > from the board init code.
-> > 
-> > Signed-off-by: Alban Bedel <albeu@free.fr>
-> > ---
-> >  arch/mips/ath79/irq.c                    | 163 +++------------------------
-> >  arch/mips/include/asm/mach-ath79/ath79.h |   3 +
-> >  drivers/irqchip/Makefile                 |   1 +
-> >  drivers/irqchip/irq-ath79-misc.c         | 182 +++++++++++++++++++++++++++++++
-> >  4 files changed, 201 insertions(+), 148 deletions(-)
-> >  create mode 100644 drivers/irqchip/irq-ath79-misc.c
-> ...
-> > diff --git a/drivers/irqchip/Makefile b/drivers/irqchip/Makefile
-> > index 177f78f..a8f9075 100644
-> > --- a/drivers/irqchip/Makefile
-> > +++ b/drivers/irqchip/Makefile
-> > @@ -1,5 +1,6 @@
-> >  obj-$(CONFIG_IRQCHIP)			+= irqchip.o
-> >  
-> > +obj-$(CONFIG_ATH79)			+= irq-ath79-misc.o
-> >  obj-$(CONFIG_ARCH_BCM2835)		+= irq-bcm2835.o
-> >  obj-$(CONFIG_ARCH_BCM2835)		+= irq-bcm2836.o
-> >  obj-$(CONFIG_ARCH_EXYNOS)		+= exynos-combiner.o
-> 
-> CONFIG_ARCH_ATH79 ?
+Hi all,
 
-Nope.
+This patch series is including device tree entries that clean up existing
+entries and adds missing entries for BCM7xxx platforms.
 
-arch/mips/Kconfig:config ATH79
+Jaedon Shin (7):
+  MIPS: BMIPS: remove unused aliases in device tree
+  MIPS: BMIPS: remove wrong sata properties
+  MIPS: BMIPS: fix phy name in device tree
+  MIPS: BMIPS: fix interrupt number in bcm7425.dtsi
+  MIPS: BMIPS: add device tree entry for BCM7xxx UART
+  MIPS: BMIPS: add device tree entry for BCM7xxx I2C
+  MIPS: BMIPS: add device tree entry for BCM7xxx SATA
+
+ arch/mips/boot/dts/brcm/bcm7125.dtsi     |  69 +++++++++++++++-
+ arch/mips/boot/dts/brcm/bcm7346.dtsi     |   6 +-
+ arch/mips/boot/dts/brcm/bcm7358.dtsi     |   2 -
+ arch/mips/boot/dts/brcm/bcm7360.dtsi     |  42 +++++++++-
+ arch/mips/boot/dts/brcm/bcm7362.dtsi     |   6 +-
+ arch/mips/boot/dts/brcm/bcm7420.dtsi     |  77 +++++++++++++++++-
+ arch/mips/boot/dts/brcm/bcm7425.dtsi     | 100 +++++++++++++++++++++--
+ arch/mips/boot/dts/brcm/bcm7435.dtsi     | 134 ++++++++++++++++++++++++++++++-
+ arch/mips/boot/dts/brcm/bcm97125cbmb.dts |  24 ++++++
+ arch/mips/boot/dts/brcm/bcm97360svmb.dts |   8 ++
+ arch/mips/boot/dts/brcm/bcm97420c.dts    |  28 +++++++
+ arch/mips/boot/dts/brcm/bcm97425svmb.dts |  28 +++++++
+ arch/mips/boot/dts/brcm/bcm97435svmb.dts |  36 +++++++++
+ 13 files changed, 534 insertions(+), 26 deletions(-)
+
+--
+2.6.3

@@ -1,40 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Nov 2015 19:15:42 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:56214 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27012082AbbKTSPkWJ7eZ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 20 Nov 2015 19:15:40 +0100
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Websense Email Security Gateway with ESMTPS id 9CB2CE116B8FA;
-        Fri, 20 Nov 2015 18:15:31 +0000 (GMT)
-Received: from [10.100.200.53] (10.100.200.53) by hhmail02.hh.imgtec.org
- (10.100.10.20) with Microsoft SMTP Server id 14.3.235.1; Fri, 20 Nov 2015
- 18:15:33 +0000
-Date:   Fri, 20 Nov 2015 18:15:32 +0000
-From:   "Maciej W. Rozycki" <macro@imgtec.com>
-To:     Matthew Fortune <Matthew.Fortune@imgtec.com>
-CC:     Alex Smith <alex@alex-smith.me.uk>,
-        Markos Chandras <Markos.Chandras@imgtec.com>,
-        linux-mips <linux-mips@linux-mips.org>,
-        Alex Smith <Alex.Smith@imgtec.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH 1/3] MIPS: Initial implementation of a VDSO
-In-Reply-To: <6D39441BF12EF246A7ABCE6654B023532128FCAD@LEMAIL01.le.imgtec.org>
-Message-ID: <alpine.DEB.2.00.1511201810080.6915@tp.orcam.me.uk>
-References: <1443434629-14325-1-git-send-email-markos.chandras@imgtec.com>        <1443435011-17061-1-git-send-email-markos.chandras@imgtec.com> <CAOFt0_ANW6uHVU4+bTP8=oXJ8OjsEiuFPkz3GCcTZFLHs5xo4A@mail.gmail.com>
- <6D39441BF12EF246A7ABCE6654B023532128FCAD@LEMAIL01.le.imgtec.org>
-User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Nov 2015 19:25:54 +0100 (CET)
+Received: from relay1.mentorg.com ([192.94.38.131]:34795 "EHLO
+        relay1.mentorg.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27006799AbbKTSZw4zfhA (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 20 Nov 2015 19:25:52 +0100
+Received: from nat-ies.mentorg.com ([192.94.31.2] helo=SVR-IES-FEM-01.mgc.mentorg.com)
+        by relay1.mentorg.com with esmtp 
+        id 1ZzqNV-0005tM-A1 from joseph_myers@mentor.com ; Fri, 20 Nov 2015 10:25:45 -0800
+Received: from digraph.polyomino.org.uk (137.202.0.76) by
+ SVR-IES-FEM-01.mgc.mentorg.com (137.202.0.104) with Microsoft SMTP Server id
+ 14.3.224.2; Fri, 20 Nov 2015 18:25:44 +0000
+Received: from jsm28 (helo=localhost)   by digraph.polyomino.org.uk with
+ local-esmtp (Exim 4.82)        (envelope-from <joseph@codesourcery.com>)       id
+ 1ZzqNS-0002xC-GQ; Fri, 20 Nov 2015 18:25:42 +0000
+Date:   Fri, 20 Nov 2015 18:25:42 +0000
+From:   Joseph Myers <joseph@codesourcery.com>
+X-X-Sender: jsm28@digraph.polyomino.org.uk
+To:     "Maciej W. Rozycki" <macro@imgtec.com>
+CC:     <linux-mips@linux-mips.org>, <libc-alpha@sourceware.org>,
+        <binutils@sourceware.org>, <gcc@gcc.gnu.org>,
+        Matthew Fortune <Matthew.Fortune@imgtec.com>,
+        Daniel Sanders <Daniel.Sanders@imgtec.com>,
+        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+Subject: Re: [RFC] MIPS ABI Extension for IEEE Std 754 Non-Compliant
+ Interlinking
+In-Reply-To: <alpine.DEB.2.00.1511201535580.6915@tp.orcam.me.uk>
+Message-ID: <alpine.DEB.2.10.1511201815230.9012@digraph.polyomino.org.uk>
+References: <alpine.DEB.2.00.1511140411050.7097@tp.orcam.me.uk> <alpine.DEB.2.10.1511171503510.14808@digraph.polyomino.org.uk> <alpine.DEB.2.00.1511201535580.6915@tp.orcam.me.uk>
+User-Agent: Alpine 2.10 (DEB 1266 2009-07-14)
 MIME-Version: 1.0
 Content-Type: text/plain; charset="US-ASCII"
-X-Originating-IP: [10.100.200.53]
-Return-Path: <Maciej.Rozycki@imgtec.com>
+Return-Path: <joseph_myers@mentor.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50004
+X-archive-position: 50005
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@imgtec.com
+X-original-sender: joseph@codesourcery.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,43 +50,42 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, 28 Sep 2015, Matthew Fortune wrote:
+On Fri, 20 Nov 2015, Maciej W. Rozycki wrote:
 
-> > > +       /* lapc <symbol> is an alias to addiupc reg, <symbol> - .
-> > > +        *
-> > > +        * We can't use addiupc because there is no label-label
-> > > +        * support for the addiupc reloc
-> > > +        */
-> > > +       __asm__("lapc   %0, _start                      \n"
-> > > +               : "=r" (addr) : :);
-> > 
-> > Just curious - if lapc is just an alias to addiupc, why does that work
-> > but not addiupc? IIRC I did try addiupc previously but removed it
-> > because it wasn't working, didn't know about lapc!
-> 
-> This is just an unfortunate quirk of how the implementation is done in
-> binutils. We don't recognise the special case that:
-> 
-> addiupc <reg>, <sym> - .
-> 
-> is the same as
-> 
-> lapc <reg>, <sym>
-> 
-> And therefore don't know that we can just use the MIPS_PC19_S2 reloc
-> (name of that reloc may not be perfectly correct). It is a special
-> case as the RHS of the expression in ADDIUPC above can be theoretically
-> anything so we only support assembly time constants with addiupc.
-> 
-> Apart from the need to document the LAPC alias somewhere I'm not sure
-> we need do anything to improve addiupc itself particularly.
+>  The target audience for the `-mieee=strict' option is in my idea a 
+> non-technical user, say a physicist, who does not necessarily know or is 
+> fluent with the guts of computer hardware and who has the need to build 
+> and reliably run their software which uses IEEE Std 754 arithmetic.  
+> Rather than giving such a user necessarily lengthy explanations as to the 
+> complexity of the situation I'd prefer to give them this single option to 
+> guarantee (modulo bugs, as noted above) that a piece of software built 
+> with this option will either produce correct (as in "standard-compliant") 
+> results or refuse to run.
 
- For the record -- this corresponds to how the LA macro and the 
-PC-relative ADDIU instruction are handled when assembling MIPS16 code.
+This does not make any sense.  The correspondence between IEEE 754 
+operations and source code in C or other languages is extremely 
+complicated.  If the user thinks of C as some form of portable assembler 
+for IEEE 754 operations, that is not something effectively supportable.
 
- And the place to document such peculiarities is obviously an assembly 
-language manual.  A few have been written for the MIPS architecture 
-already and with recent updates to the instruction set perhaps it is time 
-for a revised edition or yet another book.
+Can we assume that if the user depends on rounding modes, they will use 
+the FENV_ACCESS pragma (not implemented, of course) or -frounding-math?  
+Can we assume that their dependence on the absence of contraction of 
+expressions is in accordance with ISO C rules (again, FP_CONTRACT isn't 
+implemented but -ffp-contract=off is)?  Can we assume that they don't 
+depend on signaling NaNs?  Can we assume they don't depend on trap 
+handlers that count the number of times a given exception occurs, since 
+that is explicitly unsupported by ISO C?
 
-  Maciej
+An option like that has to be defined in terms of existing C bindings for 
+IEEE 754, not in terms of supporting users who don't know what they are 
+doing and are unfamiliar with how C source code constructs are mapped to 
+IEEE 754 operations and what features the C standard allows non-default 
+pragmas or options to be required for.
+
+>  Does this answer address your concerns?
+
+No, the option concept as described seems too irremediably vague.
+
+-- 
+Joseph S. Myers
+joseph@codesourcery.com

@@ -1,43 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Nov 2015 19:25:54 +0100 (CET)
-Received: from relay1.mentorg.com ([192.94.38.131]:34795 "EHLO
-        relay1.mentorg.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27006799AbbKTSZw4zfhA (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 20 Nov 2015 19:25:52 +0100
-Received: from nat-ies.mentorg.com ([192.94.31.2] helo=SVR-IES-FEM-01.mgc.mentorg.com)
-        by relay1.mentorg.com with esmtp 
-        id 1ZzqNV-0005tM-A1 from joseph_myers@mentor.com ; Fri, 20 Nov 2015 10:25:45 -0800
-Received: from digraph.polyomino.org.uk (137.202.0.76) by
- SVR-IES-FEM-01.mgc.mentorg.com (137.202.0.104) with Microsoft SMTP Server id
- 14.3.224.2; Fri, 20 Nov 2015 18:25:44 +0000
-Received: from jsm28 (helo=localhost)   by digraph.polyomino.org.uk with
- local-esmtp (Exim 4.82)        (envelope-from <joseph@codesourcery.com>)       id
- 1ZzqNS-0002xC-GQ; Fri, 20 Nov 2015 18:25:42 +0000
-Date:   Fri, 20 Nov 2015 18:25:42 +0000
-From:   Joseph Myers <joseph@codesourcery.com>
-X-X-Sender: jsm28@digraph.polyomino.org.uk
-To:     "Maciej W. Rozycki" <macro@imgtec.com>
-CC:     <linux-mips@linux-mips.org>, <libc-alpha@sourceware.org>,
-        <binutils@sourceware.org>, <gcc@gcc.gnu.org>,
-        Matthew Fortune <Matthew.Fortune@imgtec.com>,
-        Daniel Sanders <Daniel.Sanders@imgtec.com>,
-        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-Subject: Re: [RFC] MIPS ABI Extension for IEEE Std 754 Non-Compliant
- Interlinking
-In-Reply-To: <alpine.DEB.2.00.1511201535580.6915@tp.orcam.me.uk>
-Message-ID: <alpine.DEB.2.10.1511201815230.9012@digraph.polyomino.org.uk>
-References: <alpine.DEB.2.00.1511140411050.7097@tp.orcam.me.uk> <alpine.DEB.2.10.1511171503510.14808@digraph.polyomino.org.uk> <alpine.DEB.2.00.1511201535580.6915@tp.orcam.me.uk>
-User-Agent: Alpine 2.10 (DEB 1266 2009-07-14)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Nov 2015 21:40:10 +0100 (CET)
+Received: from www.linutronix.de ([62.245.132.108]:54430 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27012873AbbKTUkJSTWuB (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 20 Nov 2015 21:40:09 +0100
+Received: from localhost ([127.0.0.1])
+        by Galois.linutronix.de with esmtps (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:256)
+        (Exim 4.80)
+        (envelope-from <tglx@linutronix.de>)
+        id 1ZzsTS-000550-N9; Fri, 20 Nov 2015 21:40:02 +0100
+Date:   Fri, 20 Nov 2015 21:39:21 +0100 (CET)
+From:   Thomas Gleixner <tglx@linutronix.de>
+To:     Qais Yousef <qais.yousef@imgtec.com>
+cc:     linux-kernel@vger.kernel.org, jason@lakedaemon.net,
+        marc.zyngier@arm.com, jiang.liu@linux.intel.com,
+        ralf@linux-mips.org, linux-mips@linux-mips.org
+Subject: Re: [PATCH 10/14] irqchip/mips-gic: Add a IPI hierarchy domaind
+In-Reply-To: <564EFA74.90606@imgtec.com>
+Message-ID: <alpine.DEB.2.11.1511202113010.3931@nanos>
+References: <1446549181-31788-1-git-send-email-qais.yousef@imgtec.com> <1446549181-31788-11-git-send-email-qais.yousef@imgtec.com> <alpine.DEB.2.11.1511071323471.4032@nanos> <56407F3C.4060404@imgtec.com> <alpine.DEB.2.11.1511161610070.3761@nanos>
+ <564EFA74.90606@imgtec.com>
+User-Agent: Alpine 2.11 (DEB 23 2013-08-11)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Return-Path: <joseph_myers@mentor.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Linutronix-Spam-Score: -1.0
+X-Linutronix-Spam-Level: -
+X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+Return-Path: <tglx@linutronix.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50005
+X-archive-position: 50006
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: joseph@codesourcery.com
+X-original-sender: tglx@linutronix.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,42 +46,56 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, 20 Nov 2015, Maciej W. Rozycki wrote:
+Qais,
 
->  The target audience for the `-mieee=strict' option is in my idea a 
-> non-technical user, say a physicist, who does not necessarily know or is 
-> fluent with the guts of computer hardware and who has the need to build 
-> and reliably run their software which uses IEEE Std 754 arithmetic.  
-> Rather than giving such a user necessarily lengthy explanations as to the 
-> complexity of the situation I'd prefer to give them this single option to 
-> guarantee (modulo bugs, as noted above) that a piece of software built 
-> with this option will either produce correct (as in "standard-compliant") 
-> results or refuse to run.
+On Fri, 20 Nov 2015, Qais Yousef wrote:
+> On 11/16/2015 05:17 PM, Thomas Gleixner wrote:
+> > 1) IPI as per_cpu interrupts
+> > 
+> >     Single hwirq represented by a single irq descriptor
+> > 
+> > 2) IPI with consecutive mapping space
+> > 
+> >     No extra mapping from virq base to target cpu required as its just
+> >     linear. Everything can be handled via the base virq.
+> > 
+> 
+> 
+> I think I am seeing a major issue with this approach.
+> 
+> Take the case where we reserve an IPI with ipi_mask that has cpu 5 and 6 set
+> only. When allocating a per_cpu or consectuve mapping, we will require 2
+> consecutive virqs and hwirqs. But since the cpu location is not starting from
+> 0, we can't use the cpu as an offset anymore.
+> 
+> So when a user wants to send an IPI to cpu 6 only, the code can't easily tell
+> what's the correct offset from base virq or hwirq to use.
 
-This does not make any sense.  The correspondence between IEEE 754 
-operations and source code in C or other languages is extremely 
-complicated.  If the user thinks of C as some form of portable assembler 
-for IEEE 754 operations, that is not something effectively supportable.
+Well, you can store the start offset easily and subtract it. It's 0
+for most of the cases.
 
-Can we assume that if the user depends on rounding modes, they will use 
-the FENV_ACCESS pragma (not implemented, of course) or -frounding-math?  
-Can we assume that their dependence on the absence of contraction of 
-expressions is in accordance with ISO C rules (again, FP_CONTRACT isn't 
-implemented but -ffp-contract=off is)?  Can we assume that they don't 
-depend on signaling NaNs?  Can we assume they don't depend on trap 
-handlers that count the number of times a given exception occurs, since 
-that is explicitly unsupported by ISO C?
+> Same applies when doing the reverse mapping.
+> 
+> In other words, the ipi_mask won't always necessarily be linear to facilitate
+> the 1:1 mapping that this approach assumes.
+> 
+> It is a solvable problem, but I think we're losing the elegance that promoted
+> going into this direction and I think sticking to using struct ipi_mapping
+> (with some enhancements to how it's exposed an integrated by/into generic
+> code) is a better approach.
 
-An option like that has to be defined in terms of existing C bindings for 
-IEEE 754, not in terms of supporting users who don't know what they are 
-doing and are unfamiliar with how C source code constructs are mapped to 
-IEEE 754 operations and what features the C standard allows non-default 
-pragmas or options to be required for.
+The only reason to use the ipi_mapping thing is if we need non
+consecutive masks, i.e. cpu 5 and 9.
 
->  Does this answer address your concerns?
+I really don't want to have it mandatory as it does not make any sense
+for systems where the IPI is a single per_cpu interrupt. For the
+linear consecutive space it is just adding memory and cache footprint
+for no benefit. Think about machines with 4k and more cpus ....
 
-No, the option concept as described seems too irremediably vague.
+If you make ipi_mapping in a way that it can express the per_cpu,
+linear and scattered mappings, then we should be fine. The extra
+conditional you need in send_ipi() is not a problem.
 
--- 
-Joseph S. Myers
-joseph@codesourcery.com
+Thanks,
+
+	tglx

@@ -1,40 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Nov 2015 18:17:03 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:41221 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27012082AbbKTRRCSAb7k (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 20 Nov 2015 18:17:02 +0100
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Websense Email Security Gateway with ESMTPS id 78EB8FEE45A27;
-        Fri, 20 Nov 2015 17:16:53 +0000 (GMT)
-Received: from [10.100.200.53] (10.100.200.53) by hhmail02.hh.imgtec.org
- (10.100.10.20) with Microsoft SMTP Server id 14.3.235.1; Fri, 20 Nov 2015
- 17:16:55 +0000
-Date:   Fri, 20 Nov 2015 17:16:54 +0000
-From:   "Maciej W. Rozycki" <macro@imgtec.com>
-To:     Joseph Myers <joseph@codesourcery.com>
-CC:     <linux-mips@linux-mips.org>, <libc-alpha@sourceware.org>,
-        <binutils@sourceware.org>, <gcc@gcc.gnu.org>,
-        Matthew Fortune <Matthew.Fortune@imgtec.com>,
-        Daniel Sanders <Daniel.Sanders@imgtec.com>,
-        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-Subject: Re: [RFC] MIPS ABI Extension for IEEE Std 754 Non-Compliant
- Interlinking
-In-Reply-To: <alpine.DEB.2.10.1511171503510.14808@digraph.polyomino.org.uk>
-Message-ID: <alpine.DEB.2.00.1511201535580.6915@tp.orcam.me.uk>
-References: <alpine.DEB.2.00.1511140411050.7097@tp.orcam.me.uk> <alpine.DEB.2.10.1511171503510.14808@digraph.polyomino.org.uk>
-User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Nov 2015 18:33:21 +0100 (CET)
+Received: from emh01.mail.saunalahti.fi ([62.142.5.107]:58002 "EHLO
+        emh01.mail.saunalahti.fi" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012082AbbKTRdTeMb8Z (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 20 Nov 2015 18:33:19 +0100
+Received: from blackmetal.musicnaut.iki.fi (85-76-66-151-nat.elisa-mobile.fi [85.76.66.151])
+        by emh01.mail.saunalahti.fi (Postfix) with ESMTP id CD2689001E;
+        Fri, 20 Nov 2015 19:33:17 +0200 (EET)
+Date:   Fri, 20 Nov 2015 19:32:33 +0200
+From:   Aaro Koskinen <aaro.koskinen@iki.fi>
+To:     Aleksey Makarov <aleksey.makarov@auriga.com>
+Cc:     linux-mmc@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org, David Daney <david.daney@cavium.com>,
+        Chandrakala Chavva <cchavva@caviumnetworks.com>,
+        Leonid Rosenboim <lrosenboim@caviumnetworks.com>,
+        Peter Swain <pswain@cavium.com>,
+        Aaron Williams <aaron.williams@cavium.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Pawel Moll <pawel.moll@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ian Campbell <ijc+devicetree@hellion.org.uk>,
+        Kumar Gala <galak@codeaurora.org>,
+        Chris Ball <chris@printf.net>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        devicetree@vger.kernel.org
+Subject: Re: [PATCH v4] mmc: OCTEON: Add host driver for OCTEON MMC controller
+Message-ID: <20151120173233.GH18138@blackmetal.musicnaut.iki.fi>
+References: <1426518362-24349-1-git-send-email-aleksey.makarov@auriga.com>
+ <20150518210514.GG609@fuloong-minipc.musicnaut.iki.fi>
+ <555A5C5C.9090903@auriga.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-X-Originating-IP: [10.100.200.53]
-Return-Path: <Maciej.Rozycki@imgtec.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <555A5C5C.9090903@auriga.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <aaro.koskinen@iki.fi>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50002
+X-archive-position: 50003
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@imgtec.com
+X-original-sender: aaro.koskinen@iki.fi
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,61 +54,36 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, 17 Nov 2015, Joseph Myers wrote:
+Hi,
 
-> >  Any or all of these options may have effects beyond propagating the IEEE
-> > Std 754 compliance mode down to the assembler and the linker.  In
-> > particular `-mieee=strict' is expected to guarantee code generated to
-> > fully comply to IEEE Std 754 rather than only as far as NaN representation
-> > is concerned.
-> 
-> "guarantee" seems rather strong given the various known issues with (lack 
-> of) Annex F support in GCC.
+On Mon, May 18, 2015 at 02:40:44PM -0700, Aleksey Makarov wrote:
+> On 05/18/2015 02:05 PM, Aaro Koskinen wrote:
+> >On Mon, Mar 16, 2015 at 06:06:00PM +0300, Aleksey Makarov wrote:
+> >>The OCTEON MMC controller is currently found on cn61XX and cnf71XX
+> >>devices.  Device parameters are configured from device tree data.
+> >>
+> >>eMMC, MMC and SD devices are supported.
+> >>
+> >>Tested-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+> >>Signed-off-by: Chandrakala Chavva <cchavva@caviumnetworks.com>
+> >>Signed-off-by: David Daney <david.daney@cavium.com>
+> >>Signed-off-by: Aleksey Makarov <aleksey.makarov@auriga.com>
+> >>Signed-off-by: Leonid Rosenboim <lrosenboim@caviumnetworks.com>
+> >>Signed-off-by: Peter Swain <pswain@cavium.com>
+> >>Signed-off-by: Aaron Williams <aaron.williams@cavium.com>
+> >>---
+> >
+> >Any updates on this patch? Are you still working on it for
+> >the mainline kernel inclusion?
+>
+> We are working on it.  It will also be used in ARM ThunderX arch.  So we
+> will send a new version soon.
 
- Well, but aren't these current implementation shortcomings (i.e. bugs) 
-rather than a design principle?  I can weaken the language here, but if 
-the former is the case, then I think we don't need to factor in the 
-existence of bugs into an interface specification.
+Any updates?
 
-> Do you have any actual configuration in mind it would affect, 
-> MIPS-specific or otherwise?  For non-architecture-specific things, -std= 
-> options for C standards conformance are meant to enable whatever options 
-> are required (e.g. they disable the default -ffp-contract=fast), without 
-> affecting things not required by the standards by default (so they don't 
-> enable -frounding-math or -fsignaling-nans, for example).
+Also distros are waiting for this patch, MMC is the main medium on
+some boards:
 
- The target audience for the `-mieee=strict' option is in my idea a 
-non-technical user, say a physicist, who does not necessarily know or is 
-fluent with the guts of computer hardware and who has the need to build 
-and reliably run their software which uses IEEE Std 754 arithmetic.  
-Rather than giving such a user necessarily lengthy explanations as to the 
-complexity of the situation I'd prefer to give them this single option to 
-guarantee (modulo bugs, as noted above) that a piece of software built 
-with this option will either produce correct (as in "standard-compliant") 
-results or refuse to run.
+	https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=800594
 
- There is also a corresponding `--with-ieee=strict' configure-time option 
-for users who want to build their own compiler system which guarantees 
-such compliance by default.
-
- I think the `-std=' options are a little bit too broad in that they 
-control more than just the IEEE Std 754 aspect of standards compliance.  
-Of course the setting of `-mieee=' may in fact be a one-way dependency of 
-`-std=', up to a further override.  I haven't implemented such a 
-dependency in my prototype, however I think it might be a good idea to 
-have it.
-
- What I have implemented is a dependency between `-mieee=' and the 
-internal option to control the compliance mode for NaN encodings.  That 
-has encountered an unexpected complication though which I was not able to 
-resolve without turning the option handling machinery upside down, and I 
-found that code really hard to follow.  So I decided to defer it as not 
-the main scope of the matter and proceed with the rest of the feature.  
-Once the option handling has been sorted out, a similar dependency can be 
-introduced between `-std=' and `-mieee='.
-
- I'll post the details of the option handling issue with the GCC patches.
-
- Does this answer address your concerns?
-
-  Maciej
+A.

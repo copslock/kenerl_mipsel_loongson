@@ -1,44 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Nov 2015 15:26:59 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.136]:37608 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27011571AbbKTO0zxCtMF (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 20 Nov 2015 15:26:55 +0100
-Received: from mail.kernel.org (localhost [127.0.0.1])
-        by mail.kernel.org (Postfix) with ESMTP id 212692041A;
-        Fri, 20 Nov 2015 14:26:49 +0000 (UTC)
-Received: from rob-hp-laptop (72-48-98-129.dyn.grandenetworks.net [72.48.98.129])
-        (using TLSv1.2 with cipher AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 78719203AE;
-        Fri, 20 Nov 2015 14:26:42 +0000 (UTC)
-Date:   Fri, 20 Nov 2015 08:26:40 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Martin Schiller <mschiller@tdt.de>
-Cc:     linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-mips@linux-mips.org, linus.walleij@linaro.org,
-        pawel.moll@arm.com, mark.rutland@arm.com,
-        ijc+devicetree@hellion.org.uk, galak@codeaurora.org,
-        ralf@linux-mips.org, blogic@openwrt.org, hauke@hauke-m.de,
-        jogo@openwrt.org
-Subject: Re: [PATCH 1/4] pinctrl/lantiq: update devicetree bindings
- Documentation
-Message-ID: <20151120142640.GA3348@rob-hp-laptop>
-References: <1447995151-3857-1-git-send-email-mschiller@tdt.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Nov 2015 18:17:03 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:41221 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27012082AbbKTRRCSAb7k (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 20 Nov 2015 18:17:02 +0100
+Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
+        by Websense Email Security Gateway with ESMTPS id 78EB8FEE45A27;
+        Fri, 20 Nov 2015 17:16:53 +0000 (GMT)
+Received: from [10.100.200.53] (10.100.200.53) by hhmail02.hh.imgtec.org
+ (10.100.10.20) with Microsoft SMTP Server id 14.3.235.1; Fri, 20 Nov 2015
+ 17:16:55 +0000
+Date:   Fri, 20 Nov 2015 17:16:54 +0000
+From:   "Maciej W. Rozycki" <macro@imgtec.com>
+To:     Joseph Myers <joseph@codesourcery.com>
+CC:     <linux-mips@linux-mips.org>, <libc-alpha@sourceware.org>,
+        <binutils@sourceware.org>, <gcc@gcc.gnu.org>,
+        Matthew Fortune <Matthew.Fortune@imgtec.com>,
+        Daniel Sanders <Daniel.Sanders@imgtec.com>,
+        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+Subject: Re: [RFC] MIPS ABI Extension for IEEE Std 754 Non-Compliant
+ Interlinking
+In-Reply-To: <alpine.DEB.2.10.1511171503510.14808@digraph.polyomino.org.uk>
+Message-ID: <alpine.DEB.2.00.1511201535580.6915@tp.orcam.me.uk>
+References: <alpine.DEB.2.00.1511140411050.7097@tp.orcam.me.uk> <alpine.DEB.2.10.1511171503510.14808@digraph.polyomino.org.uk>
+User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1447995151-3857-1-git-send-email-mschiller@tdt.de>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-X-Virus-Scanned: ClamAV using ClamSMTP
-Return-Path: <robh@kernel.org>
+Content-Type: text/plain; charset="US-ASCII"
+X-Originating-IP: [10.100.200.53]
+Return-Path: <Maciej.Rozycki@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50000
+X-archive-position: 50002
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: robh@kernel.org
+X-original-sender: macro@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,38 +47,61 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Nov 20, 2015 at 05:52:28AM +0100, Martin Schiller wrote:
-> This patch adds the new dedicated "lantiq,pinctrl-<chip>" compatible strings
-> to the devicetree bindings Documentation, where <chip> is one of "ase",
-> "danube", "xrx100", "xrx200" or "xrx300" and marks the "lantiq,pinctrl-xway"
-> and "lantiq,pinctrl-xr9" compatible strings as DEPRECATED.
+On Tue, 17 Nov 2015, Joseph Myers wrote:
 
-This could use a better subject. Every change to bindings are "updating 
-binding description."
-
+> >  Any or all of these options may have effects beyond propagating the IEEE
+> > Std 754 compliance mode down to the assembler and the linker.  In
+> > particular `-mieee=strict' is expected to guarantee code generated to
+> > fully comply to IEEE Std 754 rather than only as far as NaN representation
+> > is concerned.
 > 
-> Signed-off-by: Martin Schiller <mschiller@tdt.de>
-> ---
->  .../bindings/pinctrl/lantiq,pinctrl-xway.txt       | 108 +++++++++++++++++++--
->  1 file changed, 100 insertions(+), 8 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/pinctrl/lantiq,pinctrl-xway.txt b/Documentation/devicetree/bindings/pinctrl/lantiq,pinctrl-xway.txt
-> index e89b467..16daa12 100644
-> --- a/Documentation/devicetree/bindings/pinctrl/lantiq,pinctrl-xway.txt
-> +++ b/Documentation/devicetree/bindings/pinctrl/lantiq,pinctrl-xway.txt
-> @@ -1,7 +1,14 @@
->  Lantiq XWAY pinmux controller
->  
->  Required properties:
-> -- compatible: "lantiq,pinctrl-xway" or "lantiq,pinctrl-xr9"
-> +- compatible: "lantiq,pinctrl-xway", (DEPRECATED: Use XWAY DANUBE Family)
-> +	      "lantiq,pinctrl-xr9", (DEPRECATED: Use XWAY xRX100/xRX200 Family)
-> +	      "lantiq,pinctrl-<chip>", where <chip> is:
+> "guarantee" seems rather strong given the various known issues with (lack 
+> of) Annex F support in GCC.
 
-<chip> first is preferred: lantiq,<chip>-pinctrl
+ Well, but aren't these current implementation shortcomings (i.e. bugs) 
+rather than a design principle?  I can weaken the language here, but if 
+the former is the case, then I think we don't need to factor in the 
+existence of bugs into an interface specification.
 
-> +		"ase" (XWAY AMAZON Family)
-> +		"danube" (XWAY DANUBE Family)
-> +		"xrx100" (XWAY xRX100 Family)
-> +		"xrx200" (XWAY xRX200 Family)
-> +		"xrx300" (XWAY xRX300 Family)
+> Do you have any actual configuration in mind it would affect, 
+> MIPS-specific or otherwise?  For non-architecture-specific things, -std= 
+> options for C standards conformance are meant to enable whatever options 
+> are required (e.g. they disable the default -ffp-contract=fast), without 
+> affecting things not required by the standards by default (so they don't 
+> enable -frounding-math or -fsignaling-nans, for example).
+
+ The target audience for the `-mieee=strict' option is in my idea a 
+non-technical user, say a physicist, who does not necessarily know or is 
+fluent with the guts of computer hardware and who has the need to build 
+and reliably run their software which uses IEEE Std 754 arithmetic.  
+Rather than giving such a user necessarily lengthy explanations as to the 
+complexity of the situation I'd prefer to give them this single option to 
+guarantee (modulo bugs, as noted above) that a piece of software built 
+with this option will either produce correct (as in "standard-compliant") 
+results or refuse to run.
+
+ There is also a corresponding `--with-ieee=strict' configure-time option 
+for users who want to build their own compiler system which guarantees 
+such compliance by default.
+
+ I think the `-std=' options are a little bit too broad in that they 
+control more than just the IEEE Std 754 aspect of standards compliance.  
+Of course the setting of `-mieee=' may in fact be a one-way dependency of 
+`-std=', up to a further override.  I haven't implemented such a 
+dependency in my prototype, however I think it might be a good idea to 
+have it.
+
+ What I have implemented is a dependency between `-mieee=' and the 
+internal option to control the compliance mode for NaN encodings.  That 
+has encountered an unexpected complication though which I was not able to 
+resolve without turning the option handling machinery upside down, and I 
+found that code really hard to follow.  So I decided to defer it as not 
+the main scope of the matter and proceed with the rest of the feature.  
+Once the option handling has been sorted out, a similar dependency can be 
+introduced between `-std=' and `-mieee='.
+
+ I'll post the details of the option handling issue with the GCC patches.
+
+ Does this answer address your concerns?
+
+  Maciej

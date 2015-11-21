@@ -1,39 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Nov 2015 21:40:10 +0100 (CET)
-Received: from www.linutronix.de ([62.245.132.108]:54430 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27012873AbbKTUkJSTWuB (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 20 Nov 2015 21:40:09 +0100
-Received: from localhost ([127.0.0.1])
-        by Galois.linutronix.de with esmtps (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:256)
-        (Exim 4.80)
-        (envelope-from <tglx@linutronix.de>)
-        id 1ZzsTS-000550-N9; Fri, 20 Nov 2015 21:40:02 +0100
-Date:   Fri, 20 Nov 2015 21:39:21 +0100 (CET)
-From:   Thomas Gleixner <tglx@linutronix.de>
-To:     Qais Yousef <qais.yousef@imgtec.com>
-cc:     linux-kernel@vger.kernel.org, jason@lakedaemon.net,
-        marc.zyngier@arm.com, jiang.liu@linux.intel.com,
-        ralf@linux-mips.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH 10/14] irqchip/mips-gic: Add a IPI hierarchy domaind
-In-Reply-To: <564EFA74.90606@imgtec.com>
-Message-ID: <alpine.DEB.2.11.1511202113010.3931@nanos>
-References: <1446549181-31788-1-git-send-email-qais.yousef@imgtec.com> <1446549181-31788-11-git-send-email-qais.yousef@imgtec.com> <alpine.DEB.2.11.1511071323471.4032@nanos> <56407F3C.4060404@imgtec.com> <alpine.DEB.2.11.1511161610070.3761@nanos>
- <564EFA74.90606@imgtec.com>
-User-Agent: Alpine 2.11 (DEB 23 2013-08-11)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 21 Nov 2015 01:14:09 +0100 (CET)
+Received: from exsmtp01.microchip.com ([198.175.253.37]:11622 "EHLO
+        email.microchip.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S27011621AbbKUAOHo9tOx (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 21 Nov 2015 01:14:07 +0100
+Received: from mx.microchip.com (10.10.76.4) by CHN-SV-EXCH01.mchp-main.com
+ (10.10.76.37) with Microsoft SMTP Server id 14.3.181.6; Fri, 20 Nov 2015
+ 17:13:59 -0700
+Received: by mx.microchip.com (sSMTP sendmail emulation); Fri, 20 Nov 2015
+ 17:20:25 -0700
+From:   Joshua Henderson <joshua.henderson@microchip.com>
+To:     <linux-kernel@vger.kernel.org>
+CC:     <linux-mips@linux-mips.org>,
+        Joshua Henderson <joshua.henderson@microchip.com>,
+        Alim Akhtar <alim.akhtar@samsung.com>,
+        Andrei Pistirica <andrei.pistirica@microchip.com>,
+        Andrew Bresticker <abrestic@chromium.org>,
+        Andy Green <andy.green@linaro.org>,
+        Ben Hutchings <ben@decadent.org.uk>,
+        Chaotian Jing <chaotian.jing@mediatek.com>,
+        Corneliu Doban <cdoban@broadcom.com>,
+        Cristian Birsan <cristian.birsan@microchip.com>,
+        <devicetree@vger.kernel.org>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Jean Delvare <jdelvare@suse.de>,
+        Kevin Hao <haokexin@gmail.com>, <linux-api@vger.kernel.org>,
+        <linux-clk@vger.kernel.org>, <linux-gpio@vger.kernel.org>,
+        <linux-mmc@vger.kernel.org>, <linux-serial@vger.kernel.org>,
+        Lokesh Vutla <lokeshvutla@ti.com>,
+        "ludovic.desroches@atmel.com" <ludovic.desroches@atmel.com>,
+        Luis de Bethencourt <luisbg@osg.samsung.com>,
+        Paul Burton <paul.burton@imgtec.com>,
+        Purna Chandra Mandal <purna.mandal@microchip.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Scott Branden <sbranden@broadcom.com>,
+        Shawn Lin <shawn.lin@rock-chips.com>,
+        Stephen Boyd <sboyd@codeaurora.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Vincent Yang <vincent.yang.fujitsu@gmail.com>,
+        Weijun Yang <Weijun.Yang@csr.com>,
+        yangbo lu <yangbo.lu@freescale.com>
+Subject: [PATCH 00/14] Initial Microchip PIC32MZDA Support
+Date:   Fri, 20 Nov 2015 17:17:12 -0700
+Message-ID: <1448065205-15762-1-git-send-email-joshua.henderson@microchip.com>
+X-Mailer: git-send-email 1.7.9.5
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
-Return-Path: <tglx@linutronix.de>
+Content-Type: text/plain
+Return-Path: <Joshua.Henderson@microchip.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50006
+X-archive-position: 50007
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tglx@linutronix.de
+X-original-sender: joshua.henderson@microchip.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,56 +66,142 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Qais,
+This patch series adds support for the Microchip PIC32MZDA MIPS
+platform. All drivers required to boot from MMC uSD card are
+included. Clock and external interrupt controller drivers are
+included. USART, console, and SDHCI peripheral drivers along with
+the dependent pinctrl driver are included. This has been tested on
+an applicable PIC32MZDA Starter Kit. A tree with these changes is
+available at [0].
 
-On Fri, 20 Nov 2015, Qais Yousef wrote:
-> On 11/16/2015 05:17 PM, Thomas Gleixner wrote:
-> > 1) IPI as per_cpu interrupts
-> > 
-> >     Single hwirq represented by a single irq descriptor
-> > 
-> > 2) IPI with consecutive mapping space
-> > 
-> >     No extra mapping from virq base to target cpu required as its just
-> >     linear. Everything can be handled via the base virq.
-> > 
-> 
-> 
-> I think I am seeing a major issue with this approach.
-> 
-> Take the case where we reserve an IPI with ipi_mask that has cpu 5 and 6 set
-> only. When allocating a per_cpu or consectuve mapping, we will require 2
-> consecutive virqs and hwirqs. But since the cpu location is not starting from
-> 0, we can't use the cpu as an offset anymore.
-> 
-> So when a user wants to send an IPI to cpu 6 only, the code can't easily tell
-> what's the correct offset from base virq or hwirq to use.
+[0] https://github.com/joshua-henderson/linux/tree/pic32-upstream-v1
 
-Well, you can store the start offset easily and subtract it. It's 0
-for most of the cases.
+Andrei Pistirica (6):
+  DEVICETREE: Add bindings for PIC32 pin control and GPIO
+  pinctrl: Add PIC32 pin control driver
+  DEVICETREE: Add bindings for PIC32 usart driver
+  serial: pic32_uart: Add PIC32 uart driver
+  mmc: sdhci-pic32: Add PIC32 SDHC host controller driver
+  DEVICETREE: Add bindings for PIC32 SDHC host controller
 
-> Same applies when doing the reverse mapping.
-> 
-> In other words, the ipi_mask won't always necessarily be linear to facilitate
-> the 1:1 mapping that this approach assumes.
-> 
-> It is a solvable problem, but I think we're losing the elegance that promoted
-> going into this direction and I think sticking to using struct ipi_mapping
-> (with some enhancements to how it's exposed an integrated by/into generic
-> code) is a better approach.
+Cristian Birsan (2):
+  DEVICETREE: Add bindings for PIC32 interrupt controller
+  irqchip: irq-pic32-evic: Add support for PIC32 interrupt controller
 
-The only reason to use the ipi_mapping thing is if we need non
-consecutive masks, i.e. cpu 5 and 9.
+Joshua Henderson (4):
+  DEVICETREE: Add bindings for PIC32/MZDA platforms
+  MIPS: Add support for PIC32MZDA platform
+  MIPS: dts: Add initial DTS for the PIC32MZDA Starter Kit
+  MIPS: pic32mzda: Add initial PIC32MZDA Starter Kit defconfig
 
-I really don't want to have it mandatory as it does not make any sense
-for systems where the IPI is a single per_cpu interrupt. For the
-linear consecutive space it is just adding memory and cache footprint
-for no benefit. Think about machines with 4k and more cpus ....
+Purna Chandra Mandal (2):
+  DEVICETREE: Add PIC32 clock binding documentation
+  clk: clk-pic32: Add PIC32 clock driver
 
-If you make ipi_mapping in a way that it can express the per_cpu,
-linear and scattered mappings, then we should be fine. The extra
-conditional you need in send_ipi() is not a problem.
+ .../devicetree/bindings/clock/microchip,pic32.txt  |  263 +++
+ .../bindings/gpio/microchip,pic32-gpio.txt         |   33 +
+ .../microchip,pic32mz-evic.txt                     |   65 +
+ .../bindings/mips/pic32/microchip,pic32mzda.txt    |   33 +
+ .../devicetree/bindings/mmc/sdhci-pic32.txt        |   24 +
+ .../bindings/pinctrl/microchip,pic32-pinctrl.txt   |  100 +
+ .../bindings/serial/microchip,pic32-usart.txt      |   29 +
+ arch/mips/Kbuild.platforms                         |    1 +
+ arch/mips/Kconfig                                  |    9 +
+ arch/mips/boot/dts/Makefile                        |    1 +
+ arch/mips/boot/dts/pic32/Makefile                  |   12 +
+ arch/mips/boot/dts/pic32/pic32mzda-clk.dtsi        |  251 +++
+ arch/mips/boot/dts/pic32/pic32mzda.dtsi            |  280 +++
+ arch/mips/boot/dts/pic32/pic32mzda_sk.dts          |  150 ++
+ arch/mips/configs/pic32mzda_defconfig              |   88 +
+ .../include/asm/mach-pic32/cpu-feature-overrides.h |   32 +
+ arch/mips/include/asm/mach-pic32/gpio.h            |   26 +
+ arch/mips/include/asm/mach-pic32/irq.h             |   22 +
+ arch/mips/include/asm/mach-pic32/pic32.h           |   44 +
+ arch/mips/include/asm/mach-pic32/spaces.h          |   24 +
+ arch/mips/pic32/Kconfig                            |   50 +
+ arch/mips/pic32/Makefile                           |    6 +
+ arch/mips/pic32/Platform                           |    7 +
+ arch/mips/pic32/common/Makefile                    |    5 +
+ arch/mips/pic32/common/irq.c                       |   20 +
+ arch/mips/pic32/common/reset.c                     |   62 +
+ arch/mips/pic32/pic32mzda/Makefile                 |    9 +
+ arch/mips/pic32/pic32mzda/config.c                 |  148 ++
+ arch/mips/pic32/pic32mzda/early_clk.c              |  106 +
+ arch/mips/pic32/pic32mzda/early_console.c          |  171 ++
+ arch/mips/pic32/pic32mzda/early_pin.c              |  275 +++
+ arch/mips/pic32/pic32mzda/early_pin.h              |  241 +++
+ arch/mips/pic32/pic32mzda/init.c                   |  156 ++
+ arch/mips/pic32/pic32mzda/pic32mzda.h              |   30 +
+ arch/mips/pic32/pic32mzda/time.c                   |   47 +
+ drivers/clk/Kconfig                                |    3 +
+ drivers/clk/Makefile                               |    1 +
+ drivers/clk/clk-pic32.c                            | 1947 ++++++++++++++++++
+ drivers/irqchip/Makefile                           |    1 +
+ drivers/irqchip/irq-pic32-evic.c                   |  309 +++
+ drivers/mmc/host/Kconfig                           |   11 +
+ drivers/mmc/host/Makefile                          |    1 +
+ drivers/mmc/host/sdhci-pic32.c                     |  354 ++++
+ drivers/pinctrl/Kconfig                            |   17 +
+ drivers/pinctrl/Makefile                           |    2 +
+ drivers/pinctrl/pinctrl-pic32.c                    | 2127 ++++++++++++++++++++
+ drivers/pinctrl/pinctrl-pic32.h                    |  158 ++
+ drivers/pinctrl/pinctrl-pic32mzda.c                |  294 +++
+ drivers/pinctrl/pinctrl-pic32mzda.h                |   40 +
+ drivers/tty/serial/Kconfig                         |   21 +
+ drivers/tty/serial/Makefile                        |    1 +
+ drivers/tty/serial/pic32_uart.c                    |  930 +++++++++
+ drivers/tty/serial/pic32_uart.h                    |  199 ++
+ .../interrupt-controller/microchip,pic32mz-evic.h  |  238 +++
+ include/dt-bindings/pinctrl/pic32mzda.h            |  404 ++++
+ include/linux/irqchip/pic32-evic.h                 |   19 +
+ include/linux/platform_data/sdhci-pic32.h          |   22 +
+ include/uapi/linux/serial_core.h                   |    3 +
+ 58 files changed, 9922 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/clock/microchip,pic32.txt
+ create mode 100644 Documentation/devicetree/bindings/gpio/microchip,pic32-gpio.txt
+ create mode 100644 Documentation/devicetree/bindings/interrupt-controller/microchip,pic32mz-evic.txt
+ create mode 100644 Documentation/devicetree/bindings/mips/pic32/microchip,pic32mzda.txt
+ create mode 100644 Documentation/devicetree/bindings/mmc/sdhci-pic32.txt
+ create mode 100644 Documentation/devicetree/bindings/pinctrl/microchip,pic32-pinctrl.txt
+ create mode 100644 Documentation/devicetree/bindings/serial/microchip,pic32-usart.txt
+ create mode 100644 arch/mips/boot/dts/pic32/Makefile
+ create mode 100644 arch/mips/boot/dts/pic32/pic32mzda-clk.dtsi
+ create mode 100644 arch/mips/boot/dts/pic32/pic32mzda.dtsi
+ create mode 100644 arch/mips/boot/dts/pic32/pic32mzda_sk.dts
+ create mode 100644 arch/mips/configs/pic32mzda_defconfig
+ create mode 100644 arch/mips/include/asm/mach-pic32/cpu-feature-overrides.h
+ create mode 100644 arch/mips/include/asm/mach-pic32/gpio.h
+ create mode 100644 arch/mips/include/asm/mach-pic32/irq.h
+ create mode 100644 arch/mips/include/asm/mach-pic32/pic32.h
+ create mode 100644 arch/mips/include/asm/mach-pic32/spaces.h
+ create mode 100644 arch/mips/pic32/Kconfig
+ create mode 100644 arch/mips/pic32/Makefile
+ create mode 100644 arch/mips/pic32/Platform
+ create mode 100644 arch/mips/pic32/common/Makefile
+ create mode 100644 arch/mips/pic32/common/irq.c
+ create mode 100644 arch/mips/pic32/common/reset.c
+ create mode 100644 arch/mips/pic32/pic32mzda/Makefile
+ create mode 100644 arch/mips/pic32/pic32mzda/config.c
+ create mode 100644 arch/mips/pic32/pic32mzda/early_clk.c
+ create mode 100644 arch/mips/pic32/pic32mzda/early_console.c
+ create mode 100644 arch/mips/pic32/pic32mzda/early_pin.c
+ create mode 100644 arch/mips/pic32/pic32mzda/early_pin.h
+ create mode 100644 arch/mips/pic32/pic32mzda/init.c
+ create mode 100644 arch/mips/pic32/pic32mzda/pic32mzda.h
+ create mode 100644 arch/mips/pic32/pic32mzda/time.c
+ create mode 100644 drivers/clk/clk-pic32.c
+ create mode 100644 drivers/irqchip/irq-pic32-evic.c
+ create mode 100644 drivers/mmc/host/sdhci-pic32.c
+ create mode 100644 drivers/pinctrl/pinctrl-pic32.c
+ create mode 100644 drivers/pinctrl/pinctrl-pic32.h
+ create mode 100644 drivers/pinctrl/pinctrl-pic32mzda.c
+ create mode 100644 drivers/pinctrl/pinctrl-pic32mzda.h
+ create mode 100644 drivers/tty/serial/pic32_uart.c
+ create mode 100644 drivers/tty/serial/pic32_uart.h
+ create mode 100644 include/dt-bindings/interrupt-controller/microchip,pic32mz-evic.h
+ create mode 100644 include/dt-bindings/pinctrl/pic32mzda.h
+ create mode 100644 include/linux/irqchip/pic32-evic.h
+ create mode 100644 include/linux/platform_data/sdhci-pic32.h
 
-Thanks,
-
-	tglx
+--
+1.7.9.5

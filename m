@@ -1,24 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 21 Nov 2015 01:14:46 +0100 (CET)
-Received: from exsmtp03.microchip.com ([198.175.253.49]:23291 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 21 Nov 2015 01:15:08 +0100 (CET)
+Received: from exsmtp03.microchip.com ([198.175.253.49]:23335 "EHLO
         email.microchip.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27013019AbbKUAO0aLqWx (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 21 Nov 2015 01:14:26 +0100
+        by eddie.linux-mips.org with ESMTP id S27013021AbbKUAOfR9pdx (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 21 Nov 2015 01:14:35 +0100
 Received: from mx.microchip.com (10.10.76.4) by chn-sv-exch03.mchp-main.com
  (10.10.76.49) with Microsoft SMTP Server id 14.3.181.6; Fri, 20 Nov 2015
- 17:14:17 -0700
+ 17:14:27 -0700
 Received: by mx.microchip.com (sSMTP sendmail emulation); Fri, 20 Nov 2015
- 17:20:44 -0700
+ 17:20:54 -0700
 From:   Joshua Henderson <joshua.henderson@microchip.com>
 To:     <linux-kernel@vger.kernel.org>
 CC:     <linux-mips@linux-mips.org>,
-        Cristian Birsan <cristian.birsan@microchip.com>,
+        Purna Chandra Mandal <purna.mandal@microchip.com>,
         Joshua Henderson <joshua.henderson@microchip.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Marc Zyngier <marc.zyngier@arm.com>
-Subject: [PATCH 02/14] irqchip: irq-pic32-evic: Add support for PIC32 interrupt controller
-Date:   Fri, 20 Nov 2015 17:17:14 -0700
-Message-ID: <1448065205-15762-3-git-send-email-joshua.henderson@microchip.com>
+        Rob Herring <robh+dt@kernel.org>,
+        Pawel Moll <pawel.moll@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ian Campbell <ijc+devicetree@hellion.org.uk>,
+        Kumar Gala <galak@codeaurora.org>, <devicetree@vger.kernel.org>
+Subject: [PATCH 03/14] DEVICETREE: Add PIC32 clock binding documentation
+Date:   Fri, 20 Nov 2015 17:17:15 -0700
+Message-ID: <1448065205-15762-4-git-send-email-joshua.henderson@microchip.com>
 X-Mailer: git-send-email 1.7.9.5
 In-Reply-To: <1448065205-15762-1-git-send-email-joshua.henderson@microchip.com>
 References: <1448065205-15762-1-git-send-email-joshua.henderson@microchip.com>
@@ -28,7 +30,7 @@ Return-Path: <Joshua.Henderson@microchip.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50009
+X-archive-position: 50010
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,374 +47,286 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Cristian Birsan <cristian.birsan@microchip.com>
+From: Purna Chandra Mandal <purna.mandal@microchip.com>
 
-This adds support for the EVIC present on a PIC32MZDA.
+Document the devicetree bindings for the clock driver found on Microchip
+PIC32 class devices.
 
-The following features are supported:
- - DT properties for EVIC and for devices that use interrupt lines
- - persistent and non-persistent interrupt handling
- - Priority, sub-priority and polariy settings for each interrupt line
- - irqdomain support
-
-Signed-off-by: Cristian Birsan <cristian.birsan@microchip.com>
+Signed-off-by: Purna Chandra Mandal <purna.mandal@microchip.com>
 Signed-off-by: Joshua Henderson <joshua.henderson@microchip.com>
 ---
- drivers/irqchip/Makefile           |    1 +
- drivers/irqchip/irq-pic32-evic.c   |  309 ++++++++++++++++++++++++++++++++++++
- include/linux/irqchip/pic32-evic.h |   19 +++
- 3 files changed, 329 insertions(+)
- create mode 100644 drivers/irqchip/irq-pic32-evic.c
- create mode 100644 include/linux/irqchip/pic32-evic.h
+ .../devicetree/bindings/clock/microchip,pic32.txt  |  263 ++++++++++++++++++++
+ 1 file changed, 263 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/clock/microchip,pic32.txt
 
-diff --git a/drivers/irqchip/Makefile b/drivers/irqchip/Makefile
-index 177f78f..e3608fc 100644
---- a/drivers/irqchip/Makefile
-+++ b/drivers/irqchip/Makefile
-@@ -55,3 +55,4 @@ obj-$(CONFIG_RENESAS_H8S_INTC)		+= irq-renesas-h8s.o
- obj-$(CONFIG_ARCH_SA1100)		+= irq-sa11x0.o
- obj-$(CONFIG_INGENIC_IRQ)		+= irq-ingenic.o
- obj-$(CONFIG_IMX_GPCV2)			+= irq-imx-gpcv2.o
-+obj-$(CONFIG_MACH_PIC32)		+= irq-pic32-evic.o
-diff --git a/drivers/irqchip/irq-pic32-evic.c b/drivers/irqchip/irq-pic32-evic.c
+diff --git a/Documentation/devicetree/bindings/clock/microchip,pic32.txt b/Documentation/devicetree/bindings/clock/microchip,pic32.txt
 new file mode 100644
-index 0000000..7b87b43
+index 0000000..4cef72d
 --- /dev/null
-+++ b/drivers/irqchip/irq-pic32-evic.c
-@@ -0,0 +1,309 @@
-+/*
-+ * Cristian Birsan <cristian.birsan@microchip.com>
-+ * Copyright (C) 2015 Microchip Technology Inc.  All rights reserved.
-+ *
-+ * This program is free software; you can redistribute  it and/or modify it
-+ * under  the terms of  the GNU General  Public License as published by the
-+ * Free Software Foundation;  either version 2 of the  License, or (at your
-+ * option) any later version.
-+ */
-+#include <linux/kernel.h>
-+#include <linux/module.h>
-+#include <linux/interrupt.h>
-+#include <linux/irqdomain.h>
-+#include <linux/of_address.h>
-+#include <linux/slab.h>
-+#include <linux/io.h>
-+#include <linux/irqchip.h>
++++ b/Documentation/devicetree/bindings/clock/microchip,pic32.txt
+@@ -0,0 +1,263 @@
++Binding for a Clock hardware block found on
++certain Microchip PIC32 MCU devices.
 +
-+#include <asm/irq.h>
-+#include <asm/traps.h>
-+#include <dt-bindings/interrupt-controller/microchip,pic32mz-evic.h>
++Microchip SoC clocks-node consists of few oscillators, PLL, multiplexer
++and few divider nodes.
 +
-+struct irq_domain *evic_irq_domain;
-+static struct evic __iomem *evic_base;
++We will find only the base address of the clock tree, this base
++address is common for some of the subnodes, not all. If no address is
++specified for any of subnode base address of the clock tree will be
++treated as its base. Each of subnodes follow the same common clock
++binding with some additional optional properties.
 +
-+static unsigned int *evic_irq_prio;
++	clocks_node {
++		reg = <>;
 +
-+struct pic_reg {
-+	u32 val; /* value register*/
-+	u32 clr; /* clear register */
-+	u32 set; /* set register */
-+	u32 inv; /* inv register */
-+} __packed;
++		spll_node {
++			...
++		};
 +
-+struct evic {
-+	struct pic_reg intcon;
-+	struct pic_reg priss;
-+	struct pic_reg intstat;
-+	struct pic_reg iptmr;
-+	struct pic_reg ifs[6];
-+	u32 reserved1[8];
-+	struct pic_reg iec[6];
-+	u32 reserved2[8];
-+	struct pic_reg ipc[48];
-+	u32 reserved3[64];
-+	u32 off[191];
-+} __packed;
++		frcdiv_node {
++			...
++		};
 +
-+static int get_ext_irq_index(irq_hw_number_t hw);
-+static void evic_set_ext_irq_polarity(int ext_irq, u32 type);
++		sysclk_mux_node {
++			...
++		};
 +
-+#define BIT_REG_MASK(bit, reg, mask)		\
-+	do {					\
-+		reg = bit/32;			\
-+		mask = 1 << (bit % 32);		\
-+	} while (0)
++		pbdiv_node {
++			...
++		};
 +
-+asmlinkage void __weak plat_irq_dispatch(void)
-+{
-+	unsigned int irq, hwirq;
-+	u32 reg, mask;
++		refoclk_node {
++			...
++		};
++		...
++	};
 +
-+	hwirq = readl(&evic_base->intstat.val) & 0xFF;
++This binding uses the common clock binding[1].
 +
-+	/* Check if the interrupt was really triggered by hardware*/
-+	BIT_REG_MASK(hwirq, reg, mask);
-+	if (likely(readl(&evic_base->ifs[reg].val) &
-+			readl(&evic_base->iec[reg].val) & mask)) {
-+		irq = irq_linear_revmap(evic_irq_domain, hwirq);
-+		do_IRQ(irq);
-+	} else
-+		spurious_interrupt();
-+}
++[1] Documentation/devicetree/bindings/clock/clock-bindings.txt
 +
-+/* mask off an interrupt */
-+static inline void mask_pic32_irq(struct irq_data *irqd)
-+{
-+	u32 reg, mask;
-+	unsigned int hwirq = irqd_to_hwirq(irqd);
++Required properties:
++- compatible : should have "microchip,pic32-clk".
++- reg : A Base address and length of the register set.
++- interrupts : source of interrupt.
 +
-+	BIT_REG_MASK(hwirq, reg, mask);
-+	writel(mask, &evic_base->iec[reg].clr);
-+}
++Optional properties (for subnodes):
++- #clock-cells: From common clock binding, should be 0.
 +
-+/* unmask an interrupt */
-+static inline void unmask_pic32_irq(struct irq_data *irqd)
-+{
-+	u32 reg, mask;
-+	unsigned int hwirq = irqd_to_hwirq(irqd);
++- microchip,clock-indices: in multiplexer node clock sources always aren't linear
++    and contiguous. This property helps define clock-sources with respect to
++    the mux clock node.
 +
-+	BIT_REG_MASK(hwirq, reg, mask);
-+	writel(mask, &evic_base->iec[reg].set);
-+}
++- microchip,ignore-unused : ignore gate request even if the gated clock is unused.
++- microchip,status-bit-mask: bitmask for status check. This will be used to confirm
++    particular operation by clock sub-node is completed. It is dependent sub-node.
++- microchip,bit-mask: enable mask, similar to microchip,status-bit-mask.
++- microchip,slew-step: enable frequency slewing(stepping) during rate change;
++    applicable only to sys-clock subnode.
 +
-+/* acknowledge an interrupt */
-+static void ack_pic32_irq(struct irq_data *irqd)
-+{
-+	u32 reg, mask;
-+	unsigned int hwirq = irqd_to_hwirq(irqd);
++Example:
 +
-+	BIT_REG_MASK(hwirq, reg, mask);
-+	writel(mask, &evic_base->ifs[reg].clr);
-+}
++/* PIC32 specific clks */
++pic32_clktree {
++	#address-cells = <1>;
++	#size-cells = <1>;
++	reg = <0x1f801200 0x200>;
++	compatible = "microchip,pic32-clk";
++	interrupts = <12>;
++	ranges;
 +
-+/* mask off and acknowledge an interrupt */
-+static inline void mask_ack_pic32_irq(struct irq_data *irqd)
-+{
-+	u32 reg, mask;
-+	unsigned int hwirq = irqd_to_hwirq(irqd);
++	/* secondary oscillator; external input on SOSCI pin */
++	SOSC:sosc_clk {
++		#clock-cells = <0>;
++		compatible = "microchip,pic32-sosc";
++		clock-frequency = <32768>;
++		reg = <0x1f801200 0x10   /* enable reg */
++			0x1f801390 0x10>; /* status reg */
++		microchip,bit-mask = <0x02>; /* enable mask */
++		microchip,status-bit-mask = <0x10>; /* status-mask*/
++	};
 +
-+	BIT_REG_MASK(hwirq, reg, mask);
-+	writel(mask, &evic_base->iec[reg].clr);
-+	writel(mask, &evic_base->ifs[reg].clr);
-+}
++	FRCDIV:frcdiv_clk {
++		#clock-cells = <0>;
++		compatible = "microchip,pic32-frcdivclk";
++		clocks = <&FRC>;
++		clock-output-names = "frcdiv_clk";
++	};
 +
-+static int set_type_pic32_irq(struct irq_data *data, unsigned int flow_type)
-+{
-+	int index;
++	/* System PLL clock */
++	SYSPLL:spll_clk {
++		#clock-cells = <0>;
++		compatible = "microchip,pic32-syspll";
++		reg = <0x1f801220 0x10 /* SPLL register */
++			0x1f801390 0x10>; /* CLKSTAT register */
++		clocks = <&POSC>, <&FRC>;
++		clock-output-names = "sys_pll";
++		microchip,status-bit-mask = <0x80>; /* SPLLRDY */
++	};
 +
-+	switch (flow_type) {
++	/* system clock; mux with postdiv & slew */
++	SYSCLK:sys_clk {
++		#clock-cells = <0>;
++		compatible = "microchip,pic32-sysclk-v2";
++		reg = <0x1f8013c0 0x04>; /* SLEWCON */
++		clocks = <&FRCDIV>, <&SYSPLL>, <&POSC>, <&SOSC>,
++				<&LPRC>, <&FRCDIV>;
++		microchip,clock-indices = <0>, <1>, <2>, <4>, <5>, <7>;
++		clock-output-names = "sys_clk";
++	};
 +
-+	case IRQ_TYPE_EDGE_RISING:
-+	case IRQ_TYPE_EDGE_FALLING:
-+		irq_set_handler_locked(data, handle_edge_irq);
-+		break;
++	/* DDR Ctrl & DDR PHY PLL */
++	MPLL: CLK_MPLL {
++		#clock-cells = <0>;
++		compatible = "microchip,pic32-mpll";
++		reg = <0x1f800100 0x04>; /* CFGMPLL */
++		clocks = <&POSC>;
++		clock-output-names = "pic32-mpll";
++		status = "disabled";
++	};
 +
-+	case IRQ_TYPE_LEVEL_HIGH:
-+	case IRQ_TYPE_LEVEL_LOW:
-+		irq_set_handler_locked(data, handle_fasteoi_irq);
-+		break;
++	/* Peripheral bus1 clock */
++	PBCLK1:pb1_clk {
++		reg = <0x1f801340 0x10>;
++		#clock-cells = <0>;
++		compatible = "microchip,pic32-pbclk";
++		clocks = <&SYSCLK>;
++		clock-output-names = "pb1_clk";
++		/* used by system modules, not gateable */
++		microchip,ignore-unused;
++	};
 +
-+	default:
-+		pr_err("Invalid interrupt type !\n");
-+		return -EINVAL;
-+	}
++	/* Peripheral bus2 clock */
++	PBCLK2:pb2_clk {
++		reg = <0x1f801350 0x10>;
++		#clock-cells = <0>;
++		compatible = "microchip,pic32-pbclk";
++		clocks = <&SYSCLK>;
++		clock-output-names = "pb2_clk";
++		/* avoid gating even if unused */
++		microchip,ignore-unused;
++	};
 +
-+	/* set polarity for external interrupts only */
-+	index = get_ext_irq_index(data->hwirq);
-+	if (index >= 0)
-+		evic_set_ext_irq_polarity(index, flow_type);
++	/* Peripheral bus3 clock */
++	PBCLK3:pb3_clk {
++		reg = <0x1f801360 0x10>;
++		#clock-cells = <0>;
++		compatible = "microchip,pic32-pbclk";
++		clocks = <&SYSCLK>;
++		clock-output-names = "pb3_clk";
++	};
 +
-+	return IRQ_SET_MASK_OK;
-+}
++	/* Peripheral bus4 clock(I/O ports, GPIO) */
++	PBCLK4:pb4_clk {
++		reg = <0x1f801370 0x10>;
++		#clock-cells = <0>;
++		compatible = "microchip,pic32-pbclk";
++		clocks = <&SYSCLK>;
++		clock-output-names = "pb4_clk";
++	};
 +
-+static void pic32_bind_evic_interrupt(int irq, int set)
-+{
-+	writel(set, &evic_base->off[irq]);
-+}
++	/* Peripheral bus clock */
++	PBCLK5:pb5_clk {
++		reg = <0x1f801380 0x10>;
++		#clock-cells = <0>;
++		compatible = "microchip,pic32-pbclk";
++		clocks = <&SYSCLK>;
++		clock-output-names = "pb5_clk";
++	};
 +
-+int pic32_get_c0_compare_int(void)
-+{
-+	int virq;
++	/* Peripheral Bus6 clock; */
++	PBCLK6:pb6_clk {
++		reg = <0x1f801390 0x10>;
++		compatible = "microchip,pic32-pbclk";
++		clocks = <&SYSCLK>;
++		#clock-cells = <0>;
++	};
 +
-+	virq = irq_create_mapping(evic_irq_domain, CORE_TIMER_INTERRUPT);
-+	irq_set_irq_type(virq, IRQ_TYPE_EDGE_RISING);
-+	return virq;
-+}
++	/* Peripheral bus7 clock */
++	PBCLK7:pb7_clk {
++		reg = <0x1f8013A0 0x10>;
++		#clock-cells = <0>;
++		compatible = "microchip,pic32-pbclk";
++		/* CPU is driven by this clock; so named */
++		clock-output-names = "cpu_clk";
++		clocks = <&SYSCLK>;
++	};
 +
-+static struct irq_chip pic32_irq_chip = {
-+	.name = "PIC32-EVIC",
-+	.irq_ack = ack_pic32_irq,
-+	.irq_mask = mask_pic32_irq,
-+	.irq_mask_ack = mask_ack_pic32_irq,
-+	.irq_unmask = unmask_pic32_irq,
-+	.irq_eoi = ack_pic32_irq,
-+	.irq_set_type = set_type_pic32_irq,
-+	.irq_enable = unmask_pic32_irq,
-+	.irq_disable = mask_pic32_irq,
++	/* Reference Oscillator clock for SPI/I2S */
++	REFCLKO1:refo1_clk {
++		reg = <0x1f801280 0x20>;
++		#clock-cells = <0>;
++		compatible = "microchip,pic32-refoclk";
++		clocks = <&SYSCLK>, <&PBCLK1>, <&POSC>, <&FRC>, <&LPRC>,
++			<&SOSC>, <&SYSPLL>, <&REFIx>, <&BFRC>;
++		microchip,clock-indices = <0>, <1>, <2>, <3>, <4>, <5>,
++						<7>, <8>, <9>;
++		clock-output-names = "refo1_clk";
++		clock-frequency = <10000000>;  /* 10Mhz for I2S MCLK */
++	};
++
++	/* Reference Oscillator clock for SQI */
++	REFCLKO2:refo2_clk {
++		reg = <0x1f8012A0 0x20>;
++		#clock-cells = <0>;
++		compatible = "microchip,pic32-refoclk";
++		clocks = <&SYSCLK>, <&PBCLK1>, <&POSC>, <&FRC>, <&LPRC>,
++			<&SOSC>, <&SYSPLL>, <&REFIx>, <&BFRC>;
++		microchip,clock-indices = <0>, <1>, <2>, <3>, <4>, <5>,
++						<7>, <8>, <9>;
++		clock-output-names = "refo2_clk";
++		clock-frequency = <50000000>; /* 50MHz for SQI */
++	};
++
++	/* Reference Oscillator clock, ADC */
++	REFCLKO3:refo3_clk {
++		reg = <0x1f8012C0 0x20>;
++		compatible = "microchip,pic32-refoclk";
++		clocks = <&SYSCLK>, <&PBCLK1>, <&POSC>, <&FRC>, <&LPRC>,
++			<&SOSC>, <&SYSPLL>, <&REFIx>, <&BFRC>;
++		microchip,clock-indices = <0>, <1>, <2>, <3>, <4>, <5>,
++						<7>, <8>, <9>;
++		#clock-cells = <0>;
++		clock-output-names = "refo3_clk";
++		clock-frequency = <10000000>;  /* 1Mhz */
++	};
++
++	/* Reference Oscillator clock */
++	REFCLKO4:refo4_clk {
++		reg = <0x1f8012E0 0x20>;
++		compatible = "microchip,pic32-refoclk";
++		clocks = <&SYSCLK>, <&PBCLK1>, <&POSC>, <&FRC>, <&LPRC>,
++				<&SOSC>, <&SYSPLL>, <&REFIx>, <&BFRC>;
++		microchip,clock-indices = <0>,<1>,<2>,<3>,<4>,<5>,<7>,
++						<8>,<9>;
++		#clock-cells = <0>;
++		clock-output-names = "refo4_clk";
++		clock-frequency = <25000000>;  /* 25Mhz */
++	};
++
++	/* Reference Oscillator clock, LCD */
++	REFCLKO5:refo5_clk {
++		reg = <0x1f801300 0x20>;
++		compatible = "microchip,pic32-refoclk";
++		clocks = <&SYSCLK>,<&PBCLK1>,<&POSC>,<&FRC>,<&LPRC>,
++			<&SOSC>,<&SYSPLL>,<&REFIx>,<&BFRC>;
++		microchip,clock-indices = <0>, <1>, <2>, <3>, <4>, <5>,
++					<7>, <8>,<9>;
++		#clock-cells = <0>;
++		clock-output-names = "refo5_clk";
++		clock-frequency = <40000000>;  /* 40Mhz */
++	};
 +};
 +
-+static void evic_set_irq_priority(int irq, int priority)
-+{
-+	u32 reg, shift;
++The clock consumer should specify the desired clock by having the clocks in its
++"clock" phandle cell. For example for UART:
 +
-+	reg = irq / 4;
-+	shift = (irq % 4) * 8;
-+
-+	/* set priority */
-+	writel(INT_MASK << shift, &evic_base->ipc[reg].clr);
-+	writel(priority << shift, &evic_base->ipc[reg].set);
++uart2: serial@<> {
++	compatible = "microchip,pic32-uart";
++	reg = <>;
++	interrupts = <>;
++	clocks = <&PBCLK2>;
 +}
-+
-+static void evic_set_ext_irq_polarity(int ext_irq, u32 type)
-+{
-+	if (WARN_ON(ext_irq >= NR_EXT_IRQS))
-+		return;
-+	switch (type) {
-+	case IRQ_TYPE_EDGE_RISING:
-+		writel(1 << ext_irq, &evic_base->intcon.set);
-+		break;
-+	case IRQ_TYPE_EDGE_FALLING:
-+		writel(1 << ext_irq, &evic_base->intcon.clr);
-+		break;
-+	default:
-+		pr_err("Invalid external interrupt polarity !\n");
-+	}
-+}
-+
-+static int get_ext_irq_index(irq_hw_number_t hw)
-+{
-+	switch (hw) {
-+	case EXTERNAL_INTERRUPT_0:
-+		return 0;
-+	case EXTERNAL_INTERRUPT_1:
-+		return 1;
-+	case EXTERNAL_INTERRUPT_2:
-+		return 2;
-+	case EXTERNAL_INTERRUPT_3:
-+		return 3;
-+	case EXTERNAL_INTERRUPT_4:
-+		return 4;
-+	default:
-+		return -1;
-+	}
-+}
-+
-+static int evic_intc_map(struct irq_domain *irqd, unsigned int virq,
-+			irq_hw_number_t hw)
-+{
-+	u32 reg, mask;
-+
-+	irq_set_chip(virq, &pic32_irq_chip);
-+
-+	BIT_REG_MASK(hw, reg, mask);
-+
-+	/* disable */
-+	writel(mask, &evic_base->iec[reg].clr);
-+
-+	/* clear flag */
-+	writel(mask, &evic_base->ifs[reg].clr);
-+
-+	evic_set_irq_priority(hw, evic_irq_prio[hw]);
-+
-+	return 0;
-+}
-+
-+static int evic_irq_domain_xlate(struct irq_domain *d,
-+				struct device_node *ctrlr,
-+				const u32 *intspec,
-+				unsigned int intsize,
-+				irq_hw_number_t *out_hwirq,
-+				unsigned int *out_type)
-+{
-+	/* Check for number of params */
-+	if (WARN_ON(intsize < 3))
-+		return -EINVAL;
-+	if (WARN_ON(intspec[0] >= NR_IRQS))
-+		return -EINVAL;
-+	/* Check for correct priority settings */
-+	if (WARN_ON((intspec[1] < MICROCHIP_EVIC_MIN_PRIORITY)
-+			|| (intspec[1] > MICROCHIP_EVIC_MAX_PRIORITY)))
-+		return -EINVAL;
-+
-+	*out_hwirq = intspec[0];
-+
-+	evic_irq_prio[*out_hwirq] = intspec[1];
-+
-+	*out_type = intspec[2];
-+
-+	return 0;
-+}
-+
-+static const struct irq_domain_ops evic_intc_irq_domain_ops = {
-+		.map = evic_intc_map,
-+		.xlate = evic_irq_domain_xlate,
-+};
-+
-+#ifdef CONFIG_OF
-+
-+static int __init
-+microchip_evic_of_init(struct device_node *node, struct device_node *parent)
-+{
-+	struct resource res;
-+
-+	if (WARN_ON(!node))
-+		return -ENODEV;
-+
-+	evic_irq_prio = kcalloc(NR_IRQS, sizeof(*evic_irq_prio),
-+				GFP_KERNEL);
-+	if (!evic_irq_prio)
-+		return -ENOMEM;
-+
-+	evic_irq_prio[CORE_TIMER_INTERRUPT] = DEFAULT_INT_PRI; /* Default IRQ*/
-+
-+	if (of_address_to_resource(node, 0, &res))
-+		panic("Failed to get evic memory range");
-+
-+	if (request_mem_region(res.start, resource_size(&res),
-+				res.name) == NULL)
-+		panic("Failed to request evic memory");
-+
-+	evic_base = ioremap_nocache(res.start, resource_size(&res));
-+	if (!evic_base)
-+		panic("Failed to remap evic memory");
-+
-+	board_bind_eic_interrupt = &pic32_bind_evic_interrupt;
-+
-+	evic_irq_domain = irq_domain_add_linear(node, NR_IRQS,
-+			&evic_intc_irq_domain_ops, NULL);
-+	if (!evic_irq_domain)
-+		panic("Failed to add linear irqdomain for EVIC");
-+
-+	irq_set_default_host(evic_irq_domain);
-+
-+	return 0;
-+}
-+
-+IRQCHIP_DECLARE(microchip_evic, "microchip,evic-v2", microchip_evic_of_init);
-+#endif
-diff --git a/include/linux/irqchip/pic32-evic.h b/include/linux/irqchip/pic32-evic.h
-new file mode 100644
-index 0000000..c514bae
---- /dev/null
-+++ b/include/linux/irqchip/pic32-evic.h
-@@ -0,0 +1,19 @@
-+/*
-+ * Joshua Henderson, <joshua.henderson@microchip.com>
-+ * Copyright (C) 2015 Microchip Technology Inc.  All rights reserved.
-+ *
-+ *  This program is free software; you can distribute it and/or modify it
-+ *  under the terms of the GNU General Public License (Version 2) as
-+ *  published by the Free Software Foundation.
-+ *
-+ *  This program is distributed in the hope it will be useful, but WITHOUT
-+ *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-+ *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
-+ *  for more details.
-+ */
-+#ifndef __LINUX_IRQCHIP_PIC32_EVIC_H
-+#define __LINUX_IRQCHIP_PIC32_EVIC_H
-+
-+extern int pic32_get_c0_compare_int(void);
-+
-+#endif /* __LINUX_IRQCHIP_PIC32_EVIC_H */
 -- 
 1.7.9.5

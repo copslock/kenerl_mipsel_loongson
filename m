@@ -1,35 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 22 Nov 2015 17:23:13 +0100 (CET)
-Received: from exsmtp03.microchip.com ([198.175.253.49]:54814 "EHLO
-        email.microchip.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27011429AbbKVQXLZIL71 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 22 Nov 2015 17:23:11 +0100
-Received: from [10.14.4.125] (10.10.76.4) by chn-sv-exch03.mchp-main.com
- (10.10.76.49) with Microsoft SMTP Server id 14.3.181.6; Sun, 22 Nov 2015
- 09:23:01 -0700
-Subject: Re: [PATCH 06/14] MIPS: Add support for PIC32MZDA platform
-To:     Alban <albeu@free.fr>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 22 Nov 2015 22:15:05 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.136]:53085 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27006567AbbKVVPA5HEWZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 22 Nov 2015 22:15:00 +0100
+Received: from mail.kernel.org (localhost [127.0.0.1])
+        by mail.kernel.org (Postfix) with ESMTP id 8CF16206F9;
+        Sun, 22 Nov 2015 21:14:57 +0000 (UTC)
+Received: from rob-hp-laptop (72-48-98-129.dyn.grandenetworks.net [72.48.98.129])
+        (using TLSv1.2 with cipher AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id A13C72056D;
+        Sun, 22 Nov 2015 21:14:55 +0000 (UTC)
+Date:   Sun, 22 Nov 2015 15:14:53 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Joshua Henderson <joshua.henderson@microchip.com>
+Cc:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        Cristian Birsan <cristian.birsan@microchip.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Marc Zyngier <marc.zyngier@arm.com>,
+        Pawel Moll <pawel.moll@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ian Campbell <ijc+devicetree@hellion.org.uk>,
+        Kumar Gala <galak@codeaurora.org>, devicetree@vger.kernel.org
+Subject: Re: [PATCH 01/14] DEVICETREE: Add bindings for PIC32 interrupt
+ controller
+Message-ID: <20151122211453.GA13180@rob-hp-laptop>
 References: <1448065205-15762-1-git-send-email-joshua.henderson@microchip.com>
- <1448065205-15762-7-git-send-email-joshua.henderson@microchip.com>
- <20151121123753.58eb6e80@tock>
-CC:     <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>
-From:   Joshua Henderson <joshua.henderson@microchip.com>
-Message-ID: <5651ED63.9090101@microchip.com>
-Date:   Sun, 22 Nov 2015 09:29:23 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.3.0
+ <1448065205-15762-2-git-send-email-joshua.henderson@microchip.com>
 MIME-Version: 1.0
-In-Reply-To: <20151121123753.58eb6e80@tock>
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: 7bit
-Return-Path: <Joshua.Henderson@microchip.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1448065205-15762-2-git-send-email-joshua.henderson@microchip.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+X-Virus-Scanned: ClamAV using ClamSMTP
+Return-Path: <robh@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50050
+X-archive-position: 50051
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: joshua.henderson@microchip.com
+X-original-sender: robh@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -42,27 +55,41 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 11/21/2015 04:37 AM, Alban wrote:
-> On Fri, 20 Nov 2015 17:17:18 -0700
-> Joshua Henderson <joshua.henderson@microchip.com> wrote:
+On Fri, Nov 20, 2015 at 05:17:13PM -0700, Joshua Henderson wrote:
+> From: Cristian Birsan <cristian.birsan@microchip.com>
 > 
->> This adds support for the Microchip PIC32 MIPS microcontroller with
->> the specific variant PIC32MZDA. PIC32MZDA is based on the MIPS m14KEc
->> core and boots using device tree.
->>
->> This includes an early pin setup and early clock setup needed prior to
->> device tree being initialized. In additon, an interface is provided to
->> synchronize access to registers shared across several peripherals.
->>
->> Signed-off-by: Joshua Henderson <joshua.henderson@microchip.com>
->>
->> [...]
->>
->> diff --git a/arch/mips/include/asm/mach-pic32/gpio.h
->> b/arch/mips/include/asm/mach-pic32/gpio.h new file mode 100644
+> Document the devicetree bindings for the interrupt controller on Microchip
+> PIC32 class devices. This also adds a header defining associated interrupts
+> and related settings.
 > 
-> Custom GPIO header are not used anymore, this file can be dropped.
+> Signed-off-by: Cristian Birsan <cristian.birsan@microchip.com>
+> Signed-off-by: Joshua Henderson <joshua.henderson@microchip.com>
+> ---
+>  .../microchip,pic32mz-evic.txt                     |   65 ++++++
+>  .../interrupt-controller/microchip,pic32mz-evic.h  |  238 ++++++++++++++++++++
+>  2 files changed, 303 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/interrupt-controller/microchip,pic32mz-evic.txt
+>  create mode 100644 include/dt-bindings/interrupt-controller/microchip,pic32mz-evic.h
 > 
-Ack.  Will drop.
+> diff --git a/Documentation/devicetree/bindings/interrupt-controller/microchip,pic32mz-evic.txt b/Documentation/devicetree/bindings/interrupt-controller/microchip,pic32mz-evic.txt
+> new file mode 100644
+> index 0000000..12fb91f
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/interrupt-controller/microchip,pic32mz-evic.txt
+> @@ -0,0 +1,65 @@
+> +Microchip PIC32MZ Interrupt Controller
+> +======================================
+> +
+> +The Microchip PIC32MZ SOC contains an Enhanced Vectored Interrupt Controller
+> +(EVIC) version 2. It handles internal and external interrupts and provides
+> +support for priority, sub-priority, irq type and polarity.
+> +
+> +Required properties
+> +-------------------
+> +
+> +- compatible: Should be "microchip,evic-v2"
 
-Josh
+This should be more specific like "microchip,pic32mz-evic". You can keep 
+this one in addition if you like for matching.
+
+Rob

@@ -1,33 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 22 Nov 2015 16:50:13 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:49804 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27011492AbbKVPuIP7j4P (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 22 Nov 2015 16:50:08 +0100
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.15.2/8.14.8) with ESMTP id tAMFo78f019497;
-        Sun, 22 Nov 2015 16:50:07 +0100
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.15.2/8.15.2/Submit) id tAMFo6It019496;
-        Sun, 22 Nov 2015 16:50:06 +0100
-Date:   Sun, 22 Nov 2015 16:50:06 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     linux-mips@linux-mips.org
-Subject: MIPS: Pull request
-Message-ID: <20151122155006.GA19323@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 22 Nov 2015 17:23:13 +0100 (CET)
+Received: from exsmtp03.microchip.com ([198.175.253.49]:54814 "EHLO
+        email.microchip.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S27011429AbbKVQXLZIL71 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 22 Nov 2015 17:23:11 +0100
+Received: from [10.14.4.125] (10.10.76.4) by chn-sv-exch03.mchp-main.com
+ (10.10.76.49) with Microsoft SMTP Server id 14.3.181.6; Sun, 22 Nov 2015
+ 09:23:01 -0700
+Subject: Re: [PATCH 06/14] MIPS: Add support for PIC32MZDA platform
+To:     Alban <albeu@free.fr>
+References: <1448065205-15762-1-git-send-email-joshua.henderson@microchip.com>
+ <1448065205-15762-7-git-send-email-joshua.henderson@microchip.com>
+ <20151121123753.58eb6e80@tock>
+CC:     <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>
+From:   Joshua Henderson <joshua.henderson@microchip.com>
+Message-ID: <5651ED63.9090101@microchip.com>
+Date:   Sun, 22 Nov 2015 09:29:23 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+ Thunderbird/38.3.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.24 (2015-08-30)
-Return-Path: <ralf@linux-mips.org>
+In-Reply-To: <20151121123753.58eb6e80@tock>
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: 7bit
+Return-Path: <Joshua.Henderson@microchip.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50049
+X-archive-position: 50050
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: joshua.henderson@microchip.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -40,42 +42,27 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Linus,
+On 11/21/2015 04:37 AM, Alban wrote:
+> On Fri, 20 Nov 2015 17:17:18 -0700
+> Joshua Henderson <joshua.henderson@microchip.com> wrote:
+> 
+>> This adds support for the Microchip PIC32 MIPS microcontroller with
+>> the specific variant PIC32MZDA. PIC32MZDA is based on the MIPS m14KEc
+>> core and boots using device tree.
+>>
+>> This includes an early pin setup and early clock setup needed prior to
+>> device tree being initialized. In additon, an interface is provided to
+>> synchronize access to registers shared across several peripherals.
+>>
+>> Signed-off-by: Joshua Henderson <joshua.henderson@microchip.com>
+>>
+>> [...]
+>>
+>> diff --git a/arch/mips/include/asm/mach-pic32/gpio.h
+>> b/arch/mips/include/asm/mach-pic32/gpio.h new file mode 100644
+> 
+> Custom GPIO header are not used anymore, this file can be dropped.
+> 
+Ack.  Will drop.
 
-The following changes since commit 8005c49d9aea74d382f474ce11afbbc7d7130bec:
-
-  Linux 4.4-rc1 (2015-11-15 17:00:27 -0800)
-
-are available in the git repository at:
-
-  git://git.linux-mips.org/pub/scm/ralf/upstream-linus.git upstream
-
-for you to fetch changes up to 55f1d5988c52d481dc489e29ee5e8905b18ff859:
-
-  MIPS: ath79: Add a machine entry for booting OF machines (2015-11-20 15:44:57 +0100)
-
-MIPS fixes for 4.1:
-
- - Fix a flood of annoying build warnings
- - A number of fixes for Atheros 79xx platforms
-
-Please consider pulling,
-
-  Ralf
-
-----------------------------------------------------------------
-As usual this has sat in linux-next and survived Imagination's automated
-build and test system.
-
-Alban Bedel (3):
-      MIPS: ath79: Fix the DDR control initialization on ar71xx and ar934x
-      MIPS: ath79: Fix the size of the MISC INTC registers in ar9132.dtsi
-      MIPS: ath79: Add a machine entry for booting OF machines
-
-Ralf Baechle (1):
-      MIPS: Fix flood of warnings about comparsion being always true.
-
- arch/mips/ath79/setup.c            | 7 ++++++-
- arch/mips/boot/dts/qca/ar9132.dtsi | 2 +-
- arch/mips/include/asm/page.h       | 3 ++-
- 3 files changed, 9 insertions(+), 3 deletions(-)
+Josh

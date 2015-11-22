@@ -1,17 +1,17 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 22 Nov 2015 15:03:31 +0100 (CET)
-Received: from proxima.lp0.eu ([81.2.80.65]:54352 "EHLO proxima.lp0.eu"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 22 Nov 2015 15:05:32 +0100 (CET)
+Received: from proxima.lp0.eu ([81.2.80.65]:54404 "EHLO proxima.lp0.eu"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27007233AbbKVOD3Uv33s (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 22 Nov 2015 15:03:29 +0100
+        id S27007233AbbKVOFax0GYs (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 22 Nov 2015 15:05:30 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=fire.lp0.eu; s=exim;
-        h=Content-Transfer-Encoding:Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:Cc:References:To:Subject; bh=A6OUHBXe5/389OW7eqNOKUKtsY3bJ4+yMvsG84MEr/g=;
-        b=EpLwM57ii/FxpksnF0dAqqoWv3PDJyQDp1+asmMPsgRl9FOx4tT2CZGFhFkwdzaPP3iXUb7e3lcEADdppUpMioRXd+d30PsQ/cfXbu84/WcKyXrCskTDMIQ1Ni/B14F/IKsXwp94lePAaejulDdvMhrLWQ7xklXp95+zt+xuyjtI2RdEqqpgYqVCLjgtggelueS63HbKib6gIluTGfnYjzJig74LkrtlJjEZ6xcCF5qt+J1nXGhtkjhCmh1P2lUxNatFWkngDcRXD5C7i6szcYT6QK7UrqUzwkg/tMJcpFCQX+wALS00CmHI7hCdlXdmF0uLVKLlab6OJivpgjAcEw==;
-Received: from redrum.lp0.eu ([2001:8b0:ffea:0:2e0:81ff:fe4d:2bec]:60487)
+        h=Content-Transfer-Encoding:Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:Cc:References:To:Subject; bh=d8znIjN0bFxFyYaU2IRzuBiMYRszR1TM88ho1CvqYF8=;
+        b=GBqh+Rx2vC0lMPWrTZeg6FyT0Up1i4VZ2pD7EwX1iyU5zrJfQjLH+45yTVV9ByA3VLnKrQdyahxoTWygBA/Is7Q9KoYX0QeGEaFSDOHKFHuP5S2cJdnrkTbVy49bdHjz0vETzhgccrE5jdDgamLhSkcQENPeIE54K/6ITn1bmuJs7mothEThQ2OKW32N+O6RSUUA4sJEav+/V2LSKLxrXV8lmRBIPAs1oq+NrBfLh3hdMBxI4tCzRKDXBwjoLt3O59i9h1bK9la0vWtCM64FHPSPM4mH3FmbJYE7sn/vFrwVDzh+g0Ohuo5EPx96wI6Xp6M2kBJ7zpd+M3eMDELfZg==;
+Received: from redrum.lp0.eu ([2001:8b0:ffea:0:2e0:81ff:fe4d:2bec]:60491 ident=simon)
         by proxima.lp0.eu ([2001:8b0:ffea:0:205:b4ff:fe12:530]:465)
         with esmtpsav (UNKNOWN:DHE-RSA-AES256-SHA:256/CN=Simon Arlott)
-        id 1a0VER-0000fY-DU (Exim); Sun, 22 Nov 2015 14:03:07 +0000
-Subject: Re: [PATCH 4/10] (Was: [PATCH 4/4]) MIPS: bmips: Convert bcm63xx_wdt
- to use WATCHDOG_CORE
+        id 1a0VGX-0000mF-Q8 (Exim); Sun, 22 Nov 2015 14:05:18 +0000
+Subject: [PATCH 4/10] watchdog: bcm63xx_wdt: Handle hardware interrupt and
+ remove software timer
 To:     Guenter Roeck <linux@roeck-us.net>,
         "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
         Ralf Baechle <ralf@linux-mips.org>,
@@ -21,32 +21,32 @@ To:     Guenter Roeck <linux@roeck-us.net>,
         Kevin Cernekee <cernekee@gmail.com>,
         Florian Fainelli <f.fainelli@gmail.com>,
         Wim Van Sebroeck <wim@iguana.be>,
-        Miguel Gaio <miguel.gaio@efixo.com>,
         Maxime Bizon <mbizon@freebox.fr>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         linux-mips@linux-mips.org, linux-watchdog@vger.kernel.org
 References: <5650BFD6.5030700@simon.arlott.org.uk>
  <5650C08C.6090300@simon.arlott.org.uk> <5650E2FA.6090408@roeck-us.net>
  <5650E5BB.6020404@simon.arlott.org.uk> <56512937.6030903@roeck-us.net>
+ <5651CB13.4090704@simon.arlott.org.uk>
 Cc:     Rob Herring <robh+dt@kernel.org>, Pawel Moll <pawel.moll@arm.com>,
         Mark Rutland <mark.rutland@arm.com>,
         Ian Campbell <ijc+devicetree@hellion.org.uk>,
         Kumar Gala <galak@codeaurora.org>,
         Jonas Gorski <jogo@openwrt.org>
 From:   Simon Arlott <simon@fire.lp0.eu>
-Message-ID: <5651CB13.4090704@simon.arlott.org.uk>
-Date:   Sun, 22 Nov 2015 14:02:59 +0000
+Message-ID: <5651CB9C.4090005@simon.arlott.org.uk>
+Date:   Sun, 22 Nov 2015 14:05:16 +0000
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
  Thunderbird/38.3.0
 MIME-Version: 1.0
-In-Reply-To: <56512937.6030903@roeck-us.net>
+In-Reply-To: <5651CB13.4090704@simon.arlott.org.uk>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
 Return-Path: <simon@fire.lp0.eu>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50040
+X-archive-position: 50041
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -63,50 +63,288 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 22/11/15 02:32, Guenter Roeck wrote:
-> On 11/21/2015 01:44 PM, Simon Arlott wrote:
->> On 21/11/15 21:32, Guenter Roeck wrote:
->>> this is really doing a bit too much in a single patch.
->>> Conversion to the watchdog infrastructure should probably be
->>> the first step, followed by further optimizations and improvements.
->>
+There is a level triggered interrupt for the watchdog timer as part of
+the bcm63xx_timer device. The interrupt occurs when the hardware watchdog
+timer reaches 50% of the remaining time.
 
-I've split patch 4 up into 7 patches, which will be patches 4/10..10/10
-in this thread.
+It is not possible to mask the interrupt within the bcm63xx_timer device.
+To get around this limitation, handle the interrupt by restarting the
+watchdog with the current remaining time (which will be half the previous
+timeout) so that the interrupt occurs again at 1/4th, 1/8th, etc. of the
+original timeout value until the watchdog forces a reboot.
 
-Instead of using bcm63xx_timer_register in #ifdefs, I'll remove most of
-bcm63xx_timer because it's only used by the watchdog.
+The software timer was restarting the hardware watchdog with a 85 second
+timeout until the software timer expired, and then causing a panic()
+about 42.5 seconds later when the hardware interrupt occurred. The
+hardware watchdog would not reboot until a further 42.5 seconds had
+passed.
 
->>> We have some infrastructure changes in the works which will move
->>> the need for soft-timers from individual drivers into the watchdog core.
->>> Would this possibly be helpful here ? The timer-driven watchdog ping
->>> seems to accomplish pretty much the same.
->>
->> There is no need for a software timer. This is not a timer-driven
->> watchdog ping, there is an unmaskable timer interrupt when the watchdog
->> timer has less than 50% remaining.
->>
-> Ok. Maybe I got confused by the interrupt-triggered watchdog ping.
-> I'll have to look into that much more closely; it is quite unusual
-> and complex. The explanation is also not easy to understand.
-> What does "The only way to stop this interrupt" mean ? Repeatedly
+Remove the software timer and rely on the hardware timer directly,
+reducing the maximum timeout from 256 seconds to 85 seconds
+(2^32 / WDT_HZ).
 
-The interrupt is level triggered at less than 50% of the time remaining.
-Unless the watchdog is stopped or restarted, the interrupt will not stop
-occurring.
+Signed-off-by: Simon Arlott <simon@fire.lp0.eu>
+---
+ drivers/watchdog/bcm63xx_wdt.c | 124 ++++++++++++++++++++++++-----------------
+ 1 file changed, 72 insertions(+), 52 deletions(-)
 
-> triggering the interrupt in 1/2, 1/4, 1/8 of the remaining time is
-> really odd.
-
-It's a bit odd but there's no way to ack the interrupt. This seemed like
-the best approach without adding the complexity of a software timer or
-trying to mask and unmask the timer interrupt. I don't  want to ignore
-the interrupt entirely because I'd like to know if the watchdog is going
-to cause a reboot.
-
-> On side note, the subject tag should be "watchdog:", not "MIPS:".
-
-Fixed.
+diff --git a/drivers/watchdog/bcm63xx_wdt.c b/drivers/watchdog/bcm63xx_wdt.c
+index ab26fd9..f88fc97 100644
+--- a/drivers/watchdog/bcm63xx_wdt.c
++++ b/drivers/watchdog/bcm63xx_wdt.c
+@@ -3,6 +3,7 @@
+  *
+  *  Copyright (C) 2007, Miguel Gaio <miguel.gaio@efixo.com>
+  *  Copyright (C) 2008, Florian Fainelli <florian@openwrt.org>
++ *  Copyright 2015 Simon Arlott
+  *
+  *  This program is free software; you can redistribute it and/or
+  *  modify it under the terms of the GNU General Public License
+@@ -20,11 +21,10 @@
+ #include <linux/miscdevice.h>
+ #include <linux/module.h>
+ #include <linux/moduleparam.h>
++#include <linux/spinlock.h>
+ #include <linux/types.h>
+ #include <linux/uaccess.h>
+ #include <linux/watchdog.h>
+-#include <linux/timer.h>
+-#include <linux/jiffies.h>
+ #include <linux/interrupt.h>
+ #include <linux/ptrace.h>
+ #include <linux/resource.h>
+@@ -37,16 +37,17 @@
+ 
+ #define PFX KBUILD_MODNAME
+ 
+-#define WDT_HZ		50000000 /* Fclk */
+-#define WDT_DEFAULT_TIME	30      /* seconds */
+-#define WDT_MAX_TIME		256     /* seconds */
++#define WDT_HZ			50000000		/* Fclk */
++#define WDT_DEFAULT_TIME	30			/* seconds */
++#define WDT_MAX_TIME		(0xffffffff / WDT_HZ)	/* seconds */
+ 
+-static struct {
++struct bcm63xx_wdt_hw {
++	raw_spinlock_t lock;
+ 	void __iomem *regs;
+-	struct timer_list timer;
+ 	unsigned long inuse;
+-	atomic_t ticks;
+-} bcm63xx_wdt_device;
++	bool running;
++};
++static struct bcm63xx_wdt_hw bcm63xx_wdt_device;
+ 
+ static int expect_close;
+ 
+@@ -59,48 +60,67 @@ MODULE_PARM_DESC(nowayout, "Watchdog cannot be stopped once started (default="
+ /* HW functions */
+ static void bcm63xx_wdt_hw_start(void)
+ {
+-	bcm_writel(0xfffffffe, bcm63xx_wdt_device.regs + WDT_DEFVAL_REG);
++	unsigned long flags;
++
++	raw_spin_lock_irqsave(&bcm63xx_wdt_device.lock, flags);
++	bcm_writel(wdt_time * WDT_HZ, bcm63xx_wdt_device.regs + WDT_DEFVAL_REG);
+ 	bcm_writel(WDT_START_1, bcm63xx_wdt_device.regs + WDT_CTL_REG);
+ 	bcm_writel(WDT_START_2, bcm63xx_wdt_device.regs + WDT_CTL_REG);
++	bcm63xx_wdt_device.running = true;
++	raw_spin_unlock_irqrestore(&bcm63xx_wdt_device.lock, flags);
+ }
+ 
+ static void bcm63xx_wdt_hw_stop(void)
+ {
++	unsigned long flags;
++
++	raw_spin_lock_irqsave(&bcm63xx_wdt_device.lock, flags);
+ 	bcm_writel(WDT_STOP_1, bcm63xx_wdt_device.regs + WDT_CTL_REG);
+ 	bcm_writel(WDT_STOP_2, bcm63xx_wdt_device.regs + WDT_CTL_REG);
++	bcm63xx_wdt_device.running = false;
++	raw_spin_unlock_irqrestore(&bcm63xx_wdt_device.lock, flags);
+ }
+ 
++/* The watchdog interrupt occurs when half the timeout is remaining */
+ static void bcm63xx_wdt_isr(void *data)
+ {
+-	struct pt_regs *regs = get_irq_regs();
+-
+-	die(PFX " fire", regs);
+-}
+-
+-static void bcm63xx_timer_tick(unsigned long unused)
+-{
+-	if (!atomic_dec_and_test(&bcm63xx_wdt_device.ticks)) {
+-		bcm63xx_wdt_hw_start();
+-		mod_timer(&bcm63xx_wdt_device.timer, jiffies + HZ);
+-	} else
+-		pr_crit("watchdog will restart system\n");
+-}
+-
+-static void bcm63xx_wdt_pet(void)
+-{
+-	atomic_set(&bcm63xx_wdt_device.ticks, wdt_time);
+-}
+-
+-static void bcm63xx_wdt_start(void)
+-{
+-	bcm63xx_wdt_pet();
+-	bcm63xx_timer_tick(0);
+-}
++	struct bcm63xx_wdt_hw *hw = &bcm63xx_wdt_device;
++	unsigned long flags;
++
++	raw_spin_lock_irqsave(&hw->lock, flags);
++	if (!hw->running) {
++		/* Stop the watchdog as it shouldn't be running */
++		bcm_writel(WDT_STOP_1, hw->regs + WDT_CTL_REG);
++		bcm_writel(WDT_STOP_2, hw->regs + WDT_CTL_REG);
++	} else {
++		u32 timeleft = bcm_readl(hw->regs + WDT_CTL_REG);
++		u32 ms;
++
++		if (timeleft >= 2) {
++			/* The only way to clear this level triggered interrupt
++			 * without disrupting the normal running of the watchdog
++			 * is to restart the watchdog with the current remaining
++			 * time value (which will be half the previous timeout)
++			 * so the interrupt occurs again at 1/4th, 1/8th, etc.
++			 * of the original timeout value until we reboot.
++			 *
++			 * This is done with a lock held in case userspace is
++			 * trying to restart the watchdog on another CPU.
++			 */
++			bcm_writel(timeleft, hw->regs + WDT_DEFVAL_REG);
++			bcm_writel(WDT_START_1, hw->regs + WDT_CTL_REG);
++			bcm_writel(WDT_START_2, hw->regs + WDT_CTL_REG);
++		} else {
++			/* The watchdog cannot be started with a time of less
++			 * than 2 ticks (it won't fire).
++			 */
++			die(PFX ": watchdog timer expired\n", get_irq_regs());
++		}
+ 
+-static void bcm63xx_wdt_pause(void)
+-{
+-	del_timer_sync(&bcm63xx_wdt_device.timer);
+-	bcm63xx_wdt_hw_stop();
++		ms = timeleft / (WDT_HZ / 1000);
++		pr_alert("warning timer fired, reboot in %ums\n", ms);
++	}
++	raw_spin_unlock_irqrestore(&hw->lock, flags);
+ }
+ 
+ static int bcm63xx_wdt_settimeout(int new_time)
+@@ -118,17 +138,17 @@ static int bcm63xx_wdt_open(struct inode *inode, struct file *file)
+ 	if (test_and_set_bit(0, &bcm63xx_wdt_device.inuse))
+ 		return -EBUSY;
+ 
+-	bcm63xx_wdt_start();
++	bcm63xx_wdt_hw_start();
+ 	return nonseekable_open(inode, file);
+ }
+ 
+ static int bcm63xx_wdt_release(struct inode *inode, struct file *file)
+ {
+ 	if (expect_close == 42)
+-		bcm63xx_wdt_pause();
++		bcm63xx_wdt_hw_stop();
+ 	else {
+ 		pr_crit("Unexpected close, not stopping watchdog!\n");
+-		bcm63xx_wdt_start();
++		bcm63xx_wdt_hw_start();
+ 	}
+ 	clear_bit(0, &bcm63xx_wdt_device.inuse);
+ 	expect_close = 0;
+@@ -153,7 +173,7 @@ static ssize_t bcm63xx_wdt_write(struct file *file, const char *data,
+ 					expect_close = 42;
+ 			}
+ 		}
+-		bcm63xx_wdt_pet();
++		bcm63xx_wdt_hw_start();
+ 	}
+ 	return len;
+ }
+@@ -187,18 +207,18 @@ static long bcm63xx_wdt_ioctl(struct file *file, unsigned int cmd,
+ 			return -EFAULT;
+ 
+ 		if (new_value & WDIOS_DISABLECARD) {
+-			bcm63xx_wdt_pause();
++			bcm63xx_wdt_hw_stop();
+ 			retval = 0;
+ 		}
+ 		if (new_value & WDIOS_ENABLECARD) {
+-			bcm63xx_wdt_start();
++			bcm63xx_wdt_hw_start();
+ 			retval = 0;
+ 		}
+ 
+ 		return retval;
+ 
+ 	case WDIOC_KEEPALIVE:
+-		bcm63xx_wdt_pet();
++		bcm63xx_wdt_hw_start();
+ 		return 0;
+ 
+ 	case WDIOC_SETTIMEOUT:
+@@ -208,7 +228,7 @@ static long bcm63xx_wdt_ioctl(struct file *file, unsigned int cmd,
+ 		if (bcm63xx_wdt_settimeout(new_value))
+ 			return -EINVAL;
+ 
+-		bcm63xx_wdt_pet();
++		bcm63xx_wdt_hw_start();
+ 
+ 	case WDIOC_GETTIMEOUT:
+ 		return put_user(wdt_time, p);
+@@ -240,8 +260,6 @@ static int bcm63xx_wdt_probe(struct platform_device *pdev)
+ 	int ret;
+ 	struct resource *r;
+ 
+-	setup_timer(&bcm63xx_wdt_device.timer, bcm63xx_timer_tick, 0L);
+-
+ 	r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+ 	if (!r) {
+ 		dev_err(&pdev->dev, "failed to get resources\n");
+@@ -255,6 +273,8 @@ static int bcm63xx_wdt_probe(struct platform_device *pdev)
+ 		return -ENXIO;
+ 	}
+ 
++	raw_spin_lock_init(&bcm63xx_wdt_device.lock);
++
+ 	ret = bcm63xx_timer_register(TIMER_WDT_ID, bcm63xx_wdt_isr, NULL);
+ 	if (ret < 0) {
+ 		dev_err(&pdev->dev, "failed to register wdt timer isr\n");
+@@ -264,8 +284,8 @@ static int bcm63xx_wdt_probe(struct platform_device *pdev)
+ 	if (bcm63xx_wdt_settimeout(wdt_time)) {
+ 		bcm63xx_wdt_settimeout(WDT_DEFAULT_TIME);
+ 		dev_info(&pdev->dev,
+-			": wdt_time value must be 1 <= wdt_time <= 256, using %d\n",
+-			wdt_time);
++			": wdt_time value must be 1 <= wdt_time <= %d, using %d\n",
++			WDT_MAX_TIME, wdt_time);
+ 	}
+ 
+ 	ret = misc_register(&bcm63xx_wdt_miscdev);
+@@ -287,7 +307,7 @@ unregister_timer:
+ static int bcm63xx_wdt_remove(struct platform_device *pdev)
+ {
+ 	if (!nowayout)
+-		bcm63xx_wdt_pause();
++		bcm63xx_wdt_hw_stop();
+ 
+ 	misc_deregister(&bcm63xx_wdt_miscdev);
+ 	bcm63xx_timer_unregister(TIMER_WDT_ID);
+@@ -296,7 +316,7 @@ static int bcm63xx_wdt_remove(struct platform_device *pdev)
+ 
+ static void bcm63xx_wdt_shutdown(struct platform_device *pdev)
+ {
+-	bcm63xx_wdt_pause();
++	bcm63xx_wdt_hw_stop();
+ }
+ 
+ static struct platform_driver bcm63xx_wdt_driver = {
+-- 
+2.1.4
 
 -- 
 Simon Arlott

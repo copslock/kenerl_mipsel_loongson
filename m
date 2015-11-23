@@ -1,56 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Nov 2015 16:33:35 +0100 (CET)
-Received: from arrakis.dune.hu ([78.24.191.176]:39081 "EHLO arrakis.dune.hu"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27011488AbbKWPddhE4Vy (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 23 Nov 2015 16:33:33 +0100
-Received: from localhost (localhost [127.0.0.1])
-        by arrakis.dune.hu (Postfix) with ESMTP id 61F9D28BD63;
-        Mon, 23 Nov 2015 16:31:29 +0100 (CET)
-X-Virus-Scanned: at arrakis.dune.hu
-Received: from mail-lf0-f42.google.com (mail-lf0-f42.google.com [209.85.215.42])
-        by arrakis.dune.hu (Postfix) with ESMTPSA id E5C7128058C;
-        Mon, 23 Nov 2015 16:31:20 +0100 (CET)
-Received: by lfdl133 with SMTP id l133so28745258lfd.2;
-        Mon, 23 Nov 2015 07:33:23 -0800 (PST)
-X-Received: by 10.25.39.19 with SMTP id n19mr8962181lfn.156.1448292803288;
- Mon, 23 Nov 2015 07:33:23 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Nov 2015 17:55:36 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:33789 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27013023AbbKWQzfNNi1T (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 23 Nov 2015 17:55:35 +0100
+Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
+        by Websense Email Security Gateway with ESMTPS id 6ABF75182A33C;
+        Mon, 23 Nov 2015 16:55:26 +0000 (GMT)
+Received: from HHMAIL01.hh.imgtec.org (10.100.10.19) by hhmail02.hh.imgtec.org
+ (10.100.10.20) with Microsoft SMTP Server (TLS) id 14.3.235.1; Mon, 23 Nov
+ 2015 16:55:28 +0000
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ HHMAIL01.hh.imgtec.org (10.100.10.19) with Microsoft SMTP Server (TLS) id
+ 14.3.235.1; Mon, 23 Nov 2015 16:55:28 +0000
+Received: from [192.168.154.94] (192.168.154.94) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Mon, 23 Nov
+ 2015 16:55:28 +0000
+Subject: Re: [PATCH 10/14] irqchip/mips-gic: Add a IPI hierarchy domaind
+To:     Thomas Gleixner <tglx@linutronix.de>
+References: <1446549181-31788-1-git-send-email-qais.yousef@imgtec.com>
+ <1446549181-31788-11-git-send-email-qais.yousef@imgtec.com>
+ <alpine.DEB.2.11.1511071323471.4032@nanos> <56407F3C.4060404@imgtec.com>
+ <alpine.DEB.2.11.1511161610070.3761@nanos> <564EFA74.90606@imgtec.com>
+ <alpine.DEB.2.11.1511202113010.3931@nanos>
+CC:     <linux-kernel@vger.kernel.org>, <jason@lakedaemon.net>,
+        <marc.zyngier@arm.com>, <jiang.liu@linux.intel.com>,
+        <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
+From:   Qais Yousef <qais.yousef@imgtec.com>
+Message-ID: <565344FF.1090508@imgtec.com>
+Date:   Mon, 23 Nov 2015 16:55:27 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+ Thunderbird/38.3.0
 MIME-Version: 1.0
-Received: by 10.25.162.78 with HTTP; Mon, 23 Nov 2015 07:33:03 -0800 (PST)
-In-Reply-To: <5650BFD6.5030700@simon.arlott.org.uk>
-References: <5650BFD6.5030700@simon.arlott.org.uk>
-From:   Jonas Gorski <jogo@openwrt.org>
-Date:   Mon, 23 Nov 2015 16:33:03 +0100
-X-Gmail-Original-Message-ID: <CAOiHx=k0Aa+qrBT1J7_cQaQRxndBmwsgSgi3x0eJOYTAy6Zq7Q@mail.gmail.com>
-Message-ID: <CAOiHx=k0Aa+qrBT1J7_cQaQRxndBmwsgSgi3x0eJOYTAy6Zq7Q@mail.gmail.com>
-Subject: Re: [PATCH 1/4] clocksource: Add brcm,bcm6345-timer device tree binding
-To:     Simon Arlott <simon@fire.lp0.eu>
-Cc:     "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Marc Zyngier <marc.zyngier@arm.com>,
-        Kevin Cernekee <cernekee@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Wim Van Sebroeck <wim@iguana.be>,
-        Miguel Gaio <miguel.gaio@efixo.com>,
-        Maxime Bizon <mbizon@freebox.fr>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        MIPS Mailing List <linux-mips@linux-mips.org>,
-        linux-watchdog@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        Pawel Moll <pawel.moll@arm.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ian Campbell <ijc+devicetree@hellion.org.uk>,
-        Kumar Gala <galak@codeaurora.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <jogo@openwrt.org>
+In-Reply-To: <alpine.DEB.2.11.1511202113010.3931@nanos>
+Content-Type: text/plain; charset="windows-1252"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.154.94]
+Return-Path: <Qais.Yousef@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50062
+X-archive-position: 50063
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jogo@openwrt.org
+X-original-sender: qais.yousef@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -63,55 +56,33 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sat, Nov 21, 2015 at 8:02 PM, Simon Arlott <simon@fire.lp0.eu> wrote:
-> Add device tree binding for the BCM6345 timer. This is required for the
-> BCM6345 watchdog which needs to respond to one of the timer interrupts.
+On 11/20/2015 08:39 PM, Thomas Gleixner wrote:
+>> Same applies when doing the reverse mapping.
+>>
+>> In other words, the ipi_mask won't always necessarily be linear to facilitate
+>> the 1:1 mapping that this approach assumes.
+>>
+>> It is a solvable problem, but I think we're losing the elegance that promoted
+>> going into this direction and I think sticking to using struct ipi_mapping
+>> (with some enhancements to how it's exposed an integrated by/into generic
+>> code) is a better approach.
+> The only reason to use the ipi_mapping thing is if we need non
+> consecutive masks, i.e. cpu 5 and 9.
+
+That's the case I had in mind.
+
 >
-> Signed-off-by: Simon Arlott <simon@fire.lp0.eu>
-> ---
->  .../bindings/timer/brcm,bcm6345-timer.txt          | 57 ++++++++++++++++++++++
->  1 file changed, 57 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/timer/brcm,bcm6345-timer.txt
->
-> diff --git a/Documentation/devicetree/bindings/timer/brcm,bcm6345-timer.txt b/Documentation/devicetree/bindings/timer/brcm,bcm6345-timer.txt
-> new file mode 100644
-> index 0000000..2593907
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/timer/brcm,bcm6345-timer.txt
-> @@ -0,0 +1,57 @@
-> +Broadcom BCM6345 Timer
-> +
-> +This block is a timer that is connected to one interrupt on the main interrupt
-> +controller and functions as a programmable interrupt controller for timer events.
-> +
-> +- 3 to 4 independent timers with their own maskable level interrupt bit (but not
-> +  per CPU because there is only one parent interrupt and the timers share it)
-> +
+> I really don't want to have it mandatory as it does not make any sense
+> for systems where the IPI is a single per_cpu interrupt. For the
+> linear consecutive space it is just adding memory and cache footprint
+> for no benefit. Think about machines with 4k and more cpus ....
 
-This is true for the 6345 one but not the 6318/63148/63381 one, which
-has one interrupt per timer (+ one extra watchdog interrupt on
-6318/63148), and the parent interrupt controller supports affinity. So
-you could e.g. route the timer 0 irq to cpu 0 and timer1 irq on cpu 1.
+OK. Although so far I think the ovehead is higher without the 
+ipi_mapping because of all the extra checkings we have to do when 
+sending an IPI. I'll leave this to code review when I have something 
+ready though.
 
-> +- 1 watchdog timer with an unmaskable level interrupt
-> +
-> +- Contains one enable/status word pair
-> +
-> +- No atomic set/clear operations
-> +
-> +The lack of per CPU ability of timers makes them unusable as a set of
-> +clockevent devices, otherwise they could be attached to the remaining
-> +interrupts.
-> +
-> +The BCM6318 also has a separate interrupt for every timer except the watchdog.
-> +
-> +Required properties:
-> +
-> +- compatible: should be "brcm,bcm<soc>-timer", "brcm,bcm6345-timer"
+I'm debugging more problems and hopefully I'll send something this week.
 
-Since bcm6318 uses a slightly different register layout than the
-earlier SoCs, I'd argue that using bcm6345-timer as a compatible for
-bcm6318 is wrong.
-
-
-Jonas
+Thanks,
+Qais

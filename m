@@ -1,34 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Nov 2015 16:02:57 +0100 (CET)
-Received: from arrakis.dune.hu ([78.24.191.176]:38067 "EHLO arrakis.dune.hu"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Nov 2015 16:33:35 +0100 (CET)
+Received: from arrakis.dune.hu ([78.24.191.176]:39081 "EHLO arrakis.dune.hu"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27012812AbbKWPCyWt427 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 23 Nov 2015 16:02:54 +0100
+        id S27011488AbbKWPddhE4Vy (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 23 Nov 2015 16:33:33 +0100
 Received: from localhost (localhost [127.0.0.1])
-        by arrakis.dune.hu (Postfix) with ESMTP id C844E287BA5;
-        Mon, 23 Nov 2015 16:00:50 +0100 (CET)
+        by arrakis.dune.hu (Postfix) with ESMTP id 61F9D28BD63;
+        Mon, 23 Nov 2015 16:31:29 +0100 (CET)
 X-Virus-Scanned: at arrakis.dune.hu
-Received: from mail-lf0-f53.google.com (mail-lf0-f53.google.com [209.85.215.53])
-        by arrakis.dune.hu (Postfix) with ESMTPSA id 38A1228058C;
-        Mon, 23 Nov 2015 16:00:39 +0100 (CET)
-Received: by lfaz4 with SMTP id z4so109299233lfa.0;
-        Mon, 23 Nov 2015 07:02:41 -0800 (PST)
-X-Received: by 10.25.39.19 with SMTP id n19mr8907366lfn.156.1448290961561;
- Mon, 23 Nov 2015 07:02:41 -0800 (PST)
+Received: from mail-lf0-f42.google.com (mail-lf0-f42.google.com [209.85.215.42])
+        by arrakis.dune.hu (Postfix) with ESMTPSA id E5C7128058C;
+        Mon, 23 Nov 2015 16:31:20 +0100 (CET)
+Received: by lfdl133 with SMTP id l133so28745258lfd.2;
+        Mon, 23 Nov 2015 07:33:23 -0800 (PST)
+X-Received: by 10.25.39.19 with SMTP id n19mr8962181lfn.156.1448292803288;
+ Mon, 23 Nov 2015 07:33:23 -0800 (PST)
 MIME-Version: 1.0
-Received: by 10.25.162.78 with HTTP; Mon, 23 Nov 2015 07:02:22 -0800 (PST)
-In-Reply-To: <5651CC3C.5090200@simon.arlott.org.uk>
-References: <5650BFD6.5030700@simon.arlott.org.uk> <5650C08C.6090300@simon.arlott.org.uk>
- <5650E2FA.6090408@roeck-us.net> <5650E5BB.6020404@simon.arlott.org.uk>
- <56512937.6030903@roeck-us.net> <5651CB13.4090704@simon.arlott.org.uk> <5651CC3C.5090200@simon.arlott.org.uk>
+Received: by 10.25.162.78 with HTTP; Mon, 23 Nov 2015 07:33:03 -0800 (PST)
+In-Reply-To: <5650BFD6.5030700@simon.arlott.org.uk>
+References: <5650BFD6.5030700@simon.arlott.org.uk>
 From:   Jonas Gorski <jogo@openwrt.org>
-Date:   Mon, 23 Nov 2015 16:02:22 +0100
-X-Gmail-Original-Message-ID: <CAOiHx==Z=4H=-L2CY-FE5m6WMV0XzgsCmy1b9tUbsmOHydzkEw@mail.gmail.com>
-Message-ID: <CAOiHx==Z=4H=-L2CY-FE5m6WMV0XzgsCmy1b9tUbsmOHydzkEw@mail.gmail.com>
-Subject: Re: [PATCH 6/10] watchdog: bcm63xx_wdt: Obtain watchdog clock HZ from
- "periph" clk
+Date:   Mon, 23 Nov 2015 16:33:03 +0100
+X-Gmail-Original-Message-ID: <CAOiHx=k0Aa+qrBT1J7_cQaQRxndBmwsgSgi3x0eJOYTAy6Zq7Q@mail.gmail.com>
+Message-ID: <CAOiHx=k0Aa+qrBT1J7_cQaQRxndBmwsgSgi3x0eJOYTAy6Zq7Q@mail.gmail.com>
+Subject: Re: [PATCH 1/4] clocksource: Add brcm,bcm6345-timer device tree binding
 To:     Simon Arlott <simon@fire.lp0.eu>
-Cc:     Guenter Roeck <linux@roeck-us.net>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+Cc:     "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
         Ralf Baechle <ralf@linux-mips.org>,
         Thomas Gleixner <tglx@linutronix.de>,
         Jason Cooper <jason@lakedaemon.net>,
@@ -36,6 +32,7 @@ Cc:     Guenter Roeck <linux@roeck-us.net>,
         Kevin Cernekee <cernekee@gmail.com>,
         Florian Fainelli <f.fainelli@gmail.com>,
         Wim Van Sebroeck <wim@iguana.be>,
+        Miguel Gaio <miguel.gaio@efixo.com>,
         Maxime Bizon <mbizon@freebox.fr>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         MIPS Mailing List <linux-mips@linux-mips.org>,
@@ -49,7 +46,7 @@ Return-Path: <jogo@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50061
+X-archive-position: 50062
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -66,43 +63,55 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi,
-
-On Sun, Nov 22, 2015 at 3:07 PM, Simon Arlott <simon@fire.lp0.eu> wrote:
-> Instead of using a fixed clock HZ in the driver, obtain it from the
-> "periph" clk that the watchdog timer uses.
+On Sat, Nov 21, 2015 at 8:02 PM, Simon Arlott <simon@fire.lp0.eu> wrote:
+> Add device tree binding for the BCM6345 timer. This is required for the
+> BCM6345 watchdog which needs to respond to one of the timer interrupts.
 >
 > Signed-off-by: Simon Arlott <simon@fire.lp0.eu>
 > ---
->  drivers/watchdog/bcm63xx_wdt.c | 36 +++++++++++++++++++++++++++++++-----
->  1 file changed, 31 insertions(+), 5 deletions(-)
+>  .../bindings/timer/brcm,bcm6345-timer.txt          | 57 ++++++++++++++++++++++
+>  1 file changed, 57 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/timer/brcm,bcm6345-timer.txt
 >
-> diff --git a/drivers/watchdog/bcm63xx_wdt.c b/drivers/watchdog/bcm63xx_wdt.c
-> index 1d2a501..eb5e551 100644
-> --- a/drivers/watchdog/bcm63xx_wdt.c
-> +++ b/drivers/watchdog/bcm63xx_wdt.c
-> @@ -13,6 +13,7 @@
->
->  #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
->
-> +#include <linux/clk.h>
->  #include <linux/errno.h>
->  #include <linux/io.h>
->  #include <linux/kernel.h>
-> @@ -32,11 +33,13 @@
->
->  #define PFX KBUILD_MODNAME
->
-> -#define WDT_HZ                 50000000                /* Fclk */
-> +#define WDT_CLK_NAME           "periph"
+> diff --git a/Documentation/devicetree/bindings/timer/brcm,bcm6345-timer.txt b/Documentation/devicetree/bindings/timer/brcm,bcm6345-timer.txt
+> new file mode 100644
+> index 0000000..2593907
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/timer/brcm,bcm6345-timer.txt
+> @@ -0,0 +1,57 @@
+> +Broadcom BCM6345 Timer
+> +
+> +This block is a timer that is connected to one interrupt on the main interrupt
+> +controller and functions as a programmable interrupt controller for timer events.
+> +
+> +- 3 to 4 independent timers with their own maskable level interrupt bit (but not
+> +  per CPU because there is only one parent interrupt and the timers share it)
+> +
 
-@Florian:
-Is this correct? The comment for the watchdog in 6358_map_part.h and
-earlier claims that the clock is 40 MHz there, but the code uses 50MHz
-- is this a bug in the comments or is it a bug taken over from the
-original broadcom code? I'm sure that the periph clock being 50 MHz
-even on the older chips is correct, else we'd have noticed that in
-serial output (where it's also used).
+This is true for the 6345 one but not the 6318/63148/63381 one, which
+has one interrupt per timer (+ one extra watchdog interrupt on
+6318/63148), and the parent interrupt controller supports affinity. So
+you could e.g. route the timer 0 irq to cpu 0 and timer1 irq on cpu 1.
+
+> +- 1 watchdog timer with an unmaskable level interrupt
+> +
+> +- Contains one enable/status word pair
+> +
+> +- No atomic set/clear operations
+> +
+> +The lack of per CPU ability of timers makes them unusable as a set of
+> +clockevent devices, otherwise they could be attached to the remaining
+> +interrupts.
+> +
+> +The BCM6318 also has a separate interrupt for every timer except the watchdog.
+> +
+> +Required properties:
+> +
+> +- compatible: should be "brcm,bcm<soc>-timer", "brcm,bcm6345-timer"
+
+Since bcm6318 uses a slightly different register layout than the
+earlier SoCs, I'd argue that using bcm6345-timer as a compatible for
+bcm6318 is wrong.
 
 
 Jonas

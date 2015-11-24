@@ -1,96 +1,71 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Nov 2015 19:13:41 +0100 (CET)
-Received: from mail-bl2on0099.outbound.protection.outlook.com ([65.55.169.99]:47552
-        "EHLO na01-bl2-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27007608AbbKXSNjBHOdB (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 24 Nov 2015 19:13:39 +0100
-Authentication-Results: spf=none (sender IP is )
- smtp.mailfrom=David.Daney@caviumnetworks.com; 
-Received: from dl.caveonetworks.com (64.2.3.194) by
- BN4PR07MB2129.namprd07.prod.outlook.com (10.164.63.11) with Microsoft SMTP
- Server (TLS) id 15.1.331.20; Tue, 24 Nov 2015 18:13:29 +0000
-Message-ID: <5654A8C6.3070306@caviumnetworks.com>
-Date:   Tue, 24 Nov 2015 10:13:26 -0800
-From:   David Daney <ddaney@caviumnetworks.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
-MIME-Version: 1.0
-To:     Aaro Koskinen <aaro.koskinen@iki.fi>
-CC:     Aleksey Makarov <aleksey.makarov@auriga.com>,
-        <linux-mmc@vger.kernel.org>, <linux-mips@linux-mips.org>,
-        <linux-kernel@vger.kernel.org>,
-        David Daney <david.daney@cavium.com>,
-        Chandrakala Chavva <cchavva@caviumnetworks.com>,
-        Leonid Rosenboim <lrosenboim@caviumnetworks.com>,
-        Peter Swain <pswain@cavium.com>,
-        Aaron Williams <aaron.williams@cavium.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Nov 2015 19:21:56 +0100 (CET)
+Received: from bh-25.webhostbox.net ([208.91.199.152]:53802 "EHLO
+        bh-25.webhostbox.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27007607AbbKXSVyHA42B (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 24 Nov 2015 19:21:54 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=roeck-us.net; s=default;
+        h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date; bh=fQiReybo840hKr2cDBgrBUQewo0/qMup5xyMDQNtaPM=;
+        b=q+xv27px094vrfTyJpi860JgF//5u2k4oKZSEaWRWhsm6gImfzgBDDbs38sQY0EdtCCsqERwmo8eu0Mdqdts8Nxo/Fb5l3RGcg7y4NgHuyTdtBKfAbTC11wnUxOqFDQR/VjimfKAQYwzhphwL2Wkg+s6FhBh5KACRlZpNx8cteI=;
+Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:49349 helo=localhost)
+        by bh-25.webhostbox.net with esmtpa (Exim 4.85)
+        (envelope-from <linux@roeck-us.net>)
+        id 1a1IDu-003jcm-BP; Tue, 24 Nov 2015 18:21:53 +0000
+Date:   Tue, 24 Nov 2015 10:21:38 -0800
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Simon Arlott <simon@fire.lp0.eu>,
+        Florian Fainelli <f.fainelli@gmail.com>
+Cc:     "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Marc Zyngier <marc.zyngier@arm.com>,
+        Kevin Cernekee <cernekee@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Wim Van Sebroeck <wim@iguana.be>,
+        Maxime Bizon <mbizon@freebox.fr>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-mips@linux-mips.org, linux-watchdog@vger.kernel.org,
         Rob Herring <robh+dt@kernel.org>,
         Pawel Moll <pawel.moll@arm.com>,
         Mark Rutland <mark.rutland@arm.com>,
         Ian Campbell <ijc+devicetree@hellion.org.uk>,
         Kumar Gala <galak@codeaurora.org>,
-        Chris Ball <chris@printf.net>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        <devicetree@vger.kernel.org>
-Subject: Re: [PATCH v4] mmc: OCTEON: Add host driver for OCTEON MMC controller
-References: <1426518362-24349-1-git-send-email-aleksey.makarov@auriga.com> <20150518210514.GG609@fuloong-minipc.musicnaut.iki.fi> <555A5C5C.9090903@auriga.com> <20151120173233.GH18138@blackmetal.musicnaut.iki.fi>
-In-Reply-To: <20151120173233.GH18138@blackmetal.musicnaut.iki.fi>
-Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [64.2.3.194]
-X-ClientProxiedBy: BY2PR07CA043.namprd07.prod.outlook.com (10.141.251.18) To
- BN4PR07MB2129.namprd07.prod.outlook.com (25.164.63.11)
-X-Microsoft-Exchange-Diagnostics: 1;BN4PR07MB2129;2:P2fLP5E7j4a2/0zrQ+1Ob5IAw/cBNzkhpNC1T4l4nqGEZr1SmMhekWYsPMcqp0rOBt+WsrLYVycmyeTxXEKaFZunHOEcORgHkU8mlN89Sz4UcMNnIjlH1BDsfoJwNPijNLOHiBTey2y4wn6pFYFkeA==;3:PUoseJex19cCkP7l6RAuKhOxat3SKrknqjhjvffMn1lssYSurRMAqYJF2xEb3aP8eAnpZx19hTs6O7DMV7Vm+Qh23TSEbMbnCVKWUZ+PwfH5eD6OSABEvOfNSkxecpp9;25:R1c+zOMW9dgXPC9yzqouQ2V4tRYFY3Labcr+mDzgrPecTeh/TIDX7RZSn3bs8T1p8STxuAAN2VoocioRHwCTgq/2ReZYrklivjPYEraBc/zT9/+9u75qEs21REmGi0EExqGNpbBi+QlfUy4EAzbIksP13XY/Aor4l/RGqlKKV/4TdxMHO+qTp59QnUro5rsIJAKocW1+Tq+Ey599GTh5+S3Qg9GRh6XfPoC/Ghn/Y6pdTJKtkv4rTRmLA+SF9BiSmgKrwx3RdOjcdn/L20AcQA==
-X-Microsoft-Antispam: UriScan:;BCL:0;PCL:0;RULEID:;SRVR:BN4PR07MB2129;
-X-Microsoft-Exchange-Diagnostics: 1;BN4PR07MB2129;20:5SElNzak7U9zQSz1OOC5qG/lE3sBcc7dJW05FnLvGY6wY7uYYe3oABllmW/1LMkcard+QPOr2dL/HbhnqXSD7b+pM7nJDhAOE2rjcPFtoscSWwt+MKq9oBWfJXhkwH1RMF3dCO6+WYDc8dQfUYTXerkO2VCdFEtZWtcdWdjDSLOa/TTb6GosD8Xww+Lhuap54yIT1MUH1NBAAWU238CVDRMaVyuAX0u50LKOaSGMScu9pxkzVLa8LAiTrbT3/np6nHYH2POiE1L+GrDr7DblxM/RA5L3JdshVWTjX/ueO1hTy5rZVc7e+Ud3/QvOH2/CiH5+PVmGIVfDrSOCtQZYAbHBxUKEzTfSCGrB4mQ6zD0OH7xflELS5B7o4eVLcI/fdZWLolGZb5j9N4vwMZiHC33w6i484R6cfaEKxYBKvw5SesHAolebPgS8SmszG/RQGb6IrU8QHtCklg+rTifd4/Gr2lsUcCI31+S/Tl9mlQxLjjK941vUQijxeCzOVgeDWnd03/vAwjNM7JgY2vUjUTk28SvEZa8/F7w581qExRBOmHzGlhhs1/iRoqzq8hO+6GXkbEmd2gsG0XHz80pQrLrGeZ4bf0S73ZaMgnM7TUo=
-X-Microsoft-Antispam-PRVS: <BN4PR07MB21296F660E8B1500FF7FBA829A060@BN4PR07MB2129.namprd07.prod.outlook.com>
-X-Exchange-Antispam-Report-Test: UriScan:(236414709691187);
-X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(601004)(2401047)(520078)(5005006)(8121501046)(10201501046)(3002001);SRVR:BN4PR07MB2129;BCL:0;PCL:0;RULEID:;SRVR:BN4PR07MB2129;
-X-Microsoft-Exchange-Diagnostics: 1;BN4PR07MB2129;4:6M5xTFwmqFkhvAvVYs3YUUoSszQJIz4r4CYob6F98X4vb81tk4tifD1/6o5jnLEdhWcxDC1OVrdsg65AoLkmXpnQOxDmcoFMxJyRQqLv7hMVozQX8Ek9yzvIMmvD+ZDLXArtzNiYYmGa/NhE+EAfkUqRg6LN4hJwLTwvr7hbsonUpC7HNiquJtNuFYf14UY5W7k2RK2bQoCHwfqD7aMm34Lw6/rk4jaUcUpZOFJAwIzPODaTmug1qlERrdwl9mKY7OrNx8cotuXn8BNiou2z8jwm+OQdZJ2hySx056+aVyJgEMcqGpoRDUDfsSYW7J0Q2vu3XbX79aBBqdLrSSe94sezEUnxqKBItR+YdoPlgRLZto4khNwHGPUfUqXOsH4+4savAGixY3/MeuWQ5fT6Gg6+olocTrMQ6oVaSsrlbOpz1CRWdv+JvGuYAcAe/gHV
-X-Forefront-PRVS: 0770F75EA9
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(6009001)(479174004)(189002)(199003)(24454002)(377454003)(106356001)(230700001)(3846002)(47776003)(65816999)(81156007)(19580405001)(97736004)(80316001)(19580395003)(6116002)(40100003)(50466002)(50986999)(59896002)(42186005)(87976001)(110136002)(93886004)(122386002)(83506001)(69596002)(33656002)(2950100001)(4001350100001)(105586002)(64126003)(5001960100002)(189998001)(36756003)(76176999)(23756003)(54356999)(101416001)(586003)(87266999)(53416004)(92566002)(65956001)(77096005)(5004730100002)(15975445007)(5007970100001)(66066001)(5008740100001)(5001920100001)(65806001)(217873001);DIR:OUT;SFP:1101;SCL:1;SRVR:BN4PR07MB2129;H:dl.caveonetworks.com;FPR:;SPF:None;PTR:InfoNoRecords;MX:1;A:1;LANG:en;
-Received-SPF: None (protection.outlook.com: caviumnetworks.com does not
- designate permitted sender hosts)
-X-Microsoft-Exchange-Diagnostics: =?iso-8859-1?Q?1;BN4PR07MB2129;23:6y0yn7fyG6kEnYiBm1X0q0nMv8wEXVP1npKlyOU?=
- =?iso-8859-1?Q?GI4WN4aZq5DgE3FG6IZrJ4uiuK05BBSfqkLoFFkkV+imD7B2DtwAlrHhGw?=
- =?iso-8859-1?Q?exPhk4gPh4zCAxjYOa36q2lQ0uzlmNBBISel839nKRWity4ZpEuexRWmif?=
- =?iso-8859-1?Q?Ni6V52VlTE79ct88x4FZgv+dJqw1IKHib48ozb27UU5tpw6cvB+Ot0VR1h?=
- =?iso-8859-1?Q?jaqxm8rQiAkNxBy3/N/cc2uDrZ0baRbj1rKTdyp3ILPWJvMATAPsSBhj5S?=
- =?iso-8859-1?Q?xRkP9V33CEJyGNiJZC+3mY2wY20v4rTOzNH28oaRzY54H/m5IJ7yyiOmSD?=
- =?iso-8859-1?Q?SdNGN5QotiYv6yHf5VqEYa2pYyopra3HUIkY75xTCY2bevklcponWs/uE7?=
- =?iso-8859-1?Q?8FxhKHfEHW81QmuXm7AXzFDZAu06Qs0IF5El200zYyEpcAT1p1A8Thv5CI?=
- =?iso-8859-1?Q?qZWwUJ5lGLgspQRmbOGYxFTghl5sj4qFKudSRkb99uNOJoggh/7hMKer58?=
- =?iso-8859-1?Q?HhW4HK1iOcyy9kme01+ChZqLppey5jKEByEcD3IUgx11Bks5XU6PccPfhJ?=
- =?iso-8859-1?Q?AQU7bcRur8cCxPcNBA4sRiPw7h9NCI+vDK3PC0gmojVVBTykOODWabjTh8?=
- =?iso-8859-1?Q?CkmJ73geS8iZbIsTKTjOaNQ9VY3u78BsJwCV4cLKjxffMaMWExHI7MQsUp?=
- =?iso-8859-1?Q?25SV7k/kSXTGsm1rGYEaMf7htDMeAL6FNCKUiAZ6iXUr3h5zN8GkyM39pI?=
- =?iso-8859-1?Q?wx1vEGOOjLMcqDHCJRP3NzUaAdEGWwKMhdBPP7xC0hNfoxA0yscv9AuXyW?=
- =?iso-8859-1?Q?lvyRqnd4mXkx8TruaSeRQ59qyPeMSdj5lcMSvK81TKjolcYttBBz/b4rxd?=
- =?iso-8859-1?Q?F+by5jBAvj15jMVeuyUZvQ6vJduieO7sE6cpwFCGjBjuYGA/LvQT2NPELe?=
- =?iso-8859-1?Q?z5wxs8vknYjT5TkLZo3+yhuXaOymqjg0HytfwgoFFLNQxe0defH8qlQ03S?=
- =?iso-8859-1?Q?/Ijt5UkBQ5Py012vM3gEVn7Orfpq+C9cGce1ZlWOUQwVzmiYV4d6cNYJrH?=
- =?iso-8859-1?Q?4mNNHCsvPFcIs1eUqjufXzzs6YTPo+BKdipZTmmB4Wq6NFi0X8o0aIXub+?=
- =?iso-8859-1?Q?zfKYiE9Io2mqKOyQAjhZBLkrKOkhyhm8UlW4w1K0rh8WBCJPDnpAqUXZEV?=
- =?iso-8859-1?Q?dV1ZM/DjhcRl30+5wS+okk/mkV94Iby6PeEsHegEwpmgYJZ7ZA3y36lNo8?=
- =?iso-8859-1?Q?q0kwDQ8FB9gHgh32S+85t46BWTJHpwY7Cmw0DAxR07MuPRzA2jvkl4ILcx?=
- =?iso-8859-1?Q?sCcVjUkia5m9Qgm+cWY3oSfoytBEekJji9xfcIz46yiXvvcBVWOQGcThQv?=
- =?iso-8859-1?Q?8mSBKYx+7vQIgfWQOi0Ap2DhvgXtgitYlmgbgnyxrQiiMLi6ldJiGIslVO?=
- =?iso-8859-1?Q?5kiJWCWQP8ReBV/xCqQ3ZK6WTMtf0MTLU0A?=
-X-Microsoft-Exchange-Diagnostics: 1;BN4PR07MB2129;5:+dI0wJi6qDeHUIwXluFrM2PT8rJLY5KiA/cpLxN9c/dDXon3nYKHZs3IxABBNRgF276Aws2JdP5OczeU/9K65mOoDs6AqxvdgeiOEyRZD5qObxO3y9m2vOhFjQgQiLOstAkMQqA+dBwJJBEyeXtT2g==;24:wEacnMTEPzNMm3BIqRMvO0b+l6Nutx1A/pV8vi31SL3afa4fi7+JYNVaHFmhev+2tG2Xed1RJmJImXjR0lvHSQadEhdYvD+RchmE/KU9UMo=
-SpamDiagnosticOutput: 1:23
-SpamDiagnosticMetadata: NSPM
-X-OriginatorOrg: caviumnetworks.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Nov 2015 18:13:29.5414 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN4PR07MB2129
-Return-Path: <David.Daney@caviumnetworks.com>
+        Jonas Gorski <jogo@openwrt.org>
+Subject: Re: [PATCH 4/10] watchdog: bcm63xx_wdt: Handle hardware interrupt
+ and remove software timer
+Message-ID: <20151124182138.GB12289@roeck-us.net>
+References: <5650BFD6.5030700@simon.arlott.org.uk>
+ <5650C08C.6090300@simon.arlott.org.uk>
+ <5650E2FA.6090408@roeck-us.net>
+ <5650E5BB.6020404@simon.arlott.org.uk>
+ <56512937.6030903@roeck-us.net>
+ <5651CB13.4090704@simon.arlott.org.uk>
+ <5651CB9C.4090005@simon.arlott.org.uk>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5651CB9C.4090005@simon.arlott.org.uk>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+X-Authenticated_sender: guenter@roeck-us.net
+X-OutGoing-Spam-Status: No, score=-1.0
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - bh-25.webhostbox.net
+X-AntiAbuse: Original Domain - linux-mips.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - roeck-us.net
+X-Get-Message-Sender-Via: bh-25.webhostbox.net: authenticated_id: guenter@roeck-us.net
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+Return-Path: <linux@roeck-us.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50068
+X-archive-position: 50069
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: linux@roeck-us.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -103,45 +78,298 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 11/20/2015 09:32 AM, Aaro Koskinen wrote:
-> Hi,
->
-> On Mon, May 18, 2015 at 02:40:44PM -0700, Aleksey Makarov wrote:
->> On 05/18/2015 02:05 PM, Aaro Koskinen wrote:
->>> On Mon, Mar 16, 2015 at 06:06:00PM +0300, Aleksey Makarov wrote:
->>>> The OCTEON MMC controller is currently found on cn61XX and cnf71XX
->>>> devices.  Device parameters are configured from device tree data.
->>>>
->>>> eMMC, MMC and SD devices are supported.
->>>>
->>>> Tested-by: Aaro Koskinen <aaro.koskinen@iki.fi>
->>>> Signed-off-by: Chandrakala Chavva <cchavva@caviumnetworks.com>
->>>> Signed-off-by: David Daney <david.daney@cavium.com>
->>>> Signed-off-by: Aleksey Makarov <aleksey.makarov@auriga.com>
->>>> Signed-off-by: Leonid Rosenboim <lrosenboim@caviumnetworks.com>
->>>> Signed-off-by: Peter Swain <pswain@cavium.com>
->>>> Signed-off-by: Aaron Williams <aaron.williams@cavium.com>
->>>> ---
->>>
->>> Any updates on this patch? Are you still working on it for
->>> the mainline kernel inclusion?
->>
->> We are working on it.  It will also be used in ARM ThunderX arch.  So we
->> will send a new version soon.
->
-> Any updates?
->
-> Also distros are waiting for this patch, MMC is the main medium on
-> some boards:
->
-> 	https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=800594
+On Sun, Nov 22, 2015 at 02:05:16PM +0000, Simon Arlott wrote:
+> There is a level triggered interrupt for the watchdog timer as part of
+> the bcm63xx_timer device. The interrupt occurs when the hardware watchdog
+> timer reaches 50% of the remaining time.
+> 
+> It is not possible to mask the interrupt within the bcm63xx_timer device.
+> To get around this limitation, handle the interrupt by restarting the
+> watchdog with the current remaining time (which will be half the previous
+> timeout) so that the interrupt occurs again at 1/4th, 1/8th, etc. of the
+> original timeout value until the watchdog forces a reboot.
+> 
+> The software timer was restarting the hardware watchdog with a 85 second
+> timeout until the software timer expired, and then causing a panic()
+> about 42.5 seconds later when the hardware interrupt occurred. The
+> hardware watchdog would not reboot until a further 42.5 seconds had
+> passed.
+> 
+> Remove the software timer and rely on the hardware timer directly,
+> reducing the maximum timeout from 256 seconds to 85 seconds
+> (2^32 / WDT_HZ).
+> 
 
-I am aware of the need, but haven't been able to find the time to work 
-on the MMC patch.
+Florian,
 
-David Daney
+can you have a look into this patch and confirm that there is no better
+way to clear the interrupt status ?
 
+Thanks,
+Guenter
 
->
-> A.
->
+> Signed-off-by: Simon Arlott <simon@fire.lp0.eu>
+> ---
+>  drivers/watchdog/bcm63xx_wdt.c | 124 ++++++++++++++++++++++++-----------------
+>  1 file changed, 72 insertions(+), 52 deletions(-)
+> 
+> diff --git a/drivers/watchdog/bcm63xx_wdt.c b/drivers/watchdog/bcm63xx_wdt.c
+> index ab26fd9..f88fc97 100644
+> --- a/drivers/watchdog/bcm63xx_wdt.c
+> +++ b/drivers/watchdog/bcm63xx_wdt.c
+> @@ -3,6 +3,7 @@
+>   *
+>   *  Copyright (C) 2007, Miguel Gaio <miguel.gaio@efixo.com>
+>   *  Copyright (C) 2008, Florian Fainelli <florian@openwrt.org>
+> + *  Copyright 2015 Simon Arlott
+>   *
+>   *  This program is free software; you can redistribute it and/or
+>   *  modify it under the terms of the GNU General Public License
+> @@ -20,11 +21,10 @@
+>  #include <linux/miscdevice.h>
+>  #include <linux/module.h>
+>  #include <linux/moduleparam.h>
+> +#include <linux/spinlock.h>
+>  #include <linux/types.h>
+>  #include <linux/uaccess.h>
+>  #include <linux/watchdog.h>
+> -#include <linux/timer.h>
+> -#include <linux/jiffies.h>
+>  #include <linux/interrupt.h>
+>  #include <linux/ptrace.h>
+>  #include <linux/resource.h>
+> @@ -37,16 +37,17 @@
+>  
+>  #define PFX KBUILD_MODNAME
+>  
+> -#define WDT_HZ		50000000 /* Fclk */
+> -#define WDT_DEFAULT_TIME	30      /* seconds */
+> -#define WDT_MAX_TIME		256     /* seconds */
+> +#define WDT_HZ			50000000		/* Fclk */
+> +#define WDT_DEFAULT_TIME	30			/* seconds */
+> +#define WDT_MAX_TIME		(0xffffffff / WDT_HZ)	/* seconds */
+>  
+> -static struct {
+> +struct bcm63xx_wdt_hw {
+> +	raw_spinlock_t lock;
+>  	void __iomem *regs;
+> -	struct timer_list timer;
+>  	unsigned long inuse;
+> -	atomic_t ticks;
+> -} bcm63xx_wdt_device;
+> +	bool running;
+> +};
+> +static struct bcm63xx_wdt_hw bcm63xx_wdt_device;
+>  
+>  static int expect_close;
+>  
+> @@ -59,48 +60,67 @@ MODULE_PARM_DESC(nowayout, "Watchdog cannot be stopped once started (default="
+>  /* HW functions */
+>  static void bcm63xx_wdt_hw_start(void)
+>  {
+> -	bcm_writel(0xfffffffe, bcm63xx_wdt_device.regs + WDT_DEFVAL_REG);
+> +	unsigned long flags;
+> +
+> +	raw_spin_lock_irqsave(&bcm63xx_wdt_device.lock, flags);
+> +	bcm_writel(wdt_time * WDT_HZ, bcm63xx_wdt_device.regs + WDT_DEFVAL_REG);
+>  	bcm_writel(WDT_START_1, bcm63xx_wdt_device.regs + WDT_CTL_REG);
+>  	bcm_writel(WDT_START_2, bcm63xx_wdt_device.regs + WDT_CTL_REG);
+> +	bcm63xx_wdt_device.running = true;
+> +	raw_spin_unlock_irqrestore(&bcm63xx_wdt_device.lock, flags);
+>  }
+>  
+>  static void bcm63xx_wdt_hw_stop(void)
+>  {
+> +	unsigned long flags;
+> +
+> +	raw_spin_lock_irqsave(&bcm63xx_wdt_device.lock, flags);
+>  	bcm_writel(WDT_STOP_1, bcm63xx_wdt_device.regs + WDT_CTL_REG);
+>  	bcm_writel(WDT_STOP_2, bcm63xx_wdt_device.regs + WDT_CTL_REG);
+> +	bcm63xx_wdt_device.running = false;
+> +	raw_spin_unlock_irqrestore(&bcm63xx_wdt_device.lock, flags);
+>  }
+>  
+> +/* The watchdog interrupt occurs when half the timeout is remaining */
+>  static void bcm63xx_wdt_isr(void *data)
+>  {
+> -	struct pt_regs *regs = get_irq_regs();
+> -
+> -	die(PFX " fire", regs);
+> -}
+> -
+> -static void bcm63xx_timer_tick(unsigned long unused)
+> -{
+> -	if (!atomic_dec_and_test(&bcm63xx_wdt_device.ticks)) {
+> -		bcm63xx_wdt_hw_start();
+> -		mod_timer(&bcm63xx_wdt_device.timer, jiffies + HZ);
+> -	} else
+> -		pr_crit("watchdog will restart system\n");
+> -}
+> -
+> -static void bcm63xx_wdt_pet(void)
+> -{
+> -	atomic_set(&bcm63xx_wdt_device.ticks, wdt_time);
+> -}
+> -
+> -static void bcm63xx_wdt_start(void)
+> -{
+> -	bcm63xx_wdt_pet();
+> -	bcm63xx_timer_tick(0);
+> -}
+> +	struct bcm63xx_wdt_hw *hw = &bcm63xx_wdt_device;
+> +	unsigned long flags;
+> +
+> +	raw_spin_lock_irqsave(&hw->lock, flags);
+> +	if (!hw->running) {
+> +		/* Stop the watchdog as it shouldn't be running */
+> +		bcm_writel(WDT_STOP_1, hw->regs + WDT_CTL_REG);
+> +		bcm_writel(WDT_STOP_2, hw->regs + WDT_CTL_REG);
+> +	} else {
+> +		u32 timeleft = bcm_readl(hw->regs + WDT_CTL_REG);
+> +		u32 ms;
+> +
+> +		if (timeleft >= 2) {
+> +			/* The only way to clear this level triggered interrupt
+> +			 * without disrupting the normal running of the watchdog
+> +			 * is to restart the watchdog with the current remaining
+> +			 * time value (which will be half the previous timeout)
+> +			 * so the interrupt occurs again at 1/4th, 1/8th, etc.
+> +			 * of the original timeout value until we reboot.
+> +			 *
+> +			 * This is done with a lock held in case userspace is
+> +			 * trying to restart the watchdog on another CPU.
+> +			 */
+> +			bcm_writel(timeleft, hw->regs + WDT_DEFVAL_REG);
+> +			bcm_writel(WDT_START_1, hw->regs + WDT_CTL_REG);
+> +			bcm_writel(WDT_START_2, hw->regs + WDT_CTL_REG);
+> +		} else {
+> +			/* The watchdog cannot be started with a time of less
+> +			 * than 2 ticks (it won't fire).
+> +			 */
+> +			die(PFX ": watchdog timer expired\n", get_irq_regs());
+> +		}
+>  
+> -static void bcm63xx_wdt_pause(void)
+> -{
+> -	del_timer_sync(&bcm63xx_wdt_device.timer);
+> -	bcm63xx_wdt_hw_stop();
+> +		ms = timeleft / (WDT_HZ / 1000);
+> +		pr_alert("warning timer fired, reboot in %ums\n", ms);
+> +	}
+> +	raw_spin_unlock_irqrestore(&hw->lock, flags);
+>  }
+>  
+>  static int bcm63xx_wdt_settimeout(int new_time)
+> @@ -118,17 +138,17 @@ static int bcm63xx_wdt_open(struct inode *inode, struct file *file)
+>  	if (test_and_set_bit(0, &bcm63xx_wdt_device.inuse))
+>  		return -EBUSY;
+>  
+> -	bcm63xx_wdt_start();
+> +	bcm63xx_wdt_hw_start();
+>  	return nonseekable_open(inode, file);
+>  }
+>  
+>  static int bcm63xx_wdt_release(struct inode *inode, struct file *file)
+>  {
+>  	if (expect_close == 42)
+> -		bcm63xx_wdt_pause();
+> +		bcm63xx_wdt_hw_stop();
+>  	else {
+>  		pr_crit("Unexpected close, not stopping watchdog!\n");
+> -		bcm63xx_wdt_start();
+> +		bcm63xx_wdt_hw_start();
+>  	}
+>  	clear_bit(0, &bcm63xx_wdt_device.inuse);
+>  	expect_close = 0;
+> @@ -153,7 +173,7 @@ static ssize_t bcm63xx_wdt_write(struct file *file, const char *data,
+>  					expect_close = 42;
+>  			}
+>  		}
+> -		bcm63xx_wdt_pet();
+> +		bcm63xx_wdt_hw_start();
+>  	}
+>  	return len;
+>  }
+> @@ -187,18 +207,18 @@ static long bcm63xx_wdt_ioctl(struct file *file, unsigned int cmd,
+>  			return -EFAULT;
+>  
+>  		if (new_value & WDIOS_DISABLECARD) {
+> -			bcm63xx_wdt_pause();
+> +			bcm63xx_wdt_hw_stop();
+>  			retval = 0;
+>  		}
+>  		if (new_value & WDIOS_ENABLECARD) {
+> -			bcm63xx_wdt_start();
+> +			bcm63xx_wdt_hw_start();
+>  			retval = 0;
+>  		}
+>  
+>  		return retval;
+>  
+>  	case WDIOC_KEEPALIVE:
+> -		bcm63xx_wdt_pet();
+> +		bcm63xx_wdt_hw_start();
+>  		return 0;
+>  
+>  	case WDIOC_SETTIMEOUT:
+> @@ -208,7 +228,7 @@ static long bcm63xx_wdt_ioctl(struct file *file, unsigned int cmd,
+>  		if (bcm63xx_wdt_settimeout(new_value))
+>  			return -EINVAL;
+>  
+> -		bcm63xx_wdt_pet();
+> +		bcm63xx_wdt_hw_start();
+>  
+>  	case WDIOC_GETTIMEOUT:
+>  		return put_user(wdt_time, p);
+> @@ -240,8 +260,6 @@ static int bcm63xx_wdt_probe(struct platform_device *pdev)
+>  	int ret;
+>  	struct resource *r;
+>  
+> -	setup_timer(&bcm63xx_wdt_device.timer, bcm63xx_timer_tick, 0L);
+> -
+>  	r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+>  	if (!r) {
+>  		dev_err(&pdev->dev, "failed to get resources\n");
+> @@ -255,6 +273,8 @@ static int bcm63xx_wdt_probe(struct platform_device *pdev)
+>  		return -ENXIO;
+>  	}
+>  
+> +	raw_spin_lock_init(&bcm63xx_wdt_device.lock);
+> +
+>  	ret = bcm63xx_timer_register(TIMER_WDT_ID, bcm63xx_wdt_isr, NULL);
+>  	if (ret < 0) {
+>  		dev_err(&pdev->dev, "failed to register wdt timer isr\n");
+> @@ -264,8 +284,8 @@ static int bcm63xx_wdt_probe(struct platform_device *pdev)
+>  	if (bcm63xx_wdt_settimeout(wdt_time)) {
+>  		bcm63xx_wdt_settimeout(WDT_DEFAULT_TIME);
+>  		dev_info(&pdev->dev,
+> -			": wdt_time value must be 1 <= wdt_time <= 256, using %d\n",
+> -			wdt_time);
+> +			": wdt_time value must be 1 <= wdt_time <= %d, using %d\n",
+> +			WDT_MAX_TIME, wdt_time);
+>  	}
+>  
+>  	ret = misc_register(&bcm63xx_wdt_miscdev);
+> @@ -287,7 +307,7 @@ unregister_timer:
+>  static int bcm63xx_wdt_remove(struct platform_device *pdev)
+>  {
+>  	if (!nowayout)
+> -		bcm63xx_wdt_pause();
+> +		bcm63xx_wdt_hw_stop();
+>  
+>  	misc_deregister(&bcm63xx_wdt_miscdev);
+>  	bcm63xx_timer_unregister(TIMER_WDT_ID);
+> @@ -296,7 +316,7 @@ static int bcm63xx_wdt_remove(struct platform_device *pdev)
+>  
+>  static void bcm63xx_wdt_shutdown(struct platform_device *pdev)
+>  {
+> -	bcm63xx_wdt_pause();
+> +	bcm63xx_wdt_hw_stop();
+>  }
+>  
+>  static struct platform_driver bcm63xx_wdt_driver = {
+> -- 
+> 2.1.4
+> 
+> -- 
+> Simon Arlott

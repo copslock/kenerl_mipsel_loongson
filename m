@@ -1,56 +1,77 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Nov 2015 17:09:33 +0100 (CET)
-Received: from mail-oi0-f41.google.com ([209.85.218.41]:36697 "EHLO
-        mail-oi0-f41.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012815AbbKYQJac3EB7 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Nov 2015 17:09:30 +0100
-Received: by oiww189 with SMTP id w189so31575675oiw.3;
-        Wed, 25 Nov 2015 08:09:24 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Nov 2015 17:39:04 +0100 (CET)
+Received: from mail-yk0-f173.google.com ([209.85.160.173]:33177 "EHLO
+        mail-yk0-f173.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012888AbbKYQjDRybe8 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Nov 2015 17:39:03 +0100
+Received: by ykdv3 with SMTP id v3so61729266ykd.0
+        for <linux-mips@linux-mips.org>; Wed, 25 Nov 2015 08:38:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro-org.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type;
+        bh=NvsSxbEoAe6+ZSkiT5LyD3zBnDP9+zhgL0WM4Xy9MRw=;
+        b=KWV/fk/k5X8NkzaYI88WbPNx4YSOCOTmz6IZGlZfG/G2vZ/Ckh0/BDys1+96FvylIz
+         eDDvDFyOXwinxCmXN6z0eWdQBpof8JqOPViGD9jWjPfawYfLDb1UtpTDl9ZuHZruuPLC
+         xsOjUco/9c8LHruedDNQbFuy7eWWgsXpbjyY5Wlaqm5Lt6eX04C1zZ4qjbq83tLQnsXB
+         XfAMRtXHWlFLu1Sll58OAQRIVTFCb2YxWXaXSYDQ4oCv4Ml8WE2p6rPCAWYGYdlAXKGz
+         j0i/7BxWB3UB955SmtA+ZLicP50leoo/pDDITDTcK/QuWeQZCAtUQoVC+V7fGX5r8Xf4
+         OkhQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-type:content-disposition:in-reply-to:user-agent;
-        bh=LM2FRrr4zA3UUuZYAsTcfZTMfv2YNikkb4NIZV+FWh0=;
-        b=CISgIV0k0iDxPh/R8OixO8SZj/tkHw4uPbho3GaLnA0uX07bHz/HAZpbBqVHw9Kq2L
-         gQX5F6w8fQKcf1s5SCr3PBUCDzVXWLsSbUX5LMg1HRz1D3+gixAGdLDFZnb/3XBnXP2Y
-         qvFI7hccTScDPVGv130wy8lwucmlXIW40j/rjReBmlAg8Q3ugV9ysZ/I3XQnq1wdmc+m
-         mcmjL7Zrjs2Ig+hsflzxqc2gyBpZmFR9QGsdVpwNeYATJfUCWEznYcVMFILS3PLsi/vs
-         vOnN+xlNT7c4KIv1Hllk2iornVhmcjSppN9O1THV5dWzLz84G0CNyg4Tfz5OZncZnums
-         bShg==
-X-Received: by 10.202.173.17 with SMTP id w17mr23623670oie.52.1448467764573;
-        Wed, 25 Nov 2015 08:09:24 -0800 (PST)
-Received: from rob-hp-laptop (mobile-166-176-123-126.mycingular.net. [166.176.123.126])
-        by smtp.gmail.com with ESMTPSA id k136sm10775632oib.24.2015.11.25.08.09.19
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 25 Nov 2015 08:09:23 -0800 (PST)
-Date:   Wed, 25 Nov 2015 10:09:11 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Qais Yousef <qais.yousef@imgtec.com>
-Cc:     linux-kernel@vger.kernel.org, tglx@linutronix.de,
-        jason@lakedaemon.net, marc.zyngier@arm.com,
-        jiang.liu@linux.intel.com, ralf@linux-mips.org,
-        linux-mips@linux-mips.org, Pawel Moll <pawel.moll@arm.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ian Campbell <ijc+devicetree@hellion.org.uk>,
-        Kumar Gala <galak@codeaurora.org>, devicetree@vger.kernel.org
-Subject: Re: [PATCH v2 19/19] irqchip/mips-gic: Add new DT property to
- reserve IPIs
-Message-ID: <20151125160849.GA21688@rob-hp-laptop>
-References: <1448453217-3874-1-git-send-email-qais.yousef@imgtec.com>
- <1448453217-3874-20-git-send-email-qais.yousef@imgtec.com>
+        h=x-gm-message-state:mime-version:in-reply-to:references:date
+         :message-id:subject:from:to:cc:content-type;
+        bh=NvsSxbEoAe6+ZSkiT5LyD3zBnDP9+zhgL0WM4Xy9MRw=;
+        b=OedJdbGj22MAcKFK9LgRh/wPyigPihAsMEfDyySpwtESChh7WyakSFF93CtxwOEm6J
+         U5kKz/gnQqtNCdNdOr1yIjRC0VYEpcbSOEOFxEbzE1Bxyzp6x6WJh5Xqu1rfXjyj2mTR
+         5IFQWenfFl8VX1rMVngRFxL7LDDJYOFbmeAlaJcdttXEuOVxlGEv2svKsemXQZKkGoj9
+         pIfZtFH0t6Djmrf/1wa0QIoPJ5/PP7WVF9Lv3HEySsZA9u21KPEgHsdMxzb4Y8Op+lQT
+         e+BmIHEF3Z9FQz+S85bsiu5TO3v1aPBih5ZgPvpLkjaUmJzjw6xP01QpgOGM5m02xUgH
+         wALQ==
+X-Gm-Message-State: ALoCoQkcBWqGEgERGS8wJlowcmkfRd+P2or238K4e7rKgBzOeLOhOUDxTnNA1Gs2bf6agc9jpT6S
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1448453217-3874-20-git-send-email-qais.yousef@imgtec.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <robherring2@gmail.com>
+X-Received: by 10.13.210.66 with SMTP id u63mr33596376ywd.206.1448469537501;
+ Wed, 25 Nov 2015 08:38:57 -0800 (PST)
+Received: by 10.13.238.195 with HTTP; Wed, 25 Nov 2015 08:38:57 -0800 (PST)
+In-Reply-To: <CAPDyKFrFZgi3bQYZgrB0OVq4i3__Vor129F7abGYJ+rrPmP6EQ@mail.gmail.com>
+References: <1448065205-15762-1-git-send-email-joshua.henderson@microchip.com>
+        <1448065205-15762-12-git-send-email-joshua.henderson@microchip.com>
+        <CAPDyKFrFZgi3bQYZgrB0OVq4i3__Vor129F7abGYJ+rrPmP6EQ@mail.gmail.com>
+Date:   Wed, 25 Nov 2015 17:38:57 +0100
+Message-ID: <CAPDyKFph3vDzDJCxZFZYGN2BsBcqSqhvsug5F_JUdEryNa9udw@mail.gmail.com>
+Subject: Re: [PATCH 11/14] mmc: sdhci-pic32: Add PIC32 SDHC host controller driver
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+To:     Joshua Henderson <joshua.henderson@microchip.com>
+Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        linux-mips@linux-mips.org,
+        Andrei Pistirica <andrei.pistirica@microchip.com>,
+        Jean Delvare <jdelvare@suse.de>,
+        Corneliu Doban <cdoban@broadcom.com>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Alim Akhtar <alim.akhtar@samsung.com>,
+        Luis de Bethencourt <luisbg@osg.samsung.com>,
+        Weijun Yang <Weijun.Yang@csr.com>,
+        Lokesh Vutla <lokeshvutla@ti.com>,
+        Scott Branden <sbranden@broadcom.com>,
+        Vincent Yang <vincent.yang.fujitsu@gmail.com>,
+        Chaotian Jing <chaotian.jing@mediatek.com>,
+        "ludovic.desroches@atmel.com" <ludovic.desroches@atmel.com>,
+        Shawn Lin <shawn.lin@rock-chips.com>,
+        Stephen Boyd <sboyd@codeaurora.org>,
+        yangbo lu <yangbo.lu@freescale.com>,
+        Kevin Hao <haokexin@gmail.com>,
+        Ben Hutchings <ben@decadent.org.uk>,
+        Andy Green <andy.green@linaro.org>,
+        linux-mmc <linux-mmc@vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <ulf.hansson@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50108
+X-archive-position: 50109
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: robh@kernel.org
+X-original-sender: ulf.hansson@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -63,83 +84,34 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Nov 25, 2015 at 12:06:57PM +0000, Qais Yousef wrote:
-> The new property will allow to specify the range of GIC hwirqs to use for IPIs.
-> 
-> This is an optinal property. We preserve the previous behaviour of allocating
-> the last 2 * gic_vpes if it's not specified or DT is not supported.
-> 
-> Signed-off-by: Qais Yousef <qais.yousef@imgtec.com>
-> Cc: Rob Herring <robh+dt@kernel.org>
-> Cc: Pawel Moll <pawel.moll@arm.com>
-> Cc: Mark Rutland <mark.rutland@arm.com>
-> Cc: Ian Campbell <ijc+devicetree@hellion.org.uk>
-> Cc: Kumar Gala <galak@codeaurora.org>
-> Cc: devicetree@vger.kernel.org
+[...]
 
-Acked-by: Rob Herring <robh@kernel.org>
+>> +sdhci_pic32_probe_dts(struct platform_device *pdev,
+>> +                     struct pic32_sdhci_pdata *boarddata)
+>> +{
+>> +       struct device_node *np = pdev->dev.of_node;
+>> +
+>> +       if (!np)
+>> +               return -ENODEV;
+>> +
+>> +       if (of_find_property(np, "no-1-8-v", NULL))
+>
+> Please don't use this property as it's broken. It has two different
+> purposes and those are conflicting as discussed here[1].
 
-> 
-> ---
->  .../devicetree/bindings/interrupt-controller/mips-gic.txt    |  7 +++++++
->  drivers/irqchip/irq-mips-gic.c                               | 12 ++++++++++--
->  2 files changed, 17 insertions(+), 2 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/interrupt-controller/mips-gic.txt b/Documentation/devicetree/bindings/interrupt-controller/mips-gic.txt
-> index aae4c384ee1f..173595305e26 100644
-> --- a/Documentation/devicetree/bindings/interrupt-controller/mips-gic.txt
-> +++ b/Documentation/devicetree/bindings/interrupt-controller/mips-gic.txt
-> @@ -23,6 +23,12 @@ Optional properties:
->  - mti,reserved-cpu-vectors : Specifies the list of CPU interrupt vectors
->    to which the GIC may not route interrupts.  Valid values are 2 - 7.
->    This property is ignored if the CPU is started in EIC mode.
-> +- mti,reserved-ipi-vectors : Specifies the range of GIC interrupts that are
-> +  reserved for IPIs.
-> +  It accepts 2 values, the 1st is the starting interrupt and the 2nd is the size
-> +  of the reserved range.
-> +  If not specified, the driver will allocate the last 2 * number of VPEs in the
-> +  system.
->  
->  Required properties for timer sub-node:
->  - compatible : Should be "mti,gic-timer".
-> @@ -44,6 +50,7 @@ Example:
->  		#interrupt-cells = <3>;
->  
->  		mti,reserved-cpu-vectors = <7>;
-> +		mti,reserved-ipi-vectors = <40 8>;
->  
->  		timer {
->  			compatible = "mti,gic-timer";
-> diff --git a/drivers/irqchip/irq-mips-gic.c b/drivers/irqchip/irq-mips-gic.c
-> index c7043a15253b..659fe734d1b7 100644
-> --- a/drivers/irqchip/irq-mips-gic.c
-> +++ b/drivers/irqchip/irq-mips-gic.c
-> @@ -945,6 +945,7 @@ static void __init __gic_init(unsigned long gic_base_addr,
->  			      struct device_node *node)
->  {
->  	unsigned int gicconfig;
-> +	unsigned int v[2];
->  
->  	gic_base = ioremap_nocache(gic_base_addr, gic_addrspace_size);
->  
-> @@ -1013,8 +1014,15 @@ static void __init __gic_init(unsigned long gic_base_addr,
->  
->  	gic_ipi_domain->bus_token = DOMAIN_BUS_IPI;
->  
-> -	/* Make the last 2 * NR_CPUS available for IPIs */
-> -	bitmap_set(ipi_resrv, gic_shared_intrs - 2 * gic_vpes, 2 * gic_vpes);
-> +	if (node &&
-> +	    !of_property_read_u32_array(node, "mti,reserved-ipi-vectors", &v, 2)) {
-> +		bitmap_set(ipi_resrv, v[0], v[1]);
-> +	} else {
-> +		/* Make the last 2 * gic_vpes available for IPIs */
-> +		bitmap_set(ipi_resrv,
-> +			   gic_shared_intrs - 2 * gic_vpes,
-> +			   2 * gic_vpes);
-> +	}
->  
->  	gic_basic_init();
->  }
-> -- 
-> 2.1.0
-> 
+Realized that I forgot to attach the reference to the discussion, here it is.
+
+[1]
+http://comments.gmane.org/gmane.linux.kernel.mmc/32751
+
+>
+> You have two options, either invent a new binding which provides
+> information about which signal voltage that *is* supported, or use the
+> current existing common MMC dt bindings to override the SDHCI
+> capabilities register.
+>
+
+[...]
+
+Kind regards
+Uffe

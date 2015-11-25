@@ -1,20 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Nov 2015 11:20:28 +0100 (CET)
-Received: from mxout51.expurgate.net ([91.198.224.51]:38097 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Nov 2015 11:20:44 +0100 (CET)
+Received: from mxout51.expurgate.net ([91.198.224.51]:52085 "EHLO
         mxout51.expurgate.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27006588AbbKYKTqEpVod convert rfc822-to-8bit
+        by eddie.linux-mips.org with ESMTP id S27011855AbbKYKTrJ0ovd convert rfc822-to-8bit
         (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 25 Nov 2015 11:19:46 +0100
+        Wed, 25 Nov 2015 11:19:47 +0100
 Received: from [127.0.0.1] (helo=localhost)
         by relay.expurgate.net with smtp (Exim 4.80.1)
         (envelope-from <mschiller@tdt.de>)
-        id 1a1XAo-0004nw-Iy; Wed, 25 Nov 2015 11:19:38 +0100
+        id 1a1XAr-000109-Rd; Wed, 25 Nov 2015 11:19:41 +0100
 Received: from [195.243.126.94] (helo=ms.tdt.de)
         by relay.expurgate.net with esmtp (Exim 4.80.1)
         (envelope-from <mschiller@tdt.de>)
-        id 1a1XAm-00008p-Bd; Wed, 25 Nov 2015 11:19:36 +0100
+        id 1a1XAq-00009m-VK; Wed, 25 Nov 2015 11:19:41 +0100
 Received: from mschille.tdtnet.local (10.1.3.20) by TDT-MS.TDTNET.local
  (10.1.10.2) with Microsoft SMTP Server (TLS) id 15.0.1104.5; Wed, 25 Nov 2015
- 11:19:35 +0100
+ 11:19:40 +0100
 From:   Martin Schiller <mschiller@tdt.de>
 To:     <linux-gpio@vger.kernel.org>, <devicetree@vger.kernel.org>,
         <linux-mips@linux-mips.org>
@@ -24,10 +24,12 @@ CC:     <linus.walleij@linaro.org>, <robh+dt@kernel.org>,
         <ralf@linux-mips.org>, <blogic@openwrt.org>, <hauke@hauke-m.de>,
         <jogo@openwrt.org>, <daniel.schwierzeck@gmail.com>,
         Martin Schiller <mschiller@tdt.de>
-Subject: [PATCH v2 1/4] pinctrl/lantiq: updating devicetree binding description
-Date:   Wed, 25 Nov 2015 11:18:56 +0100
-Message-ID: <1448446739-5541-1-git-send-email-mschiller@tdt.de>
+Subject: [PATCH v2 4/4] pinctrl/lantiq: fix up pinmux
+Date:   Wed, 25 Nov 2015 11:18:59 +0100
+Message-ID: <1448446739-5541-4-git-send-email-mschiller@tdt.de>
 X-Mailer: git-send-email 2.1.4
+In-Reply-To: <1448446739-5541-1-git-send-email-mschiller@tdt.de>
+References: <1448446739-5541-1-git-send-email-mschiller@tdt.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 X-Originating-IP: [10.1.3.20]
@@ -36,17 +38,17 @@ X-EsetId: 37303A29F17133606D7D66
 X-C2ProcessedOrg: 0a9847a8-efc2-4cb2-92f2-0898183e658d
 Content-Transfer-Encoding: 8BIT
 X-purgate-relay-fid: relay-9b77e0
-X-purgate-sourceid: 1a1XAm-00008p-Bd
+X-purgate-sourceid: 1a1XAq-00009m-VK
 X-purgate-Ad: Checked for spam and viruses by eXpurgate(R), see www.eleven.de for details.
-X-purgate-ID: 151534::1448446777-0000693D-6CBDE059/0/0
+X-purgate-ID: 151534::1448446781-000066A1-5635C9BC/0/0
 X-purgate: clean
 X-purgate-type: clean
-X-purgate-relay-bid: relay-b62ce8
+X-purgate-relay-bid: relay-3cc1a3
 Return-Path: <mschiller@tdt.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50082
+X-archive-position: 50083
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -63,165 +65,87 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This patch adds the new dedicated "lantiq,<chip>-pinctrl" compatible strings
-to the devicetree bindings Documentation, where <chip> is one of "ase",
-"danube", "xrx100", "xrx200" or "xrx300" and marks the "lantiq,pinctrl-xway",
-"lantiq,pinctrl-ase" and "lantiq,pinctrl-xr9" compatible strings as DEPRECATED.
+From: John Crispin <blogic@openwrt.org>
 
+This patch is included in the openwrt patchset for several years now and needs
+to go upstream as well. It includes the following changes:
+1. Fix up inline function call to xway_mux_apply
+2. Fix GPIO Setup of GPIO Port3
+3. Implement gpio_chip.to_irq
+
+Signed-off-by: John Crispin <blogic@openwrt.org>
 Signed-off-by: Martin Schiller <mschiller@tdt.de>
 ---
- .../bindings/pinctrl/lantiq,pinctrl-xway.txt       | 110 +++++++++++++++++++--
- 1 file changed, 102 insertions(+), 8 deletions(-)
+ drivers/pinctrl/pinctrl-xway.c | 28 ++++++++++++++++++++++++++--
+ 1 file changed, 26 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/pinctrl/lantiq,pinctrl-xway.txt b/Documentation/devicetree/bindings/pinctrl/lantiq,pinctrl-xway.txt
-index e89b467..8e5216b 100644
---- a/Documentation/devicetree/bindings/pinctrl/lantiq,pinctrl-xway.txt
-+++ b/Documentation/devicetree/bindings/pinctrl/lantiq,pinctrl-xway.txt
-@@ -1,7 +1,16 @@
- Lantiq XWAY pinmux controller
+diff --git a/drivers/pinctrl/pinctrl-xway.c b/drivers/pinctrl/pinctrl-xway.c
+index a064962..f0b1b48 100644
+--- a/drivers/pinctrl/pinctrl-xway.c
++++ b/drivers/pinctrl/pinctrl-xway.c
+@@ -1496,10 +1496,9 @@ static struct pinctrl_desc xway_pctrl_desc = {
+ 	.confops	= &xway_pinconf_ops,
+ };
  
- Required properties:
--- compatible: "lantiq,pinctrl-xway" or "lantiq,pinctrl-xr9"
-+- compatible: "lantiq,pinctrl-xway", (DEPRECATED: Use "lantiq,pinctrl-danube")
-+	      "lantiq,pinctrl-xr9", (DEPRECATED: Use "lantiq,xrx100-pinctrl" or
-+					"lantiq,xrx200-pinctrl")
-+	      "lantiq,pinctrl-ase", (DEPRECATED: Use "lantiq,ase-pinctrl")
-+	      "lantiq,<chip>-pinctrl", where <chip> is:
-+		"ase" (XWAY AMAZON Family)
-+		"danube" (XWAY DANUBE Family)
-+		"xrx100" (XWAY xRX100 Family)
-+		"xrx200" (XWAY xRX200 Family)
-+		"xrx300" (XWAY xRX300 Family)
- - reg: Should contain the physical address and length of the gpio/pinmux
-   register range
+-static inline int xway_mux_apply(struct pinctrl_dev *pctrldev,
++static int mux_apply(struct ltq_pinmux_info *info,
+ 				int pin, int mux)
+ {
+-	struct ltq_pinmux_info *info = pinctrl_dev_get_drvdata(pctrldev);
+ 	int port = PORT(pin);
+ 	u32 alt1_reg = GPIO_ALT1(pin);
  
-@@ -36,19 +45,87 @@ Required subnode-properties:
+@@ -1519,6 +1518,14 @@ static inline int xway_mux_apply(struct pinctrl_dev *pctrldev,
+ 	return 0;
+ }
  
- Valid values for group and function names:
++static inline int xway_mux_apply(struct pinctrl_dev *pctrldev,
++				int pin, int mux)
++{
++	struct ltq_pinmux_info *info = pinctrl_dev_get_drvdata(pctrldev);
++
++	return mux_apply(info, pin, mux);
++}
++
+ static const struct ltq_cfg_param xway_cfg_params[] = {
+ 	{"lantiq,pull",		LTQ_PINCONF_PARAM_PULL},
+ 	{"lantiq,open-drain",	LTQ_PINCONF_PARAM_OPEN_DRAIN},
+@@ -1563,12 +1570,28 @@ static int xway_gpio_dir_out(struct gpio_chip *chip, unsigned int pin, int val)
+ {
+ 	struct ltq_pinmux_info *info = dev_get_drvdata(chip->dev);
  
-+XWAY: (DEPRECATED: Use DANUBE)
-   mux groups:
-     exin0, exin1, exin2, jtag, ebu a23, ebu a24, ebu a25, ebu clk, ebu cs1,
-     ebu wait, nand ale, nand cs1, nand cle, spi, spi_cs1, spi_cs2, spi_cs3,
--    spi_cs4, spi_cs5, spi_cs6, asc0, asc0 cts rts, stp, nmi , gpt1, gpt2,
-+    spi_cs4, spi_cs5, spi_cs6, asc0, asc0 cts rts, stp, nmi, gpt1, gpt2,
-     gpt3, clkout0, clkout1, clkout2, clkout3, gnt1, gnt2, gnt3, req1, req2,
-     req3
++	if (PORT(pin) == PORT3)
++		gpio_setbit(info->membase[0], GPIO3_OD, PORT_PIN(pin));
++	else
++		gpio_setbit(info->membase[0], GPIO_OD(pin), PORT_PIN(pin));
+ 	gpio_setbit(info->membase[0], GPIO_DIR(pin), PORT_PIN(pin));
+ 	xway_gpio_set(chip, pin, val);
  
--  additional mux groups (XR9 only):
--    mdio, nand rdy, nand rd, exin3, exin4, gnt4, req4
-+  functions:
-+    spi, asc, cgu, jtag, exin, stp, gpt, nmi, pci, ebu
-+
-+XR9: ( DEPRECATED: Use xRX100/xRX200)
-+  mux groups:
-+    exin0, exin1, exin2, exin3, exin4, jtag, ebu a23, ebu a24, ebu a25,
-+    ebu clk, ebu cs1, ebu wait, nand ale, nand cs1, nand cle, nand rdy,
-+    nand rd, spi, spi_cs1, spi_cs2, spi_cs3, spi_cs4, spi_cs5, spi_cs6,
-+    asc0, asc0 cts rts, stp, nmi, gpt1, gpt2, gpt3, clkout0, clkout1,
-+    clkout2, clkout3, gnt1, gnt2, gnt3, gnt4, req1, req2, req3, req4, mdio,
-+    gphy0 led0, gphy0 led1, gphy0 led2, gphy1 led0, gphy1 led1, gphy1 led2
-+
-+  functions:
-+    spi, asc, cgu, jtag, exin, stp, gpt, nmi, pci, ebu, mdio, gphy
-+
-+AMAZON:
-+  mux groups:
-+    exin0, exin1, exin2, jtag, spi_di, spi_do, spi_clk, spi_cs1, spi_cs2,
-+    spi_cs3, spi_cs4, spi_cs5, spi_cs6, asc, stp, gpt1, gpt2, gpt3, clkout0,
-+    clkout1, clkout2, mdio, dfe led0, dfe led1, ephy led0, ephy led1, ephy led2
-+
-+  functions:
-+    spi, asc, cgu, jtag, exin, stp, gpt, mdio, ephy, dfe
-+
-+DANUBE:
-+  mux groups:
-+    exin0, exin1, exin2, jtag, ebu a23, ebu a24, ebu a25, ebu clk, ebu cs1,
-+    ebu wait, nand ale, nand cs1, nand cle, spi_di, spi_do, spi_clk, spi_cs1,
-+    spi_cs2, spi_cs3, spi_cs4, spi_cs5, spi_cs6, asc0, asc0 cts rts, stp, nmi,
-+    gpt1, gpt2, gpt3, clkout0, clkout1, clkout2, clkout3, gnt1, gnt2, gnt3,
-+    req1, req2, req3, dfe led0, dfe led1
+ 	return 0;
+ }
  
-   functions:
--    spi, asc, cgu, jtag, exin, stp, gpt, nmi, pci, ebu, mdio
-+    spi, asc, cgu, jtag, exin, stp, gpt, nmi, pci, ebu, dfe
- 
-+xRX100:
-+  mux groups:
-+    exin0, exin1, exin2, exin3, exin4, ebu a23, ebu a24, ebu a25, ebu clk,
-+    ebu cs1, ebu wait, nand ale, nand cs1, nand cle, nand rdy, nand rd,
-+    spi_di, spi_do, spi_clk, spi_cs1, spi_cs2, spi_cs3, spi_cs4, spi_cs5,
-+    spi_cs6, asc0, asc0 cts rts, stp, nmi, gpt1, gpt2, gpt3, clkout0, clkout1,
-+    clkout2, clkout3, gnt1, gnt2, gnt3, gnt4, req1, req2, req3, req4, mdio,
-+    dfe led0, dfe led1
++static int xway_gpio_to_irq(struct gpio_chip *chip, unsigned offset)
++{
++	struct ltq_pinmux_info *info = dev_get_drvdata(chip->dev);
++	int i;
 +
-+  functions:
-+    spi, asc, cgu, exin, stp, gpt, nmi, pci, ebu, mdio, dfe
++	for (i = 0; i < info->num_exin; i++)
++		if (info->exin[i] == offset)
++			return ltq_eiu_get_irq(i);
 +
-+xRX200:
-+  mux groups:
-+    exin0, exin1, exin2, exin3, exin4, ebu a23, ebu a24, ebu a25, ebu clk,
-+    ebu cs1, ebu wait, nand ale, nand cs1, nand cle, nand rdy, nand rd,
-+    spi_di, spi_do, spi_clk, spi_cs1, spi_cs2, spi_cs3, spi_cs4, spi_cs5,
-+    spi_cs6, usif uart_rx, usif uart_tx, usif uart_rts, usif uart_cts,
-+    usif uart_dtr, usif uart_dsr, usif uart_dcd, usif uart_ri, usif spi_di,
-+    usif spi_do, usif spi_clk, usif spi_cs0, usif spi_cs1, usif spi_cs2,
-+    stp, nmi, gpt1, gpt2, gpt3, clkout0, clkout1, clkout2, clkout3, gnt1,
-+    gnt2, gnt3, gnt4, req1, req2, req3, req4, mdio, dfe led0, dfe led1,
-+    gphy0 led0, gphy0 led1, gphy0 led2, gphy1 led0, gphy1 led1, gphy1 led2
++	return -1;
++}
 +
-+  functions:
-+    spi, usif, cgu, exin, stp, gpt, nmi, pci, ebu, mdio, dfe, gphy
-+
-+xRX300:
-+  mux groups:
-+    exin0, exin1, exin2, exin4, nand ale, nand cs0, nand cs1, nand cle,
-+    nand rdy, nand rd, nand_d0, nand_d1, nand_d2, nand_d3, nand_d4, nand_d5,
-+    nand_d6, nand_d7, nand_d1, nand wr, nand wp, nand se, spi_di, spi_do,
-+    spi_clk, spi_cs1, spi_cs4, spi_cs6, usif uart_rx, usif uart_tx,
-+    usif spi_di, usif spi_do, usif spi_clk, usif spi_cs0, stp, clkout2,
-+    mdio, dfe led0, dfe led1, ephy0 led0, ephy0 led1, ephy1 led0, ephy1 led1
-+
-+  functions:
-+    spi, usif, cgu, exin, stp, ebu, mdio, dfe, ephy
- 
- 
- Definition of pin configurations:
-@@ -62,15 +139,32 @@ Optional subnode-properties:
-     0: none, 1: down, 2: up.
- - lantiq,open-drain: Boolean, enables open-drain on the defined pin.
- 
--Valid values for XWAY pin names:
-+Valid values for XWAY pin names: (DEPRECATED: Use DANUBE)
-   Pinconf pins can be referenced via the names io0-io31.
- 
--Valid values for XR9 pin names:
-+Valid values for XR9 pin names: (DEPRECATED: Use xrX100/xRX200)
-   Pinconf pins can be referenced via the names io0-io55.
- 
-+Valid values for AMAZON pin names:
-+  Pinconf pins can be referenced via the names io0-io31.
-+
-+Valid values for DANUBE pin names:
-+  Pinconf pins can be referenced via the names io0-io31.
-+
-+Valid values for xRX100 pin names:
-+  Pinconf pins can be referenced via the names io0-io55.
-+
-+Valid values for xRX200 pin names:
-+  Pinconf pins can be referenced via the names io0-io49.
-+
-+Valid values for xRX300 pin names:
-+  Pinconf pins can be referenced via the names io0-io1,io3-io6,io8-io11,
-+						io13-io19,io23-io27,io34-io36,
-+						io42-io43,io48-io61.
-+
- Example:
- 	gpio: pinmux@E100B10 {
--		compatible = "lantiq,pinctrl-xway";
-+		compatible = "lantiq,danube-pinctrl";
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&state_default>;
+ static struct gpio_chip xway_chip = {
+ 	.label = "gpio-xway",
+ 	.direction_input = xway_gpio_dir_in,
+@@ -1577,6 +1600,7 @@ static struct gpio_chip xway_chip = {
+ 	.set = xway_gpio_set,
+ 	.request = gpiochip_generic_request,
+ 	.free = gpiochip_generic_free,
++	.to_irq = xway_gpio_to_irq,
+ 	.base = -1,
+ };
  
 -- 
 2.1.4

@@ -1,26 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Nov 2015 13:12:55 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:6310 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Nov 2015 13:13:12 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:25275 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27012942AbbKYMITec0Jf (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Nov 2015 13:08:19 +0100
+        with ESMTP id S27012895AbbKYMIamJQJf (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Nov 2015 13:08:30 +0100
 Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Websense Email Security Gateway with ESMTPS id 60D7DFDCBDE2E;
-        Wed, 25 Nov 2015 12:08:11 +0000 (GMT)
+        by Websense Email Security Gateway with ESMTPS id 1D157DE386A65;
+        Wed, 25 Nov 2015 12:08:22 +0000 (GMT)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
  HHMAIL01.hh.imgtec.org (10.100.10.19) with Microsoft SMTP Server (TLS) id
- 14.3.235.1; Wed, 25 Nov 2015 12:08:13 +0000
+ 14.3.235.1; Wed, 25 Nov 2015 12:08:24 +0000
 Received: from qyousef-linux.le.imgtec.org (192.168.154.94) by
  LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.210.2; Wed, 25 Nov 2015 12:08:12 +0000
+ 14.3.210.2; Wed, 25 Nov 2015 12:08:24 +0000
 From:   Qais Yousef <qais.yousef@imgtec.com>
 To:     <linux-kernel@vger.kernel.org>
 CC:     <tglx@linutronix.de>, <jason@lakedaemon.net>,
         <marc.zyngier@arm.com>, <jiang.liu@linux.intel.com>,
         <ralf@linux-mips.org>, <linux-mips@linux-mips.org>,
-        Qais Yousef <qais.yousef@imgtec.com>
-Subject: [PATCH v2 17/19] MIPS: Make smp CMP, CPS and MT use the new generic IPI functions
-Date:   Wed, 25 Nov 2015 12:06:55 +0000
-Message-ID: <1448453217-3874-18-git-send-email-qais.yousef@imgtec.com>
+        Qais Yousef <qais.yousef@imgtec.com>,
+        "Rob Herring" <robh+dt@kernel.org>,
+        Pawel Moll <pawel.moll@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ian Campbell <ijc+devicetree@hellion.org.uk>,
+        "Kumar Gala" <galak@codeaurora.org>, <devicetree@vger.kernel.org>
+Subject: [PATCH v2 19/19] irqchip/mips-gic: Add new DT property to reserve IPIs
+Date:   Wed, 25 Nov 2015 12:06:57 +0000
+Message-ID: <1448453217-3874-20-git-send-email-qais.yousef@imgtec.com>
 X-Mailer: git-send-email 2.1.0
 In-Reply-To: <1448453217-3874-1-git-send-email-qais.yousef@imgtec.com>
 References: <1448453217-3874-1-git-send-email-qais.yousef@imgtec.com>
@@ -31,7 +36,7 @@ Return-Path: <Qais.Yousef@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50103
+X-archive-position: 50104
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,231 +53,78 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This commit does several things to avoid breaking bisectability.
+The new property will allow to specify the range of GIC hwirqs to use for IPIs.
 
-	1- Remove IPI init code from irqchip/mips-gic
-	2- Implement the new irqchip->send_ipi() in irqchip/mips-gic
-	3- Select GENERIC_IRQ_IPI Kconfig symbol for MIPS_GIC
-	4- Change MIPS SMP to use the generic IPI implementation
-
-Only the SMP variants that use GIC were converted as it's the only irqchip that
-will have the support for generic IPI for now.
+This is an optinal property. We preserve the previous behaviour of allocating
+the last 2 * gic_vpes if it's not specified or DT is not supported.
 
 Signed-off-by: Qais Yousef <qais.yousef@imgtec.com>
----
- arch/mips/include/asm/smp-ops.h  |  5 ++-
- arch/mips/kernel/smp-cmp.c       |  4 +-
- arch/mips/kernel/smp-cps.c       |  4 +-
- arch/mips/kernel/smp-mt.c        |  2 +-
- drivers/irqchip/Kconfig          |  1 +
- drivers/irqchip/irq-mips-gic.c   | 87 +++-------------------------------------
- include/linux/irqchip/mips-gic.h |  3 --
- 7 files changed, 15 insertions(+), 91 deletions(-)
+Cc: Rob Herring <robh+dt@kernel.org>
+Cc: Pawel Moll <pawel.moll@arm.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Ian Campbell <ijc+devicetree@hellion.org.uk>
+Cc: Kumar Gala <galak@codeaurora.org>
+Cc: devicetree@vger.kernel.org
 
-diff --git a/arch/mips/include/asm/smp-ops.h b/arch/mips/include/asm/smp-ops.h
-index 6ba1fb8b11e2..db7c322f057f 100644
---- a/arch/mips/include/asm/smp-ops.h
-+++ b/arch/mips/include/asm/smp-ops.h
-@@ -44,8 +44,9 @@ static inline void plat_smp_setup(void)
- 	mp_ops->smp_setup();
- }
+---
+ .../devicetree/bindings/interrupt-controller/mips-gic.txt    |  7 +++++++
+ drivers/irqchip/irq-mips-gic.c                               | 12 ++++++++++--
+ 2 files changed, 17 insertions(+), 2 deletions(-)
+
+diff --git a/Documentation/devicetree/bindings/interrupt-controller/mips-gic.txt b/Documentation/devicetree/bindings/interrupt-controller/mips-gic.txt
+index aae4c384ee1f..173595305e26 100644
+--- a/Documentation/devicetree/bindings/interrupt-controller/mips-gic.txt
++++ b/Documentation/devicetree/bindings/interrupt-controller/mips-gic.txt
+@@ -23,6 +23,12 @@ Optional properties:
+ - mti,reserved-cpu-vectors : Specifies the list of CPU interrupt vectors
+   to which the GIC may not route interrupts.  Valid values are 2 - 7.
+   This property is ignored if the CPU is started in EIC mode.
++- mti,reserved-ipi-vectors : Specifies the range of GIC interrupts that are
++  reserved for IPIs.
++  It accepts 2 values, the 1st is the starting interrupt and the 2nd is the size
++  of the reserved range.
++  If not specified, the driver will allocate the last 2 * number of VPEs in the
++  system.
  
--extern void gic_send_ipi_single(int cpu, unsigned int action);
--extern void gic_send_ipi_mask(const struct cpumask *mask, unsigned int action);
-+extern void mips_smp_send_ipi_single(int cpu, unsigned int action);
-+extern void mips_smp_send_ipi_mask(const struct cpumask *mask,
-+				      unsigned int action);
+ Required properties for timer sub-node:
+ - compatible : Should be "mti,gic-timer".
+@@ -44,6 +50,7 @@ Example:
+ 		#interrupt-cells = <3>;
  
- #else /* !CONFIG_SMP */
+ 		mti,reserved-cpu-vectors = <7>;
++		mti,reserved-ipi-vectors = <40 8>;
  
-diff --git a/arch/mips/kernel/smp-cmp.c b/arch/mips/kernel/smp-cmp.c
-index d5e0f949dc48..76923349b4fe 100644
---- a/arch/mips/kernel/smp-cmp.c
-+++ b/arch/mips/kernel/smp-cmp.c
-@@ -149,8 +149,8 @@ void __init cmp_prepare_cpus(unsigned int max_cpus)
- }
- 
- struct plat_smp_ops cmp_smp_ops = {
--	.send_ipi_single	= gic_send_ipi_single,
--	.send_ipi_mask		= gic_send_ipi_mask,
-+	.send_ipi_single	= mips_smp_send_ipi_single,
-+	.send_ipi_mask		= mips_smp_send_ipi_mask,
- 	.init_secondary		= cmp_init_secondary,
- 	.smp_finish		= cmp_smp_finish,
- 	.boot_secondary		= cmp_boot_secondary,
-diff --git a/arch/mips/kernel/smp-cps.c b/arch/mips/kernel/smp-cps.c
-index c88937745b4e..69d811e72f2b 100644
---- a/arch/mips/kernel/smp-cps.c
-+++ b/arch/mips/kernel/smp-cps.c
-@@ -444,8 +444,8 @@ static struct plat_smp_ops cps_smp_ops = {
- 	.boot_secondary		= cps_boot_secondary,
- 	.init_secondary		= cps_init_secondary,
- 	.smp_finish		= cps_smp_finish,
--	.send_ipi_single	= gic_send_ipi_single,
--	.send_ipi_mask		= gic_send_ipi_mask,
-+	.send_ipi_single	= mips_smp_send_ipi_single,
-+	.send_ipi_mask		= mips_smp_send_ipi_mask,
- #ifdef CONFIG_HOTPLUG_CPU
- 	.cpu_disable		= cps_cpu_disable,
- 	.cpu_die		= cps_cpu_die,
-diff --git a/arch/mips/kernel/smp-mt.c b/arch/mips/kernel/smp-mt.c
-index 86311a164ef1..4f9570a57e8d 100644
---- a/arch/mips/kernel/smp-mt.c
-+++ b/arch/mips/kernel/smp-mt.c
-@@ -121,7 +121,7 @@ static void vsmp_send_ipi_single(int cpu, unsigned int action)
- 
- #ifdef CONFIG_MIPS_GIC
- 	if (gic_present) {
--		gic_send_ipi_single(cpu, action);
-+		mips_smp_send_ipi_single(cpu, action);
- 		return;
- 	}
- #endif
-diff --git a/drivers/irqchip/Kconfig b/drivers/irqchip/Kconfig
-index e1dcfdffd2c7..590bc55f28da 100644
---- a/drivers/irqchip/Kconfig
-+++ b/drivers/irqchip/Kconfig
-@@ -168,6 +168,7 @@ config KEYSTONE_IRQ
- 
- config MIPS_GIC
- 	bool
-+	select GENERIC_IRQ_IPI
- 	select IRQ_DOMAIN_HIERARCHY
- 	select MIPS_CM
- 
+ 		timer {
+ 			compatible = "mti,gic-timer";
 diff --git a/drivers/irqchip/irq-mips-gic.c b/drivers/irqchip/irq-mips-gic.c
-index 723135dcacb3..c7043a15253b 100644
+index c7043a15253b..659fe734d1b7 100644
 --- a/drivers/irqchip/irq-mips-gic.c
 +++ b/drivers/irqchip/irq-mips-gic.c
-@@ -278,9 +278,11 @@ static void gic_bind_eic_interrupt(int irq, int set)
- 		  GIC_VPE_EIC_SS(irq), set);
- }
- 
--void gic_send_ipi(unsigned int intr)
-+static void gic_send_ipi(struct irq_data *d, unsigned int cpu)
+@@ -945,6 +945,7 @@ static void __init __gic_init(unsigned long gic_base_addr,
+ 			      struct device_node *node)
  {
--	gic_write(GIC_REG(SHARED, GIC_SH_WEDGE), GIC_SH_WEDGE_SET(intr));
-+	irq_hw_number_t hwirq = GIC_HWIRQ_TO_SHARED(irqd_to_hwirq(d));
-+
-+	gic_write(GIC_REG(SHARED, GIC_SH_WEDGE), GIC_SH_WEDGE_SET(hwirq));
- }
+ 	unsigned int gicconfig;
++	unsigned int v[2];
  
- int gic_get_c0_compare_int(void)
-@@ -482,6 +484,8 @@ static struct irq_chip gic_edge_irq_controller = {
- #ifdef CONFIG_SMP
- 	.irq_set_affinity	=	gic_set_affinity,
- #endif
-+	.ipi_send_single	=	gic_send_ipi,
-+	.ipi_send_coproc_single	=	gic_send_ipi,
- };
+ 	gic_base = ioremap_nocache(gic_base_addr, gic_addrspace_size);
  
- static void gic_handle_local_int(bool chained)
-@@ -575,83 +579,6 @@ static void gic_irq_dispatch(struct irq_desc *desc)
- 	gic_handle_shared_int(true);
- }
+@@ -1013,8 +1014,15 @@ static void __init __gic_init(unsigned long gic_base_addr,
  
--#ifdef CONFIG_MIPS_GIC_IPI
--static int gic_resched_int_base;
--static int gic_call_int_base;
--
--unsigned int plat_ipi_resched_int_xlate(unsigned int cpu)
--{
--	return gic_resched_int_base + cpu;
--}
--
--unsigned int plat_ipi_call_int_xlate(unsigned int cpu)
--{
--	return gic_call_int_base + cpu;
--}
--
--static irqreturn_t ipi_resched_interrupt(int irq, void *dev_id)
--{
--	scheduler_ipi();
--
--	return IRQ_HANDLED;
--}
--
--static irqreturn_t ipi_call_interrupt(int irq, void *dev_id)
--{
--	generic_smp_call_function_interrupt();
--
--	return IRQ_HANDLED;
--}
--
--static struct irqaction irq_resched = {
--	.handler	= ipi_resched_interrupt,
--	.flags		= IRQF_PERCPU,
--	.name		= "IPI resched"
--};
--
--static struct irqaction irq_call = {
--	.handler	= ipi_call_interrupt,
--	.flags		= IRQF_PERCPU,
--	.name		= "IPI call"
--};
--
--static __init void gic_ipi_init_one(unsigned int intr, int cpu,
--				    struct irqaction *action)
--{
--	int virq = irq_create_mapping(gic_irq_domain,
--				      GIC_SHARED_TO_HWIRQ(intr));
--	int i;
--
--	gic_map_to_vpe(intr, mips_cm_vp_id(cpu));
--	for (i = 0; i < NR_CPUS; i++)
--		clear_bit(intr, pcpu_masks[i].pcpu_mask);
--	set_bit(intr, pcpu_masks[cpu].pcpu_mask);
--
--	irq_set_irq_type(virq, IRQ_TYPE_EDGE_RISING);
--
--	irq_set_handler(virq, handle_percpu_irq);
--	setup_irq(virq, action);
--}
--
--static __init void gic_ipi_init(void)
--{
--	int i;
--
--	/* Use last 2 * NR_CPUS interrupts as IPIs */
--	gic_resched_int_base = gic_shared_intrs - nr_cpu_ids;
--	gic_call_int_base = gic_resched_int_base - nr_cpu_ids;
--
--	for (i = 0; i < nr_cpu_ids; i++) {
--		gic_ipi_init_one(gic_call_int_base + i, i, &irq_call);
--		gic_ipi_init_one(gic_resched_int_base + i, i, &irq_resched);
--	}
--}
--#else
--static inline void gic_ipi_init(void)
--{
--}
--#endif
--
- static void __init gic_basic_init(void)
- {
- 	unsigned int i;
-@@ -1090,8 +1017,6 @@ static void __init __gic_init(unsigned long gic_base_addr,
- 	bitmap_set(ipi_resrv, gic_shared_intrs - 2 * gic_vpes, 2 * gic_vpes);
+ 	gic_ipi_domain->bus_token = DOMAIN_BUS_IPI;
+ 
+-	/* Make the last 2 * NR_CPUS available for IPIs */
+-	bitmap_set(ipi_resrv, gic_shared_intrs - 2 * gic_vpes, 2 * gic_vpes);
++	if (node &&
++	    !of_property_read_u32_array(node, "mti,reserved-ipi-vectors", &v, 2)) {
++		bitmap_set(ipi_resrv, v[0], v[1]);
++	} else {
++		/* Make the last 2 * gic_vpes available for IPIs */
++		bitmap_set(ipi_resrv,
++			   gic_shared_intrs - 2 * gic_vpes,
++			   2 * gic_vpes);
++	}
  
  	gic_basic_init();
--
--	gic_ipi_init();
  }
- 
- void __init gic_init(unsigned long gic_base_addr,
-diff --git a/include/linux/irqchip/mips-gic.h b/include/linux/irqchip/mips-gic.h
-index 4e6861605050..321278767506 100644
---- a/include/linux/irqchip/mips-gic.h
-+++ b/include/linux/irqchip/mips-gic.h
-@@ -258,9 +258,6 @@ extern void gic_write_compare(cycle_t cnt);
- extern void gic_write_cpu_compare(cycle_t cnt, int cpu);
- extern void gic_start_count(void);
- extern void gic_stop_count(void);
--extern void gic_send_ipi(unsigned int intr);
--extern unsigned int plat_ipi_call_int_xlate(unsigned int);
--extern unsigned int plat_ipi_resched_int_xlate(unsigned int);
- extern int gic_get_c0_compare_int(void);
- extern int gic_get_c0_perfcount_int(void);
- extern int gic_get_c0_fdc_int(void);
 -- 
 2.1.0

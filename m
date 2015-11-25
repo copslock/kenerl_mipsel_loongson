@@ -1,58 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Nov 2015 09:17:34 +0100 (CET)
-Received: from proxima.lp0.eu ([81.2.80.65]:37104 "EHLO proxima.lp0.eu"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27006588AbbKYIRbxr60p (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 25 Nov 2015 09:17:31 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=fire.lp0.eu; s=exim;
-        h=Content-Transfer-Encoding:Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:Cc:References:To:Subject; bh=HA7G9dAUmpuknYFGGhaBDtRDcZ5UFv7jlgvAPqu1SnQ=;
-        b=s0TebOdw01ta/p61WGj/X42po4lL0dlWNCMZARgRjZpBjklyGW/RB+Yk3sIPLjTW3I18fHlicheE4BA/V0MAGoO1b+9L6RwwQyYfDDUFgDV6ayD+bonEWNex4dOBd5w+95Ppyyu8NcS/2UChcyRkOhe/lwfuH1N7cL6TqBCKvyJJdDpR+P9vO4D8Ujxe7Otkh5dZIYLLiAYcQeU7/VqANH9oyKJSHFXuApAb6v4PKcngRPw+OOLOcgKCg0a/CeDsnyNXNsjiQ9EdiwoCgENONWvasXm40rtHSmfKR8jvRcqM/XtYU7kdvS2msFerfxhYEGo45RUBt4Y74lhqfLP/Zw==;
-Received: from redrum.lp0.eu ([2001:8b0:ffea:0:2e0:81ff:fe4d:2bec]:43341 ident=simon)
-        by proxima.lp0.eu ([2001:8b0:ffea:0:205:b4ff:fe12:530]:465)
-        with esmtpsav (UNKNOWN:DHE-RSA-AES256-SHA:256/CN=Simon Arlott)
-        id 1a1VGJ-0006y0-Ds (Exim); Wed, 25 Nov 2015 08:17:12 +0000
-Subject: Re: [PATCH (v2) 7/10] watchdog: bcm63xx_wdt: Add get_timeleft
- function
-To:     Guenter Roeck <linux@roeck-us.net>, linux-watchdog@vger.kernel.org
-References: <5650BFD6.5030700@simon.arlott.org.uk>
- <5650C08C.6090300@simon.arlott.org.uk> <5650E2FA.6090408@roeck-us.net>
- <5650E5BB.6020404@simon.arlott.org.uk> <56512937.6030903@roeck-us.net>
- <5651CB13.4090704@simon.arlott.org.uk> <5651CC90.7090402@simon.arlott.org.uk>
- <a1461a17c94353f38316d2c6ae04d6b77c91bfd4@8b5064a13e22126c1b9329f0dc35b8915774b7c3.invalid>
- <56552214.2050808@roeck-us.net>
-Cc:     "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Marc Zyngier <marc.zyngier@arm.com>,
-        Kevin Cernekee <cernekee@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Wim Van Sebroeck <wim@iguana.be>,
-        Maxime Bizon <mbizon@freebox.fr>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-mips@linux-mips.org, Rob Herring <robh+dt@kernel.org>,
-        Pawel Moll <pawel.moll@arm.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ian Campbell <ijc+devicetree@hellion.org.uk>,
-        Kumar Gala <galak@codeaurora.org>,
-        Jonas Gorski <jogo@openwrt.org>
-From:   Simon Arlott <simon@fire.lp0.eu>
-Message-ID: <56556E84.50202@simon.arlott.org.uk>
-Date:   Wed, 25 Nov 2015 08:17:08 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.3.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Nov 2015 11:19:47 +0100 (CET)
+Received: from mxout51.expurgate.net ([91.198.224.51]:44284 "EHLO
+        mxout51.expurgate.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010957AbbKYKTqHJr3d convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 25 Nov 2015 11:19:46 +0100
+Received: from [127.0.0.1] (helo=localhost)
+        by relay.expurgate.net with smtp (Exim 4.80.1)
+        (envelope-from <mschiller@tdt.de>)
+        id 1a1XAq-0006VI-Qc; Wed, 25 Nov 2015 11:19:40 +0100
+Received: from [195.243.126.94] (helo=ms.tdt.de)
+        by relay.expurgate.net with esmtp (Exim 4.80.1)
+        (envelope-from <mschiller@tdt.de>)
+        id 1a1XAp-00009L-UT; Wed, 25 Nov 2015 11:19:39 +0100
+Received: from mschille.tdtnet.local (10.1.3.20) by TDT-MS.TDTNET.local
+ (10.1.10.2) with Microsoft SMTP Server (TLS) id 15.0.1104.5; Wed, 25 Nov 2015
+ 11:19:39 +0100
+From:   Martin Schiller <mschiller@tdt.de>
+To:     <linux-gpio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-mips@linux-mips.org>
+CC:     <linus.walleij@linaro.org>, <robh+dt@kernel.org>,
+        <pawel.moll@arm.com>, <mark.rutland@arm.com>,
+        <ijc+devicetree@hellion.org.uk>, <galak@codeaurora.org>,
+        <ralf@linux-mips.org>, <blogic@openwrt.org>, <hauke@hauke-m.de>,
+        <jogo@openwrt.org>, <daniel.schwierzeck@gmail.com>,
+        Martin Schiller <mschiller@tdt.de>
+Subject: [PATCH v2 3/4] pinctrl/lantiq: update devicetree binding in dts file
+Date:   Wed, 25 Nov 2015 11:18:58 +0100
+Message-ID: <1448446739-5541-3-git-send-email-mschiller@tdt.de>
+X-Mailer: git-send-email 2.1.4
+In-Reply-To: <1448446739-5541-1-git-send-email-mschiller@tdt.de>
+References: <1448446739-5541-1-git-send-email-mschiller@tdt.de>
 MIME-Version: 1.0
-In-Reply-To: <56552214.2050808@roeck-us.net>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Return-Path: <simon@fire.lp0.eu>
+Content-Type: text/plain; charset="utf-8"
+X-Originating-IP: [10.1.3.20]
+X-EsetResult: clean, is OK
+X-EsetId: 37303A29F17133606D7D66
+X-C2ProcessedOrg: 0a9847a8-efc2-4cb2-92f2-0898183e658d
+Content-Transfer-Encoding: 8BIT
+X-purgate-relay-fid: relay-9b77e0
+X-purgate-sourceid: 1a1XAp-00009L-UT
+X-purgate-Ad: Checked for spam and viruses by eXpurgate(R), see www.eleven.de for details.
+X-purgate-ID: 151534::1448446780-0000070C-11180450/0/0
+X-purgate: clean
+X-purgate-type: clean
+X-purgate-relay-bid: relay-1e7d0f
+Return-Path: <mschiller@tdt.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50079
+X-archive-position: 50080
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: simon@fire.lp0.eu
+X-original-sender: mschiller@tdt.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -65,40 +65,26 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 25/11/15 02:51, Guenter Roeck wrote:
-> On 11/24/2015 02:15 PM, Simon Arlott wrote:
->> Return the remaining time from the hardware control register.
->>
->> Warn when the device is registered if the hardware watchdog is currently
->> running and report the remaining time left.
-> 
-> This is really two logical changes, isn't it ?
+This patch updates the compatible string in the easy50712.dts file to the new
+"lantiq,danube-pinctrl".
 
-If you insist then I'll split it out into yet another patch.
+Signed-off-by: Martin Schiller <mschiller@tdt.de>
+---
+ arch/mips/boot/dts/lantiq/easy50712.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> Nice trick to figure out if the watchdog is running.
-> 
-> What is the impact ? Will this result in interrupts ?
-
-Yes, if it is running it will receive interrupts and check hw->running
-to determine if it should stop the watchdog or not.
-
-> If so, would it make sense to _not_ reset the system after a timeout
-> in this case, but to keep pinging the watchdog while the watchdog device
-> is not open ?
-
-As the whole point of a hardware watchdog is to reset the system when
-there is a problem with the software, it should not be automatically
-reset by the driver on startup. If the watchdog is already running then
-it needs to be pinged by userspace before the timeout.
-
-The bootloader (CFE) doesn't leave the watchdog running. On my system I
-prepend some code before vmlinuz that starts it running at the maximum
-timeout.
-
-A module parameter could be added to automatically ping/stop it if it's
-running, but this should be in the watchdog core and not an individual
-driver.
-
+diff --git a/arch/mips/boot/dts/lantiq/easy50712.dts b/arch/mips/boot/dts/lantiq/easy50712.dts
+index 143b8a3..b599625 100644
+--- a/arch/mips/boot/dts/lantiq/easy50712.dts
++++ b/arch/mips/boot/dts/lantiq/easy50712.dts
+@@ -52,7 +52,7 @@
+ 		};
+ 
+ 		gpio: pinmux@E100B10 {
+-			compatible = "lantiq,pinctrl-xway";
++			compatible = "lantiq,danube-pinctrl";
+ 			pinctrl-names = "default";
+ 			pinctrl-0 = <&state_default>;
+ 
 -- 
-Simon Arlott
+2.1.4

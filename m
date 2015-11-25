@@ -1,26 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Nov 2015 13:09:05 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:10510 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Nov 2015 13:09:24 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:30463 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27012723AbbKYMIAIwxef (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Nov 2015 13:08:00 +0100
+        with ESMTP id S27012739AbbKYMIDU-COf (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Nov 2015 13:08:03 +0100
 Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Websense Email Security Gateway with ESMTPS id 86F7EC41EA941;
-        Wed, 25 Nov 2015 12:07:52 +0000 (GMT)
+        by Websense Email Security Gateway with ESMTPS id C6BD181872CB6;
+        Wed, 25 Nov 2015 12:07:54 +0000 (GMT)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
  HHMAIL01.hh.imgtec.org (10.100.10.19) with Microsoft SMTP Server (TLS) id
- 14.3.235.1; Wed, 25 Nov 2015 12:07:54 +0000
+ 14.3.235.1; Wed, 25 Nov 2015 12:07:57 +0000
 Received: from qyousef-linux.le.imgtec.org (192.168.154.94) by
  LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.210.2; Wed, 25 Nov 2015 12:07:53 +0000
+ 14.3.210.2; Wed, 25 Nov 2015 12:07:56 +0000
 From:   Qais Yousef <qais.yousef@imgtec.com>
 To:     <linux-kernel@vger.kernel.org>
 CC:     <tglx@linutronix.de>, <jason@lakedaemon.net>,
         <marc.zyngier@arm.com>, <jiang.liu@linux.intel.com>,
         <ralf@linux-mips.org>, <linux-mips@linux-mips.org>,
         Qais Yousef <qais.yousef@imgtec.com>
-Subject: [PATCH v2 05/19] genirq: Add struct ipi_mask to irq_data
-Date:   Wed, 25 Nov 2015 12:06:43 +0000
-Message-ID: <1448453217-3874-6-git-send-email-qais.yousef@imgtec.com>
+Subject: [PATCH v2 07/19] genirq: Make irq_domain_alloc_descs() non static
+Date:   Wed, 25 Nov 2015 12:06:45 +0000
+Message-ID: <1448453217-3874-8-git-send-email-qais.yousef@imgtec.com>
 X-Mailer: git-send-email 2.1.0
 In-Reply-To: <1448453217-3874-1-git-send-email-qais.yousef@imgtec.com>
 References: <1448453217-3874-1-git-send-email-qais.yousef@imgtec.com>
@@ -31,7 +31,7 @@ Return-Path: <Qais.Yousef@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50090
+X-archive-position: 50091
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,48 +48,52 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-It has a similar role to affinity mask, but tracks the IPI affinity instead.
+We will need to use this function to implement irq_reserve_ipi() later. So make
+it non static and move the prototype to irqdomain.h to allow using it outside
+irqdomain.c
 
 Signed-off-by: Qais Yousef <qais.yousef@imgtec.com>
 ---
- include/linux/irq.h | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ include/linux/irqdomain.h | 2 ++
+ kernel/irq/irqdomain.c    | 6 ++----
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/include/linux/irq.h b/include/linux/irq.h
-index 7d8c3d88f16f..fcdcb9394e75 100644
---- a/include/linux/irq.h
-+++ b/include/linux/irq.h
-@@ -168,6 +168,9 @@ struct irq_common_data {
- 	void			*handler_data;
- 	struct msi_desc		*msi_desc;
- 	cpumask_var_t		affinity;
-+#ifdef CONFIG_GENERIC_IRQ_IPI
-+	struct ipi_mask		*ipi_mask;
-+#endif
+diff --git a/include/linux/irqdomain.h b/include/linux/irqdomain.h
+index f717796a4d5e..fcafae8e3aaf 100644
+--- a/include/linux/irqdomain.h
++++ b/include/linux/irqdomain.h
+@@ -212,6 +212,8 @@ struct irq_domain *irq_domain_add_legacy(struct device_node *of_node,
+ extern struct irq_domain *irq_find_matching_fwnode(struct fwnode_handle *fwnode,
+ 						   enum irq_domain_bus_token bus_token);
+ extern void irq_set_default_host(struct irq_domain *host);
++extern int irq_domain_alloc_descs(int virq, unsigned int nr_irqs,
++				  irq_hw_number_t hwirq, int node);
+ 
+ static inline struct fwnode_handle *of_node_to_fwnode(struct device_node *node)
+ {
+diff --git a/kernel/irq/irqdomain.c b/kernel/irq/irqdomain.c
+index 22aa9612ef7c..c31ab8f67f06 100644
+--- a/kernel/irq/irqdomain.c
++++ b/kernel/irq/irqdomain.c
+@@ -23,8 +23,6 @@ static DEFINE_MUTEX(irq_domain_mutex);
+ static DEFINE_MUTEX(revmap_trees_mutex);
+ static struct irq_domain *irq_default_domain;
+ 
+-static int irq_domain_alloc_descs(int virq, unsigned int nr_irqs,
+-				  irq_hw_number_t hwirq, int node);
+ static void irq_domain_check_hierarchy(struct irq_domain *domain);
+ 
+ struct irqchip_fwid {
+@@ -833,8 +831,8 @@ const struct irq_domain_ops irq_domain_simple_ops = {
  };
+ EXPORT_SYMBOL_GPL(irq_domain_simple_ops);
  
- /**
-@@ -705,6 +708,21 @@ static inline struct cpumask *irq_data_get_affinity_mask(struct irq_data *d)
- 	return d->common->affinity;
- }
+-static int irq_domain_alloc_descs(int virq, unsigned int cnt,
+-				  irq_hw_number_t hwirq, int node)
++int irq_domain_alloc_descs(int virq, unsigned int cnt,
++			   irq_hw_number_t hwirq, int node)
+ {
+ 	unsigned int hint;
  
-+#ifdef CONFIG_GENERIC_IRQ_IPI
-+
-+static inline struct ipi_mask *irq_data_get_ipi_mask(struct irq_data *d)
-+{
-+	return d->common->ipi_mask;
-+}
-+
-+static inline void irq_data_set_ipi_mask(struct irq_data *d,
-+					 struct ipi_mask *ipimask)
-+{
-+	d->common->ipi_mask = ipimask;
-+}
-+
-+#endif
-+
- unsigned int arch_dynirq_lower_bound(unsigned int from);
- 
- int __irq_alloc_descs(int irq, unsigned int from, unsigned int cnt, int node,
 -- 
 2.1.0

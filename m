@@ -1,46 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Nov 2015 13:13:12 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:25275 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27012895AbbKYMIamJQJf (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Nov 2015 13:08:30 +0100
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Websense Email Security Gateway with ESMTPS id 1D157DE386A65;
-        Wed, 25 Nov 2015 12:08:22 +0000 (GMT)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- HHMAIL01.hh.imgtec.org (10.100.10.19) with Microsoft SMTP Server (TLS) id
- 14.3.235.1; Wed, 25 Nov 2015 12:08:24 +0000
-Received: from qyousef-linux.le.imgtec.org (192.168.154.94) by
- LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.210.2; Wed, 25 Nov 2015 12:08:24 +0000
-From:   Qais Yousef <qais.yousef@imgtec.com>
-To:     <linux-kernel@vger.kernel.org>
-CC:     <tglx@linutronix.de>, <jason@lakedaemon.net>,
-        <marc.zyngier@arm.com>, <jiang.liu@linux.intel.com>,
-        <ralf@linux-mips.org>, <linux-mips@linux-mips.org>,
-        Qais Yousef <qais.yousef@imgtec.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Nov 2015 14:02:21 +0100 (CET)
+Received: from proxima.lp0.eu ([81.2.80.65]:43478 "EHLO proxima.lp0.eu"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27012702AbbKYNCTeaJiy (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 25 Nov 2015 14:02:19 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=fire.lp0.eu; s=exim;
+        h=Content-Transfer-Encoding:Content-Type:MIME-Version:Cc:To:From:Subject:Date:References:In-Reply-To:Message-ID; bh=P+Z05xNzgMDnQ6PEYUfqfgIRsQ/8gu/gnSgEcpUH87Y=;
+        b=keRxjO9mRR4rTzFLHfVdrl1iycKuP+BZBKHgFdqZoez4+4s0e/crv1GfbLUf3OSYhCBTBKCBYFIJpUJ5C4tkOx149OT0L6JqeKuMXEVrCZphv1TOKgaSE1ONym3WIVZsljwN/BEmR7MlCif1vzHklmc2h5PuJZH2GXfpyfELOtLjxAZmiedJPtSMXE62t2GJR4YfhBT5sKCWGAAASs6OvsZaYjK91E7n5WwWfY8jzAzYiJib0V+TU7j5VcGEvsRk24wzAr2vD1k+NtHewfQk1d5UTVPZZmafsBRJfGad6OkBN9eQ+Bftc3fiId6sWZaBah/yZ2gSLWElmNkB8s3JMQ==;
+Received: from lp0_webmail by proxima.lp0.eu with local 
+        id 1a1Zi6-0005FL-K9 (Exim); Wed, 25 Nov 2015 13:02:11 +0000
+Received: from simon by proxima.lp0.eu with https;
+        Wed, 25 Nov 2015 13:02:10 -0000
+Message-ID: <726719450643bb69683224d731b582b0df27fe1f@8b5064a13e22126c1b9329f0dc35b8915774b7c3.invalid>
+In-Reply-To: <56552099.7070709@roeck-us.net>
+References: <5650BFD6.5030700@simon.arlott.org.uk>
+    <5650C08C.6090300@simon.arlott.org.uk> <5650E2FA.6090408@roeck-us.net>
+    <5650E5BB.6020404@simon.arlott.org.uk> <56512937.6030903@roeck-us.net>
+    <5651CB13.4090704@simon.arlott.org.uk>
+    <5651CBF0.30904@simon.arlott.org.uk> <56552099.7070709@roeck-us.net>
+Date:   Wed, 25 Nov 2015 13:02:10 -0000
+Subject: Re: [PATCH 5/10] watchdog: bcm63xx_wdt: Use WATCHDOG_CORE
+From:   "Simon Arlott" <simon@fire.lp0.eu>
+To:     "Guenter Roeck" <linux@roeck-us.net>
+Cc:     "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "Ralf Baechle" <ralf@linux-mips.org>,
+        "Thomas Gleixner" <tglx@linutronix.de>,
+        "Jason Cooper" <jason@lakedaemon.net>,
+        "Marc Zyngier" <marc.zyngier@arm.com>,
+        "Kevin Cernekee" <cernekee@gmail.com>,
+        "Florian Fainelli" <f.fainelli@gmail.com>,
+        "Wim Van Sebroeck" <wim@iguana.be>,
+        "Maxime Bizon" <mbizon@freebox.fr>,
+        "Linux Kernel Mailing List" <linux-kernel@vger.kernel.org>,
+        linux-mips@linux-mips.org, linux-watchdog@vger.kernel.org,
         "Rob Herring" <robh+dt@kernel.org>,
-        Pawel Moll <pawel.moll@arm.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ian Campbell <ijc+devicetree@hellion.org.uk>,
-        "Kumar Gala" <galak@codeaurora.org>, <devicetree@vger.kernel.org>
-Subject: [PATCH v2 19/19] irqchip/mips-gic: Add new DT property to reserve IPIs
-Date:   Wed, 25 Nov 2015 12:06:57 +0000
-Message-ID: <1448453217-3874-20-git-send-email-qais.yousef@imgtec.com>
-X-Mailer: git-send-email 2.1.0
-In-Reply-To: <1448453217-3874-1-git-send-email-qais.yousef@imgtec.com>
-References: <1448453217-3874-1-git-send-email-qais.yousef@imgtec.com>
+        "Pawel Moll" <pawel.moll@arm.com>,
+        "Mark Rutland" <mark.rutland@arm.com>,
+        "Ian Campbell" <ijc+devicetree@hellion.org.uk>,
+        "Kumar Gala" <galak@codeaurora.org>,
+        "Jonas Gorski" <jogo@openwrt.org>
+User-Agent: SquirrelMail/1.4.22
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.154.94]
-Return-Path: <Qais.Yousef@imgtec.com>
+Content-Type: text/plain;charset=utf-8
+Content-Transfer-Encoding: 8bit
+X-Priority: 3 (Normal)
+Importance: Normal
+Return-Path: <simon@fire.lp0.eu>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50104
+X-archive-position: 50105
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: qais.yousef@imgtec.com
+X-original-sender: simon@fire.lp0.eu
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,78 +65,30 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The new property will allow to specify the range of GIC hwirqs to use for IPIs.
+On Wed, November 25, 2015 02:44, Guenter Roeck wrote:
+> The "running" flag should no longer be needed. watchdog_active()
+> should provide that information.
 
-This is an optinal property. We preserve the previous behaviour of allocating
-the last 2 * gic_vpes if it's not specified or DT is not supported.
+I'm going to need to keep that because I need to know if it's running
+in the interrupt handler, and wdd->lock is a mutex.
 
-Signed-off-by: Qais Yousef <qais.yousef@imgtec.com>
-Cc: Rob Herring <robh+dt@kernel.org>
-Cc: Pawel Moll <pawel.moll@arm.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Ian Campbell <ijc+devicetree@hellion.org.uk>
-Cc: Kumar Gala <galak@codeaurora.org>
-Cc: devicetree@vger.kernel.org
+>> @@ -306,17 +202,18 @@ unregister_timer:
+>>
+>>   static int bcm63xx_wdt_remove(struct platform_device *pdev)
+>>   {
+>> -	if (!nowayout)
+>> -		bcm63xx_wdt_hw_stop();
+>> +	struct watchdog_device *wdd = platform_get_drvdata(pdev);
+>>
+>> -	misc_deregister(&bcm63xx_wdt_miscdev);
+>>   	bcm63xx_timer_unregister(TIMER_WDT_ID);
+>> +	watchdog_unregister_device(wdd);
+>
+> Shouldn't that come first, before unregistering the timer ?
 
----
- .../devicetree/bindings/interrupt-controller/mips-gic.txt    |  7 +++++++
- drivers/irqchip/irq-mips-gic.c                               | 12 ++++++++++--
- 2 files changed, 17 insertions(+), 2 deletions(-)
+No, because wdd->dev is used in the interrupt handler. I will have to
+move registration of the interrupt to after creating the watchdog
+because it could currently be used before wdd->dev is set.
 
-diff --git a/Documentation/devicetree/bindings/interrupt-controller/mips-gic.txt b/Documentation/devicetree/bindings/interrupt-controller/mips-gic.txt
-index aae4c384ee1f..173595305e26 100644
---- a/Documentation/devicetree/bindings/interrupt-controller/mips-gic.txt
-+++ b/Documentation/devicetree/bindings/interrupt-controller/mips-gic.txt
-@@ -23,6 +23,12 @@ Optional properties:
- - mti,reserved-cpu-vectors : Specifies the list of CPU interrupt vectors
-   to which the GIC may not route interrupts.  Valid values are 2 - 7.
-   This property is ignored if the CPU is started in EIC mode.
-+- mti,reserved-ipi-vectors : Specifies the range of GIC interrupts that are
-+  reserved for IPIs.
-+  It accepts 2 values, the 1st is the starting interrupt and the 2nd is the size
-+  of the reserved range.
-+  If not specified, the driver will allocate the last 2 * number of VPEs in the
-+  system.
- 
- Required properties for timer sub-node:
- - compatible : Should be "mti,gic-timer".
-@@ -44,6 +50,7 @@ Example:
- 		#interrupt-cells = <3>;
- 
- 		mti,reserved-cpu-vectors = <7>;
-+		mti,reserved-ipi-vectors = <40 8>;
- 
- 		timer {
- 			compatible = "mti,gic-timer";
-diff --git a/drivers/irqchip/irq-mips-gic.c b/drivers/irqchip/irq-mips-gic.c
-index c7043a15253b..659fe734d1b7 100644
---- a/drivers/irqchip/irq-mips-gic.c
-+++ b/drivers/irqchip/irq-mips-gic.c
-@@ -945,6 +945,7 @@ static void __init __gic_init(unsigned long gic_base_addr,
- 			      struct device_node *node)
- {
- 	unsigned int gicconfig;
-+	unsigned int v[2];
- 
- 	gic_base = ioremap_nocache(gic_base_addr, gic_addrspace_size);
- 
-@@ -1013,8 +1014,15 @@ static void __init __gic_init(unsigned long gic_base_addr,
- 
- 	gic_ipi_domain->bus_token = DOMAIN_BUS_IPI;
- 
--	/* Make the last 2 * NR_CPUS available for IPIs */
--	bitmap_set(ipi_resrv, gic_shared_intrs - 2 * gic_vpes, 2 * gic_vpes);
-+	if (node &&
-+	    !of_property_read_u32_array(node, "mti,reserved-ipi-vectors", &v, 2)) {
-+		bitmap_set(ipi_resrv, v[0], v[1]);
-+	} else {
-+		/* Make the last 2 * gic_vpes available for IPIs */
-+		bitmap_set(ipi_resrv,
-+			   gic_shared_intrs - 2 * gic_vpes,
-+			   2 * gic_vpes);
-+	}
- 
- 	gic_basic_init();
- }
 -- 
-2.1.0
+Simon Arlott

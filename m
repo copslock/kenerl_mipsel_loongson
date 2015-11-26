@@ -1,58 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Nov 2015 11:02:41 +0100 (CET)
-Received: from mxout51.expurgate.net ([194.37.255.51]:59331 "EHLO
-        mxout51.expurgate.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012734AbbKZKB5Of7hI convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 26 Nov 2015 11:01:57 +0100
-Received: from [127.0.0.1] (helo=localhost)
-        by relay.expurgate.net with smtp (Exim 4.80.1)
-        (envelope-from <mschiller@tdt.de>)
-        id 1a1tN9-0003Kb-Vu; Thu, 26 Nov 2015 11:01:52 +0100
-Received: from [195.243.126.94] (helo=ms.tdt.de)
-        by relay.expurgate.net with esmtp (Exim 4.80.1)
-        (envelope-from <mschiller@tdt.de>)
-        id 1a1tN9-0002go-25; Thu, 26 Nov 2015 11:01:51 +0100
-Received: from mschille.tdtnet.local (10.1.3.20) by TDT-MS.TDTNET.local
- (10.1.10.2) with Microsoft SMTP Server (TLS) id 15.0.1104.5; Thu, 26 Nov 2015
- 11:01:49 +0100
-From:   Martin Schiller <mschiller@tdt.de>
-To:     <linux-gpio@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-mips@linux-mips.org>
-CC:     <linus.walleij@linaro.org>, <robh+dt@kernel.org>,
-        <pawel.moll@arm.com>, <mark.rutland@arm.com>,
-        <ijc+devicetree@hellion.org.uk>, <galak@codeaurora.org>,
-        <ralf@linux-mips.org>, <blogic@openwrt.org>, <hauke@hauke-m.de>,
-        <jogo@openwrt.org>, <daniel.schwierzeck@gmail.com>,
-        Martin Schiller <mschiller@tdt.de>
-Subject: [PATCH v3 5/5] pinctrl/lantiq: Implement gpio_chip.to_irq
-Date:   Thu, 26 Nov 2015 11:00:10 +0100
-Message-ID: <1448532010-30930-5-git-send-email-mschiller@tdt.de>
-X-Mailer: git-send-email 2.1.4
-In-Reply-To: <1448532010-30930-1-git-send-email-mschiller@tdt.de>
-References: <1448532010-30930-1-git-send-email-mschiller@tdt.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Nov 2015 23:32:57 +0100 (CET)
+Received: from proxima.lp0.eu ([81.2.80.65]:37595 "EHLO proxima.lp0.eu"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27012714AbbKZWczVDTK0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 26 Nov 2015 23:32:55 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=fire.lp0.eu; s=exim;
+        h=Content-Transfer-Encoding:Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:Cc:References:To:Subject; bh=c3wqNCYozjhpM8wwYrkF9fIcC6TA4ZGsYzEehOiumUI=;
+        b=NLQipbpvM0xGgAxB+wAP+6UWh/de61gbAN2o6IRd+BdfctrO+IgXbmz40EP/LQaGAx0TnTLdagHGZv61b847vjHQwlUJVlWNIzWtL19/AIDezandAraEyi4IJlZnq43mjeT38DUV3qhEvt6+XYG4ML7/dmCEvR9T4K8E2VsyZUd7R3dXW2tKZOrcPzgs9ljQ8armxKgu9iGmaKwdn/XnatrIqRKh0/FOvKKIMDiWSe+lfR4EmL4K6FUvYlSHRAVgTuOjJpfe1yOK11uH+bY05mtaAyvfjf5oXDxpdAsR/4uXC4BHurQWUBPzQ1DpA9R1hOBcenjuGPPKoJJ8se5ujA==;
+Received: from redrum.lp0.eu ([2001:8b0:ffea:0:2e0:81ff:fe4d:2bec]:49822)
+        by proxima.lp0.eu ([2001:8b0:ffea:0:205:b4ff:fe12:530]:465)
+        with esmtpsav (UNKNOWN:DHE-RSA-AES256-SHA:256/CN=Simon Arlott)
+        id 1a255Q-0005rd-7U (Exim); Thu, 26 Nov 2015 22:32:20 +0000
+Subject: [PATCH (v4) 2/11] MIPS: bmips: Add bcm6345-l2-timer interrupt
+ controller
+To:     Florian Fainelli <f.fainelli@gmail.com>,
+        MIPS Mailing List <linux-mips@linux-mips.org>
+References: <5650BFD6.5030700@simon.arlott.org.uk>
+ <CAOiHx=k0Aa+qrBT1J7_cQaQRxndBmwsgSgi3x0eJOYTAy6Zq7Q@mail.gmail.com>
+ <5653612A.4050309@simon.arlott.org.uk> <565361AF.20400@simon.arlott.org.uk>
+ <70d031ae4c3aa29888d77b64686c39e7e7eaae92@8b5064a13e22126c1b9329f0dc35b8915774b7c3.invalid>
+ <5654E67A.9060800@gmail.com>
+Cc:     Jonas Gorski <jogo@openwrt.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Marc Zyngier <marc.zyngier@arm.com>,
+        Kevin Cernekee <cernekee@gmail.com>,
+        Wim Van Sebroeck <wim@iguana.be>,
+        Miguel Gaio <miguel.gaio@efixo.com>,
+        Maxime Bizon <mbizon@freebox.fr>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-watchdog@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        Pawel Moll <pawel.moll@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ian Campbell <ijc+devicetree@hellion.org.uk>,
+        Kumar Gala <galak@codeaurora.org>
+From:   Simon Arlott <simon@fire.lp0.eu>
+Message-ID: <5657886F.3090908@simon.arlott.org.uk>
+Date:   Thu, 26 Nov 2015 22:32:15 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+ Thunderbird/38.3.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Originating-IP: [10.1.3.20]
-X-EsetResult: clean, is OK
-X-EsetId: 37303A29F17133606C7561
-X-C2ProcessedOrg: 0a9847a8-efc2-4cb2-92f2-0898183e658d
-Content-Transfer-Encoding: 8BIT
-X-purgate-relay-fid: relay-5443cb
-X-purgate-sourceid: 1a1tN9-0002go-25
-X-purgate-Ad: Checked for spam and viruses by eXpurgate(R), see www.eleven.de for details.
-X-purgate-ID: 151534::1448532111-00006013-CC150195/0/0
-X-purgate: clean
-X-purgate-type: clean
-X-purgate-relay-bid: relay-938205
-Return-Path: <mschiller@tdt.de>
+In-Reply-To: <5654E67A.9060800@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Return-Path: <simon@fire.lp0.eu>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50139
+X-archive-position: 50140
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mschiller@tdt.de
+X-original-sender: simon@fire.lp0.eu
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -65,50 +65,414 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: John Crispin <blogic@openwrt.org>
+Add the BCM6345/BCM6318 timer as an interrupt controller so that it can be
+used by the watchdog to warn that its timer will expire soon.
 
-Signed-off-by: John Crispin <blogic@openwrt.org>
-Signed-off-by: Martin Schiller <mschiller@tdt.de>
+Support for clocksource/clockevents is not implemented as the timer
+interrupt is not per CPU (except on the BCM6318) and the MIPS clock is
+better. This could be added later if required without changing the device
+tree binding.
+
+Signed-off-by: Simon Arlott <simon@fire.lp0.eu>
 ---
-Changes in v3:
-- Moved this change into a separate patch
+On 24/11/15 22:36, Florian Fainelli wrote:
+> On 24/11/15 14:10, Simon Arlott wrote:
+>> +static inline u32 bcm6345_timer_read_int_status(struct bcm6345_timer *timer)
+>> +{
+>> +	if (timer->type == TIMER_TYPE_6318)
+>> +		return __raw_readl(timer->base + REG_6318_IRQ_STATUS);
+>> +	else
+>> +		return __raw_readb(timer->base + REG_6345_IRQ_STATUS);
+> 
+> This is really error prone and does not scale to adding a third type of
+> timer if we ever had to. How about using the same logic and construction
+> as the following drivers: drivers/spi/spi-bcm63xx.c,
+> drivers/bus/brcmstb_gisb.c?
 
-Changes in v2: 
-None
+I've changed it to use an array of registers, but I still need to check
+if the interrupt register size is 8 or 32 bits.
 
- drivers/pinctrl/pinctrl-xway.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ drivers/irqchip/Kconfig                |   5 +
+ drivers/irqchip/Makefile               |   1 +
+ drivers/irqchip/irq-bcm6345-l2-timer.c | 339 +++++++++++++++++++++++++++++++++
+ 3 files changed, 345 insertions(+)
+ create mode 100644 drivers/irqchip/irq-bcm6345-l2-timer.c
 
-diff --git a/drivers/pinctrl/pinctrl-xway.c b/drivers/pinctrl/pinctrl-xway.c
-index b78baaa..8ae99a8 100644
---- a/drivers/pinctrl/pinctrl-xway.c
-+++ b/drivers/pinctrl/pinctrl-xway.c
-@@ -1573,6 +1573,18 @@ static int xway_gpio_dir_out(struct gpio_chip *chip, unsigned int pin, int val)
- 	return 0;
- }
+diff --git a/drivers/irqchip/Kconfig b/drivers/irqchip/Kconfig
+index d307bb3..21c3d9b 100644
+--- a/drivers/irqchip/Kconfig
++++ b/drivers/irqchip/Kconfig
+@@ -70,6 +70,11 @@ config BCM6345_L1_IRQ
+ 	select GENERIC_IRQ_CHIP
+ 	select IRQ_DOMAIN
  
-+static int xway_gpio_to_irq(struct gpio_chip *chip, unsigned offset)
++config BCM6345_L2_TIMER_IRQ
++	bool
++	select GENERIC_IRQ_CHIP
++	select IRQ_DOMAIN
++
+ config BCM7038_L1_IRQ
+ 	bool
+ 	select GENERIC_IRQ_CHIP
+diff --git a/drivers/irqchip/Makefile b/drivers/irqchip/Makefile
+index ded59cf..2687dea 100644
+--- a/drivers/irqchip/Makefile
++++ b/drivers/irqchip/Makefile
+@@ -44,6 +44,7 @@ obj-$(CONFIG_XTENSA_MX)			+= irq-xtensa-mx.o
+ obj-$(CONFIG_IRQ_CROSSBAR)		+= irq-crossbar.o
+ obj-$(CONFIG_SOC_VF610)			+= irq-vf610-mscm-ir.o
+ obj-$(CONFIG_BCM6345_L1_IRQ)		+= irq-bcm6345-l1.o
++obj-$(CONFIG_BCM6345_L2_TIMER_IRQ)	+= irq-bcm6345-l2-timer.o
+ obj-$(CONFIG_BCM7038_L1_IRQ)		+= irq-bcm7038-l1.o
+ obj-$(CONFIG_BCM7120_L2_IRQ)		+= irq-bcm7120-l2.o
+ obj-$(CONFIG_BRCMSTB_L2_IRQ)		+= irq-brcmstb-l2.o
+diff --git a/drivers/irqchip/irq-bcm6345-l2-timer.c b/drivers/irqchip/irq-bcm6345-l2-timer.c
+new file mode 100644
+index 0000000..800f1ac
+--- /dev/null
++++ b/drivers/irqchip/irq-bcm6345-l2-timer.c
+@@ -0,0 +1,339 @@
++/*
++ * Copyright 2015 Simon Arlott
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * Based on arch/mips/bcm63xx/timer.c:
++ * Copyright (C) 2008 Maxime Bizon <mbizon@freebox.fr>
++ *
++ * Registers for SoCs with 4 timers: BCM6345, BCM6328, BCM6362, BCM6816,
++ *                                   BCM68220,BCM63168, BCM63268
++ *   0x02: Interrupt enable (u8)
++ *   0x03: Interrupt status (u8)
++ *   0x04: Timer 0 control
++ *   0x08: Timer 1 control
++ *   0x0c: Timer 2 control
++ *   0x10: Timer 0 count
++ *   0x14: Timer 1 count
++ *   0x18: Timer 2 count
++ *   0x1c+: Watchdog registers
++ *
++ * Registers for SoCs with 5 timers: BCM6318
++ *   0x00: Interrupt enable (u32)
++ *   0x04: Interrupt status (u32)
++ *   0x08: Timer 0 control
++ *   0x0c: Timer 1 control
++ *   0x10: Timer 2 control
++ *   0x14: Timer 3 control
++ *   0x18: Timer 0 count
++ *   0x1c: Timer 1 count
++ *   0x20: Timer 2 count
++ *   0x24: Timer 3 count
++ *   0x28+: Watchdog registers
++ */
++
++#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
++
++#include <linux/bitops.h>
++#include <linux/interrupt.h>
++#include <linux/irqreturn.h>
++#include <linux/kernel.h>
++#include <linux/module.h>
++#include <linux/of_address.h>
++#include <linux/of_irq.h>
++#include <linux/of_platform.h>
++#include <linux/slab.h>
++#include <linux/spinlock.h>
++#include <linux/string.h>
++#include <linux/irqchip.h>
++#include <linux/irqchip/chained_irq.h>
++
++enum timer_regs {
++	/* Interrupt enable register:
++	 *   1 bit per timer (without the watchdog)
++	 */
++	TIMER_INT_ENABLE = 0,
++
++	/* Interrupt status register:
++	 *   1 bit per timer (plus the watchdog after the timers)
++	 *   Read for status
++	 *   Write bit to ack
++	 */
++	TIMER_INT_STATUS,
++
++	/* Per-timer control register */
++	TIMER_CONTROL,
++
++	/* Per-timer count register */
++	TIMER_COUNT,
++};
++
++#define WATCHDOG_INT_BIT(x)		(BIT((x)->nr_timers))
++
++#define CONTROL_COUNTDOWN_MASK		(0x3fffffff)
++#define CONTROL_RSTCNTCLR_MASK		(1 << 30)
++#define CONTROL_ENABLE_MASK		(1 << 31)
++
++#define COUNT_MASK			(0x3fffffff)
++
++#define NR_TIMERS_6318			4
++#define INTR_BITS_6318			32
++static const long timer_regs_6318[] = {
++	[TIMER_INT_ENABLE]		= 0x00,
++	[TIMER_INT_STATUS]		= 0x04,
++	[TIMER_CONTROL]			= 0x08,
++	[TIMER_COUNT]			= 0x18,
++};
++
++#define NR_TIMERS_6345			3
++#define INTR_BITS_6345			8
++static const long timer_regs_6345[] = {
++	[TIMER_INT_ENABLE]		= 0x02,
++	[TIMER_INT_STATUS]		= 0x03,
++	[TIMER_CONTROL]			= 0x04,
++	[TIMER_COUNT]			= 0x10,
++};
++
++struct bcm6345_timer {
++	raw_spinlock_t lock;
++	void __iomem *base;
++	unsigned int irq;
++	struct irq_domain *domain;
++
++	const long *regs;
++	int interrupt_bits;
++	unsigned int nr_interrupts;
++	unsigned int nr_timers;
++};
++
++static inline u32 bcm6345_timer_read_int_status(struct bcm6345_timer *timer)
 +{
-+	struct ltq_pinmux_info *info = dev_get_drvdata(chip->dev);
-+	int i;
-+
-+	for (i = 0; i < info->num_exin; i++)
-+		if (info->exin[i] == offset)
-+			return ltq_eiu_get_irq(i);
-+
-+	return -1;
++	if (timer->interrupt_bits == 32)
++		return __raw_readl(timer->base + timer->regs[TIMER_INT_STATUS]);
++	else
++		return __raw_readb(timer->base + timer->regs[TIMER_INT_STATUS]);
 +}
 +
- static struct gpio_chip xway_chip = {
- 	.label = "gpio-xway",
- 	.direction_input = xway_gpio_dir_in,
-@@ -1581,6 +1593,7 @@ static struct gpio_chip xway_chip = {
- 	.set = xway_gpio_set,
- 	.request = gpiochip_generic_request,
- 	.free = gpiochip_generic_free,
-+	.to_irq = xway_gpio_to_irq,
- 	.base = -1,
- };
- 
++static inline void bcm6345_timer_write_int_status(struct bcm6345_timer *timer,
++	u32 val)
++{
++	if (timer->interrupt_bits == 32)
++		__raw_writel(val, timer->base + timer->regs[TIMER_INT_STATUS]);
++	else
++		__raw_writeb(val, timer->base + timer->regs[TIMER_INT_STATUS]);
++}
++
++static inline u32 bcm6345_timer_read_int_enable(struct bcm6345_timer *timer)
++{
++	if (timer->interrupt_bits == 32)
++		return __raw_readl(timer->base + timer->regs[TIMER_INT_ENABLE]);
++	else
++		return __raw_readb(timer->base + timer->regs[TIMER_INT_ENABLE]);
++}
++
++static inline void bcm6345_timer_write_int_enable(struct bcm6345_timer *timer,
++	u32 val)
++{
++	if (timer->interrupt_bits == 32)
++		__raw_writel(val, timer->base + timer->regs[TIMER_INT_ENABLE]);
++	else
++		__raw_writeb(val, timer->base + timer->regs[TIMER_INT_ENABLE]);
++}
++
++static inline void bcm6345_timer_write_control(struct bcm6345_timer *timer,
++	unsigned int id, u32 val)
++{
++	if (id >= timer->nr_timers) {
++		WARN(1, "%s: %d >= %d", __func__, id, timer->nr_timers);
++		return;
++	}
++
++	__raw_writel(val, timer->base + timer->regs[TIMER_CONTROL] + id * 4);
++}
++
++static inline void bcm6345_timer_write_count(struct bcm6345_timer *timer,
++	unsigned int id, u32 val)
++{
++	if (id >= timer->nr_timers) {
++		WARN(1, "%s: %d >= %d", __func__, id, timer->nr_timers);
++		return;
++	}
++
++	__raw_writel(val, timer->base + timer->regs[TIMER_COUNT] + id * 4);
++}
++
++static inline void bcm6345_timer_stop(struct bcm6345_timer *timer, int id)
++{
++	bcm6345_timer_write_control(timer, id, 0);
++	bcm6345_timer_write_count(timer, id, 0);
++	bcm6345_timer_write_int_status(timer, BIT(id));
++}
++
++static void bcm6345_timer_interrupt(struct irq_desc *desc)
++{
++	struct bcm6345_timer *timer = irq_desc_get_handler_data(desc);
++	struct irq_chip *chip = irq_desc_get_chip(desc);
++	unsigned long pending;
++	irq_hw_number_t hwirq;
++	unsigned int irq;
++
++	chained_irq_enter(chip, desc);
++
++	pending = bcm6345_timer_read_int_status(timer);
++	pending &= bcm6345_timer_read_int_enable(timer) |
++			WATCHDOG_INT_BIT(timer); /* Watchdog can't be masked */
++
++	for_each_set_bit(hwirq, &pending, timer->nr_interrupts) {
++		irq = irq_linear_revmap(timer->domain, hwirq);
++		if (irq)
++			do_IRQ(irq);
++		else
++			spurious_interrupt();
++	}
++
++	chained_irq_exit(chip, desc);
++}
++
++static void bcm6345_timer_unmask(struct irq_data *d)
++{
++	struct bcm6345_timer *timer = irq_data_get_irq_chip_data(d);
++	unsigned long flags;
++	u8 val;
++
++	if (d->hwirq < timer->nr_timers) {
++		raw_spin_lock_irqsave(&timer->lock, flags);
++		val = bcm6345_timer_read_int_enable(timer);
++		val |= BIT(d->hwirq);
++		bcm6345_timer_write_int_enable(timer, val);
++		raw_spin_unlock_irqrestore(&timer->lock, flags);
++	}
++}
++
++static void bcm6345_timer_mask(struct irq_data *d)
++{
++	struct bcm6345_timer *timer = irq_data_get_irq_chip_data(d);
++	unsigned long flags;
++	u32 val;
++
++	if (d->hwirq < timer->nr_timers) {
++		raw_spin_lock_irqsave(&timer->lock, flags);
++		val = bcm6345_timer_read_int_enable(timer);
++		val &= ~BIT(d->hwirq);
++		bcm6345_timer_write_int_enable(timer, val);
++		raw_spin_unlock_irqrestore(&timer->lock, flags);
++	}
++}
++
++static void bcm6345_timer_eoi(struct irq_data *d)
++{
++	struct bcm6345_timer *timer = irq_data_get_irq_chip_data(d);
++
++	bcm6345_timer_write_int_status(timer, BIT(d->hwirq));
++}
++
++static struct irq_chip bcm6345_timer_chip = {
++	.name			= "bcm6345-timer",
++	.irq_mask		= bcm6345_timer_mask,
++	.irq_unmask		= bcm6345_timer_unmask,
++	.irq_eoi		= bcm6345_timer_eoi,
++};
++
++static int bcm6345_timer_map(struct irq_domain *d, unsigned int virq,
++			     irq_hw_number_t hwirq)
++{
++	struct bcm6345_timer *timer = d->host_data;
++
++	irq_set_chip_and_handler(virq, &bcm6345_timer_chip,
++		hwirq < timer->nr_timers ?
++			handle_fasteoi_irq : handle_simple_irq);
++	irq_set_chip_data(virq, timer);
++	return 0;
++}
++
++static const struct irq_domain_ops bcm6345_timer_domain_ops = {
++	.xlate			= irq_domain_xlate_onecell,
++	.map			= bcm6345_timer_map,
++};
++
++static int __init bcm63xx_timer_init(struct device_node *node,
++	const char *name, const long *regs, int interrupt_bits,
++	unsigned int nr_timers)
++{
++	struct bcm6345_timer *timer;
++	int ret, i;
++
++	timer = kzalloc(sizeof(*timer), GFP_KERNEL);
++	if (!timer)
++		return -ENOMEM;
++
++	raw_spin_lock_init(&timer->lock);
++	timer->regs = regs;
++	timer->interrupt_bits = interrupt_bits;
++	timer->nr_timers = nr_timers;
++	timer->nr_interrupts = nr_timers + 1;
++
++	timer->irq = irq_of_parse_and_map(node, 0);
++	if (!timer->irq) {
++		pr_err("unable to map parent IRQ\n");
++		ret = -EINVAL;
++		goto free_timer;
++	}
++
++	timer->base = of_iomap(node, 0);
++	if (!timer->base) {
++		pr_err("unable to map registers\n");
++		ret = -ENOMEM;
++		goto free_timer;
++	}
++
++	timer->domain = irq_domain_add_linear(node, timer->nr_interrupts,
++					&bcm6345_timer_domain_ops, timer);
++	if (!timer->domain) {
++		pr_err("unable to add IRQ domain");
++		ret = -ENOMEM;
++		goto unmap_io;
++	}
++
++	/* Mask all interrupts and stop all timers */
++	bcm6345_timer_write_int_enable(timer, 0);
++	for (i = 0; i < timer->nr_timers; i++)
++		bcm6345_timer_stop(timer, i);
++
++	irq_set_chained_handler_and_data(timer->irq,
++					bcm6345_timer_interrupt, timer);
++
++	pr_info("registered %s L2 (timer) intc at MMIO 0x%p (irq = %d, IRQs: %d)\n",
++			name, timer->base, timer->irq, timer->nr_interrupts);
++	return 0;
++
++unmap_io:
++	iounmap(timer->base);
++free_timer:
++	kfree(timer);
++	return ret;
++}
++
++static int __init bcm6318_timer_init(struct device_node *node,
++				      struct device_node *parent)
++{
++	return bcm63xx_timer_init(node,
++		"BCM6318", timer_regs_6318, INTR_BITS_6318, NR_TIMERS_6318);
++}
++
++static int __init bcm6345_timer_init(struct device_node *node,
++				      struct device_node *parent)
++{
++	return bcm63xx_timer_init(node,
++		"BCM6345", timer_regs_6345, INTR_BITS_6345, NR_TIMERS_6345);
++}
++
++IRQCHIP_DECLARE(bcm6318_l2_timer, "brcm,bcm6318-timer", bcm6318_timer_init);
++IRQCHIP_DECLARE(bcm6345_l2_timer, "brcm,bcm6345-timer", bcm6345_timer_init);
 -- 
 2.1.4
+
+-- 
+Simon Arlott

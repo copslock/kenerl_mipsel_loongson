@@ -1,35 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Nov 2015 12:20:29 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:49726 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27006685AbbK0LU0zqhP2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 27 Nov 2015 12:20:26 +0100
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.15.2/8.14.8) with ESMTP id tARBKQPn000817;
-        Fri, 27 Nov 2015 12:20:26 +0100
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.15.2/8.15.2/Submit) id tARBKQO8000816;
-        Fri, 27 Nov 2015 12:20:26 +0100
-Date:   Fri, 27 Nov 2015 12:20:26 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: Re: no-op delay loops
-Message-ID: <20151127112025.GD20269@linux-mips.org>
-References: <87si3rbz6p.fsf@rasmusvillemoes.dk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Nov 2015 12:46:46 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:55489 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27010740AbbK0Lqo4KFW- (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 27 Nov 2015 12:46:44 +0100
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Websense Email Security Gateway with ESMTPS id AC38A98EB0FD3;
+        Fri, 27 Nov 2015 11:46:36 +0000 (GMT)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ HHMAIL01.hh.imgtec.org (10.100.10.19) with Microsoft SMTP Server (TLS) id
+ 14.3.235.1; Fri, 27 Nov 2015 11:46:38 +0000
+Received: from [192.168.154.94] (192.168.154.94) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Fri, 27 Nov
+ 2015 11:46:38 +0000
+Subject: Re: [PATCH v2 09/19] genirq: Add a new function to get IPI reverse
+ mapping
+To:     <linux-kernel@vger.kernel.org>
+References: <1448453217-3874-1-git-send-email-qais.yousef@imgtec.com>
+ <1448453217-3874-10-git-send-email-qais.yousef@imgtec.com>
+CC:     <tglx@linutronix.de>, <jason@lakedaemon.net>,
+        <marc.zyngier@arm.com>, <jiang.liu@linux.intel.com>,
+        <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
+From:   Qais Yousef <qais.yousef@imgtec.com>
+Message-ID: <5658429D.3000105@imgtec.com>
+Date:   Fri, 27 Nov 2015 11:46:38 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+ Thunderbird/38.3.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87si3rbz6p.fsf@rasmusvillemoes.dk>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-Return-Path: <ralf@linux-mips.org>
+In-Reply-To: <1448453217-3874-10-git-send-email-qais.yousef@imgtec.com>
+Content-Type: text/plain; charset="windows-1252"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.154.94]
+Return-Path: <Qais.Yousef@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50152
+X-archive-position: 50153
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: qais.yousef@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -42,35 +51,57 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Nov 27, 2015 at 09:53:50AM +0100, Rasmus Villemoes wrote:
+On 11/25/2015 12:06 PM, Qais Yousef wrote:
+> +
+> +/**
+> + * ipi_get_hwirq - get the hwirq associated with an IPI to a cpu
+> + * @irq: linux irq number
+> + * @cpu: the cpu to find the revmap for
+> + *
+> + * When dealing with coprocessors IPI, we need to inform it of the hwirq it
+> + * needs to use to receive and send IPIs. This function provides the revmap
+> + * to get this info to pass on to coprocessor firmware.
+> + *
+> + * Returns hwirq value on success and INVALID_HWIRQ on failure.
+> + */
+> +irq_hw_number_t ipi_get_hwirq(unsigned int irq, unsigned int cpu)
+> +{
+> +	struct irq_data *data = irq_get_irq_data(irq);
+> +	struct ipi_mask *ipimask = data ? irq_data_get_ipi_mask(data) : NULL;
+> +	irq_hw_number_t hwirq;
+> +
+> +	if (!data || !ipimask)
+> +		return INVALID_HWIRQ;
+> +
+> +	if (cpu > ipimask->nbits)
+> +		return INVALID_HWIRQ;
+> +
+> +	if (!test_bit(cpu, ipimask->cpu_bitmap))
+> +		return INVALID_HWIRQ;
+> +
+> +	if (irq_domain_is_ipi_per_cpu(data->domain)) {
+> +		data = irq_get_irq_data(irq + cpu - ipimask->offset);
+> +		hwirq = data ? irqd_to_hwirq(data) : INVALID_HWIRQ;
+> +	} else {
+> +		hwirq = irqd_to_hwirq(data) + cpu - ipimask->offset;
+> +	}
+> +
+> +	return hwirq;
+> +}
+> +EXPORT_SYMBOL_GPL(ipi_get_hwirq);
 
-> It seems that gcc happily compiles
-> 
-> for (i = 0; i < 1000000000; ++i) ;
-> 
-> into simply
-> 
-> i = 1000000000;
-> 
-> (which is then usually eliminated as a dead store). At least at -O2, and
-> when i is not declared volatile. So it would seem that the loops at
-> 
-> arch/mips/pci/pci-rt2880.c:235
-> arch/mips/pmcs-msp71xx/msp_setup.c:80
-> arch/mips/sni/reset.c:35
-> 
-> actually don't do anything. (In the middle one, i is 'register', but
-> that doesn't change anything.) Is mips compiled with some special flags
-> that would make gcc actually emit code for the above?
 
-Thanks for reporting!
+While trying to get my remoteproc driver work with this I uncovered a 
+problem with this approach.
 
-GCC used to intentionally not eleminate empty loops.  This has changed a
-while ago.  Using volatile for the loop variable will result in atrocious
-code so should be avoided.
+mips-gic doesn't store the actual hwirq in the irq_data. It uses 
+GIC_SHARED_TO_HWIRQ() and GIC_HWIRQ_TO_SHARED() to add and remove an offset.
 
-One problem of these open coded loops is that it's not obvious how much
-delay was actually intended so when fixing this I will have to do a bit
-of precission guessing ;-)
+I'll add a new chip function irq_get_raw_hwirq(struct irq_data *d) that 
+will return the real hardware value of hwirq. If not defined, I'll 
+revert back to using the irqd_to_hwirq().
 
-  Ralf
+Objections?
+
+Thanks,
+Qais

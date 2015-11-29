@@ -1,59 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 28 Nov 2015 13:27:22 +0100 (CET)
-Received: from proxima.lp0.eu ([81.2.80.65]:33605 "EHLO proxima.lp0.eu"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27006691AbbK1M1Sb70WW (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 28 Nov 2015 13:27:18 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=fire.lp0.eu; s=exim;
-        h=Content-Transfer-Encoding:Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:Cc:References:To:Subject; bh=aMlzRupiR6QJOdmCDv1VNnpEJ4Gz69hwoivbJu/MOvo=;
-        b=dIsvdFe7F5+kaGwUnkyCElHaJKo9gfCgMXLyBtCrc9Ov04Ydtzd47EF7+mZ4Ch2rYTXQBWMctIHY5OVgmsNArPHG8aXGsRgrl3H3eeYE7p3KXuBahWnKggvHfIF9im0OlTOwyNoipmJSGG8t19vFc775F2godNfyRnnPlfgc1jwlreqwNyiWBQi1BW5aSUOfDpPWOgNdTw62FSEAbkpKMrT1Ls2gFW6Dd/M/WzCNPCEtF18JFWIgL58gxIcJLJ77ANrjuKqpLEspOGNz8pmmfdCtK0JU5Is3BuQEYtqN+fg4saB+JFDLRXIXViR5PMeQ8CbH4RUCAwN7s0E/ZUykYg==;
-Received: from redrum.lp0.eu ([2001:8b0:ffea:0:2e0:81ff:fe4d:2bec]:54831 ident=simon)
-        by proxima.lp0.eu ([2001:8b0:ffea:0:205:b4ff:fe12:530]:465)
-        with esmtpsav (UNKNOWN:DHE-RSA-AES256-SHA:256/CN=Simon Arlott)
-        id 1a2eaC-0001fq-S6 (Exim); Sat, 28 Nov 2015 12:26:29 +0000
-Subject: [PATCH (v5) 3/11] MIPS: bmips: Add bcm6345-l2-timer interrupt
- controller
-To:     Thomas Gleixner <tglx@linutronix.de>
-References: <5650BFD6.5030700@simon.arlott.org.uk>
- <CAOiHx=k0Aa+qrBT1J7_cQaQRxndBmwsgSgi3x0eJOYTAy6Zq7Q@mail.gmail.com>
- <5653612A.4050309@simon.arlott.org.uk> <565361AF.20400@simon.arlott.org.uk>
- <70d031ae4c3aa29888d77b64686c39e7e7eaae92@8b5064a13e22126c1b9329f0dc35b8915774b7c3.invalid>
- <5654E67A.9060800@gmail.com> <5657886F.3090908@simon.arlott.org.uk>
- <alpine.DEB.2.11.1511270926580.3572@nanos>
-Cc:     Florian Fainelli <f.fainelli@gmail.com>,
-        MIPS Mailing List <linux-mips@linux-mips.org>,
-        Jonas Gorski <jogo@openwrt.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Marc Zyngier <marc.zyngier@arm.com>,
-        Kevin Cernekee <cernekee@gmail.com>,
-        Wim Van Sebroeck <wim@iguana.be>,
-        Miguel Gaio <miguel.gaio@efixo.com>,
-        Maxime Bizon <mbizon@freebox.fr>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-watchdog@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        Pawel Moll <pawel.moll@arm.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ian Campbell <ijc+devicetree@hellion.org.uk>,
-        Kumar Gala <galak@codeaurora.org>
-From:   Simon Arlott <simon@fire.lp0.eu>
-Message-ID: <56599D73.7040801@simon.arlott.org.uk>
-Date:   Sat, 28 Nov 2015 12:26:27 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.3.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 29 Nov 2015 21:15:01 +0100 (CET)
+Received: from exsmtp01.microchip.com ([198.175.253.37]:58918 "EHLO
+        email.microchip.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S27006758AbbK2UO57QO-I (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 29 Nov 2015 21:14:57 +0100
+Received: from CHN-SV-EXMX01.mchp-main.com ([fe80::453e:263d:be10:ebe8]) by
+ CHN-SV-EXCH01.mchp-main.com ([fe80::9840:ffdf:ec5:1335%29]) with mapi id
+ 14.03.0181.006; Sun, 29 Nov 2015 13:14:49 -0700
+From:   <Paul.Thacker@microchip.com>
+To:     <ulf.hansson@linaro.org>, <Joshua.Henderson@microchip.com>
+CC:     <linux-kernel@vger.kernel.org>, <linux-mips@linux-mips.org>,
+        <Andrei.Pistirica@microchip.com>, <jdelvare@suse.de>,
+        <cdoban@broadcom.com>, <haojian.zhuang@gmail.com>,
+        <alim.akhtar@samsung.com>, <luisbg@osg.samsung.com>,
+        <Weijun.Yang@csr.com>, <lokeshvutla@ti.com>,
+        <sbranden@broadcom.com>, <vincent.yang.fujitsu@gmail.com>,
+        <chaotian.jing@mediatek.com>, <ludovic.desroches@atmel.com>,
+        <shawn.lin@rock-chips.com>, <sboyd@codeaurora.org>,
+        <yangbo.lu@freescale.com>, <haokexin@gmail.com>,
+        <ben@decadent.org.uk>, <andy.green@linaro.org>,
+        <linux-mmc@vger.kernel.org>
+Subject: RE: [PATCH 11/14] mmc: sdhci-pic32: Add PIC32 SDHC host controller
+ driver
+Thread-Topic: [PATCH 11/14] mmc: sdhci-pic32: Add PIC32 SDHC host controller
+ driver
+Thread-Index: AQHRI/J3e4h013qRbkq0Pb+oZL4CxJ6tYM+AgAYW5iA=
+Date:   Sun, 29 Nov 2015 20:14:48 +0000
+Message-ID: <F2D704DDA6AE8B4A87FF87509480F4A449DAE14E@CHN-SV-EXMX01.mchp-main.com>
+References: <1448065205-15762-1-git-send-email-joshua.henderson@microchip.com>
+        <1448065205-15762-12-git-send-email-joshua.henderson@microchip.com>
+ <CAPDyKFrFZgi3bQYZgrB0OVq4i3__Vor129F7abGYJ+rrPmP6EQ@mail.gmail.com>
+In-Reply-To: <CAPDyKFrFZgi3bQYZgrB0OVq4i3__Vor129F7abGYJ+rrPmP6EQ@mail.gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.10.215.90]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-In-Reply-To: <alpine.DEB.2.11.1511270926580.3572@nanos>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Return-Path: <simon@fire.lp0.eu>
+Return-Path: <Paul.Thacker@microchip.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50160
+X-archive-position: 50161
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: simon@fire.lp0.eu
+X-original-sender: Paul.Thacker@microchip.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -66,487 +59,317 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add the BCM6345/BCM6318 timer as an interrupt controller so that it can be
-used by the watchdog to warn that its timer will expire soon.
-
-Support for clocksource/clockevents is not implemented as the timer
-interrupt is not per CPU (except on the BCM6318) and the MIPS clock is
-better. This could be added later if required without changing the device
-tree binding.
-
-Signed-off-by: Simon Arlott <simon@fire.lp0.eu>
----
-On 27/11/15 08:37, Thomas Gleixner wrote:
-> Instead of having that pile of conditionals you could just define two
-> functions and have a function pointer in struct bcm6345_timer which
-> you initialize at init time.
-
-Fixed.
-
->> +static inline void bcm6345_timer_write_control(struct bcm6345_timer *timer,
->> + unsigned int id, u32 val)
->> +{
->> + if (id >= timer->nr_timers) {
->> + WARN(1, "%s: %d >= %d", __func__, id, timer->nr_timers);
->
-> Hmm?
-
-I've now removed this.
-
->> +static void bcm6345_timer_unmask(struct irq_data *d)
->> +{
->> + struct bcm6345_timer *timer = irq_data_get_irq_chip_data(d);
->> + unsigned long flags;
->> + u8 val;
->> +
->> + if (d->hwirq < timer->nr_timers) {
->
-> Again. You can have two different interrupt chips without that
-> completely undocumented and non obvious conditional.
-
-Fixed.
-
-> BTW, how are those simple interrupts masked at all?
-
-The interrupt for the watchdog can't be masked. I've now used a noop
-function for irq_enable/irq_disable.
-
->> + timer->nr_timers = nr_timers;
->> + timer->nr_interrupts = nr_timers + 1;
->
-> What is that extra interrupt about? For the casual reader this looks
-> like a bug ... Comments exist for a reason.
-
-Fixed.
-
- drivers/irqchip/Kconfig                |   5 +
- drivers/irqchip/Makefile               |   1 +
- drivers/irqchip/irq-bcm6345-l2-timer.c | 386 +++++++++++++++++++++++++++++++++
- 3 files changed, 392 insertions(+)
- create mode 100644 drivers/irqchip/irq-bcm6345-l2-timer.c
-
-diff --git a/drivers/irqchip/Kconfig b/drivers/irqchip/Kconfig
-index d307bb3..21c3d9b 100644
---- a/drivers/irqchip/Kconfig
-+++ b/drivers/irqchip/Kconfig
-@@ -70,6 +70,11 @@ config BCM6345_L1_IRQ
- 	select GENERIC_IRQ_CHIP
- 	select IRQ_DOMAIN
- 
-+config BCM6345_L2_TIMER_IRQ
-+	bool
-+	select GENERIC_IRQ_CHIP
-+	select IRQ_DOMAIN
-+
- config BCM7038_L1_IRQ
- 	bool
- 	select GENERIC_IRQ_CHIP
-diff --git a/drivers/irqchip/Makefile b/drivers/irqchip/Makefile
-index ded59cf..2687dea 100644
---- a/drivers/irqchip/Makefile
-+++ b/drivers/irqchip/Makefile
-@@ -44,6 +44,7 @@ obj-$(CONFIG_XTENSA_MX)			+= irq-xtensa-mx.o
- obj-$(CONFIG_IRQ_CROSSBAR)		+= irq-crossbar.o
- obj-$(CONFIG_SOC_VF610)			+= irq-vf610-mscm-ir.o
- obj-$(CONFIG_BCM6345_L1_IRQ)		+= irq-bcm6345-l1.o
-+obj-$(CONFIG_BCM6345_L2_TIMER_IRQ)	+= irq-bcm6345-l2-timer.o
- obj-$(CONFIG_BCM7038_L1_IRQ)		+= irq-bcm7038-l1.o
- obj-$(CONFIG_BCM7120_L2_IRQ)		+= irq-bcm7120-l2.o
- obj-$(CONFIG_BRCMSTB_L2_IRQ)		+= irq-brcmstb-l2.o
-diff --git a/drivers/irqchip/irq-bcm6345-l2-timer.c b/drivers/irqchip/irq-bcm6345-l2-timer.c
-new file mode 100644
-index 0000000..f3acda7
---- /dev/null
-+++ b/drivers/irqchip/irq-bcm6345-l2-timer.c
-@@ -0,0 +1,386 @@
-+/*
-+ * Copyright 2015 Simon Arlott
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; either version 2 of the License, or
-+ * (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * Based on arch/mips/bcm63xx/timer.c:
-+ * Copyright (C) 2008 Maxime Bizon <mbizon@freebox.fr>
-+ *
-+ * Registers for SoCs with 4 timers: BCM6345, BCM6328, BCM6362, BCM6816,
-+ *                                   BCM68220,BCM63168, BCM63268
-+ *   0x02: Interrupt enable (u8)
-+ *   0x03: Interrupt status (u8)
-+ *   0x04: Timer 0 control
-+ *   0x08: Timer 1 control
-+ *   0x0c: Timer 2 control
-+ *   0x10: Timer 0 count
-+ *   0x14: Timer 1 count
-+ *   0x18: Timer 2 count
-+ *   0x1c+: Watchdog registers
-+ *
-+ * Registers for SoCs with 5 timers: BCM6318
-+ *   0x00: Interrupt enable (u32)
-+ *   0x04: Interrupt status (u32)
-+ *   0x08: Timer 0 control
-+ *   0x0c: Timer 1 control
-+ *   0x10: Timer 2 control
-+ *   0x14: Timer 3 control
-+ *   0x18: Timer 0 count
-+ *   0x1c: Timer 1 count
-+ *   0x20: Timer 2 count
-+ *   0x24: Timer 3 count
-+ *   0x28+: Watchdog registers
-+ */
-+
-+#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
-+
-+#include <linux/bitops.h>
-+#include <linux/interrupt.h>
-+#include <linux/irqreturn.h>
-+#include <linux/kernel.h>
-+#include <linux/module.h>
-+#include <linux/of_address.h>
-+#include <linux/of_irq.h>
-+#include <linux/of_platform.h>
-+#include <linux/slab.h>
-+#include <linux/spinlock.h>
-+#include <linux/string.h>
-+#include <linux/irqchip.h>
-+#include <linux/irqchip/chained_irq.h>
-+
-+enum timer_regs {
-+	/* Interrupt enable register:
-+	 *   1 bit per timer (without the watchdog)
-+	 */
-+	TIMER_INT_ENABLE = 0,
-+
-+	/* Interrupt status register:
-+	 *   1 bit per timer (plus the watchdog)
-+	 *   Read for status
-+	 *   Write bit to ack
-+	 */
-+	TIMER_INT_STATUS,
-+
-+	/* Per-timer control register */
-+	TIMER_CONTROL,
-+
-+	/* Per-timer count register */
-+	TIMER_COUNT,
-+
-+
-+	/* Number of registers in enum */
-+	__TIMER_REGS_ENUM_SIZE
-+};
-+
-+/* Watchdog interrupt is immediately after the timers */
-+#define WATCHDOG_INT_BIT(x)		(BIT((x)->variant.nr_timers))
-+
-+#define CONTROL_COUNTDOWN_MASK		(0x3fffffff)
-+#define CONTROL_RSTCNTCLR_MASK		(1 << 30)
-+#define CONTROL_ENABLE_MASK		(1 << 31)
-+
-+#define COUNT_MASK			(0x3fffffff)
-+
-+struct bcm6345_timer *timer;
-+
-+struct bcm6345_timer_variant {
-+	unsigned int nr_timers;
-+	u32 (*int_read)(struct bcm6345_timer *timer, int reg);
-+	void (*int_write)(struct bcm6345_timer *timer, int reg, u32 val);
-+	long regs[__TIMER_REGS_ENUM_SIZE];
-+};
-+
-+struct bcm6345_timer {
-+	raw_spinlock_t lock;
-+	void __iomem *base;
-+	unsigned int irq;
-+	struct irq_domain *domain;
-+
-+	struct bcm6345_timer_variant variant;
-+	unsigned int nr_interrupts;
-+};
-+
-+
-+/* Interrupt enable/status are either 8-bit or 32-bit registers */
-+
-+static u32 bcm6345_timer_int_readl(struct bcm6345_timer *timer, int reg)
-+{
-+	return __raw_readl(timer->base + timer->variant.regs[reg]);
-+}
-+
-+static void bcm6345_timer_int_writel(struct bcm6345_timer *timer,
-+	int reg, u32 val)
-+{
-+	__raw_writel(val, timer->base + timer->variant.regs[reg]);
-+}
-+
-+static u32 bcm6345_timer_int_readb(struct bcm6345_timer *timer, int reg)
-+{
-+	return __raw_readb(timer->base + timer->variant.regs[reg]);
-+}
-+
-+static void bcm6345_timer_int_writeb(struct bcm6345_timer *timer,
-+	int reg, u32 val)
-+{
-+	__raw_writeb(val, timer->base + timer->variant.regs[reg]);
-+}
-+
-+
-+/* Timer variants */
-+
-+static const struct bcm6345_timer_variant timer_bcm6318 __initconst = {
-+	.nr_timers = 4,
-+	.regs = {
-+		[TIMER_INT_ENABLE]	= 0x00,
-+		[TIMER_INT_STATUS]	= 0x04,
-+		[TIMER_CONTROL]		= 0x08,
-+		[TIMER_COUNT]		= 0x18,
-+	},
-+	.int_read = bcm6345_timer_int_readl,
-+	.int_write = bcm6345_timer_int_writel,
-+};
-+
-+static const struct bcm6345_timer_variant timer_bcm6345 __initconst = {
-+	.nr_timers = 3,
-+	.regs = {
-+		[TIMER_INT_ENABLE]	= 0x02,
-+		[TIMER_INT_STATUS]	= 0x03,
-+		[TIMER_CONTROL]		= 0x04,
-+		[TIMER_COUNT]		= 0x10,
-+	},
-+	.int_read = bcm6345_timer_int_readb,
-+	.int_write = bcm6345_timer_int_writeb,
-+};
-+
-+
-+/* Register access functions */
-+
-+static inline u32 bcm6345_timer_read_int_status(struct bcm6345_timer *timer)
-+{
-+	return timer->variant.int_read(timer, TIMER_INT_STATUS);
-+}
-+
-+static inline void bcm6345_timer_write_int_status(struct bcm6345_timer *timer,
-+	u32 val)
-+{
-+	timer->variant.int_write(timer, TIMER_INT_STATUS, val);
-+}
-+
-+static inline u32 bcm6345_timer_read_int_enable(struct bcm6345_timer *timer)
-+{
-+	return timer->variant.int_read(timer, TIMER_INT_ENABLE);
-+}
-+
-+static inline void bcm6345_timer_write_int_enable(struct bcm6345_timer *timer,
-+	u32 val)
-+{
-+	timer->variant.int_write(timer, TIMER_INT_ENABLE, val);
-+}
-+
-+static inline __init void bcm6345_timer_write_control(
-+	struct bcm6345_timer *timer, unsigned int id, u32 val)
-+{
-+	__raw_writel(val,
-+		timer->base + timer->variant.regs[TIMER_CONTROL] + id * 4);
-+}
-+
-+static inline __init void bcm6345_timer_write_count(
-+	struct bcm6345_timer *timer, unsigned int id, u32 val)
-+{
-+	__raw_writel(val,
-+		timer->base + timer->variant.regs[TIMER_COUNT] + id * 4);
-+}
-+
-+static inline __init void bcm6345_timer_stop(struct bcm6345_timer *timer,
-+	unsigned int id)
-+{
-+	bcm6345_timer_write_control(timer, id, 0);
-+	bcm6345_timer_write_count(timer, id, 0);
-+	bcm6345_timer_write_int_status(timer, BIT(id));
-+}
-+
-+
-+/* Interrupt handler functions */
-+
-+static void bcm6345_timer_interrupt(struct irq_desc *desc)
-+{
-+	struct bcm6345_timer *timer = irq_desc_get_handler_data(desc);
-+	struct irq_chip *chip = irq_desc_get_chip(desc);
-+	unsigned long pending;
-+	irq_hw_number_t hwirq;
-+	unsigned int irq;
-+
-+	chained_irq_enter(chip, desc);
-+
-+	pending = bcm6345_timer_read_int_status(timer);
-+	pending &= bcm6345_timer_read_int_enable(timer) |
-+			WATCHDOG_INT_BIT(timer); /* Watchdog can't be masked */
-+
-+	for_each_set_bit(hwirq, &pending, timer->nr_interrupts) {
-+		irq = irq_linear_revmap(timer->domain, hwirq);
-+		if (irq)
-+			do_IRQ(irq);
-+		else
-+			spurious_interrupt();
-+	}
-+
-+	chained_irq_exit(chip, desc);
-+}
-+
-+static void bcm6345_timer_enable(struct irq_data *d)
-+{
-+	struct bcm6345_timer *timer = irq_data_get_irq_chip_data(d);
-+	unsigned long flags;
-+	u8 val;
-+
-+	raw_spin_lock_irqsave(&timer->lock, flags);
-+	val = bcm6345_timer_read_int_enable(timer);
-+	val |= BIT(d->hwirq);
-+	bcm6345_timer_write_int_enable(timer, val);
-+	raw_spin_unlock_irqrestore(&timer->lock, flags);
-+}
-+
-+static void bcm6345_timer_disable(struct irq_data *d)
-+{
-+	struct bcm6345_timer *timer = irq_data_get_irq_chip_data(d);
-+	unsigned long flags;
-+	u32 val;
-+
-+	raw_spin_lock_irqsave(&timer->lock, flags);
-+	val = bcm6345_timer_read_int_enable(timer);
-+	val &= ~BIT(d->hwirq);
-+	bcm6345_timer_write_int_enable(timer, val);
-+	raw_spin_unlock_irqrestore(&timer->lock, flags);
-+}
-+
-+static void bcm6345_timer_eoi(struct irq_data *d)
-+{
-+	struct bcm6345_timer *timer = irq_data_get_irq_chip_data(d);
-+
-+	bcm6345_timer_write_int_status(timer, BIT(d->hwirq));
-+}
-+
-+static struct irq_chip bcm6345_timer_chip = {
-+	.name		= "bcm6345-timer",
-+	.irq_enable	= bcm6345_timer_enable,
-+	.irq_disable	= bcm6345_timer_disable,
-+	.irq_eoi	= bcm6345_timer_eoi,
-+};
-+
-+static void bcm6345_timer_irq_noop(struct irq_data *d)
-+{
-+	/* The watchdog interrupt can't be masked (its
-+	 * enable bit has no effect), so do nothing.
-+	 */
-+}
-+
-+static struct irq_chip bcm6345_timer_wdt_chip = {
-+	.name		= "bcm6345-timer",
-+	.irq_enable	= bcm6345_timer_irq_noop,
-+	.irq_disable	= bcm6345_timer_irq_noop,
-+};
-+
-+static int bcm6345_timer_map(struct irq_domain *d, unsigned int virq,
-+			     irq_hw_number_t hwirq)
-+{
-+	struct bcm6345_timer *timer = d->host_data;
-+
-+	if (hwirq < timer->variant.nr_timers) {
-+		irq_set_chip_and_handler(virq, &bcm6345_timer_chip,
-+			handle_fasteoi_irq);
-+	} else {
-+		/* Watchdog interrupt can't be disabled or acked */
-+		irq_set_chip_and_handler(virq, &bcm6345_timer_wdt_chip,
-+			handle_simple_irq);
-+	}
-+	irq_set_chip_data(virq, timer);
-+	return 0;
-+}
-+
-+static const struct irq_domain_ops bcm6345_timer_domain_ops = {
-+	.xlate	= irq_domain_xlate_onecell,
-+	.map	= bcm6345_timer_map,
-+};
-+
-+static int __init bcm63xx_timer_init(struct device_node *node,
-+	const char *name, const struct bcm6345_timer_variant *variant)
-+{
-+	struct bcm6345_timer *timer;
-+	unsigned int i;
-+	int ret;
-+
-+	timer = kzalloc(sizeof(*timer), GFP_KERNEL);
-+	if (!timer)
-+		return -ENOMEM;
-+
-+	raw_spin_lock_init(&timer->lock);
-+	memcpy(&timer->variant, variant, sizeof(*variant));
-+	/* The watchdog warning event is the next interrupt bit
-+	 * after the timers. It has different control/countdown
-+	 * registers, handled by the watchdog driver.
-+	 */
-+	timer->nr_interrupts = timer->variant.nr_timers + 1;
-+
-+	timer->irq = irq_of_parse_and_map(node, 0);
-+	if (!timer->irq) {
-+		pr_err("unable to map parent IRQ\n");
-+		ret = -EINVAL;
-+		goto free_timer;
-+	}
-+
-+	timer->base = of_iomap(node, 0);
-+	if (!timer->base) {
-+		pr_err("unable to map registers\n");
-+		ret = -ENOMEM;
-+		goto free_timer;
-+	}
-+
-+	timer->domain = irq_domain_add_linear(node, timer->nr_interrupts,
-+					&bcm6345_timer_domain_ops, timer);
-+	if (!timer->domain) {
-+		pr_err("unable to add IRQ domain");
-+		ret = -ENOMEM;
-+		goto unmap_io;
-+	}
-+
-+	/* Mask all interrupts and stop all timers */
-+	bcm6345_timer_write_int_enable(timer, 0);
-+	for (i = 0; i < timer->variant.nr_timers; i++)
-+		bcm6345_timer_stop(timer, i);
-+
-+	irq_set_chained_handler_and_data(timer->irq,
-+					bcm6345_timer_interrupt, timer);
-+
-+	pr_info("registered %s L2 (timer) intc at MMIO 0x%p (irq = %d, IRQs: %d)\n",
-+			name, timer->base, timer->irq, timer->nr_interrupts);
-+	return 0;
-+
-+unmap_io:
-+	iounmap(timer->base);
-+free_timer:
-+	kfree(timer);
-+	return ret;
-+}
-+
-+static int __init bcm6318_timer_init(struct device_node *node,
-+				      struct device_node *parent)
-+{
-+	return bcm63xx_timer_init(node, "BCM6318", &timer_bcm6318);
-+}
-+
-+static int __init bcm6345_timer_init(struct device_node *node,
-+				      struct device_node *parent)
-+{
-+	return bcm63xx_timer_init(node, "BCM6345", &timer_bcm6345);
-+}
-+
-+IRQCHIP_DECLARE(bcm6318_l2_timer, "brcm,bcm6318-timer", bcm6318_timer_init);
-+IRQCHIP_DECLARE(bcm6345_l2_timer, "brcm,bcm6345-timer", bcm6345_timer_init);
--- 
-2.1.4
-
--- 
-Simon Arlott
+T24gMTEvMjUvMjAxNSA4OjU1IEFNLCBVbGYgSGFuc3NvbiB3cm90ZToNCj4gT24gMjEgTm92ZW1i
+ZXIgMjAxNSBhdCAwMToxNywgSm9zaHVhIEhlbmRlcnNvbg0KPiA8am9zaHVhLmhlbmRlcnNvbkBt
+aWNyb2NoaXAuY29tPiB3cm90ZToNCj4gPiBGcm9tOiBBbmRyZWkgUGlzdGlyaWNhIDxhbmRyZWku
+cGlzdGlyaWNhQG1pY3JvY2hpcC5jb20+DQo+ID4NCj4gPiBUaGlzIGRyaXZlciBzdXBwb3J0cyB0
+aGUgU0RIQ0kgaG9zdCBjb250cm9sbGVyIGZvdW5kIG9uIHRoZSBQSUMzMiBpbg0KPiA+IERNQSBv
+ciBQSU8gbW9kZS4NCj4gPg0KPiA+IFNpZ25lZC1vZmYtYnk6IEFuZHJlaSBQaXN0aXJpY2EgPGFu
+ZHJlaS5waXN0aXJpY2FAbWljcm9jaGlwLmNvbT4NCj4gPiBTaWduZWQtb2ZmLWJ5OiBKb3NodWEg
+SGVuZGVyc29uIDxqb3NodWEuaGVuZGVyc29uQG1pY3JvY2hpcC5jb20+DQo+ID4gLS0tDQo+ID4g
+IGRyaXZlcnMvbW1jL2hvc3QvS2NvbmZpZyAgICAgICB8ICAgMTEgKysNCj4gPiAgZHJpdmVycy9t
+bWMvaG9zdC9NYWtlZmlsZSAgICAgIHwgICAgMSArDQo+ID4gIGRyaXZlcnMvbW1jL2hvc3Qvc2Ro
+Y2ktcGljMzIuYyB8ICAzNTQNCj4gPiArKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
+KysrKysrDQo+ID4gIDMgZmlsZXMgY2hhbmdlZCwgMzY2IGluc2VydGlvbnMoKykNCj4gPiAgY3Jl
+YXRlIG1vZGUgMTAwNjQ0IGRyaXZlcnMvbW1jL2hvc3Qvc2RoY2ktcGljMzIuYw0KPiA+DQo+ID4g
+ZGlmZiAtLWdpdCBhL2RyaXZlcnMvbW1jL2hvc3QvS2NvbmZpZyBiL2RyaXZlcnMvbW1jL2hvc3Qv
+S2NvbmZpZyBpbmRleA0KPiA+IGFmNzFkZTUuLjc1YWFlZDEgMTAwNjQ0DQo+ID4gLS0tIGEvZHJp
+dmVycy9tbWMvaG9zdC9LY29uZmlnDQo+ID4gKysrIGIvZHJpdmVycy9tbWMvaG9zdC9LY29uZmln
+DQo+ID4gQEAgLTc4NCwzICs3ODQsMTQgQEAgY29uZmlnIE1NQ19NVEsNCj4gPiAgICAgICAgICAg
+SWYgeW91IGhhdmUgYSBtYWNoaW5lIHdpdGggYSBpbnRlZ3JhdGVkIFNEL01NQyBjYXJkIHJlYWRl
+ciwgc2F5IFkgb3IgTQ0KPiBoZXJlLg0KPiA+ICAgICAgICAgICBUaGlzIGlzIG5lZWRlZCBpZiBz
+dXBwb3J0IGZvciBhbnkgU0QvU0RJTy9NTUMgZGV2aWNlcyBpcyByZXF1aXJlZC4NCj4gPiAgICAg
+ICAgICAgSWYgdW5zdXJlLCBzYXkgTi4NCj4gPiArDQo+ID4gK2NvbmZpZyBNTUNfU0RIQ0lfTUlD
+Uk9DSElQX1BJQzMyDQo+ID4gKyAgICAgICAgdHJpc3RhdGUgIk1pY3JvY2hpcCBQSUMzMk1aREEg
+U0RIQ0kgc3VwcG9ydCINCj4gPiArICAgICAgICBkZXBlbmRzIG9uIE1NQ19TREhDSSAmJiBQSUMz
+Mk1aREENCj4gPiArICAgICAgICBoZWxwDQo+ID4gKyAgICAgICAgICBUaGlzIHNlbGVjdHMgdGhl
+IFNlY3VyZSBEaWdpdGFsIEhvc3QgQ29udHJvbGxlciBJbnRlcmZhY2UgKFNESENJKQ0KPiA+ICsg
+ICAgICAgICAgZm9yIFBJQzMyTVpEQSBwbGF0Zm9ybS4NCj4gPiArDQo+ID4gKyAgICAgICAgICBJ
+ZiB5b3UgaGF2ZSBhIGNvbnRyb2xsZXIgd2l0aCB0aGlzIGludGVyZmFjZSwgc2F5IFkgb3IgTSBo
+ZXJlLg0KPiA+ICsNCj4gPiArICAgICAgICAgIElmIHVuc3VyZSwgc2F5IE4uDQo+ID4gZGlmZiAt
+LWdpdCBhL2RyaXZlcnMvbW1jL2hvc3QvTWFrZWZpbGUgYi9kcml2ZXJzL21tYy9ob3N0L01ha2Vm
+aWxlDQo+ID4gaW5kZXggMzU5NWY4My4uYWY5MThkMiAxMDA2NDQNCj4gPiAtLS0gYS9kcml2ZXJz
+L21tYy9ob3N0L01ha2VmaWxlDQo+ID4gKysrIGIvZHJpdmVycy9tbWMvaG9zdC9NYWtlZmlsZQ0K
+PiA+IEBAIC03NSw2ICs3NSw3IEBAIG9iai0kKENPTkZJR19NTUNfU0RIQ0lfQkNNMjgzNSkgICAg
+ICAgICAgICAgICArPSBzZGhjaS0NCj4gYmNtMjgzNS5vDQo+ID4gIG9iai0kKENPTkZJR19NTUNf
+U0RIQ0lfSVBST0MpICAgICAgICAgICs9IHNkaGNpLWlwcm9jLm8NCj4gPiAgb2JqLSQoQ09ORklH
+X01NQ19TREhDSV9NU00pICAgICAgICAgICAgKz0gc2RoY2ktbXNtLm8NCj4gPiAgb2JqLSQoQ09O
+RklHX01NQ19TREhDSV9TVCkgICAgICAgICAgICAgKz0gc2RoY2ktc3Qubw0KPiA+ICtvYmotJChD
+T05GSUdfTU1DX1NESENJX01JQ1JPQ0hJUF9QSUMzMikgICAgICAgICs9IHNkaGNpLXBpYzMyLm8N
+Cj4gPg0KPiA+ICBpZmVxICgkKENPTkZJR19DQjcxMF9ERUJVRykseSkNCj4gPiAgICAgICAgIENG
+TEFHUy1jYjcxMC1tbWMgICAgICAgICs9IC1EREVCVUcNCj4gPiBkaWZmIC0tZ2l0IGEvZHJpdmVy
+cy9tbWMvaG9zdC9zZGhjaS1waWMzMi5jDQo+ID4gYi9kcml2ZXJzL21tYy9ob3N0L3NkaGNpLXBp
+YzMyLmMgbmV3IGZpbGUgbW9kZSAxMDA2NDQgaW5kZXgNCj4gPiAwMDAwMDAwLi43ZmYyM2E5DQo+
+ID4gLS0tIC9kZXYvbnVsbA0KPiA+ICsrKyBiL2RyaXZlcnMvbW1jL2hvc3Qvc2RoY2ktcGljMzIu
+Yw0KPiA+IEBAIC0wLDAgKzEsMzU0IEBADQo+ID4gKy8qDQo+ID4gKyAqIFN1cHBvcnQgb2YgU0RI
+Q0kgcGxhdGZvcm0gZGV2aWNlcyBmb3IgTWljcm9jaGlwIFBJQzMyLg0KPiA+ICsgKg0KPiA+ICsg
+KiBDb3B5cmlnaHQgKEMpIDIwMTUgTWljcm9jaGlwDQo+ID4gKyAqIEFuZHJlaSBQaXN0aXJpY2Es
+IFBhdWwgVGhhY2tlcg0KPiA+ICsgKg0KPiA+ICsgKiBJbnNwaXJlZCBieSBzZGhjaS1wbHRmbS5j
+DQo+ID4gKyAqDQo+ID4gKyAqIFRoaXMgZmlsZSBpcyBsaWNlbnNlZCB1bmRlciB0aGUgdGVybXMg
+b2YgdGhlIEdOVSBHZW5lcmFsIFB1YmxpYw0KPiA+ICsgKiBMaWNlbnNlIHZlcnNpb24gMi4gVGhp
+cyBwcm9ncmFtIGlzIGxpY2Vuc2VkICJhcyBpcyIgd2l0aG91dCBhbnkNCj4gPiArICogd2FycmFu
+dHkgb2YgYW55IGtpbmQsIHdoZXRoZXIgZXhwcmVzcyBvciBpbXBsaWVkLg0KPiA+ICsgKi8NCj4g
+PiArDQo+ID4gKyNpbmNsdWRlIDxsaW51eC9jbGsuaD4NCj4gPiArI2luY2x1ZGUgPGxpbnV4L2Rl
+bGF5Lmg+DQo+ID4gKyNpbmNsdWRlIDxsaW51eC9oaWdobWVtLmg+DQo+ID4gKyNpbmNsdWRlIDxs
+aW51eC9tb2R1bGUuaD4NCj4gPiArI2luY2x1ZGUgPGxpbnV4L2ludGVycnVwdC5oPg0KPiA+ICsj
+aW5jbHVkZSA8bGludXgvaXJxLmg+DQo+ID4gKyNpbmNsdWRlIDxsaW51eC9vZi5oPg0KPiA+ICsj
+aW5jbHVkZSA8bGludXgvcGxhdGZvcm1fZGV2aWNlLmg+DQo+ID4gKyNpbmNsdWRlIDxsaW51eC9w
+bS5oPg0KPiA+ICsjaW5jbHVkZSA8bGludXgvc2xhYi5oPg0KPiA+ICsjaW5jbHVkZSA8bGludXgv
+bW1jL2hvc3QuaD4NCj4gPiArI2luY2x1ZGUgPGxpbnV4L2lvLmg+DQo+ID4gKyNpbmNsdWRlICJz
+ZGhjaS5oIg0KPiA+ICsjaW5jbHVkZSA8bGludXgvcGxhdGZvcm1fZGF0YS9zZGhjaS1waWMzMi5o
+Pg0KPiANCj4gV2hlcmUgZG9lcyB0aGlzIGluY2x1ZGUgY29tZSBmcm9tLCBhbnkgd2h5IGRvIHlv
+dSBuZWVkIGl0Pw0KDQpJdCdzIGluY2x1ZGVkIGluIHBhdGNoIDYvMTQgb2YgdGhpcyBwYXRjaCBz
+ZXQsIHdoaWNoIGFkZHMgcGxhdGZvcm0gc3VwcG9ydCBmb3IgUElDMzIuIEl0J3MgbmVlZGVkIHRv
+IHByb3ZpZGUgc2FmZSBhY2Nlc3MgdG8gYSByZWdpc3RlciB0aGF0J3Mgc2hhcmVkIGJ5IHRoaXMg
+ZHJpdmVyIGFuZCBhbm90aGVyIGRyaXZlci4NCg0KPiANCj4gPiArDQo+ID4gKyNkZWZpbmUgUElD
+MzJfTU1DX09DUiAoTU1DX1ZERF8zMl8zMyB8IE1NQ19WRERfMzNfMzQpDQo+IA0KPiBXaHkgdGhl
+c2UgdmFsdWVzPw0KDQpUaGVzZSBhcmUgbm90IG5lZWRlZCwgYW5kIHdpbGwgYmUgcmVtb3ZlZC4N
+Cg0KPiANCj4gRG9lcyB0aGUgU0RIQ0kgY29udHJvbGxlciBtYW5hZ2VzIHRoZSBwb3dlciB0byB0
+aGUgY2FyZCBvciBkbyBoYXZlIGFuDQo+IGV4dGVybmFsIHJlZ3VsYXRvciBhdmFpbGFibGU/DQoN
+ClRoZSBTREhDSSBjb250cm9sbGVyIG1hbmFnZXMgcG93ZXIgdG8gdGhlIGNhcmQuDQoNCj4gDQo+
+ID4gKw0KPiA+ICsjZGVmaW5lIFNESF9TSEFSRURfQlVTX0NUUkwgICAgICAgICAgICAweDAwMDAw
+MEUwDQo+ID4gKyNkZWZpbmUgU0RIX1NIQVJFRF9CVVNfTlJfQ0xLX1BJTlNfTUFTSyAgICAgICAg
+MHg3DQo+ID4gKyNkZWZpbmUgU0RIX1NIQVJFRF9CVVNfTlJfSVJRX1BJTlNfTUFTSyAgICAgICAg
+MHgzMA0KPiA+ICsjZGVmaW5lIFNESF9TSEFSRURfQlVTX0NMS19QSU5TICAgICAgICAgICAgICAg
+IDB4MTANCj4gPiArI2RlZmluZSBTREhfU0hBUkVEX0JVU19JUlFfUElOUyAgICAgICAgICAgICAg
+ICAweDE0DQo+ID4gKyNkZWZpbmUgU0RIX0NBUFNfU0RIX1NMT1RfVFlQRV9NQVNLICAgIDB4QzAw
+MDAwMDANCj4gPiArI2RlZmluZSBTREhfU0xPVF9UWVBFX1JFTU9WQUJMRSAgICAgICAgICAgICAg
+ICAweDANCj4gPiArI2RlZmluZSBTREhfU0xPVF9UWVBFX0VNQkVEREVEICAgICAgICAgMHgxDQo+
+ID4gKyNkZWZpbmUgU0RIX1NMT1RfVFlQRV9TSEFSRURfQlVTICAgICAgIDB4Mg0KPiA+ICsjZGVm
+aW5lIFNESENJX0NUUkxfQ0RTU0VMICAgICAgICAgICAgICAweDgwDQo+ID4gKyNkZWZpbmUgU0RI
+Q0lfQ1RSTF9DRFRMVkwgICAgICAgICAgICAgIDB4NDANCj4gPiArDQo+ID4gKyNkZWZpbmUgQURN
+QV9GSUZPX1JEX1RIU0hMRCAgICA1MTINCj4gPiArI2RlZmluZSBBRE1BX0ZJRk9fV1JfVEhTSExE
+ICAgIDUxMg0KPiANCj4gSXMgYWxsIHRoZSBhYm92ZSByZWdpc3RlcnMvYml0cywgc3BlY2lmaWMg
+Zm9yIHNkaGNpLXBpYzMyPw0KDQpUaGUgc2hhcmVkIGJ1cyBjb250cm9sIHJlZ2lzdGVyIGlzIGlu
+IHRoZSB2My4wIHNwZWMsIGJ1dCBJIGRvbid0IHNlZSBhIGRlZmluZSBmb3IgaXQgaW4gdGhlIGtl
+cm5lbC4gVGhlIEZJRk8gdGhyZXNob2xkIHJlZ2lzdGVycyBhcmUgc3BlY2lmaWMgdG8gUElDMzIu
+DQoNCj4gDQo+ID4gKw0KPiA+ICsjZGVmaW5lIERFVl9OQU1FICJwaWMzMi1zZGhjaSINCj4gPiAr
+DQo+ID4gK3N0cnVjdCBwaWMzMl9zZGhjaV9wZGF0YSB7DQo+ID4gKyAgICAgICBzdHJ1Y3QgcGxh
+dGZvcm1fZGV2aWNlICAqcGRldjsNCj4gPiArICAgICAgIHN0cnVjdCBjbGsgKnN5c19jbGs7DQo+
+ID4gKyAgICAgICBzdHJ1Y3QgY2xrICpiYXNlX2NsazsNCj4gPiArICAgICAgIGJvb2wgc3VwcG9y
+dF92c2VsOw0KPiA+ICsgICAgICAgYm9vbCBwaW9tb2RlOw0KPiA+ICt9Ow0KPiA+ICsNCj4gPiAr
+dW5zaWduZWQgaW50IHBpYzMyX3NkaGNpX2dldF9tYXhfY2xvY2soc3RydWN0IHNkaGNpX2hvc3Qg
+Kmhvc3QpIHsNCj4gPiArICAgICAgIHN0cnVjdCBwaWMzMl9zZGhjaV9wZGF0YSAqc2RoY2lfcGRh
+dGEgPSBzZGhjaV9wcml2KGhvc3QpOw0KPiA+ICsgICAgICAgdW5zaWduZWQgaW50IGNsa19yYXRl
+ID0gY2xrX2dldF9yYXRlKHNkaGNpX3BkYXRhLT5iYXNlX2Nsayk7DQo+ID4gKyAgICAgICBzdHJ1
+Y3QgcGxhdGZvcm1fZGV2aWNlICpwZGV2ID0gc2RoY2lfcGRhdGEtPnBkZXY7DQo+ID4gKw0KPiA+
+ICsgICAgICAgZGV2X2RiZygmcGRldi0+ZGV2LCAiU2RoYyBtYXggY2xvY2sgcmF0ZTogJXVcbiIs
+IGNsa19yYXRlKTsNCj4gDQo+IFlvdSBtYXkgd2FudCB0byByZW1vdmUgIlNkaGMiLCBJIHRoaW5r
+IGl0IGlzbid0IG5lZWRlZC4NCj4gDQo+IEkgZmluZCB0aGUgc2ltaWxhciBhdCBzb21lIG1vcmUg
+cGxhY2VzIGluIHRoZSBkcml2ZXIsIHBsZWFzZSByZW1vdmUgYWxsIG9mIHRoZW0uDQoNCkFjay4N
+Cg0KPiANCj4gPiArICAgICAgIHJldHVybiBjbGtfcmF0ZTsNCj4gPiArfQ0KPiA+ICsNCj4gPiAr
+dW5zaWduZWQgaW50IHBpYzMyX3NkaGNpX2dldF9taW5fY2xvY2soc3RydWN0IHNkaGNpX2hvc3Qg
+Kmhvc3QpIHsNCj4gPiArICAgICAgIHN0cnVjdCBwaWMzMl9zZGhjaV9wZGF0YSAqc2RoY2lfcGRh
+dGEgPSBzZGhjaV9wcml2KGhvc3QpOw0KPiA+ICsgICAgICAgdW5zaWduZWQgaW50IGNsa19yYXRl
+ID0gY2xrX2dldF9yYXRlKHNkaGNpX3BkYXRhLT5iYXNlX2Nsayk7DQo+ID4gKyAgICAgICBzdHJ1
+Y3QgcGxhdGZvcm1fZGV2aWNlICpwZGV2ID0gc2RoY2lfcGRhdGEtPnBkZXY7DQo+ID4gKw0KPiA+
+ICsgICAgICAgZGV2X2RiZygmcGRldi0+ZGV2LCAiU2RoYyBtaW4gY2xvY2sgcmF0ZTogJXVcbiIs
+IGNsa19yYXRlKTsNCj4gPiArICAgICAgIHJldHVybiBjbGtfcmF0ZTsNCj4gPiArfQ0KPiA+ICsN
+Cj4gPiArdm9pZCBwaWMzMl9zZGhjaV9zZXRfYnVzX3dpZHRoKHN0cnVjdCBzZGhjaV9ob3N0ICpo
+b3N0LCBpbnQgd2lkdGgpIHsNCj4gPiArICAgICAgIHU4IGN0cmw7DQo+ID4gKw0KPiA+ICsgICAg
+ICAgY3RybCA9IHNkaGNpX3JlYWRiKGhvc3QsIFNESENJX0hPU1RfQ09OVFJPTCk7DQo+ID4gKyAg
+ICAgICBpZiAod2lkdGggPT0gTU1DX0JVU19XSURUSF84KSB7DQo+ID4gKyAgICAgICAgICAgICAg
+IGN0cmwgJj0gflNESENJX0NUUkxfNEJJVEJVUzsNCj4gPiArICAgICAgICAgICAgICAgaWYgKGhv
+c3QtPnZlcnNpb24gPj0gU0RIQ0lfU1BFQ18zMDApDQo+ID4gKyAgICAgICAgICAgICAgICAgICAg
+ICAgY3RybCB8PSBTREhDSV9DVFJMXzhCSVRCVVM7DQo+ID4gKyAgICAgICB9IGVsc2Ugew0KPiA+
+ICsgICAgICAgICAgICAgICBpZiAoaG9zdC0+dmVyc2lvbiA+PSBTREhDSV9TUEVDXzMwMCkNCj4g
+PiArICAgICAgICAgICAgICAgICAgICAgICBjdHJsICY9IH5TREhDSV9DVFJMXzhCSVRCVVM7DQo+
+ID4gKyAgICAgICAgICAgICAgIGlmICh3aWR0aCA9PSBNTUNfQlVTX1dJRFRIXzQpDQo+ID4gKyAg
+ICAgICAgICAgICAgICAgICAgICAgY3RybCB8PSBTREhDSV9DVFJMXzRCSVRCVVM7DQo+ID4gKyAg
+ICAgICAgICAgICAgIGVsc2UNCj4gPiArICAgICAgICAgICAgICAgICAgICAgICBjdHJsICY9IH5T
+REhDSV9DVFJMXzRCSVRCVVM7DQo+ID4gKyAgICAgICB9DQo+ID4gKyAgICAgICAvKg0KPiA+ICsg
+ICAgICAgICogU0RIQyB3aWxsIG5vdCB3b3JrIGlmIEpUQUcgaXMgbm90IENvbm5lY3RlZC5BcyBh
+IHdvcmthcm91bmQgZml4LA0KPiA+ICsgICAgICAgICogc2V0IENhcmQgRGV0ZWN0IFNpZ25hbCBT
+ZWxlY3Rpb24gYml0IGluIFNESEMgSG9zdCBDb250cm9sDQo+ID4gKyAgICAgICAgKiByZWdpc3Rl
+ciBhbmQgY2xlYXIgQ2FyZCBEZXRlY3QgVGVzdCBMZXZlbCBiaXQgaW4gU0RIQyBIb3N0DQo+ID4g
+KyAgICAgICAgKiBDb250cm9sIHJlZ2lzdGVyLg0KPiANCj4gL3MvU0RIQy9TREhDSQ0KPiANCj4g
+SWYgdGhlcmUgYXJlIG1vcmUgcGxhY2VzLCBwbGVhc2UgZml4IHRoZW0gdG9vLg0KDQpBY2suDQoN
+Cj4gDQo+ID4gKyAgICAgICAgKi8NCj4gPiArICAgICAgIGN0cmwgJj0gflNESENJX0NUUkxfQ0RU
+TFZMOw0KPiA+ICsgICAgICAgY3RybCB8PSBTREhDSV9DVFJMX0NEU1NFTDsNCj4gPiArICAgICAg
+IHNkaGNpX3dyaXRlYihob3N0LCBjdHJsLCBTREhDSV9IT1NUX0NPTlRST0wpOyB9DQo+ID4gKw0K
+PiA+ICtzdGF0aWMgdW5zaWduZWQgaW50IHBpYzMyX3NkaGNpX2dldF9ybyhzdHJ1Y3Qgc2RoY2lf
+aG9zdCAqaG9zdCkgew0KPiA+ICsgICAgICAgLyoNCj4gPiArICAgICAgICAqIFRoZSBTREhDSV9X
+UklURV9QUk9URUNUIGJpdCBpcyB1bnN0YWJsZSBvbiBjdXJyZW50IGhhcmR3YXJlIHNvIHdlDQo+
+ID4gKyAgICAgICAgKiBjYW4ndCBkZXBlbmQgb24gaXRzIHZhbHVlIGluIGFueSB3YXkuDQo+ID4g
+KyAgICAgICAgKi8NCj4gPiArICAgICAgIHJldHVybiAwOw0KPiA+ICt9DQo+ID4gKw0KPiA+ICtz
+dGF0aWMgY29uc3Qgc3RydWN0IHNkaGNpX29wcyBwaWMzMl9zZGhjaV9vcHMgPSB7DQo+ID4gKyAg
+ICAgICAuZ2V0X21heF9jbG9jayA9IHBpYzMyX3NkaGNpX2dldF9tYXhfY2xvY2ssDQo+ID4gKyAg
+ICAgICAuZ2V0X21pbl9jbG9jayA9IHBpYzMyX3NkaGNpX2dldF9taW5fY2xvY2ssDQo+ID4gKyAg
+ICAgICAuc2V0X2Nsb2NrID0gc2RoY2lfc2V0X2Nsb2NrLA0KPiA+ICsgICAgICAgLnNldF9idXNf
+d2lkdGggPSBwaWMzMl9zZGhjaV9zZXRfYnVzX3dpZHRoLA0KPiA+ICsgICAgICAgLnJlc2V0ID0g
+c2RoY2lfcmVzZXQsDQo+ID4gKyAgICAgICAuc2V0X3Voc19zaWduYWxpbmcgPSBzZGhjaV9zZXRf
+dWhzX3NpZ25hbGluZywNCj4gPiArICAgICAgIC5nZXRfcm8gPSBwaWMzMl9zZGhjaV9nZXRfcm8s
+DQo+ID4gK307DQo+ID4gKw0KPiA+ICt2b2lkIHBpYzMyX3NkaGNpX3NoYXJlZF9idXMoc3RydWN0
+IHBsYXRmb3JtX2RldmljZSAqcGRldikgew0KPiA+ICsgICAgICAgc3RydWN0IHNkaGNpX2hvc3Qg
+Kmhvc3QgPSBwbGF0Zm9ybV9nZXRfZHJ2ZGF0YShwZGV2KTsNCj4gPiArICAgICAgIHUzMiBidXMg
+PSByZWFkbChob3N0LT5pb2FkZHIgKyBTREhfU0hBUkVEX0JVU19DVFJMKTsNCj4gPiArICAgICAg
+IHUzMiBjbGtfcGlucyA9IChidXMgJiBTREhfU0hBUkVEX0JVU19OUl9DTEtfUElOU19NQVNLKSA+
+PiAwOw0KPiA+ICsgICAgICAgdTMyIGlycV9waW5zID0gKGJ1cyAmIFNESF9TSEFSRURfQlVTX05S
+X0lSUV9QSU5TX01BU0spID4+IDQ7DQo+ID4gKw0KPiA+ICsgICAgICAgLyogc2VsZWN0IGZpcnN0
+IGNsb2NrICovDQo+ID4gKyAgICAgICBpZiAoY2xrX3BpbnMgJiAweDEpDQo+ID4gKyAgICAgICAg
+ICAgICAgIGJ1cyB8PSAoMHgxIDw8IFNESF9TSEFSRURfQlVTX0NMS19QSU5TKTsNCj4gPiArDQo+
+ID4gKyAgICAgICAvKiBzZWxlY3QgZmlyc3QgaW50ZXJydXB0ICovDQo+ID4gKyAgICAgICBpZiAo
+aXJxX3BpbnMgJiAweDEpDQo+ID4gKyAgICAgICAgICAgICAgIGJ1cyB8PSAoMHgxIDw8IFNESF9T
+SEFSRURfQlVTX0lSUV9QSU5TKTsNCj4gPiArDQo+ID4gKyAgICAgICB3cml0ZWwoYnVzLCBob3N0
+LT5pb2FkZHIgKyBTREhfU0hBUkVEX0JVU19DVFJMKTsgfQ0KPiA+ICsNCj4gPiArc3RhdGljIGlu
+dCBwaWMzMl9zZGhjaV9wcm9iZV9wbGF0Zm9ybShzdHJ1Y3QgcGxhdGZvcm1fZGV2aWNlICpwZGV2
+LA0KPiA+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc3RydWN0IHBpYzMy
+X3NkaGNpX3BkYXRhICpwZGF0YSkNCj4gPiArew0KPiA+ICsgICAgICAgaW50IHJldCA9IDA7DQo+
+ID4gKyAgICAgICB1MzIgY2Fwc19zbG90X3R5cGU7DQo+ID4gKyAgICAgICBzdHJ1Y3Qgc2RoY2lf
+aG9zdCAqaG9zdCA9IHBsYXRmb3JtX2dldF9kcnZkYXRhKHBkZXYpOw0KPiA+ICsNCj4gPiArICAg
+ICAgIC8qIENoZWNrIGNhcmQgc2xvdCBjb25uZWN0ZWQgb24gc2hhcmVkIGJ1cy4gKi8NCj4gPiAr
+ICAgICAgIGhvc3QtPmNhcHMgPSByZWFkbChob3N0LT5pb2FkZHIgKyBTREhDSV9DQVBBQklMSVRJ
+RVMpOw0KPiA+ICsgICAgICAgY2Fwc19zbG90X3R5cGUgPSAoaG9zdC0+Y2FwcyAmIFNESF9DQVBT
+X1NESF9TTE9UX1RZUEVfTUFTSykgPj4NCj4gMzA7DQo+ID4gKyAgICAgICBpZiAoY2Fwc19zbG90
+X3R5cGUgPT0gU0RIX1NMT1RfVFlQRV9TSEFSRURfQlVTKQ0KPiA+ICsgICAgICAgICAgICAgICBw
+aWMzMl9zZGhjaV9zaGFyZWRfYnVzKHBkZXYpOw0KPiA+ICsNCj4gPiArICAgICAgIHJldHVybiBy
+ZXQ7DQo+ID4gK30NCj4gPiArDQo+ID4gKyNpZmRlZiBDT05GSUdfT0YNCj4gPiArc3RhdGljIGlu
+bGluZSBpbnQNCj4gDQo+IFdoeSBpbmxpbmU/DQoNClRoaXMgZnVuY3Rpb24gd2lsbCBiZSByZW1v
+dmVkIGluIGZhdm9yIG9mIG1tY19vZl9wYXJzZSgpLg0KDQo+IA0KPiA+ICtzZGhjaV9waWMzMl9w
+cm9iZV9kdHMoc3RydWN0IHBsYXRmb3JtX2RldmljZSAqcGRldiwNCj4gPiArICAgICAgICAgICAg
+ICAgICAgICAgc3RydWN0IHBpYzMyX3NkaGNpX3BkYXRhICpib2FyZGRhdGEpIHsNCj4gPiArICAg
+ICAgIHN0cnVjdCBkZXZpY2Vfbm9kZSAqbnAgPSBwZGV2LT5kZXYub2Zfbm9kZTsNCj4gPiArDQo+
+ID4gKyAgICAgICBpZiAoIW5wKQ0KPiA+ICsgICAgICAgICAgICAgICByZXR1cm4gLUVOT0RFVjsN
+Cj4gPiArDQo+ID4gKyAgICAgICBpZiAob2ZfZmluZF9wcm9wZXJ0eShucCwgIm5vLTEtOC12Iiwg
+TlVMTCkpDQo+IA0KPiBQbGVhc2UgZG9uJ3QgdXNlIHRoaXMgcHJvcGVydHkgYXMgaXQncyBicm9r
+ZW4uIEl0IGhhcyB0d28gZGlmZmVyZW50IHB1cnBvc2VzIGFuZA0KPiB0aG9zZSBhcmUgY29uZmxp
+Y3RpbmcgYXMgZGlzY3Vzc2VkIGhlcmVbMV0uDQoNCkFjay4NCg0KPiANCj4gWW91IGhhdmUgdHdv
+IG9wdGlvbnMsIGVpdGhlciBpbnZlbnQgYSBuZXcgYmluZGluZyB3aGljaCBwcm92aWRlcyBpbmZv
+cm1hdGlvbg0KPiBhYm91dCB3aGljaCBzaWduYWwgdm9sdGFnZSB0aGF0ICppcyogc3VwcG9ydGVk
+LCBvciB1c2UgdGhlIGN1cnJlbnQgZXhpc3RpbmcNCj4gY29tbW9uIE1NQyBkdCBiaW5kaW5ncyB0
+byBvdmVycmlkZSB0aGUgU0RIQ0kgY2FwYWJpbGl0aWVzIHJlZ2lzdGVyLg0KPiANCg0KV2Ugd2ls
+bCB1c2UgZXhpc3RpbmcgY29tbW9uIG1tYyBEVCBiaW5kaW5ncyB0byBvdmVycmlkZSB0aGUgU0RI
+Q0kgY2FwYWJpbGl0aWVzIHJlZ2lzdGVyLg0KDQo+ID4gKyAgICAgICAgICAgICAgIGJvYXJkZGF0
+YS0+c3VwcG9ydF92c2VsID0gdHJ1ZTsNCj4gPiArICAgICAgIGVsc2UNCj4gPiArICAgICAgICAg
+ICAgICAgYm9hcmRkYXRhLT5zdXBwb3J0X3ZzZWwgPSBmYWxzZTsNCj4gPiArDQo+ID4gKyAgICAg
+ICBpZiAob2ZfZmluZF9wcm9wZXJ0eShucCwgInBpb21vZGUiLCBOVUxMKSkNCj4gDQo+IFdoYXQn
+cyB0aGlzPyBBcmUgdGhlcmUgZGlmZmVyZW50IHZlcnNpb25zIG9mIHRoZSBjb250cm9sbGVyLCBv
+bmUgc3VwcG9ydGluZw0KPiAicGlvbW9kZSIgYW5vdGhlciBub3Q/DQo+IA0KPiBNb3Jlb3Zlciwg
+d2hlcmUgaXMgdGhpcyBiZWluZyBkb2N1bWVudGVkPw0KDQpUaGlzIHdpbGwgYmUgcmVtb3ZlZC4g
+V2Ugd29uJ3QgYmUgc3VwcG9ydGluZyBwaW8gbW9kZS4NCg0KPiANCj4gPiArICAgICAgICAgICAg
+ICAgYm9hcmRkYXRhLT5waW9tb2RlID0gdHJ1ZTsNCj4gPiArICAgICAgIGVsc2UNCj4gPiArICAg
+ICAgICAgICAgICAgYm9hcmRkYXRhLT5waW9tb2RlID0gZmFsc2U7DQo+ID4gKw0KPiA+ICsgICAg
+ICAgcmV0dXJuIDA7DQo+ID4gK30NCj4gPiArI2Vsc2UNCj4gPiArc3RhdGljIGlubGluZSBpbnQN
+Cj4gPiArc2RoY2lfcGljMzJfcHJvYmVfZHRzKHN0cnVjdCBwbGF0Zm9ybV9kZXZpY2UgKnBkZXYs
+DQo+ID4gKyAgICAgICAgICAgICAgICAgICAgIHN0cnVjdCBwaWMzMl9zZGhjaV9wZGF0YSAqYm9h
+cmRkYXRhKSB7DQo+ID4gKyAgICAgICByZXR1cm4gLUVOT0RFVjsNCj4gPiArfQ0KPiA+ICsjZW5k
+aWYNCj4gDQo+IEkgZG9uJ3QgdGhpbmsgeW91IG5lZWQgdGhpcyBmb3IgdGhlIENPTkZJR19PRiB1
+bnNldCBjYXNlLiBUaGVyZSBzaG91bGQgYmUgc3R1Yg0KPiBmdW5jdGlvbnMgZm9yIG9mX2ZpbmRf
+cHJvcGVydHkoKSBldGMuDQoNClRoaXMgZnVuY3Rpb24gd2lsbCBiZSByZW1vdmVkLg0KDQo+IA0K
+PiA+ICsNCj4gPiAraW50IHBpYzMyX3NkaGNpX3Byb2JlKHN0cnVjdCBwbGF0Zm9ybV9kZXZpY2Ug
+KnBkZXYpIHsNCj4gPiArICAgICAgIHN0cnVjdCBkZXZpY2UgKmRldiA9ICZwZGV2LT5kZXY7DQo+
+ID4gKyAgICAgICBzdHJ1Y3Qgc2RoY2lfaG9zdCAqaG9zdDsNCj4gPiArICAgICAgIHN0cnVjdCBy
+ZXNvdXJjZSAqaW9tZW07DQo+ID4gKyAgICAgICBzdHJ1Y3QgcGljMzJfc2RoY2lfcGRhdGEgKnNk
+aGNpX3BkYXRhOw0KPiA+ICsgICAgICAgc3RydWN0IHBpYzMyX3NkaGNpX3BsYXRmb3JtX2RhdGEg
+KnBsYXRfZGF0YTsNCj4gPiArICAgICAgIHVuc2lnbmVkIGludCBjbGtfcmF0ZSA9IDA7DQo+ID4g
+KyAgICAgICBpbnQgcmV0Ow0KPiA+ICsgICAgICAgc3RydWN0IHBpbmN0cmwgKnBpbmN0cmw7DQo+
+ID4gKw0KPiA+ICsgICAgICAgaG9zdCA9IHNkaGNpX2FsbG9jX2hvc3QoZGV2LCBzaXplb2YoKnNk
+aGNpX3BkYXRhKSk7DQo+ID4gKyAgICAgICBpZiAoSVNfRVJSKGhvc3QpKSB7DQo+ID4gKyAgICAg
+ICAgICAgICAgIHJldCA9IFBUUl9FUlIoaG9zdCk7DQo+ID4gKyAgICAgICAgICAgICAgIGRldl9l
+cnIoJnBkZXYtPmRldiwgImNhbm5vdCBhbGxvY2F0ZSBtZW1vcnkgZm9yIHNkaGNpXG4iKTsNCj4g
+PiArICAgICAgICAgICAgICAgZ290byBlcnI7DQo+ID4gKyAgICAgICB9DQo+ID4gKw0KPiA+ICsg
+ICAgICAgc2RoY2lfcGRhdGEgPSBzZGhjaV9wcml2KGhvc3QpOw0KPiA+ICsgICAgICAgc2RoY2lf
+cGRhdGEtPnBkZXYgPSBwZGV2Ow0KPiA+ICsgICAgICAgcGxhdGZvcm1fc2V0X2RydmRhdGEocGRl
+diwgaG9zdCk7DQo+ID4gKw0KPiA+ICsgICAgICAgaWYgKHNkaGNpX3BpYzMyX3Byb2JlX2R0cyhw
+ZGV2LCBzZGhjaV9wZGF0YSkgPCAwKSB7DQo+ID4gKyAgICAgICAgICAgICAgIHJldCA9IC1FSU5W
+QUw7DQo+ID4gKyAgICAgICAgICAgICAgIGRldl9lcnIoJnBkZXYtPmRldiwgIm5vIGRldmljZSB0
+cmVlIGluZm9ybWF0aW9uICVkXG4iLCByZXQpOw0KPiA+ICsgICAgICAgICAgICAgICBnb3RvIGVy
+cl9ob3N0MTsNCj4gPiArICAgICAgIH0NCj4gPiArDQo+ID4gKyAgICAgICBpb21lbSA9IHBsYXRm
+b3JtX2dldF9yZXNvdXJjZShwZGV2LCBJT1JFU09VUkNFX01FTSwgMCk7DQo+ID4gKyAgICAgICBo
+b3N0LT5pb2FkZHIgPSBkZXZtX2lvcmVtYXBfcmVzb3VyY2UoJnBkZXYtPmRldiwgaW9tZW0pOw0K
+PiA+ICsgICAgICAgaWYgKElTX0VSUihob3N0LT5pb2FkZHIpKSB7DQo+ID4gKyAgICAgICAgICAg
+ICAgIHJldCA9IFBUUl9FUlIoaG9zdC0+aW9hZGRyKTsNCj4gPiArICAgICAgICAgICAgICAgZGV2
+X2VycigmcGRldi0+ZGV2LCAidW5hYmxlIHRvIG1hcCBpb21lbTogJWRcbiIsIHJldCk7DQo+ID4g
+KyAgICAgICAgICAgICAgIGdvdG8gZXJyX2hvc3Q7DQo+ID4gKyAgICAgICB9DQo+ID4gKw0KPiA+
+ICsgICAgICAgaWYgKCFzZGhjaV9wZGF0YS0+cGlvbW9kZSkgew0KPiA+ICsgICAgICAgICAgICAg
+ICBwbGF0X2RhdGEgPSBwZGV2LT5kZXYucGxhdGZvcm1fZGF0YTsNCj4gPiArICAgICAgICAgICAg
+ICAgaWYgKHBsYXRfZGF0YSAmJiBwbGF0X2RhdGEtPnNldHVwX2RtYSkgew0KPiA+ICsgICAgICAg
+ICAgICAgICAgICAgICAgIHJldCA9IHBsYXRfZGF0YS0+c2V0dXBfZG1hKEFETUFfRklGT19SRF9U
+SFNITEQsDQo+ID4gKyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgQURNQV9GSUZPX1dSX1RIU0hMRCk7DQo+ID4gKyAgICAgICAgICAgICAgICAgICAgICAg
+aWYgKHJldCkNCj4gPiArICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGdvdG8gZXJyX2hv
+c3Q7DQo+ID4gKyAgICAgICAgICAgICAgIH0NCj4gPiArICAgICAgIH0NCj4gPiArDQo+ID4gKyAg
+ICAgICBwaW5jdHJsID0gZGV2bV9waW5jdHJsX2dldF9zZWxlY3RfZGVmYXVsdCgmcGRldi0+ZGV2
+KTsNCj4gPiArICAgICAgIGlmIChJU19FUlIocGluY3RybCkpIHsNCj4gPiArICAgICAgICAgICAg
+ICAgcmV0ID0gUFRSX0VSUihwaW5jdHJsKTsNCj4gPiArICAgICAgICAgICAgICAgZGV2X3dhcm4o
+JnBkZXYtPmRldiwgIk5vIHBpbmN0cmwgcHJvdmlkZWQgJWRcbiIsIHJldCk7DQo+ID4gKyAgICAg
+ICAgICAgICAgIGlmIChyZXQgPT0gLUVQUk9CRV9ERUZFUikNCj4gPiArICAgICAgICAgICAgICAg
+ICAgICAgICBnb3RvIGVycl9ob3N0Ow0KPiA+ICsgICAgICAgfQ0KPiA+ICsNCj4gPiArICAgICAg
+IGhvc3QtPm9wcyA9ICZwaWMzMl9zZGhjaV9vcHM7DQo+ID4gKyAgICAgICBob3N0LT5pcnEgPSBw
+bGF0Zm9ybV9nZXRfaXJxKHBkZXYsIDApOw0KPiA+ICsNCj4gPiArICAgICAgIHNkaGNpX3BkYXRh
+LT5zeXNfY2xrID0gZGV2bV9jbGtfZ2V0KCZwZGV2LT5kZXYsICJzeXNfY2xrIik7DQo+ID4gKyAg
+ICAgICBpZiAoSVNfRVJSKHNkaGNpX3BkYXRhLT5zeXNfY2xrKSkgew0KPiA+ICsgICAgICAgICAg
+ICAgICByZXQgPSBQVFJfRVJSKHNkaGNpX3BkYXRhLT5zeXNfY2xrKTsNCj4gPiArICAgICAgICAg
+ICAgICAgZGV2X2VycigmcGRldi0+ZGV2LCAiRXJyb3IgZ2V0dGluZyBjbG9ja1xuIik7DQo+ID4g
+KyAgICAgICAgICAgICAgIGdvdG8gZXJyX2hvc3Q7DQo+ID4gKyAgICAgICB9DQo+ID4gKw0KPiA+
+ICsgICAgICAgLyogRW5hYmxlIGNsb2NrIHdoZW4gYXZhaWxhYmxlISAqLw0KPiA+ICsgICAgICAg
+cmV0ID0gY2xrX3ByZXBhcmVfZW5hYmxlKHNkaGNpX3BkYXRhLT5zeXNfY2xrKTsNCj4gPiArICAg
+ICAgIGlmIChyZXQpIHsNCj4gPiArICAgICAgICAgICAgICAgZGV2X2RiZygmcGRldi0+ZGV2LCAi
+RXJyb3IgZW5hYmxpbmcgY2xvY2tcbiIpOw0KPiA+ICsgICAgICAgICAgICAgICBnb3RvIGVycl9o
+b3N0Ow0KPiA+ICsgICAgICAgfQ0KPiA+ICsNCj4gPiArICAgICAgIC8qIFNESCBDTEsgZW5hYmxl
+ICovDQo+ID4gKyAgICAgICBzZGhjaV9wZGF0YS0+YmFzZV9jbGsgPSBkZXZtX2Nsa19nZXQoJnBk
+ZXYtPmRldiwgImJhc2VfY2xrIik7DQo+ID4gKyAgICAgICBpZiAoSVNfRVJSKHNkaGNpX3BkYXRh
+LT5iYXNlX2NsaykpIHsNCj4gPiArICAgICAgICAgICAgICAgcmV0ID0gUFRSX0VSUihzZGhjaV9w
+ZGF0YS0+YmFzZV9jbGspOw0KPiA+ICsgICAgICAgICAgICAgICBkZXZfZXJyKCZwZGV2LT5kZXYs
+ICJFcnJvciBnZXR0aW5nIGNsb2NrXG4iKTsNCj4gPiArICAgICAgICAgICAgICAgZ290byBlcnJf
+aG9zdDsNCj4gPiArICAgICAgIH0NCj4gPiArDQo+ID4gKyAgICAgICAvKiBFbmFibGUgY2xvY2sg
+d2hlbiBhdmFpbGFibGUhICovDQo+ID4gKyAgICAgICByZXQgPSBjbGtfcHJlcGFyZV9lbmFibGUo
+c2RoY2lfcGRhdGEtPmJhc2VfY2xrKTsNCj4gPiArICAgICAgIGlmIChyZXQpIHsNCj4gPiArICAg
+ICAgICAgICAgICAgZGV2X2RiZygmcGRldi0+ZGV2LCAiRXJyb3IgZW5hYmxpbmcgY2xvY2tcbiIp
+Ow0KPiA+ICsgICAgICAgICAgICAgICBnb3RvIGVycl9ob3N0Ow0KPiA+ICsgICAgICAgfQ0KPiA+
+ICsNCj4gPiArICAgICAgIGNsa19yYXRlID0gY2xrX2dldF9yYXRlKHNkaGNpX3BkYXRhLT5iYXNl
+X2Nsayk7DQo+ID4gKyAgICAgICBkZXZfZGJnKCZwZGV2LT5kZXYsICJiYXNlIGNsb2NrIGF0OiAl
+dVxuIiwgY2xrX3JhdGUpOw0KPiA+ICsgICAgICAgY2xrX3JhdGUgPSBjbGtfZ2V0X3JhdGUoc2Ro
+Y2lfcGRhdGEtPnN5c19jbGspOw0KPiA+ICsgICAgICAgZGV2X2RiZygmcGRldi0+ZGV2LCAic3lz
+IGNsb2NrIGF0OiAldVxuIiwgY2xrX3JhdGUpOw0KPiA+ICsNCj4gPiArICAgICAgIGlmIChzZGhj
+aV9wZGF0YS0+c3VwcG9ydF92c2VsKQ0KPiA+ICsgICAgICAgICAgICAgICBob3N0LT5xdWlya3My
+IHw9IFNESENJX1FVSVJLMl9OT18xXzhfVjsNCj4gPiArDQo+ID4gKyAgICAgICBpZiAoc2RoY2lf
+cGRhdGEtPnBpb21vZGUpDQo+ID4gKyAgICAgICAgICAgICAgIGhvc3QtPnF1aXJrcyB8PSBTREhD
+SV9RVUlSS19CUk9LRU5fQURNQSB8DQo+ID4gKyAgICAgICAgICAgICAgICAgICAgICAgU0RIQ0lf
+UVVJUktfQlJPS0VOX0RNQTsNCj4gPiArDQo+ID4gKyAgICAgICBob3N0LT5xdWlya3MgfD0gU0RI
+Q0lfUVVJUktfTk9fSElTUERfQklUOw0KPiA+ICsNCj4gPiArICAgICAgIGhvc3QtPm1tYy0+b2Ny
+X2F2YWlsID0gUElDMzJfTU1DX09DUjsNCj4gPiArDQo+ID4gKyAgICAgICByZXQgPSBwaWMzMl9z
+ZGhjaV9wcm9iZV9wbGF0Zm9ybShwZGV2LCBzZGhjaV9wZGF0YSk7DQo+ID4gKyAgICAgICBpZiAo
+cmV0KSB7DQo+ID4gKyAgICAgICAgICAgICAgIGRldl9lcnIoJnBkZXYtPmRldiwgImZhaWxlZCB0
+byBwcm9iZSBwbGF0Zm9ybSFcbiIpOw0KPiA+ICsgICAgICAgICAgICAgICBnb3RvIGVycl9ob3N0
+Ow0KPiA+ICsgICAgICAgfQ0KPiANCj4gQW55IHJlYXNvbiB3aHkgeW91IGRvbid0IHdhbnQgdG8g
+dXNlIG1tY19vZl9wYXJzZSgpIHRvIHBhcnNlIGZvciBjb21tb24NCj4gbW1jIERUIGJpbmRpbmdz
+Pw0KDQpXZSB3aWxsIHVwZGF0ZSB0aGUgZHJpdmVyIHRvIHVzZSBtbWNfb2ZfcGFyc2UoKS4NCg0K
+PiANCj4gPiArDQo+ID4gKyAgICAgICByZXQgPSBzZGhjaV9hZGRfaG9zdChob3N0KTsNCj4gPiAr
+ICAgICAgIGlmIChyZXQpIHsNCj4gPiArICAgICAgICAgICAgICAgZGV2X2RiZygmcGRldi0+ZGV2
+LCAiZXJyb3IgYWRkaW5nIGhvc3RcbiIpOw0KPiA+ICsgICAgICAgICAgICAgICBnb3RvIGVycl9o
+b3N0Ow0KPiA+ICsgICAgICAgfQ0KPiA+ICsNCj4gPiArICAgICAgIGRldl9pbmZvKCZwZGV2LT5k
+ZXYsICJTdWNjZXNzZnVsbHkgYWRkZWQgc2RoY2kgaG9zdFxuIik7DQo+ID4gKyAgICAgICByZXR1
+cm4gMDsNCj4gPiArDQo+ID4gK2Vycl9ob3N0Og0KPiA+ICsgICAgICAgZGV2bV9pb3VubWFwKCZw
+ZGV2LT5kZXYsIGhvc3QtPmlvYWRkcik7DQo+ID4gK2Vycl9ob3N0MToNCj4gPiArICAgICAgIHNk
+aGNpX2ZyZWVfaG9zdChob3N0KTsNCj4gPiArZXJyOg0KPiA+ICsgICAgICAgZGV2X2VycigmcGRl
+di0+ZGV2LCAicGljMzItc2RoY2kgcHJvYmUgZmFpbGVkOiAlZFxuIiwgcmV0KTsNCj4gPiArICAg
+ICAgIHJldHVybiByZXQ7DQo+ID4gK30NCj4gPiArDQo+ID4gK3N0YXRpYyBpbnQgcGljMzJfc2Ro
+Y2lfcmVtb3ZlKHN0cnVjdCBwbGF0Zm9ybV9kZXZpY2UgKnBkZXYpIHsNCj4gPiArICAgICAgIHN0
+cnVjdCBzZGhjaV9ob3N0ICpob3N0ID0gcGxhdGZvcm1fZ2V0X2RydmRhdGEocGRldik7DQo+ID4g
+KyAgICAgICBzdHJ1Y3QgcGljMzJfc2RoY2lfcGRhdGEgKnNkaGNpX3BkYXRhID0gc2RoY2lfcHJp
+dihob3N0KTsNCj4gPiArICAgICAgIGludCBkZWFkID0gMDsNCj4gPiArICAgICAgIHUzMiBzY3Jh
+dGNoOw0KPiA+ICsNCj4gPiArICAgICAgIHNjcmF0Y2ggPSByZWFkbChob3N0LT5pb2FkZHIgKyBT
+REhDSV9JTlRfU1RBVFVTKTsNCj4gPiArICAgICAgIGlmIChzY3JhdGNoID09ICh1MzIpLTEpDQo+
+ID4gKyAgICAgICAgICAgICAgIGRlYWQgPSAxOw0KPiA+ICsNCj4gPiArICAgICAgIHNkaGNpX3Jl
+bW92ZV9ob3N0KGhvc3QsIGRlYWQpOw0KPiA+ICsgICAgICAgY2xrX2Rpc2FibGVfdW5wcmVwYXJl
+KHNkaGNpX3BkYXRhLT5iYXNlX2Nsayk7DQo+ID4gKyAgICAgICBjbGtfZGlzYWJsZV91bnByZXBh
+cmUoc2RoY2lfcGRhdGEtPnN5c19jbGspOw0KPiA+ICsgICAgICAgZGV2bV9pb3VubWFwKCZwZGV2
+LT5kZXYsIGhvc3QtPmlvYWRkcik7DQo+ID4gKyAgICAgICBzZGhjaV9mcmVlX2hvc3QoaG9zdCk7
+DQo+ID4gKw0KPiA+ICsgICAgICAgcmV0dXJuIDA7DQo+ID4gK30NCj4gPiArDQo+ID4gK3N0YXRp
+YyBjb25zdCBzdHJ1Y3Qgb2ZfZGV2aWNlX2lkIHBpYzMyX3NkaGNpX2lkX3RhYmxlW10gPSB7DQo+
+ID4gKyAgICAgICB7IC5jb21wYXRpYmxlID0gIm1pY3JvY2hpcCxwaWMzMi1zZGhjaSIgfSwNCj4g
+PiArICAgICAgIHt9DQo+ID4gK307DQo+ID4gK01PRFVMRV9ERVZJQ0VfVEFCTEUob2YsIHBpYzMy
+X3NkaGNpX2lkX3RhYmxlKTsNCj4gPiArDQo+ID4gK3N0YXRpYyBzdHJ1Y3QgcGxhdGZvcm1fZHJp
+dmVyIHBpYzMyX3NkaGNpX2RyaXZlciA9IHsNCj4gPiArICAgICAgIC5kcml2ZXIgPSB7DQo+ID4g
+KyAgICAgICAgICAgICAgIC5uYW1lICAgPSBERVZfTkFNRSwNCj4gPiArICAgICAgICAgICAgICAg
+Lm93bmVyICA9IFRISVNfTU9EVUxFLA0KPiA+ICsgICAgICAgICAgICAgICAub2ZfbWF0Y2hfdGFi
+bGUgPSBvZl9tYXRjaF9wdHIocGljMzJfc2RoY2lfaWRfdGFibGUpLA0KPiA+ICsgICAgICAgfSwN
+Cj4gPiArICAgICAgIC5wcm9iZSAgICAgICAgICA9IHBpYzMyX3NkaGNpX3Byb2JlLA0KPiA+ICsg
+ICAgICAgLnJlbW92ZSAgICAgICAgID0gcGljMzJfc2RoY2lfcmVtb3ZlLA0KPiA+ICt9Ow0KPiA+
+ICsNCj4gPiArbW9kdWxlX3BsYXRmb3JtX2RyaXZlcihwaWMzMl9zZGhjaV9kcml2ZXIpOw0KPiA+
+ICsNCj4gPiArTU9EVUxFX0RFU0NSSVBUSU9OKCJNaWNyb2NoaXAgUElDMzIgU0RIQ0kgZHJpdmVy
+Iik7DQo+ID4gK01PRFVMRV9BVVRIT1IoIlBpc3RpcmljYSBTb3JpbiBBbmRyZWkgJiBTYW5kZWVw
+IFNoZXJpa2VyIik7DQo+ID4gK01PRFVMRV9MSUNFTlNFKCJHUEwgdjIiKTsNCj4gPiAtLQ0KPiA+
+IDEuNy45LjUNCj4gPg0KPiANCj4gS2luZCByZWdhcmRzDQo+IFVmZmUNCg0KVGhhbmtzLA0KUGF1
+bA0K

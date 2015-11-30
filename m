@@ -1,33 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Nov 2015 12:48:10 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:47257 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Nov 2015 12:59:25 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:7426 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27006763AbbK3LsIPIcHP (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 30 Nov 2015 12:48:08 +0100
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Websense Email Security Gateway with ESMTPS id AC552A8CA92FA;
-        Mon, 30 Nov 2015 11:48:00 +0000 (GMT)
+        with ESMTP id S27007140AbbK3L7WoG23P (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 30 Nov 2015 12:59:22 +0100
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Websense Email Security Gateway with ESMTPS id 7F1413DAB3C40;
+        Mon, 30 Nov 2015 11:59:14 +0000 (GMT)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
- 14.3.235.1; Mon, 30 Nov 2015 11:48:02 +0000
+ HHMAIL01.hh.imgtec.org (10.100.10.19) with Microsoft SMTP Server (TLS) id
+ 14.3.235.1; Mon, 30 Nov 2015 11:59:16 +0000
 Received: from [192.168.154.94] (192.168.154.94) by LEMAIL01.le.imgtec.org
  (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Mon, 30 Nov
- 2015 11:48:01 +0000
-Subject: Re: [PATCH v2 04/19] genirq: Add new struct ipi_mask and helper
- functions
+ 2015 11:59:16 +0000
+Subject: Re: [PATCH v2 09/19] genirq: Add a new function to get IPI reverse
+ mapping
 To:     Thomas Gleixner <tglx@linutronix.de>
 References: <1448453217-3874-1-git-send-email-qais.yousef@imgtec.com>
- <1448453217-3874-5-git-send-email-qais.yousef@imgtec.com>
- <alpine.DEB.2.11.1511301158100.3572@nanos>
+ <1448453217-3874-10-git-send-email-qais.yousef@imgtec.com>
+ <5658429D.3000105@imgtec.com> <alpine.DEB.2.11.1511301139500.3572@nanos>
+ <565C2ABD.5030409@imgtec.com> <alpine.DEB.2.11.1511301220380.3572@nanos>
 CC:     <linux-kernel@vger.kernel.org>, <jason@lakedaemon.net>,
         <marc.zyngier@arm.com>, <jiang.liu@linux.intel.com>,
         <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
 From:   Qais Yousef <qais.yousef@imgtec.com>
-Message-ID: <565C3771.7040202@imgtec.com>
-Date:   Mon, 30 Nov 2015 11:48:01 +0000
+Message-ID: <565C3A14.10401@imgtec.com>
+Date:   Mon, 30 Nov 2015 11:59:16 +0000
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
  Thunderbird/38.3.0
 MIME-Version: 1.0
-In-Reply-To: <alpine.DEB.2.11.1511301158100.3572@nanos>
+In-Reply-To: <alpine.DEB.2.11.1511301220380.3572@nanos>
 Content-Type: text/plain; charset="windows-1252"; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Originating-IP: [192.168.154.94]
@@ -35,7 +36,7 @@ Return-Path: <Qais.Yousef@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50166
+X-archive-position: 50167
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -52,32 +53,32 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 11/30/2015 11:20 AM, Thomas Gleixner wrote:
-> On Wed, 25 Nov 2015, Qais Yousef wrote:
->> cpumask is limited to NR_CPUS. Introduce ipi_mask which allows us to address
->> cpu range that is higher than NR_CPUS which is required for drivers to send
->> IPIs for coprocessor that are outside Linux CPU range.
-> I have second thoughts on this.
->
-> cpumask is indeed limited to NR_CPUS or in case of CPUMASK_ON_STACK
-> limited to nr_cpu_ids.
->
-> But, that's not an issue for that coprocessor case. Let's assume you
-> have 16 Linux CPUs and 4 coprocessors. So you set the number of
-> possible cpus (NR_CPUS) to 20. That makes the cpumask sizeof 20.
->
-> The boot-process sets the number of available cpus to 16. So the
-> Linux side will never try to access anything beyond cpu15.
->
-> But you can spare that extra mask magic and simply use cpumask. Sorry
-> that I did not think about that earlier.
->
+On 11/30/2015 11:22 AM, Thomas Gleixner wrote:
+> On Mon, 30 Nov 2015, Qais Yousef wrote:
+>> On 11/30/2015 10:40 AM, Thomas Gleixner wrote:
+>>> On Fri, 27 Nov 2015, Qais Yousef wrote:
+>>>> While trying to get my remoteproc driver work with this I uncovered a
+>>>> problem
+>>>> with this approach.
+>>>>
+>>>> mips-gic doesn't store the actual hwirq in the irq_data. It uses
+>>>> GIC_SHARED_TO_HWIRQ() and GIC_HWIRQ_TO_SHARED() to add and remove an
+>>>> offset.
+>>> Why can't MIPS store the real hwirq number in irq_data?
+>>
+>> I'm wary of ending up in inconsistency hell where some functions need to deal
+>> with raw hwirq and others with translated ones.
+>>
+>> I will give this a go first and see if it gets really ugly.
+> Well, the question is why can't those functions not all use the raw
+> hardware irq. We have it in irq_data exactly to avoid calculations in
+> the hot path functions.
 >
 
 
-Yes it would be much better to reuse it but wouldn't the runtime checks 
-against nr_cpu_ids create problems especially when CPUMASK_ON_STACK is 
-defined?
+I'll see what I can do as part of this series. I think I can fix the new 
+IPI and device domains, but can't promise about the root gic domain. It 
+might be too big of a change for this series.
 
 Thanks,
 Qais

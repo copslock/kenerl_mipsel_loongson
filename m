@@ -1,25 +1,25 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Nov 2015 17:27:46 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:34028 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Nov 2015 17:28:07 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:15464 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27008064AbbK3Q03WJFVe (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 30 Nov 2015 17:26:29 +0100
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Websense Email Security Gateway with ESMTPS id 469FCA22D8396;
-        Mon, 30 Nov 2015 16:26:21 +0000 (GMT)
+        with ESMTP id S27008074AbbK3Q0oHamre (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 30 Nov 2015 17:26:44 +0100
+Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
+        by Websense Email Security Gateway with ESMTPS id A06569E47182E;
+        Mon, 30 Nov 2015 16:26:35 +0000 (GMT)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- HHMAIL01.hh.imgtec.org (10.100.10.19) with Microsoft SMTP Server (TLS) id
- 14.3.235.1; Mon, 30 Nov 2015 16:26:23 +0000
+ hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
+ 14.3.235.1; Mon, 30 Nov 2015 16:26:38 +0000
 Received: from localhost (10.100.200.236) by LEMAIL01.le.imgtec.org
  (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Mon, 30 Nov
- 2015 16:26:23 +0000
+ 2015 16:26:37 +0000
 From:   Paul Burton <paul.burton@imgtec.com>
 To:     <linux-mips@linux-mips.org>
-CC:     Paul Burton <paul.burton@imgtec.com>,
-        Mark Brown <broonie@kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-spi@vger.kernel.org>
-Subject: [PATCH 17/28] spi: topcliff-pch: allow build for MIPS platforms
-Date:   Mon, 30 Nov 2015 16:21:42 +0000
-Message-ID: <1448900513-20856-18-git-send-email-paul.burton@imgtec.com>
+CC:     Paul Burton <paul.burton@imgtec.com>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>,
+        Richard Cochran <richardcochran@gmail.com>
+Subject: [PATCH 18/28] ptp: pch: allow build on MIPS platforms
+Date:   Mon, 30 Nov 2015 16:21:43 +0000
+Message-ID: <1448900513-20856-19-git-send-email-paul.burton@imgtec.com>
 X-Mailer: git-send-email 2.6.2
 In-Reply-To: <1448900513-20856-1-git-send-email-paul.burton@imgtec.com>
 References: <1448900513-20856-1-git-send-email-paul.burton@imgtec.com>
@@ -30,7 +30,7 @@ Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50198
+X-archive-position: 50199
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,27 +47,27 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Allow the topcliff-pch driver to be built for MIPS platforms, in
-preparation for use on the MIPS Boston board.
+Allow the ptp_pch driver to be built on MIPS platforms in preparation
+for use on the MIPS Boston board.
 
 Signed-off-by: Paul Burton <paul.burton@imgtec.com>
 ---
 
- drivers/spi/Kconfig | 2 +-
+ drivers/ptp/Kconfig | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index 8b9c2a3..7c78d52 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -585,7 +585,7 @@ config SPI_TEGRA20_SLINK
+diff --git a/drivers/ptp/Kconfig b/drivers/ptp/Kconfig
+index ee3de34..ee43549 100644
+--- a/drivers/ptp/Kconfig
++++ b/drivers/ptp/Kconfig
+@@ -74,7 +74,7 @@ config DP83640_PHY
  
- config SPI_TOPCLIFF_PCH
- 	tristate "Intel EG20T PCH/LAPIS Semicon IOH(ML7213/ML7223/ML7831) SPI"
--	depends on PCI && (X86_32 || COMPILE_TEST)
-+	depends on PCI && (X86_32 || MIPS || COMPILE_TEST)
+ config PTP_1588_CLOCK_PCH
+ 	tristate "Intel PCH EG20T as PTP clock"
+-	depends on X86_32 || COMPILE_TEST
++	depends on X86_32 || MIPS || COMPILE_TEST
+ 	depends on HAS_IOMEM && NET
+ 	select PTP_1588_CLOCK
  	help
- 	  SPI driver for the Topcliff PCH (Platform Controller Hub) SPI bus
- 	  used in some x86 embedded processors.
 -- 
 2.6.2

@@ -1,40 +1,92 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Nov 2015 16:41:06 +0100 (CET)
-Received: from sauhun.de ([89.238.76.85]:57256 "EHLO pokefinder.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27007213AbbK3PlE3GrtV (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 30 Nov 2015 16:41:04 +0100
-Received: from p4fe25b9b.dip0.t-ipconnect.de ([79.226.91.155]:49054 helo=katana)
-        by pokefinder.org with esmtpsa (TLS1.2:RSA_AES_128_CBC_SHA1:128)
-        (Exim 4.80)
-        (envelope-from <wsa@the-dreams.de>)
-        id 1a3QZb-0000sV-Ug; Mon, 30 Nov 2015 16:41:04 +0100
-Date:   Mon, 30 Nov 2015 16:41:02 +0100
-From:   Wolfram Sang <wsa@the-dreams.de>
-To:     Jaedon Shin <jaedon.shin@gmail.com>
-Cc:     Kamal Dasu <kdasu.kdev@gmail.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Nov 2015 17:22:22 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:2752 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27007943AbbK3QWUYklOV (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 30 Nov 2015 17:22:20 +0100
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Websense Email Security Gateway with ESMTPS id 6CE2E341C48C2;
+        Mon, 30 Nov 2015 16:22:10 +0000 (GMT)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ HHMAIL01.hh.imgtec.org (10.100.10.19) with Microsoft SMTP Server (TLS) id
+ 14.3.235.1; Mon, 30 Nov 2015 16:22:12 +0000
+Received: from localhost (10.100.200.236) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Mon, 30 Nov
+ 2015 16:22:12 +0000
+From:   Paul Burton <paul.burton@imgtec.com>
+To:     <linux-mips@linux-mips.org>
+CC:     Paul Burton <paul.burton@imgtec.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Joshua Kinard <kumba@gentoo.org>,
+        Alessandro Zummo <a.zummo@towertech.it>,
+        Jiri Slaby <jslaby@suse.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        "Zubair Lutfullah Kakakhel" <Zubair.Kakakhel@imgtec.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Kumar Gala <galak@codeaurora.org>,
+        Yijing Wang <wangyijing@huawei.com>,
+        Ian Campbell <ijc+devicetree@hellion.org.uk>,
+        "Rob Herring" <robh+dt@kernel.org>,
+        John Crispin <blogic@openwrt.org>,
+        "Jayachandran C" <jchandra@broadcom.com>,
+        <linux-spi@vger.kernel.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Ray Jui <rjui@broadcom.com>,
+        Richard Cochran <richardcochran@gmail.com>,
+        Tejun Heo <tj@kernel.org>,
+        Michal Simek <michal.simek@xilinx.com>,
+        Andrew Bresticker <abrestic@chromium.org>,
+        "Russell Joyce" <russell.joyce@york.ac.uk>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "Grant Likely" <grant.likely@linaro.org>,
+        Alexandre Belloni <alexandre.belloni@free-electrons.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        Pawel Moll <pawel.moll@arm.com>, <linux-pci@vger.kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Ralf Baechle <ralf@linux-mips.org>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-mips@linux-mips.org
-Subject: Re: [PATCH 5/9] i2c: brcmstb: fix start and stop conditions
-Message-ID: <20151130154102.GP1513@katana>
-References: <1445395021-4204-1-git-send-email-jaedon.shin@gmail.com>
- <1445395021-4204-6-git-send-email-jaedon.shin@gmail.com>
+        Alexandre Courbot <gnurou@gmail.com>,
+        Zhou Wang <wangzhou1@hisilicon.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Ley Foon Tan <lftan@altera.com>,
+        <devicetree@vger.kernel.org>,
+        Jiang Liu <jiang.liu@linux.intel.com>,
+        <linux-serial@vger.kernel.org>, <rtc-linux@googlegroups.com>,
+        Rob Herring <robh@kernel.org>,
+        Mauro Carvalho Chehab <mchehab@osg.samsung.com>,
+        "Wolfram Sang" <wsa@the-dreams.de>, Duc Dang <dhdang@apm.com>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Vinod Koul <vinod.koul@intel.com>,
+        Markos Chandras <markos.chandras@imgtec.com>,
+        Michal Simek <monstr@monstr.eu>,
+        Marc Zyngier <marc.zyngier@arm.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        "Miguel Ojeda Sandonis" <miguel.ojeda.sandonis@gmail.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        <linux-gpio@vger.kernel.org>, <netdev@vger.kernel.org>,
+        Mark Brown <broonie@kernel.org>,
+        <linux-kernel@vger.kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        "Joe Perches" <joe@perches.com>, Jingoo Han <jingoohan1@gmail.com>,
+        Hauke Mehrtens <hauke@hauke-m.de>,
+        =?UTF-8?q?S=C3=B6ren=20Brinkmann?= <soren.brinkmann@xilinx.com>,
+        <dmaengine@vger.kernel.org>, Mark Rutland <mark.rutland@arm.com>,
+        Minghuan Lian <Minghuan.Lian@freescale.com>,
+        <linux-i2c@vger.kernel.org>
+Subject: [PATCH 00/28] MIPS Boston board support
+Date:   Mon, 30 Nov 2015 16:21:25 +0000
+Message-ID: <1448900513-20856-1-git-send-email-paul.burton@imgtec.com>
+X-Mailer: git-send-email 2.6.2
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="kOdvwer/5gjFgNo6"
-Content-Disposition: inline
-In-Reply-To: <1445395021-4204-6-git-send-email-jaedon.shin@gmail.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <wsa@the-dreams.de>
+Content-Type: text/plain
+X-Originating-IP: [10.100.200.236]
+Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50180
+X-archive-position: 50181
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wsa@the-dreams.de
+X-original-sender: paul.burton@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,77 +99,111 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+This series introduces support for the Imagination Technologies MIPS
+Boston development board. Boston is an FPGA-based development board
+akin to the much older Malta board, built around a Xilinx FPGA running
+a MIPS CPU & other logic including a PCIe root port connected to an
+Intel EG20T Platform Controller Hub. This provides a base set of
+peripherals including SATA, USB, SD/MMC, ethernet, I2C & GPIOs. PCIe
+slots are also present for expansion.
 
---kOdvwer/5gjFgNo6
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Paul Burton (28):
+  serial: earlycon: allow MEM32 I/O for DT earlycon
+  dt-bindings: ascii-lcd: Document a binding for simple ASCII LCDs
+  auxdisplay: driver for simple memory mapped ASCII LCD displays
+  MIPS: PCI: compatibility with ARM-like PCI host drivers
+  PCI: xilinx: keep references to both IRQ domains
+  PCI: xilinx: unify INTx & MSI interrupt FIFO decode
+  PCI: xilinx: always clear interrupt decode register
+  PCI: xilinx: fix INTX irq dispatch
+  PCI: xilinx: allow build on MIPS platforms
+  misc: pch_phub: allow build on MIPS platforms
+  dmaengine: pch_dma: allow build on MIPS platforms
+  gpio: pch: allow build on MIPS platforms
+  gpio: pch: allow use from device tree
+  i2c: eg20t: allow build on MIPS platforms
+  i2c: eg20t: set i2c_adapter->dev.of_node
+  rtc: m41t80: add devicetree probe support
+  spi: topcliff-pch: allow build for MIPS platforms
+  ptp: pch: allow build on MIPS platforms
+  net: pch_gbe: allow build on MIPS platforms
+  net: pch_gbe: clear interrupt FIFO during probe
+  net: pch_gbe: mark Minnow PHY reset GPIO active low
+  net: pch_gbe: pull PHY GPIO handling out of Minnow code
+  net: pch_gbe: always reset PHY along with MAC
+  net: pch_gbe: add device tree support
+  net: pch_gbe: allow longer for resets
+  MIPS: support for generating FIT (.itb) images
+  dt-bindings: mips: img,boston: Document img,boston binding
+  MIPS: Boston board support
 
-On Wed, Oct 21, 2015 at 11:36:57AM +0900, Jaedon Shin wrote:
-> Fixes conditions for RESTART, NOSTART and NOSTOP. The masks of start and
-> stop is already in brcmstb_set_i2c_start_stop(). Therefore, the caller
-> does not need a mask value.
+ Documentation/devicetree/bindings/ascii-lcd.txt    |  10 +
+ .../devicetree/bindings/mips/img/boston.txt        |  15 ++
+ MAINTAINERS                                        |  14 ++
+ arch/mips/Kbuild.platforms                         |   1 +
+ arch/mips/Kconfig                                  |  45 ++++
+ arch/mips/Makefile                                 |   6 +-
+ arch/mips/boot/Makefile                            |  61 ++++++
+ arch/mips/boot/dts/Makefile                        |   1 +
+ arch/mips/boot/dts/img/Makefile                    |   7 +
+ arch/mips/boot/dts/img/boston.dts                  | 201 ++++++++++++++++++
+ arch/mips/boot/skeleton.its                        |  24 +++
+ arch/mips/boston/Makefile                          |  12 ++
+ arch/mips/boston/Platform                          |   8 +
+ arch/mips/boston/init.c                            |  75 +++++++
+ arch/mips/boston/int.c                             |  33 +++
+ arch/mips/boston/time.c                            |  89 ++++++++
+ arch/mips/boston/vmlinux.its                       |  23 ++
+ arch/mips/configs/boston_defconfig                 | 170 +++++++++++++++
+ .../asm/mach-boston/cpu-feature-overrides.h        |  26 +++
+ arch/mips/include/asm/mach-boston/irq.h            |  18 ++
+ arch/mips/include/asm/mach-boston/spaces.h         |  20 ++
+ arch/mips/include/asm/pci.h                        |  67 +++++-
+ arch/mips/lib/iomap-pci.c                          |   2 +-
+ arch/mips/pci/Makefile                             |   6 +
+ arch/mips/pci/pci-generic.c                        | 138 ++++++++++++
+ arch/mips/pci/pci-legacy.c                         | 232 +++++++++++++++++++++
+ arch/mips/pci/pci.c                                | 226 +-------------------
+ drivers/auxdisplay/Kconfig                         |   7 +
+ drivers/auxdisplay/Makefile                        |   1 +
+ drivers/auxdisplay/ascii-lcd.c                     | 230 ++++++++++++++++++++
+ drivers/dma/Kconfig                                |   2 +-
+ drivers/gpio/Kconfig                               |   2 +-
+ drivers/gpio/gpio-pch.c                            |   1 +
+ drivers/i2c/busses/Kconfig                         |   2 +-
+ drivers/i2c/busses/i2c-eg20t.c                     |   1 +
+ drivers/misc/Kconfig                               |   2 +-
+ drivers/net/ethernet/oki-semi/pch_gbe/Kconfig      |   2 +-
+ drivers/net/ethernet/oki-semi/pch_gbe/pch_gbe.h    |   4 +-
+ .../net/ethernet/oki-semi/pch_gbe/pch_gbe_main.c   |  74 +++++--
+ drivers/of/fdt.c                                   |   2 +-
+ drivers/pci/host/Kconfig                           |   2 +-
+ drivers/pci/host/pcie-xilinx.c                     | 123 +++++------
+ drivers/ptp/Kconfig                                |   2 +-
+ drivers/rtc/rtc-m41t80.c                           |  26 +++
+ drivers/spi/Kconfig                                |   2 +-
+ drivers/tty/serial/Makefile                        |   1 +
+ drivers/tty/serial/earlycon.c                      |  15 +-
+ include/linux/serial_core.h                        |   2 +-
+ 48 files changed, 1720 insertions(+), 313 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/ascii-lcd.txt
+ create mode 100644 Documentation/devicetree/bindings/mips/img/boston.txt
+ create mode 100644 arch/mips/boot/dts/img/Makefile
+ create mode 100644 arch/mips/boot/dts/img/boston.dts
+ create mode 100644 arch/mips/boot/skeleton.its
+ create mode 100644 arch/mips/boston/Makefile
+ create mode 100644 arch/mips/boston/Platform
+ create mode 100644 arch/mips/boston/init.c
+ create mode 100644 arch/mips/boston/int.c
+ create mode 100644 arch/mips/boston/time.c
+ create mode 100644 arch/mips/boston/vmlinux.its
+ create mode 100644 arch/mips/configs/boston_defconfig
+ create mode 100644 arch/mips/include/asm/mach-boston/cpu-feature-overrides.h
+ create mode 100644 arch/mips/include/asm/mach-boston/irq.h
+ create mode 100644 arch/mips/include/asm/mach-boston/spaces.h
+ create mode 100644 arch/mips/pci/pci-generic.c
+ create mode 100644 arch/mips/pci/pci-legacy.c
+ create mode 100644 drivers/auxdisplay/ascii-lcd.c
 
-Hmm, and what if that changes for some reason in the future (driver
-refactoring)? I'd rather leave it as it is; it is a micro-optimization
-after all.
-
->=20
-> Signed-off-by: Jaedon Shin <jaedon.shin@gmail.com>
-> ---
->  drivers/i2c/busses/i2c-brcmstb.c | 5 ++---
->  1 file changed, 2 insertions(+), 3 deletions(-)
->=20
-> diff --git a/drivers/i2c/busses/i2c-brcmstb.c b/drivers/i2c/busses/i2c-br=
-cmstb.c
-> index 53eb8b0c9bad..dcd1209f843f 100644
-> --- a/drivers/i2c/busses/i2c-brcmstb.c
-> +++ b/drivers/i2c/busses/i2c-brcmstb.c
-> @@ -464,7 +464,7 @@ static int brcmstb_i2c_xfer(struct i2c_adapter *adapt=
-er,
->  			pmsg->buf ? pmsg->buf[0] : '0', pmsg->len);
-> =20
->  		if (i < (num - 1) && (msgs[i + 1].flags & I2C_M_NOSTART))
-> -			brcmstb_set_i2c_start_stop(dev, ~(COND_START_STOP));
-> +			brcmstb_set_i2c_start_stop(dev, 0);
->  		else
->  			brcmstb_set_i2c_start_stop(dev,
->  						   COND_RESTART | COND_NOSTOP);
-> @@ -485,8 +485,7 @@ static int brcmstb_i2c_xfer(struct i2c_adapter *adapt=
-er,
->  			bytes_to_xfer =3D min(len, N_DATA_BYTES);
-> =20
->  			if (len <=3D N_DATA_BYTES && i =3D=3D (num - 1))
-> -				brcmstb_set_i2c_start_stop(dev,
-> -							   ~(COND_START_STOP));
-> +				brcmstb_set_i2c_start_stop(dev, 0);
-> =20
->  			rc =3D brcmstb_i2c_xfer_bsc_data(dev, tmp_buf,
->  						       bytes_to_xfer, pmsg);
-> --=20
-> 2.6.1
->=20
-
---kOdvwer/5gjFgNo6
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
-
-iQIcBAEBAgAGBQJWXG4OAAoJEBQN5MwUoCm2SfgQAII/cyivEot2YOJJU16DofUH
-XxMJJxgPB7SY9SVaQhdjiHiaMBqvdLKq/h6sFXdVfuAvij+BE1eY5sSR8djGs2Bc
-eDj7sXFTSN1kZQ/1+WiC0TMwSNrGH9yEYIGwZl5n7SYm5oYWjRgZ9kIucMGVl7cI
-KqVQv6DLvRNgeOePb9S4Bzw8QZQqI9cDDH4oLBMFhqhaYAATxY4B/UX7tg068uUL
-sUBKZrZq1Gs0/vEBhDPpFTvJFZFNN3bbHEm10W0qolmBhxR+0paYA+/yy8tF2MBi
-zkmsUNEEG+Yj5m4PyzOwjhXMD88BGKZ3VVVfV6nruKhMR1Rg0Mpelf6L1K/2Dr1S
-90wmTa5594VVOwH7CQBV0FcSBW6AN6zuxzUNqIcgqGBFRsGIYTM39UKyKNWAvk73
-AhWlX5FQ/8CiYdiRcu6Jj9+wUkOJokKPVd/Dbhf7eDI3+jt3nDzLetG2fyb4O46D
-LiBjFxNObUlqJxZji2wGXwjIaFv8q/pnelLvzLL9DAzSkRy9tZc62UZHfSanwd24
-E2jUlJSojiMnEW4RXF5kVnQVyRK2xw8t0LvGPDz5OdnqSj0snxePG+JdLgiK3sKj
-x7JFlzoj6fEjBqgsgG3VitPRufy4zhs9LH3Y5Dsvcl+uWdPladwmWfSsOfJ7FAq0
-wuOwtt2EEmuJ8ydB3Biq
-=rvMD
------END PGP SIGNATURE-----
-
---kOdvwer/5gjFgNo6--
+-- 
+2.6.2

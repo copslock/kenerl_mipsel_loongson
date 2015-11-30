@@ -1,26 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Nov 2015 23:08:47 +0100 (CET)
-Received: from mail-pa0-f68.google.com ([209.85.220.68]:33314 "EHLO
-        mail-pa0-f68.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008060AbbK3WGeEExyY (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 30 Nov 2015 23:06:34 +0100
-Received: by pagj16 with SMTP id j16so26828404pag.0
-        for <linux-mips@linux-mips.org>; Mon, 30 Nov 2015 14:06:28 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Nov 2015 23:09:04 +0100 (CET)
+Received: from mail-pa0-f66.google.com ([209.85.220.66]:35041 "EHLO
+        mail-pa0-f66.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27009681AbbK3WGf4pOBY (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 30 Nov 2015 23:06:35 +0100
+Received: by padhk6 with SMTP id hk6so26757109pad.2
+        for <linux-mips@linux-mips.org>; Mon, 30 Nov 2015 14:06:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=HaeSywdGb/y7/AJeheiCF5TJwClDXhxly1fU4bqLtSU=;
-        b=yrtNPeWMCRQ1fc1bZLAmeR31d+dgYqAqqV+VWczEUQT2B2BpIkboiUC+Ulrwxem1mh
-         3uWsnA79jGpbCaZ2X4kNxX6JO8nTAk4+Ii8Qo7SSFYiWo3KETDoiNIrdmaUPhwbNmpHI
-         JaYVqjLGiE0ZooMT+7vzbnMbr63lsku6gYXmrX7Kq/xczRYrWKW9yxOGAJm5xQo6vH3Y
-         FbjFf5O0BRqnUmrkcFpH5nW6SfD5TmvrnuPMAAUP+Lq27crL3h0fU7pj/1FW7pmqoUzU
-         d3Rl2MM6CRyeegV45c8NtmnuWj5vaFsmh30mG8kLz/KnEhpShJVBFaXqrDBChdIb8ryS
-         719w==
-X-Received: by 10.98.87.16 with SMTP id l16mr73832250pfb.80.1448921188017;
-        Mon, 30 Nov 2015 14:06:28 -0800 (PST)
+        bh=3MrQkdrWG404sli28QxMn7ROu3hLO7dsAGv0ih1BHuM=;
+        b=NBq/gQnFhOOAWMUCiicY0IWc+aErvsTL4xlKq8OAVUQ217IVzx4CUhOYK8E7TcOWTI
+         3hHjZwxvK7o/nThTGwv1ShC8Mb9ZRQC686CRaNhN6dMtpcFgv4YoTa6hPSBSa5iMvbmN
+         zVYnBPRUtxxOiiDqrSBxBBSTUtlV+DL+yqNbkJ9+svB1UU6ESLm6dvH/WRzA9pzFZIm8
+         SV38jSApJlkeBhY65l7IPp+XzL5u7/ax8tSLwplobV6H0cD49RNSuerkRVCJgStAazlt
+         MRIOdRl8Bd/D6xW+2Vx4OdUZJGrpUMAi+e5gbPdRxWlBslTpbJzp7p/zsFzbQ13vMber
+         agGg==
+X-Received: by 10.66.216.7 with SMTP id om7mr93802021pac.90.1448921190220;
+        Mon, 30 Nov 2015 14:06:30 -0800 (PST)
 Received: from decotigny.mtv.corp.google.com ([172.18.64.159])
-        by smtp.gmail.com with ESMTPSA id p6sm53253789pfi.20.2015.11.30.14.06.26
+        by smtp.gmail.com with ESMTPSA id p6sm53253789pfi.20.2015.11.30.14.06.29
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Mon, 30 Nov 2015 14:06:27 -0800 (PST)
+        Mon, 30 Nov 2015 14:06:29 -0800 (PST)
 From:   David Decotigny <ddecotig@gmail.com>
 To:     "David S. Miller" <davem@davemloft.net>,
         Ben Hutchings <ben@decadent.org.uk>,
@@ -42,9 +42,9 @@ Cc:     Eric Dumazet <edumazet@google.com>,
         "James E.J. Bottomley" <JBottomley@parallels.com>,
         Yuval Mintz <Yuval.Mintz@qlogic.com>,
         David Decotigny <decot@googlers.com>
-Subject: [PATCH net-next v3 07/17] net: ipvlan: use __ethtool_get_ksettings
-Date:   Mon, 30 Nov 2015 14:05:45 -0800
-Message-Id: <1448921155-24764-8-git-send-email-ddecotig@gmail.com>
+Subject: [PATCH net-next v3 09/17] net: team: use __ethtool_get_ksettings
+Date:   Mon, 30 Nov 2015 14:05:47 -0800
+Message-Id: <1448921155-24764-10-git-send-email-ddecotig@gmail.com>
 X-Mailer: git-send-email 2.6.0.rc2.230.g3dd15c0
 In-Reply-To: <1448921155-24764-1-git-send-email-ddecotig@gmail.com>
 References: <1448921155-24764-1-git-send-email-ddecotig@gmail.com>
@@ -52,7 +52,7 @@ Return-Path: <ddecotig@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50230
+X-archive-position: 50231
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -73,37 +73,29 @@ From: David Decotigny <decot@googlers.com>
 
 Signed-off-by: David Decotigny <decot@googlers.com>
 ---
- drivers/net/ipvlan/ipvlan_main.c | 8 ++++----
+ drivers/net/team/team.c | 8 ++++----
  1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ipvlan/ipvlan_main.c b/drivers/net/ipvlan/ipvlan_main.c
-index a9268db..63b3aa5 100644
---- a/drivers/net/ipvlan/ipvlan_main.c
-+++ b/drivers/net/ipvlan/ipvlan_main.c
-@@ -346,12 +346,12 @@ static const struct header_ops ipvlan_header_ops = {
- 	.cache_update	= eth_header_cache_update,
- };
+diff --git a/drivers/net/team/team.c b/drivers/net/team/team.c
+index 651d35e..288ca01 100644
+--- a/drivers/net/team/team.c
++++ b/drivers/net/team/team.c
+@@ -2776,12 +2776,12 @@ static void __team_port_change_send(struct team_port *port, bool linkup)
+ 	port->state.linkup = linkup;
+ 	team_refresh_port_linkup(port);
+ 	if (linkup) {
+-		struct ethtool_cmd ecmd;
++		struct ethtool_ksettings ecmd;
  
--static int ipvlan_ethtool_get_settings(struct net_device *dev,
--				       struct ethtool_cmd *cmd)
-+static int ipvlan_ethtool_get_ksettings(struct net_device *dev,
-+					struct ethtool_ksettings *cmd)
- {
- 	const struct ipvl_dev *ipvlan = netdev_priv(dev);
- 
--	return __ethtool_get_settings(ipvlan->phy_dev, cmd);
-+	return __ethtool_get_ksettings(ipvlan->phy_dev, cmd);
- }
- 
- static void ipvlan_ethtool_get_drvinfo(struct net_device *dev,
-@@ -377,7 +377,7 @@ static void ipvlan_ethtool_set_msglevel(struct net_device *dev, u32 value)
- 
- static const struct ethtool_ops ipvlan_ethtool_ops = {
- 	.get_link	= ethtool_op_get_link,
--	.get_settings	= ipvlan_ethtool_get_settings,
-+	.get_ksettings	= ipvlan_ethtool_get_ksettings,
- 	.get_drvinfo	= ipvlan_ethtool_get_drvinfo,
- 	.get_msglevel	= ipvlan_ethtool_get_msglevel,
- 	.set_msglevel	= ipvlan_ethtool_set_msglevel,
+-		err = __ethtool_get_settings(port->dev, &ecmd);
++		err = __ethtool_get_ksettings(port->dev, &ecmd);
+ 		if (!err) {
+-			port->state.speed = ethtool_cmd_speed(&ecmd);
+-			port->state.duplex = ecmd.duplex;
++			port->state.speed = ecmd.parent.speed;
++			port->state.duplex = ecmd.parent.duplex;
+ 			goto send_event;
+ 		}
+ 	}
 -- 
 2.6.0.rc2.230.g3dd15c0

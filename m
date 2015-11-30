@@ -1,67 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Nov 2015 13:21:41 +0100 (CET)
-Received: from mail-oi0-f47.google.com ([209.85.218.47]:33655 "EHLO
-        mail-oi0-f47.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007949AbbK3MVjfKPXP (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 30 Nov 2015 13:21:39 +0100
-Received: by oixx65 with SMTP id x65so93582372oix.0
-        for <linux-mips@linux-mips.org>; Mon, 30 Nov 2015 04:21:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro-org.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        bh=p2MwtY7xTQCuZxnM/gziElGbMnqG4NBE186kivjoNKE=;
-        b=KUpnbA+bl1gDIPyfVWsXdqKD/kK5pK1WY/dSAHttva+C2dRT8aaP+t8Wr2rxKbs4+v
-         iVpd+4vhibJSVjSHrX/p5mr/nocVdbRpF4zdCnvJntFS3tHGdFxpFIMeABLpr++ERt78
-         NEGobFNMwObojp5jbRP1zoFUvAnVlvzdE5JyJTIzKEf0OeBp4eOnoRo65wxKw2emwO/a
-         yqEO3CSr3iY0P1xhEVM+zvy+duzld58nB02/WL0GjD2ixHWtRQgnWyubl7t6DOKyNd37
-         oVgO7hXE436yY3vZvCQCbJEVbW/cMs3bGRwavVxseI0eXjiuxWhwqV/t88jKKJ0wWTMA
-         dt7w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:in-reply-to:references:date
-         :message-id:subject:from:to:cc:content-type;
-        bh=p2MwtY7xTQCuZxnM/gziElGbMnqG4NBE186kivjoNKE=;
-        b=NhXZ9iBPsXZvWVAYNWSIrCKDVIvPm6wVX56XoLDKDig3R1OoYAfKgSIDtgRG8Jf9Tc
-         S90AgQD+R4vPUqkQSDLSflpQKeaKMA4WSQnZzmF1Dtlm5jWgs6cFVZ477ea8qV06ThWg
-         rsqal4H6uBs6fpauWgWolItOgNRYc/XU6J833faopzF32tyj5vnWRbEo8vbl2sJD9tCM
-         J2uEMDAGOEYgCe/GEmf4h2vjlOk3VmgydEtye1Osl4BNKSGWw08Mu4n11I8cc+i+bstE
-         GxS21BAsTDCOCIjKyL1XrIxgcfxUPw9C9GrpLzKALORehVygtHS4OAh9a22eZEsbtJQ9
-         Eplw==
-X-Gm-Message-State: ALoCoQkCJzrSKoc/1TfeoknAYqIiEu25Dnd8H/hoIGeoFvVdjWFzkHwuae9yqm/M7Av2mRm69azO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Nov 2015 14:11:55 +0100 (CET)
+Received: from www.linutronix.de ([62.245.132.108]:52551 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27006999AbbK3NLxkCEOQ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 30 Nov 2015 14:11:53 +0100
+Received: from localhost ([127.0.0.1])
+        by Galois.linutronix.de with esmtps (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:256)
+        (Exim 4.80)
+        (envelope-from <tglx@linutronix.de>)
+        id 1a3OF9-0004Uv-8O; Mon, 30 Nov 2015 14:11:47 +0100
+Date:   Mon, 30 Nov 2015 14:11:03 +0100 (CET)
+From:   Thomas Gleixner <tglx@linutronix.de>
+To:     Qais Yousef <qais.yousef@imgtec.com>
+cc:     linux-kernel@vger.kernel.org, jason@lakedaemon.net,
+        marc.zyngier@arm.com, jiang.liu@linux.intel.com,
+        ralf@linux-mips.org, linux-mips@linux-mips.org
+Subject: Re: [PATCH v2 04/19] genirq: Add new struct ipi_mask and helper
+ functions
+In-Reply-To: <565C3771.7040202@imgtec.com>
+Message-ID: <alpine.DEB.2.11.1511301410280.3572@nanos>
+References: <1448453217-3874-1-git-send-email-qais.yousef@imgtec.com> <1448453217-3874-5-git-send-email-qais.yousef@imgtec.com> <alpine.DEB.2.11.1511301158100.3572@nanos> <565C3771.7040202@imgtec.com>
+User-Agent: Alpine 2.11 (DEB 23 2013-08-11)
 MIME-Version: 1.0
-X-Received: by 10.202.98.86 with SMTP id w83mr41259054oib.135.1448886093640;
- Mon, 30 Nov 2015 04:21:33 -0800 (PST)
-Received: by 10.182.32.70 with HTTP; Mon, 30 Nov 2015 04:21:33 -0800 (PST)
-In-Reply-To: <1448532010-30930-5-git-send-email-mschiller@tdt.de>
-References: <1448532010-30930-1-git-send-email-mschiller@tdt.de>
-        <1448532010-30930-5-git-send-email-mschiller@tdt.de>
-Date:   Mon, 30 Nov 2015 13:21:33 +0100
-Message-ID: <CACRpkdaeCR+h+3qLkJXuhwfSCffgbn-nzdKasVxQAKETbk6s5A@mail.gmail.com>
-Subject: Re: [PATCH v3 5/5] pinctrl/lantiq: Implement gpio_chip.to_irq
-From:   Linus Walleij <linus.walleij@linaro.org>
-To:     Martin Schiller <mschiller@tdt.de>
-Cc:     "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        Linux MIPS <linux-mips@linux-mips.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        =?UTF-8?Q?Pawe=C5=82_Moll?= <pawel.moll@arm.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        "ijc+devicetree@hellion.org.uk" <ijc+devicetree@hellion.org.uk>,
-        Kumar Gala <galak@codeaurora.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        John Crispin <blogic@openwrt.org>,
-        Hauke Mehrtens <hauke@hauke-m.de>,
-        Jonas Gorski <jogo@openwrt.org>, daniel.schwierzeck@gmail.com
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <linus.walleij@linaro.org>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Linutronix-Spam-Score: -1.0
+X-Linutronix-Spam-Level: -
+X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+Return-Path: <tglx@linutronix.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50172
+X-archive-position: 50173
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linus.walleij@linaro.org
+X-original-sender: tglx@linutronix.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -74,43 +46,36 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Nov 26, 2015 at 11:00 AM, Martin Schiller <mschiller@tdt.de> wrote:
+On Mon, 30 Nov 2015, Qais Yousef wrote:
+> On 11/30/2015 11:20 AM, Thomas Gleixner wrote:
+> > On Wed, 25 Nov 2015, Qais Yousef wrote:
+> > > cpumask is limited to NR_CPUS. Introduce ipi_mask which allows us to
+> > > address
+> > > cpu range that is higher than NR_CPUS which is required for drivers to
+> > > send
+> > > IPIs for coprocessor that are outside Linux CPU range.
+> > I have second thoughts on this.
+> > 
+> > cpumask is indeed limited to NR_CPUS or in case of CPUMASK_ON_STACK
+> > limited to nr_cpu_ids.
+> > 
+> > But, that's not an issue for that coprocessor case. Let's assume you
+> > have 16 Linux CPUs and 4 coprocessors. So you set the number of
+> > possible cpus (NR_CPUS) to 20. That makes the cpumask sizeof 20.
+> > 
+> > The boot-process sets the number of available cpus to 16. So the
+> > Linux side will never try to access anything beyond cpu15.
+> > 
+> > But you can spare that extra mask magic and simply use cpumask. Sorry
+> > that I did not think about that earlier.
+> > 
+> > 
+> Yes it would be much better to reuse it but wouldn't the runtime checks
+> against nr_cpu_ids create problems especially when CPUMASK_ON_STACK is
+> defined?
 
-Please write a commit message.
+nr_cpu_ids == find_last_bit(cpumask_bits(cpu_possible_mask),NR_CPUS) + 1;
 
-> From: John Crispin <blogic@openwrt.org>
->
-> Signed-off-by: John Crispin <blogic@openwrt.org>
-> Signed-off-by: Martin Schiller <mschiller@tdt.de>
-> ---
-> Changes in v3:
-> - Moved this change into a separate patch
+Thanks,
 
-(...)
-> +static int xway_gpio_to_irq(struct gpio_chip *chip, unsigned offset)
-> +{
-> +       struct ltq_pinmux_info *info = dev_get_drvdata(chip->dev);
-> +       int i;
-> +
-> +       for (i = 0; i < info->num_exin; i++)
-> +               if (info->exin[i] == offset)
-> +                       return ltq_eiu_get_irq(i);
-> +
-> +       return -1;
-> +}
-> +
-(...)
-> +       .to_irq = xway_gpio_to_irq,
-
-Can you explain this a bit, and add a comment in the code as to
-what is going on?
-
-I take it that the Lantiq has a dedicated IRQ line for some of the
-GPIO lines, referred to as external interrupts, and then you just
-go in and grab that frm the external interrupt unit like this?
-
-Looks OK, just send an updated patch with some more
-explanations.
-
-Yours,
-Linus Walleij
+	tglx

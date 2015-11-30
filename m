@@ -1,50 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Nov 2015 19:57:53 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.136]:38455 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Nov 2015 21:53:18 +0100 (CET)
+Received: from proxima.lp0.eu ([81.2.80.65]:56855 "EHLO proxima.lp0.eu"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27006508AbbK3S5vHMpiE (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 30 Nov 2015 19:57:51 +0100
-Received: from mail.kernel.org (localhost [127.0.0.1])
-        by mail.kernel.org (Postfix) with ESMTP id 711A820591;
-        Mon, 30 Nov 2015 18:57:46 +0000 (UTC)
-Received: from rob-hp-laptop (72-48-98-129.dyn.grandenetworks.net [72.48.98.129])
-        (using TLSv1.2 with cipher AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 7E1AE2058A;
-        Mon, 30 Nov 2015 18:57:44 +0000 (UTC)
-Date:   Mon, 30 Nov 2015 12:57:42 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Paul Burton <paul.burton@imgtec.com>
-Cc:     linux-mips@linux-mips.org, Tejun Heo <tj@kernel.org>,
-        Joe Perches <joe@perches.com>, Jiri Slaby <jslaby@suse.com>,
-        Mauro Carvalho Chehab <mchehab@osg.samsung.com>,
-        linux-kernel@vger.kernel.org, Kumar Gala <galak@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Ian Campbell <ijc+devicetree@hellion.org.uk>,
-        devicetree@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
+        id S27008007AbbK3UxQDZVGw (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 30 Nov 2015 21:53:16 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=fire.lp0.eu; s=exim;
+        h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:Message-ID:Subject:Cc:From:To; bh=XYGh0iqmvnRY37wTmw0xTFIdBg5NALX4Pf4BBeUMEX8=;
+        b=XzvNgxdZ7x+ydivpt+5ngOberwrb7nbUCYBnmqZBlPd46YnGT5TM+eP1LXv3CnIIRYMgwKTGQ9KQQvkl9jYrgXtysY+MHaz5m3mBmmpo3OXqa+s42SM8UQdGqo/lJroUlCdshk41ddlUaRiaZsQeYfS8Bm9oMdR3xbWvrVlWtR8/1e0kYnJx9uQAgRsEXtT0ZcrS8c5s/gsB09WgrHkuRaysnaLPbq6564aig26qrPHXdhvt5IG8fIoHIIvZ+1G4rvj3eox1JqFbFvbX9UoHvKegQpPW0Id046K/WLMd5470izTU0oIzAAdxDgj26LurhNv00VW8xPGa/+y3m8mN/Q==;
+Received: from redrum.lp0.eu ([2001:8b0:ffea:0:2e0:81ff:fe4d:2bec]:43478 ident=simon)
+        by proxima.lp0.eu ([2001:8b0:ffea:0:205:b4ff:fe12:530]:465)
+        with esmtpsav (UNKNOWN:DHE-RSA-AES256-SHA:256/CN=Simon Arlott)
+        id 1a3VRR-0001pJ-Nq (Exim); Mon, 30 Nov 2015 20:53:01 +0000
+To:     Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@codeaurora.org>,
+        Kevin Cernekee <cernekee@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+From:   Simon Arlott <simon@fire.lp0.eu>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-clk@vger.kernel.org, linux-mips@linux-mips.org,
+        Rob Herring <robh+dt@kernel.org>,
         Pawel Moll <pawel.moll@arm.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Mark Rutland <mark.rutland@arm.com>
-Subject: Re: [PATCH 02/28] dt-bindings: ascii-lcd: Document a binding for
- simple ASCII LCDs
-Message-ID: <20151130185742.GA28127@rob-hp-laptop>
-References: <1448900513-20856-1-git-send-email-paul.burton@imgtec.com>
- <1448900513-20856-3-git-send-email-paul.burton@imgtec.com>
+        Mark Rutland <mark.rutland@arm.com>,
+        Ian Campbell <ijc+devicetree@hellion.org.uk>,
+        Kumar Gala <galak@codeaurora.org>
+Subject: [PATCH 1/2] clk: Add brcm,bcm63xx-gate-clk device tree binding
+Message-ID: <565CB727.7030209@simon.arlott.org.uk>
+Date:   Mon, 30 Nov 2015 20:52:55 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+ Thunderbird/38.3.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1448900513-20856-3-git-send-email-paul.burton@imgtec.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-X-Virus-Scanned: ClamAV using ClamSMTP
-Return-Path: <robh@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Return-Path: <simon@fire.lp0.eu>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50214
+X-archive-position: 50215
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: robh@kernel.org
+X-original-sender: simon@fire.lp0.eu
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -57,61 +52,85 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Nov 30, 2015 at 04:21:27PM +0000, Paul Burton wrote:
-> Add documentation for a devicetree binding for simple memory-mapped
-> ASCII LCD displays, such as those found on the Imagination Technologies
-> Boston & Malta development boards.
-> 
-> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-> ---
-> 
->  Documentation/devicetree/bindings/ascii-lcd.txt | 10 ++++++++++
+Add device tree binding for the BCM63xx's gated clocks.
 
-This should go under bindings/display/.
+The BCM63xx contains clocks gated with a register. Clocks are indexed
+by bits in the register and are active high. Clock gate bits are
+interleaved with other status bits and configurable clocks in the same
+register.
 
->  MAINTAINERS                                     |  5 +++++
->  2 files changed, 15 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/ascii-lcd.txt
-> 
-> diff --git a/Documentation/devicetree/bindings/ascii-lcd.txt b/Documentation/devicetree/bindings/ascii-lcd.txt
-> new file mode 100644
-> index 0000000..40ae536
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/ascii-lcd.txt
-> @@ -0,0 +1,10 @@
-> +Binding for simple memory-mapped ASCII LCD displays
+Signed-off-by: Simon Arlott <simon@fire.lp0.eu>
+---
+ .../bindings/clock/brcm,bcm63xx-gate-clk.txt       | 58 ++++++++++++++++++++++
+ 1 file changed, 58 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/clock/brcm,bcm63xx-gate-clk.txt
 
-Presumably, this is a binding for the controller, not the actual 
-display. You need to more fully describe what the h/w looks like here. 
-Like what is the interface between the controller and display?
+diff --git a/Documentation/devicetree/bindings/clock/brcm,bcm63xx-gate-clk.txt b/Documentation/devicetree/bindings/clock/brcm,bcm63xx-gate-clk.txt
+new file mode 100644
+index 0000000..3f4ead1
+--- /dev/null
++++ b/Documentation/devicetree/bindings/clock/brcm,bcm63xx-gate-clk.txt
+@@ -0,0 +1,58 @@
++Broadcom BCM63xx clocks
++
++This binding uses the common clock binding:
++	Documentation/devicetree/bindings/clock/clock-bindings.txt
++
++The BCM63xx contains clocks gated with a register. Clocks are indexed
++by bits in the register and are active high. Clock gate bits are
++interleaved with other status bits and configurable clocks in the same
++register.
++
++Required properties:
++- compatible:	Should be "brcm,bcm<soc>-gate-clk", "brcm,bcm63xx-gate-clk"
++- #clock-cells:	Should be <1>.
++- regmap:	The register map phandle
++- offset:	Offset in the register map for the reboot register (in bytes)
++- clocks:	The external oscillator clock phandle
++
++Example:
++
++periph_clk: periph_clk {
++	compatible = "brcm,bcm63168-gate-clk", "brcm,bcm63xx-gate-clk";
++	regmap = <&periph_cntl>;
++	offset = <0x4>;
++
++	#clock-cells = <1>;
++	clock-indices =
++		<1>,          <2>,        <3>,       <4>,     <5>,
++		<6>,          <7>,        <8>,       <9>,     <10>,
++		<11>,         <12>,       <13>,      <14>,    <15>,
++		<16>,         <17>,       <18>,      <19>,    <20>,
++		<27>,         <31>;
++	clock-output-names =
++		"vdsl_qproc", "vdsl_afe", "vdsl",    "mips",  "wlan_ocp",
++		"dect",       "fap0",     "fap1",    "sar",   "robosw",
++		"pcm",        "usbd",     "usbh",    "ipsec", "spi",
++		"hsspi",      "pcie",     "phymips", "gmac",  "nand",
++		"tbus",       "robosw250";
++};
++
++timer_clk: timer_clk {
++	compatible = "brcm,bcm63168-gate-clk", "brcm,bcm63xx-gate-clk";
++	regmap = <&timer_cntl>;
++	offset = <0x4>;
++
++	#clock-cells = <1>;
++	clock-indices = <17>, <18>;
++	clock-output-names = "uto_extin", "usb_ref";
++};
++
++ehci0: usb@10002500 {
++	compatible = "brcm,bcm63168-ehci", "brcm,bcm63xx-ehci", "generic-ehci";
++	reg = <0x10002500 0x100>;
++	big-endian;
++	interrupt-parent = <&periph_intc>;
++	interrupts = <10>;
++	clocks = <&periph_clk 13>, <&timer_clk 18>;
++	phys = <&usbh>;
++};
+-- 
+2.1.4
 
-Rob
-
-> +
-> +Required properties:
-> +- compatible : should be one of:
-> +    "img,boston-lcd"
-> +    "mti,malta-lcd"
-> +- reg : memory region locating the device registers
-> +
-> +The layout of the registers & properties of the display are determined
-> +from the compatible string, making this binding somewhat trivial.
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index cba790b..1e2b74b 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -1782,6 +1782,11 @@ S:	Maintained
->  F:	Documentation/hwmon/asc7621
->  F:	drivers/hwmon/asc7621.c
->  
-> +ASCII LCD DRIVER
-> +M:	Paul Burton <paul.burton@imgtec.com>
-> +S:	Maintained
-> +F:	Documentation/devicetree/bindings/ascii-lcd.txt
-> +
->  ASUS NOTEBOOKS AND EEEPC ACPI/WMI EXTRAS DRIVERS
->  M:	Corentin Chary <corentin.chary@gmail.com>
->  L:	acpi4asus-user@lists.sourceforge.net
-> -- 
-> 2.6.2
-> 
+-- 
+Simon Arlott

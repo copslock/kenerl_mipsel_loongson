@@ -1,26 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Nov 2015 23:07:35 +0100 (CET)
-Received: from mail-pa0-f66.google.com ([209.85.220.66]:36164 "EHLO
-        mail-pa0-f66.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008528AbbK3WGaUOj9Y (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 30 Nov 2015 23:06:30 +0100
-Received: by pabfh17 with SMTP id fh17so26930984pab.3
-        for <linux-mips@linux-mips.org>; Mon, 30 Nov 2015 14:06:24 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Nov 2015 23:07:52 +0100 (CET)
+Received: from mail-pa0-f65.google.com ([209.85.220.65]:34992 "EHLO
+        mail-pa0-f65.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008095AbbK3WGb2-YkY (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 30 Nov 2015 23:06:31 +0100
+Received: by padhk6 with SMTP id hk6so26756844pad.2
+        for <linux-mips@linux-mips.org>; Mon, 30 Nov 2015 14:06:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=kpuIPKrTmxuCRGYw4eE6brz+5JDaSOc4Q0HuIuhp7OQ=;
-        b=hoZePTgL2vJmou4EHirdLFrfB4fnAGgQWml3HLLTSHaeR7apbTVgNMvQJkMyOl9F+7
-         4HRicahGiq64uvOQiUUkDUR2MNZArxPY78fcDryQnAmrWm+ZcG8DlmICFa2M9GIZ6Kf1
-         /P0ZVMrH7LFHHm1suod3d1HbxMOdSHzLg6YcuQXv1M7uyhT6Bh1qHcBws0WAxPnoRsYg
-         CV2YXWHINLO8bhAIL/7cpNkFztd8I2yh3SYxYEkDI46LwMiB4Mqcmtx2cN/YDBK3r1WM
-         inXFc3lioZMKuTGChQ+s++ItKjo8vjPhBP0sjbWfqWmgP5/BT2ToQGuS1xADYC514GWT
-         hLqg==
-X-Received: by 10.66.234.226 with SMTP id uh2mr75522432pac.6.1448921184639;
-        Mon, 30 Nov 2015 14:06:24 -0800 (PST)
+        bh=SLZu4wDfPCMLSD0EjTqF5vtk0jmXRpgPD/TdddjYjZI=;
+        b=PXrFQyJ3typSnWKHwM8ExDHiMPlg2FITS3xzXjCVnXyFd0lr1ZATtbrGjrnZUhuL+c
+         GR+PdPa5+EwliO4iZ4bqurRkh85QhCqVJ6XDWuPi3IWggIfsVwYJaChPIdWvY0Ayzmvz
+         xl0UEdk4Mgb8nX3+jM41FahjylW59RdYBpbFMgSrH+jcgf+A6M3FX/xAbqo3axTPAbq2
+         sKHkY7z6mVUWxV86ZAGxT3txWpu9XIVnRzNCpz80l+FiHgmPjfdyIRkLpkloLgdYgwtN
+         UKLpI2jJSA9pGUev9kUQWIqkekUTUHMALnj0954hF4dfLBCr2p+R124AWJ5xaBVpK2wI
+         VBgQ==
+X-Received: by 10.66.228.225 with SMTP id sl1mr54304874pac.63.1448921185741;
+        Mon, 30 Nov 2015 14:06:25 -0800 (PST)
 Received: from decotigny.mtv.corp.google.com ([172.18.64.159])
-        by smtp.gmail.com with ESMTPSA id p6sm53253789pfi.20.2015.11.30.14.06.23
+        by smtp.gmail.com with ESMTPSA id p6sm53253789pfi.20.2015.11.30.14.06.24
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Mon, 30 Nov 2015 14:06:24 -0800 (PST)
+        Mon, 30 Nov 2015 14:06:25 -0800 (PST)
 From:   David Decotigny <ddecotig@gmail.com>
 To:     "David S. Miller" <davem@davemloft.net>,
         Ben Hutchings <ben@decadent.org.uk>,
@@ -42,9 +42,9 @@ Cc:     Eric Dumazet <edumazet@google.com>,
         "James E.J. Bottomley" <JBottomley@parallels.com>,
         Yuval Mintz <Yuval.Mintz@qlogic.com>,
         David Decotigny <decot@googlers.com>
-Subject: [PATCH net-next v3 04/17] tx4939: use __ethtool_get_ksettings
-Date:   Mon, 30 Nov 2015 14:05:42 -0800
-Message-Id: <1448921155-24764-5-git-send-email-ddecotig@gmail.com>
+Subject: [PATCH net-next v3 05/17] net: usnic: use __ethtool_get_ksettings
+Date:   Mon, 30 Nov 2015 14:05:43 -0800
+Message-Id: <1448921155-24764-6-git-send-email-ddecotig@gmail.com>
 X-Mailer: git-send-email 2.6.0.rc2.230.g3dd15c0
 In-Reply-To: <1448921155-24764-1-git-send-email-ddecotig@gmail.com>
 References: <1448921155-24764-1-git-send-email-ddecotig@gmail.com>
@@ -52,7 +52,7 @@ Return-Path: <ddecotig@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50226
+X-archive-position: 50227
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -73,28 +73,38 @@ From: David Decotigny <decot@googlers.com>
 
 Signed-off-by: David Decotigny <decot@googlers.com>
 ---
- arch/mips/txx9/generic/setup_tx4939.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/infiniband/hw/usnic/usnic_ib_verbs.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/mips/txx9/generic/setup_tx4939.c b/arch/mips/txx9/generic/setup_tx4939.c
-index e3733cd..4a3ebf6 100644
---- a/arch/mips/txx9/generic/setup_tx4939.c
-+++ b/arch/mips/txx9/generic/setup_tx4939.c
-@@ -320,11 +320,12 @@ void __init tx4939_sio_init(unsigned int sclk, unsigned int cts_mask)
- #if IS_ENABLED(CONFIG_TC35815)
- static u32 tx4939_get_eth_speed(struct net_device *dev)
+diff --git a/drivers/infiniband/hw/usnic/usnic_ib_verbs.c b/drivers/infiniband/hw/usnic/usnic_ib_verbs.c
+index e082170..e0d12d4 100644
+--- a/drivers/infiniband/hw/usnic/usnic_ib_verbs.c
++++ b/drivers/infiniband/hw/usnic/usnic_ib_verbs.c
+@@ -324,12 +324,12 @@ int usnic_ib_query_port(struct ib_device *ibdev, u8 port,
+ 				struct ib_port_attr *props)
  {
+ 	struct usnic_ib_dev *us_ibdev = to_usdev(ibdev);
 -	struct ethtool_cmd cmd;
--	if (__ethtool_get_settings(dev, &cmd))
 +	struct ethtool_ksettings cmd;
-+
-+	if (__ethtool_get_ksettings(dev, &cmd))
- 		return 100;	/* default 100Mbps */
  
--	return ethtool_cmd_speed(&cmd);
-+	return cmd.parent.speed;
- }
+ 	usnic_dbg("\n");
  
- static int tx4939_netdev_event(struct notifier_block *this,
+ 	mutex_lock(&us_ibdev->usdev_lock);
+-	__ethtool_get_settings(us_ibdev->netdev, &cmd);
++	__ethtool_get_ksettings(us_ibdev->netdev, &cmd);
+ 	memset(props, 0, sizeof(*props));
+ 
+ 	props->lid = 0;
+@@ -353,8 +353,8 @@ int usnic_ib_query_port(struct ib_device *ibdev, u8 port,
+ 	props->pkey_tbl_len = 1;
+ 	props->bad_pkey_cntr = 0;
+ 	props->qkey_viol_cntr = 0;
+-	eth_speed_to_ib_speed(cmd.speed, &props->active_speed,
+-				&props->active_width);
++	eth_speed_to_ib_speed(cmd.parent.speed, &props->active_speed,
++			      &props->active_width);
+ 	props->max_mtu = IB_MTU_4096;
+ 	props->active_mtu = iboe_get_mtu(us_ibdev->ufdev->mtu);
+ 	/* Userspace will adjust for hdrs */
 -- 
 2.6.0.rc2.230.g3dd15c0

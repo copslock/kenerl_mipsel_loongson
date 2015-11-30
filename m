@@ -1,42 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Nov 2015 16:19:47 +0100 (CET)
-Received: from smtpbg299.qq.com ([184.105.67.99]:33195 "EHLO smtpbg299.qq.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Nov 2015 16:36:09 +0100 (CET)
+Received: from sauhun.de ([89.238.76.85]:57170 "EHLO pokefinder.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27006763AbbK3PTpjhxiS (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 30 Nov 2015 16:19:45 +0100
-X-QQ-mid: bizesmtp8t1448896729t246t296
-Received: from software.domain.org (unknown [222.92.8.142])
-        by esmtp4.qq.com (ESMTP) with 
-        id ; Mon, 30 Nov 2015 23:18:42 +0800 (CST)
-X-QQ-SSF: 01100000002000F0FK62B00A0000000
-X-QQ-FEAT: oP8qruwI8aV2qtJwy9msFEos1sPsZUHFKuB3u6nbRySFkZG+H/Xdh0urbIPqE
-        zWKxIZgi4W+1mytMjoxl9HXt0vCchrMQnNfc76FYvhUC+T18Yd6aob1PQ20XU7rmg4Byrv8
-        rvTYafPSHbPJzwDVCKS6UhF5duE5O8RGXdeyLyOUbQhMV2iJJ77tD7hVTNd2yE6ihPqJESZ
-        KKQ2+zGYLDgnHxXDzs0ozHQKAAKCQsBcwCTStEEUMFNhqKWAcfLL6GR1+MnRdjT83+OdBiE
-        cvOgB5RYQjkxWspUtrQKTe+p4=
-X-QQ-GoodBg: 0
-From:   Huacai Chen <chenhc@lemote.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Aurelien Jarno <aurelien@aurel32.net>,
-        "Steven J. Hill" <Steven.Hill@imgtec.com>,
-        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>,
-        Huacai Chen <chenhc@lemote.com>, <stable@vger.kernel.org>
-Subject: [PATCH] MIPS: Cleanup the unused __arch_local_irq_restore() function
-Date:   Mon, 30 Nov 2015 23:22:38 +0800
-Message-Id: <1448896958-14551-1-git-send-email-chenhc@lemote.com>
-X-Mailer: git-send-email 2.4.6
-X-QQ-SENDSIZE: 520
-X-QQ-FName: DAC92E87B595406B9C38F0CEB7E68615
-X-QQ-LocalIP: 10.130.87.152
-Return-Path: <chenhc@lemote.com>
+        id S27007213AbbK3PgGihSIV (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 30 Nov 2015 16:36:06 +0100
+Received: from p4fe25b9b.dip0.t-ipconnect.de ([79.226.91.155]:49052 helo=katana)
+        by pokefinder.org with esmtpsa (TLS1.2:RSA_AES_128_CBC_SHA1:128)
+        (Exim 4.80)
+        (envelope-from <wsa@the-dreams.de>)
+        id 1a3QUn-0000rB-Tt; Mon, 30 Nov 2015 16:36:06 +0100
+Date:   Mon, 30 Nov 2015 16:36:04 +0100
+From:   Wolfram Sang <wsa@the-dreams.de>
+To:     Florian Fainelli <f.fainelli@gmail.com>
+Cc:     Jaedon Shin <jaedon.shin@gmail.com>,
+        Kamal Dasu <kdasu.kdev@gmail.com>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-i2c@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-mips@linux-mips.org
+Subject: Re: [PATCH 3/9] i2c: brcmstb: add missing parenthesis
+Message-ID: <20151130153604.GN1513@katana>
+References: <1445395021-4204-1-git-send-email-jaedon.shin@gmail.com>
+ <1445395021-4204-4-git-send-email-jaedon.shin@gmail.com>
+ <5628425C.5080104@gmail.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="dPW7zu3hTOhZvCDO"
+Content-Disposition: inline
+In-Reply-To: <5628425C.5080104@gmail.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <wsa@the-dreams.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50177
+X-archive-position: 50178
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: chenhc@lemote.com
+X-original-sender: wsa@the-dreams.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,107 +47,68 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-In history, __arch_local_irq_restore() is only used by SMTC. However,
-SMTC support has been removed since 3.16, this patch remove the unused
-function.
 
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Huacai Chen <chenhc@lemote.com>
----
- arch/mips/include/asm/irqflags.h | 30 ------------------------------
- arch/mips/lib/mips-atomic.c      | 30 +-----------------------------
- 2 files changed, 1 insertion(+), 59 deletions(-)
+--dPW7zu3hTOhZvCDO
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/arch/mips/include/asm/irqflags.h b/arch/mips/include/asm/irqflags.h
-index e7b138b..65c351e 100644
---- a/arch/mips/include/asm/irqflags.h
-+++ b/arch/mips/include/asm/irqflags.h
-@@ -84,41 +84,11 @@ static inline void arch_local_irq_restore(unsigned long flags)
- 	: "memory");
- }
- 
--static inline void __arch_local_irq_restore(unsigned long flags)
--{
--	__asm__ __volatile__(
--	"	.set	push						\n"
--	"	.set	noreorder					\n"
--	"	.set	noat						\n"
--#if defined(CONFIG_IRQ_MIPS_CPU)
--	/*
--	 * Slow, but doesn't suffer from a relatively unlikely race
--	 * condition we're having since days 1.
--	 */
--	"	beqz	%[flags], 1f					\n"
--	"	di							\n"
--	"	ei							\n"
--	"1:								\n"
--#else
--	/*
--	 * Fast, dangerous.  Life is fun, life is good.
--	 */
--	"	mfc0	$1, $12						\n"
--	"	ins	$1, %[flags], 0, 1				\n"
--	"	mtc0	$1, $12						\n"
--#endif
--	"	" __stringify(__irq_disable_hazard) "			\n"
--	"	.set	pop						\n"
--	: [flags] "=r" (flags)
--	: "0" (flags)
--	: "memory");
--}
- #else
- /* Functions that require preempt_{dis,en}able() are in mips-atomic.c */
- void arch_local_irq_disable(void);
- unsigned long arch_local_irq_save(void);
- void arch_local_irq_restore(unsigned long flags);
--void __arch_local_irq_restore(unsigned long flags);
- #endif /* CONFIG_CPU_MIPSR2 || CONFIG_CPU_MIPSR6 */
- 
- static inline void arch_local_irq_enable(void)
-diff --git a/arch/mips/lib/mips-atomic.c b/arch/mips/lib/mips-atomic.c
-index 272af8a..5530070 100644
---- a/arch/mips/lib/mips-atomic.c
-+++ b/arch/mips/lib/mips-atomic.c
-@@ -57,7 +57,6 @@ notrace void arch_local_irq_disable(void)
- }
- EXPORT_SYMBOL(arch_local_irq_disable);
- 
--
- notrace unsigned long arch_local_irq_save(void)
- {
- 	unsigned long flags;
-@@ -111,31 +110,4 @@ notrace void arch_local_irq_restore(unsigned long flags)
- }
- EXPORT_SYMBOL(arch_local_irq_restore);
- 
--
--notrace void __arch_local_irq_restore(unsigned long flags)
--{
--	unsigned long __tmp1;
--
--	preempt_disable();
--
--	__asm__ __volatile__(
--	"	.set	push						\n"
--	"	.set	noreorder					\n"
--	"	.set	noat						\n"
--	"	mfc0	$1, $12						\n"
--	"	andi	%[flags], 1					\n"
--	"	ori	$1, 0x1f					\n"
--	"	xori	$1, 0x1f					\n"
--	"	or	%[flags], $1					\n"
--	"	mtc0	%[flags], $12					\n"
--	"	" __stringify(__irq_disable_hazard) "			\n"
--	"	.set	pop						\n"
--	: [flags] "=r" (__tmp1)
--	: "0" (flags)
--	: "memory");
--
--	preempt_enable();
--}
--EXPORT_SYMBOL(__arch_local_irq_restore);
--
--#endif /* !CONFIG_CPU_MIPSR2 */
-+#endif /* !CONFIG_CPU_MIPSR2 && !CONFIG_CPU_MIPSR6 */
--- 
-2.4.6
+On Wed, Oct 21, 2015 at 06:56:44PM -0700, Florian Fainelli wrote:
+> Le 20/10/2015 19:36, Jaedon Shin a =C3=A9crit :
+> > Add the necessary parenthesis for NOACK condition.
+> >=20
+> > Signed-off-by: Jaedon Shin <jaedon.shin@gmail.com>
+>=20
+> Acked-by: Florian Fainelli <f.fainelli@gmail.com>
+
+I wouldn't call them necessary?
+
+>=20
+> > ---
+> >  drivers/i2c/busses/i2c-brcmstb.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >=20
+> > diff --git a/drivers/i2c/busses/i2c-brcmstb.c b/drivers/i2c/busses/i2c-=
+brcmstb.c
+> > index 6b8bbf99880d..2d7d155029dc 100644
+> > --- a/drivers/i2c/busses/i2c-brcmstb.c
+> > +++ b/drivers/i2c/busses/i2c-brcmstb.c
+> > @@ -305,7 +305,7 @@ static int brcmstb_send_i2c_cmd(struct brcmstb_i2c_=
+dev *dev,
+> >  	}
+> > =20
+> >  	if ((CMD_RD || CMD_WR) &&
+> > -	    bsc_readl(dev, iic_enable) & BSC_IIC_EN_NOACK_MASK) {
+> > +	    (bsc_readl(dev, iic_enable) & BSC_IIC_EN_NOACK_MASK)) {
+> >  		rc =3D -EREMOTEIO;
+> >  		dev_dbg(dev->device, "controller received NOACK intr for %s\n",
+> >  			cmd_string[cmd]);
+> >=20
+>=20
+>=20
+> --=20
+> Florian
+
+--dPW7zu3hTOhZvCDO
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
+
+iQIcBAEBAgAGBQJWXGzkAAoJEBQN5MwUoCm2BRQP/3Jp7MtRO1DcmUk+TOVQ49y3
+kvJgqGzocRCKPZzKr3a2MRRqvsRxODIjOWbM7tptNGMZVDbqBquhZB5tHfQFp7Ux
+95MjyBV6pU0jMIWnR14LwKknrUXjBN7YPrr9hbUmjKm7QAxI8LZLc5cAdE+fqza6
+uZ9qybujqnTO2eFlnXquFXPG3cnbZDx1zY9PkWmjF7sbEr7GdtcQSiq/S3tC+hJD
+XuQIMI47sp0sdBE+BefiCLPp8cF8ly67fmQ7yHtBh2D5gLE8m7MPAT9u/wKStKYX
+COCKmsyiW8jlbI5qksUq9+k8Xm3XNYaaFjXgqRWI/TSPuIC9DdSj2ZebI2AN/LCg
+t9n2QqwZcPU15hpxsm8FITtkSlhY3w3ldtGwL0GfS12HfsG0iKRFW6faYUJ2jLkM
+pQgAkD0bFcOEQN2y+O6cGw19AqU8kHjl66OpkIM+UNDBwVJxB7XHtlWJPq/7v5wO
+pfILsiO1rm59aX05Kh3FJyDkMixv3tBGJogfIYOLcHNRDfih9qBX2U6dtAchEhlN
+W4ZoDiHQdKKL6xGQch7nq2ap0WFXj693dCF0gCcXJYp4kzmoqaAesoG9el6Q2a1M
+nNwlO6osnPgwmdmkD1uCRDjPxSXOJu20hzlPRpms7Wstafu5H4rJAoCtL9NI8brU
+qnWOoBDAihktR/EOXG7V
+=4IwD
+-----END PGP SIGNATURE-----
+
+--dPW7zu3hTOhZvCDO--

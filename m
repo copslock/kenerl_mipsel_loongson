@@ -1,40 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Dec 2015 02:25:51 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:34038 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27006970AbbLABZt22tUl (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 1 Dec 2015 02:25:49 +0100
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.15.2/8.14.8) with ESMTP id tB11Pm78018422;
-        Tue, 1 Dec 2015 02:25:48 +0100
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.15.2/8.15.2/Submit) id tB11PkLa018421;
-        Tue, 1 Dec 2015 02:25:46 +0100
-Date:   Tue, 1 Dec 2015 02:25:46 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Cc:     Arnd Bergmann <arnd@arndb.de>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org, Richard Henderson <rth@twiddle.net>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Subject: Re: no-op delay loops
-Message-ID: <20151201012546.GC23993@linux-mips.org>
-References: <87si3rbz6p.fsf@rasmusvillemoes.dk>
- <3228673.rOyW85ILiP@wuerfel>
- <874mg3b2h5.fsf@rasmusvillemoes.dk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Dec 2015 02:50:05 +0100 (CET)
+Received: from mail-pa0-f54.google.com ([209.85.220.54]:33019 "EHLO
+        mail-pa0-f54.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008060AbbLABuDEmpNl (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 1 Dec 2015 02:50:03 +0100
+Received: by pabfh17 with SMTP id fh17so209604027pab.0
+        for <linux-mips@linux-mips.org>; Mon, 30 Nov 2015 17:49:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding;
+        bh=X4WNCAq9YWA73PuVA14tIpUOzUndAGYPgmlQEF9cxZ4=;
+        b=NSWYY/wJt7zZ5vob21TZ21S7vm3OiHKlOBy3pvlVaNjLRPOraBp+lhfqoBxB5SrkYF
+         sXrNQp8kbJ6sop1GxmxuR6VxokD2Kaex3vmvX9Ra9R/BfrGKdhdAlMyDoQjYRpZQN5Ew
+         gFlOw1cBUKqUEgp2O4hqturzzsL7KS6pKsle3TfNP+hgeu2aLKPF/oJZdKGvwUi9HFPH
+         xS+3u7LvM3FkMA7buBF6W8bLVCoSflk6bnBdaWMXfAHOub/KDb1+jw6DTKcwlPpCIt+m
+         UmmDzPCYr4lMLDrG4sdL16vh/U70fcK29nnPPkn0o6GeIiUVF/BkmA3i3isV5CI9iw7y
+         3tdA==
+X-Received: by 10.67.30.168 with SMTP id kf8mr96240724pad.106.1448934595576;
+        Mon, 30 Nov 2015 17:49:55 -0800 (PST)
+Received: from [10.12.156.244] (5520-maca-inet1-outside.broadcom.com. [216.31.211.11])
+        by smtp.googlemail.com with ESMTPSA id vq2sm10752945pab.42.2015.11.30.17.49.53
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 30 Nov 2015 17:49:54 -0800 (PST)
+Message-ID: <565CFC7C.101@gmail.com>
+Date:   Mon, 30 Nov 2015 17:48:44 -0800
+From:   Florian Fainelli <f.fainelli@gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <874mg3b2h5.fsf@rasmusvillemoes.dk>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-Return-Path: <ralf@linux-mips.org>
+To:     Paul Burton <paul.burton@imgtec.com>, linux-mips@linux-mips.org
+CC:     =?UTF-8?B?U8O2cmVuIEJyaW5rbWFubg==?= <soren.brinkmann@xilinx.com>,
+        Michal Simek <michal.simek@xilinx.com>,
+        Jiang Liu <jiang.liu@linux.intel.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Rob Herring <robh@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org,
+        Russell Joyce <russell.joyce@york.ac.uk>,
+        Arnd Bergmann <arnd@arndb.de>, linux-kernel@vger.kernel.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 20/28] net: pch_gbe: clear interrupt FIFO during probe
+References: <1448900513-20856-1-git-send-email-paul.burton@imgtec.com> <1448900513-20856-21-git-send-email-paul.burton@imgtec.com>
+In-Reply-To: <1448900513-20856-21-git-send-email-paul.burton@imgtec.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50246
+X-archive-position: 50247
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: f.fainelli@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,41 +65,16 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Nov 30, 2015 at 10:29:26PM +0100, Rasmus Villemoes wrote:
-
-> OK, thanks. That's a very very long time ago.
+On 30/11/15 08:21, Paul Burton wrote:
+> xilinx_pcie_init_port clears the pending interrupts in the interrupt
+> decode register, but does not clear the interrupt FIFO. This would lead
+> to spurious interrupts if any were present in the FIFO at probe time.
+> Clear the interrupt FIFO prior to the interrupt decode register in order
+> to start with a clean slate as expected.
 > 
-> FWIW, the remaining instances that my trivial coccinelle script found
-> are
+> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
 
-After your initial report I also wrote a coccinelle which is looking
-also for delay loops implemented in while loops.  It found the following
-two:
-
-diff -u -p ./drivers/video/uvesafb.c /tmp/nothing/drivers/video/uvesafb.c
---- ./drivers/video/uvesafb.c
-+++ /tmp/nothing/drivers/video/uvesafb.c
-@@ -1142,7 +1142,6 @@ static int uvesafb_blank(int blank, stru
- 		vga_wseq(NULL, 0x00, seq);
- 
- 		crtc17 |= vga_rcrt(NULL, 0x17) & ~0x80;
--		while (loop--);
- 		vga_wcrt(NULL, 0x17, crtc17);
- 		vga_wseq(NULL, 0x00, 0x03);
- 	} else
-diff -u -p ./arch/mips/pmc-sierra/yosemite/atmel_read_eeprom.c /tmp/nothing/arch/mips/pmc-sierra/yosemite/atmel_read_eeprom.c
---- ./arch/mips/pmc-sierra/yosemite/atmel_read_eeprom.c
-+++ /tmp/nothing/arch/mips/pmc-sierra/yosemite/atmel_read_eeprom.c
-@@ -37,7 +37,6 @@
- 
- static void delay(int delay)
- {
--	while (delay--);
- }
- 
- static void send_bit(unsigned char bit)
-
-The 2nd file falls into my domain so I'm going to fix it.  Not sure
-how the uvesafb one should be treated.
-
-  Ralf
+Seems like the subject should be "PCI: xilinx: ..." to be consistent
+with the changes you are making to this driver earlier in the series?
+-- 
+Florian

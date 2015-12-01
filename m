@@ -1,71 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Dec 2015 12:16:20 +0100 (CET)
-Received: from mail-lf0-f52.google.com ([209.85.215.52]:36456 "EHLO
-        mail-lf0-f52.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27006924AbbLALQSHHBwY (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 1 Dec 2015 12:16:18 +0100
-Received: by lfs39 with SMTP id 39so3369609lfs.3
-        for <linux-mips@linux-mips.org>; Tue, 01 Dec 2015 03:16:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cogentembedded-com.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:references:cc:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-type:content-transfer-encoding;
-        bh=Gu1N8mnjl+4tMq2pqR1OQYobwjYg/VQJj2fvH+gklSw=;
-        b=bHOxvmDgr9lzoj6TdgTG2ZaE+4Kbe7rq+dVtjhvKKZRVoTFslTprIjC9uz4dav9MX4
-         81ISSnnsuX18AfDB8993+Mg1ozekhISwmhyoCui0s/UuNfQXBBXRX5Jbwjfnx51hrCgp
-         CeRL4GjQzzrl6iZ5AvJvdoqVbh9dvkMFKBr39rppl+htiBnFYPqv9XJ6oPuMIrMawyRd
-         btsnM4gQJSFHYncccUd2tJtpv1hKqIrLnJl68wWhljmiqxGQihF8Qwq+/8YSrk4+A7gh
-         APM1QkCeZ5ENHMA+2asLPH0XayMuEHPe8p7bCkt42Ps7H1Op1bLs2Gds0LhDCi3GGpGx
-         8oRg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:subject:to:references:cc:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-type
-         :content-transfer-encoding;
-        bh=Gu1N8mnjl+4tMq2pqR1OQYobwjYg/VQJj2fvH+gklSw=;
-        b=X/Grr193EmQIN++Dj8+jXlL4I2M6viXfqQ/Zee/ChEqPkf7lef92qtJuU4w5DiXY6W
-         KHplclOiSFZ9eySE91wRDy0P6EiTk1YiEq9ijA5khoSqXV81DqrK3zKDYt8wZKj6zpeZ
-         4zO2sCwHKg0P0LG9XJ4BvHSEEuu0Bk/YPP0kxGXHCo3WFGaLYuM+/13U2o8HgwZmosOI
-         t1VRUamPbWK/99bV+flVIurSGPDeyXqE3C5VFPRz7TX2Xi/bxGHoYfT0N8bIaxwkSPIC
-         WwRmg/9/ExqpyRk2Gk3dNtJ4M0rEEM7oCjeFO1QvlKfiOBqERf//b7UtQbGyq0gthFey
-         RcSg==
-X-Gm-Message-State: ALoCoQnQ2u3ir+RJsoSn4BZezi1DZ12YJoSiqJmgdKEOmmOXOL4bdEtJf0QUi5RWRBoG1cdaj4wP
-X-Received: by 10.25.19.69 with SMTP id j66mr28585046lfi.25.1448968572157;
-        Tue, 01 Dec 2015 03:16:12 -0800 (PST)
-Received: from [192.168.4.126] ([195.16.110.19])
-        by smtp.gmail.com with ESMTPSA id g80sm8240482lfg.44.2015.12.01.03.16.09
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Tue, 01 Dec 2015 03:16:10 -0800 (PST)
-Subject: Re: [PATCH 1/2] reset: Add brcm,bcm63xx-reset device tree binding
-To:     Simon Arlott <simon@fire.lp0.eu>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Kevin Cernekee <cernekee@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
-References: <565CB83B.7010000@simon.arlott.org.uk>
-Cc:     linux-kernel@vger.kernel.org,
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Dec 2015 14:02:18 +0100 (CET)
+Received: from proxima.lp0.eu ([81.2.80.65]:53766 "EHLO proxima.lp0.eu"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27006924AbbLANCPbOt8d (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 1 Dec 2015 14:02:15 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=fire.lp0.eu; s=exim;
+        h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:Message-ID:Subject:Cc:From:To; bh=OyoUBdPoKuKGN63tUfMth8M2Tm8d5ZelvaFX3JOeAnk=;
+        b=bxQJS9J3aBgdDoZ9HS4jmRBpluOC0U8Lu0hmtCCIrUr4G+vwqL1gkmQ1qXqkWhMZJ1XTMu62TiV49neM4QPUsv2xBHQHzDrJrqfDFiGp2TQUjzvfOrniBBK4KoR8Svb5CY6+iUoo1BaXVAe+641QeJXqQ4FJsvLIApF+zhcIfn5vN/J3pUMthFUFeyHf1TW1DLZvjiNHHPr7xPxBdyfTyc7dpzIFIWd2zUshc8ZgZSE/caJMANZ1+EiokmnyEcztboVZ38pZDfqH7vzYJFVwRcA8LbUG3Rumw5gDRHi1qfeS+AtF9trz//7ht5WA70OOT26aaGTLwQhXO3LkROT13Q==;
+Received: from redrum.lp0.eu ([2001:8b0:ffea:0:2e0:81ff:fe4d:2bec]:45576 ident=simon)
+        by proxima.lp0.eu ([2001:8b0:ffea:0:205:b4ff:fe12:530]:465)
+        with esmtpsav (UNKNOWN:DHE-RSA-AES256-SHA:256/CN=Simon Arlott)
+        id 1a3kZ8-0007ZC-7l (Exim); Tue, 01 Dec 2015 13:01:55 +0000
+To:     Guenter Roeck <linux@roeck-us.net>,
+        Thomas Gleixner <tglx@linutronix.de>
+From:   Simon Arlott <simon@fire.lp0.eu>
+Cc:     Florian Fainelli <f.fainelli@gmail.com>,
         MIPS Mailing List <linux-mips@linux-mips.org>,
-        Rob Herring <robh+dt@kernel.org>,
+        Jonas Gorski <jogo@openwrt.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Marc Zyngier <marc.zyngier@arm.com>,
+        Kevin Cernekee <cernekee@gmail.com>,
+        Wim Van Sebroeck <wim@iguana.be>,
+        Maxime Bizon <mbizon@freebox.fr>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-watchdog@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
         Pawel Moll <pawel.moll@arm.com>,
         Mark Rutland <mark.rutland@arm.com>,
-        Ian Campbell <ijc+devicetree@hellion.org.uk>
-From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Message-ID: <565D817A.2030607@cogentembedded.com>
-Date:   Tue, 1 Dec 2015 14:16:10 +0300
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:38.0) Gecko/20100101
- Thunderbird/38.4.0
+        Ian Campbell <ijc+devicetree@hellion.org.uk>,
+        Kumar Gala <galak@codeaurora.org>
+Subject: [PATCH 01/11] clocksource: Add brcm,bcm6345-timer/brcm,bcm6318-timer
+ device tree binding
+Message-ID: <565D9A40.60409@simon.arlott.org.uk>
+Date:   Tue, 1 Dec 2015 13:01:52 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+ Thunderbird/38.3.0
 MIME-Version: 1.0
-In-Reply-To: <565CB83B.7010000@simon.arlott.org.uk>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sergei.shtylyov@cogentembedded.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+Return-Path: <simon@fire.lp0.eu>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50251
+X-archive-position: 50252
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sergei.shtylyov@cogentembedded.com
+X-original-sender: simon@fire.lp0.eu
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -78,41 +59,124 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hello.
+Add device tree bindings for the BCM6345/BCM6318 timers. This is required
+for the BCM6345 watchdog which needs to respond to one of the timer
+interrupts.
 
-On 11/30/2015 11:57 PM, Simon Arlott wrote:
+Signed-off-by: Simon Arlott <simon@fire.lp0.eu>
+Acked-by: Rob Herring <robh@kernel.org>
+---
+ .../bindings/timer/brcm,bcm6318-timer.txt          | 44 ++++++++++++++++++++
+ .../bindings/timer/brcm,bcm6345-timer.txt          | 47 ++++++++++++++++++++++
+ 2 files changed, 91 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/timer/brcm,bcm6318-timer.txt
+ create mode 100644 Documentation/devicetree/bindings/timer/brcm,bcm6345-timer.txt
 
-> Add device tree binding for the BCM63xx soft reset controller.
->
-> The BCM63xx contains a soft-reset controller activated by setting
-> a bit (that must previously have cleared).
->
-> Signed-off-by: Simon Arlott <simon@fire.lp0.eu>
-> ---
->   .../bindings/reset/brcm,bcm63xx-reset.txt          | 37 ++++++++++++++++++++++
->   1 file changed, 37 insertions(+)
->   create mode 100644 Documentation/devicetree/bindings/reset/brcm,bcm63xx-reset.txt
->
-> diff --git a/Documentation/devicetree/bindings/reset/brcm,bcm63xx-reset.txt b/Documentation/devicetree/bindings/reset/brcm,bcm63xx-reset.txt
-> new file mode 100644
-> index 0000000..48e9daf
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/reset/brcm,bcm63xx-reset.txt
-> @@ -0,0 +1,37 @@
-> +BCM63xx reset controller
-> +
-> +The BCM63xx contains a basic soft reset controller in the perf register
-> +set which resets components using a bit in a register.
-> +
-> +Please also refer to reset.txt in this directory for common reset
-> +controller binding usage.
-> +
-> +Required properties:
-> +- compatible:	Should be "brcm,bcm<soc>-reset", "brcm,bcm63xx-reset"
+diff --git a/Documentation/devicetree/bindings/timer/brcm,bcm6318-timer.txt b/Documentation/devicetree/bindings/timer/brcm,bcm6318-timer.txt
+new file mode 100644
+index 0000000..cf4be7e
+--- /dev/null
++++ b/Documentation/devicetree/bindings/timer/brcm,bcm6318-timer.txt
+@@ -0,0 +1,44 @@
++Broadcom BCM6318 Timer
++
++This block is a timer that is connected to multiple interrupts on the main
++interrupt controller and functions as a programmable interrupt controller for
++timer events. There is a main timer interrupt for all timers.
++
++- 4 independent timers with their own interrupt, and own maskable level
++  interrupt bit in the main timer interrupt
++
++- 1 watchdog timer with an unmaskable level interrupt bit in the main timer
++  interrupt
++
++- Contains one enable/status word pair
++
++- No atomic set/clear operations
++
++Required properties:
++
++- compatible: should be "brcm,bcm<soc>-timer", "brcm,bcm6318-timer"
++- reg: specifies the base physical address and size of the registers, excluding
++  the watchdog registers
++- interrupt-controller: identifies the node as an interrupt controller
++- #interrupt-cells: specifies the number of cells needed to encode an interrupt
++  source, should be 1.
++- interrupt-parent: specifies the phandle to the parent interrupt controller(s)
++  this one is cascaded from
++- interrupts: specifies the interrupt line(s) in the interrupt-parent controller
++  node for the main timer interrupt, followed by the individual timer
++  interrupts; valid values depend on the type of parent interrupt controller
++- clocks: phandle of timer reference clock (periph)
++
++Example:
++
++timer: timer@10000040 {
++	compatible = "brcm,bcm63148-timer", "brcm,bcm6318-timer";
++	reg = <0x10000040 0x28>;
++
++	interrupt-controller;
++	#interrupt-cells = <1>;
++
++	interrupt-parent = <&periph_intc>;
++	interrupts = <31>, <0>, <1>, <2>, <3>;
++	clock = <&periph_osc>;
++};
+diff --git a/Documentation/devicetree/bindings/timer/brcm,bcm6345-timer.txt b/Documentation/devicetree/bindings/timer/brcm,bcm6345-timer.txt
+new file mode 100644
+index 0000000..03250dd
+--- /dev/null
++++ b/Documentation/devicetree/bindings/timer/brcm,bcm6345-timer.txt
+@@ -0,0 +1,47 @@
++Broadcom BCM6345 Timer
++
++This block is a timer that is connected to one interrupt on the main interrupt
++controller and functions as a programmable interrupt controller for timer
++events.
++
++- 3 independent timers with their own maskable level interrupt bit (but not
++  per CPU because there is only one parent interrupt and the timers share it)
++
++- 1 watchdog timer with an unmaskable level interrupt
++
++- Contains one enable/status word pair
++
++- No atomic set/clear operations
++
++The lack of per CPU ability of timers makes them unusable as a set of
++clockevent devices, otherwise they could be attached to the remaining
++interrupts.
++
++Required properties:
++
++- compatible: should be "brcm,bcm<soc>-timer", "brcm,bcm6345-timer"
++- reg: specifies the base physical address and size of the registers, excluding
++  the watchdog registers
++- interrupt-controller: identifies the node as an interrupt controller
++- #interrupt-cells: specifies the number of cells needed to encode an interrupt
++  source, should be 1.
++- interrupt-parent: specifies the phandle to the parent interrupt controller(s)
++  this one is cascaded from
++- interrupts: specifies the interrupt line(s) in the interrupt-parent controller
++  node for the timer interrupt; valid values depend on the type of parent
++  interrupt controller
++- clocks: phandle of timer reference clock (periph)
++
++Example:
++
++timer: timer@10000080 {
++	compatible = "brcm,bcm63168-timer", "brcm,bcm6345-timer";
++	reg = <0x10000080 0x1c>;
++
++	interrupt-controller;
++	#interrupt-cells = <1>;
++
++	interrupt-parent = <&periph_intc>;
++	interrupts = <0>;
++	clock·=·<&periph_osc>;
++};
+-- 
+2.1.4
 
-     Wildcards (xx) are not allowed here. Please choose a "least common 
-denominator" SoC and name the string after it.
-
-[...]
-
-MBR, Sergei
+-- 
+Simon Arlott

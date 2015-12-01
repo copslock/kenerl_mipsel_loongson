@@ -1,47 +1,71 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Dec 2015 11:47:13 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:28048 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27007240AbbLAKrLrdZKY (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 1 Dec 2015 11:47:11 +0100
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Websense Email Security Gateway with ESMTPS id 3A111173C2A3;
-        Tue,  1 Dec 2015 10:47:04 +0000 (GMT)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- HHMAIL01.hh.imgtec.org (10.100.10.19) with Microsoft SMTP Server (TLS) id
- 14.3.235.1; Tue, 1 Dec 2015 10:47:05 +0000
-Received: from [192.168.154.94] (192.168.154.94) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Tue, 1 Dec
- 2015 10:47:05 +0000
-Subject: Re: [PATCH v2 09/19] genirq: Add a new function to get IPI reverse
- mapping
-To:     Thomas Gleixner <tglx@linutronix.de>
-References: <1448453217-3874-1-git-send-email-qais.yousef@imgtec.com>
- <1448453217-3874-10-git-send-email-qais.yousef@imgtec.com>
- <5658429D.3000105@imgtec.com> <alpine.DEB.2.11.1511301139500.3572@nanos>
- <565C2ABD.5030409@imgtec.com> <alpine.DEB.2.11.1511301220380.3572@nanos>
- <565C3A14.10401@imgtec.com>
-CC:     <linux-kernel@vger.kernel.org>, <jason@lakedaemon.net>,
-        <marc.zyngier@arm.com>, <jiang.liu@linux.intel.com>,
-        <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
-From:   Qais Yousef <qais.yousef@imgtec.com>
-Message-ID: <565D7AA9.2080708@imgtec.com>
-Date:   Tue, 1 Dec 2015 10:47:05 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.3.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Dec 2015 12:16:20 +0100 (CET)
+Received: from mail-lf0-f52.google.com ([209.85.215.52]:36456 "EHLO
+        mail-lf0-f52.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006924AbbLALQSHHBwY (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 1 Dec 2015 12:16:18 +0100
+Received: by lfs39 with SMTP id 39so3369609lfs.3
+        for <linux-mips@linux-mips.org>; Tue, 01 Dec 2015 03:16:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cogentembedded-com.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:references:cc:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-type:content-transfer-encoding;
+        bh=Gu1N8mnjl+4tMq2pqR1OQYobwjYg/VQJj2fvH+gklSw=;
+        b=bHOxvmDgr9lzoj6TdgTG2ZaE+4Kbe7rq+dVtjhvKKZRVoTFslTprIjC9uz4dav9MX4
+         81ISSnnsuX18AfDB8993+Mg1ozekhISwmhyoCui0s/UuNfQXBBXRX5Jbwjfnx51hrCgp
+         CeRL4GjQzzrl6iZ5AvJvdoqVbh9dvkMFKBr39rppl+htiBnFYPqv9XJ6oPuMIrMawyRd
+         btsnM4gQJSFHYncccUd2tJtpv1hKqIrLnJl68wWhljmiqxGQihF8Qwq+/8YSrk4+A7gh
+         APM1QkCeZ5ENHMA+2asLPH0XayMuEHPe8p7bCkt42Ps7H1Op1bLs2Gds0LhDCi3GGpGx
+         8oRg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:subject:to:references:cc:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-type
+         :content-transfer-encoding;
+        bh=Gu1N8mnjl+4tMq2pqR1OQYobwjYg/VQJj2fvH+gklSw=;
+        b=X/Grr193EmQIN++Dj8+jXlL4I2M6viXfqQ/Zee/ChEqPkf7lef92qtJuU4w5DiXY6W
+         KHplclOiSFZ9eySE91wRDy0P6EiTk1YiEq9ijA5khoSqXV81DqrK3zKDYt8wZKj6zpeZ
+         4zO2sCwHKg0P0LG9XJ4BvHSEEuu0Bk/YPP0kxGXHCo3WFGaLYuM+/13U2o8HgwZmosOI
+         t1VRUamPbWK/99bV+flVIurSGPDeyXqE3C5VFPRz7TX2Xi/bxGHoYfT0N8bIaxwkSPIC
+         WwRmg/9/ExqpyRk2Gk3dNtJ4M0rEEM7oCjeFO1QvlKfiOBqERf//b7UtQbGyq0gthFey
+         RcSg==
+X-Gm-Message-State: ALoCoQnQ2u3ir+RJsoSn4BZezi1DZ12YJoSiqJmgdKEOmmOXOL4bdEtJf0QUi5RWRBoG1cdaj4wP
+X-Received: by 10.25.19.69 with SMTP id j66mr28585046lfi.25.1448968572157;
+        Tue, 01 Dec 2015 03:16:12 -0800 (PST)
+Received: from [192.168.4.126] ([195.16.110.19])
+        by smtp.gmail.com with ESMTPSA id g80sm8240482lfg.44.2015.12.01.03.16.09
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Tue, 01 Dec 2015 03:16:10 -0800 (PST)
+Subject: Re: [PATCH 1/2] reset: Add brcm,bcm63xx-reset device tree binding
+To:     Simon Arlott <simon@fire.lp0.eu>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Kevin Cernekee <cernekee@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+References: <565CB83B.7010000@simon.arlott.org.uk>
+Cc:     linux-kernel@vger.kernel.org,
+        MIPS Mailing List <linux-mips@linux-mips.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Pawel Moll <pawel.moll@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ian Campbell <ijc+devicetree@hellion.org.uk>
+From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Message-ID: <565D817A.2030607@cogentembedded.com>
+Date:   Tue, 1 Dec 2015 14:16:10 +0300
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:38.0) Gecko/20100101
+ Thunderbird/38.4.0
 MIME-Version: 1.0
-In-Reply-To: <565C3A14.10401@imgtec.com>
-Content-Type: text/plain; charset="windows-1252"; format=flowed
+In-Reply-To: <565CB83B.7010000@simon.arlott.org.uk>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.154.94]
-Return-Path: <Qais.Yousef@imgtec.com>
+Return-Path: <sergei.shtylyov@cogentembedded.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50250
+X-archive-position: 50251
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: qais.yousef@imgtec.com
+X-original-sender: sergei.shtylyov@cogentembedded.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,30 +78,41 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 11/30/2015 11:59 AM, Qais Yousef wrote:
-> On 11/30/2015 11:22 AM, Thomas Gleixner wrote:
->> Well, the question is why can't those functions not all use the raw
->> hardware irq. We have it in irq_data exactly to avoid calculations in
->> the hot path functions.
->>
+Hello.
+
+On 11/30/2015 11:57 PM, Simon Arlott wrote:
+
+> Add device tree binding for the BCM63xx soft reset controller.
 >
+> The BCM63xx contains a soft-reset controller activated by setting
+> a bit (that must previously have cleared).
 >
-> I'll see what I can do as part of this series. I think I can fix the 
-> new IPI and device domains, but can't promise about the root gic 
-> domain. It might be too big of a change for this series.
+> Signed-off-by: Simon Arlott <simon@fire.lp0.eu>
+> ---
+>   .../bindings/reset/brcm,bcm63xx-reset.txt          | 37 ++++++++++++++++++++++
+>   1 file changed, 37 insertions(+)
+>   create mode 100644 Documentation/devicetree/bindings/reset/brcm,bcm63xx-reset.txt
+>
+> diff --git a/Documentation/devicetree/bindings/reset/brcm,bcm63xx-reset.txt b/Documentation/devicetree/bindings/reset/brcm,bcm63xx-reset.txt
+> new file mode 100644
+> index 0000000..48e9daf
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/reset/brcm,bcm63xx-reset.txt
+> @@ -0,0 +1,37 @@
+> +BCM63xx reset controller
+> +
+> +The BCM63xx contains a basic soft reset controller in the perf register
+> +set which resets components using a bit in a register.
+> +
+> +Please also refer to reset.txt in this directory for common reset
+> +controller binding usage.
+> +
+> +Required properties:
+> +- compatible:	Should be "brcm,bcm<soc>-reset", "brcm,bcm63xx-reset"
 
+     Wildcards (xx) are not allowed here. Please choose a "least common 
+denominator" SoC and name the string after it.
 
-Unfortunately this is more work than I can afford putting into it right 
-now. Can we have this fix coming in later? It shouldn't affect anything 
-in this series.
+[...]
 
-The major issue here is that I need to split the root domain into shared 
-and local so that each will have its linear hwirq space therefore get 
-rid of the conversion macros.
-
-BUT, the DT binding will break if I do this. I can't think of a simple 
-way to keep the existing binding and do the split. Not without hackery 
-and more magic at least which I don't think would be a better alternative.
-
-Thanks,
-Qais
+MBR, Sergei

@@ -1,54 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Dec 2015 16:32:06 +0100 (CET)
-Received: from mail-qk0-f170.google.com ([209.85.220.170]:34166 "EHLO
-        mail-qk0-f170.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008128AbbLAPcEevxGK (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 1 Dec 2015 16:32:04 +0100
-Received: by qkfo3 with SMTP id o3so3790780qkf.1;
-        Tue, 01 Dec 2015 07:31:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=sender:subject:to:references:cc:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-type:content-transfer-encoding;
-        bh=g11RDYfJ/UrANY0wLpf1vq4Jjly9HX8uwUBlII6IJWs=;
-        b=EhAV55ZkW6GJFAFhuftZjC130Pzyqz6qjQbwJavZdZi9Mj0WM8TnBqNIGmVk0lmgza
-         i8yVaX4G7Jn2M6EqZPfwsPn+I6vuYOp11p33+8UpVVwMTxzOHOlaeIkvQqLxmgDfBF1O
-         IszPEO2DzaYelIFGuZFcNrf8X6lFLMmz9wcfh818Ca05PU/NpcCzsucrlNJQg4N2Voyi
-         SUIqOjl1wSaeDY7JFvlWlgvz1IZ/pNEVgTxxv540mlXSrKanZIjcaKW17ls/dnAAbPK5
-         eWYJ7ZsT6O8y6hfV6hdxNagfZd041RnWqmgmcF4T3OfEmEs4gCxUU/J5a0A/Mu6P7l4M
-         hKuQ==
-X-Received: by 10.55.204.213 with SMTP id n82mr83458677qkl.36.1448983918201;
-        Tue, 01 Dec 2015 07:31:58 -0800 (PST)
-Received: from bigtime.twiddle.net (50-194-63-110-static.hfc.comcastbusiness.net. [50.194.63.110])
-        by smtp.googlemail.com with ESMTPSA id b22sm17213252qge.23.2015.12.01.07.31.55
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Tue, 01 Dec 2015 07:31:57 -0800 (PST)
-Subject: Re: no-op delay loops
-To:     Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Arnd Bergmann <arnd@arndb.de>
-References: <87si3rbz6p.fsf@rasmusvillemoes.dk> <3228673.rOyW85ILiP@wuerfel>
- <874mg3b2h5.fsf@rasmusvillemoes.dk>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>
-From:   Richard Henderson <rth@twiddle.net>
-Message-ID: <565DBD69.7000701@twiddle.net>
-Date:   Tue, 1 Dec 2015 07:31:53 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.3.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Dec 2015 00:25:02 +0100 (CET)
+Received: from mx2.suse.de ([195.135.220.15]:43713 "EHLO mx2.suse.de"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27007995AbbLAXY7wDJBD (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 2 Dec 2015 00:24:59 +0100
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (charybdis-ext.suse.de [195.135.220.254])
+        by mx2.suse.de (Postfix) with ESMTP id 6ABE4AC05;
+        Tue,  1 Dec 2015 23:24:53 +0000 (UTC)
+Date:   Wed, 2 Dec 2015 00:24:49 +0100 (CET)
+From:   Jiri Kosina <jikos@kernel.org>
+X-X-Sender: jkosina@pobox.suse.cz
+To:     Petr Mladek <pmladek@suse.com>
+cc:     kbuild test robot <lkp@intel.com>, kbuild-all@01.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Russell King <rmk+kernel@arm.linux.org.uk>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-kernel@vger.kernel.org, x86@kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        adi-buildroot-devel@lists.sourceforge.net,
+        linux-cris-kernel@axis.com, linux-mips@linux-mips.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        David Howells <dhowells@redhat.com>,
+        Koichi Yasutake <yasutake.koichi@jp.panasonic.com>,
+        linux-am33-list@redhat.com
+Subject: Re: [PATCH v2 1/5] printk/nmi: Generic solution for safe printk in
+ NMI
+In-Reply-To: <20151127153804.GC2648@pathway.suse.cz>
+Message-ID: <alpine.LNX.2.00.1512020022460.32500@pobox.suse.cz>
+References: <1448622572-16900-2-git-send-email-pmladek@suse.com> <201511271919.aEZuZKNe%fengguang.wu@intel.com> <20151127153804.GC2648@pathway.suse.cz>
+User-Agent: Alpine 2.00 (LNX 1167 2008-08-23)
 MIME-Version: 1.0
-In-Reply-To: <874mg3b2h5.fsf@rasmusvillemoes.dk>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <rth7680@gmail.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <jikos@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50263
+X-archive-position: 50264
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rth@twiddle.net
+X-original-sender: jikos@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -61,14 +57,23 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 11/30/2015 01:29 PM, Rasmus Villemoes wrote:
-> ./arch/alpha/boot/main.c:187:1-4: no-op delay loop
+On Fri, 27 Nov 2015, Petr Mladek wrote:
 
-Not sure why this is there.  The runkernel function that preceeds it cannot 
-return, having performed an indirect branch (not a call) to the kernel start.
+> MN10300 has its own implementation for entering and exiting NMI 
+> handlers. It does not call nmi_enter() and nmi_exit(). Please, find 
+> below an updated patch that adds printk_nmi_enter() and 
+> printk_nmi_exit() to the custom entry points. Then we could add HAVE_NMI 
+> to arch/mn10300/Kconfig and avoid the above warning.
 
-I see no reason to actually change anything, unless someone insists that this 
-be remove to avoid future similar analysis.
+Hmm, so what exactly would go wrong if MN10300 (whatever that architecture 
+is) would call nmi_enter() and nmi_exit() at the places where it's 
+starting and finishing NMI handler?
 
+From a cursory look, it seems like most (if not all) of the things called 
+from nmi_{enter,exit}() would be nops there anyway.
 
-r~
+Thanks,
+
+-- 
+Jiri Kosina
+SUSE Labs

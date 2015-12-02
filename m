@@ -1,26 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Dec 2015 13:28:13 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:9867 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Dec 2015 13:28:33 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:22169 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27012091AbbLBMWnOBMeA (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Dec 2015 13:22:43 +0100
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Websense Email Security Gateway with ESMTPS id 6B408D46019D8;
-        Wed,  2 Dec 2015 12:22:34 +0000 (GMT)
+        with ESMTP id S27012122AbbLBMWoI88hA (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Dec 2015 13:22:44 +0100
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Websense Email Security Gateway with ESMTPS id CFBA2473CF721;
+        Wed,  2 Dec 2015 12:22:35 +0000 (GMT)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
- 14.3.235.1; Wed, 2 Dec 2015 12:22:36 +0000
+ HHMAIL01.hh.imgtec.org (10.100.10.19) with Microsoft SMTP Server (TLS) id
+ 14.3.235.1; Wed, 2 Dec 2015 12:22:38 +0000
 Received: from qyousef-linux.le.imgtec.org (192.168.154.94) by
  LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.210.2; Wed, 2 Dec 2015 12:22:35 +0000
+ 14.3.210.2; Wed, 2 Dec 2015 12:22:37 +0000
 From:   Qais Yousef <qais.yousef@imgtec.com>
 To:     <linux-kernel@vger.kernel.org>
 CC:     <tglx@linutronix.de>, <jason@lakedaemon.net>,
         <marc.zyngier@arm.com>, <jiang.liu@linux.intel.com>,
         <ralf@linux-mips.org>, <linux-mips@linux-mips.org>,
         Qais Yousef <qais.yousef@imgtec.com>
-Subject: [PATCH v3 18/19] MIPS: Delete smp-gic.c
-Date:   Wed, 2 Dec 2015 12:21:59 +0000
-Message-ID: <1449058920-21011-19-git-send-email-qais.yousef@imgtec.com>
+Subject: [PATCH v3 19/19] irqchip/mips-gic: Add new DT property to reserve IPIs
+Date:   Wed, 2 Dec 2015 12:22:00 +0000
+Message-ID: <1449058920-21011-20-git-send-email-qais.yousef@imgtec.com>
 X-Mailer: git-send-email 2.1.0
 In-Reply-To: <1449058920-21011-1-git-send-email-qais.yousef@imgtec.com>
 References: <1449058920-21011-1-git-send-email-qais.yousef@imgtec.com>
@@ -31,7 +31,7 @@ Return-Path: <Qais.Yousef@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50288
+X-archive-position: 50289
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,136 +48,72 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-We now have a generic IPI layer that will use GIC automatically
-if it's compiled in.
+The new property will allow to specify the range of GIC hwirqs to use for IPIs.
+
+This is an optinal property. We preserve the previous behaviour of allocating
+the last 2 * gic_vpes if it's not specified or DT is not supported.
 
 Signed-off-by: Qais Yousef <qais.yousef@imgtec.com>
+Acked-by: Rob Herring <robh@kernel.org>
 ---
- arch/mips/Kconfig          |  6 -----
- arch/mips/kernel/Makefile  |  1 -
- arch/mips/kernel/smp-gic.c | 64 ----------------------------------------------
- 3 files changed, 71 deletions(-)
- delete mode 100644 arch/mips/kernel/smp-gic.c
+ .../devicetree/bindings/interrupt-controller/mips-gic.txt    |  7 +++++++
+ drivers/irqchip/irq-mips-gic.c                               | 12 ++++++++++--
+ 2 files changed, 17 insertions(+), 2 deletions(-)
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index e3aa5b0b4ef1..5a73c1217af7 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -2123,7 +2123,6 @@ config MIPS_MT_SMP
- 	select CPU_MIPSR2_IRQ_VI
- 	select CPU_MIPSR2_IRQ_EI
- 	select SYNC_R4K
--	select MIPS_GIC_IPI
- 	select MIPS_MT
- 	select SMP
- 	select SMP_UP
-@@ -2221,7 +2220,6 @@ config MIPS_VPE_APSP_API_MT
- config MIPS_CMP
- 	bool "MIPS CMP framework support (DEPRECATED)"
- 	depends on SYS_SUPPORTS_MIPS_CMP && !CPU_MIPSR6
--	select MIPS_GIC_IPI
- 	select SMP
- 	select SYNC_R4K
- 	select SYS_SUPPORTS_SMP
-@@ -2241,7 +2239,6 @@ config MIPS_CPS
- 	select MIPS_CM
- 	select MIPS_CPC
- 	select MIPS_CPS_PM if HOTPLUG_CPU
--	select MIPS_GIC_IPI
- 	select SMP
- 	select SYNC_R4K if (CEVT_R4K || CSRC_R4K)
- 	select SYS_SUPPORTS_HOTPLUG_CPU
-@@ -2259,9 +2256,6 @@ config MIPS_CPS_PM
- 	select MIPS_CPC
- 	bool
+diff --git a/Documentation/devicetree/bindings/interrupt-controller/mips-gic.txt b/Documentation/devicetree/bindings/interrupt-controller/mips-gic.txt
+index aae4c384ee1f..173595305e26 100644
+--- a/Documentation/devicetree/bindings/interrupt-controller/mips-gic.txt
++++ b/Documentation/devicetree/bindings/interrupt-controller/mips-gic.txt
+@@ -23,6 +23,12 @@ Optional properties:
+ - mti,reserved-cpu-vectors : Specifies the list of CPU interrupt vectors
+   to which the GIC may not route interrupts.  Valid values are 2 - 7.
+   This property is ignored if the CPU is started in EIC mode.
++- mti,reserved-ipi-vectors : Specifies the range of GIC interrupts that are
++  reserved for IPIs.
++  It accepts 2 values, the 1st is the starting interrupt and the 2nd is the size
++  of the reserved range.
++  If not specified, the driver will allocate the last 2 * number of VPEs in the
++  system.
  
--config MIPS_GIC_IPI
--	bool
--
- config MIPS_CM
- 	bool
+ Required properties for timer sub-node:
+ - compatible : Should be "mti,gic-timer".
+@@ -44,6 +50,7 @@ Example:
+ 		#interrupt-cells = <3>;
  
-diff --git a/arch/mips/kernel/Makefile b/arch/mips/kernel/Makefile
-index d982be1ea1c3..a4bfc41d46b5 100644
---- a/arch/mips/kernel/Makefile
-+++ b/arch/mips/kernel/Makefile
-@@ -51,7 +51,6 @@ obj-$(CONFIG_MIPS_MT_FPAFF)	+= mips-mt-fpaff.o
- obj-$(CONFIG_MIPS_MT_SMP)	+= smp-mt.o
- obj-$(CONFIG_MIPS_CMP)		+= smp-cmp.o
- obj-$(CONFIG_MIPS_CPS)		+= smp-cps.o cps-vec.o
--obj-$(CONFIG_MIPS_GIC_IPI)	+= smp-gic.o
- obj-$(CONFIG_MIPS_SPRAM)	+= spram.o
+ 		mti,reserved-cpu-vectors = <7>;
++		mti,reserved-ipi-vectors = <40 8>;
  
- obj-$(CONFIG_MIPS_VPE_LOADER)	+= vpe.o
-diff --git a/arch/mips/kernel/smp-gic.c b/arch/mips/kernel/smp-gic.c
-deleted file mode 100644
-index 5f0ab5bcd01e..000000000000
---- a/arch/mips/kernel/smp-gic.c
-+++ /dev/null
-@@ -1,64 +0,0 @@
--/*
-- * Copyright (C) 2013 Imagination Technologies
-- * Author: Paul Burton <paul.burton@imgtec.com>
-- *
-- * Based on smp-cmp.c:
-- *  Copyright (C) 2007 MIPS Technologies, Inc.
-- *  Author: Chris Dearman (chris@mips.com)
-- *
-- * This program is free software; you can redistribute it and/or modify it
-- * under the terms of the GNU General Public License as published by the
-- * Free Software Foundation;  either version 2 of the  License, or (at your
-- * option) any later version.
-- */
--
--#include <linux/irqchip/mips-gic.h>
--#include <linux/printk.h>
--
--#include <asm/mips-cpc.h>
--#include <asm/smp-ops.h>
--
--void gic_send_ipi_single(int cpu, unsigned int action)
--{
--	unsigned long flags;
--	unsigned int intr;
--	unsigned int core = cpu_data[cpu].core;
--
--	pr_debug("CPU%d: %s cpu %d action %u status %08x\n",
--		 smp_processor_id(), __func__, cpu, action, read_c0_status());
--
--	local_irq_save(flags);
--
--	switch (action) {
--	case SMP_CALL_FUNCTION:
--		intr = plat_ipi_call_int_xlate(cpu);
--		break;
--
--	case SMP_RESCHEDULE_YOURSELF:
--		intr = plat_ipi_resched_int_xlate(cpu);
--		break;
--
--	default:
--		BUG();
--	}
--
--	gic_send_ipi(intr);
--
--	if (mips_cpc_present() && (core != current_cpu_data.core)) {
--		while (!cpumask_test_cpu(cpu, &cpu_coherent_mask)) {
--			mips_cpc_lock_other(core);
--			write_cpc_co_cmd(CPC_Cx_CMD_PWRUP);
--			mips_cpc_unlock_other();
--		}
--	}
--
--	local_irq_restore(flags);
--}
--
--void gic_send_ipi_mask(const struct cpumask *mask, unsigned int action)
--{
--	unsigned int i;
--
--	for_each_cpu(i, mask)
--		gic_send_ipi_single(i, action);
--}
+ 		timer {
+ 			compatible = "mti,gic-timer";
+diff --git a/drivers/irqchip/irq-mips-gic.c b/drivers/irqchip/irq-mips-gic.c
+index 77200da9d8d3..055aa513295c 100644
+--- a/drivers/irqchip/irq-mips-gic.c
++++ b/drivers/irqchip/irq-mips-gic.c
+@@ -944,6 +944,7 @@ static void __init __gic_init(unsigned long gic_base_addr,
+ 			      struct device_node *node)
+ {
+ 	unsigned int gicconfig;
++	unsigned int v[2];
+ 
+ 	gic_base = ioremap_nocache(gic_base_addr, gic_addrspace_size);
+ 
+@@ -1012,8 +1013,15 @@ static void __init __gic_init(unsigned long gic_base_addr,
+ 
+ 	gic_ipi_domain->bus_token = DOMAIN_BUS_IPI;
+ 
+-	/* Make the last 2 * NR_CPUS available for IPIs */
+-	bitmap_set(ipi_resrv, gic_shared_intrs - 2 * gic_vpes, 2 * gic_vpes);
++	if (node &&
++	    !of_property_read_u32_array(node, "mti,reserved-ipi-vectors", v, 2)) {
++		bitmap_set(ipi_resrv, v[0], v[1]);
++	} else {
++		/* Make the last 2 * gic_vpes available for IPIs */
++		bitmap_set(ipi_resrv,
++			   gic_shared_intrs - 2 * gic_vpes,
++			   2 * gic_vpes);
++	}
+ 
+ 	gic_basic_init();
+ }
 -- 
 2.1.0

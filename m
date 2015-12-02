@@ -1,44 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Dec 2015 21:44:06 +0100 (CET)
-Received: from proxima.lp0.eu ([81.2.80.65]:41846 "EHLO proxima.lp0.eu"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Dec 2015 22:03:32 +0100 (CET)
+Received: from proxima.lp0.eu ([81.2.80.65]:42293 "EHLO proxima.lp0.eu"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27012497AbbLBUoETs8GM (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 2 Dec 2015 21:44:04 +0100
+        id S27008265AbbLBVDa4xngM (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 2 Dec 2015 22:03:30 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=fire.lp0.eu; s=exim;
-        h=Content-Transfer-Encoding:Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:Cc:References:To:Subject; bh=f7S99wPx4zbQYLNehnlSzLcQXQ7vm7w+Y2lX3kQwx+Q=;
-        b=HScBAt5gXGa4+C8p6vLEQTSKnM2mCevOyxU+qEJnBQERbUgeirz9XyWpBnGw14SjirJg1A2m+7Mvi9ETHwifcoZ22mkK9my3p/pSYJjA46J4MMtakeV+GdqP+WxYnjhq8rPqWhA3zDrS/1aue6IxtlPGS6RawMndCy2sy6ovDHiLwtAfh2iutbcwBh3mjkp5leVpeq0RnxTxgV36c7Gxenvz7+QclYptAAtgsaE/bfIQWEdG36/sXWfHfSn/Knyt8XalftjHioJml8yC+hEzq4BRvE7DW7EmdzgvBZLHRP2zZxnQPQ5vyfxk6hcKPKbX7LDm6T5Kjx0pQ4QvjWpGVg==;
-Received: from redrum.lp0.eu ([2001:8b0:ffea:0:2e0:81ff:fe4d:2bec]:48861)
+        h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:Message-ID:Cc:To:Subject:From; bh=ochK14C6rCnhWaOC716hjQfMFs6DOFFtXdv894yrer4=;
+        b=R/qejRkdFLoE+bNs+a9RfXxTsJ1HUOHEr7BImUxAIzKlfKbWVDR1CavaBAwedtVcy+Ftx0s2b5r8xG+s+J2RVMDZA90az36VEPoO+2yiZiD1myrwPTAi1Uy5UJzqvsIE6vz5QdRtKcbqTK2BW2krCNXaDeNddghjqjja9dx8XqTNMs3T9ap822txjnQESg8zYFz3N3annszlE6V38pF7rIUbVk28qXQrDmg6jRtDbfTcv44KGo7eM2t5xxvoXKv6TBcKNUxXURkM9FA4BQN6mEfs56MEzBayVto+EAddJEzKFXSFDP3apD848mpPrU6hYo4/AXxPSgH/E9lQVuh0DA==;
+Received: from redrum.lp0.eu ([2001:8b0:ffea:0:2e0:81ff:fe4d:2bec]:48890 ident=simon)
         by proxima.lp0.eu ([2001:8b0:ffea:0:205:b4ff:fe12:530]:465)
         with esmtpsav (UNKNOWN:DHE-RSA-AES256-SHA:256/CN=Simon Arlott)
-        id 1a4EFj-0005r3-Vr (Exim); Wed, 02 Dec 2015 20:43:52 +0000
-Subject: Re: [PATCH 2/2] reset: bcm63xx: Add support for the BCM63xx
- soft-reset controller
-To:     Florian Fainelli <f.fainelli@gmail.com>
-References: <565CB83B.7010000@simon.arlott.org.uk>
- <565CB86F.4040303@simon.arlott.org.uk>
- <CAGVrzcbjdsbGLuH6T6DSoC5SGN5WDFdM1h1xB5nQyX8wm-Esow@mail.gmail.com>
-Cc:     Philipp Zabel <p.zabel@pengutronix.de>,
+        id 1a4EYZ-0006nl-I8 (Exim); Wed, 02 Dec 2015 21:03:19 +0000
+From:   Simon Arlott <simon@fire.lp0.eu>
+Subject: [PATCH (v2) 1/2] reset: Add brcm,bcm6345-reset device tree binding
+To:     Philipp Zabel <p.zabel@pengutronix.de>,
         Kevin Cernekee <cernekee@gmail.com>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+Cc:     linux-kernel@vger.kernel.org,
         MIPS Mailing List <linux-mips@linux-mips.org>,
         Rob Herring <robh+dt@kernel.org>,
         Pawel Moll <pawel.moll@arm.com>,
         Mark Rutland <mark.rutland@arm.com>,
-        Ian Campbell <ijc+devicetree@hellion.org.uk>
-From:   Simon Arlott <simon@fire.lp0.eu>
-Message-ID: <565F5805.6010506@simon.arlott.org.uk>
-Date:   Wed, 2 Dec 2015 20:43:49 +0000
+        Ian Campbell <ijc+devicetree@hellion.org.uk>,
+        Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Message-ID: <565F5C96.5090700@simon.arlott.org.uk>
+Date:   Wed, 2 Dec 2015 21:03:18 +0000
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
  Thunderbird/38.3.0
 MIME-Version: 1.0
-In-Reply-To: <CAGVrzcbjdsbGLuH6T6DSoC5SGN5WDFdM1h1xB5nQyX8wm-Esow@mail.gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
 Return-Path: <simon@fire.lp0.eu>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50298
+X-archive-position: 50299
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -55,64 +51,60 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 02/12/15 18:03, Florian Fainelli wrote:
-> 2015-11-30 12:58 GMT-08:00 Simon Arlott <simon@fire.lp0.eu>:
->> The BCM63xx contains a soft-reset controller activated by setting
->> a bit (that must previously have cleared).
->>
->> Signed-off-by: Simon Arlott <simon@fire.lp0.eu>
->> ---
->>  MAINTAINERS                   |   1 +
->>  drivers/reset/Kconfig         |   9 +++
->>  drivers/reset/Makefile        |   1 +
->>  drivers/reset/reset-bcm63xx.c | 134 ++++++++++++++++++++++++++++++++++++++++++
->>  4 files changed, 145 insertions(+)
->>  create mode 100644 drivers/reset/reset-bcm63xx.c
-> 
-> 
-> Could you create a bcm directory and then add your reset-bcm63xx.c
-> file there? I have a pending submission for the BCM63138 reset
-> controller which is not at all using the same structure and will share
-> nothing with your driver.
-> 
+Add device tree binding for the BCM6345 soft reset controller.
 
-Ok, I'll call it reset-bcm6345.c to avoid confusion.
+The BCM6345 contains a soft-reset controller activated by setting
+a bit (that must previously have cleared).
 
-> 
->> +static int bcm63xx_reset_xlate(struct reset_controller_dev *rcdev,
->> +       const struct of_phandle_args *reset_spec)
->> +{
->> +       struct bcm63xx_reset_priv *priv = to_bcm63xx_reset_priv(rcdev);
->> +
->> +       if (WARN_ON(reset_spec->args_count != rcdev->of_reset_n_cells))
->> +               return -EINVAL;
->> +
->> +       if (reset_spec->args[0] >= rcdev->nr_resets)
->> +               return -EINVAL;
-> 
-> Should not these two things be moved to the core reset controller code
-> based on the #reset-cells value?
-> 
+Signed-off-by: Simon Arlott <simon@fire.lp0.eu>
+---
+Renamed to bcm6345, removed "mask" property.
 
-This has already been removed from the next version of the patch.
+ .../bindings/reset/brcm,bcm6345-reset.txt          | 33 ++++++++++++++++++++++
+ 1 file changed, 33 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/reset/brcm,bcm6345-reset.txt
 
-> 
->> +       if (of_property_read_u32(np, "offset", &priv->offset))
->> +               return -EINVAL;
->> +
->> +       /* valid reset bits */
->> +       if (of_property_read_u32(np, "mask", &priv->mask))
->> +               priv->mask = 0xffffffff;
->> +
->> +       priv->rcdev.owner = THIS_MODULE;
->> +       priv->rcdev.ops = &bcm63xx_reset_ops;
->> +       priv->rcdev.nr_resets = 32;
-> 
-> Should not that come from Device Tree, or be computed based on the
-> mask property, like hweight_long() or something along these lines?
-
-The "mask" property has been removed. It will assume 32 resets and rely
-on the rest of the DT to only refer to valid bits.
+diff --git a/Documentation/devicetree/bindings/reset/brcm,bcm6345-reset.txt b/Documentation/devicetree/bindings/reset/brcm,bcm6345-reset.txt
+new file mode 100644
+index 0000000..bb9ca6e
+--- /dev/null
++++ b/Documentation/devicetree/bindings/reset/brcm,bcm6345-reset.txt
+@@ -0,0 +1,33 @@
++Broadcom BCM6345 reset controller
++
++The BCM6345 contains a basic soft reset controller in the perf register
++set which resets components using a bit in a register.
++
++Please also refer to reset.txt in this directory for common reset
++controller binding usage.
++
++Required properties:
++- compatible:	Should be "brcm,bcm<soc>-reset", "brcm,bcm6345-reset"
++- regmap:	The register map phandle
++- offset:	Offset in the register map for the reset register (in bytes)
++- #reset-cells:	Must be set to 1
++
++Example:
++
++periph_soft_rst: reset-controller {
++	compatible = "brcm,bcm63168-reset", "brcm,bcm6345-reset";
++	regmap = <&periph_cntl>;
++	offset = <0x10>;
++
++	#reset-cells = <1>;
++};
++
++usbh: usbphy@10002700 {
++	compatible = "brcm,bcm63168-usbh";
++	reg = <0x10002700 0x38>;
++	clocks = <&periph_clk 13>, <&timer_clk 18>;
++	resets = <&periph_soft_rst 6>;
++	power-supply = <&power_usbh>;
++	#phy-cells = <0>;
++};
++
+-- 
+2.1.4
 
 -- 
 Simon Arlott

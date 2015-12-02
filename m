@@ -1,41 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Dec 2015 13:28:33 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:22169 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27012122AbbLBMWoI88hA (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Dec 2015 13:22:44 +0100
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Websense Email Security Gateway with ESMTPS id CFBA2473CF721;
-        Wed,  2 Dec 2015 12:22:35 +0000 (GMT)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- HHMAIL01.hh.imgtec.org (10.100.10.19) with Microsoft SMTP Server (TLS) id
- 14.3.235.1; Wed, 2 Dec 2015 12:22:38 +0000
-Received: from qyousef-linux.le.imgtec.org (192.168.154.94) by
- LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.210.2; Wed, 2 Dec 2015 12:22:37 +0000
-From:   Qais Yousef <qais.yousef@imgtec.com>
-To:     <linux-kernel@vger.kernel.org>
-CC:     <tglx@linutronix.de>, <jason@lakedaemon.net>,
-        <marc.zyngier@arm.com>, <jiang.liu@linux.intel.com>,
-        <ralf@linux-mips.org>, <linux-mips@linux-mips.org>,
-        Qais Yousef <qais.yousef@imgtec.com>
-Subject: [PATCH v3 19/19] irqchip/mips-gic: Add new DT property to reserve IPIs
-Date:   Wed, 2 Dec 2015 12:22:00 +0000
-Message-ID: <1449058920-21011-20-git-send-email-qais.yousef@imgtec.com>
-X-Mailer: git-send-email 2.1.0
-In-Reply-To: <1449058920-21011-1-git-send-email-qais.yousef@imgtec.com>
-References: <1449058920-21011-1-git-send-email-qais.yousef@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Dec 2015 14:23:29 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:57574 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S27011789AbbLBNX1IoguQ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 2 Dec 2015 14:23:27 +0100
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.15.2/8.14.8) with ESMTP id tB2DNOUF025032;
+        Wed, 2 Dec 2015 14:23:24 +0100
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.15.2/8.15.2/Submit) id tB2DNKWM025031;
+        Wed, 2 Dec 2015 14:23:20 +0100
+Date:   Wed, 2 Dec 2015 14:23:20 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Yang Shi <yang.shi@linaro.org>
+Cc:     akpm@linux-foundation.org, rostedt@goodmis.org, mingo@redhat.com,
+        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+        linaro-kernel@lists.linaro.org, linux-mips@linux-mips.org
+Subject: Re: [PATCH 4/7] mips: mm/gup: add gup trace points
+Message-ID: <20151202132320.GA24730@linux-mips.org>
+References: <1449011177-30686-1-git-send-email-yang.shi@linaro.org>
+ <1449011177-30686-5-git-send-email-yang.shi@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.154.94]
-Return-Path: <Qais.Yousef@imgtec.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1449011177-30686-5-git-send-email-yang.shi@linaro.org>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50289
+X-archive-position: 50290
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: qais.yousef@imgtec.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,72 +45,47 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The new property will allow to specify the range of GIC hwirqs to use for IPIs.
+On Tue, Dec 01, 2015 at 03:06:14PM -0800, Yang Shi wrote:
 
-This is an optinal property. We preserve the previous behaviour of allocating
-the last 2 * gic_vpes if it's not specified or DT is not supported.
+>  arch/mips/mm/gup.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
+> 
+> diff --git a/arch/mips/mm/gup.c b/arch/mips/mm/gup.c
+> index 349995d..3c5b8c8 100644
+> --- a/arch/mips/mm/gup.c
+> +++ b/arch/mips/mm/gup.c
+> @@ -12,6 +12,9 @@
+>  #include <linux/swap.h>
+>  #include <linux/hugetlb.h>
+>  
+> +#define CREATE_TRACE_POINTS
+> +#include <trace/events/gup.h>
+> +
+>  #include <asm/cpu-features.h>
+>  #include <asm/pgtable.h>
+>  
+> @@ -211,6 +214,8 @@ int __get_user_pages_fast(unsigned long start, int nr_pages, int write,
+>  					(void __user *)start, len)))
+>  		return 0;
+>  
+> +	trace_gup_get_user_pages_fast(start, nr_pages, write, pages);
+> +
+>  	/*
+>  	 * XXX: batch / limit 'nr', to avoid large irq off latency
+>  	 * needs some instrumenting to determine the common sizes used by
+> @@ -277,6 +282,8 @@ int get_user_pages_fast(unsigned long start, int nr_pages, int write,
+>  	if (end < start || cpu_has_dc_aliases)
+>  		goto slow_irqon;
+>  
+> +	trace_gup_get_user_pages_fast(start, nr_pages, write, pages);
+> +
+>  	/* XXX: batch / limit 'nr' */
+>  	local_irq_disable();
+>  	pgdp = pgd_offset(mm, addr);
 
-Signed-off-by: Qais Yousef <qais.yousef@imgtec.com>
-Acked-by: Rob Herring <robh@kernel.org>
----
- .../devicetree/bindings/interrupt-controller/mips-gic.txt    |  7 +++++++
- drivers/irqchip/irq-mips-gic.c                               | 12 ++++++++++--
- 2 files changed, 17 insertions(+), 2 deletions(-)
+Acked-by: Ralf Baechle <ralf@linux-mips.org>
 
-diff --git a/Documentation/devicetree/bindings/interrupt-controller/mips-gic.txt b/Documentation/devicetree/bindings/interrupt-controller/mips-gic.txt
-index aae4c384ee1f..173595305e26 100644
---- a/Documentation/devicetree/bindings/interrupt-controller/mips-gic.txt
-+++ b/Documentation/devicetree/bindings/interrupt-controller/mips-gic.txt
-@@ -23,6 +23,12 @@ Optional properties:
- - mti,reserved-cpu-vectors : Specifies the list of CPU interrupt vectors
-   to which the GIC may not route interrupts.  Valid values are 2 - 7.
-   This property is ignored if the CPU is started in EIC mode.
-+- mti,reserved-ipi-vectors : Specifies the range of GIC interrupts that are
-+  reserved for IPIs.
-+  It accepts 2 values, the 1st is the starting interrupt and the 2nd is the size
-+  of the reserved range.
-+  If not specified, the driver will allocate the last 2 * number of VPEs in the
-+  system.
- 
- Required properties for timer sub-node:
- - compatible : Should be "mti,gic-timer".
-@@ -44,6 +50,7 @@ Example:
- 		#interrupt-cells = <3>;
- 
- 		mti,reserved-cpu-vectors = <7>;
-+		mti,reserved-ipi-vectors = <40 8>;
- 
- 		timer {
- 			compatible = "mti,gic-timer";
-diff --git a/drivers/irqchip/irq-mips-gic.c b/drivers/irqchip/irq-mips-gic.c
-index 77200da9d8d3..055aa513295c 100644
---- a/drivers/irqchip/irq-mips-gic.c
-+++ b/drivers/irqchip/irq-mips-gic.c
-@@ -944,6 +944,7 @@ static void __init __gic_init(unsigned long gic_base_addr,
- 			      struct device_node *node)
- {
- 	unsigned int gicconfig;
-+	unsigned int v[2];
- 
- 	gic_base = ioremap_nocache(gic_base_addr, gic_addrspace_size);
- 
-@@ -1012,8 +1013,15 @@ static void __init __gic_init(unsigned long gic_base_addr,
- 
- 	gic_ipi_domain->bus_token = DOMAIN_BUS_IPI;
- 
--	/* Make the last 2 * NR_CPUS available for IPIs */
--	bitmap_set(ipi_resrv, gic_shared_intrs - 2 * gic_vpes, 2 * gic_vpes);
-+	if (node &&
-+	    !of_property_read_u32_array(node, "mti,reserved-ipi-vectors", v, 2)) {
-+		bitmap_set(ipi_resrv, v[0], v[1]);
-+	} else {
-+		/* Make the last 2 * gic_vpes available for IPIs */
-+		bitmap_set(ipi_resrv,
-+			   gic_shared_intrs - 2 * gic_vpes,
-+			   2 * gic_vpes);
-+	}
- 
- 	gic_basic_init();
- }
--- 
-2.1.0
+Please feel free to merge this upstream with the remainder of the
+series once it's been acked.
+
+  Ralf

@@ -1,38 +1,75 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Dec 2015 14:23:29 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:57574 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27011789AbbLBNX1IoguQ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 2 Dec 2015 14:23:27 +0100
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.15.2/8.14.8) with ESMTP id tB2DNOUF025032;
-        Wed, 2 Dec 2015 14:23:24 +0100
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.15.2/8.15.2/Submit) id tB2DNKWM025031;
-        Wed, 2 Dec 2015 14:23:20 +0100
-Date:   Wed, 2 Dec 2015 14:23:20 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Yang Shi <yang.shi@linaro.org>
-Cc:     akpm@linux-foundation.org, rostedt@goodmis.org, mingo@redhat.com,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        linaro-kernel@lists.linaro.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH 4/7] mips: mm/gup: add gup trace points
-Message-ID: <20151202132320.GA24730@linux-mips.org>
-References: <1449011177-30686-1-git-send-email-yang.shi@linaro.org>
- <1449011177-30686-5-git-send-email-yang.shi@linaro.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Dec 2015 17:22:19 +0100 (CET)
+Received: from smtp-out6.electric.net ([192.162.217.183]:58386 "EHLO
+        smtp-out6.electric.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012198AbbLBQWRk8yse (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Dec 2015 17:22:17 +0100
+Received: from 1a4AAR-00056I-VU by out6c.electric.net with emc1-ok (Exim 4.85)
+        (envelope-from <David.Laight@ACULAB.COM>)
+        id 1a4AAT-0005In-Vy; Wed, 02 Dec 2015 08:22:09 -0800
+Received: by emcmailer; Wed, 02 Dec 2015 08:22:09 -0800
+Received: from [213.249.233.130] (helo=AcuExch.aculab.com)
+        by out6c.electric.net with esmtps (TLSv1:AES128-SHA:128)
+        (Exim 4.85)
+        (envelope-from <David.Laight@ACULAB.COM>)
+        id 1a4AAR-00056I-VU; Wed, 02 Dec 2015 08:22:07 -0800
+Received: from ACUEXCH.Aculab.com ([::1]) by AcuExch.aculab.com ([::1]) with
+ mapi id 14.03.0123.003; Wed, 2 Dec 2015 16:20:42 +0000
+From:   David Laight <David.Laight@ACULAB.COM>
+To:     'yalin wang' <yalin.wang2010@gmail.com>,
+        Petr Mladek <pmladek@suse.com>
+CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jiri Kosina <jkosina@suse.com>,
+        "linux-cris-kernel@axis.com" <linux-cris-kernel@axis.com>,
+        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        "x86@kernel.org" <x86@kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        "adi-buildroot-devel@lists.sourceforge.net" 
+        <adi-buildroot-devel@lists.sourceforge.net>,
+        Ingo Molnar <mingo@redhat.com>,
+        "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
+        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
+        Russell King <rmk+kernel@arm.linux.org.uk>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+        "Thomas Gleixner" <tglx@linutronix.de>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>
+Subject: RE: [PATCH v2 5/5] printk/nmi: Increase the size of the temporary
+ buffer
+Thread-Topic: [PATCH v2 5/5] printk/nmi: Increase the size of the temporary
+ buffer
+Thread-Index: AQHRLMHRY5g5WKb0eUmhIi5CGO67i563383w
+Date:   Wed, 2 Dec 2015 16:20:41 +0000
+Message-ID: <063D6719AE5E284EB5DD2968C1650D6D1CBE1231@AcuExch.aculab.com>
+References: <1448622572-16900-1-git-send-email-pmladek@suse.com>
+ <1448622572-16900-6-git-send-email-pmladek@suse.com>
+ <81211733-2484-40A9-9D4A-644AA27FBC73@gmail.com>
+In-Reply-To: <81211733-2484-40A9-9D4A-644AA27FBC73@gmail.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.202.99.200]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1449011177-30686-5-git-send-email-yang.shi@linaro.org>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-Return-Path: <ralf@linux-mips.org>
+X-Outbound-IP: 213.249.233.130
+X-Env-From: David.Laight@ACULAB.COM
+X-PolicySMART: 3396946, 3397078
+X-Virus-Status: Scanned by VirusSMART (c)
+X-Virus-Status: Scanned by VirusSMART (s)
+Return-Path: <David.Laight@ACULAB.COM>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50290
+X-archive-position: 50291
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: David.Laight@ACULAB.COM
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,47 +82,12 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Dec 01, 2015 at 03:06:14PM -0800, Yang Shi wrote:
-
->  arch/mips/mm/gup.c | 7 +++++++
->  1 file changed, 7 insertions(+)
-> 
-> diff --git a/arch/mips/mm/gup.c b/arch/mips/mm/gup.c
-> index 349995d..3c5b8c8 100644
-> --- a/arch/mips/mm/gup.c
-> +++ b/arch/mips/mm/gup.c
-> @@ -12,6 +12,9 @@
->  #include <linux/swap.h>
->  #include <linux/hugetlb.h>
->  
-> +#define CREATE_TRACE_POINTS
-> +#include <trace/events/gup.h>
-> +
->  #include <asm/cpu-features.h>
->  #include <asm/pgtable.h>
->  
-> @@ -211,6 +214,8 @@ int __get_user_pages_fast(unsigned long start, int nr_pages, int write,
->  					(void __user *)start, len)))
->  		return 0;
->  
-> +	trace_gup_get_user_pages_fast(start, nr_pages, write, pages);
-> +
->  	/*
->  	 * XXX: batch / limit 'nr', to avoid large irq off latency
->  	 * needs some instrumenting to determine the common sizes used by
-> @@ -277,6 +282,8 @@ int get_user_pages_fast(unsigned long start, int nr_pages, int write,
->  	if (end < start || cpu_has_dc_aliases)
->  		goto slow_irqon;
->  
-> +	trace_gup_get_user_pages_fast(start, nr_pages, write, pages);
-> +
->  	/* XXX: batch / limit 'nr' */
->  	local_irq_disable();
->  	pgdp = pgd_offset(mm, addr);
-
-Acked-by: Ralf Baechle <ralf@linux-mips.org>
-
-Please feel free to merge this upstream with the remainder of the
-series once it's been acked.
-
-  Ralf
+RnJvbTogeWFsaW4gd2FuZw0KPiBTZW50OiAzMCBOb3ZlbWJlciAyMDE1IDE2OjQyDQo+ID4gT24g
+Tm92IDI3LCAyMDE1LCBhdCAxOTowOSwgUGV0ciBNbGFkZWsgPHBtbGFkZWtAc3VzZS5jb20+IHdy
+b3RlOg0KPiA+DQo+ID4gVGVzdGluZyBoYXMgc2hvd24gdGhhdCB0aGUgYmFja3RyYWNlIHNvbWV0
+aW1lcyBkb2VzIG5vdCBmaXQNCj4gPiBpbnRvIHRoZSA0a0IgdGVtcG9yYXJ5IGJ1ZmZlciB0aGF0
+IGlzIHVzZWQgaW4gTk1JIGNvbnRleHQuDQo+ID4NCj4gPiBUaGUgd2FybmluZ3MgYXJlIGdvbmUg
+d2hlbiBJIGRvdWJsZSB0aGUgdGVtcG9yYXJ5IGJ1ZmZlciBzaXplLg0KDQpZb3UgYXJlIHdhc3Rp
+bmcgYSBsb3Qgb2YgbWVtb3J5IGZvciBzb21ldGhpbmcgdGhhdCBpcyBpbmZyZXF1ZW50bHkgdXNl
+ZC4NClRoZXJlIG91Z2h0IHRvIGJlIHNvbWUgd2F5IG9mIGNvcHlpbmcgcGFydGlhbCB0cmFjZWJh
+Y2tzIGludG8gdGhlDQptYWluIGJ1ZmZlci4NCg0KCURhdmlkDQoNCg==

@@ -1,26 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Dec 2015 13:24:59 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:65357 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Dec 2015 13:25:21 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:28109 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27011996AbbLBMW1ymw2A (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Dec 2015 13:22:27 +0100
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Websense Email Security Gateway with ESMTPS id 2DAE2DFAD412A;
-        Wed,  2 Dec 2015 12:22:24 +0000 (GMT)
+        with ESMTP id S27012003AbbLBMW23-eOA (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Dec 2015 13:22:28 +0100
+Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
+        by Websense Email Security Gateway with ESMTPS id DEBECC2B523DB;
+        Wed,  2 Dec 2015 12:22:19 +0000 (GMT)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- HHMAIL01.hh.imgtec.org (10.100.10.19) with Microsoft SMTP Server (TLS) id
- 14.3.235.1; Wed, 2 Dec 2015 12:22:26 +0000
+ hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
+ 14.3.235.1; Wed, 2 Dec 2015 12:22:22 +0000
 Received: from qyousef-linux.le.imgtec.org (192.168.154.94) by
  LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.210.2; Wed, 2 Dec 2015 12:22:26 +0000
+ 14.3.210.2; Wed, 2 Dec 2015 12:22:21 +0000
 From:   Qais Yousef <qais.yousef@imgtec.com>
 To:     <linux-kernel@vger.kernel.org>
 CC:     <tglx@linutronix.de>, <jason@lakedaemon.net>,
         <marc.zyngier@arm.com>, <jiang.liu@linux.intel.com>,
         <ralf@linux-mips.org>, <linux-mips@linux-mips.org>,
         Qais Yousef <qais.yousef@imgtec.com>
-Subject: [PATCH v3 11/19] genirq: Implement ipi_send_{mask, single}()
-Date:   Wed, 2 Dec 2015 12:21:52 +0000
-Message-ID: <1449058920-21011-12-git-send-email-qais.yousef@imgtec.com>
+Subject: [PATCH v3 08/19] genirq: Add a new generic IPI reservation code to irq core
+Date:   Wed, 2 Dec 2015 12:21:49 +0000
+Message-ID: <1449058920-21011-9-git-send-email-qais.yousef@imgtec.com>
 X-Mailer: git-send-email 2.1.0
 In-Reply-To: <1449058920-21011-1-git-send-email-qais.yousef@imgtec.com>
 References: <1449058920-21011-1-git-send-email-qais.yousef@imgtec.com>
@@ -31,7 +31,7 @@ Return-Path: <Qais.Yousef@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50278
+X-archive-position: 50279
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,202 +48,181 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add APIs to send single or mask IPI. We have 2 variants, one that uses cpumask
-and to be used by arch code to send regular SMP IPIs. And another that uses
-ipi_mask to be used by drivers to send IPIs to coprocessors.
+Add a generic mechanism to dynamically allocate an IPI.
+
+With this change the user can call irq_reserve_ipi() to dynamically allocate an
+IPI and use the associated virq to send one to 1 or more cpus.
 
 Signed-off-by: Qais Yousef <qais.yousef@imgtec.com>
 ---
- include/linux/irq.h |   5 ++
- kernel/irq/ipi.c    | 165 ++++++++++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 170 insertions(+)
+ include/linux/irqdomain.h |   6 +++
+ kernel/irq/ipi.c          | 126 ++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 132 insertions(+)
 
-diff --git a/include/linux/irq.h b/include/linux/irq.h
-index b0556c5787d7..f521f1ac36d4 100644
---- a/include/linux/irq.h
-+++ b/include/linux/irq.h
-@@ -988,4 +988,9 @@ irq_hw_number_t irq_ipi_mapping_get_hwirq(struct ipi_mapping *map,
+diff --git a/include/linux/irqdomain.h b/include/linux/irqdomain.h
+index fcafae8e3aaf..4277b2918052 100644
+--- a/include/linux/irqdomain.h
++++ b/include/linux/irqdomain.h
+@@ -39,6 +39,7 @@ struct irq_domain;
+ struct of_device_id;
+ struct irq_chip;
+ struct irq_data;
++struct ipi_mask;
  
- irq_hw_number_t ipi_get_hwirq(unsigned int irq, unsigned int cpu);
+ /* Number of irqs reserved for a legacy isa controller */
+ #define NUM_ISA_INTERRUPTS	16
+@@ -338,6 +339,11 @@ int irq_domain_xlate_onetwocell(struct irq_domain *d, struct device_node *ctrlr,
+ 			const u32 *intspec, unsigned int intsize,
+ 			irq_hw_number_t *out_hwirq, unsigned int *out_type);
  
-+int __ipi_send_single(struct irq_desc *desc, unsigned int cpu);
-+int __ipi_send_mask(struct irq_desc *desc, const struct cpumask *dest);
-+int ipi_send_single(unsigned int virq, unsigned int cpu);
-+int ipi_send_mask(unsigned int virq, const struct cpumask *dest);
++/* IPI functions */
++unsigned int irq_reserve_ipi(struct irq_domain *domain,
++			     const struct cpumask *dest);
++void irq_destroy_ipi(unsigned int irq);
 +
- #endif /* _LINUX_IRQ_H */
+ /* V2 interfaces to support hierarchy IRQ domains. */
+ extern struct irq_data *irq_domain_get_irq_data(struct irq_domain *domain,
+ 						unsigned int virq);
 diff --git a/kernel/irq/ipi.c b/kernel/irq/ipi.c
-index 814162b72aed..02882ca8f336 100644
+index 8cf76852982f..250c1a96ca2d 100644
 --- a/kernel/irq/ipi.c
 +++ b/kernel/irq/ipi.c
-@@ -270,3 +270,168 @@ irq_hw_number_t ipi_get_hwirq(unsigned int irq, unsigned int cpu)
- 	return hwirq;
+@@ -8,6 +8,7 @@
+  */
+ 
+ #include <linux/irq.h>
++#include <linux/irqdomain.h>
+ #include <linux/slab.h>
+ 
+ /**
+@@ -107,3 +108,128 @@ irq_hw_number_t irq_ipi_mapping_get_hwirq(struct ipi_mapping *map,
+ 
+ 	return map->cpumap[cpu];
  }
- EXPORT_SYMBOL_GPL(ipi_get_hwirq);
 +
 +/**
-+ * __ipi_send_single - send an IPI to a target Linux SMP CPU
-+ * @desc: pointer to irq_desc of the IRQ
-+ * @cpu: dest CPU, must be the same or a subset of the mask passed to
-+ *        irq_reserve_ipi()
++ * irq_reserve_ipi() - setup an IPI to destination cpumask
++ * @domain: IPI domain
++ * @dest: cpumask of cpus to receive the IPI
 + *
-+ * Sends an IPI to a single smp cpu
-+ * This function is meant to be used from arch code to send single SMP IPI.
++ * Allocate a virq that can be used to send IPI to any CPU in dest mask.
 + *
-+ * Returns zero on success and negative error number on failure.
++ * On success it'll return linux irq number and 0 on failure
 + */
-+int __ipi_send_single(struct irq_desc *desc, unsigned int cpu)
++unsigned int irq_reserve_ipi(struct irq_domain *domain,
++			     const struct cpumask *dest)
 +{
-+	struct irq_data *data = irq_desc_get_irq_data(desc);
-+	struct irq_chip *chip = irq_data_get_irq_chip(data);
-+	const struct cpumask *dest = cpumask_of(cpu);
++	struct irq_data *data;
++	unsigned int nr_irqs, offset = 0;
++	int prev_cpu = -1, cpu;
++	int virq, i;
 +
-+#ifdef DEBUG
-+	/*
-+	 * Minimise the overhead by omitting the checks for Linux SMP IPIs.
-+	 * Since the callers should be ARCH code which is generally trusted,
-+	 * only check for errors when debugging.
-+	 */
-+	struct cpumask *ipimask = data ? irq_data_get_affinity_mask(data) : NULL;
-+
-+	if (!chip || !ipimask)
-+		return -EINVAL;
-+
-+	if (!chip->ipi_send_single && !chip->ipi_send_mask)
-+		return -EINVAL;
-+
-+	if (cpu > nr_cpu_ids)
-+		return -EINVAL;
-+
-+	if (!cpumask_test_cpu(cpu, ipimask))
-+		return -EINVAL;
-+#endif
-+
-+	if (chip->ipi_send_single)
-+		chip->ipi_send_single(data, cpu);
-+	else
-+		chip->ipi_send_mask(data, dest);
-+	return 0;
-+}
-+
-+/**
-+ * ipi_send_mask - send an IPI to target Linux SMP CPU(s)
-+ * @desc: pointer to irq_desc of the IRQ
-+ * @dest: dest CPU(s), must be the same or a subset of the mask passed to
-+ *        irq_reserve_ipi()
-+ *
-+ * Sends an IPI to all smp cpus in dest mask.
-+ * This function is meant to be used from arch code to send SMP IPIs.
-+ *
-+ * Returns zero on success and negative error number on failure.
-+ */
-+int __ipi_send_mask(struct irq_desc *desc, const struct cpumask *dest)
-+{
-+	struct irq_data *data = irq_desc_get_irq_data(desc);
-+	struct irq_chip *chip = irq_data_get_irq_chip(data);
-+	unsigned int cpu;
-+
-+#ifdef DEBUG
-+	/*
-+	 * Minimise the overhead by omitting the checks for Linux SMP IPIs.
-+	 * Since the callers should be ARCH code which is generally trusted,
-+	 * only check for errors when debugging.
-+	 */
-+	struct cpumask *ipimask = data ? irq_data_get_affinity_mask(data) : NULL;
-+
-+	if (!chip || !ipimask)
-+		return -EINVAL;
-+
-+	if (!chip->ipi_send_single && !chip->ipi_send_mask)
-+		return -EINVAL;
-+
-+	if (!cpumask_subset(dest, ipimask))
-+		return -EINVAL;
-+#endif
-+
-+	if (chip->ipi_send_mask) {
-+		chip->ipi_send_mask(data, dest);
++	if (domain == NULL) {
++		pr_warn("Must provide a valid IPI domain!\n");
 +		return 0;
 +	}
 +
-+	if (irq_domain_is_ipi_per_cpu(data->domain)) {
-+		unsigned int base_virq = data->irq;
-+		for_each_cpu(cpu, dest) {
-+			data = irq_get_irq_data(base_virq + cpu - data->common->ipi_offset);
-+			chip->ipi_send_single(data, cpu);
-+		}
-+	} else {
-+		for_each_cpu(cpu, dest)
-+			chip->ipi_send_single(data, cpu);
++	if (!irq_domain_is_ipi(domain)) {
++		pr_warn("Not an IPI domain!\n");
++		return 0;
 +	}
 +
++	if (!cpumask_subset(dest, cpu_possible_mask)) {
++		pr_warn("Can't reserve an IPI outside cpu_possible_mask range\n");
++		return 0;
++	}
++
++	nr_irqs = cpumask_weight(dest);
++	if (!nr_irqs) {
++		pr_warn("Can't reserve an IPI for an empty mask\n");
++		return 0;
++	}
++
++	if (irq_domain_is_ipi_single(domain))
++		nr_irqs = 1;
++
++	/*
++	 * Disallow holes in the ipi_mask.
++	 * Holes makes it difficult to manage code in generic way. So we always
++	 * assume a consecutive ipi_mask. It's easy for the user to split
++	 * an ipi_mask with a hole into 2 consecutive ipi_masks and manage
++	 * which virq to use locally than adding generic support that would
++	 * complicate the generic code.
++	 */
++	for_each_cpu(cpu, dest) {
++		if (prev_cpu == -1) {
++			/* while at it save the offset */
++			offset = cpu;
++			prev_cpu = cpu;
++			continue;
++		}
++
++		if (prev_cpu - cpu > 1) {
++			pr_err("Can't allocate IPIs using non consecutive mask\n");
++			return 0;
++		}
++
++		prev_cpu = cpu;
++	}
++
++	virq = irq_domain_alloc_descs(-1, nr_irqs, 0, NUMA_NO_NODE);
++	if (virq <= 0) {
++		pr_warn("Can't reserve IPI, failed to alloc descs\n");
++		return 0;
++	}
++
++	virq = __irq_domain_alloc_irqs(domain, virq, nr_irqs, NUMA_NO_NODE,
++					(void *) dest, true);
++	if (virq <= 0) {
++		pr_warn("Can't reserve IPI, failed to alloc irqs\n");
++		goto free_descs;
++	}
++
++	for (i = 0; i < nr_irqs; i++) {
++		data = irq_get_irq_data(virq + i);
++		cpumask_copy(data->common->affinity, dest);
++		data->common->ipi_offset = offset;
++	}
++
++	return virq;
++
++free_descs:
++	irq_free_descs(virq, nr_irqs);
 +	return 0;
 +}
 +
 +/**
-+ * ipi_send_single - send an IPI to a single CPU
-+ * @virq: linux irq number from irq_reserve_ipi()
-+ * @cpu: CPU ID. Must be a subset of the mask passed to irq_reserve_ipi()
++ * irq_destroy_ipi() - unreserve an IPI that was previously allocated
++ * @irq: linux irq number to be destroyed
 + *
-+ * Sends an IPI to destination CPU
-+ *
-+ * Returns zero on success and negative error number on failure.
++ * Return the IPIs allocated with irq_reserve_ipi() to the system destroying all
++ * virqs associated with them.
 + */
-+int ipi_send_single(unsigned int virq, unsigned int cpu)
++void irq_destroy_ipi(unsigned int irq)
 +{
-+	struct irq_desc *desc = irq_to_desc(virq);
-+	struct irq_data *data = desc ? irq_desc_get_irq_data(desc) : NULL;
-+	struct irq_chip *chip = data ? irq_data_get_irq_chip(data) : NULL;
++	struct irq_data *data = irq_get_irq_data(irq);
 +	struct cpumask *ipimask = data ? irq_data_get_affinity_mask(data) : NULL;
++	struct irq_domain *domain;
++	unsigned int nr_irqs;
 +
-+	if (!chip || !ipimask)
-+		return -EINVAL;
++	if (!irq || !data || !ipimask)
++		return;
 +
-+	if (!chip->ipi_send_single && !chip->ipi_send_mask)
-+		return -EINVAL;
++	domain = data->domain;
++	if (WARN_ON(domain == NULL))
++		return;
 +
-+	if (cpu > nr_cpu_ids)
-+		return -EINVAL;
++	if (!irq_domain_is_ipi(domain)) {
++		pr_warn("Not an IPI domain!\n");
++		return;
++	}
 +
-+	if (!cpumask_test_cpu(cpu, ipimask))
-+		return -EINVAL;
++	if (irq_domain_is_ipi_per_cpu(domain))
++		nr_irqs = cpumask_weight(ipimask);
++	else
++		nr_irqs = 1;
 +
-+	__ipi_send_single(desc, cpu);
-+
-+	return 0;
++	irq_domain_free_irqs(irq, nr_irqs);
 +}
-+EXPORT_SYMBOL_GPL(ipi_send_single);
-+
-+/**
-+ * ipi_send_mask - send an IPI to target CPU(s)
-+ * @virq: linux irq number from irq_reserve_ipi()
-+ * @dest: dest CPU(s), must be the same or a subset of the mask passed to
-+ *        irq_reserve_ipi()
-+ *
-+ * Sends an IPI to all prcessors in dest mask.
-+ *
-+ * Returns zero on success and negative error number on failure.
-+ */
-+int ipi_send_mask(unsigned int virq, const struct cpumask *dest)
-+{
-+	struct irq_desc *desc = irq_to_desc(virq);
-+	struct irq_data *data = desc ? irq_desc_get_irq_data(desc) : NULL;
-+	struct irq_chip *chip = data ? irq_data_get_irq_chip(data) : NULL;
-+	struct cpumask *ipimask = data ? irq_data_get_affinity_mask(data) : NULL;
-+
-+	if (!chip || !ipimask)
-+		return -EINVAL;
-+
-+	if (!chip->ipi_send_single && !chip->ipi_send_mask)
-+		return -EINVAL;
-+
-+	if (!cpumask_subset(dest, ipimask))
-+		return -EINVAL;
-+
-+	__ipi_send_mask(desc, dest);
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(ipi_send_mask);
 -- 
 2.1.0

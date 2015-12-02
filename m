@@ -1,26 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Dec 2015 13:24:21 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:31461 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Dec 2015 13:24:42 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:65357 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27011915AbbLBMWY6IEiA (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Dec 2015 13:22:24 +0100
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Websense Email Security Gateway with ESMTPS id 2283CFF22761F;
-        Wed,  2 Dec 2015 12:22:17 +0000 (GMT)
+        with ESMTP id S27011935AbbLBMW0XQaVA (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Dec 2015 13:22:26 +0100
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Websense Email Security Gateway with ESMTPS id 6F38ABE209FCB;
+        Wed,  2 Dec 2015 12:22:18 +0000 (GMT)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
- 14.3.235.1; Wed, 2 Dec 2015 12:22:19 +0000
+ HHMAIL01.hh.imgtec.org (10.100.10.19) with Microsoft SMTP Server (TLS) id
+ 14.3.235.1; Wed, 2 Dec 2015 12:22:20 +0000
 Received: from qyousef-linux.le.imgtec.org (192.168.154.94) by
  LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.210.2; Wed, 2 Dec 2015 12:22:18 +0000
+ 14.3.210.2; Wed, 2 Dec 2015 12:22:20 +0000
 From:   Qais Yousef <qais.yousef@imgtec.com>
 To:     <linux-kernel@vger.kernel.org>
 CC:     <tglx@linutronix.de>, <jason@lakedaemon.net>,
         <marc.zyngier@arm.com>, <jiang.liu@linux.intel.com>,
         <ralf@linux-mips.org>, <linux-mips@linux-mips.org>,
         Qais Yousef <qais.yousef@imgtec.com>
-Subject: [PATCH v3 06/19] genirq: Add an extra comment about the use of affinity in irq_common_data
-Date:   Wed, 2 Dec 2015 12:21:47 +0000
-Message-ID: <1449058920-21011-7-git-send-email-qais.yousef@imgtec.com>
+Subject: [PATCH v3 07/19] genirq: Make irq_domain_alloc_descs() non static
+Date:   Wed, 2 Dec 2015 12:21:48 +0000
+Message-ID: <1449058920-21011-8-git-send-email-qais.yousef@imgtec.com>
 X-Mailer: git-send-email 2.1.0
 In-Reply-To: <1449058920-21011-1-git-send-email-qais.yousef@imgtec.com>
 References: <1449058920-21011-1-git-send-email-qais.yousef@imgtec.com>
@@ -31,7 +31,7 @@ Return-Path: <Qais.Yousef@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50276
+X-archive-position: 50277
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,30 +48,52 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Affinity will have dual meaning depends on the type of the irq. If it is
-a normal irq, it'll have the standard affinity meaning.
-
-If it is an IPI, it will hold the IPI mask of the cpus it can talk to.
+We will need to use this function to implement irq_reserve_ipi() later. So make
+it non static and move the prototype to irqdomain.h to allow using it outside
+irqdomain.c
 
 Signed-off-by: Qais Yousef <qais.yousef@imgtec.com>
 ---
- include/linux/irq.h | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ include/linux/irqdomain.h | 2 ++
+ kernel/irq/irqdomain.c    | 6 ++----
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/include/linux/irq.h b/include/linux/irq.h
-index 6bcbd11207ea..7f6dd4eec207 100644
---- a/include/linux/irq.h
-+++ b/include/linux/irq.h
-@@ -145,7 +145,9 @@ struct ipi_mapping {
-  *			Use accessor functions to deal with it
-  * @node:		node index useful for balancing
-  * @handler_data:	per-IRQ data for the irq_chip methods
-- * @affinity:		IRQ affinity on SMP
-+ * @affinity:		IRQ affinity on SMP.
-+ *			If this is an IPI irq data, this will be the IPI mask
-+ *			of the cpus it can talk to.
-  * @msi_desc:		MSI descriptor
-  * @ipi_mapping:	Contains the hwirq mapping of IPIs.
-  *			The use of this struct is optional and not all irqchips
+diff --git a/include/linux/irqdomain.h b/include/linux/irqdomain.h
+index f717796a4d5e..fcafae8e3aaf 100644
+--- a/include/linux/irqdomain.h
++++ b/include/linux/irqdomain.h
+@@ -212,6 +212,8 @@ struct irq_domain *irq_domain_add_legacy(struct device_node *of_node,
+ extern struct irq_domain *irq_find_matching_fwnode(struct fwnode_handle *fwnode,
+ 						   enum irq_domain_bus_token bus_token);
+ extern void irq_set_default_host(struct irq_domain *host);
++extern int irq_domain_alloc_descs(int virq, unsigned int nr_irqs,
++				  irq_hw_number_t hwirq, int node);
+ 
+ static inline struct fwnode_handle *of_node_to_fwnode(struct device_node *node)
+ {
+diff --git a/kernel/irq/irqdomain.c b/kernel/irq/irqdomain.c
+index 22aa9612ef7c..c31ab8f67f06 100644
+--- a/kernel/irq/irqdomain.c
++++ b/kernel/irq/irqdomain.c
+@@ -23,8 +23,6 @@ static DEFINE_MUTEX(irq_domain_mutex);
+ static DEFINE_MUTEX(revmap_trees_mutex);
+ static struct irq_domain *irq_default_domain;
+ 
+-static int irq_domain_alloc_descs(int virq, unsigned int nr_irqs,
+-				  irq_hw_number_t hwirq, int node);
+ static void irq_domain_check_hierarchy(struct irq_domain *domain);
+ 
+ struct irqchip_fwid {
+@@ -833,8 +831,8 @@ const struct irq_domain_ops irq_domain_simple_ops = {
+ };
+ EXPORT_SYMBOL_GPL(irq_domain_simple_ops);
+ 
+-static int irq_domain_alloc_descs(int virq, unsigned int cnt,
+-				  irq_hw_number_t hwirq, int node)
++int irq_domain_alloc_descs(int virq, unsigned int cnt,
++			   irq_hw_number_t hwirq, int node)
+ {
+ 	unsigned int hint;
+ 
 -- 
 2.1.0

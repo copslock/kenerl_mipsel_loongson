@@ -1,54 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Dec 2015 00:45:23 +0100 (CET)
-Received: from pandora.arm.linux.org.uk ([78.32.30.218]:38737 "EHLO
-        pandora.arm.linux.org.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008027AbbLAXpWMAF9y (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Dec 2015 00:45:22 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=arm.linux.org.uk; s=pandora-2014;
-        h=Sender:In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date; bh=gW+btQ6MZseEHLxtOVd+CXO1epPCaUW4rXUnrXLTEQg=;
-        b=m/rAsyvX6Omc0/Ivg5nxjNZk25kPKM8T4LuyRC4sra5jnkO6/AlCBi1L5jLMR4K1JWEeH116Iy/mooKrvYgVHKH8r8rfWCIo2qQJPDiHdTi4v6DcD2ZH5vp26y0O0zIXafE0bM55BqNgW2W4f8ac+j4MpapMMTkBvnA1w4bg+1w=;
-Received: from n2100.arm.linux.org.uk ([fd8f:7570:feb6:1:214:fdff:fe10:4f86]:49423)
-        by pandora.arm.linux.org.uk with esmtpsa (TLSv1:DHE-RSA-AES256-SHA:256)
-        (Exim 4.82_1-5b7a7c0-XX)
-        (envelope-from <linux@arm.linux.org.uk>)
-        id 1a3ubC-00080R-QO; Tue, 01 Dec 2015 23:44:42 +0000
-Received: from linux by n2100.arm.linux.org.uk with local (Exim 4.76)
-        (envelope-from <linux@n2100.arm.linux.org.uk>)
-        id 1a3ub9-0000JO-27; Tue, 01 Dec 2015 23:44:39 +0000
-Date:   Tue, 1 Dec 2015 23:44:37 +0000
-From:   Russell King - ARM Linux <linux@arm.linux.org.uk>
-To:     Petr Mladek <pmladek@suse.com>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Dec 2015 03:45:23 +0100 (CET)
+Received: from ozlabs.org ([103.22.144.67]:32943 "EHLO ozlabs.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27007158AbbLBCpVo6dUf (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 2 Dec 2015 03:45:21 +0100
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by ozlabs.org (Postfix) with ESMTPSA id ECA7C1402A6;
+        Wed,  2 Dec 2015 13:45:16 +1100 (AEDT)
+Message-ID: <1449024316.11810.6.camel@ellerman.id.au>
+Subject: Re: [PATCH v2 1/5] printk/nmi: Generic solution for safe printk in
+ NMI
+From:   Michael Ellerman <mpe@ellerman.id.au>
+To:     Petr Mladek <pmladek@suse.com>,
+        Andrew Morton <akpm@linux-foundation.org>
+Cc:     linux-mips@linux-mips.org,
         Daniel Thompson <daniel.thompson@linaro.org>,
-        Jiri Kosina <jkosina@suse.com>, Ingo Molnar <mingo@redhat.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-kernel@vger.kernel.org, x86@kernel.org,
-        linux-arm-kernel@lists.infradead.org,
+        Jiri Kosina <jkosina@suse.com>, linux-cris-kernel@axis.com,
+        linux-s390@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
+        x86@kernel.org, linux-kernel@vger.kernel.org,
+        Steven Rostedt <rostedt@goodmis.org>,
         adi-buildroot-devel@lists.sourceforge.net,
-        linux-cris-kernel@axis.com, linux-mips@linux-mips.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        Petr Mladek <pmladek@suse.cz>
-Subject: Re: [PATCH v2 3/5] printk/nmi: Try hard to print Oops message in NMI
- context
-Message-ID: <20151201234437.GA8644@n2100.arm.linux.org.uk>
+        Ingo Molnar <mingo@redhat.com>, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org,
+        Russell King <rmk+kernel@arm.linux.org.uk>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Date:   Wed, 02 Dec 2015 13:45:16 +1100
+In-Reply-To: <1448622572-16900-2-git-send-email-pmladek@suse.com>
 References: <1448622572-16900-1-git-send-email-pmladek@suse.com>
- <1448622572-16900-4-git-send-email-pmladek@suse.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1448622572-16900-4-git-send-email-pmladek@suse.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <linux+linux-mips=linux-mips.org@arm.linux.org.uk>
+         <1448622572-16900-2-git-send-email-pmladek@suse.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.16.5-1ubuntu3 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Return-Path: <mpe@ellerman.id.au>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50266
+X-archive-position: 50267
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linux@arm.linux.org.uk
+X-original-sender: mpe@ellerman.id.au
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -61,20 +55,46 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Nov 27, 2015 at 12:09:30PM +0100, Petr Mladek wrote:
-> What we can do, though, is to zap all printk locks. We already do this
-> when a printk recursion is detected. This should be safe because
-> the system is crashing and there shouldn't be any printk caller
-> that would cause the deadlock.
+On Fri, 2015-11-27 at 12:09 +0100, Petr Mladek wrote:
 
-What about serial consoles which may call out to subsystems like the
-clk subsystem to enable a clock, which would want to take their own
-spinlocks in addition to the serial console driver?
+> printk() takes some locks and could not be used a safe way in NMI
+> context.
+> 
+> The chance of a deadlock is real especially when printing
+> stacks from all CPUs. This particular problem has been addressed
+> on x86 by the commit a9edc8809328 ("x86/nmi: Perform a safe NMI stack
+> trace on all CPUs").
 
-I don't see bust_spinlocks() dealing with any of these locks, so IMHO
-trying to make this work in NMI context strikes me as making the
-existing solution more unreliable on ARM systems.
+...
 
--- 
-FTTC broadband for 0.8mile line: currently at 9.6Mbps down 400kbps up
-according to speedtest.net.
+> diff --git a/kernel/printk/nmi.c b/kernel/printk/nmi.c
+> new file mode 100644
+> index 000000000000..3989e13a0021
+> --- /dev/null
+> +++ b/kernel/printk/nmi.c
+> @@ -0,0 +1,200 @@
+
+...
+
+> +
+> +struct nmi_seq_buf {
+> +	atomic_t		len;	/* length of written data */
+> +	struct irq_work		work;	/* IRQ work that flushes the buffer */
+> +	unsigned char		buffer[PAGE_SIZE - sizeof(atomic_t) -
+> +				       sizeof(struct irq_work)];
+> +};
+> +static DEFINE_PER_CPU(struct nmi_seq_buf, nmi_print_seq);
+
+
+PAGE_SIZE isn't always 4K.
+
+On typical powerpc systems this will give you 128K, and on some 512K, which is
+probably not what we wanted.
+
+The existing code just did:
+
+#define NMI_BUF_SIZE           4096
+
+So I think you should just go back to doing that.
+
+cheers

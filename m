@@ -1,68 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Dec 2015 19:29:08 +0100 (CET)
-Received: from mail-lf0-f41.google.com ([209.85.215.41]:36163 "EHLO
-        mail-lf0-f41.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007549AbbLBS3Gz8O07 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Dec 2015 19:29:06 +0100
-Received: by lfs39 with SMTP id 39so58612439lfs.3
-        for <linux-mips@linux-mips.org>; Wed, 02 Dec 2015 10:29:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cogentembedded-com.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:references:cc:from:organization:message-id:date
-         :user-agent:mime-version:in-reply-to:content-type
-         :content-transfer-encoding;
-        bh=xmhMbH7Jq2YJ99Bhvuk/VTviy4vRJpCqoR/bVjyCHS8=;
-        b=dr+sqYXCgBfFc+b/m/nyQikneVtps8XnIbc+Kx/pVGeBHhcGxRjFdXlwVYJ/wqiGit
-         o6JOWNJjNH7yO+QlAx63kEtmVIxZKzZhEBrIcbKi6/Tnn/A4xud2yibKC99egb2iWmCz
-         qZsICmggkoj3ulkNJy8rmxEjK23nHrLXpoOkaNkI/b7RaCZn09nJyXI+hQ0JVUrhfRmi
-         YWr9sxCVPgIL6697PYJt2HPltuiAoy2V25M8b+Q9zRRGi6TlwRqpAbFiVnAWYBgKuYgO
-         zjHSG6NIPzQGajyxH974XbSZ1Gj1Wvpp8w/ZXa79D9AqSDI5tt6UjOheNhCAiivHHeZ8
-         EUtg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:subject:to:references:cc:from:organization
-         :message-id:date:user-agent:mime-version:in-reply-to:content-type
-         :content-transfer-encoding;
-        bh=xmhMbH7Jq2YJ99Bhvuk/VTviy4vRJpCqoR/bVjyCHS8=;
-        b=c69xOIwCSsxL4CAaG7ccgvP2gL6PSO0tLomjPkafC4bji4VnCJ8h1ABdfJVKEMD0go
-         8EBn+TuY0aI7vPp0k68dL0PyaDr8dsRHXkUuwwWgVDuBHnBTx0kLBj5QMTwwioSU5a/l
-         nfq9zfoWWOHXgCxy3ID2U9d0Aq77gz4qPEAQ+zwMNNjm1T35XCbXbyJIqxFQHZ+qvapQ
-         3CxwHiIKqyr2bwCFgn8u1blAnSec7Kz6TFaX6+L6U4m1RTJEo/c2SVv1SHnBlTIe8tDd
-         wIqX8JJFkO7bafnLRTGC4bHVsiBizbWM9AHEK0SlWMFMdd5XElfrjZbuJkwBC4Ti2z4V
-         av8A==
-X-Gm-Message-State: ALoCoQnUqk530pgoSK4pzD6aJoIn8GCU2QFZeAGLwI9ocr20Qu5xFan9v+6Sc9ORH49hnrSSILqs
-X-Received: by 10.112.99.4 with SMTP id em4mr3749387lbb.87.1449080940069;
-        Wed, 02 Dec 2015 10:29:00 -0800 (PST)
-Received: from wasted.cogentembedded.com ([31.173.80.183])
-        by smtp.gmail.com with ESMTPSA id mp1sm666131lbb.43.2015.12.02.10.28.58
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Wed, 02 Dec 2015 10:28:58 -0800 (PST)
-Subject: Re: [PATCH v3 14/19] irqchip/mips-gic: Use gic_vpes instead of
- NR_CPUS
-To:     Qais Yousef <qais.yousef@imgtec.com>, linux-kernel@vger.kernel.org
-References: <1449058920-21011-1-git-send-email-qais.yousef@imgtec.com>
- <1449058920-21011-15-git-send-email-qais.yousef@imgtec.com>
-Cc:     tglx@linutronix.de, jason@lakedaemon.net, marc.zyngier@arm.com,
-        jiang.liu@linux.intel.com, ralf@linux-mips.org,
-        linux-mips@linux-mips.org
-From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Organization: Cogent Embedded
-Message-ID: <565F3869.4020603@cogentembedded.com>
-Date:   Wed, 2 Dec 2015 21:28:57 +0300
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Dec 2015 21:44:06 +0100 (CET)
+Received: from proxima.lp0.eu ([81.2.80.65]:41846 "EHLO proxima.lp0.eu"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27012497AbbLBUoETs8GM (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 2 Dec 2015 21:44:04 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=fire.lp0.eu; s=exim;
+        h=Content-Transfer-Encoding:Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:Cc:References:To:Subject; bh=f7S99wPx4zbQYLNehnlSzLcQXQ7vm7w+Y2lX3kQwx+Q=;
+        b=HScBAt5gXGa4+C8p6vLEQTSKnM2mCevOyxU+qEJnBQERbUgeirz9XyWpBnGw14SjirJg1A2m+7Mvi9ETHwifcoZ22mkK9my3p/pSYJjA46J4MMtakeV+GdqP+WxYnjhq8rPqWhA3zDrS/1aue6IxtlPGS6RawMndCy2sy6ovDHiLwtAfh2iutbcwBh3mjkp5leVpeq0RnxTxgV36c7Gxenvz7+QclYptAAtgsaE/bfIQWEdG36/sXWfHfSn/Knyt8XalftjHioJml8yC+hEzq4BRvE7DW7EmdzgvBZLHRP2zZxnQPQ5vyfxk6hcKPKbX7LDm6T5Kjx0pQ4QvjWpGVg==;
+Received: from redrum.lp0.eu ([2001:8b0:ffea:0:2e0:81ff:fe4d:2bec]:48861)
+        by proxima.lp0.eu ([2001:8b0:ffea:0:205:b4ff:fe12:530]:465)
+        with esmtpsav (UNKNOWN:DHE-RSA-AES256-SHA:256/CN=Simon Arlott)
+        id 1a4EFj-0005r3-Vr (Exim); Wed, 02 Dec 2015 20:43:52 +0000
+Subject: Re: [PATCH 2/2] reset: bcm63xx: Add support for the BCM63xx
+ soft-reset controller
+To:     Florian Fainelli <f.fainelli@gmail.com>
+References: <565CB83B.7010000@simon.arlott.org.uk>
+ <565CB86F.4040303@simon.arlott.org.uk>
+ <CAGVrzcbjdsbGLuH6T6DSoC5SGN5WDFdM1h1xB5nQyX8wm-Esow@mail.gmail.com>
+Cc:     Philipp Zabel <p.zabel@pengutronix.de>,
+        Kevin Cernekee <cernekee@gmail.com>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        MIPS Mailing List <linux-mips@linux-mips.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Pawel Moll <pawel.moll@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ian Campbell <ijc+devicetree@hellion.org.uk>
+From:   Simon Arlott <simon@fire.lp0.eu>
+Message-ID: <565F5805.6010506@simon.arlott.org.uk>
+Date:   Wed, 2 Dec 2015 20:43:49 +0000
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
  Thunderbird/38.3.0
 MIME-Version: 1.0
-In-Reply-To: <1449058920-21011-15-git-send-email-qais.yousef@imgtec.com>
-Content-Type: text/plain; charset=windows-1252; format=flowed
+In-Reply-To: <CAGVrzcbjdsbGLuH6T6DSoC5SGN5WDFdM1h1xB5nQyX8wm-Esow@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
-Return-Path: <sergei.shtylyov@cogentembedded.com>
+Return-Path: <simon@fire.lp0.eu>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50297
+X-archive-position: 50298
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sergei.shtylyov@cogentembedded.com
+X-original-sender: simon@fire.lp0.eu
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -75,37 +55,64 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hello.
+On 02/12/15 18:03, Florian Fainelli wrote:
+> 2015-11-30 12:58 GMT-08:00 Simon Arlott <simon@fire.lp0.eu>:
+>> The BCM63xx contains a soft-reset controller activated by setting
+>> a bit (that must previously have cleared).
+>>
+>> Signed-off-by: Simon Arlott <simon@fire.lp0.eu>
+>> ---
+>>  MAINTAINERS                   |   1 +
+>>  drivers/reset/Kconfig         |   9 +++
+>>  drivers/reset/Makefile        |   1 +
+>>  drivers/reset/reset-bcm63xx.c | 134 ++++++++++++++++++++++++++++++++++++++++++
+>>  4 files changed, 145 insertions(+)
+>>  create mode 100644 drivers/reset/reset-bcm63xx.c
+> 
+> 
+> Could you create a bcm directory and then add your reset-bcm63xx.c
+> file there? I have a pending submission for the BCM63138 reset
+> controller which is not at all using the same structure and will share
+> nothing with your driver.
+> 
 
-On 12/02/2015 03:21 PM, Qais Yousef wrote:
+Ok, I'll call it reset-bcm6345.c to avoid confusion.
 
-> NR_CPUS is set by Kconfig and could be much higher than what actually is in the
-> system.
->
-> gic_vpes should be a true representitives of the number of cpus in the system,
-> so use it instead.
->
-> Signed-off-by: Qais Yousef <qais.yousef@imgtec.com>
-> ---
->   drivers/irqchip/irq-mips-gic.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/irqchip/irq-mips-gic.c b/drivers/irqchip/irq-mips-gic.c
-> index 41ccc84c68ba..c24feb739bb3 100644
-> --- a/drivers/irqchip/irq-mips-gic.c
-> +++ b/drivers/irqchip/irq-mips-gic.c
-[...]
-> @@ -1084,7 +1084,7 @@ static void __init __gic_init(unsigned long gic_base_addr,
->   	gic_ipi_domain->bus_token = DOMAIN_BUS_IPI;
->
->   	/* Make the last 2 * NR_CPUS available for IPIs */
+> 
+>> +static int bcm63xx_reset_xlate(struct reset_controller_dev *rcdev,
+>> +       const struct of_phandle_args *reset_spec)
+>> +{
+>> +       struct bcm63xx_reset_priv *priv = to_bcm63xx_reset_priv(rcdev);
+>> +
+>> +       if (WARN_ON(reset_spec->args_count != rcdev->of_reset_n_cells))
+>> +               return -EINVAL;
+>> +
+>> +       if (reset_spec->args[0] >= rcdev->nr_resets)
+>> +               return -EINVAL;
+> 
+> Should not these two things be moved to the core reset controller code
+> based on the #reset-cells value?
+> 
 
-    Looks like you forgot to also change this comment...
+This has already been removed from the next version of the patch.
 
-> -	bitmap_set(ipi_resrv, gic_shared_intrs - 2 * NR_CPUS, 2 * NR_CPUS);
-> +	bitmap_set(ipi_resrv, gic_shared_intrs - 2 * gic_vpes, 2 * gic_vpes);
->
->   	gic_basic_init();
->
+> 
+>> +       if (of_property_read_u32(np, "offset", &priv->offset))
+>> +               return -EINVAL;
+>> +
+>> +       /* valid reset bits */
+>> +       if (of_property_read_u32(np, "mask", &priv->mask))
+>> +               priv->mask = 0xffffffff;
+>> +
+>> +       priv->rcdev.owner = THIS_MODULE;
+>> +       priv->rcdev.ops = &bcm63xx_reset_ops;
+>> +       priv->rcdev.nr_resets = 32;
+> 
+> Should not that come from Device Tree, or be computed based on the
+> mask property, like hweight_long() or something along these lines?
 
-MBR, Sergei
+The "mask" property has been removed. It will assume 32 resets and rely
+on the rest of the DT to only refer to valid bits.
+
+-- 
+Simon Arlott

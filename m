@@ -1,48 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Dec 2015 03:45:23 +0100 (CET)
-Received: from ozlabs.org ([103.22.144.67]:32943 "EHLO ozlabs.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27007158AbbLBCpVo6dUf (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 2 Dec 2015 03:45:21 +0100
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by ozlabs.org (Postfix) with ESMTPSA id ECA7C1402A6;
-        Wed,  2 Dec 2015 13:45:16 +1100 (AEDT)
-Message-ID: <1449024316.11810.6.camel@ellerman.id.au>
-Subject: Re: [PATCH v2 1/5] printk/nmi: Generic solution for safe printk in
- NMI
-From:   Michael Ellerman <mpe@ellerman.id.au>
-To:     Petr Mladek <pmladek@suse.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-Cc:     linux-mips@linux-mips.org,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jiri Kosina <jkosina@suse.com>, linux-cris-kernel@axis.com,
-        linux-s390@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
-        x86@kernel.org, linux-kernel@vger.kernel.org,
-        Steven Rostedt <rostedt@goodmis.org>,
-        adi-buildroot-devel@lists.sourceforge.net,
-        Ingo Molnar <mingo@redhat.com>, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org,
-        Russell King <rmk+kernel@arm.linux.org.uk>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
-Date:   Wed, 02 Dec 2015 13:45:16 +1100
-In-Reply-To: <1448622572-16900-2-git-send-email-pmladek@suse.com>
-References: <1448622572-16900-1-git-send-email-pmladek@suse.com>
-         <1448622572-16900-2-git-send-email-pmladek@suse.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.16.5-1ubuntu3 
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Dec 2015 04:14:06 +0100 (CET)
+Received: from shards.monkeyblade.net ([149.20.54.216]:58121 "EHLO
+        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006154AbbLBDOErpv7f (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Dec 2015 04:14:04 +0100
+Received: from localhost (cpe-72-227-129-226.nyc.res.rr.com [72.227.129.226])
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id 641DD59DAA1;
+        Tue,  1 Dec 2015 19:13:58 -0800 (PST)
+Date:   Tue, 01 Dec 2015 22:13:56 -0500 (EST)
+Message-Id: <20151201.221356.2176806670215219133.davem@davemloft.net>
+To:     ddecotig@gmail.com
+Cc:     ben@decadent.org.uk, amirv@mellanox.com,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        linux-api@vger.kernel.org, linux-mips@linux-mips.org,
+        fcoe-devel@open-fcoe.org, edumazet@google.com,
+        eugenia@mellanox.co.il, ogerlitz@mellanox.com, idos@mellanox.com,
+        joe@perches.com, saeedm@mellanox.com, _govind@gmx.com,
+        VenkatKumar.Duvvuru@Emulex.Com, jeffrey.t.kirsher@intel.com,
+        eyalpe@mellanox.com, pshelar@nicira.com,
+        eswierk@skyportsystems.com, robert.w.love@intel.com,
+        JBottomley@parallels.com, Yuval.Mintz@qlogic.com,
+        decot@googlers.com
+Subject: Re: [PATCH net-next v3 03/17] net: ethtool: add new
+ ETHTOOL_GSETTINGS/SSETTINGS API
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <1448921155-24764-4-git-send-email-ddecotig@gmail.com>
+References: <1448921155-24764-1-git-send-email-ddecotig@gmail.com>
+        <1448921155-24764-4-git-send-email-ddecotig@gmail.com>
+X-Mailer: Mew version 6.7 on Emacs 24.5 / Mule 6.0 (HANACHIRUSATO)
 Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Return-Path: <mpe@ellerman.id.au>
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Tue, 01 Dec 2015 19:14:00 -0800 (PST)
+Return-Path: <davem@davemloft.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50267
+X-archive-position: 50268
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mpe@ellerman.id.au
+X-original-sender: davem@davemloft.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,46 +53,25 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, 2015-11-27 at 12:09 +0100, Petr Mladek wrote:
+From: David Decotigny <ddecotig@gmail.com>
+Date: Mon, 30 Nov 2015 14:05:41 -0800
 
-> printk() takes some locks and could not be used a safe way in NMI
-> context.
-> 
-> The chance of a deadlock is real especially when printing
-> stacks from all CPUs. This particular problem has been addressed
-> on x86 by the commit a9edc8809328 ("x86/nmi: Perform a safe NMI stack
-> trace on all CPUs").
+> This patch defines a new ETHTOOL_GSETTINGS/SSETTINGS API, handled by
+> the new get_ksettings/set_ksettings callbacks. This API provides
+> support for most legacy ethtool_cmd fields, adds support for larger
+> link mode masks (up to 4064 bits, variable length), and removes
+> ethtool_cmd deprecated fields (transceiver/maxrxpkt/maxtxpkt).
 
-...
+Please do not define the mask using a non-fixed type.  I know it makes
+it easier to use the various bitmap helper routines if you use 'long',
+but here it is clearly superior to use "u32" for the bitmap type and
+do the bit operations by hand if necessary.
 
-> diff --git a/kernel/printk/nmi.c b/kernel/printk/nmi.c
-> new file mode 100644
-> index 000000000000..3989e13a0021
-> --- /dev/null
-> +++ b/kernel/printk/nmi.c
-> @@ -0,0 +1,200 @@
+Otherwise you have to have all of this ulong size CPP conditional code
+which is incredibly ugly.
 
-...
+Furthermore you have to use fixed sized types anyways so that we don't
+need compat code to deal with 32-bit userspace applications making
+these ethtool calls into a 64-bit kernel.
 
-> +
-> +struct nmi_seq_buf {
-> +	atomic_t		len;	/* length of written data */
-> +	struct irq_work		work;	/* IRQ work that flushes the buffer */
-> +	unsigned char		buffer[PAGE_SIZE - sizeof(atomic_t) -
-> +				       sizeof(struct irq_work)];
-> +};
-> +static DEFINE_PER_CPU(struct nmi_seq_buf, nmi_print_seq);
-
-
-PAGE_SIZE isn't always 4K.
-
-On typical powerpc systems this will give you 128K, and on some 512K, which is
-probably not what we wanted.
-
-The existing code just did:
-
-#define NMI_BUF_SIZE           4096
-
-So I think you should just go back to doing that.
-
-cheers
+THanks.

@@ -1,48 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Dec 2015 19:04:13 +0100 (CET)
-Received: from mail-ig0-f177.google.com ([209.85.213.177]:37253 "EHLO
-        mail-ig0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007502AbbLBSEF403BG (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Dec 2015 19:04:05 +0100
-Received: by igcto18 with SMTP id to18so37451981igc.0
-        for <linux-mips@linux-mips.org>; Wed, 02 Dec 2015 10:04:00 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Dec 2015 19:09:27 +0100 (CET)
+Received: from mail-ig0-f175.google.com ([209.85.213.175]:32902 "EHLO
+        mail-ig0-f175.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007502AbbLBSJYvuguG (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Dec 2015 19:09:24 +0100
+Received: by igcmv3 with SMTP id mv3so123463998igc.0
+        for <linux-mips@linux-mips.org>; Wed, 02 Dec 2015 10:09:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=mime-version:in-reply-to:references:from:date:message-id:subject:to
          :cc:content-type;
-        bh=As7YkBTSU4/luvzL2a17ICksU6zlbYeJoD8OegUHdYY=;
-        b=YsnpDXgRvhfoVQeKj7iDVcBlodW5BbcF0RwMHMMlQQzRNWC7GDO2Kv6kBlc8tEXGNr
-         A5i0902bIl/6Ea+7drjbd0fVvwH5mPo7P7fvU0ZO//3vQQq1Kob6lBEcEpfK41uVaMuS
-         ZKY//03mKbcrxZTMautYO9K/cbrT3KRMm2u+o6rhgP0Bc+b+IND8OpbI8VQ4EkmMeO+a
-         XhPERyaf3cf+xLVPWCiFGZSDGD0cYd2cp9kLGmu5jEyQowGbh+dQTVSGuLxn5S/X9DDL
-         OjpCFje2XvvtfHslh7E2ZTkNhekI2xMIU8C6OBbt7AJx5YHl+dUiIG89J8EvZSwam1L5
-         CgMw==
-X-Received: by 10.50.155.4 with SMTP id vs4mr5286240igb.34.1449079440097; Wed,
- 02 Dec 2015 10:04:00 -0800 (PST)
+        bh=JSd7QybGmTI+/p3Jk5oiw7CXdIV+BxwwLxY4CciDneI=;
+        b=m4ICv+vy/4a0ZRb9z0PGcSKMNwDKBj85Gte+qZcnFTo71N/j3QocvGeiHfdbcSXuNh
+         ih5jf9f+8KvbjJsMQCXb9Al4Q637b4+oq6mVBzw1q0eXyHtBrX5ZDte44GLcoxs5w4ny
+         GQ02rYJyp6nYJqwCBjVQvPYzVgjQc4fuJ/G/pbVsInLpIzT7B3r45kw/l1P6yoTkyhsH
+         eBnL0vXq2/jVLz0unTQGi2vnwZ4x3CUk9EFb39/1VMlRqbtGuBwwKE4/KTFpDeaIKLH0
+         kqreIarF+w9eqp931U5s3HtWLFPg6mSE8+b49O3ucVrp209h4PgYQ7omrVI09D54pRW7
+         hwog==
+X-Received: by 10.50.59.242 with SMTP id c18mr8539242igr.82.1449079759266;
+ Wed, 02 Dec 2015 10:09:19 -0800 (PST)
 MIME-Version: 1.0
-Received: by 10.107.6.17 with HTTP; Wed, 2 Dec 2015 10:03:20 -0800 (PST)
-In-Reply-To: <565CB86F.4040303@simon.arlott.org.uk>
-References: <565CB83B.7010000@simon.arlott.org.uk> <565CB86F.4040303@simon.arlott.org.uk>
+Received: by 10.107.6.17 with HTTP; Wed, 2 Dec 2015 10:08:39 -0800 (PST)
+In-Reply-To: <565CB780.3010206@simon.arlott.org.uk>
+References: <565CB727.7030209@simon.arlott.org.uk> <565CB780.3010206@simon.arlott.org.uk>
 From:   Florian Fainelli <f.fainelli@gmail.com>
-Date:   Wed, 2 Dec 2015 10:03:20 -0800
-Message-ID: <CAGVrzcbjdsbGLuH6T6DSoC5SGN5WDFdM1h1xB5nQyX8wm-Esow@mail.gmail.com>
-Subject: Re: [PATCH 2/2] reset: bcm63xx: Add support for the BCM63xx
- soft-reset controller
+Date:   Wed, 2 Dec 2015 10:08:39 -0800
+Message-ID: <CAGVrzcauQMk7wurw3CVG8Sh5NN1dEDLjjguuUeBxTMcozjJVCQ@mail.gmail.com>
+Subject: Re: [PATCH 2/2] clk: bcm63xx: Add BCM63xx gated clock support
 To:     Simon Arlott <simon@fire.lp0.eu>
-Cc:     Philipp Zabel <p.zabel@pengutronix.de>,
+Cc:     Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@codeaurora.org>,
         Kevin Cernekee <cernekee@gmail.com>,
         "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        MIPS Mailing List <linux-mips@linux-mips.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-clk@vger.kernel.org, Linux-MIPS <linux-mips@linux-mips.org>,
         Rob Herring <robh+dt@kernel.org>,
         Pawel Moll <pawel.moll@arm.com>,
         Mark Rutland <mark.rutland@arm.com>,
-        Ian Campbell <ijc+devicetree@hellion.org.uk>
+        Ian Campbell <ijc+devicetree@hellion.org.uk>,
+        Kumar Gala <galak@codeaurora.org>
 Content-Type: text/plain; charset=UTF-8
 Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50294
+X-archive-position: 50295
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -59,60 +60,68 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-2015-11-30 12:58 GMT-08:00 Simon Arlott <simon@fire.lp0.eu>:
-> The BCM63xx contains a soft-reset controller activated by setting
-> a bit (that must previously have cleared).
+2015-11-30 12:54 GMT-08:00 Simon Arlott <simon@fire.lp0.eu>:
+> The BCM63xx contains clocks gated with a register. Clocks are indexed
+> by bits in the register and are active high. Clock gate bits are
+> interleaved with other status bits and configurable clocks in the same
+> register.
+>
+> Enabled by default for BMIPS_GENERIC.
 >
 > Signed-off-by: Simon Arlott <simon@fire.lp0.eu>
 > ---
->  MAINTAINERS                   |   1 +
->  drivers/reset/Kconfig         |   9 +++
->  drivers/reset/Makefile        |   1 +
->  drivers/reset/reset-bcm63xx.c | 134 ++++++++++++++++++++++++++++++++++++++++++
->  4 files changed, 145 insertions(+)
->  create mode 100644 drivers/reset/reset-bcm63xx.c
-
-
-Could you create a bcm directory and then add your reset-bcm63xx.c
-file there? I have a pending submission for the BCM63138 reset
-controller which is not at all using the same structure and will share
-nothing with your driver.
 
 [snip]
 
-> +static int bcm63xx_reset_xlate(struct reset_controller_dev *rcdev,
-> +       const struct of_phandle_args *reset_spec)
-> +{
-> +       struct bcm63xx_reset_priv *priv = to_bcm63xx_reset_priv(rcdev);
 > +
-> +       if (WARN_ON(reset_spec->args_count != rcdev->of_reset_n_cells))
-> +               return -EINVAL;
-> +
-> +       if (reset_spec->args[0] >= rcdev->nr_resets)
-> +               return -EINVAL;
+> +config CLK_BCM63XX
+> +       bool "Broadcom BCM63xx clock support"
+> +       depends on BMIPS_GENERIC
+> +       depends on COMMON_CLK
+> +       default y
 
-Should not these two things be moved to the core reset controller code
-based on the #reset-cells value?
+default BMIPS_GENERIC?
 
-[snip]
+> +       help
+> +         Enable clock framework support for Broadcom 63xx SoCs
+> diff --git a/drivers/clk/bcm/Makefile b/drivers/clk/bcm/Makefile
+> index 3fc9506..4f5f8ce 100644
+> --- a/drivers/clk/bcm/Makefile
+> +++ b/drivers/clk/bcm/Makefile
+> @@ -8,3 +8,4 @@ obj-$(CONFIG_COMMON_CLK_IPROC)  += clk-ns2.o
+>  obj-$(CONFIG_ARCH_BCM_CYGNUS)  += clk-cygnus.o
+>  obj-$(CONFIG_ARCH_BCM_NSP)     += clk-nsp.o
+>  obj-$(CONFIG_ARCH_BCM_5301X)   += clk-nsp.o
+> +obj-$(CONFIG_CLK_BCM63XX)      += clk-bcm63xx.o
+> diff --git a/drivers/clk/bcm/clk-bcm63xx.c b/drivers/clk/bcm/clk-bcm63xx.c
+> new file mode 100644
+> index 0000000..0e8cc06
+> --- /dev/null
+> +++ b/drivers/clk/bcm/clk-bcm63xx.c
 
-> +       if (of_property_read_u32(np, "offset", &priv->offset))
-> +               return -EINVAL;
-> +
-> +       /* valid reset bits */
-> +       if (of_property_read_u32(np, "mask", &priv->mask))
-> +               priv->mask = 0xffffffff;
-> +
-> +       priv->rcdev.owner = THIS_MODULE;
-> +       priv->rcdev.ops = &bcm63xx_reset_ops;
-> +       priv->rcdev.nr_resets = 32;
+There is a pending clk-bcm63xx.c implementation, covering BCM63138 in
+Stephen Boyd's clk/next tree, which you would want to base your
+patches on, it is not a huge deal to resolve the conflict, and there
+will be separate entry points and functions based on the compatible
+string anyway...
 
-Should not that come from Device Tree, or be computed based on the
-mask property, like hweight_long() or something along these lines?
+> @@ -0,0 +1,187 @@
+> +/*
+> + * Copyright 2015 Simon Arlott
+> + *
+> + * This program is free software; you can redistribute it and/or modify
+> + * it under the terms of the GNU General Public License version 2 as
+> + * published by the Free Software Foundation.
+> + *
+> + * Based on clk-gate.c:
+> + * Copyright (C) 2010-2011 Canonical Ltd <jeremy.kerr@canonical.com>
+> + * Copyright (C) 2011-2012 Mike Turquette, Linaro Ltd <mturquette@linaro.org>
+> + */
 
-> +       priv->rcdev.of_node = pdev->dev.of_node;
-> +       priv->rcdev.of_reset_n_cells = 1;
-> +       priv->rcdev.of_xlate = bcm63xx_reset_xlate;
-
--- 
+I am not really anything very specific to 63xx chips in there, in
+fact, this looks like a fairly generic clk-gate driver using regmap to
+get its masks and offsets, would it make sense to create
+clk-gate-regmap.c which exposes the bulk of what you are doing and you
+could match using a specific compatible string?
+--
 Florian

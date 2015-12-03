@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Dec 2015 11:09:26 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:14196 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Dec 2015 11:09:46 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:35737 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27012273AbbLCKIaeJB4Z (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 3 Dec 2015 11:08:30 +0100
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Websense Email Security Gateway with ESMTPS id C858DDD4F81EC
-        for <linux-mips@linux-mips.org>; Thu,  3 Dec 2015 10:08:22 +0000 (GMT)
+        with ESMTP id S27012364AbbLCKIbZb5bZ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 3 Dec 2015 11:08:31 +0100
+Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
+        by Websense Email Security Gateway with ESMTPS id E7C6FA9C9123B
+        for <linux-mips@linux-mips.org>; Thu,  3 Dec 2015 10:08:23 +0000 (GMT)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- HHMAIL01.hh.imgtec.org (10.100.10.19) with Microsoft SMTP Server (TLS) id
- 14.3.235.1; Thu, 3 Dec 2015 10:08:24 +0000
+ hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
+ 14.3.235.1; Thu, 3 Dec 2015 10:08:25 +0000
 Received: from mredfearn-linux.le.imgtec.org (192.168.154.116) by
  LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
  14.3.210.2; Thu, 3 Dec 2015 10:08:24 +0000
 From:   Matt Redfearn <matt.redfearn@imgtec.com>
 To:     <linux-mips@linux-mips.org>
 CC:     Matt Redfearn <matt.redfearn@imgtec.com>
-Subject: [PATCH 3/9] MIPS: Reserve space for relocation table
-Date:   Thu, 3 Dec 2015 10:08:11 +0000
-Message-ID: <1449137297-30464-4-git-send-email-matt.redfearn@imgtec.com>
+Subject: [PATCH 4/9] MIPS: Generate relocation table when CONFIG_RELOCATABLE
+Date:   Thu, 3 Dec 2015 10:08:12 +0000
+Message-ID: <1449137297-30464-5-git-send-email-matt.redfearn@imgtec.com>
 X-Mailer: git-send-email 2.1.4
 In-Reply-To: <1449137297-30464-1-git-send-email-matt.redfearn@imgtec.com>
 References: <1449137297-30464-1-git-send-email-matt.redfearn@imgtec.com>
@@ -28,7 +28,7 @@ Return-Path: <Matt.Redfearn@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50308
+X-archive-position: 50309
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,78 +45,70 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-When CONFIG_RELOCATABLE is enabled, add a new section in the memory map
-to be filled with relocation data.
+When CONFIG_RELOCATABLE is enabled (added in later patch) add
+--emit-relocs to vmlinux LDFLAGS so that fully linked vmlinux contains
+relocation information.
 
-CONFIG_RELOCATION_TABLE_SIZE allows the amount of space reserved to be
-adjusted if necessary.
+Run the previously added relocs tool to fill in the .data.relocs section
+of vmlinux with a table of relocations. The relocs tool will also remove
+(mark as 0 length) the relocation sections added to vmlinux.
 
-The relocs tool will populate this reserved space with relocation
-information. The space is reserved within the elf by filling it with
-0's, and an invalid entry is left at the start of the space such that
-kernel relocation will be aborted if the table is empty.
+When vmlinux is passed to the boot makefile for conversion into a boot
+image the now empty relocation sections will be removed and the
+populated relocation table will be included in the binary image.
 
 Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
 ---
- arch/mips/Kconfig              | 14 ++++++++++++++
- arch/mips/kernel/vmlinux.lds.S | 20 ++++++++++++++++++++
- 2 files changed, 34 insertions(+)
+ arch/mips/Makefile | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index e3aa5b0b4ef1..b8ed64dfaafc 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -2431,6 +2431,20 @@ config NUMA
- config SYS_SUPPORTS_NUMA
- 	bool
+diff --git a/arch/mips/Makefile b/arch/mips/Makefile
+index 33fbfd276671..5a01a9e21274 100644
+--- a/arch/mips/Makefile
++++ b/arch/mips/Makefile
+@@ -96,6 +96,10 @@ LDFLAGS_vmlinux			+= -G 0 -static -n -nostdlib
+ KBUILD_AFLAGS_MODULE		+= -mlong-calls
+ KBUILD_CFLAGS_MODULE		+= -mlong-calls
  
-+config RELOCATION_TABLE_SIZE
-+	hex "Relocation table size"
-+	depends on RELOCATABLE
-+	range 0x0 0x01000000
-+	default "0x00100000"
-+	---help---
-+	  A table of relocation data will be appended to the kernel binary
-+	  and parsed at boot to fix up the relocated kernel.
++ifeq ($(CONFIG_RELOCATABLE),y)
++LDFLAGS_vmlinux			+= --emit-relocs
++endif
 +
-+	  This option allows the amount of space reserved for the table to be
-+	  adjusted, although the default of 1Mb should be ok in most cases.
+ #
+ # pass -msoft-float to GAS if it supports it.  However on newer binutils
+ # (specifically newer than 2.24.51.20140728) we then also need to explicitly
+@@ -319,6 +323,10 @@ rom.bin rom.sw: vmlinux
+ 		$(bootvars-y) $@
+ endif
+ 
++CMD_RELOCS = arch/mips/boot/tools/relocs
++quiet_cmd_relocs = RELOCS  $<
++      cmd_relocs = $(CMD_RELOCS) $<
 +
-+	  If unsure, leave at the default value.
-+
- config NODES_SHIFT
- 	int
- 	default "6"
-diff --git a/arch/mips/kernel/vmlinux.lds.S b/arch/mips/kernel/vmlinux.lds.S
-index 07d32a4aea60..27d70423f1dd 100644
---- a/arch/mips/kernel/vmlinux.lds.S
-+++ b/arch/mips/kernel/vmlinux.lds.S
-@@ -128,6 +128,26 @@ SECTIONS
- #ifdef CONFIG_SMP
- 	PERCPU_SECTION(1 << CONFIG_MIPS_L1_CACHE_SHIFT)
- #endif
-+
-+#ifdef CONFIG_RELOCATABLE
-+	. = ALIGN(4);
-+
-+	.data.reloc : {
-+		_relocation_start = .;
-+		/* Space for relocation table
-+		 * This needs to be filled so that the
-+		 * relocs tool can overwrite the content.
-+		 * An invalid value is left at the start of the
-+		 * section to abort relocation if the table
-+		 * has not been filled in.
-+		 */
-+		LONG(0xFFFFFFFF);
-+		FILL(0);
-+		. += CONFIG_RELOCATION_TABLE_SIZE - 4;
-+		_relocation_end = .;
-+	}
-+#endif
-+
- #ifdef CONFIG_MIPS_RAW_APPENDED_DTB
- 	__appended_dtb = .;
- 	/* leave space for appended DTB */
+ #
+ # Some machines like the Indy need 32-bit ELF binaries for booting purposes.
+ # Other need ECOFF, so we build a 32-bit ELF binary for them which we then
+@@ -327,6 +335,11 @@ endif
+ quiet_cmd_32 = OBJCOPY $@
+ 	cmd_32 = $(OBJCOPY) -O $(32bit-bfd) $(OBJCOPYFLAGS) $< $@
+ vmlinux.32: vmlinux
++ifeq ($(CONFIG_RELOCATABLE)$(CONFIG_64BIT),yy)
++# Currently, objcopy fails to handle the relocations in the elf64
++# So the relocs tool must be run here to remove them first
++	$(call cmd,relocs)
++endif
+ 	$(call cmd,32)
+ 
+ #
+@@ -342,6 +355,9 @@ all:	$(all-y)
+ 
+ # boot
+ $(boot-y): $(vmlinux-32) FORCE
++ifeq ($(CONFIG_RELOCATABLE)$(CONFIG_32BIT),yy)
++	$(call cmd,relocs)
++endif
+ 	$(Q)$(MAKE) $(build)=arch/mips/boot VMLINUX=$(vmlinux-32) \
+ 		$(bootvars-y) arch/mips/boot/$@
+ 
 -- 
 2.1.4

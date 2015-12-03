@@ -1,72 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Dec 2015 00:39:10 +0100 (CET)
-Received: from mail-ig0-f170.google.com ([209.85.213.170]:38654 "EHLO
-        mail-ig0-f170.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007195AbbLBXjHGba07 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 3 Dec 2015 00:39:07 +0100
-Received: by igbxm8 with SMTP id xm8so35016igb.1
-        for <linux-mips@linux-mips.org>; Wed, 02 Dec 2015 15:39:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=hurleysoftware-com.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:references:cc:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-type:content-transfer-encoding;
-        bh=k7eRwhmW9YmKcnd/vcImWXNJtv/kNIVTM17lQh3eZbg=;
-        b=SqSh4JefAMr0/YfkQ17jlllGfr3W8ya9cqevyC2S7p55ACmCZ8HcG+6knu5FE5gqVO
-         GocSRIF68NZSbwbYKJhwG5Mxq6WKsy4vJ6fh8Inc/y16fSnuVOvJNbIjnYLC3QZ1YcqP
-         uv7kd33u0jXCmNf3oMOuga3+wrci8vv/gdxg6SNkHGZBk7q+ARAREjJWYyH87AHXrVmX
-         Q3Ex3iEOPB3lvWGeh6FHV1M4wb2/jHHTeoVXRA4ut6tXME8Jo/bA4OYvA4iIO5NnjR5p
-         jK+phUCgo87PVawJTCcbfZ7WH6ZiptZLjD5LEUYtx/IWnSnNF5wVn0CUv0AhiqkMvNrh
-         lgeg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:subject:to:references:cc:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-type
-         :content-transfer-encoding;
-        bh=k7eRwhmW9YmKcnd/vcImWXNJtv/kNIVTM17lQh3eZbg=;
-        b=H/s52lRZe8jpCWUICG+O0Eda6MwaPeZsHykugOO+RFylzKI0OdwwpuIWVyGh8Zb0/q
-         1WiEC1OhkkVz785HRkKyZuj7UmuT6ahkXQ4cPil8+Nbd1/+To7TIkMbDuhNb8TIQYDPN
-         1Vw9JCEEUskTMejJJLpov8q9qHRHPd+1NGYw+PTAt7u875ftu5TrCNM+cAJgBDtUydeZ
-         NC10sUIvKsykRQ8pXirZ4LLQ2+pNyntw+LtcLYkDxsI+0sOEd3XDFRldPWvIUeX5yytP
-         Gws0Ict/18/Mh2vcB7TrBAl34D+FHGMo50lvSzC0q4zfi34jZnRuDownYxAMFhtMxvrv
-         o3pw==
-X-Gm-Message-State: ALoCoQkjksOxGOtDEeLu9TIZz0q6Tf588yjLn3mvQNnmyQEmz7Fd4uJ5DYXbdGe6bxtLDDGqy1XW
-X-Received: by 10.50.43.227 with SMTP id z3mr36011164igl.34.1449099541331;
-        Wed, 02 Dec 2015 15:39:01 -0800 (PST)
-Received: from [192.168.1.4] (cpe-76-190-194-55.neo.res.rr.com. [76.190.194.55])
-        by smtp.gmail.com with ESMTPSA id a5sm12156724iga.7.2015.12.02.15.39.00
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Wed, 02 Dec 2015 15:39:00 -0800 (PST)
-Subject: Re: [PATCH 01/28] serial: earlycon: allow MEM32 I/O for DT earlycon
-To:     Rob Herring <robh+dt@kernel.org>,
-        Paul Burton <paul.burton@imgtec.com>
-References: <1448900513-20856-1-git-send-email-paul.burton@imgtec.com>
- <1448900513-20856-2-git-send-email-paul.burton@imgtec.com>
- <CAL_JsqJ3cZEbWT_Ycrb1euWJ05cN31wOYikbwKhZSEyFu2rkrA@mail.gmail.com>
-Cc:     Linux-MIPS <linux-mips@linux-mips.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Dec 2015 09:39:13 +0100 (CET)
+Received: from metis.ext.4.pengutronix.de ([92.198.50.35]:36639 "EHLO
+        metis.ext.4.pengutronix.de" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007359AbbLCIjKdwszV (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 3 Dec 2015 09:39:10 +0100
+Received: from paszta.hi.pengutronix.de ([2001:67c:670:100:96de:80ff:fec2:9969] helo=paszta)
+        by metis.ext.pengutronix.de with esmtp (Exim 4.80)
+        (envelope-from <p.zabel@pengutronix.de>)
+        id 1a4PPt-0003Dq-9y; Thu, 03 Dec 2015 09:39:05 +0100
+Message-ID: <1449131943.3339.8.camel@pengutronix.de>
+Subject: Re: [PATCH (v2) 1/2] reset: Add brcm,bcm6345-reset device tree
+ binding
+From:   Philipp Zabel <p.zabel@pengutronix.de>
+To:     Simon Arlott <simon@fire.lp0.eu>
+Cc:     Kevin Cernekee <cernekee@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
         "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        Jiri Slaby <jslaby@suse.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Grant Likely <grant.likely@linaro.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>
-From:   Peter Hurley <peter@hurleysoftware.com>
-Message-ID: <565F8112.8040907@hurleysoftware.com>
-Date:   Wed, 2 Dec 2015 18:38:58 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.3.0
-MIME-Version: 1.0
-In-Reply-To: <CAL_JsqJ3cZEbWT_Ycrb1euWJ05cN31wOYikbwKhZSEyFu2rkrA@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
+        linux-kernel@vger.kernel.org,
+        MIPS Mailing List <linux-mips@linux-mips.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Pawel Moll <pawel.moll@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ian Campbell <ijc+devicetree@hellion.org.uk>,
+        Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Date:   Thu, 03 Dec 2015 09:39:03 +0100
+In-Reply-To: <565F5C96.5090700@simon.arlott.org.uk>
+References: <565F5C96.5090700@simon.arlott.org.uk>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.12.9-1+b1 
+Mime-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Return-Path: <peter@hurleysoftware.com>
+X-SA-Exim-Connect-IP: 2001:67c:670:100:96de:80ff:fec2:9969
+X-SA-Exim-Mail-From: p.zabel@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-mips@linux-mips.org
+Return-Path: <p.zabel@pengutronix.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50302
+X-archive-position: 50303
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: peter@hurleysoftware.com
+X-original-sender: p.zabel@pengutronix.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -79,103 +54,76 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 11/30/2015 05:52 PM, Rob Herring wrote:
-> On Mon, Nov 30, 2015 at 10:21 AM, Paul Burton <paul.burton@imgtec.com> wrote:
->> Read the reg-io-width property when earlycon is setup via device tree,
->> and set the I/O type to UPIO_MEM32 when 4 is read. This behaviour
->> matches that of the of_serial driver, and is needed for DT configured
->> earlycon on the MIPS Boston board.
->>
->> Note that this is only possible when CONFIG_LIBFDT is enabled, but
->> enabling it everywhere seems like overkill. Thus systems that need this
->> functionality should select CONFIG_LIBFDT for themselves.
-> 
-> libfdt is enabled if you are booting from DT, so checking this
-> property should not add anything.
-> 
->>
->> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
->> ---
->>
->>  drivers/of/fdt.c              |  2 +-
->>  drivers/tty/serial/Makefile   |  1 +
->>  drivers/tty/serial/earlycon.c | 15 ++++++++++++++-
->>  include/linux/serial_core.h   |  2 +-
->>  4 files changed, 17 insertions(+), 3 deletions(-)
->>
->> diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
->> index d243029..71c7f0d 100644
->> --- a/drivers/of/fdt.c
->> +++ b/drivers/of/fdt.c
->> @@ -833,7 +833,7 @@ static int __init early_init_dt_scan_chosen_serial(void)
->>                 if (addr == OF_BAD_ADDR)
->>                         return -ENXIO;
->>
->> -               of_setup_earlycon(addr, match->data);
->> +               of_setup_earlycon(fdt, offset, addr, match->data);
->>                 return 0;
->>         }
->>         return -ENODEV;
->> diff --git a/drivers/tty/serial/Makefile b/drivers/tty/serial/Makefile
->> index 5ab4111..1d290d6 100644
->> --- a/drivers/tty/serial/Makefile
->> +++ b/drivers/tty/serial/Makefile
->> @@ -7,6 +7,7 @@ obj-$(CONFIG_SERIAL_21285) += 21285.o
->>
->>  obj-$(CONFIG_SERIAL_EARLYCON) += earlycon.o
->>  obj-$(CONFIG_SERIAL_EARLYCON_ARM_SEMIHOST) += earlycon-arm-semihost.o
->> +CFLAGS_earlycon.o += -I$(srctree)/scripts/dtc/libfdt
-> 
-> This is no longer necessary.
-> 
->>
->>  # These Sparc drivers have to appear before others such as 8250
->>  # which share ttySx minor node space.  Otherwise console device
->> diff --git a/drivers/tty/serial/earlycon.c b/drivers/tty/serial/earlycon.c
->> index f096360..2b936a7 100644
->> --- a/drivers/tty/serial/earlycon.c
->> +++ b/drivers/tty/serial/earlycon.c
->> @@ -17,6 +17,7 @@
->>  #include <linux/kernel.h>
->>  #include <linux/init.h>
->>  #include <linux/io.h>
->> +#include <linux/libfdt.h>
->>  #include <linux/serial_core.h>
->>  #include <linux/sizes.h>
->>  #include <linux/mod_devicetable.h>
->> @@ -196,17 +197,29 @@ static int __init param_setup_earlycon(char *buf)
->>  }
->>  early_param("earlycon", param_setup_earlycon);
->>
->> -int __init of_setup_earlycon(unsigned long addr,
->> +int __init of_setup_earlycon(const void *fdt, int offset, unsigned long addr,
-> 
-> I would add iotype as a parameter instead, and then...
-> 
->>                              int (*setup)(struct earlycon_device *, const char *))
->>  {
->>         int err;
->>         struct uart_port *port = &early_console_dev.port;
->> +       const __be32 *prop;
->>
->>         port->iotype = UPIO_MEM;
->>         port->mapbase = addr;
->>         port->uartclk = BASE_BAUD * 16;
->>         port->membase = earlycon_map(addr, SZ_4K);
->>
->> +       if (config_enabled(CONFIG_LIBFDT)) {
->> +               prop = fdt_getprop(fdt, offset, "reg-io-width", NULL);
->> +               if (prop) {
->> +                       switch (be32_to_cpup(prop)) {
->> +                       case 4:
->> +                               port->iotype = UPIO_MEM32;
->> +                               break;
->> +                       }
->> +               }
-> 
-> ...move this parsing into fdt.c where we parse the address.
+Hi Simon,
 
-FWIW, all of of_setup_earlycon() should only be #ifdef CONFIG_OF_EARLY_FLATTREE
+Am Mittwoch, den 02.12.2015, 21:03 +0000 schrieb Simon Arlott:
+> Add device tree binding for the BCM6345 soft reset controller.
+> 
+> The BCM6345 contains a soft-reset controller activated by setting
+> a bit (that must previously have cleared).
+> 
+> Signed-off-by: Simon Arlott <simon@fire.lp0.eu>
+> ---
+> Renamed to bcm6345, removed "mask" property.
+> 
+>  .../bindings/reset/brcm,bcm6345-reset.txt          | 33 ++++++++++++++++++++++
+>  1 file changed, 33 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/reset/brcm,bcm6345-reset.txt
+> 
+> diff --git a/Documentation/devicetree/bindings/reset/brcm,bcm6345-reset.txt b/Documentation/devicetree/bindings/reset/brcm,bcm6345-reset.txt
+> new file mode 100644
+> index 0000000..bb9ca6e
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/reset/brcm,bcm6345-reset.txt
+> @@ -0,0 +1,33 @@
+> +Broadcom BCM6345 reset controller
+> +
+> +The BCM6345 contains a basic soft reset controller in the perf register
+> +set which resets components using a bit in a register.
+> +
+> +Please also refer to reset.txt in this directory for common reset
+> +controller binding usage.
+> +
+> +Required properties:
+> +- compatible:	Should be "brcm,bcm<soc>-reset", "brcm,bcm6345-reset"
 
-Regards,
-Peter Hurley
+> +- regmap:	The register map phandle
+> +- offset:	Offset in the register map for the reset register (in bytes)
+
+Is this something the device tree maintainers are happy with?
+I see there are already some regmap properties in the device tree, but
+in this case it looks to me like the reset controller node should be a
+child of the periph_cntl node as that register space is the only means
+of controlling it.
+
+> +- #reset-cells:	Must be set to 1
+> +
+> +Example:
+> +
+> +periph_soft_rst: reset-controller {
+> +	compatible = "brcm,bcm63168-reset", "brcm,bcm6345-reset";
+> +	regmap = <&periph_cntl>;
+> +	offset = <0x10>;
+> +
+> +	#reset-cells = <1>;
+> +};
+
+I would have written it something like this:
+
+periph_cntl: ... {
+	compatible = "syscon", "simple-mfd";
+	#address-cells = <1>;
+	#size-cells = <1>;
+
+	periph_soft_rst: reset-controller {
+		compatible = "brcm,bcm6345-reset";
+		reg = <0x10 0x4>;
+		#reset-cells = <1>;
+	};
+};
+
+for a device that is only controlled through a syscon.
+The driver itself looks good to me.
+
+best regards
+Philipp

@@ -1,47 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Dec 2015 09:39:13 +0100 (CET)
-Received: from metis.ext.4.pengutronix.de ([92.198.50.35]:36639 "EHLO
-        metis.ext.4.pengutronix.de" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007359AbbLCIjKdwszV (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 3 Dec 2015 09:39:10 +0100
-Received: from paszta.hi.pengutronix.de ([2001:67c:670:100:96de:80ff:fec2:9969] helo=paszta)
-        by metis.ext.pengutronix.de with esmtp (Exim 4.80)
-        (envelope-from <p.zabel@pengutronix.de>)
-        id 1a4PPt-0003Dq-9y; Thu, 03 Dec 2015 09:39:05 +0100
-Message-ID: <1449131943.3339.8.camel@pengutronix.de>
-Subject: Re: [PATCH (v2) 1/2] reset: Add brcm,bcm6345-reset device tree
- binding
-From:   Philipp Zabel <p.zabel@pengutronix.de>
-To:     Simon Arlott <simon@fire.lp0.eu>
-Cc:     Kevin Cernekee <cernekee@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        linux-kernel@vger.kernel.org,
-        MIPS Mailing List <linux-mips@linux-mips.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Pawel Moll <pawel.moll@arm.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ian Campbell <ijc+devicetree@hellion.org.uk>,
-        Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Date:   Thu, 03 Dec 2015 09:39:03 +0100
-In-Reply-To: <565F5C96.5090700@simon.arlott.org.uk>
-References: <565F5C96.5090700@simon.arlott.org.uk>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.12.9-1+b1 
-Mime-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Dec 2015 10:52:09 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:23806 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27007572AbbLCJwIGx5aZ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 3 Dec 2015 10:52:08 +0100
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Websense Email Security Gateway with ESMTPS id 8F3CD7262DD40;
+        Thu,  3 Dec 2015 09:52:00 +0000 (GMT)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ HHMAIL01.hh.imgtec.org (10.100.10.19) with Microsoft SMTP Server (TLS) id
+ 14.3.235.1; Thu, 3 Dec 2015 09:52:02 +0000
+Received: from [192.168.154.94] (192.168.154.94) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Thu, 3 Dec
+ 2015 09:52:01 +0000
+Subject: Re: [PATCH v3 14/19] irqchip/mips-gic: Use gic_vpes instead of
+ NR_CPUS
+To:     Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
+        <linux-kernel@vger.kernel.org>
+References: <1449058920-21011-1-git-send-email-qais.yousef@imgtec.com>
+ <1449058920-21011-15-git-send-email-qais.yousef@imgtec.com>
+ <565F3869.4020603@cogentembedded.com>
+CC:     <tglx@linutronix.de>, <jason@lakedaemon.net>,
+        <marc.zyngier@arm.com>, <jiang.liu@linux.intel.com>,
+        <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
+From:   Qais Yousef <qais.yousef@imgtec.com>
+Message-ID: <566010C1.1000506@imgtec.com>
+Date:   Thu, 3 Dec 2015 09:52:01 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+ Thunderbird/38.3.0
+MIME-Version: 1.0
+In-Reply-To: <565F3869.4020603@cogentembedded.com>
+Content-Type: text/plain; charset="windows-1252"; format=flowed
 Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 2001:67c:670:100:96de:80ff:fec2:9969
-X-SA-Exim-Mail-From: p.zabel@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-mips@linux-mips.org
-Return-Path: <p.zabel@pengutronix.de>
+X-Originating-IP: [192.168.154.94]
+Return-Path: <Qais.Yousef@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50303
+X-archive-position: 50304
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: p.zabel@pengutronix.de
+X-original-sender: qais.yousef@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,76 +53,18 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Simon,
+On 12/02/2015 06:28 PM, Sergei Shtylyov wrote:
+>
+>> @@ -1084,7 +1084,7 @@ static void __init __gic_init(unsigned long 
+>> gic_base_addr,
+>>       gic_ipi_domain->bus_token = DOMAIN_BUS_IPI;
+>>
+>>       /* Make the last 2 * NR_CPUS available for IPIs */
+>
+>    Looks like you forgot to also change this comment...
 
-Am Mittwoch, den 02.12.2015, 21:03 +0000 schrieb Simon Arlott:
-> Add device tree binding for the BCM6345 soft reset controller.
-> 
-> The BCM6345 contains a soft-reset controller activated by setting
-> a bit (that must previously have cleared).
-> 
-> Signed-off-by: Simon Arlott <simon@fire.lp0.eu>
-> ---
-> Renamed to bcm6345, removed "mask" property.
-> 
->  .../bindings/reset/brcm,bcm6345-reset.txt          | 33 ++++++++++++++++++++++
->  1 file changed, 33 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/reset/brcm,bcm6345-reset.txt
-> 
-> diff --git a/Documentation/devicetree/bindings/reset/brcm,bcm6345-reset.txt b/Documentation/devicetree/bindings/reset/brcm,bcm6345-reset.txt
-> new file mode 100644
-> index 0000000..bb9ca6e
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/reset/brcm,bcm6345-reset.txt
-> @@ -0,0 +1,33 @@
-> +Broadcom BCM6345 reset controller
-> +
-> +The BCM6345 contains a basic soft reset controller in the perf register
-> +set which resets components using a bit in a register.
-> +
-> +Please also refer to reset.txt in this directory for common reset
-> +controller binding usage.
-> +
-> +Required properties:
-> +- compatible:	Should be "brcm,bcm<soc>-reset", "brcm,bcm6345-reset"
+This code changes again in a later patch with the correct comment on. 
+I'll fix it in the next series.
 
-> +- regmap:	The register map phandle
-> +- offset:	Offset in the register map for the reset register (in bytes)
-
-Is this something the device tree maintainers are happy with?
-I see there are already some regmap properties in the device tree, but
-in this case it looks to me like the reset controller node should be a
-child of the periph_cntl node as that register space is the only means
-of controlling it.
-
-> +- #reset-cells:	Must be set to 1
-> +
-> +Example:
-> +
-> +periph_soft_rst: reset-controller {
-> +	compatible = "brcm,bcm63168-reset", "brcm,bcm6345-reset";
-> +	regmap = <&periph_cntl>;
-> +	offset = <0x10>;
-> +
-> +	#reset-cells = <1>;
-> +};
-
-I would have written it something like this:
-
-periph_cntl: ... {
-	compatible = "syscon", "simple-mfd";
-	#address-cells = <1>;
-	#size-cells = <1>;
-
-	periph_soft_rst: reset-controller {
-		compatible = "brcm,bcm6345-reset";
-		reg = <0x10 0x4>;
-		#reset-cells = <1>;
-	};
-};
-
-for a device that is only controlled through a syscon.
-The driver itself looks good to me.
-
-best regards
-Philipp
+Thanks,
+Qais

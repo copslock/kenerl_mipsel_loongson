@@ -1,66 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Jun 2016 16:35:16 +0200 (CEST)
-Received: from youngberry.canonical.com ([91.189.89.112]:58392 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27041106AbcFIOeeGtcTQ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 9 Jun 2016 16:34:34 +0200
-Received: from 1.general.kamal.us.vpn ([10.172.68.52] helo=fourier)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_128_CBC_SHA1:16)
-        (Exim 4.76)
-        (envelope-from <kamal@canonical.com>)
-        id 1bB12X-0000Qr-Gk; Thu, 09 Jun 2016 14:34:33 +0000
-Received: from kamal by fourier with local (Exim 4.86_2)
-        (envelope-from <kamal@whence.com>)
-        id 1bB12U-0005hw-RJ; Thu, 09 Jun 2016 07:34:30 -0700
-From:   Kamal Mostafa <kamal@canonical.com>
-To:     James Hogan <james.hogan@imgtec.com>
-Cc:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
-        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
-        Kamal Mostafa <kamal@canonical.com>,
-        kernel-team@lists.ubuntu.com
-Subject: [4.2.y-ckt stable] Patch "MIPS: Avoid using unwind_stack() with usermode" has been added to the 4.2.y-ckt tree
-Date:   Thu,  9 Jun 2016 07:34:29 -0700
-Message-Id: <1465482869-21905-1-git-send-email-kamal@canonical.com>
-X-Mailer: git-send-email 2.7.4
-X-Extended-Stable: 4.2
-Return-Path: <kamal@canonical.com>
-X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
-X-Orcpt: rfc822;linux-mips@linux-mips.org
-Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53936
-X-ecartis-version: Ecartis v1.0.0
-Sender: linux-mips-bounce@linux-mips.org
-Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kamal@canonical.com
-Precedence: bulk
-List-help: <mailto:ecartis@linux-mips.org?Subject=help>
-List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
-List-software: Ecartis version 1.0.0
-List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
-X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
-List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
-List-owner: <mailto:ralf@linux-mips.org>
-List-post: <mailto:linux-mips@linux-mips.org>
-List-archive: <http://www.linux-mips.org/archives/linux-mips/>
-X-list: linux-mips
+From: James Hogan <james.hogan@imgtec.com>
+Date: Fri, 4 Dec 2015 22:25:02 +0000
+Subject: MIPS: Avoid using unwind_stack() with usermode
+Message-ID: <20151204222502.6c1FVe1Ot3kNQXSkGKj2HDyFFkghU6PQmjZe2q9O09E@z>
 
-This is a note to let you know that I have just added a patch titled
+commit 81a76d7119f63c359750e4adeff922a31ad1135f upstream.
 
-    MIPS: Avoid using unwind_stack() with usermode
+When showing backtraces in response to traps, for example crashes and
+address errors (usually unaligned accesses) when they are set in debugfs
+to be reported, unwind_stack will be used if the PC was in the kernel
+text address range. However since EVA it is possible for user and kernel
+address ranges to overlap, and even without EVA userland can still
+trigger an address error by jumping to a KSeg0 address.
 
-to the linux-4.2.y-queue branch of the 4.2.y-ckt extended stable tree 
-which can be found at:
+Adjust the check to also ensure that it was running in kernel mode. I
+don't believe any harm can come of this problem, since unwind_stack() is
+sufficiently defensive, however it is only meant for unwinding kernel
+code, so to be correct it should use the raw backtracing instead.
 
-    https://git.launchpad.net/~canonical-kernel/linux/+git/linux-stable-ckt/log/?h=linux-4.2.y-queue
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Reviewed-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+Cc: linux-mips@linux-mips.org
+Patchwork: https://patchwork.linux-mips.org/patch/11701/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+(cherry picked from commit d2941a975ac745c607dfb590e92bb30bc352dad9)
+Signed-off-by: Kamal Mostafa <kamal@canonical.com>
+---
+ arch/mips/kernel/traps.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-This patch is scheduled to be released in version 4.2.8-ckt12.
+diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
+index ef1e9d3..86454f5 100644
+--- a/arch/mips/kernel/traps.c
++++ b/arch/mips/kernel/traps.c
+@@ -143,7 +143,7 @@ static void show_backtrace(struct task_struct *task, const struct pt_regs *regs)
+ 	if (!task)
+ 		task = current;
 
-If you, or anyone else, feels it should not be added to this tree, please 
-reply to this email.
-
-For more information about the 4.2.y-ckt tree, see
-https://wiki.ubuntu.com/Kernel/Dev/ExtendedStable
-
-Thanks.
--Kamal
-
----8<------------------------------------------------------------
+-	if (raw_show_trace || !__kernel_text_address(pc)) {
++	if (raw_show_trace || user_mode(regs) || !__kernel_text_address(pc)) {
+ 		show_raw_backtrace(sp);
+ 		return;
+ 	}
+--
+2.7.4

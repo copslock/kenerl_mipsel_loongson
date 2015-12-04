@@ -1,43 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Dec 2015 16:27:14 +0100 (CET)
-Received: from mx2.suse.de ([195.135.220.15]:53901 "EHLO mx2.suse.de"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Dec 2015 16:29:27 +0100 (CET)
+Received: from mx2.suse.de ([195.135.220.15]:54271 "EHLO mx2.suse.de"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27007599AbbLDP1NOQ057 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 4 Dec 2015 16:27:13 +0100
+        id S27007599AbbLDP3Zwd3L7 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 4 Dec 2015 16:29:25 +0100
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay2.suse.de (charybdis-ext.suse.de [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id 6B521AB12;
-        Fri,  4 Dec 2015 15:27:11 +0000 (UTC)
-Date:   Fri, 4 Dec 2015 16:27:09 +0100
+        by mx2.suse.de (Postfix) with ESMTP id 4FC73ABA3;
+        Fri,  4 Dec 2015 15:29:25 +0000 (UTC)
+Date:   Fri, 4 Dec 2015 16:29:24 +0100
 From:   Petr Mladek <pmladek@suse.com>
-To:     Russell King - ARM Linux <linux@arm.linux.org.uk>
+To:     Michael Ellerman <mpe@ellerman.id.au>
 Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
+        linux-mips@linux-mips.org,
         Daniel Thompson <daniel.thompson@linaro.org>,
-        Jiri Kosina <jkosina@suse.com>, Ingo Molnar <mingo@redhat.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-kernel@vger.kernel.org, x86@kernel.org,
-        linux-arm-kernel@lists.infradead.org,
+        Jiri Kosina <jkosina@suse.com>, linux-cris-kernel@axis.com,
+        linux-s390@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
+        x86@kernel.org, linux-kernel@vger.kernel.org,
+        Steven Rostedt <rostedt@goodmis.org>,
         adi-buildroot-devel@lists.sourceforge.net,
-        linux-cris-kernel@axis.com, linux-mips@linux-mips.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org
-Subject: Re: [PATCH v2 3/5] printk/nmi: Try hard to print Oops message in NMI
- context
-Message-ID: <20151204152709.GA20935@pathway.suse.cz>
+        Ingo Molnar <mingo@redhat.com>, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org,
+        Russell King <rmk+kernel@arm.linux.org.uk>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v2 1/5] printk/nmi: Generic solution for safe printk in
+ NMI
+Message-ID: <20151204152924.GB20935@pathway.suse.cz>
 References: <1448622572-16900-1-git-send-email-pmladek@suse.com>
- <1448622572-16900-4-git-send-email-pmladek@suse.com>
- <20151201234437.GA8644@n2100.arm.linux.org.uk>
+ <1448622572-16900-2-git-send-email-pmladek@suse.com>
+ <1449024316.11810.6.camel@ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20151201234437.GA8644@n2100.arm.linux.org.uk>
+In-Reply-To: <1449024316.11810.6.camel@ellerman.id.au>
 User-Agent: Mutt/1.5.21 (2010-09-15)
 Return-Path: <pmladek@suse.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50337
+X-archive-position: 50338
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -54,32 +55,50 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue 2015-12-01 23:44:37, Russell King - ARM Linux wrote:
-> On Fri, Nov 27, 2015 at 12:09:30PM +0100, Petr Mladek wrote:
-> > What we can do, though, is to zap all printk locks. We already do this
-> > when a printk recursion is detected. This should be safe because
-> > the system is crashing and there shouldn't be any printk caller
-> > that would cause the deadlock.
+On Wed 2015-12-02 13:45:16, Michael Ellerman wrote:
+> On Fri, 2015-11-27 at 12:09 +0100, Petr Mladek wrote:
 > 
-> What about serial consoles which may call out to subsystems like the
-> clk subsystem to enable a clock, which would want to take their own
-> spinlocks in addition to the serial console driver?
+> > printk() takes some locks and could not be used a safe way in NMI
+> > context.
+> > 
+> > The chance of a deadlock is real especially when printing
+> > stacks from all CPUs. This particular problem has been addressed
+> > on x86 by the commit a9edc8809328 ("x86/nmi: Perform a safe NMI stack
+> > trace on all CPUs").
+> 
+> ...
+> 
+> > diff --git a/kernel/printk/nmi.c b/kernel/printk/nmi.c
+> > new file mode 100644
+> > index 000000000000..3989e13a0021
+> > --- /dev/null
+> > +++ b/kernel/printk/nmi.c
+> > @@ -0,0 +1,200 @@
+> 
+> ...
+> 
+> > +
+> > +struct nmi_seq_buf {
+> > +	atomic_t		len;	/* length of written data */
+> > +	struct irq_work		work;	/* IRQ work that flushes the buffer */
+> > +	unsigned char		buffer[PAGE_SIZE - sizeof(atomic_t) -
+> > +				       sizeof(struct irq_work)];
+> > +};
+> > +static DEFINE_PER_CPU(struct nmi_seq_buf, nmi_print_seq);
+> 
+> 
+> PAGE_SIZE isn't always 4K.
+> 
+> On typical powerpc systems this will give you 128K, and on some 512K, which is
+> probably not what we wanted.
 
-Yes, there might be more locks used by the serial console but I do
-not know how to handle them all easily. IMHO, this patch is just better
-than nothing.
+Good point!
 
-> I don't see bust_spinlocks() dealing with any of these locks, so IMHO
-> trying to make this work in NMI context strikes me as making the
-> existing solution more unreliable on ARM systems.
+> The existing code just did:
+> 
+> #define NMI_BUF_SIZE           4096
 
-bust_spinlocks() calls printk_nmi_flush() that would call printk()
-that would zap "lockbuf_lock" and "console_sem" when in Oops and NMI.
-Yes, there might be more locks blocked but we try to break at least
-the first two walls. Also zapping is allowed only once per 30 seconds,
-see zap_locks(). Why do you think that it might make things more
-unreliable, please?
+I will change this to 8192. The 4kB were not enough in some cases.
 
-
-Thanks for looking,
+Best Regards,
 Petr

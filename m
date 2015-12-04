@@ -1,49 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Dec 2015 22:12:21 +0100 (CET)
-Received: from proxima.lp0.eu ([81.2.80.65]:52560 "EHLO proxima.lp0.eu"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27007703AbbLDVMT5ZpQS (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 4 Dec 2015 22:12:19 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=fire.lp0.eu; s=exim;
-        h=Content-Transfer-Encoding:Content-Type:MIME-Version:Cc:To:From:Subject:Date:References:In-Reply-To:Message-ID; bh=kTtlnVIotr4leB85Na2V3XYocdGHmKKiN9RSvft7k10=;
-        b=oCVX+JvkezBB3aloClK9mvymtsIDX/v1sT5VTMOrhYNC57SOgiUlgrHJ1p4ClplQRyo+6SqfpJMjKRmNFyygoZ1B750ERMl8JVEWeoXbxYVBLep5a4kuILOr2HJMZsBpaJ2qctfHfndZ6op1UWI67HLr9xVqB11qwz340TbxqqF4u1bOdkyit5KOhNdRw6NBk9La5e9qO8cQE7wDPuAfycmsU9RZQyUzOINHJrjvBisIoviTwkJTdJPgS9lKSVBXxkIfy1v178BvqECi/SpMyh5f/gZjHo93Pv+OLy2ODqWdvADkRtZEsPaaXXZ1chXqVl0xd2JpTS4M+OmMhw4NYQ==;
-Received: from lp0_webmail by proxima.lp0.eu with local 
-        id 1a4xeD-0006c9-Rv (Exim); Fri, 04 Dec 2015 21:12:10 +0000
-Received: from simon by proxima.lp0.eu with https;
-        Fri, 4 Dec 2015 21:12:10 -0000
-Message-ID: <6a3790afc811ac4ed732371f2eb33a7c194b996d@8b5064a13e22126c1b9329f0dc35b8915774b7c3.invalid>
-In-Reply-To: <1449131943.3339.8.camel@pengutronix.de>
-References: <565F5C96.5090700@simon.arlott.org.uk>
-    <1449131943.3339.8.camel@pengutronix.de>
-Date:   Fri, 4 Dec 2015 21:12:10 -0000
-Subject: Re: [PATCH (v2) 1/2] reset: Add brcm,bcm6345-reset device tree
- binding
-From:   "Simon Arlott" <simon@fire.lp0.eu>
-To:     "Rob Herring" <robh+dt@kernel.org>,
-        "Philipp Zabel" <p.zabel@pengutronix.de>
-Cc:     "Kevin Cernekee" <cernekee@gmail.com>,
-        "Florian Fainelli" <f.fainelli@gmail.com>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        linux-kernel@vger.kernel.org,
-        "MIPS Mailing List" <linux-mips@linux-mips.org>,
-        "Pawel Moll" <pawel.moll@arm.com>,
-        "Mark Rutland" <mark.rutland@arm.com>,
-        "Ian Campbell" <ijc+devicetree@hellion.org.uk>,
-        "Sergei Shtylyov" <sergei.shtylyov@cogentembedded.com>
-User-Agent: SquirrelMail/1.4.22
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Dec 2015 23:25:17 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:35059 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27007703AbbLDWZQLPMeY (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 4 Dec 2015 23:25:16 +0100
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Websense Email Security Gateway with ESMTPS id 81E1AFB258686;
+        Fri,  4 Dec 2015 22:25:06 +0000 (GMT)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ HHMAIL01.hh.imgtec.org (10.100.10.19) with Microsoft SMTP Server (TLS) id
+ 14.3.235.1; Fri, 4 Dec 2015 22:25:09 +0000
+Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
+ LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
+ 14.3.210.2; Fri, 4 Dec 2015 22:25:08 +0000
+From:   James Hogan <james.hogan@imgtec.com>
+To:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
+CC:     James Hogan <james.hogan@imgtec.com>,
+        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
+        <stable@vger.kernel.org>
+Subject: [PATCH 0/2] MIPS: Minor EVA related unwind fixes
+Date:   Fri, 4 Dec 2015 22:25:00 +0000
+Message-ID: <1449267902-28674-1-git-send-email-james.hogan@imgtec.com>
+X-Mailer: git-send-email 2.4.10
 MIME-Version: 1.0
-Content-Type: text/plain;charset=utf-8
-Content-Transfer-Encoding: 8bit
-X-Priority: 3 (Normal)
-Importance: Normal
-Return-Path: <simon@fire.lp0.eu>
+Content-Type: text/plain
+X-Originating-IP: [192.168.154.110]
+Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50347
+X-archive-position: 50348
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: simon@fire.lp0.eu
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,40 +45,42 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, December 3, 2015 08:39, Philipp Zabel wrote:
-> Am Mittwoch, den 02.12.2015, 21:03 +0000 schrieb Simon Arlott:
->> +periph_soft_rst: reset-controller {
->> +	compatible = "brcm,bcm63168-reset", "brcm,bcm6345-reset";
->> +	regmap = <&periph_cntl>;
->> +	offset = <0x10>;
->> +
->> +	#reset-cells = <1>;
->> +};
->
-> I would have written it something like this:
->
-> periph_cntl: ... {
-> 	compatible = "syscon", "simple-mfd";
-> 	#address-cells = <1>;
-> 	#size-cells = <1>;
->
-> 	periph_soft_rst: reset-controller {
-> 		compatible = "brcm,bcm6345-reset";
-> 		reg = <0x10 0x4>;
-> 		#reset-cells = <1>;
-> 	};
-> };
->
-> for a device that is only controlled through a syscon.
+Here are a couple of minor EVA related stack unwind fixes, which
+prevent the use of unwind_stack() (which unwinds using kallsyms
+knowledge of where kernel functions begin and end) to unwind userland
+code, particularly where the PC is a valid kernel address, which could
+happen innocently with EVA due to the overlapped user/kernel address
+spaces.
 
-Rob, do you want me to change this or is my version ok?
+Note that unwind_stack() is defensive enough that it shouldn't do any
+harm, so I've only tagged stable back to v3.15, when EVA was added and
+it could conceivably happen under normal operation.
 
-> The driver itself looks good to me.
->
-> best regards
-> Philipp
->
->
+A rough audit shows no other uses of __kernel_text_address() in relation
+to possibly user mode register contexts.
 
+
+The first patch fixes unwind_stack() itself not to unwind through an
+exception frame if it represents the user register context, preventing
+itself being called with that context next.
+
+The second patch fixes show_backtrace() to fall back to raw backtrace
+for user mode register contexts, rather than using unwind_stack(). This
+is used on certain faults which can be triggered by userland (namely
+unaligned accesses when reporting is enabled in debugfs).
+
+
+James Hogan (2):
+  MIPS: Don't unwind to user mode with EVA
+  MIPS: Avoid using unwind_stack() with usermode
+
+ arch/mips/kernel/process.c | 2 +-
+ arch/mips/kernel/traps.c   | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+Cc: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: linux-mips@linux-mips.org
+Cc: <stable@vger.kernel.org> # 3.15+
 -- 
-Simon Arlott
+2.4.10

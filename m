@@ -1,66 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Jun 2016 16:34:53 +0200 (CEST)
-Received: from youngberry.canonical.com ([91.189.89.112]:58386 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27031940AbcFIOecvDwuQ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 9 Jun 2016 16:34:32 +0200
-Received: from 1.general.kamal.us.vpn ([10.172.68.52] helo=fourier)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_128_CBC_SHA1:16)
-        (Exim 4.76)
-        (envelope-from <kamal@canonical.com>)
-        id 1bB12W-0000Qj-6L; Thu, 09 Jun 2016 14:34:32 +0000
-Received: from kamal by fourier with local (Exim 4.86_2)
-        (envelope-from <kamal@whence.com>)
-        id 1bB12T-0005hC-GW; Thu, 09 Jun 2016 07:34:29 -0700
-From:   Kamal Mostafa <kamal@canonical.com>
-To:     James Hogan <james.hogan@imgtec.com>
-Cc:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
-        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
-        Kamal Mostafa <kamal@canonical.com>,
-        kernel-team@lists.ubuntu.com
-Subject: [4.2.y-ckt stable] Patch "MIPS: Don't unwind to user mode with EVA" has been added to the 4.2.y-ckt tree
-Date:   Thu,  9 Jun 2016 07:34:28 -0700
-Message-Id: <1465482868-21859-1-git-send-email-kamal@canonical.com>
-X-Mailer: git-send-email 2.7.4
-X-Extended-Stable: 4.2
-Return-Path: <kamal@canonical.com>
-X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
-X-Orcpt: rfc822;linux-mips@linux-mips.org
-Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53935
-X-ecartis-version: Ecartis v1.0.0
-Sender: linux-mips-bounce@linux-mips.org
-Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kamal@canonical.com
-Precedence: bulk
-List-help: <mailto:ecartis@linux-mips.org?Subject=help>
-List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
-List-software: Ecartis version 1.0.0
-List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
-X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
-List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
-List-owner: <mailto:ralf@linux-mips.org>
-List-post: <mailto:linux-mips@linux-mips.org>
-List-archive: <http://www.linux-mips.org/archives/linux-mips/>
-X-list: linux-mips
+From: James Hogan <james.hogan@imgtec.com>
+Date: Fri, 4 Dec 2015 22:25:01 +0000
+Subject: MIPS: Don't unwind to user mode with EVA
+Message-ID: <20151204222501.ZUKvitAfkeGXzoC2Odmdj395mbdAlS2bWOESdcbCiuQ@z>
 
-This is a note to let you know that I have just added a patch titled
+commit a816b306c62195b7c43c92cb13330821a96bdc27 upstream.
 
-    MIPS: Don't unwind to user mode with EVA
+When unwinding through IRQs and exceptions, the unwinding only continues
+if the PC is a kernel text address, however since EVA it is possible for
+user and kernel address ranges to overlap, potentially allowing
+unwinding to continue to user mode if the user PC happens to be in the
+kernel text address range.
 
-to the linux-4.2.y-queue branch of the 4.2.y-ckt extended stable tree 
-which can be found at:
+Adjust the check to also ensure that the register state from before the
+exception is actually running in kernel mode, i.e. !user_mode(regs).
 
-    https://git.launchpad.net/~canonical-kernel/linux/+git/linux-stable-ckt/log/?h=linux-4.2.y-queue
+I don't believe any harm can come of this problem, since the PC is only
+output, the stack pointer is checked to ensure it resides within the
+task's stack page before it is dereferenced in search of the return
+address, and the return address register is similarly only output (if
+the PC is in a leaf function or the beginning of a non-leaf function).
 
-This patch is scheduled to be released in version 4.2.8-ckt12.
+However unwind_stack() is only meant for unwinding kernel code, so to be
+correct the unwind should stop there.
 
-If you, or anyone else, feels it should not be added to this tree, please 
-reply to this email.
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Reviewed-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+Cc: linux-mips@linux-mips.org
+Patchwork: https://patchwork.linux-mips.org/patch/11700/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: Kamal Mostafa <kamal@canonical.com>
+---
+ arch/mips/kernel/process.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-For more information about the 4.2.y-ckt tree, see
-https://wiki.ubuntu.com/Kernel/Dev/ExtendedStable
-
-Thanks.
--Kamal
-
----8<------------------------------------------------------------
+diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
+index f2975d4..6b3ae73 100644
+--- a/arch/mips/kernel/process.c
++++ b/arch/mips/kernel/process.c
+@@ -457,7 +457,7 @@ unsigned long notrace unwind_stack_by_address(unsigned long stack_page,
+ 		    *sp + sizeof(*regs) <= stack_page + THREAD_SIZE - 32) {
+ 			regs = (struct pt_regs *)*sp;
+ 			pc = regs->cp0_epc;
+-			if (__kernel_text_address(pc)) {
++			if (!user_mode(regs) && __kernel_text_address(pc)) {
+ 				*sp = regs->regs[29];
+ 				*ra = regs->regs[31];
+ 				return pc;
+--
+2.7.4

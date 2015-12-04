@@ -1,48 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Dec 2015 15:59:34 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.136]:36636 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Dec 2015 16:27:14 +0100 (CET)
+Received: from mx2.suse.de ([195.135.220.15]:53901 "EHLO mx2.suse.de"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27013220AbbLDO73qfxbp (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 4 Dec 2015 15:59:29 +0100
-Received: from mail.kernel.org (localhost [127.0.0.1])
-        by mail.kernel.org (Postfix) with ESMTP id 8641020592;
-        Fri,  4 Dec 2015 14:59:27 +0000 (UTC)
-Received: from rob-hp-laptop (72-48-98-129.dyn.grandenetworks.net [72.48.98.129])
-        (using TLSv1.2 with cipher AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 06BAD2045A;
-        Fri,  4 Dec 2015 14:59:25 +0000 (UTC)
-Date:   Fri, 4 Dec 2015 08:59:24 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Simon Arlott <simon@fire.lp0.eu>
-Cc:     Philipp Zabel <p.zabel@pengutronix.de>,
-        Kevin Cernekee <cernekee@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        linux-kernel@vger.kernel.org,
-        MIPS Mailing List <linux-mips@linux-mips.org>,
-        Pawel Moll <pawel.moll@arm.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ian Campbell <ijc+devicetree@hellion.org.uk>,
-        Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Subject: Re: [PATCH (v2) 1/2] reset: Add brcm,bcm6345-reset device tree
- binding
-Message-ID: <20151204145924.GA23834@rob-hp-laptop>
-References: <565F5C96.5090700@simon.arlott.org.uk>
+        id S27007599AbbLDP1NOQ057 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 4 Dec 2015 16:27:13 +0100
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (charybdis-ext.suse.de [195.135.220.254])
+        by mx2.suse.de (Postfix) with ESMTP id 6B521AB12;
+        Fri,  4 Dec 2015 15:27:11 +0000 (UTC)
+Date:   Fri, 4 Dec 2015 16:27:09 +0100
+From:   Petr Mladek <pmladek@suse.com>
+To:     Russell King - ARM Linux <linux@arm.linux.org.uk>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jiri Kosina <jkosina@suse.com>, Ingo Molnar <mingo@redhat.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-kernel@vger.kernel.org, x86@kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        adi-buildroot-devel@lists.sourceforge.net,
+        linux-cris-kernel@axis.com, linux-mips@linux-mips.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org
+Subject: Re: [PATCH v2 3/5] printk/nmi: Try hard to print Oops message in NMI
+ context
+Message-ID: <20151204152709.GA20935@pathway.suse.cz>
+References: <1448622572-16900-1-git-send-email-pmladek@suse.com>
+ <1448622572-16900-4-git-send-email-pmladek@suse.com>
+ <20151201234437.GA8644@n2100.arm.linux.org.uk>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <565F5C96.5090700@simon.arlott.org.uk>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-X-Virus-Scanned: ClamAV using ClamSMTP
-Return-Path: <robh@kernel.org>
+In-Reply-To: <20151201234437.GA8644@n2100.arm.linux.org.uk>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <pmladek@suse.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50336
+X-archive-position: 50337
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: robh@kernel.org
+X-original-sender: pmladek@suse.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,64 +54,32 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Dec 02, 2015 at 09:03:18PM +0000, Simon Arlott wrote:
-> Add device tree binding for the BCM6345 soft reset controller.
+On Tue 2015-12-01 23:44:37, Russell King - ARM Linux wrote:
+> On Fri, Nov 27, 2015 at 12:09:30PM +0100, Petr Mladek wrote:
+> > What we can do, though, is to zap all printk locks. We already do this
+> > when a printk recursion is detected. This should be safe because
+> > the system is crashing and there shouldn't be any printk caller
+> > that would cause the deadlock.
 > 
-> The BCM6345 contains a soft-reset controller activated by setting
-> a bit (that must previously have cleared).
-> 
-> Signed-off-by: Simon Arlott <simon@fire.lp0.eu>
-> ---
-> Renamed to bcm6345, removed "mask" property.
+> What about serial consoles which may call out to subsystems like the
+> clk subsystem to enable a clock, which would want to take their own
+> spinlocks in addition to the serial console driver?
 
-Acked-by: Rob Herring <robh@kernel.org>
+Yes, there might be more locks used by the serial console but I do
+not know how to handle them all easily. IMHO, this patch is just better
+than nothing.
 
-> 
->  .../bindings/reset/brcm,bcm6345-reset.txt          | 33 ++++++++++++++++++++++
->  1 file changed, 33 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/reset/brcm,bcm6345-reset.txt
-> 
-> diff --git a/Documentation/devicetree/bindings/reset/brcm,bcm6345-reset.txt b/Documentation/devicetree/bindings/reset/brcm,bcm6345-reset.txt
-> new file mode 100644
-> index 0000000..bb9ca6e
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/reset/brcm,bcm6345-reset.txt
-> @@ -0,0 +1,33 @@
-> +Broadcom BCM6345 reset controller
-> +
-> +The BCM6345 contains a basic soft reset controller in the perf register
-> +set which resets components using a bit in a register.
-> +
-> +Please also refer to reset.txt in this directory for common reset
-> +controller binding usage.
-> +
-> +Required properties:
-> +- compatible:	Should be "brcm,bcm<soc>-reset", "brcm,bcm6345-reset"
-> +- regmap:	The register map phandle
-> +- offset:	Offset in the register map for the reset register (in bytes)
-> +- #reset-cells:	Must be set to 1
-> +
-> +Example:
-> +
-> +periph_soft_rst: reset-controller {
-> +	compatible = "brcm,bcm63168-reset", "brcm,bcm6345-reset";
-> +	regmap = <&periph_cntl>;
-> +	offset = <0x10>;
-> +
-> +	#reset-cells = <1>;
-> +};
-> +
-> +usbh: usbphy@10002700 {
-> +	compatible = "brcm,bcm63168-usbh";
-> +	reg = <0x10002700 0x38>;
-> +	clocks = <&periph_clk 13>, <&timer_clk 18>;
-> +	resets = <&periph_soft_rst 6>;
-> +	power-supply = <&power_usbh>;
-> +	#phy-cells = <0>;
-> +};
-> +
-> -- 
-> 2.1.4
-> 
-> -- 
-> Simon Arlott
+> I don't see bust_spinlocks() dealing with any of these locks, so IMHO
+> trying to make this work in NMI context strikes me as making the
+> existing solution more unreliable on ARM systems.
+
+bust_spinlocks() calls printk_nmi_flush() that would call printk()
+that would zap "lockbuf_lock" and "console_sem" when in Oops and NMI.
+Yes, there might be more locks blocked but we try to break at least
+the first two walls. Also zapping is allowed only once per 30 seconds,
+see zap_locks(). Why do you think that it might make things more
+unreliable, please?
+
+
+Thanks for looking,
+Petr

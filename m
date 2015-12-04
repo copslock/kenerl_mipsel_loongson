@@ -1,47 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Dec 2015 23:23:39 +0100 (CET)
-Received: from resqmta-po-06v.sys.comcast.net ([96.114.154.165]:45449 "EHLO
-        resqmta-po-06v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007545AbbLCWXhvvZy0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 3 Dec 2015 23:23:37 +0100
-Received: from resomta-po-05v.sys.comcast.net ([96.114.154.229])
-        by resqmta-po-06v.sys.comcast.net with comcast
-        id pAMM1r0034xDoy801APaHC; Thu, 03 Dec 2015 22:23:34 +0000
-Received: from [192.168.1.13] ([76.106.83.43])
-        by resomta-po-05v.sys.comcast.net with comcast
-        id pAPY1r00J0w5D3801APZQg; Thu, 03 Dec 2015 22:23:34 +0000
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Dec 2015 09:14:48 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:55622 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27012580AbbLDIOrMUwnY (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 4 Dec 2015 09:14:47 +0100
+Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
+        by Websense Email Security Gateway with ESMTPS id AB3AC31FC585A;
+        Fri,  4 Dec 2015 08:14:39 +0000 (GMT)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
+ 14.3.235.1; Fri, 4 Dec 2015 08:14:41 +0000
+Received: from [192.168.154.116] (192.168.154.116) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Fri, 4 Dec
+ 2015 08:14:40 +0000
 Subject: Re: [PATCH 0/9] MIPS Relocatable kernel & KASLR
-To:     Matt Redfearn <matt.redfearn@imgtec.com>
+To:     Joshua Kinard <kumba@gentoo.org>
 References: <1449137297-30464-1-git-send-email-matt.redfearn@imgtec.com>
-Cc:     linux-mips@linux-mips.org
-From:   Joshua Kinard <kumba@gentoo.org>
-Message-ID: <5660C0D5.208@gentoo.org>
-Date:   Thu, 3 Dec 2015 17:23:17 -0500
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:38.0) Gecko/20100101
- Thunderbird/38.4.0
+ <5660C0D5.208@gentoo.org>
+CC:     <linux-mips@linux-mips.org>
+From:   Matt Redfearn <matt.redfearn@imgtec.com>
+Message-ID: <56614B70.9090700@imgtec.com>
+Date:   Fri, 4 Dec 2015 08:14:40 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+ Thunderbird/38.3.0
 MIME-Version: 1.0
-In-Reply-To: <1449137297-30464-1-git-send-email-matt.redfearn@imgtec.com>
-Content-Type: text/plain; charset=windows-1252
+In-Reply-To: <5660C0D5.208@gentoo.org>
+Content-Type: text/plain; charset="windows-1252"; format=flowed
 Content-Transfer-Encoding: 7bit
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=comcast.net;
-        s=q20140121; t=1449181414;
-        bh=wgVMO9rYT0bmOvneexsuHNhModhOPId7RZ8iUTgLnQM=;
-        h=Received:Received:Subject:To:From:Message-ID:Date:MIME-Version:
-         Content-Type;
-        b=IPtKhYY/xriEh/VvzMU5OjANjXCvtTdpaDF3l68R4AnA0nrifXnmwfRfjEZO/LCXu
-         0XnljxuHrwjpqXsSlG94e0jmg0aL74Kgpx5ZBsv1XHXOg3fxwcLQa3sxEcpvLoWDT8
-         PSe+Mf4i7MHX19M2DZsOfAJGdVUH3KsYjhDaZ1Fn87/V5Dn2lJuzT71lInNJxD6WEm
-         va2qfsBf6YwcRvjNkozZOzX26vvC/Sonx36P8GOpyZfNWx5Rj7WqSMYA8VQfkRQ1OG
-         q7Yaj/9NABVAyTOIx2Jup14MOnKsYqOkRTorJdRmufOapO5wZVJHCWWWRf6PbEA0Jp
-         HwJi3u1QDGWIw==
-Return-Path: <kumba@gentoo.org>
+X-Originating-IP: [192.168.154.116]
+Return-Path: <Matt.Redfearn@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50328
+X-archive-position: 50329
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kumba@gentoo.org
+X-original-sender: matt.redfearn@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,19 +48,29 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 12/03/2015 05:08, Matt Redfearn wrote:
-> This series adds the ability for the MIPS kernel to relocate itself at
-> runtime, optionally to an address determined at random each boot. This
-> series is based on v4.3 and has been tested on the Malta platform.
+Hi Joshua,
+The patch as it stands uses a couple of MIPS R2 additional instructions 
+to deal with synchronizing icache. Firstly, the synci instruction to 
+ensure that icache is in sync with the dcache after the relocated kernel 
+has been written, and the jr.hb instruction to resolve any hazards 
+created by writing the new kernel before jumping to it.
 
-[snip]
+Thanks,
+Matt
 
-> * Relocation is currently supported on R2 of the MIPS architecture,
->   32bit and 64bit.
-
-Out of curiosity, why is this capability restricted to MIPS R2 and higher?
-IRIX kernels and the 'sash' tool were both relocatable on the older SGI
-platforms.  Does the feature, as implemented, rely on R2-specific
-instructions/capabilities, or only due to lack of testing on pre-R2 hardware?
-
---J
+On 03/12/15 22:23, Joshua Kinard wrote:
+> On 12/03/2015 05:08, Matt Redfearn wrote:
+>> This series adds the ability for the MIPS kernel to relocate itself at
+>> runtime, optionally to an address determined at random each boot. This
+>> series is based on v4.3 and has been tested on the Malta platform.
+> [snip]
+>
+>> * Relocation is currently supported on R2 of the MIPS architecture,
+>>    32bit and 64bit.
+> Out of curiosity, why is this capability restricted to MIPS R2 and higher?
+> IRIX kernels and the 'sash' tool were both relocatable on the older SGI
+> platforms.  Does the feature, as implemented, rely on R2-specific
+> instructions/capabilities, or only due to lack of testing on pre-R2 hardware?
+>
+> --J
+>

@@ -1,49 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Dec 2015 14:14:41 +0100 (CET)
-Received: from resqmta-ch2-12v.sys.comcast.net ([69.252.207.44]:35341 "EHLO
-        resqmta-ch2-12v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27013216AbbLDNOjyi6Gv (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 4 Dec 2015 14:14:39 +0100
-Received: from resomta-ch2-13v.sys.comcast.net ([69.252.207.109])
-        by resqmta-ch2-12v.sys.comcast.net with comcast
-        id pRER1r00C2N9P4d01REXV0; Fri, 04 Dec 2015 13:14:31 +0000
-Received: from [192.168.1.13] ([76.106.83.43])
-        by resomta-ch2-13v.sys.comcast.net with comcast
-        id pREW1r0010w5D3801REWNb; Fri, 04 Dec 2015 13:14:31 +0000
-Subject: Re: [PATCH 0/9] MIPS Relocatable kernel & KASLR
-To:     Matt Redfearn <matt.redfearn@imgtec.com>
-References: <1449137297-30464-1-git-send-email-matt.redfearn@imgtec.com>
- <5660C0D5.208@gentoo.org> <56614B70.9090700@imgtec.com>
-Cc:     linux-mips@linux-mips.org
-From:   Joshua Kinard <kumba@gentoo.org>
-X-Enigmail-Draft-Status: N1110
-Message-ID: <566191A4.1070003@gentoo.org>
-Date:   Fri, 4 Dec 2015 08:14:12 -0500
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:38.0) Gecko/20100101
- Thunderbird/38.4.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Dec 2015 15:30:49 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.136]:34093 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27013220AbbLDOaqxluOp (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 4 Dec 2015 15:30:46 +0100
+Received: from mail.kernel.org (localhost [127.0.0.1])
+        by mail.kernel.org (Postfix) with ESMTP id 927182045E;
+        Fri,  4 Dec 2015 14:30:43 +0000 (UTC)
+Received: from rob-hp-laptop (72-48-98-129.dyn.grandenetworks.net [72.48.98.129])
+        (using TLSv1.2 with cipher AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 1C6AF20445;
+        Fri,  4 Dec 2015 14:30:39 +0000 (UTC)
+Date:   Fri, 4 Dec 2015 08:30:37 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Simon Arlott <simon@fire.lp0.eu>
+Cc:     Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@codeaurora.org>,
+        Kevin Cernekee <cernekee@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-clk@vger.kernel.org, linux-mips@linux-mips.org,
+        Pawel Moll <pawel.moll@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ian Campbell <ijc+devicetree@hellion.org.uk>,
+        Kumar Gala <galak@codeaurora.org>
+Subject: Re: [PATCH 1/2] clk: Add brcm,bcm63xx-gate-clk device tree binding
+Message-ID: <20151204143037.GA3667@rob-hp-laptop>
+References: <565CB727.7030209@simon.arlott.org.uk>
 MIME-Version: 1.0
-In-Reply-To: <56614B70.9090700@imgtec.com>
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=comcast.net;
-        s=q20140121; t=1449234871;
-        bh=3D9mCYS95VWkR/X2p2X7Owsy6PJx4K3nLDTrLeRRe7g=;
-        h=Received:Received:Subject:To:From:Message-ID:Date:MIME-Version:
-         Content-Type;
-        b=OWrfNQDRsR0FX2x0kDcZ0bdQ5s9RKH3r87MOzz3saiw486hY4JTQKM3u9ZiuweChM
-         Fx7/2a5XNksVpCyQo7/gPertMmlnOlr2e6XIympPvG42u6L5nYfk+maiDMVPOSBzC0
-         WzhfbVVjPP9OHIsq5/86wBf/gK9hW22NyLbpySg2lTgNufqiBA2fy0Egphct033Kvh
-         OxH+ohNsV1mxQdiMgRCCn/QJnmqb1oWlysykvDTyNKgDTIM83HfqLM7Taascli9HYp
-         uLDS1SYOp028xoII09pGa/E9MsXHh+XAwvGFs6T6OqTeHFTxuDK9tFdbpg7ximNKU5
-         Zhh529zA1GFkQ==
-Return-Path: <kumba@gentoo.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <565CB727.7030209@simon.arlott.org.uk>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+X-Virus-Scanned: ClamAV using ClamSMTP
+Return-Path: <robh@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50334
+X-archive-position: 50335
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kumba@gentoo.org
+X-original-sender: robh@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,58 +55,49 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-
-Hazards shouldn't be an issue on the R10000-series of processors, as they
-handle all hazards in hardware. So I guess that leaves just finding a
-replacement for 'synci' on those CPUs, and then maybe relocs could be used on
-at least IP27, IP28, and IP30 systems (and IP32, if we ever solve the coherency
-issues there w/ R10K).
-
-Not sure what benefit there would be, though.
-
---J
-
-
-
-On 12/04/2015 03:14, Matt Redfearn wrote:
-> Hi Joshua,
-> The patch as it stands uses a couple of MIPS R2 additional instructions to deal
-> with synchronizing icache. Firstly, the synci instruction to ensure that icache
-> is in sync with the dcache after the relocated kernel has been written, and the
-> jr.hb instruction to resolve any hazards created by writing the new kernel
-> before jumping to it.
+On Mon, Nov 30, 2015 at 08:52:55PM +0000, Simon Arlott wrote:
+> Add device tree binding for the BCM63xx's gated clocks.
 > 
-> Thanks,
-> Matt
+> The BCM63xx contains clocks gated with a register. Clocks are indexed
+> by bits in the register and are active high. Clock gate bits are
+> interleaved with other status bits and configurable clocks in the same
+> register.
 > 
-> On 03/12/15 22:23, Joshua Kinard wrote:
->> On 12/03/2015 05:08, Matt Redfearn wrote:
->>> This series adds the ability for the MIPS kernel to relocate itself at
->>> runtime, optionally to an address determined at random each boot. This
->>> series is based on v4.3 and has been tested on the Malta platform.
->> [snip]
->>
->>> * Relocation is currently supported on R2 of the MIPS architecture,
->>>    32bit and 64bit.
->> Out of curiosity, why is this capability restricted to MIPS R2 and higher?
->> IRIX kernels and the 'sash' tool were both relocatable on the older SGI
->> platforms.  Does the feature, as implemented, rely on R2-specific
->> instructions/capabilities, or only due to lack of testing on pre-R2 hardware?
->>
->> --J
->>
+> Signed-off-by: Simon Arlott <simon@fire.lp0.eu>
+> ---
+>  .../bindings/clock/brcm,bcm63xx-gate-clk.txt       | 58 ++++++++++++++++++++++
+>  1 file changed, 58 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/clock/brcm,bcm63xx-gate-clk.txt
 > 
-> 
+> diff --git a/Documentation/devicetree/bindings/clock/brcm,bcm63xx-gate-clk.txt b/Documentation/devicetree/bindings/clock/brcm,bcm63xx-gate-clk.txt
+> new file mode 100644
+> index 0000000..3f4ead1
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/clock/brcm,bcm63xx-gate-clk.txt
+> @@ -0,0 +1,58 @@
+> +Broadcom BCM63xx clocks
+> +
+> +This binding uses the common clock binding:
+> +	Documentation/devicetree/bindings/clock/clock-bindings.txt
+> +
+> +The BCM63xx contains clocks gated with a register. Clocks are indexed
+> +by bits in the register and are active high. Clock gate bits are
+> +interleaved with other status bits and configurable clocks in the same
+> +register.
+> +
+> +Required properties:
+> +- compatible:	Should be "brcm,bcm<soc>-gate-clk", "brcm,bcm63xx-gate-clk"
+> +- #clock-cells:	Should be <1>.
+> +- regmap:	The register map phandle
+> +- offset:	Offset in the register map for the reboot register (in bytes)
+> +- clocks:	The external oscillator clock phandle
+> +
+> +Example:
+> +
+> +periph_clk: periph_clk {
+> +	compatible = "brcm,bcm63168-gate-clk", "brcm,bcm63xx-gate-clk";
+> +	regmap = <&periph_cntl>;
 
+What else is in periph_cntrl? Could this all just be part of that node?
 
--- 
-Joshua Kinard
-Gentoo/MIPS
-kumba@gentoo.org
-6144R/F5C6C943 2015-04-27
-177C 1972 1FB8 F254 BAD0 3E72 5C63 F4E3 F5C6 C943
-
-"The past tempts us, the present confuses us, the future frightens us.  And our
-lives slip away, moment by moment, lost in that vast, terrible in-between."
-
---Emperor Turhan, Centauri Republic
+Rob

@@ -1,45 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Dec 2015 09:20:16 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:8210 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27011494AbbLDIUOeBXzY (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 4 Dec 2015 09:20:14 +0100
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Websense Email Security Gateway with ESMTPS id 48A2C3F8C0357;
-        Fri,  4 Dec 2015 08:20:05 +0000 (GMT)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- HHMAIL01.hh.imgtec.org (10.100.10.19) with Microsoft SMTP Server (TLS) id
- 14.3.235.1; Fri, 4 Dec 2015 08:20:06 +0000
-Received: from [192.168.154.116] (192.168.154.116) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Fri, 4 Dec
- 2015 08:20:05 +0000
-Subject: Re: [PATCH 6/9] MIPS: Call relocate_kernel if CONFIG_RELOCATABLE=y
-To:     James Hogan <james@albanarts.com>,
-        Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
-        <linux-mips@linux-mips.org>
-References: <1449137297-30464-1-git-send-email-matt.redfearn@imgtec.com>
- <1449137297-30464-7-git-send-email-matt.redfearn@imgtec.com>
- <56605081.5050307@cogentembedded.com> <5660577F.2020401@imgtec.com>
- <56607FE6.7040001@cogentembedded.com>
- <BA73413A-D335-4692-85A4-9330D7ACAC03@albanarts.com>
-From:   Matt Redfearn <matt.redfearn@imgtec.com>
-Message-ID: <56614CB5.9020002@imgtec.com>
-Date:   Fri, 4 Dec 2015 08:20:05 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.3.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Dec 2015 12:40:13 +0100 (CET)
+Received: from mail-pa0-f52.google.com ([209.85.220.52]:34116 "EHLO
+        mail-pa0-f52.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27013159AbbLDLkMFpwvx (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 4 Dec 2015 12:40:12 +0100
+Received: by pacwq6 with SMTP id wq6so8660142pac.1;
+        Fri, 04 Dec 2015 03:40:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=date:from:to:cc:subject:message-id:mime-version:content-type
+         :content-disposition:user-agent;
+        bh=H6V2li49aUcZCpI5xuHiqcAZ2HEmRb4KRSTu2gBjwZI=;
+        b=G9irWZ3CNJuTOpG7QqQHNCCXfS16YWSoLfpqJaXKo4G5fV6vzKvkfrfzj4/X9U+uly
+         iKxUH1EUfq4tv4Wv1TOYipCyvRYUoNrNLk+u3raxtq4SnSBg2UJgCRbP4meNR8DyX9Kx
+         OuNhbYr7EMlxNK+WuuN64Z5oCcv4QsUKGOzMMJvWYQUllR7+0ufUW9Qu+YEW9w1fpveg
+         rRDZojS9uknQm3e1bfbFaQcCtNVHfUvabFgmO/nVrkYkvcu70HV7Jih/SdmxlEOGVRGT
+         hsRycmI/iVJkCvM3qmchdvnqatuOp5aI86z5+PnYi46MErPWfWIp4Hhx27FbiQp3rqMy
+         AzcA==
+X-Received: by 10.66.153.198 with SMTP id vi6mr20801310pab.37.1449229205819;
+        Fri, 04 Dec 2015 03:40:05 -0800 (PST)
+Received: from yggdrasil (111-243-147-169.dynamic.hinet.net. [111.243.147.169])
+        by smtp.gmail.com with ESMTPSA id w8sm16657822pfi.41.2015.12.04.03.40.03
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 04 Dec 2015 03:40:04 -0800 (PST)
+Date:   Fri, 4 Dec 2015 19:40:00 +0800
+From:   Tony Wu <tung7970@gmail.com>
+To:     Paul Burton <paul.burton@imgtec.com>, ralf@linux-mips.org
+Cc:     James Hogan <james.hogan@imgtec.com>,
+        Markos Chandras <markos.chandras@imgtec.com>,
+        linux-mips@linux-mips.org
+Subject: [PATCH] MIPS: CM: Fix compilation error when !MIPS_CM
+Message-ID: <20151204193713-tung7970@googlemail.com>
 MIME-Version: 1.0
-In-Reply-To: <BA73413A-D335-4692-85A4-9330D7ACAC03@albanarts.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.154.116]
-Return-Path: <Matt.Redfearn@imgtec.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <tung7970@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50330
+X-archive-position: 50331
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: matt.redfearn@imgtec.com
+X-original-sender: tung7970@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,59 +55,25 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi James,
+Fix mips_cm_lock_other compilation error when MIPS_CM is not selected.
+This was introduced in commit 23d5de8efb9a (MIPS: CM: Introduce core-other
+locking functions)
 
-On 03/12/15 18:54, James Hogan wrote:
-> On 3 December 2015 17:46:14 GMT+00:00, Sergei Shtylyov <sergei.shtylyov@cogentembedded.com> wrote:
->> On 12/03/2015 05:53 PM, Matt Redfearn wrote:
->>
->>>>> If CONFIG_RELOCATABLE is enabled, jump to relocate_kernel.
->>>>>
->>>>> This function will return the entry point of the relocated kernel
->> if
->>>>> copy/relocate is sucessful or the original entry point if not. The
->> stack
->>>>> pointer must then be pointed into the new image.
->>>>>
->>>>> Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
->>>>> ---
->>>>>    arch/mips/kernel/head.S | 20 ++++++++++++++++++++
->>>>>    1 file changed, 20 insertions(+)
->>>>>
->>>>> diff --git a/arch/mips/kernel/head.S b/arch/mips/kernel/head.S
->>>>> index 4e4cc5b9a771..7dc043349d66 100644
->>>>> --- a/arch/mips/kernel/head.S
->>>>> +++ b/arch/mips/kernel/head.S
->>>>> @@ -132,7 +132,27 @@ not_found:
->>>>>        set_saved_sp    sp, t0, t1
->>>>>        PTR_SUBU    sp, 4 * SZREG        # init stack pointer
->>>>>
->>>>> +#ifdef CONFIG_RELOCATABLE
->>>>> +    /* Copy kernel and apply the relocations */
->>>>> +    jal        relocate_kernel
->>>>> +
->>>>> +    /* Repoint the sp into the new kernel image */
->>>>> +    PTR_LI        sp, _THREAD_SIZE - 32 - PT_SIZE
->>>>> +    PTR_ADDU    sp, $28
->>>>     Can't you account for it in the previous PTR_LI?
->>> During relocate_kernel, $28, pointer to the current thread,
->> Ah, it's a register! I thought it was an immediate. Nevermind then. :-)
-> Although, it could still be reduced:
-> PTR_ADDU sp, gp, _THREAD_SIZE - 32 - PT_SIZE
->
-> Assuming the immediate is in range of signed 16bit.
+Signed-off-by: Tony Wu <tung7970@gmail.com>
+Cc: Paul Burton <paul.burton@imgtec.com>
+Cc: James Hogan <james.hogan@imgtec.com>
+Cc: Markos Chandras <markos.chandras@imgtec.com>
 
-The immediate would be 32552, so in range of signed 16bit, but that 
-would be brittle if either _THREAD_SIZE or PT_SIZE were to change in 
-future....
-
-Thanks,
-Matt
->
-> Cheers
-> James
->
->> [...]
->>
->> MBR, Sergei
->
+diff --git a/arch/mips/include/asm/mips-cm.h b/arch/mips/include/asm/mips-cm.h
+index 6516e9d..0dabede 100644
+--- a/arch/mips/include/asm/mips-cm.h
++++ b/arch/mips/include/asm/mips-cm.h
+@@ -501,7 +501,7 @@ extern void mips_cm_unlock_other(void);
+ 
+ #else /* !CONFIG_MIPS_CM */
+ 
+-static inline void mips_cm_lock_other(unsigned int core) { }
++static inline void mips_cm_lock_other(unsigned int core, unsigned int vp) { }
+ static inline void mips_cm_unlock_other(void) { }
+ 
+ #endif /* !CONFIG_MIPS_CM */

@@ -1,48 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Dec 2015 16:29:27 +0100 (CET)
-Received: from mx2.suse.de ([195.135.220.15]:54271 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27007599AbbLDP3Zwd3L7 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 4 Dec 2015 16:29:25 +0100
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (charybdis-ext.suse.de [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id 4FC73ABA3;
-        Fri,  4 Dec 2015 15:29:25 +0000 (UTC)
-Date:   Fri, 4 Dec 2015 16:29:24 +0100
-From:   Petr Mladek <pmladek@suse.com>
-To:     Michael Ellerman <mpe@ellerman.id.au>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        linux-mips@linux-mips.org,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jiri Kosina <jkosina@suse.com>, linux-cris-kernel@axis.com,
-        linux-s390@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
-        x86@kernel.org, linux-kernel@vger.kernel.org,
-        Steven Rostedt <rostedt@goodmis.org>,
-        adi-buildroot-devel@lists.sourceforge.net,
-        Ingo Molnar <mingo@redhat.com>, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org,
-        Russell King <rmk+kernel@arm.linux.org.uk>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v2 1/5] printk/nmi: Generic solution for safe printk in
- NMI
-Message-ID: <20151204152924.GB20935@pathway.suse.cz>
-References: <1448622572-16900-1-git-send-email-pmladek@suse.com>
- <1448622572-16900-2-git-send-email-pmladek@suse.com>
- <1449024316.11810.6.camel@ellerman.id.au>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Dec 2015 16:37:21 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:57264 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S27007599AbbLDPhSp6Bg7 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 4 Dec 2015 16:37:18 +0100
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.15.2/8.14.8) with ESMTP id tB4FbHLf016844;
+        Fri, 4 Dec 2015 16:37:17 +0100
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.15.2/8.15.2/Submit) id tB4FbH9U016843;
+        Fri, 4 Dec 2015 16:37:17 +0100
+Date:   Fri, 4 Dec 2015 16:37:17 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Matt Redfearn <matt.redfearn@imgtec.com>
+Cc:     James Hogan <james@albanarts.com>,
+        Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
+        linux-mips@linux-mips.org
+Subject: Re: [PATCH 6/9] MIPS: Call relocate_kernel if CONFIG_RELOCATABLE=y
+Message-ID: <20151204153716.GA16238@linux-mips.org>
+References: <1449137297-30464-1-git-send-email-matt.redfearn@imgtec.com>
+ <1449137297-30464-7-git-send-email-matt.redfearn@imgtec.com>
+ <56605081.5050307@cogentembedded.com>
+ <5660577F.2020401@imgtec.com>
+ <56607FE6.7040001@cogentembedded.com>
+ <BA73413A-D335-4692-85A4-9330D7ACAC03@albanarts.com>
+ <56614CB5.9020002@imgtec.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1449024316.11810.6.camel@ellerman.id.au>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <pmladek@suse.com>
+In-Reply-To: <56614CB5.9020002@imgtec.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50338
+X-archive-position: 50339
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: pmladek@suse.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,50 +50,51 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed 2015-12-02 13:45:16, Michael Ellerman wrote:
-> On Fri, 2015-11-27 at 12:09 +0100, Petr Mladek wrote:
-> 
-> > printk() takes some locks and could not be used a safe way in NMI
-> > context.
-> > 
-> > The chance of a deadlock is real especially when printing
-> > stacks from all CPUs. This particular problem has been addressed
-> > on x86 by the commit a9edc8809328 ("x86/nmi: Perform a safe NMI stack
-> > trace on all CPUs").
-> 
-> ...
-> 
-> > diff --git a/kernel/printk/nmi.c b/kernel/printk/nmi.c
-> > new file mode 100644
-> > index 000000000000..3989e13a0021
-> > --- /dev/null
-> > +++ b/kernel/printk/nmi.c
-> > @@ -0,0 +1,200 @@
-> 
-> ...
-> 
-> > +
-> > +struct nmi_seq_buf {
-> > +	atomic_t		len;	/* length of written data */
-> > +	struct irq_work		work;	/* IRQ work that flushes the buffer */
-> > +	unsigned char		buffer[PAGE_SIZE - sizeof(atomic_t) -
-> > +				       sizeof(struct irq_work)];
-> > +};
-> > +static DEFINE_PER_CPU(struct nmi_seq_buf, nmi_print_seq);
-> 
-> 
-> PAGE_SIZE isn't always 4K.
-> 
-> On typical powerpc systems this will give you 128K, and on some 512K, which is
-> probably not what we wanted.
+On Fri, Dec 04, 2015 at 08:20:05AM +0000, Matt Redfearn wrote:
 
-Good point!
-
-> The existing code just did:
+> >Although, it could still be reduced:
+> >PTR_ADDU sp, gp, _THREAD_SIZE - 32 - PT_SIZE
+> >
+> >Assuming the immediate is in range of signed 16bit.
 > 
-> #define NMI_BUF_SIZE           4096
+> The immediate would be 32552, so in range of signed 16bit, but that would be
+> brittle if either _THREAD_SIZE or PT_SIZE were to change in future....
 
-I will change this to 8192. The 4kB were not enough in some cases.
+The maximum value possible for _THREAD_SIZE would be with 64k pages for
+which the expression will exceed the signed 16 bit range.  The good news
+is that GAS is smart enough to cope with the situation by suitably
+expanding the instruction into a macro unless ".set noat" or ".set nomacro"
+mode are enabled:
 
-Best Regards,
-Petr
+$ cat s.s 
+	addu	$sp, $gp, 65536
+[ralf@h7 tmp]$ mips-linux-as -O2 -als -o s.o s.s
+GAS LISTING s.s 			page 1
+
+
+   1 0000 3C010001 		addu	$sp, $gp, 65536
+   1      0381E821 
+   1      00000000 
+   1      00000000 
+
+GAS LISTING s.s 			page 2
+
+
+NO DEFINED SYMBOLS
+
+NO UNDEFINED SYMBOLS
+[ralf@h7 tmp]$ mips-linux-objdump -d s.o 
+s.o:     file format elf32-tradbigmips
+
+
+Disassembly of section .text:
+
+00000000 <.text>:
+   0:	3c010001 	lui	at,0x1
+   4:	0381e821 	addu	sp,gp,at
+	...
+
+And of course that macro should better not be expanded in a branch
+delay slot ...
+
+  Ralf

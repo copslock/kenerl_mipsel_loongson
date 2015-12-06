@@ -1,47 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 05 Dec 2015 07:19:13 +0100 (CET)
-Received: from conuserg009.nifty.com ([202.248.44.35]:42922 "EHLO
-        conuserg009-v.nifty.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27006555AbbLEGTL2sFCB (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 5 Dec 2015 07:19:11 +0100
-Received: from grover.sesame (FL1-203-136-65-164.osk.mesh.ad.jp [203.136.65.164]) (authenticated)
-        by conuserg009-v.nifty.com with ESMTP id tB56HwRs021501;
-        Sat, 5 Dec 2015 15:18:01 +0900
-X-Nifty-SrcIP: [203.136.65.164]
-From:   Masahiro Yamada <yamada.masahiro@socionext.com>
-To:     linux-clk@vger.kernel.org
-Cc:     Masahiro Yamada <yamada.masahiro@socionext.com>,
-        linux-mips@linux-mips.org, linux-sh@vger.kernel.org,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Eric Miao <eric.y.miao@gmail.com>,
-        Hartley Sweeten <hsweeten@visionengravers.com>,
-        Greg Ungerer <gerg@uclinux.org>,
-        Ryan Mallon <rmallon@gmail.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Steven Miao <realmz6@gmail.com>,
-        Simon Horman <horms@verge.net.au>,
-        Wan ZongShun <mcuos.com@gmail.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Hauke Mehrtens <hauke@hauke-m.de>,
-        adi-buildroot-devel@lists.sourceforge.net,
-        Russell King <linux@arm.linux.org.uk>,
-        linux-m68k@lists.linux-m68k.org, Roland Stigge <stigge@antcom.de>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        Dmitry Eremin-Solenikov <dbaryshkov@gmail.com>,
-        Magnus Damm <magnus.damm@gmail.com>,
-        John Crispin <blogic@openwrt.org>
-Subject: [PATCH] clk: let clk_disable() return immediately if clk is NULL or error
-Date:   Sat,  5 Dec 2015 15:17:56 +0900
-Message-Id: <1449296276-32208-1-git-send-email-yamada.masahiro@socionext.com>
-X-Mailer: git-send-email 1.9.1
-Return-Path: <yamada.masahiro@socionext.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 06 Dec 2015 22:13:08 +0100 (CET)
+Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:40045 "EHLO
+        shadbolt.e.decadent.org.uk" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007281AbbLFVNFPpyaE (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 6 Dec 2015 22:13:05 +0100
+Received: from deadeye.i.decadent.org.uk ([192.168.2.112] helo=deadeye)
+        by shadbolt.decadent.org.uk with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.84)
+        (envelope-from <ben@decadent.org.uk>)
+        id 1a5gc6-00085y-E5; Sun, 06 Dec 2015 21:12:58 +0000
+Received: from ben by deadeye with local (Exim 4.86)
+        (envelope-from <ben@decadent.org.uk>)
+        id 1a5gc1-0004kI-9x; Sun, 06 Dec 2015 21:12:53 +0000
+Message-ID: <1449436368.2824.32.camel@decadent.org.uk>
+Subject: Re: [PATCH] MIPS: Cleanup the unused __arch_local_irq_restore()
+ function
+From:   Ben Hutchings <ben@decadent.org.uk>
+To:     Huacai Chen <chenhc@lemote.com>, Ralf Baechle <ralf@linux-mips.org>
+Cc:     Aurelien Jarno <aurelien@aurel32.net>,
+        "Steven J. Hill" <Steven.Hill@imgtec.com>,
+        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>, stable@vger.kernel.org
+Date:   Sun, 06 Dec 2015 21:12:48 +0000
+In-Reply-To: <1448896958-14551-1-git-send-email-chenhc@lemote.com>
+References: <1448896958-14551-1-git-send-email-chenhc@lemote.com>
+Content-Type: multipart/signed; micalg="pgp-sha512";
+        protocol="application/pgp-signature"; boundary="=-0eTDcClfmBHfFCVpMShm"
+X-Mailer: Evolution 3.18.2-1 
+Mime-Version: 1.0
+X-SA-Exim-Connect-IP: 192.168.2.112
+X-SA-Exim-Mail-From: ben@decadent.org.uk
+X-SA-Exim-Scanned: No (on shadbolt.decadent.org.uk); SAEximRunCond expanded to false
+Return-Path: <ben@decadent.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50353
+X-archive-position: 50354
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yamada.masahiro@socionext.com
+X-original-sender: ben@decadent.org.uk
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,182 +51,50 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The clk_disable() in the common clock framework (drivers/clk/clk.c)
-returns immediately if the given clk is NULL or an error pointer.
-It allows drivers to call clk_disable() (and clk_disable_unprepare())
-with a clock that might be NULL or an error pointer as long as the
-drivers are only used along with the common clock framework.
 
-Unfortunately, NULL/error checking is missing from some of non-common
-clk_disable() implementations.  This prevents us from completely
-dropping NULL/error from callers.  Let's add IS_ERR_OR_NULL(clk)
-checks to all callees.
+--=-0eTDcClfmBHfFCVpMShm
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
----
+On Mon, 2015-11-30 at 23:22 +0800, Huacai Chen wrote:
+> In history, __arch_local_irq_restore() is only used by SMTC. However,
+> SMTC support has been removed since 3.16, this patch remove the unused
+> function.
+>=20
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Huacai Chen <chenhc@lemote.com>
+[...]
 
- arch/arm/mach-ep93xx/clock.c     |  2 +-
- arch/arm/mach-lpc32xx/clock.c    |  3 +++
- arch/arm/mach-mmp/clock.c        |  3 +++
- arch/arm/mach-sa1100/clock.c     | 15 ++++++++-------
- arch/arm/mach-w90x900/clock.c    |  3 +++
- arch/blackfin/mach-bf609/clock.c |  3 +++
- arch/m68k/coldfire/clk.c         |  4 ++++
- arch/mips/bcm63xx/clk.c          |  3 +++
- arch/mips/lantiq/clk.c           |  3 +++
- drivers/sh/clk/core.c            |  2 +-
- 10 files changed, 32 insertions(+), 9 deletions(-)
+If this is only a clean-up, then it is not suitable for stable.
 
-diff --git a/arch/arm/mach-ep93xx/clock.c b/arch/arm/mach-ep93xx/clock.c
-index 39ef3b6..4e11f7d 100644
---- a/arch/arm/mach-ep93xx/clock.c
-+++ b/arch/arm/mach-ep93xx/clock.c
-@@ -293,7 +293,7 @@ void clk_disable(struct clk *clk)
- {
- 	unsigned long flags;
- 
--	if (!clk)
-+	if (IS_ERR_OR_NULL(clk))
- 		return;
- 
- 	spin_lock_irqsave(&clk_lock, flags);
-diff --git a/arch/arm/mach-lpc32xx/clock.c b/arch/arm/mach-lpc32xx/clock.c
-index 661c8f4..07faac2 100644
---- a/arch/arm/mach-lpc32xx/clock.c
-+++ b/arch/arm/mach-lpc32xx/clock.c
-@@ -1125,6 +1125,9 @@ void clk_disable(struct clk *clk)
- {
- 	unsigned long flags;
- 
-+	if (IS_ERR_OR_NULL(clk))
-+		return;
-+
- 	spin_lock_irqsave(&global_clkregs_lock, flags);
- 	local_clk_disable(clk);
- 	spin_unlock_irqrestore(&global_clkregs_lock, flags);
-diff --git a/arch/arm/mach-mmp/clock.c b/arch/arm/mach-mmp/clock.c
-index 7c6f95f..7b33122 100644
---- a/arch/arm/mach-mmp/clock.c
-+++ b/arch/arm/mach-mmp/clock.c
-@@ -67,6 +67,9 @@ void clk_disable(struct clk *clk)
- {
- 	unsigned long flags;
- 
-+	if (IS_ERR_OR_NULL(clk))
-+		return;
-+
- 	WARN_ON(clk->enabled == 0);
- 
- 	spin_lock_irqsave(&clocks_lock, flags);
-diff --git a/arch/arm/mach-sa1100/clock.c b/arch/arm/mach-sa1100/clock.c
-index cbf53bb..ea103fd 100644
---- a/arch/arm/mach-sa1100/clock.c
-+++ b/arch/arm/mach-sa1100/clock.c
-@@ -85,13 +85,14 @@ void clk_disable(struct clk *clk)
- {
- 	unsigned long flags;
- 
--	if (clk) {
--		WARN_ON(clk->enabled == 0);
--		spin_lock_irqsave(&clocks_lock, flags);
--		if (--clk->enabled == 0)
--			clk->ops->disable(clk);
--		spin_unlock_irqrestore(&clocks_lock, flags);
--	}
-+	if (IS_ERR_OR_NULL(clk))
-+		return;
-+
-+	WARN_ON(clk->enabled == 0);
-+	spin_lock_irqsave(&clocks_lock, flags);
-+	if (--clk->enabled == 0)
-+		clk->ops->disable(clk);
-+	spin_unlock_irqrestore(&clocks_lock, flags);
- }
- EXPORT_SYMBOL(clk_disable);
- 
-diff --git a/arch/arm/mach-w90x900/clock.c b/arch/arm/mach-w90x900/clock.c
-index 2c371ff..90ec250 100644
---- a/arch/arm/mach-w90x900/clock.c
-+++ b/arch/arm/mach-w90x900/clock.c
-@@ -46,6 +46,9 @@ void clk_disable(struct clk *clk)
- {
- 	unsigned long flags;
- 
-+	if (IS_ERR_OR_NULL(clk))
-+		return;
-+
- 	WARN_ON(clk->enabled == 0);
- 
- 	spin_lock_irqsave(&clocks_lock, flags);
-diff --git a/arch/blackfin/mach-bf609/clock.c b/arch/blackfin/mach-bf609/clock.c
-index 3783058..fed8015 100644
---- a/arch/blackfin/mach-bf609/clock.c
-+++ b/arch/blackfin/mach-bf609/clock.c
-@@ -97,6 +97,9 @@ EXPORT_SYMBOL(clk_enable);
- 
- void clk_disable(struct clk *clk)
- {
-+	if (IS_ERR_OR_NULL(clk))
-+		return;
-+
- 	if (clk->ops && clk->ops->disable)
- 		clk->ops->disable(clk);
- }
-diff --git a/arch/m68k/coldfire/clk.c b/arch/m68k/coldfire/clk.c
-index fddfdcc..eb0e8c1 100644
---- a/arch/m68k/coldfire/clk.c
-+++ b/arch/m68k/coldfire/clk.c
-@@ -101,6 +101,10 @@ EXPORT_SYMBOL(clk_enable);
- void clk_disable(struct clk *clk)
- {
- 	unsigned long flags;
-+
-+	if (IS_ERR_OR_NULL(clk))
-+		return;
-+
- 	spin_lock_irqsave(&clk_lock, flags);
- 	if ((--clk->enabled == 0) && clk->clk_ops)
- 		clk->clk_ops->disable(clk);
-diff --git a/arch/mips/bcm63xx/clk.c b/arch/mips/bcm63xx/clk.c
-index 6375652..d6a39bf 100644
---- a/arch/mips/bcm63xx/clk.c
-+++ b/arch/mips/bcm63xx/clk.c
-@@ -326,6 +326,9 @@ EXPORT_SYMBOL(clk_enable);
- 
- void clk_disable(struct clk *clk)
- {
-+	if (IS_ERR_OR_NULL(clk))
-+		return;
-+
- 	mutex_lock(&clocks_mutex);
- 	clk_disable_unlocked(clk);
- 	mutex_unlock(&clocks_mutex);
-diff --git a/arch/mips/lantiq/clk.c b/arch/mips/lantiq/clk.c
-index a0706fd..c8d87b1 100644
---- a/arch/mips/lantiq/clk.c
-+++ b/arch/mips/lantiq/clk.c
-@@ -130,6 +130,9 @@ EXPORT_SYMBOL(clk_enable);
- 
- void clk_disable(struct clk *clk)
- {
-+	if (IS_ERR_OR_NULL(clk))
-+		return;
-+
- 	if (unlikely(!clk_good(clk)))
- 		return;
- 
-diff --git a/drivers/sh/clk/core.c b/drivers/sh/clk/core.c
-index be56b22..3dd20cf 100644
---- a/drivers/sh/clk/core.c
-+++ b/drivers/sh/clk/core.c
-@@ -252,7 +252,7 @@ void clk_disable(struct clk *clk)
- {
- 	unsigned long flags;
- 
--	if (!clk)
-+	if (IS_ERR_OR_NULL(clk))
- 		return;
- 
- 	spin_lock_irqsave(&clock_lock, flags);
--- 
-1.9.1
+If this fixes a real problem, you should explain it in the commit
+message.
+
+Ben.
+
+--=20
+Ben Hutchings
+Larkinson's Law: All laws are basically false.
+--=-0eTDcClfmBHfFCVpMShm
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
+
+iQIVAwUAVmSk0Oe/yOyVhhEJAQrqKhAApZAJYJSTD6uzauDAD7myqCS/+i26Wa5Z
+6Tw7WfddOPCEr3GNr1kPBJoafPKsFGoXmE1zHDk4JtJr7F2K1fbhSYxO3i/54XBS
+dzGYXPO2zAdgXvJ7V4IUeTEbAwpSZM8W3n2dHqP/GfAN7UVZ7Wovv+de6Hsysjj0
+nMueK3kyQxcIwhucPl4GXzzY5fw7+FfUvUVL2bPOgAIarIqYiohqnn8DZPV1u6KN
+ZDYvKW44owpVajULGV8PFyRalJGaYpev4HVbl/L4003giv48e9NPg/FTXPDS/7GZ
+J4N4xVicJRYg3Z1so4C74Czfy9sSACYfx2IXbVu+iYagdK4ofxnfywgFtZEtdwDq
+DeT9LnTuORdZCfG3xyMG6mLa8WMQiBmqVNQdV0nWULt3WqUzCRQ/Mo8qKCtjfpcI
+NT541tNQVp83uMnalP65h+cglcAe2QyESFyuVdZ8XHSORoiETPcH71kgDFYpBOs/
+/MKz8Br9YMFP+2+hpaxCURBvrYIS7wRotjzTSn4YzKxSRkREwkLfimLK8bFuhHSC
+759hOHcnnqAHfXNgbWCLr5UCTk/nCj85HeCSq8VpEl8KGKZXVXXBYTR304KulYlP
+tk59xpKxUxbRB2TD0Q1smZqo8iWtG5Yy1VjV+5y6AAboyxWuHcsFOIgY3QcsbnZM
+88cNjfyNjfc=
+=wlMf
+-----END PGP SIGNATURE-----
+
+--=-0eTDcClfmBHfFCVpMShm--

@@ -1,13 +1,13 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Dec 2015 23:33:21 +0100 (CET)
-Received: from down.free-electrons.com ([37.187.137.238]:56107 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Dec 2015 23:33:38 +0100 (CET)
+Received: from down.free-electrons.com ([37.187.137.238]:56158 "EHLO
         mail.free-electrons.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27013338AbbLGW16zspNg (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 7 Dec 2015 23:27:58 +0100
+        by eddie.linux-mips.org with ESMTP id S27013339AbbLGW2EjuXdg (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 7 Dec 2015 23:28:04 +0100
 Received: by mail.free-electrons.com (Postfix, from userid 110)
-        id 65DFA1B0A; Mon,  7 Dec 2015 23:27:51 +0100 (CET)
+        id 401831B09; Mon,  7 Dec 2015 23:27:57 +0100 (CET)
 Received: from localhost.localdomain (unknown [37.160.132.173])
-        by mail.free-electrons.com (Postfix) with ESMTPSA id 3DFCC1BC2;
-        Mon,  7 Dec 2015 23:27:42 +0100 (CET)
+        by mail.free-electrons.com (Postfix) with ESMTPSA id 33FBC1783;
+        Mon,  7 Dec 2015 23:27:47 +0100 (CET)
 From:   Boris Brezillon <boris.brezillon@free-electrons.com>
 To:     David Woodhouse <dwmw2@infradead.org>,
         Brian Norris <computersforpeace@gmail.com>,
@@ -30,9 +30,9 @@ Cc:     Daniel Mack <daniel@zonque.org>,
         devel@driverdev.osuosl.org, linux-kernel@vger.kernel.org,
         punnaiah choudary kalluri <punnaia@xilinx.com>,
         Boris Brezillon <boris.brezillon@free-electrons.com>
-Subject: [PATCH 21/23] staging: mt29f_spinand: switch to mtd_ooblayout_ops
-Date:   Mon,  7 Dec 2015 23:26:16 +0100
-Message-Id: <1449527178-5930-22-git-send-email-boris.brezillon@free-electrons.com>
+Subject: [PATCH 23/23] mtd: kill the nand_ecclayout struct
+Date:   Mon,  7 Dec 2015 23:26:18 +0100
+Message-Id: <1449527178-5930-24-git-send-email-boris.brezillon@free-electrons.com>
 X-Mailer: git-send-email 2.1.4
 In-Reply-To: <1449527178-5930-1-git-send-email-boris.brezillon@free-electrons.com>
 References: <1449527178-5930-1-git-send-email-boris.brezillon@free-electrons.com>
@@ -40,7 +40,7 @@ Return-Path: <boris.brezillon@free-electrons.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50401
+X-archive-position: 50402
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -57,79 +57,153 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+Now that all mtd drivers have moved to the mtd_ooblayout_ops model we can
+safely remove the struct nand_ecclayout definition, and all the remaining
+places where it was still used.
+
 Signed-off-by: Boris Brezillon <boris.brezillon@free-electrons.com>
 ---
- drivers/staging/mt29f_spinand/mt29f_spinand.c | 44 ++++++++++++++++-----------
- 1 file changed, 26 insertions(+), 18 deletions(-)
+ drivers/mtd/mtdchar.c      | 12 ++++++------
+ drivers/mtd/mtdcore.c      | 44 --------------------------------------------
+ include/linux/mtd/mtd.h    | 20 --------------------
+ include/uapi/mtd/mtd-abi.h |  2 +-
+ 4 files changed, 7 insertions(+), 71 deletions(-)
 
-diff --git a/drivers/staging/mt29f_spinand/mt29f_spinand.c b/drivers/staging/mt29f_spinand/mt29f_spinand.c
-index cb9d5ab..967d50a 100644
---- a/drivers/staging/mt29f_spinand/mt29f_spinand.c
-+++ b/drivers/staging/mt29f_spinand/mt29f_spinand.c
-@@ -42,23 +42,29 @@ static inline struct spinand_state *mtd_to_state(struct mtd_info *mtd)
- static int enable_hw_ecc;
- static int enable_read_hw_ecc;
+diff --git a/drivers/mtd/mtdchar.c b/drivers/mtd/mtdchar.c
+index c03b678..322e838 100644
+--- a/drivers/mtd/mtdchar.c
++++ b/drivers/mtd/mtdchar.c
+@@ -465,12 +465,12 @@ static int mtdchar_readoob(struct file *file, struct mtd_info *mtd,
+ }
  
--static struct nand_ecclayout spinand_oob_64 = {
--	.eccbytes = 24,
--	.eccpos = {
--		1, 2, 3, 4, 5, 6,
--		17, 18, 19, 20, 21, 22,
--		33, 34, 35, 36, 37, 38,
--		49, 50, 51, 52, 53, 54, },
--	.oobfree = {
--		{.offset = 8,
--			.length = 8},
--		{.offset = 24,
--			.length = 8},
--		{.offset = 40,
--			.length = 8},
--		{.offset = 56,
--			.length = 8},
--	}
-+static int spinand_oob_64_eccpos(struct mtd_info *mtd, int eccbyte)
-+{
-+	if (eccbyte > 23)
-+		return -ERANGE;
-+
-+	return ((eccbyte / 6) * 16) + 1;
-+}
-+
-+static int spinand_oob_64_oobfree(struct mtd_info *mtd, int section,
-+				  struct nand_oobfree *oobfree)
-+{
-+	if (section > 3)
-+		return -ERANGE;
-+
-+	oobfree->offset = (section * 16) + 8;
-+	oobfree->length = 8;
-+
-+	return 0;
-+}
-+
-+const struct mtd_ooblayout_ops spinand_oob_64_ops = {
-+	.eccpos = spinand_oob_64_eccpos,
-+	.oobfree = spinand_oob_64_oobfree,
- };
- #endif
+ /*
+- * Copies (and truncates, if necessary) data from the larger struct,
+- * nand_ecclayout, to the smaller, deprecated layout struct,
+- * nand_ecclayout_user. This is necessary only to support the deprecated
+- * API ioctl ECCGETLAYOUT while allowing all new functionality to use
+- * nand_ecclayout flexibly (i.e. the struct may change size in new
+- * releases without requiring major rewrites).
++ * Copies (and truncates, if necessary) OOB layout information to the
++ * deprecated layout struct, nand_ecclayout_user. This is necessary only to
++ * support the deprecated API ioctl ECCGETLAYOUT while allowing all new
++ * functionality to use mtd_ooblayout_ops flexibly (i.e. mtd_ooblayout_ops
++ * can describe any kind of OOB layout with almost zero overhead from a
++ * memory usage point of view).
+  */
+ static int shrink_ecclayout(struct mtd_info *mtd,
+ 			    struct nand_ecclayout_user *to)
+diff --git a/drivers/mtd/mtdcore.c b/drivers/mtd/mtdcore.c
+index d87f3621..62f83b0 100644
+--- a/drivers/mtd/mtdcore.c
++++ b/drivers/mtd/mtdcore.c
+@@ -833,50 +833,6 @@ void __put_mtd_device(struct mtd_info *mtd)
+ }
+ EXPORT_SYMBOL_GPL(__put_mtd_device);
  
-@@ -883,7 +889,6 @@ static int spinand_probe(struct spi_device *spi_nand)
+-static int nand_ecclayout_eccpos(struct mtd_info *mtd, int eccbyte)
+-{
+-	struct nand_ecclayout *layout = mtd->ecclayout;
+-
+-	if (!layout)
+-		return -ENOTSUPP;
+-
+-	if (eccbyte >= layout->eccbytes)
+-		return -ERANGE;
+-
+-	return layout->eccpos[eccbyte];
+-}
+-
+-static int nand_ecclayout_oobfree(struct mtd_info *mtd, int section,
+-				  struct nand_oobfree *oobfree)
+-{
+-	struct nand_ecclayout *layout = mtd->ecclayout;
+-
+-	if (!layout)
+-		return -ENOTSUPP;
+-
+-	if (section >= MTD_MAX_OOBFREE_ENTRIES_LARGE)
+-		return -ERANGE;
+-
+-	*oobfree = layout->oobfree[section];
+-
+-	return 0;
+-}
+-
+-static const struct mtd_ooblayout_ops nand_ecclayout_ops = {
+-	.eccpos = nand_ecclayout_eccpos,
+-	.oobfree = nand_ecclayout_oobfree,
+-};
+-
+-void mtd_set_ecclayout(struct mtd_info *mtd, struct nand_ecclayout *ecclayout)
+-{
+-	if (!mtd || !ecclayout)
+-		return;
+-
+-	mtd->ecclayout = ecclayout;
+-	mtd_set_ooblayout(mtd, &nand_ecclayout_ops);
+-}
+-EXPORT_SYMBOL_GPL(mtd_set_ecclayout);
+-
+ /*
+  * Erase is an asynchronous operation.  Device drivers are supposed
+  * to call instr->callback() whenever the operation completes, even
+diff --git a/include/linux/mtd/mtd.h b/include/linux/mtd/mtd.h
+index 9c3699b..3a4bab7 100644
+--- a/include/linux/mtd/mtd.h
++++ b/include/linux/mtd/mtd.h
+@@ -96,21 +96,6 @@ struct mtd_oob_ops {
  
- 	chip->ecc.strength = 1;
- 	chip->ecc.total	= chip->ecc.steps * chip->ecc.bytes;
--	chip->ecc.layout = &spinand_oob_64;
- 	chip->ecc.read_page = spinand_read_page_hwecc;
- 	chip->ecc.write_page = spinand_write_page_hwecc;
- #else
-@@ -911,6 +916,9 @@ static int spinand_probe(struct spi_device *spi_nand)
- 	mtd->priv = chip;
- 	mtd->dev.parent = &spi_nand->dev;
- 	mtd->oobsize = 64;
-+#ifdef CONFIG_MTD_SPINAND_ONDIEECC
-+	mtd_set_ooblayout(mtd, &spinand_oob_64_ops);
-+#endif
+ #define MTD_MAX_OOBFREE_ENTRIES_LARGE	32
+ #define MTD_MAX_ECCPOS_ENTRIES_LARGE	640
+-/*
+- * Internal ECC layout control structure. For historical reasons, there is a
+- * similar, smaller struct nand_ecclayout_user (in mtd-abi.h) that is retained
+- * for export to user-space via the ECCGETLAYOUT ioctl.
+- * nand_ecclayout should be expandable in the future simply by the above macros.
+- *
+- * This structure is now deprecated, you should use struct nand_ecclayout_ops
+- * to describe your OOB layout.
+- */
+-struct nand_ecclayout {
+-	__u32 eccbytes;
+-	__u32 eccpos[MTD_MAX_ECCPOS_ENTRIES_LARGE];
+-	struct nand_oobfree oobfree[MTD_MAX_OOBFREE_ENTRIES_LARGE];
+-};
+-
+ /**
+  * struct mtd_ooblayout_ops - NAND OOB layout operations.
+  *
+@@ -183,9 +168,6 @@ struct mtd_info {
+ 	const char *name;
+ 	int index;
  
- 	if (nand_scan(mtd, 1))
- 		return -ENXIO;
+-	/* [Deprecated] ECC layout structure pointer - read only! */
+-	struct nand_ecclayout *ecclayout;
+-
+ 	/* OOB layout description */
+ 	const struct mtd_ooblayout_ops *ooblayout;
+ 
+@@ -279,8 +261,6 @@ static inline void mtd_set_ooblayout(struct mtd_info *mtd,
+ 	mtd->ooblayout = ooblayout;
+ }
+ 
+-void mtd_set_ecclayout(struct mtd_info *mtd, struct nand_ecclayout *ecclayout);
+-
+ static inline int mtd_eccpos(struct mtd_info *mtd, int eccbyte)
+ {
+ 	if (!mtd->ooblayout || !mtd->ooblayout->eccpos)
+diff --git a/include/uapi/mtd/mtd-abi.h b/include/uapi/mtd/mtd-abi.h
+index 763bb69..0ec1da2 100644
+--- a/include/uapi/mtd/mtd-abi.h
++++ b/include/uapi/mtd/mtd-abi.h
+@@ -228,7 +228,7 @@ struct nand_oobfree {
+  * complete set of ECC information. The ioctl truncates the larger internal
+  * structure to retain binary compatibility with the static declaration of the
+  * ioctl. Note that the "MTD_MAX_..._ENTRIES" macros represent the max size of
+- * the user struct, not the MAX size of the internal struct nand_ecclayout.
++ * the user struct, not the MAX size of the internal OOB layout representation.
+  */
+ struct nand_ecclayout_user {
+ 	__u32 eccbytes;
 -- 
 2.1.4

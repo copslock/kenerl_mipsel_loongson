@@ -1,13 +1,13 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Dec 2015 23:33:04 +0100 (CET)
-Received: from down.free-electrons.com ([37.187.137.238]:56127 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Dec 2015 23:33:21 +0100 (CET)
+Received: from down.free-electrons.com ([37.187.137.238]:56107 "EHLO
         mail.free-electrons.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27013334AbbLGW16zspNg (ORCPT
+        by eddie.linux-mips.org with ESMTP id S27013338AbbLGW16zspNg (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Mon, 7 Dec 2015 23:27:58 +0100
 Received: by mail.free-electrons.com (Postfix, from userid 110)
-        id 7E6B2229; Mon,  7 Dec 2015 23:27:51 +0100 (CET)
+        id 65DFA1B0A; Mon,  7 Dec 2015 23:27:51 +0100 (CET)
 Received: from localhost.localdomain (unknown [37.160.132.173])
-        by mail.free-electrons.com (Postfix) with ESMTPSA id 784F81C14;
-        Mon,  7 Dec 2015 23:27:44 +0100 (CET)
+        by mail.free-electrons.com (Postfix) with ESMTPSA id 3DFCC1BC2;
+        Mon,  7 Dec 2015 23:27:42 +0100 (CET)
 From:   Boris Brezillon <boris.brezillon@free-electrons.com>
 To:     David Woodhouse <dwmw2@infradead.org>,
         Brian Norris <computersforpeace@gmail.com>,
@@ -30,9 +30,9 @@ Cc:     Daniel Mack <daniel@zonque.org>,
         devel@driverdev.osuosl.org, linux-kernel@vger.kernel.org,
         punnaiah choudary kalluri <punnaia@xilinx.com>,
         Boris Brezillon <boris.brezillon@free-electrons.com>
-Subject: [PATCH 22/23] mtd: nand: kill layout field
-Date:   Mon,  7 Dec 2015 23:26:17 +0100
-Message-Id: <1449527178-5930-23-git-send-email-boris.brezillon@free-electrons.com>
+Subject: [PATCH 21/23] staging: mt29f_spinand: switch to mtd_ooblayout_ops
+Date:   Mon,  7 Dec 2015 23:26:16 +0100
+Message-Id: <1449527178-5930-22-git-send-email-boris.brezillon@free-electrons.com>
 X-Mailer: git-send-email 2.1.4
 In-Reply-To: <1449527178-5930-1-git-send-email-boris.brezillon@free-electrons.com>
 References: <1449527178-5930-1-git-send-email-boris.brezillon@free-electrons.com>
@@ -40,7 +40,7 @@ Return-Path: <boris.brezillon@free-electrons.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50400
+X-archive-position: 50401
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -59,68 +59,77 @@ X-list: linux-mips
 
 Signed-off-by: Boris Brezillon <boris.brezillon@free-electrons.com>
 ---
- drivers/mtd/nand/nand_base.c | 8 --------
- drivers/mtd/nand/nand_bch.c  | 9 ---------
- include/linux/mtd/nand.h     | 1 -
- 3 files changed, 18 deletions(-)
+ drivers/staging/mt29f_spinand/mt29f_spinand.c | 44 ++++++++++++++++-----------
+ 1 file changed, 26 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/mtd/nand/nand_base.c b/drivers/mtd/nand/nand_base.c
-index 6440c5d..85deacb 100644
---- a/drivers/mtd/nand/nand_base.c
-+++ b/drivers/mtd/nand/nand_base.c
-@@ -4148,13 +4148,6 @@ int nand_scan_tail(struct mtd_info *mtd)
- 	chip->oob_poi = chip->buffers->databuf + mtd->writesize;
+diff --git a/drivers/staging/mt29f_spinand/mt29f_spinand.c b/drivers/staging/mt29f_spinand/mt29f_spinand.c
+index cb9d5ab..967d50a 100644
+--- a/drivers/staging/mt29f_spinand/mt29f_spinand.c
++++ b/drivers/staging/mt29f_spinand/mt29f_spinand.c
+@@ -42,23 +42,29 @@ static inline struct spinand_state *mtd_to_state(struct mtd_info *mtd)
+ static int enable_hw_ecc;
+ static int enable_read_hw_ecc;
  
- 	/*
--	 * Set the provided ECC layout. If ecc->layout is NULL, the MTD core
--	 * will just leave mtd->ooblayout to NULL, if it's not NULL, it will
--	 * set ->ooblayout to the default ecclayout wrapper.
--	 */
--	mtd_set_ecclayout(mtd, ecc->layout);
--
--	/*
- 	 * If no default placement scheme is given, select an appropriate one.
- 	 */
- 	if (!mtd->ooblayout && (ecc->mode != NAND_ECC_SOFT_BCH)) {
-@@ -4401,7 +4394,6 @@ int nand_scan_tail(struct mtd_info *mtd)
- 	mtd->writebufsize = mtd->writesize;
+-static struct nand_ecclayout spinand_oob_64 = {
+-	.eccbytes = 24,
+-	.eccpos = {
+-		1, 2, 3, 4, 5, 6,
+-		17, 18, 19, 20, 21, 22,
+-		33, 34, 35, 36, 37, 38,
+-		49, 50, 51, 52, 53, 54, },
+-	.oobfree = {
+-		{.offset = 8,
+-			.length = 8},
+-		{.offset = 24,
+-			.length = 8},
+-		{.offset = 40,
+-			.length = 8},
+-		{.offset = 56,
+-			.length = 8},
+-	}
++static int spinand_oob_64_eccpos(struct mtd_info *mtd, int eccbyte)
++{
++	if (eccbyte > 23)
++		return -ERANGE;
++
++	return ((eccbyte / 6) * 16) + 1;
++}
++
++static int spinand_oob_64_oobfree(struct mtd_info *mtd, int section,
++				  struct nand_oobfree *oobfree)
++{
++	if (section > 3)
++		return -ERANGE;
++
++	oobfree->offset = (section * 16) + 8;
++	oobfree->length = 8;
++
++	return 0;
++}
++
++const struct mtd_ooblayout_ops spinand_oob_64_ops = {
++	.eccpos = spinand_oob_64_eccpos,
++	.oobfree = spinand_oob_64_oobfree,
+ };
+ #endif
  
- 	/* propagate ecc info to mtd_info */
--	mtd_set_ecclayout(mtd, ecc->layout);
- 	mtd->ecc_strength = ecc->strength;
- 	mtd->ecc_step_size = ecc->size;
- 	/*
-diff --git a/drivers/mtd/nand/nand_bch.c b/drivers/mtd/nand/nand_bch.c
-index 2937b49..3b90643 100644
---- a/drivers/mtd/nand/nand_bch.c
-+++ b/drivers/mtd/nand/nand_bch.c
-@@ -158,15 +158,6 @@ struct nand_bch_control *nand_bch_init(struct mtd_info *mtd)
+@@ -883,7 +889,6 @@ static int spinand_probe(struct spi_device *spi_nand)
  
- 	eccsteps = mtd->writesize/eccsize;
+ 	chip->ecc.strength = 1;
+ 	chip->ecc.total	= chip->ecc.steps * chip->ecc.bytes;
+-	chip->ecc.layout = &spinand_oob_64;
+ 	chip->ecc.read_page = spinand_read_page_hwecc;
+ 	chip->ecc.write_page = spinand_write_page_hwecc;
+ #else
+@@ -911,6 +916,9 @@ static int spinand_probe(struct spi_device *spi_nand)
+ 	mtd->priv = chip;
+ 	mtd->dev.parent = &spi_nand->dev;
+ 	mtd->oobsize = 64;
++#ifdef CONFIG_MTD_SPINAND_ONDIEECC
++	mtd_set_ooblayout(mtd, &spinand_oob_64_ops);
++#endif
  
--	/*
--	 * Rely on the default ecclayout to ooblayout wrapper provided by MTD
--	 * core if ecc.layout is not NULL.
--	 * FIXME: this should be removed when all callers have moved to the
--	 * mtd_ooblayout_ops approach.
--	 */
--	if (nand->ecc.layout)
--		mtd_set_ecclayout(mtd, nand->ecc.layout);
--
- 	/* if no ecc placement scheme was provided, build one */
- 	if (!mtd->ooblayout) {
- 
-diff --git a/include/linux/mtd/nand.h b/include/linux/mtd/nand.h
-index 9ba9daba..f4ba147 100644
---- a/include/linux/mtd/nand.h
-+++ b/include/linux/mtd/nand.h
-@@ -494,7 +494,6 @@ struct nand_ecc_ctrl {
- 	int strength;
- 	int prepad;
- 	int postpad;
--	struct nand_ecclayout	*layout;
- 	void *priv;
- 	void (*hwctl)(struct mtd_info *mtd, int mode);
- 	int (*calculate)(struct mtd_info *mtd, const uint8_t *dat,
+ 	if (nand_scan(mtd, 1))
+ 		return -ENXIO;
 -- 
 2.1.4

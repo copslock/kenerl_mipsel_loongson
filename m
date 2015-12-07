@@ -1,52 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Dec 2015 09:43:54 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:19691 "EHLO
-        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27006898AbbLGInwiqUE6 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 7 Dec 2015 09:43:52 +0100
-Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
-        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 2D42141F8E55;
-        Mon,  7 Dec 2015 08:43:47 +0000 (GMT)
-Received: from mailapp01.imgtec.com ([10.100.180.241])
-  by imgpgp01.kl.imgtec.org (PGP Universal service);
-  Mon, 07 Dec 2015 08:43:47 +0000
-X-PGP-Universal: processed;
-        by imgpgp01.kl.imgtec.org on Mon, 07 Dec 2015 08:43:47 +0000
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Websense Email Security Gateway with ESMTPS id C2B7E7C40C7B2;
-        Mon,  7 Dec 2015 08:43:44 +0000 (GMT)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- HHMAIL01.hh.imgtec.org (10.100.10.19) with Microsoft SMTP Server (TLS) id
- 14.3.235.1; Mon, 7 Dec 2015 08:43:46 +0000
-Received: from localhost (192.168.154.110) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Mon, 7 Dec
- 2015 08:43:46 +0000
-Date:   Mon, 7 Dec 2015 08:43:46 +0000
-From:   James Hogan <james.hogan@imgtec.com>
-To:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-CC:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>,
-        <stable@vger.kernel.org>
-Subject: Re: [PATCH 1/2] MIPS: Don't unwind to user mode with EVA
-Message-ID: <20151207084345.GB874@jhogan-linux.le.imgtec.org>
-References: <1449267902-28674-1-git-send-email-james.hogan@imgtec.com>
- <1449267902-28674-2-git-send-email-james.hogan@imgtec.com>
- <56622DF5.30005@imgtec.com>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="tjCHc7DPkfUGtrlw"
-Content-Disposition: inline
-In-Reply-To: <56622DF5.30005@imgtec.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-X-Originating-IP: [192.168.154.110]
-X-ESG-ENCRYPT-TAG: c13f36af
-Return-Path: <James.Hogan@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Dec 2015 13:09:43 +0100 (CET)
+Received: from mail-pa0-f49.google.com ([209.85.220.49]:33397 "EHLO
+        mail-pa0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008478AbbLGMJlnMCdL (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 7 Dec 2015 13:09:41 +0100
+Received: by pabfh17 with SMTP id fh17so127756959pab.0;
+        Mon, 07 Dec 2015 04:09:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id;
+        bh=gbrtOsbRQ9WGQ10ylHggf0Nh1oi1g0DSIPTnbjU2DCQ=;
+        b=t266KFvcj74d/t2ZF+oj3OlU84pB4i3kLvPnTf7rFmuGBDfR7quZJGkUdGiu31ZPCs
+         yFmPQ7sMc/BvWL+exfhyARUt2/wFHuKNHbyFBWdOtX7bsRCyb6ujOjS/E3m43TlnPSpt
+         qbNJvHTjyD20q5ktqH0QVaFm42QDBsxAbC+ZvfrIJ/ZkNKuAl0R2MIBBMjc24D0PuG6l
+         w9zvSqDuZD5TBWECV8XrKqViRqvml2WtJaTIRX+ERplBDOCZnM/Cidpx4b3zvytp6XHX
+         AjhMnVokksjuNXb88AWJakxuMcVYMYBmpKCHGLwiMWbZSuCmUk0MGcq7vodfVzBPM12K
+         KzUQ==
+X-Received: by 10.66.234.226 with SMTP id uh2mr41840371pac.6.1449490174686;
+        Mon, 07 Dec 2015 04:09:34 -0800 (PST)
+Received: from sudip-pc.vectortproxy.org ([122.169.145.251])
+        by smtp.gmail.com with ESMTPSA id q129sm34312989pfq.19.2015.12.07.04.09.31
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Mon, 07 Dec 2015 04:09:34 -0800 (PST)
+From:   Sudip Mukherjee <sudipm.mukherjee@gmail.com>
+To:     Ralf Baechle <ralf@linux-mips.org>,
+        Andrew Morton <akpm@linux-foundation.org>
+Cc:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
+        Chen Gang <gang.chen.5i5j@gmail.com>,
+        Minchan Kim <minchan@kernel.org>
+Subject: [PATCH] mips: mm: fix build failure
+Date:   Mon,  7 Dec 2015 17:39:24 +0530
+Message-Id: <1449490164-21029-1-git-send-email-sudipm.mukherjee@gmail.com>
+X-Mailer: git-send-email 1.9.1
+Return-Path: <sudipm.mukherjee@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50355
+X-archive-position: 50356
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: sudipm.mukherjee@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,38 +53,33 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---tjCHc7DPkfUGtrlw
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+We are having build failure with mips defconfig with the error:
+"MADV_FREE" redefined.
 
-On Fri, Dec 04, 2015 at 04:21:09PM -0800, Leonid Yegoshin wrote:
-> OK.
+commit d53d95838c7d introduced uniform values for all architecture but
+missed removing the old value.
 
-Thanks Leonid. Can that be taken as a Reviewed-by?
+Fixes: d53d95838c7d ("arch/*/include/uapi/asm/mman.h: : let MADV_FREE have same value for all architectures")
+Signed-off-by: Sudip Mukherjee <sudip@vectorindia.org>
+---
 
-Cheers
-James
+build log is at:
+https://travis-ci.org/sudipm-mukherjee/parport/jobs/95309512
 
---tjCHc7DPkfUGtrlw
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+ arch/mips/include/uapi/asm/mman.h | 1 -
+ 1 file changed, 1 deletion(-)
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQIcBAEBCAAGBQJWZUbBAAoJEGwLaZPeOHZ6SKwP/i0PfNI1qeOpYUuFbkYaqPSw
-CyR4utT8xp9yJhFl7H/186J09oYOtreFwrncO4apUBwkaEjZUFE4aRp5VNpdFBgy
-KHLnTgwvRSEmnayVwRQnZhfSnP0nf0oDysZ7ZgorX9Lux2pe3o9/lBarYvSqQnto
-dDXu9XW7+is1B/eVUm255eEXOLf525SzHTrR8bCjRKomeaZXJJQddvvDSq3kPImR
-3ei7006JX6iYtftzf2g1lzsH70ssouNOOSl0iqQNXfEKi2E4Xu/MEd2PZuPl4KMS
-bAfYvG2xjTh/CxhXoH/53iJQKe1ecCNM0+yAzqtNTIswnMJEBAfik22CTBDuNgXZ
-DYuP7ONfSVArt5n+ZDE5kvTi7SgRFjgXhqZ76nH6gzP5OH3Z4nmevBTDAAVyQ6dY
-VpFjFFwoJDLcwnF8Q3zHP6in8DE/GM63L2kD2ogi3mBFlOP+m60YTmmt0QNhSHph
-R4bjNxFUguNAHFVOyLSErVbXi5IFZNP3OYzLB62wXYKOgiLpdGWgbrzgHB5oFJSv
-DbqFBiZJjrCpKKnP755UMOrJotNFKUpR4GEF+hMkzUX8p6YwHX8YPkMOE/S6Aqd6
-fdQ9xqJjQzUKt/BnbaAPFE1+1OTwlTmAnwDRtFvfpNiNWOcMAFlKCcJLLcd99MyC
-3mKxS3IzGrHdoLVcV3zC
-=WguQ
------END PGP SIGNATURE-----
-
---tjCHc7DPkfUGtrlw--
+diff --git a/arch/mips/include/uapi/asm/mman.h b/arch/mips/include/uapi/asm/mman.h
+index b0ebe59..ccdcfcb 100644
+--- a/arch/mips/include/uapi/asm/mman.h
++++ b/arch/mips/include/uapi/asm/mman.h
+@@ -73,7 +73,6 @@
+ #define MADV_SEQUENTIAL 2		/* expect sequential page references */
+ #define MADV_WILLNEED	3		/* will need these pages */
+ #define MADV_DONTNEED	4		/* don't need these pages */
+-#define MADV_FREE	5		/* free pages only if memory pressure */
+ 
+ /* common parameters: try to keep these consistent across architectures */
+ #define MADV_FREE	8		/* free pages only if memory pressure */
+-- 
+1.9.1

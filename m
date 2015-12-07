@@ -1,76 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Dec 2015 16:50:22 +0100 (CET)
-Received: from smtp-out6.electric.net ([192.162.217.187]:51948 "EHLO
-        smtp-out6.electric.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011740AbbLGPuVTCEs4 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 7 Dec 2015 16:50:21 +0100
-Received: from 1a5y3N-00068e-TG by out6a.electric.net with emc1-ok (Exim 4.85)
-        (envelope-from <David.Laight@ACULAB.COM>)
-        id 1a5y3O-0006D0-VM; Mon, 07 Dec 2015 07:50:18 -0800
-Received: by emcmailer; Mon, 07 Dec 2015 07:50:18 -0800
-Received: from [213.249.233.130] (helo=AcuExch.aculab.com)
-        by out6a.electric.net with esmtps (TLSv1:AES128-SHA:128)
-        (Exim 4.85)
-        (envelope-from <David.Laight@ACULAB.COM>)
-        id 1a5y3N-00068e-TG; Mon, 07 Dec 2015 07:50:17 -0800
-Received: from ACUEXCH.Aculab.com ([::1]) by AcuExch.aculab.com ([::1]) with
- mapi id 14.03.0123.003; Mon, 7 Dec 2015 15:48:34 +0000
-From:   David Laight <David.Laight@ACULAB.COM>
-To:     'Russell King - ARM Linux' <linux@arm.linux.org.uk>,
-        Petr Mladek <pmladek@suse.com>
-CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jiri Kosina <jkosina@suse.com>,
-        "linux-cris-kernel@axis.com" <linux-cris-kernel@axis.com>,
-        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        "x86@kernel.org" <x86@kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        "adi-buildroot-devel@lists.sourceforge.net" 
-        <adi-buildroot-devel@lists.sourceforge.net>,
-        Ingo Molnar <mingo@redhat.com>,
-        "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
-        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>
-Subject: RE: [PATCH v2 3/5] printk/nmi: Try hard to print Oops message in
- NMI context
-Thread-Topic: [PATCH v2 3/5] printk/nmi: Try hard to print Oops message in
- NMI context
-Thread-Index: AQHRLqgubPKrTfv+iUmzuwEnAJAPAp67ELeAgASapLA=
-Date:   Mon, 7 Dec 2015 15:48:33 +0000
-Message-ID: <063D6719AE5E284EB5DD2968C1650D6D1CBE68C7@AcuExch.aculab.com>
-References: <1448622572-16900-1-git-send-email-pmladek@suse.com>
- <1448622572-16900-4-git-send-email-pmladek@suse.com>
- <20151201234437.GA8644@n2100.arm.linux.org.uk>
- <20151204152709.GA20935@pathway.suse.cz>
- <20151204171255.GZ8644@n2100.arm.linux.org.uk>
-In-Reply-To: <20151204171255.GZ8644@n2100.arm.linux.org.uk>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.202.99.200]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Dec 2015 20:46:03 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:37220 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27010566AbbLGTqA06Xw2 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 7 Dec 2015 20:46:00 +0100
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Websense Email Security Gateway with ESMTPS id 0BEC5BFE946BA;
+        Mon,  7 Dec 2015 19:45:50 +0000 (GMT)
+Received: from BAMAIL02.ba.imgtec.org (10.20.40.28) by HHMAIL01.hh.imgtec.org
+ (10.100.10.19) with Microsoft SMTP Server (TLS) id 14.3.235.1; Mon, 7 Dec
+ 2015 19:45:53 +0000
+Received: from [10.20.3.92] (10.20.3.92) by bamail02.ba.imgtec.org
+ (10.20.40.28) with Microsoft SMTP Server (TLS) id 14.3.174.1; Mon, 7 Dec 2015
+ 11:45:51 -0800
+Message-ID: <5665E1EE.1070501@imgtec.com>
+Date:   Mon, 7 Dec 2015 11:45:50 -0800
+From:   Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.2.0
 MIME-Version: 1.0
-X-Outbound-IP: 213.249.233.130
-X-Env-From: David.Laight@ACULAB.COM
-X-PolicySMART: 3396946, 3397078
-X-Virus-Status: Scanned by VirusSMART (c)
-X-Virus-Status: Scanned by VirusSMART (s)
-Return-Path: <David.Laight@ACULAB.COM>
+To:     James Hogan <james.hogan@imgtec.com>
+CC:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>,
+        <stable@vger.kernel.org>
+Subject: Re: [PATCH 1/2] MIPS: Don't unwind to user mode with EVA
+References: <1449267902-28674-1-git-send-email-james.hogan@imgtec.com> <1449267902-28674-2-git-send-email-james.hogan@imgtec.com> <56622DF5.30005@imgtec.com> <20151207084345.GB874@jhogan-linux.le.imgtec.org>
+In-Reply-To: <20151207084345.GB874@jhogan-linux.le.imgtec.org>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.20.3.92]
+Return-Path: <Leonid.Yegoshin@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50376
+X-archive-position: 50377
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: David.Laight@ACULAB.COM
+X-original-sender: Leonid.Yegoshin@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -83,30 +47,13 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-RnJvbTogUnVzc2VsbCBLaW5nIC0gQVJNIExpbnV4DQo+IFNlbnQ6IDA0IERlY2VtYmVyIDIwMTUg
-MTc6MTMNCi4uLg0KPiBJIGhhdmUgYSBzbGlnaHRseSBkaWZmZXJlbnQgdmlldy4uLg0KPiANCj4g
-PiA+IEkgZG9uJ3Qgc2VlIGJ1c3Rfc3BpbmxvY2tzKCkgZGVhbGluZyB3aXRoIGFueSBvZiB0aGVz
-ZSBsb2Nrcywgc28gSU1ITw0KPiA+ID4gdHJ5aW5nIHRvIG1ha2UgdGhpcyB3b3JrIGluIE5NSSBj
-b250ZXh0IHN0cmlrZXMgbWUgYXMgbWFraW5nIHRoZQ0KPiA+ID4gZXhpc3Rpbmcgc29sdXRpb24g
-bW9yZSB1bnJlbGlhYmxlIG9uIEFSTSBzeXN0ZW1zLg0KPiA+DQo+ID4gYnVzdF9zcGlubG9ja3Mo
-KSBjYWxscyBwcmludGtfbm1pX2ZsdXNoKCkgdGhhdCB3b3VsZCBjYWxsIHByaW50aygpDQo+ID4g
-dGhhdCB3b3VsZCB6YXAgImxvY2tidWZfbG9jayIgYW5kICJjb25zb2xlX3NlbSIgd2hlbiBpbiBP
-b3BzIGFuZCBOTUkuDQo+ID4gWWVzLCB0aGVyZSBtaWdodCBiZSBtb3JlIGxvY2tzIGJsb2NrZWQg
-YnV0IHdlIHRyeSB0byBicmVhayBhdCBsZWFzdA0KPiA+IHRoZSBmaXJzdCB0d28gd2FsbHMuIEFs
-c28gemFwcGluZyBpcyBhbGxvd2VkIG9ubHkgb25jZSBwZXIgMzAgc2Vjb25kcywNCj4gPiBzZWUg
-emFwX2xvY2tzKCkuIFdoeSBkbyB5b3UgdGhpbmsgdGhhdCBpdCBtaWdodCBtYWtlIHRoaW5ncyBt
-b3JlDQo+ID4gdW5yZWxpYWJsZSwgcGxlYXNlPw0KPiANCj4gVGFrZSB0aGUgc2NlbmFyaW8gd2hl
-cmUgQ1BVMSBpcyBpbiB0aGUgbWlkZGxlIG9mIGEgcHJpbnRrKCksIGFuZCBpcw0KPiBob2xkaW5n
-IGl0cyBsb2NrLg0KPiANCj4gQ1BVMCBjb21lcyBhbG9uZyBhbmQgZGVjaWRlcyB0byB0cmlnZ2Vy
-IGEgTk1JIGJhY2t0cmFjZS4gIFRoaXMgc2VuZHMNCj4gYSBOTUkgdG8gQ1BVMSwgd2hpY2ggdGFr
-ZXMgaXQgaW4gdGhlIG1pZGRsZSBvZiB0aGUgc2VyaWFsIGNvbnNvbGUNCj4gb3V0cHV0Lg0KPiAN
-Cj4gV2l0aCB0aGUgZXhpc3Rpbmcgc29sdXRpb24sIHRoZSBOTUkgb3V0cHV0IHdpbGwgYmUgd3Jp
-dHRlbiB0byB0aGUNCj4gdGVtcG9yYXJ5IGJ1ZmZlciwgYW5kIENQVTEgaGFzIGZpbmlzaGVkIGhh
-bmRsaW5nIHRoZSBOTUkgaXQgcmVzdW1lcw0KPiB0aGUgc2VyaWFsIGNvbnNvbGUgb3V0cHV0LCBl
-dmVudHVhbGx5IGRyb3BwaW5nIHRoZSBsb2NrLiAgVGhhdCB0aGVuDQo+IGFsbG93cyBDUFUwIHRv
-IHByaW50IHRoZSBjb250ZW50cyBvZiBhbGwgYnVmZmVycywgYW5kIHdlIGdldCBOTUkNCj4gcHJp
-bnRrIG91dHB1dC4NCg0KSXMgdGhlIHRyYWNlYmFjayBmcm9tIGluc2lkZSBwcmludGsoKSBvciBz
-ZXJpYWwgY29uc29sZSBjb2RlDQpsaWtlbHkgdG8gYmUgdXNlZnVsPw0KSWYgbm90IHRoZW4gd2h5
-IG5vdCBnZXQgdGhlIHN0YWNrdHJhY2UgZ2VuZXJhdGVkIHdoZW4gdGhlIHJlbGV2YW50DQpsb2Nr
-IGlzIHJlbGVhc2VkPw0KVGhhdCBzaG91bGQgc2F2ZSBhbnkgZmFmZmluZyB3aXRoIGEgc3BlY2lh
-bCBidWZmZXIuDQoNCglEYXZpZA0KDQo=
+On 12/07/2015 12:43 AM, James Hogan wrote:
+> On Fri, Dec 04, 2015 at 04:21:09PM -0800, Leonid Yegoshin wrote:
+>> OK.
+> Thanks Leonid. Can that be taken as a Reviewed-by?
+>
+> Cheers
+> James
+Yes, please.
+
+- Leonid

@@ -1,13 +1,13 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Dec 2015 23:28:03 +0100 (CET)
-Received: from down.free-electrons.com ([37.187.137.238]:55620 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Dec 2015 23:28:20 +0100 (CET)
+Received: from down.free-electrons.com ([37.187.137.238]:55637 "EHLO
         mail.free-electrons.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27013269AbbLGW1Cdl3Cg (ORCPT
+        by eddie.linux-mips.org with ESMTP id S27013273AbbLGW1Co16bg (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Mon, 7 Dec 2015 23:27:02 +0100
 Received: by mail.free-electrons.com (Postfix, from userid 110)
-        id 3CABC223; Mon,  7 Dec 2015 23:26:56 +0100 (CET)
+        id 56ACA229; Mon,  7 Dec 2015 23:26:56 +0100 (CET)
 Received: from localhost.localdomain (unknown [37.160.132.173])
-        by mail.free-electrons.com (Postfix) with ESMTPSA id 9A9691B07;
-        Mon,  7 Dec 2015 23:26:50 +0100 (CET)
+        by mail.free-electrons.com (Postfix) with ESMTPSA id 0CF461B09;
+        Mon,  7 Dec 2015 23:26:52 +0100 (CET)
 From:   Boris Brezillon <boris.brezillon@free-electrons.com>
 To:     David Woodhouse <dwmw2@infradead.org>,
         Brian Norris <computersforpeace@gmail.com>,
@@ -30,9 +30,9 @@ Cc:     Daniel Mack <daniel@zonque.org>,
         devel@driverdev.osuosl.org, linux-kernel@vger.kernel.org,
         punnaiah choudary kalluri <punnaia@xilinx.com>,
         Boris Brezillon <boris.brezillon@free-electrons.com>
-Subject: [PATCH 04/23] mtd: nand: s3c2410: kill the ->ecc_layout field
-Date:   Mon,  7 Dec 2015 23:25:59 +0100
-Message-Id: <1449527178-5930-5-git-send-email-boris.brezillon@free-electrons.com>
+Subject: [PATCH 05/23] mtd: nand: jz4770: kill the ->ecc_layout field
+Date:   Mon,  7 Dec 2015 23:26:00 +0100
+Message-Id: <1449527178-5930-6-git-send-email-boris.brezillon@free-electrons.com>
 X-Mailer: git-send-email 2.1.4
 In-Reply-To: <1449527178-5930-1-git-send-email-boris.brezillon@free-electrons.com>
 References: <1449527178-5930-1-git-send-email-boris.brezillon@free-electrons.com>
@@ -40,7 +40,7 @@ Return-Path: <boris.brezillon@free-electrons.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50383
+X-archive-position: 50384
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -57,64 +57,42 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The s3c2410 is allowing board data to overload the default ECC layout
-defined inside the driver, but this feature is not used by board
-specific definitions.
-Kill this field so that we can easily move to a model where ecclayout
-are dynamically allocated by the NAND controller driver.
+->ecc_layout is not used by any board file. Kill this field to avoid any
+confusion. New boards are encouraged to use the default ECC layout defined
+in NAND core.
 
 Signed-off-by: Boris Brezillon <boris.brezillon@free-electrons.com>
 ---
- arch/arm/plat-samsung/devs.c                   | 9 ---------
- drivers/mtd/nand/s3c2410.c                     | 3 ---
- include/linux/platform_data/mtd-nand-s3c2410.h | 1 -
- 3 files changed, 13 deletions(-)
+ arch/mips/include/asm/mach-jz4740/jz4740_nand.h | 2 --
+ drivers/mtd/nand/jz4740_nand.c                  | 3 ---
+ 2 files changed, 5 deletions(-)
 
-diff --git a/arch/arm/plat-samsung/devs.c b/arch/arm/plat-samsung/devs.c
-index 8207462..a903ee8 100644
---- a/arch/arm/plat-samsung/devs.c
-+++ b/arch/arm/plat-samsung/devs.c
-@@ -710,15 +710,6 @@ static int __init s3c_nand_copy_set(struct s3c2410_nand_set *set)
- 			return -ENOMEM;
- 	}
- 
--	if (set->ecc_layout) {
--		ptr = kmemdup(set->ecc_layout,
--			      sizeof(struct nand_ecclayout), GFP_KERNEL);
--		set->ecc_layout = ptr;
--
--		if (!ptr)
--			return -ENOMEM;
--	}
--
- 	return 0;
- }
- 
-diff --git a/drivers/mtd/nand/s3c2410.c b/drivers/mtd/nand/s3c2410.c
-index 05105ca..b569200 100644
---- a/drivers/mtd/nand/s3c2410.c
-+++ b/drivers/mtd/nand/s3c2410.c
-@@ -860,9 +860,6 @@ static void s3c2410_nand_init_chip(struct s3c2410_nand_info *info,
- 	chip->ecc.mode	    = NAND_ECC_SOFT;
- #endif
- 
--	if (set->ecc_layout != NULL)
--		chip->ecc.layout = set->ecc_layout;
--
- 	if (set->disable_ecc)
- 		chip->ecc.mode	= NAND_ECC_NONE;
- 
-diff --git a/include/linux/platform_data/mtd-nand-s3c2410.h b/include/linux/platform_data/mtd-nand-s3c2410.h
-index 36bb921..c55e42ee 100644
---- a/include/linux/platform_data/mtd-nand-s3c2410.h
-+++ b/include/linux/platform_data/mtd-nand-s3c2410.h
-@@ -40,7 +40,6 @@ struct s3c2410_nand_set {
- 	char			*name;
- 	int			*nr_map;
+diff --git a/arch/mips/include/asm/mach-jz4740/jz4740_nand.h b/arch/mips/include/asm/mach-jz4740/jz4740_nand.h
+index 79cff26..398733e 100644
+--- a/arch/mips/include/asm/mach-jz4740/jz4740_nand.h
++++ b/arch/mips/include/asm/mach-jz4740/jz4740_nand.h
+@@ -25,8 +25,6 @@ struct jz_nand_platform_data {
+ 	int			num_partitions;
  	struct mtd_partition	*partitions;
--	struct nand_ecclayout	*ecc_layout;
- };
  
- struct s3c2410_platform_nand {
+-	struct nand_ecclayout	*ecc_layout;
+-
+ 	unsigned char banks[JZ_NAND_NUM_BANKS];
+ 
+ 	void (*ident_callback)(struct platform_device *, struct nand_chip *,
+diff --git a/drivers/mtd/nand/jz4740_nand.c b/drivers/mtd/nand/jz4740_nand.c
+index 5a99a93..c4fe446 100644
+--- a/drivers/mtd/nand/jz4740_nand.c
++++ b/drivers/mtd/nand/jz4740_nand.c
+@@ -446,9 +446,6 @@ static int jz_nand_probe(struct platform_device *pdev)
+ 	chip->ecc.bytes		= 9;
+ 	chip->ecc.strength	= 4;
+ 
+-	if (pdata)
+-		chip->ecc.layout = pdata->ecc_layout;
+-
+ 	chip->chip_delay = 50;
+ 	chip->cmd_ctrl = jz_nand_cmd_ctrl;
+ 	chip->select_chip = jz_nand_select_chip;
 -- 
 2.1.4

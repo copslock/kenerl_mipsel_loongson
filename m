@@ -1,13 +1,13 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Dec 2015 23:31:16 +0100 (CET)
-Received: from down.free-electrons.com ([37.187.137.238]:55929 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Dec 2015 23:31:34 +0100 (CET)
+Received: from down.free-electrons.com ([37.187.137.238]:55946 "EHLO
         mail.free-electrons.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27013322AbbLGW1c4POVg (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 7 Dec 2015 23:27:32 +0100
+        by eddie.linux-mips.org with ESMTP id S27013325AbbLGW1e1CB1g (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 7 Dec 2015 23:27:34 +0100
 Received: by mail.free-electrons.com (Postfix, from userid 110)
-        id 99BD31A8A; Mon,  7 Dec 2015 23:27:26 +0100 (CET)
+        id 1A0D82231; Mon,  7 Dec 2015 23:27:28 +0100 (CET)
 Received: from localhost.localdomain (unknown [37.160.132.173])
-        by mail.free-electrons.com (Postfix) with ESMTPSA id 080501C14;
-        Mon,  7 Dec 2015 23:27:21 +0100 (CET)
+        by mail.free-electrons.com (Postfix) with ESMTPSA id 6EA56223;
+        Mon,  7 Dec 2015 23:27:25 +0100 (CET)
 From:   Boris Brezillon <boris.brezillon@free-electrons.com>
 To:     David Woodhouse <dwmw2@infradead.org>,
         Brian Norris <computersforpeace@gmail.com>,
@@ -30,9 +30,9 @@ Cc:     Daniel Mack <daniel@zonque.org>,
         devel@driverdev.osuosl.org, linux-kernel@vger.kernel.org,
         punnaiah choudary kalluri <punnaia@xilinx.com>,
         Boris Brezillon <boris.brezillon@free-electrons.com>
-Subject: [PATCH 15/23] mtd: create an mtd_ooblayout_ops struct to ease ECC layout definition
-Date:   Mon,  7 Dec 2015 23:26:10 +0100
-Message-Id: <1449527178-5930-16-git-send-email-boris.brezillon@free-electrons.com>
+Subject: [PATCH 16/23] mtd: docg3: switch to mtd_ooblayout_ops
+Date:   Mon,  7 Dec 2015 23:26:11 +0100
+Message-Id: <1449527178-5930-17-git-send-email-boris.brezillon@free-electrons.com>
 X-Mailer: git-send-email 2.1.4
 In-Reply-To: <1449527178-5930-1-git-send-email-boris.brezillon@free-electrons.com>
 References: <1449527178-5930-1-git-send-email-boris.brezillon@free-electrons.com>
@@ -40,7 +40,7 @@ Return-Path: <boris.brezillon@free-electrons.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50394
+X-archive-position: 50395
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -57,266 +57,62 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-ECC layout definitions are currently exposed using the nand_ecclayout
-struct which embeds oobfree and eccpos arrays with predefined size.
-This approach was acceptable when the NAND were providing relatively small
-OOB regions, but MLC and TLC now provide OOB regions of several hundreds
-of bytes, which implies a non negigible size penalty for everybody even
-those who only need to support legacy NANDs.
-
-Create an mtd_ooblayout_ops interface providing the same functionality
-(expose the ECC and OOBFREE layout) without the need for this huge
-structure.
-
-The mtd->ecclayout is now deprecated and should be replaced by the
-equivalent mtd_ooblayout_ops. In the meantime we provide a wrapper around
-the ->ecclayout field to ease migration to this new model.
-
 Signed-off-by: Boris Brezillon <boris.brezillon@free-electrons.com>
 ---
- drivers/mtd/mtdchar.c   |  4 ++--
- drivers/mtd/mtdconcat.c |  2 +-
- drivers/mtd/mtdcore.c   | 44 ++++++++++++++++++++++++++++++++++++++++
- drivers/mtd/mtdpart.c   | 22 +++++++++++++++++++-
- include/linux/mtd/mtd.h | 53 +++++++++++++++++++++++++++++++++----------------
- 5 files changed, 104 insertions(+), 21 deletions(-)
+ drivers/mtd/devices/docg3.c | 34 +++++++++++++++++++++++++++++-----
+ 1 file changed, 29 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/mtd/mtdchar.c b/drivers/mtd/mtdchar.c
-index 66d0898..c03b678 100644
---- a/drivers/mtd/mtdchar.c
-+++ b/drivers/mtd/mtdchar.c
-@@ -862,7 +862,7 @@ static int mtdchar_ioctl(struct file *file, u_int cmd, u_long arg)
- 	{
- 		struct nand_oobinfo oi;
- 
--		if (!mtd->ecclayout)
-+		if (!mtd->ooblayout)
- 			return -EOPNOTSUPP;
- 
- 		ret = get_oobinfo(mtd, &oi);
-@@ -956,7 +956,7 @@ static int mtdchar_ioctl(struct file *file, u_int cmd, u_long arg)
- 	{
- 		struct nand_ecclayout_user *usrlay;
- 
--		if (!mtd->ecclayout)
-+		if (!mtd->ooblayout)
- 			return -EOPNOTSUPP;
- 
- 		usrlay = kmalloc(sizeof(*usrlay), GFP_KERNEL);
-diff --git a/drivers/mtd/mtdconcat.c b/drivers/mtd/mtdconcat.c
-index 481565e..d573606 100644
---- a/drivers/mtd/mtdconcat.c
-+++ b/drivers/mtd/mtdconcat.c
-@@ -777,7 +777,7 @@ struct mtd_info *mtd_concat_create(struct mtd_info *subdev[],	/* subdevices to c
- 
- 	}
- 
--	mtd_set_ecclayout(&concat->mtd, subdev[0]->ecclayout);
-+	mtd_set_ooblayout(&concat->mtd, subdev[0]->ooblayout);
- 
- 	concat->num_subdev = num_devs;
- 	concat->mtd.name = name;
-diff --git a/drivers/mtd/mtdcore.c b/drivers/mtd/mtdcore.c
-index 62f83b0..d87f3621 100644
---- a/drivers/mtd/mtdcore.c
-+++ b/drivers/mtd/mtdcore.c
-@@ -833,6 +833,50 @@ void __put_mtd_device(struct mtd_info *mtd)
- }
- EXPORT_SYMBOL_GPL(__put_mtd_device);
- 
-+static int nand_ecclayout_eccpos(struct mtd_info *mtd, int eccbyte)
+diff --git a/drivers/mtd/devices/docg3.c b/drivers/mtd/devices/docg3.c
+index 6b516e1..7463dd8 100644
+--- a/drivers/mtd/devices/docg3.c
++++ b/drivers/mtd/devices/docg3.c
+@@ -73,10 +73,34 @@ MODULE_PARM_DESC(reliable_mode, "Set the docg3 mode (0=normal MLC, 1=fast, "
+  * @eccpos: ecc positions (byte 7 is Hamming ECC, byte 8-14 are BCH ECC)
+  * @oobfree: free pageinfo bytes (byte 0 until byte 6, byte 15
+  */
+-static struct nand_ecclayout docg3_oobinfo = {
+-	.eccbytes = 8,
+-	.eccpos = {7, 8, 9, 10, 11, 12, 13, 14},
+-	.oobfree = {{0, 7}, {15, 1} },
++static int docg3_eccpos(struct mtd_info *mtd, int eccbyte)
 +{
-+	struct nand_ecclayout *layout = mtd->ecclayout;
-+
-+	if (!layout)
-+		return -ENOTSUPP;
-+
-+	if (eccbyte >= layout->eccbytes)
++	if (eccbyte >= 8)
 +		return -ERANGE;
 +
-+	return layout->eccpos[eccbyte];
++	return eccbyte + 7;
 +}
 +
-+static int nand_ecclayout_oobfree(struct mtd_info *mtd, int section,
-+				  struct nand_oobfree *oobfree)
++static int docg3_oobfree(struct mtd_info *mtd, int section,
++			 struct nand_oobfree *oobfree)
 +{
-+	struct nand_ecclayout *layout = mtd->ecclayout;
-+
-+	if (!layout)
-+		return -ENOTSUPP;
-+
-+	if (section >= MTD_MAX_OOBFREE_ENTRIES_LARGE)
++	if (section > 1)
 +		return -ERANGE;
 +
-+	*oobfree = layout->oobfree[section];
++	if (!section) {
++		oobfree->offset = 0;
++		oobfree->length = 7;
++	} else {
++		oobfree->offset = 15;
++		oobfree->length = 1;
++	}
 +
 +	return 0;
 +}
 +
-+static const struct mtd_ooblayout_ops nand_ecclayout_ops = {
-+	.eccpos = nand_ecclayout_eccpos,
-+	.oobfree = nand_ecclayout_oobfree,
-+};
-+
-+void mtd_set_ecclayout(struct mtd_info *mtd, struct nand_ecclayout *ecclayout)
-+{
-+	if (!mtd || !ecclayout)
-+		return;
-+
-+	mtd->ecclayout = ecclayout;
-+	mtd_set_ooblayout(mtd, &nand_ecclayout_ops);
-+}
-+EXPORT_SYMBOL_GPL(mtd_set_ecclayout);
-+
- /*
-  * Erase is an asynchronous operation.  Device drivers are supposed
-  * to call instr->callback() whenever the operation completes, even
-diff --git a/drivers/mtd/mtdpart.c b/drivers/mtd/mtdpart.c
-index 244faa8..2b5c8ca 100644
---- a/drivers/mtd/mtdpart.c
-+++ b/drivers/mtd/mtdpart.c
-@@ -320,6 +320,26 @@ static int part_block_markbad(struct mtd_info *mtd, loff_t ofs)
- 	return res;
- }
- 
-+static int part_ooblayout_eccpos(struct mtd_info *mtd, int eccbyte)
-+{
-+	struct mtd_part *part = mtd_to_part(mtd);
-+
-+	return mtd_eccpos(part->master, eccbyte);
-+}
-+
-+static int part_ooblayout_oobfree(struct mtd_info *mtd, int section,
-+				  struct nand_oobfree *oobfree)
-+{
-+	struct mtd_part *part = mtd_to_part(mtd);
-+
-+	return mtd_oobfree(part->master, section, oobfree);
-+}
-+
-+static const struct mtd_ooblayout_ops part_ooblayout_ops = {
-+	.eccpos = part_ooblayout_eccpos,
-+	.oobfree = part_ooblayout_oobfree,
-+};
-+
- static inline void free_partition(struct mtd_part *p)
- {
- 	kfree(p->mtd.name);
-@@ -536,7 +556,7 @@ static struct mtd_part *allocate_partition(struct mtd_info *master,
- 			part->name);
- 	}
- 
--	mtd_set_ecclayout(&slave->mtd, master->ecclayout);
-+	mtd_set_ooblayout(&slave->mtd, &part_ooblayout_ops);
- 	slave->mtd.ecc_step_size = master->ecc_step_size;
- 	slave->mtd.ecc_strength = master->ecc_strength;
- 	slave->mtd.bitflip_threshold = master->bitflip_threshold;
-diff --git a/include/linux/mtd/mtd.h b/include/linux/mtd/mtd.h
-index 80e32fa..9c3699b 100644
---- a/include/linux/mtd/mtd.h
-+++ b/include/linux/mtd/mtd.h
-@@ -101,6 +101,9 @@ struct mtd_oob_ops {
-  * similar, smaller struct nand_ecclayout_user (in mtd-abi.h) that is retained
-  * for export to user-space via the ECCGETLAYOUT ioctl.
-  * nand_ecclayout should be expandable in the future simply by the above macros.
-+ *
-+ * This structure is now deprecated, you should use struct nand_ecclayout_ops
-+ * to describe your OOB layout.
-  */
- struct nand_ecclayout {
- 	__u32 eccbytes;
-@@ -108,6 +111,20 @@ struct nand_ecclayout {
- 	struct nand_oobfree oobfree[MTD_MAX_OOBFREE_ENTRIES_LARGE];
++static const struct nand_ooblayout_ops nand_ooblayout_docg3_ops = {
++	.eccpos = docg3_eccpos,
++	.oobfree = docg3_oobfree,
  };
  
-+/**
-+ * struct mtd_ooblayout_ops - NAND OOB layout operations.
-+ *
-+ * @eccpos: function returning the position of an ECC byte. Should return
-+ *	    -ERANGE if %eccbyte exceed the number of ECC bytes.
-+ * @oobfree: function returning an oobfree section. Should return -ERANGE
-+ *	     if %section exceed the total number of oobfree sections.
-+ */
-+struct mtd_ooblayout_ops {
-+	int (*eccpos)(struct mtd_info *mtd, int eccbyte);
-+	int (*oobfree)(struct mtd_info *mtd, int section,
-+		       struct nand_oobfree *oobfree);
-+};
-+
- struct module;	/* only needed for owner field in mtd_info */
+ static inline u8 doc_readb(struct docg3 *docg3, u16 reg)
+@@ -1857,7 +1881,7 @@ static int __init doc_set_driver_info(int chip_id, struct mtd_info *mtd)
+ 	mtd->_read_oob = doc_read_oob;
+ 	mtd->_write_oob = doc_write_oob;
+ 	mtd->_block_isbad = doc_block_isbad;
+-	mtd_set_ecclayout(mtd, &docg3_oobinfo);
++	mtd_set_ooblayout_ops(mtd, &nand_ooblayout_docg3_ops);
+ 	mtd->oobavail = 8;
+ 	mtd->ecc_strength = DOC_ECC_BCH_T;
  
- struct mtd_info {
-@@ -166,9 +183,12 @@ struct mtd_info {
- 	const char *name;
- 	int index;
- 
--	/* ECC layout structure pointer - read only! */
-+	/* [Deprecated] ECC layout structure pointer - read only! */
- 	struct nand_ecclayout *ecclayout;
- 
-+	/* OOB layout description */
-+	const struct mtd_ooblayout_ops *ooblayout;
-+
- 	/* the ecc step size. */
- 	unsigned int ecc_step_size;
- 
-@@ -253,21 +273,20 @@ struct mtd_info {
- 	int usecount;
- };
- 
--static inline void mtd_set_ecclayout(struct mtd_info *mtd,
--				     struct nand_ecclayout *ecclayout)
-+static inline void mtd_set_ooblayout(struct mtd_info *mtd,
-+				     const struct mtd_ooblayout_ops *ooblayout)
- {
--	mtd->ecclayout = ecclayout;
-+	mtd->ooblayout = ooblayout;
- }
- 
-+void mtd_set_ecclayout(struct mtd_info *mtd, struct nand_ecclayout *ecclayout);
-+
- static inline int mtd_eccpos(struct mtd_info *mtd, int eccbyte)
- {
--	if (!mtd->ecclayout)
-+	if (!mtd->ooblayout || !mtd->ooblayout->eccpos)
- 		return -ENOTSUPP;
- 
--	if (eccbyte >= mtd->ecclayout->eccbytes)
--		return -ERANGE;
--
--	return mtd->ecclayout->eccpos[eccbyte];
-+	return mtd->ooblayout->eccpos(mtd, eccbyte);
- }
- 
- static inline int mtd_oobfree(struct mtd_info *mtd, int section,
-@@ -275,20 +294,20 @@ static inline int mtd_oobfree(struct mtd_info *mtd, int section,
- {
- 	memset(oobfree, 0, sizeof(*oobfree));
- 
--	if (!mtd->ecclayout)
-+	if (!mtd->ooblayout || !mtd->ooblayout->oobfree)
- 		return -ENOTSUPP;
- 
--	if (section >= MTD_MAX_OOBFREE_ENTRIES_LARGE)
--		return -ERANGE;
--
--	*oobfree = mtd->ecclayout->oobfree[section];
--
--	return 0;
-+	return mtd->ooblayout->oobfree(mtd, section, oobfree);
- }
- 
- static inline int mtd_eccbytes(struct mtd_info *mtd)
- {
--	return mtd->ecclayout ? mtd->ecclayout->eccbytes : 0;
-+	int eccbytes;
-+
-+	for (eccbytes = 0; mtd_eccpos(mtd, eccbytes) >= 0; eccbytes++)
-+		;
-+
-+	return eccbytes;
- }
- 
- static inline void mtd_set_of_node(struct mtd_info *mtd,
 -- 
 2.1.4

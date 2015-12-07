@@ -1,20 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Dec 2015 15:58:11 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:41215 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Dec 2015 15:58:31 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:41216 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011418AbbLGO6IyBVIc (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 7 Dec 2015 15:58:08 +0100
+        by eddie.linux-mips.org with ESMTP id S27011443AbbLGO6JwxCUc (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 7 Dec 2015 15:58:09 +0100
 Received: from localhost (unknown [66.228.68.140])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 6B6A3A7D;
-        Mon,  7 Dec 2015 14:58:02 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id B7B87A71;
+        Mon,  7 Dec 2015 14:58:03 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Hauke Mehrtens <hauke@hauke-m.de>,
-        John Crispin <blogic@openwrt.org>, linux-mips@linux-mips.org,
+        stable@vger.kernel.org, James Hogan <james.hogan@imgtec.com>,
+        Jiri Slaby <jslaby@suse.com>, linux-mips@linux-mips.org,
         Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.2 041/124] MIPS: lantiq: add clk_round_rate()
-Date:   Mon,  7 Dec 2015 09:55:31 -0500
-Message-Id: <20151207144921.731743749@linuxfoundation.org>
+Subject: [PATCH 4.2 042/124] MIPS: CDMM: Add builtin_mips_cdmm_driver() macro
+Date:   Mon,  7 Dec 2015 09:55:32 -0500
+Message-Id: <20151207144921.778267289@linuxfoundation.org>
 X-Mailer: git-send-email 2.6.3
 In-Reply-To: <20151207144919.656035367@linuxfoundation.org>
 References: <20151207144919.656035367@linuxfoundation.org>
@@ -25,7 +25,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50362
+X-archive-position: 50363
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,50 +46,44 @@ X-list: linux-mips
 
 ------------------
 
-From: Hauke Mehrtens <hauke@hauke-m.de>
+From: James Hogan <james.hogan@imgtec.com>
 
-commit 4e7d30dba493b60a80e9b590add1b4402265cc83 upstream.
+commit 1b4a5ddb127caf125e14551ebd334be1acf21805 upstream.
 
-This adds a basic implementation of clk_round_rate()
-The clk_round_rate() function is called by multiple drivers and
-subsystems now and the lantiq clk driver is supposed to export this,
-but doesn't do so, this causes linking problems like this one:
-ERROR: "clk_round_rate" [drivers/media/v4l2-core/videodev.ko] undefined!
+Add helper macro builtin_mips_cdmm_driver() for builtin CDMM drivers
+that don't do anything special in init and have no exit. The
+module_mips_cdmm_driver() helper isn't really appropriate for drivers
+that can't be built as a module.
 
-Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
-Acked-by: John Crispin <blogic@openwrt.org>
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Jiri Slaby <jslaby@suse.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/11358/
+Patchwork: http://patchwork.linux-mips.org/patch/11264/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/lantiq/clk.c |   17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ arch/mips/include/asm/cdmm.h |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/arch/mips/lantiq/clk.c
-+++ b/arch/mips/lantiq/clk.c
-@@ -99,6 +99,23 @@ int clk_set_rate(struct clk *clk, unsign
- }
- EXPORT_SYMBOL(clk_set_rate);
+--- a/arch/mips/include/asm/cdmm.h
++++ b/arch/mips/include/asm/cdmm.h
+@@ -84,6 +84,17 @@ void mips_cdmm_driver_unregister(struct
+ 	module_driver(__mips_cdmm_driver, mips_cdmm_driver_register, \
+ 			mips_cdmm_driver_unregister)
  
-+long clk_round_rate(struct clk *clk, unsigned long rate)
-+{
-+	if (unlikely(!clk_good(clk)))
-+		return 0;
-+	if (clk->rates && *clk->rates) {
-+		unsigned long *r = clk->rates;
++/*
++ * builtin_mips_cdmm_driver() - Helper macro for drivers that don't do anything
++ * special in init and have no exit. This eliminates some boilerplate. Each
++ * driver may only use this macro once, and calling it replaces device_initcall
++ * (or in some cases, the legacy __initcall). This is meant to be a direct
++ * parallel of module_mips_cdmm_driver() above but without the __exit stuff that
++ * is not used for builtin cases.
++ */
++#define builtin_mips_cdmm_driver(__mips_cdmm_driver) \
++	builtin_driver(__mips_cdmm_driver, mips_cdmm_driver_register)
 +
-+		while (*r && (*r != rate))
-+			r++;
-+		if (!*r) {
-+			return clk->rate;
-+		}
-+	}
-+	return rate;
-+}
-+EXPORT_SYMBOL(clk_round_rate);
-+
- int clk_enable(struct clk *clk)
- {
- 	if (unlikely(!clk_good(clk)))
+ /* drivers/tty/mips_ejtag_fdc.c */
+ 
+ #ifdef CONFIG_MIPS_EJTAG_FDC_EARLYCON

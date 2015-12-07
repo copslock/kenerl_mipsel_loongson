@@ -1,25 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Dec 2015 15:38:14 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:38713 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Dec 2015 15:58:11 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:41215 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010977AbbLGOhUYCeZc (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 7 Dec 2015 15:37:20 +0100
+        by eddie.linux-mips.org with ESMTP id S27011418AbbLGO6IyBVIc (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 7 Dec 2015 15:58:08 +0100
 Received: from localhost (unknown [66.228.68.140])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 4E413BD3;
-        Mon,  7 Dec 2015 14:37:14 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 6B6A3A7D;
+        Mon,  7 Dec 2015 14:58:02 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, James Hogan <james.hogan@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Gleb Natapov <gleb@kernel.org>, linux-mips@linux-mips.org,
-        kvm@vger.kernel.org
-Subject: [PATCH 4.1 35/95] MIPS: KVM: Uninit VCPU in vcpu_create error path
-Date:   Mon,  7 Dec 2015 09:35:29 -0500
-Message-Id: <20151207142741.061264962@linuxfoundation.org>
+        stable@vger.kernel.org, Hauke Mehrtens <hauke@hauke-m.de>,
+        John Crispin <blogic@openwrt.org>, linux-mips@linux-mips.org,
+        Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH 4.2 041/124] MIPS: lantiq: add clk_round_rate()
+Date:   Mon,  7 Dec 2015 09:55:31 -0500
+Message-Id: <20151207144921.731743749@linuxfoundation.org>
 X-Mailer: git-send-email 2.6.3
-In-Reply-To: <20151207142739.317088107@linuxfoundation.org>
-References: <20151207142739.317088107@linuxfoundation.org>
+In-Reply-To: <20151207144919.656035367@linuxfoundation.org>
+References: <20151207144919.656035367@linuxfoundation.org>
 User-Agent: quilt/0.64
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ISO-8859-15
@@ -27,7 +25,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50361
+X-archive-position: 50362
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -44,50 +42,54 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-4.1-stable review patch.  If anyone has any objections, please let me know.
+4.2-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Hogan <james.hogan@imgtec.com>
+From: Hauke Mehrtens <hauke@hauke-m.de>
 
-commit 585bb8f9a5e592f2ce7abbe5ed3112d5438d2754 upstream.
+commit 4e7d30dba493b60a80e9b590add1b4402265cc83 upstream.
 
-If either of the memory allocations in kvm_arch_vcpu_create() fail, the
-vcpu which has been allocated and kvm_vcpu_init'd doesn't get uninit'd
-in the error handling path. Add a call to kvm_vcpu_uninit() to fix this.
+This adds a basic implementation of clk_round_rate()
+The clk_round_rate() function is called by multiple drivers and
+subsystems now and the lantiq clk driver is supposed to export this,
+but doesn't do so, this causes linking problems like this one:
+ERROR: "clk_round_rate" [drivers/media/v4l2-core/videodev.ko] undefined!
 
-Fixes: 669e846e6c4e ("KVM/MIPS32: MIPS arch specific APIs for KVM")
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Gleb Natapov <gleb@kernel.org>
+Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
+Acked-by: John Crispin <blogic@openwrt.org>
 Cc: linux-mips@linux-mips.org
-Cc: kvm@vger.kernel.org
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Patchwork: https://patchwork.linux-mips.org/patch/11358/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/kvm/mips.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ arch/mips/lantiq/clk.c |   17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
---- a/arch/mips/kvm/mips.c
-+++ b/arch/mips/kvm/mips.c
-@@ -277,7 +277,7 @@ struct kvm_vcpu *kvm_arch_vcpu_create(st
+--- a/arch/mips/lantiq/clk.c
++++ b/arch/mips/lantiq/clk.c
+@@ -99,6 +99,23 @@ int clk_set_rate(struct clk *clk, unsign
+ }
+ EXPORT_SYMBOL(clk_set_rate);
  
- 	if (!gebase) {
- 		err = -ENOMEM;
--		goto out_free_cpu;
-+		goto out_uninit_cpu;
- 	}
- 	kvm_debug("Allocated %d bytes for KVM Exception Handlers @ %p\n",
- 		  ALIGN(size, PAGE_SIZE), gebase);
-@@ -341,6 +341,9 @@ struct kvm_vcpu *kvm_arch_vcpu_create(st
- out_free_gebase:
- 	kfree(gebase);
- 
-+out_uninit_cpu:
-+	kvm_vcpu_uninit(vcpu);
++long clk_round_rate(struct clk *clk, unsigned long rate)
++{
++	if (unlikely(!clk_good(clk)))
++		return 0;
++	if (clk->rates && *clk->rates) {
++		unsigned long *r = clk->rates;
 +
- out_free_cpu:
- 	kfree(vcpu);
- 
++		while (*r && (*r != rate))
++			r++;
++		if (!*r) {
++			return clk->rate;
++		}
++	}
++	return rate;
++}
++EXPORT_SYMBOL(clk_round_rate);
++
+ int clk_enable(struct clk *clk)
+ {
+ 	if (unlikely(!clk_good(clk)))

@@ -1,22 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Dec 2015 15:58:49 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:41227 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Dec 2015 15:59:09 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:41232 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011740AbbLGO6Mal0Ac (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 7 Dec 2015 15:58:12 +0100
+        by eddie.linux-mips.org with ESMTP id S27010798AbbLGO6NvKOYc (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 7 Dec 2015 15:58:13 +0100
 Received: from localhost (unknown [66.228.68.140])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 5B361A7E;
-        Mon,  7 Dec 2015 14:58:06 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id B3539A7B;
+        Mon,  7 Dec 2015 14:58:07 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Alban Bedel <albeu@free.fr>,
-        Felix Fietkau <nbd@openwrt.org>,
-        Qais Yousef <qais.yousef@imgtec.com>,
-        Andrew Bresticker <abrestic@chromium.org>,
-        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.2 043/124] MIPS: ath79: Fix the DDR control initialization on ar71xx and ar934x
-Date:   Mon,  7 Dec 2015 09:55:33 -0500
-Message-Id: <20151207144921.819530273@linuxfoundation.org>
+        stable@vger.kernel.org, James Hogan <james.hogan@imgtec.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Gleb Natapov <gleb@kernel.org>, linux-mips@linux-mips.org,
+        kvm@vger.kernel.org
+Subject: [PATCH 4.2 044/124] MIPS: KVM: Fix ASID restoration logic
+Date:   Mon,  7 Dec 2015 09:55:34 -0500
+Message-Id: <20151207144921.873456216@linuxfoundation.org>
 X-Mailer: git-send-email 2.6.3
 In-Reply-To: <20151207144919.656035367@linuxfoundation.org>
 References: <20151207144919.656035367@linuxfoundation.org>
@@ -27,7 +27,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50364
+X-archive-position: 50365
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,39 +48,62 @@ X-list: linux-mips
 
 ------------------
 
-From: Alban Bedel <albeu@free.fr>
+From: James Hogan <james.hogan@imgtec.com>
 
-commit 5011a7e808c9fec643d752c5a495a48f27268a48 upstream.
+commit 002374f371bd02df864cce1fe85d90dc5b292837 upstream.
 
-The DDR control initialization needs to know the SoC type, however
-ath79_detect_sys_type() was called after ath79_ddr_ctrl_init().
-Reverse the order to fix the DDR control initialization on ar71xx and
-ar934x.
+ASID restoration on guest resume should determine the guest execution
+mode based on the guest Status register rather than bit 30 of the guest
+PC.
 
-Signed-off-by: Alban Bedel <albeu@free.fr>
-Cc: Felix Fietkau <nbd@openwrt.org>
-Cc: Qais Yousef <qais.yousef@imgtec.com>
-Cc: Andrew Bresticker <abrestic@chromium.org>
+Fix the two places in locore.S that do this, loading the guest status
+from the cop0 area. Note, this assembly is specific to the trap &
+emulate implementation of KVM, so it doesn't need to check the
+supervisor bit as that mode is not implemented in the guest.
+
+Fixes: b680f70fc111 ("KVM/MIPS32: Entry point for trampolining to...")
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Gleb Natapov <gleb@kernel.org>
 Cc: linux-mips@linux-mips.org
-Cc: linux-kernel@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/11500/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Cc: kvm@vger.kernel.org
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/ath79/setup.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/kvm/locore.S |   16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
---- a/arch/mips/ath79/setup.c
-+++ b/arch/mips/ath79/setup.c
-@@ -216,9 +216,9 @@ void __init plat_mem_setup(void)
- 					   AR71XX_RESET_SIZE);
- 	ath79_pll_base = ioremap_nocache(AR71XX_PLL_BASE,
- 					 AR71XX_PLL_SIZE);
-+	ath79_detect_sys_type();
- 	ath79_ddr_ctrl_init();
+--- a/arch/mips/kvm/locore.S
++++ b/arch/mips/kvm/locore.S
+@@ -165,9 +165,11 @@ FEXPORT(__kvm_mips_vcpu_run)
  
--	ath79_detect_sys_type();
- 	if (mips_machtype != ATH79_MACH_GENERIC_OF)
- 		detect_memory_region(0, ATH79_MEM_SIZE_MIN, ATH79_MEM_SIZE_MAX);
+ FEXPORT(__kvm_mips_load_asid)
+ 	/* Set the ASID for the Guest Kernel */
+-	INT_SLL	t0, t0, 1	/* with kseg0 @ 0x40000000, kernel */
+-			        /* addresses shift to 0x80000000 */
+-	bltz	t0, 1f		/* If kernel */
++	PTR_L	t0, VCPU_COP0(k1)
++	LONG_L	t0, COP0_STATUS(t0)
++	andi	t0, KSU_USER | ST0_ERL | ST0_EXL
++	xori	t0, KSU_USER
++	bnez	t0, 1f		/* If kernel */
+ 	 INT_ADDIU t1, k1, VCPU_GUEST_KERNEL_ASID  /* (BD)  */
+ 	INT_ADDIU t1, k1, VCPU_GUEST_USER_ASID    /* else user */
+ 1:
+@@ -482,9 +484,11 @@ __kvm_mips_return_to_guest:
+ 	mtc0	t0, CP0_EPC
  
+ 	/* Set the ASID for the Guest Kernel */
+-	INT_SLL	t0, t0, 1	/* with kseg0 @ 0x40000000, kernel */
+-				/* addresses shift to 0x80000000 */
+-	bltz	t0, 1f		/* If kernel */
++	PTR_L	t0, VCPU_COP0(k1)
++	LONG_L	t0, COP0_STATUS(t0)
++	andi	t0, KSU_USER | ST0_ERL | ST0_EXL
++	xori	t0, KSU_USER
++	bnez	t0, 1f		/* If kernel */
+ 	 INT_ADDIU t1, k1, VCPU_GUEST_KERNEL_ASID  /* (BD)  */
+ 	INT_ADDIU t1, k1, VCPU_GUEST_USER_ASID    /* else user */
+ 1:

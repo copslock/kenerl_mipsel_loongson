@@ -1,22 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Dec 2015 15:59:47 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:41247 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Dec 2015 16:00:06 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:42168 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011964AbbLGO6QbT7fc (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 7 Dec 2015 15:58:16 +0100
+        by eddie.linux-mips.org with ESMTP id S27010798AbbLGPADYN0wc (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 7 Dec 2015 16:00:03 +0100
 Received: from localhost (unknown [66.228.68.140])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 5C308A71;
-        Mon,  7 Dec 2015 14:58:10 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id E8039938;
+        Mon,  7 Dec 2015 14:59:56 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         stable@vger.kernel.org, James Hogan <james.hogan@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Gleb Natapov <gleb@kernel.org>, linux-mips@linux-mips.org,
-        kvm@vger.kernel.org
-Subject: [PATCH 4.2 046/124] MIPS: KVM: Uninit VCPU in vcpu_create error path
-Date:   Mon,  7 Dec 2015 09:55:36 -0500
-Message-Id: <20151207144921.964712724@linuxfoundation.org>
+        Jiri Slaby <jslaby@suse.com>,
+        Paul Gortmaker <paul.gortmaker@windriver.com>,
+        linux-mips@linux-mips.org
+Subject: [PATCH 4.2 118/124] ttyFDC: Fix build problems due to use of module_{init,exit}
+Date:   Mon,  7 Dec 2015 09:56:48 -0500
+Message-Id: <20151207144925.650096960@linuxfoundation.org>
 X-Mailer: git-send-email 2.6.3
 In-Reply-To: <20151207144919.656035367@linuxfoundation.org>
 References: <20151207144919.656035367@linuxfoundation.org>
@@ -27,7 +26,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50367
+X-archive-position: 50368
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -50,44 +49,91 @@ X-list: linux-mips
 
 From: James Hogan <james.hogan@imgtec.com>
 
-commit 585bb8f9a5e592f2ce7abbe5ed3112d5438d2754 upstream.
+commit 3e8137a185240fa6da0ff91cd9c604716371903b upstream.
 
-If either of the memory allocations in kvm_arch_vcpu_create() fail, the
-vcpu which has been allocated and kvm_vcpu_init'd doesn't get uninit'd
-in the error handling path. Add a call to kvm_vcpu_uninit() to fix this.
+Commit 0fd972a7d91d (module: relocate module_init from init.h to
+module.h) broke the build of ttyFDC driver due to that driver's (mis)use
+of module_mips_cdmm_driver() without first including module.h, for
+example:
 
-Fixes: 669e846e6c4e ("KVM/MIPS32: MIPS arch specific APIs for KVM")
+In file included from ./arch/mips/include/asm/cdmm.h +11 :0,
+                 from drivers/tty/mips_ejtag_fdc.c +34 :
+include/linux/device.h +1295 :1: warning: data definition has no type or storage class
+./arch/mips/include/asm/cdmm.h +84 :2: note: in expansion of macro ‘module_driver’
+drivers/tty/mips_ejtag_fdc.c +1157 :1: note: in expansion of macro ‘module_mips_cdmm_driver’
+include/linux/device.h +1295 :1: error: type defaults to ‘int’ in declaration of ‘module_init’ [-Werror=implicit-int]
+./arch/mips/include/asm/cdmm.h +84 :2: note: in expansion of macro ‘module_driver’
+drivers/tty/mips_ejtag_fdc.c +1157 :1: note: in expansion of macro ‘module_mips_cdmm_driver’
+drivers/tty/mips_ejtag_fdc.c +1157 :1: warning: parameter names (without types) in function declaration
+
+Instead of just adding the module.h include, switch to using the new
+builtin_mips_cdmm_driver() helper macro and drop the remove callback,
+since it isn't needed. If module support is added later, the code can
+always be resurrected.
+
 Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Gleb Natapov <gleb@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Jiri Slaby <jslaby@suse.com>
+Cc: Paul Gortmaker <paul.gortmaker@windriver.com>
 Cc: linux-mips@linux-mips.org
-Cc: kvm@vger.kernel.org
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/kvm/mips.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/tty/mips_ejtag_fdc.c |   35 +----------------------------------
+ 1 file changed, 1 insertion(+), 34 deletions(-)
 
---- a/arch/mips/kvm/mips.c
-+++ b/arch/mips/kvm/mips.c
-@@ -278,7 +278,7 @@ struct kvm_vcpu *kvm_arch_vcpu_create(st
+--- a/drivers/tty/mips_ejtag_fdc.c
++++ b/drivers/tty/mips_ejtag_fdc.c
+@@ -1045,38 +1045,6 @@ err_destroy_ports:
+ 	return ret;
+ }
  
- 	if (!gebase) {
- 		err = -ENOMEM;
--		goto out_free_cpu;
-+		goto out_uninit_cpu;
- 	}
- 	kvm_debug("Allocated %d bytes for KVM Exception Handlers @ %p\n",
- 		  ALIGN(size, PAGE_SIZE), gebase);
-@@ -342,6 +342,9 @@ struct kvm_vcpu *kvm_arch_vcpu_create(st
- out_free_gebase:
- 	kfree(gebase);
+-static int mips_ejtag_fdc_tty_remove(struct mips_cdmm_device *dev)
+-{
+-	struct mips_ejtag_fdc_tty *priv = mips_cdmm_get_drvdata(dev);
+-	struct mips_ejtag_fdc_tty_port *dport;
+-	int nport;
+-	unsigned int cfg;
+-
+-	if (priv->irq >= 0) {
+-		raw_spin_lock_irq(&priv->lock);
+-		cfg = mips_ejtag_fdc_read(priv, REG_FDCFG);
+-		/* Disable interrupts */
+-		cfg &= ~(REG_FDCFG_TXINTTHRES | REG_FDCFG_RXINTTHRES);
+-		cfg |= REG_FDCFG_TXINTTHRES_DISABLED;
+-		cfg |= REG_FDCFG_RXINTTHRES_DISABLED;
+-		mips_ejtag_fdc_write(priv, REG_FDCFG, cfg);
+-		raw_spin_unlock_irq(&priv->lock);
+-	} else {
+-		priv->removing = true;
+-		del_timer_sync(&priv->poll_timer);
+-	}
+-	kthread_stop(priv->thread);
+-	if (dev->cpu == 0)
+-		mips_ejtag_fdc_con.tty_drv = NULL;
+-	tty_unregister_driver(priv->driver);
+-	for (nport = 0; nport < NUM_TTY_CHANNELS; nport++) {
+-		dport = &priv->ports[nport];
+-		tty_port_destroy(&dport->port);
+-	}
+-	put_tty_driver(priv->driver);
+-	return 0;
+-}
+-
+ static int mips_ejtag_fdc_tty_cpu_down(struct mips_cdmm_device *dev)
+ {
+ 	struct mips_ejtag_fdc_tty *priv = mips_cdmm_get_drvdata(dev);
+@@ -1149,12 +1117,11 @@ static struct mips_cdmm_driver mips_ejta
+ 		.name	= "mips_ejtag_fdc",
+ 	},
+ 	.probe		= mips_ejtag_fdc_tty_probe,
+-	.remove		= mips_ejtag_fdc_tty_remove,
+ 	.cpu_down	= mips_ejtag_fdc_tty_cpu_down,
+ 	.cpu_up		= mips_ejtag_fdc_tty_cpu_up,
+ 	.id_table	= mips_ejtag_fdc_tty_ids,
+ };
+-module_mips_cdmm_driver(mips_ejtag_fdc_tty_driver);
++builtin_mips_cdmm_driver(mips_ejtag_fdc_tty_driver);
  
-+out_uninit_cpu:
-+	kvm_vcpu_uninit(vcpu);
-+
- out_free_cpu:
- 	kfree(vcpu);
- 
+ static int __init mips_ejtag_fdc_init_console(void)
+ {

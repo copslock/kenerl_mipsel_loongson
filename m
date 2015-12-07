@@ -1,46 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Dec 2015 13:09:43 +0100 (CET)
-Received: from mail-pa0-f49.google.com ([209.85.220.49]:33397 "EHLO
-        mail-pa0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008478AbbLGMJlnMCdL (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 7 Dec 2015 13:09:41 +0100
-Received: by pabfh17 with SMTP id fh17so127756959pab.0;
-        Mon, 07 Dec 2015 04:09:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id;
-        bh=gbrtOsbRQ9WGQ10ylHggf0Nh1oi1g0DSIPTnbjU2DCQ=;
-        b=t266KFvcj74d/t2ZF+oj3OlU84pB4i3kLvPnTf7rFmuGBDfR7quZJGkUdGiu31ZPCs
-         yFmPQ7sMc/BvWL+exfhyARUt2/wFHuKNHbyFBWdOtX7bsRCyb6ujOjS/E3m43TlnPSpt
-         qbNJvHTjyD20q5ktqH0QVaFm42QDBsxAbC+ZvfrIJ/ZkNKuAl0R2MIBBMjc24D0PuG6l
-         w9zvSqDuZD5TBWECV8XrKqViRqvml2WtJaTIRX+ERplBDOCZnM/Cidpx4b3zvytp6XHX
-         AjhMnVokksjuNXb88AWJakxuMcVYMYBmpKCHGLwiMWbZSuCmUk0MGcq7vodfVzBPM12K
-         KzUQ==
-X-Received: by 10.66.234.226 with SMTP id uh2mr41840371pac.6.1449490174686;
-        Mon, 07 Dec 2015 04:09:34 -0800 (PST)
-Received: from sudip-pc.vectortproxy.org ([122.169.145.251])
-        by smtp.gmail.com with ESMTPSA id q129sm34312989pfq.19.2015.12.07.04.09.31
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Mon, 07 Dec 2015 04:09:34 -0800 (PST)
-From:   Sudip Mukherjee <sudipm.mukherjee@gmail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>,
-        Andrew Morton <akpm@linux-foundation.org>
-Cc:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
-        Chen Gang <gang.chen.5i5j@gmail.com>,
-        Minchan Kim <minchan@kernel.org>
-Subject: [PATCH] mips: mm: fix build failure
-Date:   Mon,  7 Dec 2015 17:39:24 +0530
-Message-Id: <1449490164-21029-1-git-send-email-sudipm.mukherjee@gmail.com>
-X-Mailer: git-send-email 1.9.1
-Return-Path: <sudipm.mukherjee@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Dec 2015 15:16:52 +0100 (CET)
+Received: from mx2.suse.de ([195.135.220.15]:53503 "EHLO mx2.suse.de"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27010130AbbLGOQuFoLvo (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 7 Dec 2015 15:16:50 +0100
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (charybdis-ext.suse.de [195.135.220.254])
+        by mx2.suse.de (Postfix) with ESMTP id A927E75015;
+        Mon,  7 Dec 2015 14:16:48 +0000 (UTC)
+Date:   Mon, 7 Dec 2015 15:16:46 +0100
+From:   Petr Mladek <pmladek@suse.com>
+To:     yalin wang <yalin.wang2010@gmail.com>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Russell King <rmk+kernel@arm.linux.org.uk>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jiri Kosina <jkosina@suse.com>, Ingo Molnar <mingo@redhat.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-kernel <linux-kernel@vger.kernel.org>, x86@kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        adi-buildroot-devel@lists.sourceforge.net,
+        linux-cris-kernel@axis.com, linux-mips@linux-mips.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org
+Subject: Re: [PATCH v2 5/5] printk/nmi: Increase the size of the temporary
+ buffer
+Message-ID: <20151207141646.GF20935@pathway.suse.cz>
+References: <1448622572-16900-1-git-send-email-pmladek@suse.com>
+ <1448622572-16900-6-git-send-email-pmladek@suse.com>
+ <81211733-2484-40A9-9D4A-644AA27FBC73@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <81211733-2484-40A9-9D4A-644AA27FBC73@gmail.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <pmladek@suse.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50356
+X-archive-position: 50357
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sudipm.mukherjee@gmail.com
+X-original-sender: pmladek@suse.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,33 +55,59 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-We are having build failure with mips defconfig with the error:
-"MADV_FREE" redefined.
+On Mon 2015-11-30 08:42:04, yalin wang wrote:
+> 
+> > On Nov 27, 2015, at 19:09, Petr Mladek <pmladek@suse.com> wrote:
+> > 
+> > Testing has shown that the backtrace sometimes does not fit
+> > into the 4kB temporary buffer that is used in NMI context.
+> > 
+> > The warnings are gone when I double the temporary buffer size.
+> > 
+> > Note that this problem existed even in the x86-specific
+> > implementation that was added by the commit a9edc8809328
+> > ("x86/nmi: Perform a safe NMI stack trace on all CPUs").
+> > Nobody noticed it because it did not print any warnings.
+> > 
+> > Signed-off-by: Petr Mladek <pmladek@suse.com>
+> > ---
+> > kernel/printk/nmi.c | 2 +-
+> > 1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > diff --git a/kernel/printk/nmi.c b/kernel/printk/nmi.c
+> > index 8af1e4016719..6111644d5f01 100644
+> > --- a/kernel/printk/nmi.c
+> > +++ b/kernel/printk/nmi.c
+> > @@ -42,7 +42,7 @@ atomic_t nmi_message_lost;
+> > struct nmi_seq_buf {
+> > 	atomic_t		len;	/* length of written data */
+> > 	struct irq_work		work;	/* IRQ work that flushes the buffer */
+> > -	unsigned char		buffer[PAGE_SIZE - sizeof(atomic_t) -
+> > +	unsigned char		buffer[2 * PAGE_SIZE - sizeof(atomic_t) -
+> > 				       sizeof(struct irq_work)];
+> > };
+> > 
+> 
+> why not define like this:
+> 
+> union {
+> struct {atomic_t		len;	
+> 	struct irq_work		work;
+> }
+> unsigned char		buffer[PAGE_SIZE * 2] ;
+> }
+> 
+> we can make sure the union is 2 PAGE_SIZE .
 
-commit d53d95838c7d introduced uniform values for all architecture but
-missed removing the old value.
+IMHO, this would add more confusion. It would just move the
+computation somewhere else. The union will have 2*PAGE_SIZE
+but the beginning of "buffer" will be shared with "len"
+and "work". Therefore, we would need to skip the beginning
+of the buffer when storing the data. By other words, we still
+will be able to use only (sizeof(buffer) - sizeof(atomic_t) -
+sizeof(struct irq_work)] of the "buffer".
 
-Fixes: d53d95838c7d ("arch/*/include/uapi/asm/mman.h: : let MADV_FREE have same value for all architectures")
-Signed-off-by: Sudip Mukherjee <sudip@vectorindia.org>
----
+Or did I miss something, please?
 
-build log is at:
-https://travis-ci.org/sudipm-mukherjee/parport/jobs/95309512
-
- arch/mips/include/uapi/asm/mman.h | 1 -
- 1 file changed, 1 deletion(-)
-
-diff --git a/arch/mips/include/uapi/asm/mman.h b/arch/mips/include/uapi/asm/mman.h
-index b0ebe59..ccdcfcb 100644
---- a/arch/mips/include/uapi/asm/mman.h
-+++ b/arch/mips/include/uapi/asm/mman.h
-@@ -73,7 +73,6 @@
- #define MADV_SEQUENTIAL 2		/* expect sequential page references */
- #define MADV_WILLNEED	3		/* will need these pages */
- #define MADV_DONTNEED	4		/* don't need these pages */
--#define MADV_FREE	5		/* free pages only if memory pressure */
- 
- /* common parameters: try to keep these consistent across architectures */
- #define MADV_FREE	8		/* free pages only if memory pressure */
--- 
-1.9.1
+Best Regards,
+Petr

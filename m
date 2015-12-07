@@ -1,13 +1,13 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Dec 2015 23:28:54 +0100 (CET)
-Received: from down.free-electrons.com ([37.187.137.238]:55697 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Dec 2015 23:29:12 +0100 (CET)
+Received: from down.free-electrons.com ([37.187.137.238]:55730 "EHLO
         mail.free-electrons.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27013003AbbLGW1IW6vqg (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 7 Dec 2015 23:27:08 +0100
+        by eddie.linux-mips.org with ESMTP id S27013277AbbLGW1KjuXdg (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 7 Dec 2015 23:27:10 +0100
 Received: by mail.free-electrons.com (Postfix, from userid 110)
-        id 1F55A1B07; Mon,  7 Dec 2015 23:27:02 +0100 (CET)
+        id 5B1661B0C; Mon,  7 Dec 2015 23:27:04 +0100 (CET)
 Received: from localhost.localdomain (unknown [37.160.132.173])
-        by mail.free-electrons.com (Postfix) with ESMTPSA id 4C66118FE;
-        Mon,  7 Dec 2015 23:26:58 +0100 (CET)
+        by mail.free-electrons.com (Postfix) with ESMTPSA id 3DBBF18FE;
+        Mon,  7 Dec 2015 23:27:02 +0100 (CET)
 From:   Boris Brezillon <boris.brezillon@free-electrons.com>
 To:     David Woodhouse <dwmw2@infradead.org>,
         Brian Norris <computersforpeace@gmail.com>,
@@ -30,9 +30,9 @@ Cc:     Daniel Mack <daniel@zonque.org>,
         devel@driverdev.osuosl.org, linux-kernel@vger.kernel.org,
         punnaiah choudary kalluri <punnaia@xilinx.com>,
         Boris Brezillon <boris.brezillon@free-electrons.com>
-Subject: [PATCH 07/23] staging: mt29f_spinand: kill unused ecclayout field
-Date:   Mon,  7 Dec 2015 23:26:02 +0100
-Message-Id: <1449527178-5930-8-git-send-email-boris.brezillon@free-electrons.com>
+Subject: [PATCH 08/23] mtd: nand: lpc32xx_mlc: fix ecc.size
+Date:   Mon,  7 Dec 2015 23:26:03 +0100
+Message-Id: <1449527178-5930-9-git-send-email-boris.brezillon@free-electrons.com>
 X-Mailer: git-send-email 2.1.4
 In-Reply-To: <1449527178-5930-1-git-send-email-boris.brezillon@free-electrons.com>
 References: <1449527178-5930-1-git-send-email-boris.brezillon@free-electrons.com>
@@ -40,7 +40,7 @@ Return-Path: <boris.brezillon@free-electrons.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50386
+X-archive-position: 50387
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -57,25 +57,26 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The spinand_info struct embeds a pointer to an ecclayout definition, but
-this field is never used in the mt29f driver.
+According to the ECC layout description the actual ecc.size is 512 bytes
+and not mtd->writesize.
 
 Signed-off-by: Boris Brezillon <boris.brezillon@free-electrons.com>
 ---
- drivers/staging/mt29f_spinand/mt29f_spinand.h | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/mtd/nand/lpc32xx_mlc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/staging/mt29f_spinand/mt29f_spinand.h b/drivers/staging/mt29f_spinand/mt29f_spinand.h
-index ae62975..457dc7f 100644
---- a/drivers/staging/mt29f_spinand/mt29f_spinand.h
-+++ b/drivers/staging/mt29f_spinand/mt29f_spinand.h
-@@ -78,7 +78,6 @@
- #define BL_ALL_UNLOCKED    0
+diff --git a/drivers/mtd/nand/lpc32xx_mlc.c b/drivers/mtd/nand/lpc32xx_mlc.c
+index 57c4b71..0ee81a0 100644
+--- a/drivers/mtd/nand/lpc32xx_mlc.c
++++ b/drivers/mtd/nand/lpc32xx_mlc.c
+@@ -751,7 +751,7 @@ static int lpc32xx_nand_probe(struct platform_device *pdev)
+ 	}
  
- struct spinand_info {
--	struct nand_ecclayout *ecclayout;
- 	struct spi_device *spi;
- 	void *priv;
- };
+ 	nand_chip->ecc.mode = NAND_ECC_HW;
+-	nand_chip->ecc.size = mtd->writesize;
++	nand_chip->ecc.size = 512;
+ 	nand_chip->ecc.layout = &lpc32xx_nand_oob;
+ 	host->mlcsubpages = mtd->writesize / 512;
+ 
 -- 
 2.1.4

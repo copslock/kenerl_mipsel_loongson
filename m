@@ -1,13 +1,13 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Dec 2015 23:27:44 +0100 (CET)
-Received: from down.free-electrons.com ([37.187.137.238]:55605 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Dec 2015 23:28:03 +0100 (CET)
+Received: from down.free-electrons.com ([37.187.137.238]:55620 "EHLO
         mail.free-electrons.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27013238AbbLGW1C2lBOg (ORCPT
+        by eddie.linux-mips.org with ESMTP id S27013269AbbLGW1Cdl3Cg (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Mon, 7 Dec 2015 23:27:02 +0100
 Received: by mail.free-electrons.com (Postfix, from userid 110)
-        id 1FE021C14; Mon,  7 Dec 2015 23:26:56 +0100 (CET)
+        id 3CABC223; Mon,  7 Dec 2015 23:26:56 +0100 (CET)
 Received: from localhost.localdomain (unknown [37.160.132.173])
-        by mail.free-electrons.com (Postfix) with ESMTPSA id 1B986223;
-        Mon,  7 Dec 2015 23:26:47 +0100 (CET)
+        by mail.free-electrons.com (Postfix) with ESMTPSA id 9A9691B07;
+        Mon,  7 Dec 2015 23:26:50 +0100 (CET)
 From:   Boris Brezillon <boris.brezillon@free-electrons.com>
 To:     David Woodhouse <dwmw2@infradead.org>,
         Brian Norris <computersforpeace@gmail.com>,
@@ -30,9 +30,9 @@ Cc:     Daniel Mack <daniel@zonque.org>,
         devel@driverdev.osuosl.org, linux-kernel@vger.kernel.org,
         punnaiah choudary kalluri <punnaia@xilinx.com>,
         Boris Brezillon <boris.brezillon@free-electrons.com>
-Subject: [PATCH 03/23] mtd: nftl: kill unused oobinfo field
-Date:   Mon,  7 Dec 2015 23:25:58 +0100
-Message-Id: <1449527178-5930-4-git-send-email-boris.brezillon@free-electrons.com>
+Subject: [PATCH 04/23] mtd: nand: s3c2410: kill the ->ecc_layout field
+Date:   Mon,  7 Dec 2015 23:25:59 +0100
+Message-Id: <1449527178-5930-5-git-send-email-boris.brezillon@free-electrons.com>
 X-Mailer: git-send-email 2.1.4
 In-Reply-To: <1449527178-5930-1-git-send-email-boris.brezillon@free-electrons.com>
 References: <1449527178-5930-1-git-send-email-boris.brezillon@free-electrons.com>
@@ -40,7 +40,7 @@ Return-Path: <boris.brezillon@free-electrons.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50382
+X-archive-position: 50383
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -57,22 +57,64 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+The s3c2410 is allowing board data to overload the default ECC layout
+defined inside the driver, but this feature is not used by board
+specific definitions.
+Kill this field so that we can easily move to a model where ecclayout
+are dynamically allocated by the NAND controller driver.
+
 Signed-off-by: Boris Brezillon <boris.brezillon@free-electrons.com>
 ---
- include/linux/mtd/nftl.h | 1 -
- 1 file changed, 1 deletion(-)
+ arch/arm/plat-samsung/devs.c                   | 9 ---------
+ drivers/mtd/nand/s3c2410.c                     | 3 ---
+ include/linux/platform_data/mtd-nand-s3c2410.h | 1 -
+ 3 files changed, 13 deletions(-)
 
-diff --git a/include/linux/mtd/nftl.h b/include/linux/mtd/nftl.h
-index b059629..044daa0 100644
---- a/include/linux/mtd/nftl.h
-+++ b/include/linux/mtd/nftl.h
-@@ -50,7 +50,6 @@ struct NFTLrecord {
-         unsigned int nb_blocks;		/* number of physical blocks */
-         unsigned int nb_boot_blocks;	/* number of blocks used by the bios */
-         struct erase_info instr;
--	struct nand_ecclayout oobinfo;
+diff --git a/arch/arm/plat-samsung/devs.c b/arch/arm/plat-samsung/devs.c
+index 8207462..a903ee8 100644
+--- a/arch/arm/plat-samsung/devs.c
++++ b/arch/arm/plat-samsung/devs.c
+@@ -710,15 +710,6 @@ static int __init s3c_nand_copy_set(struct s3c2410_nand_set *set)
+ 			return -ENOMEM;
+ 	}
+ 
+-	if (set->ecc_layout) {
+-		ptr = kmemdup(set->ecc_layout,
+-			      sizeof(struct nand_ecclayout), GFP_KERNEL);
+-		set->ecc_layout = ptr;
+-
+-		if (!ptr)
+-			return -ENOMEM;
+-	}
+-
+ 	return 0;
+ }
+ 
+diff --git a/drivers/mtd/nand/s3c2410.c b/drivers/mtd/nand/s3c2410.c
+index 05105ca..b569200 100644
+--- a/drivers/mtd/nand/s3c2410.c
++++ b/drivers/mtd/nand/s3c2410.c
+@@ -860,9 +860,6 @@ static void s3c2410_nand_init_chip(struct s3c2410_nand_info *info,
+ 	chip->ecc.mode	    = NAND_ECC_SOFT;
+ #endif
+ 
+-	if (set->ecc_layout != NULL)
+-		chip->ecc.layout = set->ecc_layout;
+-
+ 	if (set->disable_ecc)
+ 		chip->ecc.mode	= NAND_ECC_NONE;
+ 
+diff --git a/include/linux/platform_data/mtd-nand-s3c2410.h b/include/linux/platform_data/mtd-nand-s3c2410.h
+index 36bb921..c55e42ee 100644
+--- a/include/linux/platform_data/mtd-nand-s3c2410.h
++++ b/include/linux/platform_data/mtd-nand-s3c2410.h
+@@ -40,7 +40,6 @@ struct s3c2410_nand_set {
+ 	char			*name;
+ 	int			*nr_map;
+ 	struct mtd_partition	*partitions;
+-	struct nand_ecclayout	*ecc_layout;
  };
  
- int NFTL_mount(struct NFTLrecord *s);
+ struct s3c2410_platform_nand {
 -- 
 2.1.4

@@ -1,64 +1,76 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Dec 2015 01:00:20 +0100 (CET)
-Received: from mail-io0-f178.google.com ([209.85.223.178]:35326 "EHLO
-        mail-io0-f178.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007910AbbLHAAS3fEAl (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 8 Dec 2015 01:00:18 +0100
-Received: by ioc74 with SMTP id 74so7666087ioc.2;
-        Mon, 07 Dec 2015 16:00:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-type;
-        bh=RzaRxnh/yHJzWY08pCL/Mqq5Z1Fb9um74gFJWqXOXBY=;
-        b=llVFDyNwhfGrmVFapxcarAdb1yFAzrzju+Pg0MELwRm6OZ5XRU4Z9satoI+qeeRNYr
-         re9PytDu/pkbMD+OM/mnoRgUBz9Q0dCt64VHai8NlOJVWZXcsvs9Zn5nv7wupsOZp18r
-         fFxXpepP3CtPK1Ws9oc4wKNu8r48wbswsklb2Oa20dVwcnguWYO/VJEccW5TDuuDlQeG
-         aHjT/sx2CQY1h9+N4Rb31J8vEve9caiyqm4oySbPkA7MVLSY2QXAbLAo1AQKUXp7c5/I
-         RYWopYB76l44/vLZg5J+3WLYh5dS+z0Ip9AZP4S7tXmO8+VpGbfNNK4MjpQmKs4dsGP7
-         uomQ==
-X-Received: by 10.107.153.11 with SMTP id b11mr1124422ioe.95.1449532812589;
- Mon, 07 Dec 2015 16:00:12 -0800 (PST)
-MIME-Version: 1.0
-Received: by 10.79.111.1 with HTTP; Mon, 7 Dec 2015 15:59:53 -0800 (PST)
-In-Reply-To: <1449527178-5930-22-git-send-email-boris.brezillon@free-electrons.com>
-References: <1449527178-5930-1-git-send-email-boris.brezillon@free-electrons.com>
- <1449527178-5930-22-git-send-email-boris.brezillon@free-electrons.com>
-From:   Julian Calaby <julian.calaby@gmail.com>
-Date:   Tue, 8 Dec 2015 10:59:53 +1100
-Message-ID: <CAGRGNgV09JJ7+hDVJwZcp89nEsgNS6r2Mo1_R+EEAT9=aR-Z_g@mail.gmail.com>
-Subject: Re: [linux-sunxi] [PATCH 21/23] staging: mt29f_spinand: switch to mtd_ooblayout_ops
-To:     boris.brezillon@free-electrons.com
-Cc:     David Woodhouse <dwmw2@infradead.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Dec 2015 01:39:03 +0100 (CET)
+Received: from mailout3.w1.samsung.com ([210.118.77.13]:43388 "EHLO
+        mailout3.w1.samsung.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007910AbbLHAjAswoJC (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 8 Dec 2015 01:39:00 +0100
+Received: from eucpsbgm2.samsung.com (unknown [203.254.199.245])
+ by mailout3.w1.samsung.com
+ (Oracle Communications Messaging Server 7.0.5.31.0 64bit (built May  5 2014))
+ with ESMTP id <0NZ0005UPKGTRW80@mailout3.w1.samsung.com>; Tue,
+ 08 Dec 2015 00:38:53 +0000 (GMT)
+X-AuditID: cbfec7f5-f79b16d000005389-b1-5666269c26b5
+Received: from eusync1.samsung.com ( [203.254.199.211])
+        by eucpsbgm2.samsung.com (EUCPMTA) with SMTP id 6F.98.21385.C9626665; Tue,
+ 8 Dec 2015 00:38:52 +0000 (GMT)
+Received: from [10.113.63.52] by eusync1.samsung.com
+ (Oracle Communications Messaging Server 7.0.5.31.0 64bit (built May  5 2014))
+ with ESMTPA id <0NZ0006R4KGMH600@eusync1.samsung.com>; Tue,
+ 08 Dec 2015 00:38:52 +0000 (GMT)
+Subject: Re: [PATCH 04/23] mtd: nand: s3c2410: kill the ->ecc_layout field
+To:     Boris Brezillon <boris.brezillon@free-electrons.com>,
+        David Woodhouse <dwmw2@infradead.org>,
         Brian Norris <computersforpeace@gmail.com>,
-        linux-mtd@lists.infradead.org, Daniel Mack <daniel@zonque.org>,
+        linux-mtd@lists.infradead.org
+References: <1449527178-5930-1-git-send-email-boris.brezillon@free-electrons.com>
+ <1449527178-5930-5-git-send-email-boris.brezillon@free-electrons.com>
+Cc:     Daniel Mack <daniel@zonque.org>,
         Haojian Zhuang <haojian.zhuang@gmail.com>,
         Robert Jarzmik <robert.jarzmik@free.fr>,
         Kukjin Kim <kgene@kernel.org>,
-        Krzysztof Kozlowski <k.kozlowski@samsung.com>,
         linux-samsung-soc@vger.kernel.org,
-        "Mailing List, Arm" <linux-arm-kernel@lists.infradead.org>,
+        linux-arm-kernel@lists.infradead.org,
         Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
         Josh Wu <josh.wu@atmel.com>,
         Ezequiel Garcia <ezequiel.garcia@free-electrons.com>,
         Maxime Ripard <maxime.ripard@free-electrons.com>,
-        Chen-Yu Tsai <wens@csie.org>,
-        linux-sunxi <linux-sunxi@googlegroups.com>,
+        Chen-Yu Tsai <wens@csie.org>, linux-sunxi@googlegroups.com,
         Stefan Agner <stefan@agner.ch>,
         Kyungmin Park <kyungmin.park@samsung.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        devel@driverdev.osuosl.org, linux-kernel@vger.kernel.org,
         punnaiah choudary kalluri <punnaia@xilinx.com>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <julian.calaby@gmail.com>
+From:   Krzysztof Kozlowski <k.kozlowski@samsung.com>
+Message-id: <56662696.1000705@samsung.com>
+Date:   Tue, 08 Dec 2015 09:38:46 +0900
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+ Thunderbird/38.4.0
+MIME-version: 1.0
+In-reply-to: <1449527178-5930-5-git-send-email-boris.brezillon@free-electrons.com>
+Content-type: text/plain; charset=windows-1252
+Content-transfer-encoding: 7bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrIIsWRmVeSWpSXmKPExsVy+t/xy7pz1NLCDJ68M7Q48GIhi8WRC2uZ
+        LZr+vmKx2HPmF7vFxJWTmS1On1rAatG8eD2bxYV15ha7Gn+zWrx+YWjR//g1s8XZpjfsFpse
+        X2O1uLxrDpvFhKmT2C12Ny1jt5hxfh+Txe9Hx9gttm7ay2yx8OlPVotLe1QsZr0Rtti8rp3d
+        4ueh80wOEh6Lv99j9ljwayuLx4ZHq1k97u07zOLxZNNFRo/+dZ9ZPXbOusvusWfiSTaPzSu0
+        PDat6mTzOLpyLZPH/rlr2D02L6n36NuyitHj8yY5j72ff7MECEZx2aSk5mSWpRbp2yVwZWx/
+        dpy14CFrxa7nag2Me1m6GDk5JARMJNb9/8AIYYtJXLi3nq2LkYtDSGApo8S0htNQzlNGifPb
+        W8GqhAW8JGa+/sECkhARWAdUdec9E0TVbEaJ76+3g2WYBW6ySjw40Aq2hE3AWGLz8iVsIDav
+        gJbEqqOLwWwWAVWJtpn3gGo4OEQFIiQW7ciEKBGU+DH5Hlgrp0CIxKafx5hASpgF9CTuX9QC
+        CTMLyEtsXvOWeQKjwCwkHbMQqmYhqVrAyLyKUTS1NLmgOCk910ivODG3uDQvXS85P3cTIyTi
+        v+5gXHrM6hCjAAejEg+vwsnUMCHWxLLiytxDjBIczEoivHyqaWFCvCmJlVWpRfnxRaU5qcWH
+        GKU5WJTEeWfueh8iJJCeWJKanZpakFoEk2Xi4JRqYPT0PcW/1XVvEvenmKOLLygJP+vzlLJv
+        s2j4q/M/lMFImd+y84WHzPEtaTVfPDZJeMbqR5ZalwnJ9zeX3j1WM3+i0AelzSXx3xRefDq7
+        VY1JYt0Bj41Fjxd+XFnG+cE/6W3Am80fsoruR+kmheZuXMDF2+kWHpDXvexKyKElzzacfsjw
+        uvbKZSWW4oxEQy3mouJEAHEEP3/0AgAA
+Return-Path: <k.kozlowski@samsung.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50407
+X-archive-position: 50408
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: julian.calaby@gmail.com
+X-original-sender: k.kozlowski@samsung.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -71,60 +83,21 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Boris,
-
-On Tue, Dec 8, 2015 at 9:26 AM, Boris Brezillon
-<boris.brezillon@free-electrons.com> wrote:
+On 08.12.2015 07:25, Boris Brezillon wrote:
+> The s3c2410 is allowing board data to overload the default ECC layout
+> defined inside the driver, but this feature is not used by board
+> specific definitions.
+> Kill this field so that we can easily move to a model where ecclayout
+> are dynamically allocated by the NAND controller driver.
+> 
 > Signed-off-by: Boris Brezillon <boris.brezillon@free-electrons.com>
 > ---
->  drivers/staging/mt29f_spinand/mt29f_spinand.c | 44 ++++++++++++++++-----------
->  1 file changed, 26 insertions(+), 18 deletions(-)
->
-> diff --git a/drivers/staging/mt29f_spinand/mt29f_spinand.c b/drivers/staging/mt29f_spinand/mt29f_spinand.c
-> index cb9d5ab..967d50a 100644
-> --- a/drivers/staging/mt29f_spinand/mt29f_spinand.c
-> +++ b/drivers/staging/mt29f_spinand/mt29f_spinand.c
-> @@ -42,23 +42,29 @@ static inline struct spinand_state *mtd_to_state(struct mtd_info *mtd)
->  static int enable_hw_ecc;
->  static int enable_read_hw_ecc;
->
-> -static struct nand_ecclayout spinand_oob_64 = {
-> -       .eccbytes = 24,
-> -       .eccpos = {
-> -               1, 2, 3, 4, 5, 6,
-> -               17, 18, 19, 20, 21, 22,
-> -               33, 34, 35, 36, 37, 38,
-> -               49, 50, 51, 52, 53, 54, },
-> -       .oobfree = {
-> -               {.offset = 8,
-> -                       .length = 8},
-> -               {.offset = 24,
-> -                       .length = 8},
-> -               {.offset = 40,
-> -                       .length = 8},
-> -               {.offset = 56,
-> -                       .length = 8},
-> -       }
-> +static int spinand_oob_64_eccpos(struct mtd_info *mtd, int eccbyte)
-> +{
-> +       if (eccbyte > 23)
-> +               return -ERANGE;
-> +
-> +       return ((eccbyte / 6) * 16) + 1;
+>  arch/arm/plat-samsung/devs.c                   | 9 ---------
+>  drivers/mtd/nand/s3c2410.c                     | 3 ---
+>  include/linux/platform_data/mtd-nand-s3c2410.h | 1 -
+>  3 files changed, 13 deletions(-)
 
-Are you sure this is correct? My reading of this is that we'd get 1
-for eccbytes 0 through 5.
+Acked-by: Krzysztof Kozlowski <k.kozlowski@samsung.com>
 
-Would
-
-((eccbyte / 6) * 16) + (eccbyte % 6) + 1
-
-be more correct?
-
-Thanks,
-
--- 
-Julian Calaby
-
-Email: julian.calaby@gmail.com
-Profile: http://www.google.com/profiles/julian.calaby/
+Best regards,
+Krzysztof

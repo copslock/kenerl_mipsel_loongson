@@ -1,52 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Dec 2015 15:36:48 +0100 (CET)
-Received: from mail-pa0-f45.google.com ([209.85.220.45]:33751 "EHLO
-        mail-pa0-f45.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007050AbbLHOgrFleEU (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 8 Dec 2015 15:36:47 +0100
-Received: by pabur14 with SMTP id ur14so13037232pab.0;
-        Tue, 08 Dec 2015 06:36:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-type:content-disposition:in-reply-to:user-agent;
-        bh=bkOcMSaPf/keqZK5hxD3fD7wfh7uByWVVfS/mo0EwGI=;
-        b=b83r4kA9G/RpYcRzNZk+3+14jq4JXmN7JkmbUxG7Z5bkeIQG+nqmAc124TaWa7OzQ9
-         E2Cm3HQgWOQgKbiru6He8yaOA3d0zrU6tizKjOdc02SChKyi86AOOkPQrhszHp3/i8Nf
-         Hbe6BDAlnXqBRqjgimxntbFpKwqIeLU6SbeVzuJXE3ZgUmIpXlwaP9E0Xr3cvASB02uB
-         QoF47ocwCwXKwKZ/2kA8gQSkWsJF8iKjvjcC66xI26agkFTnEujjQNq5PtkyUicUCUSz
-         YyhGAlu8m1fs98pmicrhkwmABYtPM5xBIWUPOMUoPheydVPBCZBmrAV13vPpBy+ei4JU
-         2Duw==
-X-Received: by 10.66.219.163 with SMTP id pp3mr267718pac.55.1449585400748;
-        Tue, 08 Dec 2015 06:36:40 -0800 (PST)
-Received: from sudip-pc ([122.169.143.75])
-        by smtp.gmail.com with ESMTPSA id l20sm5279425pfi.10.2015.12.08.06.36.37
-        (version=TLS1_2 cipher=AES128-SHA bits=128/128);
-        Tue, 08 Dec 2015 06:36:40 -0800 (PST)
-Date:   Tue, 8 Dec 2015 20:06:35 +0530
-From:   Sudip Mukherjee <sudipm.mukherjee@gmail.com>
-To:     Chen Gang <gang.chen.5i5j@gmail.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Dec 2015 15:49:10 +0100 (CET)
+Received: from mx2.suse.de ([195.135.220.15]:33775 "EHLO mx2.suse.de"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27007050AbbLHOtIts0IU (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 8 Dec 2015 15:49:08 +0100
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay1.suse.de (charybdis-ext.suse.de [195.135.220.254])
+        by mx2.suse.de (Postfix) with ESMTP id 73919AAB6;
+        Tue,  8 Dec 2015 14:49:07 +0000 (UTC)
+Date:   Tue, 8 Dec 2015 15:49:06 +0100
+From:   Petr Mladek <pmladek@suse.com>
+To:     David Laight <David.Laight@ACULAB.COM>
+Cc:     'Russell King - ARM Linux' <linux@arm.linux.org.uk>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jiri Kosina <jkosina@suse.com>,
+        "linux-cris-kernel@axis.com" <linux-cris-kernel@axis.com>,
+        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        "x86@kernel.org" <x86@kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        "adi-buildroot-devel@lists.sourceforge.net" 
+        <adi-buildroot-devel@lists.sourceforge.net>,
+        Ingo Molnar <mingo@redhat.com>,
+        "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
+        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
         Andrew Morton <akpm@linux-foundation.org>,
-        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        Minchan Kim <minchan@kernel.org>
-Subject: Re: [PATCH] mips: mm: fix build failure
-Message-ID: <20151208143635.GD4120@sudip-pc>
-References: <1449490164-21029-1-git-send-email-sudipm.mukherjee@gmail.com>
- <5666D493.1030604@gmail.com>
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>
+Subject: Re: [PATCH v2 3/5] printk/nmi: Try hard to print Oops message in NMI
+ context
+Message-ID: <20151208144906.GL20935@pathway.suse.cz>
+References: <1448622572-16900-1-git-send-email-pmladek@suse.com>
+ <1448622572-16900-4-git-send-email-pmladek@suse.com>
+ <20151201234437.GA8644@n2100.arm.linux.org.uk>
+ <20151204152709.GA20935@pathway.suse.cz>
+ <20151204171255.GZ8644@n2100.arm.linux.org.uk>
+ <063D6719AE5E284EB5DD2968C1650D6D1CBE68C7@AcuExch.aculab.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <5666D493.1030604@gmail.com>
+In-Reply-To: <063D6719AE5E284EB5DD2968C1650D6D1CBE68C7@AcuExch.aculab.com>
 User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <sudipm.mukherjee@gmail.com>
+Return-Path: <pmladek@suse.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50445
+X-archive-position: 50446
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sudipm.mukherjee@gmail.com
+X-original-sender: pmladek@suse.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,21 +65,53 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Dec 08, 2015 at 09:01:07PM +0800, Chen Gang wrote:
-> On 12/7/15 20:09, Sudip Mukherjee wrote:
-> > We are having build failure with mips defconfig with the error:
-> > "MADV_FREE" redefined.
+On Mon 2015-12-07 15:48:33, David Laight wrote:
+> From: Russell King - ARM Linux
+> > Sent: 04 December 2015 17:13
+> ...
+> > I have a slightly different view...
 > > 
-> > commit d53d95838c7d introduced uniform values for all architecture but
-> > missed removing the old value.
+> > > > I don't see bust_spinlocks() dealing with any of these locks, so IMHO
+> > > > trying to make this work in NMI context strikes me as making the
+> > > > existing solution more unreliable on ARM systems.
+> > >
+> > > bust_spinlocks() calls printk_nmi_flush() that would call printk()
+> > > that would zap "lockbuf_lock" and "console_sem" when in Oops and NMI.
+> > > Yes, there might be more locks blocked but we try to break at least
+> > > the first two walls. Also zapping is allowed only once per 30 seconds,
+> > > see zap_locks(). Why do you think that it might make things more
+> > > unreliable, please?
 > > 
+> > Take the scenario where CPU1 is in the middle of a printk(), and is
+> > holding its lock.
+> > 
+> > CPU0 comes along and decides to trigger a NMI backtrace.  This sends
+> > a NMI to CPU1, which takes it in the middle of the serial console
+> > output.
+> > 
+> > With the existing solution, the NMI output will be written to the
+> > temporary buffer, and CPU1 has finished handling the NMI it resumes
+> > the serial console output, eventually dropping the lock.  That then
+> > allows CPU0 to print the contents of all buffers, and we get NMI
+> > printk output.
 > 
-> What you said is OK to me. For me, one fix patch for all related archs
-> is enough (need not send several patches for each arch). :-)
+> Is the traceback from inside printk() or serial console code
+> likely to be useful?
 
-Ok, I thought it will be different tree and different maintainer, so
-sent separate patch.
-Sending a combined patch now.
+It is useful if a problem is caused by the printk or serial console
+code. For example, a slow serial console might cause a soft lockup
+if there are too many messages to print.
 
-regards
-sudip
+
+> If not then why not get the stacktrace generated when the relevant
+> lock is released? That should save any faffing with a special
+> buffer.
+
+Another question is how to detect that NMI interrupted printk() code.
+We would either need to analyze backtrace. Or we would need to
+know which CPU took the printk() or console locks. This check
+should be race-safe vs. the NMI context.
+
+
+Best Regards,
+Petr

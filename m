@@ -1,51 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Dec 2015 13:58:28 +0100 (CET)
-Received: from mail-pf0-f169.google.com ([209.85.192.169]:34790 "EHLO
-        mail-pf0-f169.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27006859AbbLHM60hvIeZ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 8 Dec 2015 13:58:26 +0100
-Received: by pfbg73 with SMTP id g73so12263265pfb.1;
-        Tue, 08 Dec 2015 04:58:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=cSJLvxffXhPHhlHiSkbWLp2K0noDYHaA0vp8AmZPojs=;
-        b=UpYpqFXKmg0wBPSoEoYvylv6tz85DgqBNcJl9/muY4fHUiFPvZMHyJcZ/GZDhnucYx
-         8Cr4DhZoaVFoH5VQZtd8eN8mI6OqJOoq8n/iqDq4GquNMgBaAuWFss5Lbxi1hsW6cuae
-         wWfGBJCo2u3Ch6Df6Z6dHxVw0esz5D+tcvk0c2iOOfY5GHtXuS/y8hQDaPpNLXFrxDdh
-         BFC7+1bT0sgyeM26FR02chryTIoMl3deYZKXvfHXHfqYUuc16pglvftbojuhQHb35DIT
-         +CX4S0yC2g18aQODwDPcSLJIl8GoZH24EYbCZU0fgVuaOgjigSfn+sVV3MzFdeg2/P43
-         6tTQ==
-X-Received: by 10.98.67.68 with SMTP id q65mr4582919pfa.63.1449579500400;
-        Tue, 08 Dec 2015 04:58:20 -0800 (PST)
-Received: from ShengShiZhuChengdeMacBook-Pro.local ([223.72.67.57])
-        by smtp.googlemail.com with ESMTPSA id kr16sm4837340pab.33.2015.12.08.04.58.17
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Tue, 08 Dec 2015 04:58:19 -0800 (PST)
-Message-ID: <5666D493.1030604@gmail.com>
-Date:   Tue, 08 Dec 2015 21:01:07 +0800
-From:   Chen Gang <gang.chen.5i5j@gmail.com>
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:31.0) Gecko/20100101 Thunderbird/31.7.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Dec 2015 14:20:59 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:42642 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27007016AbbLHNU6P2jvZ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 8 Dec 2015 14:20:58 +0100
+Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
+        by Websense Email Security Gateway with ESMTPS id 04F2FB7E2336F;
+        Tue,  8 Dec 2015 13:17:48 +0000 (GMT)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
+ 14.3.235.1; Tue, 8 Dec 2015 13:20:51 +0000
+Received: from qyousef-linux.le.imgtec.org (192.168.154.94) by
+ LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
+ 14.3.210.2; Tue, 8 Dec 2015 13:20:50 +0000
+From:   Qais Yousef <qais.yousef@imgtec.com>
+To:     <linux-kernel@vger.kernel.org>
+CC:     <tglx@linutronix.de>, <jason@lakedaemon.net>,
+        <marc.zyngier@arm.com>, <jiang.liu@linux.intel.com>,
+        <ralf@linux-mips.org>, <linux-mips@linux-mips.org>,
+        <lisa.parratt@imgtec.com>, Qais Yousef <qais.yousef@imgtec.com>
+Subject: [PATCH v4 00/19] Implement generic IPI support mechanism
+Date:   Tue, 8 Dec 2015 13:20:11 +0000
+Message-ID: <1449580830-23652-1-git-send-email-qais.yousef@imgtec.com>
+X-Mailer: git-send-email 2.1.0
 MIME-Version: 1.0
-To:     Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Andrew Morton <akpm@linux-foundation.org>
-CC:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        Minchan Kim <minchan@kernel.org>
-Subject: Re: [PATCH] mips: mm: fix build failure
-References: <1449490164-21029-1-git-send-email-sudipm.mukherjee@gmail.com>
-In-Reply-To: <1449490164-21029-1-git-send-email-sudipm.mukherjee@gmail.com>
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-Return-Path: <gang.chen.5i5j@gmail.com>
+Content-Type: text/plain
+X-Originating-IP: [192.168.154.94]
+Return-Path: <Qais.Yousef@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50423
+X-archive-position: 50424
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gang.chen.5i5j@gmail.com
+X-original-sender: qais.yousef@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,45 +46,69 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 12/7/15 20:09, Sudip Mukherjee wrote:
-> We are having build failure with mips defconfig with the error:
-> "MADV_FREE" redefined.
-> 
-> commit d53d95838c7d introduced uniform values for all architecture but
-> missed removing the old value.
-> 
+This series adds support for a generic IPI mechanism that can be used by both
+arch and drivers to send IPIs to other CPUs.
 
-What you said is OK to me. For me, one fix patch for all related archs
-is enough (need not send several patches for each arch). :-)
+v4 is rebased on tip of irq/core and fixes a bug in ipi_send_single() where we
+were passing the basevirq irq_data instead of the irq_data for the target cpu.
 
+v3 removed the use of struct ipi_mask and moved to using cpumask only.
+The assumption is that the user would need to set NR_CPUS to a suitable value to
+cater for coprocessors outside linux SMP range.
 
-Thanks.
+We use irq_common_data affinity to store the ipi_mask too. Maybe we need to
+separate them later, but I think it can be done safely later if the need arises.
 
-> Fixes: d53d95838c7d ("arch/*/include/uapi/asm/mman.h: : let MADV_FREE have same value for all architectures")
-> Signed-off-by: Sudip Mukherjee <sudip@vectorindia.org>
-> ---
-> 
-> build log is at:
-> https://travis-ci.org/sudipm-mukherjee/parport/jobs/95309512
-> 
->  arch/mips/include/uapi/asm/mman.h | 1 -
->  1 file changed, 1 deletion(-)
-> 
-> diff --git a/arch/mips/include/uapi/asm/mman.h b/arch/mips/include/uapi/asm/mman.h
-> index b0ebe59..ccdcfcb 100644
-> --- a/arch/mips/include/uapi/asm/mman.h
-> +++ b/arch/mips/include/uapi/asm/mman.h
-> @@ -73,7 +73,6 @@
->  #define MADV_SEQUENTIAL 2		/* expect sequential page references */
->  #define MADV_WILLNEED	3		/* will need these pages */
->  #define MADV_DONTNEED	4		/* don't need these pages */
-> -#define MADV_FREE	5		/* free pages only if memory pressure */
->  
->  /* common parameters: try to keep these consistent across architectures */
->  #define MADV_FREE	8		/* free pages only if memory pressure */
-> 
+This is boot tested on Malta platform.
+
+Note that of_irq_find_parent() was moved to be static and could cause this patch
+series not to compile. The issue was reported and a fix to undo that change
+is in the pipeline (in the DT tree I guess).
+
+Thanks,
+Qais
+
+Qais Yousef (19):
+  genirq: Add new IRQ_DOMAIN_FLAGS_IPI
+  genirq: Add DOMAIN_BUS_IPI
+  genirq: Add GENERIC_IRQ_IPI Kconfig symbol
+  genirq: Add struct ipi_mapping and its helper functions
+  genirq: Add ipi_offset to irq_common_data
+  genirq: Add an extra comment about the use of affinity in
+    irq_common_data
+  genirq: Make irq_domain_alloc_descs() non static
+  genirq: Add a new generic IPI reservation code to irq core
+  genirq: Add a new function to get IPI reverse mapping
+  genirq: Add a new irq_send_ipi() to irq_chip
+  genirq: Implement ipi_send_{mask, single}()
+  irqchip/mips-gic: Add a IPI hierarchy domain
+  irqchip/mips-gic: Add device hierarchy domain
+  irqchip/mips-gic: Use gic_vpes instead of NR_CPUS
+  irqchip/mips-gic: Clear percpu_masks correctly when mapping
+  MIPS: Add generic SMP IPI support
+  MIPS: Make smp CMP, CPS and MT use the new generic IPI functions
+  MIPS: Delete smp-gic.c
+  irqchip/mips-gic: Add new DT property to reserve IPIs
+
+ .../bindings/interrupt-controller/mips-gic.txt     |   7 +
+ arch/mips/Kconfig                                  |   6 -
+ arch/mips/include/asm/smp-ops.h                    |   5 +-
+ arch/mips/kernel/Makefile                          |   1 -
+ arch/mips/kernel/smp-cmp.c                         |   4 +-
+ arch/mips/kernel/smp-cps.c                         |   4 +-
+ arch/mips/kernel/smp-mt.c                          |   2 +-
+ arch/mips/kernel/smp.c                             | 136 +++++++
+ drivers/irqchip/Kconfig                            |   2 +
+ drivers/irqchip/irq-mips-gic.c                     | 354 ++++++++++++-----
+ include/linux/irq.h                                |  61 ++-
+ include/linux/irqchip/mips-gic.h                   |   3 -
+ include/linux/irqdomain.h                          |  45 +++
+ kernel/irq/Kconfig                                 |   4 +
+ kernel/irq/Makefile                                |   1 +
+ kernel/irq/ipi.c                                   | 441 +++++++++++++++++++++
+ kernel/irq/irqdomain.c                             |   6 +-
+ 17 files changed, 969 insertions(+), 113 deletions(-)
+ create mode 100644 kernel/irq/ipi.c
 
 -- 
-Chen Gang
-
-Open, share, and attitude like air, water, and life which God blessed
+2.1.0

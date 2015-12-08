@@ -1,59 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Dec 2015 13:10:37 +0100 (CET)
-Received: from mail-lb0-f173.google.com ([209.85.217.173]:35953 "EHLO
-        mail-lb0-f173.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27013340AbbLHMKejBbdF (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 8 Dec 2015 13:10:34 +0100
-Received: by lbblt2 with SMTP id lt2so9877718lbb.3
-        for <linux-mips@linux-mips.org>; Tue, 08 Dec 2015 04:10:29 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Dec 2015 13:12:58 +0100 (CET)
+Received: from mail-lb0-f180.google.com ([209.85.217.180]:33397 "EHLO
+        mail-lb0-f180.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27013349AbbLHMMzyk8XF (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 8 Dec 2015 13:12:55 +0100
+Received: by lbbkw15 with SMTP id kw15so9940718lbb.0
+        for <linux-mips@linux-mips.org>; Tue, 08 Dec 2015 04:12:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=cogentembedded-com.20150623.gappssmtp.com; s=20150623;
         h=subject:to:references:cc:from:message-id:date:user-agent
          :mime-version:in-reply-to:content-type:content-transfer-encoding;
-        bh=dRCi3GvwQN8yxeZAVGuCY5+4yh78dNyjWFKQ9kS340g=;
-        b=k3qxALxu55r3I9mCCyYpGVMSWfnnNmKW2GqDKmZIgziDoLPSxeUPojut81RbvuSchw
-         hdERrBEpsFmQAqOdDe707gR8Ae2RazAq/lthJG8k2BlbPqiCShGkzTTlMbGjaG7J/erY
-         1l+QpRyZFSfaqBbxmcItuHDkWJCpi0Ly957Bnf8Q9llo/546HTP8belQBvs6tpMtTnxV
-         suy3e3wJnxCFAi5dBV1ooB5xrg08mwL6LQOQtB8Tjao58+lQgb+ReQtajEv7aLHDWBOX
-         0/LbPUVEJ6LXSgSQhE+UaVpRdjVWgLjM06kzynaOIVWRXMc0Mc5VzIkO/kDrrqLsP9ad
-         AigA==
+        bh=cJtjFMSL7fYh6MKDObHyP5f7I+1M7M08qZiUyZycCEw=;
+        b=O4NEzNOtYVIpaisu5VV5TfggmC5ShKFDeDdSOb/sMmbjjho3M67i7BoYdES+O4GBNT
+         pe8dse7WIx21XHhH+j4d3oXFx8na4iEeiXsGWMrXd3+jdeQIwOZTBcYwPoKRxRX3XXFS
+         TczrjCQixsSD5e1pU0Vw3Bv8UtRFCzyIjYw66CEBTUvFEj8KIYM9cAEf18S0WASZi58A
+         sVuxHjrfLirh7whuwvmOugsQKubb0MjkdgXYmVK1MKKBNV596ZTBCb3qydlKa41bxdIO
+         bKZUQSFohnZPeSoFp3jAJy3mFcKyZx175/P78PQHQNFDuULueq1x0OnIWUh5LLmyvftY
+         ZhBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:subject:to:references:cc:from:message-id:date
          :user-agent:mime-version:in-reply-to:content-type
          :content-transfer-encoding;
-        bh=dRCi3GvwQN8yxeZAVGuCY5+4yh78dNyjWFKQ9kS340g=;
-        b=X4O4O+XE89DfKedwEOIRa319n93/NIqwBLdqoF3slwR6gGM0MCEWUVIGmBepqng2J3
-         oNkc39aE8uffuFd+ZmVByH1Lh0ggfbEI/jFVmcK+bjUxSqlvEmdXSpFrgt5AroKVhKku
-         Ia1r5t0WQj65jxupqd5M6e2z6YamL4cP9WRN47xqeucszhNS3FUCtxAhHcpogPGjqJIQ
-         uruylnfoqzrqhy9b0uJGqBSP/wOiQ7HzYkcXJkC6xja40UUOzvvLXT1fg1Kjj4eD0wTf
-         xmni6bKRcLS8+V+08rjLOnLYZMGTLS0qqtKWuGswScpT/PVHwvcJJ92EYE5l+vzflNBX
-         fLsg==
-X-Gm-Message-State: ALoCoQkSggGUDKDaQqX9I1OVHIZCQBY+whqAK8+/SwW8CfHgVz9vEGqsUm5+DBVBfa2ZQKT/0y4qJDo3XykXjimkiNIBwOMs9A==
-X-Received: by 10.112.200.40 with SMTP id jp8mr1371751lbc.104.1449576628961;
-        Tue, 08 Dec 2015 04:10:28 -0800 (PST)
+        bh=cJtjFMSL7fYh6MKDObHyP5f7I+1M7M08qZiUyZycCEw=;
+        b=EP8LMPwTFCMfwYSNFGGzcjlNTf4L230FVCakUgjUnoXadWlAscQJNha9tNxuNlR0I+
+         ceju+GLo/yq6lJWmDFvoeF905Z0QU5HK2JmV4sJ0OP9ArH/ylqLGR6r9XYVFDFAiH9cT
+         zyTdhnNNUR8mmcJTHYPTsIGpb8ZVxomC29VGQcezFwmOrxm9ZqGWPrBeuv8Amt1piR02
+         f1VcunqxhoaboQ19sVQqJOlA4HyrbRqAIagx9XvO0MFCsxuYjd0XSTKqrh5sFapOvYYh
+         wjtkmoNnGpDDeQ7DJsBcoButuhz9B7/wR9/IN6Zyxa4U0b4wl9PcyR4zEg0tQNMTd9lI
+         toaA==
+X-Gm-Message-State: ALoCoQn8tvjv2SsBy7/XEhFRA7+0I5vLYMCW3NWa2YKgWPcECX7B7denDlg8QfgythqAZ4H40L35/CiZjIPu8Zn6loacVpk2zg==
+X-Received: by 10.112.146.42 with SMTP id sz10mr1326370lbb.50.1449576770533;
+        Tue, 08 Dec 2015 04:12:50 -0800 (PST)
 Received: from [192.168.4.126] ([83.149.8.57])
-        by smtp.gmail.com with ESMTPSA id au8sm523719lbc.31.2015.12.08.04.10.27
+        by smtp.gmail.com with ESMTPSA id um1sm527346lbb.23.2015.12.08.04.12.49
         (version=TLSv1/SSLv3 cipher=OTHER);
-        Tue, 08 Dec 2015 04:10:27 -0800 (PST)
-Subject: Re: [PATCH] MIPS: VDSO: Fix build error
+        Tue, 08 Dec 2015 04:12:49 -0800 (PST)
+Subject: Re: [PATCH] MIPS: Fix DMA contiguous allocation
 To:     Qais Yousef <qais.yousef@imgtec.com>, linux-mips@linux-mips.org
-References: <1449569503-1611-1-git-send-email-qais.yousef@imgtec.com>
-Cc:     alex@alex-smith.me.uk, linux-kernel@vger.kernel.org,
-        ralf@linux-mips.org
+References: <1449569930-2118-1-git-send-email-qais.yousef@imgtec.com>
+Cc:     linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        ralf@linux-mips.org, akpm@linux-foundation.org,
+        mgorman@techsingularity.net
 From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Message-ID: <5666C8B2.2030402@cogentembedded.com>
-Date:   Tue, 8 Dec 2015 15:10:26 +0300
+Message-ID: <5666C941.20209@cogentembedded.com>
+Date:   Tue, 8 Dec 2015 15:12:49 +0300
 User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:38.0) Gecko/20100101
  Thunderbird/38.4.0
 MIME-Version: 1.0
-In-Reply-To: <1449569503-1611-1-git-send-email-qais.yousef@imgtec.com>
+In-Reply-To: <1449569930-2118-1-git-send-email-qais.yousef@imgtec.com>
 Content-Type: text/plain; charset=windows-1252; format=flowed
 Content-Transfer-Encoding: 7bit
 Return-Path: <sergei.shtylyov@cogentembedded.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50420
+X-archive-position: 50421
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -70,31 +71,42 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hello.
+On 12/8/2015 1:18 PM, Qais Yousef wrote:
 
-On 12/8/2015 1:11 PM, Qais Yousef wrote:
-
-> Commit ebb5e78cc634 (MIPS: Initial implementation of a VDSO) introduced a build
-> error.
-
-    scripts/checkpatch.pl now enforces certain format for the commit citing -- 
-you also need to enclose the summary in "".
-
-> For MIPS VDSO to be compiled it requires binutils version 2.25 or above but the
-> check in the Makefile had inverted logic causing it to be compiled in if binutils
-> is below 2.25.
+> Recent changes to how GFP_ATOMIC is defined seems to have broken the condition
+> to use mips_alloc_from_contiguous() in mips_dma_alloc_coherent().
 >
-> This fixes the following compilation error:
+> I couldn't bottom out the exact change but I think it's this one
 >
-> CC      arch/mips/vdso/gettimeofday.o
-> /tmp/ccsExcUd.s: Assembler messages:
-> /tmp/ccsExcUd.s:62: Error: can't resolve `_start' {*UND* section} - `L0' {.text section}
-> /tmp/ccsExcUd.s:467: Error: can't resolve `_start' {*UND* section} - `L0' {.text section}
-> make[2]: *** [arch/mips/vdso/gettimeofday.o] Error 1
-> make[1]: *** [arch/mips/vdso] Error 2
-> make: *** [arch/mips] Error 2
+> d0164adc89f6 (mm, page_alloc: distinguish between being unable to sleep,
+> unwilling to sleep and avoiding waking kswapd)
+>
+>  From what I see GFP_ATOMIC has multiple bits set and the check for !(gfp
+> & GFP_ATOMIC) isn't enough. To verify if the flag is atomic we need to make
+> sure that (gfp & GFP_ATOMIC) == GFP_ATOMIC to verify that all bits rquired to
+
+    Required.
+
+> satisfy GFP_ATOMIC condition are set.
 >
 > Signed-off-by: Qais Yousef <qais.yousef@imgtec.com>
+> ---
+>   arch/mips/mm/dma-default.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/arch/mips/mm/dma-default.c b/arch/mips/mm/dma-default.c
+> index d8117be729a2..d6b8a1445a3a 100644
+> --- a/arch/mips/mm/dma-default.c
+> +++ b/arch/mips/mm/dma-default.c
+> @@ -145,7 +145,7 @@ static void *mips_dma_alloc_coherent(struct device *dev, size_t size,
+>
+>   	gfp = massage_gfp_flags(dev, gfp);
+>
+> -	if (IS_ENABLED(CONFIG_DMA_CMA) && !(gfp & GFP_ATOMIC))
+> +	if (IS_ENABLED(CONFIG_DMA_CMA) && ((gfp & GFP_ATOMIC) != GFP_ATOMIC))
+
+    () around != not necessary.
+
 [...]
 
 MBR, Sergei

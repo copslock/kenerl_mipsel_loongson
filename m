@@ -1,24 +1,25 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Dec 2015 11:12:06 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:26261 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Dec 2015 11:19:12 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:34206 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27006859AbbLHKMErPtB2 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 8 Dec 2015 11:12:04 +0100
+        with ESMTP id S27006954AbbLHKTKonq02 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 8 Dec 2015 11:19:10 +0100
 Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Websense Email Security Gateway with ESMTPS id B60AA32230FF3;
-        Tue,  8 Dec 2015 10:11:56 +0000 (GMT)
+        by Websense Email Security Gateway with ESMTPS id 28AB2228E10B1;
+        Tue,  8 Dec 2015 10:19:03 +0000 (GMT)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
  hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
- 14.3.235.1; Tue, 8 Dec 2015 10:11:58 +0000
+ 14.3.235.1; Tue, 8 Dec 2015 10:19:04 +0000
 Received: from qyousef-linux.le.imgtec.org (192.168.154.94) by
  LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.210.2; Tue, 8 Dec 2015 10:11:58 +0000
+ 14.3.210.2; Tue, 8 Dec 2015 10:19:04 +0000
 From:   Qais Yousef <qais.yousef@imgtec.com>
 To:     <linux-mips@linux-mips.org>
-CC:     <alex@alex-smith.me.uk>, <linux-kernel@vger.kernel.org>,
-        <ralf@linux-mips.org>, Qais Yousef <qais.yousef@imgtec.com>
-Subject: [PATCH] MIPS: VDSO: Fix build error
-Date:   Tue, 8 Dec 2015 10:11:43 +0000
-Message-ID: <1449569503-1611-1-git-send-email-qais.yousef@imgtec.com>
+CC:     <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+        <ralf@linux-mips.org>, <akpm@linux-foundation.org>,
+        <mgorman@techsingularity.net>, Qais Yousef <qais.yousef@imgtec.com>
+Subject: [PATCH] MIPS: Fix DMA contiguous allocation
+Date:   Tue, 8 Dec 2015 10:18:50 +0000
+Message-ID: <1449569930-2118-1-git-send-email-qais.yousef@imgtec.com>
 X-Mailer: git-send-email 2.1.0
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -27,7 +28,7 @@ Return-Path: <Qais.Yousef@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50415
+X-archive-position: 50416
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -44,42 +45,36 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Commit ebb5e78cc634 (MIPS: Initial implementation of a VDSO) introduced a build
-error.
+Recent changes to how GFP_ATOMIC is defined seems to have broken the condition
+to use mips_alloc_from_contiguous() in mips_dma_alloc_coherent().
 
-For MIPS VDSO to be compiled it requires binutils version 2.25 or above but the
-check in the Makefile had inverted logic causing it to be compiled in if binutils
-is below 2.25.
+I couldn't bottom out the exact change but I think it's this one
 
-This fixes the following compilation error:
+d0164adc89f6 (mm, page_alloc: distinguish between being unable to sleep,
+unwilling to sleep and avoiding waking kswapd)
 
-CC      arch/mips/vdso/gettimeofday.o
-/tmp/ccsExcUd.s: Assembler messages:
-/tmp/ccsExcUd.s:62: Error: can't resolve `_start' {*UND* section} - `L0' {.text section}
-/tmp/ccsExcUd.s:467: Error: can't resolve `_start' {*UND* section} - `L0' {.text section}
-make[2]: *** [arch/mips/vdso/gettimeofday.o] Error 1
-make[1]: *** [arch/mips/vdso] Error 2
-make: *** [arch/mips] Error 2
+From what I see GFP_ATOMIC has multiple bits set and the check for !(gfp
+& GFP_ATOMIC) isn't enough. To verify if the flag is atomic we need to make
+sure that (gfp & GFP_ATOMIC) == GFP_ATOMIC to verify that all bits rquired to
+satisfy GFP_ATOMIC condition are set.
 
 Signed-off-by: Qais Yousef <qais.yousef@imgtec.com>
 ---
- arch/mips/vdso/Makefile | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/mips/mm/dma-default.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/mips/vdso/Makefile b/arch/mips/vdso/Makefile
-index ef5f348f386a..018f8c7b94f2 100644
---- a/arch/mips/vdso/Makefile
-+++ b/arch/mips/vdso/Makefile
-@@ -26,8 +26,8 @@ aflags-vdso := $(ccflags-vdso) \
- # the comments on that file.
- #
- ifndef CONFIG_CPU_MIPSR6
--  ifeq ($(call ld-ifversion, -gt, 22400000, y),)
--    $(warning MIPS VDSO requires binutils > 2.24)
-+  ifeq ($(call ld-ifversion, -lt, 22500000, y),)
-+    $(warning MIPS VDSO requires binutils >= 2.25)
-     obj-vdso-y := $(filter-out gettimeofday.o, $(obj-vdso-y))
-     ccflags-vdso += -DDISABLE_MIPS_VDSO
-   endif
+diff --git a/arch/mips/mm/dma-default.c b/arch/mips/mm/dma-default.c
+index d8117be729a2..d6b8a1445a3a 100644
+--- a/arch/mips/mm/dma-default.c
++++ b/arch/mips/mm/dma-default.c
+@@ -145,7 +145,7 @@ static void *mips_dma_alloc_coherent(struct device *dev, size_t size,
+ 
+ 	gfp = massage_gfp_flags(dev, gfp);
+ 
+-	if (IS_ENABLED(CONFIG_DMA_CMA) && !(gfp & GFP_ATOMIC))
++	if (IS_ENABLED(CONFIG_DMA_CMA) && ((gfp & GFP_ATOMIC) != GFP_ATOMIC))
+ 		page = dma_alloc_from_contiguous(dev,
+ 					count, get_order(size));
+ 	if (!page)
 -- 
 2.1.0

@@ -1,38 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Dec 2015 11:19:12 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:34206 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Dec 2015 11:31:04 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:16381 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27006954AbbLHKTKonq02 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 8 Dec 2015 11:19:10 +0100
+        with ESMTP id S27006859AbbLHKbChsrKp (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 8 Dec 2015 11:31:02 +0100
 Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Websense Email Security Gateway with ESMTPS id 28AB2228E10B1;
-        Tue,  8 Dec 2015 10:19:03 +0000 (GMT)
+        by Websense Email Security Gateway with ESMTPS id 4417FF98715BF;
+        Tue,  8 Dec 2015 10:30:54 +0000 (GMT)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
  hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
- 14.3.235.1; Tue, 8 Dec 2015 10:19:04 +0000
-Received: from qyousef-linux.le.imgtec.org (192.168.154.94) by
- LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.210.2; Tue, 8 Dec 2015 10:19:04 +0000
-From:   Qais Yousef <qais.yousef@imgtec.com>
-To:     <linux-mips@linux-mips.org>
-CC:     <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
-        <ralf@linux-mips.org>, <akpm@linux-foundation.org>,
-        <mgorman@techsingularity.net>, Qais Yousef <qais.yousef@imgtec.com>
-Subject: [PATCH] MIPS: Fix DMA contiguous allocation
-Date:   Tue, 8 Dec 2015 10:18:50 +0000
-Message-ID: <1449569930-2118-1-git-send-email-qais.yousef@imgtec.com>
-X-Mailer: git-send-email 2.1.0
+ 14.3.235.1; Tue, 8 Dec 2015 10:30:56 +0000
+Received: from [192.168.154.22] (192.168.154.22) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Tue, 8 Dec
+ 2015 10:30:55 +0000
+Subject: Re: [PATCH 05/23] mtd: nand: jz4770: kill the ->ecc_layout field
+To:     Boris Brezillon <boris.brezillon@free-electrons.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Brian Norris <computersforpeace@gmail.com>,
+        <linux-mtd@lists.infradead.org>
+References: <1449527178-5930-1-git-send-email-boris.brezillon@free-electrons.com>
+ <1449527178-5930-6-git-send-email-boris.brezillon@free-electrons.com>
+CC:     Daniel Mack <daniel@zonque.org>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        "Kukjin Kim" <kgene@kernel.org>,
+        Krzysztof Kozlowski <k.kozlowski@samsung.com>,
+        <linux-samsung-soc@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        <linux-mips@linux-mips.org>, Josh Wu <josh.wu@atmel.com>,
+        Ezequiel Garcia <ezequiel.garcia@free-electrons.com>,
+        Maxime Ripard <maxime.ripard@free-electrons.com>,
+        Chen-Yu Tsai <wens@csie.org>, <linux-sunxi@googlegroups.com>,
+        Stefan Agner <stefan@agner.ch>,
+        Kyungmin Park <kyungmin.park@samsung.com>,
+        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+        <devel@driverdev.osuosl.org>, <linux-kernel@vger.kernel.org>,
+        punnaiah choudary kalluri <punnaia@xilinx.com>
+From:   Harvey Hunt <harvey.hunt@imgtec.com>
+Message-ID: <5666B150.2030406@imgtec.com>
+Date:   Tue, 8 Dec 2015 10:30:40 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+ Thunderbird/38.4.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.154.94]
-Return-Path: <Qais.Yousef@imgtec.com>
+In-Reply-To: <1449527178-5930-6-git-send-email-boris.brezillon@free-electrons.com>
+Content-Type: text/plain; charset="windows-1252"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.154.22]
+Return-Path: <Harvey.Hunt@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50416
+X-archive-position: 50417
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: qais.yousef@imgtec.com
+X-original-sender: harvey.hunt@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,36 +67,52 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Recent changes to how GFP_ATOMIC is defined seems to have broken the condition
-to use mips_alloc_from_contiguous() in mips_dma_alloc_coherent().
+Hi Boris,
 
-I couldn't bottom out the exact change but I think it's this one
+On 07/12/15 22:26, Boris Brezillon wrote:
+> ->ecc_layout is not used by any board file. Kill this field to avoid any
+> confusion. New boards are encouraged to use the default ECC layout defined
+> in NAND core.
+>
+> Signed-off-by: Boris Brezillon <boris.brezillon@free-electrons.com>
+> ---
+>   arch/mips/include/asm/mach-jz4740/jz4740_nand.h | 2 --
+>   drivers/mtd/nand/jz4740_nand.c                  | 3 ---
+>   2 files changed, 5 deletions(-)
+>
+> diff --git a/arch/mips/include/asm/mach-jz4740/jz4740_nand.h b/arch/mips/include/asm/mach-jz4740/jz4740_nand.h
+> index 79cff26..398733e 100644
+> --- a/arch/mips/include/asm/mach-jz4740/jz4740_nand.h
+> +++ b/arch/mips/include/asm/mach-jz4740/jz4740_nand.h
+> @@ -25,8 +25,6 @@ struct jz_nand_platform_data {
+>   	int			num_partitions;
+>   	struct mtd_partition	*partitions;
+>
+> -	struct nand_ecclayout	*ecc_layout;
+> -
+>   	unsigned char banks[JZ_NAND_NUM_BANKS];
+>
+>   	void (*ident_callback)(struct platform_device *, struct nand_chip *,
+> diff --git a/drivers/mtd/nand/jz4740_nand.c b/drivers/mtd/nand/jz4740_nand.c
+> index 5a99a93..c4fe446 100644
+> --- a/drivers/mtd/nand/jz4740_nand.c
+> +++ b/drivers/mtd/nand/jz4740_nand.c
+> @@ -446,9 +446,6 @@ static int jz_nand_probe(struct platform_device *pdev)
+>   	chip->ecc.bytes		= 9;
+>   	chip->ecc.strength	= 4;
+>
+> -	if (pdata)
+> -		chip->ecc.layout = pdata->ecc_layout;
+> -
+>   	chip->chip_delay = 50;
+>   	chip->cmd_ctrl = jz_nand_cmd_ctrl;
+>   	chip->select_chip = jz_nand_select_chip;
+>
 
-d0164adc89f6 (mm, page_alloc: distinguish between being unable to sleep,
-unwilling to sleep and avoiding waking kswapd)
+Is there a typo in this commit title? The JZ4740 and JZ4770 have quite 
+different NAND controller interfaces, so I don't think that the JZ4740 
+driver will support the JZ4770.
 
-From what I see GFP_ATOMIC has multiple bits set and the check for !(gfp
-& GFP_ATOMIC) isn't enough. To verify if the flag is atomic we need to make
-sure that (gfp & GFP_ATOMIC) == GFP_ATOMIC to verify that all bits rquired to
-satisfy GFP_ATOMIC condition are set.
+Thanks,
 
-Signed-off-by: Qais Yousef <qais.yousef@imgtec.com>
----
- arch/mips/mm/dma-default.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/mips/mm/dma-default.c b/arch/mips/mm/dma-default.c
-index d8117be729a2..d6b8a1445a3a 100644
---- a/arch/mips/mm/dma-default.c
-+++ b/arch/mips/mm/dma-default.c
-@@ -145,7 +145,7 @@ static void *mips_dma_alloc_coherent(struct device *dev, size_t size,
- 
- 	gfp = massage_gfp_flags(dev, gfp);
- 
--	if (IS_ENABLED(CONFIG_DMA_CMA) && !(gfp & GFP_ATOMIC))
-+	if (IS_ENABLED(CONFIG_DMA_CMA) && ((gfp & GFP_ATOMIC) != GFP_ATOMIC))
- 		page = dma_alloc_from_contiguous(dev,
- 					count, get_order(size));
- 	if (!page)
--- 
-2.1.0
+Harvey

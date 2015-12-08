@@ -1,49 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Dec 2015 12:21:50 +0100 (CET)
-Received: from mx2.suse.de ([195.135.220.15]:50912 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27006859AbbLHLVtAFySp (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 8 Dec 2015 12:21:49 +0100
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (charybdis-ext.suse.de [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id CCE22ABE5;
-        Tue,  8 Dec 2015 11:21:47 +0000 (UTC)
-Date:   Tue, 8 Dec 2015 12:21:45 +0100
-From:   Petr Mladek <pmladek@suse.com>
-To:     Russell King - ARM Linux <linux@arm.linux.org.uk>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jiri Kosina <jkosina@suse.com>, Ingo Molnar <mingo@redhat.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-kernel@vger.kernel.org, x86@kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        adi-buildroot-devel@lists.sourceforge.net,
-        linux-cris-kernel@axis.com, linux-mips@linux-mips.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org
-Subject: Re: [PATCH v2 3/5] printk/nmi: Try hard to print Oops message in NMI
- context
-Message-ID: <20151208112145.GK20935@pathway.suse.cz>
-References: <1448622572-16900-1-git-send-email-pmladek@suse.com>
- <1448622572-16900-4-git-send-email-pmladek@suse.com>
- <20151201234437.GA8644@n2100.arm.linux.org.uk>
- <20151204152709.GA20935@pathway.suse.cz>
- <20151204171255.GZ8644@n2100.arm.linux.org.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Dec 2015 13:10:37 +0100 (CET)
+Received: from mail-lb0-f173.google.com ([209.85.217.173]:35953 "EHLO
+        mail-lb0-f173.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27013340AbbLHMKejBbdF (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 8 Dec 2015 13:10:34 +0100
+Received: by lbblt2 with SMTP id lt2so9877718lbb.3
+        for <linux-mips@linux-mips.org>; Tue, 08 Dec 2015 04:10:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cogentembedded-com.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:references:cc:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-type:content-transfer-encoding;
+        bh=dRCi3GvwQN8yxeZAVGuCY5+4yh78dNyjWFKQ9kS340g=;
+        b=k3qxALxu55r3I9mCCyYpGVMSWfnnNmKW2GqDKmZIgziDoLPSxeUPojut81RbvuSchw
+         hdERrBEpsFmQAqOdDe707gR8Ae2RazAq/lthJG8k2BlbPqiCShGkzTTlMbGjaG7J/erY
+         1l+QpRyZFSfaqBbxmcItuHDkWJCpi0Ly957Bnf8Q9llo/546HTP8belQBvs6tpMtTnxV
+         suy3e3wJnxCFAi5dBV1ooB5xrg08mwL6LQOQtB8Tjao58+lQgb+ReQtajEv7aLHDWBOX
+         0/LbPUVEJ6LXSgSQhE+UaVpRdjVWgLjM06kzynaOIVWRXMc0Mc5VzIkO/kDrrqLsP9ad
+         AigA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:subject:to:references:cc:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-type
+         :content-transfer-encoding;
+        bh=dRCi3GvwQN8yxeZAVGuCY5+4yh78dNyjWFKQ9kS340g=;
+        b=X4O4O+XE89DfKedwEOIRa319n93/NIqwBLdqoF3slwR6gGM0MCEWUVIGmBepqng2J3
+         oNkc39aE8uffuFd+ZmVByH1Lh0ggfbEI/jFVmcK+bjUxSqlvEmdXSpFrgt5AroKVhKku
+         Ia1r5t0WQj65jxupqd5M6e2z6YamL4cP9WRN47xqeucszhNS3FUCtxAhHcpogPGjqJIQ
+         uruylnfoqzrqhy9b0uJGqBSP/wOiQ7HzYkcXJkC6xja40UUOzvvLXT1fg1Kjj4eD0wTf
+         xmni6bKRcLS8+V+08rjLOnLYZMGTLS0qqtKWuGswScpT/PVHwvcJJ92EYE5l+vzflNBX
+         fLsg==
+X-Gm-Message-State: ALoCoQkSggGUDKDaQqX9I1OVHIZCQBY+whqAK8+/SwW8CfHgVz9vEGqsUm5+DBVBfa2ZQKT/0y4qJDo3XykXjimkiNIBwOMs9A==
+X-Received: by 10.112.200.40 with SMTP id jp8mr1371751lbc.104.1449576628961;
+        Tue, 08 Dec 2015 04:10:28 -0800 (PST)
+Received: from [192.168.4.126] ([83.149.8.57])
+        by smtp.gmail.com with ESMTPSA id au8sm523719lbc.31.2015.12.08.04.10.27
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Tue, 08 Dec 2015 04:10:27 -0800 (PST)
+Subject: Re: [PATCH] MIPS: VDSO: Fix build error
+To:     Qais Yousef <qais.yousef@imgtec.com>, linux-mips@linux-mips.org
+References: <1449569503-1611-1-git-send-email-qais.yousef@imgtec.com>
+Cc:     alex@alex-smith.me.uk, linux-kernel@vger.kernel.org,
+        ralf@linux-mips.org
+From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Message-ID: <5666C8B2.2030402@cogentembedded.com>
+Date:   Tue, 8 Dec 2015 15:10:26 +0300
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:38.0) Gecko/20100101
+ Thunderbird/38.4.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20151204171255.GZ8644@n2100.arm.linux.org.uk>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <pmladek@suse.com>
+In-Reply-To: <1449569503-1611-1-git-send-email-qais.yousef@imgtec.com>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sergei.shtylyov@cogentembedded.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50419
+X-archive-position: 50420
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: pmladek@suse.com
+X-original-sender: sergei.shtylyov@cogentembedded.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,32 +70,31 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-> Take the scenario where CPU1 is in the middle of a printk(), and is
-> holding its lock.
-> 
-> CPU0 comes along and decides to trigger a NMI backtrace.  This sends
-> a NMI to CPU1, which takes it in the middle of the serial console
-> output.
-> 
-> With the existing solution, the NMI output will be written to the
-> temporary buffer, and CPU1 has finished handling the NMI it resumes
-> the serial console output, eventually dropping the lock.  That then
-> allows CPU0 to print the contents of all buffers, and we get NMI
-> printk output.
-> 
-> With this solution, as I understand it, we'll instead end up with
-> CPU1's printk trying to output direct to the console, and although
-> we've busted a couple of locks, we won't have busted the serial
-> console locks, so CPU1 will deadlock - and that will stop any output
-> what so ever.
-> 
-> If this is correct, then the net result is that we go from NMI with
-> serial console producing output to NMI with serial console being
-> less reliable at producing output.
+Hello.
 
-You are right. I thought about it a lot and I think that the best
-solution is to avoid this patch at all. I guess that it will make
-Peter Zijlstra happy as well.
+On 12/8/2015 1:11 PM, Qais Yousef wrote:
 
-Best Regards,
-Petr
+> Commit ebb5e78cc634 (MIPS: Initial implementation of a VDSO) introduced a build
+> error.
+
+    scripts/checkpatch.pl now enforces certain format for the commit citing -- 
+you also need to enclose the summary in "".
+
+> For MIPS VDSO to be compiled it requires binutils version 2.25 or above but the
+> check in the Makefile had inverted logic causing it to be compiled in if binutils
+> is below 2.25.
+>
+> This fixes the following compilation error:
+>
+> CC      arch/mips/vdso/gettimeofday.o
+> /tmp/ccsExcUd.s: Assembler messages:
+> /tmp/ccsExcUd.s:62: Error: can't resolve `_start' {*UND* section} - `L0' {.text section}
+> /tmp/ccsExcUd.s:467: Error: can't resolve `_start' {*UND* section} - `L0' {.text section}
+> make[2]: *** [arch/mips/vdso/gettimeofday.o] Error 1
+> make[1]: *** [arch/mips/vdso] Error 2
+> make: *** [arch/mips] Error 2
+>
+> Signed-off-by: Qais Yousef <qais.yousef@imgtec.com>
+[...]
+
+MBR, Sergei

@@ -1,51 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Dec 2015 04:30:06 +0100 (CET)
-Received: from mail-pf0-f170.google.com ([209.85.192.170]:35886 "EHLO
-        mail-pf0-f170.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27006513AbbLHDaDw2-Ke (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 8 Dec 2015 04:30:03 +0100
-Received: by pfdd184 with SMTP id d184so4568081pfd.3;
-        Mon, 07 Dec 2015 19:29:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-type:content-disposition:in-reply-to:user-agent;
-        bh=G8Kz9KMmQsA3fjhjnVIzxHnPhQeybE5JJvshGcr/IKQ=;
-        b=hVu1y5Crxt2mAXsUKNV84e85CRsWtYKtGoGlN5M7z8YfVKzyPrBXs9eSygtPDkSKBG
-         9bnO+sJ8uqpBt1UwrkxfX7iSiBm3kLQXdPnZMWGdi9rVxDKiLjTuRqNWQ4tbaRcHqQST
-         MQlI1P+ZhA2pS4vhcBYWqAEAX5A/LGXn6KWgIUSvrsw1kGvjS9G3gyTwn4gM4D5tH8BP
-         94AXS7vC6S/UUV/UyRSMgwClX3YhKQc5LEh+H92Xxi695zGhiHGeOohtQ0/foYnB009v
-         e/4KNdDT9sU7e0mSntGAzBTIyAASThAUDdFQYq+RZ4KAcrAbHjDpap+vuPiczlVl0xe6
-         bySg==
-X-Received: by 10.98.0.137 with SMTP id 131mr1738032pfa.137.1449545397717;
-        Mon, 07 Dec 2015 19:29:57 -0800 (PST)
-Received: from google.com ([2620:0:1000:1301:5ca9:672c:7da0:50e1])
-        by smtp.gmail.com with ESMTPSA id 87sm928946pfj.23.2015.12.07.19.29.57
-        (version=TLS1_2 cipher=AES128-SHA bits=128/128);
-        Mon, 07 Dec 2015 19:29:57 -0800 (PST)
-Date:   Mon, 7 Dec 2015 19:29:55 -0800
-From:   Brian Norris <computersforpeace@gmail.com>
-To:     Boris Brezillon <boris.brezillon@free-electrons.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mtd@lists.infradead.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH v2 04/25] mips: nand: make use of mtd_to_nand() where
- appropriate
-Message-ID: <20151208032955.GS120110@google.com>
-References: <1448967802-25796-1-git-send-email-boris.brezillon@free-electrons.com>
- <1448967802-25796-5-git-send-email-boris.brezillon@free-electrons.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1448967802-25796-5-git-send-email-boris.brezillon@free-electrons.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <computersforpeace@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Dec 2015 07:43:10 +0100 (CET)
+Received: from plaes.org ([188.166.43.21]:41520 "EHLO plaes.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27006743AbbLHGnINAo9S (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 8 Dec 2015 07:43:08 +0100
+Received: from t431s.lan (112-218-191-90.dyn.estpak.ee [90.191.218.112])
+        by plaes.org (Postfix) with ESMTPSA id 0B3AF41158;
+        Tue,  8 Dec 2015 06:43:05 +0000 (UTC)
+Message-ID: <1449556985.25438.8.camel@plaes.org>
+Subject: Re: [linux-sunxi] [PATCH 01/23] mtd: kill the ecclayout->oobavail
+ field
+From:   Priit Laes <plaes@plaes.org>
+To:     boris.brezillon@free-electrons.com,
+        David Woodhouse <dwmw2@infradead.org>,
+        Brian Norris <computersforpeace@gmail.com>,
+        linux-mtd@lists.infradead.org
+Cc:     Daniel Mack <daniel@zonque.org>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        Kukjin Kim <kgene@kernel.org>,
+        Krzysztof Kozlowski <k.kozlowski@samsung.com>,
+        linux-samsung-soc@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        Josh Wu <josh.wu@atmel.com>,
+        Ezequiel Garcia <ezequiel.garcia@free-electrons.com>,
+        Maxime Ripard <maxime.ripard@free-electrons.com>,
+        Chen-Yu Tsai <wens@csie.org>, linux-sunxi@googlegroups.com,
+        Stefan Agner <stefan@agner.ch>,
+        Kyungmin Park <kyungmin.park@samsung.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        devel@driverdev.osuosl.org, linux-kernel@vger.kernel.org,
+        punnaiah choudary kalluri <punnaia@xilinx.com>
+Date:   Tue, 08 Dec 2015 08:43:05 +0200
+In-Reply-To: <1449527178-5930-2-git-send-email-boris.brezillon@free-electrons.com>
+References: <1449527178-5930-1-git-send-email-boris.brezillon@free-electrons.com>
+         <1449527178-5930-2-git-send-email-boris.brezillon@free-electrons.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.19.2 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Return-Path: <plaes@plaes.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50410
+X-archive-position: 50411
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: computersforpeace@gmail.com
+X-original-sender: plaes@plaes.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,94 +60,137 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-(Trim CC list)
-
-Hi Ralf,
-
-On Tue, Dec 01, 2015 at 12:03:01PM +0100, Boris Brezillon wrote:
-> mtd_to_nand() was recently introduced to avoid direct accesses to the
-> mtd->priv field. Update all MIPS specific implementations to use this
-> helper.
+On Mon, 2015-12-07 at 23:25 +0100, Boris Brezillon wrote:
+> ecclayout->oobavail is just redundant with the mtd->oobavail field.
+> Moreover, it prevents static const definition of ecc layouts since
+> the
+> NAND framework is calculating this value based on the ecclayout-
+> >oobfree
+> field.
 > 
 > Signed-off-by: Boris Brezillon <boris.brezillon@free-electrons.com>
 > ---
->  arch/mips/alchemy/devboards/db1200.c | 2 +-
->  arch/mips/alchemy/devboards/db1300.c | 2 +-
->  arch/mips/alchemy/devboards/db1550.c | 2 +-
->  arch/mips/pnx833x/common/platform.c  | 2 +-
->  arch/mips/rb532/devices.c            | 2 +-
->  5 files changed, 5 insertions(+), 5 deletions(-)
+>  drivers/mtd/devices/docg3.c                   |  5 ++-
+>  drivers/mtd/mtdswap.c                         | 16 ++++-----
+>  drivers/mtd/nand/brcmnand/brcmnand.c          |  3 --
+>  drivers/mtd/nand/docg4.c                      |  1 -
+>  drivers/mtd/nand/hisi504_nand.c               |  1 -
+>  drivers/mtd/nand/nand_base.c                  | 12 +++----
+>  drivers/mtd/onenand/onenand_base.c            | 16 ++++-----
+>  drivers/mtd/tests/oobtest.c                   | 49 +++++++++++++--
+> ------------
+>  drivers/staging/mt29f_spinand/mt29f_spinand.c |  1 -
+>  fs/jffs2/wbuf.c                               |  6 ++--
+>  include/linux/mtd/mtd.h                       |  1 -
+>  11 files changed, 48 insertions(+), 63 deletions(-)
 > 
-> diff --git a/arch/mips/alchemy/devboards/db1200.c b/arch/mips/alchemy/devboards/db1200.c
-> index 8c13675..992442a 100644
-> --- a/arch/mips/alchemy/devboards/db1200.c
-> +++ b/arch/mips/alchemy/devboards/db1200.c
-> @@ -200,7 +200,7 @@ static struct i2c_board_info db1200_i2c_devs[] __initdata = {
->  static void au1200_nand_cmd_ctrl(struct mtd_info *mtd, int cmd,
->  				 unsigned int ctrl)
->  {
-> -	struct nand_chip *this = mtd->priv;
-> +	struct nand_chip *this = mtd_to_nand(mtd);
->  	unsigned long ioaddr = (unsigned long)this->IO_ADDR_W;
->  
->  	ioaddr &= 0xffffff00;
-> diff --git a/arch/mips/alchemy/devboards/db1300.c b/arch/mips/alchemy/devboards/db1300.c
-> index b580770..d3c087f 100644
-> --- a/arch/mips/alchemy/devboards/db1300.c
-> +++ b/arch/mips/alchemy/devboards/db1300.c
-> @@ -150,7 +150,7 @@ static void __init db1300_gpio_config(void)
->  static void au1300_nand_cmd_ctrl(struct mtd_info *mtd, int cmd,
->  				 unsigned int ctrl)
->  {
-> -	struct nand_chip *this = mtd->priv;
-> +	struct nand_chip *this = mtd_to_nand(mtd);
->  	unsigned long ioaddr = (unsigned long)this->IO_ADDR_W;
->  
->  	ioaddr &= 0xffffff00;
-> diff --git a/arch/mips/alchemy/devboards/db1550.c b/arch/mips/alchemy/devboards/db1550.c
-> index 5740bcf..b518f02 100644
-> --- a/arch/mips/alchemy/devboards/db1550.c
-> +++ b/arch/mips/alchemy/devboards/db1550.c
-> @@ -128,7 +128,7 @@ static struct i2c_board_info db1550_i2c_devs[] __initdata = {
->  static void au1550_nand_cmd_ctrl(struct mtd_info *mtd, int cmd,
->  				 unsigned int ctrl)
->  {
-> -	struct nand_chip *this = mtd->priv;
-> +	struct nand_chip *this = mtd_to_nand(mtd);
->  	unsigned long ioaddr = (unsigned long)this->IO_ADDR_W;
->  
->  	ioaddr &= 0xffffff00;
-> diff --git a/arch/mips/pnx833x/common/platform.c b/arch/mips/pnx833x/common/platform.c
-> index b4b774b..3cd3577 100644
-> --- a/arch/mips/pnx833x/common/platform.c
-> +++ b/arch/mips/pnx833x/common/platform.c
-> @@ -180,7 +180,7 @@ static struct platform_device pnx833x_sata_device = {
->  static void
->  pnx833x_flash_nand_cmd_ctrl(struct mtd_info *mtd, int cmd, unsigned int ctrl)
->  {
-> -	struct nand_chip *this = mtd->priv;
-> +	struct nand_chip *this = mtd_to_nand(mtd);
->  	unsigned long nandaddr = (unsigned long)this->IO_ADDR_W;
->  
->  	if (cmd == NAND_CMD_NONE)
-> diff --git a/arch/mips/rb532/devices.c b/arch/mips/rb532/devices.c
-> index 9bd7a2d..0966adc 100644
-> --- a/arch/mips/rb532/devices.c
-> +++ b/arch/mips/rb532/devices.c
-> @@ -148,7 +148,7 @@ static int rb532_dev_ready(struct mtd_info *mtd)
->  
->  static void rb532_cmd_ctrl(struct mtd_info *mtd, int cmd, unsigned int ctrl)
->  {
-> -	struct nand_chip *chip = mtd->priv;
-> +	struct nand_chip *chip = mtd_to_nand(mtd);
->  	unsigned char orbits, nandbits;
->  
->  	if (ctrl & NAND_CTRL_CHANGE) {
+[..]
+>  
+> diff --git a/drivers/mtd/nand/brcmnand/brcmnand.c
+> b/drivers/mtd/nand/brcmnand/brcmnand.c
+> index 35d78f7..a906ec2 100644
+> --- a/drivers/mtd/nand/brcmnand/brcmnand.c
+> +++ b/drivers/mtd/nand/brcmnand/brcmnand.c
+> @@ -845,9 +845,6 @@ static struct nand_ecclayout *brcmnand_create_layout(int ecc_level,
+>  			break;
+>  	}
+>  out:
+> -	/* Sum available OOB */
+> -	for (i = 0; i < MTD_MAX_OOBFREE_ENTRIES_LARGE; i++)
+> -		layout->oobavail += layout->oobfree[i].length;
+>  	return layout;
+>  }
 
-Acked-by: Brian Norris <computersforpeace@gmail.com>
+You can get rid of the 'out' label and replace the single goto in this
+function with 'return layout'.
 
-Do you want me to queue a pull request with this patch + 1 dependent
-change for you? I'm perfectly fine just taking this directly too.
+[...]
+>  
+> diff --git a/drivers/mtd/nand/nand_base.c
+> b/drivers/mtd/nand/nand_base.c
+> index 0748a13..1107f5c1 100644
+> --- a/drivers/mtd/nand/nand_base.c
+> +++ b/drivers/mtd/nand/nand_base.c
+> @@ -2037,7 +2037,7 @@ static int nand_do_read_oob(struct mtd_info
+> *mtd, loff_t from,
+>  	stats = mtd->ecc_stats;
+>  
+>  	if (ops->mode == MTD_OPS_AUTO_OOB)
+> -		len = chip->ecc.layout->oobavail;
+> +		len = mtd->oobavail;
+>  	else
+>  		len = mtd->oobsize;
+>  
+> @@ -2728,7 +2728,7 @@ static int nand_do_write_oob(struct mtd_info
+> *mtd, loff_t to,
+>  			 __func__, (unsigned int)to, (int)ops-
+> >ooblen);
+>  
+>  	if (ops->mode == MTD_OPS_AUTO_OOB)
+> -		len = chip->ecc.layout->oobavail;
+> +		len = mtd->oobavail;
+>  	else
+>  		len = mtd->oobsize;
+>  
+[...]
+> diff --git a/drivers/mtd/onenand/onenand_base.c
+> b/drivers/mtd/onenand/onenand_base.c
+> index 43b3392..d70bbfd 100644
+> --- a/drivers/mtd/onenand/onenand_base.c
+> +++ b/drivers/mtd/onenand/onenand_base.c
+> @@ -1125,7 +1125,7 @@ static int onenand_mlc_read_ops_nolock(struct
+> mtd_info *mtd, loff_t from,
+>  			(int)len);
+>  
+>  	if (ops->mode == MTD_OPS_AUTO_OOB)
+> -		oobsize = this->ecclayout->oobavail;
+> +		oobsize = mtd->oobavail;
+>  	else
+>  		oobsize = mtd->oobsize;
+>  
+> @@ -1230,7 +1230,7 @@ static int onenand_read_ops_nolock(struct
+> mtd_info *mtd, loff_t from,
+>  			(int)len);
+>  
+>  	if (ops->mode == MTD_OPS_AUTO_OOB)
+> -		oobsize = this->ecclayout->oobavail;
+> +		oobsize = mtd->oobavail;
+>  	else
+>  		oobsize = mtd->oobsize;
+>  
+> @@ -1365,7 +1365,7 @@ static int onenand_read_oob_nolock(struct
+> mtd_info *mtd, loff_t from,
+>  	ops->oobretlen = 0;
+>  
+>  	if (mode == MTD_OPS_AUTO_OOB)
+> -		oobsize = this->ecclayout->oobavail;
+> +		oobsize = mtd->oobavail;
+>  	else
+>  		oobsize = mtd->oobsize;
+>  
+> @@ -1887,7 +1887,7 @@ static int onenand_write_ops_nolock(struct
+> mtd_info *mtd, loff_t to,
+>  		return 0;
+>  
+>  	if (ops->mode == MTD_OPS_AUTO_OOB)
+> -		oobsize = this->ecclayout->oobavail;
+> +		oobsize = mtd->oobavail;
+>  	else
+>  		oobsize = mtd->oobsize;
+>  
+> @@ -2063,7 +2063,7 @@ static int onenand_write_oob_nolock(struct
+> mtd_info *mtd, loff_t to,
+>  	ops->oobretlen = 0;
+>  
+>  	if (mode == MTD_OPS_AUTO_OOB)
+> -		oobsize = this->ecclayout->oobavail;
+> +		oobsize = mtd->oobavail;
+>  	else
+>  		oobsize = mtd->oobsize;
 
-Regards,
-Brian
+This identical construction seems to occur multiple times in multiple
+files. Would it make sense to create a macro for it?
+
+
+Päikest,
+Priit Laes :)

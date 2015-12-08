@@ -1,53 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Dec 2015 11:11:41 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:41918 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27013203AbbLHKLjG0oo2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 8 Dec 2015 11:11:39 +0100
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.15.2/8.14.8) with ESMTP id tB8ABUUL005231;
-        Tue, 8 Dec 2015 11:11:30 +0100
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.15.2/8.15.2/Submit) id tB8ABLsl005230;
-        Tue, 8 Dec 2015 11:11:21 +0100
-Date:   Tue, 8 Dec 2015 11:11:21 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Boris Brezillon <boris.brezillon@free-electrons.com>
-Cc:     David Woodhouse <dwmw2@infradead.org>,
-        Brian Norris <computersforpeace@gmail.com>,
-        linux-mtd@lists.infradead.org, Daniel Mack <daniel@zonque.org>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        Kukjin Kim <kgene@kernel.org>,
-        Krzysztof Kozlowski <k.kozlowski@samsung.com>,
-        linux-samsung-soc@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
-        Josh Wu <josh.wu@atmel.com>,
-        Ezequiel Garcia <ezequiel.garcia@free-electrons.com>,
-        Maxime Ripard <maxime.ripard@free-electrons.com>,
-        Chen-Yu Tsai <wens@csie.org>, linux-sunxi@googlegroups.com,
-        Stefan Agner <stefan@agner.ch>,
-        Kyungmin Park <kyungmin.park@samsung.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        devel@driverdev.osuosl.org, linux-kernel@vger.kernel.org,
-        punnaiah choudary kalluri <punnaia@xilinx.com>
-Subject: Re: [PATCH 19/23] mtd: nand: switch all drivers to mtd_ooblayout_ops
-Message-ID: <20151208101121.GA4221@linux-mips.org>
-References: <1449527178-5930-1-git-send-email-boris.brezillon@free-electrons.com>
- <1449527178-5930-20-git-send-email-boris.brezillon@free-electrons.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Dec 2015 11:12:06 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:26261 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27006859AbbLHKMErPtB2 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 8 Dec 2015 11:12:04 +0100
+Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
+        by Websense Email Security Gateway with ESMTPS id B60AA32230FF3;
+        Tue,  8 Dec 2015 10:11:56 +0000 (GMT)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
+ 14.3.235.1; Tue, 8 Dec 2015 10:11:58 +0000
+Received: from qyousef-linux.le.imgtec.org (192.168.154.94) by
+ LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
+ 14.3.210.2; Tue, 8 Dec 2015 10:11:58 +0000
+From:   Qais Yousef <qais.yousef@imgtec.com>
+To:     <linux-mips@linux-mips.org>
+CC:     <alex@alex-smith.me.uk>, <linux-kernel@vger.kernel.org>,
+        <ralf@linux-mips.org>, Qais Yousef <qais.yousef@imgtec.com>
+Subject: [PATCH] MIPS: VDSO: Fix build error
+Date:   Tue, 8 Dec 2015 10:11:43 +0000
+Message-ID: <1449569503-1611-1-git-send-email-qais.yousef@imgtec.com>
+X-Mailer: git-send-email 2.1.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1449527178-5930-20-git-send-email-boris.brezillon@free-electrons.com>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-Return-Path: <ralf@linux-mips.org>
+Content-Type: text/plain
+X-Originating-IP: [192.168.154.94]
+Return-Path: <Qais.Yousef@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50414
+X-archive-position: 50415
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: qais.yousef@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -60,10 +44,42 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Dec 07, 2015 at 11:26:14PM +0100, Boris Brezillon wrote:
+Commit ebb5e78cc634 (MIPS: Initial implementation of a VDSO) introduced a build
+error.
 
-Looking good,
+For MIPS VDSO to be compiled it requires binutils version 2.25 or above but the
+check in the Makefile had inverted logic causing it to be compiled in if binutils
+is below 2.25.
 
-Acked-by: Ralf Baechle <ralf@linux-mips.org>
+This fixes the following compilation error:
 
-  Ralf
+CC      arch/mips/vdso/gettimeofday.o
+/tmp/ccsExcUd.s: Assembler messages:
+/tmp/ccsExcUd.s:62: Error: can't resolve `_start' {*UND* section} - `L0' {.text section}
+/tmp/ccsExcUd.s:467: Error: can't resolve `_start' {*UND* section} - `L0' {.text section}
+make[2]: *** [arch/mips/vdso/gettimeofday.o] Error 1
+make[1]: *** [arch/mips/vdso] Error 2
+make: *** [arch/mips] Error 2
+
+Signed-off-by: Qais Yousef <qais.yousef@imgtec.com>
+---
+ arch/mips/vdso/Makefile | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/mips/vdso/Makefile b/arch/mips/vdso/Makefile
+index ef5f348f386a..018f8c7b94f2 100644
+--- a/arch/mips/vdso/Makefile
++++ b/arch/mips/vdso/Makefile
+@@ -26,8 +26,8 @@ aflags-vdso := $(ccflags-vdso) \
+ # the comments on that file.
+ #
+ ifndef CONFIG_CPU_MIPSR6
+-  ifeq ($(call ld-ifversion, -gt, 22400000, y),)
+-    $(warning MIPS VDSO requires binutils > 2.24)
++  ifeq ($(call ld-ifversion, -lt, 22500000, y),)
++    $(warning MIPS VDSO requires binutils >= 2.25)
+     obj-vdso-y := $(filter-out gettimeofday.o, $(obj-vdso-y))
+     ccflags-vdso += -DDISABLE_MIPS_VDSO
+   endif
+-- 
+2.1.0

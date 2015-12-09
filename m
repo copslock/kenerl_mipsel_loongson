@@ -1,58 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Dec 2015 22:42:34 +0100 (CET)
-Received: from mail-pa0-f48.google.com ([209.85.220.48]:36492 "EHLO
-        mail-pa0-f48.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27013466AbbLIVmbgxeNi (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 9 Dec 2015 22:42:31 +0100
-Received: by pacdm15 with SMTP id dm15so35952581pac.3
-        for <linux-mips@linux-mips.org>; Wed, 09 Dec 2015 13:42:25 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Dec 2015 22:44:48 +0100 (CET)
+Received: from mail-wm0-f50.google.com ([74.125.82.50]:37920 "EHLO
+        mail-wm0-f50.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011794AbbLIVopmFOhi (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 9 Dec 2015 22:44:45 +0100
+Received: by wmec201 with SMTP id c201so92785466wme.1;
+        Wed, 09 Dec 2015 13:44:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro-org.20150623.gappssmtp.com; s=20150623;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=auEe5BE2UyyLggn0dbi3+mENLaR5mSlgo6fFE9oVkPM=;
-        b=vlOpXkadrFqj4I3qw1v42K7tPdclZ9Zn24gScY1HpVRE4pGV1Jg7Z6eVEd7+Y9ylys
-         W4RFPyr+Vt14F2BYfq+7bfNNfOnKhd/n0v00jG+lfMeSc3mh3X3VpPZxxsPhWPa8yYIQ
-         9wSR1OzfCIwBveo5HGWulYwc4P8bnyApSDcqhmDzOy67Dv6lZrpQm/ZQHLZFn9ff4wxL
-         AT0Tx72Zucxp07DJFSVhIT32tCfU0yj44y37mo5q52K/HS50wqVoFH3RdM9KKHAshCSQ
-         QGUKROv6tzhFoNt+TgCKYanD1tDKDv9ZeXCUsEWaFSmoWn3yT59Q1JyozNPsunYblORT
-         qvMA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=auEe5BE2UyyLggn0dbi3+mENLaR5mSlgo6fFE9oVkPM=;
-        b=HvdP3QzpLV/Z7yDRl9H8V/hMwqWhyCB4qBF50r7iQVvKh/tJpc6BdLc799tiTi5wVa
-         8pcHKitebKZQlWEkxuach6KpqVkRAYbSNlVZHeHts4k1hItGlWb12Sp8eHAAc817a7b0
-         n1lAjjDCtl+zLLa0jfT9XSiHCVmgn4en6PMo4LpSazP1N23FAVDOZE46iuq3rSW5AzF/
-         W9NEY3MqODgzzBoUQ2sFFiESMQ8HR/GdsiZZKCD9nBGF33jvagj52Tj4PoNEMJ+i6v/N
-         vwxnEsEmXpAGu3FjHrXZDSI35Pj+b3U+v+oiyxYH0phze8gMzYVJlpc0PjEnBAd5vVnV
-         1Fpg==
-X-Gm-Message-State: ALoCoQkEP22wUu4+3x5Zc+qLsVrXAfF1v6Sm5XgDEaspcpU+8x0f4OBk3SJvPrXda3zZDaol2yT1XnuTt4OuojLSjnrexZbTkQ==
-X-Received: by 10.66.172.164 with SMTP id bd4mr11375405pac.64.1449697345228;
-        Wed, 09 Dec 2015 13:42:25 -0800 (PST)
-Received: from yshi-Precision-T5600.corp.ad.wrs.com (unknown-216-82.windriver.com. [147.11.216.82])
-        by smtp.gmail.com with ESMTPSA id f76sm13717090pfd.49.2015.12.09.13.42.24
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 09 Dec 2015 13:42:24 -0800 (PST)
-From:   Yang Shi <yang.shi@linaro.org>
-To:     akpm@linux-foundation.org, rostedt@goodmis.org, mingo@redhat.com
-Cc:     linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        linaro-kernel@lists.linaro.org, yang.shi@linaro.org,
-        linux-mips@linux-mips.org
-Subject: [PATCH v5 4/7] mips: mm/gup: add gup trace points
-Date:   Wed,  9 Dec 2015 13:22:28 -0800
-Message-Id: <1449696151-4195-5-git-send-email-yang.shi@linaro.org>
-X-Mailer: git-send-email 2.0.2
-In-Reply-To: <1449696151-4195-1-git-send-email-yang.shi@linaro.org>
-References: <1449696151-4195-1-git-send-email-yang.shi@linaro.org>
-Return-Path: <yang.shi@linaro.org>
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc:content-type;
+        bh=EKCM4pKjl8IKn44eWhnP53rbDW+/3zjfM2H2HT+YOaU=;
+        b=qoZNuHdbZ18Fm5sHzHeOHRSQFGeGSrbM+EP26x14kdeWSfpDx5zfrON7pSGoAG6+sD
+         omwclY/nLHJo8Q7jRMr+BkESJFbK6Z3Vuc/t87cdKC25lgXtYAEDlOSDX101+H4jJh9M
+         M3lAcc3WIsRCIbaF8UWA6EHeSxFu+fP3EeIRYAdMQXyZ97YCIPb5A8kQX6t03dNaOZlv
+         krH6Q08mTAkp57TekCLo5gge6Lk396DKAZkNz/DMN30BMUNwjbDIcQ/6JAsEf6Er0QMO
+         K5aZ7vwtKfn7XmNg+xIUvEHPbiQI5mIgUl6F6gsMOH+1dZ7aVCO3wW/k2/kyWam7GfhN
+         qbLQ==
+X-Received: by 10.194.242.195 with SMTP id ws3mr8402323wjc.131.1449697480511;
+ Wed, 09 Dec 2015 13:44:40 -0800 (PST)
+MIME-Version: 1.0
+Received: by 10.28.216.85 with HTTP; Wed, 9 Dec 2015 13:44:01 -0800 (PST)
+In-Reply-To: <1449668342-4446-1-git-send-email-linus.walleij@linaro.org>
+References: <1449668342-4446-1-git-send-email-linus.walleij@linaro.org>
+From:   Manuel Lauss <manuel.lauss@gmail.com>
+Date:   Wed, 9 Dec 2015 22:44:01 +0100
+Message-ID: <CAOLZvyGe5SV044P+uje5ro+F5yHoUVqz6or4QBMfdCgXW92sbA@mail.gmail.com>
+Subject: Re: [PATCH 135/182] MIPS: alchemy: switch to gpiochip_add_data()
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     linux-gpio@vger.kernel.org, Johan Hovold <johan@kernel.org>,
+        Alexandre Courbot <acourbot@nvidia.com>,
+        Michael Welling <mwelling@ieee.org>,
+        Markus Pargmann <mpa@pengutronix.de>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Linux-MIPS <linux-mips@linux-mips.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <manuel.lauss@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50513
+X-archive-position: 50514
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yang.shi@linaro.org
+X-original-sender: manuel.lauss@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -65,43 +55,15 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Cc: linux-mips@linux-mips.org
-Acked-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Yang Shi <yang.shi@linaro.org>
----
- arch/mips/mm/gup.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+On Wed, Dec 9, 2015 at 2:39 PM, Linus Walleij <linus.walleij@linaro.org> wrote:
 
-diff --git a/arch/mips/mm/gup.c b/arch/mips/mm/gup.c
-index 349995d..7d90883 100644
---- a/arch/mips/mm/gup.c
-+++ b/arch/mips/mm/gup.c
-@@ -15,6 +15,8 @@
- #include <asm/cpu-features.h>
- #include <asm/pgtable.h>
- 
-+#include <trace/events/gup.h>
-+
- static inline pte_t gup_get_pte(pte_t *ptep)
- {
- #if defined(CONFIG_PHYS_ADDR_T_64BIT) && defined(CONFIG_CPU_MIPS32)
-@@ -211,6 +213,8 @@ int __get_user_pages_fast(unsigned long start, int nr_pages, int write,
- 					(void __user *)start, len)))
- 		return 0;
- 
-+	trace_gup_get_user_pages_fast(start, nr_pages);
-+
- 	/*
- 	 * XXX: batch / limit 'nr', to avoid large irq off latency
- 	 * needs some instrumenting to determine the common sizes used by
-@@ -291,6 +295,8 @@ int get_user_pages_fast(unsigned long start, int nr_pages, int write,
- 	} while (pgdp++, addr = next, addr != end);
- 	local_irq_enable();
- 
-+	trace_gup_get_user_pages_fast(start, nr_pages);
-+
- 	VM_BUG_ON(nr != (end - start) >> PAGE_SHIFT);
- 	return nr;
- slow:
--- 
-2.0.2
+> ---
+> Ralf: please ACK this so I can take it through the GPIO tree.
+> BTW: would be nice if the MIPS GPIO drivers could move down
+> to drivers/gpio in the long run.
+
+Is there a specific reason?  I have no objections to moving it, but
+on the other hand I also like that (in this case) most/all chip-specific
+code is grouped together and not scattered around the tree.
+
+Manuel

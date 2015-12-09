@@ -1,34 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Dec 2015 14:56:17 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:38596 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Dec 2015 14:56:38 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:38880 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27013566AbbLIN4Inucv9 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 9 Dec 2015 14:56:08 +0100
+        id S27013555AbbLIN4ZhliU9 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 9 Dec 2015 14:56:25 +0100
 Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.15.2/8.14.8) with ESMTP id tB9Du7wZ002370;
-        Wed, 9 Dec 2015 14:56:07 +0100
+        by scotty.linux-mips.net (8.15.2/8.14.8) with ESMTP id tB9DuNpn002376;
+        Wed, 9 Dec 2015 14:56:23 +0100
 Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.15.2/8.15.2/Submit) id tB9Du7LN002369;
-        Wed, 9 Dec 2015 14:56:07 +0100
-Date:   Wed, 9 Dec 2015 14:56:07 +0100
+        by scotty.linux-mips.net (8.15.2/8.15.2/Submit) id tB9DuNrn002375;
+        Wed, 9 Dec 2015 14:56:23 +0100
+Date:   Wed, 9 Dec 2015 14:56:23 +0100
 From:   Ralf Baechle <ralf@linux-mips.org>
 To:     Linus Walleij <linus.walleij@linaro.org>
 Cc:     linux-gpio@vger.kernel.org, Johan Hovold <johan@kernel.org>,
         Alexandre Courbot <acourbot@nvidia.com>,
         Michael Welling <mwelling@ieee.org>,
         Markus Pargmann <mpa@pengutronix.de>, linux-mips@linux-mips.org
-Subject: Re: [PATCH 138/182] MIPS: jz4740: use gpiochip data pointer
-Message-ID: <20151209135607.GL4722@linux-mips.org>
-References: <1449668372-4587-1-git-send-email-linus.walleij@linaro.org>
+Subject: Re: [PATCH 139/182] MIPS: txx9: switch to gpiochip_add_data()
+Message-ID: <20151209135623.GM4722@linux-mips.org>
+References: <1449668384-4634-1-git-send-email-linus.walleij@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1449668372-4587-1-git-send-email-linus.walleij@linaro.org>
+In-Reply-To: <1449668384-4634-1-git-send-email-linus.walleij@linaro.org>
 User-Agent: Mutt/1.5.24 (2015-08-30)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50479
+X-archive-position: 50480
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,18 +45,10 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Dec 09, 2015 at 02:39:32PM +0100, Linus Walleij wrote:
-> Date:   Wed,  9 Dec 2015 14:39:32 +0100
-> From: Linus Walleij <linus.walleij@linaro.org>
-> To: linux-gpio@vger.kernel.org, Johan Hovold <johan@kernel.org>, Alexandre
->  Courbot <acourbot@nvidia.com>, Michael Welling <mwelling@ieee.org>, Markus
->  Pargmann <mpa@pengutronix.de>, Ralf Baechle <ralf@linux-mips.org>
-> Cc: Linus Walleij <linus.walleij@linaro.org>, linux-mips@linux-mips.org
-> Subject: [PATCH 138/182] MIPS: jz4740: use gpiochip data pointer
-> 
-> This makes the driver use the data pointer added to the gpio_chip
-> to store a pointer to the state container instead of relying on
-> container_of().
+On Wed, Dec 09, 2015 at 02:39:44PM +0100, Linus Walleij wrote:
+
+> We're planning to remove the gpiochip_add() function to swith
+> to gpiochip_add_data() with NULL for data argument.
 > 
 > Cc: Ralf Baechle <ralf@linux-mips.org>
 > Cc: linux-mips@linux-mips.org
@@ -64,7 +56,8 @@ On Wed, Dec 09, 2015 at 02:39:32PM +0100, Linus Walleij wrote:
 > ---
 > Ralf: please ACK this so I can take it through the GPIO tree.
 > BTW: would be nice if the MIPS GPIO drivers could move down
-> to drivers/gpio in the long run.
+> to drivers/gpio in the long run. This should compile with
+> just #include <linux/gpio/driver.h>, I hope that works.
 
 Acked-by: Ralf Baechle <ralf@linux-mips.org>
 

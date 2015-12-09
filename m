@@ -1,39 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Dec 2015 14:57:47 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:39668 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27013575AbbLIN5dVfkW9 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 9 Dec 2015 14:57:33 +0100
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.15.2/8.14.8) with ESMTP id tB9DvWFD002414;
-        Wed, 9 Dec 2015 14:57:32 +0100
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.15.2/8.15.2/Submit) id tB9DvWdx002413;
-        Wed, 9 Dec 2015 14:57:32 +0100
-Date:   Wed, 9 Dec 2015 14:57:32 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     linux-gpio@vger.kernel.org, Johan Hovold <johan@kernel.org>,
-        Alexandre Courbot <acourbot@nvidia.com>,
-        Michael Welling <mwelling@ieee.org>,
-        Markus Pargmann <mpa@pengutronix.de>, linux-mips@linux-mips.org
-Subject: Re: [PATCH 142/182] MIPS: txx9: rbtx4938: switch to
- gpiochip_add_data()
-Message-ID: <20151209135732.GP4722@linux-mips.org>
-References: <1449668416-4785-1-git-send-email-linus.walleij@linaro.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Dec 2015 15:32:57 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:12861 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27007854AbbLIOcygCpt5 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 9 Dec 2015 15:32:54 +0100
+Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
+        by Websense Email Security Gateway with ESMTPS id 7CF8AA05249CF;
+        Wed,  9 Dec 2015 14:32:43 +0000 (GMT)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
+ 14.3.235.1; Wed, 9 Dec 2015 14:32:46 +0000
+Received: from [192.168.154.94] (192.168.154.94) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Wed, 9 Dec
+ 2015 14:32:46 +0000
+Subject: Re: [PATCH] MIPS: Fix DMA contiguous allocation
+To:     Mel Gorman <mgorman@techsingularity.net>,
+        Andrew Morton <akpm@linux-foundation.org>
+References: <1449569930-2118-1-git-send-email-qais.yousef@imgtec.com>
+ <20151208141939.d0edbb72b3c15844c5ac25ea@linux-foundation.org>
+ <20151209113635.GA15910@techsingularity.net>
+CC:     <linux-mips@linux-mips.org>, <linux-mm@kvack.org>,
+        <linux-kernel@vger.kernel.org>, <ralf@linux-mips.org>
+From:   Qais Yousef <qais.yousef@imgtec.com>
+Message-ID: <56683B8E.2000600@imgtec.com>
+Date:   Wed, 9 Dec 2015 14:32:46 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+ Thunderbird/38.3.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1449668416-4785-1-git-send-email-linus.walleij@linaro.org>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-Return-Path: <ralf@linux-mips.org>
+In-Reply-To: <20151209113635.GA15910@techsingularity.net>
+Content-Type: text/plain; charset="iso-8859-15"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.154.94]
+Return-Path: <Qais.Yousef@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50483
+X-archive-position: 50484
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: qais.yousef@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,22 +51,35 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Dec 09, 2015 at 02:40:16PM +0100, Linus Walleij wrote:
+On 12/09/2015 11:36 AM, Mel Gorman wrote:
+> On Tue, Dec 08, 2015 at 02:19:39PM -0800, Andrew Morton wrote:
+>> On Tue, 8 Dec 2015 10:18:50 +0000 Qais Yousef <qais.yousef@imgtec.com> wrote:
+>>
+>>> --- a/arch/mips/mm/dma-default.c
+>>> +++ b/arch/mips/mm/dma-default.c
+>>> @@ -145,7 +145,7 @@ static void *mips_dma_alloc_coherent(struct device *dev, size_t size,
+>>>   
+>>>   	gfp = massage_gfp_flags(dev, gfp);
+>>>   
+>>> -	if (IS_ENABLED(CONFIG_DMA_CMA) && !(gfp & GFP_ATOMIC))
+>>> +	if (IS_ENABLED(CONFIG_DMA_CMA) && ((gfp & GFP_ATOMIC) != GFP_ATOMIC))
+>>>   		page = dma_alloc_from_contiguous(dev,
+>>>   					count, get_order(size));
+>>>   	if (!page)
+>> hm.  It seems that the code is asking "can I do a potentially-sleeping
+>> memory allocation"?
+>>
+>> The way to do that under the new regime is
+>>
+>> 	if (IS_ENABLED(CONFIG_DMA_CMA) && gfpflags_allow_blocking(gfp))
+>>
+>> Mel, can you please confirm?
+> Yes, this is the correct way it should be checked. The full flags cover
+> watermark and kswapd treatment which potentially could be altered by
+> the caller.
+>
 
-> We're planning to remove the gpiochip_add() function to swith
-> to gpiochip_add_data() with NULL for data argument.
-> 
-> Cc: Ralf Baechle <ralf@linux-mips.org>
-> Cc: linux-mips@linux-mips.org
-> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-> ---
-> Ralf: please ACK this so I can take it through the GPIO tree.
-> 
-> This one needs to include both <linux/gpio/driver.h> and
-> <linux/gpio.h> since it is using both the driver and consumer
-> interface, and looks like one of those cases where the gpio
-> implementations should be kept local to this file.
+OK thanks both. I'll send a revised version with this change.
 
-Acked-by: Ralf Baechle <ralf@linux-mips.org>
-
-  Ralf
+Thanks,
+Qais

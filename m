@@ -1,57 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Dec 2015 14:41:27 +0100 (CET)
-Received: from mail-lf0-f45.google.com ([209.85.215.45]:35614 "EHLO
-        mail-lf0-f45.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27013554AbbLINkZ4bCs9 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 9 Dec 2015 14:40:25 +0100
-Received: by lfdl133 with SMTP id l133so34274910lfd.2
-        for <linux-mips@linux-mips.org>; Wed, 09 Dec 2015 05:40:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro-org.20150623.gappssmtp.com; s=20150623;
-        h=from:to:cc:subject:date:message-id;
-        bh=YFi/THFSXA+Ztzk7Use8qUJ7hWeefKTM02OWp/MSoCg=;
-        b=xocLugglxA3FNVORuR5bemtjECu/B4XZ6TYBZi+18deG1DDpbJ9+5V5nFrkZJeyXkl
-         jNn3TwD6hqUxbYPsSFyhFisGeuNm4VgYiFbD5OrXCT2JBqzf+6qYx7M8r425FruCV+RZ
-         fYhf8/WwX6PqwVW2emlFLiGiwBquK+1KiBSC9NSGlY7QX9k71jxT3PMQQr3XGncmf47L
-         rO2IWUGfKDR0tUW7gZyMocpaRBH6qIVO7ObAVdIESixmiQcgihJv7oFQZcUSXYbIM8wr
-         m/4R/V4U67JnAOP61ZUoFPbKO3U7aIenEH++j16M/VBq6ELi6ib4UyGhOzZnsyg09LfC
-         SV4g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=YFi/THFSXA+Ztzk7Use8qUJ7hWeefKTM02OWp/MSoCg=;
-        b=imEnj68DOnAfc0/qtw0pbj4onSAU46o4Af27T+4FbYUE/035rwLB1aYsEgdqoqgMvb
-         NxqxtvF4WC4/5jIa0OJVJ8Sry9GGLaHTwIN6RQcGF6bSSY0PLaTaJ85H7MUfVA3u2AnO
-         8njIsB5SI5trYRlm9bTfTNo18Pfz66zaKSrsmwFMVmGgza077ppzJyIBcNUXoURXSV8P
-         n1KWyS6siHvy8zSwsOsoauPJrthD1O3xa2m1APY/lp0GRoEfTkK5gor8vdXsKb9AZEPY
-         Jsxqpwtpr9ugd9D9fvE5hL/r8oOj2z3+Hhqslnddb/MvJnEkZgh/rrDXfrnwR1ZGHWKs
-         7mnw==
-X-Gm-Message-State: ALoCoQlPIWw5tB3pBiahO2MD2YF/Wci7PcBWI41mGP3OpCWt2mx5rojrF8DSRSQaX50jvr6H4p8Pb0k4KyU6C03M41Lc0IcvnQ==
-X-Received: by 10.25.43.138 with SMTP id r132mr2254719lfr.103.1449668420549;
-        Wed, 09 Dec 2015 05:40:20 -0800 (PST)
-Received: from localhost.localdomain ([85.235.10.227])
-        by smtp.gmail.com with ESMTPSA id zm10sm1432158lbb.49.2015.12.09.05.40.19
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 09 Dec 2015 05:40:19 -0800 (PST)
-From:   Linus Walleij <linus.walleij@linaro.org>
-To:     linux-gpio@vger.kernel.org, Johan Hovold <johan@kernel.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Dec 2015 14:44:44 +0100 (CET)
+Received: from pandora.arm.linux.org.uk ([78.32.30.218]:58144 "EHLO
+        pandora.arm.linux.org.uk" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007162AbbLINonOC0k9 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 9 Dec 2015 14:44:43 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=arm.linux.org.uk; s=pandora-2014;
+        h=Sender:In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date; bh=BNpnW+KSCDRqHuLGVrsDDUJ0YyrkQrcJvaHBZfUVNBc=;
+        b=GSlBrSmx8nHB1cTSFfGVcidPzqCefdc3g8IKTqVg2oE9nX8bl4QXveqNyn8RuE06RgwJmn3gmesAuR27rl2FWb7eOIcwBQbafcggUjlWufZJXu/rNXHQexwBpLuNPtuXAD9PvNNm6UX21e3+1butpK+HhnWosxR9XxkDGML1+2Q=;
+Received: from n2100.arm.linux.org.uk ([2002:4e20:1eda:1:214:fdff:fe10:4f86]:42144)
+        by pandora.arm.linux.org.uk with esmtpsa (TLSv1:DHE-RSA-AES256-SHA:256)
+        (Exim 4.82_1-5b7a7c0-XX)
+        (envelope-from <linux@arm.linux.org.uk>)
+        id 1a6f2W-0003tQ-U0; Wed, 09 Dec 2015 13:44:17 +0000
+Received: from linux by n2100.arm.linux.org.uk with local (Exim 4.76)
+        (envelope-from <linux@n2100.arm.linux.org.uk>)
+        id 1a6f2S-00088p-7E; Wed, 09 Dec 2015 13:44:13 +0000
+Date:   Wed, 9 Dec 2015 13:44:11 +0000
+From:   Russell King - ARM Linux <linux@arm.linux.org.uk>
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     linux-gpio@vger.kernel.org, Johan Hovold <johan@kernel.org>,
         Alexandre Courbot <acourbot@nvidia.com>,
+        Arnd Bergmann <arnd@arndb.de>,
         Michael Welling <mwelling@ieee.org>,
         Markus Pargmann <mpa@pengutronix.de>,
-        Ralf Baechle <ralf@linux-mips.org>
-Cc:     Linus Walleij <linus.walleij@linaro.org>, linux-mips@linux-mips.org
-Subject: [PATCH 142/182] MIPS: txx9: rbtx4938: switch to gpiochip_add_data()
-Date:   Wed,  9 Dec 2015 14:40:16 +0100
-Message-Id: <1449668416-4785-1-git-send-email-linus.walleij@linaro.org>
-X-Mailer: git-send-email 2.4.3
-Return-Path: <linus.walleij@linaro.org>
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Mark Brown <broonie@kernel.org>,
+        Amit Kucheria <amit.kucheria@linaro.org>, arm@kernel.org,
+        Haavard Skinnemoen <hskinnemoen@gmail.com>,
+        Sonic Zhang <sonic.zhang@analog.com>,
+        Greg Ungerer <gerg@uclinux.org>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        Anatolij Gustschin <agust@denx.de>,
+        linux-wireless@vger.kernel.org, linux-input@vger.kernel.org,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Lee Jones <lee.jones@linaro.org>
+Subject: Re: [PATCH 000/182] Rid struct gpio_chip from container_of() usage
+Message-ID: <20151209134410.GH8644@n2100.arm.linux.org.uk>
+References: <1449666515-23343-1-git-send-email-linus.walleij@linaro.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1449666515-23343-1-git-send-email-linus.walleij@linaro.org>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <linux+linux-mips=linux-mips.org@arm.linux.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50474
+X-archive-position: 50475
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linus.walleij@linaro.org
+X-original-sender: linux@arm.linux.org.uk
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -64,43 +62,45 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-We're planning to remove the gpiochip_add() function to swith
-to gpiochip_add_data() with NULL for data argument.
+On Wed, Dec 09, 2015 at 02:08:35PM +0100, Linus Walleij wrote:
+> Because we want to have a proper userspace ABI for GPIO chips,
+> which involves using a character device that the user opens
+> and closes. While the character device is open, the underlying
+> kernel objects must not go away.
 
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
----
-Ralf: please ACK this so I can take it through the GPIO tree.
+Okay, so you stop the gpio_chip struct from going away.  What
+about the code which is called via gpio_chip - say, if userspace
+keep shte chardev open, and someone rmmod's the driver providing
+the GPIO driver.
 
-This one needs to include both <linux/gpio/driver.h> and
-<linux/gpio.h> since it is using both the driver and consumer
-interface, and looks like one of those cases where the gpio
-implementations should be kept local to this file.
----
- arch/mips/txx9/rbtx4938/setup.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+I'm not sure that splitting up objects in this way really solves
+anything at all.  Yes, it divorses the driver's private data from
+the subsystem data, but is that really an advantage?
 
-diff --git a/arch/mips/txx9/rbtx4938/setup.c b/arch/mips/txx9/rbtx4938/setup.c
-index c9afd05020e0..54de66837103 100644
---- a/arch/mips/txx9/rbtx4938/setup.c
-+++ b/arch/mips/txx9/rbtx4938/setup.c
-@@ -14,6 +14,7 @@
- #include <linux/ioport.h>
- #include <linux/delay.h>
- #include <linux/platform_device.h>
-+#include <linux/gpio/driver.h>
- #include <linux/gpio.h>
- #include <linux/mtd/physmap.h>
- 
-@@ -335,7 +336,7 @@ static void __init rbtx4938_mtd_init(void)
- 
- static void __init rbtx4938_arch_init(void)
- {
--	gpiochip_add(&rbtx4938_spi_gpio_chip);
-+	gpiochip_add_data(&rbtx4938_spi_gpio_chip, NULL);
- 	rbtx4938_pci_setup();
- 	rbtx4938_spi_init();
- }
+Network drivers have a similar issue, and the way this problem is
+solved there is that alloc_netdev() is always used to allocate the
+subsystem data structure and any driver private data structure as
+one allocation, and the lifetime of both objects remains under the
+control of the subsystem.
+
+The allocated memory is only freed when the last user goes away,
+and net has protection to prevent an unregistered driver from
+being called (via locks on every path into the layer.)
+
+Things get a little more complex with gpio, because there's the
+issue that some methods are spinlocked while others can take
+semaphores, but it should be possible to come up with a solution
+to that - maybe an atomic_t which is incremented whenever we're
+in some operation provided it's >= 0 (otherwise it fails), and
+decremented when the operation completes.  We can then control
+in the unregistration path further GPIO accesses, and also
+prevent new accesses occuring by setting the atomic_t to -1.
+This shouldn't require any additional locking in any path.  It
+does mean that the unregistration path needs careful thought to
+ensure that when we set it to -1, we wait for it to be dropped
+by the appropriate amount.
+
 -- 
-2.4.3
+RMK's Patch system: http://www.arm.linux.org.uk/developer/patches/
+FTTC broadband for 0.8mile line: currently at 9.6Mbps down 400kbps up
+according to speedtest.net.

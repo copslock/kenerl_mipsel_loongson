@@ -1,26 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Dec 2015 19:00:59 +0100 (CET)
-Received: from mail-pf0-f195.google.com ([209.85.192.195]:34461 "EHLO
-        mail-pf0-f195.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27013542AbbLISAYkz5Sm (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 9 Dec 2015 19:00:24 +0100
-Received: by pfu207 with SMTP id 207so3522783pfu.1
-        for <linux-mips@linux-mips.org>; Wed, 09 Dec 2015 10:00:18 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Dec 2015 19:01:18 +0100 (CET)
+Received: from mail-pf0-f194.google.com ([209.85.192.194]:36853 "EHLO
+        mail-pf0-f194.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27013547AbbLISAZuSjcm (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 9 Dec 2015 19:00:25 +0100
+Received: by pfbc17 with SMTP id c17so3521826pfb.3
+        for <linux-mips@linux-mips.org>; Wed, 09 Dec 2015 10:00:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=foI0qjyVrsfdXTw0dPLkCriM6WBmHBiEyQH0sFdy9pw=;
-        b=qpeUsKvSfzESRNaO1sqaoZQC4gEr2xbX/YrgdRXxgLJUOworoyqNv+YqOe1tFnx3Eo
-         QRAD8ZidovIu3Gb6JJYq6U27WQjjshaQCPPz0UKxVjAiUySpQ36noOeK8ZxphprVgzNV
-         Utnu+/kNJZZoG5KY4fk1Tv9UtHbM0WpgznsPMbkElMC7nsM2Gb4oXbk/F0Y/MdGRJaKZ
-         XM5M+ERQhtqqXmU3tGAcvn7mO9tjBpEKwZ5YlDdTUn8g+Ta4I9awZnQSMcH1WCmlKp+t
-         xynSvOPLsfySDkCQgwuDtdal9b6OrzyV5FLO75eONmR+oFMrWIQPag1IiFRLHsLPtgj4
-         vB0Q==
-X-Received: by 10.98.16.81 with SMTP id y78mr93391pfi.158.1449684018728;
-        Wed, 09 Dec 2015 10:00:18 -0800 (PST)
+        bh=/REcK23yGJ7JdkI4eqZvWHNndUFE0N7MWy4yvzwR3sI=;
+        b=Ahh0uM1xm5z8opKo+D8EZBy0XUaiZn3UTUOZ3zaTKS6jBWYPSHbBqLlhQHGZvSNiIs
+         ALObxScLklVelr2Wy1pPsAEvGq/7Od0mfmrBLxiboxssbgETrf/I6wLlnVvTBlP//m+B
+         gcFQL7yldvkrVXWFa4KYbqN74Y5vKpUQA2OcEDiASNubj+z7YR2jQQ61gLgDEbjyir4t
+         zLC085QUXiPd+mJxmizvAfMqhXKhq3T8QeyC07+wl4TyqUKpwJrJ9350DXZvHOD9QsZE
+         1Q+IoQomLc0l86I+zRbsmfM6ed6gj+YP68xiDYfvYhR/AHN9a+bRj36694pnMQBXkzTD
+         3ylw==
+X-Received: by 10.98.12.8 with SMTP id u8mr118758pfi.76.1449684020167;
+        Wed, 09 Dec 2015 10:00:20 -0800 (PST)
 Received: from decotigny.mtv.corp.google.com ([172.18.64.159])
-        by smtp.gmail.com with ESMTPSA id 82sm13056535pfn.76.2015.12.09.10.00.17
+        by smtp.gmail.com with ESMTPSA id 82sm13056535pfn.76.2015.12.09.10.00.18
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Wed, 09 Dec 2015 10:00:17 -0800 (PST)
+        Wed, 09 Dec 2015 10:00:19 -0800 (PST)
 From:   David Decotigny <ddecotig@gmail.com>
 To:     "David S. Miller" <davem@davemloft.net>,
         Ben Hutchings <ben@decadent.org.uk>,
@@ -44,9 +44,9 @@ Cc:     Eric Dumazet <edumazet@google.com>,
         Yuval Mintz <Yuval.Mintz@qlogic.com>,
         Rasmus Villemoes <linux@rasmusvillemoes.dk>,
         David Decotigny <decot@googlers.com>
-Subject: [PATCH net-next v4 03/19] net: usnic: remove unused call to ethtool_ops::get_settings
-Date:   Wed,  9 Dec 2015 09:59:13 -0800
-Message-Id: <1449683969-7305-4-git-send-email-ddecotig@gmail.com>
+Subject: [PATCH net-next v4 04/19] net: usnic: use __ethtool_get_settings
+Date:   Wed,  9 Dec 2015 09:59:14 -0800
+Message-Id: <1449683969-7305-5-git-send-email-ddecotig@gmail.com>
 X-Mailer: git-send-email 2.6.0.rc2.230.g3dd15c0
 In-Reply-To: <1449683969-7305-1-git-send-email-ddecotig@gmail.com>
 References: <1449683969-7305-1-git-send-email-ddecotig@gmail.com>
@@ -54,7 +54,7 @@ Return-Path: <ddecotig@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50492
+X-archive-position: 50493
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -75,28 +75,21 @@ From: David Decotigny <decot@googlers.com>
 
 Signed-off-by: David Decotigny <decot@googlers.com>
 ---
- drivers/infiniband/hw/usnic/usnic_ib_verbs.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/infiniband/hw/usnic/usnic_ib_verbs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/infiniband/hw/usnic/usnic_ib_verbs.c b/drivers/infiniband/hw/usnic/usnic_ib_verbs.c
-index f8e3211..5b60579 100644
+index 5b60579..e082170 100644
 --- a/drivers/infiniband/hw/usnic/usnic_ib_verbs.c
 +++ b/drivers/infiniband/hw/usnic/usnic_ib_verbs.c
-@@ -269,7 +269,6 @@ int usnic_ib_query_device(struct ib_device *ibdev,
- 	struct usnic_ib_dev *us_ibdev = to_usdev(ibdev);
- 	union ib_gid gid;
- 	struct ethtool_drvinfo info;
--	struct ethtool_cmd cmd;
- 	int qp_per_vf;
- 
+@@ -329,7 +329,7 @@ int usnic_ib_query_port(struct ib_device *ibdev, u8 port,
  	usnic_dbg("\n");
-@@ -278,7 +277,6 @@ int usnic_ib_query_device(struct ib_device *ibdev,
  
  	mutex_lock(&us_ibdev->usdev_lock);
- 	us_ibdev->netdev->ethtool_ops->get_drvinfo(us_ibdev->netdev, &info);
 -	us_ibdev->netdev->ethtool_ops->get_settings(us_ibdev->netdev, &cmd);
++	__ethtool_get_settings(us_ibdev->netdev, &cmd);
  	memset(props, 0, sizeof(*props));
- 	usnic_mac_ip_to_gid(us_ibdev->ufdev->mac, us_ibdev->ufdev->inaddr,
- 			&gid.raw[0]);
+ 
+ 	props->lid = 0;
 -- 
 2.6.0.rc2.230.g3dd15c0

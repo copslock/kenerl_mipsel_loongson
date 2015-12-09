@@ -1,50 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Dec 2015 23:37:08 +0100 (CET)
-Received: from mail-lf0-f52.google.com ([209.85.215.52]:35539 "EHLO
-        mail-lf0-f52.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27013556AbbLIWhHA6Y-b (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 9 Dec 2015 23:37:07 +0100
-Received: by lfdl133 with SMTP id l133so44591834lfd.2;
-        Wed, 09 Dec 2015 14:37:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:mime-version:content-type
-         :content-transfer-encoding;
-        bh=mBcGkxsbM42d9vtEIxeGqNCEpGrnBA90rbPApzCYtBQ=;
-        b=NozY969uoX0alyH78Davs/7p2wE1/2rsY8xs3oZ28b6y39iq20Qa4+iV/6LiI8ITcU
-         hunoj3Xo4WLLByuquu96Zyt2Wf3FCNYrtE7mN+AtDAj6fDAKwGZ7l3eSatUKq1Vzs7GH
-         bUQhlMtPChWi3ueFpKte+nAeeEoHWBHNYo/3N4xJau+SV0CB4HaTh9byoQDWK+ciFfcY
-         KhOc/nTZn113R/6yZlS/JtBT0773uq9qSA7o4Bg6QX4HHQe8+T0AMSv6hKNe+cmIrGgt
-         zRDqKF5cvUlArJkNxPtxpb3AfwXLJvpNADYPw5MP89cQ9Hf4+vI4yz38Voyx5dB5fQ0e
-         FXUw==
-X-Received: by 10.25.65.2 with SMTP id o2mr3616720lfa.12.1449700621619;
-        Wed, 09 Dec 2015 14:37:01 -0800 (PST)
-Received: from linux-samsung.lan (ip-194-187-74-233.konfederacka.maverick.com.pl. [194.187.74.233])
-        by smtp.gmail.com with ESMTPSA id p69sm1757674lfe.42.2015.12.09.14.37.00
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 09 Dec 2015 14:37:00 -0800 (PST)
-From:   =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
-To:     Kalle Valo <kvalo@codeaurora.org>, linux-wireless@vger.kernel.org,
-        =?UTF-8?q?Michael=20B=C3=BCsch?= <m@bues.ch>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        Hauke Mehrtens <hauke@hauke-m.de>,
-        Larry Finger <larry.finger@lwfinger.net>,
-        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
-Subject: [PATCH] ssb: pick SoC invariants code from MIPS BCM47xx arch
-Date:   Wed,  9 Dec 2015 23:36:51 +0100
-Message-Id: <1449700611-6952-1-git-send-email-zajec5@gmail.com>
-X-Mailer: git-send-email 1.8.4.5
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Return-Path: <zajec5@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Dec 2015 00:50:17 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:53035 "EHLO
+        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011794AbbLIXuPKwrmw (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 10 Dec 2015 00:50:15 +0100
+Received: from akpm3.mtv.corp.google.com (unknown [216.239.45.65])
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 1DF02C6A;
+        Wed,  9 Dec 2015 23:50:08 +0000 (UTC)
+Date:   Wed, 9 Dec 2015 15:50:07 -0800
+From:   Andrew Morton <akpm@linux-foundation.org>
+To:     Petr Mladek <pmladek@suse.com>
+Cc:     Peter Zijlstra <peterz@infradead.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Russell King <rmk+kernel@arm.linux.org.uk>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jiri Kosina <jkosina@suse.com>, Ingo Molnar <mingo@redhat.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-kernel@vger.kernel.org, x86@kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        adi-buildroot-devel@lists.sourceforge.net,
+        linux-cris-kernel@axis.com, linux-mips@linux-mips.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org
+Subject: Re: [PATCH v3 1/4] printk/nmi: Generic solution for safe printk in
+ NMI
+Message-Id: <20151209155007.cab2f1afd7e76878a1733033@linux-foundation.org>
+In-Reply-To: <1449667265-17525-2-git-send-email-pmladek@suse.com>
+References: <1449667265-17525-1-git-send-email-pmladek@suse.com>
+        <1449667265-17525-2-git-send-email-pmladek@suse.com>
+X-Mailer: Sylpheed 3.4.1 (GTK+ 2.24.23; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <akpm@linux-foundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50517
+X-archive-position: 50518
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: zajec5@gmail.com
+X-original-sender: akpm@linux-foundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -57,201 +52,167 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-There is code in ssb fetching "invariants" that is basically a set of
-board specific data. Every host requires its own implementation of
-reading function. In ssb we have support for PCI, PCMCIA & SDIO.
-For some (historical?) reason code reading "invariants" for SoC was
-placed in arch code and provided by a callback. This is not needed
-nowadays, so lets move that into ssb. This way we keep all "invariants"
-functions in a single module making code cleaner.
+On Wed,  9 Dec 2015 14:21:02 +0100 Petr Mladek <pmladek@suse.com> wrote:
 
-Signed-off-by: Rafał Miłecki <zajec5@gmail.com>
----
- arch/mips/bcm47xx/setup.c | 39 +--------------------------------------
- drivers/ssb/Kconfig       |  2 +-
- drivers/ssb/host_soc.c    | 37 +++++++++++++++++++++++++++++++++++++
- drivers/ssb/main.c        |  5 ++---
- drivers/ssb/ssb_private.h |  3 +++
- include/linux/ssb/ssb.h   | 10 +++-------
- 6 files changed, 47 insertions(+), 49 deletions(-)
+> printk() takes some locks and could not be used a safe way in NMI
+> context.
+> 
+> The chance of a deadlock is real especially when printing
+> stacks from all CPUs. This particular problem has been addressed
+> on x86 by the commit a9edc8809328 ("x86/nmi: Perform a safe NMI stack
+> trace on all CPUs").
+> 
+> This patch reuses most of the code and makes it generic. It is
+> useful for all messages and architectures that support NMI.
+> 
+> The alternative printk_func is set when entering and is reseted when
+> leaving NMI context. It queues IRQ work to copy the messages into
+> the main ring buffer in a safe context.
+> 
+> __printk_nmi_flush() copies all available messages and reset
+> the buffer. Then we could use a simple cmpxchg operations to
+> get synchronized with writers. There is also used a spinlock
+> to get synchronized with other flushers.
+> 
+> We do not longer use seq_buf because it depends on external lock.
+> It would be hard to make all supported operations safe for
+> a lockless use. It would be confusing and error prone to
+> make only some operations safe.
+> 
+> The code is put into separate printk/nmi.c as suggested by
+> Steven Rostedt. It needs a per-CPU buffer and is compiled only
+> on architectures that call nmi_enter(). This is achieved by
+> the new HAVE_NMI Kconfig flag.
+> 
+> One exception is arm where the deferred printing is used for
+> printing backtraces even without NMI. For this purpose,
+> we define NEED_PRINTK_NMI Kconfig flag. The alternative
+> printk_func is explicitly set when IPI_CPU_BACKTRACE is
+> handled.
+> 
+> The other exceptions are MN10300 and Xtensa architectures.
+> We need to clean up NMI handling there first. Let's do it
+> separately.
+> 
+> The patch is heavily based on the draft from Peter Zijlstra,
+> see https://lkml.org/lkml/2015/6/10/327
+> 
 
-diff --git a/arch/mips/bcm47xx/setup.c b/arch/mips/bcm47xx/setup.c
-index 6d38948..c807e32 100644
---- a/arch/mips/bcm47xx/setup.c
-+++ b/arch/mips/bcm47xx/setup.c
-@@ -101,50 +101,13 @@ static void bcm47xx_machine_halt(void)
- }
- 
- #ifdef CONFIG_BCM47XX_SSB
--static int bcm47xx_get_invariants(struct ssb_bus *bus,
--				  struct ssb_init_invariants *iv)
--{
--	char buf[20];
--	int len, err;
--
--	/* Fill boardinfo structure */
--	memset(&iv->boardinfo, 0 , sizeof(struct ssb_boardinfo));
--
--	len = bcm47xx_nvram_getenv("boardvendor", buf, sizeof(buf));
--	if (len > 0) {
--		err = kstrtou16(strim(buf), 0, &iv->boardinfo.vendor);
--		if (err)
--			pr_warn("Couldn't parse nvram board vendor entry with value \"%s\"\n",
--				buf);
--	}
--	if (!iv->boardinfo.vendor)
--		iv->boardinfo.vendor = SSB_BOARDVENDOR_BCM;
--
--	len = bcm47xx_nvram_getenv("boardtype", buf, sizeof(buf));
--	if (len > 0) {
--		err = kstrtou16(strim(buf), 0, &iv->boardinfo.type);
--		if (err)
--			pr_warn("Couldn't parse nvram board type entry with value \"%s\"\n",
--				buf);
--	}
--
--	memset(&iv->sprom, 0, sizeof(struct ssb_sprom));
--	bcm47xx_fill_sprom(&iv->sprom, NULL, false);
--
--	if (bcm47xx_nvram_getenv("cardbus", buf, sizeof(buf)) >= 0)
--		iv->has_cardbus_slot = !!simple_strtoul(buf, NULL, 10);
--
--	return 0;
--}
--
- static void __init bcm47xx_register_ssb(void)
- {
- 	int err;
- 	char buf[100];
- 	struct ssb_mipscore *mcore;
- 
--	err = ssb_bus_ssbbus_register(&bcm47xx_bus.ssb, SSB_ENUM_BASE,
--				      bcm47xx_get_invariants);
-+	err = ssb_bus_host_soc_register(&bcm47xx_bus.ssb, SSB_ENUM_BASE);
- 	if (err)
- 		panic("Failed to initialize SSB bus (err %d)", err);
- 
-diff --git a/drivers/ssb/Kconfig b/drivers/ssb/Kconfig
-index 149214b..0c67586 100644
---- a/drivers/ssb/Kconfig
-+++ b/drivers/ssb/Kconfig
-@@ -82,7 +82,7 @@ config SSB_SDIOHOST
- 
- config SSB_HOST_SOC
- 	bool "Support for SSB bus on SoC"
--	depends on SSB
-+	depends on SSB && BCM47XX_NVRAM
- 	help
- 	  Host interface for a SSB directly mapped into memory. This is
- 	  for some Broadcom SoCs from the BCM47xx and BCM53xx lines.
-diff --git a/drivers/ssb/host_soc.c b/drivers/ssb/host_soc.c
-index c809f25..d62992d 100644
---- a/drivers/ssb/host_soc.c
-+++ b/drivers/ssb/host_soc.c
-@@ -8,6 +8,7 @@
-  * Licensed under the GNU/GPL. See COPYING for details.
-  */
- 
-+#include <linux/bcm47xx_nvram.h>
- #include <linux/ssb/ssb.h>
- 
- #include "ssb_private.h"
-@@ -171,3 +172,39 @@ const struct ssb_bus_ops ssb_host_soc_ops = {
- 	.block_write	= ssb_host_soc_block_write,
- #endif
- };
-+
-+int ssb_host_soc_get_invariants(struct ssb_bus *bus,
-+				struct ssb_init_invariants *iv)
-+{
-+	char buf[20];
-+	int len, err;
-+
-+	/* Fill boardinfo structure */
-+	memset(&iv->boardinfo, 0, sizeof(struct ssb_boardinfo));
-+
-+	len = bcm47xx_nvram_getenv("boardvendor", buf, sizeof(buf));
-+	if (len > 0) {
-+		err = kstrtou16(strim(buf), 0, &iv->boardinfo.vendor);
-+		if (err)
-+			pr_warn("Couldn't parse nvram board vendor entry with value \"%s\"\n",
-+				buf);
-+	}
-+	if (!iv->boardinfo.vendor)
-+		iv->boardinfo.vendor = SSB_BOARDVENDOR_BCM;
-+
-+	len = bcm47xx_nvram_getenv("boardtype", buf, sizeof(buf));
-+	if (len > 0) {
-+		err = kstrtou16(strim(buf), 0, &iv->boardinfo.type);
-+		if (err)
-+			pr_warn("Couldn't parse nvram board type entry with value \"%s\"\n",
-+				buf);
-+	}
-+
-+	memset(&iv->sprom, 0, sizeof(struct ssb_sprom));
-+	ssb_fill_sprom_with_fallback(bus, &iv->sprom);
-+
-+	if (bcm47xx_nvram_getenv("cardbus", buf, sizeof(buf)) >= 0)
-+		iv->has_cardbus_slot = !!simple_strtoul(buf, NULL, 10);
-+
-+	return 0;
-+}
-diff --git a/drivers/ssb/main.c b/drivers/ssb/main.c
-index 5d1e9a0..cde5ff7 100644
---- a/drivers/ssb/main.c
-+++ b/drivers/ssb/main.c
-@@ -762,15 +762,14 @@ EXPORT_SYMBOL(ssb_bus_sdiobus_register);
- #endif /* CONFIG_SSB_PCMCIAHOST */
- 
- #ifdef CONFIG_SSB_HOST_SOC
--int ssb_bus_ssbbus_register(struct ssb_bus *bus, unsigned long baseaddr,
--			    ssb_invariants_func_t get_invariants)
-+int ssb_bus_host_soc_register(struct ssb_bus *bus, unsigned long baseaddr)
- {
- 	int err;
- 
- 	bus->bustype = SSB_BUSTYPE_SSB;
- 	bus->ops = &ssb_host_soc_ops;
- 
--	err = ssb_bus_register(bus, get_invariants, baseaddr);
-+	err = ssb_bus_register(bus, ssb_host_soc_get_invariants, baseaddr);
- 	if (!err) {
- 		ssb_info("Sonics Silicon Backplane found at address 0x%08lX\n",
- 			 baseaddr);
-diff --git a/drivers/ssb/ssb_private.h b/drivers/ssb/ssb_private.h
-index 15bfd5c..c2f5d39 100644
---- a/drivers/ssb/ssb_private.h
-+++ b/drivers/ssb/ssb_private.h
-@@ -163,6 +163,9 @@ static inline int ssb_sdio_init(struct ssb_bus *bus)
- 
- #ifdef CONFIG_SSB_HOST_SOC
- extern const struct ssb_bus_ops ssb_host_soc_ops;
-+
-+extern int ssb_host_soc_get_invariants(struct ssb_bus *bus,
-+				       struct ssb_init_invariants *iv);
- #endif
- 
- /* scan.c */
-diff --git a/include/linux/ssb/ssb.h b/include/linux/ssb/ssb.h
-index c3d1a52..26a0b3c 100644
---- a/include/linux/ssb/ssb.h
-+++ b/include/linux/ssb/ssb.h
-@@ -524,13 +524,9 @@ struct ssb_init_invariants {
- typedef int (*ssb_invariants_func_t)(struct ssb_bus *bus,
- 				     struct ssb_init_invariants *iv);
- 
--/* Register a SSB system bus. get_invariants() is called after the
-- * basic system devices are initialized.
-- * The invariants are usually fetched from some NVRAM.
-- * Put the invariants into the struct pointed to by iv. */
--extern int ssb_bus_ssbbus_register(struct ssb_bus *bus,
--				   unsigned long baseaddr,
--				   ssb_invariants_func_t get_invariants);
-+/* Register SoC bus. */
-+extern int ssb_bus_host_soc_register(struct ssb_bus *bus,
-+				     unsigned long baseaddr);
- #ifdef CONFIG_SSB_PCIHOST
- extern int ssb_bus_pcibus_register(struct ssb_bus *bus,
- 				   struct pci_dev *host_pci);
--- 
-1.8.4.5
+I guess this code is useful even on CONFIG_SMP=n: to avoid corruption
+of the printk internal structures whcih the problematic locking
+protects.
+
+> ...
+>
+> +/*
+> + * printk() could not take logbuf_lock in NMI context. Instead,
+> + * it uses an alternative implementation that temporary stores
+> + * the strings into a per-CPU buffer. The content of the buffer
+> + * is later flushed into the main ring buffer via IRQ work.
+> + *
+> + * The alternative implementation is chosen transparently
+> + * via @printk_func per-CPU variable.
+> + *
+> + * The implementation allows to flush the strings also from another CPU.
+> + * There are situations when we want to make sure that all buffers
+> + * were handled or when IRQs are blocked.
+> + */
+> +DEFINE_PER_CPU(printk_func_t, printk_func) = vprintk_default;
+> +
+> +#define NMI_LOG_BUF_LEN (4096 - sizeof(atomic_t) - sizeof(struct irq_work))
+> +
+> +struct nmi_seq_buf {
+> +	atomic_t		len;	/* length of written data */
+> +	struct irq_work		work;	/* IRQ work that flushes the buffer */
+> +	unsigned char		buffer[NMI_LOG_BUF_LEN];
+
+When this buffer overflows, which characters get lost?  Most recent or
+least recent?
+
+I'm not sure which is best, really.  For an oops trace you probably
+want to preserve the least recent output: the stuff at the start of the
+output.
+
+> +};
+>
+> ...
+>
+> +static void __printk_nmi_flush(struct irq_work *work)
+> +{
+> +	static raw_spinlock_t read_lock =
+> +		__RAW_SPIN_LOCK_INITIALIZER(read_lock);
+> +	struct nmi_seq_buf *s = container_of(work, struct nmi_seq_buf, work);
+> +	int len, size, i, last_i;
+> +
+> +	/*
+> +	 * The lock has two functions. First, one reader has to flush all
+> +	 * available message to make the lockless synchronization with
+> +	 * writers easier. Second, we do not want to mix messages from
+> +	 * different CPUs. This is especially important when printing
+> +	 * a backtrace.
+> +	 */
+> +	raw_spin_lock(&read_lock);
+> +
+> +	i = 0;
+> +more:
+> +	len = atomic_read(&s->len);
+> +
+> +	/*
+> +	 * This is just a paranoid check that nobody has manipulated
+> +	 * the buffer an unexpected way. If we printed something then
+> +	 * @len must only increase.
+> +	 */
+> +	WARN_ON(i && i >= len);
+
+hm, dumping a big backtrace in this context seems a poor idea.  Oh
+well, shouldn't happen.
+
+> +	if (!len)
+> +		goto out; /* Someone else has already flushed the buffer. */
+> +
+> +	/* Make sure that data has been written up to the @len */
+> +	smp_rmb();
+> +
+> +	size = min_t(int, len, sizeof(s->buffer));
+
+len and size should have type size_t.
+
+> +	last_i = i;
+> +
+> +	/* Print line by line. */
+> +	for (; i < size; i++) {
+> +		if (s->buffer[i] == '\n') {
+> +			print_nmi_seq_line(s, last_i, i);
+> +			last_i = i + 1;
+> +		}
+> +	}
+> +	/* Check if there was a partial line. */
+> +	if (last_i < size) {
+> +		print_nmi_seq_line(s, last_i, size - 1);
+> +		pr_cont("\n");
+> +	}
+> +
+> +	/*
+> +	 * Check that nothing has got added in the meantime and truncate
+> +	 * the buffer. Note that atomic_cmpxchg() is an implicit memory
+> +	 * barrier that makes sure that the data were copied before
+> +	 * updating s->len.
+> +	 */
+> +	if (atomic_cmpxchg(&s->len, len, 0) != len)
+> +		goto more;
+> +
+> +out:
+> +	raw_spin_unlock(&read_lock);
+> +}
+>
+> ...
+>
+> --- /dev/null
+> +++ b/kernel/printk/printk.h
+
+I find it a bit irritating to have duplicated filenames.  We could
+follow convention and call this "internal.h".
+
+>
+> ...
+>

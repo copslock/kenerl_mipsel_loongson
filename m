@@ -1,47 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Dec 2015 16:26:11 +0100 (CET)
-Received: from mx2.suse.de ([195.135.220.15]:40760 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27013618AbbLJP0JZ2shv (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 10 Dec 2015 16:26:09 +0100
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (charybdis-ext.suse.de [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id 65913ACED;
-        Thu, 10 Dec 2015 15:26:08 +0000 (UTC)
-Date:   Thu, 10 Dec 2015 16:26:06 +0100
-From:   Petr Mladek <pmladek@suse.com>
-To:     Andrew Morton <akpm@linux-foundation.org>
-Cc:     Peter Zijlstra <peterz@infradead.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Russell King <rmk+kernel@arm.linux.org.uk>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jiri Kosina <jkosina@suse.com>, Ingo Molnar <mingo@redhat.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-kernel@vger.kernel.org, x86@kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        adi-buildroot-devel@lists.sourceforge.net,
-        linux-cris-kernel@axis.com, linux-mips@linux-mips.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org
-Subject: Re: [PATCH v3 1/4] printk/nmi: Generic solution for safe printk in
- NMI
-Message-ID: <20151210152606.GD2946@pathway.suse.cz>
-References: <1449667265-17525-1-git-send-email-pmladek@suse.com>
- <1449667265-17525-2-git-send-email-pmladek@suse.com>
- <20151209155007.cab2f1afd7e76878a1733033@linux-foundation.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Dec 2015 17:24:04 +0100 (CET)
+Received: from mail-oi0-f51.google.com ([209.85.218.51]:35261 "EHLO
+        mail-oi0-f51.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27013634AbbLJQYC0n9pm (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 10 Dec 2015 17:24:02 +0100
+Received: by oige206 with SMTP id e206so49165871oig.2
+        for <linux-mips@linux-mips.org>; Thu, 10 Dec 2015 08:23:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro-org.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type;
+        bh=27rbor6tP9E9yXg0YFnnjndZWXCJ0wmpUHs59EjQfUg=;
+        b=Dx1IdupQRFjTdzzy6ZratKd3wDgNm9c07GRva75jcHC0PT724lxES1i42gcSWjlcaZ
+         hljtKsIjQw2Xb3MG3wf6wzsxOtAeYDjqDbMk8TpiFUkxnKsQSC6JfrEKhfywhLjA0v88
+         eQZtZHlmtxC/LTd5mScWuCA5OBbZRmJcX/s3Crly8gcdXEoRpGJ4aZJlSjuE/0bS4ei4
+         DKaxJfHhnE+8JJ9JaitPY/lZQEFkNSCVpkxCYOMXK5hKMotlMAzApH/ONsu6LYYFf3bg
+         /akYlRaiaHLcOddScVn2qungNMZ/qHsNj/SLCnaHTprCPi+cWeDUteMfNizZbfiFVeg6
+         ywfg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:in-reply-to:references:date
+         :message-id:subject:from:to:cc:content-type;
+        bh=27rbor6tP9E9yXg0YFnnjndZWXCJ0wmpUHs59EjQfUg=;
+        b=Xzkeia2RJd0fJZ1NpngAPhDUtdwP+RhMEkWV0vtifQ6DAWmT+rwrGV3CHSRdfpWMuV
+         pAq8mRBctV5zQo6BGFCOfUaN8cZ+a5WHW+14wO3UmpUgzy13eV5YBKjPB/kcPeDhy0jZ
+         JvIPpeljQQi2XivnGMwMZdwXFBNNIat7ovRx1vV9IyHi0MFw3lALJVn5VuvLWgu3KziX
+         xe3trUFHcUo8uN5NkmCtRBEF6EK3NBhPi84Fp/2ZGFjBbeD6CsQ2m6xPzx6UcSySQfbW
+         wsZQ0AUr+ibwBwM5qwbB1G9K2bLrwSOOjdK/A9/rmVBgA7iy9exNr5EM345lSqNFUQ85
+         pfog==
+X-Gm-Message-State: ALoCoQkKV2Bl+NmSTnNZD5ChsMo1YtWPcSdnb2waeGkwc550eX3z7f6GnN2U9QFEzr7X4jvcCaNE4cq6kY/ok9W5Tcdr3ZMW4ouQ8bvT1PyOxSIEbOEOI/Q=
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20151209155007.cab2f1afd7e76878a1733033@linux-foundation.org>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <pmladek@suse.com>
+X-Received: by 10.202.51.138 with SMTP id z132mr9641621oiz.39.1449764636489;
+ Thu, 10 Dec 2015 08:23:56 -0800 (PST)
+Received: by 10.182.32.70 with HTTP; Thu, 10 Dec 2015 08:23:56 -0800 (PST)
+In-Reply-To: <1448900513-20856-13-git-send-email-paul.burton@imgtec.com>
+References: <1448900513-20856-1-git-send-email-paul.burton@imgtec.com>
+        <1448900513-20856-13-git-send-email-paul.burton@imgtec.com>
+Date:   Thu, 10 Dec 2015 17:23:56 +0100
+Message-ID: <CACRpkdZgYFMgEqd3AZn0Vp14BDiYQuUPzT7eGPB69Qs1m7Bo7w@mail.gmail.com>
+Subject: Re: [PATCH 12/28] gpio: pch: allow build on MIPS platforms
+From:   Linus Walleij <linus.walleij@linaro.org>
+To:     Paul Burton <paul.burton@imgtec.com>
+Cc:     Linux MIPS <linux-mips@linux-mips.org>,
+        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+        Alexandre Courbot <gnurou@gmail.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <linus.walleij@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50526
+X-archive-position: 50527
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: pmladek@suse.com
+X-original-sender: linus.walleij@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,114 +66,17 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed 2015-12-09 15:50:07, Andrew Morton wrote:
-> On Wed,  9 Dec 2015 14:21:02 +0100 Petr Mladek <pmladek@suse.com> wrote:
-> 
-> > printk() takes some locks and could not be used a safe way in NMI
-> > context.
-> > 
-> > The chance of a deadlock is real especially when printing
-> > stacks from all CPUs. This particular problem has been addressed
-> > on x86 by the commit a9edc8809328 ("x86/nmi: Perform a safe NMI stack
-> > trace on all CPUs").
-> > 
-> > This patch reuses most of the code and makes it generic. It is
-> > useful for all messages and architectures that support NMI.
-> > 
-> > The patch is heavily based on the draft from Peter Zijlstra,
-> > see https://lkml.org/lkml/2015/6/10/327
-> > 
-> 
-> I guess this code is useful even on CONFIG_SMP=n: to avoid corruption
-> of the printk internal structures whcih the problematic locking
-> protects.
+On Mon, Nov 30, 2015 at 5:21 PM, Paul Burton <paul.burton@imgtec.com> wrote:
 
-Yup and it is used even on CONFIG_SMP=n if I am not missing
-something. At least, CONFIG_PRINTK_NMI stays enabled here.
+> Allow the pch_gpio driver to be built for MIPS platforms, in preparation
+> for use on the MIPS Boston board.
+>
+> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
 
+Patch applied to the GPIO tree.
 
-> > +#define NMI_LOG_BUF_LEN (4096 - sizeof(atomic_t) - sizeof(struct irq_work))
-> > +
-> > +struct nmi_seq_buf {
-> > +	atomic_t		len;	/* length of written data */
-> > +	struct irq_work		work;	/* IRQ work that flushes the buffer */
-> > +	unsigned char		buffer[NMI_LOG_BUF_LEN];
-> 
-> When this buffer overflows, which characters get lost?  Most recent or
-> least recent?
+All GPIO patches should go separately to the GPIO tree, especially
+this merge window as I'm doing refactorings.
 
-The most recent messages are lost when the buffer overflows. The other
-way would require to use a ring-buffer instead the seq_buf. We would need
-a lock-less synchronization for both, begin and end, pointers. It
-would add quite some complications.
-
-
-> I'm not sure which is best, really.  For an oops trace you probably
-> want to preserve the least recent output: the stuff at the start of the
-> output.
-
-I agree. Fortunately, this is easier and it works this way.
-
-
-> > +static void __printk_nmi_flush(struct irq_work *work)
-> > +{
-> > +	static raw_spinlock_t read_lock =
-> > +		__RAW_SPIN_LOCK_INITIALIZER(read_lock);
-> > +	struct nmi_seq_buf *s = container_of(work, struct nmi_seq_buf, work);
-> > +	int len, size, i, last_i;
-> > +
-> > +	/*
-> > +	 * The lock has two functions. First, one reader has to flush all
-> > +	 * available message to make the lockless synchronization with
-> > +	 * writers easier. Second, we do not want to mix messages from
-> > +	 * different CPUs. This is especially important when printing
-> > +	 * a backtrace.
-> > +	 */
-> > +	raw_spin_lock(&read_lock);
-> > +
-> > +	i = 0;
-> > +more:
-> > +	len = atomic_read(&s->len);
-> > +
-> > +	/*
-> > +	 * This is just a paranoid check that nobody has manipulated
-> > +	 * the buffer an unexpected way. If we printed something then
-> > +	 * @len must only increase.
-> > +	 */
-> > +	WARN_ON(i && i >= len);
-> 
-> hm, dumping a big backtrace in this context seems a poor idea.  Oh
-> well, shouldn't happen.
-
-I see and the backtrace probably would not help much because "len"
-might be manipulated also from NMI context. I am going to change
-this to:
-
-	if (i && i >= len)
-		pr_err("printk_nmi_flush: internal error: i=%d >=
-		len=%d)\n", i, len);
-
-
-
-> > +	if (!len)
-> > +		goto out; /* Someone else has already flushed the buffer. */
-> > +
-> > +	/* Make sure that data has been written up to the @len */
-> > +	smp_rmb();
-> > +
-> > +	size = min_t(int, len, sizeof(s->buffer));
-> 
-> len and size should have type size_t.
-
-OK
-
-> > --- /dev/null
-> > +++ b/kernel/printk/printk.h
-> 
-> I find it a bit irritating to have duplicated filenames.  We could
-> follow convention and call this "internal.h".
-
-No problem. I am going to send an updated patchset soon.
-
-Thanks a lot for review,
-Petr
+Yours,
+Linus Walleij

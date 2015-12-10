@@ -1,40 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 Dec 2015 00:04:38 +0100 (CET)
-Received: from proxima.lp0.eu ([81.2.80.65]:52007 "EHLO proxima.lp0.eu"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 Dec 2015 00:06:20 +0100 (CET)
+Received: from proxima.lp0.eu ([81.2.80.65]:52027 "EHLO proxima.lp0.eu"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27008407AbbLJXEgA1s6l (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 11 Dec 2015 00:04:36 +0100
+        id S27008407AbbLJXGRKzVdl (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 11 Dec 2015 00:06:17 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=fire.lp0.eu; s=exim;
-        h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:Message-ID:Cc:To:Subject:From; bh=5LrGbl8Q4VSOeiGpBqEDktZmSvqkSbF+S5xkoVDgSHA=;
-        b=nojgXnlyCP3RE3qLLLMu8W3Oy07yKU1umCElHsloViP1dfEMpRC3CsMv7ltA5l36K5edAf2yL6VLJL1blooPS6jVf5btlI5T2B+2i5AD6U7AD5YQ6Z3Pj5F/keXqfOd6QPqgbIKeNMoED2IGNbRqlka0L8CoLyol+gi80SX3TKGztiRhCcZV3Q/S16hKMtLAa7ZGvUHY77K2D6X9IB/P9DdKAzNntEnI/iUv9d8Tfd9lkUWq1CZZ/b+vV43x3Zi+B9pk+vK1M3ZR0yfbFXAw1s2PTWLT/28/aOQF2DcVmBcQyrJ/OmBazSgioK0hX3p/6zQbGjH55b7d8GUmnyDPdw==;
-Received: from redrum.lp0.eu ([2001:8b0:ffea:0:2e0:81ff:fe4d:2bec]:60947)
+        h=Content-Transfer-Encoding:Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:Cc:References:To:Subject; bh=pF34OjGhm6Yx6KAGKoy2O5o/QR8iRFQCfvD8hyEI/w4=;
+        b=CedEpS2vqLc7way5XWiHA8KLl+1GeQY4a29vpUjsbVO8+7aexxrgmE86kbXVxWpfZqfwmABdbGx3uPlFGMOHp0G+oKB6iRuSZoDUWk9DuBKCjXQAfsl+M1Co2lxY35x2Ecc8tBxLOfmvBNy3IgjeIRUhUIFVe48ljZxysqayE62T1JRTkfOnVzieYzhYYzpsoWhtkdr50h7Vqyy0N+N7opTMxIhGyBY1Av8ClMG6urHbnU7qlTOae59Bcs2fqTR4QpnhAg2p+iq1FaUMOtzxuSnK8RnHR8KKaCEViVUzFIzhsnzeIpH3iCOqYydTnrmSMfY31VhfrgGa2QgPH3wFqw==;
+Received: from redrum.lp0.eu ([2001:8b0:ffea:0:2e0:81ff:fe4d:2bec]:60949 ident=simon)
         by proxima.lp0.eu ([2001:8b0:ffea:0:205:b4ff:fe12:530]:465)
         with esmtpsav (UNKNOWN:DHE-RSA-AES256-SHA:256/CN=Simon Arlott)
-        id 1a7AGD-0004KK-G4 (Exim); Thu, 10 Dec 2015 23:04:30 +0000
-From:   Simon Arlott <simon@fire.lp0.eu>
-Subject: [PATCH linux-next (v2) 1/3] MIPS: bcm963xx: Add nvram structure
+        id 1a7AHw-0004O2-1X (Exim); Thu, 10 Dec 2015 23:06:16 +0000
+Subject: [PATCH linux-next (v2) 2/3] MIPS: bcm63xx: Use common nvram structure
+ definition
 To:     David Woodhouse <dwmw2@infradead.org>,
         Brian Norris <computersforpeace@gmail.com>,
         Florian Fainelli <f.fainelli@gmail.com>,
         Ralf Baechle <ralf@linux-mips.org>,
         Kevin Cernekee <cernekee@gmail.com>
+References: <566A04FB.7000104@simon.arlott.org.uk>
 Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         MTD Maling List <linux-mtd@lists.infradead.org>,
         Jonas Gorski <jogo@openwrt.org>,
         bcm-kernel-feedback-list <bcm-kernel-feedback-list@broadcom.com>,
         MIPS Mailing List <linux-mips@linux-mips.org>,
         linux-api@vger.kernel.org
-Message-ID: <566A04FB.7000104@simon.arlott.org.uk>
-Date:   Thu, 10 Dec 2015 23:04:27 +0000
+From:   Simon Arlott <simon@fire.lp0.eu>
+Message-ID: <566A0563.7040209@simon.arlott.org.uk>
+Date:   Thu, 10 Dec 2015 23:06:11 +0000
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
  Thunderbird/38.4.0
 MIME-Version: 1.0
+In-Reply-To: <566A04FB.7000104@simon.arlott.org.uk>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
 Return-Path: <simon@fire.lp0.eu>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50535
+X-archive-position: 50536
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -51,76 +54,73 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The BCM963xx has multiple nvram variants across different SoCs with
-additional checksum fields added whenever the size of the nvram was
-extended.
+Use an external common definition of the nvram structure.
 
 Signed-off-by: Simon Arlott <simon@fire.lp0.eu>
 ---
+Compile tested only (there is no support for brcmnand on mach-bcm63xx).
+
 v2: Use external struct bcm963xx_nvram definition for bcm963268part.
 
- MAINTAINERS                         |  1 +
- include/uapi/linux/bcm963xx_nvram.h | 39 +++++++++++++++++++++++++++++++++++++
- 2 files changed, 40 insertions(+)
- create mode 100644 include/uapi/linux/bcm963xx_nvram.h
+ arch/mips/bcm63xx/nvram.c | 32 ++++++++------------------------
+ 1 file changed, 8 insertions(+), 24 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 1354720..5d2272c 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -2396,6 +2396,7 @@ F:	drivers/irqchip/irq-brcmstb*
- F:	drivers/power/bcm6358*
- F:	drivers/reset/bcm/reset-bcm6345*
- F:	include/linux/bcm63xx_wdt.h
-+F:	include/uapi/linux/bcm963xx_nvram.h
+diff --git a/arch/mips/bcm63xx/nvram.c b/arch/mips/bcm63xx/nvram.c
+index 4b50d40..36e74f9 100644
+--- a/arch/mips/bcm63xx/nvram.c
++++ b/arch/mips/bcm63xx/nvram.c
+@@ -16,25 +16,9 @@
+ #include <linux/kernel.h>
+ #include <linux/if_ether.h>
  
- BROADCOM TG3 GIGABIT ETHERNET DRIVER
- M:	Prashant Sreedharan <prashant@broadcom.com>
-diff --git a/include/uapi/linux/bcm963xx_nvram.h b/include/uapi/linux/bcm963xx_nvram.h
-new file mode 100644
-index 0000000..470a4b9
---- /dev/null
-+++ b/include/uapi/linux/bcm963xx_nvram.h
-@@ -0,0 +1,39 @@
-+#ifndef _UAPI__LINUX_BCM963XX_NVRAM_H__
-+#define _UAPI__LINUX_BCM963XX_NVRAM_H__
-+
-+#include <linux/sizes.h>
-+#include <linux/types.h>
-+#include <linux/if_ether.h>
-+
-+#define BCM963XX_NVRAM_V4_SIZE		300
-+#define BCM963XX_NVRAM_V5_SIZE		(1 * SZ_1K)
-+#define BCM963XX_NVRAM_V6_SIZE		BCM963XX_NVRAM_V5_SIZE
-+#define BCM963XX_NVRAM_V7_SIZE		(3 * SZ_1K)
-+
-+#define BCM963XX_NVRAM_NR_PARTS		5
-+
-+struct bcm963xx_nvram {
-+	u32	version;
-+	char	bootline[256];
-+	char	name[16];
-+	u32	main_tp_number;
-+	u32	psi_size;
-+	u32	mac_addr_count;
-+	u8	mac_addr_base[ETH_ALEN];
-+	u8	__reserved1[2];
-+	u32	checksum_v4;
-+
-+	u8	__reserved2[292];
-+	u32	nand_part_offset[BCM963XX_NVRAM_NR_PARTS];
-+	u32	nand_part_size[BCM963XX_NVRAM_NR_PARTS];
-+	u8	__reserved3[388];
-+	union {
-+		u32	checksum_v5;
-+		u32	checksum_v6;
-+	};
-+
-+	u8	__reserved4[2044];
-+	u32	checksum_v7;
-+} __packed;
-+
-+#endif /* _UAPI__LINUX_BCM963XX_NVRAM_H__ */
++#include <uapi/linux/bcm963xx_nvram.h>
+ #include <bcm63xx_nvram.h>
+ 
+-/*
+- * nvram structure
+- */
+-struct bcm963xx_nvram {
+-	u32	version;
+-	u8	reserved1[256];
+-	u8	name[16];
+-	u32	main_tp_number;
+-	u32	psi_size;
+-	u32	mac_addr_count;
+-	u8	mac_addr_base[ETH_ALEN];
+-	u8	reserved2[2];
+-	u32	checksum_old;
+-	u8	reserved3[720];
+-	u32	checksum_high;
+-};
+-
+ #define BCM63XX_DEFAULT_PSI_SIZE	64
+ 
+ static struct bcm963xx_nvram nvram;
+@@ -47,17 +31,17 @@ void __init bcm63xx_nvram_init(void *addr)
+ 	u8 hcs_mac_addr[ETH_ALEN] = { 0x00, 0x10, 0x18, 0xff, 0xff, 0xff };
+ 
+ 	/* extract nvram data */
+-	memcpy(&nvram, addr, sizeof(nvram));
++	memcpy(&nvram, addr, BCM963XX_NVRAM_V5_SIZE);
+ 
+ 	/* check checksum before using data */
+ 	if (nvram.version <= 4) {
+-		check_len = offsetof(struct bcm963xx_nvram, reserved3);
+-		expected_crc = nvram.checksum_old;
+-		nvram.checksum_old = 0;
++		check_len = BCM963XX_NVRAM_V4_SIZE;
++		expected_crc = nvram.checksum_v4;
++		nvram.checksum_v4 = 0;
+ 	} else {
+-		check_len = sizeof(nvram);
+-		expected_crc = nvram.checksum_high;
+-		nvram.checksum_high = 0;
++		check_len = BCM963XX_NVRAM_V5_SIZE;
++		expected_crc = nvram.checksum_v5;
++		nvram.checksum_v5 = 0;
+ 	}
+ 
+ 	crc = crc32_le(~0, (u8 *)&nvram, check_len);
 -- 
 2.1.4
 

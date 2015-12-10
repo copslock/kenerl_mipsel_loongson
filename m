@@ -1,87 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Dec 2015 05:01:51 +0100 (CET)
-Received: from mail-wm0-f44.google.com ([74.125.82.44]:34908 "EHLO
-        mail-wm0-f44.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27006880AbbLJEBuEResC (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 10 Dec 2015 05:01:50 +0100
-Received: by mail-wm0-f44.google.com with SMTP id u63so7263096wmu.0
-        for <linux-mips@linux-mips.org>; Wed, 09 Dec 2015 20:01:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=mime-version:sender:in-reply-to:references:from:date:message-id
-         :subject:to:cc:content-type;
-        bh=gszFJV6jvHTRUzbFm7jA14PKTD919scheslOfy/vhis=;
-        b=RobMLdI8XI9aVDu+c32DNvyqU96rVSiMi04yc2KTFb4JdnD9RTC+pEqEEe5U9197ZN
-         BHVl0BfH/Fzqc4/ayfJNbBQ+8K+sSOd5yCk3WvBN8WDgDvTXye8Ua/RhVPfCZAK1rXsM
-         8moPDcPvDETS60YbtFZLuBQXSUIDld3AVa5HrW3XbRzTiGZcThwsUN9Y+dc4ngwA9La7
-         856ItmUrlYNnCU/x1pl/zOLOc4MUBdh8TPgJT2ObvbnGu+K5TqrEn54ylRd/bPo/Rs+6
-         vKL7J2k2jFkDrXRyREV2nGoxgVPUCMctT/yC4WcfXoBg3Ng+hZH648u2gzManH3cYld2
-         fO+g==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:sender:in-reply-to:references:from:date:message-id
-         :subject:to:cc:content-type;
-        bh=gszFJV6jvHTRUzbFm7jA14PKTD919scheslOfy/vhis=;
-        b=mYFf1nMgxCXjHllICDd48qDyz4PD4wLK4mWuc0B9OZfxwvsX+1Dz6fU5dFkBwCHGOf
-         7kKtBRr0tM1192eRNhXMaGT+ekZsyAAI4cth87XXFJif23a+g4RzCuktflWwmJtOFal7
-         2OWZNM2kL6ycqMZZp8OVNkZ086pWvX2nh5/C/QJGTpdzrqfGaG7OZuADKgxLLYr3pFBo
-         +9ek32WeZ9r7sab94jEZS4IbYIHmNjICSnSSiv1qMe6z2bl3DtvgvSPmUjTnKav97/E2
-         WzBY2sypdUkYovN8bSisE1wXiC5kR5Z056/JRJyt+uaUMh+BwUoDQHecWz24nPwsQStt
-         AH+Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
-         :date:message-id:subject:to:cc:content-type;
-        bh=gszFJV6jvHTRUzbFm7jA14PKTD919scheslOfy/vhis=;
-        b=mz4dyN9EXQZVaCEOyfC92jyVX1Ba+n9JIIut8HZ/qrwF7/M+pBug8lOwKQJscmsLmC
-         kf3GsOfUTeuHBprMUculrbygotITjD9lzqrqcvvWTS2YkbTzk9pNO6jPIvXfIO4exT75
-         AxvWlyW8Wk2ZyD7RF5pWTHwocH/TtTk1R7YRODrplJbA4TKTtvWC63t7jDkNCfsJ23z7
-         zrTTOqKfDNOzA9WdSRxIKRpZp/vmGBlVRSssVH7xN+4Y+RSQdrzvDFwMT2+e+qYcMvA0
-         PeaRN5ajVMaDIY8gT7/1wNcAh37soVCLZlEQDb9Nx+QCVXitva7/+f4EwEH1Lyx7Ei2M
-         y+EA==
-X-Gm-Message-State: ALoCoQlPJlE2b9GRgzy3oPYTxQv3bO909+jClWHWtZMP1vco3a+qkEXip/5ILnUWztMZgjZhEedvZZNMO6WWHX6hSGJDvvr6cl+N6e6IzV505fS6yEY16+U=
-X-Received: by 10.28.105.23 with SMTP id e23mr39999215wmc.80.1449720104442;
- Wed, 09 Dec 2015 20:01:44 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Dec 2015 10:40:34 +0100 (CET)
+Received: from icp-osb-irony-out9.external.iinet.net.au ([203.59.1.226]:11052
+        "EHLO icp-osb-irony-out9.external.iinet.net.au" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006633AbbLJJkawaYgh (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 10 Dec 2015 10:40:30 +0100
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-Anti-Spam-Result: A2GdAQDRR2lW/z7yBzoNURkBAQEBDwEBAQEGAQEBAYRBqg8BAQEBAQEGkH2ECYYPAoF5AQEBAQEBBIU8AQEBAycRQAEQCw0LCRYPCQMCAQIBRQYBDAYCAQG1JZMTAQEBAQEBAQEBAQEBAQEBAR2GDoVFiUABBJZpln2FfY1MgnQdgWhghVoBAQE
+X-IPAS-Result: A2GdAQDRR2lW/z7yBzoNURkBAQEBDwEBAQEGAQEBAYRBqg8BAQEBAQEGkH2ECYYPAoF5AQEBAQEBBIU8AQEBAycRQAEQCw0LCRYPCQMCAQIBRQYBDAYCAQG1JZMTAQEBAQEBAQEBAQEBAQEBAR2GDoVFiUABBJZpln2FfY1MgnQdgWhghVoBAQE
+X-IronPort-AV: E=Sophos;i="5.20,407,1444665600"; 
+   d="scan'208";a="5725061"
+Received: from unknown (HELO [192.168.0.106]) ([58.7.242.62])
+  by icp-osb-irony-out9.iinet.net.au with ESMTP; 10 Dec 2015 17:40:23 +0800
+From:   Greg Ungerer <gerg@uclinux.org>
+Subject: Re: [PATCH] clk: let clk_disable() return immediately if clk is NULL
+ or error
+To:     Masahiro Yamada <yamada.masahiro@socionext.com>,
+        linux-clk@vger.kernel.org
+References: <1449296276-32208-1-git-send-email-yamada.masahiro@socionext.com>
+Cc:     linux-mips@linux-mips.org, linux-sh@vger.kernel.org,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Eric Miao <eric.y.miao@gmail.com>,
+        Hartley Sweeten <hsweeten@visionengravers.com>,
+        Ryan Mallon <rmallon@gmail.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Steven Miao <realmz6@gmail.com>,
+        Simon Horman <horms@verge.net.au>,
+        Wan ZongShun <mcuos.com@gmail.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Hauke Mehrtens <hauke@hauke-m.de>,
+        adi-buildroot-devel@lists.sourceforge.net,
+        Russell King <linux@arm.linux.org.uk>,
+        linux-m68k@lists.linux-m68k.org, Roland Stigge <stigge@antcom.de>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Dmitry Eremin-Solenikov <dbaryshkov@gmail.com>,
+        Magnus Damm <magnus.damm@gmail.com>,
+        John Crispin <blogic@openwrt.org>
+Message-ID: <56694885.1080609@uclinux.org>
+Date:   Thu, 10 Dec 2015 19:40:21 +1000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+ Thunderbird/38.4.0
 MIME-Version: 1.0
-Received: by 10.28.31.135 with HTTP; Wed, 9 Dec 2015 20:01:24 -0800 (PST)
-In-Reply-To: <201512100349.fX57FR9Z%fengguang.wu@intel.com>
-References: <1449683969-7305-13-git-send-email-ddecotig@gmail.com> <201512100349.fX57FR9Z%fengguang.wu@intel.com>
-From:   David Decotigny <ddecotig@gmail.com>
-Date:   Wed, 9 Dec 2015 20:01:24 -0800
-X-Google-Sender-Auth: RC52sMpXPxYOO91-RdnSv0_qUU4
-Message-ID: <CAG88wWZP7KGC5zguP0te7KaLngLX98Q2ZsDJmbU-GHEEaLzKtA@mail.gmail.com>
-Subject: Re: [PATCH net-next v4 12/19] net: fcoe: use __ethtool_get_ksettings
-To:     kbuild test robot <lkp@intel.com>
-Cc:     kbuild-all@01.org, "David S. Miller" <davem@davemloft.net>,
-        Ben Hutchings <ben@decadent.org.uk>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-api@vger.kernel.org" <linux-api@vger.kernel.org>,
-        linux-mips@linux-mips.org, fcoe-devel@open-fcoe.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Tejun Heo <tj@kernel.org>, Eric Dumazet <edumazet@google.com>,
-        Eugenia Emantayev <eugenia@mellanox.co.il>,
-        Or Gerlitz <ogerlitz@mellanox.com>,
-        Ido Shamay <idos@mellanox.com>, Joe Perches <joe@perches.com>,
-        Saeed Mahameed <saeedm@mellanox.com>,
-        Govindarajulu Varadarajan <_govind@gmx.com>,
-        Venkata Duvvuru <VenkatKumar.Duvvuru@emulex.com>,
-        Jeff Kirsher <jeffrey.t.kirsher@intel.com>,
-        Pravin B Shelar <pshelar@nicira.com>,
-        Ed Swierk <eswierk@skyportsystems.com>,
-        Robert Love <robert.w.love@intel.com>,
-        "James E.J. Bottomley" <JBottomley@parallels.com>,
-        Yuval Mintz <Yuval.Mintz@qlogic.com>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <decot@google.com>
+In-Reply-To: <1449296276-32208-1-git-send-email-yamada.masahiro@socionext.com>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <gerg@uclinux.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50520
+X-archive-position: 50521
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddecotig@gmail.com
+X-original-sender: gerg@uclinux.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -94,49 +63,193 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-apologies, forgot to make allyesconfig/allmodconfig this time. Fixed
-in my local copy. Will be part of v5 after other feedback on this v4.
+Hi Masahiro,
 
-On Wed, Dec 9, 2015 at 11:18 AM, kbuild test robot <lkp@intel.com> wrote:
-> Hi David,
+On 05/12/15 16:17, Masahiro Yamada wrote:
+> The clk_disable() in the common clock framework (drivers/clk/clk.c)
+> returns immediately if the given clk is NULL or an error pointer.
+> It allows drivers to call clk_disable() (and clk_disable_unprepare())
+> with a clock that might be NULL or an error pointer as long as the
+> drivers are only used along with the common clock framework.
 >
-> [auto build test ERROR on net-next/master]
+> Unfortunately, NULL/error checking is missing from some of non-common
+> clk_disable() implementations.  This prevents us from completely
+> dropping NULL/error from callers.  Let's add IS_ERR_OR_NULL(clk)
+> checks to all callees.
 >
-> url:    https://github.com/0day-ci/linux/commits/David-Decotigny/RFC-new-ETHTOOL_GSETTINGS-SSETTINGS-API/20151210-022123
-> config: i386-randconfig-b0-12100240 (attached as .config)
-> reproduce:
->         # save the attached .config to linux build tree
->         make ARCH=i386
->
-> All errors (new ones prefixed by >>):
->
->    drivers/scsi/fcoe/fcoe_transport.c: In function 'fcoe_link_speed_update':
->>> drivers/scsi/fcoe/fcoe_transport.c:104:32: error: request for member 'mask' in something not a structure or union
->       if (ecmd.link_modes.supported.mask[0] & (
->                                    ^
->    drivers/scsi/fcoe/fcoe_transport.c:110:32: error: request for member 'mask' in something not a structure or union
->       if (ecmd.link_modes.supported.mask[0] & (
->                                    ^
->    drivers/scsi/fcoe/fcoe_transport.c:117:32: error: request for member 'mask' in something not a structure or union
->       if (ecmd.link_modes.supported.mask[0] & (
->                                    ^
->    drivers/scsi/fcoe/fcoe_transport.c:122:32: error: request for member 'mask' in something not a structure or union
->       if (ecmd.link_modes.supported.mask[0] & (
->                                    ^
->
-> vim +/mask +104 drivers/scsi/fcoe/fcoe_transport.c
->
->     98          if (!__ethtool_get_ksettings(netdev, &ecmd)) {
->     99                  lport->link_supported_speeds &= ~(FC_PORTSPEED_1GBIT  |
->    100                                                    FC_PORTSPEED_10GBIT |
->    101                                                    FC_PORTSPEED_20GBIT |
->    102                                                    FC_PORTSPEED_40GBIT);
->    103
->  > 104                  if (ecmd.link_modes.supported.mask[0] & (
->    105                              SUPPORTED_1000baseT_Half |
->    106                              SUPPORTED_1000baseT_Full |
->    107                              SUPPORTED_1000baseKX_Full))
->
+> Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+
+I have no problems with the m68k/coldfire change:
+
+Acked-by: Greg Ungerer <gerg@uclinux.org>
+
+Regards
+Greg
+
+
 > ---
-> 0-DAY kernel test infrastructure                Open Source Technology Center
-> https://lists.01.org/pipermail/kbuild-all                   Intel Corporation
+>
+>  arch/arm/mach-ep93xx/clock.c     |  2 +-
+>  arch/arm/mach-lpc32xx/clock.c    |  3 +++
+>  arch/arm/mach-mmp/clock.c        |  3 +++
+>  arch/arm/mach-sa1100/clock.c     | 15 ++++++++-------
+>  arch/arm/mach-w90x900/clock.c    |  3 +++
+>  arch/blackfin/mach-bf609/clock.c |  3 +++
+>  arch/m68k/coldfire/clk.c         |  4 ++++
+>  arch/mips/bcm63xx/clk.c          |  3 +++
+>  arch/mips/lantiq/clk.c           |  3 +++
+>  drivers/sh/clk/core.c            |  2 +-
+>  10 files changed, 32 insertions(+), 9 deletions(-)
+>
+> diff --git a/arch/arm/mach-ep93xx/clock.c b/arch/arm/mach-ep93xx/clock.c
+> index 39ef3b6..4e11f7d 100644
+> --- a/arch/arm/mach-ep93xx/clock.c
+> +++ b/arch/arm/mach-ep93xx/clock.c
+> @@ -293,7 +293,7 @@ void clk_disable(struct clk *clk)
+>  {
+>  	unsigned long flags;
+>
+> -	if (!clk)
+> +	if (IS_ERR_OR_NULL(clk))
+>  		return;
+>
+>  	spin_lock_irqsave(&clk_lock, flags);
+> diff --git a/arch/arm/mach-lpc32xx/clock.c b/arch/arm/mach-lpc32xx/clock.c
+> index 661c8f4..07faac2 100644
+> --- a/arch/arm/mach-lpc32xx/clock.c
+> +++ b/arch/arm/mach-lpc32xx/clock.c
+> @@ -1125,6 +1125,9 @@ void clk_disable(struct clk *clk)
+>  {
+>  	unsigned long flags;
+>
+> +	if (IS_ERR_OR_NULL(clk))
+> +		return;
+> +
+>  	spin_lock_irqsave(&global_clkregs_lock, flags);
+>  	local_clk_disable(clk);
+>  	spin_unlock_irqrestore(&global_clkregs_lock, flags);
+> diff --git a/arch/arm/mach-mmp/clock.c b/arch/arm/mach-mmp/clock.c
+> index 7c6f95f..7b33122 100644
+> --- a/arch/arm/mach-mmp/clock.c
+> +++ b/arch/arm/mach-mmp/clock.c
+> @@ -67,6 +67,9 @@ void clk_disable(struct clk *clk)
+>  {
+>  	unsigned long flags;
+>
+> +	if (IS_ERR_OR_NULL(clk))
+> +		return;
+> +
+>  	WARN_ON(clk->enabled == 0);
+>
+>  	spin_lock_irqsave(&clocks_lock, flags);
+> diff --git a/arch/arm/mach-sa1100/clock.c b/arch/arm/mach-sa1100/clock.c
+> index cbf53bb..ea103fd 100644
+> --- a/arch/arm/mach-sa1100/clock.c
+> +++ b/arch/arm/mach-sa1100/clock.c
+> @@ -85,13 +85,14 @@ void clk_disable(struct clk *clk)
+>  {
+>  	unsigned long flags;
+>
+> -	if (clk) {
+> -		WARN_ON(clk->enabled == 0);
+> -		spin_lock_irqsave(&clocks_lock, flags);
+> -		if (--clk->enabled == 0)
+> -			clk->ops->disable(clk);
+> -		spin_unlock_irqrestore(&clocks_lock, flags);
+> -	}
+> +	if (IS_ERR_OR_NULL(clk))
+> +		return;
+> +
+> +	WARN_ON(clk->enabled == 0);
+> +	spin_lock_irqsave(&clocks_lock, flags);
+> +	if (--clk->enabled == 0)
+> +		clk->ops->disable(clk);
+> +	spin_unlock_irqrestore(&clocks_lock, flags);
+>  }
+>  EXPORT_SYMBOL(clk_disable);
+>
+> diff --git a/arch/arm/mach-w90x900/clock.c b/arch/arm/mach-w90x900/clock.c
+> index 2c371ff..90ec250 100644
+> --- a/arch/arm/mach-w90x900/clock.c
+> +++ b/arch/arm/mach-w90x900/clock.c
+> @@ -46,6 +46,9 @@ void clk_disable(struct clk *clk)
+>  {
+>  	unsigned long flags;
+>
+> +	if (IS_ERR_OR_NULL(clk))
+> +		return;
+> +
+>  	WARN_ON(clk->enabled == 0);
+>
+>  	spin_lock_irqsave(&clocks_lock, flags);
+> diff --git a/arch/blackfin/mach-bf609/clock.c b/arch/blackfin/mach-bf609/clock.c
+> index 3783058..fed8015 100644
+> --- a/arch/blackfin/mach-bf609/clock.c
+> +++ b/arch/blackfin/mach-bf609/clock.c
+> @@ -97,6 +97,9 @@ EXPORT_SYMBOL(clk_enable);
+>
+>  void clk_disable(struct clk *clk)
+>  {
+> +	if (IS_ERR_OR_NULL(clk))
+> +		return;
+> +
+>  	if (clk->ops && clk->ops->disable)
+>  		clk->ops->disable(clk);
+>  }
+> diff --git a/arch/m68k/coldfire/clk.c b/arch/m68k/coldfire/clk.c
+> index fddfdcc..eb0e8c1 100644
+> --- a/arch/m68k/coldfire/clk.c
+> +++ b/arch/m68k/coldfire/clk.c
+> @@ -101,6 +101,10 @@ EXPORT_SYMBOL(clk_enable);
+>  void clk_disable(struct clk *clk)
+>  {
+>  	unsigned long flags;
+> +
+> +	if (IS_ERR_OR_NULL(clk))
+> +		return;
+> +
+>  	spin_lock_irqsave(&clk_lock, flags);
+>  	if ((--clk->enabled == 0) && clk->clk_ops)
+>  		clk->clk_ops->disable(clk);
+> diff --git a/arch/mips/bcm63xx/clk.c b/arch/mips/bcm63xx/clk.c
+> index 6375652..d6a39bf 100644
+> --- a/arch/mips/bcm63xx/clk.c
+> +++ b/arch/mips/bcm63xx/clk.c
+> @@ -326,6 +326,9 @@ EXPORT_SYMBOL(clk_enable);
+>
+>  void clk_disable(struct clk *clk)
+>  {
+> +	if (IS_ERR_OR_NULL(clk))
+> +		return;
+> +
+>  	mutex_lock(&clocks_mutex);
+>  	clk_disable_unlocked(clk);
+>  	mutex_unlock(&clocks_mutex);
+> diff --git a/arch/mips/lantiq/clk.c b/arch/mips/lantiq/clk.c
+> index a0706fd..c8d87b1 100644
+> --- a/arch/mips/lantiq/clk.c
+> +++ b/arch/mips/lantiq/clk.c
+> @@ -130,6 +130,9 @@ EXPORT_SYMBOL(clk_enable);
+>
+>  void clk_disable(struct clk *clk)
+>  {
+> +	if (IS_ERR_OR_NULL(clk))
+> +		return;
+> +
+>  	if (unlikely(!clk_good(clk)))
+>  		return;
+>
+> diff --git a/drivers/sh/clk/core.c b/drivers/sh/clk/core.c
+> index be56b22..3dd20cf 100644
+> --- a/drivers/sh/clk/core.c
+> +++ b/drivers/sh/clk/core.c
+> @@ -252,7 +252,7 @@ void clk_disable(struct clk *clk)
+>  {
+>  	unsigned long flags;
+>
+> -	if (!clk)
+> +	if (IS_ERR_OR_NULL(clk))
+>  		return;
+>
+>  	spin_lock_irqsave(&clock_lock, flags);
+>

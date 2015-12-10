@@ -1,116 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Dec 2015 17:26:39 +0100 (CET)
-Received: from mail-ob0-f172.google.com ([209.85.214.172]:33843 "EHLO
-        mail-ob0-f172.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27013641AbbLJQ0iHUQho (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 10 Dec 2015 17:26:38 +0100
-Received: by obciw8 with SMTP id iw8so62734310obc.1
-        for <linux-mips@linux-mips.org>; Thu, 10 Dec 2015 08:26:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro-org.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        bh=/2dQ1I4K/Otgz0LyxnqpvUPEFvyAh7R6LMMAgcQD9mo=;
-        b=xJRxbCtOnrg06FPa+RqPwHWKWc6HS/BUewYQT9Y9TCTcGxoCwFcEylNusxyuzzOfrj
-         gqtgJWBdOvKfPz4i/1GSw5Yn0SXU56GhPCG5SPPho4ZXZaQduCYXEv1ZGXPTHkaoDLKd
-         KB0Ihey+1CKPJbPB4urRBBmrCboUwYuI3tFNvpXQJ9As2BsmUHJ1PvCXS6uPMK8sqnej
-         J6wPjGz7h7eYg/KDJo95mXe6R7fm5SJS6LMIN5g5m230fMW1nl8OKH0cvHLgjd21jpiE
-         Z7v5oYWK4j12viGZRQeqFXRoKMlddcO6d+fHJ3SfJHE/oRIPCEFGTy/eKwE1mSIp3jAx
-         fK2A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:in-reply-to:references:date
-         :message-id:subject:from:to:cc:content-type;
-        bh=/2dQ1I4K/Otgz0LyxnqpvUPEFvyAh7R6LMMAgcQD9mo=;
-        b=VOYS8nvNxtfiwZu/y922Xvm2NjigSkhK/TKvW9lTKEm1QtwZT5uIV258FebEfwVtJB
-         1qV5Fa6yuEU4/AfZ/96wLPPXfVtIc3lN3kh81bxyS4IANnVlsVQLpBF/knVO+TdNPmeV
-         zeTW+OjWAkFGfPcEcVSWMiyWStiK7Kkg2S+4WdJDukxYccy+qHzNG2ixHXq/4OOGxk8m
-         s81np/wFCEXmCG9cR1MXLVj6ZDmfbn3VxhT67jVyYTMuTGrLNhzR9SJq1YDU1dB2T0ii
-         vYPLzWaod1/Ein6CDv2sOnqkRGSHc42+9UfVj1vr/qzrFnGPS1PQTO8UsPvxToUYK+5o
-         uBsA==
-X-Gm-Message-State: ALoCoQn92y4AM44XQFgHUw8e+v9k153go+Ft62soZirDzFy6sT17b1sQIFEOBss3/W4pd9/ib/UhWpt3C7XBlJw2ty9I9ZmAnzSF3mwzUGpCLnU7NSgyTa8=
-MIME-Version: 1.0
-X-Received: by 10.182.129.132 with SMTP id nw4mr4913603obb.48.1449764791554;
- Thu, 10 Dec 2015 08:26:31 -0800 (PST)
-Received: by 10.182.32.70 with HTTP; Thu, 10 Dec 2015 08:26:31 -0800 (PST)
-In-Reply-To: <20151130163413.GB1929@sirena.org.uk>
-References: <1448900513-20856-1-git-send-email-paul.burton@imgtec.com>
-        <20151130163413.GB1929@sirena.org.uk>
-Date:   Thu, 10 Dec 2015 17:26:31 +0100
-Message-ID: <CACRpkdb2YhSbaYUXh4Dz7juObHxmWLc8Gj6UmkJ=Nv69UNfaPA@mail.gmail.com>
-Subject: Re: [PATCH 00/28] MIPS Boston board support
-From:   Linus Walleij <linus.walleij@linaro.org>
-To:     Mark Brown <broonie@kernel.org>
-Cc:     Paul Burton <paul.burton@imgtec.com>,
-        Linux MIPS <linux-mips@linux-mips.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Joshua Kinard <kumba@gentoo.org>,
-        Alessandro Zummo <a.zummo@towertech.it>,
-        Jiri Slaby <jslaby@suse.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>,
-        Kumar Gala <galak@codeaurora.org>,
-        Yijing Wang <wangyijing@huawei.com>,
-        Ian Campbell <ijc+devicetree@hellion.org.uk>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Dec 2015 22:29:01 +0100 (CET)
+Received: from proxima.lp0.eu ([81.2.80.65]:49977 "EHLO proxima.lp0.eu"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27013651AbbLJV2653ekJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 10 Dec 2015 22:28:58 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=fire.lp0.eu; s=exim;
+        h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:Message-ID:Cc:To:Subject:From; bh=Fer/Aci73ThtoNLDEX2VQt9usPT5cMzlDjh2tzPULwk=;
+        b=hk/v/CfLioMMZF+pPOMvOJTiOx5gSGv/EDj/B+OIrNJQwC9H0YB2sYI0QILjaE/P/5lJ3T8aNhBIxOzHy25I0QD5wpr7/LJKUP//Vr0pVBho8Bnc1o/Be3LCTC6qfFFb1Bz1AZ6WH/toPLUoSnAtqSvKMkaNjjFtfhJqDQNo/cKQM3XZLi7mhsRDxv9mZtYjuT2FOOJIfFjDqPoBK+ztFXmayDagodB2h1K5ac4kkAcQo1qX0S30QbUaLY1rTETCc9tJBvTIcMibHtoE6X695uuPGSbdcnKIYCNRJZwXQwcMQ6b57+BPYDSBDjxie7EDEXMq/vlYVPf+oN46SENCXA==;
+Received: from redrum.lp0.eu ([2001:8b0:ffea:0:2e0:81ff:fe4d:2bec]:60677 ident=simon)
+        by proxima.lp0.eu ([2001:8b0:ffea:0:205:b4ff:fe12:530]:465)
+        with esmtpsav (UNKNOWN:DHE-RSA-AES256-SHA:256/CN=Simon Arlott)
+        id 1a78lU-0007yd-Ff (Exim); Thu, 10 Dec 2015 21:28:41 +0000
+From:   Simon Arlott <simon@fire.lp0.eu>
+Subject: [PATCH linux-next (v3) 1/2] reset: Add brcm,bcm6345-reset device tree
+ binding
+To:     Philipp Zabel <p.zabel@pengutronix.de>,
+        Kevin Cernekee <cernekee@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+Cc:     linux-kernel@vger.kernel.org,
+        MIPS Mailing List <linux-mips@linux-mips.org>,
         Rob Herring <robh+dt@kernel.org>,
-        John Crispin <blogic@openwrt.org>,
-        Jayachandran C <jchandra@broadcom.com>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Ray Jui <rjui@broadcom.com>,
-        Richard Cochran <richardcochran@gmail.com>,
-        Tejun Heo <tj@kernel.org>,
-        Michal Simek <michal.simek@xilinx.com>,
-        Andrew Bresticker <abrestic@chromium.org>,
-        Russell Joyce <russell.joyce@york.ac.uk>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Grant Likely <grant.likely@linaro.org>,
-        Alexandre Belloni <alexandre.belloni@free-electrons.com>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
         Pawel Moll <pawel.moll@arm.com>,
-        linux-pci <linux-pci@vger.kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Alexandre Courbot <gnurou@gmail.com>,
-        Zhou Wang <wangzhou1@hisilicon.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Ley Foon Tan <lftan@altera.com>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        Jiang Liu <jiang.liu@linux.intel.com>,
-        "linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
-        "rtc-linux@googlegroups.com" <rtc-linux@googlegroups.com>,
-        Rob Herring <robh@kernel.org>,
-        Mauro Carvalho Chehab <mchehab@osg.samsung.com>,
-        Wolfram Sang <wsa@the-dreams.de>, Duc Dang <dhdang@apm.com>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Vinod Koul <vinod.koul@intel.com>,
-        Markos Chandras <markos.chandras@imgtec.com>,
-        Michal Simek <monstr@monstr.eu>,
-        Marc Zyngier <marc.zyngier@arm.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Miguel Ojeda Sandonis <miguel.ojeda.sandonis@gmail.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Joe Perches <joe@perches.com>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Hauke Mehrtens <hauke@hauke-m.de>,
-        =?UTF-8?Q?S=C3=B6ren_Brinkmann?= <soren.brinkmann@xilinx.com>,
-        dmaengine@vger.kernel.org, Mark Rutland <mark.rutland@arm.com>,
-        Minghuan Lian <Minghuan.Lian@freescale.com>,
-        "linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <linus.walleij@linaro.org>
+        Mark Rutland <mark.rutland@arm.com>,
+        Ian Campbell <ijc+devicetree@hellion.org.uk>,
+        Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
+        Jonas Gorski <jogo@openwrt.org>
+Message-ID: <5669EE86.8030406@simon.arlott.org.uk>
+Date:   Thu, 10 Dec 2015 21:28:38 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+ Thunderbird/38.4.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Return-Path: <simon@fire.lp0.eu>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50529
+X-archive-position: 50530
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linus.walleij@linaro.org
+X-original-sender: simon@fire.lp0.eu
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -123,22 +53,64 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Nov 30, 2015 at 5:34 PM, Mark Brown <broonie@kernel.org> wrote:
-> On Mon, Nov 30, 2015 at 04:21:25PM +0000, Paul Burton wrote:
->> This series introduces support for the Imagination Technologies MIPS
->> Boston development board. Boston is an FPGA-based development board
->> akin to the much older Malta board, built around a Xilinx FPGA running
->> a MIPS CPU & other logic including a PCIe root port connected to an
->> Intel EG20T Platform Controller Hub. This provides a base set of
->> peripherals including SATA, USB, SD/MMC, ethernet, I2C & GPIOs. PCIe
->> slots are also present for expansion.
->
-> This is an insanely big CC list :(
->
-> What are the interdependencies here - does this really need to be one
-> patch series or can the individual driver changes go in separately?
+Add device tree binding for the BCM6345 soft reset controller.
 
-I took the two GPIO patches and ran off with them at least.
+The BCM6345 contains a soft-reset controller activated by setting
+a bit (that must previously have been cleared).
 
-Yours,
-Linus Walleij
+Signed-off-by: Simon Arlott <simon@fire.lp0.eu>
+---
+v3: Resend. Example has changed because usbh now has two compatible
+    strings and uses a power domain instead of a regulator.
+
+v2: Renamed to bcm6345, removed "mask" property.
+    Acked-by: Rob Herring <robh@kernel.org>
+
+ .../bindings/reset/brcm,bcm6345-reset.txt          | 33 ++++++++++++++++++++++
+ 1 file changed, 33 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/reset/brcm,bcm6345-reset.txt
+
+diff --git a/Documentation/devicetree/bindings/reset/brcm,bcm6345-reset.txt b/Documentation/devicetree/bindings/reset/brcm,bcm6345-reset.txt
+new file mode 100644
+index 0000000..0313040
+--- /dev/null
++++ b/Documentation/devicetree/bindings/reset/brcm,bcm6345-reset.txt
+@@ -0,0 +1,33 @@
++Broadcom BCM6345 reset controller
++
++The BCM6345 contains a basic soft reset controller in the perf register
++set which resets components using a bit in a register.
++
++Please also refer to reset.txt in this directory for common reset
++controller binding usage.
++
++Required properties:
++- compatible:	Should be "brcm,bcm<soc>-reset", "brcm,bcm6345-reset"
++- regmap:	The register map phandle
++- offset:	Offset in the register map for the reset register (in bytes)
++- #reset-cells:	Must be set to 1
++
++Example:
++
++periph_soft_rst: reset-controller {
++	compatible = "brcm,bcm63168-reset", "brcm,bcm6345-reset";
++	regmap = <&periph_cntl>;
++	offset = <0x10>;
++
++	#reset-cells = <1>;
++};
++
++usbh: usbphy@10002700 {
++	compatible = "brcm,bcm63168-usbh", "brcm,bcm6328-usbh";
++	reg = <0x10002700 0x38>;
++	clocks = <&periph_clk 13>, <&timer_clk 18>;
++	resets = <&periph_soft_rst 6>;
++	power-domains = <&misc_iddq_ctrl 4>;
++	#phy-cells = <0>;
++};
++
+-- 
+2.1.4
+
+-- 
+Simon Arlott

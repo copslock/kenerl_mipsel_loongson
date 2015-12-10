@@ -1,75 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Dec 2015 22:36:57 +0100 (CET)
-Received: from mail-lb0-f173.google.com ([209.85.217.173]:33346 "EHLO
-        mail-lb0-f173.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27013666AbbLJVgymnbsJ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 10 Dec 2015 22:36:54 +0100
-Received: by lbbkw15 with SMTP id kw15so59285658lbb.0
-        for <linux-mips@linux-mips.org>; Thu, 10 Dec 2015 13:36:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cogentembedded-com.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:references:cc:from:organization:message-id:date
-         :user-agent:mime-version:in-reply-to:content-type
-         :content-transfer-encoding;
-        bh=VDjo4xE0DL6sSPPbRL6hj3A1RJdgLjO9IT6fiiAzLaM=;
-        b=m8I+K/CXE3rL4ATZeOIdkoI2566vKiaISaBNvo8tRMrwiTv4n/Zo3hfJ6OE8sHNI4f
-         JbQM+jtR+bu2T6OOsIjj4kIRCjEKI7+bKEoFvmxWZ5MvK0hRWmbeVq9V0JhodIcTbbEG
-         +safpfcpokHFM5j/oxlFHQK4Ms7yYKpm7+MooQvk/FooAV957gv6DwxFK5iY1iKIbz7H
-         mgjTVaBUS4qIIyyz4Dmboe+Um+FbjJD6VFZK8G8+wPM+uV/Ka9Sc/dUB0L796J9kkIZA
-         qdCQrTi1BtY858RgiFU3V205WpStOoHPwsv6SuXWtl3KLKvC3JNw22aedts82HvlMfD9
-         1xfg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:subject:to:references:cc:from:organization
-         :message-id:date:user-agent:mime-version:in-reply-to:content-type
-         :content-transfer-encoding;
-        bh=VDjo4xE0DL6sSPPbRL6hj3A1RJdgLjO9IT6fiiAzLaM=;
-        b=jJBhtUSJhgbYyIhTzVhP85MRZHMXP3aAhb8cL8ZC7P3FavUE/lM44tVqlggfAqax3x
-         XN1+aOVpme2cHd8qItOZdCiEbjdpoaM05JMeDulRbVydOL1XCk811+vG5RvqeD+J0LNk
-         qgXUkqhdE+NsocqBGQCcc3qcv16wAEZ/mwChwn0EVlkuQlAI7/VMSA72GpZrRnky0wFt
-         K80e+4+cpX4IAjbjv2ETruhm7HR/O8O8piVoe+zGTII4eLGRIqp1wA1FufMr/IWiA/3n
-         WSOGFL8IAbyhi1QDdAEI/+GbB2YIPmlqXI51X6MrpXJfePix8xteSS7lR3Vgvadrdhif
-         WogA==
-X-Gm-Message-State: ALoCoQlYaxscjAsp4lS5Tnb2G+ZfRcZzJ+5tVYTI5feMt0BeU+3elArq5Z6HIeIY83KysnPKHOdFdzZQYEYkTuo2gy+flZUs4g==
-X-Received: by 10.112.171.99 with SMTP id at3mr6623806lbc.108.1449783409311;
-        Thu, 10 Dec 2015 13:36:49 -0800 (PST)
-Received: from wasted.cogentembedded.com ([31.173.80.98])
-        by smtp.gmail.com with ESMTPSA id t82sm2665661lfe.14.2015.12.10.13.36.47
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Thu, 10 Dec 2015 13:36:48 -0800 (PST)
-Subject: Re: [PATCH linux-next (v3) 1/2] reset: Add brcm,bcm6345-reset device
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Dec 2015 22:49:39 +0100 (CET)
+Received: from proxima.lp0.eu ([81.2.80.65]:50433 "EHLO proxima.lp0.eu"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27013651AbbLJVthjK13J (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 10 Dec 2015 22:49:37 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=fire.lp0.eu; s=exim;
+        h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:Message-ID:Cc:To:Subject:From; bh=NvCzI2NZSgPe31/q9YF1zoQZ0qCLATfwc4ZeQs72OOQ=;
+        b=YgAetqI9ZvuwByHlqT648OA6m6lH0yD5xh25RvyVvUZ1N68wc7+2eyWnodR84xDuBDhjxl0N8LCj1ypeNRQGiY7cqXjQEsyWQXp/9UwCFoYBjoTQRa/y9feMXYwwmaY1pcNCys1uCv4DVfnnTomQ7UM2kswMbYkgqJ5yO9VjhM3a65RsCexc55km99Wx1fQowHNfrD4rY+jszeiBc9DfrFN38zij6hsVNje86ag6K0EOguEkjpet2y/yollhe+zD4yUBtmOk4mdSskeLIgJu9X1RbZ9bgOvxEXzLdlFS2AxDkUwpnUQYCfMeo8iLP8C1DL25ezv0liTKnp56cxBf0A==;
+Received: from redrum.lp0.eu ([2001:8b0:ffea:0:2e0:81ff:fe4d:2bec]:60775)
+        by proxima.lp0.eu ([2001:8b0:ffea:0:205:b4ff:fe12:530]:465)
+        with esmtpsav (UNKNOWN:DHE-RSA-AES256-SHA:256/CN=Simon Arlott)
+        id 1a795X-0000dQ-Oj (Exim); Thu, 10 Dec 2015 21:49:24 +0000
+From:   Simon Arlott <simon@fire.lp0.eu>
+Subject: [PATCH linux-next (v2) 1/2] clk: Add brcm,bcm6345-gate-clk device
  tree binding
-To:     Simon Arlott <simon@fire.lp0.eu>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
+To:     Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@codeaurora.org>,
         Kevin Cernekee <cernekee@gmail.com>,
         Florian Fainelli <f.fainelli@gmail.com>,
         "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
-References: <5669EE86.8030406@simon.arlott.org.uk>
-Cc:     linux-kernel@vger.kernel.org,
-        MIPS Mailing List <linux-mips@linux-mips.org>,
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-clk@vger.kernel.org, linux-mips@linux-mips.org,
         Rob Herring <robh+dt@kernel.org>,
         Pawel Moll <pawel.moll@arm.com>,
         Mark Rutland <mark.rutland@arm.com>,
         Ian Campbell <ijc+devicetree@hellion.org.uk>,
+        Kumar Gala <galak@codeaurora.org>,
         Jonas Gorski <jogo@openwrt.org>
-From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Organization: Cogent Embedded
-Message-ID: <5669F06E.3060506@cogentembedded.com>
-Date:   Fri, 11 Dec 2015 00:36:46 +0300
+Message-ID: <5669F361.60405@simon.arlott.org.uk>
+Date:   Thu, 10 Dec 2015 21:49:21 +0000
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.3.0
+ Thunderbird/38.4.0
 MIME-Version: 1.0
-In-Reply-To: <5669EE86.8030406@simon.arlott.org.uk>
-Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
-Return-Path: <sergei.shtylyov@cogentembedded.com>
+Return-Path: <simon@fire.lp0.eu>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50532
+X-archive-position: 50533
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sergei.shtylyov@cogentembedded.com
+X-original-sender: simon@fire.lp0.eu
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -82,62 +54,95 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hello.
+Add device tree binding for the BCM6345's gated clocks.
 
-On 12/11/2015 12:28 AM, Simon Arlott wrote:
+The BCM6345 contains clocks gated with a register. Clocks are indexed
+by bits in the register and are active high. Most MIPS-based BCM63xx
+SoCs have a clock gating set of registers, but some have clock gate bits
+interleaved with other status bits and configurable clocks in the same
+register.
 
-> Add device tree binding for the BCM6345 soft reset controller.
->
-> The BCM6345 contains a soft-reset controller activated by setting
-> a bit (that must previously have been cleared).
->
-> Signed-off-by: Simon Arlott <simon@fire.lp0.eu>
-> ---
-> v3: Resend. Example has changed because usbh now has two compatible
->      strings and uses a power domain instead of a regulator.
->
-> v2: Renamed to bcm6345, removed "mask" property.
->      Acked-by: Rob Herring <robh@kernel.org>
->
->   .../bindings/reset/brcm,bcm6345-reset.txt          | 33 ++++++++++++++++++++++
->   1 file changed, 33 insertions(+)
->   create mode 100644 Documentation/devicetree/bindings/reset/brcm,bcm6345-reset.txt
->
-> diff --git a/Documentation/devicetree/bindings/reset/brcm,bcm6345-reset.txt b/Documentation/devicetree/bindings/reset/brcm,bcm6345-reset.txt
-> new file mode 100644
-> index 0000000..0313040
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/reset/brcm,bcm6345-reset.txt
-> @@ -0,0 +1,33 @@
-> +Broadcom BCM6345 reset controller
-> +
-> +The BCM6345 contains a basic soft reset controller in the perf register
-> +set which resets components using a bit in a register.
-> +
-> +Please also refer to reset.txt in this directory for common reset
-> +controller binding usage.
-> +
-> +Required properties:
-> +- compatible:	Should be "brcm,bcm<soc>-reset", "brcm,bcm6345-reset"
-> +- regmap:	The register map phandle
-> +- offset:	Offset in the register map for the reset register (in bytes)
-> +- #reset-cells:	Must be set to 1
-> +
-> +Example:
-> +
-> +periph_soft_rst: reset-controller {
-> +	compatible = "brcm,bcm63168-reset", "brcm,bcm6345-reset";
-> +	regmap = <&periph_cntl>;
-> +	offset = <0x10>;
-> +
-> +	#reset-cells = <1>;
-> +};
-> +
-> +usbh: usbphy@10002700 {
+Signed-off-by: Simon Arlott <simon@fire.lp0.eu>
+---
+v2: Added clock-indices, clock-output-names (from clock-bindings.txt),
+    these are required properties.
 
-    "usb-phy" please to be more in line with ePAPR standardized "ethernet-phy" 
-node name.
+v1: Renamed from BCM63xx to BCM6345.
 
-[...]
+ .../bindings/clock/brcm,bcm6345-gate-clk.txt       | 62 ++++++++++++++++++++++
+ 1 file changed, 62 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/clock/brcm,bcm6345-gate-clk.txt
 
-MBR, Sergei
+diff --git a/Documentation/devicetree/bindings/clock/brcm,bcm6345-gate-clk.txt b/Documentation/devicetree/bindings/clock/brcm,bcm6345-gate-clk.txt
+new file mode 100644
+index 0000000..a6e264c
+--- /dev/null
++++ b/Documentation/devicetree/bindings/clock/brcm,bcm6345-gate-clk.txt
+@@ -0,0 +1,62 @@
++Broadcom BCM6345 clocks
++
++This binding uses the common clock binding:
++	Documentation/devicetree/bindings/clock/clock-bindings.txt
++
++The BCM6345 contains clocks gated with a register. Clocks are indexed
++by bits in the register and are active high. Most MIPS-based BCM63xx
++SoCs have a clock gating set of registers, but some have clock gate bits
++interleaved with other status bits and configurable clocks in the same
++register.
++
++Required properties:
++- compatible:         Should be "brcm,bcm<soc>-gate-clk", "brcm,bcm6345-gate-clk"
++- #clock-cells:       Should be <1>.
++- regmap:             The register map phandle
++- offset:             Offset in the register map for the clock register (in bytes)
++- clocks:             The external oscillator clock phandle
++- clock-indices:      The bits in the register used for gated clocks.
++- clock-output-names: Should be a list of strings of clock output signal
++                      names indexed by the clock indices.
++
++Example:
++
++periph_clk: periph_clk {
++	compatible = "brcm,bcm63168-gate-clk", "brcm,bcm6345-gate-clk";
++	regmap = <&periph_cntl>;
++	offset = <0x4>;
++
++	#clock-cells = <1>;
++	clock-indices =
++		<1>,          <2>,        <3>,       <4>,     <5>,
++		<6>,          <7>,        <8>,       <9>,     <10>,
++		<11>,         <12>,       <13>,      <14>,    <15>,
++		<16>,         <17>,       <18>,      <19>,    <20>,
++		<27>,         <31>;
++	clock-output-names =
++		"vdsl_qproc", "vdsl_afe", "vdsl",    "mips",  "wlan_ocp",
++		"dect",       "fap0",     "fap1",    "sar",   "robosw",
++		"pcm",        "usbd",     "usbh",    "ipsec", "spi",
++		"hsspi",      "pcie",     "phymips", "gmac",  "nand",
++		"tbus",       "robosw250";
++};
++
++timer_clk: timer_clk {
++	compatible = "brcm,bcm63168-gate-clk", "brcm,bcm6345-gate-clk";
++	regmap = <&timer_cntl>;
++	offset = <0x4>;
++
++	#clock-cells = <1>;
++	clock-indices = <17>, <18>;
++	clock-output-names = "uto_extin", "usb_ref";
++};
++
++ehci0: usb@10002500 {
++	compatible = "brcm,bcm63168-ehci", "brcm,bcm6345-ehci", "generic-ehci";
++	reg = <0x10002500 0x100>;
++	big-endian;
++	interrupt-parent = <&periph_intc>;
++	interrupts = <10>;
++	clocks = <&periph_clk 13>, <&timer_clk 18>;
++	phys = <&usbh>;
++};
+-- 
+2.1.4
+
+-- 
+Simon Arlott

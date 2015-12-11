@@ -1,50 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 Dec 2015 04:49:06 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.136]:58247 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27006195AbbLKDtFAEExD (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 11 Dec 2015 04:49:05 +0100
-Received: from mail.kernel.org (localhost [127.0.0.1])
-        by mail.kernel.org (Postfix) with ESMTP id C87302055D;
-        Fri, 11 Dec 2015 03:49:02 +0000 (UTC)
-Received: from rob-hp-laptop (72-48-98-129.dyn.grandenetworks.net [72.48.98.129])
-        (using TLSv1.2 with cipher AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id EC74020547;
-        Fri, 11 Dec 2015 03:49:00 +0000 (UTC)
-Date:   Thu, 10 Dec 2015 21:48:59 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Simon Arlott <simon@fire.lp0.eu>
-Cc:     Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@codeaurora.org>,
-        Kevin Cernekee <cernekee@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-clk@vger.kernel.org, linux-mips@linux-mips.org,
-        Pawel Moll <pawel.moll@arm.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ian Campbell <ijc+devicetree@hellion.org.uk>,
-        Kumar Gala <galak@codeaurora.org>,
-        Jonas Gorski <jogo@openwrt.org>
-Subject: Re: [PATCH linux-next (v2) 1/2] clk: Add brcm,bcm6345-gate-clk
- device tree binding
-Message-ID: <20151211034859.GA7982@rob-hp-laptop>
-References: <5669F361.60405@simon.arlott.org.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 Dec 2015 12:10:10 +0100 (CET)
+Received: from mail-ob0-f169.google.com ([209.85.214.169]:35831 "EHLO
+        mail-ob0-f169.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007832AbbLKLKI61EAY (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 11 Dec 2015 12:10:08 +0100
+Received: by obc18 with SMTP id 18so80281499obc.2
+        for <linux-mips@linux-mips.org>; Fri, 11 Dec 2015 03:10:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type;
+        bh=7mikNddyCN0ORGY489Hfcbv1xE9Joe5sEj9nvobw7Pk=;
+        b=oVEyCWQDUtzqxyTWe4G0rArAVN0w07QAIVU49w+N2whU9w3bv6jirh9UF4HiuzpfAM
+         aPSGRBV9PMQT4wjndU0dqogWCmNbVPlg2OCUpQ7PNPDgYrepffh+EQN/qkj9IapD0zhz
+         uJGip0C+kM6koVKftKU+u8TxBKyRT4L/UC4wk76jSv+GYOUlPpUvGGxx5mAZ8Q+W6qfC
+         vcTTbyGMctvpemBrM0KzGW34sr5hAggfNYmf41ZcFSjAlNkHOXKNt80gzpkb16VwFvOS
+         a3wIHlpqdNcm2ihZXYGjx8Z4CA87kBiMBul0DcFAq7YW0JcuSUUz0yfrlfN2NKqxEnYm
+         5gwQ==
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5669F361.60405@simon.arlott.org.uk>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-X-Virus-Scanned: ClamAV using ClamSMTP
-Return-Path: <robh@kernel.org>
+X-Received: by 10.182.120.4 with SMTP id ky4mr13544062obb.16.1449832202684;
+ Fri, 11 Dec 2015 03:10:02 -0800 (PST)
+Received: by 10.60.233.35 with HTTP; Fri, 11 Dec 2015 03:10:02 -0800 (PST)
+In-Reply-To: <1449667265-17525-5-git-send-email-pmladek@suse.com>
+References: <1449667265-17525-1-git-send-email-pmladek@suse.com>
+        <1449667265-17525-5-git-send-email-pmladek@suse.com>
+Date:   Fri, 11 Dec 2015 12:10:02 +0100
+X-Google-Sender-Auth: CsIvV8NVAYrLNBsuubq93hglviQ
+Message-ID: <CAMuHMdXVgr58YjoePGrRbMyMncQ27f85prL7G5SpeHeNxoYrXQ@mail.gmail.com>
+Subject: Re: [PATCH v3 4/4] printk/nmi: Increase the size of NMI buffer and
+ make it configurable
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+To:     Petr Mladek <pmladek@suse.com>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Russell King <rmk+kernel@arm.linux.org.uk>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jiri Kosina <jkosina@suse.com>, Ingo Molnar <mingo@redhat.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "the arch/x86 maintainers" <x86@kernel.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "adi-buildroot-devel@lists.sourceforge.net" 
+        <adi-buildroot-devel@lists.sourceforge.net>,
+        Cris <linux-cris-kernel@axis.com>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        sparclinux <sparclinux@vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <geert.uytterhoeven@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50542
+X-archive-position: 50543
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: robh@kernel.org
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -57,99 +71,66 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Dec 10, 2015 at 09:49:21PM +0000, Simon Arlott wrote:
-> Add device tree binding for the BCM6345's gated clocks.
-> 
-> The BCM6345 contains clocks gated with a register. Clocks are indexed
-> by bits in the register and are active high. Most MIPS-based BCM63xx
-> SoCs have a clock gating set of registers, but some have clock gate bits
-> interleaved with other status bits and configurable clocks in the same
-> register.
-> 
-> Signed-off-by: Simon Arlott <simon@fire.lp0.eu>
+On Wed, Dec 9, 2015 at 2:21 PM, Petr Mladek <pmladek@suse.com> wrote:
+> --- a/init/Kconfig
+> +++ b/init/Kconfig
+> @@ -866,6 +866,28 @@ config LOG_CPU_MAX_BUF_SHIFT
+>                      13 =>   8 KB for each CPU
+>                      12 =>   4 KB for each CPU
+>
+> +config NMI_LOG_BUF_SHIFT
+> +       int "Temporary per-CPU NMI log buffer size (12 => 4KB, 13 => 8KB)"
+> +       range 10 21
+> +       default 13
+> +       depends on PRINTK && HAVE_NMI
 
-Acked-by: Rob Herring <robh@kernel.org>
+Symbol NMI_LOG_BUF_SHIFT does not exist if its dependencies are not met.
 
-> ---
-> v2: Added clock-indices, clock-output-names (from clock-bindings.txt),
->     these are required properties.
-> 
-> v1: Renamed from BCM63xx to BCM6345.
-> 
->  .../bindings/clock/brcm,bcm6345-gate-clk.txt       | 62 ++++++++++++++++++++++
->  1 file changed, 62 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/clock/brcm,bcm6345-gate-clk.txt
-> 
-> diff --git a/Documentation/devicetree/bindings/clock/brcm,bcm6345-gate-clk.txt b/Documentation/devicetree/bindings/clock/brcm,bcm6345-gate-clk.txt
-> new file mode 100644
-> index 0000000..a6e264c
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/clock/brcm,bcm6345-gate-clk.txt
-> @@ -0,0 +1,62 @@
-> +Broadcom BCM6345 clocks
+> +       help
+> +         Select the size of a per-CPU buffer where NMI messages are temporary
+> +         stored. They are copied to the main log buffer in a safe context
+> +         to avoid a deadlock. The value defines the size as a power of 2.
 > +
-> +This binding uses the common clock binding:
-> +	Documentation/devicetree/bindings/clock/clock-bindings.txt
+> +         NMI messages are rare and limited. The largest one is when
+> +         a backtrace is printed. It usually fits into 4KB. Select
+> +         8KB if you want to be on the safe side.
 > +
-> +The BCM6345 contains clocks gated with a register. Clocks are indexed
-> +by bits in the register and are active high. Most MIPS-based BCM63xx
-> +SoCs have a clock gating set of registers, but some have clock gate bits
-> +interleaved with other status bits and configurable clocks in the same
-> +register.
+> +         Examples:
+> +                    17 => 128 KB for each CPU
+> +                    16 =>  64 KB for each CPU
+> +                    15 =>  32 KB for each CPU
+> +                    14 =>  16 KB for each CPU
+> +                    13 =>   8 KB for each CPU
+> +                    12 =>   4 KB for each CPU
 > +
-> +Required properties:
-> +- compatible:         Should be "brcm,bcm<soc>-gate-clk", "brcm,bcm6345-gate-clk"
-> +- #clock-cells:       Should be <1>.
-> +- regmap:             The register map phandle
-> +- offset:             Offset in the register map for the clock register (in bytes)
-> +- clocks:             The external oscillator clock phandle
-> +- clock-indices:      The bits in the register used for gated clocks.
-> +- clock-output-names: Should be a list of strings of clock output signal
-> +                      names indexed by the clock indices.
-> +
-> +Example:
-> +
-> +periph_clk: periph_clk {
-> +	compatible = "brcm,bcm63168-gate-clk", "brcm,bcm6345-gate-clk";
-> +	regmap = <&periph_cntl>;
-> +	offset = <0x4>;
-> +
-> +	#clock-cells = <1>;
-> +	clock-indices =
-> +		<1>,          <2>,        <3>,       <4>,     <5>,
-> +		<6>,          <7>,        <8>,       <9>,     <10>,
-> +		<11>,         <12>,       <13>,      <14>,    <15>,
-> +		<16>,         <17>,       <18>,      <19>,    <20>,
-> +		<27>,         <31>;
-> +	clock-output-names =
-> +		"vdsl_qproc", "vdsl_afe", "vdsl",    "mips",  "wlan_ocp",
-> +		"dect",       "fap0",     "fap1",    "sar",   "robosw",
-> +		"pcm",        "usbd",     "usbh",    "ipsec", "spi",
-> +		"hsspi",      "pcie",     "phymips", "gmac",  "nand",
-> +		"tbus",       "robosw250";
-> +};
-> +
-> +timer_clk: timer_clk {
-> +	compatible = "brcm,bcm63168-gate-clk", "brcm,bcm6345-gate-clk";
-> +	regmap = <&timer_cntl>;
-> +	offset = <0x4>;
-> +
-> +	#clock-cells = <1>;
-> +	clock-indices = <17>, <18>;
-> +	clock-output-names = "uto_extin", "usb_ref";
-> +};
-> +
-> +ehci0: usb@10002500 {
-> +	compatible = "brcm,bcm63168-ehci", "brcm,bcm6345-ehci", "generic-ehci";
-> +	reg = <0x10002500 0x100>;
-> +	big-endian;
-> +	interrupt-parent = <&periph_intc>;
-> +	interrupts = <10>;
-> +	clocks = <&periph_clk 13>, <&timer_clk 18>;
-> +	phys = <&usbh>;
-> +};
-> -- 
-> 2.1.4
-> 
-> -- 
-> Simon Arlott
+>  #
+>  # Architectures with an unreliable sched_clock() should select this:
+>  #
+> diff --git a/kernel/printk/nmi.c b/kernel/printk/nmi.c
+> index 5465230b75ec..78c07d441b4e 100644
+> --- a/kernel/printk/nmi.c
+> +++ b/kernel/printk/nmi.c
+> @@ -41,7 +41,8 @@ DEFINE_PER_CPU(printk_func_t, printk_func) = vprintk_default;
+>  static int printk_nmi_irq_ready;
+>  atomic_t nmi_message_lost;
+>
+> -#define NMI_LOG_BUF_LEN (4096 - sizeof(atomic_t) - sizeof(struct irq_work))
+> +#define NMI_LOG_BUF_LEN ((1 << CONFIG_NMI_LOG_BUF_SHIFT) -             \
+> +                        sizeof(atomic_t) - sizeof(struct irq_work))
+
+kernel/printk/nmi.c:50:24: error: 'CONFIG_NMI_LOG_BUF_SHIFT'
+undeclared here (not in a function)
+
+E.g. efm32_defconfig
+http://kisskb.ellerman.id.au/kisskb/buildresult/12565754/
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

@@ -1,48 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 Dec 2015 23:25:01 +0100 (CET)
-Received: from proxima.lp0.eu ([81.2.80.65]:54659 "EHLO proxima.lp0.eu"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27008262AbbLKWY5Wbr7L (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 11 Dec 2015 23:24:57 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=fire.lp0.eu; s=exim;
-        h=Content-Transfer-Encoding:Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:Cc:References:To:Subject; bh=XB8cf+HuHE6Ypo5rWfPT36EF8Q10lNW5OtAQliy81dc=;
-        b=ZKFsZGFNf53XbVHA5XtG71HcI4d0QS4N46ZRIKiR/UZqcynKUJi2rpNiEnKxlIhoFP5TN9+aTi+Lqj11xNijYbswxJkCqJwSAPbBonUOXdoH6y3MUJNJcXDRL4O1YhqQGmyXsK+Jkms+vqzLJJdXHvlguhXrzThU6pmeCxxLPWUxju0oH32Zogr4CQR2AkMPHN48fo07aMNo8RTs5g3Ipx2hKPpl+XK1R4N1wPusmbJSG+EBWbtNbkMYToplTQabwbAMGx2kmAqxihKHFrAGiBGzO/Fl8WV+N3lAFFw2gu+rpbtvb28PwxCg1vJTbUIAJEPY4E4+keIH6/nqrVYtww==;
-Received: from redrum.lp0.eu ([2001:8b0:ffea:0:2e0:81ff:fe4d:2bec]:35254 ident=simon)
-        by proxima.lp0.eu ([2001:8b0:ffea:0:205:b4ff:fe12:530]:465)
-        with esmtpsav (UNKNOWN:DHE-RSA-AES256-SHA:256/CN=Simon Arlott)
-        id 1a7W7R-0006vK-6Y (Exim); Fri, 11 Dec 2015 22:24:54 +0000
-Subject: Re: [PATCH linux-next (v3) 1/3] MIPS: bcm963xx: Add Broadcom BCM963xx
- board nvram data structure
-To:     Jonas Gorski <jogo@openwrt.org>
-References: <566B460F.1040603@simon.arlott.org.uk>
- <CAOiHx=m3cXTePDjH04Yoz3wQO9Ta9jSn=JrkfNgphoPcQVaGXg@mail.gmail.com>
-Cc:     David Woodhouse <dwmw2@infradead.org>,
-        Brian Norris <computersforpeace@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Kevin Cernekee <cernekee@gmail.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        MTD Maling List <linux-mtd@lists.infradead.org>,
-        bcm-kernel-feedback-list <bcm-kernel-feedback-list@broadcom.com>,
-        MIPS Mailing List <linux-mips@linux-mips.org>,
-        linux-api@vger.kernel.org
-From:   Simon Arlott <simon@fire.lp0.eu>
-Message-ID: <566B4D34.9040707@simon.arlott.org.uk>
-Date:   Fri, 11 Dec 2015 22:24:52 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.4.0
-MIME-Version: 1.0
-In-Reply-To: <CAOiHx=m3cXTePDjH04Yoz3wQO9Ta9jSn=JrkfNgphoPcQVaGXg@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 Dec 2015 23:57:35 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:36733 "EHLO
+        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008262AbbLKW5dUOwaa (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 11 Dec 2015 23:57:33 +0100
+Received: from akpm3.mtv.corp.google.com (unknown [216.239.45.65])
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 15C83DAA;
+        Fri, 11 Dec 2015 22:57:26 +0000 (UTC)
+Date:   Fri, 11 Dec 2015 14:57:25 -0800
+From:   Andrew Morton <akpm@linux-foundation.org>
+To:     Petr Mladek <pmladek@suse.com>
+Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Russell King <rmk+kernel@arm.linux.org.uk>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jiri Kosina <jkosina@suse.com>, Ingo Molnar <mingo@redhat.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        the arch/x86 maintainers <x86@kernel.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "adi-buildroot-devel@lists.sourceforge.net" 
+        <adi-buildroot-devel@lists.sourceforge.net>,
+        Cris <linux-cris-kernel@axis.com>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        sparclinux <sparclinux@vger.kernel.org>
+Subject: Re: [PATCH v3 4/4] printk/nmi: Increase the size of NMI buffer and
+ make it configurable
+Message-Id: <20151211145725.b0e81bb4bb18fcd72ef5f557@linux-foundation.org>
+In-Reply-To: <20151211124159.GB3729@pathway.suse.cz>
+References: <1449667265-17525-1-git-send-email-pmladek@suse.com>
+        <1449667265-17525-5-git-send-email-pmladek@suse.com>
+        <CAMuHMdXVgr58YjoePGrRbMyMncQ27f85prL7G5SpeHeNxoYrXQ@mail.gmail.com>
+        <20151211124159.GB3729@pathway.suse.cz>
+X-Mailer: Sylpheed 3.4.1 (GTK+ 2.24.23; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Return-Path: <simon@fire.lp0.eu>
+Return-Path: <akpm@linux-foundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50557
+X-archive-position: 50558
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: simon@fire.lp0.eu
+X-original-sender: akpm@linux-foundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,134 +61,67 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 11/12/15 22:02, Jonas Gorski wrote:
-> Hi,
+On Fri, 11 Dec 2015 13:41:59 +0100 Petr Mladek <pmladek@suse.com> wrote:
+
+> On Fri 2015-12-11 12:10:02, Geert Uytterhoeven wrote:
+> > On Wed, Dec 9, 2015 at 2:21 PM, Petr Mladek <pmladek@suse.com> wrote:
+> > > --- a/init/Kconfig
+> > > +++ b/init/Kconfig
+> > > @@ -866,6 +866,28 @@ config LOG_CPU_MAX_BUF_SHIFT
+> > >                      13 =>   8 KB for each CPU
+> > >                      12 =>   4 KB for each CPU
+> > >
+> > > +config NMI_LOG_BUF_SHIFT
+> > > +       int "Temporary per-CPU NMI log buffer size (12 => 4KB, 13 => 8KB)"
+> > > +       range 10 21
+> > > +       default 13
+> > > +       depends on PRINTK && HAVE_NMI
+> > 
+> > Symbol NMI_LOG_BUF_SHIFT does not exist if its dependencies are not met.
 > 
-> On Fri, Dec 11, 2015 at 10:54 PM, Simon Arlott <simon@fire.lp0.eu> wrote:
->> Broadcom BCM963xx boards have multiple nvram variants across different
->> SoCs with additional checksum fields added whenever the size of the
->> nvram was extended.
->>
->> Add this structure as a header file so that multiple drivers and userspace
->> can use it.
->>
->> Signed-off-by: Simon Arlott <simon@fire.lp0.eu>
->> ---
->> v3: Fix includes/type names, add comments explaining the nvram struct.
->>
->> v2: Use external struct bcm963xx_nvram definition for bcm963268part.
->>
->>  MAINTAINERS                         |  1 +
->>  include/uapi/linux/bcm963xx_nvram.h | 53 +++++++++++++++++++++++++++++++++++++
->>  2 files changed, 54 insertions(+)
->>  create mode 100644 include/uapi/linux/bcm963xx_nvram.h
->>
->> diff --git a/MAINTAINERS b/MAINTAINERS
->> index 6b6d4e2e..abf18b4 100644
->> --- a/MAINTAINERS
->> +++ b/MAINTAINERS
->> @@ -2393,6 +2393,7 @@ F:        drivers/irqchip/irq-bcm63*
->>  F:     drivers/irqchip/irq-bcm7*
->>  F:     drivers/irqchip/irq-brcmstb*
->>  F:     include/linux/bcm63xx_wdt.h
->> +F:     include/uapi/linux/bcm963xx_nvram.h
->>
->>  BROADCOM TG3 GIGABIT ETHERNET DRIVER
->>  M:     Prashant Sreedharan <prashant@broadcom.com>
->> diff --git a/include/uapi/linux/bcm963xx_nvram.h b/include/uapi/linux/bcm963xx_nvram.h
->> new file mode 100644
->> index 0000000..2dcb307
->> --- /dev/null
->> +++ b/include/uapi/linux/bcm963xx_nvram.h
+> __h, the NMI buffer is enabled on arm via NEED_PRINTK_NMI.
 > 
-> Why uapi? The nvram layout isn't really enforced to be that way, and
-> at least Huawei uses a modified one on some devices (in case you
-> wondered why bcm63xx doesn't fail a crc32-"broken" one), so IMHO it
-> should be kept for in-kernel use only.
-
-Because Florian suggested include/uapi/linux/bcm963xx_nvram.h; I could
-move it to include/linux/ instead if this is preferred.
-
->> @@ -0,0 +1,53 @@
->> +#ifndef _UAPI__LINUX_BCM963XX_NVRAM_H__
->> +#define _UAPI__LINUX_BCM963XX_NVRAM_H__
->> +
->> +#include <linux/types.h>
->> +#include <linux/if_ether.h>
->> +
->> +/*
->> + * Broadcom BCM963xx SoC board nvram data structure.
->> + *
->> + * The nvram structure varies in size depending on the SoC board version. Use
->> + * the appropriate minimum BCM963XX_NVRAM_*_SIZE define for the information
->> + * you need instead of sizeof(struct bcm963xx_nvram) as this may change.
->> + *
->> + * The "version" field value maps directly to the size and checksum names, e.g.
->> + * version 4 uses "checksum_v4" and the data is BCM963XX_NVRAM_V4_SIZE bytes.
->> + *
->> + * Do not use the __reserved fields, especially not as an offset for CRC
->> + * calculations (use BCM963XX_NVRAM_*_SIZE instead). These may be removed or
->> + * repositioned.
->> + */
->> +
->> +#define BCM963XX_NVRAM_V4_SIZE         300
->> +#define BCM963XX_NVRAM_V5_SIZE         1024
->> +#define BCM963XX_NVRAM_V6_SIZE         BCM963XX_NVRAM_V5_SIZE
->> +#define BCM963XX_NVRAM_V7_SIZE         3072
->> +
->> +#define BCM963XX_NVRAM_NR_PARTS                5
->> +
->> +struct bcm963xx_nvram {
->> +       __u32   version;
->> +       char    bootline[256];
->> +       char    name[16];
->> +       __u32   main_tp_number;
->> +       __u32   psi_size;
->> +       __u32   mac_addr_count;
->> +       __u8    mac_addr_base[ETH_ALEN];
->> +       __u8    __reserved1[2];
->> +       __u32   checksum_v4;
->> +
->> +       __u8    __reserved2[292];
->> +       __u32   nand_part_offset[BCM963XX_NVRAM_NR_PARTS];
->> +       __u32   nand_part_size[BCM963XX_NVRAM_NR_PARTS];
->> +       __u8    __reserved3[388];
->> +       union {
->> +               __u32   checksum_v5;
->> +               __u32   checksum_v6;
->> +       };
+> The buffer is compiled when CONFIG_PRINTK_NMI is defined. I am going
+> to fix it the following way:
 > 
-> what's the point of this union? Both are the same size and have the
-> same function.
-
-For convenience when deciding which size of nvram to use.
-
-The mach-bcm63xx code uses the V5 definitions because it supports
-checksums at the v4 and v5 sizes.
-
-The bcm963xxpart code uses the V6 definitions because that's what my
-board has and I can't tell if the nand_part values are valid in version
-5 or if they were only added in version 6.
- 
->> +
->> +       __u8    __reserved4[2044];
->> +       __u32   checksum_v7;
->> +} __packed;
 > 
-> Why is it __packed? there are no unaligned members, so it should work
-> fine without this (and it did for bcm63xx).
+> diff --git a/init/Kconfig b/init/Kconfig
+> index efcff25a112d..61cfd96a3c96 100644
+> --- a/init/Kconfig
+> +++ b/init/Kconfig
+> @@ -870,7 +870,7 @@ config NMI_LOG_BUF_SHIFT
+>  	int "Temporary per-CPU NMI log buffer size (12 => 4KB, 13 => 8KB)"
+>  	range 10 21
+>  	default 13
+> -	depends on PRINTK && HAVE_NMI
+> +	depends on PRINTK_NMI
+>  	help
+>  	  Select the size of a per-CPU buffer where NMI messages are temporary
+>  	  stored. They are copied to the main log buffer in a safe context
 
-I could remove it, but as soon as someone adds an unaligned member but
-forgets to add __packed it's going to break.
+I'm wondering why we're building kernel/printk/nmi.o if HAVE_NMI is not
+set.
 
-There are unaligned members in some of the __reserved areas, like this
-one:
+	obj-$(CONFIG_PRINTK_NMI)		+= nmi.o
 
-#define NVRAM_GPON_SERIAL_NUMBER_LEN    13
-#define NVRAM_GPON_PASSWORD_LEN         11
+and
 
-    char gponSerialNumber[NVRAM_GPON_SERIAL_NUMBER_LEN];
-    char gponPassword[NVRAM_GPON_PASSWORD_LEN];
+	config PRINTK_NMI
+		def_bool y
+		depends on PRINTK
+		depends on HAVE_NMI || NEED_PRINTK_NMI
 
--- 
-Simon Arlott
+This is a bit messy.  NEED_PRINTK_NMI is an added-on hack for one
+particular arm variant.  From the changelog:
+
+   "One exception is arm where the deferred printing is used for
+    printing backtraces even without NMI.  For this purpose, we define
+    NEED_PRINTK_NMI Kconfig flag.  The alternative printk_func is
+    explicitly set when IPI_CPU_BACKTRACE is handled."
+
+
+- why does arm needs deferred printing for backtraces?
+
+- why is this specific to CONFIG_CPU_V7M?
+
+- can this Kconfig logic be cleaned up a bit?

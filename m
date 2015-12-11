@@ -1,40 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 Dec 2015 17:09:43 +0100 (CET)
-Received: from exsmtp01.microchip.com ([198.175.253.37]:46927 "EHLO
-        email.microchip.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27007521AbbLKQJlHXJuZ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 11 Dec 2015 17:09:41 +0100
-Received: from [10.14.4.125] (10.10.76.4) by CHN-SV-EXCH01.mchp-main.com
- (10.10.76.37) with Microsoft SMTP Server id 14.3.181.6; Fri, 11 Dec 2015
- 09:09:32 -0700
-Subject: Re: [PATCH 09/14] DEVICETREE: Add bindings for PIC32 usart driver
-To:     Rob Herring <robh@kernel.org>
-References: <1448065205-15762-1-git-send-email-joshua.henderson@microchip.com>
- <1448065205-15762-10-git-send-email-joshua.henderson@microchip.com>
- <20151122215622.GA32221@rob-hp-laptop>
-CC:     <linux-kernel@vger.kernel.org>, <linux-mips@linux-mips.org>,
-        Andrei Pistirica <andrei.pistirica@microchip.com>,
-        Pawel Moll <pawel.moll@arm.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ian Campbell <ijc+devicetree@hellion.org.uk>,
-        Kumar Gala <galak@codeaurora.org>, <devicetree@vger.kernel.org>
-From:   Joshua Henderson <joshua.henderson@microchip.com>
-Message-ID: <566AF6DE.9030803@microchip.com>
-Date:   Fri, 11 Dec 2015 09:16:30 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.4.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 Dec 2015 18:07:18 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:13694 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27006518AbbLKRHQZFSqs (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 11 Dec 2015 18:07:16 +0100
+Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
+        by Websense Email Security Gateway with ESMTPS id 61C7CA54CC3FF;
+        Fri, 11 Dec 2015 17:07:07 +0000 (GMT)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
+ 14.3.235.1; Fri, 11 Dec 2015 17:07:10 +0000
+Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
+ LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
+ 14.3.210.2; Fri, 11 Dec 2015 17:07:09 +0000
+From:   James Hogan <james.hogan@imgtec.com>
+To:     <stable@vger.kernel.org>
+CC:     James Hogan <james.hogan@imgtec.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Gleb Natapov <gleb@kernel.org>, <linux-mips@linux-mips.org>,
+        <kvm@vger.kernel.org>
+Subject: [PATCH backport v3.10 1/4] MIPS: KVM: Fix ASID restoration logic
+Date:   Fri, 11 Dec 2015 17:06:52 +0000
+Message-ID: <1449853615-6535-1-git-send-email-james.hogan@imgtec.com>
+X-Mailer: git-send-email 2.4.10
 MIME-Version: 1.0
-In-Reply-To: <20151122215622.GA32221@rob-hp-laptop>
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: 7bit
-Return-Path: <Joshua.Henderson@microchip.com>
+Content-Type: text/plain
+X-Originating-IP: [192.168.154.110]
+Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50547
+X-archive-position: 50548
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: joshua.henderson@microchip.com
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,76 +47,63 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Rob,
+commit 002374f371bd02df864cce1fe85d90dc5b292837 upstream.
 
-On 11/22/2015 02:56 PM, Rob Herring wrote:
-> On Fri, Nov 20, 2015 at 05:17:21PM -0700, Joshua Henderson wrote:
->> From: Andrei Pistirica <andrei.pistirica@microchip.com>
->>
->> Document the devicetree bindings for the USART peripheral found on
->> Microchip PIC32 class devices.
->>
->> Signed-off-by: Andrei Pistirica <andrei.pistirica@microchip.com>
->> Signed-off-by: Joshua Henderson <joshua.henderson@microchip.com>
->> ---
->>  .../bindings/serial/microchip,pic32-usart.txt      |   29 ++++++++++++++++++++
->>  1 file changed, 29 insertions(+)
->>  create mode 100644 Documentation/devicetree/bindings/serial/microchip,pic32-usart.txt
->>
->> diff --git a/Documentation/devicetree/bindings/serial/microchip,pic32-usart.txt b/Documentation/devicetree/bindings/serial/microchip,pic32-usart.txt
->> new file mode 100644
->> index 0000000..c87321c
->> --- /dev/null
->> +++ b/Documentation/devicetree/bindings/serial/microchip,pic32-usart.txt
->> @@ -0,0 +1,29 @@
->> +* Microchip Universal Synchronous Asynchronous Receiver/Transmitter (USART)
->> +
->> +Required properties:
->> +- compatible: Should be "microchip,pic32-usart"
-> 
-> Again, should be more specific.
-> 
+ASID restoration on guest resume should determine the guest execution
+mode based on the guest Status register rather than bit 30 of the guest
+PC.
 
-Ack.  In addition, will replace all instances of USART with UART.
+Fix the two places in locore.S that do this, loading the guest status
+from the cop0 area. Note, this assembly is specific to the trap &
+emulate implementation of KVM, so it doesn't need to check the
+supervisor bit as that mode is not implemented in the guest.
 
->> +- reg: Should contain registers location and length
->> +- interrupts: Should contain interrupt
->> +- pinctrl: Should contain pinctrl for TX/RX/RTS/CTS
->> +
->> +Optional properties:
->> +- microchip,uart-has-rtscts : Indicate the uart has hardware flow control
->> +- rts-gpios: RTS pin for USP-based UART if microchip,uart-has-rtscts
->> +- cts-gpios: CTS pin for USP-based UART if microchip,uart-has-rtscts
-> 
-> This appears to just be copied for Sirf UART.
-> 
-> Doesn't *-gpios being present imply having h/w 
-> flow-control (i.e. microchip,uart-has-rtscts)?
-> 
-> Rob
+Fixes: b680f70fc111 ("KVM/MIPS32: Entry point for trampolining to...")
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Gleb Natapov <gleb@kernel.org>
+Cc: linux-mips@linux-mips.org
+Cc: kvm@vger.kernel.org
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+---
+ arch/mips/kvm/kvm_locore.S | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
-Agreed.  microchip,uart-has-rtscts will be dropped and it turns out we don't really need the rtc-gpios property.
-
-Josh
-
-> 
->> +
->> +Example:
->> +	usart0: serial@1f822000 {
->> +		compatible = "microchip,pic32-usart";
->> +		reg = <0x1f822000 0x50>;
->> +		interrupts = <UART1_FAULT DEFAULT_INT_PRI IRQ_TYPE_NONE>,
->> +			     <UART1_RECEIVE_DONE DEFAULT_INT_PRI IRQ_TYPE_NONE>,
->> +			     <UART1_TRANSFER_DONE DEFAULT_INT_PRI IRQ_TYPE_NONE>;
->> +		pinctrl-names = "default";
->> +		pinctrl-0 = <
->> +			&pinctrl_uart1
->> +			&pinctrl_uart1_cts
->> +			&pinctrl_uart1_rts>;
->> +		microchip,uart-has-rtscts;
->> +		cts-gpios = <&pioB 15 0>;
->> +		rts-gpios = <&pioD 1 0>;
->> +	};
->> -- 
->> 1.7.9.5
->>
+diff --git a/arch/mips/kvm/kvm_locore.S b/arch/mips/kvm/kvm_locore.S
+index 920b63210806..34c35f0e3290 100644
+--- a/arch/mips/kvm/kvm_locore.S
++++ b/arch/mips/kvm/kvm_locore.S
+@@ -156,9 +156,11 @@ FEXPORT(__kvm_mips_vcpu_run)
+ 
+ FEXPORT(__kvm_mips_load_asid)
+     /* Set the ASID for the Guest Kernel */
+-    sll         t0, t0, 1                       /* with kseg0 @ 0x40000000, kernel */
+-                                                /* addresses shift to 0x80000000 */
+-    bltz        t0, 1f                          /* If kernel */
++    PTR_L	t0, VCPU_COP0(k1)
++    LONG_L	t0, COP0_STATUS(t0)
++    andi	t0, KSU_USER | ST0_ERL | ST0_EXL
++    xori	t0, KSU_USER
++    bnez	t0, 1f		/* If kernel */
+ 	addiu       t1, k1, VCPU_GUEST_KERNEL_ASID  /* (BD)  */
+     addiu       t1, k1, VCPU_GUEST_USER_ASID    /* else user */
+ 1:
+@@ -442,9 +444,11 @@ __kvm_mips_return_to_guest:
+ 	mtc0		t0, CP0_EPC
+ 
+     /* Set the ASID for the Guest Kernel */
+-    sll         t0, t0, 1                       /* with kseg0 @ 0x40000000, kernel */
+-                                                /* addresses shift to 0x80000000 */
+-    bltz        t0, 1f                          /* If kernel */
++    PTR_L	t0, VCPU_COP0(k1)
++    LONG_L	t0, COP0_STATUS(t0)
++    andi	t0, KSU_USER | ST0_ERL | ST0_EXL
++    xori	t0, KSU_USER
++    bnez	t0, 1f		/* If kernel */
+ 	addiu       t1, k1, VCPU_GUEST_KERNEL_ASID  /* (BD)  */
+     addiu       t1, k1, VCPU_GUEST_USER_ASID    /* else user */
+ 1:
+-- 
+2.4.10

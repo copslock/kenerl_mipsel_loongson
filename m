@@ -1,49 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 Dec 2015 03:58:52 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.136]:55152 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 Dec 2015 04:47:35 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.136]:58171 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27007112AbbLKC6uutNAZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 11 Dec 2015 03:58:50 +0100
+        id S27006195AbbLKDr2MSFmD (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 11 Dec 2015 04:47:28 +0100
 Received: from mail.kernel.org (localhost [127.0.0.1])
-        by mail.kernel.org (Postfix) with ESMTP id A6E7520570;
-        Fri, 11 Dec 2015 02:58:48 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTP id E0A452056D;
+        Fri, 11 Dec 2015 03:47:25 +0000 (UTC)
 Received: from rob-hp-laptop (72-48-98-129.dyn.grandenetworks.net [72.48.98.129])
         (using TLSv1.2 with cipher AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id AB2AA2056D;
-        Fri, 11 Dec 2015 02:58:46 +0000 (UTC)
-Date:   Thu, 10 Dec 2015 20:58:44 -0600
+        by mail.kernel.org (Postfix) with ESMTPSA id 403F420562;
+        Fri, 11 Dec 2015 03:47:24 +0000 (UTC)
+Date:   Thu, 10 Dec 2015 21:47:22 -0600
 From:   Rob Herring <robh@kernel.org>
 To:     Simon Arlott <simon@fire.lp0.eu>
-Cc:     "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        Sebastian Reichel <sre@kernel.org>,
-        Dmitry Eremin-Solenikov <dbaryshkov@gmail.com>,
-        David Woodhouse <dwmw2@infradead.org>,
+Cc:     Philipp Zabel <p.zabel@pengutronix.de>,
         Kevin Cernekee <cernekee@gmail.com>,
         Florian Fainelli <f.fainelli@gmail.com>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        linux-kernel@vger.kernel.org,
+        MIPS Mailing List <linux-mips@linux-mips.org>,
         Pawel Moll <pawel.moll@arm.com>,
         Mark Rutland <mark.rutland@arm.com>,
         Ian Campbell <ijc+devicetree@hellion.org.uk>,
-        Kumar Gala <galak@codeaurora.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Jonas Gorski <jogo@openwrt.org>, linux-pm@vger.kernel.org,
-        Mark Brown <broonie@kernel.org>,
-        MIPS Mailing List <linux-mips@linux-mips.org>,
-        bcm-kernel-feedback-list <bcm-kernel-feedback-list@broadcom.com>
-Subject: Re: [PATCH linux-next 1/2] power: Add brcm,bcm6358-power-controller
- device tree binding
-Message-ID: <20151211025844.GA5251@rob-hp-laptop>
-References: <5668AB4F.7030100@simon.arlott.org.uk>
+        Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
+        Jonas Gorski <jogo@openwrt.org>
+Subject: Re: [PATCH linux-next (v3) 1/2] reset: Add brcm,bcm6345-reset device
+ tree binding
+Message-ID: <20151211034722.GA6667@rob-hp-laptop>
+References: <5669EE86.8030406@simon.arlott.org.uk>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <5668AB4F.7030100@simon.arlott.org.uk>
+In-Reply-To: <5669EE86.8030406@simon.arlott.org.uk>
 User-Agent: Mutt/1.5.23 (2014-03-12)
 X-Virus-Scanned: ClamAV using ClamSMTP
 Return-Path: <robh@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50540
+X-archive-position: 50541
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -60,54 +56,69 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Dec 09, 2015 at 10:29:35PM +0000, Simon Arlott wrote:
-> The BCM6358 contains power domains controlled with a register. Power
-> domains are indexed by bits in the register. Power domain bits can be
-> interleaved with other status bits and clocks in the same register.
+On Thu, Dec 10, 2015 at 09:28:38PM +0000, Simon Arlott wrote:
+> Add device tree binding for the BCM6345 soft reset controller.
 > 
-> Newer SoCs with dedicated power domain registers are active low.
+> The BCM6345 contains a soft-reset controller activated by setting
+> a bit (that must previously have been cleared).
 > 
 > Signed-off-by: Simon Arlott <simon@fire.lp0.eu>
 > ---
->  .../power/brcm,bcm6358-power-controller.txt        | 53 ++++++++++++++++++++++
->  1 file changed, 53 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/power/brcm,bcm6358-power-controller.txt
+> v3: Resend. Example has changed because usbh now has two compatible
+>     strings and uses a power domain instead of a regulator.
+
+Not really all that important to this binding definition, so you can 
+keep my ack.
+
 > 
-> diff --git a/Documentation/devicetree/bindings/power/brcm,bcm6358-power-controller.txt b/Documentation/devicetree/bindings/power/brcm,bcm6358-power-controller.txt
+> v2: Renamed to bcm6345, removed "mask" property.
+>     Acked-by: Rob Herring <robh@kernel.org>
+> 
+>  .../bindings/reset/brcm,bcm6345-reset.txt          | 33 ++++++++++++++++++++++
+>  1 file changed, 33 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/reset/brcm,bcm6345-reset.txt
+> 
+> diff --git a/Documentation/devicetree/bindings/reset/brcm,bcm6345-reset.txt b/Documentation/devicetree/bindings/reset/brcm,bcm6345-reset.txt
 > new file mode 100644
-> index 0000000..556c323
+> index 0000000..0313040
 > --- /dev/null
-> +++ b/Documentation/devicetree/bindings/power/brcm,bcm6358-power-controller.txt
-> @@ -0,0 +1,53 @@
-> +Broadcom BCM6358 Power domain controller
+> +++ b/Documentation/devicetree/bindings/reset/brcm,bcm6345-reset.txt
+> @@ -0,0 +1,33 @@
+> +Broadcom BCM6345 reset controller
 > +
-> +This binding uses the power domain bindings:
-> +        Documentation/devicetree/bindings/power/power_domain.txt
+> +The BCM6345 contains a basic soft reset controller in the perf register
+> +set which resets components using a bit in a register.
 > +
-> +The BCM6358 contains power domains controlled with a register. Power
-> +domains are indexed by bits in the register. Power domain bits can be
-> +interleaved with other status bits and clocks in the same register.
-> +
-> +Newer SoCs with dedicated power domain registers are active low.
+> +Please also refer to reset.txt in this directory for common reset
+> +controller binding usage.
 > +
 > +Required properties:
-> +- compatible:           Should be "brcm,bcm<soc>-power-controller", "brcm,bcm6358-power-controller"
-> +- #power-domain-cells:  Should be <1>.
-> +- regmap:               The register map phandle
-> +- offset:               Offset in the register map for the power domain register (in bytes)
-> +- power-domain-indices: The bits in the register used for power domains.
-
-You should drop this and make the cell values be the register offsets.
-
-> +- power-domain-names:   Should be a list of strings of power domain names
-> +                        indexed by the power domain indices.
-
-This isn't really needed anyway.
-
+> +- compatible:	Should be "brcm,bcm<soc>-reset", "brcm,bcm6345-reset"
+> +- regmap:	The register map phandle
+> +- offset:	Offset in the register map for the reset register (in bytes)
+> +- #reset-cells:	Must be set to 1
 > +
-> +Optional properties:
-> +- active-low:           Specify that the bits are active low.
-
-This should be implied by the compatible property.
-
-Rob
+> +Example:
+> +
+> +periph_soft_rst: reset-controller {
+> +	compatible = "brcm,bcm63168-reset", "brcm,bcm6345-reset";
+> +	regmap = <&periph_cntl>;
+> +	offset = <0x10>;
+> +
+> +	#reset-cells = <1>;
+> +};
+> +
+> +usbh: usbphy@10002700 {
+> +	compatible = "brcm,bcm63168-usbh", "brcm,bcm6328-usbh";
+> +	reg = <0x10002700 0x38>;
+> +	clocks = <&periph_clk 13>, <&timer_clk 18>;
+> +	resets = <&periph_soft_rst 6>;
+> +	power-domains = <&misc_iddq_ctrl 4>;
+> +	#phy-cells = <0>;
+> +};
+> +
+> -- 
+> 2.1.4
+> 
+> -- 
+> Simon Arlott

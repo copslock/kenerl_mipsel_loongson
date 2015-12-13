@@ -1,62 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 13 Dec 2015 21:25:56 +0100 (CET)
-Received: from mail-ob0-f172.google.com ([209.85.214.172]:34939 "EHLO
-        mail-ob0-f172.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27013272AbbLMUZyzZlna (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 13 Dec 2015 21:25:54 +0100
-Received: by obc18 with SMTP id 18so117400110obc.2
-        for <linux-mips@linux-mips.org>; Sun, 13 Dec 2015 12:25:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro-org.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        bh=gAhVnIIwgo1H4W0516KJm3L0GG/UlN+9eVxTanPsvrA=;
-        b=NLtyh1LhsJ0cy5+Zrqwx3MyioWu7oXrxr/4OpDZT8944kWcm1TYt7JHVdvXIpS6Xzn
-         bpiqDvYusgHXhuBvacstvq9RJVoUZq1p8zqexk+Tkuma+jYXvjOhKRQ0OzZLwPOhmhiR
-         YBuztYRRZNtOvHgm89iXEvLncDn35WOdQcx0xSRLqgdBdDupz+L1nxSMM4R4ItVWE6tL
-         F2sChyLB8EQwusZPSSUretmmaS3WvBoG3DqXfYNl2XN7dHR/QsgjqAUqKjK+Lv5/BgL6
-         STz6/9I+/3AJV9k541VnY3HS3i/xnLxMtOETfUisp99vyIQOVOwwdSHCrlyl7UD7Evh4
-         J59g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:in-reply-to:references:date
-         :message-id:subject:from:to:cc:content-type;
-        bh=gAhVnIIwgo1H4W0516KJm3L0GG/UlN+9eVxTanPsvrA=;
-        b=V5rfB9QQc9TYP++GFB5KwHVcvSX1Bk8blZHHUUUQtKg6BLEw1gMj84quBzbwkiKU3z
-         xx0tqlyMZsEa+HIYsX/Ze6LQ8Cyvk7xdu7acQicP7fRbXAPOwYtdRyh+oF5AjJOx3SK/
-         OqnSOkZbXPpUlf0TPosLjcEQrH6y7gZU9FGFxWfEqh7Df+jABNyd1HEUifJvV+ZKX6B2
-         Lgtlw2LDtqsDlYSGiVVc8BQAD/zplIZMDF0UEyPg7AaKbSgkMzVIq/avZSZqyLHWwvlt
-         Z2nJkvOoQxM2k9p6lWN0thaMGfQ5622Nvd/jZ71+/lacg/XZY5KJih06lQJQkhpay90K
-         iV8A==
-X-Gm-Message-State: ALoCoQkD25b0kKsysnEJnc3E3GpYqhSF+DEB3Yx5DBaB0POv351YdxA847ByZ1NY23r2h/LPYoCdofxIqV/diUUvicA4ge+9DK+QtMxg9UH07Y3Kl8V1exw=
-MIME-Version: 1.0
-X-Received: by 10.182.247.105 with SMTP id yd9mr22431546obc.21.1450038348738;
- Sun, 13 Dec 2015 12:25:48 -0800 (PST)
-Received: by 10.182.32.70 with HTTP; Sun, 13 Dec 2015 12:25:48 -0800 (PST)
-In-Reply-To: <CAOLZvyGe5SV044P+uje5ro+F5yHoUVqz6or4QBMfdCgXW92sbA@mail.gmail.com>
-References: <1449668342-4446-1-git-send-email-linus.walleij@linaro.org>
-        <CAOLZvyGe5SV044P+uje5ro+F5yHoUVqz6or4QBMfdCgXW92sbA@mail.gmail.com>
-Date:   Sun, 13 Dec 2015 21:25:48 +0100
-Message-ID: <CACRpkdbmpE5i4_WmUcG-EZZBrTKpAtLwjLwrH48F6hxGEA9JvQ@mail.gmail.com>
-Subject: Re: [PATCH 135/182] MIPS: alchemy: switch to gpiochip_add_data()
-From:   Linus Walleij <linus.walleij@linaro.org>
-To:     Manuel Lauss <manuel.lauss@gmail.com>
-Cc:     "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-        Johan Hovold <johan@kernel.org>,
-        Alexandre Courbot <acourbot@nvidia.com>,
-        Michael Welling <mwelling@ieee.org>,
-        Markus Pargmann <mpa@pengutronix.de>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 13 Dec 2015 21:27:08 +0100 (CET)
+Received: from proxima.lp0.eu ([81.2.80.65]:60620 "EHLO proxima.lp0.eu"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27008830AbbLMU1GV1TGA (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 13 Dec 2015 21:27:06 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=fire.lp0.eu; s=exim;
+        h=Content-Transfer-Encoding:Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:Cc:References:To:Subject; bh=tao75H1Wib6kk5xz+3bl6Qs3Uu3MG5JpQUkMfMpcOJ8=;
+        b=seM7qNsV0vzJcQb6Zf4F0Bdx8UEwJ7wic5NITiU9cgBBNOMmP57lcSu9gJwI5rWxNLSjrnLonSA8ccxZQZ6fhKMy/zvUZosmvD7OOFgik25lg87RgnsCtMAwBs02zj47ZN77nw+3FegezIeCDGcDRrSRaNZf4pztemxdZvxXvo6gxlKeDlvQmKrZ7TGWmpK4tE7Ze5xwhFhiubEtS0McWnLj/YQIoAxs/J2g1FSM/OHrAn5Jyf2u9zhIBF11quDjgT0XVMKZVVEZadrkRhdjAI3IWw+o51HCRrzahJT6r3OCyalTKaYC6EEBGfgMlbzYfKS1kIMqxSVhVDb9fG5iGQ==;
+Received: from redrum.lp0.eu ([2001:8b0:ffea:0:2e0:81ff:fe4d:2bec]:44162 ident=simon)
+        by proxima.lp0.eu ([2001:8b0:ffea:0:205:b4ff:fe12:530]:465)
+        with esmtpsav (UNKNOWN:DHE-RSA-AES256-SHA:256/CN=Simon Arlott)
+        id 1a8DER-00057c-T8 (Exim); Sun, 13 Dec 2015 20:27:00 +0000
+Subject: Re: [PATCH linux-next (v3) 3/3] mtd: part: Add BCM962368 CFE
+ partitioning support
+To:     Jonas Gorski <jogo@openwrt.org>
+References: <566B460F.1040603@simon.arlott.org.uk>
+ <566B47D9.8020105@simon.arlott.org.uk>
+ <CAOiHx==GSwCxWmaQfmHHumGu_ye6waf-DA_5+m8_Ukc1hVeBYg@mail.gmail.com>
+Cc:     David Woodhouse <dwmw2@infradead.org>,
+        Brian Norris <computersforpeace@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
         Ralf Baechle <ralf@linux-mips.org>,
-        Linux-MIPS <linux-mips@linux-mips.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <linus.walleij@linaro.org>
+        Kevin Cernekee <cernekee@gmail.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        MTD Maling List <linux-mtd@lists.infradead.org>,
+        bcm-kernel-feedback-list <bcm-kernel-feedback-list@broadcom.com>,
+        MIPS Mailing List <linux-mips@linux-mips.org>,
+        linux-api@vger.kernel.org
+From:   Simon Arlott <simon@fire.lp0.eu>
+Message-ID: <566DD491.4030902@simon.arlott.org.uk>
+Date:   Sun, 13 Dec 2015 20:26:57 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+ Thunderbird/38.4.0
+MIME-Version: 1.0
+In-Reply-To: <CAOiHx==GSwCxWmaQfmHHumGu_ye6waf-DA_5+m8_Ukc1hVeBYg@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Return-Path: <simon@fire.lp0.eu>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50569
+X-archive-position: 50570
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linus.walleij@linaro.org
+X-original-sender: simon@fire.lp0.eu
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -69,21 +56,22 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Dec 9, 2015 at 10:44 PM, Manuel Lauss <manuel.lauss@gmail.com> wrote:
-> On Wed, Dec 9, 2015 at 2:39 PM, Linus Walleij <linus.walleij@linaro.org> wrote:
->
->> ---
->> Ralf: please ACK this so I can take it through the GPIO tree.
->> BTW: would be nice if the MIPS GPIO drivers could move down
->> to drivers/gpio in the long run.
->
-> Is there a specific reason?  I have no objections to moving it, but
-> on the other hand I also like that (in this case) most/all chip-specific
-> code is grouped together and not scattered around the tree.
+On 11/12/15 23:12, Jonas Gorski wrote:
+> On Fri, Dec 11, 2015 at 11:02 PM, Simon Arlott <simon@fire.lp0.eu> wrote:
+>> +#define BCM63XX_CFE_MAGIC_OFFSET       0x4e0
+>> +#define BCM963XX_CFE_VERSION_OFFSET    0x570
+>> +#define BCM963XX_NVRAM_OFFSET          0x580
+> 
+> You should decide whether you want to call it BCM63XX (the SoC) or
+> BCM963XX (the Board using the SoC). Also probably better served in
+> bcm963xx_nvram.h
 
-Here is a reason. This patch series. If I could just change all that and have
-the dependencies inside the GPIO tree, refactoring struggles would be
-so much easier.
+I'm going to name the CFE locations, nvram and anything that is a
+property of the flash layout BCM963XX_*, as a theoretical board using
+BCM63XX with no flash wouldn't use these. The parser is still called
+bcm63xxpart so that's currently an anomaly.
 
-Yours,
-Linus Walleij
+I'm working on making it support both NOR and NAND flash layouts.
+
+-- 
+Simon Arlott

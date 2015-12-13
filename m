@@ -1,17 +1,17 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 13 Dec 2015 23:48:00 +0100 (CET)
-Received: from proxima.lp0.eu ([81.2.80.65]:35360 "EHLO proxima.lp0.eu"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 13 Dec 2015 23:48:48 +0100 (CET)
+Received: from proxima.lp0.eu ([81.2.80.65]:35377 "EHLO proxima.lp0.eu"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27008361AbbLMWr6nc8p9 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 13 Dec 2015 23:47:58 +0100
+        id S27013568AbbLMWsq4-Eb9 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 13 Dec 2015 23:48:46 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=fire.lp0.eu; s=exim;
-        h=Content-Transfer-Encoding:Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:Cc:References:To:Subject; bh=jdYlfGZQZaqPl9oHFsFLKue0e3ow6t1FRpxm9ckqxNU=;
-        b=scaqjWl03oaaBh28jyPTzU84BerAvoY7/H0AK5ir67pXd/fhbHp6Tk0UO24jqP4LP2tDSqveamywKwGu3US07RvF9mxia4f8fBH8O9UHwDQf/IhNpbNFKhrhLZjdxknp5Na8A7W32XH5lpIJQUdA0mACqGsLrBTRkBCNN1Xe6WyPspp5P+zn25L9yorxuCwOebZyVRTCrUz/J5ruRF66tNZZJ48TcXbf4I0226V09ahazFv8PL61gmaJFj8XwkApsd8Oe0w1dCWpCVkUi6H+esd5rfu0K2F/S5geAJuOgks1nTe39DwQRW/CFsqaat5h3YvPdJdg47/FAbS5t/QRzA==;
-Received: from redrum.lp0.eu ([2001:8b0:ffea:0:2e0:81ff:fe4d:2bec]:44498 ident=simon)
+        h=Content-Transfer-Encoding:Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:Cc:References:To:Subject; bh=siQmuM3eHbRzCulytnp1hHpTAt5xygjNxTBLBl5KsdM=;
+        b=D/SduZquoRVCIIT9mDpo3IQc7xvz7HzlcT0PbHaabOvidn3rNb0311MDzh+n4RgxVyB4cSHJIPt4W5SoMpFVNit1zFYqtP+QNnTwuaLqvLZbBZiP68HvcfXxOcX+OyXa8FQPnDAHRSrtCHWCP2BeVNvX6orZVXhd7VpBm4q+Z0+MjjWSQbFvMMROMpYyGRFuu1/wSzaRQYwrq/91WQfwjTrPCjwb/tbNjUVPSz2HVEQHk/TizT7HEPGnyyF6iyDDUcfkldvYHP/53Hj2bZlttmKO+lcHZS485DTTPpfz+C5Cay3rLwzbTNNNUO8aiZrVI4TKwedWbI2JP1aDpuD+Hg==;
+Received: from redrum.lp0.eu ([2001:8b0:ffea:0:2e0:81ff:fe4d:2bec]:44499 ident=simon)
         by proxima.lp0.eu ([2001:8b0:ffea:0:205:b4ff:fe12:530]:465)
         with esmtpsav (UNKNOWN:DHE-RSA-AES256-SHA:256/CN=Simon Arlott)
-        id 1a8FQr-0003vE-5Q (Exim); Sun, 13 Dec 2015 22:47:58 +0000
-Subject: [PATCH linux-next v4 04/11] MIPS: bcm963xx: Move extended flash
- address to bcm_tag header file
+        id 1a8FRd-0003xH-F6 (Exim); Sun, 13 Dec 2015 22:48:46 +0000
+Subject: [PATCH linux-next v4 05/11] MIPS: bcm963xx: Update bcm_tag field
+ image_sequence
 To:     Ralf Baechle <ralf@linux-mips.org>,
         David Woodhouse <dwmw2@infradead.org>,
         Brian Norris <computersforpeace@gmail.com>,
@@ -23,8 +23,8 @@ Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         MIPS Mailing List <linux-mips@linux-mips.org>,
         MTD Maling List <linux-mtd@lists.infradead.org>
 From:   Simon Arlott <simon@fire.lp0.eu>
-Message-ID: <566DF59B.8000804@simon.arlott.org.uk>
-Date:   Sun, 13 Dec 2015 22:47:55 +0000
+Message-ID: <566DF5CC.20908@simon.arlott.org.uk>
+Date:   Sun, 13 Dec 2015 22:48:44 +0000
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
  Thunderbird/38.4.0
 MIME-Version: 1.0
@@ -35,7 +35,7 @@ Return-Path: <simon@fire.lp0.eu>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50576
+X-archive-position: 50577
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -52,62 +52,45 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The extended flash address needs to be subtracted from bcm_tag flash
-image offsets. Move this value to the bcm_tag header file.
-
-Renamed define name to consistently use bcm963xx for flash layout
-which should be considered a property of the board and not the SoC
-(i.e. bcm63xx could theoretically be used on a board without CFE
-or any flash).
+The "dual_image" and "inactive_flag" fields should be merged into a single
+"image_sequence" field.
 
 Signed-off-by: Simon Arlott <simon@fire.lp0.eu>
 ---
 v4: New patch.
 
- drivers/mtd/bcm63xxpart.c    | 6 ++----
- include/linux/bcm963xx_tag.h | 5 +++++
- 2 files changed, 7 insertions(+), 4 deletions(-)
+ include/linux/bcm963xx_tag.h | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/mtd/bcm63xxpart.c b/drivers/mtd/bcm63xxpart.c
-index b5bad1f..cec3188 100644
---- a/drivers/mtd/bcm63xxpart.c
-+++ b/drivers/mtd/bcm63xxpart.c
-@@ -37,8 +37,6 @@
- #include <asm/mach-bcm63xx/bcm63xx_nvram.h>
- #include <asm/mach-bcm63xx/board_bcm963xx.h>
- 
--#define BCM63XX_EXTENDED_SIZE	0xBFC00000	/* Extended flash address */
--
- #define BCM63XX_CFE_BLOCK_SIZE	SZ_64K		/* always at least 64KiB */
- 
- #define BCM63XX_CFE_MAGIC_OFFSET 0x4e0
-@@ -123,8 +121,8 @@ static int bcm63xx_parse_cfe_partitions(struct mtd_info *master,
- 		pr_info("CFE boot tag found with version %s and board type %s\n",
- 			tagversion, boardid);
- 
--		kerneladdr = kerneladdr - BCM63XX_EXTENDED_SIZE;
--		rootfsaddr = rootfsaddr - BCM63XX_EXTENDED_SIZE;
-+		kerneladdr = kerneladdr - BCM963XX_EXTENDED_SIZE;
-+		rootfsaddr = rootfsaddr - BCM963XX_EXTENDED_SIZE;
- 		spareaddr = roundup(totallen, master->erasesize) + cfelen;
- 
- 		if (rootfsaddr < kerneladdr) {
 diff --git a/include/linux/bcm963xx_tag.h b/include/linux/bcm963xx_tag.h
-index f389dac..08e0133 100644
+index 08e0133..161c7b3 100644
 --- a/include/linux/bcm963xx_tag.h
 +++ b/include/linux/bcm963xx_tag.h
-@@ -28,6 +28,11 @@
- 	"DWV-S0", \
- }
- 
-+/* Extended flash address, needs to be subtracted
-+ * from bcm_tag flash image offsets.
-+ */
-+#define BCM963XX_EXTENDED_SIZE	0xBFC00000
-+
- /*
-  * The broadcom firmware assumes the rootfs starts the image,
-  * therefore uses the rootfs start (flash_image_address)
+@@ -12,8 +12,7 @@
+ #define CHIPID_LEN		6	/* Chip Id Length */
+ #define IMAGE_LEN		10	/* Length of Length Field */
+ #define ADDRESS_LEN		12	/* Length of Address field */
+-#define DUALFLAG_LEN		2	/* Dual Image flag Length */
+-#define INACTIVEFLAG_LEN	2	/* Inactie Flag Length */
++#define IMAGE_SEQUENCE_LEN	4	/* Image sequence Length */
+ #define RSASIG_LEN		20	/* Length of RSA Signature in tag */
+ #define TAGINFO1_LEN		30	/* Length of vendor information field1 in tag */
+ #define FLASHLAYOUTVER_LEN	4	/* Length of Flash Layout Version String tag */
+@@ -72,10 +71,10 @@ struct bcm_tag {
+ 	char kernel_address[ADDRESS_LEN];
+ 	/* 128-137: Size of kernel */
+ 	char kernel_length[IMAGE_LEN];
+-	/* 138-139: Unused at the moment */
+-	char dual_image[DUALFLAG_LEN];
+-	/* 140-141: Unused at the moment */
+-	char inactive_flag[INACTIVEFLAG_LEN];
++	/* 138-141: Image sequence number
++	 * (to be incremented when flashed with a new image)
++	 */
++	char image_sequence[IMAGE_SEQUENCE_LEN];
+ 	/* 142-161: RSA Signature (not used; some vendors may use this) */
+ 	char rsa_signature[RSASIG_LEN];
+ 	/* 162-191: Compilation and related information (not used in OpenWrt) */
 -- 
 2.1.4
 

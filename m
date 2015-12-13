@@ -1,17 +1,17 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 13 Dec 2015 23:47:07 +0100 (CET)
-Received: from proxima.lp0.eu ([81.2.80.65]:35285 "EHLO proxima.lp0.eu"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 13 Dec 2015 23:48:00 +0100 (CET)
+Received: from proxima.lp0.eu ([81.2.80.65]:35360 "EHLO proxima.lp0.eu"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27008361AbbLMWrCK6Tu9 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 13 Dec 2015 23:47:02 +0100
+        id S27008361AbbLMWr6nc8p9 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 13 Dec 2015 23:47:58 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=fire.lp0.eu; s=exim;
-        h=Content-Transfer-Encoding:Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:Cc:References:To:Subject; bh=T3RSHsqt/enmcRkn9bpTNuBnqFvHluM6WVE3LN50xLc=;
-        b=j0S4+wu+fMFNNskM0KDtiHJAI/aY3T6Q08iKpXAftnuKTZ+7w+QfkTPqs97pA9snzoxxkUWzxHlArGIjq7SfZpJxBFSLM/vG0sI1HsmpDyMT8Xt3REky39YxaAcP1dZAL8mXmWkvE+BD52BZ3xr1o5lr9Rov6M68PqAqZpAYFiwNrpltKu5W8zOg0arjTdFtQ+6O/z6Co0QG3El51Jevne+UoIovn7ycGvCBpamNJzTfvplCtjlC4wko6NQiYG/bEXxTLTUNNyZdWSr4CWNrpfvn+m6zY/XwVbNdjWfQY6ekKWNd5vjanuA6PPmFCAKyHKkQakUMjFGrwW8DXWeDiA==;
-Received: from redrum.lp0.eu ([2001:8b0:ffea:0:2e0:81ff:fe4d:2bec]:44495 ident=simon)
+        h=Content-Transfer-Encoding:Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:Cc:References:To:Subject; bh=jdYlfGZQZaqPl9oHFsFLKue0e3ow6t1FRpxm9ckqxNU=;
+        b=scaqjWl03oaaBh28jyPTzU84BerAvoY7/H0AK5ir67pXd/fhbHp6Tk0UO24jqP4LP2tDSqveamywKwGu3US07RvF9mxia4f8fBH8O9UHwDQf/IhNpbNFKhrhLZjdxknp5Na8A7W32XH5lpIJQUdA0mACqGsLrBTRkBCNN1Xe6WyPspp5P+zn25L9yorxuCwOebZyVRTCrUz/J5ruRF66tNZZJ48TcXbf4I0226V09ahazFv8PL61gmaJFj8XwkApsd8Oe0w1dCWpCVkUi6H+esd5rfu0K2F/S5geAJuOgks1nTe39DwQRW/CFsqaat5h3YvPdJdg47/FAbS5t/QRzA==;
+Received: from redrum.lp0.eu ([2001:8b0:ffea:0:2e0:81ff:fe4d:2bec]:44498 ident=simon)
         by proxima.lp0.eu ([2001:8b0:ffea:0:205:b4ff:fe12:530]:465)
         with esmtpsav (UNKNOWN:DHE-RSA-AES256-SHA:256/CN=Simon Arlott)
-        id 1a8FPw-0003rF-Mp (Exim); Sun, 13 Dec 2015 22:47:01 +0000
-Subject: [PATCH linux-next v4 03/11] MIPS: bcm963xx: Move Broadcom BCM963xx
- image tag data structure
+        id 1a8FQr-0003vE-5Q (Exim); Sun, 13 Dec 2015 22:47:58 +0000
+Subject: [PATCH linux-next v4 04/11] MIPS: bcm963xx: Move extended flash
+ address to bcm_tag header file
 To:     Ralf Baechle <ralf@linux-mips.org>,
         David Woodhouse <dwmw2@infradead.org>,
         Brian Norris <computersforpeace@gmail.com>,
@@ -23,8 +23,8 @@ Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         MIPS Mailing List <linux-mips@linux-mips.org>,
         MTD Maling List <linux-mtd@lists.infradead.org>
 From:   Simon Arlott <simon@fire.lp0.eu>
-Message-ID: <566DF563.7020602@simon.arlott.org.uk>
-Date:   Sun, 13 Dec 2015 22:46:59 +0000
+Message-ID: <566DF59B.8000804@simon.arlott.org.uk>
+Date:   Sun, 13 Dec 2015 22:47:55 +0000
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
  Thunderbird/38.4.0
 MIME-Version: 1.0
@@ -35,7 +35,7 @@ Return-Path: <simon@fire.lp0.eu>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50575
+X-archive-position: 50576
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -52,259 +52,62 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Move Broadcom BCM963xx image tag data structure to include/linux/
-so that drivers outside of mach-bcm63xx can use it.
+The extended flash address needs to be subtracted from bcm_tag flash
+image offsets. Move this value to the bcm_tag header file.
+
+Renamed define name to consistently use bcm963xx for flash layout
+which should be considered a property of the board and not the SoC
+(i.e. bcm63xx could theoretically be used on a board without CFE
+or any flash).
 
 Signed-off-by: Simon Arlott <simon@fire.lp0.eu>
 ---
 v4: New patch.
 
- MAINTAINERS                                       |  1 +
- arch/mips/include/asm/mach-bcm63xx/bcm963xx_tag.h | 96 ----------------------
- drivers/mtd/bcm63xxpart.c                         |  2 +-
- include/linux/bcm963xx_tag.h                      | 98 +++++++++++++++++++++++
- 4 files changed, 100 insertions(+), 97 deletions(-)
- delete mode 100644 arch/mips/include/asm/mach-bcm63xx/bcm963xx_tag.h
- create mode 100644 include/linux/bcm963xx_tag.h
+ drivers/mtd/bcm63xxpart.c    | 6 ++----
+ include/linux/bcm963xx_tag.h | 5 +++++
+ 2 files changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index ac7de1a..b2ef403 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -2392,6 +2392,7 @@ F:	arch/mips/boot/dts/brcm/bcm*.dts*
- F:	drivers/irqchip/irq-bcm7*
- F:	drivers/irqchip/irq-brcmstb*
- F:	include/linux/bcm963xx_nvram.h
-+F:	include/linux/bcm963xx_tag.h
- 
- BROADCOM TG3 GIGABIT ETHERNET DRIVER
- M:	Prashant Sreedharan <prashant@broadcom.com>
-diff --git a/arch/mips/include/asm/mach-bcm63xx/bcm963xx_tag.h b/arch/mips/include/asm/mach-bcm63xx/bcm963xx_tag.h
-deleted file mode 100644
-index 1e6b587..0000000
---- a/arch/mips/include/asm/mach-bcm63xx/bcm963xx_tag.h
-+++ /dev/null
-@@ -1,96 +0,0 @@
--#ifndef __BCM963XX_TAG_H
--#define __BCM963XX_TAG_H
--
--#define TAGVER_LEN		4	/* Length of Tag Version */
--#define TAGLAYOUT_LEN		4	/* Length of FlashLayoutVer */
--#define SIG1_LEN		20	/* Company Signature 1 Length */
--#define SIG2_LEN		14	/* Company Signature 2 Length */
--#define BOARDID_LEN		16	/* Length of BoardId */
--#define ENDIANFLAG_LEN		2	/* Endian Flag Length */
--#define CHIPID_LEN		6	/* Chip Id Length */
--#define IMAGE_LEN		10	/* Length of Length Field */
--#define ADDRESS_LEN		12	/* Length of Address field */
--#define DUALFLAG_LEN		2	/* Dual Image flag Length */
--#define INACTIVEFLAG_LEN	2	/* Inactie Flag Length */
--#define RSASIG_LEN		20	/* Length of RSA Signature in tag */
--#define TAGINFO1_LEN		30	/* Length of vendor information field1 in tag */
--#define FLASHLAYOUTVER_LEN	4	/* Length of Flash Layout Version String tag */
--#define TAGINFO2_LEN		16	/* Length of vendor information field2 in tag */
--#define ALTTAGINFO_LEN		54	/* Alternate length for vendor information; Pirelli */
--
--#define NUM_PIRELLI		2
--#define IMAGETAG_CRC_START	0xFFFFFFFF
--
--#define PIRELLI_BOARDS { \
--	"AGPF-S0", \
--	"DWV-S0", \
--}
--
--/*
-- * The broadcom firmware assumes the rootfs starts the image,
-- * therefore uses the rootfs start (flash_image_address)
-- * to determine where to flash the image.  Since we have the kernel first
-- * we have to give it the kernel address, but the crc uses the length
-- * associated with this address (root_length), which is added to the kernel
-- * length (kernel_length) to determine the length of image to flash and thus
-- * needs to be rootfs + deadcode (jffs2 EOF marker)
--*/
--
--struct bcm_tag {
--	/* 0-3: Version of the image tag */
--	char tag_version[TAGVER_LEN];
--	/* 4-23: Company Line 1 */
--	char sig_1[SIG1_LEN];
--	/*  24-37: Company Line 2 */
--	char sig_2[SIG2_LEN];
--	/* 38-43: Chip this image is for */
--	char chip_id[CHIPID_LEN];
--	/* 44-59: Board name */
--	char board_id[BOARDID_LEN];
--	/* 60-61: Map endianness -- 1 BE 0 LE */
--	char big_endian[ENDIANFLAG_LEN];
--	/* 62-71: Total length of image */
--	char total_length[IMAGE_LEN];
--	/* 72-83: Address in memory of CFE */
--	char cfe__address[ADDRESS_LEN];
--	/* 84-93: Size of CFE */
--	char cfe_length[IMAGE_LEN];
--	/* 94-105: Address in memory of image start
--	 * (kernel for OpenWRT, rootfs for stock firmware)
--	 */
--	char flash_image_start[ADDRESS_LEN];
--	/* 106-115: Size of rootfs */
--	char root_length[IMAGE_LEN];
--	/* 116-127: Address in memory of kernel */
--	char kernel_address[ADDRESS_LEN];
--	/* 128-137: Size of kernel */
--	char kernel_length[IMAGE_LEN];
--	/* 138-139: Unused at the moment */
--	char dual_image[DUALFLAG_LEN];
--	/* 140-141: Unused at the moment */
--	char inactive_flag[INACTIVEFLAG_LEN];
--	/* 142-161: RSA Signature (not used; some vendors may use this) */
--	char rsa_signature[RSASIG_LEN];
--	/* 162-191: Compilation and related information (not used in OpenWrt) */
--	char information1[TAGINFO1_LEN];
--	/* 192-195: Version flash layout */
--	char flash_layout_ver[FLASHLAYOUTVER_LEN];
--	/* 196-199: kernel+rootfs CRC32 */
--	__u32 fskernel_crc;
--	/* 200-215: Unused except on Alice Gate where is is information */
--	char information2[TAGINFO2_LEN];
--	/* 216-219: CRC32 of image less imagetag (kernel for Alice Gate) */
--	__u32 image_crc;
--	/* 220-223: CRC32 of rootfs partition */
--	__u32 rootfs_crc;
--	/* 224-227: CRC32 of kernel partition */
--	__u32 kernel_crc;
--	/* 228-235: Unused at present */
--	char reserved1[8];
--	/* 236-239: CRC32 of header excluding last 20 bytes */
--	__u32 header_crc;
--	/* 240-255: Unused at present */
--	char reserved2[16];
--};
--
--#endif /* __BCM63XX_TAG_H */
 diff --git a/drivers/mtd/bcm63xxpart.c b/drivers/mtd/bcm63xxpart.c
-index 4409369..b5bad1f 100644
+index b5bad1f..cec3188 100644
 --- a/drivers/mtd/bcm63xxpart.c
 +++ b/drivers/mtd/bcm63xxpart.c
-@@ -24,6 +24,7 @@
- 
- #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
- 
-+#include <linux/bcm963xx_tag.h>
- #include <linux/crc32.h>
- #include <linux/module.h>
- #include <linux/kernel.h>
-@@ -34,7 +35,6 @@
- #include <linux/mtd/partitions.h>
- 
+@@ -37,8 +37,6 @@
  #include <asm/mach-bcm63xx/bcm63xx_nvram.h>
--#include <asm/mach-bcm63xx/bcm963xx_tag.h>
  #include <asm/mach-bcm63xx/board_bcm963xx.h>
  
- #define BCM63XX_EXTENDED_SIZE	0xBFC00000	/* Extended flash address */
+-#define BCM63XX_EXTENDED_SIZE	0xBFC00000	/* Extended flash address */
+-
+ #define BCM63XX_CFE_BLOCK_SIZE	SZ_64K		/* always at least 64KiB */
+ 
+ #define BCM63XX_CFE_MAGIC_OFFSET 0x4e0
+@@ -123,8 +121,8 @@ static int bcm63xx_parse_cfe_partitions(struct mtd_info *master,
+ 		pr_info("CFE boot tag found with version %s and board type %s\n",
+ 			tagversion, boardid);
+ 
+-		kerneladdr = kerneladdr - BCM63XX_EXTENDED_SIZE;
+-		rootfsaddr = rootfsaddr - BCM63XX_EXTENDED_SIZE;
++		kerneladdr = kerneladdr - BCM963XX_EXTENDED_SIZE;
++		rootfsaddr = rootfsaddr - BCM963XX_EXTENDED_SIZE;
+ 		spareaddr = roundup(totallen, master->erasesize) + cfelen;
+ 
+ 		if (rootfsaddr < kerneladdr) {
 diff --git a/include/linux/bcm963xx_tag.h b/include/linux/bcm963xx_tag.h
-new file mode 100644
-index 0000000..f389dac
---- /dev/null
+index f389dac..08e0133 100644
+--- a/include/linux/bcm963xx_tag.h
 +++ b/include/linux/bcm963xx_tag.h
-@@ -0,0 +1,98 @@
-+#ifndef __LINUX_BCM963XX_TAG_H__
-+#define __LINUX_BCM963XX_TAG_H__
+@@ -28,6 +28,11 @@
+ 	"DWV-S0", \
+ }
+ 
++/* Extended flash address, needs to be subtracted
++ * from bcm_tag flash image offsets.
++ */
++#define BCM963XX_EXTENDED_SIZE	0xBFC00000
 +
-+#include <linux/types.h>
-+
-+#define TAGVER_LEN		4	/* Length of Tag Version */
-+#define TAGLAYOUT_LEN		4	/* Length of FlashLayoutVer */
-+#define SIG1_LEN		20	/* Company Signature 1 Length */
-+#define SIG2_LEN		14	/* Company Signature 2 Length */
-+#define BOARDID_LEN		16	/* Length of BoardId */
-+#define ENDIANFLAG_LEN		2	/* Endian Flag Length */
-+#define CHIPID_LEN		6	/* Chip Id Length */
-+#define IMAGE_LEN		10	/* Length of Length Field */
-+#define ADDRESS_LEN		12	/* Length of Address field */
-+#define DUALFLAG_LEN		2	/* Dual Image flag Length */
-+#define INACTIVEFLAG_LEN	2	/* Inactie Flag Length */
-+#define RSASIG_LEN		20	/* Length of RSA Signature in tag */
-+#define TAGINFO1_LEN		30	/* Length of vendor information field1 in tag */
-+#define FLASHLAYOUTVER_LEN	4	/* Length of Flash Layout Version String tag */
-+#define TAGINFO2_LEN		16	/* Length of vendor information field2 in tag */
-+#define ALTTAGINFO_LEN		54	/* Alternate length for vendor information; Pirelli */
-+
-+#define NUM_PIRELLI		2
-+#define IMAGETAG_CRC_START	0xFFFFFFFF
-+
-+#define PIRELLI_BOARDS { \
-+	"AGPF-S0", \
-+	"DWV-S0", \
-+}
-+
-+/*
-+ * The broadcom firmware assumes the rootfs starts the image,
-+ * therefore uses the rootfs start (flash_image_address)
-+ * to determine where to flash the image.  Since we have the kernel first
-+ * we have to give it the kernel address, but the crc uses the length
-+ * associated with this address (root_length), which is added to the kernel
-+ * length (kernel_length) to determine the length of image to flash and thus
-+ * needs to be rootfs + deadcode (jffs2 EOF marker)
-+*/
-+
-+struct bcm_tag {
-+	/* 0-3: Version of the image tag */
-+	char tag_version[TAGVER_LEN];
-+	/* 4-23: Company Line 1 */
-+	char sig_1[SIG1_LEN];
-+	/*  24-37: Company Line 2 */
-+	char sig_2[SIG2_LEN];
-+	/* 38-43: Chip this image is for */
-+	char chip_id[CHIPID_LEN];
-+	/* 44-59: Board name */
-+	char board_id[BOARDID_LEN];
-+	/* 60-61: Map endianness -- 1 BE 0 LE */
-+	char big_endian[ENDIANFLAG_LEN];
-+	/* 62-71: Total length of image */
-+	char total_length[IMAGE_LEN];
-+	/* 72-83: Address in memory of CFE */
-+	char cfe__address[ADDRESS_LEN];
-+	/* 84-93: Size of CFE */
-+	char cfe_length[IMAGE_LEN];
-+	/* 94-105: Address in memory of image start
-+	 * (kernel for OpenWRT, rootfs for stock firmware)
-+	 */
-+	char flash_image_start[ADDRESS_LEN];
-+	/* 106-115: Size of rootfs */
-+	char root_length[IMAGE_LEN];
-+	/* 116-127: Address in memory of kernel */
-+	char kernel_address[ADDRESS_LEN];
-+	/* 128-137: Size of kernel */
-+	char kernel_length[IMAGE_LEN];
-+	/* 138-139: Unused at the moment */
-+	char dual_image[DUALFLAG_LEN];
-+	/* 140-141: Unused at the moment */
-+	char inactive_flag[INACTIVEFLAG_LEN];
-+	/* 142-161: RSA Signature (not used; some vendors may use this) */
-+	char rsa_signature[RSASIG_LEN];
-+	/* 162-191: Compilation and related information (not used in OpenWrt) */
-+	char information1[TAGINFO1_LEN];
-+	/* 192-195: Version flash layout */
-+	char flash_layout_ver[FLASHLAYOUTVER_LEN];
-+	/* 196-199: kernel+rootfs CRC32 */
-+	__u32 fskernel_crc;
-+	/* 200-215: Unused except on Alice Gate where is is information */
-+	char information2[TAGINFO2_LEN];
-+	/* 216-219: CRC32 of image less imagetag (kernel for Alice Gate) */
-+	__u32 image_crc;
-+	/* 220-223: CRC32 of rootfs partition */
-+	__u32 rootfs_crc;
-+	/* 224-227: CRC32 of kernel partition */
-+	__u32 kernel_crc;
-+	/* 228-235: Unused at present */
-+	char reserved1[8];
-+	/* 236-239: CRC32 of header excluding last 20 bytes */
-+	__u32 header_crc;
-+	/* 240-255: Unused at present */
-+	char reserved2[16];
-+};
-+
-+#endif /* __LINUX_BCM63XX_TAG_H__ */
+ /*
+  * The broadcom firmware assumes the rootfs starts the image,
+  * therefore uses the rootfs start (flash_image_address)
 -- 
 2.1.4
 

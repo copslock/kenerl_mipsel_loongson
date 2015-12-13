@@ -1,50 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 12 Dec 2015 14:17:06 +0100 (CET)
-Received: from proxima.lp0.eu ([81.2.80.65]:46097 "EHLO proxima.lp0.eu"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27007470AbbLLNRDbhEY3 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 12 Dec 2015 14:17:03 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=fire.lp0.eu; s=exim;
-        h=Content-Transfer-Encoding:Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:Cc:References:To:Subject; bh=hwL196C8C3ddC1fsfWdCnTDKplw5Cb++y+M+CRhaG8w=;
-        b=Ki4ceL7W0QG1ezX5boPYtaPXEa91JAep0P1hjX9uHLARrbT+MID+732NR2QEQF9xtCvTzLHYO/em6f94aDCt5Fi/w8JiuSKLGXkU1DqC1OOWX0LMpgnCAxqTsaV9KxkYylsgM3a1mOxZNgcq0GfoE6tn7Uop1MZyrCPU8Z7kkqRei7n8RElnoE223ju8iGMZHC8ln5UWenWqyb9kipCdFzRqlKma8zxZbOOialiioplo3Jbdyp9Ltop9HANHMnL9426YiK/mpAR7d7rfOmPeOEys0y8wwDE5WInlw4O9ORfDSAC+MrgxlaYcTjga+bz64/q3/lWcPTmk5SoxCtyhLg==;
-Received: from redrum.lp0.eu ([2001:8b0:ffea:0:2e0:81ff:fe4d:2bec]:36986 ident=simon)
-        by proxima.lp0.eu ([2001:8b0:ffea:0:205:b4ff:fe12:530]:465)
-        with esmtpsav (UNKNOWN:DHE-RSA-AES256-SHA:256/CN=Simon Arlott)
-        id 1a7k2i-0004Of-59 (Exim); Sat, 12 Dec 2015 13:16:57 +0000
-Subject: Re: [PATCH linux-next (v3) 1/3] MIPS: bcm963xx: Add Broadcom BCM963xx
- board nvram data structure
-To:     Jonas Gorski <jogo@openwrt.org>
-References: <566B460F.1040603@simon.arlott.org.uk>
- <CAOiHx=m3cXTePDjH04Yoz3wQO9Ta9jSn=JrkfNgphoPcQVaGXg@mail.gmail.com>
- <566B4D34.9040707@simon.arlott.org.uk>
- <CAOiHx=nrZdvezkyLi0kfvZ6Rp3YtechtP=J2orpUsVkXvA_6HQ@mail.gmail.com>
-Cc:     David Woodhouse <dwmw2@infradead.org>,
-        Brian Norris <computersforpeace@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Kevin Cernekee <cernekee@gmail.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        MTD Maling List <linux-mtd@lists.infradead.org>,
-        bcm-kernel-feedback-list <bcm-kernel-feedback-list@broadcom.com>,
-        MIPS Mailing List <linux-mips@linux-mips.org>,
-        linux-api@vger.kernel.org
-From:   Simon Arlott <simon@fire.lp0.eu>
-Message-ID: <566C1E44.3010506@simon.arlott.org.uk>
-Date:   Sat, 12 Dec 2015 13:16:52 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.4.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 13 Dec 2015 02:22:27 +0100 (CET)
+Received: from mail-qk0-f176.google.com ([209.85.220.176]:33025 "EHLO
+        mail-qk0-f176.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008760AbbLMBWZFnD4E (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 13 Dec 2015 02:22:25 +0100
+Received: by qkck189 with SMTP id k189so56029555qkc.0
+        for <linux-mips@linux-mips.org>; Sat, 12 Dec 2015 17:22:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type;
+        bh=PzgLJ//8SRtLByYe4damo8ObBwll+7hvlU1vgMsvxMc=;
+        b=LWpikqrpAtrKgWT6zhmNu30+pdl0gqxkm25UopbyjJDwp8wEHoOthnng3/oIQy5W8o
+         kkbwy81844ciLZ3RY89IlVTVziREFUHruYw7dKUEL9HorbxHwUKvgXfcV1VqKZ3Tc8T1
+         LH8OpvK3WT3b3wmjHWrkuVqSCgcye4FlzwxE1/vg3Ys6taqEt5ZihHjvMYoqOCMaEYAN
+         lz7gAJ5vhEnfm0873Mkxqqi/xltfs2t/kBFIlT/ZWPzywWMq7XlrwXFyXQd2WvQt9o9g
+         pImasLav2oIw3MIOTuRNwNUDm/429ub66/H+zWhJe3RO1DTY9Mi08s0L1ZooSte5YTo6
+         vinw==
 MIME-Version: 1.0
-In-Reply-To: <CAOiHx=nrZdvezkyLi0kfvZ6Rp3YtechtP=J2orpUsVkXvA_6HQ@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Return-Path: <simon@fire.lp0.eu>
+X-Received: by 10.13.208.66 with SMTP id s63mr11213109ywd.20.1449969739227;
+ Sat, 12 Dec 2015 17:22:19 -0800 (PST)
+Received: by 10.37.224.143 with HTTP; Sat, 12 Dec 2015 17:22:19 -0800 (PST)
+In-Reply-To: <1448900513-20856-25-git-send-email-paul.burton@imgtec.com>
+References: <1448900513-20856-1-git-send-email-paul.burton@imgtec.com>
+        <1448900513-20856-25-git-send-email-paul.burton@imgtec.com>
+Date:   Sun, 13 Dec 2015 03:22:19 +0200
+Message-ID: <CAHp75VdezHXFcV9T=bd8k5JHoogC39Hew5GCdd02rk=PEM6ajw@mail.gmail.com>
+Subject: Re: [PATCH 24/28] net: pch_gbe: add device tree support
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+To:     Paul Burton <paul.burton@imgtec.com>
+Cc:     linux-mips@linux-mips.org, netdev <netdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <andy.shevchenko@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50564
+X-archive-position: 50565
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: simon@fire.lp0.eu
+X-original-sender: andy.shevchenko@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -57,45 +52,108 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 11/12/15 23:29, Jonas Gorski wrote:
-> On Fri, Dec 11, 2015 at 11:24 PM, Simon Arlott <simon@fire.lp0.eu> wrote:
->> On 11/12/15 22:02, Jonas Gorski wrote:
->>> On Fri, Dec 11, 2015 at 10:54 PM, Simon Arlott <simon@fire.lp0.eu> wrote:
->>>> Broadcom BCM963xx boards have multiple nvram variants across different
->>>> SoCs with additional checksum fields added whenever the size of the
->>>> nvram was extended.
->>>>
->>>> Add this structure as a header file so that multiple drivers and userspace
->>>> can use it.
->>>>
->>>> Signed-off-by: Simon Arlott <simon@fire.lp0.eu>
->>>> ---
->>>> v3: Fix includes/type names, add comments explaining the nvram struct.
->>>>
->>>> v2: Use external struct bcm963xx_nvram definition for bcm963268part.
-...
->>>> diff --git a/include/uapi/linux/bcm963xx_nvram.h b/include/uapi/linux/bcm963xx_nvram.h
->>>> new file mode 100644
->>>> index 0000000..2dcb307
->>>> --- /dev/null
->>>> +++ b/include/uapi/linux/bcm963xx_nvram.h
->>>
->>> Why uapi? The nvram layout isn't really enforced to be that way, and
->>> at least Huawei uses a modified one on some devices (in case you
->>> wondered why bcm63xx doesn't fail a crc32-"broken" one), so IMHO it
->>> should be kept for in-kernel use only.
->>
->> Because Florian suggested include/uapi/linux/bcm963xx_nvram.h; I could
->> move it to include/linux/ instead if this is preferred.
-...
->>>> + * Do not use the __reserved fields, especially not as an offset for CRC
->>>> + * calculations (use BCM963XX_NVRAM_*_SIZE instead). These may be removed or
->>>> + * repositioned.
-> 
-> Because I just saw that: Nobody will read that. ;p
+On Mon, Nov 30, 2015 at 6:21 PM, Paul Burton <paul.burton@imgtec.com> wrote:
+> Introduce support for retrieving the PHY reset GPIO from device tree,
+> which will be used on the MIPS Boston development board. This requires
+> support for probe deferral in order to work correctly, since the order
+> of device probe is not guaranteed & typically the EG20T GPIO controller
+> device will be probed after the ethernet MAC.
+>
+> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+> ---
+>
+>  .../net/ethernet/oki-semi/pch_gbe/pch_gbe_main.c   | 33 +++++++++++++++++++++-
+>  1 file changed, 32 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/net/ethernet/oki-semi/pch_gbe/pch_gbe_main.c b/drivers/net/ethernet/oki-semi/pch_gbe/pch_gbe_main.c
+> index 824ff9e..f2a9a38 100644
+> --- a/drivers/net/ethernet/oki-semi/pch_gbe/pch_gbe_main.c
+> +++ b/drivers/net/ethernet/oki-semi/pch_gbe/pch_gbe_main.c
+> @@ -23,6 +23,8 @@
+>  #include <linux/net_tstamp.h>
+>  #include <linux/ptp_classify.h>
+>  #include <linux/gpio.h>
+> +#include <linux/gpio/consumer.h>
+> +#include <linux/of_gpio.h>
+>
+>  #define DRV_VERSION     "1.01"
+>  const char pch_driver_version[] = DRV_VERSION;
+> @@ -2594,13 +2596,41 @@ static void pch_gbe_remove(struct pci_dev *pdev)
+>         free_netdev(netdev);
+>  }
+>
+> +static int pch_gbe_parse_dt(struct pci_dev *pdev,
+> +                           struct pch_gbe_privdata **pdata)
 
-I'll move this to include/linux/bcm963xx_nvram.h and omit the linux-api
-mailing list when I next send the patch series.
+Why not to return pdata as it done in many other drivers?
+You have ERR_PTR() macro to pass errors.
+
+> +{
+> +       struct device_node *np = pdev->dev.of_node;
+> +       struct gpio_desc *gpio;
+> +
+> +       if (!config_enabled(CONFIG_OF) || !np)
+
+Before I saw IS_ENABLED(). Is this one a preferable new API?
+
+> +               return 0;
+> +
+> +       if (!*pdata)
+> +               *pdata = devm_kzalloc(&pdev->dev, sizeof(**pdata), GFP_KERNEL);
+> +       if (!*pdata)
+> +               return -ENOMEM;
+> +
+> +       gpio = devm_gpiod_get(&pdev->dev, "phy-reset", GPIOD_ASIS);
+> +       if (IS_ERR(gpio))
+> +               return PTR_ERR(gpio);
+> +
+> +       (*pdata)->phy_reset_gpio = gpio;
+> +       return 0;
+> +}
+> +
+>  static int pch_gbe_probe(struct pci_dev *pdev,
+>                           const struct pci_device_id *pci_id)
+>  {
+>         struct net_device *netdev;
+>         struct pch_gbe_adapter *adapter;
+> +       struct pch_gbe_privdata *pdata;
+>         int ret;
+>
+> +       pdata = (struct pch_gbe_privdata *)pci_id->driver_data;
+> +       ret = pch_gbe_parse_dt(pdev, &pdata);
+
+So, I didn;t see anything related to dt in that function.
+Maybe you just call it always? In that case remove check for np.
+
+> +       if (ret)
+> +               goto err_out;
+> +
+>         ret = pcim_enable_device(pdev);
+>         if (ret)
+>                 return ret;
+> @@ -2638,7 +2668,7 @@ static int pch_gbe_probe(struct pci_dev *pdev,
+>         adapter->pdev = pdev;
+>         adapter->hw.back = adapter;
+>         adapter->hw.reg = pcim_iomap_table(pdev)[PCH_GBE_PCI_BAR];
+> -       adapter->pdata = (struct pch_gbe_privdata *)pci_id->driver_data;
+> +       adapter->pdata = pdata;
+>         if (adapter->pdata && adapter->pdata->platform_init)
+>                 adapter->pdata->platform_init(pdev, pdata);
+>
+> @@ -2729,6 +2759,7 @@ err_free_adapter:
+>         pch_gbe_hal_phy_hw_reset(&adapter->hw);
+>  err_free_netdev:
+>         free_netdev(netdev);
+> +err_out:
+
+Redundant.
+
+>         return ret;
+>  }
+
+For now it's a common practice to mix styles in probe due to usage of
+devres API.
 
 -- 
-Simon Arlott
+With Best Regards,
+Andy Shevchenko

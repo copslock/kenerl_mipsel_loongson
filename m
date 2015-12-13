@@ -1,45 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 13 Dec 2015 02:22:27 +0100 (CET)
-Received: from mail-qk0-f176.google.com ([209.85.220.176]:33025 "EHLO
-        mail-qk0-f176.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008760AbbLMBWZFnD4E (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 13 Dec 2015 02:22:25 +0100
-Received: by qkck189 with SMTP id k189so56029555qkc.0
-        for <linux-mips@linux-mips.org>; Sat, 12 Dec 2015 17:22:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        bh=PzgLJ//8SRtLByYe4damo8ObBwll+7hvlU1vgMsvxMc=;
-        b=LWpikqrpAtrKgWT6zhmNu30+pdl0gqxkm25UopbyjJDwp8wEHoOthnng3/oIQy5W8o
-         kkbwy81844ciLZ3RY89IlVTVziREFUHruYw7dKUEL9HorbxHwUKvgXfcV1VqKZ3Tc8T1
-         LH8OpvK3WT3b3wmjHWrkuVqSCgcye4FlzwxE1/vg3Ys6taqEt5ZihHjvMYoqOCMaEYAN
-         lz7gAJ5vhEnfm0873Mkxqqi/xltfs2t/kBFIlT/ZWPzywWMq7XlrwXFyXQd2WvQt9o9g
-         pImasLav2oIw3MIOTuRNwNUDm/429ub66/H+zWhJe3RO1DTY9Mi08s0L1ZooSte5YTo6
-         vinw==
-MIME-Version: 1.0
-X-Received: by 10.13.208.66 with SMTP id s63mr11213109ywd.20.1449969739227;
- Sat, 12 Dec 2015 17:22:19 -0800 (PST)
-Received: by 10.37.224.143 with HTTP; Sat, 12 Dec 2015 17:22:19 -0800 (PST)
-In-Reply-To: <1448900513-20856-25-git-send-email-paul.burton@imgtec.com>
-References: <1448900513-20856-1-git-send-email-paul.burton@imgtec.com>
-        <1448900513-20856-25-git-send-email-paul.burton@imgtec.com>
-Date:   Sun, 13 Dec 2015 03:22:19 +0200
-Message-ID: <CAHp75VdezHXFcV9T=bd8k5JHoogC39Hew5GCdd02rk=PEM6ajw@mail.gmail.com>
-Subject: Re: [PATCH 24/28] net: pch_gbe: add device tree support
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-To:     Paul Burton <paul.burton@imgtec.com>
-Cc:     linux-mips@linux-mips.org, netdev <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <andy.shevchenko@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 13 Dec 2015 03:29:23 +0100 (CET)
+Received: from SMTPBG11.QQ.COM ([183.60.61.232]:60772 "EHLO smtpbg11.qq.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27008776AbbLMC3TkiM86 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 13 Dec 2015 03:29:19 +0100
+X-QQ-mid: bizesmtp5t1449973726t665t224
+Received: from software.domain.org (unknown [222.92.8.142])
+        by esmtp4.qq.com (ESMTP) with 
+        id ; Sun, 13 Dec 2015 10:28:39 +0800 (CST)
+X-QQ-SSF: 01100000002000F0FK62B00A0000000
+X-QQ-FEAT: 9NFkmNiL4hcYDzQ8AULxA5aZzZr30h5KoK3s9Cu8vyD5x5qqp1ek1a9IVeT7F
+        xhkxVLxhM/scNxtYKs5vtf77YaS4oMBvvKYpefM8h4gco/ev2vuPbVPdF42Sp1NEBpfaWHc
+        hRZKEavhKWOe/b/kf0Diz7/ROQCmt3EQ5i+78j/m4mRfvdrzNEeGc799n+RDAoWP/NiGk4K
+        WaKLGqP2T6d3y+15LHIHZqxSWCqqWkjgKbR59jBHjOVZtyL0sA6HGj4uzPMmrJbr3gflr3N
+        3wKw==
+X-QQ-GoodBg: 0
+From:   Huacai Chen <chenhc@lemote.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     Aurelien Jarno <aurelien@aurel32.net>,
+        "Steven J. Hill" <Steven.Hill@imgtec.com>,
+        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        Huacai Chen <chenhc@lemote.com>
+Subject: [PATCH 1/2] MIPS: Loongson-3: Improve -march option and move it to Platform
+Date:   Sun, 13 Dec 2015 10:32:41 +0800
+Message-Id: <1449973962-16405-1-git-send-email-chenhc@lemote.com>
+X-Mailer: git-send-email 2.4.6
+X-QQ-SENDSIZE: 520
+X-QQ-Bgrelay: 1
+Return-Path: <chenhc@lemote.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50565
+X-archive-position: 50566
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: andy.shevchenko@gmail.com
+X-original-sender: chenhc@lemote.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,108 +48,69 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Nov 30, 2015 at 6:21 PM, Paul Burton <paul.burton@imgtec.com> wrote:
-> Introduce support for retrieving the PHY reset GPIO from device tree,
-> which will be used on the MIPS Boston development board. This requires
-> support for probe deferral in order to work correctly, since the order
-> of device probe is not guaranteed & typically the EG20T GPIO controller
-> device will be probed after the ethernet MAC.
->
-> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-> ---
->
->  .../net/ethernet/oki-semi/pch_gbe/pch_gbe_main.c   | 33 +++++++++++++++++++++-
->  1 file changed, 32 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/net/ethernet/oki-semi/pch_gbe/pch_gbe_main.c b/drivers/net/ethernet/oki-semi/pch_gbe/pch_gbe_main.c
-> index 824ff9e..f2a9a38 100644
-> --- a/drivers/net/ethernet/oki-semi/pch_gbe/pch_gbe_main.c
-> +++ b/drivers/net/ethernet/oki-semi/pch_gbe/pch_gbe_main.c
-> @@ -23,6 +23,8 @@
->  #include <linux/net_tstamp.h>
->  #include <linux/ptp_classify.h>
->  #include <linux/gpio.h>
-> +#include <linux/gpio/consumer.h>
-> +#include <linux/of_gpio.h>
->
->  #define DRV_VERSION     "1.01"
->  const char pch_driver_version[] = DRV_VERSION;
-> @@ -2594,13 +2596,41 @@ static void pch_gbe_remove(struct pci_dev *pdev)
->         free_netdev(netdev);
->  }
->
-> +static int pch_gbe_parse_dt(struct pci_dev *pdev,
-> +                           struct pch_gbe_privdata **pdata)
+If GCC >= 4.9 and Binutils >=2.25, we use -march=loongson3a, otherwise
+we use -march=mips64r2, this can slightly improve performance. Besides,
+arch/mips/loongson64/Platform is a better location rather than arch/
+mips/Makefile.
 
-Why not to return pdata as it done in many other drivers?
-You have ERR_PTR() macro to pass errors.
+Signed-off-by: Huacai Chen <chenhc@lemote.com>
+---
+ arch/mips/Makefile            | 10 ----------
+ arch/mips/loongson64/Platform | 21 +++++++++++++++++++++
+ 2 files changed, 21 insertions(+), 10 deletions(-)
 
-> +{
-> +       struct device_node *np = pdev->dev.of_node;
-> +       struct gpio_desc *gpio;
-> +
-> +       if (!config_enabled(CONFIG_OF) || !np)
-
-Before I saw IS_ENABLED(). Is this one a preferable new API?
-
-> +               return 0;
-> +
-> +       if (!*pdata)
-> +               *pdata = devm_kzalloc(&pdev->dev, sizeof(**pdata), GFP_KERNEL);
-> +       if (!*pdata)
-> +               return -ENOMEM;
-> +
-> +       gpio = devm_gpiod_get(&pdev->dev, "phy-reset", GPIOD_ASIS);
-> +       if (IS_ERR(gpio))
-> +               return PTR_ERR(gpio);
-> +
-> +       (*pdata)->phy_reset_gpio = gpio;
-> +       return 0;
-> +}
-> +
->  static int pch_gbe_probe(struct pci_dev *pdev,
->                           const struct pci_device_id *pci_id)
->  {
->         struct net_device *netdev;
->         struct pch_gbe_adapter *adapter;
-> +       struct pch_gbe_privdata *pdata;
->         int ret;
->
-> +       pdata = (struct pch_gbe_privdata *)pci_id->driver_data;
-> +       ret = pch_gbe_parse_dt(pdev, &pdata);
-
-So, I didn;t see anything related to dt in that function.
-Maybe you just call it always? In that case remove check for np.
-
-> +       if (ret)
-> +               goto err_out;
-> +
->         ret = pcim_enable_device(pdev);
->         if (ret)
->                 return ret;
-> @@ -2638,7 +2668,7 @@ static int pch_gbe_probe(struct pci_dev *pdev,
->         adapter->pdev = pdev;
->         adapter->hw.back = adapter;
->         adapter->hw.reg = pcim_iomap_table(pdev)[PCH_GBE_PCI_BAR];
-> -       adapter->pdata = (struct pch_gbe_privdata *)pci_id->driver_data;
-> +       adapter->pdata = pdata;
->         if (adapter->pdata && adapter->pdata->platform_init)
->                 adapter->pdata->platform_init(pdev, pdata);
->
-> @@ -2729,6 +2759,7 @@ err_free_adapter:
->         pch_gbe_hal_phy_hw_reset(&adapter->hw);
->  err_free_netdev:
->         free_netdev(netdev);
-> +err_out:
-
-Redundant.
-
->         return ret;
->  }
-
-For now it's a common practice to mix styles in probe due to usage of
-devres API.
-
+diff --git a/arch/mips/Makefile b/arch/mips/Makefile
+index 3f70ba5..e78d60d 100644
+--- a/arch/mips/Makefile
++++ b/arch/mips/Makefile
+@@ -166,16 +166,6 @@ cflags-$(CONFIG_CPU_CAVIUM_OCTEON) += -Wa,-march=octeon
+ endif
+ cflags-$(CONFIG_CAVIUM_CN63XXP1) += -Wa,-mfix-cn63xxp1
+ cflags-$(CONFIG_CPU_BMIPS)	+= -march=mips32 -Wa,-mips32 -Wa,--trap
+-#
+-# binutils from v2.25 on and gcc starting from v4.9.0 treat -march=loongson3a
+-# as MIPS64 R1; older versions as just R1.  This leaves the possibility open
+-# that GCC might generate R2 code for -march=loongson3a which then is rejected
+-# by GAS.  The cc-option can't probe for this behaviour so -march=loongson3a
+-# can't easily be used safely within the kbuild framework.
+-#
+-cflags-$(CONFIG_CPU_LOONGSON3)  +=					\
+-	$(call cc-option,-march=mips64r2,-mips64r2 -U_MIPS_ISA -D_MIPS_ISA=_MIPS_ISA_MIPS64) \
+-	-Wa,-mips64r2 -Wa,--trap
+ 
+ cflags-$(CONFIG_CPU_R4000_WORKAROUNDS)	+= $(call cc-option,-mfix-r4000,)
+ cflags-$(CONFIG_CPU_R4400_WORKAROUNDS)	+= $(call cc-option,-mfix-r4400,)
+diff --git a/arch/mips/loongson64/Platform b/arch/mips/loongson64/Platform
+index 2e48e83..85d8089 100644
+--- a/arch/mips/loongson64/Platform
++++ b/arch/mips/loongson64/Platform
+@@ -22,6 +22,27 @@ ifdef CONFIG_CPU_LOONGSON2F_WORKAROUNDS
+   endif
+ endif
+ 
++cflags-$(CONFIG_CPU_LOONGSON3)	+= -Wa,--trap
++#
++# binutils from v2.25 on and gcc starting from v4.9.0 treat -march=loongson3a
++# as MIPS64 R2; older versions as just R1.  This leaves the possibility open
++# that GCC might generate R2 code for -march=loongson3a which then is rejected
++# by GAS.  The cc-option can't probe for this behaviour so -march=loongson3a
++# can't easily be used safely within the kbuild framework.
++#
++ifeq ($(call cc-ifversion, -ge, 0409, y), y)
++  ifeq ($(call ld-ifversion, -ge, 22500000, y), y)
++    cflags-$(CONFIG_CPU_LOONGSON3)  += \
++      $(call cc-option,-march=loongson3a -U_MIPS_ISA -D_MIPS_ISA=_MIPS_ISA_MIPS64)
++  else
++    cflags-$(CONFIG_CPU_LOONGSON3)  += \
++      $(call cc-option,-march=mips64r2,-mips64r2 -U_MIPS_ISA -D_MIPS_ISA=_MIPS_ISA_MIPS64)
++  endif
++else
++    cflags-$(CONFIG_CPU_LOONGSON3)  += \
++      $(call cc-option,-march=mips64r2,-mips64r2 -U_MIPS_ISA -D_MIPS_ISA=_MIPS_ISA_MIPS64)
++endif
++
+ #
+ # Loongson Machines' Support
+ #
 -- 
-With Best Regards,
-Andy Shevchenko
+2.4.6

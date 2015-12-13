@@ -1,17 +1,17 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 13 Dec 2015 23:51:07 +0100 (CET)
-Received: from proxima.lp0.eu ([81.2.80.65]:35432 "EHLO proxima.lp0.eu"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 13 Dec 2015 23:51:41 +0100 (CET)
+Received: from proxima.lp0.eu ([81.2.80.65]:35447 "EHLO proxima.lp0.eu"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27013502AbbLMWvFdNAY9 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 13 Dec 2015 23:51:05 +0100
+        id S27013502AbbLMWvjIlW29 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 13 Dec 2015 23:51:39 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=fire.lp0.eu; s=exim;
-        h=Content-Transfer-Encoding:Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:Cc:References:To:Subject; bh=HAsHjk8kwqVAxNMxmkJuebN7RC4GAhW2W+mamwPQW3A=;
-        b=cO2c2z4t+ZcfCkCIDHtP0lediVR3BagcVMoC80cnM+liL5vr2koCXCkrMJ9T9h4blD4Z1dfrh2PR+tKgbIOTZsW7luSz+Rh6S49LtqEFfoJ9VS73g+9CttiKqFyZDqQ7Bw4Qf5BzjJk4pRiHw0aBrzq+v0qEsqzbyfoiQd1SUcBBYuGv0Q8H2oW30v0t5dy0PoiMPXPtTcJjrqZgf5cQfxmvBcYsG5uPJxSRhlh8JVlCzJ1ELahBx8wL72iYII9VXrHjXFMUQKbHYDN4qahrHxxx5irFt+67OuUIB4baTnIw9CdIhuJtmmUgYFz1Nz9aT1lDc7UW5gXoDwWUiT93tQ==;
-Received: from redrum.lp0.eu ([2001:8b0:ffea:0:2e0:81ff:fe4d:2bec]:44503 ident=simon)
+        h=Content-Transfer-Encoding:Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:Cc:References:To:Subject; bh=ymMl2NVuu6BOqDif52k51Zqo7WOE2AYRBEcJXLhpu2k=;
+        b=HOyXB25I+oiSuylWhngCGRl1mcZtyGq+vof8AQOqK3W0J1004FbK+EsnM2IH6coJSiqBvUwG38EesTe1Iayf7Ev1BC7rIfxvHbBkBn6MNAzeFCurUrMHSd6VpBGso6fYWmQHVNqo147f0bvsvq6JHb6CEnWhhqvHQdgfSfOr0IXcO0YRvZaYfIVPitr/0e1NoA+XQ140GnABAYFS4mnYgVmR0qHAtXgj2WQpC4QluyEbx8YCUFPgacykP5weW5g4h4fIzPHPbs2f5EH5RxjbLvDUzQ597P+hHunxIZmIX2YZeNynxsw2RQqcHEU99/gbprtzuAkJ1Wg9nliu7qBAgg==;
+Received: from redrum.lp0.eu ([2001:8b0:ffea:0:2e0:81ff:fe4d:2bec]:44506 ident=simon)
         by proxima.lp0.eu ([2001:8b0:ffea:0:205:b4ff:fe12:530]:465)
         with esmtpsav (UNKNOWN:DHE-RSA-AES256-SHA:256/CN=Simon Arlott)
-        id 1a8FTr-00045N-OY (Exim); Sun, 13 Dec 2015 22:51:04 +0000
-Subject: [PATCH linux-next v4 08/11] mtd: bcm63xxpart: Extract read of image
- tag to separate function
+        id 1a8FUQ-00046j-BX (Exim); Sun, 13 Dec 2015 22:51:38 +0000
+Subject: [PATCH linux-next v4 09/11] mtd: bcm63xxpart: Null terminate and
+ validate conversion of flash strings
 To:     Ralf Baechle <ralf@linux-mips.org>,
         David Woodhouse <dwmw2@infradead.org>,
         Brian Norris <computersforpeace@gmail.com>,
@@ -23,8 +23,8 @@ Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         MIPS Mailing List <linux-mips@linux-mips.org>,
         MTD Maling List <linux-mtd@lists.infradead.org>
 From:   Simon Arlott <simon@fire.lp0.eu>
-Message-ID: <566DF656.2020509@simon.arlott.org.uk>
-Date:   Sun, 13 Dec 2015 22:51:02 +0000
+Message-ID: <566DF679.5040309@simon.arlott.org.uk>
+Date:   Sun, 13 Dec 2015 22:51:37 +0000
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
  Thunderbird/38.4.0
 MIME-Version: 1.0
@@ -35,7 +35,7 @@ Return-Path: <simon@fire.lp0.eu>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50580
+X-archive-position: 50581
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -52,130 +52,78 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Extract image tag reading and CRC check to a separate function.
+Strings read from flash could be missing null termination characters, or
+not contain valid integers.
+
+Null terminate the strings and check for errors when converting them to
+integers.
+
+Also validate that the addresses are at least BCM963XX_EXTENDED_SIZE
+because this will be subtracted from them.
 
 Signed-off-by: Simon Arlott <simon@fire.lp0.eu>
 ---
 v4: New patch.
 
- drivers/mtd/bcm63xxpart.c | 62 ++++++++++++++++++++++++++++++-----------------
- 1 file changed, 40 insertions(+), 22 deletions(-)
+ drivers/mtd/bcm63xxpart.c | 38 ++++++++++++++++++++++++++++++++++----
+ 1 file changed, 34 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/mtd/bcm63xxpart.c b/drivers/mtd/bcm63xxpart.c
-index 1eea8b6..eafbf52 100644
+index eafbf52..41aa202 100644
 --- a/drivers/mtd/bcm63xxpart.c
 +++ b/drivers/mtd/bcm63xxpart.c
-@@ -41,6 +41,10 @@
- #define BCM963XX_CFE_VERSION_OFFSET	0x570
- #define BCM963XX_NVRAM_OFFSET		0x580
- 
-+/* Ensure strings read from flash structs are null terminated */
-+#define STR_NULL_TERMINATE(x) \
-+	do { char *_str = (x); _str[sizeof(x) - 1] = 0; } while (0)
-+
- static int bcm63xx_detect_cfe(struct mtd_info *master)
- {
- 	char buf[9];
-@@ -89,6 +93,37 @@ static int bcm63xx_read_nvram(struct mtd_info *master,
- 	return 0;
- }
- 
-+static int bcm63xx_read_image_tag(struct mtd_info *master, const char *name,
-+	loff_t tag_offset, struct bcm_tag *buf)
-+{
-+	int ret;
-+	size_t retlen;
-+	u32 computed_crc;
-+
-+	ret = mtd_read(master, tag_offset, sizeof(*buf), &retlen, (void *)buf);
-+	if (ret)
-+		return ret;
-+
-+	if (retlen != sizeof(*buf))
-+		return -EIO;
-+
-+	computed_crc = crc32_le(IMAGETAG_CRC_START, (u8 *)buf,
-+				offsetof(struct bcm_tag, header_crc));
-+	if (computed_crc == buf->header_crc) {
-+		STR_NULL_TERMINATE(buf->board_id);
-+		STR_NULL_TERMINATE(buf->tag_version);
-+
-+		pr_info("%s: CFE image tag found at 0x%llx with version %s, board type %s\n",
-+			name, tag_offset, buf->tag_version, buf->board_id);
-+
-+		return 0;
-+	}
-+
-+	pr_warn("%s: CFE image tag at 0x%llx CRC invalid (expected %08x, actual %08x)\n",
-+		name, tag_offset, buf->header_crc, computed_crc);
-+	return 1;
-+}
-+
- static int bcm63xx_parse_cfe_partitions(struct mtd_info *master,
- 					const struct mtd_partition **pparts,
- 					struct mtd_part_parser_data *data)
-@@ -99,13 +134,11 @@ static int bcm63xx_parse_cfe_partitions(struct mtd_info *master,
- 	struct bcm_tag *buf = NULL;
- 	struct mtd_partition *parts;
- 	int ret;
--	size_t retlen;
- 	unsigned int rootfsaddr, kerneladdr, spareaddr;
- 	unsigned int rootfslen, kernellen, sparelen, totallen;
- 	unsigned int cfelen, nvramlen;
- 	unsigned int cfe_erasesize;
- 	int i;
--	u32 computed_crc;
- 	bool rootfs_first = false;
- 
- 	if (bcm63xx_detect_cfe(master))
-@@ -134,28 +167,13 @@ static int bcm63xx_parse_cfe_partitions(struct mtd_info *master,
- 	}
- 
+@@ -169,10 +169,39 @@ static int bcm63xx_parse_cfe_partitions(struct mtd_info *master,
  	/* Get the tag */
--	ret = mtd_read(master, cfelen, sizeof(struct bcm_tag), &retlen,
--		       (void *)buf);
--
--	if (retlen != sizeof(struct bcm_tag)) {
--		ret = -EIO;
--		goto out;
--	}
--
--	computed_crc = crc32_le(IMAGETAG_CRC_START, (u8 *)buf,
--				offsetof(struct bcm_tag, header_crc));
--	if (computed_crc == buf->header_crc) {
--		char *boardid = &(buf->board_id[0]);
--		char *tagversion = &(buf->tag_version[0]);
--
-+	ret = bcm63xx_read_image_tag(master, "rootfs", cfelen, buf);
-+	if (!ret) {
- 		sscanf(buf->flash_image_start, "%u", &rootfsaddr);
- 		sscanf(buf->kernel_address, "%u", &kerneladdr);
- 		sscanf(buf->kernel_length, "%u", &kernellen);
- 		sscanf(buf->total_length, "%u", &totallen);
+ 	ret = bcm63xx_read_image_tag(master, "rootfs", cfelen, buf);
+ 	if (!ret) {
+-		sscanf(buf->flash_image_start, "%u", &rootfsaddr);
+-		sscanf(buf->kernel_address, "%u", &kerneladdr);
+-		sscanf(buf->kernel_length, "%u", &kernellen);
+-		sscanf(buf->total_length, "%u", &totallen);
++		STR_NULL_TERMINATE(buf->flash_image_start);
++		if (kstrtouint(buf->flash_image_start, 10, &rootfsaddr) ||
++				rootfsaddr < BCM963XX_EXTENDED_SIZE) {
++			pr_err("invalid rootfs address: %*ph\n",
++				sizeof(buf->flash_image_start),
++				buf->flash_image_start);
++			goto invalid_tag;
++		}
++
++		STR_NULL_TERMINATE(buf->kernel_address);
++		if (kstrtouint(buf->kernel_address, 10, &kerneladdr) ||
++				kerneladdr < BCM963XX_EXTENDED_SIZE) {
++			pr_err("invalid kernel address: %*ph\n",
++				sizeof(buf->kernel_address),
++				buf->kernel_address);
++			goto invalid_tag;
++		}
++
++		STR_NULL_TERMINATE(buf->kernel_length);
++		if (kstrtouint(buf->kernel_length, 10, &kernellen)) {
++			pr_err("invalid kernel length: %*ph\n",
++				sizeof(buf->kernel_length),
++				buf->kernel_length);
++			goto invalid_tag;
++		}
++
++		STR_NULL_TERMINATE(buf->total_length);
++		if (kstrtouint(buf->total_length, 10, &totallen)) {
++			pr_err("invalid total length: %*ph\n",
++				sizeof(buf->total_length),
++				buf->total_length);
++			goto invalid_tag;
++		}
  
--		pr_info("CFE boot tag found with version %s and board type %s\n",
--			tagversion, boardid);
--
  		kerneladdr = kerneladdr - BCM963XX_EXTENDED_SIZE;
  		rootfsaddr = rootfsaddr - BCM963XX_EXTENDED_SIZE;
- 		spareaddr = roundup(totallen, master->erasesize) + cfelen;
-@@ -169,13 +187,13 @@ static int bcm63xx_parse_cfe_partitions(struct mtd_info *master,
- 			rootfsaddr = kerneladdr + kernellen;
+@@ -188,6 +217,7 @@ static int bcm63xx_parse_cfe_partitions(struct mtd_info *master,
  			rootfslen = spareaddr - rootfsaddr;
  		}
--	} else {
--		pr_warn("CFE boot tag CRC invalid (expected %08x, actual %08x)\n",
--			buf->header_crc, computed_crc);
-+	} else if (ret > 0) {
+ 	} else if (ret > 0) {
++invalid_tag:
  		kernellen = 0;
  		rootfslen = 0;
  		rootfsaddr = 0;
- 		spareaddr = cfelen;
-+	} else {
-+		goto out;
- 	}
- 	sparelen = master->size - spareaddr - nvramlen;
- 
 -- 
 2.1.4
 

@@ -1,45 +1,75 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 13 Dec 2015 23:53:17 +0100 (CET)
-Received: from proxima.lp0.eu ([81.2.80.65]:35538 "EHLO proxima.lp0.eu"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27013558AbbLMWxPfpOS9 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 13 Dec 2015 23:53:15 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=fire.lp0.eu; s=exim;
-        h=Content-Transfer-Encoding:Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:Cc:References:To:Subject; bh=PJxTLBKcz76+/4pT7A8K8QV8zaLnd0sI/zxYFPP+Hso=;
-        b=Ihux7j2GsrR2IfBx8b8pd/wOmfq1WR9uA7VP4S1Ck9iwJBeLZVTHVXnMsTws4wet7LJLneBgY+UGERquNjGEBD2EY67ey6vgBESDZgR/Ls6NQPvvxetlZa00JJqr9a0qHxSqwpixnt9xusl9hSxAmWseWKMp6h7Nv4Z2sJrycz29XLB/1ImITrWEQRmopyBGj2NwQ+oCJjqsHAjvmrItcg1T2J62KHBQxCK9oZWH7GC0bqFZTgDpeX4iPQtBQQTnLURYQ31fSJI7AMF0a4R8hEuqY4Be2R/PWUyEt+bs073A9XzEmj2oCHwWKafAh4Ffd77oVnDOONSeP3lwAE0kcg==;
-Received: from redrum.lp0.eu ([2001:8b0:ffea:0:2e0:81ff:fe4d:2bec]:44509 ident=simon)
-        by proxima.lp0.eu ([2001:8b0:ffea:0:205:b4ff:fe12:530]:465)
-        with esmtpsav (UNKNOWN:DHE-RSA-AES256-SHA:256/CN=Simon Arlott)
-        id 1a8FVy-0004BP-87 (Exim); Sun, 13 Dec 2015 22:53:15 +0000
-Subject: [PATCH linux-next v4 11/11] mtd: bcm63xxpart: Add NAND partitioning
- support
-To:     Ralf Baechle <ralf@linux-mips.org>,
-        David Woodhouse <dwmw2@infradead.org>,
-        Brian Norris <computersforpeace@gmail.com>,
-        Kevin Cernekee <cernekee@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Jonas Gorski <jogo@openwrt.org>
-References: <566DF43B.5010400@simon.arlott.org.uk>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        MIPS Mailing List <linux-mips@linux-mips.org>,
-        MTD Maling List <linux-mtd@lists.infradead.org>
-From:   Simon Arlott <simon@fire.lp0.eu>
-Message-ID: <566DF6D9.2070904@simon.arlott.org.uk>
-Date:   Sun, 13 Dec 2015 22:53:13 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.4.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Dec 2015 10:18:12 +0100 (CET)
+Received: from mail-ob0-f179.google.com ([209.85.214.179]:34660 "EHLO
+        mail-ob0-f179.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27013758AbbLNJSLC1qgb (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 14 Dec 2015 10:18:11 +0100
+Received: by obciw8 with SMTP id iw8so126917592obc.1
+        for <linux-mips@linux-mips.org>; Mon, 14 Dec 2015 01:18:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro-org.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type;
+        bh=zCmIjte1j2RGWaFNZu4OUXss+BrV2KVsrIBIsHhjpbI=;
+        b=UO7LsbFtih6WTKuUvjfBIcoN2KRFIXo6oDqUc9Om0BDsVTMiLrPIWDgsDHgZ0N3WDP
+         3re451mjmiGEbEcs14MYJOAuUpiAIamPRWHwVCIwlYswi/YkThakFuPqLVra1ksgKSA3
+         jBdWwuQbZHBCIGUe90GKLcLVmnYmUFk4E58QRk4+MR4vlRzBdOadMsudJ4lHEzK5suOT
+         w7+bEOD/l+nM5TzfvP5ftfGMkE0jSP1AEgL/hJ1kQU7yrsm1lIDbh40WJkHdXJH3lhFn
+         hFsJo1jKOLSI3WT1bKoAcXkNCs+NcGMutJc16/6pMqlpMMY1A5+hG4psxF5obe8AMpqO
+         ZVOA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:in-reply-to:references:date
+         :message-id:subject:from:to:cc:content-type;
+        bh=zCmIjte1j2RGWaFNZu4OUXss+BrV2KVsrIBIsHhjpbI=;
+        b=RZEa0PzHWfQzBeDSkm1SrnG9PV6sATsn11tec4frGIIqT9nwfSJrzTMZdlJ74FTTt3
+         PmYLmLDXIBK1acNj2l4axmbQgq46w1gIcTJsk7mKICdfoilRrzdaHlnkk8PeE+a4E3C2
+         b5GhQCD85S9XNConY9SZYWx6akWyctmTWbWOpSdXca4oXeHV8Mr2EphulVZFXUJuJNC+
+         JBlTsXp8apm908NMberYlBT9URN6qx8FVXRQSxggiP0L2Lafc6xn52AKvIxPrxptBxZ8
+         bxfkjCHi8ZqPFsnzhvZ7qMwBWeLrGTCYKQY0lCT7pOn5/BH3qNfBz8teIjaql8nuqXxp
+         rH/g==
+X-Gm-Message-State: ALoCoQnqNwExFv7nlVOzWwXZWdE+vZ7cQsLR2njDaXahSlLhQPwyXxbXyU8YO7XWjgK59tRoaTdgRSumm7DI9/2A+hFVX7fQkD+U4P7qZrQk969+yixdpGU=
 MIME-Version: 1.0
-In-Reply-To: <566DF43B.5010400@simon.arlott.org.uk>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Return-Path: <simon@fire.lp0.eu>
+X-Received: by 10.182.120.37 with SMTP id kz5mr24047540obb.81.1450084684851;
+ Mon, 14 Dec 2015 01:18:04 -0800 (PST)
+Received: by 10.182.32.70 with HTTP; Mon, 14 Dec 2015 01:18:04 -0800 (PST)
+In-Reply-To: <20151209193034.GE27131@dtor-ws>
+References: <1449666515-23343-1-git-send-email-linus.walleij@linaro.org>
+        <20151209193034.GE27131@dtor-ws>
+Date:   Mon, 14 Dec 2015 10:18:04 +0100
+Message-ID: <CACRpkdZDFPFOH=9FfYzLeKo5b-oXG4rPjoU4Rpq9Wv1-RvY6uQ@mail.gmail.com>
+Subject: Re: [PATCH 000/182] Rid struct gpio_chip from container_of() usage
+From:   Linus Walleij <linus.walleij@linaro.org>
+To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc:     "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+        Johan Hovold <johan@kernel.org>,
+        Alexandre Courbot <acourbot@nvidia.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Michael Welling <mwelling@ieee.org>,
+        Markus Pargmann <mpa@pengutronix.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Mark Brown <broonie@kernel.org>,
+        Amit Kucheria <amit.kucheria@linaro.org>,
+        "arm@kernel.org" <arm@kernel.org>,
+        Haavard Skinnemoen <hskinnemoen@gmail.com>,
+        Sonic Zhang <sonic.zhang@analog.com>,
+        Greg Ungerer <gerg@uclinux.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Linux MIPS <linux-mips@linux-mips.org>,
+        Anatolij Gustschin <agust@denx.de>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Linux Input <linux-input@vger.kernel.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        Russell King - ARM Linux <linux@arm.linux.org.uk>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <linus.walleij@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50583
+X-archive-position: 50584
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: simon@fire.lp0.eu
+X-original-sender: linus.walleij@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,309 +82,105 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add partitioning support for BCM963xx boards with NAND flash.
+On Wed, Dec 9, 2015 at 8:30 PM, Dmitry Torokhov
+<dmitry.torokhov@gmail.com> wrote:
+> On Wed, Dec 09, 2015 at 02:08:35PM +0100, Linus Walleij wrote:
+>> This removes the use of container_of() constructions from *all*
+>> GPIO drivers in the kernel. It is done by instead adding an
+>> optional void *data pointer to the struct gpio_chip and an
+>> accessor function, gpiochip_get_data() to get it from a driver.
+>>
+>> WHY?
+>>
+>> Because we want to have a proper userspace ABI for GPIO chips,
+>> which involves using a character device that the user opens
+>> and closes. While the character device is open, the underlying
+>> kernel objects must not go away.
+>>
+>> Currently the GPIO drivers keep their state in the struct
+>> gpio_chip, and that is often allocated by the drivers, very
+>> often as a part of a containing per-instance state container
+>> struct for the driver:
+>>
+>> struct foo_state {
+>>    struct gpio_chip chip;  <- OMG my state is there
+>> };
+>>
+>> Drivers cannot allocate and manage this state: if a user has the
+>> character device open, the objects allocated must stay around
+>> even if the driver goes away. Instead drivers need to pass a
+>> descriptor to the GPIO core, and then the core should allocate
+>> and manage the lifecycle of things related to the device, such
+>> as the chardev itself or the struct device related to the GPIO
+>> device.
+>
+> Yes, but it does not mean that the object that is being maintained by
+> the subsystem and that us attached to character device needs to be
+> gpio_chip itself. You can have something like
+>
+> struct gpio_chip_chardev {
+>         struct cdev chardev;
+>         struct gpio_chip *chip;
+>         bool dead;
+> };
 
-The following partitions are defined:
-  "boot":           CFE and nvram data
-  "rootfs":         Currently selected rootfs
-  "data":           Configuration data
-  "rootfs1_update": Container for the whole flash area used
-                    for the first rootfs to allow it to be
-                    updated
-  "rootfs2_update": Container for the whole flash area used
-                    for the second rootfs to allow it to be
-                    updated
-  "rootfs_other":   The other (not currently selected) rootfs
+There needs to be a struct device too, amongst other things.
 
-Example:
-[    2.157094] nand: device found, Manufacturer ID: 0xc2, Chip ID: 0xf1
-[    2.163796] nand: Macronix NAND 128MiB 3,3V 8-bit
-[    2.168648] nand: 128 MiB, SLC, erase size: 128 KiB, page size: 2048, OOB size: 64
-[    2.176588] bcm6368_nand 10000200.nand: detected 128MiB total, 128KiB blocks, 2KiB pages, 16B OOB, 8-bit, Hamming ECC
-[    2.189782] Bad block table found at page 65472, version 0x01
-[    2.196910] Bad block table found at page 65408, version 0x01
-[    2.204003] nand_read_bbt: bad block at 0x000007480000
-[    2.225220] bcm63xxpart: rootfs1: CFE image tag found at 0x20000 with version 6, board type 963168VX
-[    2.236188] bcm63xxpart: rootfs2: CFE image tag found at 0x4000000 with version 6, board type 963168VX
-[    2.246165] bcm63xxpart: CFE bootline selected latest image rootfs1 (rootfs1_seq=2, rootfs2_seq=1)
-[    2.255800] 6 bcm63xxpart partitions found on MTD device brcmnand.0
-[    2.275360] Creating 6 MTD partitions on "brcmnand.0":
-[    2.280804] 0x000000000000-0x000000020000 : "boot"
-[    2.294609] 0x000000040000-0x000001120000 : "rootfs"
-[    2.310078] 0x000007b00000-0x000007f00000 : "data"
-[    2.324052] 0x000000020000-0x000003ac0000 : "rootfs1_update"
-[    2.339190] 0x000004000000-0x000007ac0000 : "rootfs2_update"
-[    2.354290] 0x000004020000-0x000005060000 : "rootfs_other"
+>
+> struct gpio_chip {
+>         ...
+>         struct gpio_chip_chardev *chardev;
+>         ...
+> };
+>
+> You alloctae the new structure when you register/export gpio chip in
+> gpio subsystem core and leave all the individual drivers alone.
 
-The nvram contains the offset and size of the boot, rootfs1, rootfs2
-and data partitions. The presence of CFE and nvram is already verified
-by reading from the boot partition which is assumed to be at offset 0
-and the NAND process aborts if the nvram read indicates that this is
-not the case.
+The current idea I have is something in the middle. Drivers have to
+change a bit. The important part is that gpiolib handles allocation of
+anything containing states. I'm thinking along the lines of Russell's
+proposal to use netdev_alloc()'s design pattern.
 
-There is bcm_tag information at the start of each rootfs that is used
-to determine which rootfs is newer and what its real offset/size is.
+The problem is that currently gpio_chip contains a lot of
+stateful variables (like the dynamically allocated array of GPIO descriptors
+etc) and those are used by the gpiolib core, so they have to be moved away
+from gpio_chip.
 
-The CFE bootline is used to select a rootfs.
+So what happens if I don't change the design pattern:
 
-Signed-off-by: Simon Arlott <simon@fire.lp0.eu>
----
-v4: Reorganised functions based on earlier new patches in the series,
-    no real logic changes other than having to check for nvram->version
-    >= 6 within the nand function instead of the nvram read function.
+int ret = gpiochip_add(&my_chip);
+...
+gpiochip_remove(&my_chip);
 
-    Renamed "curpart" to "i" because it allows the partition layout
-    lines to be under 80 characters.
+At this point we have to cross-reference the pointer to my chip to
+find the chip to remove. This goes for anything that takes the struct
+gpio_chip *
+as parameter, like gpiochip_add_pin_range(), gpiochip_request_own_desc()
+etc etc. So something inside gpiolib must take a gpio_chip * pointer and
+turn that into the actual state container, e.g, a struct gpio_device.
+Since struct gpio_chip needs to be static and stateless, it cannot contain
+a pointer back to its struct gpio_device.
 
-v3: Use COMPILE_TEST.
+That means basically comparing pointers across a list of gpio_device's
+to find it. And that's ... very kludgy. But if people think it's better to avoid
+changing all drivers I will consider it.
 
-    Ensure that strings read from flash are null terminated and validate
-    bcm_tag integer values (this also moves reporting of rootfs sequence
-    numbers to later on).
+I think it is better if the GPIO drivers get a handle on the
+real gpio_device * to be used when calling these gpiochip_* related
+functions and also in the callbacks, which is a bigger refactoring
+indeed.
 
-v2: Use external struct bcm963xx_nvram definition for bcm963268part.
+Part of this is trying to be elegant and mimic other subsystems and not
+have GPIO be too hopelessly wayward about things.
 
-    Removed support for the nand partition number field, it's not a
-    standard Broadcom field (was added by MitraStar Technology Corp.).
+If I compare to how struct input_dev is done, you appear to also use the
+pattern Russell suggested with input_dev_allocate() akin to
+netdev_alloc(), and the allocated struct holds all the vtable and states etc,
+and I think it is a good pattern, and that GPIO should conform.
 
- drivers/mtd/bcm63xxpart.c | 196 ++++++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 190 insertions(+), 6 deletions(-)
+This current patch series however, just give us the equivalent of
+input_get_drvdata()/input_set_drvdata() and that seems valuable on its
+own, as it reduces code size and make things more readable.
 
-diff --git a/drivers/mtd/bcm63xxpart.c b/drivers/mtd/bcm63xxpart.c
-index 26c38a1..4576b78 100644
---- a/drivers/mtd/bcm63xxpart.c
-+++ b/drivers/mtd/bcm63xxpart.c
-@@ -16,10 +16,9 @@
-  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  * GNU General Public License for more details.
-  *
-- * You should have received a copy of the GNU General Public License
-- * along with this program; if not, write to the Free Software
-- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-- *
-+ * NAND flash layout derived from bcm963xx_4.12L.06B_consumer/bcmdrivers/opensource/char/board/bcm963xx/impl1/board.c,
-+ *	bcm963xx_4.12L.06B_consumer/shared/opensource/include/bcm963xx/bcm_hwdefs.h:
-+ * Copyright (c) 2002 Broadcom Corporation
-  */
- 
- #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
-@@ -124,6 +123,25 @@ static int bcm63xx_read_image_tag(struct mtd_info *master, const char *name,
- 	return 1;
- }
- 
-+static bool bcm63xx_boot_latest(struct bcm963xx_nvram *nvram)
-+{
-+	char *p;
-+
-+	STR_NULL_TERMINATE(nvram->bootline);
-+
-+	/* Find previous image parameter "p" */
-+	if (!strncmp(nvram->bootline, "p=", 2))
-+		p = nvram->bootline;
-+	else
-+		p = strstr(nvram->bootline, " p=");
-+
-+	if (p == NULL)
-+		return true;
-+
-+	p += 2;
-+	return *p != '0';
-+}
-+
- static int bcm63xx_parse_cfe_nor_partitions(struct mtd_info *master,
- 	const struct mtd_partition **pparts, struct bcm963xx_nvram *nvram)
- {
-@@ -283,6 +301,171 @@ out:
- 	return nrparts;
- }
- 
-+static bool bcm63xx_parse_nand_image_tag(struct mtd_info *master,
-+	const char *name, loff_t tag_offset, u64 *rootfs_offset,
-+	u64 *rootfs_size, unsigned int *rootfs_sequence)
-+{
-+	struct bcm_tag *buf;
-+	int ret;
-+	bool rootfs_ok = false;
-+
-+	*rootfs_offset = 0;
-+	*rootfs_size = 0;
-+	*rootfs_sequence = 0;
-+
-+	buf = vmalloc(sizeof(struct bcm_tag));
-+	if (!buf)
-+		goto out;
-+
-+	ret = bcm63xx_read_image_tag(master, name, tag_offset, buf);
-+	if (!ret) {
-+		/* Get rootfs offset and size from tag data */
-+		STR_NULL_TERMINATE(buf->flash_image_start);
-+		if (kstrtou64(buf->flash_image_start, 10, rootfs_offset) ||
-+				*rootfs_offset < BCM963XX_EXTENDED_SIZE) {
-+			pr_err("%s: invalid rootfs offset: %*ph\n", name,
-+				sizeof(buf->flash_image_start),
-+				buf->flash_image_start);
-+			goto out;
-+		}
-+
-+		STR_NULL_TERMINATE(buf->root_length);
-+		if (kstrtou64(buf->root_length, 10, rootfs_size) ||
-+				rootfs_size == 0) {
-+			pr_err("%s: invalid rootfs size: %*ph\n", name,
-+				sizeof(buf->root_length), buf->root_length);
-+			goto out;
-+		}
-+
-+		/* Adjust for flash offset */
-+		*rootfs_offset -= BCM963XX_EXTENDED_SIZE;
-+
-+		/* Remove bcm_tag data from length */
-+		*rootfs_size -= *rootfs_offset - tag_offset;
-+
-+		/* Get image sequence number to determine which one is newer */
-+		STR_NULL_TERMINATE(buf->image_sequence);
-+		if (kstrtouint(buf->image_sequence, 10, rootfs_sequence)) {
-+			pr_err("%s: invalid rootfs sequence: %*ph\n", name,
-+				sizeof(buf->image_sequence),
-+				buf->image_sequence);
-+			goto out;
-+		}
-+
-+		rootfs_ok = true;
-+	}
-+
-+out:
-+	vfree(buf);
-+	return rootfs_ok;
-+}
-+
-+static int bcm63xx_parse_cfe_nand_partitions(struct mtd_info *master,
-+	const struct mtd_partition **pparts,
-+	struct bcm963xx_nvram *nvram)
-+{
-+	int nrparts, i;
-+	struct mtd_partition *parts;
-+	u64 rootfs1_off, rootfs1_size;
-+	unsigned int rootfs1_seq;
-+	u64 rootfs2_off, rootfs2_size;
-+	unsigned int rootfs2_seq;
-+	bool rootfs1, rootfs2;
-+	bool use_first;
-+
-+	if (nvram->version < 6) {
-+		pr_warn("nvram version %u not supported\n", nvram->version);
-+		return -EINVAL;
-+	}
-+
-+	/* We've just read the nvram from offset 0,
-+	 * so it must be located there.
-+	 */
-+	if (BCM963XX_NVRAM_NAND_PART_OFFSET(nvram, BOOT) != 0)
-+		return -EINVAL;
-+
-+	/* Get the rootfs partition locations */
-+	rootfs1 = bcm63xx_parse_nand_image_tag(master, "rootfs1",
-+		BCM963XX_NVRAM_NAND_PART_OFFSET(nvram, ROOTFS_1),
-+		&rootfs1_off, &rootfs1_size, &rootfs1_seq);
-+	rootfs2 = bcm63xx_parse_nand_image_tag(master, "rootfs2",
-+		BCM963XX_NVRAM_NAND_PART_OFFSET(nvram, ROOTFS_2),
-+		&rootfs2_off, &rootfs2_size, &rootfs2_seq);
-+
-+	/* Determine primary rootfs partition */
-+	if (rootfs1 && rootfs2) {
-+		bool use_latest = bcm63xx_boot_latest(nvram);
-+
-+		/* Compare sequence numbers */
-+		if (use_latest)
-+			use_first = rootfs1_seq > rootfs2_seq;
-+		else
-+			use_first = rootfs1_seq < rootfs2_seq;
-+
-+		pr_info("CFE bootline selected %s image rootfs%u (rootfs1_seq=%u, rootfs2_seq=%u)\n",
-+			use_latest ? "latest" : "previous",
-+			use_first ? 1 : 2,
-+			rootfs1_seq, rootfs2_seq);
-+	} else {
-+		use_first = rootfs1;
-+	}
-+
-+	/* Partitions:
-+	 * 1 boot
-+	 * 2 rootfs
-+	 * 3 data
-+	 * 4 rootfs1_update
-+	 * 5 rootfs2_update
-+	 * 6 rootfs_other
-+	 */
-+	nrparts = 6;
-+	i = 0;
-+
-+	parts = kcalloc(nrparts, sizeof(*parts), GFP_KERNEL);
-+	if (!parts)
-+		return -ENOMEM;
-+
-+	parts[i].name = "boot";
-+	parts[i].offset = BCM963XX_NVRAM_NAND_PART_OFFSET(nvram, BOOT);
-+	parts[i].size = BCM963XX_NVRAM_NAND_PART_SIZE(nvram, BOOT);
-+	i++;
-+
-+	/* Primary rootfs if either is available */
-+	if (rootfs1 || rootfs2) {
-+		parts[i].name = "rootfs";
-+		parts[i].offset = use_first ? rootfs1_off : rootfs2_off;
-+		parts[i].size = use_first ? rootfs1_size : rootfs2_size;
-+		i++;
-+	}
-+
-+	parts[i].name = "data";
-+	parts[i].offset = BCM963XX_NVRAM_NAND_PART_OFFSET(nvram, DATA);
-+	parts[i].size = BCM963XX_NVRAM_NAND_PART_SIZE(nvram, DATA);
-+	i++;
-+
-+	/* Full rootfs partitions for updates */
-+	parts[i].name = "rootfs1_update";
-+	parts[i].offset = BCM963XX_NVRAM_NAND_PART_OFFSET(nvram, ROOTFS_1);
-+	parts[i].size = BCM963XX_NVRAM_NAND_PART_SIZE(nvram, ROOTFS_1);
-+	i++;
-+
-+	parts[i].name = "rootfs2_update";
-+	parts[i].offset = BCM963XX_NVRAM_NAND_PART_OFFSET(nvram, ROOTFS_2);
-+	parts[i].size = BCM963XX_NVRAM_NAND_PART_SIZE(nvram, ROOTFS_2);
-+	i++;
-+
-+	/* Other rootfs if both are available */
-+	if (rootfs1 && rootfs2) {
-+		parts[i].name = "rootfs_other";
-+		parts[i].offset = use_first ? rootfs2_off : rootfs1_off;
-+		parts[i].size = use_first ? rootfs2_size : rootfs1_size;
-+		i++;
-+	}
-+
-+	*pparts = parts;
-+	return nrparts;
-+}
-+
- static int bcm63xx_parse_cfe_partitions(struct mtd_info *master,
- 					const struct mtd_partition **pparts,
- 					struct mtd_part_parser_data *data)
-@@ -304,7 +487,7 @@ static int bcm63xx_parse_cfe_partitions(struct mtd_info *master,
- 	if (!mtd_type_is_nand(master))
- 		ret = bcm63xx_parse_cfe_nor_partitions(master, pparts, nvram);
- 	else
--		ret = -EINVAL;
-+		ret = bcm63xx_parse_cfe_nand_partitions(master, pparts, nvram);
- 
- out:
- 	vfree(nvram);
-@@ -321,5 +504,6 @@ MODULE_LICENSE("GPL");
- MODULE_AUTHOR("Daniel Dickinson <openwrt@cshore.neomailbox.net>");
- MODULE_AUTHOR("Florian Fainelli <florian@openwrt.org>");
- MODULE_AUTHOR("Mike Albon <malbon@openwrt.org>");
--MODULE_AUTHOR("Jonas Gorski <jonas.gorski@gmail.com");
-+MODULE_AUTHOR("Jonas Gorski <jonas.gorski@gmail.com>");
-+MODULE_AUTHOR("Simon Arlott");
- MODULE_DESCRIPTION("MTD partitioning for BCM63XX CFE bootloaders");
--- 
-2.1.4
-
--- 
-Simon Arlott
+Yours,
+Linus Walleij

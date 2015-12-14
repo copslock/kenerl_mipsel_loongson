@@ -1,75 +1,86 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Dec 2015 10:18:12 +0100 (CET)
-Received: from mail-ob0-f179.google.com ([209.85.214.179]:34660 "EHLO
-        mail-ob0-f179.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27013758AbbLNJSLC1qgb (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 14 Dec 2015 10:18:11 +0100
-Received: by obciw8 with SMTP id iw8so126917592obc.1
-        for <linux-mips@linux-mips.org>; Mon, 14 Dec 2015 01:18:05 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Dec 2015 11:28:58 +0100 (CET)
+Received: from mail-wm0-f47.google.com ([74.125.82.47]:34751 "EHLO
+        mail-wm0-f47.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007818AbbLNK2zcgxU2 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 14 Dec 2015 11:28:55 +0100
+Received: by mail-wm0-f47.google.com with SMTP id p66so54970315wmp.1
+        for <linux-mips@linux-mips.org>; Mon, 14 Dec 2015 02:28:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro-org.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        bh=zCmIjte1j2RGWaFNZu4OUXss+BrV2KVsrIBIsHhjpbI=;
-        b=UO7LsbFtih6WTKuUvjfBIcoN2KRFIXo6oDqUc9Om0BDsVTMiLrPIWDgsDHgZ0N3WDP
-         3re451mjmiGEbEcs14MYJOAuUpiAIamPRWHwVCIwlYswi/YkThakFuPqLVra1ksgKSA3
-         jBdWwuQbZHBCIGUe90GKLcLVmnYmUFk4E58QRk4+MR4vlRzBdOadMsudJ4lHEzK5suOT
-         w7+bEOD/l+nM5TzfvP5ftfGMkE0jSP1AEgL/hJ1kQU7yrsm1lIDbh40WJkHdXJH3lhFn
-         hFsJo1jKOLSI3WT1bKoAcXkNCs+NcGMutJc16/6pMqlpMMY1A5+hG4psxF5obe8AMpqO
-         ZVOA==
+        h=subject:to:references:cc:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-type:content-transfer-encoding;
+        bh=xJVreFyNkFnmjAd05UMMrFfnaNHgkYQCgd0h3L5Rwho=;
+        b=lsPhy2M28imMj2OwWO+y9ogrpnH7PgpRT72x14XhD7CGKfRuhvGNWawjyPEwHVr3ib
+         4tZfO8kcrR0R2OUJjMQQMqAWZFPF76+emCTfIB2LUBtHVusnYpZgbHSoRCJ5wi9wHS+f
+         7nY4OWX+pcHfHQW3w292uwaw/Didb12IZJ9BDvSmPZ6R1B/8fvsv7qX6kaC93HQPk7Ib
+         zvoGLSBM30aGMVF0X3JlHls300fiOCxNUJESamlUp8Cf+cs9hF94ShTEn9vL23pGozLA
+         LzqMtSiEp8kUZH30iQM7d0NUJFMrwNV51MS73L5IQGbdNIe3ItF5SqX6zD4MXE9ax/Nt
+         GpZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:in-reply-to:references:date
-         :message-id:subject:from:to:cc:content-type;
-        bh=zCmIjte1j2RGWaFNZu4OUXss+BrV2KVsrIBIsHhjpbI=;
-        b=RZEa0PzHWfQzBeDSkm1SrnG9PV6sATsn11tec4frGIIqT9nwfSJrzTMZdlJ74FTTt3
-         PmYLmLDXIBK1acNj2l4axmbQgq46w1gIcTJsk7mKICdfoilRrzdaHlnkk8PeE+a4E3C2
-         b5GhQCD85S9XNConY9SZYWx6akWyctmTWbWOpSdXca4oXeHV8Mr2EphulVZFXUJuJNC+
-         JBlTsXp8apm908NMberYlBT9URN6qx8FVXRQSxggiP0L2Lafc6xn52AKvIxPrxptBxZ8
-         bxfkjCHi8ZqPFsnzhvZ7qMwBWeLrGTCYKQY0lCT7pOn5/BH3qNfBz8teIjaql8nuqXxp
-         rH/g==
-X-Gm-Message-State: ALoCoQnqNwExFv7nlVOzWwXZWdE+vZ7cQsLR2njDaXahSlLhQPwyXxbXyU8YO7XWjgK59tRoaTdgRSumm7DI9/2A+hFVX7fQkD+U4P7qZrQk969+yixdpGU=
+        h=x-gm-message-state:subject:to:references:cc:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-type
+         :content-transfer-encoding;
+        bh=xJVreFyNkFnmjAd05UMMrFfnaNHgkYQCgd0h3L5Rwho=;
+        b=PzM1mX5I2+p7sXogj5MeM0z14SRxYZr5uybsUekpG3ByhSrrJjvfQCIYWvBhZ20yRS
+         VK6bbI7qTolVLgxmUm4brgSCtd9QLNPWA77EBaL1TbzUH+rJQYA/uVXewTLgPakNUxYi
+         hTbirwKcRziGaErRrHnouapJaeNkDzRgR/8wj4mYhN/FnN5Mzb4gxQoGkffYiXc+mGdp
+         g9geYtYQWpdpBOg6y7FOTZ6+OffboNiYeYSCPni8ZPowh4VaApB4h+mH07pcNjNLIQkr
+         ycTrpCr2aoswhXsPnAkuL8nkhHqorm/yvV8OPynh8GcPEpQtp3Y/gqzVDLYUj5IJhwc8
+         WGgw==
+X-Gm-Message-State: ALoCoQnJCgG/dPwAk8AYIzspb7f8Zl5NFodKVAZ/ijxTv6C4HQU/XDPgKfB0BE3uaZOJJ5XXCtKMtHSJByzaIqcQrJCYG/Pphw==
+X-Received: by 10.194.89.226 with SMTP id br2mr40816005wjb.22.1450088930267;
+        Mon, 14 Dec 2015 02:28:50 -0800 (PST)
+Received: from [192.168.1.125] (cpc4-aztw19-0-0-cust71.18-1.cable.virginm.net. [82.33.25.72])
+        by smtp.googlemail.com with ESMTPSA id da10sm29024491wjb.22.2015.12.14.02.28.48
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Mon, 14 Dec 2015 02:28:49 -0800 (PST)
+Subject: Re: [PATCH v3 4/4] printk/nmi: Increase the size of NMI buffer and
+ make it configurable
+To:     Russell King - ARM Linux <linux@arm.linux.org.uk>,
+        Andrew Morton <akpm@linux-foundation.org>
+References: <1449667265-17525-1-git-send-email-pmladek@suse.com>
+ <1449667265-17525-5-git-send-email-pmladek@suse.com>
+ <CAMuHMdXVgr58YjoePGrRbMyMncQ27f85prL7G5SpeHeNxoYrXQ@mail.gmail.com>
+ <20151211124159.GB3729@pathway.suse.cz>
+ <20151211145725.b0e81bb4bb18fcd72ef5f557@linux-foundation.org>
+ <20151211232113.GZ8644@n2100.arm.linux.org.uk>
+Cc:     Petr Mladek <pmladek@suse.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Jiri Kosina <jkosina@suse.com>, Ingo Molnar <mingo@redhat.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        the arch/x86 maintainers <x86@kernel.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "adi-buildroot-devel@lists.sourceforge.net" 
+        <adi-buildroot-devel@lists.sourceforge.net>,
+        Cris <linux-cris-kernel@axis.com>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        sparclinux <sparclinux@vger.kernel.org>
+From:   Daniel Thompson <daniel.thompson@linaro.org>
+Message-ID: <566E99DF.6050008@linaro.org>
+Date:   Mon, 14 Dec 2015 10:28:47 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+ Thunderbird/38.4.0
 MIME-Version: 1.0
-X-Received: by 10.182.120.37 with SMTP id kz5mr24047540obb.81.1450084684851;
- Mon, 14 Dec 2015 01:18:04 -0800 (PST)
-Received: by 10.182.32.70 with HTTP; Mon, 14 Dec 2015 01:18:04 -0800 (PST)
-In-Reply-To: <20151209193034.GE27131@dtor-ws>
-References: <1449666515-23343-1-git-send-email-linus.walleij@linaro.org>
-        <20151209193034.GE27131@dtor-ws>
-Date:   Mon, 14 Dec 2015 10:18:04 +0100
-Message-ID: <CACRpkdZDFPFOH=9FfYzLeKo5b-oXG4rPjoU4Rpq9Wv1-RvY6uQ@mail.gmail.com>
-Subject: Re: [PATCH 000/182] Rid struct gpio_chip from container_of() usage
-From:   Linus Walleij <linus.walleij@linaro.org>
-To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Cc:     "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-        Johan Hovold <johan@kernel.org>,
-        Alexandre Courbot <acourbot@nvidia.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Michael Welling <mwelling@ieee.org>,
-        Markus Pargmann <mpa@pengutronix.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Mark Brown <broonie@kernel.org>,
-        Amit Kucheria <amit.kucheria@linaro.org>,
-        "arm@kernel.org" <arm@kernel.org>,
-        Haavard Skinnemoen <hskinnemoen@gmail.com>,
-        Sonic Zhang <sonic.zhang@analog.com>,
-        Greg Ungerer <gerg@uclinux.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Linux MIPS <linux-mips@linux-mips.org>,
-        Anatolij Gustschin <agust@denx.de>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Linux Input <linux-input@vger.kernel.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Russell King - ARM Linux <linux@arm.linux.org.uk>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <linus.walleij@linaro.org>
+In-Reply-To: <20151211232113.GZ8644@n2100.arm.linux.org.uk>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <daniel.thompson@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50584
+X-archive-position: 50585
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linus.walleij@linaro.org
+X-original-sender: daniel.thompson@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -82,105 +93,39 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Dec 9, 2015 at 8:30 PM, Dmitry Torokhov
-<dmitry.torokhov@gmail.com> wrote:
-> On Wed, Dec 09, 2015 at 02:08:35PM +0100, Linus Walleij wrote:
->> This removes the use of container_of() constructions from *all*
->> GPIO drivers in the kernel. It is done by instead adding an
->> optional void *data pointer to the struct gpio_chip and an
->> accessor function, gpiochip_get_data() to get it from a driver.
->>
->> WHY?
->>
->> Because we want to have a proper userspace ABI for GPIO chips,
->> which involves using a character device that the user opens
->> and closes. While the character device is open, the underlying
->> kernel objects must not go away.
->>
->> Currently the GPIO drivers keep their state in the struct
->> gpio_chip, and that is often allocated by the drivers, very
->> often as a part of a containing per-instance state container
->> struct for the driver:
->>
->> struct foo_state {
->>    struct gpio_chip chip;  <- OMG my state is there
->> };
->>
->> Drivers cannot allocate and manage this state: if a user has the
->> character device open, the objects allocated must stay around
->> even if the driver goes away. Instead drivers need to pass a
->> descriptor to the GPIO core, and then the core should allocate
->> and manage the lifecycle of things related to the device, such
->> as the chardev itself or the struct device related to the GPIO
->> device.
+On 11/12/15 23:21, Russell King - ARM Linux wrote:
+> As I explained when I did that work, the vast majority of ARM platforms
+> are unable to trigger anything like a NMI - the FIQ is something that's
+> generally a property of the secure monitor, and is not accessible to
+> Linux.  However, there are platforms where it is accessible.
 >
-> Yes, but it does not mean that the object that is being maintained by
-> the subsystem and that us attached to character device needs to be
-> gpio_chip itself. You can have something like
+> The work to add the FIQ-based variant never happened (I've no idea what
+> happened to that part, Daniel seems to have lost interest in working on
+> it.)  So, what we have is the IRQ-based variant merged in mainline, which
+> would be the fallback for the "FIQ not available" cases, and I carry a
+> local hack in my tree which provides the FIQ-based version - but if it
+> were to trigger, it takes out all interrupts (hence why I've not merged
+> my hack.)
 >
-> struct gpio_chip_chardev {
->         struct cdev chardev;
->         struct gpio_chip *chip;
->         bool dead;
-> };
+> I think the reason that the FIQ-based variant has never really happened
+> is that hooking into the interrupt controller code to clear down the FIQ
+> creates such a horrid layering violation, and also a locking mess that
+> I suspect it's just been given up with.
 
-There needs to be a struct device too, amongst other things.
+I haven't quite given up; I'm still looking into this stuff. However 
+you're certainly right that connecting the FIQ handler to the GIC code 
+in an elegant way is tough.
 
->
-> struct gpio_chip {
->         ...
->         struct gpio_chip_chardev *chardev;
->         ...
-> };
->
-> You alloctae the new structure when you register/export gpio chip in
-> gpio subsystem core and leave all the individual drivers alone.
+I've been working in parallel on an arm64 implementation with the result 
+that I'm now two lumps of code that are almost, but not quite, ready.
 
-The current idea I have is something in the middle. Drivers have to
-change a bit. The important part is that gpiolib handles allocation of
-anything containing states. I'm thinking along the lines of Russell's
-proposal to use netdev_alloc()'s design pattern.
+Right now I hope to share latest arm code fairly late in the this 
+devcycle (for review rather than merge) followed up with a new version 
+very early in v4.6. Even now I think the code needs a long soak in -next 
+just in case there are any lurking regressions on particular platforms.
 
-The problem is that currently gpio_chip contains a lot of
-stateful variables (like the dynamically allocated array of GPIO descriptors
-etc) and those are used by the gpiolib core, so they have to be moved away
-from gpio_chip.
+I don't expect anyone to base decisions on my aspirations above but 
+would like to reassure Russell that I haven't given up on it.
 
-So what happens if I don't change the design pattern:
 
-int ret = gpiochip_add(&my_chip);
-...
-gpiochip_remove(&my_chip);
-
-At this point we have to cross-reference the pointer to my chip to
-find the chip to remove. This goes for anything that takes the struct
-gpio_chip *
-as parameter, like gpiochip_add_pin_range(), gpiochip_request_own_desc()
-etc etc. So something inside gpiolib must take a gpio_chip * pointer and
-turn that into the actual state container, e.g, a struct gpio_device.
-Since struct gpio_chip needs to be static and stateless, it cannot contain
-a pointer back to its struct gpio_device.
-
-That means basically comparing pointers across a list of gpio_device's
-to find it. And that's ... very kludgy. But if people think it's better to avoid
-changing all drivers I will consider it.
-
-I think it is better if the GPIO drivers get a handle on the
-real gpio_device * to be used when calling these gpiochip_* related
-functions and also in the callbacks, which is a bigger refactoring
-indeed.
-
-Part of this is trying to be elegant and mimic other subsystems and not
-have GPIO be too hopelessly wayward about things.
-
-If I compare to how struct input_dev is done, you appear to also use the
-pattern Russell suggested with input_dev_allocate() akin to
-netdev_alloc(), and the allocated struct holds all the vtable and states etc,
-and I think it is a good pattern, and that GPIO should conform.
-
-This current patch series however, just give us the equivalent of
-input_get_drvdata()/input_set_drvdata() and that seems valuable on its
-own, as it reduces code size and make things more readable.
-
-Yours,
-Linus Walleij
+Daniel.

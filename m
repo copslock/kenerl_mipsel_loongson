@@ -1,26 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Dec 2015 22:08:44 +0100 (CET)
-Received: from mail-pa0-f65.google.com ([209.85.220.65]:36612 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Dec 2015 22:09:05 +0100 (CET)
+Received: from mail-pa0-f65.google.com ([209.85.220.65]:35384 "EHLO
         mail-pa0-f65.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008952AbbLNVEz0J0z0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 14 Dec 2015 22:04:55 +0100
-Received: by pabtx6 with SMTP id tx6so46101pab.3
-        for <linux-mips@linux-mips.org>; Mon, 14 Dec 2015 13:04:49 -0800 (PST)
+        by eddie.linux-mips.org with ESMTP id S27013846AbbLNVE4rmdk0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 14 Dec 2015 22:04:56 +0100
+Received: by padhk6 with SMTP id hk6so11992129pad.2
+        for <linux-mips@linux-mips.org>; Mon, 14 Dec 2015 13:04:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=32uEUCJjt/3JexEny1a4XBLNhBad1jYpjE6Dsv4fJCE=;
-        b=gpjwHDp/KFM5sbaDdUgJSAr5yZ3p6OjebOz94sPoIJEv9XaXbkiDFzWk56Tsti8hoz
-         B98Abucb5ShHbJro6yIaz9elV1mv9Y26Cl7iFQUvSFx6fISlfgtqRr/I9LGo7IkMAj9O
-         UWxI5/PX1eUxoS8hRoEpL6BR+gdVx4wTzWrP1k5WjGoYoQamr11feX+Veb/ZhRunJH3M
-         6BzCL/7izmDsJ2/1h4MiHLN2AEJe2VBBfnrmluWDNgcJlXXg71gIxVP1MiuPUnKcAeUX
-         Bu6YxwJadg69tAB5jjHztZUeRY81ikdf+702Z353LjrPu6I7TgjT4ul2+iZxRvY9nRzp
-         s1kw==
-X-Received: by 10.66.102.37 with SMTP id fl5mr48947702pab.24.1450127089715;
-        Mon, 14 Dec 2015 13:04:49 -0800 (PST)
+        bh=OhzCX4d6bCoeJaYJGuOErFxTEsBbq5YwBKBuqgfp42k=;
+        b=N9hMsca6rJi4t378ULNQrB5yqdwO2z6lEfVYL7alzcBZZphXRlnpMGOeOncNa7SO+g
+         IuyGKio/I65QyM+9Qdr8Tglcvb6iabVWYMCs3N8hBAI+N1J4keQUwuGrTmPZMGBE4Bav
+         XNdirrCavQ0ryHNz5ez/nKCxeUpswtbe6g8ax9B2QoG6arudexBpC/ukZT0xtDQIEf9g
+         5T4t0abh68aoXEXXTntqbwBv2RvOIbHn/o4rGwFxqIi6TTlN/7Ga2t9NsBwnlWMW86aK
+         lsW+B8axM/gHdMAnwtUrkG10z+xnASAYdZzCMk3HgAQZVEdO/sYjdOjLioRn2dd6aUoz
+         jyrg==
+X-Received: by 10.67.5.2 with SMTP id ci2mr48850081pad.47.1450127091083;
+        Mon, 14 Dec 2015 13:04:51 -0800 (PST)
 Received: from decotigny.mtv.corp.google.com ([172.18.64.159])
-        by smtp.gmail.com with ESMTPSA id 68sm13096148pfp.62.2015.12.14.13.04.48
+        by smtp.gmail.com with ESMTPSA id 68sm13096148pfp.62.2015.12.14.13.04.49
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Mon, 14 Dec 2015 13:04:49 -0800 (PST)
+        Mon, 14 Dec 2015 13:04:50 -0800 (PST)
 From:   David Decotigny <ddecotig@gmail.com>
 To:     "David S. Miller" <davem@davemloft.net>,
         Ben Hutchings <ben@decadent.org.uk>,
@@ -44,9 +44,9 @@ Cc:     Eric Dumazet <edumazet@google.com>,
         Yuval Mintz <Yuval.Mintz@qlogic.com>,
         Rasmus Villemoes <linux@rasmusvillemoes.dk>,
         David Decotigny <decot@googlers.com>
-Subject: [PATCH net-next v5 14/19] net: 8021q: use __ethtool_get_ksettings
-Date:   Mon, 14 Dec 2015 13:04:01 -0800
-Message-Id: <1450127046-4573-15-git-send-email-ddecotig@gmail.com>
+Subject: [PATCH net-next v5 15/19] net: bridge: use __ethtool_get_ksettings
+Date:   Mon, 14 Dec 2015 13:04:02 -0800
+Message-Id: <1450127046-4573-16-git-send-email-ddecotig@gmail.com>
 X-Mailer: git-send-email 2.6.0.rc2.230.g3dd15c0
 In-Reply-To: <1450127046-4573-1-git-send-email-ddecotig@gmail.com>
 References: <1450127046-4573-1-git-send-email-ddecotig@gmail.com>
@@ -54,7 +54,7 @@ Return-Path: <ddecotig@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50604
+X-archive-position: 50605
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -75,37 +75,26 @@ From: David Decotigny <decot@googlers.com>
 
 Signed-off-by: David Decotigny <decot@googlers.com>
 ---
- net/8021q/vlan_dev.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ net/bridge/br_if.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/net/8021q/vlan_dev.c b/net/8021q/vlan_dev.c
-index fded865..e607fee 100644
---- a/net/8021q/vlan_dev.c
-+++ b/net/8021q/vlan_dev.c
-@@ -620,12 +620,12 @@ static netdev_features_t vlan_dev_fix_features(struct net_device *dev,
- 	return features;
- }
- 
--static int vlan_ethtool_get_settings(struct net_device *dev,
--				     struct ethtool_cmd *cmd)
-+static int vlan_ethtool_get_ksettings(struct net_device *dev,
-+				      struct ethtool_ksettings *cmd)
+diff --git a/net/bridge/br_if.c b/net/bridge/br_if.c
+index 8d1d4a2..d1022fd 100644
+--- a/net/bridge/br_if.c
++++ b/net/bridge/br_if.c
+@@ -36,10 +36,10 @@
+  */
+ static int port_cost(struct net_device *dev)
  {
- 	const struct vlan_dev_priv *vlan = vlan_dev_priv(dev);
+-	struct ethtool_cmd ecmd;
++	struct ethtool_ksettings ecmd;
  
--	return __ethtool_get_settings(vlan->real_dev, cmd);
-+	return __ethtool_get_ksettings(vlan->real_dev, cmd);
- }
- 
- static void vlan_ethtool_get_drvinfo(struct net_device *dev,
-@@ -740,7 +740,7 @@ static int vlan_dev_get_iflink(const struct net_device *dev)
- }
- 
- static const struct ethtool_ops vlan_ethtool_ops = {
--	.get_settings	        = vlan_ethtool_get_settings,
-+	.get_ksettings	        = vlan_ethtool_get_ksettings,
- 	.get_drvinfo	        = vlan_ethtool_get_drvinfo,
- 	.get_link		= ethtool_op_get_link,
- 	.get_ts_info		= vlan_ethtool_get_ts_info,
+-	if (!__ethtool_get_settings(dev, &ecmd)) {
+-		switch (ethtool_cmd_speed(&ecmd)) {
++	if (!__ethtool_get_ksettings(dev, &ecmd)) {
++		switch (ecmd.parent.speed) {
+ 		case SPEED_10000:
+ 			return 2;
+ 		case SPEED_1000:
 -- 
 2.6.0.rc2.230.g3dd15c0

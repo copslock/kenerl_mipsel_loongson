@@ -1,26 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Dec 2015 22:07:28 +0100 (CET)
-Received: from mail-pf0-f195.google.com ([209.85.192.195]:35639 "EHLO
-        mail-pf0-f195.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27013866AbbLNVEt17zF0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 14 Dec 2015 22:04:49 +0100
-Received: by pfbu66 with SMTP id u66so7935872pfb.2
-        for <linux-mips@linux-mips.org>; Mon, 14 Dec 2015 13:04:43 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Dec 2015 22:07:50 +0100 (CET)
+Received: from mail-pf0-f194.google.com ([209.85.192.194]:34585 "EHLO
+        mail-pf0-f194.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27013868AbbLNVEupZgS0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 14 Dec 2015 22:04:50 +0100
+Received: by pfee66 with SMTP id e66so2117565pfe.1
+        for <linux-mips@linux-mips.org>; Mon, 14 Dec 2015 13:04:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=8b2JNe369HZ01ilYAMaiBGj5Ilvzj1KPQULqwcETt1Q=;
-        b=qYmVHVn95phipTUNQhVcd3hYuiBf8SrqkLzvTXmXe5YMlFHiVaqy28RCGOoHxSEW5E
-         kVl3pZxHAhi3/vi0bbHtbUMqU/dHLcKcaX6eWGrBMExAdijAK7AtueqYrzj+OLqb2/M2
-         uyETfrcK+agXO4b4nPnztZbRHUakZ7hxctm3ndXxVqWrp4P/bsc65y9f1CmW7vFqV788
-         eUWy4h7Jcg+uYIEvZS/fHOYOrXM4erXEwAZXTG16Vcq8OwmhHffgXRxBpXxqDcZGPD17
-         IbmThK+7ZFgaUwnh5yttr8nMZ/HhwKW3rUzRZifox88N0KyJqntuAdElrX7S/Og94bnE
-         O6Qg==
-X-Received: by 10.98.13.210 with SMTP id 79mr11169845pfn.112.1450127083789;
-        Mon, 14 Dec 2015 13:04:43 -0800 (PST)
+        bh=pmVqOOEEDU/OrwYB/6K0UqzhIxeK3ZVCvcoaJsWXvCw=;
+        b=QLt9tYO9CLOHssoUeR8xosrni8mGKJXc7bv6ZaMiuIDxZ007vzNSwVU8KqTeTGeA9X
+         gq5Ox2PckTuGpMYukzQJrBvjQ5cZZr0jOFhAgDG8s1YTV7lwdcNIVpEbKHRjVkEiBaZ+
+         3G2IAo4/eXsOUAxqYosVJl2Oq3siR/Oc/U8Y9qg3C4VfpgCr+bAMtZwXSmG5n+MV4fdx
+         AEfD5MznpsuKX7x3rDq2jm0vYnPh81O+23+N05587iJmO6VNb+X3aVex98TAhKtOP6hn
+         MFs2JZXkqYaGtsrrArxrWCsSA4RV9IYFeA7dcE9rDidc5O31Ll1rlsEaJ1xbYUnntKS/
+         o08g==
+X-Received: by 10.98.42.150 with SMTP id q144mr18069620pfq.81.1450127085135;
+        Mon, 14 Dec 2015 13:04:45 -0800 (PST)
 Received: from decotigny.mtv.corp.google.com ([172.18.64.159])
-        by smtp.gmail.com with ESMTPSA id 68sm13096148pfp.62.2015.12.14.13.04.42
+        by smtp.gmail.com with ESMTPSA id 68sm13096148pfp.62.2015.12.14.13.04.43
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Mon, 14 Dec 2015 13:04:43 -0800 (PST)
+        Mon, 14 Dec 2015 13:04:44 -0800 (PST)
 From:   David Decotigny <ddecotig@gmail.com>
 To:     "David S. Miller" <davem@davemloft.net>,
         Ben Hutchings <ben@decadent.org.uk>,
@@ -44,9 +44,9 @@ Cc:     Eric Dumazet <edumazet@google.com>,
         Yuval Mintz <Yuval.Mintz@qlogic.com>,
         Rasmus Villemoes <linux@rasmusvillemoes.dk>,
         David Decotigny <decot@googlers.com>
-Subject: [PATCH net-next v5 10/19] net: macvlan: use __ethtool_get_ksettings
-Date:   Mon, 14 Dec 2015 13:03:57 -0800
-Message-Id: <1450127046-4573-11-git-send-email-ddecotig@gmail.com>
+Subject: [PATCH net-next v5 11/19] net: team: use __ethtool_get_ksettings
+Date:   Mon, 14 Dec 2015 13:03:58 -0800
+Message-Id: <1450127046-4573-12-git-send-email-ddecotig@gmail.com>
 X-Mailer: git-send-email 2.6.0.rc2.230.g3dd15c0
 In-Reply-To: <1450127046-4573-1-git-send-email-ddecotig@gmail.com>
 References: <1450127046-4573-1-git-send-email-ddecotig@gmail.com>
@@ -54,7 +54,7 @@ Return-Path: <ddecotig@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50600
+X-archive-position: 50601
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -75,37 +75,29 @@ From: David Decotigny <decot@googlers.com>
 
 Signed-off-by: David Decotigny <decot@googlers.com>
 ---
- drivers/net/macvlan.c | 8 ++++----
+ drivers/net/team/team.c | 8 ++++----
  1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/macvlan.c b/drivers/net/macvlan.c
-index 06c8bfe..a95b793 100644
---- a/drivers/net/macvlan.c
-+++ b/drivers/net/macvlan.c
-@@ -940,12 +940,12 @@ static void macvlan_ethtool_get_drvinfo(struct net_device *dev,
- 	strlcpy(drvinfo->version, "0.1", sizeof(drvinfo->version));
- }
+diff --git a/drivers/net/team/team.c b/drivers/net/team/team.c
+index 059c0f6..7cc98a7 100644
+--- a/drivers/net/team/team.c
++++ b/drivers/net/team/team.c
+@@ -2799,12 +2799,12 @@ static void __team_port_change_send(struct team_port *port, bool linkup)
+ 	port->state.linkup = linkup;
+ 	team_refresh_port_linkup(port);
+ 	if (linkup) {
+-		struct ethtool_cmd ecmd;
++		struct ethtool_ksettings ecmd;
  
--static int macvlan_ethtool_get_settings(struct net_device *dev,
--					struct ethtool_cmd *cmd)
-+static int macvlan_ethtool_get_ksettings(struct net_device *dev,
-+					 struct ethtool_ksettings *cmd)
- {
- 	const struct macvlan_dev *vlan = netdev_priv(dev);
- 
--	return __ethtool_get_settings(vlan->lowerdev, cmd);
-+	return __ethtool_get_ksettings(vlan->lowerdev, cmd);
- }
- 
- static netdev_features_t macvlan_fix_features(struct net_device *dev,
-@@ -1020,7 +1020,7 @@ static int macvlan_dev_get_iflink(const struct net_device *dev)
- 
- static const struct ethtool_ops macvlan_ethtool_ops = {
- 	.get_link		= ethtool_op_get_link,
--	.get_settings		= macvlan_ethtool_get_settings,
-+	.get_ksettings		= macvlan_ethtool_get_ksettings,
- 	.get_drvinfo		= macvlan_ethtool_get_drvinfo,
- };
- 
+-		err = __ethtool_get_settings(port->dev, &ecmd);
++		err = __ethtool_get_ksettings(port->dev, &ecmd);
+ 		if (!err) {
+-			port->state.speed = ethtool_cmd_speed(&ecmd);
+-			port->state.duplex = ecmd.duplex;
++			port->state.speed = ecmd.parent.speed;
++			port->state.duplex = ecmd.parent.duplex;
+ 			goto send_event;
+ 		}
+ 	}
 -- 
 2.6.0.rc2.230.g3dd15c0

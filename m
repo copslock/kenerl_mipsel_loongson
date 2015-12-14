@@ -1,26 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Dec 2015 22:07:12 +0100 (CET)
-Received: from mail-pa0-f65.google.com ([209.85.220.65]:33091 "EHLO
-        mail-pa0-f65.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27013863AbbLNVEsUuGN0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 14 Dec 2015 22:04:48 +0100
-Received: by pacwq6 with SMTP id wq6so11290196pac.0
-        for <linux-mips@linux-mips.org>; Mon, 14 Dec 2015 13:04:42 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Dec 2015 22:07:28 +0100 (CET)
+Received: from mail-pf0-f195.google.com ([209.85.192.195]:35639 "EHLO
+        mail-pf0-f195.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27013866AbbLNVEt17zF0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 14 Dec 2015 22:04:49 +0100
+Received: by pfbu66 with SMTP id u66so7935872pfb.2
+        for <linux-mips@linux-mips.org>; Mon, 14 Dec 2015 13:04:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=HaeSywdGb/y7/AJeheiCF5TJwClDXhxly1fU4bqLtSU=;
-        b=NzP4pZtGg7856snotP77mKwgMVv7Kax1od1fl0Fkdc46KEsIftk27Ihn3TjGLBl5R9
-         kTLT69Ulfrafw5xE3MRzthyc4BmuMs3a3ry3Ts7bshaQYf4Ibj243RDvLeQi/zdeD6Kf
-         f6VhutkcL4QT+g3r4njL0LDmI0FVrz0hrwj/Oz7k3eG53wLXK+77j4BOHLirdXguuxKO
-         CsRF6pCaNqPOvaaX2eVAbZqd7gu3y11bQI4KzfwZXqwkdac8kIPQzcg8WSyTsN7KQ/fA
-         8YCsExssCBGtPC+tQJJg8Wt9f96V6SS2LFNjF4qLjE3p5Ah8HoTxvTqIQAidmPrRjhpk
-         Krww==
-X-Received: by 10.66.119.136 with SMTP id ku8mr49680406pab.128.1450127082495;
-        Mon, 14 Dec 2015 13:04:42 -0800 (PST)
+        bh=8b2JNe369HZ01ilYAMaiBGj5Ilvzj1KPQULqwcETt1Q=;
+        b=qYmVHVn95phipTUNQhVcd3hYuiBf8SrqkLzvTXmXe5YMlFHiVaqy28RCGOoHxSEW5E
+         kVl3pZxHAhi3/vi0bbHtbUMqU/dHLcKcaX6eWGrBMExAdijAK7AtueqYrzj+OLqb2/M2
+         uyETfrcK+agXO4b4nPnztZbRHUakZ7hxctm3ndXxVqWrp4P/bsc65y9f1CmW7vFqV788
+         eUWy4h7Jcg+uYIEvZS/fHOYOrXM4erXEwAZXTG16Vcq8OwmhHffgXRxBpXxqDcZGPD17
+         IbmThK+7ZFgaUwnh5yttr8nMZ/HhwKW3rUzRZifox88N0KyJqntuAdElrX7S/Og94bnE
+         O6Qg==
+X-Received: by 10.98.13.210 with SMTP id 79mr11169845pfn.112.1450127083789;
+        Mon, 14 Dec 2015 13:04:43 -0800 (PST)
 Received: from decotigny.mtv.corp.google.com ([172.18.64.159])
-        by smtp.gmail.com with ESMTPSA id 68sm13096148pfp.62.2015.12.14.13.04.41
+        by smtp.gmail.com with ESMTPSA id 68sm13096148pfp.62.2015.12.14.13.04.42
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Mon, 14 Dec 2015 13:04:41 -0800 (PST)
+        Mon, 14 Dec 2015 13:04:43 -0800 (PST)
 From:   David Decotigny <ddecotig@gmail.com>
 To:     "David S. Miller" <davem@davemloft.net>,
         Ben Hutchings <ben@decadent.org.uk>,
@@ -44,9 +44,9 @@ Cc:     Eric Dumazet <edumazet@google.com>,
         Yuval Mintz <Yuval.Mintz@qlogic.com>,
         Rasmus Villemoes <linux@rasmusvillemoes.dk>,
         David Decotigny <decot@googlers.com>
-Subject: [PATCH net-next v5 09/19] net: ipvlan: use __ethtool_get_ksettings
-Date:   Mon, 14 Dec 2015 13:03:56 -0800
-Message-Id: <1450127046-4573-10-git-send-email-ddecotig@gmail.com>
+Subject: [PATCH net-next v5 10/19] net: macvlan: use __ethtool_get_ksettings
+Date:   Mon, 14 Dec 2015 13:03:57 -0800
+Message-Id: <1450127046-4573-11-git-send-email-ddecotig@gmail.com>
 X-Mailer: git-send-email 2.6.0.rc2.230.g3dd15c0
 In-Reply-To: <1450127046-4573-1-git-send-email-ddecotig@gmail.com>
 References: <1450127046-4573-1-git-send-email-ddecotig@gmail.com>
@@ -54,7 +54,7 @@ Return-Path: <ddecotig@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50599
+X-archive-position: 50600
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -75,37 +75,37 @@ From: David Decotigny <decot@googlers.com>
 
 Signed-off-by: David Decotigny <decot@googlers.com>
 ---
- drivers/net/ipvlan/ipvlan_main.c | 8 ++++----
+ drivers/net/macvlan.c | 8 ++++----
  1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ipvlan/ipvlan_main.c b/drivers/net/ipvlan/ipvlan_main.c
-index a9268db..63b3aa5 100644
---- a/drivers/net/ipvlan/ipvlan_main.c
-+++ b/drivers/net/ipvlan/ipvlan_main.c
-@@ -346,12 +346,12 @@ static const struct header_ops ipvlan_header_ops = {
- 	.cache_update	= eth_header_cache_update,
- };
- 
--static int ipvlan_ethtool_get_settings(struct net_device *dev,
--				       struct ethtool_cmd *cmd)
-+static int ipvlan_ethtool_get_ksettings(struct net_device *dev,
-+					struct ethtool_ksettings *cmd)
- {
- 	const struct ipvl_dev *ipvlan = netdev_priv(dev);
- 
--	return __ethtool_get_settings(ipvlan->phy_dev, cmd);
-+	return __ethtool_get_ksettings(ipvlan->phy_dev, cmd);
+diff --git a/drivers/net/macvlan.c b/drivers/net/macvlan.c
+index 06c8bfe..a95b793 100644
+--- a/drivers/net/macvlan.c
++++ b/drivers/net/macvlan.c
+@@ -940,12 +940,12 @@ static void macvlan_ethtool_get_drvinfo(struct net_device *dev,
+ 	strlcpy(drvinfo->version, "0.1", sizeof(drvinfo->version));
  }
  
- static void ipvlan_ethtool_get_drvinfo(struct net_device *dev,
-@@ -377,7 +377,7 @@ static void ipvlan_ethtool_set_msglevel(struct net_device *dev, u32 value)
+-static int macvlan_ethtool_get_settings(struct net_device *dev,
+-					struct ethtool_cmd *cmd)
++static int macvlan_ethtool_get_ksettings(struct net_device *dev,
++					 struct ethtool_ksettings *cmd)
+ {
+ 	const struct macvlan_dev *vlan = netdev_priv(dev);
  
- static const struct ethtool_ops ipvlan_ethtool_ops = {
- 	.get_link	= ethtool_op_get_link,
--	.get_settings	= ipvlan_ethtool_get_settings,
-+	.get_ksettings	= ipvlan_ethtool_get_ksettings,
- 	.get_drvinfo	= ipvlan_ethtool_get_drvinfo,
- 	.get_msglevel	= ipvlan_ethtool_get_msglevel,
- 	.set_msglevel	= ipvlan_ethtool_set_msglevel,
+-	return __ethtool_get_settings(vlan->lowerdev, cmd);
++	return __ethtool_get_ksettings(vlan->lowerdev, cmd);
+ }
+ 
+ static netdev_features_t macvlan_fix_features(struct net_device *dev,
+@@ -1020,7 +1020,7 @@ static int macvlan_dev_get_iflink(const struct net_device *dev)
+ 
+ static const struct ethtool_ops macvlan_ethtool_ops = {
+ 	.get_link		= ethtool_op_get_link,
+-	.get_settings		= macvlan_ethtool_get_settings,
++	.get_ksettings		= macvlan_ethtool_get_ksettings,
+ 	.get_drvinfo		= macvlan_ethtool_get_drvinfo,
+ };
+ 
 -- 
 2.6.0.rc2.230.g3dd15c0

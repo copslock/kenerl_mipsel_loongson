@@ -1,39 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Dec 2015 23:42:20 +0100 (CET)
-Received: from exsmtp03.microchip.com ([198.175.253.49]:44709 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Dec 2015 23:42:38 +0100 (CET)
+Received: from exsmtp03.microchip.com ([198.175.253.49]:44820 "EHLO
         email.microchip.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27013824AbbLNWkW0D9No (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 14 Dec 2015 23:40:22 +0100
+        by eddie.linux-mips.org with ESMTP id S27013877AbbLNWklt1UVo (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 14 Dec 2015 23:40:41 +0100
 Received: from mx.microchip.com (10.10.76.4) by chn-sv-exch03.mchp-main.com
  (10.10.76.49) with Microsoft SMTP Server id 14.3.181.6; Mon, 14 Dec 2015
- 15:40:14 -0700
+ 15:40:34 -0700
 Received: by mx.microchip.com (sSMTP sendmail emulation); Mon, 14 Dec 2015
- 15:47:17 -0700
+ 15:47:37 -0700
 From:   Joshua Henderson <joshua.henderson@microchip.com>
 To:     <linux-kernel@vger.kernel.org>
 CC:     <linux-mips@linux-mips.org>, <ralf@linux-mips.org>,
-        Andrei Pistirica <andrei.pistirica@microchip.com>,
         Joshua Henderson <joshua.henderson@microchip.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Jean Delvare <jdelvare@suse.de>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Corneliu Doban <cdoban@broadcom.com>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Luis de Bethencourt <luisbg@osg.samsung.com>,
-        Weijun Yang <Weijun.Yang@csr.com>,
-        Lokesh Vutla <lokeshvutla@ti.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        Vincent Yang <vincent.yang.fujitsu@gmail.com>,
-        Chaotian Jing <chaotian.jing@mediatek.com>,
-        "ludovic.desroches@atmel.com" <ludovic.desroches@atmel.com>,
-        Shawn Lin <shawn.lin@rock-chips.com>,
-        Stephen Boyd <sboyd@codeaurora.org>,
-        yangbo lu <yangbo.lu@freescale.com>,
-        Kevin Hao <haokexin@gmail.com>,
-        Ben Hutchings <ben@decadent.org.uk>,
-        Andy Green <andy.green@linaro.org>, <linux-mmc@vger.kernel.org>
-Subject: [PATCH v2 12/14] mmc: sdhci-pic32: Add PIC32 SDHCI host controller driver
-Date:   Mon, 14 Dec 2015 15:42:14 -0700
-Message-ID: <1450133093-7053-13-git-send-email-joshua.henderson@microchip.com>
+        Rob Herring <robh+dt@kernel.org>,
+        Pawel Moll <pawel.moll@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ian Campbell <ijc+devicetree@hellion.org.uk>,
+        Kumar Gala <galak@codeaurora.org>,
+        Andrew Bresticker <abrestic@chromium.org>,
+        Paul Burton <paul.burton@imgtec.com>,
+        <devicetree@vger.kernel.org>
+Subject: [PATCH v2 13/14] MIPS: dts: Add initial DTS for the PIC32MZDA Starter Kit
+Date:   Mon, 14 Dec 2015 15:42:15 -0700
+Message-ID: <1450133093-7053-14-git-send-email-joshua.henderson@microchip.com>
 X-Mailer: git-send-email 1.7.9.5
 In-Reply-To: <1450133093-7053-1-git-send-email-joshua.henderson@microchip.com>
 References: <1450133093-7053-1-git-send-email-joshua.henderson@microchip.com>
@@ -43,7 +32,7 @@ Return-Path: <Joshua.Henderson@microchip.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50622
+X-archive-position: 50623
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -60,347 +49,757 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Andrei Pistirica <andrei.pistirica@microchip.com>
+This adds basic DTS configuration for the PIC32MZDA chip and in turn the
+PIC32MZDA Starter Kit.
 
-This driver supports the SDHCI host controller found on a PIC32.
-
-Signed-off-by: Andrei Pistirica <andrei.pistirica@microchip.com>
 Signed-off-by: Joshua Henderson <joshua.henderson@microchip.com>
 Cc: Ralf Baechle <ralf@linux-mips.org>
 ---
- drivers/mmc/host/Kconfig       |   11 ++
- drivers/mmc/host/Makefile      |    1 +
- drivers/mmc/host/sdhci-pic32.c |  291 ++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 303 insertions(+)
- create mode 100644 drivers/mmc/host/sdhci-pic32.c
+ arch/mips/boot/dts/Makefile                 |    1 +
+ arch/mips/boot/dts/pic32/Makefile           |   12 ++
+ arch/mips/boot/dts/pic32/pic32mzda-clk.dtsi |  235 +++++++++++++++++++++++
+ arch/mips/boot/dts/pic32/pic32mzda.dtsi     |  275 +++++++++++++++++++++++++++
+ arch/mips/boot/dts/pic32/pic32mzda_sk.dts   |  151 +++++++++++++++
+ arch/mips/pic32/Kconfig                     |   16 ++
+ 6 files changed, 690 insertions(+)
+ create mode 100644 arch/mips/boot/dts/pic32/Makefile
+ create mode 100644 arch/mips/boot/dts/pic32/pic32mzda-clk.dtsi
+ create mode 100644 arch/mips/boot/dts/pic32/pic32mzda.dtsi
+ create mode 100644 arch/mips/boot/dts/pic32/pic32mzda_sk.dts
 
-diff --git a/drivers/mmc/host/Kconfig b/drivers/mmc/host/Kconfig
-index 1dee533..1a3a42b 100644
---- a/drivers/mmc/host/Kconfig
-+++ b/drivers/mmc/host/Kconfig
-@@ -785,3 +785,14 @@ config MMC_MTK
- 	  If you have a machine with a integrated SD/MMC card reader, say Y or M here.
- 	  This is needed if support for any SD/SDIO/MMC devices is required.
- 	  If unsure, say N.
-+
-+config MMC_SDHCI_MICROCHIP_PIC32
-+        tristate "Microchip PIC32MZDA SDHCI support"
-+        depends on MMC_SDHCI && PIC32MZDA
-+        help
-+          This selects the Secure Digital Host Controller Interface (SDHCI)
-+          for PIC32MZDA platform.
-+
-+          If you have a controller with this interface, say Y or M here.
-+
-+          If unsure, say N.
-diff --git a/drivers/mmc/host/Makefile b/drivers/mmc/host/Makefile
-index 3595f83..af918d2 100644
---- a/drivers/mmc/host/Makefile
-+++ b/drivers/mmc/host/Makefile
-@@ -75,6 +75,7 @@ obj-$(CONFIG_MMC_SDHCI_BCM2835)		+= sdhci-bcm2835.o
- obj-$(CONFIG_MMC_SDHCI_IPROC)		+= sdhci-iproc.o
- obj-$(CONFIG_MMC_SDHCI_MSM)		+= sdhci-msm.o
- obj-$(CONFIG_MMC_SDHCI_ST)		+= sdhci-st.o
-+obj-$(CONFIG_MMC_SDHCI_MICROCHIP_PIC32)	+= sdhci-pic32.o
- 
- ifeq ($(CONFIG_CB710_DEBUG),y)
- 	CFLAGS-cb710-mmc	+= -DDEBUG
-diff --git a/drivers/mmc/host/sdhci-pic32.c b/drivers/mmc/host/sdhci-pic32.c
+diff --git a/arch/mips/boot/dts/Makefile b/arch/mips/boot/dts/Makefile
+index a0bf516..fc7a0a9 100644
+--- a/arch/mips/boot/dts/Makefile
++++ b/arch/mips/boot/dts/Makefile
+@@ -4,6 +4,7 @@ dts-dirs	+= ingenic
+ dts-dirs	+= lantiq
+ dts-dirs	+= mti
+ dts-dirs	+= netlogic
++dts-dirs	+= pic32
+ dts-dirs	+= qca
+ dts-dirs	+= ralink
+ dts-dirs	+= xilfpga
+diff --git a/arch/mips/boot/dts/pic32/Makefile b/arch/mips/boot/dts/pic32/Makefile
 new file mode 100644
-index 0000000..b7d7da2
+index 0000000..7ac7905
 --- /dev/null
-+++ b/drivers/mmc/host/sdhci-pic32.c
-@@ -0,0 +1,291 @@
++++ b/arch/mips/boot/dts/pic32/Makefile
+@@ -0,0 +1,12 @@
++dtb-$(CONFIG_DTB_PIC32_MZDA_SK)		+= pic32mzda_sk.dtb
++
++dtb-$(CONFIG_DTB_PIC32_NONE)		+= \
++					pic32mzda_sk.dtb
++
++obj-y				+= $(patsubst %.dtb, %.dtb.o, $(dtb-y))
++
++# Force kbuild to make empty built-in.o if necessary
++obj-				+= dummy.o
++
++always				:= $(dtb-y)
++clean-files			:= *.dtb *.dtb.S
+diff --git a/arch/mips/boot/dts/pic32/pic32mzda-clk.dtsi b/arch/mips/boot/dts/pic32/pic32mzda-clk.dtsi
+new file mode 100644
+index 0000000..9ab4df8
+--- /dev/null
++++ b/arch/mips/boot/dts/pic32/pic32mzda-clk.dtsi
+@@ -0,0 +1,235 @@
 +/*
-+ * Support of SDHCI platform devices for Microchip PIC32.
++ * Device Tree Source for PIC32MZDA clock data
 + *
-+ * Copyright (C) 2015 Microchip
-+ * Andrei Pistirica, Paul Thacker
++ * Purna Chandra Mandal <purna.mandal@microchip.com>
++ * Copyright (C) 2015 Microchip Technology Inc.  All rights reserved.
 + *
-+ * Inspired by sdhci-pltfm.c
-+ *
-+ * This file is licensed under the terms of the GNU General Public
-+ * License version 2. This program is licensed "as is" without any
-+ * warranty of any kind, whether express or implied.
++ * Licensed under GPLv2 or later.
 + */
 +
-+#include <linux/clk.h>
-+#include <linux/delay.h>
-+#include <linux/highmem.h>
-+#include <linux/module.h>
-+#include <linux/interrupt.h>
-+#include <linux/irq.h>
-+#include <linux/of.h>
-+#include <linux/platform_device.h>
-+#include <linux/pm.h>
-+#include <linux/slab.h>
-+#include <linux/mmc/host.h>
-+#include <linux/io.h>
-+#include "sdhci.h"
-+#include <linux/platform_data/sdhci-pic32.h>
++/* all fixed rate clocks */
 +
-+#define SDH_SHARED_BUS_CTRL		0x000000E0
-+#define SDH_SHARED_BUS_NR_CLK_PINS_MASK	0x7
-+#define SDH_SHARED_BUS_NR_IRQ_PINS_MASK	0x30
-+#define SDH_SHARED_BUS_CLK_PINS		0x10
-+#define SDH_SHARED_BUS_IRQ_PINS		0x14
-+#define SDH_CAPS_SDH_SLOT_TYPE_MASK	0xC0000000
-+#define SDH_SLOT_TYPE_REMOVABLE		0x0
-+#define SDH_SLOT_TYPE_EMBEDDED		0x1
-+#define SDH_SLOT_TYPE_SHARED_BUS	0x2
-+#define SDHCI_CTRL_CDSSEL		0x80
-+#define SDHCI_CTRL_CDTLVL		0x40
++/ {
++	POSC:posc_clk { /* On-chip primary oscillator */
++		#clock-cells = <0>;
++		compatible = "fixed-clock";
++		clock-frequency = <24000000>;
++	};
 +
-+#define ADMA_FIFO_RD_THSHLD	512
-+#define ADMA_FIFO_WR_THSHLD	512
++	FRC:frc_clk { /* internal FRC oscillator */
++		#clock-cells = <0>;
++		compatible = "fixed-clock";
++		clock-frequency = <8000000>;
++	};
 +
-+#define DEV_NAME "pic32-sdhci"
++	BFRC:bfrc_clk { /* internal backup FRC oscillator */
++		#clock-cells = <0>;
++		compatible = "fixed-clock";
++		clock-frequency = <8000000>;
++	};
 +
-+struct pic32_sdhci_pdata {
-+	struct platform_device	*pdev;
-+	struct clk *sys_clk;
-+	struct clk *base_clk;
++	LPRC:lprc_clk { /* internal low-power FRC oscillator */
++		#clock-cells = <0>;
++		compatible = "fixed-clock";
++		clock-frequency = <32000>;
++	};
++
++	/* UPLL provides UTMI clock to USBCORE */
++	UPLL:usb_phy_clk {
++		#clock-cells = <0>;
++		compatible = "fixed-clock";
++		clock-frequency = <24000000>;
++		clock-output-names = "usbphy_clk";
++	};
++
++	TxCKI:txcki_clk { /* external clock input on TxCLKI pin */
++		#clock-cells = <0>;
++		compatible = "fixed-clock";
++		clock-frequency = <4000000>;
++		status = "disabled";
++	};
++
++	/* external clock input on REFCLKIx pin */
++	REFIx:refix_clk {
++		#clock-cells = <0>;
++		compatible = "fixed-clock";
++		clock-frequency = <24000000>;
++		status = "disabled";
++	};
++
++	/* PIC32 specific clks */
++	pic32_clktree {
++		#address-cells = <1>;
++		#size-cells = <1>;
++		reg = <0x1f801200 0x200>;
++		compatible = "microchip,pic32mzda-clk";
++		ranges = <0 0x1f801200 0x200>;
++
++		/* secondary oscillator; external input on SOSCI pin */
++		SOSC:sosc_clk {
++			#clock-cells = <0>;
++			compatible = "microchip,pic32mzda-sosc";
++			clock-frequency = <32768>;
++			reg = <0x000 0x10>,   /* enable reg */
++			      <0x1d0 0x10>; /* status reg */
++			microchip,bit-mask = <0x02>; /* enable mask */
++			microchip,status-bit-mask = <0x10>; /* status-mask*/
++		};
++
++		FRCDIV:frcdiv_clk {
++			#clock-cells = <0>;
++			compatible = "microchip,pic32mzda-frcdivclk";
++			clocks = <&FRC>;
++			clock-output-names = "frcdiv_clk";
++		};
++
++		/* System PLL clock */
++		SYSPLL:spll_clk {
++			#clock-cells = <0>;
++			compatible = "microchip,pic32mzda-syspll";
++			reg = <0x020 0x10>, /* SPLL register */
++			      <0x1d0 0x10>; /* CLKSTAT register */
++			clocks = <&POSC>, <&FRC>;
++			clock-output-names = "sys_pll";
++			microchip,status-bit-mask = <0x80>; /* SPLLRDY */
++		};
++
++		/* system clock; mux with postdiv & slew */
++		SYSCLK:sys_clk {
++			#clock-cells = <0>;
++			compatible = "microchip,pic32mzda-sysclk-v2";
++			reg = <0x1c0 0x04>; /* SLEWCON */
++			clocks = <&FRCDIV>, <&SYSPLL>, <&POSC>, <&SOSC>,
++				 <&LPRC>, <&FRCDIV>;
++			microchip,clock-indices = <0>, <1>, <2>, <4>, <5>, <7>;
++			clock-output-names = "sys_clk";
++		};
++
++		/* Peripheral bus1 clock */
++		PBCLK1:pb1_clk {
++			reg = <0x140 0x10>;
++			#clock-cells = <0>;
++			compatible = "microchip,pic32mzda-pbclk";
++			clocks = <&SYSCLK>;
++			clock-output-names = "pb1_clk";
++			/* used by system modules, not gateable */
++			microchip,ignore-unused;
++		};
++
++		/* Peripheral bus2 clock */
++		PBCLK2:pb2_clk {
++			reg = <0x150 0x10>;
++			#clock-cells = <0>;
++			compatible = "microchip,pic32mzda-pbclk";
++			clocks = <&SYSCLK>;
++			clock-output-names = "pb2_clk";
++			/* avoid gating even if unused */
++			microchip,ignore-unused;
++		};
++
++		/* Peripheral bus3 clock */
++		PBCLK3:pb3_clk {
++			reg = <0x160 0x10>;
++			#clock-cells = <0>;
++			compatible = "microchip,pic32mzda-pbclk";
++			clocks = <&SYSCLK>;
++			clock-output-names = "pb3_clk";
++		};
++
++		/* Peripheral bus4 clock(I/O ports, GPIO) */
++		PBCLK4:pb4_clk {
++			reg = <0x170 0x10>;
++			#clock-cells = <0>;
++			compatible = "microchip,pic32mzda-pbclk";
++			clocks = <&SYSCLK>;
++			clock-output-names = "pb4_clk";
++		};
++
++		/* Peripheral bus clock */
++		PBCLK5:pb5_clk {
++			reg = <0x180 0x10>;
++			#clock-cells = <0>;
++			compatible = "microchip,pic32mzda-pbclk";
++			clocks = <&SYSCLK>;
++			clock-output-names = "pb5_clk";
++		};
++
++		/* Peripheral Bus6 clock; */
++		PBCLK6:pb6_clk {
++			reg = <0x190 0x10>;
++			compatible = "microchip,pic32mzda-pbclk";
++			clocks = <&SYSCLK>;
++			#clock-cells = <0>;
++		};
++
++		/* Peripheral bus7 clock */
++		PBCLK7:pb7_clk {
++			reg = <0x1A0 0x10>;
++			#clock-cells = <0>;
++			compatible = "microchip,pic32mzda-pbclk";
++			/* CPU is driven by this clock; so named */
++			clock-output-names = "cpu_clk";
++			clocks = <&SYSCLK>;
++		};
++
++		/* Reference Oscillator clock for SPI/I2S */
++		REFCLKO1:refo1_clk {
++			reg = <0x080 0x20>;
++			#clock-cells = <0>;
++			compatible = "microchip,pic32mzda-refoclk";
++			clocks = <&SYSCLK>, <&PBCLK1>, <&POSC>, <&FRC>, <&LPRC>,
++				<&SOSC>, <&SYSPLL>, <&REFIx>, <&BFRC>;
++			microchip,clock-indices = <0>, <1>, <2>, <3>, <4>,
++						  <5>, <7>, <8>, <9>;
++			clock-output-names = "refo1_clk";
++		};
++
++		/* Reference Oscillator clock for SQI */
++		REFCLKO2:refo2_clk {
++			reg = <0x0A0 0x20>;
++			#clock-cells = <0>;
++			compatible = "microchip,pic32mzda-refoclk";
++			clocks = <&SYSCLK>, <&PBCLK1>, <&POSC>, <&FRC>, <&LPRC>,
++				<&SOSC>, <&SYSPLL>, <&REFIx>, <&BFRC>;
++			microchip,clock-indices = <0>, <1>, <2>, <3>, <4>,
++						  <5>, <7>, <8>, <9>;
++			clock-output-names = "refo2_clk";
++		};
++
++		/* Reference Oscillator clock, ADC */
++		REFCLKO3:refo3_clk {
++			reg = <0x0C0 0x20>;
++			compatible = "microchip,pic32mzda-refoclk";
++			clocks = <&SYSCLK>, <&PBCLK1>, <&POSC>, <&FRC>, <&LPRC>,
++				<&SOSC>, <&SYSPLL>, <&REFIx>, <&BFRC>;
++			microchip,clock-indices = <0>, <1>, <2>, <3>, <4>,
++						  <5>, <7>, <8>, <9>;
++			#clock-cells = <0>;
++			clock-output-names = "refo3_clk";
++		};
++
++		/* Reference Oscillator clock */
++		REFCLKO4:refo4_clk {
++			reg = <0x0E0 0x20>;
++			compatible = "microchip,pic32mzda-refoclk";
++			clocks = <&SYSCLK>, <&PBCLK1>, <&POSC>, <&FRC>, <&LPRC>,
++					<&SOSC>, <&SYSPLL>, <&REFIx>, <&BFRC>;
++			microchip,clock-indices = <0>, <1>, <2>, <3>, <4>,
++						  <5>, <7>, <8>, <9>;
++			#clock-cells = <0>;
++			clock-output-names = "refo4_clk";
++		};
++
++		/* Reference Oscillator clock, LCD */
++		REFCLKO5:refo5_clk {
++			reg = <0x100 0x20>;
++			compatible = "microchip,pic32mzda-refoclk";
++			clocks = <&SYSCLK>,<&PBCLK1>,<&POSC>,<&FRC>,<&LPRC>,
++				<&SOSC>,<&SYSPLL>,<&REFIx>,<&BFRC>;
++			microchip,clock-indices = <0>, <1>, <2>, <3>, <4>,
++						  <5>, <7>, <8>, <9>;
++			#clock-cells = <0>;
++			clock-output-names = "refo5_clk";
++		};
++	};
++};
+diff --git a/arch/mips/boot/dts/pic32/pic32mzda.dtsi b/arch/mips/boot/dts/pic32/pic32mzda.dtsi
+new file mode 100644
+index 0000000..3eee106
+--- /dev/null
++++ b/arch/mips/boot/dts/pic32/pic32mzda.dtsi
+@@ -0,0 +1,275 @@
++/*
++ * Copyright (C) 2015 Microchip Technology Inc.  All rights reserved.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2 as
++ * published by the Free Software Foundation.
++ *
++ */
++
++#include <dt-bindings/interrupt-controller/irq.h>
++
++#include "pic32mzda-clk.dtsi"
++
++/ {
++	#address-cells = <1>;
++	#size-cells = <1>;
++	interrupt-parent = <&evic>;
++
++	aliases {
++		gpio0 = &gpio0;
++		gpio1 = &gpio1;
++		gpio2 = &gpio2;
++		gpio3 = &gpio3;
++		gpio4 = &gpio4;
++		gpio5 = &gpio5;
++		gpio6 = &gpio6;
++		gpio7 = &gpio7;
++		gpio8 = &gpio8;
++		gpio9 = &gpio9;
++		serial0 = &uart1;
++		serial1 = &uart2;
++		serial2 = &uart3;
++		serial3 = &uart4;
++		serial4 = &uart5;
++		serial5 = &uart6;
++	};
++
++	cpus {
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		cpu@0 {
++			compatible = "mti,mips14KEc";
++			device_type = "cpu";
++		};
++	};
++
++	evic: interrupt-controller@1f810000 {
++		compatible = "microchip,pic32mzda-evic";
++		interrupt-controller;
++		#interrupt-cells = <2>;
++		reg = <0x1f810000 0x1000>;
++	};
++
++	pic32_pinctrl: pinctrl@1f801400{
++		#address-cells = <1>;
++		#size-cells = <1>;
++		compatible = "microchip,pic32mzda-pinctrl";
++		reg = <0x1f801400 0x400>;
++		clocks = <&PBCLK1>;
++	};
++
++	/* PORTA */
++	gpio0: gpio0@1f860000 {
++		compatible = "microchip,pic32mzda-gpio";
++		reg = <0x1f860000 0x100>;
++		interrupts = <118 IRQ_TYPE_LEVEL_HIGH>;
++		#gpio-cells = <2>;
++		gpio-controller;
++		interrupt-controller;
++		#interrupt-cells = <2>;
++		clocks = <&PBCLK4>;
++		microchip,gpio-bank = <0>;
++		gpio-ranges = <&pic32_pinctrl 0 0 16>;
++	};
++
++	/* PORTB */
++	gpio1: gpio1@1f860100 {
++		compatible = "microchip,pic32mzda-gpio";
++		reg = <0x1f860100 0x100>;
++		interrupts = <119 IRQ_TYPE_LEVEL_HIGH>;
++		#gpio-cells = <2>;
++		gpio-controller;
++		interrupt-controller;
++		#interrupt-cells = <2>;
++		clocks = <&PBCLK4>;
++		microchip,gpio-bank = <1>;
++		gpio-ranges = <&pic32_pinctrl 0 16 16>;
++	};
++
++	/* PORTC */
++	gpio2: gpio2@1f860200 {
++		compatible = "microchip,pic32mzda-gpio";
++		reg = <0x1f860200 0x100>;
++		interrupts = <120 IRQ_TYPE_LEVEL_HIGH>;
++		#gpio-cells = <2>;
++		gpio-controller;
++		interrupt-controller;
++		#interrupt-cells = <2>;
++		clocks = <&PBCLK4>;
++		microchip,gpio-bank = <2>;
++		gpio-ranges = <&pic32_pinctrl 0 32 16>;
++	};
++
++	/* PORTD */
++	gpio3: gpio3@1f860300 {
++		compatible = "microchip,pic32mzda-gpio";
++		reg = <0x1f860300 0x100>;
++		interrupts = <121 IRQ_TYPE_LEVEL_HIGH>;
++		#gpio-cells = <2>;
++		gpio-controller;
++		interrupt-controller;
++		#interrupt-cells = <2>;
++		clocks = <&PBCLK4>;
++		microchip,gpio-bank = <3>;
++		gpio-ranges = <&pic32_pinctrl 0 48 16>;
++	};
++
++	/* PORTE */
++	gpio4: gpio4@1f860400 {
++		compatible = "microchip,pic32mzda-gpio";
++		reg = <0x1f860400 0x100>;
++		interrupts = <122 IRQ_TYPE_LEVEL_HIGH>;
++		#gpio-cells = <2>;
++		gpio-controller;
++		interrupt-controller;
++		#interrupt-cells = <2>;
++		clocks = <&PBCLK4>;
++		microchip,gpio-bank = <4>;
++		gpio-ranges = <&pic32_pinctrl 0 64 16>;
++	};
++
++	/* PORTF */
++	gpio5: gpio5@1f860500 {
++		compatible = "microchip,pic32mzda-gpio";
++		reg = <0x1f860500 0x100>;
++		interrupts = <123 IRQ_TYPE_LEVEL_HIGH>;
++		#gpio-cells = <2>;
++		gpio-controller;
++		interrupt-controller;
++		#interrupt-cells = <2>;
++		clocks = <&PBCLK4>;
++		microchip,gpio-bank = <5>;
++		gpio-ranges = <&pic32_pinctrl 0 80 16>;
++	};
++
++	/* PORTG */
++	gpio6: gpio6@1f860600 {
++		compatible = "microchip,pic32mzda-gpio";
++		reg = <0x1f860600 0x100>;
++		interrupts = <124 IRQ_TYPE_LEVEL_HIGH>;
++		#gpio-cells = <2>;
++		gpio-controller;
++		interrupt-controller;
++		#interrupt-cells = <2>;
++		clocks = <&PBCLK4>;
++		microchip,gpio-bank = <6>;
++		gpio-ranges = <&pic32_pinctrl 0 96 16>;
++	};
++
++	/* PORTH */
++	gpio7: gpio7@1f860700 {
++		compatible = "microchip,pic32mzda-gpio";
++		reg = <0x1f860700 0x100>;
++		interrupts = <125 IRQ_TYPE_LEVEL_HIGH>;
++		#gpio-cells = <2>;
++		gpio-controller;
++		interrupt-controller;
++		#interrupt-cells = <2>;
++		clocks = <&PBCLK4>;
++		microchip,gpio-bank = <7>;
++		gpio-ranges = <&pic32_pinctrl 0 112 16>;
++	};
++
++	/* PORTI does not exist */
++
++	/* PORTJ */
++	gpio8: gpio8@1f860800 {
++		compatible = "microchip,pic32mzda-gpio";
++		reg = <0x1f860800 0x100>;
++		interrupts = <126 IRQ_TYPE_LEVEL_HIGH>;
++		#gpio-cells = <2>;
++		gpio-controller;
++		interrupt-controller;
++		#interrupt-cells = <2>;
++		clocks = <&PBCLK4>;
++		microchip,gpio-bank = <8>;
++		gpio-ranges = <&pic32_pinctrl 0 128 16>;
++	};
++
++	/* PORTK */
++	gpio9: gpio9@1f860900 {
++		compatible = "microchip,pic32mzda-gpio";
++		reg = <0x1f860900 0x100>;
++		interrupts = <127 IRQ_TYPE_LEVEL_HIGH>;
++		#gpio-cells = <2>;
++		gpio-controller;
++		interrupt-controller;
++		#interrupt-cells = <2>;
++		clocks = <&PBCLK4>;
++		microchip,gpio-bank = <9>;
++		gpio-ranges = <&pic32_pinctrl 0 144 16>;
++	};
++
++	sdhci: sdhci@1f8ec000 {
++		compatible = "microchip,pic32mzda-sdhci";
++		reg = <0x1f8ec000 0x100>;
++		interrupts = <191 IRQ_TYPE_LEVEL_HIGH>;
++		clocks = <&REFCLKO4>, <&PBCLK5>;
++		clock-names = "base_clk", "sys_clk";
++		bus-width = <4>;
++		cap-sd-highspeed;
++		status = "disabled";
++	};
++
++	uart1: serial@1f822000 {
++		compatible = "microchip,pic32mzda-uart";
++		reg = <0x1f822000 0x50>;
++		interrupts = <112 IRQ_TYPE_LEVEL_HIGH>,
++			<113 IRQ_TYPE_LEVEL_HIGH>,
++			<114 IRQ_TYPE_LEVEL_HIGH>;
++		clocks = <&PBCLK2>;
++		status = "disabled";
++	};
++
++	uart2: serial@1f822200 {
++		compatible = "microchip,pic32mzda-uart";
++		reg = <0x1f822200 0x50>;
++		interrupts = <145 IRQ_TYPE_LEVEL_HIGH>,
++			<146 IRQ_TYPE_LEVEL_HIGH>,
++			<147 IRQ_TYPE_LEVEL_HIGH>;
++		clocks = <&PBCLK2>;
++		status = "disabled";
++	};
++
++	uart3: serial@1f822400 {
++		compatible = "microchip,pic32mzda-uart";
++		reg = <0x1f822400 0x50>;
++		interrupts = <157 IRQ_TYPE_LEVEL_HIGH>,
++			<158 IRQ_TYPE_LEVEL_HIGH>,
++			<159 IRQ_TYPE_LEVEL_HIGH>;
++		clocks = <&PBCLK2>;
++		status = "disabled";
++	};
++
++	uart4: serial@1f822600 {
++		compatible = "microchip,pic32mzda-uart";
++		reg = <0x1f822600 0x50>;
++		interrupts = <170 IRQ_TYPE_LEVEL_HIGH>,
++			<171 IRQ_TYPE_LEVEL_HIGH>,
++			<172 IRQ_TYPE_LEVEL_HIGH>;
++		clocks = <&PBCLK2>;
++		status = "disabled";
++	};
++
++	uart5: serial@1f822800 {
++		compatible = "microchip,pic32mzda-uart";
++		reg = <0x1f822800 0x50>;
++		interrupts = <179 IRQ_TYPE_LEVEL_HIGH>,
++			<180 IRQ_TYPE_LEVEL_HIGH>,
++			<181 IRQ_TYPE_LEVEL_HIGH>;
++		clocks = <&PBCLK2>;
++		status = "disabled";
++	};
++
++	uart6: serial@1f822A00 {
++		compatible = "microchip,pic32mzda-uart";
++		reg = <0x1f822A00 0x50>;
++		interrupts = <188 IRQ_TYPE_LEVEL_HIGH>,
++			<189 IRQ_TYPE_LEVEL_HIGH>,
++			<190 IRQ_TYPE_LEVEL_HIGH>;
++		clocks = <&PBCLK2>;
++		status = "disabled";
++	};
++};
+diff --git a/arch/mips/boot/dts/pic32/pic32mzda_sk.dts b/arch/mips/boot/dts/pic32/pic32mzda_sk.dts
+new file mode 100644
+index 0000000..3fd2307
+--- /dev/null
++++ b/arch/mips/boot/dts/pic32/pic32mzda_sk.dts
+@@ -0,0 +1,151 @@
++/*
++ * Copyright (C) 2015 Microchip Technology Inc.  All rights reserved.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2 as
++ * published by the Free Software Foundation.
++ *
++ */
++
++/dts-v1/;
++
++#include <dt-bindings/gpio/gpio.h>
++#include <dt-bindings/interrupt-controller/irq.h>
++
++#include "pic32mzda.dtsi"
++
++/ {
++	compatible = "microchip,pic32mzda-sk", "microchip,pic32mzda";
++	model = "Microchip PIC32MZDA Starter Kit";
++
++	memory {
++		device_type = "memory";
++		reg = <0x08000000 0x08000000>;
++	};
++
++	chosen {
++		bootargs = "earlyprintk=ttyS1,115200n8r console=ttyS1,115200n8";
++	};
++
++	leds0 {
++		compatible = "gpio-leds";
++		pinctrl-names = "default";
++		pinctrl-0 = <&user_leds_s0>;
++
++		led@1 {
++			label = "pic32mzda_sk:red:led1";
++			gpios = <&gpio7 0 GPIO_ACTIVE_HIGH>;
++			linux,default-trigger = "heartbeat";
++		};
++
++		led@2 {
++			label = "pic32mzda_sk:yellow:led2";
++			gpios = <&gpio7 1 GPIO_ACTIVE_HIGH>;
++			linux,default-trigger = "mmc0";
++		};
++
++		led@3 {
++			label = "pic32mzda_sk:green:led3";
++			gpios = <&gpio7 2 GPIO_ACTIVE_HIGH>;
++			default-state = "on";
++		};
++	};
++
++	keys0 {
++		compatible = "gpio-keys";
++		pinctrl-0 = <&user_buttons_s0>;
++		pinctrl-names = "default";
++
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		button@sw1 {
++			label = "ESC";
++			linux,code = <1>;
++			gpios = <&gpio1 12 0>;
++		};
++
++		button@sw2 {
++			label = "Home";
++			linux,code = <102>;
++			gpios = <&gpio1 13 0>;
++		};
++
++		button@sw3 {
++			label = "Menu";
++			linux,code = <139>;
++			gpios = <&gpio1 14 0>;
++		};
++	};
 +};
 +
-+static unsigned int pic32_sdhci_get_max_clock(struct sdhci_host *host)
-+{
-+	struct pic32_sdhci_pdata *sdhci_pdata = sdhci_priv(host);
-+
-+	return clk_get_rate(sdhci_pdata->base_clk);
-+}
-+
-+static void pic32_sdhci_set_bus_width(struct sdhci_host *host, int width)
-+{
-+	u8 ctrl;
-+
-+	ctrl = sdhci_readb(host, SDHCI_HOST_CONTROL);
-+	if (width == MMC_BUS_WIDTH_8) {
-+		ctrl &= ~SDHCI_CTRL_4BITBUS;
-+		if (host->version >= SDHCI_SPEC_300)
-+			ctrl |= SDHCI_CTRL_8BITBUS;
-+	} else {
-+		if (host->version >= SDHCI_SPEC_300)
-+			ctrl &= ~SDHCI_CTRL_8BITBUS;
-+		if (width == MMC_BUS_WIDTH_4)
-+			ctrl |= SDHCI_CTRL_4BITBUS;
-+		else
-+			ctrl &= ~SDHCI_CTRL_4BITBUS;
-+	}
-+	/*
-+	 * SDHCI will not work if JTAG is not Connected.As a workaround fix,
-+	 * set Card Detect Signal Selection bit in SDHCI Host Control
-+	 * register and clear Card Detect Test Level bit in SDHCI Host
-+	 * Control register.
-+	 */
-+	ctrl &= ~SDHCI_CTRL_CDTLVL;
-+	ctrl |= SDHCI_CTRL_CDSSEL;
-+	sdhci_writeb(host, ctrl, SDHCI_HOST_CONTROL);
-+}
-+
-+static unsigned int pic32_sdhci_get_ro(struct sdhci_host *host)
-+{
-+	/*
-+	 * The SDHCI_WRITE_PROTECT bit is unstable on current hardware so we
-+	 * can't depend on its value in any way.
-+	 */
-+	return 0;
-+}
-+
-+static const struct sdhci_ops pic32_sdhci_ops = {
-+	.get_max_clock = pic32_sdhci_get_max_clock,
-+	.set_clock = sdhci_set_clock,
-+	.set_bus_width = pic32_sdhci_set_bus_width,
-+	.reset = sdhci_reset,
-+	.set_uhs_signaling = sdhci_set_uhs_signaling,
-+	.get_ro = pic32_sdhci_get_ro,
++&uart2 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_uart2>;
++	status = "okay";
 +};
 +
-+static void pic32_sdhci_shared_bus(struct platform_device *pdev)
-+{
-+	struct sdhci_host *host = platform_get_drvdata(pdev);
-+	u32 bus = readl(host->ioaddr + SDH_SHARED_BUS_CTRL);
-+	u32 clk_pins = (bus & SDH_SHARED_BUS_NR_CLK_PINS_MASK) >> 0;
-+	u32 irq_pins = (bus & SDH_SHARED_BUS_NR_IRQ_PINS_MASK) >> 4;
-+
-+	/* select first clock */
-+	if (clk_pins & 0x1)
-+		bus |= (0x1 << SDH_SHARED_BUS_CLK_PINS);
-+
-+	/* select first interrupt */
-+	if (irq_pins & 0x1)
-+		bus |= (0x1 << SDH_SHARED_BUS_IRQ_PINS);
-+
-+	writel(bus, host->ioaddr + SDH_SHARED_BUS_CTRL);
-+}
-+
-+static int pic32_sdhci_probe_platform(struct platform_device *pdev,
-+				      struct pic32_sdhci_pdata *pdata)
-+{
-+	int ret = 0;
-+	u32 caps_slot_type;
-+	struct sdhci_host *host = platform_get_drvdata(pdev);
-+
-+	/* Check card slot connected on shared bus. */
-+	host->caps = readl(host->ioaddr + SDHCI_CAPABILITIES);
-+	caps_slot_type = (host->caps & SDH_CAPS_SDH_SLOT_TYPE_MASK) >> 30;
-+	if (caps_slot_type == SDH_SLOT_TYPE_SHARED_BUS)
-+		pic32_sdhci_shared_bus(pdev);
-+
-+	return ret;
-+}
-+
-+static int pic32_sdhci_probe(struct platform_device *pdev)
-+{
-+	struct device *dev = &pdev->dev;
-+	struct sdhci_host *host;
-+	struct resource *iomem;
-+	struct pic32_sdhci_pdata *sdhci_pdata;
-+	struct pic32_sdhci_platform_data *plat_data;
-+	unsigned int clk_rate = 0;
-+	int ret;
-+	struct pinctrl *pinctrl;
-+
-+	host = sdhci_alloc_host(dev, sizeof(*sdhci_pdata));
-+	if (IS_ERR(host)) {
-+		ret = PTR_ERR(host);
-+		dev_err(&pdev->dev, "cannot allocate memory for sdhci\n");
-+		goto err;
-+	}
-+
-+	sdhci_pdata = sdhci_priv(host);
-+	sdhci_pdata->pdev = pdev;
-+	platform_set_drvdata(pdev, host);
-+
-+	iomem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+	host->ioaddr = devm_ioremap_resource(&pdev->dev, iomem);
-+	if (IS_ERR(host->ioaddr)) {
-+		ret = PTR_ERR(host->ioaddr);
-+		dev_err(&pdev->dev, "unable to map iomem: %d\n", ret);
-+		goto err_host;
-+	}
-+
-+	plat_data = pdev->dev.platform_data;
-+	if (plat_data && plat_data->setup_dma) {
-+		ret = plat_data->setup_dma(ADMA_FIFO_RD_THSHLD,
-+					   ADMA_FIFO_WR_THSHLD);
-+		if (ret)
-+			goto err_host;
-+	}
-+
-+	pinctrl = devm_pinctrl_get_select_default(&pdev->dev);
-+	if (IS_ERR(pinctrl)) {
-+		ret = PTR_ERR(pinctrl);
-+		dev_warn(&pdev->dev, "No pinctrl provided %d\n", ret);
-+		if (ret == -EPROBE_DEFER)
-+			goto err_host;
-+	}
-+
-+	host->ops = &pic32_sdhci_ops;
-+	host->irq = platform_get_irq(pdev, 0);
-+
-+	sdhci_pdata->sys_clk = devm_clk_get(&pdev->dev, "sys_clk");
-+	if (IS_ERR(sdhci_pdata->sys_clk)) {
-+		ret = PTR_ERR(sdhci_pdata->sys_clk);
-+		dev_err(&pdev->dev, "Error getting clock\n");
-+		goto err_host;
-+	}
-+
-+	/* Enable clock when available! */
-+	ret = clk_prepare_enable(sdhci_pdata->sys_clk);
-+	if (ret) {
-+		dev_dbg(&pdev->dev, "Error enabling clock\n");
-+		goto err_host;
-+	}
-+
-+	/* SDH CLK enable */
-+	sdhci_pdata->base_clk = devm_clk_get(&pdev->dev, "base_clk");
-+	if (IS_ERR(sdhci_pdata->base_clk)) {
-+		ret = PTR_ERR(sdhci_pdata->base_clk);
-+		dev_err(&pdev->dev, "Error getting clock\n");
-+		goto err_host;
-+	}
-+
-+	/* Enable clock when available! */
-+	ret = clk_prepare_enable(sdhci_pdata->base_clk);
-+	if (ret) {
-+		dev_dbg(&pdev->dev, "Error enabling clock\n");
-+		goto err_host;
-+	}
-+
-+	clk_rate = clk_get_rate(sdhci_pdata->base_clk);
-+	dev_dbg(&pdev->dev, "base clock at: %u\n", clk_rate);
-+	clk_rate = clk_get_rate(sdhci_pdata->sys_clk);
-+	dev_dbg(&pdev->dev, "sys clock at: %u\n", clk_rate);
-+
-+	host->quirks2 |= SDHCI_QUIRK2_NO_1_8_V;
-+
-+	host->quirks |= SDHCI_QUIRK_NO_HISPD_BIT;
-+
-+	ret = mmc_of_parse(host->mmc);
-+	if (ret)
-+		goto err_host;
-+
-+	ret = pic32_sdhci_probe_platform(pdev, sdhci_pdata);
-+	if (ret) {
-+		dev_err(&pdev->dev, "failed to probe platform!\n");
-+		goto err_host;
-+	}
-+
-+	ret = sdhci_add_host(host);
-+	if (ret) {
-+		dev_dbg(&pdev->dev, "error adding host\n");
-+		goto err_host;
-+	}
-+
-+	dev_info(&pdev->dev, "Successfully added sdhci host\n");
-+	return 0;
-+
-+err_host:
-+	sdhci_free_host(host);
-+err:
-+	dev_err(&pdev->dev, "pic32-sdhci probe failed: %d\n", ret);
-+	return ret;
-+}
-+
-+static int pic32_sdhci_remove(struct platform_device *pdev)
-+{
-+	struct sdhci_host *host = platform_get_drvdata(pdev);
-+	struct pic32_sdhci_pdata *sdhci_pdata = sdhci_priv(host);
-+	int dead = 0;
-+	u32 scratch;
-+
-+	scratch = readl(host->ioaddr + SDHCI_INT_STATUS);
-+	if (scratch == (u32)-1)
-+		dead = 1;
-+
-+	sdhci_remove_host(host, dead);
-+	clk_disable_unprepare(sdhci_pdata->base_clk);
-+	clk_disable_unprepare(sdhci_pdata->sys_clk);
-+	sdhci_free_host(host);
-+
-+	return 0;
-+}
-+
-+static const struct of_device_id pic32_sdhci_id_table[] = {
-+	{ .compatible = "microchip,pic32mzda-sdhci" },
-+	{}
-+};
-+MODULE_DEVICE_TABLE(of, pic32_sdhci_id_table);
-+
-+static struct platform_driver pic32_sdhci_driver = {
-+	.driver = {
-+		.name	= DEV_NAME,
-+		.owner	= THIS_MODULE,
-+		.of_match_table = of_match_ptr(pic32_sdhci_id_table),
-+	},
-+	.probe		= pic32_sdhci_probe,
-+	.remove		= pic32_sdhci_remove,
++&uart4 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_uart4>;
++	status = "okay";
 +};
 +
-+module_platform_driver(pic32_sdhci_driver);
++&sdhci {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_sdhc1>;
++	status = "okay";
++	assigned-clocks = <&REFCLKO2>,<&REFCLKO4>,<&REFCLKO5>;
++	assigned-clock-rates = <50000000>,<25000000>,<40000000>;
++};
 +
-+MODULE_DESCRIPTION("Microchip PIC32 SDHCI driver");
-+MODULE_AUTHOR("Pistirica Sorin Andrei & Sandeep Sheriker");
-+MODULE_LICENSE("GPL v2");
++&pic32_pinctrl {
++
++	pinctrl_sdhc1: sdhc1_pins0 {
++		pins = "A6", "D4", "G13", "G12", "G14", "A7", "A0";
++		microchip,digital;
++	};
++
++	user_leds_s0: user_leds_s0 {
++		pins = "H0", "H1", "H2";
++		output-low;
++		microchip,digital;
++	};
++
++	user_buttons_s0: user_buttons_s0 {
++		pins = "B12", "B13", "B14";
++		microchip,digital;
++		input-enable;
++		bias-pull-up;
++	};
++
++	pinctrl_uart2: pinctrl_uart2 {
++		uart2-tx {
++			pins = "G9";
++			function = "U2TX";
++			microchip,digital;
++			output-low;
++		};
++		uart2-rx {
++			pins = "B0";
++			function = "U2RX";
++			microchip,digital;
++			input-enable;
++		};
++	};
++
++	pinctrl_uart4: uart4-0 {
++		uart4-tx {
++			pins = "C3";
++			function = "U4TX";
++			microchip,digital;
++			output-low;
++		};
++		uart4-rx {
++			pins = "E8";
++			function = "U4RX";
++			microchip,digital;
++			input-enable;
++		};
++	};
++};
+diff --git a/arch/mips/pic32/Kconfig b/arch/mips/pic32/Kconfig
+index 0161f09..b1bd7ba 100644
+--- a/arch/mips/pic32/Kconfig
++++ b/arch/mips/pic32/Kconfig
+@@ -31,4 +31,20 @@ config PIC32MZDA
+ 
+ endchoice
+ 
++choice
++	prompt "Devicetree selection"
++	default DTB_PIC32_NONE
++	help
++	  Select the devicetree.
++
++config DTB_PIC32_NONE
++       bool "None"
++
++config DTB_PIC32_MZDA_SK
++       bool "PIC32MZDA Starter Kit"
++       depends on PIC32MZDA
++       select BUILTIN_DTB
++
++endchoice
++
+ endif # MACH_PIC32
 -- 
 1.7.9.5

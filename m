@@ -1,305 +1,216 @@
-From: Kees Cook <keescook@chromium.org>
-Date: Thu, 19 Dec 2013 11:35:58 -0800
-Subject: stackprotector: Unify the HAVE_CC_STACKPROTECTOR logic between
- architectures
-Message-ID: <20131219193558.MANGs3TCRrJAF9a-SA-th3bjkwtBAY61mb8WLv0bCMc@z>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Dec 2015 22:04:19 +0100 (CET)
+Received: from mail-pf0-f180.google.com ([209.85.192.180]:32878 "EHLO
+        mail-pf0-f180.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27013823AbbLNVERD6e00 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 14 Dec 2015 22:04:17 +0100
+Received: by pfnn128 with SMTP id n128so111586043pfn.0
+        for <linux-mips@linux-mips.org>; Mon, 14 Dec 2015 13:04:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id;
+        bh=XL6Td/VSN2uJDYnHr9oK76QxElNuS7HwPy36b5oU0Ps=;
+        b=u5HC6U/rqhSICX15aH2OQxfvq/3inqt7SocJHmPMZdNXiC5rCpVadU/Eq6sg//Vgxf
+         nwiBwdmLFPe79xX220E9uH1ioH+FZz3enywO1TqpfYNYHZ01t+iGReIeJHJgO7r62OME
+         ei344ZmmF3kP3DaJwkR0n/5gZiMyZ5K/reTVS6kA9OSfiNINtHz9VDxgEwAdg11rJAy/
+         7h+2wrSZx610AXrSJpX9kPdOLhkRcbtY+kuu5hH9c3n/Rgl25q7PLIT1ebQZ6eFyooFf
+         d/Xv5qaKCm2ooWy//K/qsUD41MZmAjRlM6XMBStd8t85mupBgnzU3QPnJtPSmwbUwkva
+         00Ug==
+X-Received: by 10.98.19.141 with SMTP id 13mr29852748pft.47.1450127050810;
+        Mon, 14 Dec 2015 13:04:10 -0800 (PST)
+Received: from decotigny.mtv.corp.google.com ([172.18.64.159])
+        by smtp.gmail.com with ESMTPSA id 68sm13096148pfp.62.2015.12.14.13.04.09
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Mon, 14 Dec 2015 13:04:10 -0800 (PST)
+From:   David Decotigny <ddecotig@gmail.com>
+To:     "David S. Miller" <davem@davemloft.net>,
+        Ben Hutchings <ben@decadent.org.uk>,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        linux-api@vger.kernel.org, linux-mips@linux-mips.org,
+        fcoe-devel@open-fcoe.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Tejun Heo <tj@kernel.org>
+Cc:     Eric Dumazet <edumazet@google.com>,
+        Eugenia Emantayev <eugenia@mellanox.co.il>,
+        Or Gerlitz <ogerlitz@mellanox.com>,
+        Ido Shamay <idos@mellanox.com>, Joe Perches <joe@perches.com>,
+        Saeed Mahameed <saeedm@mellanox.com>,
+        Govindarajulu Varadarajan <_govind@gmx.com>,
+        Venkata Duvvuru <VenkatKumar.Duvvuru@Emulex.Com>,
+        Jeff Kirsher <jeffrey.t.kirsher@intel.com>,
+        Pravin B Shelar <pshelar@nicira.com>,
+        Ed Swierk <eswierk@skyportsystems.com>,
+        Robert Love <robert.w.love@intel.com>,
+        "James E.J. Bottomley" <JBottomley@parallels.com>,
+        Yuval Mintz <Yuval.Mintz@qlogic.com>,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        David Decotigny <decot@googlers.com>
+Subject: [PATCH net-next v5 00/19] new ETHTOOL_GSETTINGS/SSETTINGS API
+Date:   Mon, 14 Dec 2015 13:03:47 -0800
+Message-Id: <1450127046-4573-1-git-send-email-ddecotig@gmail.com>
+X-Mailer: git-send-email 2.6.0.rc2.230.g3dd15c0
+Return-Path: <ddecotig@gmail.com>
+X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
+X-Orcpt: rfc822;linux-mips@linux-mips.org
+Original-Recipient: rfc822;linux-mips@linux-mips.org
+X-archive-position: 50590
+X-ecartis-version: Ecartis v1.0.0
+Sender: linux-mips-bounce@linux-mips.org
+Errors-to: linux-mips-bounce@linux-mips.org
+X-original-sender: ddecotig@gmail.com
+Precedence: bulk
+List-help: <mailto:ecartis@linux-mips.org?Subject=help>
+List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
+List-software: Ecartis version 1.0.0
+List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
+X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
+List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
+List-owner: <mailto:ralf@linux-mips.org>
+List-post: <mailto:linux-mips@linux-mips.org>
+List-archive: <http://www.linux-mips.org/archives/linux-mips/>
+X-list: linux-mips
 
-commit 19952a92037e752f9d3bbbad552d596f9a56e146 upstream.
+From: David Decotigny <decot@googlers.com>
 
-Instead of duplicating the CC_STACKPROTECTOR Kconfig and
-Makefile logic in each architecture, switch to using
-HAVE_CC_STACKPROTECTOR and keep everything in one place. This
-retains the x86-specific bug verification scripts.
 
-Signed-off-by: Kees Cook <keescook@chromium.org>
-Cc: Arjan van de Ven <arjan@linux.intel.com>
-Cc: Michal Marek <mmarek@suse.cz>
-Cc: Russell King <linux@arm.linux.org.uk>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Paul Mundt <lethal@linux-sh.org>
-Cc: James Hogan <james.hogan@imgtec.com>
-Cc: Stephen Rothwell <sfr@canb.auug.org.au>
-Cc: Shawn Guo <shawn.guo@linaro.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-mips@linux-mips.org
-Cc: linux-arch@vger.kernel.org
-Link: http://lkml.kernel.org/r/1387481759-14535-2-git-send-email-keescook@chromium.org
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-[ kamal: 3.13-stable prereq for
-  8779657 stackprotector: Introduce CONFIG_CC_STACKPROTECTOR_STRONG ]
-Signed-off-by: Kamal Mostafa <kamal@canonical.com>
----
- Makefile           | 14 +++++++++++---
- arch/Kconfig       | 22 ++++++++++++++++++++++
- arch/arm/Kconfig   | 13 +------------
- arch/arm/Makefile  |  4 ----
- arch/mips/Kconfig  | 14 +-------------
- arch/mips/Makefile |  4 ----
- arch/sh/Kconfig    | 15 +--------------
- arch/sh/Makefile   |  4 ----
- arch/x86/Kconfig   | 17 +----------------
- arch/x86/Makefile  |  8 +++-----
- 10 files changed, 40 insertions(+), 75 deletions(-)
+History:
+ v5
+ note: please see v4 bullets for a question regarding bitmap.c
+ - minor fix to make allyesconfig/allmodconfig
+ v4
+ - removed typedef for link mode bitmaps
+ - moved bitmap<->u32[] conversion routines to bitmap.c . This is the
+   naive implementation. I have an endian-aware version that uses
+   memcpy/memset as much as possible, but I find it harder to follow
+   (see http://paste.ubuntu.com/13863722/). Please let me know if I
+   should use it instead.
+ - fixes suggested by Ben Hutchings
+ v3
+ - rebased v2 on top of latest net-next, minor checkpatch/printf %*pb
+   updates
+ v2
+ - keep return 0 in get_settings when successful, instead of
+   propagating positive result from driver's get_settings callback.
+ v1
+ - original submission
 
-diff --git a/Makefile b/Makefile
-index 7606094..58a799e 100644
---- a/Makefile
-+++ b/Makefile
-@@ -597,10 +597,18 @@ ifneq ($(CONFIG_FRAME_WARN),0)
- KBUILD_CFLAGS += $(call cc-option,-Wframe-larger-than=${CONFIG_FRAME_WARN})
- endif
 
--# Force gcc to behave correct even for buggy distributions
--ifndef CONFIG_CC_STACKPROTECTOR
--KBUILD_CFLAGS += $(call cc-option, -fno-stack-protector)
-+# Handle stack protector mode.
-+ifdef CONFIG_CC_STACKPROTECTOR
-+  stackp-flag := -fstack-protector
-+  ifeq ($(call cc-option, $(stackp-flag)),)
-+    $(warning Cannot use CONFIG_CC_STACKPROTECTOR: \
-+	      -fstack-protector not supported by compiler))
-+  endif
-+else
-+  # Force off for distro compilers that enable stack protector by default.
-+  stackp-flag := $(call cc-option, -fno-stack-protector)
- endif
-+KBUILD_CFLAGS += $(stackp-flag)
+The main goal of this series is to support ethtool link mode masks
+larger than 32 bits. It implements a new ioctl pair
+(ETHTOOL_GSETTINGS/SSETTINGS), its associated callbacks
+(get/set_settings) and a new struct ethtool_settings, which should
+eventually replace legacy ethtool_cmd. Internally, the kernel uses
+fixed length link mode masks defined at compilation time in ethtool.h
+(for now: 31 bits), that can be increased by changing
+__ETHTOOL_LINK_MODE_LAST in ethtool.h (absolute max is 4064 bits,
+checked at compile time), and the user/kernel interface allows this
+length to be arbitrary within 1..4064. This should allow some
+flexibility without using too much heap/stack space, at the cost of
+a small kernel/user handshake for the user to determine the sizes of
+those bitmaps.
 
- # This warning generated too much noise in a regular build.
- # Use make W=1 to enable this warning (see scripts/Makefile.build)
-diff --git a/arch/Kconfig b/arch/Kconfig
-index f1cf895..24e026d 100644
---- a/arch/Kconfig
-+++ b/arch/Kconfig
-@@ -336,6 +336,28 @@ config SECCOMP_FILTER
+Along the way, I chose to drop in the new structure the 3 ethtool_cmd
+fields marked "deprecated" (transceiver/maxrxpkt/maxtxpkt). They are
+still available for old drivers via the (old) ETHTOOL_GSET/SSET API,
+but are not available to drivers that switch to new API. Of those 3
+fields, ethtool_cmd::transceiver seems to be still actively used by
+several drivers, maybe we should not consider this field deprecated?
+The 2 other fields are basically not used. This transition requires
+some care in the way old and new ethtool talk to the kernel.
 
- 	  See Documentation/prctl/seccomp_filter.txt for details.
+More technical details provided in the description for main patch. In
+particular details about backward compatibility properties.
 
-+config HAVE_CC_STACKPROTECTOR
-+	bool
-+	help
-+	  An arch should select this symbol if:
-+	  - its compiler supports the -fstack-protector option
-+	  - it has implemented a stack canary (e.g. __stack_chk_guard)
-+
-+config CC_STACKPROTECTOR
-+	bool "Enable -fstack-protector buffer overflow detection"
-+	depends on HAVE_CC_STACKPROTECTOR
-+	help
-+	  This option turns on the -fstack-protector GCC feature. This
-+	  feature puts, at the beginning of functions, a canary value on
-+	  the stack just before the return address, and validates
-+	  the value just before actually returning.  Stack based buffer
-+	  overflows (that need to overwrite this return address) now also
-+	  overwrite the canary, which gets detected and the attack is then
-+	  neutralized via a kernel panic.
-+
-+	  This feature requires gcc version 4.2 or above, or a distribution
-+	  gcc with the feature backported.
-+
- config HAVE_CONTEXT_TRACKING
- 	bool
- 	help
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index b3d400d..5102fd5 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -31,6 +31,7 @@ config ARM
- 	select HAVE_BPF_JIT
- 	select HAVE_CONTEXT_TRACKING
- 	select HAVE_C_RECORDMCOUNT
-+	select HAVE_CC_STACKPROTECTOR
- 	select HAVE_DEBUG_KMEMLEAK
- 	select HAVE_DMA_API_DEBUG
- 	select HAVE_DMA_ATTRS
-@@ -1859,18 +1860,6 @@ config SECCOMP
- 	  and the task is only allowed to execute a few safe syscalls
- 	  defined by each seccomp mode.
+Some questions to more experts than me:
+ - the kernel/interface multiplexes the "tell me the bitmap length"
+   handshake and the "give me the settings" inside the new
+   ETHTOOL_GSETTINGS cmd. I was thinking of making this into 2
+   separate cmds: 1 cmd ETHTOOL_GKERNELPROPERTIES which would be
+   kernel-wide rather than device-specific, would return properties
+   like "length of the link mode bitmaps", and possibly others. And
+   ETHTOOL_GSETTINGS would expect the proper bitmaps
+ - the link mode bitmaps are piggybacked at tail of the new struct
+   ethtool_settings. Since its user-visible definition does not assume
+   specific bitmap width, I am using a 0-length array as the publicly
+   visible placeholder. But then, the kernel needs to specialize it
+   (struct ethtool_ksettings) to specify its current link mode
+   masks. This means that kernel code is "littered" with
+   "ksettings->parent.field" to access "field" inside
+   ethtool_settings:
+   + I don't like the field name "parent", any suggestion welcome
+   + and/or: I could use ethtool_settings everywhere (instead of a new
+     ethtool_ksettings) and an accessor to retrieve the link mode
+     masks?
+   + or: we could decide to make the link mode masks statically
+     bounded again, ie. make their width public, but larger than
+     current 32, and unchangeable forever. This would make everything
+     straightforward, but we might hit limits later, or have an
+     unneeded memory/stack usage for unused bits.
+   any preference?
+ - I foresee bugs where people use the legacy/deprecated SUPPORTED_x
+   macros instead of the new ETHTOOL_LINK_MODE_x_BIT enums in the new
+   get/set__ksettings callbacks. Not sure how to prevent problems with
+   this.
 
--config CC_STACKPROTECTOR
--	bool "Enable -fstack-protector buffer overflow detection (EXPERIMENTAL)"
--	help
--	  This option turns on the -fstack-protector GCC feature. This
--	  feature puts, at the beginning of functions, a canary value on
--	  the stack just before the return address, and validates
--	  the value just before actually returning.  Stack based buffer
--	  overflows (that need to overwrite this return address) now also
--	  overwrite the canary, which gets detected and the attack is then
--	  neutralized via a kernel panic.
--	  This feature requires gcc version 4.2 or above.
--
- config SWIOTLB
- 	def_bool y
+The only driver which was converted for now is mlx4. I am not
+considering fcoe as fully converted, but I updated it a minima to be
+able to remove __ethtool_get_settings, now known as
+__ethtool_get_ksettings.
 
-diff --git a/arch/arm/Makefile b/arch/arm/Makefile
-index 749e88f..bc050dc 100644
---- a/arch/arm/Makefile
-+++ b/arch/arm/Makefile
-@@ -40,10 +40,6 @@ ifeq ($(CONFIG_FRAME_POINTER),y)
- KBUILD_CFLAGS	+=-fno-omit-frame-pointer -mapcs -mno-sched-prolog
- endif
+Tested with legacy and "future" ethtool on 64b x86 kernel and 32+64b
+ethtool, and on a 32b x86 kernel + 32b ethtool.
 
--ifeq ($(CONFIG_CC_STACKPROTECTOR),y)
--KBUILD_CFLAGS	+=-fstack-protector
--endif
--
- ifeq ($(CONFIG_CPU_BIG_ENDIAN),y)
- KBUILD_CPPFLAGS	+= -mbig-endian
- AS		+= -EB
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 650de39..c93d92b 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -47,6 +47,7 @@ config MIPS
- 	select MODULES_USE_ELF_RELA if MODULES && 64BIT
- 	select CLONE_BACKWARDS
- 	select HAVE_DEBUG_STACKOVERFLOW
-+	select HAVE_CC_STACKPROTECTOR
+############################################
+# Patch Set Summary:
 
- menu "Machine selection"
+David Decotigny (19):
+  lib/bitmap.c: conversion routines to/from u32 array
+  test_bitmap: unit tests for lib/bitmap.c
+  net: usnic: remove unused call to ethtool_ops::get_settings
+  net: usnic: use __ethtool_get_settings
+  net: ethtool: add new ETHTOOL_GSETTINGS/SSETTINGS API
+  tx4939: use __ethtool_get_ksettings
+  net: usnic: use __ethtool_get_ksettings
+  net: bonding: use __ethtool_get_ksettings
+  net: ipvlan: use __ethtool_get_ksettings
+  net: macvlan: use __ethtool_get_ksettings
+  net: team: use __ethtool_get_ksettings
+  net: fcoe: use __ethtool_get_ksettings
+  net: rdma: use __ethtool_get_ksettings
+  net: 8021q: use __ethtool_get_ksettings
+  net: bridge: use __ethtool_get_ksettings
+  net: core: use __ethtool_get_ksettings
+  net: ethtool: remove unused __ethtool_get_settings
+  net: mlx4: convenience predicate for debug messages
+  net: mlx4: use new ETHTOOL_G/SSETTINGS API
 
-@@ -2322,19 +2323,6 @@ config SECCOMP
+ arch/mips/txx9/generic/setup_tx4939.c           |   7 +-
+ drivers/infiniband/hw/usnic/usnic_ib_verbs.c    |  10 +-
+ drivers/net/bonding/bond_main.c                 |  14 +-
+ drivers/net/ethernet/mellanox/mlx4/en_ethtool.c | 344 ++++++++++----------
+ drivers/net/ethernet/mellanox/mlx4/en_main.c    |   1 +
+ drivers/net/ethernet/mellanox/mlx4/mlx4_en.h    |   5 +-
+ drivers/net/ipvlan/ipvlan_main.c                |   8 +-
+ drivers/net/macvlan.c                           |   8 +-
+ drivers/net/team/team.c                         |   8 +-
+ drivers/scsi/fcoe/fcoe_transport.c              |  36 ++-
+ include/linux/bitmap.h                          |   6 +
+ include/linux/ethtool.h                         |  84 ++++-
+ include/rdma/ib_addr.h                          |  14 +-
+ include/uapi/linux/ethtool.h                    | 320 +++++++++++++++----
+ lib/Kconfig.debug                               |   8 +
+ lib/Makefile                                    |   1 +
+ lib/bitmap.c                                    |  86 +++++
+ lib/test_bitmap.c                               | 343 ++++++++++++++++++++
+ net/8021q/vlan_dev.c                            |   8 +-
+ net/bridge/br_if.c                              |   6 +-
+ net/core/ethtool.c                              | 400 +++++++++++++++++++++++-
+ net/core/net-sysfs.c                            |  15 +-
+ net/packet/af_packet.c                          |  11 +-
+ tools/testing/selftests/lib/Makefile            |   2 +-
+ tools/testing/selftests/lib/bitmap.sh           |  10 +
+ 25 files changed, 1427 insertions(+), 328 deletions(-)
+ create mode 100644 lib/test_bitmap.c
+ create mode 100644 tools/testing/selftests/lib/bitmap.sh
 
- 	  If unsure, say Y. Only embedded should say N here.
-
--config CC_STACKPROTECTOR
--	bool "Enable -fstack-protector buffer overflow detection (EXPERIMENTAL)"
--	help
--	  This option turns on the -fstack-protector GCC feature. This
--	  feature puts, at the beginning of functions, a canary value on
--	  the stack just before the return address, and validates
--	  the value just before actually returning.  Stack based buffer
--	  overflows (that need to overwrite this return address) now also
--	  overwrite the canary, which gets detected and the attack is then
--	  neutralized via a kernel panic.
--
--	  This feature requires gcc version 4.2 or above.
--
- config USE_OF
- 	bool
- 	select OF
-diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-index de300b9..efe50787 100644
---- a/arch/mips/Makefile
-+++ b/arch/mips/Makefile
-@@ -232,10 +232,6 @@ bootvars-y	= VMLINUX_LOAD_ADDRESS=$(load-y) \
-
- LDFLAGS			+= -m $(ld-emul)
-
--ifdef CONFIG_CC_STACKPROTECTOR
--  KBUILD_CFLAGS += -fstack-protector
--endif
--
- ifdef CONFIG_MIPS
- CHECKFLAGS += $(shell $(CC) $(KBUILD_CFLAGS) -dM -E -x c /dev/null | \
- 	egrep -vw '__GNUC_(|MINOR_|PATCHLEVEL_)_' | \
-diff --git a/arch/sh/Kconfig b/arch/sh/Kconfig
-index 9b0979f..ce29831 100644
---- a/arch/sh/Kconfig
-+++ b/arch/sh/Kconfig
-@@ -66,6 +66,7 @@ config SUPERH32
- 	select PERF_EVENTS
- 	select ARCH_HIBERNATION_POSSIBLE if MMU
- 	select SPARSE_IRQ
-+	select HAVE_CC_STACKPROTECTOR
-
- config SUPERH64
- 	def_bool ARCH = "sh64"
-@@ -695,20 +696,6 @@ config SECCOMP
-
- 	  If unsure, say N.
-
--config CC_STACKPROTECTOR
--	bool "Enable -fstack-protector buffer overflow detection (EXPERIMENTAL)"
--	depends on SUPERH32
--	help
--	  This option turns on the -fstack-protector GCC feature. This
--	  feature puts, at the beginning of functions, a canary value on
--	  the stack just before the return address, and validates
--	  the value just before actually returning.  Stack based buffer
--	  overflows (that need to overwrite this return address) now also
--	  overwrite the canary, which gets detected and the attack is then
--	  neutralized via a kernel panic.
--
--	  This feature requires gcc version 4.2 or above.
--
- config SMP
- 	bool "Symmetric multi-processing support"
- 	depends on SYS_SUPPORTS_SMP
-diff --git a/arch/sh/Makefile b/arch/sh/Makefile
-index aed701c..d4d16e4 100644
---- a/arch/sh/Makefile
-+++ b/arch/sh/Makefile
-@@ -199,10 +199,6 @@ ifeq ($(CONFIG_DWARF_UNWINDER),y)
-   KBUILD_CFLAGS += -fasynchronous-unwind-tables
- endif
-
--ifeq ($(CONFIG_CC_STACKPROTECTOR),y)
--  KBUILD_CFLAGS += -fstack-protector
--endif
--
- libs-$(CONFIG_SUPERH32)		:= arch/sh/lib/	$(libs-y)
- libs-$(CONFIG_SUPERH64)		:= arch/sh/lib64/ $(libs-y)
-
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 223080d..250706e 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -126,6 +126,7 @@ config X86
- 	select HAVE_DEBUG_STACKOVERFLOW
- 	select HAVE_IRQ_EXIT_ON_IRQ_STACK if X86_64
- 	select ARCH_SUPPORTS_ATOMIC_RMW
-+	select HAVE_CC_STACKPROTECTOR
-
- config INSTRUCTION_DECODER
- 	def_bool y
-@@ -1640,22 +1641,6 @@ config SECCOMP
-
- 	  If unsure, say Y. Only embedded should say N here.
-
--config CC_STACKPROTECTOR
--	bool "Enable -fstack-protector buffer overflow detection"
--	---help---
--	  This option turns on the -fstack-protector GCC feature. This
--	  feature puts, at the beginning of functions, a canary value on
--	  the stack just before the return address, and validates
--	  the value just before actually returning.  Stack based buffer
--	  overflows (that need to overwrite this return address) now also
--	  overwrite the canary, which gets detected and the attack is then
--	  neutralized via a kernel panic.
--
--	  This feature requires gcc version 4.2 or above, or a distribution
--	  gcc with the feature backported. Older versions are automatically
--	  detected and for those versions, this configuration option is
--	  ignored. (and a warning is printed during bootup)
--
- source kernel/Kconfig.hz
-
- config KEXEC
-diff --git a/arch/x86/Makefile b/arch/x86/Makefile
-index 57d0215..13b22e0 100644
---- a/arch/x86/Makefile
-+++ b/arch/x86/Makefile
-@@ -89,13 +89,11 @@ else
-         KBUILD_CFLAGS += -maccumulate-outgoing-args
- endif
-
-+# Make sure compiler does not have buggy stack-protector support.
- ifdef CONFIG_CC_STACKPROTECTOR
- 	cc_has_sp := $(srctree)/scripts/gcc-x86_$(BITS)-has-stack-protector.sh
--        ifeq ($(shell $(CONFIG_SHELL) $(cc_has_sp) $(CC) $(KBUILD_CPPFLAGS) $(biarch)),y)
--                stackp-y := -fstack-protector
--                KBUILD_CFLAGS += $(stackp-y)
--        else
--                $(warning stack protector enabled but no compiler support)
-+        ifneq ($(shell $(CONFIG_SHELL) $(cc_has_sp) $(CC) $(KBUILD_CPPFLAGS) $(biarch)),y)
-+                $(warning stack-protector enabled but compiler support broken)
-         endif
- endif
-
---
-1.9.1
+-- 
+2.6.0.rc2.230.g3dd15c0

@@ -1,58 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Dec 2015 15:26:25 +0100 (CET)
-Received: from mx2.suse.de ([195.135.220.15]:58901 "EHLO mx2.suse.de"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Dec 2015 18:00:24 +0100 (CET)
+Received: from foss.arm.com ([217.140.101.70]:60749 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27008431AbbLOO0XYb1Nq (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 15 Dec 2015 15:26:23 +0100
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (charybdis-ext.suse.de [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id 34BBCADAC;
-        Tue, 15 Dec 2015 14:26:22 +0000 (UTC)
-Date:   Tue, 15 Dec 2015 15:26:21 +0100
-From:   Petr Mladek <pmladek@suse.com>
-To:     Andrew Morton <akpm@linux-foundation.org>
-Cc:     Russell King - ARM Linux <linux@arm.linux.org.uk>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jiri Kosina <jkosina@suse.com>, Ingo Molnar <mingo@redhat.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        the arch/x86 maintainers <x86@kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "adi-buildroot-devel@lists.sourceforge.net" 
-        <adi-buildroot-devel@lists.sourceforge.net>,
-        Cris <linux-cris-kernel@axis.com>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        sparclinux <sparclinux@vger.kernel.org>
-Subject: Re: [PATCH v3 4/4] printk/nmi: Increase the size of NMI buffer and
- make it configurable
-Message-ID: <20151215142621.GE3729@pathway.suse.cz>
-References: <1449667265-17525-1-git-send-email-pmladek@suse.com>
- <1449667265-17525-5-git-send-email-pmladek@suse.com>
- <CAMuHMdXVgr58YjoePGrRbMyMncQ27f85prL7G5SpeHeNxoYrXQ@mail.gmail.com>
- <20151211124159.GB3729@pathway.suse.cz>
- <20151211145725.b0e81bb4bb18fcd72ef5f557@linux-foundation.org>
- <20151211232113.GZ8644@n2100.arm.linux.org.uk>
- <20151211153054.48da5d4139b93dd4ed438f4c@linux-foundation.org>
+        id S27008999AbbLORAUqlMr6 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 15 Dec 2015 18:00:20 +0100
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CEF825F6;
+        Tue, 15 Dec 2015 08:59:49 -0800 (PST)
+Received: from [10.1.209.24] (usa-sjc-imap-foss1.foss.arm.com [10.72.51.249])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A22653F308;
+        Tue, 15 Dec 2015 09:00:12 -0800 (PST)
+Message-ID: <5670471B.6090608@arm.com>
+Date:   Tue, 15 Dec 2015 17:00:11 +0000
+From:   Marc Zyngier <marc.zyngier@arm.com>
+Organization: ARM Ltd
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Icedove/31.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20151211153054.48da5d4139b93dd4ed438f4c@linux-foundation.org>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <pmladek@suse.com>
+To:     Joshua Henderson <joshua.henderson@microchip.com>,
+        linux-kernel@vger.kernel.org
+CC:     linux-mips@linux-mips.org, ralf@linux-mips.org,
+        Cristian Birsan <cristian.birsan@microchip.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>
+Subject: Re: [PATCH v2 02/14] irqchip: irq-pic32-evic: Add support for PIC32
+ interrupt controller
+References: <1450133093-7053-1-git-send-email-joshua.henderson@microchip.com> <1450133093-7053-3-git-send-email-joshua.henderson@microchip.com>
+In-Reply-To: <1450133093-7053-3-git-send-email-joshua.henderson@microchip.com>
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
+Return-Path: <marc.zyngier@arm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50629
+X-archive-position: 50630
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: pmladek@suse.com
+X-original-sender: marc.zyngier@arm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -65,76 +48,243 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri 2015-12-11 15:30:54, Andrew Morton wrote:
-> On Fri, 11 Dec 2015 23:21:13 +0000 Russell King - ARM Linux <linux@arm.linux.org.uk> wrote:
+On 14/12/15 22:42, Joshua Henderson wrote:
+> From: Cristian Birsan <cristian.birsan@microchip.com>
 > 
-> > On Fri, Dec 11, 2015 at 02:57:25PM -0800, Andrew Morton wrote:
-> > > This is a bit messy.  NEED_PRINTK_NMI is an added-on hack for one
-> > > particular arm variant.  From the changelog:
-> > > 
-> > >    "One exception is arm where the deferred printing is used for
-> > >     printing backtraces even without NMI.  For this purpose, we define
-> > >     NEED_PRINTK_NMI Kconfig flag.  The alternative printk_func is
-> > >     explicitly set when IPI_CPU_BACKTRACE is handled."
-> > > 
-> > > 
-> > > - why does arm needs deferred printing for backtraces?
-> > > 
-> > > - why is this specific to CONFIG_CPU_V7M?
-
-
-
-> > > - can this Kconfig logic be cleaned up a bit?
-> > 
-> > I think this comes purely from this attempt to apply another round of
-> > cleanups to the nmi backtrace work I did.
-> > 
-> > As I explained when I did that work, the vast majority of ARM platforms
-> > are unable to trigger anything like a NMI - the FIQ is something that's
-> > generally a property of the secure monitor, and is not accessible to
-> > Linux.  However, there are platforms where it is accessible.
+> This adds support for the interrupt controller present on PIC32 class
+> devices.
 > 
-> OK, thanks.  So "not needed at present, might be needed in the future,
-> useful for out-of-tree debug code"?
-
-It is possible that I got it a wrong way on arm. The NMI buffer is
-usable there on two locations.
-
-First, the temporary is currently used to handle IPI_CPU_BACKTRACE.
-It seems that it is not a real NMI. But it seems to be available
-(compiled) on all arm system. This is why I introduced NEED_PRINTK_NMI
-Kconfig flag to avoid confusion with a real NMI.
-
-Second, there is the FIQ "NMI" handler that is called from
-/arch/arm/kernel/entry-armv.S. It is compiled only if _not_
-defined $(CONFIG_CPU_V7M). It calls nmi_enter() and nmi_stop().
-It looks like a real NMI handler. This is why I defined HAVE_NMI
-if (!CPU_V7M).
-
-A solution would be to define HAVE_NMI on all Arm systems and get rid
-of NEED_PRINTK_NMI. If you think that it would cause less confusion...
-
-
-> > there's this effort to apply further cleanups - to me, the changelogs
-> > don't seem to make that much sense, unless we want to start using
-> > printk() extensively in NMI functions - using the generic nmi backtrace
-> > code surely gets us something that works across all architectures...
+> The following features are supported:
+>  - DT properties for EVIC and for devices that use interrupt lines
+>  - Persistent and non-persistent interrupt handling
+>  - irqdomain support
 > 
-> Yes, I was scratching my head over that.  The patchset takes an nmi-safe
-> all-cpu-backtrace and generalises that into an nmi-safe printk.  That
-> *sounds* like a good thing to do but yes, some additional justification
-> would be helpful.  What real-world value does this patchset really
-> bring to real-world users?
+> Signed-off-by: Cristian Birsan <cristian.birsan@microchip.com>
+> Signed-off-by: Joshua Henderson <joshua.henderson@microchip.com>
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> ---
+>  drivers/irqchip/Makefile           |    1 +
+>  drivers/irqchip/irq-pic32-evic.c   |  321 ++++++++++++++++++++++++++++++++++++
+>  include/linux/irqchip/pic32-evic.h |   19 +++
+>  3 files changed, 341 insertions(+)
+>  create mode 100644 drivers/irqchip/irq-pic32-evic.c
+>  create mode 100644 include/linux/irqchip/pic32-evic.h
+> 
+> diff --git a/drivers/irqchip/Makefile b/drivers/irqchip/Makefile
+> index 177f78f..e3608fc 100644
+> --- a/drivers/irqchip/Makefile
+> +++ b/drivers/irqchip/Makefile
+> @@ -55,3 +55,4 @@ obj-$(CONFIG_RENESAS_H8S_INTC)		+= irq-renesas-h8s.o
+>  obj-$(CONFIG_ARCH_SA1100)		+= irq-sa11x0.o
+>  obj-$(CONFIG_INGENIC_IRQ)		+= irq-ingenic.o
+>  obj-$(CONFIG_IMX_GPCV2)			+= irq-imx-gpcv2.o
+> +obj-$(CONFIG_MACH_PIC32)		+= irq-pic32-evic.o
+> diff --git a/drivers/irqchip/irq-pic32-evic.c b/drivers/irqchip/irq-pic32-evic.c
+> new file mode 100644
+> index 0000000..6a7747c
+> --- /dev/null
+> +++ b/drivers/irqchip/irq-pic32-evic.c
+> @@ -0,0 +1,321 @@
+> +/*
+> + * Cristian Birsan <cristian.birsan@microchip.com>
+> + * Copyright (C) 2015 Microchip Technology Inc.  All rights reserved.
+> + *
+> + * This program is free software; you can redistribute  it and/or modify it
+> + * under  the terms of  the GNU General  Public License as published by the
+> + * Free Software Foundation;  either version 2 of the  License, or (at your
+> + * option) any later version.
+> + */
+> +#include <linux/kernel.h>
+> +#include <linux/module.h>
+> +#include <linux/interrupt.h>
+> +#include <linux/irqdomain.h>
+> +#include <linux/of_address.h>
+> +#include <linux/slab.h>
+> +#include <linux/io.h>
+> +#include <linux/irqchip.h>
+> +#include <linux/irqchip/pic32-evic.h>
+> +
+> +#include <asm/irq.h>
+> +#include <asm/traps.h>
+> +
+> +#define CORE_TIMER_INTERRUPT 0
+> +#define EXTERNAL_INTERRUPT_0 3
+> +#define EXTERNAL_INTERRUPT_1 8
+> +#define EXTERNAL_INTERRUPT_2 13
+> +#define EXTERNAL_INTERRUPT_3 18
+> +#define EXTERNAL_INTERRUPT_4 23
+> +
+> +#define PRI_MASK	0x7	/* 3 bit priority mask */
+> +#define SUBPRI_MASK	0x3	/* 2 bit subpriority mask */
+> +#define INT_MASK	0x1F	/* 5 bit pri and subpri mask */
+> +#define NR_EXT_IRQS	5	/* 5 external interrupts sources */
+> +
+> +#define PIC32_INT_PRI(pri, subpri)	\
+> +	(((pri & PRI_MASK) << 2) | (subpri & SUBPRI_MASK))
+> +#define DEFAULT_PIC32_INT_PRI PIC32_INT_PRI(2, 0)
+> +
+> +static struct irq_domain *evic_irq_domain;
+> +static struct evic __iomem *evic_base;
+> +
+> +static unsigned int *evic_irq_prio;
+> +
+> +struct pic_reg {
+> +	u32 val; /* value register*/
+> +	u32 clr; /* clear register */
+> +	u32 set; /* set register */
+> +	u32 inv; /* inv register */
+> +} __packed;
+> +
+> +struct evic {
+> +	struct pic_reg intcon;
+> +	struct pic_reg priss;
+> +	struct pic_reg intstat;
+> +	struct pic_reg iptmr;
+> +	struct pic_reg ifs[6];
+> +	u32 reserved1[8];
+> +	struct pic_reg iec[6];
+> +	u32 reserved2[8];
+> +	struct pic_reg ipc[48];
+> +	u32 reserved3[64];
+> +	u32 off[191];
+> +} __packed;
+> +
+> +static int get_ext_irq_index(irq_hw_number_t hw);
+> +static void evic_set_ext_irq_polarity(int ext_irq, u32 type);
+> +
+> +#define BIT_REG_MASK(bit, reg, mask)		\
+> +	do {					\
+> +		reg = bit/32;			\
+> +		mask = 1 << (bit % 32);		\
+> +	} while (0)
+> +
+> +asmlinkage void __weak plat_irq_dispatch(void)
+> +{
+> +	unsigned int irq, hwirq;
+> +	u32 reg, mask;
+> +
+> +	hwirq = readl(&evic_base->intstat.val) & 0xFF;
+> +
+> +	/* Check if the interrupt was really triggered by hardware*/
+> +	BIT_REG_MASK(hwirq, reg, mask);
+> +	if (likely(readl(&evic_base->ifs[reg].val) &
+> +			readl(&evic_base->iec[reg].val) & mask)) {
+> +		irq = irq_linear_revmap(evic_irq_domain, hwirq);
+> +		do_IRQ(irq);
+> +	} else
+> +		spurious_interrupt();
+> +}
+> +
+> +/* mask off an interrupt */
+> +static inline void mask_pic32_irq(struct irq_data *irqd)
+> +{
+> +	u32 reg, mask;
+> +	unsigned int hwirq = irqd_to_hwirq(irqd);
+> +
+> +	BIT_REG_MASK(hwirq, reg, mask);
+> +	writel(mask, &evic_base->iec[reg].clr);
+> +}
+> +
+> +/* unmask an interrupt */
+> +static inline void unmask_pic32_irq(struct irq_data *irqd)
+> +{
+> +	u32 reg, mask;
+> +	unsigned int hwirq = irqd_to_hwirq(irqd);
+> +
+> +	BIT_REG_MASK(hwirq, reg, mask);
+> +	writel(mask, &evic_base->iec[reg].set);
+> +}
+> +
+> +/* acknowledge an interrupt */
+> +static void ack_pic32_irq(struct irq_data *irqd)
+> +{
+> +	u32 reg, mask;
+> +	unsigned int hwirq = irqd_to_hwirq(irqd);
+> +
+> +	BIT_REG_MASK(hwirq, reg, mask);
+> +	writel(mask, &evic_base->ifs[reg].clr);
+> +}
+> +
+> +/* mask off and acknowledge an interrupt */
+> +static inline void mask_ack_pic32_irq(struct irq_data *irqd)
+> +{
+> +	u32 reg, mask;
+> +	unsigned int hwirq = irqd_to_hwirq(irqd);
+> +
+> +	BIT_REG_MASK(hwirq, reg, mask);
+> +	writel(mask, &evic_base->iec[reg].clr);
+> +	writel(mask, &evic_base->ifs[reg].clr);
+> +}
+> +
+> +static int set_type_pic32_irq(struct irq_data *data, unsigned int flow_type)
+> +{
+> +	int index;
+> +
+> +	switch (flow_type) {
+> +
+> +	case IRQ_TYPE_EDGE_RISING:
+> +	case IRQ_TYPE_EDGE_FALLING:
+> +		irq_set_handler_locked(data, handle_edge_irq);
+> +		break;
+> +
+> +	case IRQ_TYPE_LEVEL_HIGH:
+> +	case IRQ_TYPE_LEVEL_LOW:
+> +		irq_set_handler_locked(data, handle_fasteoi_irq);
+> +		break;
+> +
+> +	default:
+> +		pr_err("Invalid interrupt type !\n");
+> +		return -EINVAL;
+> +	}
+> +
+> +	/* set polarity for external interrupts only */
+> +	index = get_ext_irq_index(data->hwirq);
+> +	if (index >= 0)
+> +		evic_set_ext_irq_polarity(index, flow_type);
+> +
+> +	return IRQ_SET_MASK_OK;
+> +}
+> +
+> +static void pic32_bind_evic_interrupt(int irq, int set)
+> +{
+> +	writel(set, &evic_base->off[irq]);
+> +}
+> +
+> +int pic32_get_c0_compare_int(void)
+> +{
+> +	int virq;
+> +
+> +	virq = irq_create_mapping(evic_irq_domain, CORE_TIMER_INTERRUPT);
+> +	irq_set_irq_type(virq, IRQ_TYPE_EDGE_RISING);
+> +	return virq;
+> +}
+> +
+> +static struct irq_chip pic32_irq_chip = {
+> +	.name = "PIC32-EVIC",
+> +	.irq_ack = ack_pic32_irq,
+> +	.irq_mask = mask_pic32_irq,
+> +	.irq_mask_ack = mask_ack_pic32_irq,
+> +	.irq_unmask = unmask_pic32_irq,
+> +	.irq_eoi = ack_pic32_irq,
+> +	.irq_set_type = set_type_pic32_irq,
+> +	.irq_enable = unmask_pic32_irq,
+> +	.irq_disable = mask_pic32_irq,
 
-The patchset brings two big advantages. First, it makes the NMI
-backtraces safe on all architectures for free. Second, it makes
-all NMI messages almost[*] safe on all architectures.
+I'm not sure I see the point of having all these methods. First, there
+is a lot of duplication: no need to provide enable/disable if all you
+have is mask/unmask - the core code can deal with that.
 
-Note that there already are several messages printed in NMI context.
-See the mail from Jiri Kosina. They are not easy to avoid.
+Then, your EOI method is not really an EOI. It doesn't terminate the
+handling, or at least that's not what the name suggest. If this is
+really an EOI, then you should be able to simplify the whole thing on
+only use the fasteoi handler, including for edge interrupts.
 
-[*] The temporary buffer is limited. We still should keep
-the number of messages in NMI context at minimum.
+It would be good to have an insight on how this thing actually works
+(I've tried to read the only documentation, but this is vague at best),
+that would help picking the right design for your use case.
 
-Best Regards,
-Petr
+Thanks,
+
+	M.
+-- 
+Jazz is not dead. It just smells funny...

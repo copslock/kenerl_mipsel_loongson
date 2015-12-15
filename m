@@ -1,45 +1,73 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Dec 2015 01:31:36 +0100 (CET)
-Received: from mail-io0-f171.google.com ([209.85.223.171]:36562 "EHLO
-        mail-io0-f171.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008969AbbLOAbexvbCf convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 15 Dec 2015 01:31:34 +0100
-Received: by mail-io0-f171.google.com with SMTP id o67so2336472iof.3
-        for <linux-mips@linux-mips.org>; Mon, 14 Dec 2015 16:31:34 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Dec 2015 01:32:37 +0100 (CET)
+Received: from mail-oi0-f46.google.com ([209.85.218.46]:33011 "EHLO
+        mail-oi0-f46.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27013875AbbLOAcbjyyIf (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 15 Dec 2015 01:32:31 +0100
+Received: by oigy66 with SMTP id y66so29352118oig.0
+        for <linux-mips@linux-mips.org>; Mon, 14 Dec 2015 16:32:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
+        d=linaro.org; s=google;
         h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type:content-transfer-encoding;
-        bh=RRIjfgPeVnb7fht+QZeTN16XZ9yBLdtn3jz4Xl8MA10=;
-        b=gBesn3FmLQnTPU8v0nmbqXb/epziqsmYHc3d9ir90NT3OtJ5VvxvfjLHLHrLPigaZm
-         gZ2oBeC7i13M75f+BoO0REGaeyY8nsfkXAiosRF0AjOu0emgPetWtS1QKGGCV6e77/+R
-         H5GHkg8HuHAvLHeOK9VNEVQcvac++CjZIiPBpEXK+bD/Q2ZUn7njdfLrdeRq7l5gVlbA
-         FYLKx4IHGwp3q5yNWq9NMfJxVQekrYLWyXrRP74wEEBu7XyOPuQ/pGX/rgWvGtJ6F7ly
-         je64aV0bE2FYbT08U/4r39vHMsh/EZhUQtlD7JwiUXqd6r9+Cn21spb+auAwoeBfi/1b
-         7Viw==
+         :cc:content-type;
+        bh=EX4cND8kzbmIsaVs0nAL/OalPM7r/+mBmirRm9tQVxY=;
+        b=W1bbVsjpxRv3HablDEpVfmzt/uKI6z77Skfoj8Ne08EmMjdDXYN+DG2kmphyPU5Fse
+         ttL2go3TYlmC6tZCGHGIGee9VPbjwF25CG2BcELEFLMMdeLbMDu/NyT/iap4/MRoPzjD
+         QBFnAIm2D87ul2hnqR1KCmHkRb0d41qnc5jB4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:in-reply-to:references:date
+         :message-id:subject:from:to:cc:content-type;
+        bh=EX4cND8kzbmIsaVs0nAL/OalPM7r/+mBmirRm9tQVxY=;
+        b=kJ9X/7RfYSVD/A6Ry/wwDKj1K0IhkMle+0IB4CRRcdpH5zgmRM3O0IaVbT5t0fz1gn
+         ZBKznCOV2tb0wHDrr7hQNo9gLAcYsXngKCkXDG9ejNU/AuKQgaqHzAuX/q27LE/cxlTe
+         5IaPrPZkGngs4IpAVHyowN9ZTkNnSN8ryL2616uBcYWCNldFSokwXnnX8XMtwjcJhkZt
+         WRvC+DmLAk2jcKRe83hAhJu6nADEygQZ3WhNlF6ZK/l7ZGAqpFQBdlIYM+J66vilq+6+
+         L76iFHuaVtfPscI/ijn/8lef3aR+iGN+hBUhgN9DhAV7F5Ah1NyzFXq+jz6GzUAL6DVS
+         hsQg==
+X-Gm-Message-State: ALoCoQmv72BmPRc5V0PMNF3oHJ0lLeXTaBl2fE3dx9ZPm1LHIBxIAsLXqBus2jkt2Dm3Vnk2aDWKSuMC8NIas0X9cf6UlC6xKjTcjk6h2X6VYKzLtGBo+ko=
 MIME-Version: 1.0
-X-Received: by 10.107.39.193 with SMTP id n184mr32620230ion.14.1450139489092;
- Mon, 14 Dec 2015 16:31:29 -0800 (PST)
-Received: by 10.107.167.66 with HTTP; Mon, 14 Dec 2015 16:31:29 -0800 (PST)
-In-Reply-To: <1449599222-8967-1-git-send-email-mar.kolya@gmail.com>
-References: <1449599222-8967-1-git-send-email-mar.kolya@gmail.com>
-Date:   Mon, 14 Dec 2015 19:31:29 -0500
-Message-ID: <CALGY4fu3NUAsc-y7zqPx_o=ggea+1yvs_QYV9PyCVOkkgugUrw@mail.gmail.com>
-Subject: Re: [PATCH] mips: Fix CPC_BASE_ADDR mask to match datasheet
-From:   Nikolay Martynov <mar.kolya@gmail.com>
-To:     linux-mips@linux-mips.org
-Cc:     Nikolay Martynov <mar.kolya@gmail.com>
+X-Received: by 10.202.192.87 with SMTP id q84mr26105435oif.59.1450139545547;
+ Mon, 14 Dec 2015 16:32:25 -0800 (PST)
+Received: by 10.202.79.79 with HTTP; Mon, 14 Dec 2015 16:32:25 -0800 (PST)
+In-Reply-To: <1450133093-7053-13-git-send-email-joshua.henderson@microchip.com>
+References: <1450133093-7053-1-git-send-email-joshua.henderson@microchip.com>
+        <1450133093-7053-13-git-send-email-joshua.henderson@microchip.com>
+Date:   Tue, 15 Dec 2015 08:32:25 +0800
+Message-ID: <CAAfg0W5PT7deAPe4BNcnm9hB8=xs7wAxYk4zGKBGDSHJE1cqdg@mail.gmail.com>
+Subject: Re: [PATCH v2 12/14] mmc: sdhci-pic32: Add PIC32 SDHCI host
+ controller driver
+From:   Andy Green <andy.green@linaro.org>
+To:     Joshua Henderson <joshua.henderson@microchip.com>
+Cc:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        ralf@linux-mips.org,
+        Andrei Pistirica <andrei.pistirica@microchip.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Jean Delvare <jdelvare@suse.de>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Corneliu Doban <cdoban@broadcom.com>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Luis de Bethencourt <luisbg@osg.samsung.com>,
+        Weijun Yang <Weijun.Yang@csr.com>,
+        Lokesh Vutla <lokeshvutla@ti.com>,
+        Scott Branden <sbranden@broadcom.com>,
+        Vincent Yang <vincent.yang.fujitsu@gmail.com>,
+        Chaotian Jing <chaotian.jing@mediatek.com>,
+        "ludovic.desroches@atmel.com" <ludovic.desroches@atmel.com>,
+        Shawn Lin <shawn.lin@rock-chips.com>,
+        Stephen Boyd <sboyd@codeaurora.org>,
+        yangbo lu <yangbo.lu@freescale.com>,
+        Kevin Hao <haokexin@gmail.com>,
+        Ben Hutchings <ben@decadent.org.uk>, linux-mmc@vger.kernel.org
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-Return-Path: <mar.kolya@gmail.com>
+Return-Path: <andy.green@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50626
+X-archive-position: 50627
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mar.kolya@gmail.com
+X-original-sender: andy.green@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,46 +80,403 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi.
+Hi... looks good, just some small general comments.
 
-  I just wanted to confirm that this is the right list for this kind
-of patches. Please let me know if I should submit it to some other
-place.
-
-Thanks!
-
-2015-12-08 13:27 GMT-05:00 Nikolay Martynov <mar.kolya@gmail.com>:
-> According to 'MIPS32® interAptivTM Multiprocessing
-> System Programmer’s Guide' CPC_BASE_ADDR takes bits [31:15].
+On 15 December 2015 at 06:42, Joshua Henderson
+<joshua.henderson@microchip.com> wrote:
+> From: Andrei Pistirica <andrei.pistirica@microchip.com>
 >
-> This change is tested ith mt7621 which wasn't working without it.
+> This driver supports the SDHCI host controller found on a PIC32.
 >
-> Signed-off-by: Nikolay Martynov <mar.kolya@gmail.com>
+> Signed-off-by: Andrei Pistirica <andrei.pistirica@microchip.com>
+> Signed-off-by: Joshua Henderson <joshua.henderson@microchip.com>
+> Cc: Ralf Baechle <ralf@linux-mips.org>
 > ---
->  arch/mips/include/asm/mips-cm.h | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+>  drivers/mmc/host/Kconfig       |   11 ++
+>  drivers/mmc/host/Makefile      |    1 +
+>  drivers/mmc/host/sdhci-pic32.c |  291 ++++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 303 insertions(+)
+>  create mode 100644 drivers/mmc/host/sdhci-pic32.c
 >
-> diff --git a/arch/mips/include/asm/mips-cm.h b/arch/mips/include/asm/mips-cm.h
-> index 6516e9d..f942ec2 100644
-> --- a/arch/mips/include/asm/mips-cm.h
-> +++ b/arch/mips/include/asm/mips-cm.h
-> @@ -286,8 +286,8 @@ BUILD_CM_Cx_R_(tcid_8_priority,     0x80)
->  #define CM_GCR_GIC_BASE_GICEN_MSK              (_ULCAST_(0x1) << 0)
+> diff --git a/drivers/mmc/host/Kconfig b/drivers/mmc/host/Kconfig
+> index 1dee533..1a3a42b 100644
+> --- a/drivers/mmc/host/Kconfig
+> +++ b/drivers/mmc/host/Kconfig
+> @@ -785,3 +785,14 @@ config MMC_MTK
+>           If you have a machine with a integrated SD/MMC card reader, say Y or M here.
+>           This is needed if support for any SD/SDIO/MMC devices is required.
+>           If unsure, say N.
+> +
+> +config MMC_SDHCI_MICROCHIP_PIC32
+> +        tristate "Microchip PIC32MZDA SDHCI support"
+> +        depends on MMC_SDHCI && PIC32MZDA
+> +        help
+> +          This selects the Secure Digital Host Controller Interface (SDHCI)
+> +          for PIC32MZDA platform.
+> +
+> +          If you have a controller with this interface, say Y or M here.
+> +
+> +          If unsure, say N.
+> diff --git a/drivers/mmc/host/Makefile b/drivers/mmc/host/Makefile
+> index 3595f83..af918d2 100644
+> --- a/drivers/mmc/host/Makefile
+> +++ b/drivers/mmc/host/Makefile
+> @@ -75,6 +75,7 @@ obj-$(CONFIG_MMC_SDHCI_BCM2835)               += sdhci-bcm2835.o
+>  obj-$(CONFIG_MMC_SDHCI_IPROC)          += sdhci-iproc.o
+>  obj-$(CONFIG_MMC_SDHCI_MSM)            += sdhci-msm.o
+>  obj-$(CONFIG_MMC_SDHCI_ST)             += sdhci-st.o
+> +obj-$(CONFIG_MMC_SDHCI_MICROCHIP_PIC32)        += sdhci-pic32.o
 >
->  /* GCR_CPC_BASE register fields */
-> -#define CM_GCR_CPC_BASE_CPCBASE_SHF            17
-> -#define CM_GCR_CPC_BASE_CPCBASE_MSK            (_ULCAST_(0x7fff) << 17)
-> +#define CM_GCR_CPC_BASE_CPCBASE_SHF            15
-> +#define CM_GCR_CPC_BASE_CPCBASE_MSK            (_ULCAST_(0x1ffff) << 15)
->  #define CM_GCR_CPC_BASE_CPCEN_SHF              0
->  #define CM_GCR_CPC_BASE_CPCEN_MSK              (_ULCAST_(0x1) << 0)
->
+>  ifeq ($(CONFIG_CB710_DEBUG),y)
+>         CFLAGS-cb710-mmc        += -DDEBUG
+> diff --git a/drivers/mmc/host/sdhci-pic32.c b/drivers/mmc/host/sdhci-pic32.c
+> new file mode 100644
+> index 0000000..b7d7da2
+> --- /dev/null
+> +++ b/drivers/mmc/host/sdhci-pic32.c
+> @@ -0,0 +1,291 @@
+> +/*
+> + * Support of SDHCI platform devices for Microchip PIC32.
+> + *
+> + * Copyright (C) 2015 Microchip
+> + * Andrei Pistirica, Paul Thacker
+> + *
+> + * Inspired by sdhci-pltfm.c
+> + *
+> + * This file is licensed under the terms of the GNU General Public
+> + * License version 2. This program is licensed "as is" without any
+> + * warranty of any kind, whether express or implied.
+> + */
+> +
+> +#include <linux/clk.h>
+> +#include <linux/delay.h>
+> +#include <linux/highmem.h>
+> +#include <linux/module.h>
+> +#include <linux/interrupt.h>
+> +#include <linux/irq.h>
+> +#include <linux/of.h>
+> +#include <linux/platform_device.h>
+> +#include <linux/pm.h>
+> +#include <linux/slab.h>
+> +#include <linux/mmc/host.h>
+> +#include <linux/io.h>
+> +#include "sdhci.h"
+> +#include <linux/platform_data/sdhci-pic32.h>
+> +
+> +#define SDH_SHARED_BUS_CTRL            0x000000E0
+> +#define SDH_SHARED_BUS_NR_CLK_PINS_MASK        0x7
+> +#define SDH_SHARED_BUS_NR_IRQ_PINS_MASK        0x30
+> +#define SDH_SHARED_BUS_CLK_PINS                0x10
+> +#define SDH_SHARED_BUS_IRQ_PINS                0x14
+> +#define SDH_CAPS_SDH_SLOT_TYPE_MASK    0xC0000000
+> +#define SDH_SLOT_TYPE_REMOVABLE                0x0
+> +#define SDH_SLOT_TYPE_EMBEDDED         0x1
+> +#define SDH_SLOT_TYPE_SHARED_BUS       0x2
+> +#define SDHCI_CTRL_CDSSEL              0x80
+> +#define SDHCI_CTRL_CDTLVL              0x40
+> +
+> +#define ADMA_FIFO_RD_THSHLD    512
+> +#define ADMA_FIFO_WR_THSHLD    512
+> +
+> +#define DEV_NAME "pic32-sdhci"
+
+Is there any point defining this when it only has one use in the driver?
+
+> +struct pic32_sdhci_pdata {
+> +       struct platform_device  *pdev;
+> +       struct clk *sys_clk;
+> +       struct clk *base_clk;
+> +};
+> +
+> +static unsigned int pic32_sdhci_get_max_clock(struct sdhci_host *host)
+> +{
+> +       struct pic32_sdhci_pdata *sdhci_pdata = sdhci_priv(host);
+> +
+> +       return clk_get_rate(sdhci_pdata->base_clk);
+> +}
+> +
+> +static void pic32_sdhci_set_bus_width(struct sdhci_host *host, int width)
+> +{
+> +       u8 ctrl;
+> +
+> +       ctrl = sdhci_readb(host, SDHCI_HOST_CONTROL);
+> +       if (width == MMC_BUS_WIDTH_8) {
+> +               ctrl &= ~SDHCI_CTRL_4BITBUS;
+> +               if (host->version >= SDHCI_SPEC_300)
+> +                       ctrl |= SDHCI_CTRL_8BITBUS;
+> +       } else {
+> +               if (host->version >= SDHCI_SPEC_300)
+> +                       ctrl &= ~SDHCI_CTRL_8BITBUS;
+> +               if (width == MMC_BUS_WIDTH_4)
+> +                       ctrl |= SDHCI_CTRL_4BITBUS;
+> +               else
+> +                       ctrl &= ~SDHCI_CTRL_4BITBUS;
+> +       }
+> +       /*
+> +        * SDHCI will not work if JTAG is not Connected.As a workaround fix,
+> +        * set Card Detect Signal Selection bit in SDHCI Host Control
+> +        * register and clear Card Detect Test Level bit in SDHCI Host
+> +        * Control register.
+> +        */
+
+Isn't this a clearer explanation, if I understood?
+
+"Without setting CD select and test bits now, SDHCI only works with
+JTAG connected."
+
+> +       ctrl &= ~SDHCI_CTRL_CDTLVL;
+> +       ctrl |= SDHCI_CTRL_CDSSEL;
+> +       sdhci_writeb(host, ctrl, SDHCI_HOST_CONTROL);
+
+Also... is that a feature of the SDHCI IP or this particular chip's
+implementation of it?  I guess if there is only one implementation
+right now that has that restriction worry about making it selectable
+later.  But if the implementation, it might make sense to also put the
+affected implementation name in the comment to make it clear.
+
+> +}
+> +
+> +static unsigned int pic32_sdhci_get_ro(struct sdhci_host *host)
+> +{
+> +       /*
+> +        * The SDHCI_WRITE_PROTECT bit is unstable on current hardware so we
+> +        * can't depend on its value in any way.
+> +        */
+> +       return 0;
+> +}
+> +
+> +static const struct sdhci_ops pic32_sdhci_ops = {
+> +       .get_max_clock = pic32_sdhci_get_max_clock,
+> +       .set_clock = sdhci_set_clock,
+> +       .set_bus_width = pic32_sdhci_set_bus_width,
+> +       .reset = sdhci_reset,
+> +       .set_uhs_signaling = sdhci_set_uhs_signaling,
+> +       .get_ro = pic32_sdhci_get_ro,
+> +};
+> +
+> +static void pic32_sdhci_shared_bus(struct platform_device *pdev)
+> +{
+> +       struct sdhci_host *host = platform_get_drvdata(pdev);
+> +       u32 bus = readl(host->ioaddr + SDH_SHARED_BUS_CTRL);
+> +       u32 clk_pins = (bus & SDH_SHARED_BUS_NR_CLK_PINS_MASK) >> 0;
+> +       u32 irq_pins = (bus & SDH_SHARED_BUS_NR_IRQ_PINS_MASK) >> 4;
+> +
+> +       /* select first clock */
+> +       if (clk_pins & 0x1)
+
+BIT(0)?  Also a couple of lines down.
+
+> +               bus |= (0x1 << SDH_SHARED_BUS_CLK_PINS);
+
+I know it's popular but there is no meaning or use in "0x1" where you
+could just say "1".
+
+> +       /* select first interrupt */
+> +       if (irq_pins & 0x1)
+> +               bus |= (0x1 << SDH_SHARED_BUS_IRQ_PINS);
+
+As above.
+
+> +       writel(bus, host->ioaddr + SDH_SHARED_BUS_CTRL);
+> +}
+> +
+> +static int pic32_sdhci_probe_platform(struct platform_device *pdev,
+> +                                     struct pic32_sdhci_pdata *pdata)
+> +{
+> +       int ret = 0;
+> +       u32 caps_slot_type;
+> +       struct sdhci_host *host = platform_get_drvdata(pdev);
+> +
+> +       /* Check card slot connected on shared bus. */
+> +       host->caps = readl(host->ioaddr + SDHCI_CAPABILITIES);
+> +       caps_slot_type = (host->caps & SDH_CAPS_SDH_SLOT_TYPE_MASK) >> 30;
+> +       if (caps_slot_type == SDH_SLOT_TYPE_SHARED_BUS)
+> +               pic32_sdhci_shared_bus(pdev);
+> +
+> +       return ret;
+> +}
+> +
+> +static int pic32_sdhci_probe(struct platform_device *pdev)
+> +{
+> +       struct device *dev = &pdev->dev;
+> +       struct sdhci_host *host;
+> +       struct resource *iomem;
+> +       struct pic32_sdhci_pdata *sdhci_pdata;
+> +       struct pic32_sdhci_platform_data *plat_data;
+> +       unsigned int clk_rate = 0;
+> +       int ret;
+> +       struct pinctrl *pinctrl;
+
+It's hardly critical but for extra gold star arranging local vars in
+length order (longest first) is nice.
+
+> +
+> +       host = sdhci_alloc_host(dev, sizeof(*sdhci_pdata));
+> +       if (IS_ERR(host)) {
+> +               ret = PTR_ERR(host);
+> +               dev_err(&pdev->dev, "cannot allocate memory for sdhci\n");
+> +               goto err;
+> +       }
+> +
+> +       sdhci_pdata = sdhci_priv(host);
+> +       sdhci_pdata->pdev = pdev;
+> +       platform_set_drvdata(pdev, host);
+> +
+> +       iomem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+> +       host->ioaddr = devm_ioremap_resource(&pdev->dev, iomem);
+> +       if (IS_ERR(host->ioaddr)) {
+> +               ret = PTR_ERR(host->ioaddr);
+> +               dev_err(&pdev->dev, "unable to map iomem: %d\n", ret);
+> +               goto err_host;
+> +       }
+> +
+> +       plat_data = pdev->dev.platform_data;
+> +       if (plat_data && plat_data->setup_dma) {
+> +               ret = plat_data->setup_dma(ADMA_FIFO_RD_THSHLD,
+> +                                          ADMA_FIFO_WR_THSHLD);
+> +               if (ret)
+> +                       goto err_host;
+> +       }
+> +
+> +       pinctrl = devm_pinctrl_get_select_default(&pdev->dev);
+> +       if (IS_ERR(pinctrl)) {
+> +               ret = PTR_ERR(pinctrl);
+> +               dev_warn(&pdev->dev, "No pinctrl provided %d\n", ret);
+> +               if (ret == -EPROBE_DEFER)
+> +                       goto err_host;
+> +       }
+> +
+> +       host->ops = &pic32_sdhci_ops;
+> +       host->irq = platform_get_irq(pdev, 0);
+> +
+> +       sdhci_pdata->sys_clk = devm_clk_get(&pdev->dev, "sys_clk");
+> +       if (IS_ERR(sdhci_pdata->sys_clk)) {
+> +               ret = PTR_ERR(sdhci_pdata->sys_clk);
+> +               dev_err(&pdev->dev, "Error getting clock\n");
+> +               goto err_host;
+> +       }
+> +
+> +       /* Enable clock when available! */
+> +       ret = clk_prepare_enable(sdhci_pdata->sys_clk);
+> +       if (ret) {
+> +               dev_dbg(&pdev->dev, "Error enabling clock\n");
+
+Shouldn't this be dev_err()?  You don't survive not having the clock
+in the stanza above.  So if you have the clock, you would want to know
+if it didn't deal with the clk_prepare_enable().
+
+The comment 4 lines above is also wrong if so.
+
+> +               goto err_host;
+> +       }
+> +
+> +       /* SDH CLK enable */
+> +       sdhci_pdata->base_clk = devm_clk_get(&pdev->dev, "base_clk");
+> +       if (IS_ERR(sdhci_pdata->base_clk)) {
+> +               ret = PTR_ERR(sdhci_pdata->base_clk);
+> +               dev_err(&pdev->dev, "Error getting clock\n");
+> +               goto err_host;
+> +       }
+> +
+> +       /* Enable clock when available! */
+> +       ret = clk_prepare_enable(sdhci_pdata->base_clk);
+
+Again the comment seems wrong.
+
+> +       if (ret) {
+> +               dev_dbg(&pdev->dev, "Error enabling clock\n");
+
+And if I understood it, dev_err() needed.
+
+> +               goto err_host;
+> +       }
+> +
+> +       clk_rate = clk_get_rate(sdhci_pdata->base_clk);
+> +       dev_dbg(&pdev->dev, "base clock at: %u\n", clk_rate);
+> +       clk_rate = clk_get_rate(sdhci_pdata->sys_clk);
+> +       dev_dbg(&pdev->dev, "sys clock at: %u\n", clk_rate);
+> +
+> +       host->quirks2 |= SDHCI_QUIRK2_NO_1_8_V;
+> +
+
+Probably can lose the blank line.
+
+> +       host->quirks |= SDHCI_QUIRK_NO_HISPD_BIT;
+> +
+> +       ret = mmc_of_parse(host->mmc);
+> +       if (ret)
+> +               goto err_host;
+> +
+> +       ret = pic32_sdhci_probe_platform(pdev, sdhci_pdata);
+> +       if (ret) {
+> +               dev_err(&pdev->dev, "failed to probe platform!\n");
+> +               goto err_host;
+> +       }
+> +
+> +       ret = sdhci_add_host(host);
+> +       if (ret) {
+> +               dev_dbg(&pdev->dev, "error adding host\n");
+> +               goto err_host;
+> +       }
+> +
+> +       dev_info(&pdev->dev, "Successfully added sdhci host\n");
+> +       return 0;
+> +
+> +err_host:
+> +       sdhci_free_host(host);
+> +err:
+> +       dev_err(&pdev->dev, "pic32-sdhci probe failed: %d\n", ret);
+> +       return ret;
+> +}
+> +
+> +static int pic32_sdhci_remove(struct platform_device *pdev)
+> +{
+> +       struct sdhci_host *host = platform_get_drvdata(pdev);
+> +       struct pic32_sdhci_pdata *sdhci_pdata = sdhci_priv(host);
+> +       int dead = 0;
+> +       u32 scratch;
+> +
+> +       scratch = readl(host->ioaddr + SDHCI_INT_STATUS);
+> +       if (scratch == (u32)-1)
+
+Since it's not actually related to signed, (u32)~0 might be clearer.
+
+> +               dead = 1;
+> +
+> +       sdhci_remove_host(host, dead);
+
+You could get rid of "dead" and have
+
+         sdhci_remove_host(host, scratch == (u32)~0);
+
+> +       clk_disable_unprepare(sdhci_pdata->base_clk);
+> +       clk_disable_unprepare(sdhci_pdata->sys_clk);
+> +       sdhci_free_host(host);
+> +
+> +       return 0;
+> +}
+> +
+> +static const struct of_device_id pic32_sdhci_id_table[] = {
+> +       { .compatible = "microchip,pic32mzda-sdhci" },
+> +       {}
+> +};
+> +MODULE_DEVICE_TABLE(of, pic32_sdhci_id_table);
+> +
+> +static struct platform_driver pic32_sdhci_driver = {
+> +       .driver = {
+> +               .name   = DEV_NAME,
+> +               .owner  = THIS_MODULE,
+> +               .of_match_table = of_match_ptr(pic32_sdhci_id_table),
+> +       },
+> +       .probe          = pic32_sdhci_probe,
+> +       .remove         = pic32_sdhci_remove,
+> +};
+> +
+> +module_platform_driver(pic32_sdhci_driver);
+> +
+> +MODULE_DESCRIPTION("Microchip PIC32 SDHCI driver");
+> +MODULE_AUTHOR("Pistirica Sorin Andrei & Sandeep Sheriker");
+> +MODULE_LICENSE("GPL v2");
 > --
-> 2.6.3
+> 1.7.9.5
 >
-
-
-
--- 
-Martynov Nikolay.
-Email: mar.kolya@gmail.com

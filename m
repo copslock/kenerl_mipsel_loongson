@@ -1,45 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Dec 2015 21:00:54 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.136]:46730 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27013855AbbLOUAoiP3Sw (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 15 Dec 2015 21:00:44 +0100
-Received: from mail.kernel.org (localhost [127.0.0.1])
-        by mail.kernel.org (Postfix) with ESMTP id 25DE4203B0;
-        Tue, 15 Dec 2015 20:00:42 +0000 (UTC)
-Received: from rob-hp-laptop (72-48-98-129.dyn.grandenetworks.net [72.48.98.129])
-        (using TLSv1.2 with cipher AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 5E129202C8;
-        Tue, 15 Dec 2015 20:00:40 +0000 (UTC)
-Date:   Tue, 15 Dec 2015 14:00:37 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Joshua Henderson <joshua.henderson@microchip.com>
-Cc:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        ralf@linux-mips.org,
-        Andrei Pistirica <andrei.pistirica@microchip.com>,
-        Pawel Moll <pawel.moll@arm.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ian Campbell <ijc+devicetree@hellion.org.uk>,
-        Kumar Gala <galak@codeaurora.org>, devicetree@vger.kernel.org
-Subject: Re: [PATCH v2 09/14] DEVICETREE: Add bindings for PIC32 UART driver
-Message-ID: <20151215200037.GA26863@rob-hp-laptop>
-References: <1450133093-7053-1-git-send-email-joshua.henderson@microchip.com>
- <1450133093-7053-10-git-send-email-joshua.henderson@microchip.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Dec 2015 22:06:31 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:38361 "EHLO
+        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S27013883AbbLOVG2VnC9V (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 15 Dec 2015 22:06:28 +0100
+Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
+        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id E3E0941F8E29;
+        Tue, 15 Dec 2015 21:06:22 +0000 (GMT)
+Received: from mailapp01.imgtec.com ([10.100.180.242])
+  by imgpgp01.kl.imgtec.org (PGP Universal service);
+  Tue, 15 Dec 2015 21:06:22 +0000
+X-PGP-Universal: processed;
+        by imgpgp01.kl.imgtec.org on Tue, 15 Dec 2015 21:06:22 +0000
+Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
+        by Websense Email Security Gateway with ESMTPS id 410B5E938F7C0;
+        Tue, 15 Dec 2015 21:06:19 +0000 (GMT)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
+ 14.3.235.1; Tue, 15 Dec 2015 21:06:22 +0000
+Received: from localhost (192.168.154.110) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Tue, 15 Dec
+ 2015 21:06:22 +0000
+Date:   Tue, 15 Dec 2015 21:06:22 +0000
+From:   James Hogan <james.hogan@imgtec.com>
+To:     Nikolay Martynov <mar.kolya@gmail.com>
+CC:     <linux-mips@linux-mips.org>
+Subject: Re: [PATCH] mips: Fix CPC_BASE_ADDR mask to match datasheet
+Message-ID: <20151215210622.GP23944@jhogan-linux.le.imgtec.org>
+References: <1449599222-8967-1-git-send-email-mar.kolya@gmail.com>
+ <CALGY4fu3NUAsc-y7zqPx_o=ggea+1yvs_QYV9PyCVOkkgugUrw@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="GvDmwISikgK05D7L"
 Content-Disposition: inline
-In-Reply-To: <1450133093-7053-10-git-send-email-joshua.henderson@microchip.com>
+In-Reply-To: <CALGY4fu3NUAsc-y7zqPx_o=ggea+1yvs_QYV9PyCVOkkgugUrw@mail.gmail.com>
 User-Agent: Mutt/1.5.23 (2014-03-12)
-X-Virus-Scanned: ClamAV using ClamSMTP
-Return-Path: <robh@kernel.org>
+X-Originating-IP: [192.168.154.110]
+X-ESG-ENCRYPT-TAG: 30575414
+Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50633
+X-archive-position: 50634
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: robh@kernel.org
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,58 +57,94 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Dec 14, 2015 at 03:42:11PM -0700, Joshua Henderson wrote:
-> From: Andrei Pistirica <andrei.pistirica@microchip.com>
-> 
-> Document the devicetree bindings for the UART peripheral found on
-> Microchip PIC32 class devices.
-> 
-> Signed-off-by: Andrei Pistirica <andrei.pistirica@microchip.com>
-> Signed-off-by: Joshua Henderson <joshua.henderson@microchip.com>
-> Cc: Ralf Baechle <ralf@linux-mips.org>
+--GvDmwISikgK05D7L
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Acked-by: Rob Herring <robh@kernel.org>
+Hi Nikolay,
 
-> ---
->  .../bindings/serial/microchip,pic32-uart.txt       |   29 ++++++++++++++++++++
->  1 file changed, 29 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/serial/microchip,pic32-uart.txt
-> 
-> diff --git a/Documentation/devicetree/bindings/serial/microchip,pic32-uart.txt b/Documentation/devicetree/bindings/serial/microchip,pic32-uart.txt
-> new file mode 100644
-> index 0000000..65b38bf6
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/serial/microchip,pic32-uart.txt
-> @@ -0,0 +1,29 @@
-> +* Microchip Universal Asynchronous Receiver Transmitter (UART)
-> +
-> +Required properties:
-> +- compatible: Should be "microchip,pic32mzda-uart"
-> +- reg: Should contain registers location and length
-> +- interrupts: Should contain interrupt
-> +- clocks: Phandle to the clock.
-> +          See: Documentation/devicetree/bindings/clock/clock-bindings.txt
-> +- pinctrl-names: A pinctrl state names "default" must be defined.
-> +- pinctrl-0: Phandle referencing pin configuration of the UART peripheral.
-> +             See: Documentation/devicetree/bindings/pinctrl/pinctrl-binding.txt
-> +
-> +Optional properties:
-> +- cts-gpios: CTS pin for UART
-> +
-> +Example:
-> +	uart1: serial@1f822000 {
-> +		compatible = "microchip,pic32mzda-uart";
-> +		reg = <0x1f822000 0x50>;
-> +		interrupts = <112 IRQ_TYPE_LEVEL_HIGH>,
-> +			<113 IRQ_TYPE_LEVEL_HIGH>,
-> +			<114 IRQ_TYPE_LEVEL_HIGH>;
-> +		clocks = <&PBCLK2>;
-> +		pinctrl-names = "default";
-> +		pinctrl-0 = <&pinctrl_uart1
-> +				&pinctrl_uart1_cts
-> +				&pinctrl_uart1_rts>;
-> +		cts-gpios = <&gpio1 15 0>;
-> +	};
-> -- 
-> 1.7.9.5
-> 
+On Mon, Dec 14, 2015 at 07:31:29PM -0500, Nikolay Martynov wrote:
+> Hi.
+>=20
+>   I just wanted to confirm that this is the right list for this kind
+> of patches. Please let me know if I should submit it to some other
+> place.
+
+You have the right list. All patches to this list go into patchwork[1],
+so they shouldn't get forgotten.
+
+The patch looks correct to me based on interAptiv and P5600 manuals, and
+the current uses of these definitions.
+Reviewed-by: James Hogan <james.hogan@imgtec.com>
+
+Thanks!
+James
+
+[1] http://patchwork.linux-mips.org
+
+>=20
+> Thanks!
+>=20
+> 2015-12-08 13:27 GMT-05:00 Nikolay Martynov <mar.kolya@gmail.com>:
+> > According to 'MIPS32=C2=AE interAptivTM Multiprocessing
+> > System Programmer=E2=80=99s Guide' CPC_BASE_ADDR takes bits [31:15].
+> >
+> > This change is tested ith mt7621 which wasn't working without it.
+> >
+> > Signed-off-by: Nikolay Martynov <mar.kolya@gmail.com>
+> > ---
+> >  arch/mips/include/asm/mips-cm.h | 4 ++--
+> >  1 file changed, 2 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/arch/mips/include/asm/mips-cm.h b/arch/mips/include/asm/mi=
+ps-cm.h
+> > index 6516e9d..f942ec2 100644
+> > --- a/arch/mips/include/asm/mips-cm.h
+> > +++ b/arch/mips/include/asm/mips-cm.h
+> > @@ -286,8 +286,8 @@ BUILD_CM_Cx_R_(tcid_8_priority,     0x80)
+> >  #define CM_GCR_GIC_BASE_GICEN_MSK              (_ULCAST_(0x1) << 0)
+> >
+> >  /* GCR_CPC_BASE register fields */
+> > -#define CM_GCR_CPC_BASE_CPCBASE_SHF            17
+> > -#define CM_GCR_CPC_BASE_CPCBASE_MSK            (_ULCAST_(0x7fff) << 17)
+> > +#define CM_GCR_CPC_BASE_CPCBASE_SHF            15
+> > +#define CM_GCR_CPC_BASE_CPCBASE_MSK            (_ULCAST_(0x1ffff) << 1=
+5)
+> >  #define CM_GCR_CPC_BASE_CPCEN_SHF              0
+> >  #define CM_GCR_CPC_BASE_CPCEN_MSK              (_ULCAST_(0x1) << 0)
+> >
+> > --
+> > 2.6.3
+> >
+>=20
+>=20
+>=20
+> --=20
+> Martynov Nikolay.
+> Email: mar.kolya@gmail.com
+>=20
+
+--GvDmwISikgK05D7L
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQIcBAEBCAAGBQJWcIDOAAoJEGwLaZPeOHZ6agEP/itFQbEpi5rJI+Vs4ubpqThO
++gnV2MSzSffhKpC8ibHiVcNxIVNhV4Wdryfuq1CigJ7tN/PuXQEbhder4KwKUwCN
+RoL8kjTdnwr+SXvJcTmxJINpIoRrQO3A5Ab6YyAB0MTNPX6DNz44hYs7lfNPugvm
+vlzEgeH3oPgaV3ClSJvboivW4FLSt+pobPNGBampoPrnSmy/QSgG+ucKsOgytYRs
+3NEpiMHezg5tYspHaNY5K5rP2Nt+tTDeNf5K6kKDeLMcBsbqAySah661rVi67zvq
+MNRl+lbEmCP7DwjpdnTDTWLAE7saW/pv/sD6bIS8vHUV1C5baNoMmdOLBbph6crF
+YiA2TOhj+4CsAomzye9gkyOcsLbp6jikLLrueJbaDHaYjWNPlXMt8xZ4QWBq1MjQ
+lZXSZlutnF8HyGAS7Ym2J3amvB984plx6rCZOtlW8pNEY1n3lSMm1HJtxEt3Apnr
+e12RKzfV3dj+cHvq4eR4uFQiSlJBbOAR9dOtyhJ+0LzngDbi2Rpp9yZvCBZTQ1xp
+9ZPC4XwoQYrnEPIfUxIuW5RrJK/aMvUdPxwqhTxA/agJqOjpCl7XTj2bhNIm9iki
+dNLb/hPnFDY1MySx/mBGXC3HKcp0KAzLVsyioZ8j+hlbWhQGP4Pt1qiHpV1zCyUx
+9qStlXYnMx9/DbTVKfGH
+=BNwk
+-----END PGP SIGNATURE-----
+
+--GvDmwISikgK05D7L--

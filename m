@@ -1,73 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Dec 2015 01:32:37 +0100 (CET)
-Received: from mail-oi0-f46.google.com ([209.85.218.46]:33011 "EHLO
-        mail-oi0-f46.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27013875AbbLOAcbjyyIf (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 15 Dec 2015 01:32:31 +0100
-Received: by oigy66 with SMTP id y66so29352118oig.0
-        for <linux-mips@linux-mips.org>; Mon, 14 Dec 2015 16:32:25 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Dec 2015 08:25:52 +0100 (CET)
+Received: from mail-ob0-f180.google.com ([209.85.214.180]:36495 "EHLO
+        mail-ob0-f180.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006645AbbLOHZudbePR (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 15 Dec 2015 08:25:50 +0100
+Received: by mail-ob0-f180.google.com with SMTP id no2so173276obc.3;
+        Mon, 14 Dec 2015 23:25:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
+        d=gmail.com; s=20120113;
         h=mime-version:in-reply-to:references:date:message-id:subject:from:to
          :cc:content-type;
-        bh=EX4cND8kzbmIsaVs0nAL/OalPM7r/+mBmirRm9tQVxY=;
-        b=W1bbVsjpxRv3HablDEpVfmzt/uKI6z77Skfoj8Ne08EmMjdDXYN+DG2kmphyPU5Fse
-         ttL2go3TYlmC6tZCGHGIGee9VPbjwF25CG2BcELEFLMMdeLbMDu/NyT/iap4/MRoPzjD
-         QBFnAIm2D87ul2hnqR1KCmHkRb0d41qnc5jB4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:in-reply-to:references:date
-         :message-id:subject:from:to:cc:content-type;
-        bh=EX4cND8kzbmIsaVs0nAL/OalPM7r/+mBmirRm9tQVxY=;
-        b=kJ9X/7RfYSVD/A6Ry/wwDKj1K0IhkMle+0IB4CRRcdpH5zgmRM3O0IaVbT5t0fz1gn
-         ZBKznCOV2tb0wHDrr7hQNo9gLAcYsXngKCkXDG9ejNU/AuKQgaqHzAuX/q27LE/cxlTe
-         5IaPrPZkGngs4IpAVHyowN9ZTkNnSN8ryL2616uBcYWCNldFSokwXnnX8XMtwjcJhkZt
-         WRvC+DmLAk2jcKRe83hAhJu6nADEygQZ3WhNlF6ZK/l7ZGAqpFQBdlIYM+J66vilq+6+
-         L76iFHuaVtfPscI/ijn/8lef3aR+iGN+hBUhgN9DhAV7F5Ah1NyzFXq+jz6GzUAL6DVS
-         hsQg==
-X-Gm-Message-State: ALoCoQmv72BmPRc5V0PMNF3oHJ0lLeXTaBl2fE3dx9ZPm1LHIBxIAsLXqBus2jkt2Dm3Vnk2aDWKSuMC8NIas0X9cf6UlC6xKjTcjk6h2X6VYKzLtGBo+ko=
+        bh=pTDbZ1r13cUUjEgx83pNpeb5QTVDWwuFh2WxvJp4AQ8=;
+        b=OFMAfOZLcG8w+oRVxwgVKp6gmE6L+5R3WoKJnicEbKpRYUeI4et7nTQFb0AUj+UlmF
+         /CbLf3IqzrYd/R/a9NqyXl/036Vlh0224eKiluhq/I22/SQwzeWhXXQzbOfnqTKBJKdn
+         kC4X6Qu4eNEEqrdwbPZC4lRF4NLX3W+ESK8q1L/UOA6SS8sc0bc2zy9/KLST6uYx6tMg
+         fqT2DLNL0Hp7rOcCWL3PedmLBL2TRPlcgoa7tXzImhImNRTwNKKQUYJfzSxXuvrP4gol
+         CDfBu0AxJjBoZy/IV9qoouhVcAnT+4HZSfklRqcqk1W1uP/31ZAPfwFZCi2lzUYEqGsS
+         IjCw==
 MIME-Version: 1.0
-X-Received: by 10.202.192.87 with SMTP id q84mr26105435oif.59.1450139545547;
- Mon, 14 Dec 2015 16:32:25 -0800 (PST)
-Received: by 10.202.79.79 with HTTP; Mon, 14 Dec 2015 16:32:25 -0800 (PST)
-In-Reply-To: <1450133093-7053-13-git-send-email-joshua.henderson@microchip.com>
-References: <1450133093-7053-1-git-send-email-joshua.henderson@microchip.com>
-        <1450133093-7053-13-git-send-email-joshua.henderson@microchip.com>
-Date:   Tue, 15 Dec 2015 08:32:25 +0800
-Message-ID: <CAAfg0W5PT7deAPe4BNcnm9hB8=xs7wAxYk4zGKBGDSHJE1cqdg@mail.gmail.com>
-Subject: Re: [PATCH v2 12/14] mmc: sdhci-pic32: Add PIC32 SDHCI host
- controller driver
-From:   Andy Green <andy.green@linaro.org>
-To:     Joshua Henderson <joshua.henderson@microchip.com>
-Cc:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        ralf@linux-mips.org,
-        Andrei Pistirica <andrei.pistirica@microchip.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Jean Delvare <jdelvare@suse.de>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Corneliu Doban <cdoban@broadcom.com>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Luis de Bethencourt <luisbg@osg.samsung.com>,
-        Weijun Yang <Weijun.Yang@csr.com>,
-        Lokesh Vutla <lokeshvutla@ti.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        Vincent Yang <vincent.yang.fujitsu@gmail.com>,
-        Chaotian Jing <chaotian.jing@mediatek.com>,
-        "ludovic.desroches@atmel.com" <ludovic.desroches@atmel.com>,
-        Shawn Lin <shawn.lin@rock-chips.com>,
-        Stephen Boyd <sboyd@codeaurora.org>,
-        yangbo lu <yangbo.lu@freescale.com>,
-        Kevin Hao <haokexin@gmail.com>,
-        Ben Hutchings <ben@decadent.org.uk>, linux-mmc@vger.kernel.org
+X-Received: by 10.182.66.8 with SMTP id b8mr28570241obt.53.1450164344577; Mon,
+ 14 Dec 2015 23:25:44 -0800 (PST)
+Received: by 10.182.73.193 with HTTP; Mon, 14 Dec 2015 23:25:44 -0800 (PST)
+In-Reply-To: <CACRpkdZDFPFOH=9FfYzLeKo5b-oXG4rPjoU4Rpq9Wv1-RvY6uQ@mail.gmail.com>
+References: <1449666515-23343-1-git-send-email-linus.walleij@linaro.org>
+        <20151209193034.GE27131@dtor-ws>
+        <CACRpkdZDFPFOH=9FfYzLeKo5b-oXG4rPjoU4Rpq9Wv1-RvY6uQ@mail.gmail.com>
+Date:   Mon, 14 Dec 2015 23:25:44 -0800
+Message-ID: <CAKdAkRR6kEzEOtjxXqS4BPToEzKGBsLb=SzePFAiLSDhh+=qnw@mail.gmail.com>
+Subject: Re: [PATCH 000/182] Rid struct gpio_chip from container_of() usage
+From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+        Johan Hovold <johan@kernel.org>,
+        Alexandre Courbot <acourbot@nvidia.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Michael Welling <mwelling@ieee.org>,
+        Markus Pargmann <mpa@pengutronix.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Mark Brown <broonie@kernel.org>,
+        Amit Kucheria <amit.kucheria@linaro.org>,
+        "arm@kernel.org" <arm@kernel.org>,
+        Haavard Skinnemoen <hskinnemoen@gmail.com>,
+        Sonic Zhang <sonic.zhang@analog.com>,
+        Greg Ungerer <gerg@uclinux.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Linux MIPS <linux-mips@linux-mips.org>,
+        Anatolij Gustschin <agust@denx.de>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Linux Input <linux-input@vger.kernel.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        Russell King - ARM Linux <linux@arm.linux.org.uk>
 Content-Type: text/plain; charset=UTF-8
-Return-Path: <andy.green@linaro.org>
+Return-Path: <dmitry.torokhov@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50627
+X-archive-position: 50628
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: andy.green@linaro.org
+X-original-sender: dmitry.torokhov@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -80,403 +71,119 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi... looks good, just some small general comments.
-
-On 15 December 2015 at 06:42, Joshua Henderson
-<joshua.henderson@microchip.com> wrote:
-> From: Andrei Pistirica <andrei.pistirica@microchip.com>
+On Mon, Dec 14, 2015 at 1:18 AM, Linus Walleij <linus.walleij@linaro.org> wrote:
+> On Wed, Dec 9, 2015 at 8:30 PM, Dmitry Torokhov
+> <dmitry.torokhov@gmail.com> wrote:
+>> On Wed, Dec 09, 2015 at 02:08:35PM +0100, Linus Walleij wrote:
+>>> This removes the use of container_of() constructions from *all*
+>>> GPIO drivers in the kernel. It is done by instead adding an
+>>> optional void *data pointer to the struct gpio_chip and an
+>>> accessor function, gpiochip_get_data() to get it from a driver.
+>>>
+>>> WHY?
+>>>
+>>> Because we want to have a proper userspace ABI for GPIO chips,
+>>> which involves using a character device that the user opens
+>>> and closes. While the character device is open, the underlying
+>>> kernel objects must not go away.
+>>>
+>>> Currently the GPIO drivers keep their state in the struct
+>>> gpio_chip, and that is often allocated by the drivers, very
+>>> often as a part of a containing per-instance state container
+>>> struct for the driver:
+>>>
+>>> struct foo_state {
+>>>    struct gpio_chip chip;  <- OMG my state is there
+>>> };
+>>>
+>>> Drivers cannot allocate and manage this state: if a user has the
+>>> character device open, the objects allocated must stay around
+>>> even if the driver goes away. Instead drivers need to pass a
+>>> descriptor to the GPIO core, and then the core should allocate
+>>> and manage the lifecycle of things related to the device, such
+>>> as the chardev itself or the struct device related to the GPIO
+>>> device.
+>>
+>> Yes, but it does not mean that the object that is being maintained by
+>> the subsystem and that us attached to character device needs to be
+>> gpio_chip itself. You can have something like
+>>
+>> struct gpio_chip_chardev {
+>>         struct cdev chardev;
+>>         struct gpio_chip *chip;
+>>         bool dead;
+>> };
 >
-> This driver supports the SDHCI host controller found on a PIC32.
+> There needs to be a struct device too, amongst other things.
+
+Could be; I was not trying to provide finished data structure but just
+illustrate possible solution.
+
 >
-> Signed-off-by: Andrei Pistirica <andrei.pistirica@microchip.com>
-> Signed-off-by: Joshua Henderson <joshua.henderson@microchip.com>
-> Cc: Ralf Baechle <ralf@linux-mips.org>
-> ---
->  drivers/mmc/host/Kconfig       |   11 ++
->  drivers/mmc/host/Makefile      |    1 +
->  drivers/mmc/host/sdhci-pic32.c |  291 ++++++++++++++++++++++++++++++++++++++++
->  3 files changed, 303 insertions(+)
->  create mode 100644 drivers/mmc/host/sdhci-pic32.c
+>>
+>> struct gpio_chip {
+>>         ...
+>>         struct gpio_chip_chardev *chardev;
+>>         ...
+>> };
+>>
+>> You alloctae the new structure when you register/export gpio chip in
+>> gpio subsystem core and leave all the individual drivers alone.
 >
-> diff --git a/drivers/mmc/host/Kconfig b/drivers/mmc/host/Kconfig
-> index 1dee533..1a3a42b 100644
-> --- a/drivers/mmc/host/Kconfig
-> +++ b/drivers/mmc/host/Kconfig
-> @@ -785,3 +785,14 @@ config MMC_MTK
->           If you have a machine with a integrated SD/MMC card reader, say Y or M here.
->           This is needed if support for any SD/SDIO/MMC devices is required.
->           If unsure, say N.
-> +
-> +config MMC_SDHCI_MICROCHIP_PIC32
-> +        tristate "Microchip PIC32MZDA SDHCI support"
-> +        depends on MMC_SDHCI && PIC32MZDA
-> +        help
-> +          This selects the Secure Digital Host Controller Interface (SDHCI)
-> +          for PIC32MZDA platform.
-> +
-> +          If you have a controller with this interface, say Y or M here.
-> +
-> +          If unsure, say N.
-> diff --git a/drivers/mmc/host/Makefile b/drivers/mmc/host/Makefile
-> index 3595f83..af918d2 100644
-> --- a/drivers/mmc/host/Makefile
-> +++ b/drivers/mmc/host/Makefile
-> @@ -75,6 +75,7 @@ obj-$(CONFIG_MMC_SDHCI_BCM2835)               += sdhci-bcm2835.o
->  obj-$(CONFIG_MMC_SDHCI_IPROC)          += sdhci-iproc.o
->  obj-$(CONFIG_MMC_SDHCI_MSM)            += sdhci-msm.o
->  obj-$(CONFIG_MMC_SDHCI_ST)             += sdhci-st.o
-> +obj-$(CONFIG_MMC_SDHCI_MICROCHIP_PIC32)        += sdhci-pic32.o
+> The current idea I have is something in the middle. Drivers have to
+> change a bit. The important part is that gpiolib handles allocation of
+> anything containing states. I'm thinking along the lines of Russell's
+> proposal to use netdev_alloc()'s design pattern.
 >
->  ifeq ($(CONFIG_CB710_DEBUG),y)
->         CFLAGS-cb710-mmc        += -DDEBUG
-> diff --git a/drivers/mmc/host/sdhci-pic32.c b/drivers/mmc/host/sdhci-pic32.c
-> new file mode 100644
-> index 0000000..b7d7da2
-> --- /dev/null
-> +++ b/drivers/mmc/host/sdhci-pic32.c
-> @@ -0,0 +1,291 @@
-> +/*
-> + * Support of SDHCI platform devices for Microchip PIC32.
-> + *
-> + * Copyright (C) 2015 Microchip
-> + * Andrei Pistirica, Paul Thacker
-> + *
-> + * Inspired by sdhci-pltfm.c
-> + *
-> + * This file is licensed under the terms of the GNU General Public
-> + * License version 2. This program is licensed "as is" without any
-> + * warranty of any kind, whether express or implied.
-> + */
-> +
-> +#include <linux/clk.h>
-> +#include <linux/delay.h>
-> +#include <linux/highmem.h>
-> +#include <linux/module.h>
-> +#include <linux/interrupt.h>
-> +#include <linux/irq.h>
-> +#include <linux/of.h>
-> +#include <linux/platform_device.h>
-> +#include <linux/pm.h>
-> +#include <linux/slab.h>
-> +#include <linux/mmc/host.h>
-> +#include <linux/io.h>
-> +#include "sdhci.h"
-> +#include <linux/platform_data/sdhci-pic32.h>
-> +
-> +#define SDH_SHARED_BUS_CTRL            0x000000E0
-> +#define SDH_SHARED_BUS_NR_CLK_PINS_MASK        0x7
-> +#define SDH_SHARED_BUS_NR_IRQ_PINS_MASK        0x30
-> +#define SDH_SHARED_BUS_CLK_PINS                0x10
-> +#define SDH_SHARED_BUS_IRQ_PINS                0x14
-> +#define SDH_CAPS_SDH_SLOT_TYPE_MASK    0xC0000000
-> +#define SDH_SLOT_TYPE_REMOVABLE                0x0
-> +#define SDH_SLOT_TYPE_EMBEDDED         0x1
-> +#define SDH_SLOT_TYPE_SHARED_BUS       0x2
-> +#define SDHCI_CTRL_CDSSEL              0x80
-> +#define SDHCI_CTRL_CDTLVL              0x40
-> +
-> +#define ADMA_FIFO_RD_THSHLD    512
-> +#define ADMA_FIFO_WR_THSHLD    512
-> +
-> +#define DEV_NAME "pic32-sdhci"
-
-Is there any point defining this when it only has one use in the driver?
-
-> +struct pic32_sdhci_pdata {
-> +       struct platform_device  *pdev;
-> +       struct clk *sys_clk;
-> +       struct clk *base_clk;
-> +};
-> +
-> +static unsigned int pic32_sdhci_get_max_clock(struct sdhci_host *host)
-> +{
-> +       struct pic32_sdhci_pdata *sdhci_pdata = sdhci_priv(host);
-> +
-> +       return clk_get_rate(sdhci_pdata->base_clk);
-> +}
-> +
-> +static void pic32_sdhci_set_bus_width(struct sdhci_host *host, int width)
-> +{
-> +       u8 ctrl;
-> +
-> +       ctrl = sdhci_readb(host, SDHCI_HOST_CONTROL);
-> +       if (width == MMC_BUS_WIDTH_8) {
-> +               ctrl &= ~SDHCI_CTRL_4BITBUS;
-> +               if (host->version >= SDHCI_SPEC_300)
-> +                       ctrl |= SDHCI_CTRL_8BITBUS;
-> +       } else {
-> +               if (host->version >= SDHCI_SPEC_300)
-> +                       ctrl &= ~SDHCI_CTRL_8BITBUS;
-> +               if (width == MMC_BUS_WIDTH_4)
-> +                       ctrl |= SDHCI_CTRL_4BITBUS;
-> +               else
-> +                       ctrl &= ~SDHCI_CTRL_4BITBUS;
-> +       }
-> +       /*
-> +        * SDHCI will not work if JTAG is not Connected.As a workaround fix,
-> +        * set Card Detect Signal Selection bit in SDHCI Host Control
-> +        * register and clear Card Detect Test Level bit in SDHCI Host
-> +        * Control register.
-> +        */
-
-Isn't this a clearer explanation, if I understood?
-
-"Without setting CD select and test bits now, SDHCI only works with
-JTAG connected."
-
-> +       ctrl &= ~SDHCI_CTRL_CDTLVL;
-> +       ctrl |= SDHCI_CTRL_CDSSEL;
-> +       sdhci_writeb(host, ctrl, SDHCI_HOST_CONTROL);
-
-Also... is that a feature of the SDHCI IP or this particular chip's
-implementation of it?  I guess if there is only one implementation
-right now that has that restriction worry about making it selectable
-later.  But if the implementation, it might make sense to also put the
-affected implementation name in the comment to make it clear.
-
-> +}
-> +
-> +static unsigned int pic32_sdhci_get_ro(struct sdhci_host *host)
-> +{
-> +       /*
-> +        * The SDHCI_WRITE_PROTECT bit is unstable on current hardware so we
-> +        * can't depend on its value in any way.
-> +        */
-> +       return 0;
-> +}
-> +
-> +static const struct sdhci_ops pic32_sdhci_ops = {
-> +       .get_max_clock = pic32_sdhci_get_max_clock,
-> +       .set_clock = sdhci_set_clock,
-> +       .set_bus_width = pic32_sdhci_set_bus_width,
-> +       .reset = sdhci_reset,
-> +       .set_uhs_signaling = sdhci_set_uhs_signaling,
-> +       .get_ro = pic32_sdhci_get_ro,
-> +};
-> +
-> +static void pic32_sdhci_shared_bus(struct platform_device *pdev)
-> +{
-> +       struct sdhci_host *host = platform_get_drvdata(pdev);
-> +       u32 bus = readl(host->ioaddr + SDH_SHARED_BUS_CTRL);
-> +       u32 clk_pins = (bus & SDH_SHARED_BUS_NR_CLK_PINS_MASK) >> 0;
-> +       u32 irq_pins = (bus & SDH_SHARED_BUS_NR_IRQ_PINS_MASK) >> 4;
-> +
-> +       /* select first clock */
-> +       if (clk_pins & 0x1)
-
-BIT(0)?  Also a couple of lines down.
-
-> +               bus |= (0x1 << SDH_SHARED_BUS_CLK_PINS);
-
-I know it's popular but there is no meaning or use in "0x1" where you
-could just say "1".
-
-> +       /* select first interrupt */
-> +       if (irq_pins & 0x1)
-> +               bus |= (0x1 << SDH_SHARED_BUS_IRQ_PINS);
-
-As above.
-
-> +       writel(bus, host->ioaddr + SDH_SHARED_BUS_CTRL);
-> +}
-> +
-> +static int pic32_sdhci_probe_platform(struct platform_device *pdev,
-> +                                     struct pic32_sdhci_pdata *pdata)
-> +{
-> +       int ret = 0;
-> +       u32 caps_slot_type;
-> +       struct sdhci_host *host = platform_get_drvdata(pdev);
-> +
-> +       /* Check card slot connected on shared bus. */
-> +       host->caps = readl(host->ioaddr + SDHCI_CAPABILITIES);
-> +       caps_slot_type = (host->caps & SDH_CAPS_SDH_SLOT_TYPE_MASK) >> 30;
-> +       if (caps_slot_type == SDH_SLOT_TYPE_SHARED_BUS)
-> +               pic32_sdhci_shared_bus(pdev);
-> +
-> +       return ret;
-> +}
-> +
-> +static int pic32_sdhci_probe(struct platform_device *pdev)
-> +{
-> +       struct device *dev = &pdev->dev;
-> +       struct sdhci_host *host;
-> +       struct resource *iomem;
-> +       struct pic32_sdhci_pdata *sdhci_pdata;
-> +       struct pic32_sdhci_platform_data *plat_data;
-> +       unsigned int clk_rate = 0;
-> +       int ret;
-> +       struct pinctrl *pinctrl;
-
-It's hardly critical but for extra gold star arranging local vars in
-length order (longest first) is nice.
-
-> +
-> +       host = sdhci_alloc_host(dev, sizeof(*sdhci_pdata));
-> +       if (IS_ERR(host)) {
-> +               ret = PTR_ERR(host);
-> +               dev_err(&pdev->dev, "cannot allocate memory for sdhci\n");
-> +               goto err;
-> +       }
-> +
-> +       sdhci_pdata = sdhci_priv(host);
-> +       sdhci_pdata->pdev = pdev;
-> +       platform_set_drvdata(pdev, host);
-> +
-> +       iomem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> +       host->ioaddr = devm_ioremap_resource(&pdev->dev, iomem);
-> +       if (IS_ERR(host->ioaddr)) {
-> +               ret = PTR_ERR(host->ioaddr);
-> +               dev_err(&pdev->dev, "unable to map iomem: %d\n", ret);
-> +               goto err_host;
-> +       }
-> +
-> +       plat_data = pdev->dev.platform_data;
-> +       if (plat_data && plat_data->setup_dma) {
-> +               ret = plat_data->setup_dma(ADMA_FIFO_RD_THSHLD,
-> +                                          ADMA_FIFO_WR_THSHLD);
-> +               if (ret)
-> +                       goto err_host;
-> +       }
-> +
-> +       pinctrl = devm_pinctrl_get_select_default(&pdev->dev);
-> +       if (IS_ERR(pinctrl)) {
-> +               ret = PTR_ERR(pinctrl);
-> +               dev_warn(&pdev->dev, "No pinctrl provided %d\n", ret);
-> +               if (ret == -EPROBE_DEFER)
-> +                       goto err_host;
-> +       }
-> +
-> +       host->ops = &pic32_sdhci_ops;
-> +       host->irq = platform_get_irq(pdev, 0);
-> +
-> +       sdhci_pdata->sys_clk = devm_clk_get(&pdev->dev, "sys_clk");
-> +       if (IS_ERR(sdhci_pdata->sys_clk)) {
-> +               ret = PTR_ERR(sdhci_pdata->sys_clk);
-> +               dev_err(&pdev->dev, "Error getting clock\n");
-> +               goto err_host;
-> +       }
-> +
-> +       /* Enable clock when available! */
-> +       ret = clk_prepare_enable(sdhci_pdata->sys_clk);
-> +       if (ret) {
-> +               dev_dbg(&pdev->dev, "Error enabling clock\n");
-
-Shouldn't this be dev_err()?  You don't survive not having the clock
-in the stanza above.  So if you have the clock, you would want to know
-if it didn't deal with the clk_prepare_enable().
-
-The comment 4 lines above is also wrong if so.
-
-> +               goto err_host;
-> +       }
-> +
-> +       /* SDH CLK enable */
-> +       sdhci_pdata->base_clk = devm_clk_get(&pdev->dev, "base_clk");
-> +       if (IS_ERR(sdhci_pdata->base_clk)) {
-> +               ret = PTR_ERR(sdhci_pdata->base_clk);
-> +               dev_err(&pdev->dev, "Error getting clock\n");
-> +               goto err_host;
-> +       }
-> +
-> +       /* Enable clock when available! */
-> +       ret = clk_prepare_enable(sdhci_pdata->base_clk);
-
-Again the comment seems wrong.
-
-> +       if (ret) {
-> +               dev_dbg(&pdev->dev, "Error enabling clock\n");
-
-And if I understood it, dev_err() needed.
-
-> +               goto err_host;
-> +       }
-> +
-> +       clk_rate = clk_get_rate(sdhci_pdata->base_clk);
-> +       dev_dbg(&pdev->dev, "base clock at: %u\n", clk_rate);
-> +       clk_rate = clk_get_rate(sdhci_pdata->sys_clk);
-> +       dev_dbg(&pdev->dev, "sys clock at: %u\n", clk_rate);
-> +
-> +       host->quirks2 |= SDHCI_QUIRK2_NO_1_8_V;
-> +
-
-Probably can lose the blank line.
-
-> +       host->quirks |= SDHCI_QUIRK_NO_HISPD_BIT;
-> +
-> +       ret = mmc_of_parse(host->mmc);
-> +       if (ret)
-> +               goto err_host;
-> +
-> +       ret = pic32_sdhci_probe_platform(pdev, sdhci_pdata);
-> +       if (ret) {
-> +               dev_err(&pdev->dev, "failed to probe platform!\n");
-> +               goto err_host;
-> +       }
-> +
-> +       ret = sdhci_add_host(host);
-> +       if (ret) {
-> +               dev_dbg(&pdev->dev, "error adding host\n");
-> +               goto err_host;
-> +       }
-> +
-> +       dev_info(&pdev->dev, "Successfully added sdhci host\n");
-> +       return 0;
-> +
-> +err_host:
-> +       sdhci_free_host(host);
-> +err:
-> +       dev_err(&pdev->dev, "pic32-sdhci probe failed: %d\n", ret);
-> +       return ret;
-> +}
-> +
-> +static int pic32_sdhci_remove(struct platform_device *pdev)
-> +{
-> +       struct sdhci_host *host = platform_get_drvdata(pdev);
-> +       struct pic32_sdhci_pdata *sdhci_pdata = sdhci_priv(host);
-> +       int dead = 0;
-> +       u32 scratch;
-> +
-> +       scratch = readl(host->ioaddr + SDHCI_INT_STATUS);
-> +       if (scratch == (u32)-1)
-
-Since it's not actually related to signed, (u32)~0 might be clearer.
-
-> +               dead = 1;
-> +
-> +       sdhci_remove_host(host, dead);
-
-You could get rid of "dead" and have
-
-         sdhci_remove_host(host, scratch == (u32)~0);
-
-> +       clk_disable_unprepare(sdhci_pdata->base_clk);
-> +       clk_disable_unprepare(sdhci_pdata->sys_clk);
-> +       sdhci_free_host(host);
-> +
-> +       return 0;
-> +}
-> +
-> +static const struct of_device_id pic32_sdhci_id_table[] = {
-> +       { .compatible = "microchip,pic32mzda-sdhci" },
-> +       {}
-> +};
-> +MODULE_DEVICE_TABLE(of, pic32_sdhci_id_table);
-> +
-> +static struct platform_driver pic32_sdhci_driver = {
-> +       .driver = {
-> +               .name   = DEV_NAME,
-> +               .owner  = THIS_MODULE,
-> +               .of_match_table = of_match_ptr(pic32_sdhci_id_table),
-> +       },
-> +       .probe          = pic32_sdhci_probe,
-> +       .remove         = pic32_sdhci_remove,
-> +};
-> +
-> +module_platform_driver(pic32_sdhci_driver);
-> +
-> +MODULE_DESCRIPTION("Microchip PIC32 SDHCI driver");
-> +MODULE_AUTHOR("Pistirica Sorin Andrei & Sandeep Sheriker");
-> +MODULE_LICENSE("GPL v2");
-> --
-> 1.7.9.5
+> The problem is that currently gpio_chip contains a lot of
+> stateful variables (like the dynamically allocated array of GPIO descriptors
+> etc) and those are used by the gpiolib core, so they have to be moved away
+> from gpio_chip.
 >
+> So what happens if I don't change the design pattern:
+>
+> int ret = gpiochip_add(&my_chip);
+> ...
+> gpiochip_remove(&my_chip);
+>
+> At this point we have to cross-reference the pointer to my chip to
+> find the chip to remove. This goes for anything that takes the struct
+> gpio_chip *
+> as parameter, like gpiochip_add_pin_range(), gpiochip_request_own_desc()
+> etc etc. So something inside gpiolib must take a gpio_chip * pointer and
+> turn that into the actual state container, e.g, a struct gpio_device.
+> Since struct gpio_chip needs to be static and stateless, it cannot contain
+> a pointer back to its struct gpio_device.
+
+Why does gpio_chip have to be stateless? I am not saying that it
+should or should not, I just want to better understand what you are
+trying to achieve.
+
+>
+> That means basically comparing pointers across a list of gpio_device's
+> to find it. And that's ... very kludgy. But if people think it's better to avoid
+> changing all drivers I will consider it.
+>
+> I think it is better if the GPIO drivers get a handle on the
+> real gpio_device * to be used when calling these gpiochip_* related
+> functions and also in the callbacks, which is a bigger refactoring
+> indeed.
+>
+> Part of this is trying to be elegant and mimic other subsystems and not
+> have GPIO be too hopelessly wayward about things.
+>
+> If I compare to how struct input_dev is done, you appear to also use the
+> pattern Russell suggested with input_dev_allocate() akin to
+> netdev_alloc(), and the allocated struct holds all the vtable and states etc,
+> and I think it is a good pattern, and that GPIO should conform.
+
+The main difference between gpio_chip (at least as it stands
+currently) and input devices and corresponding private driver data is
+that input device and driver data has different lifetimes; input
+devices may stick around even though driver is unbound from
+corresponding device and driver's private data freed.
+
+Thanks.
+
+-- 
+Dmitry

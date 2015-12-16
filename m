@@ -1,47 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Dec 2015 15:37:35 +0100 (CET)
-Received: from smtp.codeaurora.org ([198.145.29.96]:48267 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27009046AbbLPOhclmkUD convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 16 Dec 2015 15:37:32 +0100
-Received: from smtp.codeaurora.org (localhost [127.0.0.1])
-        by smtp.codeaurora.org (Postfix) with ESMTP id 063FD60271;
-        Wed, 16 Dec 2015 14:37:30 +0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id E7D5D60267; Wed, 16 Dec 2015 14:37:29 +0000 (UTC)
-Received: from potku.adurom.net (a88-115-185-251.elisa-laajakaista.fi [88.115.185.251])
-        (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id EA33C6024B;
-        Wed, 16 Dec 2015 14:37:27 +0000 (UTC)
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     =?utf-8?Q?Rafa=C5=82_Mi=C5=82ecki?= <zajec5@gmail.com>
-Cc:     linux-wireless@vger.kernel.org,
-        Michael =?utf-8?Q?B=C3=BCsch?= <m@bues.ch>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        Hauke Mehrtens <hauke@hauke-m.de>,
-        Larry Finger <larry.finger@lwfinger.net>
-Subject: Re: [PATCH] ssb: pick SoC invariants code from MIPS BCM47xx arch
-References: <1449700611-6952-1-git-send-email-zajec5@gmail.com>
-Date:   Wed, 16 Dec 2015 16:37:22 +0200
-In-Reply-To: <1449700611-6952-1-git-send-email-zajec5@gmail.com>
- (=?utf-8?Q?=22Rafa=C5=82=09Mi=C5=82ecki=22's?= message of "Wed, 9 Dec 2015
- 23:36:51 +0100")
-Message-ID: <871tamfoil.fsf@kamboji.qca.qualcomm.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/23.3 (gnu/linux)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8BIT
-X-Virus-Scanned: ClamAV using ClamSMTP
-Return-Path: <kvalo@codeaurora.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Dec 2015 17:38:22 +0100 (CET)
+Received: from shards.monkeyblade.net ([149.20.54.216]:59102 "EHLO
+        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008014AbbLPQiVSwkK- (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 16 Dec 2015 17:38:21 +0100
+Received: from localhost (cpe-72-227-129-226.nyc.res.rr.com [72.227.129.226])
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id 5C0835A3CE1;
+        Wed, 16 Dec 2015 08:38:16 -0800 (PST)
+Date:   Wed, 16 Dec 2015 11:38:14 -0500 (EST)
+Message-Id: <20151216.113814.2025166082777387327.davem@davemloft.net>
+To:     ddecotig@gmail.com
+Cc:     ben@decadent.org.uk, linux-kernel@vger.kernel.org,
+        netdev@vger.kernel.org, linux-api@vger.kernel.org,
+        linux-mips@linux-mips.org, fcoe-devel@open-fcoe.org,
+        akpm@linux-foundation.org, tj@kernel.org, edumazet@google.com,
+        eugenia@mellanox.co.il, ogerlitz@mellanox.com, idos@mellanox.com,
+        joe@perches.com, saeedm@mellanox.com, _govind@gmx.com,
+        VenkatKumar.Duvvuru@Emulex.Com, jeffrey.t.kirsher@intel.com,
+        pshelar@nicira.com, eswierk@skyportsystems.com,
+        robert.w.love@intel.com, JBottomley@parallels.com,
+        Yuval.Mintz@qlogic.com, linux@rasmusvillemoes.dk,
+        decot@googlers.com
+Subject: Re: [PATCH net-next v5 05/19] net: ethtool: add new
+ ETHTOOL_GSETTINGS/SSETTINGS API
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <1450127046-4573-6-git-send-email-ddecotig@gmail.com>
+References: <1450127046-4573-1-git-send-email-ddecotig@gmail.com>
+        <1450127046-4573-6-git-send-email-ddecotig@gmail.com>
+X-Mailer: Mew version 6.7 on Emacs 24.5 / Mule 6.0 (HANACHIRUSATO)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Wed, 16 Dec 2015 08:38:18 -0800 (PST)
+Return-Path: <davem@davemloft.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50640
+X-archive-position: 50641
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kvalo@codeaurora.org
+X-original-sender: davem@davemloft.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,19 +53,37 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Rafał Miłecki <zajec5@gmail.com> writes:
+From: David Decotigny <ddecotig@gmail.com>
+Date: Mon, 14 Dec 2015 13:03:52 -0800
 
-> There is code in ssb fetching "invariants" that is basically a set of
-> board specific data. Every host requires its own implementation of
-> reading function. In ssb we have support for PCI, PCMCIA & SDIO.
-> For some (historical?) reason code reading "invariants" for SoC was
-> placed in arch code and provided by a callback. This is not needed
-> nowadays, so lets move that into ssb. This way we keep all "invariants"
-> functions in a single module making code cleaner.
->
-> Signed-off-by: Rafał Miłecki <zajec5@gmail.com>
+> +static int ethtool_get_ksettings(struct net_device *dev, void __user *useraddr)
+> +{
+ ...
+> +	if (__ETHTOOL_LINK_MODE_MASK_NU32
+> +	    != ksettings.parent.link_mode_masks_nwords) {
+> +		/* wrong link mode nbits requested */
+> +		memset(&ksettings, 0, sizeof(ksettings));
+> +		/* keep cmd field reset to 0 */
+> +		/* send back number of words required as negative val */
+> +		compiletime_assert(__ETHTOOL_LINK_MODE_MASK_NU32 <= S8_MAX,
+> +				   "need too many bits for link modes!");
+> +		ksettings.parent.link_mode_masks_nwords
+> +			= -((s8)__ETHTOOL_LINK_MODE_MASK_NU32);
 
-Manually applied to wireless-drivers-next.git, thanks.
+I'm trying to understand how this can work.
 
--- 
-Kalle Valo
+Supposedly, the link_mode_masks_nwords field is there so that we can
+add new link modes yet still work with tools built against any
+particular link mode list in the UAPI header files.
+
+But here you're forcing the value of link_mode_masks_nwords and then
+copying that amount back to userspace.  If the user allocated less
+space than the the link mode list in the kernel supports, we will
+overwrite past the end of the user's usettings object.
+
+You cannot unconditionally copy sizeof(usettings) back to the user,
+as store_ksettings_for_user() will do.
+
+I think you have to truncate here, copying only the array elements the
+user's structure actually has space for.  That's the only way this can
+work.

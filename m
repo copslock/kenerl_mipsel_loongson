@@ -1,51 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Dec 2015 11:49:27 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:35473 "EHLO
-        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27013952AbbLQKtYyAvUa (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 17 Dec 2015 11:49:24 +0100
-Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
-        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 60D8241F8E61;
-        Thu, 17 Dec 2015 10:49:19 +0000 (GMT)
-Received: from mailapp01.imgtec.com ([10.100.180.241])
-  by imgpgp01.kl.imgtec.org (PGP Universal service);
-  Thu, 17 Dec 2015 10:49:19 +0000
-X-PGP-Universal: processed;
-        by imgpgp01.kl.imgtec.org on Thu, 17 Dec 2015 10:49:19 +0000
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Websense Email Security Gateway with ESMTPS id 294F6526ACFF6;
-        Thu, 17 Dec 2015 10:49:17 +0000 (GMT)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- HHMAIL01.hh.imgtec.org (10.100.10.19) with Microsoft SMTP Server (TLS) id
- 14.3.235.1; Thu, 17 Dec 2015 10:49:19 +0000
-Received: from localhost (192.168.154.110) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Thu, 17 Dec
- 2015 10:49:18 +0000
-Date:   Thu, 17 Dec 2015 10:49:18 +0000
-From:   James Hogan <james.hogan@imgtec.com>
-To:     Paolo Bonzini <pbonzini@redhat.com>
-CC:     Ralf Baechle <ralf@linux-mips.org>, Gleb Natapov <gleb@kernel.org>,
-        <linux-mips@linux-mips.org>, <kvm@vger.kernel.org>
-Subject: Re: [PATCH 00/16] MIPS: KVM: Misc trivial cleanups
-Message-ID: <20151217104918.GA2789@jhogan-linux.le.imgtec.org>
-References: <1450309781-28030-1-git-send-email-james.hogan@imgtec.com>
- <567290D2.70207@redhat.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Dec 2015 13:54:25 +0100 (CET)
+Received: from mail.efficios.com ([78.47.125.74]:45179 "EHLO mail.efficios.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27008659AbbLQMyVRsm7T (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 17 Dec 2015 13:54:21 +0100
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by mail.efficios.com (Postfix) with ESMTP id AFAFD340319;
+        Thu, 17 Dec 2015 12:54:17 +0000 (UTC)
+Received: from mail.efficios.com ([127.0.0.1])
+        by localhost (evm-mail-1.efficios.com [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id 5JMlhMlFQiOx; Thu, 17 Dec 2015 12:54:13 +0000 (UTC)
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by mail.efficios.com (Postfix) with ESMTP id 3B0A23403DD;
+        Thu, 17 Dec 2015 12:54:13 +0000 (UTC)
+X-Virus-Scanned: amavisd-new at efficios.com
+Received: from mail.efficios.com ([127.0.0.1])
+        by localhost (evm-mail-1.efficios.com [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id w7ukhVzCX30x; Thu, 17 Dec 2015 12:54:13 +0000 (UTC)
+Received: from evm-mail-1.efficios.com (evm-mail-1.efficios.com [78.47.125.74])
+        by mail.efficios.com (Postfix) with ESMTP id 0D21D340319;
+        Thu, 17 Dec 2015 12:54:13 +0000 (UTC)
+Date:   Thu, 17 Dec 2015 12:54:12 +0000 (UTC)
+From:   Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+To:     "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>,
+        Jon Bernard <jbernard@debian.org>
+Cc:     Michael Jeanson <mjeanson@efficios.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        linux-mips <linux-mips@linux-mips.org>,
+        linux-kernel@vger.kernel.org,
+        "James E.J. Bottomley" <jejb@parisc-linux.org>,
+        Helge Deller <deller@gmx.de>,
+        linux-parisc <linux-parisc@vger.kernel.org>,
+        Ed Swierk <eswierk@skyportsystems.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Message-ID: <663068619.259007.1450356852694.JavaMail.zimbra@efficios.com>
+In-Reply-To: <1450303792-27470-1-git-send-email-mathieu.desnoyers@efficios.com>
+References: <1450303792-27470-1-git-send-email-mathieu.desnoyers@efficios.com>
+Subject: Re: [RFC PATCH urcu on mips, parisc] Fix: compat_futex should
+ work-around futex signal-restart kernel bug
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="ibTvN161/egqYuK8"
-Content-Disposition: inline
-In-Reply-To: <567290D2.70207@redhat.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-X-Originating-IP: [192.168.154.110]
-X-ESG-ENCRYPT-TAG: e68ca197
-Return-Path: <James.Hogan@imgtec.com>
+Content-Type: multipart/mixed; 
+        boundary="----=_Part_259005_501537116.1450356852692"
+X-Originating-IP: [78.47.125.74]
+X-Mailer: Zimbra 8.6.0_GA_1178 (ZimbraWebClient - FF42 (Linux)/8.6.0_GA_1178)
+Thread-Topic: compat_futex should work-around futex signal-restart kernel bug
+Thread-Index: yCkBslMyIgxq4n9NRGE8Kc2gSaRfqw==
+Return-Path: <compudj@efficios.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50675
+X-archive-position: 50676
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: mathieu.desnoyers@efficios.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,120 +65,138 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---ibTvN161/egqYuK8
+------=_Part_259005_501537116.1450356852692
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
 
-Hi Paolo.
+----- On Dec 16, 2015, at 5:09 PM, Mathieu Desnoyers mathieu.desnoyers@efficios.com wrote:
 
-On Thu, Dec 17, 2015 at 11:39:14AM +0100, Paolo Bonzini wrote:
->=20
->=20
-> On 17/12/2015 00:49, James Hogan wrote:
-> > This patchset contains a bunch of miscellaneous cleanups (which are
-> > mostly trivial) for MIPS KVM & MIPS headers, such as:
-> > - Style/whitespace fixes
-> > - General cleanup and removal of dead code.
-> > - Moving/refactoring of general MIPS definitions out of arch/mips/kvm/
-> >   and into arch/mips/include/asm/ so they can be shared with the rest of
-> >   arch/mips. Specifically COP0 register bits, exception codes, cache
-> >   ops, & instruction opcodes.
-> > - Add MAINTAINERS entry for MIPS KVM.
-> >=20
-> > Due to the interaction with other arch/mips/ code, I think it makes
-> > sense for these to go via the MIPS tree.
->=20
-> No objection.
->=20
-> Acked-by: Paolo Bonzini <pbonzini@redhat.com>
+> When testing liburcu on a 3.18 Linux kernel, 2-core MIPS (cpu model :
+> Ingenic JZRISC V4.15  FPU V0.0), we notice that a blocked sys_futex
+> FUTEX_WAIT returns -1, errno=ENOSYS when interrupted by a SA_RESTART
+> signal handler. This spurious ENOSYS behavior causes hangs in liburcu
+> 0.9.x. Running a MIPS 3.18 kernel under a QEMU emulator exhibits the
+> same behavior. This might affect earlier kernels.
+> 
+> This issue appears to be fixed in 3.18.y stable kernels and 3.19, but
+> nevertheless, we should try to handle this kernel bug more gracefully
+> than a user-space hang due to unexpected spurious ENOSYS return value.
+
+It's actually fixed in 3.19, but not in 3.18.y stable kernels. The
+Linux kernel upstream fix commit is:
+e967ef02 "MIPS: Fix restart of indirect syscalls"
+
+I've created a small test program that could also be used on parisc
+to check if it suffers from the same issue (see attached).
+
+On bogus mips kernels, we see the following output:
+[OK] Test program with pid: 5748 SIGUSR1 handler
+[FAIL] futex returns -1, Function not implemented
+
+Let me know if someone can try it out on a parisc kernel.
 
 Thanks!
 
->=20
-> I think I'd use s8/u8 instead of int8_t/uint8_t in patch 15, but really
-> that's just me.  I'm fine either way, and that's really the only comment
-> I have on the series. :)
+Mathieu
 
-I'm inclined to agree. u?int(8|16|32)_t all over arch/mips/kvm/ instead
-of [us](8|16|32) irritates me as its not very kernel'y.
+> 
+> Therefore, fallback on the "async-safe" version of compat_futex in those
+> situations where FUTEX_WAIT returns ENOSYS. This async-safe fallback has
+> the nice property of being OK to use concurrently with other FUTEX_WAKE
+> and FUTEX_WAIT futex() calls, because it's simply a busy-wait scheme.
+> 
+> We suspect that parisc might be affected by a similar issue (Debian
+> build bots reported a similar hang on both mips and parisc), but we do
+> not have access to the hardware required to test this hypothesis.
+> 
+> Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+> CC: Michael Jeanson <mjeanson@efficios.com>
+> CC: Paul E. McKenney <paulmck@linux.vnet.ibm.com>
+> CC: Ralf Baechle <ralf@linux-mips.org>
+> CC: linux-mips@linux-mips.org
+> CC: linux-kernel@vger.kernel.org
+> CC: "James E.J. Bottomley" <jejb@parisc-linux.org>
+> CC: Helge Deller <deller@gmx.de>
+> CC: linux-parisc@vger.kernel.org
+> ---
+> compat_futex.c |  2 ++
+> urcu/futex.h   | 12 +++++++++++-
+> 2 files changed, 13 insertions(+), 1 deletion(-)
+> 
+> diff --git a/compat_futex.c b/compat_futex.c
+> index b7f78f0..9e918fe 100644
+> --- a/compat_futex.c
+> +++ b/compat_futex.c
+> @@ -111,6 +111,8 @@ end:
+>  * _ASYNC SIGNAL-SAFE_.
+>  * For now, timeout, uaddr2 and val3 are unused.
+>  * Waiter will busy-loop trying to read the condition.
+> + * It is OK to use compat_futex_async() on a futex address on which
+> + * futex() WAKE operations are also performed.
+>  */
+> 
+> int compat_futex_async(int32_t *uaddr, int op, int32_t val,
+> diff --git a/urcu/futex.h b/urcu/futex.h
+> index 4d16cfa..a17eda8 100644
+> --- a/urcu/futex.h
+> +++ b/urcu/futex.h
+> @@ -73,7 +73,17 @@ static inline int futex_noasync(int32_t *uaddr, int op,
+> int32_t val,
+> 
+> 	ret = futex(uaddr, op, val, timeout, uaddr2, val3);
+> 	if (caa_unlikely(ret < 0 && errno == ENOSYS)) {
+> -		return compat_futex_noasync(uaddr, op, val, timeout,
+> +		/*
+> +		 * The fallback on ENOSYS is the async-safe version of
+> +		 * the compat futex implementation, because the
+> +		 * async-safe compat implementation allows being used
+> +		 * concurrently with calls to futex(). Indeed, sys_futex
+> +		 * FUTEX_WAIT, on some architectures (e.g. mips), within
+> +		 * a given process, spuriously return ENOSYS due to
+> +		 * signal restart bugs on some kernel versions (e.g.
+> +		 * Linux kernel 3.18 and possibly earlier).
+> +		 */
+> +		return compat_futex_async(uaddr, op, val, timeout,
+> 				uaddr2, val3);
+> 	}
+> 	return ret;
+> --
+> 2.1.4
 
-Ralf: Maybe don't apply patch 15 (I've marked rejected in patchwork),
-and I'll do a wider cleanup at some point instead.
+-- 
+Mathieu Desnoyers
+EfficiOS Inc.
+http://www.efficios.com
 
-Cheers
-James
+------=_Part_259005_501537116.1450356852692
+Content-Type: text/x-c++src; name=test-sigrestart-futex.c
+Content-Disposition: attachment; filename=test-sigrestart-futex.c
+Content-Transfer-Encoding: base64
 
->=20
-> Paolo
->=20
-> > James Hogan (16):
-> >   MIPS: KVM: Trivial whitespace and style fixes
-> >   MIPS: KVM: Drop some unused definitions from kvm_host.h
-> >   MIPS: Move definition of DC bit to mipsregs.h
-> >   MIPS: KVM: Drop unused kvm_mips_host_tlb_inv_index()
-> >   MIPS: KVM: Convert EXPORT_SYMBOL to _GPL
-> >   MIPS: KVM: Refactor added offsetof()s
-> >   MIPS: KVM: Make kvm_mips_{init,exit}() static
-> >   MIPS: Move Cause.ExcCode trap codes to mipsregs.h
-> >   MIPS: Update trap codes
-> >   MIPS: Use EXCCODE_ constants with set_except_vector()
-> >   MIPS: Break down cacheops.h definitions
-> >   MIPS: KVM: Use cacheops.h definitions
-> >   MIPS: Move KVM specific opcodes into asm/inst.h
-> >   MIPS: KVM: Add missing newline to kvm_err()
-> >   MIPS: KVM: Consistent use of uint*_t in MMIO handling
-> >   MAINTAINERS: Add KVM for MIPS entry
-> >=20
-> >  MAINTAINERS                       |   8 +++
-> >  arch/mips/Kconfig                 |   3 +-
-> >  arch/mips/include/asm/cacheops.h  | 106 ++++++++++++++++++++----------=
-----
-> >  arch/mips/include/asm/kvm_host.h  |  39 +------------
-> >  arch/mips/include/asm/mipsregs.h  |  34 +++++++++++
-> >  arch/mips/include/uapi/asm/inst.h |   3 +-
-> >  arch/mips/kernel/cpu-bugs64.c     |   8 +--
-> >  arch/mips/kernel/traps.c          |  52 ++++++++---------
-> >  arch/mips/kvm/callback.c          |   2 +-
-> >  arch/mips/kvm/dyntrans.c          |  10 +---
-> >  arch/mips/kvm/emulate.c           | 118 ++++++++++++++++--------------=
---------
-> >  arch/mips/kvm/interrupt.c         |   8 +--
-> >  arch/mips/kvm/locore.S            |  12 ++--
-> >  arch/mips/kvm/mips.c              |  38 ++++++------
-> >  arch/mips/kvm/opcode.h            |  22 -------
-> >  arch/mips/kvm/tlb.c               |  77 +++++++------------------
-> >  arch/mips/kvm/trap_emul.c         |   1 -
-> >  17 files changed, 245 insertions(+), 296 deletions(-)
-> >  delete mode 100644 arch/mips/kvm/opcode.h
-> >=20
-> > Cc: Ralf Baechle <ralf@linux-mips.org>
-> > Cc: Paolo Bonzini <pbonzini@redhat.com>
-> > Cc: Gleb Natapov <gleb@kernel.org>
-> > Cc: linux-mips@linux-mips.org
-> > Cc: kvm@vger.kernel.org
-> >=20
-
---ibTvN161/egqYuK8
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQIcBAEBCAAGBQJWcpMuAAoJEGwLaZPeOHZ6VhYQAJ+PwFTimcObsAV65URdWakP
-G9w/rkpv+XYuIfA4dh5p44njEhL5+r9kXrIps7u03Cv3SU8h+PmZej2Ni9Tt8RQP
-pBSOc0AxJFU8tdLkIju1oHflAblbkOe7OXJTFKZA1NEBn5diJt6e8CCeC8rkZbB/
-wvKDmrvfZuDqCrPj4+XOU1rVpLEeQem+oH4qXvTudQEuz/8u8FTZjFVb/YjT+vp5
-6XQmc/6Oh2nZO1HU67nrqu/VdwesokbaKzc71CZ1SqJi2XACzFZgcx4l0D6VNvrU
-G4LAr0IoYh9v1cpvwbi9mYzzTA+9Kq66b+EpxtCJj1OyqAMi4imNtrpBq56hlM99
-dHSJFXwm8iPF+zwR+VhoAZMQpbDC+T+6M1J+V9j5DwrttyAuOAeYMqG1zEpbbPTC
-QfeNMxIO82gjAQU5fDqkxrZPkLibCJtVlZqe4/WOPybS1Xzf6L4UOSSDka6UNaKM
-2n4Bo8o1h8cDamA1YHA1nHB+HWkSQTXVROj8jBJZrW0r0gWJI+Ex9cHgDFLOt1T9
-J9HDHyshMrR6WLk4NM+rww4370h+fwQ3Fdz58kjjNgIDfAgcSz0QKL6m2RQYMdil
-jUdshWUvIcgmfPsaMCCBkP9O6RjEpKJ7+gD5BB27T/u35dK8K0E1WuarH+IatNru
-6ccg+2wvsctx4NKrhwh8
-=sNqW
------END PGP SIGNATURE-----
-
---ibTvN161/egqYuK8--
+I2RlZmluZSBfR05VX1NPVVJDRQojaW5jbHVkZSA8c3RkaW8uaD4KI2luY2x1ZGUgPHN5cy90eXBl
+cy5oPgojaW5jbHVkZSA8dW5pc3RkLmg+CiNpbmNsdWRlIDxzaWduYWwuaD4KI2luY2x1ZGUgPHN0
+ZGxpYi5oPgojaW5jbHVkZSA8ZXJybm8uaD4KI2luY2x1ZGUgPHN5cy9zeXNjYWxsLmg+CgpzdGF0
+aWMgaW50IHZhbHVlID0gLTE7CgojZGVmaW5lIEZVVEVYX1dBSVQJCTAKI2RlZmluZSBGVVRFWF9X
+QUtFCQkxCgpzdGF0aWMgaW50IGZ1dGV4KGludDMyX3QgKnVhZGRyLCBpbnQgb3AsIGludDMyX3Qg
+dmFsLAoJCWNvbnN0IHN0cnVjdCB0aW1lc3BlYyAqdGltZW91dCwgaW50MzJfdCAqdWFkZHIyLCBp
+bnQzMl90IHZhbDMpCnsKCXJldHVybiBzeXNjYWxsKF9fTlJfZnV0ZXgsIHVhZGRyLCBvcCwgdmFs
+LCB0aW1lb3V0LAoJCQl1YWRkcjIsIHZhbDMpOwp9CgpzdGF0aWMgdm9pZCBzaWdoYW5kbGVyKGlu
+dCBzaWdubywgc2lnaW5mb190ICpzaWdpbmZvLCB2b2lkICpjb250ZXh0KQp7CglmcHJpbnRmKHN0
+ZGVyciwgIltPS10gVGVzdCBwcm9ncmFtIHdpdGggcGlkOiAlZCBTSUdVU1IxIGhhbmRsZXJcbiIs
+CgkJZ2V0cGlkKCkpOwp9CgppbnQgbWFpbihpbnQgYXJnYywgY2hhciAqKmFyZ3YpCnsKCXN0cnVj
+dCBzaWdhY3Rpb24gYWN0OwoJcGlkX3QgcGlkLCB3YWl0X3BpZDsKCWludCByZXQ7CgoJZnByaW50
+ZihzdGRlcnIsICJUZXN0aW5nIGZ1dGV4IHNpZ3Jlc3RhcnQuIFN0b3Agd2l0aCBDVFJMLWMuXG4i
+LAoJCWdldHBpZCgpKTsKCWFjdC5zYV9zaWdhY3Rpb24gPSBzaWdoYW5kbGVyOwoJYWN0LnNhX2Zs
+YWdzID0gU0FfU0lHSU5GTyB8IFNBX1JFU1RBUlQ7CgkvL2FjdC5zYV9mbGFncyA9IFNBX1NJR0lO
+Rk87CglzaWdlbXB0eXNldCgmYWN0LnNhX21hc2spOwoJcmV0ID0gc2lnYWN0aW9uKFNJR1VTUjEs
+ICZhY3QsIE5VTEwpOwoJaWYgKHJldCkKCQlhYm9ydCgpOwoKCXBpZCA9IGZvcmsoKTsKCWlmIChw
+aWQgPiAwKSB7CgkJLyogcGFyZW50ICovCgkJZm9yICg7OykgewoJCQlyZXQgPSBraWxsKHBpZCwg
+U0lHVVNSMSk7CgkJCWlmIChyZXQpIHsKCQkJCXBlcnJvcigia2lsbCIpOwoJCQkJYWJvcnQoKTsK
+CQkJfQoJCQlzbGVlcCgxKTsKCQl9Cgl9IGVsc2UgewoJCWlmIChwaWQgPCAwKSB7CgkJCWFib3J0
+KCk7CgkJfQoJCS8qIGNoaWxkICovCgkJZm9yICg7OykgewoJCQlyZXQgPSBmdXRleCgmdmFsdWUs
+IEZVVEVYX1dBSVQsIC0xLCBOVUxMLCBOVUxMLCAwKTsKCQkJaWYgKHJldCA8IDApIHsKCQkJCWZw
+cmludGYoc3RkZXJyLCAiW0ZBSUxdIGZ1dGV4IHJldHVybnMgJWQsICVzXG4iLAoJCQkJCXJldCwg
+c3RyZXJyb3IoZXJybm8pKTsKCQkJfSBlbHNlIHsKCQkJCWZwcmludGYoc3RkZXJyLCAiW0ZBSUxd
+IGZ1dGV4IHJldHVybnMgJWQgKHVuZXhwZWN0ZWQpXG4iLAoJCQkJCXJldCk7CgkJCX0KCQl9Cgl9
+CgoJcmV0dXJuIDA7Cn0K
+------=_Part_259005_501537116.1450356852692--

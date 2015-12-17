@@ -1,58 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Dec 2015 17:23:15 +0100 (CET)
-Received: from mout.gmx.net ([212.227.17.20]:63615 "EHLO mout.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27013719AbbLQQXL7BAmr (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 17 Dec 2015 17:23:11 +0100
-Received: from [155.56.68.219] by 3capp-gmx-bs60.server.lan (via HTTP); Thu,
- 17 Dec 2015 17:22:50 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Dec 2015 19:05:35 +0100 (CET)
+Received: from exsmtp01.microchip.com ([198.175.253.37]:54347 "EHLO
+        email.microchip.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S27014123AbbLQSFdmg4sg (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 17 Dec 2015 19:05:33 +0100
+Received: from CHN-SV-EXMX01.mchp-main.com ([fe80::453e:263d:be10:ebe8]) by
+ CHN-SV-EXCH01.mchp-main.com ([fe80::9840:ffdf:ec5:1335%29]) with mapi id
+ 14.03.0181.006; Thu, 17 Dec 2015 11:05:25 -0700
+From:   <Paul.Thacker@microchip.com>
+To:     <ulf.hansson@linaro.org>, <Joshua.Henderson@microchip.com>
+CC:     <linux-kernel@vger.kernel.org>, <linux-mips@linux-mips.org>,
+        <ralf@linux-mips.org>, <Andrei.Pistirica@microchip.com>,
+        <jdelvare@suse.de>, <geert@linux-m68k.org>, <cdoban@broadcom.com>,
+        <haojian.zhuang@gmail.com>, <luisbg@osg.samsung.com>,
+        <Weijun.Yang@csr.com>, <lokeshvutla@ti.com>,
+        <sbranden@broadcom.com>, <vincent.yang.fujitsu@gmail.com>,
+        <chaotian.jing@mediatek.com>, <ludovic.desroches@atmel.com>,
+        <shawn.lin@rock-chips.com>, <sboyd@codeaurora.org>,
+        <yangbo.lu@freescale.com>, <haokexin@gmail.com>,
+        <ben@decadent.org.uk>, <andy.green@linaro.org>,
+        <linux-mmc@vger.kernel.org>
+Subject: RE: [PATCH v2 12/14] mmc: sdhci-pic32: Add PIC32 SDHCI host
+ controller driver
+Thread-Topic: [PATCH v2 12/14] mmc: sdhci-pic32: Add PIC32 SDHCI host
+ controller driver
+Thread-Index: AQHRNsCt9Pq1H7UTskmnIVXyoRiPXp7N5mAAgAGV4zA=
+Date:   Thu, 17 Dec 2015 18:05:24 +0000
+Message-ID: <F2D704DDA6AE8B4A87FF87509480F4A449E07947@CHN-SV-EXMX01.mchp-main.com>
+References: <1450133093-7053-1-git-send-email-joshua.henderson@microchip.com>
+        <1450133093-7053-13-git-send-email-joshua.henderson@microchip.com>
+ <CAPDyKFpQeq-9G_=n62c8uE+Tkiz3o9jManiOuCZG2qNKwkZ5EQ@mail.gmail.com>
+In-Reply-To: <CAPDyKFpQeq-9G_=n62c8uE+Tkiz3o9jManiOuCZG2qNKwkZ5EQ@mail.gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.10.76.4]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Message-ID: <trinity-0a355ae2-e5eb-40e5-8561-41a2e8e251e2-1450369370294@3capp-gmx-bs60>
-From:   "Helge Deller" <deller@gmx.de>
-To:     "Mathieu Desnoyers" <mathieu.desnoyers@efficios.com>
-Cc:     "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>,
-        "Jon Bernard" <jbernard@debian.org>,
-        "Michael Jeanson" <mjeanson@efficios.com>,
-        "Ralf Baechle" <ralf@linux-mips.org>,
-        linux-mips <linux-mips@linux-mips.org>,
-        linux-kernel@vger.kernel.org,
-        "James E.J. Bottomley" <jejb@parisc-linux.org>,
-        linux-parisc <linux-parisc@vger.kernel.org>,
-        "Ed Swierk" <eswierk@skyportsystems.com>,
-        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>
-Subject: Aw: Re: [RFC PATCH urcu on mips, parisc] Fix: compat_futex should
- work-around futex signal-restart kernel bug
-Content-Type: text/plain; charset=UTF-8
-Date:   Thu, 17 Dec 2015 17:22:50 +0100
-Importance: normal
-Sensitivity: Normal
-In-Reply-To: <663068619.259007.1450356852694.JavaMail.zimbra@efficios.com>
-References: <1450303792-27470-1-git-send-email-mathieu.desnoyers@efficios.com>,
- <663068619.259007.1450356852694.JavaMail.zimbra@efficios.com>
-X-UI-Message-Type: mail
-X-Priority: 3
-X-Provags-ID: V03:K0:S4GvqvUzGKUVaj6GoSrZC1ke0+mBTKijM7/5wWiXv2E
- SSUVRF3K6wQFaxdbNLHZnFZ1m29kpubSD5hcsz2rcervAwcuxT
- AxciIwsC2Erc4DV2wFPyKuHk4WBx0o3pSJ2CnY7v5Wi9DKK6Au
- fn0jw1FPxKj9PmY093DtJ375rDfHpNDCWzjgEjncMFKIv0hUOY
- EiksuPJk5Oh4TBFVcUaxAwFE2QlFh1djaPw0lAusB+LS2+j0JD
- QXBiM4yctg1YegOATi3fvXwh3I9Fx7zzkqQet6zWEigm+AznNX kA/fm8=
-X-UI-Out-Filterresults: notjunk:1;V01:K0:PZnGyK9QlsI=:oaiCQQ1lTj/aYqDsdWah+D
- aEEq5RmQGnN39tYeUQdFD/YeXbiAJCx3DXgKFxjnR3Ebw0pXZ36IniYNZgWRPQQJJ7Cg/gbPL
- hsHk6fGW8euv9k+OfJ/JI4X/Haf4TN3MNsHQPbpfAAIl+EWZTjWz1lGn7W3VOSqpk7FMG/zWh
- p4d2+b0ePhOIn/FwoMnFySqf158ZvDcL9JgtXL4IXhEp4iMmGs8Frz+bnhC7XUSSzINmVUoCR
- s4XqymQl4/T5J3Yc704Po73pGtnz06FbyKQpAv9qGcXuu3mIzK26Fe4vlRAIhGHSvnefhJ3cr
- mek+WpAw7tn9brt4iB1VgN62+ZKEtrDZ0j60XUrKDaObC6wqcVYLnmjIIkWuol6Q67I+Ok1gE
- ZT0b1A4hmpgh0gS7zqeTsPSjTgzbC5Fnc7ayFMdSDYJwNtTnH8I4Lq3qhlgto/WQcBEoA0OtT
- 81cneGnt4A==
-Return-Path: <deller@gmx.de>
+Return-Path: <Paul.Thacker@microchip.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50678
+X-archive-position: 50679
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: deller@gmx.de
+X-original-sender: Paul.Thacker@microchip.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -65,109 +59,118 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hello Mathieu,
-
-> > When testing liburcu on a 3.18 Linux kernel, 2-core MIPS (cpu model :
-> > Ingenic JZRISC V4.15  FPU V0.0), we notice that a blocked sys_futex
-> > FUTEX_WAIT returns -1, errno=ENOSYS when interrupted by a SA_RESTART
-> > signal handler. This spurious ENOSYS behavior causes hangs in liburcu
-> > 0.9.x. Running a MIPS 3.18 kernel under a QEMU emulator exhibits the
-> > same behavior. This might affect earlier kernels.
-> > 
-> > This issue appears to be fixed in 3.18.y stable kernels and 3.19, but
-> > nevertheless, we should try to handle this kernel bug more gracefully
-> > than a user-space hang due to unexpected spurious ENOSYS return value.
-> 
-> It's actually fixed in 3.19, but not in 3.18.y stable kernels. The
-> Linux kernel upstream fix commit is:
-> e967ef02 "MIPS: Fix restart of indirect syscalls"
-
-But that patch fixes mips only.
- 
-> I've created a small test program that could also be used on parisc
-> to check if it suffers from the same issue (see attached).
-> 
-> On bogus mips kernels, we see the following output:
-> [OK] Test program with pid: 5748 SIGUSR1 handler
-> [FAIL] futex returns -1, Function not implemented
-
-I tested it on a recent 4.2 kernel on parisc.
-It fails as you describe:
-
-Testing futex sigrestart. Stop with CTRL-c.
-[OK] Test program with pid: 1361 SIGUSR1 handler
-[OK] Test program with pid: 1361 SIGUSR1 handler
-[FAIL] futex returns -1, Function not implemented
-[OK] Test program with pid: 1361 SIGUSR1 handler
-[FAIL] futex returns -1, Function not implemented
-
-strace gives:
-[pid  1329] futex(0x1210c, FUTEX_WAIT, -1, NULL <unfinished ...>
-[pid  1328] nanosleep({1, 0},  <unfinished ...>
-[pid  1329] <... futex resumed> )       = ? ERESTARTSYS (To be restarted if SA_RESTART is set)
-[pid  1329] write(2, "[FAIL] futex returns -1, Functio"..., 50[FAIL] futex returns -1, Function not implemented)
-
-
-> > Therefore, fallback on the "async-safe" version of compat_futex in those
-> > situations where FUTEX_WAIT returns ENOSYS. This async-safe fallback has
-> > the nice property of being OK to use concurrently with other FUTEX_WAKE
-> > and FUTEX_WAIT futex() calls, because it's simply a busy-wait scheme.
-> > 
-> > We suspect that parisc might be affected by a similar issue (Debian
-> > build bots reported a similar hang on both mips and parisc), but we do
-> > not have access to the hardware required to test this hypothesis.
-
-If you want access to a machine, let me know.
-I'll try the patch below as well..
-
-> > Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-> > CC: Michael Jeanson <mjeanson@efficios.com>
-> > CC: Paul E. McKenney <paulmck@linux.vnet.ibm.com>
-> > CC: Ralf Baechle <ralf@linux-mips.org>
-> > CC: linux-mips@linux-mips.org
-> > CC: linux-kernel@vger.kernel.org
-> > CC: "James E.J. Bottomley" <jejb@parisc-linux.org>
-> > CC: Helge Deller <deller@gmx.de>
-> > CC: linux-parisc@vger.kernel.org
-> > ---
-> > compat_futex.c |  2 ++
-> > urcu/futex.h   | 12 +++++++++++-
-> > 2 files changed, 13 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/compat_futex.c b/compat_futex.c
-> > index b7f78f0..9e918fe 100644
-> > --- a/compat_futex.c
-> > +++ b/compat_futex.c
-> > @@ -111,6 +111,8 @@ end:
-> >  * _ASYNC SIGNAL-SAFE_.
-> >  * For now, timeout, uaddr2 and val3 are unused.
-> >  * Waiter will busy-loop trying to read the condition.
-> > + * It is OK to use compat_futex_async() on a futex address on which
-> > + * futex() WAKE operations are also performed.
-> >  */
-> > 
-> > int compat_futex_async(int32_t *uaddr, int op, int32_t val,
-> > diff --git a/urcu/futex.h b/urcu/futex.h
-> > index 4d16cfa..a17eda8 100644
-> > --- a/urcu/futex.h
-> > +++ b/urcu/futex.h
-> > @@ -73,7 +73,17 @@ static inline int futex_noasync(int32_t *uaddr, int op,
-> > int32_t val,
-> > 
-> > 	ret = futex(uaddr, op, val, timeout, uaddr2, val3);
-> > 	if (caa_unlikely(ret < 0 && errno == ENOSYS)) {
-> > -		return compat_futex_noasync(uaddr, op, val, timeout,
-> > +		/*
-> > +		 * The fallback on ENOSYS is the async-safe version of
-> > +		 * the compat futex implementation, because the
-> > +		 * async-safe compat implementation allows being used
-> > +		 * concurrently with calls to futex(). Indeed, sys_futex
-> > +		 * FUTEX_WAIT, on some architectures (e.g. mips), within
-> > +		 * a given process, spuriously return ENOSYS due to
-> > +		 * signal restart bugs on some kernel versions (e.g.
-> > +		 * Linux kernel 3.18 and possibly earlier).
-> > +		 */
-> > +		return compat_futex_async(uaddr, op, val, timeout,
-> > 				uaddr2, val3);
-> > 	}
-> > 	return ret;
+T24gMTIvMTYvMjAxNSAzOjQ4IEFNLCBVbGYgSGFuc3NvbiB3cm90ZToNCj4gDQo+IFsuLi5dDQo+
+IA0KPiA+ICtzdGF0aWMgaW50IHBpYzMyX3NkaGNpX3Byb2JlKHN0cnVjdCBwbGF0Zm9ybV9kZXZp
+Y2UgKnBkZXYpIHsNCj4gPiArICAgICAgIHN0cnVjdCBkZXZpY2UgKmRldiA9ICZwZGV2LT5kZXY7
+DQo+ID4gKyAgICAgICBzdHJ1Y3Qgc2RoY2lfaG9zdCAqaG9zdDsNCj4gPiArICAgICAgIHN0cnVj
+dCByZXNvdXJjZSAqaW9tZW07DQo+ID4gKyAgICAgICBzdHJ1Y3QgcGljMzJfc2RoY2lfcGRhdGEg
+KnNkaGNpX3BkYXRhOw0KPiA+ICsgICAgICAgc3RydWN0IHBpYzMyX3NkaGNpX3BsYXRmb3JtX2Rh
+dGEgKnBsYXRfZGF0YTsNCj4gPiArICAgICAgIHVuc2lnbmVkIGludCBjbGtfcmF0ZSA9IDA7DQo+
+ID4gKyAgICAgICBpbnQgcmV0Ow0KPiA+ICsgICAgICAgc3RydWN0IHBpbmN0cmwgKnBpbmN0cmw7
+DQo+ID4gKw0KPiA+ICsgICAgICAgaG9zdCA9IHNkaGNpX2FsbG9jX2hvc3QoZGV2LCBzaXplb2Yo
+KnNkaGNpX3BkYXRhKSk7DQo+ID4gKyAgICAgICBpZiAoSVNfRVJSKGhvc3QpKSB7DQo+ID4gKyAg
+ICAgICAgICAgICAgIHJldCA9IFBUUl9FUlIoaG9zdCk7DQo+ID4gKyAgICAgICAgICAgICAgIGRl
+dl9lcnIoJnBkZXYtPmRldiwgImNhbm5vdCBhbGxvY2F0ZSBtZW1vcnkgZm9yIHNkaGNpXG4iKTsN
+Cj4gPiArICAgICAgICAgICAgICAgZ290byBlcnI7DQo+ID4gKyAgICAgICB9DQo+ID4gKw0KPiA+
+ICsgICAgICAgc2RoY2lfcGRhdGEgPSBzZGhjaV9wcml2KGhvc3QpOw0KPiA+ICsgICAgICAgc2Ro
+Y2lfcGRhdGEtPnBkZXYgPSBwZGV2Ow0KPiA+ICsgICAgICAgcGxhdGZvcm1fc2V0X2RydmRhdGEo
+cGRldiwgaG9zdCk7DQo+ID4gKw0KPiA+ICsgICAgICAgaW9tZW0gPSBwbGF0Zm9ybV9nZXRfcmVz
+b3VyY2UocGRldiwgSU9SRVNPVVJDRV9NRU0sIDApOw0KPiA+ICsgICAgICAgaG9zdC0+aW9hZGRy
+ID0gZGV2bV9pb3JlbWFwX3Jlc291cmNlKCZwZGV2LT5kZXYsIGlvbWVtKTsNCj4gPiArICAgICAg
+IGlmIChJU19FUlIoaG9zdC0+aW9hZGRyKSkgew0KPiA+ICsgICAgICAgICAgICAgICByZXQgPSBQ
+VFJfRVJSKGhvc3QtPmlvYWRkcik7DQo+ID4gKyAgICAgICAgICAgICAgIGRldl9lcnIoJnBkZXYt
+PmRldiwgInVuYWJsZSB0byBtYXAgaW9tZW06ICVkXG4iLCByZXQpOw0KPiA+ICsgICAgICAgICAg
+ICAgICBnb3RvIGVycl9ob3N0Ow0KPiA+ICsgICAgICAgfQ0KPiA+ICsNCj4gPiArICAgICAgIHBs
+YXRfZGF0YSA9IHBkZXYtPmRldi5wbGF0Zm9ybV9kYXRhOw0KPiA+ICsgICAgICAgaWYgKHBsYXRf
+ZGF0YSAmJiBwbGF0X2RhdGEtPnNldHVwX2RtYSkgew0KPiA+ICsgICAgICAgICAgICAgICByZXQg
+PSBwbGF0X2RhdGEtPnNldHVwX2RtYShBRE1BX0ZJRk9fUkRfVEhTSExELA0KPiA+ICsgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBBRE1BX0ZJRk9fV1JfVEhTSExEKTsN
+Cj4gPiArICAgICAgICAgICAgICAgaWYgKHJldCkNCj4gPiArICAgICAgICAgICAgICAgICAgICAg
+ICBnb3RvIGVycl9ob3N0Ow0KPiA+ICsgICAgICAgfQ0KPiA+ICsNCj4gPiArICAgICAgIHBpbmN0
+cmwgPSBkZXZtX3BpbmN0cmxfZ2V0X3NlbGVjdF9kZWZhdWx0KCZwZGV2LT5kZXYpOw0KPiANCj4g
+VGhpcyBpc24ndCBuZWVkIGFzIGl0J3MgYWxyZWFkeSBoYW5kbGVkIGJ5IHRoZSBQTSBjb3JlLg0K
+DQpBY2suIFdpbGwgcmVtb3ZlLg0KDQo+IA0KPiA+ICsgICAgICAgaWYgKElTX0VSUihwaW5jdHJs
+KSkgew0KPiA+ICsgICAgICAgICAgICAgICByZXQgPSBQVFJfRVJSKHBpbmN0cmwpOw0KPiA+ICsg
+ICAgICAgICAgICAgICBkZXZfd2FybigmcGRldi0+ZGV2LCAiTm8gcGluY3RybCBwcm92aWRlZCAl
+ZFxuIiwgcmV0KTsNCj4gPiArICAgICAgICAgICAgICAgaWYgKHJldCA9PSAtRVBST0JFX0RFRkVS
+KQ0KPiA+ICsgICAgICAgICAgICAgICAgICAgICAgIGdvdG8gZXJyX2hvc3Q7DQo+ID4gKyAgICAg
+ICB9DQo+ID4gKw0KPiA+ICsgICAgICAgaG9zdC0+b3BzID0gJnBpYzMyX3NkaGNpX29wczsNCj4g
+PiArICAgICAgIGhvc3QtPmlycSA9IHBsYXRmb3JtX2dldF9pcnEocGRldiwgMCk7DQo+ID4gKw0K
+PiA+ICsgICAgICAgc2RoY2lfcGRhdGEtPnN5c19jbGsgPSBkZXZtX2Nsa19nZXQoJnBkZXYtPmRl
+diwgInN5c19jbGsiKTsNCj4gPiArICAgICAgIGlmIChJU19FUlIoc2RoY2lfcGRhdGEtPnN5c19j
+bGspKSB7DQo+ID4gKyAgICAgICAgICAgICAgIHJldCA9IFBUUl9FUlIoc2RoY2lfcGRhdGEtPnN5
+c19jbGspOw0KPiA+ICsgICAgICAgICAgICAgICBkZXZfZXJyKCZwZGV2LT5kZXYsICJFcnJvciBn
+ZXR0aW5nIGNsb2NrXG4iKTsNCj4gPiArICAgICAgICAgICAgICAgZ290byBlcnJfaG9zdDsNCj4g
+PiArICAgICAgIH0NCj4gPiArDQo+ID4gKyAgICAgICAvKiBFbmFibGUgY2xvY2sgd2hlbiBhdmFp
+bGFibGUhICovDQo+ID4gKyAgICAgICByZXQgPSBjbGtfcHJlcGFyZV9lbmFibGUoc2RoY2lfcGRh
+dGEtPnN5c19jbGspOw0KPiA+ICsgICAgICAgaWYgKHJldCkgew0KPiA+ICsgICAgICAgICAgICAg
+ICBkZXZfZGJnKCZwZGV2LT5kZXYsICJFcnJvciBlbmFibGluZyBjbG9ja1xuIik7DQo+ID4gKyAg
+ICAgICAgICAgICAgIGdvdG8gZXJyX2hvc3Q7DQo+ID4gKyAgICAgICB9DQo+ID4gKw0KPiA+ICsg
+ICAgICAgLyogU0RIIENMSyBlbmFibGUgKi8NCj4gPiArICAgICAgIHNkaGNpX3BkYXRhLT5iYXNl
+X2NsayA9IGRldm1fY2xrX2dldCgmcGRldi0+ZGV2LCAiYmFzZV9jbGsiKTsNCj4gPiArICAgICAg
+IGlmIChJU19FUlIoc2RoY2lfcGRhdGEtPmJhc2VfY2xrKSkgew0KPiA+ICsgICAgICAgICAgICAg
+ICByZXQgPSBQVFJfRVJSKHNkaGNpX3BkYXRhLT5iYXNlX2Nsayk7DQo+ID4gKyAgICAgICAgICAg
+ICAgIGRldl9lcnIoJnBkZXYtPmRldiwgIkVycm9yIGdldHRpbmcgY2xvY2tcbiIpOw0KPiA+ICsg
+ICAgICAgICAgICAgICBnb3RvIGVycl9ob3N0Ow0KPiA+ICsgICAgICAgfQ0KPiA+ICsNCj4gPiAr
+ICAgICAgIC8qIEVuYWJsZSBjbG9jayB3aGVuIGF2YWlsYWJsZSEgKi8NCj4gPiArICAgICAgIHJl
+dCA9IGNsa19wcmVwYXJlX2VuYWJsZShzZGhjaV9wZGF0YS0+YmFzZV9jbGspOw0KPiA+ICsgICAg
+ICAgaWYgKHJldCkgew0KPiA+ICsgICAgICAgICAgICAgICBkZXZfZGJnKCZwZGV2LT5kZXYsICJF
+cnJvciBlbmFibGluZyBjbG9ja1xuIik7DQo+ID4gKyAgICAgICAgICAgICAgIGdvdG8gZXJyX2hv
+c3Q7DQo+ID4gKyAgICAgICB9DQo+ID4gKw0KPiA+ICsgICAgICAgY2xrX3JhdGUgPSBjbGtfZ2V0
+X3JhdGUoc2RoY2lfcGRhdGEtPmJhc2VfY2xrKTsNCj4gPiArICAgICAgIGRldl9kYmcoJnBkZXYt
+PmRldiwgImJhc2UgY2xvY2sgYXQ6ICV1XG4iLCBjbGtfcmF0ZSk7DQo+ID4gKyAgICAgICBjbGtf
+cmF0ZSA9IGNsa19nZXRfcmF0ZShzZGhjaV9wZGF0YS0+c3lzX2Nsayk7DQo+ID4gKyAgICAgICBk
+ZXZfZGJnKCZwZGV2LT5kZXYsICJzeXMgY2xvY2sgYXQ6ICV1XG4iLCBjbGtfcmF0ZSk7DQo+IA0K
+PiBUaGlzIGxvb2tzIGxpa2Ugc29tZSBsZWZ0b3ZlciBmcm9tIGEgZGVidWdnaW5nIHRhc2suIENh
+biB5b3UgcmVtb3ZlIHRoZW0/DQo+IA0KDQpZZXMsIHRoZXNlIGFyZSBub3QgbmVlZGVkIGFuZCB3
+aWxsIGJlIHJlbW92ZWQuDQoNCj4gPiArDQo+ID4gKyAgICAgICBob3N0LT5xdWlya3MyIHw9IFNE
+SENJX1FVSVJLMl9OT18xXzhfVjsNCj4gPiArDQo+ID4gKyAgICAgICBob3N0LT5xdWlya3MgfD0g
+U0RIQ0lfUVVJUktfTk9fSElTUERfQklUOw0KPiA+ICsNCj4gPiArICAgICAgIHJldCA9IG1tY19v
+Zl9wYXJzZShob3N0LT5tbWMpOw0KPiA+ICsgICAgICAgaWYgKHJldCkNCj4gDQo+IEZyb20gdGhp
+cyBwb2ludCwgdGhlIGVycm9yIGhhbmRsaW5nIGRvZXNuJ3QgdW5kbyBjbGtfcHJlcGFyZV9lbmFi
+bGUoKS4NCj4gUGxlYXNlIGFkZCB0aGF0Lg0KDQpBY2suIFdpbGwgZG8uDQoNCj4gDQo+ID4gKyAg
+ICAgICAgICAgICAgIGdvdG8gZXJyX2hvc3Q7DQo+ID4gKw0KPiA+ICsgICAgICAgcmV0ID0gcGlj
+MzJfc2RoY2lfcHJvYmVfcGxhdGZvcm0ocGRldiwgc2RoY2lfcGRhdGEpOw0KPiA+ICsgICAgICAg
+aWYgKHJldCkgew0KPiA+ICsgICAgICAgICAgICAgICBkZXZfZXJyKCZwZGV2LT5kZXYsICJmYWls
+ZWQgdG8gcHJvYmUgcGxhdGZvcm0hXG4iKTsNCj4gPiArICAgICAgICAgICAgICAgZ290byBlcnJf
+aG9zdDsNCj4gPiArICAgICAgIH0NCj4gPiArDQo+ID4gKyAgICAgICByZXQgPSBzZGhjaV9hZGRf
+aG9zdChob3N0KTsNCj4gPiArICAgICAgIGlmIChyZXQpIHsNCj4gPiArICAgICAgICAgICAgICAg
+ZGV2X2RiZygmcGRldi0+ZGV2LCAiZXJyb3IgYWRkaW5nIGhvc3RcbiIpOw0KPiA+ICsgICAgICAg
+ICAgICAgICBnb3RvIGVycl9ob3N0Ow0KPiA+ICsgICAgICAgfQ0KPiA+ICsNCj4gPiArICAgICAg
+IGRldl9pbmZvKCZwZGV2LT5kZXYsICJTdWNjZXNzZnVsbHkgYWRkZWQgc2RoY2kgaG9zdFxuIik7
+DQo+ID4gKyAgICAgICByZXR1cm4gMDsNCj4gPiArDQo+ID4gK2Vycl9ob3N0Og0KPiA+ICsgICAg
+ICAgc2RoY2lfZnJlZV9ob3N0KGhvc3QpOw0KPiA+ICtlcnI6DQo+ID4gKyAgICAgICBkZXZfZXJy
+KCZwZGV2LT5kZXYsICJwaWMzMi1zZGhjaSBwcm9iZSBmYWlsZWQ6ICVkXG4iLCByZXQpOw0KPiA+
+ICsgICAgICAgcmV0dXJuIHJldDsNCj4gDQo+IEEgZ2VuZXJhbCBjb21tZW50IGZvciB0aGUgLT5w
+cm9iZSgpIGFuZCB0aGUgYmVsb3cgLT5yZW1vdmUoKSBjYWxsYmFjaywgaXMgdGhhdA0KPiB5b3Ug
+c2hvdWxkIHByb2JhYmx5IGJlIGFibGUgdG8gY29udmVydCB0byB1c2UNCj4gc2RoY2lfcGx0Zm1f
+aW5pdCgpIGFuZCBzZGhjaV9wbHRmbV9mcmVlKCkgaW4gZmF2b3Igb2YNCj4gc2RoY2lfYWxsb2Nf
+aG9zdCgpIGFuZCBzZGhjaV9mcmVlX2hvc3QoKS4NCj4gDQo+IEkgdGhpbmsgdGhhdCBjb3VsZCBz
+aW1wbGlmeSB0aGUgY29kZSBhIGJpdC4NCg0KT2suIFdpbGwgZG8uDQoNCj4gDQo+ID4gK30NCj4g
+PiArDQo+ID4gK3N0YXRpYyBpbnQgcGljMzJfc2RoY2lfcmVtb3ZlKHN0cnVjdCBwbGF0Zm9ybV9k
+ZXZpY2UgKnBkZXYpIHsNCj4gPiArICAgICAgIHN0cnVjdCBzZGhjaV9ob3N0ICpob3N0ID0gcGxh
+dGZvcm1fZ2V0X2RydmRhdGEocGRldik7DQo+ID4gKyAgICAgICBzdHJ1Y3QgcGljMzJfc2RoY2lf
+cGRhdGEgKnNkaGNpX3BkYXRhID0gc2RoY2lfcHJpdihob3N0KTsNCj4gPiArICAgICAgIGludCBk
+ZWFkID0gMDsNCj4gPiArICAgICAgIHUzMiBzY3JhdGNoOw0KPiA+ICsNCj4gPiArICAgICAgIHNj
+cmF0Y2ggPSByZWFkbChob3N0LT5pb2FkZHIgKyBTREhDSV9JTlRfU1RBVFVTKTsNCj4gPiArICAg
+ICAgIGlmIChzY3JhdGNoID09ICh1MzIpLTEpDQo+ID4gKyAgICAgICAgICAgICAgIGRlYWQgPSAx
+Ow0KPiA+ICsNCj4gPiArICAgICAgIHNkaGNpX3JlbW92ZV9ob3N0KGhvc3QsIGRlYWQpOw0KPiA+
+ICsgICAgICAgY2xrX2Rpc2FibGVfdW5wcmVwYXJlKHNkaGNpX3BkYXRhLT5iYXNlX2Nsayk7DQo+
+ID4gKyAgICAgICBjbGtfZGlzYWJsZV91bnByZXBhcmUoc2RoY2lfcGRhdGEtPnN5c19jbGspOw0K
+PiA+ICsgICAgICAgc2RoY2lfZnJlZV9ob3N0KGhvc3QpOw0KPiA+ICsNCj4gPiArICAgICAgIHJl
+dHVybiAwOw0KPiA+ICt9DQo+ID4gKw0KPiA+ICtzdGF0aWMgY29uc3Qgc3RydWN0IG9mX2Rldmlj
+ZV9pZCBwaWMzMl9zZGhjaV9pZF90YWJsZVtdID0gew0KPiA+ICsgICAgICAgeyAuY29tcGF0aWJs
+ZSA9ICJtaWNyb2NoaXAscGljMzJtemRhLXNkaGNpIiB9LA0KPiA+ICsgICAgICAge30NCj4gPiAr
+fTsNCj4gPiArTU9EVUxFX0RFVklDRV9UQUJMRShvZiwgcGljMzJfc2RoY2lfaWRfdGFibGUpOw0K
+PiA+ICsNCj4gPiArc3RhdGljIHN0cnVjdCBwbGF0Zm9ybV9kcml2ZXIgcGljMzJfc2RoY2lfZHJp
+dmVyID0gew0KPiA+ICsgICAgICAgLmRyaXZlciA9IHsNCj4gPiArICAgICAgICAgICAgICAgLm5h
+bWUgICA9IERFVl9OQU1FLA0KPiA+ICsgICAgICAgICAgICAgICAub3duZXIgID0gVEhJU19NT0RV
+TEUsDQo+ID4gKyAgICAgICAgICAgICAgIC5vZl9tYXRjaF90YWJsZSA9IG9mX21hdGNoX3B0cihw
+aWMzMl9zZGhjaV9pZF90YWJsZSksDQo+ID4gKyAgICAgICB9LA0KPiA+ICsgICAgICAgLnByb2Jl
+ICAgICAgICAgID0gcGljMzJfc2RoY2lfcHJvYmUsDQo+ID4gKyAgICAgICAucmVtb3ZlICAgICAg
+ICAgPSBwaWMzMl9zZGhjaV9yZW1vdmUsDQo+ID4gK307DQo+ID4gKw0KPiA+ICttb2R1bGVfcGxh
+dGZvcm1fZHJpdmVyKHBpYzMyX3NkaGNpX2RyaXZlcik7DQo+ID4gKw0KPiA+ICtNT0RVTEVfREVT
+Q1JJUFRJT04oIk1pY3JvY2hpcCBQSUMzMiBTREhDSSBkcml2ZXIiKTsNCj4gPiArTU9EVUxFX0FV
+VEhPUigiUGlzdGlyaWNhIFNvcmluIEFuZHJlaSAmIFNhbmRlZXAgU2hlcmlrZXIiKTsNCj4gPiAr
+TU9EVUxFX0xJQ0VOU0UoIkdQTCB2MiIpOw0KPiA+IC0tDQo+ID4gMS43LjkuNQ0KDQpUaGFua3Ms
+DQpQYXVsDQo=

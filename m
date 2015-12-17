@@ -1,52 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Dec 2015 19:05:35 +0100 (CET)
-Received: from exsmtp01.microchip.com ([198.175.253.37]:54347 "EHLO
-        email.microchip.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27014123AbbLQSFdmg4sg (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 17 Dec 2015 19:05:33 +0100
-Received: from CHN-SV-EXMX01.mchp-main.com ([fe80::453e:263d:be10:ebe8]) by
- CHN-SV-EXCH01.mchp-main.com ([fe80::9840:ffdf:ec5:1335%29]) with mapi id
- 14.03.0181.006; Thu, 17 Dec 2015 11:05:25 -0700
-From:   <Paul.Thacker@microchip.com>
-To:     <ulf.hansson@linaro.org>, <Joshua.Henderson@microchip.com>
-CC:     <linux-kernel@vger.kernel.org>, <linux-mips@linux-mips.org>,
-        <ralf@linux-mips.org>, <Andrei.Pistirica@microchip.com>,
-        <jdelvare@suse.de>, <geert@linux-m68k.org>, <cdoban@broadcom.com>,
-        <haojian.zhuang@gmail.com>, <luisbg@osg.samsung.com>,
-        <Weijun.Yang@csr.com>, <lokeshvutla@ti.com>,
-        <sbranden@broadcom.com>, <vincent.yang.fujitsu@gmail.com>,
-        <chaotian.jing@mediatek.com>, <ludovic.desroches@atmel.com>,
-        <shawn.lin@rock-chips.com>, <sboyd@codeaurora.org>,
-        <yangbo.lu@freescale.com>, <haokexin@gmail.com>,
-        <ben@decadent.org.uk>, <andy.green@linaro.org>,
-        <linux-mmc@vger.kernel.org>
-Subject: RE: [PATCH v2 12/14] mmc: sdhci-pic32: Add PIC32 SDHCI host
- controller driver
-Thread-Topic: [PATCH v2 12/14] mmc: sdhci-pic32: Add PIC32 SDHCI host
- controller driver
-Thread-Index: AQHRNsCt9Pq1H7UTskmnIVXyoRiPXp7N5mAAgAGV4zA=
-Date:   Thu, 17 Dec 2015 18:05:24 +0000
-Message-ID: <F2D704DDA6AE8B4A87FF87509480F4A449E07947@CHN-SV-EXMX01.mchp-main.com>
-References: <1450133093-7053-1-git-send-email-joshua.henderson@microchip.com>
-        <1450133093-7053-13-git-send-email-joshua.henderson@microchip.com>
- <CAPDyKFpQeq-9G_=n62c8uE+Tkiz3o9jManiOuCZG2qNKwkZ5EQ@mail.gmail.com>
-In-Reply-To: <CAPDyKFpQeq-9G_=n62c8uE+Tkiz3o9jManiOuCZG2qNKwkZ5EQ@mail.gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.10.76.4]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Dec 2015 22:30:02 +0100 (CET)
+Received: from vs18.mail.saunalahti.fi ([62.142.117.199]:38990 "EHLO
+        vs18.mail.saunalahti.fi" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008714AbbLQVaAXXIWa (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 17 Dec 2015 22:30:00 +0100
+Received: from vams (localhost [127.0.0.1])
+        by vs18.mail.saunalahti.fi (Postfix) with SMTP id C5DEC1800B9;
+        Thu, 17 Dec 2015 23:29:54 +0200 (EET)
+Received: from gw01.mail.saunalahti.fi (gw01.mail.saunalahti.fi [195.197.172.115])
+        by vs18.mail.saunalahti.fi (Postfix) with ESMTP id 913A11800B9;
+        Thu, 17 Dec 2015 23:29:54 +0200 (EET)
+Received: from [192.168.1.230] (91-157-120-53.elisa-laajakaista.fi [91.157.120.53])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by gw01.mail.saunalahti.fi (Postfix) with ESMTPSA id 7E1964008B;
+        Thu, 17 Dec 2015 23:29:52 +0200 (EET)
+To:     linux-mips@linux-mips.org
+Cc:     Liviu.Dudau@arm.com
+From:   Matti Laakso <malaakso@elisanet.fi>
+Subject: Unable to allocate PCI I/O resources
+Message-ID: <56732950.4060201@elisanet.fi>
+Date:   Thu, 17 Dec 2015 23:29:52 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+ Thunderbird/38.4.0
 MIME-Version: 1.0
-Return-Path: <Paul.Thacker@microchip.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Return-Path: <malaakso@elisanet.fi>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50679
+X-archive-position: 50680
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Paul.Thacker@microchip.com
+X-original-sender: malaakso@elisanet.fi
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,118 +46,23 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-T24gMTIvMTYvMjAxNSAzOjQ4IEFNLCBVbGYgSGFuc3NvbiB3cm90ZToNCj4gDQo+IFsuLi5dDQo+
-IA0KPiA+ICtzdGF0aWMgaW50IHBpYzMyX3NkaGNpX3Byb2JlKHN0cnVjdCBwbGF0Zm9ybV9kZXZp
-Y2UgKnBkZXYpIHsNCj4gPiArICAgICAgIHN0cnVjdCBkZXZpY2UgKmRldiA9ICZwZGV2LT5kZXY7
-DQo+ID4gKyAgICAgICBzdHJ1Y3Qgc2RoY2lfaG9zdCAqaG9zdDsNCj4gPiArICAgICAgIHN0cnVj
-dCByZXNvdXJjZSAqaW9tZW07DQo+ID4gKyAgICAgICBzdHJ1Y3QgcGljMzJfc2RoY2lfcGRhdGEg
-KnNkaGNpX3BkYXRhOw0KPiA+ICsgICAgICAgc3RydWN0IHBpYzMyX3NkaGNpX3BsYXRmb3JtX2Rh
-dGEgKnBsYXRfZGF0YTsNCj4gPiArICAgICAgIHVuc2lnbmVkIGludCBjbGtfcmF0ZSA9IDA7DQo+
-ID4gKyAgICAgICBpbnQgcmV0Ow0KPiA+ICsgICAgICAgc3RydWN0IHBpbmN0cmwgKnBpbmN0cmw7
-DQo+ID4gKw0KPiA+ICsgICAgICAgaG9zdCA9IHNkaGNpX2FsbG9jX2hvc3QoZGV2LCBzaXplb2Yo
-KnNkaGNpX3BkYXRhKSk7DQo+ID4gKyAgICAgICBpZiAoSVNfRVJSKGhvc3QpKSB7DQo+ID4gKyAg
-ICAgICAgICAgICAgIHJldCA9IFBUUl9FUlIoaG9zdCk7DQo+ID4gKyAgICAgICAgICAgICAgIGRl
-dl9lcnIoJnBkZXYtPmRldiwgImNhbm5vdCBhbGxvY2F0ZSBtZW1vcnkgZm9yIHNkaGNpXG4iKTsN
-Cj4gPiArICAgICAgICAgICAgICAgZ290byBlcnI7DQo+ID4gKyAgICAgICB9DQo+ID4gKw0KPiA+
-ICsgICAgICAgc2RoY2lfcGRhdGEgPSBzZGhjaV9wcml2KGhvc3QpOw0KPiA+ICsgICAgICAgc2Ro
-Y2lfcGRhdGEtPnBkZXYgPSBwZGV2Ow0KPiA+ICsgICAgICAgcGxhdGZvcm1fc2V0X2RydmRhdGEo
-cGRldiwgaG9zdCk7DQo+ID4gKw0KPiA+ICsgICAgICAgaW9tZW0gPSBwbGF0Zm9ybV9nZXRfcmVz
-b3VyY2UocGRldiwgSU9SRVNPVVJDRV9NRU0sIDApOw0KPiA+ICsgICAgICAgaG9zdC0+aW9hZGRy
-ID0gZGV2bV9pb3JlbWFwX3Jlc291cmNlKCZwZGV2LT5kZXYsIGlvbWVtKTsNCj4gPiArICAgICAg
-IGlmIChJU19FUlIoaG9zdC0+aW9hZGRyKSkgew0KPiA+ICsgICAgICAgICAgICAgICByZXQgPSBQ
-VFJfRVJSKGhvc3QtPmlvYWRkcik7DQo+ID4gKyAgICAgICAgICAgICAgIGRldl9lcnIoJnBkZXYt
-PmRldiwgInVuYWJsZSB0byBtYXAgaW9tZW06ICVkXG4iLCByZXQpOw0KPiA+ICsgICAgICAgICAg
-ICAgICBnb3RvIGVycl9ob3N0Ow0KPiA+ICsgICAgICAgfQ0KPiA+ICsNCj4gPiArICAgICAgIHBs
-YXRfZGF0YSA9IHBkZXYtPmRldi5wbGF0Zm9ybV9kYXRhOw0KPiA+ICsgICAgICAgaWYgKHBsYXRf
-ZGF0YSAmJiBwbGF0X2RhdGEtPnNldHVwX2RtYSkgew0KPiA+ICsgICAgICAgICAgICAgICByZXQg
-PSBwbGF0X2RhdGEtPnNldHVwX2RtYShBRE1BX0ZJRk9fUkRfVEhTSExELA0KPiA+ICsgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBBRE1BX0ZJRk9fV1JfVEhTSExEKTsN
-Cj4gPiArICAgICAgICAgICAgICAgaWYgKHJldCkNCj4gPiArICAgICAgICAgICAgICAgICAgICAg
-ICBnb3RvIGVycl9ob3N0Ow0KPiA+ICsgICAgICAgfQ0KPiA+ICsNCj4gPiArICAgICAgIHBpbmN0
-cmwgPSBkZXZtX3BpbmN0cmxfZ2V0X3NlbGVjdF9kZWZhdWx0KCZwZGV2LT5kZXYpOw0KPiANCj4g
-VGhpcyBpc24ndCBuZWVkIGFzIGl0J3MgYWxyZWFkeSBoYW5kbGVkIGJ5IHRoZSBQTSBjb3JlLg0K
-DQpBY2suIFdpbGwgcmVtb3ZlLg0KDQo+IA0KPiA+ICsgICAgICAgaWYgKElTX0VSUihwaW5jdHJs
-KSkgew0KPiA+ICsgICAgICAgICAgICAgICByZXQgPSBQVFJfRVJSKHBpbmN0cmwpOw0KPiA+ICsg
-ICAgICAgICAgICAgICBkZXZfd2FybigmcGRldi0+ZGV2LCAiTm8gcGluY3RybCBwcm92aWRlZCAl
-ZFxuIiwgcmV0KTsNCj4gPiArICAgICAgICAgICAgICAgaWYgKHJldCA9PSAtRVBST0JFX0RFRkVS
-KQ0KPiA+ICsgICAgICAgICAgICAgICAgICAgICAgIGdvdG8gZXJyX2hvc3Q7DQo+ID4gKyAgICAg
-ICB9DQo+ID4gKw0KPiA+ICsgICAgICAgaG9zdC0+b3BzID0gJnBpYzMyX3NkaGNpX29wczsNCj4g
-PiArICAgICAgIGhvc3QtPmlycSA9IHBsYXRmb3JtX2dldF9pcnEocGRldiwgMCk7DQo+ID4gKw0K
-PiA+ICsgICAgICAgc2RoY2lfcGRhdGEtPnN5c19jbGsgPSBkZXZtX2Nsa19nZXQoJnBkZXYtPmRl
-diwgInN5c19jbGsiKTsNCj4gPiArICAgICAgIGlmIChJU19FUlIoc2RoY2lfcGRhdGEtPnN5c19j
-bGspKSB7DQo+ID4gKyAgICAgICAgICAgICAgIHJldCA9IFBUUl9FUlIoc2RoY2lfcGRhdGEtPnN5
-c19jbGspOw0KPiA+ICsgICAgICAgICAgICAgICBkZXZfZXJyKCZwZGV2LT5kZXYsICJFcnJvciBn
-ZXR0aW5nIGNsb2NrXG4iKTsNCj4gPiArICAgICAgICAgICAgICAgZ290byBlcnJfaG9zdDsNCj4g
-PiArICAgICAgIH0NCj4gPiArDQo+ID4gKyAgICAgICAvKiBFbmFibGUgY2xvY2sgd2hlbiBhdmFp
-bGFibGUhICovDQo+ID4gKyAgICAgICByZXQgPSBjbGtfcHJlcGFyZV9lbmFibGUoc2RoY2lfcGRh
-dGEtPnN5c19jbGspOw0KPiA+ICsgICAgICAgaWYgKHJldCkgew0KPiA+ICsgICAgICAgICAgICAg
-ICBkZXZfZGJnKCZwZGV2LT5kZXYsICJFcnJvciBlbmFibGluZyBjbG9ja1xuIik7DQo+ID4gKyAg
-ICAgICAgICAgICAgIGdvdG8gZXJyX2hvc3Q7DQo+ID4gKyAgICAgICB9DQo+ID4gKw0KPiA+ICsg
-ICAgICAgLyogU0RIIENMSyBlbmFibGUgKi8NCj4gPiArICAgICAgIHNkaGNpX3BkYXRhLT5iYXNl
-X2NsayA9IGRldm1fY2xrX2dldCgmcGRldi0+ZGV2LCAiYmFzZV9jbGsiKTsNCj4gPiArICAgICAg
-IGlmIChJU19FUlIoc2RoY2lfcGRhdGEtPmJhc2VfY2xrKSkgew0KPiA+ICsgICAgICAgICAgICAg
-ICByZXQgPSBQVFJfRVJSKHNkaGNpX3BkYXRhLT5iYXNlX2Nsayk7DQo+ID4gKyAgICAgICAgICAg
-ICAgIGRldl9lcnIoJnBkZXYtPmRldiwgIkVycm9yIGdldHRpbmcgY2xvY2tcbiIpOw0KPiA+ICsg
-ICAgICAgICAgICAgICBnb3RvIGVycl9ob3N0Ow0KPiA+ICsgICAgICAgfQ0KPiA+ICsNCj4gPiAr
-ICAgICAgIC8qIEVuYWJsZSBjbG9jayB3aGVuIGF2YWlsYWJsZSEgKi8NCj4gPiArICAgICAgIHJl
-dCA9IGNsa19wcmVwYXJlX2VuYWJsZShzZGhjaV9wZGF0YS0+YmFzZV9jbGspOw0KPiA+ICsgICAg
-ICAgaWYgKHJldCkgew0KPiA+ICsgICAgICAgICAgICAgICBkZXZfZGJnKCZwZGV2LT5kZXYsICJF
-cnJvciBlbmFibGluZyBjbG9ja1xuIik7DQo+ID4gKyAgICAgICAgICAgICAgIGdvdG8gZXJyX2hv
-c3Q7DQo+ID4gKyAgICAgICB9DQo+ID4gKw0KPiA+ICsgICAgICAgY2xrX3JhdGUgPSBjbGtfZ2V0
-X3JhdGUoc2RoY2lfcGRhdGEtPmJhc2VfY2xrKTsNCj4gPiArICAgICAgIGRldl9kYmcoJnBkZXYt
-PmRldiwgImJhc2UgY2xvY2sgYXQ6ICV1XG4iLCBjbGtfcmF0ZSk7DQo+ID4gKyAgICAgICBjbGtf
-cmF0ZSA9IGNsa19nZXRfcmF0ZShzZGhjaV9wZGF0YS0+c3lzX2Nsayk7DQo+ID4gKyAgICAgICBk
-ZXZfZGJnKCZwZGV2LT5kZXYsICJzeXMgY2xvY2sgYXQ6ICV1XG4iLCBjbGtfcmF0ZSk7DQo+IA0K
-PiBUaGlzIGxvb2tzIGxpa2Ugc29tZSBsZWZ0b3ZlciBmcm9tIGEgZGVidWdnaW5nIHRhc2suIENh
-biB5b3UgcmVtb3ZlIHRoZW0/DQo+IA0KDQpZZXMsIHRoZXNlIGFyZSBub3QgbmVlZGVkIGFuZCB3
-aWxsIGJlIHJlbW92ZWQuDQoNCj4gPiArDQo+ID4gKyAgICAgICBob3N0LT5xdWlya3MyIHw9IFNE
-SENJX1FVSVJLMl9OT18xXzhfVjsNCj4gPiArDQo+ID4gKyAgICAgICBob3N0LT5xdWlya3MgfD0g
-U0RIQ0lfUVVJUktfTk9fSElTUERfQklUOw0KPiA+ICsNCj4gPiArICAgICAgIHJldCA9IG1tY19v
-Zl9wYXJzZShob3N0LT5tbWMpOw0KPiA+ICsgICAgICAgaWYgKHJldCkNCj4gDQo+IEZyb20gdGhp
-cyBwb2ludCwgdGhlIGVycm9yIGhhbmRsaW5nIGRvZXNuJ3QgdW5kbyBjbGtfcHJlcGFyZV9lbmFi
-bGUoKS4NCj4gUGxlYXNlIGFkZCB0aGF0Lg0KDQpBY2suIFdpbGwgZG8uDQoNCj4gDQo+ID4gKyAg
-ICAgICAgICAgICAgIGdvdG8gZXJyX2hvc3Q7DQo+ID4gKw0KPiA+ICsgICAgICAgcmV0ID0gcGlj
-MzJfc2RoY2lfcHJvYmVfcGxhdGZvcm0ocGRldiwgc2RoY2lfcGRhdGEpOw0KPiA+ICsgICAgICAg
-aWYgKHJldCkgew0KPiA+ICsgICAgICAgICAgICAgICBkZXZfZXJyKCZwZGV2LT5kZXYsICJmYWls
-ZWQgdG8gcHJvYmUgcGxhdGZvcm0hXG4iKTsNCj4gPiArICAgICAgICAgICAgICAgZ290byBlcnJf
-aG9zdDsNCj4gPiArICAgICAgIH0NCj4gPiArDQo+ID4gKyAgICAgICByZXQgPSBzZGhjaV9hZGRf
-aG9zdChob3N0KTsNCj4gPiArICAgICAgIGlmIChyZXQpIHsNCj4gPiArICAgICAgICAgICAgICAg
-ZGV2X2RiZygmcGRldi0+ZGV2LCAiZXJyb3IgYWRkaW5nIGhvc3RcbiIpOw0KPiA+ICsgICAgICAg
-ICAgICAgICBnb3RvIGVycl9ob3N0Ow0KPiA+ICsgICAgICAgfQ0KPiA+ICsNCj4gPiArICAgICAg
-IGRldl9pbmZvKCZwZGV2LT5kZXYsICJTdWNjZXNzZnVsbHkgYWRkZWQgc2RoY2kgaG9zdFxuIik7
-DQo+ID4gKyAgICAgICByZXR1cm4gMDsNCj4gPiArDQo+ID4gK2Vycl9ob3N0Og0KPiA+ICsgICAg
-ICAgc2RoY2lfZnJlZV9ob3N0KGhvc3QpOw0KPiA+ICtlcnI6DQo+ID4gKyAgICAgICBkZXZfZXJy
-KCZwZGV2LT5kZXYsICJwaWMzMi1zZGhjaSBwcm9iZSBmYWlsZWQ6ICVkXG4iLCByZXQpOw0KPiA+
-ICsgICAgICAgcmV0dXJuIHJldDsNCj4gDQo+IEEgZ2VuZXJhbCBjb21tZW50IGZvciB0aGUgLT5w
-cm9iZSgpIGFuZCB0aGUgYmVsb3cgLT5yZW1vdmUoKSBjYWxsYmFjaywgaXMgdGhhdA0KPiB5b3Ug
-c2hvdWxkIHByb2JhYmx5IGJlIGFibGUgdG8gY29udmVydCB0byB1c2UNCj4gc2RoY2lfcGx0Zm1f
-aW5pdCgpIGFuZCBzZGhjaV9wbHRmbV9mcmVlKCkgaW4gZmF2b3Igb2YNCj4gc2RoY2lfYWxsb2Nf
-aG9zdCgpIGFuZCBzZGhjaV9mcmVlX2hvc3QoKS4NCj4gDQo+IEkgdGhpbmsgdGhhdCBjb3VsZCBz
-aW1wbGlmeSB0aGUgY29kZSBhIGJpdC4NCg0KT2suIFdpbGwgZG8uDQoNCj4gDQo+ID4gK30NCj4g
-PiArDQo+ID4gK3N0YXRpYyBpbnQgcGljMzJfc2RoY2lfcmVtb3ZlKHN0cnVjdCBwbGF0Zm9ybV9k
-ZXZpY2UgKnBkZXYpIHsNCj4gPiArICAgICAgIHN0cnVjdCBzZGhjaV9ob3N0ICpob3N0ID0gcGxh
-dGZvcm1fZ2V0X2RydmRhdGEocGRldik7DQo+ID4gKyAgICAgICBzdHJ1Y3QgcGljMzJfc2RoY2lf
-cGRhdGEgKnNkaGNpX3BkYXRhID0gc2RoY2lfcHJpdihob3N0KTsNCj4gPiArICAgICAgIGludCBk
-ZWFkID0gMDsNCj4gPiArICAgICAgIHUzMiBzY3JhdGNoOw0KPiA+ICsNCj4gPiArICAgICAgIHNj
-cmF0Y2ggPSByZWFkbChob3N0LT5pb2FkZHIgKyBTREhDSV9JTlRfU1RBVFVTKTsNCj4gPiArICAg
-ICAgIGlmIChzY3JhdGNoID09ICh1MzIpLTEpDQo+ID4gKyAgICAgICAgICAgICAgIGRlYWQgPSAx
-Ow0KPiA+ICsNCj4gPiArICAgICAgIHNkaGNpX3JlbW92ZV9ob3N0KGhvc3QsIGRlYWQpOw0KPiA+
-ICsgICAgICAgY2xrX2Rpc2FibGVfdW5wcmVwYXJlKHNkaGNpX3BkYXRhLT5iYXNlX2Nsayk7DQo+
-ID4gKyAgICAgICBjbGtfZGlzYWJsZV91bnByZXBhcmUoc2RoY2lfcGRhdGEtPnN5c19jbGspOw0K
-PiA+ICsgICAgICAgc2RoY2lfZnJlZV9ob3N0KGhvc3QpOw0KPiA+ICsNCj4gPiArICAgICAgIHJl
-dHVybiAwOw0KPiA+ICt9DQo+ID4gKw0KPiA+ICtzdGF0aWMgY29uc3Qgc3RydWN0IG9mX2Rldmlj
-ZV9pZCBwaWMzMl9zZGhjaV9pZF90YWJsZVtdID0gew0KPiA+ICsgICAgICAgeyAuY29tcGF0aWJs
-ZSA9ICJtaWNyb2NoaXAscGljMzJtemRhLXNkaGNpIiB9LA0KPiA+ICsgICAgICAge30NCj4gPiAr
-fTsNCj4gPiArTU9EVUxFX0RFVklDRV9UQUJMRShvZiwgcGljMzJfc2RoY2lfaWRfdGFibGUpOw0K
-PiA+ICsNCj4gPiArc3RhdGljIHN0cnVjdCBwbGF0Zm9ybV9kcml2ZXIgcGljMzJfc2RoY2lfZHJp
-dmVyID0gew0KPiA+ICsgICAgICAgLmRyaXZlciA9IHsNCj4gPiArICAgICAgICAgICAgICAgLm5h
-bWUgICA9IERFVl9OQU1FLA0KPiA+ICsgICAgICAgICAgICAgICAub3duZXIgID0gVEhJU19NT0RV
-TEUsDQo+ID4gKyAgICAgICAgICAgICAgIC5vZl9tYXRjaF90YWJsZSA9IG9mX21hdGNoX3B0cihw
-aWMzMl9zZGhjaV9pZF90YWJsZSksDQo+ID4gKyAgICAgICB9LA0KPiA+ICsgICAgICAgLnByb2Jl
-ICAgICAgICAgID0gcGljMzJfc2RoY2lfcHJvYmUsDQo+ID4gKyAgICAgICAucmVtb3ZlICAgICAg
-ICAgPSBwaWMzMl9zZGhjaV9yZW1vdmUsDQo+ID4gK307DQo+ID4gKw0KPiA+ICttb2R1bGVfcGxh
-dGZvcm1fZHJpdmVyKHBpYzMyX3NkaGNpX2RyaXZlcik7DQo+ID4gKw0KPiA+ICtNT0RVTEVfREVT
-Q1JJUFRJT04oIk1pY3JvY2hpcCBQSUMzMiBTREhDSSBkcml2ZXIiKTsNCj4gPiArTU9EVUxFX0FV
-VEhPUigiUGlzdGlyaWNhIFNvcmluIEFuZHJlaSAmIFNhbmRlZXAgU2hlcmlrZXIiKTsNCj4gPiAr
-TU9EVUxFX0xJQ0VOU0UoIkdQTCB2MiIpOw0KPiA+IC0tDQo+ID4gMS43LjkuNQ0KDQpUaGFua3Ms
-DQpQYXVsDQo=
+Hello all,
+
+I have some oldish MIPS-based (Lantiq Danube) routers that have a PCI
+bus and a VIA 6212 USB-controller connected to it. The USB controller
+requires I/O resources in addition to memory. It seems that with kernel
+3.18 and newer PCI I/O resources can no longer be allocated on this
+platform. I tracked the problem down to a patch set from Liviu Dudau
+(Support for creating generic PCI host bridges from DT). After this
+patch the function pci_address_to_pio in drivers/of/address.c hits the check
+
+address > IO_SPACE_LIMIT
+
+since address on this SoC is 0x1AE00000 and IO_SPACE_LIMIT is 0xFFFF on
+MIPS (PCI_IOBASE is not defined). Changing IO_SPACE_LIMIT to 0xFFFFFFFF
+I can work around the problem, but I think that is not the proper solution.
+
+Any ideas on how to fix this?
+
+Best regards,
+Matti Laakso

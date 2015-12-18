@@ -1,20 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Dec 2015 23:39:07 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:51376 "EHLO
-        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008714AbbLQWjGEXgUF (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 17 Dec 2015 23:39:06 +0100
-Received: from akpm3.mtv.corp.google.com (unknown [216.239.45.65])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 086E9F89;
-        Thu, 17 Dec 2015 22:38:59 +0000 (UTC)
-Date:   Thu, 17 Dec 2015 14:38:58 -0800
-From:   Andrew Morton <akpm@linux-foundation.org>
-To:     Petr Mladek <pmladek@suse.com>
-Cc:     Russell King - ARM Linux <linux@arm.linux.org.uk>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Dec 2015 11:18:18 +0100 (CET)
+Received: from mail-wm0-f46.google.com ([74.125.82.46]:38248 "EHLO
+        mail-wm0-f46.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006811AbbLRKSQd4fgG (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 18 Dec 2015 11:18:16 +0100
+Received: by mail-wm0-f46.google.com with SMTP id l126so58474630wml.1
+        for <linux-mips@linux-mips.org>; Fri, 18 Dec 2015 02:18:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=subject:to:references:cc:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-type:content-transfer-encoding;
+        bh=wepTfVH0PMVDtb5enoiBtQGY1mhryiamlTKb1tv486E=;
+        b=WNIFmsZvvMUAq+vAJ0HYeAkpdrjcDA5l9nb9dRS1NTbidS4ufEANRTD+TOJvCjJXlF
+         JuX4orGS++Ijq3DhXBErNanP87jybjxMwPKWM0yfmXgm+8cEcuDV3j1lcb/le1y2tkDv
+         TYNWKthEfayBLbqzBJYXm/22dJ1CjsoX8gOp0=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:subject:to:references:cc:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-type
+         :content-transfer-encoding;
+        bh=wepTfVH0PMVDtb5enoiBtQGY1mhryiamlTKb1tv486E=;
+        b=f0N/+ozAQDudvrLjkmNaQ2baaDCSFYN882p/fiBueOzH719vVeheoIZ5xNaZlpnql6
+         zVfUIhlT0S9igwbwO38Z2x8hKkH5gy209vV1GYhLJsGNNGmcjXGO2kAQ3OI7usqvcSfq
+         Eu8AoPoMJxrQVLY7JSUHkHAeq9y4vvqITw1RyRlBEpRyCbJz/x35sdH5+zJNWcTzaW+F
+         RKzeRR9CBZbzXfuIbKactt6mL01mX1/LK67zKfYwQ53HcSDUho4v1gLRMKw0rogY7Hkp
+         bxcygTi9Tb9zlDYxinlKBTu6hermTgAqwyAIUU4udBn76OAjZIbgym+c981tQb2xRfEY
+         yApA==
+X-Gm-Message-State: ALoCoQl4ljUJxawh4Mzsp2sVjdDVMUVuNt6JmsT5rWZj8s4EVn24+IBs86Qr21WVsKCnSnUfDL2vh86/oIVN1y9XYxwZvFEjzg==
+X-Received: by 10.28.214.20 with SMTP id n20mr2314686wmg.36.1450433890907;
+        Fri, 18 Dec 2015 02:18:10 -0800 (PST)
+Received: from [192.168.1.125] (cpc4-aztw19-0-0-cust71.18-1.cable.virginm.net. [82.33.25.72])
+        by smtp.googlemail.com with ESMTPSA id f11sm6064431wmd.7.2015.12.18.02.18.08
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Fri, 18 Dec 2015 02:18:09 -0800 (PST)
+Subject: Re: [PATCH v3 4/4] printk/nmi: Increase the size of NMI buffer and
+ make it configurable
+To:     Jiri Kosina <jikos@kernel.org>,
+        Russell King - ARM Linux <linux@arm.linux.org.uk>
+References: <1449667265-17525-1-git-send-email-pmladek@suse.com>
+ <1449667265-17525-5-git-send-email-pmladek@suse.com>
+ <CAMuHMdXVgr58YjoePGrRbMyMncQ27f85prL7G5SpeHeNxoYrXQ@mail.gmail.com>
+ <20151211124159.GB3729@pathway.suse.cz>
+ <20151211145725.b0e81bb4bb18fcd72ef5f557@linux-foundation.org>
+ <20151211232113.GZ8644@n2100.arm.linux.org.uk>
+ <alpine.LNX.2.00.1512120024370.9922@cbobk.fhfr.pm>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        Petr Mladek <pmladek@suse.com>,
         Geert Uytterhoeven <geert@linux-m68k.org>,
         Peter Zijlstra <peterz@infradead.org>,
         Steven Rostedt <rostedt@goodmis.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jiri Kosina <jkosina@suse.com>, Ingo Molnar <mingo@redhat.com>,
+        Ingo Molnar <mingo@redhat.com>,
         Thomas Gleixner <tglx@linutronix.de>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         the arch/x86 maintainers <x86@kernel.org>,
@@ -28,31 +62,24 @@ Cc:     Russell King - ARM Linux <linux@arm.linux.org.uk>,
         linux-s390 <linux-s390@vger.kernel.org>,
         Linux-sh list <linux-sh@vger.kernel.org>,
         sparclinux <sparclinux@vger.kernel.org>
-Subject: Re: [PATCH v3 4/4] printk/nmi: Increase the size of NMI buffer and
- make it configurable
-Message-Id: <20151217143858.447b5fe79aaa5ed7b2328d67@linux-foundation.org>
-In-Reply-To: <20151215142621.GE3729@pathway.suse.cz>
-References: <1449667265-17525-1-git-send-email-pmladek@suse.com>
-        <1449667265-17525-5-git-send-email-pmladek@suse.com>
-        <CAMuHMdXVgr58YjoePGrRbMyMncQ27f85prL7G5SpeHeNxoYrXQ@mail.gmail.com>
-        <20151211124159.GB3729@pathway.suse.cz>
-        <20151211145725.b0e81bb4bb18fcd72ef5f557@linux-foundation.org>
-        <20151211232113.GZ8644@n2100.arm.linux.org.uk>
-        <20151211153054.48da5d4139b93dd4ed438f4c@linux-foundation.org>
-        <20151215142621.GE3729@pathway.suse.cz>
-X-Mailer: Sylpheed 3.4.1 (GTK+ 2.24.23; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+From:   Daniel Thompson <daniel.thompson@linaro.org>
+Message-ID: <5673DD60.7080302@linaro.org>
+Date:   Fri, 18 Dec 2015 10:18:08 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+ Thunderbird/38.4.0
+MIME-Version: 1.0
+In-Reply-To: <alpine.LNX.2.00.1512120024370.9922@cbobk.fhfr.pm>
+Content-Type: text/plain; charset=windows-1252; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <akpm@linux-foundation.org>
+Return-Path: <daniel.thompson@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50681
+X-archive-position: 50682
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: akpm@linux-foundation.org
+X-original-sender: daniel.thompson@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -65,62 +92,41 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, 15 Dec 2015 15:26:21 +0100 Petr Mladek <pmladek@suse.com> wrote:
+On 11/12/15 23:26, Jiri Kosina wrote:
+> On Fri, 11 Dec 2015, Russell King - ARM Linux wrote:
+>
+>> I'm personally happy with the existing code, and I've been wondering why
+>> there's this effort to apply further cleanups - to me, the changelogs
+>> don't seem to make that much sense, unless we want to start using
+>> printk() extensively in NMI functions - using the generic nmi backtrace
+>> code surely gets us something that works across all architectures...
+>
+> It is already being used extensively, and not only for all-CPU backtraces.
+> For starters, please consider
+>
+> - WARN_ON(in_nmi())
+> - BUG_ON(in_nmi())
 
-> > OK, thanks.  So "not needed at present, might be needed in the future,
-> > useful for out-of-tree debug code"?
-> 
-> It is possible that I got it a wrong way on arm. The NMI buffer is
-> usable there on two locations.
-> 
-> First, the temporary is currently used to handle IPI_CPU_BACKTRACE.
-> It seems that it is not a real NMI. But it seems to be available
-> (compiled) on all arm system. This is why I introduced NEED_PRINTK_NMI
-> Kconfig flag to avoid confusion with a real NMI.
-> 
-> Second, there is the FIQ "NMI" handler that is called from
-> /arch/arm/kernel/entry-armv.S. It is compiled only if _not_
-> defined $(CONFIG_CPU_V7M). It calls nmi_enter() and nmi_stop().
-> It looks like a real NMI handler. This is why I defined HAVE_NMI
-> if (!CPU_V7M).
-> 
-> A solution would be to define HAVE_NMI on all Arm systems and get rid
-> of NEED_PRINTK_NMI. If you think that it would cause less confusion...
+Sorry to join in so late but...
 
-So does this mean that the patch will be updated?
+Today we risk deadlock when we try to issue these diagnostic errors 
+directly from NMI context.
 
-> 
-> > > there's this effort to apply further cleanups - to me, the changelogs
-> > > don't seem to make that much sense, unless we want to start using
-> > > printk() extensively in NMI functions - using the generic nmi backtrace
-> > > code surely gets us something that works across all architectures...
-> > 
-> > Yes, I was scratching my head over that.  The patchset takes an nmi-safe
-> > all-cpu-backtrace and generalises that into an nmi-safe printk.  That
-> > *sounds* like a good thing to do but yes, some additional justification
-> > would be helpful.  What real-world value does this patchset really
-> > bring to real-world users?
-> 
-> The patchset brings two big advantages. First, it makes the NMI
-> backtraces safe on all architectures for free. Second, it makes
-> all NMI messages almost[*] safe on all architectures.
-> 
-> Note that there already are several messages printed in NMI context.
-> See the mail from Jiri Kosina. They are not easy to avoid.
-> 
-> [*] The temporary buffer is limited. We still should keep
-> the number of messages in NMI context at minimum.
+After this change we will still risk deadlock, because that's what the 
+diagnostic code is trying to tell us, *and* we delay actually reporting 
+the error until, and only if, the NMI handler completes.
 
-This is important info - in fact a paragraph which starts with "The
-patchset brings two big advantages" is *the most* important info.  I
-added the below text to the [1/n] changelog:
+I'm not entirely sure that this is an improvement.
 
-: The patchset brings two big advantages.  First, it makes the NMI
-: backtraces safe on all architectures for free.  Second, it makes all NMI
-: messages almost safe on all architectures (the temporary buffer is
-: limited.  We still should keep the number of messages in NMI context at
-: minimum).
-: 
-: Note that there already are several messages printed in NMI context:
-: WARN_ON(in_nmi()), BUG_ON(in_nmi()), anything being printed out from MCE
-: handlers.  These are not easy to avoid.
+
+> - anything being printed out from MCE handlers
+
+The MCE handlers should only call printk() when they decide to panic and 
+*after* busting the spinlocks. At this point deferring printk() until it 
+is safe is not very helpful.
+
+When we bust the spinlocks we should probably restore the normal 
+printk() function to give best chance of the failure messages making it out.
+
+
+Daniel.

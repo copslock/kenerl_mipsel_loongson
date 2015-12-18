@@ -1,36 +1,74 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Dec 2015 13:47:34 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:38377 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27008631AbbLRMrdEdL5C (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 18 Dec 2015 13:47:33 +0100
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Websense Email Security Gateway with ESMTPS id BB0A8A70AE5D8
-        for <linux-mips@linux-mips.org>; Fri, 18 Dec 2015 12:47:24 +0000 (GMT)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- HHMAIL01.hh.imgtec.org (10.100.10.19) with Microsoft SMTP Server (TLS) id
- 14.3.235.1; Fri, 18 Dec 2015 12:47:26 +0000
-Received: from mredfearn-linux.le.imgtec.org (192.168.154.116) by
- LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.210.2; Fri, 18 Dec 2015 12:47:26 +0000
-From:   Matt Redfearn <matt.redfearn@imgtec.com>
-To:     <linux-mips@linux-mips.org>
-CC:     <paul.burton@imgtec.com>, Matt Redfearn <matt.redfearn@imgtec.com>
-Subject: [PATCH] MIPS: smp-cps: Ensure secondary cores start with EVA disabled
-Date:   Fri, 18 Dec 2015 12:47:00 +0000
-Message-ID: <1450442820-14690-1-git-send-email-matt.redfearn@imgtec.com>
-X-Mailer: git-send-email 2.1.4
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Dec 2015 15:42:35 +0100 (CET)
+Received: from mail-oi0-f53.google.com ([209.85.218.53]:34103 "EHLO
+        mail-oi0-f53.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006918AbbLROmdywoz0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 18 Dec 2015 15:42:33 +0100
+Received: by mail-oi0-f53.google.com with SMTP id o124so60622059oia.1
+        for <linux-mips@linux-mips.org>; Fri, 18 Dec 2015 06:42:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type;
+        bh=Z3pJXm/y737zIIDVTjIv1wfR8fm+2rM/e5M5LF5Ja74=;
+        b=e/ERk4Yp/MeJWghZF+i7xu4pAAZGUr+JGB7NGTXtrX2s1rBDxTYUZ+ckaCeQLFVMVe
+         I+i5Tvac9pwNLlXpk9J7dh5eBdoJ4gRU8XZrVUDaDNokac313UegaAGQqUfR3peEzQ4Z
+         qvR/MfJ3SwPQrB4RKPE21tTDRuAiXRQAhE70o=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:in-reply-to:references:date
+         :message-id:subject:from:to:cc:content-type;
+        bh=Z3pJXm/y737zIIDVTjIv1wfR8fm+2rM/e5M5LF5Ja74=;
+        b=AQX39X+e8uKQBzZNoab2TKPPcO3eqeQZY4BJtY7BNeVQPYsNGbTqpZthhMuMaaao46
+         CkaP9znL3tylXpBrWT/Pc/oAwO5u1fRpUnSJ0IC0M80zY2cZlJQVCSLMqBbSJd3aQ735
+         L2EKAi5M/57mpSZZfTuyulKRAjsmv8orI2PyBd4l7wK9Z+CAJQR3iJiIqFva0kuMeCX0
+         jlqFjMZPMRb/CKYvU+nrfR/1Qv7ZYhW2uCVC0mITugSn7XWXErCC2Q2/ODeaojHCQ2LK
+         5XUIsxh0PwUw82jQyiaGPl62lBY7+Jg9CRiX1WJespCtYNxDqecJifgq6+SNNmmWqD16
+         u78A==
+X-Gm-Message-State: ALoCoQnXygwZhMlKkIKDgOLfOQp7Xam4JqEHdM9WXT7KsSKIYdr/FYzNjUScbGJ5bkD53I+NsSgG+alOBRkt8Nxp/cX1GIMnUqG2qgapF7LwqXnCKXyZEsU=
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.154.116]
-Return-Path: <Matt.Redfearn@imgtec.com>
+X-Received: by 10.202.107.68 with SMTP id g65mr1596021oic.135.1450449747801;
+ Fri, 18 Dec 2015 06:42:27 -0800 (PST)
+Received: by 10.182.32.70 with HTTP; Fri, 18 Dec 2015 06:42:27 -0800 (PST)
+In-Reply-To: <20151214124626.GG23327@localhost>
+References: <1449666515-23343-1-git-send-email-linus.walleij@linaro.org>
+        <20151209134410.GH8644@n2100.arm.linux.org.uk>
+        <CACRpkdZcz73vtgZsCKZCJ=G3nq-yCPiO8hws4ro5HVWd8AVRCw@mail.gmail.com>
+        <20151214124626.GG23327@localhost>
+Date:   Fri, 18 Dec 2015 15:42:27 +0100
+Message-ID: <CACRpkdZ9vZmMWHemb8_XDwdhMDjMNoE7EyLUSnvVS6R5yU3i_A@mail.gmail.com>
+Subject: Re: [PATCH 000/182] Rid struct gpio_chip from container_of() usage
+From:   Linus Walleij <linus.walleij@linaro.org>
+To:     Johan Hovold <johan@kernel.org>
+Cc:     Russell King - ARM Linux <linux@arm.linux.org.uk>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+        Alexandre Courbot <acourbot@nvidia.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Michael Welling <mwelling@ieee.org>,
+        Markus Pargmann <mpa@pengutronix.de>,
+        Mark Brown <broonie@kernel.org>,
+        Amit Kucheria <amit.kucheria@linaro.org>,
+        "arm@kernel.org" <arm@kernel.org>,
+        Haavard Skinnemoen <hskinnemoen@gmail.com>,
+        Sonic Zhang <sonic.zhang@analog.com>,
+        Greg Ungerer <gerg@uclinux.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Linux MIPS <linux-mips@linux-mips.org>,
+        Anatolij Gustschin <agust@denx.de>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Linux Input <linux-input@vger.kernel.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Lee Jones <lee.jones@linaro.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <linus.walleij@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50686
+X-archive-position: 50687
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: matt.redfearn@imgtec.com
+X-original-sender: linus.walleij@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,49 +81,17 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The kernel currently assumes that a core will start up in legacy mode
-using the exception base provided through the CM GCR registers. If a
-core has been configured in hardware to start in EVA mode, these
-assumptions will fail.
+On Mon, Dec 14, 2015 at 1:46 PM, Johan Hovold <johan@kernel.org> wrote:
 
-This patch ensures that secondary cores are initialized to meet these
-assumptions.
+> Ok, but let's take a step back. So you have all this in place and a
+> consumer calls gpiod_get_value() that returns an errno because the device
+> is gone. Note that this wasn't even possible before e20538b82f1f ("gpio:
+> Propagate errors from chip->get()") that went into *v4.3*, and I assume
+> most drivers would need to be updated to even handle that that gpio
+> call, and all future calls, are now suddenly failing.
 
-Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
-Reviewed-by: Paul Burton <paul.burton@imgtec.com>
----
- arch/mips/include/asm/mips-cm.h | 4 ++++
- arch/mips/kernel/smp-cps.c      | 3 +++
- 2 files changed, 7 insertions(+)
+I actually have a revert of that in my fixes queue. So another step back
+and two forward for v4.5 (hopefully): audit all drivers to respect this.
 
-diff --git a/arch/mips/include/asm/mips-cm.h b/arch/mips/include/asm/mips-cm.h
-index 1f1927ab4269..0dc8618aeb5e 100644
---- a/arch/mips/include/asm/mips-cm.h
-+++ b/arch/mips/include/asm/mips-cm.h
-@@ -230,6 +230,10 @@ BUILD_CM_Cx_R_(tcid_8_priority,	0x80)
- #define  CM_GCR_BASE_CMDEFTGT_IOCU0		2
- #define  CM_GCR_BASE_CMDEFTGT_IOCU1		3
- 
-+/* GCR_RESET_EXT_BASE register fields */
-+#define CM_GCR_RESET_EXT_BASE_EVARESET		BIT(31)
-+#define CM_GCR_RESET_EXT_BASE_UEB		BIT(30)
-+
- /* GCR_ACCESS register fields */
- #define CM_GCR_ACCESS_ACCESSEN_SHF		0
- #define CM_GCR_ACCESS_ACCESSEN_MSK		(_ULCAST_(0xff) << 0)
-diff --git a/arch/mips/kernel/smp-cps.c b/arch/mips/kernel/smp-cps.c
-index c88937745b4e..db1da4d905b4 100644
---- a/arch/mips/kernel/smp-cps.c
-+++ b/arch/mips/kernel/smp-cps.c
-@@ -201,6 +201,9 @@ static void boot_core(unsigned core)
- 	/* Ensure its coherency is disabled */
- 	write_gcr_co_coherence(0);
- 
-+	/* Start it with the legacy memory map and exception base */
-+	write_gcr_co_reset_ext_base(CM_GCR_RESET_EXT_BASE_UEB);
-+
- 	/* Ensure the core can access the GCRs */
- 	access = read_gcr_access();
- 	access |= 1 << (CM_GCR_ACCESS_ACCESSEN_SHF + core);
--- 
-2.1.4
+Yours,
+Linus Walleij

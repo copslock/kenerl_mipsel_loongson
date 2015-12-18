@@ -1,74 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Dec 2015 15:47:00 +0100 (CET)
-Received: from mail-ob0-f173.google.com ([209.85.214.173]:34577 "EHLO
-        mail-ob0-f173.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27006918AbbLROq5dEVe0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 18 Dec 2015 15:46:57 +0100
-Received: by mail-ob0-f173.google.com with SMTP id iw8so80841383obc.1
-        for <linux-mips@linux-mips.org>; Fri, 18 Dec 2015 06:46:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        bh=5foSTx3CVIMkWwabIobMFLMhFPIAddxChA4mUFe9FdU=;
-        b=cswkZanNzDaYIC9nuRcADOYc3A3RDt0s/BywXajMr4dYszUTpADFsG8rDHdbP0HCbz
-         J2MyI2fHO+3hX40kCV9px7KaRb2YrapYjcE+F1RQb6WR2NsHd7Y5hkakaPpPeXNWaJR7
-         Z9XlfediTCDPb5Pj+kAMozAGbsUxlZYCkrje8=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:in-reply-to:references:date
-         :message-id:subject:from:to:cc:content-type;
-        bh=5foSTx3CVIMkWwabIobMFLMhFPIAddxChA4mUFe9FdU=;
-        b=jd7dE//QrMhTT40YF6xmf/WUT3MlAv8EL4attxErfaO//S5f5MfgddkJwDTbelDazs
-         zl9f/EcYfejvZ4rsUZzGu7Zo0THNhns4MWpLGu5EdXnXiIyDcfBGI4kL94dTevlY/hkO
-         VdK6t5Z4ymGEU7gJjFrbijFEwK0EOSuMBoqtbaqoXUanALXkCvTNK3/e6PI2vghgFS30
-         jxsr97MNRRsCcvZHsfHmXSAYhctT4eI8obsZB8ra0QFZB8ibXb4m0bS+MYsaqcPxtNFa
-         MUixx8ZEte1alto/DOHixHd0wLYvR8AxMkRHMwSx9g1eftfXLqeAdBjP+Hfz4nO8237m
-         8ZSQ==
-X-Gm-Message-State: ALoCoQmBm7vorIGS06uOnxZARClypVzl+6mdVJ/ECI74NhDFIaY2v+Z3JGYASxecMg9urUJOULrBnKG8C1++vSxt6Z9x9wDq8p9AkAqTVdzrbZazBoUcPcA=
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Dec 2015 15:52:14 +0100 (CET)
+Received: from mx2.suse.de ([195.135.220.15]:34591 "EHLO mx2.suse.de"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27006918AbbLROwKxsCV0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 18 Dec 2015 15:52:10 +0100
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (charybdis-ext.suse.de [195.135.220.254])
+        by mx2.suse.de (Postfix) with ESMTP id C7BA6AB13;
+        Fri, 18 Dec 2015 14:52:08 +0000 (UTC)
+Date:   Fri, 18 Dec 2015 15:52:07 +0100
+From:   Petr Mladek <pmladek@suse.com>
+To:     Daniel Thompson <daniel.thompson@linaro.org>
+Cc:     Jiri Kosina <jikos@kernel.org>,
+        Russell King - ARM Linux <linux@arm.linux.org.uk>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        the arch/x86 maintainers <x86@kernel.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "adi-buildroot-devel@lists.sourceforge.net" 
+        <adi-buildroot-devel@lists.sourceforge.net>,
+        Cris <linux-cris-kernel@axis.com>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        sparclinux <sparclinux@vger.kernel.org>
+Subject: Re: [PATCH v3 4/4] printk/nmi: Increase the size of NMI buffer and
+ make it configurable
+Message-ID: <20151218145207.GK3729@pathway.suse.cz>
+References: <1449667265-17525-1-git-send-email-pmladek@suse.com>
+ <1449667265-17525-5-git-send-email-pmladek@suse.com>
+ <CAMuHMdXVgr58YjoePGrRbMyMncQ27f85prL7G5SpeHeNxoYrXQ@mail.gmail.com>
+ <20151211124159.GB3729@pathway.suse.cz>
+ <20151211145725.b0e81bb4bb18fcd72ef5f557@linux-foundation.org>
+ <20151211232113.GZ8644@n2100.arm.linux.org.uk>
+ <alpine.LNX.2.00.1512120024370.9922@cbobk.fhfr.pm>
+ <5673DD60.7080302@linaro.org>
 MIME-Version: 1.0
-X-Received: by 10.182.247.105 with SMTP id yd9mr1701945obc.21.1450450011898;
- Fri, 18 Dec 2015 06:46:51 -0800 (PST)
-Received: by 10.182.32.70 with HTTP; Fri, 18 Dec 2015 06:46:51 -0800 (PST)
-In-Reply-To: <CAKdAkRR6kEzEOtjxXqS4BPToEzKGBsLb=SzePFAiLSDhh+=qnw@mail.gmail.com>
-References: <1449666515-23343-1-git-send-email-linus.walleij@linaro.org>
-        <20151209193034.GE27131@dtor-ws>
-        <CACRpkdZDFPFOH=9FfYzLeKo5b-oXG4rPjoU4Rpq9Wv1-RvY6uQ@mail.gmail.com>
-        <CAKdAkRR6kEzEOtjxXqS4BPToEzKGBsLb=SzePFAiLSDhh+=qnw@mail.gmail.com>
-Date:   Fri, 18 Dec 2015 15:46:51 +0100
-Message-ID: <CACRpkdb+jJyt1DLqsMfbFJ+md1mUrFprzG1m+6W2S-9pZV+PxA@mail.gmail.com>
-Subject: Re: [PATCH 000/182] Rid struct gpio_chip from container_of() usage
-From:   Linus Walleij <linus.walleij@linaro.org>
-To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Cc:     "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-        Johan Hovold <johan@kernel.org>,
-        Alexandre Courbot <acourbot@nvidia.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Michael Welling <mwelling@ieee.org>,
-        Markus Pargmann <mpa@pengutronix.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Mark Brown <broonie@kernel.org>,
-        Amit Kucheria <amit.kucheria@linaro.org>,
-        "arm@kernel.org" <arm@kernel.org>,
-        Haavard Skinnemoen <hskinnemoen@gmail.com>,
-        Sonic Zhang <sonic.zhang@analog.com>,
-        Greg Ungerer <gerg@uclinux.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Linux MIPS <linux-mips@linux-mips.org>,
-        Anatolij Gustschin <agust@denx.de>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Linux Input <linux-input@vger.kernel.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Russell King - ARM Linux <linux@arm.linux.org.uk>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <linus.walleij@linaro.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5673DD60.7080302@linaro.org>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <pmladek@suse.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50688
+X-archive-position: 50689
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linus.walleij@linaro.org
+X-original-sender: pmladek@suse.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -81,42 +67,63 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Dec 15, 2015 at 8:25 AM, Dmitry Torokhov
-<dmitry.torokhov@gmail.com> wrote:
-> On Mon, Dec 14, 2015 at 1:18 AM, Linus Walleij <linus.walleij@linaro.org> wrote:
+On Fri 2015-12-18 10:18:08, Daniel Thompson wrote:
+> On 11/12/15 23:26, Jiri Kosina wrote:
+> >On Fri, 11 Dec 2015, Russell King - ARM Linux wrote:
+> >
+> >>I'm personally happy with the existing code, and I've been wondering why
+> >>there's this effort to apply further cleanups - to me, the changelogs
+> >>don't seem to make that much sense, unless we want to start using
+> >>printk() extensively in NMI functions - using the generic nmi backtrace
+> >>code surely gets us something that works across all architectures...
+> >
+> >It is already being used extensively, and not only for all-CPU backtraces.
+> >For starters, please consider
+> >
+> >- WARN_ON(in_nmi())
+> >- BUG_ON(in_nmi())
+> 
+> Sorry to join in so late but...
+> 
+> Today we risk deadlock when we try to issue these diagnostic errors
+> directly from NMI context.
+> 
+> After this change we will still risk deadlock, because that's what
+> the diagnostic code is trying to tell us, *and* we delay actually
+> reporting the error until, and only if, the NMI handler completes.
 
->> At this point we have to cross-reference the pointer to my chip to
->> find the chip to remove. This goes for anything that takes the struct
->> gpio_chip *
->> as parameter, like gpiochip_add_pin_range(), gpiochip_request_own_desc()
->> etc etc. So something inside gpiolib must take a gpio_chip * pointer and
->> turn that into the actual state container, e.g, a struct gpio_device.
->> Since struct gpio_chip needs to be static and stateless, it cannot contain
->> a pointer back to its struct gpio_device.
->
-> Why does gpio_chip have to be stateless? I am not saying that it
-> should or should not, I just want to better understand what you are
-> trying to achieve.
+I think that NMI messages about a possible deadlock are the ones
+from
 
-Because the allocation of gpio_chip is currently inside each driver
-(often as part of their own state struct) and will go away with the
-driver. I want to make that const parameter that the drivers supply
-to the core gpiolib, and the gpiolib handled all states using something
-like that struct gpio_device you suggested or a more elaborate
-solution.
+    kernel/locking/rtmutex.c
+    kernel/irq_work.c
+    include/linux/hardirq.h
 
->> If I compare to how struct input_dev is done, you appear to also use the
->> pattern Russell suggested with input_dev_allocate() akin to
->> netdev_alloc(), and the allocated struct holds all the vtable and states etc,
->> and I think it is a good pattern, and that GPIO should conform.
->
-> The main difference between gpio_chip (at least as it stands
-> currently) and input devices and corresponding private driver data is
-> that input device and driver data has different lifetimes; input
-> devices may stick around even though driver is unbound from
-> corresponding device and driver's private data freed.
+You are right that if the deadlock happens, this patch set lowers the
+chance to see the message.
 
-I would like to achieve something similar for GPIO devices.
+On the other hand, all the other printk's in NMI seems to be non-fatal
+warnings. In this case, this patch set increases the chance to see
+them.
 
-Yours,
-Linus Walleij
+A compromise might be to explicitly call printk_nmi_flush() in the few
+fatal cases. Alternatively we could force the messages on the
+early_console when available.
+
+
+> >- anything being printed out from MCE handlers
+> 
+> The MCE handlers should only call printk() when they decide to panic
+> and *after* busting the spinlocks. At this point deferring printk()
+> until it is safe is not very helpful.
+> 
+> When we bust the spinlocks we should probably restore the normal
+> printk() function to give best chance of the failure messages making
+> it out.
+
+The problem is that we do not know what locks need to be busted. There
+are too many consoles and too many locks involved. Also busting locks
+open another can of worms.
+
+Best Regards,
+Petr

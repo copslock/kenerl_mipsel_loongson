@@ -1,44 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Dec 2015 16:47:30 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.136]:45518 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Dec 2015 17:18:40 +0100 (CET)
+Received: from mx2.suse.de ([195.135.220.15]:40224 "EHLO mx2.suse.de"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27007169AbbLRPr1ubKJ8 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 18 Dec 2015 16:47:27 +0100
-Received: from mail.kernel.org (localhost [127.0.0.1])
-        by mail.kernel.org (Postfix) with ESMTP id A0E7F20480;
-        Fri, 18 Dec 2015 15:47:25 +0000 (UTC)
-Received: from rob-hp-laptop (72-48-98-129.dyn.grandenetworks.net [72.48.98.129])
-        (using TLSv1.2 with cipher AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D402D20445;
-        Fri, 18 Dec 2015 15:47:23 +0000 (UTC)
-Date:   Fri, 18 Dec 2015 09:47:21 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Joshua Henderson <joshua.henderson@microchip.com>
-Cc:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        ralf@linux-mips.org, Pawel Moll <pawel.moll@arm.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ian Campbell <ijc+devicetree@hellion.org.uk>,
-        Kumar Gala <galak@codeaurora.org>, devicetree@vger.kernel.org
-Subject: Re: [PATCH v2 05/14] DEVICETREE: Add bindings for PIC32/MZDA
- platforms
-Message-ID: <20151218154721.GA19931@rob-hp-laptop>
-References: <1450133093-7053-1-git-send-email-joshua.henderson@microchip.com>
- <1450133093-7053-6-git-send-email-joshua.henderson@microchip.com>
+        id S27007628AbbLRQSios8l8 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 18 Dec 2015 17:18:38 +0100
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (charybdis-ext.suse.de [195.135.220.254])
+        by mx2.suse.de (Postfix) with ESMTP id 11D68AAB2;
+        Fri, 18 Dec 2015 16:18:37 +0000 (UTC)
+Date:   Fri, 18 Dec 2015 17:18:36 +0100
+From:   Petr Mladek <pmladek@suse.com>
+To:     Andrew Morton <akpm@linux-foundation.org>
+Cc:     Russell King - ARM Linux <linux@arm.linux.org.uk>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jiri Kosina <jkosina@suse.com>, Ingo Molnar <mingo@redhat.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        the arch/x86 maintainers <x86@kernel.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "adi-buildroot-devel@lists.sourceforge.net" 
+        <adi-buildroot-devel@lists.sourceforge.net>,
+        Cris <linux-cris-kernel@axis.com>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        sparclinux <sparclinux@vger.kernel.org>
+Subject: Re: [PATCH v3 4/4] printk/nmi: Increase the size of NMI buffer and
+ make it configurable
+Message-ID: <20151218161836.GL3729@pathway.suse.cz>
+References: <1449667265-17525-1-git-send-email-pmladek@suse.com>
+ <1449667265-17525-5-git-send-email-pmladek@suse.com>
+ <CAMuHMdXVgr58YjoePGrRbMyMncQ27f85prL7G5SpeHeNxoYrXQ@mail.gmail.com>
+ <20151211124159.GB3729@pathway.suse.cz>
+ <20151211145725.b0e81bb4bb18fcd72ef5f557@linux-foundation.org>
+ <20151211232113.GZ8644@n2100.arm.linux.org.uk>
+ <20151211153054.48da5d4139b93dd4ed438f4c@linux-foundation.org>
+ <20151215142621.GE3729@pathway.suse.cz>
+ <20151217143858.447b5fe79aaa5ed7b2328d67@linux-foundation.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1450133093-7053-6-git-send-email-joshua.henderson@microchip.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-X-Virus-Scanned: ClamAV using ClamSMTP
-Return-Path: <robh@kernel.org>
+In-Reply-To: <20151217143858.447b5fe79aaa5ed7b2328d67@linux-foundation.org>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <pmladek@suse.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50691
+X-archive-position: 50692
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: robh@kernel.org
+X-original-sender: pmladek@suse.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,62 +67,30 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Dec 14, 2015 at 03:42:07PM -0700, Joshua Henderson wrote:
-
-dt/bindings: ... is preferred for the subject.
-
-> This adds support for the Microchip PIC32 platform along with the
-> specific variant PIC32MZDA on a PIC32MZDA Starter Kit.
+On Thu 2015-12-17 14:38:58, Andrew Morton wrote:
+> On Tue, 15 Dec 2015 15:26:21 +0100 Petr Mladek <pmladek@suse.com> wrote:
 > 
-> Signed-off-by: Joshua Henderson <joshua.henderson@microchip.com>
-> Cc: Ralf Baechle <ralf@linux-mips.org>
-
-Acked-by: Rob Herring <robh@kernel.org>
-
-> ---
->  .../bindings/mips/pic32/microchip,pic32mzda.txt    |   33 ++++++++++++++++++++
->  1 file changed, 33 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/mips/pic32/microchip,pic32mzda.txt
+> > > OK, thanks.  So "not needed at present, might be needed in the future,
+> > > useful for out-of-tree debug code"?
+> > 
+> > It is possible that I got it a wrong way on arm. The NMI buffer is
+> > usable there on two locations.
+> > 
+> > First, the temporary is currently used to handle IPI_CPU_BACKTRACE.
+> > It seems that it is not a real NMI. But it seems to be available
+> > (compiled) on all arm system. This is why I introduced NEED_PRINTK_NMI
+> > Kconfig flag to avoid confusion with a real NMI.
+> > 
+> > Second, there is the FIQ "NMI" handler that is called from
+> > /arch/arm/kernel/entry-armv.S. It is compiled only if _not_
+> > defined $(CONFIG_CPU_V7M). It calls nmi_enter() and nmi_stop().
+> > It looks like a real NMI handler. This is why I defined HAVE_NMI
+> > if (!CPU_V7M).
+> > 
+> > A solution would be to define HAVE_NMI on all Arm systems and get rid
+> > of NEED_PRINTK_NMI. If you think that it would cause less confusion...
 > 
-> diff --git a/Documentation/devicetree/bindings/mips/pic32/microchip,pic32mzda.txt b/Documentation/devicetree/bindings/mips/pic32/microchip,pic32mzda.txt
-> new file mode 100644
-> index 0000000..bcf3e04
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/mips/pic32/microchip,pic32mzda.txt
-> @@ -0,0 +1,33 @@
-> +* Microchip PIC32MZDA Platforms
-> +
-> +PIC32MZDA Starter Kit
-> +Required root node properties:
-> +    - compatible = "microchip,pic32mzda-sk", "microchip,pic32mzda"
-> +
-> +CPU nodes:
-> +----------
-> +A "cpus" node is required.  Required properties:
-> + - #address-cells: Must be 1.
-> + - #size-cells: Must be 0.
-> +A CPU sub-node is also required.  Required properties:
-> + - device_type: Must be "cpu".
-> + - compatible: Must be "mti,mips14KEc".
-> +Example:
-> +	cpus {
-> +		#address-cells = <1>;
-> +		#size-cells = <0>;
-> +
-> +		cpu0: cpu@0 {
-> +			device_type = "cpu";
-> +			compatible = "mti,mips14KEc";
-> +		};
-> +	};
-> +
-> +Boot protocol
-> +--------------
-> +In accordance with the MIPS UHI specification[1], the bootloader must pass the
-> +following arguments to the kernel:
-> + - $a0: -2.
-> + - $a1: KSEG0 address of the flattened device-tree blob.
-> +
-> +[1] http://prplfoundation.org/wiki/MIPS_documentation
-> -- 
-> 1.7.9.5
-> 
+> So does this mean that the patch will be updated?
+
+Please, find the follow up patch below. I guess that you will want to
+squash it into the [1/n] one.

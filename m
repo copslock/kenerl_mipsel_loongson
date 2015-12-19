@@ -1,65 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 19 Dec 2015 11:37:33 +0100 (CET)
-Received: from mout.gmx.net ([212.227.17.21]:59719 "EHLO mout.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27008203AbbLSKhakb1QH (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 19 Dec 2015 11:37:30 +0100
-Received: from [192.168.20.60] ([92.203.49.69]) by mail.gmx.com (mrgmx101)
- with ESMTPSA (Nemesis) id 0LtVLE-1aI7CS2QAW-010xcb; Sat, 19 Dec 2015 11:37:08
- +0100
-Subject: Re: Aw: Re: [RFC PATCH urcu on mips, parisc] Fix: compat_futex should
- work-around futex signal-restart kernel bug
-To:     Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-References: <1450303792-27470-1-git-send-email-mathieu.desnoyers@efficios.com>
- <663068619.259007.1450356852694.JavaMail.zimbra@efficios.com>
- <trinity-0a355ae2-e5eb-40e5-8561-41a2e8e251e2-1450369370294@3capp-gmx-bs60>
- <1817225945.264082.1450468696180.JavaMail.zimbra@efficios.com>
- <56746FC6.10904@gmx.de>
-Cc:     "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>,
-        Jon Bernard <jbernard@debian.org>,
-        Michael Jeanson <mjeanson@efficios.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        linux-mips <linux-mips@linux-mips.org>,
-        linux-kernel@vger.kernel.org,
-        "James E.J. Bottomley" <jejb@parisc-linux.org>,
-        linux-parisc <linux-parisc@vger.kernel.org>,
-        Ed Swierk <eswierk@skyportsystems.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-From:   Helge Deller <deller@gmx.de>
-X-Enigmail-Draft-Status: N1110
-Message-ID: <56753350.2060906@gmx.de>
-Date:   Sat, 19 Dec 2015 11:37:04 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 19 Dec 2015 12:50:58 +0100 (CET)
+Received: from exsmtp03.microchip.com ([198.175.253.49]:35279 "EHLO
+        email.microchip.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S27008205AbbLSLuyphGne (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 19 Dec 2015 12:50:54 +0100
+Received: from [10.41.20.11] (10.10.76.4) by chn-sv-exch03.mchp-main.com
+ (10.10.76.49) with Microsoft SMTP Server id 14.3.181.6; Sat, 19 Dec 2015
+ 04:50:45 -0700
+Subject: Re: [PATCH v2 03/14] DEVICETREE: Add PIC32 clock binding
+ documentation
+To:     Rob Herring <robh@kernel.org>
+References: <1450133093-7053-1-git-send-email-joshua.henderson@microchip.com>
+ <1450133093-7053-4-git-send-email-joshua.henderson@microchip.com>
+ <20151218154444.GA27288@rob-hp-laptop>
+CC:     Joshua Henderson <joshua.henderson@microchip.com>,
+        <linux-kernel@vger.kernel.org>, <linux-mips@linux-mips.org>,
+        <ralf@linux-mips.org>, Pawel Moll <pawel.moll@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ian Campbell <ijc+devicetree@hellion.org.uk>,
+        Kumar Gala <galak@codeaurora.org>, <devicetree@vger.kernel.org>
+From:   Purna Chandra Mandal <purna.mandal@microchip.com>
+Message-ID: <56754427.8050704@microchip.com>
+Date:   Sat, 19 Dec 2015 17:18:55 +0530
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.1.0
+ Thunderbird/38.3.0
 MIME-Version: 1.0
-In-Reply-To: <56746FC6.10904@gmx.de>
-Content-Type: text/plain; charset=utf-8
+In-Reply-To: <20151218154444.GA27288@rob-hp-laptop>
+Content-Type: text/plain; charset="windows-1252"
 Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K0:uxzVTCk6u1umsLnvdXfIDmJFGM+UOgO7XnRHdEKl4Dby88+yTHq
- pI9bxeIthGVcCI1a5bYQT6Y3ib/bfgJPf/OdQja7msGIUkSU0BpCE8ceiRU/ZO9scwTp6ep
- sVoajB2SWUh7TlfoyOhj1jsju8HCQICIFVaQVOFIFuxgS6SnLFaipz4SJP+kCNGWPJ0bRb1
- 14BNnaDEJ+FWeyHSnGJtQ==
-X-UI-Out-Filterresults: notjunk:1;V01:K0:57Z/ls11cUY=:dCR0UNUCg62CTM5ND5f0CM
- TAQyOXSR0bOyQAhro9EECli5q/iogTHuLwikXVpteEFjEIG04YlA1hlJU6iteYEsOB2zgBNFT
- ud8RNr+zPAKLWomIOD1jN9AAtw8xchREhiy68gkb+D7TPQjXeLm/XI19F7RIkkTe0K/w8Z3cL
- AcOGX2VwqWSWDoQPVUefE1nl/14BZLdtRiPKlHKSmk6+M+rfjsXxRWZCKOFDfjIUoovyqt4nI
- G2wy4CItDrMzJSWq6JJjSujfW+nEHCgLPrZE1dNQMNIZAVnX6oGkL9MuOUEY9kfuvBYbkNx4C
- 2yI2zCwEBCFdMi7uQXeb0Gjg9dW02rNnmu8BSnFUnHrPIKEYgDicm65anZFhzmgVLvU4+lSG1
- B/eRyXgtuN4Xq/F9G2Bqwb/OcEz9jRtRVS/ft9X6uYwExoRWWSuW8WnBA9a9WkzpW7R/J46bE
- QsCF3ytpScOoFcUudnCwmj8fxO2hAE7TNw0VgrG2CiG35+LpnfmGNrqNrtTDC0LuBwbgOVlmM
- j+s+KURRYYSHus704ku5bWUNG8Huw5S+PABdHznGL6PpEOGDl4Hbw9vGnCJ9GDsCghlmeCZ0Q
- cmkXxEan8WRiULOafVAC4bUC7/688QYVE/+yQWnqSevwMJA/1s24EBVHHj/82VJteWukm3GQy
- xYenIZXhYRQ+CDkjTb1raMwCB+iG3tp94+UxG9F18wUgUSkFnpQ3CIIkUM7EvqQ706LjZFKCz
- uEq+BJVTQM0wdghEQ6x4WyehECHaVP0gGz917WovjEEY+dOcVQboWNvnlfzBxehuwHhOenHYf
- TBK60ya
-Return-Path: <deller@gmx.de>
+Return-Path: <Purna.Mandal@microchip.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50697
+X-archive-position: 50698
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: deller@gmx.de
+X-original-sender: purna.mandal@microchip.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -72,42 +48,303 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Mathieu,
+On 12/18/2015 09:14 PM, Rob Herring wrote:
+> On Mon, Dec 14, 2015 at 03:42:05PM -0700, Joshua Henderson wrote:
+>> From: Purna Chandra Mandal <purna.mandal@microchip.com>
+>>
+>> Document the devicetree bindings for the clock driver found on Microchip
+>> PIC32 class devices.
+>>
+>> Signed-off-by: Purna Chandra Mandal <purna.mandal@microchip.com>
+>> Signed-off-by: Joshua Henderson <joshua.henderson@microchip.com>
+>> Cc: Ralf Baechle <ralf@linux-mips.org>
+> A couple of nits on the example, otherwise:
+>
+> Acked-by: Rob Herring <robh@kernel.org>
+>
+>> ---
+>>  .../devicetree/bindings/clock/microchip,pic32.txt  |  256 ++++++++++++++++++++
+>>  1 file changed, 256 insertions(+)
+>>  create mode 100644 Documentation/devicetree/bindings/clock/microchip,pic32.txt
+>>
+>> diff --git a/Documentation/devicetree/bindings/clock/microchip,pic32.txt b/Documentation/devicetree/bindings/clock/microchip,pic32.txt
+>> new file mode 100644
+>> index 0000000..f50c653
+>> --- /dev/null
+>> +++ b/Documentation/devicetree/bindings/clock/microchip,pic32.txt
+>> @@ -0,0 +1,256 @@
+>> +Binding for a Clock hardware block found on
+>> +certain Microchip PIC32 MCU devices.
+>> +
+>> +Microchip SoC clocks-node consists of few oscillators, PLL, multiplexer
+>> +and few divider nodes.
+>> +
+>> +We will find only the base address of the clock tree, this base
+>> +address is common for some of the subnodes, not all. If no address is
+>> +specified for any of subnode base address of the clock tree will be
+>> +treated as its base. Each of subnodes follow the same common clock
+>> +binding with some additional optional properties.
+>> +
+>> +	clocks_node {
+>> +		reg = <>;
+>> +
+>> +		spll_node {
+>> +			...
+>> +		};
+>> +
+>> +		frcdiv_node {
+>> +			...
+>> +		};
+>> +
+>> +		sysclk_mux_node {
+>> +			...
+>> +		};
+>> +
+>> +		pbdiv_node {
+>> +			...
+>> +		};
+>> +
+>> +		refoclk_node {
+>> +			...
+>> +		};
+>> +		...
+>> +	};
+>> +
+>> +This binding uses the common clock binding[1].
+>> +
+>> +[1] Documentation/devicetree/bindings/clock/clock-bindings.txt
+>> +
+>> +Required properties:
+>> +- compatible : should be one of "microchip,pic32mzda-clk",
+>> +    "microchip,pic32mzda-sosc", "microchip,pic32mzda-frcdivclk",
+>> +    "microchip,pic32mzda-syspll", "microchip,pic32mzda-sysclk-v2",
+>> +    "microchip,pic32mzda-pbclk", "microchip,pic32mzda-refoclk".
+>> +- reg : A Base address and length of the register set.
+>> +- interrupts : source of interrupt.
+>> +
+>> +Optional properties (for subnodes):
+>> +- #clock-cells: From common clock binding, should be 0.
+>> +- microchip,clock-indices: in multiplexer node clock sources always aren't linear
+>> +    and contiguous. This property helps define clock-sources with respect to
+>> +    the mux clock node.
+>> +- microchip,ignore-unused : ignore gate request even if the gated clock is unused.
+>> +- microchip,status-bit-mask: bitmask for status check. This will be used to confirm
+>> +    particular operation by clock sub-node is completed. It is dependent sub-node.
+>> +- microchip,bit-mask: enable mask, similar to microchip,status-bit-mask.
+>> +- microchip,slew-step: enable frequency slewing(stepping) during rate change;
+>> +    applicable only to sys-clock subnode.
+>> +
+>> +Example:
+>> +
+>> +/* PIC32 specific clks */
+>> +pic32_clktree {
+>> +	#address-cells = <1>;
+>> +	#size-cells = <1>;
+>> +	reg = <0x1f801200 0x200>;
+>> +	compatible = "microchip,pic32mzda-clk";
+>> +	ranges = <0 0x1f801200 0x200>;
+>> +
+>> +	/* secondary oscillator; external input on SOSCI pin */
+>> +	SOSC:sosc_clk {
+> For the ones with reg property, do clock@0 instead of sosc_clk.
 
-On 18.12.2015 21:42, Helge Deller wrote:
-> On 18.12.2015 20:58, Mathieu Desnoyers wrote:
->>>>> When testing liburcu on a 3.18 Linux kernel, 2-core MIPS (cpu model :
->>>>> Ingenic JZRISC V4.15  FPU V0.0), we notice that a blocked sys_futex
->>>>> FUTEX_WAIT returns -1, errno=ENOSYS when interrupted by a SA_RESTART
->>>>> signal handler. This spurious ENOSYS behavior causes hangs in liburcu
->>>>> 0.9.x. Running a MIPS 3.18 kernel under a QEMU emulator exhibits the
->>>>> same behavior. This might affect earlier kernels.
->>>>>
->>>>> This issue appears to be fixed in 3.18.y stable kernels and 3.19, but
->>>>> nevertheless, we should try to handle this kernel bug more gracefully
->>>>> than a user-space hang due to unexpected spurious ENOSYS return value.
->>>>
->>>> It's actually fixed in 3.19, but not in 3.18.y stable kernels. The
->>>> Linux kernel upstream fix commit is:
->>>> e967ef02 "MIPS: Fix restart of indirect syscalls"
+ack. Will update.
 
->> Looks like parisc has an issue very similar to the one that
->> has been fixed on MIPS by e967ef02 "MIPS: Fix restart of indirect syscalls".
+>> +		#clock-cells = <0>;
+>> +		compatible = "microchip,pic32mzda-sosc";
+>> +		clock-frequency = <32768>;
+>> +		reg = <0x000 0x10>, /* enable reg */
+>> +		      <0x1d0 0x10>; /* status reg */
+>> +		microchip,bit-mask = <0x02>; /* enable mask */
+>> +		microchip,status-bit-mask = <0x10>; /* status-mask*/
+>> +	};
+>> +
+>> +	FRCDIV:frcdiv_clk {
+>> +		#clock-cells = <0>;
+>> +		compatible = "microchip,pic32mzda-frcdivclk";
+>> +		clocks = <&FRC>;
+>> +		clock-output-names = "frcdiv_clk";
+>> +	};
+>> +
+>> +	/* System PLL clock */
+>> +	SYSPLL:spll_clk {
+>> +		#clock-cells = <0>;
+>> +		compatible = "microchip,pic32mzda-syspll";
+>> +		reg = <0x020 0x10>, /* SPLL register */
+>> +		      <0x1d0 0x10>; /* CLKSTAT register */
+>> +		clocks = <&POSC>, <&FRC>;
+>> +		clock-output-names = "sys_pll";
+>> +		microchip,status-bit-mask = <0x80>; /* SPLLRDY */
+>> +	};
+>> +
+>> +	/* system clock; mux with postdiv & slew */
+>> +	SYSCLK:sys_clk {
+>> +		#clock-cells = <0>;
+>> +		compatible = "microchip,pic32mzda-sysclk-v2";
+>> +		reg = <0x1c0 0x04>; /* SLEWCON */
+>> +		clocks = <&FRCDIV>, <&SYSPLL>, <&POSC>, <&SOSC>,
+>> +				<&LPRC>, <&FRCDIV>;
+>> +		microchip,clock-indices = <0>, <1>, <2>, <4>, <5>, <7>;
+>> +		clock-output-names = "sys_clk";
+>> +	};
+>> +
+>> +	/* UPLL is integral part of USB PHY; UTMI clk for USBCORE */
+>> +	UPLL:usb_phy_clk {
+>> +		#clock-cells = <0>;
+>> +		compatible = "fixed-clocks";
+>> +		clock-frequency = <24000000>;
+>> +		clock-output-names = "usbphy_clk";
+>> +	};
+>> +
+>> +	/* Peripheral bus1 clock */
+>> +	PBCLK1:pb1_clk {
+>> +		reg = <0x140 0x10>;
+>> +		#clock-cells = <0>;
+>> +		compatible = "microchip,pic32mzda-pbclk";
+>> +		clocks = <&SYSCLK>;
+>> +		clock-output-names = "pb1_clk";
+>> +		/* used by system modules, not gateable */
+>> +		microchip,ignore-unused;
+>> +	};
+>> +
+>> +	/* Peripheral bus2 clock */
+>> +	PBCLK2:pb2_clk {
+>> +		reg = <0x150 0x10>;
+>> +		#clock-cells = <0>;
+>> +		compatible = "microchip,pic32mzda-pbclk";
+>> +		clocks = <&SYSCLK>;
+>> +		clock-output-names = "pb2_clk";
+>> +		/* avoid gating even if unused */
+>> +		microchip,ignore-unused;
+>> +	};
+>> +
+>> +	/* Peripheral bus3 clock */
+>> +	PBCLK3:pb3_clk {
+>> +		reg = <0x160 0x10>;
+>> +		#clock-cells = <0>;
+>> +		compatible = "microchip,pic32mzda-pbclk";
+>> +		clocks = <&SYSCLK>;
+>> +		clock-output-names = "pb3_clk";
+>> +	};
+>> +
+>> +	/* Peripheral bus4 clock(I/O ports, GPIO) */
+>> +	PBCLK4:pb4_clk {
+>> +		reg = <0x170 0x10>;
+>> +		#clock-cells = <0>;
+>> +		compatible = "microchip,pic32mzda-pbclk";
+>> +		clocks = <&SYSCLK>;
+>> +		clock-output-names = "pb4_clk";
+>> +	};
+>> +
+>> +	/* Peripheral bus clock */
+>> +	PBCLK5:pb5_clk {
+>> +		reg = <0x180 0x10>;
+>> +		#clock-cells = <0>;
+>> +		compatible = "microchip,pic32mzda-pbclk";
+>> +		clocks = <&SYSCLK>;
+>> +		clock-output-names = "pb5_clk";
+>> +	};
+>> +
+>> +	/* Peripheral Bus6 clock; */
+>> +	PBCLK6:pb6_clk {
+>> +		reg = <0x190 0x10>;
+>> +		compatible = "microchip,pic32mzda-pbclk";
+>> +		clocks = <&SYSCLK>;
+>> +		#clock-cells = <0>;
+>> +	};
+>> +
+>> +	/* Peripheral bus7 clock */
+>> +	PBCLK7:pb7_clk {
+>> +		reg = <0x1A0 0x10>;
+> lower case
 
-Yes, parisc is affected the same way.
-I've posted a patch to the parisc mailing list which fixes this issue for
-parisc and which I plan to push into stable kernels:
-http://thread.gmane.org/gmane.linux.ports.parisc/26243
+ack.
 
-Regarding your patch for liburcu:
+>> +		#clock-cells = <0>;
+>> +		compatible = "microchip,pic32mzda-pbclk";
+>> +		/* CPU is driven by this clock; so named */
+>> +		clock-output-names = "cpu_clk";
+>> +		clocks = <&SYSCLK>;
+>> +	};
+>> +
+>> +	/* Reference Oscillator clock for SPI/I2S */
+>> +	REFCLKO1:refo1_clk {
+>> +		reg = <0x080 0x20>;
+>> +		#clock-cells = <0>;
+>> +		compatible = "microchip,pic32mzda-refoclk";
+>> +		clocks = <&SYSCLK>, <&PBCLK1>, <&POSC>, <&FRC>, <&LPRC>,
+>> +			<&SOSC>, <&SYSPLL>, <&REFIx>, <&BFRC>;
+>> +		microchip,clock-indices = <0>, <1>, <2>, <3>, <4>, <5>,
+>> +						<7>, <8>, <9>;
+>> +		clock-output-names = "refo1_clk";
+>> +	};
+>> +
+>> +	/* Reference Oscillator clock for SQI */
+>> +	REFCLKO2:refo2_clk {
+>> +		reg = <0x0A0 0x20>;
+> lower case
 
->>>>> Therefore, fallback on the "async-safe" version of compat_futex in those
->>>>> situations where FUTEX_WAIT returns ENOSYS. This async-safe fallback has
->>>>> the nice property of being OK to use concurrently with other FUTEX_WAKE
->>>>> and FUTEX_WAIT futex() calls, because it's simply a busy-wait scheme.
+ack.
 
-I've tested your patch. It does not produce any regressions on parisc, but I can't
-say for sure if it really works. ENOSYS is returned randomly, so maybe I didn't
-faced a situation where your patch actually was used.
+>> +		#clock-cells = <0>;
+>> +		compatible = "microchip,pic32mzda-refoclk";
+>> +		clocks = <&SYSCLK>, <&PBCLK1>, <&POSC>, <&FRC>, <&LPRC>,
+>> +			<&SOSC>, <&SYSPLL>, <&REFIx>, <&BFRC>;
+>> +		microchip,clock-indices = <0>, <1>, <2>, <3>, <4>, <5>,
+>> +						<7>, <8>, <9>;
+>> +		clock-output-names = "refo2_clk";
+>> +	};
+>> +
+>> +	/* Reference Oscillator clock, ADC */
+>> +	REFCLKO3:refo3_clk {
+>> +		reg = <0x0C0 0x20>;
+> lower case
 
-Helge
+ack.
+
+>> +		compatible = "microchip,pic32mzda-refoclk";
+>> +		clocks = <&SYSCLK>, <&PBCLK1>, <&POSC>, <&FRC>, <&LPRC>,
+>> +			<&SOSC>, <&SYSPLL>, <&REFIx>, <&BFRC>;
+>> +		microchip,clock-indices = <0>, <1>, <2>, <3>, <4>, <5>,
+>> +						<7>, <8>, <9>;
+>> +		#clock-cells = <0>;
+>> +		clock-output-names = "refo3_clk";
+>> +	};
+>> +
+>> +	/* Reference Oscillator clock */
+>> +	REFCLKO4:refo4_clk {
+>> +		reg = <0x0E0 0x20>;
+>> +		compatible = "microchip,pic32mzda-refoclk";
+>> +		clocks = <&SYSCLK>, <&PBCLK1>, <&POSC>, <&FRC>, <&LPRC>,
+>> +				<&SOSC>, <&SYSPLL>, <&REFIx>, <&BFRC>;
+>> +		microchip,clock-indices = <0>,<1>,<2>,<3>,<4>,<5>,<7>,
+>> +						<8>,<9>;
+>> +		#clock-cells = <0>;
+>> +		clock-output-names = "refo4_clk";
+>> +	};
+>> +
+>> +	/* Reference Oscillator clock, LCD */
+>> +	REFCLKO5:refo5_clk {
+>> +		reg = <0x100 0x20>;
+>> +		compatible = "microchip,pic32mzda-refoclk";
+>> +		clocks = <&SYSCLK>,<&PBCLK1>,<&POSC>,<&FRC>,<&LPRC>,
+>> +			<&SOSC>,<&SYSPLL>,<&REFIx>,<&BFRC>;
+>> +		microchip,clock-indices = <0>, <1>, <2>, <3>, <4>, <5>,
+>> +					<7>, <8>,<9>;
+>> +		#clock-cells = <0>;
+>> +		clock-output-names = "refo5_clk";
+>> +	};
+>> +};
+>> +
+>> +The clock consumer should specify the desired clock by having the clocks in its
+>> +"clock" phandle cell. For example for UART:
+>> +
+>> +uart2: serial@<> {
+>> +	compatible = "microchip,pic32mzda-uart";
+>> +	reg = <>;
+>> +	interrupts = <>;
+>> +	clocks = <&PBCLK2>;
+>> +}
+>> -- 
+>> 1.7.9.5
+>>

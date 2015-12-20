@@ -1,44 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 19 Dec 2015 15:54:51 +0100 (CET)
-Received: from vs14.mail.saunalahti.fi ([62.142.117.201]:37305 "EHLO
-        vs14.mail.saunalahti.fi" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007487AbbLSOytxuSW8 convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 19 Dec 2015 15:54:49 +0100
-Received: from vams (localhost [127.0.0.1])
-        by vs14.mail.saunalahti.fi (Postfix) with SMTP id 236AC74008F;
-        Sat, 19 Dec 2015 16:54:44 +0200 (EET)
-Received: from gw02.mail.saunalahti.fi (gw02.mail.saunalahti.fi [195.197.172.116])
-        by vs14.mail.saunalahti.fi (Postfix) with ESMTP id 0577774008F;
-        Sat, 19 Dec 2015 16:54:44 +0200 (EET)
-Received: from Orion (91-157-120-53.elisa-laajakaista.fi [91.157.120.53])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by gw02.mail.saunalahti.fi (Postfix) with ESMTPSA id E5093400A3;
-        Sat, 19 Dec 2015 16:54:41 +0200 (EET)
-From:   "Matti Laakso" <malaakso@elisanet.fi>
-To:     <Liviu.Dudau@arm.com>
-Cc:     <linux-mips@linux-mips.org>
-References: <56732950.4060201@elisanet.fi> <20151218114210.GJ960@e106497-lin.cambridge.arm.com>
-In-Reply-To: <20151218114210.GJ960@e106497-lin.cambridge.arm.com>
-Subject: RE: Unable to allocate PCI I/O resources
-Date:   Sat, 19 Dec 2015 16:54:41 +0200
-Message-ID: <010801d13a6d$31eb3740$95c1a5c0$@elisanet.fi>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 20 Dec 2015 15:11:48 +0100 (CET)
+Received: from mail.efficios.com ([78.47.125.74]:47680 "EHLO mail.efficios.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27008174AbbLTOLqCy55A (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 20 Dec 2015 15:11:46 +0100
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by mail.efficios.com (Postfix) with ESMTP id 91CFC340307;
+        Sun, 20 Dec 2015 14:11:42 +0000 (UTC)
+Received: from mail.efficios.com ([127.0.0.1])
+        by localhost (evm-mail-1.efficios.com [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id LSh7MmEWuO3U; Sun, 20 Dec 2015 14:11:41 +0000 (UTC)
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by mail.efficios.com (Postfix) with ESMTP id D355B3403D3;
+        Sun, 20 Dec 2015 14:11:41 +0000 (UTC)
+X-Virus-Scanned: amavisd-new at efficios.com
+Received: from mail.efficios.com ([127.0.0.1])
+        by localhost (evm-mail-1.efficios.com [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id g_x2Yh5st3Xz; Sun, 20 Dec 2015 14:11:41 +0000 (UTC)
+Received: from evm-mail-1.efficios.com (evm-mail-1.efficios.com [78.47.125.74])
+        by mail.efficios.com (Postfix) with ESMTP id 9FE5F3403D2;
+        Sun, 20 Dec 2015 14:11:41 +0000 (UTC)
+Date:   Sun, 20 Dec 2015 14:11:41 +0000 (UTC)
+From:   Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+To:     Helge Deller <deller@gmx.de>
+Cc:     "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>,
+        Jon Bernard <jbernard@debian.org>,
+        Michael Jeanson <mjeanson@efficios.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        linux-mips <linux-mips@linux-mips.org>,
+        linux-kernel@vger.kernel.org,
+        "James E.J. Bottomley" <jejb@parisc-linux.org>,
+        linux-parisc <linux-parisc@vger.kernel.org>,
+        Ed Swierk <eswierk@skyportsystems.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Message-ID: <1106544409.268921.1450620701325.JavaMail.zimbra@efficios.com>
+In-Reply-To: <56753350.2060906@gmx.de>
+References: <1450303792-27470-1-git-send-email-mathieu.desnoyers@efficios.com> <663068619.259007.1450356852694.JavaMail.zimbra@efficios.com> <trinity-0a355ae2-e5eb-40e5-8561-41a2e8e251e2-1450369370294@3capp-gmx-bs60> <1817225945.264082.1450468696180.JavaMail.zimbra@efficios.com> <56746FC6.10904@gmx.de> <56753350.2060906@gmx.de>
+Subject: Re: Aw: Re: [RFC PATCH urcu on mips, parisc] Fix: compat_futex
+ should work-around futex signal-restart kernel bug
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="utf-8"
-Content-Transfer-Encoding: 8BIT
-X-Mailer: Microsoft Outlook 16.0
-Thread-Index: AQABAgME7K2rcGz0btYjkKrajbWSxaJy0ctA
-Content-Language: fi
-Return-Path: <malaakso@elisanet.fi>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [78.47.125.74]
+X-Mailer: Zimbra 8.6.0_GA_1178 (ZimbraWebClient - FF42 (Linux)/8.6.0_GA_1178)
+Thread-Topic: compat_futex should work-around futex signal-restart kernel bug
+Thread-Index: yUnaPxzg3j5H69hDs6qKec20Dl+bNA==
+Return-Path: <compudj@efficios.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50699
+X-archive-position: 50705
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: malaakso@elisanet.fi
+X-original-sender: mathieu.desnoyers@efficios.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,43 +65,60 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Second try after webmail messed up my first message.
+----- On Dec 19, 2015, at 5:37 AM, Helge Deller deller@gmx.de wrote:
 
-> On Thu, Dec 17, 2015 at 11:29:52PM +0200, Matti Laakso wrote:
-> > Hello all,
-> > 
-> > I have some oldish MIPS-based (Lantiq Danube) routers that have a PCI 
-> > bus and a VIA 6212 USB-controller connected to it. The USB controller 
-> > requires I/O resources in addition to memory. It seems that with 
-> > kernel
-> > 3.18 and newer PCI I/O resources can no longer be allocated on this 
-> > platform. I tracked the problem down to a patch set from Liviu Dudau 
-> > (Support for creating generic PCI host bridges from DT). After this 
-> > patch the function pci_address_to_pio in drivers/of/address.c hits the 
-> > check
-> >
-> > address > IO_SPACE_LIMIT
-> >
-> > since address on this SoC is 0x1AE00000 and IO_SPACE_LIMIT is 0xFFFF 
-> > on MIPS (PCI_IOBASE is not defined). Changing IO_SPACE_LIMIT to 
-> > 0xFFFFFFFF I can work around the problem, but I think that is not the proper solution.
->
-> if PCI_IOBASE is not defined then you should not hit the code I have added with commit 41f8bba7f5552d0 but the old code path, in which case I would guess the code was broken before my change?
->
+> Hi Mathieu,
+> 
+> On 18.12.2015 21:42, Helge Deller wrote:
+>> On 18.12.2015 20:58, Mathieu Desnoyers wrote:
+>>>>>> When testing liburcu on a 3.18 Linux kernel, 2-core MIPS (cpu model :
+>>>>>> Ingenic JZRISC V4.15  FPU V0.0), we notice that a blocked sys_futex
+>>>>>> FUTEX_WAIT returns -1, errno=ENOSYS when interrupted by a SA_RESTART
+>>>>>> signal handler. This spurious ENOSYS behavior causes hangs in liburcu
+>>>>>> 0.9.x. Running a MIPS 3.18 kernel under a QEMU emulator exhibits the
+>>>>>> same behavior. This might affect earlier kernels.
+>>>>>>
+>>>>>> This issue appears to be fixed in 3.18.y stable kernels and 3.19, but
+>>>>>> nevertheless, we should try to handle this kernel bug more gracefully
+>>>>>> than a user-space hang due to unexpected spurious ENOSYS return value.
+>>>>>
+>>>>> It's actually fixed in 3.19, but not in 3.18.y stable kernels. The
+>>>>> Linux kernel upstream fix commit is:
+>>>>> e967ef02 "MIPS: Fix restart of indirect syscalls"
+> 
+>>> Looks like parisc has an issue very similar to the one that
+>>> has been fixed on MIPS by e967ef02 "MIPS: Fix restart of indirect syscalls".
+> 
+> Yes, parisc is affected the same way.
+> I've posted a patch to the parisc mailing list which fixes this issue for
+> parisc and which I plan to push into stable kernels:
+> http://thread.gmane.org/gmane.linux.ports.parisc/26243
+> 
+> Regarding your patch for liburcu:
+> 
+>>>>>> Therefore, fallback on the "async-safe" version of compat_futex in those
+>>>>>> situations where FUTEX_WAIT returns ENOSYS. This async-safe fallback has
+>>>>>> the nice property of being OK to use concurrently with other FUTEX_WAKE
+>>>>>> and FUTEX_WAIT futex() calls, because it's simply a busy-wait scheme.
+> 
+> I've tested your patch. It does not produce any regressions on parisc, but I
+> can't
+> say for sure if it really works. ENOSYS is returned randomly, so maybe I didn't
+> faced a situation where your patch actually was used.
 
-Well, before your change of_pci_range_to_resource() simply filled the resource struct without any checks. Now it fills it with OF_BAD_ADDR. Maybe it was broken, but at least it worked in this case.
+If you ran make check and make regtest, and nothing
+fails/hangs, you should be OK. liburcu runs very heavy
+stress-tests which makes it likely to hit race conditions
+repeatedly.
 
-> > 
-> > Any ideas on how to fix this?
-> >
->
-> There is a distinction between IO range being visible from the CPU @ 0x1AE00000 and the IO address being used by the PCI subsystem. The IO address is a bus address and it should be between 0 - IO_SPACE_LIMIT.
->
+Thanks!
 
-From reading the code in of_pci_range_to_resource() I'd expect pci_address_to_pio(range->cpu_addr) to get the CPU address as its argument. Why is it checked against IO_SPACE_LIMIT? Or is the IO address yet different from PCI address (meaning, range->pci_addr)?
+Mathieu
 
-> I would look into the actual user of pci_address_to_pio(), and maybe define PCI_IOBASE for your platform to tell it where the IO space starts from CPU point of view.
->
+> 
+> Helge
 
-Best regards,
-Matti Laakso
+-- 
+Mathieu Desnoyers
+EfficiOS Inc.
+http://www.efficios.com

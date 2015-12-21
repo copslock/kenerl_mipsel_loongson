@@ -1,18 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 Dec 2015 11:35:54 +0100 (CET)
-Received: from albert.telenet-ops.be ([195.130.137.90]:34438 "EHLO
-        albert.telenet-ops.be" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27014276AbbLUKeG4jegL (ORCPT
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 Dec 2015 11:36:15 +0100 (CET)
+Received: from laurent.telenet-ops.be ([195.130.137.89]:49312 "EHLO
+        laurent.telenet-ops.be" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27014284AbbLUKeG5GDoL (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Mon, 21 Dec 2015 11:34:06 +0100
 Received: from ayla.of.borg ([84.195.106.123])
-        by albert.telenet-ops.be with bizsmtp
-        id wAZw1r01R2fm56U06AZw6m; Mon, 21 Dec 2015 11:34:06 +0100
+        by laurent.telenet-ops.be with bizsmtp
+        id wAZw1r01J2fm56U01AZwhK; Mon, 21 Dec 2015 11:34:06 +0100
 Received: from ramsan.of.borg ([192.168.97.29] helo=ramsan)
         by ayla.of.borg with esmtp (Exim 4.82)
         (envelope-from <geert@linux-m68k.org>)
-        id 1aAxmu-0004ST-Jp; Mon, 21 Dec 2015 11:33:56 +0100
+        id 1aAxmu-0004SS-Jf; Mon, 21 Dec 2015 11:33:56 +0100
 Received: from geert by ramsan with local (Exim 4.82)
         (envelope-from <geert@linux-m68k.org>)
-        id 1aAxmz-0007E6-KR; Mon, 21 Dec 2015 11:34:01 +0100
+        id 1aAxmz-0007E1-JR; Mon, 21 Dec 2015 11:34:01 +0100
 From:   Geert Uytterhoeven <geert+renesas@glider.be>
 To:     arm@kernel.org, Andrew Lunn <andrew@lunn.ch>,
         Gregory Clement <gregory.clement@free-electrons.com>,
@@ -27,9 +27,9 @@ Cc:     Brian Norris <computersforpeace@gmail.com>,
         linux-mips@linux-mips.org, linux-mtd@lists.infradead.org,
         linux-kernel@vger.kernel.org,
         Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH v2 4/9] ARM: shmobile: lager dts: Add compatible property to "partitions" node
-Date:   Mon, 21 Dec 2015 11:33:48 +0100
-Message-Id: <1450694033-27717-5-git-send-email-geert+renesas@glider.be>
+Subject: [PATCH v2 3/9] ARM: shmobile: bockw dts: Add compatible property to "partitions" node
+Date:   Mon, 21 Dec 2015 11:33:47 +0100
+Message-Id: <1450694033-27717-4-git-send-email-geert+renesas@glider.be>
 X-Mailer: git-send-email 1.9.1
 In-Reply-To: <1450694033-27717-1-git-send-email-geert+renesas@glider.be>
 References: <1450694033-27717-1-git-send-email-geert+renesas@glider.be>
@@ -37,7 +37,7 @@ Return-Path: <geert@linux-m68k.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50717
+X-archive-position: 50718
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -65,14 +65,14 @@ Acked-by: Brian Norris <computersforpeace@gmail.com>
 v2:
   - Add Acked-by.
 ---
- arch/arm/boot/dts/r8a7790-lager.dts | 1 +
+ arch/arm/boot/dts/r8a7778-bockw.dts | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm/boot/dts/r8a7790-lager.dts b/arch/arm/boot/dts/r8a7790-lager.dts
-index 7773cb1f10317d85..cdc0414f5f0716dd 100644
---- a/arch/arm/boot/dts/r8a7790-lager.dts
-+++ b/arch/arm/boot/dts/r8a7790-lager.dts
-@@ -457,6 +457,7 @@
+diff --git a/arch/arm/boot/dts/r8a7778-bockw.dts b/arch/arm/boot/dts/r8a7778-bockw.dts
+index 482228b8a984656e..06ceefe3cb500dc7 100644
+--- a/arch/arm/boot/dts/r8a7778-bockw.dts
++++ b/arch/arm/boot/dts/r8a7778-bockw.dts
+@@ -212,6 +212,7 @@
  		m25p,fast-read;
  
  		partitions {

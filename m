@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 Dec 2015 17:49:45 +0100 (CET)
-Received: from down.free-electrons.com ([37.187.137.238]:48276 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 Dec 2015 17:50:16 +0100 (CET)
+Received: from down.free-electrons.com ([37.187.137.238]:48286 "EHLO
         mail.free-electrons.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27014300AbbLUQtnNIaY9 convert rfc822-to-8bit
+        by eddie.linux-mips.org with ESMTP id S27008778AbbLUQuOTCIT9 convert rfc822-to-8bit
         (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 21 Dec 2015 17:49:43 +0100
+        Mon, 21 Dec 2015 17:50:14 +0100
 Received: by mail.free-electrons.com (Postfix, from userid 110)
-        id 1C0D02C5; Mon, 21 Dec 2015 17:49:35 +0100 (CET)
+        id 21652295; Mon, 21 Dec 2015 17:50:08 +0100 (CET)
 Received: from localhost (81-67-231-93.rev.numericable.fr [81.67.231.93])
-        by mail.free-electrons.com (Postfix) with ESMTPSA id 7C967246;
-        Mon, 21 Dec 2015 17:48:47 +0100 (CET)
+        by mail.free-electrons.com (Postfix) with ESMTPSA id D4D62246;
+        Mon, 21 Dec 2015 17:49:57 +0100 (CET)
 From:   Gregory CLEMENT <gregory.clement@free-electrons.com>
 To:     Geert Uytterhoeven <geert+renesas@glider.be>
 Cc:     arm@kernel.org, Andrew Lunn <andrew@lunn.ch>,
@@ -22,13 +22,13 @@ Cc:     arm@kernel.org, Andrew Lunn <andrew@lunn.ch>,
         linux-arm-kernel@lists.infradead.org, linux-sh@vger.kernel.org,
         linux-mips@linux-mips.org, linux-mtd@lists.infradead.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/9] ARM: mvebu: ix4-300d: Add compatible property to "partitions" node
+Subject: Re: [PATCH v2 2/9] ARM: mvebu: kirkwood: Add compatible property to "partitions" node
 References: <1450694033-27717-1-git-send-email-geert+renesas@glider.be>
-        <1450694033-27717-2-git-send-email-geert+renesas@glider.be>
-Date:   Mon, 21 Dec 2015 17:48:48 +0100
-In-Reply-To: <1450694033-27717-2-git-send-email-geert+renesas@glider.be>
-        (Geert Uytterhoeven's message of "Mon, 21 Dec 2015 11:33:45 +0100")
-Message-ID: <87zix3rbm7.fsf@free-electrons.com>
+        <1450694033-27717-3-git-send-email-geert+renesas@glider.be>
+Date:   Mon, 21 Dec 2015 17:49:58 +0100
+In-Reply-To: <1450694033-27717-3-git-send-email-geert+renesas@glider.be>
+        (Geert Uytterhoeven's message of "Mon, 21 Dec 2015 11:33:46 +0100")
+Message-ID: <87vb7rrbk9.fsf@free-electrons.com>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -37,7 +37,7 @@ Return-Path: <gregory.clement@free-electrons.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50723
+X-archive-position: 50724
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -64,10 +64,8 @@ Hi Geert,
 > longer detected if it is not present.
 >
 > Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-> Acked-by: Brian Norris <computersforpeace@gmail.com>
 
-Applied on mvebu/dt (with the hope that it is still time to push it to
-arm-soc)
+Applied on mvebu/dt
 
 Thanks,
 
@@ -75,22 +73,22 @@ Gregory
 
 > ---
 > v2:
->   - Add Acked-by.
+>   - New.
 > ---
->  arch/arm/boot/dts/armada-xp-lenovo-ix4-300d.dts | 1 +
+>  arch/arm/boot/dts/kirkwood-pogoplug-series-4.dts | 1 +
 >  1 file changed, 1 insertion(+)
 >
-> diff --git a/arch/arm/boot/dts/armada-xp-lenovo-ix4-300d.dts b/arch/arm/boot/dts/armada-xp-lenovo-ix4-300d.dts
-> index 13cf69a8d0fb392b..fb9e1bbf23385b85 100644
-> --- a/arch/arm/boot/dts/armada-xp-lenovo-ix4-300d.dts
-> +++ b/arch/arm/boot/dts/armada-xp-lenovo-ix4-300d.dts
-> @@ -152,6 +152,7 @@
->  				nand-on-flash-bbt;
->  
->  				partitions {
-> +					compatible = "fixed-partitions";
->  					#address-cells = <1>;
->  					#size-cells = <1>;
+> diff --git a/arch/arm/boot/dts/kirkwood-pogoplug-series-4.dts b/arch/arm/boot/dts/kirkwood-pogoplug-series-4.dts
+> index 1db6f2c506cce320..8082d64266a37c33 100644
+> --- a/arch/arm/boot/dts/kirkwood-pogoplug-series-4.dts
+> +++ b/arch/arm/boot/dts/kirkwood-pogoplug-series-4.dts
+> @@ -131,6 +131,7 @@
+>  	chip-delay = <40>;
+>  	status = "okay";
+>  	partitions {
+> +		compatible = "fixed-partitions";
+>  		#address-cells = <1>;
+>  		#size-cells = <1>;
 >  
 > -- 
 > 1.9.1

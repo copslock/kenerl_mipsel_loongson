@@ -1,51 +1,75 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Dec 2015 15:41:54 +0100 (CET)
-Received: from mail-lf0-f42.google.com ([209.85.215.42]:33938 "EHLO
-        mail-lf0-f42.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008520AbbLVOlwtMMK9 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 22 Dec 2015 15:41:52 +0100
-Received: by mail-lf0-f42.google.com with SMTP id y184so130351530lfc.1
-        for <linux-mips@linux-mips.org>; Tue, 22 Dec 2015 06:41:52 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Dec 2015 22:22:40 +0100 (CET)
+Received: from mail-pf0-f181.google.com ([209.85.192.181]:33562 "EHLO
+        mail-pf0-f181.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27014376AbbLVVWhvmbiD (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 22 Dec 2015 22:22:37 +0100
+Received: by mail-pf0-f181.google.com with SMTP id q63so5919379pfb.0
+        for <linux-mips@linux-mips.org>; Tue, 22 Dec 2015 13:22:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id;
-        bh=9YCWhaEBz9Ggtr9lm9W5NgV4aciQfnNiNp6VM0b0xCE=;
-        b=ccLC0/ZeUTUGzwlVx63yR0hIJx6lqpYo8o8xfEuOdCpUwiG+zQc2qry46WJj+moRsX
-         b8vuXwVzQsr65Ns5/KXwe5jfhB4jDf7fsPnbLHdf2NDyQ/dlQu/av8DVKo6zqQOqrNWG
-         eG4YDgDcPOTZ5C9aSrZlA2lX65jf97JftvCcE=
+        d=lixom-net.20150623.gappssmtp.com; s=20150623;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-type:content-disposition:in-reply-to:user-agent;
+        bh=fQGC1z8rXhZfT+Xif9JMiPn1kcoRgNiRpp+gV5tHqqA=;
+        b=saJInhbyogsSiTn4yIoa/Qq/WS68M9XPT2nHzPIcN6mW+Gr5VdeDf1s9a8+Je5y7Sm
+         mr5EMukLB0kO9NAbG64xUhkZtw04rjFJaJgVAmSioSNQuqlX8DPjQqapccpECkPyNGwu
+         Li6OPmq45dZcMCVrUdcwKzheYGvk3cn7G43iee7Iwek/PwtvCPhyKOGE0mk+VDyq9Dnt
+         jljaufdV3Hd/ADmTLCa0uNuuJN9FNRAKjXIpSl7Q7qLkt/f2syVGeo6aQxeOwz3xMIop
+         IgOYNsXYP0AJzMTHaXKnAxPmJS9q2d+CGycGgXX4f5RrSjXCjAYhXJtTfddvZ8Lis99X
+         Fd6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=9YCWhaEBz9Ggtr9lm9W5NgV4aciQfnNiNp6VM0b0xCE=;
-        b=VrPxC+q2K4bPMduZlDDWu8UvZ1K1t0lFmGsulhnhnqE7e/tGrlUo6zWoTWXAZy8pgY
-         gpqbjeKKH1b1+xzME1JxZDlDPEDcCPXH7LByp3Jmjr51ZCsntljXVTjxADwWW3eZhrYl
-         JECVrxYQ/Vp2t+j3Zldr0ijldwQha/uG3Nk6Vp0Q1HzktdzhehXFtDoqT6Tmkcy3uZNV
-         iMN+bZS9jrbsw44nKppv6/ngPtlJd181WOM5y7yy8LxHZJykF2Y6hLM8eyS3e0WKTnXK
-         ZVfMlBAShmgecq45w9pafCaeCRTpHMJjItQ2cosmfyC+tEaAHtH3Ceoyo8GGrcvcAV5V
-         lMvw==
-X-Gm-Message-State: ALoCoQl1iWo60H90lNOqlz885ulHb8oa21sTGt+uxRe337jMYXLacFdFcQEDYeN9PjeKV858QTYHa/CnecdOy2Y6oj2ZkdJmBQ==
-X-Received: by 10.25.154.146 with SMTP id c140mr7792792lfe.24.1450795307459;
-        Tue, 22 Dec 2015 06:41:47 -0800 (PST)
-Received: from localhost.localdomain ([85.235.10.227])
-        by smtp.gmail.com with ESMTPSA id h8sm5584728lbd.5.2015.12.22.06.41.46
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-type:content-disposition:in-reply-to
+         :user-agent;
+        bh=fQGC1z8rXhZfT+Xif9JMiPn1kcoRgNiRpp+gV5tHqqA=;
+        b=GgxH1nwGXjtQgKgYVxWxgzgCpHDGdmjaeQgqUWSbPuJwxJdMGMboF66klqYY2UVBYb
+         hlOQsoGBy5a124i3qStPDvp1kIrq6w+QbRNfO3tgzkigWayxMcFF+J4wgFt77cbrmnNg
+         EcTbwkFXwa8k1bb2q1f10Cp7+PX0LdogA9JzJ1SGVt6CnooFGKeKZjZv1ZDvMENSYeja
+         5FmN9xjEOhvoEtCrVqfaWOXQB9+7MVRuuqkU0W/RFoRo3xSejsM8OMT9siIprBm1qdPA
+         SyIyMZNwWeqEOVzAK9/B36Z/Y1TYScwtdxvgcRnd2cjtmiWoRFHdfbDS9D/Fks3D1p5G
+         FsXA==
+X-Gm-Message-State: ALoCoQl5gHj37e7H5PgT3jpM2hLllBc7Rul832jipj78pqFFYEbUXbnGqSclyqr0Jto6XZddwkGhPQAybfyqt0/M1EPzHpPITw==
+X-Received: by 10.98.16.70 with SMTP id y67mr16472950pfi.150.1450819351556;
+        Tue, 22 Dec 2015 13:22:31 -0800 (PST)
+Received: from localhost ([2620:0:1000:fd1f:a01d:b55d:7883:cc13])
+        by smtp.gmail.com with ESMTPSA id 19sm7078441pfj.16.2015.12.22.13.22.30
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 22 Dec 2015 06:41:46 -0800 (PST)
-From:   Linus Walleij <linus.walleij@linaro.org>
-To:     linux-gpio@vger.kernel.org, linux-mips@linux-mips.org,
-        Ralf Baechle <ralf@linux-mips.org>
-Cc:     Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH 40/54] mips: txx9: iocled: Be sure to clamp return value
-Date:   Tue, 22 Dec 2015 15:41:44 +0100
-Message-Id: <1450795304-27576-1-git-send-email-linus.walleij@linaro.org>
-X-Mailer: git-send-email 2.4.3
-Return-Path: <linus.walleij@linaro.org>
+        Tue, 22 Dec 2015 13:22:30 -0800 (PST)
+Date:   Tue, 22 Dec 2015 13:22:25 -0800
+From:   Olof Johansson <olof@lixom.net>
+To:     Gregory CLEMENT <gregory.clement@free-electrons.com>
+Cc:     Geert Uytterhoeven <geert+renesas@glider.be>, arm@kernel.org,
+        Andrew Lunn <andrew@lunn.ch>,
+        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        Simon Horman <horms@verge.net.au>,
+        Magnus Damm <magnus.damm@gmail.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Alex Smith <alex.smith@imgtec.com>,
+        Brian Norris <computersforpeace@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-sh@vger.kernel.org,
+        linux-mips@linux-mips.org, linux-mtd@lists.infradead.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/9] ARM: mvebu: ix4-300d: Add compatible property to
+ "partitions" node
+Message-ID: <20151222212225.GE30172@localhost>
+References: <1450694033-27717-1-git-send-email-geert+renesas@glider.be>
+ <1450694033-27717-2-git-send-email-geert+renesas@glider.be>
+ <87zix3rbm7.fsf@free-electrons.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87zix3rbm7.fsf@free-electrons.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <olof@lixom.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50736
+X-archive-position: 50737
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linus.walleij@linaro.org
+X-original-sender: olof@lixom.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,33 +82,24 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-As we want gpio_chip .get() calls to be able to return negative
-error codes and propagate to drivers, we need to go over all
-drivers and make sure their return values are clamped to [0,1].
-We do this by using the ret = !!(val) design pattern.
+On Mon, Dec 21, 2015 at 05:48:48PM +0100, Gregory CLEMENT wrote:
+> Hi Geert,
+>  
+>  On lun., d??c. 21 2015, Geert Uytterhoeven <geert+renesas@glider.be> wrote:
+> 
+> > As of commit e488ca9f8d4f62c2 ("doc: dt: mtd: partitions: add compatible
+> > property to "partitions" node"), the "partitions" subnode of an SPI
+> > FLASH device node must have a compatible property. The partitions are no
+> > longer detected if it is not present.
+> >
+> > Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+> > Acked-by: Brian Norris <computersforpeace@gmail.com>
+> 
+> Applied on mvebu/dt (with the hope that it is still time to push it to
+> arm-soc)
 
-Cc: linux-mips@linux-mips.org
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
----
-MIPS folks: as mentioned in 00/54: either apply this directly
-or ACK it and I will take it into the GPIO tree.
----
- arch/mips/txx9/generic/setup.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I think we should just take this directly, so feel free to drop it. I'll
+followup on 0/9.
 
-diff --git a/arch/mips/txx9/generic/setup.c b/arch/mips/txx9/generic/setup.c
-index 9d9962ab7d25..2fd350f31f4b 100644
---- a/arch/mips/txx9/generic/setup.c
-+++ b/arch/mips/txx9/generic/setup.c
-@@ -689,7 +689,7 @@ static int txx9_iocled_get(struct gpio_chip *chip, unsigned int offset)
- {
- 	struct txx9_iocled_data *data =
- 		container_of(chip, struct txx9_iocled_data, chip);
--	return data->cur_val & (1 << offset);
-+	return !!(data->cur_val & (1 << offset));
- }
- 
- static void txx9_iocled_set(struct gpio_chip *chip, unsigned int offset,
--- 
-2.4.3
+
+-Olof

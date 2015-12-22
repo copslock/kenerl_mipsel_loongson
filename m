@@ -1,51 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Dec 2015 00:21:00 +0100 (CET)
-Received: from mail-pa0-f53.google.com ([209.85.220.53]:36093 "EHLO
-        mail-pa0-f53.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007410AbbLUXU7FjwFV (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 22 Dec 2015 00:20:59 +0100
-Received: by mail-pa0-f53.google.com with SMTP id q3so86093080pav.3;
-        Mon, 21 Dec 2015 15:20:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=1KvlbvWtyXDnuEHuy/6V7/eVq+tC1OlpXa7Q1uo8+QM=;
-        b=MlE9FcO9aqQ3P+zh86A74cH8zHxcKRJLF6/vmurm8qLOWM922I7gPmvGorbldpjDfE
-         ZuNp6QcCodhKkQUE0Ilk+NnXf1JE7z5c/Yj/Q+D/pm5MtWWqwOS5TkVWshA7yYxotk3a
-         d/CqXsrgRBeIhCj2n9xjKemd7N7kkGZ8RxU8u6B2sbCz0iH/SC8NeibICoVImBsS6Zkd
-         hOBxOn9KnJYi70us09EilnRP3ULUwKErpdjt15pCxsVS5O5G9drBBQmXb8mRnbjEf+09
-         224AfTyPeh1sqQFQPsf19tMF9dETPwOk0WBHHAW0sMTMxjPZphJvI+FNb+Q662Bb7N3N
-         4I4Q==
-X-Received: by 10.66.228.225 with SMTP id sl1mr31103015pac.63.1450740052913;
-        Mon, 21 Dec 2015 15:20:52 -0800 (PST)
-Received: from [10.12.156.244] (5520-maca-inet1-outside.broadcom.com. [216.31.211.11])
-        by smtp.googlemail.com with ESMTPSA id zu6sm24314552pac.8.2015.12.21.15.20.51
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 21 Dec 2015 15:20:52 -0800 (PST)
-Message-ID: <56788942.3030601@gmail.com>
-Date:   Mon, 21 Dec 2015 15:20:34 -0800
-From:   Florian Fainelli <f.fainelli@gmail.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.8.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Dec 2015 02:16:21 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:52140 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S27009000AbbLVBQShRZ02 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 22 Dec 2015 02:16:18 +0100
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.15.2/8.14.8) with ESMTP id tBM1GES7016801;
+        Tue, 22 Dec 2015 02:16:15 +0100
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.15.2/8.15.2/Submit) id tBM1G9CT016792;
+        Tue, 22 Dec 2015 02:16:09 +0100
+Date:   Tue, 22 Dec 2015 02:16:09 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Geert Uytterhoeven <geert+renesas@glider.be>
+Cc:     arm@kernel.org, Andrew Lunn <andrew@lunn.ch>,
+        Gregory Clement <gregory.clement@free-electrons.com>,
+        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        Simon Horman <horms@verge.net.au>,
+        Magnus Damm <magnus.damm@gmail.com>,
+        Alex Smith <alex.smith@imgtec.com>,
+        Brian Norris <computersforpeace@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-sh@vger.kernel.org,
+        linux-mips@linux-mips.org, linux-mtd@lists.infradead.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 9/9] MIPS: dts: jz4780/ci20: Add compatible property
+ to "partitions" node
+Message-ID: <20151222011609.GA15881@linux-mips.org>
+References: <1450694033-27717-1-git-send-email-geert+renesas@glider.be>
+ <1450694033-27717-10-git-send-email-geert+renesas@glider.be>
 MIME-Version: 1.0
-To:     Jaedon Shin <jaedon.shin@gmail.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Linux-MIPS <linux-mips@linux-mips.org>
-CC:     Kevin Cernekee <cernekee@gmail.com>,
-        Dragan Stancevic <dragan.stancevic@gmail.com>
-Subject: Re: [PATCH 0/7] cleanup and add device tree for BCM7xxx platforms
-References: <1447900493-1167-1-git-send-email-jaedon.shin@gmail.com>
-In-Reply-To: <1447900493-1167-1-git-send-email-jaedon.shin@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Return-Path: <f.fainelli@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1450694033-27717-10-git-send-email-geert+renesas@glider.be>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50727
+X-archive-position: 50728
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: f.fainelli@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,35 +54,50 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 18/11/15 18:34, Jaedon Shin wrote:
-> Hi all,
+On Mon, Dec 21, 2015 at 11:33:53AM +0100, Geert Uytterhoeven wrote:
+> Date:   Mon, 21 Dec 2015 11:33:53 +0100
+> From: Geert Uytterhoeven <geert+renesas@glider.be>
+> To: arm@kernel.org, Andrew Lunn <andrew@lunn.ch>, Gregory Clement
+>  <gregory.clement@free-electrons.com>, Sebastian Hesselbarth
+>  <sebastian.hesselbarth@gmail.com>, Simon Horman <horms@verge.net.au>,
+>  Magnus Damm <magnus.damm@gmail.com>, Ralf Baechle <ralf@linux-mips.org>,
+>  Alex Smith <alex.smith@imgtec.com>
+> Cc: Brian Norris <computersforpeace@gmail.com>, Rob Herring
+>  <robh+dt@kernel.org>, devicetree@vger.kernel.org,
+>  linux-arm-kernel@lists.infradead.org, linux-sh@vger.kernel.org,
+>  linux-mips@linux-mips.org, linux-mtd@lists.infradead.org,
+>  linux-kernel@vger.kernel.org, Geert Uytterhoeven <geert+renesas@glider.be>
+> Subject: [PATCH v2 9/9] MIPS: dts: jz4780/ci20: Add compatible property to
+>  "partitions" node
 > 
-> This patch series is including device tree entries that clean up existing
-> entries and adds missing entries for BCM7xxx platforms.
+> As of commit e488ca9f8d4f62c2 ("doc: dt: mtd: partitions: add compatible
+> property to "partitions" node"), the "partitions" subnode of an SPI
+> FLASH device node must have a compatible property. The partitions are no
+> longer detected if it is not present.
 > 
-> Jaedon Shin (7):
->   MIPS: BMIPS: remove unused aliases in device tree
->   MIPS: BMIPS: remove wrong sata properties
->   MIPS: BMIPS: fix phy name in device tree
->   MIPS: BMIPS: fix interrupt number in bcm7425.dtsi
->   MIPS: BMIPS: add device tree entry for BCM7xxx UART
->   MIPS: BMIPS: add device tree entry for BCM7xxx I2C
->   MIPS: BMIPS: add device tree entry for BCM7xxx SATA
+> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+> ---
+> v2:
+>   - New.
+> ---
+>  arch/mips/boot/dts/ingenic/ci20.dts | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/arch/mips/boot/dts/ingenic/ci20.dts b/arch/mips/boot/dts/ingenic/ci20.dts
+> index 782258c0e4fbba8e..1652d8d60b1e4b86 100644
+> --- a/arch/mips/boot/dts/ingenic/ci20.dts
+> +++ b/arch/mips/boot/dts/ingenic/ci20.dts
+> @@ -70,6 +70,7 @@
+>  			nand-on-flash-bbt;
+>  
+>  			partitions {
+> +				compatible = "fixed-partitions";
+>  				#address-cells = <2>;
+>  				#size-cells = <2>;
+>  
+> -- 
+> 1.9.1
 
-Reviewed-by: Florian Fainelli <f.fainelli@gmail.com>
+Acked-by: Ralf Baechle <ralf@linux-mips.org>
 
-Thanks!
-
-Ralf, since 19e88101c78f MIPS: BMIPS: Add SATA/PHY nodes for bcm7346 and
-other changes got into 4.4-rc1, could you queue at least
-
-MIPS: BMIPS: remove wrong sata properties
-and
-MIPS: BMIPS: fix interrupt number in bcm7425.dtsi
-
-for an upcoming 4.4 pull request so we have correct device trees from
-there on?
-
-Thank you!
--- 
-Florian
+  Ralf

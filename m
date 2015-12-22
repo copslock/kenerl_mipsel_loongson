@@ -1,48 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Dec 2015 15:40:39 +0100 (CET)
-Received: from mail-lb0-f169.google.com ([209.85.217.169]:34405 "EHLO
-        mail-lb0-f169.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27014339AbbLVOkhFvFu9 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 22 Dec 2015 15:40:37 +0100
-Received: by mail-lb0-f169.google.com with SMTP id pv2so46223032lbb.1
-        for <linux-mips@linux-mips.org>; Tue, 22 Dec 2015 06:40:37 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Dec 2015 15:41:14 +0100 (CET)
+Received: from mail-lb0-f174.google.com ([209.85.217.174]:34641 "EHLO
+        mail-lb0-f174.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008520AbbLVOlKD8x19 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 22 Dec 2015 15:41:10 +0100
+Received: by mail-lb0-f174.google.com with SMTP id pv2so46231017lbb.1
+        for <linux-mips@linux-mips.org>; Tue, 22 Dec 2015 06:41:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id;
-        bh=ti+yH1KIw5N2AgY1Id5bmyFlHBdjzzI3lBMCNNPO3Z0=;
-        b=GsYdXXaUW/i8Tk6v7k5cHYozacOaG/MVDvEzcI6eYq8srREkU39aZgO2qOs95FbZeM
-         bVurmy+8/hxIpLAC3QYimLMvsh9P04lXPxNe3fd3LqoVB3FAY3NZGQPpWotLkvDu4/+p
-         A8r+cVHd00cbb5C5OmvtMopnKLBJI9Z6lB3Ak=
+        bh=MfSEB722wOd40uCF76eY9sTMLwL/w+YOOIsha1ZZv9s=;
+        b=ESbhd40ormPuGenfQP5ucHVw3u8pTHIMIJfXbd25XHvViu9f2b6F2INYeukQZ3ozZE
+         E+PHDW1qQG8+unSs8vv//kp2vVQQn7IC8VPzw3EaCpwMwsOH7yMVO0sHh/wK3UOkW7B7
+         s13vtMmhvWHklWUYWDZ6/vbkH8bDHQuFBD1dM=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=ti+yH1KIw5N2AgY1Id5bmyFlHBdjzzI3lBMCNNPO3Z0=;
-        b=PfGbMginU8iKO7yrF4Qtf2KYXHtdANEgojlQksiER8V0IRW7ksasQHvqimcBQZm34a
-         vcW7qwhT2fCtcF0J7SYjyg/Zl0ve/QyB/2hZPxGJVIpqu9g5PMWmnHSmosOs4j6w1AF+
-         r3yqqtEvVR5NMXiup5ZuoLXXWh+g/KfKqwe7SZcluEwOzqSrH2YbuyzsibTzgDAaj7Qd
-         eLm0eLYgGXmCw9jBA6ba4YcwYizHWAPnI+TywnLT8ikkZgC1lSuo3lO7TDPPcUobPtaW
-         r5IC6MbMNuPAGqS/uKNKdlmisE/97l6prYBnk1WueGFdsaz0N13RwaYwXE4EkQzFK+Dq
-         ysfg==
-X-Gm-Message-State: ALoCoQngyF8ExO0PuyYeKmUqRfDEUyNxuqNwTZis7TZG1iBBRr8iP1SE1LqUHa1SZjHMqfgpMMegYQCPKP5ZU0OeS+vnhIqIAQ==
-X-Received: by 10.112.161.228 with SMTP id xv4mr8958226lbb.60.1450795231512;
-        Tue, 22 Dec 2015 06:40:31 -0800 (PST)
+        bh=MfSEB722wOd40uCF76eY9sTMLwL/w+YOOIsha1ZZv9s=;
+        b=hU/q9j1p+3o/cjcjsZy+0jcU0r+dTNRTVINIE5Xqsiang0Cjjd4KHgrUry+oXdG9g8
+         S78y1QUsHEm25VAxmuWoYZTPBsCDlKFqjn5KT/gWlArELFleCEfFigxuHJPalHIqtIcf
+         frKdvfd1mfMB9QmH8UMwIAbDqEedxC315J2hSOUG64Q05zWOS6MeC5iV8wEbFw2B/vND
+         lFX/vT6nXz84OjMe/nL2feTK2i1cgydo4u2I2L5QT/UXPbMpQF1gkGlajV1ld/tTQD5K
+         JtQ8bKNZ7lYYS1C2rHHNEBajNWn4ojQvP4dtzEdexM6IhkPt7Y/547bPhFnc9jQT0i3y
+         OaQA==
+X-Gm-Message-State: ALoCoQnHKGw+vwRiqEQllfsk+3ssoJb0mxMxL+ohNFd3kQo2d0O9180wkkTORBsvNBCp7cmmk804T01G0yM6yCoUCHF492uGUg==
+X-Received: by 10.112.219.197 with SMTP id pq5mr7195129lbc.73.1450795264732;
+        Tue, 22 Dec 2015 06:41:04 -0800 (PST)
 Received: from localhost.localdomain ([85.235.10.227])
-        by smtp.gmail.com with ESMTPSA id pd9sm5726524lbc.48.2015.12.22.06.40.30
+        by smtp.gmail.com with ESMTPSA id p1sm3400546lbo.30.2015.12.22.06.41.03
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 22 Dec 2015 06:40:30 -0800 (PST)
+        Tue, 22 Dec 2015 06:41:04 -0800 (PST)
 From:   Linus Walleij <linus.walleij@linaro.org>
 To:     linux-gpio@vger.kernel.org, linux-mips@linux-mips.org,
         Ralf Baechle <ralf@linux-mips.org>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        Alban Bedel <albeu@free.fr>
-Subject: [PATCH 37/54] mips: ar7/gpio: Be sure to clamp return value
-Date:   Tue, 22 Dec 2015 15:40:27 +0100
-Message-Id: <1450795227-27411-1-git-send-email-linus.walleij@linaro.org>
+Cc:     Linus Walleij <linus.walleij@linaro.org>
+Subject: [PATCH 38/54] mips: txx9: Be sure to clamp return value
+Date:   Tue, 22 Dec 2015 15:41:01 +0100
+Message-Id: <1450795261-27465-1-git-send-email-linus.walleij@linaro.org>
 X-Mailer: git-send-email 2.4.3
 Return-Path: <linus.walleij@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50733
+X-archive-position: 50734
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -65,25 +64,27 @@ drivers and make sure their return values are clamped to [0,1].
 We do this by using the ret = !!(val) design pattern.
 
 Cc: linux-mips@linux-mips.org
-Cc: Alban Bedel <albeu@free.fr>
 Cc: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 ---
- arch/mips/ar7/gpio.c | 2 +-
+MIPS folks: as mentioned in 00/54: either apply this directly
+or ACK it and I will take it into the GPIO tree.
+---
+ arch/mips/kernel/gpio_txx9.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/mips/ar7/gpio.c b/arch/mips/ar7/gpio.c
-index f4930456eb8e..f969f583c68c 100644
---- a/arch/mips/ar7/gpio.c
-+++ b/arch/mips/ar7/gpio.c
-@@ -37,7 +37,7 @@ static int ar7_gpio_get_value(struct gpio_chip *chip, unsigned gpio)
- 				container_of(chip, struct ar7_gpio_chip, chip);
- 	void __iomem *gpio_in = gpch->regs + AR7_GPIO_INPUT;
+diff --git a/arch/mips/kernel/gpio_txx9.c b/arch/mips/kernel/gpio_txx9.c
+index c6854d9df926..705be43c3533 100644
+--- a/arch/mips/kernel/gpio_txx9.c
++++ b/arch/mips/kernel/gpio_txx9.c
+@@ -21,7 +21,7 @@ static struct txx9_pio_reg __iomem *txx9_pioptr;
  
--	return readl(gpio_in) & (1 << gpio);
-+	return !!(readl(gpio_in) & (1 << gpio));
+ static int txx9_gpio_get(struct gpio_chip *chip, unsigned int offset)
+ {
+-	return __raw_readl(&txx9_pioptr->din) & (1 << offset);
++	return !!(__raw_readl(&txx9_pioptr->din) & (1 << offset));
  }
  
- static int titan_gpio_get_value(struct gpio_chip *chip, unsigned gpio)
+ static void txx9_gpio_set_raw(unsigned int offset, int value)
 -- 
 2.4.3

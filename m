@@ -1,59 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 Dec 2015 14:35:59 +0100 (CET)
-Received: from mx2.parallels.com ([199.115.105.18]:35239 "EHLO
-        mx2.parallels.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27008444AbbLXNf5hIa0f (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 24 Dec 2015 14:35:57 +0100
-Received: from [199.115.105.250] (helo=mail.odin.com)
-        by mx2.parallels.com with esmtps (TLSv1.2:ECDHE-RSA-AES256-SHA384:256)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 Dec 2015 16:24:16 +0100 (CET)
+Received: from bh-25.webhostbox.net ([208.91.199.152]:42118 "EHLO
+        bh-25.webhostbox.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27014421AbbLXPYN6BDkH (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 24 Dec 2015 16:24:13 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=roeck-us.net; s=default; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:MIME-Version:Date:Message-ID:From:Cc:References:To:Subject;
+        bh=IHlMg2vOKaDUHkxqyF05DluikVLyXLwrYK0ysdmC0ew=; b=s0652IFRT5I1v6cHiS4UxR7/h2
+        LA8ny9YCGYO85gL0Ix58uywtFOjyikJvP4FlbJPhD4Ww5IOFQUkg821JG0AW9EEntMhTMlXNhXP7X
+        3x9yk7cr/0qjVowi4rg30fIZu9KzcQVz7jSviFSq4TVzyZVq6hFOgV7vJjaq+GRngXr8=;
+Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:48652 helo=server.roeck-us.net)
+        by bh-25.webhostbox.net with esmtpsa (TLSv1:DHE-RSA-AES128-SHA:128)
         (Exim 4.86)
-        (envelope-from <rkagan@virtuozzo.com>)
-        id 1aC63d-0006Mi-Cy; Thu, 24 Dec 2015 05:35:53 -0800
-Received: from rkaganb.sw.ru (10.30.3.95) by US-EXCH2.sw.swsoft.com
- (10.255.249.46) with Microsoft SMTP Server (TLS) id 15.0.1130.7; Thu, 24 Dec
- 2015 05:35:43 -0800
-Date:   Thu, 24 Dec 2015 16:35:39 +0300
-From:   Roman Kagan <rkagan@virtuozzo.com>
-To:     Andrey Smetanin <asmetanin@virtuozzo.com>
-CC:     <kvm@vger.kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
-        Gleb Natapov <gleb@kernel.org>,
-        James Hogan <james.hogan@imgtec.com>,
-        Paul Burton <paul.burton@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Alexander Graf <agraf@suse.com>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        "Cornelia Huck" <cornelia.huck@de.ibm.com>,
-        <linux-mips@linux-mips.org>, <kvm-ppc@vger.kernel.org>,
-        <linux-s390@vger.kernel.org>, "Denis V. Lunev" <den@openvz.org>,
-        <qemu-devel@nongnu.org>
-Subject: Re: [PATCH v2] kvm: Make vcpu->requests as 64 bit bitmap
-Message-ID: <20151224133538.GD19296@rkaganb.sw.ru>
-Mail-Followup-To: Roman Kagan <rkagan@virtuozzo.com>,
-        Andrey Smetanin <asmetanin@virtuozzo.com>, kvm@vger.kernel.org,
-        Paolo Bonzini <pbonzini@redhat.com>, Gleb Natapov <gleb@kernel.org>,
-        James Hogan <james.hogan@imgtec.com>,
-        Paul Burton <paul.burton@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>, Alexander Graf <agraf@suse.com>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        Cornelia Huck <cornelia.huck@de.ibm.com>, linux-mips@linux-mips.org,
-        kvm-ppc@vger.kernel.org, linux-s390@vger.kernel.org,
-        "Denis V. Lunev" <den@openvz.org>, qemu-devel@nongnu.org
-References: <1450963761-20269-1-git-send-email-asmetanin@virtuozzo.com>
+        (envelope-from <linux@roeck-us.net>)
+        id 1aC7kb-004EBw-C1; Thu, 24 Dec 2015 15:24:23 +0000
+Subject: Re: [PATCH -next] MIPS: VDSO: Fix build error with binutils 2.24 and
+ earlier
+To:     James Hogan <james.hogan@imgtec.com>
+References: <1450933471-7357-1-git-send-email-linux@roeck-us.net>
+ <20151224124812.GA5376@jhogan-linux.le.imgtec.org>
+Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org, Qais Yousef <qais.yousef@imgtec.com>
+From:   Guenter Roeck <linux@roeck-us.net>
+Message-ID: <567C0E13.6000006@roeck-us.net>
+Date:   Thu, 24 Dec 2015 07:24:03 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+ Thunderbird/38.4.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <1450963761-20269-1-git-send-email-asmetanin@virtuozzo.com>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-X-ClientProxiedBy: US-EXCH2.sw.swsoft.com (10.255.249.46) To
- US-EXCH2.sw.swsoft.com (10.255.249.46)
-Return-Path: <rkagan@virtuozzo.com>
+In-Reply-To: <20151224124812.GA5376@jhogan-linux.le.imgtec.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Authenticated_sender: linux@roeck-us.net
+X-OutGoing-Spam-Status: No, score=-1.0
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - bh-25.webhostbox.net
+X-AntiAbuse: Original Domain - linux-mips.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - roeck-us.net
+X-Get-Message-Sender-Via: bh-25.webhostbox.net: authenticated_id: linux@roeck-us.net
+X-Authenticated-Sender: bh-25.webhostbox.net: linux@roeck-us.net
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+Return-Path: <linux@roeck-us.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50752
+X-archive-position: 50753
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rkagan@virtuozzo.com
+X-original-sender: linux@roeck-us.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -66,60 +63,87 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Dec 24, 2015 at 04:29:21PM +0300, Andrey Smetanin wrote:
-> Currently on x86 arch we has already 32 requests defined
-> so the newer request bits can't be placed inside
-> vcpu->requests(unsigned long) inside x86 32 bit system.
-> But we are going to add a new request in x86 arch
-> for Hyper-V tsc page support.
-> 
-> To solve the problem the patch replaces vcpu->requests by
-> bitmap with 64 bit length and uses bitmap API.
-> 
-> The patch consists of:
-> * announce kvm_has_requests() to check whether vcpu has
-> requests
-> * announce kvm_clear_request() to clear particular vcpu request
-> * announce kvm_test_request() to test particular vcpu request
-> * replace if (vcpu->requests) by if (kvm_has_requests(vcpu))
-> * replace clear_bit(req, vcpu->requests) by
->  kvm_clear_request(req, vcpu)
-> 
-> Changes v2:
-> * hide internals of vcpu requests bitmap
-> by interface usage in all places
-> * replace test_bit(req, vcpu->requests) by
->  kvm_test_request()
-> * POWERPC: trace vcpu requests bitmap by
-> __bitmask, __assign_bitmap, __get_bitmask
-> 
-> Signed-off-by: Andrey Smetanin <asmetanin@virtuozzo.com>
-> Acked-by: James Hogan <james.hogan@imgtec.com>
-> CC: Paolo Bonzini <pbonzini@redhat.com>
-> CC: Gleb Natapov <gleb@kernel.org>
-> CC: James Hogan <james.hogan@imgtec.com>
-> CC: Paul Burton <paul.burton@imgtec.com>
-> CC: Ralf Baechle <ralf@linux-mips.org>
-> CC: Alexander Graf <agraf@suse.com>
-> CC: Christian Borntraeger <borntraeger@de.ibm.com>
-> CC: Cornelia Huck <cornelia.huck@de.ibm.com>
-> CC: linux-mips@linux-mips.org
-> CC: kvm-ppc@vger.kernel.org
-> CC: linux-s390@vger.kernel.org
-> CC: Roman Kagan <rkagan@virtuozzo.com>
-> CC: Denis V. Lunev <den@openvz.org>
-> CC: qemu-devel@nongnu.org
-> ---
->  arch/mips/kvm/emulate.c           |  4 +---
->  arch/powerpc/kvm/book3s_pr.c      |  2 +-
->  arch/powerpc/kvm/book3s_pr_papr.c |  2 +-
->  arch/powerpc/kvm/booke.c          |  6 +++---
->  arch/powerpc/kvm/powerpc.c        |  6 +++---
->  arch/powerpc/kvm/trace.h          |  9 +++++----
->  arch/s390/kvm/kvm-s390.c          |  4 ++--
->  arch/x86/kvm/vmx.c                |  2 +-
->  arch/x86/kvm/x86.c                | 16 ++++++++--------
->  include/linux/kvm_host.h          | 38 +++++++++++++++++++++++++-------------
->  10 files changed, 50 insertions(+), 39 deletions(-)
+On 12/24/2015 04:48 AM, James Hogan wrote:
+> Hi Guenter,
+>
+> On Wed, Dec 23, 2015 at 09:04:31PM -0800, Guenter Roeck wrote:
+>> Commit 2a037f310bab ("MIPS: VDSO: Fix build error") tries to fix a build
+>> error seen with binutils 2.24 and earlier. However, the fix does not work,
+>> and again results in the already known build errors if the kernel is built
+>> with an earlier version of binutils.
+>>
+>> CC      arch/mips/vdso/gettimeofday.o
+>> /tmp/ccnOVbHT.s: Assembler messages:
+>> /tmp/ccnOVbHT.s:50: Error: can't resolve `_start' {*UND* section} - `L0 {.text section}
+>> /tmp/ccnOVbHT.s:374: Error: can't resolve `_start' {*UND* section} - `L0 {.text section}
+>> scripts/Makefile.build:258: recipe for target 'arch/mips/vdso/gettimeofday.o' failed
+>> make[2]: *** [arch/mips/vdso/gettimeofday.o] Error 1
+>>
+>> Fixes: 2a037f310bab ("MIPS: VDSO: Fix build error")
+>> Cc: Qais Yousef <qais.yousef@imgtec.com>
+>> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+>> ---
+>> Tested with binutils 2.25 and 2.22.
+>>
+>>   arch/mips/vdso/Makefile | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/arch/mips/vdso/Makefile b/arch/mips/vdso/Makefile
+>> index 018f8c7b94f2..14568900fc1d 100644
+>> --- a/arch/mips/vdso/Makefile
+>> +++ b/arch/mips/vdso/Makefile
+>> @@ -26,7 +26,7 @@ aflags-vdso := $(ccflags-vdso) \
+>>   # the comments on that file.
+>>   #
+>>   ifndef CONFIG_CPU_MIPSR6
+>> -  ifeq ($(call ld-ifversion, -lt, 22500000, y),)
+>> +  ifeq ($(call ld-ifversion, -lt, 22500000, y),y)
+>
+> I agree this is semantically correct, but there is something more evil
+> going on here.
+>
+> Originally the check was version <= 2.24
+> Qais' patch changed it to version >= 2.25 (intending version < 2.25)
+> Your patch changes it to version < 2.25
+>
+> I think the reason this fixed the problem for Qais is actually that he
+> probably had a similar toolchain version to what I'm using:
+>
+> GNU ld (Codescape GNU Tools 2015.06-05 for MIPS MTI Linux) 2.24.90
+>
 
-Reviewed-by: Roman Kagan <rkagan@virtuozzo.com>
+My toolchains are yocto 1.3 (2.22) and yocto 2.0 (2.25).
+
+> ./scripts/ld-version.sh does this:
+>
+> print a[1]*10000000 + a[2]*100000 + a[3]*10000 + a[4]*100 + a[5];
+>
+> which changes that version number into:
+>   20000000
+> +  2400000
+> +   900000 = 23300000
+>
+> I.e. it doesn't expect a[3] to be >= 10.
+>
+> Should we do something like this (increase multipliers on a[1] and
+> a[2])?:
+>
+> diff --git a/scripts/ld-version.sh b/scripts/ld-version.sh
+> index 198580d245e0..0b67edc5bc6f 100755
+> --- a/scripts/ld-version.sh
+> +++ b/scripts/ld-version.sh
+> @@ -3,6 +3,6 @@
+>   	{
+>   	gsub(".*)", "");
+>   	split($1,a, ".");
+> -	print a[1]*10000000 + a[2]*100000 + a[3]*10000 + a[4]*100 + a[5];
+> +	print a[1]*100000000 + a[2]*1000000 + a[3]*10000 + a[4]*100 + a[5];
+>   	exit
+>   	}
+>
+> which gives 2.24.90 => 224900000.
+>
+Yes, that makes sense, and from your description will be necessary.
+
+Thanks,
+Guenter

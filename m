@@ -1,54 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 Dec 2015 13:57:37 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:14892 "EHLO
-        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27008444AbbLXM5dM0UHa (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 24 Dec 2015 13:57:33 +0100
-Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
-        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 9937441F8E73;
-        Thu, 24 Dec 2015 12:57:27 +0000 (GMT)
-Received: from mailapp01.imgtec.com ([10.100.180.242])
-  by imgpgp01.kl.imgtec.org (PGP Universal service);
-  Thu, 24 Dec 2015 12:57:27 +0000
-X-PGP-Universal: processed;
-        by imgpgp01.kl.imgtec.org on Thu, 24 Dec 2015 12:57:27 +0000
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Websense Email Security Gateway with ESMTPS id 934A8118DFDE1;
-        Thu, 24 Dec 2015 12:57:25 +0000 (GMT)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
- 14.3.235.1; Thu, 24 Dec 2015 12:57:27 +0000
-Received: from localhost (192.168.154.110) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Thu, 24 Dec
- 2015 12:57:26 +0000
-Date:   Thu, 24 Dec 2015 12:57:26 +0000
-From:   James Hogan <james.hogan@imgtec.com>
-To:     Guenter Roeck <linux@roeck-us.net>
-CC:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>,
-        <linux-kernel@vger.kernel.org>,
-        Qais Yousef <qais.yousef@imgtec.com>,
-        "Andi Kleen" <ak@linux.intel.com>, Michal Marek <mmarek@suse.cz>
-Subject: Re: [PATCH -next] MIPS: VDSO: Fix build error with binutils 2.24 and
- earlier
-Message-ID: <20151224125726.GB5376@jhogan-linux.le.imgtec.org>
-References: <1450933471-7357-1-git-send-email-linux@roeck-us.net>
- <20151224124812.GA5376@jhogan-linux.le.imgtec.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="QTprm0S8XgL7H0Dt"
-Content-Disposition: inline
-In-Reply-To: <20151224124812.GA5376@jhogan-linux.le.imgtec.org>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-X-Originating-IP: [192.168.154.110]
-X-ESG-ENCRYPT-TAG: 30575414
-Return-Path: <James.Hogan@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 Dec 2015 14:29:51 +0100 (CET)
+Received: from mailhub.sw.ru ([195.214.232.25]:45450 "EHLO relay.sw.ru"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27008257AbbLXN3sFPjrf (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 24 Dec 2015 14:29:48 +0100
+Received: from asm-pc.sw.ru ([10.30.16.30])
+        by relay.sw.ru (8.13.4/8.13.4) with ESMTP id tBODTMPB017495;
+        Thu, 24 Dec 2015 16:29:24 +0300 (MSK)
+From:   Andrey Smetanin <asmetanin@virtuozzo.com>
+To:     kvm@vger.kernel.org
+Cc:     Paolo Bonzini <pbonzini@redhat.com>,
+        Gleb Natapov <gleb@kernel.org>,
+        James Hogan <james.hogan@imgtec.com>,
+        Paul Burton <paul.burton@imgtec.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Alexander Graf <agraf@suse.com>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        Cornelia Huck <cornelia.huck@de.ibm.com>,
+        linux-mips@linux-mips.org, kvm-ppc@vger.kernel.org,
+        linux-s390@vger.kernel.org, Roman Kagan <rkagan@virtuozzo.com>,
+        "Denis V. Lunev" <den@openvz.org>, qemu-devel@nongnu.org
+Subject: [PATCH v2] kvm: Make vcpu->requests as 64 bit bitmap
+Date:   Thu, 24 Dec 2015 16:29:21 +0300
+Message-Id: <1450963761-20269-1-git-send-email-asmetanin@virtuozzo.com>
+X-Mailer: git-send-email 2.4.3
+Return-Path: <asmetanin@virtuozzo.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50750
+X-archive-position: 50751
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: asmetanin@virtuozzo.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -61,138 +44,370 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---QTprm0S8XgL7H0Dt
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Currently on x86 arch we has already 32 requests defined
+so the newer request bits can't be placed inside
+vcpu->requests(unsigned long) inside x86 32 bit system.
+But we are going to add a new request in x86 arch
+for Hyper-V tsc page support.
 
-On Thu, Dec 24, 2015 at 12:48:12PM +0000, James Hogan wrote:
-> Hi Guenter,
->=20
-> On Wed, Dec 23, 2015 at 09:04:31PM -0800, Guenter Roeck wrote:
-> > Commit 2a037f310bab ("MIPS: VDSO: Fix build error") tries to fix a build
-> > error seen with binutils 2.24 and earlier. However, the fix does not wo=
-rk,
-> > and again results in the already known build errors if the kernel is bu=
-ilt
-> > with an earlier version of binutils.
-> >=20
-> > CC      arch/mips/vdso/gettimeofday.o
-> > /tmp/ccnOVbHT.s: Assembler messages:
-> > /tmp/ccnOVbHT.s:50: Error: can't resolve `_start' {*UND* section} - `L0=
- {.text section}
-> > /tmp/ccnOVbHT.s:374: Error: can't resolve `_start' {*UND* section} - `L=
-0 {.text section}
-> > scripts/Makefile.build:258: recipe for target 'arch/mips/vdso/gettimeof=
-day.o' failed
-> > make[2]: *** [arch/mips/vdso/gettimeofday.o] Error 1
-> >=20
-> > Fixes: 2a037f310bab ("MIPS: VDSO: Fix build error")
-> > Cc: Qais Yousef <qais.yousef@imgtec.com>
-> > Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-> > ---
-> > Tested with binutils 2.25 and 2.22.
-> >=20
-> >  arch/mips/vdso/Makefile | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >=20
-> > diff --git a/arch/mips/vdso/Makefile b/arch/mips/vdso/Makefile
-> > index 018f8c7b94f2..14568900fc1d 100644
-> > --- a/arch/mips/vdso/Makefile
-> > +++ b/arch/mips/vdso/Makefile
-> > @@ -26,7 +26,7 @@ aflags-vdso :=3D $(ccflags-vdso) \
-> >  # the comments on that file.
-> >  #
-> >  ifndef CONFIG_CPU_MIPSR6
-> > -  ifeq ($(call ld-ifversion, -lt, 22500000, y),)
-> > +  ifeq ($(call ld-ifversion, -lt, 22500000, y),y)
->=20
-> I agree this is semantically correct, but there is something more evil
-> going on here.
->=20
-> Originally the check was version <=3D 2.24
-> Qais' patch changed it to version >=3D 2.25 (intending version < 2.25)
-> Your patch changes it to version < 2.25
->=20
-> I think the reason this fixed the problem for Qais is actually that he
-> probably had a similar toolchain version to what I'm using:
->=20
-> GNU ld (Codescape GNU Tools 2015.06-05 for MIPS MTI Linux) 2.24.90
->=20
-> ./scripts/ld-version.sh does this:
->=20
-> print a[1]*10000000 + a[2]*100000 + a[3]*10000 + a[4]*100 + a[5];
->=20
-> which changes that version number into:
->  20000000
-> + 2400000
-> +  900000 =3D 23300000
->=20
-> I.e. it doesn't expect a[3] to be >=3D 10.
->=20
-> Should we do something like this (increase multipliers on a[1] and
-> a[2])?:
->=20
-> diff --git a/scripts/ld-version.sh b/scripts/ld-version.sh
-> index 198580d245e0..0b67edc5bc6f 100755
-> --- a/scripts/ld-version.sh
-> +++ b/scripts/ld-version.sh
-> @@ -3,6 +3,6 @@
->  	{
->  	gsub(".*)", "");
->  	split($1,a, ".");
-> -	print a[1]*10000000 + a[2]*100000 + a[3]*10000 + a[4]*100 + a[5];
-> +	print a[1]*100000000 + a[2]*1000000 + a[3]*10000 + a[4]*100 + a[5];
->  	exit
->  	}
->=20
-> which gives 2.24.90 =3D> 224900000.
->=20
-> All call sites would need updating too to add the extra 0, but a quick
-> git grep isn't showing any other ones than this one.
+To solve the problem the patch replaces vcpu->requests by
+bitmap with 64 bit length and uses bitmap API.
 
-Actually, linux-next includes this commit which uses ld-ifversion too:
+The patch consists of:
+* announce kvm_has_requests() to check whether vcpu has
+requests
+* announce kvm_clear_request() to clear particular vcpu request
+* announce kvm_test_request() to test particular vcpu request
+* replace if (vcpu->requests) by if (kvm_has_requests(vcpu))
+* replace clear_bit(req, vcpu->requests) by
+ kvm_clear_request(req, vcpu)
 
-19a3cc83353e3bb4bc28769f8606139a3d350d2d
-"Kbuild, lto: Add Link Time Optimization support v3"
+Changes v2:
+* hide internals of vcpu requests bitmap
+by interface usage in all places
+* replace test_bit(req, vcpu->requests) by
+ kvm_test_request()
+* POWERPC: trace vcpu requests bitmap by
+__bitmask, __assign_bitmap, __get_bitmask
 
-Cheers
-James
+Signed-off-by: Andrey Smetanin <asmetanin@virtuozzo.com>
+Acked-by: James Hogan <james.hogan@imgtec.com>
+CC: Paolo Bonzini <pbonzini@redhat.com>
+CC: Gleb Natapov <gleb@kernel.org>
+CC: James Hogan <james.hogan@imgtec.com>
+CC: Paul Burton <paul.burton@imgtec.com>
+CC: Ralf Baechle <ralf@linux-mips.org>
+CC: Alexander Graf <agraf@suse.com>
+CC: Christian Borntraeger <borntraeger@de.ibm.com>
+CC: Cornelia Huck <cornelia.huck@de.ibm.com>
+CC: linux-mips@linux-mips.org
+CC: kvm-ppc@vger.kernel.org
+CC: linux-s390@vger.kernel.org
+CC: Roman Kagan <rkagan@virtuozzo.com>
+CC: Denis V. Lunev <den@openvz.org>
+CC: qemu-devel@nongnu.org
+---
+ arch/mips/kvm/emulate.c           |  4 +---
+ arch/powerpc/kvm/book3s_pr.c      |  2 +-
+ arch/powerpc/kvm/book3s_pr_papr.c |  2 +-
+ arch/powerpc/kvm/booke.c          |  6 +++---
+ arch/powerpc/kvm/powerpc.c        |  6 +++---
+ arch/powerpc/kvm/trace.h          |  9 +++++----
+ arch/s390/kvm/kvm-s390.c          |  4 ++--
+ arch/x86/kvm/vmx.c                |  2 +-
+ arch/x86/kvm/x86.c                | 16 ++++++++--------
+ include/linux/kvm_host.h          | 38 +++++++++++++++++++++++++-------------
+ 10 files changed, 50 insertions(+), 39 deletions(-)
 
->=20
-> Cheers
-> James
->=20
-> >      $(warning MIPS VDSO requires binutils >=3D 2.25)
-> >      obj-vdso-y :=3D $(filter-out gettimeofday.o, $(obj-vdso-y))
-> >      ccflags-vdso +=3D -DDISABLE_MIPS_VDSO
-> > --=20
-> > 2.1.4
-> >=20
-> >=20
-
-
-
---QTprm0S8XgL7H0Dt
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQIcBAEBCAAGBQJWe+u2AAoJEGwLaZPeOHZ67UMQAL3fFCv47WamYoayDlDM9lAu
-HunjFnKsDN8mLccKS7XUn1cD+/7UdD2gm/g2+6ieGsisOK8NdznhM7c+lF+3NJJs
-nmAk3pFVsZh5gbXweVxSCCiRrgnQq3DZ9StgJjJQaocx28wQ9vYMRrvsMgsuf1D4
-H5wDzAGxOm8D1RWqEcW/BgVAIaXFd4GFW1cSxlDMd4aVRHftWOwbp/fbE/3Z42Zl
-GAbaegTTFJXMOnEKhuOlCVgi8+MCisZMsmuLRx6dOl2Abnz6D3ZrW7COfs3MIWAa
-gdQxSIPNMdaVnDWbi1yQIUkZGi+Ab7QjSOJqLQNMyochyFEA0+QSFUUpBSQagJjx
-vG4GIdWwB4zORWyH/NM1o8lvIVnQKMurToeTV/Wg23I9HY5ESBKL9b87fMmKQsk7
-hO9B+IOCTp85+4tDtZY336YYoiXLEhW/HmuQ+FQL1U+iwOs9UEnkTrQpQ4eJ2VjU
-l7Jg93Rw4fPQyW11sYIgW+BAq9N7PmXHh8fvr4oFlj9sbjEn/0EreDyFeCbzgPd9
-w4bmGQwP1H1FJ3fM3LmkHaUxKCRF/D309Riy5RPTeFtYEL6YAJCbzw2wY2GOWyOV
-7a9J0lltvpVaNryv2/DxddYE99/PbogISNTJc5PcnR28bis2aQhPGQN34IsSDcgM
-VFuodZgKA5m5ivlK0OAu
-=dpML
------END PGP SIGNATURE-----
-
---QTprm0S8XgL7H0Dt--
+diff --git a/arch/mips/kvm/emulate.c b/arch/mips/kvm/emulate.c
+index 41b1b09..14aebe8 100644
+--- a/arch/mips/kvm/emulate.c
++++ b/arch/mips/kvm/emulate.c
+@@ -774,10 +774,8 @@ enum emulation_result kvm_mips_emul_wait(struct kvm_vcpu *vcpu)
+ 		 * We we are runnable, then definitely go off to user space to
+ 		 * check if any I/O interrupts are pending.
+ 		 */
+-		if (kvm_check_request(KVM_REQ_UNHALT, vcpu)) {
+-			clear_bit(KVM_REQ_UNHALT, &vcpu->requests);
++		if (kvm_check_request(KVM_REQ_UNHALT, vcpu))
+ 			vcpu->run->exit_reason = KVM_EXIT_IRQ_WINDOW_OPEN;
+-		}
+ 	}
+ 
+ 	return EMULATE_DONE;
+diff --git a/arch/powerpc/kvm/book3s_pr.c b/arch/powerpc/kvm/book3s_pr.c
+index 64891b0..e975279 100644
+--- a/arch/powerpc/kvm/book3s_pr.c
++++ b/arch/powerpc/kvm/book3s_pr.c
+@@ -349,7 +349,7 @@ static void kvmppc_set_msr_pr(struct kvm_vcpu *vcpu, u64 msr)
+ 	if (msr & MSR_POW) {
+ 		if (!vcpu->arch.pending_exceptions) {
+ 			kvm_vcpu_block(vcpu);
+-			clear_bit(KVM_REQ_UNHALT, &vcpu->requests);
++			kvm_clear_request(KVM_REQ_UNHALT, vcpu));
+ 			vcpu->stat.halt_wakeup++;
+ 
+ 			/* Unset POW bit after we woke up */
+diff --git a/arch/powerpc/kvm/book3s_pr_papr.c b/arch/powerpc/kvm/book3s_pr_papr.c
+index f2c75a1..60cf393 100644
+--- a/arch/powerpc/kvm/book3s_pr_papr.c
++++ b/arch/powerpc/kvm/book3s_pr_papr.c
+@@ -309,7 +309,7 @@ int kvmppc_h_pr(struct kvm_vcpu *vcpu, unsigned long cmd)
+ 	case H_CEDE:
+ 		kvmppc_set_msr_fast(vcpu, kvmppc_get_msr(vcpu) | MSR_EE);
+ 		kvm_vcpu_block(vcpu);
+-		clear_bit(KVM_REQ_UNHALT, &vcpu->requests);
++		kvm_clear_request(KVM_REQ_UNHALT, vcpu);
+ 		vcpu->stat.halt_wakeup++;
+ 		return EMULATE_DONE;
+ 	case H_LOGICAL_CI_LOAD:
+diff --git a/arch/powerpc/kvm/booke.c b/arch/powerpc/kvm/booke.c
+index fd58751..b2e8643 100644
+--- a/arch/powerpc/kvm/booke.c
++++ b/arch/powerpc/kvm/booke.c
+@@ -574,7 +574,7 @@ static void arm_next_watchdog(struct kvm_vcpu *vcpu)
+ 	 * userspace, so clear the KVM_REQ_WATCHDOG request.
+ 	 */
+ 	if ((vcpu->arch.tsr & (TSR_ENW | TSR_WIS)) != (TSR_ENW | TSR_WIS))
+-		clear_bit(KVM_REQ_WATCHDOG, &vcpu->requests);
++		kvm_clear_request(KVM_REQ_WATCHDOG, vcpu);
+ 
+ 	spin_lock_irqsave(&vcpu->arch.wdt_lock, flags);
+ 	nr_jiffies = watchdog_next_timeout(vcpu);
+@@ -677,7 +677,7 @@ int kvmppc_core_prepare_to_enter(struct kvm_vcpu *vcpu)
+ 
+ 	kvmppc_core_check_exceptions(vcpu);
+ 
+-	if (vcpu->requests) {
++	if (kvm_has_requests(vcpu)) {
+ 		/* Exception delivery raised request; start over */
+ 		return 1;
+ 	}
+@@ -685,7 +685,7 @@ int kvmppc_core_prepare_to_enter(struct kvm_vcpu *vcpu)
+ 	if (vcpu->arch.shared->msr & MSR_WE) {
+ 		local_irq_enable();
+ 		kvm_vcpu_block(vcpu);
+-		clear_bit(KVM_REQ_UNHALT, &vcpu->requests);
++		kvm_clear_request(KVM_REQ_UNHALT, vcpu);
+ 		hard_irq_disable();
+ 
+ 		kvmppc_set_exit_type(vcpu, EMULATED_MTMSRWE_EXITS);
+diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
+index 6fd2405..5cd6c29 100644
+--- a/arch/powerpc/kvm/powerpc.c
++++ b/arch/powerpc/kvm/powerpc.c
+@@ -49,7 +49,7 @@ EXPORT_SYMBOL_GPL(kvmppc_pr_ops);
+ int kvm_arch_vcpu_runnable(struct kvm_vcpu *v)
+ {
+ 	return !!(v->arch.pending_exceptions) ||
+-	       v->requests;
++	       kvm_has_requests(v);
+ }
+ 
+ int kvm_arch_vcpu_should_kick(struct kvm_vcpu *vcpu)
+@@ -98,7 +98,7 @@ int kvmppc_prepare_to_enter(struct kvm_vcpu *vcpu)
+ 		 */
+ 		smp_mb();
+ 
+-		if (vcpu->requests) {
++		if (kvm_has_requests(vcpu)) {
+ 			/* Make sure we process requests preemptable */
+ 			local_irq_enable();
+ 			trace_kvm_check_requests(vcpu);
+@@ -225,7 +225,7 @@ int kvmppc_kvm_pv(struct kvm_vcpu *vcpu)
+ 	case EV_HCALL_TOKEN(EV_IDLE):
+ 		r = EV_SUCCESS;
+ 		kvm_vcpu_block(vcpu);
+-		clear_bit(KVM_REQ_UNHALT, &vcpu->requests);
++		kvm_clear_request(KVM_REQ_UNHALT, vcpu);
+ 		break;
+ 	default:
+ 		r = EV_UNIMPLEMENTED;
+diff --git a/arch/powerpc/kvm/trace.h b/arch/powerpc/kvm/trace.h
+index 2e0e67e..5eaea01 100644
+--- a/arch/powerpc/kvm/trace.h
++++ b/arch/powerpc/kvm/trace.h
+@@ -104,16 +104,17 @@ TRACE_EVENT(kvm_check_requests,
+ 
+ 	TP_STRUCT__entry(
+ 		__field(	__u32,	cpu_nr		)
+-		__field(	__u32,	requests	)
++		__bitmask(cpu_requests,	KVM_REQ_MAX)
+ 	),
+ 
+ 	TP_fast_assign(
+ 		__entry->cpu_nr		= vcpu->vcpu_id;
+-		__entry->requests	= vcpu->requests;
++		__assign_bitmask(cpu_requests, (void *)vcpu->requests,
++				 KVM_REQ_MAX);
+ 	),
+ 
+-	TP_printk("vcpu=%x requests=%x",
+-		__entry->cpu_nr, __entry->requests)
++	TP_printk("vcpu=%x requests=0x%s",
++		__entry->cpu_nr, __get_bitmask(cpu_requests))
+ );
+ 
+ #endif /* _TRACE_KVM_H */
+diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
+index 8465892..439c106 100644
+--- a/arch/s390/kvm/kvm-s390.c
++++ b/arch/s390/kvm/kvm-s390.c
+@@ -1847,7 +1847,7 @@ static int kvm_s390_handle_requests(struct kvm_vcpu *vcpu)
+ {
+ retry:
+ 	kvm_s390_vcpu_request_handled(vcpu);
+-	if (!vcpu->requests)
++	if (!kvm_has_requests(vcpu))
+ 		return 0;
+ 	/*
+ 	 * We use MMU_RELOAD just to re-arm the ipte notifier for the
+@@ -1890,7 +1890,7 @@ retry:
+ 	}
+ 
+ 	/* nothing to do, just clear the request */
+-	clear_bit(KVM_REQ_UNHALT, &vcpu->requests);
++	kvm_clear_request(KVM_REQ_UNHALT, vcpu);
+ 
+ 	return 0;
+ }
+diff --git a/arch/x86/kvm/vmx.c b/arch/x86/kvm/vmx.c
+index 1a8bfaa..8c843e5 100644
+--- a/arch/x86/kvm/vmx.c
++++ b/arch/x86/kvm/vmx.c
+@@ -5957,7 +5957,7 @@ static int handle_invalid_guest_state(struct kvm_vcpu *vcpu)
+ 		if (intr_window_requested && vmx_interrupt_allowed(vcpu))
+ 			return handle_interrupt_window(&vmx->vcpu);
+ 
+-		if (test_bit(KVM_REQ_EVENT, &vcpu->requests))
++		if (kvm_test_request(KVM_REQ_EVENT, vcpu))
+ 			return 1;
+ 
+ 		err = emulate_instruction(vcpu, EMULTYPE_NO_REEXECUTE);
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 0601c05..cf4911f 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -1702,7 +1702,7 @@ static void kvm_gen_update_masterclock(struct kvm *kvm)
+ 
+ 	/* guest entries allowed */
+ 	kvm_for_each_vcpu(i, vcpu, kvm)
+-		clear_bit(KVM_REQ_MCLOCK_INPROGRESS, &vcpu->requests);
++		kvm_clear_request(KVM_REQ_MCLOCK_INPROGRESS, vcpu);
+ 
+ 	spin_unlock(&ka->pvclock_gtod_sync_lock);
+ #endif
+@@ -2116,8 +2116,8 @@ int kvm_set_msr_common(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
+ 			bool tmp = (msr == MSR_KVM_SYSTEM_TIME);
+ 
+ 			if (ka->boot_vcpu_runs_old_kvmclock != tmp)
+-				set_bit(KVM_REQ_MASTERCLOCK_UPDATE,
+-					&vcpu->requests);
++				kvm_make_request(KVM_REQ_MASTERCLOCK_UPDATE,
++						 vcpu);
+ 
+ 			ka->boot_vcpu_runs_old_kvmclock = tmp;
+ 		}
+@@ -6410,7 +6410,7 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
+ 
+ 	bool req_immediate_exit = false;
+ 
+-	if (vcpu->requests) {
++	if (kvm_has_requests(vcpu)) {
+ 		if (kvm_check_request(KVM_REQ_MMU_RELOAD, vcpu))
+ 			kvm_mmu_unload(vcpu);
+ 		if (kvm_check_request(KVM_REQ_MIGRATE_TIMER, vcpu))
+@@ -6560,7 +6560,7 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
+ 
+ 	local_irq_disable();
+ 
+-	if (vcpu->mode == EXITING_GUEST_MODE || vcpu->requests
++	if (vcpu->mode == EXITING_GUEST_MODE || kvm_has_requests(vcpu)
+ 	    || need_resched() || signal_pending(current)) {
+ 		vcpu->mode = OUTSIDE_GUEST_MODE;
+ 		smp_wmb();
+@@ -6720,7 +6720,7 @@ static int vcpu_run(struct kvm_vcpu *vcpu)
+ 		if (r <= 0)
+ 			break;
+ 
+-		clear_bit(KVM_REQ_PENDING_TIMER, &vcpu->requests);
++		kvm_clear_request(KVM_REQ_PENDING_TIMER, vcpu);
+ 		if (kvm_cpu_has_pending_timer(vcpu))
+ 			kvm_inject_pending_timer_irqs(vcpu);
+ 
+@@ -6848,7 +6848,7 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu, struct kvm_run *kvm_run)
+ 	if (unlikely(vcpu->arch.mp_state == KVM_MP_STATE_UNINITIALIZED)) {
+ 		kvm_vcpu_block(vcpu);
+ 		kvm_apic_accept_events(vcpu);
+-		clear_bit(KVM_REQ_UNHALT, &vcpu->requests);
++		kvm_clear_request(KVM_REQ_UNHALT, vcpu);
+ 		r = -EAGAIN;
+ 		goto out;
+ 	}
+@@ -8048,7 +8048,7 @@ static inline bool kvm_vcpu_has_events(struct kvm_vcpu *vcpu)
+ 	if (atomic_read(&vcpu->arch.nmi_queued))
+ 		return true;
+ 
+-	if (test_bit(KVM_REQ_SMI, &vcpu->requests))
++	if (kvm_test_request(KVM_REQ_SMI, vcpu))
+ 		return true;
+ 
+ 	if (kvm_arch_interrupt_allowed(vcpu) &&
+diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+index da7a7e4..d1ef7ad 100644
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -146,6 +146,8 @@ static inline bool is_error_page(struct page *page)
+ #define KVM_REQ_HV_EXIT           30
+ #define KVM_REQ_HV_STIMER         31
+ 
++#define KVM_REQ_MAX               64
++
+ #define KVM_USERSPACE_IRQ_SOURCE_ID		0
+ #define KVM_IRQFD_RESAMPLE_IRQ_SOURCE_ID	1
+ 
+@@ -233,7 +235,7 @@ struct kvm_vcpu {
+ 	int vcpu_id;
+ 	int srcu_idx;
+ 	int mode;
+-	unsigned long requests;
++	DECLARE_BITMAP(requests, KVM_REQ_MAX);
+ 	unsigned long guest_debug;
+ 
+ 	int pre_pcpu;
+@@ -1000,11 +1002,6 @@ static inline bool kvm_is_error_gpa(struct kvm *kvm, gpa_t gpa)
+ 	return kvm_is_error_hva(hva);
+ }
+ 
+-static inline void kvm_migrate_timers(struct kvm_vcpu *vcpu)
+-{
+-	set_bit(KVM_REQ_MIGRATE_TIMER, &vcpu->requests);
+-}
+-
+ enum kvm_stat_kind {
+ 	KVM_STAT_VM,
+ 	KVM_STAT_VCPU,
+@@ -1116,19 +1113,34 @@ bool kvm_vcpu_compatible(struct kvm_vcpu *vcpu);
+ static inline bool kvm_vcpu_compatible(struct kvm_vcpu *vcpu) { return true; }
+ #endif
+ 
++static inline bool kvm_has_requests(struct kvm_vcpu *vcpu)
++{
++	return !bitmap_empty(vcpu->requests, KVM_REQ_MAX);
++}
++
+ static inline void kvm_make_request(int req, struct kvm_vcpu *vcpu)
+ {
+-	set_bit(req, &vcpu->requests);
++	set_bit(req, (ulong *)vcpu->requests);
+ }
+ 
+ static inline bool kvm_check_request(int req, struct kvm_vcpu *vcpu)
+ {
+-	if (test_bit(req, &vcpu->requests)) {
+-		clear_bit(req, &vcpu->requests);
+-		return true;
+-	} else {
+-		return false;
+-	}
++	return test_and_clear_bit(req, (ulong *)vcpu->requests);
++}
++
++static inline bool kvm_test_request(int req, struct kvm_vcpu *vcpu)
++{
++	return test_bit(req, (ulong *)vcpu->requests);
++}
++
++static inline void kvm_clear_request(int req, struct kvm_vcpu *vcpu)
++{
++	clear_bit(req, (ulong *)vcpu->requests);
++}
++
++static inline void kvm_migrate_timers(struct kvm_vcpu *vcpu)
++{
++	kvm_make_request(KVM_REQ_MIGRATE_TIMER, vcpu);
+ }
+ 
+ extern bool kvm_rebooting;
+-- 
+2.4.3

@@ -1,42 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 28 Dec 2015 09:27:48 +0100 (CET)
-Received: from down.free-electrons.com ([37.187.137.238]:39365 "EHLO
-        mail.free-electrons.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27007617AbbL1I1pxJ3b4 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 28 Dec 2015 09:27:45 +0100
-Received: by mail.free-electrons.com (Postfix, from userid 110)
-        id 902CA295; Mon, 28 Dec 2015 09:27:38 +0100 (CET)
-Received: from bbrezillon (AToulouse-657-1-24-92.w83-193.abo.wanadoo.fr [83.193.68.92])
-        by mail.free-electrons.com (Postfix) with ESMTPSA id 106BB26C;
-        Mon, 28 Dec 2015 09:27:38 +0100 (CET)
-Date:   Mon, 28 Dec 2015 09:27:38 +0100
-From:   Boris Brezillon <boris.brezillon@free-electrons.com>
-To:     Harvey Hunt <harvey.hunt@imgtec.com>
-Cc:     <linux-mtd@lists.infradead.org>, <computersforpeace@gmail.com>,
-        <alex@alex-smith.me.uk>, Alex Smith <alex.smith@imgtec.com>,
-        "Zubair Lutfullah Kakakhel" <Zubair.Kakakhel@imgtec.com>,
-        David Woodhouse <dwmw2@infradead.org>,
-        Paul Burton <paul.burton@imgtec.com>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-mips@linux-mips.org>, <robh@kernel.org>
-Subject: Re: [PATCH v10 3/3] MIPS: dts: jz4780/ci20: Add NEMC, BCH and NAND
- device tree nodes
-Message-ID: <20151228092738.5cba56da@bbrezillon>
-In-Reply-To: <1450959615-30246-4-git-send-email-harvey.hunt@imgtec.com>
-References: <1450959615-30246-1-git-send-email-harvey.hunt@imgtec.com>
-        <1450959615-30246-4-git-send-email-harvey.hunt@imgtec.com>
-X-Mailer: Claws Mail 3.11.1 (GTK+ 2.24.27; x86_64-pc-linux-gnu)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 28 Dec 2015 11:15:39 +0100 (CET)
+Received: from mail-io0-f194.google.com ([209.85.223.194]:33084 "EHLO
+        mail-io0-f194.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007586AbbL1KPgXqQdZ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 28 Dec 2015 11:15:36 +0100
+Received: by mail-io0-f194.google.com with SMTP id f127so24068322ioa.0;
+        Mon, 28 Dec 2015 02:15:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type;
+        bh=B1HjBYd68AD2J26CIELNyq6AaDVL5QC8v69kqcTKQbg=;
+        b=V729q1KOCJaLoH0bLUQiODlAbEl4cGWbDC0H89HRAgJybYV3yEJXxWh7HpbBz4Z4mC
+         vIpYgWBRtgtb1FzHihy65IUwV/LhBJN1sc86dwuoStMIWvuZ6DtWri+F7XlefJtKqzUi
+         /igRiesY5wFdGbHTwyI7vf9AtD9k8GaEolhV75Q4J+G8zewCp64KpUFpYjUYeDhFX03D
+         2927gTyR9Iox2dm2XGjWDDbpTiv2Bb1rKDsWvNnBbLp1RK5rDVo5zU93tLc2pBo7ai7j
+         TllH1ftzyc1nkIm9WkM9rRK6mPidWGIj+3UkytX089Kcv6x9QsZm70/U2ML0Ps0B7VPE
+         niJg==
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <boris.brezillon@free-electrons.com>
+X-Received: by 10.107.148.75 with SMTP id w72mr9001783iod.115.1451297730517;
+ Mon, 28 Dec 2015 02:15:30 -0800 (PST)
+Received: by 10.107.9.97 with HTTP; Mon, 28 Dec 2015 02:15:30 -0800 (PST)
+In-Reply-To: <20151228050147.GE1066@verge.net.au>
+References: <1450694033-27717-1-git-send-email-geert+renesas@glider.be>
+        <20151228050147.GE1066@verge.net.au>
+Date:   Mon, 28 Dec 2015 11:15:30 +0100
+X-Google-Sender-Auth: e4zmnQ_3AGzRO10fxVmRk4EJdD8
+Message-ID: <CAMuHMdXt36GSDuoFVGBebJVN9OHPh=ze8u8KvQ0B+RcvT6xTYQ@mail.gmail.com>
+Subject: Re: [PATCH v2 0/9] ARM: dts: Add compatible property to "partitions" node
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+To:     Simon Horman <horms@verge.net.au>
+Cc:     Geert Uytterhoeven <geert+renesas@glider.be>,
+        "arm@kernel.org" <arm@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
+        Gregory Clement <gregory.clement@free-electrons.com>,
+        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        Magnus Damm <magnus.damm@gmail.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Alex Smith <alex.smith@imgtec.com>,
+        Brian Norris <computersforpeace@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        MTD Maling List <linux-mtd@lists.infradead.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <geert.uytterhoeven@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50760
+X-archive-position: 50761
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: boris.brezillon@free-electrons.com
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,169 +67,62 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, 24 Dec 2015 12:20:15 +0000
-Harvey Hunt <harvey.hunt@imgtec.com> wrote:
+Hi Simon,
 
-> From: Alex Smith <alex.smith@imgtec.com>
-> 
-> Add device tree nodes for the NEMC and BCH to the JZ4780 device tree,
-> and make use of them in the Ci20 device tree to add a node for the
-> board's NAND.
-> 
-> Note that since the pinctrl driver is not yet upstream, this includes
-> neither pin configuration nor busy/write-protect GPIO pins for the
-> NAND. Use of the NAND relies on the boot loader to have left the pins
-> configured in a usable state, which should be the case when booted
-> from the NAND.
-> 
-> Signed-off-by: Alex Smith <alex.smith@imgtec.com>
-> Cc: Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>
-> Cc: David Woodhouse <dwmw2@infradead.org>
-> Cc: Brian Norris <computersforpeace@gmail.com>
-> Cc: Paul Burton <paul.burton@imgtec.com>
-> Cc: linux-mtd@lists.infradead.org
-> Cc: devicetree@vger.kernel.org
-> Cc: linux-kernel@vger.kernel.org
-> Cc: linux-mips@linux-mips.org
-> Cc: robh@kernel.org
-> Signed-off-by: Harvey Hunt <harvey.hunt@imgtec.com>
+On Mon, Dec 28, 2015 at 6:01 AM, Simon Horman <horms@verge.net.au> wrote:
+> On Mon, Dec 21, 2015 at 11:33:44AM +0100, Geert Uytterhoeven wrote:
+>> As of commit e488ca9f8d4f62c2 ("doc: dt: mtd: partitions: add compatible
+>> property to "partitions" node"), which is in v4.4-rc6, the "partitions"
+>> subnode of an SPI FLASH device node must have a compatible property. The
+>> partitions are no longer detected if it is not present.
+>>
+>> However, several DTSes in -next have already been converted to the
+>> "partitions" subnode without "compatible" property, introduced by
+>> commits 5cfdedb7b9a0fe38 ("mtd: ofpart: move ofpart partitions to a
+>> dedicated dt node") and fe2585e9c29a650a ("doc: dt: mtd: support
+>> partitions in a special 'partitions' subnode"). Hence all of these are
+>> now broken in -next, and will be broken in upstream during the merge
+>> window.
+>>
+>> This series fixes all users in next-20151221.
+>> Tested on r8a7791/koelsch.
+>>
+>> Changes since v1:
+>>   - Add Acked-by,
+>>   - Fix new users in -next (kirkwood, ci20).
+>>
+>> Most of these are in arm-soc/for-next. Exceptions are kirkwood (in
+>> mvebu/for-next), and ci20 (in mips/mips-for-linux-next).
+>>
+>> Given we're late in the v4.4-rc cycle, perhaps it's easiest if the
+>> arm-soc maintainers take all applicable patches directly, bypassing the
+>> mvebu and shmobile maintainers?
+>>
+>> Thanks for queuing for v4.5!
+>>
+>> Geert Uytterhoeven (9):
+>>   ARM: mvebu: ix4-300d: Add compatible property to "partitions" node
+>>   ARM: mvebu: kirkwood: Add compatible property to "partitions" node
+>>   ARM: shmobile: bockw dts: Add compatible property to "partitions" node
+>>   ARM: shmobile: lager dts: Add compatible property to "partitions" node
+>>   ARM: shmobile: koelsch dts: Add compatible property to "partitions"
+>>     node
+>>   ARM: shmobile: porter dts: Add compatible property to "partitions"
+>>     node
+>>   ARM: shmobile: gose dts: Add compatible property to "partitions" node
+>>   ARM: shmobile: silk dts: Add compatible property to "partitions" node
+>
+> Thanks, I have queued up the above "shmobile" patches for v4.6.
 
-Reviewed-by: Boris Brezillon <boris.brezillon@free-electrons.com>
+I'm afraid v4.6 is too late, leaving all SPI FLASHes broken in v4.5.
 
-> ---
-> v9 -> v10:
->  - No change.
-> 
-> v8 -> v9:
->  - Represent the partition table as a subnode of a NAND chip. 
-> 
-> v7 -> v8:
->  - Describe the NAND chips as children nodes of the NAND controller.
->  - Remove ingenic, prefix from ECC settings.
->  - Renamed some ECC settings.
-> 
-> v6 -> v7:
->  - Add nand-ecc-mode to DT.
->  - Add nand-on-flash-bbt to DT.
-> 
-> v4 -> v5:
->  - New patch adding DT nodes for the NAND so that the driver can be
->    tested.
-> 
->  arch/mips/boot/dts/ingenic/ci20.dts    | 63 ++++++++++++++++++++++++++++++++++
->  arch/mips/boot/dts/ingenic/jz4780.dtsi | 26 ++++++++++++++
->  2 files changed, 89 insertions(+)
-> 
-> diff --git a/arch/mips/boot/dts/ingenic/ci20.dts b/arch/mips/boot/dts/ingenic/ci20.dts
-> index 9fcb9e7..782258c 100644
-> --- a/arch/mips/boot/dts/ingenic/ci20.dts
-> +++ b/arch/mips/boot/dts/ingenic/ci20.dts
-> @@ -42,3 +42,66 @@
->  &uart4 {
->  	status = "okay";
->  };
-> +
-> +&nemc {
-> +	status = "okay";
-> +
-> +	nandc: nand-controller@1 {
-> +		compatible = "ingenic,jz4780-nand";
-> +		reg = <1 0 0x1000000>;
-> +
-> +		#address-cells = <1>;
-> +		#size-cells = <0>;
-> +
-> +		ingenic,bch-controller = <&bch>;
-> +
-> +		ingenic,nemc-tAS = <10>;
-> +		ingenic,nemc-tAH = <5>;
-> +		ingenic,nemc-tBP = <10>;
-> +		ingenic,nemc-tAW = <15>;
-> +		ingenic,nemc-tSTRV = <100>;
-> +
-> +		nand@1 {
-> +			reg = <1>;
-> +
-> +			nand-ecc-step-size = <1024>;
-> +			nand-ecc-strength = <24>;
-> +			nand-ecc-mode = "hw";
-> +			nand-on-flash-bbt;
-> +
-> +			partitions {
-> +				#address-cells = <2>;
-> +				#size-cells = <2>;
-> +
-> +				partition@0 {
-> +					label = "u-boot-spl";
-> +					reg = <0x0 0x0 0x0 0x800000>;
-> +				};
-> +
-> +				partition@0x800000 {
-> +					label = "u-boot";
-> +					reg = <0x0 0x800000 0x0 0x200000>;
-> +				};
-> +
-> +				partition@0xa00000 {
-> +					label = "u-boot-env";
-> +					reg = <0x0 0xa00000 0x0 0x200000>;
-> +				};
-> +
-> +				partition@0xc00000 {
-> +					label = "boot";
-> +					reg = <0x0 0xc00000 0x0 0x4000000>;
-> +				};
-> +
-> +				partition@0x8c00000 {
-> +					label = "system";
-> +					reg = <0x0 0x4c00000 0x1 0xfb400000>;
-> +				};
-> +			};
-> +		};
-> +	};
-> +};
-> +
-> +&bch {
-> +	status = "okay";
-> +};
-> diff --git a/arch/mips/boot/dts/ingenic/jz4780.dtsi b/arch/mips/boot/dts/ingenic/jz4780.dtsi
-> index 65389f6..b868b42 100644
-> --- a/arch/mips/boot/dts/ingenic/jz4780.dtsi
-> +++ b/arch/mips/boot/dts/ingenic/jz4780.dtsi
-> @@ -108,4 +108,30 @@
->  
->  		status = "disabled";
->  	};
-> +
-> +	nemc: nemc@13410000 {
-> +		compatible = "ingenic,jz4780-nemc";
-> +		reg = <0x13410000 0x10000>;
-> +		#address-cells = <2>;
-> +		#size-cells = <1>;
-> +		ranges = <1 0 0x1b000000 0x1000000
-> +			  2 0 0x1a000000 0x1000000
-> +			  3 0 0x19000000 0x1000000
-> +			  4 0 0x18000000 0x1000000
-> +			  5 0 0x17000000 0x1000000
-> +			  6 0 0x16000000 0x1000000>;
-> +
-> +		clocks = <&cgu JZ4780_CLK_NEMC>;
-> +
-> +		status = "disabled";
-> +	};
-> +
-> +	bch: bch@134d0000 {
-> +		compatible = "ingenic,jz4780-bch";
-> +		reg = <0x134d0000 0x10000>;
-> +
-> +		clocks = <&cgu JZ4780_CLK_BCH>;
-> +
-> +		status = "disabled";
-> +	};
->  };
+Gr{oetje,eeting}s,
 
+                        Geert
 
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
--- 
-Boris Brezillon, Free Electrons
-Embedded Linux and Kernel engineering
-http://free-electrons.com
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

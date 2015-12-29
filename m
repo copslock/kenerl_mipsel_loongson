@@ -1,57 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 28 Dec 2015 17:29:41 +0100 (CET)
-Received: from mail-yk0-f175.google.com ([209.85.160.175]:34566 "EHLO
-        mail-yk0-f175.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008993AbbL1Q3juRN2R (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 28 Dec 2015 17:29:39 +0100
-Received: by mail-yk0-f175.google.com with SMTP id a85so30480368ykb.1;
-        Mon, 28 Dec 2015 08:29:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=sender:date:from:to:cc:subject:message-id:references:mime-version
-         :content-type:content-disposition:in-reply-to:user-agent;
-        bh=LLwV/WFmiJJV5wLRERksZD2ZPDTpAqBVR3Id6C7F4jk=;
-        b=e3BKySUD7Fpsm6JqK0YmOUdYOaBaRcnbYB7OupFB9jL2eV8LQw/HEuNpW9Lt+dElJV
-         g02BYT5hqrp4D01u3tawmFWDT6UD4EfIKHeJ33VJDZvLj914SlifqpBbS5NnrsXsTYLS
-         OY8qxbN11bKuHJfXdjUzpeUGAwNbvuSvT/OyISuJ3N/2yMEKVeXGZj3ujmRmb5sOg8HQ
-         Cl5hc6hej3SujRVnBynRbjykCts0G1j25T3NevZDI8AKDi70oc1XVBrBALIygrxqOVLi
-         jI4xFqhACfSjzofnf0jui4v1VKaeWz6H9y1ADG0ZVRWvRiGuudlIGeFiyB9phPUQJco9
-         fB5A==
-X-Received: by 10.129.0.136 with SMTP id 130mr19365589ywa.81.1451320174156;
-        Mon, 28 Dec 2015 08:29:34 -0800 (PST)
-Received: from localhost ([2620:10d:c091:200::d:d535])
-        by smtp.gmail.com with ESMTPSA id i67sm1543234ywf.34.2015.12.28.08.29.33
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 28 Dec 2015 08:29:33 -0800 (PST)
-Date:   Mon, 28 Dec 2015 11:29:33 -0500
-From:   Tejun Heo <tj@kernel.org>
-To:     Randy Dunlap <rdunlap@infradead.org>
-Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Qais Yousef <qais.yousef@imgtec.com>,
-        Alex Smith <alex.smith@imgtec.com>,
-        Markos Chandras <Markos.Chandras@imgtec.com>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>
-Subject: Re: Build regressions/improvements in v4.4-rc7
-Message-ID: <20151228162933.GV5003@mtj.duckdns.org>
-References: <1451305281-3911-1-git-send-email-geert@linux-m68k.org>
- <CAMuHMdWnSERAHcxDV47FRY1Sz6XJku72xRPb1cGig7sSF8nf4A@mail.gmail.com>
- <20151228161839.GS5003@mtj.duckdns.org>
- <568161BC.3060208@infradead.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <568161BC.3060208@infradead.org>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-Return-Path: <htejun@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Dec 2015 23:50:08 +0100 (CET)
+Received: from smtp6-g21.free.fr ([212.27.42.6]:61842 "EHLO smtp6-g21.free.fr"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27008192AbbL2WuHHwbGq (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 29 Dec 2015 23:50:07 +0100
+Received: from localhost.localdomain (unknown [78.54.179.50])
+        (Authenticated sender: albeu)
+        by smtp6-g21.free.fr (Postfix) with ESMTPA id 73A498226E;
+        Tue, 29 Dec 2015 23:49:35 +0100 (CET)
+From:   Alban Bedel <albeu@free.fr>
+To:     linux-mips@linux-mips.org
+Cc:     Ralf Baechle <ralf@linux-mips.org>, Alban Bedel <albeu@free.fr>
+Subject: [PATCH] MIPS: zboot: Fix the build with XZ compression on older GCC versions
+Date:   Tue, 29 Dec 2015 23:49:55 +0100
+Message-Id: <1451429395-24688-1-git-send-email-albeu@free.fr>
+X-Mailer: git-send-email 2.0.0
+Return-Path: <albeu@free.fr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50767
+X-archive-position: 50770
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tj@kernel.org
+X-original-sender: albeu@free.fr
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -64,31 +35,32 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hello,
+Some older GCC version (at least 4.6) emits calls to __bswapsi2() when
+building the XZ decompressor. The link of the compressed image then
+fails with the following error:
 
-On Mon, Dec 28, 2015 at 08:22:20AM -0800, Randy Dunlap wrote:
-> On 12/28/15 08:18, Tejun Heo wrote:
-> > On Mon, Dec 28, 2015 at 01:29:18PM +0100, Geert Uytterhoeven wrote:
-> >> On Mon, Dec 28, 2015 at 1:21 PM, Geert Uytterhoeven
-> >> <geert@linux-m68k.org> wrote:
-> >>> JFYI, when comparing v4.4-rc7[1] to v4.4-rc6[3], the summaries are:
-> >>>   - build errors: +14/-3
-> >>
-> >>   + /home/kisskb/slave/src/include/linux/kqueue.h: error:
-> >> dereferencing type-punned pointer will break strict-aliasing rules
-> >> [-Werror=strict-aliasing]:  => 186:2
-> > 
-> > kqueue.h?
-> > 
-> 
->   + /home/kisskb/slave/src/include/linux/workqueue.h: error: dereferencing type-punned pointer will break strict-aliasing rules [-Werror=strict-aliasing]:  => 186:2
+arch/mips/boot/compressed/decompress.o: In function '__fswab32':
+include/uapi/linux/swab.h:60: undefined reference to '__bswapsi2'
 
-Heh, yeah, that makes a lot more sense.  At the same time tho, the
-code has been there forever and there are a lot of simliar derefs
-throughout kernel/workqueue.c.  Is there something the code should be
-doing?
+Add bswapsi.o to the link to fix the build with these versions.
 
-Thanks.
+Signed-off-by: Alban Bedel <albeu@free.fr>
+---
+ arch/mips/boot/compressed/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/arch/mips/boot/compressed/Makefile b/arch/mips/boot/compressed/Makefile
+index d5bdee1..45f8abb 100644
+--- a/arch/mips/boot/compressed/Makefile
++++ b/arch/mips/boot/compressed/Makefile
+@@ -41,7 +41,7 @@ vmlinuzobjs-$(CONFIG_MIPS_ALCHEMY)		   += $(obj)/uart-alchemy.o
+ endif
+ 
+ ifdef CONFIG_KERNEL_XZ
+-vmlinuzobjs-y += $(obj)/../../lib/ashldi3.o
++vmlinuzobjs-y += $(obj)/../../lib/ashldi3.o $(obj)/../../lib/bswapsi.o
+ endif
+ 
+ targets += vmlinux.bin
 -- 
-tejun
+2.0.0

@@ -1,15 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 Dec 2015 20:11:07 +0100 (CET)
-Received: from mx1.redhat.com ([209.132.183.28]:46452 "EHLO mx1.redhat.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 Dec 2015 20:11:23 +0100 (CET)
+Received: from mx1.redhat.com ([209.132.183.28]:46502 "EHLO mx1.redhat.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27014417AbbLaTIBMz6Wk (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 31 Dec 2015 20:08:01 +0100
-Received: from int-mx11.intmail.prod.int.phx2.redhat.com (int-mx11.intmail.prod.int.phx2.redhat.com [10.5.11.24])
-        by mx1.redhat.com (Postfix) with ESMTPS id 19BDE42E5B0;
-        Thu, 31 Dec 2015 19:07:59 +0000 (UTC)
+        id S27012538AbbLaTIL08Lek (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 31 Dec 2015 20:08:11 +0100
+Received: from int-mx10.intmail.prod.int.phx2.redhat.com (int-mx10.intmail.prod.int.phx2.redhat.com [10.5.11.23])
+        by mx1.redhat.com (Postfix) with ESMTPS id 0AE6142E5B2;
+        Thu, 31 Dec 2015 19:08:07 +0000 (UTC)
 Received: from redhat.com (vpn1-7-165.ams2.redhat.com [10.36.7.165])
-        by int-mx11.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with SMTP id tBVJ7pnE029863;
-        Thu, 31 Dec 2015 14:07:52 -0500
-Date:   Thu, 31 Dec 2015 21:07:51 +0200
+        by int-mx10.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with SMTP id tBVJ7xWh011816;
+        Thu, 31 Dec 2015 14:08:00 -0500
+Date:   Thu, 31 Dec 2015 21:07:59 +0200
 From:   "Michael S. Tsirkin" <mst@redhat.com>
 To:     linux-kernel@vger.kernel.org
 Cc:     Peter Zijlstra <peterz@infradead.org>,
@@ -27,25 +27,24 @@ Cc:     Peter Zijlstra <peterz@infradead.org>,
         adi-buildroot-devel@lists.sourceforge.net,
         linux-sh@vger.kernel.org, linux-xtensa@linux-xtensa.org,
         xen-devel@lists.xenproject.org,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
+        Russell King <linux@arm.linux.org.uk>,
         Ingo Molnar <mingo@kernel.org>,
-        Andrey Konovalov <andreyknvl@google.com>,
-        Andre Przywara <andre.przywara@arm.com>
-Subject: [PATCH v2 16/32] arm64: define __smp_xxx
-Message-ID: <1451572003-2440-17-git-send-email-mst@redhat.com>
+        Tony Lindgren <tony@atomide.com>,
+        Andrey Konovalov <andreyknvl@google.com>
+Subject: [PATCH v2 17/32] arm: define __smp_xxx
+Message-ID: <1451572003-2440-18-git-send-email-mst@redhat.com>
 References: <1451572003-2440-1-git-send-email-mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <1451572003-2440-1-git-send-email-mst@redhat.com>
 X-Mutt-Fcc: =sent
-X-Scanned-By: MIMEDefang 2.68 on 10.5.11.24
+X-Scanned-By: MIMEDefang 2.68 on 10.5.11.23
 Return-Path: <mst@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50790
+X-archive-position: 50791
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -62,49 +61,42 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This defines __smp_xxx barriers for arm64,
+This defines __smp_xxx barriers for arm,
 for use by virtualization.
 
 smp_xxx barriers are removed as they are
 defined correctly by asm-generic/barriers.h
 
-Note: arm64 does not support !SMP config,
-so smp_xxx and __smp_xxx are always equivalent.
+This reduces the amount of arch-specific boiler-plate code.
 
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 Acked-by: Arnd Bergmann <arnd@arndb.de>
 ---
- arch/arm64/include/asm/barrier.h | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ arch/arm/include/asm/barrier.h | 12 +++---------
+ 1 file changed, 3 insertions(+), 9 deletions(-)
 
-diff --git a/arch/arm64/include/asm/barrier.h b/arch/arm64/include/asm/barrier.h
-index 91a43f4..dae5c49 100644
---- a/arch/arm64/include/asm/barrier.h
-+++ b/arch/arm64/include/asm/barrier.h
-@@ -35,11 +35,11 @@
- #define dma_rmb()	dmb(oshld)
- #define dma_wmb()	dmb(oshst)
+diff --git a/arch/arm/include/asm/barrier.h b/arch/arm/include/asm/barrier.h
+index 31152e8..112cc1a 100644
+--- a/arch/arm/include/asm/barrier.h
++++ b/arch/arm/include/asm/barrier.h
+@@ -60,15 +60,9 @@ extern void arm_heavy_mb(void);
+ #define dma_wmb()	barrier()
+ #endif
  
+-#ifndef CONFIG_SMP
+-#define smp_mb()	barrier()
+-#define smp_rmb()	barrier()
+-#define smp_wmb()	barrier()
+-#else
 -#define smp_mb()	dmb(ish)
--#define smp_rmb()	dmb(ishld)
+-#define smp_rmb()	smp_mb()
 -#define smp_wmb()	dmb(ishst)
+-#endif
 +#define __smp_mb()	dmb(ish)
-+#define __smp_rmb()	dmb(ishld)
++#define __smp_rmb()	__smp_mb()
 +#define __smp_wmb()	dmb(ishst)
  
--#define smp_store_release(p, v)						\
-+#define __smp_store_release(p, v)						\
- do {									\
- 	compiletime_assert_atomic_type(*p);				\
- 	switch (sizeof(*p)) {						\
-@@ -62,7 +62,7 @@ do {									\
- 	}								\
- } while (0)
+ #include <asm-generic/barrier.h>
  
--#define smp_load_acquire(p)						\
-+#define __smp_load_acquire(p)						\
- ({									\
- 	union { typeof(*p) __val; char __c[1]; } __u;			\
- 	compiletime_assert_atomic_type(*p);				\
 -- 
 MST

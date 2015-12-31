@@ -1,15 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 Dec 2015 20:13:53 +0100 (CET)
-Received: from mx1.redhat.com ([209.132.183.28]:56713 "EHLO mx1.redhat.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 Dec 2015 20:14:14 +0100 (CET)
+Received: from mx1.redhat.com ([209.132.183.28]:34445 "EHLO mx1.redhat.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27014577AbbLaTJMQNeOk (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 31 Dec 2015 20:09:12 +0100
-Received: from int-mx10.intmail.prod.int.phx2.redhat.com (int-mx10.intmail.prod.int.phx2.redhat.com [10.5.11.23])
-        by mx1.redhat.com (Postfix) with ESMTPS id A08EE8F506;
-        Thu, 31 Dec 2015 19:09:09 +0000 (UTC)
+        id S27013998AbbLaTJVF5h5k (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 31 Dec 2015 20:09:21 +0100
+Received: from int-mx11.intmail.prod.int.phx2.redhat.com (int-mx11.intmail.prod.int.phx2.redhat.com [10.5.11.24])
+        by mx1.redhat.com (Postfix) with ESMTPS id EC358935D5;
+        Thu, 31 Dec 2015 19:09:16 +0000 (UTC)
 Received: from redhat.com (vpn1-7-165.ams2.redhat.com [10.36.7.165])
-        by int-mx10.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with SMTP id tBVJ91lE012002;
-        Thu, 31 Dec 2015 14:09:02 -0500
-Date:   Thu, 31 Dec 2015 21:09:01 +0200
+        by int-mx11.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with SMTP id tBVJ999F030093;
+        Thu, 31 Dec 2015 14:09:10 -0500
+Date:   Thu, 31 Dec 2015 21:09:09 +0200
 From:   "Michael S. Tsirkin" <mst@redhat.com>
 To:     linux-kernel@vger.kernel.org
 Cc:     Peter Zijlstra <peterz@infradead.org>,
@@ -26,21 +26,22 @@ Cc:     Peter Zijlstra <peterz@infradead.org>,
         x86@kernel.org, user-mode-linux-devel@lists.sourceforge.net,
         adi-buildroot-devel@lists.sourceforge.net,
         linux-sh@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        xen-devel@lists.xenproject.org, Chris Metcalf <cmetcalf@ezchip.com>
-Subject: [PATCH v2 25/32] tile: define __smp_xxx
-Message-ID: <1451572003-2440-26-git-send-email-mst@redhat.com>
+        xen-devel@lists.xenproject.org, Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>
+Subject: [PATCH v2 26/32] xtensa: define __smp_xxx
+Message-ID: <1451572003-2440-27-git-send-email-mst@redhat.com>
 References: <1451572003-2440-1-git-send-email-mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <1451572003-2440-1-git-send-email-mst@redhat.com>
 X-Mutt-Fcc: =sent
-X-Scanned-By: MIMEDefang 2.68 on 10.5.11.23
+X-Scanned-By: MIMEDefang 2.68 on 10.5.11.24
 Return-Path: <mst@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50799
+X-archive-position: 50800
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -57,41 +58,32 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This defines __smp_xxx barriers for tile,
+This defines __smp_xxx barriers for xtensa,
 for use by virtualization.
 
-Some smp_xxx barriers are removed as they are
+smp_xxx barriers are removed as they are
 defined correctly by asm-generic/barriers.h
-
-Note: for 32 bit, keep smp_mb__after_atomic around since it's faster
-than the generic implementation.
 
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 Acked-by: Arnd Bergmann <arnd@arndb.de>
 ---
- arch/tile/include/asm/barrier.h | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ arch/xtensa/include/asm/barrier.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/tile/include/asm/barrier.h b/arch/tile/include/asm/barrier.h
-index 96a42ae..d552228 100644
---- a/arch/tile/include/asm/barrier.h
-+++ b/arch/tile/include/asm/barrier.h
-@@ -79,11 +79,12 @@ mb_incoherent(void)
-  * But after the word is updated, the routine issues an "mf" before returning,
-  * and since it's a function call, we don't even need a compiler barrier.
-  */
--#define smp_mb__before_atomic()	smp_mb()
--#define smp_mb__after_atomic()	do { } while (0)
-+#define __smp_mb__before_atomic()	__smp_mb()
-+#define __smp_mb__after_atomic()	do { } while (0)
-+#define smp_mb__after_atomic()	__smp_mb__after_atomic()
- #else /* 64 bit */
--#define smp_mb__before_atomic()	smp_mb()
--#define smp_mb__after_atomic()	smp_mb()
-+#define __smp_mb__before_atomic()	__smp_mb()
-+#define __smp_mb__after_atomic()	__smp_mb()
- #endif
+diff --git a/arch/xtensa/include/asm/barrier.h b/arch/xtensa/include/asm/barrier.h
+index 5b88774..956596e 100644
+--- a/arch/xtensa/include/asm/barrier.h
++++ b/arch/xtensa/include/asm/barrier.h
+@@ -13,8 +13,8 @@
+ #define rmb() barrier()
+ #define wmb() mb()
+ 
+-#define smp_mb__before_atomic()		barrier()
+-#define smp_mb__after_atomic()		barrier()
++#define __smp_mb__before_atomic()		barrier()
++#define __smp_mb__after_atomic()		barrier()
  
  #include <asm-generic/barrier.h>
+ 
 -- 
 MST

@@ -1,15 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 Dec 2015 20:09:06 +0100 (CET)
-Received: from mx1.redhat.com ([209.132.183.28]:55509 "EHLO mx1.redhat.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 Dec 2015 20:09:26 +0100 (CET)
+Received: from mx1.redhat.com ([209.132.183.28]:36540 "EHLO mx1.redhat.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27014271AbbLaTHOp9EZk (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 31 Dec 2015 20:07:14 +0100
-Received: from int-mx11.intmail.prod.int.phx2.redhat.com (int-mx11.intmail.prod.int.phx2.redhat.com [10.5.11.24])
-        by mx1.redhat.com (Postfix) with ESMTPS id 876A07AEA8;
-        Thu, 31 Dec 2015 19:07:10 +0000 (UTC)
+        id S27014252AbbLaTHYhqk-k (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 31 Dec 2015 20:07:24 +0100
+Received: from int-mx13.intmail.prod.int.phx2.redhat.com (int-mx13.intmail.prod.int.phx2.redhat.com [10.5.11.26])
+        by mx1.redhat.com (Postfix) with ESMTPS id 9E4C1C0B932D;
+        Thu, 31 Dec 2015 19:07:18 +0000 (UTC)
 Received: from redhat.com (vpn1-7-165.ams2.redhat.com [10.36.7.165])
-        by int-mx11.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with SMTP id tBVJ73ib029689;
-        Thu, 31 Dec 2015 14:07:03 -0500
-Date:   Thu, 31 Dec 2015 21:07:02 +0200
+        by int-mx13.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with SMTP id tBVJ7B8c004310;
+        Thu, 31 Dec 2015 14:07:11 -0500
+Date:   Thu, 31 Dec 2015 21:07:10 +0200
 From:   "Michael S. Tsirkin" <mst@redhat.com>
 To:     linux-kernel@vger.kernel.org
 Cc:     Peter Zijlstra <peterz@infradead.org>,
@@ -26,25 +26,24 @@ Cc:     Peter Zijlstra <peterz@infradead.org>,
         x86@kernel.org, user-mode-linux-devel@lists.sourceforge.net,
         adi-buildroot-devel@lists.sourceforge.net,
         linux-sh@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        xen-devel@lists.xenproject.org,
-        James Hogan <james.hogan@imgtec.com>,
+        xen-devel@lists.xenproject.org, Ralf Baechle <ralf@linux-mips.org>,
         Ingo Molnar <mingo@kernel.org>,
         Michael Ellerman <mpe@ellerman.id.au>,
         Andrey Konovalov <andreyknvl@google.com>
-Subject: [PATCH v2 10/32] metag: reuse asm-generic/barrier.h
-Message-ID: <1451572003-2440-11-git-send-email-mst@redhat.com>
+Subject: [PATCH v2 11/32] mips: reuse asm-generic/barrier.h
+Message-ID: <1451572003-2440-12-git-send-email-mst@redhat.com>
 References: <1451572003-2440-1-git-send-email-mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <1451572003-2440-1-git-send-email-mst@redhat.com>
 X-Mutt-Fcc: =sent
-X-Scanned-By: MIMEDefang 2.68 on 10.5.11.24
+X-Scanned-By: MIMEDefang 2.68 on 10.5.11.26
 Return-Path: <mst@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50784
+X-archive-position: 50785
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -61,7 +60,7 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On metag dma_rmb, dma_wmb, smp_store_mb, read_barrier_depends,
+On mips dma_rmb, dma_wmb, smp_store_mb, read_barrier_depends,
 smp_read_barrier_depends, smp_store_release and smp_load_acquire  match
 the asm-generic variants exactly. Drop the local definitions and pull in
 asm-generic/barrier.h instead.
@@ -71,32 +70,46 @@ This is in preparation to refactoring this code area.
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 Acked-by: Arnd Bergmann <arnd@arndb.de>
 ---
- arch/metag/include/asm/barrier.h | 25 ++-----------------------
+ arch/mips/include/asm/barrier.h | 25 ++-----------------------
  1 file changed, 2 insertions(+), 23 deletions(-)
 
-diff --git a/arch/metag/include/asm/barrier.h b/arch/metag/include/asm/barrier.h
-index 172b7e5..b5b778b 100644
---- a/arch/metag/include/asm/barrier.h
-+++ b/arch/metag/include/asm/barrier.h
-@@ -44,9 +44,6 @@ static inline void wr_fence(void)
- #define rmb()		barrier()
- #define wmb()		mb()
+diff --git a/arch/mips/include/asm/barrier.h b/arch/mips/include/asm/barrier.h
+index 752e0b8..3eac4b9 100644
+--- a/arch/mips/include/asm/barrier.h
++++ b/arch/mips/include/asm/barrier.h
+@@ -10,9 +10,6 @@
  
--#define dma_rmb()	rmb()
--#define dma_wmb()	wmb()
+ #include <asm/addrspace.h>
+ 
+-#define read_barrier_depends()		do { } while(0)
+-#define smp_read_barrier_depends()	do { } while(0)
 -
- #ifndef CONFIG_SMP
- #define fence()		do { } while (0)
- #define smp_mb()        barrier()
-@@ -81,27 +78,9 @@ static inline void fence(void)
- #endif
+ #ifdef CONFIG_CPU_HAS_SYNC
+ #define __sync()				\
+ 	__asm__ __volatile__(			\
+@@ -87,8 +84,6 @@
+ 
+ #define wmb()		fast_wmb()
+ #define rmb()		fast_rmb()
+-#define dma_wmb()	fast_wmb()
+-#define dma_rmb()	fast_rmb()
+ 
+ #if defined(CONFIG_WEAK_ORDERING) && defined(CONFIG_SMP)
+ # ifdef CONFIG_CPU_CAVIUM_OCTEON
+@@ -112,9 +107,6 @@
+ #define __WEAK_LLSC_MB		"		\n"
  #endif
  
--#define read_barrier_depends()		do { } while (0)
--#define smp_read_barrier_depends()	do { } while (0)
+-#define smp_store_mb(var, value) \
+-	do { WRITE_ONCE(var, value); smp_mb(); } while (0)
 -
--#define smp_store_mb(var, value) do { WRITE_ONCE(var, value); smp_mb(); } while (0)
--
+ #define smp_llsc_mb()	__asm__ __volatile__(__WEAK_LLSC_MB : : :"memory")
+ 
+ #ifdef CONFIG_CPU_CAVIUM_OCTEON
+@@ -129,22 +121,9 @@
+ #define nudge_writes() mb()
+ #endif
+ 
 -#define smp_store_release(p, v)						\
 -do {									\
 -	compiletime_assert_atomic_type(*p);				\
@@ -112,11 +125,11 @@ index 172b7e5..b5b778b 100644
 -	___p1;								\
 -})
 -
- #define smp_mb__before_atomic()	barrier()
- #define smp_mb__after_atomic()	barrier()
+ #define smp_mb__before_atomic()	smp_mb__before_llsc()
+ #define smp_mb__after_atomic()	smp_llsc_mb()
  
 +#include <asm-generic/barrier.h>
 +
- #endif /* _ASM_METAG_BARRIER_H */
+ #endif /* __ASM_BARRIER_H */
 -- 
 MST

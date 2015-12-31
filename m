@@ -1,15 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 Dec 2015 20:06:25 +0100 (CET)
-Received: from mx1.redhat.com ([209.132.183.28]:56661 "EHLO mx1.redhat.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 Dec 2015 20:06:47 +0100 (CET)
+Received: from mx1.redhat.com ([209.132.183.28]:48964 "EHLO mx1.redhat.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27009260AbbLaTGIQJqFk (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 31 Dec 2015 20:06:08 +0100
-Received: from int-mx14.intmail.prod.int.phx2.redhat.com (int-mx14.intmail.prod.int.phx2.redhat.com [10.5.11.27])
-        by mx1.redhat.com (Postfix) with ESMTPS id F0F443B758;
-        Thu, 31 Dec 2015 19:06:04 +0000 (UTC)
+        id S27009363AbbLaTGRZCHCk (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 31 Dec 2015 20:06:17 +0100
+Received: from int-mx13.intmail.prod.int.phx2.redhat.com (int-mx13.intmail.prod.int.phx2.redhat.com [10.5.11.26])
+        by mx1.redhat.com (Postfix) with ESMTPS id 46A79C0B7E04;
+        Thu, 31 Dec 2015 19:06:13 +0000 (UTC)
 Received: from redhat.com (vpn1-7-165.ams2.redhat.com [10.36.7.165])
-        by int-mx14.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with SMTP id tBVJ5wMv022962;
-        Thu, 31 Dec 2015 14:05:59 -0500
-Date:   Thu, 31 Dec 2015 21:05:58 +0200
+        by int-mx13.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with SMTP id tBVJ659Q003704;
+        Thu, 31 Dec 2015 14:06:06 -0500
+Date:   Thu, 31 Dec 2015 21:06:05 +0200
 From:   "Michael S. Tsirkin" <mst@redhat.com>
 To:     linux-kernel@vger.kernel.org
 Cc:     Peter Zijlstra <peterz@infradead.org>,
@@ -26,21 +26,24 @@ Cc:     Peter Zijlstra <peterz@infradead.org>,
         x86@kernel.org, user-mode-linux-devel@lists.sourceforge.net,
         adi-buildroot-devel@lists.sourceforge.net,
         linux-sh@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        xen-devel@lists.xenproject.org
-Subject: [PATCH v2 02/32] asm-generic: guard smp_store_release/load_acquire
-Message-ID: <1451572003-2440-3-git-send-email-mst@redhat.com>
+        xen-devel@lists.xenproject.org, Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Jiang Liu <jiang.liu@linux.intel.com>,
+        Rusty Russell <rusty@rustcorp.com.au>
+Subject: [PATCH v2 03/32] ia64: rename nop->iosapic_nop
+Message-ID: <1451572003-2440-4-git-send-email-mst@redhat.com>
 References: <1451572003-2440-1-git-send-email-mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <1451572003-2440-1-git-send-email-mst@redhat.com>
 X-Mutt-Fcc: =sent
-X-Scanned-By: MIMEDefang 2.68 on 10.5.11.27
+X-Scanned-By: MIMEDefang 2.68 on 10.5.11.26
 Return-Path: <mst@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50776
+X-archive-position: 50777
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -57,48 +60,50 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Allow architectures to override smp_store_release
-and smp_load_acquire by guarding the defines
-in asm-generic/barrier.h with ifndef directives.
+asm-generic/barrier.h defines a nop() macro.
+To be able to use this header on ia64, we shouldn't
+call local functions/variables nop().
 
-This is in preparation to reusing asm-generic/barrier.h
-on architectures which have their own definition
-of these macros.
+There's one instance where this breaks on ia64:
+rename the function to iosapic_nop to avoid the conflict.
 
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Acked-by: Tony Luck <tony.luck@intel.com>
 Acked-by: Arnd Bergmann <arnd@arndb.de>
 ---
- include/asm-generic/barrier.h | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/ia64/kernel/iosapic.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/include/asm-generic/barrier.h b/include/asm-generic/barrier.h
-index 0f45f93..987b2e0 100644
---- a/include/asm-generic/barrier.h
-+++ b/include/asm-generic/barrier.h
-@@ -104,13 +104,16 @@
- #define smp_mb__after_atomic()	smp_mb()
- #endif
+diff --git a/arch/ia64/kernel/iosapic.c b/arch/ia64/kernel/iosapic.c
+index d2fae05..90fde5b 100644
+--- a/arch/ia64/kernel/iosapic.c
++++ b/arch/ia64/kernel/iosapic.c
+@@ -256,7 +256,7 @@ set_rte (unsigned int gsi, unsigned int irq, unsigned int dest, int mask)
+ }
  
-+#ifndef smp_store_release
- #define smp_store_release(p, v)						\
- do {									\
- 	compiletime_assert_atomic_type(*p);				\
- 	smp_mb();							\
- 	WRITE_ONCE(*p, v);						\
- } while (0)
-+#endif
+ static void
+-nop (struct irq_data *data)
++iosapic_nop (struct irq_data *data)
+ {
+ 	/* do nothing... */
+ }
+@@ -415,7 +415,7 @@ iosapic_unmask_level_irq (struct irq_data *data)
+ #define iosapic_shutdown_level_irq	mask_irq
+ #define iosapic_enable_level_irq	unmask_irq
+ #define iosapic_disable_level_irq	mask_irq
+-#define iosapic_ack_level_irq		nop
++#define iosapic_ack_level_irq		iosapic_nop
  
-+#ifndef smp_load_acquire
- #define smp_load_acquire(p)						\
- ({									\
- 	typeof(*p) ___p1 = READ_ONCE(*p);				\
-@@ -118,6 +121,7 @@ do {									\
- 	smp_mb();							\
- 	___p1;								\
- })
-+#endif
+ static struct irq_chip irq_type_iosapic_level = {
+ 	.name =			"IO-SAPIC-level",
+@@ -453,7 +453,7 @@ iosapic_ack_edge_irq (struct irq_data *data)
+ }
  
- #endif /* !__ASSEMBLY__ */
- #endif /* __ASM_GENERIC_BARRIER_H */
+ #define iosapic_enable_edge_irq		unmask_irq
+-#define iosapic_disable_edge_irq	nop
++#define iosapic_disable_edge_irq	iosapic_nop
+ 
+ static struct irq_chip irq_type_iosapic_edge = {
+ 	.name =			"IO-SAPIC-edge",
 -- 
 MST

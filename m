@@ -1,15 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 Dec 2015 20:12:37 +0100 (CET)
-Received: from mx1.redhat.com ([209.132.183.28]:43517 "EHLO mx1.redhat.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 Dec 2015 20:12:59 +0100 (CET)
+Received: from mx1.redhat.com ([209.132.183.28]:49257 "EHLO mx1.redhat.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27014411AbbLaTIoMKImk (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 31 Dec 2015 20:08:44 +0100
-Received: from int-mx09.intmail.prod.int.phx2.redhat.com (int-mx09.intmail.prod.int.phx2.redhat.com [10.5.11.22])
-        by mx1.redhat.com (Postfix) with ESMTPS id 006898E238;
-        Thu, 31 Dec 2015 19:08:37 +0000 (UTC)
+        id S27013900AbbLaTIr3vSSk (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 31 Dec 2015 20:08:47 +0100
+Received: from int-mx11.intmail.prod.int.phx2.redhat.com (int-mx11.intmail.prod.int.phx2.redhat.com [10.5.11.24])
+        by mx1.redhat.com (Postfix) with ESMTPS id 55435C0B7E1C;
+        Thu, 31 Dec 2015 19:08:46 +0000 (UTC)
 Received: from redhat.com (vpn1-7-165.ams2.redhat.com [10.36.7.165])
-        by int-mx09.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with SMTP id tBVJ8UU6022704;
-        Thu, 31 Dec 2015 14:08:31 -0500
-Date:   Thu, 31 Dec 2015 21:08:30 +0200
+        by int-mx11.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with SMTP id tBVJ8caa030003;
+        Thu, 31 Dec 2015 14:08:39 -0500
+Date:   Thu, 31 Dec 2015 21:08:38 +0200
 From:   "Michael S. Tsirkin" <mst@redhat.com>
 To:     linux-kernel@vger.kernel.org
 Cc:     Peter Zijlstra <peterz@infradead.org>,
@@ -26,23 +26,27 @@ Cc:     Peter Zijlstra <peterz@infradead.org>,
         x86@kernel.org, user-mode-linux-devel@lists.sourceforge.net,
         adi-buildroot-devel@lists.sourceforge.net,
         linux-sh@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        xen-devel@lists.xenproject.org, Ralf Baechle <ralf@linux-mips.org>,
+        xen-devel@lists.xenproject.org,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
         Ingo Molnar <mingo@kernel.org>,
+        Davidlohr Bueso <dave@stgolabs.net>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
         Andrey Konovalov <andreyknvl@google.com>
-Subject: [PATCH v2 21/32] mips: define __smp_xxx
-Message-ID: <1451572003-2440-22-git-send-email-mst@redhat.com>
+Subject: [PATCH v2 22/32] s390: define __smp_xxx
+Message-ID: <1451572003-2440-23-git-send-email-mst@redhat.com>
 References: <1451572003-2440-1-git-send-email-mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <1451572003-2440-1-git-send-email-mst@redhat.com>
 X-Mutt-Fcc: =sent
-X-Scanned-By: MIMEDefang 2.68 on 10.5.11.22
+X-Scanned-By: MIMEDefang 2.68 on 10.5.11.24
 Return-Path: <mst@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50795
+X-archive-position: 50796
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -59,80 +63,52 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This defines __smp_xxx barriers for mips,
+This defines __smp_xxx barriers for s390,
 for use by virtualization.
 
-smp_xxx barriers are removed as they are
+Some smp_xxx barriers are removed as they are
 defined correctly by asm-generic/barriers.h
 
-Note: the only exception is smp_mb__before_llsc which is mips-specific.
-We define both the __smp_mb__before_llsc variant (for use in
-asm/barriers.h) and smp_mb__before_llsc (for use elsewhere on this
-architecture).
+Note: smp_mb, smp_rmb and smp_wmb are defined as full barriers
+unconditionally on this architecture.
 
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 Acked-by: Arnd Bergmann <arnd@arndb.de>
 ---
- arch/mips/include/asm/barrier.h | 26 ++++++++++++++------------
- 1 file changed, 14 insertions(+), 12 deletions(-)
+ arch/s390/include/asm/barrier.h | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/arch/mips/include/asm/barrier.h b/arch/mips/include/asm/barrier.h
-index 3eac4b9..d296633 100644
---- a/arch/mips/include/asm/barrier.h
-+++ b/arch/mips/include/asm/barrier.h
-@@ -85,20 +85,20 @@
- #define wmb()		fast_wmb()
- #define rmb()		fast_rmb()
+diff --git a/arch/s390/include/asm/barrier.h b/arch/s390/include/asm/barrier.h
+index c358c31..fbd25b2 100644
+--- a/arch/s390/include/asm/barrier.h
++++ b/arch/s390/include/asm/barrier.h
+@@ -26,18 +26,21 @@
+ #define wmb()				barrier()
+ #define dma_rmb()			mb()
+ #define dma_wmb()			mb()
+-#define smp_mb()			mb()
+-#define smp_rmb()			rmb()
+-#define smp_wmb()			wmb()
+-
+-#define smp_store_release(p, v)						\
++#define __smp_mb()			mb()
++#define __smp_rmb()			rmb()
++#define __smp_wmb()			wmb()
++#define smp_mb()			__smp_mb()
++#define smp_rmb()			__smp_rmb()
++#define smp_wmb()			__smp_wmb()
++
++#define __smp_store_release(p, v)					\
+ do {									\
+ 	compiletime_assert_atomic_type(*p);				\
+ 	barrier();							\
+ 	WRITE_ONCE(*p, v);						\
+ } while (0)
  
--#if defined(CONFIG_WEAK_ORDERING) && defined(CONFIG_SMP)
-+#if defined(CONFIG_WEAK_ORDERING)
- # ifdef CONFIG_CPU_CAVIUM_OCTEON
--#  define smp_mb()	__sync()
--#  define smp_rmb()	barrier()
--#  define smp_wmb()	__syncw()
-+#  define __smp_mb()	__sync()
-+#  define __smp_rmb()	barrier()
-+#  define __smp_wmb()	__syncw()
- # else
--#  define smp_mb()	__asm__ __volatile__("sync" : : :"memory")
--#  define smp_rmb()	__asm__ __volatile__("sync" : : :"memory")
--#  define smp_wmb()	__asm__ __volatile__("sync" : : :"memory")
-+#  define __smp_mb()	__asm__ __volatile__("sync" : : :"memory")
-+#  define __smp_rmb()	__asm__ __volatile__("sync" : : :"memory")
-+#  define __smp_wmb()	__asm__ __volatile__("sync" : : :"memory")
- # endif
- #else
--#define smp_mb()	barrier()
--#define smp_rmb()	barrier()
--#define smp_wmb()	barrier()
-+#define __smp_mb()	barrier()
-+#define __smp_rmb()	barrier()
-+#define __smp_wmb()	barrier()
- #endif
- 
- #if defined(CONFIG_WEAK_REORDERING_BEYOND_LLSC) && defined(CONFIG_SMP)
-@@ -111,6 +111,7 @@
- 
- #ifdef CONFIG_CPU_CAVIUM_OCTEON
- #define smp_mb__before_llsc() smp_wmb()
-+#define __smp_mb__before_llsc() __smp_wmb()
- /* Cause previous writes to become visible on all CPUs as soon as possible */
- #define nudge_writes() __asm__ __volatile__(".set push\n\t"		\
- 					    ".set arch=octeon\n\t"	\
-@@ -118,11 +119,12 @@
- 					    ".set pop" : : : "memory")
- #else
- #define smp_mb__before_llsc() smp_llsc_mb()
-+#define __smp_mb__before_llsc() smp_llsc_mb()
- #define nudge_writes() mb()
- #endif
- 
--#define smp_mb__before_atomic()	smp_mb__before_llsc()
--#define smp_mb__after_atomic()	smp_llsc_mb()
-+#define __smp_mb__before_atomic()	__smp_mb__before_llsc()
-+#define __smp_mb__after_atomic()	smp_llsc_mb()
- 
- #include <asm-generic/barrier.h>
- 
+-#define smp_load_acquire(p)						\
++#define __smp_load_acquire(p)						\
+ ({									\
+ 	typeof(*p) ___p1 = READ_ONCE(*p);				\
+ 	compiletime_assert_atomic_type(*p);				\
 -- 
 MST

@@ -1,74 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 Jan 2016 08:16:29 +0100 (CET)
-Received: from mail-pf0-f179.google.com ([209.85.192.179]:33664 "EHLO
-        mail-pf0-f179.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27006601AbcAAHQ2Tt9Ic convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 1 Jan 2016 08:16:28 +0100
-Received: by mail-pf0-f179.google.com with SMTP id q63so129171720pfb.0
-        for <linux-mips@linux-mips.org>; Thu, 31 Dec 2015 23:16:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20150623.gappssmtp.com; s=20150623;
-        h=content-type:mime-version:content-transfer-encoding:to:from
-         :in-reply-to:cc:references:message-id:user-agent:subject:date;
-        bh=8/ZjlnlooYJoWTKbhvc7eHXT9jyM8bcP2nCMuS2X1FU=;
-        b=oZgU3uuMyYLCGuOJlsxQRGSaqtpUVbaGiOWnnisNlei9l/k/Ld8udtvpNiLFpbbCwW
-         o7YvZS5tmahJpS71m1y2+/WS8yHqJl0GyVQo8USw0bkzLzb12dVDlt2DozZbHW41RCCT
-         4kUGha51HHaxUARc4tj7pvEF5QLJ8TnubOPeEiMDnLSmnMXbweKouDgkQQdoyH+3dSu9
-         9DZdENMazkbz2s+7H0bWxD10xq9rb34CJhzcf90QMWzkNcl9e0JUqL+0dUMtThxJAgQL
-         Tsb3FOZshM4mZ3eGd/Eu82mZ/RDG1xxHkrak2mmlZ0P8AhAQTBQEYFKxNnbVDb2Nfgq2
-         L/Jw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:content-type:mime-version
-         :content-transfer-encoding:to:from:in-reply-to:cc:references
-         :message-id:user-agent:subject:date;
-        bh=8/ZjlnlooYJoWTKbhvc7eHXT9jyM8bcP2nCMuS2X1FU=;
-        b=Fo2D/Iy9VFJmVfS7UZ0AKX6jlCQbS5FJQJ5ioSUPiAlMW6RYgH/JyKxQDoGTY6KICQ
-         F3KPBzU2AhN776sNk9IVwLigUzYoA+NV6jAgs0upPpsudqCHhEBRtP540FTQBhe74Vlw
-         b8i4XLDmSlOMBO5BWQXhpj6/GBNsyodu2Vgmws9c4/NdKu7fG5d/FiDvgkjETMdRPsDq
-         7KbMlhJQyyC3AZozWved/w6CMe22p9i1eeGHdZLQmtueySo5bNSSfBHw2xJWQ15LVamM
-         67PxBcWcFTsRIpRn0gie0O0r0dm8lPMec3gKOBWA1dfr5i6q0i5fRtH1bWIofU8o/jOs
-         MrAQ==
-X-Gm-Message-State: ALoCoQmTlPj+8HU9EYEa95EgVGB3YgtXQBKXlUYqH3oJwKkeztBTJn357DmVZWP6DDojXqycKMNGP5qKSeOOlHaiCInjBJIyzg==
-X-Received: by 10.98.68.85 with SMTP id r82mr49368989pfa.143.1451632581405;
-        Thu, 31 Dec 2015 23:16:21 -0800 (PST)
-Received: from localhost (cpe-172-248-200-249.socal.res.rr.com. [172.248.200.249])
-        by smtp.gmail.com with ESMTPSA id x3sm38866984pfi.21.2015.12.31.23.16.20
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 31 Dec 2015 23:16:20 -0800 (PST)
-Content-Type: text/plain; charset="utf-8"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 Jan 2016 11:22:08 +0100 (CET)
+Received: from mx1.redhat.com ([209.132.183.28]:37754 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27008473AbcAAKWGGA6Qe (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 1 Jan 2016 11:22:06 +0100
+Received: from int-mx11.intmail.prod.int.phx2.redhat.com (int-mx11.intmail.prod.int.phx2.redhat.com [10.5.11.24])
+        by mx1.redhat.com (Postfix) with ESMTPS id B396B8F4F9;
+        Fri,  1 Jan 2016 10:21:59 +0000 (UTC)
+Received: from redhat.com (vpn1-7-173.ams2.redhat.com [10.36.7.173])
+        by int-mx11.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with SMTP id u01ALq8K016806;
+        Fri, 1 Jan 2016 05:21:53 -0500
+Date:   Fri, 1 Jan 2016 12:21:52 +0200
+From:   "Michael S. Tsirkin" <mst@redhat.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     Peter Zijlstra <peterz@infradead.org>,
+        Arnd Bergmann <arnd@arndb.de>, linux-arch@vger.kernel.org,
+        Andrew Cooper <andrew.cooper3@citrix.com>,
+        virtualization@lists.linux-foundation.org,
+        Stefano Stabellini <stefano.stabellini@eu.citrix.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@elte.hu>, "H. Peter Anvin" <hpa@zytor.com>,
+        David Miller <davem@davemloft.net>, linux-ia64@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-metag@vger.kernel.org, linux-mips@linux-mips.org,
+        x86@kernel.org, user-mode-linux-devel@lists.sourceforge.net,
+        adi-buildroot-devel@lists.sourceforge.net,
+        linux-sh@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        xen-devel@lists.xenproject.org,
+        Alexander Duyck <alexander.duyck@gmail.com>
+Subject: Re: [PATCH v2 30/32] virtio_ring: update weak barriers to use
+ __smp_xxx
+Message-ID: <20160101122115-mutt-send-email-mst@redhat.com>
+References: <1451572003-2440-1-git-send-email-mst@redhat.com>
+ <1451572003-2440-31-git-send-email-mst@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-To:     Simon Arlott <simon@fire.lp0.eu>,
-        "Stephen Boyd" <sboyd@codeaurora.org>,
-        "Kevin Cernekee" <cernekee@gmail.com>,
-        "Florian Fainelli" <f.fainelli@gmail.com>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
-From:   Michael Turquette <mturquette@baylibre.com>
-In-Reply-To: <5669F361.60405@simon.arlott.org.uk>
-Cc:     "Linux Kernel Mailing List" <linux-kernel@vger.kernel.org>,
-        linux-clk@vger.kernel.org, linux-mips@linux-mips.org,
-        "Rob Herring" <robh+dt@kernel.org>,
-        "Pawel Moll" <pawel.moll@arm.com>,
-        "Mark Rutland" <mark.rutland@arm.com>,
-        "Ian Campbell" <ijc+devicetree@hellion.org.uk>,
-        "Kumar Gala" <galak@codeaurora.org>,
-        "Jonas Gorski" <jogo@openwrt.org>
-References: <5669F361.60405@simon.arlott.org.uk>
-Message-ID: <20160101071619.7140.40854@quark.deferred.io>
-User-Agent: alot/0.3.6
-Subject: Re: [PATCH linux-next (v2) 1/2] clk: Add brcm,
- bcm6345-gate-clk device tree binding
-Date:   Thu, 31 Dec 2015 23:16:19 -0800
-Return-Path: <mturquette@baylibre.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1451572003-2440-31-git-send-email-mst@redhat.com>
+X-Scanned-By: MIMEDefang 2.68 on 10.5.11.24
+Return-Path: <mst@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50811
+X-archive-position: 50812
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mturquette@baylibre.com
+X-original-sender: mst@redhat.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -81,65 +59,88 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Simon,
-
-Quoting Simon Arlott (2015-12-10 13:49:21)
-> +periph_clk: periph_clk {
-> +       compatible = "brcm,bcm63168-gate-clk", "brcm,bcm6345-gate-clk";
-> +       regmap = <&periph_cntl>;
-> +       offset = <0x4>;
-> +
-> +       #clock-cells = <1>;
-> +       clock-indices =
-> +               <1>,          <2>,        <3>,       <4>,     <5>,
-> +               <6>,          <7>,        <8>,       <9>,     <10>,
-> +               <11>,         <12>,       <13>,      <14>,    <15>,
-> +               <16>,         <17>,       <18>,      <19>,    <20>,
-> +               <27>,         <31>;
-> +       clock-output-names =
-> +               "vdsl_qproc", "vdsl_afe", "vdsl",    "mips",  "wlan_ocp",
-> +               "dect",       "fap0",     "fap1",    "sar",   "robosw",
-> +               "pcm",        "usbd",     "usbh",    "ipsec", "spi",
-> +               "hsspi",      "pcie",     "phymips", "gmac",  "nand",
-> +               "tbus",       "robosw250";
-
-Why is clock-output-names required? Because you don't have any clock
-data in your driver? Or is there another reason?
-
-FYI, I'm not a fan of clock-output-names, and prefer for the clk
-consumer devices to specify the clock-names property.
-
-Another question, is it correct that this binding requires a DT node for
-every register that contains clock control bits? If so, I'm skeptical of
-that approach. What if you have a clock controller IP block on a future
-soc that has several registers worth of clock controls?
-
-Regards,
-Mike
-
-> +};
-> +
-> +timer_clk: timer_clk {
-> +       compatible = "brcm,bcm63168-gate-clk", "brcm,bcm6345-gate-clk";
-> +       regmap = <&timer_cntl>;
-> +       offset = <0x4>;
-> +
-> +       #clock-cells = <1>;
-> +       clock-indices = <17>, <18>;
-> +       clock-output-names = "uto_extin", "usb_ref";
-> +};
-> +
-> +ehci0: usb@10002500 {
-> +       compatible = "brcm,bcm63168-ehci", "brcm,bcm6345-ehci", "generic-ehci";
-> +       reg = <0x10002500 0x100>;
-> +       big-endian;
-> +       interrupt-parent = <&periph_intc>;
-> +       interrupts = <10>;
-> +       clocks = <&periph_clk 13>, <&timer_clk 18>;
-> +       phys = <&usbh>;
-> +};
-> -- 
-> 2.1.4
+On Fri, Jan 01, 2016 at 11:39:40AM +0200, Michael S. Tsirkin wrote:
+> virtio ring uses smp_wmb on SMP and wmb on !SMP,
+> the reason for the later being that it might be
+> talking to another kernel on the same SMP machine.
 > 
+> This is exactly what __smp_XXX barriers do,
+> so switch to these instead of homegrown ifdef hacks.
+> 
+> Cc: Peter Zijlstra <peterz@infradead.org>
+> Cc: Alexander Duyck <alexander.duyck@gmail.com>
+> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+
+The subject and commit log should say
+virt_xxx and not __smp_xxx - I fixed this up in
+my tree.
+
+> ---
+>  include/linux/virtio_ring.h | 25 ++++---------------------
+>  1 file changed, 4 insertions(+), 21 deletions(-)
+> 
+> diff --git a/include/linux/virtio_ring.h b/include/linux/virtio_ring.h
+> index 67e06fe..f3fa55b 100644
+> --- a/include/linux/virtio_ring.h
+> +++ b/include/linux/virtio_ring.h
+> @@ -12,7 +12,7 @@
+>   * anyone care?
+>   *
+>   * For virtio_pci on SMP, we don't need to order with respect to MMIO
+> - * accesses through relaxed memory I/O windows, so smp_mb() et al are
+> + * accesses through relaxed memory I/O windows, so virt_mb() et al are
+>   * sufficient.
+>   *
+>   * For using virtio to talk to real devices (eg. other heterogeneous
+> @@ -21,11 +21,10 @@
+>   * actually quite cheap.
+>   */
+>  
+> -#ifdef CONFIG_SMP
+>  static inline void virtio_mb(bool weak_barriers)
+>  {
+>  	if (weak_barriers)
+> -		smp_mb();
+> +		virt_mb();
+>  	else
+>  		mb();
+>  }
+> @@ -33,7 +32,7 @@ static inline void virtio_mb(bool weak_barriers)
+>  static inline void virtio_rmb(bool weak_barriers)
+>  {
+>  	if (weak_barriers)
+> -		smp_rmb();
+> +		virt_rmb();
+>  	else
+>  		rmb();
+>  }
+> @@ -41,26 +40,10 @@ static inline void virtio_rmb(bool weak_barriers)
+>  static inline void virtio_wmb(bool weak_barriers)
+>  {
+>  	if (weak_barriers)
+> -		smp_wmb();
+> +		virt_wmb();
+>  	else
+>  		wmb();
+>  }
+> -#else
+> -static inline void virtio_mb(bool weak_barriers)
+> -{
+> -	mb();
+> -}
+> -
+> -static inline void virtio_rmb(bool weak_barriers)
+> -{
+> -	rmb();
+> -}
+> -
+> -static inline void virtio_wmb(bool weak_barriers)
+> -{
+> -	wmb();
+> -}
+> -#endif
+>  
+>  struct virtio_device;
+>  struct virtqueue;
 > -- 
-> Simon Arlott
+> MST

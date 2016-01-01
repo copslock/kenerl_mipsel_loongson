@@ -1,47 +1,77 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 Jan 2016 15:30:21 +0100 (CET)
-Received: from mail-lb0-f169.google.com ([209.85.217.169]:33365 "EHLO
-        mail-lb0-f169.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008924AbcAAOaTlGm9B (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 1 Jan 2016 15:30:19 +0100
-Received: by mail-lb0-f169.google.com with SMTP id sv6so128396147lbb.0;
-        Fri, 01 Jan 2016 06:30:19 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 Jan 2016 18:23:56 +0100 (CET)
+Received: from mail-lf0-f48.google.com ([209.85.215.48]:33879 "EHLO
+        mail-lf0-f48.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27009102AbcAARXycVRm1 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 1 Jan 2016 18:23:54 +0100
+Received: by mail-lf0-f48.google.com with SMTP id y184so249879515lfc.1
+        for <linux-mips@linux-mips.org>; Fri, 01 Jan 2016 09:23:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:mime-version:content-type
+        d=cogentembedded-com.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:references:cc:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-type:content-transfer-encoding;
+        bh=2BJQA0QVeePVboF/Vmww9BmcToMac4EqtXr6sRSPi+U=;
+        b=FASK9t8U7pZZHO0YesrDPCbr1gpmYqCXTefGmuZcjOe5fnlPCc2SgzzjJDZ/7duIFb
+         0r4lg/qmhoFHuhMm3bVzSdv3ibRdRHMts2nYa+Xeue2iM2yzALsCRBO9lpedxm8tbiz3
+         0b9CmWjbBqh9XWTnYsBlu+f4ZePQO1613dgSGw8H3gi23AlJah8ZGBHjaBEvL9Nj1cBD
+         jfZ0c/JJdOEd3UnoZSlInMREzTWboOBAFBAFV3siuiF5S9MEHqoztdFASyO5flxQQmeB
+         vZ79CynYByEr9ZdrydbGfQZOPuu92VQf7jTxq3NzhTbk7V99r7Kyz0jlZD04Dcibq3q5
+         ncXA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:subject:to:references:cc:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-type
          :content-transfer-encoding;
-        bh=oWMQ7igmu570vuJq4+RIk2XegVxnqKpx1tE8lmQCx4c=;
-        b=emykIyJz1ApaIhPBwHN1RvK9eDWunQihmBoRSvFhzqRnxlRssgUjtd9BHRFtMEPIkP
-         HrETzOTfWS+MF76pM0E/c27uTcodq8muqbD/i8BWcd0RrgEW6K3/XqzM8cQVlzktFp5p
-         QgPa/m8YwgOleHBA+nbNbXkF0r24LTuCvMAa9pEgqnJ9z0eBd89KuyJ8kr+IhhtNr6ia
-         3Z/ad+UXyCMTchasJB0PnVS7WmV2lzTBiTAXhhckKzgkSC2BDiQzGrNUJKEuD4J/n8sn
-         ldZwy7bSL3WFisRfWYaHkZhH9gMvmnCLkxUz1RLJFVymBmD7bJyn+2vXwlkddgnsIGI2
-         qTOQ==
-X-Received: by 10.112.198.72 with SMTP id ja8mr17110690lbc.142.1451658613235;
-        Fri, 01 Jan 2016 06:30:13 -0800 (PST)
-Received: from linux-samsung.lan (ip-194-187-74-233.konfederacka.maverick.com.pl. [194.187.74.233])
-        by smtp.gmail.com with ESMTPSA id zu7sm3249849lbb.36.2016.01.01.06.30.12
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 01 Jan 2016 06:30:12 -0800 (PST)
-From:   =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
-To:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Cc:     Hauke Mehrtens <hauke@hauke-m.de>,
-        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
-Subject: [PATCH] MIPS: BCM47xx: Support SPROM prefixes on other platforms
-Date:   Fri,  1 Jan 2016 15:30:03 +0100
-Message-Id: <1451658603-31298-1-git-send-email-zajec5@gmail.com>
-X-Mailer: git-send-email 1.8.4.5
+        bh=2BJQA0QVeePVboF/Vmww9BmcToMac4EqtXr6sRSPi+U=;
+        b=Vo0XSGNw6EYSFPwJT4egMTmm3XFI6FivIG0RSOjwB/TquyBlAg5KKEHvVCcQoqhwom
+         F0QRIEjiUxzuHRprswBh28IM7373NivdRd5vHoLBXpWX/TiItdYWXz1V9wpnZ2O4CxsC
+         DEr8LIqZ7UlHNhLwUx6QOegcj8dnjbLMHtQHzGpfjVm1RSFzEwgGSmgZMhNu1XVygsQ8
+         qAkiddSUwYZDq3oUKny9xz7wMCNauTrZT8GpGZgp6v0lXB3UyQRZ+Ab/Xj53AHFdmlOk
+         /UONx1U7SpJCeBmugytHbg/wTs1dlRDyQExz9vH99hKAfq1f5cCdONmisC1LHQw4HFuW
+         510w==
+X-Gm-Message-State: ALoCoQkAXVndaZ1xR+6hodjmc6/nK5ZO1iOD3QlPesPDtdLa3MIfy6f8rYk36AZvIK3zeQhPNrRAKoxPuZcpRCeMQvNNLG+4bg==
+X-Received: by 10.25.90.195 with SMTP id o186mr27641903lfb.9.1451669028104;
+        Fri, 01 Jan 2016 09:23:48 -0800 (PST)
+Received: from [192.168.4.126] ([31.173.84.162])
+        by smtp.gmail.com with ESMTPSA id xo4sm8646949lbb.27.2016.01.01.09.23.45
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Fri, 01 Jan 2016 09:23:47 -0800 (PST)
+Subject: Re: [PATCH v2 32/32] virtio_ring: use virt_store_mb
+To:     "Michael S. Tsirkin" <mst@redhat.com>, linux-kernel@vger.kernel.org
+References: <1451572003-2440-1-git-send-email-mst@redhat.com>
+ <1451572003-2440-33-git-send-email-mst@redhat.com>
+Cc:     Peter Zijlstra <peterz@infradead.org>,
+        Arnd Bergmann <arnd@arndb.de>, linux-arch@vger.kernel.org,
+        Andrew Cooper <andrew.cooper3@citrix.com>,
+        virtualization@lists.linux-foundation.org,
+        Stefano Stabellini <stefano.stabellini@eu.citrix.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@elte.hu>, "H. Peter Anvin" <hpa@zytor.com>,
+        David Miller <davem@davemloft.net>, linux-ia64@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-metag@vger.kernel.org, linux-mips@linux-mips.org,
+        x86@kernel.org, user-mode-linux-devel@lists.sourceforge.net,
+        adi-buildroot-devel@lists.sourceforge.net,
+        linux-sh@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        xen-devel@lists.xenproject.org
+From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Message-ID: <5686B622.6070600@cogentembedded.com>
+Date:   Fri, 1 Jan 2016 20:23:46 +0300
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:38.0) Gecko/20100101
+ Thunderbird/38.5.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Return-Path: <zajec5@gmail.com>
+In-Reply-To: <1451572003-2440-33-git-send-email-mst@redhat.com>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sergei.shtylyov@cogentembedded.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50813
+X-archive-position: 50814
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: zajec5@gmail.com
+X-original-sender: sergei.shtylyov@cogentembedded.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,40 +84,50 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-BCM47XX platform has specific PCI setup because all buses share the same
-domain. It's different e.g. on ARM ARCH_BCM_5301X where each PCI bus
-gets its own domain (they are handled by iProc PCIe controller driver).
+Hello.
 
-As we want to make SPROM driver more generic, let's add an exception for
-BCM47xx. It was tested on BCM4706 (MIPS) and BCM4708A0 (ARM).
+On 12/31/2015 10:09 PM, Michael S. Tsirkin wrote:
 
-Signed-off-by: Rafał Miłecki <zajec5@gmail.com>
----
- arch/mips/bcm47xx/sprom.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+> We need a full barrier after writing out event index, using
+> virt_store_mb there seems better than open-coding.  As usual, we need a
+> wrapper to account for strong barriers.
+>
+> It's tempting to use this in vhost as well, for that, we'll
+> need a variant of smp_store_mb that works on __user pointers.
+>
+> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+> ---
+>   include/linux/virtio_ring.h  | 12 ++++++++++++
+>   drivers/virtio/virtio_ring.c | 15 +++++++++------
+>   2 files changed, 21 insertions(+), 6 deletions(-)
+>
+> diff --git a/include/linux/virtio_ring.h b/include/linux/virtio_ring.h
+> index f3fa55b..3a74d91 100644
+> --- a/include/linux/virtio_ring.h
+> +++ b/include/linux/virtio_ring.h
+> @@ -45,6 +45,18 @@ static inline void virtio_wmb(bool weak_barriers)
+>   		wmb();
+>   }
+>
+> +static inline void virtio_store_mb(bool weak_barriers,
+> +				   __virtio16 *p, __virtio16 v)
+> +{
+> +	if (weak_barriers)
+> +		virt_store_mb(*p, v);
+> +	else
+> +	{
 
-diff --git a/arch/mips/bcm47xx/sprom.c b/arch/mips/bcm47xx/sprom.c
-index a7e569c..959c145 100644
---- a/arch/mips/bcm47xx/sprom.c
-+++ b/arch/mips/bcm47xx/sprom.c
-@@ -666,9 +666,15 @@ static int bcm47xx_get_sprom_bcma(struct bcma_bus *bus, struct ssb_sprom *out)
- 	switch (bus->hosttype) {
- 	case BCMA_HOSTTYPE_PCI:
- 		memset(out, 0, sizeof(struct ssb_sprom));
--		snprintf(buf, sizeof(buf), "pci/%u/%u/",
--			 bus->host_pci->bus->number + 1,
--			 PCI_SLOT(bus->host_pci->devfn));
-+		/* On BCM47XX all PCI buses share the same domain */
-+		if (config_enabled(CONFIG_BCM47XX))
-+			snprintf(buf, sizeof(buf), "pci/%u/%u/",
-+				 bus->host_pci->bus->number + 1,
-+				 PCI_SLOT(bus->host_pci->devfn));
-+		else
-+			snprintf(buf, sizeof(buf), "pci/%u/%u/",
-+				 pci_domain_nr(bus->host_pci->bus) + 1,
-+				 bus->host_pci->bus->number);
- 		bcm47xx_sprom_apply_prefix_alias(buf, sizeof(buf));
- 		prefix = buf;
- 		break;
--- 
-1.8.4.5
+    The kernel coding style dictates:
+
+	if (weak_barriers) {
+		virt_store_mb(*p, v);
+	} else {
+
+> +		WRITE_ONCE(*p, v);
+> +		mb();
+> +	}
+> +}
+> +
+[...]
+
+MBR, Sergei

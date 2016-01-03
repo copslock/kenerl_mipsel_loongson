@@ -1,22 +1,17 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 02 Jan 2016 12:25:09 +0100 (CET)
-Received: from pandora.arm.linux.org.uk ([78.32.30.218]:56532 "EHLO
-        pandora.arm.linux.org.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008444AbcABLZHATO8Y (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 2 Jan 2016 12:25:07 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=arm.linux.org.uk; s=pandora-2014;
-        h=Sender:In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date; bh=X3+18T8zdAgtUB3pjGCJjERgQgLG6PuJtm+CVr6GyRY=;
-        b=ZmGyLiEYEh7A3KwgJUGCkrfv+hRm1/lm9Q4BfuxoIYwGB+rAwvRTe7LdfcaEGyA/FWmbRLwFZK8DWKkcW0OB4sXYSRWwYEOnWuHRzi7RuaFk1AH1Zc1d3mBDCfUU0xdVd4yTozYftw0NH736vcZk+GBRp1DBP4bRLQpVDcZZLHc=;
-Received: from n2100.arm.linux.org.uk ([2002:4e20:1eda:1:214:fdff:fe10:4f86]:33328)
-        by pandora.arm.linux.org.uk with esmtpsa (TLSv1:DHE-RSA-AES256-SHA:256)
-        (Exim 4.82_1-5b7a7c0-XX)
-        (envelope-from <linux@arm.linux.org.uk>)
-        id 1aFKIc-0000DK-R8; Sat, 02 Jan 2016 11:24:42 +0000
-Received: from linux by n2100.arm.linux.org.uk with local (Exim 4.76)
-        (envelope-from <linux@n2100.arm.linux.org.uk>)
-        id 1aFKIZ-0008WE-9p; Sat, 02 Jan 2016 11:24:39 +0000
-Date:   Sat, 2 Jan 2016 11:24:38 +0000
-From:   Russell King - ARM Linux <linux@arm.linux.org.uk>
-To:     "Michael S. Tsirkin" <mst@redhat.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 03 Jan 2016 10:01:21 +0100 (CET)
+Received: from mx1.redhat.com ([209.132.183.28]:45815 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27005160AbcACJBTR76YD (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 3 Jan 2016 10:01:19 +0100
+Received: from int-mx13.intmail.prod.int.phx2.redhat.com (int-mx13.intmail.prod.int.phx2.redhat.com [10.5.11.26])
+        by mx1.redhat.com (Postfix) with ESMTPS id 172358E760;
+        Sun,  3 Jan 2016 09:01:14 +0000 (UTC)
+Received: from redhat.com (vpn1-7-172.ams2.redhat.com [10.36.7.172])
+        by int-mx13.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with SMTP id u03916En001102;
+        Sun, 3 Jan 2016 04:01:06 -0500
+Date:   Sun, 3 Jan 2016 11:01:05 +0200
+From:   "Michael S. Tsirkin" <mst@redhat.com>
+To:     Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
 Cc:     linux-kernel@vger.kernel.org,
         Peter Zijlstra <peterz@infradead.org>,
         Arnd Bergmann <arnd@arndb.de>, linux-arch@vger.kernel.org,
@@ -32,27 +27,26 @@ Cc:     linux-kernel@vger.kernel.org,
         x86@kernel.org, user-mode-linux-devel@lists.sourceforge.net,
         adi-buildroot-devel@lists.sourceforge.net,
         linux-sh@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        xen-devel@lists.xenproject.org, Ingo Molnar <mingo@kernel.org>,
-        Tony Lindgren <tony@atomide.com>,
-        Andrey Konovalov <andreyknvl@google.com>
-Subject: Re: [PATCH v2 17/32] arm: define __smp_xxx
-Message-ID: <20160102112438.GU8644@n2100.arm.linux.org.uk>
+        xen-devel@lists.xenproject.org
+Subject: Re: [PATCH v2 32/32] virtio_ring: use virt_store_mb
+Message-ID: <20160103110052-mutt-send-email-mst@redhat.com>
 References: <1451572003-2440-1-git-send-email-mst@redhat.com>
- <1451572003-2440-18-git-send-email-mst@redhat.com>
+ <1451572003-2440-33-git-send-email-mst@redhat.com>
+ <5686B622.6070600@cogentembedded.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1451572003-2440-18-git-send-email-mst@redhat.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <linux+linux-mips=linux-mips.org@arm.linux.org.uk>
+In-Reply-To: <5686B622.6070600@cogentembedded.com>
+X-Scanned-By: MIMEDefang 2.68 on 10.5.11.26
+Return-Path: <mst@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50817
+X-archive-position: 50818
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linux@arm.linux.org.uk
+X-original-sender: mst@redhat.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -65,34 +59,53 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Dec 31, 2015 at 09:07:59PM +0200, Michael S. Tsirkin wrote:
-> This defines __smp_xxx barriers for arm,
-> for use by virtualization.
+On Fri, Jan 01, 2016 at 08:23:46PM +0300, Sergei Shtylyov wrote:
+> Hello.
 > 
-> smp_xxx barriers are removed as they are
-> defined correctly by asm-generic/barriers.h
+> On 12/31/2015 10:09 PM, Michael S. Tsirkin wrote:
 > 
-> This reduces the amount of arch-specific boiler-plate code.
+> >We need a full barrier after writing out event index, using
+> >virt_store_mb there seems better than open-coding.  As usual, we need a
+> >wrapper to account for strong barriers.
+> >
+> >It's tempting to use this in vhost as well, for that, we'll
+> >need a variant of smp_store_mb that works on __user pointers.
+> >
+> >Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+> >---
+> >  include/linux/virtio_ring.h  | 12 ++++++++++++
+> >  drivers/virtio/virtio_ring.c | 15 +++++++++------
+> >  2 files changed, 21 insertions(+), 6 deletions(-)
+> >
+> >diff --git a/include/linux/virtio_ring.h b/include/linux/virtio_ring.h
+> >index f3fa55b..3a74d91 100644
+> >--- a/include/linux/virtio_ring.h
+> >+++ b/include/linux/virtio_ring.h
+> >@@ -45,6 +45,18 @@ static inline void virtio_wmb(bool weak_barriers)
+> >  		wmb();
+> >  }
+> >
+> >+static inline void virtio_store_mb(bool weak_barriers,
+> >+				   __virtio16 *p, __virtio16 v)
+> >+{
+> >+	if (weak_barriers)
+> >+		virt_store_mb(*p, v);
+> >+	else
+> >+	{
 > 
-> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-> Acked-by: Arnd Bergmann <arnd@arndb.de>
+>    The kernel coding style dictates:
+> 
+> 	if (weak_barriers) {
+> 		virt_store_mb(*p, v);
+> 	} else {
+> 
+> >+		WRITE_ONCE(*p, v);
+> >+		mb();
+> >+	}
+> >+}
+> >+
+> [...]
+> 
+> MBR, Sergei
 
-In combination with patch 14, this looks like it should result in no
-change to the resulting code.
-
-Acked-by: Russell King <rmk+kernel@arm.linux.org.uk>
-
-My only concern is that it gives people an additional handle onto a
-"new" set of barriers - just because they're prefixed with __*
-unfortunately doesn't stop anyone from using it (been there with
-other arch stuff before.)
-
-I wonder whether we should consider making the smp memory barriers
-inline functions, so these __smp_xxx() variants can be undef'd
-afterwards, thereby preventing drivers getting their hands on these
-new macros?
-
--- 
-RMK's Patch system: http://www.arm.linux.org.uk/developer/patches/
-FTTC broadband for 0.8mile line: currently at 9.6Mbps down 400kbps up
-according to speedtest.net.
+Will fix, thanks!

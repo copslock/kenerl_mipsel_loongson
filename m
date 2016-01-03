@@ -1,17 +1,17 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 03 Jan 2016 10:01:21 +0100 (CET)
-Received: from mx1.redhat.com ([209.132.183.28]:45815 "EHLO mx1.redhat.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 03 Jan 2016 10:13:05 +0100 (CET)
+Received: from mx1.redhat.com ([209.132.183.28]:59896 "EHLO mx1.redhat.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27005160AbcACJBTR76YD (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 3 Jan 2016 10:01:19 +0100
-Received: from int-mx13.intmail.prod.int.phx2.redhat.com (int-mx13.intmail.prod.int.phx2.redhat.com [10.5.11.26])
-        by mx1.redhat.com (Postfix) with ESMTPS id 172358E760;
-        Sun,  3 Jan 2016 09:01:14 +0000 (UTC)
+        id S27005160AbcACJNAvUJID (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 3 Jan 2016 10:13:00 +0100
+Received: from int-mx11.intmail.prod.int.phx2.redhat.com (int-mx11.intmail.prod.int.phx2.redhat.com [10.5.11.24])
+        by mx1.redhat.com (Postfix) with ESMTPS id A21818E6E3;
+        Sun,  3 Jan 2016 09:12:53 +0000 (UTC)
 Received: from redhat.com (vpn1-7-172.ams2.redhat.com [10.36.7.172])
-        by int-mx13.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with SMTP id u03916En001102;
-        Sun, 3 Jan 2016 04:01:06 -0500
-Date:   Sun, 3 Jan 2016 11:01:05 +0200
+        by int-mx11.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with SMTP id u039CiGM004198;
+        Sun, 3 Jan 2016 04:12:46 -0500
+Date:   Sun, 3 Jan 2016 11:12:44 +0200
 From:   "Michael S. Tsirkin" <mst@redhat.com>
-To:     Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+To:     Russell King - ARM Linux <linux@arm.linux.org.uk>
 Cc:     linux-kernel@vger.kernel.org,
         Peter Zijlstra <peterz@infradead.org>,
         Arnd Bergmann <arnd@arndb.de>, linux-arch@vger.kernel.org,
@@ -27,22 +27,24 @@ Cc:     linux-kernel@vger.kernel.org,
         x86@kernel.org, user-mode-linux-devel@lists.sourceforge.net,
         adi-buildroot-devel@lists.sourceforge.net,
         linux-sh@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        xen-devel@lists.xenproject.org
-Subject: Re: [PATCH v2 32/32] virtio_ring: use virt_store_mb
-Message-ID: <20160103110052-mutt-send-email-mst@redhat.com>
+        xen-devel@lists.xenproject.org, Ingo Molnar <mingo@kernel.org>,
+        Tony Lindgren <tony@atomide.com>,
+        Andrey Konovalov <andreyknvl@google.com>
+Subject: Re: [PATCH v2 17/32] arm: define __smp_xxx
+Message-ID: <20160103110158-mutt-send-email-mst@redhat.com>
 References: <1451572003-2440-1-git-send-email-mst@redhat.com>
- <1451572003-2440-33-git-send-email-mst@redhat.com>
- <5686B622.6070600@cogentembedded.com>
+ <1451572003-2440-18-git-send-email-mst@redhat.com>
+ <20160102112438.GU8644@n2100.arm.linux.org.uk>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <5686B622.6070600@cogentembedded.com>
-X-Scanned-By: MIMEDefang 2.68 on 10.5.11.26
+In-Reply-To: <20160102112438.GU8644@n2100.arm.linux.org.uk>
+X-Scanned-By: MIMEDefang 2.68 on 10.5.11.24
 Return-Path: <mst@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50818
+X-archive-position: 50819
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -59,53 +61,41 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Jan 01, 2016 at 08:23:46PM +0300, Sergei Shtylyov wrote:
-> Hello.
+On Sat, Jan 02, 2016 at 11:24:38AM +0000, Russell King - ARM Linux wrote:
+> On Thu, Dec 31, 2015 at 09:07:59PM +0200, Michael S. Tsirkin wrote:
+> > This defines __smp_xxx barriers for arm,
+> > for use by virtualization.
+> > 
+> > smp_xxx barriers are removed as they are
+> > defined correctly by asm-generic/barriers.h
+> > 
+> > This reduces the amount of arch-specific boiler-plate code.
+> > 
+> > Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+> > Acked-by: Arnd Bergmann <arnd@arndb.de>
 > 
-> On 12/31/2015 10:09 PM, Michael S. Tsirkin wrote:
+> In combination with patch 14, this looks like it should result in no
+> change to the resulting code.
 > 
-> >We need a full barrier after writing out event index, using
-> >virt_store_mb there seems better than open-coding.  As usual, we need a
-> >wrapper to account for strong barriers.
-> >
-> >It's tempting to use this in vhost as well, for that, we'll
-> >need a variant of smp_store_mb that works on __user pointers.
-> >
-> >Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-> >---
-> >  include/linux/virtio_ring.h  | 12 ++++++++++++
-> >  drivers/virtio/virtio_ring.c | 15 +++++++++------
-> >  2 files changed, 21 insertions(+), 6 deletions(-)
-> >
-> >diff --git a/include/linux/virtio_ring.h b/include/linux/virtio_ring.h
-> >index f3fa55b..3a74d91 100644
-> >--- a/include/linux/virtio_ring.h
-> >+++ b/include/linux/virtio_ring.h
-> >@@ -45,6 +45,18 @@ static inline void virtio_wmb(bool weak_barriers)
-> >  		wmb();
-> >  }
-> >
-> >+static inline void virtio_store_mb(bool weak_barriers,
-> >+				   __virtio16 *p, __virtio16 v)
-> >+{
-> >+	if (weak_barriers)
-> >+		virt_store_mb(*p, v);
-> >+	else
-> >+	{
+> Acked-by: Russell King <rmk+kernel@arm.linux.org.uk>
 > 
->    The kernel coding style dictates:
+> My only concern is that it gives people an additional handle onto a
+> "new" set of barriers - just because they're prefixed with __*
+> unfortunately doesn't stop anyone from using it (been there with
+> other arch stuff before.)
 > 
-> 	if (weak_barriers) {
-> 		virt_store_mb(*p, v);
-> 	} else {
-> 
-> >+		WRITE_ONCE(*p, v);
-> >+		mb();
-> >+	}
-> >+}
-> >+
-> [...]
-> 
-> MBR, Sergei
+> I wonder whether we should consider making the smp memory barriers
+> inline functions, so these __smp_xxx() variants can be undef'd
+> afterwards, thereby preventing drivers getting their hands on these
+> new macros?
 
-Will fix, thanks!
+That'd be tricky to do cleanly since asm-generic depends on
+ifndef to add generic variants where needed.
+
+But it would be possible to add a checkpatch test for this.
+
+
+> -- 
+> RMK's Patch system: http://www.arm.linux.org.uk/developer/patches/
+> FTTC broadband for 0.8mile line: currently at 9.6Mbps down 400kbps up
+> according to speedtest.net.

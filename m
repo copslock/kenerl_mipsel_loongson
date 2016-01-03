@@ -1,59 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 03 Jan 2016 22:39:47 +0100 (CET)
-Received: from kirsty.vergenet.net ([202.4.237.240]:54720 "EHLO
-        kirsty.vergenet.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27009469AbcACVjoUyGcs (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 3 Jan 2016 22:39:44 +0100
-Received: from penelope.kanocho.kobe.vergenet.net (58-6-44-103.dyn.iinet.net.au [58.6.44.103])
-        by kirsty.vergenet.net (Postfix) with ESMTPSA id 2F50825AD89;
-        Mon,  4 Jan 2016 08:39:39 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=verge.net.au; s=mail;
-        t=1451857179; bh=jSDoIx6tIOtUwpZxh+l7xsxiv50EC9yvkuuF+8Yajwg=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=LnI0VwfW5P4vzPX6Qd3KM4hIuEFLMIbvFSfSd3yCYOQZQYCJK0Lie/3eQ2hapw4P6
-         +lLOrduZHql5vXgs/NpsyChcDqpoC1T9764zuIvKdl+n3QvLUKEhFsD9aRXgOioyZq
-         djpM5xFGgAePbRte81NyolalNrNSJiR1zQ5H03bM=
-Received: by penelope.kanocho.kobe.vergenet.net (Postfix, from userid 7100)
-        id DF82166ACB; Mon,  4 Jan 2016 08:39:38 +1100 (AEDT)
-Date:   Mon, 4 Jan 2016 08:39:38 +1100
-From:   Simon Horman <horms@verge.net.au>
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     Geert Uytterhoeven <geert+renesas@glider.be>,
-        "arm@kernel.org" <arm@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
-        Gregory Clement <gregory.clement@free-electrons.com>,
-        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-        Magnus Damm <magnus.damm@gmail.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Alex Smith <alex.smith@imgtec.com>,
-        Brian Norris <computersforpeace@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        MTD Maling List <linux-mtd@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 0/9] ARM: dts: Add compatible property to "partitions"
- node
-Message-ID: <20160103213938.GD22806@verge.net.au>
-References: <1450694033-27717-1-git-send-email-geert+renesas@glider.be>
- <20151228050147.GE1066@verge.net.au>
- <CAMuHMdXt36GSDuoFVGBebJVN9OHPh=ze8u8KvQ0B+RcvT6xTYQ@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Jan 2016 00:08:42 +0100 (CET)
+Received: from bh-25.webhostbox.net ([208.91.199.152]:58557 "EHLO
+        bh-25.webhostbox.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27007789AbcACXIkJS0VB (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 4 Jan 2016 00:08:40 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=roeck-us.net; s=default; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:MIME-Version:Date:Message-ID:From:Cc:References:To:Subject;
+        bh=PJ66xs601Z3cmhXEKheOwMf4RmAa+57Sjx3Iz6tXsCw=; b=zPD23m97EjrxUsFE62G87pPkX0
+        UvTeIpgjBxNE+lO1rfsbmCKsJW6xWYg2vCelsApU57hX1lVEnWFXe9mAS9L9/rFLYJsOEllyUZINJ
+        DpDUJXDELZizNhaFlN/cU3jBjhJiSHg23+Pyk7Mq4na7bRmrKv+HzCICFIhOxsiLjY9I=;
+Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:52310 helo=server.roeck-us.net)
+        by bh-25.webhostbox.net with esmtpsa (TLSv1:DHE-RSA-AES128-SHA:128)
+        (Exim 4.86)
+        (envelope-from <linux@roeck-us.net>)
+        id 1aFrla-003zy0-LS; Sun, 03 Jan 2016 23:08:52 +0000
+Subject: Re: [PATCH -next] MIPS: VDSO: Fix build error with binutils 2.24 and
+ earlier
+To:     Ralf Baechle <ralf@linux-mips.org>
+References: <1450933471-7357-1-git-send-email-linux@roeck-us.net>
+Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        Qais Yousef <qais.yousef@imgtec.com>,
+        James Hogan <james.hogan@imgtec.com>
+From:   Guenter Roeck <linux@roeck-us.net>
+Message-ID: <5689A9ED.5080506@roeck-us.net>
+Date:   Sun, 3 Jan 2016 15:08:29 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+ Thunderbird/38.4.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAMuHMdXt36GSDuoFVGBebJVN9OHPh=ze8u8KvQ0B+RcvT6xTYQ@mail.gmail.com>
-Organisation: Horms Solutions Ltd.
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <horms@verge.net.au>
+In-Reply-To: <1450933471-7357-1-git-send-email-linux@roeck-us.net>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Authenticated_sender: linux@roeck-us.net
+X-OutGoing-Spam-Status: No, score=-1.0
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - bh-25.webhostbox.net
+X-AntiAbuse: Original Domain - linux-mips.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - roeck-us.net
+X-Get-Message-Sender-Via: bh-25.webhostbox.net: authenticated_id: linux@roeck-us.net
+X-Authenticated-Sender: bh-25.webhostbox.net: linux@roeck-us.net
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+Return-Path: <linux@roeck-us.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50833
+X-archive-position: 50834
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: horms@verge.net.au
+X-original-sender: linux@roeck-us.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -66,54 +63,46 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Dec 28, 2015 at 11:15:30AM +0100, Geert Uytterhoeven wrote:
-> Hi Simon,
-> 
-> On Mon, Dec 28, 2015 at 6:01 AM, Simon Horman <horms@verge.net.au> wrote:
-> > On Mon, Dec 21, 2015 at 11:33:44AM +0100, Geert Uytterhoeven wrote:
-> >> As of commit e488ca9f8d4f62c2 ("doc: dt: mtd: partitions: add compatible
-> >> property to "partitions" node"), which is in v4.4-rc6, the "partitions"
-> >> subnode of an SPI FLASH device node must have a compatible property. The
-> >> partitions are no longer detected if it is not present.
-> >>
-> >> However, several DTSes in -next have already been converted to the
-> >> "partitions" subnode without "compatible" property, introduced by
-> >> commits 5cfdedb7b9a0fe38 ("mtd: ofpart: move ofpart partitions to a
-> >> dedicated dt node") and fe2585e9c29a650a ("doc: dt: mtd: support
-> >> partitions in a special 'partitions' subnode"). Hence all of these are
-> >> now broken in -next, and will be broken in upstream during the merge
-> >> window.
-> >>
-> >> This series fixes all users in next-20151221.
-> >> Tested on r8a7791/koelsch.
-> >>
-> >> Changes since v1:
-> >>   - Add Acked-by,
-> >>   - Fix new users in -next (kirkwood, ci20).
-> >>
-> >> Most of these are in arm-soc/for-next. Exceptions are kirkwood (in
-> >> mvebu/for-next), and ci20 (in mips/mips-for-linux-next).
-> >>
-> >> Given we're late in the v4.4-rc cycle, perhaps it's easiest if the
-> >> arm-soc maintainers take all applicable patches directly, bypassing the
-> >> mvebu and shmobile maintainers?
-> >>
-> >> Thanks for queuing for v4.5!
-> >>
-> >> Geert Uytterhoeven (9):
-> >>   ARM: mvebu: ix4-300d: Add compatible property to "partitions" node
-> >>   ARM: mvebu: kirkwood: Add compatible property to "partitions" node
-> >>   ARM: shmobile: bockw dts: Add compatible property to "partitions" node
-> >>   ARM: shmobile: lager dts: Add compatible property to "partitions" node
-> >>   ARM: shmobile: koelsch dts: Add compatible property to "partitions"
-> >>     node
-> >>   ARM: shmobile: porter dts: Add compatible property to "partitions"
-> >>     node
-> >>   ARM: shmobile: gose dts: Add compatible property to "partitions" node
-> >>   ARM: shmobile: silk dts: Add compatible property to "partitions" node
-> >
-> > Thanks, I have queued up the above "shmobile" patches for v4.6.
-> 
-> I'm afraid v4.6 is too late, leaving all SPI FLASHes broken in v4.5.
+On 12/23/2015 09:04 PM, Guenter Roeck wrote:
+> Commit 2a037f310bab ("MIPS: VDSO: Fix build error") tries to fix a build
+> error seen with binutils 2.24 and earlier. However, the fix does not work,
+> and again results in the already known build errors if the kernel is built
+> with an earlier version of binutils.
+>
+> CC      arch/mips/vdso/gettimeofday.o
+> /tmp/ccnOVbHT.s: Assembler messages:
+> /tmp/ccnOVbHT.s:50: Error: can't resolve `_start' {*UND* section} - `L0 {.text section}
+> /tmp/ccnOVbHT.s:374: Error: can't resolve `_start' {*UND* section} - `L0 {.text section}
+> scripts/Makefile.build:258: recipe for target 'arch/mips/vdso/gettimeofday.o' failed
+> make[2]: *** [arch/mips/vdso/gettimeofday.o] Error 1
+>
 
-Thanks. I'll re-queue them up as fixes for v4.5.
+> Fixes: 2a037f310bab ("MIPS: VDSO: Fix build error")
+
+The above patch, and thus the build error with binutils 2.24 and earlier introduced by it,
+has now made it into the mainline kernel.
+
+Guenter
+
+> Cc: Qais Yousef <qais.yousef@imgtec.com>
+> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+> ---
+> Tested with binutils 2.25 and 2.22.
+>
+>   arch/mips/vdso/Makefile | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/arch/mips/vdso/Makefile b/arch/mips/vdso/Makefile
+> index 018f8c7b94f2..14568900fc1d 100644
+> --- a/arch/mips/vdso/Makefile
+> +++ b/arch/mips/vdso/Makefile
+> @@ -26,7 +26,7 @@ aflags-vdso := $(ccflags-vdso) \
+>   # the comments on that file.
+>   #
+>   ifndef CONFIG_CPU_MIPSR6
+> -  ifeq ($(call ld-ifversion, -lt, 22500000, y),)
+> +  ifeq ($(call ld-ifversion, -lt, 22500000, y),y)
+>       $(warning MIPS VDSO requires binutils >= 2.25)
+>       obj-vdso-y := $(filter-out gettimeofday.o, $(obj-vdso-y))
+>       ccflags-vdso += -DDISABLE_MIPS_VDSO
+>

@@ -1,54 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 03 Jan 2016 10:13:05 +0100 (CET)
-Received: from mx1.redhat.com ([209.132.183.28]:59896 "EHLO mx1.redhat.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 03 Jan 2016 16:26:42 +0100 (CET)
+Received: from arrakis.dune.hu ([78.24.191.176]:44991 "EHLO arrakis.dune.hu"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27005160AbcACJNAvUJID (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 3 Jan 2016 10:13:00 +0100
-Received: from int-mx11.intmail.prod.int.phx2.redhat.com (int-mx11.intmail.prod.int.phx2.redhat.com [10.5.11.24])
-        by mx1.redhat.com (Postfix) with ESMTPS id A21818E6E3;
-        Sun,  3 Jan 2016 09:12:53 +0000 (UTC)
-Received: from redhat.com (vpn1-7-172.ams2.redhat.com [10.36.7.172])
-        by int-mx11.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with SMTP id u039CiGM004198;
-        Sun, 3 Jan 2016 04:12:46 -0500
-Date:   Sun, 3 Jan 2016 11:12:44 +0200
-From:   "Michael S. Tsirkin" <mst@redhat.com>
-To:     Russell King - ARM Linux <linux@arm.linux.org.uk>
-Cc:     linux-kernel@vger.kernel.org,
-        Peter Zijlstra <peterz@infradead.org>,
-        Arnd Bergmann <arnd@arndb.de>, linux-arch@vger.kernel.org,
-        Andrew Cooper <andrew.cooper3@citrix.com>,
-        virtualization@lists.linux-foundation.org,
-        Stefano Stabellini <stefano.stabellini@eu.citrix.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@elte.hu>, "H. Peter Anvin" <hpa@zytor.com>,
-        David Miller <davem@davemloft.net>, linux-ia64@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-metag@vger.kernel.org, linux-mips@linux-mips.org,
-        x86@kernel.org, user-mode-linux-devel@lists.sourceforge.net,
-        adi-buildroot-devel@lists.sourceforge.net,
-        linux-sh@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        xen-devel@lists.xenproject.org, Ingo Molnar <mingo@kernel.org>,
-        Tony Lindgren <tony@atomide.com>,
-        Andrey Konovalov <andreyknvl@google.com>
-Subject: Re: [PATCH v2 17/32] arm: define __smp_xxx
-Message-ID: <20160103110158-mutt-send-email-mst@redhat.com>
-References: <1451572003-2440-1-git-send-email-mst@redhat.com>
- <1451572003-2440-18-git-send-email-mst@redhat.com>
- <20160102112438.GU8644@n2100.arm.linux.org.uk>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20160102112438.GU8644@n2100.arm.linux.org.uk>
-X-Scanned-By: MIMEDefang 2.68 on 10.5.11.24
-Return-Path: <mst@redhat.com>
+        id S27007969AbcACP0hyDpv7 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 3 Jan 2016 16:26:37 +0100
+Received: from arrakis.dune.hu (localhost [127.0.0.1])
+        by arrakis.dune.hu (Postfix) with ESMTP id A130E28BFD3;
+        Sun,  3 Jan 2016 16:26:06 +0100 (CET)
+Received: from localhost.localdomain (p548C9B8E.dip0.t-ipconnect.de [84.140.155.142])
+        by arrakis.dune.hu (Postfix) with ESMTPSA;
+        Sun,  3 Jan 2016 16:26:06 +0100 (CET)
+From:   John Crispin <blogic@openwrt.org>
+To:     "David S. Miller" <davem@davemloft.net>
+Cc:     netdev@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-mediatek@lists.infradead.org,
+        John Crispin <blogic@openwrt.org>,
+        Felix Fietkau <nbd@nbd.name>, Michael Lee <igvtee@gmail.com>,
+        =?UTF-8?q?Steven=20Liu=20=28=E5=8A=89=E4=BA=BA=E8=B1=AA=29?= 
+        <steven.liu@mediatek.com>,
+        =?UTF-8?q?Fred=20Chang=20=28=E5=BC=B5=E5=98=89=E5=AE=8F=29?= 
+        <Fred.Chang@mediatek.com>
+Subject: [PATCH 01/12] Documentation: DT: net: add docs for ralink/mediatek SoC ethernet binding
+Date:   Sun,  3 Jan 2016 16:26:04 +0100
+Message-Id: <1451834775-15789-1-git-send-email-blogic@openwrt.org>
+X-Mailer: git-send-email 1.7.10.4
+Return-Path: <blogic@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50819
+X-archive-position: 50820
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mst@redhat.com
+X-original-sender: blogic@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -61,41 +44,158 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sat, Jan 02, 2016 at 11:24:38AM +0000, Russell King - ARM Linux wrote:
-> On Thu, Dec 31, 2015 at 09:07:59PM +0200, Michael S. Tsirkin wrote:
-> > This defines __smp_xxx barriers for arm,
-> > for use by virtualization.
-> > 
-> > smp_xxx barriers are removed as they are
-> > defined correctly by asm-generic/barriers.h
-> > 
-> > This reduces the amount of arch-specific boiler-plate code.
-> > 
-> > Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-> > Acked-by: Arnd Bergmann <arnd@arndb.de>
-> 
-> In combination with patch 14, this looks like it should result in no
-> change to the resulting code.
-> 
-> Acked-by: Russell King <rmk+kernel@arm.linux.org.uk>
-> 
-> My only concern is that it gives people an additional handle onto a
-> "new" set of barriers - just because they're prefixed with __*
-> unfortunately doesn't stop anyone from using it (been there with
-> other arch stuff before.)
-> 
-> I wonder whether we should consider making the smp memory barriers
-> inline functions, so these __smp_xxx() variants can be undef'd
-> afterwards, thereby preventing drivers getting their hands on these
-> new macros?
+Add three files. ralink,rt2880-net.txt  descibes the actual frame engine
+and the other two describe the switch forntend bindings.
 
-That'd be tricky to do cleanly since asm-generic depends on
-ifndef to add generic variants where needed.
+Signed-off-by: John Crispin <blogic@openwrt.org>
+Signed-off-by: Felix Fietkau <nbd@openwrt.org>
+Signed-off-by: Michael Lee <igvtee@gmail.com>
+Cc: devicetree@vger.kernel.org
+---
+ .../bindings/net/mediatek,mt7620-gsw.txt           |   26 +++++++++
+ .../devicetree/bindings/net/ralink,rt2880-net.txt  |   61 ++++++++++++++++++++
+ .../devicetree/bindings/net/ralink,rt3050-esw.txt  |   32 ++++++++++
+ 3 files changed, 119 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/net/mediatek,mt7620-gsw.txt
+ create mode 100644 Documentation/devicetree/bindings/net/ralink,rt2880-net.txt
+ create mode 100644 Documentation/devicetree/bindings/net/ralink,rt3050-esw.txt
 
-But it would be possible to add a checkpatch test for this.
-
-
-> -- 
-> RMK's Patch system: http://www.arm.linux.org.uk/developer/patches/
-> FTTC broadband for 0.8mile line: currently at 9.6Mbps down 400kbps up
-> according to speedtest.net.
+diff --git a/Documentation/devicetree/bindings/net/mediatek,mt7620-gsw.txt b/Documentation/devicetree/bindings/net/mediatek,mt7620-gsw.txt
+new file mode 100644
+index 0000000..aa63130
+--- /dev/null
++++ b/Documentation/devicetree/bindings/net/mediatek,mt7620-gsw.txt
+@@ -0,0 +1,26 @@
++Mediatek Gigabit Switch
++=======================
++
++The mediatek gigabit switch can be found on Mediatek SoCs (mt7620, mt7621).
++
++Required properties:
++- compatible: Should be "mediatek,mt7620-gsw" or "mediatek,mt7621-gsw"
++- reg: Address and length of the register set for the device
++- interrupt-parent: Should be the phandle for the interrupt controller
++  that services interrupts for this device
++- interrupts: Should contain the gigabit switches interrupt
++- resets: Should contain the gigabit switches resets
++- reset-names: Should contain the reset names "gsw"
++
++Example:
++
++gsw@10110000 {
++	compatible = "ralink,mt7620-gsw";
++	reg = <0x10110000 8000>;
++
++	resets = <&rstctrl 23>;
++	reset-names = "gsw";
++
++	interrupt-parent = <&intc>;
++	interrupts = <17>;
++};
+diff --git a/Documentation/devicetree/bindings/net/ralink,rt2880-net.txt b/Documentation/devicetree/bindings/net/ralink,rt2880-net.txt
+new file mode 100644
+index 0000000..88b095d
+--- /dev/null
++++ b/Documentation/devicetree/bindings/net/ralink,rt2880-net.txt
+@@ -0,0 +1,61 @@
++Ralink Frame Engine Ethernet controller
++=======================================
++
++The Ralink frame engine ethernet controller can be found on Ralink and
++Mediatek SoCs (RT288x, RT3x5x, RT366x, RT388x, rt5350, mt7620, mt7621, mt76x8).
++
++Depending on the SoC, there is a number of ports connected to the CPU port
++directly and/or via a (gigabit-)switch.
++
++* Ethernet controller node
++
++Required properties:
++- compatible: Should be one of "ralink,rt2880-eth", "ralink,rt3050-eth",
++  "ralink,rt3050-eth", "ralink,rt3883-eth", "ralink,rt5350-eth",
++  "mediatek,mt7620-eth", "mediatek,mt7621-eth"
++- reg: Address and length of the register set for the device
++- interrupt-parent: Should be the phandle for the interrupt controller
++  that services interrupts for this device
++- interrupts: Should contain the frame engines interrupt
++- resets: Should contain the frame engines resets
++- reset-names: Should contain the reset names "fe". If a switch is present
++  "esw" is also required.
++
++
++* Ethernet port node
++
++Required properties:
++- compatible: Should be "ralink,eth-port"
++- reg: The number of the physical port
++- phy-handle: reference to the node describing the phy
++
++Example:
++
++mdio-bus {
++	...
++	phy0: ethernet-phy@0 {
++		phy-mode = "mii";
++		reg = <0>;
++	};
++};
++
++ethernet@400000 {
++	compatible = "ralink,rt2880-eth";
++	reg = <0x00400000 10000>;
++
++	#address-cells = <1>;
++	#size-cells = <0>;
++
++	resets = <&rstctrl 18>;
++	reset-names = "fe";
++
++	interrupt-parent = <&cpuintc>;
++	interrupts = <5>;
++
++	port@0 {
++		compatible = "ralink,eth-port";
++		reg = <0>;
++		phy-handle = <&phy0>;
++	};
++
++};
+diff --git a/Documentation/devicetree/bindings/net/ralink,rt3050-esw.txt b/Documentation/devicetree/bindings/net/ralink,rt3050-esw.txt
+new file mode 100644
+index 0000000..2e79bd3
+--- /dev/null
++++ b/Documentation/devicetree/bindings/net/ralink,rt3050-esw.txt
+@@ -0,0 +1,32 @@
++Ralink Fast Ethernet Embedded Switch
++====================================
++
++The ralink fast ethernet embedded switch can be found on Ralink and Mediatek
++SoCs (RT3x5x, RT5350, MT76x8).
++
++Required properties:
++- compatible: Should be "ralink,rt3050-esw"
++- reg: Address and length of the register set for the device
++- interrupt-parent: Should be the phandle for the interrupt controller
++  that services interrupts for this device
++- interrupts: Should contain the embedded switches interrupt
++- resets: Should contain the embedded switches resets
++- reset-names: Should contain the reset names "esw"
++
++Optional properties:
++- ralink,portmap: can be used to choose if the default switch setup is
++  llllw or wllll
++- ralink,led_polarity: override the active high/low settings of the leds
++
++Example:
++
++esw@10110000 {
++	compatible = "ralink,rt3050-esw";
++	reg = <0x10110000 8000>;
++
++	resets = <&rstctrl 23>;
++	reset-names = "esw";
++
++	interrupt-parent = <&intc>;
++	interrupts = <17>;
++};
+-- 
+1.7.10.4

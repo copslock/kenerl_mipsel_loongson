@@ -1,43 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Jan 2016 22:34:03 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:7531 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27009752AbcADVeANeywb (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 4 Jan 2016 22:34:00 +0100
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Websense Email Security Gateway with ESMTPS id B1E2B332E4A8B;
-        Mon,  4 Jan 2016 21:33:50 +0000 (GMT)
-Received: from BAMAIL02.ba.imgtec.org (10.20.40.28) by hhmail02.hh.imgtec.org
- (10.100.10.20) with Microsoft SMTP Server (TLS) id 14.3.235.1; Mon, 4 Jan
- 2016 21:33:54 +0000
-Received: from [10.20.3.92] (10.20.3.92) by bamail02.ba.imgtec.org
- (10.20.40.28) with Microsoft SMTP Server (TLS) id 14.3.174.1; Mon, 4 Jan 2016
- 13:33:52 -0800
-Message-ID: <568AE53F.80103@imgtec.com>
-Date:   Mon, 4 Jan 2016 13:33:51 -0800
-From:   Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.2.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Jan 2016 22:55:33 +0100 (CET)
+Received: from mail-lf0-f49.google.com ([209.85.215.49]:32893 "EHLO
+        mail-lf0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27009741AbcADVzbgA-xb (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 4 Jan 2016 22:55:31 +0100
+Received: by mail-lf0-f49.google.com with SMTP id p203so285777863lfa.0
+        for <linux-mips@linux-mips.org>; Mon, 04 Jan 2016 13:55:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cogentembedded-com.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:references:cc:from:organization:message-id:date
+         :user-agent:mime-version:in-reply-to:content-type
+         :content-transfer-encoding;
+        bh=TdXDHcTR3JGAMW7JhBV+tYw6JaxsLz4QssrOzODBsDA=;
+        b=xe+D/xYrFUnMVzZHDN4HibYEhcd6AnW3f25pr4+aAfrKpmXFO2d0/G9IVSd5qbcow8
+         VqEzKBRaqmMV2Ea/Eo3j+R+lipCE/VAmKNHfHvbh+6JgM90Bnu8P1hOj0bCO8qeG3uF1
+         zglvXm/2yG1uWGhUBMCgfY7Fbgxe39QVHtXU+bG9NTHfF74l4xm/6HypXEg+lvwdLY1G
+         tFL0NqMBuSAzJ34ujDLwkYpens7lGX04DbvUP+M3GfUVwfRohWvY0FfIzh/ctMn3FlHd
+         s5/Qvvms0l7PREpHjx3iXAmLqp/bu+dXQxoSLtQMpGehiINvO9LzZjvoF9xl16hOejK4
+         NKtw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:subject:to:references:cc:from:organization
+         :message-id:date:user-agent:mime-version:in-reply-to:content-type
+         :content-transfer-encoding;
+        bh=TdXDHcTR3JGAMW7JhBV+tYw6JaxsLz4QssrOzODBsDA=;
+        b=cwsrw4wiZ9TrrsC7MfopV8rHFhUY7auBloDTMgSQFJ6Yv4LrMclFDVT5b4qtJxb7+/
+         /csgsdc6S/uu9Ai+qcybaKKv9+o2fX3ChuIutcaZFM5Q/7PyZHJKPQr1e+qUM8uh9LIB
+         FZG89WgbAAtNfVXoAx1Kqpk5tjjueFhPGHId++psjCoR0h5Fk2cc8X7U6GsqZ4Sj5WIu
+         AJ2SFgtWFVjhAEQpQhhsWlbE0Qi9GBYzHmoaS5YhM5G59uXw+/PbL2cnXGLw2WkZNCf5
+         Ea/VC2nx5Ra5UGB/hBZ3CabpRmZLwBeuC0W9l9gU9x7z2pCjIvHH7kUzQ5ilaIweQPRB
+         EmOQ==
+X-Gm-Message-State: ALoCoQkqjkuJuSXo7IAL60Ufic58WevK+gi+HyxVdVPjAyer0FIcWV+f4+xG0+po/1BF8DLa6gtxNadUEOyP+QdGwUBF/x4h1Q==
+X-Received: by 10.25.165.133 with SMTP id o127mr23105738lfe.105.1451944526091;
+        Mon, 04 Jan 2016 13:55:26 -0800 (PST)
+Received: from wasted.cogentembedded.com ([83.149.9.222])
+        by smtp.gmail.com with ESMTPSA id ki2sm15805732lbc.15.2016.01.04.13.55.24
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Mon, 04 Jan 2016 13:55:25 -0800 (PST)
+Subject: Re: [PATCH 1/2] MAINTAINERS: add myself as Lantiq MIPS architecture
+ maintainer
+To:     John Crispin <blogic@openwrt.org>,
+        Ralf Baechle <ralf@linux-mips.org>
+References: <1451935693-40889-1-git-send-email-blogic@openwrt.org>
+Cc:     linux-mips@linux-mips.org
+From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Organization: Cogent Embedded
+Message-ID: <568AEA4C.10803@cogentembedded.com>
+Date:   Tue, 5 Jan 2016 00:55:24 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+ Thunderbird/38.3.0
 MIME-Version: 1.0
-To:     James Hogan <james.hogan@imgtec.com>, <stable@vger.kernel.org>,
-        "Tom Herbert" <therbert@google.com>
-CC:     Markos Chandras <markos.chandras@imgtec.com>,
-        Paul Burton <paul.burton@imgtec.com>,
-        <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [PATCH backport v3.15..v4.1 1/2] MIPS: uaccess: Take EVA into
- account in __copy_from_user()
-References: <1451939344-21557-1-git-send-email-james.hogan@imgtec.com> <1451939344-21557-2-git-send-email-james.hogan@imgtec.com>
-In-Reply-To: <1451939344-21557-2-git-send-email-james.hogan@imgtec.com>
-Content-Type: text/plain; charset="windows-1252"; format=flowed
+In-Reply-To: <1451935693-40889-1-git-send-email-blogic@openwrt.org>
+Content-Type: text/plain; charset=windows-1252; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.20.3.92]
-Return-Path: <Leonid.Yegoshin@imgtec.com>
+Return-Path: <sergei.shtylyov@cogentembedded.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50887
+X-archive-position: 50888
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Leonid.Yegoshin@imgtec.com
+X-original-sender: sergei.shtylyov@cogentembedded.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,47 +73,25 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 01/04/2016 12:29 PM, James Hogan wrote:
-> commit 6f06a2c45d8d714ea3b11a360b4a7191e52acaa4 upstream.
->
-> When EVA is in use, __copy_from_user() was unconditionally using the EVA
-> instructions to read the user address space, however this can also be
-> used for kernel access. If the address isn't a valid user address it
-> will cause an address error or TLB exception, and if it is then user
-> memory may be read instead of kernel memory.
->
-> For example in the following stack trace from Linux v3.10 (changes since
-> then will prevent this particular one still happening) kernel_sendmsg()
-> set the user address limit to KERNEL_DS, and tcp_sendmsg() goes on to
-> use __copy_from_user() with a kernel address in KSeg0.
->
-> [<8002d434>] __copy_fromuser_common+0x10c/0x254
-> [<805710e0>] tcp_sendmsg+0x5f4/0xf00
-> [<804e8e3c>] sock_sendmsg+0x78/0xa0
-> [<804e8f28>] kernel_sendmsg+0x24/0x38
-> [<804ee0f8>] sock_no_sendpage+0x70/0x7c
-> [<8017c820>] pipe_to_sendpage+0x80/0x98
-> [<8017c6b0>] splice_from_pipe_feed+0xa8/0x198
-> [<8017cc54>] __splice_from_pipe+0x4c/0x8c
-> [<8017e844>] splice_from_pipe+0x58/0x78
-> [<8017e884>] generic_splice_sendpage+0x20/0x2c
-> [<8017d690>] do_splice_from+0xb4/0x110
-> [<8017d710>] direct_splice_actor+0x24/0x30
-> [<8017d394>] splice_direct_to_actor+0xd8/0x208
-> [<8017d51c>] do_splice_direct+0x58/0x7c
-> [<8014eaf4>] do_sendfile+0x1dc/0x39c
-> [<8014f82c>] SyS_sendfile+0x90/0xf8
->
-> Add the eva_kernel_access() check in __copy_from_user() like the one in
-> copy_from_user().
->
+Hello.
 
-I think that the best way to fix this problem is - stop 
-skb_do_copy_data_nocache() using __copy_from_user_nocache(). All TCP/IP 
-stuff (beyond SCTP) doesn't use "accelerated" __copy*() functions. 
-Adding a user space check in __copy_from_user() kills the original 
-design. And splitting a user space processing in two places 
-(skb_do_copy_data_nocache() calls access_ok(), BTW) - and it is also a 
-bad thing in my mind.
+On 01/04/2016 10:28 PM, John Crispin wrote:
 
-- Leonid.
+> Signed-off-by: John Crispin <blogic@openwrt.org>
+[...]
+> diff --git a/arch/mips/vdso/Makefile b/arch/mips/vdso/Makefile
+> index 018f8c7..1456890 100644
+> --- a/arch/mips/vdso/Makefile
+> +++ b/arch/mips/vdso/Makefile
+> @@ -26,7 +26,7 @@ aflags-vdso := $(ccflags-vdso) \
+>   # the comments on that file.
+>   #
+>   ifndef CONFIG_CPU_MIPSR6
+> -  ifeq ($(call ld-ifversion, -lt, 22500000, y),)
+> +  ifeq ($(call ld-ifversion, -lt, 22500000, y),y)
+
+    What?
+
+[...]
+
+MBR, Sergei

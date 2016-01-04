@@ -1,65 +1,63 @@
-From: James Hogan <james.hogan@imgtec.com>
-Date: Wed, 11 Nov 2015 14:21:18 +0000
-Subject: MIPS: KVM: Fix ASID restoration logic
-Message-ID: <20151111142118.HOFSy9NKG6UJL0xgiZLtE67VdKszV8YzGKAxdKChl4U@z>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Jan 2016 18:32:26 +0100 (CET)
+Received: from youngberry.canonical.com ([91.189.89.112]:40272 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27009679AbcADRcJ1QL7O (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 4 Jan 2016 18:32:09 +0100
+Received: from 1.general.henrix.uk.vpn ([10.172.192.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_128_CBC_SHA1:16)
+        (Exim 4.76)
+        (envelope-from <luis.henriques@canonical.com>)
+        id 1aG8zI-00029K-N3; Mon, 04 Jan 2016 17:32:09 +0000
+From:   Luis Henriques <luis.henriques@canonical.com>
+To:     James Hogan <james.hogan@imgtec.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Gleb Natapov <gleb@kernel.org>, linux-mips@linux-mips.org,
+        kvm@vger.kernel.org, Luis Henriques <luis.henriques@canonical.com>,
+        kernel-team@lists.ubuntu.com
+Subject: [3.16.y-ckt stable] Patch "MIPS: KVM: Fix CACHE immediate offset sign extension" has been added to staging queue
+Date:   Mon,  4 Jan 2016 17:32:07 +0000
+Message-Id: <1451928727-1689-1-git-send-email-luis.henriques@canonical.com>
+X-Extended-Stable: 3.16
+Return-Path: <luis.henriques@canonical.com>
+X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
+X-Orcpt: rfc822;linux-mips@linux-mips.org
+Original-Recipient: rfc822;linux-mips@linux-mips.org
+X-archive-position: 50864
+X-ecartis-version: Ecartis v1.0.0
+Sender: linux-mips-bounce@linux-mips.org
+Errors-to: linux-mips-bounce@linux-mips.org
+X-original-sender: luis.henriques@canonical.com
+Precedence: bulk
+List-help: <mailto:ecartis@linux-mips.org?Subject=help>
+List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
+List-software: Ecartis version 1.0.0
+List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
+X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
+List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
+List-owner: <mailto:ralf@linux-mips.org>
+List-post: <mailto:linux-mips@linux-mips.org>
+List-archive: <http://www.linux-mips.org/archives/linux-mips/>
+X-list: linux-mips
 
-commit 002374f371bd02df864cce1fe85d90dc5b292837 upstream.
+This is a note to let you know that I have just added a patch titled
 
-ASID restoration on guest resume should determine the guest execution
-mode based on the guest Status register rather than bit 30 of the guest
-PC.
+    MIPS: KVM: Fix CACHE immediate offset sign extension
 
-Fix the two places in locore.S that do this, loading the guest status
-from the cop0 area. Note, this assembly is specific to the trap &
-emulate implementation of KVM, so it doesn't need to check the
-supervisor bit as that mode is not implemented in the guest.
+to the linux-3.16.y-queue branch of the 3.16.y-ckt extended stable tree 
+which can be found at:
 
-Fixes: b680f70fc111 ("KVM/MIPS32: Entry point for trampolining to...")
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Gleb Natapov <gleb@kernel.org>
-Cc: linux-mips@linux-mips.org
-Cc: kvm@vger.kernel.org
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-[ luis: backported to 3.16:
-  - file rename: locore.S -> kvm_locore.S ]
-Signed-off-by: Luis Henriques <luis.henriques@canonical.com>
----
- arch/mips/kvm/kvm_locore.S | 16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+    http://kernel.ubuntu.com/git/ubuntu/linux.git/log/?h=linux-3.16.y-queue
 
-diff --git a/arch/mips/kvm/kvm_locore.S b/arch/mips/kvm/kvm_locore.S
-index 17376cd838e6..fc24acb3a837 100644
---- a/arch/mips/kvm/kvm_locore.S
-+++ b/arch/mips/kvm/kvm_locore.S
-@@ -159,9 +159,11 @@ FEXPORT(__kvm_mips_vcpu_run)
+This patch is scheduled to be released in version 3.16.7-ckt22.
 
- FEXPORT(__kvm_mips_load_asid)
- 	/* Set the ASID for the Guest Kernel */
--	INT_SLL	t0, t0, 1	/* with kseg0 @ 0x40000000, kernel */
--			        /* addresses shift to 0x80000000 */
--	bltz	t0, 1f		/* If kernel */
-+	PTR_L	t0, VCPU_COP0(k1)
-+	LONG_L	t0, COP0_STATUS(t0)
-+	andi	t0, KSU_USER | ST0_ERL | ST0_EXL
-+	xori	t0, KSU_USER
-+	bnez	t0, 1f		/* If kernel */
- 	 INT_ADDIU t1, k1, VCPU_GUEST_KERNEL_ASID  /* (BD)  */
- 	INT_ADDIU t1, k1, VCPU_GUEST_USER_ASID    /* else user */
- 1:
-@@ -438,9 +440,11 @@ __kvm_mips_return_to_guest:
- 	mtc0	t0, CP0_EPC
+If you, or anyone else, feels it should not be added to this tree, please 
+reply to this email.
 
- 	/* Set the ASID for the Guest Kernel */
--	INT_SLL	t0, t0, 1	/* with kseg0 @ 0x40000000, kernel */
--				/* addresses shift to 0x80000000 */
--	bltz	t0, 1f		/* If kernel */
-+	PTR_L	t0, VCPU_COP0(k1)
-+	LONG_L	t0, COP0_STATUS(t0)
-+	andi	t0, KSU_USER | ST0_ERL | ST0_EXL
-+	xori	t0, KSU_USER
-+	bnez	t0, 1f		/* If kernel */
- 	 INT_ADDIU t1, k1, VCPU_GUEST_KERNEL_ASID  /* (BD)  */
- 	INT_ADDIU t1, k1, VCPU_GUEST_USER_ASID    /* else user */
- 1:
+For more information about the 3.16.y-ckt tree, see
+https://wiki.ubuntu.com/Kernel/Dev/ExtendedStable
+
+Thanks.
+-Luis
+
+------

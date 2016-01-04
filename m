@@ -1,12 +1,12 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Jan 2016 12:32:10 +0100 (CET)
-Received: from smtp02.citrix.com ([66.165.176.63]:21710 "EHLO
-        SMTP02.CITRIX.COM" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27009352AbcADLcHQ6ptO (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 4 Jan 2016 12:32:07 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Jan 2016 12:32:38 +0100 (CET)
+Received: from smtp.citrix.com ([66.165.176.89]:37389 "EHLO SMTP.CITRIX.COM"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27009352AbcADLcgGit2O (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 4 Jan 2016 12:32:36 +0100
 X-IronPort-AV: E=Sophos;i="5.20,520,1444694400"; 
-   d="scan'208";a="328829991"
-Message-ID: <568A5830.9000501@citrix.com>
-Date:   Mon, 4 Jan 2016 11:32:00 +0000
+   d="scan'208";a="322700815"
+Message-ID: <568A584C.2070501@citrix.com>
+Date:   Mon, 4 Jan 2016 11:32:28 +0000
 From:   David Vrabel <david.vrabel@citrix.com>
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Icedove/31.8.0
 MIME-Version: 1.0
@@ -30,10 +30,10 @@ CC:     <linux-mips@linux-mips.org>, <linux-ia64@vger.kernel.org>,
         Andrew Cooper <andrew.cooper3@citrix.com>,
         David Vrabel <david.vrabel@citrix.com>,
         <linuxppc-dev@lists.ozlabs.org>, David Miller <davem@davemloft.net>
-Subject: Re: [Xen-devel] [PATCH v2 33/34] xenbus: use virt_xxx barriers
+Subject: Re: [Xen-devel] [PATCH v2 34/34] xen/io: use virt_xxx barriers
 References: <1451572003-2440-1-git-send-email-mst@redhat.com>
- <1451572003-2440-34-git-send-email-mst@redhat.com>
-In-Reply-To: <1451572003-2440-34-git-send-email-mst@redhat.com>
+ <1451572003-2440-35-git-send-email-mst@redhat.com>
+In-Reply-To: <1451572003-2440-35-git-send-email-mst@redhat.com>
 Content-Type: text/plain; charset="windows-1252"
 Content-Transfer-Encoding: 7bit
 X-DLP:  MIA1
@@ -41,7 +41,7 @@ Return-Path: <prvs=8047ed68d=david.vrabel@citrix.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50835
+X-archive-position: 50836
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -59,7 +59,7 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 On 31/12/15 19:10, Michael S. Tsirkin wrote:
-> drivers/xen/xenbus/xenbus_comms.c uses
+> include/xen/interface/io/ring.h uses
 > full memory barriers to communicate with the other side.
 > 
 > For guests compiled with CONFIG_SMP, smp_wmb and smp_mb
@@ -69,9 +69,5 @@ On 31/12/15 19:10, Michael S. Tsirkin wrote:
 > Switch to virt_xxx barriers which serve this exact purpose.
 
 Acked-by: David Vrabel <david.vrabel@citrix.com>
-
-If you're feeling particularly keen there's a rmb() consume_one_event()
-in drivers/xen/events/events_fifo.c that can be converted to virt_rmb()
-as well.
 
 David

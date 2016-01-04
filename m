@@ -1,20 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Jan 2016 20:25:24 +0100 (CET)
-Received: from arrakis.dune.hu ([78.24.191.176]:57800 "EHLO arrakis.dune.hu"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Jan 2016 20:25:45 +0100 (CET)
+Received: from arrakis.dune.hu ([78.24.191.176]:57807 "EHLO arrakis.dune.hu"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27014440AbcADTYTMvC9F (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 4 Jan 2016 20:24:19 +0100
+        id S27014490AbcADTY0YUwLi (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 4 Jan 2016 20:24:26 +0100
 Received: from arrakis.dune.hu (localhost [127.0.0.1])
-        by arrakis.dune.hu (Postfix) with ESMTP id E810A280520;
-        Mon,  4 Jan 2016 20:23:48 +0100 (CET)
+        by arrakis.dune.hu (Postfix) with ESMTP id 4EEEB280520;
+        Mon,  4 Jan 2016 20:23:52 +0100 (CET)
 Received: from localhost.localdomain (p548C87BE.dip0.t-ipconnect.de [84.140.135.190])
         by arrakis.dune.hu (Postfix) with ESMTPSA;
-        Mon,  4 Jan 2016 20:23:48 +0100 (CET)
+        Mon,  4 Jan 2016 20:23:50 +0100 (CET)
 From:   John Crispin <blogic@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org
-Subject: [PATCH 5/8] MIPS: ralink: fix invalid assignment of SoC type
-Date:   Mon,  4 Jan 2016 20:23:58 +0100
-Message-Id: <1451935441-40803-5-git-send-email-blogic@openwrt.org>
+Subject: [PATCH 6/8] MIPS: ralink: fix vendor string for mt7620
+Date:   Mon,  4 Jan 2016 20:23:59 +0100
+Message-Id: <1451935441-40803-6-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.10.4
 In-Reply-To: <1451935441-40803-1-git-send-email-blogic@openwrt.org>
 References: <1451935441-40803-1-git-send-email-blogic@openwrt.org>
@@ -22,7 +22,7 @@ Return-Path: <blogic@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50871
+X-archive-position: 50872
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -39,24 +39,26 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Commit 418d29c87061 ("MIPS: ralink: Unify SoC id handling") introduced
-broken code. We obviously need to assign the value.
+Ralink was acquired by Mediatek. Represent this in the cpuinfo. It
+apparently confused people.
 
 Signed-off-by: John Crispin <blogic@openwrt.org>
 ---
- arch/mips/ralink/rt288x.c |    2 +-
+ arch/mips/ralink/mt7620.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/mips/ralink/rt288x.c b/arch/mips/ralink/rt288x.c
-index 844f5cd..3c84166 100644
---- a/arch/mips/ralink/rt288x.c
-+++ b/arch/mips/ralink/rt288x.c
-@@ -119,5 +119,5 @@ void prom_soc_init(struct ralink_soc_info *soc_info)
- 	soc_info->mem_size_max = RT2880_MEM_SIZE_MAX;
+diff --git a/arch/mips/ralink/mt7620.c b/arch/mips/ralink/mt7620.c
+index 4c17dc6..da01e1f 100644
+--- a/arch/mips/ralink/mt7620.c
++++ b/arch/mips/ralink/mt7620.c
+@@ -572,7 +572,7 @@ void prom_soc_init(struct ralink_soc_info *soc_info)
+ 	}
  
- 	rt2880_pinmux_data = rt2880_pinmux_data_act;
--	ralink_soc == RT2880_SOC;
-+	ralink_soc = RT2880_SOC;
- }
+ 	snprintf(soc_info->sys_type, RAMIPS_SYS_TYPE_LEN,
+-		"Ralink %s ver:%u eco:%u",
++		"MediaTek %s ver:%u eco:%u",
+ 		name,
+ 		(rev >> CHIP_REV_VER_SHIFT) & CHIP_REV_VER_MASK,
+ 		(rev & CHIP_REV_ECO_MASK));
 -- 
 1.7.10.4

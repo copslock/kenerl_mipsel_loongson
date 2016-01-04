@@ -1,66 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Jan 2016 22:55:33 +0100 (CET)
-Received: from mail-lf0-f49.google.com ([209.85.215.49]:32893 "EHLO
-        mail-lf0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27009741AbcADVzbgA-xb (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 4 Jan 2016 22:55:31 +0100
-Received: by mail-lf0-f49.google.com with SMTP id p203so285777863lfa.0
-        for <linux-mips@linux-mips.org>; Mon, 04 Jan 2016 13:55:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cogentembedded-com.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:references:cc:from:organization:message-id:date
-         :user-agent:mime-version:in-reply-to:content-type
-         :content-transfer-encoding;
-        bh=TdXDHcTR3JGAMW7JhBV+tYw6JaxsLz4QssrOzODBsDA=;
-        b=xe+D/xYrFUnMVzZHDN4HibYEhcd6AnW3f25pr4+aAfrKpmXFO2d0/G9IVSd5qbcow8
-         VqEzKBRaqmMV2Ea/Eo3j+R+lipCE/VAmKNHfHvbh+6JgM90Bnu8P1hOj0bCO8qeG3uF1
-         zglvXm/2yG1uWGhUBMCgfY7Fbgxe39QVHtXU+bG9NTHfF74l4xm/6HypXEg+lvwdLY1G
-         tFL0NqMBuSAzJ34ujDLwkYpens7lGX04DbvUP+M3GfUVwfRohWvY0FfIzh/ctMn3FlHd
-         s5/Qvvms0l7PREpHjx3iXAmLqp/bu+dXQxoSLtQMpGehiINvO9LzZjvoF9xl16hOejK4
-         NKtw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:subject:to:references:cc:from:organization
-         :message-id:date:user-agent:mime-version:in-reply-to:content-type
-         :content-transfer-encoding;
-        bh=TdXDHcTR3JGAMW7JhBV+tYw6JaxsLz4QssrOzODBsDA=;
-        b=cwsrw4wiZ9TrrsC7MfopV8rHFhUY7auBloDTMgSQFJ6Yv4LrMclFDVT5b4qtJxb7+/
-         /csgsdc6S/uu9Ai+qcybaKKv9+o2fX3ChuIutcaZFM5Q/7PyZHJKPQr1e+qUM8uh9LIB
-         FZG89WgbAAtNfVXoAx1Kqpk5tjjueFhPGHId++psjCoR0h5Fk2cc8X7U6GsqZ4Sj5WIu
-         AJ2SFgtWFVjhAEQpQhhsWlbE0Qi9GBYzHmoaS5YhM5G59uXw+/PbL2cnXGLw2WkZNCf5
-         Ea/VC2nx5Ra5UGB/hBZ3CabpRmZLwBeuC0W9l9gU9x7z2pCjIvHH7kUzQ5ilaIweQPRB
-         EmOQ==
-X-Gm-Message-State: ALoCoQkqjkuJuSXo7IAL60Ufic58WevK+gi+HyxVdVPjAyer0FIcWV+f4+xG0+po/1BF8DLa6gtxNadUEOyP+QdGwUBF/x4h1Q==
-X-Received: by 10.25.165.133 with SMTP id o127mr23105738lfe.105.1451944526091;
-        Mon, 04 Jan 2016 13:55:26 -0800 (PST)
-Received: from wasted.cogentembedded.com ([83.149.9.222])
-        by smtp.gmail.com with ESMTPSA id ki2sm15805732lbc.15.2016.01.04.13.55.24
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Mon, 04 Jan 2016 13:55:25 -0800 (PST)
-Subject: Re: [PATCH 1/2] MAINTAINERS: add myself as Lantiq MIPS architecture
- maintainer
-To:     John Crispin <blogic@openwrt.org>,
-        Ralf Baechle <ralf@linux-mips.org>
-References: <1451935693-40889-1-git-send-email-blogic@openwrt.org>
-Cc:     linux-mips@linux-mips.org
-From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Organization: Cogent Embedded
-Message-ID: <568AEA4C.10803@cogentembedded.com>
-Date:   Tue, 5 Jan 2016 00:55:24 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.3.0
-MIME-Version: 1.0
-In-Reply-To: <1451935693-40889-1-git-send-email-blogic@openwrt.org>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sergei.shtylyov@cogentembedded.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Jan 2016 23:11:47 +0100 (CET)
+Received: from smtprelay0247.hostedemail.com ([216.40.44.247]:55050 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S27009717AbcADWLp2zO9b (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 4 Jan 2016 23:11:45 +0100
+Received: from filter.hostedemail.com (unknown [216.40.38.60])
+        by smtprelay07.hostedemail.com (Postfix) with ESMTP id D5506C212D;
+        Mon,  4 Jan 2016 22:11:42 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-HE-Tag: drug38_488843a841b22
+X-Filterd-Recvd-Size: 2591
+Received: from joe-X200MA.home (pool-96-251-138-91.lsanca.fios.verizon.net [96.251.138.91])
+        (Authenticated sender: joe@perches.com)
+        by omf10.hostedemail.com (Postfix) with ESMTPA;
+        Mon,  4 Jan 2016 22:11:38 +0000 (UTC)
+Message-ID: <1451945497.4334.107.camel@perches.com>
+Subject: Re: [PATCH 3/3] checkpatch: add virt barriers
+From:   Joe Perches <joe@perches.com>
+To:     "Michael S. Tsirkin" <mst@redhat.com>
+Cc:     linux-kernel@vger.kernel.org,
+        "Cc : Andy Whitcroft" <apw@canonical.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Arnd Bergmann <arnd@arndb.de>, linux-arch@vger.kernel.org,
+        Andrew Cooper <andrew.cooper3@citrix.com>,
+        virtualization@lists.linux-foundation.org,
+        Stefano Stabellini <stefano.stabellini@eu.citrix.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@elte.hu>, "H. Peter Anvin" <hpa@zytor.com>,
+        David Miller <davem@davemloft.net>, linux-ia64@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-metag@vger.kernel.org, linux-mips@linux-mips.org,
+        x86@kernel.org, user-mode-linux-devel@lists.sourceforge.net,
+        adi-buildroot-devel@lists.sourceforge.net,
+        linux-sh@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        xen-devel@lists.xenproject.org, Ingo Molnar <mingo@kernel.org>,
+        Tony Lindgren <tony@atomide.com>,
+        Andrey Konovalov <andreyknvl@google.com>,
+        Russell King - ARM Linux <linux@arm.linux.org.uk>
+Date:   Mon, 04 Jan 2016 14:11:37 -0800
+In-Reply-To: <20160104230528-mutt-send-email-mst@redhat.com>
+References: <1451907395-15978-1-git-send-email-mst@redhat.com>
+         <1451907395-15978-4-git-send-email-mst@redhat.com>
+         <1451926073.4334.90.camel@perches.com>
+         <20160104230528-mutt-send-email-mst@redhat.com>
+Content-Type: text/plain; charset="ISO-8859-1"
+X-Mailer: Evolution 3.18.3-1ubuntu1 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Return-Path: <joe@perches.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50888
+X-archive-position: 50889
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sergei.shtylyov@cogentembedded.com
+X-original-sender: joe@perches.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -73,25 +68,23 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hello.
+On Mon, 2016-01-04 at 23:07 +0200, Michael S. Tsirkin wrote:
+> On Mon, Jan 04, 2016 at 08:47:53AM -0800, Joe Perches wrote:
+> > On Mon, 2016-01-04 at 13:37 +0200, Michael S. Tsirkin wrote:
+> > > Add virt_ barriers to list of barriers to check for
+> > > presence of a comment.
+> > 
+> > Are these virt_ barriers used anywhere?
+> > 
+> > I see some virtio_ barrier like uses.
+> 
+> They will be :) They are added and used by patchset
+> 	        arch: barrier cleanup + barriers for virt
+> 
+> See
+> http://article.gmane.org/gmane.linux.kernel.virtualization/26555
 
-On 01/04/2016 10:28 PM, John Crispin wrote:
+Ah, OK, thanks.
 
-> Signed-off-by: John Crispin <blogic@openwrt.org>
-[...]
-> diff --git a/arch/mips/vdso/Makefile b/arch/mips/vdso/Makefile
-> index 018f8c7..1456890 100644
-> --- a/arch/mips/vdso/Makefile
-> +++ b/arch/mips/vdso/Makefile
-> @@ -26,7 +26,7 @@ aflags-vdso := $(ccflags-vdso) \
->   # the comments on that file.
->   #
->   ifndef CONFIG_CPU_MIPSR6
-> -  ifeq ($(call ld-ifversion, -lt, 22500000, y),)
-> +  ifeq ($(call ld-ifversion, -lt, 22500000, y),y)
-
-    What?
-
-[...]
-
-MBR, Sergei
+Are the virtio_ barriers going away?
+If not, maybe those should be added too.

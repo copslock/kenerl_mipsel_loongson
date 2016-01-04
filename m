@@ -1,58 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Jan 2016 17:48:03 +0100 (CET)
-Received: from smtprelay0091.hostedemail.com ([216.40.44.91]:46238 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27006513AbcADQsBSpkte (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 4 Jan 2016 17:48:01 +0100
-Received: from filter.hostedemail.com (unknown [216.40.38.60])
-        by smtprelay02.hostedemail.com (Postfix) with ESMTP id D03E112BCE4;
-        Mon,  4 Jan 2016 16:47:58 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-HE-Tag: hen51_ace7a9ced862
-X-Filterd-Recvd-Size: 2054
-Received: from joe-X200MA.home (pool-173-51-221-2.lsanca.fios.verizon.net [173.51.221.2])
-        (Authenticated sender: joe@perches.com)
-        by omf08.hostedemail.com (Postfix) with ESMTPA;
-        Mon,  4 Jan 2016 16:47:54 +0000 (UTC)
-Message-ID: <1451926073.4334.90.camel@perches.com>
-Subject: Re: [PATCH 3/3] checkpatch: add virt barriers
-From:   Joe Perches <joe@perches.com>
-To:     "Michael S. Tsirkin" <mst@redhat.com>, linux-kernel@vger.kernel.org
-Cc:     "Cc : Andy Whitcroft" <apw@canonical.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Arnd Bergmann <arnd@arndb.de>, linux-arch@vger.kernel.org,
-        Andrew Cooper <andrew.cooper3@citrix.com>,
-        virtualization@lists.linux-foundation.org,
-        Stefano Stabellini <stefano.stabellini@eu.citrix.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@elte.hu>, "H. Peter Anvin" <hpa@zytor.com>,
-        David Miller <davem@davemloft.net>, linux-ia64@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-metag@vger.kernel.org, linux-mips@linux-mips.org,
-        x86@kernel.org, user-mode-linux-devel@lists.sourceforge.net,
-        adi-buildroot-devel@lists.sourceforge.net,
-        linux-sh@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        xen-devel@lists.xenproject.org, Ingo Molnar <mingo@kernel.org>,
-        Tony Lindgren <tony@atomide.com>,
-        Andrey Konovalov <andreyknvl@google.com>,
-        Russell King - ARM Linux <linux@arm.linux.org.uk>
-Date:   Mon, 04 Jan 2016 08:47:53 -0800
-In-Reply-To: <1451907395-15978-4-git-send-email-mst@redhat.com>
-References: <1451907395-15978-1-git-send-email-mst@redhat.com>
-         <1451907395-15978-4-git-send-email-mst@redhat.com>
-Content-Type: text/plain; charset="ISO-8859-1"
-X-Mailer: Evolution 3.18.3-1ubuntu1 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Return-Path: <joe@perches.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Jan 2016 18:32:08 +0100 (CET)
+Received: from youngberry.canonical.com ([91.189.89.112]:40265 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008821AbcADRcHMaJDO (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 4 Jan 2016 18:32:07 +0100
+Received: from 1.general.henrix.uk.vpn ([10.172.192.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_128_CBC_SHA1:16)
+        (Exim 4.76)
+        (envelope-from <luis.henriques@canonical.com>)
+        id 1aG8zG-00029B-9C; Mon, 04 Jan 2016 17:32:06 +0000
+From:   Luis Henriques <luis.henriques@canonical.com>
+To:     James Hogan <james.hogan@imgtec.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Gleb Natapov <gleb@kernel.org>, linux-mips@linux-mips.org,
+        kvm@vger.kernel.org, Luis Henriques <luis.henriques@canonical.com>,
+        kernel-team@lists.ubuntu.com
+Subject: [3.16.y-ckt stable] Patch "MIPS: KVM: Fix ASID restoration logic" has been added to staging queue
+Date:   Mon,  4 Jan 2016 17:32:04 +0000
+Message-Id: <1451928724-1648-1-git-send-email-luis.henriques@canonical.com>
+X-Extended-Stable: 3.16
+Return-Path: <luis.henriques@canonical.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50862
+X-archive-position: 50863
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: joe@perches.com
+X-original-sender: luis.henriques@canonical.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -65,10 +40,24 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, 2016-01-04 at 13:37 +0200, Michael S. Tsirkin wrote:
-> Add virt_ barriers to list of barriers to check for
-> presence of a comment.
+This is a note to let you know that I have just added a patch titled
 
-Are these virt_ barriers used anywhere?
+    MIPS: KVM: Fix ASID restoration logic
 
-I see some virtio_ barrier like uses.
+to the linux-3.16.y-queue branch of the 3.16.y-ckt extended stable tree 
+which can be found at:
+
+    http://kernel.ubuntu.com/git/ubuntu/linux.git/log/?h=linux-3.16.y-queue
+
+This patch is scheduled to be released in version 3.16.7-ckt22.
+
+If you, or anyone else, feels it should not be added to this tree, please 
+reply to this email.
+
+For more information about the 3.16.y-ckt tree, see
+https://wiki.ubuntu.com/Kernel/Dev/ExtendedStable
+
+Thanks.
+-Luis
+
+------

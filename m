@@ -1,52 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Jan 2016 15:09:53 +0100 (CET)
-Received: from bombadil.infradead.org ([198.137.202.9]:32801 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008336AbcADOJucP7-n (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 4 Jan 2016 15:09:50 +0100
-Received: from j217066.upc-j.chello.nl ([24.132.217.66] helo=twins)
-        by bombadil.infradead.org with esmtpsa (Exim 4.80.1 #2 (Red Hat Linux))
-        id 1aG5pN-00046R-Dp; Mon, 04 Jan 2016 14:09:41 +0000
-Received: by twins (Postfix, from userid 1000)
-        id 2A5D61257A0D8; Mon,  4 Jan 2016 15:09:39 +0100 (CET)
-Date:   Mon, 4 Jan 2016 15:09:39 +0100
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     "Michael S. Tsirkin" <mst@redhat.com>
-Cc:     linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
-        linux-arch@vger.kernel.org,
-        Andrew Cooper <andrew.cooper3@citrix.com>,
-        virtualization@lists.linux-foundation.org,
-        Stefano Stabellini <stefano.stabellini@eu.citrix.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@elte.hu>, "H. Peter Anvin" <hpa@zytor.com>,
-        David Miller <davem@davemloft.net>, linux-ia64@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-metag@vger.kernel.org, linux-mips@linux-mips.org,
-        x86@kernel.org, user-mode-linux-devel@lists.sourceforge.net,
-        adi-buildroot-devel@lists.sourceforge.net,
-        linux-sh@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        xen-devel@lists.xenproject.org,
-        Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        David Vrabel <david.vrabel@citrix.com>
-Subject: Re: [PATCH v2 33/34] xenbus: use virt_xxx barriers
-Message-ID: <20160104140939.GC6344@twins.programming.kicks-ass.net>
-References: <1451572003-2440-1-git-send-email-mst@redhat.com>
- <1451572003-2440-34-git-send-email-mst@redhat.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Jan 2016 16:04:52 +0100 (CET)
+Received: from mail-ig0-f173.google.com ([209.85.213.173]:36621 "EHLO
+        mail-ig0-f173.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008336AbcADPEtIqvqJ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 4 Jan 2016 16:04:49 +0100
+Received: by mail-ig0-f173.google.com with SMTP id ph11so246317287igc.1;
+        Mon, 04 Jan 2016 07:04:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type;
+        bh=YePYMzg8bVAuhm4BBepE+Fnww7vwOc0y9XgoZLWGyWk=;
+        b=cSCr9v31v19ibdhOC5ALpEu1+iZ3rvab3tMpIDpaFp1qhy3PeAdraMlG11728dgJiU
+         hjhImrDAIJERDJNz4S6ED5g9/JfdhUC72YRzax3DRtvom3ofMN447u5yOS19BHDEM8sU
+         weIlVTmK17ot6ZPA3/NHEmYyUTuMwOvJgDsrLpPZJjPZ6jd1/Q6nMWqkJtv1/N30q25R
+         YSZT7+9uTjcZrYuu6yl6OfJrqlBeX7QQ4Qa6Mp1jUyGAVA16yTcN9pgUVDIyXMNVfjDK
+         GH5VAPl8Z1NPiAYnZxx80lef1FJSM2YQ47BaBFpuccYMqqWNZNgNO0m7MPtn2+kgHRrc
+         lObg==
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1451572003-2440-34-git-send-email-mst@redhat.com>
-User-Agent: Mutt/1.5.21 (2012-12-30)
-Return-Path: <peterz@infradead.org>
+X-Received: by 10.50.109.167 with SMTP id ht7mr51673265igb.38.1451919882522;
+ Mon, 04 Jan 2016 07:04:42 -0800 (PST)
+Received: by 10.107.9.97 with HTTP; Mon, 4 Jan 2016 07:04:42 -0800 (PST)
+In-Reply-To: <1451919704-31509-1-git-send-email-geert@linux-m68k.org>
+References: <1451919704-31509-1-git-send-email-geert@linux-m68k.org>
+Date:   Mon, 4 Jan 2016 16:04:42 +0100
+X-Google-Sender-Auth: l_0dSxaZPNZhcE1cdWPl_5IrfIM
+Message-ID: <CAMuHMdXSiozb=4pC-vecF5RhwHxbuVA0au-P9VKymWV+1YhsCQ@mail.gmail.com>
+Subject: Re: Build regressions/improvements in v4.4-rc8
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+To:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <geert.uytterhoeven@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50852
+X-archive-position: 50853
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: peterz@infradead.org
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,35 +53,55 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Dec 31, 2015 at 09:10:01PM +0200, Michael S. Tsirkin wrote:
-> drivers/xen/xenbus/xenbus_comms.c uses
-> full memory barriers to communicate with the other side.
-> 
-> For guests compiled with CONFIG_SMP, smp_wmb and smp_mb
-> would be sufficient, so mb() and wmb() here are only needed if
-> a non-SMP guest runs on an SMP host.
-> 
-> Switch to virt_xxx barriers which serve this exact purpose.
-> 
-> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-> ---
->  drivers/xen/xenbus/xenbus_comms.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/xen/xenbus/xenbus_comms.c b/drivers/xen/xenbus/xenbus_comms.c
-> index fdb0f33..ecdecce 100644
-> --- a/drivers/xen/xenbus/xenbus_comms.c
-> +++ b/drivers/xen/xenbus/xenbus_comms.c
-> @@ -123,14 +123,14 @@ int xb_write(const void *data, unsigned len)
->  			avail = len;
->  
->  		/* Must write data /after/ reading the consumer index. */
-> -		mb();
-> +		virt_mb();
->  
+On Mon, Jan 4, 2016 at 4:01 PM, Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+> JFYI, when comparing v4.4-rc8[1] to v4.4-rc7[3], the summaries are:
+>   - build errors: +19/-18
 
-So its possible to remove this barrier entirely, see the "CONTROL
-DEPENDNCIES" chunk of memory-barrier.txt.
+  + /home/kisskb/slave/src/arch/arm/kernel/ftrace.c: error: implicit
+declaration of function 'flush_tlb_all'
+[-Werror=implicit-function-declaration]:  => 93:2
+  + /home/kisskb/slave/src/arch/arm/kernel/patch.c: error:
+'L_PTE_DIRTY' undeclared (first use in this function):  => 39:2
+  + /home/kisskb/slave/src/arch/arm/kernel/patch.c: error:
+'L_PTE_MT_WRITEBACK' undeclared (first use in this function):  => 39:2
+  + /home/kisskb/slave/src/arch/arm/kernel/patch.c: error:
+'L_PTE_PRESENT' undeclared (first use in this function):  => 39:2
+  + /home/kisskb/slave/src/arch/arm/kernel/patch.c: error: 'L_PTE_XN'
+undeclared (first use in this function):  => 39:2
+  + /home/kisskb/slave/src/arch/arm/kernel/patch.c: error:
+'L_PTE_YOUNG' undeclared (first use in this function):  => 39:2
 
-But do that in a separate patch series and only if you really really
-need the performance.
+arm-randconfig
+Seen and report before
+
+  + /tmp/cc5DX198.s: Error: can't resolve `_start' {*UND* section} -
+`L0^A' {.text section}:  => 43
+  + /tmp/ccHnSrdb.s: Error: can't resolve `_start' {*UND* section} -
+`L0^A' {.text section}:  => 49, 366
+  + /tmp/ccSLqWGf.s: Error: can't resolve `_start' {*UND* section} -
+`L0^A' {.text section}:  => 43
+  + /tmp/cch44bTJ.s: Error: can't resolve `_start' {*UND* section} -
+`L0^A' {.text section}:  => 378, 49
+  + /tmp/ccjj7cLa.s: Error: can't resolve `_start' {*UND* section} -
+`L0^A' {.text section}:  => 43
+  + /tmp/ccsgtMo8.s: Error: can't resolve `_start' {*UND* section} -
+`L0^A' {.text section}:  => 41, 403
+  + /tmp/ccxItlIa.s: Error: can't resolve `_start' {*UND* section} -
+`L0^A' {.text section}:  => 43
+
+Various mips.
+Seems like the fix for this fix still doesn't fix everything?
+
+> [1] http://kisskb.ellerman.id.au/kisskb/head/9755/ (all 259 configs)
+> [3] http://kisskb.ellerman.id.au/kisskb/head/9745/ (258 out of 259 configs)
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

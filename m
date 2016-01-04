@@ -1,46 +1,76 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Jan 2016 16:04:52 +0100 (CET)
-Received: from mail-ig0-f173.google.com ([209.85.213.173]:36621 "EHLO
-        mail-ig0-f173.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008336AbcADPEtIqvqJ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 4 Jan 2016 16:04:49 +0100
-Received: by mail-ig0-f173.google.com with SMTP id ph11so246317287igc.1;
-        Mon, 04 Jan 2016 07:04:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc:content-type;
-        bh=YePYMzg8bVAuhm4BBepE+Fnww7vwOc0y9XgoZLWGyWk=;
-        b=cSCr9v31v19ibdhOC5ALpEu1+iZ3rvab3tMpIDpaFp1qhy3PeAdraMlG11728dgJiU
-         hjhImrDAIJERDJNz4S6ED5g9/JfdhUC72YRzax3DRtvom3ofMN447u5yOS19BHDEM8sU
-         weIlVTmK17ot6ZPA3/NHEmYyUTuMwOvJgDsrLpPZJjPZ6jd1/Q6nMWqkJtv1/N30q25R
-         YSZT7+9uTjcZrYuu6yl6OfJrqlBeX7QQ4Qa6Mp1jUyGAVA16yTcN9pgUVDIyXMNVfjDK
-         GH5VAPl8Z1NPiAYnZxx80lef1FJSM2YQ47BaBFpuccYMqqWNZNgNO0m7MPtn2+kgHRrc
-         lObg==
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Jan 2016 16:05:09 +0100 (CET)
+Received: from e06smtp08.uk.ibm.com ([195.75.94.104]:33294 "EHLO
+        e06smtp08.uk.ibm.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27008363AbcADPE6ty8sJ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 4 Jan 2016 16:04:58 +0100
+Received: from localhost
+        by e06smtp08.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <linux-mips@linux-mips.org> from <schwidefsky@de.ibm.com>;
+        Mon, 4 Jan 2016 15:04:53 -0000
+Received: from d06dlp02.portsmouth.uk.ibm.com (9.149.20.14)
+        by e06smtp08.uk.ibm.com (192.168.101.138) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        Mon, 4 Jan 2016 15:04:47 -0000
+X-IBM-Helo: d06dlp02.portsmouth.uk.ibm.com
+X-IBM-MailFrom: schwidefsky@de.ibm.com
+X-IBM-RcptTo: linux-mips@linux-mips.org
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
+        by d06dlp02.portsmouth.uk.ibm.com (Postfix) with ESMTP id 68006219005C
+        for <linux-mips@linux-mips.org>; Mon,  4 Jan 2016 15:04:36 +0000 (GMT)
+Received: from d06av05.portsmouth.uk.ibm.com (d06av05.portsmouth.uk.ibm.com [9.149.37.229])
+        by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id u04F4kBH49610960
+        for <linux-mips@linux-mips.org>; Mon, 4 Jan 2016 15:04:46 GMT
+Received: from d06av05.portsmouth.uk.ibm.com (localhost [127.0.0.1])
+        by d06av05.portsmouth.uk.ibm.com (8.14.4/8.14.4/NCO v10.0 AVout) with ESMTP id u04F4iRf022936
+        for <linux-mips@linux-mips.org>; Mon, 4 Jan 2016 08:04:46 -0700
+Received: from mschwide (dyn-9-152-212-43.boeblingen.de.ibm.com [9.152.212.43])
+        by d06av05.portsmouth.uk.ibm.com (8.14.4/8.14.4/NCO v10.0 AVin) with ESMTP id u04F4ijb022909;
+        Mon, 4 Jan 2016 08:04:44 -0700
+Date:   Mon, 4 Jan 2016 16:03:39 +0100
+From:   Martin Schwidefsky <schwidefsky@de.ibm.com>
+To:     Peter Zijlstra <peterz@infradead.org>
+Cc:     "Michael S. Tsirkin" <mst@redhat.com>,
+        linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+        linux-arch@vger.kernel.org,
+        Andrew Cooper <andrew.cooper3@citrix.com>,
+        virtualization@lists.linux-foundation.org,
+        Stefano Stabellini <stefano.stabellini@eu.citrix.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@elte.hu>, "H. Peter Anvin" <hpa@zytor.com>,
+        David Miller <davem@davemloft.net>, linux-ia64@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-metag@vger.kernel.org, linux-mips@linux-mips.org,
+        x86@kernel.org, user-mode-linux-devel@lists.sourceforge.net,
+        adi-buildroot-devel@lists.sourceforge.net,
+        linux-sh@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        xen-devel@lists.xenproject.org,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        Davidlohr Bueso <dave@stgolabs.net>,
+        Andrey Konovalov <andreyknvl@google.com>,
+        Christian Borntraeger <borntraeger@de.ibm.com>
+Subject: Re: [PATCH v2 06/32] s390: reuse asm-generic/barrier.h
+Message-ID: <20160104160339.25101b5d@mschwide>
+In-Reply-To: <20160104132042.GW6344@twins.programming.kicks-ass.net>
+References: <1451572003-2440-1-git-send-email-mst@redhat.com>
+        <1451572003-2440-7-git-send-email-mst@redhat.com>
+        <20160104132042.GW6344@twins.programming.kicks-ass.net>
+X-Mailer: Claws Mail 3.9.3 (GTK+ 2.24.23; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-X-Received: by 10.50.109.167 with SMTP id ht7mr51673265igb.38.1451919882522;
- Mon, 04 Jan 2016 07:04:42 -0800 (PST)
-Received: by 10.107.9.97 with HTTP; Mon, 4 Jan 2016 07:04:42 -0800 (PST)
-In-Reply-To: <1451919704-31509-1-git-send-email-geert@linux-m68k.org>
-References: <1451919704-31509-1-git-send-email-geert@linux-m68k.org>
-Date:   Mon, 4 Jan 2016 16:04:42 +0100
-X-Google-Sender-Auth: l_0dSxaZPNZhcE1cdWPl_5IrfIM
-Message-ID: <CAMuHMdXSiozb=4pC-vecF5RhwHxbuVA0au-P9VKymWV+1YhsCQ@mail.gmail.com>
-Subject: Re: Build regressions/improvements in v4.4-rc8
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-To:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <geert.uytterhoeven@gmail.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-TM-AS-MML: disable
+X-Content-Scanned: Fidelis XPS MAILER
+x-cbid: 16010415-0033-0000-0000-00000548E4C1
+Return-Path: <schwidefsky@de.ibm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50853
+X-archive-position: 50854
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: schwidefsky@de.ibm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,55 +83,49 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Jan 4, 2016 at 4:01 PM, Geert Uytterhoeven <geert@linux-m68k.org> wrote:
-> JFYI, when comparing v4.4-rc8[1] to v4.4-rc7[3], the summaries are:
->   - build errors: +19/-18
+On Mon, 4 Jan 2016 14:20:42 +0100
+Peter Zijlstra <peterz@infradead.org> wrote:
 
-  + /home/kisskb/slave/src/arch/arm/kernel/ftrace.c: error: implicit
-declaration of function 'flush_tlb_all'
-[-Werror=implicit-function-declaration]:  => 93:2
-  + /home/kisskb/slave/src/arch/arm/kernel/patch.c: error:
-'L_PTE_DIRTY' undeclared (first use in this function):  => 39:2
-  + /home/kisskb/slave/src/arch/arm/kernel/patch.c: error:
-'L_PTE_MT_WRITEBACK' undeclared (first use in this function):  => 39:2
-  + /home/kisskb/slave/src/arch/arm/kernel/patch.c: error:
-'L_PTE_PRESENT' undeclared (first use in this function):  => 39:2
-  + /home/kisskb/slave/src/arch/arm/kernel/patch.c: error: 'L_PTE_XN'
-undeclared (first use in this function):  => 39:2
-  + /home/kisskb/slave/src/arch/arm/kernel/patch.c: error:
-'L_PTE_YOUNG' undeclared (first use in this function):  => 39:2
+> On Thu, Dec 31, 2015 at 09:06:30PM +0200, Michael S. Tsirkin wrote:
+> > On s390 read_barrier_depends, smp_read_barrier_depends
+> > smp_store_mb(), smp_mb__before_atomic and smp_mb__after_atomic match the
+> > asm-generic variants exactly. Drop the local definitions and pull in
+> > asm-generic/barrier.h instead.
+> > 
+> > This is in preparation to refactoring this code area.
+> > 
+> > Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+> > Acked-by: Arnd Bergmann <arnd@arndb.de>
+> > ---
+> >  arch/s390/include/asm/barrier.h | 10 ++--------
+> >  1 file changed, 2 insertions(+), 8 deletions(-)
+> > 
+> > diff --git a/arch/s390/include/asm/barrier.h b/arch/s390/include/asm/barrier.h
+> > index 7ffd0b1..c358c31 100644
+> > --- a/arch/s390/include/asm/barrier.h
+> > +++ b/arch/s390/include/asm/barrier.h
+> > @@ -30,14 +30,6 @@
+> >  #define smp_rmb()			rmb()
+> >  #define smp_wmb()			wmb()
+> >  
+> > -#define read_barrier_depends()		do { } while (0)
+> > -#define smp_read_barrier_depends()	do { } while (0)
+> > -
+> > -#define smp_mb__before_atomic()		smp_mb()
+> > -#define smp_mb__after_atomic()		smp_mb()
+> 
+> As per:
+> 
+>   lkml.kernel.org/r/20150921112252.3c2937e1@mschwide
+> 
+> s390 should change this to barrier() instead of smp_mb() and hence
+> should not use the generic versions.
+ 
+Yes, we wanted to simplify this. Thanks for the reminder, I'll queue
+a patch.
 
-arm-randconfig
-Seen and report before
+-- 
+blue skies,
+   Martin.
 
-  + /tmp/cc5DX198.s: Error: can't resolve `_start' {*UND* section} -
-`L0^A' {.text section}:  => 43
-  + /tmp/ccHnSrdb.s: Error: can't resolve `_start' {*UND* section} -
-`L0^A' {.text section}:  => 49, 366
-  + /tmp/ccSLqWGf.s: Error: can't resolve `_start' {*UND* section} -
-`L0^A' {.text section}:  => 43
-  + /tmp/cch44bTJ.s: Error: can't resolve `_start' {*UND* section} -
-`L0^A' {.text section}:  => 378, 49
-  + /tmp/ccjj7cLa.s: Error: can't resolve `_start' {*UND* section} -
-`L0^A' {.text section}:  => 43
-  + /tmp/ccsgtMo8.s: Error: can't resolve `_start' {*UND* section} -
-`L0^A' {.text section}:  => 41, 403
-  + /tmp/ccxItlIa.s: Error: can't resolve `_start' {*UND* section} -
-`L0^A' {.text section}:  => 43
-
-Various mips.
-Seems like the fix for this fix still doesn't fix everything?
-
-> [1] http://kisskb.ellerman.id.au/kisskb/head/9755/ (all 259 configs)
-> [3] http://kisskb.ellerman.id.au/kisskb/head/9745/ (258 out of 259 configs)
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+"Reality continues to ruin my life." - Calvin.

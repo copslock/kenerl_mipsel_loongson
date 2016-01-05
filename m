@@ -1,13 +1,13 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Jan 2016 18:47:36 +0100 (CET)
-Received: from mx2.suse.de ([195.135.220.15]:43735 "EHLO mx2.suse.de"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Jan 2016 18:47:54 +0100 (CET)
+Received: from mx2.suse.de ([195.135.220.15]:43741 "EHLO mx2.suse.de"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27009955AbcAERrS1wYAm (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 5 Jan 2016 18:47:18 +0100
+        id S27009962AbcAERrTIFp3m (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 5 Jan 2016 18:47:19 +0100
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 X-Amavis-Alert: BAD HEADER SECTION, Duplicate header field: "References"
 Received: from relay2.suse.de (charybdis-ext.suse.de [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id 95DAEABA2;
-        Tue,  5 Jan 2016 17:47:17 +0000 (UTC)
+        by mx2.suse.de (Postfix) with ESMTP id 4914BAAB4;
+        Tue,  5 Jan 2016 17:47:18 +0000 (UTC)
 From:   Jiri Slaby <jslaby@suse.cz>
 To:     stable@vger.kernel.org
 Cc:     linux-kernel@vger.kernel.org, James Hogan <james.hogan@imgtec.com>,
@@ -15,9 +15,9 @@ Cc:     linux-kernel@vger.kernel.org, James Hogan <james.hogan@imgtec.com>,
         Paolo Bonzini <pbonzini@redhat.com>,
         Gleb Natapov <gleb@kernel.org>, linux-mips@linux-mips.org,
         kvm@vger.kernel.org, Jiri Slaby <jslaby@suse.cz>
-Subject: [PATCH 3.12 03/91] MIPS: KVM: Fix CACHE immediate offset sign extension
-Date:   Tue,  5 Jan 2016 18:45:47 +0100
-Message-Id: <33ae9c415d1988b9a26ae72c7dc6eb8c94d04772.1452015821.git.jslaby@suse.cz>
+Subject: [PATCH 3.12 04/91] MIPS: KVM: Uninit VCPU in vcpu_create error path
+Date:   Tue,  5 Jan 2016 18:45:48 +0100
+Message-Id: <471673ae79e77b7e731dc39dcb89171dfd244ea8.1452015821.git.jslaby@suse.cz>
 X-Mailer: git-send-email 2.6.4
 In-Reply-To: <ba880cfbf85370a46062a2894a70d35260f26f2b.1452015821.git.jslaby@suse.cz>
 References: <ba880cfbf85370a46062a2894a70d35260f26f2b.1452015821.git.jslaby@suse.cz>
@@ -27,7 +27,7 @@ Return-Path: <jslaby@suse.cz>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50931
+X-archive-position: 50932
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -50,13 +50,13 @@ From: James Hogan <james.hogan@imgtec.com>
 
 ===============
 
-commit c5c2a3b998f1ff5a586f9d37e154070b8d550d17 upstream.
+commit 585bb8f9a5e592f2ce7abbe5ed3112d5438d2754 upstream.
 
-The immediate field of the CACHE instruction is signed, so ensure that
-it gets sign extended by casting it to an int16_t rather than just
-masking the low 16 bits.
+If either of the memory allocations in kvm_arch_vcpu_create() fail, the
+vcpu which has been allocated and kvm_vcpu_init'd doesn't get uninit'd
+in the error handling path. Add a call to kvm_vcpu_uninit() to fix this.
 
-Fixes: e685c689f3a8 ("KVM/MIPS32: Privileged instruction/target branch emulation.")
+Fixes: 669e846e6c4e ("KVM/MIPS32: MIPS arch specific APIs for KVM")
 Signed-off-by: James Hogan <james.hogan@imgtec.com>
 Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: Paolo Bonzini <pbonzini@redhat.com>
@@ -67,21 +67,31 @@ Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: James Hogan <james.hogan@imgtec.com>
 Signed-off-by: Jiri Slaby <jslaby@suse.cz>
 ---
- arch/mips/kvm/kvm_mips_emul.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/kvm/kvm_mips.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/arch/mips/kvm/kvm_mips_emul.c b/arch/mips/kvm/kvm_mips_emul.c
-index c76f297b7149..33085819cd89 100644
---- a/arch/mips/kvm/kvm_mips_emul.c
-+++ b/arch/mips/kvm/kvm_mips_emul.c
-@@ -935,7 +935,7 @@ kvm_mips_emulate_cache(uint32_t inst, uint32_t *opc, uint32_t cause,
+diff --git a/arch/mips/kvm/kvm_mips.c b/arch/mips/kvm/kvm_mips.c
+index 2cb24788a8a6..7e7de1f2b8ed 100644
+--- a/arch/mips/kvm/kvm_mips.c
++++ b/arch/mips/kvm/kvm_mips.c
+@@ -312,7 +312,7 @@ struct kvm_vcpu *kvm_arch_vcpu_create(struct kvm *kvm, unsigned int id)
  
- 	base = (inst >> 21) & 0x1f;
- 	op_inst = (inst >> 16) & 0x1f;
--	offset = inst & 0xffff;
-+	offset = (int16_t)inst;
- 	cache = (inst >> 16) & 0x3;
- 	op = (inst >> 18) & 0x7;
+ 	if (!gebase) {
+ 		err = -ENOMEM;
+-		goto out_free_cpu;
++		goto out_uninit_cpu;
+ 	}
+ 	kvm_info("Allocated %d bytes for KVM Exception Handlers @ %p\n",
+ 		 ALIGN(size, PAGE_SIZE), gebase);
+@@ -372,6 +372,9 @@ struct kvm_vcpu *kvm_arch_vcpu_create(struct kvm *kvm, unsigned int id)
+ out_free_gebase:
+ 	kfree(gebase);
+ 
++out_uninit_cpu:
++	kvm_vcpu_uninit(vcpu);
++
+ out_free_cpu:
+ 	kfree(vcpu);
  
 -- 
 2.6.4

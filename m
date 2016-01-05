@@ -1,66 +1,73 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Jan 2016 10:52:46 +0100 (CET)
-Received: from mail-lf0-f46.google.com ([209.85.215.46]:32786 "EHLO
-        mail-lf0-f46.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27009835AbcAEJwiZOE-h (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 5 Jan 2016 10:52:38 +0100
-Received: by mail-lf0-f46.google.com with SMTP id p203so293078328lfa.0
-        for <linux-mips@linux-mips.org>; Tue, 05 Jan 2016 01:52:38 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Jan 2016 10:54:24 +0100 (CET)
+Received: from mail-oi0-f66.google.com ([209.85.218.66]:35823 "EHLO
+        mail-oi0-f66.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27009111AbcAEJyWdcUeh (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 5 Jan 2016 10:54:22 +0100
+Received: by mail-oi0-f66.google.com with SMTP id e195so8942927oig.2
+        for <linux-mips@linux-mips.org>; Tue, 05 Jan 2016 01:54:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cogentembedded-com.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:references:cc:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-type:content-transfer-encoding;
-        bh=AIZHUlFlL5qU7rH5/TaHWU8W7wl+auIIXtRj9EWRPAY=;
-        b=NinoMZrY+ejIVHI9HxtpVF9xZzI1krVk+QfEb3kjC0helLEnLA+mBlLFnPHqEaGxg5
-         9nRKYyqhSfQZPfUD294of1jb94amGTBoSb+qUwygsxZC3D6OVazmpdvvZRboDVKn+s+A
-         7sznulETvdGeSSAF4Hz8jf5u4ZXGaFXozy6dpLFWpn6JSPOfKPv4/zdZYYirMlmtM+6+
-         GpXCXi4azq40MLq9bJv1r2JSfHezDDUmJmWM0kdukLu1hju0EWJJwQAHfWS2d5wLdltu
-         laV7cVPVTx8C8y5+aKUkodMQohBJ0S/ymGQAClcwZC0nGQYTGFfHBErtApCNkE23RQq9
-         f3YQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:subject:to:references:cc:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-type
-         :content-transfer-encoding;
-        bh=AIZHUlFlL5qU7rH5/TaHWU8W7wl+auIIXtRj9EWRPAY=;
-        b=OnY38LiEpAa7eObg5aNbXUS/k7Mpgp4Wiq49RcpT/sIqz8lqbZfJZVbfVcQc/g8Lad
-         Rqv6LLx50Ph47W/HXoohuDetvA1E9+s8m/5eL6NcKixUlmydsAmOpddxbCZafTSBrb0u
-         RLi8LjDpZEyL/jI3XiRpLUJr75hmLwNZrUfYLV9e6fNjM/U9pOR373XysetbUUsOJKQu
-         FOXlCDbrrc4GJWfINcfpIBpI2WFbXE/iF9YEXBPx2kw0BJq2O0jU/sYe5zoBdhfhu2Sq
-         O/KAyvHC4fDa0a/zfCtUW24clyuQmLoLGxNVv7iX+Eqr8HzMsDpmWwfBaV8DqMEHLsWg
-         rCDw==
-X-Gm-Message-State: ALoCoQmY9FB9i9FV1fxCiE5xS5kaiat2E+HLroUB7eMczcrnbAXafF6qHg2wr5nG8LIziuD2zYpf/MjWSYCo7WhyZ8uuSHKE7A==
-X-Received: by 10.25.17.89 with SMTP id g86mr9168892lfi.82.1451987552924;
-        Tue, 05 Jan 2016 01:52:32 -0800 (PST)
-Received: from [192.168.4.126] ([31.173.84.203])
-        by smtp.gmail.com with ESMTPSA id t9sm11284559lfd.13.2016.01.05.01.52.30
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Tue, 05 Jan 2016 01:52:31 -0800 (PST)
-Subject: Re: [PATCH 6/6] MIPS: Fix some missing CONFIG_CPU_MIPSR6 definitions
-To:     Huacai Chen <chenhc@lemote.com>, Ralf Baechle <ralf@linux-mips.org>
-References: <1451973549-16198-1-git-send-email-chenhc@lemote.com>
- <1451973549-16198-7-git-send-email-chenhc@lemote.com>
-Cc:     Aurelien Jarno <aurelien@aurel32.net>,
-        "Steven J. Hill" <Steven.Hill@imgtec.com>,
-        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>, stable@vger.kernel.org
-From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Message-ID: <568B925E.4020401@cogentembedded.com>
-Date:   Tue, 5 Jan 2016 12:52:30 +0300
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:38.0) Gecko/20100101
- Thunderbird/38.5.0
+        d=gmail.com; s=20120113;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-type:content-disposition:in-reply-to:user-agent;
+        bh=4WcelTu80cgtRpW9LfXKPNnjGLhaBIIPBrswrqSYvPM=;
+        b=SNFKNNu/7++/AIwj0lJNftVtz3v0SFr9KzFQkWvdlYyZVsQPvlNcNRRNVojR95eudb
+         Y1RO+f9inM+PjXItrZyZXrcDGGtb03MsuqiNmGhkWvr/jEOv0ajLWbkyCya7K6U5fm36
+         YeijP7NPTEgBluWXyo3z2AdsZtnwyZlkSqchZmYs/qdGIPCoQWFpbhrUesQgj9T3CyUr
+         azG5NIvu/l4px1kZC582dTVkZBgG5z2GGFIVGSDgQlUH1F5mJPV0eqf46Rv8nFAotB97
+         UJSDCShPHd9TdV4W+mC1v/YIEzEF4R1xGhhKLyEvOKNtHVfEwHZ4LounzWd2iIACajQi
+         2r0w==
+X-Received: by 10.202.73.67 with SMTP id w64mr61326543oia.84.1451987656601;
+        Tue, 05 Jan 2016 01:54:16 -0800 (PST)
+Received: from localhost ([45.32.128.109])
+        by smtp.gmail.com with ESMTPSA id gi5sm36637559obb.6.2016.01.05.01.54.14
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 05 Jan 2016 01:54:15 -0800 (PST)
+Date:   Tue, 5 Jan 2016 17:53:41 +0800
+From:   Boqun Feng <boqun.feng@gmail.com>
+To:     "Michael S. Tsirkin" <mst@redhat.com>
+Cc:     linux-kernel@vger.kernel.org,
+        Peter Zijlstra <peterz@infradead.org>,
+        Arnd Bergmann <arnd@arndb.de>, linux-arch@vger.kernel.org,
+        Andrew Cooper <andrew.cooper3@citrix.com>,
+        virtualization@lists.linux-foundation.org,
+        Stefano Stabellini <stefano.stabellini@eu.citrix.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@elte.hu>, "H. Peter Anvin" <hpa@zytor.com>,
+        David Miller <davem@davemloft.net>, linux-ia64@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-metag@vger.kernel.org, linux-mips@linux-mips.org,
+        x86@kernel.org, user-mode-linux-devel@lists.sourceforge.net,
+        adi-buildroot-devel@lists.sourceforge.net,
+        linux-sh@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        xen-devel@lists.xenproject.org,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Ingo Molnar <mingo@kernel.org>,
+        Davidlohr Bueso <dave@stgolabs.net>,
+        Andrey Konovalov <andreyknvl@google.com>,
+        "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>
+Subject: Re: [PATCH v2 15/32] powerpc: define __smp_xxx
+Message-ID: <20160105095341.GA5321@fixme-laptop.cn.ibm.com>
+References: <1451572003-2440-1-git-send-email-mst@redhat.com>
+ <1451572003-2440-16-git-send-email-mst@redhat.com>
+ <20160105013648.GA1256@fixme-laptop.cn.ibm.com>
+ <20160105085117.GA11858@redhat.com>
 MIME-Version: 1.0
-In-Reply-To: <1451973549-16198-7-git-send-email-chenhc@lemote.com>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sergei.shtylyov@cogentembedded.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20160105085117.GA11858@redhat.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+Return-Path: <boqun.feng@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50909
+X-archive-position: 50910
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sergei.shtylyov@cogentembedded.com
+X-original-sender: boqun.feng@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -73,20 +80,142 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hello.
+On Tue, Jan 05, 2016 at 10:51:17AM +0200, Michael S. Tsirkin wrote:
+> On Tue, Jan 05, 2016 at 09:36:55AM +0800, Boqun Feng wrote:
+> > Hi Michael,
+> > 
+> > On Thu, Dec 31, 2015 at 09:07:42PM +0200, Michael S. Tsirkin wrote:
+> > > This defines __smp_xxx barriers for powerpc
+> > > for use by virtualization.
+> > > 
+> > > smp_xxx barriers are removed as they are
+> > > defined correctly by asm-generic/barriers.h
+> 
+> I think this is the part that was missed in review.
+> 
 
-On 1/5/2016 8:59 AM, Huacai Chen wrote:
+Yes, I realized my mistake after reread the series. But smp_lwsync() is
+not defined in asm-generic/barriers.h, right?
 
-> Commit be0c37c985eddc4 (MIPS: Rearrange PTE bits into fixed positions.)
-> defines fixed PTE bits for MIPS R2. Then, commit d7b631419b3d230a4d383
-> (MIPS: pgtable-bits: Fix XPA damage to R6 definitions.) adds the MIPS
-> R6 definitions in the same way as MIPS R2. But some R6 definitions in
-> the later commit is missing, so in this patch I fix that.
+> > > This reduces the amount of arch-specific boiler-plate code.
+> > > 
+> > > Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+> > > Acked-by: Arnd Bergmann <arnd@arndb.de>
+> > > ---
+> > >  arch/powerpc/include/asm/barrier.h | 24 ++++++++----------------
+> > >  1 file changed, 8 insertions(+), 16 deletions(-)
+> > > 
+> > > diff --git a/arch/powerpc/include/asm/barrier.h b/arch/powerpc/include/asm/barrier.h
+> > > index 980ad0c..c0deafc 100644
+> > > --- a/arch/powerpc/include/asm/barrier.h
+> > > +++ b/arch/powerpc/include/asm/barrier.h
+> > > @@ -44,19 +44,11 @@
+> > >  #define dma_rmb()	__lwsync()
+> > >  #define dma_wmb()	__asm__ __volatile__ (stringify_in_c(SMPWMB) : : :"memory")
+> > >  
+> > > -#ifdef CONFIG_SMP
+> > > -#define smp_lwsync()	__lwsync()
+> > > +#define __smp_lwsync()	__lwsync()
+> > >  
+> > 
+> > so __smp_lwsync() is always mapped to lwsync, right?
+> 
+> Yes.
+> 
+> > > -#define smp_mb()	mb()
+> > > -#define smp_rmb()	__lwsync()
+> > > -#define smp_wmb()	__asm__ __volatile__ (stringify_in_c(SMPWMB) : : :"memory")
+> > > -#else
+> > > -#define smp_lwsync()	barrier()
+> > > -
+> > > -#define smp_mb()	barrier()
+> > > -#define smp_rmb()	barrier()
+> > > -#define smp_wmb()	barrier()
+> > > -#endif /* CONFIG_SMP */
+> > > +#define __smp_mb()	mb()
+> > > +#define __smp_rmb()	__lwsync()
+> > > +#define __smp_wmb()	__asm__ __volatile__ (stringify_in_c(SMPWMB) : : :"memory")
+> > >  
+> > >  /*
+> > >   * This is a barrier which prevents following instructions from being
+> > > @@ -67,18 +59,18 @@
+> > >  #define data_barrier(x)	\
+> > >  	asm volatile("twi 0,%0,0; isync" : : "r" (x) : "memory");
+> > >  
+> > > -#define smp_store_release(p, v)						\
+> > > +#define __smp_store_release(p, v)						\
+> > >  do {									\
+> > >  	compiletime_assert_atomic_type(*p);				\
+> > > -	smp_lwsync();							\
+> > > +	__smp_lwsync();							\
+> > 
+> > , therefore this will emit an lwsync no matter SMP or UP.
+> 
+> Absolutely. But smp_store_release (without __) will not.
+> 
+> Please note I did test this: for ppc code before and after
+> this patch generates exactly the same binary on SMP and UP.
+> 
 
-    You're adding #ifdef's, not definitions.
+Yes, you're right, sorry for my mistake...
 
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Huacai Chen <chenhc@lemote.com>
-[...]
+> 
+> > Another thing is that smp_lwsync() may have a third user(other than
+> > smp_load_acquire() and smp_store_release()):
+> > 
+> > http://article.gmane.org/gmane.linux.ports.ppc.embedded/89877
+> > 
+> > I'm OK to change my patch accordingly, but do we really want
+> > smp_lwsync() get involved in this cleanup? If I understand you
+> > correctly, this cleanup focuses on external API like smp_{r,w,}mb(),
+> > while smp_lwsync() is internal to PPC.
+> > 
+> > Regards,
+> > Boqun
+> 
+> I think you missed the leading ___ :)
+> 
 
-MBR, Sergei
+What I mean here was smp_lwsync() was originally internal to PPC, but
+never mind ;-)
+
+> smp_store_release is external and it needs __smp_lwsync as
+> defined here.
+> 
+> I can duplicate some code and have smp_lwsync *not* call __smp_lwsync
+
+You mean bringing smp_lwsync() back? because I haven't seen you defining
+in asm-generic/barriers.h in previous patches and you just delete it in
+this patch.
+
+> but why do this? Still, if you prefer it this way,
+> please let me know.
+> 
+
+I think deleting smp_lwsync() is fine, though I need to change atomic
+variants patches on PPC because of it ;-/
+
+Regards,
+Boqun
+
+> > >  	WRITE_ONCE(*p, v);						\
+> > >  } while (0)
+> > >  
+> > > -#define smp_load_acquire(p)						\
+> > > +#define __smp_load_acquire(p)						\
+> > >  ({									\
+> > >  	typeof(*p) ___p1 = READ_ONCE(*p);				\
+> > >  	compiletime_assert_atomic_type(*p);				\
+> > > -	smp_lwsync();							\
+> > > +	__smp_lwsync();							\
+> > >  	___p1;								\
+> > >  })
+> > >  
+> > > -- 
+> > > MST
+> > > 
+> > > --
+> > > To unsubscribe from this list: send the line "unsubscribe linux-kernel" in
+> > > the body of a message to majordomo@vger.kernel.org
+> > > More majordomo info at  http://vger.kernel.org/majordomo-info.html
+> > > Please read the FAQ at  http://www.tux.org/lkml/

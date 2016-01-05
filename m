@@ -1,59 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Jan 2016 09:51:39 +0100 (CET)
-Received: from mx1.redhat.com ([209.132.183.28]:58009 "EHLO mx1.redhat.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Jan 2016 10:21:03 +0100 (CET)
+Received: from mx2.suse.de ([195.135.220.15]:42465 "EHLO mx2.suse.de"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27009111AbcAEIve4N2YR (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 5 Jan 2016 09:51:34 +0100
-Received: from int-mx10.intmail.prod.int.phx2.redhat.com (int-mx10.intmail.prod.int.phx2.redhat.com [10.5.11.23])
-        by mx1.redhat.com (Postfix) with ESMTPS id 43E0BAF384;
-        Tue,  5 Jan 2016 08:51:28 +0000 (UTC)
-Received: from redhat.com ([10.35.7.189])
-        by int-mx10.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with SMTP id u058pHgw016098;
-        Tue, 5 Jan 2016 03:51:18 -0500
-Date:   Tue, 5 Jan 2016 10:51:17 +0200
-From:   "Michael S. Tsirkin" <mst@redhat.com>
-To:     Boqun Feng <boqun.feng@gmail.com>
-Cc:     linux-kernel@vger.kernel.org,
-        Peter Zijlstra <peterz@infradead.org>,
-        Arnd Bergmann <arnd@arndb.de>, linux-arch@vger.kernel.org,
-        Andrew Cooper <andrew.cooper3@citrix.com>,
-        virtualization@lists.linux-foundation.org,
-        Stefano Stabellini <stefano.stabellini@eu.citrix.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@elte.hu>, "H. Peter Anvin" <hpa@zytor.com>,
-        David Miller <davem@davemloft.net>, linux-ia64@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-metag@vger.kernel.org, linux-mips@linux-mips.org,
-        x86@kernel.org, user-mode-linux-devel@lists.sourceforge.net,
-        adi-buildroot-devel@lists.sourceforge.net,
-        linux-sh@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        xen-devel@lists.xenproject.org,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Ingo Molnar <mingo@kernel.org>,
-        Davidlohr Bueso <dave@stgolabs.net>,
-        Andrey Konovalov <andreyknvl@google.com>,
-        "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>
-Subject: Re: [PATCH v2 15/32] powerpc: define __smp_xxx
-Message-ID: <20160105085117.GA11858@redhat.com>
-References: <1451572003-2440-1-git-send-email-mst@redhat.com>
- <1451572003-2440-16-git-send-email-mst@redhat.com>
- <20160105013648.GA1256@fixme-laptop.cn.ibm.com>
+        id S27009111AbcAEJVAp9UMR (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 5 Jan 2016 10:21:00 +0100
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (charybdis-ext.suse.de [195.135.220.254])
+        by mx2.suse.de (Postfix) with ESMTP id 19B33ABE5;
+        Tue,  5 Jan 2016 09:20:59 +0000 (UTC)
+Subject: Re: [PATCH -next] MIPS: VDSO: Fix build error with binutils 2.24 and
+ earlier
+To:     James Hogan <james.hogan@imgtec.com>,
+        Guenter Roeck <linux@roeck-us.net>
+References: <1450933471-7357-1-git-send-email-linux@roeck-us.net>
+ <20151224124812.GA5376@jhogan-linux.le.imgtec.org>
+ <20151224125726.GB5376@jhogan-linux.le.imgtec.org>
+Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org, Qais Yousef <qais.yousef@imgtec.com>,
+        Andi Kleen <ak@linux.intel.com>
+From:   Michal Marek <mmarek@suse.cz>
+Message-ID: <568B8AFB.1020403@suse.cz>
+Date:   Tue, 5 Jan 2016 10:20:59 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+ Thunderbird/38.3.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20160105013648.GA1256@fixme-laptop.cn.ibm.com>
-X-Scanned-By: MIMEDefang 2.68 on 10.5.11.23
-Return-Path: <mst@redhat.com>
+In-Reply-To: <20151224125726.GB5376@jhogan-linux.le.imgtec.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Return-Path: <mmarek@suse.cz>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50906
+X-archive-position: 50907
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mst@redhat.com
+X-original-sender: mmarek@suse.cz
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -66,118 +47,93 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Jan 05, 2016 at 09:36:55AM +0800, Boqun Feng wrote:
-> Hi Michael,
+On 2015-12-24 13:57, James Hogan wrote:
+> On Thu, Dec 24, 2015 at 12:48:12PM +0000, James Hogan wrote:
+>> Hi Guenter,
+>>
+>> On Wed, Dec 23, 2015 at 09:04:31PM -0800, Guenter Roeck wrote:
+>>> Commit 2a037f310bab ("MIPS: VDSO: Fix build error") tries to fix a build
+>>> error seen with binutils 2.24 and earlier. However, the fix does not work,
+>>> and again results in the already known build errors if the kernel is built
+>>> with an earlier version of binutils.
+>>>
+>>> CC      arch/mips/vdso/gettimeofday.o
+>>> /tmp/ccnOVbHT.s: Assembler messages:
+>>> /tmp/ccnOVbHT.s:50: Error: can't resolve `_start' {*UND* section} - `L0 {.text section}
+>>> /tmp/ccnOVbHT.s:374: Error: can't resolve `_start' {*UND* section} - `L0 {.text section}
+>>> scripts/Makefile.build:258: recipe for target 'arch/mips/vdso/gettimeofday.o' failed
+>>> make[2]: *** [arch/mips/vdso/gettimeofday.o] Error 1
+>>>
+>>> Fixes: 2a037f310bab ("MIPS: VDSO: Fix build error")
+>>> Cc: Qais Yousef <qais.yousef@imgtec.com>
+>>> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+>>> ---
+>>> Tested with binutils 2.25 and 2.22.
+>>>
+>>>  arch/mips/vdso/Makefile | 2 +-
+>>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>>
+>>> diff --git a/arch/mips/vdso/Makefile b/arch/mips/vdso/Makefile
+>>> index 018f8c7b94f2..14568900fc1d 100644
+>>> --- a/arch/mips/vdso/Makefile
+>>> +++ b/arch/mips/vdso/Makefile
+>>> @@ -26,7 +26,7 @@ aflags-vdso := $(ccflags-vdso) \
+>>>  # the comments on that file.
+>>>  #
+>>>  ifndef CONFIG_CPU_MIPSR6
+>>> -  ifeq ($(call ld-ifversion, -lt, 22500000, y),)
+>>> +  ifeq ($(call ld-ifversion, -lt, 22500000, y),y)
+>>
+>> I agree this is semantically correct, but there is something more evil
+>> going on here.
+>>
+>> Originally the check was version <= 2.24
+>> Qais' patch changed it to version >= 2.25 (intending version < 2.25)
+>> Your patch changes it to version < 2.25
+>>
+>> I think the reason this fixed the problem for Qais is actually that he
+>> probably had a similar toolchain version to what I'm using:
+>>
+>> GNU ld (Codescape GNU Tools 2015.06-05 for MIPS MTI Linux) 2.24.90
+>>
+>> ./scripts/ld-version.sh does this:
+>>
+>> print a[1]*10000000 + a[2]*100000 + a[3]*10000 + a[4]*100 + a[5];
+>>
+>> which changes that version number into:
+>>  20000000
+>> + 2400000
+>> +  900000 = 23300000
+>>
+>> I.e. it doesn't expect a[3] to be >= 10.
+>>
+>> Should we do something like this (increase multipliers on a[1] and
+>> a[2])?:
+>>
+>> diff --git a/scripts/ld-version.sh b/scripts/ld-version.sh
+>> index 198580d245e0..0b67edc5bc6f 100755
+>> --- a/scripts/ld-version.sh
+>> +++ b/scripts/ld-version.sh
+>> @@ -3,6 +3,6 @@
+>>  	{
+>>  	gsub(".*)", "");
+>>  	split($1,a, ".");
+>> -	print a[1]*10000000 + a[2]*100000 + a[3]*10000 + a[4]*100 + a[5];
+>> +	print a[1]*100000000 + a[2]*1000000 + a[3]*10000 + a[4]*100 + a[5];
+>>  	exit
+>>  	}
+>>
+>> which gives 2.24.90 => 224900000.
+>>
+>> All call sites would need updating too to add the extra 0, but a quick
+>> git grep isn't showing any other ones than this one.
 > 
-> On Thu, Dec 31, 2015 at 09:07:42PM +0200, Michael S. Tsirkin wrote:
-> > This defines __smp_xxx barriers for powerpc
-> > for use by virtualization.
-> > 
-> > smp_xxx barriers are removed as they are
-> > defined correctly by asm-generic/barriers.h
-
-I think this is the part that was missed in review.
-
-> > This reduces the amount of arch-specific boiler-plate code.
-> > 
-> > Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-> > Acked-by: Arnd Bergmann <arnd@arndb.de>
-> > ---
-> >  arch/powerpc/include/asm/barrier.h | 24 ++++++++----------------
-> >  1 file changed, 8 insertions(+), 16 deletions(-)
-> > 
-> > diff --git a/arch/powerpc/include/asm/barrier.h b/arch/powerpc/include/asm/barrier.h
-> > index 980ad0c..c0deafc 100644
-> > --- a/arch/powerpc/include/asm/barrier.h
-> > +++ b/arch/powerpc/include/asm/barrier.h
-> > @@ -44,19 +44,11 @@
-> >  #define dma_rmb()	__lwsync()
-> >  #define dma_wmb()	__asm__ __volatile__ (stringify_in_c(SMPWMB) : : :"memory")
-> >  
-> > -#ifdef CONFIG_SMP
-> > -#define smp_lwsync()	__lwsync()
-> > +#define __smp_lwsync()	__lwsync()
-> >  
+> Actually, linux-next includes this commit which uses ld-ifversion too:
 > 
-> so __smp_lwsync() is always mapped to lwsync, right?
+> 19a3cc83353e3bb4bc28769f8606139a3d350d2d
+> "Kbuild, lto: Add Link Time Optimization support v3"
 
-Yes.
+That commit needs updating for other reasons, so feel free to fix
+ld-ifversion and its usage in arch/mips.
 
-> > -#define smp_mb()	mb()
-> > -#define smp_rmb()	__lwsync()
-> > -#define smp_wmb()	__asm__ __volatile__ (stringify_in_c(SMPWMB) : : :"memory")
-> > -#else
-> > -#define smp_lwsync()	barrier()
-> > -
-> > -#define smp_mb()	barrier()
-> > -#define smp_rmb()	barrier()
-> > -#define smp_wmb()	barrier()
-> > -#endif /* CONFIG_SMP */
-> > +#define __smp_mb()	mb()
-> > +#define __smp_rmb()	__lwsync()
-> > +#define __smp_wmb()	__asm__ __volatile__ (stringify_in_c(SMPWMB) : : :"memory")
-> >  
-> >  /*
-> >   * This is a barrier which prevents following instructions from being
-> > @@ -67,18 +59,18 @@
-> >  #define data_barrier(x)	\
-> >  	asm volatile("twi 0,%0,0; isync" : : "r" (x) : "memory");
-> >  
-> > -#define smp_store_release(p, v)						\
-> > +#define __smp_store_release(p, v)						\
-> >  do {									\
-> >  	compiletime_assert_atomic_type(*p);				\
-> > -	smp_lwsync();							\
-> > +	__smp_lwsync();							\
-> 
-> , therefore this will emit an lwsync no matter SMP or UP.
-
-Absolutely. But smp_store_release (without __) will not.
-
-Please note I did test this: for ppc code before and after
-this patch generates exactly the same binary on SMP and UP.
-
-
-> Another thing is that smp_lwsync() may have a third user(other than
-> smp_load_acquire() and smp_store_release()):
-> 
-> http://article.gmane.org/gmane.linux.ports.ppc.embedded/89877
-> 
-> I'm OK to change my patch accordingly, but do we really want
-> smp_lwsync() get involved in this cleanup? If I understand you
-> correctly, this cleanup focuses on external API like smp_{r,w,}mb(),
-> while smp_lwsync() is internal to PPC.
-> 
-> Regards,
-> Boqun
-
-I think you missed the leading ___ :)
-
-smp_store_release is external and it needs __smp_lwsync as
-defined here.
-
-I can duplicate some code and have smp_lwsync *not* call __smp_lwsync
-but why do this? Still, if you prefer it this way,
-please let me know.
-
-> >  	WRITE_ONCE(*p, v);						\
-> >  } while (0)
-> >  
-> > -#define smp_load_acquire(p)						\
-> > +#define __smp_load_acquire(p)						\
-> >  ({									\
-> >  	typeof(*p) ___p1 = READ_ONCE(*p);				\
-> >  	compiletime_assert_atomic_type(*p);				\
-> > -	smp_lwsync();							\
-> > +	__smp_lwsync();							\
-> >  	___p1;								\
-> >  })
-> >  
-> > -- 
-> > MST
-> > 
-> > --
-> > To unsubscribe from this list: send the line "unsubscribe linux-kernel" in
-> > the body of a message to majordomo@vger.kernel.org
-> > More majordomo info at  http://vger.kernel.org/majordomo-info.html
-> > Please read the FAQ at  http://www.tux.org/lkml/
+Michal

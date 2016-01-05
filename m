@@ -1,33 +1,17 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Jan 2016 15:21:30 +0100 (CET)
-Received: from e06smtp17.uk.ibm.com ([195.75.94.113]:44620 "EHLO
-        e06smtp17.uk.ibm.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27009780AbcAEOV2LfvfG (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 5 Jan 2016 15:21:28 +0100
-Received: from localhost
-        by e06smtp17.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <linux-mips@linux-mips.org> from <schwidefsky@de.ibm.com>;
-        Tue, 5 Jan 2016 14:21:22 -0000
-Received: from d06dlp03.portsmouth.uk.ibm.com (9.149.20.15)
-        by e06smtp17.uk.ibm.com (192.168.101.147) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        Tue, 5 Jan 2016 14:21:21 -0000
-X-IBM-Helo: d06dlp03.portsmouth.uk.ibm.com
-X-IBM-MailFrom: schwidefsky@de.ibm.com
-X-IBM-RcptTo: linux-mips@linux-mips.org
-Received: from b06cxnps3075.portsmouth.uk.ibm.com (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
-        by d06dlp03.portsmouth.uk.ibm.com (Postfix) with ESMTP id 7F6B11B08067
-        for <linux-mips@linux-mips.org>; Tue,  5 Jan 2016 14:22:01 +0000 (GMT)
-Received: from d06av02.portsmouth.uk.ibm.com (d06av02.portsmouth.uk.ibm.com [9.149.37.228])
-        by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id u05ELKai3867092
-        for <linux-mips@linux-mips.org>; Tue, 5 Jan 2016 14:21:20 GMT
-Received: from d06av02.portsmouth.uk.ibm.com (localhost [127.0.0.1])
-        by d06av02.portsmouth.uk.ibm.com (8.14.4/8.14.4/NCO v10.0 AVout) with ESMTP id u05ELIaA012252
-        for <linux-mips@linux-mips.org>; Tue, 5 Jan 2016 07:21:20 -0700
-Received: from mschwide (dyn-9-152-212-43.boeblingen.de.ibm.com [9.152.212.43])
-        by d06av02.portsmouth.uk.ibm.com (8.14.4/8.14.4/NCO v10.0 AVin) with ESMTP id u05ELH4o012161;
-        Tue, 5 Jan 2016 07:21:17 -0700
-Date:   Tue, 5 Jan 2016 15:21:16 +0100
-From:   Martin Schwidefsky <schwidefsky@de.ibm.com>
-To:     "Michael S. Tsirkin" <mst@redhat.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Jan 2016 15:39:08 +0100 (CET)
+Received: from mx1.redhat.com ([209.132.183.28]:57391 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27009780AbcAEOjHSPMku (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 5 Jan 2016 15:39:07 +0100
+Received: from int-mx11.intmail.prod.int.phx2.redhat.com (int-mx11.intmail.prod.int.phx2.redhat.com [10.5.11.24])
+        by mx1.redhat.com (Postfix) with ESMTPS id D8B3342E5C8;
+        Tue,  5 Jan 2016 14:39:03 +0000 (UTC)
+Received: from redhat.com (vpn1-5-187.ams2.redhat.com [10.36.5.187])
+        by int-mx11.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with SMTP id u05Ecthg031167;
+        Tue, 5 Jan 2016 09:38:56 -0500
+Date:   Tue, 5 Jan 2016 16:38:54 +0200
+From:   "Michael S. Tsirkin" <mst@redhat.com>
+To:     Russell King - ARM Linux <linux@arm.linux.org.uk>
 Cc:     Peter Zijlstra <peterz@infradead.org>,
         linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
         linux-arch@vger.kernel.org,
@@ -43,40 +27,32 @@ Cc:     Peter Zijlstra <peterz@infradead.org>,
         x86@kernel.org, user-mode-linux-devel@lists.sourceforge.net,
         adi-buildroot-devel@lists.sourceforge.net,
         linux-sh@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        xen-devel@lists.xenproject.org,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Ingo Molnar <mingo@kernel.org>,
-        Davidlohr Bueso <dave@stgolabs.net>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        Andrey Konovalov <andreyknvl@google.com>,
-        Carsten Otte <cotte@de.ibm.com>
-Subject: Re: [PATCH v2 22/32] s390: define __smp_xxx
-Message-ID: <20160105152116.60ae92f6@mschwide>
-In-Reply-To: <20160105144842-mutt-send-email-mst@redhat.com>
+        xen-devel@lists.xenproject.org, Ingo Molnar <mingo@kernel.org>,
+        Tony Lindgren <tony@atomide.com>,
+        Andrey Konovalov <andreyknvl@google.com>
+Subject: Re: [PATCH v2 17/32] arm: define __smp_xxx
+Message-ID: <20160105163429-mutt-send-email-mst@redhat.com>
 References: <1451572003-2440-1-git-send-email-mst@redhat.com>
-        <1451572003-2440-23-git-send-email-mst@redhat.com>
-        <20160104134525.GA6344@twins.programming.kicks-ass.net>
-        <20160104221323-mutt-send-email-mst@redhat.com>
-        <20160105091319.59ddefc7@mschwide>
-        <20160105105335-mutt-send-email-mst@redhat.com>
-        <20160105130852.11148a7f@mschwide>
-        <20160105144842-mutt-send-email-mst@redhat.com>
-X-Mailer: Claws Mail 3.9.3 (GTK+ 2.24.23; x86_64-pc-linux-gnu)
+ <1451572003-2440-18-git-send-email-mst@redhat.com>
+ <20160102112438.GU8644@n2100.arm.linux.org.uk>
+ <20160103110158-mutt-send-email-mst@redhat.com>
+ <20160104133658.GY6344@twins.programming.kicks-ass.net>
+ <20160104135420.GS6373@twins.programming.kicks-ass.net>
+ <20160104135934.GE19062@n2100.arm.linux.org.uk>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-TM-AS-MML: disable
-X-Content-Scanned: Fidelis XPS MAILER
-x-cbid: 16010514-0005-0000-0000-000009EA8B30
-Return-Path: <schwidefsky@de.ibm.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20160104135934.GE19062@n2100.arm.linux.org.uk>
+X-Scanned-By: MIMEDefang 2.68 on 10.5.11.24
+Return-Path: <mst@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50915
+X-archive-position: 50916
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: schwidefsky@de.ibm.com
+X-original-sender: mst@redhat.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -89,118 +65,94 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, 5 Jan 2016 15:04:43 +0200
-"Michael S. Tsirkin" <mst@redhat.com> wrote:
-
-> On Tue, Jan 05, 2016 at 01:08:52PM +0100, Martin Schwidefsky wrote:
-> > On Tue, 5 Jan 2016 11:30:19 +0200
-> > "Michael S. Tsirkin" <mst@redhat.com> wrote:
-> > 
-> > > On Tue, Jan 05, 2016 at 09:13:19AM +0100, Martin Schwidefsky wrote:
-> > > > On Mon, 4 Jan 2016 22:18:58 +0200
-> > > > "Michael S. Tsirkin" <mst@redhat.com> wrote:
-> > > > 
-> > > > > On Mon, Jan 04, 2016 at 02:45:25PM +0100, Peter Zijlstra wrote:
-> > > > > > On Thu, Dec 31, 2015 at 09:08:38PM +0200, Michael S. Tsirkin wrote:
-> > > > > > > This defines __smp_xxx barriers for s390,
-> > > > > > > for use by virtualization.
-> > > > > > > 
-> > > > > > > Some smp_xxx barriers are removed as they are
-> > > > > > > defined correctly by asm-generic/barriers.h
-> > > > > > > 
-> > > > > > > Note: smp_mb, smp_rmb and smp_wmb are defined as full barriers
-> > > > > > > unconditionally on this architecture.
-> > > > > > > 
-> > > > > > > Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-> > > > > > > Acked-by: Arnd Bergmann <arnd@arndb.de>
-> > > > > > > ---
-> > > > > > >  arch/s390/include/asm/barrier.h | 15 +++++++++------
-> > > > > > >  1 file changed, 9 insertions(+), 6 deletions(-)
-> > > > > > > 
-> > > > > > > diff --git a/arch/s390/include/asm/barrier.h b/arch/s390/include/asm/barrier.h
-> > > > > > > index c358c31..fbd25b2 100644
-> > > > > > > --- a/arch/s390/include/asm/barrier.h
-> > > > > > > +++ b/arch/s390/include/asm/barrier.h
-> > > > > > > @@ -26,18 +26,21 @@
-> > > > > > >  #define wmb()				barrier()
-> > > > > > >  #define dma_rmb()			mb()
-> > > > > > >  #define dma_wmb()			mb()
-> > > > > > > -#define smp_mb()			mb()
-> > > > > > > -#define smp_rmb()			rmb()
-> > > > > > > -#define smp_wmb()			wmb()
-> > > > > > > -
-> > > > > > > -#define smp_store_release(p, v)						\
-> > > > > > > +#define __smp_mb()			mb()
-> > > > > > > +#define __smp_rmb()			rmb()
-> > > > > > > +#define __smp_wmb()			wmb()
-> > > > > > > +#define smp_mb()			__smp_mb()
-> > > > > > > +#define smp_rmb()			__smp_rmb()
-> > > > > > > +#define smp_wmb()			__smp_wmb()
-> > > > > > 
-> > > > > > Why define the smp_*mb() primitives here? Would not the inclusion of
-> > > > > > asm-generic/barrier.h do this?
+On Mon, Jan 04, 2016 at 01:59:34PM +0000, Russell King - ARM Linux wrote:
+> On Mon, Jan 04, 2016 at 02:54:20PM +0100, Peter Zijlstra wrote:
+> > On Mon, Jan 04, 2016 at 02:36:58PM +0100, Peter Zijlstra wrote:
+> > > On Sun, Jan 03, 2016 at 11:12:44AM +0200, Michael S. Tsirkin wrote:
+> > > > On Sat, Jan 02, 2016 at 11:24:38AM +0000, Russell King - ARM Linux wrote:
+> > > 
+> > > > > My only concern is that it gives people an additional handle onto a
+> > > > > "new" set of barriers - just because they're prefixed with __*
+> > > > > unfortunately doesn't stop anyone from using it (been there with
+> > > > > other arch stuff before.)
 > > > > > 
-> > > > > No because the generic one is a nop on !SMP, this one isn't.
-> > > > > 
-> > > > > Pls note this patch is just reordering code without making
-> > > > > functional changes.
-> > > > > And at the moment, on s390 smp_xxx barriers are always non empty.
+> > > > > I wonder whether we should consider making the smp memory barriers
+> > > > > inline functions, so these __smp_xxx() variants can be undef'd
+> > > > > afterwards, thereby preventing drivers getting their hands on these
+> > > > > new macros?
 > > > > 
-> > > > The s390 kernel is SMP to 99.99%, we just didn't bother with a
-> > > > non-smp variant for the memory-barriers. If the generic header
-> > > > is used we'd get the non-smp version for free. It will save a
-> > > > small amount of text space for CONFIG_SMP=n. 
+> > > > That'd be tricky to do cleanly since asm-generic depends on
+> > > > ifndef to add generic variants where needed.
+> > > > 
+> > > > But it would be possible to add a checkpatch test for this.
 > > > 
-> > > OK, so I'll queue a patch to do this then?
+> > > Wasn't the whole purpose of these things for 'drivers' (namely
+> > > virtio/xen hypervisor interaction) to use these?
 > > 
-> > Yes please.
+> > Ah, I see, you add virt_*mb() stuff later on for that use case.
+> > 
+> > So, assuming everybody does include asm-generic/barrier.h, you could
+> > simply #undef the __smp version at the end of that, once we've generated
+> > all the regular primitives from it, no?
 > 
-> OK, I'll add a patch on top in v3.
-
-Good, with this addition:
-
-Acked-by: Martin Schwidefsky <schwidefsky@de.ibm.com>
-
-> > > Just to make sure: the question would be, are smp_xxx barriers ever used
-> > > in s390 arch specific code to flush in/out memory accesses for
-> > > synchronization with the hypervisor?
-> > > 
-> > > I went over s390 arch code and it seems to me the answer is no
-> > > (except of course for virtio).
-> > 
-> > Correct. Guest to host communication either uses instructions which
-> > imply a memory barrier or QDIO which uses atomics.
+> Not so simple - that's why I mentioned using inline functions.
 > 
-> And atomics imply a barrier on s390, right?
-
-Yes they do.
-
-> > > But I also see a lot of weirdness on this architecture.
-> > 
-> > Mostly historical, s390 actually is one of the easiest architectures in
-> > regard to memory barriers.
-> > 
-> > > I found these calls:
-> > > 
-> > > arch/s390/include/asm/bitops.h: smp_mb__before_atomic();
-> > > arch/s390/include/asm/bitops.h: smp_mb();
-> > > 
-> > > Not used in arch specific code so this is likely OK.
-> > 
-> > This has been introduced with git commit 5402ea6af11dc5a9, the smp_mb
-> > and smp_mb__before_atomic are used in clear_bit_unlock and
-> > __clear_bit_unlock which are 1:1 copies from the code in
-> > include/asm-generic/bitops/lock.h. Only test_and_set_bit_lock differs
-> > from the generic implementation.
+> The new smp_* _macros_ are:
 > 
-> something to keep in mind, but
-> I'd rather not touch bitops at the moment - this patchset is already too big.
+> +#define smp_mb()       __smp_mb()
+> 
+> which means if we simply #undef __smp_mb(), smp_mb() then points at
+> something which is no longer available, and we'll end up with errors
+> saying that __smp_mb() doesn't exist.
+> 
+> My suggestion was to change:
+> 
+> #ifndef smp_mb
+> #define smp_mb()	__smp_mb()
+> #endif
+> 
+> to:
+> 
+> #ifndef smp_mb
+> static inline void smp_mb(void)
+> {
+> 	__smp_mb();
+> }
+> #endif
+> 
+> which then means __smp_mb() and friends can be #undef'd afterwards.
 
-With the conversion smp_mb__before_atomic to a barrier() it does the
-correct thing. I don't think that any chance is necessary.
+Absolutely, I got it.
+The issue is that e.g. tile has:
+#define __smp_mb__after_atomic()        do { } while (0)
 
--- 
-blue skies,
-   Martin.
+and this is cheaper than barrier().
 
-"Reality continues to ruin my life." - Calvin.
+For this reason I left
+#define smp_mb__after_atomic()  __smp_mb__after_atomic()
+in place there.
+
+Now, of course I can do (in asm-generic):
+
+#ifndef smp_mb__after_atomic
+static inline void smp_mb__after_atomic(void)
+{
+...
+}
+#endif
+
+but this seems ugly: architectures do defines, generic
+version does inline.
+
+
+And that is not all: APIs like smp_store_mb can take
+a variety of types as arguments so they pretty much
+must be implemented as macros.
+
+Teaching checkpatch.pl to complain about it seems like the cleanest
+approach.
+
+> -- 
+> RMK's Patch system: http://www.arm.linux.org.uk/developer/patches/
+> FTTC broadband for 0.8mile line: currently at 9.6Mbps down 400kbps up
+> according to speedtest.net.

@@ -1,40 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Jan 2016 10:21:03 +0100 (CET)
-Received: from mx2.suse.de ([195.135.220.15]:42465 "EHLO mx2.suse.de"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Jan 2016 10:30:34 +0100 (CET)
+Received: from mx1.redhat.com ([209.132.183.28]:59629 "EHLO mx1.redhat.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27009111AbcAEJVAp9UMR (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 5 Jan 2016 10:21:00 +0100
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (charybdis-ext.suse.de [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id 19B33ABE5;
-        Tue,  5 Jan 2016 09:20:59 +0000 (UTC)
-Subject: Re: [PATCH -next] MIPS: VDSO: Fix build error with binutils 2.24 and
- earlier
-To:     James Hogan <james.hogan@imgtec.com>,
-        Guenter Roeck <linux@roeck-us.net>
-References: <1450933471-7357-1-git-send-email-linux@roeck-us.net>
- <20151224124812.GA5376@jhogan-linux.le.imgtec.org>
- <20151224125726.GB5376@jhogan-linux.le.imgtec.org>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org, Qais Yousef <qais.yousef@imgtec.com>,
-        Andi Kleen <ak@linux.intel.com>
-From:   Michal Marek <mmarek@suse.cz>
-Message-ID: <568B8AFB.1020403@suse.cz>
-Date:   Tue, 5 Jan 2016 10:20:59 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.3.0
+        id S27009884AbcAEJabbiQCh (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 5 Jan 2016 10:30:31 +0100
+Received: from int-mx13.intmail.prod.int.phx2.redhat.com (int-mx13.intmail.prod.int.phx2.redhat.com [10.5.11.26])
+        by mx1.redhat.com (Postfix) with ESMTPS id 04F43915A3;
+        Tue,  5 Jan 2016 09:30:28 +0000 (UTC)
+Received: from redhat.com ([10.35.7.189])
+        by int-mx13.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with SMTP id u059UJwG028088;
+        Tue, 5 Jan 2016 04:30:20 -0500
+Date:   Tue, 5 Jan 2016 11:30:19 +0200
+From:   "Michael S. Tsirkin" <mst@redhat.com>
+To:     Martin Schwidefsky <schwidefsky@de.ibm.com>
+Cc:     Peter Zijlstra <peterz@infradead.org>,
+        linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+        linux-arch@vger.kernel.org,
+        Andrew Cooper <andrew.cooper3@citrix.com>,
+        virtualization@lists.linux-foundation.org,
+        Stefano Stabellini <stefano.stabellini@eu.citrix.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@elte.hu>, "H. Peter Anvin" <hpa@zytor.com>,
+        David Miller <davem@davemloft.net>, linux-ia64@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-metag@vger.kernel.org, linux-mips@linux-mips.org,
+        x86@kernel.org, user-mode-linux-devel@lists.sourceforge.net,
+        adi-buildroot-devel@lists.sourceforge.net,
+        linux-sh@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        xen-devel@lists.xenproject.org,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        Davidlohr Bueso <dave@stgolabs.net>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        Andrey Konovalov <andreyknvl@google.com>,
+        Carsten Otte <cotte@de.ibm.com>,
+        Christian Ehrhardt <ehrhardt@de.ibm.com>
+Subject: Re: [PATCH v2 22/32] s390: define __smp_xxx
+Message-ID: <20160105105335-mutt-send-email-mst@redhat.com>
+References: <1451572003-2440-1-git-send-email-mst@redhat.com>
+ <1451572003-2440-23-git-send-email-mst@redhat.com>
+ <20160104134525.GA6344@twins.programming.kicks-ass.net>
+ <20160104221323-mutt-send-email-mst@redhat.com>
+ <20160105091319.59ddefc7@mschwide>
 MIME-Version: 1.0
-In-Reply-To: <20151224125726.GB5376@jhogan-linux.le.imgtec.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Return-Path: <mmarek@suse.cz>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20160105091319.59ddefc7@mschwide>
+X-Scanned-By: MIMEDefang 2.68 on 10.5.11.26
+Return-Path: <mst@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50907
+X-archive-position: 50908
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mmarek@suse.cz
+X-original-sender: mst@redhat.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,93 +68,149 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 2015-12-24 13:57, James Hogan wrote:
-> On Thu, Dec 24, 2015 at 12:48:12PM +0000, James Hogan wrote:
->> Hi Guenter,
->>
->> On Wed, Dec 23, 2015 at 09:04:31PM -0800, Guenter Roeck wrote:
->>> Commit 2a037f310bab ("MIPS: VDSO: Fix build error") tries to fix a build
->>> error seen with binutils 2.24 and earlier. However, the fix does not work,
->>> and again results in the already known build errors if the kernel is built
->>> with an earlier version of binutils.
->>>
->>> CC      arch/mips/vdso/gettimeofday.o
->>> /tmp/ccnOVbHT.s: Assembler messages:
->>> /tmp/ccnOVbHT.s:50: Error: can't resolve `_start' {*UND* section} - `L0 {.text section}
->>> /tmp/ccnOVbHT.s:374: Error: can't resolve `_start' {*UND* section} - `L0 {.text section}
->>> scripts/Makefile.build:258: recipe for target 'arch/mips/vdso/gettimeofday.o' failed
->>> make[2]: *** [arch/mips/vdso/gettimeofday.o] Error 1
->>>
->>> Fixes: 2a037f310bab ("MIPS: VDSO: Fix build error")
->>> Cc: Qais Yousef <qais.yousef@imgtec.com>
->>> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
->>> ---
->>> Tested with binutils 2.25 and 2.22.
->>>
->>>  arch/mips/vdso/Makefile | 2 +-
->>>  1 file changed, 1 insertion(+), 1 deletion(-)
->>>
->>> diff --git a/arch/mips/vdso/Makefile b/arch/mips/vdso/Makefile
->>> index 018f8c7b94f2..14568900fc1d 100644
->>> --- a/arch/mips/vdso/Makefile
->>> +++ b/arch/mips/vdso/Makefile
->>> @@ -26,7 +26,7 @@ aflags-vdso := $(ccflags-vdso) \
->>>  # the comments on that file.
->>>  #
->>>  ifndef CONFIG_CPU_MIPSR6
->>> -  ifeq ($(call ld-ifversion, -lt, 22500000, y),)
->>> +  ifeq ($(call ld-ifversion, -lt, 22500000, y),y)
->>
->> I agree this is semantically correct, but there is something more evil
->> going on here.
->>
->> Originally the check was version <= 2.24
->> Qais' patch changed it to version >= 2.25 (intending version < 2.25)
->> Your patch changes it to version < 2.25
->>
->> I think the reason this fixed the problem for Qais is actually that he
->> probably had a similar toolchain version to what I'm using:
->>
->> GNU ld (Codescape GNU Tools 2015.06-05 for MIPS MTI Linux) 2.24.90
->>
->> ./scripts/ld-version.sh does this:
->>
->> print a[1]*10000000 + a[2]*100000 + a[3]*10000 + a[4]*100 + a[5];
->>
->> which changes that version number into:
->>  20000000
->> + 2400000
->> +  900000 = 23300000
->>
->> I.e. it doesn't expect a[3] to be >= 10.
->>
->> Should we do something like this (increase multipliers on a[1] and
->> a[2])?:
->>
->> diff --git a/scripts/ld-version.sh b/scripts/ld-version.sh
->> index 198580d245e0..0b67edc5bc6f 100755
->> --- a/scripts/ld-version.sh
->> +++ b/scripts/ld-version.sh
->> @@ -3,6 +3,6 @@
->>  	{
->>  	gsub(".*)", "");
->>  	split($1,a, ".");
->> -	print a[1]*10000000 + a[2]*100000 + a[3]*10000 + a[4]*100 + a[5];
->> +	print a[1]*100000000 + a[2]*1000000 + a[3]*10000 + a[4]*100 + a[5];
->>  	exit
->>  	}
->>
->> which gives 2.24.90 => 224900000.
->>
->> All call sites would need updating too to add the extra 0, but a quick
->> git grep isn't showing any other ones than this one.
+On Tue, Jan 05, 2016 at 09:13:19AM +0100, Martin Schwidefsky wrote:
+> On Mon, 4 Jan 2016 22:18:58 +0200
+> "Michael S. Tsirkin" <mst@redhat.com> wrote:
 > 
-> Actually, linux-next includes this commit which uses ld-ifversion too:
+> > On Mon, Jan 04, 2016 at 02:45:25PM +0100, Peter Zijlstra wrote:
+> > > On Thu, Dec 31, 2015 at 09:08:38PM +0200, Michael S. Tsirkin wrote:
+> > > > This defines __smp_xxx barriers for s390,
+> > > > for use by virtualization.
+> > > > 
+> > > > Some smp_xxx barriers are removed as they are
+> > > > defined correctly by asm-generic/barriers.h
+> > > > 
+> > > > Note: smp_mb, smp_rmb and smp_wmb are defined as full barriers
+> > > > unconditionally on this architecture.
+> > > > 
+> > > > Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+> > > > Acked-by: Arnd Bergmann <arnd@arndb.de>
+> > > > ---
+> > > >  arch/s390/include/asm/barrier.h | 15 +++++++++------
+> > > >  1 file changed, 9 insertions(+), 6 deletions(-)
+> > > > 
+> > > > diff --git a/arch/s390/include/asm/barrier.h b/arch/s390/include/asm/barrier.h
+> > > > index c358c31..fbd25b2 100644
+> > > > --- a/arch/s390/include/asm/barrier.h
+> > > > +++ b/arch/s390/include/asm/barrier.h
+> > > > @@ -26,18 +26,21 @@
+> > > >  #define wmb()				barrier()
+> > > >  #define dma_rmb()			mb()
+> > > >  #define dma_wmb()			mb()
+> > > > -#define smp_mb()			mb()
+> > > > -#define smp_rmb()			rmb()
+> > > > -#define smp_wmb()			wmb()
+> > > > -
+> > > > -#define smp_store_release(p, v)						\
+> > > > +#define __smp_mb()			mb()
+> > > > +#define __smp_rmb()			rmb()
+> > > > +#define __smp_wmb()			wmb()
+> > > > +#define smp_mb()			__smp_mb()
+> > > > +#define smp_rmb()			__smp_rmb()
+> > > > +#define smp_wmb()			__smp_wmb()
+> > > 
+> > > Why define the smp_*mb() primitives here? Would not the inclusion of
+> > > asm-generic/barrier.h do this?
+> > 
+> > No because the generic one is a nop on !SMP, this one isn't.
+> > 
+> > Pls note this patch is just reordering code without making
+> > functional changes.
+> > And at the moment, on s390 smp_xxx barriers are always non empty.
 > 
-> 19a3cc83353e3bb4bc28769f8606139a3d350d2d
-> "Kbuild, lto: Add Link Time Optimization support v3"
+> The s390 kernel is SMP to 99.99%, we just didn't bother with a
+> non-smp variant for the memory-barriers. If the generic header
+> is used we'd get the non-smp version for free. It will save a
+> small amount of text space for CONFIG_SMP=n. 
 
-That commit needs updating for other reasons, so feel free to fix
-ld-ifversion and its usage in arch/mips.
+OK, so I'll queue a patch to do this then?
 
-Michal
+Just to make sure: the question would be, are smp_xxx barriers ever used
+in s390 arch specific code to flush in/out memory accesses for
+synchronization with the hypervisor?
+
+I went over s390 arch code and it seems to me the answer is no
+(except of course for virtio).
+
+But I also see a lot of weirdness on this architecture.
+
+I found these calls:
+
+arch/s390/include/asm/bitops.h: smp_mb__before_atomic();
+arch/s390/include/asm/bitops.h: smp_mb();
+
+Not used in arch specific code so this is likely OK.
+
+arch/s390/kernel/vdso.c:        smp_mb();
+
+Looking at
+	Author: Christian Borntraeger <borntraeger@de.ibm.com>
+	Date:   Fri Sep 11 16:23:06 2015 +0200
+
+	    s390/vdso: use correct memory barrier
+
+	    By definition smp_wmb only orders writes against writes. (Finish all
+	    previous writes, and do not start any future write). To protect the
+	    vdso init code against early reads on other CPUs, let's use a full
+	    smp_mb at the end of vdso init. As right now smp_wmb is implemented
+	    as full serialization, this needs no stable backport, but this change
+	    will be necessary if we reimplement smp_wmb.
+
+ok from hypervisor point of view, but it's also strange:
+1. why isn't this paired with another mb somewhere?
+   this seems to violate barrier pairing rules.
+2. how does smp_mb protect against early reads on other CPUs?
+   It normally does not: it orders reads from this CPU versus writes
+   from same CPU. But init code does not appear to read anything.
+   Maybe this is some s390 specific trick?
+
+I could not figure out the above commit.
+
+
+arch/s390/kvm/kvm-s390.c:       smp_mb();
+
+Does not appear to be paired with anything.
+
+
+arch/s390/lib/spinlock.c:               smp_mb();
+arch/s390/lib/spinlock.c:                       smp_mb();
+
+Seems ok, and appears paired properly.
+Just to make sure - spinlock is not paravirtualized on s390, is it?
+
+rch/s390/kernel/time.c:        smp_wmb();
+arch/s390/kernel/time.c:        smp_wmb();
+arch/s390/kernel/time.c:        smp_wmb();
+arch/s390/kernel/time.c:        smp_wmb();
+
+It's all around vdso, so I'm guessing userspace is using this,
+this is why there's no pairing.
+
+
+
+> > Some of this could be sub-optimal, but
+> > since on s390 Linux always runs on a hypervisor,
+> > I am not sure it's safe to use the generic version -
+> > in other words, it just might be that for s390 smp_ and virt_
+> > barriers must be equivalent.
+> 
+> The definition of the memory barriers is independent from the fact
+> if the system is running on an hypervisor or not.
+> Is there really
+> an architecture where you need special virt_xxx barriers?!? 
+
+It is whenever host and guest or two guests access memory at
+the same time.
+
+The optimization where smp_xxx barriers are compiled out when
+CONFIG_SMP is cleared means that two UP guests running
+on an SMP host can not use smp_xxx barriers for communication.
+
+See explanation here:
+http://thread.gmane.org/gmane.linux.kernel.virtualization/26555
+
+> -- 
+> blue skies,
+>    Martin.
+> 
+> "Reality continues to ruin my life." - Calvin.

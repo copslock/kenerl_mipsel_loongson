@@ -1,44 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Jan 2016 06:56:25 +0100 (CET)
-Received: from smtpbg303.qq.com ([184.105.206.26]:57450 "EHLO smtpbg303.qq.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27007847AbcAEFzAy4KG- (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 5 Jan 2016 06:55:00 +0100
-X-QQ-mid: bizesmtp4t1451973251t998t287
-Received: from software.domain.org (unknown [222.92.8.142])
-        by esmtp4.qq.com (ESMTP) with 
-        id ; Tue, 05 Jan 2016 13:54:11 +0800 (CST)
-X-QQ-SSF: 01100000002000F0FK70B00A0000000
-X-QQ-FEAT: raNNwdt7yZAvevMvJY4OE0HvZYTdCw3CuVg9bd7Uzhor57d1m8iSx8KLouTM6
-        8wkH3Nd12WfN3JKW4BBpHezpHzCntU1kHJo16HKcROqd024nr2mSMVMFfsDsEUbImC9q6D4
-        Q4dqZkMMctWQY1tGxv77p40EO6fB2LhZK2TY1b5UxDHL7TPhYb3QXt1vfrgX6xSdHRoOSQA
-        nE537VBEsn1w3iaICSPJFRVUYiVGwVVeUn5yuZYnTpmdk7ssufyQOeIym0e6NDAS2DffFyu
-        pzn9tO1EewlGVOE28HVRwE3c8=
-X-QQ-GoodBg: 0
-From:   Huacai Chen <chenhc@lemote.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Aurelien Jarno <aurelien@aurel32.net>,
-        "Steven J. Hill" <Steven.Hill@imgtec.com>,
-        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>,
-        Huacai Chen <chenhc@lemote.com>
-Subject: [PATCH 1/6] MIPS: Cleanup the unused __arch_local_irq_restore() function
-Date:   Tue,  5 Jan 2016 13:59:04 +0800
-Message-Id: <1451973549-16198-2-git-send-email-chenhc@lemote.com>
-X-Mailer: git-send-email 2.4.6
-In-Reply-To: <1451973549-16198-1-git-send-email-chenhc@lemote.com>
-References: <1451973549-16198-1-git-send-email-chenhc@lemote.com>
-X-QQ-SENDSIZE: 520
-X-QQ-FName: ECD2F403058A41B3AD8022DE1E0A3ABA
-X-QQ-LocalIP: 10.130.87.152
-Return-Path: <chenhc@lemote.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Jan 2016 08:21:16 +0100 (CET)
+Received: from mail-pf0-f181.google.com ([209.85.192.181]:34091 "EHLO
+        mail-pf0-f181.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007847AbcAEHVOjU34i (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 5 Jan 2016 08:21:14 +0100
+Received: by mail-pf0-f181.google.com with SMTP id e65so162784522pfe.1;
+        Mon, 04 Jan 2016 23:21:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=date:from:to:cc:subject:message-id:mime-version:content-type
+         :content-disposition:user-agent;
+        bh=jhH272oXWBUcxO+GLQOzsgmYsjN/0b4MSjijYfUjxfw=;
+        b=dCZn3zsdOeXt/M5WtS7mqCDKZT9+Rv+QQhYevk3Tl6IzloXpkaH+RkZtpi+sIQ5Opy
+         qqyeMRoh7SFgVrJdhHod2h0pj7Xs1zoYCtRR8xN6NTsmX8KXuvuScBMzUxTj5Ze0mgro
+         //WUJ1+2jC+hgz2y06BZ9M21EKcRaGsbSgNDeQImo20m4x2FOF9+dVt6GFlXEVXQUuIb
+         eSudPD630mjeZzG0uMUAb8BcdrV32JpipM3d9H5AdzyOZ5KzzR372B4W23PiO097b2dh
+         K6B9eKkL1F+ci6dDw2JDtVn/PG/wpgd5pAk9d08SigeAQuq8qKuRraYWuXUvGZIH0mVE
+         3hsg==
+X-Received: by 10.98.43.79 with SMTP id r76mr132658583pfr.9.1451978468382;
+        Mon, 04 Jan 2016 23:21:08 -0800 (PST)
+Received: from yggdrasil.local (42-72-43-89.EMOME-IP.hinet.net. [42.72.43.89])
+        by smtp.gmail.com with ESMTPSA id d26sm101545410pfb.22.2016.01.04.23.21.05
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 04 Jan 2016 23:21:07 -0800 (PST)
+Date:   Tue, 5 Jan 2016 15:21:01 +0800
+From:   Tony Wu <tung7970@gmail.com>
+To:     ralf@linux-mips.org, Qais Yousef <qais.yousef@imgtec.com>
+Cc:     Alex Smith <alex@alex-smith.me.uk>, linux-mips@linux-mips.org
+Subject: [PATCH] MIPS: VDSO: Fix binutils version test
+Message-ID: <20160105151705-tung7970@googlemail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <tung7970@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50902
+X-archive-position: 50903
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: chenhc@lemote.com
+X-original-sender: tung7970@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,106 +53,45 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-In history, __arch_local_irq_restore() is only used by SMTC. However,
-SMTC support has been removed since 3.16, this patch remove the unused
-function.
+Commit 2a037f310bab ("MIPS: VDSO: Fix build error") fixed the logic
+for testing binutils version, but introduced another issue.
 
-Signed-off-by: Huacai Chen <chenhc@lemote.com>
----
- arch/mips/include/asm/irqflags.h | 30 ------------------------------
- arch/mips/lib/mips-atomic.c      | 30 +-----------------------------
- 2 files changed, 1 insertion(+), 59 deletions(-)
+The ld-ifversion macro is defined as follows:
 
-diff --git a/arch/mips/include/asm/irqflags.h b/arch/mips/include/asm/irqflags.h
-index e7b138b..65c351e 100644
---- a/arch/mips/include/asm/irqflags.h
-+++ b/arch/mips/include/asm/irqflags.h
-@@ -84,41 +84,11 @@ static inline void arch_local_irq_restore(unsigned long flags)
- 	: "memory");
- }
- 
--static inline void __arch_local_irq_restore(unsigned long flags)
--{
--	__asm__ __volatile__(
--	"	.set	push						\n"
--	"	.set	noreorder					\n"
--	"	.set	noat						\n"
--#if defined(CONFIG_IRQ_MIPS_CPU)
--	/*
--	 * Slow, but doesn't suffer from a relatively unlikely race
--	 * condition we're having since days 1.
--	 */
--	"	beqz	%[flags], 1f					\n"
--	"	di							\n"
--	"	ei							\n"
--	"1:								\n"
--#else
--	/*
--	 * Fast, dangerous.  Life is fun, life is good.
--	 */
--	"	mfc0	$1, $12						\n"
--	"	ins	$1, %[flags], 0, 1				\n"
--	"	mtc0	$1, $12						\n"
--#endif
--	"	" __stringify(__irq_disable_hazard) "			\n"
--	"	.set	pop						\n"
--	: [flags] "=r" (flags)
--	: "0" (flags)
--	: "memory");
--}
- #else
- /* Functions that require preempt_{dis,en}able() are in mips-atomic.c */
- void arch_local_irq_disable(void);
- unsigned long arch_local_irq_save(void);
- void arch_local_irq_restore(unsigned long flags);
--void __arch_local_irq_restore(unsigned long flags);
- #endif /* CONFIG_CPU_MIPSR2 || CONFIG_CPU_MIPSR6 */
- 
- static inline void arch_local_irq_enable(void)
-diff --git a/arch/mips/lib/mips-atomic.c b/arch/mips/lib/mips-atomic.c
-index 272af8a..5530070 100644
---- a/arch/mips/lib/mips-atomic.c
-+++ b/arch/mips/lib/mips-atomic.c
-@@ -57,7 +57,6 @@ notrace void arch_local_irq_disable(void)
- }
- EXPORT_SYMBOL(arch_local_irq_disable);
- 
--
- notrace unsigned long arch_local_irq_save(void)
- {
- 	unsigned long flags;
-@@ -111,31 +110,4 @@ notrace void arch_local_irq_restore(unsigned long flags)
- }
- EXPORT_SYMBOL(arch_local_irq_restore);
- 
--
--notrace void __arch_local_irq_restore(unsigned long flags)
--{
--	unsigned long __tmp1;
--
--	preempt_disable();
--
--	__asm__ __volatile__(
--	"	.set	push						\n"
--	"	.set	noreorder					\n"
--	"	.set	noat						\n"
--	"	mfc0	$1, $12						\n"
--	"	andi	%[flags], 1					\n"
--	"	ori	$1, 0x1f					\n"
--	"	xori	$1, 0x1f					\n"
--	"	or	%[flags], $1					\n"
--	"	mtc0	%[flags], $12					\n"
--	"	" __stringify(__irq_disable_hazard) "			\n"
--	"	.set	pop						\n"
--	: [flags] "=r" (__tmp1)
--	: "0" (flags)
--	: "memory");
--
--	preempt_enable();
--}
--EXPORT_SYMBOL(__arch_local_irq_restore);
--
--#endif /* !CONFIG_CPU_MIPSR2 */
-+#endif /* !CONFIG_CPU_MIPSR2 && !CONFIG_CPU_MIPSR6 */
--- 
-2.4.6
+  $(shell [ $(ld-version) $(1) $(2) ] && echo $(3) || echo $(4))
+
+This macro checks ld version to echo $(3) or echo $(4) based on
+the given condition.
+
+It is called as follows in arch/mips/vdso/Makefile:
+
+  ifeq ($(call ld-ifversion, -lt, 22500000, y),)
+    $(warning MIPS VDSO requires binutils >= 2.25)
+    obj-vdso-y := $(filter-out gettimeofday.o, $(obj-vdso-y))
+    ccflags-vdso += -DDISABLE_MIPS_VDSO
+  endif
+
+Since $(4) is empty, echo $(4) will evaluate to a simple 'echo'. So, in
+case binutils version is indeed greater than 2.25.0, ld-ifversion macro
+will return a newline, not the empty string as expected, and that makes
+the test fail.
+
+This patch fixes the test condition.
+
+Signed-off-by: Tony Wu <tung7970@gmail.com>
+Cc: Qais Yousef <qais.yousef@imgtec.com>
+Cc: Alex Smith <alex@alex-smith.me.uk>
+
+diff --git a/arch/mips/vdso/Makefile b/arch/mips/vdso/Makefile
+index 018f8c7..a54a082 100644
+--- a/arch/mips/vdso/Makefile
++++ b/arch/mips/vdso/Makefile
+@@ -26,7 +26,7 @@ aflags-vdso := $(ccflags-vdso) \
+ # the comments on that file.
+ #
+ ifndef CONFIG_CPU_MIPSR6
+-  ifeq ($(call ld-ifversion, -lt, 22500000, y),)
++  ifneq ($(call ld-ifversion,-ge,22500000,y),y)
+     $(warning MIPS VDSO requires binutils >= 2.25)
+     obj-vdso-y := $(filter-out gettimeofday.o, $(obj-vdso-y))
+     ccflags-vdso += -DDISABLE_MIPS_VDSO

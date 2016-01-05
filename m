@@ -1,71 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Jan 2016 02:37:41 +0100 (CET)
-Received: from mail-ob0-f196.google.com ([209.85.214.196]:36282 "EHLO
-        mail-ob0-f196.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27009781AbcAEBhiyBomm (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 5 Jan 2016 02:37:38 +0100
-Received: by mail-ob0-f196.google.com with SMTP id or18so21829887obb.3
-        for <linux-mips@linux-mips.org>; Mon, 04 Jan 2016 17:37:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-type:content-disposition:in-reply-to:user-agent;
-        bh=Ugr6DjtUHr/PMYqG/o+GbXhrMpS/9rj4l9/OaEIMOcA=;
-        b=qYN2KabvmUlhe1lAmPRHEYbnR+ik0lwV38h1/fc177Ud24UOO2s4+MfA9jO0/DZicf
-         DO+1InVbSp1l1sOyPFg6215bEKSxr234FoqAucoHKZ7LpQFFxQIin1PaRMCIY/d0QQgc
-         UcyIQ2sLZFuluTepstfBi2D4cTUTLulmN1RXSH6nQ3cWRGCRP2ak7qiJsNPdNu8mmCRF
-         MOZnk+Y6Wcp1dWr+FooLVXdHrb2XSX/URifC9swfmHSu0DIGd6xmU6PprnPc8+7MDEZk
-         f94Vo7SiK3CLnKW17/mG0WxHwW7TQNoHpvv8IXyEifBhHdSQl6kaRnizd3i0OAiITbhG
-         lsOw==
-X-Received: by 10.60.23.66 with SMTP id k2mr61821637oef.17.1451957852977;
-        Mon, 04 Jan 2016 17:37:32 -0800 (PST)
-Received: from localhost ([45.32.128.109])
-        by smtp.gmail.com with ESMTPSA id m2sm35439898oia.7.2016.01.04.17.37.30
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 04 Jan 2016 17:37:31 -0800 (PST)
-Date:   Tue, 5 Jan 2016 09:36:55 +0800
-From:   Boqun Feng <boqun.feng@gmail.com>
-To:     "Michael S. Tsirkin" <mst@redhat.com>
-Cc:     linux-kernel@vger.kernel.org,
-        Peter Zijlstra <peterz@infradead.org>,
-        Arnd Bergmann <arnd@arndb.de>, linux-arch@vger.kernel.org,
-        Andrew Cooper <andrew.cooper3@citrix.com>,
-        virtualization@lists.linux-foundation.org,
-        Stefano Stabellini <stefano.stabellini@eu.citrix.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@elte.hu>, "H. Peter Anvin" <hpa@zytor.com>,
-        David Miller <davem@davemloft.net>, linux-ia64@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-metag@vger.kernel.org, linux-mips@linux-mips.org,
-        x86@kernel.org, user-mode-linux-devel@lists.sourceforge.net,
-        adi-buildroot-devel@lists.sourceforge.net,
-        linux-sh@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        xen-devel@lists.xenproject.org,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Ingo Molnar <mingo@kernel.org>,
-        Davidlohr Bueso <dave@stgolabs.net>,
-        Andrey Konovalov <andreyknvl@google.com>,
-        "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>
-Subject: Re: [PATCH v2 15/32] powerpc: define __smp_xxx
-Message-ID: <20160105013648.GA1256@fixme-laptop.cn.ibm.com>
-References: <1451572003-2440-1-git-send-email-mst@redhat.com>
- <1451572003-2440-16-git-send-email-mst@redhat.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1451572003-2440-16-git-send-email-mst@redhat.com>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-Return-Path: <boqun.feng@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Jan 2016 06:54:37 +0100 (CET)
+Received: from smtpbgbr2.qq.com ([54.207.22.56]:57634 "EHLO smtpbgbr2.qq.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27007189AbcAEFye6sHP- (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 5 Jan 2016 06:54:34 +0100
+X-QQ-mid: bizesmtp4t1451973254t244t260
+Received: from software.domain.org (unknown [222.92.8.142])
+        by esmtp4.qq.com (ESMTP) with 
+        id ; Tue, 05 Jan 2016 13:54:13 +0800 (CST)
+X-QQ-SSF: 01100000002000F0FK70B00A0000000
+X-QQ-FEAT: 6dXuswn9i1WC2RVMz1rE+DNwR+c9K5vXWsp1vaE2wcNES80G7GwPublUR+M5Z
+        7fB+0KFr6fyDDTQWZ9xLzn/aGAUb201fmYQ++N/yDTWl2pDBW97jqTMqDRSj3sNEFuPaffh
+        DgjYbt0+CB8sXZznpqb+Ek0Bz5Atz0AOXmlY3tpWk1wOdV2NninwN6lMsL4FStdb9qvJX0w
+        +hDvif+is44PMoPDwv+oWOUxZmbgBV4kWi7SNmI+WxG26swHl1w/nMwm7gFRx9EyM+J+MAW
+        3wT3yX7LVyteeP
+X-QQ-GoodBg: 0
+From:   Huacai Chen <chenhc@lemote.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     Aurelien Jarno <aurelien@aurel32.net>,
+        "Steven J. Hill" <Steven.Hill@imgtec.com>,
+        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        Huacai Chen <chenhc@lemote.com>
+Subject: [PATCH 2/6] MIPS: Loongson-3: Improve -march option and move it to Platform
+Date:   Tue,  5 Jan 2016 13:59:05 +0800
+Message-Id: <1451973549-16198-3-git-send-email-chenhc@lemote.com>
+X-Mailer: git-send-email 2.4.6
+In-Reply-To: <1451973549-16198-1-git-send-email-chenhc@lemote.com>
+References: <1451973549-16198-1-git-send-email-chenhc@lemote.com>
+X-QQ-SENDSIZE: 520
+X-QQ-Bgrelay: 1
+Return-Path: <chenhc@lemote.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50895
+X-archive-position: 50896
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: boqun.feng@gmail.com
+X-original-sender: chenhc@lemote.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -78,98 +50,69 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Michael,
+If GCC >= 4.9 and Binutils >=2.25, we use -march=loongson3a, otherwise
+we use -march=mips64r2, this can slightly improve performance. Besides,
+arch/mips/loongson64/Platform is a better location rather than arch/
+mips/Makefile.
 
-On Thu, Dec 31, 2015 at 09:07:42PM +0200, Michael S. Tsirkin wrote:
-> This defines __smp_xxx barriers for powerpc
-> for use by virtualization.
-> 
-> smp_xxx barriers are removed as they are
-> defined correctly by asm-generic/barriers.h
-> 
-> This reduces the amount of arch-specific boiler-plate code.
-> 
-> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-> Acked-by: Arnd Bergmann <arnd@arndb.de>
-> ---
->  arch/powerpc/include/asm/barrier.h | 24 ++++++++----------------
->  1 file changed, 8 insertions(+), 16 deletions(-)
-> 
-> diff --git a/arch/powerpc/include/asm/barrier.h b/arch/powerpc/include/asm/barrier.h
-> index 980ad0c..c0deafc 100644
-> --- a/arch/powerpc/include/asm/barrier.h
-> +++ b/arch/powerpc/include/asm/barrier.h
-> @@ -44,19 +44,11 @@
->  #define dma_rmb()	__lwsync()
->  #define dma_wmb()	__asm__ __volatile__ (stringify_in_c(SMPWMB) : : :"memory")
->  
-> -#ifdef CONFIG_SMP
-> -#define smp_lwsync()	__lwsync()
-> +#define __smp_lwsync()	__lwsync()
->  
+Signed-off-by: Huacai Chen <chenhc@lemote.com>
+---
+ arch/mips/Makefile            | 10 ----------
+ arch/mips/loongson64/Platform | 21 +++++++++++++++++++++
+ 2 files changed, 21 insertions(+), 10 deletions(-)
 
-so __smp_lwsync() is always mapped to lwsync, right?
-
-> -#define smp_mb()	mb()
-> -#define smp_rmb()	__lwsync()
-> -#define smp_wmb()	__asm__ __volatile__ (stringify_in_c(SMPWMB) : : :"memory")
-> -#else
-> -#define smp_lwsync()	barrier()
-> -
-> -#define smp_mb()	barrier()
-> -#define smp_rmb()	barrier()
-> -#define smp_wmb()	barrier()
-> -#endif /* CONFIG_SMP */
-> +#define __smp_mb()	mb()
-> +#define __smp_rmb()	__lwsync()
-> +#define __smp_wmb()	__asm__ __volatile__ (stringify_in_c(SMPWMB) : : :"memory")
->  
->  /*
->   * This is a barrier which prevents following instructions from being
-> @@ -67,18 +59,18 @@
->  #define data_barrier(x)	\
->  	asm volatile("twi 0,%0,0; isync" : : "r" (x) : "memory");
->  
-> -#define smp_store_release(p, v)						\
-> +#define __smp_store_release(p, v)						\
->  do {									\
->  	compiletime_assert_atomic_type(*p);				\
-> -	smp_lwsync();							\
-> +	__smp_lwsync();							\
-
-, therefore this will emit an lwsync no matter SMP or UP.
-
-Another thing is that smp_lwsync() may have a third user(other than
-smp_load_acquire() and smp_store_release()):
-
-http://article.gmane.org/gmane.linux.ports.ppc.embedded/89877
-
-I'm OK to change my patch accordingly, but do we really want
-smp_lwsync() get involved in this cleanup? If I understand you
-correctly, this cleanup focuses on external API like smp_{r,w,}mb(),
-while smp_lwsync() is internal to PPC.
-
-Regards,
-Boqun
-
->  	WRITE_ONCE(*p, v);						\
->  } while (0)
->  
-> -#define smp_load_acquire(p)						\
-> +#define __smp_load_acquire(p)						\
->  ({									\
->  	typeof(*p) ___p1 = READ_ONCE(*p);				\
->  	compiletime_assert_atomic_type(*p);				\
-> -	smp_lwsync();							\
-> +	__smp_lwsync();							\
->  	___p1;								\
->  })
->  
-> -- 
-> MST
-> 
-> --
-> To unsubscribe from this list: send the line "unsubscribe linux-kernel" in
-> the body of a message to majordomo@vger.kernel.org
-> More majordomo info at  http://vger.kernel.org/majordomo-info.html
-> Please read the FAQ at  http://www.tux.org/lkml/
+diff --git a/arch/mips/Makefile b/arch/mips/Makefile
+index 3f70ba5..e78d60d 100644
+--- a/arch/mips/Makefile
++++ b/arch/mips/Makefile
+@@ -166,16 +166,6 @@ cflags-$(CONFIG_CPU_CAVIUM_OCTEON) += -Wa,-march=octeon
+ endif
+ cflags-$(CONFIG_CAVIUM_CN63XXP1) += -Wa,-mfix-cn63xxp1
+ cflags-$(CONFIG_CPU_BMIPS)	+= -march=mips32 -Wa,-mips32 -Wa,--trap
+-#
+-# binutils from v2.25 on and gcc starting from v4.9.0 treat -march=loongson3a
+-# as MIPS64 R1; older versions as just R1.  This leaves the possibility open
+-# that GCC might generate R2 code for -march=loongson3a which then is rejected
+-# by GAS.  The cc-option can't probe for this behaviour so -march=loongson3a
+-# can't easily be used safely within the kbuild framework.
+-#
+-cflags-$(CONFIG_CPU_LOONGSON3)  +=					\
+-	$(call cc-option,-march=mips64r2,-mips64r2 -U_MIPS_ISA -D_MIPS_ISA=_MIPS_ISA_MIPS64) \
+-	-Wa,-mips64r2 -Wa,--trap
+ 
+ cflags-$(CONFIG_CPU_R4000_WORKAROUNDS)	+= $(call cc-option,-mfix-r4000,)
+ cflags-$(CONFIG_CPU_R4400_WORKAROUNDS)	+= $(call cc-option,-mfix-r4400,)
+diff --git a/arch/mips/loongson64/Platform b/arch/mips/loongson64/Platform
+index 2e48e83..85d8089 100644
+--- a/arch/mips/loongson64/Platform
++++ b/arch/mips/loongson64/Platform
+@@ -22,6 +22,27 @@ ifdef CONFIG_CPU_LOONGSON2F_WORKAROUNDS
+   endif
+ endif
+ 
++cflags-$(CONFIG_CPU_LOONGSON3)	+= -Wa,--trap
++#
++# binutils from v2.25 on and gcc starting from v4.9.0 treat -march=loongson3a
++# as MIPS64 R2; older versions as just R1.  This leaves the possibility open
++# that GCC might generate R2 code for -march=loongson3a which then is rejected
++# by GAS.  The cc-option can't probe for this behaviour so -march=loongson3a
++# can't easily be used safely within the kbuild framework.
++#
++ifeq ($(call cc-ifversion, -ge, 0409, y), y)
++  ifeq ($(call ld-ifversion, -ge, 22500000, y), y)
++    cflags-$(CONFIG_CPU_LOONGSON3)  += \
++      $(call cc-option,-march=loongson3a -U_MIPS_ISA -D_MIPS_ISA=_MIPS_ISA_MIPS64)
++  else
++    cflags-$(CONFIG_CPU_LOONGSON3)  += \
++      $(call cc-option,-march=mips64r2,-mips64r2 -U_MIPS_ISA -D_MIPS_ISA=_MIPS_ISA_MIPS64)
++  endif
++else
++    cflags-$(CONFIG_CPU_LOONGSON3)  += \
++      $(call cc-option,-march=mips64r2,-mips64r2 -U_MIPS_ISA -D_MIPS_ISA=_MIPS_ISA_MIPS64)
++endif
++
+ #
+ # Loongson Machines' Support
+ #
+-- 
+2.4.6

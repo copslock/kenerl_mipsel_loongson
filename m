@@ -1,36 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Jan 2016 09:13:33 +0100 (CET)
-Received: from e06smtp08.uk.ibm.com ([195.75.94.104]:40803 "EHLO
-        e06smtp08.uk.ibm.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27008357AbcAEINa4jX00 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 5 Jan 2016 09:13:30 +0100
-Received: from localhost
-        by e06smtp08.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <linux-mips@linux-mips.org> from <schwidefsky@de.ibm.com>;
-        Tue, 5 Jan 2016 08:13:25 -0000
-Received: from d06dlp02.portsmouth.uk.ibm.com (9.149.20.14)
-        by e06smtp08.uk.ibm.com (192.168.101.138) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        Tue, 5 Jan 2016 08:13:24 -0000
-X-IBM-Helo: d06dlp02.portsmouth.uk.ibm.com
-X-IBM-MailFrom: schwidefsky@de.ibm.com
-X-IBM-RcptTo: linux-mips@linux-mips.org
-Received: from b06cxnps3074.portsmouth.uk.ibm.com (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
-        by d06dlp02.portsmouth.uk.ibm.com (Postfix) with ESMTP id B27CB219004D
-        for <linux-mips@linux-mips.org>; Tue,  5 Jan 2016 08:13:13 +0000 (GMT)
-Received: from d06av11.portsmouth.uk.ibm.com (d06av11.portsmouth.uk.ibm.com [9.149.37.252])
-        by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id u058DNdT8716644
-        for <linux-mips@linux-mips.org>; Tue, 5 Jan 2016 08:13:23 GMT
-Received: from d06av11.portsmouth.uk.ibm.com (localhost [127.0.0.1])
-        by d06av11.portsmouth.uk.ibm.com (8.14.4/8.14.4/NCO v10.0 AVout) with ESMTP id u058DLF9013820
-        for <linux-mips@linux-mips.org>; Tue, 5 Jan 2016 01:13:23 -0700
-Received: from mschwide (dyn-9-152-212-43.boeblingen.de.ibm.com [9.152.212.43])
-        by d06av11.portsmouth.uk.ibm.com (8.14.4/8.14.4/NCO v10.0 AVin) with ESMTP id u058DLwT013799;
-        Tue, 5 Jan 2016 01:13:21 -0700
-Date:   Tue, 5 Jan 2016 09:13:19 +0100
-From:   Martin Schwidefsky <schwidefsky@de.ibm.com>
-To:     "Michael S. Tsirkin" <mst@redhat.com>
-Cc:     Peter Zijlstra <peterz@infradead.org>,
-        linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
-        linux-arch@vger.kernel.org,
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Jan 2016 09:51:39 +0100 (CET)
+Received: from mx1.redhat.com ([209.132.183.28]:58009 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27009111AbcAEIve4N2YR (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 5 Jan 2016 09:51:34 +0100
+Received: from int-mx10.intmail.prod.int.phx2.redhat.com (int-mx10.intmail.prod.int.phx2.redhat.com [10.5.11.23])
+        by mx1.redhat.com (Postfix) with ESMTPS id 43E0BAF384;
+        Tue,  5 Jan 2016 08:51:28 +0000 (UTC)
+Received: from redhat.com ([10.35.7.189])
+        by int-mx10.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with SMTP id u058pHgw016098;
+        Tue, 5 Jan 2016 03:51:18 -0500
+Date:   Tue, 5 Jan 2016 10:51:17 +0200
+From:   "Michael S. Tsirkin" <mst@redhat.com>
+To:     Boqun Feng <boqun.feng@gmail.com>
+Cc:     linux-kernel@vger.kernel.org,
+        Peter Zijlstra <peterz@infradead.org>,
+        Arnd Bergmann <arnd@arndb.de>, linux-arch@vger.kernel.org,
         Andrew Cooper <andrew.cooper3@citrix.com>,
         virtualization@lists.linux-foundation.org,
         Stefano Stabellini <stefano.stabellini@eu.citrix.com>,
@@ -44,34 +28,32 @@ Cc:     Peter Zijlstra <peterz@infradead.org>,
         adi-buildroot-devel@lists.sourceforge.net,
         linux-sh@vger.kernel.org, linux-xtensa@linux-xtensa.org,
         xen-devel@lists.xenproject.org,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
         Ingo Molnar <mingo@kernel.org>,
         Davidlohr Bueso <dave@stgolabs.net>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        Andrey Konovalov <andreyknvl@google.com>
-Subject: Re: [PATCH v2 22/32] s390: define __smp_xxx
-Message-ID: <20160105091319.59ddefc7@mschwide>
-In-Reply-To: <20160104221323-mutt-send-email-mst@redhat.com>
+        Andrey Konovalov <andreyknvl@google.com>,
+        "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>
+Subject: Re: [PATCH v2 15/32] powerpc: define __smp_xxx
+Message-ID: <20160105085117.GA11858@redhat.com>
 References: <1451572003-2440-1-git-send-email-mst@redhat.com>
-        <1451572003-2440-23-git-send-email-mst@redhat.com>
-        <20160104134525.GA6344@twins.programming.kicks-ass.net>
-        <20160104221323-mutt-send-email-mst@redhat.com>
-X-Mailer: Claws Mail 3.9.3 (GTK+ 2.24.23; x86_64-pc-linux-gnu)
+ <1451572003-2440-16-git-send-email-mst@redhat.com>
+ <20160105013648.GA1256@fixme-laptop.cn.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-TM-AS-MML: disable
-X-Content-Scanned: Fidelis XPS MAILER
-x-cbid: 16010508-0033-0000-0000-0000054A6C10
-Return-Path: <schwidefsky@de.ibm.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20160105013648.GA1256@fixme-laptop.cn.ibm.com>
+X-Scanned-By: MIMEDefang 2.68 on 10.5.11.23
+Return-Path: <mst@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50905
+X-archive-position: 50906
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: schwidefsky@de.ibm.com
+X-original-sender: mst@redhat.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -84,72 +66,118 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, 4 Jan 2016 22:18:58 +0200
-"Michael S. Tsirkin" <mst@redhat.com> wrote:
-
-> On Mon, Jan 04, 2016 at 02:45:25PM +0100, Peter Zijlstra wrote:
-> > On Thu, Dec 31, 2015 at 09:08:38PM +0200, Michael S. Tsirkin wrote:
-> > > This defines __smp_xxx barriers for s390,
-> > > for use by virtualization.
-> > > 
-> > > Some smp_xxx barriers are removed as they are
-> > > defined correctly by asm-generic/barriers.h
-> > > 
-> > > Note: smp_mb, smp_rmb and smp_wmb are defined as full barriers
-> > > unconditionally on this architecture.
-> > > 
-> > > Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-> > > Acked-by: Arnd Bergmann <arnd@arndb.de>
-> > > ---
-> > >  arch/s390/include/asm/barrier.h | 15 +++++++++------
-> > >  1 file changed, 9 insertions(+), 6 deletions(-)
-> > > 
-> > > diff --git a/arch/s390/include/asm/barrier.h b/arch/s390/include/asm/barrier.h
-> > > index c358c31..fbd25b2 100644
-> > > --- a/arch/s390/include/asm/barrier.h
-> > > +++ b/arch/s390/include/asm/barrier.h
-> > > @@ -26,18 +26,21 @@
-> > >  #define wmb()				barrier()
-> > >  #define dma_rmb()			mb()
-> > >  #define dma_wmb()			mb()
-> > > -#define smp_mb()			mb()
-> > > -#define smp_rmb()			rmb()
-> > > -#define smp_wmb()			wmb()
-> > > -
-> > > -#define smp_store_release(p, v)						\
-> > > +#define __smp_mb()			mb()
-> > > +#define __smp_rmb()			rmb()
-> > > +#define __smp_wmb()			wmb()
-> > > +#define smp_mb()			__smp_mb()
-> > > +#define smp_rmb()			__smp_rmb()
-> > > +#define smp_wmb()			__smp_wmb()
+On Tue, Jan 05, 2016 at 09:36:55AM +0800, Boqun Feng wrote:
+> Hi Michael,
+> 
+> On Thu, Dec 31, 2015 at 09:07:42PM +0200, Michael S. Tsirkin wrote:
+> > This defines __smp_xxx barriers for powerpc
+> > for use by virtualization.
 > > 
-> > Why define the smp_*mb() primitives here? Would not the inclusion of
-> > asm-generic/barrier.h do this?
+> > smp_xxx barriers are removed as they are
+> > defined correctly by asm-generic/barriers.h
+
+I think this is the part that was missed in review.
+
+> > This reduces the amount of arch-specific boiler-plate code.
+> > 
+> > Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+> > Acked-by: Arnd Bergmann <arnd@arndb.de>
+> > ---
+> >  arch/powerpc/include/asm/barrier.h | 24 ++++++++----------------
+> >  1 file changed, 8 insertions(+), 16 deletions(-)
+> > 
+> > diff --git a/arch/powerpc/include/asm/barrier.h b/arch/powerpc/include/asm/barrier.h
+> > index 980ad0c..c0deafc 100644
+> > --- a/arch/powerpc/include/asm/barrier.h
+> > +++ b/arch/powerpc/include/asm/barrier.h
+> > @@ -44,19 +44,11 @@
+> >  #define dma_rmb()	__lwsync()
+> >  #define dma_wmb()	__asm__ __volatile__ (stringify_in_c(SMPWMB) : : :"memory")
+> >  
+> > -#ifdef CONFIG_SMP
+> > -#define smp_lwsync()	__lwsync()
+> > +#define __smp_lwsync()	__lwsync()
+> >  
 > 
-> No because the generic one is a nop on !SMP, this one isn't.
+> so __smp_lwsync() is always mapped to lwsync, right?
+
+Yes.
+
+> > -#define smp_mb()	mb()
+> > -#define smp_rmb()	__lwsync()
+> > -#define smp_wmb()	__asm__ __volatile__ (stringify_in_c(SMPWMB) : : :"memory")
+> > -#else
+> > -#define smp_lwsync()	barrier()
+> > -
+> > -#define smp_mb()	barrier()
+> > -#define smp_rmb()	barrier()
+> > -#define smp_wmb()	barrier()
+> > -#endif /* CONFIG_SMP */
+> > +#define __smp_mb()	mb()
+> > +#define __smp_rmb()	__lwsync()
+> > +#define __smp_wmb()	__asm__ __volatile__ (stringify_in_c(SMPWMB) : : :"memory")
+> >  
+> >  /*
+> >   * This is a barrier which prevents following instructions from being
+> > @@ -67,18 +59,18 @@
+> >  #define data_barrier(x)	\
+> >  	asm volatile("twi 0,%0,0; isync" : : "r" (x) : "memory");
+> >  
+> > -#define smp_store_release(p, v)						\
+> > +#define __smp_store_release(p, v)						\
+> >  do {									\
+> >  	compiletime_assert_atomic_type(*p);				\
+> > -	smp_lwsync();							\
+> > +	__smp_lwsync();							\
 > 
-> Pls note this patch is just reordering code without making
-> functional changes.
-> And at the moment, on s390 smp_xxx barriers are always non empty.
+> , therefore this will emit an lwsync no matter SMP or UP.
 
-The s390 kernel is SMP to 99.99%, we just didn't bother with a
-non-smp variant for the memory-barriers. If the generic header
-is used we'd get the non-smp version for free. It will save a
-small amount of text space for CONFIG_SMP=n. 
- 
-> Some of this could be sub-optimal, but
-> since on s390 Linux always runs on a hypervisor,
-> I am not sure it's safe to use the generic version -
-> in other words, it just might be that for s390 smp_ and virt_
-> barriers must be equivalent.
+Absolutely. But smp_store_release (without __) will not.
 
-The definition of the memory barriers is independent from the fact
-if the system is running on an hypervisor or not. Is there really
-an architecture where you need special virt_xxx barriers?!? 
+Please note I did test this: for ppc code before and after
+this patch generates exactly the same binary on SMP and UP.
 
--- 
-blue skies,
-   Martin.
 
-"Reality continues to ruin my life." - Calvin.
+> Another thing is that smp_lwsync() may have a third user(other than
+> smp_load_acquire() and smp_store_release()):
+> 
+> http://article.gmane.org/gmane.linux.ports.ppc.embedded/89877
+> 
+> I'm OK to change my patch accordingly, but do we really want
+> smp_lwsync() get involved in this cleanup? If I understand you
+> correctly, this cleanup focuses on external API like smp_{r,w,}mb(),
+> while smp_lwsync() is internal to PPC.
+> 
+> Regards,
+> Boqun
+
+I think you missed the leading ___ :)
+
+smp_store_release is external and it needs __smp_lwsync as
+defined here.
+
+I can duplicate some code and have smp_lwsync *not* call __smp_lwsync
+but why do this? Still, if you prefer it this way,
+please let me know.
+
+> >  	WRITE_ONCE(*p, v);						\
+> >  } while (0)
+> >  
+> > -#define smp_load_acquire(p)						\
+> > +#define __smp_load_acquire(p)						\
+> >  ({									\
+> >  	typeof(*p) ___p1 = READ_ONCE(*p);				\
+> >  	compiletime_assert_atomic_type(*p);				\
+> > -	smp_lwsync();							\
+> > +	__smp_lwsync();							\
+> >  	___p1;								\
+> >  })
+> >  
+> > -- 
+> > MST
+> > 
+> > --
+> > To unsubscribe from this list: send the line "unsubscribe linux-kernel" in
+> > the body of a message to majordomo@vger.kernel.org
+> > More majordomo info at  http://vger.kernel.org/majordomo-info.html
+> > Please read the FAQ at  http://www.tux.org/lkml/

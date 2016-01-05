@@ -1,53 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Jan 2016 18:43:35 +0100 (CET)
-Received: from mail-pa0-f46.google.com ([209.85.220.46]:35150 "EHLO
-        mail-pa0-f46.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27009955AbcAERnU3Xfmm (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 5 Jan 2016 18:43:20 +0100
-Received: by mail-pa0-f46.google.com with SMTP id ho8so2080686pac.2
-        for <linux-mips@linux-mips.org>; Tue, 05 Jan 2016 09:43:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-type:content-disposition:in-reply-to:user-agent;
-        bh=kD/9/yv32gCrI40XvCfUJ0X+Ts1N4aJe0UFPd8L8L20=;
-        b=uE8PFnxvr+9APnGsRrTmkpbsNFElU8MPbx5f8J/ihQ19F6RZyKDT0y7WScEYt7EN2Q
-         q5cPQWh4Ff8p3BV58O/kro/EsFUv2avl+1vLWMZ2ktvWat6m9J7f1EPGaKqY8XS+DZON
-         YHg6UVSHkcewBZ6wasj4nkzenh5bJHhCmwM3xC968UNiu/zjEpgOkSdyVCObAY1Yii9M
-         Cqwjgk47seNMqFwCujm4WInVpY2CuXPXROXa2FGxTCWz6eRc9R3R/Dspq6PODJfbJo8q
-         qjofkY4qJpLIrzVrjmZd214PHDUDKlok5ymnSGZ7/KRDmDNiUDdSndbA6eKGiErhtvXb
-         b2Qg==
-X-Received: by 10.66.218.225 with SMTP id pj1mr132391888pac.40.1452015794368;
-        Tue, 05 Jan 2016 09:43:14 -0800 (PST)
-Received: from ast-mbp.thefacebook.com ([2620:10d:c090:200::b:e6be])
-        by smtp.gmail.com with ESMTPSA id w23sm106632527pfa.24.2016.01.05.09.43.13
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 05 Jan 2016 09:43:13 -0800 (PST)
-Date:   Tue, 5 Jan 2016 09:43:10 -0800
-From:   Alexei Starovoitov <alexei.starovoitov@gmail.com>
-To:     Daniel Borkmann <daniel@iogearbox.net>
-Cc:     Rabin Vincent <rabin@rab.in>, davem@davemloft.net,
-        netdev@vger.kernel.org, ast@kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
-        linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] net: filter: make JITs zero A for SKF_AD_ALU_XOR_X
-Message-ID: <20160105174309.GA83548@ast-mbp.thefacebook.com>
-References: <1452007387-626-1-git-send-email-rabin@rab.in>
- <568BF11F.1060507@iogearbox.net>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <568BF11F.1060507@iogearbox.net>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-Return-Path: <alexei.starovoitov@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Jan 2016 18:47:19 +0100 (CET)
+Received: from mx2.suse.de ([195.135.220.15]:43726 "EHLO mx2.suse.de"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27006757AbcAERrRgOPxm (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 5 Jan 2016 18:47:17 +0100
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+X-Amavis-Alert: BAD HEADER SECTION, Duplicate header field: "References"
+Received: from relay2.suse.de (charybdis-ext.suse.de [195.135.220.254])
+        by mx2.suse.de (Postfix) with ESMTP id B52B9AAB6;
+        Tue,  5 Jan 2016 17:47:16 +0000 (UTC)
+From:   Jiri Slaby <jslaby@suse.cz>
+To:     stable@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, James Hogan <james.hogan@imgtec.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Gleb Natapov <gleb@kernel.org>, linux-mips@linux-mips.org,
+        kvm@vger.kernel.org, Jiri Slaby <jslaby@suse.cz>
+Subject: [PATCH 3.12 02/91] MIPS: KVM: Fix ASID restoration logic
+Date:   Tue,  5 Jan 2016 18:45:46 +0100
+Message-Id: <a667d58f97543daae4c9410d5da0a56988343d9c.1452015821.git.jslaby@suse.cz>
+X-Mailer: git-send-email 2.6.4
+In-Reply-To: <ba880cfbf85370a46062a2894a70d35260f26f2b.1452015821.git.jslaby@suse.cz>
+References: <ba880cfbf85370a46062a2894a70d35260f26f2b.1452015821.git.jslaby@suse.cz>
+In-Reply-To: <cover.1452015821.git.jslaby@suse.cz>
+References: <cover.1452015821.git.jslaby@suse.cz>
+Return-Path: <jslaby@suse.cz>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50929
+X-archive-position: 50930
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alexei.starovoitov@gmail.com
+X-original-sender: jslaby@suse.cz
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -60,27 +44,70 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Jan 05, 2016 at 05:36:47PM +0100, Daniel Borkmann wrote:
-> On 01/05/2016 04:23 PM, Rabin Vincent wrote:
-> >The SKF_AD_ALU_XOR_X ancillary is not like the other ancillary data
-> >instructions since it XORs A with X while all the others replace A with
-> >some loaded value.  All the BPF JITs fail to clear A if this is used as
-> >the first instruction in a filter.  This was found using american fuzzy
-> >lop.
-> >
-> >Add a helper to determine if A needs to be cleared given the first
-> >instruction in a filter, and use this in the JITs.  Except for ARM, the
-> >rest have only been compile-tested.
-> >
-> >Fixes: 3480593131e0 ("net: filter: get rid of BPF_S_* enum")
-> >Signed-off-by: Rabin Vincent <rabin@rab.in>
-> 
-> Excellent catch, thanks a lot! The fix looks good to me and should
-> go to -net tree.
-> 
-> Acked-by: Daniel Borkmann <daniel@iogearbox.net>
+From: James Hogan <james.hogan@imgtec.com>
 
-good catch indeed.
-Classic bpf jits didn't have much love. Great to see this work.
+3.12-stable review patch.  If anyone has any objections, please let me know.
 
-Acked-by: Alexei Starovoitov <ast@kernel.org>
+===============
+
+commit 002374f371bd02df864cce1fe85d90dc5b292837 upstream.
+
+ASID restoration on guest resume should determine the guest execution
+mode based on the guest Status register rather than bit 30 of the guest
+PC.
+
+Fix the two places in locore.S that do this, loading the guest status
+from the cop0 area. Note, this assembly is specific to the trap &
+emulate implementation of KVM, so it doesn't need to check the
+supervisor bit as that mode is not implemented in the guest.
+
+Fixes: b680f70fc111 ("KVM/MIPS32: Entry point for trampolining to...")
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Gleb Natapov <gleb@kernel.org>
+Cc: linux-mips@linux-mips.org
+Cc: kvm@vger.kernel.org
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Signed-off-by: Jiri Slaby <jslaby@suse.cz>
+---
+ arch/mips/kvm/kvm_locore.S | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
+
+diff --git a/arch/mips/kvm/kvm_locore.S b/arch/mips/kvm/kvm_locore.S
+index 03a2db58b22d..ba5ce99c021d 100644
+--- a/arch/mips/kvm/kvm_locore.S
++++ b/arch/mips/kvm/kvm_locore.S
+@@ -159,9 +159,11 @@ FEXPORT(__kvm_mips_vcpu_run)
+ 
+ FEXPORT(__kvm_mips_load_asid)
+ 	/* Set the ASID for the Guest Kernel */
+-	INT_SLL	t0, t0, 1	/* with kseg0 @ 0x40000000, kernel */
+-			        /* addresses shift to 0x80000000 */
+-	bltz	t0, 1f		/* If kernel */
++	PTR_L	t0, VCPU_COP0(k1)
++	LONG_L	t0, COP0_STATUS(t0)
++	andi	t0, KSU_USER | ST0_ERL | ST0_EXL
++	xori	t0, KSU_USER
++	bnez	t0, 1f		/* If kernel */
+ 	 INT_ADDIU t1, k1, VCPU_GUEST_KERNEL_ASID  /* (BD)  */
+ 	INT_ADDIU t1, k1, VCPU_GUEST_USER_ASID    /* else user */
+ 1:
+@@ -438,9 +440,11 @@ __kvm_mips_return_to_guest:
+ 	mtc0	t0, CP0_EPC
+ 
+ 	/* Set the ASID for the Guest Kernel */
+-	INT_SLL	t0, t0, 1	/* with kseg0 @ 0x40000000, kernel */
+-				/* addresses shift to 0x80000000 */
+-	bltz	t0, 1f		/* If kernel */
++	PTR_L	t0, VCPU_COP0(k1)
++	LONG_L	t0, COP0_STATUS(t0)
++	andi	t0, KSU_USER | ST0_ERL | ST0_EXL
++	xori	t0, KSU_USER
++	bnez	t0, 1f		/* If kernel */
+ 	 INT_ADDIU t1, k1, VCPU_GUEST_KERNEL_ASID  /* (BD)  */
+ 	INT_ADDIU t1, k1, VCPU_GUEST_USER_ASID    /* else user */
+ 1:
+-- 
+2.6.4

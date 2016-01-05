@@ -1,18 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Jan 2016 06:54:37 +0100 (CET)
-Received: from smtpbgbr2.qq.com ([54.207.22.56]:57634 "EHLO smtpbgbr2.qq.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27007189AbcAEFye6sHP- (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 5 Jan 2016 06:54:34 +0100
-X-QQ-mid: bizesmtp4t1451973254t244t260
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Jan 2016 06:54:52 +0100 (CET)
+Received: from smtpproxy19.qq.com ([184.105.206.84]:52936 "EHLO
+        smtpproxy19.qq.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27007258AbcAEFygShA3- (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 5 Jan 2016 06:54:36 +0100
+X-QQ-mid: bizesmtp4t1451973262t948t250
 Received: from software.domain.org (unknown [222.92.8.142])
         by esmtp4.qq.com (ESMTP) with 
-        id ; Tue, 05 Jan 2016 13:54:13 +0800 (CST)
+        id ; Tue, 05 Jan 2016 13:54:22 +0800 (CST)
 X-QQ-SSF: 01100000002000F0FK70B00A0000000
-X-QQ-FEAT: 6dXuswn9i1WC2RVMz1rE+DNwR+c9K5vXWsp1vaE2wcNES80G7GwPublUR+M5Z
-        7fB+0KFr6fyDDTQWZ9xLzn/aGAUb201fmYQ++N/yDTWl2pDBW97jqTMqDRSj3sNEFuPaffh
-        DgjYbt0+CB8sXZznpqb+Ek0Bz5Atz0AOXmlY3tpWk1wOdV2NninwN6lMsL4FStdb9qvJX0w
-        +hDvif+is44PMoPDwv+oWOUxZmbgBV4kWi7SNmI+WxG26swHl1w/nMwm7gFRx9EyM+J+MAW
-        3wT3yX7LVyteeP
+X-QQ-FEAT: NviVax2pLsX2dsz27zxn3U4TQrQxz6BHlCyWTw4X4HCFDRqfkX6cP5Y12YfDO
+        zFoy/Z+sTlTq0ZJwzlBNU6HQ0IZlHrFFjxqJvGAz0T0754MPSr3QpPpMHf6lcraDFcb5tPP
+        Sswv/E7ArI1R1+6YdUon8u7U+KgbbMIYfyXcDUE400oIJTLcIdXDX6iSlbQf3bcj5u0ZY2H
+        g59MsQ8yGn7Ojo9MtOknpUNOL9rB+fyvvYfVrY557Ci+PQ1hDhJJsU6P1AxAnoLZ3rek+eY
+        Gu6ysjE1dwwdjU
 X-QQ-GoodBg: 0
 From:   Huacai Chen <chenhc@lemote.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
@@ -20,10 +20,10 @@ Cc:     Aurelien Jarno <aurelien@aurel32.net>,
         "Steven J. Hill" <Steven.Hill@imgtec.com>,
         linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
         Zhangjin Wu <wuzhangjin@gmail.com>,
-        Huacai Chen <chenhc@lemote.com>
-Subject: [PATCH 2/6] MIPS: Loongson-3: Improve -march option and move it to Platform
-Date:   Tue,  5 Jan 2016 13:59:05 +0800
-Message-Id: <1451973549-16198-3-git-send-email-chenhc@lemote.com>
+        Huacai Chen <chenhc@lemote.com>, <stable@vger.kernel.org>
+Subject: [PATCH 6/6] MIPS: Fix some missing CONFIG_CPU_MIPSR6 definitions
+Date:   Tue,  5 Jan 2016 13:59:09 +0800
+Message-Id: <1451973549-16198-7-git-send-email-chenhc@lemote.com>
 X-Mailer: git-send-email 2.4.6
 In-Reply-To: <1451973549-16198-1-git-send-email-chenhc@lemote.com>
 References: <1451973549-16198-1-git-send-email-chenhc@lemote.com>
@@ -33,7 +33,7 @@ Return-Path: <chenhc@lemote.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50896
+X-archive-position: 50897
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -50,69 +50,53 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-If GCC >= 4.9 and Binutils >=2.25, we use -march=loongson3a, otherwise
-we use -march=mips64r2, this can slightly improve performance. Besides,
-arch/mips/loongson64/Platform is a better location rather than arch/
-mips/Makefile.
+Commit be0c37c985eddc4 (MIPS: Rearrange PTE bits into fixed positions.)
+defines fixed PTE bits for MIPS R2. Then, commit d7b631419b3d230a4d383
+(MIPS: pgtable-bits: Fix XPA damage to R6 definitions.) adds the MIPS
+R6 definitions in the same way as MIPS R2. But some R6 definitions in
+the later commit is missing, so in this patch I fix that.
 
+Cc: <stable@vger.kernel.org>
 Signed-off-by: Huacai Chen <chenhc@lemote.com>
 ---
- arch/mips/Makefile            | 10 ----------
- arch/mips/loongson64/Platform | 21 +++++++++++++++++++++
- 2 files changed, 21 insertions(+), 10 deletions(-)
+ arch/mips/include/asm/pgtable.h | 4 ++--
+ arch/mips/mm/tlbex.c            | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-index 3f70ba5..e78d60d 100644
---- a/arch/mips/Makefile
-+++ b/arch/mips/Makefile
-@@ -166,16 +166,6 @@ cflags-$(CONFIG_CPU_CAVIUM_OCTEON) += -Wa,-march=octeon
- endif
- cflags-$(CONFIG_CAVIUM_CN63XXP1) += -Wa,-mfix-cn63xxp1
- cflags-$(CONFIG_CPU_BMIPS)	+= -march=mips32 -Wa,-mips32 -Wa,--trap
--#
--# binutils from v2.25 on and gcc starting from v4.9.0 treat -march=loongson3a
--# as MIPS64 R1; older versions as just R1.  This leaves the possibility open
--# that GCC might generate R2 code for -march=loongson3a which then is rejected
--# by GAS.  The cc-option can't probe for this behaviour so -march=loongson3a
--# can't easily be used safely within the kbuild framework.
--#
--cflags-$(CONFIG_CPU_LOONGSON3)  +=					\
--	$(call cc-option,-march=mips64r2,-mips64r2 -U_MIPS_ISA -D_MIPS_ISA=_MIPS_ISA_MIPS64) \
--	-Wa,-mips64r2 -Wa,--trap
+diff --git a/arch/mips/include/asm/pgtable.h b/arch/mips/include/asm/pgtable.h
+index 8957f15..18826aa 100644
+--- a/arch/mips/include/asm/pgtable.h
++++ b/arch/mips/include/asm/pgtable.h
+@@ -353,7 +353,7 @@ static inline pte_t pte_mkdirty(pte_t pte)
+ static inline pte_t pte_mkyoung(pte_t pte)
+ {
+ 	pte_val(pte) |= _PAGE_ACCESSED;
+-#ifdef CONFIG_CPU_MIPSR2
++#if defined(CONFIG_CPU_MIPSR2) || defined(CONFIG_CPU_MIPSR6)
+ 	if (!(pte_val(pte) & _PAGE_NO_READ))
+ 		pte_val(pte) |= _PAGE_SILENT_READ;
+ 	else
+@@ -560,7 +560,7 @@ static inline pmd_t pmd_mkyoung(pmd_t pmd)
+ {
+ 	pmd_val(pmd) |= _PAGE_ACCESSED;
  
- cflags-$(CONFIG_CPU_R4000_WORKAROUNDS)	+= $(call cc-option,-mfix-r4000,)
- cflags-$(CONFIG_CPU_R4400_WORKAROUNDS)	+= $(call cc-option,-mfix-r4400,)
-diff --git a/arch/mips/loongson64/Platform b/arch/mips/loongson64/Platform
-index 2e48e83..85d8089 100644
---- a/arch/mips/loongson64/Platform
-+++ b/arch/mips/loongson64/Platform
-@@ -22,6 +22,27 @@ ifdef CONFIG_CPU_LOONGSON2F_WORKAROUNDS
-   endif
- endif
- 
-+cflags-$(CONFIG_CPU_LOONGSON3)	+= -Wa,--trap
-+#
-+# binutils from v2.25 on and gcc starting from v4.9.0 treat -march=loongson3a
-+# as MIPS64 R2; older versions as just R1.  This leaves the possibility open
-+# that GCC might generate R2 code for -march=loongson3a which then is rejected
-+# by GAS.  The cc-option can't probe for this behaviour so -march=loongson3a
-+# can't easily be used safely within the kbuild framework.
-+#
-+ifeq ($(call cc-ifversion, -ge, 0409, y), y)
-+  ifeq ($(call ld-ifversion, -ge, 22500000, y), y)
-+    cflags-$(CONFIG_CPU_LOONGSON3)  += \
-+      $(call cc-option,-march=loongson3a -U_MIPS_ISA -D_MIPS_ISA=_MIPS_ISA_MIPS64)
-+  else
-+    cflags-$(CONFIG_CPU_LOONGSON3)  += \
-+      $(call cc-option,-march=mips64r2,-mips64r2 -U_MIPS_ISA -D_MIPS_ISA=_MIPS_ISA_MIPS64)
-+  endif
-+else
-+    cflags-$(CONFIG_CPU_LOONGSON3)  += \
-+      $(call cc-option,-march=mips64r2,-mips64r2 -U_MIPS_ISA -D_MIPS_ISA=_MIPS_ISA_MIPS64)
-+endif
-+
- #
- # Loongson Machines' Support
- #
+-#ifdef CONFIG_CPU_MIPSR2
++#if defined(CONFIG_CPU_MIPSR2) || defined(CONFIG_CPU_MIPSR6)
+ 	if (!(pmd_val(pmd) & _PAGE_NO_READ))
+ 		pmd_val(pmd) |= _PAGE_SILENT_READ;
+ 	else
+diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
+index 32e0be2..29f73e0 100644
+--- a/arch/mips/mm/tlbex.c
++++ b/arch/mips/mm/tlbex.c
+@@ -242,7 +242,7 @@ static void output_pgtable_bits_defines(void)
+ 	pr_define("_PAGE_HUGE_SHIFT %d\n", _PAGE_HUGE_SHIFT);
+ 	pr_define("_PAGE_SPLITTING_SHIFT %d\n", _PAGE_SPLITTING_SHIFT);
+ #endif
+-#ifdef CONFIG_CPU_MIPSR2
++#if defined(CONFIG_CPU_MIPSR2) || defined(CONFIG_CPU_MIPSR6)
+ 	if (cpu_has_rixi) {
+ #ifdef _PAGE_NO_EXEC_SHIFT
+ 		pr_define("_PAGE_NO_EXEC_SHIFT %d\n", _PAGE_NO_EXEC_SHIFT);
 -- 
 2.4.6

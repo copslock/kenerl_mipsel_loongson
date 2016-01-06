@@ -1,18 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Jan 2016 00:12:54 +0100 (CET)
-Received: from a.ns.miles-group.at ([95.130.255.143]:7604 "EHLO radon.swed.at"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27012538AbcAEXMwGH0A0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 6 Jan 2016 00:12:52 +0100
-Received: (qmail 26674 invoked by uid 89); 5 Jan 2016 23:12:51 -0000
-Received: by simscan 1.3.1 ppid: 26669, pid: 26672, t: 0.0485s
-         scanners: attach: 1.3.1
-Received: from unknown (HELO ?192.168.0.10?) (richard@nod.at@213.47.235.169)
-  by radon.swed.at with ESMTPA; 5 Jan 2016 23:12:51 -0000
-Subject: Re: [PATCH v2 12/32] x86/um: reuse asm-generic/barrier.h
-To:     "Michael S. Tsirkin" <mst@redhat.com>, linux-kernel@vger.kernel.org
-References: <1451572003-2440-1-git-send-email-mst@redhat.com>
- <1451572003-2440-13-git-send-email-mst@redhat.com>
-Cc:     Peter Zijlstra <peterz@infradead.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Jan 2016 02:52:37 +0100 (CET)
+Received: from mail-ob0-f196.google.com ([209.85.214.196]:34519 "EHLO
+        mail-ob0-f196.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27014567AbcAFBwfmwaKR (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 6 Jan 2016 02:52:35 +0100
+Received: by mail-ob0-f196.google.com with SMTP id q2so24777796obl.1
+        for <linux-mips@linux-mips.org>; Tue, 05 Jan 2016 17:52:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-type:content-disposition:in-reply-to:user-agent;
+        bh=C+PydKOcHCiWchjE5tNPiLaDHUKUwzC1TPX379C4ghU=;
+        b=e9rb5u2vETAd0OaSW14hzwGJFZkRntyg7TNoCPiX3sACE1PDp3apaqglc5X0sP+Di4
+         py/1u+k+HGOXjHtrQRss5EBZqOKFTKp/f9/ri/cpecwU3jhYmplGNuq/Gme1/tf8K8Js
+         hqlNftChzCbU++9WclmYaNS5xscuk0LggdpSyTDMqxHRE7JDqEn294ko96Ije3g/aAft
+         nM6x8ZBaRy29Z1m8gqLaY7t5wd6vB7/J6zeFVfovskDJBQQ2eVptq7Cy9LW32twL0tmD
+         MDn/OfdJVSu6knAvgeRCgHQEVPtoRvwUqewydQuKKZUzXtUBiZPWMF4DJI2iOpR6BUeI
+         ecLw==
+X-Received: by 10.182.18.105 with SMTP id v9mr67292797obd.59.1452045149834;
+        Tue, 05 Jan 2016 17:52:29 -0800 (PST)
+Received: from localhost ([45.32.128.109])
+        by smtp.gmail.com with ESMTPSA id px4sm24358823oec.7.2016.01.05.17.52.28
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 05 Jan 2016 17:52:28 -0800 (PST)
+Date:   Wed, 6 Jan 2016 09:51:52 +0800
+From:   Boqun Feng <boqun.feng@gmail.com>
+To:     "Michael S. Tsirkin" <mst@redhat.com>
+Cc:     linux-kernel@vger.kernel.org,
+        Peter Zijlstra <peterz@infradead.org>,
         Arnd Bergmann <arnd@arndb.de>, linux-arch@vger.kernel.org,
         Andrew Cooper <andrew.cooper3@citrix.com>,
         virtualization@lists.linux-foundation.org,
@@ -26,28 +40,36 @@ Cc:     Peter Zijlstra <peterz@infradead.org>,
         x86@kernel.org, user-mode-linux-devel@lists.sourceforge.net,
         adi-buildroot-devel@lists.sourceforge.net,
         linux-sh@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        xen-devel@lists.xenproject.org, Jeff Dike <jdike@addtoit.com>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@suse.de>,
-        Andy Lutomirski <luto@kernel.org>,
-        user-mode-linux-user@lists.sourceforge.net
-From:   Richard Weinberger <richard@nod.at>
-Message-ID: <568C4DEA.5070601@nod.at>
-Date:   Wed, 6 Jan 2016 00:12:42 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.4.0
+        xen-devel@lists.xenproject.org,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Ingo Molnar <mingo@kernel.org>,
+        Davidlohr Bueso <dave@stgolabs.net>,
+        Andrey Konovalov <andreyknvl@google.com>,
+        "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>
+Subject: Re: [PATCH v2 15/32] powerpc: define __smp_xxx
+Message-ID: <20160106015152.GA14605@fixme-laptop.cn.ibm.com>
+References: <1451572003-2440-1-git-send-email-mst@redhat.com>
+ <1451572003-2440-16-git-send-email-mst@redhat.com>
+ <20160105013648.GA1256@fixme-laptop.cn.ibm.com>
+ <20160105085117.GA11858@redhat.com>
+ <20160105095341.GA5321@fixme-laptop.cn.ibm.com>
+ <20160105180938-mutt-send-email-mst@redhat.com>
 MIME-Version: 1.0
-In-Reply-To: <1451572003-2440-13-git-send-email-mst@redhat.com>
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-Return-Path: <richard@nod.at>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20160105180938-mutt-send-email-mst@redhat.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+Return-Path: <boqun.feng@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50935
+X-archive-position: 50936
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: richard@nod.at
+X-original-sender: boqun.feng@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -60,17 +82,93 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Am 31.12.2015 um 20:07 schrieb Michael S. Tsirkin:
-> On x86/um CONFIG_SMP is never defined.  As a result, several macros
-> match the asm-generic variant exactly. Drop the local definitions and
-> pull in asm-generic/barrier.h instead.
+On Tue, Jan 05, 2016 at 06:16:48PM +0200, Michael S. Tsirkin wrote:
+[snip]
+> > > > Another thing is that smp_lwsync() may have a third user(other than
+> > > > smp_load_acquire() and smp_store_release()):
+> > > > 
+> > > > http://article.gmane.org/gmane.linux.ports.ppc.embedded/89877
+> > > > 
+> > > > I'm OK to change my patch accordingly, but do we really want
+> > > > smp_lwsync() get involved in this cleanup? If I understand you
+> > > > correctly, this cleanup focuses on external API like smp_{r,w,}mb(),
+> > > > while smp_lwsync() is internal to PPC.
+> > > > 
+> > > > Regards,
+> > > > Boqun
+> > > 
+> > > I think you missed the leading ___ :)
+> > > 
+> > 
+> > What I mean here was smp_lwsync() was originally internal to PPC, but
+> > never mind ;-)
+> > 
+> > > smp_store_release is external and it needs __smp_lwsync as
+> > > defined here.
+> > > 
+> > > I can duplicate some code and have smp_lwsync *not* call __smp_lwsync
+> > 
+> > You mean bringing smp_lwsync() back? because I haven't seen you defining
+> > in asm-generic/barriers.h in previous patches and you just delete it in
+> > this patch.
+> > 
+> > > but why do this? Still, if you prefer it this way,
+> > > please let me know.
+> > > 
+> > 
+> > I think deleting smp_lwsync() is fine, though I need to change atomic
+> > variants patches on PPC because of it ;-/
+> > 
+> > Regards,
+> > Boqun
 > 
-> This is in preparation to refactoring this code area.
+> Sorry, I don't understand - why do you have to do anything?
+> I changed all users of smp_lwsync so they
+> use __smp_lwsync on SMP and barrier() on !SMP.
 > 
-> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-> Acked-by: Arnd Bergmann <arnd@arndb.de>
+> This is exactly the current behaviour, I also tested that
+> generated code does not change at all.
+> 
+> Is there a patch in your tree that conflicts with this?
+> 
 
-Acked-by: Richard Weinberger <richard@nod.at>
+Because in a patchset which implements atomic relaxed/acquire/release
+variants on PPC I use smp_lwsync(), this makes it have another user,
+please see this mail:
 
-Thanks,
-//richard
+http://article.gmane.org/gmane.linux.ports.ppc.embedded/89877
+
+in definition of PPC's __atomic_op_release().
+
+
+But I think removing smp_lwsync() is a good idea and actually I think we
+can go further to remove __smp_lwsync() and let __smp_load_acquire and
+__smp_store_release call __lwsync() directly, but that is another thing.
+
+Anyway, I will modify my patch.
+
+Regards,
+Boqun
+
+> 
+> > > > >  	WRITE_ONCE(*p, v);						\
+> > > > >  } while (0)
+> > > > >  
+> > > > > -#define smp_load_acquire(p)						\
+> > > > > +#define __smp_load_acquire(p)						\
+> > > > >  ({									\
+> > > > >  	typeof(*p) ___p1 = READ_ONCE(*p);				\
+> > > > >  	compiletime_assert_atomic_type(*p);				\
+> > > > > -	smp_lwsync();							\
+> > > > > +	__smp_lwsync();							\
+> > > > >  	___p1;								\
+> > > > >  })
+> > > > >  
+> > > > > -- 
+> > > > > MST
+> > > > > 
+> > > > > --
+> > > > > To unsubscribe from this list: send the line "unsubscribe linux-kernel" in
+> > > > > the body of a message to majordomo@vger.kernel.org
+> > > > > More majordomo info at  http://vger.kernel.org/majordomo-info.html
+> > > > > Please read the FAQ at  http://www.tux.org/lkml/

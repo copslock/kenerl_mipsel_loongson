@@ -1,36 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Jan 2016 19:56:36 +0100 (CET)
-Received: from mail-pf0-f177.google.com ([209.85.192.177]:33477 "EHLO
-        mail-pf0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010083AbcAFS4SR1ZaQ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 6 Jan 2016 19:56:18 +0100
-Received: by mail-pf0-f177.google.com with SMTP id q63so207366605pfb.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Jan 2016 19:56:51 +0100 (CET)
+Received: from mail-pf0-f178.google.com ([209.85.192.178]:33483 "EHLO
+        mail-pf0-f178.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010086AbcAFS4TBGK8Q (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 6 Jan 2016 19:56:19 +0100
+Received: by mail-pf0-f178.google.com with SMTP id q63so207366818pfb.0
         for <linux-mips@linux-mips.org>; Wed, 06 Jan 2016 10:56:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=MDugv/eQgO+NcD0TTz656IGQ0uJ3T4jC8x74VZ5Jp7s=;
-        b=i0Qzubp6eBsrhujBsBUjZK3ikQa5IE2bknh83S0Ms4LzHF1RH8/cJqgf8w2wApeIC6
-         GjZqvoXXQsVjRR0z4N/UTonxP8oLLxcIImqKm2IkyG6CzuojT0r5n86ipkcZJHzUTupc
-         kvYWtKLji2AM+R3pHA+mkMzdsau+vRG9VVOvIXBGOPfP53t/GoO3qndgUT93BgREWelU
-         +j0hWX6M/UHRfX2hXdxOILMjNDfAThUon5arqbcugt9mUtIYf3e82TaLQXdtzzJ+fhMS
-         vTgRernGVDRyBVKGvUdIn0bu3efUa+WayanqkYAIeGF5j4FTIYrqt49u0V2urdxoS/RK
-         OqzQ==
-X-Received: by 10.98.13.86 with SMTP id v83mr125946772pfi.127.1452106572388;
-        Wed, 06 Jan 2016 10:56:12 -0800 (PST)
+        bh=jljX2xnI9J7c3TG8ck+SDZWbULfIsrcFlljUiihFNlc=;
+        b=ngLY1k2S1f/1wQZAc3l/ognRp9J1SkfdG5LVL5UVxTNP2VC72DeFvNGaZDu+b5WQ6Y
+         2XA3lD0Sjk/85IkKXZ+sEufohZvQJE9TKSgtSqfLom7XylKCmXODUtzmfygqlOHxIJrp
+         Uj4AR4SWoD9ZdpiIEawrMiCGM6OIDzavS+OKnG7AZh/SijdGTK7xU7FIVYhP+fXW9Tg7
+         fFXdE5Q/rvmkGmt2/NESHTNW6gWdvTBAaDATQ0S+iTbfLDYrGf3gJihxffY1CqNn6pw3
+         dksM85r5X2izNyOfj6mhiAyog6nFVgvmL/8nY/C81m4E9hxTBB9GjjhACL6lY0/ChyZN
+         WUOg==
+X-Received: by 10.98.69.73 with SMTP id s70mr143798697pfa.4.1452106573340;
+        Wed, 06 Jan 2016 10:56:13 -0800 (PST)
 Received: from fainelli-desktop.broadcom.com (5520-maca-inet1-outside.broadcom.com. [216.31.211.11])
-        by smtp.gmail.com with ESMTPSA id u67sm137196864pfa.84.2016.01.06.10.56.11
+        by smtp.gmail.com with ESMTPSA id u67sm137196864pfa.84.2016.01.06.10.56.12
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Wed, 06 Jan 2016 10:56:11 -0800 (PST)
+        Wed, 06 Jan 2016 10:56:12 -0800 (PST)
 From:   Florian Fainelli <f.fainelli@gmail.com>
 To:     linux-gpio@vger.kernel.org
 Cc:     linux-mips@linux-mips.org, gregory.0xf0@gmail.com,
         jaedon.shin@gmail.com, linus.walleij@linaro.org, gnurou@gmail.com,
         bcm-kernel-feedback-list@broadcom.com,
-        Jim Quinlan <jim2101024@gmail.com>,
         Florian Fainelli <f.fainelli@gmail.com>
-Subject: [PATCH 1/3] gpio: brcmstb: have driver register during subsys_initcall()
-Date:   Wed,  6 Jan 2016 10:55:21 -0800
-Message-Id: <1452106523-11556-2-git-send-email-f.fainelli@gmail.com>
+Subject: [PATCH 2/3] gpio: brcmstb: Set endian flags for big-endian MIPS
+Date:   Wed,  6 Jan 2016 10:55:22 -0800
+Message-Id: <1452106523-11556-3-git-send-email-f.fainelli@gmail.com>
 X-Mailer: git-send-email 2.1.0
 In-Reply-To: <1452106523-11556-1-git-send-email-f.fainelli@gmail.com>
 References: <1452106523-11556-1-git-send-email-f.fainelli@gmail.com>
@@ -38,7 +37,7 @@ Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50944
+X-archive-position: 50945
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -55,45 +54,57 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Jim Quinlan <jim2101024@gmail.com>
+Broadcom MIPS-based STB chips endianness is configured by boot strap,
+which also reverses all bus endianness (i.e., big-endian CPU + big
+endian bus ==> native endian I/O).
 
-Because regulators are started with subsys_initcall(), and gpio references may
-be contained in the regulators, it makes sense to start the brcmstb-gpio's with
-a subsys_initcall(). The order within the drivers/Makefile ensures that the
-gpio initialization happens prior to the regulator's initialization.
+Other architectures (e.g., ARM) either do not support big endian, or
+else leave I/O in little endian mode.
 
-We need to unroll module_platform_driver() now to allow this and have custom
-exit and init module functions to control the initialization level.
-
-Signed-off-by: Jim Quinlan <jim2101024@gmail.com>
 Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
 ---
- drivers/gpio/gpio-brcmstb.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ drivers/gpio/gpio-brcmstb.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/gpio/gpio-brcmstb.c b/drivers/gpio/gpio-brcmstb.c
-index dc3f0395693b..3618b9fd0cba 100644
+index 3618b9fd0cba..8e8ddc76a56f 100644
 --- a/drivers/gpio/gpio-brcmstb.c
 +++ b/drivers/gpio/gpio-brcmstb.c
-@@ -535,7 +535,18 @@ static struct platform_driver brcmstb_gpio_driver = {
- 	.probe = brcmstb_gpio_probe,
- 	.remove = brcmstb_gpio_remove,
- };
--module_platform_driver(brcmstb_gpio_driver);
-+
-+static int __init brcmstb_gpio_init(void)
-+{
-+	return platform_driver_register(&brcmstb_gpio_driver);
-+}
-+subsys_initcall(brcmstb_gpio_init);
-+
-+static void __exit brcmstb_gpio_exit(void)
-+{
-+	platform_driver_unregister(&brcmstb_gpio_driver);
-+}
-+module_exit(brcmstb_gpio_exit);
+@@ -409,6 +409,7 @@ static int brcmstb_gpio_probe(struct platform_device *pdev)
+ 	int num_banks = 0;
+ 	int err;
+ 	static int gpio_base;
++	unsigned long flags = 0;
  
- MODULE_AUTHOR("Gregory Fong");
- MODULE_DESCRIPTION("Driver for Broadcom BRCMSTB SoC UPG GPIO");
+ 	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
+ 	if (!priv)
+@@ -438,6 +439,18 @@ static int brcmstb_gpio_probe(struct platform_device *pdev)
+ 	if (brcmstb_gpio_sanity_check_banks(dev, np, res))
+ 		return -EINVAL;
+ 
++	/*
++	 * MIPS endianness is configured by boot strap, which also reverses all
++	 * bus endianness (i.e., big-endian CPU + big endian bus ==> native
++	 * endian I/O).
++	 *
++	 * Other architectures (e.g., ARM) either do not support big endian, or
++	 * else leave I/O in little endian mode.
++	 */
++#if defined(CONFIG_MIPS) && defined(__BIG_ENDIAN)
++	flags = BGPIOF_BIG_ENDIAN_BYTE_ORDER;
++#endif
++
+ 	of_property_for_each_u32(np, "brcm,gpio-bank-widths", prop, p,
+ 			bank_width) {
+ 		struct brcmstb_gpio_bank *bank;
+@@ -466,7 +479,7 @@ static int brcmstb_gpio_probe(struct platform_device *pdev)
+ 		err = bgpio_init(gc, dev, 4,
+ 				reg_base + GIO_DATA(bank->id),
+ 				NULL, NULL, NULL,
+-				reg_base + GIO_IODIR(bank->id), 0);
++				reg_base + GIO_IODIR(bank->id), flags);
+ 		if (err) {
+ 			dev_err(dev, "bgpio_init() failed\n");
+ 			goto fail;
 -- 
 2.1.0

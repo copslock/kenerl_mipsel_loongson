@@ -1,35 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Jan 2016 19:56:51 +0100 (CET)
-Received: from mail-pf0-f178.google.com ([209.85.192.178]:33483 "EHLO
-        mail-pf0-f178.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010086AbcAFS4TBGK8Q (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 6 Jan 2016 19:56:19 +0100
-Received: by mail-pf0-f178.google.com with SMTP id q63so207366818pfb.0
-        for <linux-mips@linux-mips.org>; Wed, 06 Jan 2016 10:56:18 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Jan 2016 19:57:14 +0100 (CET)
+Received: from mail-pf0-f172.google.com ([209.85.192.172]:35431 "EHLO
+        mail-pf0-f172.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010090AbcAFS4UR1ZaQ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 6 Jan 2016 19:56:20 +0100
+Received: by mail-pf0-f172.google.com with SMTP id 78so246505977pfw.2
+        for <linux-mips@linux-mips.org>; Wed, 06 Jan 2016 10:56:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=jljX2xnI9J7c3TG8ck+SDZWbULfIsrcFlljUiihFNlc=;
-        b=ngLY1k2S1f/1wQZAc3l/ognRp9J1SkfdG5LVL5UVxTNP2VC72DeFvNGaZDu+b5WQ6Y
-         2XA3lD0Sjk/85IkKXZ+sEufohZvQJE9TKSgtSqfLom7XylKCmXODUtzmfygqlOHxIJrp
-         Uj4AR4SWoD9ZdpiIEawrMiCGM6OIDzavS+OKnG7AZh/SijdGTK7xU7FIVYhP+fXW9Tg7
-         fFXdE5Q/rvmkGmt2/NESHTNW6gWdvTBAaDATQ0S+iTbfLDYrGf3gJihxffY1CqNn6pw3
-         dksM85r5X2izNyOfj6mhiAyog6nFVgvmL/8nY/C81m4E9hxTBB9GjjhACL6lY0/ChyZN
-         WUOg==
-X-Received: by 10.98.69.73 with SMTP id s70mr143798697pfa.4.1452106573340;
-        Wed, 06 Jan 2016 10:56:13 -0800 (PST)
+        bh=sYUXb9vPJ+r6TiUdi+YCNXYYc6kDpfQ6xLLRLn9MPm4=;
+        b=boMiAzI/Iqh34M8HKS88rCFnrs8OWn/XIGwbExB4CCxe+ITS8aRP+0ZlVas4zNAASB
+         VCMn/UNPWbgDbvk73ja9eqxr/4mpMzId+E0jD6Aki/zMehr8p3mT5lMb+sgfkSyPXevD
+         kegPDghN+EIW0gO93hwMnxgcKXdCOj4EcpApoF4bKyfrEG+R2mdxkvsE0j8N3JFqftne
+         GXKKFtncO21KPVU/sevqno3HS4sKkn8QBRx0KUdWsZDJBjmTBQkyha8HsfkT23Vxo6ad
+         5zjysaJSRM2mIXEhfU7/s9u/6/th8EUCXMmTN7PRaYzSE1d4wCMA+jRYuUvz3GU5os34
+         9SGQ==
+X-Received: by 10.98.72.199 with SMTP id q68mr145147175pfi.140.1452106574464;
+        Wed, 06 Jan 2016 10:56:14 -0800 (PST)
 Received: from fainelli-desktop.broadcom.com (5520-maca-inet1-outside.broadcom.com. [216.31.211.11])
-        by smtp.gmail.com with ESMTPSA id u67sm137196864pfa.84.2016.01.06.10.56.12
+        by smtp.gmail.com with ESMTPSA id u67sm137196864pfa.84.2016.01.06.10.56.13
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Wed, 06 Jan 2016 10:56:12 -0800 (PST)
+        Wed, 06 Jan 2016 10:56:13 -0800 (PST)
 From:   Florian Fainelli <f.fainelli@gmail.com>
 To:     linux-gpio@vger.kernel.org
 Cc:     linux-mips@linux-mips.org, gregory.0xf0@gmail.com,
         jaedon.shin@gmail.com, linus.walleij@linaro.org, gnurou@gmail.com,
         bcm-kernel-feedback-list@broadcom.com,
         Florian Fainelli <f.fainelli@gmail.com>
-Subject: [PATCH 2/3] gpio: brcmstb: Set endian flags for big-endian MIPS
-Date:   Wed,  6 Jan 2016 10:55:22 -0800
-Message-Id: <1452106523-11556-3-git-send-email-f.fainelli@gmail.com>
+Subject: [PATCH 3/3] gpio: brcmstb: Allow building driver for BMIPS_GENERIC
+Date:   Wed,  6 Jan 2016 10:55:23 -0800
+Message-Id: <1452106523-11556-4-git-send-email-f.fainelli@gmail.com>
 X-Mailer: git-send-email 2.1.0
 In-Reply-To: <1452106523-11556-1-git-send-email-f.fainelli@gmail.com>
 References: <1452106523-11556-1-git-send-email-f.fainelli@gmail.com>
@@ -37,7 +37,7 @@ Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50945
+X-archive-position: 50946
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -54,57 +54,29 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Broadcom MIPS-based STB chips endianness is configured by boot strap,
-which also reverses all bus endianness (i.e., big-endian CPU + big
-endian bus ==> native endian I/O).
-
-Other architectures (e.g., ARM) either do not support big endian, or
-else leave I/O in little endian mode.
+BMIPS_GENERIC (arch/mips/bmips) is the Kconfig symbol associated with
+Broadcom MIPS-based STB chips. Since this driver is perfectly usable on
+these platforms as well, allow using it.
 
 Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
 ---
- drivers/gpio/gpio-brcmstb.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ drivers/gpio/Kconfig | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpio/gpio-brcmstb.c b/drivers/gpio/gpio-brcmstb.c
-index 3618b9fd0cba..8e8ddc76a56f 100644
---- a/drivers/gpio/gpio-brcmstb.c
-+++ b/drivers/gpio/gpio-brcmstb.c
-@@ -409,6 +409,7 @@ static int brcmstb_gpio_probe(struct platform_device *pdev)
- 	int num_banks = 0;
- 	int err;
- 	static int gpio_base;
-+	unsigned long flags = 0;
+diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
+index b60f40a423f3..cb212ebb39ff 100644
+--- a/drivers/gpio/Kconfig
++++ b/drivers/gpio/Kconfig
+@@ -134,8 +134,8 @@ config GPIO_BCM_KONA
  
- 	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
- 	if (!priv)
-@@ -438,6 +439,18 @@ static int brcmstb_gpio_probe(struct platform_device *pdev)
- 	if (brcmstb_gpio_sanity_check_banks(dev, np, res))
- 		return -EINVAL;
- 
-+	/*
-+	 * MIPS endianness is configured by boot strap, which also reverses all
-+	 * bus endianness (i.e., big-endian CPU + big endian bus ==> native
-+	 * endian I/O).
-+	 *
-+	 * Other architectures (e.g., ARM) either do not support big endian, or
-+	 * else leave I/O in little endian mode.
-+	 */
-+#if defined(CONFIG_MIPS) && defined(__BIG_ENDIAN)
-+	flags = BGPIOF_BIG_ENDIAN_BYTE_ORDER;
-+#endif
-+
- 	of_property_for_each_u32(np, "brcm,gpio-bank-widths", prop, p,
- 			bank_width) {
- 		struct brcmstb_gpio_bank *bank;
-@@ -466,7 +479,7 @@ static int brcmstb_gpio_probe(struct platform_device *pdev)
- 		err = bgpio_init(gc, dev, 4,
- 				reg_base + GIO_DATA(bank->id),
- 				NULL, NULL, NULL,
--				reg_base + GIO_IODIR(bank->id), 0);
-+				reg_base + GIO_IODIR(bank->id), flags);
- 		if (err) {
- 			dev_err(dev, "bgpio_init() failed\n");
- 			goto fail;
+ config GPIO_BRCMSTB
+ 	tristate "BRCMSTB GPIO support"
+-	default y if ARCH_BRCMSTB
+-	depends on OF_GPIO && (ARCH_BRCMSTB || COMPILE_TEST)
++	default y if (ARCH_BRCMSTB || BMIPS_GENERIC)
++	depends on OF_GPIO && (ARCH_BRCMSTB || BMIPS_GENERIC || COMPILE_TEST)
+ 	select GPIO_GENERIC
+ 	select GPIOLIB_IRQCHIP
+ 	help
 -- 
 2.1.0

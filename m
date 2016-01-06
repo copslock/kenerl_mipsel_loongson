@@ -1,63 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Jan 2016 21:24:16 +0100 (CET)
-Received: from mx1.redhat.com ([209.132.183.28]:35630 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27010102AbcAFUYICrJ2X (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 6 Jan 2016 21:24:08 +0100
-Received: from int-mx14.intmail.prod.int.phx2.redhat.com (int-mx14.intmail.prod.int.phx2.redhat.com [10.5.11.27])
-        by mx1.redhat.com (Postfix) with ESMTPS id D406DC057EC8;
-        Wed,  6 Jan 2016 20:24:03 +0000 (UTC)
-Received: from redhat.com (vpn1-4-81.ams2.redhat.com [10.36.4.81])
-        by int-mx14.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with SMTP id u06KNpfk014354;
-        Wed, 6 Jan 2016 15:23:52 -0500
-Date:   Wed, 6 Jan 2016 22:23:51 +0200
-From:   "Michael S. Tsirkin" <mst@redhat.com>
-To:     Boqun Feng <boqun.feng@gmail.com>
-Cc:     linux-kernel@vger.kernel.org,
-        Peter Zijlstra <peterz@infradead.org>,
-        Arnd Bergmann <arnd@arndb.de>, linux-arch@vger.kernel.org,
-        Andrew Cooper <andrew.cooper3@citrix.com>,
-        virtualization@lists.linux-foundation.org,
-        Stefano Stabellini <stefano.stabellini@eu.citrix.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@elte.hu>, "H. Peter Anvin" <hpa@zytor.com>,
-        David Miller <davem@davemloft.net>, linux-ia64@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-metag@vger.kernel.org, linux-mips@linux-mips.org,
-        x86@kernel.org, user-mode-linux-devel@lists.sourceforge.net,
-        adi-buildroot-devel@lists.sourceforge.net,
-        linux-sh@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        xen-devel@lists.xenproject.org,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Ingo Molnar <mingo@kernel.org>,
-        Davidlohr Bueso <dave@stgolabs.net>,
-        Andrey Konovalov <andreyknvl@google.com>,
-        "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>
-Subject: Re: [PATCH v2 15/32] powerpc: define __smp_xxx
-Message-ID: <20160106222337-mutt-send-email-mst@redhat.com>
-References: <1451572003-2440-1-git-send-email-mst@redhat.com>
- <1451572003-2440-16-git-send-email-mst@redhat.com>
- <20160105013648.GA1256@fixme-laptop.cn.ibm.com>
- <20160105085117.GA11858@redhat.com>
- <20160105095341.GA5321@fixme-laptop.cn.ibm.com>
- <20160105180938-mutt-send-email-mst@redhat.com>
- <20160106015152.GA14605@fixme-laptop.cn.ibm.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Jan 2016 23:00:54 +0100 (CET)
+Received: from exsmtp01.microchip.com ([198.175.253.37]:55112 "EHLO
+        email.microchip.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S27010011AbcAFWAwcJw1w convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 6 Jan 2016 23:00:52 +0100
+Received: from CHN-SV-EXMX01.mchp-main.com ([fe80::453e:263d:be10:ebe8]) by
+ CHN-SV-EXCH01.mchp-main.com ([fe80::9840:ffdf:ec5:1335%29]) with mapi id
+ 14.03.0181.006; Wed, 6 Jan 2016 15:00:44 -0700
+From:   <Paul.Thacker@microchip.com>
+To:     <gnomes@lxorguk.ukuu.org.uk>, <Joshua.Henderson@microchip.com>
+CC:     <linux-kernel@vger.kernel.org>, <linux-mips@linux-mips.org>,
+        <ralf@linux-mips.org>, <Andrei.Pistirica@microchip.com>,
+        <gregkh@linuxfoundation.org>, <jslaby@suse.com>,
+        <linux-serial@vger.kernel.org>, <linux-api@vger.kernel.org>
+Subject: Re: [PATCH v2 10/14] serial: pic32_uart: Add PIC32 UART driver
+Thread-Topic: [PATCH v2 10/14] serial: pic32_uart: Add PIC32 UART driver
+Thread-Index: AQHRNsCME92lzOY7V0e3fYiKG2XSEA==
+Date:   Wed, 6 Jan 2016 22:00:43 +0000
+Message-ID: <F2D704DDA6AE8B4A87FF87509480F4A449E46187@CHN-SV-EXMX01.mchp-main.com>
+References: <1450133093-7053-1-git-send-email-joshua.henderson@microchip.com>
+        <1450133093-7053-11-git-send-email-joshua.henderson@microchip.com>
+ <20160105204322.2dc5ab3f@lxorguk.ukuu.org.uk>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.10.215.90]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20160106015152.GA14605@fixme-laptop.cn.ibm.com>
-X-Scanned-By: MIMEDefang 2.68 on 10.5.11.27
-Return-Path: <mst@redhat.com>
+Return-Path: <Paul.Thacker@microchip.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50947
+X-archive-position: 50948
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mst@redhat.com
+X-original-sender: Paul.Thacker@microchip.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -70,98 +50,72 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Jan 06, 2016 at 09:51:52AM +0800, Boqun Feng wrote:
-> On Tue, Jan 05, 2016 at 06:16:48PM +0200, Michael S. Tsirkin wrote:
-> [snip]
-> > > > > Another thing is that smp_lwsync() may have a third user(other than
-> > > > > smp_load_acquire() and smp_store_release()):
-> > > > > 
-> > > > > http://article.gmane.org/gmane.linux.ports.ppc.embedded/89877
-> > > > > 
-> > > > > I'm OK to change my patch accordingly, but do we really want
-> > > > > smp_lwsync() get involved in this cleanup? If I understand you
-> > > > > correctly, this cleanup focuses on external API like smp_{r,w,}mb(),
-> > > > > while smp_lwsync() is internal to PPC.
-> > > > > 
-> > > > > Regards,
-> > > > > Boqun
-> > > > 
-> > > > I think you missed the leading ___ :)
-> > > > 
-> > > 
-> > > What I mean here was smp_lwsync() was originally internal to PPC, but
-> > > never mind ;-)
-> > > 
-> > > > smp_store_release is external and it needs __smp_lwsync as
-> > > > defined here.
-> > > > 
-> > > > I can duplicate some code and have smp_lwsync *not* call __smp_lwsync
-> > > 
-> > > You mean bringing smp_lwsync() back? because I haven't seen you defining
-> > > in asm-generic/barriers.h in previous patches and you just delete it in
-> > > this patch.
-> > > 
-> > > > but why do this? Still, if you prefer it this way,
-> > > > please let me know.
-> > > > 
-> > > 
-> > > I think deleting smp_lwsync() is fine, though I need to change atomic
-> > > variants patches on PPC because of it ;-/
-> > > 
-> > > Regards,
-> > > Boqun
-> > 
-> > Sorry, I don't understand - why do you have to do anything?
-> > I changed all users of smp_lwsync so they
-> > use __smp_lwsync on SMP and barrier() on !SMP.
-> > 
-> > This is exactly the current behaviour, I also tested that
-> > generated code does not change at all.
-> > 
-> > Is there a patch in your tree that conflicts with this?
-> > 
-> 
-> Because in a patchset which implements atomic relaxed/acquire/release
-> variants on PPC I use smp_lwsync(), this makes it have another user,
-> please see this mail:
-> 
-> http://article.gmane.org/gmane.linux.ports.ppc.embedded/89877
-> 
-> in definition of PPC's __atomic_op_release().
-> 
-> 
-> But I think removing smp_lwsync() is a good idea and actually I think we
-> can go further to remove __smp_lwsync() and let __smp_load_acquire and
-> __smp_store_release call __lwsync() directly, but that is another thing.
-> 
-> Anyway, I will modify my patch.
-> 
-> Regards,
-> Boqun
+On 01/05/2016 03:50 PM, One Thousand Gnomes wrote:
+>
+>> +#define PIC32_SDEV_NAME		"ttyS"
+>> +#define PIC32_SDEV_MAJOR	TTY_MAJOR
+>> +#define PIC32_SDEV_MINOR	64
+>
+> No. Same goes for you as every one of the forty other people a year who
+> try and claim their console is ttyS. If it's not an 8250 it isn't.
+>
+> ttyS is the 8250, use dynamic major and minor and a different name.
 
+Ok. Is there a naming convention documented anywhere? How about ttyPIC?
 
-Thanks!
-Could you send an ack then please?
+>
+>
+>> +/* serial core request to change current uart setting */
+>> +static void pic32_uart_set_termios(struct uart_port *port,
+>> +				   struct ktermios *new,
+>> +				   struct ktermios *old)
+>> +{
+>
+> You need to clear any termios features requested but not supported. In
+> your case that appears to be CMSPAR, as you don't seem to support
+> mark/space parity.
 
-> > 
-> > > > > >  	WRITE_ONCE(*p, v);						\
-> > > > > >  } while (0)
-> > > > > >  
-> > > > > > -#define smp_load_acquire(p)						\
-> > > > > > +#define __smp_load_acquire(p)						\
-> > > > > >  ({									\
-> > > > > >  	typeof(*p) ___p1 = READ_ONCE(*p);				\
-> > > > > >  	compiletime_assert_atomic_type(*p);				\
-> > > > > > -	smp_lwsync();							\
-> > > > > > +	__smp_lwsync();							\
-> > > > > >  	___p1;								\
-> > > > > >  })
-> > > > > >  
-> > > > > > -- 
-> > > > > > MST
-> > > > > > 
-> > > > > > --
-> > > > > > To unsubscribe from this list: send the line "unsubscribe linux-kernel" in
-> > > > > > the body of a message to majordomo@vger.kernel.org
-> > > > > > More majordomo info at  http://vger.kernel.org/majordomo-info.html
-> > > > > > Please read the FAQ at  http://www.tux.org/lkml/
+Ack.
+
+>
+> Similarly if you only support 8N1 or 7E1/7O1 you need to force the CSIZE
+> bits to match what you ended up setting the UART to do.
+
+Ack.
+
+>
+>> +	/* update baud */
+>> +	baud = uart_get_baud_rate(port, new, old, 0, port->uartclk / 16);
+>> +	quot = uart_get_divisor(port, baud) - 1;
+>> +	pic32_uart_write(quot, sport, PIC32_UART_BRG);
+>> +	uart_update_timeout(port, new->c_cflag, baud);
+>
+> See the 8250 driver for an example: you probably need to write back the
+> actual rate you got.
+
+Ack.
+
+>
+>> +/* serial core request to release uart iomem */
+>> +static void pic32_uart_release_port(struct uart_port *port)
+>> +{
+>> +	struct platform_device *pdev = to_platform_device(port->dev);
+>> +	struct resource *res_mem;
+>> +	unsigned int res_size;
+>
+> resource_size_t for resources. Or you could just avoid the pointless
+> variable in the first place 8)
+
+Pointless variable removed.
+
+>
+> Other oddments - things like kasprintf() returns should be checked
+
+Ack.
+
+>
+>
+> Alan
+
+Thanks,
+Paul

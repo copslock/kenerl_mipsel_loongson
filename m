@@ -1,50 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Jan 2016 10:40:22 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:35401 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27007617AbcAGJkUlKOfI (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 7 Jan 2016 10:40:20 +0100
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Websense Email Security Gateway with ESMTPS id C024ECB8C713C;
-        Thu,  7 Jan 2016 09:40:12 +0000 (GMT)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- HHMAIL01.hh.imgtec.org (10.100.10.19) with Microsoft SMTP Server (TLS) id
- 14.3.235.1; Thu, 7 Jan 2016 09:40:14 +0000
-Received: from [192.168.154.40] (192.168.154.40) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Thu, 7 Jan
- 2016 09:40:13 +0000
-Subject: Re: [PATCH v11 3/3] MIPS: dts: jz4780/ci20: Add NEMC, BCH and NAND
- device tree nodes
-To:     Brian Norris <computersforpeace@gmail.com>
-References: <1451910884-18710-1-git-send-email-harvey.hunt@imgtec.com>
- <1451910884-18710-4-git-send-email-harvey.hunt@imgtec.com>
- <20160107012903.GX109450@google.com>
-CC:     <linux-mtd@lists.infradead.org>,
-        <boris.brezillon@free-electrons.com>, <alex@alex-smith.me.uk>,
-        Alex Smith <alex.smith@imgtec.com>,
-        "Zubair Lutfullah Kakakhel" <Zubair.Kakakhel@imgtec.com>,
-        David Woodhouse <dwmw2@infradead.org>,
-        Paul Burton <paul.burton@imgtec.com>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-mips@linux-mips.org>, <robh@kernel.org>
-From:   Harvey Hunt <harvey.hunt@imgtec.com>
-Message-ID: <568E327D.8040905@imgtec.com>
-Date:   Thu, 7 Jan 2016 09:40:13 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.5.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Jan 2016 16:26:17 +0100 (CET)
+Received: from mail-oi0-f52.google.com ([209.85.218.52]:34752 "EHLO
+        mail-oi0-f52.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27009505AbcAGP0QAzat3 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 7 Jan 2016 16:26:16 +0100
+Received: by mail-oi0-f52.google.com with SMTP id o124so315251800oia.1
+        for <linux-mips@linux-mips.org>; Thu, 07 Jan 2016 07:26:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type;
+        bh=syoXOUHtzoQM0I88fw2V6t9dM+0Xh6+SHfwOUEfCqx8=;
+        b=UJ78I625SSMVvIBg+3sj+3TL8fqQxLpqpXM+UbnWXWnhGLqPOFTwfqJmTN7DGgFlKU
+         qw7h2wdEuhWFz31DC6la40uEkvWugOnA9HbR81fFnxPwszCliovaOtwFbxAF5kWy3dz/
+         t+DPRe47IKhlR3tkiN/Tu18yMSyKUS8x/hI8M=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:in-reply-to:references:date
+         :message-id:subject:from:to:cc:content-type;
+        bh=syoXOUHtzoQM0I88fw2V6t9dM+0Xh6+SHfwOUEfCqx8=;
+        b=kRSTyOMxo9QlreiyxGkB/SWY/SnyROmFoqAVKa0TiIukpZe7Djx9Po2Z1E0o7MA8xQ
+         UDgjO8c6zrQVRBPkhxnav7a8jNAaOkJZSqD5ts9PwhZxT4OlxMwp6c+m+Ly3FddJPSIW
+         ud8EO7/fdNOUe7dmVNlvWfeMk28iXPaOIGjnlTjFZa3+o/HeFOD2Mi4jcHMZmN8gsEAP
+         f1G05YTeRjrDG/y4ANwShTxSUF9tm2cdAJLHBE52mro8qEhUXVXzTsXGw1oVZ88wGzJ4
+         EodIFhTgQzshWZm7DnRcnsbE99u7WHGBv8B1hKhTZBX1DX+uLfew4cVqEovmPe4B7f7k
+         k3hQ==
+X-Gm-Message-State: ALoCoQlC95RRcSqRiMExojF8/+Hsx9dUg5iACaMkm64hpAsYjM66MzyHmIpGWmla3K+A/R7jUcedBvIP6fw3UI/RIIGc4nmOQrtjIPOhK/6Jw5Gd3xRIOfM=
 MIME-Version: 1.0
-In-Reply-To: <20160107012903.GX109450@google.com>
-Content-Type: text/plain; charset="windows-1252"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.154.40]
-Return-Path: <Harvey.Hunt@imgtec.com>
+X-Received: by 10.202.196.67 with SMTP id u64mr73481171oif.94.1452180370103;
+ Thu, 07 Jan 2016 07:26:10 -0800 (PST)
+Received: by 10.182.55.105 with HTTP; Thu, 7 Jan 2016 07:26:10 -0800 (PST)
+In-Reply-To: <1452106523-11556-3-git-send-email-f.fainelli@gmail.com>
+References: <1452106523-11556-1-git-send-email-f.fainelli@gmail.com>
+        <1452106523-11556-3-git-send-email-f.fainelli@gmail.com>
+Date:   Thu, 7 Jan 2016 16:26:10 +0100
+Message-ID: <CACRpkdavAtSqcdp3_C5WFgSnAwzkCx-5G_BkbC05T0-GxnJxBw@mail.gmail.com>
+Subject: Re: [PATCH 2/3] gpio: brcmstb: Set endian flags for big-endian MIPS
+From:   Linus Walleij <linus.walleij@linaro.org>
+To:     Florian Fainelli <f.fainelli@gmail.com>
+Cc:     "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+        Linux MIPS <linux-mips@linux-mips.org>,
+        Gregory Fong <gregory.0xf0@gmail.com>, jaedon.shin@gmail.com,
+        Alexandre Courbot <gnurou@gmail.com>,
+        bcm-kernel-feedback-list <bcm-kernel-feedback-list@broadcom.com>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <linus.walleij@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50957
+X-archive-position: 50958
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: harvey.hunt@imgtec.com
+X-original-sender: linus.walleij@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -57,104 +64,18 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Brian,
+On Wed, Jan 6, 2016 at 7:55 PM, Florian Fainelli <f.fainelli@gmail.com> wrote:
 
-On 07/01/16 01:29, Brian Norris wrote:
-> On Mon, Jan 04, 2016 at 12:34:44PM +0000, Harvey Hunt wrote:
->> diff --git a/arch/mips/boot/dts/ingenic/ci20.dts b/arch/mips/boot/dts/ingenic/ci20.dts
->> index 9fcb9e7..782258c 100644
->> --- a/arch/mips/boot/dts/ingenic/ci20.dts
->> +++ b/arch/mips/boot/dts/ingenic/ci20.dts
+> Broadcom MIPS-based STB chips endianness is configured by boot strap,
+> which also reverses all bus endianness (i.e., big-endian CPU + big
+> endian bus ==> native endian I/O).
 >
-> As I noted on patch 1, you need to send this to linux-mips + Ralf.
+> Other architectures (e.g., ARM) either do not support big endian, or
+> else leave I/O in little endian mode.
+>
+> Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
 
-I forgot to CC Ralf on this version, but he took v9 (no change between 
-v9 and v11) through linux-mips as can be seen here: 
-http://patchwork.linux-mips.org/patch/11695/
+Patch applied with Gregory's ACK.
 
->
->> @@ -42,3 +42,66 @@
->>   &uart4 {
->>   	status = "okay";
->>   };
->> +
->> +&nemc {
->> +	status = "okay";
->> +
->> +	nandc: nand-controller@1 {
->> +		compatible = "ingenic,jz4780-nand";
->> +		reg = <1 0 0x1000000>;
->> +
->> +		#address-cells = <1>;
->> +		#size-cells = <0>;
->> +
->> +		ingenic,bch-controller = <&bch>;
->> +
->> +		ingenic,nemc-tAS = <10>;
->> +		ingenic,nemc-tAH = <5>;
->> +		ingenic,nemc-tBP = <10>;
->> +		ingenic,nemc-tAW = <15>;
->> +		ingenic,nemc-tSTRV = <100>;
->> +
->> +		nand@1 {
->> +			reg = <1>;
->> +
->> +			nand-ecc-step-size = <1024>;
->> +			nand-ecc-strength = <24>;
->> +			nand-ecc-mode = "hw";
->> +			nand-on-flash-bbt;
->> +
->> +			partitions {
->> +				#address-cells = <2>;
->> +				#size-cells = <2>;
->
-> This binding was updated, so you need:
->
-> 				compatible = "fixed-partitions";
-
-This has been fixed in mips-linux here: 
-http://patchwork.linux-mips.org/patch/11914/
-
-Thanks,
-
-Harvey
-
->
-> Brian
->
->> +
->> +				partition@0 {
->> +					label = "u-boot-spl";
->> +					reg = <0x0 0x0 0x0 0x800000>;
->> +				};
->> +
->> +				partition@0x800000 {
->> +					label = "u-boot";
->> +					reg = <0x0 0x800000 0x0 0x200000>;
->> +				};
->> +
->> +				partition@0xa00000 {
->> +					label = "u-boot-env";
->> +					reg = <0x0 0xa00000 0x0 0x200000>;
->> +				};
->> +
->> +				partition@0xc00000 {
->> +					label = "boot";
->> +					reg = <0x0 0xc00000 0x0 0x4000000>;
->> +				};
->> +
->> +				partition@0x8c00000 {
->> +					label = "system";
->> +					reg = <0x0 0x4c00000 0x1 0xfb400000>;
->> +				};
->> +			};
->> +		};
->> +	};
->> +};
->> +
->> +&bch {
->> +	status = "okay";
->> +};
->
-> Brian
->
+Yours,
+Linus Walleij

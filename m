@@ -1,28 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Jan 2016 04:30:30 +0100 (CET)
-Received: from [43.251.239.24] ([43.251.239.24]:4622 "EHLO mail.foidd.pw"
-        rhost-flags-FAIL-FAIL-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27006154AbcAGDa2JpJWj (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 7 Jan 2016 04:30:28 +0100
-Received: from ([127.0.0.1]) with MailEnable ESMTP; Thu, 7 Jan 2016 11:30:21 +0800
-From:   "Barcelona Dance Award 2016" <info@barcelonadance.org>
-Subject: Last places available for Barcelona Dance Award 2016, International
- Competition in Easter Spring Time for Schools, Companies, Academies and
- Groups from all over the World. All division and any level Welcome!
-To:     "linux-mips" <linux-mips@linux-mips.org>
-Content-Type: text/plain; charset=iso-8859-1
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Jan 2016 07:05:49 +0100 (CET)
+Received: from mail-ig0-f181.google.com ([209.85.213.181]:35269 "EHLO
+        mail-ig0-f181.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008245AbcAGGFqagvG7 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 7 Jan 2016 07:05:46 +0100
+Received: by mail-ig0-f181.google.com with SMTP id t15so21547155igr.0
+        for <linux-mips@linux-mips.org>; Wed, 06 Jan 2016 22:05:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc:content-type;
+        bh=x+Doae/nP61xetUJtaTXErmWFR37qL0ksmQe4n4/0oI=;
+        b=l1pH8o88C8daGpN5L3bzDW3+jRTr6NUkdYJ/HZcqvz8VSveb6wy2ucaOzXtvN/6yoA
+         4kznQy8yfFZjr1DuztX4OLQvmNeZEDKeDMF9hv29Gi0L+jOEBkKO5HyWLfXrSwS7cCKf
+         hotlVs31O/h/jp9fJSzPMOy8wHKO3cFnbx26yEgyxFfKrzD2DW+bCTLxrmiSxlORt/k2
+         brGNp8AwlxDWVz44y+H+q03m1rBPwD5Pp3ZN3IqtXV3Pe3xBxgYUgSE+fLAD861nXysu
+         ndTBCqaPRCqA8awxwTx0DowCR02CWziby57sYdRMMD8UAnzt1knVPDsuBKh953GEShRu
+         1qQQ==
+X-Received: by 10.50.43.136 with SMTP id w8mr13368750igl.96.1452146740491;
+ Wed, 06 Jan 2016 22:05:40 -0800 (PST)
 MIME-Version: 1.0
-Organization: Choreography Competitions 2016
-Date:   Thu, 7 Jan 2016 04:43:43 +0100
-Message-ID: <3CE3D8F15B25430395C3821B82C5002C.MAI@foidd.pw>
-Return-Path: <info@barcelonadance.org>
+Received: by 10.64.125.69 with HTTP; Wed, 6 Jan 2016 22:05:10 -0800 (PST)
+In-Reply-To: <1452106523-11556-2-git-send-email-f.fainelli@gmail.com>
+References: <1452106523-11556-1-git-send-email-f.fainelli@gmail.com> <1452106523-11556-2-git-send-email-f.fainelli@gmail.com>
+From:   Gregory Fong <gregory.0xf0@gmail.com>
+Date:   Wed, 6 Jan 2016 22:05:10 -0800
+Message-ID: <CADtm3G7_pGdgM8EJgRzRf8j1JAJKivxzd85ie5haWP8ivZvwSg@mail.gmail.com>
+Subject: Re: [PATCH 1/3] gpio: brcmstb: have driver register during subsys_initcall()
+To:     Florian Fainelli <f.fainelli@gmail.com>
+Cc:     linux-gpio@vger.kernel.org,
+        "open list:MIPS" <linux-mips@linux-mips.org>,
+        jaedon.shin@gmail.com, Linus Walleij <linus.walleij@linaro.org>,
+        Alexandre Courbot <gnurou@gmail.com>,
+        bcm-kernel-feedback-list <bcm-kernel-feedback-list@broadcom.com>,
+        Jim Quinlan <jim2101024@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <gregory.0xf0@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50953
+X-archive-position: 50954
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: info@barcelonadance.org
+X-original-sender: gregory.0xf0@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -35,45 +55,24 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+Hello Florian and Jim,
 
-Hey Everybody,
-it's never to late to start preparing International Easter Spring 2016 
-DanceCompetitions for Schools, Companies, Academies and Groups 
-from all over, there are still some places at your disposal to participate.
+On Wed, Jan 6, 2016 at 10:55 AM, Florian Fainelli <f.fainelli@gmail.com> wrote:
+> From: Jim Quinlan <jim2101024@gmail.com>
+>
+> Because regulators are started with subsys_initcall(), and gpio references may
+> be contained in the regulators, it makes sense to start the brcmstb-gpio's with
+> a subsys_initcall(). The order within the drivers/Makefile ensures that the
+> gpio initialization happens prior to the regulator's initialization.
+>
+> We need to unroll module_platform_driver() now to allow this and have custom
+> exit and init module functions to control the initialization level.
 
-As the premier Europe finals with sold-out Tikets Entry competitions, studios 
-representing every world countries, it will be the bigger event in Barcelona! 
-   
-Only a little fee required for your Easter Spring Theatrical/Choreo tourneè!
- 
-Our places blocks always sell-out, so make sure you book early!
+If gpio pins are needed for a regulator to come up, wouldn't it be
+better to handle this using deferred probe instead of initcall-based
+initialization?  Deferred probe has its problems, but I was under the
+impression that it's the encouraged way to resolve these sort of
+initialization order issues.
 
-All info and an application forms are also available at the competitions website by clicking on:
-<barcelonadance. org>
-&
-barcelonadance(dot)org
-
-If clicking doesn't work, "Cut" and "Paste" the link into your Web browser's address bar.
-*Replace the (dot) with  .  the appropriate symbol!
-
-We would appreciate your posting the Choreography Competitions information in your 
-workplaceand passing it on to any contacts you think may be interested.
-
-Interested Schools/Groups are asked to send their completed application and if you would like a 
-printed schedule, (posters & brochures, at no charges to you, please send us your mailing address.
-Director Name:
-Gruop Name:
-Post Addres: 
-Your Email: 
-If interested, give us your email  to discuss any questions you may hav,e please send this form to our email:     
-dancingspain@katamail.com 
-
-Kind regards.
-
-
-
-
-
-
-
-To unsubscribe  please send an email to:  choreospain2014@katamail.com
+Best regards,
+Gregory

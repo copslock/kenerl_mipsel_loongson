@@ -1,49 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Jan 2016 16:53:17 +0100 (CET)
-Received: from mail-pa0-f43.google.com ([209.85.220.43]:35011 "EHLO
-        mail-pa0-f43.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010155AbcAGPxPK8O9V (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 7 Jan 2016 16:53:15 +0100
-Received: by mail-pa0-f43.google.com with SMTP id ho8so870436pac.2;
-        Thu, 07 Jan 2016 07:53:15 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Jan 2016 18:34:02 +0100 (CET)
+Received: from mail-pa0-f53.google.com ([209.85.220.53]:34866 "EHLO
+        mail-pa0-f53.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27014165AbcAGReA0IMXe (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 7 Jan 2016 18:34:00 +0100
+Received: by mail-pa0-f53.google.com with SMTP id ho8so2834210pac.2;
+        Thu, 07 Jan 2016 09:33:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=gzC+rO/zS2AXNuVzU1DeAQ3NFxCzgzLU8hUFbhuybIE=;
-        b=Cn5IjVXKMmj3KVxKgaz7TQNSm0KnM1wVnt18Pj6q7OwZ3nSbg9PDZwHIktDrSujj6p
-         +UISQ+kTtx1yNXBXKoDwcra6pOumoNLBymkPsa3YoF0BnHIpbzYaPbbFl8EOZ1N8g6ox
-         eZCTBqNofIXy8iY6eQoDHgd5/uKc7mDw6cVU7OwRj3dUGDZQAJmKPDMHiom72AsyhmHu
-         qfHAZjPXJMOhIsHJgkyg2TB7a4Zk8kHh/ktLyRZfzs6kO8VXWM9KPvyvbSTPR/DXPY/m
-         bo8l71iwH0qKBw1j/bykS2JgQU++n+ST2d9Nw256fHZQ1YvcUQbjs48jYtwWWoJspBWA
-         4GFg==
-X-Received: by 10.66.182.202 with SMTP id eg10mr152036226pac.50.1452181988997;
-        Thu, 07 Jan 2016 07:53:08 -0800 (PST)
-Received: from [192.168.1.7] (ip174-67-203-144.oc.oc.cox.net. [174.67.203.144])
-        by smtp.gmail.com with ESMTPSA id qj8sm17745223pac.40.2016.01.07.07.53.06
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Thu, 07 Jan 2016 07:53:07 -0800 (PST)
-Message-ID: <568E89EC.4050902@gmail.com>
-Date:   Thu, 07 Jan 2016 07:53:16 -0800
-From:   Dragan Stancevic <dragan.stancevic@gmail.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.8.0
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-type:content-disposition:in-reply-to:user-agent;
+        bh=9MpknYvan+13/PlZrolziZrfqDwQzwuvGj7fHIk6bNU=;
+        b=f3SqA6UFBAyylmIU4lGqK4O9iSgDO3ytDDtfLz7TZkWdbHoo2/5zOEhBgOSFP/bmhX
+         NII84R4RJzcoUHFzMvQRBV4faePDi0O3X2iGJOrJU9w1Kwzqr2TO/+6JLiU+tJrct1Af
+         y4vHUkz4tdDbszoWzfElDovmtXzfcJx8C74Jl7qYWNQYtl+y7NL1HDDTf46NralXqxMm
+         SYTHSwLaaTCwAQ9UOCJtppBrpGjCzhvhcMYnx4TdBgIkEUGQ807LddtEvkXOZdNihhQj
+         0JDRHy4hpj7cuXzIyI3RCDIdP72BoXKe14AUZ3xnX709PJLiy2ox5Hf3XgD04/l71XmJ
+         yP9Q==
+X-Received: by 10.66.190.7 with SMTP id gm7mr93830085pac.79.1452188033360;
+        Thu, 07 Jan 2016 09:33:53 -0800 (PST)
+Received: from google.com ([2620:0:1000:1301:a0c7:6a2c:8427:c983])
+        by smtp.gmail.com with ESMTPSA id kk5sm143649137pab.16.2016.01.07.09.33.52
+        (version=TLS1_2 cipher=AES128-SHA bits=128/128);
+        Thu, 07 Jan 2016 09:33:52 -0800 (PST)
+Date:   Thu, 7 Jan 2016 09:33:50 -0800
+From:   Brian Norris <computersforpeace@gmail.com>
+To:     Harvey Hunt <harvey.hunt@imgtec.com>,
+        Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mtd@lists.infradead.org, boris.brezillon@free-electrons.com,
+        alex@alex-smith.me.uk, Alex Smith <alex.smith@imgtec.com>,
+        Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Paul Burton <paul.burton@imgtec.com>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mips@linux-mips.org, robh@kernel.org,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: Re: [PATCH v11 3/3] MIPS: dts: jz4780/ci20: Add NEMC, BCH and NAND
+ device tree nodes
+Message-ID: <20160107173350.GF109450@google.com>
+References: <1451910884-18710-1-git-send-email-harvey.hunt@imgtec.com>
+ <1451910884-18710-4-git-send-email-harvey.hunt@imgtec.com>
+ <20160107012903.GX109450@google.com>
+ <568E327D.8040905@imgtec.com>
 MIME-Version: 1.0
-To:     Florian Fainelli <f.fainelli@gmail.com>, linux-mips@linux-mips.org
-CC:     ralf@linux-mips.org, cernekee@gmail.com, jaedon.shin@gmail.com,
-        gregory.0xf0@gmail.com
-Subject: Re: [PATCH] MIPS: BMIPS: Enable ARCH_WANT_OPTIONAL_GPIOLIB
-References: <1452106265-11384-1-git-send-email-f.fainelli@gmail.com>
-In-Reply-To: <1452106265-11384-1-git-send-email-f.fainelli@gmail.com>
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-Return-Path: <dragan.stancevic@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <568E327D.8040905@imgtec.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <computersforpeace@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50961
+X-archive-position: 50962
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dragan.stancevic@gmail.com
+X-original-sender: computersforpeace@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,26 +68,105 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Reviewed-by: Dragan Stancevic <dragan.stancevic@gmail.com>
+Hi Harvey + Ralf,
 
-On 01/06/2016 10:51 AM, Florian Fainelli wrote:
-> Allow BMIPS_GENERIC supported platforms to build GPIO controller
-> drivers.
->
-> Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
-> ---
->  arch/mips/Kconfig | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-> index 71683a853372..77dd3c0f10f8 100644
-> --- a/arch/mips/Kconfig
-> +++ b/arch/mips/Kconfig
-> @@ -170,6 +170,7 @@ config BMIPS_GENERIC
->  	select USB_EHCI_BIG_ENDIAN_MMIO if CPU_BIG_ENDIAN
->  	select USB_OHCI_BIG_ENDIAN_DESC if CPU_BIG_ENDIAN
->  	select USB_OHCI_BIG_ENDIAN_MMIO if CPU_BIG_ENDIAN
-> +	select ARCH_WANT_OPTIONAL_GPIOLIB
->  	help
->  	  Build a generic DT-based kernel image that boots on select
->  	  BCM33xx cable modem chips, BCM63xx DSL chips, and BCM7xxx set-top
+On Thu, Jan 07, 2016 at 09:40:13AM +0000, Harvey Hunt wrote:
+> On 07/01/16 01:29, Brian Norris wrote:
+> >On Mon, Jan 04, 2016 at 12:34:44PM +0000, Harvey Hunt wrote:
+> >>diff --git a/arch/mips/boot/dts/ingenic/ci20.dts b/arch/mips/boot/dts/ingenic/ci20.dts
+> >>index 9fcb9e7..782258c 100644
+> >>--- a/arch/mips/boot/dts/ingenic/ci20.dts
+> >>+++ b/arch/mips/boot/dts/ingenic/ci20.dts
+> >
+> >As I noted on patch 1, you need to send this to linux-mips + Ralf.
+> 
+> I forgot to CC Ralf on this version, but he took v9 (no change
+> between v9 and v11) through linux-mips as can be seen here:
+> http://patchwork.linux-mips.org/patch/11695/
+
+OK.
+
+> >>@@ -42,3 +42,66 @@
+> >>  &uart4 {
+> >>  	status = "okay";
+> >>  };
+> >>+
+> >>+&nemc {
+> >>+	status = "okay";
+> >>+
+> >>+	nandc: nand-controller@1 {
+> >>+		compatible = "ingenic,jz4780-nand";
+> >>+		reg = <1 0 0x1000000>;
+> >>+
+> >>+		#address-cells = <1>;
+> >>+		#size-cells = <0>;
+> >>+
+> >>+		ingenic,bch-controller = <&bch>;
+> >>+
+> >>+		ingenic,nemc-tAS = <10>;
+> >>+		ingenic,nemc-tAH = <5>;
+> >>+		ingenic,nemc-tBP = <10>;
+> >>+		ingenic,nemc-tAW = <15>;
+> >>+		ingenic,nemc-tSTRV = <100>;
+> >>+
+> >>+		nand@1 {
+> >>+			reg = <1>;
+> >>+
+> >>+			nand-ecc-step-size = <1024>;
+> >>+			nand-ecc-strength = <24>;
+> >>+			nand-ecc-mode = "hw";
+> >>+			nand-on-flash-bbt;
+> >>+
+> >>+			partitions {
+> >>+				#address-cells = <2>;
+> >>+				#size-cells = <2>;
+> >
+> >This binding was updated, so you need:
+> >
+> >				compatible = "fixed-partitions";
+> 
+> This has been fixed in mips-linux here:
+> http://patchwork.linux-mips.org/patch/11914/
+
+Ralf: it looks like you applied the DTS changes twice, essentially.
+Might want to fix that:
+
+[From arch/mips/boot/dts/ingenic/ci20.dts]
+...
+&nemc {
+	...
+	nandc: nand-controller@1 {
+		...
+		nand@1 {
+			...
+			partitions {
+				compatible = "fixed-partitions";
+				...
+			};
+		};
+	};
+};
+
+&bch {
+	status = "okay";
+};
+
+&nemc {
+	...
+	nandc: nand-controller@1 {
+		...
+		nand@1 {
+			...
+			partitions {
+				...
+			};
+		};
+	};
+};
+
+&bch {
+	status = "okay";
+};
+
+
+Brian

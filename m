@@ -1,35 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Jan 2016 18:55:31 +0100 (CET)
-Received: from mx1.redhat.com ([209.132.183.28]:55220 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27014611AbcAGRz2zZN0e (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 7 Jan 2016 18:55:28 +0100
-Received: from int-mx14.intmail.prod.int.phx2.redhat.com (int-mx14.intmail.prod.int.phx2.redhat.com [10.5.11.27])
-        by mx1.redhat.com (Postfix) with ESMTPS id 23E6EA2023;
-        Thu,  7 Jan 2016 17:55:27 +0000 (UTC)
-Received: from redhat.com (vpn1-6-132.ams2.redhat.com [10.36.6.132])
-        by int-mx14.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with SMTP id u07HtOZ3026136;
-        Thu, 7 Jan 2016 12:55:25 -0500
-Date:   Thu, 7 Jan 2016 19:55:24 +0200
-From:   "Michael S. Tsirkin" <mst@redhat.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     Michal Marek <mmarek@suse.com>, linux-kbuild@vger.kernel.org,
-        linux-mips@linux-mips.org, ralf@linux-mips.org
-Subject: [PATCH] ld-version: fix it on Fedora
-Message-ID: <1452189189-31188-1-git-send-email-mst@redhat.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Jan 2016 19:13:25 +0100 (CET)
+Received: from mail-pa0-f49.google.com ([209.85.220.49]:36118 "EHLO
+        mail-pa0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27014690AbcAGSNYIqTTe (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 7 Jan 2016 19:13:24 +0100
+Received: by mail-pa0-f49.google.com with SMTP id yy13so171844972pab.3
+        for <linux-mips@linux-mips.org>; Thu, 07 Jan 2016 10:13:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding;
+        bh=zpT+akx+GRSK4Ho+ijom43wtyheq2jDiL/E62Dx5s5s=;
+        b=mSQ8juTFXguZW0zIPJG6esFWmIop+0J3Vl+mnhB9ooA2H2q7N+2OEqrsXLGIEx8l6h
+         Ty6ckJbw9e8ZKR4bxI90IGpG0UTcm8L8qXwvR8VDGDKuPGLi5ohVfP/c3HxGoCmDf4vQ
+         v4/2/Lj///3V1MD4dia2Q0XKROuN1pg/WYh+sqiiekJDhZ1YQ5OzbB0v9RXy1eyItBHK
+         aIDBIRV9dIEmHnzW8CLlRSWUTsWAmfMHcFjPtWuLJFxgBybETRB5A67cIbDbkYkLCBrb
+         x0jGPCFQnO4w6OEQSNgw94h4jaIrJFW1dxeq9vmfY9AdCPybX5Zk8+kTvEK5jfDFAbwV
+         wb1g==
+X-Received: by 10.66.158.193 with SMTP id ww1mr152357678pab.21.1452190397448;
+        Thu, 07 Jan 2016 10:13:17 -0800 (PST)
+Received: from [10.12.156.244] (5520-maca-inet1-outside.broadcom.com. [216.31.211.11])
+        by smtp.googlemail.com with ESMTPSA id dg12sm119333854pac.47.2016.01.07.10.13.16
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 07 Jan 2016 10:13:16 -0800 (PST)
+Message-ID: <568EAA99.1020603@gmail.com>
+Date:   Thu, 07 Jan 2016 10:12:41 -0800
+From:   Florian Fainelli <f.fainelli@gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mutt-Fcc: =sent
-X-Scanned-By: MIMEDefang 2.68 on 10.5.11.27
-Return-Path: <mst@redhat.com>
+To:     Gregory Fong <gregory.0xf0@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>
+CC:     linux-gpio@vger.kernel.org, 
+ open list:MIPS <linux-mips@linux-mips.org>,
+ jaedon.shin@gmail.com, Linus Walleij <linus.walleij@linaro.org>, 
+ Alexandre Courbot <gnurou@gmail.com>,
+ bcm-kernel-feedback-list <bcm-kernel-feedback-list@broadcom.com>, 
+ Jim Quinlan <jim2101024@gmail.com>
+Subject: Re: [PATCH 1/3] gpio: brcmstb: have driver register during subsys_initcall()
+References: <1452106523-11556-1-git-send-email-f.fainelli@gmail.com> <1452106523-11556-2-git-send-email-f.fainelli@gmail.com> <CADtm3G7_pGdgM8EJgRzRf8j1JAJKivxzd85ie5haWP8ivZvwSg@mail.gmail.com>
+In-Reply-To: <CADtm3G7_pGdgM8EJgRzRf8j1JAJKivxzd85ie5haWP8ivZvwSg@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50963
+X-archive-position: 50964
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mst@redhat.com
+X-original-sender: f.fainelli@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -42,34 +61,45 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fedora 23, ld --version outputs:
-GNU ld version 2.25-15.fc23
+On 06/01/16 22:05, Gregory Fong wrote:
+> Hello Florian and Jim,
+> 
+> On Wed, Jan 6, 2016 at 10:55 AM, Florian Fainelli <f.fainelli@gmail.com> wrote:
+>> From: Jim Quinlan <jim2101024@gmail.com>
+>>
+>> Because regulators are started with subsys_initcall(), and gpio references may
+>> be contained in the regulators, it makes sense to start the brcmstb-gpio's with
+>> a subsys_initcall(). The order within the drivers/Makefile ensures that the
+>> gpio initialization happens prior to the regulator's initialization.
+>>
+>> We need to unroll module_platform_driver() now to allow this and have custom
+>> exit and init module functions to control the initialization level.
+> 
+> If gpio pins are needed for a regulator to come up, wouldn't it be
+> better to handle this using deferred probe instead of initcall-based
+> initialization?  Deferred probe has its problems, but I was under the
+> impression that it's the encouraged way to resolve these sort of
+> initialization order issues.
 
-But ld-version.sh fails to parse this, so e.g.  mips build fails to
-enable VDSO, printing a warning that binutils >= 2.24 is required.
+To give you some more context associated with this change, we now have
+some boards which have GPIO-connected regulators to turn on/off PCIe
+endpoint devices. In the downstream kernel, and with lack of a better
+solution for now, we ended-up having the PCIE Root Complex driver to
+claim these regulator, and flip them on shortly before attempting a bus
+scan.
 
-To fix, teach ld-version to parse this format.
+If we used deferred probing, I am assuming the sequence of events could
+go like this:
 
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
----
+- PCIe driver gets initialized, looks for regulators, cannot get a
+handle on them, gets EPROBE_DEFER (arch_initcall right now)
+- regulator subsystem gets initialized, does not have a valid GPIO
+provider driver yet, returns EPROBE_DEFER (subsys_initcall)
+- GPIO provider (gpio-brcmstb) finally gets probed and registered,
+regulator get registered and available, PCIe RC driver can now use them
+and power on the PCIE end point (module_initcall)
 
-Which tree should this be merged through? Mine? MIPS?
-
- scripts/ld-version.sh | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/scripts/ld-version.sh b/scripts/ld-version.sh
-index 198580d..25d23c8 100755
---- a/scripts/ld-version.sh
-+++ b/scripts/ld-version.sh
-@@ -2,6 +2,8 @@
- # extract linker version number from stdin and turn into single number
- 	{
- 	gsub(".*)", "");
-+	gsub(".*version ", "");
-+	gsub("-.*", "");
- 	split($1,a, ".");
- 	print a[1]*10000000 + a[2]*100000 + a[3]*10000 + a[4]*100 + a[5];
- 	exit
+I suppose this might be working actually, let me go back to the white
+board and look at this with Jim.
 -- 
-MST
+Florian

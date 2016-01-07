@@ -1,58 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Jan 2016 16:28:42 +0100 (CET)
-Received: from mail-oi0-f41.google.com ([209.85.218.41]:35081 "EHLO
-        mail-oi0-f41.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27009505AbcAGP2kA2x0m (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 7 Jan 2016 16:28:40 +0100
-Received: by mail-oi0-f41.google.com with SMTP id l9so287793107oia.2
-        for <linux-mips@linux-mips.org>; Thu, 07 Jan 2016 07:28:39 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Jan 2016 16:53:17 +0100 (CET)
+Received: from mail-pa0-f43.google.com ([209.85.220.43]:35011 "EHLO
+        mail-pa0-f43.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010155AbcAGPxPK8O9V (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 7 Jan 2016 16:53:15 +0100
+Received: by mail-pa0-f43.google.com with SMTP id ho8so870436pac.2;
+        Thu, 07 Jan 2016 07:53:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        bh=KWtma6QyqzcSQ2/y4rsGThATVrqS8mHFHJ0JwtNPjjY=;
-        b=N5oYQgF51jS6WqMN5nYZbLQmg/7l/mdJqX5axwdavd8xzw2OVXuHCvhAlK6bR2mSnm
-         NYyc1pru7xT6MrKoYkrozGC5v1K6vcWfxE1+/AKtaoZgeNWxu0PpPXHAZXyATC4aipGN
-         fXL1HrX23aasMcmi0Hc45THgncmBnnBXvLH6Q=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:in-reply-to:references:date
-         :message-id:subject:from:to:cc:content-type;
-        bh=KWtma6QyqzcSQ2/y4rsGThATVrqS8mHFHJ0JwtNPjjY=;
-        b=Ik27z2C8isnaaUt/C5fzW2qu8xrvQkePIDPBxp9HU1+IvNLkcq/pfvIRZs3JP/IijX
-         dhhExf0bbqLjq8yb1+3Mon6WEUipGaEW8Z4kcp4/aPbVy7qFR3HO2RRatJjfr8bvOYk9
-         VnC/f+F0Y8KGzFQlnPu+/8fQmowBePLhOPe0TJ/VubWgMlSNbBpHBkrc7umZx46kOxzc
-         zJR+VUDtspEAapmBt0y7EfK+Sr92Rc4m+GvIf9Yw3Izatvy8XFJ6uizhNUAnOv9bPUub
-         wU3aAT8GkqLO+3DFPz7/5LBPcjeTHUNFPw0CeWgQ6KNZ75LYGAOHysYKg2j6x4iCNsjg
-         m3tg==
-X-Gm-Message-State: ALoCoQnVzlWLK/ZbKl3l/QabWeWOSMhLy+fziRMyLh8/MwKuq2OrO0HcWlkxLQJqpIL16y7rF5LM14Oka8XzBRULClBHHLzqGmOl0u6BC9zVxbwuSAJXFeA=
+        d=gmail.com; s=20120113;
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding;
+        bh=gzC+rO/zS2AXNuVzU1DeAQ3NFxCzgzLU8hUFbhuybIE=;
+        b=Cn5IjVXKMmj3KVxKgaz7TQNSm0KnM1wVnt18Pj6q7OwZ3nSbg9PDZwHIktDrSujj6p
+         +UISQ+kTtx1yNXBXKoDwcra6pOumoNLBymkPsa3YoF0BnHIpbzYaPbbFl8EOZ1N8g6ox
+         eZCTBqNofIXy8iY6eQoDHgd5/uKc7mDw6cVU7OwRj3dUGDZQAJmKPDMHiom72AsyhmHu
+         qfHAZjPXJMOhIsHJgkyg2TB7a4Zk8kHh/ktLyRZfzs6kO8VXWM9KPvyvbSTPR/DXPY/m
+         bo8l71iwH0qKBw1j/bykS2JgQU++n+ST2d9Nw256fHZQ1YvcUQbjs48jYtwWWoJspBWA
+         4GFg==
+X-Received: by 10.66.182.202 with SMTP id eg10mr152036226pac.50.1452181988997;
+        Thu, 07 Jan 2016 07:53:08 -0800 (PST)
+Received: from [192.168.1.7] (ip174-67-203-144.oc.oc.cox.net. [174.67.203.144])
+        by smtp.gmail.com with ESMTPSA id qj8sm17745223pac.40.2016.01.07.07.53.06
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Thu, 07 Jan 2016 07:53:07 -0800 (PST)
+Message-ID: <568E89EC.4050902@gmail.com>
+Date:   Thu, 07 Jan 2016 07:53:16 -0800
+From:   Dragan Stancevic <dragan.stancevic@gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.8.0
 MIME-Version: 1.0
-X-Received: by 10.202.102.102 with SMTP id a99mr74055614oic.113.1452180514491;
- Thu, 07 Jan 2016 07:28:34 -0800 (PST)
-Received: by 10.182.55.105 with HTTP; Thu, 7 Jan 2016 07:28:34 -0800 (PST)
-In-Reply-To: <1452106523-11556-2-git-send-email-f.fainelli@gmail.com>
-References: <1452106523-11556-1-git-send-email-f.fainelli@gmail.com>
-        <1452106523-11556-2-git-send-email-f.fainelli@gmail.com>
-Date:   Thu, 7 Jan 2016 16:28:34 +0100
-Message-ID: <CACRpkda7xndoR5M7Jfhys4m_ggPModW=gEhzRZUnG2vn_WYDMg@mail.gmail.com>
-Subject: Re: [PATCH 1/3] gpio: brcmstb: have driver register during subsys_initcall()
-From:   Linus Walleij <linus.walleij@linaro.org>
-To:     Florian Fainelli <f.fainelli@gmail.com>
-Cc:     "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-        Linux MIPS <linux-mips@linux-mips.org>,
-        Gregory Fong <gregory.0xf0@gmail.com>, jaedon.shin@gmail.com,
-        Alexandre Courbot <gnurou@gmail.com>,
-        bcm-kernel-feedback-list <bcm-kernel-feedback-list@broadcom.com>,
-        Jim Quinlan <jim2101024@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <linus.walleij@linaro.org>
+To:     Florian Fainelli <f.fainelli@gmail.com>, linux-mips@linux-mips.org
+CC:     ralf@linux-mips.org, cernekee@gmail.com, jaedon.shin@gmail.com,
+        gregory.0xf0@gmail.com
+Subject: Re: [PATCH] MIPS: BMIPS: Enable ARCH_WANT_OPTIONAL_GPIOLIB
+References: <1452106265-11384-1-git-send-email-f.fainelli@gmail.com>
+In-Reply-To: <1452106265-11384-1-git-send-email-f.fainelli@gmail.com>
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
+Return-Path: <dragan.stancevic@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50960
+X-archive-position: 50961
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linus.walleij@linaro.org
+X-original-sender: dragan.stancevic@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -65,23 +56,26 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Jan 6, 2016 at 7:55 PM, Florian Fainelli <f.fainelli@gmail.com> wrote:
+Reviewed-by: Dragan Stancevic <dragan.stancevic@gmail.com>
 
-> From: Jim Quinlan <jim2101024@gmail.com>
+On 01/06/2016 10:51 AM, Florian Fainelli wrote:
+> Allow BMIPS_GENERIC supported platforms to build GPIO controller
+> drivers.
 >
-> Because regulators are started with subsys_initcall(), and gpio references may
-> be contained in the regulators, it makes sense to start the brcmstb-gpio's with
-> a subsys_initcall(). The order within the drivers/Makefile ensures that the
-> gpio initialization happens prior to the regulator's initialization.
->
-> We need to unroll module_platform_driver() now to allow this and have custom
-> exit and init module functions to control the initialization level.
->
-> Signed-off-by: Jim Quinlan <jim2101024@gmail.com>
 > Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
-
-I'm holding this back until the initcall ordering discussion is
-resolved, the other two patches are applied.
-
-Yours,
-Linus Walleij
+> ---
+>  arch/mips/Kconfig | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+> index 71683a853372..77dd3c0f10f8 100644
+> --- a/arch/mips/Kconfig
+> +++ b/arch/mips/Kconfig
+> @@ -170,6 +170,7 @@ config BMIPS_GENERIC
+>  	select USB_EHCI_BIG_ENDIAN_MMIO if CPU_BIG_ENDIAN
+>  	select USB_OHCI_BIG_ENDIAN_DESC if CPU_BIG_ENDIAN
+>  	select USB_OHCI_BIG_ENDIAN_MMIO if CPU_BIG_ENDIAN
+> +	select ARCH_WANT_OPTIONAL_GPIOLIB
+>  	help
+>  	  Build a generic DT-based kernel image that boots on select
+>  	  BCM33xx cable modem chips, BCM63xx DSL chips, and BCM7xxx set-top

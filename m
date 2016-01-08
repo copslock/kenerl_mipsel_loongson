@@ -1,25 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 Jan 2016 00:58:28 +0100 (CET)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 Jan 2016 00:58:52 +0100 (CET)
 Received: from exsmtp03.microchip.com ([198.175.253.49]:56321 "EHLO
         email.microchip.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27014715AbcAGX536KCFu (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 8 Jan 2016 00:57:29 +0100
+        by eddie.linux-mips.org with ESMTP id S27010187AbcAGX5adLnKu (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 8 Jan 2016 00:57:30 +0100
 Received: from mx.microchip.com (10.10.76.4) by chn-sv-exch03.mchp-main.com
  (10.10.76.49) with Microsoft SMTP Server id 14.3.181.6; Thu, 7 Jan 2016
- 16:57:24 -0700
+ 16:57:28 -0700
 Received: by mx.microchip.com (sSMTP sendmail emulation); Thu, 07 Jan 2016
- 17:05:03 -0700
+ 17:05:06 -0700
 From:   Joshua Henderson <joshua.henderson@microchip.com>
 To:     <linux-kernel@vger.kernel.org>
 CC:     <linux-mips@linux-mips.org>, <ralf@linux-mips.org>,
         Joshua Henderson <joshua.henderson@microchip.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Pawel Moll <pawel.moll@arm.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ian Campbell <ijc+devicetree@hellion.org.uk>,
-        Kumar Gala <galak@codeaurora.org>, <devicetree@vger.kernel.org>
-Subject: [PATCH v3 07/14] dt/bindings: Add bindings for PIC32 pin control and GPIO
-Date:   Thu, 7 Jan 2016 17:00:22 -0700
-Message-ID: <1452211389-31025-8-git-send-email-joshua.henderson@microchip.com>
+        Linus Walleij <linus.walleij@linaro.org>,
+        <linux-gpio@vger.kernel.org>
+Subject: [PATCH v3 08/14] pinctrl: pinctrl-pic32: Add PIC32 pin control driver
+Date:   Thu, 7 Jan 2016 17:00:23 -0700
+Message-ID: <1452211389-31025-9-git-send-email-joshua.henderson@microchip.com>
 X-Mailer: git-send-email 1.7.9.5
 In-Reply-To: <1452211389-31025-1-git-send-email-joshua.henderson@microchip.com>
 References: <1452211389-31025-1-git-send-email-joshua.henderson@microchip.com>
@@ -29,7 +26,7 @@ Return-Path: <Joshua.Henderson@microchip.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50974
+X-archive-position: 50975
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,139 +43,2553 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Document the devicetree bindings for PINCTRL and GPIO found on Microchip
-PIC32 class devices.
+Add a driver for the pin controller present on the Microchip PIC32
+including the specific variant PIC32MZDA. This driver provides pinmux
+and pinconfig operations as well as GPIO and IRQ chips for the GPIO
+banks.
 
 Signed-off-by: Joshua Henderson <joshua.henderson@microchip.com>
 Cc: Ralf Baechle <ralf@linux-mips.org>
-Acked-by: Rob Herring <robh@kernel.org>
 ---
- .../bindings/gpio/microchip,pic32-gpio.txt         |   49 ++++++++++++++++
- .../bindings/pinctrl/microchip,pic32-pinctrl.txt   |   60 ++++++++++++++++++++
- 2 files changed, 109 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/gpio/microchip,pic32-gpio.txt
- create mode 100644 Documentation/devicetree/bindings/pinctrl/microchip,pic32-pinctrl.txt
+ drivers/pinctrl/Kconfig         |   17 +
+ drivers/pinctrl/Makefile        |    1 +
+ drivers/pinctrl/pinctrl-pic32.c | 2339 +++++++++++++++++++++++++++++++++++++++
+ drivers/pinctrl/pinctrl-pic32.h |  141 +++
+ 4 files changed, 2498 insertions(+)
+ create mode 100644 drivers/pinctrl/pinctrl-pic32.c
+ create mode 100644 drivers/pinctrl/pinctrl-pic32.h
 
-diff --git a/Documentation/devicetree/bindings/gpio/microchip,pic32-gpio.txt b/Documentation/devicetree/bindings/gpio/microchip,pic32-gpio.txt
+diff --git a/drivers/pinctrl/Kconfig b/drivers/pinctrl/Kconfig
+index 312c78b..374386a 100644
+--- a/drivers/pinctrl/Kconfig
++++ b/drivers/pinctrl/Kconfig
+@@ -246,6 +246,23 @@ config PINCTRL_ZYNQ
+ 	help
+ 	  This selectes the pinctrl driver for Xilinx Zynq.
+ 
++config PINCTRL_PIC32
++	bool "Microchip PIC32 pin controller driver"
++	depends on OF
++	depends on MACH_PIC32
++	select PINMUX
++	select GENERIC_PINCONF
++	select GPIOLIB_IRQCHIP
++	select OF_GPIO
++	help
++	  This is the pin controller and gpio driver for Microchip PIC32
++	  microcontrollers. This option is selected automatically when specific
++	  machine and arch are selected to build.
++
++config PINCTRL_PIC32MZDA
++	def_bool y if PIC32MZDA
++	select PINCTRL_PIC32
++
+ source "drivers/pinctrl/bcm/Kconfig"
+ source "drivers/pinctrl/berlin/Kconfig"
+ source "drivers/pinctrl/freescale/Kconfig"
+diff --git a/drivers/pinctrl/Makefile b/drivers/pinctrl/Makefile
+index 738cb49..a512196 100644
+--- a/drivers/pinctrl/Makefile
++++ b/drivers/pinctrl/Makefile
+@@ -18,6 +18,7 @@ obj-$(CONFIG_PINCTRL_DIGICOLOR)	+= pinctrl-digicolor.o
+ obj-$(CONFIG_PINCTRL_FALCON)	+= pinctrl-falcon.o
+ obj-$(CONFIG_PINCTRL_MESON)	+= meson/
+ obj-$(CONFIG_PINCTRL_PALMAS)	+= pinctrl-palmas.o
++obj-$(CONFIG_PINCTRL_PIC32)	+= pinctrl-pic32.o
+ obj-$(CONFIG_PINCTRL_PISTACHIO)	+= pinctrl-pistachio.o
+ obj-$(CONFIG_PINCTRL_ROCKCHIP)	+= pinctrl-rockchip.o
+ obj-$(CONFIG_PINCTRL_SINGLE)	+= pinctrl-single.o
+diff --git a/drivers/pinctrl/pinctrl-pic32.c b/drivers/pinctrl/pinctrl-pic32.c
 new file mode 100644
-index 0000000..ef37528
+index 0000000..dc0c5aa
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/gpio/microchip,pic32-gpio.txt
-@@ -0,0 +1,49 @@
-+* Microchip PIC32 GPIO devices (PIO).
++++ b/drivers/pinctrl/pinctrl-pic32.c
+@@ -0,0 +1,2339 @@
++/*
++ * PIC32 pinctrl driver
++ *
++ * Joshua Henderson, <joshua.henderson@microchip.com>
++ * Copyright (C) 2015 Microchip Technology Inc.  All rights reserved.
++ *
++ * This program is free software; you can distribute it and/or modify it
++ * under the terms of the GNU General Public License (Version 2) as
++ * published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope it will be useful, but WITHOUT
++ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
++ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
++ * for more details.
++ */
++#include <linux/clk.h>
++#include <linux/gpio.h>
++#include <linux/gpio/driver.h>
++#include <linux/interrupt.h>
++#include <linux/io.h>
++#include <linux/irq.h>
++#include <linux/of.h>
++#include <linux/of_device.h>
++#include <linux/pinctrl/pinconf.h>
++#include <linux/pinctrl/pinconf-generic.h>
++#include <linux/pinctrl/pinctrl.h>
++#include <linux/pinctrl/pinmux.h>
++#include <linux/platform_device.h>
++#include <linux/slab.h>
++#include <linux/spinlock.h>
 +
-+Required properties:
-+ - compatible: "microchip,pic32mzda-gpio"
-+ - reg: Base address and length for the device.
-+ - interrupts: The port interrupt shared by all pins.
-+ - gpio-controller: Marks the port as GPIO controller.
-+ - #gpio-cells: Two. The first cell is the pin number and
-+   the second cell is used to specify the gpio polarity as defined in
-+   defined in <dt-bindings/gpio/gpio.h>:
-+      0 = GPIO_ACTIVE_HIGH
-+      1 = GPIO_ACTIVE_LOW
-+      2 = GPIO_OPEN_DRAIN
-+ - interrupt-controller: Marks the device node as an interrupt controller.
-+ - #interrupt-cells: Two. The first cell is the GPIO number and second cell
-+   is used to specify the trigger type as defined in
-+   <dt-bindings/interrupt-controller/irq.h>:
-+      IRQ_TYPE_EDGE_RISING
-+      IRQ_TYPE_EDGE_FALLING
-+      IRQ_TYPE_EDGE_BOTH
-+ - clocks: Clock specifier (see clock bindings for details).
-+ - microchip,gpio-bank: Specifies which bank a controller owns.
-+ - gpio-ranges: Interaction with the PINCTRL subsystem.
++#include <asm/mach-pic32/pic32.h>
 +
-+Example:
++#include "pinctrl-utils.h"
++#include "pinctrl-pic32.h"
 +
-+/* PORTA */
-+gpio0: gpio0@1f860000 {
-+	compatible = "microchip,pic32mzda-gpio";
-+	reg = <0x1f860000 0x100>;
-+	interrupts = <118 IRQ_TYPE_LEVEL_HIGH>;
-+	#gpio-cells = <2>;
-+	gpio-controller;
-+	interrupt-controller;
-+	#interrupt-cells = <2>;
-+	clocks = <&PBCLK4>;
-+	microchip,gpio-bank = <0>;
-+	gpio-ranges = <&pic32_pinctrl 0 0 16>;
++#define PINS_PER_BANK		16
++
++#define PIC32_CNCON_EDGE	11
++#define PIC32_CNCON_ON		15
++
++#define PIN_CONFIG_MICROCHIP_DIGITAL	(PIN_CONFIG_END + 1)
++#define PIN_CONFIG_MICROCHIP_ANALOG	(PIN_CONFIG_END + 2)
++
++static const struct pinconf_generic_params pic32_mpp_bindings[] = {
++	{"microchip,digital",	PIN_CONFIG_MICROCHIP_DIGITAL,	0},
++	{"microchip,analog",	PIN_CONFIG_MICROCHIP_ANALOG,	0},
 +};
 +
-+keys {
-+	...
++#define GPIO_BANK_START(bank)		((bank) * PINS_PER_BANK)
 +
-+	button@sw1 {
-+		label = "ESC";
-+		linux,code = <1>;
-+		gpios = <&gpio0 12 0>;
-+	};
++struct pic32_function {
++	const char *name;
++	const char * const *groups;
++	unsigned int ngroups;
 +};
-diff --git a/Documentation/devicetree/bindings/pinctrl/microchip,pic32-pinctrl.txt b/Documentation/devicetree/bindings/pinctrl/microchip,pic32-pinctrl.txt
++
++struct pic32_pin_group {
++	const char *name;
++	unsigned int pin;
++	struct pic32_desc_function *functions;
++};
++
++struct pic32_desc_function {
++	const char *name;
++	u32 muxreg;
++	u32 muxval;
++};
++
++struct pic32_gpio_bank {
++	void __iomem *reg_base;
++	struct gpio_chip gpio_chip;
++	struct irq_chip irq_chip;
++	struct clk *clk;
++};
++
++struct pic32_pinctrl {
++	void __iomem *reg_base;
++	struct device *dev;
++	struct pinctrl_dev *pctldev;
++	const struct pinctrl_pin_desc *pins;
++	unsigned int npins;
++	const struct pic32_function *functions;
++	unsigned int nfunctions;
++	const struct pic32_pin_group *groups;
++	unsigned int ngroups;
++	struct pic32_gpio_bank *gpio_banks;
++	unsigned int nbanks;
++	struct clk *clk;
++};
++
++static const struct pinctrl_pin_desc pic32_pins[] = {
++	PINCTRL_PIN(0, "A0"),
++	PINCTRL_PIN(1, "A1"),
++	PINCTRL_PIN(2, "A2"),
++	PINCTRL_PIN(3, "A3"),
++	PINCTRL_PIN(4, "A4"),
++	PINCTRL_PIN(5, "A5"),
++	PINCTRL_PIN(6, "A6"),
++	PINCTRL_PIN(7, "A7"),
++	PINCTRL_PIN(8, "A8"),
++	PINCTRL_PIN(9, "A9"),
++	PINCTRL_PIN(10, "A10"),
++	PINCTRL_PIN(11, "A11"),
++	PINCTRL_PIN(12, "A12"),
++	PINCTRL_PIN(13, "A13"),
++	PINCTRL_PIN(14, "A14"),
++	PINCTRL_PIN(15, "A15"),
++	PINCTRL_PIN(16, "B0"),
++	PINCTRL_PIN(17, "B1"),
++	PINCTRL_PIN(18, "B2"),
++	PINCTRL_PIN(19, "B3"),
++	PINCTRL_PIN(20, "B4"),
++	PINCTRL_PIN(21, "B5"),
++	PINCTRL_PIN(22, "B6"),
++	PINCTRL_PIN(23, "B7"),
++	PINCTRL_PIN(24, "B8"),
++	PINCTRL_PIN(25, "B9"),
++	PINCTRL_PIN(26, "B10"),
++	PINCTRL_PIN(27, "B11"),
++	PINCTRL_PIN(28, "B12"),
++	PINCTRL_PIN(29, "B13"),
++	PINCTRL_PIN(30, "B14"),
++	PINCTRL_PIN(31, "B15"),
++	PINCTRL_PIN(33, "C1"),
++	PINCTRL_PIN(34, "C2"),
++	PINCTRL_PIN(35, "C3"),
++	PINCTRL_PIN(36, "C4"),
++	PINCTRL_PIN(44, "C12"),
++	PINCTRL_PIN(45, "C13"),
++	PINCTRL_PIN(46, "C14"),
++	PINCTRL_PIN(47, "C15"),
++	PINCTRL_PIN(48, "D0"),
++	PINCTRL_PIN(49, "D1"),
++	PINCTRL_PIN(50, "D2"),
++	PINCTRL_PIN(51, "D3"),
++	PINCTRL_PIN(52, "D4"),
++	PINCTRL_PIN(53, "D5"),
++	PINCTRL_PIN(54, "D6"),
++	PINCTRL_PIN(55, "D7"),
++	PINCTRL_PIN(57, "D9"),
++	PINCTRL_PIN(58, "D10"),
++	PINCTRL_PIN(59, "D11"),
++	PINCTRL_PIN(60, "D12"),
++	PINCTRL_PIN(61, "D13"),
++	PINCTRL_PIN(62, "D14"),
++	PINCTRL_PIN(63, "D15"),
++	PINCTRL_PIN(64, "E0"),
++	PINCTRL_PIN(65, "E1"),
++	PINCTRL_PIN(66, "E2"),
++	PINCTRL_PIN(67, "E3"),
++	PINCTRL_PIN(68, "E4"),
++	PINCTRL_PIN(69, "E5"),
++	PINCTRL_PIN(70, "E6"),
++	PINCTRL_PIN(71, "E7"),
++	PINCTRL_PIN(72, "E8"),
++	PINCTRL_PIN(73, "E9"),
++	PINCTRL_PIN(80, "F0"),
++	PINCTRL_PIN(81, "F1"),
++	PINCTRL_PIN(82, "F2"),
++	PINCTRL_PIN(83, "F3"),
++	PINCTRL_PIN(84, "F4"),
++	PINCTRL_PIN(85, "F5"),
++	PINCTRL_PIN(88, "F8"),
++	PINCTRL_PIN(92, "F12"),
++	PINCTRL_PIN(93, "F13"),
++	PINCTRL_PIN(96, "G0"),
++	PINCTRL_PIN(97, "G1"),
++	PINCTRL_PIN(102, "G6"),
++	PINCTRL_PIN(103, "G7"),
++	PINCTRL_PIN(104, "G8"),
++	PINCTRL_PIN(105, "G9"),
++	PINCTRL_PIN(108, "G12"),
++	PINCTRL_PIN(109, "G13"),
++	PINCTRL_PIN(110, "G14"),
++	PINCTRL_PIN(111, "G15"),
++	PINCTRL_PIN(112, "H0"),
++	PINCTRL_PIN(113, "H1"),
++	PINCTRL_PIN(114, "H2"),
++	PINCTRL_PIN(115, "H3"),
++	PINCTRL_PIN(116, "H4"),
++	PINCTRL_PIN(117, "H5"),
++	PINCTRL_PIN(118, "H6"),
++	PINCTRL_PIN(119, "H7"),
++	PINCTRL_PIN(120, "H8"),
++	PINCTRL_PIN(121, "H9"),
++	PINCTRL_PIN(122, "H10"),
++	PINCTRL_PIN(123, "H11"),
++	PINCTRL_PIN(124, "H12"),
++	PINCTRL_PIN(125, "H13"),
++	PINCTRL_PIN(126, "H14"),
++	PINCTRL_PIN(127, "H15"),
++	PINCTRL_PIN(128, "J0"),
++	PINCTRL_PIN(129, "J1"),
++	PINCTRL_PIN(130, "J2"),
++	PINCTRL_PIN(131, "J3"),
++	PINCTRL_PIN(132, "J4"),
++	PINCTRL_PIN(133, "J5"),
++	PINCTRL_PIN(134, "J6"),
++	PINCTRL_PIN(135, "J7"),
++	PINCTRL_PIN(136, "J8"),
++	PINCTRL_PIN(137, "J9"),
++	PINCTRL_PIN(138, "J10"),
++	PINCTRL_PIN(139, "J11"),
++	PINCTRL_PIN(140, "J12"),
++	PINCTRL_PIN(141, "J13"),
++	PINCTRL_PIN(142, "J14"),
++	PINCTRL_PIN(143, "J15"),
++	PINCTRL_PIN(144, "K0"),
++	PINCTRL_PIN(145, "K1"),
++	PINCTRL_PIN(146, "K2"),
++	PINCTRL_PIN(147, "K3"),
++	PINCTRL_PIN(148, "K4"),
++	PINCTRL_PIN(149, "K5"),
++	PINCTRL_PIN(150, "K6"),
++	PINCTRL_PIN(151, "K7"),
++};
++
++static const char * const pic32_input0_group[] = {
++	"D2", "G8", "F4", "F1", "B9", "B10", "C14", "B5",
++	"C1", "D14", "G1", "A14", "D6",
++};
++
++static const char * const pic32_input1_group[] = {
++	"D3", "G7", "F5", "D11", "F0", "B1", "E5", "C13",
++	"B3", "C4", "G0", "A15", "D7",
++};
++
++static const char * const pic32_input2_group[] = {
++	"D9", "G6", "B8", "B15", "D4", "B0", "E3", "B7",
++	"F12", "D12", "F8", "C3", "E9",
++};
++
++static const char * const pic32_input3_group[] = {
++	"G9", "B14", "D0", "B6", "D5", "B2", "F3", "F13",
++	"F2", "C2", "E8",
++};
++
++static const char * const pic32_output0_group[] = {
++	"D2", "G8", "F4", "D10", "F1", "B9", "B10", "C14",
++	"B5", "C1", "D14", "G1", "A14", "D6",
++};
++
++static const char * const pic32_output0_1_group[] = {
++	"D2", "G8", "F4", "D10", "F1", "B9", "B10", "C14",
++	"B5", "C1", "D14", "G1", "A14", "D6",
++	"D3", "G7", "F5", "D11", "F0", "B1", "E5", "C13",
++	"B3", "C4", "D15", "G0", "A15", "D7",
++};
++
++static const char *const pic32_output1_group[] = {
++	"D3", "G7", "F5", "D11", "F0", "B1", "E5", "C13",
++	"B3", "C4", "D15", "G0", "A15", "D7",
++};
++
++static const char *const pic32_output1_3_group[] = {
++	"D3", "G7", "F5", "D11", "F0", "B1", "E5", "C13",
++	"B3", "C4", "D15", "G0", "A15", "D7",
++	"G9", "B14", "D0", "B6", "D5", "B2", "F3", "F13",
++	"C2", "E8", "F2",
++};
++
++static const char * const pic32_output2_group[] = {
++	"D9", "G6", "B8", "B15", "D4", "B0", "E3", "B7",
++	"F12", "D12", "F8", "C3", "E9",
++};
++
++static const char * const pic32_output2_3_group[] = {
++	"D9", "G6", "B8", "B15", "D4", "B0", "E3", "B7",
++	"F12", "D12", "F8", "C3", "E9",
++	"G9", "B14", "D0", "B6", "D5", "B2", "F3", "F13",
++	"C2", "E8", "F2",
++};
++
++static const char * const pic32_output3_group[] = {
++	"G9", "B14", "D0", "B6", "D5", "B2", "F3", "F13",
++	"C2", "E8", "F2",
++};
++
++#define FUNCTION(_name, _gr)					\
++	{							\
++		.name = #_name,					\
++		.groups = pic32_##_gr##_group,			\
++		.ngroups = ARRAY_SIZE(pic32_##_gr##_group),	\
++	}
++
++static const struct pic32_function pic32_functions[] = {
++	FUNCTION(INT3, input0),
++	FUNCTION(T2CK, input0),
++	FUNCTION(T6CK, input0),
++	FUNCTION(IC3, input0),
++	FUNCTION(IC7, input0),
++	FUNCTION(U1RX, input0),
++	FUNCTION(U2CTS, input0),
++	FUNCTION(U5RX, input0),
++	FUNCTION(U6CTS, input0),
++	FUNCTION(SDI1, input0),
++	FUNCTION(SDI3, input0),
++	FUNCTION(SDI5, input0),
++	FUNCTION(SS6IN, input0),
++	FUNCTION(REFCLKI1, input0),
++	FUNCTION(INT4, input1),
++	FUNCTION(T5CK, input1),
++	FUNCTION(T7CK, input1),
++	FUNCTION(IC4, input1),
++	FUNCTION(IC8, input1),
++	FUNCTION(U3RX, input1),
++	FUNCTION(U4CTS, input1),
++	FUNCTION(SDI2, input1),
++	FUNCTION(SDI4, input1),
++	FUNCTION(C1RX, input1),
++	FUNCTION(REFCLKI4, input1),
++	FUNCTION(INT2, input2),
++	FUNCTION(T3CK, input2),
++	FUNCTION(T8CK, input2),
++	FUNCTION(IC2, input2),
++	FUNCTION(IC5, input2),
++	FUNCTION(IC9, input2),
++	FUNCTION(U1CTS, input2),
++	FUNCTION(U2RX, input2),
++	FUNCTION(U5CTS, input2),
++	FUNCTION(SS1IN, input2),
++	FUNCTION(SS3IN, input2),
++	FUNCTION(SS4IN, input2),
++	FUNCTION(SS5IN, input2),
++	FUNCTION(C2RX, input2),
++	FUNCTION(INT1, input3),
++	FUNCTION(T4CK, input3),
++	FUNCTION(T9CK, input3),
++	FUNCTION(IC1, input3),
++	FUNCTION(IC6, input3),
++	FUNCTION(U3CTS, input3),
++	FUNCTION(U4RX, input3),
++	FUNCTION(U6RX, input3),
++	FUNCTION(SS2IN, input3),
++	FUNCTION(SDI6, input3),
++	FUNCTION(OCFA, input3),
++	FUNCTION(REFCLKI3, input3),
++	FUNCTION(U3TX, output0),
++	FUNCTION(U4RTS, output0),
++	FUNCTION(SDO1, output0_1),
++	FUNCTION(SDO2, output0_1),
++	FUNCTION(SDO3, output0_1),
++	FUNCTION(SDO5, output0_1),
++	FUNCTION(SS6OUT, output0),
++	FUNCTION(OC3, output0),
++	FUNCTION(OC6, output0),
++	FUNCTION(REFCLKO4, output0),
++	FUNCTION(C2OUT, output0),
++	FUNCTION(C1TX, output0),
++	FUNCTION(U1TX, output1),
++	FUNCTION(U2RTS, output1),
++	FUNCTION(U5TX, output1),
++	FUNCTION(U6RTS, output1),
++	FUNCTION(SDO4, output1_3),
++	FUNCTION(OC4, output1),
++	FUNCTION(OC7, output1),
++	FUNCTION(REFCLKO1, output1),
++	FUNCTION(U3RTS, output2),
++	FUNCTION(U4TX, output2),
++	FUNCTION(U6TX, output2_3),
++	FUNCTION(SS1OUT, output2),
++	FUNCTION(SS3OUT, output2),
++	FUNCTION(SS4OUT, output2),
++	FUNCTION(SS5OUT, output2),
++	FUNCTION(SDO6, output2_3),
++	FUNCTION(OC5, output2),
++	FUNCTION(OC8, output2),
++	FUNCTION(C1OUT, output2),
++	FUNCTION(REFCLKO3, output2),
++	FUNCTION(U1RTS, output3),
++	FUNCTION(U2TX, output3),
++	FUNCTION(U5RTS, output3),
++	FUNCTION(SS2OUT, output3),
++	FUNCTION(OC2, output3),
++	FUNCTION(OC1, output3),
++	FUNCTION(OC9, output3),
++	FUNCTION(C2TX, output3),
++};
++
++#define PIC32_PINCTRL_GROUP(_pin, _name, ...)				\
++	{								\
++		.name = #_name,						\
++		.pin = _pin,						\
++		.functions = (struct pic32_desc_function[]){		\
++			__VA_ARGS__, { } },				\
++	}
++
++#define PIC32_PINCTRL_FUNCTION(_name, _muxreg, _muxval)	\
++	{						\
++		.name = #_name,				\
++		.muxreg = _muxreg,			\
++		.muxval = _muxval,			\
++	}
++
++static const struct pic32_pin_group pic32_groups[] = {
++	PIC32_PINCTRL_GROUP(14, A14,
++			PIC32_PINCTRL_FUNCTION(INT3, INT3R, 13),
++			PIC32_PINCTRL_FUNCTION(T2CK, T2CKR, 13),
++			PIC32_PINCTRL_FUNCTION(T6CK, T6CKR, 13),
++			PIC32_PINCTRL_FUNCTION(IC3, IC3R, 13),
++			PIC32_PINCTRL_FUNCTION(IC7, IC7R, 13),
++			PIC32_PINCTRL_FUNCTION(U1RX, U1RXR, 13),
++			PIC32_PINCTRL_FUNCTION(U2CTS, U2CTSR, 13),
++			PIC32_PINCTRL_FUNCTION(U5RX, U5RXR, 13),
++			PIC32_PINCTRL_FUNCTION(U6CTS, U6CTSR, 13),
++			PIC32_PINCTRL_FUNCTION(SDI1, SDI1R, 13),
++			PIC32_PINCTRL_FUNCTION(SDI3, SDI3R, 13),
++			PIC32_PINCTRL_FUNCTION(SDI5, SDI5R, 13),
++			PIC32_PINCTRL_FUNCTION(SS6IN, SS6INR, 13),
++			PIC32_PINCTRL_FUNCTION(REFCLKI1, REFCLKI1R, 13),
++			PIC32_PINCTRL_FUNCTION(U3TX, RPA14R, 1),
++			PIC32_PINCTRL_FUNCTION(U4RTS, RPA14R, 2),
++			PIC32_PINCTRL_FUNCTION(SDO1, RPA14R, 5),
++			PIC32_PINCTRL_FUNCTION(SDO2, RPA14R, 6),
++			PIC32_PINCTRL_FUNCTION(SDO3, RPA14R, 7),
++			PIC32_PINCTRL_FUNCTION(SDO5, RPA14R, 9),
++			PIC32_PINCTRL_FUNCTION(SS6OUT, RPA14R, 10),
++			PIC32_PINCTRL_FUNCTION(OC3, RPA14R, 11),
++			PIC32_PINCTRL_FUNCTION(OC6, RPA14R, 12),
++			PIC32_PINCTRL_FUNCTION(REFCLKO4, RPA14R, 13),
++			PIC32_PINCTRL_FUNCTION(C2OUT, RPA14R, 14),
++			PIC32_PINCTRL_FUNCTION(C1TX, RPA14R, 15)),
++	PIC32_PINCTRL_GROUP(15, A15,
++			PIC32_PINCTRL_FUNCTION(INT4, INT4R, 13),
++			PIC32_PINCTRL_FUNCTION(T5CK, T5CKR, 13),
++			PIC32_PINCTRL_FUNCTION(T7CK, T7CKR, 13),
++			PIC32_PINCTRL_FUNCTION(IC4, IC4R, 13),
++			PIC32_PINCTRL_FUNCTION(IC8, IC8R, 13),
++			PIC32_PINCTRL_FUNCTION(U3RX, U3RXR, 13),
++			PIC32_PINCTRL_FUNCTION(U4CTS, U4CTSR, 13),
++			PIC32_PINCTRL_FUNCTION(SDI2, SDI2R, 13),
++			PIC32_PINCTRL_FUNCTION(SDI4, SDI4R, 13),
++			PIC32_PINCTRL_FUNCTION(C1RX, C1RXR, 13),
++			PIC32_PINCTRL_FUNCTION(REFCLKI4, REFCLKI4R, 13),
++			PIC32_PINCTRL_FUNCTION(U1TX, RPA15R, 1),
++			PIC32_PINCTRL_FUNCTION(U2RTS, RPA15R, 2),
++			PIC32_PINCTRL_FUNCTION(U5TX, RPA15R, 3),
++			PIC32_PINCTRL_FUNCTION(U6RTS, RPA15R, 4),
++			PIC32_PINCTRL_FUNCTION(SDO1, RPA15R, 5),
++			PIC32_PINCTRL_FUNCTION(SDO2, RPA15R, 6),
++			PIC32_PINCTRL_FUNCTION(SDO3, RPA15R, 7),
++			PIC32_PINCTRL_FUNCTION(SDO4, RPA15R, 8),
++			PIC32_PINCTRL_FUNCTION(SDO5, RPA15R, 9),
++			PIC32_PINCTRL_FUNCTION(OC4, RPA15R, 11),
++			PIC32_PINCTRL_FUNCTION(OC7, RPA15R, 12),
++			PIC32_PINCTRL_FUNCTION(REFCLKO1, RPA15R, 15)),
++	PIC32_PINCTRL_GROUP(16, B0,
++			PIC32_PINCTRL_FUNCTION(INT2, INT2R, 5),
++			PIC32_PINCTRL_FUNCTION(T3CK, T3CKR, 5),
++			PIC32_PINCTRL_FUNCTION(T8CK, T8CKR, 5),
++			PIC32_PINCTRL_FUNCTION(IC2, IC2R, 5),
++			PIC32_PINCTRL_FUNCTION(IC5, IC5R, 5),
++			PIC32_PINCTRL_FUNCTION(IC9, IC9R, 5),
++			PIC32_PINCTRL_FUNCTION(U1CTS, U1CTSR, 5),
++			PIC32_PINCTRL_FUNCTION(U2RX, U2RXR, 5),
++			PIC32_PINCTRL_FUNCTION(U5CTS, U5CTSR, 5),
++			PIC32_PINCTRL_FUNCTION(SS1IN, SS1INR, 5),
++			PIC32_PINCTRL_FUNCTION(SS3IN, SS3INR, 5),
++			PIC32_PINCTRL_FUNCTION(SS4IN, SS4INR, 5),
++			PIC32_PINCTRL_FUNCTION(SS5IN, SS5INR, 5),
++			PIC32_PINCTRL_FUNCTION(C2RX, C2RXR, 5),
++			PIC32_PINCTRL_FUNCTION(U3RTS, RPB0R, 1),
++			PIC32_PINCTRL_FUNCTION(U4TX, RPB0R, 2),
++			PIC32_PINCTRL_FUNCTION(U6TX, RPB0R, 4),
++			PIC32_PINCTRL_FUNCTION(SS1OUT, RPB0R, 5),
++			PIC32_PINCTRL_FUNCTION(SS3OUT, RPB0R, 7),
++			PIC32_PINCTRL_FUNCTION(SS4OUT, RPB0R, 8),
++			PIC32_PINCTRL_FUNCTION(SS5OUT, RPB0R, 9),
++			PIC32_PINCTRL_FUNCTION(SDO6, RPB0R, 10),
++			PIC32_PINCTRL_FUNCTION(OC5, RPB0R, 11),
++			PIC32_PINCTRL_FUNCTION(OC8, RPB0R, 12),
++			PIC32_PINCTRL_FUNCTION(C1OUT, RPB0R, 14),
++			PIC32_PINCTRL_FUNCTION(REFCLKO3, RPB0R, 15)),
++	PIC32_PINCTRL_GROUP(17, B1,
++			PIC32_PINCTRL_FUNCTION(INT4, INT4R, 5),
++			PIC32_PINCTRL_FUNCTION(T5CK, T5CKR, 5),
++			PIC32_PINCTRL_FUNCTION(T7CK, T7CKR, 5),
++			PIC32_PINCTRL_FUNCTION(IC4, IC4R, 5),
++			PIC32_PINCTRL_FUNCTION(IC8, IC8R, 5),
++			PIC32_PINCTRL_FUNCTION(U3RX, U3RXR, 5),
++			PIC32_PINCTRL_FUNCTION(U4CTS, U4CTSR, 5),
++			PIC32_PINCTRL_FUNCTION(SDI2, SDI2R, 5),
++			PIC32_PINCTRL_FUNCTION(SDI4, SDI4R, 5),
++			PIC32_PINCTRL_FUNCTION(C1RX, C1RXR, 5),
++			PIC32_PINCTRL_FUNCTION(REFCLKI4, REFCLKI4R, 5),
++			PIC32_PINCTRL_FUNCTION(U1TX, RPB1R, 1),
++			PIC32_PINCTRL_FUNCTION(U2RTS, RPB1R, 2),
++			PIC32_PINCTRL_FUNCTION(U5TX, RPB1R, 3),
++			PIC32_PINCTRL_FUNCTION(U6RTS, RPB1R, 4),
++			PIC32_PINCTRL_FUNCTION(SDO1, RPB1R, 5),
++			PIC32_PINCTRL_FUNCTION(SDO2, RPB1R, 6),
++			PIC32_PINCTRL_FUNCTION(SDO3, RPB1R, 7),
++			PIC32_PINCTRL_FUNCTION(SDO4, RPB1R, 8),
++			PIC32_PINCTRL_FUNCTION(SDO5, RPB1R, 9),
++			PIC32_PINCTRL_FUNCTION(OC4, RPB1R, 11),
++			PIC32_PINCTRL_FUNCTION(OC7, RPB1R, 12),
++			PIC32_PINCTRL_FUNCTION(REFCLKO1, RPB1R, 15)),
++	PIC32_PINCTRL_GROUP(18, B2,
++			PIC32_PINCTRL_FUNCTION(INT1, INT1R, 7),
++			PIC32_PINCTRL_FUNCTION(T4CK, T4CKR, 7),
++			PIC32_PINCTRL_FUNCTION(T9CK, T9CKR, 7),
++			PIC32_PINCTRL_FUNCTION(IC1, IC1R, 7),
++			PIC32_PINCTRL_FUNCTION(IC6, IC6R, 7),
++			PIC32_PINCTRL_FUNCTION(U3CTS, U3CTSR, 7),
++			PIC32_PINCTRL_FUNCTION(U4RX, U4RXR, 7),
++			PIC32_PINCTRL_FUNCTION(U6RX, U6RXR, 7),
++			PIC32_PINCTRL_FUNCTION(SS2IN, SS2INR, 7),
++			PIC32_PINCTRL_FUNCTION(SDI6, SDI6R, 7),
++			PIC32_PINCTRL_FUNCTION(OCFA, OCFAR, 7),
++			PIC32_PINCTRL_FUNCTION(REFCLKI3, REFCLKI3R, 7),
++			PIC32_PINCTRL_FUNCTION(U1RTS, RPB2R, 1),
++			PIC32_PINCTRL_FUNCTION(U2TX, RPB2R, 2),
++			PIC32_PINCTRL_FUNCTION(U5RTS, RPB2R, 3),
++			PIC32_PINCTRL_FUNCTION(U6TX, RPB2R, 4),
++			PIC32_PINCTRL_FUNCTION(SS2OUT, RPB2R, 6),
++			PIC32_PINCTRL_FUNCTION(SDO4, RPB2R, 8),
++			PIC32_PINCTRL_FUNCTION(SDO6, RPB2R, 10),
++			PIC32_PINCTRL_FUNCTION(OC2, RPB2R, 11),
++			PIC32_PINCTRL_FUNCTION(OC1, RPB2R, 12),
++			PIC32_PINCTRL_FUNCTION(OC9, RPB2R, 13),
++			PIC32_PINCTRL_FUNCTION(C2TX, RPB2R, 15)),
++	PIC32_PINCTRL_GROUP(19, B3,
++			PIC32_PINCTRL_FUNCTION(INT4, INT4R, 8),
++			PIC32_PINCTRL_FUNCTION(T5CK, T5CKR, 8),
++			PIC32_PINCTRL_FUNCTION(T7CK, T7CKR, 8),
++			PIC32_PINCTRL_FUNCTION(IC4, IC4R, 8),
++			PIC32_PINCTRL_FUNCTION(IC8, IC8R, 8),
++			PIC32_PINCTRL_FUNCTION(U3RX, U3RXR, 8),
++			PIC32_PINCTRL_FUNCTION(U4CTS, U4CTSR, 8),
++			PIC32_PINCTRL_FUNCTION(SDI2, SDI2R, 8),
++			PIC32_PINCTRL_FUNCTION(SDI4, SDI4R, 8),
++			PIC32_PINCTRL_FUNCTION(C1RX, C1RXR, 8),
++			PIC32_PINCTRL_FUNCTION(REFCLKI4, REFCLKI4R, 8),
++			PIC32_PINCTRL_FUNCTION(U1TX, RPB3R, 1),
++			PIC32_PINCTRL_FUNCTION(U2RTS, RPB3R, 2),
++			PIC32_PINCTRL_FUNCTION(U5TX, RPB3R, 3),
++			PIC32_PINCTRL_FUNCTION(U6RTS, RPB3R, 4),
++			PIC32_PINCTRL_FUNCTION(SDO1, RPB3R, 5),
++			PIC32_PINCTRL_FUNCTION(SDO2, RPB3R, 6),
++			PIC32_PINCTRL_FUNCTION(SDO3, RPB3R, 7),
++			PIC32_PINCTRL_FUNCTION(SDO4, RPB3R, 8),
++			PIC32_PINCTRL_FUNCTION(SDO5, RPB3R, 9),
++			PIC32_PINCTRL_FUNCTION(OC4, RPB3R, 11),
++			PIC32_PINCTRL_FUNCTION(OC7, RPB3R, 12),
++			PIC32_PINCTRL_FUNCTION(REFCLKO1, RPB3R, 15)),
++	PIC32_PINCTRL_GROUP(21, B5,
++			PIC32_PINCTRL_FUNCTION(INT3, INT3R, 8),
++			PIC32_PINCTRL_FUNCTION(T2CK, T2CKR, 8),
++			PIC32_PINCTRL_FUNCTION(T6CK, T6CKR, 8),
++			PIC32_PINCTRL_FUNCTION(IC3, IC3R, 8),
++			PIC32_PINCTRL_FUNCTION(IC7, IC7R, 8),
++			PIC32_PINCTRL_FUNCTION(U1RX, U1RXR, 8),
++			PIC32_PINCTRL_FUNCTION(U2CTS, U2CTSR, 8),
++			PIC32_PINCTRL_FUNCTION(U5RX, U5RXR, 8),
++			PIC32_PINCTRL_FUNCTION(U6CTS, U6CTSR, 8),
++			PIC32_PINCTRL_FUNCTION(SDI1, SDI1R, 8),
++			PIC32_PINCTRL_FUNCTION(SDI3, SDI3R, 8),
++			PIC32_PINCTRL_FUNCTION(SDI5, SDI5R, 8),
++			PIC32_PINCTRL_FUNCTION(SS6IN, SS6INR, 8),
++			PIC32_PINCTRL_FUNCTION(REFCLKI1, REFCLKI1R, 8),
++			PIC32_PINCTRL_FUNCTION(U3TX, RPB5R, 1),
++			PIC32_PINCTRL_FUNCTION(U4RTS, RPB5R, 2),
++			PIC32_PINCTRL_FUNCTION(SDO1, RPB5R, 5),
++			PIC32_PINCTRL_FUNCTION(SDO2, RPB5R, 6),
++			PIC32_PINCTRL_FUNCTION(SDO3, RPB5R, 7),
++			PIC32_PINCTRL_FUNCTION(SDO5, RPB5R, 9),
++			PIC32_PINCTRL_FUNCTION(SS6OUT, RPB5R, 10),
++			PIC32_PINCTRL_FUNCTION(OC3, RPB5R, 11),
++			PIC32_PINCTRL_FUNCTION(OC6, RPB5R, 12),
++			PIC32_PINCTRL_FUNCTION(REFCLKO4, RPB5R, 13),
++			PIC32_PINCTRL_FUNCTION(C2OUT, RPB5R, 14),
++			PIC32_PINCTRL_FUNCTION(C1TX, RPB5R, 15)),
++	PIC32_PINCTRL_GROUP(22, B6,
++			PIC32_PINCTRL_FUNCTION(INT1, INT1R, 4),
++			PIC32_PINCTRL_FUNCTION(T4CK, T4CKR, 4),
++			PIC32_PINCTRL_FUNCTION(T9CK, T9CKR, 4),
++			PIC32_PINCTRL_FUNCTION(IC1, IC1R, 4),
++			PIC32_PINCTRL_FUNCTION(IC6, IC6R, 4),
++			PIC32_PINCTRL_FUNCTION(U3CTS, U3CTSR, 4),
++			PIC32_PINCTRL_FUNCTION(U4RX, U4RXR, 4),
++			PIC32_PINCTRL_FUNCTION(U6RX, U6RXR, 4),
++			PIC32_PINCTRL_FUNCTION(SS2IN, SS2INR, 4),
++			PIC32_PINCTRL_FUNCTION(SDI6, SDI6R, 4),
++			PIC32_PINCTRL_FUNCTION(OCFA, OCFAR, 4),
++			PIC32_PINCTRL_FUNCTION(REFCLKI3, REFCLKI3R, 4),
++			PIC32_PINCTRL_FUNCTION(U1RTS, RPB6R, 1),
++			PIC32_PINCTRL_FUNCTION(U2TX, RPB6R, 2),
++			PIC32_PINCTRL_FUNCTION(U5RTS, RPB6R, 3),
++			PIC32_PINCTRL_FUNCTION(U6TX, RPB6R, 4),
++			PIC32_PINCTRL_FUNCTION(SS2OUT, RPB6R, 6),
++			PIC32_PINCTRL_FUNCTION(SDO4, RPB6R, 8),
++			PIC32_PINCTRL_FUNCTION(SDO6, RPB6R, 10),
++			PIC32_PINCTRL_FUNCTION(OC2, RPB6R, 11),
++			PIC32_PINCTRL_FUNCTION(OC1, RPB6R, 12),
++			PIC32_PINCTRL_FUNCTION(OC9, RPB6R, 13),
++			PIC32_PINCTRL_FUNCTION(C2TX, RPB6R, 15)),
++	PIC32_PINCTRL_GROUP(23, B7,
++			PIC32_PINCTRL_FUNCTION(INT2, INT2R, 7),
++			PIC32_PINCTRL_FUNCTION(T3CK, T3CKR, 7),
++			PIC32_PINCTRL_FUNCTION(T8CK, T8CKR, 7),
++			PIC32_PINCTRL_FUNCTION(IC2, IC2R, 7),
++			PIC32_PINCTRL_FUNCTION(IC5, IC5R, 7),
++			PIC32_PINCTRL_FUNCTION(IC9, IC9R, 7),
++			PIC32_PINCTRL_FUNCTION(U1CTS, U1CTSR, 7),
++			PIC32_PINCTRL_FUNCTION(U2RX, U2RXR, 7),
++			PIC32_PINCTRL_FUNCTION(U5CTS, U5CTSR, 7),
++			PIC32_PINCTRL_FUNCTION(SS1IN, SS1INR, 7),
++			PIC32_PINCTRL_FUNCTION(SS3IN, SS3INR, 7),
++			PIC32_PINCTRL_FUNCTION(SS4IN, SS4INR, 7),
++			PIC32_PINCTRL_FUNCTION(SS5IN, SS5INR, 7),
++			PIC32_PINCTRL_FUNCTION(C2RX, C2RXR, 7),
++			PIC32_PINCTRL_FUNCTION(U3RTS, RPB7R, 1),
++			PIC32_PINCTRL_FUNCTION(U4TX, RPB7R, 2),
++			PIC32_PINCTRL_FUNCTION(U6TX, RPB7R, 4),
++			PIC32_PINCTRL_FUNCTION(SS1OUT, RPB7R, 5),
++			PIC32_PINCTRL_FUNCTION(SS3OUT, RPB7R, 7),
++			PIC32_PINCTRL_FUNCTION(SS4OUT, RPB7R, 8),
++			PIC32_PINCTRL_FUNCTION(SS5OUT, RPB7R, 9),
++			PIC32_PINCTRL_FUNCTION(SDO6, RPB7R, 10),
++			PIC32_PINCTRL_FUNCTION(OC5, RPB7R, 11),
++			PIC32_PINCTRL_FUNCTION(OC8, RPB7R, 12),
++			PIC32_PINCTRL_FUNCTION(C1OUT, RPB7R, 14),
++			PIC32_PINCTRL_FUNCTION(REFCLKO3, RPB7R, 15)),
++	PIC32_PINCTRL_GROUP(24, B8,
++			PIC32_PINCTRL_FUNCTION(INT2, INT2R, 2),
++			PIC32_PINCTRL_FUNCTION(T3CK, T3CKR, 2),
++			PIC32_PINCTRL_FUNCTION(T8CK, T8CKR, 2),
++			PIC32_PINCTRL_FUNCTION(IC2, IC2R, 2),
++			PIC32_PINCTRL_FUNCTION(IC5, IC5R, 2),
++			PIC32_PINCTRL_FUNCTION(IC9, IC9R, 2),
++			PIC32_PINCTRL_FUNCTION(U1CTS, U1CTSR, 2),
++			PIC32_PINCTRL_FUNCTION(U2RX, U2RXR, 2),
++			PIC32_PINCTRL_FUNCTION(U5CTS, U5CTSR, 2),
++			PIC32_PINCTRL_FUNCTION(SS1IN, SS1INR, 2),
++			PIC32_PINCTRL_FUNCTION(SS3IN, SS3INR, 2),
++			PIC32_PINCTRL_FUNCTION(SS4IN, SS4INR, 2),
++			PIC32_PINCTRL_FUNCTION(SS5IN, SS5INR, 2),
++			PIC32_PINCTRL_FUNCTION(C2RX, C2RXR, 2),
++			PIC32_PINCTRL_FUNCTION(U3RTS, RPB8R, 1),
++			PIC32_PINCTRL_FUNCTION(U4TX, RPB8R, 2),
++			PIC32_PINCTRL_FUNCTION(U6TX, RPB8R, 4),
++			PIC32_PINCTRL_FUNCTION(SS1OUT, RPB8R, 5),
++			PIC32_PINCTRL_FUNCTION(SS3OUT, RPB8R, 7),
++			PIC32_PINCTRL_FUNCTION(SS4OUT, RPB8R, 8),
++			PIC32_PINCTRL_FUNCTION(SS5OUT, RPB8R, 9),
++			PIC32_PINCTRL_FUNCTION(SDO6, RPB8R, 10),
++			PIC32_PINCTRL_FUNCTION(OC5, RPB8R, 11),
++			PIC32_PINCTRL_FUNCTION(OC8, RPB8R, 12),
++			PIC32_PINCTRL_FUNCTION(C1OUT, RPB8R, 14),
++			PIC32_PINCTRL_FUNCTION(REFCLKO3, RPB8R, 15)),
++	PIC32_PINCTRL_GROUP(25, B9,
++			PIC32_PINCTRL_FUNCTION(INT3, INT3R, 5),
++			PIC32_PINCTRL_FUNCTION(T2CK, T2CKR, 5),
++			PIC32_PINCTRL_FUNCTION(T6CK, T6CKR, 5),
++			PIC32_PINCTRL_FUNCTION(IC3, IC3R, 5),
++			PIC32_PINCTRL_FUNCTION(IC7, IC7R, 5),
++			PIC32_PINCTRL_FUNCTION(U1RX, U1RXR, 5),
++			PIC32_PINCTRL_FUNCTION(U2CTS, U2CTSR, 5),
++			PIC32_PINCTRL_FUNCTION(U5RX, U5RXR, 5),
++			PIC32_PINCTRL_FUNCTION(U6CTS, U6CTSR, 5),
++			PIC32_PINCTRL_FUNCTION(SDI1, SDI1R, 5),
++			PIC32_PINCTRL_FUNCTION(SDI3, SDI3R, 5),
++			PIC32_PINCTRL_FUNCTION(SDI5, SDI5R, 5),
++			PIC32_PINCTRL_FUNCTION(SS6IN, SS6INR, 5),
++			PIC32_PINCTRL_FUNCTION(REFCLKI1, REFCLKI1R, 5),
++			PIC32_PINCTRL_FUNCTION(U3TX, RPB9R, 1),
++			PIC32_PINCTRL_FUNCTION(U4RTS, RPB9R, 2),
++			PIC32_PINCTRL_FUNCTION(SDO1, RPB9R, 5),
++			PIC32_PINCTRL_FUNCTION(SDO2, RPB9R, 6),
++			PIC32_PINCTRL_FUNCTION(SDO3, RPB9R, 7),
++			PIC32_PINCTRL_FUNCTION(SDO5, RPB9R, 9),
++			PIC32_PINCTRL_FUNCTION(SS6OUT, RPB9R, 10),
++			PIC32_PINCTRL_FUNCTION(OC3, RPB9R, 11),
++			PIC32_PINCTRL_FUNCTION(OC6, RPB9R, 12),
++			PIC32_PINCTRL_FUNCTION(REFCLKO4, RPB9R, 13),
++			PIC32_PINCTRL_FUNCTION(C2OUT, RPB9R, 14),
++			PIC32_PINCTRL_FUNCTION(C1TX, RPB9R, 15)),
++	PIC32_PINCTRL_GROUP(26, B10,
++			PIC32_PINCTRL_FUNCTION(INT3, INT3R, 6),
++			PIC32_PINCTRL_FUNCTION(T2CK, T2CKR, 6),
++			PIC32_PINCTRL_FUNCTION(T6CK, T6CKR, 6),
++			PIC32_PINCTRL_FUNCTION(IC3, IC3R, 6),
++			PIC32_PINCTRL_FUNCTION(IC7, IC7R, 6),
++			PIC32_PINCTRL_FUNCTION(U1RX, U1RXR, 6),
++			PIC32_PINCTRL_FUNCTION(U2CTS, U2CTSR, 6),
++			PIC32_PINCTRL_FUNCTION(U5RX, U5RXR, 6),
++			PIC32_PINCTRL_FUNCTION(U6CTS, U6CTSR, 6),
++			PIC32_PINCTRL_FUNCTION(SDI1, SDI1R, 6),
++			PIC32_PINCTRL_FUNCTION(SDI3, SDI3R, 6),
++			PIC32_PINCTRL_FUNCTION(SDI5, SDI5R, 6),
++			PIC32_PINCTRL_FUNCTION(SS6IN, SS6INR, 6),
++			PIC32_PINCTRL_FUNCTION(REFCLKI1, REFCLKI1R, 6),
++			PIC32_PINCTRL_FUNCTION(U3TX, RPB10R, 1),
++			PIC32_PINCTRL_FUNCTION(U4RTS, RPB10R, 2),
++			PIC32_PINCTRL_FUNCTION(SDO1, RPB10R, 5),
++			PIC32_PINCTRL_FUNCTION(SDO2, RPB10R, 6),
++			PIC32_PINCTRL_FUNCTION(SDO3, RPB10R, 7),
++			PIC32_PINCTRL_FUNCTION(SDO5, RPB10R, 9),
++			PIC32_PINCTRL_FUNCTION(SS6OUT, RPB10R, 10),
++			PIC32_PINCTRL_FUNCTION(OC3, RPB10R, 11),
++			PIC32_PINCTRL_FUNCTION(OC6, RPB10R, 12),
++			PIC32_PINCTRL_FUNCTION(REFCLKO4, RPB10R, 13),
++			PIC32_PINCTRL_FUNCTION(C2OUT, RPB10R, 14),
++			PIC32_PINCTRL_FUNCTION(C1TX, RPB10R, 15)),
++	PIC32_PINCTRL_GROUP(30, B14,
++			PIC32_PINCTRL_FUNCTION(INT1, INT1R, 2),
++			PIC32_PINCTRL_FUNCTION(T4CK, T4CKR, 2),
++			PIC32_PINCTRL_FUNCTION(T9CK, T9CKR, 2),
++			PIC32_PINCTRL_FUNCTION(IC1, IC1R, 2),
++			PIC32_PINCTRL_FUNCTION(IC6, IC6R, 2),
++			PIC32_PINCTRL_FUNCTION(U3CTS, U3CTSR, 2),
++			PIC32_PINCTRL_FUNCTION(U4RX, U4RXR, 2),
++			PIC32_PINCTRL_FUNCTION(U6RX, U6RXR, 2),
++			PIC32_PINCTRL_FUNCTION(SS2IN, SS2INR, 2),
++			PIC32_PINCTRL_FUNCTION(SDI6, SDI6R, 2),
++			PIC32_PINCTRL_FUNCTION(OCFA, OCFAR, 2),
++			PIC32_PINCTRL_FUNCTION(REFCLKI3, REFCLKI3R, 2),
++			PIC32_PINCTRL_FUNCTION(U1RTS, RPB14R, 1),
++			PIC32_PINCTRL_FUNCTION(U2TX, RPB14R, 2),
++			PIC32_PINCTRL_FUNCTION(U5RTS, RPB14R, 3),
++			PIC32_PINCTRL_FUNCTION(U6TX, RPB14R, 4),
++			PIC32_PINCTRL_FUNCTION(SS2OUT, RPB14R, 6),
++			PIC32_PINCTRL_FUNCTION(SDO4, RPB14R, 8),
++			PIC32_PINCTRL_FUNCTION(SDO6, RPB14R, 10),
++			PIC32_PINCTRL_FUNCTION(OC2, RPB14R, 11),
++			PIC32_PINCTRL_FUNCTION(OC1, RPB14R, 12),
++			PIC32_PINCTRL_FUNCTION(OC9, RPB14R, 13),
++			PIC32_PINCTRL_FUNCTION(C2TX, RPB14R, 15)),
++	PIC32_PINCTRL_GROUP(31, B15,
++			PIC32_PINCTRL_FUNCTION(INT2, INT2R, 3),
++			PIC32_PINCTRL_FUNCTION(T3CK, T3CKR, 3),
++			PIC32_PINCTRL_FUNCTION(T8CK, T8CKR, 3),
++			PIC32_PINCTRL_FUNCTION(IC2, IC2R, 3),
++			PIC32_PINCTRL_FUNCTION(IC5, IC5R, 3),
++			PIC32_PINCTRL_FUNCTION(IC9, IC9R, 3),
++			PIC32_PINCTRL_FUNCTION(U1CTS, U1CTSR, 3),
++			PIC32_PINCTRL_FUNCTION(U2RX, U2RXR, 3),
++			PIC32_PINCTRL_FUNCTION(U5CTS, U5CTSR, 3),
++			PIC32_PINCTRL_FUNCTION(SS1IN, SS1INR, 3),
++			PIC32_PINCTRL_FUNCTION(SS3IN, SS3INR, 3),
++			PIC32_PINCTRL_FUNCTION(SS4IN, SS4INR, 3),
++			PIC32_PINCTRL_FUNCTION(SS5IN, SS5INR, 3),
++			PIC32_PINCTRL_FUNCTION(C2RX, C2RXR, 3),
++			PIC32_PINCTRL_FUNCTION(U3RTS, RPB15R, 1),
++			PIC32_PINCTRL_FUNCTION(U4TX, RPB15R, 2),
++			PIC32_PINCTRL_FUNCTION(U6TX, RPB15R, 4),
++			PIC32_PINCTRL_FUNCTION(SS1OUT, RPB15R, 5),
++			PIC32_PINCTRL_FUNCTION(SS3OUT, RPB15R, 7),
++			PIC32_PINCTRL_FUNCTION(SS4OUT, RPB15R, 8),
++			PIC32_PINCTRL_FUNCTION(SS5OUT, RPB15R, 9),
++			PIC32_PINCTRL_FUNCTION(SDO6, RPB15R, 10),
++			PIC32_PINCTRL_FUNCTION(OC5, RPB15R, 11),
++			PIC32_PINCTRL_FUNCTION(OC8, RPB15R, 12),
++			PIC32_PINCTRL_FUNCTION(C1OUT, RPB15R, 14),
++			PIC32_PINCTRL_FUNCTION(REFCLKO3, RPB15R, 15)),
++	PIC32_PINCTRL_GROUP(33, C1,
++			PIC32_PINCTRL_FUNCTION(INT3, INT3R, 10),
++			PIC32_PINCTRL_FUNCTION(T2CK, T2CKR, 10),
++			PIC32_PINCTRL_FUNCTION(T6CK, T6CKR, 10),
++			PIC32_PINCTRL_FUNCTION(IC3, IC3R, 10),
++			PIC32_PINCTRL_FUNCTION(IC7, IC7R, 10),
++			PIC32_PINCTRL_FUNCTION(U1RX, U1RXR, 10),
++			PIC32_PINCTRL_FUNCTION(U2CTS, U2CTSR, 10),
++			PIC32_PINCTRL_FUNCTION(U5RX, U5RXR, 10),
++			PIC32_PINCTRL_FUNCTION(U6CTS, U6CTSR, 10),
++			PIC32_PINCTRL_FUNCTION(SDI1, SDI1R, 10),
++			PIC32_PINCTRL_FUNCTION(SDI3, SDI3R, 10),
++			PIC32_PINCTRL_FUNCTION(SDI5, SDI5R, 10),
++			PIC32_PINCTRL_FUNCTION(SS6IN, SS6INR, 10),
++			PIC32_PINCTRL_FUNCTION(REFCLKI1, REFCLKI1R, 10),
++			PIC32_PINCTRL_FUNCTION(U3TX, RPC1R, 1),
++			PIC32_PINCTRL_FUNCTION(U4RTS, RPC1R, 2),
++			PIC32_PINCTRL_FUNCTION(SDO1, RPC1R, 5),
++			PIC32_PINCTRL_FUNCTION(SDO2, RPC1R, 6),
++			PIC32_PINCTRL_FUNCTION(SDO3, RPC1R, 7),
++			PIC32_PINCTRL_FUNCTION(SDO5, RPC1R, 9),
++			PIC32_PINCTRL_FUNCTION(SS6OUT, RPC1R, 10),
++			PIC32_PINCTRL_FUNCTION(OC3, RPC1R, 11),
++			PIC32_PINCTRL_FUNCTION(OC6, RPC1R, 12),
++			PIC32_PINCTRL_FUNCTION(REFCLKO4, RPC1R, 13),
++			PIC32_PINCTRL_FUNCTION(C2OUT, RPC1R, 14),
++			PIC32_PINCTRL_FUNCTION(C1TX, RPC1R, 15)),
++	PIC32_PINCTRL_GROUP(34, C2,
++			PIC32_PINCTRL_FUNCTION(INT1, INT1R, 12),
++			PIC32_PINCTRL_FUNCTION(T4CK, T4CKR, 12),
++			PIC32_PINCTRL_FUNCTION(T9CK, T9CKR, 12),
++			PIC32_PINCTRL_FUNCTION(IC1, IC1R, 12),
++			PIC32_PINCTRL_FUNCTION(IC6, IC6R, 12),
++			PIC32_PINCTRL_FUNCTION(U3CTS, U3CTSR, 12),
++			PIC32_PINCTRL_FUNCTION(U4RX, U4RXR, 12),
++			PIC32_PINCTRL_FUNCTION(U6RX, U6RXR, 12),
++			PIC32_PINCTRL_FUNCTION(SS2IN, SS2INR, 12),
++			PIC32_PINCTRL_FUNCTION(SDI6, SDI6R, 12),
++			PIC32_PINCTRL_FUNCTION(OCFA, OCFAR, 12),
++			PIC32_PINCTRL_FUNCTION(REFCLKI3, REFCLKI3R, 12),
++			PIC32_PINCTRL_FUNCTION(U1RTS, RPC2R, 1),
++			PIC32_PINCTRL_FUNCTION(U2TX, RPC2R, 2),
++			PIC32_PINCTRL_FUNCTION(U5RTS, RPC2R, 3),
++			PIC32_PINCTRL_FUNCTION(U6TX, RPC2R, 4),
++			PIC32_PINCTRL_FUNCTION(SS2OUT, RPC2R, 6),
++			PIC32_PINCTRL_FUNCTION(SDO4, RPC2R, 8),
++			PIC32_PINCTRL_FUNCTION(SDO6, RPC2R, 10),
++			PIC32_PINCTRL_FUNCTION(OC2, RPC2R, 11),
++			PIC32_PINCTRL_FUNCTION(OC1, RPC2R, 12),
++			PIC32_PINCTRL_FUNCTION(OC9, RPC2R, 13),
++			PIC32_PINCTRL_FUNCTION(C2TX, RPC2R, 15)),
++	PIC32_PINCTRL_GROUP(35, C3,
++			PIC32_PINCTRL_FUNCTION(INT2, INT2R, 12),
++			PIC32_PINCTRL_FUNCTION(T3CK, T3CKR, 12),
++			PIC32_PINCTRL_FUNCTION(T8CK, T8CKR, 12),
++			PIC32_PINCTRL_FUNCTION(IC2, IC2R, 12),
++			PIC32_PINCTRL_FUNCTION(IC5, IC5R, 12),
++			PIC32_PINCTRL_FUNCTION(IC9, IC9R, 12),
++			PIC32_PINCTRL_FUNCTION(U1CTS, U1CTSR, 12),
++			PIC32_PINCTRL_FUNCTION(U2RX, U2RXR, 12),
++			PIC32_PINCTRL_FUNCTION(U5CTS, U5CTSR, 12),
++			PIC32_PINCTRL_FUNCTION(SS1IN, SS1INR, 12),
++			PIC32_PINCTRL_FUNCTION(SS3IN, SS3INR, 12),
++			PIC32_PINCTRL_FUNCTION(SS4IN, SS4INR, 12),
++			PIC32_PINCTRL_FUNCTION(SS5IN, SS5INR, 12),
++			PIC32_PINCTRL_FUNCTION(C2RX, C2RXR, 12),
++			PIC32_PINCTRL_FUNCTION(U3RTS, RPC3R, 1),
++			PIC32_PINCTRL_FUNCTION(U4TX, RPC3R, 2),
++			PIC32_PINCTRL_FUNCTION(U6TX, RPC3R, 4),
++			PIC32_PINCTRL_FUNCTION(SS1OUT, RPC3R, 5),
++			PIC32_PINCTRL_FUNCTION(SS3OUT, RPC3R, 7),
++			PIC32_PINCTRL_FUNCTION(SS4OUT, RPC3R, 8),
++			PIC32_PINCTRL_FUNCTION(SS5OUT, RPC3R, 9),
++			PIC32_PINCTRL_FUNCTION(SDO6, RPC3R, 10),
++			PIC32_PINCTRL_FUNCTION(OC5, RPC3R, 11),
++			PIC32_PINCTRL_FUNCTION(OC8, RPC3R, 12),
++			PIC32_PINCTRL_FUNCTION(C1OUT, RPC3R, 14),
++			PIC32_PINCTRL_FUNCTION(REFCLKO3, RPC3R, 15)),
++	PIC32_PINCTRL_GROUP(36, C4,
++			PIC32_PINCTRL_FUNCTION(INT4, INT4R, 10),
++			PIC32_PINCTRL_FUNCTION(T5CK, T5CKR, 10),
++			PIC32_PINCTRL_FUNCTION(T7CK, T7CKR, 10),
++			PIC32_PINCTRL_FUNCTION(IC4, IC4R, 10),
++			PIC32_PINCTRL_FUNCTION(IC8, IC8R, 10),
++			PIC32_PINCTRL_FUNCTION(U3RX, U3RXR, 10),
++			PIC32_PINCTRL_FUNCTION(U4CTS, U4CTSR, 10),
++			PIC32_PINCTRL_FUNCTION(SDI2, SDI2R, 10),
++			PIC32_PINCTRL_FUNCTION(SDI4, SDI4R, 10),
++			PIC32_PINCTRL_FUNCTION(C1RX, C1RXR, 10),
++			PIC32_PINCTRL_FUNCTION(REFCLKI4, REFCLKI4R, 10),
++			PIC32_PINCTRL_FUNCTION(U1TX, RPC4R, 1),
++			PIC32_PINCTRL_FUNCTION(U2RTS, RPC4R, 2),
++			PIC32_PINCTRL_FUNCTION(U5TX, RPC4R, 3),
++			PIC32_PINCTRL_FUNCTION(U6RTS, RPC4R, 4),
++			PIC32_PINCTRL_FUNCTION(SDO1, RPC4R, 5),
++			PIC32_PINCTRL_FUNCTION(SDO2, RPC4R, 6),
++			PIC32_PINCTRL_FUNCTION(SDO3, RPC4R, 7),
++			PIC32_PINCTRL_FUNCTION(SDO4, RPC4R, 8),
++			PIC32_PINCTRL_FUNCTION(SDO5, RPC4R, 9),
++			PIC32_PINCTRL_FUNCTION(OC4, RPC4R, 11),
++			PIC32_PINCTRL_FUNCTION(OC7, RPC4R, 12),
++			PIC32_PINCTRL_FUNCTION(REFCLKO1, RPC4R, 15)),
++	PIC32_PINCTRL_GROUP(45, C13,
++			PIC32_PINCTRL_FUNCTION(INT4, INT4R, 7),
++			PIC32_PINCTRL_FUNCTION(T5CK, T5CKR, 7),
++			PIC32_PINCTRL_FUNCTION(T7CK, T7CKR, 7),
++			PIC32_PINCTRL_FUNCTION(IC4, IC4R, 7),
++			PIC32_PINCTRL_FUNCTION(IC8, IC8R, 7),
++			PIC32_PINCTRL_FUNCTION(U3RX, U3RXR, 7),
++			PIC32_PINCTRL_FUNCTION(U4CTS, U4CTSR, 7),
++			PIC32_PINCTRL_FUNCTION(SDI2, SDI2R, 7),
++			PIC32_PINCTRL_FUNCTION(SDI4, SDI4R, 7),
++			PIC32_PINCTRL_FUNCTION(C1RX, C1RXR, 7),
++			PIC32_PINCTRL_FUNCTION(REFCLKI4, REFCLKI4R, 7),
++			PIC32_PINCTRL_FUNCTION(U1TX, RPC13R, 1),
++			PIC32_PINCTRL_FUNCTION(U2RTS, RPC13R, 2),
++			PIC32_PINCTRL_FUNCTION(U5TX, RPC13R, 3),
++			PIC32_PINCTRL_FUNCTION(U6RTS, RPC13R, 4),
++			PIC32_PINCTRL_FUNCTION(SDO1, RPC13R, 5),
++			PIC32_PINCTRL_FUNCTION(SDO2, RPC13R, 6),
++			PIC32_PINCTRL_FUNCTION(SDO3, RPC13R, 7),
++			PIC32_PINCTRL_FUNCTION(SDO4, RPC13R, 8),
++			PIC32_PINCTRL_FUNCTION(SDO5, RPC13R, 9),
++			PIC32_PINCTRL_FUNCTION(OC4, RPC13R, 11),
++			PIC32_PINCTRL_FUNCTION(OC7, RPC13R, 12),
++			PIC32_PINCTRL_FUNCTION(REFCLKO1, RPC13R, 15)),
++	PIC32_PINCTRL_GROUP(46, C14,
++			PIC32_PINCTRL_FUNCTION(INT3, INT3R, 7),
++			PIC32_PINCTRL_FUNCTION(T2CK, T2CKR, 7),
++			PIC32_PINCTRL_FUNCTION(T6CK, T6CKR, 7),
++			PIC32_PINCTRL_FUNCTION(IC3, IC3R, 7),
++			PIC32_PINCTRL_FUNCTION(IC7, IC7R, 7),
++			PIC32_PINCTRL_FUNCTION(U1RX, U1RXR, 7),
++			PIC32_PINCTRL_FUNCTION(U2CTS, U2CTSR, 7),
++			PIC32_PINCTRL_FUNCTION(U5RX, U5RXR, 7),
++			PIC32_PINCTRL_FUNCTION(U6CTS, U6CTSR, 7),
++			PIC32_PINCTRL_FUNCTION(SDI1, SDI1R, 7),
++			PIC32_PINCTRL_FUNCTION(SDI3, SDI3R, 7),
++			PIC32_PINCTRL_FUNCTION(SDI5, SDI5R, 7),
++			PIC32_PINCTRL_FUNCTION(SS6IN, SS6INR, 7),
++			PIC32_PINCTRL_FUNCTION(REFCLKI1, REFCLKI1R, 7),
++			PIC32_PINCTRL_FUNCTION(U3TX, RPC14R, 1),
++			PIC32_PINCTRL_FUNCTION(U4RTS, RPC14R, 2),
++			PIC32_PINCTRL_FUNCTION(SDO1, RPC14R, 5),
++			PIC32_PINCTRL_FUNCTION(SDO2, RPC14R, 6),
++			PIC32_PINCTRL_FUNCTION(SDO3, RPC14R, 7),
++			PIC32_PINCTRL_FUNCTION(SDO5, RPC14R, 9),
++			PIC32_PINCTRL_FUNCTION(SS6OUT, RPC14R, 10),
++			PIC32_PINCTRL_FUNCTION(OC3, RPC14R, 11),
++			PIC32_PINCTRL_FUNCTION(OC6, RPC14R, 12),
++			PIC32_PINCTRL_FUNCTION(REFCLKO4, RPC14R, 13),
++			PIC32_PINCTRL_FUNCTION(C2OUT, RPC14R, 14),
++			PIC32_PINCTRL_FUNCTION(C1TX, RPC14R, 15)),
++	PIC32_PINCTRL_GROUP(48, D0,
++			PIC32_PINCTRL_FUNCTION(INT1, INT1R, 3),
++			PIC32_PINCTRL_FUNCTION(T4CK, T4CKR, 3),
++			PIC32_PINCTRL_FUNCTION(T9CK, T9CKR, 3),
++			PIC32_PINCTRL_FUNCTION(IC1, IC1R, 3),
++			PIC32_PINCTRL_FUNCTION(IC6, IC6R, 3),
++			PIC32_PINCTRL_FUNCTION(U3CTS, U3CTSR, 3),
++			PIC32_PINCTRL_FUNCTION(U4RX, U4RXR, 3),
++			PIC32_PINCTRL_FUNCTION(U6RX, U6RXR, 3),
++			PIC32_PINCTRL_FUNCTION(SS2IN, SS2INR, 3),
++			PIC32_PINCTRL_FUNCTION(SDI6, SDI6R, 3),
++			PIC32_PINCTRL_FUNCTION(OCFA, OCFAR, 3),
++			PIC32_PINCTRL_FUNCTION(REFCLKI3, REFCLKI3R, 3),
++			PIC32_PINCTRL_FUNCTION(U1RTS, RPD0R, 1),
++			PIC32_PINCTRL_FUNCTION(U2TX, RPD0R, 2),
++			PIC32_PINCTRL_FUNCTION(U5RTS, RPD0R, 3),
++			PIC32_PINCTRL_FUNCTION(U6TX, RPD0R, 4),
++			PIC32_PINCTRL_FUNCTION(SS2OUT, RPD0R, 6),
++			PIC32_PINCTRL_FUNCTION(SDO4, RPD0R, 8),
++			PIC32_PINCTRL_FUNCTION(SDO6, RPD0R, 10),
++			PIC32_PINCTRL_FUNCTION(OC2, RPD0R, 11),
++			PIC32_PINCTRL_FUNCTION(OC1, RPD0R, 12),
++			PIC32_PINCTRL_FUNCTION(OC9, RPD0R, 13),
++			PIC32_PINCTRL_FUNCTION(C2TX, RPD0R, 15)),
++	PIC32_PINCTRL_GROUP(50, D2,
++			PIC32_PINCTRL_FUNCTION(INT3, INT3R, 0),
++			PIC32_PINCTRL_FUNCTION(T2CK, T2CKR, 0),
++			PIC32_PINCTRL_FUNCTION(T6CK, T6CKR, 0),
++			PIC32_PINCTRL_FUNCTION(IC3, IC3R, 0),
++			PIC32_PINCTRL_FUNCTION(IC7, IC7R, 0),
++			PIC32_PINCTRL_FUNCTION(U1RX, U1RXR, 0),
++			PIC32_PINCTRL_FUNCTION(U2CTS, U2CTSR, 0),
++			PIC32_PINCTRL_FUNCTION(U5RX, U5RXR, 0),
++			PIC32_PINCTRL_FUNCTION(U6CTS, U6CTSR, 0),
++			PIC32_PINCTRL_FUNCTION(SDI1, SDI1R, 0),
++			PIC32_PINCTRL_FUNCTION(SDI3, SDI3R, 0),
++			PIC32_PINCTRL_FUNCTION(SDI5, SDI5R, 0),
++			PIC32_PINCTRL_FUNCTION(SS6IN, SS6INR, 0),
++			PIC32_PINCTRL_FUNCTION(REFCLKI1, REFCLKI1R, 0),
++			PIC32_PINCTRL_FUNCTION(U3TX, RPD2R, 1),
++			PIC32_PINCTRL_FUNCTION(U4RTS, RPD2R, 2),
++			PIC32_PINCTRL_FUNCTION(SDO1, RPD2R, 5),
++			PIC32_PINCTRL_FUNCTION(SDO2, RPD2R, 6),
++			PIC32_PINCTRL_FUNCTION(SDO3, RPD2R, 7),
++			PIC32_PINCTRL_FUNCTION(SDO5, RPD2R, 9),
++			PIC32_PINCTRL_FUNCTION(SS6OUT, RPD2R, 10),
++			PIC32_PINCTRL_FUNCTION(OC3, RPD2R, 11),
++			PIC32_PINCTRL_FUNCTION(OC6, RPD2R, 12),
++			PIC32_PINCTRL_FUNCTION(REFCLKO4, RPD2R, 13),
++			PIC32_PINCTRL_FUNCTION(C2OUT, RPD2R, 14),
++			PIC32_PINCTRL_FUNCTION(C1TX, RPD2R, 15)),
++	PIC32_PINCTRL_GROUP(51, D3,
++			PIC32_PINCTRL_FUNCTION(INT4, INT4R, 0),
++			PIC32_PINCTRL_FUNCTION(T5CK, T5CKR, 0),
++			PIC32_PINCTRL_FUNCTION(T7CK, T7CKR, 0),
++			PIC32_PINCTRL_FUNCTION(IC4, IC4R, 0),
++			PIC32_PINCTRL_FUNCTION(IC8, IC8R, 0),
++			PIC32_PINCTRL_FUNCTION(U3RX, U3RXR, 0),
++			PIC32_PINCTRL_FUNCTION(U4CTS, U4CTSR, 0),
++			PIC32_PINCTRL_FUNCTION(SDI2, SDI2R, 0),
++			PIC32_PINCTRL_FUNCTION(SDI4, SDI4R, 0),
++			PIC32_PINCTRL_FUNCTION(C1RX, C1RXR, 0),
++			PIC32_PINCTRL_FUNCTION(REFCLKI4, REFCLKI4R, 0),
++			PIC32_PINCTRL_FUNCTION(U1TX, RPD3R, 1),
++			PIC32_PINCTRL_FUNCTION(U2RTS, RPD3R, 2),
++			PIC32_PINCTRL_FUNCTION(U5TX, RPD3R, 3),
++			PIC32_PINCTRL_FUNCTION(U6RTS, RPD3R, 4),
++			PIC32_PINCTRL_FUNCTION(SDO1, RPD3R, 5),
++			PIC32_PINCTRL_FUNCTION(SDO2, RPD3R, 6),
++			PIC32_PINCTRL_FUNCTION(SDO3, RPD3R, 7),
++			PIC32_PINCTRL_FUNCTION(SDO4, RPD3R, 8),
++			PIC32_PINCTRL_FUNCTION(SDO5, RPD3R, 9),
++			PIC32_PINCTRL_FUNCTION(OC4, RPD3R, 11),
++			PIC32_PINCTRL_FUNCTION(OC7, RPD3R, 12),
++			PIC32_PINCTRL_FUNCTION(REFCLKO1, RPD3R, 15)),
++	PIC32_PINCTRL_GROUP(52, D4,
++			PIC32_PINCTRL_FUNCTION(INT2, INT2R, 4),
++			PIC32_PINCTRL_FUNCTION(T3CK, T3CKR, 4),
++			PIC32_PINCTRL_FUNCTION(T8CK, T8CKR, 4),
++			PIC32_PINCTRL_FUNCTION(IC2, IC2R, 4),
++			PIC32_PINCTRL_FUNCTION(IC5, IC5R, 4),
++			PIC32_PINCTRL_FUNCTION(IC9, IC9R, 4),
++			PIC32_PINCTRL_FUNCTION(U1CTS, U1CTSR, 4),
++			PIC32_PINCTRL_FUNCTION(U2RX, U2RXR, 4),
++			PIC32_PINCTRL_FUNCTION(U5CTS, U5CTSR, 4),
++			PIC32_PINCTRL_FUNCTION(SS1IN, SS1INR, 4),
++			PIC32_PINCTRL_FUNCTION(SS3IN, SS3INR, 4),
++			PIC32_PINCTRL_FUNCTION(SS4IN, SS4INR, 4),
++			PIC32_PINCTRL_FUNCTION(SS5IN, SS5INR, 4),
++			PIC32_PINCTRL_FUNCTION(C2RX, C2RXR, 4),
++			PIC32_PINCTRL_FUNCTION(U3RTS, RPD4R, 1),
++			PIC32_PINCTRL_FUNCTION(U4TX, RPD4R, 2),
++			PIC32_PINCTRL_FUNCTION(U6TX, RPD4R, 4),
++			PIC32_PINCTRL_FUNCTION(SS1OUT, RPD4R, 5),
++			PIC32_PINCTRL_FUNCTION(SS3OUT, RPD4R, 7),
++			PIC32_PINCTRL_FUNCTION(SS4OUT, RPD4R, 8),
++			PIC32_PINCTRL_FUNCTION(SS5OUT, RPD4R, 9),
++			PIC32_PINCTRL_FUNCTION(SDO6, RPD4R, 10),
++			PIC32_PINCTRL_FUNCTION(OC5, RPD4R, 11),
++			PIC32_PINCTRL_FUNCTION(OC8, RPD4R, 12),
++			PIC32_PINCTRL_FUNCTION(C1OUT, RPD4R, 14),
++			PIC32_PINCTRL_FUNCTION(REFCLKO3, RPD4R, 15)),
++	PIC32_PINCTRL_GROUP(53, D5,
++			PIC32_PINCTRL_FUNCTION(INT1, INT1R, 6),
++			PIC32_PINCTRL_FUNCTION(T4CK, T4CKR, 6),
++			PIC32_PINCTRL_FUNCTION(T9CK, T9CKR, 6),
++			PIC32_PINCTRL_FUNCTION(IC1, IC1R, 6),
++			PIC32_PINCTRL_FUNCTION(IC6, IC6R, 6),
++			PIC32_PINCTRL_FUNCTION(U3CTS, U3CTSR, 6),
++			PIC32_PINCTRL_FUNCTION(U4RX, U4RXR, 6),
++			PIC32_PINCTRL_FUNCTION(U6RX, U6RXR, 6),
++			PIC32_PINCTRL_FUNCTION(SS2IN, SS2INR, 6),
++			PIC32_PINCTRL_FUNCTION(SDI6, SDI6R, 6),
++			PIC32_PINCTRL_FUNCTION(OCFA, OCFAR, 6),
++			PIC32_PINCTRL_FUNCTION(REFCLKI3, REFCLKI3R, 6),
++			PIC32_PINCTRL_FUNCTION(U1RTS, RPD5R, 1),
++			PIC32_PINCTRL_FUNCTION(U2TX, RPD5R, 2),
++			PIC32_PINCTRL_FUNCTION(U5RTS, RPD5R, 3),
++			PIC32_PINCTRL_FUNCTION(U6TX, RPD5R, 4),
++			PIC32_PINCTRL_FUNCTION(SS2OUT, RPD5R, 6),
++			PIC32_PINCTRL_FUNCTION(SDO4, RPD5R, 8),
++			PIC32_PINCTRL_FUNCTION(SDO6, RPD5R, 10),
++			PIC32_PINCTRL_FUNCTION(OC2, RPD5R, 11),
++			PIC32_PINCTRL_FUNCTION(OC1, RPD5R, 12),
++			PIC32_PINCTRL_FUNCTION(OC9, RPD5R, 13),
++			PIC32_PINCTRL_FUNCTION(C2TX, RPD5R, 15)),
++	PIC32_PINCTRL_GROUP(54, D6,
++			PIC32_PINCTRL_FUNCTION(INT3, INT3R, 14),
++			PIC32_PINCTRL_FUNCTION(T2CK, T2CKR, 14),
++			PIC32_PINCTRL_FUNCTION(T6CK, T6CKR, 14),
++			PIC32_PINCTRL_FUNCTION(IC3, IC3R, 14),
++			PIC32_PINCTRL_FUNCTION(IC7, IC7R, 14),
++			PIC32_PINCTRL_FUNCTION(U1RX, U1RXR, 14),
++			PIC32_PINCTRL_FUNCTION(U2CTS, U2CTSR, 14),
++			PIC32_PINCTRL_FUNCTION(U5RX, U5RXR, 14),
++			PIC32_PINCTRL_FUNCTION(U6CTS, U6CTSR, 14),
++			PIC32_PINCTRL_FUNCTION(SDI1, SDI1R, 14),
++			PIC32_PINCTRL_FUNCTION(SDI3, SDI3R, 14),
++			PIC32_PINCTRL_FUNCTION(SDI5, SDI5R, 14),
++			PIC32_PINCTRL_FUNCTION(SS6IN, SS6INR, 14),
++			PIC32_PINCTRL_FUNCTION(REFCLKI1, REFCLKI1R, 14),
++			PIC32_PINCTRL_FUNCTION(U3TX, RPD6R, 1),
++			PIC32_PINCTRL_FUNCTION(U4RTS, RPD6R, 2),
++			PIC32_PINCTRL_FUNCTION(SDO1, RPD6R, 5),
++			PIC32_PINCTRL_FUNCTION(SDO2, RPD6R, 6),
++			PIC32_PINCTRL_FUNCTION(SDO3, RPD6R, 7),
++			PIC32_PINCTRL_FUNCTION(SDO5, RPD6R, 9),
++			PIC32_PINCTRL_FUNCTION(SS6OUT, RPD6R, 10),
++			PIC32_PINCTRL_FUNCTION(OC3, RPD6R, 11),
++			PIC32_PINCTRL_FUNCTION(OC6, RPD6R, 12),
++			PIC32_PINCTRL_FUNCTION(REFCLKO4, RPD6R, 13),
++			PIC32_PINCTRL_FUNCTION(C2OUT, RPD6R, 14),
++			PIC32_PINCTRL_FUNCTION(C1TX, RPD6R, 15)),
++	PIC32_PINCTRL_GROUP(55, D7,
++			PIC32_PINCTRL_FUNCTION(INT4, INT4R, 14),
++			PIC32_PINCTRL_FUNCTION(T5CK, T5CKR, 14),
++			PIC32_PINCTRL_FUNCTION(T7CK, T7CKR, 14),
++			PIC32_PINCTRL_FUNCTION(IC4, IC4R, 14),
++			PIC32_PINCTRL_FUNCTION(IC8, IC8R, 14),
++			PIC32_PINCTRL_FUNCTION(U3RX, U3RXR, 14),
++			PIC32_PINCTRL_FUNCTION(U4CTS, U4CTSR, 14),
++			PIC32_PINCTRL_FUNCTION(SDI2, SDI2R, 14),
++			PIC32_PINCTRL_FUNCTION(SDI4, SDI4R, 14),
++			PIC32_PINCTRL_FUNCTION(C1RX, C1RXR, 14),
++			PIC32_PINCTRL_FUNCTION(REFCLKI4, REFCLKI4R, 14),
++			PIC32_PINCTRL_FUNCTION(U1TX, RPD7R, 1),
++			PIC32_PINCTRL_FUNCTION(U2RTS, RPD7R, 2),
++			PIC32_PINCTRL_FUNCTION(U5TX, RPD7R, 3),
++			PIC32_PINCTRL_FUNCTION(U6RTS, RPD7R, 4),
++			PIC32_PINCTRL_FUNCTION(SDO1, RPD7R, 5),
++			PIC32_PINCTRL_FUNCTION(SDO2, RPD7R, 6),
++			PIC32_PINCTRL_FUNCTION(SDO3, RPD7R, 7),
++			PIC32_PINCTRL_FUNCTION(SDO4, RPD7R, 8),
++			PIC32_PINCTRL_FUNCTION(SDO5, RPD7R, 9),
++			PIC32_PINCTRL_FUNCTION(OC4, RPD7R, 11),
++			PIC32_PINCTRL_FUNCTION(OC7, RPD7R, 12),
++			PIC32_PINCTRL_FUNCTION(REFCLKO1, RPD7R, 15)),
++	PIC32_PINCTRL_GROUP(57, D9,
++			PIC32_PINCTRL_FUNCTION(INT2, INT2R, 0),
++			PIC32_PINCTRL_FUNCTION(T3CK, T3CKR, 0),
++			PIC32_PINCTRL_FUNCTION(T8CK, T8CKR, 0),
++			PIC32_PINCTRL_FUNCTION(IC2, IC2R, 0),
++			PIC32_PINCTRL_FUNCTION(IC5, IC5R, 0),
++			PIC32_PINCTRL_FUNCTION(IC9, IC9R, 0),
++			PIC32_PINCTRL_FUNCTION(U1CTS, U1CTSR, 0),
++			PIC32_PINCTRL_FUNCTION(U2RX, U2RXR, 0),
++			PIC32_PINCTRL_FUNCTION(U5CTS, U5CTSR, 0),
++			PIC32_PINCTRL_FUNCTION(SS1IN, SS1INR, 0),
++			PIC32_PINCTRL_FUNCTION(SS3IN, SS3INR, 0),
++			PIC32_PINCTRL_FUNCTION(SS4IN, SS4INR, 0),
++			PIC32_PINCTRL_FUNCTION(SS5IN, SS5INR, 0),
++			PIC32_PINCTRL_FUNCTION(C2RX, C2RXR, 0),
++			PIC32_PINCTRL_FUNCTION(U3RTS, RPD9R, 1),
++			PIC32_PINCTRL_FUNCTION(U4TX, RPD9R, 2),
++			PIC32_PINCTRL_FUNCTION(U6TX, RPD9R, 4),
++			PIC32_PINCTRL_FUNCTION(SS1OUT, RPD9R, 5),
++			PIC32_PINCTRL_FUNCTION(SS3OUT, RPD9R, 7),
++			PIC32_PINCTRL_FUNCTION(SS4OUT, RPD9R, 8),
++			PIC32_PINCTRL_FUNCTION(SS5OUT, RPD9R, 9),
++			PIC32_PINCTRL_FUNCTION(SDO6, RPD9R, 10),
++			PIC32_PINCTRL_FUNCTION(OC5, RPD9R, 11),
++			PIC32_PINCTRL_FUNCTION(OC8, RPD9R, 12),
++			PIC32_PINCTRL_FUNCTION(C1OUT, RPD9R, 14),
++			PIC32_PINCTRL_FUNCTION(REFCLKO3, RPD9R, 15)),
++	PIC32_PINCTRL_GROUP(58, D10,
++			PIC32_PINCTRL_FUNCTION(U3TX, RPD10R, 1),
++			PIC32_PINCTRL_FUNCTION(U4RTS, RPD10R, 2),
++			PIC32_PINCTRL_FUNCTION(SDO1, RPD10R, 5),
++			PIC32_PINCTRL_FUNCTION(SDO2, RPD10R, 6),
++			PIC32_PINCTRL_FUNCTION(SDO3, RPD10R, 7),
++			PIC32_PINCTRL_FUNCTION(SDO5, RPD10R, 9),
++			PIC32_PINCTRL_FUNCTION(SS6OUT, RPD10R, 10),
++			PIC32_PINCTRL_FUNCTION(OC3, RPD10R, 11),
++			PIC32_PINCTRL_FUNCTION(OC6, RPD10R, 12),
++			PIC32_PINCTRL_FUNCTION(REFCLKO4, RPD10R, 13),
++			PIC32_PINCTRL_FUNCTION(C2OUT, RPD10R, 14),
++			PIC32_PINCTRL_FUNCTION(C1TX, RPD10R, 15)),
++	PIC32_PINCTRL_GROUP(59, D11,
++			PIC32_PINCTRL_FUNCTION(INT4, INT4R, 3),
++			PIC32_PINCTRL_FUNCTION(T5CK, T5CKR, 3),
++			PIC32_PINCTRL_FUNCTION(T7CK, T7CKR, 3),
++			PIC32_PINCTRL_FUNCTION(IC4, IC4R, 3),
++			PIC32_PINCTRL_FUNCTION(IC8, IC8R, 3),
++			PIC32_PINCTRL_FUNCTION(U3RX, U3RXR, 3),
++			PIC32_PINCTRL_FUNCTION(U4CTS, U4CTSR, 3),
++			PIC32_PINCTRL_FUNCTION(SDI2, SDI2R, 3),
++			PIC32_PINCTRL_FUNCTION(SDI4, SDI4R, 3),
++			PIC32_PINCTRL_FUNCTION(C1RX, C1RXR, 3),
++			PIC32_PINCTRL_FUNCTION(REFCLKI4, REFCLKI4R, 3),
++			PIC32_PINCTRL_FUNCTION(U1TX, RPD11R, 1),
++			PIC32_PINCTRL_FUNCTION(U2RTS, RPD11R, 2),
++			PIC32_PINCTRL_FUNCTION(U5TX, RPD11R, 3),
++			PIC32_PINCTRL_FUNCTION(U6RTS, RPD11R, 4),
++			PIC32_PINCTRL_FUNCTION(SDO1, RPD11R, 5),
++			PIC32_PINCTRL_FUNCTION(SDO2, RPD11R, 6),
++			PIC32_PINCTRL_FUNCTION(SDO3, RPD11R, 7),
++			PIC32_PINCTRL_FUNCTION(SDO4, RPD11R, 8),
++			PIC32_PINCTRL_FUNCTION(SDO5, RPD11R, 9),
++			PIC32_PINCTRL_FUNCTION(OC4, RPD11R, 11),
++			PIC32_PINCTRL_FUNCTION(OC7, RPD11R, 12),
++			PIC32_PINCTRL_FUNCTION(REFCLKO1, RPD11R, 15)),
++	PIC32_PINCTRL_GROUP(60, D12,
++			PIC32_PINCTRL_FUNCTION(INT2, INT2R, 10),
++			PIC32_PINCTRL_FUNCTION(T3CK, T3CKR, 10),
++			PIC32_PINCTRL_FUNCTION(T8CK, T8CKR, 10),
++			PIC32_PINCTRL_FUNCTION(IC2, IC2R, 10),
++			PIC32_PINCTRL_FUNCTION(IC5, IC5R, 10),
++			PIC32_PINCTRL_FUNCTION(IC9, IC9R, 10),
++			PIC32_PINCTRL_FUNCTION(U1CTS, U1CTSR, 10),
++			PIC32_PINCTRL_FUNCTION(U2RX, U2RXR, 10),
++			PIC32_PINCTRL_FUNCTION(U5CTS, U5CTSR, 10),
++			PIC32_PINCTRL_FUNCTION(SS1IN, SS1INR, 10),
++			PIC32_PINCTRL_FUNCTION(SS3IN, SS3INR, 10),
++			PIC32_PINCTRL_FUNCTION(SS4IN, SS4INR, 10),
++			PIC32_PINCTRL_FUNCTION(SS5IN, SS5INR, 10),
++			PIC32_PINCTRL_FUNCTION(C2RX, C2RXR, 10),
++			PIC32_PINCTRL_FUNCTION(U3RTS, RPD12R, 1),
++			PIC32_PINCTRL_FUNCTION(U4TX, RPD12R, 2),
++			PIC32_PINCTRL_FUNCTION(U6TX, RPD12R, 4),
++			PIC32_PINCTRL_FUNCTION(SS1OUT, RPD12R, 5),
++			PIC32_PINCTRL_FUNCTION(SS3OUT, RPD12R, 7),
++			PIC32_PINCTRL_FUNCTION(SS4OUT, RPD12R, 8),
++			PIC32_PINCTRL_FUNCTION(SS5OUT, RPD12R, 9),
++			PIC32_PINCTRL_FUNCTION(SDO6, RPD12R, 10),
++			PIC32_PINCTRL_FUNCTION(OC5, RPD12R, 11),
++			PIC32_PINCTRL_FUNCTION(OC8, RPD12R, 12),
++			PIC32_PINCTRL_FUNCTION(C1OUT, RPD12R, 14),
++			PIC32_PINCTRL_FUNCTION(REFCLKO3, RPD12R, 15)),
++	PIC32_PINCTRL_GROUP(62, D14,
++			PIC32_PINCTRL_FUNCTION(INT3, INT3R, 11),
++			PIC32_PINCTRL_FUNCTION(T2CK, T2CKR, 11),
++			PIC32_PINCTRL_FUNCTION(T6CK, T6CKR, 11),
++			PIC32_PINCTRL_FUNCTION(IC3, IC3R, 11),
++			PIC32_PINCTRL_FUNCTION(IC7, IC7R, 11),
++			PIC32_PINCTRL_FUNCTION(U1RX, U1RXR, 11),
++			PIC32_PINCTRL_FUNCTION(U2CTS, U2CTSR, 11),
++			PIC32_PINCTRL_FUNCTION(U5RX, U5RXR, 11),
++			PIC32_PINCTRL_FUNCTION(U6CTS, U6CTSR, 11),
++			PIC32_PINCTRL_FUNCTION(SDI1, SDI1R, 11),
++			PIC32_PINCTRL_FUNCTION(SDI3, SDI3R, 11),
++			PIC32_PINCTRL_FUNCTION(SDI5, SDI5R, 11),
++			PIC32_PINCTRL_FUNCTION(SS6IN, SS6INR, 11),
++			PIC32_PINCTRL_FUNCTION(REFCLKI1, REFCLKI1R, 11),
++			PIC32_PINCTRL_FUNCTION(U3TX, RPD14R, 1),
++			PIC32_PINCTRL_FUNCTION(U4RTS, RPD14R, 2),
++			PIC32_PINCTRL_FUNCTION(SDO1, RPD14R, 5),
++			PIC32_PINCTRL_FUNCTION(SDO2, RPD14R, 6),
++			PIC32_PINCTRL_FUNCTION(SDO3, RPD14R, 7),
++			PIC32_PINCTRL_FUNCTION(SDO5, RPD14R, 9),
++			PIC32_PINCTRL_FUNCTION(SS6OUT, RPD14R, 10),
++			PIC32_PINCTRL_FUNCTION(OC3, RPD14R, 11),
++			PIC32_PINCTRL_FUNCTION(OC6, RPD14R, 12),
++			PIC32_PINCTRL_FUNCTION(REFCLKO4, RPD14R, 13),
++			PIC32_PINCTRL_FUNCTION(C2OUT, RPD14R, 14),
++			PIC32_PINCTRL_FUNCTION(C1TX, RPD14R, 15)),
++	PIC32_PINCTRL_GROUP(63, D15,
++			PIC32_PINCTRL_FUNCTION(U1TX, RPD15R, 1),
++			PIC32_PINCTRL_FUNCTION(U2RTS, RPD15R, 2),
++			PIC32_PINCTRL_FUNCTION(U5TX, RPD15R, 3),
++			PIC32_PINCTRL_FUNCTION(U6RTS, RPD15R, 4),
++			PIC32_PINCTRL_FUNCTION(SDO1, RPD15R, 5),
++			PIC32_PINCTRL_FUNCTION(SDO2, RPD15R, 6),
++			PIC32_PINCTRL_FUNCTION(SDO3, RPD15R, 7),
++			PIC32_PINCTRL_FUNCTION(SDO4, RPD15R, 8),
++			PIC32_PINCTRL_FUNCTION(SDO5, RPD15R, 9),
++			PIC32_PINCTRL_FUNCTION(OC4, RPD15R, 11),
++			PIC32_PINCTRL_FUNCTION(OC7, RPD15R, 12),
++			PIC32_PINCTRL_FUNCTION(REFCLKO1, RPD15R, 15)),
++	PIC32_PINCTRL_GROUP(67, E3,
++			PIC32_PINCTRL_FUNCTION(INT2, INT2R, 6),
++			PIC32_PINCTRL_FUNCTION(T3CK, T3CKR, 6),
++			PIC32_PINCTRL_FUNCTION(T8CK, T8CKR, 6),
++			PIC32_PINCTRL_FUNCTION(IC2, IC2R, 6),
++			PIC32_PINCTRL_FUNCTION(IC5, IC5R, 6),
++			PIC32_PINCTRL_FUNCTION(IC9, IC9R, 6),
++			PIC32_PINCTRL_FUNCTION(U1CTS, U1CTSR, 6),
++			PIC32_PINCTRL_FUNCTION(U2RX, U2RXR, 6),
++			PIC32_PINCTRL_FUNCTION(U5CTS, U5CTSR, 6),
++			PIC32_PINCTRL_FUNCTION(SS1IN, SS1INR, 6),
++			PIC32_PINCTRL_FUNCTION(SS3IN, SS3INR, 6),
++			PIC32_PINCTRL_FUNCTION(SS4IN, SS4INR, 6),
++			PIC32_PINCTRL_FUNCTION(SS5IN, SS5INR, 6),
++			PIC32_PINCTRL_FUNCTION(C2RX, C2RXR, 6),
++			PIC32_PINCTRL_FUNCTION(U3RTS, RPE3R, 1),
++			PIC32_PINCTRL_FUNCTION(U4TX, RPE3R, 2),
++			PIC32_PINCTRL_FUNCTION(U6TX, RPE3R, 4),
++			PIC32_PINCTRL_FUNCTION(SS1OUT, RPE3R, 5),
++			PIC32_PINCTRL_FUNCTION(SS3OUT, RPE3R, 7),
++			PIC32_PINCTRL_FUNCTION(SS4OUT, RPE3R, 8),
++			PIC32_PINCTRL_FUNCTION(SS5OUT, RPE3R, 9),
++			PIC32_PINCTRL_FUNCTION(SDO6, RPE3R, 10),
++			PIC32_PINCTRL_FUNCTION(OC5, RPE3R, 11),
++			PIC32_PINCTRL_FUNCTION(OC8, RPE3R, 12),
++			PIC32_PINCTRL_FUNCTION(C1OUT, RPE3R, 14),
++			PIC32_PINCTRL_FUNCTION(REFCLKO3, RPE3R, 15)),
++	PIC32_PINCTRL_GROUP(69, E5,
++			PIC32_PINCTRL_FUNCTION(INT4, INT4R, 6),
++			PIC32_PINCTRL_FUNCTION(T5CK, T5CKR, 6),
++			PIC32_PINCTRL_FUNCTION(T7CK, T7CKR, 6),
++			PIC32_PINCTRL_FUNCTION(IC4, IC4R, 6),
++			PIC32_PINCTRL_FUNCTION(IC8, IC8R, 6),
++			PIC32_PINCTRL_FUNCTION(U3RX, U3RXR, 6),
++			PIC32_PINCTRL_FUNCTION(U4CTS, U4CTSR, 6),
++			PIC32_PINCTRL_FUNCTION(SDI2, SDI2R, 6),
++			PIC32_PINCTRL_FUNCTION(SDI4, SDI4R, 6),
++			PIC32_PINCTRL_FUNCTION(C1RX, C1RXR, 6),
++			PIC32_PINCTRL_FUNCTION(REFCLKI4, REFCLKI4R, 6),
++			PIC32_PINCTRL_FUNCTION(U1TX, RPE5R, 1),
++			PIC32_PINCTRL_FUNCTION(U2RTS, RPE5R, 2),
++			PIC32_PINCTRL_FUNCTION(U5TX, RPE5R, 3),
++			PIC32_PINCTRL_FUNCTION(U6RTS, RPE5R, 4),
++			PIC32_PINCTRL_FUNCTION(SDO1, RPE5R, 5),
++			PIC32_PINCTRL_FUNCTION(SDO2, RPE5R, 6),
++			PIC32_PINCTRL_FUNCTION(SDO3, RPE5R, 7),
++			PIC32_PINCTRL_FUNCTION(SDO4, RPE5R, 8),
++			PIC32_PINCTRL_FUNCTION(SDO5, RPE5R, 9),
++			PIC32_PINCTRL_FUNCTION(OC4, RPE5R, 11),
++			PIC32_PINCTRL_FUNCTION(OC7, RPE5R, 12),
++			PIC32_PINCTRL_FUNCTION(REFCLKO1, RPE5R, 15)),
++	PIC32_PINCTRL_GROUP(72, E8,
++			PIC32_PINCTRL_FUNCTION(INT1, INT1R, 13),
++			PIC32_PINCTRL_FUNCTION(T4CK, T4CKR, 13),
++			PIC32_PINCTRL_FUNCTION(T9CK, T9CKR, 13),
++			PIC32_PINCTRL_FUNCTION(IC1, IC1R, 13),
++			PIC32_PINCTRL_FUNCTION(IC6, IC6R, 13),
++			PIC32_PINCTRL_FUNCTION(U3CTS, U3CTSR, 13),
++			PIC32_PINCTRL_FUNCTION(U4RX, U4RXR, 13),
++			PIC32_PINCTRL_FUNCTION(U6RX, U6RXR, 13),
++			PIC32_PINCTRL_FUNCTION(SS2IN, SS2INR, 13),
++			PIC32_PINCTRL_FUNCTION(SDI6, SDI6R, 13),
++			PIC32_PINCTRL_FUNCTION(OCFA, OCFAR, 13),
++			PIC32_PINCTRL_FUNCTION(REFCLKI3, REFCLKI3R, 13),
++			PIC32_PINCTRL_FUNCTION(U1RTS, RPE8R, 1),
++			PIC32_PINCTRL_FUNCTION(U2TX, RPE8R, 2),
++			PIC32_PINCTRL_FUNCTION(U5RTS, RPE8R, 3),
++			PIC32_PINCTRL_FUNCTION(U6TX, RPE8R, 4),
++			PIC32_PINCTRL_FUNCTION(SS2OUT, RPE8R, 6),
++			PIC32_PINCTRL_FUNCTION(SDO4, RPE8R, 8),
++			PIC32_PINCTRL_FUNCTION(SDO6, RPE8R, 10),
++			PIC32_PINCTRL_FUNCTION(OC2, RPE8R, 11),
++			PIC32_PINCTRL_FUNCTION(OC1, RPE8R, 12),
++			PIC32_PINCTRL_FUNCTION(OC9, RPE8R, 13),
++			PIC32_PINCTRL_FUNCTION(C2TX, RPE8R, 15)),
++	PIC32_PINCTRL_GROUP(73, E9,
++			PIC32_PINCTRL_FUNCTION(INT2, INT2R, 13),
++			PIC32_PINCTRL_FUNCTION(T3CK, T3CKR, 13),
++			PIC32_PINCTRL_FUNCTION(T8CK, T8CKR, 13),
++			PIC32_PINCTRL_FUNCTION(IC2, IC2R, 13),
++			PIC32_PINCTRL_FUNCTION(IC5, IC5R, 13),
++			PIC32_PINCTRL_FUNCTION(IC9, IC9R, 13),
++			PIC32_PINCTRL_FUNCTION(U1CTS, U1CTSR, 13),
++			PIC32_PINCTRL_FUNCTION(U2RX, U2RXR, 13),
++			PIC32_PINCTRL_FUNCTION(U5CTS, U5CTSR, 13),
++			PIC32_PINCTRL_FUNCTION(SS1IN, SS1INR, 13),
++			PIC32_PINCTRL_FUNCTION(SS3IN, SS3INR, 13),
++			PIC32_PINCTRL_FUNCTION(SS4IN, SS4INR, 13),
++			PIC32_PINCTRL_FUNCTION(SS5IN, SS5INR, 13),
++			PIC32_PINCTRL_FUNCTION(C2RX, C2RXR, 13),
++			PIC32_PINCTRL_FUNCTION(U3RTS, RPE9R, 1),
++			PIC32_PINCTRL_FUNCTION(U4TX, RPE9R, 2),
++			PIC32_PINCTRL_FUNCTION(U6TX, RPE9R, 4),
++			PIC32_PINCTRL_FUNCTION(SS1OUT, RPE9R, 5),
++			PIC32_PINCTRL_FUNCTION(SS3OUT, RPE9R, 7),
++			PIC32_PINCTRL_FUNCTION(SS4OUT, RPE9R, 8),
++			PIC32_PINCTRL_FUNCTION(SS5OUT, RPE9R, 9),
++			PIC32_PINCTRL_FUNCTION(SDO6, RPE9R, 10),
++			PIC32_PINCTRL_FUNCTION(OC5, RPE9R, 11),
++			PIC32_PINCTRL_FUNCTION(OC8, RPE9R, 12),
++			PIC32_PINCTRL_FUNCTION(C1OUT, RPE9R, 14),
++			PIC32_PINCTRL_FUNCTION(REFCLKO3, RPE9R, 15)),
++	PIC32_PINCTRL_GROUP(80, F0,
++			PIC32_PINCTRL_FUNCTION(INT4, INT4R, 4),
++			PIC32_PINCTRL_FUNCTION(T5CK, T5CKR, 4),
++			PIC32_PINCTRL_FUNCTION(T7CK, T7CKR, 4),
++			PIC32_PINCTRL_FUNCTION(IC4, IC4R, 4),
++			PIC32_PINCTRL_FUNCTION(IC8, IC8R, 4),
++			PIC32_PINCTRL_FUNCTION(U3RX, U3RXR, 4),
++			PIC32_PINCTRL_FUNCTION(U4CTS, U4CTSR, 4),
++			PIC32_PINCTRL_FUNCTION(SDI2, SDI2R, 4),
++			PIC32_PINCTRL_FUNCTION(SDI4, SDI4R, 4),
++			PIC32_PINCTRL_FUNCTION(C1RX, C1RXR, 4),
++			PIC32_PINCTRL_FUNCTION(REFCLKI4, REFCLKI4R, 4),
++			PIC32_PINCTRL_FUNCTION(U1TX, RPF0R, 1),
++			PIC32_PINCTRL_FUNCTION(U2RTS, RPF0R, 2),
++			PIC32_PINCTRL_FUNCTION(U5TX, RPF0R, 3),
++			PIC32_PINCTRL_FUNCTION(U6RTS, RPF0R, 4),
++			PIC32_PINCTRL_FUNCTION(SDO1, RPF0R, 5),
++			PIC32_PINCTRL_FUNCTION(SDO2, RPF0R, 6),
++			PIC32_PINCTRL_FUNCTION(SDO3, RPF0R, 7),
++			PIC32_PINCTRL_FUNCTION(SDO4, RPF0R, 8),
++			PIC32_PINCTRL_FUNCTION(SDO5, RPF0R, 9),
++			PIC32_PINCTRL_FUNCTION(OC4, RPF0R, 11),
++			PIC32_PINCTRL_FUNCTION(OC7, RPF0R, 12),
++			PIC32_PINCTRL_FUNCTION(REFCLKO1, RPF0R, 15)),
++	PIC32_PINCTRL_GROUP(81, F1,
++			PIC32_PINCTRL_FUNCTION(INT3, INT3R, 4),
++			PIC32_PINCTRL_FUNCTION(T2CK, T2CKR, 4),
++			PIC32_PINCTRL_FUNCTION(T6CK, T6CKR, 4),
++			PIC32_PINCTRL_FUNCTION(IC3, IC3R, 4),
++			PIC32_PINCTRL_FUNCTION(IC7, IC7R, 4),
++			PIC32_PINCTRL_FUNCTION(U1RX, U1RXR, 4),
++			PIC32_PINCTRL_FUNCTION(U2CTS, U2CTSR, 4),
++			PIC32_PINCTRL_FUNCTION(U5RX, U5RXR, 4),
++			PIC32_PINCTRL_FUNCTION(U6CTS, U6CTSR, 4),
++			PIC32_PINCTRL_FUNCTION(SDI1, SDI1R, 4),
++			PIC32_PINCTRL_FUNCTION(SDI3, SDI3R, 4),
++			PIC32_PINCTRL_FUNCTION(SDI5, SDI5R, 4),
++			PIC32_PINCTRL_FUNCTION(SS6IN, SS6INR, 4),
++			PIC32_PINCTRL_FUNCTION(REFCLKI1, REFCLKI1R, 4),
++			PIC32_PINCTRL_FUNCTION(U3TX, RPF1R, 1),
++			PIC32_PINCTRL_FUNCTION(U4RTS, RPF1R, 2),
++			PIC32_PINCTRL_FUNCTION(SDO1, RPF1R, 5),
++			PIC32_PINCTRL_FUNCTION(SDO2, RPF1R, 6),
++			PIC32_PINCTRL_FUNCTION(SDO3, RPF1R, 7),
++			PIC32_PINCTRL_FUNCTION(SDO5, RPF1R, 9),
++			PIC32_PINCTRL_FUNCTION(SS6OUT, RPF1R, 10),
++			PIC32_PINCTRL_FUNCTION(OC3, RPF1R, 11),
++			PIC32_PINCTRL_FUNCTION(OC6, RPF1R, 12),
++			PIC32_PINCTRL_FUNCTION(REFCLKO4, RPF1R, 13),
++			PIC32_PINCTRL_FUNCTION(C2OUT, RPF1R, 14),
++			PIC32_PINCTRL_FUNCTION(C1TX, RPF1R, 15)),
++	PIC32_PINCTRL_GROUP(82, F2,
++			PIC32_PINCTRL_FUNCTION(INT1, INT1R, 11),
++			PIC32_PINCTRL_FUNCTION(T4CK, T4CKR, 11),
++			PIC32_PINCTRL_FUNCTION(T9CK, T9CKR, 11),
++			PIC32_PINCTRL_FUNCTION(IC1, IC1R, 11),
++			PIC32_PINCTRL_FUNCTION(IC6, IC6R, 11),
++			PIC32_PINCTRL_FUNCTION(U3CTS, U3CTSR, 11),
++			PIC32_PINCTRL_FUNCTION(U4RX, U4RXR, 11),
++			PIC32_PINCTRL_FUNCTION(U6RX, U6RXR, 11),
++			PIC32_PINCTRL_FUNCTION(SS2IN, SS2INR, 11),
++			PIC32_PINCTRL_FUNCTION(SDI6, SDI6R, 11),
++			PIC32_PINCTRL_FUNCTION(OCFA, OCFAR, 11),
++			PIC32_PINCTRL_FUNCTION(REFCLKI3, REFCLKI3R, 11),
++			PIC32_PINCTRL_FUNCTION(U1RTS, RPF2R, 1),
++			PIC32_PINCTRL_FUNCTION(U2TX, RPF2R, 2),
++			PIC32_PINCTRL_FUNCTION(U5RTS, RPF2R, 3),
++			PIC32_PINCTRL_FUNCTION(U6TX, RPF2R, 4),
++			PIC32_PINCTRL_FUNCTION(SS2OUT, RPF2R, 6),
++			PIC32_PINCTRL_FUNCTION(SDO4, RPF2R, 8),
++			PIC32_PINCTRL_FUNCTION(SDO6, RPF2R, 10),
++			PIC32_PINCTRL_FUNCTION(OC2, RPF2R, 11),
++			PIC32_PINCTRL_FUNCTION(OC1, RPF2R, 12),
++			PIC32_PINCTRL_FUNCTION(OC9, RPF2R, 13),
++			PIC32_PINCTRL_FUNCTION(C2TX, RPF2R, 15)),
++	PIC32_PINCTRL_GROUP(83, F3,
++			PIC32_PINCTRL_FUNCTION(INT1, INT1R, 8),
++			PIC32_PINCTRL_FUNCTION(T4CK, T4CKR, 8),
++			PIC32_PINCTRL_FUNCTION(T9CK, T9CKR, 8),
++			PIC32_PINCTRL_FUNCTION(IC1, IC1R, 8),
++			PIC32_PINCTRL_FUNCTION(IC6, IC6R, 8),
++			PIC32_PINCTRL_FUNCTION(U3CTS, U3CTSR, 8),
++			PIC32_PINCTRL_FUNCTION(U4RX, U4RXR, 8),
++			PIC32_PINCTRL_FUNCTION(U6RX, U6RXR, 8),
++			PIC32_PINCTRL_FUNCTION(SS2IN, SS2INR, 8),
++			PIC32_PINCTRL_FUNCTION(SDI6, SDI6R, 8),
++			PIC32_PINCTRL_FUNCTION(OCFA, OCFAR, 8),
++			PIC32_PINCTRL_FUNCTION(REFCLKI3, REFCLKI3R, 8),
++			PIC32_PINCTRL_FUNCTION(U1RTS, RPF3R, 1),
++			PIC32_PINCTRL_FUNCTION(U2TX, RPF3R, 2),
++			PIC32_PINCTRL_FUNCTION(U5RTS, RPF3R, 3),
++			PIC32_PINCTRL_FUNCTION(U6TX, RPF3R, 4),
++			PIC32_PINCTRL_FUNCTION(SS2OUT, RPF3R, 6),
++			PIC32_PINCTRL_FUNCTION(SDO4, RPF3R, 8),
++			PIC32_PINCTRL_FUNCTION(SDO6, RPF3R, 10),
++			PIC32_PINCTRL_FUNCTION(OC2, RPF3R, 11),
++			PIC32_PINCTRL_FUNCTION(OC1, RPF3R, 12),
++			PIC32_PINCTRL_FUNCTION(OC9, RPF3R, 13),
++			PIC32_PINCTRL_FUNCTION(C2TX, RPF3R, 15)),
++	PIC32_PINCTRL_GROUP(84, F4,
++			PIC32_PINCTRL_FUNCTION(INT3, INT3R, 2),
++			PIC32_PINCTRL_FUNCTION(T2CK, T2CKR, 2),
++			PIC32_PINCTRL_FUNCTION(T6CK, T6CKR, 2),
++			PIC32_PINCTRL_FUNCTION(IC3, IC3R, 2),
++			PIC32_PINCTRL_FUNCTION(IC7, IC7R, 2),
++			PIC32_PINCTRL_FUNCTION(U1RX, U1RXR, 2),
++			PIC32_PINCTRL_FUNCTION(U2CTS, U2CTSR, 2),
++			PIC32_PINCTRL_FUNCTION(U5RX, U5RXR, 2),
++			PIC32_PINCTRL_FUNCTION(U6CTS, U6CTSR, 2),
++			PIC32_PINCTRL_FUNCTION(SDI1, SDI1R, 2),
++			PIC32_PINCTRL_FUNCTION(SDI3, SDI3R, 2),
++			PIC32_PINCTRL_FUNCTION(SDI5, SDI5R, 2),
++			PIC32_PINCTRL_FUNCTION(SS6IN, SS6INR, 2),
++			PIC32_PINCTRL_FUNCTION(REFCLKI1, REFCLKI1R, 2),
++			PIC32_PINCTRL_FUNCTION(U3TX, RPF4R, 1),
++			PIC32_PINCTRL_FUNCTION(U4RTS, RPF4R, 2),
++			PIC32_PINCTRL_FUNCTION(SDO1, RPF4R, 5),
++			PIC32_PINCTRL_FUNCTION(SDO2, RPF4R, 6),
++			PIC32_PINCTRL_FUNCTION(SDO3, RPF4R, 7),
++			PIC32_PINCTRL_FUNCTION(SDO5, RPF4R, 9),
++			PIC32_PINCTRL_FUNCTION(SS6OUT, RPF4R, 10),
++			PIC32_PINCTRL_FUNCTION(OC3, RPF4R, 11),
++			PIC32_PINCTRL_FUNCTION(OC6, RPF4R, 12),
++			PIC32_PINCTRL_FUNCTION(REFCLKO4, RPF4R, 13),
++			PIC32_PINCTRL_FUNCTION(C2OUT, RPF4R, 14),
++			PIC32_PINCTRL_FUNCTION(C1TX, RPF4R, 15)),
++	PIC32_PINCTRL_GROUP(85, F5,
++			PIC32_PINCTRL_FUNCTION(INT4, INT4R, 2),
++			PIC32_PINCTRL_FUNCTION(T5CK, T5CKR, 2),
++			PIC32_PINCTRL_FUNCTION(T7CK, T7CKR, 2),
++			PIC32_PINCTRL_FUNCTION(IC4, IC4R, 2),
++			PIC32_PINCTRL_FUNCTION(IC8, IC8R, 2),
++			PIC32_PINCTRL_FUNCTION(U3RX, U3RXR, 2),
++			PIC32_PINCTRL_FUNCTION(U4CTS, U4CTSR, 2),
++			PIC32_PINCTRL_FUNCTION(SDI2, SDI2R, 2),
++			PIC32_PINCTRL_FUNCTION(SDI4, SDI4R, 2),
++			PIC32_PINCTRL_FUNCTION(C1RX, C1RXR, 2),
++			PIC32_PINCTRL_FUNCTION(REFCLKI4, REFCLKI4R, 2),
++			PIC32_PINCTRL_FUNCTION(U1TX, RPF5R, 1),
++			PIC32_PINCTRL_FUNCTION(U2RTS, RPF5R, 2),
++			PIC32_PINCTRL_FUNCTION(U5TX, RPF5R, 3),
++			PIC32_PINCTRL_FUNCTION(U6RTS, RPF5R, 4),
++			PIC32_PINCTRL_FUNCTION(SDO1, RPF5R, 5),
++			PIC32_PINCTRL_FUNCTION(SDO2, RPF5R, 6),
++			PIC32_PINCTRL_FUNCTION(SDO3, RPF5R, 7),
++			PIC32_PINCTRL_FUNCTION(SDO4, RPF5R, 8),
++			PIC32_PINCTRL_FUNCTION(SDO5, RPF5R, 9),
++			PIC32_PINCTRL_FUNCTION(OC4, RPF5R, 11),
++			PIC32_PINCTRL_FUNCTION(OC7, RPF5R, 12),
++			PIC32_PINCTRL_FUNCTION(REFCLKO1, RPF5R, 15)),
++	PIC32_PINCTRL_GROUP(88, F8,
++			PIC32_PINCTRL_FUNCTION(INT2, INT2R, 11),
++			PIC32_PINCTRL_FUNCTION(T3CK, T3CKR, 11),
++			PIC32_PINCTRL_FUNCTION(T8CK, T8CKR, 11),
++			PIC32_PINCTRL_FUNCTION(IC2, IC2R, 11),
++			PIC32_PINCTRL_FUNCTION(IC5, IC5R, 11),
++			PIC32_PINCTRL_FUNCTION(IC9, IC9R, 11),
++			PIC32_PINCTRL_FUNCTION(U1CTS, U1CTSR, 11),
++			PIC32_PINCTRL_FUNCTION(U2RX, U2RXR, 11),
++			PIC32_PINCTRL_FUNCTION(U5CTS, U5CTSR, 11),
++			PIC32_PINCTRL_FUNCTION(SS1IN, SS1INR, 11),
++			PIC32_PINCTRL_FUNCTION(SS3IN, SS3INR, 11),
++			PIC32_PINCTRL_FUNCTION(SS4IN, SS4INR, 11),
++			PIC32_PINCTRL_FUNCTION(SS5IN, SS5INR, 11),
++			PIC32_PINCTRL_FUNCTION(C2RX, C2RXR, 11),
++			PIC32_PINCTRL_FUNCTION(U3RTS, RPF8R, 1),
++			PIC32_PINCTRL_FUNCTION(U4TX, RPF8R, 2),
++			PIC32_PINCTRL_FUNCTION(U6TX, RPF8R, 4),
++			PIC32_PINCTRL_FUNCTION(SS1OUT, RPF8R, 5),
++			PIC32_PINCTRL_FUNCTION(SS3OUT, RPF8R, 7),
++			PIC32_PINCTRL_FUNCTION(SS4OUT, RPF8R, 8),
++			PIC32_PINCTRL_FUNCTION(SS5OUT, RPF8R, 9),
++			PIC32_PINCTRL_FUNCTION(SDO6, RPF8R, 10),
++			PIC32_PINCTRL_FUNCTION(OC5, RPF8R, 11),
++			PIC32_PINCTRL_FUNCTION(OC8, RPF8R, 12),
++			PIC32_PINCTRL_FUNCTION(C1OUT, RPF8R, 14),
++			PIC32_PINCTRL_FUNCTION(REFCLKO3, RPF8R, 15)),
++	PIC32_PINCTRL_GROUP(92, F12,
++			PIC32_PINCTRL_FUNCTION(INT2, INT2R, 9),
++			PIC32_PINCTRL_FUNCTION(T3CK, T3CKR, 9),
++			PIC32_PINCTRL_FUNCTION(T8CK, T8CKR, 9),
++			PIC32_PINCTRL_FUNCTION(IC2, IC2R, 9),
++			PIC32_PINCTRL_FUNCTION(IC5, IC5R, 9),
++			PIC32_PINCTRL_FUNCTION(IC9, IC9R, 9),
++			PIC32_PINCTRL_FUNCTION(U1CTS, U1CTSR, 9),
++			PIC32_PINCTRL_FUNCTION(U2RX, U2RXR, 9),
++			PIC32_PINCTRL_FUNCTION(U5CTS, U5CTSR, 9),
++			PIC32_PINCTRL_FUNCTION(SS1IN, SS1INR, 9),
++			PIC32_PINCTRL_FUNCTION(SS3IN, SS3INR, 9),
++			PIC32_PINCTRL_FUNCTION(SS4IN, SS4INR, 9),
++			PIC32_PINCTRL_FUNCTION(SS5IN, SS5INR, 9),
++			PIC32_PINCTRL_FUNCTION(C2RX, C2RXR, 9),
++			PIC32_PINCTRL_FUNCTION(U3RTS, RPF12R, 1),
++			PIC32_PINCTRL_FUNCTION(U4TX, RPF12R, 2),
++			PIC32_PINCTRL_FUNCTION(U6TX, RPF12R, 4),
++			PIC32_PINCTRL_FUNCTION(SS1OUT, RPF12R, 5),
++			PIC32_PINCTRL_FUNCTION(SS3OUT, RPF12R, 7),
++			PIC32_PINCTRL_FUNCTION(SS4OUT, RPF12R, 8),
++			PIC32_PINCTRL_FUNCTION(SS5OUT, RPF12R, 9),
++			PIC32_PINCTRL_FUNCTION(SDO6, RPF12R, 10),
++			PIC32_PINCTRL_FUNCTION(OC5, RPF12R, 11),
++			PIC32_PINCTRL_FUNCTION(OC8, RPF12R, 12),
++			PIC32_PINCTRL_FUNCTION(C1OUT, RPF12R, 14),
++			PIC32_PINCTRL_FUNCTION(REFCLKO3, RPF12R, 15)),
++	PIC32_PINCTRL_GROUP(93, F13,
++			PIC32_PINCTRL_FUNCTION(INT1, INT1R, 9),
++			PIC32_PINCTRL_FUNCTION(T4CK, T4CKR, 9),
++			PIC32_PINCTRL_FUNCTION(T9CK, T9CKR, 9),
++			PIC32_PINCTRL_FUNCTION(IC1, IC1R, 9),
++			PIC32_PINCTRL_FUNCTION(IC6, IC6R, 9),
++			PIC32_PINCTRL_FUNCTION(U3CTS, U3CTSR, 9),
++			PIC32_PINCTRL_FUNCTION(U4RX, U4RXR, 9),
++			PIC32_PINCTRL_FUNCTION(U6RX, U6RXR, 9),
++			PIC32_PINCTRL_FUNCTION(SS2IN, SS2INR, 9),
++			PIC32_PINCTRL_FUNCTION(SDI6, SDI6R, 9),
++			PIC32_PINCTRL_FUNCTION(OCFA, OCFAR, 9),
++			PIC32_PINCTRL_FUNCTION(REFCLKI3, REFCLKI3R, 9),
++			PIC32_PINCTRL_FUNCTION(U1RTS, RPF13R, 1),
++			PIC32_PINCTRL_FUNCTION(U2TX, RPF13R, 2),
++			PIC32_PINCTRL_FUNCTION(U5RTS, RPF13R, 3),
++			PIC32_PINCTRL_FUNCTION(U6TX, RPF13R, 4),
++			PIC32_PINCTRL_FUNCTION(SS2OUT, RPF13R, 6),
++			PIC32_PINCTRL_FUNCTION(SDO4, RPF13R, 8),
++			PIC32_PINCTRL_FUNCTION(SDO6, RPF13R, 10),
++			PIC32_PINCTRL_FUNCTION(OC2, RPF13R, 11),
++			PIC32_PINCTRL_FUNCTION(OC1, RPF13R, 12),
++			PIC32_PINCTRL_FUNCTION(OC9, RPF13R, 13),
++			PIC32_PINCTRL_FUNCTION(C2TX, RPF13R, 15)),
++	PIC32_PINCTRL_GROUP(96, G0,
++			PIC32_PINCTRL_FUNCTION(INT4, INT4R, 12),
++			PIC32_PINCTRL_FUNCTION(T5CK, T5CKR, 12),
++			PIC32_PINCTRL_FUNCTION(T7CK, T7CKR, 12),
++			PIC32_PINCTRL_FUNCTION(IC4, IC4R, 12),
++			PIC32_PINCTRL_FUNCTION(IC8, IC8R, 12),
++			PIC32_PINCTRL_FUNCTION(U3RX, U3RXR, 12),
++			PIC32_PINCTRL_FUNCTION(U4CTS, U4CTSR, 12),
++			PIC32_PINCTRL_FUNCTION(SDI2, SDI2R, 12),
++			PIC32_PINCTRL_FUNCTION(SDI4, SDI4R, 12),
++			PIC32_PINCTRL_FUNCTION(C1RX, C1RXR, 12),
++			PIC32_PINCTRL_FUNCTION(REFCLKI4, REFCLKI4R, 12),
++			PIC32_PINCTRL_FUNCTION(U1TX, RPG0R, 1),
++			PIC32_PINCTRL_FUNCTION(U2RTS, RPG0R, 2),
++			PIC32_PINCTRL_FUNCTION(U5TX, RPG0R, 3),
++			PIC32_PINCTRL_FUNCTION(U6RTS, RPG0R, 4),
++			PIC32_PINCTRL_FUNCTION(SDO1, RPG0R, 5),
++			PIC32_PINCTRL_FUNCTION(SDO2, RPG0R, 6),
++			PIC32_PINCTRL_FUNCTION(SDO3, RPG0R, 7),
++			PIC32_PINCTRL_FUNCTION(SDO4, RPG0R, 8),
++			PIC32_PINCTRL_FUNCTION(SDO5, RPG0R, 9),
++			PIC32_PINCTRL_FUNCTION(OC4, RPG0R, 11),
++			PIC32_PINCTRL_FUNCTION(OC7, RPG0R, 12),
++			PIC32_PINCTRL_FUNCTION(REFCLKO1, RPG0R, 15)),
++	PIC32_PINCTRL_GROUP(97, G1,
++			PIC32_PINCTRL_FUNCTION(INT3, INT3R, 12),
++			PIC32_PINCTRL_FUNCTION(T2CK, T2CKR, 12),
++			PIC32_PINCTRL_FUNCTION(T6CK, T6CKR, 12),
++			PIC32_PINCTRL_FUNCTION(IC3, IC3R, 12),
++			PIC32_PINCTRL_FUNCTION(IC7, IC7R, 12),
++			PIC32_PINCTRL_FUNCTION(U1RX, U1RXR, 12),
++			PIC32_PINCTRL_FUNCTION(U2CTS, U2CTSR, 12),
++			PIC32_PINCTRL_FUNCTION(U5RX, U5RXR, 12),
++			PIC32_PINCTRL_FUNCTION(U6CTS, U6CTSR, 12),
++			PIC32_PINCTRL_FUNCTION(SDI1, SDI1R, 12),
++			PIC32_PINCTRL_FUNCTION(SDI3, SDI3R, 12),
++			PIC32_PINCTRL_FUNCTION(SDI5, SDI5R, 12),
++			PIC32_PINCTRL_FUNCTION(SS6IN, SS6INR, 12),
++			PIC32_PINCTRL_FUNCTION(REFCLKI1, REFCLKI1R, 12),
++			PIC32_PINCTRL_FUNCTION(U3TX, RPG1R, 1),
++			PIC32_PINCTRL_FUNCTION(U4RTS, RPG1R, 2),
++			PIC32_PINCTRL_FUNCTION(SDO1, RPG1R, 5),
++			PIC32_PINCTRL_FUNCTION(SDO2, RPG1R, 6),
++			PIC32_PINCTRL_FUNCTION(SDO3, RPG1R, 7),
++			PIC32_PINCTRL_FUNCTION(SDO5, RPG1R, 9),
++			PIC32_PINCTRL_FUNCTION(SS6OUT, RPG1R, 10),
++			PIC32_PINCTRL_FUNCTION(OC3, RPG1R, 11),
++			PIC32_PINCTRL_FUNCTION(OC6, RPG1R, 12),
++			PIC32_PINCTRL_FUNCTION(REFCLKO4, RPG1R, 13),
++			PIC32_PINCTRL_FUNCTION(C2OUT, RPG1R, 14),
++			PIC32_PINCTRL_FUNCTION(C1TX, RPG1R, 15)),
++	PIC32_PINCTRL_GROUP(102, G6,
++			PIC32_PINCTRL_FUNCTION(INT2, INT2R, 1),
++			PIC32_PINCTRL_FUNCTION(T3CK, T3CKR, 1),
++			PIC32_PINCTRL_FUNCTION(T8CK, T8CKR, 1),
++			PIC32_PINCTRL_FUNCTION(IC2, IC2R, 1),
++			PIC32_PINCTRL_FUNCTION(IC5, IC5R, 1),
++			PIC32_PINCTRL_FUNCTION(IC9, IC9R, 1),
++			PIC32_PINCTRL_FUNCTION(U1CTS, U1CTSR, 1),
++			PIC32_PINCTRL_FUNCTION(U2RX, U2RXR, 1),
++			PIC32_PINCTRL_FUNCTION(U5CTS, U5CTSR, 1),
++			PIC32_PINCTRL_FUNCTION(SS1IN, SS1INR, 1),
++			PIC32_PINCTRL_FUNCTION(SS3IN, SS3INR, 1),
++			PIC32_PINCTRL_FUNCTION(SS4IN, SS4INR, 1),
++			PIC32_PINCTRL_FUNCTION(SS5IN, SS5INR, 1),
++			PIC32_PINCTRL_FUNCTION(C2RX, C2RXR, 1),
++			PIC32_PINCTRL_FUNCTION(U3RTS, RPG6R, 1),
++			PIC32_PINCTRL_FUNCTION(U4TX, RPG6R, 2),
++			PIC32_PINCTRL_FUNCTION(U6TX, RPG6R, 4),
++			PIC32_PINCTRL_FUNCTION(SS1OUT, RPG6R, 5),
++			PIC32_PINCTRL_FUNCTION(SS3OUT, RPG6R, 7),
++			PIC32_PINCTRL_FUNCTION(SS4OUT, RPG6R, 8),
++			PIC32_PINCTRL_FUNCTION(SS5OUT, RPG6R, 9),
++			PIC32_PINCTRL_FUNCTION(SDO6, RPG6R, 10),
++			PIC32_PINCTRL_FUNCTION(OC5, RPG6R, 11),
++			PIC32_PINCTRL_FUNCTION(OC8, RPG6R, 12),
++			PIC32_PINCTRL_FUNCTION(C1OUT, RPG6R, 14),
++			PIC32_PINCTRL_FUNCTION(REFCLKO3, RPG6R, 15)),
++	PIC32_PINCTRL_GROUP(103, G7,
++			PIC32_PINCTRL_FUNCTION(INT4, INT4R, 1),
++			PIC32_PINCTRL_FUNCTION(T5CK, T5CKR, 1),
++			PIC32_PINCTRL_FUNCTION(T7CK, T7CKR, 1),
++			PIC32_PINCTRL_FUNCTION(IC4, IC4R, 1),
++			PIC32_PINCTRL_FUNCTION(IC8, IC8R, 1),
++			PIC32_PINCTRL_FUNCTION(U3RX, U3RXR, 1),
++			PIC32_PINCTRL_FUNCTION(U4CTS, U4CTSR, 1),
++			PIC32_PINCTRL_FUNCTION(SDI2, SDI2R, 1),
++			PIC32_PINCTRL_FUNCTION(SDI4, SDI4R, 1),
++			PIC32_PINCTRL_FUNCTION(C1RX, C1RXR, 1),
++			PIC32_PINCTRL_FUNCTION(REFCLKI4, REFCLKI4R, 1),
++			PIC32_PINCTRL_FUNCTION(U1TX, RPG7R, 1),
++			PIC32_PINCTRL_FUNCTION(U2RTS, RPG7R, 2),
++			PIC32_PINCTRL_FUNCTION(U5TX, RPG7R, 3),
++			PIC32_PINCTRL_FUNCTION(U6RTS, RPG7R, 4),
++			PIC32_PINCTRL_FUNCTION(SDO1, RPG7R, 5),
++			PIC32_PINCTRL_FUNCTION(SDO2, RPG7R, 6),
++			PIC32_PINCTRL_FUNCTION(SDO3, RPG7R, 7),
++			PIC32_PINCTRL_FUNCTION(SDO4, RPG7R, 8),
++			PIC32_PINCTRL_FUNCTION(SDO5, RPG7R, 9),
++			PIC32_PINCTRL_FUNCTION(OC4, RPG7R, 11),
++			PIC32_PINCTRL_FUNCTION(OC7, RPG7R, 12),
++			PIC32_PINCTRL_FUNCTION(REFCLKO1, RPG7R, 15)),
++	PIC32_PINCTRL_GROUP(104, G8,
++			PIC32_PINCTRL_FUNCTION(INT3, INT3R, 1),
++			PIC32_PINCTRL_FUNCTION(T2CK, T2CKR, 1),
++			PIC32_PINCTRL_FUNCTION(T6CK, T6CKR, 1),
++			PIC32_PINCTRL_FUNCTION(IC3, IC3R, 1),
++			PIC32_PINCTRL_FUNCTION(IC7, IC7R, 1),
++			PIC32_PINCTRL_FUNCTION(U1RX, U1RXR, 1),
++			PIC32_PINCTRL_FUNCTION(U2CTS, U2CTSR, 1),
++			PIC32_PINCTRL_FUNCTION(U5RX, U5RXR, 1),
++			PIC32_PINCTRL_FUNCTION(U6CTS, U6CTSR, 1),
++			PIC32_PINCTRL_FUNCTION(SDI1, SDI1R, 1),
++			PIC32_PINCTRL_FUNCTION(SDI3, SDI3R, 1),
++			PIC32_PINCTRL_FUNCTION(SDI5, SDI5R, 1),
++			PIC32_PINCTRL_FUNCTION(SS6IN, SS6INR, 1),
++			PIC32_PINCTRL_FUNCTION(REFCLKI1, REFCLKI1R, 1),
++			PIC32_PINCTRL_FUNCTION(U3TX, RPG8R, 1),
++			PIC32_PINCTRL_FUNCTION(U4RTS, RPG8R, 2),
++			PIC32_PINCTRL_FUNCTION(SDO1, RPG8R, 5),
++			PIC32_PINCTRL_FUNCTION(SDO2, RPG8R, 6),
++			PIC32_PINCTRL_FUNCTION(SDO3, RPG8R, 7),
++			PIC32_PINCTRL_FUNCTION(SDO5, RPG8R, 9),
++			PIC32_PINCTRL_FUNCTION(SS6OUT, RPG8R, 10),
++			PIC32_PINCTRL_FUNCTION(OC3, RPG8R, 11),
++			PIC32_PINCTRL_FUNCTION(OC6, RPG8R, 12),
++			PIC32_PINCTRL_FUNCTION(REFCLKO4, RPG8R, 13),
++			PIC32_PINCTRL_FUNCTION(C2OUT, RPG8R, 14),
++			PIC32_PINCTRL_FUNCTION(C1TX, RPG8R, 15)),
++	PIC32_PINCTRL_GROUP(105, G9,
++			PIC32_PINCTRL_FUNCTION(INT1, INT1R, 1),
++			PIC32_PINCTRL_FUNCTION(T4CK, T4CKR, 1),
++			PIC32_PINCTRL_FUNCTION(T9CK, T9CKR, 1),
++			PIC32_PINCTRL_FUNCTION(IC1, IC1R, 1),
++			PIC32_PINCTRL_FUNCTION(IC6, IC6R, 1),
++			PIC32_PINCTRL_FUNCTION(U3CTS, U3CTSR, 1),
++			PIC32_PINCTRL_FUNCTION(U4RX, U4RXR, 1),
++			PIC32_PINCTRL_FUNCTION(U6RX, U6RXR, 1),
++			PIC32_PINCTRL_FUNCTION(SS2IN, SS2INR, 1),
++			PIC32_PINCTRL_FUNCTION(SDI6, SDI6R, 1),
++			PIC32_PINCTRL_FUNCTION(OCFA, OCFAR, 1),
++			PIC32_PINCTRL_FUNCTION(REFCLKI3, REFCLKI3R, 1),
++			PIC32_PINCTRL_FUNCTION(U1RTS, RPG9R, 1),
++			PIC32_PINCTRL_FUNCTION(U2TX, RPG9R, 2),
++			PIC32_PINCTRL_FUNCTION(U5RTS, RPG9R, 3),
++			PIC32_PINCTRL_FUNCTION(U6TX, RPG9R, 4),
++			PIC32_PINCTRL_FUNCTION(SS2OUT, RPG9R, 6),
++			PIC32_PINCTRL_FUNCTION(SDO4, RPG9R, 8),
++			PIC32_PINCTRL_FUNCTION(SDO6, RPG9R, 10),
++			PIC32_PINCTRL_FUNCTION(OC2, RPG9R, 11),
++			PIC32_PINCTRL_FUNCTION(OC1, RPG9R, 12),
++			PIC32_PINCTRL_FUNCTION(OC9, RPG9R, 13),
++			PIC32_PINCTRL_FUNCTION(C2TX, RPG9R, 15)),
++};
++
++static inline u32 pctl_readl(struct pic32_pinctrl *pctl, u32 reg)
++{
++	return readl(pctl->reg_base + reg);
++}
++
++static inline void pctl_writel(struct pic32_pinctrl *pctl, u32 val, u32 reg)
++{
++	writel(val, pctl->reg_base + reg);
++}
++
++static inline struct pic32_gpio_bank *gc_to_bank(struct gpio_chip *gc)
++{
++	return container_of(gc, struct pic32_gpio_bank, gpio_chip);
++}
++
++static inline struct pic32_gpio_bank *irqd_to_bank(struct irq_data *d)
++{
++	return gc_to_bank(irq_data_get_irq_chip_data(d));
++}
++
++static inline struct pic32_gpio_bank *pctl_to_bank(struct pic32_pinctrl *pctl,
++						unsigned pin)
++{
++	return &pctl->gpio_banks[pin / PINS_PER_BANK];
++}
++
++static inline u32 gpio_readl(struct pic32_gpio_bank *bank, u32 reg)
++{
++	return readl(bank->reg_base + reg);
++}
++
++static inline void gpio_writel(struct pic32_gpio_bank *bank, u32 val,
++			       u32 reg)
++{
++	writel(val, bank->reg_base + reg);
++}
++
++static int pic32_pinctrl_get_groups_count(struct pinctrl_dev *pctldev)
++{
++	struct pic32_pinctrl *pctl = pinctrl_dev_get_drvdata(pctldev);
++
++	return pctl->ngroups;
++}
++
++static const char *pic32_pinctrl_get_group_name(struct pinctrl_dev *pctldev,
++						    unsigned group)
++{
++	struct pic32_pinctrl *pctl = pinctrl_dev_get_drvdata(pctldev);
++
++	return pctl->groups[group].name;
++}
++
++static int pic32_pinctrl_get_group_pins(struct pinctrl_dev *pctldev,
++					    unsigned group,
++					    const unsigned **pins,
++					    unsigned *num_pins)
++{
++	struct pic32_pinctrl *pctl = pinctrl_dev_get_drvdata(pctldev);
++
++	*pins = &pctl->groups[group].pin;
++	*num_pins = 1;
++
++	return 0;
++}
++
++static const struct pinctrl_ops pic32_pinctrl_ops = {
++	.get_groups_count = pic32_pinctrl_get_groups_count,
++	.get_group_name = pic32_pinctrl_get_group_name,
++	.get_group_pins = pic32_pinctrl_get_group_pins,
++	.dt_node_to_map = pinconf_generic_dt_node_to_map_pin,
++	.dt_free_map = pinctrl_utils_dt_free_map,
++};
++
++static int pic32_pinmux_get_functions_count(struct pinctrl_dev *pctldev)
++{
++	struct pic32_pinctrl *pctl = pinctrl_dev_get_drvdata(pctldev);
++
++	return pctl->nfunctions;
++}
++
++static const char *
++pic32_pinmux_get_function_name(struct pinctrl_dev *pctldev, unsigned func)
++{
++	struct pic32_pinctrl *pctl = pinctrl_dev_get_drvdata(pctldev);
++
++	return pctl->functions[func].name;
++}
++
++static int pic32_pinmux_get_function_groups(struct pinctrl_dev *pctldev,
++						unsigned func,
++						const char * const **groups,
++						unsigned * const num_groups)
++{
++	struct pic32_pinctrl *pctl = pinctrl_dev_get_drvdata(pctldev);
++
++	*groups = pctl->functions[func].groups;
++	*num_groups = pctl->functions[func].ngroups;
++
++	return 0;
++}
++
++static int pic32_pinmux_enable(struct pinctrl_dev *pctldev,
++				   unsigned func, unsigned group)
++{
++	struct pic32_pinctrl *pctl = pinctrl_dev_get_drvdata(pctldev);
++	const struct pic32_pin_group *pg = &pctl->groups[group];
++	const struct pic32_function *pf = &pctl->functions[func];
++	const char *fname = pf->name;
++	struct pic32_desc_function *functions = pg->functions;
++
++	while (functions->name) {
++		if (!strcmp(functions->name, fname)) {
++			dev_dbg(pctl->dev,
++				"setting function %s reg 0x%x = %d\n",
++				fname, functions->muxreg, functions->muxval);
++
++			pctl_writel(pctl, functions->muxval, functions->muxreg);
++
++			return 0;
++		}
++
++		functions++;
++	}
++
++	dev_err(pctl->dev, "cannot mux pin %u to function %u\n", group, func);
++
++	return -EINVAL;
++}
++
++static int pic32_gpio_request_enable(struct pinctrl_dev *pctldev,
++				     struct pinctrl_gpio_range *range,
++				     unsigned offset)
++{
++	struct pic32_pinctrl *pctl = pinctrl_dev_get_drvdata(pctldev);
++	struct pic32_gpio_bank *bank = gc_to_bank(range->gc);
++	u32 mask = BIT(offset - bank->gpio_chip.base);
++
++	dev_dbg(pctl->dev, "requesting gpio %d in bank %d with mask 0x%x\n",
++		offset, bank->gpio_chip.base, mask);
++
++	gpio_writel(bank, mask, PIC32_CLR(ANSEL_REG));
++
++	return 0;
++}
++
++static int pic32_gpio_direction_input(struct gpio_chip *chip,
++					  unsigned offset)
++{
++	struct pic32_gpio_bank *bank = gc_to_bank(chip);
++	u32 mask = BIT(offset);
++
++	gpio_writel(bank, mask, PIC32_SET(TRIS_REG));
++
++	return 0;
++}
++
++static int pic32_gpio_get(struct gpio_chip *chip, unsigned offset)
++{
++	struct pic32_gpio_bank *bank = gc_to_bank(chip);
++
++	return !!(gpio_readl(bank, PORT_REG) & BIT(offset));
++}
++
++static void pic32_gpio_set(struct gpio_chip *chip, unsigned offset,
++			       int value)
++{
++	struct pic32_gpio_bank *bank = gc_to_bank(chip);
++	u32 mask = BIT(offset);
++
++	if (value)
++		gpio_writel(bank, mask, PIC32_SET(PORT_REG));
++	else
++		gpio_writel(bank, mask, PIC32_CLR(PORT_REG));
++}
++
++static int pic32_gpio_direction_output(struct gpio_chip *chip,
++					   unsigned offset, int value)
++{
++	struct pic32_gpio_bank *bank = gc_to_bank(chip);
++	u32 mask = BIT(offset);
++
++	pic32_gpio_set(chip, offset, value);
++	gpio_writel(bank, mask, PIC32_CLR(TRIS_REG));
++
++	return 0;
++}
++
++static int pic32_gpio_set_direction(struct pinctrl_dev *pctldev,
++					      struct pinctrl_gpio_range *range,
++					      unsigned offset, bool input)
++{
++	struct gpio_chip *chip = range->gc;
++
++	if (input)
++		pic32_gpio_direction_input(chip, offset);
++	else
++		pic32_gpio_direction_output(chip, offset, 0);
++
++	return 0;
++}
++
++static const struct pinmux_ops pic32_pinmux_ops = {
++	.get_functions_count = pic32_pinmux_get_functions_count,
++	.get_function_name = pic32_pinmux_get_function_name,
++	.get_function_groups = pic32_pinmux_get_function_groups,
++	.set_mux = pic32_pinmux_enable,
++	.gpio_request_enable = pic32_gpio_request_enable,
++	.gpio_set_direction = pic32_gpio_set_direction,
++};
++
++static int pic32_pinconf_get(struct pinctrl_dev *pctldev, unsigned pin,
++				 unsigned long *config)
++{
++	struct pic32_pinctrl *pctl = pinctrl_dev_get_drvdata(pctldev);
++	struct pic32_gpio_bank *bank = pctl_to_bank(pctl, pin);
++	unsigned param = pinconf_to_config_param(*config);
++	u32 mask = BIT(pin - bank->gpio_chip.base);
++	u32 arg;
++
++	switch (param) {
++	case PIN_CONFIG_BIAS_PULL_UP:
++		arg = !!(gpio_readl(bank, CNPU_REG) & mask);
++		break;
++	case PIN_CONFIG_BIAS_PULL_DOWN:
++		arg = !!(gpio_readl(bank, CNPD_REG) & mask);
++		break;
++	case PIN_CONFIG_MICROCHIP_DIGITAL:
++		arg = !(gpio_readl(bank, ANSEL_REG) & mask);
++		break;
++	case PIN_CONFIG_MICROCHIP_ANALOG:
++		arg = !!(gpio_readl(bank, ANSEL_REG) & mask);
++		break;
++	case PIN_CONFIG_DRIVE_OPEN_DRAIN:
++		arg = !!(gpio_readl(bank, ODCU_REG) & mask);
++		break;
++	case PIN_CONFIG_INPUT_ENABLE:
++		arg = !!(gpio_readl(bank, TRIS_REG) & mask);
++		break;
++	case PIN_CONFIG_OUTPUT:
++		arg = !(gpio_readl(bank, TRIS_REG) & mask);
++		break;
++	default:
++		dev_err(pctl->dev, "Property %u not supported\n", param);
++		return -ENOTSUPP;
++	}
++
++	*config = pinconf_to_config_packed(param, arg);
++
++	return 0;
++}
++
++static int pic32_pinconf_set(struct pinctrl_dev *pctldev, unsigned pin,
++				 unsigned long *configs, unsigned num_configs)
++{
++	struct pic32_pinctrl *pctl = pinctrl_dev_get_drvdata(pctldev);
++	struct pic32_gpio_bank *bank = pctl_to_bank(pctl, pin);
++	unsigned param;
++	u32 arg;
++	unsigned int i;
++	u32 offset = pin - bank->gpio_chip.base;
++	u32 mask = BIT(offset);
++
++	dev_dbg(pctl->dev, "setting pin %d bank %d mask 0x%x\n",
++		pin, bank->gpio_chip.base, mask);
++
++	for (i = 0; i < num_configs; i++) {
++		param = pinconf_to_config_param(configs[i]);
++		arg = pinconf_to_config_argument(configs[i]);
++
++		switch (param) {
++		case PIN_CONFIG_BIAS_PULL_UP:
++			dev_dbg(pctl->dev, "   pullup\n");
++			gpio_writel(bank, mask, PIC32_SET(CNPU_REG));
++			break;
++		case PIN_CONFIG_BIAS_PULL_DOWN:
++			dev_dbg(pctl->dev, "   pulldown\n");
++			gpio_writel(bank, mask, PIC32_SET(CNPD_REG));
++			break;
++		case PIN_CONFIG_MICROCHIP_DIGITAL:
++			dev_dbg(pctl->dev, "   digital\n");
++			gpio_writel(bank, mask, PIC32_CLR(ANSEL_REG));
++			break;
++		case PIN_CONFIG_MICROCHIP_ANALOG:
++			dev_dbg(pctl->dev, "   analog\n");
++			gpio_writel(bank, mask, PIC32_SET(ANSEL_REG));
++			break;
++		case PIN_CONFIG_DRIVE_OPEN_DRAIN:
++			dev_dbg(pctl->dev, "   opendrain\n");
++			gpio_writel(bank, mask, PIC32_SET(ODCU_REG));
++			break;
++		case PIN_CONFIG_INPUT_ENABLE:
++			pic32_gpio_direction_input(&bank->gpio_chip, offset);
++			break;
++		case PIN_CONFIG_OUTPUT:
++			pic32_gpio_direction_output(&bank->gpio_chip,
++						    offset, arg);
++			break;
++		default:
++			dev_err(pctl->dev, "Property %u not supported\n",
++				param);
++			return -ENOTSUPP;
++		}
++	}
++
++	return 0;
++}
++
++static const struct pinconf_ops pic32_pinconf_ops = {
++	.pin_config_get = pic32_pinconf_get,
++	.pin_config_set = pic32_pinconf_set,
++	.is_generic = true,
++};
++
++static struct pinctrl_desc pic32_pinctrl_desc = {
++	.name = "pic32-pinctrl",
++	.pctlops = &pic32_pinctrl_ops,
++	.pmxops = &pic32_pinmux_ops,
++	.confops = &pic32_pinconf_ops,
++	.owner = THIS_MODULE,
++};
++
++static int pic32_gpio_get_direction(struct gpio_chip *chip, unsigned offset)
++{
++	struct pic32_gpio_bank *bank = gc_to_bank(chip);
++
++	return !!(gpio_readl(bank, TRIS_REG) & BIT(offset));
++}
++
++static void pic32_gpio_irq_ack(struct irq_data *data)
++{
++	struct pic32_gpio_bank *bank = irqd_to_bank(data);
++
++	gpio_writel(bank, 0, CNF_REG);
++}
++
++static void pic32_gpio_irq_mask(struct irq_data *data)
++{
++	struct pic32_gpio_bank *bank = irqd_to_bank(data);
++
++	gpio_writel(bank, BIT(PIC32_CNCON_ON), PIC32_CLR(CNCON_REG));
++}
++
++static void pic32_gpio_irq_unmask(struct irq_data *data)
++{
++	struct pic32_gpio_bank *bank = irqd_to_bank(data);
++
++	gpio_writel(bank, BIT(PIC32_CNCON_ON), PIC32_SET(CNCON_REG));
++}
++
++static unsigned int pic32_gpio_irq_startup(struct irq_data *data)
++{
++	struct gpio_chip *chip = irq_data_get_irq_chip_data(data);
++
++	pic32_gpio_direction_input(chip, data->hwirq);
++	pic32_gpio_irq_unmask(data);
++
++	return 0;
++}
++
++static int pic32_gpio_irq_set_type(struct irq_data *data, unsigned int type)
++{
++	struct pic32_gpio_bank *bank = irqd_to_bank(data);
++	u32 mask = BIT(data->hwirq);
++
++	switch (type & IRQ_TYPE_SENSE_MASK) {
++	case IRQ_TYPE_EDGE_RISING:
++		/* enable RISE */
++		gpio_writel(bank, mask, PIC32_SET(CNEN_REG));
++		/* disable FALL */
++		gpio_writel(bank, mask, PIC32_CLR(CNNE_REG));
++		/* enable EDGE */
++		gpio_writel(bank, BIT(PIC32_CNCON_EDGE), PIC32_SET(CNCON_REG));
++		break;
++	case IRQ_TYPE_EDGE_FALLING:
++		/* disable RISE */
++		gpio_writel(bank, mask, PIC32_CLR(CNEN_REG));
++		/* enable FALL */
++		gpio_writel(bank, mask, PIC32_SET(CNNE_REG));
++		/* enable EDGE */
++		gpio_writel(bank, BIT(PIC32_CNCON_EDGE), PIC32_SET(CNCON_REG));
++		break;
++	case IRQ_TYPE_EDGE_BOTH:
++		/* enable RISE */
++		gpio_writel(bank, mask, PIC32_SET(CNEN_REG));
++		/* enable FALL */
++		gpio_writel(bank, mask, PIC32_SET(CNNE_REG));
++		/* enable EDGE */
++		gpio_writel(bank, BIT(PIC32_CNCON_EDGE), PIC32_SET(CNCON_REG));
++		break;
++	default:
++		return -EINVAL;
++	}
++
++	irq_set_handler_locked(data, handle_edge_irq);
++
++	return 0;
++}
++
++static u32 pic32_gpio_get_pending(struct gpio_chip *gc, unsigned long status)
++{
++	struct pic32_gpio_bank *bank = gc_to_bank(gc);
++	u32 pending = 0;
++	u32 cnen_rise, cnne_fall;
++	u32 pin;
++
++	cnen_rise = gpio_readl(bank, CNEN_REG);
++	cnne_fall = gpio_readl(bank, CNNE_REG);
++
++	for_each_set_bit(pin, &status, BITS_PER_LONG) {
++		u32 mask = BIT(pin);
++
++		if ((mask & cnen_rise) || (mask && cnne_fall))
++			pending |= mask;
++	}
++
++	return pending;
++}
++
++static void pic32_gpio_irq_handler(struct irq_desc *desc)
++{
++	struct gpio_chip *gc = irq_desc_get_handler_data(desc);
++	struct pic32_gpio_bank *bank = gc_to_bank(gc);
++	struct irq_chip *chip = irq_desc_get_chip(desc);
++	unsigned long pending;
++	unsigned int pin;
++	u32 stat;
++
++	chained_irq_enter(chip, desc);
++
++	stat = gpio_readl(bank, CNF_REG);
++	pending = pic32_gpio_get_pending(gc, stat);
++
++	for_each_set_bit(pin, &pending, BITS_PER_LONG)
++		generic_handle_irq(irq_linear_revmap(gc->irqdomain, pin));
++
++	chained_irq_exit(chip, desc);
++}
++
++#define GPIO_BANK(_bank, _npins)					\
++	{								\
++		.gpio_chip = {						\
++			.label = "GPIO" #_bank,				\
++			.request = gpiochip_generic_request,		\
++			.free = gpiochip_generic_free,			\
++			.get_direction = pic32_gpio_get_direction,	\
++			.direction_input = pic32_gpio_direction_input,	\
++			.direction_output = pic32_gpio_direction_output, \
++			.get = pic32_gpio_get,				\
++			.set = pic32_gpio_set,				\
++			.ngpio = _npins,				\
++			.base = GPIO_BANK_START(_bank),			\
++			.owner = THIS_MODULE,				\
++			.can_sleep = 0,					\
++		},							\
++		.irq_chip = {						\
++			.name = "GPIO" #_bank,				\
++			.irq_startup = pic32_gpio_irq_startup,	\
++			.irq_ack = pic32_gpio_irq_ack,		\
++			.irq_mask = pic32_gpio_irq_mask,		\
++			.irq_unmask = pic32_gpio_irq_unmask,		\
++			.irq_set_type = pic32_gpio_irq_set_type,	\
++		},							\
++	}
++
++static struct pic32_gpio_bank pic32_gpio_banks[] = {
++	GPIO_BANK(0, PINS_PER_BANK),
++	GPIO_BANK(1, PINS_PER_BANK),
++	GPIO_BANK(2, PINS_PER_BANK),
++	GPIO_BANK(3, PINS_PER_BANK),
++	GPIO_BANK(4, PINS_PER_BANK),
++	GPIO_BANK(5, PINS_PER_BANK),
++	GPIO_BANK(6, PINS_PER_BANK),
++	GPIO_BANK(7, PINS_PER_BANK),
++	GPIO_BANK(8, PINS_PER_BANK),
++	GPIO_BANK(9, PINS_PER_BANK),
++};
++
++static int pic32_pinctrl_probe(struct platform_device *pdev)
++{
++	struct pic32_pinctrl *pctl;
++	struct resource *res;
++	int ret;
++
++	pctl = devm_kzalloc(&pdev->dev, sizeof(*pctl), GFP_KERNEL);
++	if (!pctl)
++		return -ENOMEM;
++	pctl->dev = &pdev->dev;
++	dev_set_drvdata(&pdev->dev, pctl);
++
++	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	pctl->reg_base = devm_ioremap_resource(&pdev->dev, res);
++	if (IS_ERR(pctl->reg_base))
++		return PTR_ERR(pctl->reg_base);
++
++	pctl->clk = devm_clk_get(&pdev->dev, NULL);
++	if (IS_ERR(pctl->clk)) {
++		ret = PTR_ERR(pctl->clk);
++		dev_err(&pdev->dev, "clk get failed\n");
++		return ret;
++	}
++
++	ret = clk_prepare_enable(pctl->clk);
++	if (ret) {
++		dev_err(&pdev->dev, "clk enable failed\n");
++		return ret;
++	}
++
++	pctl->pins = pic32_pins;
++	pctl->npins = ARRAY_SIZE(pic32_pins);
++	pctl->functions = pic32_functions;
++	pctl->nfunctions = ARRAY_SIZE(pic32_functions);
++	pctl->groups = pic32_groups;
++	pctl->ngroups = ARRAY_SIZE(pic32_groups);
++	pctl->gpio_banks = pic32_gpio_banks;
++	pctl->nbanks = ARRAY_SIZE(pic32_gpio_banks);
++
++	pic32_pinctrl_desc.pins = pctl->pins;
++	pic32_pinctrl_desc.npins = pctl->npins;
++	pic32_pinctrl_desc.custom_params = pic32_mpp_bindings;
++	pic32_pinctrl_desc.num_custom_params = ARRAY_SIZE(pic32_mpp_bindings);
++
++	pctl->pctldev = pinctrl_register(&pic32_pinctrl_desc, &pdev->dev, pctl);
++	if (IS_ERR(pctl->pctldev)) {
++		dev_err(&pdev->dev, "Failed to register pinctrl device\n");
++		return PTR_ERR(pctl->pctldev);
++	}
++
++	return 0;
++}
++
++static int pic32_gpio_probe(struct platform_device *pdev)
++{
++	struct device_node *np = pdev->dev.of_node;
++	struct pic32_gpio_bank *bank;
++	u32 id;
++	int irq, ret;
++	struct resource *res;
++
++	if (of_property_read_u32(np, "microchip,gpio-bank", &id)) {
++		dev_err(&pdev->dev, "microchip,gpio-bank property not found\n");
++		return -EINVAL;
++	}
++
++	if (id >= ARRAY_SIZE(pic32_gpio_banks)) {
++		dev_err(&pdev->dev, "invalid microchip,gpio-bank property\n");
++		return -EINVAL;
++	}
++
++	bank = &pic32_gpio_banks[id];
++
++	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	bank->reg_base = devm_ioremap_resource(&pdev->dev, res);
++	if (IS_ERR(bank->reg_base))
++		return PTR_ERR(bank->reg_base);
++
++	irq = platform_get_irq(pdev, 0);
++	if (irq < 0) {
++		dev_err(&pdev->dev, "irq get failed\n");
++		return irq;
++	}
++
++	bank->clk = devm_clk_get(&pdev->dev, NULL);
++	if (IS_ERR(bank->clk)) {
++		ret = PTR_ERR(bank->clk);
++		dev_err(&pdev->dev, "clk get failed\n");
++		return ret;
++	}
++
++	ret = clk_prepare_enable(bank->clk);
++	if (ret) {
++		dev_err(&pdev->dev, "clk enable failed\n");
++		return ret;
++	}
++
++	bank->gpio_chip.dev = &pdev->dev;
++	bank->gpio_chip.of_node = np;
++	ret = gpiochip_add(&bank->gpio_chip);
++	if (ret < 0) {
++		dev_err(&pdev->dev, "Failed to add GPIO chip %u: %d\n",
++			id, ret);
++		return ret;
++	}
++
++	ret = gpiochip_irqchip_add(&bank->gpio_chip, &bank->irq_chip,
++				0, handle_level_irq, IRQ_TYPE_NONE);
++	if (ret < 0) {
++		dev_err(&pdev->dev, "Failed to add IRQ chip %u: %d\n",
++			id, ret);
++		gpiochip_remove(&bank->gpio_chip);
++		return ret;
++	}
++
++	gpiochip_set_chained_irqchip(&bank->gpio_chip, &bank->irq_chip,
++				     irq, pic32_gpio_irq_handler);
++
++	return 0;
++}
++
++static const struct of_device_id pic32_pinctrl_of_match[] = {
++	{ .compatible = "microchip,pic32mzda-pinctrl", },
++	{ },
++};
++
++static struct platform_driver pic32_pinctrl_driver = {
++	.driver = {
++		.name = "pic32-pinctrl",
++		.of_match_table = pic32_pinctrl_of_match,
++		.suppress_bind_attrs = true,
++	},
++	.probe = pic32_pinctrl_probe,
++};
++
++static const struct of_device_id pic32_gpio_of_match[] = {
++	{ .compatible = "microchip,pic32mzda-gpio", },
++	{ },
++};
++
++static struct platform_driver pic32_gpio_driver = {
++	.driver = {
++		.name = "pic32-gpio",
++		.of_match_table = pic32_gpio_of_match,
++		.suppress_bind_attrs = true,
++	},
++	.probe = pic32_gpio_probe,
++};
++
++static int __init pic32_gpio_register(void)
++{
++	return platform_driver_register(&pic32_gpio_driver);
++}
++arch_initcall(pic32_gpio_register);
++
++static int __init pic32_pinctrl_register(void)
++{
++	return platform_driver_register(&pic32_pinctrl_driver);
++}
++arch_initcall(pic32_pinctrl_register);
+diff --git a/drivers/pinctrl/pinctrl-pic32.h b/drivers/pinctrl/pinctrl-pic32.h
 new file mode 100644
-index 0000000..4b5efa5
+index 0000000..1282626
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/pinctrl/microchip,pic32-pinctrl.txt
-@@ -0,0 +1,60 @@
-+* Microchip PIC32 Pin Controller
++++ b/drivers/pinctrl/pinctrl-pic32.h
+@@ -0,0 +1,141 @@
++/*
++ * PIC32 pinctrl driver
++ *
++ * Joshua Henderson, <joshua.henderson@microchip.com>
++ * Copyright (C) 2015 Microchip Technology Inc.  All rights reserved.
++ *
++ * This program is free software; you can distribute it and/or modify it
++ * under the terms of the GNU General Public License (Version 2) as
++ * published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope it will be useful, but WITHOUT
++ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
++ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
++ * for more details.
++ */
++#ifndef PINCTRL_PINCTRL_PIC32_H
++#define PINCTRL_PINCTRL_PIC32_H
 +
-+Please refer to pinctrl-bindings.txt, ../gpio/gpio.txt, and
-+../interrupt-controller/interrupts.txt for generic information regarding
-+pin controller, GPIO, and interrupt bindings.
++/* PORT Registers */
++#define ANSEL_REG	0x00
++#define TRIS_REG	0x10
++#define PORT_REG	0x20
++#define LAT_REG		0x30
++#define ODCU_REG	0x40
++#define CNPU_REG	0x50
++#define CNPD_REG	0x60
++#define CNCON_REG	0x70
++#define CNEN_REG	0x80
++#define CNSTAT_REG	0x90
++#define CNNE_REG	0xA0
++#define CNF_REG		0xB0
 +
-+PIC32 'pin configuration node' is a node of a group of pins which can be
-+used for a specific device or function. This node represents configuraions of
-+pins, optional function, and optional mux related configuration.
++/* Input PPS Registers */
++#define INT1R 0x04
++#define INT2R 0x08
++#define INT3R 0x0C
++#define INT4R 0x10
++#define T2CKR 0x18
++#define T3CKR 0x1C
++#define T4CKR 0x20
++#define T5CKR 0x24
++#define T6CKR 0x28
++#define T7CKR 0x2C
++#define T8CKR 0x30
++#define T9CKR 0x34
++#define IC1R 0x38
++#define IC2R 0x3C
++#define IC3R 0x40
++#define IC4R 0x44
++#define IC5R 0x48
++#define IC6R 0x4C
++#define IC7R 0x50
++#define IC8R 0x54
++#define IC9R 0x58
++#define OCFAR 0x60
++#define U1RXR 0x68
++#define U1CTSR 0x6C
++#define U2RXR 0x70
++#define U2CTSR 0x74
++#define U3RXR 0x78
++#define U3CTSR 0x7C
++#define U4RXR 0x80
++#define U4CTSR 0x84
++#define U5RXR 0x88
++#define U5CTSR 0x8C
++#define U6RXR 0x90
++#define U6CTSR 0x94
++#define SDI1R 0x9C
++#define SS1INR 0xA0
++#define SDI2R 0xA8
++#define SS2INR 0xAC
++#define SDI3R 0xB4
++#define SS3INR 0xB8
++#define SDI4R 0xC0
++#define SS4INR 0xC4
++#define SDI5R 0xCC
++#define SS5INR 0xD0
++#define SDI6R 0xD8
++#define SS6INR 0xDC
++#define C1RXR 0xE0
++#define C2RXR 0xE4
++#define REFCLKI1R 0xE8
++#define REFCLKI3R 0xF0
++#define REFCLKI4R 0xF4
 +
-+Required properties for pin controller node:
-+ - compatible: "microchip,pic32mada-pinctrl"
-+ - reg: Address range of the pinctrl registers.
-+ - clocks: Clock specifier (see clock bindings for details)
++/* Output PPS Registers */
++#define RPA14R 0x138
++#define RPA15R 0x13C
++#define RPB0R 0x140
++#define RPB1R 0x144
++#define RPB2R 0x148
++#define RPB3R 0x14C
++#define RPB5R 0x154
++#define RPB6R 0x158
++#define RPB7R 0x15C
++#define RPB8R 0x160
++#define RPB9R 0x164
++#define RPB10R 0x168
++#define RPB14R 0x178
++#define RPB15R 0x17C
++#define RPC1R 0x184
++#define RPC2R 0x188
++#define RPC3R 0x18C
++#define RPC4R 0x190
++#define RPC13R 0x1B4
++#define RPC14R 0x1B8
++#define RPD0R 0x1C0
++#define RPD1R 0x1C4
++#define RPD2R 0x1C8
++#define RPD3R 0x1CC
++#define RPD4R 0x1D0
++#define RPD5R 0x1D4
++#define RPD6R 0x1D8
++#define RPD7R 0x1DC
++#define RPD9R 0x1E4
++#define RPD10R 0x1E8
++#define RPD11R 0x1EC
++#define RPD12R 0x1F0
++#define RPD14R 0x1F8
++#define RPD15R 0x1FC
++#define RPE3R 0x20C
++#define RPE5R 0x214
++#define RPE8R 0x220
++#define RPE9R 0x224
++#define RPF0R 0x240
++#define RPF1R 0x244
++#define RPF2R 0x248
++#define RPF3R 0x24C
++#define RPF4R 0x250
++#define RPF5R 0x254
++#define RPF8R 0x260
++#define RPF12R 0x270
++#define RPF13R 0x274
++#define RPG0R 0x280
++#define RPG1R 0x284
++#define RPG6R 0x298
++#define RPG7R 0x29C
++#define RPG8R 0x2A0
++#define RPG9R 0x2A4
 +
-+Required properties for pin configuration sub-nodes:
-+ - pins: List of pins to which the configuration applies.
-+
-+Optional properties for pin configuration sub-nodes:
-+----------------------------------------------------
-+ - function: Mux function for the specified pins.
-+ - bias-pull-up: Enable weak pull-up.
-+ - bias-pull-down: Enable weak pull-down.
-+ - input-enable: Set the pin as an input.
-+ - output-low: Set the pin as an output level low.
-+ - output-high: Set the pin as an output level high.
-+ - microchip,digital: Enable digital I/O.
-+ - microchip,analog: Enable analog I/O.
-+
-+Example:
-+
-+pic32_pinctrl: pinctrl@1f801400{
-+	#address-cells = <1>;
-+	#size-cells = <1>;
-+	compatible = "microchip,pic32mzda-pinctrl";
-+	reg = <0x1f801400 0x400>;
-+	clocks = <&PBCLK1>;
-+
-+	pinctrl_uart2: pinctrl_uart2 {
-+		uart2-tx {
-+			pins = "G9";
-+			function = "U2TX";
-+			microchip,digital;
-+			output-low;
-+		};
-+		uart2-rx {
-+			pins = "B0";
-+			function = "U2RX";
-+			microchip,digital;
-+			input-enable;
-+		};
-+	};
-+};
-+
-+uart2: serial@1f822200 {
-+	compatible = "microchip,pic32mzda-uart";
-+	reg = <0x1f822200 0x50>;
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_uart2>;
-+};
++#endif  /* PINCTRL_PINCTRL_PIC32_H */
 -- 
 1.7.9.5

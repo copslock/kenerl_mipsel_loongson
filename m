@@ -1,56 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 Jan 2016 11:12:59 +0100 (CET)
-Received: from mail-lb0-f169.google.com ([209.85.217.169]:33699 "EHLO
-        mail-lb0-f169.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008374AbcAHKM5v6jJC convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 8 Jan 2016 11:12:57 +0100
-Received: by mail-lb0-f169.google.com with SMTP id sv6so214509086lbb.0;
-        Fri, 08 Jan 2016 02:12:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=date:from:to:cc:subject:message-id:in-reply-to:references
-         :mime-version:content-type:content-transfer-encoding;
-        bh=MjQhP6UBIuWW3K2GHEf4sQw0se0Bl6MCsj2HzRJ/S1Y=;
-        b=h0hLwQadC6vHiFpKDB4Thgj9YB5grBU4TV1y0UnM35rJMODEV+JON37vgiVjtq2Swp
-         QWqx18vHAwQBpdDOyqMA7BqC+83VPzRdqgvJfTRx6tmCLwxwqRIdvKClQ0tmZZzFAMhq
-         ykiyYm+RQyFUTKlrXP+HKqwdoxGiG49g9mcLGgSRHf+9qJt0NVk/SMvwm7XaUYH0J3LG
-         JT6DB71Is442//agUPCfB+ycb9OuuhQhYvK5FDvhlQfe8C+fh8muA2z6hGPCiTQuRt/+
-         eD1pmRAzQsQhR6IKaFpAHZQXVU5qtO6ycYAGaNnEpDV+kcTOkXJoXAR8N+9DcORI9XJN
-         31sA==
-X-Received: by 10.112.52.38 with SMTP id q6mr7587155lbo.112.1452247972178;
-        Fri, 08 Jan 2016 02:12:52 -0800 (PST)
-Received: from flare (t35.niisi.ras.ru. [193.232.173.35])
-        by smtp.gmail.com with ESMTPSA id l204sm1737711lfg.49.2016.01.08.02.12.50
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Fri, 08 Jan 2016 02:12:51 -0800 (PST)
-Date:   Fri, 8 Jan 2016 13:37:39 +0300
-From:   Antony Pavlov <antonynpavlov@gmail.com>
-To:     Joshua Henderson <joshua.henderson@microchip.com>
-Cc:     <linux-kernel@vger.kernel.org>, <linux-mips@linux-mips.org>,
-        <ralf@linux-mips.org>, Rob Herring <robh+dt@kernel.org>,
-        Pawel Moll <pawel.moll@arm.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ian Campbell <ijc+devicetree@hellion.org.uk>,
-        Kumar Gala <galak@codeaurora.org>, <devicetree@vger.kernel.org>
-Subject: Re: [PATCH v3 05/14] dt/bindings: Add bindings for PIC32/MZDA
- platforms
-Message-Id: <20160108133739.9a9c63c18fee346098354b21@gmail.com>
-In-Reply-To: <1452211389-31025-6-git-send-email-joshua.henderson@microchip.com>
-References: <1452211389-31025-1-git-send-email-joshua.henderson@microchip.com>
-        <1452211389-31025-6-git-send-email-joshua.henderson@microchip.com>
-X-Mailer: Sylpheed 3.5.0beta3 (GTK+ 2.24.25; i586-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-Return-Path: <antonynpavlov@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 Jan 2016 11:15:05 +0100 (CET)
+Received: from mx1.redhat.com ([209.132.183.28]:56845 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27008374AbcAHKPD42dxC (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 8 Jan 2016 11:15:03 +0100
+Received: from int-mx14.intmail.prod.int.phx2.redhat.com (int-mx14.intmail.prod.int.phx2.redhat.com [10.5.11.27])
+        by mx1.redhat.com (Postfix) with ESMTPS id 2448BA8C;
+        Fri,  8 Jan 2016 10:14:59 +0000 (UTC)
+Received: from redhat.com (vpn1-6-168.ams2.redhat.com [10.36.6.168])
+        by int-mx14.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with ESMTP id u08AEmhE027048;
+        Fri, 8 Jan 2016 05:14:49 -0500
+Date:   Fri, 8 Jan 2016 12:14:48 +0200
+From:   "Michael S. Tsirkin" <mst@redhat.com>
+To:     Joe Perches <joe@perches.com>
+Cc:     linux-kernel@vger.kernel.org,
+        "Cc : Andy Whitcroft" <apw@canonical.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Arnd Bergmann <arnd@arndb.de>, linux-arch@vger.kernel.org,
+        Andrew Cooper <andrew.cooper3@citrix.com>,
+        virtualization@lists.linux-foundation.org,
+        Stefano Stabellini <stefano.stabellini@eu.citrix.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@elte.hu>, "H. Peter Anvin" <hpa@zytor.com>,
+        David Miller <davem@davemloft.net>, linux-ia64@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-metag@vger.kernel.org, linux-mips@linux-mips.org,
+        x86@kernel.org, user-mode-linux-devel@lists.sourceforge.net,
+        adi-buildroot-devel@lists.sourceforge.net,
+        linux-sh@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        xen-devel@lists.xenproject.org, Ingo Molnar <mingo@kernel.org>,
+        Tony Lindgren <tony@atomide.com>,
+        Andrey Konovalov <andreyknvl@google.com>,
+        Russell King - ARM Linux <linux@arm.linux.org.uk>
+Subject: Re: [PATCH 3/3] checkpatch: add virt barriers
+Message-ID: <20160108121352-mutt-send-email-mst@redhat.com>
+References: <1451907395-15978-1-git-send-email-mst@redhat.com>
+ <1451907395-15978-4-git-send-email-mst@redhat.com>
+ <1451926073.4334.90.camel@perches.com>
+ <20160104230528-mutt-send-email-mst@redhat.com>
+ <1451945497.4334.107.camel@perches.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <1451945497.4334.107.camel@perches.com>
+X-Scanned-By: MIMEDefang 2.68 on 10.5.11.27
+Return-Path: <mst@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50983
+X-archive-position: 50984
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: antonynpavlov@gmail.com
+X-original-sender: mst@redhat.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -63,69 +66,30 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, 7 Jan 2016 17:00:20 -0700
-Joshua Henderson <joshua.henderson@microchip.com> wrote:
-
-> This adds support for the Microchip PIC32 platform along with the
-> specific variant PIC32MZDA on a PIC32MZDA Starter Kit.
+On Mon, Jan 04, 2016 at 02:11:37PM -0800, Joe Perches wrote:
+> On Mon, 2016-01-04 at 23:07 +0200, Michael S. Tsirkin wrote:
+> > On Mon, Jan 04, 2016 at 08:47:53AM -0800, Joe Perches wrote:
+> > > On Mon, 2016-01-04 at 13:37 +0200, Michael S. Tsirkin wrote:
+> > > > Add virt_ barriers to list of barriers to check for
+> > > > presence of a comment.
+> > > 
+> > > Are these virt_ barriers used anywhere?
+> > > 
+> > > I see some virtio_ barrier like uses.
+> > 
+> > They will be :) They are added and used by patchset
+> > 	        arch: barrier cleanup + barriers for virt
+> > 
+> > See
+> > http://article.gmane.org/gmane.linux.kernel.virtualization/26555
 > 
-> Signed-off-by: Joshua Henderson <joshua.henderson@microchip.com>
-> Cc: Ralf Baechle <ralf@linux-mips.org>
-> Acked-by: Rob Herring <robh@kernel.org>
-> ---
->  .../bindings/mips/pic32/microchip,pic32mzda.txt    |   33 ++++++++++++++++++++
->  1 file changed, 33 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/mips/pic32/microchip,pic32mzda.txt
+> Ah, OK, thanks.
 > 
-> diff --git a/Documentation/devicetree/bindings/mips/pic32/microchip,pic32mzda.txt b/Documentation/devicetree/bindings/mips/pic32/microchip,pic32mzda.txt
-> new file mode 100644
-> index 0000000..bcf3e04
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/mips/pic32/microchip,pic32mzda.txt
-> @@ -0,0 +1,33 @@
-> +* Microchip PIC32MZDA Platforms
-> +
-> +PIC32MZDA Starter Kit
-> +Required root node properties:
-> +    - compatible = "microchip,pic32mzda-sk", "microchip,pic32mzda"
-> +
-> +CPU nodes:
-> +----------
-> +A "cpus" node is required.  Required properties:
-> + - #address-cells: Must be 1.
-> + - #size-cells: Must be 0.
-> +A CPU sub-node is also required.  Required properties:
-> + - device_type: Must be "cpu".
-> + - compatible: Must be "mti,mips14KEc".
-> +Example:
-> +	cpus {
-> +		#address-cells = <1>;
-> +		#size-cells = <0>;
-> +
-> +		cpu0: cpu@0 {
-> +			device_type = "cpu";
-> +			compatible = "mti,mips14KEc";
-> +		};
-> +	};
-> +
-> +Boot protocol
-> +--------------
-> +In accordance with the MIPS UHI specification[1], the bootloader must pass the
-> +following arguments to the kernel:
-> + - $a0: -2.
-> + - $a1: KSEG0 address of the flattened device-tree blob.
-> +
-> +[1] http://prplfoundation.org/wiki/MIPS_documentation
+> Are the virtio_ barriers going away?
+> If not, maybe those should be added too.
 
-At the moment the link [1] does not work. It is redirected to nonexisting "http://wiki.prplfoundation.org//MIPS_documentation" (prplfoundation.org site problem?).
+I don't mind. I'll queue a patch like that.
 
-The http://wiki.prplfoundation.org/wiki/MIPS_documentation URL works.
 
-The "MIPS documentation" wiki page contains many documents so can we use 
-more accurate URL, e.g. http://wiki.prplfoundation.org/wiki/MIPS_documentation#Unified_Hosting_Interface ?
-
-Can we use more strict name for "MIPS UHI specification", e.g. "Unified Hosting Interface Reference Manual (MD01069)"?
-
--- 
-Best regards,
-  Antony Pavlov
+-- 
+MST

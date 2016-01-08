@@ -1,34 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 Jan 2016 01:00:52 +0100 (CET)
-Received: from exsmtp01.microchip.com ([198.175.253.37]:34214 "EHLO
-        email.microchip.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27014716AbcAGX63RYt5u (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 8 Jan 2016 00:58:29 +0100
-Received: from mx.microchip.com (10.10.76.4) by CHN-SV-EXCH01.mchp-main.com
- (10.10.76.37) with Microsoft SMTP Server id 14.3.181.6; Thu, 7 Jan 2016
- 16:58:21 -0700
-Received: by mx.microchip.com (sSMTP sendmail emulation); Thu, 07 Jan 2016
- 17:06:00 -0700
-From:   Joshua Henderson <joshua.henderson@microchip.com>
-To:     <linux-kernel@vger.kernel.org>
-CC:     <linux-mips@linux-mips.org>, <ralf@linux-mips.org>,
-        Joshua Henderson <joshua.henderson@microchip.com>
-Subject: [PATCH v3 14/14] MIPS: pic32mzda: Add initial PIC32MZDA Starter Kit defconfig
-Date:   Thu, 7 Jan 2016 17:00:29 -0700
-Message-ID: <1452211389-31025-15-git-send-email-joshua.henderson@microchip.com>
-X-Mailer: git-send-email 1.7.9.5
-In-Reply-To: <1452211389-31025-1-git-send-email-joshua.henderson@microchip.com>
-References: <1452211389-31025-1-git-send-email-joshua.henderson@microchip.com>
-MIME-Version: 1.0
-Content-Type: text/plain
-Return-Path: <Joshua.Henderson@microchip.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 Jan 2016 10:03:19 +0100 (CET)
+Received: from mail-lf0-f47.google.com ([209.85.215.47]:33515 "EHLO
+        mail-lf0-f47.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006967AbcAHJDRHf29M convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 8 Jan 2016 10:03:17 +0100
+Received: by mail-lf0-f47.google.com with SMTP id m198so23817792lfm.0;
+        Fri, 08 Jan 2016 01:03:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=date:from:to:cc:subject:message-id:in-reply-to:references
+         :mime-version:content-type:content-transfer-encoding;
+        bh=DTxBgG5fRnSYX1VJD1pAywbDQFmU3qnha6FhpnT7Bpw=;
+        b=EWGsHb3OjJlTT+Tz4RXss8BtR+uj/wie01/O20LljA4C8yLRz65/2l8t5YUxzqSETO
+         PG+Za7rgLje8qCnUJL046VE3BsxDSQ3pnWcFJHOdDTEsdfy8jUk+UFaFmK2+DxdOw35t
+         TW95ULxzBWIdTZlgeT6747nHhHZUHl4k7VmTpAXMpKZJ7SRdJCAXZOPBz+TiDcVXibej
+         3GFudkc30o1ny74+cdCRrGzVFopl3DAYo4FapGVsx7pjKvGBeNzigCMDGnKvZuGgGxuE
+         8APH3UrtDsMosLWUXwsGBS+aDcpoxKcloDjxdUg/KxdLotuYWmY4MmisGMtxZZxCZYqS
+         gsoA==
+X-Received: by 10.25.22.167 with SMTP id 39mr3089514lfw.153.1452243791630;
+        Fri, 08 Jan 2016 01:03:11 -0800 (PST)
+Received: from flare (t35.niisi.ras.ru. [193.232.173.35])
+        by smtp.gmail.com with ESMTPSA id h196sm18867617lfb.48.2016.01.08.01.03.09
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Fri, 08 Jan 2016 01:03:10 -0800 (PST)
+Date:   Fri, 8 Jan 2016 12:28:00 +0300
+From:   Antony Pavlov <antonynpavlov@gmail.com>
+To:     Alban Bedel <albeu@free.fr>
+Cc:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
+        Alex Smith <alex.smith@imgtec.com>,
+        Wu Zhangjin <wuzhangjin@gmail.com>,
+        Andrew Bresticker <abrestic@chromium.org>,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 3/3] MIPS: ath79: Add zboot debug serial support
+Message-Id: <20160108122800.fd116b9c2f74c72be9ac4d05@gmail.com>
+In-Reply-To: <1449741444-29110-3-git-send-email-albeu@free.fr>
+References: <1449741444-29110-1-git-send-email-albeu@free.fr>
+        <1449741444-29110-3-git-send-email-albeu@free.fr>
+X-Mailer: Sylpheed 3.5.0beta3 (GTK+ 2.24.25; i586-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
+Return-Path: <antonynpavlov@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50981
+X-archive-position: 50982
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: joshua.henderson@microchip.com
+X-original-sender: antonynpavlov@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -41,110 +61,100 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This adds an initial default config that enables all available PIC32
-drivers and is enough for booting a PIC32MZDA Starter Kit.
+On Thu, 10 Dec 2015 10:57:22 +0100
+Alban Bedel <albeu@free.fr> wrote:
 
-Signed-off-by: Joshua Henderson <joshua.henderson@microchip.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
----
- arch/mips/configs/pic32mzda_defconfig |   89 +++++++++++++++++++++++++++++++++
- 1 file changed, 89 insertions(+)
- create mode 100644 arch/mips/configs/pic32mzda_defconfig
+> Reuse the early printk code to support the serial in zboot. We copy
+> early_printk.c instead of referencing it because we need to build a
+> different object file for the normal kernel and zboot.
+> 
+> Signed-off-by: Alban Bedel <albeu@free.fr>
+> ---
+>  arch/mips/Kconfig                  | 2 +-
+>  arch/mips/boot/compressed/Makefile | 4 ++++
+>  2 files changed, 5 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+> index ef1d665..bb2987b 100644
+> --- a/arch/mips/Kconfig
+> +++ b/arch/mips/Kconfig
+> @@ -138,7 +138,7 @@ config ATH79
+>  	select SYS_SUPPORTS_32BIT_KERNEL
+>  	select SYS_SUPPORTS_BIG_ENDIAN
+>  	select SYS_SUPPORTS_MIPS16
+> -	select SYS_SUPPORTS_ZBOOT
+> +	select SYS_SUPPORTS_ZBOOT_UART_PROM
+>  	select USE_OF
+>  	help
+>  	  Support for the Atheros AR71XX/AR724X/AR913X SoCs.
+> diff --git a/arch/mips/boot/compressed/Makefile b/arch/mips/boot/compressed/Makefile
+> index 4eff1ef..f648bf7 100644
+> --- a/arch/mips/boot/compressed/Makefile
+> +++ b/arch/mips/boot/compressed/Makefile
+> @@ -37,8 +37,12 @@ vmlinuzobjs-$(CONFIG_DEBUG_ZBOOT)		   += $(obj)/dbg.o
+>  vmlinuzobjs-$(CONFIG_SYS_SUPPORTS_ZBOOT_UART16550) += $(obj)/uart-16550.o
+>  vmlinuzobjs-$(CONFIG_SYS_SUPPORTS_ZBOOT_UART_PROM) += $(obj)/uart-prom.o
+>  vmlinuzobjs-$(CONFIG_MIPS_ALCHEMY)		   += $(obj)/uart-alchemy.o
+> +vmlinuzobjs-$(CONFIG_ATH79)			   += $(obj)/uart-ath79.o
+>  endif
+>  
+> +$(obj)/uart-ath79.c: $(srctree)/arch/mips/ath79/early_printk.c
+> +	$(call cmd,shipped)
+> +
+>  vmlinuzobjs-$(CONFIG_KERNEL_XZ) += $(obj)/ashldi3.o
+>  
+>  $(obj)/ashldi3.o: KBUILD_CFLAGS += -I$(srctree)/arch/mips/lib
+> -- 
+> 2.0.0
+> 
 
-diff --git a/arch/mips/configs/pic32mzda_defconfig b/arch/mips/configs/pic32mzda_defconfig
-new file mode 100644
-index 0000000..52192c6
---- /dev/null
-+++ b/arch/mips/configs/pic32mzda_defconfig
-@@ -0,0 +1,89 @@
-+CONFIG_MACH_PIC32=y
-+CONFIG_DTB_PIC32_MZDA_SK=y
-+CONFIG_HZ_100=y
-+CONFIG_PREEMPT_VOLUNTARY=y
-+# CONFIG_SECCOMP is not set
-+CONFIG_SYSVIPC=y
-+CONFIG_NO_HZ=y
-+CONFIG_HIGH_RES_TIMERS=y
-+CONFIG_IKCONFIG=y
-+CONFIG_IKCONFIG_PROC=y
-+CONFIG_LOG_BUF_SHIFT=14
-+CONFIG_RELAY=y
-+CONFIG_CC_OPTIMIZE_FOR_SIZE=y
-+CONFIG_EMBEDDED=y
-+# CONFIG_COMPAT_BRK is not set
-+CONFIG_SLAB=y
-+CONFIG_JUMP_LABEL=y
-+CONFIG_MODULES=y
-+CONFIG_MODULE_UNLOAD=y
-+CONFIG_MODVERSIONS=y
-+CONFIG_MODULE_SRCVERSION_ALL=y
-+CONFIG_BLK_DEV_BSGLIB=y
-+CONFIG_PARTITION_ADVANCED=y
-+CONFIG_SGI_PARTITION=y
-+CONFIG_BINFMT_MISC=m
-+# CONFIG_SUSPEND is not set
-+CONFIG_DEVTMPFS=y
-+CONFIG_DEVTMPFS_MOUNT=y
-+# CONFIG_FIRMWARE_IN_KERNEL is not set
-+# CONFIG_ALLOW_DEV_COREDUMP is not set
-+CONFIG_BLK_DEV_LOOP=m
-+CONFIG_SCSI=y
-+CONFIG_BLK_DEV_SD=y
-+CONFIG_SCSI_CONSTANTS=y
-+CONFIG_SCSI_SCAN_ASYNC=y
-+# CONFIG_SCSI_LOWLEVEL is not set
-+CONFIG_INPUT_LEDS=m
-+CONFIG_INPUT_POLLDEV=y
-+CONFIG_INPUT_MOUSEDEV=m
-+CONFIG_INPUT_EVDEV=y
-+CONFIG_INPUT_EVBUG=m
-+# CONFIG_KEYBOARD_ATKBD is not set
-+CONFIG_KEYBOARD_GPIO=m
-+CONFIG_KEYBOARD_GPIO_POLLED=m
-+# CONFIG_MOUSE_PS2 is not set
-+# CONFIG_SERIO is not set
-+CONFIG_SERIAL_PIC32=y
-+CONFIG_SERIAL_PIC32_CONSOLE=y
-+CONFIG_HW_RANDOM=y
-+CONFIG_RAW_DRIVER=m
-+CONFIG_GPIO_SYSFS=y
-+# CONFIG_HWMON is not set
-+CONFIG_HIDRAW=y
-+# CONFIG_USB_SUPPORT is not set
-+CONFIG_MMC=y
-+CONFIG_MMC_SDHCI=y
-+CONFIG_MMC_SDHCI_PLTFM=y
-+CONFIG_MMC_SDHCI_MICROCHIP_PIC32=y
-+CONFIG_NEW_LEDS=y
-+CONFIG_LEDS_CLASS=y
-+CONFIG_LEDS_GPIO=y
-+CONFIG_LEDS_TRIGGERS=y
-+CONFIG_LEDS_TRIGGER_TIMER=m
-+CONFIG_LEDS_TRIGGER_ONESHOT=m
-+CONFIG_LEDS_TRIGGER_HEARTBEAT=y
-+CONFIG_LEDS_TRIGGER_GPIO=m
-+CONFIG_LEDS_TRIGGER_DEFAULT_ON=y
-+# CONFIG_MIPS_PLATFORM_DEVICES is not set
-+# CONFIG_IOMMU_SUPPORT is not set
-+CONFIG_EXT4_FS=y
-+CONFIG_EXT4_FS_POSIX_ACL=y
-+CONFIG_EXT4_FS_SECURITY=y
-+CONFIG_AUTOFS4_FS=m
-+CONFIG_FUSE_FS=m
-+CONFIG_FSCACHE=m
-+CONFIG_ISO9660_FS=m
-+CONFIG_JOLIET=y
-+CONFIG_ZISOFS=y
-+CONFIG_UDF_FS=m
-+CONFIG_MSDOS_FS=m
-+CONFIG_VFAT_FS=m
-+CONFIG_PROC_KCORE=y
-+CONFIG_TMPFS=y
-+CONFIG_TMPFS_POSIX_ACL=y
-+CONFIG_SQUASHFS=m
-+CONFIG_SQUASHFS_XATTR=y
-+CONFIG_SQUASHFS_LZ4=y
-+CONFIG_SQUASHFS_LZO=y
-+CONFIG_SQUASHFS_XZ=y
--- 
-1.7.9.5
+This patch has a side effect: git untracked file arch/mips/boot/compressed/uart-ath79.c after build.
+This untracked file is not removed by 'make mrproper'.
+
+Here is my build log:
+
+    $ git clone -b ath79 https://github.com/AlbanBedel/linux
+    ...
+    $ cd linux
+    linux$ make ARCH=mips ath79_defconfig
+    ...
+    linux$ grep -w CONFIG_DEBUG_ZBOOT .config
+    # CONFIG_DEBUG_ZBOOT is not set
+    linux$ sed -i "s/^# \(CONFIG_DEBUG_ZBOOT\) .*$/\1=y/" .config
+    linux$ make ARCH=mips oldconfig
+    linux$ grep -w CONFIG_DEBUG_ZBOOT .config
+    CONFIG_DEBUG_ZBOOT=y
+    linux$ git status
+    On branch ath79
+    Your branch is up-to-date with 'origin/ath79'.
+    nothing to commit, working directory clean
+    
+    linux$ make -s ARCH=mips CROSS_COMPILE=mips-linux-gnu- vmlinuz
+    ...
+    
+    linux$ git status
+    On branch ath79
+    Your branch is up-to-date with 'origin/ath79'.
+    Untracked files:
+      (use "git add <file>..." to include in what will be committed)
+    
+            arch/mips/boot/compressed/uart-ath79.c
+    
+    nothing added to commit but untracked files present (use "git add" to track)
+    
+    linux$ make ARCH=mips mrproper
+    ...
+
+    linux$ git status
+    On branch ath79
+    Your branch is up-to-date with 'origin/ath79'.
+    Untracked files:
+      (use "git add <file>..." to include in what will be committed)
+    
+            arch/mips/boot/compressed/uart-ath79.c
+    
+    nothing added to commit but untracked files present (use "git add" to track)
+
+-- 
+Best regards,
+  Antony Pavlov

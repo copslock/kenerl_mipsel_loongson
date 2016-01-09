@@ -1,39 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 09 Jan 2016 02:34:14 +0100 (CET)
-Received: from exsmtp01.microchip.com ([198.175.253.37]:46766 "EHLO
-        email.microchip.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27010667AbcAIBeI00-9N (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 9 Jan 2016 02:34:08 +0100
-Received: from mx.microchip.com (10.10.76.4) by CHN-SV-EXCH01.mchp-main.com
- (10.10.76.37) with Microsoft SMTP Server id 14.3.181.6; Fri, 8 Jan 2016
- 18:34:01 -0700
-Received: by mx.microchip.com (sSMTP sendmail emulation); Fri, 08 Jan 2016
- 18:41:41 -0700
-From:   Joshua Henderson <joshua.henderson@microchip.com>
-To:     <linux-kernel@vger.kernel.org>
-CC:     <linux-mips@linux-mips.org>, <ralf@linux-mips.org>,
-        Joshua Henderson <joshua.henderson@microchip.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Pawel Moll <pawel.moll@arm.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ian Campbell <ijc+devicetree@hellion.org.uk>,
-        Kumar Gala <galak@codeaurora.org>, <devicetree@vger.kernel.org>
-Subject: [PATCH v4 05/14] dt/bindings: Add bindings for PIC32/MZDA platforms
-Date:   Fri, 8 Jan 2016 18:40:18 -0700
-Message-ID: <1452303638-21388-2-git-send-email-joshua.henderson@microchip.com>
-X-Mailer: git-send-email 1.7.9.5
-In-Reply-To: <1452303638-21388-1-git-send-email-joshua.henderson@microchip.com>
-References: <1452303638-21388-1-git-send-email-joshua.henderson@microchip.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 09 Jan 2016 03:07:11 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:17693 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27010667AbcAICHJCor-N (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 9 Jan 2016 03:07:09 +0100
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Websense Email Security Gateway with ESMTPS id 18A1EB1628178;
+        Sat,  9 Jan 2016 02:07:02 +0000 (GMT)
+Received: from [10.100.200.34] (10.100.200.34) by HHMAIL01.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server id 14.3.235.1; Sat, 9 Jan 2016
+ 02:07:02 +0000
+Date:   Sat, 9 Jan 2016 02:05:31 +0000
+From:   "Maciej W. Rozycki" <macro@imgtec.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+CC:     Brian Norris <computersforpeace@gmail.com>,
+        =?ISO-8859-2?Q?Rafa=B3_Mi=B3ecki?= <zajec5@gmail.com>,
+        <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>
+Subject: [PATCH] MIPS: io.h: Define `ioremap_cache'
+Message-ID: <alpine.DEB.2.00.1601090127240.5958@tp.orcam.me.uk>
+User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
 MIME-Version: 1.0
-Content-Type: text/plain
-Return-Path: <Joshua.Henderson@microchip.com>
+Content-Type: text/plain; charset="US-ASCII"
+X-Originating-IP: [10.100.200.34]
+Return-Path: <Maciej.Rozycki@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50989
+X-archive-position: 50990
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: joshua.henderson@microchip.com
+X-original-sender: macro@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,57 +42,31 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This adds support for the Microchip PIC32 platform along with the
-specific variant PIC32MZDA on a PIC32MZDA Starter Kit.
-
-Signed-off-by: Joshua Henderson <joshua.henderson@microchip.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Acked-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Maciej W. Rozycki <macro@imgtec.com>
 ---
-Changes since v3 (https://lkml.org/lkml/2016/1/7/760):
-	+ Remove broken URL and use full manual name for boot protocol
+Ralf,
 
+ Please try and push it ASAP, with 4.5 if possible.  This should be an 
+obviously correct internal API consistency fix, along the lines of the 
+recent `ioremap_uc' addition.  NB, there's a fallback `ioremap_cache' 
+implementation in kernel/memremap.c redirecting to plain `ioremap', but I 
+think we should simply do the right thing rather than relying on that 
+code.
 
- .../bindings/mips/pic32/microchip,pic32mzda.txt    |   31 ++++++++++++++++++++
- 1 file changed, 31 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/mips/pic32/microchip,pic32mzda.txt
+ Thanks,
 
-diff --git a/Documentation/devicetree/bindings/mips/pic32/microchip,pic32mzda.txt b/Documentation/devicetree/bindings/mips/pic32/microchip,pic32mzda.txt
-new file mode 100644
-index 0000000..1c8dbc4
---- /dev/null
-+++ b/Documentation/devicetree/bindings/mips/pic32/microchip,pic32mzda.txt
-@@ -0,0 +1,31 @@
-+* Microchip PIC32MZDA Platforms
-+
-+PIC32MZDA Starter Kit
-+Required root node properties:
-+    - compatible = "microchip,pic32mzda-sk", "microchip,pic32mzda"
-+
-+CPU nodes:
-+----------
-+A "cpus" node is required.  Required properties:
-+ - #address-cells: Must be 1.
-+ - #size-cells: Must be 0.
-+A CPU sub-node is also required.  Required properties:
-+ - device_type: Must be "cpu".
-+ - compatible: Must be "mti,mips14KEc".
-+Example:
-+	cpus {
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		cpu0: cpu@0 {
-+			device_type = "cpu";
-+			compatible = "mti,mips14KEc";
-+		};
-+	};
-+
-+Boot protocol
-+--------------
-+In accordance with Unified Hosting Interface Reference Manual (MD01069), the
-+bootloader must pass the following arguments to the kernel:
-+ - $a0: -2.
-+ - $a1: KSEG0 address of the flattened device-tree blob.
---
-1.7.9.5
+  Maciej
+
+linux-mips-ioremap-cache.diff
+Index: linux-sfr-test/arch/mips/include/asm/io.h
+===================================================================
+--- linux-sfr-test.orig/arch/mips/include/asm/io.h	2015-10-07 19:33:20.000000000 +0100
++++ linux-sfr-test/arch/mips/include/asm/io.h	2016-01-09 01:32:14.432587000 +0000
+@@ -275,6 +275,7 @@ static inline void __iomem * __ioremap_m
+  */
+ #define ioremap_cachable(offset, size)					\
+ 	__ioremap_mode((offset), (size), _page_cachable_default)
++#define ioremap_cache ioremap_cachable
+ 
+ /*
+  * These two are MIPS specific ioremap variant.	 ioremap_cacheable_cow

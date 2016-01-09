@@ -1,37 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 09 Jan 2016 01:27:48 +0100 (CET)
-Received: from exsmtp03.microchip.com ([198.175.253.49]:35554 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 09 Jan 2016 02:33:36 +0100 (CET)
+Received: from exsmtp01.microchip.com ([198.175.253.37]:46590 "EHLO
         email.microchip.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27010157AbcAIA1p1Em96 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 9 Jan 2016 01:27:45 +0100
-Received: from [10.14.4.125] (10.10.76.4) by chn-sv-exch03.mchp-main.com
- (10.10.76.49) with Microsoft SMTP Server id 14.3.181.6; Fri, 8 Jan 2016
- 17:27:37 -0700
-Subject: Re: [PATCH v3 05/14] dt/bindings: Add bindings for PIC32/MZDA
- platforms
-To:     Antony Pavlov <antonynpavlov@gmail.com>
-References: <1452211389-31025-1-git-send-email-joshua.henderson@microchip.com>
- <1452211389-31025-6-git-send-email-joshua.henderson@microchip.com>
- <20160108133739.9a9c63c18fee346098354b21@gmail.com>
-CC:     <linux-kernel@vger.kernel.org>, <linux-mips@linux-mips.org>,
-        <ralf@linux-mips.org>, Rob Herring <robh+dt@kernel.org>,
-        Pawel Moll <pawel.moll@arm.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ian Campbell <ijc+devicetree@hellion.org.uk>,
-        Kumar Gala <galak@codeaurora.org>, <devicetree@vger.kernel.org>
+        by eddie.linux-mips.org with ESMTP id S27010592AbcAIBddp6Z8N (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 9 Jan 2016 02:33:33 +0100
+Received: from mx.microchip.com (10.10.76.4) by CHN-SV-EXCH01.mchp-main.com
+ (10.10.76.37) with Microsoft SMTP Server id 14.3.181.6; Fri, 8 Jan 2016
+ 18:33:25 -0700
+Received: by mx.microchip.com (sSMTP sendmail emulation); Fri, 08 Jan 2016
+ 18:41:05 -0700
 From:   Joshua Henderson <joshua.henderson@microchip.com>
-Message-ID: <569055C5.9040003@microchip.com>
-Date:   Fri, 8 Jan 2016 17:35:17 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.4.0
+To:     <linux-kernel@vger.kernel.org>
+CC:     <linux-mips@linux-mips.org>, <ralf@linux-mips.org>,
+        Cristian Birsan <cristian.birsan@microchip.com>,
+        Joshua Henderson <joshua.henderson@microchip.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Marc Zyngier <marc.zyngier@arm.com>
+Subject: [PATCH v4 02/14] irqchip: irq-pic32-evic: Add support for PIC32 interrupt controller
+Date:   Fri, 8 Jan 2016 18:40:17 -0700
+Message-ID: <1452303638-21388-1-git-send-email-joshua.henderson@microchip.com>
+X-Mailer: git-send-email 1.7.9.5
 MIME-Version: 1.0
-In-Reply-To: <20160108133739.9a9c63c18fee346098354b21@gmail.com>
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 Return-Path: <Joshua.Henderson@microchip.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50987
+X-archive-position: 50988
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,76 +43,374 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 01/08/2016 03:37 AM, Antony Pavlov wrote:
-> On Thu, 7 Jan 2016 17:00:20 -0700
-> Joshua Henderson <joshua.henderson@microchip.com> wrote:
-> 
->> This adds support for the Microchip PIC32 platform along with the
->> specific variant PIC32MZDA on a PIC32MZDA Starter Kit.
->>
->> Signed-off-by: Joshua Henderson <joshua.henderson@microchip.com>
->> Cc: Ralf Baechle <ralf@linux-mips.org>
->> Acked-by: Rob Herring <robh@kernel.org>
->> ---
->>  .../bindings/mips/pic32/microchip,pic32mzda.txt    |   33 ++++++++++++++++++++
->>  1 file changed, 33 insertions(+)
->>  create mode 100644 Documentation/devicetree/bindings/mips/pic32/microchip,pic32mzda.txt
->>
->> diff --git a/Documentation/devicetree/bindings/mips/pic32/microchip,pic32mzda.txt b/Documentation/devicetree/bindings/mips/pic32/microchip,pic32mzda.txt
->> new file mode 100644
->> index 0000000..bcf3e04
->> --- /dev/null
->> +++ b/Documentation/devicetree/bindings/mips/pic32/microchip,pic32mzda.txt
->> @@ -0,0 +1,33 @@
->> +* Microchip PIC32MZDA Platforms
->> +
->> +PIC32MZDA Starter Kit
->> +Required root node properties:
->> +    - compatible = "microchip,pic32mzda-sk", "microchip,pic32mzda"
->> +
->> +CPU nodes:
->> +----------
->> +A "cpus" node is required.  Required properties:
->> + - #address-cells: Must be 1.
->> + - #size-cells: Must be 0.
->> +A CPU sub-node is also required.  Required properties:
->> + - device_type: Must be "cpu".
->> + - compatible: Must be "mti,mips14KEc".
->> +Example:
->> +	cpus {
->> +		#address-cells = <1>;
->> +		#size-cells = <0>;
->> +
->> +		cpu0: cpu@0 {
->> +			device_type = "cpu";
->> +			compatible = "mti,mips14KEc";
->> +		};
->> +	};
->> +
->> +Boot protocol
->> +--------------
->> +In accordance with the MIPS UHI specification[1], the bootloader must pass the
->> +following arguments to the kernel:
->> + - $a0: -2.
->> + - $a1: KSEG0 address of the flattened device-tree blob.
->> +
->> +[1] http://prplfoundation.org/wiki/MIPS_documentation
-> 
-> At the moment the link [1] does not work. It is redirected to nonexisting "http://wiki.prplfoundation.org//MIPS_documentation" (prplfoundation.org site problem?).
-> 
-> The http://wiki.prplfoundation.org/wiki/MIPS_documentation URL works.
-> 
-> The "MIPS documentation" wiki page contains many documents so can we use 
-> more accurate URL, e.g. http://wiki.prplfoundation.org/wiki/MIPS_documentation#Unified_Hosting_Interface ?
-> 
-> Can we use more strict name for "MIPS UHI specification", e.g. "Unified Hosting Interface Reference Manual (MD01069)"?
-> 
+From: Cristian Birsan <cristian.birsan@microchip.com>
 
-I agree.  I will reference the name of the complete specification as suggested, however, it looks like it may be safer to drop the URL.  Search does a better job here.
+This adds support for the interrupt controller present on PIC32 class
+devices.
 
-> -- 
-> Best regards,
->   Antony Pavlov
-> 
+The following features are supported:
+ - DT properties for EVIC and for devices that use interrupt lines
+ - Persistent and non-persistent interrupt handling
+ - irqdomain support
 
-Josh
+Signed-off-by: Cristian Birsan <cristian.birsan@microchip.com>
+Signed-off-by: Joshua Henderson <joshua.henderson@microchip.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+---
+Changes since v3 (https://lkml.org/lkml/2016/1/7/760):
+	+ Formatting and comment location
+	+ Move functions to remove need for forward declaration
+
+
+ drivers/irqchip/Makefile           |    1 +
+ drivers/irqchip/irq-pic32-evic.c   |  303 ++++++++++++++++++++++++++++++++++++
+ include/linux/irqchip/pic32-evic.h |   19 +++
+ 3 files changed, 323 insertions(+)
+ create mode 100644 drivers/irqchip/irq-pic32-evic.c
+ create mode 100644 include/linux/irqchip/pic32-evic.h
+
+diff --git a/drivers/irqchip/Makefile b/drivers/irqchip/Makefile
+index 177f78f..e3608fc 100644
+--- a/drivers/irqchip/Makefile
++++ b/drivers/irqchip/Makefile
+@@ -55,3 +55,4 @@ obj-$(CONFIG_RENESAS_H8S_INTC)		+= irq-renesas-h8s.o
+ obj-$(CONFIG_ARCH_SA1100)		+= irq-sa11x0.o
+ obj-$(CONFIG_INGENIC_IRQ)		+= irq-ingenic.o
+ obj-$(CONFIG_IMX_GPCV2)			+= irq-imx-gpcv2.o
++obj-$(CONFIG_MACH_PIC32)		+= irq-pic32-evic.o
+diff --git a/drivers/irqchip/irq-pic32-evic.c b/drivers/irqchip/irq-pic32-evic.c
+new file mode 100644
+index 0000000..000b289
+--- /dev/null
++++ b/drivers/irqchip/irq-pic32-evic.c
+@@ -0,0 +1,303 @@
++/*
++ * Cristian Birsan <cristian.birsan@microchip.com>
++ * Copyright (C) 2015 Microchip Technology Inc.  All rights reserved.
++ *
++ * This program is free software; you can redistribute  it and/or modify it
++ * under  the terms of  the GNU General  Public License as published by the
++ * Free Software Foundation;  either version 2 of the  License, or (at your
++ * option) any later version.
++ */
++#include <linux/kernel.h>
++#include <linux/module.h>
++#include <linux/interrupt.h>
++#include <linux/irqdomain.h>
++#include <linux/of_address.h>
++#include <linux/slab.h>
++#include <linux/io.h>
++#include <linux/irqchip.h>
++#include <linux/irqchip/pic32-evic.h>
++
++#include <asm/irq.h>
++#include <asm/traps.h>
++
++#define CORE_TIMER_INTERRUPT 0
++#define EXTERNAL_INTERRUPT_0 3
++#define EXTERNAL_INTERRUPT_1 8
++#define EXTERNAL_INTERRUPT_2 13
++#define EXTERNAL_INTERRUPT_3 18
++#define EXTERNAL_INTERRUPT_4 23
++
++/* 3 bit priority mask */
++#define PRI_MASK	0x7
++/* 2 bit subpriority mask */
++#define SUBPRI_MASK	0x3
++/* 5 bit pri and subpri mask */
++#define INT_MASK	0x1F
++
++#define PIC32_INT_PRI(pri, subpri)	\
++	(((pri & PRI_MASK) << 2) | (subpri & SUBPRI_MASK))
++#define DEFAULT_PIC32_INT_PRI PIC32_INT_PRI(2, 0)
++
++static struct irq_domain *evic_irq_domain;
++static struct evic __iomem *evic_base;
++
++static unsigned int *evic_irq_prio;
++
++struct pic_reg {
++	u32 val;
++	u32 clr;
++	u32 set;
++	u32 inv;
++} __packed;
++
++struct evic {
++	struct pic_reg	intcon;
++	struct pic_reg	priss;
++	struct pic_reg	intstat;
++	struct pic_reg	iptmr;
++	struct pic_reg	ifs[6];
++	u32		reserved1[8];
++	struct pic_reg	iec[6];
++	u32		reserved2[8];
++	struct pic_reg	ipc[48];
++	u32		reserved3[64];
++	u32		off[191];
++} __packed;
++
++#define BIT_REG_MASK(bit, reg, mask)		\
++	do {					\
++		reg = bit/32;			\
++		mask = 1 << (bit % 32);		\
++	} while (0)
++
++static int get_ext_irq_index(irq_hw_number_t hw)
++{
++	switch (hw) {
++	case EXTERNAL_INTERRUPT_0:
++		return 0;
++	case EXTERNAL_INTERRUPT_1:
++		return 1;
++	case EXTERNAL_INTERRUPT_2:
++		return 2;
++	case EXTERNAL_INTERRUPT_3:
++		return 3;
++	case EXTERNAL_INTERRUPT_4:
++		return 4;
++	default:
++		return -1;
++	}
++}
++
++static void evic_set_ext_irq_polarity(int ext_irq, u32 type)
++{
++	switch (type) {
++	case IRQ_TYPE_EDGE_RISING:
++		writel(1 << ext_irq, &evic_base->intcon.set);
++		break;
++	case IRQ_TYPE_EDGE_FALLING:
++		writel(1 << ext_irq, &evic_base->intcon.clr);
++		break;
++	default:
++		pr_err("Invalid external interrupt polarity !\n");
++	}
++}
++
++asmlinkage void __weak plat_irq_dispatch(void)
++{
++	unsigned int irq, hwirq;
++	u32 reg, mask;
++
++	hwirq = readl(&evic_base->intstat.val) & 0xFF;
++
++	/* Check if the interrupt was really triggered by hardware*/
++	BIT_REG_MASK(hwirq, reg, mask);
++	if (likely(readl(&evic_base->ifs[reg].val) &
++			readl(&evic_base->iec[reg].val) & mask)) {
++		irq = irq_linear_revmap(evic_irq_domain, hwirq);
++		do_IRQ(irq);
++	} else
++		spurious_interrupt();
++}
++
++/* mask off an interrupt */
++static inline void mask_pic32_irq(struct irq_data *irqd)
++{
++	u32 reg, mask;
++	unsigned int hwirq = irqd_to_hwirq(irqd);
++
++	BIT_REG_MASK(hwirq, reg, mask);
++	writel(mask, &evic_base->iec[reg].clr);
++}
++
++/* unmask an interrupt */
++static inline void unmask_pic32_irq(struct irq_data *irqd)
++{
++	u32 reg, mask;
++	unsigned int hwirq = irqd_to_hwirq(irqd);
++
++	BIT_REG_MASK(hwirq, reg, mask);
++	writel(mask, &evic_base->iec[reg].set);
++}
++
++/* acknowledge an interrupt */
++static void ack_pic32_irq(struct irq_data *irqd)
++{
++	u32 reg, mask;
++	unsigned int hwirq = irqd_to_hwirq(irqd);
++
++	BIT_REG_MASK(hwirq, reg, mask);
++	writel(mask, &evic_base->ifs[reg].clr);
++}
++
++static int set_type_pic32_irq(struct irq_data *data, unsigned int flow_type)
++{
++	int index;
++
++	switch (flow_type) {
++	case IRQ_TYPE_EDGE_RISING:
++	case IRQ_TYPE_EDGE_FALLING:
++		irq_set_handler_locked(data, handle_edge_irq);
++		break;
++
++	case IRQ_TYPE_LEVEL_HIGH:
++	case IRQ_TYPE_LEVEL_LOW:
++		irq_set_handler_locked(data, handle_fasteoi_irq);
++		break;
++
++	default:
++		pr_err("Invalid interrupt type !\n");
++		return -EINVAL;
++	}
++
++	/* set polarity for external interrupts only */
++	index = get_ext_irq_index(data->hwirq);
++	if (index >= 0)
++		evic_set_ext_irq_polarity(index, flow_type);
++
++	return IRQ_SET_MASK_OK;
++}
++
++static void pic32_bind_evic_interrupt(int irq, int set)
++{
++	writel(set, &evic_base->off[irq]);
++}
++
++int pic32_get_c0_compare_int(void)
++{
++	int virq;
++
++	virq = irq_create_mapping(evic_irq_domain, CORE_TIMER_INTERRUPT);
++	irq_set_irq_type(virq, IRQ_TYPE_EDGE_RISING);
++	return virq;
++}
++
++static struct irq_chip pic32_irq_chip = {
++	.name		= "PIC32-EVIC",
++	.irq_ack	= ack_pic32_irq,
++	.irq_mask	= mask_pic32_irq,
++	.irq_unmask	= unmask_pic32_irq,
++	.irq_eoi	= ack_pic32_irq,
++	.irq_set_type	= set_type_pic32_irq,
++};
++
++static void evic_set_irq_priority(int irq, int priority)
++{
++	u32 reg, shift;
++
++	reg = irq / 4;
++	shift = (irq % 4) * 8;
++
++	/* set priority */
++	writel(INT_MASK << shift, &evic_base->ipc[reg].clr);
++	writel(priority << shift, &evic_base->ipc[reg].set);
++}
++
++static int evic_intc_map(struct irq_domain *irqd, unsigned int virq,
++			irq_hw_number_t hw)
++{
++	u32 reg, mask;
++
++	irq_set_chip(virq, &pic32_irq_chip);
++
++	BIT_REG_MASK(hw, reg, mask);
++
++	/* disable */
++	writel(mask, &evic_base->iec[reg].clr);
++
++	/* clear flag */
++	writel(mask, &evic_base->ifs[reg].clr);
++
++	evic_set_irq_priority(hw, evic_irq_prio[hw]);
++
++	return 0;
++}
++
++static int evic_irq_domain_xlate(struct irq_domain *d,
++				struct device_node *ctrlr,
++				const u32 *intspec,
++				unsigned int intsize,
++				irq_hw_number_t *out_hwirq,
++				unsigned int *out_type)
++{
++	/* Check for number of params */
++	if (WARN_ON(intsize < 2))
++		return -EINVAL;
++	if (WARN_ON(intspec[0] >= NR_IRQS))
++		return -EINVAL;
++
++	*out_hwirq = intspec[0];
++
++	evic_irq_prio[*out_hwirq] = DEFAULT_PIC32_INT_PRI;
++
++	*out_type = intspec[1];
++
++	return 0;
++}
++
++static const struct irq_domain_ops evic_intc_irq_domain_ops = {
++		.map = evic_intc_map,
++		.xlate = evic_irq_domain_xlate,
++};
++
++#ifdef CONFIG_OF
++static int __init
++microchip_evic_of_init(struct device_node *node, struct device_node *parent)
++{
++	struct resource res;
++
++	if (WARN_ON(!node))
++		return -ENODEV;
++
++	evic_irq_prio = kcalloc(NR_IRQS, sizeof(*evic_irq_prio),
++				GFP_KERNEL);
++	if (!evic_irq_prio)
++		return -ENOMEM;
++
++	evic_irq_prio[CORE_TIMER_INTERRUPT] = DEFAULT_PIC32_INT_PRI;
++
++	if (of_address_to_resource(node, 0, &res))
++		panic("Failed to get evic memory range");
++
++	if (request_mem_region(res.start, resource_size(&res),
++				res.name) == NULL)
++		panic("Failed to request evic memory");
++
++	evic_base = ioremap_nocache(res.start, resource_size(&res));
++	if (!evic_base)
++		panic("Failed to remap evic memory");
++
++	board_bind_eic_interrupt = &pic32_bind_evic_interrupt;
++
++	evic_irq_domain = irq_domain_add_linear(node, NR_IRQS,
++			&evic_intc_irq_domain_ops, NULL);
++	if (!evic_irq_domain)
++		panic("Failed to add linear irqdomain for EVIC");
++
++	irq_set_default_host(evic_irq_domain);
++
++	return 0;
++}
++
++IRQCHIP_DECLARE(microchip_evic, "microchip,pic32mzda-evic",
++		microchip_evic_of_init);
++#endif
+diff --git a/include/linux/irqchip/pic32-evic.h b/include/linux/irqchip/pic32-evic.h
+new file mode 100644
+index 0000000..c514bae
+--- /dev/null
++++ b/include/linux/irqchip/pic32-evic.h
+@@ -0,0 +1,19 @@
++/*
++ * Joshua Henderson, <joshua.henderson@microchip.com>
++ * Copyright (C) 2015 Microchip Technology Inc.  All rights reserved.
++ *
++ *  This program is free software; you can distribute it and/or modify it
++ *  under the terms of the GNU General Public License (Version 2) as
++ *  published by the Free Software Foundation.
++ *
++ *  This program is distributed in the hope it will be useful, but WITHOUT
++ *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
++ *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
++ *  for more details.
++ */
++#ifndef __LINUX_IRQCHIP_PIC32_EVIC_H
++#define __LINUX_IRQCHIP_PIC32_EVIC_H
++
++extern int pic32_get_c0_compare_int(void);
++
++#endif /* __LINUX_IRQCHIP_PIC32_EVIC_H */
+--
+1.7.9.5

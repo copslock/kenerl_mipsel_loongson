@@ -1,15 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 10 Jan 2016 15:24:41 +0100 (CET)
-Received: from mx1.redhat.com ([209.132.183.28]:33288 "EHLO mx1.redhat.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 10 Jan 2016 15:25:02 +0100 (CET)
+Received: from mx1.redhat.com ([209.132.183.28]:33304 "EHLO mx1.redhat.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27009156AbcAJOTxshLp8 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 10 Jan 2016 15:19:53 +0100
+        id S27009395AbcAJOUCnsMU8 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 10 Jan 2016 15:20:02 +0100
 Received: from int-mx10.intmail.prod.int.phx2.redhat.com (int-mx10.intmail.prod.int.phx2.redhat.com [10.5.11.23])
-        by mx1.redhat.com (Postfix) with ESMTPS id 91C8742E5DF;
-        Sun, 10 Jan 2016 14:19:52 +0000 (UTC)
+        by mx1.redhat.com (Postfix) with ESMTPS id 8D17E42E5D6;
+        Sun, 10 Jan 2016 14:20:00 +0000 (UTC)
 Received: from redhat.com (vpn1-5-155.ams2.redhat.com [10.36.5.155])
-        by int-mx10.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with SMTP id u0AEJjCH019047;
-        Sun, 10 Jan 2016 09:19:45 -0500
-Date:   Sun, 10 Jan 2016 16:19:44 +0200
+        by int-mx10.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with SMTP id u0AEJrua019071;
+        Sun, 10 Jan 2016 09:19:53 -0500
+Date:   Sun, 10 Jan 2016 16:19:52 +0200
 From:   "Michael S. Tsirkin" <mst@redhat.com>
 To:     linux-kernel@vger.kernel.org
 Cc:     Peter Zijlstra <peterz@infradead.org>,
@@ -29,8 +29,8 @@ Cc:     Peter Zijlstra <peterz@infradead.org>,
         adi-buildroot-devel@lists.sourceforge.net,
         linux-sh@vger.kernel.org, linux-xtensa@linux-xtensa.org,
         xen-devel@lists.xenproject.org, Ingo Molnar <mingo@kernel.org>
-Subject: [PATCH v3 23/41] sh: define __smp_xxx, fix smp_store_mb for !SMP
-Message-ID: <1452426622-4471-24-git-send-email-mst@redhat.com>
+Subject: [PATCH v3 24/41] sparc: define __smp_xxx
+Message-ID: <1452426622-4471-25-git-send-email-mst@redhat.com>
 References: <1452426622-4471-1-git-send-email-mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -42,7 +42,7 @@ Return-Path: <mst@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51020
+X-archive-position: 51021
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -59,30 +59,48 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-sh variant of smp_store_mb() calls xchg() on !SMP which is stronger than
-implied by both the name and the documentation.
+This defines __smp_xxx barriers for sparc,
+for use by virtualization.
 
-define __smp_store_mb instead: code in asm-generic/barrier.h
-will then define smp_store_mb correctly depending on
-CONFIG_SMP.
+smp_xxx barriers are removed as they are
+defined correctly by asm-generic/barriers.h
 
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 Acked-by: Arnd Bergmann <arnd@arndb.de>
+Acked-by: David S. Miller <davem@davemloft.net>
 ---
- arch/sh/include/asm/barrier.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/sparc/include/asm/barrier_64.h | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/sh/include/asm/barrier.h b/arch/sh/include/asm/barrier.h
-index bf91037..f887c64 100644
---- a/arch/sh/include/asm/barrier.h
-+++ b/arch/sh/include/asm/barrier.h
-@@ -32,7 +32,8 @@
- #define ctrl_barrier()	__asm__ __volatile__ ("nop;nop;nop;nop;nop;nop;nop;nop")
- #endif
+diff --git a/arch/sparc/include/asm/barrier_64.h b/arch/sparc/include/asm/barrier_64.h
+index 26c3f72..c9f6ee6 100644
+--- a/arch/sparc/include/asm/barrier_64.h
++++ b/arch/sparc/include/asm/barrier_64.h
+@@ -37,14 +37,14 @@ do {	__asm__ __volatile__("ba,pt	%%xcc, 1f\n\t" \
+ #define rmb()	__asm__ __volatile__("":::"memory")
+ #define wmb()	__asm__ __volatile__("":::"memory")
  
--#define smp_store_mb(var, value) do { (void)xchg(&var, value); } while (0)
-+#define __smp_store_mb(var, value) do { (void)xchg(&var, value); } while (0)
-+#define smp_store_mb(var, value) __smp_store_mb(var, value)
+-#define smp_store_release(p, v)						\
++#define __smp_store_release(p, v)						\
+ do {									\
+ 	compiletime_assert_atomic_type(*p);				\
+ 	barrier();							\
+ 	WRITE_ONCE(*p, v);						\
+ } while (0)
+ 
+-#define smp_load_acquire(p)						\
++#define __smp_load_acquire(p)						\
+ ({									\
+ 	typeof(*p) ___p1 = READ_ONCE(*p);				\
+ 	compiletime_assert_atomic_type(*p);				\
+@@ -52,8 +52,8 @@ do {									\
+ 	___p1;								\
+ })
+ 
+-#define smp_mb__before_atomic()	barrier()
+-#define smp_mb__after_atomic()	barrier()
++#define __smp_mb__before_atomic()	barrier()
++#define __smp_mb__after_atomic()	barrier()
  
  #include <asm-generic/barrier.h>
  

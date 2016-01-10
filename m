@@ -1,20 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 10 Jan 2016 16:08:47 +0100 (CET)
-Received: from smtprelay0160.hostedemail.com ([216.40.44.160]:60832 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 10 Jan 2016 16:17:43 +0100 (CET)
+Received: from smtprelay0057.hostedemail.com ([216.40.44.57]:46934 "EHLO
         smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27008675AbcAJPIp0cdZy (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 10 Jan 2016 16:08:45 +0100
+        by eddie.linux-mips.org with ESMTP id S27008675AbcAJPRlbVcuy (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 10 Jan 2016 16:17:41 +0100
 Received: from filter.hostedemail.com (unknown [216.40.38.60])
-        by smtprelay03.hostedemail.com (Postfix) with ESMTP id E9E436B6D6;
-        Sun, 10 Jan 2016 15:08:43 +0000 (UTC)
+        by smtprelay06.hostedemail.com (Postfix) with ESMTP id E46C69EA1C;
+        Sun, 10 Jan 2016 15:17:38 +0000 (UTC)
 X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-HE-Tag: sheet24_4bb96679f3906
-X-Filterd-Recvd-Size: 3007
+X-HE-Tag: curve09_7fadec20f056
+X-Filterd-Recvd-Size: 2566
 Received: from joe-X200MA.home (pool-173-51-221-2.lsanca.fios.verizon.net [173.51.221.2])
         (Authenticated sender: joe@perches.com)
-        by omf13.hostedemail.com (Postfix) with ESMTPA;
-        Sun, 10 Jan 2016 15:08:40 +0000 (UTC)
-Message-ID: <1452438519.7773.23.camel@perches.com>
-Subject: Re: [PATCH v2 2/3] checkpatch: check for __smp outside barrier.h
+        by omf05.hostedemail.com (Postfix) with ESMTPA;
+        Sun, 10 Jan 2016 15:17:34 +0000 (UTC)
+Message-ID: <1452439051.7773.27.camel@perches.com>
+Subject: Re: [PATCH v2 1/3] checkpatch.pl: add missing memory barriers
 From:   Joe Perches <joe@perches.com>
 To:     "Michael S. Tsirkin" <mst@redhat.com>, linux-kernel@vger.kernel.org
 Cc:     Andy Whitcroft <apw@canonical.com>,
@@ -36,19 +36,20 @@ Cc:     Andy Whitcroft <apw@canonical.com>,
         Tony Lindgren <tony@atomide.com>,
         Andrey Konovalov <andreyknvl@google.com>,
         Russell King - ARM Linux <linux@arm.linux.org.uk>
-Date:   Sun, 10 Jan 2016 07:08:39 -0800
-In-Reply-To: <1452427000-4520-3-git-send-email-mst@redhat.com>
+Date:   Sun, 10 Jan 2016 07:17:31 -0800
+In-Reply-To: <1452438425.7773.21.camel@perches.com>
 References: <1452427000-4520-1-git-send-email-mst@redhat.com>
-         <1452427000-4520-3-git-send-email-mst@redhat.com>
+         <1452427000-4520-2-git-send-email-mst@redhat.com>
+         <1452438425.7773.21.camel@perches.com>
 Content-Type: text/plain; charset="ISO-8859-1"
 X-Mailer: Evolution 3.18.3-1ubuntu1 
 Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Return-Path: <joe@perches.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51040
+X-archive-position: 51041
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -65,33 +66,26 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sun, 2016-01-10 at 13:57 +0200, Michael S. Tsirkin wrote:
-> Introduction of __smp barriers cleans up a bunch of duplicate code, but
-> it gives people an additional handle onto a "new" set of barriers - just
-> because they're prefixed with __* unfortunately doesn't stop anyone from
-> using it (as happened with other arch stuff before.)
+On Sun, 2016-01-10 at 07:07 -0800, Joe Perches wrote:
+> On Sun, 2016-01-10 at 13:56 +0200, Michael S. Tsirkin wrote:
+> > SMP-only barriers were missing in checkpatch.pl
+> > 
+> > Refactor code slightly to make adding more variants easier.
+> []
+> > diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
+[]
+> If I use a variable called $smp_barriers, I'd expect
+> it to actually be the smp_barriers, not to have to
+> prefix it with smp_ before using it.
 > 
-> Add a checkpatch test so it will trigger a warning.
-[]
-> diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
-[]
-> @@ -5141,6 +5141,16 @@ sub process {
->  			}
->  		}
->  
-> +		my $underscore_smp_barriers = qr{__smp_($smp_barriers)}x;
+> 		my $smp_barriers = qr{
+> 			smp_store_release|
+> 			smp_load_acquire|
+> 			smp_store_mb|
+> 			smp_read_barrier_depends
 
-another unnecessary capture group
+That's missing (?:barriers) too.
 
-> +
-> +		if ($realfile !~ m@^include/asm-generic/@ &&
-> +		    $realfile !~ m@/barrier\.h$@ &&
-> +		    $line =~ m/\b($underscore_smp_barriers)\s*\(/ &&
-> +		    $line !~ m/^.\s*\#\s*define\s+($underscore_smp_barriers)\s*\(/) {
-> +			WARN("MEMORY_BARRIER",
-> +			     "__smp memory barriers shouldn't be used outside barrier.h and asm-generic\n" . $herecurr);
-> +		}
-> +
->  # check for waitqueue_active without a comment.
->  		if ($line =~ /\bwaitqueue_active\s*\(/) {
->  			if (!ctx_has_comment($first_line, $linenr)) {
+btw: shouldn't this also have
+	smp_mb__(?:before|after)_atomic
+?

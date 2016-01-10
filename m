@@ -1,15 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 10 Jan 2016 20:14:01 +0100 (CET)
-Received: from mx1.redhat.com ([209.132.183.28]:59635 "EHLO mx1.redhat.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 10 Jan 2016 20:29:27 +0100 (CET)
+Received: from mx1.redhat.com ([209.132.183.28]:36173 "EHLO mx1.redhat.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27009054AbcAJTN7Kb7Da (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 10 Jan 2016 20:13:59 +0100
+        id S27009342AbcAJT3ZDqNG7 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 10 Jan 2016 20:29:25 +0100
 Received: from int-mx09.intmail.prod.int.phx2.redhat.com (int-mx09.intmail.prod.int.phx2.redhat.com [10.5.11.22])
-        by mx1.redhat.com (Postfix) with ESMTPS id 09C1D8CB55;
-        Sun, 10 Jan 2016 19:13:51 +0000 (UTC)
+        by mx1.redhat.com (Postfix) with ESMTPS id C2CD2C0032F8;
+        Sun, 10 Jan 2016 19:29:17 +0000 (UTC)
 Received: from redhat.com (vpn1-5-155.ams2.redhat.com [10.36.5.155])
-        by int-mx09.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with ESMTP id u0AJDcTv028616;
-        Sun, 10 Jan 2016 14:13:39 -0500
-Date:   Sun, 10 Jan 2016 21:13:38 +0200
+        by int-mx09.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with SMTP id u0AJT7mb000806;
+        Sun, 10 Jan 2016 14:29:08 -0500
+Date:   Sun, 10 Jan 2016 21:29:06 +0200
 From:   "Michael S. Tsirkin" <mst@redhat.com>
 To:     Joe Perches <joe@perches.com>
 Cc:     linux-kernel@vger.kernel.org, Andy Whitcroft <apw@canonical.com>,
@@ -32,21 +32,21 @@ Cc:     linux-kernel@vger.kernel.org, Andy Whitcroft <apw@canonical.com>,
         Andrey Konovalov <andreyknvl@google.com>,
         Russell King - ARM Linux <linux@arm.linux.org.uk>
 Subject: Re: [PATCH v2 1/3] checkpatch.pl: add missing memory barriers
-Message-ID: <20160110191338.GA5063@redhat.com>
+Message-ID: <20160110212531-mutt-send-email-mst@redhat.com>
 References: <1452427000-4520-1-git-send-email-mst@redhat.com>
  <1452427000-4520-2-git-send-email-mst@redhat.com>
  <1452438425.7773.21.camel@perches.com>
+ <1452439051.7773.27.camel@perches.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1452438425.7773.21.camel@perches.com>
+In-Reply-To: <1452439051.7773.27.camel@perches.com>
 X-Scanned-By: MIMEDefang 2.68 on 10.5.11.22
 Return-Path: <mst@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51042
+X-archive-position: 51043
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -63,77 +63,35 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sun, Jan 10, 2016 at 07:07:05AM -0800, Joe Perches wrote:
-> On Sun, 2016-01-10 at 13:56 +0200, Michael S. Tsirkin wrote:
-> > SMP-only barriers were missing in checkpatch.pl
+On Sun, Jan 10, 2016 at 07:17:31AM -0800, Joe Perches wrote:
+> On Sun, 2016-01-10 at 07:07 -0800, Joe Perches wrote:
+> > On Sun, 2016-01-10 at 13:56 +0200, Michael S. Tsirkin wrote:
+> > > SMP-only barriers were missing in checkpatch.pl
+> > > 
+> > > Refactor code slightly to make adding more variants easier.
+> > []
+> > > diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
+> []
+> > If I use a variable called $smp_barriers, I'd expect
+> > it to actually be the smp_barriers, not to have to
+> > prefix it with smp_ before using it.
 > > 
-> > Refactor code slightly to make adding more variants easier.
-> []
-> > diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
-> []
-> > @@ -5116,7 +5116,25 @@ sub process {
-> >  			}
-> >  		}
-> >  # check for memory barriers without a comment.
-> > -		if ($line =~ /\b(mb|rmb|wmb|read_barrier_depends|smp_mb|smp_rmb|smp_wmb|smp_read_barrier_depends)\(/) {
-> > +
-> > +		my $barriers = qr{
-> > +			mb|
-> > +			rmb|
-> > +			wmb|
-> > +			read_barrier_depends
-> > +		}x;
-> > +		my $smp_barriers = qr{
-> > +			store_release|
-> > +			load_acquire|
-> > +			store_mb|
-> > +			($barriers)
-> > +		}x;
+> > 		my $smp_barriers = qr{
+> > 			smp_store_release|
+> > 			smp_load_acquire|
+> > 			smp_store_mb|
+> > 			smp_read_barrier_depends
 > 
-> If I use a variable called $smp_barriers, I'd expect
-> it to actually be the smp_barriers, not to have to
-> prefix it with smp_ before using it.
-> 
-> 		my $smp_barriers = qr{
-> 			smp_store_release|
-> 			smp_load_acquire|
-> 			smp_store_mb|
-> 			smp_read_barrier_depends
-> 		}x;
-> 
-> or
-> 
-> 		my $smp_barriers = qr{
-> 			smp_(?:store_release|load_acquire|store_mb|read_barrier_depends)
-> 		}x;
-> 
+> That's missing (?:barriers) too.
 
-Yes but virt barriers (added in patch 3) are same things but prefixed
-with virt_.  So we need the stems without smp_ prefix. If smp_barriers is
-too confusing we'll just need to give them some other name.
-How about:
-my $smp_barrier_stems
+My version has it but need to add ?: to avoid
+a capture group.
 
-?
+> btw: shouldn't this also have
+> 	smp_mb__(?:before|after)_atomic
+> ?
 
-> > +		my $all_barriers = qr{
-> > +			$barriers|
-> > +			smp_($smp_barriers)
-> > +		}x;
-> 
-> And this shouldn't have a capture group.
-> 
-> 		my $all_barriers = qr{
-> 			$barriers|
-> 			$smp_barriers
-> 		}x;		
-> > +
-> > +		if ($line =~ /\b($all_barriers)\s*\(/) {
-> 
-> This doesn't need the capture group either (?:all_barriers)
-> 
-> >  			if (!ctx_has_comment($first_line, $linenr))
-> > {
-> >  				WARN("MEMORY_BARRIER",
-> >  				     "memory barrier without
-> > comment\n" . $herecurr);
+Good catch, included in the next version.
+
+-- 
+MST

@@ -1,41 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 10 Jan 2016 11:10:56 +0100 (CET)
-Received: from www.linutronix.de ([62.245.132.108]:47162 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27007214AbcAJKKysC1CE (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 10 Jan 2016 11:10:54 +0100
-Received: from localhost ([127.0.0.1])
-        by Galois.linutronix.de with esmtps (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:256)
-        (Exim 4.80)
-        (envelope-from <tglx@linutronix.de>)
-        id 1aICxX-00005X-R6; Sun, 10 Jan 2016 11:10:52 +0100
-Date:   Sun, 10 Jan 2016 11:09:58 +0100 (CET)
-From:   Thomas Gleixner <tglx@linutronix.de>
-To:     Joshua Henderson <joshua.henderson@microchip.com>
-cc:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        ralf@linux-mips.org,
-        Cristian Birsan <cristian.birsan@microchip.com>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Marc Zyngier <marc.zyngier@arm.com>
-Subject: Re: [PATCH v3 02/14] irqchip: irq-pic32-evic: Add support for PIC32
- interrupt controller
-In-Reply-To: <56903D9F.3010908@microchip.com>
-Message-ID: <alpine.DEB.2.11.1601091148480.3575@nanos>
-References: <1452211389-31025-1-git-send-email-joshua.henderson@microchip.com> <1452211389-31025-3-git-send-email-joshua.henderson@microchip.com> <alpine.DEB.2.11.1601081931080.3575@nanos> <56903D9F.3010908@microchip.com>
-User-Agent: Alpine 2.11 (DEB 23 2013-08-11)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 10 Jan 2016 12:42:47 +0100 (CET)
+Received: from mx1.redhat.com ([209.132.183.28]:50417 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27007671AbcAJLmn6vI3S (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 10 Jan 2016 12:42:43 +0100
+Received: from int-mx10.intmail.prod.int.phx2.redhat.com (int-mx10.intmail.prod.int.phx2.redhat.com [10.5.11.23])
+        by mx1.redhat.com (Postfix) with ESMTPS id 18B378DFFA;
+        Sun, 10 Jan 2016 11:42:40 +0000 (UTC)
+Received: from redhat.com (vpn1-5-155.ams2.redhat.com [10.36.5.155])
+        by int-mx10.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with ESMTP id u0ABgTaC032702;
+        Sun, 10 Jan 2016 06:42:29 -0500
+Date:   Sun, 10 Jan 2016 13:42:28 +0200
+From:   "Michael S. Tsirkin" <mst@redhat.com>
+To:     Joe Perches <joe@perches.com>
+Cc:     linux-kernel@vger.kernel.org,
+        "Cc : Andy Whitcroft" <apw@canonical.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Arnd Bergmann <arnd@arndb.de>, linux-arch@vger.kernel.org,
+        Andrew Cooper <andrew.cooper3@citrix.com>,
+        virtualization@lists.linux-foundation.org,
+        Stefano Stabellini <stefano.stabellini@eu.citrix.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@elte.hu>, "H. Peter Anvin" <hpa@zytor.com>,
+        David Miller <davem@davemloft.net>, linux-ia64@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-metag@vger.kernel.org, linux-mips@linux-mips.org,
+        x86@kernel.org, user-mode-linux-devel@lists.sourceforge.net,
+        adi-buildroot-devel@lists.sourceforge.net,
+        linux-sh@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        xen-devel@lists.xenproject.org, Ingo Molnar <mingo@kernel.org>,
+        Tony Lindgren <tony@atomide.com>,
+        Andrey Konovalov <andreyknvl@google.com>,
+        Russell King - ARM Linux <linux@arm.linux.org.uk>
+Subject: Re: [PATCH 1/3] checkpatch.pl: add missing memory barriers
+Message-ID: <20160110134133-mutt-send-email-mst@redhat.com>
+References: <1451907395-15978-1-git-send-email-mst@redhat.com>
+ <1451907395-15978-2-git-send-email-mst@redhat.com>
+ <1451923660.4334.83.camel@perches.com>
+ <20160104224415-mutt-send-email-mst@redhat.com>
+ <1451945750.4334.111.camel@perches.com>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
-Return-Path: <tglx@linutronix.de>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <1451945750.4334.111.camel@perches.com>
+X-Scanned-By: MIMEDefang 2.68 on 10.5.11.23
+Return-Path: <mst@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 50991
+X-archive-position: 50992
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tglx@linutronix.de
+X-original-sender: mst@redhat.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,142 +66,44 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Joshua,
-
-On Fri, 8 Jan 2016, Joshua Henderson wrote:
-> On 01/08/2016 12:04 PM, Thomas Gleixner wrote:
-> > On Thu, 7 Jan 2016, Joshua Henderson wrote:
-> >> +/* acknowledge an interrupt */
-> >> +static void ack_pic32_irq(struct irq_data *irqd)
-> >> +{
-> >> +	u32 reg, mask;
-> >> +	unsigned int hwirq = irqd_to_hwirq(irqd);
-> >> +
-> >> +	BIT_REG_MASK(hwirq, reg, mask);
-> >> +	writel(mask, &evic_base->ifs[reg].clr);
+On Mon, Jan 04, 2016 at 02:15:50PM -0800, Joe Perches wrote:
+> On Mon, 2016-01-04 at 22:45 +0200, Michael S. Tsirkin wrote:
+> > On Mon, Jan 04, 2016 at 08:07:40AM -0800, Joe Perches wrote:
+> > > On Mon, 2016-01-04 at 13:36 +0200, Michael S. Tsirkin wrote:
+> > > > SMP-only barriers were missing in checkpatch.pl
+> > > > 
+> > > > Refactor code slightly to make adding more variants easier.
+> > > > 
+> > > > Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+> > > > ---
+> > > >  scripts/checkpatch.pl | 9 ++++++++-
+> > > >  1 file changed, 8 insertions(+), 1 deletion(-)
+> > > > 
+> > > > diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
+> > > > index 2b3c228..0245bbe 100755
+> > > > --- a/scripts/checkpatch.pl
+> > > > +++ b/scripts/checkpatch.pl
+> > > > @@ -5116,7 +5116,14 @@ sub process {
+> > > >  			}
+> > > >  		}
+> > > >  # check for memory barriers without a comment.
+> > > > -		if ($line =~ /\b(mb|rmb|wmb|read_barrier_depends|smp_mb|smp_rmb|smp_wmb|smp_read_barrier_depends)\(/) {
+> > > > +
+> > > > +		my @barriers = ('mb', 'rmb', 'wmb', 'read_barrier_depends');
+> > > > +		my @smp_barriers = ('smp_store_release', 'smp_load_acquire', 'smp_store_mb');
+> > > > +
+> > > > +		@smp_barriers = (@smp_barriers, map {"smp_" . $_} @barriers);
+> > > 
+> > > I think using map, which so far checkpatch doesn't use,
+> > > makes smp_barriers harder to understand and it'd be
+> > > better to enumerate them.
 > > 
-> > So you invented an open coded variant of the generic irq chip. Just with the
-> > difference that the generic chip caches the mask and the register offsets ....
-> > 
-> 
-> On PIC32 we have 4 different register offsets in many cases, including the interrupt
-> controller registers, to write to one hardware register.  The PIC32 has special
-> write only registers for set/clear/invert and which one is used is dependent on
-> the logic at the time of writel(). Point being, there is no obvious value in
-> caching when using these registers.  We don't have to perform a readl() at any
-> time beforehand to write a mask to a register to update it atomically.
-
-The generic chip has functions which handle the seperate register case.
-
-void irq_gc_mask_disable_reg(struct irq_data *d);
-void irq_gc_unmask_enable_reg(struct irq_data *d);
-void irq_gc_mask_disable_reg_and_ack(struct irq_data *d);
-void irq_gc_eoi(struct irq_data *d);
-
-> >> +static int set_type_pic32_irq(struct irq_data *data, unsigned int flow_type)
-> >> +{
-> >> +	int index;
-> >> +
-> >> +	switch (flow_type) {
-> >> +
-> >> +	case IRQ_TYPE_EDGE_RISING:
-> >> +	case IRQ_TYPE_EDGE_FALLING:
-> >> +		irq_set_handler_locked(data, handle_edge_irq);
-> >> +		break;
-> >> +
-> >> +	case IRQ_TYPE_LEVEL_HIGH:
-> >> +	case IRQ_TYPE_LEVEL_LOW:
-> >> +		irq_set_handler_locked(data, handle_fasteoi_irq);
-> >> +		break;
-> >> +
-> >> +	default:
-> >> +		pr_err("Invalid interrupt type !\n");
-> >> +		return -EINVAL;
-> >> +	}
-> >> +
-> >> +	/* set polarity for external interrupts only */
-> >> +	index = get_ext_irq_index(data->hwirq);
-> >> +	if (index >= 0)
-> >> +		evic_set_ext_irq_polarity(index, flow_type);
-> > 
-> > So for the non external interrupts you set a different handler and be
-> > done. How is that supposed to work? They switch magically from one mode to the
-> > other?
+> > Okay - I'll rewrite using foreach.
 > > 
 > 
-> It's all the same handlers (depending on whether it's persistent or
-> non-persistent) irrelevant of it being an external interrupt or not.  It's all
-> the same hardware interrupt controller.  Some pins on the chip can be configured
-> as an interrupt source through pin configuration and those have dedicated
-> interrupts associated with them.  The only thing "special" about these external
-> interrupts is they must be explicitly configured as edge rising or edge falling
-> in hardware- which is what is being handled here.  Non-external interrupts don't
-> need this configuration.
+> I think using the qr form (like 'our $Attribute' and
+> a bunch of others) is the general style that should
+> be used for checkpatch.
 
-I really cannot follow here. The code tells me that I can set
-EDGE_RISING/FALLING/LEVEL_HIGH/LOW for any of those interrupts.
-
-So that makes two questions:
-
-   1) Can the non-external mode handle all type variants automagically? I
-      seriously doubt that. If the type cannot be set, then it makes no sense
-      to pretend that it can and allow to switch the handler from fasteoi to
-      edge mode.
-
-   2) The external irqs do not support level according to your
-      evic_set_ext_irq_polarity() function. But you return success if set_type
-      is called with a level type and gladly switch the handler. You merily
-      pr_warn in evic_set_ext_irq_polarity().
-
-That's just crap.
- 
-> >> +int pic32_get_c0_compare_int(void)
-> >> +{
-> >> +	int virq;
-> >> +
-> >> +	virq = irq_create_mapping(evic_irq_domain, CORE_TIMER_INTERRUPT);
-> >> +	irq_set_irq_type(virq, IRQ_TYPE_EDGE_RISING);
-> >> +	return virq;
-> > 
-> > Why isn't that information retrieved via device tree?
-> > 
-> 
-> I suppose it could be.  We took a lesson from irq-mips-gic.c on this one.
-
-You copied it, right? That does not make it any better.
- 
-> > Why don't you use a seperate irq chip for the ext irqs? You can do that with
-> > the generic chip as well.
-> > 
-> >     irq_alloc_domain_generic_chips(domain, 32, 2, ....)
-> > 
-> > And then you assign the alternate chip (2) to your ext irqs and have the set
-> > type function only for the alternate chip.
-> > 
-> 
-> We have one interrupt controller.  All interrupts have a hardware hard-coded
-> flow type (edge, level) ...
-
-And that's exactly the point. They are hardcoded, but you still allow any
-random driver to change the type and therefor the handler. How is that
-supposed to work?
-
-> ...  with the exception of what we are calling "external interrupts".
-> These are essentially gpio interrupts that can be software
-> configured as edge rising or edge falling.  Otherwise, there is no difference
-> between any of the interrupts.
-
-And again. Here you can change the type, but only edge rising and falling are
-supported. And you still allow setting a level type.
-
-So for both types you allow the driver/DT writer to get it wrong. And of
-course this happens without a single line of comment which explains the
-oddities of your driver, so a causual reader will stumble over it and ask
-exactly the questions I'm asking. We want understandable and maintainable code
-and not some 'work for me' hackery.
-
-Thanks,
-
-	tglx
-
-	
+Thanks - that's what I did in the new version (included in
+v3 of the arch cleanup patchset now).

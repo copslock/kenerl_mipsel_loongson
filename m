@@ -1,34 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Jan 2016 14:27:59 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:59146 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Jan 2016 14:50:22 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:59708 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27014618AbcALN1zKQsn0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 12 Jan 2016 14:27:55 +0100
+        id S27009531AbcALNuUUgpA0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 12 Jan 2016 14:50:20 +0100
 Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.15.2/8.14.8) with ESMTP id u0CDRswp002855;
-        Tue, 12 Jan 2016 14:27:54 +0100
+        by scotty.linux-mips.net (8.15.2/8.14.8) with ESMTP id u0CDoJQ7003300;
+        Tue, 12 Jan 2016 14:50:19 +0100
 Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.15.2/8.15.2/Submit) id u0CDRrf4002854;
-        Tue, 12 Jan 2016 14:27:53 +0100
-Date:   Tue, 12 Jan 2016 14:27:53 +0100
+        by scotty.linux-mips.net (8.15.2/8.15.2/Submit) id u0CDoJEN003299;
+        Tue, 12 Jan 2016 14:50:19 +0100
+Date:   Tue, 12 Jan 2016 14:50:19 +0100
 From:   Ralf Baechle <ralf@linux-mips.org>
 To:     "Maciej W. Rozycki" <macro@linux-mips.org>
-Cc:     Petri Gynther <pgynther@google.com>, linux-mips@linux-mips.org,
-        f.fainelli@gmail.com, cernekee@gmail.com
-Subject: Re: [PATCH] MIPS: switch BMIPS5000 to use r4k_wait_irqoff()
-Message-ID: <20160112132753.GA30362@linux-mips.org>
-References: <1445280264-42016-1-git-send-email-pgynther@google.com>
- <20151109092412.GA2775@linux-mips.org>
- <alpine.LFD.2.20.1601120038000.23714@eddie.linux-mips.org>
+Cc:     Petri Gynther <pgynther@google.com>,
+        linux-mips <linux-mips@linux-mips.org>
+Subject: Re: [PATCH] MIPS: add nmi_enter() + nmi_exit() to
+ nmi_exception_handler()
+Message-ID: <20160112135019.GB30362@linux-mips.org>
+References: <1445280592-43038-1-git-send-email-pgynther@google.com>
+ <CAGXr9JH5TLxOnA2LMPdxo3Sqeigprm=KFiiM9Vu2eMOaMgC6yA@mail.gmail.com>
+ <20151109080906.GA27251@linux-mips.org>
+ <alpine.LFD.2.20.1601120044470.23714@eddie.linux-mips.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <alpine.LFD.2.20.1601120038000.23714@eddie.linux-mips.org>
+In-Reply-To: <alpine.LFD.2.20.1601120044470.23714@eddie.linux-mips.org>
 User-Agent: Mutt/1.5.24 (2015-08-30)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51075
+X-archive-position: 51076
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,28 +47,60 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Jan 12, 2016 at 12:42:14AM +0000, Maciej W. Rozycki wrote:
+On Tue, Jan 12, 2016 at 01:03:18AM +0000, Maciej W. Rozycki wrote:
 
-> > > Programming notes:
-> > > The WAIT instruction should be executed while interrupts are disabled
-> > > by the IE bit in the Status register. This avoids a potential timing
-> > > hazard, which occurs if an interrupt is taken between testing the counter
-> > > and executing the WAIT instruction. In this hazard case, the interrupt
-> > > will have been completed before the WAIT instruction is executed, so
-> > > the processor will remain indefinitely in wait state until the next
-> > > interrupt.
-> > 
-> > Note that this is the opposite restriction than many older MIPS CPUs
-> > where it is undefined if an interrupt will restart execution of
-> > instructions if interrupts are disabled.  So this might be a violation
-> > of the architecture specification.  However I rather have it the BMIPS
-> > way than the other way ...
+> On Mon, 9 Nov 2015, Ralf Baechle wrote:
 > 
->  It's been implementation-dependent since MIPSr1 whether a non-enabled 
-> interrupt breaks out of WAIT, so no architecture specification violation 
-> here.
+> > > > diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
+> > > > index fdb392b..efcedd4 100644
+> > > > --- a/arch/mips/kernel/traps.c
+> > > > +++ b/arch/mips/kernel/traps.c
+> > > > @@ -1856,12 +1856,14 @@ void __noreturn nmi_exception_handler(struct pt_regs *regs)
+> > > >  {
+> > > >         char str[100];
+> > > >
+> > > > +       nmi_enter();
+> > > >         raw_notifier_call_chain(&nmi_chain, 0, regs);
+> > > >         bust_spinlocks(1);
+> > > >         snprintf(str, 100, "CPU%d NMI taken, CP0_EPC=%lx\n",
+> > > >                  smp_processor_id(), regs->cp0_epc);
+> > > >         regs->cp0_epc = read_c0_errorepc();
+> > > >         die(str, regs);
+> > > > +       nmi_exit();
+> > > >  }
+> > > >
+> > > >  #define VECTORSPACING 0x100    /* for EI/VI mode */
+> > > > --
+> > > > 2.6.0.rc2.230.g3dd15c0
+> > > >
+> > > 
+> > > Any comments/concerns about this patch?
+> > 
+> > Is NMI on your systems actually recoverable?  I never bothered with
+> > nmi_enther / nmi_exit and other fine details of the NMI implementations
+> > because as defined by the MIPS architecture an NMI may be pretty destructive
+> > and closer to a reset than what other architectures describer as their NMI.
+> > Think what's going to happen if it hits during any phase when $k0 / $k1
+> > are active.
+> 
+>  We could do better though, by having a register stash area defined 
+> somewhere in low memory (0x0-0x7fff) -- of course if physical memory is 
+> actually available there in a given system.  Remember that setting 
+> CP0.Status.ERL makes KUSEG identity mapped, making it possible to access 
+> its beginning off $zero and save all GPRs in a non-destructive manner.
+> 
+>  That is however assuming we can take control at all in the first place as 
+> the NMI vector is hardwired and points to a ROM location in a typical 
+> system.
 
-I probably should have clarified that in the commit message but alas
-too late, this commit is long upstream.
+NMIs don't nest; the system is lost if it receives another NMI before the
+state of the first is saved.  It's currently up to the system to avoid that
+probably by yes masking the non-maskable interrupt.
+
+ErrorEPC is also used by cache errors so an NMI following a cache error
+exception before state has been saved might be fatal.
+
+These are scenarios that are taken care of by CISC architectures but on a
+purebred RISC they're up to system implementors.
 
   Ralf

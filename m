@@ -1,30 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Jan 2016 02:03:22 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:50190 "EHLO localhost"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27011069AbcALBDTBW1Fj (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 12 Jan 2016 02:03:19 +0100
-Date:   Tue, 12 Jan 2016 01:03:18 +0000 (GMT)
-From:   "Maciej W. Rozycki" <macro@linux-mips.org>
-To:     Ralf Baechle <ralf@linux-mips.org>
-cc:     Petri Gynther <pgynther@google.com>,
-        linux-mips <linux-mips@linux-mips.org>
-Subject: Re: [PATCH] MIPS: add nmi_enter() + nmi_exit() to
- nmi_exception_handler()
-In-Reply-To: <20151109080906.GA27251@linux-mips.org>
-Message-ID: <alpine.LFD.2.20.1601120044470.23714@eddie.linux-mips.org>
-References: <1445280592-43038-1-git-send-email-pgynther@google.com> <CAGXr9JH5TLxOnA2LMPdxo3Sqeigprm=KFiiM9Vu2eMOaMgC6yA@mail.gmail.com> <20151109080906.GA27251@linux-mips.org>
-User-Agent: Alpine 2.20 (LFD 67 2015-01-07)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Jan 2016 02:14:30 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:24044 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27011069AbcALBO2cdckj (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 12 Jan 2016 02:14:28 +0100
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Websense Email Security Gateway with ESMTPS id 2B123E37C1C20;
+        Tue, 12 Jan 2016 01:14:17 +0000 (GMT)
+Received: from BAMAIL02.ba.imgtec.org (10.20.40.28) by HHMAIL01.hh.imgtec.org
+ (10.100.10.19) with Microsoft SMTP Server (TLS) id 14.3.235.1; Tue, 12 Jan
+ 2016 01:14:17 +0000
+Received: from [10.20.3.92] (10.20.3.92) by bamail02.ba.imgtec.org
+ (10.20.40.28) with Microsoft SMTP Server (TLS) id 14.3.174.1; Mon, 11 Jan
+ 2016 17:14:14 -0800
+Message-ID: <56945366.2090504@imgtec.com>
+Date:   Mon, 11 Jan 2016 17:14:14 -0800
+From:   Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.2.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Return-Path: <macro@linux-mips.org>
+To:     "Michael S. Tsirkin" <mst@redhat.com>,
+        <linux-kernel@vger.kernel.org>
+CC:     Peter Zijlstra <peterz@infradead.org>,
+        Arnd Bergmann <arnd@arndb.de>, <linux-arch@vger.kernel.org>,
+        Andrew Cooper <andrew.cooper3@citrix.com>,
+        Russell King - ARM Linux <linux@arm.linux.org.uk>,
+        <virtualization@lists.linux-foundation.org>,
+        Stefano Stabellini <stefano.stabellini@eu.citrix.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@elte.hu>, "H. Peter Anvin" <hpa@zytor.com>,
+        Joe Perches <joe@perches.com>,
+        David Miller <davem@davemloft.net>,
+        <linux-ia64@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>,
+        <linux-s390@vger.kernel.org>, <sparclinux@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-metag@vger.kernel.org>, <linux-mips@linux-mips.org>,
+        <x86@kernel.org>, <user-mode-linux-devel@lists.sourceforge.net>,
+        <adi-buildroot-devel@lists.sourceforge.net>,
+        <linux-sh@vger.kernel.org>, <linux-xtensa@linux-xtensa.org>,
+        <xen-devel@lists.xenproject.org>,
+        "Ralf Baechle" <ralf@linux-mips.org>,
+        Ingo Molnar <mingo@kernel.org>
+Subject: Re: [v3,11/41] mips: reuse asm-generic/barrier.h
+References: <1452426622-4471-12-git-send-email-mst@redhat.com>
+In-Reply-To: <1452426622-4471-12-git-send-email-mst@redhat.com>
+Content-Type: text/plain; charset="windows-1252"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.20.3.92]
+Return-Path: <Leonid.Yegoshin@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51066
+X-archive-position: 51067
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: Leonid.Yegoshin@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -37,48 +66,16 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, 9 Nov 2015, Ralf Baechle wrote:
+On 01/10/2016 06:18 AM, Michael S. Tsirkin wrote:
+> On mips dma_rmb, dma_wmb, smp_store_mb, read_barrier_depends,
+> smp_read_barrier_depends, smp_store_release and smp_load_acquire  match
+> the asm-generic variants exactly. Drop the local definitions and pull in
+> asm-generic/barrier.h instead.
+>
+This statement doesn't fit MIPS barriers variations. Moreover, there is 
+a reason to extend that even more specific, at least for 
+smp_store_release and smp_load_acquire, look into
 
-> > > diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
-> > > index fdb392b..efcedd4 100644
-> > > --- a/arch/mips/kernel/traps.c
-> > > +++ b/arch/mips/kernel/traps.c
-> > > @@ -1856,12 +1856,14 @@ void __noreturn nmi_exception_handler(struct pt_regs *regs)
-> > >  {
-> > >         char str[100];
-> > >
-> > > +       nmi_enter();
-> > >         raw_notifier_call_chain(&nmi_chain, 0, regs);
-> > >         bust_spinlocks(1);
-> > >         snprintf(str, 100, "CPU%d NMI taken, CP0_EPC=%lx\n",
-> > >                  smp_processor_id(), regs->cp0_epc);
-> > >         regs->cp0_epc = read_c0_errorepc();
-> > >         die(str, regs);
-> > > +       nmi_exit();
-> > >  }
-> > >
-> > >  #define VECTORSPACING 0x100    /* for EI/VI mode */
-> > > --
-> > > 2.6.0.rc2.230.g3dd15c0
-> > >
-> > 
-> > Any comments/concerns about this patch?
-> 
-> Is NMI on your systems actually recoverable?  I never bothered with
-> nmi_enther / nmi_exit and other fine details of the NMI implementations
-> because as defined by the MIPS architecture an NMI may be pretty destructive
-> and closer to a reset than what other architectures describer as their NMI.
-> Think what's going to happen if it hits during any phase when $k0 / $k1
-> are active.
+     http://patchwork.linux-mips.org/patch/10506/
 
- We could do better though, by having a register stash area defined 
-somewhere in low memory (0x0-0x7fff) -- of course if physical memory is 
-actually available there in a given system.  Remember that setting 
-CP0.Status.ERL makes KUSEG identity mapped, making it possible to access 
-its beginning off $zero and save all GPRs in a non-destructive manner.
-
- That is however assuming we can take control at all in the first place as 
-the NMI vector is hardwired and points to a ROM location in a typical 
-system.
-
-  Maciej
+- Leonid.

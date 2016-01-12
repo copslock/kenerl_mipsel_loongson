@@ -1,40 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Jan 2016 14:50:22 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:59708 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27009531AbcALNuUUgpA0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 12 Jan 2016 14:50:20 +0100
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.15.2/8.14.8) with ESMTP id u0CDoJQ7003300;
-        Tue, 12 Jan 2016 14:50:19 +0100
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.15.2/8.15.2/Submit) id u0CDoJEN003299;
-        Tue, 12 Jan 2016 14:50:19 +0100
-Date:   Tue, 12 Jan 2016 14:50:19 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     "Maciej W. Rozycki" <macro@linux-mips.org>
-Cc:     Petri Gynther <pgynther@google.com>,
-        linux-mips <linux-mips@linux-mips.org>
-Subject: Re: [PATCH] MIPS: add nmi_enter() + nmi_exit() to
- nmi_exception_handler()
-Message-ID: <20160112135019.GB30362@linux-mips.org>
-References: <1445280592-43038-1-git-send-email-pgynther@google.com>
- <CAGXr9JH5TLxOnA2LMPdxo3Sqeigprm=KFiiM9Vu2eMOaMgC6yA@mail.gmail.com>
- <20151109080906.GA27251@linux-mips.org>
- <alpine.LFD.2.20.1601120044470.23714@eddie.linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Jan 2016 15:12:47 +0100 (CET)
+Received: from www.linutronix.de ([62.245.132.108]:43523 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27014662AbcALOMmmRQM0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 12 Jan 2016 15:12:42 +0100
+Received: from localhost ([127.0.0.1])
+        by Galois.linutronix.de with esmtps (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:256)
+        (Exim 4.80)
+        (envelope-from <tglx@linutronix.de>)
+        id 1aIzg9-0007YJ-89; Tue, 12 Jan 2016 15:12:09 +0100
+Date:   Tue, 12 Jan 2016 15:11:14 +0100 (CET)
+From:   Thomas Gleixner <tglx@linutronix.de>
+To:     "Michael S. Tsirkin" <mst@redhat.com>
+cc:     linux-kernel@vger.kernel.org,
+        Peter Zijlstra <peterz@infradead.org>,
+        Arnd Bergmann <arnd@arndb.de>, linux-arch@vger.kernel.org,
+        Andrew Cooper <andrew.cooper3@citrix.com>,
+        Russell King - ARM Linux <linux@arm.linux.org.uk>,
+        virtualization@lists.linux-foundation.org,
+        Stefano Stabellini <stefano.stabellini@eu.citrix.com>,
+        Ingo Molnar <mingo@elte.hu>, "H. Peter Anvin" <hpa@zytor.com>,
+        Joe Perches <joe@perches.com>,
+        David Miller <davem@davemloft.net>, linux-ia64@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-metag@vger.kernel.org, linux-mips@linux-mips.org,
+        x86@kernel.org, user-mode-linux-devel@lists.sourceforge.net,
+        adi-buildroot-devel@lists.sourceforge.net,
+        linux-sh@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        xen-devel@lists.xenproject.org, Ingo Molnar <mingo@redhat.com>,
+        Borislav Petkov <bp@suse.de>, Andy Lutomirski <luto@kernel.org>
+Subject: Re: [PATCH v3 27/41] x86: define __smp_xxx
+In-Reply-To: <1452426622-4471-28-git-send-email-mst@redhat.com>
+Message-ID: <alpine.DEB.2.11.1601121511030.3575@nanos>
+References: <1452426622-4471-1-git-send-email-mst@redhat.com> <1452426622-4471-28-git-send-email-mst@redhat.com>
+User-Agent: Alpine 2.11 (DEB 23 2013-08-11)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <alpine.LFD.2.20.1601120044470.23714@eddie.linux-mips.org>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-Return-Path: <ralf@linux-mips.org>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Linutronix-Spam-Score: -1.0
+X-Linutronix-Spam-Level: -
+X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001,URIBL_BLOCKED=0.001
+Return-Path: <tglx@linutronix.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51076
+X-archive-position: 51077
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: tglx@linutronix.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,60 +60,15 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Jan 12, 2016 at 01:03:18AM +0000, Maciej W. Rozycki wrote:
+On Sun, 10 Jan 2016, Michael S. Tsirkin wrote:
 
-> On Mon, 9 Nov 2015, Ralf Baechle wrote:
+> This defines __smp_xxx barriers for x86,
+> for use by virtualization.
 > 
-> > > > diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
-> > > > index fdb392b..efcedd4 100644
-> > > > --- a/arch/mips/kernel/traps.c
-> > > > +++ b/arch/mips/kernel/traps.c
-> > > > @@ -1856,12 +1856,14 @@ void __noreturn nmi_exception_handler(struct pt_regs *regs)
-> > > >  {
-> > > >         char str[100];
-> > > >
-> > > > +       nmi_enter();
-> > > >         raw_notifier_call_chain(&nmi_chain, 0, regs);
-> > > >         bust_spinlocks(1);
-> > > >         snprintf(str, 100, "CPU%d NMI taken, CP0_EPC=%lx\n",
-> > > >                  smp_processor_id(), regs->cp0_epc);
-> > > >         regs->cp0_epc = read_c0_errorepc();
-> > > >         die(str, regs);
-> > > > +       nmi_exit();
-> > > >  }
-> > > >
-> > > >  #define VECTORSPACING 0x100    /* for EI/VI mode */
-> > > > --
-> > > > 2.6.0.rc2.230.g3dd15c0
-> > > >
-> > > 
-> > > Any comments/concerns about this patch?
-> > 
-> > Is NMI on your systems actually recoverable?  I never bothered with
-> > nmi_enther / nmi_exit and other fine details of the NMI implementations
-> > because as defined by the MIPS architecture an NMI may be pretty destructive
-> > and closer to a reset than what other architectures describer as their NMI.
-> > Think what's going to happen if it hits during any phase when $k0 / $k1
-> > are active.
+> smp_xxx barriers are removed as they are
+> defined correctly by asm-generic/barriers.h
 > 
->  We could do better though, by having a register stash area defined 
-> somewhere in low memory (0x0-0x7fff) -- of course if physical memory is 
-> actually available there in a given system.  Remember that setting 
-> CP0.Status.ERL makes KUSEG identity mapped, making it possible to access 
-> its beginning off $zero and save all GPRs in a non-destructive manner.
-> 
->  That is however assuming we can take control at all in the first place as 
-> the NMI vector is hardwired and points to a ROM location in a typical 
-> system.
+> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+> Acked-by: Arnd Bergmann <arnd@arndb.de>
 
-NMIs don't nest; the system is lost if it receives another NMI before the
-state of the first is saved.  It's currently up to the system to avoid that
-probably by yes masking the non-maskable interrupt.
-
-ErrorEPC is also used by cache errors so an NMI following a cache error
-exception before state has been saved might be fatal.
-
-These are scenarios that are taken care of by CISC architectures but on a
-purebred RISC they're up to system implementors.
-
-  Ralf
+Reviewed-by: Thomas Gleixner <tglx@linutronix.de>

@@ -1,31 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Jan 2016 22:38:45 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:38762 "EHLO localhost"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27010680AbcALVilzbXhk (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 12 Jan 2016 22:38:41 +0100
-Date:   Tue, 12 Jan 2016 21:38:41 +0000 (GMT)
-From:   "Maciej W. Rozycki" <macro@linux-mips.org>
-To:     Ralf Baechle <ralf@linux-mips.org>
-cc:     Petri Gynther <pgynther@google.com>,
-        linux-mips <linux-mips@linux-mips.org>
-Subject: Re: [PATCH] MIPS: add nmi_enter() + nmi_exit() to
- nmi_exception_handler()
-In-Reply-To: <20160112135019.GB30362@linux-mips.org>
-Message-ID: <alpine.LFD.2.20.1601121740520.23714@eddie.linux-mips.org>
-References: <1445280592-43038-1-git-send-email-pgynther@google.com> <CAGXr9JH5TLxOnA2LMPdxo3Sqeigprm=KFiiM9Vu2eMOaMgC6yA@mail.gmail.com> <20151109080906.GA27251@linux-mips.org> <alpine.LFD.2.20.1601120044470.23714@eddie.linux-mips.org>
- <20160112135019.GB30362@linux-mips.org>
-User-Agent: Alpine 2.20 (LFD 67 2015-01-07)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Jan 2016 22:40:17 +0100 (CET)
+Received: from casper.infradead.org ([85.118.1.10]:43189 "EHLO
+        casper.infradead.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27010672AbcALVkPXXPuk (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 12 Jan 2016 22:40:15 +0100
+Received: from j217066.upc-j.chello.nl ([24.132.217.66] helo=twins)
+        by casper.infradead.org with esmtpsa (Exim 4.80.1 #2 (Red Hat Linux))
+        id 1aJ6fd-0006th-Vp; Tue, 12 Jan 2016 21:40:06 +0000
+Received: by twins (Postfix, from userid 1000)
+        id EE15E1257A0D8; Tue, 12 Jan 2016 22:40:03 +0100 (CET)
+Date:   Tue, 12 Jan 2016 22:40:03 +0100
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+Cc:     Will Deacon <will.deacon@arm.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+        linux-arch@vger.kernel.org,
+        Andrew Cooper <andrew.cooper3@citrix.com>,
+        Russell King - ARM Linux <linux@arm.linux.org.uk>,
+        virtualization@lists.linux-foundation.org,
+        Stefano Stabellini <stefano.stabellini@eu.citrix.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@elte.hu>, "H. Peter Anvin" <hpa@zytor.com>,
+        Joe Perches <joe@perches.com>,
+        David Miller <davem@davemloft.net>, linux-ia64@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-metag@vger.kernel.org, linux-mips@linux-mips.org,
+        x86@kernel.org, user-mode-linux-devel@lists.sourceforge.net,
+        adi-buildroot-devel@lists.sourceforge.net,
+        linux-sh@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        xen-devel@lists.xenproject.org, Ralf Baechle <ralf@linux-mips.org>,
+        Ingo Molnar <mingo@kernel.org>, ddaney.cavm@gmail.com,
+        james.hogan@imgtec.com, Michael Ellerman <mpe@ellerman.id.au>,
+        Paul McKenney <paulmck@linux.vnet.ibm.com>
+Subject: Re: [v3,11/41] mips: reuse asm-generic/barrier.h
+Message-ID: <20160112214003.GQ6357@twins.programming.kicks-ass.net>
+References: <1452426622-4471-12-git-send-email-mst@redhat.com>
+ <56945366.2090504@imgtec.com>
+ <20160112092711.GP6344@twins.programming.kicks-ass.net>
+ <20160112102555.GV6373@twins.programming.kicks-ass.net>
+ <20160112104012.GW6373@twins.programming.kicks-ass.net>
+ <20160112114111.GB15737@arm.com>
+ <569565DA.2010903@imgtec.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Return-Path: <macro@linux-mips.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <569565DA.2010903@imgtec.com>
+User-Agent: Mutt/1.5.21 (2012-12-30)
+Return-Path: <peterz@infradead.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51084
+X-archive-position: 51085
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: peterz@infradead.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -38,39 +68,100 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, 12 Jan 2016, Ralf Baechle wrote:
-
-> >  We could do better though, by having a register stash area defined 
-> > somewhere in low memory (0x0-0x7fff) -- of course if physical memory is 
-> > actually available there in a given system.  Remember that setting 
-> > CP0.Status.ERL makes KUSEG identity mapped, making it possible to access 
-> > its beginning off $zero and save all GPRs in a non-destructive manner.
-> > 
-> >  That is however assuming we can take control at all in the first place as 
-> > the NMI vector is hardwired and points to a ROM location in a typical 
-> > system.
+On Tue, Jan 12, 2016 at 12:45:14PM -0800, Leonid Yegoshin wrote:
+> (I try to answer on multiple mails in one)
 > 
-> NMIs don't nest; the system is lost if it receives another NMI before the
-> state of the first is saved.  It's currently up to the system to avoid that
-> probably by yes masking the non-maskable interrupt.
+> First of all, it seems like some generic notes should be given here:
+> 
+> 1. Generic MIPS "SYNC" (aka "SYNC 0") instruction is a very heavy in some
+> CPUs. On that CPUs it basically kills pipelines in each CPU, can do a
+> special memory/IO bus transaction (similar to "fence") and hold a system
+> until all R/W is completed. It is like Big Kernel Lock but worse. So, the
+> move to SMP_* kind of barriers is needed to improve performance, especially
+> on newest CPUs with long pipelines.
 
- Indeed, ErrorEPC will be lost on a nested NMI.  We should be able to 
-detect it and let the handler complete gracefully if it reaches to the end 
-uninterrupted.
+The MIPS SYNC isn't any worse than the PPC SYNC, x86 MFENCE or arm DSB
+SY, yes they're heavy, so what.
 
-> ErrorEPC is also used by cache errors so an NMI following a cache error
-> exception before state has been saved might be fatal.
+> 2. MIPS Arch document may be misleading because words "ordering" and
+> "completion" means different from Linux, the SYNC instruction description is
+> written for HW engineers. I wrote that in a separate patch of the same
+> patchset - http://patchwork.linux-mips.org/patch/10505/ "MIPS: R6: Use
+> lightweight SYNC instruction in smp_* memory barriers":
 
- Hmm, I think a cache error is fatal by itself, so this scenario is 
-probably not of much concern -- just dumping the available state to the 
-console and panicking should do.
+Did you actually say anything here?
 
-> These are scenarios that are taken care of by CISC architectures but on a
-> purebred RISC they're up to system implementors.
+> >This instructions were specifically designed to work for smp_*() sort of
+> >memory barriers in MIPS R2/R3/R5 and R6.
+> >
+> >Unfortunately, it's description is very cryptic and is done in HW engineering
+> >style which prevents use of it by SW.
+> 
+> 3. I bother MIPS Arch team long time until I completely understood that MIPS
+> SYNC_WMB, SYNC_MB, SYNC_RMB, SYNC_RELEASE and SYNC_ACQUIRE do an exactly
+> that is required in Documentation/memory-barriers.txt
 
- E.g. x86 masks NMIs internally to avoid nesting, but it is able to notice 
-another incoming NMI and releases it as soon as the handling of the 
-previous one has completed.  We'd need to have external circuitry for any 
-handling of this kind.
+Ha! and you think that document covers all the really fun details?
 
-  Maciej
+In particular we're very much all 'confused' about the various notions
+of transitivity and what barriers imply how much of it.
+
+> In Peter Zijlstra mail:
+> 
+> >1) you do not make such things selectable; either the hardware needs
+> >them or it doesn't. If it does you_must_  use them, however unlikely.
+
+> It is selectable only for MIPS R2 but not MIPS R6. The reason is - most of
+> MIPS R2 CPUs have short pipeline and that SYNC is just waste of CPU
+> resource, especially taking into account that "lightweight syncs" are
+> converted to a heavy "SYNC 0" in many of that CPUs. However the latest
+> MIPS/Imagination CPU have a pipeline long enough to hit a problem - absence
+> of SYNC at LL/SC inside atomics, barriers etc.
+
+What ?! Are you saying that because R2 has short pipelines its unlikely
+to hit the reordering issues and we can omit barriers?
+
+> >And reading the MIPS64 v6.04 instruction set manual, I think 0x11/0x12
+> >are_NOT_  transitive and therefore cannot be used to implement the
+> >smp_mb__{before,after} stuff.
+> >
+> >That is, in MIPS speak, those SYNC types are Ordering Barriers, not
+> >Completion Barriers.
+> 
+> Please see above, point 2.
+
+That did not in fact enlighten things. Are they transitive/multi-copy
+atomic or not?
+
+(and here Will will go into great detail on the differences between the
+two and make our collective brains explode :-)
+
+> >That is, currently all architectures -- with exception of PPC -- have
+> >RCsc locks, but using these non-transitive things will get you RCpc
+> >locks.
+> >
+> >So yes, MIPS can go RCpc for its locks and share the burden of pain with
+> >PPC, but that needs to be a very concious decision.
+> 
+> I don't understand that - I tried hard but I can't find any word like
+> "RCsc", "RCpc" in Documents/ directory. Web search goes nowhere, of course.
+
+From: lkml.kernel.org/r/20150828153921.GF19282@twins.programming.kicks-ass.net
+
+Yes, the difference between RCpc and RCsc is in the meaning of RELEASE +
+ACQUIRE. With RCsc that implies a full memory barrier, with RCpc it does
+not.
+
+Currently PowerPC is the only arch that (can, and) does RCpc and gives a
+weaker RELEASE + ACQUIRE. Only the CPU who did the ACQUIRE is guaranteed
+to see the stores of the CPU which did the RELEASE in order.
+
+As it stands, RCU is the only _known_ codebase where this matters, but
+we did in fact write code for a fair number of years 'assuming' RELEASE
++ ACQUIRE was a full barrier, so who knows what else is out there.
+
+
+RCsc - release consistency sequential consistency
+RCpc - release consistency processor consistency
+
+https://en.wikipedia.org/wiki/Processor_consistency

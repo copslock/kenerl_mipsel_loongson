@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Jan 2016 15:12:47 +0100 (CET)
-Received: from www.linutronix.de ([62.245.132.108]:43523 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Jan 2016 15:13:06 +0100 (CET)
+Received: from www.linutronix.de ([62.245.132.108]:43533 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27014662AbcALOMmmRQM0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 12 Jan 2016 15:12:42 +0100
+        with ESMTP id S27014662AbcALONCbqDT0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 12 Jan 2016 15:13:02 +0100
 Received: from localhost ([127.0.0.1])
         by Galois.linutronix.de with esmtps (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:256)
         (Exim 4.80)
         (envelope-from <tglx@linutronix.de>)
-        id 1aIzg9-0007YJ-89; Tue, 12 Jan 2016 15:12:09 +0100
-Date:   Tue, 12 Jan 2016 15:11:14 +0100 (CET)
+        id 1aIzfl-0007Xp-3a; Tue, 12 Jan 2016 15:11:45 +0100
+Date:   Tue, 12 Jan 2016 15:10:49 +0100 (CET)
 From:   Thomas Gleixner <tglx@linutronix.de>
 To:     "Michael S. Tsirkin" <mst@redhat.com>
 cc:     linux-kernel@vger.kernel.org,
@@ -29,10 +29,10 @@ cc:     linux-kernel@vger.kernel.org,
         linux-sh@vger.kernel.org, linux-xtensa@linux-xtensa.org,
         xen-devel@lists.xenproject.org, Ingo Molnar <mingo@redhat.com>,
         Borislav Petkov <bp@suse.de>, Andy Lutomirski <luto@kernel.org>
-Subject: Re: [PATCH v3 27/41] x86: define __smp_xxx
-In-Reply-To: <1452426622-4471-28-git-send-email-mst@redhat.com>
-Message-ID: <alpine.DEB.2.11.1601121511030.3575@nanos>
-References: <1452426622-4471-1-git-send-email-mst@redhat.com> <1452426622-4471-28-git-send-email-mst@redhat.com>
+Subject: Re: [PATCH v3 13/41] x86: reuse asm-generic/barrier.h
+In-Reply-To: <1452426622-4471-14-git-send-email-mst@redhat.com>
+Message-ID: <alpine.DEB.2.11.1601121510380.3575@nanos>
+References: <1452426622-4471-1-git-send-email-mst@redhat.com> <1452426622-4471-14-git-send-email-mst@redhat.com>
 User-Agent: Alpine 2.11 (DEB 23 2013-08-11)
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
@@ -43,7 +43,7 @@ Return-Path: <tglx@linutronix.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51077
+X-archive-position: 51078
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -62,11 +62,11 @@ X-list: linux-mips
 
 On Sun, 10 Jan 2016, Michael S. Tsirkin wrote:
 
-> This defines __smp_xxx barriers for x86,
-> for use by virtualization.
+> As on most architectures, on x86 read_barrier_depends and
+> smp_read_barrier_depends are empty.  Drop the local definitions and pull
+> the generic ones from asm-generic/barrier.h instead: they are identical.
 > 
-> smp_xxx barriers are removed as they are
-> defined correctly by asm-generic/barriers.h
+> This is in preparation to refactoring this code area.
 > 
 > Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 > Acked-by: Arnd Bergmann <arnd@arndb.de>

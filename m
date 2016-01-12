@@ -1,23 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Jan 2016 15:13:06 +0100 (CET)
-Received: from www.linutronix.de ([62.245.132.108]:43533 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27014662AbcALONCbqDT0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 12 Jan 2016 15:13:02 +0100
-Received: from localhost ([127.0.0.1])
-        by Galois.linutronix.de with esmtps (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:256)
-        (Exim 4.80)
-        (envelope-from <tglx@linutronix.de>)
-        id 1aIzfl-0007Xp-3a; Tue, 12 Jan 2016 15:11:45 +0100
-Date:   Tue, 12 Jan 2016 15:10:49 +0100 (CET)
-From:   Thomas Gleixner <tglx@linutronix.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Jan 2016 17:29:06 +0100 (CET)
+Received: from e37.co.us.ibm.com ([32.97.110.158]:57487 "EHLO
+        e37.co.us.ibm.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27009873AbcALQ3EJ56Ar (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 12 Jan 2016 17:29:04 +0100
+Received: from localhost
+        by e37.co.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <linux-mips@linux-mips.org> from <paulmck@linux.vnet.ibm.com>;
+        Tue, 12 Jan 2016 09:28:57 -0700
+Received: from d03dlp02.boulder.ibm.com (9.17.202.178)
+        by e37.co.us.ibm.com (192.168.1.137) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        Tue, 12 Jan 2016 09:28:56 -0700
+X-IBM-Helo: d03dlp02.boulder.ibm.com
+X-IBM-MailFrom: paulmck@linux.vnet.ibm.com
+X-IBM-RcptTo: linux-mips@linux-mips.org
+Received: from b03cxnp08026.gho.boulder.ibm.com (b03cxnp08026.gho.boulder.ibm.com [9.17.130.18])
+        by d03dlp02.boulder.ibm.com (Postfix) with ESMTP id E2BA23E4003F
+        for <linux-mips@linux-mips.org>; Tue, 12 Jan 2016 09:28:55 -0700 (MST)
+Received: from d03av05.boulder.ibm.com (d03av05.boulder.ibm.com [9.17.195.85])
+        by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id u0CGSth227590900
+        for <linux-mips@linux-mips.org>; Tue, 12 Jan 2016 09:28:55 -0700
+Received: from d03av05.boulder.ibm.com (localhost [127.0.0.1])
+        by d03av05.boulder.ibm.com (8.14.4/8.14.4/NCO v10.0 AVout) with ESMTP id u0CGSiuH011545
+        for <linux-mips@linux-mips.org>; Tue, 12 Jan 2016 09:28:55 -0700
+Received: from paulmck-ThinkPad-W541 ([9.70.82.27])
+        by d03av05.boulder.ibm.com (8.14.4/8.14.4/NCO v10.0 AVin) with ESMTP id u0CGShCN011465;
+        Tue, 12 Jan 2016 09:28:43 -0700
+Received: by paulmck-ThinkPad-W541 (Postfix, from userid 1000)
+        id 61EB816C29A0; Tue, 12 Jan 2016 08:28:44 -0800 (PST)
+Date:   Tue, 12 Jan 2016 08:28:44 -0800
+From:   "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>
 To:     "Michael S. Tsirkin" <mst@redhat.com>
-cc:     linux-kernel@vger.kernel.org,
+Cc:     linux-kernel@vger.kernel.org,
         Peter Zijlstra <peterz@infradead.org>,
         Arnd Bergmann <arnd@arndb.de>, linux-arch@vger.kernel.org,
         Andrew Cooper <andrew.cooper3@citrix.com>,
         Russell King - ARM Linux <linux@arm.linux.org.uk>,
         virtualization@lists.linux-foundation.org,
         Stefano Stabellini <stefano.stabellini@eu.citrix.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@elte.hu>, "H. Peter Anvin" <hpa@zytor.com>,
         Joe Perches <joe@perches.com>,
         David Miller <davem@davemloft.net>, linux-ia64@vger.kernel.org,
@@ -27,27 +47,43 @@ cc:     linux-kernel@vger.kernel.org,
         x86@kernel.org, user-mode-linux-devel@lists.sourceforge.net,
         adi-buildroot-devel@lists.sourceforge.net,
         linux-sh@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        xen-devel@lists.xenproject.org, Ingo Molnar <mingo@redhat.com>,
-        Borislav Petkov <bp@suse.de>, Andy Lutomirski <luto@kernel.org>
-Subject: Re: [PATCH v3 13/41] x86: reuse asm-generic/barrier.h
-In-Reply-To: <1452426622-4471-14-git-send-email-mst@redhat.com>
-Message-ID: <alpine.DEB.2.11.1601121510380.3575@nanos>
-References: <1452426622-4471-1-git-send-email-mst@redhat.com> <1452426622-4471-14-git-send-email-mst@redhat.com>
-User-Agent: Alpine 2.11 (DEB 23 2013-08-11)
+        xen-devel@lists.xenproject.org,
+        Davidlohr Bueso <dave@stgolabs.net>,
+        Davidlohr Bueso <dbueso@suse.de>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Tony Luck <tony.luck@intel.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Christian Borntraeger <borntraeger@de.ibm.com>
+Subject: Re: [PATCH v3 01/41] lcoking/barriers, arch: Use smp barriers in
+ smp_store_release()
+Message-ID: <20160112162844.GD3818@linux.vnet.ibm.com>
+Reply-To: paulmck@linux.vnet.ibm.com
+References: <1452426622-4471-1-git-send-email-mst@redhat.com>
+ <1452426622-4471-2-git-send-email-mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001,URIBL_BLOCKED=0.001
-Return-Path: <tglx@linutronix.de>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1452426622-4471-2-git-send-email-mst@redhat.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-TM-AS-MML: disable
+X-Content-Scanned: Fidelis XPS MAILER
+x-cbid: 16011216-0025-0000-0000-00002054DDF9
+Return-Path: <paulmck@linux.vnet.ibm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51078
+X-archive-position: 51079
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tglx@linutronix.de
+X-original-sender: paulmck@linux.vnet.ibm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -60,15 +96,93 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sun, 10 Jan 2016, Michael S. Tsirkin wrote:
-
-> As on most architectures, on x86 read_barrier_depends and
-> smp_read_barrier_depends are empty.  Drop the local definitions and pull
-> the generic ones from asm-generic/barrier.h instead: they are identical.
+On Sun, Jan 10, 2016 at 04:16:32PM +0200, Michael S. Tsirkin wrote:
+> From: Davidlohr Bueso <dave@stgolabs.net>
 > 
-> This is in preparation to refactoring this code area.
+> With commit b92b8b35a2e ("locking/arch: Rename set_mb() to smp_store_mb()")
+> it was made clear that the context of this call (and thus set_mb)
+> is strictly for CPU ordering, as opposed to IO. As such all archs
+> should use the smp variant of mb(), respecting the semantics and
+> saving a mandatory barrier on UP.
 > 
-> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-> Acked-by: Arnd Bergmann <arnd@arndb.de>
+> Signed-off-by: Davidlohr Bueso <dbueso@suse.de>
+> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> Cc: <linux-arch@vger.kernel.org>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> Cc: Heiko Carstens <heiko.carstens@de.ibm.com>
+> Cc: Linus Torvalds <torvalds@linux-foundation.org>
+> Cc: Paul E. McKenney <paulmck@linux.vnet.ibm.com>
+> Cc: Peter Zijlstra <peterz@infradead.org>
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Tony Luck <tony.luck@intel.com>
+> Cc: dave@stgolabs.net
+> Link: http://lkml.kernel.org/r/1445975631-17047-3-git-send-email-dave@stgolabs.net
+> Signed-off-by: Ingo Molnar <mingo@kernel.org>
 
-Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
+Aside from a need for s/lcoking/locking/ in the subject line:
+
+Reviewed-by: Paul E. McKenney <paulmck@linux.vnet.ibm.com>
+
+> ---
+>  arch/ia64/include/asm/barrier.h    | 2 +-
+>  arch/powerpc/include/asm/barrier.h | 2 +-
+>  arch/s390/include/asm/barrier.h    | 2 +-
+>  include/asm-generic/barrier.h      | 2 +-
+>  4 files changed, 4 insertions(+), 4 deletions(-)
+> 
+> diff --git a/arch/ia64/include/asm/barrier.h b/arch/ia64/include/asm/barrier.h
+> index df896a1..209c4b8 100644
+> --- a/arch/ia64/include/asm/barrier.h
+> +++ b/arch/ia64/include/asm/barrier.h
+> @@ -77,7 +77,7 @@ do {									\
+>  	___p1;								\
+>  })
+> 
+> -#define smp_store_mb(var, value)	do { WRITE_ONCE(var, value); mb(); } while (0)
+> +#define smp_store_mb(var, value) do { WRITE_ONCE(var, value); smp_mb(); } while (0)
+> 
+>  /*
+>   * The group barrier in front of the rsm & ssm are necessary to ensure
+> diff --git a/arch/powerpc/include/asm/barrier.h b/arch/powerpc/include/asm/barrier.h
+> index 0eca6ef..a7af5fb 100644
+> --- a/arch/powerpc/include/asm/barrier.h
+> +++ b/arch/powerpc/include/asm/barrier.h
+> @@ -34,7 +34,7 @@
+>  #define rmb()  __asm__ __volatile__ ("sync" : : : "memory")
+>  #define wmb()  __asm__ __volatile__ ("sync" : : : "memory")
+> 
+> -#define smp_store_mb(var, value)	do { WRITE_ONCE(var, value); mb(); } while (0)
+> +#define smp_store_mb(var, value) do { WRITE_ONCE(var, value); smp_mb(); } while (0)
+> 
+>  #ifdef __SUBARCH_HAS_LWSYNC
+>  #    define SMPWMB      LWSYNC
+> diff --git a/arch/s390/include/asm/barrier.h b/arch/s390/include/asm/barrier.h
+> index d68e11e..7ffd0b1 100644
+> --- a/arch/s390/include/asm/barrier.h
+> +++ b/arch/s390/include/asm/barrier.h
+> @@ -36,7 +36,7 @@
+>  #define smp_mb__before_atomic()		smp_mb()
+>  #define smp_mb__after_atomic()		smp_mb()
+> 
+> -#define smp_store_mb(var, value)		do { WRITE_ONCE(var, value); mb(); } while (0)
+> +#define smp_store_mb(var, value)	do { WRITE_ONCE(var, value); smp_mb(); } while (0)
+> 
+>  #define smp_store_release(p, v)						\
+>  do {									\
+> diff --git a/include/asm-generic/barrier.h b/include/asm-generic/barrier.h
+> index b42afad..0f45f93 100644
+> --- a/include/asm-generic/barrier.h
+> +++ b/include/asm-generic/barrier.h
+> @@ -93,7 +93,7 @@
+>  #endif	/* CONFIG_SMP */
+> 
+>  #ifndef smp_store_mb
+> -#define smp_store_mb(var, value)  do { WRITE_ONCE(var, value); mb(); } while (0)
+> +#define smp_store_mb(var, value)  do { WRITE_ONCE(var, value); smp_mb(); } while (0)
+>  #endif
+> 
+>  #ifndef smp_mb__before_atomic
+> -- 
+> MST
+> 

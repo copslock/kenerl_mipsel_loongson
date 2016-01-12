@@ -1,41 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Jan 2016 20:31:45 +0100 (CET)
-Received: from exsmtp01.microchip.com ([198.175.253.37]:39744 "EHLO
-        email.microchip.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27009614AbcALTbebSTGK (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 12 Jan 2016 20:31:34 +0100
-Received: from [10.14.4.125] (10.10.76.4) by CHN-SV-EXCH01.mchp-main.com
- (10.10.76.37) with Microsoft SMTP Server id 14.3.181.6; Tue, 12 Jan 2016
- 12:31:24 -0700
-From:   Joshua Henderson <joshua.henderson@microchip.com>
-Subject: Re: [PATCH v3 02/14] irqchip: irq-pic32-evic: Add support for PIC32
- interrupt controller
-To:     Thomas Gleixner <tglx@linutronix.de>
-References: <1452211389-31025-1-git-send-email-joshua.henderson@microchip.com>
- <1452211389-31025-3-git-send-email-joshua.henderson@microchip.com>
- <alpine.DEB.2.11.1601081931080.3575@nanos> <56903D9F.3010908@microchip.com>
- <alpine.DEB.2.11.1601091148480.3575@nanos>
-CC:     <linux-kernel@vger.kernel.org>, <linux-mips@linux-mips.org>,
-        <ralf@linux-mips.org>,
-        Cristian Birsan <cristian.birsan@microchip.com>,
-        "Jason Cooper" <jason@lakedaemon.net>,
-        Marc Zyngier <marc.zyngier@arm.com>
-Message-ID: <5695565E.4050500@microchip.com>
-Date:   Tue, 12 Jan 2016 12:39:10 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.4.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Jan 2016 21:45:26 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:45280 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27010521AbcALUpYQ9dvE (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 12 Jan 2016 21:45:24 +0100
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Websense Email Security Gateway with ESMTPS id 4CDB98B66F6AB;
+        Tue, 12 Jan 2016 20:45:14 +0000 (GMT)
+Received: from BAMAIL02.ba.imgtec.org (10.20.40.28) by HHMAIL01.hh.imgtec.org
+ (10.100.10.19) with Microsoft SMTP Server (TLS) id 14.3.235.1; Tue, 12 Jan
+ 2016 20:45:17 +0000
+Received: from [10.20.3.92] (10.20.3.92) by bamail02.ba.imgtec.org
+ (10.20.40.28) with Microsoft SMTP Server (TLS) id 14.3.174.1; Tue, 12 Jan
+ 2016 12:45:15 -0800
+Message-ID: <569565DA.2010903@imgtec.com>
+Date:   Tue, 12 Jan 2016 12:45:14 -0800
+From:   Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.2.0
 MIME-Version: 1.0
-In-Reply-To: <alpine.DEB.2.11.1601091148480.3575@nanos>
-Content-Type: text/plain; charset="windows-1252"
+To:     Will Deacon <will.deacon@arm.com>,
+        Peter Zijlstra <peterz@infradead.org>
+CC:     "Michael S. Tsirkin" <mst@redhat.com>,
+        <linux-kernel@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+        <linux-arch@vger.kernel.org>,
+        Andrew Cooper <andrew.cooper3@citrix.com>,
+        Russell King - ARM Linux <linux@arm.linux.org.uk>,
+        <virtualization@lists.linux-foundation.org>,
+        Stefano Stabellini <stefano.stabellini@eu.citrix.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@elte.hu>, "H. Peter Anvin" <hpa@zytor.com>,
+        Joe Perches <joe@perches.com>,
+        David Miller <davem@davemloft.net>,
+        <linux-ia64@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>,
+        <linux-s390@vger.kernel.org>, <sparclinux@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-metag@vger.kernel.org>, <linux-mips@linux-mips.org>,
+        <x86@kernel.org>, <user-mode-linux-devel@lists.sourceforge.net>,
+        <adi-buildroot-devel@lists.sourceforge.net>,
+        <linux-sh@vger.kernel.org>, <linux-xtensa@linux-xtensa.org>,
+        <xen-devel@lists.xenproject.org>,
+        "Ralf Baechle" <ralf@linux-mips.org>,
+        Ingo Molnar <mingo@kernel.org>, <ddaney.cavm@gmail.com>,
+        <james.hogan@imgtec.com>, Michael Ellerman <mpe@ellerman.id.au>,
+        Paul McKenney <paulmck@linux.vnet.ibm.com>
+Subject: Re: [v3,11/41] mips: reuse asm-generic/barrier.h
+References: <1452426622-4471-12-git-send-email-mst@redhat.com> <56945366.2090504@imgtec.com> <20160112092711.GP6344@twins.programming.kicks-ass.net> <20160112102555.GV6373@twins.programming.kicks-ass.net> <20160112104012.GW6373@twins.programming.kicks-ass.net> <20160112114111.GB15737@arm.com>
+In-Reply-To: <20160112114111.GB15737@arm.com>
+Content-Type: text/plain; charset="windows-1252"; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <Joshua.Henderson@microchip.com>
+X-Originating-IP: [10.20.3.92]
+Return-Path: <Leonid.Yegoshin@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51082
+X-archive-position: 51083
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: joshua.henderson@microchip.com
+X-original-sender: Leonid.Yegoshin@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,182 +69,101 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Thomas,
+(I try to answer on multiple mails in one)
 
-On 01/10/2016 03:09 AM, Thomas Gleixner wrote:
-> Joshua,
-> 
-> On Fri, 8 Jan 2016, Joshua Henderson wrote:
->> On 01/08/2016 12:04 PM, Thomas Gleixner wrote:
->>> On Thu, 7 Jan 2016, Joshua Henderson wrote:
->>>> +/* acknowledge an interrupt */
->>>> +static void ack_pic32_irq(struct irq_data *irqd)
->>>> +{
->>>> +	u32 reg, mask;
->>>> +	unsigned int hwirq = irqd_to_hwirq(irqd);
->>>> +
->>>> +	BIT_REG_MASK(hwirq, reg, mask);
->>>> +	writel(mask, &evic_base->ifs[reg].clr);
->>>
->>> So you invented an open coded variant of the generic irq chip. Just with the
->>> difference that the generic chip caches the mask and the register offsets ....
->>>
->>
->> On PIC32 we have 4 different register offsets in many cases, including the interrupt
->> controller registers, to write to one hardware register.  The PIC32 has special
->> write only registers for set/clear/invert and which one is used is dependent on
->> the logic at the time of writel(). Point being, there is no obvious value in
->> caching when using these registers.  We don't have to perform a readl() at any
->> time beforehand to write a mask to a register to update it atomically.
-> 
-> The generic chip has functions which handle the seperate register case.
-> 
-> void irq_gc_mask_disable_reg(struct irq_data *d);
-> void irq_gc_unmask_enable_reg(struct irq_data *d);
-> void irq_gc_mask_disable_reg_and_ack(struct irq_data *d);
-> void irq_gc_eoi(struct irq_data *d);
-> 
+First of all, it seems like some generic notes should be given here:
 
-This makes sense now.  Using these is a natural result of moving to using generic chip as suggested below.
+1. Generic MIPS "SYNC" (aka "SYNC 0") instruction is a very heavy in 
+some CPUs. On that CPUs it basically kills pipelines in each CPU, can do 
+a special memory/IO bus transaction (similar to "fence") and hold a 
+system until all R/W is completed. It is like Big Kernel Lock but worse. 
+So, the move to SMP_* kind of barriers is needed to improve performance, 
+especially on newest CPUs with long pipelines.
 
->>>> +static int set_type_pic32_irq(struct irq_data *data, unsigned int flow_type)
->>>> +{
->>>> +	int index;
->>>> +
->>>> +	switch (flow_type) {
->>>> +
->>>> +	case IRQ_TYPE_EDGE_RISING:
->>>> +	case IRQ_TYPE_EDGE_FALLING:
->>>> +		irq_set_handler_locked(data, handle_edge_irq);
->>>> +		break;
->>>> +
->>>> +	case IRQ_TYPE_LEVEL_HIGH:
->>>> +	case IRQ_TYPE_LEVEL_LOW:
->>>> +		irq_set_handler_locked(data, handle_fasteoi_irq);
->>>> +		break;
->>>> +
->>>> +	default:
->>>> +		pr_err("Invalid interrupt type !\n");
->>>> +		return -EINVAL;
->>>> +	}
->>>> +
->>>> +	/* set polarity for external interrupts only */
->>>> +	index = get_ext_irq_index(data->hwirq);
->>>> +	if (index >= 0)
->>>> +		evic_set_ext_irq_polarity(index, flow_type);
->>>
->>> So for the non external interrupts you set a different handler and be
->>> done. How is that supposed to work? They switch magically from one mode to the
->>> other?
->>>
->>
->> It's all the same handlers (depending on whether it's persistent or
->> non-persistent) irrelevant of it being an external interrupt or not.  It's all
->> the same hardware interrupt controller.  Some pins on the chip can be configured
->> as an interrupt source through pin configuration and those have dedicated
->> interrupts associated with them.  The only thing "special" about these external
->> interrupts is they must be explicitly configured as edge rising or edge falling
->> in hardware- which is what is being handled here.  Non-external interrupts don't
->> need this configuration.
-> 
-> I really cannot follow here. The code tells me that I can set
-> EDGE_RISING/FALLING/LEVEL_HIGH/LOW for any of those interrupts.
-> 
-> So that makes two questions:
-> 
->    1) Can the non-external mode handle all type variants automagically? I
->       seriously doubt that. If the type cannot be set, then it makes no sense
->       to pretend that it can and allow to switch the handler from fasteoi to
->       edge mode.
-> 
->    2) The external irqs do not support level according to your
->       evic_set_ext_irq_polarity() function. But you return success if set_type
->       is called with a level type and gladly switch the handler. You merily
->       pr_warn in evic_set_ext_irq_polarity().
-> 
-> That's just crap.
-> 
+2. MIPS Arch document may be misleading because words "ordering" and 
+"completion" means different from Linux, the SYNC instruction 
+description is written for HW engineers. I wrote that in a separate 
+patch of the same patchset - 
+http://patchwork.linux-mips.org/patch/10505/ "MIPS: R6: Use lightweight 
+SYNC instruction in smp_* memory barriers":
 
-Got it.  The plan is for .irq_set_type to only exist for edge interrupts, and properly fail if it is not an external interrupt (meaning, there is no actual hardware change otherwise).  External interrupts will configured through a custom DT property in the evic node.  So, this means all non external interrupts will be "locked" to the DT specified irq type at mapping.  This should cleanly address these two issues.  Comments will be added to explain this.
- 
->>>> +int pic32_get_c0_compare_int(void)
->>>> +{
->>>> +	int virq;
->>>> +
->>>> +	virq = irq_create_mapping(evic_irq_domain, CORE_TIMER_INTERRUPT);
->>>> +	irq_set_irq_type(virq, IRQ_TYPE_EDGE_RISING);
->>>> +	return virq;
->>>
->>> Why isn't that information retrieved via device tree?
->>>
->>
->> I suppose it could be.  We took a lesson from irq-mips-gic.c on this one.
-> 
-> You copied it, right? That does not make it any better.
->  
+> This instructions were specifically designed to work for smp_*() sort of
+> memory barriers in MIPS R2/R3/R5 and R6.
+>
+> Unfortunately, it's description is very cryptic and is done in HW engineering
+> style which prevents use of it by SW.
 
-Typically, this CPU core interrupt number can be read from the CP0 registers.  However, the interrupt controller on PIC32 is the interface/arbiter for all interrupts, peripheral and CPU, and therefore we have to specify it.  Because this is not a unique scenario for probably various reasons, the arch/mips/kernel/cevt-r4k.c provides get_c0_compare_int() as a __weak symbol which is currently overwritten by ~11 MIPS platforms in the exact same non-DTS way.  This is what I meant by saying PIC32 implemented this like irq-mips-gic.c.  So, I see 2 options to address this:
+3. I bother MIPS Arch team long time until I completely understood that 
+MIPS SYNC_WMB, SYNC_MB, SYNC_RMB, SYNC_RELEASE and SYNC_ACQUIRE do an 
+exactly that is required in Documentation/memory-barriers.txt
 
-1) Move pic32_get_c0_compare_int() to platform code as get_c0_compare_int().  Load a fixed mapping from DT in the irqchip driver and find that mapping with get_c0_compare_int().
-2) Add DT support to arch cevt-r4k.c or cpu_probe.c read an arch common property from DT to get the core timer interrupt number.
 
-I think 1) satisfies your feedback on this.  Does this make sense?
+In Peter Zijlstra mail:
 
->>> Why don't you use a seperate irq chip for the ext irqs? You can do that with
->>> the generic chip as well.
->>>
->>>     irq_alloc_domain_generic_chips(domain, 32, 2, ....)
->>>
->>> And then you assign the alternate chip (2) to your ext irqs and have the set
->>> type function only for the alternate chip.
->>>
->>
->> We have one interrupt controller.  All interrupts have a hardware hard-coded
->> flow type (edge, level) ...
-> 
-> And that's exactly the point. They are hardcoded, but you still allow any
-> random driver to change the type and therefor the handler. How is that
-> supposed to work?
-> 
+> 1) you do not make such things selectable; either the hardware needs
+> them or it doesn't. If it does you_must_  use them, however unlikely.
+It is selectable only for MIPS R2 but not MIPS R6. The reason is - most 
+of MIPS R2 CPUs have short pipeline and that SYNC is just waste of CPU 
+resource, especially taking into account that "lightweight syncs" are 
+converted to a heavy "SYNC 0" in many of that CPUs. However the latest 
+MIPS/Imagination CPU have a pipeline long enough to hit a problem - 
+absence of SYNC at LL/SC inside atomics, barriers etc.
 
-To clarify, by hardcoded, I mean the hardware peripheral the interrupt controller is arbitrating for has a defined irq type.  We specify this in a DT standard way for each peripheral, seeing that it varies by peripheral and there is no rhyme or reason to it in the linear IRQ mapping for > 200 interrupts at the evic level:
+> And reading the MIPS64 v6.04 instruction set manual, I think 0x11/0x12
+> are_NOT_  transitive and therefore cannot be used to implement the
+> smp_mb__{before,after} stuff.
+>
+> That is, in MIPS speak, those SYNC types are Ordering Barriers, not
+> Completion Barriers.
 
-	uart1: serial@1f822000 {
-                compatible = "microchip,pic32mzda-uart";
-		...
-                interrupts = <112 IRQ_TYPE_LEVEL_HIGH>,
-                        <113 IRQ_TYPE_LEVEL_HIGH>,
-                        <114 IRQ_TYPE_LEVEL_HIGH>;
-		...
-        };
+Please see above, point 2.
 
-	PBTIMER1:pbtimer1 {
-		compatible = "microchip,pic32mzda-timerA";
-		...
-                interrupts = <4 IRQ_TYPE_EDGE_RISING>;
-		...
-        };
+> That is, currently all architectures -- with exception of PPC -- have
+> RCsc locks, but using these non-transitive things will get you RCpc
+> locks.
+>
+> So yes, MIPS can go RCpc for its locks and share the burden of pain with
+> PPC, but that needs to be a very concious decision.
 
-The shortcoming of allowing a change to the flow handler will be addressed.  It does make sense as you are suggesting to use different irq chips for the different flow handlers.  irq_alloc_domain_generic_chips() will work as suggested and there will be alternate chips for the different scenarios.
+I don't understand that - I tried hard but I can't find any word like 
+"RCsc", "RCpc" in Documents/ directory. Web search goes nowhere, of course.
 
->> ...  with the exception of what we are calling "external interrupts".
->> These are essentially gpio interrupts that can be software
->> configured as edge rising or edge falling.  Otherwise, there is no difference
->> between any of the interrupts.
-> 
-> And again. Here you can change the type, but only edge rising and falling are
-> supported. And you still allow setting a level type.
-> 
 
-This will be addressed.
+In Will Deacon mail:
 
-> So for both types you allow the driver/DT writer to get it wrong. And of
-> course this happens without a single line of comment which explains the
-> oddities of your driver, so a causual reader will stumble over it and ask
-> exactly the questions I'm asking. We want understandable and maintainable code
-> and not some 'work for me' hackery.
+> The issue I have with the SYNC description in the text above is that it
+> describes the single CPU (program order) and the dual-CPU (confusingly
+> named global order) cases, but then doesn't generalise any further. That
+> means we can't sensibly reason about transitivity properties when a third
+> agent is involved. For example, the WRC+sync+addr test:
+>
+>
+> P0:
+> Wx = 1
+>
+> P1:
+> Rx == 1
+> SYNC
+> Wy = 1
+>
+> P2:
+> Ry == 1
+> <address dep>
+> Rx = 0
+>
+>
+> I can't find anything to forbid that, given the text. The main problem
+> is having the SYNC on P1 affect the write by P0.
 
-Make no mistake, I'm here to do this the right way.  A new irqchip driver is in the oven.
+As I understand that test, the visibility of P0: W[x] = 1 is identical 
+to P1 and P2 here. If P1 got X before SYNC and write to Y after SYNC 
+then instruction source register dependency tracking in P2 prevents a 
+speculative load of X before P2 obtains Y from the same place as P0/P1 
+and calculate address of X. If some load of X in P2 happens before 
+address dependency calculation it's result is discarded.
 
-Thanks,
-Josh
+Yes, you can't find that in MIPS SYNC instruction description, it is 
+more likely in CM (Coherence Manager) area. I just pointed our arch team 
+member responsible for documents and he will think how to explain that.
+
+- Leonid.

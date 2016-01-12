@@ -1,20 +1,17 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Jan 2016 12:41:24 +0100 (CET)
-Received: from foss.arm.com ([217.140.101.70]:43902 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27011189AbcALLlWfXlLz (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 12 Jan 2016 12:41:22 +0100
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 546804A7;
-        Tue, 12 Jan 2016 03:40:40 -0800 (PST)
-Received: from arm.com (usa-sjc-imap-foss1.foss.arm.com [10.72.51.249])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2CC163F246;
-        Tue, 12 Jan 2016 03:41:10 -0800 (PST)
-Date:   Tue, 12 Jan 2016 11:41:11 +0000
-From:   Will Deacon <will.deacon@arm.com>
-To:     Peter Zijlstra <peterz@infradead.org>
-Cc:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Jan 2016 13:50:28 +0100 (CET)
+Received: from bombadil.infradead.org ([198.137.202.9]:60382 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27014618AbcALMuZqIFQa (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 12 Jan 2016 13:50:25 +0100
+Received: from j217066.upc-j.chello.nl ([24.132.217.66] helo=twins)
+        by bombadil.infradead.org with esmtpsa (Exim 4.80.1 #2 (Red Hat Linux))
+        id 1aIyOp-0004Mj-1C; Tue, 12 Jan 2016 12:50:11 +0000
+Received: by twins (Postfix, from userid 1000)
+        id C23DB1257A0D8; Tue, 12 Jan 2016 13:50:07 +0100 (CET)
+Date:   Tue, 12 Jan 2016 13:50:07 +0100
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     "Michael S. Tsirkin" <mst@redhat.com>
+Cc:     linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
         linux-arch@vger.kernel.org,
         Andrew Cooper <andrew.cooper3@citrix.com>,
         Russell King - ARM Linux <linux@arm.linux.org.uk>,
@@ -30,31 +27,24 @@ Cc:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
         x86@kernel.org, user-mode-linux-devel@lists.sourceforge.net,
         adi-buildroot-devel@lists.sourceforge.net,
         linux-sh@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        xen-devel@lists.xenproject.org, Ralf Baechle <ralf@linux-mips.org>,
-        Ingo Molnar <mingo@kernel.org>, ddaney.cavm@gmail.com,
-        james.hogan@imgtec.com, Michael Ellerman <mpe@ellerman.id.au>,
-        Paul McKenney <paulmck@linux.vnet.ibm.com>
-Subject: Re: [v3,11/41] mips: reuse asm-generic/barrier.h
-Message-ID: <20160112114111.GB15737@arm.com>
-References: <1452426622-4471-12-git-send-email-mst@redhat.com>
- <56945366.2090504@imgtec.com>
- <20160112092711.GP6344@twins.programming.kicks-ass.net>
- <20160112102555.GV6373@twins.programming.kicks-ass.net>
- <20160112104012.GW6373@twins.programming.kicks-ass.net>
+        xen-devel@lists.xenproject.org
+Subject: Re: [PATCH v3 00/41] arch: barrier cleanup + barriers for virt
+Message-ID: <20160112125007.GR6344@twins.programming.kicks-ass.net>
+References: <1452426622-4471-1-git-send-email-mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20160112104012.GW6373@twins.programming.kicks-ass.net>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <will.deacon@arm.com>
+In-Reply-To: <1452426622-4471-1-git-send-email-mst@redhat.com>
+User-Agent: Mutt/1.5.21 (2012-12-30)
+Return-Path: <peterz@infradead.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51073
+X-archive-position: 51074
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: will.deacon@arm.com
+X-original-sender: peterz@infradead.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -67,60 +57,16 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Jan 12, 2016 at 11:40:12AM +0100, Peter Zijlstra wrote:
-> On Tue, Jan 12, 2016 at 11:25:55AM +0100, Peter Zijlstra wrote:
-> > On Tue, Jan 12, 2016 at 10:27:11AM +0100, Peter Zijlstra wrote:
-> > > 2) the changelog _completely_ fails to explain the sync 0x11 and sync
-> > > 0x12 semantics nor does it provide a publicly accessible link to
-> > > documentation that does.
-> > 
-> > Ralf pointed me at: https://imgtec.com/mips/architectures/mips64/
-> > 
-> > > 3) it really should have explained what you did with
-> > > smp_llsc_mb/smp_mb__before_llsc() in _detail_.
-> > 
-> > And reading the MIPS64 v6.04 instruction set manual, I think 0x11/0x12
-> > are _NOT_ transitive and therefore cannot be used to implement the
-> > smp_mb__{before,after} stuff.
-> > 
-> > That is, in MIPS speak, those SYNC types are Ordering Barriers, not
-> > Completion Barriers. They need not be globally performed.
+On Sun, Jan 10, 2016 at 04:16:22PM +0200, Michael S. Tsirkin wrote:
+> I parked this in vhost tree for now, though the inclusion of patch 1 from tip
+> creates a merge conflict - but one that is trivial to resolve.
 > 
-> Which if true; and I know Will has some questions here; would also mean
-> that you 'cannot' use the ACQUIRE/RELEASE barriers for your locks as was
-> recently suggested by David Daney.
-
-The issue I have with the SYNC description in the text above is that it
-describes the single CPU (program order) and the dual-CPU (confusingly
-named global order) cases, but then doesn't generalise any further. That
-means we can't sensibly reason about transitivity properties when a third
-agent is involved. For example, the WRC+sync+addr test:
-
-
-P0:
-Wx = 1
-
-P1:
-Rx == 1
-SYNC
-Wy = 1
-
-P2:
-Ry == 1
-<address dep>
-Rx = 0
-
-
-I can't find anything to forbid that, given the text. The main problem
-is having the SYNC on P1 affect the write by P0.
-
-> That is, currently all architectures -- with exception of PPC -- have
-> RCsc locks, but using these non-transitive things will get you RCpc
-> locks.
+> So I intend to just merge it all through my tree, including the
+> duplicate patch, and assume conflict will be resolved.
 > 
-> So yes, MIPS can go RCpc for its locks and share the burden of pain with
-> PPC, but that needs to be a very concious decision.
+> I would really appreciate some feedback on arch bits (especially the x86 bits),
+> and acks for merging this through the vhost tree.
 
-I think it's much worse than RCpc, given my interpretation of the wording.
+Thanks for doing this, looks good to me.
 
-Will
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>

@@ -1,63 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Jan 2016 21:49:18 +0100 (CET)
-Received: from bombadil.infradead.org ([198.137.202.9]:55767 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27009601AbcAMUtQifwCd (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 13 Jan 2016 21:49:16 +0100
-Received: from j217066.upc-j.chello.nl ([24.132.217.66] helo=twins)
-        by bombadil.infradead.org with esmtpsa (Exim 4.80.1 #2 (Red Hat Linux))
-        id 1aJSLX-0007FY-QO; Wed, 13 Jan 2016 20:48:48 +0000
-Received: by twins (Postfix, from userid 1000)
-        id D8D1F1257A0D8; Wed, 13 Jan 2016 21:48:44 +0100 (CET)
-Date:   Wed, 13 Jan 2016 21:48:44 +0100
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-Cc:     Will Deacon <will.deacon@arm.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Jan 2016 21:58:33 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:9202 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27009601AbcAMU6b078jd (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 13 Jan 2016 21:58:31 +0100
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Websense Email Security Gateway with ESMTPS id 65E8FF71890C2;
+        Wed, 13 Jan 2016 20:58:21 +0000 (GMT)
+Received: from BAMAIL02.ba.imgtec.org (10.20.40.28) by HHMAIL01.hh.imgtec.org
+ (10.100.10.19) with Microsoft SMTP Server (TLS) id 14.3.235.1; Wed, 13 Jan
+ 2016 20:58:25 +0000
+Received: from [10.20.3.92] (10.20.3.92) by bamail02.ba.imgtec.org
+ (10.20.40.28) with Microsoft SMTP Server (TLS) id 14.3.174.1; Wed, 13 Jan
+ 2016 12:58:22 -0800
+Message-ID: <5696BA6E.4070508@imgtec.com>
+Date:   Wed, 13 Jan 2016 12:58:22 -0800
+From:   Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.2.0
+MIME-Version: 1.0
+To:     Peter Zijlstra <peterz@infradead.org>
+CC:     Will Deacon <will.deacon@arm.com>,
         "Michael S. Tsirkin" <mst@redhat.com>,
-        linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
-        linux-arch@vger.kernel.org,
+        <linux-kernel@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+        <linux-arch@vger.kernel.org>,
         Andrew Cooper <andrew.cooper3@citrix.com>,
         Russell King - ARM Linux <linux@arm.linux.org.uk>,
-        virtualization@lists.linux-foundation.org,
+        <virtualization@lists.linux-foundation.org>,
         Stefano Stabellini <stefano.stabellini@eu.citrix.com>,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@elte.hu>, "H. Peter Anvin" <hpa@zytor.com>,
         Joe Perches <joe@perches.com>,
-        David Miller <davem@davemloft.net>, linux-ia64@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-metag@vger.kernel.org, linux-mips@linux-mips.org,
-        x86@kernel.org, user-mode-linux-devel@lists.sourceforge.net,
-        adi-buildroot-devel@lists.sourceforge.net,
-        linux-sh@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        xen-devel@lists.xenproject.org, Ralf Baechle <ralf@linux-mips.org>,
-        Ingo Molnar <mingo@kernel.org>, ddaney.cavm@gmail.com,
-        james.hogan@imgtec.com, Michael Ellerman <mpe@ellerman.id.au>,
+        David Miller <davem@davemloft.net>,
+        <linux-ia64@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>,
+        <linux-s390@vger.kernel.org>, <sparclinux@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-metag@vger.kernel.org>, <linux-mips@linux-mips.org>,
+        <x86@kernel.org>, <user-mode-linux-devel@lists.sourceforge.net>,
+        <adi-buildroot-devel@lists.sourceforge.net>,
+        <linux-sh@vger.kernel.org>, <linux-xtensa@linux-xtensa.org>,
+        <xen-devel@lists.xenproject.org>,
+        "Ralf Baechle" <ralf@linux-mips.org>,
+        Ingo Molnar <mingo@kernel.org>, <ddaney.cavm@gmail.com>,
+        <james.hogan@imgtec.com>, Michael Ellerman <mpe@ellerman.id.au>,
         Paul McKenney <paulmck@linux.vnet.ibm.com>
 Subject: Re: [v3,11/41] mips: reuse asm-generic/barrier.h
-Message-ID: <20160113204844.GV6357@twins.programming.kicks-ass.net>
-References: <1452426622-4471-12-git-send-email-mst@redhat.com>
- <56945366.2090504@imgtec.com>
- <20160112092711.GP6344@twins.programming.kicks-ass.net>
- <20160112102555.GV6373@twins.programming.kicks-ass.net>
- <20160112104012.GW6373@twins.programming.kicks-ass.net>
- <20160112114111.GB15737@arm.com>
- <569565DA.2010903@imgtec.com>
- <20160113104516.GE25458@arm.com>
- <56969F4B.7070001@imgtec.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <56969F4B.7070001@imgtec.com>
-User-Agent: Mutt/1.5.21 (2012-12-30)
-Return-Path: <peterz@infradead.org>
+References: <1452426622-4471-12-git-send-email-mst@redhat.com> <56945366.2090504@imgtec.com> <20160112092711.GP6344@twins.programming.kicks-ass.net> <20160112102555.GV6373@twins.programming.kicks-ass.net> <20160112104012.GW6373@twins.programming.kicks-ass.net> <20160112114111.GB15737@arm.com> <569565DA.2010903@imgtec.com> <20160113104516.GE25458@arm.com> <56969F4B.7070001@imgtec.com> <20160113204844.GV6357@twins.programming.kicks-ass.net>
+In-Reply-To: <20160113204844.GV6357@twins.programming.kicks-ass.net>
+Content-Type: text/plain; charset="windows-1252"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.20.3.92]
+Return-Path: <Leonid.Yegoshin@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51092
+X-archive-position: 51093
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: peterz@infradead.org
+X-original-sender: Leonid.Yegoshin@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -70,20 +69,18 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Jan 13, 2016 at 11:02:35AM -0800, Leonid Yegoshin wrote:
+On 01/13/2016 12:48 PM, Peter Zijlstra wrote:
+> On Wed, Jan 13, 2016 at 11:02:35AM -0800, Leonid Yegoshin wrote:
+>
+>> I ask HW team about it but I have a question - has it any relationship with
+>> replacing MIPS SYNC with lightweight SYNCs (SYNC_WMB etc)?
+> Of course. If you cannot explain the semantics of the primitives you
+> introduce, how can we judge the patch.
+>
+>
+You missed a point - it is a question about replacement of SYNC with 
+lightweight primitives. It is NOT a question about multithread system 
+behavior without any SYNC. The answer on a latest Will's question lies 
+in different area.
 
-> I ask HW team about it but I have a question - has it any relationship with
-> replacing MIPS SYNC with lightweight SYNCs (SYNC_WMB etc)?
-
-Of course. If you cannot explain the semantics of the primitives you
-introduce, how can we judge the patch.
-
-This barrier business is hard enough as it is, but magic unexplained
-hardware makes it impossible.
-
-Rest assured, you (MIPS) isn't the first (nor likely the last) to go
-through all this. We've had these discussions (and to a certain extend
-are still having them) for x86, PPC, Alpha, ARM, etc..
-
-Any every time new barriers instructions get introduced we had better
-have a full and comprehensive explanation to go along with them.
+- Leonid.

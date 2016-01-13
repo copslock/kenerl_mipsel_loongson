@@ -1,47 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Jan 2016 18:30:30 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:32416 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Jan 2016 20:02:48 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:36386 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27010653AbcAMRaYurg9r (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 13 Jan 2016 18:30:24 +0100
+        with ESMTP id S27009601AbcAMTCqJ8Eu7 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 13 Jan 2016 20:02:46 +0100
 Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Websense Email Security Gateway with ESMTPS id DC2AFD8B25FD8;
-        Wed, 13 Jan 2016 17:30:15 +0000 (GMT)
-Received: from HHMAIL01.hh.imgtec.org ([fe80::710b:f219:72bc:e0b3]) by
- hhmail02.hh.imgtec.org ([fe80::5400:d33e:81a4:f775%25]) with mapi id
- 14.03.0235.001; Wed, 13 Jan 2016 17:30:18 +0000
-From:   Daniel Sanders <Daniel.Sanders@imgtec.com>
-To:     James Hogan <James.Hogan@imgtec.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>
-CC:     LKML <linux-kernel@vger.kernel.org>,
-        Michal Marek <mmarek@suse.com>,
-        "linux-kbuild@vger.kernel.org" <linux-kbuild@vger.kernel.org>,
-        "Linux MIPS Mailing List" <linux-mips@linux-mips.org>,
-        Ralf Baechle <ralf@linux-mips.org>
-Subject: RE: [PATCH] ld-version: fix it on Fedora
-Thread-Topic: [PATCH] ld-version: fix it on Fedora
-Thread-Index: AQHRTiSm06OWSy7R702Mpze/gPXRWp75re5g
-Date:   Wed, 13 Jan 2016 17:30:18 +0000
-Message-ID: <E484D272A3A61B4880CDF2E712E9279F45D04AA7@HHMAIL01.hh.imgtec.org>
-References: <1452189189-31188-1-git-send-email-mst@redhat.com>
- <CAAG0J995iCNwdN6PpuJfzo+TVWNXR3UVqS9v-4HXbryyvMn+=w@mail.gmail.com>
-In-Reply-To: <CAAG0J995iCNwdN6PpuJfzo+TVWNXR3UVqS9v-4HXbryyvMn+=w@mail.gmail.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [192.168.14.109]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        by Websense Email Security Gateway with ESMTPS id 074A45726F056;
+        Wed, 13 Jan 2016 19:02:35 +0000 (GMT)
+Received: from BAMAIL02.ba.imgtec.org (10.20.40.28) by hhmail02.hh.imgtec.org
+ (10.100.10.20) with Microsoft SMTP Server (TLS) id 14.3.235.1; Wed, 13 Jan
+ 2016 19:02:37 +0000
+Received: from [10.20.3.92] (10.20.3.92) by bamail02.ba.imgtec.org
+ (10.20.40.28) with Microsoft SMTP Server (TLS) id 14.3.174.1; Wed, 13 Jan
+ 2016 11:02:35 -0800
+Message-ID: <56969F4B.7070001@imgtec.com>
+Date:   Wed, 13 Jan 2016 11:02:35 -0800
+From:   Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.2.0
 MIME-Version: 1.0
-Return-Path: <Daniel.Sanders@imgtec.com>
+To:     Will Deacon <will.deacon@arm.com>
+CC:     Peter Zijlstra <peterz@infradead.org>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        <linux-kernel@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+        <linux-arch@vger.kernel.org>,
+        Andrew Cooper <andrew.cooper3@citrix.com>,
+        Russell King - ARM Linux <linux@arm.linux.org.uk>,
+        <virtualization@lists.linux-foundation.org>,
+        Stefano Stabellini <stefano.stabellini@eu.citrix.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@elte.hu>, "H. Peter Anvin" <hpa@zytor.com>,
+        Joe Perches <joe@perches.com>,
+        David Miller <davem@davemloft.net>,
+        <linux-ia64@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>,
+        <linux-s390@vger.kernel.org>, <sparclinux@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-metag@vger.kernel.org>, <linux-mips@linux-mips.org>,
+        <x86@kernel.org>, <user-mode-linux-devel@lists.sourceforge.net>,
+        <adi-buildroot-devel@lists.sourceforge.net>,
+        <linux-sh@vger.kernel.org>, <linux-xtensa@linux-xtensa.org>,
+        <xen-devel@lists.xenproject.org>,
+        "Ralf Baechle" <ralf@linux-mips.org>,
+        Ingo Molnar <mingo@kernel.org>, <ddaney.cavm@gmail.com>,
+        <james.hogan@imgtec.com>, Michael Ellerman <mpe@ellerman.id.au>,
+        Paul McKenney <paulmck@linux.vnet.ibm.com>
+Subject: Re: [v3,11/41] mips: reuse asm-generic/barrier.h
+References: <1452426622-4471-12-git-send-email-mst@redhat.com> <56945366.2090504@imgtec.com> <20160112092711.GP6344@twins.programming.kicks-ass.net> <20160112102555.GV6373@twins.programming.kicks-ass.net> <20160112104012.GW6373@twins.programming.kicks-ass.net> <20160112114111.GB15737@arm.com> <569565DA.2010903@imgtec.com> <20160113104516.GE25458@arm.com>
+In-Reply-To: <20160113104516.GE25458@arm.com>
+Content-Type: text/plain; charset="windows-1252"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.20.3.92]
+Return-Path: <Leonid.Yegoshin@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51090
+X-archive-position: 51091
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Daniel.Sanders@imgtec.com
+X-original-sender: Leonid.Yegoshin@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,38 +69,38 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-SGksDQoNClRoZSB2ZXJzaW9uIG51bWJlciB0aGF0J3MgZ2l2aW5nIG1lIHByb2JsZW1zIGlzIDIu
-MjQuNTEuMjAxNDAyMTcgd2hpY2ggbGQtdmVyc2lvbi5zaCBjb252ZXJ0cyB0byAyMDM2OTMxNzAw
-ICgyMDAwMDAwMCsyNDAwMDAwKzUxMDAwMCsyMDE0MDIxNzAwKS4NCg0KQXQgdGhlIG1vbWVudCwg
-SSdtIHdvbmRlcmluZyB3aGV0aGVyIHdlIHJlYWxseSBuZWVkIHRvIGhhbmRsZSBtb3JlIHRoYW4g
-dGhyZWUgdmVyc2lvbiBudW1iZXIgY29tcG9uZW50cy4gQW5vdGhlciB0aG91Z2h0IGlzIHRoYXQg
-dGhlIGNvbXBhcmlzb24gY291bGQgYmUgaW5zaWRlIGxkLXZlcnNpb24uc2ggKG9yIGEgcmVwbGFj
-ZW1lbnQpIHNvIHRoYXQgaXQgY2FuIGNvbXBhcmUgdGhlIGFycmF5IG9mIHZlcnNpb24gY29tcG9u
-ZW50cyBkaXJlY3RseSBpbnN0ZWFkIG9mIHVzaW5nIGEgY29uc3RydWN0ZWQgaW50ZWdlciBhcyBh
-IHByb3h5Lg0KDQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IGphbWVzQGFs
-YmFuYXJ0cy5jb20gW21haWx0bzpqYW1lc0BhbGJhbmFydHMuY29tXSBPbiBCZWhhbGYgT2YNCj4g
-SmFtZXMgSG9nYW4NCj4gU2VudDogMTMgSmFudWFyeSAyMDE2IDE3OjA2DQo+IFRvOiBNaWNoYWVs
-IFMuIFRzaXJraW4NCj4gQ2M6IExLTUw7IE1pY2hhbCBNYXJlazsgbGludXgta2J1aWxkQHZnZXIu
-a2VybmVsLm9yZzsgTGludXggTUlQUyBNYWlsaW5nDQo+IExpc3Q7IFJhbGYgQmFlY2hsZTsgRGFu
-aWVsIFNhbmRlcnMNCj4gU3ViamVjdDogUmU6IFtQQVRDSF0gbGQtdmVyc2lvbjogZml4IGl0IG9u
-IEZlZG9yYQ0KPiANCj4gQ2MnaW5nIERhbmllbCwgd2hvIGhhcyBoaXQgZnVydGhlciBicmVha2Fn
-ZSBkdWUgdG8gdW51c3VhbCB2ZXJzaW9uIG51bWJlcnMuDQo+IA0KPiBPbiA3IEphbnVhcnkgMjAx
-NiBhdCAxNzo1NSwgTWljaGFlbCBTLiBUc2lya2luIDxtc3RAcmVkaGF0LmNvbT4gd3JvdGU6DQo+
-ID4gT24gRmVkb3JhIDIzLCBsZCAtLXZlcnNpb24gb3V0cHV0czoNCj4gPiBHTlUgbGQgdmVyc2lv
-biAyLjI1LTE1LmZjMjMNCj4gPg0KPiA+IEJ1dCBsZC12ZXJzaW9uLnNoIGZhaWxzIHRvIHBhcnNl
-IHRoaXMsIHNvIGUuZy4gIG1pcHMgYnVpbGQgZmFpbHMgdG8NCj4gPiBlbmFibGUgVkRTTywgcHJp
-bnRpbmcgYSB3YXJuaW5nIHRoYXQgYmludXRpbHMgPj0gMi4yNCBpcyByZXF1aXJlZC4NCj4gPg0K
-PiA+IFRvIGZpeCwgdGVhY2ggbGQtdmVyc2lvbiB0byBwYXJzZSB0aGlzIGZvcm1hdC4NCj4gPg0K
-PiA+IFNpZ25lZC1vZmYtYnk6IE1pY2hhZWwgUy4gVHNpcmtpbiA8bXN0QHJlZGhhdC5jb20+DQo+
-ID4gLS0tDQo+ID4NCj4gPiBXaGljaCB0cmVlIHNob3VsZCB0aGlzIGJlIG1lcmdlZCB0aHJvdWdo
-PyBNaW5lPyBNSVBTPw0KPiA+DQo+ID4gIHNjcmlwdHMvbGQtdmVyc2lvbi5zaCB8IDIgKysNCj4g
-PiAgMSBmaWxlIGNoYW5nZWQsIDIgaW5zZXJ0aW9ucygrKQ0KPiA+DQo+ID4gZGlmZiAtLWdpdCBh
-L3NjcmlwdHMvbGQtdmVyc2lvbi5zaCBiL3NjcmlwdHMvbGQtdmVyc2lvbi5zaA0KPiA+IGluZGV4
-IDE5ODU4MGQuLjI1ZDIzYzggMTAwNzU1DQo+ID4gLS0tIGEvc2NyaXB0cy9sZC12ZXJzaW9uLnNo
-DQo+ID4gKysrIGIvc2NyaXB0cy9sZC12ZXJzaW9uLnNoDQo+ID4gQEAgLTIsNiArMiw4IEBADQo+
-ID4gICMgZXh0cmFjdCBsaW5rZXIgdmVyc2lvbiBudW1iZXIgZnJvbSBzdGRpbiBhbmQgdHVybiBp
-bnRvIHNpbmdsZSBudW1iZXINCj4gPiAgICAgICAgIHsNCj4gPiAgICAgICAgIGdzdWIoIi4qKSIs
-ICIiKTsNCj4gPiArICAgICAgIGdzdWIoIi4qdmVyc2lvbiAiLCAiIik7DQo+ID4gKyAgICAgICBn
-c3ViKCItLioiLCAiIik7DQo+ID4gICAgICAgICBzcGxpdCgkMSxhLCAiLiIpOw0KPiA+ICAgICAg
-ICAgcHJpbnQgYVsxXSoxMDAwMDAwMCArIGFbMl0qMTAwMDAwICsgYVszXSoxMDAwMCArIGFbNF0q
-MTAwICsgYVs1XTsNCj4gPiAgICAgICAgIGV4aXQNCj4gPiAtLQ0KPiA+IE1TVA0KPiA+DQo=
+On 01/13/2016 02:45 AM, Will Deacon wrote:
+> On Tue, Jan 12, 2016 at 12:45:14PM -0800, Leonid Yegoshin wrote:
+>>
+> I don't think the address dependency is enough on its own. By that
+> reasoning, the following variant (WRC+addr+addr) would work too:
+>
+>
+> P0:
+> Wx = 1
+>
+> P1:
+> Rx == 1
+> <address dep>
+> Wy = 1
+>
+> P2:
+> Ry == 1
+> <address dep>
+> Rx = 0
+>
+>
+> So are you saying that this is also forbidden?
+> Imagine that P0 and P1 are two threads that share a store buffer. What
+> then?
+>
+
+I ask HW team about it but I have a question - has it any relationship 
+with replacing MIPS SYNC with lightweight SYNCs (SYNC_WMB etc)? You use 
+any barrier or do not use it and I just voice an intention to use a more 
+efficient instruction instead of bold hummer (SYNC instruction). If you 
+don't use any barrier here then it is a different issue.
+
+May be it has sense to return back to original issue?
+
+- Leonid

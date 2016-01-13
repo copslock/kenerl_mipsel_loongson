@@ -1,61 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Jan 2016 18:05:55 +0100 (CET)
-Received: from mail-yk0-f180.google.com ([209.85.160.180]:36644 "EHLO
-        mail-yk0-f180.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010430AbcAMRFxMRwnV (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 13 Jan 2016 18:05:53 +0100
-Received: by mail-yk0-f180.google.com with SMTP id v14so402121258ykd.3
-        for <linux-mips@linux-mips.org>; Wed, 13 Jan 2016 09:05:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=albanarts-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc:content-type;
-        bh=VebqCV3n6ZzWzHoh98GKnZkM8x5Z3GlFI3aBaJBMFnI=;
-        b=d28a0Zlp8jlaM46uF9iiKgki6WyVrau52AEkueEzoSYAGRaRaD3ihPMTwUNISaR7Pg
-         kFNGxxnsfHpZFw+BWp76hdbiAWQGmtdQpPnh1qPoPbNRaFRF2VKIhSSHqhB0Y+BjR1s/
-         Ck7aDSbK9DQNbPxcN69ptu7CxGRyZTGYpCIC+SEHSgshCmWy8FbRUl7mQbUIazDEgqUr
-         1mKnJyB9xKvk/BulL7S5WTPWSODx685oNwjrkZ28xnS6D3794yTb+HyQuoYQI/r4B9d9
-         EoXPERankOI2WPfJ/M8fL2sfFjzVEaCblYwPfwIMIoImYjstGZc+GpzvZflV7j3M1XGN
-         J9tw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:sender:in-reply-to:references:date
-         :message-id:subject:from:to:cc:content-type;
-        bh=VebqCV3n6ZzWzHoh98GKnZkM8x5Z3GlFI3aBaJBMFnI=;
-        b=WqHJadiX0gWdugqExa3Qs+teIKL20+TrIlxqrlLy1CYdA2S5xmOIscT+gu2BYEdki5
-         5t4JeCthi6OdfDrF/Igj4TRvqUKQzFA2DzPBhvYiDUT5hbozJJzOjQay9C8+GsL5vr9K
-         IQbzKwJbj5HGCNVgmsvk22oSD/k7Crtz26Y7XN9NFpQP6XaVnMgdhSPtuXVMDxZdBlyC
-         nUx4stWvxgKQ7ZjIh6NM4U+4PLnc+/Vq5Q5NFOvRxpiv+HDtqJnr/2rdIrIGjWfa2ENQ
-         1FvtEQEoTnDR4oh4cBKs9F7RjQ+Zbt9xd0WIbCUsQOxrwR6t35JRJQba0D9VVab2cpfj
-         XOUQ==
-X-Gm-Message-State: ALoCoQkzfJXKvd/g0Tqht9OYfCvGtE+1Pv/ffJSBEAw6scWANAdr7HC1b8R+l/AkHg1xH1sJXQeeRBEuDuiPZd6zZMlWGtiOfQ==
-MIME-Version: 1.0
-X-Received: by 10.13.218.196 with SMTP id c187mr17228139ywe.232.1452704745747;
- Wed, 13 Jan 2016 09:05:45 -0800 (PST)
-Received: by 10.37.50.150 with HTTP; Wed, 13 Jan 2016 09:05:45 -0800 (PST)
-X-Originating-IP: [212.159.75.221]
-In-Reply-To: <1452189189-31188-1-git-send-email-mst@redhat.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Jan 2016 18:30:30 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:32416 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27010653AbcAMRaYurg9r (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 13 Jan 2016 18:30:24 +0100
+Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
+        by Websense Email Security Gateway with ESMTPS id DC2AFD8B25FD8;
+        Wed, 13 Jan 2016 17:30:15 +0000 (GMT)
+Received: from HHMAIL01.hh.imgtec.org ([fe80::710b:f219:72bc:e0b3]) by
+ hhmail02.hh.imgtec.org ([fe80::5400:d33e:81a4:f775%25]) with mapi id
+ 14.03.0235.001; Wed, 13 Jan 2016 17:30:18 +0000
+From:   Daniel Sanders <Daniel.Sanders@imgtec.com>
+To:     James Hogan <James.Hogan@imgtec.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>
+CC:     LKML <linux-kernel@vger.kernel.org>,
+        Michal Marek <mmarek@suse.com>,
+        "linux-kbuild@vger.kernel.org" <linux-kbuild@vger.kernel.org>,
+        "Linux MIPS Mailing List" <linux-mips@linux-mips.org>,
+        Ralf Baechle <ralf@linux-mips.org>
+Subject: RE: [PATCH] ld-version: fix it on Fedora
+Thread-Topic: [PATCH] ld-version: fix it on Fedora
+Thread-Index: AQHRTiSm06OWSy7R702Mpze/gPXRWp75re5g
+Date:   Wed, 13 Jan 2016 17:30:18 +0000
+Message-ID: <E484D272A3A61B4880CDF2E712E9279F45D04AA7@HHMAIL01.hh.imgtec.org>
 References: <1452189189-31188-1-git-send-email-mst@redhat.com>
-Date:   Wed, 13 Jan 2016 17:05:45 +0000
-X-Google-Sender-Auth: 9a4mp0mGsj7VF7Fo4W2up5tL9Wg
-Message-ID: <CAAG0J995iCNwdN6PpuJfzo+TVWNXR3UVqS9v-4HXbryyvMn+=w@mail.gmail.com>
-Subject: Re: [PATCH] ld-version: fix it on Fedora
-From:   James Hogan <james.hogan@imgtec.com>
-To:     "Michael S. Tsirkin" <mst@redhat.com>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Michal Marek <mmarek@suse.com>, linux-kbuild@vger.kernel.org,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Daniel Sanders <Daniel.Sanders@imgtec.com>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <james@albanarts.com>
+ <CAAG0J995iCNwdN6PpuJfzo+TVWNXR3UVqS9v-4HXbryyvMn+=w@mail.gmail.com>
+In-Reply-To: <CAAG0J995iCNwdN6PpuJfzo+TVWNXR3UVqS9v-4HXbryyvMn+=w@mail.gmail.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [192.168.14.109]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Return-Path: <Daniel.Sanders@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51089
+X-archive-position: 51090
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: Daniel.Sanders@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -68,38 +54,38 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Cc'ing Daniel, who has hit further breakage due to unusual version numbers.
-
-On 7 January 2016 at 17:55, Michael S. Tsirkin <mst@redhat.com> wrote:
-> On Fedora 23, ld --version outputs:
-> GNU ld version 2.25-15.fc23
->
-> But ld-version.sh fails to parse this, so e.g.  mips build fails to
-> enable VDSO, printing a warning that binutils >= 2.24 is required.
->
-> To fix, teach ld-version to parse this format.
->
-> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-> ---
->
-> Which tree should this be merged through? Mine? MIPS?
->
->  scripts/ld-version.sh | 2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/scripts/ld-version.sh b/scripts/ld-version.sh
-> index 198580d..25d23c8 100755
-> --- a/scripts/ld-version.sh
-> +++ b/scripts/ld-version.sh
-> @@ -2,6 +2,8 @@
->  # extract linker version number from stdin and turn into single number
->         {
->         gsub(".*)", "");
-> +       gsub(".*version ", "");
-> +       gsub("-.*", "");
->         split($1,a, ".");
->         print a[1]*10000000 + a[2]*100000 + a[3]*10000 + a[4]*100 + a[5];
->         exit
-> --
-> MST
->
+SGksDQoNClRoZSB2ZXJzaW9uIG51bWJlciB0aGF0J3MgZ2l2aW5nIG1lIHByb2JsZW1zIGlzIDIu
+MjQuNTEuMjAxNDAyMTcgd2hpY2ggbGQtdmVyc2lvbi5zaCBjb252ZXJ0cyB0byAyMDM2OTMxNzAw
+ICgyMDAwMDAwMCsyNDAwMDAwKzUxMDAwMCsyMDE0MDIxNzAwKS4NCg0KQXQgdGhlIG1vbWVudCwg
+SSdtIHdvbmRlcmluZyB3aGV0aGVyIHdlIHJlYWxseSBuZWVkIHRvIGhhbmRsZSBtb3JlIHRoYW4g
+dGhyZWUgdmVyc2lvbiBudW1iZXIgY29tcG9uZW50cy4gQW5vdGhlciB0aG91Z2h0IGlzIHRoYXQg
+dGhlIGNvbXBhcmlzb24gY291bGQgYmUgaW5zaWRlIGxkLXZlcnNpb24uc2ggKG9yIGEgcmVwbGFj
+ZW1lbnQpIHNvIHRoYXQgaXQgY2FuIGNvbXBhcmUgdGhlIGFycmF5IG9mIHZlcnNpb24gY29tcG9u
+ZW50cyBkaXJlY3RseSBpbnN0ZWFkIG9mIHVzaW5nIGEgY29uc3RydWN0ZWQgaW50ZWdlciBhcyBh
+IHByb3h5Lg0KDQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IGphbWVzQGFs
+YmFuYXJ0cy5jb20gW21haWx0bzpqYW1lc0BhbGJhbmFydHMuY29tXSBPbiBCZWhhbGYgT2YNCj4g
+SmFtZXMgSG9nYW4NCj4gU2VudDogMTMgSmFudWFyeSAyMDE2IDE3OjA2DQo+IFRvOiBNaWNoYWVs
+IFMuIFRzaXJraW4NCj4gQ2M6IExLTUw7IE1pY2hhbCBNYXJlazsgbGludXgta2J1aWxkQHZnZXIu
+a2VybmVsLm9yZzsgTGludXggTUlQUyBNYWlsaW5nDQo+IExpc3Q7IFJhbGYgQmFlY2hsZTsgRGFu
+aWVsIFNhbmRlcnMNCj4gU3ViamVjdDogUmU6IFtQQVRDSF0gbGQtdmVyc2lvbjogZml4IGl0IG9u
+IEZlZG9yYQ0KPiANCj4gQ2MnaW5nIERhbmllbCwgd2hvIGhhcyBoaXQgZnVydGhlciBicmVha2Fn
+ZSBkdWUgdG8gdW51c3VhbCB2ZXJzaW9uIG51bWJlcnMuDQo+IA0KPiBPbiA3IEphbnVhcnkgMjAx
+NiBhdCAxNzo1NSwgTWljaGFlbCBTLiBUc2lya2luIDxtc3RAcmVkaGF0LmNvbT4gd3JvdGU6DQo+
+ID4gT24gRmVkb3JhIDIzLCBsZCAtLXZlcnNpb24gb3V0cHV0czoNCj4gPiBHTlUgbGQgdmVyc2lv
+biAyLjI1LTE1LmZjMjMNCj4gPg0KPiA+IEJ1dCBsZC12ZXJzaW9uLnNoIGZhaWxzIHRvIHBhcnNl
+IHRoaXMsIHNvIGUuZy4gIG1pcHMgYnVpbGQgZmFpbHMgdG8NCj4gPiBlbmFibGUgVkRTTywgcHJp
+bnRpbmcgYSB3YXJuaW5nIHRoYXQgYmludXRpbHMgPj0gMi4yNCBpcyByZXF1aXJlZC4NCj4gPg0K
+PiA+IFRvIGZpeCwgdGVhY2ggbGQtdmVyc2lvbiB0byBwYXJzZSB0aGlzIGZvcm1hdC4NCj4gPg0K
+PiA+IFNpZ25lZC1vZmYtYnk6IE1pY2hhZWwgUy4gVHNpcmtpbiA8bXN0QHJlZGhhdC5jb20+DQo+
+ID4gLS0tDQo+ID4NCj4gPiBXaGljaCB0cmVlIHNob3VsZCB0aGlzIGJlIG1lcmdlZCB0aHJvdWdo
+PyBNaW5lPyBNSVBTPw0KPiA+DQo+ID4gIHNjcmlwdHMvbGQtdmVyc2lvbi5zaCB8IDIgKysNCj4g
+PiAgMSBmaWxlIGNoYW5nZWQsIDIgaW5zZXJ0aW9ucygrKQ0KPiA+DQo+ID4gZGlmZiAtLWdpdCBh
+L3NjcmlwdHMvbGQtdmVyc2lvbi5zaCBiL3NjcmlwdHMvbGQtdmVyc2lvbi5zaA0KPiA+IGluZGV4
+IDE5ODU4MGQuLjI1ZDIzYzggMTAwNzU1DQo+ID4gLS0tIGEvc2NyaXB0cy9sZC12ZXJzaW9uLnNo
+DQo+ID4gKysrIGIvc2NyaXB0cy9sZC12ZXJzaW9uLnNoDQo+ID4gQEAgLTIsNiArMiw4IEBADQo+
+ID4gICMgZXh0cmFjdCBsaW5rZXIgdmVyc2lvbiBudW1iZXIgZnJvbSBzdGRpbiBhbmQgdHVybiBp
+bnRvIHNpbmdsZSBudW1iZXINCj4gPiAgICAgICAgIHsNCj4gPiAgICAgICAgIGdzdWIoIi4qKSIs
+ICIiKTsNCj4gPiArICAgICAgIGdzdWIoIi4qdmVyc2lvbiAiLCAiIik7DQo+ID4gKyAgICAgICBn
+c3ViKCItLioiLCAiIik7DQo+ID4gICAgICAgICBzcGxpdCgkMSxhLCAiLiIpOw0KPiA+ICAgICAg
+ICAgcHJpbnQgYVsxXSoxMDAwMDAwMCArIGFbMl0qMTAwMDAwICsgYVszXSoxMDAwMCArIGFbNF0q
+MTAwICsgYVs1XTsNCj4gPiAgICAgICAgIGV4aXQNCj4gPiAtLQ0KPiA+IE1TVA0KPiA+DQo=

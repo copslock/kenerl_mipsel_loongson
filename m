@@ -1,62 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Jan 2016 11:45:28 +0100 (CET)
-Received: from foss.arm.com ([217.140.101.70]:50070 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27014677AbcAMKp07Eott (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 13 Jan 2016 11:45:26 +0100
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 606363A8;
-        Wed, 13 Jan 2016 02:44:44 -0800 (PST)
-Received: from arm.com (usa-sjc-imap-foss1.foss.arm.com [10.72.51.249])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DF3023F21A;
-        Wed, 13 Jan 2016 02:45:14 -0800 (PST)
-Date:   Wed, 13 Jan 2016 10:45:17 +0000
-From:   Will Deacon <will.deacon@arm.com>
-To:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-Cc:     Peter Zijlstra <peterz@infradead.org>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
-        linux-arch@vger.kernel.org,
-        Andrew Cooper <andrew.cooper3@citrix.com>,
-        Russell King - ARM Linux <linux@arm.linux.org.uk>,
-        virtualization@lists.linux-foundation.org,
-        Stefano Stabellini <stefano.stabellini@eu.citrix.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@elte.hu>, "H. Peter Anvin" <hpa@zytor.com>,
-        Joe Perches <joe@perches.com>,
-        David Miller <davem@davemloft.net>, linux-ia64@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-metag@vger.kernel.org, linux-mips@linux-mips.org,
-        x86@kernel.org, user-mode-linux-devel@lists.sourceforge.net,
-        adi-buildroot-devel@lists.sourceforge.net,
-        linux-sh@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        xen-devel@lists.xenproject.org, Ralf Baechle <ralf@linux-mips.org>,
-        Ingo Molnar <mingo@kernel.org>, ddaney.cavm@gmail.com,
-        james.hogan@imgtec.com, Michael Ellerman <mpe@ellerman.id.au>,
-        Paul McKenney <paulmck@linux.vnet.ibm.com>
-Subject: Re: [v3,11/41] mips: reuse asm-generic/barrier.h
-Message-ID: <20160113104516.GE25458@arm.com>
-References: <1452426622-4471-12-git-send-email-mst@redhat.com>
- <56945366.2090504@imgtec.com>
- <20160112092711.GP6344@twins.programming.kicks-ass.net>
- <20160112102555.GV6373@twins.programming.kicks-ass.net>
- <20160112104012.GW6373@twins.programming.kicks-ass.net>
- <20160112114111.GB15737@arm.com>
- <569565DA.2010903@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Jan 2016 18:05:55 +0100 (CET)
+Received: from mail-yk0-f180.google.com ([209.85.160.180]:36644 "EHLO
+        mail-yk0-f180.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010430AbcAMRFxMRwnV (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 13 Jan 2016 18:05:53 +0100
+Received: by mail-yk0-f180.google.com with SMTP id v14so402121258ykd.3
+        for <linux-mips@linux-mips.org>; Wed, 13 Jan 2016 09:05:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=albanarts-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type;
+        bh=VebqCV3n6ZzWzHoh98GKnZkM8x5Z3GlFI3aBaJBMFnI=;
+        b=d28a0Zlp8jlaM46uF9iiKgki6WyVrau52AEkueEzoSYAGRaRaD3ihPMTwUNISaR7Pg
+         kFNGxxnsfHpZFw+BWp76hdbiAWQGmtdQpPnh1qPoPbNRaFRF2VKIhSSHqhB0Y+BjR1s/
+         Ck7aDSbK9DQNbPxcN69ptu7CxGRyZTGYpCIC+SEHSgshCmWy8FbRUl7mQbUIazDEgqUr
+         1mKnJyB9xKvk/BulL7S5WTPWSODx685oNwjrkZ28xnS6D3794yTb+HyQuoYQI/r4B9d9
+         EoXPERankOI2WPfJ/M8fL2sfFjzVEaCblYwPfwIMIoImYjstGZc+GpzvZflV7j3M1XGN
+         J9tw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:sender:in-reply-to:references:date
+         :message-id:subject:from:to:cc:content-type;
+        bh=VebqCV3n6ZzWzHoh98GKnZkM8x5Z3GlFI3aBaJBMFnI=;
+        b=WqHJadiX0gWdugqExa3Qs+teIKL20+TrIlxqrlLy1CYdA2S5xmOIscT+gu2BYEdki5
+         5t4JeCthi6OdfDrF/Igj4TRvqUKQzFA2DzPBhvYiDUT5hbozJJzOjQay9C8+GsL5vr9K
+         IQbzKwJbj5HGCNVgmsvk22oSD/k7Crtz26Y7XN9NFpQP6XaVnMgdhSPtuXVMDxZdBlyC
+         nUx4stWvxgKQ7ZjIh6NM4U+4PLnc+/Vq5Q5NFOvRxpiv+HDtqJnr/2rdIrIGjWfa2ENQ
+         1FvtEQEoTnDR4oh4cBKs9F7RjQ+Zbt9xd0WIbCUsQOxrwR6t35JRJQba0D9VVab2cpfj
+         XOUQ==
+X-Gm-Message-State: ALoCoQkzfJXKvd/g0Tqht9OYfCvGtE+1Pv/ffJSBEAw6scWANAdr7HC1b8R+l/AkHg1xH1sJXQeeRBEuDuiPZd6zZMlWGtiOfQ==
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <569565DA.2010903@imgtec.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <will.deacon@arm.com>
+X-Received: by 10.13.218.196 with SMTP id c187mr17228139ywe.232.1452704745747;
+ Wed, 13 Jan 2016 09:05:45 -0800 (PST)
+Received: by 10.37.50.150 with HTTP; Wed, 13 Jan 2016 09:05:45 -0800 (PST)
+X-Originating-IP: [212.159.75.221]
+In-Reply-To: <1452189189-31188-1-git-send-email-mst@redhat.com>
+References: <1452189189-31188-1-git-send-email-mst@redhat.com>
+Date:   Wed, 13 Jan 2016 17:05:45 +0000
+X-Google-Sender-Auth: 9a4mp0mGsj7VF7Fo4W2up5tL9Wg
+Message-ID: <CAAG0J995iCNwdN6PpuJfzo+TVWNXR3UVqS9v-4HXbryyvMn+=w@mail.gmail.com>
+Subject: Re: [PATCH] ld-version: fix it on Fedora
+From:   James Hogan <james.hogan@imgtec.com>
+To:     "Michael S. Tsirkin" <mst@redhat.com>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        Michal Marek <mmarek@suse.com>, linux-kbuild@vger.kernel.org,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Daniel Sanders <Daniel.Sanders@imgtec.com>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <james@albanarts.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51088
+X-archive-position: 51089
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: will.deacon@arm.com
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -69,65 +68,38 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Jan 12, 2016 at 12:45:14PM -0800, Leonid Yegoshin wrote:
-> >The issue I have with the SYNC description in the text above is that it
-> >describes the single CPU (program order) and the dual-CPU (confusingly
-> >named global order) cases, but then doesn't generalise any further. That
-> >means we can't sensibly reason about transitivity properties when a third
-> >agent is involved. For example, the WRC+sync+addr test:
-> >
-> >
-> >P0:
-> >Wx = 1
-> >
-> >P1:
-> >Rx == 1
-> >SYNC
-> >Wy = 1
-> >
-> >P2:
-> >Ry == 1
-> ><address dep>
-> >Rx = 0
-> >
-> >
-> >I can't find anything to forbid that, given the text. The main problem
-> >is having the SYNC on P1 affect the write by P0.
-> 
-> As I understand that test, the visibility of P0: W[x] = 1 is identical to P1
-> and P2 here. If P1 got X before SYNC and write to Y after SYNC then
-> instruction source register dependency tracking in P2 prevents a speculative
-> load of X before P2 obtains Y from the same place as P0/P1 and calculate
-> address of X. If some load of X in P2 happens before address dependency
-> calculation it's result is discarded.
+Cc'ing Daniel, who has hit further breakage due to unusual version numbers.
 
-I don't think the address dependency is enough on its own. By that
-reasoning, the following variant (WRC+addr+addr) would work too:
-
-
-P0:
-Wx = 1
-
-P1:
-Rx == 1
-<address dep>
-Wy = 1
-
-P2:
-Ry == 1
-<address dep>
-Rx = 0
-
-
-So are you saying that this is also forbidden?
-Imagine that P0 and P1 are two threads that share a store buffer. What
-then?
-
-> Yes, you can't find that in MIPS SYNC instruction description, it is more
-> likely in CM (Coherence Manager) area. I just pointed our arch team member
-> responsible for documents and he will think how to explain that.
-
-I tried grepping the linked documents for "coherence manager" but couldn't
-find anything. Is the description you refer to available anywhere?
-
-Will
+On 7 January 2016 at 17:55, Michael S. Tsirkin <mst@redhat.com> wrote:
+> On Fedora 23, ld --version outputs:
+> GNU ld version 2.25-15.fc23
+>
+> But ld-version.sh fails to parse this, so e.g.  mips build fails to
+> enable VDSO, printing a warning that binutils >= 2.24 is required.
+>
+> To fix, teach ld-version to parse this format.
+>
+> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+> ---
+>
+> Which tree should this be merged through? Mine? MIPS?
+>
+>  scripts/ld-version.sh | 2 ++
+>  1 file changed, 2 insertions(+)
+>
+> diff --git a/scripts/ld-version.sh b/scripts/ld-version.sh
+> index 198580d..25d23c8 100755
+> --- a/scripts/ld-version.sh
+> +++ b/scripts/ld-version.sh
+> @@ -2,6 +2,8 @@
+>  # extract linker version number from stdin and turn into single number
+>         {
+>         gsub(".*)", "");
+> +       gsub(".*version ", "");
+> +       gsub("-.*", "");
+>         split($1,a, ".");
+>         print a[1]*10000000 + a[2]*100000 + a[3]*10000 + a[4]*100 + a[5];
+>         exit
+> --
+> MST
+>

@@ -1,62 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Jan 2016 00:04:30 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:40755 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27010191AbcANXE1vOe1h (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 15 Jan 2016 00:04:27 +0100
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Websense Email Security Gateway with ESMTPS id 6431D898C78E;
-        Thu, 14 Jan 2016 23:04:17 +0000 (GMT)
-Received: from BAMAIL02.ba.imgtec.org (10.20.40.28) by HHMAIL01.hh.imgtec.org
- (10.100.10.19) with Microsoft SMTP Server (TLS) id 14.3.235.1; Thu, 14 Jan
- 2016 23:04:21 +0000
-Received: from [10.20.3.92] (10.20.3.92) by bamail02.ba.imgtec.org
- (10.20.40.28) with Microsoft SMTP Server (TLS) id 14.3.174.1; Thu, 14 Jan
- 2016 15:04:18 -0800
-Message-ID: <56982972.7050609@imgtec.com>
-Date:   Thu, 14 Jan 2016 15:04:18 -0800
-From:   Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.2.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Jan 2016 00:13:54 +0100 (CET)
+Received: from mout.kundenserver.de ([212.227.126.187]:60456 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27010220AbcANXNw0IfOh (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 15 Jan 2016 00:13:52 +0100
+Received: from wuerfel.localnet ([134.3.118.24]) by mrelayeu.kundenserver.de
+ (mreue002) with ESMTPSA (Nemesis) id 0LqInx-1ZggdK03If-00e2Sf; Fri, 15 Jan
+ 2016 00:13:03 +0100
+From:   Arnd Bergmann <arnd@arndb.de>
+To:     linux-arm-kernel@lists.infradead.org
+Cc:     Kalle Valo <kvalo@codeaurora.org>, linux-mips@linux-mips.org,
+        Hauke Mehrtens <hauke@hauke-m.de>,
+        =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+        linux-kernel@vger.kernel.org, Michael Buesch <m@bues.ch>,
+        netdev@vger.kernel.org
+Subject: [PATCH, RESEND] ssb: mark ssb_bus_register as __maybe_unused
+Date:   Fri, 15 Jan 2016 00:13 +0100
+Message-ID: <4037550.DMaVTE01Aq@wuerfel>
+User-Agent: KMail/4.11.5 (Linux/3.16.0-10-generic; KDE/4.11.5; x86_64; ; )
+In-Reply-To: <8760ywd5fe.fsf@kamboji.qca.qualcomm.com>
+References: <8128014.DbbgBtKY3z@wuerfel> <8760ywd5fe.fsf@kamboji.qca.qualcomm.com>
 MIME-Version: 1.0
-To:     <paulmck@linux.vnet.ibm.com>
-CC:     Peter Zijlstra <peterz@infradead.org>,
-        Will Deacon <will.deacon@arm.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        <linux-kernel@vger.kernel.org>, "Arnd Bergmann" <arnd@arndb.de>,
-        <linux-arch@vger.kernel.org>,
-        Andrew Cooper <andrew.cooper3@citrix.com>,
-        Russell King - ARM Linux <linux@arm.linux.org.uk>,
-        <virtualization@lists.linux-foundation.org>,
-        Stefano Stabellini <stefano.stabellini@eu.citrix.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@elte.hu>, "H. Peter Anvin" <hpa@zytor.com>,
-        Joe Perches <joe@perches.com>,
-        David Miller <davem@davemloft.net>,
-        <linux-ia64@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>,
-        <linux-s390@vger.kernel.org>, <sparclinux@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-metag@vger.kernel.org>, <linux-mips@linux-mips.org>,
-        <x86@kernel.org>, <user-mode-linux-devel@lists.sourceforge.net>,
-        <adi-buildroot-devel@lists.sourceforge.net>,
-        <linux-sh@vger.kernel.org>, <linux-xtensa@linux-xtensa.org>,
-        <xen-devel@lists.xenproject.org>,
-        "Ralf Baechle" <ralf@linux-mips.org>,
-        Ingo Molnar <mingo@kernel.org>, <ddaney.cavm@gmail.com>,
-        <james.hogan@imgtec.com>, Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [v3,11/41] mips: reuse asm-generic/barrier.h
-References: <56969F4B.7070001@imgtec.com> <20160113204844.GV6357@twins.programming.kicks-ass.net> <5696BA6E.4070508@imgtec.com> <20160114120445.GB15828@arm.com> <20160114161604.GT3818@linux.vnet.ibm.com> <5697FA0A.6040601@imgtec.com> <20160114201513.GI6357@twins.programming.kicks-ass.net> <56980933.2020801@imgtec.com> <20160114213440.GG3818@linux.vnet.ibm.com> <56981708.4000007@imgtec.com> <20160114222433.GI3818@linux.vnet.ibm.com>
-In-Reply-To: <20160114222433.GI3818@linux.vnet.ibm.com>
-Content-Type: text/plain; charset="windows-1252"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.20.3.92]
-Return-Path: <Leonid.Yegoshin@imgtec.com>
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+X-Provags-ID: V03:K0:O5X5MmEB3YAo/M0wdSx9OGVPs/bQnMWMKdj2hn/sQqVJAC4T+xq
+ MnRmUG9s8Q98ufdbf/fsQAwGhRsUSk6zWmDkliRlO5g8Qn9YcstzqfD/oCGOLi5I2MbsZsw
+ uFvbhYgIP+NJ8FLjfbgReHcTGh076rpNVPCMy5zqE/3qIezugtiz0TbPHO/Vzzq5KaRTUv3
+ fjFd+dlI43PKWzdN1eDkg==
+X-UI-Out-Filterresults: notjunk:1;V01:K0:CCh0uex/jiM=:FOjYRKn0/ZGy3Jw22VPgs4
+ ajvG2nnaKjU5OTmU9hGzi2NGg8riJpMQHWPYNfejIbp+/7c810WKkc50lr90YAy7nDj/ceD0R
+ VB+Tt33ATDxjf0lzuD2r52ljCyhY6WHaBL+o1dObag6hwON7VcCt/gFjDIFaz55Sydkrl/VoN
+ TSee23At6PzvMb96kv4Z/D2VXQpoTT1p15SchPEKyhTRwSiyiA3urcv9GD8YmEbGtRlBbGwSp
+ n2EyUNkoxBmd7BJhTzwKPtePF3SR3Fx8HRle+LDgyWgkQ+Hz4B9rBd/CACyWTh33lXxqfEkIJ
+ DFrZAwf/dUigBAJroFo1CYiUYTGu+7+HKhOdYMSVXaVCwYtSMFSds1rmnC7oG3bFdLK9EKKL2
+ +jQV3jsafQM2Cvu0E0OJ0wG1rGI7ts8WZV5ssYoEGAamew5fcHRIanTbWH+6M+uTKCcHbN1Ky
+ Xyhm+1Ym1lA0KfNvHSap26y6tStBsavzMdIUgwpqfzrqPGvqJMQy0TGiP71GT80XUSdnVz+KO
+ kzav0CZTYOSMsjmdOBy+nNfAPkUjrEAQYnn4rZIR0LUOb7+JESO0YXhTUFwIXm8Cjvor5X4FW
+ 3kw9FIZSYlHjnbULOPcmPiwMD+Uwe6gUHOJkXtgd0CbiHWjiryTb9mMattUvyXwtmdf3gHfvS
+ qGTboPfyE8cmkIz26Rngj3WoMgzI7y0GrbyfQ7Ku9w8nY6Y9H5MBuuekepJcdanHo9LJH6lx+
+ WZfqr/bKy9kpS3fw
+Return-Path: <arnd@arndb.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51142
+X-archive-position: 51143
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Leonid.Yegoshin@imgtec.com
+X-original-sender: arnd@arndb.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -69,19 +59,45 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 01/14/2016 02:24 PM, Paul E. McKenney wrote:
-> Actually, the Linux kernel doesn't have an acquire barrier, just an 
-> smp_load_acquire(). Or did someone sneak one in while I wasn't looking?
-That was an exactly starting point for this discussion. This patch just 
-pulls out from MIPS files smp_load_acquire() and smp_store_release(). 
-However, I put into LMO half year ago the patch 
-http://patchwork.linux-mips.org/patch/10506/ which replaces a generic 
-smp_mb with MIPS specific smp_release/acquire in that functions. This 
-patch also fixes use of SYNCs barriers in spin_locks/atomics/bitops for 
-Imagination MIPS CPUs too - it is just absent now for any Imagination 
-MIPS CPUs!
+The SoC variant of the ssb code is now optional like the other
+ones, which means we can build the framwork without any
+front-end, but that results in a warning:
 
-Michael later pointed me that it can be returned back with his series of 
-patches but discussion was already here.
+drivers/ssb/main.c:616:12: warning: 'ssb_bus_register' defined but not used [-Wunused-function]
 
-- Leonid.
+This annotates the ssb_bus_register function as __maybe_unused to
+shut up the warning. A configuration like this will not work on
+any hardware of course, but we still want this to silently build
+without warnings if the configuration is allowed in the first
+place.
+
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Fixes: 845da6e58e19 ("ssb: add Kconfig entry for compiling SoC related code")
+Acked-by: Michael Buesch <m@bues.ch>
+---
+
+On Thursday 14 January 2016 08:46:29 Kalle Valo wrote:
+> I can take it. For historical reasons ssb patches go through my
+> wireless-drivers trees.
+
+I found this in my backlog, and I believe it still applies. Can you take
+that one too?
+
+diff --git a/drivers/ssb/main.c b/drivers/ssb/main.c
+index cde5ff7529eb..d1a750760cf3 100644
+--- a/drivers/ssb/main.c
++++ b/drivers/ssb/main.c
+@@ -613,9 +613,10 @@ out:
+ 	return err;
+ }
+ 
+-static int ssb_bus_register(struct ssb_bus *bus,
+-			    ssb_invariants_func_t get_invariants,
+-			    unsigned long baseaddr)
++static int __maybe_unused
++ssb_bus_register(struct ssb_bus *bus,
++		 ssb_invariants_func_t get_invariants,
++		 unsigned long baseaddr)
+ {
+ 	int err;
+ 

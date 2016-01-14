@@ -1,87 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Jan 2016 22:35:06 +0100 (CET)
-Received: from e31.co.us.ibm.com ([32.97.110.149]:54991 "EHLO
-        e31.co.us.ibm.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27010453AbcANVfERN0O7 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 14 Jan 2016 22:35:04 +0100
-Received: from localhost
-        by e31.co.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <linux-mips@linux-mips.org> from <paulmck@linux.vnet.ibm.com>;
-        Thu, 14 Jan 2016 14:34:56 -0700
-Received: from d03dlp03.boulder.ibm.com (9.17.202.179)
-        by e31.co.us.ibm.com (192.168.1.131) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        Thu, 14 Jan 2016 14:34:53 -0700
-X-IBM-Helo: d03dlp03.boulder.ibm.com
-X-IBM-MailFrom: paulmck@linux.vnet.ibm.com
-X-IBM-RcptTo: linux-mips@linux-mips.org;ralf@linux-mips.org
-Received: from b03cxnp07029.gho.boulder.ibm.com (b03cxnp07029.gho.boulder.ibm.com [9.17.130.16])
-        by d03dlp03.boulder.ibm.com (Postfix) with ESMTP id 16A2B19D803F;
-        Thu, 14 Jan 2016 14:22:54 -0700 (MST)
-Received: from d03av05.boulder.ibm.com (d03av05.boulder.ibm.com [9.17.195.85])
-        by b03cxnp07029.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id u0ELYqKJ23593172;
-        Thu, 14 Jan 2016 14:34:52 -0700
-Received: from d03av05.boulder.ibm.com (localhost [127.0.0.1])
-        by d03av05.boulder.ibm.com (8.14.4/8.14.4/NCO v10.0 AVout) with ESMTP id u0ELYmA5018909;
-        Thu, 14 Jan 2016 14:34:52 -0700
-Received: from paulmck-ThinkPad-W541 ([9.70.82.27])
-        by d03av05.boulder.ibm.com (8.14.4/8.14.4/NCO v10.0 AVin) with ESMTP id u0ELYdqN018429;
-        Thu, 14 Jan 2016 14:34:39 -0700
-Received: by paulmck-ThinkPad-W541 (Postfix, from userid 1000)
-        id 9378C16C05D5; Thu, 14 Jan 2016 13:34:40 -0800 (PST)
-Date:   Thu, 14 Jan 2016 13:34:40 -0800
-From:   "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>
-To:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-Cc:     Peter Zijlstra <peterz@infradead.org>,
-        Will Deacon <will.deacon@arm.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Jan 2016 22:37:01 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:63227 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27010191AbcANVg7N-0k7 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 14 Jan 2016 22:36:59 +0100
+Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
+        by Websense Email Security Gateway with ESMTPS id 3B2BBB1580DA1;
+        Thu, 14 Jan 2016 21:36:49 +0000 (GMT)
+Received: from BAMAIL02.ba.imgtec.org (10.20.40.28) by hhmail02.hh.imgtec.org
+ (10.100.10.20) with Microsoft SMTP Server (TLS) id 14.3.235.1; Thu, 14 Jan
+ 2016 21:36:52 +0000
+Received: from [10.20.3.92] (10.20.3.92) by bamail02.ba.imgtec.org
+ (10.20.40.28) with Microsoft SMTP Server (TLS) id 14.3.174.1; Thu, 14 Jan
+ 2016 13:36:50 -0800
+Message-ID: <569814F2.50801@imgtec.com>
+Date:   Thu, 14 Jan 2016 13:36:50 -0800
+From:   Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.2.0
+MIME-Version: 1.0
+To:     <paulmck@linux.vnet.ibm.com>
+CC:     Will Deacon <will.deacon@arm.com>,
+        Peter Zijlstra <peterz@infradead.org>,
         "Michael S. Tsirkin" <mst@redhat.com>,
-        linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
-        linux-arch@vger.kernel.org,
+        <linux-kernel@vger.kernel.org>, "Arnd Bergmann" <arnd@arndb.de>,
+        <linux-arch@vger.kernel.org>,
         Andrew Cooper <andrew.cooper3@citrix.com>,
         Russell King - ARM Linux <linux@arm.linux.org.uk>,
-        virtualization@lists.linux-foundation.org,
+        <virtualization@lists.linux-foundation.org>,
         Stefano Stabellini <stefano.stabellini@eu.citrix.com>,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@elte.hu>, "H. Peter Anvin" <hpa@zytor.com>,
         Joe Perches <joe@perches.com>,
-        David Miller <davem@davemloft.net>, linux-ia64@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-metag@vger.kernel.org, linux-mips@linux-mips.org,
-        x86@kernel.org, user-mode-linux-devel@lists.sourceforge.net,
-        adi-buildroot-devel@lists.sourceforge.net,
-        linux-sh@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        xen-devel@lists.xenproject.org, Ralf Baechle <ralf@linux-mips.org>,
-        Ingo Molnar <mingo@kernel.org>, ddaney.cavm@gmail.com,
-        james.hogan@imgtec.com, Michael Ellerman <mpe@ellerman.id.au>
+        David Miller <davem@davemloft.net>,
+        <linux-ia64@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>,
+        <linux-s390@vger.kernel.org>, <sparclinux@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-metag@vger.kernel.org>, <linux-mips@linux-mips.org>,
+        <x86@kernel.org>, <user-mode-linux-devel@lists.sourceforge.net>,
+        <adi-buildroot-devel@lists.sourceforge.net>,
+        <linux-sh@vger.kernel.org>, <linux-xtensa@linux-xtensa.org>,
+        <xen-devel@lists.xenproject.org>,
+        "Ralf Baechle" <ralf@linux-mips.org>,
+        Ingo Molnar <mingo@kernel.org>, <ddaney.cavm@gmail.com>,
+        <james.hogan@imgtec.com>, Michael Ellerman <mpe@ellerman.id.au>
 Subject: Re: [v3,11/41] mips: reuse asm-generic/barrier.h
-Message-ID: <20160114213440.GG3818@linux.vnet.ibm.com>
-Reply-To: paulmck@linux.vnet.ibm.com
-References: <569565DA.2010903@imgtec.com>
- <20160113104516.GE25458@arm.com>
- <56969F4B.7070001@imgtec.com>
- <20160113204844.GV6357@twins.programming.kicks-ass.net>
- <5696BA6E.4070508@imgtec.com>
- <20160114120445.GB15828@arm.com>
- <20160114161604.GT3818@linux.vnet.ibm.com>
- <5697FA0A.6040601@imgtec.com>
- <20160114201513.GI6357@twins.programming.kicks-ass.net>
- <56980933.2020801@imgtec.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <56980933.2020801@imgtec.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-TM-AS-MML: disable
-X-Content-Scanned: Fidelis XPS MAILER
-x-cbid: 16011421-8236-0000-0000-0000153308DE
-Return-Path: <paulmck@linux.vnet.ibm.com>
+References: <20160112102555.GV6373@twins.programming.kicks-ass.net> <20160112104012.GW6373@twins.programming.kicks-ass.net> <20160112114111.GB15737@arm.com> <569565DA.2010903@imgtec.com> <20160113104516.GE25458@arm.com> <5696CF08.8080700@imgtec.com> <20160114121449.GC15828@arm.com> <5697F6D2.60409@imgtec.com> <20160114203430.GC3818@linux.vnet.ibm.com> <56980C91.1010403@imgtec.com> <20160114212913.GF3818@linux.vnet.ibm.com>
+In-Reply-To: <20160114212913.GF3818@linux.vnet.ibm.com>
+Content-Type: text/plain; charset="windows-1252"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.20.3.92]
+Return-Path: <Leonid.Yegoshin@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51135
+X-archive-position: 51136
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paulmck@linux.vnet.ibm.com
+X-original-sender: Leonid.Yegoshin@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -94,48 +69,35 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Jan 14, 2016 at 12:46:43PM -0800, Leonid Yegoshin wrote:
-> On 01/14/2016 12:15 PM, Peter Zijlstra wrote:
-> >On Thu, Jan 14, 2016 at 11:42:02AM -0800, Leonid Yegoshin wrote:
-> >>An the only point - please use an appropriate SYNC_* barriers instead of
-> >>heavy bold hammer. That stuff was design explicitly to support the
-> >>requirements of Documentation/memory-barriers.txt
-> >That's madness. That document changes from version to version as to what
-> >we _think_ the actual hardware does. It is _NOT_ a specification.
-> >
-> >You cannot design hardware from that. Its incomplete and fails to
-> >specify a bunch of things. It not a mathematically sound definition of a
-> >memory model.
-> >
-> >Please stop referring to that document for what a particular barrier
-> >_should_ do.  Explain what MIPS does, so we can attempt to integrate
-> >this knowledge with our knowledge of PPC/ARM/Alpha/x86/etc. and improve
-> >upon our understanding of hardware and improve the Linux memory model.
-> 
-> I am afraid I can't help you here. It is very complicated stuff and
-> a model is actually doesn't fit your assumptions about CPUs well
-> without some simplifications which are based on what you want to
-> have.
-> 
-> I say that SYNC_ACQUIRE/etc follows what you expect for smp_acquire
-> etc (basing on that document). And at least two CPU models were
-> tested with my patches (see it in LMO) for that last year and that
-> instructions are implemented now in engineering kernel.
-> 
-> If you have something else in mind, you can ask me. But I prefer to
-> do not deviate too much from Documentation/memory-barriers.txt, for
-> exam - if it asks to have memory barrier somewhere, then I assume
-> the code should have it, and please - don't ask me a test which
-> violates the current version of document recommendations.
-> 
-> For a moment I don't see a significant changes in this document for
-> MIPS Arch at least 1.5 year, and the only significant point is that
-> MIPS CPU Arch doesn't have yet smp_read_barrier_depends() and
-> smp_rmb() should be used instead.
+On 01/14/2016 01:29 PM, Paul E. McKenney wrote:
+>
+>> On 01/14/2016 12:34 PM, Paul E. McKenney wrote:
+>>>
+>>> The WRC+addr+addr is OK because data dependencies are not required to be
+>>> transitive, in other words, they are not required to flow from one CPU to
+>>> another without the help of an explicit memory barrier.
+>> I don't see any reliable way to fit WRC+addr+addr into "DATA
+>> DEPENDENCY BARRIERS" section recommendation to have data dependency
+>> barrier between read of a shared pointer/index and read the shared
+>> data based on that pointer. If you have this two reads, it doesn't
+>> matter the rest of scenario, you should put the dependency barrier
+>> in code anyway. If you don't do it in WRC+addr+addr scenario then
+>> after years it can be easily changed to different scenario which
+>> fits some of scenario in "DATA DEPENDENCY BARRIERS" section and
+>> fails.
+> The trick is that lockless_dereference() contains an
+> smp_read_barrier_depends():
+>
+> #define lockless_dereference(p) \
+> ({ \
+> 	typeof(p) _________p1 = READ_ONCE(p); \
+> 	smp_read_barrier_depends(); /* Dependency order vs. p above. */ \
+> 	(_________p1); \
+> })
+>
+> Or am I missing your point?
 
-Is SYNC_ACQUIRE a memory-barrier instruction that orders prior loads
-against later loads and stores?  If so, and if MIPS does not do
-ordering based on address and data dependencies, I suggest making
-read_barrier_depends() be a SYNC_ACQUIRE rather than SYNC_RMB.
+WRC+addr+addr has no any barrier. lockless_dereference() has a barrier. 
+I don't see a common points between this and that in your answer, sorry.
 
-							Thanx, Paul
+- Leonid.

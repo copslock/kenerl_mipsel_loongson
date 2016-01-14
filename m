@@ -1,54 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Jan 2016 09:21:58 +0100 (CET)
-Received: from mail-wm0-f44.google.com ([74.125.82.44]:34868 "EHLO
-        mail-wm0-f44.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007755AbcANIV4to4Ur (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 14 Jan 2016 09:21:56 +0100
-Received: by mail-wm0-f44.google.com with SMTP id f206so330306153wmf.0
-        for <linux-mips@linux-mips.org>; Thu, 14 Jan 2016 00:21:56 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Jan 2016 09:45:51 +0100 (CET)
+Received: from mail-io0-f180.google.com ([209.85.223.180]:36215 "EHLO
+        mail-io0-f180.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007755AbcANIpt71hBm (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 14 Jan 2016 09:45:49 +0100
+Received: by mail-io0-f180.google.com with SMTP id g73so251532251ioe.3
+        for <linux-mips@linux-mips.org>; Thu, 14 Jan 2016 00:45:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id;
-        bh=/H9UnZggMzFyqHPt5lMEj1lkNFQp+6bw15umnWhXMBs=;
-        b=pUSpl+W0QlhbY6zcWTBjMTVHzHN8wNSOpqOFwEWm0qoPEKXy4WodIIGZKLkLWVlfve
-         zwdgrWGHzcCqdhDBvQAxp6cSnCSBU7op2s8MF4jmdYYCanhnTyximoJqHJjPAiKuLrTm
-         Wj6+zb1EqMC4m7L7zDZ4P9CGnhh69FA30J3PJqAVCCLfC/a4kwAVi0UYE+YjPtgzENC8
-         R27Av+NEM+G3VewUdGiKP6TADlwmGErVGHgG6ETKu+fgNLC0o91syWpJVs3vcIpu1Ebv
-         kaqQYdcxsLuBBm+hkUcyJmvW4E8osi4tDq86AKoxN++f2/ndhJyUM1fzUlUbXiQUXINS
-         cTlQ==
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type;
+        bh=DH6by+zxdcqdZx7FKPQ2PkcJrSQl2NRGtS5+2S5mSgE=;
+        b=aoaWdcrapc7JJzuVGE8dprB4idbyAyE0EscwfXuTKZrepb5QoG8Lm8oSpkR/Ki7qOk
+         Zw/86t08KaAEdVss+rXU5ZtW3BIgtfW6uao0cQLV6SJZAY6782CFnUxJKa0ihsSHmdPi
+         WU00ZQso6Vl7HOhiIS9kAyQDhbzCFc8C+wGuVptQz97230ZDiBoxpOEhWgNdvvzcogBa
+         KacOQVrSUIHCAk+zMdjDDZeDTj/Dn6Z+QTh6SoTjC9rO+GaMZGbB/vqjXvFkOydzEJrF
+         MtQCx5YGunwnuX2EqC7EmcXksoq5VnGltHIBJuk7sOgKx0IgAgtP2glvVsH2tNk9BoyR
+         M4jQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=/H9UnZggMzFyqHPt5lMEj1lkNFQp+6bw15umnWhXMBs=;
-        b=LNAfxU9mqoqjW939vApYa318I9u3jdU3znHwR+qnnUwzwsVJnGlCPEZwTMQSAdHROp
-         3zRfYhKr+4o47kUYur6p8pc1eUIP/OpCBNiCNtQnqoUo9XMonueygqu2iiwucU6q1tKt
-         MrR/wT7GHGBrr3J6WCHe45bsfZiyo7WyU77gejqzTFB6pqbadayAPc0NneaHcA3jMVSS
-         ghoqcTxKNbedPISj8VazxYr/vzaPu6zIw7GrriBsIiA6AzCSlr1PywrbFCHlQMTKaTMd
-         2+pxa29n8Su9cG8RZpb3ow29U17V75JlGNgTjtNV5hK9Xl0je70idq/JSYV4Ruz8AUKq
-         zWkw==
-X-Gm-Message-State: ALoCoQnNHyif7xPk8o9LYhiGtBb01Xh0+8vS+PZlyWDNXLjgRmhHhSZDPiU0uGzU7llux7RB4WMLOk8VU73TUke+zmD1np72og==
-X-Received: by 10.112.209.99 with SMTP id ml3mr742893lbc.26.1452759711525;
-        Thu, 14 Jan 2016 00:21:51 -0800 (PST)
-Received: from localhost.localdomain (ppp109-252-26-184.pppoe.spdop.ru. [109.252.26.184])
-        by smtp.gmail.com with ESMTPSA id tv1sm267673lbb.4.2016.01.14.00.21.50
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Thu, 14 Jan 2016 00:21:50 -0800 (PST)
-From:   Antony Pavlov <antonynpavlov@gmail.com>
-To:     linux-mips@linux-mips.org
-Cc:     Antony Pavlov <antonynpavlov@gmail.com>,
-        Alban Bedel <albeu@free.fr>, devicetree@vger.kernel.org
-Subject: [PATCH] MIPS: dts: tl_wr1043nd_v1: fix "aliases" node name
-Date:   Thu, 14 Jan 2016 11:20:57 +0300
-Message-Id: <1452759657-7114-1-git-send-email-antonynpavlov@gmail.com>
-X-Mailer: git-send-email 2.6.2
-Return-Path: <antonynpavlov@gmail.com>
+        h=x-gm-message-state:mime-version:in-reply-to:references:date
+         :message-id:subject:from:to:cc:content-type;
+        bh=DH6by+zxdcqdZx7FKPQ2PkcJrSQl2NRGtS5+2S5mSgE=;
+        b=mGbJ4nfokhnMd/JhTtN0V2JTmGQdMMDKDPtY26ByEAp62KW93PkTiMrlYgHr/XyaHl
+         rNp/V+N5TixRLfPZZnx2IAWvxi0q4l54NKvnMoR+6dpTF5CTZq86f9KfY82SkvMmVyzS
+         Sel4/dwgiwJGQTlpl3HMfWjRO2qZjpoCUHsz+utuzQ4koDd6dCvc6a96yBjo/kUA/hFf
+         qOGAUFZuz4ADDNHyQEjR0VWBClNrNS24UFz+ap5pmjxwYBKdbSt9JxJgWRsVAOeVxKAM
+         Qa2QMk7ayXXCd2Ubat90jZOhJojxTYrr+rXIOu7z7b8gsGDx3/WA8Eg/W8j60tL9WOeA
+         Ci4w==
+X-Gm-Message-State: ALoCoQnxo+6zVRQ9/Vk26m0ITNCDqLdhqhQvh3tcBbbrdQqb7JXpt/UUFCLyHsFohepYc834AYbjTsF2nxC9AoQxARsuPqoXcw==
+MIME-Version: 1.0
+X-Received: by 10.107.168.203 with SMTP id e72mr3512254ioj.96.1452761144181;
+ Thu, 14 Jan 2016 00:45:44 -0800 (PST)
+Received: by 10.107.149.16 with HTTP; Thu, 14 Jan 2016 00:45:44 -0800 (PST)
+In-Reply-To: <8128014.DbbgBtKY3z@wuerfel>
+References: <8128014.DbbgBtKY3z@wuerfel>
+Date:   Thu, 14 Jan 2016 09:45:44 +0100
+Message-ID: <CACna6rwAUh+LTBAepMTy1ZT7QhRYFPFmP5wPxyyQVb29gFwQYg@mail.gmail.com>
+Subject: Re: [PATCH] ssb: host_soc depends on sprom
+From:   =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        Hauke Mehrtens <hauke@hauke-m.de>, Michael Buesch <m@bues.ch>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Network Development <netdev@vger.kernel.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <zajec5@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51113
+X-archive-position: 51114
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: antonynpavlov@gmail.com
+X-original-sender: zajec5@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -61,36 +68,18 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The correct name for aliases node is "aliases" not "alias".
+On 13 January 2016 at 23:51, Arnd Bergmann <arnd@arndb.de> wrote:
+> Drivers that use the SSB sprom functionality typically 'select SSB_SPROM'
+> from Kconfig, but CONFIG_SSB_HOST_SOC misses this, which results in
+> a build failure unless at least one of the other drivers that selects
+> it is enabled:
+>
+> drivers/built-in.o: In function `ssb_host_soc_get_invariants':
+> (.text+0x459494): undefined reference to `ssb_fill_sprom_with_fallback'
+>
+> This adds the same select statement that is used elsewhere.
+>
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> Fixes: 541c9a84cd85 ("ssb: pick SoC invariants code from MIPS BCM47xx arch")
 
-An overview of the "aliases" node usage can be found
-on the device tree usage page at devicetree.org [1].
-
-Also please see chapter 3.3 ("Aliases node") of the ePAPR 1.1 [2].
-
-[1] http://devicetree.org/Device_Tree_Usage#aliases_Node
-[2] https://www.power.org/documentation/epapr-version-1-1/
-
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: Alban Bedel <albeu@free.fr>
-Cc: linux-mips@linux-mips.org
-Cc: devicetree@vger.kernel.org
----
- arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts b/arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts
-index 003015a..4b6d38c 100644
---- a/arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts
-+++ b/arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts
-@@ -9,7 +9,7 @@
- 	compatible = "tplink,tl-wr1043nd-v1", "qca,ar9132";
- 	model = "TP-Link TL-WR1043ND Version 1";
- 
--	alias {
-+	aliases {
- 		serial0 = "/ahb/apb/uart@18020000";
- 	};
- 
--- 
-2.6.2
+I missed this dependency, thanks, patch looks OK.

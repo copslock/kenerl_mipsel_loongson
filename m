@@ -1,41 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Jan 2016 09:11:10 +0100 (CET)
-Received: from www.linutronix.de ([62.245.132.108]:58492 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27007755AbcANILHECwir (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 14 Jan 2016 09:11:07 +0100
-Received: from localhost ([127.0.0.1])
-        by Galois.linutronix.de with esmtps (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:256)
-        (Exim 4.80)
-        (envelope-from <tglx@linutronix.de>)
-        id 1aJczo-0001dv-OB; Thu, 14 Jan 2016 09:11:04 +0100
-Date:   Thu, 14 Jan 2016 09:10:09 +0100 (CET)
-From:   Thomas Gleixner <tglx@linutronix.de>
-To:     Joshua Henderson <joshua.henderson@microchip.com>
-cc:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        ralf@linux-mips.org,
-        Cristian Birsan <cristian.birsan@microchip.com>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Marc Zyngier <marc.zyngier@arm.com>
-Subject: Re: [PATCH v5 02/14] irqchip: irq-pic32-evic: Add support for PIC32
- interrupt controller
-In-Reply-To: <1452734299-460-3-git-send-email-joshua.henderson@microchip.com>
-Message-ID: <alpine.DEB.2.11.1601140901210.3575@nanos>
-References: <1452734299-460-1-git-send-email-joshua.henderson@microchip.com> <1452734299-460-3-git-send-email-joshua.henderson@microchip.com>
-User-Agent: Alpine 2.11 (DEB 23 2013-08-11)
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
-Return-Path: <tglx@linutronix.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Jan 2016 09:21:58 +0100 (CET)
+Received: from mail-wm0-f44.google.com ([74.125.82.44]:34868 "EHLO
+        mail-wm0-f44.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007755AbcANIV4to4Ur (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 14 Jan 2016 09:21:56 +0100
+Received: by mail-wm0-f44.google.com with SMTP id f206so330306153wmf.0
+        for <linux-mips@linux-mips.org>; Thu, 14 Jan 2016 00:21:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id;
+        bh=/H9UnZggMzFyqHPt5lMEj1lkNFQp+6bw15umnWhXMBs=;
+        b=pUSpl+W0QlhbY6zcWTBjMTVHzHN8wNSOpqOFwEWm0qoPEKXy4WodIIGZKLkLWVlfve
+         zwdgrWGHzcCqdhDBvQAxp6cSnCSBU7op2s8MF4jmdYYCanhnTyximoJqHJjPAiKuLrTm
+         Wj6+zb1EqMC4m7L7zDZ4P9CGnhh69FA30J3PJqAVCCLfC/a4kwAVi0UYE+YjPtgzENC8
+         R27Av+NEM+G3VewUdGiKP6TADlwmGErVGHgG6ETKu+fgNLC0o91syWpJVs3vcIpu1Ebv
+         kaqQYdcxsLuBBm+hkUcyJmvW4E8osi4tDq86AKoxN++f2/ndhJyUM1fzUlUbXiQUXINS
+         cTlQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=/H9UnZggMzFyqHPt5lMEj1lkNFQp+6bw15umnWhXMBs=;
+        b=LNAfxU9mqoqjW939vApYa318I9u3jdU3znHwR+qnnUwzwsVJnGlCPEZwTMQSAdHROp
+         3zRfYhKr+4o47kUYur6p8pc1eUIP/OpCBNiCNtQnqoUo9XMonueygqu2iiwucU6q1tKt
+         MrR/wT7GHGBrr3J6WCHe45bsfZiyo7WyU77gejqzTFB6pqbadayAPc0NneaHcA3jMVSS
+         ghoqcTxKNbedPISj8VazxYr/vzaPu6zIw7GrriBsIiA6AzCSlr1PywrbFCHlQMTKaTMd
+         2+pxa29n8Su9cG8RZpb3ow29U17V75JlGNgTjtNV5hK9Xl0je70idq/JSYV4Ruz8AUKq
+         zWkw==
+X-Gm-Message-State: ALoCoQnNHyif7xPk8o9LYhiGtBb01Xh0+8vS+PZlyWDNXLjgRmhHhSZDPiU0uGzU7llux7RB4WMLOk8VU73TUke+zmD1np72og==
+X-Received: by 10.112.209.99 with SMTP id ml3mr742893lbc.26.1452759711525;
+        Thu, 14 Jan 2016 00:21:51 -0800 (PST)
+Received: from localhost.localdomain (ppp109-252-26-184.pppoe.spdop.ru. [109.252.26.184])
+        by smtp.gmail.com with ESMTPSA id tv1sm267673lbb.4.2016.01.14.00.21.50
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Thu, 14 Jan 2016 00:21:50 -0800 (PST)
+From:   Antony Pavlov <antonynpavlov@gmail.com>
+To:     linux-mips@linux-mips.org
+Cc:     Antony Pavlov <antonynpavlov@gmail.com>,
+        Alban Bedel <albeu@free.fr>, devicetree@vger.kernel.org
+Subject: [PATCH] MIPS: dts: tl_wr1043nd_v1: fix "aliases" node name
+Date:   Thu, 14 Jan 2016 11:20:57 +0300
+Message-Id: <1452759657-7114-1-git-send-email-antonynpavlov@gmail.com>
+X-Mailer: git-send-email 2.6.2
+Return-Path: <antonynpavlov@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51112
+X-archive-position: 51113
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tglx@linutronix.de
+X-original-sender: antonynpavlov@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,60 +61,36 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, 13 Jan 2016, Joshua Henderson wrote:
-> +static int pic32_set_type_edge(struct irq_data *data,
-> +			       unsigned int flow_type)
-> +{
-> +	struct evic_chip_data *priv = irqd_to_priv(data);
-> +	int ret;
-> +	int i;
-> +
-> +	if (!(flow_type & IRQ_TYPE_EDGE_BOTH))
-> +		return -EBADR;
-> +
-> +	/* set polarity for external interrupts only */
-> +	for (i = 0; i < ARRAY_SIZE(priv->ext_irqs); i++) {
-> +		if (priv->ext_irqs[i] == data->hwirq) {
-> +			ret = pic32_set_ext_polarity(i + 1, flow_type);
-> +			if (ret)
-> +				return ret;
-> +		}
-> +	}
-> +
-> +	irqd_set_trigger_type(data, flow_type);
+The correct name for aliases node is "aliases" not "alias".
 
-The core code handles that already.
+An overview of the "aliases" node usage can be found
+on the device tree usage page at devicetree.org [1].
 
-> +static int pic32_irq_domain_map(struct irq_domain *d, unsigned int virq,
-> +				irq_hw_number_t hw)
-> +{
-> +	struct evic_chip_data *priv = d->host_data;
-> +	struct irq_data *data;
-> +	int ret;
-> +	u32 iecclr, ifsclr;
-> +	u32 reg, mask;
-> +
-> +	ret = irq_map_generic_chip(d, virq, hw);
-> +	if (ret)
-> +		return ret;
-> +
-> +	/*
-> +	 * Piggyback on xlate function to move to an alternate chip as necessary
-> +	 * at time of mapping instead of allowing the flow handler/chip to be
-> +	 * changed later. This requires all interrupts to be configured through
-> +	 * DT.
-> +	 */
-> +	if (priv->irq_types[hw] & IRQ_TYPE_SENSE_MASK) {
-> +		data = irq_domain_get_irq_data(d, virq);
-> +		irqd_set_trigger_type(data, priv->irq_types[hw]);
-> +		irq_setup_alt_chip(data, priv->irq_types[hw]);
-> +	}
+Also please see chapter 3.3 ("Aliases node") of the ePAPR 1.1 [2].
 
-I like that approach.
+[1] http://devicetree.org/Device_Tree_Usage#aliases_Node
+[2] https://www.power.org/documentation/epapr-version-1-1/
 
-So except for the nit in pic32_set_type_edge() this looks good. It's pretty
-clear now what the code does and how the hardware works.
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: Alban Bedel <albeu@free.fr>
+Cc: linux-mips@linux-mips.org
+Cc: devicetree@vger.kernel.org
+---
+ arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Thanks for following up!
-
-       tglx
+diff --git a/arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts b/arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts
+index 003015a..4b6d38c 100644
+--- a/arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts
++++ b/arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts
+@@ -9,7 +9,7 @@
+ 	compatible = "tplink,tl-wr1043nd-v1", "qca,ar9132";
+ 	model = "TP-Link TL-WR1043ND Version 1";
+ 
+-	alias {
++	aliases {
+ 		serial0 = "/ahb/apb/uart@18020000";
+ 	};
+ 
+-- 
+2.6.2

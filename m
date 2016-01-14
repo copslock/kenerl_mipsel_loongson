@@ -1,63 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Jan 2016 21:46:33 +0100 (CET)
-Received: from bombadil.infradead.org ([198.137.202.9]:45456 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008357AbcANUqbDYPGp (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 14 Jan 2016 21:46:31 +0100
-Received: from j217066.upc-j.chello.nl ([24.132.217.66] helo=twins)
-        by bombadil.infradead.org with esmtpsa (Exim 4.80.1 #2 (Red Hat Linux))
-        id 1aJomb-0001Uh-4t; Thu, 14 Jan 2016 20:46:13 +0000
-Received: by twins (Postfix, from userid 1000)
-        id CB6BA1257A0D8; Thu, 14 Jan 2016 21:46:10 +0100 (CET)
-Date:   Thu, 14 Jan 2016 21:46:10 +0100
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-Cc:     paulmck@linux.vnet.ibm.com, Will Deacon <will.deacon@arm.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Jan 2016 21:46:55 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:36055 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27008357AbcANUqxDFKZp (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 14 Jan 2016 21:46:53 +0100
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Websense Email Security Gateway with ESMTPS id 1946D4865EAE4;
+        Thu, 14 Jan 2016 20:46:43 +0000 (GMT)
+Received: from BAMAIL02.ba.imgtec.org (10.20.40.28) by HHMAIL01.hh.imgtec.org
+ (10.100.10.19) with Microsoft SMTP Server (TLS) id 14.3.235.1; Thu, 14 Jan
+ 2016 20:46:46 +0000
+Received: from [10.20.3.92] (10.20.3.92) by bamail02.ba.imgtec.org
+ (10.20.40.28) with Microsoft SMTP Server (TLS) id 14.3.174.1; Thu, 14 Jan
+ 2016 12:46:44 -0800
+Message-ID: <56980933.2020801@imgtec.com>
+Date:   Thu, 14 Jan 2016 12:46:43 -0800
+From:   Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.2.0
+MIME-Version: 1.0
+To:     Peter Zijlstra <peterz@infradead.org>
+CC:     <paulmck@linux.vnet.ibm.com>, Will Deacon <will.deacon@arm.com>,
         "Michael S. Tsirkin" <mst@redhat.com>,
-        linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
-        linux-arch@vger.kernel.org,
+        <linux-kernel@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+        <linux-arch@vger.kernel.org>,
         Andrew Cooper <andrew.cooper3@citrix.com>,
         Russell King - ARM Linux <linux@arm.linux.org.uk>,
-        virtualization@lists.linux-foundation.org,
+        <virtualization@lists.linux-foundation.org>,
         Stefano Stabellini <stefano.stabellini@eu.citrix.com>,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@elte.hu>, "H. Peter Anvin" <hpa@zytor.com>,
         Joe Perches <joe@perches.com>,
-        David Miller <davem@davemloft.net>, linux-ia64@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-metag@vger.kernel.org, linux-mips@linux-mips.org,
-        x86@kernel.org, user-mode-linux-devel@lists.sourceforge.net,
-        adi-buildroot-devel@lists.sourceforge.net,
-        linux-sh@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        xen-devel@lists.xenproject.org, Ralf Baechle <ralf@linux-mips.org>,
-        Ingo Molnar <mingo@kernel.org>, ddaney.cavm@gmail.com,
-        james.hogan@imgtec.com, Michael Ellerman <mpe@ellerman.id.au>
+        David Miller <davem@davemloft.net>,
+        <linux-ia64@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>,
+        <linux-s390@vger.kernel.org>, <sparclinux@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-metag@vger.kernel.org>, <linux-mips@linux-mips.org>,
+        <x86@kernel.org>, <user-mode-linux-devel@lists.sourceforge.net>,
+        <adi-buildroot-devel@lists.sourceforge.net>,
+        <linux-sh@vger.kernel.org>, <linux-xtensa@linux-xtensa.org>,
+        <xen-devel@lists.xenproject.org>,
+        "Ralf Baechle" <ralf@linux-mips.org>,
+        Ingo Molnar <mingo@kernel.org>, <ddaney.cavm@gmail.com>,
+        <james.hogan@imgtec.com>, Michael Ellerman <mpe@ellerman.id.au>
 Subject: Re: [v3,11/41] mips: reuse asm-generic/barrier.h
-Message-ID: <20160114204610.GA6373@twins.programming.kicks-ass.net>
-References: <20160112114111.GB15737@arm.com>
- <569565DA.2010903@imgtec.com>
- <20160113104516.GE25458@arm.com>
- <56969F4B.7070001@imgtec.com>
- <20160113204844.GV6357@twins.programming.kicks-ass.net>
- <5696BA6E.4070508@imgtec.com>
- <20160114120445.GB15828@arm.com>
- <20160114161604.GT3818@linux.vnet.ibm.com>
- <5697FA0A.6040601@imgtec.com>
- <20160114201513.GI6357@twins.programming.kicks-ass.net>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+References: <20160112104012.GW6373@twins.programming.kicks-ass.net> <20160112114111.GB15737@arm.com> <569565DA.2010903@imgtec.com> <20160113104516.GE25458@arm.com> <56969F4B.7070001@imgtec.com> <20160113204844.GV6357@twins.programming.kicks-ass.net> <5696BA6E.4070508@imgtec.com> <20160114120445.GB15828@arm.com> <20160114161604.GT3818@linux.vnet.ibm.com> <5697FA0A.6040601@imgtec.com> <20160114201513.GI6357@twins.programming.kicks-ass.net>
 In-Reply-To: <20160114201513.GI6357@twins.programming.kicks-ass.net>
-User-Agent: Mutt/1.5.21 (2012-12-30)
-Return-Path: <peterz@infradead.org>
+Content-Type: text/plain; charset="windows-1252"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.20.3.92]
+Return-Path: <Leonid.Yegoshin@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51129
+X-archive-position: 51130
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: peterz@infradead.org
+X-original-sender: Leonid.Yegoshin@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -70,65 +68,41 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Jan 14, 2016 at 09:15:13PM +0100, Peter Zijlstra wrote:
+On 01/14/2016 12:15 PM, Peter Zijlstra wrote:
 > On Thu, Jan 14, 2016 at 11:42:02AM -0800, Leonid Yegoshin wrote:
-> > An the only point - please use an appropriate SYNC_* barriers instead of
-> > heavy bold hammer. That stuff was design explicitly to support the
-> > requirements of Documentation/memory-barriers.txt
-> 
+>> An the only point - please use an appropriate SYNC_* barriers instead of
+>> heavy bold hammer. That stuff was design explicitly to support the
+>> requirements of Documentation/memory-barriers.txt
 > That's madness. That document changes from version to version as to what
 > we _think_ the actual hardware does. It is _NOT_ a specification.
-> 
+>
 > You cannot design hardware from that. Its incomplete and fails to
 > specify a bunch of things. It not a mathematically sound definition of a
 > memory model.
-> 
+>
 > Please stop referring to that document for what a particular barrier
 > _should_ do.  Explain what MIPS does, so we can attempt to integrate
 > this knowledge with our knowledge of PPC/ARM/Alpha/x86/etc. and improve
 > upon our understanding of hardware and improve the Linux memory model.
 
-That is, if you'd managed to read that file at the right point in time,
-you might have through we'd be OK with requiring a barrier for
-control dependencies.
+I am afraid I can't help you here. It is very complicated stuff and a 
+model is actually doesn't fit your assumptions about CPUs well without 
+some simplifications which are based on what you want to have.
 
-We got rid of that mistake. It was based on a flawed reading of the
-Alpha docs. See: 105ff3cbf225 ("atomic: remove all traces of
-READ_ONCE_CTRL() and atomic*_read_ctrl()")
+I say that SYNC_ACQUIRE/etc follows what you expect for smp_acquire etc 
+(basing on that document). And at least two CPU models were tested with 
+my patches (see it in LMO) for that last year and that instructions are 
+implemented now in engineering kernel.
 
-Similarly, while the document goes to great length to explain the
-read_barrier_depends thing, nobody actually thinks its a brilliant idea
-to have. Ideally we'd kill the thing the moment we drop Alpha support.
+If you have something else in mind, you can ask me. But I prefer to do 
+not deviate too much from Documentation/memory-barriers.txt, for exam - 
+if it asks to have memory barrier somewhere, then I assume the code 
+should have it, and please - don't ask me a test which violates the 
+current version of document recommendations.
 
-Again, memory-barriers.txt is _NOT_, I repeat, _NOT_ a hardware spec, it
-is not even a recommendation. It are our best effort (but flawed)
-scribbles of what we think is makes sense given the huge amount of
-actual hardware we have to run on.
+For a moment I don't see a significant changes in this document for MIPS 
+Arch at least 1.5 year, and the only significant point is that MIPS CPU 
+Arch doesn't have yet smp_read_barrier_depends() and smp_rmb() should be 
+used instead.
 
-
-As to the ACQUIRE/RELEASE semantics, ARM64 actually has
-multi-copy-atomic acquire/release (as does ia64, although in reality it
-doesn't actually have acquire/release). PPC otoh does _NOT_ have this,
-and is currently the only arch to suffer RCpc locks.
-
-Now for a long long time we assumed our locks were RCsc, and we've
-written code assuming UNLOCK x + LOCK y was in fact a full barrier with
-transitiviy. Then we figured out PPC didn't actually match that. RCU is
-the only piece of code we _know_ relied on that, but there might be more
-out there...
-
-So we document, for new code, that UNLOCK+LOCK isn't a MB, while at the
-same time we lobby PPC to stick a full barrier in and get rid of this
-stuff.
-
-Nobody really likes RCpc locks, esp. given the history we have of
-assuming RCsc.
-
-The current document allowing for RCpc is not an endorsement thereof.
-Ideally we'd _NOT_ have to worry about that. We can do without these
-head-aches.
-
-
-So again, stop referring to our document as a spec. Also please don't
-make MIPS push the limits of weak memory models, we really can do
-without the pain.
+- Leonid.

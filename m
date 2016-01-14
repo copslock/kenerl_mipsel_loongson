@@ -1,52 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Jan 2016 00:13:54 +0100 (CET)
-Received: from mout.kundenserver.de ([212.227.126.187]:60456 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27010220AbcANXNw0IfOh (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 15 Jan 2016 00:13:52 +0100
-Received: from wuerfel.localnet ([134.3.118.24]) by mrelayeu.kundenserver.de
- (mreue002) with ESMTPSA (Nemesis) id 0LqInx-1ZggdK03If-00e2Sf; Fri, 15 Jan
- 2016 00:13:03 +0100
-From:   Arnd Bergmann <arnd@arndb.de>
-To:     linux-arm-kernel@lists.infradead.org
-Cc:     Kalle Valo <kvalo@codeaurora.org>, linux-mips@linux-mips.org,
-        Hauke Mehrtens <hauke@hauke-m.de>,
-        =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        linux-kernel@vger.kernel.org, Michael Buesch <m@bues.ch>,
-        netdev@vger.kernel.org
-Subject: [PATCH, RESEND] ssb: mark ssb_bus_register as __maybe_unused
-Date:   Fri, 15 Jan 2016 00:13 +0100
-Message-ID: <4037550.DMaVTE01Aq@wuerfel>
-User-Agent: KMail/4.11.5 (Linux/3.16.0-10-generic; KDE/4.11.5; x86_64; ; )
-In-Reply-To: <8760ywd5fe.fsf@kamboji.qca.qualcomm.com>
-References: <8128014.DbbgBtKY3z@wuerfel> <8760ywd5fe.fsf@kamboji.qca.qualcomm.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Jan 2016 00:33:52 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:28762 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27010191AbcANXduI5HX5 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 15 Jan 2016 00:33:50 +0100
+Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
+        by Websense Email Security Gateway with ESMTPS id 4F42015001C15;
+        Thu, 14 Jan 2016 23:33:39 +0000 (GMT)
+Received: from BAMAIL02.ba.imgtec.org (10.20.40.28) by hhmail02.hh.imgtec.org
+ (10.100.10.20) with Microsoft SMTP Server (TLS) id 14.3.235.1; Thu, 14 Jan
+ 2016 23:33:43 +0000
+Received: from [10.20.3.92] (10.20.3.92) by bamail02.ba.imgtec.org
+ (10.20.40.28) with Microsoft SMTP Server (TLS) id 14.3.174.1; Thu, 14 Jan
+ 2016 15:33:41 -0800
+Message-ID: <56983054.4070807@imgtec.com>
+Date:   Thu, 14 Jan 2016 15:33:40 -0800
+From:   Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.2.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-X-Provags-ID: V03:K0:O5X5MmEB3YAo/M0wdSx9OGVPs/bQnMWMKdj2hn/sQqVJAC4T+xq
- MnRmUG9s8Q98ufdbf/fsQAwGhRsUSk6zWmDkliRlO5g8Qn9YcstzqfD/oCGOLi5I2MbsZsw
- uFvbhYgIP+NJ8FLjfbgReHcTGh076rpNVPCMy5zqE/3qIezugtiz0TbPHO/Vzzq5KaRTUv3
- fjFd+dlI43PKWzdN1eDkg==
-X-UI-Out-Filterresults: notjunk:1;V01:K0:CCh0uex/jiM=:FOjYRKn0/ZGy3Jw22VPgs4
- ajvG2nnaKjU5OTmU9hGzi2NGg8riJpMQHWPYNfejIbp+/7c810WKkc50lr90YAy7nDj/ceD0R
- VB+Tt33ATDxjf0lzuD2r52ljCyhY6WHaBL+o1dObag6hwON7VcCt/gFjDIFaz55Sydkrl/VoN
- TSee23At6PzvMb96kv4Z/D2VXQpoTT1p15SchPEKyhTRwSiyiA3urcv9GD8YmEbGtRlBbGwSp
- n2EyUNkoxBmd7BJhTzwKPtePF3SR3Fx8HRle+LDgyWgkQ+Hz4B9rBd/CACyWTh33lXxqfEkIJ
- DFrZAwf/dUigBAJroFo1CYiUYTGu+7+HKhOdYMSVXaVCwYtSMFSds1rmnC7oG3bFdLK9EKKL2
- +jQV3jsafQM2Cvu0E0OJ0wG1rGI7ts8WZV5ssYoEGAamew5fcHRIanTbWH+6M+uTKCcHbN1Ky
- Xyhm+1Ym1lA0KfNvHSap26y6tStBsavzMdIUgwpqfzrqPGvqJMQy0TGiP71GT80XUSdnVz+KO
- kzav0CZTYOSMsjmdOBy+nNfAPkUjrEAQYnn4rZIR0LUOb7+JESO0YXhTUFwIXm8Cjvor5X4FW
- 3kw9FIZSYlHjnbULOPcmPiwMD+Uwe6gUHOJkXtgd0CbiHWjiryTb9mMattUvyXwtmdf3gHfvS
- qGTboPfyE8cmkIz26Rngj3WoMgzI7y0GrbyfQ7Ku9w8nY6Y9H5MBuuekepJcdanHo9LJH6lx+
- WZfqr/bKy9kpS3fw
-Return-Path: <arnd@arndb.de>
+To:     <paulmck@linux.vnet.ibm.com>
+CC:     Will Deacon <will.deacon@arm.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        <linux-kernel@vger.kernel.org>, "Arnd Bergmann" <arnd@arndb.de>,
+        <linux-arch@vger.kernel.org>,
+        Andrew Cooper <andrew.cooper3@citrix.com>,
+        Russell King - ARM Linux <linux@arm.linux.org.uk>,
+        <virtualization@lists.linux-foundation.org>,
+        Stefano Stabellini <stefano.stabellini@eu.citrix.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@elte.hu>, "H. Peter Anvin" <hpa@zytor.com>,
+        Joe Perches <joe@perches.com>,
+        David Miller <davem@davemloft.net>,
+        <linux-ia64@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>,
+        <linux-s390@vger.kernel.org>, <sparclinux@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-metag@vger.kernel.org>, <linux-mips@linux-mips.org>,
+        <x86@kernel.org>, <user-mode-linux-devel@lists.sourceforge.net>,
+        <adi-buildroot-devel@lists.sourceforge.net>,
+        <linux-sh@vger.kernel.org>, <linux-xtensa@linux-xtensa.org>,
+        <xen-devel@lists.xenproject.org>,
+        "Ralf Baechle" <ralf@linux-mips.org>,
+        Ingo Molnar <mingo@kernel.org>, <ddaney.cavm@gmail.com>,
+        <james.hogan@imgtec.com>, Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [v3,11/41] mips: reuse asm-generic/barrier.h
+References: <20160112114111.GB15737@arm.com> <569565DA.2010903@imgtec.com> <20160113104516.GE25458@arm.com> <5696CF08.8080700@imgtec.com> <20160114121449.GC15828@arm.com> <5697F6D2.60409@imgtec.com> <20160114203430.GC3818@linux.vnet.ibm.com> <56980C91.1010403@imgtec.com> <20160114212913.GF3818@linux.vnet.ibm.com> <569814F2.50801@imgtec.com> <20160114225510.GJ3818@linux.vnet.ibm.com>
+In-Reply-To: <20160114225510.GJ3818@linux.vnet.ibm.com>
+Content-Type: text/plain; charset="windows-1252"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.20.3.92]
+Return-Path: <Leonid.Yegoshin@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51143
+X-archive-position: 51144
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arnd@arndb.de
+X-original-sender: Leonid.Yegoshin@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,45 +69,56 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The SoC variant of the ssb code is now optional like the other
-ones, which means we can build the framwork without any
-front-end, but that results in a warning:
+On 01/14/2016 02:55 PM, Paul E. McKenney wrote:
+> OK, so it looks like Will was asking not about WRC+addr+addr, but instead
+> about WRC+sync+addr.
+(He actually asked twice about this and that too but skip this)
 
-drivers/ssb/main.c:616:12: warning: 'ssb_bus_register' defined but not used [-Wunused-function]
+> I am guessing that the manual's "Older instructions which must be globally
+> performed when the SYNC instruction completes" provides the equivalent
+> of ARM/Power A-cumulativity, which can be thought of as transitivity
+> backwards in time.  This leads me to believe that your smp_mb() needs
+> to use SYNC rather than SYNC_MB, as was the subject of earlier spirited
+> discussion in this thread.
 
-This annotates the ssb_bus_register function as __maybe_unused to
-shut up the warning. A configuration like this will not work on
-any hardware of course, but we still want this to silently build
-without warnings if the configuration is allowed in the first
-place.
+Don't be fooled here by words "ordered" and "completed" - it is HW 
+design items and actually written poorly.
+Just assume that SYNC_MB is absolutely the same as SYNC for any CPU and 
+coherent device (besides performance). The difference can be in 
+non-coherent devices because SYNC actually tries to make a barrier for 
+them too. In some SoCs it is just the same because there is no need to 
+barrier a non-coherent device (device register access usually strictly 
+ordered... if there is no bridge in between).
 
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Fixes: 845da6e58e19 ("ssb: add Kconfig entry for compiling SoC related code")
-Acked-by: Michael Buesch <m@bues.ch>
----
+>
+> Suppose you have something like this:
+> ...
+> Does your hardware guarantee that it is not possible for all of r0,
+> r1, r2, and r3 to be equal to zero at the end of the test, assuming
+> that a, b, c, and d are all initially zero, and the four functions
+> above run concurrently?
 
-On Thursday 14 January 2016 08:46:29 Kalle Valo wrote:
-> I can take it. For historical reasons ssb patches go through my
-> wireless-drivers trees.
+It is assumed to be so from Arch point of view. HW bugs are possible, of 
+course.
 
-I found this in my backlog, and I believe it still applies. Can you take
-that one too?
+> Another (more academic) case is this one, with x and y initially zero:
+>
+> ...
+> Does SYNC_MB() prohibit r1 == 1 && r2 == 0 && r3 == 1 && r4 == 0?
 
-diff --git a/drivers/ssb/main.c b/drivers/ssb/main.c
-index cde5ff7529eb..d1a750760cf3 100644
---- a/drivers/ssb/main.c
-+++ b/drivers/ssb/main.c
-@@ -613,9 +613,10 @@ out:
- 	return err;
- }
- 
--static int ssb_bus_register(struct ssb_bus *bus,
--			    ssb_invariants_func_t get_invariants,
--			    unsigned long baseaddr)
-+static int __maybe_unused
-+ssb_bus_register(struct ssb_bus *bus,
-+		 ssb_invariants_func_t get_invariants,
-+		 unsigned long baseaddr)
- {
- 	int err;
- 
+It is assumed to be so from Arch point of view. HW bugs are possible, of 
+course.
+
+Note: I am not sure about ANY past MIPS R2 CPU because that stuff is 
+implemented some time but nobody made it in Linux kernel (it was used by 
+some vendor for non-Linux system). For that reason my patch for 
+lightweight SYNCs has an option - implement it or implement a generic 
+SYNC. It is possible that some vendor did it in different way but nobody 
+knows or test it. But as a minimum - SYNC must be implemented in 
+spinlocks/atomics/bitops, in recent P5600 it is proven that read can 
+pass write in atomics.
+
+MIPS R6 is a different story, I verified lightweight SYNCs from the 
+beginning and it also should use SYNCs.
+
+- Leonid.

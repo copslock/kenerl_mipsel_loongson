@@ -1,37 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Jan 2016 23:21:08 +0100 (CET)
-Received: from e36.co.us.ibm.com ([32.97.110.154]:60299 "EHLO
-        e36.co.us.ibm.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27010191AbcANWVGSW257 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 14 Jan 2016 23:21:06 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Jan 2016 23:24:57 +0100 (CET)
+Received: from e35.co.us.ibm.com ([32.97.110.153]:57868 "EHLO
+        e35.co.us.ibm.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27010191AbcANWYyuR08W (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 14 Jan 2016 23:24:54 +0100
 Received: from localhost
-        by e36.co.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        by e35.co.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
         for <linux-mips@linux-mips.org> from <paulmck@linux.vnet.ibm.com>;
-        Thu, 14 Jan 2016 15:20:59 -0700
+        Thu, 14 Jan 2016 15:24:48 -0700
 Received: from d03dlp03.boulder.ibm.com (9.17.202.179)
-        by e36.co.us.ibm.com (192.168.1.136) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        Thu, 14 Jan 2016 15:20:58 -0700
+        by e35.co.us.ibm.com (192.168.1.135) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        Thu, 14 Jan 2016 15:24:46 -0700
 X-IBM-Helo: d03dlp03.boulder.ibm.com
 X-IBM-MailFrom: paulmck@linux.vnet.ibm.com
 X-IBM-RcptTo: linux-mips@linux-mips.org;ralf@linux-mips.org
-Received: from b03cxnp07029.gho.boulder.ibm.com (b03cxnp07029.gho.boulder.ibm.com [9.17.130.16])
-        by d03dlp03.boulder.ibm.com (Postfix) with ESMTP id 6DBC819D803E;
-        Thu, 14 Jan 2016 15:08:59 -0700 (MST)
+Received: from b03cxnp08025.gho.boulder.ibm.com (b03cxnp08025.gho.boulder.ibm.com [9.17.130.17])
+        by d03dlp03.boulder.ibm.com (Postfix) with ESMTP id 53BD519D804A;
+        Thu, 14 Jan 2016 15:12:47 -0700 (MST)
 Received: from d03av05.boulder.ibm.com (d03av05.boulder.ibm.com [9.17.195.85])
-        by b03cxnp07029.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id u0EMKvRK23593142;
-        Thu, 14 Jan 2016 15:20:57 -0700
+        by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id u0EMOjOZ27459666;
+        Thu, 14 Jan 2016 15:24:45 -0700
 Received: from d03av05.boulder.ibm.com (localhost [127.0.0.1])
-        by d03av05.boulder.ibm.com (8.14.4/8.14.4/NCO v10.0 AVout) with ESMTP id u0EMKmAB000862;
-        Thu, 14 Jan 2016 15:20:57 -0700
+        by d03av05.boulder.ibm.com (8.14.4/8.14.4/NCO v10.0 AVout) with ESMTP id u0EMOX0k012927;
+        Thu, 14 Jan 2016 15:24:45 -0700
 Received: from paulmck-ThinkPad-W541 ([9.70.82.27])
-        by d03av05.boulder.ibm.com (8.14.4/8.14.4/NCO v10.0 AVin) with ESMTP id u0EMKjCQ000621;
-        Thu, 14 Jan 2016 15:20:45 -0700
+        by d03av05.boulder.ibm.com (8.14.4/8.14.4/NCO v10.0 AVin) with ESMTP id u0EMOW14012880;
+        Thu, 14 Jan 2016 15:24:32 -0700
 Received: by paulmck-ThinkPad-W541 (Postfix, from userid 1000)
-        id CB6CF16C064E; Thu, 14 Jan 2016 14:20:46 -0800 (PST)
-Date:   Thu, 14 Jan 2016 14:20:46 -0800
+        id D28F016C1B1C; Thu, 14 Jan 2016 14:24:33 -0800 (PST)
+Date:   Thu, 14 Jan 2016 14:24:33 -0800
 From:   "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>
 To:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-Cc:     Will Deacon <will.deacon@arm.com>,
-        Peter Zijlstra <peterz@infradead.org>,
+Cc:     Peter Zijlstra <peterz@infradead.org>,
+        Will Deacon <will.deacon@arm.com>,
         "Michael S. Tsirkin" <mst@redhat.com>,
         linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
         linux-arch@vger.kernel.org,
@@ -53,31 +53,31 @@ Cc:     Will Deacon <will.deacon@arm.com>,
         Ingo Molnar <mingo@kernel.org>, ddaney.cavm@gmail.com,
         james.hogan@imgtec.com, Michael Ellerman <mpe@ellerman.id.au>
 Subject: Re: [v3,11/41] mips: reuse asm-generic/barrier.h
-Message-ID: <20160114222046.GH3818@linux.vnet.ibm.com>
+Message-ID: <20160114222433.GI3818@linux.vnet.ibm.com>
 Reply-To: paulmck@linux.vnet.ibm.com
-References: <20160112114111.GB15737@arm.com>
- <569565DA.2010903@imgtec.com>
- <20160113104516.GE25458@arm.com>
- <56969F4B.7070001@imgtec.com>
+References: <56969F4B.7070001@imgtec.com>
  <20160113204844.GV6357@twins.programming.kicks-ass.net>
  <5696BA6E.4070508@imgtec.com>
  <20160114120445.GB15828@arm.com>
- <56980145.5030901@imgtec.com>
- <20160114204827.GE3818@linux.vnet.ibm.com>
- <56981212.7050301@imgtec.com>
+ <20160114161604.GT3818@linux.vnet.ibm.com>
+ <5697FA0A.6040601@imgtec.com>
+ <20160114201513.GI6357@twins.programming.kicks-ass.net>
+ <56980933.2020801@imgtec.com>
+ <20160114213440.GG3818@linux.vnet.ibm.com>
+ <56981708.4000007@imgtec.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <56981212.7050301@imgtec.com>
+In-Reply-To: <56981708.4000007@imgtec.com>
 User-Agent: Mutt/1.5.21 (2010-09-15)
 X-TM-AS-MML: disable
 X-Content-Scanned: Fidelis XPS MAILER
-x-cbid: 16011422-0021-0000-0000-0000161C8A17
+x-cbid: 16011422-0013-0000-0000-00001BE5CF65
 Return-Path: <paulmck@linux.vnet.ibm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51139
+X-archive-position: 51140
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -94,141 +94,65 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Jan 14, 2016 at 01:24:34PM -0800, Leonid Yegoshin wrote:
-> On 01/14/2016 12:48 PM, Paul E. McKenney wrote:
-> >
-> >So SYNC_RMB is intended to implement smp_rmb(), correct?
-> Yes.
-> >
-> >You could use SYNC_ACQUIRE() to implement read_barrier_depends() and
-> >smp_read_barrier_depends(), but SYNC_RMB probably does not suffice.
+On Thu, Jan 14, 2016 at 01:45:44PM -0800, Leonid Yegoshin wrote:
+> On 01/14/2016 01:34 PM, Paul E. McKenney wrote:
+> >On Thu, Jan 14, 2016 at 12:46:43PM -0800, Leonid Yegoshin wrote:
+> >>On 01/14/2016 12:15 PM, Peter Zijlstra wrote:
+> >>>On Thu, Jan 14, 2016 at 11:42:02AM -0800, Leonid Yegoshin wrote:
+> >>>>An the only point - please use an appropriate SYNC_* barriers instead of
+> >>>>heavy bold hammer. That stuff was design explicitly to support the
+> >>>>requirements of Documentation/memory-barriers.txt
+> >>>That's madness. That document changes from version to version as to what
+> >>>we _think_ the actual hardware does. It is _NOT_ a specification.
+> >>>
+> >>>You cannot design hardware from that. Its incomplete and fails to
+> >>>specify a bunch of things. It not a mathematically sound definition of a
+> >>>memory model.
+> >>>
+> >>>Please stop referring to that document for what a particular barrier
+> >>>_should_ do.  Explain what MIPS does, so we can attempt to integrate
+> >>>this knowledge with our knowledge of PPC/ARM/Alpha/x86/etc. and improve
+> >>>upon our understanding of hardware and improve the Linux memory model.
+> >>I am afraid I can't help you here. It is very complicated stuff and
+> >>a model is actually doesn't fit your assumptions about CPUs well
+> >>without some simplifications which are based on what you want to
+> >>have.
+> >>
+> >>I say that SYNC_ACQUIRE/etc follows what you expect for smp_acquire
+> >>etc (basing on that document). And at least two CPU models were
+> >>tested with my patches (see it in LMO) for that last year and that
+> >>instructions are implemented now in engineering kernel.
+> >>
+> >>If you have something else in mind, you can ask me. But I prefer to
+> >>do not deviate too much from Documentation/memory-barriers.txt, for
+> >>exam - if it asks to have memory barrier somewhere, then I assume
+> >>the code should have it, and please - don't ask me a test which
+> >>violates the current version of document recommendations.
+> >>
+> >>For a moment I don't see a significant changes in this document for
+> >>MIPS Arch at least 1.5 year, and the only significant point is that
+> >>MIPS CPU Arch doesn't have yet smp_read_barrier_depends() and
+> >>smp_rmb() should be used instead.
 > 
-> If smp_read_barrier_depends() is used to separate not only two reads
-> but read pointer and WRITE basing on that pointer (example below) -
-> yes. I just doesn't see any example of this in famous
-> Documentation/memory-barriers.txt and had no chance to know what you
-> use it in this way too.
-
-Well, Documentation/memory-barriers.txt was intended as a guide for Linux
-kernel hackers, and not for hardware architects.  The need for something
-more precise has become clear over the past year or two, and I am working
-on it with some heavy-duty memory-model folks.  But all previous memory
-models have been for a specific CPU architecture, so doing one for the
-intersection of several is offering up some complications.  I therefore
-cannot yet provide a completion date.
-
-That said, I still suggest use of SYNC_ACQUIRE for read_barrier_depends().
-
-> >The reason for this is that smp_read_barrier_depends() must order the
-> >pointer load against any subsequent read or write through a dereference
-> >of that pointer.
+> >Is SYNC_ACQUIRE a memory-barrier instruction that orders prior loads
+> >against later loads and stores?
 > 
-> I can't see that requirement anywhere in Documents directory. I mean
-> - the words "write through a dereference of that pointer" or similar
-> for smp_read_barrier_depends.
+> Yes, it is in MD00087 (table 6.6 of document Ver 6.04) -
+> https://imgtec.com/?do-download=4302
 
-No worries, I will add one.  Please see the end of this message for an
-initial patch.
+OK, it does look like it should work.  Of course, if you can rely
+on straight address/data dependencies, that would be even better.
 
-Please understand that Documentation/memory-barriers.txt is a living
-document:
-
-v4.4: Two changes
-v4.3: Three changes
-v4.2: Six changes
-v4.1: Three changes
-v4.0: Two changes
-
-It tends to change as we locate corner cases either in hardware or
-in software use cases/APIs.
-
-> >   For example:
-> >
-> >	p = READ_ONCE(gp);
-> >	smp_rmb();
-> >	r1 = p->a; /* ordered by smp_rmb(). */
-> >	p->b = 42; /* NOT ordered by smp_rmb(), BUG!!! */
-> >	r2 = x; /* ordered by smp_rmb(), but doesn't need to be. */
-> >
-> >In contrast:
-> >
-> >	p = READ_ONCE(gp);
-> >	smp_read_barrier_depends();
-> >	r1 = p->a; /* ordered by smp_read_barrier_depends(). */
-> >	p->b = 42; /* ordered by smp_read_barrier_depends(). */
-> >	r2 = x; /* not ordered by smp_read_barrier_depends(), which is OK. */
-> >
-> >Again, if your hardware maintains local ordering for address
-> >and data dependencies, you can have read_barrier_depends() and
-> >smp_read_barrier_depends() be no-ops like they are for most
-> >architectures.
+> >   If so, and if MIPS does not do
+> >ordering based on address and data dependencies, I suggest making
+> >read_barrier_depends() be a SYNC_ACQUIRE rather than SYNC_RMB.
 > 
-> It is not so simple, I mean "local ordering for address and data
-> dependencies". Local ordering is NOT enough. It happens that current
-> MIPS R6 doesn't require in your example smp_read_barrier_depends()
-> but in discussion it comes out that it may not. Because without
-> smp_read_barrier_depends() your example can be a part of Will's
-> WRC+addr+addr and we found some design which easily can bump into
-> this test. And that design actually performs "local ordering for
-> address and data dependencies" too.
+> I understood that, after I see the example of using it.
+> Please consider to add that into Documentation/memory-barriers.txt
+> (it is not easy to find that this barrier is used for shared WRITE
+> basing on shared pointer), it would be helpful.
 
-As noted in another email in this thread, I do not believe that
-WRC+addr+addr needs to be prohibited.  Sounds like Will and I need to
-get our story straight, though.
-
-Will?
+Actually, the Linux kernel doesn't have an acquire barrier, just an
+smp_load_acquire().  Or did someone sneak one in while I wasn't looking?  ;-)
 
 							Thanx, Paul
-
-------------------------------------------------------------------------
-
-commit 955720966e216b00613fcf60188d507c103f0e80
-Author: Paul E. McKenney <paulmck@linux.vnet.ibm.com>
-Date:   Thu Jan 14 14:17:04 2016 -0800
-
-    documentation: Subsequent writes ordered by rcu_dereference()
-    
-    The current memory-barriers.txt does not address the possibility of
-    a write to a dereferenced pointer.  This should be rare, but when it
-    happens, we need that write -not- to be clobbered by the initialization.
-    This commit therefore adds an example showing a data dependency ordering
-    a later data-dependent write.
-    
-    Reported-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-    Signed-off-by: Paul E. McKenney <paulmck@linux.vnet.ibm.com>
-
-diff --git a/Documentation/memory-barriers.txt b/Documentation/memory-barriers.txt
-index f49c15f7864f..c66ba46d8079 100644
---- a/Documentation/memory-barriers.txt
-+++ b/Documentation/memory-barriers.txt
-@@ -555,6 +555,30 @@ between the address load and the data load:
- This enforces the occurrence of one of the two implications, and prevents the
- third possibility from arising.
- 
-+A data-dependency barrier must also order against dependent writes:
-+
-+	CPU 1		      CPU 2
-+	===============	      ===============
-+	{ A == 1, B == 2, C = 3, P == &A, Q == &C }
-+	B = 4;
-+	<write barrier>
-+	WRITE_ONCE(P, &B);
-+			      Q = READ_ONCE(P);
-+			      <data dependency barrier>
-+			      *Q = 5;
-+
-+The data-dependency barrier must order the read into Q with the store
-+into *Q.  This prohibits this outcome:
-+
-+	(Q == B) && (B == 4)
-+
-+Please note that this pattern should be rare.  After all, the whole point
-+of dependency ordering is to -prevent- writes to the data structure, along
-+with the expensive cache misses associated with those writes.  This pattern
-+can be used to record rare error conditions and the like, and the ordering
-+prevents such records from being lost.
-+
-+
- [!] Note that this extremely counterintuitive situation arises most easily on
- machines with split caches, so that, for example, one cache bank processes
- even-numbered cache lines and the other bank processes odd-numbered cache

@@ -1,54 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Jan 2016 02:10:52 +0100 (CET)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Jan 2016 02:11:11 +0100 (CET)
 Received: from exsmtp01.microchip.com ([198.175.253.37]:58961 "EHLO
         email.microchip.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27010453AbcANBKt7H0T9 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 14 Jan 2016 02:10:49 +0100
+        by eddie.linux-mips.org with ESMTP id S27010701AbcANBKufzn39 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 14 Jan 2016 02:10:50 +0100
 Received: from mx.microchip.com (10.10.76.4) by CHN-SV-EXCH01.mchp-main.com
  (10.10.76.37) with Microsoft SMTP Server id 14.3.181.6; Wed, 13 Jan 2016
- 18:10:41 -0700
+ 18:10:48 -0700
 Received: by mx.microchip.com (sSMTP sendmail emulation); Wed, 13 Jan 2016
- 18:18:28 -0700
+ 18:18:35 -0700
 From:   Joshua Henderson <joshua.henderson@microchip.com>
 To:     <linux-kernel@vger.kernel.org>
 CC:     <linux-mips@linux-mips.org>, <ralf@linux-mips.org>,
+        Cristian Birsan <cristian.birsan@microchip.com>,
         Joshua Henderson <joshua.henderson@microchip.com>,
-        Andrei Pistirica <andrei.pistirica@microchip.com>,
-        Andrew Bresticker <abrestic@chromium.org>,
-        Andy Green <andy.green@linaro.org>,
-        Ben Hutchings <ben@decadent.org.uk>,
-        Chaotian Jing <chaotian.jing@mediatek.com>,
-        Corneliu Doban <cdoban@broadcom.com>,
-        <devicetree@vger.kernel.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Jean Delvare <jdelvare@suse.de>,
-        Kevin Hao <haokexin@gmail.com>, <linux-api@vger.kernel.org>,
-        <linux-clk@vger.kernel.org>, <linux-gpio@vger.kernel.org>,
-        <linux-mmc@vger.kernel.org>, <linux-serial@vger.kernel.org>,
-        Lokesh Vutla <lokeshvutla@ti.com>,
-        "ludovic.desroches@atmel.com" <ludovic.desroches@atmel.com>,
-        Luis de Bethencourt <luisbg@osg.samsung.com>,
-        Paul Burton <paul.burton@imgtec.com>,
-        Purna Chandra Mandal <purna.mandal@microchip.com>,
-        Rob Herring <robh@kernel.org>,
-        Scott Branden <sbranden@broadcom.com>,
-        Shawn Lin <shawn.lin@rock-chips.com>,
-        Stephen Boyd <sboyd@codeaurora.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Vincent Yang <vincent.yang.fujitsu@gmail.com>,
-        Weijun Yang <Weijun.Yang@csr.com>,
-        yangbo lu <yangbo.lu@freescale.com>
-Subject: [PATCH v5 00/14] Initial Microchip PIC32MZDA Support
-Date:   Wed, 13 Jan 2016 18:15:33 -0700
-Message-ID: <1452734299-460-1-git-send-email-joshua.henderson@microchip.com>
+        Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Marc Zyngier <marc.zyngier@arm.com>
+Subject: [PATCH v5 02/14] irqchip: irq-pic32-evic: Add support for PIC32 interrupt controller
+Date:   Wed, 13 Jan 2016 18:15:35 -0700
+Message-ID: <1452734299-460-3-git-send-email-joshua.henderson@microchip.com>
 X-Mailer: git-send-email 1.7.9.5
+In-Reply-To: <1452734299-460-1-git-send-email-joshua.henderson@microchip.com>
+References: <1452734299-460-1-git-send-email-joshua.henderson@microchip.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 Return-Path: <Joshua.Henderson@microchip.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51096
+X-archive-position: 51097
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -65,213 +45,406 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This patch series adds support for the Microchip PIC32MZDA MIPS platform.
-All drivers required to boot from a MMC uSD card are included. Clock,
-external interrupt controller, serial, SDHCI, and pinctrl/gpio drivers
-are included. This has been tested on a PIC32MZDA Starter Kit. A tree
-with these changes is available at [0].
+From: Cristian Birsan <cristian.birsan@microchip.com>
 
-[0] https://github.com/joshua-henderson/linux/tree/pic32-upstream-v5
+This adds support for the interrupt controller present on PIC32 class
+devices. It handles all internal and external interrupts. This controller
+exists outside of the CPU core and is the arbitrator of all interrupts
+(including interrupts from the CPU itself) before they are presented to
+the CPU.
 
-Changes since v4 (https://lkml.org/lkml/2016/1/8/964
-	          https://lkml.org/lkml/2016/1/8/965):
+The following features are supported:
+ - DT properties for EVIC and for devices/peripherals that use interrupt lines
+ - Persistent and non-persistent interrupt handling
+ - irqdomain and generic chip support
+ - Configuration of external interrupt edge polarity
 
-	+ Add soc node for core timer interrupt to DTS
-        + Add external IRQ property to DTS
-	+ Clean up irq alloc on failure
-        + Fix rework regression with handling failure in probe
-	+ Select config PIC32_EVIC for PIC32MZDA
-        + Implement get_c0_compare_int() in platform using DTS
-	+ Rearchitect (rewrite) to use generic chip
-        + Be consistent with naming of functions, use pic32_ prefix
-        + Move get_c0_compare_int() to platform where it belongs
-        + Drop obsolete header
-        + Add comments about the handler flow of the different interrupt types
-        + Prevent external interrupts from being requested as level flow type
-        + Simplify/optimize register access
-        + Configure external interrupts from DT
-        + Simplify plat_irq_dispatch() implementation
-        + Change irq chip names to evic-*
-        + Add EVIC_PIC32 config option and have platform select it
-        + Support to configure core timer interrupt from DT
-        + Use proper code comment formatting
-	+ Add new microchip,external-interrupts property
-        + Provide a better description of some of the features
-        + Clean up formatting
-
-Changes since v3 (https://lkml.org/lkml/2016/1/7/760):
-
-	+ Remove broken URL and use full manual name for boot protocol
-	+ Formatting and comment location
-	+ Move functions to remove need for forward declaration
-
-Changes since v2 (https://lkml.org/lkml/2015/12/14/818):
-
-	+ Prefer dt/bindings: prefix for subject
-	+ Remove redundant irq_chip functions in interrupt driver
-	+ Use 'sdhci_pltfm_*' instead of 'sdhci_*_host' and other cleanup
-	+ Use dynamic major/minor and ttyPIC* instead of ttyS*
-	+ Follow device-tree node naming convention for clocks
-	+ Remove pinctrl pins that are not port pins
-	+ Force lowercase in PIC32 clock binding documentation
-	+ Replace __clk_debug with pr_debug
-	+ Add of_clk_parent_fill usage in PIC32 clock driver
-	+ UART: Remove unused header files
-	+ UART: Refactor register read/write functions
-	+ UART: Reorder arguments to readl/writel functions
-	+ UART: Add missing initializations to termios
-	+ UART: Fix clk enable/disable mismatch
-
-Changes since v1 (https://lkml.org/lkml/2015/11/20/848):
-
-	+ Rename all DT compatible properties to be chip specific.
-	+ Remove hardware interrupt priorities from interrupt controller DT
-	  bindings.
-	+ Remove all dependencies on include headers used by PIC32 DTS
-	  files.
-	+ Remove arch/mips/include/asm/mach-pic32/gpio.h
-	+ Drop usage of the following, mostly non-standard, properties in
-	  DT bindings:
-		device_type
-		piomode
-		no-1-8-v
-		uart-has-rtscts
-		clock-frequency => assigned-clock-rate
-	+ Remove PIC32 memory PLL support from DT.
-	+ Replace empty 'ranges' with populated one for clock tree node.
-	+ Rename all instances of "USART" to "UART".
-	+ Remove 'interrupts' property from FSCM of PIC32 clock tree node.
-	+ Add default REFCLK rate initialization required for SDHCI in DTS.
-	+ Remove default frequency setup for REFOSC clocks in -clk DTS.
-	+ Address missing static on local functions and other sparse
-	  warnings in several drivers.
-	+ Update pinctrl driver to address major binding and architectural
-	  issues.
-	+ Remove redundant probing 'pb7_clk' to find CPU clock.
-	+ Remove unused PIC32 MPLL support.
-	+ Remove support for initializing default parent/rate for REFOSC
-	  clocks.
-	+ Be consistent and use only "SDHCI" when referring to SD host
-	  controller
-	+ Remove unnecessary PIC32 sdhci_ops min clock function.
-	+ Make platform PIC32[_CLR|_SET|_INV] register macros safer.
-
-
-Andrei Pistirica (4):
-  dt/bindings: Add bindings for PIC32 UART driver
-  serial: pic32_uart: Add PIC32 UART driver
-  dt/bindings: Add bindings for PIC32 SDHCI host controller
-  mmc: sdhci-pic32: Add PIC32 SDHCI host controller driver
-
-Cristian Birsan (2):
-  dt/bindings: Add bindings for PIC32 interrupt controller
-  irqchip: irq-pic32-evic: Add support for PIC32 interrupt controller
-
-Joshua Henderson (6):
-  dt/bindings: Add bindings for PIC32/MZDA platforms
-  MIPS: Add support for PIC32MZDA platform
-  dt/bindings: Add bindings for PIC32 pin control and GPIO
-  pinctrl: pinctrl-pic32: Add PIC32 pin control driver
-  MIPS: dts: Add initial DTS for the PIC32MZDA Starter Kit
-  MIPS: pic32mzda: Add initial PIC32MZDA Starter Kit defconfig
-
-Purna Chandra Mandal (2):
-  dt/bindings: Add PIC32 clock binding documentation
-  clk: clk-pic32: Add PIC32 clock driver
-
- .../devicetree/bindings/clock/microchip,pic32.txt  |  257 +++
- .../bindings/gpio/microchip,pic32-gpio.txt         |   49 +
- .../interrupt-controller/microchip,pic32-evic.txt  |   67 +
- .../bindings/mips/pic32/microchip,pic32mzda.txt    |   31 +
- .../bindings/mmc/microchip,sdhci-pic32.txt         |   29 +
- .../bindings/pinctrl/microchip,pic32-pinctrl.txt   |   60 +
- .../bindings/serial/microchip,pic32-uart.txt       |   29 +
- arch/mips/Kbuild.platforms                         |    1 +
- arch/mips/Kconfig                                  |    9 +
- arch/mips/boot/dts/Makefile                        |    1 +
- arch/mips/boot/dts/pic32/Makefile                  |   12 +
- arch/mips/boot/dts/pic32/pic32mzda-clk.dtsi        |  236 ++
- arch/mips/boot/dts/pic32/pic32mzda.dtsi            |  281 +++
- arch/mips/boot/dts/pic32/pic32mzda_sk.dts          |  151 ++
- arch/mips/configs/pic32mzda_defconfig              |   89 +
- .../include/asm/mach-pic32/cpu-feature-overrides.h |   32 +
- arch/mips/include/asm/mach-pic32/irq.h             |   22 +
- arch/mips/include/asm/mach-pic32/pic32.h           |   44 +
- arch/mips/include/asm/mach-pic32/spaces.h          |   24 +
- arch/mips/pic32/Kconfig                            |   51 +
- arch/mips/pic32/Makefile                           |    6 +
- arch/mips/pic32/Platform                           |    7 +
- arch/mips/pic32/common/Makefile                    |    5 +
- arch/mips/pic32/common/irq.c                       |   21 +
- arch/mips/pic32/common/reset.c                     |   62 +
- arch/mips/pic32/pic32mzda/Makefile                 |    9 +
- arch/mips/pic32/pic32mzda/config.c                 |  126 ++
- arch/mips/pic32/pic32mzda/early_clk.c              |  106 +
- arch/mips/pic32/pic32mzda/early_console.c          |  171 ++
- arch/mips/pic32/pic32mzda/early_pin.c              |  275 +++
- arch/mips/pic32/pic32mzda/early_pin.h              |  241 ++
- arch/mips/pic32/pic32mzda/init.c                   |  156 ++
- arch/mips/pic32/pic32mzda/pic32mzda.h              |   29 +
- arch/mips/pic32/pic32mzda/time.c                   |   73 +
- drivers/clk/Kconfig                                |    3 +
- drivers/clk/Makefile                               |    1 +
- drivers/clk/clk-pic32.c                            | 1801 +++++++++++++++
- drivers/irqchip/Kconfig                            |    5 +
- drivers/irqchip/Makefile                           |    1 +
- drivers/irqchip/irq-pic32-evic.c                   |  324 +++
- drivers/mmc/host/Kconfig                           |   11 +
- drivers/mmc/host/Makefile                          |    1 +
- drivers/mmc/host/sdhci-pic32.c                     |  257 +++
- drivers/pinctrl/Kconfig                            |   17 +
- drivers/pinctrl/Makefile                           |    1 +
- drivers/pinctrl/pinctrl-pic32.c                    | 2339 ++++++++++++++++++++
- drivers/pinctrl/pinctrl-pic32.h                    |  141 ++
- drivers/tty/serial/Kconfig                         |   21 +
- drivers/tty/serial/Makefile                        |    1 +
- drivers/tty/serial/pic32_uart.c                    |  960 ++++++++
- drivers/tty/serial/pic32_uart.h                    |  126 ++
- include/linux/platform_data/sdhci-pic32.h          |   22 +
- include/uapi/linux/serial_core.h                   |    3 +
- 53 files changed, 8797 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/clock/microchip,pic32.txt
- create mode 100644 Documentation/devicetree/bindings/gpio/microchip,pic32-gpio.txt
- create mode 100644 Documentation/devicetree/bindings/interrupt-controller/microchip,pic32-evic.txt
- create mode 100644 Documentation/devicetree/bindings/mips/pic32/microchip,pic32mzda.txt
- create mode 100644 Documentation/devicetree/bindings/mmc/microchip,sdhci-pic32.txt
- create mode 100644 Documentation/devicetree/bindings/pinctrl/microchip,pic32-pinctrl.txt
- create mode 100644 Documentation/devicetree/bindings/serial/microchip,pic32-uart.txt
- create mode 100644 arch/mips/boot/dts/pic32/Makefile
- create mode 100644 arch/mips/boot/dts/pic32/pic32mzda-clk.dtsi
- create mode 100644 arch/mips/boot/dts/pic32/pic32mzda.dtsi
- create mode 100644 arch/mips/boot/dts/pic32/pic32mzda_sk.dts
- create mode 100644 arch/mips/configs/pic32mzda_defconfig
- create mode 100644 arch/mips/include/asm/mach-pic32/cpu-feature-overrides.h
- create mode 100644 arch/mips/include/asm/mach-pic32/irq.h
- create mode 100644 arch/mips/include/asm/mach-pic32/pic32.h
- create mode 100644 arch/mips/include/asm/mach-pic32/spaces.h
- create mode 100644 arch/mips/pic32/Kconfig
- create mode 100644 arch/mips/pic32/Makefile
- create mode 100644 arch/mips/pic32/Platform
- create mode 100644 arch/mips/pic32/common/Makefile
- create mode 100644 arch/mips/pic32/common/irq.c
- create mode 100644 arch/mips/pic32/common/reset.c
- create mode 100644 arch/mips/pic32/pic32mzda/Makefile
- create mode 100644 arch/mips/pic32/pic32mzda/config.c
- create mode 100644 arch/mips/pic32/pic32mzda/early_clk.c
- create mode 100644 arch/mips/pic32/pic32mzda/early_console.c
- create mode 100644 arch/mips/pic32/pic32mzda/early_pin.c
- create mode 100644 arch/mips/pic32/pic32mzda/early_pin.h
- create mode 100644 arch/mips/pic32/pic32mzda/init.c
- create mode 100644 arch/mips/pic32/pic32mzda/pic32mzda.h
- create mode 100644 arch/mips/pic32/pic32mzda/time.c
- create mode 100644 drivers/clk/clk-pic32.c
+Signed-off-by: Cristian Birsan <cristian.birsan@microchip.com>
+Signed-off-by: Joshua Henderson <joshua.henderson@microchip.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+---
+Changes since v4:
+	- Rearchitect (rewrite) to use generic chip
+	- Be consistent with naming of functions, use pic32_ prefix
+	- Move get_c0_compare_int() to platform where it belongs
+	- Drop obsolete header
+	- Add comments about the handler flow of the different interrupt types
+	- Prevent external interrupts from being requested as level flow type
+	- Simplify/optimize register access
+	- Configure external interrupts from DT
+	- Simplify plat_irq_dispatch() implementation
+	- Change irq chip names to evic-*
+	- Add EVIC_PIC32 config option and have platform select it
+	- Support to configure core timer interrupt from DT
+	- Use proper code comment formatting
+Changes since v3:
+	- Formatting and comment location
+	- Move functions to remove need for forward declaration
+Changes since v2:
+	- Remove redundant irq_chip functions in interrupt driver
+Changes since v1:
+	- Remove configuring hardware priorities and just set a default
+---
+ drivers/irqchip/Kconfig          |    5 +
+ drivers/irqchip/Makefile         |    1 +
+ drivers/irqchip/irq-pic32-evic.c |  324 ++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 330 insertions(+)
  create mode 100644 drivers/irqchip/irq-pic32-evic.c
- create mode 100644 drivers/mmc/host/sdhci-pic32.c
- create mode 100644 drivers/pinctrl/pinctrl-pic32.c
- create mode 100644 drivers/pinctrl/pinctrl-pic32.h
- create mode 100644 drivers/tty/serial/pic32_uart.c
- create mode 100644 drivers/tty/serial/pic32_uart.h
- create mode 100644 include/linux/platform_data/sdhci-pic32.h
 
---
+diff --git a/drivers/irqchip/Kconfig b/drivers/irqchip/Kconfig
+index 4d7294e..d5bafdd 100644
+--- a/drivers/irqchip/Kconfig
++++ b/drivers/irqchip/Kconfig
+@@ -117,6 +117,11 @@ config ORION_IRQCHIP
+ 	select IRQ_DOMAIN
+ 	select MULTI_IRQ_HANDLER
+ 
++config PIC32_EVIC
++	bool
++	select GENERIC_IRQ_CHIP
++	select IRQ_DOMAIN
++
+ config RENESAS_INTC_IRQPIN
+ 	bool
+ 	select IRQ_DOMAIN
+diff --git a/drivers/irqchip/Makefile b/drivers/irqchip/Makefile
+index 177f78f..5278893 100644
+--- a/drivers/irqchip/Makefile
++++ b/drivers/irqchip/Makefile
+@@ -55,3 +55,4 @@ obj-$(CONFIG_RENESAS_H8S_INTC)		+= irq-renesas-h8s.o
+ obj-$(CONFIG_ARCH_SA1100)		+= irq-sa11x0.o
+ obj-$(CONFIG_INGENIC_IRQ)		+= irq-ingenic.o
+ obj-$(CONFIG_IMX_GPCV2)			+= irq-imx-gpcv2.o
++obj-$(CONFIG_PIC32_EVIC)		+= irq-pic32-evic.o
+diff --git a/drivers/irqchip/irq-pic32-evic.c b/drivers/irqchip/irq-pic32-evic.c
+new file mode 100644
+index 0000000..e7155db
+--- /dev/null
++++ b/drivers/irqchip/irq-pic32-evic.c
+@@ -0,0 +1,324 @@
++/*
++ * Cristian Birsan <cristian.birsan@microchip.com>
++ * Joshua Henderson <joshua.henderson@microchip.com>
++ * Copyright (C) 2016 Microchip Technology Inc.  All rights reserved.
++ *
++ * This program is free software; you can redistribute  it and/or modify it
++ * under  the terms of  the GNU General  Public License as published by the
++ * Free Software Foundation;  either version 2 of the  License, or (at your
++ * option) any later version.
++ */
++#include <linux/kernel.h>
++#include <linux/module.h>
++#include <linux/interrupt.h>
++#include <linux/irqdomain.h>
++#include <linux/of_address.h>
++#include <linux/slab.h>
++#include <linux/io.h>
++#include <linux/irqchip.h>
++#include <linux/irq.h>
++
++#include <asm/irq.h>
++#include <asm/traps.h>
++#include <asm/mach-pic32/pic32.h>
++
++#define REG_INTCON	0x0000
++#define REG_INTSTAT	0x0020
++#define REG_IFS_OFFSET	0x0040
++#define REG_IEC_OFFSET	0x00C0
++#define REG_IPC_OFFSET	0x0140
++#define REG_OFF_OFFSET	0x0540
++
++#define MAJPRI_MASK	0x07
++#define SUBPRI_MASK	0x03
++#define PRIORITY_MASK	0x1F
++
++#define PIC32_INT_PRI(pri, subpri)				\
++	((((pri) & MAJPRI_MASK) << 2) | ((subpri) & SUBPRI_MASK))
++
++struct evic_chip_data {
++	u32 irq_types[NR_IRQS];
++	u32 ext_irqs[8];
++};
++
++static struct irq_domain *evic_irq_domain;
++static void __iomem *evic_base;
++
++asmlinkage void __weak plat_irq_dispatch(void)
++{
++	unsigned int irq, hwirq;
++
++	hwirq = readl(evic_base + REG_INTSTAT) & 0xFF;
++	irq = irq_linear_revmap(evic_irq_domain, hwirq);
++	do_IRQ(irq);
++}
++
++static struct evic_chip_data *irqd_to_priv(struct irq_data *data)
++{
++	return (struct evic_chip_data *)data->domain->host_data;
++}
++
++static int pic32_set_ext_polarity(int bit, u32 type)
++{
++	/*
++	 * External interrupts can be either edge rising or edge falling,
++	 * but not both.
++	 */
++	switch (type) {
++	case IRQ_TYPE_EDGE_RISING:
++		writel(BIT(bit), evic_base + PIC32_SET(REG_INTCON));
++		break;
++	case IRQ_TYPE_EDGE_FALLING:
++		writel(BIT(bit), evic_base + PIC32_CLR(REG_INTCON));
++		break;
++	default:
++		return -EINVAL;
++	}
++
++	return 0;
++}
++
++static int pic32_set_type_edge(struct irq_data *data,
++			       unsigned int flow_type)
++{
++	struct evic_chip_data *priv = irqd_to_priv(data);
++	int ret;
++	int i;
++
++	if (!(flow_type & IRQ_TYPE_EDGE_BOTH))
++		return -EBADR;
++
++	/* set polarity for external interrupts only */
++	for (i = 0; i < ARRAY_SIZE(priv->ext_irqs); i++) {
++		if (priv->ext_irqs[i] == data->hwirq) {
++			ret = pic32_set_ext_polarity(i + 1, flow_type);
++			if (ret)
++				return ret;
++		}
++	}
++
++	irqd_set_trigger_type(data, flow_type);
++
++	return IRQ_SET_MASK_OK;
++}
++
++static void pic32_bind_evic_interrupt(int irq, int set)
++{
++	writel(set, evic_base + REG_OFF_OFFSET + irq * 4);
++}
++
++static void pic32_set_irq_priority(int irq, int priority)
++{
++	u32 reg, shift;
++
++	reg = irq / 4;
++	shift = (irq % 4) * 8;
++
++	writel(PRIORITY_MASK << shift,
++		evic_base + PIC32_CLR(REG_IPC_OFFSET + reg * 0x10));
++	writel(priority << shift,
++		evic_base + PIC32_SET(REG_IPC_OFFSET + reg * 0x10));
++}
++
++#define IRQ_REG_MASK(_hwirq, _reg, _mask)		       \
++	do {						       \
++		_reg = _hwirq / 32;			       \
++		_mask = 1 << (_hwirq % 32);		       \
++	} while (0)
++
++static int pic32_irq_domain_map(struct irq_domain *d, unsigned int virq,
++				irq_hw_number_t hw)
++{
++	struct evic_chip_data *priv = d->host_data;
++	struct irq_data *data;
++	int ret;
++	u32 iecclr, ifsclr;
++	u32 reg, mask;
++
++	ret = irq_map_generic_chip(d, virq, hw);
++	if (ret)
++		return ret;
++
++	/*
++	 * Piggyback on xlate function to move to an alternate chip as necessary
++	 * at time of mapping instead of allowing the flow handler/chip to be
++	 * changed later. This requires all interrupts to be configured through
++	 * DT.
++	 */
++	if (priv->irq_types[hw] & IRQ_TYPE_SENSE_MASK) {
++		data = irq_domain_get_irq_data(d, virq);
++		irqd_set_trigger_type(data, priv->irq_types[hw]);
++		irq_setup_alt_chip(data, priv->irq_types[hw]);
++	}
++
++	IRQ_REG_MASK(hw, reg, mask);
++
++	iecclr = PIC32_CLR(REG_IEC_OFFSET + reg * 0x10);
++	ifsclr = PIC32_CLR(REG_IFS_OFFSET + reg * 0x10);
++
++	/* mask and clear flag */
++	writel(mask, evic_base + iecclr);
++	writel(mask, evic_base + ifsclr);
++
++	/* default priority is required */
++	pic32_set_irq_priority(hw, PIC32_INT_PRI(2, 0));
++
++	return ret;
++}
++
++int pic32_irq_domain_xlate(struct irq_domain *d, struct device_node *ctrlr,
++			   const u32 *intspec, unsigned int intsize,
++			   irq_hw_number_t *out_hwirq, unsigned int *out_type)
++{
++	struct evic_chip_data *priv = d->host_data;
++
++	if (WARN_ON(intsize < 2))
++		return -EINVAL;
++
++	if (WARN_ON(intspec[0] >= NR_IRQS))
++		return -EINVAL;
++
++	*out_hwirq = intspec[0];
++	*out_type = intspec[1] & IRQ_TYPE_SENSE_MASK;
++
++	priv->irq_types[intspec[0]] = intspec[1] & IRQ_TYPE_SENSE_MASK;
++
++	return 0;
++}
++
++static const struct irq_domain_ops pic32_irq_domain_ops = {
++	.map	= pic32_irq_domain_map,
++	.xlate	= pic32_irq_domain_xlate,
++};
++
++static void __init pic32_ext_irq_of_init(struct irq_domain *domain)
++{
++	struct device_node *node = irq_domain_get_of_node(domain);
++	struct evic_chip_data *priv = domain->host_data;
++	struct property *prop;
++	const __le32 *p;
++	u32 hwirq;
++	int i = 0;
++	const char *pname = "microchip,external-irqs";
++
++	of_property_for_each_u32(node, pname, prop, p, hwirq) {
++		if (i >= ARRAY_SIZE(priv->ext_irqs)) {
++			pr_warn("More than %d external irq, skip rest\n",
++				ARRAY_SIZE(priv->ext_irqs));
++			break;
++		}
++
++		priv->ext_irqs[i] = hwirq;
++		i++;
++	}
++}
++
++static int __init pic32_of_init(struct device_node *node,
++				struct device_node *parent)
++{
++	struct irq_chip_generic *gc;
++	struct evic_chip_data *priv;
++	unsigned int clr = IRQ_NOREQUEST | IRQ_NOPROBE | IRQ_NOAUTOEN;
++	int nchips, ret;
++	int i;
++
++	nchips = DIV_ROUND_UP(NR_IRQS, 32);
++
++	evic_base = of_iomap(node, 0);
++	if (!evic_base)
++		return -ENOMEM;
++
++	priv = kcalloc(nchips, sizeof(*priv), GFP_KERNEL);
++	if (!priv) {
++		ret = -ENOMEM;
++		goto err_iounmap;
++	}
++
++	evic_irq_domain = irq_domain_add_linear(node, nchips * 32,
++						&pic32_irq_domain_ops,
++						priv);
++	if (!evic_irq_domain) {
++		ret = -ENOMEM;
++		goto err_free_priv;
++	}
++
++	/*
++	 * The PIC32 EVIC has a linear list of irqs and the type of each
++	 * irq is determined by the hardware peripheral the EVIC is arbitrating.
++	 * These irq types are defined in the datasheet as "persistent" and
++	 * "non-persistent" which are mapped here to level and edge
++	 * respectively. To manage the different flow handler requirements of
++	 * each irq type, different chip_types are used.
++	 */
++	ret = irq_alloc_domain_generic_chips(evic_irq_domain, 32, 2,
++					     "evic-level", handle_level_irq,
++					     clr, 0, 0);
++	if (ret)
++		goto err_domain_remove;
++
++	board_bind_eic_interrupt = &pic32_bind_evic_interrupt;
++
++	for (i = 0; i < nchips; i++) {
++		u32 ifsclr = PIC32_CLR(REG_IFS_OFFSET + (i * 0x10));
++		u32 iec = REG_IEC_OFFSET + (i * 0x10);
++
++		gc = irq_get_domain_generic_chip(evic_irq_domain, i * 32);
++
++		gc->reg_base = evic_base;
++		gc->unused = 0;
++
++		/*
++		 * Level/persistent interrupts have a special requirement that
++		 * the condition generating the interrupt be cleared before the
++		 * interrupt flag (ifs) can be cleared. chip.irq_eoi is used to
++		 * complete the interrupt with an ack.
++		 */
++		gc->chip_types[0].type			= IRQ_TYPE_LEVEL_MASK;
++		gc->chip_types[0].handler		= handle_fasteoi_irq;
++		gc->chip_types[0].regs.ack		= ifsclr;
++		gc->chip_types[0].regs.mask		= iec;
++		gc->chip_types[0].chip.name		= "evic-level";
++		gc->chip_types[0].chip.irq_eoi		= irq_gc_ack_set_bit;
++		gc->chip_types[0].chip.irq_mask		= irq_gc_mask_clr_bit;
++		gc->chip_types[0].chip.irq_unmask	= irq_gc_mask_set_bit;
++		gc->chip_types[0].chip.flags		= IRQCHIP_SKIP_SET_WAKE;
++
++		/* Edge interrupts */
++		gc->chip_types[1].type			= IRQ_TYPE_EDGE_BOTH;
++		gc->chip_types[1].handler		= handle_edge_irq;
++		gc->chip_types[1].regs.ack		= ifsclr;
++		gc->chip_types[1].regs.mask		= iec;
++		gc->chip_types[1].chip.name		= "evic-edge";
++		gc->chip_types[1].chip.irq_ack		= irq_gc_ack_set_bit;
++		gc->chip_types[1].chip.irq_mask		= irq_gc_mask_clr_bit;
++		gc->chip_types[1].chip.irq_unmask	= irq_gc_mask_set_bit;
++		gc->chip_types[1].chip.irq_set_type	= pic32_set_type_edge;
++		gc->chip_types[1].chip.flags		= IRQCHIP_SKIP_SET_WAKE;
++
++		gc->private = &priv[i];
++	}
++
++	irq_set_default_host(evic_irq_domain);
++
++	/*
++	 * External interrupts have software configurable edge polarity. These
++	 * interrupts are defined in DT allowing polarity to be configured only
++	 * for these interrupts when requested.
++	 */
++	pic32_ext_irq_of_init(evic_irq_domain);
++
++	return 0;
++
++err_domain_remove:
++	irq_domain_remove(evic_irq_domain);
++
++err_free_priv:
++	kfree(priv);
++
++err_iounmap:
++	iounmap(evic_base);
++
++	return ret;
++}
++
++IRQCHIP_DECLARE(pic32_evic, "microchip,pic32mzda-evic", pic32_of_init);
+-- 
 1.7.9.5

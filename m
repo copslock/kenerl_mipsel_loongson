@@ -1,66 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Jan 2016 13:19:13 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:41814 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27009857AbcANMTHuEJ8W (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 14 Jan 2016 13:19:07 +0100
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.15.2/8.14.8) with ESMTP id u0ECIvX3020828;
-        Thu, 14 Jan 2016 13:18:57 +0100
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.15.2/8.15.2/Submit) id u0EBCD6h019655;
-        Thu, 14 Jan 2016 12:12:13 +0100
-Date:   Thu, 14 Jan 2016 12:12:13 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Thomas Gleixner <tglx@linutronix.de>
-Cc:     Joshua Henderson <joshua.henderson@microchip.com>,
-        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        Cristian Birsan <cristian.birsan@microchip.com>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Marc Zyngier <marc.zyngier@arm.com>,
-        Purna Chandra Mandal <purna.mandal@microchip.com>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@codeaurora.org>, linux-clk@vger.kernel.org,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-gpio@vger.kernel.org,
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Jan 2016 14:55:58 +0100 (CET)
+Received: from lxorguk.ukuu.org.uk ([81.2.110.251]:45128 "EHLO
+        lxorguk.ukuu.org.uk" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27009908AbcANNzzkd8Nc (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 14 Jan 2016 14:55:55 +0100
+Received: from localhost.localdomain (proxy [81.2.110.250])
+        by lxorguk.ukuu.org.uk (8.15.2/8.14.1) with ESMTP id u0EEVruI011406;
+        Thu, 14 Jan 2016 14:31:59 GMT
+Date:   Thu, 14 Jan 2016 13:55:47 +0000
+From:   One Thousand Gnomes <gnomes@lxorguk.ukuu.org.uk>
+To:     Joshua Henderson <joshua.henderson@microchip.com>
+Cc:     <linux-kernel@vger.kernel.org>, <linux-mips@linux-mips.org>,
+        <ralf@linux-mips.org>,
         Andrei Pistirica <andrei.pistirica@microchip.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jslaby@suse.com>, linux-serial@vger.kernel.org,
-        linux-api@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>,
-        Jean Delvare <jdelvare@suse.de>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Corneliu Doban <cdoban@broadcom.com>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Luis de Bethencourt <luisbg@osg.samsung.com>,
-        Weijun Yang <Weijun.Yang@csr.com>,
-        Lokesh Vutla <lokeshvutla@ti.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        Vincent Yang <vincent.yang.fujitsu@gmail.com>,
-        Chaotian Jing <chaotian.jing@mediatek.com>,
-        "ludovic.desroches@atmel.com" <ludovic.desroches@atmel.com>,
-        Shawn Lin <shawn.lin@rock-chips.com>,
-        yangbo lu <yangbo.lu@freescale.com>,
-        Kevin Hao <haokexin@gmail.com>,
-        Ben Hutchings <ben@decadent.org.uk>
-Subject: Re: [PATCH v5 02/14] irqchip: irq-pic32-evic: Add support for PIC32
- interrupt controller
-Message-ID: <20160114111213.GC28942@linux-mips.org>
+        Jiri Slaby <jslaby@suse.com>, <linux-serial@vger.kernel.org>,
+        <linux-api@vger.kernel.org>
+Subject: Re: [PATCH v5 10/14] serial: pic32_uart: Add PIC32 UART driver
+Message-ID: <20160114135547.3ac6a296@lxorguk.ukuu.org.uk>
+In-Reply-To: <1452734299-460-11-git-send-email-joshua.henderson@microchip.com>
 References: <1452734299-460-1-git-send-email-joshua.henderson@microchip.com>
- <1452734299-460-3-git-send-email-joshua.henderson@microchip.com>
- <alpine.DEB.2.11.1601140901210.3575@nanos>
+        <1452734299-460-11-git-send-email-joshua.henderson@microchip.com>
+Organization: Intel Corporation
+X-Mailer: Claws Mail 3.12.0 (GTK+ 2.24.29; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <alpine.DEB.2.11.1601140901210.3575@nanos>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-Return-Path: <ralf@linux-mips.org>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <gnomes@lxorguk.ukuu.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51118
+X-archive-position: 51120
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: gnomes@lxorguk.ukuu.org.uk
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -73,23 +46,16 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Jan 14, 2016 at 09:10:09AM +0100, Thomas Gleixner wrote:
+On Wed, 13 Jan 2016 18:15:43 -0700
+Joshua Henderson <joshua.henderson@microchip.com> wrote:
 
-> I like that approach.
+> From: Andrei Pistirica <andrei.pistirica@microchip.com>
 > 
-> So except for the nit in pic32_set_type_edge() this looks good. It's pretty
-> clear now what the code does and how the hardware works.
+> This adds UART and a serial console driver for Microchip PIC32 class
+> devices.
 > 
-> Thanks for following up!
+> Signed-off-by: Andrei Pistirica <andrei.pistirica@microchip.com>
+> Signed-off-by: Joshua Henderson <joshua.henderson@microchip.com>
+> Cc: Ralf Baechle <ralf@linux-mips.org>
 
-So I take that for an ack.  I still haven't seen any acks or comments for
-the patches:
-
-     4/14      drivers/clk
-     8/14      drivers/pinctrl
-    10/14      drivers/serial
-    12/14      drivers/mmc
-
-Of this series.  Ping?
-
-  Ralf
+Reviewed-by: Alan Cox <alan@linux.intel.com>

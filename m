@@ -1,74 +1,108 @@
-From: James Hogan <james.hogan@imgtec.com>
-Date: Mon, 4 Jan 2016 20:29:03 +0000
-Subject: MIPS: uaccess: Take EVA into account in __copy_from_user()
-Message-ID: <20160104202903.qxihfZfWBKnxg57YGerdfVzhN-DnemP3CoWzPFGAzuc@z>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Jan 2016 19:48:33 +0100 (CET)
+Received: from mail-ig0-f171.google.com ([209.85.213.171]:35861 "EHLO
+        mail-ig0-f171.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27009964AbcAOSsa58b9d (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 15 Jan 2016 19:48:30 +0100
+Received: by mail-ig0-f171.google.com with SMTP id z14so17845108igp.1
+        for <linux-mips@linux-mips.org>; Fri, 15 Jan 2016 10:48:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding;
+        bh=EZcXw+TQZ684wUJVRw6l3aNRQdauEPtcp10ZI5bm9tk=;
+        b=kTf4c4nXJfNKOqzXYE+jifB+LvDGQXkY93HqbC9eMM9hCupes4aBNX+V2ijQAy7EBI
+         EzWwBxhbuIUZbOex9ubPZHy+lTs9kzvJHAQZXifi+JYifVq8GpSHqZzxKp97Fb7bZj3m
+         dBdWuDEnnlLU/PcnXkzuvZhWFBvqV6qi1Guqrn1X3WfH0LbpRLYVhWYJ4nERNieD/u2v
+         nMte1i0Rat+jPa+icTivHVMdOXzGT2UpKCKR8t+U9uakc6cUl8RkjHRZKTYxjvZJylWv
+         CnObtmjnmZLSPf4+xZRdZzJK/mN+1F9mm2dg2wj+Un4FrCXrTKA2dBhrELckaAaRJo8I
+         jCKA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:message-id:date:from:user-agent:mime-version:to
+         :cc:subject:references:in-reply-to:content-type
+         :content-transfer-encoding;
+        bh=EZcXw+TQZ684wUJVRw6l3aNRQdauEPtcp10ZI5bm9tk=;
+        b=dQInVAr612tyEpS8lQhcsS8+AYkqpcdRmC8Eg4KnVkSHyxeveyAC62Kw2+MbJcehhg
+         0VmQti1Ka/HMHrFawmvPTHX4bNvVgpNiO8pI0D/Jwq42gvDfoKHyecG5DwvuItm0mLmf
+         Ci3LX2fnYUv88SV1+DAQGSvhXTh5EDrumow/F44tD3LHgHivDy9MuGxgIj4Z2/Nh4tGU
+         /3nT5v4CX2Fsnk2TP5swBZZ1JxVup7CKgMPCaVL3bd88g8M5Ba1HM+WZ202BPAFPmvgT
+         qgiRXP38VHZbY3lYkyM0SBY16Ew/RRb+h1GwoWosdV7uYec+Ob/PtScvXJ8clJCL8I5a
+         gS5g==
+X-Gm-Message-State: AG10YOSrdYxnqMfewBKbHMwHpJQackLDHGnvYI7q3VIw11YdS9nKjMyPw6UWsZe33DmllA==
+X-Received: by 10.50.78.169 with SMTP id c9mr53630igx.29.1452883705120;
+        Fri, 15 Jan 2016 10:48:25 -0800 (PST)
+Received: from dl.caveonetworks.com ([64.2.3.194])
+        by smtp.googlemail.com with ESMTPSA id p8sm4650700ioe.38.2016.01.15.10.48.22
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Fri, 15 Jan 2016 10:48:23 -0800 (PST)
+Message-ID: <56993EF5.9040008@gmail.com>
+Date:   Fri, 15 Jan 2016 10:48:21 -0800
+From:   David Daney <ddaney.cavm@gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
+MIME-Version: 1.0
+To:     Antony Pavlov <antonynpavlov@gmail.com>
+CC:     linux-mips@linux-mips.org, Alban Bedel <albeu@free.fr>,
+        devicetree@vger.kernel.org
+Subject: Re: [PATCH] MIPS: dts: tl_wr1043nd_v1: fix "aliases" node name
+References: <1452759657-7114-1-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1452759657-7114-1-git-send-email-antonynpavlov@gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <ddaney.cavm@gmail.com>
+X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
+X-Orcpt: rfc822;linux-mips@linux-mips.org
+Original-Recipient: rfc822;linux-mips@linux-mips.org
+X-archive-position: 51158
+X-ecartis-version: Ecartis v1.0.0
+Sender: linux-mips-bounce@linux-mips.org
+Errors-to: linux-mips-bounce@linux-mips.org
+X-original-sender: ddaney.cavm@gmail.com
+Precedence: bulk
+List-help: <mailto:ecartis@linux-mips.org?Subject=help>
+List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
+List-software: Ecartis version 1.0.0
+List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
+X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
+List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
+List-owner: <mailto:ralf@linux-mips.org>
+List-post: <mailto:linux-mips@linux-mips.org>
+List-archive: <http://www.linux-mips.org/archives/linux-mips/>
+X-list: linux-mips
 
-commit 6f06a2c45d8d714ea3b11a360b4a7191e52acaa4 upstream.
+On 01/14/2016 12:20 AM, Antony Pavlov wrote:
+> The correct name for aliases node is "aliases" not "alias".
+>
+> An overview of the "aliases" node usage can be found
+> on the device tree usage page at devicetree.org [1].
+>
+> Also please see chapter 3.3 ("Aliases node") of the ePAPR 1.1 [2].
+>
+> [1] http://devicetree.org/Device_Tree_Usage#aliases_Node
+> [2] https://www.power.org/documentation/epapr-version-1-1/
+>
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> Cc: Alban Bedel <albeu@free.fr>
+> Cc: linux-mips@linux-mips.org
+> Cc: devicetree@vger.kernel.org
+> ---
+>   arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts b/arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts
+> index 003015a..4b6d38c 100644
+> --- a/arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts
+> +++ b/arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts
+> @@ -9,7 +9,7 @@
+>   	compatible = "tplink,tl-wr1043nd-v1", "qca,ar9132";
+>   	model = "TP-Link TL-WR1043ND Version 1";
+>
+> -	alias {
+> +	aliases {
+>   		serial0 = "/ahb/apb/uart@18020000";
+>   	};
 
-When EVA is in use, __copy_from_user() was unconditionally using the EVA
-instructions to read the user address space, however this can also be
-used for kernel access. If the address isn't a valid user address it
-will cause an address error or TLB exception, and if it is then user
-memory may be read instead of kernel memory.
+What uses this alias?  If the answer is nothing (likely, as it was 
+broken and nobody seems to have noticed), just remove the whole thing.
 
-For example in the following stack trace from Linux v3.10 (changes since
-then will prevent this particular one still happening) kernel_sendmsg()
-set the user address limit to KERNEL_DS, and tcp_sendmsg() goes on to
-use __copy_from_user() with a kernel address in KSeg0.
-
-[<8002d434>] __copy_fromuser_common+0x10c/0x254
-[<805710e0>] tcp_sendmsg+0x5f4/0xf00
-[<804e8e3c>] sock_sendmsg+0x78/0xa0
-[<804e8f28>] kernel_sendmsg+0x24/0x38
-[<804ee0f8>] sock_no_sendpage+0x70/0x7c
-[<8017c820>] pipe_to_sendpage+0x80/0x98
-[<8017c6b0>] splice_from_pipe_feed+0xa8/0x198
-[<8017cc54>] __splice_from_pipe+0x4c/0x8c
-[<8017e844>] splice_from_pipe+0x58/0x78
-[<8017e884>] generic_splice_sendpage+0x20/0x2c
-[<8017d690>] do_splice_from+0xb4/0x110
-[<8017d710>] direct_splice_actor+0x24/0x30
-[<8017d394>] splice_direct_to_actor+0xd8/0x208
-[<8017d51c>] do_splice_direct+0x58/0x7c
-[<8014eaf4>] do_sendfile+0x1dc/0x39c
-[<8014f82c>] SyS_sendfile+0x90/0xf8
-
-Add the eva_kernel_access() check in __copy_from_user() like the one in
-copy_from_user().
-
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Markos Chandras <markos.chandras@imgtec.com>
-Cc: Paul Burton <paul.burton@imgtec.com>
-Cc: Leonid Yegoshin <leonid.yegoshin@imgtec.com>
-Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/10843/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-[james.hogan@imgtec.com: backport]
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Signed-off-by: Luis Henriques <luis.henriques@canonical.com>
----
- arch/mips/include/asm/uaccess.h | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
-
-diff --git a/arch/mips/include/asm/uaccess.h b/arch/mips/include/asm/uaccess.h
-index b9ab717e3619..81d4d7e012ca 100644
---- a/arch/mips/include/asm/uaccess.h
-+++ b/arch/mips/include/asm/uaccess.h
-@@ -1092,9 +1092,15 @@ extern size_t __copy_in_user_eva(void *__to, const void *__from, size_t __n);
- 	__cu_to = (to);							\
- 	__cu_from = (from);						\
- 	__cu_len = (n);							\
--	might_fault();							\
--	__cu_len = __invoke_copy_from_user(__cu_to, __cu_from,		\
--					   __cu_len);			\
-+	if (segment_eq(get_fs(), get_ds())) {				\
-+		__cu_len = __invoke_copy_from_kernel(__cu_to,		\
-+						     __cu_from,		\
-+						     __cu_len);		\
-+	} else {							\
-+		might_fault();						\
-+		__cu_len = __invoke_copy_from_user(__cu_to, __cu_from,	\
-+						   __cu_len);		\
-+	}								\
- 	__cu_len;							\
- })
+>
+>

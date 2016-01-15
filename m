@@ -1,37 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Jan 2016 20:29:07 +0100 (CET)
-Received: from e35.co.us.ibm.com ([32.97.110.153]:47646 "EHLO
-        e35.co.us.ibm.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27009964AbcAOT3D4Opsw (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 15 Jan 2016 20:29:03 +0100
-Received: from localhost
-        by e35.co.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <linux-mips@linux-mips.org> from <paulmck@linux.vnet.ibm.com>;
-        Fri, 15 Jan 2016 12:28:57 -0700
-Received: from d03dlp03.boulder.ibm.com (9.17.202.179)
-        by e35.co.us.ibm.com (192.168.1.135) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        Fri, 15 Jan 2016 12:28:53 -0700
-X-IBM-Helo: d03dlp03.boulder.ibm.com
-X-IBM-MailFrom: paulmck@linux.vnet.ibm.com
-X-IBM-RcptTo: linux-mips@linux-mips.org;ralf@linux-mips.org
-Received: from b03cxnp08025.gho.boulder.ibm.com (b03cxnp08025.gho.boulder.ibm.com [9.17.130.17])
-        by d03dlp03.boulder.ibm.com (Postfix) with ESMTP id 2A6FD19D8047;
-        Fri, 15 Jan 2016 12:16:54 -0700 (MST)
-Received: from d03av05.boulder.ibm.com (d03av05.boulder.ibm.com [9.17.195.85])
-        by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id u0FJSqQZ22347810;
-        Fri, 15 Jan 2016 12:28:52 -0700
-Received: from d03av05.boulder.ibm.com (localhost [127.0.0.1])
-        by d03av05.boulder.ibm.com (8.14.4/8.14.4/NCO v10.0 AVout) with ESMTP id u0FJSh5x009533;
-        Fri, 15 Jan 2016 12:28:52 -0700
-Received: from paulmck-ThinkPad-W541 ([9.70.82.27])
-        by d03av05.boulder.ibm.com (8.14.4/8.14.4/NCO v10.0 AVin) with ESMTP id u0FJShRH009499;
-        Fri, 15 Jan 2016 12:28:43 -0700
-Received: by paulmck-ThinkPad-W541 (Postfix, from userid 1000)
-        id EB21016C0C35; Fri, 15 Jan 2016 11:28:45 -0800 (PST)
-Date:   Fri, 15 Jan 2016 11:28:45 -0800
-From:   "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>
-To:     Will Deacon <will.deacon@arm.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Jan 2016 22:27:56 +0100 (CET)
+Received: from bombadil.infradead.org ([198.137.202.9]:36013 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010005AbcAOV1qkJEH3 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 15 Jan 2016 22:27:46 +0100
+Received: from j217066.upc-j.chello.nl ([24.132.217.66] helo=worktop)
+        by bombadil.infradead.org with esmtpsa (Exim 4.80.1 #2 (Red Hat Linux))
+        id 1aKBty-00072c-GJ; Fri, 15 Jan 2016 21:27:24 +0000
+Received: by worktop (Postfix, from userid 1000)
+        id EA6566E0814; Fri, 15 Jan 2016 22:27:14 +0100 (CET)
+Date:   Fri, 15 Jan 2016 22:27:14 +0100
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>
 Cc:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
-        Peter Zijlstra <peterz@infradead.org>,
+        Will Deacon <will.deacon@arm.com>,
         "Michael S. Tsirkin" <mst@redhat.com>,
         linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
         linux-arch@vger.kernel.org,
@@ -53,35 +34,31 @@ Cc:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
         Ingo Molnar <mingo@kernel.org>, ddaney.cavm@gmail.com,
         james.hogan@imgtec.com, Michael Ellerman <mpe@ellerman.id.au>
 Subject: Re: [v3,11/41] mips: reuse asm-generic/barrier.h
-Message-ID: <20160115192845.GA12510@linux.vnet.ibm.com>
-Reply-To: paulmck@linux.vnet.ibm.com
-References: <5696CF08.8080700@imgtec.com>
+Message-ID: <20160115212714.GM3421@worktop>
+References: <20160113104516.GE25458@arm.com>
+ <5696CF08.8080700@imgtec.com>
  <20160114121449.GC15828@arm.com>
  <5697F6D2.60409@imgtec.com>
  <20160114203430.GC3818@linux.vnet.ibm.com>
  <56980C91.1010403@imgtec.com>
  <20160114212913.GF3818@linux.vnet.ibm.com>
- <569814F2.50801@imgtec.com>
- <20160114225510.GJ3818@linux.vnet.ibm.com>
- <20160115102431.GB2131@arm.com>
- <20160115175401.GW3818@linux.vnet.ibm.com>
+ <20160115085554.GF3421@worktop>
+ <20160115091348.GA27936@worktop>
+ <20160115174612.GV3818@linux.vnet.ibm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20160115175401.GW3818@linux.vnet.ibm.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-TM-AS-MML: disable
-X-Content-Scanned: Fidelis XPS MAILER
-x-cbid: 16011519-0013-0000-0000-00001BED62AA
-Return-Path: <paulmck@linux.vnet.ibm.com>
+In-Reply-To: <20160115174612.GV3818@linux.vnet.ibm.com>
+User-Agent: Mutt/1.5.22.1 (2013-10-16)
+Return-Path: <peterz@infradead.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51160
+X-archive-position: 51161
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paulmck@linux.vnet.ibm.com
+X-original-sender: peterz@infradead.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -94,108 +71,18 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Jan 15, 2016 at 09:54:01AM -0800, Paul E. McKenney wrote:
-> On Fri, Jan 15, 2016 at 10:24:32AM +0000, Will Deacon wrote:
-> > On Thu, Jan 14, 2016 at 02:55:10PM -0800, Paul E. McKenney wrote:
-> > > On Thu, Jan 14, 2016 at 01:36:50PM -0800, Leonid Yegoshin wrote:
-> > > > On 01/14/2016 01:29 PM, Paul E. McKenney wrote:
-> > > > >
-> > > > >>On 01/14/2016 12:34 PM, Paul E. McKenney wrote:
-> > > > >>>
-> > > > >>>The WRC+addr+addr is OK because data dependencies are not required to be
-> > > > >>>transitive, in other words, they are not required to flow from one CPU to
-> > > > >>>another without the help of an explicit memory barrier.
-> > > > >>I don't see any reliable way to fit WRC+addr+addr into "DATA
-> > > > >>DEPENDENCY BARRIERS" section recommendation to have data dependency
-> > > > >>barrier between read of a shared pointer/index and read the shared
-> > > > >>data based on that pointer. If you have this two reads, it doesn't
-> > > > >>matter the rest of scenario, you should put the dependency barrier
-> > > > >>in code anyway. If you don't do it in WRC+addr+addr scenario then
-> > > > >>after years it can be easily changed to different scenario which
-> > > > >>fits some of scenario in "DATA DEPENDENCY BARRIERS" section and
-> > > > >>fails.
-> > > > >The trick is that lockless_dereference() contains an
-> > > > >smp_read_barrier_depends():
-> > > > >
-> > > > >#define lockless_dereference(p) \
-> > > > >({ \
-> > > > >	typeof(p) _________p1 = READ_ONCE(p); \
-> > > > >	smp_read_barrier_depends(); /* Dependency order vs. p above. */ \
-> > > > >	(_________p1); \
-> > > > >})
-> > > > >
-> > > > >Or am I missing your point?
-> > > > 
-> > > > WRC+addr+addr has no any barrier. lockless_dereference() has a
-> > > > barrier. I don't see a common points between this and that in your
-> > > > answer, sorry.
-> > > 
-> > > Me, I am wondering what WRC+addr+addr has to do with anything at all.
-> > 
-> > See my earlier reply [1] (but also, your WRC Linux example looks more
-> > like a variant on WWC and I couldn't really follow it).
+On Fri, Jan 15, 2016 at 09:46:12AM -0800, Paul E. McKenney wrote:
+> On Fri, Jan 15, 2016 at 10:13:48AM +0100, Peter Zijlstra wrote:
+
+> > And the stuff we're confused about is how best to express the difference
+> > and guarantees of these two forms of transitivity and how exactly they
+> > interact.
 > 
-> I will revisit my WRC Linux example.  And yes, creating litmus tests
-> that use non-fake dependencies is still a bit of an undertaking.  :-/
-> I am sure that it will seem more natural with time and experience...
+> Hoping my memory-barrier.txt patch helps here...
 
-Hmmm...  You are quite right, I did do WWC.  I need to change cpu2()'s
-last access from a store to a load to get WRC.  Plus the levels of
-indirection definitely didn't match up, did they?
+Yes, that seems a good start. But yesterday you raised the 'fun' point
+of two globally ordered sequences connected by a single local link.
 
-	struct foo {
-		struct foo *next;
-	};
-	struct foo a;
-	struct foo b;
-	struct foo c = { &a };
-	struct foo d = { &b };
-	struct foo x = { &c };
-	struct foo y = { &d };
-	struct foo *r1, *r2, *r3;
-
-	void cpu0(void)
-	{
-		WRITE_ONCE(x.next, &y);
-	}
-
-	void cpu1(void)
-	{
-		r1 = lockless_dereference(x.next);
-		WRITE_ONCE(r1->next, &x);
-	}
-
-	void cpu2(void)
-	{
-		r2 = lockless_dereference(y.next);
-		r3 = READ_ONCE(r2->next);
-	}
-
-In this case, it is legal to end the run with:
-
-	r1 == &y && r2 == &x && r3 == &c
-
-Please see below for a ppcmem litmus test.
-
-So, did I get it right this time?  ;-)
-
-							Thanx, Paul
-
-PS.  And yes, working through this does help me understand the
-     benefits of fake dependencies.  Why do you ask?  ;-)
-
-------------------------------------------------------------------------
-
-PPC WRCnf+addrs
-""
-{
-0:r2=x; 0:r3=y;
-1:r2=x; 1:r3=y;
-2:r2=x; 2:r3=y;
-c=a; d=b; x=c; y=d;
-}
- P0           | P1            | P2            ;
- stw r3,0(r2) | lwz r8,0(r2)  | lwz r8,0(r3)  ;
-              | stw r2,0(r3)  | lwz r9,0(r8)  ;
-exists
-(1:r8=y /\ 2:r8=x /\ 2:r9=c)
+And I think I'm still confused on LWSYNC (in the smp_wmb case) when one
+of the stores looses a conflict, and if that scenario matters. If it
+does, we should inspect the same case for other barriers.

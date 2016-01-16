@@ -1,63 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 16 Jan 2016 05:37:12 +0100 (CET)
-Received: from mail-lb0-f181.google.com ([209.85.217.181]:36528 "EHLO
-        mail-lb0-f181.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27006195AbcAPEhKUvfhK convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 16 Jan 2016 05:37:10 +0100
-Received: by mail-lb0-f181.google.com with SMTP id oh2so325196336lbb.3
-        for <linux-mips@linux-mips.org>; Fri, 15 Jan 2016 20:37:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=date:from:to:cc:subject:message-id:in-reply-to:references
-         :mime-version:content-type:content-transfer-encoding;
-        bh=Wnx69FsewPXQlU3eF5Sm8ZwIEvI+ZFNTDUXLZsSTV44=;
-        b=Vubpz6oMs/w7UfCuFH6MgFONulM8B4TVwGYCnpT36ZOB41cSAQgDOyAjWBidylqDSk
-         OY/c3dW+mbkMYRXPb5VYxakjixJ+bU2J2t0NMSfDzygN92vh516+fsrITLxxi3Xk0sOl
-         wRYSz6vx2ZN8lbcbVQZvGKrocTMnF7o6oSYPkD/YyAJ4QHDFeCzKHNyg1bOgA6T1+G/3
-         LJAQvILX3vlIgZf8DsCT4LzmfTbz2a55eR0dNBe9ItBZ9gAlH0K3WMzUZN2t1B8T1axy
-         YNsfOBeZiUnpXzTlDq912UdjXM4P0iOMntx4KaKn+kMb3JQfRZVUZrN6r47BLtNoRFxI
-         aKgA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:in-reply-to
-         :references:mime-version:content-type:content-transfer-encoding;
-        bh=Wnx69FsewPXQlU3eF5Sm8ZwIEvI+ZFNTDUXLZsSTV44=;
-        b=h3loDbQtgTwbVdp78Y1JIuaChSNFcxe82sBK8Yp81TD+PBgzNvDk2XPiZNh6T+PRuF
-         bx8od1ss0RiTzw9YlKo2/E2UENYZW5TdTZsQfQ9Uq/JAOe0ome+XYfMx545QluHGrGfK
-         hsC5Tq2ksrlJkdecvfY9P9lVP5lNYw6/fxy7vbiOPastB1XGT3ooUuAKa5L6nK9SUjba
-         7S8jpS/klkIZGFMIHScFdoMI7ppcEitIRnxQRpsvCr9U1fLlytpvWobF8EmZwBAOhodu
-         JS+eRXw/fNDFpaIdn0x2SErN3IQ1+nT6EultgF0Ga1Yo+TNzHtHQsmaTSU+kL/PhaPmJ
-         UpdQ==
-X-Gm-Message-State: AG10YOR9WAFTHUdZCGeCEI1Dq68B79c3rgAtI4eadsjD7RoiZ5kfDSfcjMpqXAKC83o61Q==
-X-Received: by 10.112.13.165 with SMTP id i5mr877731lbc.79.1452919024775;
-        Fri, 15 Jan 2016 20:37:04 -0800 (PST)
-Received: from flare (t35.niisi.ras.ru. [193.232.173.35])
-        by smtp.gmail.com with ESMTPSA id r200sm1748759lfd.35.2016.01.15.20.37.03
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Fri, 15 Jan 2016 20:37:04 -0800 (PST)
-Date:   Sat, 16 Jan 2016 08:02:05 +0300
-From:   Antony Pavlov <antonynpavlov@gmail.com>
-To:     David Daney <ddaney.cavm@gmail.com>
-Cc:     linux-mips@linux-mips.org, Alban Bedel <albeu@free.fr>,
-        devicetree@vger.kernel.org
-Subject: Re: [PATCH] MIPS: dts: tl_wr1043nd_v1: fix "aliases" node name
-Message-Id: <20160116080205.0b6e84c9e531b0cfd845b67b@gmail.com>
-In-Reply-To: <56993EF5.9040008@gmail.com>
-References: <1452759657-7114-1-git-send-email-antonynpavlov@gmail.com>
-        <56993EF5.9040008@gmail.com>
-X-Mailer: Sylpheed 3.5.0beta3 (GTK+ 2.24.25; i586-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-Return-Path: <antonynpavlov@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 16 Jan 2016 13:10:43 +0100 (CET)
+Received: from smtp.codeaurora.org ([198.145.29.96]:50889 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27008872AbcAPMKllgxXo (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 16 Jan 2016 13:10:41 +0100
+Received: from smtp.codeaurora.org (localhost [127.0.0.1])
+        by smtp.codeaurora.org (Postfix) with ESMTP id B538E60606;
+        Sat, 16 Jan 2016 12:10:39 +0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 9E6EA6060D; Sat, 16 Jan 2016 12:10:39 +0000 (UTC)
+Received: from potku.adurom.net (a88-115-185-251.elisa-laajakaista.fi [88.115.185.251])
+        (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 5EC7560251;
+        Sat, 16 Jan 2016 12:10:37 +0000 (UTC)
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
+        Hauke Mehrtens <hauke@hauke-m.de>,
+        =?utf-8?Q?Rafa=C5=82_Mi=C5=82ecki?= <zajec5@gmail.com>,
+        linux-kernel@vger.kernel.org, Michael Buesch <m@bues.ch>,
+        netdev@vger.kernel.org
+Subject: Re: [PATCH, RESEND] ssb: mark ssb_bus_register as __maybe_unused
+References: <8128014.DbbgBtKY3z@wuerfel>
+        <8760ywd5fe.fsf@kamboji.qca.qualcomm.com> <4037550.DMaVTE01Aq@wuerfel>
+Date:   Sat, 16 Jan 2016 14:10:31 +0200
+In-Reply-To: <4037550.DMaVTE01Aq@wuerfel> (Arnd Bergmann's message of "Fri, 15
+        Jan 2016 00:13 +0100")
+Message-ID: <87bn8l7miw.fsf@kamboji.qca.qualcomm.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/23.3 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Virus-Scanned: ClamAV using ClamSMTP
+Return-Path: <kvalo@codeaurora.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51170
+X-archive-position: 51171
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: antonynpavlov@gmail.com
+X-original-sender: kvalo@codeaurora.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -70,52 +53,20 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, 15 Jan 2016 10:48:21 -0800
-David Daney <ddaney.cavm@gmail.com> wrote:
+Arnd Bergmann <arnd@arndb.de> writes:
 
-> On 01/14/2016 12:20 AM, Antony Pavlov wrote:
-> > The correct name for aliases node is "aliases" not "alias".
-> >
-> > An overview of the "aliases" node usage can be found
-> > on the device tree usage page at devicetree.org [1].
-> >
-> > Also please see chapter 3.3 ("Aliases node") of the ePAPR 1.1 [2].
-> >
-> > [1] http://devicetree.org/Device_Tree_Usage#aliases_Node
-> > [2] https://www.power.org/documentation/epapr-version-1-1/
-> >
-> > Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> > Cc: Alban Bedel <albeu@free.fr>
-> > Cc: linux-mips@linux-mips.org
-> > Cc: devicetree@vger.kernel.org
-> > ---
-> >   arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts | 2 +-
-> >   1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts b/arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts
-> > index 003015a..4b6d38c 100644
-> > --- a/arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts
-> > +++ b/arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts
-> > @@ -9,7 +9,7 @@
-> >   	compatible = "tplink,tl-wr1043nd-v1", "qca,ar9132";
-> >   	model = "TP-Link TL-WR1043ND Version 1";
-> >
-> > -	alias {
-> > +	aliases {
-> >   		serial0 = "/ahb/apb/uart@18020000";
-> >   	};
-> 
-> What uses this alias?  If the answer is nothing (likely, as it was 
-> broken and nobody seems to have noticed), just remove the whole thing.
+> On Thursday 14 January 2016 08:46:29 Kalle Valo wrote:
+>> I can take it. For historical reasons ssb patches go through my
+>> wireless-drivers trees.
+>
+> I found this in my backlog, and I believe it still applies. Can you take
+> that one too?
 
-I have used ar9132_tl_wr1043nd_v1.dts as a template for AR9331-based board dts-file.
-AR9331 uses it's own very special UART implementation (the ar933x_uart.c driver is used).
-ar933x_uart.c relies on alias and does not work if alias is not set.
-I have not yet runned linux on TL-WR1034ND, but I suppose that uart alias is not 
-actually used for TL-WR1034ND and this aliases node can be safely removed.
+I'm not sure what you mean here, I can take any ssb patch if it's ok for
+Michael or Rafal :)
 
-Alban, have you any comments?
+Just please submit the patch properly (with S-o-B line) and CC
+linux-wireless so that it goes to patchwork.
 
--- 
-Best regards,
-  Antony Pavlov
+-- 
+Kalle Valo

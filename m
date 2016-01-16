@@ -1,40 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 16 Jan 2016 01:07:23 +0100 (CET)
-Received: from youngberry.canonical.com ([91.189.89.112]:47511 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27014776AbcAPAHEKTtPn (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 16 Jan 2016 01:07:04 +0100
-Received: from 1.general.kamal.us.vpn ([10.172.68.52] helo=fourier)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:DHE_RSA_AES_128_CBC_SHA1:16)
-        (Exim 4.76)
-        (envelope-from <kamal@canonical.com>)
-        id 1aKEOV-0008Eo-89; Sat, 16 Jan 2016 00:07:03 +0000
-Received: from kamal by fourier with local (Exim 4.82)
-        (envelope-from <kamal@whence.com>)
-        id 1aKEOS-0002Az-Eg; Fri, 15 Jan 2016 16:07:00 -0800
-From:   Kamal Mostafa <kamal@canonical.com>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        kernel-team@lists.ubuntu.com
-Cc:     Paul Burton <paul.burton@imgtec.com>,
-        Markos Chandras <markos.chandras@imgtec.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
-        Kamal Mostafa <kamal@canonical.com>
-Subject: [PATCH 4.2.y-ckt 256/305] MIPS: CPS: drop .set mips64r2 directives
-Date:   Fri, 15 Jan 2016 16:01:10 -0800
-Message-Id: <1452902519-2754-257-git-send-email-kamal@canonical.com>
-X-Mailer: git-send-email 1.9.1
-In-Reply-To: <1452902519-2754-1-git-send-email-kamal@canonical.com>
-References: <1452902519-2754-1-git-send-email-kamal@canonical.com>
-X-Extended-Stable: 4.2
-Return-Path: <kamal@canonical.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 16 Jan 2016 05:37:12 +0100 (CET)
+Received: from mail-lb0-f181.google.com ([209.85.217.181]:36528 "EHLO
+        mail-lb0-f181.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006195AbcAPEhKUvfhK convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 16 Jan 2016 05:37:10 +0100
+Received: by mail-lb0-f181.google.com with SMTP id oh2so325196336lbb.3
+        for <linux-mips@linux-mips.org>; Fri, 15 Jan 2016 20:37:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=date:from:to:cc:subject:message-id:in-reply-to:references
+         :mime-version:content-type:content-transfer-encoding;
+        bh=Wnx69FsewPXQlU3eF5Sm8ZwIEvI+ZFNTDUXLZsSTV44=;
+        b=Vubpz6oMs/w7UfCuFH6MgFONulM8B4TVwGYCnpT36ZOB41cSAQgDOyAjWBidylqDSk
+         OY/c3dW+mbkMYRXPb5VYxakjixJ+bU2J2t0NMSfDzygN92vh516+fsrITLxxi3Xk0sOl
+         wRYSz6vx2ZN8lbcbVQZvGKrocTMnF7o6oSYPkD/YyAJ4QHDFeCzKHNyg1bOgA6T1+G/3
+         LJAQvILX3vlIgZf8DsCT4LzmfTbz2a55eR0dNBe9ItBZ9gAlH0K3WMzUZN2t1B8T1axy
+         YNsfOBeZiUnpXzTlDq912UdjXM4P0iOMntx4KaKn+kMb3JQfRZVUZrN6r47BLtNoRFxI
+         aKgA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:in-reply-to
+         :references:mime-version:content-type:content-transfer-encoding;
+        bh=Wnx69FsewPXQlU3eF5Sm8ZwIEvI+ZFNTDUXLZsSTV44=;
+        b=h3loDbQtgTwbVdp78Y1JIuaChSNFcxe82sBK8Yp81TD+PBgzNvDk2XPiZNh6T+PRuF
+         bx8od1ss0RiTzw9YlKo2/E2UENYZW5TdTZsQfQ9Uq/JAOe0ome+XYfMx545QluHGrGfK
+         hsC5Tq2ksrlJkdecvfY9P9lVP5lNYw6/fxy7vbiOPastB1XGT3ooUuAKa5L6nK9SUjba
+         7S8jpS/klkIZGFMIHScFdoMI7ppcEitIRnxQRpsvCr9U1fLlytpvWobF8EmZwBAOhodu
+         JS+eRXw/fNDFpaIdn0x2SErN3IQ1+nT6EultgF0Ga1Yo+TNzHtHQsmaTSU+kL/PhaPmJ
+         UpdQ==
+X-Gm-Message-State: AG10YOR9WAFTHUdZCGeCEI1Dq68B79c3rgAtI4eadsjD7RoiZ5kfDSfcjMpqXAKC83o61Q==
+X-Received: by 10.112.13.165 with SMTP id i5mr877731lbc.79.1452919024775;
+        Fri, 15 Jan 2016 20:37:04 -0800 (PST)
+Received: from flare (t35.niisi.ras.ru. [193.232.173.35])
+        by smtp.gmail.com with ESMTPSA id r200sm1748759lfd.35.2016.01.15.20.37.03
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Fri, 15 Jan 2016 20:37:04 -0800 (PST)
+Date:   Sat, 16 Jan 2016 08:02:05 +0300
+From:   Antony Pavlov <antonynpavlov@gmail.com>
+To:     David Daney <ddaney.cavm@gmail.com>
+Cc:     linux-mips@linux-mips.org, Alban Bedel <albeu@free.fr>,
+        devicetree@vger.kernel.org
+Subject: Re: [PATCH] MIPS: dts: tl_wr1043nd_v1: fix "aliases" node name
+Message-Id: <20160116080205.0b6e84c9e531b0cfd845b67b@gmail.com>
+In-Reply-To: <56993EF5.9040008@gmail.com>
+References: <1452759657-7114-1-git-send-email-antonynpavlov@gmail.com>
+        <56993EF5.9040008@gmail.com>
+X-Mailer: Sylpheed 3.5.0beta3 (GTK+ 2.24.25; i586-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
+Return-Path: <antonynpavlov@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51169
+X-archive-position: 51170
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kamal@canonical.com
+X-original-sender: antonynpavlov@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,57 +70,52 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-4.2.8-ckt2 -stable review patch.  If anyone has any objections, please let me know.
+On Fri, 15 Jan 2016 10:48:21 -0800
+David Daney <ddaney.cavm@gmail.com> wrote:
 
----8<------------------------------------------------------------
+> On 01/14/2016 12:20 AM, Antony Pavlov wrote:
+> > The correct name for aliases node is "aliases" not "alias".
+> >
+> > An overview of the "aliases" node usage can be found
+> > on the device tree usage page at devicetree.org [1].
+> >
+> > Also please see chapter 3.3 ("Aliases node") of the ePAPR 1.1 [2].
+> >
+> > [1] http://devicetree.org/Device_Tree_Usage#aliases_Node
+> > [2] https://www.power.org/documentation/epapr-version-1-1/
+> >
+> > Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> > Cc: Alban Bedel <albeu@free.fr>
+> > Cc: linux-mips@linux-mips.org
+> > Cc: devicetree@vger.kernel.org
+> > ---
+> >   arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts | 2 +-
+> >   1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts b/arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts
+> > index 003015a..4b6d38c 100644
+> > --- a/arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts
+> > +++ b/arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts
+> > @@ -9,7 +9,7 @@
+> >   	compatible = "tplink,tl-wr1043nd-v1", "qca,ar9132";
+> >   	model = "TP-Link TL-WR1043ND Version 1";
+> >
+> > -	alias {
+> > +	aliases {
+> >   		serial0 = "/ahb/apb/uart@18020000";
+> >   	};
+> 
+> What uses this alias?  If the answer is nothing (likely, as it was 
+> broken and nobody seems to have noticed), just remove the whole thing.
 
-From: Paul Burton <paul.burton@imgtec.com>
+I have used ar9132_tl_wr1043nd_v1.dts as a template for AR9331-based board dts-file.
+AR9331 uses it's own very special UART implementation (the ar933x_uart.c driver is used).
+ar933x_uart.c relies on alias and does not work if alias is not set.
+I have not yet runned linux on TL-WR1034ND, but I suppose that uart alias is not 
+actually used for TL-WR1034ND and this aliases node can be safely removed.
 
-commit f3575e230cf8537951ebe3cc19974c5db2ff4f1c upstream.
+Alban, have you any comments?
 
-Commit 977e043d5ea1 ("MIPS: kernel: cps-vec: Replace mips32r2 ISA level
-with mips64r2") leads to .set mips64r2 directives being present in 32
-bit (ie. CONFIG_32BIT=y) kernels. This is incorrect & leads to MIPS64
-instructions being emitted by the assembler when expanding
-pseudo-instructions. For example the "move" instruction can legitimately
-be expanded to a "daddu". This causes problems when the kernel is run on
-a MIPS32 CPU, as CONFIG_32BIT kernels of course often are...
-
-Fix this by dropping the .set <ISA> directives entirely now that Kconfig
-should be ensuring that kernels including this code are built with a
-suitable -march= compiler flag.
-
-Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-Cc: Markos Chandras <markos.chandras@imgtec.com>
-Cc: James Hogan <james.hogan@imgtec.com>
-Cc: linux-mips@linux-mips.org
-Cc: linux-kernel@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/10869/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Kamal Mostafa <kamal@canonical.com>
----
- arch/mips/kernel/cps-vec.S | 2 --
- 1 file changed, 2 deletions(-)
-
-diff --git a/arch/mips/kernel/cps-vec.S b/arch/mips/kernel/cps-vec.S
-index 209ded1..763d8b7 100644
---- a/arch/mips/kernel/cps-vec.S
-+++ b/arch/mips/kernel/cps-vec.S
-@@ -229,7 +229,6 @@ LEAF(mips_cps_core_init)
- 	has_mt	t0, 3f
- 
- 	.set	push
--	.set	mips64r2
- 	.set	mt
- 
- 	/* Only allow 1 TC per VPE to execute... */
-@@ -348,7 +347,6 @@ LEAF(mips_cps_boot_vpes)
- 	 nop
- 
- 	.set	push
--	.set	mips64r2
- 	.set	mt
- 
- 1:	/* Enter VPE configuration state */
--- 
-1.9.1
+-- 
+Best regards,
+  Antony Pavlov

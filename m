@@ -1,55 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 17 Jan 2016 15:48:40 +0100 (CET)
-Received: from mout.gmx.net ([212.227.15.18]:52344 "EHLO mout.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27009313AbcAQOsixg-WT (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 17 Jan 2016 15:48:38 +0100
-Received: from [192.168.123.49] ([37.24.8.189]) by mail.gmx.com (mrgmx001)
- with ESMTPSA (Nemesis) id 0MWTfu-1ae6qt2tuU-00XdVO; Sun, 17 Jan 2016 15:48:29
- +0100
-Subject: =?UTF-8?Q?Re:_cannot_build_Linux_4.4:_arch/mips/kernel/signal.c:142?=
- =?UTF-8?Q?:12:_error:_=e2=80=98struct_ucontext=e2=80=99_has_no_member_named?=
- =?UTF-8?B?IOKAmHVjX2V4dGNvbnRleHTigJk=?=
-To:     lkml <linux-kernel@vger.kernel.org>, linux-mips@linux-mips.org
-References: <569B9CFE.1090007@gmx.de>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@imgtec.com>,
-        James Hogan <james.hogan@imgtec.com>
-From:   Heinrich Schuchardt <xypron.glpk@gmx.de>
-X-Enigmail-Draft-Status: N1110
-Message-ID: <569BA9BB.3080508@gmx.de>
-Date:   Sun, 17 Jan 2016 15:48:27 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Icedove/38.5.0
-MIME-Version: 1.0
-In-Reply-To: <569B9CFE.1090007@gmx.de>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K0:AsbQCnI/VJwSFG/yBaaBiCsENOPUDpai7dh2M5iuaj5jrXmZGGf
- QcQ9AMJ6H4f8SeXjuQLNFELTKHJS1E9OalVCsGrBge00N9otoEHJk0pm7eTQSaNLgAhu3gW
- UR+wa9rW6QznAIEZP5WQvquHGzcDZ8ResNmXFGAPDxfMI/QJfOQKvWLV7yr6NIGSyWiVuvQ
- XslPKTXCIwcnPs0twm2zA==
-X-UI-Out-Filterresults: notjunk:1;V01:K0:tlgXaf6Stkw=:96Q2EJ19X5xB/zEiHW3Rda
- jVgfvrlydYhMwpumVyOoMNxTpMOj15qbSzpPBz4y0oeCm9+OBu3TfzvFWeUxs6j7alKLXpMBD
- JJB2RfhzsoEF2w+OcCrl8i8igIUwkA68ch0NzExFCGfQCU/N90hwLZGg5rotLWXyJVVOzsyxi
- 5YOCWhmME9Qiqnm7NeQMZzXSyu3rG4vIck7qTDVJ/+hvZE7oweUVOOSTCFQl41dPGWN8N3JJ8
- CBir1H2Kk7E7NVrTJCxvdCsbsl6erzG63fNLmZsjUFr0TUvLkZB5aQGmGvO2/QFIncvZPq2rg
- bNxjO3YlFXo4v7VV7fhMbkBfcuYOdg49rlQ4UA07Q61GvGxt1cDwKbLDJfKmSaZun4t3fyD53
- IBPA1bQLV1RGu9PUcaWe6jPYpOQymUPSeTlxGNjt9+APC6LtiXdfe15ykQkcOO8vb/pKdAMk2
- 4XK8hNfsZt+Lk0fw2rheVif3NSDZOMilFWs60E88xpH+wRznt9ncaOCt28RykFZ+zgGzAuCx1
- Ht8nX8yB7afSiOTUqnjlCoqU11orZZ5+MoKRowibjt107jOQf+d4V2EZnmLtnmbELXEXQAS0g
- fBpkT8ooWst+jSZorCQDhx5XAYCwJqwv7P7WDfop6Fv7VITptH4A9d7R2L8vxghmqmIKhQiqC
- gLtz5lN7cNia+Ft8iz06YY3THUGMjPy4+/b8q7ZFPTHgK/kOP33431fnzSfFpnAgoCc7uBuLY
- lrqZYUaYuNaFcrNohXNkUEQs7RthkhIBTsFBMe8UI8GyGtnwuBB06myPT31KeXx4cj+/yMGeL
- btSjiVc
-Return-Path: <xypron.glpk@gmx.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Jan 2016 00:57:10 +0100 (CET)
+Received: from mail-lb0-f177.google.com ([209.85.217.177]:36661 "EHLO
+        mail-lb0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006525AbcAQX5JUF-9D (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 18 Jan 2016 00:57:09 +0100
+Received: by mail-lb0-f177.google.com with SMTP id oh2so339170541lbb.3
+        for <linux-mips@linux-mips.org>; Sun, 17 Jan 2016 15:57:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id;
+        bh=OR8TLeUGJRbRm7GZwdTi2CTxY586BE3bZ/BypDXnglk=;
+        b=L9N9XzDOVQ0DozpIqoWuuEYvfemcvDpsdcpz1Ue8S8H1i23StxoYHJB13XglG8iyPR
+         TrGS6SyJ5IkR1oNjRQe0VVajxs2gd5WS5TxDZa2tqsS+6sBEfcn9KJP02dpSu4VyhedY
+         q9Ci5DA/iGWt6wMGs8WD0U0O2FPBRLcVmc/4IadJ5d6FDs53Z1aU/EpYWV5GpmT2IVXc
+         +hfUzZoWJP2ODsiuwykBU/8mku5e4PLXTzWGNb5fdtqpCVOV7CAW6rnqPgB3SZ3vPV36
+         uRD99OuxNjNqV+a53xi1Gwv14MkbegMCWzitlneqtWUkMIK+nlM+yIKQnoxNmgaPkAKS
+         QtsA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=OR8TLeUGJRbRm7GZwdTi2CTxY586BE3bZ/BypDXnglk=;
+        b=UTd6UkfZ18dwHEYZdmpfFXLtYOU+wDnGzzJxx7QMjgU05RkP3DHny7HV8RPvW03wQf
+         wnPzDIrOg69Z+2cPeONrPCgf9LJOeCXjWGcaGfdmxpbY8nALmbfqxZemrranIsaMNQl9
+         V99H9AnCet2ozaMb/sdrpdO4Z52ivowp9lJ+rN0dGx8egxOvXefF2f1YWW2tVoYmludS
+         yYkvGEUEBU9DTeaT+qWroAPqVmAxQeWT3ZjMueRSTbVZ4qXVxsNj8BbRfl3H+d2hmF6P
+         Bzg/8EvL7qyM4Nwm9XeuynXcY2K1wMCe6676//a8uT4KTXlmnt3l/K0I+/CCwIBCuQ6J
+         vreg==
+X-Gm-Message-State: ALoCoQmZkIpuyxK3opzE9SMdWZsw6QJc7uVOYS3p4/tb2RDePfpeUOePuS1URTGsHavHOpxyqxi6Ij/f3VBfodPJmjW4vTVrkQ==
+X-Received: by 10.112.134.165 with SMTP id pl5mr7374103lbb.126.1453075023831;
+        Sun, 17 Jan 2016 15:57:03 -0800 (PST)
+Received: from localhost.localdomain (ppp109-252-26-184.pppoe.spdop.ru. [109.252.26.184])
+        by smtp.gmail.com with ESMTPSA id xe8sm2783445lbb.41.2016.01.17.15.57.02
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Sun, 17 Jan 2016 15:57:03 -0800 (PST)
+From:   Antony Pavlov <antonynpavlov@gmail.com>
+To:     linux-mips@linux-mips.org
+Cc:     Yegor Yefremov <yegorslists@googlemail.com>,
+        Antony Pavlov <antonynpavlov@gmail.com>,
+        Gabor Juhos <juhosg@openwrt.org>, Alban Bedel <albeu@free.fr>
+Subject: [RFC 0/4] MIPS: ath79: introduce AR9331 devicetree support
+Date:   Mon, 18 Jan 2016 02:56:23 +0300
+Message-Id: <1453074987-3356-1-git-send-email-antonynpavlov@gmail.com>
+X-Mailer: git-send-email 2.6.2
+Return-Path: <antonynpavlov@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51179
+X-archive-position: 51180
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: xypron.glpk@gmx.de
+X-original-sender: antonynpavlov@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -62,31 +62,32 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 01/17/2016 02:54 PM, Heinrich Schuchardt wrote:
-> 
-> HEAD is now at afd2ff9... Linux 4.4
-> arch/mips/kernel/signal.c: In function ‘sc_to_extcontext’:
-> arch/mips/kernel/signal.c:142:12: error: ‘struct ucontext’ has no member
-> named ‘uc_extcontext’
->   return &uc->uc_extcontext;
->             ^
-> In file included from include/linux/poll.h:11:0,
->                  from include/linux/ring_buffer.h:7,
->                  from include/linux/trace_events.h:5,
->                  from include/trace/syscall.h:6,
->                  from include/linux/syscalls.h:81,
->                  from arch/mips/kernel/signal.c:26:
-> arch/mips/kernel/signal.c: In function ‘save_msa_extcontext’:
-> arch/mips/kernel/signal.c:170:40: error: dereferencing pointer to
-> incomplete type
-> 
+This patchseries also can be found on github:
 
-The problem stemmed from make not recognizing that this file was outdated:
+     https://github.com/frantony/linux/tree/20160118.v4.4-mr3020-dt
 
-Oct 16  2014 arch/mips/include/generated/asm/ucontext.h
+Antony Pavlov (4):
+  WIP: MIPS: ath79: make ar933x clks more devicetree-friendly
+  MIPS: dts: qca: introduces AR9331 devicetree
+  MIPS: ath79: add initial support for TP-LINK MR3020
+  WIP: MIPS: add tl-mr3020-dt-raw_defconfig
 
-Shouldn't make automatically regenerate outdated files?
+ arch/mips/ath79/Kconfig                      |   5 ++
+ arch/mips/ath79/clock.c                      |  20 +++--
+ arch/mips/boot/dts/qca/Makefile              |   1 +
+ arch/mips/boot/dts/qca/ar9331.dtsi           | 113 +++++++++++++++++++++++++++
+ arch/mips/boot/dts/qca/tl_mr3020.dts         |  68 ++++++++++++++++
+ arch/mips/configs/tl-mr3020-dt-raw_defconfig |  85 ++++++++++++++++++++
+ include/dt-bindings/clock/ar933x-clk.h       |  22 ++++++
+ 7 files changed, 307 insertions(+), 7 deletions(-)
+ create mode 100644 arch/mips/boot/dts/qca/ar9331.dtsi
+ create mode 100644 arch/mips/boot/dts/qca/tl_mr3020.dts
+ create mode 100644 arch/mips/configs/tl-mr3020-dt-raw_defconfig
+ create mode 100644 include/dt-bindings/clock/ar933x-clk.h
 
-Best regards
+Cc: Gabor Juhos <juhosg@openwrt.org>
+Cc: Alban Bedel <albeu@free.fr>
+Cc: linux-mips@linux-mips.org
 
-Heinrich Schuchardt
+-- 
+2.6.2

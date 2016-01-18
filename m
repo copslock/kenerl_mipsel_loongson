@@ -1,56 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Jan 2016 09:24:56 +0100 (CET)
-Received: from mout.gmx.net ([212.227.17.22]:49890 "EHLO mout.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27009232AbcARIYxesdVx (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 18 Jan 2016 09:24:53 +0100
-Received: from [10.95.162.180] ([155.56.40.73]) by mail.gmx.com (mrgmx101)
- with ESMTPSA (Nemesis) id 0MPYqL-1aGyMY3hxp-004ftD; Mon, 18 Jan 2016 09:23:52
- +0100
-Subject: Re: [PATCH] mm: Remove duplicate definitions of MADV_FREE
-To:     Guenter Roeck <linux@roeck-us.net>,
-        Andrew Morton <akpm@linux-foundation.org>
-References: <1453087746-4658-1-git-send-email-linux@roeck-us.net>
-Cc:     Richard Henderson <rth@twiddle.net>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Chris Zankel <chris@zankel.net>, linux-alpha@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-parisc@vger.kernel.org, Chen Gang <gang.chen.5i5j@gmail.com>,
-        Minchan Kim <minchan@kernel.org>
-From:   Helge Deller <deller@gmx.de>
-Message-ID: <569CA115.3010305@gmx.de>
-Date:   Mon, 18 Jan 2016 09:23:49 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Jan 2016 09:26:39 +0100 (CET)
+Received: from smtp.codeaurora.org ([198.145.29.96]:57349 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27010464AbcARI0h5NK28 convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 18 Jan 2016 09:26:37 +0100
+Received: from smtp.codeaurora.org (localhost [127.0.0.1])
+        by smtp.codeaurora.org (Postfix) with ESMTP id 4CA1B60244;
+        Mon, 18 Jan 2016 08:26:36 +0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 40AE860577; Mon, 18 Jan 2016 08:26:36 +0000 (UTC)
+Received: from potku.adurom.net (a88-115-185-251.elisa-laajakaista.fi [88.115.185.251])
+        (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id BE6CB60244;
+        Mon, 18 Jan 2016 08:26:32 +0000 (UTC)
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     =?utf-8?Q?Rafa=C5=82_Mi=C5=82ecki?= <zajec5@gmail.com>
+Cc:     Arnd Bergmann <arnd@arndb.de>,
+        "linux-arm-kernel\@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-mips\@linux-mips.org" <linux-mips@linux-mips.org>,
+        Hauke Mehrtens <hauke@hauke-m.de>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Michael Buesch <m@bues.ch>,
+        Network Development <netdev@vger.kernel.org>
+Subject: Re: [PATCH, RESEND] ssb: mark ssb_bus_register as __maybe_unused
+References: <8128014.DbbgBtKY3z@wuerfel>
+        <8760ywd5fe.fsf@kamboji.qca.qualcomm.com> <4037550.DMaVTE01Aq@wuerfel>
+        <87bn8l7miw.fsf@kamboji.qca.qualcomm.com>
+        <CACna6ryvDFHqwJ3ExURcyFT2ZaT9fS9v36wCnJfze5BLnE88og@mail.gmail.com>
+Date:   Mon, 18 Jan 2016 10:26:29 +0200
+In-Reply-To: <CACna6ryvDFHqwJ3ExURcyFT2ZaT9fS9v36wCnJfze5BLnE88og@mail.gmail.com>
+        (=?utf-8?Q?=22Rafa=C5=82_Mi=C5=82ecki=22's?= message of "Sat, 16 Jan 2016
+ 15:44:23 +0100")
+Message-ID: <87y4bn5m4q.fsf@kamboji.qca.qualcomm.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/23.3 (gnu/linux)
 MIME-Version: 1.0
-In-Reply-To: <1453087746-4658-1-git-send-email-linux@roeck-us.net>
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K0:i38AfTZjK41GkZKU2dmNITCEEFeHmZFoVic8caYJmCCSleXIOIW
- XdwwgsEdeRKfcIifoCXcj5uuEnQdvcEgtUr6RJAawGPXneWBNBSqCtSFbPBmjPJ4s7lcjRv
- ZpJjV9YWqUl3R4PMR6OfKAJ2cP9117TVJTS3hWGfh60ma4yUOdai9khpVQSPQp5DqJPuYV1
- QWZD/Gq7Q4xC/n3hvbyPw==
-X-UI-Out-Filterresults: notjunk:1;V01:K0:VSzWWqyIQu4=:sVP94BYMAYzx9FXYPNSWL7
- afXl5v2Hf8bfY9382flL9fkmCGV6ge8oBt9knfmm28t4UMSgJ5fVMOOG5NlGu5UpOZj5CaTYO
- EXVrcSmnbwecY2iqJy2+NLq26aHhQyajCcHcJKxOpFx18DsApfGPUbaO4zT6IGMoTyUB/UZ01
- Rzzgf1oLXNF/YL3GE78MVAko8PBBKWJxK10C+DoA839qNvOLtPJdJrW3E9Ng14gkroDGVSTfO
- RlzKAsTPtnAzpuiitaQquwVOFoHTG0/ZPtoNN/qPs9yuXe+D8HrDm0ulHNiLghQtdbK+rtEIx
- XcQQdybS0Z5trLqGxEjl1dukufzzVfYriL6DRXtGTvQ88LX6h0MrkiAYEti4yNsqiREpJrChp
- 1Sjl3YBvCa4CeNYOPlYgch5tNq33/vKzJQkSLG/Kil9f/dyFLh3LUv6sNOPSG9UZwhrotmirP
- 0jBK3fGCLWdCt8kCdSBmz7Hd9L9V5iFbazZkfHv9wK7YLetMoYKsxAfuo9Rp4oelHycwuh0GZ
- rkm7FzTrDYslFAATXIPCNQqLOihRizTzrv7N4uSxQxH6CNDOQbn7WfQTLRSWz1DJpfOFBVTgG
- DJYLIF5NRU9ieMPvx8j9Z1hvMZvaw/YEHp8pfxCGnpVOGo6plWVGrIu5ds5oDrLdS/wdq3LcZ
- 6KPNS5dnqgELWqW/tJOHijr3mOHbCsTG5+unw3v/I+8t158/HEq6lcEHDiYCzvcY3AjY6me1J
- IhQ/LxNRlUTv9cvxXcUTHi9WQWg7dJiVG5Ui/BirLQkEdLhmg5W6DsR7dXZuIv5MP4Dr7J6P5
- iUWC41u
-Return-Path: <deller@gmx.de>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8BIT
+X-Virus-Scanned: ClamAV using ClamSMTP
+Return-Path: <kvalo@codeaurora.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51192
+X-archive-position: 51193
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: deller@gmx.de
+X-original-sender: kvalo@codeaurora.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -63,50 +60,45 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 18.01.2016 04:29, Guenter Roeck wrote:
-> Commits 21f55b018ba5 ("arch/*/include/uapi/asm/mman.h: : let MADV_FREE
-> have same value for all architectures") and ef58978f1eaa ("mm: define
-> MADV_FREE for some arches") both defined MADV_FREE, but did not use the
-> same values. This results in build errors such as
-> 
-> ./arch/alpha/include/uapi/asm/mman.h:53:0: error: "MADV_FREE" redefined
-> ./arch/alpha/include/uapi/asm/mman.h:50:0: note:
-> 	this is the location of the previous definition
-> 
-> for the affected architectures.
-> 
-> Fixes: 21f55b018ba5 ("arch/*/include/uapi/asm/mman.h: : let MADV_FREE have same value for all architectures")
-> Fixes: ef58978f1eaa ("mm: define MADV_FREE for some arches")
-> Cc: Chen Gang <gang.chen.5i5j@gmail.com>
-> Cc: Minchan Kim <minchan@kernel.org>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Rafał Miłecki <zajec5@gmail.com> writes:
 
+> On 16 January 2016 at 13:10, Kalle Valo <kvalo@codeaurora.org> wrote:
+>> Arnd Bergmann <arnd@arndb.de> writes:
+>>
+>>> On Thursday 14 January 2016 08:46:29 Kalle Valo wrote:
+>>>> I can take it. For historical reasons ssb patches go through my
+>>>> wireless-drivers trees.
+>>>
+>>> I found this in my backlog, and I believe it still applies. Can you take
+>>> that one too?
+>>
+>> I'm not sure what you mean here, I can take any ssb patch if it's ok for
+>> Michael or Rafal :)
+>>
+>> Just please submit the patch properly (with S-o-B line) and CC
+>> linux-wireless so that it goes to patchwork.
+>
+> It was already sent once and Acked by Michael:
+> https://patchwork.kernel.org/patch/7543191/
+>
+> The problem was not cc-ing linux-wireless so it wasn't picked by the
+> linux-wireless patchwork.
 
-On parisc both definitions of MADV_FREE are 8, so I do not face the compiler error.
-Nevertheless it should be cleaned up.
+Ah, that's why I missed it. I only follow patchwork, I basically ignore
+patches which are sent via email. Arnd, can you please resend the patch
+and CC linux-wireless? Sorry for the trouble.
 
-Acked-by: Helge Deller <deller@gmx.de>  (for parisc)
+To avoid this in the future I think we should replace netdev with
+linux-wireless in the MAINTAINERS entry:
 
-Thanks!
-Helge
+SONICS SILICON BACKPLANE DRIVER (SSB)
+M:      Michael Buesch <m@bues.ch>
+L:      netdev@vger.kernel.org
+S:      Maintained
+F:      drivers/ssb/
+F:      include/linux/ssb/
 
-> ---
->  arch/alpha/include/uapi/asm/mman.h  | 1 -
->  arch/mips/include/uapi/asm/mman.h   | 1 -
->  arch/parisc/include/uapi/asm/mman.h | 1 -
->  arch/xtensa/include/uapi/asm/mman.h | 1 -
->  4 files changed, 4 deletions(-)
-> 
-> diff --git a/arch/parisc/include/uapi/asm/mman.h b/arch/parisc/include/uapi/asm/mman.h
-> index cf830d465f75..f3db7d8eb0c2 100644
-> --- a/arch/parisc/include/uapi/asm/mman.h
-> +++ b/arch/parisc/include/uapi/asm/mman.h
-> @@ -43,7 +43,6 @@
->  #define MADV_SPACEAVAIL 5               /* insure that resources are reserved */
->  #define MADV_VPS_PURGE  6               /* Purge pages from VM page cache */
->  #define MADV_VPS_INHERIT 7              /* Inherit parents page size */
-> -#define MADV_FREE	8		/* free pages only if memory pressure */
->  
->  /* common/generic parameters */
->  #define MADV_FREE	8		/* free pages only if memory pressure */
+Are people ok with that? Patches welcome :)
+
+-- 
+Kalle Valo

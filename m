@@ -1,74 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Jan 2016 16:46:48 +0100 (CET)
-Received: from e32.co.us.ibm.com ([32.97.110.150]:41539 "EHLO
-        e32.co.us.ibm.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27010530AbcARPqrQp3iO (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 18 Jan 2016 16:46:47 +0100
-Received: from localhost
-        by e32.co.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <linux-mips@linux-mips.org> from <paulmck@linux.vnet.ibm.com>;
-        Mon, 18 Jan 2016 08:46:40 -0700
-Received: from d03dlp02.boulder.ibm.com (9.17.202.178)
-        by e32.co.us.ibm.com (192.168.1.132) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        Mon, 18 Jan 2016 08:46:38 -0700
-X-IBM-Helo: d03dlp02.boulder.ibm.com
-X-IBM-MailFrom: paulmck@linux.vnet.ibm.com
-X-IBM-RcptTo: linux-mips@linux-mips.org;ralf@linux-mips.org
-Received: from b03cxnp08028.gho.boulder.ibm.com (b03cxnp08028.gho.boulder.ibm.com [9.17.130.20])
-        by d03dlp02.boulder.ibm.com (Postfix) with ESMTP id D833A3E4003B;
-        Mon, 18 Jan 2016 08:46:37 -0700 (MST)
-Received: from d03av05.boulder.ibm.com (d03av05.boulder.ibm.com [9.17.195.85])
-        by b03cxnp08028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id u0IFkbd127721756;
-        Mon, 18 Jan 2016 08:46:37 -0700
-Received: from d03av05.boulder.ibm.com (localhost [127.0.0.1])
-        by d03av05.boulder.ibm.com (8.14.4/8.14.4/NCO v10.0 AVout) with ESMTP id u0IFkSAP020908;
-        Mon, 18 Jan 2016 08:46:37 -0700
-Received: from paulmck-ThinkPad-W541 (sig-9-77-144-101.ibm.com [9.77.144.101])
-        by d03av05.boulder.ibm.com (8.14.4/8.14.4/NCO v10.0 AVin) with ESMTP id u0IFkPB9020674;
-        Mon, 18 Jan 2016 08:46:26 -0700
-Received: by paulmck-ThinkPad-W541 (Postfix, from userid 1000)
-        id 6201B16C1AF4; Mon, 18 Jan 2016 07:46:29 -0800 (PST)
-Date:   Mon, 18 Jan 2016 07:46:29 -0800
-From:   "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>
-To:     Herbert Xu <herbert@gondor.apana.org.au>
-Cc:     Leonid.Yegoshin@imgtec.com, linux-mips@linux-mips.org,
-        linux-ia64@vger.kernel.org, mst@redhat.com, peterz@infradead.org,
-        will.deacon@arm.com, virtualization@lists.linux-foundation.org,
-        hpa@zytor.com, sparclinux@vger.kernel.org, mingo@kernel.org,
-        linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
-        linux@arm.linux.org.uk,
-        user-mode-linux-devel@lists.sourceforge.net,
-        linux-sh@vger.kernel.org, mpe@ellerman.id.au, x86@kernel.org,
-        xen-devel@lists.xenproject.org, mingo@elte.hu,
-        linux-xtensa@linux-xtensa.org, james.hogan@imgtec.com,
-        arnd@arndb.de, stefano.stabellini@eu.citrix.com,
-        adi-buildroot-devel@lists.sourceforge.net, ddaney.cavm@gmail.com,
-        tglx@linutronix.de, linux-metag@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, andrew.cooper3@citrix.com,
-        linux-kernel@vger.kernel.org, ralf@linux-mips.org, joe@perches.com,
-        linuxppc-dev@lists.ozlabs.org, davem@davemloft.net,
-        Linus Torvalds <torvalds@linux-foundation.org>
-Subject: Re: [v3,11/41] mips: reuse asm-generic/barrier.h
-Message-ID: <20160118154629.GB3818@linux.vnet.ibm.com>
-Reply-To: paulmck@linux.vnet.ibm.com
-References: <20160114204827.GE3818@linux.vnet.ibm.com>
- <20160118081929.GA30420@gondor.apana.org.au>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Jan 2016 17:53:52 +0100 (CET)
+Received: from bues.ch ([80.190.117.144]:56476 "EHLO bues.ch"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27010552AbcARQxsbWDpT (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 18 Jan 2016 17:53:48 +0100
+Received: by bues.ch with esmtpsa (Exim 4.80)
+        (envelope-from <m@bues.ch>)
+        id 1aLD3i-0007Qo-NK; Mon, 18 Jan 2016 17:53:38 +0100
+Date:   Mon, 18 Jan 2016 17:53:03 +0100
+From:   Michael =?UTF-8?B?QsO8c2No?= <m@bues.ch>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        "linux-arm-kernel\@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-mips\@linux-mips.org" <linux-mips@linux-mips.org>,
+        Hauke Mehrtens <hauke@hauke-m.de>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Network Development <netdev@vger.kernel.org>,
+        linux-wireless@vger.kernel.org
+Subject: ssb: Set linux-wireless as MAINTAINERS list
+Message-ID: <20160118175303.19164539@wiggum>
+In-Reply-To: <87y4bn5m4q.fsf@kamboji.qca.qualcomm.com>
+References: <8128014.DbbgBtKY3z@wuerfel>
+ <8760ywd5fe.fsf@kamboji.qca.qualcomm.com>
+ <4037550.DMaVTE01Aq@wuerfel>
+ <87bn8l7miw.fsf@kamboji.qca.qualcomm.com>
+ <CACna6ryvDFHqwJ3ExURcyFT2ZaT9fS9v36wCnJfze5BLnE88og@mail.gmail.com>
+ <87y4bn5m4q.fsf@kamboji.qca.qualcomm.com>
+X-Mailer: Claws Mail 3.13.1 (GTK+ 2.24.29; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20160118081929.GA30420@gondor.apana.org.au>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-TM-AS-MML: disable
-X-Content-Scanned: Fidelis XPS MAILER
-x-cbid: 16011815-0005-0000-0000-00001B8983C5
-Return-Path: <paulmck@linux.vnet.ibm.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ boundary="Sig_/W9FSX.bWK4dE3/AP7ZDba/G"; protocol="application/pgp-signature"
+Return-Path: <m@bues.ch>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51198
+X-archive-position: 51199
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paulmck@linux.vnet.ibm.com
+X-original-sender: m@bues.ch
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -81,46 +52,58 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Jan 18, 2016 at 04:19:29PM +0800, Herbert Xu wrote:
-> Paul E. McKenney <paulmck@linux.vnet.ibm.com> wrote:
-> >
-> > You could use SYNC_ACQUIRE() to implement read_barrier_depends() and
-> > smp_read_barrier_depends(), but SYNC_RMB probably does not suffice.
-> > The reason for this is that smp_read_barrier_depends() must order the
-> > pointer load against any subsequent read or write through a dereference
-> > of that pointer.  For example:
-> > 
-> >        p = READ_ONCE(gp);
-> >        smp_rmb();
-> >        r1 = p->a; /* ordered by smp_rmb(). */
-> >        p->b = 42; /* NOT ordered by smp_rmb(), BUG!!! */
-> >        r2 = x; /* ordered by smp_rmb(), but doesn't need to be. */
-> > 
-> > In contrast:
-> > 
-> >        p = READ_ONCE(gp);
-> >        smp_read_barrier_depends();
-> >        r1 = p->a; /* ordered by smp_read_barrier_depends(). */
-> >        p->b = 42; /* ordered by smp_read_barrier_depends(). */
-> >        r2 = x; /* not ordered by smp_read_barrier_depends(), which is OK. */
-> > 
-> > Again, if your hardware maintains local ordering for address
-> > and data dependencies, you can have read_barrier_depends() and
-> > smp_read_barrier_depends() be no-ops like they are for most
-> > architectures.
-> > 
-> > Does that help?
-> 
-> This is crazy! smp_rmb started out being strictly stronger than
-> smp_read_barrier_depends, when did this stop being the case?
+--Sig_/W9FSX.bWK4dE3/AP7ZDba/G
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-Hello, Herbert!
+ssb patches go through the linux-wireless tree.
+Set the list to linux-wireless, so linux-wireless patchwork can catch the p=
+atches.
 
-It is true that most Linux kernel code relies only on the read-read
-properties of dependencies, but the read-write properties are useful.
-Admittedly relatively rarely, but useful.
+Signed-off-by: Michael Buesch <m@bues.ch>
 
-The better comparison for smp_read_barrier_depends(), especially in
-its rcu_dereference*() form, is smp_load_acquire().
+---
 
-							Thanx, Paul
+Index: linux/MAINTAINERS
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+--- linux.orig/MAINTAINERS
++++ linux/MAINTAINERS
+@@ -10036,7 +10036,7 @@ F:	drivers/net/ethernet/natsemi/sonic.*
+=20
+ SONICS SILICON BACKPLANE DRIVER (SSB)
+ M:	Michael Buesch <m@bues.ch>
+-L:	netdev@vger.kernel.org
++L:	linux-wireless@vger.kernel.org
+ S:	Maintained
+ F:	drivers/ssb/
+ F:	include/linux/ssb/
+
+
+--=20
+Michael
+
+--Sig_/W9FSX.bWK4dE3/AP7ZDba/G
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQIcBAEBCAAGBQJWnRhvAAoJEPUyvh2QjYsOPYMP+wVU8Zgs2cPYZAxBjr/7/ZKX
+7/S5jsyNck3aQRMfwW9l2od0ZC1zwkSCRZLNzwtbWlXTdsc5ti/5xY8b1BG8AMai
+jvuwrpQFJTP3pDBfITcfHy1TOCRAp9WlZYftbz5AsnweHe3c9pGZVSEi5kdRXQrt
+5UlcViNaQ2Xj6mcbvSHGL78lvspgUGikjztlKq2FDfeYn++iyr71x9cSBfbNkB3v
+ZKa3bFPAaNR2/0gY9xVKE6pcHBroGUB6RxuLoXXp2rCX6XpTtI6hq0ITFUcyEwuQ
+MQqFqh67iB3prN6hRHX+dJl2VsuruyAZpgPCOVDysF0xThHdEZFDTlAgPmpdnju9
+wRb6hKiQkjvjzYAHAxo6YepAOIXHEhaPqnPs8u2hxVCZk8mM4dOMGp5ZNdsmQi8q
+F/Dd9MbYYDpgy/1y65dCPTz0KRq0UzzUdu85MSOk/SQ3ZxA5vlYs8t8IKeIM7x+A
+9QDwtlcNjnqzJ8qgd/rweC/Pty8m3Tg6wzIXYeDs8lty7VygC2MZ5cggCUHMdap1
+urBEE09Vz9aK8/q+SvMGis//flrjcodlhrmQPZkJ5x5I+pACf0n/t5JMrRWkw49n
+EF1djRh9+YHd0KdsuYU336RgW00GV2FWUepPGeKVuQH9Z+cGKriakXeTDkpsnm+w
+Nf2mv0KxPsLC53wdZlyN
+=OMM2
+-----END PGP SIGNATURE-----
+
+--Sig_/W9FSX.bWK4dE3/AP7ZDba/G--

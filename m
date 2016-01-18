@@ -1,65 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Jan 2016 07:57:38 +0100 (CET)
-Received: from mail-yk0-f194.google.com ([209.85.160.194]:34728 "EHLO
-        mail-yk0-f194.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27009232AbcARG5gzf-8P (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 18 Jan 2016 07:57:36 +0100
-Received: by mail-yk0-f194.google.com with SMTP id v14so37391990ykd.1;
-        Sun, 17 Jan 2016 22:57:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=user-agent:in-reply-to:references:mime-version
-         :content-transfer-encoding:content-type:subject:from:date:to
-         :message-id;
-        bh=Ets8Bh9Pt6DA0xIc5BSdfutLQrQEhUGK3MzIvo8M2Yw=;
-        b=pgq5QyOq0N24djDCiVb9qH1LWyTI3VPsMbWYL2BZyChU0qsOhRP+lQjMSoNfUs/3LP
-         ziyEL7xh3BDdb3oJOJWSMfjJyp6AxVB5YrVf7R13tfJyFP9XgiEDPyVqNkUR1PEjd2gJ
-         3kB8K1wJvH6jyrOc9AyRaifUD9wvijz6Aez9egJxjhgah/SVG7fBW7s2B2bihiau+qOT
-         dUl+PX3VS2r2OV6FenGONzQN4T2Ev7R2h1ofM7OL8FppTKGKnHiipyB32zeWVJtAtPTq
-         r8LjhQW78xBoRLViiDE8Zk0mXcRrv4PaYjsoWFRYk/OUnCeuGKjUbqpX1R/lrkswkCRL
-         kuqg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:user-agent:in-reply-to:references:mime-version
-         :content-transfer-encoding:content-type:subject:from:date:to
-         :message-id;
-        bh=Ets8Bh9Pt6DA0xIc5BSdfutLQrQEhUGK3MzIvo8M2Yw=;
-        b=aRH/7BgpyRqG7fwqRpdtApvjIg3dzvkf0aqvb70BKTqbUnEVRViHiU3Ee6hoqBLGoi
-         HcVXzV/CjxC3W7lCDulpb47HZr7y+z0WC1oRAOJ5/n63Y5OKXKO6SfE8e9Dnyo9DGYYn
-         YCVEQGBbNDNTDL3FuB4oymnj8G3PZ+zkRQvU9Udp2jilMrx8Ll8okGC+NRQJpaPu7cha
-         tIO+3eeUdyu0QpimSC3KDo96TeInwr6BzrZF/cUjC3PdrDZkZjxfkHGnDcVCmIiOzF8o
-         92Rg4z+vupfE5cRu0DlqsWNcQfMLJLLT70ZfQPiDGt7yGeBX5TfLXNcCIBihL6IIDQri
-         beOQ==
-X-Gm-Message-State: ALoCoQmWZ2bcYgezORnXsUlwLm3k8Pm/qU8nnudtGKs7uzccofduaoqKP9D90YA6qUIwlAlTMFlT1FwhMuNN8MWKBh/5UTFpLg==
-X-Received: by 10.129.33.65 with SMTP id h62mr14174733ywh.139.1453100251083;
-        Sun, 17 Jan 2016 22:57:31 -0800 (PST)
-Received: from ?IPv6:2001:470:d:73f:903:9f9b:ce2a:20c0? ([2001:470:d:73f:903:9f9b:ce2a:20c0])
-        by smtp.gmail.com with ESMTPSA id t11sm17618219ywg.16.2016.01.17.22.57.29
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Sun, 17 Jan 2016 22:57:30 -0800 (PST)
-User-Agent: K-9 Mail for Android
-In-Reply-To: <1453024955-13570-1-git-send-email-noltari@gmail.com>
-References: <1453024955-13570-1-git-send-email-noltari@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Jan 2016 09:22:40 +0100 (CET)
+Received: from helcar.hengli.com.au ([209.40.204.226]:41132 "EHLO
+        helcar.hengli.com.au" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27009232AbcARIWdcXQCG (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 18 Jan 2016 09:22:33 +0100
+Received: from gondolin.me.apana.org.au ([192.168.0.6])
+        by norbury.hengli.com.au with esmtp (Exim 4.80 #3 (Debian))
+        id 1aL52Y-0006Wo-Nq; Mon, 18 Jan 2016 19:19:54 +1100
+Received: from herbert by gondolin.me.apana.org.au with local (Exim 4.80)
+        (envelope-from <herbert@gondor.apana.org.au>)
+        id 1aL52A-0007ut-Bx; Mon, 18 Jan 2016 16:19:30 +0800
+Date:   Mon, 18 Jan 2016 16:19:29 +0800
+From:   Herbert Xu <herbert@gondor.apana.org.au>
+To:     paulmck@linux.vnet.ibm.com
+Cc:     Leonid.Yegoshin@imgtec.com, linux-mips@linux-mips.org,
+        linux-ia64@vger.kernel.org, mst@redhat.com, peterz@infradead.org,
+        will.deacon@arm.com, virtualization@lists.linux-foundation.org,
+        hpa@zytor.com, sparclinux@vger.kernel.org, mingo@kernel.org,
+        linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
+        linux@arm.linux.org.uk,
+        user-mode-linux-devel@lists.sourceforge.net,
+        linux-sh@vger.kernel.org, mpe@ellerman.id.au, x86@kernel.org,
+        xen-devel@lists.xenproject.org, mingo@elte.hu,
+        linux-xtensa@linux-xtensa.org, james.hogan@imgtec.com,
+        arnd@arndb.de, stefano.stabellini@eu.citrix.com,
+        adi-buildroot-devel@lists.sourceforge.net, ddaney.cavm@gmail.com,
+        tglx@linutronix.de, linux-metag@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, andrew.cooper3@citrix.com,
+        linux-kernel@vger.kernel.org, ralf@linux-mips.org, joe@perches.com,
+        linuxppc-dev@lists.ozlabs.org, davem@davemloft.net,
+        Linus Torvalds <torvalds@linux-foundation.org>
+Subject: Re: [v3,11/41] mips: reuse asm-generic/barrier.h
+Message-ID: <20160118081929.GA30420@gondor.apana.org.au>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain;
- charset=UTF-8
-Subject: Re: [PATCH 1/2] bmips: improve BCM6328 device tree
-From:   Florian Fainelli <f.fainelli@gmail.com>
-Date:   Sun, 17 Jan 2016 22:57:23 -0800
-To:     =?ISO-8859-1?Q?=C1lvaro_Fern=E1ndez_Rojas?= <noltari@gmail.com>,
-        linux-mips@linux-mips.org, ralf@linux-mips.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        jogo@openwrt.org, cernekee@gmail.com
-Message-ID: <420C870C-0A83-4115-8EDD-B8F46C17339D@gmail.com>
-Return-Path: <f.fainelli@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20160114204827.GE3818@linux.vnet.ibm.com>
+Organization: Core
+X-Newsgroups: apana.lists.os.linux.kernel,apana.lists.os.linux.virtualization
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <herbert@gondor.apana.org.au>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51190
+X-archive-position: 51191
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: f.fainelli@gmail.com
+X-original-sender: herbert@gondor.apana.org.au
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -72,12 +59,38 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On January 17, 2016 2:02:34 AM PST, "Álvaro Fernández Rojas" <noltari@gmail.com> wrote:
->Adds bcm6328-leds node to bcm6328.dtsi
+Paul E. McKenney <paulmck@linux.vnet.ibm.com> wrote:
 >
->Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
+> You could use SYNC_ACQUIRE() to implement read_barrier_depends() and
+> smp_read_barrier_depends(), but SYNC_RMB probably does not suffice.
+> The reason for this is that smp_read_barrier_depends() must order the
+> pointer load against any subsequent read or write through a dereference
+> of that pointer.  For example:
+> 
+>        p = READ_ONCE(gp);
+>        smp_rmb();
+>        r1 = p->a; /* ordered by smp_rmb(). */
+>        p->b = 42; /* NOT ordered by smp_rmb(), BUG!!! */
+>        r2 = x; /* ordered by smp_rmb(), but doesn't need to be. */
+> 
+> In contrast:
+> 
+>        p = READ_ONCE(gp);
+>        smp_read_barrier_depends();
+>        r1 = p->a; /* ordered by smp_read_barrier_depends(). */
+>        p->b = 42; /* ordered by smp_read_barrier_depends(). */
+>        r2 = x; /* not ordered by smp_read_barrier_depends(), which is OK. */
+> 
+> Again, if your hardware maintains local ordering for address
+> and data dependencies, you can have read_barrier_depends() and
+> smp_read_barrier_depends() be no-ops like they are for most
+> architectures.
+> 
+> Does that help?
 
-Reviewed-by: Florian Fainelli <f.fainelli@gmail.com>
-
+This is crazy! smp_rmb started out being strictly stronger than
+smp_read_barrier_depends, when did this stop being the case?
 -- 
-Florian
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt

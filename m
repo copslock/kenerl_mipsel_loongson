@@ -1,52 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Jan 2016 09:22:40 +0100 (CET)
-Received: from helcar.hengli.com.au ([209.40.204.226]:41132 "EHLO
-        helcar.hengli.com.au" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27009232AbcARIWdcXQCG (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 18 Jan 2016 09:22:33 +0100
-Received: from gondolin.me.apana.org.au ([192.168.0.6])
-        by norbury.hengli.com.au with esmtp (Exim 4.80 #3 (Debian))
-        id 1aL52Y-0006Wo-Nq; Mon, 18 Jan 2016 19:19:54 +1100
-Received: from herbert by gondolin.me.apana.org.au with local (Exim 4.80)
-        (envelope-from <herbert@gondor.apana.org.au>)
-        id 1aL52A-0007ut-Bx; Mon, 18 Jan 2016 16:19:30 +0800
-Date:   Mon, 18 Jan 2016 16:19:29 +0800
-From:   Herbert Xu <herbert@gondor.apana.org.au>
-To:     paulmck@linux.vnet.ibm.com
-Cc:     Leonid.Yegoshin@imgtec.com, linux-mips@linux-mips.org,
-        linux-ia64@vger.kernel.org, mst@redhat.com, peterz@infradead.org,
-        will.deacon@arm.com, virtualization@lists.linux-foundation.org,
-        hpa@zytor.com, sparclinux@vger.kernel.org, mingo@kernel.org,
-        linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
-        linux@arm.linux.org.uk,
-        user-mode-linux-devel@lists.sourceforge.net,
-        linux-sh@vger.kernel.org, mpe@ellerman.id.au, x86@kernel.org,
-        xen-devel@lists.xenproject.org, mingo@elte.hu,
-        linux-xtensa@linux-xtensa.org, james.hogan@imgtec.com,
-        arnd@arndb.de, stefano.stabellini@eu.citrix.com,
-        adi-buildroot-devel@lists.sourceforge.net, ddaney.cavm@gmail.com,
-        tglx@linutronix.de, linux-metag@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, andrew.cooper3@citrix.com,
-        linux-kernel@vger.kernel.org, ralf@linux-mips.org, joe@perches.com,
-        linuxppc-dev@lists.ozlabs.org, davem@davemloft.net,
-        Linus Torvalds <torvalds@linux-foundation.org>
-Subject: Re: [v3,11/41] mips: reuse asm-generic/barrier.h
-Message-ID: <20160118081929.GA30420@gondor.apana.org.au>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Jan 2016 09:24:56 +0100 (CET)
+Received: from mout.gmx.net ([212.227.17.22]:49890 "EHLO mout.gmx.net"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27009232AbcARIYxesdVx (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 18 Jan 2016 09:24:53 +0100
+Received: from [10.95.162.180] ([155.56.40.73]) by mail.gmx.com (mrgmx101)
+ with ESMTPSA (Nemesis) id 0MPYqL-1aGyMY3hxp-004ftD; Mon, 18 Jan 2016 09:23:52
+ +0100
+Subject: Re: [PATCH] mm: Remove duplicate definitions of MADV_FREE
+To:     Guenter Roeck <linux@roeck-us.net>,
+        Andrew Morton <akpm@linux-foundation.org>
+References: <1453087746-4658-1-git-send-email-linux@roeck-us.net>
+Cc:     Richard Henderson <rth@twiddle.net>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Chris Zankel <chris@zankel.net>, linux-alpha@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-parisc@vger.kernel.org, Chen Gang <gang.chen.5i5j@gmail.com>,
+        Minchan Kim <minchan@kernel.org>
+From:   Helge Deller <deller@gmx.de>
+Message-ID: <569CA115.3010305@gmx.de>
+Date:   Mon, 18 Jan 2016 09:23:49 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+ Thunderbird/38.1.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20160114204827.GE3818@linux.vnet.ibm.com>
-Organization: Core
-X-Newsgroups: apana.lists.os.linux.kernel,apana.lists.os.linux.virtualization
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <herbert@gondor.apana.org.au>
+In-Reply-To: <1453087746-4658-1-git-send-email-linux@roeck-us.net>
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K0:i38AfTZjK41GkZKU2dmNITCEEFeHmZFoVic8caYJmCCSleXIOIW
+ XdwwgsEdeRKfcIifoCXcj5uuEnQdvcEgtUr6RJAawGPXneWBNBSqCtSFbPBmjPJ4s7lcjRv
+ ZpJjV9YWqUl3R4PMR6OfKAJ2cP9117TVJTS3hWGfh60ma4yUOdai9khpVQSPQp5DqJPuYV1
+ QWZD/Gq7Q4xC/n3hvbyPw==
+X-UI-Out-Filterresults: notjunk:1;V01:K0:VSzWWqyIQu4=:sVP94BYMAYzx9FXYPNSWL7
+ afXl5v2Hf8bfY9382flL9fkmCGV6ge8oBt9knfmm28t4UMSgJ5fVMOOG5NlGu5UpOZj5CaTYO
+ EXVrcSmnbwecY2iqJy2+NLq26aHhQyajCcHcJKxOpFx18DsApfGPUbaO4zT6IGMoTyUB/UZ01
+ Rzzgf1oLXNF/YL3GE78MVAko8PBBKWJxK10C+DoA839qNvOLtPJdJrW3E9Ng14gkroDGVSTfO
+ RlzKAsTPtnAzpuiitaQquwVOFoHTG0/ZPtoNN/qPs9yuXe+D8HrDm0ulHNiLghQtdbK+rtEIx
+ XcQQdybS0Z5trLqGxEjl1dukufzzVfYriL6DRXtGTvQ88LX6h0MrkiAYEti4yNsqiREpJrChp
+ 1Sjl3YBvCa4CeNYOPlYgch5tNq33/vKzJQkSLG/Kil9f/dyFLh3LUv6sNOPSG9UZwhrotmirP
+ 0jBK3fGCLWdCt8kCdSBmz7Hd9L9V5iFbazZkfHv9wK7YLetMoYKsxAfuo9Rp4oelHycwuh0GZ
+ rkm7FzTrDYslFAATXIPCNQqLOihRizTzrv7N4uSxQxH6CNDOQbn7WfQTLRSWz1DJpfOFBVTgG
+ DJYLIF5NRU9ieMPvx8j9Z1hvMZvaw/YEHp8pfxCGnpVOGo6plWVGrIu5ds5oDrLdS/wdq3LcZ
+ 6KPNS5dnqgELWqW/tJOHijr3mOHbCsTG5+unw3v/I+8t158/HEq6lcEHDiYCzvcY3AjY6me1J
+ IhQ/LxNRlUTv9cvxXcUTHi9WQWg7dJiVG5Ui/BirLQkEdLhmg5W6DsR7dXZuIv5MP4Dr7J6P5
+ iUWC41u
+Return-Path: <deller@gmx.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51191
+X-archive-position: 51192
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: herbert@gondor.apana.org.au
+X-original-sender: deller@gmx.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,38 +63,50 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Paul E. McKenney <paulmck@linux.vnet.ibm.com> wrote:
->
-> You could use SYNC_ACQUIRE() to implement read_barrier_depends() and
-> smp_read_barrier_depends(), but SYNC_RMB probably does not suffice.
-> The reason for this is that smp_read_barrier_depends() must order the
-> pointer load against any subsequent read or write through a dereference
-> of that pointer.  For example:
+On 18.01.2016 04:29, Guenter Roeck wrote:
+> Commits 21f55b018ba5 ("arch/*/include/uapi/asm/mman.h: : let MADV_FREE
+> have same value for all architectures") and ef58978f1eaa ("mm: define
+> MADV_FREE for some arches") both defined MADV_FREE, but did not use the
+> same values. This results in build errors such as
 > 
->        p = READ_ONCE(gp);
->        smp_rmb();
->        r1 = p->a; /* ordered by smp_rmb(). */
->        p->b = 42; /* NOT ordered by smp_rmb(), BUG!!! */
->        r2 = x; /* ordered by smp_rmb(), but doesn't need to be. */
+> ./arch/alpha/include/uapi/asm/mman.h:53:0: error: "MADV_FREE" redefined
+> ./arch/alpha/include/uapi/asm/mman.h:50:0: note:
+> 	this is the location of the previous definition
 > 
-> In contrast:
+> for the affected architectures.
 > 
->        p = READ_ONCE(gp);
->        smp_read_barrier_depends();
->        r1 = p->a; /* ordered by smp_read_barrier_depends(). */
->        p->b = 42; /* ordered by smp_read_barrier_depends(). */
->        r2 = x; /* not ordered by smp_read_barrier_depends(), which is OK. */
-> 
-> Again, if your hardware maintains local ordering for address
-> and data dependencies, you can have read_barrier_depends() and
-> smp_read_barrier_depends() be no-ops like they are for most
-> architectures.
-> 
-> Does that help?
+> Fixes: 21f55b018ba5 ("arch/*/include/uapi/asm/mman.h: : let MADV_FREE have same value for all architectures")
+> Fixes: ef58978f1eaa ("mm: define MADV_FREE for some arches")
+> Cc: Chen Gang <gang.chen.5i5j@gmail.com>
+> Cc: Minchan Kim <minchan@kernel.org>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 
-This is crazy! smp_rmb started out being strictly stronger than
-smp_read_barrier_depends, when did this stop being the case?
--- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+
+On parisc both definitions of MADV_FREE are 8, so I do not face the compiler error.
+Nevertheless it should be cleaned up.
+
+Acked-by: Helge Deller <deller@gmx.de>  (for parisc)
+
+Thanks!
+Helge
+
+> ---
+>  arch/alpha/include/uapi/asm/mman.h  | 1 -
+>  arch/mips/include/uapi/asm/mman.h   | 1 -
+>  arch/parisc/include/uapi/asm/mman.h | 1 -
+>  arch/xtensa/include/uapi/asm/mman.h | 1 -
+>  4 files changed, 4 deletions(-)
+> 
+> diff --git a/arch/parisc/include/uapi/asm/mman.h b/arch/parisc/include/uapi/asm/mman.h
+> index cf830d465f75..f3db7d8eb0c2 100644
+> --- a/arch/parisc/include/uapi/asm/mman.h
+> +++ b/arch/parisc/include/uapi/asm/mman.h
+> @@ -43,7 +43,6 @@
+>  #define MADV_SPACEAVAIL 5               /* insure that resources are reserved */
+>  #define MADV_VPS_PURGE  6               /* Purge pages from VM page cache */
+>  #define MADV_VPS_INHERIT 7              /* Inherit parents page size */
+> -#define MADV_FREE	8		/* free pages only if memory pressure */
+>  
+>  /* common/generic parameters */
+>  #define MADV_FREE	8		/* free pages only if memory pressure */

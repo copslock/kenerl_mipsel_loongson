@@ -1,56 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Jan 2016 12:28:32 +0100 (CET)
-Received: from mga14.intel.com ([192.55.52.115]:56629 "EHLO mga14.intel.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27010563AbcASL23QGufS (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 19 Jan 2016 12:28:29 +0100
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga103.fm.intel.com with ESMTP; 19 Jan 2016 03:28:22 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.22,317,1449561600"; 
-   d="scan'208";a="730160119"
-Received: from bee.sh.intel.com (HELO bee) ([10.239.97.14])
-  by orsmga003.jf.intel.com with ESMTP; 19 Jan 2016 03:28:19 -0800
-Received: from kbuild by bee with local (Exim 4.83)
-        (envelope-from <fengguang.wu@intel.com>)
-        id 1aLUSN-000N2A-2r; Tue, 19 Jan 2016 19:28:15 +0800
-Date:   Tue, 19 Jan 2016 19:27:55 +0800
-From:   kbuild test robot <fengguang.wu@intel.com>
-To:     James Hogan <james.hogan@imgtec.com>
-Cc:     linux-mips@linux-mips.org, linux-arch@vger.kernel.org,
-        linux-kbuild@vger.kernel.org,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Paul Burton <paul.burton@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        James Hogan <james.hogan@imgtec.com>,
-        Heinrich Schuchardt <xypron.glpk@gmx.de>,
-        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-arch@vger.kernel.org, linux-kbuild@vger.kernel.org,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Paul Burton <paul.burton@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        James Hogan <james.hogan@imgtec.com>,
-        Heinrich Schuchardt <xypron.glpk@gmx.de>,
-        linux-kernel@vger.kernel.org, Michal Marek <mmarek@suse.com>
-Subject: [linux-review:James-Hogan/kbuild-Remove-stale-asm-generic-wrappers/20160119-183642] d979f99e9cc14e2667e9b6e268db695977e4197a BUILD DONE
-Message-ID: <569e1dbb.MgLv8OaZwklOxxtU%fengguang.wu@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Jan 2016 14:04:00 +0100 (CET)
+Received: from smtp.codeaurora.org ([198.145.29.96]:35388 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27010601AbcASND6iTuH1 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 19 Jan 2016 14:03:58 +0100
+Received: from smtp.codeaurora.org (localhost [127.0.0.1])
+        by smtp.codeaurora.org (Postfix) with ESMTP id 9A3FD60377;
+        Tue, 19 Jan 2016 13:03:56 +0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 8E4C860388; Tue, 19 Jan 2016 13:03:56 +0000 (UTC)
+Received: from potku.adurom.net (a88-115-185-251.elisa-laajakaista.fi [88.115.185.251])
+        (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 7B2A960251;
+        Tue, 19 Jan 2016 13:03:50 +0000 (UTC)
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
+        Hauke Mehrtens <hauke@hauke-m.de>,
+        =?utf-8?Q?Rafa=C5=82_Mi=C5=82ecki?= <zajec5@gmail.com>,
+        linux-kernel@vger.kernel.org, Michael Buesch <m@bues.ch>,
+        netdev@vger.kernel.org, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH, RESEND^2] ssb: mark ssb_bus_register as __maybe_unused
+References: <8128014.DbbgBtKY3z@wuerfel>
+        <8760ywd5fe.fsf@kamboji.qca.qualcomm.com> <6063400.39vor3soEb@wuerfel>
+Date:   Tue, 19 Jan 2016 15:03:45 +0200
+In-Reply-To: <6063400.39vor3soEb@wuerfel> (Arnd Bergmann's message of "Mon, 18
+        Jan 2016 20:39:56 +0100")
+Message-ID: <877fj567ri.fsf@kamboji.qca.qualcomm.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/23.3 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: <locally generated>
-X-SA-Exim-Mail-From: fengguang.wu@intel.com
-X-SA-Exim-Scanned: No (on bee); SAEximRunCond expanded to false
-Return-Path: <fengguang.wu@intel.com>
+Content-Type: text/plain; charset=us-ascii
+X-Virus-Scanned: ClamAV using ClamSMTP
+Return-Path: <kvalo@codeaurora.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51215
+X-archive-position: 51216
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: fengguang.wu@intel.com
+X-original-sender: kvalo@codeaurora.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -63,166 +53,27 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-https://github.com/0day-ci/linux  James-Hogan/kbuild-Remove-stale-asm-generic-wrappers/20160119-183642
-d979f99e9cc14e2667e9b6e268db695977e4197a  kbuild: Remove stale asm-generic wrappers
+Arnd Bergmann <arnd@arndb.de> writes:
 
-arch/x86/include/asm/unistd.h:15:29: fatal error: asm/unistd_32.h: No such file or directory
-arch/x86/kernel/asm-offsets_32.c:12:29: fatal error: asm/syscalls_32.h: No such file or directory
-arch/x86/kernel/asm-offsets_64.c:15:29: fatal error: asm/syscalls_64.h: No such file or directory
-/bin/sh: line 0: [: -ge: unary operator expected
+> The SoC variant of the ssb code is now optional like the other
+> ones, which means we can build the framwork without any
+> front-end, but that results in a warning:
+>
+> drivers/ssb/main.c:616:12: warning: 'ssb_bus_register' defined but not used [-Wunused-function]
+>
+> This annotates the ssb_bus_register function as __maybe_unused to
+> shut up the warning. A configuration like this will not work on
+> any hardware of course, but we still want this to silently build
+> without warnings if the configuration is allowed in the first
+> place.
+>
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> Fixes: 845da6e58e19 ("ssb: add Kconfig entry for compiling SoC related code")
+> Acked-by: Michael Buesch <m@bues.ch>
+> ---
+> Resent to linux-wireless as requested
 
-Error ids grouped by kconfigs:
+Thanks, and sorry for the hassle. I'm planning to push this to 4.5.
 
-recent_errors
-├── i386-alldefconfig
-│   └── arch-x86-include-asm-unistd.h:fatal-error:asm-unistd_32.h:No-such-file-or-directory
-├── i386-allmodconfig
-│   └── arch-x86-include-asm-unistd.h:fatal-error:asm-unistd_32.h:No-such-file-or-directory
-├── i386-allyesconfig
-│   └── arch-x86-include-asm-unistd.h:fatal-error:asm-unistd_32.h:No-such-file-or-directory
-├── i386-defconfig
-│   └── arch-x86-include-asm-unistd.h:fatal-error:asm-unistd_32.h:No-such-file-or-directory
-├── i386-randconfig-a0-201603
-│   └── arch-x86-kernel-asm-offsets_32.c:fatal-error:asm-syscalls_32.h:No-such-file-or-directory
-├── i386-randconfig-b0-01191831
-│   └── arch-x86-kernel-asm-offsets_32.c:fatal-error:asm-syscalls_32.h:No-such-file-or-directory
-├── i386-randconfig-i0-201603
-│   └── arch-x86-include-asm-unistd.h:fatal-error:asm-unistd_32.h:No-such-file-or-directory
-├── i386-randconfig-i1-201603
-│   └── arch-x86-include-asm-unistd.h:fatal-error:asm-unistd_32.h:No-such-file-or-directory
-├── i386-randconfig-r0-201603
-│   └── arch-x86-kernel-asm-offsets_32.c:fatal-error:asm-syscalls_32.h:No-such-file-or-directory
-├── i386-randconfig-s1-201603
-│   └── arch-x86-kernel-asm-offsets_32.c:fatal-error:asm-syscalls_32.h:No-such-file-or-directory
-├── i386-randconfig-x002-01181631
-│   └── bin-sh:line::ge:unary-operator-expected
-├── i386-tinyconfig
-│   └── arch-x86-kernel-asm-offsets_32.c:fatal-error:asm-syscalls_32.h:No-such-file-or-directory
-└── x86_64-randconfig-s3-01191831
-    └── arch-x86-kernel-asm-offsets_64.c:fatal-error:asm-syscalls_64.h:No-such-file-or-directory
-
-elapsed time: 50m
-
-configs tested: 118
-
-i386                     randconfig-a0-201603
-x86_64                             acpi-redef
-x86_64                           allyesdebian
-x86_64                                nfsroot
-blackfin                BF526-EZBRD_defconfig
-blackfin                BF533-EZKIT_defconfig
-blackfin            BF561-EZKIT-SMP_defconfig
-blackfin                  TCM-BF537_defconfig
-cris                 etrax-100lx_v2_defconfig
-sh                                allnoconfig
-sh                          rsk7269_defconfig
-sh                  sh7785lcr_32bit_defconfig
-sh                            titan_defconfig
-arm                               allnoconfig
-arm                         at91_dt_defconfig
-arm                                  at_hdmac
-arm                                    ep93xx
-arm                       imx_v6_v7_defconfig
-arm                                  iop-adma
-arm                          marzen_defconfig
-arm                          prima2_defconfig
-arm                                    sa1100
-arm                                   samsung
-arm                                        sh
-arm                       spear13xx_defconfig
-powerpc                           allnoconfig
-powerpc                             defconfig
-powerpc                       ppc64_defconfig
-m32r                       m32104ut_defconfig
-m32r                     mappi3.smp_defconfig
-m32r                         opsput_defconfig
-m32r                           usrv_defconfig
-xtensa                       common_defconfig
-xtensa                          iss_defconfig
-alpha                               defconfig
-parisc                            allnoconfig
-parisc                         b180_defconfig
-parisc                        c3000_defconfig
-parisc                              defconfig
-avr32                    hammerhead_defconfig
-m32r                    m32700ut.up_defconfig
-mips                        bcm47xx_defconfig
-mips                       capcella_defconfig
-powerpc                   bluestone_defconfig
-i386                             alldefconfig
-i386                              allnoconfig
-i386                                defconfig
-m68k                       m5475evb_defconfig
-m68k                          multi_defconfig
-m68k                           sun3_defconfig
-i386                     randconfig-s0-201603
-i386                     randconfig-s1-201603
-x86_64                 randconfig-s0-01191831
-x86_64                 randconfig-s1-01191831
-x86_64                 randconfig-s2-01191831
-x86_64                           allmodconfig
-x86_64                 randconfig-s3-01191831
-x86_64                 randconfig-s4-01191831
-x86_64                 randconfig-s5-01191831
-avr32                      atngw100_defconfig
-avr32                     atstk1006_defconfig
-frv                                 defconfig
-mn10300                     asb2364_defconfig
-openrisc                    or1ksim_defconfig
-tile                         tilegx_defconfig
-um                             i386_defconfig
-um                           x86_64_defconfig
-m68k                             alldefconfig
-mips                         db1xxx_defconfig
-mips                malta_qemu_32r6_defconfig
-sh                          landisk_defconfig
-mips                              allnoconfig
-mips                      fuloong2e_defconfig
-mips                                   jz4740
-mips                                     txx9
-x86_64                   randconfig-i0-201603
-i386                   randconfig-b0-01191831
-sparc                               defconfig
-sparc64                           allnoconfig
-sparc64                             defconfig
-microblaze                      mmu_defconfig
-microblaze                    nommu_defconfig
-i386                     randconfig-i0-201603
-i386                     randconfig-i1-201603
-i386                             allyesconfig
-x86_64                 randconfig-b0-01191744
-i386                               tinyconfig
-i386                     randconfig-n0-201603
-ia64                             alldefconfig
-ia64                              allnoconfig
-ia64                                defconfig
-x86_64                                   rhel
-ia64                          tiger_defconfig
-x86_64                 randconfig-x000-201603
-x86_64                 randconfig-x001-201603
-x86_64                 randconfig-x002-201603
-x86_64                 randconfig-x003-201603
-x86_64                 randconfig-x004-201603
-x86_64                 randconfig-x005-201603
-x86_64                 randconfig-x006-201603
-x86_64                 randconfig-x007-201603
-x86_64                 randconfig-x008-201603
-x86_64                 randconfig-x009-201603
-i386                     randconfig-r0-201603
-i386                             allmodconfig
-m68k                          sun3x_defconfig
-mips                  mips_paravirt_defconfig
-powerpc                     ppa8548_defconfig
-i386                 randconfig-x000-01181631
-i386                 randconfig-x001-01181631
-i386                 randconfig-x002-01181631
-i386                 randconfig-x003-01181631
-i386                 randconfig-x004-01181631
-i386                 randconfig-x005-01181631
-i386                 randconfig-x006-01181631
-i386                 randconfig-x007-01181631
-i386                 randconfig-x008-01181631
-i386                 randconfig-x009-01181631
-
-Thanks,
-Fengguang
+-- 
+Kalle Valo

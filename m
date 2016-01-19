@@ -1,43 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Jan 2016 20:26:28 +0100 (CET)
-Received: from smtp.codeaurora.org ([198.145.29.96]:58556 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27014786AbcAST00MxS1i (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 19 Jan 2016 20:26:26 +0100
-Received: from smtp.codeaurora.org (localhost [127.0.0.1])
-        by smtp.codeaurora.org (Postfix) with ESMTP id 5B02960632;
-        Tue, 19 Jan 2016 19:26:25 +0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 4E3F960577; Tue, 19 Jan 2016 19:26:25 +0000 (UTC)
-Received: from potku.adurom.net (a88-115-185-251.elisa-laajakaista.fi [88.115.185.251])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 08CC66061C;
-        Tue, 19 Jan 2016 19:26:22 +0000 (UTC)
-Content-Type: text/plain; charset="us-ascii"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Jan 2016 00:43:51 +0100 (CET)
+Received: from smtp1-g21.free.fr ([212.27.42.1]:18078 "EHLO smtp1-g21.free.fr"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27014786AbcASXntkTasx (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 20 Jan 2016 00:43:49 +0100
+Received: from tock (unknown [78.50.162.29])
+        (Authenticated sender: albeu)
+        by smtp1-g21.free.fr (Postfix) with ESMTPSA id 667E79400EF;
+        Wed, 20 Jan 2016 00:42:24 +0100 (CET)
+Date:   Wed, 20 Jan 2016 00:43:36 +0100
+From:   Alban <albeu@free.fr>
+To:     Antony Pavlov <antonynpavlov@gmail.com>
+Cc:     Aban Bedel <albeu@free.fr>, David Daney <ddaney.cavm@gmail.com>,
+        linux-mips@linux-mips.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH] MIPS: dts: tl_wr1043nd_v1: fix "aliases" node name
+Message-ID: <20160120004336.2b89a5f6@tock>
+In-Reply-To: <20160116080205.0b6e84c9e531b0cfd845b67b@gmail.com>
+References: <1452759657-7114-1-git-send-email-antonynpavlov@gmail.com>
+        <56993EF5.9040008@gmail.com>
+        <20160116080205.0b6e84c9e531b0cfd845b67b@gmail.com>
+X-Mailer: Claws Mail 3.9.3 (GTK+ 2.24.23; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Subject: Re: [RESEND^2] ssb: mark ssb_bus_register as __maybe_unused
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <6063400.39vor3soEb@wuerfel>
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
-        Hauke Mehrtens <hauke@hauke-m.de>,
-        =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        linux-kernel@vger.kernel.org, Michael Buesch <m@bues.ch>,
-        netdev@vger.kernel.org, linux-wireless@vger.kernel.org
-Message-Id: <20160119192625.4E3F960577@smtp.codeaurora.org>
-Date:   Tue, 19 Jan 2016 19:26:25 +0000 (UTC)
-X-Virus-Scanned: ClamAV using ClamSMTP
-Return-Path: <kvalo@codeaurora.org>
+Return-Path: <albeu@free.fr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51226
+X-archive-position: 51227
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kvalo@codeaurora.org
+X-original-sender: albeu@free.fr
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,23 +43,57 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+On Sat, 16 Jan 2016 08:02:05 +0300
+Antony Pavlov <antonynpavlov@gmail.com> wrote:
 
-> The SoC variant of the ssb code is now optional like the other
-> ones, which means we can build the framwork without any
-> front-end, but that results in a warning:
+> On Fri, 15 Jan 2016 10:48:21 -0800
+> David Daney <ddaney.cavm@gmail.com> wrote:
 > 
-> drivers/ssb/main.c:616:12: warning: 'ssb_bus_register' defined but not used [-Wunused-function]
+> > On 01/14/2016 12:20 AM, Antony Pavlov wrote:
+> > > The correct name for aliases node is "aliases" not "alias".
+> > >
+> > > An overview of the "aliases" node usage can be found
+> > > on the device tree usage page at devicetree.org [1].
+> > >
+> > > Also please see chapter 3.3 ("Aliases node") of the ePAPR 1.1 [2].
+> > >
+> > > [1] http://devicetree.org/Device_Tree_Usage#aliases_Node
+> > > [2] https://www.power.org/documentation/epapr-version-1-1/
+> > >
+> > > Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> > > Cc: Alban Bedel <albeu@free.fr>
+> > > Cc: linux-mips@linux-mips.org
+> > > Cc: devicetree@vger.kernel.org
+> > > ---
+> > >   arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts | 2 +-
+> > >   1 file changed, 1 insertion(+), 1 deletion(-)
+> > >
+> > > diff --git a/arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts
+> > > b/arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts index
+> > > 003015a..4b6d38c 100644 ---
+> > > a/arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts +++
+> > > b/arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts @@ -9,7 +9,7 @@
+> > >   	compatible = "tplink,tl-wr1043nd-v1", "qca,ar9132";
+> > >   	model = "TP-Link TL-WR1043ND Version 1";
+> > >
+> > > -	alias {
+> > > +	aliases {
+> > >   		serial0 = "/ahb/apb/uart@18020000";
+> > >   	};
+> > 
+> > What uses this alias?  If the answer is nothing (likely, as it was 
+> > broken and nobody seems to have noticed), just remove the whole
+> > thing.
 > 
-> This annotates the ssb_bus_register function as __maybe_unused to
-> shut up the warning. A configuration like this will not work on
-> any hardware of course, but we still want this to silently build
-> without warnings if the configuration is allowed in the first
-> place.
+> I have used ar9132_tl_wr1043nd_v1.dts as a template for AR9331-based
+> board dts-file. AR9331 uses it's own very special UART implementation
+> (the ar933x_uart.c driver is used). ar933x_uart.c relies on alias and
+> does not work if alias is not set. I have not yet runned linux on
+> TL-WR1034ND, but I suppose that uart alias is not actually used for
+> TL-WR1034ND and this aliases node can be safely removed.
 > 
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> Fixes: 845da6e58e19 ("ssb: add Kconfig entry for compiling SoC related code")
-> Acked-by: Michael Buesch <m@bues.ch>
+> Alban, have you any comments?
 
-Thanks, applied to wireless-drivers.git.
+David is right, we should just remove it.
 
-Kalle Valo
+Alban

@@ -1,50 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Jan 2016 15:26:53 +0100 (CET)
-Received: from mout.kundenserver.de ([212.227.17.10]:62135 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Jan 2016 15:27:44 +0100 (CET)
+Received: from mout.kundenserver.de ([212.227.126.134]:54052 "EHLO
         mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27010833AbcASO0vWq2eV (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 19 Jan 2016 15:26:51 +0100
+        with ESMTP id S27010890AbcASO1mIEB8V convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 19 Jan 2016 15:27:42 +0100
 Received: from wuerfel.localnet ([78.42.132.4]) by mrelayeu.kundenserver.de
- (mreue102) with ESMTPSA (Nemesis) id 0MP0B5-1aFloQ45wN-006M7j; Tue, 19 Jan
- 2016 15:26:22 +0100
+ (mreue004) with ESMTPSA (Nemesis) id 0MR97T-1aiKEk20AJ-00UZ4f; Tue, 19 Jan
+ 2016 15:27:25 +0100
 From:   Arnd Bergmann <arnd@arndb.de>
-To:     kbuild test robot <fengguang.wu@intel.com>
-Cc:     James Hogan <james.hogan@imgtec.com>, linux-mips@linux-mips.org,
-        linux-arch@vger.kernel.org, linux-kbuild@vger.kernel.org,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Paul Burton <paul.burton@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
+To:     James Hogan <james.hogan@imgtec.com>
+Cc:     Michal Marek <mmarek@suse.com>, linux-kernel@vger.kernel.org,
         Heinrich Schuchardt <xypron.glpk@gmx.de>,
-        linux-kernel@vger.kernel.org, Michal Marek <mmarek@suse.com>
-Subject: Re: [linux-review:James-Hogan/kbuild-Remove-stale-asm-generic-wrappers/20160119-183642] d979f99e9cc14e2667e9b6e268db695977e4197a BUILD DONE
-Date:   Tue, 19 Jan 2016 15:26:16 +0100
-Message-ID: <1534543.eobSKFEFfp@wuerfel>
+        Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@imgtec.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        linux-kbuild@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-mips@linux-mips.org
+Subject: Re: [PATCH v2 2/2] kbuild: Remove stale asm-generic wrappers
+Date:   Tue, 19 Jan 2016 15:27:24 +0100
+Message-ID: <4206493.gjdgtfndZ8@wuerfel>
 User-Agent: KMail/4.11.5 (Linux/3.16.0-10-generic; KDE/4.11.5; x86_64; ; )
-In-Reply-To: <569e1dbb.MgLv8OaZwklOxxtU%fengguang.wu@intel.com>
-References: <569e1dbb.MgLv8OaZwklOxxtU%fengguang.wu@intel.com>
+In-Reply-To: <20160119142213.GA12679@jhogan-linux.le.imgtec.org>
+References: <1453210670-12596-1-git-send-email-james.hogan@imgtec.com> <1667268.iM977TQnEK@wuerfel> <20160119142213.GA12679@jhogan-linux.le.imgtec.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-X-Provags-ID: V03:K0:yTdvr1Vd+IKbhJpIwBomnn1PSjJ6V4SM1hzankAhD8l4NXpaaHY
- 1hs2tHbZAAAvo/F2Tqty1E6dbWfUi3bRSdbqG6NPVlmQusH6xM1JjENcPKPJKvJp3Wv0CNC
- K8bYOBpWLIKbU4Hw2XqkOzRAFki0ezhb3QWSuGmSICyrxBySE6nvAQdkvbMwWFmaSNE5A16
- BqMCVghqfERPeVtw60Duw==
-X-UI-Out-Filterresults: notjunk:1;V01:K0:hH1iu22MZm0=:ezlObkAqqbFDYv8CSgYYMp
- Qpc0+V55vEMUX2M3NnYXocg9Dro4mUZXwiazdwoKJJPPVdsStkf043Chjp/vXfnGdhIjvP4Q+
- 9LNdg6gEbj/qisS8vtaQHL9wEUDP27c9aDbrG1EsrtAOIup8b1H9ki6XNGJ2/Tq86JtrBnMLd
- Yw8au6TgJoOJ1aahJMizJWqvSMAVO4jfWaaGZQvoHm6a2szTegQLTRYbvJS+r2vqdtQW77CIC
- X6dZXGMCKwtiHIpeWdBUpBqORrNSYxjg0L07VeQvcnEuB9BjqFuUYfI3iY4ifqppmX3O7MERj
- SYS152VbVXHvWQcYG6sL1hMzRVVUFdGhM+bxIc97pHtXZa8/FN+MSLX8/1tEIJfCcsGNEcD8G
- s4obGv9qmWdpGq3bX24+rofGVfMY1fdNQS2q4gTZwH6tJLVvLaLnhfxnmZ3lle3kQCtDDHCu6
- 9dGcOnd/IYzKre225ihfAZ7sfJqc7NfkBVaMbDGAbDD5rI/fX8MRFMsZ//PeT3DC9Yz2/Pda2
- 2FTsCUbgIBuOzrJ4D+Q9dVow6MDsTv5Y/8QoHe9Me+zvrXITq6vCsFfMetId2BT9dNoLxlfAX
- R+5EehNz9MkSkbhiTiDVmV8+CdeD6qibjR/xLFAB3E5aR+BKXLPjZCKE41sIOCcjuT7oI8t/l
- XOC6BIp26GAXCPT98hvV4KhfbWFkkM01W/89fAfrUMbHJVYEDX0P3f4jMYb0P/OGzMrLL8pX5
- 7vpcW3xKLnbriwgP
+Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset="utf-8"
+X-Provags-ID: V03:K0:JiunNZpSLt/ZMF48wjqdovFpbGJUmgrHHYAQTGa8ofvdNOWGDN3
+ mo0RirB7U/VNnXEA/C3RiQ6yOZyRHHTCQxy/TP6nxt9fCkTKTzXALrETWTatzfUUBXrUgEw
+ pQO6K01Pw0Xx4N6fm1IkHbpaRHrQoQIx0HijgBo+qaYlweYQ817LrfPSlHZOk7bmj5IXxsJ
+ eRzP/6RDc9QsErxif3Ohw==
+X-UI-Out-Filterresults: notjunk:1;V01:K0:xW6S5zy1UH4=:EU3qA4dZvU4KfNLL1qTZ0B
+ TrVYh4b16fEe54eDeplm3MdWI1/HmKTD7zlODp0Dz+VsSZP33mbhNslIXGpejGvFZLTP/+No+
+ dmp2YzRM4guMRRGhiuRH+iIAZisqr2/ApQROSMj3vaPgUM2yY41qYDctcRdnmMfIpgD0dsEjC
+ oeSVeXqg/cTMbAJU5KDwZsoVrn+vBhAfllhU4mDxaWJDAkmjVmaH0Mu7APY3Z88ETsjpZxCF7
+ xH98luyqnOuGVvc37S0yOOz0r2CjyBEoZm8GR9mtjCFf7/XPTPq+Btmnh1V7RV+WKbIlpyCLn
+ ZfSzERixsmU4jnQiXFO9i6X+7W6DkMko6dQocWu548w4uLz/3L7X2g4U2cwsOMw3ZwEOppDTd
+ FsdLXuAp2ymdpsPtykL/OiVAfNUWxIarelAGQVF7YlrmgcgUZbkkqCr8yqp8U2n55YzTvSM9Y
+ 9V8o8j35LK+JiuCLxQxiGwGjVPOFDfyweEC2OZdSmqs6hAPRvPLTaz+uCc6w2+bAZ1gcZ0Bex
+ uDz0G9Vu+4CNzeW6PnGJzfRrbpZjw4LVPupGS5AIN8p3TapZzXXNdoIosY2AiTxEoBqYEJb95
+ 2r3AO1v5Vd20UmSZAxzLtAt/eLFSkPQkmT7IP5Qxi269aJXk+g5UAfGTkxIARCPAlxXIwAavd
+ URerpZACZLyHttxqN1w9Db0hvrZ1W4YZZ/liZcWwt+MxfPgi/pEzx1ToBcX0TunprCosAnOcB
+ SBqxWp553i8kzPsH
 Return-Path: <arnd@arndb.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51222
+X-archive-position: 51223
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -61,32 +61,44 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tuesday 19 January 2016 19:27:55 kbuild test robot wrote:
-> arm                               allnoconfig
-> arm                         at91_dt_defconfig
-> arm                                  at_hdmac
-> arm                                    ep93xx
-> arm                       imx_v6_v7_defconfig
-> arm                                  iop-adma
-> arm                          marzen_defconfig
-> arm                          prima2_defconfig
-> arm                                    sa1100
-> arm                                   samsung
-> arm                                        sh
-> arm                       spear13xx_defconfig
+On Tuesday 19 January 2016 14:22:13 James Hogan wrote:
+> On Tue, Jan 19, 2016 at 03:09:14PM +0100, Arnd Bergmann wrote:
+> > On Tuesday 19 January 2016 13:37:50 James Hogan wrote:
+> > > When a header file is removed from generic-y (often accompanied by the
+> > > addition of an arch specific header), the generated wrapper file will
+> > > persist, and in some cases may still take precedence over the new arch
+> > > header.
+> > > 
+> > > For example commit f1fe2d21f4e1 ("MIPS: Add definitions for extended
+> > > context") removed ucontext.h from generic-y in arch/mips/include/asm/,
+> > > and added an arch/mips/include/uapi/asm/ucontext.h. The continued use of
+> > > the wrapper when reusing a dirty build tree resulted in build failures
+> > > in arch/mips/kernel/signal.c:
+> > > 
+> > > arch/mips/kernel/signal.c: In function ‘sc_to_extcontext’:
+> > > arch/mips/kernel/signal.c:142:12: error: ‘struct ucontext’ has no member named ‘uc_extcontext’
+> > >   return &uc->uc_extcontext;
+> > >             ^
+> > > 
+> > > Fix by detecting and removing wrapper headers in generated header
+> > > directories that do not correspond to a filename in generic-y, genhdr-y,
+> > > or the newly introduced generated-y.
+> > 
+> > Good idea.
+> > 
+> > Acked-by: Arnd Bergmann <arnd@arndb.de>
 > 
+> Thanks Arnd
+> 
+> > Can you merge this through the mips tree, or do you need me to pick it
+> > up through asm-generic?
+> 
+> I was envisaging the kbuild tree tbh, but I don't really mind how it
+> gets merged. This patch depends on patch 1, which adds generated-y to
+> x86 so we don't delete their other generated headers, but other than
+> that it doesn't really have any dependencies.
 
-Hi Fengguang,
-
-Sorry for hijacking this thread. I have never seen the list of arm defconfigs
-you are building before, and it seems to be a surprising selection, as a number
-of platforms (ep93xx, iop, sa1100, spear13xx) are rather obscure, but the
-configurations that I tend to use most (multi_v7_defconfig, multi_v5_defconfig,
-allmodconfig) are not included.
-
-Do you always build the same set of configurations, or is this a different
-each time?
-
-Can you always include the three I mentioned?
+Ok, the kbuild tree works fine too, and I guess the x86 tree would
+also be fine if that helps avoid the dependency.
 
 	Arnd

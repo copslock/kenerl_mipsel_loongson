@@ -1,57 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Jan 2016 15:22:25 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:1879 "EHLO
-        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27010833AbcASOWWilq5j (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 19 Jan 2016 15:22:22 +0100
-Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
-        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id B272041F8D4D;
-        Tue, 19 Jan 2016 14:22:14 +0000 (GMT)
-Received: from mailapp01.imgtec.com ([10.100.180.242])
-  by imgpgp01.kl.imgtec.org (PGP Universal service);
-  Tue, 19 Jan 2016 14:22:14 +0000
-X-PGP-Universal: processed;
-        by imgpgp01.kl.imgtec.org on Tue, 19 Jan 2016 14:22:14 +0000
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Websense Email Security Gateway with ESMTPS id B0AC2F1531C75;
-        Tue, 19 Jan 2016 14:22:11 +0000 (GMT)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
- 14.3.235.1; Tue, 19 Jan 2016 14:22:14 +0000
-Received: from localhost (192.168.154.110) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Tue, 19 Jan
- 2016 14:22:13 +0000
-Date:   Tue, 19 Jan 2016 14:22:13 +0000
-From:   James Hogan <james.hogan@imgtec.com>
-To:     Arnd Bergmann <arnd@arndb.de>
-CC:     Michal Marek <mmarek@suse.com>, <linux-kernel@vger.kernel.org>,
-        "Heinrich Schuchardt" <xypron.glpk@gmx.de>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        "Paul Burton" <paul.burton@imgtec.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Jan 2016 15:26:53 +0100 (CET)
+Received: from mout.kundenserver.de ([212.227.17.10]:62135 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27010833AbcASO0vWq2eV (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 19 Jan 2016 15:26:51 +0100
+Received: from wuerfel.localnet ([78.42.132.4]) by mrelayeu.kundenserver.de
+ (mreue102) with ESMTPSA (Nemesis) id 0MP0B5-1aFloQ45wN-006M7j; Tue, 19 Jan
+ 2016 15:26:22 +0100
+From:   Arnd Bergmann <arnd@arndb.de>
+To:     kbuild test robot <fengguang.wu@intel.com>
+Cc:     James Hogan <james.hogan@imgtec.com>, linux-mips@linux-mips.org,
+        linux-arch@vger.kernel.org, linux-kbuild@vger.kernel.org,
         Florian Fainelli <f.fainelli@gmail.com>,
-        <linux-kbuild@vger.kernel.org>, <linux-arch@vger.kernel.org>,
-        <linux-mips@linux-mips.org>
-Subject: Re: [PATCH v2 2/2] kbuild: Remove stale asm-generic wrappers
-Message-ID: <20160119142213.GA12679@jhogan-linux.le.imgtec.org>
-References: <1453210670-12596-1-git-send-email-james.hogan@imgtec.com>
- <1453210670-12596-3-git-send-email-james.hogan@imgtec.com>
- <1667268.iM977TQnEK@wuerfel>
+        Paul Burton <paul.burton@imgtec.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Heinrich Schuchardt <xypron.glpk@gmx.de>,
+        linux-kernel@vger.kernel.org, Michal Marek <mmarek@suse.com>
+Subject: Re: [linux-review:James-Hogan/kbuild-Remove-stale-asm-generic-wrappers/20160119-183642] d979f99e9cc14e2667e9b6e268db695977e4197a BUILD DONE
+Date:   Tue, 19 Jan 2016 15:26:16 +0100
+Message-ID: <1534543.eobSKFEFfp@wuerfel>
+User-Agent: KMail/4.11.5 (Linux/3.16.0-10-generic; KDE/4.11.5; x86_64; ; )
+In-Reply-To: <569e1dbb.MgLv8OaZwklOxxtU%fengguang.wu@intel.com>
+References: <569e1dbb.MgLv8OaZwklOxxtU%fengguang.wu@intel.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="Qxx1br4bt0+wmkIi"
-Content-Disposition: inline
-In-Reply-To: <1667268.iM977TQnEK@wuerfel>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-X-Originating-IP: [192.168.154.110]
-X-ESG-ENCRYPT-TAG: 30575414
-Return-Path: <James.Hogan@imgtec.com>
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+X-Provags-ID: V03:K0:yTdvr1Vd+IKbhJpIwBomnn1PSjJ6V4SM1hzankAhD8l4NXpaaHY
+ 1hs2tHbZAAAvo/F2Tqty1E6dbWfUi3bRSdbqG6NPVlmQusH6xM1JjENcPKPJKvJp3Wv0CNC
+ K8bYOBpWLIKbU4Hw2XqkOzRAFki0ezhb3QWSuGmSICyrxBySE6nvAQdkvbMwWFmaSNE5A16
+ BqMCVghqfERPeVtw60Duw==
+X-UI-Out-Filterresults: notjunk:1;V01:K0:hH1iu22MZm0=:ezlObkAqqbFDYv8CSgYYMp
+ Qpc0+V55vEMUX2M3NnYXocg9Dro4mUZXwiazdwoKJJPPVdsStkf043Chjp/vXfnGdhIjvP4Q+
+ 9LNdg6gEbj/qisS8vtaQHL9wEUDP27c9aDbrG1EsrtAOIup8b1H9ki6XNGJ2/Tq86JtrBnMLd
+ Yw8au6TgJoOJ1aahJMizJWqvSMAVO4jfWaaGZQvoHm6a2szTegQLTRYbvJS+r2vqdtQW77CIC
+ X6dZXGMCKwtiHIpeWdBUpBqORrNSYxjg0L07VeQvcnEuB9BjqFuUYfI3iY4ifqppmX3O7MERj
+ SYS152VbVXHvWQcYG6sL1hMzRVVUFdGhM+bxIc97pHtXZa8/FN+MSLX8/1tEIJfCcsGNEcD8G
+ s4obGv9qmWdpGq3bX24+rofGVfMY1fdNQS2q4gTZwH6tJLVvLaLnhfxnmZ3lle3kQCtDDHCu6
+ 9dGcOnd/IYzKre225ihfAZ7sfJqc7NfkBVaMbDGAbDD5rI/fX8MRFMsZ//PeT3DC9Yz2/Pda2
+ 2FTsCUbgIBuOzrJ4D+Q9dVow6MDsTv5Y/8QoHe9Me+zvrXITq6vCsFfMetId2BT9dNoLxlfAX
+ R+5EehNz9MkSkbhiTiDVmV8+CdeD6qibjR/xLFAB3E5aR+BKXLPjZCKE41sIOCcjuT7oI8t/l
+ XOC6BIp26GAXCPT98hvV4KhfbWFkkM01W/89fAfrUMbHJVYEDX0P3f4jMYb0P/OGzMrLL8pX5
+ 7vpcW3xKLnbriwgP
+Return-Path: <arnd@arndb.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51221
+X-archive-position: 51222
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: arnd@arndb.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -64,72 +61,32 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---Qxx1br4bt0+wmkIi
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Tuesday 19 January 2016 19:27:55 kbuild test robot wrote:
+> arm                               allnoconfig
+> arm                         at91_dt_defconfig
+> arm                                  at_hdmac
+> arm                                    ep93xx
+> arm                       imx_v6_v7_defconfig
+> arm                                  iop-adma
+> arm                          marzen_defconfig
+> arm                          prima2_defconfig
+> arm                                    sa1100
+> arm                                   samsung
+> arm                                        sh
+> arm                       spear13xx_defconfig
+> 
 
-On Tue, Jan 19, 2016 at 03:09:14PM +0100, Arnd Bergmann wrote:
-> On Tuesday 19 January 2016 13:37:50 James Hogan wrote:
-> > When a header file is removed from generic-y (often accompanied by the
-> > addition of an arch specific header), the generated wrapper file will
-> > persist, and in some cases may still take precedence over the new arch
-> > header.
-> >=20
-> > For example commit f1fe2d21f4e1 ("MIPS: Add definitions for extended
-> > context") removed ucontext.h from generic-y in arch/mips/include/asm/,
-> > and added an arch/mips/include/uapi/asm/ucontext.h. The continued use of
-> > the wrapper when reusing a dirty build tree resulted in build failures
-> > in arch/mips/kernel/signal.c:
-> >=20
-> > arch/mips/kernel/signal.c: In function =E2=80=98sc_to_extcontext=E2=80=
-=99:
-> > arch/mips/kernel/signal.c:142:12: error: =E2=80=98struct ucontext=E2=80=
-=99 has no member named =E2=80=98uc_extcontext=E2=80=99
-> >   return &uc->uc_extcontext;
-> >             ^
-> >=20
-> > Fix by detecting and removing wrapper headers in generated header
-> > directories that do not correspond to a filename in generic-y, genhdr-y,
-> > or the newly introduced generated-y.
->=20
-> Good idea.
->=20
-> Acked-by: Arnd Bergmann <arnd@arndb.de>
+Hi Fengguang,
 
-Thanks Arnd
+Sorry for hijacking this thread. I have never seen the list of arm defconfigs
+you are building before, and it seems to be a surprising selection, as a number
+of platforms (ep93xx, iop, sa1100, spear13xx) are rather obscure, but the
+configurations that I tend to use most (multi_v7_defconfig, multi_v5_defconfig,
+allmodconfig) are not included.
 
-> Can you merge this through the mips tree, or do you need me to pick it
-> up through asm-generic?
+Do you always build the same set of configurations, or is this a different
+each time?
 
-I was envisaging the kbuild tree tbh, but I don't really mind how it
-gets merged. This patch depends on patch 1, which adds generated-y to
-x86 so we don't delete their other generated headers, but other than
-that it doesn't really have any dependencies.
+Can you always include the three I mentioned?
 
-Cheers
-James
-
---Qxx1br4bt0+wmkIi
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQIcBAEBCAAGBQJWnkaVAAoJEGwLaZPeOHZ6LmUQAKpWgHRKouJiF5R5uD2uvVkn
-PfRiCE8HmFx4ZN6wZu5uSF8wujCGQGxUr6JTvfyC66CvHlFSgPwCwHEseoTFAvHj
-rE77AQcz3qUwz30KIfS9Hj7XaBBPgi6XC9ljQ4qghijCpLANreyLvah90pg1Tgge
-r9AX7SaSsXMX9jJj8h6zOuTKXELlDAzi6rGm/Zp+dzscdht9U5OoTruJ06HvxdLG
-+4AdpuYpAW+qHYrqhmo6vGWwgLZaps37dOHk0pRcdRXRVaaCr9LjZmywR/FAz6+3
-idr6ME2irAhSe8sMXB+A4dscHp8GFCcutyInhNFSw5JrZrifjp15sLhpbb8pgX5y
-I4N8mn9ADW/bRNcvi6Y9zPBNLbnY+kOdPNKrSsJbtW9oLhS4ZR9amYjqsfzFfWzM
-yvhr1BB7ENHca2aF9Cm2RM0W25luhYjOhMY1QMTg0Wk28dbGeKh5eMOt4MEuf4/1
-sd/b5SRgAIoSCvq9dJfIpOv6tu0WIooepA6ZtJ7N7LYSaI7PdAbjIqKG/lNUWB66
-PFzprvBh9XI/dpoUTYtWgIG7Kt6cLA8gcfwqa0ZCK+1B0kR/B2OxymaXEIig/CpL
-54F2hef8q3L8aHlP6XZ4911AT2nPhtt9s4hoUhWnJBnkWlS5C5RyiSmPzfp617tn
-iWeC12OMk1R0ZgpqL3HU
-=Lh3+
------END PGP SIGNATURE-----
-
---Qxx1br4bt0+wmkIi--
+	Arnd

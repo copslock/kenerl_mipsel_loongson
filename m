@@ -1,38 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Jan 2016 01:46:48 +0100 (CET)
-Received: from mail-pa0-f67.google.com ([209.85.220.67]:36851 "EHLO
-        mail-pa0-f67.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27014799AbcATAoXf9sDw (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 20 Jan 2016 01:44:23 +0100
-Received: by mail-pa0-f67.google.com with SMTP id a20so29539507pag.3
-        for <linux-mips@linux-mips.org>; Tue, 19 Jan 2016 16:44:23 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Jan 2016 01:47:07 +0100 (CET)
+Received: from mail-pa0-f66.google.com ([209.85.220.66]:33586 "EHLO
+        mail-pa0-f66.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27014800AbcATAoYk6Xqw (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 20 Jan 2016 01:44:24 +0100
+Received: by mail-pa0-f66.google.com with SMTP id pv5so35633914pac.0
+        for <linux-mips@linux-mips.org>; Tue, 19 Jan 2016 16:44:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=LSOSm8ovDOv7O4dhua5l3LiRN+yyMayJ0g+FuqZ6B+0=;
-        b=WAN/SlfBOjv/8zxQxmE8v1/Fe+bQORSxNcGyHvBbcmP9jpz0w+kZqSshaBTC/petL7
-         pybR8x1iEGe7ke9CyVVNWooWNOjVgG7+JG2+d2S8xjRzNCIEnNuFfBpCZNCZtvX8xFmr
-         35jXlX3v6AcY6iPtB5LAAALNsVWSFG87/+Be0xf56BNOyLA0mHV1kP4tYYnj41Pk3ymj
-         IaP2MAGCgDSjWrbxHu+O2OoyDykWnjEqhrc1fy68hxkn86R7mpLGlVAErytYLgXdtgy6
-         +PcuFDirb8O6yVFcYpeV6mCutRr1KQKmMPgXZLdXYF/rjVZCvduV8RoYrbswhGdjmRrm
-         Gw7A==
+        bh=YqzFUwOOYfvvbbWV3bDRf6OmJBSkZssNbqtiqnmrOzo=;
+        b=PhZJjYlXPBhQX9i2NOnbLVUsqaMeJVdnosUxZL+xA/5fMIDPZEpcqZ+YztafKx8Llr
+         kloekguDuEqExmYpwXN/Hnue+amJAn5aCyfcOiLOHEglW47UzHfcRf6aoQh+yOysaf8M
+         s+kOCi0zx4UYcgraCZ2y27ETz/LydlU5zryTFlSCoZtEKoDUM+BOxYn0eBax6+3kUify
+         bhxInuci2XgTc5C0XOluDAFatVuKZLpTFddyxsXUyY/FPtHvtPkLWph7TH84spo38co2
+         5kGsoxBy+CTZxz/XYsonZQ+WXvt43ysl0Op12SqnVg6jY+TcTrn2lKvoBmcGoQG4HnV+
+         zQYw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=LSOSm8ovDOv7O4dhua5l3LiRN+yyMayJ0g+FuqZ6B+0=;
-        b=N0lgbJaGVu9IccbhFw6+zT/yYZE3x54QydHRBtWMwn/dM1nQBdsevhZQ2PFLNRw/y3
-         9Gk8tiDnezZbPw1U7+gNBQ4MXIx6YwjOOdslb6dRwrK1oQUlSmOlt99Jp/zFBJV4xloy
-         DxMI5zysd5DcT1XWKAw9xqiraVbgRlsJKw0yFOcbMLuKNdjOnnVLNbsM9hOP7Mm6Jb9v
-         UWEi8PdZYy+kgPMLo1xHjWmtqMgsCvXsy5r+dw1UzcowYsIGY3WT84LVcwz0TSiY1cxf
-         XMDYtzMWAHgJrPBQnF6pzdCU6VsUrVWNsIwD5DjANPWGAkrKPUR8Hxx+EkGbQ+8IjC+v
-         tiyQ==
-X-Gm-Message-State: ALoCoQnDDuU0ZoLXNwQLVjdhHRD06Kt2nSoxNR6IVDLNhgipXdanhmEusu7AKna22eiO7D6V3GVCK04B1+39n1kHq8QimqmYWw==
-X-Received: by 10.66.234.200 with SMTP id ug8mr48825129pac.129.1453250657796;
-        Tue, 19 Jan 2016 16:44:17 -0800 (PST)
+        bh=YqzFUwOOYfvvbbWV3bDRf6OmJBSkZssNbqtiqnmrOzo=;
+        b=QTc7z1b0fIp1tfhEKnxrWXD7vBlN0BdvwgBrDub068uMMpOXOkk4TlG2fYIjrUo0nh
+         ONKicvloqMyI4O6gsK968wjYHJZDhqiir/cPAKXN6XwTHCPvTwyuPsLA0PPwr640stn1
+         cxKE/ywgArqkSz+DuGMrn4XmOqfOkakBAd05p5QCYA6eezHyy/BmnE0fBpCDpC74+tsz
+         elbi7s0YhhzmX9JsiM9+X23bwpcwDG43bqNPfMK7M9iXgiQHwA5zR48cD1VRG4lDYvre
+         s2qxz8ky1hA6MKzJVgMFawY27SpvEvNtMw14e+cf07MYIAIWHeohWuXPYN4xdThfVvaE
+         Y3Ow==
+X-Gm-Message-State: ALoCoQnYbRqfjXnrVCog6hQv6lRLi5XJlfRrfGlcdgiSzwt+TEvvFqvdMitHkd3PIZ9yZXiS0zjyBcGKSH4lFLcwUD8cAFgaEw==
+X-Received: by 10.66.139.234 with SMTP id rb10mr48222795pab.82.1453250658930;
+        Tue, 19 Jan 2016 16:44:18 -0800 (PST)
 Received: from decotigny.mtv.corp.google.com ([172.18.64.159])
-        by smtp.gmail.com with ESMTPSA id cq4sm44444099pad.28.2016.01.19.16.44.16
+        by smtp.gmail.com with ESMTPSA id cq4sm44444099pad.28.2016.01.19.16.44.17
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Tue, 19 Jan 2016 16:44:17 -0800 (PST)
+        Tue, 19 Jan 2016 16:44:18 -0800 (PST)
 From:   David Decotigny <ddecotig@gmail.com>
 To:     "David S. Miller" <davem@davemloft.net>,
         Ben Hutchings <ben@decadent.org.uk>,
@@ -56,9 +56,9 @@ Cc:     Eric Dumazet <edumazet@google.com>,
         Yuval Mintz <Yuval.Mintz@qlogic.com>,
         Rasmus Villemoes <linux@rasmusvillemoes.dk>,
         David Decotigny <decot@googlers.com>
-Subject: [PATCH net-next v6 08/19] net: bonding: use __ethtool_get_ksettings
-Date:   Tue, 19 Jan 2016 16:43:53 -0800
-Message-Id: <1453250644-14796-9-git-send-email-ddecotig@gmail.com>
+Subject: [PATCH net-next v6 09/19] net: ipvlan: use __ethtool_get_ksettings
+Date:   Tue, 19 Jan 2016 16:43:54 -0800
+Message-Id: <1453250644-14796-10-git-send-email-ddecotig@gmail.com>
 X-Mailer: git-send-email 2.7.0.rc3.207.g0ac5344
 In-Reply-To: <1453250644-14796-1-git-send-email-ddecotig@gmail.com>
 References: <1453250644-14796-1-git-send-email-ddecotig@gmail.com>
@@ -66,7 +66,7 @@ Return-Path: <ddecotig@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51236
+X-archive-position: 51237
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -87,50 +87,37 @@ From: David Decotigny <decot@googlers.com>
 
 Signed-off-by: David Decotigny <decot@googlers.com>
 ---
- drivers/net/bonding/bond_main.c | 14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
+ drivers/net/ipvlan/ipvlan_main.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index 56b5605..df7b12a 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -374,22 +374,20 @@ down:
- static void bond_update_speed_duplex(struct slave *slave)
+diff --git a/drivers/net/ipvlan/ipvlan_main.c b/drivers/net/ipvlan/ipvlan_main.c
+index f94392d..3ea9983 100644
+--- a/drivers/net/ipvlan/ipvlan_main.c
++++ b/drivers/net/ipvlan/ipvlan_main.c
+@@ -346,12 +346,12 @@ static const struct header_ops ipvlan_header_ops = {
+ 	.cache_update	= eth_header_cache_update,
+ };
+ 
+-static int ipvlan_ethtool_get_settings(struct net_device *dev,
+-				       struct ethtool_cmd *cmd)
++static int ipvlan_ethtool_get_ksettings(struct net_device *dev,
++					struct ethtool_ksettings *cmd)
  {
- 	struct net_device *slave_dev = slave->dev;
--	struct ethtool_cmd ecmd;
--	u32 slave_speed;
-+	struct ethtool_ksettings ecmd;
- 	int res;
+ 	const struct ipvl_dev *ipvlan = netdev_priv(dev);
  
- 	slave->speed = SPEED_UNKNOWN;
- 	slave->duplex = DUPLEX_UNKNOWN;
- 
--	res = __ethtool_get_settings(slave_dev, &ecmd);
-+	res = __ethtool_get_ksettings(slave_dev, &ecmd);
- 	if (res < 0)
- 		return;
- 
--	slave_speed = ethtool_cmd_speed(&ecmd);
--	if (slave_speed == 0 || slave_speed == ((__u32) -1))
-+	if (ecmd.parent.speed == 0 || ecmd.parent.speed == ((__u32)-1))
- 		return;
- 
--	switch (ecmd.duplex) {
-+	switch (ecmd.parent.duplex) {
- 	case DUPLEX_FULL:
- 	case DUPLEX_HALF:
- 		break;
-@@ -397,8 +395,8 @@ static void bond_update_speed_duplex(struct slave *slave)
- 		return;
- 	}
- 
--	slave->speed = slave_speed;
--	slave->duplex = ecmd.duplex;
-+	slave->speed = ecmd.parent.speed;
-+	slave->duplex = ecmd.parent.duplex;
- 
- 	return;
+-	return __ethtool_get_settings(ipvlan->phy_dev, cmd);
++	return __ethtool_get_ksettings(ipvlan->phy_dev, cmd);
  }
+ 
+ static void ipvlan_ethtool_get_drvinfo(struct net_device *dev,
+@@ -377,7 +377,7 @@ static void ipvlan_ethtool_set_msglevel(struct net_device *dev, u32 value)
+ 
+ static const struct ethtool_ops ipvlan_ethtool_ops = {
+ 	.get_link	= ethtool_op_get_link,
+-	.get_settings	= ipvlan_ethtool_get_settings,
++	.get_ksettings	= ipvlan_ethtool_get_ksettings,
+ 	.get_drvinfo	= ipvlan_ethtool_get_drvinfo,
+ 	.get_msglevel	= ipvlan_ethtool_get_msglevel,
+ 	.set_msglevel	= ipvlan_ethtool_set_msglevel,
 -- 
 2.7.0.rc3.207.g0ac5344

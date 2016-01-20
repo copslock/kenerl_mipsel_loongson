@@ -1,38 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Jan 2016 01:45:17 +0100 (CET)
-Received: from mail-pa0-f66.google.com ([209.85.220.66]:35384 "EHLO
-        mail-pa0-f66.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27014793AbcATAoSjXMEw (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 20 Jan 2016 01:44:18 +0100
-Received: by mail-pa0-f66.google.com with SMTP id gi1so41971294pac.2
-        for <linux-mips@linux-mips.org>; Tue, 19 Jan 2016 16:44:18 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Jan 2016 01:45:35 +0100 (CET)
+Received: from mail-pa0-f67.google.com ([209.85.220.67]:33559 "EHLO
+        mail-pa0-f67.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27014792AbcATAoRkyfhw (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 20 Jan 2016 01:44:17 +0100
+Received: by mail-pa0-f67.google.com with SMTP id pv5so35633791pac.0
+        for <linux-mips@linux-mips.org>; Tue, 19 Jan 2016 16:44:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=0b2NB8Neq9YbgfIGNg2Fnawu1+aEU+dLPb7K9khusm4=;
-        b=X9J8v1DgKYtLKz6+pR18MeFtcKBj16Kp41gG2SZRG6wgSKUo4q9DYr1yDWq/TRdsUV
-         WQ23sBdqs4UlJs4bY5HpzDCbQIGLWGz28j29Tbasb7REkcXeVKY1EETGJOOcVRBp2vfz
-         TBpN1USQk7b2QiEBjs/SgYd14OLPOTnqvqeyFDscn6+YMjSH1qP9MYj8qwtll2u37iyn
-         LjKlGlWkG38lfjhBypyfZZ939p/4wDZcPUsFwTW5SW2FEb0c5pq9+hq0V62OI5oNkPt8
-         XMNd0B9ZVKaXPxS8RKN+xfCS+Z8nTIxKFVZo7fZ5uIMIX0dEQSAn4Lbp1uGqYkT4v8Bo
-         vU/Q==
+        bh=SjqM3n3yi1AT/PZiqB08uVDb4q4yu9XebVlaQXGrl+g=;
+        b=mfvln1+CSPlj+Rmk6rcvCU7IwhF0zVc1YEn3M1WD/Cfrk2U6FO7wi12yl+il3tDgHK
+         mojoEGwXtgwZssMStaky4AwEE92CuNwQAqBVa7L8Nus6Rp3Oms/Q8uCvz6RnclURfkTE
+         bXw6cu+Zl682CB3lFlCIf7tSv56GtZnIS4EaTnovqMjvdnPasqjnGL5tU7U38vKyrdCa
+         nD/Zu4bEfnjiSwwzDwDUNIaBn+cOccun0+2OeU7/P55JKtfEvBu12EKjhm++/7gTtDsm
+         mzh9cPCH7LzmD4xXq5k5nuETMIXaw714jlLYNcWWc0yAxz7HbqXkrAP4I2Fly9biPSIq
+         C3jA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=0b2NB8Neq9YbgfIGNg2Fnawu1+aEU+dLPb7K9khusm4=;
-        b=m0N9qE10rwDd6InucB0Qz0VHmKAYMqtutKeiBw8/YI2jSToHcQ4qTsjoKDq0yZsfL6
-         zrbLap9W7y8EzXcp7iIeDi0WeUo4pZDJuj4huNfmyM03GUjkAFz5GDZ9n08PqZ9+ppwR
-         Vah4ZQWMzTZZT1qQZEBJDl+XRtzSmK5db92xERk5E5UKQtZgIsEGFUt/NkzCGkS0rCys
-         t+/Y1GU/FuWnNhLwRFP93d5GgldfvhcJDipe71CpjM3cX9X6A51yOXLdabl97cQgHNDj
-         Atg2MOqC552/5kPvj0KS/lq0nzFnUq57aNz0g+cb5X7DChc9sGElmda/egjtftaTl/mm
-         v3sA==
-X-Gm-Message-State: ALoCoQkTf3TGQ0RrqAyHl7rpXp8kf5LXMXtLMHk5UGDpp4jegC3P8umDQ390850XGhiZa6ZzYJMa+cVoQaGNLVdz2IPy4qdwvg==
-X-Received: by 10.66.255.70 with SMTP id ao6mr48135180pad.64.1453250653049;
-        Tue, 19 Jan 2016 16:44:13 -0800 (PST)
+        bh=SjqM3n3yi1AT/PZiqB08uVDb4q4yu9XebVlaQXGrl+g=;
+        b=XQfFYX2ABhosZCKeHyiY7iPJN6pUzjLr2YoU4XJQIXxG/bH424wdsajplj5w2kgAk+
+         u4suy7HI4BJLHpxAPKbCnrf88iM8Z8Z72mPwOo55ekhgCbiA/XYs5LPsuIm0kIkGDLzb
+         fOPfpabmgd6QHlr2Zovzavquo2RWtbl4MCSAl8IgF+xcwMXeE4CNmRaN4SSg3We5We3O
+         3vhibadiFVR7LFFL8zvniSVV0EUP00j1Zse2sexc6TJRHoWO8Q8kvFWmu67deAcrPJef
+         FFK2iaTM/sXEs+U3KMRzsyMLIjFSceob0OJ4PCMpKTVXL2XFPVfm9D6cnLbvhuYSNNfN
+         uTSA==
+X-Gm-Message-State: ALoCoQkn/IjHaySAL0ZGQBMw15JgyOEYR2DFruhck2TWSaRz3uF3LMypvFvYvVWdXjsI2aV0vQehYZNSVeMqZxMeOYRJVBWhQg==
+X-Received: by 10.66.186.170 with SMTP id fl10mr49317351pac.134.1453250651797;
+        Tue, 19 Jan 2016 16:44:11 -0800 (PST)
 Received: from decotigny.mtv.corp.google.com ([172.18.64.159])
-        by smtp.gmail.com with ESMTPSA id cq4sm44444099pad.28.2016.01.19.16.44.11
+        by smtp.gmail.com with ESMTPSA id cq4sm44444099pad.28.2016.01.19.16.44.10
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Tue, 19 Jan 2016 16:44:12 -0800 (PST)
+        Tue, 19 Jan 2016 16:44:11 -0800 (PST)
 From:   David Decotigny <ddecotig@gmail.com>
 To:     "David S. Miller" <davem@davemloft.net>,
         Ben Hutchings <ben@decadent.org.uk>,
@@ -56,9 +56,9 @@ Cc:     Eric Dumazet <edumazet@google.com>,
         Yuval Mintz <Yuval.Mintz@qlogic.com>,
         Rasmus Villemoes <linux@rasmusvillemoes.dk>,
         David Decotigny <decot@googlers.com>
-Subject: [PATCH net-next v6 04/19] net: usnic: use __ethtool_get_settings
-Date:   Tue, 19 Jan 2016 16:43:49 -0800
-Message-Id: <1453250644-14796-5-git-send-email-ddecotig@gmail.com>
+Subject: [PATCH net-next v6 03/19] net: usnic: remove unused call to ethtool_ops::get_settings
+Date:   Tue, 19 Jan 2016 16:43:48 -0800
+Message-Id: <1453250644-14796-4-git-send-email-ddecotig@gmail.com>
 X-Mailer: git-send-email 2.7.0.rc3.207.g0ac5344
 In-Reply-To: <1453250644-14796-1-git-send-email-ddecotig@gmail.com>
 References: <1453250644-14796-1-git-send-email-ddecotig@gmail.com>
@@ -66,7 +66,7 @@ Return-Path: <ddecotig@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51231
+X-archive-position: 51232
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -87,21 +87,28 @@ From: David Decotigny <decot@googlers.com>
 
 Signed-off-by: David Decotigny <decot@googlers.com>
 ---
- drivers/infiniband/hw/usnic/usnic_ib_verbs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/infiniband/hw/usnic/usnic_ib_verbs.c | 2 --
+ 1 file changed, 2 deletions(-)
 
 diff --git a/drivers/infiniband/hw/usnic/usnic_ib_verbs.c b/drivers/infiniband/hw/usnic/usnic_ib_verbs.c
-index 5b60579..e082170 100644
+index f8e3211..5b60579 100644
 --- a/drivers/infiniband/hw/usnic/usnic_ib_verbs.c
 +++ b/drivers/infiniband/hw/usnic/usnic_ib_verbs.c
-@@ -329,7 +329,7 @@ int usnic_ib_query_port(struct ib_device *ibdev, u8 port,
+@@ -269,7 +269,6 @@ int usnic_ib_query_device(struct ib_device *ibdev,
+ 	struct usnic_ib_dev *us_ibdev = to_usdev(ibdev);
+ 	union ib_gid gid;
+ 	struct ethtool_drvinfo info;
+-	struct ethtool_cmd cmd;
+ 	int qp_per_vf;
+ 
  	usnic_dbg("\n");
+@@ -278,7 +277,6 @@ int usnic_ib_query_device(struct ib_device *ibdev,
  
  	mutex_lock(&us_ibdev->usdev_lock);
+ 	us_ibdev->netdev->ethtool_ops->get_drvinfo(us_ibdev->netdev, &info);
 -	us_ibdev->netdev->ethtool_ops->get_settings(us_ibdev->netdev, &cmd);
-+	__ethtool_get_settings(us_ibdev->netdev, &cmd);
  	memset(props, 0, sizeof(*props));
- 
- 	props->lid = 0;
+ 	usnic_mac_ip_to_gid(us_ibdev->ufdev->mac, us_ibdev->ufdev->inaddr,
+ 			&gid.raw[0]);
 -- 
 2.7.0.rc3.207.g0ac5344

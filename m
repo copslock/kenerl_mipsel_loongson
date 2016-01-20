@@ -1,38 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Jan 2016 01:49:30 +0100 (CET)
-Received: from mail-pf0-f196.google.com ([209.85.192.196]:35809 "EHLO
-        mail-pf0-f196.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27014807AbcATAodxfFew (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 20 Jan 2016 01:44:33 +0100
-Received: by mail-pf0-f196.google.com with SMTP id 65so13873843pff.2
-        for <linux-mips@linux-mips.org>; Tue, 19 Jan 2016 16:44:33 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Jan 2016 01:49:50 +0100 (CET)
+Received: from mail-pa0-f68.google.com ([209.85.220.68]:35426 "EHLO
+        mail-pa0-f68.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011081AbcATAofEqyXw (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 20 Jan 2016 01:44:35 +0100
+Received: by mail-pa0-f68.google.com with SMTP id gi1so41971542pac.2
+        for <linux-mips@linux-mips.org>; Tue, 19 Jan 2016 16:44:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=vjZp1sZqLCMkxHmaI1RWhfKju4DlWPhcjIZRr/0vwgI=;
-        b=sAzNcY2MyJjYAqe6IBNlfOc/nf7eVbvy5trV/ppQgogL+76mvjMN8WeEptSPwAZIxQ
-         2RQo1B44/c9PQ0TSiUldvop/DPV5TbBrZzOH2IPxIEmg2zb8YC4n1SnCXTV+JPGzn8sp
-         j0fzuqvxsITg7DgAOjbsTEeFLQldOvOBDEwQiFyuOUrtr+//ki0NfQH0+r/Rg/4xKVrD
-         URbM11YCzfqEOXRcPigJB9hmq6ILnbIQBngPCxGp35zVs0qz6TOaM0ZFXXz7qK/3rkaX
-         6nGzV1mv5B1uA9in+n3O7yppIjIGtQVwv9umW1C3QiA0iAIcnMy15MKaIv4rfUktsOaW
-         E1Qg==
+        bh=armc4XePUYtdepP6EOcKIhPlBFWTLDb4Fr4GLxD5PWo=;
+        b=JvBWGbMSJPN98unWtMHy/xQBgKBHlEn/yyzf1DUj8ufmjFHILhggyIqaL/ua8WMntp
+         BBiasUlgMFMsrYdizUpxRNvCWmUcxc96G3t4wEFp2hjl+FoeeF4RDEw3EWtY8n5AwUqF
+         ePa2WdBLr83dQh0QWwDcMhddY8yqg8BVSqPhDHujGcz5t4QfWJO3Rxp0O/Ueyzq0H21z
+         BjVRBeg8WIx9j9Jn6e7kpEc3QMId6eY9BGMw+f40EPkhoiy586Ss35Hx4xJ38yyuWrqW
+         yznYDR3DBL/pKyZXC9pF78oCfAoOSo/oR6O0Cz/cvXbZu9t6+b84SfcxanWZdcJhtufW
+         WJBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=vjZp1sZqLCMkxHmaI1RWhfKju4DlWPhcjIZRr/0vwgI=;
-        b=KsF5v7XncL30yjkYP7VgmXi45CNahP5kXpnVnQPFAivNXPYUL29uyeyOh5uO6bd1Qo
-         0q2tMAjTlYDl84y+V/TEnOLiLd65SvGbt1pa8sN2ZY39odiIY7tSfWGNHy44DPniUBb9
-         ahHVvAKXTdr85o3in3w1kPbiSR4cX2W74pHI0O0hmal7IHsy0Jk2/lzEWeQ3ctRDQun4
-         Z5P4IGFumOHmGjZayCiCOuTa90OH/i9PozcFqpmcKtFA4jRpEYQcaVFajBdyZL9O3c8m
-         AD0xBvzHn4hHXSw+F9h5qMmdV/63uzO++/raJq1REBNftVNy/FuBqWc4zU7yx/SuSv2K
-         Ud7Q==
-X-Gm-Message-State: ALoCoQkmK5SS7/kk6P7eZyktYb6eZmltXhsrNgiyeI9XuZnBo2vuzYVKBMoGRkmAgeM7oOKMkNa5qwkTmb1pmMxJlgRniTptIQ==
-X-Received: by 10.98.16.27 with SMTP id y27mr48847614pfi.33.1453250668271;
-        Tue, 19 Jan 2016 16:44:28 -0800 (PST)
+        bh=armc4XePUYtdepP6EOcKIhPlBFWTLDb4Fr4GLxD5PWo=;
+        b=S/ElspWOuxbii2ycDM3vlo67MIY9nUO49zSrkY3TfM5roQwXEd6UL4zX1cdIpLaang
+         MOwlN2PONzSoHqm2L0c0rK77A3UbuJwLuFFyN3V3phj9ycdRVT8LHMDZGQJprLXHwdlO
+         8ao3BVj50ZSbVlcgOfA0cb+0OJAnVnN9YuNqPSAXpXej+G155pvuh+ToXPawDGP2lTpa
+         4DdgMXiOlzwZZpKUvuJnvhjymQ+dAFiVJBZ8vESYZqAh7qsZ+V/HHT95cIbWU7XYBr+r
+         4pvwBinqDybxlI12KMpSTcgcIpNfTH2AEIgevs0wM0MeKwXswAhcfsF6JH1V/uizvHRG
+         4t/g==
+X-Gm-Message-State: ALoCoQkUjyWVa6YrrfuVpYRBaj/9+FeEXTNqrSPMOIHHlTAR1YS3O/0SM06C+9t5V+N3gzh/j9sbDRZAA9D5UjyQIiPIzrjvYA==
+X-Received: by 10.66.255.70 with SMTP id ao6mr48136518pad.64.1453250669440;
+        Tue, 19 Jan 2016 16:44:29 -0800 (PST)
 Received: from decotigny.mtv.corp.google.com ([172.18.64.159])
-        by smtp.gmail.com with ESMTPSA id cq4sm44444099pad.28.2016.01.19.16.44.27
+        by smtp.gmail.com with ESMTPSA id cq4sm44444099pad.28.2016.01.19.16.44.28
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Tue, 19 Jan 2016 16:44:27 -0800 (PST)
+        Tue, 19 Jan 2016 16:44:28 -0800 (PST)
 From:   David Decotigny <ddecotig@gmail.com>
 To:     "David S. Miller" <davem@davemloft.net>,
         Ben Hutchings <ben@decadent.org.uk>,
@@ -56,9 +56,9 @@ Cc:     Eric Dumazet <edumazet@google.com>,
         Yuval Mintz <Yuval.Mintz@qlogic.com>,
         Rasmus Villemoes <linux@rasmusvillemoes.dk>,
         David Decotigny <decot@googlers.com>
-Subject: [PATCH net-next v6 17/19] net: ethtool: remove unused __ethtool_get_settings
-Date:   Tue, 19 Jan 2016 16:44:02 -0800
-Message-Id: <1453250644-14796-18-git-send-email-ddecotig@gmail.com>
+Subject: [PATCH net-next v6 18/19] net: mlx4: convenience predicate for debug messages
+Date:   Tue, 19 Jan 2016 16:44:03 -0800
+Message-Id: <1453250644-14796-19-git-send-email-ddecotig@gmail.com>
 X-Mailer: git-send-email 2.7.0.rc3.207.g0ac5344
 In-Reply-To: <1453250644-14796-1-git-send-email-ddecotig@gmail.com>
 References: <1453250644-14796-1-git-send-email-ddecotig@gmail.com>
@@ -66,7 +66,7 @@ Return-Path: <ddecotig@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51245
+X-archive-position: 51246
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -85,102 +85,27 @@ X-list: linux-mips
 
 From: David Decotigny <decot@googlers.com>
 
-replaced by __ethtool_get_ksettings.
-
 Signed-off-by: David Decotigny <decot@googlers.com>
 ---
- include/linux/ethtool.h |  4 ----
- net/core/ethtool.c      | 45 ++++++++++++++-------------------------------
- 2 files changed, 14 insertions(+), 35 deletions(-)
+ drivers/net/ethernet/mellanox/mlx4/mlx4_en.h | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/ethtool.h b/include/linux/ethtool.h
-index 6077cbb..05d4f0e 100644
---- a/include/linux/ethtool.h
-+++ b/include/linux/ethtool.h
-@@ -148,10 +148,6 @@ struct ethtool_ksettings {
- extern int __ethtool_get_ksettings(struct net_device *dev,
- 				   struct ethtool_ksettings *ksettings);
+diff --git a/drivers/net/ethernet/mellanox/mlx4/mlx4_en.h b/drivers/net/ethernet/mellanox/mlx4/mlx4_en.h
+index 35de7d2..b04054d 100644
+--- a/drivers/net/ethernet/mellanox/mlx4/mlx4_en.h
++++ b/drivers/net/ethernet/mellanox/mlx4/mlx4_en.h
+@@ -740,9 +740,11 @@ __printf(3, 4)
+ void en_print(const char *level, const struct mlx4_en_priv *priv,
+ 	      const char *format, ...);
  
--/* DEPRECATED, use __ethtool_get_ksettings */
--extern int __ethtool_get_settings(struct net_device *dev,
--				  struct ethtool_cmd *cmd);
--
- /**
-  * struct ethtool_ops - optional netdev operations
-  * @get_settings: DEPRECATED, use %get_ksettings/%set_ksettings
-diff --git a/net/core/ethtool.c b/net/core/ethtool.c
-index ed1fde3..95ce5c9 100644
---- a/net/core/ethtool.c
-+++ b/net/core/ethtool.c
-@@ -529,7 +529,12 @@ int __ethtool_get_ksettings(struct net_device *dev,
- 	 * legacy %ethtool_cmd API, unless it's not supported either.
- 	 * TODO: remove when ethtool_ops::get_settings disappears internally
- 	 */
--	err = __ethtool_get_settings(dev, &cmd);
-+	if (!dev->ethtool_ops->get_settings)
-+		return -EOPNOTSUPP;
-+
-+	memset(&cmd, 0, sizeof(cmd));
-+	cmd.cmd = ETHTOOL_GSET;
-+	err = dev->ethtool_ops->get_settings(dev, &cmd);
- 	if (err < 0)
- 		return err;
- 
-@@ -699,30 +704,6 @@ static int ethtool_set_ksettings(struct net_device *dev, void __user *useraddr)
- 	return dev->ethtool_ops->set_ksettings(dev, &ksettings);
- }
- 
--/* Internal kernel helper to query a device ethtool_cmd settings.
-- *
-- * Note about transition to ethtool_settings API: We do not need (or
-- * want) this function to support "dev" instances that implement the
-- * ethtool_settings API as we will update the drivers calling this
-- * function to call __ethtool_get_ksettings instead, before the first
-- * drivers implement ethtool_ops::get_ksettings.
-- *
-- * TODO 1: at least make this function static when no driver is using it
-- * TODO 2: remove when ethtool_ops::get_settings disappears internally
-- */
--int __ethtool_get_settings(struct net_device *dev, struct ethtool_cmd *cmd)
--{
--	ASSERT_RTNL();
--
--	if (!dev->ethtool_ops->get_settings)
--		return -EOPNOTSUPP;
--
--	memset(cmd, 0, sizeof(struct ethtool_cmd));
--	cmd->cmd = ETHTOOL_GSET;
--	return dev->ethtool_ops->get_settings(dev, cmd);
--}
--EXPORT_SYMBOL(__ethtool_get_settings);
--
- static void
- warn_incomplete_ethtool_legacy_settings_conversion(const char *details)
- {
-@@ -764,16 +745,18 @@ static int ethtool_get_settings(struct net_device *dev, void __user *useraddr)
- 		/* send a sensible cmd tag back to user */
- 		cmd.cmd = ETHTOOL_GSET;
- 	} else {
--		int err;
--		/* TODO: return -EOPNOTSUPP when
--		 * ethtool_ops::get_settings disappears internally
--		 */
--
- 		/* driver doesn't support %ethtool_ksettings
- 		 * API. revert to legacy %ethtool_cmd API, unless it's
- 		 * not supported either.
- 		 */
--		err = __ethtool_get_settings(dev, &cmd);
-+		int err;
-+
-+		if (!dev->ethtool_ops->get_settings)
-+			return -EOPNOTSUPP;
-+
-+		memset(&cmd, 0, sizeof(cmd));
-+		cmd.cmd = ETHTOOL_GSET;
-+		err = dev->ethtool_ops->get_settings(dev, &cmd);
- 		if (err < 0)
- 			return err;
- 	}
++#define en_dbg_enabled(mlevel, priv)		\
++	(NETIF_MSG_##mlevel & (priv)->msg_enable)
+ #define en_dbg(mlevel, priv, format, ...)				\
+ do {									\
+-	if (NETIF_MSG_##mlevel & (priv)->msg_enable)			\
++	if (en_dbg_enabled(mlevel, priv))				\
+ 		en_print(KERN_DEBUG, priv, format, ##__VA_ARGS__);	\
+ } while (0)
+ #define en_warn(priv, format, ...)					\
 -- 
 2.7.0.rc3.207.g0ac5344

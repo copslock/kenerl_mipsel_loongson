@@ -1,38 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Jan 2016 01:48:54 +0100 (CET)
-Received: from mail-pa0-f65.google.com ([209.85.220.65]:35416 "EHLO
-        mail-pa0-f65.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27014805AbcATAobwxTyw (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 20 Jan 2016 01:44:31 +0100
-Received: by mail-pa0-f65.google.com with SMTP id gi1so41971474pac.2
-        for <linux-mips@linux-mips.org>; Tue, 19 Jan 2016 16:44:31 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Jan 2016 01:49:10 +0100 (CET)
+Received: from mail-pf0-f193.google.com ([209.85.192.193]:34177 "EHLO
+        mail-pf0-f193.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27014806AbcATAocoi42w (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 20 Jan 2016 01:44:32 +0100
+Received: by mail-pf0-f193.google.com with SMTP id 65so13872792pfd.1
+        for <linux-mips@linux-mips.org>; Tue, 19 Jan 2016 16:44:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=4IpA9nl8IZlK/ByCx1cK2rQrWfMOQ/Wm2UEg6gnOMKA=;
-        b=vRd4+AsVw3Fiy6xG3NCzr9LRgLCOtfwYBKmyEzmgsNAz6/c/TwwWJ5zBB2NTnz993y
-         ET9B15hhrCR0bcIlJpg1zf5ON65qkKwTI/3nHiSuPCfjYqtB4gmTAMAWTr6soFtIsnKT
-         ZVnkLHw8PKG+0REZgouUkCnOO/MC9glmlgwxsvL5QmqWdSK70Z8pALfjAY5uKhEYwit8
-         GuvxRCv5INVx/nYzOKpTmthwNu+WrkSrgC41RzLkN3gzFrEm1qXLPIXxh8swlXC0vVrP
-         nRvk1pARwzhinx9j4JFPxNaYdYD4S2ZfmXz/1vTzO9zPxH23gU50VEfP3a1WJFHihMz6
-         sjnQ==
+        bh=zQ1rYGVvGRJZfRUg7fh1a5XOOy4lFP3VjakhqNShtQc=;
+        b=fZf9tCnAaCsPsztmY4H/xL367F0IyNEa5tx2aHwVRP2KTJztFeZb12oAYIRI+HVw52
+         rJCgR9ItqiReJrDor6GTzfZyliUEA85WXhT6vTZLdaArDKnjD6WEdfcxteaOfKKS5pFP
+         8U/2dIYf/YxXHnlkyhKQVCGYIgXpfO8XIchpiTErwS5t1oGFGvWbWdA/6BzsgaEJCP8/
+         8H8VbrkufEAjoWPwyXpxOP5LEztsvwncPpq0m5mL5xilNIlZD/4tlrv3RkCCriIk76xk
+         i8mZ7dEXF15qi5/YTgoyfGSS/CQK0Uy7PqNbj8xowiiHGdt6mFGSvjXRE1mJCLer3sYR
+         i48A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=4IpA9nl8IZlK/ByCx1cK2rQrWfMOQ/Wm2UEg6gnOMKA=;
-        b=VaqQc8sssZQr6KG42X41NHawWg+5BEn5eFeT/TiLY8kNYZWNcTQBzbN9a9wrQ2BOiR
-         ZNwl7loRjgJ1lQRZAaHFFC29Wg6R5r+DX+24xQqZDigWVh2iH1Go8QIbpmoQutdv4zrh
-         vYwbVEBuRrFcL6Yslyymr2gfcu4jfjJm5COhl5QKtqjg2Tx6wL5ehD3TCb6BHzC1Fm0a
-         Kq9//IfosC+moeQUo0aHgRw23xTURuJTrLZvwJRaqXESakDxWWanx04nonugHXIU5W4b
-         shM7x/gWd4HCnk7FulLhvdg9WaJTEm4xFVfdGi0yEqTvPMacHCi2MQKNm/hw6qWDNZuf
-         AkYw==
-X-Gm-Message-State: ALoCoQmB/nzxz82YgfnfU/D2tv/hJILqPSdm2OPm4TFmzgwefcxNKDqsp9rfEDtLaUzvwQ1/igUhqpeCWM0sRhFAj7alJM67RQ==
-X-Received: by 10.67.7.200 with SMTP id de8mr48946845pad.28.1453250665885;
-        Tue, 19 Jan 2016 16:44:25 -0800 (PST)
+        bh=zQ1rYGVvGRJZfRUg7fh1a5XOOy4lFP3VjakhqNShtQc=;
+        b=dvfkRzDIyseqemeWRS2+Ik3xi0e6EO9GCikG2ydqvxXUr11ndA3nefd9sf5Pex4TEb
+         L8VhnGy7ZOrdx0lP2tNH90CxfggLp4q/BMOjwE4q4haWapQRyFpYriqzTTFgZCFoIinN
+         wRHM4/H1J235hnMjiQZI/fLYbw9IrDmxkYXnj6/82infISIDUrwGpeqRcGWvGxRZCCiS
+         ZRC2OXC41XiEjsLshlYJ71elN8OKYV/2TzFOf0jTNs/NrB75fsyBYcErHnoHd3P5l0wj
+         F61bl2pvmn97k/xUovvXe/654KuRbv/jh+ynVJ9QUY+XA+BFOS/lWB9+7kkrt8Fax9ZO
+         nAiw==
+X-Gm-Message-State: ALoCoQmY/D5dDoKo76Et+0tUY4lzk7QLl5HErVZKrCwc7njm9MqdipHeNvOW84asy2IiMmLIFY8rdZA2djihDoa9meML+EFIpg==
+X-Received: by 10.98.71.157 with SMTP id p29mr48260177pfi.45.1453250667112;
+        Tue, 19 Jan 2016 16:44:27 -0800 (PST)
 Received: from decotigny.mtv.corp.google.com ([172.18.64.159])
-        by smtp.gmail.com with ESMTPSA id cq4sm44444099pad.28.2016.01.19.16.44.24
+        by smtp.gmail.com with ESMTPSA id cq4sm44444099pad.28.2016.01.19.16.44.25
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Tue, 19 Jan 2016 16:44:25 -0800 (PST)
+        Tue, 19 Jan 2016 16:44:26 -0800 (PST)
 From:   David Decotigny <ddecotig@gmail.com>
 To:     "David S. Miller" <davem@davemloft.net>,
         Ben Hutchings <ben@decadent.org.uk>,
@@ -56,9 +56,9 @@ Cc:     Eric Dumazet <edumazet@google.com>,
         Yuval Mintz <Yuval.Mintz@qlogic.com>,
         Rasmus Villemoes <linux@rasmusvillemoes.dk>,
         David Decotigny <decot@googlers.com>
-Subject: [PATCH net-next v6 15/19] net: bridge: use __ethtool_get_ksettings
-Date:   Tue, 19 Jan 2016 16:44:00 -0800
-Message-Id: <1453250644-14796-16-git-send-email-ddecotig@gmail.com>
+Subject: [PATCH net-next v6 16/19] net: core: use __ethtool_get_ksettings
+Date:   Tue, 19 Jan 2016 16:44:01 -0800
+Message-Id: <1453250644-14796-17-git-send-email-ddecotig@gmail.com>
 X-Mailer: git-send-email 2.7.0.rc3.207.g0ac5344
 In-Reply-To: <1453250644-14796-1-git-send-email-ddecotig@gmail.com>
 References: <1453250644-14796-1-git-send-email-ddecotig@gmail.com>
@@ -66,7 +66,7 @@ Return-Path: <ddecotig@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51243
+X-archive-position: 51244
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -87,26 +87,82 @@ From: David Decotigny <decot@googlers.com>
 
 Signed-off-by: David Decotigny <decot@googlers.com>
 ---
- net/bridge/br_if.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/core/net-sysfs.c   | 15 +++++++++------
+ net/packet/af_packet.c | 11 +++++------
+ 2 files changed, 14 insertions(+), 12 deletions(-)
 
-diff --git a/net/bridge/br_if.c b/net/bridge/br_if.c
-index c367b3e..cafe4e6 100644
---- a/net/bridge/br_if.c
-+++ b/net/bridge/br_if.c
-@@ -36,10 +36,10 @@
-  */
- static int port_cost(struct net_device *dev)
+diff --git a/net/core/net-sysfs.c b/net/core/net-sysfs.c
+index b6c8a66..456f3b9 100644
+--- a/net/core/net-sysfs.c
++++ b/net/core/net-sysfs.c
+@@ -199,9 +199,10 @@ static ssize_t speed_show(struct device *dev,
+ 		return restart_syscall();
+ 
+ 	if (netif_running(netdev)) {
+-		struct ethtool_cmd cmd;
+-		if (!__ethtool_get_settings(netdev, &cmd))
+-			ret = sprintf(buf, fmt_dec, ethtool_cmd_speed(&cmd));
++		struct ethtool_ksettings cmd;
++
++		if (!__ethtool_get_ksettings(netdev, &cmd))
++			ret = sprintf(buf, fmt_dec, cmd.parent.speed);
+ 	}
+ 	rtnl_unlock();
+ 	return ret;
+@@ -218,10 +219,12 @@ static ssize_t duplex_show(struct device *dev,
+ 		return restart_syscall();
+ 
+ 	if (netif_running(netdev)) {
+-		struct ethtool_cmd cmd;
+-		if (!__ethtool_get_settings(netdev, &cmd)) {
++		struct ethtool_ksettings cmd;
++
++		if (!__ethtool_get_ksettings(netdev, &cmd)) {
+ 			const char *duplex;
+-			switch (cmd.duplex) {
++
++			switch (cmd.parent.duplex) {
+ 			case DUPLEX_HALF:
+ 				duplex = "half";
+ 				break;
+diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
+index 992396a..626dae0 100644
+--- a/net/packet/af_packet.c
++++ b/net/packet/af_packet.c
+@@ -557,9 +557,8 @@ static int prb_calc_retire_blk_tmo(struct packet_sock *po,
  {
+ 	struct net_device *dev;
+ 	unsigned int mbits = 0, msec = 0, div = 0, tmo = 0;
 -	struct ethtool_cmd ecmd;
 +	struct ethtool_ksettings ecmd;
+ 	int err;
+-	u32 speed;
  
--	if (!__ethtool_get_settings(dev, &ecmd)) {
--		switch (ethtool_cmd_speed(&ecmd)) {
-+	if (!__ethtool_get_ksettings(dev, &ecmd)) {
-+		switch (ecmd.parent.speed) {
- 		case SPEED_10000:
- 			return 2;
- 		case SPEED_1000:
+ 	rtnl_lock();
+ 	dev = __dev_get_by_index(sock_net(&po->sk), po->ifindex);
+@@ -567,19 +566,19 @@ static int prb_calc_retire_blk_tmo(struct packet_sock *po,
+ 		rtnl_unlock();
+ 		return DEFAULT_PRB_RETIRE_TOV;
+ 	}
+-	err = __ethtool_get_settings(dev, &ecmd);
+-	speed = ethtool_cmd_speed(&ecmd);
++	err = __ethtool_get_ksettings(dev, &ecmd);
+ 	rtnl_unlock();
+ 	if (!err) {
+ 		/*
+ 		 * If the link speed is so slow you don't really
+ 		 * need to worry about perf anyways
+ 		 */
+-		if (speed < SPEED_1000 || speed == SPEED_UNKNOWN) {
++		if (ecmd.parent.speed < SPEED_1000 ||
++		    ecmd.parent.speed == SPEED_UNKNOWN) {
+ 			return DEFAULT_PRB_RETIRE_TOV;
+ 		} else {
+ 			msec = 1;
+-			div = speed / 1000;
++			div = ecmd.parent.speed / 1000;
+ 		}
+ 	}
+ 
 -- 
 2.7.0.rc3.207.g0ac5344

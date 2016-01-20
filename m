@@ -1,38 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Jan 2016 01:46:30 +0100 (CET)
-Received: from mail-pa0-f65.google.com ([209.85.220.65]:34733 "EHLO
-        mail-pa0-f65.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27014798AbcATAoWP-w8w (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 20 Jan 2016 01:44:22 +0100
-Received: by mail-pa0-f65.google.com with SMTP id yy13so34598480pab.1
-        for <linux-mips@linux-mips.org>; Tue, 19 Jan 2016 16:44:22 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Jan 2016 01:46:48 +0100 (CET)
+Received: from mail-pa0-f67.google.com ([209.85.220.67]:36851 "EHLO
+        mail-pa0-f67.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27014799AbcATAoXf9sDw (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 20 Jan 2016 01:44:23 +0100
+Received: by mail-pa0-f67.google.com with SMTP id a20so29539507pag.3
+        for <linux-mips@linux-mips.org>; Tue, 19 Jan 2016 16:44:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=Zopn90n7AV1Jfgn+DBoFL2ZBnZMrT28Y9+sPnSBybxk=;
-        b=yp2OtyEdlUynIEnO28vJD9WkdQV/tmKeRnsX+M/YnEBLp+C+WJADdVUXVevR864RVd
-         t7GnJUOvgAUzTYWjgDfLjTVX5iCnYsN4rtB+buRr4WqaQpGNbyoz2ztmY3mTydyFU2r2
-         9xpJqmBJWELEu1lpTXlUiBIoIEkTn+ip+J79rMVy6kPja50rrBkBQeSByXqzhI3T9aye
-         HWuXHBGDcdZR1opjbL5YtOpx3HwJ232VzJHfDiOVScyFuJFPDiadY9R8NTBg7/Bza0bk
-         k1i7OSVWEwKEkxMTQhrxcwThaC57wiOD9bNE4Phfgo5BJBShg0N8Z/9LE59w2lF18AUb
-         2KWQ==
+        bh=LSOSm8ovDOv7O4dhua5l3LiRN+yyMayJ0g+FuqZ6B+0=;
+        b=WAN/SlfBOjv/8zxQxmE8v1/Fe+bQORSxNcGyHvBbcmP9jpz0w+kZqSshaBTC/petL7
+         pybR8x1iEGe7ke9CyVVNWooWNOjVgG7+JG2+d2S8xjRzNCIEnNuFfBpCZNCZtvX8xFmr
+         35jXlX3v6AcY6iPtB5LAAALNsVWSFG87/+Be0xf56BNOyLA0mHV1kP4tYYnj41Pk3ymj
+         IaP2MAGCgDSjWrbxHu+O2OoyDykWnjEqhrc1fy68hxkn86R7mpLGlVAErytYLgXdtgy6
+         +PcuFDirb8O6yVFcYpeV6mCutRr1KQKmMPgXZLdXYF/rjVZCvduV8RoYrbswhGdjmRrm
+         Gw7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=Zopn90n7AV1Jfgn+DBoFL2ZBnZMrT28Y9+sPnSBybxk=;
-        b=iyAeedsmALtHqzFreLr27iQ4xoiZBTnUpukcadvAztgifo07GZOlnefr0tXIZ13ZRR
-         xFH+y2GHZ8pGEcwTmPkdDTG4xtLC43wKzIEgblL5RMcWpPKzKOr/sqwyrgs6aM1EW3T5
-         K1bRNrNO32znhPkqUtiFmjLtgQYDN3AgePXV4f4G1wq5MkOQMkVsgzClzmGxMptuiUba
-         97rQ+jkA/2MzSYu/FeN61KZSbtmdp7W2swwDlEAtUBkhkwrYNL5tmCVMa+4PwBZrdMk1
-         cf/Ilxix7ZdSTZJwCVCvTphfgbiCoqQLuvUmVHF1xztyjDEODywiLs6j6L5Bc5FY+L/p
-         CRIQ==
-X-Gm-Message-State: AG10YOQMOt8EABZctPdMYMg/FPLYUMB3rwJNmtSojHZ/UhQU+1PuwAoCSvPMrTJA/21e9w==
-X-Received: by 10.67.15.2 with SMTP id fk2mr31223351pad.99.1453250656628;
-        Tue, 19 Jan 2016 16:44:16 -0800 (PST)
+        bh=LSOSm8ovDOv7O4dhua5l3LiRN+yyMayJ0g+FuqZ6B+0=;
+        b=N0lgbJaGVu9IccbhFw6+zT/yYZE3x54QydHRBtWMwn/dM1nQBdsevhZQ2PFLNRw/y3
+         9Gk8tiDnezZbPw1U7+gNBQ4MXIx6YwjOOdslb6dRwrK1oQUlSmOlt99Jp/zFBJV4xloy
+         DxMI5zysd5DcT1XWKAw9xqiraVbgRlsJKw0yFOcbMLuKNdjOnnVLNbsM9hOP7Mm6Jb9v
+         UWEi8PdZYy+kgPMLo1xHjWmtqMgsCvXsy5r+dw1UzcowYsIGY3WT84LVcwz0TSiY1cxf
+         XMDYtzMWAHgJrPBQnF6pzdCU6VsUrVWNsIwD5DjANPWGAkrKPUR8Hxx+EkGbQ+8IjC+v
+         tiyQ==
+X-Gm-Message-State: ALoCoQnDDuU0ZoLXNwQLVjdhHRD06Kt2nSoxNR6IVDLNhgipXdanhmEusu7AKna22eiO7D6V3GVCK04B1+39n1kHq8QimqmYWw==
+X-Received: by 10.66.234.200 with SMTP id ug8mr48825129pac.129.1453250657796;
+        Tue, 19 Jan 2016 16:44:17 -0800 (PST)
 Received: from decotigny.mtv.corp.google.com ([172.18.64.159])
-        by smtp.gmail.com with ESMTPSA id cq4sm44444099pad.28.2016.01.19.16.44.15
+        by smtp.gmail.com with ESMTPSA id cq4sm44444099pad.28.2016.01.19.16.44.16
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Tue, 19 Jan 2016 16:44:16 -0800 (PST)
+        Tue, 19 Jan 2016 16:44:17 -0800 (PST)
 From:   David Decotigny <ddecotig@gmail.com>
 To:     "David S. Miller" <davem@davemloft.net>,
         Ben Hutchings <ben@decadent.org.uk>,
@@ -56,9 +56,9 @@ Cc:     Eric Dumazet <edumazet@google.com>,
         Yuval Mintz <Yuval.Mintz@qlogic.com>,
         Rasmus Villemoes <linux@rasmusvillemoes.dk>,
         David Decotigny <decot@googlers.com>
-Subject: [PATCH net-next v6 07/19] net: usnic: use __ethtool_get_ksettings
-Date:   Tue, 19 Jan 2016 16:43:52 -0800
-Message-Id: <1453250644-14796-8-git-send-email-ddecotig@gmail.com>
+Subject: [PATCH net-next v6 08/19] net: bonding: use __ethtool_get_ksettings
+Date:   Tue, 19 Jan 2016 16:43:53 -0800
+Message-Id: <1453250644-14796-9-git-send-email-ddecotig@gmail.com>
 X-Mailer: git-send-email 2.7.0.rc3.207.g0ac5344
 In-Reply-To: <1453250644-14796-1-git-send-email-ddecotig@gmail.com>
 References: <1453250644-14796-1-git-send-email-ddecotig@gmail.com>
@@ -66,7 +66,7 @@ Return-Path: <ddecotig@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51235
+X-archive-position: 51236
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -87,38 +87,50 @@ From: David Decotigny <decot@googlers.com>
 
 Signed-off-by: David Decotigny <decot@googlers.com>
 ---
- drivers/infiniband/hw/usnic/usnic_ib_verbs.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/bonding/bond_main.c | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/infiniband/hw/usnic/usnic_ib_verbs.c b/drivers/infiniband/hw/usnic/usnic_ib_verbs.c
-index e082170..e0d12d4 100644
---- a/drivers/infiniband/hw/usnic/usnic_ib_verbs.c
-+++ b/drivers/infiniband/hw/usnic/usnic_ib_verbs.c
-@@ -324,12 +324,12 @@ int usnic_ib_query_port(struct ib_device *ibdev, u8 port,
- 				struct ib_port_attr *props)
+diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+index 56b5605..df7b12a 100644
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -374,22 +374,20 @@ down:
+ static void bond_update_speed_duplex(struct slave *slave)
  {
- 	struct usnic_ib_dev *us_ibdev = to_usdev(ibdev);
--	struct ethtool_cmd cmd;
-+	struct ethtool_ksettings cmd;
+ 	struct net_device *slave_dev = slave->dev;
+-	struct ethtool_cmd ecmd;
+-	u32 slave_speed;
++	struct ethtool_ksettings ecmd;
+ 	int res;
  
- 	usnic_dbg("\n");
+ 	slave->speed = SPEED_UNKNOWN;
+ 	slave->duplex = DUPLEX_UNKNOWN;
  
- 	mutex_lock(&us_ibdev->usdev_lock);
--	__ethtool_get_settings(us_ibdev->netdev, &cmd);
-+	__ethtool_get_ksettings(us_ibdev->netdev, &cmd);
- 	memset(props, 0, sizeof(*props));
+-	res = __ethtool_get_settings(slave_dev, &ecmd);
++	res = __ethtool_get_ksettings(slave_dev, &ecmd);
+ 	if (res < 0)
+ 		return;
  
- 	props->lid = 0;
-@@ -353,8 +353,8 @@ int usnic_ib_query_port(struct ib_device *ibdev, u8 port,
- 	props->pkey_tbl_len = 1;
- 	props->bad_pkey_cntr = 0;
- 	props->qkey_viol_cntr = 0;
--	eth_speed_to_ib_speed(cmd.speed, &props->active_speed,
--				&props->active_width);
-+	eth_speed_to_ib_speed(cmd.parent.speed, &props->active_speed,
-+			      &props->active_width);
- 	props->max_mtu = IB_MTU_4096;
- 	props->active_mtu = iboe_get_mtu(us_ibdev->ufdev->mtu);
- 	/* Userspace will adjust for hdrs */
+-	slave_speed = ethtool_cmd_speed(&ecmd);
+-	if (slave_speed == 0 || slave_speed == ((__u32) -1))
++	if (ecmd.parent.speed == 0 || ecmd.parent.speed == ((__u32)-1))
+ 		return;
+ 
+-	switch (ecmd.duplex) {
++	switch (ecmd.parent.duplex) {
+ 	case DUPLEX_FULL:
+ 	case DUPLEX_HALF:
+ 		break;
+@@ -397,8 +395,8 @@ static void bond_update_speed_duplex(struct slave *slave)
+ 		return;
+ 	}
+ 
+-	slave->speed = slave_speed;
+-	slave->duplex = ecmd.duplex;
++	slave->speed = ecmd.parent.speed;
++	slave->duplex = ecmd.parent.duplex;
+ 
+ 	return;
+ }
 -- 
 2.7.0.rc3.207.g0ac5344

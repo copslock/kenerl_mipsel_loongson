@@ -1,45 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Jan 2016 23:35:17 +0100 (CET)
-Received: from mail-lf0-f44.google.com ([209.85.215.44]:34504 "EHLO
-        mail-lf0-f44.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011167AbcAUWemyw5CN (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 21 Jan 2016 23:34:42 +0100
-Received: by mail-lf0-f44.google.com with SMTP id 17so36141540lfz.1
-        for <linux-mips@linux-mips.org>; Thu, 21 Jan 2016 14:34:42 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Jan 2016 23:35:35 +0100 (CET)
+Received: from mail-lf0-f41.google.com ([209.85.215.41]:34509 "EHLO
+        mail-lf0-f41.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011180AbcAUWenrjUBN (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 21 Jan 2016 23:34:43 +0100
+Received: by mail-lf0-f41.google.com with SMTP id 17so36141740lfz.1
+        for <linux-mips@linux-mips.org>; Thu, 21 Jan 2016 14:34:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=+2Ygch3p+gP9skM2lWXtVvZikHnCmTbdaPp1aumMFeE=;
-        b=v0zZmJVFIQNEw83pUmHS1fQv/pp9Q4mD4E8fQQbPrZPKvipSLqsTa9+I8p5WhJ1hU/
-         HKjBNLGUgacQmE2kIRgD19VRJdiiIpydwBS4OAGpL958BSR+igIy9M1Wix/t1MquNUN0
-         lYW2Lrh7AvqNRod4k907KzJMLvGad79Ol5kZGYKRH7PjhkXSoZLaW2M85hKLl5ppG9YX
-         JnaQ2ZhDSomz0Nt5WKLzmQoXp7lRy+qAyt/MWgoe1jbvgEVfh6a3IrBo5s0GhvvAtchZ
-         CSnA6iRIIKrXbypCbqymIDMrAXM0LEtQdGztgearqv7KxKrzCXJ4bMMNjXP5Z9Wc6s1k
-         nz2A==
+        bh=9cwSD+wMnxpSRedBUtTZkXTn2hdzqH0qI/J5yEkARSQ=;
+        b=Qxol6wC1mHHMNJkAPKriCw15c9JVwXOP0y4kO2jArqHTN6wnK5+O0IB2ECKgJCmhqt
+         n2MBg+poJLTbWORW04Gyfzb9zjFbRaXp2JBQ4KIeM+LwV1W3M9qGxhdytxqy8NVABKsc
+         QbFAdD4S/7ltDb/OF7wZN/nBbSz9Il9f5r63OsehdbRzpikrSCN7ImQ5+HBoVdQQVui/
+         55rYW7ACkhEApT7bOplFN7R4MA4Glr3hhoIZLtKo+hy1XscyoV76JVOAhfknt6XZtke0
+         XDB8LOF73ohPaHS9L2/wwmoNZRy5EakKuiXtbllJP3ZqHzV2MRLbeOSAsyZ3pU3BTblX
+         SvTw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=+2Ygch3p+gP9skM2lWXtVvZikHnCmTbdaPp1aumMFeE=;
-        b=WnaOR1laUyrbs1pF7h8R45s6yxs5fOTlawtm8TfYM9mNVxxlYlQLJd6IorheBy4HSZ
-         exAjoNxkHSGWQHjU3r2X50H0xLQ6953Qu3hv6v2q/gRERrn/oMYInXqX+deQjPJNwbSb
-         IAmZD2TLL8okIjPCFqnXcQQABoSiDjbQ9qXt6xSP63N0/YsOVpKlZZbIXFLYeWOGBrtO
-         u3F2Wm1kH72U+psfy0yvlPwapDdAVNEXwPTt0YPGijMh+OhhrA6otCsW+Iuu1dyD0lt5
-         BxPqIU8wUrI+n4O47n0hY6jyIJw7czlhEoiCqnfcnQp1/onLPs2SuVe9/ooKx4NsvtZs
-         qG+A==
-X-Gm-Message-State: ALoCoQl1Ifq2T9yBAcv3Fh8sm+07fa2xPwKZ99SZs2LRjeb+RE8mGWqSEFz5H86IJyaMP1xkpTfB9VnUrI6UF6PntHKLp6xGaQ==
-X-Received: by 10.25.147.200 with SMTP id v191mr13767860lfd.167.1453415677694;
-        Thu, 21 Jan 2016 14:34:37 -0800 (PST)
+        bh=9cwSD+wMnxpSRedBUtTZkXTn2hdzqH0qI/J5yEkARSQ=;
+        b=c7i8Mq+61VjR8UwnCn7DSfdjmZyL9uY9/+vz4i4iDnO8/d0IHblw9mKVvgV1zQk8Jn
+         NtZ/Vxnd5KxKk5qkOmNA3ceSDQVTPXSRfCYSa0tVnvb65ieUavlBtebLxlGQt9xHuvCj
+         /FPbfhsw09vJHvlT+eCxiPLzrqCb/s0J2bdg5QMeNTCw9I/dTJm6qUJWY7qa03TLNsb6
+         OXaTNtX2xvLa2M5DmrH9bUqjJ6xXqdQhifyVdxQNncKvIlto0n3bg0gqsunuJ8P9TBou
+         v/z/AyLyuJNcizZsWQ09Ht7F6+Qrx/NxHuZULgFGs83oDHqkX8J6LoZ5bP0UIKhYLt8i
+         hHVw==
+X-Gm-Message-State: ALoCoQkX1VDTWl7E633FPD8apwJ00B7LSJT7kP52KDOKo2g3XEPL09rjYQ9EEdAc/FfqmT/EzBuF9BaPzWuHY5sz20cLkfRhnA==
+X-Received: by 10.25.64.5 with SMTP id n5mr16275814lfa.89.1453415678577;
+        Thu, 21 Jan 2016 14:34:38 -0800 (PST)
 Received: from localhost.localdomain (ppp109-252-26-184.pppoe.spdop.ru. [109.252.26.184])
-        by smtp.gmail.com with ESMTPSA id j130sm319217lfe.23.2016.01.21.14.34.36
+        by smtp.gmail.com with ESMTPSA id j130sm319217lfe.23.2016.01.21.14.34.37
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Thu, 21 Jan 2016 14:34:37 -0800 (PST)
+        Thu, 21 Jan 2016 14:34:38 -0800 (PST)
 From:   Antony Pavlov <antonynpavlov@gmail.com>
 To:     linux-mips@linux-mips.org
 Cc:     Antony Pavlov <antonynpavlov@gmail.com>,
-        Gabor Juhos <juhosg@openwrt.org>, Alban Bedel <albeu@free.fr>
-Subject: [RFC v2 2/7] WIP: MIPS: ath79: use drivers/clk/clk-ath79.c driver for ar933x
-Date:   Fri, 22 Jan 2016 01:34:19 +0300
-Message-Id: <1453415664-20307-3-git-send-email-antonynpavlov@gmail.com>
+        Gabor Juhos <juhosg@openwrt.org>, Alban Bedel <albeu@free.fr>,
+        devicetree@vger.kernel.org
+Subject: [RFC v2 3/7] MIPS: dts: qca: introduce AR9331 devicetree
+Date:   Fri, 22 Jan 2016 01:34:20 +0300
+Message-Id: <1453415664-20307-4-git-send-email-antonynpavlov@gmail.com>
 X-Mailer: git-send-email 2.6.2
 In-Reply-To: <1453415664-20307-1-git-send-email-antonynpavlov@gmail.com>
 References: <1453415664-20307-1-git-send-email-antonynpavlov@gmail.com>
@@ -47,7 +48,7 @@ Return-Path: <antonynpavlov@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51285
+X-archive-position: 51286
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -64,44 +65,147 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+This patch introduces devicetree for Atheros AR9331 SoC (AKA Hornet).
+The AR9331 chip is a Wi-Fi System-On-Chip (WiSOC),
+typically used in very cheap Access Points and Routers.
+
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: Gabor Juhos <juhosg@openwrt.org>
 Cc: Alban Bedel <albeu@free.fr>
 Cc: linux-mips@linux-mips.org
+Cc: devicetree@vger.kernel.org
 ---
- arch/mips/ath79/clock.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ arch/mips/boot/dts/qca/ar9331.dtsi | 123 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 123 insertions(+)
 
-diff --git a/arch/mips/ath79/clock.c b/arch/mips/ath79/clock.c
-index eb5117c..10bee3b 100644
---- a/arch/mips/ath79/clock.c
-+++ b/arch/mips/ath79/clock.c
-@@ -24,6 +24,7 @@
- #include <asm/mach-ath79/ath79.h>
- #include <asm/mach-ath79/ar71xx_regs.h>
- #include "common.h"
-+#include "machtypes.h"
- 
- #define AR71XX_BASE_FREQ	40000000
- #define AR724X_BASE_FREQ	5000000
-@@ -167,6 +168,10 @@ static void __init ar933x_clocks_init(void)
- 	u32 freq;
- 	u32 t;
- 
-+	if (IS_ENABLED(CONFIG_OF) && mips_machtype == ATH79_MACH_GENERIC_OF) {
-+		return;
-+	}
+diff --git a/arch/mips/boot/dts/qca/ar9331.dtsi b/arch/mips/boot/dts/qca/ar9331.dtsi
+new file mode 100644
+index 0000000..fae7e6d
+--- /dev/null
++++ b/arch/mips/boot/dts/qca/ar9331.dtsi
+@@ -0,0 +1,123 @@
++#include <dt-bindings/clock/ar933x-clk.h>
 +
- 	t = ath79_reset_rr(AR933X_RESET_REG_BOOTSTRAP);
- 	if (t & AR933X_BOOTSTRAP_REF_CLK_40)
- 		ref_rate = (40 * 1000 * 1000);
-@@ -484,7 +489,6 @@ static void __init ath79_clocks_init_dt(struct device_node *np)
- CLK_OF_DECLARE(ar7100, "qca,ar7100-pll", ath79_clocks_init_dt);
- CLK_OF_DECLARE(ar7240, "qca,ar7240-pll", ath79_clocks_init_dt);
- CLK_OF_DECLARE(ar9130, "qca,ar9130-pll", ath79_clocks_init_dt);
--CLK_OF_DECLARE(ar9330, "qca,ar9330-pll", ath79_clocks_init_dt);
- CLK_OF_DECLARE(ar9340, "qca,ar9340-pll", ath79_clocks_init_dt);
- CLK_OF_DECLARE(ar9550, "qca,qca9550-pll", ath79_clocks_init_dt);
- #endif
++/ {
++	compatible = "qca,ar9331";
++
++	#address-cells = <1>;
++	#size-cells = <1>;
++
++	cpus {
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		cpu@0 {
++			device_type = "cpu";
++			compatible = "mips,mips24Kc";
++			reg = <0>;
++		};
++	};
++
++	cpuintc: interrupt-controller {
++		compatible = "qca,ar7100-cpu-intc";
++
++		interrupt-controller;
++		#interrupt-cells = <1>;
++
++		qca,ddr-wb-channel-interrupts = <2>, <3>;
++		qca,ddr-wb-channels = <&ddr_ctrl 3>, <&ddr_ctrl 2>;
++	};
++
++	ahb {
++		compatible = "simple-bus";
++		ranges;
++
++		#address-cells = <1>;
++		#size-cells = <1>;
++
++		interrupt-parent = <&cpuintc>;
++
++		apb {
++			compatible = "simple-bus";
++			ranges;
++
++			#address-cells = <1>;
++			#size-cells = <1>;
++
++			interrupt-parent = <&miscintc>;
++
++			ddr_ctrl: memory-controller@18000000 {
++				compatible = "qca,ar7240-ddr-controller";
++				reg = <0x18000000 0x100>;
++
++				#qca,ddr-wb-channel-cells = <1>;
++			};
++
++			uart: uart@18020000 {
++				compatible = "qca,ar9330-uart";
++				reg = <0x18020000 0x14>;
++
++				interrupts = <3>;
++
++				clocks = <&pll AR933X_CLK_UART>;
++				clock-names = "uart";
++
++				status = "disabled";
++			};
++
++			gpio: gpio@18040000 {
++				compatible = "qca,ar7100-gpio";
++				reg = <0x18040000 0x34>;
++				interrupts = <2>;
++
++				ngpios = <30>;
++
++				gpio-controller;
++				#gpio-cells = <2>;
++
++				interrupt-controller;
++				#interrupt-cells = <2>;
++
++				status = "disabled";
++			};
++
++			ref: oscillator {
++				compatible = "fixed-clock";
++				#clock-cells = <0>;
++			};
++
++			pll: pll-controller@18050000 {
++				compatible = "qca,ar9330-pll";
++				reg = <0x18050000 0x20>;
++
++				clocks = <&ref>;
++				clock-names = "ref";
++
++				#clock-cells = <1>;
++			};
++
++			miscintc: interrupt-controller@18060010 {
++				compatible = "qca,ar7240-misc-intc";
++				reg = <0x18060010 0x4>;
++
++				interrupt-parent = <&cpuintc>;
++				interrupts = <6>;
++
++				interrupt-controller;
++				#interrupt-cells = <1>;
++			};
++
++			spi: spi@1f000000 {
++				compatible = "qca,ar7100-spi";
++				reg = <0x1f000000 0x10>;
++
++				clocks = <&pll AR933X_CLK_AHB>;
++				clock-names = "ahb";
++
++				#address-cells = <1>;
++				#size-cells = <0>;
++
++				status = "disabled";
++			};
++		};
++	};
++};
 -- 
 2.6.2

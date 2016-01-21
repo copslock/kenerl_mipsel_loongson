@@ -1,44 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Jan 2016 23:35:00 +0100 (CET)
-Received: from mail-lf0-f47.google.com ([209.85.215.47]:32877 "EHLO
-        mail-lf0-f47.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010265AbcAUWemI3DkN (ORCPT
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Jan 2016 23:35:17 +0100 (CET)
+Received: from mail-lf0-f44.google.com ([209.85.215.44]:34504 "EHLO
+        mail-lf0-f44.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011167AbcAUWemyw5CN (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Thu, 21 Jan 2016 23:34:42 +0100
-Received: by mail-lf0-f47.google.com with SMTP id m198so36169626lfm.0
+Received: by mail-lf0-f44.google.com with SMTP id 17so36141540lfz.1
         for <linux-mips@linux-mips.org>; Thu, 21 Jan 2016 14:34:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=hjbQc9DjaSJO2W9q64ngPIUd8DbvQBeqPuOxQQPNhks=;
-        b=HttrppNSyqUuyv4xMauET/KkciQsBE87hO8WaMvk9ExjihpKPIB2aYlZqYz8DEbYsT
-         XTn+jyPLfk1k0RieAA7BnPj96Z4GMQ82VXpKZ6pPG8JqkXinlo1NRN19hSJCp8AQ7f6e
-         XylRj+FWVLefSQSLkRYBlFvqwQKXldwiIreDiQXcqrIEs/+jWBnlEzUrra5M9PhsNNj0
-         u+ZCRKJZZ4BL8R4fB+ZPu0dtGG98R/HB6opgJBAgh+MCGGyBhxGvyLLk6+gKgPVQCtjb
-         fKzrfd7E9wa2dnhD27pBqEr54KxKCALKcwAfi1pqCqU+fUVjzS1/I3z4shVYXDNMkbxs
-         e3Dw==
+        bh=+2Ygch3p+gP9skM2lWXtVvZikHnCmTbdaPp1aumMFeE=;
+        b=v0zZmJVFIQNEw83pUmHS1fQv/pp9Q4mD4E8fQQbPrZPKvipSLqsTa9+I8p5WhJ1hU/
+         HKjBNLGUgacQmE2kIRgD19VRJdiiIpydwBS4OAGpL958BSR+igIy9M1Wix/t1MquNUN0
+         lYW2Lrh7AvqNRod4k907KzJMLvGad79Ol5kZGYKRH7PjhkXSoZLaW2M85hKLl5ppG9YX
+         JnaQ2ZhDSomz0Nt5WKLzmQoXp7lRy+qAyt/MWgoe1jbvgEVfh6a3IrBo5s0GhvvAtchZ
+         CSnA6iRIIKrXbypCbqymIDMrAXM0LEtQdGztgearqv7KxKrzCXJ4bMMNjXP5Z9Wc6s1k
+         nz2A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=hjbQc9DjaSJO2W9q64ngPIUd8DbvQBeqPuOxQQPNhks=;
-        b=cmmiQVaKM8ssHQ5+0ezSdMf0RJz8qVT6DBDvwQ4GHNnDL9hT5e1RZ48RXj0b0ChJGE
-         OT+coPE922YYM9HkuCiWQLJ1Luysv9Fpnw94p5liFL+QKXq1P6vjjnSzXJTRAW8hNVkF
-         XNYh4LLX7tYHYGxdIdPqM583h+HEJiGF1VgLhfL1Rku6g4bogJ5tAgqy3yvQBfM0XpOs
-         I8z9KqdRt+jqOzMhK07DEcFROSMHgTsBprt79o1phpnY1E95FlcvKDctEDjO6lTErp10
-         ig5N3DORuV62j4U96t9UtB9+HZNVHXkfSqD5aR4VOZQwQuC1vPEu7Q9D9SVKFgUVbKMv
-         B3Jg==
-X-Gm-Message-State: ALoCoQlfw7Prx8GE8gO/eOVHiOX1c3Hpty9wrxTUPBqNVbYluGYeL3vrlbXWMat5vLeHHuffq1Qo1wFvW2sZMU48oIXYGBi0cw==
-X-Received: by 10.25.26.68 with SMTP id a65mr16554516lfa.24.1453415676793;
-        Thu, 21 Jan 2016 14:34:36 -0800 (PST)
+        bh=+2Ygch3p+gP9skM2lWXtVvZikHnCmTbdaPp1aumMFeE=;
+        b=WnaOR1laUyrbs1pF7h8R45s6yxs5fOTlawtm8TfYM9mNVxxlYlQLJd6IorheBy4HSZ
+         exAjoNxkHSGWQHjU3r2X50H0xLQ6953Qu3hv6v2q/gRERrn/oMYInXqX+deQjPJNwbSb
+         IAmZD2TLL8okIjPCFqnXcQQABoSiDjbQ9qXt6xSP63N0/YsOVpKlZZbIXFLYeWOGBrtO
+         u3F2Wm1kH72U+psfy0yvlPwapDdAVNEXwPTt0YPGijMh+OhhrA6otCsW+Iuu1dyD0lt5
+         BxPqIU8wUrI+n4O47n0hY6jyIJw7czlhEoiCqnfcnQp1/onLPs2SuVe9/ooKx4NsvtZs
+         qG+A==
+X-Gm-Message-State: ALoCoQl1Ifq2T9yBAcv3Fh8sm+07fa2xPwKZ99SZs2LRjeb+RE8mGWqSEFz5H86IJyaMP1xkpTfB9VnUrI6UF6PntHKLp6xGaQ==
+X-Received: by 10.25.147.200 with SMTP id v191mr13767860lfd.167.1453415677694;
+        Thu, 21 Jan 2016 14:34:37 -0800 (PST)
 Received: from localhost.localdomain (ppp109-252-26-184.pppoe.spdop.ru. [109.252.26.184])
-        by smtp.gmail.com with ESMTPSA id j130sm319217lfe.23.2016.01.21.14.34.35
+        by smtp.gmail.com with ESMTPSA id j130sm319217lfe.23.2016.01.21.14.34.36
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Thu, 21 Jan 2016 14:34:36 -0800 (PST)
+        Thu, 21 Jan 2016 14:34:37 -0800 (PST)
 From:   Antony Pavlov <antonynpavlov@gmail.com>
 To:     linux-mips@linux-mips.org
-Cc:     Antony Pavlov <antonynpavlov@gmail.com>
-Subject: [RFC v2 1/7] WIP: clk: add AR9331 SoC clock driver
-Date:   Fri, 22 Jan 2016 01:34:18 +0300
-Message-Id: <1453415664-20307-2-git-send-email-antonynpavlov@gmail.com>
+Cc:     Antony Pavlov <antonynpavlov@gmail.com>,
+        Gabor Juhos <juhosg@openwrt.org>, Alban Bedel <albeu@free.fr>
+Subject: [RFC v2 2/7] WIP: MIPS: ath79: use drivers/clk/clk-ath79.c driver for ar933x
+Date:   Fri, 22 Jan 2016 01:34:19 +0300
+Message-Id: <1453415664-20307-3-git-send-email-antonynpavlov@gmail.com>
 X-Mailer: git-send-email 2.6.2
 In-Reply-To: <1453415664-20307-1-git-send-email-antonynpavlov@gmail.com>
 References: <1453415664-20307-1-git-send-email-antonynpavlov@gmail.com>
@@ -46,7 +47,7 @@ Return-Path: <antonynpavlov@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51284
+X-archive-position: 51285
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -64,194 +65,43 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: Gabor Juhos <juhosg@openwrt.org>
+Cc: Alban Bedel <albeu@free.fr>
+Cc: linux-mips@linux-mips.org
 ---
- drivers/clk/Makefile                   |   1 +
- drivers/clk/clk-ath79.c                | 137 +++++++++++++++++++++++++++++++++
- include/dt-bindings/clock/ar933x-clk.h |  22 ++++++
- 3 files changed, 160 insertions(+)
+ arch/mips/ath79/clock.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/clk/Makefile b/drivers/clk/Makefile
-index 820714c..5101763 100644
---- a/drivers/clk/Makefile
-+++ b/drivers/clk/Makefile
-@@ -18,6 +18,7 @@ endif
- # hardware specific clock types
- # please keep this section sorted lexicographically by file/directory path name
- obj-$(CONFIG_MACH_ASM9260)		+= clk-asm9260.o
-+obj-$(CONFIG_ATH79)			+= clk-ath79.o
- obj-$(CONFIG_COMMON_CLK_AXI_CLKGEN)	+= clk-axi-clkgen.o
- obj-$(CONFIG_ARCH_AXXIA)		+= clk-axm5516.o
- obj-$(CONFIG_COMMON_CLK_CDCE706)	+= clk-cdce706.o
-diff --git a/drivers/clk/clk-ath79.c b/drivers/clk/clk-ath79.c
-new file mode 100644
-index 0000000..1126840
---- /dev/null
-+++ b/drivers/clk/clk-ath79.c
-@@ -0,0 +1,137 @@
-+/*
-+ * Clock driver for Atheros AR933x SoCs.
-+ *
-+ * Copyright (C) 2016 Antony Pavlov <antonynpavlov@gmail.com>
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ */
-+
-+#include <linux/bitops.h>
-+#include <linux/clk.h>
-+#include <linux/clk-provider.h>
-+#include <linux/clkdev.h>
-+#include <linux/delay.h>
-+#include <linux/math64.h>
-+#include <linux/of.h>
-+#include <linux/of_address.h>
-+#include <linux/slab.h>
-+#include <linux/spinlock.h>
-+#include "clk.h"
-+
-+#include <dt-bindings/clock/ar933x-clk.h>
-+
-+#include "asm/mach-ath79/ar71xx_regs.h"
-+#include "asm/mach-ath79/ath79.h"
-+
-+#define MHZ (1000 * 1000)
-+
-+static struct clk *ar933x_clks[AR933X_CLK_END];
-+
-+static struct clk_onecell_data clk_data;
-+
-+static struct clk *__init ath79_add_sys_clkdev(
-+	const char *id, unsigned long rate)
-+{
-+	struct clk *clk;
-+	int err;
-+
-+	clk = clk_register_fixed_rate(NULL, id, NULL, CLK_IS_ROOT, rate);
-+	if (!clk)
-+		panic("failed to allocate %s clock structure", id);
-+
-+	err = clk_register_clkdev(clk, id, NULL);
-+	if (err)
-+		panic("unable to register %s clock device", id);
-+
-+	return clk;
-+}
-+
-+static void __init ar933x_clk_init(struct device_node *np)
-+{
-+	struct clk *ref_clk;
-+	unsigned long of_ref_rate;
-+	unsigned long ref_rate;
-+	unsigned long cpu_rate;
-+	unsigned long ddr_rate;
-+	unsigned long ahb_rate;
-+	u32 clock_ctrl;
-+	u32 cpu_config;
-+	u32 freq;
-+	u32 t;
-+
-+	ref_clk = of_clk_get(np, 0);
-+	if (IS_ERR(ref_clk)) {
-+		pr_err("%s: of_clk_get failed\n", np->full_name);
+diff --git a/arch/mips/ath79/clock.c b/arch/mips/ath79/clock.c
+index eb5117c..10bee3b 100644
+--- a/arch/mips/ath79/clock.c
++++ b/arch/mips/ath79/clock.c
+@@ -24,6 +24,7 @@
+ #include <asm/mach-ath79/ath79.h>
+ #include <asm/mach-ath79/ar71xx_regs.h>
+ #include "common.h"
++#include "machtypes.h"
+ 
+ #define AR71XX_BASE_FREQ	40000000
+ #define AR724X_BASE_FREQ	5000000
+@@ -167,6 +168,10 @@ static void __init ar933x_clocks_init(void)
+ 	u32 freq;
+ 	u32 t;
+ 
++	if (IS_ENABLED(CONFIG_OF) && mips_machtype == ATH79_MACH_GENERIC_OF) {
 +		return;
 +	}
 +
-+	of_ref_rate = clk_get_rate(ref_clk);
-+
-+	t = ath79_reset_rr(AR933X_RESET_REG_BOOTSTRAP);
-+	if (t & AR933X_BOOTSTRAP_REF_CLK_40)
-+		ref_rate = 40 * MHZ;
-+	else
-+		ref_rate = 25 * MHZ;
-+
-+	if (ref_rate != of_ref_rate) {
-+		pr_err("ref_rate != of_ref_rate\n");
-+		ref_rate = of_ref_rate;
-+	}
-+
-+	clock_ctrl = ath79_pll_rr(AR933X_PLL_CLOCK_CTRL_REG);
-+	if (clock_ctrl & AR933X_PLL_CLOCK_CTRL_BYPASS) {
-+		cpu_rate = ref_rate;
-+		ahb_rate = ref_rate;
-+		ddr_rate = ref_rate;
-+	} else {
-+		cpu_config = ath79_pll_rr(AR933X_PLL_CPU_CONFIG_REG);
-+
-+		t = (cpu_config >> AR933X_PLL_CPU_CONFIG_REFDIV_SHIFT) &
-+		    AR933X_PLL_CPU_CONFIG_REFDIV_MASK;
-+		freq = ref_rate / t;
-+
-+		t = (cpu_config >> AR933X_PLL_CPU_CONFIG_NINT_SHIFT) &
-+		    AR933X_PLL_CPU_CONFIG_NINT_MASK;
-+		freq *= t;
-+
-+		t = (cpu_config >> AR933X_PLL_CPU_CONFIG_OUTDIV_SHIFT) &
-+		    AR933X_PLL_CPU_CONFIG_OUTDIV_MASK;
-+		if (t == 0)
-+			t = 1;
-+
-+		freq >>= t;
-+
-+		t = ((clock_ctrl >> AR933X_PLL_CLOCK_CTRL_CPU_DIV_SHIFT) &
-+		     AR933X_PLL_CLOCK_CTRL_CPU_DIV_MASK) + 1;
-+		cpu_rate = freq / t;
-+
-+		t = ((clock_ctrl >> AR933X_PLL_CLOCK_CTRL_DDR_DIV_SHIFT) &
-+		      AR933X_PLL_CLOCK_CTRL_DDR_DIV_MASK) + 1;
-+		ddr_rate = freq / t;
-+
-+		t = ((clock_ctrl >> AR933X_PLL_CLOCK_CTRL_AHB_DIV_SHIFT) &
-+		     AR933X_PLL_CLOCK_CTRL_AHB_DIV_MASK) + 1;
-+		ahb_rate = freq / t;
-+	}
-+
-+	ar933x_clks[AR933X_CLK_REF] = ath79_add_sys_clkdev("ref", ref_rate);
-+	ar933x_clks[AR933X_CLK_CPU] = ath79_add_sys_clkdev("cpu", cpu_rate);
-+	ar933x_clks[AR933X_CLK_DDR] = ath79_add_sys_clkdev("ddr", ddr_rate);
-+	ar933x_clks[AR933X_CLK_AHB] = ath79_add_sys_clkdev("ahb", ahb_rate);
-+	ar933x_clks[AR933X_CLK_WDT] = ath79_add_sys_clkdev("wdt", ahb_rate);
-+	ar933x_clks[AR933X_CLK_UART] = ath79_add_sys_clkdev("uart", ref_rate);
-+
-+	clk_data.clks = ar933x_clks;
-+	clk_data.clk_num = AR933X_CLK_END;
-+
-+	of_clk_add_provider(np, of_clk_src_onecell_get, &clk_data);
-+}
-+CLK_OF_DECLARE(ar933x_clk, "qca,ar9330-pll", ar933x_clk_init);
-diff --git a/include/dt-bindings/clock/ar933x-clk.h b/include/dt-bindings/clock/ar933x-clk.h
-new file mode 100644
-index 0000000..ed9e5d5
---- /dev/null
-+++ b/include/dt-bindings/clock/ar933x-clk.h
-@@ -0,0 +1,22 @@
-+/*
-+ * Copyright (C) 2014, 2016 Antony Pavlov <antonynpavlov@gmail.com>
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2 as
-+ * published by the Free Software Foundation.
-+ *
-+ */
-+
-+#ifndef __DT_BINDINGS_AR933X_CLK_H
-+#define __DT_BINDINGS_AR933X_CLK_H
-+
-+#define AR933X_CLK_REF		0
-+#define AR933X_CLK_CPU		1
-+#define AR933X_CLK_DDR		2
-+#define AR933X_CLK_AHB		3
-+#define AR933X_CLK_WDT		4
-+#define AR933X_CLK_UART		5
-+
-+#define AR933X_CLK_END		6
-+
-+#endif /* __DT_BINDINGS_AR933X_CLK_H */
+ 	t = ath79_reset_rr(AR933X_RESET_REG_BOOTSTRAP);
+ 	if (t & AR933X_BOOTSTRAP_REF_CLK_40)
+ 		ref_rate = (40 * 1000 * 1000);
+@@ -484,7 +489,6 @@ static void __init ath79_clocks_init_dt(struct device_node *np)
+ CLK_OF_DECLARE(ar7100, "qca,ar7100-pll", ath79_clocks_init_dt);
+ CLK_OF_DECLARE(ar7240, "qca,ar7240-pll", ath79_clocks_init_dt);
+ CLK_OF_DECLARE(ar9130, "qca,ar9130-pll", ath79_clocks_init_dt);
+-CLK_OF_DECLARE(ar9330, "qca,ar9330-pll", ath79_clocks_init_dt);
+ CLK_OF_DECLARE(ar9340, "qca,ar9340-pll", ath79_clocks_init_dt);
+ CLK_OF_DECLARE(ar9550, "qca,qca9550-pll", ath79_clocks_init_dt);
+ #endif
 -- 
 2.6.2

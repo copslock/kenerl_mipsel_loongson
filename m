@@ -1,57 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Jan 2016 22:14:36 +0100 (CET)
-Received: from mail-lf0-f47.google.com ([209.85.215.47]:33869 "EHLO
-        mail-lf0-f47.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010087AbcAUVOeBrgiX convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 21 Jan 2016 22:14:34 +0100
-Received: by mail-lf0-f47.google.com with SMTP id 17so35047831lfz.1
-        for <linux-mips@linux-mips.org>; Thu, 21 Jan 2016 13:14:33 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Jan 2016 23:34:42 +0100 (CET)
+Received: from mail-lf0-f49.google.com ([209.85.215.49]:34495 "EHLO
+        mail-lf0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010087AbcAUWelcaYTN (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 21 Jan 2016 23:34:41 +0100
+Received: by mail-lf0-f49.google.com with SMTP id 17so36141173lfz.1
+        for <linux-mips@linux-mips.org>; Thu, 21 Jan 2016 14:34:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=date:from:to:cc:subject:message-id:in-reply-to:references
-         :mime-version:content-type:content-transfer-encoding;
-        bh=BPHav1xHdJ3RouTdWgIPLyyBU5xhaXVRaAdoMcS0taM=;
-        b=y0xLN8fQ+U5CYReT//rE/qVhk5G0CokwKACWRgEWoL2SZavYTZ6uL3CEU7VIHUsoHT
-         p6YqvCh7Y1wsU0QEa44QvJymPWGEEtVhGqZYR0CROt1gqjooO07ngo2jJRWNext6X/oD
-         8T72cmmKiQ/7bwRMfYQmjfNpcmnxifaFFlBBNKiMIPqBrYfiPWBkBzM9HHLSeCXt7Qx0
-         nr1WGRsJZRGAII4TbpZk/uVlnmZtPTZjOpJkPvq4+Z38gKybFryAZYvB0Jyj/W09NjEC
-         LzuDA6Q/V0o0zV2mvmVTTzf79PakOb3m2KSjIaU5xBsEI6D2nRMzDSaCjCJVdHWa3S5D
-         gUBg==
+        h=from:to:cc:subject:date:message-id;
+        bh=HimEDrUguaBGiUHQ1HIYXtYsFhnABpBIerYL5xzzRT8=;
+        b=BfXE78ndXA6CY0kNHlZySsI6A/3hkvu3AiNCa+2hw3KSTkbd7qVFDwPAVE6NEntPHe
+         p5Kliu89tt+GSdm+E1m5kKqPwu2CuaXC4kN8A+avu6tiXlmLqyljGVK3f0R1B48TnSdW
+         I+wpF9GxycrwYdrI6HByB84tN+tNyRIxDgvXVD441lI8ZY+fgHRGjA4wz64Jgkdp2txO
+         Z/38Z1+noOMQFKIqsBrs+GWqU4DWEJ8cA3H6m3QqizQcSBxC/J9u3HOHrfwYug03LUwG
+         Euskp0msI3L+2aUY0wi6eg0Y3J8nuW+ogS0iLl4t9idXz1AFrNorDfQcMVgTF4cFweUF
+         Vf9w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:in-reply-to
-         :references:mime-version:content-type:content-transfer-encoding;
-        bh=BPHav1xHdJ3RouTdWgIPLyyBU5xhaXVRaAdoMcS0taM=;
-        b=lzbPgjQShdad7sZvtZ7/8a5aMQTGcsfB0RoaAlhsmQRoRLO+S4ZMFuIrYJbPExc950
-         25sRh841X2hlULM80n+wEYoTRyZT20G26DGgfJre4GVUHdVP+dcJ0k6O8EoE5nYpvMP/
-         vgYwy+Xzmt9+DR1cx4/J/wnEL42InTtoNO3wl2kgz3nT0/tuBIME7OSCJYrZhQhn5tQq
-         vf+dErq7rhGxG9Ju8Hwjp1NcpOlMcDxqrmGMuIMBlDvvLEM2+HvwEvVtPOnk8P7kdv1g
-         6KmseWUVI3Ic9l6WypIwL4oNY7MhEzwaku9CE0wodCdXdYfDWX1fXlf3cXjTh0Az9kx/
-         j2aA==
-X-Gm-Message-State: ALoCoQmO6M0DMIGgb7UMzLh35ejkQWpShMHe2QkrmMjaXGNG4MBN/N6YVMziCPVbinQbvFUiIS266LskY0p4CUBU5YwD1EXs1g==
-X-Received: by 10.25.19.80 with SMTP id j77mr16629979lfi.84.1453410868345;
-        Thu, 21 Jan 2016 13:14:28 -0800 (PST)
-Received: from flare (t35.niisi.ras.ru. [193.232.173.35])
-        by smtp.gmail.com with ESMTPSA id h72sm451678lfe.33.2016.01.21.13.14.27
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Thu, 21 Jan 2016 13:14:27 -0800 (PST)
-Date:   Fri, 22 Jan 2016 00:39:38 +0300
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=HimEDrUguaBGiUHQ1HIYXtYsFhnABpBIerYL5xzzRT8=;
+        b=ZuvzZgyodE+1+l+z6x3WUQEteJ/2IUxWzpbk9gn1TOg91ekE3XURupDQR9P++JimTq
+         u+bVX9iRemnUarQ/3t7E9AyZ1TYeMPIAd0A6msU6n2xPUE3y6QozqsTGo1hlbsfnNZSJ
+         bNI8x2J3PaqzCCChVC6StM4G+j+btjd+nCg0oFSYXgZhDm5Wy4rh+9nL+lbAKgWPdgQE
+         dvULRr2vZdydWX36dtbSsGTLQVif11ZKDveI92Fcecqa2rblNjb9YcgoftmOZ0WOiPVQ
+         x4OqUcfyyI8/+GFhrfIvDjmwt2MQ8ba+aXiOpTnl9676xckxKkbs6sF4npWYyACyGbmT
+         YmUA==
+X-Gm-Message-State: ALoCoQmeX6KDHuq10dc3hO8GwtZnohVuEZW2Dic9LA7m+f7lASP9knKf4HrRDHJdj4bJdzAKcejHlNNRrNnvxgf3LgEog8Kp1Q==
+X-Received: by 10.25.149.146 with SMTP id x140mr16186016lfd.64.1453415675932;
+        Thu, 21 Jan 2016 14:34:35 -0800 (PST)
+Received: from localhost.localdomain (ppp109-252-26-184.pppoe.spdop.ru. [109.252.26.184])
+        by smtp.gmail.com with ESMTPSA id j130sm319217lfe.23.2016.01.21.14.34.34
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Thu, 21 Jan 2016 14:34:35 -0800 (PST)
 From:   Antony Pavlov <antonynpavlov@gmail.com>
-To:     Alban Bedel <albeu@free.fr>
-Cc:     linux-mips@linux-mips.org
-Subject: Re: MIPS: ath79: TP-LINK WR1043ND: uart clk issue
-Message-Id: <20160122003938.2e689f07cbe360be15381277@gmail.com>
-In-Reply-To: <20160121123647.5b08e7360103768755488433@gmail.com>
-References: <20160121123647.5b08e7360103768755488433@gmail.com>
-X-Mailer: Sylpheed 3.5.0beta3 (GTK+ 2.24.25; i586-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
+To:     linux-mips@linux-mips.org
+Cc:     Antony Pavlov <antonynpavlov@gmail.com>
+Subject: [RFC v2 0/7] MIPS: ath79: introduce AR9331 devicetree support
+Date:   Fri, 22 Jan 2016 01:34:17 +0300
+Message-Id: <1453415664-20307-1-git-send-email-antonynpavlov@gmail.com>
+X-Mailer: git-send-email 2.6.2
 Return-Path: <antonynpavlov@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51282
+X-archive-position: 51283
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -68,65 +60,48 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, 21 Jan 2016 12:36:47 +0300
-Antony Pavlov <antonynpavlov@gmail.com> wrote:
+Changes since RFC v1:
+
+  * add Dragino MS14 board support;
+  * add "ref" oscillator input clock for pll-controller;
+    add necessary nodes to board dts files.
+
+TODO:
+
+  * add Onion Omega board support;
+  * add AR9132 SoC clock driver;
+  * fixup Kconfig & Makefile changes.
 
 
+Antony Pavlov (7):
+  WIP: clk: add AR9331 SoCs clock driver
+  WIP: MIPS: ath79: use drivers/clk/clk-ath79.c driver for ar933x
+  MIPS: dts: qca: introduce AR9331 devicetree
+  MIPS: ath79: add initial support for TP-LINK MR3020
+  devicetree: add Dragino vendor id
+  MIPS: ath79: add initial support for Dragino MS14 (Dragino 2)
+  WIP: MIPS: add ar9331 devicetree defconfigs
 
-A thousand apologies!
-
-It looks like there is no uart clk issue at all.
-
-I have to use "console=ttyS0,115200" instead of just "console=ttyS0" in kernel cmdline
-to make console works.
-
-
-
-> Hi!
-> 
-> I have tried to run linux on TP-LINK WR1043ND v1.8.
-> 
-> I use branch master from git://git.linux-mips.org/pub/scm/ralf/linux
-> 
-> I see a problem with UART speed setup. There is no UART output after
-> serial port initialization. Here is the last correct linux output:
-> 
->   Serial: 8250/16550 driver, 4 ports, IRQ sharing disabled
->   console [ttyS0] disabled
->   18020000.uart: ttyS0 at MMIO 0x18020000 (irq = 11, base_baud = 12500000) is a 8250
-> 
-> 
-> I can disable UART speed setup in 8250 driver:
-> 
-> --- a/drivers/tty/serial/8250/8250_port.c
-> +++ b/drivers/tty/serial/8250/8250_port.c
-> @@ -2208,6 +2208,8 @@ static void serial8250_set_divisor(struct uart_port *port, unsigned int baud,
->  {
->         struct uart_8250_port *up = up_to_u8250p(port);
->  
-> +       return;
-> +
->         /* Workaround to enable 115200 baud on OMAP1510 internal ports */
->         if (is_omap1510_8250(up)) {
->                 if (baud == 115200) {
-> 
-> With this very very dirty hack linux works fine.
-> 
-> I suppose there is a problem in arch/mips/ath79/clock.c
-> 
-> I have tryed to cherry-pick your 'MIPS: ath79: Fix the ar913x reference clock rate'
-> and 'MIPS: ath79: Fix the ar724x clock calculation' commits from
-> your github ath79 branch at https://github.com/AlbanBedel/linux/tree/ath79
-> but these patches don't help me.
-> 
-> Could you please try to reproduce the problem?
-> 
-> -- 
-> Best regards,
->   Antony Pavlov
-
+ .../devicetree/bindings/vendor-prefixes.txt        |   1 +
+ arch/mips/ath79/Kconfig                            |  10 ++
+ arch/mips/ath79/clock.c                            |   6 +-
+ arch/mips/boot/dts/qca/Makefile                    |   2 +
+ arch/mips/boot/dts/qca/ar9331.dtsi                 | 123 ++++++++++++++++++
+ arch/mips/boot/dts/qca/dragino_ms14.dts            |  73 +++++++++++
+ arch/mips/boot/dts/qca/tl_mr3020.dts               |  72 +++++++++++
+ arch/mips/configs/dragino-ms14-dt-raw_defconfig    |  85 +++++++++++++
+ arch/mips/configs/tl-mr3020-dt-raw_defconfig       |  85 +++++++++++++
+ drivers/clk/Makefile                               |   1 +
+ drivers/clk/clk-ath79.c                            | 137 +++++++++++++++++++++
+ include/dt-bindings/clock/ar933x-clk.h             |  22 ++++
+ 12 files changed, 616 insertions(+), 1 deletion(-)
+ create mode 100644 arch/mips/boot/dts/qca/ar9331.dtsi
+ create mode 100644 arch/mips/boot/dts/qca/dragino_ms14.dts
+ create mode 100644 arch/mips/boot/dts/qca/tl_mr3020.dts
+ create mode 100644 arch/mips/configs/dragino-ms14-dt-raw_defconfig
+ create mode 100644 arch/mips/configs/tl-mr3020-dt-raw_defconfig
+ create mode 100644 drivers/clk/clk-ath79.c
+ create mode 100644 include/dt-bindings/clock/ar933x-clk.h
 
 -- 
--- 
-Best regards,
-  Antony Pavlov
+2.6.2

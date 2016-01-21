@@ -1,46 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Jan 2016 10:11:50 +0100 (CET)
-Received: from mail-lf0-f48.google.com ([209.85.215.48]:36747 "EHLO
-        mail-lf0-f48.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008977AbcAUJLtHxlBe convert rfc822-to-8bit
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Jan 2016 10:52:11 +0100 (CET)
+Received: from mail-lf0-f49.google.com ([209.85.215.49]:36776 "EHLO
+        mail-lf0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008977AbcAUJwKT2t0s convert rfc822-to-8bit
         (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 21 Jan 2016 10:11:49 +0100
-Received: by mail-lf0-f48.google.com with SMTP id h129so22660161lfh.3
-        for <linux-mips@linux-mips.org>; Thu, 21 Jan 2016 01:11:49 -0800 (PST)
+        Thu, 21 Jan 2016 10:52:10 +0100
+Received: by mail-lf0-f49.google.com with SMTP id h129so23305068lfh.3
+        for <linux-mips@linux-mips.org>; Thu, 21 Jan 2016 01:52:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=date:from:to:cc:subject:message-id:mime-version:content-type
-         :content-transfer-encoding;
-        bh=8/Sd+yGVuz8Ju16jjwRMtwCE0ol/r4uts9CD6xuI0cQ=;
-        b=R3cUmqIfQhaAsNuOazNemJONPXZ8D9grx8rCq/54inyWuqNorrksAFCZgSkdeDLO+0
-         A95LDmuDX5OL7gyylJoQkS3tGn44ocOMP4Lyn75sqy3Du182tKaJWCQI8h+oNEmg8hFD
-         wacT7/ZOyLi2sDWuIuvEsAzxUt8tXnC0CWgsKQL0N/wWnNRflX1fxukUuRUj8BPzd+FO
-         lDK3irtGJU+bO6SdlhmfMwD6AEDGDo7RxHndx5Y8XTF/DNjyhU91T5Mr/tJWy61F7Nir
-         HTfKueUEpv2ngO9PGPjwPybOPcT0N5aHPhYcAEZrrG7s2FsNMEIRIRP68a6bJzNzDl5M
-         G2Sw==
+        h=date:from:to:cc:subject:message-id:in-reply-to:references
+         :mime-version:content-type:content-transfer-encoding;
+        bh=KS+9G6uLO6ALDBys3YHVBG11T4AnsPACQFeme73CN90=;
+        b=GjMXWChYv0XELHzdd2DAsSVst14xCejoowBJVFKPGwhmyRtCLYE69E0tjU86iiWlkD
+         TK3CW2ahZKXU3kde1uN31jiWZtL0UjHCjveoer/YlKT8P+YrwAFhVMr+UamZCvckUgrK
+         CU9WxgSO4hgUEu2fmEt5GgmGQDgLXBI1MbPya7CvMpxo3Co5goVZS22zlo7NojU7oDDS
+         nik3SjFuFzDpidrWJ2HZFP5BoTavj5vEEiNEbLU2jzvYU2gxOhJg4vy8QlI3GcouE6B8
+         QkJkbGDbYzy9+blZecwFHr5ZCt8Eu9cvjrWbW9/NRDLfjHgQzOPKx0kKYTjq/PzIyMYh
+         Ra9Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
-         :content-type:content-transfer-encoding;
-        bh=8/Sd+yGVuz8Ju16jjwRMtwCE0ol/r4uts9CD6xuI0cQ=;
-        b=iiTOQ1ExEbVTeGz0NzQSXetdD9pfBzC508YoZ7D99eqSsN1qlTrkOGoy8iOGsPIMg+
-         WwJsa3uAsEQ3pHPhVn8CVeoaSKvpHI8vtpscV8AAoGsqjl2xbAEIB/wxrxbtzusKVvtI
-         JpZxHKiMvezTlOyYqBZ08BpsRHlp4+7V92hwyaro3yDfz5LGUYydGqDVASAMSlronKte
-         yyzuowLZE/QWCba7MFbCChjUbI0bKrEvYcZBjD9Nnm/the2Axl9V4zHZMO8NkSw9kmbc
-         qU28U+Mm9Nh/3/WIykEJalmxVHrlfNYLnu2ohthppIi+AGrO3pS+ugacBUOIV89CoFZC
-         Kuzw==
-X-Gm-Message-State: ALoCoQnbruqsgjyWnuw8fikCtJJpQ7K3UZQVtwYoGc4qoFGc9t8fLrbRZ22d47OH07FRLWSRDATpukgsGYBNOPeE1gMT6x2Hww==
-X-Received: by 10.25.148.141 with SMTP id w135mr12313288lfd.137.1453367503690;
-        Thu, 21 Jan 2016 01:11:43 -0800 (PST)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:in-reply-to
+         :references:mime-version:content-type:content-transfer-encoding;
+        bh=KS+9G6uLO6ALDBys3YHVBG11T4AnsPACQFeme73CN90=;
+        b=UBNXQ1owgG1cmrONf1DpPyTXsIu7n9mO3lUuG1VBYNuL/svrXdQ3GazvYkM3Na0VD6
+         B0G7E4rylewuKCJ5U+UOy2bolIWqG9YRN+2y1BTqMtrMjmUVRVT10BwubHeAgt/JHH7W
+         aFTaVVuGtZtCRG5QiYO7D1AYwaa/8xV4fiPivl9M5Z7zOm1UkMrujUx5XwruwX6IFyTI
+         d4WXOlP5ojtQDsvvbog6Y4OXi/ZIPldbWElEd0M0ZbXVQm6i2cnukYfdpare1EIcVfNc
+         uGTf/ZxPTiNIySsOLvJ9ID7HpgoA8IAynkAV+34Qlu1i878rvj1fO6JpQYV8I0luyInZ
+         wiNQ==
+X-Gm-Message-State: ALoCoQm7SbfYjpUjPfnKpAhl+CcQdytvBFl5gkDSvYN2Rfng/F1wxLIJmK67bvYua7EMyDpEe1kzdbxnpcmyQk2LllT2jtEN3Q==
+X-Received: by 10.25.18.162 with SMTP id 34mr13502058lfs.52.1453369924914;
+        Thu, 21 Jan 2016 01:52:04 -0800 (PST)
 Received: from flare (t35.niisi.ras.ru. [193.232.173.35])
-        by smtp.gmail.com with ESMTPSA id p66sm52973lfe.42.2016.01.21.01.11.42
+        by smtp.gmail.com with ESMTPSA id ei4sm79206lbb.18.2016.01.21.01.52.02
         (version=TLSv1/SSLv3 cipher=OTHER);
-        Thu, 21 Jan 2016 01:11:42 -0800 (PST)
-Date:   Thu, 21 Jan 2016 12:36:47 +0300
+        Thu, 21 Jan 2016 01:52:04 -0800 (PST)
+Date:   Thu, 21 Jan 2016 13:17:11 +0300
 From:   Antony Pavlov <antonynpavlov@gmail.com>
-To:     Alban Bedel <albeu@free.fr>
-Cc:     linux-mips@linux-mips.org
-Subject: MIPS: ath79: TP-LINK WR1043ND: uart clk issue
-Message-Id: <20160121123647.5b08e7360103768755488433@gmail.com>
+To:     Alban <albeu@free.fr>
+Cc:     linux-mips@linux-mips.org,
+        Yegor Yefremov <yegorslists@googlemail.com>,
+        Gabor Juhos <juhosg@openwrt.org>, devicetree@vger.kernel.org
+Subject: Re: [RFC 1/4] WIP: MIPS: ath79: make ar933x clks more
+ devicetree-friendly
+Message-Id: <20160121131711.a7315d3ca6233e50ec824544@gmail.com>
+In-Reply-To: <20160121091217.379b6239@tock>
+References: <1453074987-3356-1-git-send-email-antonynpavlov@gmail.com>
+        <1453074987-3356-2-git-send-email-antonynpavlov@gmail.com>
+        <20160118205725.0a16be8e@tock>
+        <20160121031215.250b826347fd9c179b031288@gmail.com>
+        <20160121091217.379b6239@tock>
 X-Mailer: Sylpheed 3.5.0beta3 (GTK+ 2.24.25; i586-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=ISO-8859-1
@@ -49,7 +58,7 @@ Return-Path: <antonynpavlov@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51266
+X-archive-position: 51267
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -66,44 +75,94 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi!
+On Thu, 21 Jan 2016 09:12:17 +0100
+Alban <albeu@free.fr> wrote:
 
-I have tried to run linux on TP-LINK WR1043ND v1.8.
+> On Thu, 21 Jan 2016 03:12:15 +0300
+> Antony Pavlov <antonynpavlov@gmail.com> wrote:
+> 
+> > On Mon, 18 Jan 2016 20:57:25 +0100
+> > Alban <albeu@free.fr> wrote:
+> > 
+> > > On Mon, 18 Jan 2016 02:56:24 +0300
+> > > Antony Pavlov <antonynpavlov@gmail.com> wrote:
+> > > 
+> > > > At the moment ar933x of-enabled drivers use use clock names
+> > > > (e.g. "uart" or "ahb") to get clk descriptor.
+> > > > On the other hand
+> > > > Documentation/devicetree/bindings/clock/clock-bindings.txt states
+> > > > that the 'clocks' property is required for passing clk to clock
+> > > > consumers.
+> > > 
+> > > This patch is not need, you should set the clock-names property in
+> > > the relevant device nodes instead.
+> > 
+> > This patch is needed for AR9331!
+> > 
+> > In ar933x_clocks_init() we have
+> > 
+> >         ath79_add_sys_clkdev("ref", ref_rate);
+> >         clks[0] = ath79_add_sys_clkdev("cpu", cpu_rate);
+> >         clks[1] = ath79_add_sys_clkdev("ddr", ddr_rate);
+> >         clks[2] = ath79_add_sys_clkdev("ahb", ahb_rate);
+> > 
+> >         clk_add_alias("wdt", NULL, "ahb", NULL);
+> >         clk_add_alias("uart", NULL, "ref", NULL);
+> > 
+> > "uart" is an alias for "ref". But "ref" is not visible via device tree!
+> > 
+> > I see this error message on ar933x-uart start:
+> >  
+> >      ERROR: could not get clock /ahb/apb/uart@18020000:uart(0)
+> 
+> The ref clock should be defined in the board DTS, I now see that it is
+> missing in yours. What you need to do is to define the clock-names
+> property in the Soc DTS, that allow the names lookup to work. Then in
+> the board DTS you can define the clock property to connect it to the
+> proper parent. 
+> 
+> I'm also working on supporting the QCA9558 and the clock tree is similar.
+> See https://github.com/AlbanBedel/linux/commit/d6c8f8adfce08972c6
+> as example.
 
-I use branch master from git://git.linux-mips.org/pub/scm/ralf/linux
+Current ath79 clock.c code does not read ref clock from devicetree!
+So you can set any clock rate value in board DTS but it will has no effect
+on the real clk calculation.
 
-I see a problem with UART speed setup. There is no UART output after
-serial port initialization. Here is the last correct linux output:
+A more reasonable solution is used for CI20 board.
+In arch/mips/boot/dts/ingenic/jz4780.dtsi we have
 
-  Serial: 8250/16550 driver, 4 ports, IRQ sharing disabled
-  console [ttyS0] disabled
-  18020000.uart: ttyS0 at MMIO 0x18020000 (irq = 11, base_baud = 12500000) is a 8250
+	ext: ext {
+		compatible = "fixed-clock";
+		#clock-cells = <0>;
+	};
+
+...
+
+	cgu: jz4780-cgu@10000000 {
+		compatible = "ingenic,jz4780-cgu";
+		reg = <0x10000000 0x100>;
+
+		clocks = <&ext>, <&rtc>;
+		clock-names = "ext", "rtc";
+
+		#clock-cells = <1>;
+	};
 
 
-I can disable UART speed setup in 8250 driver:
+In arch/mips/boot/dts/ingenic/ci20.dts we have
 
---- a/drivers/tty/serial/8250/8250_port.c
-+++ b/drivers/tty/serial/8250/8250_port.c
-@@ -2208,6 +2208,8 @@ static void serial8250_set_divisor(struct uart_port *port, unsigned int baud,
- {
-        struct uart_8250_port *up = up_to_u8250p(port);
- 
-+       return;
-+
-        /* Workaround to enable 115200 baud on OMAP1510 internal ports */
-        if (is_omap1510_8250(up)) {
-                if (baud == 115200) {
+&ext {
+	clock-frequency = <48000000>;
+};
 
-With this very very dirty hack linux works fine.
+At last drivers/clk/ingenic/jz4780-cgu.c registers this "ext" clock
+as a parent of most other subordianate clocks. So there is no magic
+frequency constants in drivers/clk/ingenic!
 
-I suppose there is a problem in arch/mips/ath79/clock.c
-
-I have tryed to cherry-pick your 'MIPS: ath79: Fix the ar913x reference clock rate'
-and 'MIPS: ath79: Fix the ar724x clock calculation' commits from
-your github ath79 branch at https://github.com/AlbanBedel/linux/tree/ath79
-but these patches don't help me.
-
-Could you please try to reproduce the problem?
+In arch/mips/ath79/clocks.c we have a very different situation:
+the reference clock frequences are already hardcoded in C-code so there is
+no need to mention them in devicetree files.
 
 -- 
 Best regards,

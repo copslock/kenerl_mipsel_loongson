@@ -1,69 +1,88 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 Jan 2016 01:14:15 +0100 (CET)
-Received: from youngberry.canonical.com ([91.189.89.112]:41919 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011671AbcA0ANnu7bT3 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 27 Jan 2016 01:13:43 +0100
-Received: from 1.general.kamal.us.vpn ([10.172.68.52] helo=fourier)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:DHE_RSA_AES_128_CBC_SHA1:16)
-        (Exim 4.76)
-        (envelope-from <kamal@canonical.com>)
-        id 1aODjc-0007eH-Cl; Wed, 27 Jan 2016 00:13:20 +0000
-Received: from kamal by fourier with local (Exim 4.82)
-        (envelope-from <kamal@whence.com>)
-        id 1aODjZ-0005ep-Kv; Tue, 26 Jan 2016 16:13:17 -0800
-From:   Kamal Mostafa <kamal@canonical.com>
-To:     Huacai Chen <chenhc@lemote.com>
-Cc:     Aurelien Jarno <aurelien@aurel32.net>,
-        "Steven J. Hill" <Steven.Hill@imgtec.com>,
-        Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>, linux-mips@linux-mips.org,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Kamal Mostafa <kamal@canonical.com>,
-        kernel-team@lists.ubuntu.com
-Subject: [4.2.y-ckt stable] Patch "MIPS: hpet: Choose a safe value for the ETIME check" has been added to the 4.2.y-ckt tree
-Date:   Tue, 26 Jan 2016 16:13:16 -0800
-Message-Id: <1453853596-21717-1-git-send-email-kamal@canonical.com>
-X-Mailer: git-send-email 1.9.1
-X-Extended-Stable: 4.2
-Return-Path: <kamal@canonical.com>
-X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
-X-Orcpt: rfc822;linux-mips@linux-mips.org
-Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51448
-X-ecartis-version: Ecartis v1.0.0
-Sender: linux-mips-bounce@linux-mips.org
-Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kamal@canonical.com
-Precedence: bulk
-List-help: <mailto:ecartis@linux-mips.org?Subject=help>
-List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
-List-software: Ecartis version 1.0.0
-List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
-X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
-List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
-List-owner: <mailto:ralf@linux-mips.org>
-List-post: <mailto:linux-mips@linux-mips.org>
-List-archive: <http://www.linux-mips.org/archives/linux-mips/>
-X-list: linux-mips
+From: Huacai Chen <chenhc@lemote.com>
+Date: Thu, 21 Jan 2016 21:09:50 +0800
+Subject: MIPS: hpet: Choose a safe value for the ETIME check
+Message-ID: <20160121130950.FHCptBqd8eIP0b4ulgY64ElFTDWCUkx7tGq8_kL7goI@z>
 
-This is a note to let you know that I have just added a patch titled
+commit 5610b1254e3689b6ef8ebe2db260709a74da06c8 upstream.
 
-    MIPS: hpet: Choose a safe value for the ETIME check
+This patch is borrowed from x86 hpet driver and explaind below:
 
-to the linux-4.2.y-queue branch of the 4.2.y-ckt extended stable tree 
-which can be found at:
+Due to the overly intelligent design of HPETs, we need to workaround
+the problem that the compare value which we write is already behind
+the actual counter value at the point where the value hits the real
+compare register. This happens for two reasons:
 
-    http://kernel.ubuntu.com/git/ubuntu/linux.git/log/?h=linux-4.2.y-queue
+1) We read out the counter, add the delta and write the result to the
+   compare register. When a NMI hits between the read out and the write
+   then the counter can be ahead of the event already.
 
-This patch is scheduled to be released in version 4.2.8-ckt3.
+2) The write to the compare register is delayed by up to two HPET
+   cycles in AMD chipsets.
 
-If you, or anyone else, feels it should not be added to this tree, please 
-reply to this email.
+We can work around this by reading back the compare register to make
+sure that the written value has hit the hardware. But that is bad
+performance wise for the normal case where the event is far enough in
+the future.
 
-For more information about the 4.2.y-ckt tree, see
-https://wiki.ubuntu.com/Kernel/Dev/ExtendedStable
+As we already know that the write can be delayed by up to two cycles
+we can avoid the read back of the compare register completely if we
+make the decision whether the delta has elapsed already or not based
+on the following calculation:
 
-Thanks.
--Kamal
+  cmp = event - actual_count;
 
----8<------------------------------------------------------------
+If cmp is less than 64 HPET clock cycles, then we decide that the event
+has happened already and return -ETIME. That covers the above #1 and #2
+problems which would cause a wait for HPET wraparound (~306 seconds).
+
+Signed-off-by: Huacai Chen <chenhc@lemote.com>
+Cc: Aurelien Jarno <aurelien@aurel32.net>
+Cc: Steven J. Hill <Steven.Hill@imgtec.com>
+Cc: Fuxin Zhang <zhangfx@lemote.com>
+Cc: Zhangjin Wu <wuzhangjin@gmail.com>
+Cc: Huacai Chen <chenhc@lemote.com>
+Cc: linux-mips@linux-mips.org
+Patchwork: https://patchwork.linux-mips.org/patch/12162/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: Kamal Mostafa <kamal@canonical.com>
+---
+ arch/mips/loongson64/loongson-3/hpet.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
+
+diff --git a/arch/mips/loongson64/loongson-3/hpet.c b/arch/mips/loongson64/loongson-3/hpet.c
+index 5c21cd3..b2888d5 100644
+--- a/arch/mips/loongson64/loongson-3/hpet.c
++++ b/arch/mips/loongson64/loongson-3/hpet.c
+@@ -13,6 +13,9 @@
+ #define SMBUS_PCI_REG64		0x64
+ #define SMBUS_PCI_REGB4		0xb4
+
++#define HPET_MIN_CYCLES		64
++#define HPET_MIN_PROG_DELTA	(HPET_MIN_CYCLES + (HPET_MIN_CYCLES >> 1))
++
+ static DEFINE_SPINLOCK(hpet_lock);
+ DEFINE_PER_CPU(struct clock_event_device, hpet_clockevent_device);
+
+@@ -139,8 +142,9 @@ static int hpet_next_event(unsigned long delta,
+ 	cnt += delta;
+ 	hpet_write(HPET_T0_CMP, cnt);
+
+-	res = ((int)(hpet_read(HPET_COUNTER) - cnt) > 0) ? -ETIME : 0;
+-	return res;
++	res = (int)(cnt - hpet_read(HPET_COUNTER));
++
++	return res < HPET_MIN_CYCLES ? -ETIME : 0;
+ }
+
+ static irqreturn_t hpet_irq_handler(int irq, void *data)
+@@ -212,7 +216,7 @@ void __init setup_hpet_timer(void)
+ 	cd->cpumask = cpumask_of(cpu);
+ 	clockevent_set_clock(cd, HPET_FREQ);
+ 	cd->max_delta_ns = clockevent_delta2ns(0x7fffffff, cd);
+-	cd->min_delta_ns = 5000;
++	cd->min_delta_ns = clockevent_delta2ns(HPET_MIN_PROG_DELTA, cd);
+
+ 	clockevents_register_device(cd);
+ 	setup_irq(HPET_T0_IRQ, &hpet_irq);
+--
+1.9.1

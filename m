@@ -1,18 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Jan 2016 14:06:05 +0100 (CET)
-Received: from smtpbg63.qq.com ([103.7.29.150]:54191 "EHLO smtpbg63.qq.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27010024AbcAUNFyBM4iu (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 21 Jan 2016 14:05:54 +0100
-X-QQ-mid: bizesmtp15t1453381492t466t13
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Jan 2016 14:06:23 +0100 (CET)
+Received: from smtpproxy19.qq.com ([184.105.206.84]:47749 "EHLO
+        smtpproxy19.qq.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27009614AbcAUNGOSbJYu (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 21 Jan 2016 14:06:14 +0100
+X-QQ-mid: bizesmtp15t1453381555t754t09
 Received: from software.domain.org (unknown [222.92.8.142])
         by esmtp4.qq.com (ESMTP) with 
-        id ; Thu, 21 Jan 2016 21:04:47 +0800 (CST)
+        id ; Thu, 21 Jan 2016 21:05:21 +0800 (CST)
 X-QQ-SSF: 01100000002000F0FK70B00A0000000
-X-QQ-FEAT: 3jlOKZxptE6GHaJempPsTKuayociTY8EY++tKd4sq/ItVk4lxbyaB/8iCsmWr
-        4wxTLwaX39gbOkZ21t3VRlVZIDeQMqO1IE9feVrLyd39a74zIJFRg2cM4kWVc6s/lqcMHxD
-        hi7iAILqt4JvS9+txEaXNHeX7bSg0DBR+XggASfDWxEF4C+yUgt7s6XlQUKM3Ecd1HGIfwj
-        FXd4vwnCOw430wWceFJFUqyIHWLhkxF6NMMf7PiBeWOMfCizUML9WKNzUeEFt0bohwO1w6t
-        osFsM1VmQ4U87viVs4crly6E4=
+X-QQ-FEAT: QX/rXDl9P1ukz/Ob6OXod0ZY3jIeYKVMPJydYopW1bX/utl70pHipmXMbZsYY
+        Q4X+/D3Nsj21K9IQ435IoUYv3UZnLsWYi1Fk7f183v2EdKib2rjU8YM6onqT2WPMLITZ7AT
+        CTR2L1V4h8UM18XF2DYFfH2AofFD0lHcHSs+HOCOZicejnyQ597Dei8UAw3b5zpFgrBnaUH
+        UUrXcG7wqfr2icvSEnSIH5lMsVb/FENgDH/J2bQ6N1WF3Bjb57iSGyj7egdAUJSnLvuv362
+        a1U935Gm2YMCabNW8LXIj3yTQ=
 X-QQ-GoodBg: 0
 From:   Huacai Chen <chenhc@lemote.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
@@ -20,19 +20,20 @@ Cc:     Aurelien Jarno <aurelien@aurel32.net>,
         "Steven J. Hill" <Steven.Hill@imgtec.com>,
         linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
         Zhangjin Wu <wuzhangjin@gmail.com>,
-        Huacai Chen <chenhc@lemote.com>
-Subject: [PATCH V2 2/6] MIPS: Loongson-3: Improve -march option and move it to Platform
-Date:   Thu, 21 Jan 2016 21:09:48 +0800
-Message-Id: <1453381793-8357-3-git-send-email-chenhc@lemote.com>
+        Huacai Chen <chenhc@lemote.com>, <stable@vger.kernel.org>
+Subject: [PATCH V2 4/6] MIPS: hpet: Choose a safe value for the ETIME check
+Date:   Thu, 21 Jan 2016 21:09:50 +0800
+Message-Id: <1453381793-8357-5-git-send-email-chenhc@lemote.com>
 X-Mailer: git-send-email 2.4.6
 In-Reply-To: <1453381793-8357-1-git-send-email-chenhc@lemote.com>
 References: <1453381793-8357-1-git-send-email-chenhc@lemote.com>
 X-QQ-SENDSIZE: 520
+X-QQ-Bgrelay: 1
 Return-Path: <chenhc@lemote.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51278
+X-archive-position: 51279
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -49,69 +50,76 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-If GCC >= 4.9 and Binutils >=2.25, we use -march=loongson3a, otherwise
-we use -march=mips64r2, this can slightly improve performance. Besides,
-arch/mips/loongson64/Platform is a better location rather than arch/
-mips/Makefile.
+This patch is borrowed from x86 hpet driver and explaind below:
 
+Due to the overly intelligent design of HPETs, we need to workaround
+the problem that the compare value which we write is already behind
+the actual counter value at the point where the value hits the real
+compare register. This happens for two reasons:
+
+1) We read out the counter, add the delta and write the result to the
+   compare register. When a NMI hits between the read out and the write
+   then the counter can be ahead of the event already.
+
+2) The write to the compare register is delayed by up to two HPET
+   cycles in AMD chipsets.
+
+We can work around this by reading back the compare register to make
+sure that the written value has hit the hardware. But that is bad
+performance wise for the normal case where the event is far enough in
+the future.
+
+As we already know that the write can be delayed by up to two cycles
+we can avoid the read back of the compare register completely if we
+make the decision whether the delta has elapsed already or not based
+on the following calculation:
+
+  cmp = event - actual_count;
+
+If cmp is less than 64 HPET clock cycles, then we decide that the event
+has happened already and return -ETIME. That covers the above #1 and #2
+problems which would cause a wait for HPET wraparound (~306 seconds).
+
+Cc: <stable@vger.kernel.org>
 Signed-off-by: Huacai Chen <chenhc@lemote.com>
 ---
- arch/mips/Makefile            | 10 ----------
- arch/mips/loongson64/Platform | 21 +++++++++++++++++++++
- 2 files changed, 21 insertions(+), 10 deletions(-)
+ arch/mips/loongson64/loongson-3/hpet.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-index 3f70ba5..e78d60d 100644
---- a/arch/mips/Makefile
-+++ b/arch/mips/Makefile
-@@ -166,16 +166,6 @@ cflags-$(CONFIG_CPU_CAVIUM_OCTEON) += -Wa,-march=octeon
- endif
- cflags-$(CONFIG_CAVIUM_CN63XXP1) += -Wa,-mfix-cn63xxp1
- cflags-$(CONFIG_CPU_BMIPS)	+= -march=mips32 -Wa,-mips32 -Wa,--trap
--#
--# binutils from v2.25 on and gcc starting from v4.9.0 treat -march=loongson3a
--# as MIPS64 R1; older versions as just R1.  This leaves the possibility open
--# that GCC might generate R2 code for -march=loongson3a which then is rejected
--# by GAS.  The cc-option can't probe for this behaviour so -march=loongson3a
--# can't easily be used safely within the kbuild framework.
--#
--cflags-$(CONFIG_CPU_LOONGSON3)  +=					\
--	$(call cc-option,-march=mips64r2,-mips64r2 -U_MIPS_ISA -D_MIPS_ISA=_MIPS_ISA_MIPS64) \
--	-Wa,-mips64r2 -Wa,--trap
+diff --git a/arch/mips/loongson64/loongson-3/hpet.c b/arch/mips/loongson64/loongson-3/hpet.c
+index bf9f1a7..a2631a5 100644
+--- a/arch/mips/loongson64/loongson-3/hpet.c
++++ b/arch/mips/loongson64/loongson-3/hpet.c
+@@ -13,6 +13,9 @@
+ #define SMBUS_PCI_REG64		0x64
+ #define SMBUS_PCI_REGB4		0xb4
  
- cflags-$(CONFIG_CPU_R4000_WORKAROUNDS)	+= $(call cc-option,-mfix-r4000,)
- cflags-$(CONFIG_CPU_R4400_WORKAROUNDS)	+= $(call cc-option,-mfix-r4400,)
-diff --git a/arch/mips/loongson64/Platform b/arch/mips/loongson64/Platform
-index 2e48e83..85d8089 100644
---- a/arch/mips/loongson64/Platform
-+++ b/arch/mips/loongson64/Platform
-@@ -22,6 +22,27 @@ ifdef CONFIG_CPU_LOONGSON2F_WORKAROUNDS
-   endif
- endif
- 
-+cflags-$(CONFIG_CPU_LOONGSON3)	+= -Wa,--trap
-+#
-+# binutils from v2.25 on and gcc starting from v4.9.0 treat -march=loongson3a
-+# as MIPS64 R2; older versions as just R1.  This leaves the possibility open
-+# that GCC might generate R2 code for -march=loongson3a which then is rejected
-+# by GAS.  The cc-option can't probe for this behaviour so -march=loongson3a
-+# can't easily be used safely within the kbuild framework.
-+#
-+ifeq ($(call cc-ifversion, -ge, 0409, y), y)
-+  ifeq ($(call ld-ifversion, -ge, 22500000, y), y)
-+    cflags-$(CONFIG_CPU_LOONGSON3)  += \
-+      $(call cc-option,-march=loongson3a -U_MIPS_ISA -D_MIPS_ISA=_MIPS_ISA_MIPS64)
-+  else
-+    cflags-$(CONFIG_CPU_LOONGSON3)  += \
-+      $(call cc-option,-march=mips64r2,-mips64r2 -U_MIPS_ISA -D_MIPS_ISA=_MIPS_ISA_MIPS64)
-+  endif
-+else
-+    cflags-$(CONFIG_CPU_LOONGSON3)  += \
-+      $(call cc-option,-march=mips64r2,-mips64r2 -U_MIPS_ISA -D_MIPS_ISA=_MIPS_ISA_MIPS64)
-+endif
++#define HPET_MIN_CYCLES		64
++#define HPET_MIN_PROG_DELTA	(HPET_MIN_CYCLES + (HPET_MIN_CYCLES >> 1))
 +
- #
- # Loongson Machines' Support
- #
+ static DEFINE_SPINLOCK(hpet_lock);
+ DEFINE_PER_CPU(struct clock_event_device, hpet_clockevent_device);
+ 
+@@ -161,8 +164,9 @@ static int hpet_next_event(unsigned long delta,
+ 	cnt += delta;
+ 	hpet_write(HPET_T0_CMP, cnt);
+ 
+-	res = ((int)(hpet_read(HPET_COUNTER) - cnt) > 0) ? -ETIME : 0;
+-	return res;
++	res = (int)(cnt - hpet_read(HPET_COUNTER));
++
++	return res < HPET_MIN_CYCLES ? -ETIME : 0;
+ }
+ 
+ static irqreturn_t hpet_irq_handler(int irq, void *data)
+@@ -237,7 +241,7 @@ void __init setup_hpet_timer(void)
+ 	cd->cpumask = cpumask_of(cpu);
+ 	clockevent_set_clock(cd, HPET_FREQ);
+ 	cd->max_delta_ns = clockevent_delta2ns(0x7fffffff, cd);
+-	cd->min_delta_ns = 5000;
++	cd->min_delta_ns = clockevent_delta2ns(HPET_MIN_PROG_DELTA, cd);
+ 
+ 	clockevents_register_device(cd);
+ 	setup_irq(HPET_T0_IRQ, &hpet_irq);
 -- 
 2.4.6

@@ -1,18 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Jan 2016 14:05:22 +0100 (CET)
-Received: from smtpproxy19.qq.com ([184.105.206.84]:53446 "EHLO
-        smtpproxy19.qq.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27009956AbcAUNFJEecau (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 21 Jan 2016 14:05:09 +0100
-X-QQ-mid: bizesmtp15t1453381485t597t10
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Jan 2016 14:05:44 +0100 (CET)
+Received: from smtpbgau2.qq.com ([54.206.34.216]:45131 "EHLO smtpbgau2.qq.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27009614AbcAUNFm3Rixu (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 21 Jan 2016 14:05:42 +0100
+X-QQ-mid: bizesmtp15t1453381520t789t13
 Received: from software.domain.org (unknown [222.92.8.142])
         by esmtp4.qq.com (ESMTP) with 
-        id ; Thu, 21 Jan 2016 21:04:41 +0800 (CST)
+        id ; Thu, 21 Jan 2016 21:04:54 +0800 (CST)
 X-QQ-SSF: 01100000002000F0FK70B00A0000000
-X-QQ-FEAT: 3jlOKZxptE7JHAvCvFnf3Rtj6JJtb4OSlT1MYD0hGZIwCNyJQFvIr91pEOpZv
-        KxD5o9x7FcXIPIcm2a2ufKOyO/Vg9rj5FIIO5R3sXtDE9jSBLbIO0wOEDxESZa3tCn35Q3D
-        wbXAlHeJ+5T0qQy25pVbFmrXPEXm1mvp6Qhki4sF3i0V/1Qvg6RmzMynogdScKAZ5BI2P7n
-        ewkZo+TD6wasc5IQAzsQqHfVDoI09aB3i5lJtX4XIOVwSC7DeUts8rbZajAn1AjICToRjDg
-        J/Mhpr5fIB0nyIoyqhqqBcnok=
+X-QQ-FEAT: 6dXuswn9i1Wrv+QVta/meS8vLkkMIJOFzPweKlTzQfwOqU6lLUdKD2Z3IJb+e
+        mtFDZZ5bl77tHr2zC7EIKDQwizDTKD3EKysYG9yYu4ozVhuZIdYbqXscAhNHqRcTvyVoyIU
+        cUFxZzyFmTP8xSIObRm/8zUwo5ajBAYWy5iKMOnFcHVIab8OK20dxv6s0iCav2xdUJ/skJl
+        lQfnfMN3Sxt01P/0cInKKwO1Z/giFljrUnII9vYEnewCyJ7ZAKhTIXqnsmwTeJGQcLM0AEo
+        PUwVv6r47Osh9SglVbPKXv6TA=
 X-QQ-GoodBg: 0
 From:   Huacai Chen <chenhc@lemote.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
@@ -20,10 +20,10 @@ Cc:     Aurelien Jarno <aurelien@aurel32.net>,
         "Steven J. Hill" <Steven.Hill@imgtec.com>,
         linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
         Zhangjin Wu <wuzhangjin@gmail.com>,
-        Huacai Chen <chenhc@lemote.com>
-Subject: [PATCH V2 1/6] MIPS: Cleanup the unused __arch_local_irq_restore() function
-Date:   Thu, 21 Jan 2016 21:09:47 +0800
-Message-Id: <1453381793-8357-2-git-send-email-chenhc@lemote.com>
+        Huacai Chen <chenhc@lemote.com>, <stable@vger.kernel.org>
+Subject: [PATCH V2 3/6] MIPS: Loongson-3: Fix SMP_ASK_C0COUNT IPI handler
+Date:   Thu, 21 Jan 2016 21:09:49 +0800
+Message-Id: <1453381793-8357-4-git-send-email-chenhc@lemote.com>
 X-Mailer: git-send-email 2.4.6
 In-Reply-To: <1453381793-8357-1-git-send-email-chenhc@lemote.com>
 References: <1453381793-8357-1-git-send-email-chenhc@lemote.com>
@@ -33,7 +33,7 @@ Return-Path: <chenhc@lemote.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51276
+X-archive-position: 51277
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -50,106 +50,80 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-In history, __arch_local_irq_restore() is only used by SMTC. However,
-SMTC support has been removed since 3.16, this patch remove the unused
-function.
+When Core-0 handle SMP_ASK_C0COUNT IPI, we should make other cores to
+see the result as soon as possible (especially when Store-Fill-Buffer
+is enabled). Otherwise, C0_Count syncronization makes no sense.
 
+BTW, array is more suitable than per-cpu variable for syncronization,
+and there is a corner case should be avoid: C0_Count of Core-0 can be
+really 0.
+
+Cc: <stable@vger.kernel.org>
 Signed-off-by: Huacai Chen <chenhc@lemote.com>
 ---
- arch/mips/include/asm/irqflags.h | 30 ------------------------------
- arch/mips/lib/mips-atomic.c      | 30 +-----------------------------
- 2 files changed, 1 insertion(+), 59 deletions(-)
+ arch/mips/loongson64/loongson-3/smp.c | 20 +++++++++++++-------
+ 1 file changed, 13 insertions(+), 7 deletions(-)
 
-diff --git a/arch/mips/include/asm/irqflags.h b/arch/mips/include/asm/irqflags.h
-index e7b138b..65c351e 100644
---- a/arch/mips/include/asm/irqflags.h
-+++ b/arch/mips/include/asm/irqflags.h
-@@ -84,41 +84,11 @@ static inline void arch_local_irq_restore(unsigned long flags)
- 	: "memory");
+diff --git a/arch/mips/loongson64/loongson-3/smp.c b/arch/mips/loongson64/loongson-3/smp.c
+index 1a4738a..509832a9 100644
+--- a/arch/mips/loongson64/loongson-3/smp.c
++++ b/arch/mips/loongson64/loongson-3/smp.c
+@@ -30,13 +30,13 @@
+ #include "smp.h"
+ 
+ DEFINE_PER_CPU(int, cpu_state);
+-DEFINE_PER_CPU(uint32_t, core0_c0count);
+ 
+ static void *ipi_set0_regs[16];
+ static void *ipi_clear0_regs[16];
+ static void *ipi_status0_regs[16];
+ static void *ipi_en0_regs[16];
+ static void *ipi_mailbox_buf[16];
++static uint32_t core0_c0count[NR_CPUS];
+ 
+ /* read a 32bit value from ipi register */
+ #define loongson3_ipi_read32(addr) readl(addr)
+@@ -275,12 +275,14 @@ void loongson3_ipi_interrupt(struct pt_regs *regs)
+ 	if (action & SMP_ASK_C0COUNT) {
+ 		BUG_ON(cpu != 0);
+ 		c0count = read_c0_count();
+-		for (i = 1; i < num_possible_cpus(); i++)
+-			per_cpu(core0_c0count, i) = c0count;
++		c0count = c0count ? c0count : 1;
++		for (i = 1; i < nr_cpu_ids; i++)
++			core0_c0count[i] = c0count;
++		__wbflush(); /* Let others see the result ASAP */
+ 	}
  }
  
--static inline void __arch_local_irq_restore(unsigned long flags)
--{
--	__asm__ __volatile__(
--	"	.set	push						\n"
--	"	.set	noreorder					\n"
--	"	.set	noat						\n"
--#if defined(CONFIG_IRQ_MIPS_CPU)
--	/*
--	 * Slow, but doesn't suffer from a relatively unlikely race
--	 * condition we're having since days 1.
--	 */
--	"	beqz	%[flags], 1f					\n"
--	"	di							\n"
--	"	ei							\n"
--	"1:								\n"
--#else
--	/*
--	 * Fast, dangerous.  Life is fun, life is good.
--	 */
--	"	mfc0	$1, $12						\n"
--	"	ins	$1, %[flags], 0, 1				\n"
--	"	mtc0	$1, $12						\n"
--#endif
--	"	" __stringify(__irq_disable_hazard) "			\n"
--	"	.set	pop						\n"
--	: [flags] "=r" (flags)
--	: "0" (flags)
--	: "memory");
--}
- #else
- /* Functions that require preempt_{dis,en}able() are in mips-atomic.c */
- void arch_local_irq_disable(void);
- unsigned long arch_local_irq_save(void);
- void arch_local_irq_restore(unsigned long flags);
--void __arch_local_irq_restore(unsigned long flags);
- #endif /* CONFIG_CPU_MIPSR2 || CONFIG_CPU_MIPSR6 */
+-#define MAX_LOOPS 1111
++#define MAX_LOOPS 800
+ /*
+  * SMP init and finish on secondary CPUs
+  */
+@@ -305,16 +307,20 @@ static void loongson3_init_secondary(void)
+ 		cpu_logical_map(cpu) / loongson_sysconf.cores_per_package;
  
- static inline void arch_local_irq_enable(void)
-diff --git a/arch/mips/lib/mips-atomic.c b/arch/mips/lib/mips-atomic.c
-index 272af8a..5530070 100644
---- a/arch/mips/lib/mips-atomic.c
-+++ b/arch/mips/lib/mips-atomic.c
-@@ -57,7 +57,6 @@ notrace void arch_local_irq_disable(void)
+ 	i = 0;
+-	__this_cpu_write(core0_c0count, 0);
++	core0_c0count[cpu] = 0;
+ 	loongson3_send_ipi_single(0, SMP_ASK_C0COUNT);
+-	while (!__this_cpu_read(core0_c0count)) {
++	while (!core0_c0count[cpu]) {
+ 		i++;
+ 		cpu_relax();
+ 	}
+ 
+ 	if (i > MAX_LOOPS)
+ 		i = MAX_LOOPS;
+-	initcount = __this_cpu_read(core0_c0count) + i;
++	if (cpu_data[cpu].package)
++		initcount = core0_c0count[cpu] + i;
++	else /* Local access is faster for loops */
++		initcount = core0_c0count[cpu] + i/2;
++
+ 	write_c0_count(initcount);
  }
- EXPORT_SYMBOL(arch_local_irq_disable);
  
--
- notrace unsigned long arch_local_irq_save(void)
- {
- 	unsigned long flags;
-@@ -111,31 +110,4 @@ notrace void arch_local_irq_restore(unsigned long flags)
- }
- EXPORT_SYMBOL(arch_local_irq_restore);
- 
--
--notrace void __arch_local_irq_restore(unsigned long flags)
--{
--	unsigned long __tmp1;
--
--	preempt_disable();
--
--	__asm__ __volatile__(
--	"	.set	push						\n"
--	"	.set	noreorder					\n"
--	"	.set	noat						\n"
--	"	mfc0	$1, $12						\n"
--	"	andi	%[flags], 1					\n"
--	"	ori	$1, 0x1f					\n"
--	"	xori	$1, 0x1f					\n"
--	"	or	%[flags], $1					\n"
--	"	mtc0	%[flags], $12					\n"
--	"	" __stringify(__irq_disable_hazard) "			\n"
--	"	.set	pop						\n"
--	: [flags] "=r" (__tmp1)
--	: "0" (flags)
--	: "memory");
--
--	preempt_enable();
--}
--EXPORT_SYMBOL(__arch_local_irq_restore);
--
--#endif /* !CONFIG_CPU_MIPSR2 */
-+#endif /* !CONFIG_CPU_MIPSR2 && !CONFIG_CPU_MIPSR6 */
 -- 
 2.4.6

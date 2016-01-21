@@ -1,18 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Jan 2016 14:05:44 +0100 (CET)
-Received: from smtpbgau2.qq.com ([54.206.34.216]:45131 "EHLO smtpbgau2.qq.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Jan 2016 14:06:05 +0100 (CET)
+Received: from smtpbg63.qq.com ([103.7.29.150]:54191 "EHLO smtpbg63.qq.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27009614AbcAUNFm3Rixu (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 21 Jan 2016 14:05:42 +0100
-X-QQ-mid: bizesmtp15t1453381520t789t13
+        id S27010024AbcAUNFyBM4iu (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 21 Jan 2016 14:05:54 +0100
+X-QQ-mid: bizesmtp15t1453381492t466t13
 Received: from software.domain.org (unknown [222.92.8.142])
         by esmtp4.qq.com (ESMTP) with 
-        id ; Thu, 21 Jan 2016 21:04:54 +0800 (CST)
+        id ; Thu, 21 Jan 2016 21:04:47 +0800 (CST)
 X-QQ-SSF: 01100000002000F0FK70B00A0000000
-X-QQ-FEAT: 6dXuswn9i1Wrv+QVta/meS8vLkkMIJOFzPweKlTzQfwOqU6lLUdKD2Z3IJb+e
-        mtFDZZ5bl77tHr2zC7EIKDQwizDTKD3EKysYG9yYu4ozVhuZIdYbqXscAhNHqRcTvyVoyIU
-        cUFxZzyFmTP8xSIObRm/8zUwo5ajBAYWy5iKMOnFcHVIab8OK20dxv6s0iCav2xdUJ/skJl
-        lQfnfMN3Sxt01P/0cInKKwO1Z/giFljrUnII9vYEnewCyJ7ZAKhTIXqnsmwTeJGQcLM0AEo
-        PUwVv6r47Osh9SglVbPKXv6TA=
+X-QQ-FEAT: 3jlOKZxptE6GHaJempPsTKuayociTY8EY++tKd4sq/ItVk4lxbyaB/8iCsmWr
+        4wxTLwaX39gbOkZ21t3VRlVZIDeQMqO1IE9feVrLyd39a74zIJFRg2cM4kWVc6s/lqcMHxD
+        hi7iAILqt4JvS9+txEaXNHeX7bSg0DBR+XggASfDWxEF4C+yUgt7s6XlQUKM3Ecd1HGIfwj
+        FXd4vwnCOw430wWceFJFUqyIHWLhkxF6NMMf7PiBeWOMfCizUML9WKNzUeEFt0bohwO1w6t
+        osFsM1VmQ4U87viVs4crly6E4=
 X-QQ-GoodBg: 0
 From:   Huacai Chen <chenhc@lemote.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
@@ -20,20 +20,19 @@ Cc:     Aurelien Jarno <aurelien@aurel32.net>,
         "Steven J. Hill" <Steven.Hill@imgtec.com>,
         linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
         Zhangjin Wu <wuzhangjin@gmail.com>,
-        Huacai Chen <chenhc@lemote.com>, <stable@vger.kernel.org>
-Subject: [PATCH V2 3/6] MIPS: Loongson-3: Fix SMP_ASK_C0COUNT IPI handler
-Date:   Thu, 21 Jan 2016 21:09:49 +0800
-Message-Id: <1453381793-8357-4-git-send-email-chenhc@lemote.com>
+        Huacai Chen <chenhc@lemote.com>
+Subject: [PATCH V2 2/6] MIPS: Loongson-3: Improve -march option and move it to Platform
+Date:   Thu, 21 Jan 2016 21:09:48 +0800
+Message-Id: <1453381793-8357-3-git-send-email-chenhc@lemote.com>
 X-Mailer: git-send-email 2.4.6
 In-Reply-To: <1453381793-8357-1-git-send-email-chenhc@lemote.com>
 References: <1453381793-8357-1-git-send-email-chenhc@lemote.com>
 X-QQ-SENDSIZE: 520
-X-QQ-Bgrelay: 1
 Return-Path: <chenhc@lemote.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51277
+X-archive-position: 51278
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -50,80 +49,69 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-When Core-0 handle SMP_ASK_C0COUNT IPI, we should make other cores to
-see the result as soon as possible (especially when Store-Fill-Buffer
-is enabled). Otherwise, C0_Count syncronization makes no sense.
+If GCC >= 4.9 and Binutils >=2.25, we use -march=loongson3a, otherwise
+we use -march=mips64r2, this can slightly improve performance. Besides,
+arch/mips/loongson64/Platform is a better location rather than arch/
+mips/Makefile.
 
-BTW, array is more suitable than per-cpu variable for syncronization,
-and there is a corner case should be avoid: C0_Count of Core-0 can be
-really 0.
-
-Cc: <stable@vger.kernel.org>
 Signed-off-by: Huacai Chen <chenhc@lemote.com>
 ---
- arch/mips/loongson64/loongson-3/smp.c | 20 +++++++++++++-------
- 1 file changed, 13 insertions(+), 7 deletions(-)
+ arch/mips/Makefile            | 10 ----------
+ arch/mips/loongson64/Platform | 21 +++++++++++++++++++++
+ 2 files changed, 21 insertions(+), 10 deletions(-)
 
-diff --git a/arch/mips/loongson64/loongson-3/smp.c b/arch/mips/loongson64/loongson-3/smp.c
-index 1a4738a..509832a9 100644
---- a/arch/mips/loongson64/loongson-3/smp.c
-+++ b/arch/mips/loongson64/loongson-3/smp.c
-@@ -30,13 +30,13 @@
- #include "smp.h"
+diff --git a/arch/mips/Makefile b/arch/mips/Makefile
+index 3f70ba5..e78d60d 100644
+--- a/arch/mips/Makefile
++++ b/arch/mips/Makefile
+@@ -166,16 +166,6 @@ cflags-$(CONFIG_CPU_CAVIUM_OCTEON) += -Wa,-march=octeon
+ endif
+ cflags-$(CONFIG_CAVIUM_CN63XXP1) += -Wa,-mfix-cn63xxp1
+ cflags-$(CONFIG_CPU_BMIPS)	+= -march=mips32 -Wa,-mips32 -Wa,--trap
+-#
+-# binutils from v2.25 on and gcc starting from v4.9.0 treat -march=loongson3a
+-# as MIPS64 R1; older versions as just R1.  This leaves the possibility open
+-# that GCC might generate R2 code for -march=loongson3a which then is rejected
+-# by GAS.  The cc-option can't probe for this behaviour so -march=loongson3a
+-# can't easily be used safely within the kbuild framework.
+-#
+-cflags-$(CONFIG_CPU_LOONGSON3)  +=					\
+-	$(call cc-option,-march=mips64r2,-mips64r2 -U_MIPS_ISA -D_MIPS_ISA=_MIPS_ISA_MIPS64) \
+-	-Wa,-mips64r2 -Wa,--trap
  
- DEFINE_PER_CPU(int, cpu_state);
--DEFINE_PER_CPU(uint32_t, core0_c0count);
+ cflags-$(CONFIG_CPU_R4000_WORKAROUNDS)	+= $(call cc-option,-mfix-r4000,)
+ cflags-$(CONFIG_CPU_R4400_WORKAROUNDS)	+= $(call cc-option,-mfix-r4400,)
+diff --git a/arch/mips/loongson64/Platform b/arch/mips/loongson64/Platform
+index 2e48e83..85d8089 100644
+--- a/arch/mips/loongson64/Platform
++++ b/arch/mips/loongson64/Platform
+@@ -22,6 +22,27 @@ ifdef CONFIG_CPU_LOONGSON2F_WORKAROUNDS
+   endif
+ endif
  
- static void *ipi_set0_regs[16];
- static void *ipi_clear0_regs[16];
- static void *ipi_status0_regs[16];
- static void *ipi_en0_regs[16];
- static void *ipi_mailbox_buf[16];
-+static uint32_t core0_c0count[NR_CPUS];
- 
- /* read a 32bit value from ipi register */
- #define loongson3_ipi_read32(addr) readl(addr)
-@@ -275,12 +275,14 @@ void loongson3_ipi_interrupt(struct pt_regs *regs)
- 	if (action & SMP_ASK_C0COUNT) {
- 		BUG_ON(cpu != 0);
- 		c0count = read_c0_count();
--		for (i = 1; i < num_possible_cpus(); i++)
--			per_cpu(core0_c0count, i) = c0count;
-+		c0count = c0count ? c0count : 1;
-+		for (i = 1; i < nr_cpu_ids; i++)
-+			core0_c0count[i] = c0count;
-+		__wbflush(); /* Let others see the result ASAP */
- 	}
- }
- 
--#define MAX_LOOPS 1111
-+#define MAX_LOOPS 800
- /*
-  * SMP init and finish on secondary CPUs
-  */
-@@ -305,16 +307,20 @@ static void loongson3_init_secondary(void)
- 		cpu_logical_map(cpu) / loongson_sysconf.cores_per_package;
- 
- 	i = 0;
--	__this_cpu_write(core0_c0count, 0);
-+	core0_c0count[cpu] = 0;
- 	loongson3_send_ipi_single(0, SMP_ASK_C0COUNT);
--	while (!__this_cpu_read(core0_c0count)) {
-+	while (!core0_c0count[cpu]) {
- 		i++;
- 		cpu_relax();
- 	}
- 
- 	if (i > MAX_LOOPS)
- 		i = MAX_LOOPS;
--	initcount = __this_cpu_read(core0_c0count) + i;
-+	if (cpu_data[cpu].package)
-+		initcount = core0_c0count[cpu] + i;
-+	else /* Local access is faster for loops */
-+		initcount = core0_c0count[cpu] + i/2;
++cflags-$(CONFIG_CPU_LOONGSON3)	+= -Wa,--trap
++#
++# binutils from v2.25 on and gcc starting from v4.9.0 treat -march=loongson3a
++# as MIPS64 R2; older versions as just R1.  This leaves the possibility open
++# that GCC might generate R2 code for -march=loongson3a which then is rejected
++# by GAS.  The cc-option can't probe for this behaviour so -march=loongson3a
++# can't easily be used safely within the kbuild framework.
++#
++ifeq ($(call cc-ifversion, -ge, 0409, y), y)
++  ifeq ($(call ld-ifversion, -ge, 22500000, y), y)
++    cflags-$(CONFIG_CPU_LOONGSON3)  += \
++      $(call cc-option,-march=loongson3a -U_MIPS_ISA -D_MIPS_ISA=_MIPS_ISA_MIPS64)
++  else
++    cflags-$(CONFIG_CPU_LOONGSON3)  += \
++      $(call cc-option,-march=mips64r2,-mips64r2 -U_MIPS_ISA -D_MIPS_ISA=_MIPS_ISA_MIPS64)
++  endif
++else
++    cflags-$(CONFIG_CPU_LOONGSON3)  += \
++      $(call cc-option,-march=mips64r2,-mips64r2 -U_MIPS_ISA -D_MIPS_ISA=_MIPS_ISA_MIPS64)
++endif
 +
- 	write_c0_count(initcount);
- }
- 
+ #
+ # Loongson Machines' Support
+ #
 -- 
 2.4.6

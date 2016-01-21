@@ -1,47 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Jan 2016 09:52:30 +0100 (CET)
-Received: from foss.arm.com ([217.140.101.70]:59899 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27009408AbcAUIw2zox8e (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 21 Jan 2016 09:52:28 +0100
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 292AA3A8;
-        Thu, 21 Jan 2016 00:51:43 -0800 (PST)
-Received: from [10.1.209.129] (usa-sjc-imap-foss1.foss.arm.com [10.72.51.249])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 48D053F21A;
-        Thu, 21 Jan 2016 00:52:20 -0800 (PST)
-Subject: Re: [PATCH 6/6] MIPS: ath79: irq: Move the CPU IRQ driver to
- drivers/irqchip
-To:     Alban <albeu@free.fr>
-References: <1447788896-15553-1-git-send-email-albeu@free.fr>
- <1447788896-15553-7-git-send-email-albeu@free.fr>
- <20160120124948.6917859f@sofa.wild-wind.fr.eu.org>
- <20160120204620.714636eb@tock>
-Cc:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Alexander Couzens <lynxis@fe80.eu>,
-        Joel Porquet <joel@porquet.org>,
-        Andrew Bresticker <abrestic@chromium.org>,
-        linux-kernel@vger.kernel.org
-From:   Marc Zyngier <marc.zyngier@arm.com>
-Organization: ARM Ltd
-Message-ID: <56A09C42.3090209@arm.com>
-Date:   Thu, 21 Jan 2016 08:52:18 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Icedove/38.5.0
-MIME-Version: 1.0
-In-Reply-To: <20160120204620.714636eb@tock>
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-Return-Path: <marc.zyngier@arm.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Jan 2016 10:11:50 +0100 (CET)
+Received: from mail-lf0-f48.google.com ([209.85.215.48]:36747 "EHLO
+        mail-lf0-f48.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008977AbcAUJLtHxlBe convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 21 Jan 2016 10:11:49 +0100
+Received: by mail-lf0-f48.google.com with SMTP id h129so22660161lfh.3
+        for <linux-mips@linux-mips.org>; Thu, 21 Jan 2016 01:11:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=date:from:to:cc:subject:message-id:mime-version:content-type
+         :content-transfer-encoding;
+        bh=8/Sd+yGVuz8Ju16jjwRMtwCE0ol/r4uts9CD6xuI0cQ=;
+        b=R3cUmqIfQhaAsNuOazNemJONPXZ8D9grx8rCq/54inyWuqNorrksAFCZgSkdeDLO+0
+         A95LDmuDX5OL7gyylJoQkS3tGn44ocOMP4Lyn75sqy3Du182tKaJWCQI8h+oNEmg8hFD
+         wacT7/ZOyLi2sDWuIuvEsAzxUt8tXnC0CWgsKQL0N/wWnNRflX1fxukUuRUj8BPzd+FO
+         lDK3irtGJU+bO6SdlhmfMwD6AEDGDo7RxHndx5Y8XTF/DNjyhU91T5Mr/tJWy61F7Nir
+         HTfKueUEpv2ngO9PGPjwPybOPcT0N5aHPhYcAEZrrG7s2FsNMEIRIRP68a6bJzNzDl5M
+         G2Sw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+         :content-type:content-transfer-encoding;
+        bh=8/Sd+yGVuz8Ju16jjwRMtwCE0ol/r4uts9CD6xuI0cQ=;
+        b=iiTOQ1ExEbVTeGz0NzQSXetdD9pfBzC508YoZ7D99eqSsN1qlTrkOGoy8iOGsPIMg+
+         WwJsa3uAsEQ3pHPhVn8CVeoaSKvpHI8vtpscV8AAoGsqjl2xbAEIB/wxrxbtzusKVvtI
+         JpZxHKiMvezTlOyYqBZ08BpsRHlp4+7V92hwyaro3yDfz5LGUYydGqDVASAMSlronKte
+         yyzuowLZE/QWCba7MFbCChjUbI0bKrEvYcZBjD9Nnm/the2Axl9V4zHZMO8NkSw9kmbc
+         qU28U+Mm9Nh/3/WIykEJalmxVHrlfNYLnu2ohthppIi+AGrO3pS+ugacBUOIV89CoFZC
+         Kuzw==
+X-Gm-Message-State: ALoCoQnbruqsgjyWnuw8fikCtJJpQ7K3UZQVtwYoGc4qoFGc9t8fLrbRZ22d47OH07FRLWSRDATpukgsGYBNOPeE1gMT6x2Hww==
+X-Received: by 10.25.148.141 with SMTP id w135mr12313288lfd.137.1453367503690;
+        Thu, 21 Jan 2016 01:11:43 -0800 (PST)
+Received: from flare (t35.niisi.ras.ru. [193.232.173.35])
+        by smtp.gmail.com with ESMTPSA id p66sm52973lfe.42.2016.01.21.01.11.42
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Thu, 21 Jan 2016 01:11:42 -0800 (PST)
+Date:   Thu, 21 Jan 2016 12:36:47 +0300
+From:   Antony Pavlov <antonynpavlov@gmail.com>
+To:     Alban Bedel <albeu@free.fr>
+Cc:     linux-mips@linux-mips.org
+Subject: MIPS: ath79: TP-LINK WR1043ND: uart clk issue
+Message-Id: <20160121123647.5b08e7360103768755488433@gmail.com>
+X-Mailer: Sylpheed 3.5.0beta3 (GTK+ 2.24.25; i586-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
+Return-Path: <antonynpavlov@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51265
+X-archive-position: 51266
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: marc.zyngier@arm.com
+X-original-sender: antonynpavlov@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,61 +66,45 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 20/01/16 19:46, Alban wrote:
-> On Wed, 20 Jan 2016 12:49:48 +0000
-> Marc Zyngier <marc.zyngier@arm.com> wrote:
-> 
->> On Tue, 17 Nov 2015 20:34:56 +0100
->> Alban Bedel <albeu@free.fr> wrote:
->>
->>> Signed-off-by: Alban Bedel <albeu@free.fr>
->>> ---
->>>  arch/mips/ath79/irq.c                    | 81
->>> ++------------------------ arch/mips/include/asm/mach-ath79/ath79.h
->>> |  1 + drivers/irqchip/Makefile                 |  1 +
->>>  drivers/irqchip/irq-ath79-cpu.c          | 97
->>> ++++++++++++++++++++++++++++++++ 4 files changed, 105
->>> insertions(+), 75 deletions(-) create mode 100644
->>> drivers/irqchip/irq-ath79-cpu.c
->>>
->  
->  [...]
-> 
->>> +asmlinkage void plat_irq_dispatch(void)
->>> +{
->>> +	unsigned long pending;
->>> +	int irq;
->>> +
->>> +	pending = read_c0_status() & read_c0_cause() & ST0_IM;
->>> +
->>> +	if (!pending) {
->>> +		spurious_interrupt();
->>> +		return;
->>> +	}
->>> +
->>> +	pending >>= CAUSEB_IP;
->>> +	while (pending) {
->>> +		irq = fls(pending) - 1;
->>> +		if (irq < ARRAY_SIZE(irq_wb_chan) && irq_wb_chan[irq] != -1)
->>> +			ath79_ddr_wb_flush(irq_wb_chan[irq]);
->>> +		do_IRQ(MIPS_CPU_IRQ_BASE + irq);
->>
->> I'm rather unfamiliar with the MIPS IRQ handling, but I'm vaguely
->> surprised by the lack of domain. How do you unsure that the IRQ space
->> used here doesn't clash with the one created in your "misc" irqchip?
-> 
-> This driver extend the irq-mips-cpu driver which take care of setting up
-> a legacy domain starting from MIPS_CPU_IRQ_BASE for these interrupts. I
-> don't find this very nice either, but this patch is about moving the
-> code out of arch/mips, so I tried to minimize unrelated changes.
+Hi!
 
-As long as there is an underlying domain reserving the CPU range, then
-this is fine.
+I have tried to run linux on TP-LINK WR1043ND v1.8.
 
-So for this patch:
+I use branch master from git://git.linux-mips.org/pub/scm/ralf/linux
 
-Acked-by: Marc Zyngier <marc.zyngier@arm.com>
+I see a problem with UART speed setup. There is no UART output after
+serial port initialization. Here is the last correct linux output:
 
-	M.
--- 
-Jazz is not dead. It just smells funny...
+  Serial: 8250/16550 driver, 4 ports, IRQ sharing disabled
+  console [ttyS0] disabled
+  18020000.uart: ttyS0 at MMIO 0x18020000 (irq = 11, base_baud = 12500000) is a 8250
+
+
+I can disable UART speed setup in 8250 driver:
+
+--- a/drivers/tty/serial/8250/8250_port.c
++++ b/drivers/tty/serial/8250/8250_port.c
+@@ -2208,6 +2208,8 @@ static void serial8250_set_divisor(struct uart_port *port, unsigned int baud,
+ {
+        struct uart_8250_port *up = up_to_u8250p(port);
+ 
++       return;
++
+        /* Workaround to enable 115200 baud on OMAP1510 internal ports */
+        if (is_omap1510_8250(up)) {
+                if (baud == 115200) {
+
+With this very very dirty hack linux works fine.
+
+I suppose there is a problem in arch/mips/ath79/clock.c
+
+I have tryed to cherry-pick your 'MIPS: ath79: Fix the ar913x reference clock rate'
+and 'MIPS: ath79: Fix the ar724x clock calculation' commits from
+your github ath79 branch at https://github.com/AlbanBedel/linux/tree/ath79
+but these patches don't help me.
+
+Could you please try to reproduce the problem?
+
+-- 
+Best regards,
+  Antony Pavlov

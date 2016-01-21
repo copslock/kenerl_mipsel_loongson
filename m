@@ -1,57 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Jan 2016 11:00:12 +0100 (CET)
-Received: from mail-lf0-f66.google.com ([209.85.215.66]:33632 "EHLO
-        mail-lf0-f66.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27009491AbcAUJ7lgfiVs (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 21 Jan 2016 10:59:41 +0100
-Received: by mail-lf0-f66.google.com with SMTP id z62so1968862lfd.0
-        for <linux-mips@linux-mips.org>; Thu, 21 Jan 2016 01:59:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=pPqpPJ/sHMVJfVrJUotta+rKUw82ZhG6ipQ5opgnjZk=;
-        b=0H0pRtg+g+vsfGZ+aCw6mcmf6vN1AqpG+fxQp8Yn9KxxB7r3UAYfT8mYyB3MNYGtcA
-         XagEHVcYZIC+Hp0RtHKUKgEivMFgmzfhISkGjC6Us36pZCd+bXtamFx9CBN5I/M2yeLC
-         qkYSTaL2JERy7HjnQmvo5j8y76SROCRkQSNLSTZ2U7L+wqBKznv5c4Hb+dsxZ8eEhSYm
-         r+wNZTFC4ablG/+f3y48XXhuY+PelpPp2zOv4c3XY2uig+PcPIH2pIeDdAAWtAyC8DUI
-         KgDgsAq7que5nId3c2P9JJA7iB8i0Gztms3Wt8li1WJ9SJw/pPlt3whBMxD8XdsosZud
-         Wn6g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=pPqpPJ/sHMVJfVrJUotta+rKUw82ZhG6ipQ5opgnjZk=;
-        b=CRxvfphplDl2liXnmiQpJ+BbNXY5D37/umCaeHZ+1ngJ0OC5NosqDCquZpTv1RsysH
-         UMPY61sQoWr+ejjyCWU4mPSVF1ecKp+PsgI8IlvYd7IxwU7az+IhpI6cFwur56tfxo5R
-         NMGgkxpO3Rcu/kx0+rRhXJv/f2qxdXL2DHeK9HvaJlXM5N4Xjweedi6LgwJgmrhKEuj8
-         ad5boEmrjCVPILF5quXG5y2Cwc4A7gwoC5Ux7HJICGHt6HxuSqmGsTPB0pkB10XIybAu
-         7F+QguEB2kjtKrRDbUIkluxaz8Io9CmmN6PPkVF+RKFKfs4REB1D13BcV6PfNrIq7hqe
-         /2wQ==
-X-Gm-Message-State: ALoCoQlWjpybJit01eK3acq1rDf5fM3jjckKkGOOwJMhg3DnBXMQ0WaS30VeuMpF/7o2v+uEZyAPDvLlLR7w1sLhJUPDFTf3MA==
-X-Received: by 10.25.3.133 with SMTP id 127mr15522256lfd.50.1453370376279;
-        Thu, 21 Jan 2016 01:59:36 -0800 (PST)
-Received: from localhost.localdomain (ppp109-252-26-184.pppoe.spdop.ru. [109.252.26.184])
-        by smtp.gmail.com with ESMTPSA id i127sm86367lfd.3.2016.01.21.01.59.31
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Thu, 21 Jan 2016 01:59:32 -0800 (PST)
-From:   Antony Pavlov <antonynpavlov@gmail.com>
-To:     devicetree@vger.kernel.org
-Cc:     Antony Pavlov <antonynpavlov@gmail.com>,
-        Alban Bedel <albeu@free.fr>, linux-mips@linux-mips.org
-Subject: [PATCH 3/3] MIPS: dts: qca: ar9132: use short references for uart and spi nodes
-Date:   Thu, 21 Jan 2016 12:59:05 +0300
-Message-Id: <1453370345-16688-4-git-send-email-antonynpavlov@gmail.com>
-X-Mailer: git-send-email 2.6.2
-In-Reply-To: <1453370345-16688-1-git-send-email-antonynpavlov@gmail.com>
-References: <1453370345-16688-1-git-send-email-antonynpavlov@gmail.com>
-Return-Path: <antonynpavlov@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Jan 2016 11:19:30 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:58254 "EHLO
+        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S27009479AbcAUKT15tkZs (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 21 Jan 2016 11:19:27 +0100
+Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
+        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 682B341F8DD4;
+        Thu, 21 Jan 2016 10:19:22 +0000 (GMT)
+Received: from mailapp01.imgtec.com ([10.100.180.242])
+  by imgpgp01.kl.imgtec.org (PGP Universal service);
+  Thu, 21 Jan 2016 10:19:22 +0000
+X-PGP-Universal: processed;
+        by imgpgp01.kl.imgtec.org on Thu, 21 Jan 2016 10:19:22 +0000
+Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
+        by Websense Email Security Gateway with ESMTPS id 4BB7BB5D887AF;
+        Thu, 21 Jan 2016 10:19:20 +0000 (GMT)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
+ 14.3.235.1; Thu, 21 Jan 2016 10:19:22 +0000
+Received: from localhost (192.168.154.110) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Thu, 21 Jan
+ 2016 10:19:21 +0000
+Date:   Thu, 21 Jan 2016 10:19:21 +0000
+From:   James Hogan <james.hogan@imgtec.com>
+To:     Paul Burton <paul.burton@imgtec.com>
+CC:     Michal Marek <mmarek@suse.com>, <linux-kernel@vger.kernel.org>,
+        "Heinrich Schuchardt" <xypron.glpk@gmx.de>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        <linux-kbuild@vger.kernel.org>, <linux-arch@vger.kernel.org>,
+        <linux-mips@linux-mips.org>
+Subject: Re: [PATCH v2 2/2] kbuild: Remove stale asm-generic wrappers
+Message-ID: <20160121101921.GC24198@jhogan-linux.le.imgtec.org>
+References: <1453210670-12596-1-git-send-email-james.hogan@imgtec.com>
+ <1453210670-12596-3-git-send-email-james.hogan@imgtec.com>
+ <20160121000342.GA7538@NP-P-BURTON>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="bAmEntskrkuBymla"
+Content-Disposition: inline
+In-Reply-To: <20160121000342.GA7538@NP-P-BURTON>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+X-Originating-IP: [192.168.154.110]
+X-ESG-ENCRYPT-TAG: 30575414
+Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51270
+X-archive-position: 51271
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: antonynpavlov@gmail.com
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -64,121 +64,154 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: Alban Bedel <albeu@free.fr>
-Cc: linux-mips@linux-mips.org
-Cc: devicetree@vger.kernel.org
----
- arch/mips/boot/dts/qca/ar9132.dtsi               |  4 +-
- arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts | 70 +++++++++++-------------
- 2 files changed, 35 insertions(+), 39 deletions(-)
+--bAmEntskrkuBymla
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/arch/mips/boot/dts/qca/ar9132.dtsi b/arch/mips/boot/dts/qca/ar9132.dtsi
-index 84787e30..f197815 100644
---- a/arch/mips/boot/dts/qca/ar9132.dtsi
-+++ b/arch/mips/boot/dts/qca/ar9132.dtsi
-@@ -52,7 +52,7 @@
- 				#qca,ddr-wb-channel-cells = <1>;
- 			};
- 
--			uart@18020000 {
-+			uart: uart@18020000 {
- 				compatible = "ns8250";
- 				reg = <0x18020000 0x20>;
- 				interrupts = <3>;
-@@ -122,7 +122,7 @@
- 			};
- 		};
- 
--		spi@1f000000 {
-+		spi: spi@1f000000 {
- 			compatible = "qca,ar9132-spi", "qca,ar7100-spi";
- 			reg = <0x1f000000 0x10>;
- 
-diff --git a/arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts b/arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts
-index 10905f6..533d6e8 100644
---- a/arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts
-+++ b/arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts
-@@ -14,43 +14,6 @@
- 		reg = <0x0 0x2000000>;
- 	};
- 
--	ahb {
--		apb {
--			uart@18020000 {
--				status = "okay";
--			};
--		};
--
--		spi@1f000000 {
--			status = "okay";
--			num-cs = <1>;
--
--			flash@0 {
--				#address-cells = <1>;
--				#size-cells = <1>;
--				compatible = "s25sl064a";
--				reg = <0>;
--				spi-max-frequency = <25000000>;
--
--				partition@0 {
--					label = "u-boot";
--					reg = <0x000000 0x020000>;
--				};
--
--				partition@1 {
--					label = "firmware";
--					reg = <0x020000 0x7D0000>;
--				};
--
--				partition@2 {
--					label = "art";
--					reg = <0x7F0000 0x010000>;
--					read-only;
--				};
--			};
--		};
--	};
--
- 	gpio-keys {
- 		compatible = "gpio-keys-polled";
- 		#address-cells = <1>;
-@@ -96,3 +59,36 @@
- 		};
- 	};
- };
-+
-+&uart {
-+	status = "okay";
-+};
-+
-+&spi {
-+	status = "okay";
-+	num-cs = <1>;
-+
-+	flash@0 {
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+		compatible = "s25sl064a";
-+		reg = <0>;
-+		spi-max-frequency = <25000000>;
-+
-+		partition@0 {
-+			label = "u-boot";
-+			reg = <0x000000 0x020000>;
-+		};
-+
-+		partition@1 {
-+			label = "firmware";
-+			reg = <0x020000 0x7D0000>;
-+		};
-+
-+		partition@2 {
-+			label = "art";
-+			reg = <0x7F0000 0x010000>;
-+			read-only;
-+		};
-+	};
-+};
--- 
-2.6.2
+On Thu, Jan 21, 2016 at 12:03:42AM +0000, Paul Burton wrote:
+> On Tue, Jan 19, 2016 at 01:37:50PM +0000, James Hogan wrote:
+> > When a header file is removed from generic-y (often accompanied by the
+> > addition of an arch specific header), the generated wrapper file will
+> > persist, and in some cases may still take precedence over the new arch
+> > header.
+> >=20
+> > For example commit f1fe2d21f4e1 ("MIPS: Add definitions for extended
+> > context") removed ucontext.h from generic-y in arch/mips/include/asm/,
+> > and added an arch/mips/include/uapi/asm/ucontext.h. The continued use of
+> > the wrapper when reusing a dirty build tree resulted in build failures
+> > in arch/mips/kernel/signal.c:
+> >=20
+> > arch/mips/kernel/signal.c: In function =E2=80=98sc_to_extcontext=E2=80=
+=99:
+> > arch/mips/kernel/signal.c:142:12: error: =E2=80=98struct ucontext=E2=80=
+=99 has no member named =E2=80=98uc_extcontext=E2=80=99
+> >   return &uc->uc_extcontext;
+> >             ^
+> >=20
+> > Fix by detecting and removing wrapper headers in generated header
+> > directories that do not correspond to a filename in generic-y, genhdr-y,
+> > or the newly introduced generated-y.
+> >=20
+> > Reported-by: Jacek Anaszewski <j.anaszewski@samsung.com>
+> > Reported-by: Hauke Mehrtens <hauke@hauke-m.de>
+> > Reported-by: Heinrich Schuchardt <xypron.glpk@gmx.de>
+> > Signed-off-by: James Hogan <james.hogan@imgtec.com>
+> > Cc: Michal Marek <mmarek@suse.com>
+> > Cc: Arnd Bergmann <arnd@arndb.de>
+> > Cc: Ralf Baechle <ralf@linux-mips.org>
+> > Cc: Paul Burton <paul.burton@imgtec.com>
+> > Cc: Florian Fainelli <f.fainelli@gmail.com>
+> > Cc: linux-kbuild@vger.kernel.org
+> > Cc: linux-arch@vger.kernel.org
+> > Cc: linux-mips@linux-mips.org
+> > ---
+> > Changes in v2:
+> > - Rewrite a bit, drawing inspiration from Makefile.headersinst.
+> > - Exclude genhdr-y and generated-y (thanks to kbuild test robot).
+> > ---
+> >  scripts/Makefile.asm-generic | 17 ++++++++++++++++-
+> >  1 file changed, 16 insertions(+), 1 deletion(-)
+> >=20
+> > diff --git a/scripts/Makefile.asm-generic b/scripts/Makefile.asm-generic
+> > index 045e0098e962..24c29f16f029 100644
+> > --- a/scripts/Makefile.asm-generic
+> > +++ b/scripts/Makefile.asm-generic
+> > @@ -13,11 +13,26 @@ include scripts/Kbuild.include
+> >  # Create output directory if not already present
+> >  _dummy :=3D $(shell [ -d $(obj) ] || mkdir -p $(obj))
+> > =20
+> > +# Stale wrappers when the corresponding files are removed from generic=
+-y
+> > +# need removing.
+> > +generated-y   :=3D $(generic-y) $(genhdr-y) $(generated-y)
+> > +all-files     :=3D $(patsubst %, $(obj)/%, $(generated-y))
+> > +old-headers   :=3D $(wildcard $(obj)/*.h)
+> > +unwanted      :=3D $(filter-out $(all-files),$(old-headers))
+>=20
+> Hi James,
+>=20
+> Thanks a bunch for fixing this!
+
+FTR, I noticed yesterday it fixes a similar case when switching v4.3 to
+v4.4 too:
+
+arch/mips/kernel/../../../fs/binfmt_elf.c In function =E2=80=98create_elf_t=
+ables=E2=80=99:
+=2E/arch/mips/include/asm/elf.h +425 :14: error: =E2=80=98AT_SYSINFO_EHDR=
+=E2=80=99 undeclared (first use in this function)
+  NEW_AUX_ENT(AT_SYSINFO_EHDR,     \
+              ^
+
+Due to commit ebb5e78cc634 ("MIPS: Initial implementation of a VDSO")
+adding uapi/asm/auxvec.h and changing generic-y to header-y. Should
+ucontext.h be exported via header-y too?
+
+With these patches, it removes the stale file:
+  REMOVE  arch/mips/include/generated/uapi/asm/auxvec.h
+
+>=20
+> Though is it my sleepy self or are all-files & old-headers misnomers?
+> That is, isn't all-files actually a list of headers to be kept, and
+> old-headers actually the list of all (header) files?
+
+I've followed the naming in Makefile.headersinst. I read all-files as
+"all the files we care about" (i.e. its a combination of several sets of
+generated files, hence "all") and old-headers as in "existing headers"
+(since it won't include files which haven't been generated yet).
+
+all-files could perhaps be renamed new-headers, but that could be
+misleading too.
+
+Cheers
+James
+
+>=20
+> Thanks,
+>     Paul
+>=20
+> > +
+> >  quiet_cmd_wrap =3D WRAP    $@
+> >  cmd_wrap =3D echo "\#include <asm-generic/$*.h>" >$@
+> > =20
+> > -all: $(patsubst %, $(obj)/%, $(generic-y))
+> > +quiet_cmd_remove =3D REMOVE  $(unwanted)
+> > +cmd_remove =3D rm -f $(unwanted)
+> > +
+> > +all: $(patsubst %, $(obj)/%, $(generic-y)) FORCE
+> > +	$(if $(unwanted),$(call cmd,remove),)
+> >  	@:
+> > =20
+> >  $(obj)/%.h:
+> >  	$(call cmd,wrap)
+> > +
+> > +.PHONY: $(PHONY)
+> > +PHONY +=3D FORCE
+> > +FORCE: ;
+> > --=20
+> > 2.4.10
+> >=20
+
+--bAmEntskrkuBymla
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQIcBAEBCAAGBQJWoLCpAAoJEGwLaZPeOHZ6TaYP/iZf6/2NywLVhS2CqOESHACj
+QCJ192fD3M6pC8KZ0oMw0mqNGupk4G3y7Q1S5uLhm1mI5Ggu3kmvM4x062jFYAZ5
+TQJmpqOqrRAhCWCcEr3MPY3YoPk/ReCs6Z3CtvZ2h+NzG/69GWGZ9gvYfvcVYs9G
+FbzOfPvQq4vUTV3wYdZfkep4bVDFIgUJoCLJuPpTvzcIwDNXu+J8YNYwhphOkFJO
+bsLFpfqd0s/fWhv/hrCf0q1ZM4M899D2wJjOumCeM2rTmzw/CQLbtxOEoyp4aZq9
+lIl2hMgN/cGuBv86dRLwdlOI3hg5sDu74HNQQpXgm9dOFe+TMUoLekeekWs7CEqe
+3lN4zy7HSn6tKjk/OjK5o4vkBUKFIrRh1rV7aSQ85CxuClvaPeSZ5aWS6pVrGXJg
+VaTXeqMF49ref03vs28iQ3ZvwiyLlow5v9JM4z8hSJoXil5SIfU3YxCa57pcqlTB
+92pNm5zipZK8pvMdGIPkkp3V1I07nnUH/ziUIWIPgnVNbJe5GjHDVUIYChVtJJoQ
+0P7ScIJZ2D0ggdOL2+EBZ+bAYzIuP4y5x0K2G9SXp7pfy/VJhVH7Xtpzy/cSpDgS
+Fe0+BuS6P8EUacScrN99EdoNCs0HaQIEXJKvPRcj5qFPWe8oCwWv40PpesdUxZ8c
+N1/7yI/91ymf1KdLbHIs
+=aDXE
+-----END PGP SIGNATURE-----
+
+--bAmEntskrkuBymla--

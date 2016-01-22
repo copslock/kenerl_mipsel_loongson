@@ -1,21 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Jan 2016 06:21:45 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:49542 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Jan 2016 06:22:04 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:20999 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27009598AbcAVFVNp8Fzz (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 22 Jan 2016 06:21:13 +0100
+        with ESMTP id S27009770AbcAVFV063LZz (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 22 Jan 2016 06:21:26 +0100
 Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Websense Email Security Gateway with ESMTPS id 4313D82F13103;
-        Fri, 22 Jan 2016 05:21:07 +0000 (GMT)
+        by Websense Email Security Gateway with ESMTPS id 5AA6C161FDDB7;
+        Fri, 22 Jan 2016 05:21:20 +0000 (GMT)
 Received: from [10.100.200.15] (10.100.200.15) by HHMAIL01.hh.imgtec.org
  (10.100.10.21) with Microsoft SMTP Server id 14.3.235.1; Fri, 22 Jan 2016
- 05:21:07 +0000
-Date:   Fri, 22 Jan 2016 05:21:34 +0000
+ 05:21:20 +0000
+Date:   Fri, 22 Jan 2016 05:21:47 +0000
 From:   "Maciej W. Rozycki" <macro@imgtec.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
 CC:     Aurelien Jarno <aurelien@aurel32.net>, <linux-mips@linux-mips.org>
-Subject: [PATCH 6/7] MIPS: inst.h: Fix some instruction descriptions
+Subject: [PATCH 7/7] MIPS: math-emu: dsemul: Reduce `get_isa16_mode'
+ clutter
 In-Reply-To: <alpine.DEB.2.00.1601220227590.5958@tp.orcam.me.uk>
-Message-ID: <alpine.DEB.2.00.1601220254560.5958@tp.orcam.me.uk>
+Message-ID: <alpine.DEB.2.00.1601220255140.5958@tp.orcam.me.uk>
 References: <alpine.DEB.2.00.1601220227590.5958@tp.orcam.me.uk>
 User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
 MIME-Version: 1.0
@@ -25,7 +26,7 @@ Return-Path: <Maciej.Rozycki@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51297
+X-archive-position: 51298
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -42,42 +43,83 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Fix the description of the microMIPS NOP16 encoding or MM_NOP16, which 
-is not equivalent to the MIPS16 NOP instruction.  This is 0x0c00 and 
-represents the microMIPS `MOVE16 $0, $0' operation, whereas MIPS16 NOP 
-is encoded as 0x6500, representing `MOVE $0, $16'.
-
-Also fix a typo in `mm_fp0_format' description.
-
 Signed-off-by: Maciej W. Rozycki <macro@imgtec.com>
 ---
-Ralf,
-
- I don't think these changes are worth two separate patches.  Please 
-apply.
-
-  Maciej
-
-linux-mips-inst-comment-fix.diff
-Index: linux-sfr-test/arch/mips/include/uapi/asm/inst.h
+linux-mips-dsemul-isa16.diff
+Index: linux-sfr-sead/arch/mips/math-emu/dsemul.c
 ===================================================================
---- linux-sfr-test.orig/arch/mips/include/uapi/asm/inst.h	2016-01-20 21:52:36.000000000 +0000
-+++ linux-sfr-test/arch/mips/include/uapi/asm/inst.h	2016-01-20 21:54:36.191277000 +0000
-@@ -529,7 +529,7 @@ enum MIPS6e_i8_func {
- };
- 
- /*
-- * (microMIPS & MIPS16e) NOP instruction.
-+ * (microMIPS) NOP instruction.
+--- linux-sfr-sead.orig/arch/mips/math-emu/dsemul.c	2016-01-22 01:58:16.000000000 +0000
++++ linux-sfr-sead/arch/mips/math-emu/dsemul.c	2016-01-22 01:59:52.315227000 +0000
+@@ -38,6 +38,7 @@ struct emuframe {
   */
- #define MM_NOP16	0x0c00
+ int mips_dsemul(struct pt_regs *regs, mips_instruction ir, unsigned long cpc)
+ {
++	int isa16 = get_isa16_mode(regs->cp0_epc);
+ 	mips_instruction break_math;
+ 	struct emuframe __user *fr;
+ 	int err;
+@@ -47,7 +48,7 @@ int mips_dsemul(struct pt_regs *regs, mi
+ 		return -1;
  
-@@ -679,7 +679,7 @@ struct fp0_format {		/* FPU multiply and
- 	;))))))
- };
+ 	/* microMIPS instructions */
+-	if (get_isa16_mode(regs->cp0_epc)) {
++	if (isa16) {
+ 		union mips_instruction insn = { .word = ir };
  
--struct mm_fp0_format {		/* FPU multipy and add format (microMIPS) */
-+struct mm_fp0_format {		/* FPU multiply and add format (microMIPS) */
- 	__BITFIELD_FIELD(unsigned int opcode : 6,
- 	__BITFIELD_FIELD(unsigned int ft : 5,
- 	__BITFIELD_FIELD(unsigned int fs : 5,
+ 		/* NOP16 aka MOVE16 $0, $0 */
+@@ -81,7 +82,7 @@ int mips_dsemul(struct pt_regs *regs, mi
+ 	 * multiprocessor support.  For Linux we use a BREAK 514
+ 	 * instruction causing a breakpoint exception.
+ 	 */
+-	break_math = BREAK_MATH(get_isa16_mode(regs->cp0_epc));
++	break_math = BREAK_MATH(isa16);
+ 
+ 	/* Ensure that the two instructions are in the same cache line */
+ 	fr = (struct emuframe __user *)
+@@ -91,7 +92,7 @@ int mips_dsemul(struct pt_regs *regs, mi
+ 	if (unlikely(!access_ok(VERIFY_WRITE, fr, sizeof(struct emuframe))))
+ 		return SIGBUS;
+ 
+-	if (get_isa16_mode(regs->cp0_epc)) {
++	if (isa16) {
+ 		err = __put_user(ir >> 16,
+ 				 (u16 __user *)(&fr->emul));
+ 		err |= __put_user(ir & 0xffff,
+@@ -113,8 +114,7 @@ int mips_dsemul(struct pt_regs *regs, mi
+ 		return SIGBUS;
+ 	}
+ 
+-	regs->cp0_epc = ((unsigned long) &fr->emul) |
+-		get_isa16_mode(regs->cp0_epc);
++	regs->cp0_epc = (unsigned long)&fr->emul | isa16;
+ 
+ 	flush_cache_sigtramp((unsigned long)&fr->emul);
+ 
+@@ -123,6 +123,7 @@ int mips_dsemul(struct pt_regs *regs, mi
+ 
+ int do_dsemulret(struct pt_regs *xcp)
+ {
++	int isa16 = get_isa16_mode(xcp->cp0_epc);
+ 	struct emuframe __user *fr;
+ 	unsigned long epc;
+ 	u32 insn, cookie;
+@@ -145,7 +146,7 @@ int do_dsemulret(struct pt_regs *xcp)
+ 	 *  - Is the instruction pointed to by the EPC an BREAK_MATH?
+ 	 *  - Is the following memory word the BD_COOKIE?
+ 	 */
+-	if (get_isa16_mode(xcp->cp0_epc)) {
++	if (isa16) {
+ 		err = __get_user(instr[0],
+ 				 (u16 __user *)(&fr->badinst));
+ 		err |= __get_user(instr[1],
+@@ -156,8 +157,8 @@ int do_dsemulret(struct pt_regs *xcp)
+ 	}
+ 	err |= __get_user(cookie, &fr->cookie);
+ 
+-	if (unlikely(err || insn != BREAK_MATH(get_isa16_mode(xcp->cp0_epc)) ||
+-		     cookie != BD_COOKIE)) {
++	if (unlikely(err ||
++		     insn != BREAK_MATH(isa16) || cookie != BD_COOKIE)) {
+ 		MIPS_FPU_EMU_INC_STATS(errors);
+ 		return 0;
+ 	}

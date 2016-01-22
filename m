@@ -1,36 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Jan 2016 06:22:04 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:20999 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Jan 2016 11:58:45 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:62167 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27009770AbcAVFV063LZz (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 22 Jan 2016 06:21:26 +0100
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Websense Email Security Gateway with ESMTPS id 5AA6C161FDDB7;
-        Fri, 22 Jan 2016 05:21:20 +0000 (GMT)
-Received: from [10.100.200.15] (10.100.200.15) by HHMAIL01.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server id 14.3.235.1; Fri, 22 Jan 2016
- 05:21:20 +0000
-Date:   Fri, 22 Jan 2016 05:21:47 +0000
-From:   "Maciej W. Rozycki" <macro@imgtec.com>
+        with ESMTP id S27009517AbcAVK6nzOyqh (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 22 Jan 2016 11:58:43 +0100
+Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
+        by Websense Email Security Gateway with ESMTPS id 4830ECE1FB45B;
+        Fri, 22 Jan 2016 10:58:36 +0000 (GMT)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
+ 14.3.235.1; Fri, 22 Jan 2016 10:58:37 +0000
+Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
+ LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
+ 14.3.210.2; Fri, 22 Jan 2016 10:58:37 +0000
+From:   James Hogan <james.hogan@imgtec.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     Aurelien Jarno <aurelien@aurel32.net>, <linux-mips@linux-mips.org>
-Subject: [PATCH 7/7] MIPS: math-emu: dsemul: Reduce `get_isa16_mode'
- clutter
-In-Reply-To: <alpine.DEB.2.00.1601220227590.5958@tp.orcam.me.uk>
-Message-ID: <alpine.DEB.2.00.1601220255140.5958@tp.orcam.me.uk>
-References: <alpine.DEB.2.00.1601220227590.5958@tp.orcam.me.uk>
-User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
+CC:     Manuel Lauss <manuel.lauss@gmail.com>,
+        James Hogan <james.hogan@imgtec.com>,
+        Leonid Yegoshin <leonid.yegoshin@imgtec.com>,
+        <linux-mips@linux-mips.org>
+Subject: [PATCH 0/2] MIPS: I6400: Avoid dcache flushes
+Date:   Fri, 22 Jan 2016 10:58:24 +0000
+Message-ID: <1453460306-8505-1-git-send-email-james.hogan@imgtec.com>
+X-Mailer: git-send-email 2.4.10
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-X-Originating-IP: [10.100.200.15]
-Return-Path: <Maciej.Rozycki@imgtec.com>
+Content-Type: text/plain
+X-Originating-IP: [192.168.154.110]
+Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51298
+X-archive-position: 51299
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@imgtec.com
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,83 +46,29 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Signed-off-by: Maciej W. Rozycki <macro@imgtec.com>
----
-linux-mips-dsemul-isa16.diff
-Index: linux-sfr-sead/arch/mips/math-emu/dsemul.c
-===================================================================
---- linux-sfr-sead.orig/arch/mips/math-emu/dsemul.c	2016-01-22 01:58:16.000000000 +0000
-+++ linux-sfr-sead/arch/mips/math-emu/dsemul.c	2016-01-22 01:59:52.315227000 +0000
-@@ -38,6 +38,7 @@ struct emuframe {
-  */
- int mips_dsemul(struct pt_regs *regs, mips_instruction ir, unsigned long cpc)
- {
-+	int isa16 = get_isa16_mode(regs->cp0_epc);
- 	mips_instruction break_math;
- 	struct emuframe __user *fr;
- 	int err;
-@@ -47,7 +48,7 @@ int mips_dsemul(struct pt_regs *regs, mi
- 		return -1;
- 
- 	/* microMIPS instructions */
--	if (get_isa16_mode(regs->cp0_epc)) {
-+	if (isa16) {
- 		union mips_instruction insn = { .word = ir };
- 
- 		/* NOP16 aka MOVE16 $0, $0 */
-@@ -81,7 +82,7 @@ int mips_dsemul(struct pt_regs *regs, mi
- 	 * multiprocessor support.  For Linux we use a BREAK 514
- 	 * instruction causing a breakpoint exception.
- 	 */
--	break_math = BREAK_MATH(get_isa16_mode(regs->cp0_epc));
-+	break_math = BREAK_MATH(isa16);
- 
- 	/* Ensure that the two instructions are in the same cache line */
- 	fr = (struct emuframe __user *)
-@@ -91,7 +92,7 @@ int mips_dsemul(struct pt_regs *regs, mi
- 	if (unlikely(!access_ok(VERIFY_WRITE, fr, sizeof(struct emuframe))))
- 		return SIGBUS;
- 
--	if (get_isa16_mode(regs->cp0_epc)) {
-+	if (isa16) {
- 		err = __put_user(ir >> 16,
- 				 (u16 __user *)(&fr->emul));
- 		err |= __put_user(ir & 0xffff,
-@@ -113,8 +114,7 @@ int mips_dsemul(struct pt_regs *regs, mi
- 		return SIGBUS;
- 	}
- 
--	regs->cp0_epc = ((unsigned long) &fr->emul) |
--		get_isa16_mode(regs->cp0_epc);
-+	regs->cp0_epc = (unsigned long)&fr->emul | isa16;
- 
- 	flush_cache_sigtramp((unsigned long)&fr->emul);
- 
-@@ -123,6 +123,7 @@ int mips_dsemul(struct pt_regs *regs, mi
- 
- int do_dsemulret(struct pt_regs *xcp)
- {
-+	int isa16 = get_isa16_mode(xcp->cp0_epc);
- 	struct emuframe __user *fr;
- 	unsigned long epc;
- 	u32 insn, cookie;
-@@ -145,7 +146,7 @@ int do_dsemulret(struct pt_regs *xcp)
- 	 *  - Is the instruction pointed to by the EPC an BREAK_MATH?
- 	 *  - Is the following memory word the BD_COOKIE?
- 	 */
--	if (get_isa16_mode(xcp->cp0_epc)) {
-+	if (isa16) {
- 		err = __get_user(instr[0],
- 				 (u16 __user *)(&fr->badinst));
- 		err |= __get_user(instr[1],
-@@ -156,8 +157,8 @@ int do_dsemulret(struct pt_regs *xcp)
- 	}
- 	err |= __get_user(cookie, &fr->cookie);
- 
--	if (unlikely(err || insn != BREAK_MATH(get_isa16_mode(xcp->cp0_epc)) ||
--		     cookie != BD_COOKIE)) {
-+	if (unlikely(err ||
-+		     insn != BREAK_MATH(isa16) || cookie != BD_COOKIE)) {
- 		MIPS_FPU_EMU_INC_STATS(errors);
- 		return 0;
- 	}
+These patches allow I6400 core to avoid dcache flushes when making
+recently modified data available to icache.
+
+I6400 effectively can fill icache from dirty dcache contents, which
+means cpu_has_ic_fills_f_dc can evaluate to true (see patch 2).
+
+However there are a couple of bugs in the cache handling when
+cpu_has_ic_fills_f_dc, which need fixing first (see patch 1). That the
+CPU fills icache from dcache does not imply that the icache is coherent
+with dcache. Stale lines still need flushing from the icache, even if
+lines in the dcache don't need writing back first.
+
+James Hogan (2):
+  MIPS: c-r4k: Sync icache when it fills from dcache
+  MIPS: I6400: Icache fills from dcache
+
+ arch/mips/mm/c-r4k.c | 12 ++++++++++--
+ arch/mips/mm/init.c  |  2 +-
+ 2 files changed, 11 insertions(+), 3 deletions(-)
+
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Leonid Yegoshin <leonid.yegoshin@imgtec.com>
+Cc: Manuel Lauss <manuel.lauss@gmail.com>
+Cc: linux-mips@linux-mips.org
+-- 
+2.4.10

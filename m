@@ -1,41 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Jan 2016 11:59:19 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:53705 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27014850AbcAVK6pCXN-h (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 22 Jan 2016 11:58:45 +0100
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Websense Email Security Gateway with ESMTPS id B9695A18E0012;
-        Fri, 22 Jan 2016 10:58:37 +0000 (GMT)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
- 14.3.235.1; Fri, 22 Jan 2016 10:58:39 +0000
-Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
- LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.210.2; Fri, 22 Jan 2016 10:58:38 +0000
-From:   James Hogan <james.hogan@imgtec.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     Manuel Lauss <manuel.lauss@gmail.com>,
-        James Hogan <james.hogan@imgtec.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Jan 2016 12:26:29 +0100 (CET)
+Received: from youngberry.canonical.com ([91.189.89.112]:40361 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27009519AbcAVL01hI1y4 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 22 Jan 2016 12:26:27 +0100
+Received: from 1.general.henrix.uk.vpn ([10.172.192.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_128_CBC_SHA1:16)
+        (Exim 4.76)
+        (envelope-from <luis.henriques@canonical.com>)
+        id 1aMZrG-0002oU-MM; Fri, 22 Jan 2016 11:26:26 +0000
+From:   Luis Henriques <luis.henriques@canonical.com>
+To:     James Hogan <james.hogan@imgtec.com>
+Cc:     Markos Chandras <markos.chandras@imgtec.com>,
+        Paul Burton <paul.burton@imgtec.com>,
         Leonid Yegoshin <leonid.yegoshin@imgtec.com>,
-        <linux-mips@linux-mips.org>
-Subject: [PATCH 2/2] MIPS: I6400: Icache fills from dcache
-Date:   Fri, 22 Jan 2016 10:58:26 +0000
-Message-ID: <1453460306-8505-3-git-send-email-james.hogan@imgtec.com>
-X-Mailer: git-send-email 2.4.10
-In-Reply-To: <1453460306-8505-1-git-send-email-james.hogan@imgtec.com>
-References: <1453460306-8505-1-git-send-email-james.hogan@imgtec.com>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.154.110]
-Return-Path: <James.Hogan@imgtec.com>
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
+        Luis Henriques <luis.henriques@canonical.com>,
+        kernel-team@lists.ubuntu.com
+Subject: [3.16.y-ckt stable] Patch "MIPS: uaccess: Fix strlen_user with EVA" has been added to the 3.16.y-ckt tree
+Date:   Fri, 22 Jan 2016 11:26:25 +0000
+Message-Id: <1453461985-22581-1-git-send-email-luis.henriques@canonical.com>
+X-Extended-Stable: 3.16
+Return-Path: <luis.henriques@canonical.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51301
+X-archive-position: 51302
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: luis.henriques@canonical.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,32 +41,24 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Coherence Manager 3 (CM3) as present in I6400 can fill icache lines
-effectively from dirty dcaches, so there is no need to flush dirty lines
-from dcaches through to L2 prior to icache invalidation.
+This is a note to let you know that I have just added a patch titled
 
-Set the MIPS_CACHE_IC_F_DC flag such that cpu_has_ic_fills_f_dc
-evaluates to true, which avoids those dcache flushes.
+    MIPS: uaccess: Fix strlen_user with EVA
 
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Leonid Yegoshin <leonid.yegoshin@imgtec.com>
-Cc: linux-mips@linux-mips.org
----
- arch/mips/mm/c-r4k.c | 1 +
- 1 file changed, 1 insertion(+)
+to the linux-3.16.y-queue branch of the 3.16.y-ckt extended stable tree 
+which can be found at:
 
-diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
-index fc7289dfaf5a..69e7e5873af3 100644
---- a/arch/mips/mm/c-r4k.c
-+++ b/arch/mips/mm/c-r4k.c
-@@ -1311,6 +1311,7 @@ static void probe_pcache(void)
- 		break;
- 
- 	case CPU_ALCHEMY:
-+	case CPU_I6400:
- 		c->icache.flags |= MIPS_CACHE_IC_F_DC;
- 		break;
- 
--- 
-2.4.10
+    http://kernel.ubuntu.com/git/ubuntu/linux.git/log/?h=linux-3.16.y-queue
+
+This patch is scheduled to be released in version 3.16.7-ckt23.
+
+If you, or anyone else, feels it should not be added to this tree, please 
+reply to this email.
+
+For more information about the 3.16.y-ckt tree, see
+https://wiki.ubuntu.com/Kernel/Dev/ExtendedStable
+
+Thanks.
+-Luis
+
+---8<------------------------------------------------------------

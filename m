@@ -1,26 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 23 Jan 2016 14:09:06 +0100 (CET)
-Received: from nbd.name ([46.4.11.11]:38347 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 23 Jan 2016 15:46:48 +0100 (CET)
+Received: from wtarreau.pck.nerim.net ([62.212.114.60]:27518 "EHLO 1wt.eu"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27008721AbcAWNJEreDJI (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 23 Jan 2016 14:09:04 +0100
-Received: by nf-2.local (Postfix, from userid 501)
-        id D47941298E90B; Sat, 23 Jan 2016 14:09:02 +0100 (CET)
-From:   Felix Fietkau <nbd@openwrt.org>
-To:     linux-mips@linux-mips.org
-Cc:     ralf@linux-mips.org, blogic@openwrt.org
-Subject: [RFC] MIPS: fix crash in __update_cache for highmem pages
-Date:   Sat, 23 Jan 2016 14:09:02 +0100
-Message-Id: <1453554542-91509-1-git-send-email-nbd@openwrt.org>
-X-Mailer: git-send-email 2.2.2
-Return-Path: <nbd@nbd.name>
+        id S27009087AbcAWOqr0kD15 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 23 Jan 2016 15:46:47 +0100
+Message-Id: <20160123141223.589159555@1wt.eu>
+User-Agent: quilt/0.63-1
+Date:   Sat, 23 Jan 2016 15:12:58 +0100
+From:   Willy Tarreau <w@1wt.eu>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Ed Swierk <eswierk@skyportsystems.com>, linux-mips@linux-mips.org,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Ben Hutchings <ben@decadent.org.uk>, Willy Tarreau <w@1wt.eu>
+Subject: [PATCH 2.6.32 37/42] MIPS: Fix restart of indirect syscalls
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-15
+In-Reply-To: <aa387f55227cb730b41e3d621bf460ff@local>
+Return-Path: <w@1wt.eu>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51322
+X-archive-position: 51323
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: nbd@openwrt.org
+X-original-sender: w@1wt.eu
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -33,76 +36,65 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-When __update_cache gets a highmem page, page_address(page) returns 0
-and the code attempts to do a cache flush on the NULL pointer leading to
-a crash.
+2.6.32-longterm review patch.  If anyone has any objections, please let me know.
 
-I have no idea if doing nothing for highmem pages is the right approach
-here, but it makes my MT7621 based device with highmem boot properly
-again.
+------------------
 
-The crash that happens early during init is this one:
+From: Ed Swierk <eswierk@skyportsystems.com>
 
-[    7.060000] CPU 0 Unable to handle kernel paging request at virtual address 00000000, epc == 80028374, ra == 800295e0
-[    7.070000] Oops[#1]:
-[    7.070000] CPU: 0 PID: 311 Comm: kmodloader Not tainted 4.3.3 #15
-[    7.070000] task: 8f9405a8 ti: 8faf0000 task.ti: 8faf0000
-[    7.070000] $ 0   : 00000000 00000001 00000000 00000001
-[    7.070000] $ 4   : 00000000 00001000 00000000 8097eb9e
-[    7.070000] $ 8   : 000000a1 00000009 8f53fd40 00000000
-[    7.070000] $12   : 00000000 00000000 00000118 00000040
-[    7.070000] $16   : 00000000 80980000 00000000 77333000
-[    7.070000] $20   : 8facbccc 00000000 00000000 00040000
-[    7.070000] $24   : ffff0000 ff000000
-[    7.070000] $28   : 8faf0000 8faf1d18 ffffffbf 800295e0
-[    7.070000] Hi    : 00000004
-[    7.070000] Lo    : 00000000
-[    7.070000] epc   : 80028374 r4k_blast_dcache_page_dc32+0x18/0xb8
-[    7.070000] ra    : 800295e0 r4k_flush_data_cache_page+0x70/0x84
-[    7.070000] Status: 11000403 KERNEL EXL IE
-[    7.070000] Cause : 40800008 (ExcCode 02)
-[    7.070000] BadVA : 00000000
-[    7.070000] PrId  : 0001992f (MIPS 1004Kc)
-[    7.070000] Modules linked in:
-[    7.070000] Process kmodloader (pid: 311, threadinfo=8faf0000, task=8f9405a8, tls=7733ec94)
-[    7.070000] Stack : 00000001 8fa21c80 00000cc8 804844c0 77333000 00001000 814711e0 800212fc
-          80488920 000200da 2388fa21 814711e0 2388fa21 814711e0 8fa26480 800ed0a8
-          8f82c000 8007790c 8faf1e48 00000007 814711e0 8f53fd5c 8faf1e00 8fa21c80
-          8f540334 00000001 8fa26480 800c5ffc 00000000 00000000 77332000 8011e214
-          00000000 00000000 00000001 00000040 00000007 8fa26480 77332000 8f540338
-          ...
-[    7.070000] Call Trace:
-[    7.070000] [<80028374>] r4k_blast_dcache_page_dc32+0x18/0xb8
-[    7.070000] [<800295e0>] r4k_flush_data_cache_page+0x70/0x84
-[    7.070000] [<800212fc>] __update_cache+0xb8/0xe4
-[    7.070000] [<800ed0a8>] do_set_pte+0x160/0x188
-[    7.070000] [<800c5ffc>] filemap_map_pages+0x1cc/0x300
-[    7.070000] [<800ed674>] handle_mm_fault+0x5a4/0xe68
-[    7.070000] [<80021a50>] __do_page_fault+0x144/0x52c
-[    7.070000] [<80005420>] ret_from_exception+0x0/0x10
-[    7.070000]
-[    7.070000]
-Code: 00001021  10430027  00000000 <bc950000> bc950020  bc950040  bc950060  bc950080  bc9500a0
-[    7.260000] ---[ end trace c024e8d58a661a38 ]---
+commit e967ef022e00bb7c2e5b1a42007abfdd52055050 upstream.
+
+When 32-bit MIPS userspace invokes a syscall indirectly via syscall(number,
+arg1, ..., arg7), the kernel looks up the actual syscall based on the given
+number, shifts the other arguments to the left, and jumps to the syscall.
+
+If the syscall is interrupted by a signal and indicates it needs to be
+restarted by the kernel (by returning ERESTARTNOINTR for example), the
+syscall must be called directly, since the number is no longer the first
+argument, and the other arguments are now staged for a direct call.
+
+Before shifting the arguments, store the syscall number in pt_regs->regs[2].
+This gets copied temporarily into pt_regs->regs[0] after the syscall returns.
+If the syscall needs to be restarted, handle_signal()/do_signal() copies the
+number back to pt_regs->reg[2], which ends up in $v0 once control returns to
+userspace.
+
+Signed-off-by: Ed Swierk <eswierk@skyportsystems.com>
+Cc: linux-mips@linux-mips.org
+Patchwork: https://patchwork.linux-mips.org/patch/8929/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+[bwh: Backported to 3.2: adjust context]
+Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
+(cherry picked from commit 08f865bba9c705aef95268a33393698e5385587e)
+Signed-off-by: Willy Tarreau <w@1wt.eu>
 ---
- arch/mips/mm/cache.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/mips/kernel/scall32-o32.S | 1 +
+ arch/mips/kernel/scall64-o32.S | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/arch/mips/mm/cache.c b/arch/mips/mm/cache.c
-index aab218c..15266bf 100644
---- a/arch/mips/mm/cache.c
-+++ b/arch/mips/mm/cache.c
-@@ -141,7 +141,11 @@ void __update_cache(struct vm_area_struct *vma, unsigned long address,
- 	pfn = pte_pfn(pte);
- 	if (unlikely(!pfn_valid(pfn)))
- 		return;
-+
- 	page = pfn_to_page(pfn);
-+	if (PageHighMem(page))
-+		return;
-+
- 	if (page_mapping(page) && Page_dcache_dirty(page)) {
- 		addr = (unsigned long) page_address(page);
- 		if (exec || pages_do_alias(addr, address & PAGE_MASK))
+diff --git a/arch/mips/kernel/scall32-o32.S b/arch/mips/kernel/scall32-o32.S
+index b72c554..44194c1 100644
+--- a/arch/mips/kernel/scall32-o32.S
++++ b/arch/mips/kernel/scall32-o32.S
+@@ -194,6 +194,7 @@ illegal_syscall:
+ 	sll	t1, t0, 3
+ 	beqz	v0, einval
+ 	lw	t2, sys_call_table(t1)		# syscall routine
++	sw	a0, PT_R2(sp)			# call routine directly on restart
+ 
+ 	/* Some syscalls like execve get their arguments from struct pt_regs
+ 	   and claim zero arguments in the syscall table. Thus we have to
+diff --git a/arch/mips/kernel/scall64-o32.S b/arch/mips/kernel/scall64-o32.S
+index 33ed571..1f7c01f 100644
+--- a/arch/mips/kernel/scall64-o32.S
++++ b/arch/mips/kernel/scall64-o32.S
+@@ -180,6 +180,7 @@ LEAF(sys32_syscall)
+ 	dsll	t1, t0, 3
+ 	beqz	v0, einval
+ 	ld	t2, sys_call_table(t1)		# syscall routine
++	sd	a0, PT_R2(sp)		# call routine directly on restart
+ 
+ 	move	a0, a1			# shift argument registers
+ 	move	a1, a2
 -- 
-2.2.2
+1.7.12.2.21.g234cd45.dirty

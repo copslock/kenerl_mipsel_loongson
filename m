@@ -1,45 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 23 Jan 2016 21:19:35 +0100 (CET)
-Received: from mail-lb0-f178.google.com ([209.85.217.178]:36597 "EHLO
-        mail-lb0-f178.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27014734AbcAWURx6PuFd (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 23 Jan 2016 21:17:53 +0100
-Received: by mail-lb0-f178.google.com with SMTP id oh2so56904119lbb.3
-        for <linux-mips@linux-mips.org>; Sat, 23 Jan 2016 12:17:53 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 23 Jan 2016 21:19:53 +0100 (CET)
+Received: from mail-lb0-f182.google.com ([209.85.217.182]:33060 "EHLO
+        mail-lb0-f182.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27014846AbcAWURyurIXd (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 23 Jan 2016 21:17:54 +0100
+Received: by mail-lb0-f182.google.com with SMTP id x4so57483891lbm.0
+        for <linux-mips@linux-mips.org>; Sat, 23 Jan 2016 12:17:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=e+J2ts10S5JGEjoIQgkwjj+Vq30pUUDNEmE1ERTazfw=;
-        b=O2uRAI6N9K0otxGQZ+AcSo8jBv2wxVuPJ3jqsy0xttEF8bUWncYAwA/Gv8XAD1QF/z
-         PEkmZt8ajEV6vOD3zJNxnU40UefEY+0LxBrqZt0+m6mPArDl88+8D3CMjhDtxJaP08hQ
-         wKtOC6mQFNthH1OCeuTwM84DOcavo5/WXS6tyUa8YGJY/zFiFwjoJEG4BnHI4ulGQpDW
-         fAUyov5XU5jVQldA0e4t+FSGi7vpMfSG5hvTyAkwQcwBecKEsKr3BGlJnOKd4gPZptAq
-         068Eh5DDIFfJB5wPiZ5CbDMbe/rT64oS9/lgBJy2s0qQa5BoAu/cqB0osLtcWJY0054B
-         xCag==
+        bh=obMFf0CmOkyqiLj7gw9dOddu0QsSzImReyjnlDcVBec=;
+        b=oQSt100I/pawisf/QhJ32DpjBu01FK57tiHGFx0I6oj14J8azoUBfTWUjhA/0tItfA
+         03etkEPI0VFE/pBlmZR82+xY+hEhd25mSKn0BfePeCpAe0P1GP7RuV6w5RveQvNTtY68
+         k0l2ZgV0Fpk6IDJguCf4mGMSznHhXx4zUuGTBB61DVtwYE+er3hqRWaHDxBeQI7ogArC
+         +78pmddUAE+lYuq++bZJi8ya/SX/aIgiXFYw40yk5d57eQk+hwrlitFROmXq8kwGstPG
+         Bk5R5YdOoYrXM5sFcN8m489PkfCTa89rRs5eyi925Ug7bU4gvcwpvA/DNaY8FAl8E/Id
+         C0hw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=e+J2ts10S5JGEjoIQgkwjj+Vq30pUUDNEmE1ERTazfw=;
-        b=Uz9JkeMhvO4Uy3zlT5YYk7eqkskcHHPzCaLtN4oFkob/1K1vqZMWYA/lCi87pXlVvN
-         Pg37NR0ebTPTOzQzb/Ins9FE+TMjBrQKYM85a2noHoW77x/yX7vZPC2+1g8bdKwJwaRC
-         u+ZYddQhvyZhRzAOdlUMOmZr2EQohNYMtAbryLhhN0f+Mjf2/FENxQrE3xjsH3/F3uE7
-         5z9yDVdBZzyrwENcUjU/fQ/UGYZzN/lkD1QIiwRRqO5TcCupeZ1Unzr96nigGe480zHl
-         Ihi/M4D5ngj17kHHbuSeiKNT6cHie7mf7ryIlX10wLusMTbBsa0F0J73w8+vd2JuwznX
-         lAjw==
-X-Gm-Message-State: AG10YOQpFSIVYu5lFPRgGb/uPQUei7wGCbuO5uqiuNEtc+2P70u1yfqcw1xzq6aa8dxgUg==
-X-Received: by 10.112.219.35 with SMTP id pl3mr2845788lbc.32.1453580268696;
-        Sat, 23 Jan 2016 12:17:48 -0800 (PST)
+        bh=obMFf0CmOkyqiLj7gw9dOddu0QsSzImReyjnlDcVBec=;
+        b=nLRICbFWXsEKAnyroGSJs7Uk0LD+/hZC0XVkf44ItNNVibd1EdeGa4lIKI9nbhLGHG
+         b50i/UMA6C4+vqqHPkcUC+bUfNJ1kUqtg/1naTX99WYCUBrxo08Z5zyXgszdjSLl49H5
+         5GUMUqEhhy1YOOuLxOmi6VTXob6UTo2dTGhpG/QYMiq8lybyAum1DesfX1CAqr5Yl8ee
+         Oe2xBRjD+nyReYGGA56XtSSs8+ORetgTQ5kbvYGqxG/aUtKcKndVR/N+9EZmaQLX5KZd
+         2UG6ygakyLQAKeAXPiDAmzRN9uToxmivPJBdjlFF35tUY63IrRDk7MXWB7lQ9KgvzKty
+         LIdQ==
+X-Gm-Message-State: AG10YOQpLwm6xb8pVnLeuZvFXB4XahmmljpHb+MAY55sRwVVy1i9YIhBrg1svFRYQSfp9Q==
+X-Received: by 10.112.72.130 with SMTP id d2mr1492598lbv.141.1453580269579;
+        Sat, 23 Jan 2016 12:17:49 -0800 (PST)
 Received: from localhost.localdomain (ppp109-252-26-184.pppoe.spdop.ru. [109.252.26.184])
-        by smtp.gmail.com with ESMTPSA id o82sm1664186lfo.47.2016.01.23.12.17.47
+        by smtp.gmail.com with ESMTPSA id o82sm1664186lfo.47.2016.01.23.12.17.48
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Sat, 23 Jan 2016 12:17:48 -0800 (PST)
+        Sat, 23 Jan 2016 12:17:49 -0800 (PST)
 From:   Antony Pavlov <antonynpavlov@gmail.com>
 To:     linux-mips@linux-mips.org
 Cc:     Antony Pavlov <antonynpavlov@gmail.com>,
-        Alban Bedel <albeu@free.fr>, devicetree@vger.kernel.org
-Subject: [RFC v3 06/14] MIPS: dts: qca: ar9132: use short references for uart and spi nodes
-Date:   Sat, 23 Jan 2016 23:17:23 +0300
-Message-Id: <1453580251-2341-7-git-send-email-antonynpavlov@gmail.com>
+        Alban Bedel <albeu@free.fr>
+Subject: [RFC v3 07/14] MIPS: dts: qca: simplify Makefile
+Date:   Sat, 23 Jan 2016 23:17:24 +0300
+Message-Id: <1453580251-2341-8-git-send-email-antonynpavlov@gmail.com>
 X-Mailer: git-send-email 2.6.2
 In-Reply-To: <1453580251-2341-1-git-send-email-antonynpavlov@gmail.com>
 References: <1453580251-2341-1-git-send-email-antonynpavlov@gmail.com>
@@ -47,7 +47,7 @@ Return-Path: <antonynpavlov@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51332
+X-archive-position: 51333
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -64,121 +64,31 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+Do as arch/mips/boot/dts/ralink/Makefile does.
+Without this patch adding a dtb-file leads
+to adding __two__ lines to the Makefile.
+
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: Alban Bedel <albeu@free.fr>
 Cc: linux-mips@linux-mips.org
-Cc: devicetree@vger.kernel.org
 ---
- arch/mips/boot/dts/qca/ar9132.dtsi               |  4 +-
- arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts | 70 +++++++++++-------------
- 2 files changed, 35 insertions(+), 39 deletions(-)
+ arch/mips/boot/dts/qca/Makefile | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/arch/mips/boot/dts/qca/ar9132.dtsi b/arch/mips/boot/dts/qca/ar9132.dtsi
-index cd1602f..a14f6f2 100644
---- a/arch/mips/boot/dts/qca/ar9132.dtsi
-+++ b/arch/mips/boot/dts/qca/ar9132.dtsi
-@@ -61,7 +61,7 @@
- 				#qca,ddr-wb-channel-cells = <1>;
- 			};
+diff --git a/arch/mips/boot/dts/qca/Makefile b/arch/mips/boot/dts/qca/Makefile
+index 2d61455d..244329e 100644
+--- a/arch/mips/boot/dts/qca/Makefile
++++ b/arch/mips/boot/dts/qca/Makefile
+@@ -1,8 +1,7 @@
+ # All DTBs
+-dtb-$(CONFIG_ATH79)			+= ar9132_tl_wr1043nd_v1.dtb
++dtb-$(CONFIG_DTB_TL_WR1043ND_V1)	+= ar9132_tl_wr1043nd_v1.dtb
  
--			uart@18020000 {
-+			uart: uart@18020000 {
- 				compatible = "ns8250";
- 				reg = <0x18020000 0x20>;
- 				interrupts = <3>;
-@@ -134,7 +134,7 @@
- 			};
- 		};
+-# Select a DTB to build in the kernel
+-obj-$(CONFIG_DTB_TL_WR1043ND_V1)	+= ar9132_tl_wr1043nd_v1.dtb.o
++obj-y				+= $(patsubst %.dtb, %.dtb.o, $(dtb-y))
  
--		spi@1f000000 {
-+		spi: spi@1f000000 {
- 			compatible = "qca,ar9132-spi", "qca,ar7100-spi";
- 			reg = <0x1f000000 0x10>;
- 
-diff --git a/arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts b/arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts
-index 9618105..f22c22c 100644
---- a/arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts
-+++ b/arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts
-@@ -14,43 +14,6 @@
- 		reg = <0x0 0x2000000>;
- 	};
- 
--	ahb {
--		apb {
--			uart@18020000 {
--				status = "okay";
--			};
--		};
--
--		spi@1f000000 {
--			status = "okay";
--			num-cs = <1>;
--
--			flash@0 {
--				#address-cells = <1>;
--				#size-cells = <1>;
--				compatible = "s25sl064a";
--				reg = <0>;
--				spi-max-frequency = <25000000>;
--
--				partition@0 {
--					label = "u-boot";
--					reg = <0x000000 0x020000>;
--				};
--
--				partition@1 {
--					label = "firmware";
--					reg = <0x020000 0x7D0000>;
--				};
--
--				partition@2 {
--					label = "art";
--					reg = <0x7F0000 0x010000>;
--					read-only;
--				};
--			};
--		};
--	};
--
- 	gpio-keys {
- 		compatible = "gpio-keys-polled";
- 		#address-cells = <1>;
-@@ -100,3 +63,36 @@
- &extosc {
- 	clock-frequency = <40000000>;
- };
-+
-+&uart {
-+	status = "okay";
-+};
-+
-+&spi {
-+	status = "okay";
-+	num-cs = <1>;
-+
-+	flash@0 {
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+		compatible = "s25sl064a";
-+		reg = <0>;
-+		spi-max-frequency = <25000000>;
-+
-+		partition@0 {
-+			label = "u-boot";
-+			reg = <0x000000 0x020000>;
-+		};
-+
-+		partition@1 {
-+			label = "firmware";
-+			reg = <0x020000 0x7D0000>;
-+		};
-+
-+		partition@2 {
-+			label = "art";
-+			reg = <0x7F0000 0x010000>;
-+			read-only;
-+		};
-+	};
-+};
+ # Force kbuild to make empty built-in.o if necessary
+ obj-				+= dummy.o
 -- 
 2.6.2

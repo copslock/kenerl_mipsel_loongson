@@ -1,39 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 23 Jan 2016 13:39:34 +0100 (CET)
-Received: from hall.aurel32.net ([195.154.112.97]:46859 "EHLO hall.aurel32.net"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 23 Jan 2016 13:49:00 +0100 (CET)
+Received: from smtp3-g21.free.fr ([212.27.42.3]:48778 "EHLO smtp3-g21.free.fr"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27008721AbcAWMjdYpBSI (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 23 Jan 2016 13:39:33 +0100
-Received: from [2001:bc8:30d7:121:1a5e:fff:fe16:6c] (helo=ohm.rr44.fr)
-        by hall.aurel32.net with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.84)
-        (envelope-from <aurelien@aurel32.net>)
-        id 1aMxTY-00065z-FF; Sat, 23 Jan 2016 13:39:32 +0100
-Received: from aurel32 by ohm.rr44.fr with local (Exim 4.86)
-        (envelope-from <aurelien@aurel32.net>)
-        id 1aMxTY-0005eF-2W; Sat, 23 Jan 2016 13:39:32 +0100
-Date:   Sat, 23 Jan 2016 13:39:32 +0100
-From:   Aurelien Jarno <aurelien@aurel32.net>
-To:     "Maciej W. Rozycki" <macro@imgtec.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: Re: [PATCH 0/7] MIPS: math-emu: Branch delay slot emulation fixes
-Message-ID: <20160123123932.GA522@aurel32.net>
-Mail-Followup-To: "Maciej W. Rozycki" <macro@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-References: <alpine.DEB.2.00.1601220227590.5958@tp.orcam.me.uk>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <alpine.DEB.2.00.1601220227590.5958@tp.orcam.me.uk>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-Return-Path: <aurelien@aurel32.net>
+        id S27008721AbcAWMs6v3w1I (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 23 Jan 2016 13:48:58 +0100
+Received: from localhost.localdomain (unknown [78.54.16.94])
+        (Authenticated sender: albeu)
+        by smtp3-g21.free.fr (Postfix) with ESMTPA id BEACBA619E;
+        Sat, 23 Jan 2016 13:47:17 +0100 (CET)
+From:   Alban Bedel <albeu@free.fr>
+To:     linux-mips@linux-mips.org
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Andrew Bresticker <abrestic@chromium.org>,
+        Alex Smith <alex.smith@imgtec.com>,
+        Wu Zhangjin <wuzhangjin@gmail.com>,
+        linux-kernel@vger.kernel.org, Alban Bedel <albeu@free.fr>,
+        stable@vger.kernel.org
+Subject: [PATCH v2 1/4] MIPS: zboot: Fix the build with XZ compression on older GCC versions
+Date:   Sat, 23 Jan 2016 13:48:15 +0100
+Message-Id: <1453553326-26445-1-git-send-email-albeu@free.fr>
+X-Mailer: git-send-email 2.0.0
+Return-Path: <albeu@free.fr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51315
+X-archive-position: 51316
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aurelien@aurel32.net
+X-original-sender: albeu@free.fr
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,42 +40,36 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi,
+Some older GCC version (at least 4.6) emits calls to __bswapsi2() when
+building the XZ decompressor. The link of the compressed image then
+fails with the following error:
 
-On 2016-01-22 05:20, Maciej W. Rozycki wrote:
-> Hi,
-> 
->  This small patch series addresses the following issues with branch delay 
-> slot emulation in our floating-point emulator:
-> 
-> - NOP emulation sometimes causes SIGILL (Aurelien's bug),
-> 
-> - microMIPS emulation always goes astray,
-> 
-> - microMIPS emulation of ADDIUPC always returns the wrong result.
-> 
-> Also included are a bunch of code clean-ups and comment fixes.  See 
-> individual patch descriptions for further details.
-> 
->  I attempted to move clean-ups to the end, so that they do not interfere 
-> with backporting, except with 2/7 which, if reordered, would require 3/7 
-> to become ill-formatted.  I hope this is OK.  Changes 5-7/7 do not require 
-> backporting.
-> 
->  This series has been validated with a MIPS M5150 processor.
+arch/mips/boot/compressed/decompress.o: In function '__fswab32':
+include/uapi/linux/swab.h:60: undefined reference to '__bswapsi2'
 
-Thanks for working on that. I have tested this series, and I confirm
-this fixes the issue and works well, though I haven't tested them on
-a system with microMIPS support.
+Add bswapsi.o to the link to fix the build with these versions.
 
-So for all the patches:
-Reviewed-by: Aurelien Jarno <aurelien@aurel32.net>
+Signed-off-by: Alban Bedel <albeu@free.fr>
+CC: stable@vger.kernel.org # v4.4
+---
+Changelog:
+v2: * Added CC to stable as the patch hasn't been merged in 4.4
+---
+ arch/mips/boot/compressed/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-And for patch 1:
-Tested-by: Aurelien Jarno <aurelien@aurel32.net>
-
-
-Aurelien
+diff --git a/arch/mips/boot/compressed/Makefile b/arch/mips/boot/compressed/Makefile
+index d5bdee1..45f8abb 100644
+--- a/arch/mips/boot/compressed/Makefile
++++ b/arch/mips/boot/compressed/Makefile
+@@ -41,7 +41,7 @@ vmlinuzobjs-$(CONFIG_MIPS_ALCHEMY)		   += $(obj)/uart-alchemy.o
+ endif
+ 
+ ifdef CONFIG_KERNEL_XZ
+-vmlinuzobjs-y += $(obj)/../../lib/ashldi3.o
++vmlinuzobjs-y += $(obj)/../../lib/ashldi3.o $(obj)/../../lib/bswapsi.o
+ endif
+ 
+ targets += vmlinux.bin
 -- 
-Aurelien Jarno                          GPG: 4096R/1DDD8C9B
-aurelien@aurel32.net                 http://www.aurel32.net
+2.0.0

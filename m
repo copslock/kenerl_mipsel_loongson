@@ -1,13 +1,13 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 24 Jan 2016 23:03:20 +0100 (CET)
-Received: from youngberry.canonical.com ([91.189.89.112]:43020 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 24 Jan 2016 23:03:39 +0100 (CET)
+Received: from youngberry.canonical.com ([91.189.89.112]:43026 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27009713AbcAXWDSbXxbB (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 24 Jan 2016 23:03:18 +0100
+        by eddie.linux-mips.org with ESMTP id S27011093AbcAXWDUFJXjB (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 24 Jan 2016 23:03:20 +0100
 Received: from av-217-129-142-138.netvisao.pt ([217.129.142.138] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_128_CBC_SHA1:16)
         (Exim 4.76)
         (envelope-from <luis.henriques@canonical.com>)
-        id 1aNSkf-0000XM-6s; Sun, 24 Jan 2016 22:03:17 +0000
+        id 1aNSkh-0000XW-8S; Sun, 24 Jan 2016 22:03:19 +0000
 From:   Luis Henriques <luis.henriques@canonical.com>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
         kernel-team@lists.ubuntu.com
@@ -17,9 +17,9 @@ Cc:     James Hogan <james.hogan@imgtec.com>,
         Leonid Yegoshin <leonid.yegoshin@imgtec.com>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
         Luis Henriques <luis.henriques@canonical.com>
-Subject: [PATCH 3.16.y-ckt 050/128] MIPS: uaccess: Take EVA into account in __copy_from_user()
-Date:   Sun, 24 Jan 2016 22:00:05 +0000
-Message-Id: <1453672883-2708-51-git-send-email-luis.henriques@canonical.com>
+Subject: [PATCH 3.16.y-ckt 051/128] MIPS: uaccess: Take EVA into account in [__]clear_user
+Date:   Sun, 24 Jan 2016 22:00:06 +0000
+Message-Id: <1453672883-2708-52-git-send-email-luis.henriques@canonical.com>
 In-Reply-To: <1453672883-2708-1-git-send-email-luis.henriques@canonical.com>
 References: <1453672883-2708-1-git-send-email-luis.henriques@canonical.com>
 X-Extended-Stable: 3.16
@@ -27,7 +27,7 @@ Return-Path: <luis.henriques@canonical.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51344
+X-archive-position: 51345
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -50,73 +50,105 @@ X-list: linux-mips
 
 From: James Hogan <james.hogan@imgtec.com>
 
-commit 6f06a2c45d8d714ea3b11a360b4a7191e52acaa4 upstream.
+commit d6a428fb583738ad685c91a684748cdee7b2a05f upstream.
 
-When EVA is in use, __copy_from_user() was unconditionally using the EVA
-instructions to read the user address space, however this can also be
-used for kernel access. If the address isn't a valid user address it
-will cause an address error or TLB exception, and if it is then user
-memory may be read instead of kernel memory.
+__clear_user() (and clear_user() which uses it), always access the user
+mode address space, which results in EVA store instructions when EVA is
+enabled even if the current user address limit is KERNEL_DS.
 
-For example in the following stack trace from Linux v3.10 (changes since
-then will prevent this particular one still happening) kernel_sendmsg()
-set the user address limit to KERNEL_DS, and tcp_sendmsg() goes on to
-use __copy_from_user() with a kernel address in KSeg0.
-
-[<8002d434>] __copy_fromuser_common+0x10c/0x254
-[<805710e0>] tcp_sendmsg+0x5f4/0xf00
-[<804e8e3c>] sock_sendmsg+0x78/0xa0
-[<804e8f28>] kernel_sendmsg+0x24/0x38
-[<804ee0f8>] sock_no_sendpage+0x70/0x7c
-[<8017c820>] pipe_to_sendpage+0x80/0x98
-[<8017c6b0>] splice_from_pipe_feed+0xa8/0x198
-[<8017cc54>] __splice_from_pipe+0x4c/0x8c
-[<8017e844>] splice_from_pipe+0x58/0x78
-[<8017e884>] generic_splice_sendpage+0x20/0x2c
-[<8017d690>] do_splice_from+0xb4/0x110
-[<8017d710>] direct_splice_actor+0x24/0x30
-[<8017d394>] splice_direct_to_actor+0xd8/0x208
-[<8017d51c>] do_splice_direct+0x58/0x7c
-[<8014eaf4>] do_sendfile+0x1dc/0x39c
-[<8014f82c>] SyS_sendfile+0x90/0xf8
-
-Add the eva_kernel_access() check in __copy_from_user() like the one in
-copy_from_user().
+Fix this by adding a new symbol __bzero_kernel for the normal kernel
+address space bzero in EVA mode, and call that from __clear_user() if
+eva_kernel_access().
 
 Signed-off-by: James Hogan <james.hogan@imgtec.com>
 Cc: Markos Chandras <markos.chandras@imgtec.com>
 Cc: Paul Burton <paul.burton@imgtec.com>
 Cc: Leonid Yegoshin <leonid.yegoshin@imgtec.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/10843/
+Patchwork: https://patchwork.linux-mips.org/patch/10844/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 [james.hogan@imgtec.com: backport]
 Signed-off-by: James Hogan <james.hogan@imgtec.com>
 Signed-off-by: Luis Henriques <luis.henriques@canonical.com>
 ---
- arch/mips/include/asm/uaccess.h | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ arch/mips/include/asm/uaccess.h | 32 ++++++++++++++++++++++----------
+ arch/mips/kernel/mips_ksyms.c   |  2 ++
+ arch/mips/lib/memset.S          |  2 ++
+ 3 files changed, 26 insertions(+), 10 deletions(-)
 
 diff --git a/arch/mips/include/asm/uaccess.h b/arch/mips/include/asm/uaccess.h
-index b9ab717e3619..81d4d7e012ca 100644
+index 81d4d7e012ca..681331257bac 100644
 --- a/arch/mips/include/asm/uaccess.h
 +++ b/arch/mips/include/asm/uaccess.h
-@@ -1092,9 +1092,15 @@ extern size_t __copy_in_user_eva(void *__to, const void *__from, size_t __n);
- 	__cu_to = (to);							\
- 	__cu_from = (from);						\
- 	__cu_len = (n);							\
--	might_fault();							\
--	__cu_len = __invoke_copy_from_user(__cu_to, __cu_from,		\
--					   __cu_len);			\
-+	if (segment_eq(get_fs(), get_ds())) {				\
-+		__cu_len = __invoke_copy_from_kernel(__cu_to,		\
-+						     __cu_from,		\
-+						     __cu_len);		\
-+	} else {							\
-+		might_fault();						\
-+		__cu_len = __invoke_copy_from_user(__cu_to, __cu_from,	\
-+						   __cu_len);		\
-+	}								\
- 	__cu_len;							\
- })
+@@ -1204,16 +1204,28 @@ __clear_user(void __user *addr, __kernel_size_t size)
+ {
+ 	__kernel_size_t res;
+ 
+-	might_fault();
+-	__asm__ __volatile__(
+-		"move\t$4, %1\n\t"
+-		"move\t$5, $0\n\t"
+-		"move\t$6, %2\n\t"
+-		__MODULE_JAL(__bzero)
+-		"move\t%0, $6"
+-		: "=r" (res)
+-		: "r" (addr), "r" (size)
+-		: "$4", "$5", "$6", __UA_t0, __UA_t1, "$31");
++	if (config_enabled(CONFIG_EVA) && segment_eq(get_fs(), get_ds())) {
++		__asm__ __volatile__(
++			"move\t$4, %1\n\t"
++			"move\t$5, $0\n\t"
++			"move\t$6, %2\n\t"
++			__MODULE_JAL(__bzero_kernel)
++			"move\t%0, $6"
++			: "=r" (res)
++			: "r" (addr), "r" (size)
++			: "$4", "$5", "$6", __UA_t0, __UA_t1, "$31");
++	} else {
++		might_fault();
++		__asm__ __volatile__(
++			"move\t$4, %1\n\t"
++			"move\t$5, $0\n\t"
++			"move\t$6, %2\n\t"
++			__MODULE_JAL(__bzero)
++			"move\t%0, $6"
++			: "=r" (res)
++			: "r" (addr), "r" (size)
++			: "$4", "$5", "$6", __UA_t0, __UA_t1, "$31");
++	}
+ 
+ 	return res;
+ }
+diff --git a/arch/mips/kernel/mips_ksyms.c b/arch/mips/kernel/mips_ksyms.c
+index 1b2452e2be67..c1e152a27b17 100644
+--- a/arch/mips/kernel/mips_ksyms.c
++++ b/arch/mips/kernel/mips_ksyms.c
+@@ -17,6 +17,7 @@
+ #include <asm/fpu.h>
+ #include <asm/msa.h>
+ 
++extern void *__bzero_kernel(void *__s, size_t __count);
+ extern void *__bzero(void *__s, size_t __count);
+ extern long __strncpy_from_kernel_nocheck_asm(char *__to,
+ 					      const char *__from, long __len);
+@@ -66,6 +67,7 @@ EXPORT_SYMBOL(__copy_from_user_eva);
+ EXPORT_SYMBOL(__copy_in_user_eva);
+ EXPORT_SYMBOL(__copy_to_user_eva);
+ EXPORT_SYMBOL(__copy_user_inatomic_eva);
++EXPORT_SYMBOL(__bzero_kernel);
+ #endif
+ EXPORT_SYMBOL(__bzero);
+ EXPORT_SYMBOL(__strncpy_from_kernel_nocheck_asm);
+diff --git a/arch/mips/lib/memset.S b/arch/mips/lib/memset.S
+index 7b0e5462ca51..fd83406ceccc 100644
+--- a/arch/mips/lib/memset.S
++++ b/arch/mips/lib/memset.S
+@@ -238,6 +238,8 @@ LEAF(memset)
+ 1:
+ #ifndef CONFIG_EVA
+ FEXPORT(__bzero)
++#else
++FEXPORT(__bzero_kernel)
+ #endif
+ 	__BUILD_BZERO LEGACY_MODE
  

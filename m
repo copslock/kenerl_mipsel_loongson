@@ -1,46 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 24 Jan 2016 19:01:33 +0100 (CET)
-Received: from mail.skyhub.de ([78.46.96.112]:34859 "EHLO mail.skyhub.de"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27010713AbcAXSBbv8fk1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 24 Jan 2016 19:01:31 +0100
-X-Virus-Scanned: Nedap ESD1 at mail.skyhub.de
-Received: from mail.skyhub.de ([127.0.0.1])
-        by localhost (door.skyhub.de [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id QZqZNcEfI4lg; Sun, 24 Jan 2016 19:01:30 +0100 (CET)
-Received: from pd.tnic (p548956E0.dip0.t-ipconnect.de [84.137.86.224])
-        (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 8AA83245A96;
-        Sun, 24 Jan 2016 19:01:29 +0100 (CET)
-Received: by pd.tnic (Postfix, from userid 1000)
-        id 4D74B160953; Sun, 24 Jan 2016 19:00:57 +0100 (CET)
-Date:   Sun, 24 Jan 2016 19:00:57 +0100
-From:   Borislav Petkov <bp@alien8.de>
-To:     Toshi Kani <toshi.kani@hpe.com>
-Cc:     akpm@linux-foundation.org, linux-arch@vger.kernel.org,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org
-Subject: Re: [PATCH v3 06/17] arch: Set IORESOURCE_SYSTEM_RAM to System RAM
-Message-ID: <20160124180057.GC26879@pd.tnic>
-References: <1452020081-26534-1-git-send-email-toshi.kani@hpe.com>
- <1452020081-26534-6-git-send-email-toshi.kani@hpe.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <1452020081-26534-6-git-send-email-toshi.kani@hpe.com>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-Return-Path: <bp@alien8.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 24 Jan 2016 23:03:20 +0100 (CET)
+Received: from youngberry.canonical.com ([91.189.89.112]:43020 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27009713AbcAXWDSbXxbB (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 24 Jan 2016 23:03:18 +0100
+Received: from av-217-129-142-138.netvisao.pt ([217.129.142.138] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_128_CBC_SHA1:16)
+        (Exim 4.76)
+        (envelope-from <luis.henriques@canonical.com>)
+        id 1aNSkf-0000XM-6s; Sun, 24 Jan 2016 22:03:17 +0000
+From:   Luis Henriques <luis.henriques@canonical.com>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        kernel-team@lists.ubuntu.com
+Cc:     James Hogan <james.hogan@imgtec.com>,
+        Markos Chandras <markos.chandras@imgtec.com>,
+        Paul Burton <paul.burton@imgtec.com>,
+        Leonid Yegoshin <leonid.yegoshin@imgtec.com>,
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
+        Luis Henriques <luis.henriques@canonical.com>
+Subject: [PATCH 3.16.y-ckt 050/128] MIPS: uaccess: Take EVA into account in __copy_from_user()
+Date:   Sun, 24 Jan 2016 22:00:05 +0000
+Message-Id: <1453672883-2708-51-git-send-email-luis.henriques@canonical.com>
+In-Reply-To: <1453672883-2708-1-git-send-email-luis.henriques@canonical.com>
+References: <1453672883-2708-1-git-send-email-luis.henriques@canonical.com>
+X-Extended-Stable: 3.16
+Return-Path: <luis.henriques@canonical.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51343
+X-archive-position: 51344
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: bp@alien8.de
+X-original-sender: luis.henriques@canonical.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,405 +44,79 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Adding the respective arch MLs to CC, as an FYI.
+3.16.7-ckt23 -stable review patch.  If anyone has any objections, please let me know.
 
-On Tue, Jan 05, 2016 at 11:54:30AM -0700, Toshi Kani wrote:
-> Set IORESOURCE_SYSTEM_RAM to 'flags' of resource ranges with
-> "System RAM", "Kernel code", "Kernel data", and "Kernel bss".
-> 
-> Note that:
->  - IORESOURCE_SYSRAM (i.e. modifier bit) is set to 'flags'
->    when IORESOURCE_MEM is already set.  IORESOURCE_SYSTEM_RAM
->    is defined as (IORESOURCE_MEM|IORESOURCE_SYSRAM).
->  - Some archs do not set 'flags' for children nodes, such as
->    "Kernel code".  This patch does not change 'flags' in this
->    case.
-> 
-> Cc: linux-arch@vger.kernel.org
-> Signed-off-by: Toshi Kani <toshi.kani@hpe.com>
-> ---
->  arch/arm/kernel/setup.c       |    6 +++---
->  arch/arm64/kernel/setup.c     |    6 +++---
->  arch/avr32/kernel/setup.c     |    6 +++---
->  arch/m32r/kernel/setup.c      |    4 ++--
->  arch/mips/kernel/setup.c      |   10 ++++++----
->  arch/parisc/mm/init.c         |    6 +++---
->  arch/powerpc/mm/mem.c         |    2 +-
->  arch/s390/kernel/setup.c      |    8 ++++----
->  arch/score/kernel/setup.c     |    2 +-
->  arch/sh/kernel/setup.c        |    8 ++++----
->  arch/sparc/mm/init_64.c       |    8 ++++----
->  arch/tile/kernel/setup.c      |   11 ++++++++---
->  arch/unicore32/kernel/setup.c |    6 +++---
->  13 files changed, 45 insertions(+), 38 deletions(-)
-> 
-> diff --git a/arch/arm/kernel/setup.c b/arch/arm/kernel/setup.c
-> index 20edd34..ae44e09 100644
-> --- a/arch/arm/kernel/setup.c
-> +++ b/arch/arm/kernel/setup.c
-> @@ -173,13 +173,13 @@ static struct resource mem_res[] = {
->  		.name = "Kernel code",
->  		.start = 0,
->  		.end = 0,
-> -		.flags = IORESOURCE_MEM
-> +		.flags = IORESOURCE_SYSTEM_RAM
->  	},
->  	{
->  		.name = "Kernel data",
->  		.start = 0,
->  		.end = 0,
-> -		.flags = IORESOURCE_MEM
-> +		.flags = IORESOURCE_SYSTEM_RAM
->  	}
->  };
->  
-> @@ -781,7 +781,7 @@ static void __init request_standard_resources(const struct machine_desc *mdesc)
->  		res->name  = "System RAM";
->  		res->start = __pfn_to_phys(memblock_region_memory_base_pfn(region));
->  		res->end = __pfn_to_phys(memblock_region_memory_end_pfn(region)) - 1;
-> -		res->flags = IORESOURCE_MEM | IORESOURCE_BUSY;
-> +		res->flags = IORESOURCE_SYSTEM_RAM | IORESOURCE_BUSY;
->  
->  		request_resource(&iomem_resource, res);
->  
-> diff --git a/arch/arm64/kernel/setup.c b/arch/arm64/kernel/setup.c
-> index 8119479..450987d 100644
-> --- a/arch/arm64/kernel/setup.c
-> +++ b/arch/arm64/kernel/setup.c
-> @@ -73,13 +73,13 @@ static struct resource mem_res[] = {
->  		.name = "Kernel code",
->  		.start = 0,
->  		.end = 0,
-> -		.flags = IORESOURCE_MEM
-> +		.flags = IORESOURCE_SYSTEM_RAM
->  	},
->  	{
->  		.name = "Kernel data",
->  		.start = 0,
->  		.end = 0,
-> -		.flags = IORESOURCE_MEM
-> +		.flags = IORESOURCE_SYSTEM_RAM
->  	}
->  };
->  
-> @@ -210,7 +210,7 @@ static void __init request_standard_resources(void)
->  		res->name  = "System RAM";
->  		res->start = __pfn_to_phys(memblock_region_memory_base_pfn(region));
->  		res->end = __pfn_to_phys(memblock_region_memory_end_pfn(region)) - 1;
-> -		res->flags = IORESOURCE_MEM | IORESOURCE_BUSY;
-> +		res->flags = IORESOURCE_SYSTEM_RAM | IORESOURCE_BUSY;
->  
->  		request_resource(&iomem_resource, res);
->  
-> diff --git a/arch/avr32/kernel/setup.c b/arch/avr32/kernel/setup.c
-> index 209ae5a..e692889 100644
-> --- a/arch/avr32/kernel/setup.c
-> +++ b/arch/avr32/kernel/setup.c
-> @@ -49,13 +49,13 @@ static struct resource __initdata kernel_data = {
->  	.name	= "Kernel data",
->  	.start	= 0,
->  	.end	= 0,
-> -	.flags	= IORESOURCE_MEM,
-> +	.flags	= IORESOURCE_SYSTEM_RAM,
->  };
->  static struct resource __initdata kernel_code = {
->  	.name	= "Kernel code",
->  	.start	= 0,
->  	.end	= 0,
-> -	.flags	= IORESOURCE_MEM,
-> +	.flags	= IORESOURCE_SYSTEM_RAM,
->  	.sibling = &kernel_data,
->  };
->  
-> @@ -134,7 +134,7 @@ add_physical_memory(resource_size_t start, resource_size_t end)
->  	new->start = start;
->  	new->end = end;
->  	new->name = "System RAM";
-> -	new->flags = IORESOURCE_MEM;
-> +	new->flags = IORESOURCE_SYSTEM_RAM;
->  
->  	*pprev = new;
->  }
-> diff --git a/arch/m32r/kernel/setup.c b/arch/m32r/kernel/setup.c
-> index 0392112..5f62ff0 100644
-> --- a/arch/m32r/kernel/setup.c
-> +++ b/arch/m32r/kernel/setup.c
-> @@ -70,14 +70,14 @@ static struct resource data_resource = {
->  	.name   = "Kernel data",
->  	.start  = 0,
->  	.end    = 0,
-> -	.flags  = IORESOURCE_BUSY | IORESOURCE_MEM
-> +	.flags  = IORESOURCE_BUSY | IORESOURCE_SYSTEM_RAM
->  };
->  
->  static struct resource code_resource = {
->  	.name   = "Kernel code",
->  	.start  = 0,
->  	.end    = 0,
-> -	.flags  = IORESOURCE_BUSY | IORESOURCE_MEM
-> +	.flags  = IORESOURCE_BUSY | IORESOURCE_SYSTEM_RAM
->  };
->  
->  unsigned long memory_start;
-> diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
-> index 66aac55..c385af1 100644
-> --- a/arch/mips/kernel/setup.c
-> +++ b/arch/mips/kernel/setup.c
-> @@ -732,21 +732,23 @@ static void __init resource_init(void)
->  			end = HIGHMEM_START - 1;
->  
->  		res = alloc_bootmem(sizeof(struct resource));
-> +
-> +		res->start = start;
-> +		res->end = end;
-> +		res->flags = IORESOURCE_MEM | IORESOURCE_BUSY;
-> +
->  		switch (boot_mem_map.map[i].type) {
->  		case BOOT_MEM_RAM:
->  		case BOOT_MEM_INIT_RAM:
->  		case BOOT_MEM_ROM_DATA:
->  			res->name = "System RAM";
-> +			res->flags |= IORESOURCE_SYSRAM;
->  			break;
->  		case BOOT_MEM_RESERVED:
->  		default:
->  			res->name = "reserved";
->  		}
->  
-> -		res->start = start;
-> -		res->end = end;
-> -
-> -		res->flags = IORESOURCE_MEM | IORESOURCE_BUSY;
->  		request_resource(&iomem_resource, res);
->  
->  		/*
-> diff --git a/arch/parisc/mm/init.c b/arch/parisc/mm/init.c
-> index 1b366c4..3c07d6b 100644
-> --- a/arch/parisc/mm/init.c
-> +++ b/arch/parisc/mm/init.c
-> @@ -55,12 +55,12 @@ signed char pfnnid_map[PFNNID_MAP_MAX] __read_mostly;
->  
->  static struct resource data_resource = {
->  	.name	= "Kernel data",
-> -	.flags	= IORESOURCE_BUSY | IORESOURCE_MEM,
-> +	.flags	= IORESOURCE_BUSY | IORESOURCE_SYSTEM_RAM,
->  };
->  
->  static struct resource code_resource = {
->  	.name	= "Kernel code",
-> -	.flags	= IORESOURCE_BUSY | IORESOURCE_MEM,
-> +	.flags	= IORESOURCE_BUSY | IORESOURCE_SYSTEM_RAM,
->  };
->  
->  static struct resource pdcdata_resource = {
-> @@ -201,7 +201,7 @@ static void __init setup_bootmem(void)
->  		res->name = "System RAM";
->  		res->start = pmem_ranges[i].start_pfn << PAGE_SHIFT;
->  		res->end = res->start + (pmem_ranges[i].pages << PAGE_SHIFT)-1;
-> -		res->flags = IORESOURCE_MEM | IORESOURCE_BUSY;
-> +		res->flags = IORESOURCE_SYSTEM_RAM | IORESOURCE_BUSY;
->  		request_resource(&iomem_resource, res);
->  	}
->  
-> diff --git a/arch/powerpc/mm/mem.c b/arch/powerpc/mm/mem.c
-> index 22d94c3..e78a2b7 100644
-> --- a/arch/powerpc/mm/mem.c
-> +++ b/arch/powerpc/mm/mem.c
-> @@ -541,7 +541,7 @@ static int __init add_system_ram_resources(void)
->  			res->name = "System RAM";
->  			res->start = base;
->  			res->end = base + size - 1;
-> -			res->flags = IORESOURCE_MEM | IORESOURCE_BUSY;
-> +			res->flags = IORESOURCE_SYSTEM_RAM | IORESOURCE_BUSY;
->  			WARN_ON(request_resource(&iomem_resource, res) < 0);
->  		}
->  	}
-> diff --git a/arch/s390/kernel/setup.c b/arch/s390/kernel/setup.c
-> index c837bca..b65a883 100644
-> --- a/arch/s390/kernel/setup.c
-> +++ b/arch/s390/kernel/setup.c
-> @@ -376,17 +376,17 @@ static void __init setup_lowcore(void)
->  
->  static struct resource code_resource = {
->  	.name  = "Kernel code",
-> -	.flags = IORESOURCE_BUSY | IORESOURCE_MEM,
-> +	.flags = IORESOURCE_BUSY | IORESOURCE_SYSTEM_RAM,
->  };
->  
->  static struct resource data_resource = {
->  	.name = "Kernel data",
-> -	.flags = IORESOURCE_BUSY | IORESOURCE_MEM,
-> +	.flags = IORESOURCE_BUSY | IORESOURCE_SYSTEM_RAM,
->  };
->  
->  static struct resource bss_resource = {
->  	.name = "Kernel bss",
-> -	.flags = IORESOURCE_BUSY | IORESOURCE_MEM,
-> +	.flags = IORESOURCE_BUSY | IORESOURCE_SYSTEM_RAM,
->  };
->  
->  static struct resource __initdata *standard_resources[] = {
-> @@ -410,7 +410,7 @@ static void __init setup_resources(void)
->  
->  	for_each_memblock(memory, reg) {
->  		res = alloc_bootmem_low(sizeof(*res));
-> -		res->flags = IORESOURCE_BUSY | IORESOURCE_MEM;
-> +		res->flags = IORESOURCE_BUSY | IORESOURCE_SYSTEM_RAM;
->  
->  		res->name = "System RAM";
->  		res->start = reg->base;
-> diff --git a/arch/score/kernel/setup.c b/arch/score/kernel/setup.c
-> index b48459a..f3a0649 100644
-> --- a/arch/score/kernel/setup.c
-> +++ b/arch/score/kernel/setup.c
-> @@ -101,7 +101,7 @@ static void __init resource_init(void)
->  	res->name = "System RAM";
->  	res->start = MEMORY_START;
->  	res->end = MEMORY_START + MEMORY_SIZE - 1;
-> -	res->flags = IORESOURCE_MEM | IORESOURCE_BUSY;
-> +	res->flags = IORESOURCE_SYSTEM_RAM | IORESOURCE_BUSY;
->  	request_resource(&iomem_resource, res);
->  
->  	request_resource(res, &code_resource);
-> diff --git a/arch/sh/kernel/setup.c b/arch/sh/kernel/setup.c
-> index de19cfa..3f1c18b 100644
-> --- a/arch/sh/kernel/setup.c
-> +++ b/arch/sh/kernel/setup.c
-> @@ -78,17 +78,17 @@ static char __initdata command_line[COMMAND_LINE_SIZE] = { 0, };
->  
->  static struct resource code_resource = {
->  	.name = "Kernel code",
-> -	.flags = IORESOURCE_BUSY | IORESOURCE_MEM,
-> +	.flags = IORESOURCE_BUSY | IORESOURCE_SYSTEM_RAM,
->  };
->  
->  static struct resource data_resource = {
->  	.name = "Kernel data",
-> -	.flags = IORESOURCE_BUSY | IORESOURCE_MEM,
-> +	.flags = IORESOURCE_BUSY | IORESOURCE_SYSTEM_RAM,
->  };
->  
->  static struct resource bss_resource = {
->  	.name	= "Kernel bss",
-> -	.flags	= IORESOURCE_BUSY | IORESOURCE_MEM,
-> +	.flags	= IORESOURCE_BUSY | IORESOURCE_SYSTEM_RAM,
->  };
->  
->  unsigned long memory_start;
-> @@ -202,7 +202,7 @@ void __init __add_active_range(unsigned int nid, unsigned long start_pfn,
->  	res->name = "System RAM";
->  	res->start = start;
->  	res->end = end - 1;
-> -	res->flags = IORESOURCE_MEM | IORESOURCE_BUSY;
-> +	res->flags = IORESOURCE_SYSTEM_RAM | IORESOURCE_BUSY;
->  
->  	if (request_resource(&iomem_resource, res)) {
->  		pr_err("unable to request memory_resource 0x%lx 0x%lx\n",
-> diff --git a/arch/sparc/mm/init_64.c b/arch/sparc/mm/init_64.c
-> index 3025bd5..a02d43d 100644
-> --- a/arch/sparc/mm/init_64.c
-> +++ b/arch/sparc/mm/init_64.c
-> @@ -2862,17 +2862,17 @@ void hugetlb_setup(struct pt_regs *regs)
->  
->  static struct resource code_resource = {
->  	.name	= "Kernel code",
-> -	.flags	= IORESOURCE_BUSY | IORESOURCE_MEM
-> +	.flags	= IORESOURCE_BUSY | IORESOURCE_SYSTEM_RAM
->  };
->  
->  static struct resource data_resource = {
->  	.name	= "Kernel data",
-> -	.flags	= IORESOURCE_BUSY | IORESOURCE_MEM
-> +	.flags	= IORESOURCE_BUSY | IORESOURCE_SYSTEM_RAM
->  };
->  
->  static struct resource bss_resource = {
->  	.name	= "Kernel bss",
-> -	.flags	= IORESOURCE_BUSY | IORESOURCE_MEM
-> +	.flags	= IORESOURCE_BUSY | IORESOURCE_SYSTEM_RAM
->  };
->  
->  static inline resource_size_t compute_kern_paddr(void *addr)
-> @@ -2908,7 +2908,7 @@ static int __init report_memory(void)
->  		res->name = "System RAM";
->  		res->start = pavail[i].phys_addr;
->  		res->end = pavail[i].phys_addr + pavail[i].reg_size - 1;
-> -		res->flags = IORESOURCE_BUSY | IORESOURCE_MEM;
-> +		res->flags = IORESOURCE_BUSY | IORESOURCE_SYSTEM_RAM;
->  
->  		if (insert_resource(&iomem_resource, res) < 0) {
->  			pr_warn("Resource insertion failed.\n");
-> diff --git a/arch/tile/kernel/setup.c b/arch/tile/kernel/setup.c
-> index 6b755d1..6606fe2 100644
-> --- a/arch/tile/kernel/setup.c
-> +++ b/arch/tile/kernel/setup.c
-> @@ -1632,14 +1632,14 @@ static struct resource data_resource = {
->  	.name	= "Kernel data",
->  	.start	= 0,
->  	.end	= 0,
-> -	.flags	= IORESOURCE_BUSY | IORESOURCE_MEM
-> +	.flags	= IORESOURCE_BUSY | IORESOURCE_SYSTEM_RAM
->  };
->  
->  static struct resource code_resource = {
->  	.name	= "Kernel code",
->  	.start	= 0,
->  	.end	= 0,
-> -	.flags	= IORESOURCE_BUSY | IORESOURCE_MEM
-> +	.flags	= IORESOURCE_BUSY | IORESOURCE_SYSTEM_RAM
->  };
->  
->  /*
-> @@ -1673,10 +1673,15 @@ insert_ram_resource(u64 start_pfn, u64 end_pfn, bool reserved)
->  		kzalloc(sizeof(struct resource), GFP_ATOMIC);
->  	if (!res)
->  		return NULL;
-> -	res->name = reserved ? "Reserved" : "System RAM";
->  	res->start = start_pfn << PAGE_SHIFT;
->  	res->end = (end_pfn << PAGE_SHIFT) - 1;
->  	res->flags = IORESOURCE_BUSY | IORESOURCE_MEM;
-> +	if (reserved) {
-> +		res->name = "Reserved";
-> +	} else {
-> +		res->name = "System RAM";
-> +		res->flags |= IORESOURCE_SYSRAM;
-> +	}
->  	if (insert_resource(&iomem_resource, res)) {
->  		kfree(res);
->  		return NULL;
-> diff --git a/arch/unicore32/kernel/setup.c b/arch/unicore32/kernel/setup.c
-> index 3fa317f..c2bffa5 100644
-> --- a/arch/unicore32/kernel/setup.c
-> +++ b/arch/unicore32/kernel/setup.c
-> @@ -72,13 +72,13 @@ static struct resource mem_res[] = {
->  		.name = "Kernel code",
->  		.start = 0,
->  		.end = 0,
-> -		.flags = IORESOURCE_MEM
-> +		.flags = IORESOURCE_SYSTEM_RAM
->  	},
->  	{
->  		.name = "Kernel data",
->  		.start = 0,
->  		.end = 0,
-> -		.flags = IORESOURCE_MEM
-> +		.flags = IORESOURCE_SYSTEM_RAM
->  	}
->  };
->  
-> @@ -211,7 +211,7 @@ request_standard_resources(struct meminfo *mi)
->  		res->name  = "System RAM";
->  		res->start = mi->bank[i].start;
->  		res->end   = mi->bank[i].start + mi->bank[i].size - 1;
-> -		res->flags = IORESOURCE_MEM | IORESOURCE_BUSY;
-> +		res->flags = IORESOURCE_SYSTEM_RAM | IORESOURCE_BUSY;
->  
->  		request_resource(&iomem_resource, res);
->  
-> 
+---8<------------------------------------------------------------
 
--- 
-Regards/Gruss,
-    Boris.
+From: James Hogan <james.hogan@imgtec.com>
 
-ECO tip #101: Trim your mails when you reply.
+commit 6f06a2c45d8d714ea3b11a360b4a7191e52acaa4 upstream.
+
+When EVA is in use, __copy_from_user() was unconditionally using the EVA
+instructions to read the user address space, however this can also be
+used for kernel access. If the address isn't a valid user address it
+will cause an address error or TLB exception, and if it is then user
+memory may be read instead of kernel memory.
+
+For example in the following stack trace from Linux v3.10 (changes since
+then will prevent this particular one still happening) kernel_sendmsg()
+set the user address limit to KERNEL_DS, and tcp_sendmsg() goes on to
+use __copy_from_user() with a kernel address in KSeg0.
+
+[<8002d434>] __copy_fromuser_common+0x10c/0x254
+[<805710e0>] tcp_sendmsg+0x5f4/0xf00
+[<804e8e3c>] sock_sendmsg+0x78/0xa0
+[<804e8f28>] kernel_sendmsg+0x24/0x38
+[<804ee0f8>] sock_no_sendpage+0x70/0x7c
+[<8017c820>] pipe_to_sendpage+0x80/0x98
+[<8017c6b0>] splice_from_pipe_feed+0xa8/0x198
+[<8017cc54>] __splice_from_pipe+0x4c/0x8c
+[<8017e844>] splice_from_pipe+0x58/0x78
+[<8017e884>] generic_splice_sendpage+0x20/0x2c
+[<8017d690>] do_splice_from+0xb4/0x110
+[<8017d710>] direct_splice_actor+0x24/0x30
+[<8017d394>] splice_direct_to_actor+0xd8/0x208
+[<8017d51c>] do_splice_direct+0x58/0x7c
+[<8014eaf4>] do_sendfile+0x1dc/0x39c
+[<8014f82c>] SyS_sendfile+0x90/0xf8
+
+Add the eva_kernel_access() check in __copy_from_user() like the one in
+copy_from_user().
+
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Cc: Markos Chandras <markos.chandras@imgtec.com>
+Cc: Paul Burton <paul.burton@imgtec.com>
+Cc: Leonid Yegoshin <leonid.yegoshin@imgtec.com>
+Cc: linux-mips@linux-mips.org
+Patchwork: https://patchwork.linux-mips.org/patch/10843/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+[james.hogan@imgtec.com: backport]
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Signed-off-by: Luis Henriques <luis.henriques@canonical.com>
+---
+ arch/mips/include/asm/uaccess.h | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
+
+diff --git a/arch/mips/include/asm/uaccess.h b/arch/mips/include/asm/uaccess.h
+index b9ab717e3619..81d4d7e012ca 100644
+--- a/arch/mips/include/asm/uaccess.h
++++ b/arch/mips/include/asm/uaccess.h
+@@ -1092,9 +1092,15 @@ extern size_t __copy_in_user_eva(void *__to, const void *__from, size_t __n);
+ 	__cu_to = (to);							\
+ 	__cu_from = (from);						\
+ 	__cu_len = (n);							\
+-	might_fault();							\
+-	__cu_len = __invoke_copy_from_user(__cu_to, __cu_from,		\
+-					   __cu_len);			\
++	if (segment_eq(get_fs(), get_ds())) {				\
++		__cu_len = __invoke_copy_from_kernel(__cu_to,		\
++						     __cu_from,		\
++						     __cu_len);		\
++	} else {							\
++		might_fault();						\
++		__cu_len = __invoke_copy_from_user(__cu_to, __cu_from,	\
++						   __cu_len);		\
++	}								\
+ 	__cu_len;							\
+ })
+ 

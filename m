@@ -1,66 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Jan 2016 18:31:04 +0100 (CET)
-Received: from mail-wm0-f41.google.com ([74.125.82.41]:37282 "EHLO
-        mail-wm0-f41.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011406AbcAYRbCVcJ5p convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 25 Jan 2016 18:31:02 +0100
-Received: by mail-wm0-f41.google.com with SMTP id n5so91747300wmn.0;
-        Mon, 25 Jan 2016 09:31:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-type:content-transfer-encoding;
-        bh=26bld2CZdbXe9ADQYbrwfvgMPXLjyo0OeFxZqeA1IgE=;
-        b=wASXMd6gUf0y9GmeTF1LxDXfMeElEtdnsVxw/tEW2CwIf8ndDwHj9APXtWfj1lF9dL
-         cBDlEzPTghipNIQbs0+LaA5v1o3AO4fLSFjpTQgdrYG7F7+mJ5hVm2zHVP9ojypFEOk0
-         QLf+QBPPzfee/7n3lwxcDL32F9AgsINhzBYEoPnMeI3Uk7L9lr6fBIJ35oaBptYmu8Fi
-         tbIaC/j+bpicBI7z8u2HF/UAia6gp1DEudAczUtfosWj7Rmgb8RH7MptUPvunbSm3ACf
-         pgwh1iQ0kLghLnkRywySpkTTdxdl7Yuk4gsU6sdfD7woxDwPX3QKH7Iq6VfJN04hPiwo
-         gW5g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc:content-type:content-transfer-encoding;
-        bh=26bld2CZdbXe9ADQYbrwfvgMPXLjyo0OeFxZqeA1IgE=;
-        b=e8HYFBxNL/jNEIdzbhcwvPm2Zz+ciYzrGt3YmbMA4n4BDCwiOz4VhJQxaUVl/T3lTp
-         TY/hJRdp+oWDVnGifk0C/Czs/BS5hWw3FhlYVnO4IUZZu7Ft1zDgGoRTfuB0I5LqQW8w
-         8HTubTLGQ4ai9vfgXPCOQGNA7i9h9cjnCqjv807PHLypct1P5SzBbpnOJgQzRDk/1CzL
-         5c7aFp5ZUmmn0SDF9OJATihe6gdMWbOCw2J3HB1k9/CPFWhjEhNru08Cz3T6Y26kBgoF
-         978tYqvtJHwa/5ZIAoRgX/ts8AYYy7hH4GkubduIH8UE3R+rbvcNvpPTdZVCOT+iRho5
-         SziQ==
-X-Gm-Message-State: AG10YORaOpuhHGnrFbNd/YrN8jlqMoFYHqLAh0XdbFJgrevzxwHJOaMgZc7pbCqxtbVGadjwBiDOHzIUd//Xkw==
-X-Received: by 10.194.203.168 with SMTP id kr8mr18251978wjc.168.1453743057117;
- Mon, 25 Jan 2016 09:30:57 -0800 (PST)
-MIME-Version: 1.0
-Received: by 10.28.91.208 with HTTP; Mon, 25 Jan 2016 09:30:17 -0800 (PST)
-In-Reply-To: <E484D272A3A61B4880CDF2E712E9279F45D179FA@HHMAIL01.hh.imgtec.org>
-References: <1452189189-31188-1-git-send-email-mst@redhat.com>
- <CAAG0J995iCNwdN6PpuJfzo+TVWNXR3UVqS9v-4HXbryyvMn+=w@mail.gmail.com>
- <E484D272A3A61B4880CDF2E712E9279F45D04AA7@HHMAIL01.hh.imgtec.org>
- <CAJ1xhMWth4kNuEkuVEUiUEz=d_9dmKxh0+Z_GrRcKB+F72W91w@mail.gmail.com> <E484D272A3A61B4880CDF2E712E9279F45D179FA@HHMAIL01.hh.imgtec.org>
-From:   Alexander Kapshuk <alexander.kapshuk@gmail.com>
-Date:   Mon, 25 Jan 2016 19:30:17 +0200
-Message-ID: <CAJ1xhMVbxoag7psNg+5L6AmL4WYXKyBYNuVGjJcfqe6Km_10SQ@mail.gmail.com>
-Subject: Re: [PATCH] ld-version: fix it on Fedora
-To:     Daniel Sanders <Daniel.Sanders@imgtec.com>
-Cc:     James Hogan <James.Hogan@imgtec.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Jan 2016 19:03:18 +0100 (CET)
+Received: from foss.arm.com ([217.140.101.70]:50635 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27011406AbcAYSDKo2wCp (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 25 Jan 2016 19:03:10 +0100
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 282C949;
+        Mon, 25 Jan 2016 10:02:23 -0800 (PST)
+Received: from arm.com (usa-sjc-imap-foss1.foss.arm.com [10.72.51.249])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A7C563F24D;
+        Mon, 25 Jan 2016 10:02:58 -0800 (PST)
+Date:   Mon, 25 Jan 2016 18:02:34 +0000
+From:   Will Deacon <will.deacon@arm.com>
+To:     "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>
+Cc:     Peter Zijlstra <peterz@infradead.org>,
+        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
         "Michael S. Tsirkin" <mst@redhat.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Michal Marek <mmarek@suse.com>,
-        "linux-kbuild@vger.kernel.org" <linux-kbuild@vger.kernel.org>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        Ralf Baechle <ralf@linux-mips.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-Return-Path: <alexander.kapshuk@gmail.com>
+        linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+        linux-arch@vger.kernel.org,
+        Andrew Cooper <andrew.cooper3@citrix.com>,
+        Russell King - ARM Linux <linux@arm.linux.org.uk>,
+        virtualization@lists.linux-foundation.org,
+        Stefano Stabellini <stefano.stabellini@eu.citrix.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@elte.hu>, "H. Peter Anvin" <hpa@zytor.com>,
+        Joe Perches <joe@perches.com>,
+        David Miller <davem@davemloft.net>, linux-ia64@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-metag@vger.kernel.org, linux-mips@linux-mips.org,
+        x86@kernel.org, user-mode-linux-devel@lists.sourceforge.net,
+        adi-buildroot-devel@lists.sourceforge.net,
+        linux-sh@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        xen-devel@lists.xenproject.org, Ralf Baechle <ralf@linux-mips.org>,
+        Ingo Molnar <mingo@kernel.org>, ddaney.cavm@gmail.com,
+        james.hogan@imgtec.com, Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [v3,11/41] mips: reuse asm-generic/barrier.h
+Message-ID: <20160125180234.GA26732@arm.com>
+References: <569565DA.2010903@imgtec.com>
+ <20160113104516.GE25458@arm.com>
+ <5696CF08.8080700@imgtec.com>
+ <20160114121449.GC15828@arm.com>
+ <5697F6D2.60409@imgtec.com>
+ <20160114203430.GC3818@linux.vnet.ibm.com>
+ <56980C91.1010403@imgtec.com>
+ <20160114212913.GF3818@linux.vnet.ibm.com>
+ <20160115085554.GF3421@worktop>
+ <20160115173912.GU3818@linux.vnet.ibm.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20160115173912.GU3818@linux.vnet.ibm.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <will.deacon@arm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51355
+X-archive-position: 51356
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alexander.kapshuk@gmail.com
+X-original-sender: will.deacon@arm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -73,137 +72,179 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Jan 25, 2016 at 12:49 PM, Daniel Sanders
-<Daniel.Sanders@imgtec.com> wrote:
->
-> > From: Alexander Kapshuk [alexander.kapshuk@gmail.com]
-> > Sent: 23 January 2016 14:41
-> > To: Daniel Sanders
-> > Cc: James Hogan; Michael S. Tsirkin; LKML; Michal Marek; linux-kbuild@vger.kernel.org; Linux MIPS Mailing List; Ralf Baechle
-> > Subject: Re: [PATCH] ld-version: fix it on Fedora
-> >
-> > On Wed, Jan 13, 2016 at 7:30 PM, Daniel Sanders <Daniel.Sanders@imgtec.com<mailto:Daniel.Sanders@imgtec.com>> wrote:
-> > Hi,
-> >
-> > The version number that's giving me problems is 2.24.51.20140217 which ld-version.sh converts to 2036931700 (20000000+2400000+510000+2014021700).
-> >
-> > At the moment, I'm wondering whether we really need to handle more than three version number components. Another thought is that the comparison could be inside ld-version.sh (or a replacement) so that it can compare the array of version components directly instead of using a constructed integer as a proxy.
-> >
-> > > -----Original Message-----
-> > > From: james@albanarts.com<mailto:james@albanarts.com> [mailto:james@albanarts.com<mailto:james@albanarts.com>] On Behalf Of
-> > > James Hogan
-> > > Sent: 13 January 2016 17:06
-> > > To: Michael S. Tsirkin
-> > > Cc: LKML; Michal Marek; linux-kbuild@vger.kernel.org<mailto:linux-kbuild@vger.kernel.org>; Linux MIPS Mailing
-> > > List; Ralf Baechle; Daniel Sanders
-> > > Subject: Re: [PATCH] ld-version: fix it on Fedora
-> > >
-> > > Cc'ing Daniel, who has hit further breakage due to unusual version numbers.
-> > >
-> > > On 7 January 2016 at 17:55, Michael S. Tsirkin <mst@redhat.com<mailto:mst@redhat.com>> wrote:
-> > > > On Fedora 23, ld --version outputs:
-> > > > GNU ld version 2.25-15.fc23
-> > > >
-> > > > But ld-version.sh fails to parse this, so e.g.  mips build fails to
-> > > > enable VDSO, printing a warning that binutils >= 2.24 is required.
-> > > >
-> > > > To fix, teach ld-version to parse this format.
-> > > >
-> > > > Signed-off-by: Michael S. Tsirkin <mst@redhat.com<mailto:mst@redhat.com>>
-> > > > ---
-> > > >
-> > > > Which tree should this be merged through? Mine? MIPS?
-> > > >
-> > > >  scripts/ld-version.sh | 2 ++
-> > > >  1 file changed, 2 insertions(+)
-> > > >
-> > > > diff --git a/scripts/ld-version.sh b/scripts/ld-version.sh
-> > > > index 198580d..25d23c8 100755
-> > > > --- a/scripts/ld-version.sh
-> > > > +++ b/scripts/ld-version.sh
-> > > > @@ -2,6 +2,8 @@
-> > > >  # extract linker version number from stdin and turn into single number
-> > > >         {
-> > > >         gsub(".*)", "");
-> > > > +       gsub(".*version ", "");
-> > > > +       gsub("-.*", "");
-> > > >         split($1,a, ".");
-> > > >         print a[1]*10000000 + a[2]*100000 + a[3]*10000 + a[4]*100 + a[5];
-> > > >         exit
-> > > > --
-> > > > MST
-> > > >
-> >
-> > Is this the output you're looking for?
-> >
-> > % echo 'GNU ld version 2.25-15.fc23' |
-> > > awk '/[0-9]+([.]?[0-9]+)+/ && !/not found$/{
-> > > match($0, /[0-9]+([.]?[0-9]+)+/)
-> > > bin=substr($0,RSTART,RLENGTH)
-> > > split(bin, a, ".")
-> > > print a[1]*10000000 + a[2]*100000 + a[3]*10000}'
-> > 22500000
-> >
-> > % echo 2.25.1.20140217 |
-> > > awk '/[0-9]+([.]?[0-9]+)+/ && !/not found$/{
-> > > match($0, /[0-9]+([.]?[0-9]+)+/)
-> > > bin=substr($0,RSTART,RLENGTH)
-> > > split(bin, a, ".")
-> > > print a[1]*10000000 + a[2]*100000 + a[3]*10000}'
-> > 22510000
-> >
-> > awk parsing code taken from ver_linux:
-> > /usr/src/linux/scripts/ver_linux:28,33
-> > ld -v 2>&1 |
-> > awk '/[0-9]+([.]?[0-9]+)+/ && !/not found$/{
-> >     match($0, /[0-9]+([.]?[0-9]+)+/)
-> >     printf("Binutils\t\t%s\n",
-> >     substr($0,RSTART,RLENGTH))
-> > }'
-> >
->
-> It's close. That code doesn't quite work for my version number because the third component has two
-> digits and overflows into the second component in the proxy integer:
-> $ echo 2.24.51.20140217 |
-> > awk '/[0-9]+([.]?[0-9]+)+/ && !/not found$/{
-> > match($0, /[0-9]+([.]?[0-9]+)+/)
-> > bin=substr($0,RSTART,RLENGTH)
-> > split(bin, a, ".")
-> > print a[1]*10000000 + a[2]*100000 + a[3]*10000}'
-> 22910000
->
-> but adding a zero to the first two scale factors, or removing one from the third works for me.
-> $ echo 2.24.51.20140217 | awk '/[0-9]+([.]?[0-9]+)+/ && !/not found$/{
-> > match($0, /[0-9]+([.]?[0-9]+)+/)
-> > bin=substr($0,RSTART,RLENGTH)
-> > split(bin, a, ".")
-> > print a[1]*100000000 + a[2]*1000000 + a[3]*10000}'
-> 224510000
-> $ echo 2.24.51.20140217 | awk '/[0-9]+([.]?[0-9]+)+/ && !/not found$/{
-> > match($0, /[0-9]+([.]?[0-9]+)+/)
-> > bin=substr($0,RSTART,RLENGTH)
-> > split(bin, a, ".")
-> > print a[1]*10000000 + a[2]*100000 + a[3]*1000}'
-> 22451000
+Hi Paul,
 
+On Fri, Jan 15, 2016 at 09:39:12AM -0800, Paul E. McKenney wrote:
+> On Fri, Jan 15, 2016 at 09:55:54AM +0100, Peter Zijlstra wrote:
+> > On Thu, Jan 14, 2016 at 01:29:13PM -0800, Paul E. McKenney wrote:
+> > > So smp_mb() provides transitivity, as do pairs of smp_store_release()
+> > > and smp_read_acquire(), 
+> > 
+> > But they provide different grades of transitivity, which is where all
+> > the confusion lays.
+> > 
+> > smp_mb() is strongly/globally transitive, all CPUs will agree on the order.
+> > 
+> > Whereas the RCpc release+acquire is weakly so, only the two cpus
+> > involved in the handover will agree on the order.
+> 
+> Good point!
+> 
+> Using grace periods in place of smp_mb() also provides strong/global
+> transitivity, but also insanely high latencies.  ;-)
+> 
+> The patch below updates Documentation/memory-barriers.txt to define
+> local vs. global transitivity.  The corresponding ppcmem litmus test
+> is included below as well.
+> 
+> Should we start putting litmus tests for the various examples
+> somewhere, perhaps in a litmus-tests directory within each participating
+> architecture?  I have a pile of powerpc-related litmus tests on my laptop,
+> but they probably aren't doing all that much good there.
 
-I put the latter of the two methods that worked for you it into a
-script, shown below:
+I too would like to have the litmus tests in the kernel so that we can
+refer to them from memory-barriers.txt. Ideally they wouldn't be targetted
+to a particular arch, however.
 
-#!/usr/bin/awk -f
-# extract linker version number from stdin and turn into single number
+> PPC local-transitive
+> ""
+> {
+> 0:r1=1; 0:r2=u; 0:r3=v; 0:r4=x; 0:r5=y; 0:r6=z;
+> 1:r1=1; 1:r2=u; 1:r3=v; 1:r4=x; 1:r5=y; 1:r6=z;
+> 2:r1=1; 2:r2=u; 2:r3=v; 2:r4=x; 2:r5=y; 2:r6=z;
+> 3:r1=1; 3:r2=u; 3:r3=v; 3:r4=x; 3:r5=y; 3:r6=z;
+> }
+>  P0           | P1           | P2           | P3           ;
+>  lwz r9,0(r4) | lwz r9,0(r5) | lwz r9,0(r6) | stw r1,0(r3) ;
+>  lwsync       | lwsync       | lwsync       | sync         ;
+>  stw r1,0(r2) | lwz r8,0(r3) | stw r1,0(r7) | lwz r9,0(r2) ;
+>  lwsync       | lwz r7,0(r2) |              |              ;
+>  stw r1,0(r5) | lwsync       |              |              ;
+>               | stw r1,0(r6) |              |              ;
+> exists
+> (* (0:r9=0 /\ 1:r9=1 /\ 2:r9=1 /\ 1:r8=0 /\ 3:r9=0) *)
+> (* (0:r9=1 /\ 1:r9=1 /\ 2:r9=1) *)
+> (* (0:r9=0 /\ 1:r9=1 /\ 2:r9=1 /\ 1:r7=0) *)
+> (0:r9=0 /\ 1:r9=1 /\ 2:r9=1 /\ 1:r7=0)
 
-/[0-9]+([.]?[0-9]+)+/ && !/not found$/{
-    match($0, /[0-9]+([.]?[0-9]+)+/)
-    ver=substr($0,RSTART,RLENGTH)
-    split(ver, a, ".")
-    print a[1]*10000000 + a[2]*100000 + a[3]*1000
-    exit
-}
+i.e. we should rewrite this using READ_ONCE/WRITE_ONCE and smp_mb() etc.
 
-And tried it out on the following input:
+> ------------------------------------------------------------------------
+> 
+> commit 2cb4e83a1b5c89c8e39b8a64bd89269d05913e41
+> Author: Paul E. McKenney <paulmck@linux.vnet.ibm.com>
+> Date:   Fri Jan 15 09:30:42 2016 -0800
+> 
+>     documentation: Distinguish between local and global transitivity
+>     
+>     The introduction of smp_load_acquire() and smp_store_release() had
+>     the side effect of introducing a weaker notion of transitivity:
+>     The transitivity of full smp_mb() barriers is global, but that
+>     of smp_store_release()/smp_load_acquire() chains is local.  This
+>     commit therefore introduces the notion of local transitivity and
+>     gives an example.
+>     
+>     Reported-by: Peter Zijlstra <peterz@infradead.org>
+>     Reported-by: Will Deacon <will.deacon@arm.com>
+>     Signed-off-by: Paul E. McKenney <paulmck@linux.vnet.ibm.com>
+> 
+> diff --git a/Documentation/memory-barriers.txt b/Documentation/memory-barriers.txt
+> index c66ba46d8079..d8109ed99342 100644
+> --- a/Documentation/memory-barriers.txt
+> +++ b/Documentation/memory-barriers.txt
+> @@ -1318,8 +1318,82 @@ or a level of cache, CPU 2 might have early access to CPU 1's writes.
+>  General barriers are therefore required to ensure that all CPUs agree
+>  on the combined order of CPU 1's and CPU 2's accesses.
+>  
+> -To reiterate, if your code requires transitivity, use general barriers
+> -throughout.
+> +General barriers provide "global transitivity", so that all CPUs will
+> +agree on the order of operations.  In contrast, a chain of release-acquire
+> +pairs provides only "local transitivity", so that only those CPUs on
+> +the chain are guaranteed to agree on the combined order of the accesses.
 
-% echo 2.24.51.20140217 | ld-version.sh
-22451000
-% echo 'GNU ld version 2.25-15.fc23' | ld-version.sh
-22500000
+Thanks for having a go at this. I tried defining something axiomatically,
+but got stuck pretty quickly. In my scheme, I used "data-directed
+transitivity" instead of "local transitivity", since the latter seems to
+be a bit of a misnomer.
+
+> +For example, switching to C code in deference to Herman Hollerith:
+> +
+> +	int u, v, x, y, z;
+> +
+> +	void cpu0(void)
+> +	{
+> +		r0 = smp_load_acquire(&x);
+> +		WRITE_ONCE(u, 1);
+> +		smp_store_release(&y, 1);
+> +	}
+> +
+> +	void cpu1(void)
+> +	{
+> +		r1 = smp_load_acquire(&y);
+> +		r4 = READ_ONCE(v);
+> +		r5 = READ_ONCE(u);
+> +		smp_store_release(&z, 1);
+> +	}
+> +
+> +	void cpu2(void)
+> +	{
+> +		r2 = smp_load_acquire(&z);
+> +		smp_store_release(&x, 1);
+> +	}
+> +
+> +	void cpu3(void)
+> +	{
+> +		WRITE_ONCE(v, 1);
+> +		smp_mb();
+> +		r3 = READ_ONCE(u);
+> +	}
+> +
+> +Because cpu0(), cpu1(), and cpu2() participate in a local transitive
+> +chain of smp_store_release()/smp_load_acquire() pairs, the following
+> +outcome is prohibited:
+> +
+> +	r0 == 1 && r1 == 1 && r2 == 1
+> +
+> +Furthermore, because of the release-acquire relationship between cpu0()
+> +and cpu1(), cpu1() must see cpu0()'s writes, so that the following
+> +outcome is prohibited:
+> +
+> +	r1 == 1 && r5 == 0
+> +
+> +However, the transitivity of release-acquire is local to the participating
+> +CPUs and does not apply to cpu3().  Therefore, the following outcome
+> +is possible:
+> +
+> +	r0 == 0 && r1 == 1 && r2 == 1 && r3 == 0 && r4 == 0
+
+I think you should be completely explicit and include r5 == 1 here, too.
+
+Also -- where would you add the smp_mb__after_release_acquire to fix
+(i.e. forbid) this? Immediately after cpu1()'s read of y?
+
+> +Although cpu0(), cpu1(), and cpu2() will see their respective reads and
+> +writes in order, CPUs not involved in the release-acquire chain might
+> +well disagree on the order.  This disagreement stems from the fact that
+> +the weak memory-barrier instructions used to implement smp_load_acquire()
+> +and smp_store_release() are not required to order prior stores against
+> +subsequent loads in all cases.  This means that cpu3() can see cpu0()'s
+> +store to u as happening -after- cpu1()'s load from v, even though
+> +both cpu0() and cpu1() agree that these two operations occurred in the
+> +intended order.
+> +
+> +However, please keep in mind that smp_load_acquire() is not magic.
+> +In particular, it simply reads from its argument with ordering.  It does
+> +-not- ensure that any particular value will be read.  Therefore, the
+> +following outcome is possible:
+> +
+> +	r0 == 0 && r1 == 0 && r2 == 0 && r5 == 0
+> +
+> +Note that this outcome can happen even on a mythical sequentially
+> +consistent system where nothing is ever reordered.
+
+I'm not sure this last bit is strictly necessary. If somebody thinks that
+acquire/release involve some sort of implicit synchronisation, I think
+they may have bigger problems with memory-barriers.txt.
+
+Will

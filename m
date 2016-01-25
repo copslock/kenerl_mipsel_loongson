@@ -1,16 +1,16 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Jan 2016 23:28:41 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.136]:37395 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Jan 2016 23:29:02 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.136]:37412 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27011570AbcAYWY5T1uBl (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 25 Jan 2016 23:24:57 +0100
+        id S27011572AbcAYWY6MfZwg (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 25 Jan 2016 23:24:58 +0100
 Received: from mail.kernel.org (localhost [127.0.0.1])
-        by mail.kernel.org (Postfix) with ESMTP id B3A8D203C1;
-        Mon, 25 Jan 2016 22:24:55 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTP id CC961203C0;
+        Mon, 25 Jan 2016 22:24:56 +0000 (UTC)
 Received: from localhost (199-83-221-254.PUBLIC.monkeybrains.net [199.83.221.254])
         (using TLSv1.2 with cipher AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 0D673203C0;
-        Mon, 25 Jan 2016 22:24:55 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 2C857203C2;
+        Mon, 25 Jan 2016 22:24:56 +0000 (UTC)
 From:   Andy Lutomirski <luto@kernel.org>
 To:     Andrew Morton <akpm@linux-foundation.org>
 Cc:     Andy Lutomirski <luto@kernel.org>,
@@ -22,9 +22,9 @@ Cc:     Andy Lutomirski <luto@kernel.org>,
         Chris Metcalf <cmetcalf@ezchip.com>,
         linux-parisc@vger.kernel.org, linux-mips@linux-mips.org,
         sparclinux@vger.kernel.org
-Subject: [PATCH v2 13/16] amdkfd: Use in_compat_syscall to check open() caller type
-Date:   Mon, 25 Jan 2016 14:24:27 -0800
-Message-Id: <f9ae00f060781de8174c371b3c1918ff429572f4.1453759363.git.luto@kernel.org>
+Subject: [PATCH v2 14/16] input: Redefine INPUT_COMPAT_TEST as in_compat_syscall()
+Date:   Mon, 25 Jan 2016 14:24:28 -0800
+Message-Id: <64480084bc652d5fa91bf5cd4be979e2f1e4cf11.1453759363.git.luto@kernel.org>
 X-Mailer: git-send-email 2.5.0
 In-Reply-To: <cover.1453759363.git.luto@kernel.org>
 References: <cover.1453759363.git.luto@kernel.org>
@@ -35,7 +35,7 @@ Return-Path: <luto@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51373
+X-archive-position: 51374
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -52,45 +52,38 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-amdkfd wants to know syscall type, not task type.  Check directly.
-
-Unfortunately, amdkfd is making nasty assumptions that a process'
-bitness is a well-defined constant thing.  This isn't the case on
-x86.  I don't know how much this matters, but this patch has no
-effect on generated code on x86, so amdkfd is equally broken with
-and without this patch.
+The input compat code should work like all other compat code: for
+32-bit syscalls, use the 32-bit ABI and for 64-bit syscalls, use the
+64-bit ABI.  We have a helper for that (in_compat_syscall()): just
+use it.
 
 Signed-off-by: Andy Lutomirski <luto@kernel.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_chardev.c | 2 +-
- drivers/gpu/drm/amd/amdkfd/kfd_process.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/input/input-compat.h | 12 +-----------
+ 1 file changed, 1 insertion(+), 11 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c b/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
-index d2b49c026cf6..07ac724e3ec9 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
-@@ -107,7 +107,7 @@ static int kfd_open(struct inode *inode, struct file *filep)
- 	if (iminor(inode) != 0)
- 		return -ENODEV;
+diff --git a/drivers/input/input-compat.h b/drivers/input/input-compat.h
+index 148f66fe3205..0f25878d5fa2 100644
+--- a/drivers/input/input-compat.h
++++ b/drivers/input/input-compat.h
+@@ -17,17 +17,7 @@
  
--	is_32bit_user_mode = is_compat_task();
-+	is_32bit_user_mode = in_compat_syscall();
+ #ifdef CONFIG_COMPAT
  
- 	if (is_32bit_user_mode == true) {
- 		dev_warn(kfd_device,
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_process.c b/drivers/gpu/drm/amd/amdkfd/kfd_process.c
-index 9be007081b72..fd1a90a0f435 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_process.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_process.c
-@@ -311,7 +311,7 @@ static struct kfd_process *create_process(const struct task_struct *thread)
- 		goto err_process_pqm_init;
+-/* Note to the author of this code: did it ever occur to
+-   you why the ifdefs are needed? Think about it again. -AK */
+-#if defined(CONFIG_X86_64) || defined(CONFIG_TILE)
+-#  define INPUT_COMPAT_TEST is_compat_task()
+-#elif defined(CONFIG_S390)
+-#  define INPUT_COMPAT_TEST test_thread_flag(TIF_31BIT)
+-#elif defined(CONFIG_MIPS)
+-#  define INPUT_COMPAT_TEST test_thread_flag(TIF_32BIT_ADDR)
+-#else
+-#  define INPUT_COMPAT_TEST test_thread_flag(TIF_32BIT)
+-#endif
++#define INPUT_COMPAT_TEST in_compat_syscall()
  
- 	/* init process apertures*/
--	process->is_32bit_user_mode = is_compat_task();
-+	process->is_32bit_user_mode = in_compat_syscall();
- 	if (kfd_init_apertures(process) != 0)
- 		goto err_init_apretures;
- 
+ struct input_event_compat {
+ 	struct compat_timeval time;
 -- 
 2.5.0

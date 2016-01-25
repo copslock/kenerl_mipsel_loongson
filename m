@@ -1,16 +1,16 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Jan 2016 23:26:21 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.136]:37228 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Jan 2016 23:26:40 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.136]:37263 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27011539AbcAYWYtUJerI (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S27011548AbcAYWYt1W40w (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Mon, 25 Jan 2016 23:24:49 +0100
 Received: from mail.kernel.org (localhost [127.0.0.1])
-        by mail.kernel.org (Postfix) with ESMTP id E07C7203A4;
-        Mon, 25 Jan 2016 22:24:46 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTP id 0E1E9200BE;
+        Mon, 25 Jan 2016 22:24:48 +0000 (UTC)
 Received: from localhost (199-83-221-254.PUBLIC.monkeybrains.net [199.83.221.254])
         (using TLSv1.2 with cipher AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 42296203A1;
-        Mon, 25 Jan 2016 22:24:46 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 5F9EF20303;
+        Mon, 25 Jan 2016 22:24:47 +0000 (UTC)
 From:   Andy Lutomirski <luto@kernel.org>
 To:     Andrew Morton <akpm@linux-foundation.org>
 Cc:     Andy Lutomirski <luto@kernel.org>,
@@ -22,9 +22,9 @@ Cc:     Andy Lutomirski <luto@kernel.org>,
         Chris Metcalf <cmetcalf@ezchip.com>,
         linux-parisc@vger.kernel.org, linux-mips@linux-mips.org,
         sparclinux@vger.kernel.org
-Subject: [PATCH v2 05/16] ptrace: in PEEK_SIGINFO, check syscall bitness, not task bitness
-Date:   Mon, 25 Jan 2016 14:24:19 -0800
-Message-Id: <d1f58b0983fc85bf2440fdb86b186d9f214e03f7.1453759363.git.luto@kernel.org>
+Subject: [PATCH v2 06/16] auditsc: For seccomp events, log syscall compat state using in_compat_syscall
+Date:   Mon, 25 Jan 2016 14:24:20 -0800
+Message-Id: <2c5ac9f83ad077d1f66c9e6469eb73274703f6d1.1453759363.git.luto@kernel.org>
 X-Mailer: git-send-email 2.5.0
 In-Reply-To: <cover.1453759363.git.luto@kernel.org>
 References: <cover.1453759363.git.luto@kernel.org>
@@ -35,7 +35,7 @@ Return-Path: <luto@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51365
+X-archive-position: 51366
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -52,29 +52,29 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Users of the 32-bit ptrace() ABI expect the full 32-bit ABI.
-siginfo translation should check ptrace() ABI, not caller task ABI.
-
-This is an ABI change on SPARC.  Let's hope that no one relied on
-the old buggy ABI.
+Except on SPARC, this is what the code always did.  SPARC compat
+seccomp was buggy, although the impact of the bug was limited
+because SPARC 32-bit and 64-bit syscall numbers are the same.
 
 Signed-off-by: Andy Lutomirski <luto@kernel.org>
 ---
- kernel/ptrace.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/auditsc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/ptrace.c b/kernel/ptrace.c
-index 2341efe7fe02..c79b91d09e35 100644
---- a/kernel/ptrace.c
-+++ b/kernel/ptrace.c
-@@ -681,7 +681,7 @@ static int ptrace_peek_siginfo(struct task_struct *child,
- 			break;
+diff --git a/kernel/auditsc.c b/kernel/auditsc.c
+index 195ffaee50b9..7d0e3cf8abe1 100644
+--- a/kernel/auditsc.c
++++ b/kernel/auditsc.c
+@@ -2412,8 +2412,8 @@ void __audit_seccomp(unsigned long syscall, long signr, int code)
+ 		return;
+ 	audit_log_task(ab);
+ 	audit_log_format(ab, " sig=%ld arch=%x syscall=%ld compat=%d ip=0x%lx code=0x%x",
+-			 signr, syscall_get_arch(), syscall, is_compat_task(),
+-			 KSTK_EIP(current), code);
++			 signr, syscall_get_arch(), syscall,
++			 in_compat_syscall(), KSTK_EIP(current), code);
+ 	audit_log_end(ab);
+ }
  
- #ifdef CONFIG_COMPAT
--		if (unlikely(is_compat_task())) {
-+		if (unlikely(in_compat_syscall())) {
- 			compat_siginfo_t __user *uinfo = compat_ptr(data);
- 
- 			if (copy_siginfo_to_user32(uinfo, &info) ||
 -- 
 2.5.0

@@ -1,35 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Jan 2016 23:46:39 +0100 (CET)
-Received: from smtp6-g21.free.fr ([212.27.42.6]:27740 "EHLO smtp6-g21.free.fr"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27011442AbcAYWqiN-heU (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 25 Jan 2016 23:46:38 +0100
-Received: from tock (unknown [80.171.100.146])
-        (Authenticated sender: albeu)
-        by smtp6-g21.free.fr (Postfix) with ESMTPSA id 707E98227F;
-        Mon, 25 Jan 2016 23:45:05 +0100 (CET)
-Date:   Mon, 25 Jan 2016 23:46:30 +0100
-From:   Alban <albeu@free.fr>
-To:     Antony Pavlov <antonynpavlov@gmail.com>
-Cc:     Aban Bedel <albeu@free.fr>, linux-mips@linux-mips.org,
-        Gabor Juhos <juhosg@openwrt.org>, devicetree@vger.kernel.org
-Subject: Re: [RFC v3 08/14] MIPS: dts: qca: introduce AR9331 devicetree
-Message-ID: <20160125234630.16098b7f@tock>
-In-Reply-To: <1453580251-2341-9-git-send-email-antonynpavlov@gmail.com>
-References: <1453580251-2341-1-git-send-email-antonynpavlov@gmail.com>
-        <1453580251-2341-9-git-send-email-antonynpavlov@gmail.com>
-X-Mailer: Claws Mail 3.9.3 (GTK+ 2.24.23; x86_64-pc-linux-gnu)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Jan 2016 23:51:16 +0100 (CET)
+Received: from shards.monkeyblade.net ([149.20.54.216]:47010 "EHLO
+        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011471AbcAYWvO25QoU (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 25 Jan 2016 23:51:14 +0100
+Received: from localhost (74-93-104-98-Washington.hfc.comcastbusiness.net [74.93.104.98])
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id DAFC65A6A72;
+        Mon, 25 Jan 2016 14:51:08 -0800 (PST)
+Date:   Mon, 25 Jan 2016 14:51:08 -0800 (PST)
+Message-Id: <20160125.145108.1332641183366177944.davem@davemloft.net>
+To:     luto@kernel.org
+Cc:     akpm@linux-foundation.org, viro@zeniv.linux.org.uk,
+        torvalds@linux-foundation.org, x86@kernel.org,
+        linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
+        cmetcalf@ezchip.com, linux-parisc@vger.kernel.org,
+        linux-mips@linux-mips.org, sparclinux@vger.kernel.org
+Subject: Re: [PATCH v2 02/16] sparc/compat: Provide an accurate
+ in_compat_syscall implementation
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <e520030f750b29d14486aa1e99c271a0fa18f19e.1453759363.git.luto@kernel.org>
+References: <cover.1453759363.git.luto@kernel.org>
+        <cover.1453759363.git.luto@kernel.org>
+        <e520030f750b29d14486aa1e99c271a0fa18f19e.1453759363.git.luto@kernel.org>
+X-Mailer: Mew version 6.7 on Emacs 24.5 / Mule 6.0 (HANACHIRUSATO)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Return-Path: <albeu@free.fr>
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Mon, 25 Jan 2016 14:51:09 -0800 (PST)
+Return-Path: <davem@davemloft.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51381
+X-archive-position: 51382
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: albeu@free.fr
+X-original-sender: davem@davemloft.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -42,43 +48,22 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sat, 23 Jan 2016 23:17:25 +0300
-Antony Pavlov <antonynpavlov@gmail.com> wrote:
+From: Andy Lutomirski <luto@kernel.org>
+Date: Mon, 25 Jan 2016 14:24:16 -0800
 
-> This patch introduces devicetree for Atheros AR9331 SoC (AKA Hornet).
-> The AR9331 chip is a Wi-Fi System-On-Chip (WiSOC),
-> typically used in very cheap Access Points and Routers.
+> On sparc64 compat-enabled kernels, any task can make 32-bit and
+> 64-bit syscalls.  is_compat_task returns true in 32-bit tasks, which
+> does not necessarily imply that the current syscall is 32-bit.
 > 
-> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> Cc: Gabor Juhos <juhosg@openwrt.org>
-> Cc: Alban Bedel <albeu@free.fr>
-> Cc: linux-mips@linux-mips.org
-> Cc: devicetree@vger.kernel.org
-> ---
->  arch/mips/boot/dts/qca/ar9331.dtsi | 123 +++++++++++++++++++++++++++++++++++++
->  1 file changed, 123 insertions(+)
+> Provide an in_compat_syscall implementation that checks whether the
+> current syscall is compat.
 > 
-> diff --git a/arch/mips/boot/dts/qca/ar9331.dtsi b/arch/mips/boot/dts/qca/ar9331.dtsi
-> new file mode 100644
-> index 0000000..bf128a2
-> --- /dev/null
-> +++ b/arch/mips/boot/dts/qca/ar9331.dtsi
-> @@ -0,0 +1,123 @@
-> +#include <dt-bindings/clock/ath79-clk.h>
-> +
-> +/ {
-> +	compatible = "qca,ar9331";
-> +
+> As far as I know, sparc is the only architecture on which
+> is_compat_task checks the compat status of the task and on which the
+> compat status of a syscall can differ from the compat status of the
+> task.  On x86, is_compat_task checks the syscall type, not the task
+> type.
+> 
+> Signed-off-by: Andy Lutomirski <luto@kernel.org>
 
-[...]
-
-> +
-> +	extosc: oscillator {
-> +		compatible = "fixed-clock";
-> +		#clock-cells = <0>;
-> +	};
-
-This oscillator is on the board and not in the SoC, so it should
-be in the board DTS.
-
-Alban
+Acked-by: David S. Miller <davem@davemloft.net>

@@ -1,16 +1,16 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Jan 2016 23:25:47 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.136]:37179 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Jan 2016 23:26:05 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.136]:37201 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27011531AbcAYWYqIUpPI (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 25 Jan 2016 23:24:46 +0100
+        id S27011538AbcAYWYtCC3GI (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 25 Jan 2016 23:24:49 +0100
 Received: from mail.kernel.org (localhost [127.0.0.1])
-        by mail.kernel.org (Postfix) with ESMTP id B5D4F20392;
-        Mon, 25 Jan 2016 22:24:44 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTP id D6FFB20395;
+        Mon, 25 Jan 2016 22:24:45 +0000 (UTC)
 Received: from localhost (199-83-221-254.PUBLIC.monkeybrains.net [199.83.221.254])
         (using TLSv1.2 with cipher AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id F296320395;
-        Mon, 25 Jan 2016 22:24:43 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 1B37C2039C;
+        Mon, 25 Jan 2016 22:24:45 +0000 (UTC)
 From:   Andy Lutomirski <luto@kernel.org>
 To:     Andrew Morton <akpm@linux-foundation.org>
 Cc:     Andy Lutomirski <luto@kernel.org>,
@@ -22,9 +22,9 @@ Cc:     Andy Lutomirski <luto@kernel.org>,
         Chris Metcalf <cmetcalf@ezchip.com>,
         linux-parisc@vger.kernel.org, linux-mips@linux-mips.org,
         sparclinux@vger.kernel.org
-Subject: [PATCH v2 03/16] sparc/syscall: Fix syscall_get_arch
-Date:   Mon, 25 Jan 2016 14:24:17 -0800
-Message-Id: <dc060687116306416e656e25c6a02611bf6e894e.1453759363.git.luto@kernel.org>
+Subject: [PATCH v2 04/16] seccomp: Check in_compat_syscall, not is_compat_task, in strict mode
+Date:   Mon, 25 Jan 2016 14:24:18 -0800
+Message-Id: <9cc3588071d4e31b035e0cf1d09483067df38823.1453759363.git.luto@kernel.org>
 X-Mailer: git-send-email 2.5.0
 In-Reply-To: <cover.1453759363.git.luto@kernel.org>
 References: <cover.1453759363.git.luto@kernel.org>
@@ -35,7 +35,7 @@ Return-Path: <luto@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51363
+X-archive-position: 51364
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -52,43 +52,40 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Sparc's syscall_get_arch was buggy: it returned the task arch, not the
-syscall arch.  This could confuse seccomp and audit.
+Seccomp wants to know the syscall bitness, not the caller task
+bitness, when it selects the syscall whitelist.
 
-I don't think this is as bad for seccomp as it looks: sparc's
-32-bit and 64-bit syscalls are numbered the same.
+As far as I know, this makes no difference on any architecture, so
+it's not a security problem.  (It generates identical code
+everywhere except sparc, and, on sparc, the syscall numbering is the
+same for both ABIs.)
 
 Signed-off-by: Andy Lutomirski <luto@kernel.org>
 ---
- arch/sparc/include/asm/syscall.h | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ kernel/seccomp.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/sparc/include/asm/syscall.h b/arch/sparc/include/asm/syscall.h
-index 49f71fd5b56e..1757cd6c521b 100644
---- a/arch/sparc/include/asm/syscall.h
-+++ b/arch/sparc/include/asm/syscall.h
-@@ -3,6 +3,7 @@
+diff --git a/kernel/seccomp.c b/kernel/seccomp.c
+index 580ac2d4024f..26858fa43a60 100644
+--- a/kernel/seccomp.c
++++ b/kernel/seccomp.c
+@@ -395,7 +395,7 @@ seccomp_prepare_user_filter(const char __user *user_filter)
+ 	struct seccomp_filter *filter = ERR_PTR(-EFAULT);
  
- #include <uapi/linux/audit.h>
- #include <linux/kernel.h>
-+#include <linux/compat.h>
- #include <linux/sched.h>
- #include <asm/ptrace.h>
- #include <asm/thread_info.h>
-@@ -128,7 +129,13 @@ static inline void syscall_set_arguments(struct task_struct *task,
- 
- static inline int syscall_get_arch(void)
+ #ifdef CONFIG_COMPAT
+-	if (is_compat_task()) {
++	if (in_compat_syscall()) {
+ 		struct compat_sock_fprog fprog32;
+ 		if (copy_from_user(&fprog32, user_filter, sizeof(fprog32)))
+ 			goto out;
+@@ -529,7 +529,7 @@ static void __secure_computing_strict(int this_syscall)
  {
--	return is_32bit_task() ? AUDIT_ARCH_SPARC : AUDIT_ARCH_SPARC64;
-+#if defined(CONFIG_SPARC64) && defined(CONFIG_COMPAT)
-+	return in_compat_syscall() ? AUDIT_ARCH_SPARC : AUDIT_ARCH_SPARC64;
-+#elif defined(CONFIG_SPARC64)
-+	return AUDIT_ARCH_SPARC64;
-+#else
-+	return AUDIT_ARCH_SPARC;
-+#endif
- }
- 
- #endif /* __ASM_SPARC_SYSCALL_H */
+ 	int *syscall_whitelist = mode1_syscalls;
+ #ifdef CONFIG_COMPAT
+-	if (is_compat_task())
++	if (in_compat_syscall())
+ 		syscall_whitelist = mode1_syscalls_32;
+ #endif
+ 	do {
 -- 
 2.5.0

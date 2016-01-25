@@ -1,65 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Jan 2016 17:42:59 +0100 (CET)
-Received: from foss.arm.com ([217.140.101.70]:49686 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27010210AbcAYQm5gvLJr (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 25 Jan 2016 17:42:57 +0100
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 283493F8;
-        Mon, 25 Jan 2016 08:42:10 -0800 (PST)
-Received: from arm.com (usa-sjc-imap-foss1.foss.arm.com [10.72.51.249])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A39F33F246;
-        Mon, 25 Jan 2016 08:42:45 -0800 (PST)
-Date:   Mon, 25 Jan 2016 16:42:43 +0000
-From:   Will Deacon <will.deacon@arm.com>
-To:     "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>
-Cc:     Peter Zijlstra <peterz@infradead.org>,
-        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
-        linux-arch@vger.kernel.org,
-        Andrew Cooper <andrew.cooper3@citrix.com>,
-        Russell King - ARM Linux <linux@arm.linux.org.uk>,
-        virtualization@lists.linux-foundation.org,
-        Stefano Stabellini <stefano.stabellini@eu.citrix.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@elte.hu>, "H. Peter Anvin" <hpa@zytor.com>,
-        Joe Perches <joe@perches.com>,
-        David Miller <davem@davemloft.net>, linux-ia64@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-metag@vger.kernel.org, linux-mips@linux-mips.org,
-        x86@kernel.org, user-mode-linux-devel@lists.sourceforge.net,
-        adi-buildroot-devel@lists.sourceforge.net,
-        linux-sh@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        xen-devel@lists.xenproject.org, Ralf Baechle <ralf@linux-mips.org>,
-        Ingo Molnar <mingo@kernel.org>, ddaney.cavm@gmail.com,
-        james.hogan@imgtec.com, Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [v3,11/41] mips: reuse asm-generic/barrier.h
-Message-ID: <20160125164242.GF22927@arm.com>
-References: <20160114121449.GC15828@arm.com>
- <5697F6D2.60409@imgtec.com>
- <20160114203430.GC3818@linux.vnet.ibm.com>
- <56980C91.1010403@imgtec.com>
- <20160114212913.GF3818@linux.vnet.ibm.com>
- <20160115085554.GF3421@worktop>
- <20160115091348.GA27936@worktop>
- <20160115174612.GV3818@linux.vnet.ibm.com>
- <20160115212714.GM3421@worktop>
- <20160115215853.GC3818@linux.vnet.ibm.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Jan 2016 18:31:04 +0100 (CET)
+Received: from mail-wm0-f41.google.com ([74.125.82.41]:37282 "EHLO
+        mail-wm0-f41.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011406AbcAYRbCVcJ5p convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 25 Jan 2016 18:31:02 +0100
+Received: by mail-wm0-f41.google.com with SMTP id n5so91747300wmn.0;
+        Mon, 25 Jan 2016 09:31:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc:content-type:content-transfer-encoding;
+        bh=26bld2CZdbXe9ADQYbrwfvgMPXLjyo0OeFxZqeA1IgE=;
+        b=wASXMd6gUf0y9GmeTF1LxDXfMeElEtdnsVxw/tEW2CwIf8ndDwHj9APXtWfj1lF9dL
+         cBDlEzPTghipNIQbs0+LaA5v1o3AO4fLSFjpTQgdrYG7F7+mJ5hVm2zHVP9ojypFEOk0
+         QLf+QBPPzfee/7n3lwxcDL32F9AgsINhzBYEoPnMeI3Uk7L9lr6fBIJ35oaBptYmu8Fi
+         tbIaC/j+bpicBI7z8u2HF/UAia6gp1DEudAczUtfosWj7Rmgb8RH7MptUPvunbSm3ACf
+         pgwh1iQ0kLghLnkRywySpkTTdxdl7Yuk4gsU6sdfD7woxDwPX3QKH7Iq6VfJN04hPiwo
+         gW5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc:content-type:content-transfer-encoding;
+        bh=26bld2CZdbXe9ADQYbrwfvgMPXLjyo0OeFxZqeA1IgE=;
+        b=e8HYFBxNL/jNEIdzbhcwvPm2Zz+ciYzrGt3YmbMA4n4BDCwiOz4VhJQxaUVl/T3lTp
+         TY/hJRdp+oWDVnGifk0C/Czs/BS5hWw3FhlYVnO4IUZZu7Ft1zDgGoRTfuB0I5LqQW8w
+         8HTubTLGQ4ai9vfgXPCOQGNA7i9h9cjnCqjv807PHLypct1P5SzBbpnOJgQzRDk/1CzL
+         5c7aFp5ZUmmn0SDF9OJATihe6gdMWbOCw2J3HB1k9/CPFWhjEhNru08Cz3T6Y26kBgoF
+         978tYqvtJHwa/5ZIAoRgX/ts8AYYy7hH4GkubduIH8UE3R+rbvcNvpPTdZVCOT+iRho5
+         SziQ==
+X-Gm-Message-State: AG10YORaOpuhHGnrFbNd/YrN8jlqMoFYHqLAh0XdbFJgrevzxwHJOaMgZc7pbCqxtbVGadjwBiDOHzIUd//Xkw==
+X-Received: by 10.194.203.168 with SMTP id kr8mr18251978wjc.168.1453743057117;
+ Mon, 25 Jan 2016 09:30:57 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20160115215853.GC3818@linux.vnet.ibm.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <will.deacon@arm.com>
+Received: by 10.28.91.208 with HTTP; Mon, 25 Jan 2016 09:30:17 -0800 (PST)
+In-Reply-To: <E484D272A3A61B4880CDF2E712E9279F45D179FA@HHMAIL01.hh.imgtec.org>
+References: <1452189189-31188-1-git-send-email-mst@redhat.com>
+ <CAAG0J995iCNwdN6PpuJfzo+TVWNXR3UVqS9v-4HXbryyvMn+=w@mail.gmail.com>
+ <E484D272A3A61B4880CDF2E712E9279F45D04AA7@HHMAIL01.hh.imgtec.org>
+ <CAJ1xhMWth4kNuEkuVEUiUEz=d_9dmKxh0+Z_GrRcKB+F72W91w@mail.gmail.com> <E484D272A3A61B4880CDF2E712E9279F45D179FA@HHMAIL01.hh.imgtec.org>
+From:   Alexander Kapshuk <alexander.kapshuk@gmail.com>
+Date:   Mon, 25 Jan 2016 19:30:17 +0200
+Message-ID: <CAJ1xhMVbxoag7psNg+5L6AmL4WYXKyBYNuVGjJcfqe6Km_10SQ@mail.gmail.com>
+Subject: Re: [PATCH] ld-version: fix it on Fedora
+To:     Daniel Sanders <Daniel.Sanders@imgtec.com>
+Cc:     James Hogan <James.Hogan@imgtec.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Michal Marek <mmarek@suse.com>,
+        "linux-kbuild@vger.kernel.org" <linux-kbuild@vger.kernel.org>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        Ralf Baechle <ralf@linux-mips.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+Return-Path: <alexander.kapshuk@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51354
+X-archive-position: 51355
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: will.deacon@arm.com
+X-original-sender: alexander.kapshuk@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -72,82 +73,137 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Jan 15, 2016 at 01:58:53PM -0800, Paul E. McKenney wrote:
-> On Fri, Jan 15, 2016 at 10:27:14PM +0100, Peter Zijlstra wrote:
-> > On Fri, Jan 15, 2016 at 09:46:12AM -0800, Paul E. McKenney wrote:
-> > > On Fri, Jan 15, 2016 at 10:13:48AM +0100, Peter Zijlstra wrote:
-> > 
-> > > > And the stuff we're confused about is how best to express the difference
-> > > > and guarantees of these two forms of transitivity and how exactly they
-> > > > interact.
-> > > 
-> > > Hoping my memory-barrier.txt patch helps here...
-> > 
-> > Yes, that seems a good start. But yesterday you raised the 'fun' point
-> > of two globally ordered sequences connected by a single local link.
-> 
-> The conclusion that I am slowly coming to is that litmus tests should
-> not be thought of as linear chains, but rather as cycles.  If you think
-> of it as a cycle, then it doesn't matter where the local link is, just
-> how many of them and how they are connected.
+On Mon, Jan 25, 2016 at 12:49 PM, Daniel Sanders
+<Daniel.Sanders@imgtec.com> wrote:
+>
+> > From: Alexander Kapshuk [alexander.kapshuk@gmail.com]
+> > Sent: 23 January 2016 14:41
+> > To: Daniel Sanders
+> > Cc: James Hogan; Michael S. Tsirkin; LKML; Michal Marek; linux-kbuild@vger.kernel.org; Linux MIPS Mailing List; Ralf Baechle
+> > Subject: Re: [PATCH] ld-version: fix it on Fedora
+> >
+> > On Wed, Jan 13, 2016 at 7:30 PM, Daniel Sanders <Daniel.Sanders@imgtec.com<mailto:Daniel.Sanders@imgtec.com>> wrote:
+> > Hi,
+> >
+> > The version number that's giving me problems is 2.24.51.20140217 which ld-version.sh converts to 2036931700 (20000000+2400000+510000+2014021700).
+> >
+> > At the moment, I'm wondering whether we really need to handle more than three version number components. Another thought is that the comparison could be inside ld-version.sh (or a replacement) so that it can compare the array of version components directly instead of using a constructed integer as a proxy.
+> >
+> > > -----Original Message-----
+> > > From: james@albanarts.com<mailto:james@albanarts.com> [mailto:james@albanarts.com<mailto:james@albanarts.com>] On Behalf Of
+> > > James Hogan
+> > > Sent: 13 January 2016 17:06
+> > > To: Michael S. Tsirkin
+> > > Cc: LKML; Michal Marek; linux-kbuild@vger.kernel.org<mailto:linux-kbuild@vger.kernel.org>; Linux MIPS Mailing
+> > > List; Ralf Baechle; Daniel Sanders
+> > > Subject: Re: [PATCH] ld-version: fix it on Fedora
+> > >
+> > > Cc'ing Daniel, who has hit further breakage due to unusual version numbers.
+> > >
+> > > On 7 January 2016 at 17:55, Michael S. Tsirkin <mst@redhat.com<mailto:mst@redhat.com>> wrote:
+> > > > On Fedora 23, ld --version outputs:
+> > > > GNU ld version 2.25-15.fc23
+> > > >
+> > > > But ld-version.sh fails to parse this, so e.g.  mips build fails to
+> > > > enable VDSO, printing a warning that binutils >= 2.24 is required.
+> > > >
+> > > > To fix, teach ld-version to parse this format.
+> > > >
+> > > > Signed-off-by: Michael S. Tsirkin <mst@redhat.com<mailto:mst@redhat.com>>
+> > > > ---
+> > > >
+> > > > Which tree should this be merged through? Mine? MIPS?
+> > > >
+> > > >  scripts/ld-version.sh | 2 ++
+> > > >  1 file changed, 2 insertions(+)
+> > > >
+> > > > diff --git a/scripts/ld-version.sh b/scripts/ld-version.sh
+> > > > index 198580d..25d23c8 100755
+> > > > --- a/scripts/ld-version.sh
+> > > > +++ b/scripts/ld-version.sh
+> > > > @@ -2,6 +2,8 @@
+> > > >  # extract linker version number from stdin and turn into single number
+> > > >         {
+> > > >         gsub(".*)", "");
+> > > > +       gsub(".*version ", "");
+> > > > +       gsub("-.*", "");
+> > > >         split($1,a, ".");
+> > > >         print a[1]*10000000 + a[2]*100000 + a[3]*10000 + a[4]*100 + a[5];
+> > > >         exit
+> > > > --
+> > > > MST
+> > > >
+> >
+> > Is this the output you're looking for?
+> >
+> > % echo 'GNU ld version 2.25-15.fc23' |
+> > > awk '/[0-9]+([.]?[0-9]+)+/ && !/not found$/{
+> > > match($0, /[0-9]+([.]?[0-9]+)+/)
+> > > bin=substr($0,RSTART,RLENGTH)
+> > > split(bin, a, ".")
+> > > print a[1]*10000000 + a[2]*100000 + a[3]*10000}'
+> > 22500000
+> >
+> > % echo 2.25.1.20140217 |
+> > > awk '/[0-9]+([.]?[0-9]+)+/ && !/not found$/{
+> > > match($0, /[0-9]+([.]?[0-9]+)+/)
+> > > bin=substr($0,RSTART,RLENGTH)
+> > > split(bin, a, ".")
+> > > print a[1]*10000000 + a[2]*100000 + a[3]*10000}'
+> > 22510000
+> >
+> > awk parsing code taken from ver_linux:
+> > /usr/src/linux/scripts/ver_linux:28,33
+> > ld -v 2>&1 |
+> > awk '/[0-9]+([.]?[0-9]+)+/ && !/not found$/{
+> >     match($0, /[0-9]+([.]?[0-9]+)+/)
+> >     printf("Binutils\t\t%s\n",
+> >     substr($0,RSTART,RLENGTH))
+> > }'
+> >
+>
+> It's close. That code doesn't quite work for my version number because the third component has two
+> digits and overflows into the second component in the proxy integer:
+> $ echo 2.24.51.20140217 |
+> > awk '/[0-9]+([.]?[0-9]+)+/ && !/not found$/{
+> > match($0, /[0-9]+([.]?[0-9]+)+/)
+> > bin=substr($0,RSTART,RLENGTH)
+> > split(bin, a, ".")
+> > print a[1]*10000000 + a[2]*100000 + a[3]*10000}'
+> 22910000
+>
+> but adding a zero to the first two scale factors, or removing one from the third works for me.
+> $ echo 2.24.51.20140217 | awk '/[0-9]+([.]?[0-9]+)+/ && !/not found$/{
+> > match($0, /[0-9]+([.]?[0-9]+)+/)
+> > bin=substr($0,RSTART,RLENGTH)
+> > split(bin, a, ".")
+> > print a[1]*100000000 + a[2]*1000000 + a[3]*10000}'
+> 224510000
+> $ echo 2.24.51.20140217 | awk '/[0-9]+([.]?[0-9]+)+/ && !/not found$/{
+> > match($0, /[0-9]+([.]?[0-9]+)+/)
+> > bin=substr($0,RSTART,RLENGTH)
+> > split(bin, a, ".")
+> > print a[1]*10000000 + a[2]*100000 + a[3]*1000}'
+> 22451000
 
-Do you have some examples of this? I'm struggling to make it work in my
-mind, or are you talking specifically in the context of the kernel
-memory model?
 
-> But I will admit that there are some rather strange litmus tests that
-> challenge this cycle-centric view, for example, the one shown below.
-> It turns out that herd and ppcmem disagree on the outcome.  (The Power
-> architects side with ppcmem.)
-> 
-> > And I think I'm still confused on LWSYNC (in the smp_wmb case) when one
-> > of the stores looses a conflict, and if that scenario matters. If it
-> > does, we should inspect the same case for other barriers.
-> 
-> Indeed.  I am still working on how these should be described.  My
-> current thought is to be quite conservative on what ordering is
-> actually respected, however, the current task is formalizing how
-> RCU plays with the rest of the memory model.
-> 
-> 							Thanx, Paul
-> 
-> ------------------------------------------------------------------------
-> 
-> PPC Overlapping Group-B sets version 4
-> ""
-> (* When the Group-B sets from two different barriers involve instructions in
->    the same thread, within that thread one set must contain the other.
-> 
-> 	P0	P1	P2
-> 	Rx=1	Wy=1	Wz=2
-> 	dep.	lwsync	lwsync
-> 	Ry=0	Wz=1	Wx=1
-> 	Rz=1
-> 
-> 	assert(!(z=2))
-> 
->    Forbidden by ppcmem, allowed by herd.
-> *)
-> {
-> 0:r1=x; 0:r2=y; 0:r3=z;
-> 1:r1=x; 1:r2=y; 1:r3=z; 1:r4=1;
-> 2:r1=x; 2:r2=y; 2:r3=z; 2:r4=1; 2:r5=2;
-> }
->  P0		| P1		| P2		;
->  lwz r6,0(r1)	| stw r4,0(r2)	| stw r5,0(r3)	;
->  xor r7,r6,r6	| lwsync	| lwsync	;
->  lwzx r7,r7,r2	| stw r4,0(r3)	| stw r4,0(r1)	;
->  lwz r8,0(r3)	|		|		;
-> 
-> exists
-> (z=2 /\ 0:r6=1 /\ 0:r7=0 /\ 0:r8=1)
+I put the latter of the two methods that worked for you it into a
+script, shown below:
 
-That really hurts. Assuming that the "assert(!(z=2))" is actually there
-to constrain the coherence order of z to be {0->1->2}, then I think that
-this test is forbidden on arm using dmb instead of lwsync. That said, I
-also don't think the Rz=1 in P0 changes anything.
+#!/usr/bin/awk -f
+# extract linker version number from stdin and turn into single number
 
-The double negatives don't help here! (it is forbidden to guarantee that
-z is not always 2).
+/[0-9]+([.]?[0-9]+)+/ && !/not found$/{
+    match($0, /[0-9]+([.]?[0-9]+)+/)
+    ver=substr($0,RSTART,RLENGTH)
+    split(ver, a, ".")
+    print a[1]*10000000 + a[2]*100000 + a[3]*1000
+    exit
+}
 
-Will
+And tried it out on the following input:
+
+% echo 2.24.51.20140217 | ld-version.sh
+22451000
+% echo 'GNU ld version 2.25-15.fc23' | ld-version.sh
+22500000

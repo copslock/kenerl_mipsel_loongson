@@ -1,16 +1,16 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Jan 2016 23:25:11 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.136]:37158 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Jan 2016 23:25:31 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.136]:37144 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27011526AbcAYWYpE00FQ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S27011530AbcAYWYpLZEQM (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Mon, 25 Jan 2016 23:24:45 +0100
 Received: from mail.kernel.org (localhost [127.0.0.1])
-        by mail.kernel.org (Postfix) with ESMTP id 8921220376;
-        Mon, 25 Jan 2016 22:24:43 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTP id 6E1F820389;
+        Mon, 25 Jan 2016 22:24:42 +0000 (UTC)
 Received: from localhost (199-83-221-254.PUBLIC.monkeybrains.net [199.83.221.254])
         (using TLSv1.2 with cipher AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D5A7C20392;
-        Mon, 25 Jan 2016 22:24:42 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id A264D20376;
+        Mon, 25 Jan 2016 22:24:41 +0000 (UTC)
 From:   Andy Lutomirski <luto@kernel.org>
 To:     Andrew Morton <akpm@linux-foundation.org>
 Cc:     Andy Lutomirski <luto@kernel.org>,
@@ -22,9 +22,9 @@ Cc:     Andy Lutomirski <luto@kernel.org>,
         Chris Metcalf <cmetcalf@ezchip.com>,
         linux-parisc@vger.kernel.org, linux-mips@linux-mips.org,
         sparclinux@vger.kernel.org
-Subject: [PATCH v2 02/16] sparc/compat: Provide an accurate in_compat_syscall implementation
-Date:   Mon, 25 Jan 2016 14:24:16 -0800
-Message-Id: <e520030f750b29d14486aa1e99c271a0fa18f19e.1453759363.git.luto@kernel.org>
+Subject: [PATCH v2 01/16] compat: Add in_compat_syscall to ask whether we're in a compat syscall
+Date:   Mon, 25 Jan 2016 14:24:15 -0800
+Message-Id: <4cd121066a85fe57356569e3bae28fe9d7098806.1453759363.git.luto@kernel.org>
 X-Mailer: git-send-email 2.5.0
 In-Reply-To: <cover.1453759363.git.luto@kernel.org>
 References: <cover.1453759363.git.luto@kernel.org>
@@ -35,7 +35,7 @@ Return-Path: <luto@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51361
+X-archive-position: 51362
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -52,38 +52,48 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On sparc64 compat-enabled kernels, any task can make 32-bit and
-64-bit syscalls.  is_compat_task returns true in 32-bit tasks, which
-does not necessarily imply that the current syscall is 32-bit.
-
-Provide an in_compat_syscall implementation that checks whether the
-current syscall is compat.
-
-As far as I know, sparc is the only architecture on which
-is_compat_task checks the compat status of the task and on which the
-compat status of a syscall can differ from the compat status of the
-task.  On x86, is_compat_task checks the syscall type, not the task
-type.
+A lot of code currently abuses is_compat_task to determine this.
 
 Signed-off-by: Andy Lutomirski <luto@kernel.org>
 ---
- arch/sparc/include/asm/compat.h | 6 ++++++
- 1 file changed, 6 insertions(+)
+ include/linux/compat.h | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/arch/sparc/include/asm/compat.h b/arch/sparc/include/asm/compat.h
-index 830502fe62b4..5467404857fc 100644
---- a/arch/sparc/include/asm/compat.h
-+++ b/arch/sparc/include/asm/compat.h
-@@ -307,4 +307,10 @@ static inline int is_compat_task(void)
- 	return test_thread_flag(TIF_32BIT);
- }
+diff --git a/include/linux/compat.h b/include/linux/compat.h
+index a76c9172b2eb..f911bcec618f 100644
+--- a/include/linux/compat.h
++++ b/include/linux/compat.h
+@@ -5,6 +5,8 @@
+  * syscall compatibility layer.
+  */
  
-+static inline bool in_compat_syscall(void)
-+{
-+	return pt_regs_trap_type(current_pt_regs()) == 0x110;
-+}
-+#define in_compat_syscall in_compat_syscall
++#include <linux/types.h>
 +
- #endif /* _ASM_SPARC64_COMPAT_H */
+ #ifdef CONFIG_COMPAT
+ 
+ #include <linux/stat.h>
+@@ -713,9 +715,22 @@ asmlinkage long compat_sys_sched_rr_get_interval(compat_pid_t pid,
+ 
+ asmlinkage long compat_sys_fanotify_mark(int, unsigned int, __u32, __u32,
+ 					    int, const char __user *);
++
++/*
++ * For most but not all architectures, "am I in a compat syscall?" and
++ * "am I a compat task?" are the same question.  For architectures on which
++ * they aren't the same question, arch code can override in_compat_syscall.
++ */
++
++#ifndef in_compat_syscall
++static inline bool in_compat_syscall(void) { return is_compat_task(); }
++#endif
++
+ #else
+ 
+ #define is_compat_task() (0)
++static inline bool in_compat_syscall(void) { return false; }
+ 
+ #endif /* CONFIG_COMPAT */
++
+ #endif /* _LINUX_COMPAT_H */
 -- 
 2.5.0

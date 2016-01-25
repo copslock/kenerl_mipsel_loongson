@@ -1,36 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Jan 2016 23:31:58 +0100 (CET)
-Received: from smtp6-g21.free.fr ([212.27.42.6]:57471 "EHLO smtp6-g21.free.fr"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Jan 2016 23:36:53 +0100 (CET)
+Received: from hauke-m.de ([5.39.93.123]:51723 "EHLO hauke-m.de"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27011496AbcAYWb4MFdCU (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 25 Jan 2016 23:31:56 +0100
-Received: from tock (unknown [80.171.100.146])
-        (Authenticated sender: albeu)
-        by smtp6-g21.free.fr (Postfix) with ESMTPSA id 9003582280;
-        Mon, 25 Jan 2016 23:30:24 +0100 (CET)
-Date:   Mon, 25 Jan 2016 23:31:48 +0100
-From:   Alban <albeu@free.fr>
-To:     Antony Pavlov <antonynpavlov@gmail.com>
-Cc:     Aban Bedel <albeu@free.fr>, linux-mips@linux-mips.org,
-        devicetree@vger.kernel.org
-Subject: Re: [RFC v3 06/14] MIPS: dts: qca: ar9132: use short references for
- uart and spi nodes
-Message-ID: <20160125233148.4951e311@tock>
-In-Reply-To: <1453580251-2341-7-git-send-email-antonynpavlov@gmail.com>
-References: <1453580251-2341-1-git-send-email-antonynpavlov@gmail.com>
-        <1453580251-2341-7-git-send-email-antonynpavlov@gmail.com>
-X-Mailer: Claws Mail 3.9.3 (GTK+ 2.24.23; x86_64-pc-linux-gnu)
+        id S27011475AbcAYWgviIebU (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 25 Jan 2016 23:36:51 +0100
+Received: from [192.168.178.24] (p508B6B55.dip0.t-ipconnect.de [80.139.107.85])
+        by hauke-m.de (Postfix) with ESMTPSA id E9B1B1003CD;
+        Mon, 25 Jan 2016 23:36:50 +0100 (CET)
+Subject: Re: [PATCH v3 3/3] MIPS: VDSO: Add implementations of gettimeofday()
+ and clock_gettime()
+To:     Markos Chandras <markos.chandras@imgtec.com>,
+        linux-mips@linux-mips.org
+References: <1444645496-32046-1-git-send-email-markos.chandras@imgtec.com>
+ <1445417864-31453-1-git-send-email-markos.chandras@imgtec.com>
+Cc:     Alex Smith <alex.smith@imgtec.com>, linux-kernel@vger.kernel.org
+From:   Hauke Mehrtens <hauke@hauke-m.de>
+X-Enigmail-Draft-Status: N1110
+Message-ID: <56A6A380.70708@hauke-m.de>
+Date:   Mon, 25 Jan 2016 23:36:48 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+ Icedove/38.5.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <albeu@free.fr>
+In-Reply-To: <1445417864-31453-1-git-send-email-markos.chandras@imgtec.com>
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 8bit
+Return-Path: <hauke@hauke-m.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51378
+X-archive-position: 51379
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: albeu@free.fr
+X-original-sender: hauke@hauke-m.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,127 +44,112 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sat, 23 Jan 2016 23:17:23 +0300
-Antony Pavlov <antonynpavlov@gmail.com> wrote:
-
-I personally prefer the version without aliases :) Is there any
-guidelines on this?
-
-Alban
-
-> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> Cc: Alban Bedel <albeu@free.fr>
-> Cc: linux-mips@linux-mips.org
-> Cc: devicetree@vger.kernel.org
-> ---
->  arch/mips/boot/dts/qca/ar9132.dtsi               |  4 +-
->  arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts | 70 +++++++++++-------------
->  2 files changed, 35 insertions(+), 39 deletions(-)
+On 10/21/2015 10:57 AM, Markos Chandras wrote:
+> From: Alex Smith <alex.smith@imgtec.com>
 > 
-> diff --git a/arch/mips/boot/dts/qca/ar9132.dtsi b/arch/mips/boot/dts/qca/ar9132.dtsi
-> index cd1602f..a14f6f2 100644
-> --- a/arch/mips/boot/dts/qca/ar9132.dtsi
-> +++ b/arch/mips/boot/dts/qca/ar9132.dtsi
-> @@ -61,7 +61,7 @@
->  				#qca,ddr-wb-channel-cells = <1>;
->  			};
->  
-> -			uart@18020000 {
-> +			uart: uart@18020000 {
->  				compatible = "ns8250";
->  				reg = <0x18020000 0x20>;
->  				interrupts = <3>;
-> @@ -134,7 +134,7 @@
->  			};
->  		};
->  
-> -		spi@1f000000 {
-> +		spi: spi@1f000000 {
->  			compatible = "qca,ar9132-spi", "qca,ar7100-spi";
->  			reg = <0x1f000000 0x10>;
->  
-> diff --git a/arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts b/arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts
-> index 9618105..f22c22c 100644
-> --- a/arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts
-> +++ b/arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts
-> @@ -14,43 +14,6 @@
->  		reg = <0x0 0x2000000>;
->  	};
->  
-> -	ahb {
-> -		apb {
-> -			uart@18020000 {
-> -				status = "okay";
-> -			};
-> -		};
-> -
-> -		spi@1f000000 {
-> -			status = "okay";
-> -			num-cs = <1>;
-> -
-> -			flash@0 {
-> -				#address-cells = <1>;
-> -				#size-cells = <1>;
-> -				compatible = "s25sl064a";
-> -				reg = <0>;
-> -				spi-max-frequency = <25000000>;
-> -
-> -				partition@0 {
-> -					label = "u-boot";
-> -					reg = <0x000000 0x020000>;
-> -				};
-> -
-> -				partition@1 {
-> -					label = "firmware";
-> -					reg = <0x020000 0x7D0000>;
-> -				};
-> -
-> -				partition@2 {
-> -					label = "art";
-> -					reg = <0x7F0000 0x010000>;
-> -					read-only;
-> -				};
-> -			};
-> -		};
-> -	};
-> -
->  	gpio-keys {
->  		compatible = "gpio-keys-polled";
->  		#address-cells = <1>;
-> @@ -100,3 +63,36 @@
->  &extosc {
->  	clock-frequency = <40000000>;
->  };
+> Add user-mode implementations of gettimeofday() and clock_gettime() to
+> the VDSO. This is currently usable with 2 clocksources: the CP0 count
+> register, which is accessible to user-mode via RDHWR on R2 and later
+> cores, or the MIPS Global Interrupt Controller (GIC) timer, which
+> provides a "user-mode visible" section containing a mirror of its
+> counter registers. This section must be mapped into user memory, which
+> is done below the VDSO data page.
+> 
+> When a supported clocksource is not in use, the VDSO functions will
+> return -ENOSYS, which causes libc to fall back on the standard syscall
+> path.
+> 
+> When support for neither of these clocksources is compiled into the
+> kernel at all, the VDSO still provides clock_gettime(), as the coarse
+> realtime/monotonic clocks can still be implemented. However,
+> gettimeofday() is not provided in this case as nothing can be done
+> without a suitable clocksource. This causes the symbol lookup to fail
+> in libc and it will then always use the standard syscall path.
+> 
+> This patch includes a workaround for a bug in QEMU which results in
+> RDHWR on the CP0 count register always returning a constant (incorrect)
+> value. A fix for this has been submitted, and the workaround can be
+> removed after the fix has been in stable releases for a reasonable
+> amount of time.
+> 
+> A simple performance test which calls gettimeofday() 1000 times in a
+> loop and calculates the average execution time gives the following
+> results on a Malta + I6400 (running at 20MHz):
+> 
+>  - Syscall:    ~31000 ns
+>  - VDSO (GIC): ~15000 ns
+>  - VDSO (CP0): ~9500 ns
+> 
+> [markos.chandras@imgtec.com:
+> - Minor code re-arrangements in order for mappings to be made
+> in the order they appear to the process' address space.
+> - Move do_{monotonic, realtime} outside of the MIPS_CLOCK_VSYSCALL ifdef
+> - Use gic_get_usm_range so we can do the GIC mapping in the
+> arch/mips/kernel/vdso instead of the GIC irqchip driver]
+> 
+> Cc: linux-kernel@vger.kernel.org
+> Signed-off-by: Alex Smith <alex.smith@imgtec.com>
+> Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+> ---
+> Changes since v2:
+> - Do not export VDSO symbols if the toolchain does not have proper support
+> for the VDSO.
+> 
+> Changes since v1:
+> - Use gic_get_usm_range so we can do the GIC mapping in the
+> arch/mips/kernel/vdso instead of the GIC irqchip driver
+> ---
+>  arch/mips/Kconfig                    |   5 +
+>  arch/mips/include/asm/clocksource.h  |  29 +++++
+>  arch/mips/include/asm/vdso.h         |  68 +++++++++-
+>  arch/mips/kernel/csrc-r4k.c          |  44 +++++++
+>  arch/mips/kernel/vdso.c              |  71 ++++++++++-
+>  arch/mips/vdso/gettimeofday.c        | 232 +++++++++++++++++++++++++++++++++++
+>  arch/mips/vdso/vdso.h                |   9 ++
+>  arch/mips/vdso/vdso.lds.S            |   5 +
+>  drivers/clocksource/mips-gic-timer.c |   7 +-
+>  9 files changed, 460 insertions(+), 10 deletions(-)
+>  create mode 100644 arch/mips/include/asm/clocksource.h
+>  create mode 100644 arch/mips/vdso/gettimeofday.c
+> 
+
+....
+
 > +
-> +&uart {
-> +	status = "okay";
-> +};
+> +int __vdso_clock_gettime(clockid_t clkid, struct timespec *ts)
+> +{
+> +	const union mips_vdso_data *data = get_vdso_data();
+> +	int ret;
 > +
-> +&spi {
-> +	status = "okay";
-> +	num-cs = <1>;
+> +	switch (clkid) {
+> +	case CLOCK_REALTIME_COARSE:
+> +		ret = do_realtime_coarse(ts, data);
+> +		break;
+> +	case CLOCK_MONOTONIC_COARSE:
+> +		ret = do_monotonic_coarse(ts, data);
+> +		break;
+> +	case CLOCK_REALTIME:
+> +		ret = do_realtime(ts, data);
+> +		break;
+> +	case CLOCK_MONOTONIC:
+> +		ret = do_monotonic(ts, data);
+> +		break;
+> +	default:
+> +		ret = -ENOSYS;
+> +		break;
+> +	}
 > +
-> +	flash@0 {
-> +		#address-cells = <1>;
-> +		#size-cells = <1>;
-> +		compatible = "s25sl064a";
-> +		reg = <0>;
-> +		spi-max-frequency = <25000000>;
-> +
-> +		partition@0 {
-> +			label = "u-boot";
-> +			reg = <0x000000 0x020000>;
-> +		};
-> +
-> +		partition@1 {
-> +			label = "firmware";
-> +			reg = <0x020000 0x7D0000>;
-> +		};
-> +
-> +		partition@2 {
-> +			label = "art";
-> +			reg = <0x7F0000 0x010000>;
-> +			read-only;
-> +		};
-> +	};
-> +};
+> +	/* If we return -ENOSYS libc should fall back to a syscall. */
+
+This comment is important.
+
+The other architectures (checked arm64, tile, x86) are calling the
+original syscall instead of returning -ENOSYS here. This will confuse
+people trying to use this feature like me.
+
+When the libc does not call the normal syscall this will cause problems.
+
+> +	return ret;
+> +}
+
+Hauke

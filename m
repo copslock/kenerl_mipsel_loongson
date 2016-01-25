@@ -1,16 +1,16 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Jan 2016 23:26:56 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.136]:37281 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Jan 2016 23:27:14 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.136]:37297 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27011535AbcAYWYu1zTE- (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 25 Jan 2016 23:24:50 +0100
+        id S27011552AbcAYWYv2QFIw (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 25 Jan 2016 23:24:51 +0100
 Received: from mail.kernel.org (localhost [127.0.0.1])
-        by mail.kernel.org (Postfix) with ESMTP id 1A63920256;
-        Mon, 25 Jan 2016 22:24:49 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTP id 176CF20160;
+        Mon, 25 Jan 2016 22:24:50 +0000 (UTC)
 Received: from localhost (199-83-221-254.PUBLIC.monkeybrains.net [199.83.221.254])
         (using TLSv1.2 with cipher AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 73FA420160;
-        Mon, 25 Jan 2016 22:24:48 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 6D9A220274;
+        Mon, 25 Jan 2016 22:24:49 +0000 (UTC)
 From:   Andy Lutomirski <luto@kernel.org>
 To:     Andrew Morton <akpm@linux-foundation.org>
 Cc:     Andy Lutomirski <luto@kernel.org>,
@@ -22,9 +22,9 @@ Cc:     Andy Lutomirski <luto@kernel.org>,
         Chris Metcalf <cmetcalf@ezchip.com>,
         linux-parisc@vger.kernel.org, linux-mips@linux-mips.org,
         sparclinux@vger.kernel.org
-Subject: [PATCH v2 07/16] staging/lustre: Switch from is_compat_task to in_compat_syscall
-Date:   Mon, 25 Jan 2016 14:24:21 -0800
-Message-Id: <f9e0451f5867b0f7f6b4b6a225f76cc71fb66553.1453759363.git.luto@kernel.org>
+Subject: [PATCH v2 08/16] ext4: In ext4_dir_llseek, check syscall bitness directly
+Date:   Mon, 25 Jan 2016 14:24:22 -0800
+Message-Id: <8946a5499b6b9f2837fed067885b595ea52aafdf.1453759363.git.luto@kernel.org>
 X-Mailer: git-send-email 2.5.0
 In-Reply-To: <cover.1453759363.git.luto@kernel.org>
 References: <cover.1453759363.git.luto@kernel.org>
@@ -35,7 +35,7 @@ Return-Path: <luto@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51367
+X-archive-position: 51368
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -52,26 +52,27 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-AFAICT, lustre is trying to determine syscall bitness.  Use the new
-accessor.
+ext4 treats directory offsets differently for 32-bit and 64-bit
+callers.  Check the caller type using in_compat_syscall, not
+is_compat_task.  This changes behavior on SPARC slightly.
 
 Signed-off-by: Andy Lutomirski <luto@kernel.org>
 ---
- drivers/staging/lustre/lustre/llite/llite_internal.h | 2 +-
+ fs/ext4/dir.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/staging/lustre/lustre/llite/llite_internal.h b/drivers/staging/lustre/lustre/llite/llite_internal.h
-index 845e992ca5fc..373470410e05 100644
---- a/drivers/staging/lustre/lustre/llite/llite_internal.h
-+++ b/drivers/staging/lustre/lustre/llite/llite_internal.h
-@@ -647,7 +647,7 @@ static inline int ll_need_32bit_api(struct ll_sb_info *sbi)
- #if BITS_PER_LONG == 32
- 	return 1;
- #elif defined(CONFIG_COMPAT)
--	return unlikely(is_compat_task() || (sbi->ll_flags & LL_SBI_32BIT_API));
-+	return unlikely(in_compat_syscall() || (sbi->ll_flags & LL_SBI_32BIT_API));
+diff --git a/fs/ext4/dir.c b/fs/ext4/dir.c
+index 1d1bca74f844..6395456edea6 100644
+--- a/fs/ext4/dir.c
++++ b/fs/ext4/dir.c
+@@ -276,7 +276,7 @@ errout:
+ static inline int is_32bit_api(void)
+ {
+ #ifdef CONFIG_COMPAT
+-	return is_compat_task();
++	return in_compat_syscall();
  #else
- 	return unlikely(sbi->ll_flags & LL_SBI_32BIT_API);
+ 	return (BITS_PER_LONG == 32);
  #endif
 -- 
 2.5.0

@@ -1,46 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Jan 2016 23:15:30 +0100 (CET)
-Received: from mail-ig0-f173.google.com ([209.85.213.173]:37707 "EHLO
-        mail-ig0-f173.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011640AbcAZWP2ZGpOi (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 26 Jan 2016 23:15:28 +0100
-Received: by mail-ig0-f173.google.com with SMTP id h5so61357509igh.0;
-        Tue, 26 Jan 2016 14:15:28 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Jan 2016 23:33:49 +0100 (CET)
+Received: from mail-io0-f173.google.com ([209.85.223.173]:36430 "EHLO
+        mail-io0-f173.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011640AbcAZWdsDBXql (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 26 Jan 2016 23:33:48 +0100
+Received: by mail-io0-f173.google.com with SMTP id g73so206673404ioe.3;
+        Tue, 26 Jan 2016 14:33:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=mime-version:sender:in-reply-to:references:date:message-id:subject
          :from:to:cc:content-type;
-        bh=yQhex/wmTmU4n9V+/iMiQO1EEriVsrZ6SFDd6VACXCM=;
-        b=zTYRZfa1NFjHa8/Jw5ZF/plxa2rkxbH7qbwbUh9Tjx0T3VnRCYpsnIY2VhQt5ZZmhg
-         RkVBaNP92OxvT+oGsNIuErRxG8UMhn7/9jdFj8Wc7VA6FpLJFJQASOTERtbsqmwj8JpJ
-         RZ4J5Ozuv4CegTrBRt6T6zrizokSjGHRW1ObMKwLO0G2+yOSK8+7UL8IUABXEMdnbTF6
-         ckJNcifFVT9uqEXzQcZPszM/Z1nr93aIIcc71zhHdDKsD5UCGmfp9MTVAGJ0PDwQsBDX
-         2/PKZOOSIBnrwdWO/VMc+4g/oxBI/1SrSOl5vcGH8pyHj/PSJARFaoYDCEhvGEkUQ66C
-         5vLw==
+        bh=m7KSuAye9nwa9cL04J9X/RvSDGYQSepy1vvDUuO3JR8=;
+        b=foQuEKa4HNar4wFUDDSJmJQrRn4w8Fyqc37bpLEzC5ADHhfIod3MlvCX4Tks26MpPJ
+         oLviVUGcznr+C4178SSGES2ZIEz1w355Cv5Khl6e1Of+Hz924rdtXpDYjzaYX5Wy2gGy
+         GcUJcjKKau9yAZd7RIDaAPkjIG9+tlIK+Mn/YGFYliibkvrwsdOescLZkRzxfc5zXztf
+         PJsYRCfIQZ8YzuEOuuFTiHED4LaCSwr+cuKmQNS+Uo2cwguw5zEyL+HvYQfpu5VDnwja
+         buBpV1ojvebQc6f4HOIh2uDXc29CIxyeuQiSGjv0JnEbHsKOfRoyGeOOZCd+NhiIWkje
+         vlBw==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linux-foundation.org; s=google;
         h=mime-version:sender:in-reply-to:references:date:message-id:subject
          :from:to:cc:content-type;
-        bh=yQhex/wmTmU4n9V+/iMiQO1EEriVsrZ6SFDd6VACXCM=;
-        b=JKA67Uwd1a23lT+7fMM3cDw1hjUDERe/WvE0WvKaVkcxP5nIcdPb8aN/W2qd8r5err
-         RtJ8ooVwbZv2lk+E8I/F7lZhFSg3KEeszjTOZZF/94Ji4e7xvkP7MNj/h8CGMGiM9mae
-         YqU3fEwhU67gskq4hj5cdq3DZijwHz3SrhEjU=
+        bh=m7KSuAye9nwa9cL04J9X/RvSDGYQSepy1vvDUuO3JR8=;
+        b=h5d08G5mXWfhl0N7uH4vc5lBDSQwhUFRjd2e3SOHgJ9ejoNouEFtLZNdMpxlMtZVGG
+         IoCKgItoHputWdfsK4KWaFA4PdEtoBcvcAX0PniXPq2Fdm0s2DZ2rhBKy0ddHkxPNlVh
+         XCtrv5muGROcX/Ett/0t6hMDlanNDW+OZreIw=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:mime-version:sender:in-reply-to:references:date
          :message-id:subject:from:to:cc:content-type;
-        bh=yQhex/wmTmU4n9V+/iMiQO1EEriVsrZ6SFDd6VACXCM=;
-        b=XO8l98LMWOvkPpORtG9xYZqKwp2Xsl+Bdz3NOBuN6hJpQwvYP9RTGV6G81Iy3HUT5F
-         Cg/tIMrzkVAj8UqPXPkQB7Aa1B/H6FhV9kIH1SLgoL4ridfqEbdX8kyFleeHJvLZqXpu
-         D8IJnRmRr0mKML706vD2K8v17FTsN86vs4/qHb2pAk2b6hR+NcSMvLcy0iKGWqtNuZav
-         FhvIsvaF58mjFyAidKwV56ZI2wiYQBwp5FQ4HaNZKmGQ5iFJJzJbek7pRvq8a++u3Kxq
-         RNs2ALS4jsuewIAedQtNMQzmxbTpT9tM+45XfTBthZ2H2Dku6Ku3bEtqYq8nD90JN3vc
-         b5kg==
-X-Gm-Message-State: AG10YOQPDa2LGlxAOIaUwZFlsBPwNv1Umt4/O/IXpEEZrCA8Y/kVk668msPUlXZyAgFtz+7Xe5pk0AUq/MV//g==
+        bh=m7KSuAye9nwa9cL04J9X/RvSDGYQSepy1vvDUuO3JR8=;
+        b=LoKKTwmKbSVpczQMg2lgup6UqSQ6/IwQZdq97HycRhRQwU27JfuiBw+YMe+GIwgNQD
+         cc5ANXvHJbQMJ3ymG3toC1skvrxPPr75OJcP5Yb6j5k7Y3iALBLdEt9jJvPxeRnCRWUX
+         343O4xHYlQTBpplm+4yrcgVxLm2DxDiqmY1jlbgMLwBc4wlu/BH9LNSFvQWWaFXLcaSH
+         psQD8BCayGjty8ujkQRDjjOxVkCFAl8FPmZqw1lRdZ1doDn/TRfsUD3ljmYdK72ACMrZ
+         LUUAgKWFAWzT3vkDsUQ7ysW542hEkAOU0RukeLmHYp1S2DWhw1c/qzNM3un9obQQrrXy
+         Uwgw==
+X-Gm-Message-State: AG10YORbg3dP79ds89zuCDH4BHgk9Hb6w0MntYrXx+/EY+8qe+fHHGuIYRbSbuejO0seXb/D9Oq9BQZ0yqoT+w==
 MIME-Version: 1.0
-X-Received: by 10.50.88.74 with SMTP id be10mr24127853igb.93.1453846522122;
- Tue, 26 Jan 2016 14:15:22 -0800 (PST)
-Received: by 10.36.60.82 with HTTP; Tue, 26 Jan 2016 14:15:21 -0800 (PST)
-In-Reply-To: <20160126201037.GU4503@linux.vnet.ibm.com>
+X-Received: by 10.107.132.221 with SMTP id o90mr28916715ioi.137.1453847621300;
+ Tue, 26 Jan 2016 14:33:41 -0800 (PST)
+Received: by 10.36.60.82 with HTTP; Tue, 26 Jan 2016 14:33:40 -0800 (PST)
+In-Reply-To: <CA+55aFxjb+2rs2wVHtiSCcOzgMrE8H=yDeNcjyujPQudDCtLgw@mail.gmail.com>
 References: <20160114204827.GE3818@linux.vnet.ibm.com>
         <20160118081929.GA30420@gondor.apana.org.au>
         <20160118154629.GB3818@linux.vnet.ibm.com>
@@ -48,9 +48,10 @@ References: <20160114204827.GE3818@linux.vnet.ibm.com>
         <20160126172227.GG6357@twins.programming.kicks-ass.net>
         <CA+55aFzcC6C8imPs5vk4yH1Y2YHjnAdFM9HCkVs04COxuDQH6w@mail.gmail.com>
         <20160126201037.GU4503@linux.vnet.ibm.com>
-Date:   Tue, 26 Jan 2016 14:15:21 -0800
-X-Google-Sender-Auth: ZoCiCh0E_TG1RQIsN68oPQU7jCk
-Message-ID: <CA+55aFxjb+2rs2wVHtiSCcOzgMrE8H=yDeNcjyujPQudDCtLgw@mail.gmail.com>
+        <CA+55aFxjb+2rs2wVHtiSCcOzgMrE8H=yDeNcjyujPQudDCtLgw@mail.gmail.com>
+Date:   Tue, 26 Jan 2016 14:33:40 -0800
+X-Google-Sender-Auth: jrH1Y-2rPmX0XPeb1iHEl5cNOaA
+Message-ID: <CA+55aFwxTJd+uibcxtZD3tGnj_n=LMwyAa0s8qyx_OF0OMWQkA@mail.gmail.com>
 Subject: Re: [v3,11/41] mips: reuse asm-generic/barrier.h
 From:   Linus Torvalds <torvalds@linux-foundation.org>
 To:     Paul McKenney <paulmck@linux.vnet.ibm.com>
@@ -93,7 +94,7 @@ Return-Path: <linus971@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51438
+X-archive-position: 51439
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -110,45 +111,53 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Jan 26, 2016 at 12:10 PM, Paul E. McKenney
-<paulmck@linux.vnet.ibm.com> wrote:
-> On Tue, Jan 26, 2016 at 11:44:46AM -0800, Linus Torvalds wrote:
->>
->> >         struct foo *x = READ_ONCE(*ptr);
->> >         smp_read_barrier_depends();
->> >         x->bar = 5;
->>
->> This case is complete BS. Stop perpetuating it. I already removed a
->> number of bogus cases of it, and I removed the incorrect documentation
->> that had this crap.
+On Tue, Jan 26, 2016 at 2:15 PM, Linus Torvalds
+<torvalds@linux-foundation.org> wrote:
 >
-> If I understand your objection correctly, you want the above pattern
-> expressed either like this:
+> You might as well just write it as
 >
->         struct foo *x = rcu_dereference(*ptr);
->         x->bar = 5;
+>     struct foo x = READ_ONCE(*ptr);
+>     x->bar = 5;
 >
-> Or like this:
->
->         struct foo *x = lockless_dereference(*ptr);
->         x->bar = 5;
->
-> Or am I missing your point?
+> because that "smp_read_barrier_depends()" does NOTHING wrt the second write.
 
-You are entirely missing the point.
+Just to clarify: on alpha it adds a memory barrier, but that memory
+barrier is useless.
 
-You might as well just write it as
+On non-alpha, it is a no-op, and obviously does nothing simply because
+it generates no code.
 
-    struct foo x = READ_ONCE(*ptr);
-    x->bar = 5;
+So if anybody believes that the "smp_read_barrier_depends()" does
+something, they are *wrong*.
 
-because that "smp_read_barrier_depends()" does NOTHING wrt the second write.
+And if anybody sends out an email with that smp_read_barrier_depends()
+in an example, they are actively just confusing other people, which is
+even worse than just being wrong. Which is why I jumped in.
 
-So what I am saying is simple: anybody who writes that
-"smp_read_barrier_depends()" in there is just ttoally and completely
-WRONG, and the fact that Peter wrote it out after I removed several
-instances of that bloody f*cking idiocy is disturbing.
+So stop perpetuating the myth that smp_read_barrier_depends() does
+something here. It does not. It's a bug, and it has become this "mind
+virus" for some people that seem to believe that it does something.
 
-Don't do it. It's BS. It's wrong. Don't make excuses for it.
+I had to remove this crap once from the kernel already, see commit
+105ff3cbf225 ("atomic: remove all traces of READ_ONCE_CTRL() and
+atomic*_read_ctrl()").
 
-             Linus
+I don't want to ever see that broken construct again. And I want to
+make sure that everybody is educated about how broken it was. I'm
+extremely unhappy that it came up again.
+
+If it turns out that some architecture does actually need a barrier
+between a read and a dependent write, then that will mean that
+
+ (a) we'll have to make up a _new_ barrier, because
+"smp_read_barrier_depends()" is not that barrier. We'll presumably
+then have to make that new barrier part of "rcu_derefence()" and
+friends.
+
+ (b) we will have found an architecture with even worse memory
+ordering semantics than alpha, and we'll have to stop castigating
+alpha for being the worst memory ordering ever.
+
+but I sincerely hope that we'll never find that kind of broken architecture.
+
+               Linus

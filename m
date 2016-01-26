@@ -1,39 +1,87 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Jan 2016 22:16:25 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.136]:37850 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27011604AbcAZVQYWFylG (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 26 Jan 2016 22:16:24 +0100
-Received: from mail.kernel.org (localhost [127.0.0.1])
-        by mail.kernel.org (Postfix) with ESMTP id B872420221;
-        Tue, 26 Jan 2016 21:16:22 +0000 (UTC)
-Received: from rob-hp-laptop (72-48-98-129.dyn.grandenetworks.net [72.48.98.129])
-        (using TLSv1.2 with cipher AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 6ACD92021B;
-        Tue, 26 Jan 2016 21:16:21 +0000 (UTC)
-Date:   Tue, 26 Jan 2016 15:16:19 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Antony Pavlov <antonynpavlov@gmail.com>
-Cc:     linux-mips@linux-mips.org, devicetree@vger.kernel.org
-Subject: Re: [RFC v3 10/14] devicetree: add Dragino vendor id
-Message-ID: <20160126211619.GA11375@rob-hp-laptop>
-References: <1453580251-2341-1-git-send-email-antonynpavlov@gmail.com>
- <1453580251-2341-11-git-send-email-antonynpavlov@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Jan 2016 22:59:53 +0100 (CET)
+Received: from e31.co.us.ibm.com ([32.97.110.149]:51778 "EHLO
+        e31.co.us.ibm.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27011640AbcAZV7vhr1Ci (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 26 Jan 2016 22:59:51 +0100
+Received: from localhost
+        by e31.co.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <linux-mips@linux-mips.org> from <paulmck@linux.vnet.ibm.com>;
+        Tue, 26 Jan 2016 14:59:45 -0700
+Received: from d03dlp03.boulder.ibm.com (9.17.202.179)
+        by e31.co.us.ibm.com (192.168.1.131) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        Tue, 26 Jan 2016 14:59:42 -0700
+X-IBM-Helo: d03dlp03.boulder.ibm.com
+X-IBM-MailFrom: paulmck@linux.vnet.ibm.com
+X-IBM-RcptTo: linux-mips@linux-mips.org;ralf@linux-mips.org
+Received: from b03cxnp08025.gho.boulder.ibm.com (b03cxnp08025.gho.boulder.ibm.com [9.17.130.17])
+        by d03dlp03.boulder.ibm.com (Postfix) with ESMTP id 6C1E719D8042;
+        Tue, 26 Jan 2016 14:47:42 -0700 (MST)
+Received: from d03av05.boulder.ibm.com (d03av05.boulder.ibm.com [9.17.195.85])
+        by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id u0QLxgja29622424;
+        Tue, 26 Jan 2016 14:59:42 -0700
+Received: from d03av05.boulder.ibm.com (localhost [127.0.0.1])
+        by d03av05.boulder.ibm.com (8.14.4/8.14.4/NCO v10.0 AVout) with ESMTP id u0QLxVDh008353;
+        Tue, 26 Jan 2016 14:59:41 -0700
+Received: from paulmck-ThinkPad-W541 (paulmck-thinkpad-w541.au.ibm.com [9.192.250.130])
+        by d03av05.boulder.ibm.com (8.14.4/8.14.4/NCO v10.0 AVin) with ESMTP id u0QLxTm3008208;
+        Tue, 26 Jan 2016 14:59:29 -0700
+Received: by paulmck-ThinkPad-W541 (Postfix, from userid 1000)
+        id BA71F16C2B4C; Tue, 26 Jan 2016 11:58:20 -0800 (PST)
+Date:   Tue, 26 Jan 2016 11:58:20 -0800
+From:   "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>
+To:     Will Deacon <will.deacon@arm.com>
+Cc:     Peter Zijlstra <peterz@infradead.org>,
+        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+        linux-arch@vger.kernel.org,
+        Andrew Cooper <andrew.cooper3@citrix.com>,
+        Russell King - ARM Linux <linux@arm.linux.org.uk>,
+        virtualization@lists.linux-foundation.org,
+        Stefano Stabellini <stefano.stabellini@eu.citrix.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@elte.hu>, "H. Peter Anvin" <hpa@zytor.com>,
+        Joe Perches <joe@perches.com>,
+        David Miller <davem@davemloft.net>, linux-ia64@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-metag@vger.kernel.org, linux-mips@linux-mips.org,
+        x86@kernel.org, user-mode-linux-devel@lists.sourceforge.net,
+        adi-buildroot-devel@lists.sourceforge.net,
+        linux-sh@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        xen-devel@lists.xenproject.org, Ralf Baechle <ralf@linux-mips.org>,
+        Ingo Molnar <mingo@kernel.org>, ddaney.cavm@gmail.com,
+        james.hogan@imgtec.com, Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [v3,11/41] mips: reuse asm-generic/barrier.h
+Message-ID: <20160126195820.GS4503@linux.vnet.ibm.com>
+Reply-To: paulmck@linux.vnet.ibm.com
+References: <56980C91.1010403@imgtec.com>
+ <20160114212913.GF3818@linux.vnet.ibm.com>
+ <20160115085554.GF3421@worktop>
+ <20160115091348.GA27936@worktop>
+ <20160115174612.GV3818@linux.vnet.ibm.com>
+ <20160115212714.GM3421@worktop>
+ <20160115215853.GC3818@linux.vnet.ibm.com>
+ <20160125164242.GF22927@arm.com>
+ <20160126060322.GJ4503@linux.vnet.ibm.com>
+ <20160126121608.GE21553@arm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1453580251-2341-11-git-send-email-antonynpavlov@gmail.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-X-Virus-Scanned: ClamAV using ClamSMTP
-Return-Path: <robh@kernel.org>
+In-Reply-To: <20160126121608.GE21553@arm.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-TM-AS-MML: disable
+X-Content-Scanned: Fidelis XPS MAILER
+x-cbid: 16012621-8236-0000-0000-0000158A4856
+Return-Path: <paulmck@linux.vnet.ibm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51431
+X-archive-position: 51432
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: robh@kernel.org
+X-original-sender: paulmck@linux.vnet.ibm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,13 +94,55 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sat, Jan 23, 2016 at 11:17:27PM +0300, Antony Pavlov wrote:
-> Please see http://www.dragino.com/about/about.html for details.
+On Tue, Jan 26, 2016 at 12:16:09PM +0000, Will Deacon wrote:
+> On Mon, Jan 25, 2016 at 10:03:22PM -0800, Paul E. McKenney wrote:
+> > On Mon, Jan 25, 2016 at 04:42:43PM +0000, Will Deacon wrote:
+> > > On Fri, Jan 15, 2016 at 01:58:53PM -0800, Paul E. McKenney wrote:
+> > > > PPC Overlapping Group-B sets version 4
+> > > > ""
+> > > > (* When the Group-B sets from two different barriers involve instructions in
+> > > >    the same thread, within that thread one set must contain the other.
+> > > > 
+> > > > 	P0	P1	P2
+> > > > 	Rx=1	Wy=1	Wz=2
+> > > > 	dep.	lwsync	lwsync
+> > > > 	Ry=0	Wz=1	Wx=1
+> > > > 	Rz=1
+> > > > 
+> > > > 	assert(!(z=2))
+> > > > 
+> > > >    Forbidden by ppcmem, allowed by herd.
+> > > > *)
+> > > > {
+> > > > 0:r1=x; 0:r2=y; 0:r3=z;
+> > > > 1:r1=x; 1:r2=y; 1:r3=z; 1:r4=1;
+> > > > 2:r1=x; 2:r2=y; 2:r3=z; 2:r4=1; 2:r5=2;
+> > > > }
+> > > >  P0		| P1		| P2		;
+> > > >  lwz r6,0(r1)	| stw r4,0(r2)	| stw r5,0(r3)	;
+> > > >  xor r7,r6,r6	| lwsync	| lwsync	;
+> > > >  lwzx r7,r7,r2	| stw r4,0(r3)	| stw r4,0(r1)	;
+> > > >  lwz r8,0(r3)	|		|		;
+> > > > 
+> > > > exists
+> > > > (z=2 /\ 0:r6=1 /\ 0:r7=0 /\ 0:r8=1)
+> > > 
+> > > That really hurts. Assuming that the "assert(!(z=2))" is actually there
+> > > to constrain the coherence order of z to be {0->1->2}, then I think that
+> > > this test is forbidden on arm using dmb instead of lwsync. That said, I
+> > > also don't think the Rz=1 in P0 changes anything.
+> > 
+> > What about the smp_wmb() variant of dmb that orders only stores?
 > 
-> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> Cc: devicetree@vger.kernel.org
-> ---
->  Documentation/devicetree/bindings/vendor-prefixes.txt | 1 +
->  1 file changed, 1 insertion(+)
+> Tricky, but I think it still works out if the coherence order of z is as
+> I described above. The line of reasoning is weird though -- I ended up
+> considering the two cases where P0 reads z before and after it reads x
+> and what that means for the read of y.
 
-Acked-by: Rob Herring <robh@kernel.org>
+By "works out" you mean that ARM prohibits the outcome?
+
+BTW, I never have seen a real-world use for this case.  At the moment
+it is mostly a cautionary tale about memory-model corner cases and
+tools.
+
+							Thanx, Paul

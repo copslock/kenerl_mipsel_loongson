@@ -1,37 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Jan 2016 18:33:32 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:41479 "EHLO
-        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011636AbcAZRd2vQHZs (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 26 Jan 2016 18:33:28 +0100
-Received: from localhost (unknown [104.135.8.89])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 78EC5E96;
-        Tue, 26 Jan 2016 17:33:22 +0000 (UTC)
-Date:   Tue, 26 Jan 2016 09:33:22 -0800
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Joshua Henderson <joshua.henderson@microchip.com>
-Cc:     linux-kernel@vger.kernel.org, Jiri Slaby <jslaby@suse.com>,
-        linux-mips@linux-mips.org, ralf@linux-mips.org,
-        Andrei Pistirica <andrei.pistirica@microchip.com>,
-        linux-serial@vger.kernel.org, linux-api@vger.kernel.org
-Subject: Re: [PATCH v5 10/14] serial: pic32_uart: Add PIC32 UART driver
-Message-ID: <20160126173322.GA1664@kroah.com>
-References: <1452734299-460-1-git-send-email-joshua.henderson@microchip.com>
- <1452734299-460-11-git-send-email-joshua.henderson@microchip.com>
- <56A7A729.10008@microchip.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Jan 2016 18:44:51 +0100 (CET)
+Received: from asavdk4.altibox.net ([109.247.116.15]:45410 "EHLO
+        asavdk4.altibox.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27011634AbcAZRou3BO8s (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 26 Jan 2016 18:44:50 +0100
+Received: from ravnborg.org (unknown [188.228.89.252])
+        (using TLSv1.2 with cipher AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by asavdk4.altibox.net (Postfix) with ESMTPS id 8ACBA802DE;
+        Tue, 26 Jan 2016 18:44:43 +0100 (CET)
+Date:   Tue, 26 Jan 2016 18:44:41 +0100
+From:   Sam Ravnborg <sam@ravnborg.org>
+To:     David Miller <davem@davemloft.net>
+Cc:     luto@kernel.org, akpm@linux-foundation.org,
+        viro@zeniv.linux.org.uk, torvalds@linux-foundation.org,
+        x86@kernel.org, linux-arch@vger.kernel.org,
+        linux-s390@vger.kernel.org, cmetcalf@ezchip.com,
+        linux-parisc@vger.kernel.org, linux-mips@linux-mips.org,
+        sparclinux@vger.kernel.org
+Subject: Re: [PATCH v2 02/16] sparc/compat: Provide an accurate
+ in_compat_syscall implementation
+Message-ID: <20160126174441.GA18873@ravnborg.org>
+References: <cover.1453759363.git.luto@kernel.org>
+ <e520030f750b29d14486aa1e99c271a0fa18f19e.1453759363.git.luto@kernel.org>
+ <20160126062951.GA17107@ravnborg.org>
+ <20160125.225100.1932707129794761764.davem@davemloft.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <56A7A729.10008@microchip.com>
+In-Reply-To: <20160125.225100.1932707129794761764.davem@davemloft.net>
 User-Agent: Mutt/1.5.24 (2015-08-30)
-Return-Path: <gregkh@linuxfoundation.org>
+X-CMAE-Score: 0
+X-CMAE-Analysis: v=2.1 cv=OIGHpXuB c=1 sm=1 tr=0
+        a=Ij76tQDYWdb01v2+RnYW5w==:117 a=Ij76tQDYWdb01v2+RnYW5w==:17
+        a=L9H7d07YOLsA:10 a=9cW_t1CCXrUA:10 a=s5jvgZ67dGcA:10 a=kj9zAlcOel0A:10
+        a=7gkXJVJtAAAA:8 a=5QF_Gm3nSdwT_-_sU7YA:9 a=CjuIK1q_8ugA:10
+Return-Path: <sam@ravnborg.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51421
+X-archive-position: 51422
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
+X-original-sender: sam@ravnborg.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,15 +55,25 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Jan 26, 2016 at 10:04:41AM -0700, Joshua Henderson wrote:
-> Hi Greg and Jiri,
+On Mon, Jan 25, 2016 at 10:51:00PM -0800, David Miller wrote:
+> From: Sam Ravnborg <sam@ravnborg.org>
+> Date: Tue, 26 Jan 2016 07:29:51 +0100
 > 
-> Ping!  Need an ack for this or pull it upstream.
+> > Could you please add a comment about where 0x110 comes from.
+> > I at least failed to track this down.
+> 
+> Frankly I'm fine with this.  Someone who understands sparc64 can look
+> at the trap table around entry 0x110 and see:
+> 
+> tl0_resv10e:	BTRAP(0x10e) BTRAP(0x10f)
+> tl0_linux32:	LINUX_32BIT_SYSCALL_TRAP
+> tl0_oldlinux64:	LINUX_64BIT_SYSCALL_TRAP
 
-The merge window _just_ ended, please give us a chance to catch up on
-patches to be reviewed.  There's no reason you need a response for this
-right away, it can't be merged until 4.6-rc1, right?
+If one realise to look in the trap table in the first place - yes.
 
-thanks,
+Adding a short:
 
-greg k-h
+/* Check if this is LINUX_32BIT_SYSCALL_TRAP */
+Would make wonders to readability.
+
+	Sam

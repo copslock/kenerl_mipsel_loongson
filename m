@@ -1,55 +1,93 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Jan 2016 15:19:19 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:35383 "EHLO
-        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27011295AbcAZOTP4qe70 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 26 Jan 2016 15:19:15 +0100
-Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
-        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 8C4E141F8E4F;
-        Tue, 26 Jan 2016 14:19:10 +0000 (GMT)
-Received: from mailapp01.imgtec.com ([10.100.180.242])
-  by imgpgp01.kl.imgtec.org (PGP Universal service);
-  Tue, 26 Jan 2016 14:19:10 +0000
-X-PGP-Universal: processed;
-        by imgpgp01.kl.imgtec.org on Tue, 26 Jan 2016 14:19:10 +0000
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Websense Email Security Gateway with ESMTPS id 55398F306C26F;
-        Tue, 26 Jan 2016 14:19:08 +0000 (GMT)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
- 14.3.235.1; Tue, 26 Jan 2016 14:19:10 +0000
-Received: from localhost (192.168.154.110) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Tue, 26 Jan
- 2016 14:19:09 +0000
-Date:   Tue, 26 Jan 2016 14:19:09 +0000
-From:   James Hogan <james.hogan@imgtec.com>
-To:     Huacai Chen <chenhc@lemote.com>
-CC:     Ralf Baechle <ralf@linux-mips.org>,
-        Aurelien Jarno <aurelien@aurel32.net>,
-        "Steven J. Hill" <Steven.Hill@imgtec.com>,
-        <linux-mips@linux-mips.org>, "Fuxin Zhang" <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>
-Subject: Re: [PATCH 6/6] MIPS: Loongson-3: Introduce
- CONFIG_LOONGSON3_ENHANCEMENT
-Message-ID: <20160126141909.GB12365@jhogan-linux.le.imgtec.org>
-References: <1453814784-14230-1-git-send-email-chenhc@lemote.com>
- <1453814784-14230-7-git-send-email-chenhc@lemote.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Jan 2016 15:36:31 +0100 (CET)
+Received: from mail-pa0-f51.google.com ([209.85.220.51]:33929 "EHLO
+        mail-pa0-f51.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011595AbcAZOgX1xpvA (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 26 Jan 2016 15:36:23 +0100
+Received: by mail-pa0-f51.google.com with SMTP id uo6so100461001pac.1;
+        Tue, 26 Jan 2016 06:36:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-type:content-disposition:in-reply-to:user-agent;
+        bh=pkRiLBfI1oW5E69AtVihXygCnI+d9RsshSDPEoYtZ84=;
+        b=u2mvezApAjq6x7EBtjYT9t0AITkAsVXucgIpyXCMkAczNiDSf6b5z3LT6Tv9QRotr9
+         1b8W5l0h6v2Hd16doBqaGzgEBZKQ8ym0RlGJUlXzPRWe2AqnQFWn7XW+U7hc8dWEGNX8
+         bhYU5SKoxOvokH2Cw0hMFJ+yO9IBbVZJA+lVJCC/0SH2i1U9F9vY9UVas9LcjFBat2Xo
+         Mi9uFP3//q7WCldSY6wJf7D838itYpAdPO501cEjRJIjkPhG5XTcXzRHynI07LFKcQD3
+         H/y8cwrYcwvzdN67f2nDjOaxmrLIH3yQ17/F5WPoaTlqyskYAGhitzpBQ5GnYnhhINyC
+         9Hsw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-type:content-disposition:in-reply-to
+         :user-agent;
+        bh=pkRiLBfI1oW5E69AtVihXygCnI+d9RsshSDPEoYtZ84=;
+        b=hc/wv3FCBUsuvrOe3YUw3oHXWcRyYBPWA2wX7dKgiQ2dsbBV7ZM1WC29Q/ZfcgJL6x
+         xkLe9jKPMnFxtSUnbpL2K8bkSiZHLeBxgsXGDSCDmJmFHqJCtTnadtFgvUkCT6ue5ooV
+         YpoJO/tTzp0mkT4F7lLvoSQ3HrBOdEByt2BFnjtFvxYYZ9Ml94+Rr51rfut06iKEl5qt
+         Okb4DkUx57/4KF6q+t0cawgnZbmgCq5HgG1gdValRVFMn6U6o0CUrO2/r4I/YS+9zsEN
+         /XiiBPnNRtebrvb7WH07XJNaie3BIcpP3WGbnEbULyVTt1zPTBby7t8YNNOcngyXK/fr
+         y87A==
+X-Gm-Message-State: AG10YOQX1GWhOv0pDyAhh9hJ4O31goDmLGrlXaFbps/CvPF+DYVFPeC2IP84yLyUDjFWrw==
+X-Received: by 10.66.141.109 with SMTP id rn13mr33686657pab.83.1453818977293;
+        Tue, 26 Jan 2016 06:36:17 -0800 (PST)
+Received: from localhost ([45.32.128.109])
+        by smtp.gmail.com with ESMTPSA id xr8sm2344819pab.26.2016.01.26.06.36.15
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 26 Jan 2016 06:36:15 -0800 (PST)
+Date:   Tue, 26 Jan 2016 22:35:33 +0800
+From:   Boqun Feng <boqun.feng@gmail.com>
+To:     Will Deacon <will.deacon@arm.com>
+Cc:     "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+        linux-arch@vger.kernel.org,
+        Andrew Cooper <andrew.cooper3@citrix.com>,
+        Russell King - ARM Linux <linux@arm.linux.org.uk>,
+        virtualization@lists.linux-foundation.org,
+        Stefano Stabellini <stefano.stabellini@eu.citrix.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@elte.hu>, "H. Peter Anvin" <hpa@zytor.com>,
+        Joe Perches <joe@perches.com>,
+        David Miller <davem@davemloft.net>, linux-ia64@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-metag@vger.kernel.org, linux-mips@linux-mips.org,
+        x86@kernel.org, user-mode-linux-devel@lists.sourceforge.net,
+        adi-buildroot-devel@lists.sourceforge.net,
+        linux-sh@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        xen-devel@lists.xenproject.org, Ralf Baechle <ralf@linux-mips.org>,
+        Ingo Molnar <mingo@kernel.org>, ddaney.cavm@gmail.com,
+        james.hogan@imgtec.com, Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [v3,11/41] mips: reuse asm-generic/barrier.h
+Message-ID: <20160126143533.GA6029@fixme-laptop.cn.ibm.com>
+References: <56980C91.1010403@imgtec.com>
+ <20160114212913.GF3818@linux.vnet.ibm.com>
+ <20160115085554.GF3421@worktop>
+ <20160115091348.GA27936@worktop>
+ <20160115174612.GV3818@linux.vnet.ibm.com>
+ <20160115212714.GM3421@worktop>
+ <20160115215853.GC3818@linux.vnet.ibm.com>
+ <20160125164242.GF22927@arm.com>
+ <20160126060322.GJ4503@linux.vnet.ibm.com>
+ <20160126121608.GE21553@arm.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="OwLcNYc0lM97+oe1"
+        protocol="application/pgp-signature"; boundary="VS++wcV0S1rZb1Fb"
 Content-Disposition: inline
-In-Reply-To: <1453814784-14230-7-git-send-email-chenhc@lemote.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-X-Originating-IP: [192.168.154.110]
-X-ESG-ENCRYPT-TAG: 30575414
-Return-Path: <James.Hogan@imgtec.com>
+In-Reply-To: <20160126121608.GE21553@arm.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+Return-Path: <boqun.feng@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51411
+X-archive-position: 51412
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: boqun.feng@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -62,270 +100,91 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---OwLcNYc0lM97+oe1
-Content-Type: text/plain; charset=utf-8
+
+--VS++wcV0S1rZb1Fb
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jan 26, 2016 at 09:26:24PM +0800, Huacai Chen wrote:
-> New Loongson 3 CPU (since Loongson-3A R2, as opposed to Loongson-3A R1,
-> Loongson-3B R1 and Loongson-3B R2) has many enhancements, such as FTLB,
-> L1-VCache, EI/DI/Wait/Prefetch instruction, DSP/DSPv2 ASE, User Local
-> register, Read-Inhibit/Execute-Inhibit, SFB (Store Fill Buffer), Fast
-> TLB refill support, etc.
+Hi Will,
+
+On Tue, Jan 26, 2016 at 12:16:09PM +0000, Will Deacon wrote:
+> On Mon, Jan 25, 2016 at 10:03:22PM -0800, Paul E. McKenney wrote:
+> > On Mon, Jan 25, 2016 at 04:42:43PM +0000, Will Deacon wrote:
+> > > On Fri, Jan 15, 2016 at 01:58:53PM -0800, Paul E. McKenney wrote:
+> > > > PPC Overlapping Group-B sets version 4
+> > > > ""
+> > > > (* When the Group-B sets from two different barriers involve instru=
+ctions in
+> > > >    the same thread, within that thread one set must contain the oth=
+er.
+> > > >=20
+> > > > 	P0	P1	P2
+> > > > 	Rx=3D1	Wy=3D1	Wz=3D2
+> > > > 	dep.	lwsync	lwsync
+> > > > 	Ry=3D0	Wz=3D1	Wx=3D1
+> > > > 	Rz=3D1
+> > > >=20
+> > > > 	assert(!(z=3D2))
+> > > >=20
+> > > >    Forbidden by ppcmem, allowed by herd.
+> > > > *)
+> > > > {
+> > > > 0:r1=3Dx; 0:r2=3Dy; 0:r3=3Dz;
+> > > > 1:r1=3Dx; 1:r2=3Dy; 1:r3=3Dz; 1:r4=3D1;
+> > > > 2:r1=3Dx; 2:r2=3Dy; 2:r3=3Dz; 2:r4=3D1; 2:r5=3D2;
+> > > > }
+> > > >  P0		| P1		| P2		;
+> > > >  lwz r6,0(r1)	| stw r4,0(r2)	| stw r5,0(r3)	;
+> > > >  xor r7,r6,r6	| lwsync	| lwsync	;
+> > > >  lwzx r7,r7,r2	| stw r4,0(r3)	| stw r4,0(r1)	;
+> > > >  lwz r8,0(r3)	|		|		;
+> > > >=20
+> > > > exists
+> > > > (z=3D2 /\ 0:r6=3D1 /\ 0:r7=3D0 /\ 0:r8=3D1)
+> > >=20
+> > > That really hurts. Assuming that the "assert(!(z=3D2))" is actually t=
+here
+> > > to constrain the coherence order of z to be {0->1->2}, then I think t=
+hat
+> > > this test is forbidden on arm using dmb instead of lwsync. That said,=
+ I
+> > > also don't think the Rz=3D1 in P0 changes anything.
+> >=20
+> > What about the smp_wmb() variant of dmb that orders only stores?
 >=20
-> This patch introduce a config option, CONFIG_LOONGSON3_ENHANCEMENT, to
-> enable those enhancements which cannot be probed at run time. If you
-> want a generic kernel to run on all Loongson 3 machines, please say 'N'
-> here. If you want a high-performance kernel to run on new Loongson 3
-> machines only, please say 'Y' here.
->=20
-> Signed-off-by: Huacai Chen <chenhc@lemote.com>
-> ---
->  arch/mips/Kconfig                                      | 18 ++++++++++++=
-++++++
->  arch/mips/include/asm/hazards.h                        |  7 ++++---
->  arch/mips/include/asm/io.h                             | 10 +++++-----
->  arch/mips/include/asm/irqflags.h                       |  5 +++++
->  .../include/asm/mach-loongson64/kernel-entry-init.h    | 12 ++++++++++++
->  arch/mips/mm/c-r4k.c                                   |  3 +++
->  arch/mips/mm/page.c                                    |  9 +++++++++
->  7 files changed, 56 insertions(+), 8 deletions(-)
->=20
-> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-> index 15faaf0..e6d6f7b 100644
-> --- a/arch/mips/Kconfig
-> +++ b/arch/mips/Kconfig
-> @@ -1349,6 +1349,24 @@ config CPU_LOONGSON3
->  		The Loongson 3 processor implements the MIPS64R2 instruction
->  		set with many extensions.
-> =20
-> +config LOONGSON3_ENHANCEMENT
-> +	bool "New Loongson 3 CPU Enhancements"
-> +	default n
+> Tricky, but I think it still works out if the coherence order of z is as
+> I described above. The line of reasoning is weird though -- I ended up
+> considering the two cases where P0 reads z before and after it reads x
+                                             ^^^^^^^^^^^^^^^
+Because of the fact that two reads on the same processors can't be
+executed simultaneously? I feel like this is exactly something herd
+missed.
 
-no need, n is the default.
-
-> +	select CPU_MIPSR2
-> +	select CPU_HAS_PREFETCH
-> +	depends on CPU_LOONGSON3
-> +	help
-> +	  New Loongson 3 CPU (since Loongson-3A R2, as opposed to Loongson-3A
-> +	  R1, Loongson-3B R1 and Loongson-3B R2) has many enhancements, such as
-> +	  FTLB, L1-VCache, EI/DI/Wait/Prefetch instruction, DSP/DSPv2 ASE, User
-> +	  Local register, Read-Inhibit/Execute-Inhibit, SFB (Store Fill Buffer),
-> +	  Fast TLB refill support, etc.
-> +
-> +	  This option enable those enhancements which cannot be probed at run
-> +	  time. If you want a generic kernel to run on all Loongson 3 machines,
-> +	  please say 'N' here. If you want a high-performance kernel to run on
-> +	  new Loongson 3 machines only, please say 'Y' here.
-> +
->  config CPU_LOONGSON2E
->  	bool "Loongson 2E"
->  	depends on SYS_HAS_CPU_LOONGSON2E
-> diff --git a/arch/mips/include/asm/hazards.h b/arch/mips/include/asm/haza=
-rds.h
-> index 7b99efd..dbb1eb6 100644
-> --- a/arch/mips/include/asm/hazards.h
-> +++ b/arch/mips/include/asm/hazards.h
-> @@ -22,7 +22,8 @@
->  /*
->   * TLB hazards
->   */
-> -#if defined(CONFIG_CPU_MIPSR2) || defined(CONFIG_CPU_MIPSR6) && !defined=
-(CONFIG_CPU_CAVIUM_OCTEON)
-> +#if (defined(CONFIG_CPU_MIPSR2) || defined(CONFIG_CPU_MIPSR6)) && \
-> +	!defined(CONFIG_CPU_CAVIUM_OCTEON) && !defined(CONFIG_LOONGSON3_ENHANCE=
-MENT)
-> =20
->  /*
->   * MIPSR2 defines ehb for hazard avoidance
-> @@ -155,8 +156,8 @@ do {									\
->  } while (0)
-> =20
->  #elif defined(CONFIG_MIPS_ALCHEMY) || defined(CONFIG_CPU_CAVIUM_OCTEON) =
-|| \
-> -	defined(CONFIG_CPU_LOONGSON2) || defined(CONFIG_CPU_R10000) || \
-> -	defined(CONFIG_CPU_R5500) || defined(CONFIG_CPU_XLR)
-> +	defined(CONFIG_CPU_LOONGSON2) || defined(CONFIG_LOONGSON3_ENHANCEMENT) =
-|| \
-> +	defined(CONFIG_CPU_R10000) || defined(CONFIG_CPU_R5500) || defined(CONF=
-IG_CPU_XLR)
-> =20
->  /*
->   * R10000 rocks - all hazards handled in hardware, so this becomes a nob=
-rainer.
-> diff --git a/arch/mips/include/asm/io.h b/arch/mips/include/asm/io.h
-> index 2b4dc7a..ecabc00 100644
-> --- a/arch/mips/include/asm/io.h
-> +++ b/arch/mips/include/asm/io.h
-> @@ -304,10 +304,10 @@ static inline void iounmap(const volatile void __io=
-mem *addr)
->  #undef __IS_KSEG1
->  }
-> =20
-> -#ifdef CONFIG_CPU_CAVIUM_OCTEON
-> -#define war_octeon_io_reorder_wmb()		wmb()
-> +#if defined(CONFIG_CPU_CAVIUM_OCTEON) || defined(CONFIG_LOONGSON3_ENHANC=
-EMENT)
-> +#define war_io_reorder_wmb()		wmb()
->  #else
-> -#define war_octeon_io_reorder_wmb()		do { } while (0)
-> +#define war_io_reorder_wmb()		do { } while (0)
->  #endif
-
-Doesn't this slow things down when enabled, or is it required due to
-STFill buffer being enabled or something?
-
-> =20
->  #define __BUILD_MEMORY_SINGLE(pfx, bwlq, type, irq)			\
-> @@ -318,7 +318,7 @@ static inline void pfx##write##bwlq(type val,				\
->  	volatile type *__mem;						\
->  	type __val;							\
->  									\
-> -	war_octeon_io_reorder_wmb();					\
-> +	war_io_reorder_wmb();					\
->  									\
->  	__mem =3D (void *)__swizzle_addr_##bwlq((unsigned long)(mem));	\
->  									\
-> @@ -387,7 +387,7 @@ static inline void pfx##out##bwlq##p(type val, unsign=
-ed long port)	\
->  	volatile type *__addr;						\
->  	type __val;							\
->  									\
-> -	war_octeon_io_reorder_wmb();					\
-> +	war_io_reorder_wmb();					\
->  									\
->  	__addr =3D (void *)__swizzle_addr_##bwlq(mips_io_port_base + port); \
->  									\
-> diff --git a/arch/mips/include/asm/irqflags.h b/arch/mips/include/asm/irq=
-flags.h
-> index 65c351e..12f80b5 100644
-> --- a/arch/mips/include/asm/irqflags.h
-> +++ b/arch/mips/include/asm/irqflags.h
-> @@ -41,7 +41,12 @@ static inline unsigned long arch_local_irq_save(void)
->  	"	.set	push						\n"
->  	"	.set	reorder						\n"
->  	"	.set	noat						\n"
-> +#if defined(CONFIG_LOONGSON3_ENHANCEMENT)
-> +	"	mfc0	%[flags], $12					\n"
-> +	"	di							\n"
-
-Does this somehow help performance, or is it necessary when STFill
-buffer is enabled?
-
-> +#else
->  	"	di	%[flags]					\n"
-> +#endif
->  	"	andi	%[flags], 1					\n"
->  	"	" __stringify(__irq_disable_hazard) "			\n"
->  	"	.set	pop						\n"
-> diff --git a/arch/mips/include/asm/mach-loongson64/kernel-entry-init.h b/=
-arch/mips/include/asm/mach-loongson64/kernel-entry-init.h
-> index da83482..8393bc54 100644
-> --- a/arch/mips/include/asm/mach-loongson64/kernel-entry-init.h
-> +++ b/arch/mips/include/asm/mach-loongson64/kernel-entry-init.h
-> @@ -26,6 +26,12 @@
->  	mfc0	t0, $5, 1
->  	or	t0, (0x1 << 29)
->  	mtc0	t0, $5, 1
-> +#ifdef CONFIG_LOONGSON3_ENHANCEMENT
-> +	/* Enable STFill Buffer */
-> +	mfc0	t0, $16, 6
-> +	or	t0, 0x100
-> +	mtc0	t0, $16, 6
-> +#endif
->  	_ehb
->  	.set	pop
->  #endif
-> @@ -46,6 +52,12 @@
->  	mfc0	t0, $5, 1
->  	or	t0, (0x1 << 29)
->  	mtc0	t0, $5, 1
-> +#ifdef CONFIG_LOONGSON3_ENHANCEMENT
-> +	/* Enable STFill Buffer */
-> +	mfc0	t0, $16, 6
-> +	or	t0, 0x100
-> +	mtc0	t0, $16, 6
-> +#endif
-
-What does the STFill buffer do?
-
-Given that you can get a portable kernel without this, can this not be
-done from C code depending on the PRid?
-
->  	_ehb
->  	.set	pop
->  #endif
-> diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
-> index 65fb28c..903d8da 100644
-> --- a/arch/mips/mm/c-r4k.c
-> +++ b/arch/mips/mm/c-r4k.c
-> @@ -1170,6 +1170,9 @@ static void probe_pcache(void)
->  					  c->dcache.ways *
->  					  c->dcache.linesz;
->  		c->dcache.waybit =3D 0;
-> +#ifdef CONFIG_CPU_HAS_PREFETCH
-> +		c->options |=3D MIPS_CPU_PREFETCH;
-> +#endif
-
-Can't do that based on PRid?
-
-Cheers
-James
-
->  		break;
-> =20
->  	case CPU_CAVIUM_OCTEON3:
-> diff --git a/arch/mips/mm/page.c b/arch/mips/mm/page.c
-> index 885d73f..c41953c 100644
-> --- a/arch/mips/mm/page.c
-> +++ b/arch/mips/mm/page.c
-> @@ -188,6 +188,15 @@ static void set_prefetch_parameters(void)
->  			}
->  			break;
-> =20
-> +		case CPU_LOONGSON3:
-> +			/* Loongson-3 only support the Pref_Load/Pref_Store. */
-> +			pref_bias_clear_store =3D 128;
-> +			pref_bias_copy_load =3D 128;
-> +			pref_bias_copy_store =3D 128;
-> +			pref_src_mode =3D Pref_Load;
-> +			pref_dst_mode =3D Pref_Store;
-> +			break;
-> +
->  		default:
->  			pref_bias_clear_store =3D 128;
->  			pref_bias_copy_load =3D 256;
-> --=20
-> 2.4.6
->=20
->=20
->=20
->=20
+> and what that means for the read of y.
 >=20
 
---OwLcNYc0lM97+oe1
+And the reasoning on PPC is similar, so looks like the read of z on P0
+is a necessary condition for the exists clause to be forbidden.
+
+Regards,
+Boqun
+
+> Will
+
+--VS++wcV0S1rZb1Fb
 Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQIcBAEBCAAGBQJWp4BdAAoJEGwLaZPeOHZ64/YP/32tZ2dh2qaCQ23/OmyiDPOb
-pHXFdO4Rw/GHcGADkPaUGwzhCemClwFk50hca+4BiO8eoeOpDStc03wwdFi3ROaQ
-VPccSUv5mQqlEsIvCRymHkZb+9JFu2jvQTO2q/7vyjneZuctWzaUGfNWKMa/7TR/
-g2YGcOmniuESTeCiWqhvRH84nTfheDtASocQkidhX3MkmgElz69rU5BqPdpx34sS
-odMUTli9YqtaiPsKL9JWmXukEVXTeFZvGRkpOqNPvakaL5U2phWxygH8gWZip1yt
-jZItE/ST7L9SUz+/2TA8TiJgliWdon78wJ0dUNqoEkU3C4JciVdCON8L/kGMD7R1
-uFt5LGKnl3N7dMi+HDUhmyp240lD7MiNoPqIBfxSlGjwDewoh7fVGcnjAL/WU7m6
-5qRNH2cnkjLUCX2SkW3MAXGd+8o3w3WkVHhMmcAeZECgDBQ9SrwfpnOmNSagSEfu
-EC9aldOfZ5/AG4Ct7LqGs+9juqdqMn07wOhNzvFB6qj0EgisFszw0G+lMp08Fam3
-C8o6B8f+jglMjpAe4HyKVCu2xRK56apNVLBOkPZCbX2LRwqQ+hI9IzP6NBBnlmWJ
-8Nj/aCeeHK1mib/K0v6SYl5rOAa2yfnrJSM6F48LDCdbE/SZ0vdDvJuRaSf8dgEZ
-GKUenccANNw/Tth91XD/
-=NAyB
+iQEcBAABCAAGBQJWp4QwAAoJEEl56MO1B/q4Mm4H/0dwzlkmQS4v9KE2bwXuATC4
+SH2oyc2VGgjaT9rdPY3B52Kbcqteftm7Zej4rmBFJWSh4qMKBPI+AiT00VxEecPq
+FgZgZIyoQMLFeF7t8aogtY4rwkN/zhRt0vC7WdbBGP5ZC9HNxlwILuR9PwRrQysl
+NjhdpzH1ufk/vRvDGYF5ILw5KllvPWGOoStBn+j8AYDCDHj0xIy2BBbNWQraBas5
+jUlo1Qdm3BDCcZ6Yq52Gl/DICkIp6Qe/snmxPlASwoLTbozz1T7nhCQaN0GlWKeM
+WioHqMWD7L1RxbdNp8z0wsTOLCIeNY/+weP2r+mKCnsBivVSvocqmcQP+s4W4k4=
+=AQzQ
 -----END PGP SIGNATURE-----
 
---OwLcNYc0lM97+oe1--
+--VS++wcV0S1rZb1Fb--

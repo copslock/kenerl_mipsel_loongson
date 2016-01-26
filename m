@@ -1,42 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Jan 2016 07:51:08 +0100 (CET)
-Received: from shards.monkeyblade.net ([149.20.54.216]:50112 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27009709AbcAZGvGSLCKu (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 26 Jan 2016 07:51:06 +0100
-Received: from localhost (74-93-104-98-Washington.hfc.comcastbusiness.net [74.93.104.98])
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id C960F594E64;
-        Mon, 25 Jan 2016 22:51:02 -0800 (PST)
-Date:   Mon, 25 Jan 2016 22:51:00 -0800 (PST)
-Message-Id: <20160125.225100.1932707129794761764.davem@davemloft.net>
-To:     sam@ravnborg.org
-Cc:     luto@kernel.org, akpm@linux-foundation.org,
-        viro@zeniv.linux.org.uk, torvalds@linux-foundation.org,
-        x86@kernel.org, linux-arch@vger.kernel.org,
-        linux-s390@vger.kernel.org, cmetcalf@ezchip.com,
-        linux-parisc@vger.kernel.org, linux-mips@linux-mips.org,
-        sparclinux@vger.kernel.org
-Subject: Re: [PATCH v2 02/16] sparc/compat: Provide an accurate
- in_compat_syscall implementation
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20160126062951.GA17107@ravnborg.org>
-References: <cover.1453759363.git.luto@kernel.org>
-        <e520030f750b29d14486aa1e99c271a0fa18f19e.1453759363.git.luto@kernel.org>
-        <20160126062951.GA17107@ravnborg.org>
-X-Mailer: Mew version 6.7 on Emacs 24.5 / Mule 6.0 (HANACHIRUSATO)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Mon, 25 Jan 2016 22:51:03 -0800 (PST)
-Return-Path: <davem@davemloft.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Jan 2016 08:27:34 +0100 (CET)
+Received: from smtp3-g21.free.fr ([212.27.42.3]:34464 "EHLO smtp3-g21.free.fr"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27008947AbcAZH1cfIx08 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 26 Jan 2016 08:27:32 +0100
+Received: from localhost.localdomain (unknown [78.54.17.127])
+        (Authenticated sender: albeu)
+        by smtp3-g21.free.fr (Postfix) with ESMTPA id 17BF5A628C;
+        Tue, 26 Jan 2016 08:25:45 +0100 (CET)
+From:   Alban Bedel <albeu@free.fr>
+To:     linux-mips@linux-mips.org
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Felix Fietkau <nbd@openwrt.org>,
+        Antony Pavlov <antonynpavlov@gmail.com>,
+        Gabor Juhos <juhosg@openwrt.org>, linux-kernel@vger.kernel.org,
+        Alban Bedel <albeu@free.fr>
+Subject: [PATCH 1/2] MIPS: ath79: Add support for DTB passed using the UHI boot protocol
+Date:   Tue, 26 Jan 2016 08:27:15 +0100
+Message-Id: <1453793236-10890-1-git-send-email-albeu@free.fr>
+X-Mailer: git-send-email 2.0.0
+Return-Path: <albeu@free.fr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51389
+X-archive-position: 51390
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: davem@davemloft.net
+X-original-sender: albeu@free.fr
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,15 +39,26 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Sam Ravnborg <sam@ravnborg.org>
-Date: Tue, 26 Jan 2016 07:29:51 +0100
+This is needed for bootloader supporting UHI and to support appended
+DTB.
 
-> Could you please add a comment about where 0x110 comes from.
-> I at least failed to track this down.
+Signed-off-by: Alban Bedel <albeu@free.fr>
+---
+ arch/mips/ath79/setup.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Frankly I'm fine with this.  Someone who understands sparc64 can look
-at the trap table around entry 0x110 and see:
-
-tl0_resv10e:	BTRAP(0x10e) BTRAP(0x10f)
-tl0_linux32:	LINUX_32BIT_SYSCALL_TRAP
-tl0_oldlinux64:	LINUX_64BIT_SYSCALL_TRAP
+diff --git a/arch/mips/ath79/setup.c b/arch/mips/ath79/setup.c
+index 2fdba24..2895e45 100644
+--- a/arch/mips/ath79/setup.c
++++ b/arch/mips/ath79/setup.c
+@@ -203,6 +203,8 @@ void __init plat_mem_setup(void)
+ 	fdt_start = fw_getenvl("fdt_start");
+ 	if (fdt_start)
+ 		__dt_setup_arch((void *)KSEG0ADDR(fdt_start));
++	else if (fw_arg0 == -2)
++		__dt_setup_arch((void *)KSEG0ADDR(fw_arg1));
+ #ifdef CONFIG_BUILTIN_DTB
+ 	else
+ 		__dt_setup_arch(__dtb_start);
+-- 
+2.0.0

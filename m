@@ -1,42 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Jan 2016 23:47:21 +0100 (CET)
-Received: from mezzanine.sirena.org.uk ([106.187.55.193]:60905 "EHLO
-        mezzanine.sirena.org.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011649AbcAZWrDMjeXl (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 26 Jan 2016 23:47:03 +0100
-Received: from cpc11-sgyl31-2-0-cust672.sgyl.cable.virginm.net ([94.175.94.161] helo=debutante)
-        by mezzanine.sirena.org.uk with esmtpsa (TLS1.2:RSA_AES_128_CBC_SHA1:128)
-        (Exim 4.80)
-        (envelope-from <broonie@sirena.org.uk>)
-        id 1aOCNz-0004K0-Lu; Tue, 26 Jan 2016 22:46:56 +0000
-Received: from broonie by debutante with local (Exim 4.86)
-        (envelope-from <broonie@sirena.org.uk>)
-        id 1aOCNw-0006VB-SD; Tue, 26 Jan 2016 22:46:52 +0000
-From:   Mark Brown <broonie@kernel.org>
-To:     Ralf Baechle <ralf@linux-mips.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 Jan 2016 00:17:17 +0100 (CET)
+Received: from mail-pa0-f42.google.com ([209.85.220.42]:34231 "EHLO
+        mail-pa0-f42.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27009298AbcAZXRP7DL6l (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 27 Jan 2016 00:17:15 +0100
+Received: by mail-pa0-f42.google.com with SMTP id uo6so107047041pac.1;
+        Tue, 26 Jan 2016 15:17:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding;
+        bh=V1u1dO3+m11LJHcr9H2vAXOm2ZiBFsk7hU4S9gFbk64=;
+        b=GtawUpwjVvDFA3wLe35N1di7Hwkrj3lffkoQBBSA5Ul6R1T3TMe0XxEPGFzrJCV+yV
+         pw9CrAWmx7/wnEQVC3dGfAqas4/OXEfVmEiHccaqEaJU+oAO6HjnfV/w1DxexZUPR4NY
+         z3hCyd4awDOHQ4ez3Zf+4KLxRTRKYKoH2VqSOd5a8cB+XMFPl1MlcDvx7oeTZ/vIVZEC
+         Fb4t7OH3VjNnG6XcajRMfLfIet23SO/6Hry/b0Fh9gc1w/yQQjycMm8+ClHLkdGQTS2v
+         L0Ds8VpOVi0sie8FvkiXRUEZEzr4qNbaedEf3yGMrCOlKafrSxQYJTy5OckKQOHXIhmU
+         Lwwg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:message-id:date:from:user-agent:mime-version:to
+         :cc:subject:references:in-reply-to:content-type
+         :content-transfer-encoding;
+        bh=V1u1dO3+m11LJHcr9H2vAXOm2ZiBFsk7hU4S9gFbk64=;
+        b=fp21IfljtXDM3N8aS9jqlYe/HiWV9fTWQeLP6cVdykJhGozZNf62dxWuvC010KY9zv
+         jN5TlnlRT+wL/UxJiy/ubuFYy7LRqiCe2hy6reC1AEWxLQ7QLRTypLVHmWUwoopkwEAS
+         MDuX7qdnyXuN19XEp8xs23q4jIs1GXPTKqAYGuZTilD04CwqBMIhEfbtWopG1a8eP9QX
+         u1TOHkpB/j5U4+2KSyxfgbscLS4cwBSt8TA4zNXDaKInJISPbRMIjgjw0F+AyNz1xEhy
+         a0L7ziMPWodQ4NNhqpz/bPgiX0uvELTgkabYoVMDk7i8vz/E2jP7LDkrPAkoSbv5F7aX
+         YQVw==
+X-Gm-Message-State: AG10YOT2CV2XQCb9oIPKbOlRaAc7K23m59HTCZDuEvp78pFEmc/HQLH3u2uZdnB6iRFt2Q==
+X-Received: by 10.66.139.166 with SMTP id qz6mr38075925pab.148.1453850229656;
+        Tue, 26 Jan 2016 15:17:09 -0800 (PST)
+Received: from [10.12.156.244] (5520-maca-inet1-outside.broadcom.com. [216.31.211.11])
+        by smtp.googlemail.com with ESMTPSA id e14sm4147471pap.24.2016.01.26.15.17.08
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 26 Jan 2016 15:17:08 -0800 (PST)
+Message-ID: <56A7FE3F.5090909@gmail.com>
+Date:   Tue, 26 Jan 2016 15:16:15 -0800
+From:   Florian Fainelli <f.fainelli@gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.8.0
+MIME-Version: 1.0
+To:     Mark Brown <broonie@kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
         Kevin Cernekee <cernekee@gmail.com>
-Cc:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+CC:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
         Johannes Berg <johannes@sipsolutions.net>,
-        Simon Arlott <simon@fire.lp0.eu>,
-        Arnd Bergmann <arnd@arndb.de>, Mark Brown <broonie@kernel.org>
-Date:   Tue, 26 Jan 2016 22:46:50 +0000
-Message-Id: <1453848410-24949-2-git-send-email-broonie@kernel.org>
-X-Mailer: git-send-email 2.7.0.rc3
-In-Reply-To: <1453848410-24949-1-git-send-email-broonie@kernel.org>
-References: <1453848410-24949-1-git-send-email-broonie@kernel.org>
-X-SA-Exim-Connect-IP: 94.175.94.161
-X-SA-Exim-Mail-From: broonie@sirena.org.uk
-Subject: [PATCH RFC 2/2] MIPS: dt: Explicitly specify native endian behaviour for syscon
-X-SA-Exim-Version: 4.2.1 (built Mon, 26 Dec 2011 16:24:06 +0000)
-X-SA-Exim-Scanned: Yes (on mezzanine.sirena.org.uk)
-Return-Path: <broonie@sirena.org.uk>
+        Simon Arlott <simon@fire.lp0.eu>, Arnd Bergmann <arnd@arndb.de>
+Subject: Re: [PATCH RFC 2/2] MIPS: dt: Explicitly specify native endian behaviour
+ for syscon
+References: <1453848410-24949-1-git-send-email-broonie@kernel.org> <1453848410-24949-2-git-send-email-broonie@kernel.org>
+In-Reply-To: <1453848410-24949-2-git-send-email-broonie@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51441
+X-archive-position: 51442
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: broonie@kernel.org
+X-original-sender: f.fainelli@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,156 +73,58 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On many MIPS systems the endianness of IP blocks is kept the same as
-that of the CPU by the hardware.  This includes the system controllers
-on these systems which are controlled via syscon which uses the regmap
-API which used readl() and writel() to interact with the hardware,
-meaning that all writes are converted to little endian when writing to
-the hardware.  This caused a bad interaction with the regmap core in big
-endian mode since it was not aware of the byte swapping and so ended up
-performing little endian writes.
+On 26/01/16 14:46, Mark Brown wrote:
+> On many MIPS systems the endianness of IP blocks is kept the same as
+> that of the CPU by the hardware.  This includes the system controllers
+> on these systems which are controlled via syscon which uses the regmap
+> API which used readl() and writel() to interact with the hardware,
+> meaning that all writes are converted to little endian when writing to
+> the hardware.  This caused a bad interaction with the regmap core in big
+> endian mode since it was not aware of the byte swapping and so ended up
+> performing little endian writes.
+> 
+> Unfortunately when this issue was noticed it was addressed by updating
+> the DT for the affected devices to specify them as little endian.  This
+> happened to work since it resulted in two endianness swaps which
+> cancelled each other out and gave little endian behaviour but meant that
+> the DT was clearly not accurately describing the hardware.
+> 
+> The intention of commit 29bb45f25ff305 (regmap-mmio: Use native
+> endianness for read/write) was to fix this by making regmap default to
+> native endianness but this breaks most other MMIO users where the
+> hardware has a fixed endianness and the implementation uses the __raw
+> accessors which are not intended to be used outside of architecture
+> code.  Instead use the newly added native-endian DT property to say
+> exactly what we want for these systems.
+> 
+> Fixes: 29bb45f25ff305 (regmap-mmio: Use native endianness for read/write)
+> Reported-by: Johannes Berg <johannes@sipsolutions.net>
+> Signed-off-by: Mark Brown <broonie@kernel.org>
+> ---
+> 
+> Posted for review only, this will interact with some other patches
+> fixing the implementation of regmap-mmio and will probably need to be
+> merged along with them.
+> 
+>  arch/mips/boot/dts/brcm/bcm6328.dtsi | 1 +
 
-Unfortunately when this issue was noticed it was addressed by updating
-the DT for the affected devices to specify them as little endian.  This
-happened to work since it resulted in two endianness swaps which
-cancelled each other out and gave little endian behaviour but meant that
-the DT was clearly not accurately describing the hardware.
+v4.5-rc1 now contains an arch/mips/boot/dts/brcm/bcm6368.dtsi which
+copied the 6328.dtsi and therefore needs this hunk to be added to your
+patch series:
 
-The intention of commit 29bb45f25ff305 (regmap-mmio: Use native
-endianness for read/write) was to fix this by making regmap default to
-native endianness but this breaks most other MMIO users where the
-hardware has a fixed endianness and the implementation uses the __raw
-accessors which are not intended to be used outside of architecture
-code.  Instead use the newly added native-endian DT property to say
-exactly what we want for these systems.
+diff --git a/arch/mips/boot/dts/brcm/bcm6368.dtsi
+b/arch/mips/boot/dts/brcm/bcm6368.dtsi
+index 9c8d3fe28b31..1f6b9b5cddb4 100644
+--- a/arch/mips/boot/dts/brcm/bcm6368.dtsi
++++ b/arch/mips/boot/dts/brcm/bcm6368.dtsi
+@@ -54,7 +54,7 @@
+                periph_cntl: syscon@10000000 {
+                        compatible = "syscon";
+                        reg = <0x10000000 0x14>;
+-                       little-endian;
++                       native-endian;
+                };
 
-Fixes: 29bb45f25ff305 (regmap-mmio: Use native endianness for read/write)
-Reported-by: Johannes Berg <johannes@sipsolutions.net>
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
-
-Posted for review only, this will interact with some other patches
-fixing the implementation of regmap-mmio and will probably need to be
-merged along with them.
-
- arch/mips/boot/dts/brcm/bcm6328.dtsi | 1 +
- arch/mips/boot/dts/brcm/bcm7125.dtsi | 1 +
- arch/mips/boot/dts/brcm/bcm7346.dtsi | 1 +
- arch/mips/boot/dts/brcm/bcm7358.dtsi | 1 +
- arch/mips/boot/dts/brcm/bcm7360.dtsi | 1 +
- arch/mips/boot/dts/brcm/bcm7362.dtsi | 1 +
- arch/mips/boot/dts/brcm/bcm7420.dtsi | 1 +
- arch/mips/boot/dts/brcm/bcm7425.dtsi | 1 +
- arch/mips/boot/dts/brcm/bcm7435.dtsi | 1 +
- 9 files changed, 9 insertions(+)
-
-diff --git a/arch/mips/boot/dts/brcm/bcm6328.dtsi b/arch/mips/boot/dts/brcm/bcm6328.dtsi
-index d52ce3d07f16..04867035ea0e 100644
---- a/arch/mips/boot/dts/brcm/bcm6328.dtsi
-+++ b/arch/mips/boot/dts/brcm/bcm6328.dtsi
-@@ -73,6 +73,7 @@
- 		timer: timer@10000040 {
- 			compatible = "syscon";
- 			reg = <0x10000040 0x2c>;
-+			native-endian;
- 		};
- 
- 		reboot {
-diff --git a/arch/mips/boot/dts/brcm/bcm7125.dtsi b/arch/mips/boot/dts/brcm/bcm7125.dtsi
-index 4fc7ecee273c..3ae16053a0c9 100644
---- a/arch/mips/boot/dts/brcm/bcm7125.dtsi
-+++ b/arch/mips/boot/dts/brcm/bcm7125.dtsi
-@@ -98,6 +98,7 @@
- 		sun_top_ctrl: syscon@404000 {
- 			compatible = "brcm,bcm7125-sun-top-ctrl", "syscon";
- 			reg = <0x404000 0x60c>;
-+			native-endian;
- 		};
- 
- 		reboot {
-diff --git a/arch/mips/boot/dts/brcm/bcm7346.dtsi b/arch/mips/boot/dts/brcm/bcm7346.dtsi
-index a3039bb53477..be7991917d29 100644
---- a/arch/mips/boot/dts/brcm/bcm7346.dtsi
-+++ b/arch/mips/boot/dts/brcm/bcm7346.dtsi
-@@ -118,6 +118,7 @@
- 		sun_top_ctrl: syscon@404000 {
- 			compatible = "brcm,bcm7346-sun-top-ctrl", "syscon";
- 			reg = <0x404000 0x51c>;
-+			native-endian;
- 		};
- 
- 		reboot {
-diff --git a/arch/mips/boot/dts/brcm/bcm7358.dtsi b/arch/mips/boot/dts/brcm/bcm7358.dtsi
-index 4274ff41ec21..060805be619a 100644
---- a/arch/mips/boot/dts/brcm/bcm7358.dtsi
-+++ b/arch/mips/boot/dts/brcm/bcm7358.dtsi
-@@ -112,6 +112,7 @@
- 		sun_top_ctrl: syscon@404000 {
- 			compatible = "brcm,bcm7358-sun-top-ctrl", "syscon";
- 			reg = <0x404000 0x51c>;
-+			native-endian;
- 		};
- 
- 		reboot {
-diff --git a/arch/mips/boot/dts/brcm/bcm7360.dtsi b/arch/mips/boot/dts/brcm/bcm7360.dtsi
-index 0dcc9163c27b..bcdb09bfe07b 100644
---- a/arch/mips/boot/dts/brcm/bcm7360.dtsi
-+++ b/arch/mips/boot/dts/brcm/bcm7360.dtsi
-@@ -112,6 +112,7 @@
- 		sun_top_ctrl: syscon@404000 {
- 			compatible = "brcm,bcm7360-sun-top-ctrl", "syscon";
- 			reg = <0x404000 0x51c>;
-+			native-endian;
- 		};
- 
- 		reboot {
-diff --git a/arch/mips/boot/dts/brcm/bcm7362.dtsi b/arch/mips/boot/dts/brcm/bcm7362.dtsi
-index 2f3f9fc2c478..d3b1b762e6c3 100644
---- a/arch/mips/boot/dts/brcm/bcm7362.dtsi
-+++ b/arch/mips/boot/dts/brcm/bcm7362.dtsi
-@@ -118,6 +118,7 @@
- 		sun_top_ctrl: syscon@404000 {
- 			compatible = "brcm,bcm7362-sun-top-ctrl", "syscon";
- 			reg = <0x404000 0x51c>;
-+			native-endian;
- 		};
- 
- 		reboot {
-diff --git a/arch/mips/boot/dts/brcm/bcm7420.dtsi b/arch/mips/boot/dts/brcm/bcm7420.dtsi
-index bee221b3b568..3302a1b8a5c9 100644
---- a/arch/mips/boot/dts/brcm/bcm7420.dtsi
-+++ b/arch/mips/boot/dts/brcm/bcm7420.dtsi
-@@ -99,6 +99,7 @@
- 		sun_top_ctrl: syscon@404000 {
- 			compatible = "brcm,bcm7420-sun-top-ctrl", "syscon";
- 			reg = <0x404000 0x60c>;
-+			native-endian;
- 		};
- 
- 		reboot {
-diff --git a/arch/mips/boot/dts/brcm/bcm7425.dtsi b/arch/mips/boot/dts/brcm/bcm7425.dtsi
-index 571f30f52e3f..15b27aae15a9 100644
---- a/arch/mips/boot/dts/brcm/bcm7425.dtsi
-+++ b/arch/mips/boot/dts/brcm/bcm7425.dtsi
-@@ -100,6 +100,7 @@
- 		sun_top_ctrl: syscon@404000 {
- 			compatible = "brcm,bcm7425-sun-top-ctrl", "syscon";
- 			reg = <0x404000 0x51c>;
-+			native-endian;
- 		};
- 
- 		reboot {
-diff --git a/arch/mips/boot/dts/brcm/bcm7435.dtsi b/arch/mips/boot/dts/brcm/bcm7435.dtsi
-index 614ee211f71a..adb33e355043 100644
---- a/arch/mips/boot/dts/brcm/bcm7435.dtsi
-+++ b/arch/mips/boot/dts/brcm/bcm7435.dtsi
-@@ -114,6 +114,7 @@
- 		sun_top_ctrl: syscon@404000 {
- 			compatible = "brcm,bcm7425-sun-top-ctrl", "syscon";
- 			reg = <0x404000 0x51c>;
-+			native-endian;
- 		};
- 
- 		reboot {
+                reboot: syscon-reboot@10000008 {
 -- 
-2.7.0.rc3
+Florian

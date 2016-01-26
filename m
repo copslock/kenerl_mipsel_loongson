@@ -1,43 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Jan 2016 14:24:14 +0100 (CET)
-Received: from SMTPBG252.QQ.COM ([183.60.52.105]:55181 "EHLO smtpbg252.qq.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27011595AbcAZNYMkCKEc (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 26 Jan 2016 14:24:12 +0100
-X-QQ-mid: bizesmtp9t1453814621t527t039
-Received: from software.domain.org (unknown [222.92.8.142])
-        by esmtp4.qq.com (ESMTP) with 
-        id ; Tue, 26 Jan 2016 21:23:23 +0800 (CST)
-X-QQ-SSF: 01100000002000F0FK70B00A0000000
-X-QQ-FEAT: 6dXuswn9i1VG/5JGLAhAcZtknFCGT1mFj4YsmHwdyCG06Wvrace0gBvbYZmim
-        2EvqhKNEmn6erP/HQsAeKNTlqHX8tB9NuePG5Xd26my2iAbs5Gc2QuIvvyfJc9nh3ukPi4b
-        xm3DdaAw9T3+hJxMxqzrkhMkJ1st4MZhmCkcDwB5W/Y+JtDNx07KS0UZNP5hsCjE/dcyrBC
-        2sR1XD+NqNVBIQavG/NcUsKCPWiZTtlvuUQgNVZLzj7gS91KNIoHdBCqsOsT4q5m8kg3q0l
-        2hXYJwwN1Muhijw60LPedbVP6sKaOIusctMg==
-X-QQ-GoodBg: 0
-From:   Huacai Chen <chenhc@lemote.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Aurelien Jarno <aurelien@aurel32.net>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Jan 2016 14:42:42 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:4535 "EHLO
+        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S27011595AbcAZNmgYEFz0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 26 Jan 2016 14:42:36 +0100
+Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
+        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 4CFE341F8E4F;
+        Tue, 26 Jan 2016 13:42:30 +0000 (GMT)
+Received: from mailapp01.imgtec.com ([10.100.180.242])
+  by imgpgp01.kl.imgtec.org (PGP Universal service);
+  Tue, 26 Jan 2016 13:42:30 +0000
+X-PGP-Universal: processed;
+        by imgpgp01.kl.imgtec.org on Tue, 26 Jan 2016 13:42:30 +0000
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Websense Email Security Gateway with ESMTPS id 2A828FB7E5F8;
+        Tue, 26 Jan 2016 13:42:28 +0000 (GMT)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ HHMAIL01.hh.imgtec.org (10.100.10.19) with Microsoft SMTP Server (TLS) id
+ 14.3.235.1; Tue, 26 Jan 2016 13:42:29 +0000
+Received: from localhost (192.168.154.110) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Tue, 26 Jan
+ 2016 13:42:29 +0000
+Date:   Tue, 26 Jan 2016 13:42:29 +0000
+From:   James Hogan <james.hogan@imgtec.com>
+To:     Huacai Chen <chenhc@lemote.com>
+CC:     Ralf Baechle <ralf@linux-mips.org>,
+        Aurelien Jarno <aurelien@aurel32.net>,
         "Steven J. Hill" <Steven.Hill@imgtec.com>,
-        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>,
-        Huacai Chen <chenhc@lemote.com>
-Subject: [PATCH 6/6] MIPS: Loongson-3: Introduce CONFIG_LOONGSON3_ENHANCEMENT
-Date:   Tue, 26 Jan 2016 21:26:24 +0800
-Message-Id: <1453814784-14230-7-git-send-email-chenhc@lemote.com>
-X-Mailer: git-send-email 2.4.6
-In-Reply-To: <1453814784-14230-1-git-send-email-chenhc@lemote.com>
+        <linux-mips@linux-mips.org>, "Fuxin Zhang" <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>
+Subject: Re: [PATCH 5/6] MIPS: Loongson: Introduce and use
+ cpu_has_coherent_cache feature
+Message-ID: <20160126134229.GA12365@jhogan-linux.le.imgtec.org>
 References: <1453814784-14230-1-git-send-email-chenhc@lemote.com>
-X-QQ-SENDSIZE: 520
-X-QQ-Bgrelay: 1
-Return-Path: <chenhc@lemote.com>
+ <1453814784-14230-6-git-send-email-chenhc@lemote.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="5vNYLRcllDrimb99"
+Content-Disposition: inline
+In-Reply-To: <1453814784-14230-6-git-send-email-chenhc@lemote.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+X-Originating-IP: [192.168.154.110]
+X-ESG-ENCRYPT-TAG: 30575414
+Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51409
+X-archive-position: 51410
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: chenhc@lemote.com
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,199 +62,190 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-New Loongson 3 CPU (since Loongson-3A R2, as opposed to Loongson-3A R1,
-Loongson-3B R1 and Loongson-3B R2) has many enhancements, such as FTLB,
-L1-VCache, EI/DI/Wait/Prefetch instruction, DSP/DSPv2 ASE, User Local
-register, Read-Inhibit/Execute-Inhibit, SFB (Store Fill Buffer), Fast
-TLB refill support, etc.
+--5vNYLRcllDrimb99
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-This patch introduce a config option, CONFIG_LOONGSON3_ENHANCEMENT, to
-enable those enhancements which cannot be probed at run time. If you
-want a generic kernel to run on all Loongson 3 machines, please say 'N'
-here. If you want a high-performance kernel to run on new Loongson 3
-machines only, please say 'Y' here.
+Hi,
 
-Signed-off-by: Huacai Chen <chenhc@lemote.com>
----
- arch/mips/Kconfig                                      | 18 ++++++++++++++++++
- arch/mips/include/asm/hazards.h                        |  7 ++++---
- arch/mips/include/asm/io.h                             | 10 +++++-----
- arch/mips/include/asm/irqflags.h                       |  5 +++++
- .../include/asm/mach-loongson64/kernel-entry-init.h    | 12 ++++++++++++
- arch/mips/mm/c-r4k.c                                   |  3 +++
- arch/mips/mm/page.c                                    |  9 +++++++++
- 7 files changed, 56 insertions(+), 8 deletions(-)
+On Tue, Jan 26, 2016 at 09:26:23PM +0800, Huacai Chen wrote:
+> Loongson-3 maintains cache coherency by hardware. So we introduce a cpu
+> feature named cpu_has_coherent_cache and use it to modify MIPS's cache
+> flushing functions.
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 15faaf0..e6d6f7b 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -1349,6 +1349,24 @@ config CPU_LOONGSON3
- 		The Loongson 3 processor implements the MIPS64R2 instruction
- 		set with many extensions.
- 
-+config LOONGSON3_ENHANCEMENT
-+	bool "New Loongson 3 CPU Enhancements"
-+	default n
-+	select CPU_MIPSR2
-+	select CPU_HAS_PREFETCH
-+	depends on CPU_LOONGSON3
-+	help
-+	  New Loongson 3 CPU (since Loongson-3A R2, as opposed to Loongson-3A
-+	  R1, Loongson-3B R1 and Loongson-3B R2) has many enhancements, such as
-+	  FTLB, L1-VCache, EI/DI/Wait/Prefetch instruction, DSP/DSPv2 ASE, User
-+	  Local register, Read-Inhibit/Execute-Inhibit, SFB (Store Fill Buffer),
-+	  Fast TLB refill support, etc.
-+
-+	  This option enable those enhancements which cannot be probed at run
-+	  time. If you want a generic kernel to run on all Loongson 3 machines,
-+	  please say 'N' here. If you want a high-performance kernel to run on
-+	  new Loongson 3 machines only, please say 'Y' here.
-+
- config CPU_LOONGSON2E
- 	bool "Loongson 2E"
- 	depends on SYS_HAS_CPU_LOONGSON2E
-diff --git a/arch/mips/include/asm/hazards.h b/arch/mips/include/asm/hazards.h
-index 7b99efd..dbb1eb6 100644
---- a/arch/mips/include/asm/hazards.h
-+++ b/arch/mips/include/asm/hazards.h
-@@ -22,7 +22,8 @@
- /*
-  * TLB hazards
-  */
--#if defined(CONFIG_CPU_MIPSR2) || defined(CONFIG_CPU_MIPSR6) && !defined(CONFIG_CPU_CAVIUM_OCTEON)
-+#if (defined(CONFIG_CPU_MIPSR2) || defined(CONFIG_CPU_MIPSR6)) && \
-+	!defined(CONFIG_CPU_CAVIUM_OCTEON) && !defined(CONFIG_LOONGSON3_ENHANCEMENT)
- 
- /*
-  * MIPSR2 defines ehb for hazard avoidance
-@@ -155,8 +156,8 @@ do {									\
- } while (0)
- 
- #elif defined(CONFIG_MIPS_ALCHEMY) || defined(CONFIG_CPU_CAVIUM_OCTEON) || \
--	defined(CONFIG_CPU_LOONGSON2) || defined(CONFIG_CPU_R10000) || \
--	defined(CONFIG_CPU_R5500) || defined(CONFIG_CPU_XLR)
-+	defined(CONFIG_CPU_LOONGSON2) || defined(CONFIG_LOONGSON3_ENHANCEMENT) || \
-+	defined(CONFIG_CPU_R10000) || defined(CONFIG_CPU_R5500) || defined(CONFIG_CPU_XLR)
- 
- /*
-  * R10000 rocks - all hazards handled in hardware, so this becomes a nobrainer.
-diff --git a/arch/mips/include/asm/io.h b/arch/mips/include/asm/io.h
-index 2b4dc7a..ecabc00 100644
---- a/arch/mips/include/asm/io.h
-+++ b/arch/mips/include/asm/io.h
-@@ -304,10 +304,10 @@ static inline void iounmap(const volatile void __iomem *addr)
- #undef __IS_KSEG1
- }
- 
--#ifdef CONFIG_CPU_CAVIUM_OCTEON
--#define war_octeon_io_reorder_wmb()		wmb()
-+#if defined(CONFIG_CPU_CAVIUM_OCTEON) || defined(CONFIG_LOONGSON3_ENHANCEMENT)
-+#define war_io_reorder_wmb()		wmb()
- #else
--#define war_octeon_io_reorder_wmb()		do { } while (0)
-+#define war_io_reorder_wmb()		do { } while (0)
- #endif
- 
- #define __BUILD_MEMORY_SINGLE(pfx, bwlq, type, irq)			\
-@@ -318,7 +318,7 @@ static inline void pfx##write##bwlq(type val,				\
- 	volatile type *__mem;						\
- 	type __val;							\
- 									\
--	war_octeon_io_reorder_wmb();					\
-+	war_io_reorder_wmb();					\
- 									\
- 	__mem = (void *)__swizzle_addr_##bwlq((unsigned long)(mem));	\
- 									\
-@@ -387,7 +387,7 @@ static inline void pfx##out##bwlq##p(type val, unsigned long port)	\
- 	volatile type *__addr;						\
- 	type __val;							\
- 									\
--	war_octeon_io_reorder_wmb();					\
-+	war_io_reorder_wmb();					\
- 									\
- 	__addr = (void *)__swizzle_addr_##bwlq(mips_io_port_base + port); \
- 									\
-diff --git a/arch/mips/include/asm/irqflags.h b/arch/mips/include/asm/irqflags.h
-index 65c351e..12f80b5 100644
---- a/arch/mips/include/asm/irqflags.h
-+++ b/arch/mips/include/asm/irqflags.h
-@@ -41,7 +41,12 @@ static inline unsigned long arch_local_irq_save(void)
- 	"	.set	push						\n"
- 	"	.set	reorder						\n"
- 	"	.set	noat						\n"
-+#if defined(CONFIG_LOONGSON3_ENHANCEMENT)
-+	"	mfc0	%[flags], $12					\n"
-+	"	di							\n"
-+#else
- 	"	di	%[flags]					\n"
-+#endif
- 	"	andi	%[flags], 1					\n"
- 	"	" __stringify(__irq_disable_hazard) "			\n"
- 	"	.set	pop						\n"
-diff --git a/arch/mips/include/asm/mach-loongson64/kernel-entry-init.h b/arch/mips/include/asm/mach-loongson64/kernel-entry-init.h
-index da83482..8393bc54 100644
---- a/arch/mips/include/asm/mach-loongson64/kernel-entry-init.h
-+++ b/arch/mips/include/asm/mach-loongson64/kernel-entry-init.h
-@@ -26,6 +26,12 @@
- 	mfc0	t0, $5, 1
- 	or	t0, (0x1 << 29)
- 	mtc0	t0, $5, 1
-+#ifdef CONFIG_LOONGSON3_ENHANCEMENT
-+	/* Enable STFill Buffer */
-+	mfc0	t0, $16, 6
-+	or	t0, 0x100
-+	mtc0	t0, $16, 6
-+#endif
- 	_ehb
- 	.set	pop
- #endif
-@@ -46,6 +52,12 @@
- 	mfc0	t0, $5, 1
- 	or	t0, (0x1 << 29)
- 	mtc0	t0, $5, 1
-+#ifdef CONFIG_LOONGSON3_ENHANCEMENT
-+	/* Enable STFill Buffer */
-+	mfc0	t0, $16, 6
-+	or	t0, 0x100
-+	mtc0	t0, $16, 6
-+#endif
- 	_ehb
- 	.set	pop
- #endif
-diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
-index 65fb28c..903d8da 100644
---- a/arch/mips/mm/c-r4k.c
-+++ b/arch/mips/mm/c-r4k.c
-@@ -1170,6 +1170,9 @@ static void probe_pcache(void)
- 					  c->dcache.ways *
- 					  c->dcache.linesz;
- 		c->dcache.waybit = 0;
-+#ifdef CONFIG_CPU_HAS_PREFETCH
-+		c->options |= MIPS_CPU_PREFETCH;
-+#endif
- 		break;
- 
- 	case CPU_CAVIUM_OCTEON3:
-diff --git a/arch/mips/mm/page.c b/arch/mips/mm/page.c
-index 885d73f..c41953c 100644
---- a/arch/mips/mm/page.c
-+++ b/arch/mips/mm/page.c
-@@ -188,6 +188,15 @@ static void set_prefetch_parameters(void)
- 			}
- 			break;
- 
-+		case CPU_LOONGSON3:
-+			/* Loongson-3 only support the Pref_Load/Pref_Store. */
-+			pref_bias_clear_store = 128;
-+			pref_bias_copy_load = 128;
-+			pref_bias_copy_store = 128;
-+			pref_src_mode = Pref_Load;
-+			pref_dst_mode = Pref_Store;
-+			break;
-+
- 		default:
- 			pref_bias_clear_store = 128;
- 			pref_bias_copy_load = 256;
--- 
-2.4.6
+This is rather ambiguous (the phrase "cache coherency" can be associated
+with dcache coherency between cores). Are you saying that the icache is
+coherent with the dcache, such that writes to dcache are immediately
+visible to instruction fetches on all CPUs in the system without any
+icache flushing?
+
+If so, I think that needs clarifying, e.g. cpu_has_coherent_icache.
+
+Perhaps it should be a flag of icache along with MIPS_CACHE_IC_F_DC too
+which is already intended to avoid the dcache flushes, but not necessary
+the icache flushes.
+
+Cheers
+James
+
+>=20
+> Signed-off-by: Huacai Chen <chenhc@lemote.com>
+> ---
+>  arch/mips/include/asm/cpu-features.h                |  3 +++
+>  arch/mips/include/asm/cpu.h                         |  1 +
+>  .../asm/mach-loongson64/cpu-feature-overrides.h     |  1 +
+>  arch/mips/mm/c-r4k.c                                | 21 +++++++++++++++=
+++++++
+>  4 files changed, 26 insertions(+)
+>=20
+> diff --git a/arch/mips/include/asm/cpu-features.h b/arch/mips/include/asm=
+/cpu-features.h
+> index e0ba50a..1ec3dea 100644
+> --- a/arch/mips/include/asm/cpu-features.h
+> +++ b/arch/mips/include/asm/cpu-features.h
+> @@ -148,6 +148,9 @@
+>  #ifndef cpu_has_xpa
+>  #define cpu_has_xpa		(cpu_data[0].options & MIPS_CPU_XPA)
+>  #endif
+> +#ifndef cpu_has_coherent_cache
+> +#define cpu_has_coherent_cache	(cpu_data[0].options & MIPS_CPU_CACHE_COH=
+ERENT)
+> +#endif
+>  #ifndef cpu_has_vtag_icache
+>  #define cpu_has_vtag_icache	(cpu_data[0].icache.flags & MIPS_CACHE_VTAG)
+>  #endif
+> diff --git a/arch/mips/include/asm/cpu.h b/arch/mips/include/asm/cpu.h
+> index 5f50551..28471f0 100644
+> --- a/arch/mips/include/asm/cpu.h
+> +++ b/arch/mips/include/asm/cpu.h
+> @@ -391,6 +391,7 @@ enum cpu_type_enum {
+>  #define MIPS_CPU_NAN_LEGACY	0x40000000000ull /* Legacy NaN implemented */
+>  #define MIPS_CPU_NAN_2008	0x80000000000ull /* 2008 NaN implemented */
+>  #define MIPS_CPU_LDPTE		0x100000000000ull /* CPU has ldpte/lddir instruc=
+tions */
+> +#define MIPS_CPU_CACHE_COHERENT	0x200000000000ull /* CPU maintains cache=
+ coherency by hardware */
+> =20
+>  /*
+>   * CPU ASE encodings
+> diff --git a/arch/mips/include/asm/mach-loongson64/cpu-feature-overrides.=
+h b/arch/mips/include/asm/mach-loongson64/cpu-feature-overrides.h
+> index c3406db..647d952 100644
+> --- a/arch/mips/include/asm/mach-loongson64/cpu-feature-overrides.h
+> +++ b/arch/mips/include/asm/mach-loongson64/cpu-feature-overrides.h
+> @@ -46,6 +46,7 @@
+>  #define cpu_has_local_ebase	0
+> =20
+>  #define cpu_has_wsbh		IS_ENABLED(CONFIG_CPU_LOONGSON3)
+> +#define cpu_has_coherent_cache	IS_ENABLED(CONFIG_CPU_LOONGSON3)
+>  #define cpu_hwrena_impl_bits	0xc0000000
+> =20
+>  #endif /* __ASM_MACH_LOONGSON64_CPU_FEATURE_OVERRIDES_H */
+> diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
+> index 2abc73d..65fb28c 100644
+> --- a/arch/mips/mm/c-r4k.c
+> +++ b/arch/mips/mm/c-r4k.c
+> @@ -429,6 +429,9 @@ static void r4k_blast_scache_setup(void)
+> =20
+>  static inline void local_r4k___flush_cache_all(void * args)
+>  {
+> +	if (cpu_has_coherent_cache)
+> +		return;
+> +
+>  	switch (current_cpu_type()) {
+>  	case CPU_LOONGSON2:
+>  	case CPU_LOONGSON3:
+> @@ -457,6 +460,9 @@ static inline void local_r4k___flush_cache_all(void *=
+ args)
+> =20
+>  static void r4k___flush_cache_all(void)
+>  {
+> +	if (cpu_has_coherent_cache)
+> +		return;
+> +
+>  	r4k_on_each_cpu(local_r4k___flush_cache_all, NULL);
+>  }
+> =20
+> @@ -503,6 +509,9 @@ static void r4k_flush_cache_range(struct vm_area_stru=
+ct *vma,
+>  {
+>  	int exec =3D vma->vm_flags & VM_EXEC;
+> =20
+> +	if (cpu_has_coherent_cache)
+> +		return;
+> +
+>  	if (cpu_has_dc_aliases || (exec && !cpu_has_ic_fills_f_dc))
+>  		r4k_on_each_cpu(local_r4k_flush_cache_range, vma);
+>  }
+> @@ -627,6 +636,9 @@ static void r4k_flush_cache_page(struct vm_area_struc=
+t *vma,
+>  {
+>  	struct flush_cache_page_args args;
+> =20
+> +	if (cpu_has_coherent_cache)
+> +		return;
+> +
+>  	args.vma =3D vma;
+>  	args.addr =3D addr;
+>  	args.pfn =3D pfn;
+> @@ -636,11 +648,17 @@ static void r4k_flush_cache_page(struct vm_area_str=
+uct *vma,
+> =20
+>  static inline void local_r4k_flush_data_cache_page(void * addr)
+>  {
+> +	if (cpu_has_coherent_cache)
+> +		return;
+> +
+>  	r4k_blast_dcache_page((unsigned long) addr);
+>  }
+> =20
+>  static void r4k_flush_data_cache_page(unsigned long addr)
+>  {
+> +	if (cpu_has_coherent_cache)
+> +		return;
+> +
+>  	if (in_atomic())
+>  		local_r4k_flush_data_cache_page((void *)addr);
+>  	else
+> @@ -825,6 +843,9 @@ static void local_r4k_flush_cache_sigtramp(void * arg)
+> =20
+>  static void r4k_flush_cache_sigtramp(unsigned long addr)
+>  {
+> +	if (cpu_has_coherent_cache)
+> +		return;
+> +
+>  	r4k_on_each_cpu(local_r4k_flush_cache_sigtramp, (void *) addr);
+>  }
+> =20
+> --=20
+> 2.4.6
+>=20
+>=20
+>=20
+>=20
+>=20
+
+--5vNYLRcllDrimb99
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQIcBAEBCAAGBQJWp3fFAAoJEGwLaZPeOHZ6JCIQAJZ33J/UkYkzeFh0hGwYcUSY
+RUQW7P2xRuiq7id7yswMC9M3IdIw43X8wO5b7BSMDyTajxg6uK0XqPMMw6uTrbFk
+bR4k2khpDuD/c/PQcd84SJORVaTZhMUjvqS+/Jr86c6UzJJOalyS3b0xoOjtVZho
+3enTYHFRy9AVqWXZpGWov0PndZtbyax0YrcNreJfDV7+FWHeoB8mJyb2EjGksZJY
+aymtlbYTAGbKO4/jxlltGSGga7X/KzL3TEkR+If6LLdSRPqGSwdopFi0j16EVISo
+Qp70D3NZKN7449ZyNXzl0RyVKb5I+kZ6nb4GWkGcwM37LhsoJWFgtdnQhX7C+r1V
+dw0MdYurf2edEDaoirx8utaqZ/PjVMvfF8S74kGrG3RDFRxoUMd8gFPRWWvra3uz
+W7WJXBtE36EHeg2PClUkw2Ue5ms4oyvLMgcENntR9H0fXwpiVpvEa0qs1wJDhzUc
+rD5j2/v4c633+W8T4Lt/iyPeMAXS8jT5Wutfye3GKVhAmR9DSkwnp2B2jz0V+OtV
+cfb4abjT+k53BniuBgegWdXCfgzWIyC32cjQBHZ5XNUvChzZR8W5mnHvr5HI09ey
+9z1WcY3eyfkzC8VUnJ7Ga8or8m0DuQj7fpvtFIwr26SxBtqcSBd+jkNF4aEC84Oz
+3OHyWztbhKbsoWqeXZTB
+=uqNw
+-----END PGP SIGNATURE-----
+
+--5vNYLRcllDrimb99--

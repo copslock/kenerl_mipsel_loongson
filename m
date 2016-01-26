@@ -1,18 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Jan 2016 11:32:22 +0100 (CET)
-Received: from bombadil.infradead.org ([198.137.202.9]:40139 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010125AbcAZKcUi00aN (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 26 Jan 2016 11:32:20 +0100
-Received: from j217066.upc-j.chello.nl ([24.132.217.66] helo=twins)
-        by bombadil.infradead.org with esmtpsa (Exim 4.80.1 #2 (Red Hat Linux))
-        id 1aO0uo-0000LD-IL; Tue, 26 Jan 2016 10:32:02 +0000
-Received: by twins (Postfix, from userid 1000)
-        id 16BA51257A0D8; Tue, 26 Jan 2016 11:32:00 +0100 (CET)
-Date:   Tue, 26 Jan 2016 11:32:00 +0100
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>
-Cc:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
-        Will Deacon <will.deacon@arm.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Jan 2016 12:09:44 +0100 (CET)
+Received: from foss.arm.com ([217.140.101.70]:54293 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27011448AbcAZLJnDcmvN (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 26 Jan 2016 12:09:43 +0100
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3BE6F49;
+        Tue, 26 Jan 2016 03:08:55 -0800 (PST)
+Received: from arm.com (usa-sjc-imap-foss1.foss.arm.com [10.72.51.249])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 17BA73F24D;
+        Tue, 26 Jan 2016 03:09:30 -0800 (PST)
+Date:   Tue, 26 Jan 2016 11:09:27 +0000
+From:   Will Deacon <will.deacon@arm.com>
+To:     Peter Zijlstra <peterz@infradead.org>
+Cc:     "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>,
+        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
         "Michael S. Tsirkin" <mst@redhat.com>,
         linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
         linux-arch@vger.kernel.org,
@@ -34,9 +35,8 @@ Cc:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
         Ingo Molnar <mingo@kernel.org>, ddaney.cavm@gmail.com,
         james.hogan@imgtec.com, Michael Ellerman <mpe@ellerman.id.au>
 Subject: Re: [v3,11/41] mips: reuse asm-generic/barrier.h
-Message-ID: <20160126103200.GI6375@twins.programming.kicks-ass.net>
-References: <20160113104516.GE25458@arm.com>
- <56969F4B.7070001@imgtec.com>
+Message-ID: <20160126110053.GA21553@arm.com>
+References: <56969F4B.7070001@imgtec.com>
  <20160113204844.GV6357@twins.programming.kicks-ass.net>
  <5696BA6E.4070508@imgtec.com>
  <20160114120445.GB15828@arm.com>
@@ -45,20 +45,21 @@ References: <20160113104516.GE25458@arm.com>
  <56981212.7050301@imgtec.com>
  <20160114222046.GH3818@linux.vnet.ibm.com>
  <20160126102402.GE6357@twins.programming.kicks-ass.net>
+ <20160126103200.GI6375@twins.programming.kicks-ass.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20160126102402.GE6357@twins.programming.kicks-ass.net>
-User-Agent: Mutt/1.5.21 (2012-12-30)
-Return-Path: <peterz@infradead.org>
+In-Reply-To: <20160126103200.GI6375@twins.programming.kicks-ass.net>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <will.deacon@arm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51399
+X-archive-position: 51400
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: peterz@infradead.org
+X-original-sender: will.deacon@arm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -71,46 +72,44 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Jan 26, 2016 at 11:24:02AM +0100, Peter Zijlstra wrote:
+On Tue, Jan 26, 2016 at 11:32:00AM +0100, Peter Zijlstra wrote:
+> On Tue, Jan 26, 2016 at 11:24:02AM +0100, Peter Zijlstra wrote:
+> 
+> > Yeah, this goes under the header: memory-barriers.txt is _NOT_ a
+> > specification (I seem to keep repeating this).
+> 
+> Do we want this ?
+> 
+> ---
+>  Documentation/memory-barriers.txt | 17 +++++++++++++++++
+>  1 file changed, 17 insertions(+)
+> 
+> diff --git a/Documentation/memory-barriers.txt b/Documentation/memory-barriers.txt
+> index a61be39c7b51..433326ebdc26 100644
+> --- a/Documentation/memory-barriers.txt
+> +++ b/Documentation/memory-barriers.txt
+> @@ -1,3 +1,4 @@
+> +
+>  			 ============================
+>  			 LINUX KERNEL MEMORY BARRIERS
+>  			 ============================
+> @@ -5,6 +6,22 @@
+>  By: David Howells <dhowells@redhat.com>
+>      Paul E. McKenney <paulmck@linux.vnet.ibm.com>
+>  
+> +==========
+> +DISCLAIMER
+> +==========
+> +
+> +This document is not a specification; it is intentionally (for the sake of
+> +brevity) and unintentionally (due to being human) incomplete. This document is
+> +meant as a guide to using the various memory barriers provided by Linux, but
+> +in case of any doubt (and there are many) please ask.
 
-> Yeah, this goes under the header: memory-barriers.txt is _NOT_ a
-> specification (I seem to keep repeating this).
+It might be worth adding you and me to the top of the file, to save Paul
+Cc'ing us on questions (get_maintainer.pl points at poor old Corbet for
+this file).
 
-Do we want this ?
+But yes, it seems that something like this is required.
 
----
- Documentation/memory-barriers.txt | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
-
-diff --git a/Documentation/memory-barriers.txt b/Documentation/memory-barriers.txt
-index a61be39c7b51..433326ebdc26 100644
---- a/Documentation/memory-barriers.txt
-+++ b/Documentation/memory-barriers.txt
-@@ -1,3 +1,4 @@
-+
- 			 ============================
- 			 LINUX KERNEL MEMORY BARRIERS
- 			 ============================
-@@ -5,6 +6,22 @@
- By: David Howells <dhowells@redhat.com>
-     Paul E. McKenney <paulmck@linux.vnet.ibm.com>
- 
-+==========
-+DISCLAIMER
-+==========
-+
-+This document is not a specification; it is intentionally (for the sake of
-+brevity) and unintentionally (due to being human) incomplete. This document is
-+meant as a guide to using the various memory barriers provided by Linux, but
-+in case of any doubt (and there are many) please ask.
-+
-+I repeat, this document is not a specification of what Linux expects from
-+hardware.
-+
-+=====
-+INDEX
-+=====
-+
- Contents:
- 
-  (*) Abstract memory access model.
+Will

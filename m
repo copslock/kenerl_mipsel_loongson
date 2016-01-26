@@ -1,87 +1,106 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 Jan 2016 00:37:52 +0100 (CET)
-Received: from e33.co.us.ibm.com ([32.97.110.151]:34362 "EHLO
-        e33.co.us.ibm.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27010860AbcAZXhufqr23 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 27 Jan 2016 00:37:50 +0100
-Received: from localhost
-        by e33.co.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <linux-mips@linux-mips.org> from <paulmck@linux.vnet.ibm.com>;
-        Tue, 26 Jan 2016 16:37:43 -0700
-Received: from d03dlp02.boulder.ibm.com (9.17.202.178)
-        by e33.co.us.ibm.com (192.168.1.133) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        Tue, 26 Jan 2016 16:37:32 -0700
-X-IBM-Helo: d03dlp02.boulder.ibm.com
-X-IBM-MailFrom: paulmck@linux.vnet.ibm.com
-X-IBM-RcptTo: linux-mips@linux-mips.org;ralf@linux-mips.org
-Received: from b03cxnp07029.gho.boulder.ibm.com (b03cxnp07029.gho.boulder.ibm.com [9.17.130.16])
-        by d03dlp02.boulder.ibm.com (Postfix) with ESMTP id 338153E4003F;
-        Tue, 26 Jan 2016 16:37:32 -0700 (MST)
-Received: from d03av05.boulder.ibm.com (d03av05.boulder.ibm.com [9.17.195.85])
-        by b03cxnp07029.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id u0QNbWGX19988582;
-        Tue, 26 Jan 2016 16:37:32 -0700
-Received: from d03av05.boulder.ibm.com (localhost [127.0.0.1])
-        by d03av05.boulder.ibm.com (8.14.4/8.14.4/NCO v10.0 AVout) with ESMTP id u0QNbOlT028828;
-        Tue, 26 Jan 2016 16:37:31 -0700
-Received: from paulmck-ThinkPad-W541 (paulmck-thinkpad-w541.au.ibm.com [9.192.250.130])
-        by d03av05.boulder.ibm.com (8.14.4/8.14.4/NCO v10.0 AVin) with ESMTP id u0QNbLXh028655;
-        Tue, 26 Jan 2016 16:37:22 -0700
-Received: by paulmck-ThinkPad-W541 (Postfix, from userid 1000)
-        id 8615116C11B1; Tue, 26 Jan 2016 15:37:33 -0800 (PST)
-Date:   Tue, 26 Jan 2016 15:37:33 -0800
-From:   "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>
-To:     Will Deacon <will.deacon@arm.com>
-Cc:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
-        linux-arch@vger.kernel.org,
-        Andrew Cooper <andrew.cooper3@citrix.com>,
-        Russell King - ARM Linux <linux@arm.linux.org.uk>,
-        virtualization@lists.linux-foundation.org,
-        Stefano Stabellini <stefano.stabellini@eu.citrix.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@elte.hu>, "H. Peter Anvin" <hpa@zytor.com>,
-        Joe Perches <joe@perches.com>,
-        David Miller <davem@davemloft.net>, linux-ia64@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-metag@vger.kernel.org, linux-mips@linux-mips.org,
-        x86@kernel.org, user-mode-linux-devel@lists.sourceforge.net,
-        adi-buildroot-devel@lists.sourceforge.net,
-        linux-sh@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        xen-devel@lists.xenproject.org, Ralf Baechle <ralf@linux-mips.org>,
-        Ingo Molnar <mingo@kernel.org>, ddaney.cavm@gmail.com,
-        james.hogan@imgtec.com, Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [v3,11/41] mips: reuse asm-generic/barrier.h
-Message-ID: <20160126233733.GZ4503@linux.vnet.ibm.com>
-Reply-To: paulmck@linux.vnet.ibm.com
-References: <56980C91.1010403@imgtec.com>
- <20160114212913.GF3818@linux.vnet.ibm.com>
- <569814F2.50801@imgtec.com>
- <20160114225510.GJ3818@linux.vnet.ibm.com>
- <20160115102431.GB2131@arm.com>
- <20160115175401.GW3818@linux.vnet.ibm.com>
- <20160115192845.GA12510@linux.vnet.ibm.com>
- <20160125144133.GB22927@arm.com>
- <20160126010646.GH4503@linux.vnet.ibm.com>
- <20160126121010.GD21553@arm.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 Jan 2016 00:45:31 +0100 (CET)
+Received: from mail-ig0-f180.google.com ([209.85.213.180]:35365 "EHLO
+        mail-ig0-f180.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010153AbcAZXpaFJvT3 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 27 Jan 2016 00:45:30 +0100
+Received: by mail-ig0-f180.google.com with SMTP id t15so71679778igr.0;
+        Tue, 26 Jan 2016 15:45:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type;
+        bh=vxBBdpwNnuIYljVJMd5huWdXDB1gbM3g3PzFkWQk4HE=;
+        b=IRTA+XM1m8Nn928bPpCQxnH6+BTb8zxUTZBZ5R/dUSl7sL1OZOWLH/Yk6nzo76Y49k
+         K91wrBsgnlWuB7nLEX1Pg9YotRLJ4rxHTZAKAF7s2zQQSHw9NZMuH19ptaUoh6vaDlc7
+         kyExqroSJmXOPTPkNAAHHvKxf+AlH+lLV5g8rv6Zk0wqewQcugMewbowEIn2Bxc3DbgL
+         EXO76uBjXA2qYSJkaN/bygk0Rzf0JXEYhT0R25ZmD/2aYLpAOZ9lwAcsj0LEvrUuJZPk
+         0xsamyyeiczkWhHU4+Y5jCvkgnwerPshIp5Zg5U0+tiM86a4AkFJnnyRbl/NxBATohI+
+         bIJA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google;
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type;
+        bh=vxBBdpwNnuIYljVJMd5huWdXDB1gbM3g3PzFkWQk4HE=;
+        b=G9+N2roo+z62nZ62H8h824R5AfJwgB/v3AQqybEMArznsCucyVUUe+IHLsDjQafhtc
+         S6TWZHovLQHsmlT267MTHXQfvl2VeuxGsSNUeH6Rit+X0WegGpa7EWfk46ZWrnb8690N
+         Pxvh1I40mOWAe/ztQFSapr2SpCXr7YGQvYBSY=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:sender:in-reply-to:references:date
+         :message-id:subject:from:to:cc:content-type;
+        bh=vxBBdpwNnuIYljVJMd5huWdXDB1gbM3g3PzFkWQk4HE=;
+        b=HRz/nQhcDkzVMYHWFGu0My4NM21liw1/uWDYZpRZYtMb0iTE6+CaqqrVTy8OxJcoq7
+         T2pgGUs2BNs2BMQxVG4UMGaMftrD/Qn6vJWdFkJVB0KYTQBnnpMGdFXgZVtJMReSG1sC
+         UJRBJ8uV8FOu2oSAVR569ZUcWr79n5o4NVV/Xv3oRcjtK4FoHttafm7ZDuPYwxlUvQX0
+         HAS9viDLWR9C7pkLywLYM6BgC2pDGRwFmOX9UD77d77eBvy8u0Z6YUoSg4QD2hHSm/yH
+         tHDcaF5ly8l6ghHd1FYwFj32WGvb8nNcl1NUMBqjlL9rgqkLadX3RTaDEqRFwLySTemZ
+         Nu9w==
+X-Gm-Message-State: AG10YOTKFtBPJbwqix7e9DFPc7ANlEYuoHp0qq/ZHFJO3ZFzq0m7xSamN87hcYVtoO70nh5/V1/W/7zLjHkGGA==
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20160126121010.GD21553@arm.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-TM-AS-MML: disable
-X-Content-Scanned: Fidelis XPS MAILER
-x-cbid: 16012623-0009-0000-0000-000011C74221
-Return-Path: <paulmck@linux.vnet.ibm.com>
+X-Received: by 10.50.43.168 with SMTP id x8mr19533080igl.93.1453851924284;
+ Tue, 26 Jan 2016 15:45:24 -0800 (PST)
+Received: by 10.36.60.82 with HTTP; Tue, 26 Jan 2016 15:45:23 -0800 (PST)
+In-Reply-To: <20160126232921.GY4503@linux.vnet.ibm.com>
+References: <20160114204827.GE3818@linux.vnet.ibm.com>
+        <20160118081929.GA30420@gondor.apana.org.au>
+        <20160118154629.GB3818@linux.vnet.ibm.com>
+        <20160126165207.GB6029@fixme-laptop.cn.ibm.com>
+        <20160126172227.GG6357@twins.programming.kicks-ass.net>
+        <CA+55aFzcC6C8imPs5vk4yH1Y2YHjnAdFM9HCkVs04COxuDQH6w@mail.gmail.com>
+        <20160126201037.GU4503@linux.vnet.ibm.com>
+        <CA+55aFxjb+2rs2wVHtiSCcOzgMrE8H=yDeNcjyujPQudDCtLgw@mail.gmail.com>
+        <CA+55aFwxTJd+uibcxtZD3tGnj_n=LMwyAa0s8qyx_OF0OMWQkA@mail.gmail.com>
+        <20160126232921.GY4503@linux.vnet.ibm.com>
+Date:   Tue, 26 Jan 2016 15:45:23 -0800
+X-Google-Sender-Auth: r9XMt0fFOI9jyue8YZofPMkFFFw
+Message-ID: <CA+55aFyD94yaA1QzXgfeO18T-czY3TVUi5n6r-9jOUObDeR-zQ@mail.gmail.com>
+Subject: Re: [v3,11/41] mips: reuse asm-generic/barrier.h
+From:   Linus Torvalds <torvalds@linux-foundation.org>
+To:     Paul McKenney <paulmck@linux.vnet.ibm.com>
+Cc:     Peter Zijlstra <peterz@infradead.org>,
+        Boqun Feng <boqun.feng@gmail.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
+        linux-mips <linux-mips@linux-mips.org>,
+        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        Will Deacon <will.deacon@arm.com>,
+        virtualization <virtualization@lists.linux-foundation.org>,
+        Peter Anvin <hpa@zytor.com>, sparclinux@vger.kernel.org,
+        Ingo Molnar <mingo@kernel.org>,
+        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        Russell King - ARM Linux <linux@arm.linux.org.uk>,
+        uml-devel <user-mode-linux-devel@lists.sourceforge.net>,
+        linux-sh@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>,
+        "the arch/x86 maintainers" <x86@kernel.org>,
+        xen-devel@lists.xenproject.org, Ingo Molnar <mingo@elte.hu>,
+        linux-xtensa@linux-xtensa.org,
+        James Hogan <james.hogan@imgtec.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Stefano Stabellini <stefano.stabellini@eu.citrix.com>,
+        adi-buildroot-devel@lists.sourceforge.net,
+        David Daney <ddaney.cavm@gmail.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-metag@vger.kernel.org,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        Andrew Cooper <andrew.cooper3@citrix.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Joe Perches <joe@perches.com>,
+        ppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        David Miller <davem@davemloft.net>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <linus971@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51444
+X-archive-position: 51445
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paulmck@linux.vnet.ibm.com
+X-original-sender: torvalds@linux-foundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -94,110 +113,20 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Jan 26, 2016 at 12:10:10PM +0000, Will Deacon wrote:
-> On Mon, Jan 25, 2016 at 05:06:46PM -0800, Paul E. McKenney wrote:
-> > On Mon, Jan 25, 2016 at 02:41:34PM +0000, Will Deacon wrote:
-> > > On Fri, Jan 15, 2016 at 11:28:45AM -0800, Paul E. McKenney wrote:
-> > > > On Fri, Jan 15, 2016 at 09:54:01AM -0800, Paul E. McKenney wrote:
-> > > > > On Fri, Jan 15, 2016 at 10:24:32AM +0000, Will Deacon wrote:
-> > > > > > See my earlier reply [1] (but also, your WRC Linux example looks more
-> > > > > > like a variant on WWC and I couldn't really follow it).
-> > > > > 
-> > > > > I will revisit my WRC Linux example.  And yes, creating litmus tests
-> > > > > that use non-fake dependencies is still a bit of an undertaking.  :-/
-> > > > > I am sure that it will seem more natural with time and experience...
-> > > > 
-> > > > Hmmm...  You are quite right, I did do WWC.  I need to change cpu2()'s
-> > > > last access from a store to a load to get WRC.  Plus the levels of
-> > > > indirection definitely didn't match up, did they?
-> > > 
-> > > Nope, it was pretty baffling!
-> > 
-> > "It is a service that I provide."  ;-)
-> > 
-> > > > 	struct foo {
-> > > > 		struct foo *next;
-> > > > 	};
-> > > > 	struct foo a;
-> > > > 	struct foo b;
-> > > > 	struct foo c = { &a };
-> > > > 	struct foo d = { &b };
-> > > > 	struct foo x = { &c };
-> > > > 	struct foo y = { &d };
-> > > > 	struct foo *r1, *r2, *r3;
-> > > > 
-> > > > 	void cpu0(void)
-> > > > 	{
-> > > > 		WRITE_ONCE(x.next, &y);
-> > > > 	}
-> > > > 
-> > > > 	void cpu1(void)
-> > > > 	{
-> > > > 		r1 = lockless_dereference(x.next);
-> > > > 		WRITE_ONCE(r1->next, &x);
-> > > > 	}
-> > > > 
-> > > > 	void cpu2(void)
-> > > > 	{
-> > > > 		r2 = lockless_dereference(y.next);
-> > > > 		r3 = READ_ONCE(r2->next);
-> > > > 	}
-> > > > 
-> > > > In this case, it is legal to end the run with:
-> > > > 
-> > > > 	r1 == &y && r2 == &x && r3 == &c
-> > > > 
-> > > > Please see below for a ppcmem litmus test.
-> > > > 
-> > > > So, did I get it right this time?  ;-)
-> > > 
-> > > The code above looks correct to me (in that it matches WRC+addrs),
-> > > but your litmus test:
-> > > 
-> > > > PPC WRCnf+addrs
-> > > > ""
-> > > > {
-> > > > 0:r2=x; 0:r3=y;
-> > > > 1:r2=x; 1:r3=y;
-> > > > 2:r2=x; 2:r3=y;
-> > > > c=a; d=b; x=c; y=d;
-> > > > }
-> > > >  P0           | P1            | P2            ;
-> > > >  stw r3,0(r2) | lwz r8,0(r2)  | lwz r8,0(r3)  ;
-> > > >               | stw r2,0(r3)  | lwz r9,0(r8)  ;
-> > > > exists
-> > > > (1:r8=y /\ 2:r8=x /\ 2:r9=c)
-> > > 
-> > > Seems to be missing the address dependency on P1.
-> > 
-> > You are quite correct!  How about the following?
-> 
-> I think that's it!
-> 
-> > As before, both herd and ppcmem say that the cycle is allowed, as
-> > expected, given non-transitive ordering.  To prohibit the cycle, P1
-> > needs a suitable memory-barrier instruction.
-> > 
-> > ------------------------------------------------------------------------
-> > 
-> > PPC WRCnf+addrs
-> > ""
-> > {
-> > 0:r2=x; 0:r3=y;
-> > 1:r2=x; 1:r3=y;
-> > 2:r2=x; 2:r3=y;
-> > c=a; d=b; x=c; y=d;
-> > }
-> >  P0           | P1            | P2            ;
-> >  stw r3,0(r2) | lwz r8,0(r2)  | lwz r8,0(r3)  ;
-> >               | stw r2,0(r8)  | lwz r9,0(r8)  ;
-> > exists
-> > (1:r8=y /\ 2:r8=x /\ 2:r9=c)
-> 
-> Agreed.
+On Tue, Jan 26, 2016 at 3:29 PM, Paul E. McKenney
+<paulmck@linux.vnet.ibm.com> wrote:
+>
+> No trailing data-dependent read, so agreed, no smp_read_barrier_depends()
+> needed.  That said, I believe that we should encourage rcu_dereference*()
+> or lockless_dereference() instead of READ_ONCE() for documentation
+> reasons, though.
 
-OK, thank you!  Would you agree that it would be good to replace the
-current xor-based fake-dependency litmus tests with tests having real
-dependencies?
+I agree that that is likely the right thing to do in pretty much all situations.
 
-							Thanx, Paul
+In theory, there might be performance situations where we'd want to
+actively avoid the smp_read_barrier_depends() inherent in those, but
+considering that it's only a performance issue on alpha, and we
+probably have all of two or three people using Linux on alpha, it's a
+pretty theoretical performance worry.
+
+                  Linus

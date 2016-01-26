@@ -1,78 +1,104 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Jan 2016 20:26:58 +0100 (CET)
-Received: from mail-pf0-f171.google.com ([209.85.192.171]:33112 "EHLO
-        mail-pf0-f171.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011636AbcAZT0yw7098 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 26 Jan 2016 20:26:54 +0100
-Received: by mail-pf0-f171.google.com with SMTP id e65so103999313pfe.0;
-        Tue, 26 Jan 2016 11:26:54 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Jan 2016 20:44:55 +0100 (CET)
+Received: from mail-ig0-f179.google.com ([209.85.213.179]:37397 "EHLO
+        mail-ig0-f179.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011617AbcAZTowOmXl4 convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 26 Jan 2016 20:44:52 +0100
+Received: by mail-ig0-f179.google.com with SMTP id h5so58632439igh.0;
+        Tue, 26 Jan 2016 11:44:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-type:content-disposition:in-reply-to:user-agent;
-        bh=eNPHYKqYj252LzW4T5U5LM9j30HAE/iUpLIrRUprH7o=;
-        b=qsMDbZFmTZPdRA1fUhAWydRZypJGRSPXjtw2ncdNO0nGdxyovUlzsQ2+IOV5jKNKvy
-         t0pcJS9fxGbnGTYFpCiMplebmRWhZUJngxSt76oQC+Pack5PxvbUmwDEYupbedr7R5FP
-         sugQtkm9j1YXhKFa6S8hzaZXukC01Lruk14u5eloQM4fqTWCOCz+CFgf2unD+zrNpIdy
-         rSo1+EfLer+PcT2Rg2DDEf/m8CWu4c59lDFLPEHeQ5iPOZK/ejabMWqkaMi9n219947Q
-         nBiB8IgK4R51rLuXFz1UVsw667vXurIeAijVNHwT3EInzQNuqDpNeBTZ9A1Bds1MQEaZ
-         s7fA==
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type:content-transfer-encoding;
+        bh=+wIF6m1WEAefILO3uRc6NtTwynvjxsa4TvLya05yTJo=;
+        b=YSoxfWnyg6wfvlopPfmKHB79eotBr104T1+1kfZSdhD5YUpekLYyFqFMub7ZpI1w9F
+         2s/Q+wGSsKe/jr8BF9oE7d0ACfX9dIELytunM9I+XcvyjvdjlyIMg11EHhV7Lb1Bj6WB
+         H1LC1+G7altoWknnNdOaBeMTxXtKPCre3drpU5xTdJQmO9/729QlMbKupC77PEupOiDM
+         x5de9gvayO2ODNeI/N+QKnowgholPuNrCErVqS7kVHEfMYB6SZcKX01/6k7Hb4CzAjC2
+         APngs3T8FcDfLqctu5Ce4WPKcmttjTgCc2Ew64FFBTucz1jTPzQYDdJgjyE+1BAuYXpn
+         ODqA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google;
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type:content-transfer-encoding;
+        bh=+wIF6m1WEAefILO3uRc6NtTwynvjxsa4TvLya05yTJo=;
+        b=IG73SnEq+DO3CKmZnfSucl68V0mwjLRwtWXbW1JPGStdmkxrywnBPbMi8N2bYKXedp
+         zNrliarbdlj1ukkGd4OVZaPk5Mckp9VbShqBa5qGj71F59HlVVVOtSbh76uSJWRfQQnY
+         GrvNhak0lYVU8yeMd8QoRenDUXMwRI9BYN/hs=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-type:content-disposition:in-reply-to
-         :user-agent;
-        bh=eNPHYKqYj252LzW4T5U5LM9j30HAE/iUpLIrRUprH7o=;
-        b=FDMALDFGwmppwI2Avh2TyYLc70fRPt0SXfoW66rhyN1lZyx41whDz0jcIN8k52EeWi
-         kdOPmk5arOSwYjrKiFAVG1Mw30mIjlORHpTwK8sK/dtmhR19rdBHcdRPDWMSSx+IYRLF
-         U6h1AO3Ei/YLXwq/OeIdARKIDjZPc0tyEOYpO+JKLZtARQ37ZanO2q0MUiQWCGFyoRoR
-         Ar21CRZfiy0vmWxu8a9bto7ifX4zkBIS69QYuu48G+rf52mbhA2H3Uf252QMBdBw2s26
-         MjQaiJzEYynpfodJoQ5KURRxhi6yem2P3DV6Q60sYe3TEN4WQjG6eiLbmQbb1bzqeK0w
-         c+Rg==
-X-Gm-Message-State: AG10YOQyTsK2iZo5Rhw1st6eJVXcFOY5lnpG+94sK4JlBmZBUuL7/vL7ZXVRnRZBvvMrvw==
-X-Received: by 10.98.75.22 with SMTP id y22mr36968817pfa.147.1453836408775;
-        Tue, 26 Jan 2016 11:26:48 -0800 (PST)
-Received: from google.com ([2620:0:1000:1301:adba:d372:4bd6:cc17])
-        by smtp.gmail.com with ESMTPSA id d8sm3585293pas.14.2016.01.26.11.26.47
-        (version=TLS1_2 cipher=AES128-SHA bits=128/128);
-        Tue, 26 Jan 2016 11:26:48 -0800 (PST)
-Date:   Tue, 26 Jan 2016 11:26:45 -0800
-From:   Brian Norris <computersforpeace@gmail.com>
-To:     Boris Brezillon <boris.brezillon@free-electrons.com>
-Cc:     David Woodhouse <dwmw2@infradead.org>,
-        linux-mtd@lists.infradead.org, Daniel Mack <daniel@zonque.org>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        Kukjin Kim <kgene@kernel.org>,
-        Krzysztof Kozlowski <k.kozlowski@samsung.com>,
-        linux-samsung-soc@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        Josh Wu <josh.wu@atmel.com>,
-        Ezequiel Garcia <ezequiel.garcia@free-electrons.com>,
-        Maxime Ripard <maxime.ripard@free-electrons.com>,
-        Chen-Yu Tsai <wens@csie.org>, linux-sunxi@googlegroups.com,
-        Stefan Agner <stefan@agner.ch>,
-        Kyungmin Park <kyungmin.park@samsung.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        devel@driverdev.osuosl.org, linux-kernel@vger.kernel.org,
-        punnaiah choudary kalluri <punnaia@xilinx.com>
-Subject: Re: [PATCH 00/23] mtd: rework ECC layout definition
-Message-ID: <20160126192645.GA46523@google.com>
-References: <1449527178-5930-1-git-send-email-boris.brezillon@free-electrons.com>
+        h=x-gm-message-state:mime-version:sender:in-reply-to:references:date
+         :message-id:subject:from:to:cc:content-type
+         :content-transfer-encoding;
+        bh=+wIF6m1WEAefILO3uRc6NtTwynvjxsa4TvLya05yTJo=;
+        b=Q3YRe6Fm5su8qkUnun3bLMICaiWLf9hIsMJ4GG2j/nOtX0ZW8bpIZURZuG4GhtCnad
+         eSJGUpo0QxQDRSX5VmwOv/oIsPbCf27XWhGlNqdBN/Rzxq+O8W/A3QiUtST8sbbAKHae
+         LcQ861E5H1ARfFrs/qFt8k2JRAT/naJCf4lOFvfkCNzfXXgLruIYLiyF3C8cN2wqHGjQ
+         50ZcJCcKJWY4Z/v2LY9tNe50od2kgk8W3nSkAot8g/76az5OZizPe9ey+e1kvjbxZLWy
+         3l/oDGF90HgMM1bldyUAsOeFKxaqTdp9KgzaVkxPK71pSzHT8FNuxvid3w/VD4xEpOBX
+         2Plw==
+X-Gm-Message-State: AG10YOSwsnCS2wcTcALDedCkxWS7h0skBPa6DmWCqWSK8kZSMxO5FRfXW1wEp4QxUVTZBafcxv/EM+Pm3IO4Eg==
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1449527178-5930-1-git-send-email-boris.brezillon@free-electrons.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <computersforpeace@gmail.com>
+X-Received: by 10.50.88.72 with SMTP id be8mr24258892igb.45.1453837486386;
+ Tue, 26 Jan 2016 11:44:46 -0800 (PST)
+Received: by 10.36.60.82 with HTTP; Tue, 26 Jan 2016 11:44:46 -0800 (PST)
+In-Reply-To: <20160126172227.GG6357@twins.programming.kicks-ass.net>
+References: <20160114204827.GE3818@linux.vnet.ibm.com>
+        <20160118081929.GA30420@gondor.apana.org.au>
+        <20160118154629.GB3818@linux.vnet.ibm.com>
+        <20160126165207.GB6029@fixme-laptop.cn.ibm.com>
+        <20160126172227.GG6357@twins.programming.kicks-ass.net>
+Date:   Tue, 26 Jan 2016 11:44:46 -0800
+X-Google-Sender-Auth: hyQD0gGx7MLms_-hw8MUE-x5u9c
+Message-ID: <CA+55aFzcC6C8imPs5vk4yH1Y2YHjnAdFM9HCkVs04COxuDQH6w@mail.gmail.com>
+Subject: Re: [v3,11/41] mips: reuse asm-generic/barrier.h
+From:   Linus Torvalds <torvalds@linux-foundation.org>
+To:     Peter Zijlstra <peterz@infradead.org>
+Cc:     Boqun Feng <boqun.feng@gmail.com>,
+        "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
+        linux-mips <linux-mips@linux-mips.org>,
+        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        Will Deacon <will.deacon@arm.com>,
+        virtualization <virtualization@lists.linux-foundation.org>,
+        Peter Anvin <hpa@zytor.com>, sparclinux@vger.kernel.org,
+        Ingo Molnar <mingo@kernel.org>,
+        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        Russell King - ARM Linux <linux@arm.linux.org.uk>,
+        uml-devel <user-mode-linux-devel@lists.sourceforge.net>,
+        linux-sh@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>,
+        "the arch/x86 maintainers" <x86@kernel.org>,
+        xen-devel@lists.xenproject.org, Ingo Molnar <mingo@elte.hu>,
+        linux-xtensa@linux-xtensa.org,
+        James Hogan <james.hogan@imgtec.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Stefano Stabellini <stefano.stabellini@eu.citrix.com>,
+        adi-buildroot-devel@lists.sourceforge.net,
+        David Daney <ddaney.cavm@gmail.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-metag@vger.kernel.org,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        Andrew Cooper <andrew.cooper3@citrix.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Joe Perches <joe@perches.com>,
+        ppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        David Miller <davem@davemloft.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+Return-Path: <linus971@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51426
+X-archive-position: 51427
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: computersforpeace@gmail.com
+X-original-sender: torvalds@linux-foundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -85,64 +111,72 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Boris,
+On Tue, Jan 26, 2016 at 9:22 AM, Peter Zijlstra <peterz@infradead.org> wrote:
+>
+> This is distinct from:
 
-On Mon, Dec 07, 2015 at 11:25:55PM +0100, Boris Brezillon wrote:
-> Hello,
-> 
-> This patchset aims at getting rid of the nand_ecclayout limitations.
-> struct nand_ecclayout is defining fixed eccpos and oobfree arrays which
-> can only be increased by modifying the MTD_MAX_ECCPOS_ENTRIES_LARGE and
-> MTD_MAX_OOBFREE_ENTRIES_LARGE macros.
-> This approach forces us to modify the macro values each time we add a
-> new NAND chip with a bigger OOB area, and increasing these arrays also
-> penalize all platforms, even those who only support small NAND devices
-> (with small OOB area).
-> 
-> The idea to overcome this limitation, is to define the ECC/OOB layout
-> by the mean of two functions: ->eccpos() and ->oobfree(), which will
-> basically return the same information has those stored in the
-> nand_ecclayout struct.
-> 
-> Another advantage of this solution is that ECC layouts are usually
-> following a repetitive pattern (i.e. leave X bytes free and put Y bytes
-> of ECC per ECC chunk), which allows one to implement the ->eccpos()
-> and ->oobfree() functions with a simple logic that can be applied
-> to any size of OOB.
+That may be distinct, but:
 
-Thanks for the work! This definitely needed done. I imagined that it
-might be best if we just changed the data structure format and have
-drivers allocate it dynamically during probe(), but actually, I kinda
-like generating it on the fly. The only concern I'd have is if there is
-significant penalty to doing this sort of computation on the fly during
-(e.g.) AUTO-layout OOB reads/writes. But I guess if there is such a
-penalty, nothing would stop us from caching the results in the MTD/NAND
-core code.
+>         struct foo *x = READ_ONCE(*ptr);
+>         smp_read_barrier_depends();
+>         x->bar = 5;
 
-> Patches 1 to 10 are just cleanups or trivial fixes that can be taken
-> independently.
+This case is complete BS. Stop perpetuating it. I already removed a
+number of bogus cases of it, and I removed the incorrect documentation
+that had this crap.
 
-There were some comments for patch 1, and I want to look more closely at
-patch 10. But patches 2 to 9 are pushed to l2-mtd.git. Thanks!
+It's called "smp_READ_barrier_depends()" for a reason.
 
-> Patch 19 is just an aggregate of several smaller commits (one per
-> driver), and has been submitted this way to limit the size of the
-> series. If everybody agrees on this approach, I'll resubmit the series
-> will those changes separated in different commits (as done here [1]).
-> 
-> Also note that the last two commits are removing the nand_ecclayout
-> definition, thus preventing any new driver to use this structure.
-> Of course, this step can be delayed if some of the previous patches
-> are not accepted.
+Alpha is the only one that needs it, and alpha needs it only for
+dependent READS.
 
-I haven't looked in detail at the second half of the series, but I like
-the concept. I'll look closer once you fix up things in v2.
+It's not called smp_read_write_barrier_depends(). It's not called
+"smp_mb_depends()". It's a weaker form of "smp_rmb()", nothing else.
 
-Thanks,
-Brian
+So alpha does have an implied dependency chain from a read to a
+subsequent dependent write, and does not need any extra barriers.
 
-> Best Regards,
-> 
-> Boris
-> 
-> [1]https://github.com/bbrezillon/linux-sunxi/commits/nand/ecclayout2
+Alpha does *not* have a dependency chain from a read to a subsequent
+read, which is why we need that horrible crappy
+smp_read_barrier_depends(). But it's the only reason.
+
+This is the alpha reference manual wrt read-to-write dependency:
+
+  5.6.1.7 Definition of Dependence Constraint
+
+    The depends relation (DP) is defined as follows. Given u and v
+issued by processor Pi, where u
+    is a read or an instruction fetch and v is a write, u precedes v
+in DP order (written u DP v, that
+    is, v depends on u) in either of the following situations:
+
+     • u determines the execution of v, the location accessed by v, or
+the value written by v.
+     • u determines the execution or address or value of another
+memory access z that precedes
+
+    v or might precede v (that is, would precede v in some execution
+path depending
+    on the value read by u) by processor issue constraint (see Section 5.6.1.3).
+
+Note that the dependence barrier honors not only control flow, but
+address and data values too.  This is a different syntax than we use,
+but 'u' is the READ_ONCE, and 'v' is the write. Any data, address or
+conditional dependency between the two implies an ordering.
+
+So no, "smp_read_barrier_depends()" is *ONLY* about two reads, where
+the second read is data-dependent on the first. Nothing else.
+
+So if you _ever_ see a "smp_read_barrier_depends()" that isn't about a
+barrier between two reads, then that is a bug.
+
+The above code is crap.  It's exactly as much crap as
+
+   a = READ_ONCE(x);
+   smp_rmb();
+   WRITE_ONCE(b, y);
+
+because a "rmb()" simply doesn't have anything to do with
+read-vs-subsequent-write ordering.
+
+                 Linus

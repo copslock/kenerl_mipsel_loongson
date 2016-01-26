@@ -1,55 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Jan 2016 18:23:04 +0100 (CET)
-Received: from bombadil.infradead.org ([198.137.202.9]:49944 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011633AbcAZRXDPdCKC (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 26 Jan 2016 18:23:03 +0100
-Received: from j217066.upc-j.chello.nl ([24.132.217.66] helo=twins)
-        by bombadil.infradead.org with esmtpsa (Exim 4.80.1 #2 (Red Hat Linux))
-        id 1aO7K2-0008Dr-U0; Tue, 26 Jan 2016 17:22:31 +0000
-Received: by twins (Postfix, from userid 1000)
-        id 9D8311257A0D8; Tue, 26 Jan 2016 18:22:27 +0100 (CET)
-Date:   Tue, 26 Jan 2016 18:22:27 +0100
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     Boqun Feng <boqun.feng@gmail.com>
-Cc:     "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Leonid.Yegoshin@imgtec.com, linux-mips@linux-mips.org,
-        linux-ia64@vger.kernel.org, mst@redhat.com, will.deacon@arm.com,
-        virtualization@lists.linux-foundation.org, hpa@zytor.com,
-        sparclinux@vger.kernel.org, mingo@kernel.org,
-        linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
-        linux@arm.linux.org.uk,
-        user-mode-linux-devel@lists.sourceforge.net,
-        linux-sh@vger.kernel.org, mpe@ellerman.id.au, x86@kernel.org,
-        xen-devel@lists.xenproject.org, mingo@elte.hu,
-        linux-xtensa@linux-xtensa.org, james.hogan@imgtec.com,
-        arnd@arndb.de, stefano.stabellini@eu.citrix.com,
-        adi-buildroot-devel@lists.sourceforge.net, ddaney.cavm@gmail.com,
-        tglx@linutronix.de, linux-metag@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, andrew.cooper3@citrix.com,
-        linux-kernel@vger.kernel.org, ralf@linux-mips.org, joe@perches.com,
-        linuxppc-dev@lists.ozlabs.org, davem@davemloft.net,
-        Linus Torvalds <torvalds@linux-foundation.org>
-Subject: Re: [v3,11/41] mips: reuse asm-generic/barrier.h
-Message-ID: <20160126172227.GG6357@twins.programming.kicks-ass.net>
-References: <20160114204827.GE3818@linux.vnet.ibm.com>
- <20160118081929.GA30420@gondor.apana.org.au>
- <20160118154629.GB3818@linux.vnet.ibm.com>
- <20160126165207.GB6029@fixme-laptop.cn.ibm.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Jan 2016 18:33:32 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:41479 "EHLO
+        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011636AbcAZRd2vQHZs (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 26 Jan 2016 18:33:28 +0100
+Received: from localhost (unknown [104.135.8.89])
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 78EC5E96;
+        Tue, 26 Jan 2016 17:33:22 +0000 (UTC)
+Date:   Tue, 26 Jan 2016 09:33:22 -0800
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Joshua Henderson <joshua.henderson@microchip.com>
+Cc:     linux-kernel@vger.kernel.org, Jiri Slaby <jslaby@suse.com>,
+        linux-mips@linux-mips.org, ralf@linux-mips.org,
+        Andrei Pistirica <andrei.pistirica@microchip.com>,
+        linux-serial@vger.kernel.org, linux-api@vger.kernel.org
+Subject: Re: [PATCH v5 10/14] serial: pic32_uart: Add PIC32 UART driver
+Message-ID: <20160126173322.GA1664@kroah.com>
+References: <1452734299-460-1-git-send-email-joshua.henderson@microchip.com>
+ <1452734299-460-11-git-send-email-joshua.henderson@microchip.com>
+ <56A7A729.10008@microchip.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20160126165207.GB6029@fixme-laptop.cn.ibm.com>
-User-Agent: Mutt/1.5.21 (2012-12-30)
-Return-Path: <peterz@infradead.org>
+In-Reply-To: <56A7A729.10008@microchip.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51420
+X-archive-position: 51421
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: peterz@infradead.org
+X-original-sender: gregkh@linuxfoundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -62,39 +44,15 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Jan 27, 2016 at 12:52:07AM +0800, Boqun Feng wrote:
-> I recall that last time you and Linus came into a conclusion that even
-> on Alpha, a barrier for read->write with data dependency is unnecessary:
+On Tue, Jan 26, 2016 at 10:04:41AM -0700, Joshua Henderson wrote:
+> Hi Greg and Jiri,
 > 
-> http://article.gmane.org/gmane.linux.kernel/2077661
-> 
-> And in an earlier mail of that thread, Linus made his point that
-> smp_read_barrier_depends() should only be used to order read->read.
-> 
-> So right now, are we going to extend the semantics of
-> smp_read_barrier_depends()? Can we just make smp_read_barrier_depends()
-> still only work for read->read, and assume all the architectures won't
-> reorder read->write with data dependency, so that the code above having
-> a smp_rmb() also works?
+> Ping!  Need an ack for this or pull it upstream.
 
-That discussions was about control dependencies. So writes that _depend_
-on a prior read having an explicit value.
+The merge window _just_ ended, please give us a chance to catch up on
+patches to be reviewed.  There's no reason you need a response for this
+right away, it can't be merged until 4.6-rc1, right?
 
-So something like:
+thanks,
 
-	struct foo *x = READ_ONCE(*ptr);
-	smp_read_barrier_depends()
-	if (x->val == 5)
-		x->bar = 5;
-
-In that case, the load of x->val must be complete and its value
-determined _before_ the store to x->bar can happen.
-
-This is distinct from:
-
-	struct foo *x = READ_ONCE(*ptr);
-	smp_read_barrier_depends();
-	x->bar = 5;
-
-And its the second case where smp_read_barrier_depends() read->write
-order matters.
+greg k-h

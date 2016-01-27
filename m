@@ -1,55 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 Jan 2016 10:45:00 +0100 (CET)
-Received: from mout.kundenserver.de ([212.227.17.10]:49946 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27010552AbcA0Jo6iJYwB (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 27 Jan 2016 10:44:58 +0100
-Received: from wuerfel.localnet ([78.42.132.4]) by mrelayeu.kundenserver.de
- (mreue102) with ESMTPSA (Nemesis) id 0MejLU-1aiDss3P8S-00OIXy; Wed, 27 Jan
- 2016 10:44:06 +0100
-From:   Arnd Bergmann <arnd@arndb.de>
-To:     Fengguang Wu <fengguang.wu@intel.com>
-Cc:     James Hogan <james.hogan@imgtec.com>, linux-mips@linux-mips.org,
-        linux-arch@vger.kernel.org, linux-kbuild@vger.kernel.org,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Paul Burton <paul.burton@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Heinrich Schuchardt <xypron.glpk@gmx.de>,
-        linux-kernel@vger.kernel.org, Michal Marek <mmarek@suse.com>,
-        linux-arm-kernel@lists.infradead.org
-Subject: Re: [linux-review:James-Hogan/kbuild-Remove-stale-asm-generic-wrappers/20160119-183642] d979f99e9cc14e2667e9b6e268db695977e4197a BUILD DONE
-Date:   Wed, 27 Jan 2016 10:44:01 +0100
-Message-ID: <3596300.IYfzmako0c@wuerfel>
-User-Agent: KMail/4.11.5 (Linux/3.16.0-10-generic; KDE/4.11.5; x86_64; ; )
-In-Reply-To: <20160127093018.GA21190@wfg-t540p.sh.intel.com>
-References: <569e1dbb.MgLv8OaZwklOxxtU%fengguang.wu@intel.com> <1947556.38OyJnvGS5@wuerfel> <20160127093018.GA21190@wfg-t540p.sh.intel.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 Jan 2016 11:12:08 +0100 (CET)
+Received: from foss.arm.com ([217.140.101.70]:33308 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27010410AbcA0KMFx3s9B (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 27 Jan 2016 11:12:05 +0100
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 87AE149;
+        Wed, 27 Jan 2016 02:11:17 -0800 (PST)
+Received: from arm.com (usa-sjc-imap-foss1.foss.arm.com [10.72.51.249])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BF1FC3F246;
+        Wed, 27 Jan 2016 02:11:53 -0800 (PST)
+Date:   Wed, 27 Jan 2016 10:11:52 +0000
+From:   Will Deacon <will.deacon@arm.com>
+To:     Peter Zijlstra <peterz@infradead.org>
+Cc:     "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>,
+        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+        linux-arch@vger.kernel.org,
+        Andrew Cooper <andrew.cooper3@citrix.com>,
+        Russell King - ARM Linux <linux@arm.linux.org.uk>,
+        virtualization@lists.linux-foundation.org,
+        Stefano Stabellini <stefano.stabellini@eu.citrix.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@elte.hu>, "H. Peter Anvin" <hpa@zytor.com>,
+        Joe Perches <joe@perches.com>,
+        David Miller <davem@davemloft.net>, linux-ia64@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-metag@vger.kernel.org, linux-mips@linux-mips.org,
+        x86@kernel.org, user-mode-linux-devel@lists.sourceforge.net,
+        adi-buildroot-devel@lists.sourceforge.net,
+        linux-sh@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        xen-devel@lists.xenproject.org, Ralf Baechle <ralf@linux-mips.org>,
+        Ingo Molnar <mingo@kernel.org>, ddaney.cavm@gmail.com,
+        james.hogan@imgtec.com, Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH] documentation: Add disclaimer
+Message-ID: <20160127101151.GB2390@arm.com>
+References: <20160114120445.GB15828@arm.com>
+ <56980145.5030901@imgtec.com>
+ <20160114204827.GE3818@linux.vnet.ibm.com>
+ <56981212.7050301@imgtec.com>
+ <20160114222046.GH3818@linux.vnet.ibm.com>
+ <20160126102402.GE6357@twins.programming.kicks-ass.net>
+ <20160126103200.GI6375@twins.programming.kicks-ass.net>
+ <20160126110053.GA21553@arm.com>
+ <20160126201143.GV4503@linux.vnet.ibm.com>
+ <20160127083546.GJ6357@twins.programming.kicks-ass.net>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-X-Provags-ID: V03:K0:u4p4Pn+2jwn6DxtCQoFN3pLaHSLpaNJBmRAWcTAdeCcO3DbULq8
- dz4kMkPg2p+Z9XYsDf1h2ay+fPvMUHefuZf8CdxtUGMulO7s+6kUUeNiXgjRhV3o4Tbwcs1
- /DVI/jqPxeXo3jds3+6nom0eX4a0OU4Q4YrNRwLAijwWK6avuBvxIYlc5MoSG/KvPR7tPk5
- RNYvMJK0naE27siC79KZw==
-X-UI-Out-Filterresults: notjunk:1;V01:K0:+W4xYvSEUR4=:TQPqYcTNjAU1OT3I6ybNI2
- paEbE+Qx5OXARdxoNwcI2B+Yx89ocC/SogSXJx278QdpqUhf2Tltpx5C3axX4DDMHWGv4tAh5
- VCU2tuc8s8M6pi73Qq7J9nRKAA0yyGLIeHIKsCbvyTc54010v6C8ODqus6qHz3goXtrzPKecm
- QuZCL6Yqp0Yl6dwBXPxbDAFlk7xP6b1pR8D3npq8pP8Csmxag3ghBn1XOJjv3SyLPQ5UD6LHO
- iOY72KVkyem12L7qXkKmj8MnsoSGc8Ndu//bXdC35OsZ4z63Cvel5PCn4qkz2BH+/3auPxsUl
- IQiEhfTBPcBOEiqNlXNpCat+NDAWS4pro4Nn/4h+lfR4KbtXMzOgqI/Pl+qdE68cn6hkPqW+C
- oJ6RZ+AiC7/xUHl1p8tlTHgPkhYUCSNaqrNvRKFbo/FArmMRdSvk8HqAwca3I/m+FncKfBBA4
- 7CywovTyJeFIZzrP1Y2b4nRvGeDyoi2QSXiFkkyIKEowlKIqL37vnMwgNjguk+QB2gL4pLedr
- JVf5Okp0uMITP0ErDBVN+zo3e4jkhsUB9RDO7/YzkghG0+V8ZBqW76FcSCWgzDzYTaQe1a5cA
- DlIFVx7FodrEET5RjbvJKP720lGXhVqqnGWGoEuagDhpZxptBBhgUCj8a27FKlPHEfxkbBRPu
- 4xnRNTnpQAQ76hJUFUUUEi/CWkHr7jOI2wBuiUThNgE1/p+tYimtPxNGyPSGp6lW9wP7IWxEO
- 06p7DFTVWLz0pcQA
-Return-Path: <arnd@arndb.de>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20160127083546.GJ6357@twins.programming.kicks-ass.net>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <will.deacon@arm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51463
+X-archive-position: 51464
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arnd@arndb.de
+X-original-sender: will.deacon@arm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -62,41 +72,37 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wednesday 27 January 2016 17:30:18 Fengguang Wu wrote:
-
-> > Looks good, I'm just unsure about "multi_v8_defconfig", this does not
-> > exist. Do you mean multi_v5_defconfig?
-
-> Ah yes, multi_v8_defconfig does not exist actually.
-
-Ok, can you include multi_v5_defconfig than?
-
-I see you have one named "arm-arm5", which may be the same.
-
-> > I also wonder if you include 'randconfig' builds for some architectures.
-> > I have patches for all remaining errors and warnings that I see with
-> > ARM randconfig builds today. Not all of them are merged yet, but I could
-> > probably come up with a file to be used as input to KCONFIG_ALLCONFIG
-> > to eliminate the known-broken configurations, if you are interested.
+On Wed, Jan 27, 2016 at 09:35:46AM +0100, Peter Zijlstra wrote:
+> On Tue, Jan 26, 2016 at 12:11:43PM -0800, Paul E. McKenney wrote:
+> > So Peter, would you like to update your patch to include yourself
+> > and Will as authors?
 > 
-> If the are mostly ready for upstream, it may be easier to wait until
-> upstream randconfig works just fine for ARM.
+> Sure, here goes.
+> 
+> ---
+> Subject: documentation: Add disclaimer
+> 
+> It appears people are reading this document as a requirements list for
+> building hardware. This is not the intent of this document. Nor is it
+> particularly suited for this purpose.
+> 
+> The primary purpose of this document is our collective attempt to define
+> a set of primitives that (hopefully) allow us to write correct code on
+> the myriad of SMP platforms Linux supports.
+> 
+> Its a definite work in progress as our understanding of these platforms,
+> and memory ordering in general, progresses.
+> 
+> Nor does being mentioned in this document mean we think its a
+> particularly good idea; the data dependency barrier required by Alpha
+> being a prime example. Yes we have it, no you're insane to require it
+> when building new hardware.
+> 
+> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> ---
+>  Documentation/memory-barriers.txt | 18 +++++++++++++++++-
+>  1 file changed, 17 insertions(+), 1 deletion(-)
 
-I have around 130 patches for warnings that I'm submitting at the moment, but
-there are a couple of really tricky ones that I don't currently have
-a good plan for:
+Acked-by: Will Deacon <will.deacon@arm.com>
 
-- in some configurations, you end up without any boards selected, hitting
-  an #error in the final link
-- ARMv3 support in gcc is rather broken and causes internal compiler errors
-  among other things
-- the old ELF format (OABI) doesn't work in some cases
-- GCOV_PROFILE_ALL causes problems that need to be debugged
-- XIP_KERNEL sometimes causes kallsyms to fail
-- not all platforms implement the complete clk API, if they don't
-  use CONFIG_COMMON_CLK (I have patch for that we can probably merge)
-- CONFIG_PHYS_OFFSET needs to be entered manually to be a number
-  in 'make config'
-- same for DEBUG_LL
-
-	Arnd
+Will

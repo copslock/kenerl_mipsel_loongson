@@ -1,30 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 Jan 2016 14:56:26 +0100 (CET)
-Received: from smtp207.alice.it ([82.57.200.103]:17910 "EHLO smtp207.alice.it"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 Jan 2016 15:57:32 +0100 (CET)
+Received: from mx1.redhat.com ([209.132.183.28]:36679 "EHLO mx1.redhat.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27011373AbcA0N4Yph-hN (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 27 Jan 2016 14:56:24 +0100
-Received: from jcn (87.13.159.1) by smtp207.alice.it (8.6.060.28)
-        id 562CAA69137DC493; Wed, 27 Jan 2016 14:56:07 +0100
-Received: from ao2 by jcn with local (Exim 4.86)
-        (envelope-from <ao2@ao2.it>)
-        id 1aOQZt-00008r-JB; Wed, 27 Jan 2016 14:56:09 +0100
-From:   Antonio Ospite <ao2@ao2.it>
-To:     linux-mips@linux-mips.org
-Cc:     Antonio Ospite <ao2@ao2.it>, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH] MIPS: BCM1480: bcm1480_regs.h: strip redundant comments
-Date:   Wed, 27 Jan 2016 14:56:06 +0100
-Message-Id: <1453902966-506-1-git-send-email-ao2@ao2.it>
-X-Mailer: git-send-email 2.7.0
-X-Face: z*RaLf`X<@C75u6Ig9}{oW$H;1_\2t5)({*|jhM<pyWR#k60!#=#>/Vb;]yA5<GWI5`6u&+ ;6b'@y|8w"wB;4/e!7wYYrcqdJFY,~%Gk_4]cq$Ei/7<j&N3ah(m`ku?pX.&+~:_/wC~dwn^)MizBG !pE^+iDQQ1yC6^,)YDKkxDd!T>\I~93>J<_`<4)A{':UrE
-Return-Path: <ao2@ao2.it>
+        id S27011114AbcA0O5X6fOJm convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 27 Jan 2016 15:57:23 +0100
+Received: from int-mx13.intmail.prod.int.phx2.redhat.com (int-mx13.intmail.prod.int.phx2.redhat.com [10.5.11.26])
+        by mx1.redhat.com (Postfix) with ESMTPS id C2A37C06C9FC;
+        Wed, 27 Jan 2016 14:57:16 +0000 (UTC)
+Received: from warthog.procyon.org.uk (ovpn-113-46.phx2.redhat.com [10.3.113.46])
+        by int-mx13.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with ESMTP id u0REv8IX013219;
+        Wed, 27 Jan 2016 09:57:08 -0500
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+        Kingdom.
+        Registered in England and Wales under Company Registration No. 3798903
+From:   David Howells <dhowells@redhat.com>
+In-Reply-To: <20160127083546.GJ6357@twins.programming.kicks-ass.net>
+References: <20160127083546.GJ6357@twins.programming.kicks-ass.net> <5696BA6E.4070508@imgtec.com> <20160114120445.GB15828@arm.com> <56980145.5030901@imgtec.com> <20160114204827.GE3818@linux.vnet.ibm.com> <56981212.7050301@imgtec.com> <20160114222046.GH3818@linux.vnet.ibm.com> <20160126102402.GE6357@twins.programming.kicks-ass.net> <20160126103200.GI6375@twins.programming.kicks-ass.net> <20160126110053.GA21553@arm.com> <20160126201143.GV4503@linux.vnet.ibm.com>
+To:     Peter Zijlstra <peterz@infradead.org>
+Cc:     dhowells@redhat.com,
+        "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+        linux-arch@vger.kernel.org,
+        Andrew Cooper <andrew.cooper3@citrix.com>,
+        Russell King - ARM Linux <linux@arm.linux.org.uk>,
+        virtualization@lists.linux-foundation.org,
+        Stefano Stabellini <stefano.stabellini@eu.citrix.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@elte.hu>, "H. Peter Anvin" <hpa@zytor.com>,
+        Joe Perches <joe@perches.com>,
+        David Miller <davem@davemloft.net>, linux-ia64@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-metag@vger.kernel.org, linux-mips@linux-mips.org,
+        x86@kernel.org, user-mode-linux-devel@lists.sourceforge.net,
+        adi-buildroot-devel@lists.sourceforge.net,
+        linux-sh@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        xen-devel@lists.xenproject.org, Ralf Baechle <ralf@linux-mips.org>,
+        Ingo Molnar <mingo@kernel.org>, ddaney.cavm@gmail.com,
+        james.hogan@imgtec.com, Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH] documentation: Add disclaimer
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <15881.1453906627.1@warthog.procyon.org.uk>
+Content-Transfer-Encoding: 8BIT
+Date:   Wed, 27 Jan 2016 14:57:07 +0000
+Message-ID: <15882.1453906627@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 2.68 on 10.5.11.26
+Return-Path: <dhowells@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51479
+X-archive-position: 51480
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ao2@ao2.it
+X-original-sender: dhowells@redhat.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -37,29 +70,44 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Strip some comments which probably meant to repeat the same value of the
-define; they also contained a confusing 0x0x prefix.
+Peter Zijlstra <peterz@infradead.org> wrote:
 
-Signed-off-by: Antonio Ospite <ao2@ao2.it>
-Cc: Ralf Baechle <ralf@linux-mips.org>
----
- arch/mips/include/asm/sibyte/bcm1480_regs.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+> +==========
+> +DISCLAIMER
+> +==========
+> +
+> +This document is not a specification; it is intentionally (for the sake of
+> +brevity) and unintentionally (due to being human) incomplete. This document is
+> +meant as a guide to using the various memory barriers provided by Linux, but
+> +in case of any doubt (and there are many) please ask.
+> +
+> +I repeat, this document is not a specification of what Linux expects from
+> +hardware.
 
-diff --git a/arch/mips/include/asm/sibyte/bcm1480_regs.h b/arch/mips/include/asm/sibyte/bcm1480_regs.h
-index ec0dacf..32a8483 100644
---- a/arch/mips/include/asm/sibyte/bcm1480_regs.h
-+++ b/arch/mips/include/asm/sibyte/bcm1480_regs.h
-@@ -415,8 +415,8 @@
- 					(cpu)*BCM1480_IMR_ALIAS_MAILBOX_SPACING)
- #define A_BCM1480_IMR_ALIAS_MAILBOX_REGISTER(cpu, reg) (A_BCM1480_IMR_ALIAS_MAILBOX(cpu)+(reg))
- 
--#define R_BCM1480_IMR_ALIAS_MAILBOX_0		0x0000		/* 0x0x0 */
--#define R_BCM1480_IMR_ALIAS_MAILBOX_0_SET	0x0008		/* 0x0x8 */
-+#define R_BCM1480_IMR_ALIAS_MAILBOX_0		0x0000
-+#define R_BCM1480_IMR_ALIAS_MAILBOX_0_SET	0x0008
- 
- /*
-  * these macros work together to build the address of a mailbox
--- 
-2.7.0
+The purpose of this document is twofold:
+
+ (1) to specify the minimum functionality that one can rely on for any
+     particular barrier, and
+
+ (2) to provide a guide as to how to use the barriers that are available.
+
+Note that an architecture can provide more than the minimum requirement for
+any particular barrier, but if the barrier provides less than that, it is
+incorrect.
+
+Note also that it is possible that a barrier may be a no-op for an
+architecture because the way that arch works renders an explicit barrier
+unnecessary in that case.
+
+> +
+
+Can you bung an extra blank line in here if you have to redo this at all?
+
+> +========
+> +CONTENTS
+> +========
+>  
+>   (*) Abstract memory access model.
+>  
+
+David

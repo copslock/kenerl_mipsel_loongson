@@ -1,75 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 Jan 2016 08:51:51 +0100 (CET)
-Received: from bombadil.infradead.org ([198.137.202.9]:44825 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27009001AbcA0HvtvbP7p (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 27 Jan 2016 08:51:49 +0100
-Received: from j217066.upc-j.chello.nl ([24.132.217.66] helo=twins)
-        by bombadil.infradead.org with esmtpsa (Exim 4.80.1 #2 (Red Hat Linux))
-        id 1aOKt2-0003wJ-Q4; Wed, 27 Jan 2016 07:51:33 +0000
-Received: by twins (Postfix, from userid 1000)
-        id CEC2D1257A0D8; Wed, 27 Jan 2016 08:51:29 +0100 (CET)
-Date:   Wed, 27 Jan 2016 08:51:29 +0100
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Paul McKenney <paulmck@linux.vnet.ibm.com>,
-        Boqun Feng <boqun.feng@gmail.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
-        linux-mips <linux-mips@linux-mips.org>,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        Will Deacon <will.deacon@arm.com>,
-        virtualization <virtualization@lists.linux-foundation.org>,
-        Peter Anvin <hpa@zytor.com>, sparclinux@vger.kernel.org,
-        Ingo Molnar <mingo@kernel.org>,
-        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        Russell King - ARM Linux <linux@arm.linux.org.uk>,
-        uml-devel <user-mode-linux-devel@lists.sourceforge.net>,
-        linux-sh@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>,
-        the arch/x86 maintainers <x86@kernel.org>,
-        xen-devel@lists.xenproject.org, Ingo Molnar <mingo@elte.hu>,
-        linux-xtensa@linux-xtensa.org,
-        James Hogan <james.hogan@imgtec.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Stefano Stabellini <stefano.stabellini@eu.citrix.com>,
-        adi-buildroot-devel@lists.sourceforge.net,
-        David Daney <ddaney.cavm@gmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-metag@vger.kernel.org,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        Andrew Cooper <andrew.cooper3@citrix.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Joe Perches <joe@perches.com>,
-        ppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        David Miller <davem@davemloft.net>
-Subject: Re: [v3,11/41] mips: reuse asm-generic/barrier.h
-Message-ID: <20160127075129.GH6357@twins.programming.kicks-ass.net>
-References: <20160114204827.GE3818@linux.vnet.ibm.com>
- <20160118081929.GA30420@gondor.apana.org.au>
- <20160118154629.GB3818@linux.vnet.ibm.com>
- <20160126165207.GB6029@fixme-laptop.cn.ibm.com>
- <20160126172227.GG6357@twins.programming.kicks-ass.net>
- <CA+55aFzcC6C8imPs5vk4yH1Y2YHjnAdFM9HCkVs04COxuDQH6w@mail.gmail.com>
- <20160126201037.GU4503@linux.vnet.ibm.com>
- <CA+55aFxjb+2rs2wVHtiSCcOzgMrE8H=yDeNcjyujPQudDCtLgw@mail.gmail.com>
- <CA+55aFwxTJd+uibcxtZD3tGnj_n=LMwyAa0s8qyx_OF0OMWQkA@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CA+55aFwxTJd+uibcxtZD3tGnj_n=LMwyAa0s8qyx_OF0OMWQkA@mail.gmail.com>
-User-Agent: Mutt/1.5.21 (2012-12-30)
-Return-Path: <peterz@infradead.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 Jan 2016 09:17:25 +0100 (CET)
+Received: from mail-lb0-f180.google.com ([209.85.217.180]:35170 "EHLO
+        mail-lb0-f180.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27009259AbcA0IRXx3Igp convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 27 Jan 2016 09:17:23 +0100
+Received: by mail-lb0-f180.google.com with SMTP id bc4so785092lbc.2
+        for <linux-mips@linux-mips.org>; Wed, 27 Jan 2016 00:17:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=date:from:to:cc:subject:message-id:in-reply-to:references
+         :mime-version:content-type:content-transfer-encoding;
+        bh=XuXhUpqX+pXAzttbbg9QCWN1fkdPBD6hEMEo/erm+tU=;
+        b=ko9hI5blzIlFZwydc3r1iHl0WoStKn+ShX81sVOkBjmgVnzqLM8WJ7EMVAVEGBCXiu
+         ZDcyKJlSqlZg0MqoOANoyQTI/fWnetHEsystQXsQ6lCfycd2zvf7v1g6KHNABa6K7fbF
+         GEwh9aoRtkXupUXI2ZeT1JhNjikitoSD7wczhqEUOIyRJM4dmud0LvOR+Y/15b08WilO
+         DB028jxD6/c6LVgUEkGNzeaXoty5kG8vT5z5D89SBrv5Xd9YhZo+4DKgQD+Ctys9zQNf
+         vBFv8Puq2c0ZzPrYCQSPNWtf0WAXC0k4gMqKvGXcsTO4Gbqf1HWntn/vFgm/Y5M6eN8Q
+         z4Ug==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:in-reply-to
+         :references:mime-version:content-type:content-transfer-encoding;
+        bh=XuXhUpqX+pXAzttbbg9QCWN1fkdPBD6hEMEo/erm+tU=;
+        b=My5121x6cuhiKIFvVIoCJMeMNoGXHqxrB/qShVFi4UUqHgd8ppD6Pjz7CWiyuDXQEN
+         O+zWVoLE/e1y85zfFSYCscXtLO4Lnw+Zjy1RX+ZIZCt+4cETQhWrjjigt3HTaamQCyAb
+         MTG+kSRK3b+U7qTzEnN70Rg/Tj8IIcg46KpnRxcOV0svVKTopgbyFjXi1qSKoscys/wn
+         Hvxo8AWgDZcKvEnqYOa0yF/IjT9a4ombkyy6RBpUVxJuFpJoWSPUWyUnKQktD5ViX+NL
+         QKoTT8IBmkCYfTFzlSah++axwycp/pndYJhJbSzAZ5Xhy9DCm+8g5moefU8zRV1sm32+
+         qWyw==
+X-Gm-Message-State: AG10YOSlQMJEuwbTir0YM4mdDrCnKmqdIKItLOPT+ApgpnasL6Oj5cjTUm56drwNfBDmig==
+X-Received: by 10.112.144.226 with SMTP id sp2mr8015407lbb.70.1453882638142;
+        Wed, 27 Jan 2016 00:17:18 -0800 (PST)
+Received: from flare (t35.niisi.ras.ru. [193.232.173.35])
+        by smtp.gmail.com with ESMTPSA id rd3sm669417lbb.2.2016.01.27.00.17.16
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Wed, 27 Jan 2016 00:17:17 -0800 (PST)
+Date:   Wed, 27 Jan 2016 11:42:33 +0300
+From:   Antony Pavlov <antonynpavlov@gmail.com>
+To:     Rob Herring <robh@kernel.org>
+Cc:     linux-mips@linux-mips.org, devicetree@vger.kernel.org
+Subject: Re: [RFC v3 12/14] devicetree: add Onion Corporation vendor id
+Message-Id: <20160127114233.3ce022e7c111aca268fb8740@gmail.com>
+In-Reply-To: <20160126211529.GA10291@rob-hp-laptop>
+References: <1453580251-2341-1-git-send-email-antonynpavlov@gmail.com>
+        <1453580251-2341-13-git-send-email-antonynpavlov@gmail.com>
+        <20160126211529.GA10291@rob-hp-laptop>
+X-Mailer: Sylpheed 3.5.0beta3 (GTK+ 2.24.25; i586-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
+Return-Path: <antonynpavlov@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51455
+X-archive-position: 51456
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: peterz@infradead.org
+X-original-sender: antonynpavlov@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -82,40 +70,29 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Jan 26, 2016 at 02:33:40PM -0800, Linus Torvalds wrote:
+On Tue, 26 Jan 2016 15:15:29 -0600
+Rob Herring <robh@kernel.org> wrote:
 
-> If it turns out that some architecture does actually need a barrier
-> between a read and a dependent write, then that will mean that
+> On Sat, Jan 23, 2016 at 11:17:29PM +0300, Antony Pavlov wrote:
+> > Please see https://onion.io/contact for details.
+> > 
+> > Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> > Cc: devicetree@vger.kernel.org
+> > ---
+> >  Documentation/devicetree/bindings/vendor-prefixes.txt | 1 +
+> >  1 file changed, 1 insertion(+)
 > 
->  (a) we'll have to make up a _new_ barrier, because
-> "smp_read_barrier_depends()" is not that barrier. We'll presumably
-> then have to make that new barrier part of "rcu_derefence()" and
-> friends.
+> Is this the publishers of "The Onion"?
+
+Hélas non!
+
+  https://foursquare.com/v/the-onion/4ff5f6ae067d7fbeb9bbb3c5
+
 > 
->  (b) we will have found an architecture with even worse memory
-> ordering semantics than alpha, and we'll have to stop castigating
-> alpha for being the worst memory ordering ever.
-> 
-> but I sincerely hope that we'll never find that kind of broken architecture.
+> Acked-by: Rob Herring <robh@kernel.org>
 
-So for a moment it looked like MIPS wanted to equal or surpass Alpha in
-this respect.
 
-And Paul made the point that smp_read_barrier_depends() really should
-be smp_aquire_barrier_depends() in that we rely on both dependent reads
-and writes to be ordered against the initial pointer load.
-
-Now, as you've made abundantly clear, Alpha does this, although it needs
-the little extra help in the dependent read department.
-
-The 'problem' is that someone seemed to have used our
-Documentation/memory-barriers.txt as a specification for what hardware
-is permitted and we require. And in that light Paul noted that
-read_barrier_depends really should be considered an
-acquire_barrier_depends and order both dependent reads and writes
-against the (prior) read (if nothing else already does).
-
-Now clearly, any sane architecture doesn't need anything like this, but
-again our document doesn't seem to judge. That is, from reading the
-document one can get the impression is a perfectly fine thing to do.
-Nowhere does our disdain for this thing show.
+-- 
+-- 
+Best regards,
+  Antony Pavlov

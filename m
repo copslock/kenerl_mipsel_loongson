@@ -1,47 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 Jan 2016 05:54:05 +0100 (CET)
-Received: from mail-wm0-f66.google.com ([74.125.82.66]:36319 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 Jan 2016 05:58:50 +0100 (CET)
+Received: from mail-wm0-f66.google.com ([74.125.82.66]:34183 "EHLO
         mail-wm0-f66.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27006506AbcA0EyCB0UcZ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 27 Jan 2016 05:54:02 +0100
-Received: by mail-wm0-f66.google.com with SMTP id l65so1105930wmf.3;
-        Tue, 26 Jan 2016 20:54:02 -0800 (PST)
+        by eddie.linux-mips.org with ESMTP id S27006506AbcA0E6sbTJoZ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 27 Jan 2016 05:58:48 +0100
+Received: by mail-wm0-f66.google.com with SMTP id p63so1133654wmp.1;
+        Tue, 26 Jan 2016 20:58:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=mime-version:sender:in-reply-to:references:date:message-id:subject
          :from:to:cc:content-type;
-        bh=wbhbekgPDx6s0xk157tfoe9OdYLztbgNA+kzLyFI8fo=;
-        b=AeRpHDYaZVquJd3DvkiW2QsfSeaTCy2KNHWoCSqPxZHD0VnFWVo+5k3eFpxxLtWSyz
-         F1BvYpGeHchwN8prl4R8h32lckDiOjaej7gYv581CtPKTmIOa05hYBXyoPxlaihXTPXL
-         lZ9aqyuRizEfpqh1pKCHJIxqvuPnqmk63zgDqff32oPeqF4bjY5N2pUlu4mYv+WZPbHq
-         tdPYekUrV2XB32pYgc/nR+efUauQn5XR5mgC09P+EPyqgZ+R7dWPr/QOVTP5x4Ozfd4+
-         3hV1273zur8VvX5/67+PfhVGezy+GOpibQMbHDZgmXglj74B9g0ThAmf0lB3kWBmHoH1
-         //9Q==
+        bh=TqgN5Aa5NUJat24EGfLQuqbK4yQxb9M7JYmXDBS5pDA=;
+        b=DxHC3cA+Q0qGe9fp4WO7D+5Q03/MEIPm5XQqktszIxc14jICFt+hGnIktyDH+62I2z
+         w5YjuviIHrFiDQ8D36NdEA69URitWMbKqjsORr079b9vM2KR68/rz0wcj1PbvPWpojhX
+         mPfNIciKCp1zz8k5n1tx7YIpwbAOYPZPgdIjgVa9n+jYN2HkUPD1jim9msd4gm4zx5sT
+         NKMHBQ6+BVr3qqICqom2dTVTVYtHeAZD4S5z+B5VD9Ai3lOg6u45Xbx3dGE8B+2riK+c
+         OaYsF2vekc5iJOCRLK0elTiImPbkciQ+/Ry67IwrCwTSuyAgTzhREM3x4ensZnVjRwj0
+         YiSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:mime-version:sender:in-reply-to:references:date
          :message-id:subject:from:to:cc:content-type;
-        bh=wbhbekgPDx6s0xk157tfoe9OdYLztbgNA+kzLyFI8fo=;
-        b=mxPVLI2DjqmzBrAz7z8eU1l6ooFLuvsc3LMgcOytoiJuXMdRoo3kkPN8eZbsUZb9lE
-         erUiN1TwYR0AE4b4QHRI3aAognCB/fCcgzph0uKeqLbBC4eE7ctWqQDNbpZNR8x0K4v8
-         vTGh0lxPn/j8ZgwSc2ClbZHQunPXxdSMRw5k15/0xsY4/LEPG/aR+uR22KxUjnMP0N68
-         +osf0MF5P6aRV/8SzUtftKKabQRuacwRghRuZfcpgNbQuEw7bJjROalBLA+AfMh/eAQ8
-         TqyXgkR7NjGLnEK2tnt5SV+1MsN94xtanwHzwWZo4bK8W1VOioLFkauwppfsWxiFiwcc
-         WOdQ==
-X-Gm-Message-State: AG10YOROqwZbdVYtPYzDdiDSPhCSjTB93RjmVNyl7c7yBIocsWOlLAphrDcedGt9LuF/50esqmdVGXFqEKJzvQ==
+        bh=TqgN5Aa5NUJat24EGfLQuqbK4yQxb9M7JYmXDBS5pDA=;
+        b=LrpMlRRU3u/f3plV8rSgP6d4JNt/9fh2//KR3zDQPh+STgEkKdoQOO0NVZo6ywNgv/
+         b59BCM9IhiFJKVlous+Kt6iSJhoFJDsr8KUyYU9C6p6k9lM4qDDQx+nNqWf5b9dUBu9D
+         y0JNiip/jmygFqQSHUfpR75pFeNAcZaojtAyoc6Kqd9akifVJIxex7GPCO/2tVN758tp
+         kQYap/nnKxpGa0A81p0f0GZWiLLSbQXube5eXLdrucfyHC6AqwlYV9yGijdzjO+ky7up
+         aYvU8nn9ZDj2MCzWEjUxTtorK1OlRaV6TCKeEsb8RGg6GIPSYHSnVHxhn+C3QvQlMwTj
+         LYjQ==
+X-Gm-Message-State: AG10YORpDXCvx3SPsTtxAmb50/W0bTZakZMdEZxe5/Svu3djswzHe3G+CRqY/QWlZL4vKhLeCuva40qptKU4fQ==
 MIME-Version: 1.0
-X-Received: by 10.194.187.240 with SMTP id fv16mr26843689wjc.39.1453870436760;
- Tue, 26 Jan 2016 20:53:56 -0800 (PST)
-Received: by 10.27.13.15 with HTTP; Tue, 26 Jan 2016 20:53:56 -0800 (PST)
-In-Reply-To: <56A7E206.4040301@gmail.com>
+X-Received: by 10.28.101.131 with SMTP id z125mr26771788wmb.60.1453870722559;
+ Tue, 26 Jan 2016 20:58:42 -0800 (PST)
+Received: by 10.27.13.15 with HTTP; Tue, 26 Jan 2016 20:58:42 -0800 (PST)
+In-Reply-To: <20160126134229.GA12365@jhogan-linux.le.imgtec.org>
 References: <1453814784-14230-1-git-send-email-chenhc@lemote.com>
-        <1453814784-14230-5-git-send-email-chenhc@lemote.com>
-        <56A7E206.4040301@gmail.com>
-Date:   Wed, 27 Jan 2016 12:53:56 +0800
-X-Google-Sender-Auth: ZpuRklm4Tbtks_tXZMQ7odwOId0
-Message-ID: <CAAhV-H6BB6wjaQfU+zqTFv=qHDprwKexR74+V1EUnyEbrJ3gFw@mail.gmail.com>
-Subject: Re: [PATCH 4/6] MIPS: tlbex: Fix bugs in tlbchange handler
+        <1453814784-14230-6-git-send-email-chenhc@lemote.com>
+        <20160126134229.GA12365@jhogan-linux.le.imgtec.org>
+Date:   Wed, 27 Jan 2016 12:58:42 +0800
+X-Google-Sender-Auth: x33Y_szqwdIwVI3kWFa0hXYZlew
+Message-ID: <CAAhV-H5zFb=rnESwHvgykNVe1FyAC1WX5zAHUXswYwu7a=VPKw@mail.gmail.com>
+Subject: Re: [PATCH 5/6] MIPS: Loongson: Introduce and use cpu_has_coherent_cache
+ feature
 From:   Huacai Chen <chenhc@lemote.com>
-To:     David Daney <ddaney.cavm@gmail.com>
+To:     James Hogan <james.hogan@imgtec.com>
 Cc:     Ralf Baechle <ralf@linux-mips.org>,
         Aurelien Jarno <aurelien@aurel32.net>,
         "Steven J. Hill" <Steven.Hill@imgtec.com>,
@@ -53,7 +54,7 @@ Return-Path: <chenhuacai@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51451
+X-archive-position: 51452
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -70,109 +71,157 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-When unaligned access triggered, do_ade() will access user address
-with EXL=1, and that may trigger tlb refill.
+"cache coherency" here means the coherency across cores, not ic/dc
+coherency, could you please suggest a suitable name?
 
 Huacai
 
-On Wed, Jan 27, 2016 at 5:15 AM, David Daney <ddaney.cavm@gmail.com> wrote:
-> On 01/26/2016 05:26 AM, Huacai Chen wrote:
->>
->> If a tlb miss triggered when EXL=1,
+On Tue, Jan 26, 2016 at 9:42 PM, James Hogan <james.hogan@imgtec.com> wrote:
+> Hi,
 >
+> On Tue, Jan 26, 2016 at 09:26:23PM +0800, Huacai Chen wrote:
+>> Loongson-3 maintains cache coherency by hardware. So we introduce a cpu
+>> feature named cpu_has_coherent_cache and use it to modify MIPS's cache
+>> flushing functions.
 >
-> How is that possible?  The exception handlers are not in mapped memory, and
-> we clear EXL very early in the exception handlers.
+> This is rather ambiguous (the phrase "cache coherency" can be associated
+> with dcache coherency between cores). Are you saying that the icache is
+> coherent with the dcache, such that writes to dcache are immediately
+> visible to instruction fetches on all CPUs in the system without any
+> icache flushing?
 >
-> In valid code, how are you getting TLB related exceptions when EXL=1?
+> If so, I think that needs clarifying, e.g. cpu_has_coherent_icache.
 >
+> Perhaps it should be a flag of icache along with MIPS_CACHE_IC_F_DC too
+> which is already intended to avoid the dcache flushes, but not necessary
+> the icache flushes.
 >
->> tlb refill exception is treated as
->> tlb invalid exception, so tlbp may fails. In this situation, CP0_Index
->> register doesn't contain a valid value. This may not be a problem for
->> VTLB since it is fully-associative. However, FTLB is set-associative so
->> not every tlb entry is valid for a specific address. Thus, we should
->> use tlbwr instead of tlbwi when tlbp fails.
->>
->> There is a similar case for huge page, so build_huge_tlb_write_entry()
->> is also modified. If wmode != tlb_random, that means the caller is tlb
->> invalid handler, we should select tlbr/tlbi depend on the tlbp result.
+> Cheers
+> James
+>
 >>
 >> Signed-off-by: Huacai Chen <chenhc@lemote.com>
 >> ---
->>   arch/mips/mm/tlbex.c | 31 ++++++++++++++++++++++++++++++-
->>   1 file changed, 30 insertions(+), 1 deletion(-)
+>>  arch/mips/include/asm/cpu-features.h                |  3 +++
+>>  arch/mips/include/asm/cpu.h                         |  1 +
+>>  .../asm/mach-loongson64/cpu-feature-overrides.h     |  1 +
+>>  arch/mips/mm/c-r4k.c                                | 21 +++++++++++++++++++++
+>>  4 files changed, 26 insertions(+)
 >>
->> diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
->> index d0975cd..da68ffb 100644
->> --- a/arch/mips/mm/tlbex.c
->> +++ b/arch/mips/mm/tlbex.c
->> @@ -173,7 +173,10 @@ enum label_id {
->>         label_large_segbits_fault,
->>   #ifdef CONFIG_MIPS_HUGE_TLB_SUPPORT
->>         label_tlb_huge_update,
->> +       label_tail_huge_miss,
->> +       label_tail_huge_done,
->>   #endif
->> +       label_tail_miss,
->>   };
+>> diff --git a/arch/mips/include/asm/cpu-features.h b/arch/mips/include/asm/cpu-features.h
+>> index e0ba50a..1ec3dea 100644
+>> --- a/arch/mips/include/asm/cpu-features.h
+>> +++ b/arch/mips/include/asm/cpu-features.h
+>> @@ -148,6 +148,9 @@
+>>  #ifndef cpu_has_xpa
+>>  #define cpu_has_xpa          (cpu_data[0].options & MIPS_CPU_XPA)
+>>  #endif
+>> +#ifndef cpu_has_coherent_cache
+>> +#define cpu_has_coherent_cache       (cpu_data[0].options & MIPS_CPU_CACHE_COHERENT)
+>> +#endif
+>>  #ifndef cpu_has_vtag_icache
+>>  #define cpu_has_vtag_icache  (cpu_data[0].icache.flags & MIPS_CACHE_VTAG)
+>>  #endif
+>> diff --git a/arch/mips/include/asm/cpu.h b/arch/mips/include/asm/cpu.h
+>> index 5f50551..28471f0 100644
+>> --- a/arch/mips/include/asm/cpu.h
+>> +++ b/arch/mips/include/asm/cpu.h
+>> @@ -391,6 +391,7 @@ enum cpu_type_enum {
+>>  #define MIPS_CPU_NAN_LEGACY  0x40000000000ull /* Legacy NaN implemented */
+>>  #define MIPS_CPU_NAN_2008    0x80000000000ull /* 2008 NaN implemented */
+>>  #define MIPS_CPU_LDPTE               0x100000000000ull /* CPU has ldpte/lddir instructions */
+>> +#define MIPS_CPU_CACHE_COHERENT      0x200000000000ull /* CPU maintains cache coherency by hardware */
 >>
->>   UASM_L_LA(_second_part)
->> @@ -192,7 +195,10 @@ UASM_L_LA(_r3000_write_probe_fail)
->>   UASM_L_LA(_large_segbits_fault)
->>   #ifdef CONFIG_MIPS_HUGE_TLB_SUPPORT
->>   UASM_L_LA(_tlb_huge_update)
->> +UASM_L_LA(_tail_huge_miss)
->> +UASM_L_LA(_tail_huge_done)
->>   #endif
->> +UASM_L_LA(_tail_miss)
+>>  /*
+>>   * CPU ASE encodings
+>> diff --git a/arch/mips/include/asm/mach-loongson64/cpu-feature-overrides.h b/arch/mips/include/asm/mach-loongson64/cpu-feature-overrides.h
+>> index c3406db..647d952 100644
+>> --- a/arch/mips/include/asm/mach-loongson64/cpu-feature-overrides.h
+>> +++ b/arch/mips/include/asm/mach-loongson64/cpu-feature-overrides.h
+>> @@ -46,6 +46,7 @@
+>>  #define cpu_has_local_ebase  0
 >>
->>   static int hazard_instance;
+>>  #define cpu_has_wsbh         IS_ENABLED(CONFIG_CPU_LOONGSON3)
+>> +#define cpu_has_coherent_cache       IS_ENABLED(CONFIG_CPU_LOONGSON3)
+>>  #define cpu_hwrena_impl_bits 0xc0000000
 >>
->> @@ -706,8 +712,24 @@ static void build_huge_tlb_write_entry(u32 **p,
->> struct uasm_label **l,
->>         uasm_i_ori(p, tmp, tmp, PM_HUGE_MASK & 0xffff);
->>         uasm_i_mtc0(p, tmp, C0_PAGEMASK);
+>>  #endif /* __ASM_MACH_LOONGSON64_CPU_FEATURE_OVERRIDES_H */
+>> diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
+>> index 2abc73d..65fb28c 100644
+>> --- a/arch/mips/mm/c-r4k.c
+>> +++ b/arch/mips/mm/c-r4k.c
+>> @@ -429,6 +429,9 @@ static void r4k_blast_scache_setup(void)
 >>
->> -       build_tlb_write_entry(p, l, r, wmode);
->> +       if (wmode == tlb_random) { /* Caller is TLB Refill Handler */
->> +               build_tlb_write_entry(p, l, r, wmode);
->> +               build_restore_pagemask(p, r, tmp, label_leave,
->> restore_scratch);
->> +               return;
->> +       }
+>>  static inline void local_r4k___flush_cache_all(void * args)
+>>  {
+>> +     if (cpu_has_coherent_cache)
+>> +             return;
 >> +
->> +       /* Caller is TLB Load/Store/Modify Handler */
->> +       uasm_i_mfc0(p, tmp, C0_INDEX);
->> +       uasm_il_bltz(p, r, tmp, label_tail_huge_miss);
->> +       uasm_i_nop(p);
->> +       build_tlb_write_entry(p, l, r, tlb_indexed);
->> +       uasm_il_b(p, r, label_tail_huge_done);
->> +       uasm_i_nop(p);
+>>       switch (current_cpu_type()) {
+>>       case CPU_LOONGSON2:
+>>       case CPU_LOONGSON3:
+>> @@ -457,6 +460,9 @@ static inline void local_r4k___flush_cache_all(void * args)
+>>
+>>  static void r4k___flush_cache_all(void)
+>>  {
+>> +     if (cpu_has_coherent_cache)
+>> +             return;
 >> +
->> +       uasm_l_tail_huge_miss(l, *p);
->> +       build_tlb_write_entry(p, l, r, tlb_random);
+>>       r4k_on_each_cpu(local_r4k___flush_cache_all, NULL);
+>>  }
 >>
->> +       uasm_l_tail_huge_done(l, *p);
->>         build_restore_pagemask(p, r, tmp, label_leave, restore_scratch);
->>   }
+>> @@ -503,6 +509,9 @@ static void r4k_flush_cache_range(struct vm_area_struct *vma,
+>>  {
+>>       int exec = vma->vm_flags & VM_EXEC;
 >>
->> @@ -2026,7 +2048,14 @@ build_r4000_tlbchange_handler_tail(u32 **p, struct
->> uasm_label **l,
->>         uasm_i_ori(p, ptr, ptr, sizeof(pte_t));
->>         uasm_i_xori(p, ptr, ptr, sizeof(pte_t));
->>         build_update_entries(p, tmp, ptr);
->> +       uasm_i_mfc0(p, ptr, C0_INDEX);
->> +       uasm_il_bltz(p, r, ptr, label_tail_miss);
->> +       uasm_i_nop(p);
->>         build_tlb_write_entry(p, l, r, tlb_indexed);
->> +       uasm_il_b(p, r, label_leave);
->> +       uasm_i_nop(p);
->> +       uasm_l_tail_miss(l, *p);
->> +       build_tlb_write_entry(p, l, r, tlb_random);
->>         uasm_l_leave(l, *p);
->>         build_restore_work_registers(p);
->>         uasm_i_eret(p); /* return from trap */
+>> +     if (cpu_has_coherent_cache)
+>> +             return;
+>> +
+>>       if (cpu_has_dc_aliases || (exec && !cpu_has_ic_fills_f_dc))
+>>               r4k_on_each_cpu(local_r4k_flush_cache_range, vma);
+>>  }
+>> @@ -627,6 +636,9 @@ static void r4k_flush_cache_page(struct vm_area_struct *vma,
+>>  {
+>>       struct flush_cache_page_args args;
 >>
->
->
+>> +     if (cpu_has_coherent_cache)
+>> +             return;
+>> +
+>>       args.vma = vma;
+>>       args.addr = addr;
+>>       args.pfn = pfn;
+>> @@ -636,11 +648,17 @@ static void r4k_flush_cache_page(struct vm_area_struct *vma,
+>>
+>>  static inline void local_r4k_flush_data_cache_page(void * addr)
+>>  {
+>> +     if (cpu_has_coherent_cache)
+>> +             return;
+>> +
+>>       r4k_blast_dcache_page((unsigned long) addr);
+>>  }
+>>
+>>  static void r4k_flush_data_cache_page(unsigned long addr)
+>>  {
+>> +     if (cpu_has_coherent_cache)
+>> +             return;
+>> +
+>>       if (in_atomic())
+>>               local_r4k_flush_data_cache_page((void *)addr);
+>>       else
+>> @@ -825,6 +843,9 @@ static void local_r4k_flush_cache_sigtramp(void * arg)
+>>
+>>  static void r4k_flush_cache_sigtramp(unsigned long addr)
+>>  {
+>> +     if (cpu_has_coherent_cache)
+>> +             return;
+>> +
+>>       r4k_on_each_cpu(local_r4k_flush_cache_sigtramp, (void *) addr);
+>>  }
+>>
+>> --
+>> 2.4.6
+>>
+>>
+>>
+>>
+>>

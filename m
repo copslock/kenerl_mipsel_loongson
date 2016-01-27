@@ -1,16 +1,16 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 Jan 2016 21:40:00 +0100 (CET)
-Received: from youngberry.canonical.com ([91.189.89.112]:54062 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 Jan 2016 21:40:18 +0100 (CET)
+Received: from youngberry.canonical.com ([91.189.89.112]:54074 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011834AbcA0UjiUe9xN (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 27 Jan 2016 21:39:38 +0100
+        by eddie.linux-mips.org with ESMTP id S27011846AbcA0UjjcpKdN (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 27 Jan 2016 21:39:39 +0100
 Received: from 1.general.kamal.us.vpn ([10.172.68.52] helo=fourier)
         by youngberry.canonical.com with esmtpsa (TLS1.0:DHE_RSA_AES_128_CBC_SHA1:16)
         (Exim 4.76)
         (envelope-from <kamal@canonical.com>)
-        id 1aOWsB-0003g1-8e; Wed, 27 Jan 2016 20:39:27 +0000
+        id 1aOWsG-0003gW-J7; Wed, 27 Jan 2016 20:39:32 +0000
 Received: from kamal by fourier with local (Exim 4.82)
         (envelope-from <kamal@whence.com>)
-        id 1aOWs8-0004wm-HR; Wed, 27 Jan 2016 12:39:24 -0800
+        id 1aOWsD-0004xR-Ri; Wed, 27 Jan 2016 12:39:29 -0800
 From:   Kamal Mostafa <kamal@canonical.com>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
         kernel-team@lists.ubuntu.com
@@ -21,9 +21,9 @@ Cc:     Huacai Chen <chenhc@lemote.com>,
         Zhangjin Wu <wuzhangjin@gmail.com>, linux-mips@linux-mips.org,
         Ralf Baechle <ralf@linux-mips.org>,
         Kamal Mostafa <kamal@canonical.com>
-Subject: [PATCH 4.2.y-ckt 185/268] MIPS: hpet: Choose a safe value for the ETIME check
-Date:   Wed, 27 Jan 2016 12:34:06 -0800
-Message-Id: <1453926929-17663-186-git-send-email-kamal@canonical.com>
+Subject: [PATCH 4.2.y-ckt 190/268] MIPS: Fix some missing CONFIG_CPU_MIPSR6 #ifdefs
+Date:   Wed, 27 Jan 2016 12:34:11 -0800
+Message-Id: <1453926929-17663-191-git-send-email-kamal@canonical.com>
 X-Mailer: git-send-email 1.9.1
 In-Reply-To: <1453926929-17663-1-git-send-email-kamal@canonical.com>
 References: <1453926929-17663-1-git-send-email-kamal@canonical.com>
@@ -32,7 +32,7 @@ Return-Path: <kamal@canonical.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51492
+X-archive-position: 51493
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -55,86 +55,62 @@ X-list: linux-mips
 
 From: Huacai Chen <chenhc@lemote.com>
 
-commit 5610b1254e3689b6ef8ebe2db260709a74da06c8 upstream.
+commit 4f33f6c522948fffc345261896042b58dea23754 upstream.
 
-This patch is borrowed from x86 hpet driver and explaind below:
-
-Due to the overly intelligent design of HPETs, we need to workaround
-the problem that the compare value which we write is already behind
-the actual counter value at the point where the value hits the real
-compare register. This happens for two reasons:
-
-1) We read out the counter, add the delta and write the result to the
-   compare register. When a NMI hits between the read out and the write
-   then the counter can be ahead of the event already.
-
-2) The write to the compare register is delayed by up to two HPET
-   cycles in AMD chipsets.
-
-We can work around this by reading back the compare register to make
-sure that the written value has hit the hardware. But that is bad
-performance wise for the normal case where the event is far enough in
-the future.
-
-As we already know that the write can be delayed by up to two cycles
-we can avoid the read back of the compare register completely if we
-make the decision whether the delta has elapsed already or not based
-on the following calculation:
-
-  cmp = event - actual_count;
-
-If cmp is less than 64 HPET clock cycles, then we decide that the event
-has happened already and return -ETIME. That covers the above #1 and #2
-problems which would cause a wait for HPET wraparound (~306 seconds).
+Commit be0c37c985eddc4 (MIPS: Rearrange PTE bits into fixed positions.)
+defines fixed PTE bits for MIPS R2. Then, commit d7b631419b3d230a4d383
+(MIPS: pgtable-bits: Fix XPA damage to R6 definitions.) adds the MIPS
+R6 definitions in the same way as MIPS R2. But some R6 #ifdefs in the
+later commit are missing, so in this patch I fix that.
 
 Signed-off-by: Huacai Chen <chenhc@lemote.com>
 Cc: Aurelien Jarno <aurelien@aurel32.net>
 Cc: Steven J. Hill <Steven.Hill@imgtec.com>
 Cc: Fuxin Zhang <zhangfx@lemote.com>
 Cc: Zhangjin Wu <wuzhangjin@gmail.com>
-Cc: Huacai Chen <chenhc@lemote.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/12162/
+Patchwork: https://patchwork.linux-mips.org/patch/12164/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Kamal Mostafa <kamal@canonical.com>
 ---
- arch/mips/loongson64/loongson-3/hpet.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ arch/mips/include/asm/pgtable.h | 4 ++--
+ arch/mips/mm/tlbex.c            | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/mips/loongson64/loongson-3/hpet.c b/arch/mips/loongson64/loongson-3/hpet.c
-index 5c21cd3..b2888d5 100644
---- a/arch/mips/loongson64/loongson-3/hpet.c
-+++ b/arch/mips/loongson64/loongson-3/hpet.c
-@@ -13,6 +13,9 @@
- #define SMBUS_PCI_REG64		0x64
- #define SMBUS_PCI_REGB4		0xb4
+diff --git a/arch/mips/include/asm/pgtable.h b/arch/mips/include/asm/pgtable.h
+index ae85694..6bc427f 100644
+--- a/arch/mips/include/asm/pgtable.h
++++ b/arch/mips/include/asm/pgtable.h
+@@ -353,7 +353,7 @@ static inline pte_t pte_mkdirty(pte_t pte)
+ static inline pte_t pte_mkyoung(pte_t pte)
+ {
+ 	pte_val(pte) |= _PAGE_ACCESSED;
+-#ifdef CONFIG_CPU_MIPSR2
++#if defined(CONFIG_CPU_MIPSR2) || defined(CONFIG_CPU_MIPSR6)
+ 	if (!(pte_val(pte) & _PAGE_NO_READ))
+ 		pte_val(pte) |= _PAGE_SILENT_READ;
+ 	else
+@@ -558,7 +558,7 @@ static inline pmd_t pmd_mkyoung(pmd_t pmd)
+ {
+ 	pmd_val(pmd) |= _PAGE_ACCESSED;
  
-+#define HPET_MIN_CYCLES		64
-+#define HPET_MIN_PROG_DELTA	(HPET_MIN_CYCLES + (HPET_MIN_CYCLES >> 1))
-+
- static DEFINE_SPINLOCK(hpet_lock);
- DEFINE_PER_CPU(struct clock_event_device, hpet_clockevent_device);
- 
-@@ -139,8 +142,9 @@ static int hpet_next_event(unsigned long delta,
- 	cnt += delta;
- 	hpet_write(HPET_T0_CMP, cnt);
- 
--	res = ((int)(hpet_read(HPET_COUNTER) - cnt) > 0) ? -ETIME : 0;
--	return res;
-+	res = (int)(cnt - hpet_read(HPET_COUNTER));
-+
-+	return res < HPET_MIN_CYCLES ? -ETIME : 0;
- }
- 
- static irqreturn_t hpet_irq_handler(int irq, void *data)
-@@ -212,7 +216,7 @@ void __init setup_hpet_timer(void)
- 	cd->cpumask = cpumask_of(cpu);
- 	clockevent_set_clock(cd, HPET_FREQ);
- 	cd->max_delta_ns = clockevent_delta2ns(0x7fffffff, cd);
--	cd->min_delta_ns = 5000;
-+	cd->min_delta_ns = clockevent_delta2ns(HPET_MIN_PROG_DELTA, cd);
- 
- 	clockevents_register_device(cd);
- 	setup_irq(HPET_T0_IRQ, &hpet_irq);
+-#ifdef CONFIG_CPU_MIPSR2
++#if defined(CONFIG_CPU_MIPSR2) || defined(CONFIG_CPU_MIPSR6)
+ 	if (!(pmd_val(pmd) & _PAGE_NO_READ))
+ 		pmd_val(pmd) |= _PAGE_SILENT_READ;
+ 	else
+diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
+index 323d1d3..99e3bd3 100644
+--- a/arch/mips/mm/tlbex.c
++++ b/arch/mips/mm/tlbex.c
+@@ -242,7 +242,7 @@ static void output_pgtable_bits_defines(void)
+ 	pr_define("_PAGE_HUGE_SHIFT %d\n", _PAGE_HUGE_SHIFT);
+ 	pr_define("_PAGE_SPLITTING_SHIFT %d\n", _PAGE_SPLITTING_SHIFT);
+ #endif
+-#ifdef CONFIG_CPU_MIPSR2
++#if defined(CONFIG_CPU_MIPSR2) || defined(CONFIG_CPU_MIPSR6)
+ 	if (cpu_has_rixi) {
+ #ifdef _PAGE_NO_EXEC_SHIFT
+ 		pr_define("_PAGE_NO_EXEC_SHIFT %d\n", _PAGE_NO_EXEC_SHIFT);
 -- 
 1.9.1

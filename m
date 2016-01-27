@@ -1,63 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 Jan 2016 09:17:25 +0100 (CET)
-Received: from mail-lb0-f180.google.com ([209.85.217.180]:35170 "EHLO
-        mail-lb0-f180.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27009259AbcA0IRXx3Igp convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 27 Jan 2016 09:17:23 +0100
-Received: by mail-lb0-f180.google.com with SMTP id bc4so785092lbc.2
-        for <linux-mips@linux-mips.org>; Wed, 27 Jan 2016 00:17:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=date:from:to:cc:subject:message-id:in-reply-to:references
-         :mime-version:content-type:content-transfer-encoding;
-        bh=XuXhUpqX+pXAzttbbg9QCWN1fkdPBD6hEMEo/erm+tU=;
-        b=ko9hI5blzIlFZwydc3r1iHl0WoStKn+ShX81sVOkBjmgVnzqLM8WJ7EMVAVEGBCXiu
-         ZDcyKJlSqlZg0MqoOANoyQTI/fWnetHEsystQXsQ6lCfycd2zvf7v1g6KHNABa6K7fbF
-         GEwh9aoRtkXupUXI2ZeT1JhNjikitoSD7wczhqEUOIyRJM4dmud0LvOR+Y/15b08WilO
-         DB028jxD6/c6LVgUEkGNzeaXoty5kG8vT5z5D89SBrv5Xd9YhZo+4DKgQD+Ctys9zQNf
-         vBFv8Puq2c0ZzPrYCQSPNWtf0WAXC0k4gMqKvGXcsTO4Gbqf1HWntn/vFgm/Y5M6eN8Q
-         z4Ug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:in-reply-to
-         :references:mime-version:content-type:content-transfer-encoding;
-        bh=XuXhUpqX+pXAzttbbg9QCWN1fkdPBD6hEMEo/erm+tU=;
-        b=My5121x6cuhiKIFvVIoCJMeMNoGXHqxrB/qShVFi4UUqHgd8ppD6Pjz7CWiyuDXQEN
-         O+zWVoLE/e1y85zfFSYCscXtLO4Lnw+Zjy1RX+ZIZCt+4cETQhWrjjigt3HTaamQCyAb
-         MTG+kSRK3b+U7qTzEnN70Rg/Tj8IIcg46KpnRxcOV0svVKTopgbyFjXi1qSKoscys/wn
-         Hvxo8AWgDZcKvEnqYOa0yF/IjT9a4ombkyy6RBpUVxJuFpJoWSPUWyUnKQktD5ViX+NL
-         QKoTT8IBmkCYfTFzlSah++axwycp/pndYJhJbSzAZ5Xhy9DCm+8g5moefU8zRV1sm32+
-         qWyw==
-X-Gm-Message-State: AG10YOSlQMJEuwbTir0YM4mdDrCnKmqdIKItLOPT+ApgpnasL6Oj5cjTUm56drwNfBDmig==
-X-Received: by 10.112.144.226 with SMTP id sp2mr8015407lbb.70.1453882638142;
-        Wed, 27 Jan 2016 00:17:18 -0800 (PST)
-Received: from flare (t35.niisi.ras.ru. [193.232.173.35])
-        by smtp.gmail.com with ESMTPSA id rd3sm669417lbb.2.2016.01.27.00.17.16
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Wed, 27 Jan 2016 00:17:17 -0800 (PST)
-Date:   Wed, 27 Jan 2016 11:42:33 +0300
-From:   Antony Pavlov <antonynpavlov@gmail.com>
-To:     Rob Herring <robh@kernel.org>
-Cc:     linux-mips@linux-mips.org, devicetree@vger.kernel.org
-Subject: Re: [RFC v3 12/14] devicetree: add Onion Corporation vendor id
-Message-Id: <20160127114233.3ce022e7c111aca268fb8740@gmail.com>
-In-Reply-To: <20160126211529.GA10291@rob-hp-laptop>
-References: <1453580251-2341-1-git-send-email-antonynpavlov@gmail.com>
-        <1453580251-2341-13-git-send-email-antonynpavlov@gmail.com>
-        <20160126211529.GA10291@rob-hp-laptop>
-X-Mailer: Sylpheed 3.5.0beta3 (GTK+ 2.24.25; i586-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-Return-Path: <antonynpavlov@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 Jan 2016 09:36:08 +0100 (CET)
+Received: from bombadil.infradead.org ([198.137.202.9]:43196 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010139AbcA0IgHIk26T (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 27 Jan 2016 09:36:07 +0100
+Received: from j217066.upc-j.chello.nl ([24.132.217.66] helo=twins)
+        by bombadil.infradead.org with esmtpsa (Exim 4.80.1 #2 (Red Hat Linux))
+        id 1aOLZt-0000wt-7n; Wed, 27 Jan 2016 08:35:49 +0000
+Received: by twins (Postfix, from userid 1000)
+        id D908A1257A0D8; Wed, 27 Jan 2016 09:35:46 +0100 (CET)
+Date:   Wed, 27 Jan 2016 09:35:46 +0100
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>
+Cc:     Will Deacon <will.deacon@arm.com>,
+        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+        linux-arch@vger.kernel.org,
+        Andrew Cooper <andrew.cooper3@citrix.com>,
+        Russell King - ARM Linux <linux@arm.linux.org.uk>,
+        virtualization@lists.linux-foundation.org,
+        Stefano Stabellini <stefano.stabellini@eu.citrix.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@elte.hu>, "H. Peter Anvin" <hpa@zytor.com>,
+        Joe Perches <joe@perches.com>,
+        David Miller <davem@davemloft.net>, linux-ia64@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-metag@vger.kernel.org, linux-mips@linux-mips.org,
+        x86@kernel.org, user-mode-linux-devel@lists.sourceforge.net,
+        adi-buildroot-devel@lists.sourceforge.net,
+        linux-sh@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        xen-devel@lists.xenproject.org, Ralf Baechle <ralf@linux-mips.org>,
+        Ingo Molnar <mingo@kernel.org>, ddaney.cavm@gmail.com,
+        james.hogan@imgtec.com, Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH] documentation: Add disclaimer
+Message-ID: <20160127083546.GJ6357@twins.programming.kicks-ass.net>
+References: <5696BA6E.4070508@imgtec.com>
+ <20160114120445.GB15828@arm.com>
+ <56980145.5030901@imgtec.com>
+ <20160114204827.GE3818@linux.vnet.ibm.com>
+ <56981212.7050301@imgtec.com>
+ <20160114222046.GH3818@linux.vnet.ibm.com>
+ <20160126102402.GE6357@twins.programming.kicks-ass.net>
+ <20160126103200.GI6375@twins.programming.kicks-ass.net>
+ <20160126110053.GA21553@arm.com>
+ <20160126201143.GV4503@linux.vnet.ibm.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20160126201143.GV4503@linux.vnet.ibm.com>
+User-Agent: Mutt/1.5.21 (2012-12-30)
+Return-Path: <peterz@infradead.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51456
+X-archive-position: 51457
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: antonynpavlov@gmail.com
+X-original-sender: peterz@infradead.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -70,29 +71,63 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, 26 Jan 2016 15:15:29 -0600
-Rob Herring <robh@kernel.org> wrote:
+On Tue, Jan 26, 2016 at 12:11:43PM -0800, Paul E. McKenney wrote:
+> So Peter, would you like to update your patch to include yourself
+> and Will as authors?
 
-> On Sat, Jan 23, 2016 at 11:17:29PM +0300, Antony Pavlov wrote:
-> > Please see https://onion.io/contact for details.
-> > 
-> > Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> > Cc: devicetree@vger.kernel.org
-> > ---
-> >  Documentation/devicetree/bindings/vendor-prefixes.txt | 1 +
-> >  1 file changed, 1 insertion(+)
-> 
-> Is this the publishers of "The Onion"?
+Sure, here goes.
 
-Hélas non!
+---
+Subject: documentation: Add disclaimer
 
-  https://foursquare.com/v/the-onion/4ff5f6ae067d7fbeb9bbb3c5
+It appears people are reading this document as a requirements list for
+building hardware. This is not the intent of this document. Nor is it
+particularly suited for this purpose.
 
-> 
-> Acked-by: Rob Herring <robh@kernel.org>
+The primary purpose of this document is our collective attempt to define
+a set of primitives that (hopefully) allow us to write correct code on
+the myriad of SMP platforms Linux supports.
 
+Its a definite work in progress as our understanding of these platforms,
+and memory ordering in general, progresses.
 
--- 
--- 
-Best regards,
-  Antony Pavlov
+Nor does being mentioned in this document mean we think its a
+particularly good idea; the data dependency barrier required by Alpha
+being a prime example. Yes we have it, no you're insane to require it
+when building new hardware.
+
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+---
+ Documentation/memory-barriers.txt | 18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
+
+diff --git a/Documentation/memory-barriers.txt b/Documentation/memory-barriers.txt
+index a61be39c7b51..98626125f484 100644
+--- a/Documentation/memory-barriers.txt
++++ b/Documentation/memory-barriers.txt
+@@ -4,8 +4,24 @@
+ 
+ By: David Howells <dhowells@redhat.com>
+     Paul E. McKenney <paulmck@linux.vnet.ibm.com>
++    Will Deacon <will.deacon@arm.com>
++    Peter Zijlstra <peterz@infradead.org>
+ 
+-Contents:
++==========
++DISCLAIMER
++==========
++
++This document is not a specification; it is intentionally (for the sake of
++brevity) and unintentionally (due to being human) incomplete. This document is
++meant as a guide to using the various memory barriers provided by Linux, but
++in case of any doubt (and there are many) please ask.
++
++I repeat, this document is not a specification of what Linux expects from
++hardware.
++
++========
++CONTENTS
++========
+ 
+  (*) Abstract memory access model.
+ 

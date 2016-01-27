@@ -1,39 +1,87 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Jan 2016 01:25:18 +0100 (CET)
-Received: from exsmtp01.microchip.com ([198.175.253.37]:6233 "EHLO
-        email.microchip.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27007649AbcA1AZQKtwpv (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 28 Jan 2016 01:25:16 +0100
-Received: from [10.14.4.125] (10.10.76.4) by CHN-SV-EXCH01.mchp-main.com
- (10.10.76.37) with Microsoft SMTP Server id 14.3.181.6; Wed, 27 Jan 2016
- 17:25:08 -0700
-Subject: Re: [PATCH v5 08/14] pinctrl: pinctrl-pic32: Add PIC32 pin control
- driver
-To:     Linus Walleij <linus.walleij@linaro.org>
-References: <1452734299-460-1-git-send-email-joshua.henderson@microchip.com>
- <1452734299-460-9-git-send-email-joshua.henderson@microchip.com>
- <CACRpkdaDC5LLcQx5_=vm=tjAV0z6RHvzgjzSFK6S+_1M7faMuA@mail.gmail.com>
-CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Linux MIPS <linux-mips@linux-mips.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>
-From:   Joshua Henderson <joshua.henderson@microchip.com>
-Message-ID: <56A961CC.9030205@microchip.com>
-Date:   Wed, 27 Jan 2016 17:33:16 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.5.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Jan 2016 01:40:47 +0100 (CET)
+Received: from e34.co.us.ibm.com ([32.97.110.152]:55373 "EHLO
+        e34.co.us.ibm.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27007649AbcA1AkpezAd9 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 28 Jan 2016 01:40:45 +0100
+Received: from localhost
+        by e34.co.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <linux-mips@linux-mips.org> from <paulmck@linux.vnet.ibm.com>;
+        Wed, 27 Jan 2016 17:40:38 -0700
+Received: from d03dlp02.boulder.ibm.com (9.17.202.178)
+        by e34.co.us.ibm.com (192.168.1.134) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        Wed, 27 Jan 2016 17:40:37 -0700
+X-IBM-Helo: d03dlp02.boulder.ibm.com
+X-IBM-MailFrom: paulmck@linux.vnet.ibm.com
+X-IBM-RcptTo: linux-mips@linux-mips.org;ralf@linux-mips.org
+Received: from b03cxnp07028.gho.boulder.ibm.com (b03cxnp07028.gho.boulder.ibm.com [9.17.130.15])
+        by d03dlp02.boulder.ibm.com (Postfix) with ESMTP id 156EC3E4003E;
+        Wed, 27 Jan 2016 17:40:37 -0700 (MST)
+Received: from d03av05.boulder.ibm.com (d03av05.boulder.ibm.com [9.17.195.85])
+        by b03cxnp07028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id u0S0ebpI29163624;
+        Wed, 27 Jan 2016 17:40:37 -0700
+Received: from d03av05.boulder.ibm.com (localhost [127.0.0.1])
+        by d03av05.boulder.ibm.com (8.14.4/8.14.4/NCO v10.0 AVout) with ESMTP id u0S0eTWW026774;
+        Wed, 27 Jan 2016 17:40:36 -0700
+Received: from paulmck-ThinkPad-W541 (paulmck-thinkpad-w541.au.ibm.com [9.192.250.130])
+        by d03av05.boulder.ibm.com (8.14.4/8.14.4/NCO v10.0 AVin) with ESMTP id u0S0eS3P026716;
+        Wed, 27 Jan 2016 17:40:28 -0700
+Received: by paulmck-ThinkPad-W541 (Postfix, from userid 1000)
+        id A53C716C2B5F; Wed, 27 Jan 2016 15:32:10 -0800 (PST)
+Date:   Wed, 27 Jan 2016 15:32:10 -0800
+From:   "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>
+To:     Will Deacon <will.deacon@arm.com>
+Cc:     Peter Zijlstra <peterz@infradead.org>,
+        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+        linux-arch@vger.kernel.org,
+        Andrew Cooper <andrew.cooper3@citrix.com>,
+        Russell King - ARM Linux <linux@arm.linux.org.uk>,
+        virtualization@lists.linux-foundation.org,
+        Stefano Stabellini <stefano.stabellini@eu.citrix.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@elte.hu>, "H. Peter Anvin" <hpa@zytor.com>,
+        Joe Perches <joe@perches.com>,
+        David Miller <davem@davemloft.net>, linux-ia64@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-metag@vger.kernel.org, linux-mips@linux-mips.org,
+        x86@kernel.org, user-mode-linux-devel@lists.sourceforge.net,
+        adi-buildroot-devel@lists.sourceforge.net,
+        linux-sh@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        xen-devel@lists.xenproject.org, Ralf Baechle <ralf@linux-mips.org>,
+        Ingo Molnar <mingo@kernel.org>, ddaney.cavm@gmail.com,
+        james.hogan@imgtec.com, Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [v3,11/41] mips: reuse asm-generic/barrier.h
+Message-ID: <20160127233210.GO4503@linux.vnet.ibm.com>
+Reply-To: paulmck@linux.vnet.ibm.com
+References: <20160115085554.GF3421@worktop>
+ <20160115091348.GA27936@worktop>
+ <20160115174612.GV3818@linux.vnet.ibm.com>
+ <20160115212714.GM3421@worktop>
+ <20160115215853.GC3818@linux.vnet.ibm.com>
+ <20160125164242.GF22927@arm.com>
+ <20160126060322.GJ4503@linux.vnet.ibm.com>
+ <20160126121608.GE21553@arm.com>
+ <20160126195820.GS4503@linux.vnet.ibm.com>
+ <20160127102546.GD2390@arm.com>
 MIME-Version: 1.0
-In-Reply-To: <CACRpkdaDC5LLcQx5_=vm=tjAV0z6RHvzgjzSFK6S+_1M7faMuA@mail.gmail.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Return-Path: <Joshua.Henderson@microchip.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20160127102546.GD2390@arm.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-TM-AS-MML: disable
+X-Content-Scanned: Fidelis XPS MAILER
+x-cbid: 16012800-0017-0000-0000-000011912A65
+Return-Path: <paulmck@linux.vnet.ibm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51499
+X-archive-position: 51500
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: joshua.henderson@microchip.com
+X-original-sender: paulmck@linux.vnet.ibm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,202 +94,57 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Linus,
+On Wed, Jan 27, 2016 at 10:25:46AM +0000, Will Deacon wrote:
+> On Tue, Jan 26, 2016 at 11:58:20AM -0800, Paul E. McKenney wrote:
+> > On Tue, Jan 26, 2016 at 12:16:09PM +0000, Will Deacon wrote:
+> > > On Mon, Jan 25, 2016 at 10:03:22PM -0800, Paul E. McKenney wrote:
+> > > > On Mon, Jan 25, 2016 at 04:42:43PM +0000, Will Deacon wrote:
+> > > > > On Fri, Jan 15, 2016 at 01:58:53PM -0800, Paul E. McKenney wrote:
+> > > > > > PPC Overlapping Group-B sets version 4
+> > > > > > ""
+> > > > > > (* When the Group-B sets from two different barriers involve instructions in
+> > > > > >    the same thread, within that thread one set must contain the other.
+> > > > > > 
+> > > > > > 	P0	P1	P2
+> > > > > > 	Rx=1	Wy=1	Wz=2
+> > > > > > 	dep.	lwsync	lwsync
+> > > > > > 	Ry=0	Wz=1	Wx=1
+> > > > > > 	Rz=1
+> > > > > > 
+> > > > > > 	assert(!(z=2))
+> > > > > > 
+> > > > > >    Forbidden by ppcmem, allowed by herd.
+> > > > > > *)
+> > > > > > {
+> > > > > > 0:r1=x; 0:r2=y; 0:r3=z;
+> > > > > > 1:r1=x; 1:r2=y; 1:r3=z; 1:r4=1;
+> > > > > > 2:r1=x; 2:r2=y; 2:r3=z; 2:r4=1; 2:r5=2;
+> > > > > > }
+> > > > > >  P0		| P1		| P2		;
+> > > > > >  lwz r6,0(r1)	| stw r4,0(r2)	| stw r5,0(r3)	;
+> > > > > >  xor r7,r6,r6	| lwsync	| lwsync	;
+> > > > > >  lwzx r7,r7,r2	| stw r4,0(r3)	| stw r4,0(r1)	;
+> > > > > >  lwz r8,0(r3)	|		|		;
+> > > > > > 
+> > > > > > exists
+> > > > > > (z=2 /\ 0:r6=1 /\ 0:r7=0 /\ 0:r8=1)
+> > > > > 
+> > > > > That really hurts. Assuming that the "assert(!(z=2))" is actually there
+> > > > > to constrain the coherence order of z to be {0->1->2}, then I think that
+> > > > > this test is forbidden on arm using dmb instead of lwsync. That said, I
+> > > > > also don't think the Rz=1 in P0 changes anything.
+> > > > 
+> > > > What about the smp_wmb() variant of dmb that orders only stores?
+> > > 
+> > > Tricky, but I think it still works out if the coherence order of z is as
+> > > I described above. The line of reasoning is weird though -- I ended up
+> > > considering the two cases where P0 reads z before and after it reads x
+> > > and what that means for the read of y.
+> > 
+> > By "works out" you mean that ARM prohibits the outcome?
+> 
+> Yes, that's my understanding.
 
-On 01/27/2016 06:49 AM, Linus Walleij wrote:
-> On Thu, Jan 14, 2016 at 2:15 AM, Joshua Henderson
-> <joshua.henderson@microchip.com> wrote:
-> 
->> Add a driver for the pin controller present on the Microchip PIC32
->> including the specific variant PIC32MZDA. This driver provides pinmux
->> and pinconfig operations as well as GPIO and IRQ chips for the GPIO
->> banks.
->>
->> Signed-off-by: Joshua Henderson <joshua.henderson@microchip.com>
->> Cc: Ralf Baechle <ralf@linux-mips.org>
->> ---
->> Changes since v4: None
-> 
-> Sorry for the delay. Fell between the cracks.
->
-> Overall this looks nice. Small things that need to be fixed below.
-> 
-> Is it possible to merge this patch separately into the pinctrl tree?
+Very good, we have agreement between the two architectures, then.  ;-)
 
-Yes. That was not the original goal as it is part of a larger patch set for dependency reasons, but a couple in the series got left behind, including this one.
-
-> 
-> I was hoping there are no compile-time dependencies to the
-> MIPS tree so I can just merge this. Else I can provide some
-> kind of immutable branch to the MIPS maintainers.
-> (Having dangling symbols in Kconfig is OK with me if I know
-> they will come in from some other tree.)
-> 
-
-You have what you need in your pinctrl tree.  I see 4.5-rc1 pulled with MIPS PIC32 platform support.
-
->> +#include <linux/clk.h>
->> +#include <linux/gpio.h>
-> 
-> This include should not be needed, just the one below.
-> 
-
-Ack.
-
->> +#include <linux/gpio/driver.h>
-> (...)
->> +#include <linux/interrupt.h>
->> +#include <linux/io.h>
->> +#include <linux/irq.h>
->> +#include <linux/of.h>
->> +#include <linux/of_device.h>
->> +#include <linux/pinctrl/pinconf.h>
->> +#include <linux/pinctrl/pinconf-generic.h>
->> +#include <linux/pinctrl/pinctrl.h>
->> +#include <linux/pinctrl/pinmux.h>
->> +#include <linux/platform_device.h>
->> +#include <linux/slab.h>
->> +#include <linux/spinlock.h>
->> +
->> +#include <asm/mach-pic32/pic32.h>
-> 
-> Oh this is how you do things still? Is this necessary? :/
-
-This is needed only for the PIC32_CLR()/PIC32_SET()/PIC32_INV() macros that are just providing register offsets. These macros are used by many (all?) of the PIC32 drivers and platform.  Explicitly labeling these offsets where used is valuable because it changes the meaning of "value" to writel().  If you can suggest a better place to put these I am all for it.
-
-> Then I guess it has to be applied to the MIPS tree.
-> 
-
-Doesn't have to now.
-
->> +static inline u32 pctl_readl(struct pic32_pinctrl *pctl, u32 reg)
->> +{
->> +       return readl(pctl->reg_base + reg);
->> +}
->> +
->> +static inline void pctl_writel(struct pic32_pinctrl *pctl, u32 val, u32 reg)
->> +{
->> +       writel(val, pctl->reg_base + reg);
->> +}
-> 
-> This is a bit excess abstraction, I would just readl() and writel()
-> directly in the code, adding the offset. Butr it's you pick.
-> 
-
-I'm in agreement.  It was nice for initial debug, but we are past that.  I'll yank the wrapper *_writel/*_readl functions.
-
->> +static inline struct pic32_gpio_bank *gc_to_bank(struct gpio_chip *gc)
->> +{
->> +       return container_of(gc, struct pic32_gpio_bank, gpio_chip);
->> +}
-> 
-> Don't do this anymore.
-> 
-> Se all the "use gpiochip data pointer" patches I merged last
-> merge window.
-> 
-
-Those made it in with this patch outstanding.  I will double check against your pinctrl tree.
-
-> Replace
-> 
-> = gc_to_bank(gc)
-> with
-> = gpiochip_get_data(gc);
-> 
-> everywhere and use
-> 
-> gpiochip_add_data(&gc, bank)
-> 
-> to make sure that gpipchip_get_data() returns what you want.
-> 
->> +static inline struct pic32_gpio_bank *irqd_to_bank(struct irq_data *d)
->> +{
->> +       return gc_to_bank(irq_data_get_irq_chip_data(d));
->> +}
-> 
-> For example this becomes:
-> return gpiochip_get_data(irq_data_get_irq_chip_data(d));
-> 
-
-Thanks for the explanation.  Consider it done.
-
->> +static inline u32 gpio_readl(struct pic32_gpio_bank *bank, u32 reg)
->> +{
->> +       return readl(bank->reg_base + reg);
->> +}
->> +
->> +static inline void gpio_writel(struct pic32_gpio_bank *bank, u32 val,
->> +                              u32 reg)
->> +{
->> +       writel(val, bank->reg_base + reg);
->> +}
-> 
-> Again excessive abstraction IMO.
-> 
-
-Ack.
-
->> +#define GPIO_BANK(_bank, _npins)                                       \
->> +       {                                                               \
->> +               .gpio_chip = {                                          \
->> +                       .label = "GPIO" #_bank,                         \
->> +                       .request = gpiochip_generic_request,            \
->> +                       .free = gpiochip_generic_free,                  \
->> +                       .get_direction = pic32_gpio_get_direction,      \
->> +                       .direction_input = pic32_gpio_direction_input,  \
->> +                       .direction_output = pic32_gpio_direction_output, \
->> +                       .get = pic32_gpio_get,                          \
->> +                       .set = pic32_gpio_set,                          \
->> +                       .ngpio = _npins,                                \
->> +                       .base = GPIO_BANK_START(_bank),                 \
->> +                       .owner = THIS_MODULE,                           \
->> +                       .can_sleep = 0,                                 \
->> +               },                                                      \
->> +               .irq_chip = {                                           \
->> +                       .name = "GPIO" #_bank,                          \
->> +                       .irq_startup = pic32_gpio_irq_startup,  \
->> +                       .irq_ack = pic32_gpio_irq_ack,          \
->> +                       .irq_mask = pic32_gpio_irq_mask,                \
->> +                       .irq_unmask = pic32_gpio_irq_unmask,            \
->> +                       .irq_set_type = pic32_gpio_irq_set_type,        \
->> +               },                                                      \
->> +       }
->> +
->> +static struct pic32_gpio_bank pic32_gpio_banks[] = {
->> +       GPIO_BANK(0, PINS_PER_BANK),
->> +       GPIO_BANK(1, PINS_PER_BANK),
->> +       GPIO_BANK(2, PINS_PER_BANK),
->> +       GPIO_BANK(3, PINS_PER_BANK),
->> +       GPIO_BANK(4, PINS_PER_BANK),
->> +       GPIO_BANK(5, PINS_PER_BANK),
->> +       GPIO_BANK(6, PINS_PER_BANK),
->> +       GPIO_BANK(7, PINS_PER_BANK),
->> +       GPIO_BANK(8, PINS_PER_BANK),
->> +       GPIO_BANK(9, PINS_PER_BANK),
->> +};
-> 
-> Ewwwww.... I guess it's OK though. I would have made it with
-> some dynamic allocation and a for() loop in code.
-> 
-
-Let me look into this more and see if I can clean it up.
-
->> +       bank->gpio_chip.dev = &pdev->dev;
-> 
-> This is named .parent in the upstream kernel so you need to change it.
-
-Ack.
-
-> 
->> +       bank->gpio_chip.of_node = np;
->> +       ret = gpiochip_add(&bank->gpio_chip);
-> 
-> So use gpiochip_add_data()
-> 
-> Apart from this it looks pretty OK.
-> 
-
-I'll take what I can get.  Let me submit a patch in response to this feedback and you can take it at will.
-
-Josh
+							Thanx, Paul

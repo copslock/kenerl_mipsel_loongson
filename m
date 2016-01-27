@@ -1,65 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 Jan 2016 11:26:00 +0100 (CET)
-Received: from foss.arm.com ([217.140.101.70]:33441 "EHLO foss.arm.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 Jan 2016 11:34:09 +0100 (CET)
+Received: from arrakis.dune.hu ([78.24.191.176]:37994 "EHLO arrakis.dune.hu"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27010574AbcA0KZ7U4LrM (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 27 Jan 2016 11:25:59 +0100
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D385D49;
-        Wed, 27 Jan 2016 02:25:11 -0800 (PST)
-Received: from arm.com (usa-sjc-imap-foss1.foss.arm.com [10.72.51.249])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 146DB3F246;
-        Wed, 27 Jan 2016 02:25:47 -0800 (PST)
-Date:   Wed, 27 Jan 2016 10:25:46 +0000
-From:   Will Deacon <will.deacon@arm.com>
-To:     "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>
-Cc:     Peter Zijlstra <peterz@infradead.org>,
-        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
-        linux-arch@vger.kernel.org,
-        Andrew Cooper <andrew.cooper3@citrix.com>,
-        Russell King - ARM Linux <linux@arm.linux.org.uk>,
-        virtualization@lists.linux-foundation.org,
-        Stefano Stabellini <stefano.stabellini@eu.citrix.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@elte.hu>, "H. Peter Anvin" <hpa@zytor.com>,
-        Joe Perches <joe@perches.com>,
-        David Miller <davem@davemloft.net>, linux-ia64@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-metag@vger.kernel.org, linux-mips@linux-mips.org,
-        x86@kernel.org, user-mode-linux-devel@lists.sourceforge.net,
-        adi-buildroot-devel@lists.sourceforge.net,
-        linux-sh@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        xen-devel@lists.xenproject.org, Ralf Baechle <ralf@linux-mips.org>,
-        Ingo Molnar <mingo@kernel.org>, ddaney.cavm@gmail.com,
-        james.hogan@imgtec.com, Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [v3,11/41] mips: reuse asm-generic/barrier.h
-Message-ID: <20160127102546.GD2390@arm.com>
-References: <20160114212913.GF3818@linux.vnet.ibm.com>
- <20160115085554.GF3421@worktop>
- <20160115091348.GA27936@worktop>
- <20160115174612.GV3818@linux.vnet.ibm.com>
- <20160115212714.GM3421@worktop>
- <20160115215853.GC3818@linux.vnet.ibm.com>
- <20160125164242.GF22927@arm.com>
- <20160126060322.GJ4503@linux.vnet.ibm.com>
- <20160126121608.GE21553@arm.com>
- <20160126195820.GS4503@linux.vnet.ibm.com>
+        id S27010707AbcA0KeHvoY2M (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 27 Jan 2016 11:34:07 +0100
+Received: from localhost (localhost [127.0.0.1])
+        by arrakis.dune.hu (Postfix) with ESMTP id 6622528C007;
+        Wed, 27 Jan 2016 11:33:20 +0100 (CET)
+X-Virus-Scanned: at arrakis.dune.hu
+Received: from mail-lb0-f173.google.com (mail-lb0-f173.google.com [209.85.217.173])
+        by arrakis.dune.hu (Postfix) with ESMTPSA id 5B6AC28C709;
+        Wed, 27 Jan 2016 11:33:12 +0100 (CET)
+Received: by mail-lb0-f173.google.com with SMTP id cl12so2670388lbc.1;
+        Wed, 27 Jan 2016 02:33:57 -0800 (PST)
+X-Gm-Message-State: AG10YOS7r8bUFbpdm2VXiEQed2so9Fn2ceTvYID0miM93FgKFeLn1LvKEKIepC3nXOzdutuTPmkRCmwS3E4x+A==
+X-Received: by 10.112.129.233 with SMTP id nz9mr1288800lbb.82.1453890837190;
+ Wed, 27 Jan 2016 02:33:57 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20160126195820.GS4503@linux.vnet.ibm.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <will.deacon@arm.com>
+Received: by 10.25.25.130 with HTTP; Wed, 27 Jan 2016 02:33:37 -0800 (PST)
+In-Reply-To: <56A7FE3F.5090909@gmail.com>
+References: <1453848410-24949-1-git-send-email-broonie@kernel.org>
+ <1453848410-24949-2-git-send-email-broonie@kernel.org> <56A7FE3F.5090909@gmail.com>
+From:   Jonas Gorski <jogo@openwrt.org>
+Date:   Wed, 27 Jan 2016 11:33:37 +0100
+X-Gmail-Original-Message-ID: <CAOiHx=kk06ythGn=a3UGs-BBUUYxdm7zLsNtBFiCiwxF5m6VxA@mail.gmail.com>
+Message-ID: <CAOiHx=kk06ythGn=a3UGs-BBUUYxdm7zLsNtBFiCiwxF5m6VxA@mail.gmail.com>
+Subject: Re: [PATCH RFC 2/2] MIPS: dt: Explicitly specify native endian
+ behaviour for syscon
+To:     Florian Fainelli <f.fainelli@gmail.com>
+Cc:     Mark Brown <broonie@kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Kevin Cernekee <cernekee@gmail.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        MIPS Mailing List <linux-mips@linux-mips.org>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Simon Arlott <simon@fire.lp0.eu>, Arnd Bergmann <arnd@arndb.de>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <jogo@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51467
+X-archive-position: 51468
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: will.deacon@arm.com
+X-original-sender: jogo@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -72,54 +56,62 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Jan 26, 2016 at 11:58:20AM -0800, Paul E. McKenney wrote:
-> On Tue, Jan 26, 2016 at 12:16:09PM +0000, Will Deacon wrote:
-> > On Mon, Jan 25, 2016 at 10:03:22PM -0800, Paul E. McKenney wrote:
-> > > On Mon, Jan 25, 2016 at 04:42:43PM +0000, Will Deacon wrote:
-> > > > On Fri, Jan 15, 2016 at 01:58:53PM -0800, Paul E. McKenney wrote:
-> > > > > PPC Overlapping Group-B sets version 4
-> > > > > ""
-> > > > > (* When the Group-B sets from two different barriers involve instructions in
-> > > > >    the same thread, within that thread one set must contain the other.
-> > > > > 
-> > > > > 	P0	P1	P2
-> > > > > 	Rx=1	Wy=1	Wz=2
-> > > > > 	dep.	lwsync	lwsync
-> > > > > 	Ry=0	Wz=1	Wx=1
-> > > > > 	Rz=1
-> > > > > 
-> > > > > 	assert(!(z=2))
-> > > > > 
-> > > > >    Forbidden by ppcmem, allowed by herd.
-> > > > > *)
-> > > > > {
-> > > > > 0:r1=x; 0:r2=y; 0:r3=z;
-> > > > > 1:r1=x; 1:r2=y; 1:r3=z; 1:r4=1;
-> > > > > 2:r1=x; 2:r2=y; 2:r3=z; 2:r4=1; 2:r5=2;
-> > > > > }
-> > > > >  P0		| P1		| P2		;
-> > > > >  lwz r6,0(r1)	| stw r4,0(r2)	| stw r5,0(r3)	;
-> > > > >  xor r7,r6,r6	| lwsync	| lwsync	;
-> > > > >  lwzx r7,r7,r2	| stw r4,0(r3)	| stw r4,0(r1)	;
-> > > > >  lwz r8,0(r3)	|		|		;
-> > > > > 
-> > > > > exists
-> > > > > (z=2 /\ 0:r6=1 /\ 0:r7=0 /\ 0:r8=1)
-> > > > 
-> > > > That really hurts. Assuming that the "assert(!(z=2))" is actually there
-> > > > to constrain the coherence order of z to be {0->1->2}, then I think that
-> > > > this test is forbidden on arm using dmb instead of lwsync. That said, I
-> > > > also don't think the Rz=1 in P0 changes anything.
-> > > 
-> > > What about the smp_wmb() variant of dmb that orders only stores?
-> > 
-> > Tricky, but I think it still works out if the coherence order of z is as
-> > I described above. The line of reasoning is weird though -- I ended up
-> > considering the two cases where P0 reads z before and after it reads x
-> > and what that means for the read of y.
-> 
-> By "works out" you mean that ARM prohibits the outcome?
+Hi,
 
-Yes, that's my understanding.
+On 27 January 2016 at 00:16, Florian Fainelli <f.fainelli@gmail.com> wrote:
+> On 26/01/16 14:46, Mark Brown wrote:
+>> On many MIPS systems the endianness of IP blocks is kept the same as
+>> that of the CPU by the hardware.  This includes the system controllers
+>> on these systems which are controlled via syscon which uses the regmap
+>> API which used readl() and writel() to interact with the hardware,
+>> meaning that all writes are converted to little endian when writing to
+>> the hardware.  This caused a bad interaction with the regmap core in big
+>> endian mode since it was not aware of the byte swapping and so ended up
+>> performing little endian writes.
+>>
+>> Unfortunately when this issue was noticed it was addressed by updating
+>> the DT for the affected devices to specify them as little endian.  This
+>> happened to work since it resulted in two endianness swaps which
+>> cancelled each other out and gave little endian behaviour but meant that
+>> the DT was clearly not accurately describing the hardware.
+>>
+>> The intention of commit 29bb45f25ff305 (regmap-mmio: Use native
+>> endianness for read/write) was to fix this by making regmap default to
+>> native endianness but this breaks most other MMIO users where the
+>> hardware has a fixed endianness and the implementation uses the __raw
+>> accessors which are not intended to be used outside of architecture
+>> code.  Instead use the newly added native-endian DT property to say
+>> exactly what we want for these systems.
+>>
+>> Fixes: 29bb45f25ff305 (regmap-mmio: Use native endianness for read/write)
+>> Reported-by: Johannes Berg <johannes@sipsolutions.net>
+>> Signed-off-by: Mark Brown <broonie@kernel.org>
+>> ---
+>>
+>> Posted for review only, this will interact with some other patches
+>> fixing the implementation of regmap-mmio and will probably need to be
+>> merged along with them.
+>>
+>>  arch/mips/boot/dts/brcm/bcm6328.dtsi | 1 +
+>
+> v4.5-rc1 now contains an arch/mips/boot/dts/brcm/bcm6368.dtsi which
+> copied the 6328.dtsi and therefore needs this hunk to be added to your
+> patch series:
+>
+> diff --git a/arch/mips/boot/dts/brcm/bcm6368.dtsi
+> b/arch/mips/boot/dts/brcm/bcm6368.dtsi
+> index 9c8d3fe28b31..1f6b9b5cddb4 100644
+> --- a/arch/mips/boot/dts/brcm/bcm6368.dtsi
+> +++ b/arch/mips/boot/dts/brcm/bcm6368.dtsi
+> @@ -54,7 +54,7 @@
+>                 periph_cntl: syscon@10000000 {
+>                         compatible = "syscon";
+>                         reg = <0x10000000 0x14>;
+> -                       little-endian;
+> +                       native-endian;
 
-Will
+But native-endian == big-endian usually for bcm63xx, so is this
+actually a bugfix?
+
+
+Jonas

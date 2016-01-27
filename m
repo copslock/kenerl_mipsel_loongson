@@ -1,64 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 Jan 2016 09:39:27 +0100 (CET)
-Received: from bombadil.infradead.org ([198.137.202.9]:45667 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010139AbcA0IjZrIrsT (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 27 Jan 2016 09:39:25 +0100
-Received: from j217066.upc-j.chello.nl ([24.132.217.66] helo=twins)
-        by bombadil.infradead.org with esmtpsa (Exim 4.80.1 #2 (Red Hat Linux))
-        id 1aOLd6-0001zv-B9; Wed, 27 Jan 2016 08:39:08 +0000
-Received: by twins (Postfix, from userid 1000)
-        id 02F351257A0D8; Wed, 27 Jan 2016 09:39:06 +0100 (CET)
-Date:   Wed, 27 Jan 2016 09:39:05 +0100
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>
-Cc:     Will Deacon <will.deacon@arm.com>,
-        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
-        linux-arch@vger.kernel.org,
-        Andrew Cooper <andrew.cooper3@citrix.com>,
-        Russell King - ARM Linux <linux@arm.linux.org.uk>,
-        virtualization@lists.linux-foundation.org,
-        Stefano Stabellini <stefano.stabellini@eu.citrix.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@elte.hu>, "H. Peter Anvin" <hpa@zytor.com>,
-        Joe Perches <joe@perches.com>,
-        David Miller <davem@davemloft.net>, linux-ia64@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-metag@vger.kernel.org, linux-mips@linux-mips.org,
-        x86@kernel.org, user-mode-linux-devel@lists.sourceforge.net,
-        adi-buildroot-devel@lists.sourceforge.net,
-        linux-sh@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        xen-devel@lists.xenproject.org, Ralf Baechle <ralf@linux-mips.org>,
-        Ingo Molnar <mingo@kernel.org>, ddaney.cavm@gmail.com,
-        james.hogan@imgtec.com, Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [v3,11/41] mips: reuse asm-generic/barrier.h
-Message-ID: <20160127083905.GK6357@twins.programming.kicks-ass.net>
-References: <20160114212913.GF3818@linux.vnet.ibm.com>
- <20160115085554.GF3421@worktop>
- <20160115091348.GA27936@worktop>
- <20160115174612.GV3818@linux.vnet.ibm.com>
- <20160115212714.GM3421@worktop>
- <20160115215853.GC3818@linux.vnet.ibm.com>
- <20160125164242.GF22927@arm.com>
- <20160126060322.GJ4503@linux.vnet.ibm.com>
- <20160126101927.GD6357@twins.programming.kicks-ass.net>
- <20160126201339.GW4503@linux.vnet.ibm.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 Jan 2016 10:12:21 +0100 (CET)
+Received: from mout.kundenserver.de ([217.72.192.73]:63458 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27010410AbcA0JMTi6UWT (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 27 Jan 2016 10:12:19 +0100
+Received: from wuerfel.localnet ([78.42.132.4]) by mrelayeu.kundenserver.de
+ (mreue104) with ESMTPSA (Nemesis) id 0MI6Uo-1aNnuQ1bEU-003saD; Wed, 27 Jan
+ 2016 10:11:52 +0100
+From:   Arnd Bergmann <arnd@arndb.de>
+To:     Fengguang Wu <fengguang.wu@intel.com>
+Cc:     James Hogan <james.hogan@imgtec.com>, linux-mips@linux-mips.org,
+        linux-arch@vger.kernel.org, linux-kbuild@vger.kernel.org,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Paul Burton <paul.burton@imgtec.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Heinrich Schuchardt <xypron.glpk@gmx.de>,
+        linux-kernel@vger.kernel.org, Michal Marek <mmarek@suse.com>
+Subject: Re: [linux-review:James-Hogan/kbuild-Remove-stale-asm-generic-wrappers/20160119-183642] d979f99e9cc14e2667e9b6e268db695977e4197a BUILD DONE
+Date:   Wed, 27 Jan 2016 10:11:47 +0100
+Message-ID: <1947556.38OyJnvGS5@wuerfel>
+User-Agent: KMail/4.11.5 (Linux/3.16.0-10-generic; KDE/4.11.5; x86_64; ; )
+In-Reply-To: <20160127083745.GA9933@wfg-t540p.sh.intel.com>
+References: <569e1dbb.MgLv8OaZwklOxxtU%fengguang.wu@intel.com> <3724678.Yr2Z2lv3F9@wuerfel> <20160127083745.GA9933@wfg-t540p.sh.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20160126201339.GW4503@linux.vnet.ibm.com>
-User-Agent: Mutt/1.5.21 (2012-12-30)
-Return-Path: <peterz@infradead.org>
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+X-Provags-ID: V03:K0:j5ZKw1JUHAwgDRwKSPckHwJVfkGZJzujIrsHtb6ZYSddAt/DID/
+ /NGiMuhGQPFhpMz173+DgbsGZo0YZqHLsdTfYNJJlVwKpYYBSP7+hIGuT/y1SsbkLjbFLn7
+ vc7KqSi7hoa1vmv1ndYv6FmncQA8OW4kx5qewbCvRNzHNEd7nLZL5MCGdplzOuCZ6eA7Ljj
+ mwyGZrNU/3YhCEO25hhFw==
+X-UI-Out-Filterresults: notjunk:1;V01:K0:mLqVvlk7wmM=:gk2jTlWqYntnAPR6SEJfR6
+ aaZX0QF+4MvACXXxLlAjYTxq4VQWsNHIw9L/aep80DO6c/VTktC1ojVt5K9f7/Rsq1tG0RBSB
+ pT1552usasH4VKaoPH/0hlhFvQ4HIvb2hoTRFSAXw6Nbyig1B0R41gHITOgOC3+ZLc/ONC2RV
+ AJzFCPwp7fU2hJktCXTwec+Au91nniuJhY592scB/jVgK9sIpsshzxV8ZMcZVK34WX8kKCLhH
+ oVgHoGslci7K75taB3q1LaA1UDFGJ19e2R+XOs04iNzDq2bINz0zBPRFz7mI1yygQIw5ipDgD
+ Cd5LmjwNxVGHY4QGdXRbDZ8VwTSr0q97kacwrvbOnGpWOsFrt+SiBPAn6HbyT/4xZjnF4eTLF
+ dxW5af7nXXUIp1ZYdCFGKusNIrI5fMVHh6z1qbIKr9t7dggQNTU5YG+Nc5TjzBd5wJ4dA1EOk
+ ZE0sAkW3elxv2Uptz9M0x9iCHya3Dbqa1nd4vZWDNGoexFG/vsnth8DuJpJFbdc13qqqALlc0
+ LI4ATsAk4p71JhlP+nIAk0d3Cr2lbG17nUMeAk2tRp6tjnHHD+E0apYoWvhgoR+QKQSbAMjFz
+ iWTl9HbXqPDeIzOWl7krGRIIipcJ4UJZxhEz2aQJN68+Hs/Fq3n2OZbsR96SMPP7H8Gz2FaiQ
+ aZKuUlRKJ5sX9ZQkvo74JJZ6xMsHWP2R7K2KMjONn6S3JKV63xWHRSSBGLdlQ/BATSmCfALpy
+ x4ECreHExzxuamDC
+Return-Path: <arnd@arndb.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51459
+X-archive-position: 51460
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: peterz@infradead.org
+X-original-sender: arnd@arndb.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -71,26 +61,51 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Jan 26, 2016 at 12:13:39PM -0800, Paul E. McKenney wrote:
-> On Tue, Jan 26, 2016 at 11:19:27AM +0100, Peter Zijlstra wrote:
-
-> > So isn't smp_mb__after_unlock_lock() exactly such a scenario? And would
-> > not someone trying to implement RCsc locks using locally transitive
-> > RELEASE/ACQUIRE operations need exactly this stuff?
-> > 
-> > That is, I am afraid we need to cover the mix of local and global
-> > transitive operations at least in overview.
+On Wednesday 27 January 2016 16:37:45 Fengguang Wu wrote:
 > 
-> True, but we haven't gotten to locking yet.
+> Thank you for the tips! I've updated the lists accordingly.
+> 
+> 1st priority
+> ============
+> 
+> arm-allmodconfig
+> arm-allnoconfig
+> arm-at91_dt_defconfig
+> arm-efm32_defconfig
+> arm-exynos_defconfig
+> arm-multi_v7_defconfig
+> arm-multi_v8_defconfig
+> arm-shmobile_defconfig
+> arm-sunxi_defconfig
+> 
+> 2nd priority
+> ============
+> 
+> arm-arm5
+> arm-arm67
+> arm-imx_v6_v7_defconfig
+> arm-ixp4xx_defconfig
+> arm-mvebu_v7_defconfig
+> arm-omap2plus_defconfig
+> arm-sa1100
+> arm-samsung
+> arm-sh
+> arm-tegra_defconfig
+> 
+> 3nd priority
+> ============
+> 
+> arch/*/configs/*
 
-The mythical smp_mb__after_release_acquire() then ;-)
+Looks good, I'm just unsure about "multi_v8_defconfig", this does not
+exist. Do you mean multi_v5_defconfig?
 
-(and yes, I know you're going to say we don't have that)
+I also wonder if you include 'randconfig' builds for some architectures.
+I have patches for all remaining errors and warnings that I see with
+ARM randconfig builds today. Not all of them are merged yet, but I could
+probably come up with a file to be used as input to KCONFIG_ALLCONFIG
+to eliminate the known-broken configurations, if you are interested.
 
-> That said, I would argue
-> that smp_mb__after_unlock_lock() upgrades locks to transitive, and
-> thus would not be an exception to the "no combining transitive and
-> non-transitive steps in cycles" rule.
+Thanks!
 
-But But But ;-) It does that exactly by combining. I suspect this is
-(partly) the source of your SC chains with one PC link example.
+	Arnd

@@ -1,70 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Jan 2016 00:08:08 +0100 (CET)
-Received: from mail-pf0-f193.google.com ([209.85.192.193]:33192 "EHLO
-        mail-pf0-f193.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27006152AbcA0XIGGgD6U (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 28 Jan 2016 00:08:06 +0100
-Received: by mail-pf0-f193.google.com with SMTP id x125so1081826pfb.0;
-        Wed, 27 Jan 2016 15:08:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-type:content-disposition:in-reply-to:user-agent;
-        bh=YCbWubVVsSCkFNfXC1J0pTSpmQOjDvvGm6QI+UnwN8g=;
-        b=e5bOppjDwG6AorLntTR9nF54lwlVr6Lfu5z0/NQ7Z8PSBHhmWs53HFOzFnf+UGWrVU
-         6gSDpmVeFITNWqm2Kxj5ZyXOkyzTyk4oE+HHwGo+EK56touPCOBrnEKzwkwhj4rbcTwq
-         /NcgLcltX7eQN2EAp7sNwu/5YyRNvKTvCAGJnB3v7hc7XoTdfzii1UjFyegysjaFh6Dm
-         jdMTU9AlRz7sZkXJ3pL4aUqzM99T95E6LIKj63T5gtViM+XFVFSJAqBWlCNEI4kMlA9X
-         KoWPdec/RbvSJ+5tmSgDK5k64u/H0mOZnCv+uhFtlutVCtuoDLanlY7H2GygQPA5SrA5
-         lTyw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-type:content-disposition:in-reply-to
-         :user-agent;
-        bh=YCbWubVVsSCkFNfXC1J0pTSpmQOjDvvGm6QI+UnwN8g=;
-        b=BUSewqgMgGJ1CKqQBisYVdtHEaXwwyonRLX6VuIcg/12ezrSuDHTVcV5a1CBV+atrk
-         jTlwnfL0KMlS91LvzwlSPmEEsbzR9+0yFybdG74fINvOypdcwlLKx/BSkHahCBlohCYN
-         6Ufy2+VN+x3uTEquRLoqweJg18n14YB/WFoBeTLwQcnrkXpqxcISMRB1ZNmRtR/URP+X
-         BMH4T+RM2FYB3N+OtKx7mH5Ox2Do4l8nE1yr5AOMXnVhUmovrbEox1zHHDu4aHDOoPIR
-         lxB3GTg6JMQnH0T5sBVSHpHxEVWrWS+Zc1QZ/03uIhj+PHYwDJm8cgnK16RBobaRjUxL
-         I8Cw==
-X-Gm-Message-State: AG10YORgn1p/BzXYiH/xMR9wUSIpnZmxQjIdRPfHcQeL4+pqyHuJlC2P48rp+mwgSzDHfw==
-X-Received: by 10.98.68.199 with SMTP id m68mr46264680pfi.6.1453936073878;
-        Wed, 27 Jan 2016 15:07:53 -0800 (PST)
-Received: from google.com ([2620:0:1000:1301:6149:7131:eca:637b])
-        by smtp.gmail.com with ESMTPSA id v75sm11363022pfa.60.2016.01.27.15.07.52
-        (version=TLS1_2 cipher=AES128-SHA bits=128/128);
-        Wed, 27 Jan 2016 15:07:53 -0800 (PST)
-Date:   Wed, 27 Jan 2016 15:07:51 -0800
-From:   Brian Norris <computersforpeace@gmail.com>
-To:     Simon Arlott <simon@fire.lp0.eu>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        David Woodhouse <dwmw2@infradead.org>,
-        Kevin Cernekee <cernekee@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Jonas Gorski <jogo@openwrt.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        MIPS Mailing List <linux-mips@linux-mips.org>,
-        MTD Maling List <linux-mtd@lists.infradead.org>
-Subject: Re: [PATCH linux-next v4 11/11] mtd: bcm63xxpart: Add NAND
- partitioning support
-Message-ID: <20160127230751.GB19540@google.com>
-References: <566DF43B.5010400@simon.arlott.org.uk>
- <566DF6D9.2070904@simon.arlott.org.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Jan 2016 01:25:18 +0100 (CET)
+Received: from exsmtp01.microchip.com ([198.175.253.37]:6233 "EHLO
+        email.microchip.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S27007649AbcA1AZQKtwpv (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 28 Jan 2016 01:25:16 +0100
+Received: from [10.14.4.125] (10.10.76.4) by CHN-SV-EXCH01.mchp-main.com
+ (10.10.76.37) with Microsoft SMTP Server id 14.3.181.6; Wed, 27 Jan 2016
+ 17:25:08 -0700
+Subject: Re: [PATCH v5 08/14] pinctrl: pinctrl-pic32: Add PIC32 pin control
+ driver
+To:     Linus Walleij <linus.walleij@linaro.org>
+References: <1452734299-460-1-git-send-email-joshua.henderson@microchip.com>
+ <1452734299-460-9-git-send-email-joshua.henderson@microchip.com>
+ <CACRpkdaDC5LLcQx5_=vm=tjAV0z6RHvzgjzSFK6S+_1M7faMuA@mail.gmail.com>
+CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Linux MIPS <linux-mips@linux-mips.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>
+From:   Joshua Henderson <joshua.henderson@microchip.com>
+Message-ID: <56A961CC.9030205@microchip.com>
+Date:   Wed, 27 Jan 2016 17:33:16 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+ Thunderbird/38.5.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <566DF6D9.2070904@simon.arlott.org.uk>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <computersforpeace@gmail.com>
+In-Reply-To: <CACRpkdaDC5LLcQx5_=vm=tjAV0z6RHvzgjzSFK6S+_1M7faMuA@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Return-Path: <Joshua.Henderson@microchip.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51498
+X-archive-position: 51499
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: computersforpeace@gmail.com
+X-original-sender: joshua.henderson@microchip.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -77,326 +46,202 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi,
+Linus,
 
-On Sun, Dec 13, 2015 at 10:53:13PM +0000, Simon Arlott wrote:
-> Add partitioning support for BCM963xx boards with NAND flash.
+On 01/27/2016 06:49 AM, Linus Walleij wrote:
+> On Thu, Jan 14, 2016 at 2:15 AM, Joshua Henderson
+> <joshua.henderson@microchip.com> wrote:
 > 
-> The following partitions are defined:
->   "boot":           CFE and nvram data
->   "rootfs":         Currently selected rootfs
->   "data":           Configuration data
->   "rootfs1_update": Container for the whole flash area used
->                     for the first rootfs to allow it to be
->                     updated
->   "rootfs2_update": Container for the whole flash area used
->                     for the second rootfs to allow it to be
->                     updated
->   "rootfs_other":   The other (not currently selected) rootfs
+>> Add a driver for the pin controller present on the Microchip PIC32
+>> including the specific variant PIC32MZDA. This driver provides pinmux
+>> and pinconfig operations as well as GPIO and IRQ chips for the GPIO
+>> banks.
+>>
+>> Signed-off-by: Joshua Henderson <joshua.henderson@microchip.com>
+>> Cc: Ralf Baechle <ralf@linux-mips.org>
+>> ---
+>> Changes since v4: None
 > 
-> Example:
-> [    2.157094] nand: device found, Manufacturer ID: 0xc2, Chip ID: 0xf1
-> [    2.163796] nand: Macronix NAND 128MiB 3,3V 8-bit
-> [    2.168648] nand: 128 MiB, SLC, erase size: 128 KiB, page size: 2048, OOB size: 64
-> [    2.176588] bcm6368_nand 10000200.nand: detected 128MiB total, 128KiB blocks, 2KiB pages, 16B OOB, 8-bit, Hamming ECC
-> [    2.189782] Bad block table found at page 65472, version 0x01
-> [    2.196910] Bad block table found at page 65408, version 0x01
-> [    2.204003] nand_read_bbt: bad block at 0x000007480000
-> [    2.225220] bcm63xxpart: rootfs1: CFE image tag found at 0x20000 with version 6, board type 963168VX
-> [    2.236188] bcm63xxpart: rootfs2: CFE image tag found at 0x4000000 with version 6, board type 963168VX
-> [    2.246165] bcm63xxpart: CFE bootline selected latest image rootfs1 (rootfs1_seq=2, rootfs2_seq=1)
-> [    2.255800] 6 bcm63xxpart partitions found on MTD device brcmnand.0
-> [    2.275360] Creating 6 MTD partitions on "brcmnand.0":
-> [    2.280804] 0x000000000000-0x000000020000 : "boot"
-> [    2.294609] 0x000000040000-0x000001120000 : "rootfs"
-> [    2.310078] 0x000007b00000-0x000007f00000 : "data"
-> [    2.324052] 0x000000020000-0x000003ac0000 : "rootfs1_update"
-> [    2.339190] 0x000004000000-0x000007ac0000 : "rootfs2_update"
-> [    2.354290] 0x000004020000-0x000005060000 : "rootfs_other"
+> Sorry for the delay. Fell between the cracks.
+>
+> Overall this looks nice. Small things that need to be fixed below.
 > 
-> The nvram contains the offset and size of the boot, rootfs1, rootfs2
-> and data partitions. The presence of CFE and nvram is already verified
-> by reading from the boot partition which is assumed to be at offset 0
-> and the NAND process aborts if the nvram read indicates that this is
-> not the case.
-> 
-> There is bcm_tag information at the start of each rootfs that is used
-> to determine which rootfs is newer and what its real offset/size is.
-> 
-> The CFE bootline is used to select a rootfs.
-> 
-> Signed-off-by: Simon Arlott <simon@fire.lp0.eu>
+> Is it possible to merge this patch separately into the pinctrl tree?
 
-Have we gotten any testing besides Simon? Or any Acked-by/Reviewed-by?
+Yes. That was not the original goal as it is part of a larger patch set for dependency reasons, but a couple in the series got left behind, including this one.
 
-> ---
-> v4: Reorganised functions based on earlier new patches in the series,
->     no real logic changes other than having to check for nvram->version
->     >= 6 within the nand function instead of the nvram read function.
 > 
->     Renamed "curpart" to "i" because it allows the partition layout
->     lines to be under 80 characters.
+> I was hoping there are no compile-time dependencies to the
+> MIPS tree so I can just merge this. Else I can provide some
+> kind of immutable branch to the MIPS maintainers.
+> (Having dangling symbols in Kconfig is OK with me if I know
+> they will come in from some other tree.)
 > 
-> v3: Use COMPILE_TEST.
-> 
->     Ensure that strings read from flash are null terminated and validate
->     bcm_tag integer values (this also moves reporting of rootfs sequence
->     numbers to later on).
-> 
-> v2: Use external struct bcm963xx_nvram definition for bcm963268part.
-> 
->     Removed support for the nand partition number field, it's not a
->     standard Broadcom field (was added by MitraStar Technology Corp.).
-> 
->  drivers/mtd/bcm63xxpart.c | 196 ++++++++++++++++++++++++++++++++++++++++++++--
->  1 file changed, 190 insertions(+), 6 deletions(-)
-> 
-> diff --git a/drivers/mtd/bcm63xxpart.c b/drivers/mtd/bcm63xxpart.c
-> index 26c38a1..4576b78 100644
-> --- a/drivers/mtd/bcm63xxpart.c
-> +++ b/drivers/mtd/bcm63xxpart.c
-> @@ -16,10 +16,9 @@
->   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
->   * GNU General Public License for more details.
->   *
-> - * You should have received a copy of the GNU General Public License
-> - * along with this program; if not, write to the Free Software
-> - * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-> - *
-> + * NAND flash layout derived from bcm963xx_4.12L.06B_consumer/bcmdrivers/opensource/char/board/bcm963xx/impl1/board.c,
-> + *	bcm963xx_4.12L.06B_consumer/shared/opensource/include/bcm963xx/bcm_hwdefs.h:
-> + * Copyright (c) 2002 Broadcom Corporation
->   */
->  
->  #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
-> @@ -124,6 +123,25 @@ static int bcm63xx_read_image_tag(struct mtd_info *master, const char *name,
->  	return 1;
->  }
->  
-> +static bool bcm63xx_boot_latest(struct bcm963xx_nvram *nvram)
-> +{
-> +	char *p;
-> +
-> +	STR_NULL_TERMINATE(nvram->bootline);
-> +
-> +	/* Find previous image parameter "p" */
-> +	if (!strncmp(nvram->bootline, "p=", 2))
-> +		p = nvram->bootline;
-> +	else
-> +		p = strstr(nvram->bootline, " p=");
-> +
-> +	if (p == NULL)
-> +		return true;
-> +
-> +	p += 2;
-> +	return *p != '0';
-> +}
-> +
->  static int bcm63xx_parse_cfe_nor_partitions(struct mtd_info *master,
->  	const struct mtd_partition **pparts, struct bcm963xx_nvram *nvram)
->  {
-> @@ -283,6 +301,171 @@ out:
->  	return nrparts;
->  }
->  
-> +static bool bcm63xx_parse_nand_image_tag(struct mtd_info *master,
-> +	const char *name, loff_t tag_offset, u64 *rootfs_offset,
-> +	u64 *rootfs_size, unsigned int *rootfs_sequence)
-> +{
-> +	struct bcm_tag *buf;
-> +	int ret;
-> +	bool rootfs_ok = false;
-> +
-> +	*rootfs_offset = 0;
-> +	*rootfs_size = 0;
-> +	*rootfs_sequence = 0;
-> +
-> +	buf = vmalloc(sizeof(struct bcm_tag));
-> +	if (!buf)
-> +		goto out;
-> +
-> +	ret = bcm63xx_read_image_tag(master, name, tag_offset, buf);
-> +	if (!ret) {
-> +		/* Get rootfs offset and size from tag data */
-> +		STR_NULL_TERMINATE(buf->flash_image_start);
-> +		if (kstrtou64(buf->flash_image_start, 10, rootfs_offset) ||
-> +				*rootfs_offset < BCM963XX_EXTENDED_SIZE) {
-> +			pr_err("%s: invalid rootfs offset: %*ph\n", name,
-> +				sizeof(buf->flash_image_start),
-> +				buf->flash_image_start);
-> +			goto out;
-> +		}
-> +
-> +		STR_NULL_TERMINATE(buf->root_length);
-> +		if (kstrtou64(buf->root_length, 10, rootfs_size) ||
-> +				rootfs_size == 0) {
 
-Sparse and Smatch have caught errors on this line:
+You have what you need in your pinctrl tree.  I see 4.5-rc1 pulled with MIPS PIC32 platform support.
 
-  drivers/mtd/bcm63xxpart.c:334:48: warning: Using plain integer as NULL pointer [sparse]
-  drivers/mtd/bcm63xxpart.c:334 bcm63xx_parse_nand_image_tag() warn: variable dereferenced before check 'rootfs_size' (see line 313) [smatch]
-
-
-I think you mean '*rootfs_size == 0', not 'rootfs_size == 0'.
-
-Brian
-
-> +			pr_err("%s: invalid rootfs size: %*ph\n", name,
-> +				sizeof(buf->root_length), buf->root_length);
-> +			goto out;
-> +		}
-> +
-> +		/* Adjust for flash offset */
-> +		*rootfs_offset -= BCM963XX_EXTENDED_SIZE;
-> +
-> +		/* Remove bcm_tag data from length */
-> +		*rootfs_size -= *rootfs_offset - tag_offset;
-> +
-> +		/* Get image sequence number to determine which one is newer */
-> +		STR_NULL_TERMINATE(buf->image_sequence);
-> +		if (kstrtouint(buf->image_sequence, 10, rootfs_sequence)) {
-> +			pr_err("%s: invalid rootfs sequence: %*ph\n", name,
-> +				sizeof(buf->image_sequence),
-> +				buf->image_sequence);
-> +			goto out;
-> +		}
-> +
-> +		rootfs_ok = true;
-> +	}
-> +
-> +out:
-> +	vfree(buf);
-> +	return rootfs_ok;
-> +}
-> +
-> +static int bcm63xx_parse_cfe_nand_partitions(struct mtd_info *master,
-> +	const struct mtd_partition **pparts,
-> +	struct bcm963xx_nvram *nvram)
-> +{
-> +	int nrparts, i;
-> +	struct mtd_partition *parts;
-> +	u64 rootfs1_off, rootfs1_size;
-> +	unsigned int rootfs1_seq;
-> +	u64 rootfs2_off, rootfs2_size;
-> +	unsigned int rootfs2_seq;
-> +	bool rootfs1, rootfs2;
-> +	bool use_first;
-> +
-> +	if (nvram->version < 6) {
-> +		pr_warn("nvram version %u not supported\n", nvram->version);
-> +		return -EINVAL;
-> +	}
-> +
-> +	/* We've just read the nvram from offset 0,
-> +	 * so it must be located there.
-> +	 */
-> +	if (BCM963XX_NVRAM_NAND_PART_OFFSET(nvram, BOOT) != 0)
-> +		return -EINVAL;
-> +
-> +	/* Get the rootfs partition locations */
-> +	rootfs1 = bcm63xx_parse_nand_image_tag(master, "rootfs1",
-> +		BCM963XX_NVRAM_NAND_PART_OFFSET(nvram, ROOTFS_1),
-> +		&rootfs1_off, &rootfs1_size, &rootfs1_seq);
-> +	rootfs2 = bcm63xx_parse_nand_image_tag(master, "rootfs2",
-> +		BCM963XX_NVRAM_NAND_PART_OFFSET(nvram, ROOTFS_2),
-> +		&rootfs2_off, &rootfs2_size, &rootfs2_seq);
-> +
-> +	/* Determine primary rootfs partition */
-> +	if (rootfs1 && rootfs2) {
-> +		bool use_latest = bcm63xx_boot_latest(nvram);
-> +
-> +		/* Compare sequence numbers */
-> +		if (use_latest)
-> +			use_first = rootfs1_seq > rootfs2_seq;
-> +		else
-> +			use_first = rootfs1_seq < rootfs2_seq;
-> +
-> +		pr_info("CFE bootline selected %s image rootfs%u (rootfs1_seq=%u, rootfs2_seq=%u)\n",
-> +			use_latest ? "latest" : "previous",
-> +			use_first ? 1 : 2,
-> +			rootfs1_seq, rootfs2_seq);
-> +	} else {
-> +		use_first = rootfs1;
-> +	}
-> +
-> +	/* Partitions:
-> +	 * 1 boot
-> +	 * 2 rootfs
-> +	 * 3 data
-> +	 * 4 rootfs1_update
-> +	 * 5 rootfs2_update
-> +	 * 6 rootfs_other
-> +	 */
-> +	nrparts = 6;
-> +	i = 0;
-> +
-> +	parts = kcalloc(nrparts, sizeof(*parts), GFP_KERNEL);
-> +	if (!parts)
-> +		return -ENOMEM;
-> +
-> +	parts[i].name = "boot";
-> +	parts[i].offset = BCM963XX_NVRAM_NAND_PART_OFFSET(nvram, BOOT);
-> +	parts[i].size = BCM963XX_NVRAM_NAND_PART_SIZE(nvram, BOOT);
-> +	i++;
-> +
-> +	/* Primary rootfs if either is available */
-> +	if (rootfs1 || rootfs2) {
-> +		parts[i].name = "rootfs";
-> +		parts[i].offset = use_first ? rootfs1_off : rootfs2_off;
-> +		parts[i].size = use_first ? rootfs1_size : rootfs2_size;
-> +		i++;
-> +	}
-> +
-> +	parts[i].name = "data";
-> +	parts[i].offset = BCM963XX_NVRAM_NAND_PART_OFFSET(nvram, DATA);
-> +	parts[i].size = BCM963XX_NVRAM_NAND_PART_SIZE(nvram, DATA);
-> +	i++;
-> +
-> +	/* Full rootfs partitions for updates */
-> +	parts[i].name = "rootfs1_update";
-> +	parts[i].offset = BCM963XX_NVRAM_NAND_PART_OFFSET(nvram, ROOTFS_1);
-> +	parts[i].size = BCM963XX_NVRAM_NAND_PART_SIZE(nvram, ROOTFS_1);
-> +	i++;
-> +
-> +	parts[i].name = "rootfs2_update";
-> +	parts[i].offset = BCM963XX_NVRAM_NAND_PART_OFFSET(nvram, ROOTFS_2);
-> +	parts[i].size = BCM963XX_NVRAM_NAND_PART_SIZE(nvram, ROOTFS_2);
-> +	i++;
-> +
-> +	/* Other rootfs if both are available */
-> +	if (rootfs1 && rootfs2) {
-> +		parts[i].name = "rootfs_other";
-> +		parts[i].offset = use_first ? rootfs2_off : rootfs1_off;
-> +		parts[i].size = use_first ? rootfs2_size : rootfs1_size;
-> +		i++;
-> +	}
-> +
-> +	*pparts = parts;
-> +	return nrparts;
-> +}
-> +
->  static int bcm63xx_parse_cfe_partitions(struct mtd_info *master,
->  					const struct mtd_partition **pparts,
->  					struct mtd_part_parser_data *data)
-> @@ -304,7 +487,7 @@ static int bcm63xx_parse_cfe_partitions(struct mtd_info *master,
->  	if (!mtd_type_is_nand(master))
->  		ret = bcm63xx_parse_cfe_nor_partitions(master, pparts, nvram);
->  	else
-> -		ret = -EINVAL;
-> +		ret = bcm63xx_parse_cfe_nand_partitions(master, pparts, nvram);
->  
->  out:
->  	vfree(nvram);
-> @@ -321,5 +504,6 @@ MODULE_LICENSE("GPL");
->  MODULE_AUTHOR("Daniel Dickinson <openwrt@cshore.neomailbox.net>");
->  MODULE_AUTHOR("Florian Fainelli <florian@openwrt.org>");
->  MODULE_AUTHOR("Mike Albon <malbon@openwrt.org>");
-> -MODULE_AUTHOR("Jonas Gorski <jonas.gorski@gmail.com");
-> +MODULE_AUTHOR("Jonas Gorski <jonas.gorski@gmail.com>");
-> +MODULE_AUTHOR("Simon Arlott");
->  MODULE_DESCRIPTION("MTD partitioning for BCM63XX CFE bootloaders");
-> -- 
-> 2.1.4
+>> +#include <linux/clk.h>
+>> +#include <linux/gpio.h>
 > 
-> -- 
-> Simon Arlott
+> This include should not be needed, just the one below.
+> 
+
+Ack.
+
+>> +#include <linux/gpio/driver.h>
+> (...)
+>> +#include <linux/interrupt.h>
+>> +#include <linux/io.h>
+>> +#include <linux/irq.h>
+>> +#include <linux/of.h>
+>> +#include <linux/of_device.h>
+>> +#include <linux/pinctrl/pinconf.h>
+>> +#include <linux/pinctrl/pinconf-generic.h>
+>> +#include <linux/pinctrl/pinctrl.h>
+>> +#include <linux/pinctrl/pinmux.h>
+>> +#include <linux/platform_device.h>
+>> +#include <linux/slab.h>
+>> +#include <linux/spinlock.h>
+>> +
+>> +#include <asm/mach-pic32/pic32.h>
+> 
+> Oh this is how you do things still? Is this necessary? :/
+
+This is needed only for the PIC32_CLR()/PIC32_SET()/PIC32_INV() macros that are just providing register offsets. These macros are used by many (all?) of the PIC32 drivers and platform.  Explicitly labeling these offsets where used is valuable because it changes the meaning of "value" to writel().  If you can suggest a better place to put these I am all for it.
+
+> Then I guess it has to be applied to the MIPS tree.
+> 
+
+Doesn't have to now.
+
+>> +static inline u32 pctl_readl(struct pic32_pinctrl *pctl, u32 reg)
+>> +{
+>> +       return readl(pctl->reg_base + reg);
+>> +}
+>> +
+>> +static inline void pctl_writel(struct pic32_pinctrl *pctl, u32 val, u32 reg)
+>> +{
+>> +       writel(val, pctl->reg_base + reg);
+>> +}
+> 
+> This is a bit excess abstraction, I would just readl() and writel()
+> directly in the code, adding the offset. Butr it's you pick.
+> 
+
+I'm in agreement.  It was nice for initial debug, but we are past that.  I'll yank the wrapper *_writel/*_readl functions.
+
+>> +static inline struct pic32_gpio_bank *gc_to_bank(struct gpio_chip *gc)
+>> +{
+>> +       return container_of(gc, struct pic32_gpio_bank, gpio_chip);
+>> +}
+> 
+> Don't do this anymore.
+> 
+> Se all the "use gpiochip data pointer" patches I merged last
+> merge window.
+> 
+
+Those made it in with this patch outstanding.  I will double check against your pinctrl tree.
+
+> Replace
+> 
+> = gc_to_bank(gc)
+> with
+> = gpiochip_get_data(gc);
+> 
+> everywhere and use
+> 
+> gpiochip_add_data(&gc, bank)
+> 
+> to make sure that gpipchip_get_data() returns what you want.
+> 
+>> +static inline struct pic32_gpio_bank *irqd_to_bank(struct irq_data *d)
+>> +{
+>> +       return gc_to_bank(irq_data_get_irq_chip_data(d));
+>> +}
+> 
+> For example this becomes:
+> return gpiochip_get_data(irq_data_get_irq_chip_data(d));
+> 
+
+Thanks for the explanation.  Consider it done.
+
+>> +static inline u32 gpio_readl(struct pic32_gpio_bank *bank, u32 reg)
+>> +{
+>> +       return readl(bank->reg_base + reg);
+>> +}
+>> +
+>> +static inline void gpio_writel(struct pic32_gpio_bank *bank, u32 val,
+>> +                              u32 reg)
+>> +{
+>> +       writel(val, bank->reg_base + reg);
+>> +}
+> 
+> Again excessive abstraction IMO.
+> 
+
+Ack.
+
+>> +#define GPIO_BANK(_bank, _npins)                                       \
+>> +       {                                                               \
+>> +               .gpio_chip = {                                          \
+>> +                       .label = "GPIO" #_bank,                         \
+>> +                       .request = gpiochip_generic_request,            \
+>> +                       .free = gpiochip_generic_free,                  \
+>> +                       .get_direction = pic32_gpio_get_direction,      \
+>> +                       .direction_input = pic32_gpio_direction_input,  \
+>> +                       .direction_output = pic32_gpio_direction_output, \
+>> +                       .get = pic32_gpio_get,                          \
+>> +                       .set = pic32_gpio_set,                          \
+>> +                       .ngpio = _npins,                                \
+>> +                       .base = GPIO_BANK_START(_bank),                 \
+>> +                       .owner = THIS_MODULE,                           \
+>> +                       .can_sleep = 0,                                 \
+>> +               },                                                      \
+>> +               .irq_chip = {                                           \
+>> +                       .name = "GPIO" #_bank,                          \
+>> +                       .irq_startup = pic32_gpio_irq_startup,  \
+>> +                       .irq_ack = pic32_gpio_irq_ack,          \
+>> +                       .irq_mask = pic32_gpio_irq_mask,                \
+>> +                       .irq_unmask = pic32_gpio_irq_unmask,            \
+>> +                       .irq_set_type = pic32_gpio_irq_set_type,        \
+>> +               },                                                      \
+>> +       }
+>> +
+>> +static struct pic32_gpio_bank pic32_gpio_banks[] = {
+>> +       GPIO_BANK(0, PINS_PER_BANK),
+>> +       GPIO_BANK(1, PINS_PER_BANK),
+>> +       GPIO_BANK(2, PINS_PER_BANK),
+>> +       GPIO_BANK(3, PINS_PER_BANK),
+>> +       GPIO_BANK(4, PINS_PER_BANK),
+>> +       GPIO_BANK(5, PINS_PER_BANK),
+>> +       GPIO_BANK(6, PINS_PER_BANK),
+>> +       GPIO_BANK(7, PINS_PER_BANK),
+>> +       GPIO_BANK(8, PINS_PER_BANK),
+>> +       GPIO_BANK(9, PINS_PER_BANK),
+>> +};
+> 
+> Ewwwww.... I guess it's OK though. I would have made it with
+> some dynamic allocation and a for() loop in code.
+> 
+
+Let me look into this more and see if I can clean it up.
+
+>> +       bank->gpio_chip.dev = &pdev->dev;
+> 
+> This is named .parent in the upstream kernel so you need to change it.
+
+Ack.
+
+> 
+>> +       bank->gpio_chip.of_node = np;
+>> +       ret = gpiochip_add(&bank->gpio_chip);
+> 
+> So use gpiochip_add_data()
+> 
+> Apart from this it looks pretty OK.
+> 
+
+I'll take what I can get.  Let me submit a patch in response to this feedback and you can take it at will.
+
+Josh

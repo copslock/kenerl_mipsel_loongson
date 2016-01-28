@@ -1,51 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Jan 2016 04:15:05 +0100 (CET)
-Received: from mga01.intel.com ([192.55.52.88]:58115 "EHLO mga01.intel.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27010579AbcA1DOx3j9zE (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 28 Jan 2016 04:14:53 +0100
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmsmga101.fm.intel.com with ESMTP; 27 Jan 2016 19:14:46 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.22,356,1449561600"; 
-   d="scan'208";a="642543055"
-Received: from unknown (HELO wfg-t540p.sh.intel.com) ([10.239.192.27])
-  by FMSMGA003.fm.intel.com with ESMTP; 27 Jan 2016 19:14:38 -0800
-Received: from wfg by wfg-t540p.sh.intel.com with local (Exim 4.86)
-        (envelope-from <fengguang.wu@intel.com>)
-        id 1aOd2Z-0006tp-NK; Thu, 28 Jan 2016 11:14:35 +0800
-Date:   Thu, 28 Jan 2016 11:14:35 +0800
-From:   Fengguang Wu <fengguang.wu@intel.com>
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     James Hogan <james.hogan@imgtec.com>, linux-mips@linux-mips.org,
-        linux-arch@vger.kernel.org, linux-kbuild@vger.kernel.org,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Paul Burton <paul.burton@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Heinrich Schuchardt <xypron.glpk@gmx.de>,
-        linux-kernel@vger.kernel.org, Michal Marek <mmarek@suse.com>,
-        linux-arm-kernel@lists.infradead.org
-Subject: Re:
- [linux-review:James-Hogan/kbuild-Remove-stale-asm-generic-wrappers/20160119-183642]
- d979f99e9cc14e2667e9b6e268db695977e4197a BUILD DONE
-Message-ID: <20160128031435.GA25625@wfg-t540p.sh.intel.com>
-References: <569e1dbb.MgLv8OaZwklOxxtU%fengguang.wu@intel.com>
- <1947556.38OyJnvGS5@wuerfel>
- <20160127093018.GA21190@wfg-t540p.sh.intel.com>
- <3596300.IYfzmako0c@wuerfel>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Jan 2016 08:38:23 +0100 (CET)
+Received: from mail-wm0-f67.google.com ([74.125.82.67]:34695 "EHLO
+        mail-wm0-f67.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008613AbcA1HiUIrlkz (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 28 Jan 2016 08:38:20 +0100
+Received: by mail-wm0-f67.google.com with SMTP id p63so1917982wmp.1;
+        Wed, 27 Jan 2016 23:38:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type;
+        bh=27K2gNSbsz/51Zcgq8rT9pbtz7HBwUXw95k23fTIKfc=;
+        b=OL/EJFNwzE1ToFJpHKOvPngD0zsnWimkYrj88THQRBAiT+Eq6op+B3YI+MU9q0X1pM
+         vabjhqZOH6vhutr4TT8SjSJKJBtVFMpBRF4r+oGGHhIQXbiU+bd7a4RCpjQP1nlirkNw
+         0a9n9MwGu6NFqCphuijuveoMmbYQyR+M+InB6tSRFNG92hlv4zz7bfzLOyIYhPzrIY1x
+         xcIlRELADoBNWnqkTdjLMQyxiIR2EiktaBHUIS3eT1S+Za/sxpmsZiODcPkx6r2HeKM7
+         aCxkp2N0OpiarfS+SRJUDuhXm9tY5ek1ultGDJdL//zCsr0wRlYcc+h+KX6Hty0tXOaf
+         oR0A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:sender:in-reply-to:references:date
+         :message-id:subject:from:to:cc:content-type;
+        bh=27K2gNSbsz/51Zcgq8rT9pbtz7HBwUXw95k23fTIKfc=;
+        b=IT75keGyA+B83GLonn+/yw/1Sm61JRRnuublP5hmxKg0XOdiPx1t09tqpJ/PWkiWTH
+         +Chddw16suUYd/CiH0QjfHAUhQ+w6k6+0hJfyvTCu8cMap+RNTfhblrF+ZEfU9Nj4Ap7
+         IYgzgKSYbHwFet5kazEthKeEdhVlS5LnfUd4dzDWIuMbqVp0vSHtDQp7bXh6UbDXIbfO
+         oFmx9qgaX9oTKX6Af5Ig/9MSwzg6VCF1GuDUdAx0ijcIPx0tuqERu8GYlsZyXP8K4yg0
+         /9sMIpGHePi38MXE5MicOOj6plEyf3N2aMgVByNyKI6mgELlkjaI/PwHHoHE/YVMM9Tg
+         vjgw==
+X-Gm-Message-State: AG10YORBgGe6LYjjkFqAhmyGIqPy8J4r5Xhd4CIuAPOOuM/oBdKpucfC3QE1z6dFZIUHEDAuz1AQT1HKux8+iw==
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3596300.IYfzmako0c@wuerfel>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-Return-Path: <fengguang.wu@intel.com>
+X-Received: by 10.194.157.3 with SMTP id wi3mr1444829wjb.30.1453966694426;
+ Wed, 27 Jan 2016 23:38:14 -0800 (PST)
+Received: by 10.27.13.15 with HTTP; Wed, 27 Jan 2016 23:38:14 -0800 (PST)
+In-Reply-To: <20160127111557.GA19682@jhogan-linux.le.imgtec.org>
+References: <1453814784-14230-1-git-send-email-chenhc@lemote.com>
+        <1453814784-14230-6-git-send-email-chenhc@lemote.com>
+        <20160126134229.GA12365@jhogan-linux.le.imgtec.org>
+        <CAAhV-H5zFb=rnESwHvgykNVe1FyAC1WX5zAHUXswYwu7a=VPKw@mail.gmail.com>
+        <20160127111557.GA19682@jhogan-linux.le.imgtec.org>
+Date:   Thu, 28 Jan 2016 15:38:14 +0800
+X-Google-Sender-Auth: 56Smm-R1O20JuXkafcck85krJ1k
+Message-ID: <CAAhV-H6bzZ1cP_YeWWqZa1W0+62rz0ZbCEdfZGTVgBBier6g9A@mail.gmail.com>
+Subject: Re: [PATCH 5/6] MIPS: Loongson: Introduce and use cpu_has_coherent_cache
+ feature
+From:   Huacai Chen <chenhc@lemote.com>
+To:     James Hogan <james.hogan@imgtec.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Aurelien Jarno <aurelien@aurel32.net>,
+        "Steven J. Hill" <Steven.Hill@imgtec.com>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <chenhuacai@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51505
+X-archive-position: 51506
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: fengguang.wu@intel.com
+X-original-sender: chenhc@lemote.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,54 +73,103 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Jan 27, 2016 at 10:44:01AM +0100, Arnd Bergmann wrote:
-> On Wednesday 27 January 2016 17:30:18 Fengguang Wu wrote:
-> 
-> > > Looks good, I'm just unsure about "multi_v8_defconfig", this does not
-> > > exist. Do you mean multi_v5_defconfig?
-> 
-> > Ah yes, multi_v8_defconfig does not exist actually.
-> 
-> Ok, can you include multi_v5_defconfig than?
- 
-OK, done.
+Hi, James,
 
-> I see you have one named "arm-arm5", which may be the same.
+First I want to update some information:
+1) Loongson-3's dcaches don't alias (if PAGE_SIZE>=16K).
+2) Loongson-3's icache is coherent with dcache.
+3) Loongson-3 maintain cache coherency across cores.
 
-Yes, looks so -- it's provided by someone else long time ago.
+Even if I set cpu_has_dc_aliases to 0 and set cpu_has_ic_fills_f_dc to
+1 is not enough, because I also want to skip flush_cache_all(). So,
+maybe cpu_has_coherent_cache is a good name?
 
-> > > I also wonder if you include 'randconfig' builds for some architectures.
-> > > I have patches for all remaining errors and warnings that I see with
-> > > ARM randconfig builds today. Not all of them are merged yet, but I could
-> > > probably come up with a file to be used as input to KCONFIG_ALLCONFIG
-> > > to eliminate the known-broken configurations, if you are interested.
-> > 
-> > If the are mostly ready for upstream, it may be easier to wait until
-> > upstream randconfig works just fine for ARM.
-> 
-> I have around 130 patches for warnings that I'm submitting at the moment, but
-> there are a couple of really tricky ones that I don't currently have
-> a good plan for:
-> 
-> - in some configurations, you end up without any boards selected, hitting
->   an #error in the final link
-> - ARMv3 support in gcc is rather broken and causes internal compiler errors
->   among other things
-> - the old ELF format (OABI) doesn't work in some cases
-> - GCOV_PROFILE_ALL causes problems that need to be debugged
-> - XIP_KERNEL sometimes causes kallsyms to fail
-> - not all platforms implement the complete clk API, if they don't
->   use CONFIG_COMMON_CLK (I have patch for that we can probably merge)
+Huacai
 
-The robot may explicitly enable/disable some CONFIG_* after randconfig
-to workaround known problems.
-
-> - CONFIG_PHYS_OFFSET needs to be entered manually to be a number
->   in 'make config'
-
-That's a problem for auto tests.
-
-> - same for DEBUG_LL
-
-Thanks,
-Fengguang
+On Wed, Jan 27, 2016 at 7:15 PM, James Hogan <james.hogan@imgtec.com> wrote:
+> Hi Huacai,
+>
+> On Wed, Jan 27, 2016 at 12:58:42PM +0800, Huacai Chen wrote:
+>> "cache coherency" here means the coherency across cores, not ic/dc
+>> coherency, could you please suggest a suitable name?
+>
+> Data cache coherency across cores is pretty much a requirement for SMP.
+> It looks more like for various reasons you can skip the cache management
+> functions, e.g.
+>
+>> >> @@ -503,6 +509,9 @@ static void r4k_flush_cache_range(struct vm_area_struct *vma,
+>> >>  {
+>> >>       int exec = vma->vm_flags & VM_EXEC;
+>> >>
+>> >> +     if (cpu_has_coherent_cache)
+>> >> +             return;
+>
+> This seems to suggest:
+> 1) Your dcaches don't alias.
+> 2) Your icache is coherent with your dcache, otherwise you would need to
+>    flush the icache here so that mprotect RW->RX makes code executable
+>    without risk of stale lines existing in icache.
+>
+> So, is that the case?
+>
+> If so, it would seem better to ensure that cpu_has_dc_aliases evaluates
+> to false, and add a similar one for icache coherency, hence my original
+> suggestion.
+>
+>
+>> >> +
+>> >>       if (cpu_has_dc_aliases || (exec && !cpu_has_ic_fills_f_dc))
+>> >>               r4k_on_each_cpu(local_r4k_flush_cache_range, vma);
+>
+> (Note, this cpu_has_ic_fills_f_dc check is wrong, it shouldn't prevent
+> icache flush, see http://patchwork.linux-mips.org/patch/12179/)
+>
+> Cheers
+> James
+>
+>> >>  }
+>> >> @@ -627,6 +636,9 @@ static void r4k_flush_cache_page(struct vm_area_struct *vma,
+>> >>  {
+>> >>       struct flush_cache_page_args args;
+>> >>
+>> >> +     if (cpu_has_coherent_cache)
+>> >> +             return;
+>> >> +
+>> >>       args.vma = vma;
+>> >>       args.addr = addr;
+>> >>       args.pfn = pfn;
+>> >> @@ -636,11 +648,17 @@ static void r4k_flush_cache_page(struct vm_area_struct *vma,
+>> >>
+>> >>  static inline void local_r4k_flush_data_cache_page(void * addr)
+>> >>  {
+>> >> +     if (cpu_has_coherent_cache)
+>> >> +             return;
+>> >> +
+>> >>       r4k_blast_dcache_page((unsigned long) addr);
+>> >>  }
+>> >>
+>> >>  static void r4k_flush_data_cache_page(unsigned long addr)
+>> >>  {
+>> >> +     if (cpu_has_coherent_cache)
+>> >> +             return;
+>> >> +
+>> >>       if (in_atomic())
+>> >>               local_r4k_flush_data_cache_page((void *)addr);
+>> >>       else
+>> >> @@ -825,6 +843,9 @@ static void local_r4k_flush_cache_sigtramp(void * arg)
+>> >>
+>> >>  static void r4k_flush_cache_sigtramp(unsigned long addr)
+>> >>  {
+>> >> +     if (cpu_has_coherent_cache)
+>> >> +             return;
+>> >> +
+>> >>       r4k_on_each_cpu(local_r4k_flush_cache_sigtramp, (void *) addr);
+>> >>  }
+>> >>
+>> >> --
+>> >> 2.4.6
+>> >>
+>> >>
+>> >>
+>> >>
+>> >>

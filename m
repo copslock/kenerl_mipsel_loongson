@@ -1,56 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Jan 2016 03:29:17 +0100 (CET)
-Received: from resqmta-ch2-06v.sys.comcast.net ([69.252.207.38]:42492 "EHLO
-        resqmta-ch2-06v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27009239AbcA1C3NWLISE (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 28 Jan 2016 03:29:13 +0100
-Received: from resomta-ch2-19v.sys.comcast.net ([69.252.207.115])
-        by resqmta-ch2-06v.sys.comcast.net with comcast
-        id BEUU1s0012VvR6D01EV4XV; Thu, 28 Jan 2016 02:29:04 +0000
-Received: from [192.168.1.13] ([76.106.83.43])
-        by resomta-ch2-19v.sys.comcast.net with comcast
-        id BEV11s00H0w5D3801EV2A8; Thu, 28 Jan 2016 02:29:04 +0000
-Subject: Re: [PATCH 1/3] MIPS: R6: Use lightweight SYNC instruction in smp_*
- memory barriers
-To:     Ralf Baechle <ralf@linux-mips.org>,
-        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
-        macro@linux-mips.org
-References: <20150602000818.6668.76632.stgit@ubuntu-yegoshin>
- <20150602000934.6668.43645.stgit@ubuntu-yegoshin>
- <20150605131046.GD26432@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, benh@kernel.crashing.org,
-        will.deacon@arm.com, linux-kernel@vger.kernel.org,
-        markos.chandras@imgtec.com, Steven.Hill@imgtec.com,
-        alexander.h.duyck@redhat.com, davem@davemloft.net
-From:   Joshua Kinard <kumba@gentoo.org>
-X-Enigmail-Draft-Status: N1110
-Message-ID: <56A97CE1.5090004@gentoo.org>
-Date:   Wed, 27 Jan 2016 21:28:49 -0500
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:42.0) Gecko/20100101
- Thunderbird/42.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Jan 2016 04:15:05 +0100 (CET)
+Received: from mga01.intel.com ([192.55.52.88]:58115 "EHLO mga01.intel.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27010579AbcA1DOx3j9zE (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 28 Jan 2016 04:14:53 +0100
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga101.fm.intel.com with ESMTP; 27 Jan 2016 19:14:46 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.22,356,1449561600"; 
+   d="scan'208";a="642543055"
+Received: from unknown (HELO wfg-t540p.sh.intel.com) ([10.239.192.27])
+  by FMSMGA003.fm.intel.com with ESMTP; 27 Jan 2016 19:14:38 -0800
+Received: from wfg by wfg-t540p.sh.intel.com with local (Exim 4.86)
+        (envelope-from <fengguang.wu@intel.com>)
+        id 1aOd2Z-0006tp-NK; Thu, 28 Jan 2016 11:14:35 +0800
+Date:   Thu, 28 Jan 2016 11:14:35 +0800
+From:   Fengguang Wu <fengguang.wu@intel.com>
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     James Hogan <james.hogan@imgtec.com>, linux-mips@linux-mips.org,
+        linux-arch@vger.kernel.org, linux-kbuild@vger.kernel.org,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Paul Burton <paul.burton@imgtec.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Heinrich Schuchardt <xypron.glpk@gmx.de>,
+        linux-kernel@vger.kernel.org, Michal Marek <mmarek@suse.com>,
+        linux-arm-kernel@lists.infradead.org
+Subject: Re:
+ [linux-review:James-Hogan/kbuild-Remove-stale-asm-generic-wrappers/20160119-183642]
+ d979f99e9cc14e2667e9b6e268db695977e4197a BUILD DONE
+Message-ID: <20160128031435.GA25625@wfg-t540p.sh.intel.com>
+References: <569e1dbb.MgLv8OaZwklOxxtU%fengguang.wu@intel.com>
+ <1947556.38OyJnvGS5@wuerfel>
+ <20160127093018.GA21190@wfg-t540p.sh.intel.com>
+ <3596300.IYfzmako0c@wuerfel>
 MIME-Version: 1.0
-In-Reply-To: <20150605131046.GD26432@linux-mips.org>
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=comcast.net;
-        s=q20140121; t=1453948144;
-        bh=l5ZLMjvbCMwKKf9CuT9AXZQNzJflO8rdZ0Rs15k7GFs=;
-        h=Received:Received:Subject:To:From:Message-ID:Date:MIME-Version:
-         Content-Type;
-        b=PBJ7sFFnyOP3Hlo3P5fMjKq1n9NBqDigzzqqSGFBopguerG4E1aKkRSWFsZAvRcH3
-         22uh6nY3wgv0TxuCEqWOgitD0NB+mS4xbDdTxe/T9Sv93G2ECxNr1/tl2BYFvmQHPc
-         7KSvAhGNvfBSjpuEgmRrOXeknptNbupKFYDk6iL7cs/T11o+pBHhX+6bHukNPTLfL0
-         pVRQjKtZw3wzdVR8Bm3Bsk2d414L0HplTm7tU5YCvQb1Aug6AQhA+lkcVPTjrJXiLr
-         5p2z00Zjq9PiOpN5fmVPaGGMmT8Q8LrQk6cnRryIcJtnG3Pa7b0v9ZkOO9PxY4VV5n
-         h0r3NCACgvUYA==
-Return-Path: <kumba@gentoo.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3596300.IYfzmako0c@wuerfel>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+Return-Path: <fengguang.wu@intel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51504
+X-archive-position: 51505
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kumba@gentoo.org
+X-original-sender: fengguang.wu@intel.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -63,101 +58,54 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 06/05/2015 09:10, Ralf Baechle wrote:
-> On Mon, Jun 01, 2015 at 05:09:34PM -0700, Leonid Yegoshin wrote:
+On Wed, Jan 27, 2016 at 10:44:01AM +0100, Arnd Bergmann wrote:
+> On Wednesday 27 January 2016 17:30:18 Fengguang Wu wrote:
 > 
-> Leonid,
+> > > Looks good, I'm just unsure about "multi_v8_defconfig", this does not
+> > > exist. Do you mean multi_v5_defconfig?
 > 
-> to me the biggest technical problem with this patch is that the new Kconfig
-> option is user visible.  This is the kind of deeply technical options
-> which exceeds the technical knowledge of most users, so it should probably
-> be driven by a select.
+> > Ah yes, multi_v8_defconfig does not exist actually.
 > 
-> We probably also want to enquire how old CPUs from before the invention
-> of the stype field are behaving.  If those as I hope for all treat an
-> stype != 0 as stype 0 we could simply drop the option.  But we might
-> simply be out of luck - dunno.
+> Ok, can you include multi_v5_defconfig than?
+ 
+OK, done.
+
+> I see you have one named "arm-arm5", which may be the same.
+
+Yes, looks so -- it's provided by someone else long time ago.
+
+> > > I also wonder if you include 'randconfig' builds for some architectures.
+> > > I have patches for all remaining errors and warnings that I see with
+> > > ARM randconfig builds today. Not all of them are merged yet, but I could
+> > > probably come up with a file to be used as input to KCONFIG_ALLCONFIG
+> > > to eliminate the known-broken configurations, if you are interested.
+> > 
+> > If the are mostly ready for upstream, it may be easier to wait until
+> > upstream randconfig works just fine for ARM.
 > 
-> Maciej,
+> I have around 130 patches for warnings that I'm submitting at the moment, but
+> there are a couple of really tricky ones that I don't currently have
+> a good plan for:
 > 
-> do you have an R4000 / R4600 / R5000 / R7000 / SiByte system at hand to
-> test this?  I think we don't need to test that SYNC actually works as
-> intended but the simpler test that SYNC <stype != 0> is not causing a
-> illegal instruction exception is sufficient, that is if something like
-> 
-> int main(int argc, charg *argv[])
-> {
-> 	asm("	.set	mips2		\n"
-> 	"	sync	0x10		\n"
-> 	"	sync	0x13		\n"
-> 	"	sync	0x04		\n"
-> 	"	.set	mips 0		\n");
-> 
-> 	return 0;
-> }
-> 
-> doesn't crash we should be ok.
-> 
-> The kernel's SYNC emulation should already be ok.  We ignore the stype
-> field entirely and for a uniprocessor R2000/R3000 that should be just
-> the right thing.
-> 
->   Ralf
+> - in some configurations, you end up without any boards selected, hitting
+>   an #error in the final link
+> - ARMv3 support in gcc is rather broken and causes internal compiler errors
+>   among other things
+> - the old ELF format (OABI) doesn't work in some cases
+> - GCOV_PROFILE_ALL causes problems that need to be debugged
+> - XIP_KERNEL sometimes causes kallsyms to fail
+> - not all platforms implement the complete clk API, if they don't
+>   use CONFIG_COMMON_CLK (I have patch for that we can probably merge)
 
-I tried just compiling this on my SGI O2, which has an RM7000 CPU, and it is
-refusing to even compile (after fixing typos):
+The robot may explicitly enable/disable some CONFIG_* after randconfig
+to workaround known problems.
 
-# gcc -O2 -pipe sync_test.c -o sync_test
-{standard input}: Assembler messages:
-{standard input}:19: Error: invalid operands `sync 0x10'
-{standard input}:20: Error: invalid operands `sync 0x13'
-{standard input}:21: Error: invalid operands `sync 0x04'
+> - CONFIG_PHYS_OFFSET needs to be entered manually to be a number
+>   in 'make config'
 
-So a bit of searching landed me here:
-http://stackoverflow.com/questions/3599564/gnu-assembler-for-mips-how-to-emit-sync-instructions
+That's a problem for auto tests.
 
-And I recoded the sync insns like this:
+> - same for DEBUG_LL
 
-int main(int argc, char *argv[])
-{
-	__asm__ volatile (      \
-	"	.set    mips2				\n"
-	"	.word (0x0000000f | (0x10 << 6))	\n"
-	"	.word (0x0000000f | (0x14 << 6))	\n"
-	"	.word (0x0000000f | (0x04 << 6))	\n"
-	"	.set    mips0				\n"
-	);
-
-	return 0;
-}
-
-And the program compiles successfully and executes with no noticeable oddities
-or errors.  Nothing in dmesg, no crashes, booms, or disappearance of small
-kittens.  I did a quick disassembly to make sure all three got emitted:
-
-004005e0 <main>:
-  4005e0:       27bdfff8        addiu   sp,sp,-8
-  4005e4:       afbe0004        sw      s8,4(sp)
-  4005e8:       03a0f021        move    s8,sp
-  4005ec:       afc40008        sw      a0,8(s8)
-  4005f0:       afc5000c        sw      a1,12(s8)
-> 4005f4:       0000040f        sync.p
-> 4005f8:       0000050f        0x50f
-> 4005fc:       0000010f        0x10f
-  400600:       00001021        move    v0,zero
-
-
-Same effect on my Octane (IP30) w/ an R14000 CPU.  Tested inside a uclibc-based
-chroot, but no change.  Executes successfully silently.
-
--- 
-Joshua Kinard
-Gentoo/MIPS
-kumba@gentoo.org
-6144R/F5C6C943 2015-04-27
-177C 1972 1FB8 F254 BAD0 3E72 5C63 F4E3 F5C6 C943
-
-"The past tempts us, the present confuses us, the future frightens us.  And our
-lives slip away, moment by moment, lost in that vast, terrible in-between."
-
---Emperor Turhan, Centauri Republic
+Thanks,
+Fengguang

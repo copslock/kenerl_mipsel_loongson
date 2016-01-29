@@ -1,59 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 Jan 2016 14:39:09 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:11012 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27010150AbcA2NjHFv5fr (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 29 Jan 2016 14:39:07 +0100
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Websense Email Security Gateway with ESMTPS id 4A67C1BAA38D4;
-        Fri, 29 Jan 2016 13:38:58 +0000 (GMT)
-Received: from [10.100.200.149] (10.100.200.149) by HHMAIL01.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server id 14.3.235.1; Fri, 29 Jan 2016
- 13:39:00 +0000
-Date:   Fri, 29 Jan 2016 13:38:59 +0000
-From:   "Maciej W. Rozycki" <macro@imgtec.com>
-To:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-CC:     <paulmck@linux.vnet.ibm.com>, Will Deacon <will.deacon@arm.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        <linux-kernel@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-        <linux-arch@vger.kernel.org>,
-        Andrew Cooper <andrew.cooper3@citrix.com>,
-        Russell King - ARM Linux <linux@arm.linux.org.uk>,
-        <virtualization@lists.linux-foundation.org>,
-        Stefano Stabellini <stefano.stabellini@eu.citrix.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 Jan 2016 15:03:37 +0100 (CET)
+Received: from mail.bmw-carit.de ([62.245.222.98]:47536 "EHLO
+        linuxmail.bmw-carit.de" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S27010570AbcA2ODdJFpSr (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 29 Jan 2016 15:03:33 +0100
+Received: from localhost (handman.bmw-carit.intra [192.168.101.1])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by linuxmail.bmw-carit.de (Postfix) with ESMTPS id 2073059CF9;
+        Fri, 29 Jan 2016 14:47:27 +0100 (CET)
+From:   Daniel Wagner <daniel.wagner@bmw-carit.de>
+To:     linux-kernel@vger.kernel.org, linux-rt-users@vger.kernel.org
+Cc:     linux-fbdev@vger.kernel.org, linux-mips@linux-mips.org,
+        Marcelo Tosatti <mtosatti@redhat.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>,
+        Paul Gortmaker <paul.gortmaker@windriver.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@elte.hu>, "H. Peter Anvin" <hpa@zytor.com>,
-        Joe Perches <joe@perches.com>,
-        David Miller <davem@davemloft.net>,
-        <linux-ia64@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>,
-        <linux-s390@vger.kernel.org>, <sparclinux@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-metag@vger.kernel.org>, <linux-mips@linux-mips.org>,
-        <x86@kernel.org>, <user-mode-linux-devel@lists.sourceforge.net>,
-        <adi-buildroot-devel@lists.sourceforge.net>,
-        <linux-sh@vger.kernel.org>, <linux-xtensa@linux-xtensa.org>,
-        <xen-devel@lists.xenproject.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Boqun Feng <boqun.feng@gmail.com>,
+        Maik Broemme <mbroemme@plusserver.de>,
         Ralf Baechle <ralf@linux-mips.org>,
-        Ingo Molnar <mingo@kernel.org>, <ddaney.cavm@gmail.com>,
-        <james.hogan@imgtec.com>, Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [v3,11/41] mips: reuse asm-generic/barrier.h
-In-Reply-To: <56A9656D.3080707@imgtec.com>
-Message-ID: <alpine.DEB.2.00.1601291333130.5958@tp.orcam.me.uk>
-References: <20160113104516.GE25458@arm.com> <5696CF08.8080700@imgtec.com> <20160114121449.GC15828@arm.com> <5697F6D2.60409@imgtec.com> <20160114203430.GC3818@linux.vnet.ibm.com> <56980C91.1010403@imgtec.com> <20160114212913.GF3818@linux.vnet.ibm.com>
- <569814F2.50801@imgtec.com> <20160114225510.GJ3818@linux.vnet.ibm.com> <56983054.4070807@imgtec.com> <20160115004753.GN3818@linux.vnet.ibm.com> <56984642.3090106@imgtec.com> <alpine.DEB.2.00.1601271116520.5958@tp.orcam.me.uk> <56A9656D.3080707@imgtec.com>
-User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
+        Daniel Wagner <daniel.wagner@bmw-carit.de>
+Subject: [PATCH tip v7 1/7] video: Use bool instead int pointer for get_opt_bool() argument
+Date:   Fri, 29 Jan 2016 15:03:22 +0100
+Message-Id: <1454076208-28354-2-git-send-email-daniel.wagner@bmw-carit.de>
+X-Mailer: git-send-email 2.5.0
+In-Reply-To: <1454076208-28354-1-git-send-email-daniel.wagner@bmw-carit.de>
+References: <1454076208-28354-1-git-send-email-daniel.wagner@bmw-carit.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-X-Originating-IP: [10.100.200.149]
-Return-Path: <Maciej.Rozycki@imgtec.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Return-Path: <daniel.wagner@oss.bmw-carit.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51520
+X-archive-position: 51521
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@imgtec.com
+X-original-sender: daniel.wagner@bmw-carit.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -66,15 +52,32 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, 28 Jan 2016, Leonid Yegoshin wrote:
+As the function name already indicates that get_opt_bool() parses
+for a bool. It is not a surprise that compiler is complaining
+about it when -Werror=incompatible-pointer-types is used:
 
-> In http://patchwork.linux-mips.org/patch/10505/ the very last mesg exchange
-> is:
-[...]
-> ... and that stops forever...
+drivers/video/fbdev/intelfb/intelfbdrv.c: In function ‘intelfb_setup’:
+drivers/video/fbdev/intelfb/intelfbdrv.c:353:39: error: passing argument 3 of ‘get_opt_bool’ from incompatible pointer type [-Werror=incompatible-pointer-types]
+   if (get_opt_bool(this_opt, "accel", &accel))
 
- Thanks for the reminder -- last June was very hectic, I travelled a lot 
-and I lost the discussion from my radar.  Apologies for that.  I replied 
-in that thread now with my results.  I hope this helps.
+Signed-off-by: Daniel Wagner <daniel.wagner@bmw-carit.de>
+Reported-by: Fengguang Wu <fengguang.wu@intel.com>
+---
+ drivers/video/fbdev/intelfb/intelfbdrv.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-  Maciej
+diff --git a/drivers/video/fbdev/intelfb/intelfbdrv.c b/drivers/video/fbdev/intelfb/intelfbdrv.c
+index bbec737..bf20744 100644
+--- a/drivers/video/fbdev/intelfb/intelfbdrv.c
++++ b/drivers/video/fbdev/intelfb/intelfbdrv.c
+@@ -302,7 +302,7 @@ static __inline__ int get_opt_int(const char *this_opt, const char *name,
+ }
+ 
+ static __inline__ int get_opt_bool(const char *this_opt, const char *name,
+-				   int *ret)
++				   bool *ret)
+ {
+ 	if (!ret)
+ 		return 0;
+-- 
+2.5.0

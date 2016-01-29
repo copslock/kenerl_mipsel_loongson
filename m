@@ -1,73 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 Jan 2016 22:24:39 +0100 (CET)
-Received: from mail-io0-f175.google.com ([209.85.223.175]:32823 "EHLO
-        mail-io0-f175.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011109AbcA2VYh2p5g0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 29 Jan 2016 22:24:37 +0100
-Received: by mail-io0-f175.google.com with SMTP id f81so102264467iof.0;
-        Fri, 29 Jan 2016 13:24:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc:content-type;
-        bh=+eJ4VrRbkvzr4J2aiYtfk5Mv9W/UkKpmDZzL1Wyf+qA=;
-        b=vB7DSHXcevqxmpRhrkDIHl2mNn/t5WgPU/sAuBRWBNRpT/hI33OEVunIg9wmLoXUdz
-         Q6Kq2lL8M3BfWXNoXqxBiueStTZGwFY6etmd1TbOc5U8PGGh/x6Cd2ECk7PQuZccsraS
-         dAzr9LIi6o0b/ez/EeMTt/aA1CN1cTS5/hJIVXNqFgZqFOvaD8USuKhi/3DolqyTetsx
-         nvcB32j+dEJ5pxsToKvnV1H/JywIZ3xJ1rxIlv5HbOy6t3lNP3oykP7gO5d19AgN91v4
-         eL/RJxgQTxhTfg37Pk6bExlzneMxfm07V2SSPVn+FH/OxeaKG/6vyJlnuqTtXsVC/Nec
-         sSjA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:sender:in-reply-to:references:date
-         :message-id:subject:from:to:cc:content-type;
-        bh=+eJ4VrRbkvzr4J2aiYtfk5Mv9W/UkKpmDZzL1Wyf+qA=;
-        b=YH8YVj1jEqqXIURgq/8nMhJptSJ8KKly4ToZLPCoKtxqzKMYuHxMForPf+rEuEXi2G
-         D9GGDqbSsgZKBDycYr5/8VnC3E2PodWY6tq4MOMOYbBw+XW0bf5HgQTuNoGrz73wMTmp
-         23UZ7Yirq3G+zciq3AtZTVbewPXPRdNwlo0CguT1AzJkpz25htNY8Z89y5Q+dnaMJQHP
-         u2nJN/Kx8PfKGSEZNT6tIRPlqdRjFvs6s3Lo9OuT7plXW0FVP6L8JAGkgKaYNygWqn/N
-         4rGOxCVR6rpBxasoZRJJQDNVPwWekF8lnz31NBT5EcthKSyX/AQTUhikfvQcp2lX8t/p
-         xAeQ==
-X-Gm-Message-State: AG10YOSFgERY8jIq6ICZneYV2Ipgw67pJ9suBW9abt17HI+TiTPbZFR+LwHIEFFxbZsJS2ocQ4CpHSQjWHNFzA==
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 Jan 2016 22:32:39 +0100 (CET)
+Received: from hauke-m.de ([5.39.93.123]:55243 "EHLO hauke-m.de"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27011109AbcA2VchuBM3c (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 29 Jan 2016 22:32:37 +0100
+Received: from [192.168.178.24] (p508B66DC.dip0.t-ipconnect.de [80.139.102.220])
+        by hauke-m.de (Postfix) with ESMTPSA id 3ABB610043C;
+        Fri, 29 Jan 2016 22:32:37 +0100 (CET)
+From:   Hauke Mehrtens <hauke@hauke-m.de>
+Subject: vdso clock_gettime() sometimes broken after sleep
+X-Enigmail-Draft-Status: N1110
+To:     markos.chandras@imgtec.com, Alex Smith <alex.smith@imgtec.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Message-ID: <56ABDA74.9010203@hauke-m.de>
+Date:   Fri, 29 Jan 2016 22:32:36 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+ Icedove/38.5.0
 MIME-Version: 1.0
-X-Received: by 10.107.154.147 with SMTP id c141mr12083817ioe.151.1454102671561;
- Fri, 29 Jan 2016 13:24:31 -0800 (PST)
-Received: by 10.107.9.97 with HTTP; Fri, 29 Jan 2016 13:24:31 -0800 (PST)
-In-Reply-To: <19656457.qoKNGRmV4Q@wuerfel>
-References: <569e1dbb.MgLv8OaZwklOxxtU%fengguang.wu@intel.com>
-        <7619136.niuXthzi6R@wuerfel>
-        <CAMuHMdX33SQe8n7SRda0TjQV05yP1zbuw129Jqjknt8=CY=LjA@mail.gmail.com>
-        <19656457.qoKNGRmV4Q@wuerfel>
-Date:   Fri, 29 Jan 2016 22:24:31 +0100
-X-Google-Sender-Auth: 40A1kfcGk5-JtwKAj2Frh7tIvSs
-Message-ID: <CAMuHMdW1_of2Dw29=8VdhD0hstgvTh-CfATdLAiu5ZrwRRP77Q@mail.gmail.com>
-Subject: Re: [linux-review:James-Hogan/kbuild-Remove-stale-asm-generic-wrappers/20160119-183642]
- d979f99e9cc14e2667e9b6e268db695977e4197a BUILD DONE
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     Russell King - ARM Linux <linux@arm.linux.org.uk>,
-        Fengguang Wu <fengguang.wu@intel.com>,
-        Linux-Arch <linux-arch@vger.kernel.org>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        James Hogan <james.hogan@imgtec.com>,
-        Paul Burton <paul.burton@imgtec.com>,
-        linux-kbuild <linux-kbuild@vger.kernel.org>,
-        Heinrich Schuchardt <xypron.glpk@gmx.de>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Michal Marek <mmarek@suse.com>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <geert.uytterhoeven@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+Return-Path: <hauke@hauke-m.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51530
+X-archive-position: 51531
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: hauke@hauke-m.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -80,69 +39,90 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Arnd,
+When using the vdso clock_gettime() it looks like that the clock is
+sometimes not going forward when the process sleeps and the clock also
+sleeps. This problem only happens with the vdso clock and not with the
+normal syscall clock.
 
-On Fri, Jan 29, 2016 at 9:44 PM, Arnd Bergmann <arnd@arndb.de> wrote:
->
-> diff --git a/arch/arm/Kconfig.debug b/arch/arm/Kconfig.debug
-> index c6b6175d0203..6cc09cf8618f 100644
-> --- a/arch/arm/Kconfig.debug
-> +++ b/arch/arm/Kconfig.debug
-> @@ -1526,6 +1526,7 @@ config DEBUG_UART_PHYS
->         default 0xfffb9800 if DEBUG_OMAP1UART3 || DEBUG_OMAP7XXUART3
->         default 0xfffe8600 if DEBUG_BCM63XX_UART
->         default 0xfffff700 if ARCH_IOP33X
-> +       default 0xdeadbeef if DEBUG_LL_UART_8250 || DEBUG_LL_UART_PL01X || DEBUG_LL_UART_EFM32
->         depends on ARCH_EP93XX || \
->                 DEBUG_LL_UART_8250 || DEBUG_LL_UART_PL01X || \
->                 DEBUG_LL_UART_EFM32 || \
-> @@ -1628,6 +1629,7 @@ config DEBUG_UART_VIRT
->         default 0xff003000 if DEBUG_U300_UART
->         default 0xffd01000 if DEBUG_HIP01_UART
->         default DEBUG_UART_PHYS if !MMU
-> +       default 0xdeadbeef if DEBUG_LL_UART_8250 || DEBUG_LL_UART_PL01X || DEBUG_LL_UART_EFM32
->         depends on DEBUG_LL_UART_8250 || DEBUG_LL_UART_PL01X || \
->                 DEBUG_UART_8250 || DEBUG_UART_PL01X || DEBUG_MESON_UARTAO || \
->                 DEBUG_NETX_UART || \
-> diff --git a/arch/arm/include/debug/8250.S b/arch/arm/include/debug/8250.S
-> index 7f7446f6f806..1191b1458586 100644
-> --- a/arch/arm/include/debug/8250.S
-> +++ b/arch/arm/include/debug/8250.S
-> @@ -9,6 +9,9 @@
->   */
->  #include <linux/serial_reg.h>
->
-> +#if CONFIG_DEBUG_UART_PHYS == 0xdeadbeef || CONFIG_DEBUG_UART_VIRT < 0xe0000000
+I wrote a small test program which calls the syscall and the vdso
+version. In the first call they are showing the same time, but after I
+sleeped for 1 second, they are off by one second. This problem occurs
+not 100% reliable but I see it pretty often. Only the CLOCK_REALTIME and
+CLOCK_MONOTONIC seam to be affected CLOCK_REALTIME_COARSE is not affected.
 
-Any special reason for 0xe0000000 vs ...
+I am using an MIPS BE 34Kc V5.6 CPU with two VPEs, but only one is used.
+This is a Lantiq VRX200 SoC with OpenWrt Linux kernel 4.4 and musl libc.
 
-> --- a/arch/arm/include/debug/efm32.S
-> +++ b/arch/arm/include/debug/efm32.S
-> @@ -6,6 +6,9 @@
->   * it under the terms of the GNU General Public License version 2 as
->   * published by the Free Software Foundation.
->   */
-> +#if CONFIG_DEBUG_UART_PHYS == 0xdeadbeef || CONFIG_DEBUG_UART_VIRT < 0xf0000000
+Hauke
 
-0xf0000000?
 
-> --- a/arch/arm/include/debug/pl01x.S
-> +++ b/arch/arm/include/debug/pl01x.S
-> @@ -10,6 +10,9 @@
->   * published by the Free Software Foundation.
->   *
->  */
-> +#if CONFIG_DEBUG_UART_PHYS == 0xdeadbeef || CONFIG_DEBUG_UART_VIRT < 0xf0000000
+Here are my measurements:
 
-Likewise.
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+start test
+syscall: CLOCK_REALTIME: tv_sec: 1454098944, tv_nsec: 463189916
+vdso:    CLOCK_REALTIME: tv_sec: 1454098944, tv_nsec: 463242196
+syscall: CLOCK_REALTIME_COARSE: tv_sec: 1454098944, tv_nsec: 456000000
+vdso:    CLOCK_REALTIME_COARSE: tv_sec: 1454098944, tv_nsec: 456000000
+syscall: CLOCK_MONOTONIC: tv_sec: 107, tv_nsec: 28113172
+vdso:    CLOCK_MONOTONIC: tv_sec: 107, tv_nsec: 32150208
+syscall: CLOCK_MONOTONIC_COARSE: tv_sec: 107, tv_nsec: 24678324
+vdso:    CLOCK_MONOTONIC_COARSE: tv_sec: 107, tv_nsec: 24678324
+syscall: CLOCK_MONOTONIC_RAW: tv_sec: 107, tv_nsec: 28263008
+vdso:    CLOCK_MONOTONIC_RAW: tv_sec: 107, tv_nsec: 28300760
+syscall: CLOCK_BOOTTIME: tv_sec: 107, tv_nsec: 28337540
+vdso:    CLOCK_BOOTTIME: tv_sec: 107, tv_nsec: 28379100
+syscall: CLOCK_PROCESS_CPUTIME_ID: tv_sec: 0, tv_nsec: 3111128
+vdso:    CLOCK_PROCESS_CPUTIME_ID: tv_sec: 0, tv_nsec: 3153120
+syscall: CLOCK_THREAD_CPUTIME_ID: tv_sec: 0, tv_nsec: 3192208
+vdso:    CLOCK_THREAD_CPUTIME_ID: tv_sec: 0, tv_nsec: 3231696
+sleep(1)
+syscall: CLOCK_REALTIME: tv_sec: 1454098945, tv_nsec: 464023036
+vdso:    CLOCK_REALTIME: tv_sec: 1454098946, tv_nsec: 468077456
+syscall: CLOCK_REALTIME_COARSE: tv_sec: 1454098945, tv_nsec: 460000000
+vdso:    CLOCK_REALTIME_COARSE: tv_sec: 1454098945, tv_nsec: 460000000
+syscall: CLOCK_MONOTONIC: tv_sec: 108, tv_nsec: 28874940
+vdso:    CLOCK_MONOTONIC: tv_sec: 109, tv_nsec: 32911852
+syscall: CLOCK_MONOTONIC_COARSE: tv_sec: 108, tv_nsec: 24678324
+vdso:    CLOCK_MONOTONIC_COARSE: tv_sec: 108, tv_nsec: 24678324
+syscall: CLOCK_MONOTONIC_RAW: tv_sec: 108, tv_nsec: 29023384
+vdso:    CLOCK_MONOTONIC_RAW: tv_sec: 108, tv_nsec: 29061372
+syscall: CLOCK_BOOTTIME: tv_sec: 108, tv_nsec: 29097912
+vdso:    CLOCK_BOOTTIME: tv_sec: 108, tv_nsec: 29139864
+syscall: CLOCK_PROCESS_CPUTIME_ID: tv_sec: 0, tv_nsec: 3824540
+vdso:    CLOCK_PROCESS_CPUTIME_ID: tv_sec: 0, tv_nsec: 3865708
+syscall: CLOCK_THREAD_CPUTIME_ID: tv_sec: 0, tv_nsec: 3904680
+vdso:    CLOCK_THREAD_CPUTIME_ID: tv_sec: 0, tv_nsec: 3943892
+sleep(2)
+syscall: CLOCK_REALTIME: tv_sec: 1454098947, tv_nsec: 464791376
+vdso:    CLOCK_REALTIME: tv_sec: 1454098950, tv_nsec: 468847600
+syscall: CLOCK_REALTIME_COARSE: tv_sec: 1454098947, tv_nsec: 460000000
+vdso:    CLOCK_REALTIME_COARSE: tv_sec: 1454098947, tv_nsec: 460000000
+syscall: CLOCK_MONOTONIC: tv_sec: 110, tv_nsec: 29644468
+vdso:    CLOCK_MONOTONIC: tv_sec: 113, tv_nsec: 33682152
+syscall: CLOCK_MONOTONIC_COARSE: tv_sec: 110, tv_nsec: 24678324
+vdso:    CLOCK_MONOTONIC_COARSE: tv_sec: 110, tv_nsec: 24678324
+syscall: CLOCK_MONOTONIC_RAW: tv_sec: 110, tv_nsec: 29794136
+vdso:    CLOCK_MONOTONIC_RAW: tv_sec: 110, tv_nsec: 29831728
+syscall: CLOCK_BOOTTIME: tv_sec: 110, tv_nsec: 29868576
+vdso:    CLOCK_BOOTTIME: tv_sec: 110, tv_nsec: 29909920
+syscall: CLOCK_PROCESS_CPUTIME_ID: tv_sec: 0, tv_nsec: 4547416
+vdso:    CLOCK_PROCESS_CPUTIME_ID: tv_sec: 0, tv_nsec: 4589684
+syscall: CLOCK_THREAD_CPUTIME_ID: tv_sec: 0, tv_nsec: 4628872
+vdso:    CLOCK_THREAD_CPUTIME_ID: tv_sec: 0, tv_nsec: 4668808
+sleep(3)
+syscall: CLOCK_REALTIME: tv_sec: 1454098950, tv_nsec: 465558716
+vdso:    CLOCK_REALTIME: tv_sec: 1454098956, tv_nsec: 469613960
+syscall: CLOCK_REALTIME_COARSE: tv_sec: 1454098950, tv_nsec: 460000000
+vdso:    CLOCK_REALTIME_COARSE: tv_sec: 1454098950, tv_nsec: 460000000
+syscall: CLOCK_MONOTONIC: tv_sec: 113, tv_nsec: 30411308
+vdso:    CLOCK_MONOTONIC: tv_sec: 119, tv_nsec: 34448236
+syscall: CLOCK_MONOTONIC_COARSE: tv_sec: 113, tv_nsec: 24678324
+vdso:    CLOCK_MONOTONIC_COARSE: tv_sec: 113, tv_nsec: 24678324
+syscall: CLOCK_MONOTONIC_RAW: tv_sec: 113, tv_nsec: 30559184
+vdso:    CLOCK_MONOTONIC_RAW: tv_sec: 113, tv_nsec: 30596676
+syscall: CLOCK_BOOTTIME: tv_sec: 113, tv_nsec: 30632568
+vdso:    CLOCK_BOOTTIME: tv_sec: 113, tv_nsec: 30673204
+syscall: CLOCK_PROCESS_CPUTIME_ID: tv_sec: 0, tv_nsec: 5262328
+vdso:    CLOCK_PROCESS_CPUTIME_ID: tv_sec: 0, tv_nsec: 5304576
+syscall: CLOCK_THREAD_CPUTIME_ID: tv_sec: 0, tv_nsec: 5343136
+vdso:    CLOCK_THREAD_CPUTIME_ID: tv_sec: 0, tv_nsec: 5382616

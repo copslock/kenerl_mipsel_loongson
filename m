@@ -1,13 +1,13 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 Jan 2016 15:03:58 +0100 (CET)
-Received: from mail.bmw-carit.de ([62.245.222.98]:47538 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 Jan 2016 15:04:15 +0100 (CET)
+Received: from mail.bmw-carit.de ([62.245.222.98]:47537 "EHLO
         linuxmail.bmw-carit.de" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27010646AbcA2ODdNy4er (ORCPT
+        by eddie.linux-mips.org with ESMTP id S27006547AbcA2ODdMe92r (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Fri, 29 Jan 2016 15:03:33 +0100
 Received: from localhost (handman.bmw-carit.intra [192.168.101.1])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by linuxmail.bmw-carit.de (Postfix) with ESMTPS id 4D31F59CFA;
-        Fri, 29 Jan 2016 14:47:27 +0100 (CET)
+        by linuxmail.bmw-carit.de (Postfix) with ESMTPS id 4B8F15951C;
+        Fri, 29 Jan 2016 14:47:24 +0100 (CET)
 From:   Daniel Wagner <daniel.wagner@bmw-carit.de>
 To:     linux-kernel@vger.kernel.org, linux-rt-users@vger.kernel.org
 Cc:     linux-fbdev@vger.kernel.org, linux-mips@linux-mips.org,
@@ -22,17 +22,18 @@ Cc:     linux-fbdev@vger.kernel.org, linux-mips@linux-mips.org,
         Maik Broemme <mbroemme@plusserver.de>,
         Ralf Baechle <ralf@linux-mips.org>,
         Daniel Wagner <daniel.wagner@bmw-carit.de>
-Subject: [PATCH tip v7 2/7] MIPS: Differentiate between 32 and 64 bit ELF header
-Date:   Fri, 29 Jan 2016 15:03:23 +0100
-Message-Id: <1454076208-28354-3-git-send-email-daniel.wagner@bmw-carit.de>
+Subject: [PATCH tip v7 0/7] Simple wait queue support
+Date:   Fri, 29 Jan 2016 15:03:21 +0100
+Message-Id: <1454076208-28354-1-git-send-email-daniel.wagner@bmw-carit.de>
 X-Mailer: git-send-email 2.5.0
-In-Reply-To: <1454076208-28354-1-git-send-email-daniel.wagner@bmw-carit.de>
-References: <1454076208-28354-1-git-send-email-daniel.wagner@bmw-carit.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Return-Path: <daniel.wagner@oss.bmw-carit.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51522
+X-archive-position: 51523
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -49,128 +50,117 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Depending on the configuration either the 32 or 64 bit version of
-elf_check_arch() is defined. parse_crash_elf32_headers() does
-some basic verification of the ELF header via elf_check_arch().
-parse_crash_elf64_headers() does it via vmcore_elf64_check_arch()
-which expands to the same elf_check_check().
+Hi,
 
-   In file included from include/linux/elf.h:4:0,
-                    from fs/proc/vmcore.c:13:
-   fs/proc/vmcore.c: In function 'parse_crash_elf64_headers':
->> arch/mips/include/asm/elf.h:228:23: error: initialization from incompatible pointer type [-Werror=incompatible-pointer-types]
-     struct elfhdr *__h = (hdr);     \
-                          ^
-   include/linux/crash_dump.h:41:37: note: in expansion of macro 'elf_check_arch'
-    #define vmcore_elf64_check_arch(x) (elf_check_arch(x) || vmcore_elf_check_arch_cross(x))
-                                        ^
-   fs/proc/vmcore.c:1015:4: note: in expansion of macro 'vmcore_elf64_check_arch'
-      !vmcore_elf64_check_arch(&ehdr) ||
-       ^
+As it turns out I missed a few incompatible-pointer-types errors.
+Furthermore I even missed to update one calling side on wait in the ARM KVM
+code base. Luckily the kbuild test robot found them all.
 
-Since the MIPS ELF header for 32 bit and 64 bit differ we need
-to check accordingly.
+These patches are against
 
-Signed-off-by: Daniel Wagner <daniel.wagner@bmw-carit.de>
-Reported-by: Fengguang Wu <fengguang.wu@intel.com>
----
- arch/mips/include/asm/elf.h | 68 ++++++++++++++++++++++++---------------------
- 1 file changed, 37 insertions(+), 31 deletions(-)
+  tip/sched/core 0905f04eb21fc1c2e690bed5d0418a061d56c225
 
-diff --git a/arch/mips/include/asm/elf.h b/arch/mips/include/asm/elf.h
-index b01a6ff..e311d60 100644
---- a/arch/mips/include/asm/elf.h
-+++ b/arch/mips/include/asm/elf.h
-@@ -205,27 +205,10 @@ struct mips_elf_abiflags_v0 {
- #define MIPS_ABI_FP_64		6	/* -mips32r2 -mfp64 */
- #define MIPS_ABI_FP_64A		7	/* -mips32r2 -mfp64 -mno-odd-spreg */
- 
--#ifdef CONFIG_32BIT
--
--/*
-- * In order to be sure that we don't attempt to execute an O32 binary which
-- * requires 64 bit FP (FR=1) on a system which does not support it we refuse
-- * to execute any binary which has bits specified by the following macro set
-- * in its ELF header flags.
-- */
--#ifdef CONFIG_MIPS_O32_FP64_SUPPORT
--# define __MIPS_O32_FP64_MUST_BE_ZERO	0
--#else
--# define __MIPS_O32_FP64_MUST_BE_ZERO	EF_MIPS_FP64
--#endif
--
--/*
-- * This is used to ensure we don't load something for the wrong architecture.
-- */
--#define elf_check_arch(hdr)						\
-+#define elf_check_arch_32(hdr)						\
- ({									\
- 	int __res = 1;							\
--	struct elfhdr *__h = (hdr);					\
-+	Elf32_Ehdr *__h = (hdr);					\
- 									\
- 	if (__h->e_machine != EM_MIPS)					\
- 		__res = 0;						\
-@@ -242,6 +225,40 @@ struct mips_elf_abiflags_v0 {
- 	__res;								\
- })
- 
-+#define elf_check_arch_64(hdr)						\
-+({									\
-+	int __res = 1;							\
-+	Elf64_Ehdr *__h = (hdr);					\
-+									\
-+	if (__h->e_machine != EM_MIPS)					\
-+		__res = 0;						\
-+	if (__h->e_ident[EI_CLASS] != ELFCLASS64)			\
-+		__res = 0;						\
-+									\
-+	__res;								\
-+})
-+
-+#define vmcore_elf64_check_arch(x)	(elf_check_arch_64(x) || vmcore_elf_check_arch_cross(x))
-+
-+#ifdef CONFIG_32BIT
-+
-+/*
-+ * In order to be sure that we don't attempt to execute an O32 binary which
-+ * requires 64 bit FP (FR=1) on a system which does not support it we refuse
-+ * to execute any binary which has bits specified by the following macro set
-+ * in its ELF header flags.
-+ */
-+#ifdef CONFIG_MIPS_O32_FP64_SUPPORT
-+# define __MIPS_O32_FP64_MUST_BE_ZERO	0
-+#else
-+# define __MIPS_O32_FP64_MUST_BE_ZERO	EF_MIPS_FP64
-+#endif
-+
-+/*
-+ * This is used to ensure we don't load something for the wrong architecture.
-+ */
-+#define elf_check_arch(x)	elf_check_arch_32(x)
-+
- /*
-  * These are used to set parameters in the core dumps.
-  */
-@@ -253,18 +270,7 @@ struct mips_elf_abiflags_v0 {
- /*
-  * This is used to ensure we don't load something for the wrong architecture.
-  */
--#define elf_check_arch(hdr)						\
--({									\
--	int __res = 1;							\
--	struct elfhdr *__h = (hdr);					\
--									\
--	if (__h->e_machine != EM_MIPS)					\
--		__res = 0;						\
--	if (__h->e_ident[EI_CLASS] != ELFCLASS64)			\
--		__res = 0;						\
--									\
--	__res;								\
--})
-+#define elf_check_arch(x)	elf_check_arch_64(x)
- 
- /*
-  * These are used to set parameters in the core dumps.
+also available as git tree:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/wagi/linux.git tip-swait
+
+cheers,
+daniel
+
+changes since v6:
+ - fixed a couple of incompatible-pointer-types errors
+ - fixed a missing KVM ARM wait -> swait update
+
+changes since v5:
+ - unconditionally add -Werror=incompatible-pointer-types
+ - updated KVM statistics in commit message
+ - rebased on tip/sched/core 
+ - added ack-by PeterZ
+
+changes since v4:
+ - replaced patch #2 which tried to force to compiler to
+   exit with an error by using compile time assertion type
+   check macros. Instead use -Werror=incompatible-pointer-types
+   to tell the compiler to barf loudly.
+ - fixed wrong API usage in patch 4 as reported by Boqun.
+
+changes since v3
+ - rebased it on tip/sched/core (KVM bits have changed slightly)
+ - added compile time type check assertion
+ - added non lazy version of swake_up_locked()
+
+changes since v2
+ - rebased again on tip/master. The patches apply
+   cleanly on v4.3-rc6 too.
+ - fixed up mips
+ - reordered patches to avoid lockdep warning when doing bissect.
+ - remove unnecessary initialization of rsp->rda in rcu_init_one().
+
+changes since v1 (PATCH v0)
+ - rebased and fixed some typos found by cross building
+   for S390, ARM and powerpc. For some unknown reason didn't catch
+   them last time.
+ - dropped completion patches because it is not clear yet
+   how to handle complete_all() calls hard-irq/atomic contexts
+   and swake_up_all.
+
+changes since v0 (RFC v0)
+ - promoted the series to PATCH state instead of RFC
+ - fixed a few fallouts with build all and some cross compilers
+   such ARM, PowerPC, S390.
+ - Added the simple waitqueue transformation for KVM from -rt
+   including some numbers requested by Paolo.
+ - Added a commit message to PeterZ's patch. Hope he likes it.
+
+[I got the numbering wrong in v1, so instead 'PATCH v1' you find it
+ as 'PATCH v0' series]
+
+v6: https://lkml.org/lkml/2016/1/28/462
+v5: https://lkml.org/lkml/2015/11/30/318
+v4: https://lwn.net/Articles/665655/
+v3: https://lwn.net/Articles/661415/
+v2: https://lwn.net/Articles/660628/
+v1: https://lwn.net/Articles/656942/
+v0: https://lwn.net/Articles/653586/
+
+Daniel Wagner (4):
+  video: Use bool instead int pointer for get_opt_bool() argument
+  MIPS: Differentiate between 32 and 64 bit ELF header
+  kbuild: Add option to turn incompatible pointer check into error
+  rcu: Do not call rcu_nocb_gp_cleanup() while holding rnp->lock
+
+Marcelo Tosatti (1):
+  KVM: use simple waitqueue for vcpu->wq
+
+Paul Gortmaker (1):
+  rcu: use simple wait queues where possible in rcutree
+
+Peter Zijlstra (Intel) (1):
+  wait.[ch]: Introduce the simple waitqueue (swait) implementation
+
+ Makefile                                 |   3 +
+ arch/arm/kvm/arm.c                       |   8 +-
+ arch/arm/kvm/psci.c                      |   4 +-
+ arch/mips/include/asm/elf.h              |  68 ++++++------
+ arch/mips/kvm/mips.c                     |   8 +-
+ arch/powerpc/include/asm/kvm_host.h      |   4 +-
+ arch/powerpc/kvm/book3s_hv.c             |  23 ++---
+ arch/s390/include/asm/kvm_host.h         |   2 +-
+ arch/s390/kvm/interrupt.c                |   4 +-
+ arch/x86/kvm/lapic.c                     |   6 +-
+ drivers/video/fbdev/intelfb/intelfbdrv.c |   2 +-
+ include/linux/kvm_host.h                 |   5 +-
+ include/linux/swait.h                    | 172 +++++++++++++++++++++++++++++++
+ kernel/rcu/tree.c                        |  24 +++--
+ kernel/rcu/tree.h                        |  12 ++-
+ kernel/rcu/tree_plugin.h                 |  32 ++++--
+ kernel/sched/Makefile                    |   2 +-
+ kernel/sched/swait.c                     | 123 ++++++++++++++++++++++
+ virt/kvm/async_pf.c                      |   4 +-
+ virt/kvm/kvm_main.c                      |  17 ++-
+ 20 files changed, 420 insertions(+), 103 deletions(-)
+ create mode 100644 include/linux/swait.h
+ create mode 100644 kernel/sched/swait.c
+
 -- 
 2.5.0

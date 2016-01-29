@@ -1,32 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 Jan 2016 14:29:02 +0100 (CET)
-Received: from mail.bmw-carit.de ([62.245.222.98]:47513 "EHLO
-        linuxmail.bmw-carit.de" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27009864AbcA2N3BAv3rr (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 29 Jan 2016 14:29:01 +0100
-Received: from localhost (handman.bmw-carit.intra [192.168.101.1])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by linuxmail.bmw-carit.de (Postfix) with ESMTPS id 5CE8259CE6;
-        Fri, 29 Jan 2016 14:12:54 +0100 (CET)
-From:   Daniel Wagner <daniel.wagner@bmw-carit.de>
-To:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Daniel Wagner <daniel.wagner@bmw-carit.de>
-Subject: [PATCH] MIPS: Differentiate between 32 and 64 bit ELF header
-Date:   Fri, 29 Jan 2016 14:28:57 +0100
-Message-Id: <1454074137-16334-1-git-send-email-daniel.wagner@bmw-carit.de>
-X-Mailer: git-send-email 2.5.0
-In-Reply-To: <1453992270-4688-1-git-send-email-daniel.wagner@bmw-carit.de>
-References: <1453992270-4688-1-git-send-email-daniel.wagner@bmw-carit.de>
-Return-Path: <daniel.wagner@oss.bmw-carit.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 Jan 2016 14:32:49 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:41359 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27010028AbcA2NcqqGkjr (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 29 Jan 2016 14:32:46 +0100
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Websense Email Security Gateway with ESMTPS id 60CC297D8449C;
+        Fri, 29 Jan 2016 13:32:37 +0000 (GMT)
+Received: from [10.100.200.149] (10.100.200.149) by HHMAIL01.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server id 14.3.235.1; Fri, 29 Jan 2016
+ 13:32:39 +0000
+Date:   Fri, 29 Jan 2016 13:32:38 +0000
+From:   "Maciej W. Rozycki" <macro@imgtec.com>
+To:     Ralf Baechle <ralf@linux-mips.org>,
+        Joshua Kinard <kumba@gentoo.org>
+CC:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
+        <linux-mips@linux-mips.org>, <benh@kernel.crashing.org>,
+        <will.deacon@arm.com>, <linux-kernel@vger.kernel.org>,
+        <markos.chandras@imgtec.com>, <Steven.Hill@imgtec.com>,
+        <alexander.h.duyck@redhat.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        "Maciej W. Rozycki" <macro@linux-mips.org>
+Subject: Re: [PATCH 1/3] MIPS: R6: Use lightweight SYNC instruction in smp_*
+ memory barriers
+In-Reply-To: <56A97CE1.5090004@gentoo.org>
+Message-ID: <alpine.LFD.2.20.1601291006420.18566@eddie.linux-mips.org>
+References: <20150602000818.6668.76632.stgit@ubuntu-yegoshin> <20150602000934.6668.43645.stgit@ubuntu-yegoshin> <20150605131046.GD26432@linux-mips.org> <56A97CE1.5090004@gentoo.org>
+User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
+MIME-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+X-Originating-IP: [10.100.200.149]
+Return-Path: <Maciej.Rozycki@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51518
+X-archive-position: 51519
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: daniel.wagner@bmw-carit.de
+X-original-sender: macro@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -39,147 +50,136 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Depending on the configuration either the 32 or 64 bit version of
-elf_check_arch() is defined. parse_crash_elf32_headers() does
-some basic verification of the ELF header via elf_check_arch().
-parse_crash_elf64_headers() does it via vmcore_elf64_check_arch()
-which expands to the same elf_check_check().
+On Wed, 27 Jan 2016, Joshua Kinard wrote:
 
-   In file included from include/linux/elf.h:4:0,
-                    from fs/proc/vmcore.c:13:
-   fs/proc/vmcore.c: In function 'parse_crash_elf64_headers':
->> arch/mips/include/asm/elf.h:228:23: error: initialization from incompatible pointer type [-Werror=incompatible-pointer-types]
-     struct elfhdr *__h = (hdr);     \
-                          ^
-   include/linux/crash_dump.h:41:37: note: in expansion of macro 'elf_check_arch'
-    #define vmcore_elf64_check_arch(x) (elf_check_arch(x) || vmcore_elf_check_arch_cross(x))
-                                        ^
-   fs/proc/vmcore.c:1015:4: note: in expansion of macro 'vmcore_elf64_check_arch'
-      !vmcore_elf64_check_arch(&ehdr) ||
-       ^
+> On 06/05/2015 09:10, Ralf Baechle wrote:
+> > 
+> > Maciej,
+> > 
+> > do you have an R4000 / R4600 / R5000 / R7000 / SiByte system at hand to
+> > test this?  I think we don't need to test that SYNC actually works as
+> > intended but the simpler test that SYNC <stype != 0> is not causing a
+> > illegal instruction exception is sufficient, that is if something like
+> > 
+> > int main(int argc, charg *argv[])
+> > {
+> > 	asm("	.set	mips2		\n"
+> > 	"	sync	0x10		\n"
+> > 	"	sync	0x13		\n"
+> > 	"	sync	0x04		\n"
+> > 	"	.set	mips 0		\n");
+> > 
+> > 	return 0;
+> > }
+> > 
+> > doesn't crash we should be ok.
 
-Since the MIPS ELF header for 32 bit and 64 bit differ we need
-to check accordingly.
+ No anomalies observed with these processors:
 
-Signed-off-by: Daniel Wagner <daniel.wagner@bmw-carit.de>
-Reported-by: Fengguang Wu <fengguang.wu@intel.com>
----
-Hi,
+CPU0 revision is: 00000440 (R4400SC)
+CPU0 revision is: 01040102 (SiByte SB1)
 
-In the 'simple wait queue support' series is a patch
-which turns on -Werror=incompatible-pointer-types which will
-result in a compile error for MIPS.
+> I tried just compiling this on my SGI O2, which has an RM7000 CPU, and it is
+> refusing to even compile (after fixing typos):
+> 
+> # gcc -O2 -pipe sync_test.c -o sync_test
+> {standard input}: Assembler messages:
+> {standard input}:19: Error: invalid operands `sync 0x10'
+> {standard input}:20: Error: invalid operands `sync 0x13'
+> {standard input}:21: Error: invalid operands `sync 0x04'
 
-https://lkml.org/lkml/2016/1/28/462
+ Yeah, there is another typo there: you need to use `.set mips32' or 
+suchlike rather than `.set mips2' to be able to specify an operand.  That 
+probably counts as a bug in binutils, as -- according to what I have 
+observed in the other thread -- the `stype' field has been defined at 
+least since the MIPS IV ISA.
 
-I am not completely sure if this is the right approach but I could
-get rid of the errors by this.
+> And the program compiles successfully and executes with no noticeable oddities
+> or errors.  Nothing in dmesg, no crashes, booms, or disappearance of small
 
-I'll prepend this patch to the next version of the series in order
-to see if I got rid of all incompatible pointer types errors caught
-by the kbuild test robot.
+ You did disable SYNC emulation in the kernel though with a change like 
+below, did you?
 
-cheers,
-daniel
+> kittens.  I did a quick disassembly to make sure all three got emitted:
+> 
+> 004005e0 <main>:
+>   4005e0:       27bdfff8        addiu   sp,sp,-8
+>   4005e4:       afbe0004        sw      s8,4(sp)
+>   4005e8:       03a0f021        move    s8,sp
+>   4005ec:       afc40008        sw      a0,8(s8)
+>   4005f0:       afc5000c        sw      a1,12(s8)
+> > 4005f4:       0000040f        sync.p
+> > 4005f8:       0000050f        0x50f
+> > 4005fc:       0000010f        0x10f
+>   400600:       00001021        move    v0,zero
 
+ You could have used the -m switch to override the architecture embedded 
+with the ELF file, to have the instructions disassembled correctly, e.g.:
 
-arch/mips/include/asm/elf.h | 68 ++++++++++++++++++++++++---------------------
- 1 file changed, 37 insertions(+), 31 deletions(-)
+$ objdump -m mips:isa64 -d sync
+[...]
+00000001200008f0 <main>:
+   1200008f0:	0000040f 	sync	0x10
+   1200008f4:	000004cf 	sync	0x13
+   1200008f8:	0000010f 	sync	0x4
+   1200008fc:	03e00008 	jr	ra
+   120000900:	0000102d 	move	v0,zero
+	...
+[...]
 
-diff --git a/arch/mips/include/asm/elf.h b/arch/mips/include/asm/elf.h
-index cefb7a5..7ba0a47 100644
---- a/arch/mips/include/asm/elf.h
-+++ b/arch/mips/include/asm/elf.h
-@@ -205,27 +205,10 @@ struct mips_elf_abiflags_v0 {
- #define MIPS_ABI_FP_64		6	/* -mips32r2 -mfp64 */
- #define MIPS_ABI_FP_64A		7	/* -mips32r2 -mfp64 -mno-odd-spreg */
+ What's interesting to note is that rev. 2.60 of the architecture did 
+actually change the semantics of plain SYNC (aka SYNC 0) from an ordering 
+barrier to a completion barrier.  Previous architectural requirements for 
+plain SYNC were equivalent to rev. 2.60's SYNC_MB, and to implement a 
+completion barrier a dummy load had to follow.
+
+ Some implementers of the old plain SYNC did actually make it a completion 
+rather than ordering barrier and people even argued this was an 
+architectural requirement, as I recall from discussions in early 2000s.  
+On the other hand the implementations affected were UP-only processors 
+where about the only use for SYNC was to drain any write buffers of data 
+intended for MMIO accesses and such an implementation did conform even if 
+it was too heavyweight for architectural requirements.  So I think it was 
+a reasonable implementation decision, saving 1-2 instructions where a 
+completion barrier was required.  The only downside of this decision was 
+some programmers assumed such semantics was universally guaranteed, while 
+indeed it was not (before rev. 2.60).
+
+ Overall where backwards compatibility is required it looks to me like we 
+need to keep the implementation of any completion barriers (e.g. `iob') as 
+a SYNC followed by a dummy load.
+
+  Maciej
+
+linux-mips-no-sync.diff
+Index: linux/arch/mips/kernel/traps.c
+===================================================================
+--- linux.orig/arch/mips/kernel/traps.c
++++ linux/arch/mips/kernel/traps.c
+@@ -672,6 +672,7 @@ static int simulate_rdhwr_mm(struct pt_r
+ 	return -1;
+ }
  
--#ifdef CONFIG_32BIT
--
--/*
-- * In order to be sure that we don't attempt to execute an O32 binary which
-- * requires 64 bit FP (FR=1) on a system which does not support it we refuse
-- * to execute any binary which has bits specified by the following macro set
-- * in its ELF header flags.
-- */
--#ifdef CONFIG_MIPS_O32_FP64_SUPPORT
--# define __MIPS_O32_FP64_MUST_BE_ZERO	0
--#else
--# define __MIPS_O32_FP64_MUST_BE_ZERO	EF_MIPS_FP64
--#endif
--
--/*
-- * This is used to ensure we don't load something for the wrong architecture.
-- */
--#define elf_check_arch(hdr)						\
-+#define elf_check_arch_32(hdr)						\
- ({									\
- 	int __res = 1;							\
--	struct elfhdr *__h = (hdr);					\
-+	Elf32_Ehdr *__h = (hdr);					\
- 									\
- 	if (__h->e_machine != EM_MIPS)					\
- 		__res = 0;						\
-@@ -242,6 +225,40 @@ struct mips_elf_abiflags_v0 {
- 	__res;								\
- })
++#if 0
+ static int simulate_sync(struct pt_regs *regs, unsigned int opcode)
+ {
+ 	if ((opcode & OPCODE) == SPEC0 && (opcode & FUNC) == SYNC) {
+@@ -682,6 +683,7 @@ static int simulate_sync(struct pt_regs 
  
-+#define elf_check_arch_64(hdr)						\
-+({									\
-+	int __res = 1;							\
-+	Elf64_Ehdr *__h = (hdr);					\
-+									\
-+	if (__h->e_machine != EM_MIPS)					\
-+		__res = 0;						\
-+	if (__h->e_ident[EI_CLASS] != ELFCLASS64)			\
-+		__res = 0;						\
-+									\
-+	__res;								\
-+})
-+
-+#define vmcore_elf64_check_arch(x)	(elf_check_arch_64(x) || vmcore_elf_check_arch_cross(x))
-+
-+#ifdef CONFIG_32BIT
-+
-+/*
-+ * In order to be sure that we don't attempt to execute an O32 binary which
-+ * requires 64 bit FP (FR=1) on a system which does not support it we refuse
-+ * to execute any binary which has bits specified by the following macro set
-+ * in its ELF header flags.
-+ */
-+#ifdef CONFIG_MIPS_O32_FP64_SUPPORT
-+# define __MIPS_O32_FP64_MUST_BE_ZERO	0
-+#else
-+# define __MIPS_O32_FP64_MUST_BE_ZERO	EF_MIPS_FP64
+ 	return -1;			/* Must be something else ... */
+ }
 +#endif
-+
-+/*
-+ * This is used to ensure we don't load something for the wrong architecture.
-+ */
-+#define elf_check_arch(x)	elf_check_arch_32(x)
-+
- /*
-  * These are used to set parameters in the core dumps.
-  */
-@@ -253,18 +270,7 @@ struct mips_elf_abiflags_v0 {
- /*
-  * This is used to ensure we don't load something for the wrong architecture.
-  */
--#define elf_check_arch(hdr)						\
--({									\
--	int __res = 1;							\
--	struct elfhdr *__h = (hdr);					\
--									\
--	if (__h->e_machine != EM_MIPS)					\
--		__res = 0;						\
--	if (__h->e_ident[EI_CLASS] != ELFCLASS64)			\
--		__res = 0;						\
--									\
--	__res;								\
--})
-+#define elf_check_arch(x)	elf_check_arch_64(x)
  
- /*
-  * These are used to set parameters in the core dumps.
--- 
-2.5.0
+ asmlinkage void do_ov(struct pt_regs *regs)
+ {
+@@ -1117,8 +1119,10 @@ asmlinkage void do_ri(struct pt_regs *re
+ 		if (status < 0)
+ 			status = simulate_rdhwr_normal(regs, opcode);
+ 
++#if 0
+ 		if (status < 0)
+ 			status = simulate_sync(regs, opcode);
++#endif
+ 
+ 		if (status < 0)
+ 			status = simulate_fp(regs, opcode, old_epc, old31);

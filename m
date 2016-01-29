@@ -1,42 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 Jan 2016 15:05:55 +0100 (CET)
-Received: from mail.bmw-carit.de ([62.245.222.98]:47607 "EHLO
-        linuxmail.bmw-carit.de" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27011069AbcA2ODnlv0br (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 29 Jan 2016 15:03:43 +0100
-Received: from localhost (handman.bmw-carit.intra [192.168.101.1])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by linuxmail.bmw-carit.de (Postfix) with ESMTPS id 0AF7659CFF;
-        Fri, 29 Jan 2016 14:47:33 +0100 (CET)
-From:   Daniel Wagner <daniel.wagner@bmw-carit.de>
-To:     linux-kernel@vger.kernel.org, linux-rt-users@vger.kernel.org
-Cc:     linux-fbdev@vger.kernel.org, linux-mips@linux-mips.org,
-        Marcelo Tosatti <mtosatti@redhat.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>,
-        Paul Gortmaker <paul.gortmaker@windriver.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Boqun Feng <boqun.feng@gmail.com>,
-        Maik Broemme <mbroemme@plusserver.de>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 Jan 2016 21:45:10 +0100 (CET)
+Received: from mout.kundenserver.de ([212.227.126.131]:56455 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27011109AbcA2UpGJga2f (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 29 Jan 2016 21:45:06 +0100
+Received: from wuerfel.localnet ([78.42.132.4]) by mrelayeu.kundenserver.de
+ (mreue001) with ESMTPSA (Nemesis) id 0MBO57-1aHJH50mYf-00ADaS; Fri, 29 Jan
+ 2016 21:44:18 +0100
+From:   Arnd Bergmann <arnd@arndb.de>
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     Russell King - ARM Linux <linux@arm.linux.org.uk>,
+        Fengguang Wu <fengguang.wu@intel.com>,
+        Linux-Arch <linux-arch@vger.kernel.org>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        James Hogan <james.hogan@imgtec.com>,
+        Paul Burton <paul.burton@imgtec.com>,
+        linux-kbuild <linux-kbuild@vger.kernel.org>,
+        Heinrich Schuchardt <xypron.glpk@gmx.de>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         Ralf Baechle <ralf@linux-mips.org>,
-        Daniel Wagner <daniel.wagner@bmw-carit.de>
-Subject: [PATCH tip v7 7/7] rcu: use simple wait queues where possible in rcutree
-Date:   Fri, 29 Jan 2016 15:03:28 +0100
-Message-Id: <1454076208-28354-8-git-send-email-daniel.wagner@bmw-carit.de>
-X-Mailer: git-send-email 2.5.0
-In-Reply-To: <1454076208-28354-1-git-send-email-daniel.wagner@bmw-carit.de>
-References: <1454076208-28354-1-git-send-email-daniel.wagner@bmw-carit.de>
-Return-Path: <daniel.wagner@oss.bmw-carit.de>
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Michal Marek <mmarek@suse.com>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>
+Subject: Re: [linux-review:James-Hogan/kbuild-Remove-stale-asm-generic-wrappers/20160119-183642] d979f99e9cc14e2667e9b6e268db695977e4197a BUILD DONE
+Date:   Fri, 29 Jan 2016 21:44:13 +0100
+Message-ID: <19656457.qoKNGRmV4Q@wuerfel>
+User-Agent: KMail/4.11.5 (Linux/3.16.0-10-generic; KDE/4.11.5; x86_64; ; )
+In-Reply-To: <CAMuHMdX33SQe8n7SRda0TjQV05yP1zbuw129Jqjknt8=CY=LjA@mail.gmail.com>
+References: <569e1dbb.MgLv8OaZwklOxxtU%fengguang.wu@intel.com> <7619136.niuXthzi6R@wuerfel> <CAMuHMdX33SQe8n7SRda0TjQV05yP1zbuw129Jqjknt8=CY=LjA@mail.gmail.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+X-Provags-ID: V03:K0:DwvTgYTKmxAGRNEaMLa8C2cQ60HRPSDp/yQ8YjdqkTMPI092hEL
+ GsVAx3N8bdKxA3koMzfbsWVzLnUTXJIl0xIF50MyX/qzTkqU0g+BqOmB8isymVVh6Uhg4Gn
+ E34ekRfx/MoOnsoxz7KCRCLYaTz7siOdjqHJtz13dzWsrDQahLTZkTmRDlYv5FterIrXHcD
+ SCd/FgXdGhUw/2EAEoxGg==
+X-UI-Out-Filterresults: notjunk:1;V01:K0:8NQu+JsZMS8=:l1YGVZ6VgRvTd5vHMlxYch
+ jd70VgE1AUSrUD/rBUb1RDB918yf1L6/V2BaNgC1pWdbT+xGTCKzbsTNZCfDCtAL/lDjsAuiN
+ uNIEKur06vPhR8cYyRKF0c1sKBfkUInIZx8c4B8aNtdiE+H6h4MDrRnAqgaFkG++TS9xON5x0
+ duA/qOEaWHFMi4SAA3Kp/+eKOfLxvMWny+sAwI3i/vy05HztoaUOJYktY2aqEsl/t3IbCpLRS
+ 3h4NqBNl3lrveAuq3hmT5p4oB7xACoQd+yu8Z51Pk92nw89y8BY1p8M/EIBQbUytLq02Ln+MR
+ LTUiIyrLeHxIzq4EWVsktEuUjaaRGCq4BxeAwSQFYcTTuj6d0zeVGjmYiRoRFyHDVcduA1usf
+ okVXs5jEA9uS/tzPoLs0T3HUIKEE3a4CjPjFWi6ZR9f01GjmYfkDyCFbejqXbETjH49HEBXfm
+ prY9Dz+wl1yyPV8VxawTalb8obbTtz7VX7zWUZrY7tC+hYK9KZo/0TQECpu5uO8dBxB9epz1k
+ WtoOlxUqR4+vAaRH4KllpYeWBCgpezFuX8op8mmv+1NSmB7b74yiPFI4MnC1apINmjm93oAH0
+ 9kLQRr7JQ5IYMQI98oVm4H8I6Famn+BXUOS0R8YLYZt7H0Dxw25qRLRUrnL/63KtmorCiNvKs
+ hr45EodjVLB7/b6gW4OIrMkBKAAbA0E79CMprhfJJcKl2ioEWkjYdrOuO5x4Jmc9QyAkEb5Un
+ pCAT/2cmNYq3A0hd
+Return-Path: <arnd@arndb.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51528
+X-archive-position: 51529
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: daniel.wagner@bmw-carit.de
+X-original-sender: arnd@arndb.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,314 +68,141 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Paul Gortmaker <paul.gortmaker@windriver.com>
+On Friday 29 January 2016 09:01:31 Geert Uytterhoeven wrote:
+> Hi Arnd,
+> 
+> On Fri, Jan 29, 2016 at 12:07 AM, Arnd Bergmann <arnd@arndb.de> wrote:
+> > The other related issue is the DEBUG_UART_{VIRT,PHYS} setting,
+> > where there is no safe platform-specific default. I have two
+> > ideas for working around that, maybe one of them sounds ok to
+> > you:
+> >
+> > a) find a way to warn and/or disable DEBUG_LL when no address
+> >    is set, rather than failing the build
+> >
+> > b) add 'default 0 if COMPILE_TEST' to make it harder to get this
+> >    wrong by accident (hopefully nobody tries to run a COMPILE_TEST
+> >    kernel). Also maybe add a #warning if DEBUG_UART_VIRT is
+> 
+> Make sure to add it at the end of the list, so enabling COMPILE_TEST in a
+> working .config should give another working .config.
 
-As of commit dae6e64d2bcfd4b06304ab864c7e3a4f6b5fedf4 ("rcu: Introduce
-proper blocking to no-CBs kthreads GP waits") the RCU subsystem started
-making use of wait queues.
+Sure, I've just done a largish series of patches in 4.5 to fix that
+bug where we had it already.
 
-Here we convert all additions of RCU wait queues to use simple wait queues,
-since they don't need the extra overhead of the full wait queue features.
+> Perhaps you can use 0xdeadbeef instead of 0, and add
+> 
+>     #if DEBUG_UART_PHYS == 0xdeadbeed
+>     #warning Broken value of DEBUG_UART_PHYS.
+>     #endif
+> 
+> somewhere?
 
-Originally this was done for RT kernels[1], since we would get things like...
+I can do that, though I don't see much of an advantage, as zero
+is no more likely to be a real address than 0xdeadbeed.
 
-  BUG: sleeping function called from invalid context at kernel/rtmutex.c:659
-  in_atomic(): 1, irqs_disabled(): 1, pid: 8, name: rcu_preempt
-  Pid: 8, comm: rcu_preempt Not tainted
-  Call Trace:
-   [<ffffffff8106c8d0>] __might_sleep+0xd0/0xf0
-   [<ffffffff817d77b4>] rt_spin_lock+0x24/0x50
-   [<ffffffff8106fcf6>] __wake_up+0x36/0x70
-   [<ffffffff810c4542>] rcu_gp_kthread+0x4d2/0x680
-   [<ffffffff8105f910>] ? __init_waitqueue_head+0x50/0x50
-   [<ffffffff810c4070>] ? rcu_gp_fqs+0x80/0x80
-   [<ffffffff8105eabb>] kthread+0xdb/0xe0
-   [<ffffffff8106b912>] ? finish_task_switch+0x52/0x100
-   [<ffffffff817e0754>] kernel_thread_helper+0x4/0x10
-   [<ffffffff8105e9e0>] ? __init_kthread_worker+0x60/0x60
-   [<ffffffff817e0750>] ? gs_change+0xb/0xb
+How about the version below?
 
-...and hence simple wait queues were deployed on RT out of necessity
-(as simple wait uses a raw lock), but mainline might as well take
-advantage of the more streamline support as well.
+	Arnd
 
-[1] This is a carry forward of work from v3.10-rt; the original conversion
-was by Thomas on an earlier -rt version, and Sebastian extended it to
-additional post-3.10 added RCU waiters; here I've added a commit log and
-unified the RCU changes into one, and uprev'd it to match mainline RCU.
-
-Signed-off-by: Daniel Wagner <daniel.wagner@bmw-carit.de>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: Paul E. McKenney <paulmck@linux.vnet.ibm.com>
-Cc: Paul Gortmaker <paul.gortmaker@windriver.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
----
- kernel/rcu/tree.c        | 22 +++++++++++-----------
- kernel/rcu/tree.h        | 13 +++++++------
- kernel/rcu/tree_plugin.h | 26 +++++++++++++-------------
- 3 files changed, 31 insertions(+), 30 deletions(-)
-
-diff --git a/kernel/rcu/tree.c b/kernel/rcu/tree.c
-index baf6d09..c3bfbaa 100644
---- a/kernel/rcu/tree.c
-+++ b/kernel/rcu/tree.c
-@@ -1610,7 +1610,7 @@ static void rcu_gp_kthread_wake(struct rcu_state *rsp)
- 	    !READ_ONCE(rsp->gp_flags) ||
- 	    !rsp->gp_kthread)
- 		return;
--	wake_up(&rsp->gp_wq);
-+	swake_up(&rsp->gp_wq);
- }
- 
- /*
-@@ -1990,7 +1990,7 @@ static void rcu_gp_cleanup(struct rcu_state *rsp)
- 	int nocb = 0;
- 	struct rcu_data *rdp;
- 	struct rcu_node *rnp = rcu_get_root(rsp);
--	wait_queue_head_t *sq;
-+	struct swait_queue_head *sq;
- 
- 	WRITE_ONCE(rsp->gp_activity, jiffies);
- 	raw_spin_lock_irq(&rnp->lock);
-@@ -2078,7 +2078,7 @@ static int __noreturn rcu_gp_kthread(void *arg)
- 					       READ_ONCE(rsp->gpnum),
- 					       TPS("reqwait"));
- 			rsp->gp_state = RCU_GP_WAIT_GPS;
--			wait_event_interruptible(rsp->gp_wq,
-+			swait_event_interruptible(rsp->gp_wq,
- 						 READ_ONCE(rsp->gp_flags) &
- 						 RCU_GP_FLAG_INIT);
- 			rsp->gp_state = RCU_GP_DONE_GPS;
-@@ -2108,7 +2108,7 @@ static int __noreturn rcu_gp_kthread(void *arg)
- 					       READ_ONCE(rsp->gpnum),
- 					       TPS("fqswait"));
- 			rsp->gp_state = RCU_GP_WAIT_FQS;
--			ret = wait_event_interruptible_timeout(rsp->gp_wq,
-+			ret = swait_event_interruptible_timeout(rsp->gp_wq,
- 					rcu_gp_fqs_check_wake(rsp, &gf), j);
- 			rsp->gp_state = RCU_GP_DOING_FQS;
- 			/* Locking provides needed memory barriers. */
-@@ -2232,7 +2232,7 @@ static void rcu_report_qs_rsp(struct rcu_state *rsp, unsigned long flags)
- 	WARN_ON_ONCE(!rcu_gp_in_progress(rsp));
- 	WRITE_ONCE(rsp->gp_flags, READ_ONCE(rsp->gp_flags) | RCU_GP_FLAG_FQS);
- 	raw_spin_unlock_irqrestore(&rcu_get_root(rsp)->lock, flags);
--	rcu_gp_kthread_wake(rsp);
-+	swake_up(&rsp->gp_wq);  /* Memory barrier implied by swake_up() path. */
- }
- 
- /*
-@@ -2893,7 +2893,7 @@ static void force_quiescent_state(struct rcu_state *rsp)
- 	}
- 	WRITE_ONCE(rsp->gp_flags, READ_ONCE(rsp->gp_flags) | RCU_GP_FLAG_FQS);
- 	raw_spin_unlock_irqrestore(&rnp_old->lock, flags);
--	rcu_gp_kthread_wake(rsp);
-+	swake_up(&rsp->gp_wq); /* Memory barrier implied by swake_up() path. */
- }
- 
- /*
-@@ -3526,7 +3526,7 @@ static void __rcu_report_exp_rnp(struct rcu_state *rsp, struct rcu_node *rnp,
- 			raw_spin_unlock_irqrestore(&rnp->lock, flags);
- 			if (wake) {
- 				smp_mb(); /* EGP done before wake_up(). */
--				wake_up(&rsp->expedited_wq);
-+				swake_up(&rsp->expedited_wq);
- 			}
- 			break;
- 		}
-@@ -3783,7 +3783,7 @@ static void synchronize_sched_expedited_wait(struct rcu_state *rsp)
- 	jiffies_start = jiffies;
- 
- 	for (;;) {
--		ret = wait_event_interruptible_timeout(
-+		ret = swait_event_timeout(
- 				rsp->expedited_wq,
- 				sync_rcu_preempt_exp_done(rnp_root),
- 				jiffies_stall);
-@@ -3791,7 +3791,7 @@ static void synchronize_sched_expedited_wait(struct rcu_state *rsp)
- 			return;
- 		if (ret < 0) {
- 			/* Hit a signal, disable CPU stall warnings. */
--			wait_event(rsp->expedited_wq,
-+			swait_event(rsp->expedited_wq,
- 				   sync_rcu_preempt_exp_done(rnp_root));
- 			return;
- 		}
-@@ -4457,8 +4457,8 @@ static void __init rcu_init_one(struct rcu_state *rsp,
- 		}
- 	}
- 
--	init_waitqueue_head(&rsp->gp_wq);
--	init_waitqueue_head(&rsp->expedited_wq);
-+	init_swait_queue_head(&rsp->gp_wq);
-+	init_swait_queue_head(&rsp->expedited_wq);
- 	rnp = rsp->level[rcu_num_lvls - 1];
- 	for_each_possible_cpu(i) {
- 		while (i > rnp->grphi)
-diff --git a/kernel/rcu/tree.h b/kernel/rcu/tree.h
-index aa47e2c..8a69b6d 100644
---- a/kernel/rcu/tree.h
-+++ b/kernel/rcu/tree.h
-@@ -27,6 +27,7 @@
- #include <linux/threads.h>
- #include <linux/cpumask.h>
- #include <linux/seqlock.h>
-+#include <linux/swait.h>
- #include <linux/stop_machine.h>
- 
- /*
-@@ -241,7 +242,7 @@ struct rcu_node {
- 				/* Refused to boost: not sure why, though. */
- 				/*  This can happen due to race conditions. */
- #ifdef CONFIG_RCU_NOCB_CPU
--	wait_queue_head_t nocb_gp_wq[2];
-+	struct swait_queue_head nocb_gp_wq[2];
- 				/* Place for rcu_nocb_kthread() to wait GP. */
- #endif /* #ifdef CONFIG_RCU_NOCB_CPU */
- 	int need_future_gp[2];
-@@ -393,7 +394,7 @@ struct rcu_data {
- 	atomic_long_t nocb_q_count_lazy; /*  invocation (all stages). */
- 	struct rcu_head *nocb_follower_head; /* CBs ready to invoke. */
- 	struct rcu_head **nocb_follower_tail;
--	wait_queue_head_t nocb_wq;	/* For nocb kthreads to sleep on. */
-+	struct swait_queue_head nocb_wq; /* For nocb kthreads to sleep on. */
- 	struct task_struct *nocb_kthread;
- 	int nocb_defer_wakeup;		/* Defer wakeup of nocb_kthread. */
- 
-@@ -472,7 +473,7 @@ struct rcu_state {
- 	unsigned long gpnum;			/* Current gp number. */
- 	unsigned long completed;		/* # of last completed gp. */
- 	struct task_struct *gp_kthread;		/* Task for grace periods. */
--	wait_queue_head_t gp_wq;		/* Where GP task waits. */
-+	struct swait_queue_head gp_wq;		/* Where GP task waits. */
- 	short gp_flags;				/* Commands for GP task. */
- 	short gp_state;				/* GP kthread sleep state. */
- 
-@@ -504,7 +505,7 @@ struct rcu_state {
- 	atomic_long_t expedited_workdone3;	/* # done by others #3. */
- 	atomic_long_t expedited_normal;		/* # fallbacks to normal. */
- 	atomic_t expedited_need_qs;		/* # CPUs left to check in. */
--	wait_queue_head_t expedited_wq;		/* Wait for check-ins. */
-+	struct swait_queue_head expedited_wq;	/* Wait for check-ins. */
- 	int ncpus_snap;				/* # CPUs seen last time. */
- 
- 	unsigned long jiffies_force_qs;		/* Time at which to invoke */
-@@ -607,8 +608,8 @@ static void zero_cpu_stall_ticks(struct rcu_data *rdp);
- static void increment_cpu_stall_ticks(void);
- static bool rcu_nocb_cpu_needs_barrier(struct rcu_state *rsp, int cpu);
- static void rcu_nocb_gp_set(struct rcu_node *rnp, int nrq);
--static wait_queue_head_t *rcu_nocb_gp_get(struct rcu_node *rnp);
--static void rcu_nocb_gp_cleanup(wait_queue_head_t *sq);
-+static struct swait_queue_head *rcu_nocb_gp_get(struct rcu_node *rnp);
-+static void rcu_nocb_gp_cleanup(struct swait_queue_head *sq);
- static void rcu_init_one_nocb(struct rcu_node *rnp);
- static bool __call_rcu_nocb(struct rcu_data *rdp, struct rcu_head *rhp,
- 			    bool lazy, unsigned long flags);
-diff --git a/kernel/rcu/tree_plugin.h b/kernel/rcu/tree_plugin.h
-index 99b1ce6..3891984 100644
---- a/kernel/rcu/tree_plugin.h
-+++ b/kernel/rcu/tree_plugin.h
-@@ -1822,9 +1822,9 @@ early_param("rcu_nocb_poll", parse_rcu_nocb_poll);
-  * Wake up any no-CBs CPUs' kthreads that were waiting on the just-ended
-  * grace period.
+diff --git a/arch/arm/Kconfig.debug b/arch/arm/Kconfig.debug
+index c6b6175d0203..6cc09cf8618f 100644
+--- a/arch/arm/Kconfig.debug
++++ b/arch/arm/Kconfig.debug
+@@ -1526,6 +1526,7 @@ config DEBUG_UART_PHYS
+ 	default 0xfffb9800 if DEBUG_OMAP1UART3 || DEBUG_OMAP7XXUART3
+ 	default 0xfffe8600 if DEBUG_BCM63XX_UART
+ 	default 0xfffff700 if ARCH_IOP33X
++	default 0xdeadbeef if DEBUG_LL_UART_8250 || DEBUG_LL_UART_PL01X || DEBUG_LL_UART_EFM32
+ 	depends on ARCH_EP93XX || \
+ 	        DEBUG_LL_UART_8250 || DEBUG_LL_UART_PL01X || \
+ 		DEBUG_LL_UART_EFM32 || \
+@@ -1628,6 +1629,7 @@ config DEBUG_UART_VIRT
+ 	default 0xff003000 if DEBUG_U300_UART
+ 	default 0xffd01000 if DEBUG_HIP01_UART
+ 	default DEBUG_UART_PHYS if !MMU
++	default 0xdeadbeef if DEBUG_LL_UART_8250 || DEBUG_LL_UART_PL01X || DEBUG_LL_UART_EFM32
+ 	depends on DEBUG_LL_UART_8250 || DEBUG_LL_UART_PL01X || \
+ 		DEBUG_UART_8250 || DEBUG_UART_PL01X || DEBUG_MESON_UARTAO || \
+ 		DEBUG_NETX_UART || \
+diff --git a/arch/arm/include/debug/8250.S b/arch/arm/include/debug/8250.S
+index 7f7446f6f806..1191b1458586 100644
+--- a/arch/arm/include/debug/8250.S
++++ b/arch/arm/include/debug/8250.S
+@@ -9,6 +9,9 @@
   */
--static void rcu_nocb_gp_cleanup(wait_queue_head_t *sq)
-+static void rcu_nocb_gp_cleanup(struct swait_queue_head *sq)
- {
--	wake_up_all(sq);
-+	swake_up_all(sq);
- }
+ #include <linux/serial_reg.h>
  
- /*
-@@ -1840,15 +1840,15 @@ static void rcu_nocb_gp_set(struct rcu_node *rnp, int nrq)
- 	rnp->need_future_gp[(rnp->completed + 1) & 0x1] += nrq;
- }
++#if CONFIG_DEBUG_UART_PHYS == 0xdeadbeef || CONFIG_DEBUG_UART_VIRT < 0xe0000000
++#include "none.S"
++#else
+ 		.macro	addruart, rp, rv, tmp
+ 		ldr	\rp, =CONFIG_DEBUG_UART_PHYS
+ 		ldr	\rv, =CONFIG_DEBUG_UART_VIRT
+@@ -55,3 +58,5 @@
+ 		beq	1001b
+ #endif
+ 		.endm
++
++#endif
+diff --git a/arch/arm/include/debug/efm32.S b/arch/arm/include/debug/efm32.S
+index 660fa1e4b77b..537021761e4a 100644
+--- a/arch/arm/include/debug/efm32.S
++++ b/arch/arm/include/debug/efm32.S
+@@ -6,6 +6,9 @@
+  * it under the terms of the GNU General Public License version 2 as
+  * published by the Free Software Foundation.
+  */
++#if CONFIG_DEBUG_UART_PHYS == 0xdeadbeef || CONFIG_DEBUG_UART_VIRT < 0xf0000000
++#include "none.S"
++#else
  
--static wait_queue_head_t *rcu_nocb_gp_get(struct rcu_node *rnp)
-+static struct swait_queue_head *rcu_nocb_gp_get(struct rcu_node *rnp)
- {
- 	return &rnp->nocb_gp_wq[rnp->completed & 0x1];
- }
+ #define UARTn_CMD		0x000c
+ #define UARTn_CMD_TXEN			0x0004
+@@ -43,3 +46,5 @@
+ 		tst	\rd, #UARTn_STATUS_TXC
+ 		bne	1001b
+ 		.endm
++
++#endif
+diff --git a/arch/arm/include/debug/none.S b/arch/arm/include/debug/none.S
+new file mode 100644
+index 000000000000..75cd1bbee5c4
+--- /dev/null
++++ b/arch/arm/include/debug/none.S
+@@ -0,0 +1,16 @@
++
++#warning DEBUG_LL not configured, disabling
++
++		.macro	addruart, rp, rv, tmp
++		ldr	\rp, =0
++		ldr	\rv, =0
++		.endm
++
++		.macro	senduart,rd,rx
++		.endm
++
++		.macro	busyuart,rd,rx
++		.endm
++
++		.macro	waituart,rd,rx
++		.endm
+diff --git a/arch/arm/include/debug/pl01x.S b/arch/arm/include/debug/pl01x.S
+index f7d8323cefcc..fbe0cad32be0 100644
+--- a/arch/arm/include/debug/pl01x.S
++++ b/arch/arm/include/debug/pl01x.S
+@@ -10,6 +10,9 @@
+  * published by the Free Software Foundation.
+  *
+ */
++#if CONFIG_DEBUG_UART_PHYS == 0xdeadbeef || CONFIG_DEBUG_UART_VIRT < 0xf0000000
++#include "none.S"
++#else
+ #include <linux/amba/serial.h>
  
- static void rcu_init_one_nocb(struct rcu_node *rnp)
- {
--	init_waitqueue_head(&rnp->nocb_gp_wq[0]);
--	init_waitqueue_head(&rnp->nocb_gp_wq[1]);
-+	init_swait_queue_head(&rnp->nocb_gp_wq[0]);
-+	init_swait_queue_head(&rnp->nocb_gp_wq[1]);
- }
- 
- #ifndef CONFIG_RCU_NOCB_CPU_ALL
-@@ -1873,7 +1873,7 @@ static void wake_nocb_leader(struct rcu_data *rdp, bool force)
- 	if (READ_ONCE(rdp_leader->nocb_leader_sleep) || force) {
- 		/* Prior smp_mb__after_atomic() orders against prior enqueue. */
- 		WRITE_ONCE(rdp_leader->nocb_leader_sleep, false);
--		wake_up(&rdp_leader->nocb_wq);
-+		swake_up(&rdp_leader->nocb_wq);
- 	}
- }
- 
-@@ -2086,7 +2086,7 @@ static void rcu_nocb_wait_gp(struct rcu_data *rdp)
- 	 */
- 	trace_rcu_future_gp(rnp, rdp, c, TPS("StartWait"));
- 	for (;;) {
--		wait_event_interruptible(
-+		swait_event_interruptible(
- 			rnp->nocb_gp_wq[c & 0x1],
- 			(d = ULONG_CMP_GE(READ_ONCE(rnp->completed), c)));
- 		if (likely(d))
-@@ -2114,7 +2114,7 @@ wait_again:
- 	/* Wait for callbacks to appear. */
- 	if (!rcu_nocb_poll) {
- 		trace_rcu_nocb_wake(my_rdp->rsp->name, my_rdp->cpu, "Sleep");
--		wait_event_interruptible(my_rdp->nocb_wq,
-+		swait_event_interruptible(my_rdp->nocb_wq,
- 				!READ_ONCE(my_rdp->nocb_leader_sleep));
- 		/* Memory barrier handled by smp_mb() calls below and repoll. */
- 	} else if (firsttime) {
-@@ -2189,7 +2189,7 @@ wait_again:
- 			 * List was empty, wake up the follower.
- 			 * Memory barriers supplied by atomic_long_add().
- 			 */
--			wake_up(&rdp->nocb_wq);
-+			swake_up(&rdp->nocb_wq);
- 		}
- 	}
- 
-@@ -2210,7 +2210,7 @@ static void nocb_follower_wait(struct rcu_data *rdp)
- 		if (!rcu_nocb_poll) {
- 			trace_rcu_nocb_wake(rdp->rsp->name, rdp->cpu,
- 					    "FollowerSleep");
--			wait_event_interruptible(rdp->nocb_wq,
-+			swait_event_interruptible(rdp->nocb_wq,
- 						 READ_ONCE(rdp->nocb_follower_head));
- 		} else if (firsttime) {
- 			/* Don't drown trace log with "Poll"! */
-@@ -2369,7 +2369,7 @@ void __init rcu_init_nohz(void)
- static void __init rcu_boot_init_nocb_percpu_data(struct rcu_data *rdp)
- {
- 	rdp->nocb_tail = &rdp->nocb_head;
--	init_waitqueue_head(&rdp->nocb_wq);
-+	init_swait_queue_head(&rdp->nocb_wq);
- 	rdp->nocb_follower_tail = &rdp->nocb_follower_head;
- }
- 
-@@ -2519,7 +2519,7 @@ static bool rcu_nocb_cpu_needs_barrier(struct rcu_state *rsp, int cpu)
- 	return false;
- }
- 
--static void rcu_nocb_gp_cleanup(wait_queue_head_t *sq)
-+static void rcu_nocb_gp_cleanup(struct swait_queue_head *sq)
- {
- }
- 
-@@ -2527,7 +2527,7 @@ static void rcu_nocb_gp_set(struct rcu_node *rnp, int nrq)
- {
- }
- 
--static wait_queue_head_t *rcu_nocb_gp_get(struct rcu_node *rnp)
-+static struct swait_queue_head *rcu_nocb_gp_get(struct rcu_node *rnp)
- {
- 	return NULL;
- }
--- 
-2.5.0
+ #ifdef CONFIG_DEBUG_ZTE_ZX
+@@ -43,3 +46,4 @@
+ 		tst	\rd, #UART01x_FR_BUSY
+ 		bne	1001b
+ 		.endm
++#endif

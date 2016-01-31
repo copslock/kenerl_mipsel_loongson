@@ -1,68 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 31 Jan 2016 21:16:42 +0100 (CET)
-Received: from mail-lf0-f44.google.com ([209.85.215.44]:35976 "EHLO
-        mail-lf0-f44.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011382AbcAaUQip0D93 convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 31 Jan 2016 21:16:38 +0100
-Received: by mail-lf0-f44.google.com with SMTP id 78so35774771lfy.3
-        for <linux-mips@linux-mips.org>; Sun, 31 Jan 2016 12:16:38 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 31 Jan 2016 21:29:43 +0100 (CET)
+Received: from mail-pa0-f41.google.com ([209.85.220.41]:34964 "EHLO
+        mail-pa0-f41.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011382AbcAaU3jrfuT7 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 31 Jan 2016 21:29:39 +0100
+Received: by mail-pa0-f41.google.com with SMTP id ho8so69749156pac.2;
+        Sun, 31 Jan 2016 12:29:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=date:from:to:cc:subject:message-id:in-reply-to:references
-         :mime-version:content-type:content-transfer-encoding;
-        bh=8NAwd4t5/VaO8ukAyJ/Lr4CsgeYtF0W3ciFamXgRzDQ=;
-        b=FXAW3+uBZHSle+HbHfA6Btvtxy8aXCzlSHoci26joTzaOBsHfqEfATTvbr9NsIUBf/
-         5xEfSu/x8MFU6PpWVFcacxE7lL9rCg2U763j32G4mVW1IZJsc7bSN05J1mipXBX6sTCo
-         79TlIFDCV3b+6KMQC6MsxnMeyOyW1avE5r08lAZsnThAaeH9a0qjbdeVn88GpX9VpiuI
-         k9EbeaiF66/4PnVtW/q9ljicpc7iyMmt3L6900H1D5PAFwfsRMTm+KWu2pZhx7jzEwnC
-         WUBl5VgyPHmqJJS7pH/KVlJhtGAqN2+ynBF5NwVFKrZXafQe8t1cZlfA3qsHBZNicP7a
-         4baA==
+        h=from:to:cc:subject:date:message-id;
+        bh=JTFmwrCvLTCfE2Oikft0nI1ODRbF2diyJVsjvYkRlwQ=;
+        b=z0EAYdJFnBtc/bvfCNwqXrPw9Ayo9y6XUS/Kr/JC7MBZewWALhDxrpzt+LVJ9ACivb
+         32rOBUM/Uhkk0iXsHcyADajjm9MioZwVunSaHv2ue0zYtbVLq12oGc2+ZGcyAFWyi45T
+         C5U5Yp16zJ64RjOm7OtrP0pJ1qCVipKuQ/oljZo+/RwRtyzAuna/y4Vlx/QFkeazUaSb
+         BSlS7oFK9Tv+g2tJlLqpci1TJea3MOVsOGSaetRB2feexQGRGX3PisrhLrgbq41r3kFv
+         vXA8LpsaPIf1oEnBFmfihJaWhIPBZwkuXxyH2i4oDZ5R/+BOTcasseKdWHLrIMIOIz8t
+         Pn9Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:in-reply-to
-         :references:mime-version:content-type:content-transfer-encoding;
-        bh=8NAwd4t5/VaO8ukAyJ/Lr4CsgeYtF0W3ciFamXgRzDQ=;
-        b=kz7H0E8sLJTj7lR0At6H8nqwfuBsYa63C3EWyDBJMrsRYOdysyp3i+F6iRANaCNMjo
-         rP3Lde0GrK3GT7KdPnC5T7N83MWxUCo96Nw7t/yGZqBrrYsI0zj6u2/avEzJ9tTFS8Yo
-         tY0yQWGNKEDhGuu/1t2oU5YdWjSWdhLlC5tLp1JbLTi3CPIyQCDIQWFmGJAOSfOsKChT
-         W9pOdyp9XrHplPGOEBAlewnlga7lyiWCFOdj1TNmJY4JOYVaJcO96NFE1kdSP20WpoWV
-         vhEuuPZus9X7ilwQ/22OAnqk5saF/DNi1zdGnQr5u0vU7xeJi7V/GGYWlQ3GmCjbZZhG
-         hLjQ==
-X-Gm-Message-State: AG10YOR/5eU1rMXpUQ38AZh8H9pP2nbxQQyouieOGBHJrAzxNQ8ZcKyX+KWNjB961yDjwg==
-X-Received: by 10.25.41.203 with SMTP id p194mr7212165lfp.135.1454271393386;
-        Sun, 31 Jan 2016 12:16:33 -0800 (PST)
-Received: from flare (t35.niisi.ras.ru. [193.232.173.35])
-        by smtp.gmail.com with ESMTPSA id ug1sm3560890lbb.43.2016.01.31.12.16.32
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Sun, 31 Jan 2016 12:16:32 -0800 (PST)
-Date:   Sun, 31 Jan 2016 23:41:55 +0300
-From:   Antony Pavlov <antonynpavlov@gmail.com>
-To:     Alban <albeu@free.fr>
-Cc:     linux-mips@linux-mips.org,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@codeaurora.org>,
-        Rob Herring <robh+dt@kernel.org>, linux-clk@vger.kernel.org,
-        devicetree@vger.kernel.org
-Subject: Re: [RFC v3 01/14] WIP: clk: add Atheros AR724X/AR913X/AR933X SoCs
- clock driver
-Message-Id: <20160131234155.eee918745880878963c044aa@gmail.com>
-In-Reply-To: <20160125232156.35c0ce3f@tock>
-References: <1453580251-2341-1-git-send-email-antonynpavlov@gmail.com>
-        <1453580251-2341-2-git-send-email-antonynpavlov@gmail.com>
-        <20160125232156.35c0ce3f@tock>
-X-Mailer: Sylpheed 3.5.0beta3 (GTK+ 2.24.25; i586-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-Return-Path: <antonynpavlov@gmail.com>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=JTFmwrCvLTCfE2Oikft0nI1ODRbF2diyJVsjvYkRlwQ=;
+        b=aPHwOC1eFAA9HV56s9F2lcGSFP7s2Eh013Z47O9QFzVePxMIsVjmt6Y6LsiXnyQXNm
+         +ZmLkrMeRtqibZrmGMfj8xMxIqHfJoEbqS3SFvoE5d2Q3gWCtcz9/XYDh9dABnoFzKo6
+         EXt5uz5h21elsuGXU0WDeBi5up+NYmrddXpgDt6fy/8oVqjykcOQbarRu8P6QKiRS0gs
+         Rl3bhqjUejkpolmLVPh4om58fvFZiNn26Gahs/Fwuk7QosAb6hCA/jutSrQOAWSuEwRb
+         0QRHOFzjih+j6falr/v8hOcwh2fXl+bhSyMOVcGTY/Z+/uNKBDhbYmSRt9FH0G6TDfo0
+         LRTA==
+X-Gm-Message-State: AG10YOQCjiNtPNxUwmbxZnqYIHuyyVGCQq7Vk89Op19KLDsYdWjxTKHeD4zjxnO7El90tw==
+X-Received: by 10.66.158.37 with SMTP id wr5mr32604440pab.48.1454272173733;
+        Sun, 31 Jan 2016 12:29:33 -0800 (PST)
+Received: from localhost.localdomain (5520-maca-inet1-outside.broadcom.com. [216.31.211.11])
+        by smtp.gmail.com with ESMTPSA id ya4sm37806112pab.22.2016.01.31.12.29.32
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 31 Jan 2016 12:29:32 -0800 (PST)
+From:   Florian Fainelli <f.fainelli@gmail.com>
+To:     linux-mips@linux-mips.org
+Cc:     ralf@linux-mips.org, cernekee@gmail.com, arnd@arndb.de,
+        jaedon.shin@gmail.com, pgynther@google.com,
+        Florian Fainelli <f.fainelli@gmail.com>
+Subject: [PATCH] bus: brcmstb_gisb: Hook to MIPS board_be_handler
+Date:   Sun, 31 Jan 2016 12:29:27 -0800
+Message-Id: <1454272167-565-1-git-send-email-f.fainelli@gmail.com>
+X-Mailer: git-send-email 1.7.1
+Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51554
+X-archive-position: 51555
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: antonynpavlov@gmail.com
+X-original-sender: f.fainelli@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -75,180 +62,82 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, 25 Jan 2016 23:21:56 +0100
-Alban <albeu@free.fr> wrote:
+MIPS kernels allow platforms to invoke a custom Bus Error handler, add the
+necessary code to do this for Broadcom SoCs where the GISB bus error handler can be used.
 
-> On Sat, 23 Jan 2016 23:17:18 +0300
-> Antony Pavlov <antonynpavlov@gmail.com> wrote:
-> 
-> > TODO: get pll registers base address from devicetree node
-> > 
-> > Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> > Cc: Alban Bedel <albeu@free.fr>
-> > Cc: Michael Turquette <mturquette@baylibre.com>
-> > Cc: Stephen Boyd <sboyd@codeaurora.org>
-> > Cc: Rob Herring <robh+dt@kernel.org>
-> > Cc: linux-clk@vger.kernel.org
-> > Cc: linux-mips@linux-mips.org
-> > Cc: devicetree@vger.kernel.org
-> > ---
-> >  drivers/clk/Makefile                  |   1 +
-> >  drivers/clk/clk-ath79.c               | 193 ++++++++++++++++++++++++++++++++++
-> >  include/dt-bindings/clock/ath79-clk.h |  22 ++++
-> >  3 files changed, 216 insertions(+)
-> > 
-> > diff --git a/drivers/clk/Makefile b/drivers/clk/Makefile
-> > index 820714c..5101763 100644
-> > --- a/drivers/clk/Makefile
-> > +++ b/drivers/clk/Makefile
-> > @@ -18,6 +18,7 @@ endif
-> >  # hardware specific clock types
-> >  # please keep this section sorted lexicographically by file/directory path name
-> >  obj-$(CONFIG_MACH_ASM9260)		+= clk-asm9260.o
-> > +obj-$(CONFIG_ATH79)			+= clk-ath79.o
-> >  obj-$(CONFIG_COMMON_CLK_AXI_CLKGEN)	+= clk-axi-clkgen.o
-> >  obj-$(CONFIG_ARCH_AXXIA)		+= clk-axm5516.o
-> >  obj-$(CONFIG_COMMON_CLK_CDCE706)	+= clk-cdce706.o
-> > diff --git a/drivers/clk/clk-ath79.c b/drivers/clk/clk-ath79.c
-> > new file mode 100644
-> > index 0000000..75338a7
-> > --- /dev/null
-> > +++ b/drivers/clk/clk-ath79.c
-> > @@ -0,0 +1,193 @@
-> > +/*
-> > + * Clock driver for Atheros AR724X/AR913X/AR933X SoCs
-> > + *
-> > + * Copyright (C) 2010-2011 Jaiganesh Narayanan <jnarayanan@atheros.com>
-> > + * Copyright (C) 2011 Gabor Juhos <juhosg@openwrt.org>
-> > + * Copyright (C) 2015 Alban Bedel <albeu@free.fr>
-> > + * Copyright (C) 2016 Antony Pavlov <antonynpavlov@gmail.com>
-> > + *
-> > + * Parts of this file are based on Atheros' 2.6.15/2.6.31 BSP
-> > + *
-> > + * This program is free software; you can redistribute it and/or
-> > + * modify it under the terms of the GNU General Public License as
-> > + * published by the Free Software Foundation; either version 2 of
-> > + * the License, or (at your option) any later version.
-> > + *
-> > + * This program is distributed in the hope that it will be useful,
-> > + * but WITHOUT ANY WARRANTY; without even the implied warranty of
-> > + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-> > + * GNU General Public License for more details.
-> > + */
-> > +
-> > +#include <linux/clk.h>
-> > +#include <linux/clk-provider.h>
-> > +#include <linux/clkdev.h>
-> > +#include <linux/of.h>
-> > +#include <linux/of_address.h>
-> > +#include "clk.h"
-> > +
-> > +#include <dt-bindings/clock/ath79-clk.h>
-> > +
-> > +#include "asm/mach-ath79/ar71xx_regs.h"
-> > +#include "asm/mach-ath79/ath79.h"
-> > +
-> > +#define MHZ (1000 * 1000)
-> > +
-> > +#define AR724X_BASE_FREQ	(40 * MHZ)
-> > +
-> > +static struct clk *ath79_clks[ATH79_CLK_END];
-> > +
-> > +static struct clk_onecell_data clk_data = {
-> > +	.clks = ath79_clks,
-> > +	.clk_num = ARRAY_SIZE(ath79_clks),
-> > +};
-> > +
-> > +static struct clk *__init ath79_add_sys_clkdev(
-> > +	const char *id, unsigned long rate)
-> > +{
-> > +	struct clk *clk;
-> > +	int err;
-> > +
-> > +	clk = clk_register_fixed_rate(NULL, id, NULL, CLK_IS_ROOT, rate);
-> > +	if (!clk)
-> > +		panic("failed to allocate %s clock structure", id);
-> > +
-> > +	err = clk_register_clkdev(clk, id, NULL);
-> > +	if (err)
-> > +		panic("unable to register %s clock device", id);
-> > +
-> > +	return clk;
-> > +}
-> >
-> > +static void __init ar724x_clk_init(struct device_node *np)
-> > +{
-> > +	struct clk *ref_clk;
-> > +	unsigned long of_ref_rate;
-> > +	unsigned long ref_rate;
-> > +	unsigned long cpu_rate;
-> > +	unsigned long ddr_rate;
-> > +	unsigned long ahb_rate;
-> > +	u32 pll;
-> > +	u32 freq;
-> > +	u32 div;
-> > +
-> > +	ref_clk = of_clk_get(np, 0);
-> > +	if (IS_ERR(ref_clk)) {
-> > +		pr_err("%s: of_clk_get failed\n", np->full_name);
-> > +		return;
-> > +	}
-> 
-> It would be better to have this function take the ref clock as
-> argument, to allow using it for both OF and legacy platforms.
+We may get a bus error from an address decoded outside of the GISB bus space,
+so we need to check the validity of such a capture before printing anything.
 
-I'll try to use this idea in v5 patch version.
+Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
+---
+Ralf, Arnd,
 
-> > +	of_ref_rate = clk_get_rate(ref_clk);
-> > +
-> > +	ref_rate = AR724X_BASE_FREQ;
-> > +
-> > +	if (of_ref_rate != ref_rate) {
-> > +		pr_err("ref_rate != of_ref_rate\n");
-> > +		ref_rate = of_ref_rate;
-> > +	}
-> 
-> I don't think that this test is really useful.
+We first introduced this driver through an arm-soc drivers pull request, but since then
+there has not been many changes to this driver, at least, nothing in flight that would
+cause merge conflicts.
 
-Yes, I can make this check optional.
+I am okay to take this in an upcoming arm-soc drivers pull request, of directly via the
+MIPS tree, whatever works best for you.
 
-> > +	pll = ath79_pll_rr(AR724X_PLL_REG_CPU_CONFIG);
-> > +
-> > +	div = ((pll >> AR724X_PLL_FB_SHIFT) & AR724X_PLL_FB_MASK);
-> > +	freq = div * ref_rate;
-> > +
-> > +	div = ((pll >> AR724X_PLL_REF_DIV_SHIFT) & AR724X_PLL_REF_DIV_MASK) * 2;
-> > +	freq /= div;
-> > +
-> > +	cpu_rate = freq;
-> > +
-> > +	div = ((pll >> AR724X_DDR_DIV_SHIFT) & AR724X_DDR_DIV_MASK) + 1;
-> > +	ddr_rate = freq / div;
-> > +
-> > +	div = (((pll >> AR724X_AHB_DIV_SHIFT) & AR724X_AHB_DIV_MASK) + 1) * 2;
-> > +	ahb_rate = cpu_rate / div;
-> 
-> For a new driver it would make sense to use clk_register_divider() and
-> similar generic building blocks.
-> 
-> > +	ath79_clks[ATH79_CLK_REF] = ath79_add_sys_clkdev("ref", ref_rate);
-> > +	ath79_clks[ATH79_CLK_CPU] = ath79_add_sys_clkdev("cpu", cpu_rate);
-> > +	ath79_clks[ATH79_CLK_DDR] = ath79_add_sys_clkdev("ddr", ddr_rate);
-> > +	ath79_clks[ATH79_CLK_AHB] = ath79_add_sys_clkdev("ahb", ahb_rate);
-> > +	ath79_clks[ATH79_CLK_WDT] = ath79_add_sys_clkdev("wdt", ahb_rate);
-> > +	ath79_clks[ATH79_CLK_UART] = ath79_add_sys_clkdev("uart", ahb_rate);
-> 
-> You shouldn't add ref, wdt and uart, they are not needed and make the
-> driver incompatible with the current DT bindings.
+Thank you!
 
-Please describe the situation then this incompatibility does matter.
+ drivers/bus/brcmstb_gisb.c |   30 ++++++++++++++++++++++++++++++
+ 1 files changed, 30 insertions(+), 0 deletions(-)
 
-Current ath79 dt support is very preliminary and the only dt user
-is 5-years old TP-Link WR1043ND so it's near impossible to break somethink.
-
-Anyway current ath79 dt binding is somewhat broken (see __your__ message 'Re: [RFC 1/4] WIP: MIPS: ath79: make ar933x clks more devicetree-friendly' from 'Thu, 21 Jan 2016 12:03:20 +0100').
-
-
--- 
-Best regards,
-  Antony Pavlov
+diff --git a/drivers/bus/brcmstb_gisb.c b/drivers/bus/brcmstb_gisb.c
+index f364fa4..72fe0a5 100644
+--- a/drivers/bus/brcmstb_gisb.c
++++ b/drivers/bus/brcmstb_gisb.c
+@@ -30,6 +30,10 @@
+ #include <asm/signal.h>
+ #endif
+ 
++#ifdef CONFIG_MIPS
++#include <asm/traps.h>
++#endif
++
+ #define  ARB_ERR_CAP_CLEAR		(1 << 0)
+ #define  ARB_ERR_CAP_STATUS_TIMEOUT	(1 << 12)
+ #define  ARB_ERR_CAP_STATUS_TEA		(1 << 11)
+@@ -238,6 +242,29 @@ static int brcmstb_bus_error_handler(unsigned long addr, unsigned int fsr,
+ }
+ #endif
+ 
++#ifdef CONFIG_MIPS
++static int brcmstb_bus_error_handler(struct pt_regs *regs, int is_fixup)
++{
++	int ret = 0;
++	struct brcmstb_gisb_arb_device *gdev;
++	u32 cap_status;
++
++	list_for_each_entry(gdev, &brcmstb_gisb_arb_device_list, next) {
++		cap_status = gisb_read(gdev, ARB_ERR_CAP_STATUS);
++
++		/* Invalid captured address, bail out */
++		if (!(cap_status & ARB_ERR_CAP_STATUS_VALID)) {
++			is_fixup = 1;
++			goto out;
++		}
++
++		ret |= brcmstb_gisb_arb_decode_addr(gdev, "bus error");
++	}
++out:
++	return is_fixup ? MIPS_BE_FIXUP : MIPS_BE_FATAL;
++}
++#endif
++
+ static irqreturn_t brcmstb_gisb_timeout_handler(int irq, void *dev_id)
+ {
+ 	brcmstb_gisb_arb_decode_addr(dev_id, "timeout");
+@@ -355,6 +382,9 @@ static int __init brcmstb_gisb_arb_probe(struct platform_device *pdev)
+ 	hook_fault_code(22, brcmstb_bus_error_handler, SIGBUS, 0,
+ 			"imprecise external abort");
+ #endif
++#ifdef CONFIG_MIPS
++	board_be_handler = brcmstb_bus_error_handler;
++#endif
+ 
+ 	dev_info(&pdev->dev, "registered mem: %p, irqs: %d, %d\n",
+ 			gdev->base, timeout_irq, tea_irq);
+-- 
+1.7.1

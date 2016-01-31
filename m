@@ -1,61 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 31 Jan 2016 14:03:28 +0100 (CET)
-Received: from mail-lb0-f171.google.com ([209.85.217.171]:33144 "EHLO
-        mail-lb0-f171.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011382AbcAaND1SApCn convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 31 Jan 2016 14:03:27 +0100
-Received: by mail-lb0-f171.google.com with SMTP id x4so62406206lbm.0;
-        Sun, 31 Jan 2016 05:03:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=date:from:to:cc:subject:message-id:mime-version:content-type
-         :content-transfer-encoding;
-        bh=q0hbYAPkSwRGGgyMTs23kFruzWm6QrEtSGyavvAhd6s=;
-        b=0b9CgpOz7jZFbxlywRYItCDq+NPbGA8oj6II2yGwkE7gJgLYHCMGkDM77d0b8n4aIx
-         lppkb7JLUyq4S7Cn+XseGwS4ysOBIaKuaky6xgMt+UH1zMFsEdhDQuAP44JvbX92FK7c
-         pCGji3kJzoLGYuVyFDSRf1NqJPfjhCbDMYwczynRw0G04kPB6o2Q4OQCf2A+76yZDKUz
-         jwjQoEjXf//fx0z0UTvvss6WMoRw9JEEPNvJx5TK0nQw/jTqznskRl+bHwaKnYOB5rKF
-         7IfdLEtRbzamONU+nmkGUhF6eGbFmOMybubQ6PqT1a4GbZ89flYp1p9fAyFHZZOQqN82
-         5ylQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
-         :content-type:content-transfer-encoding;
-        bh=q0hbYAPkSwRGGgyMTs23kFruzWm6QrEtSGyavvAhd6s=;
-        b=PU7DBXRopO9PVmDs1c97v50AtVgTcWOtRFV5QCOw+0JQVyFD2TC997UnIYN38DLt1g
-         PEpazj2aJgfD4/Mm4sbVE+ry3TffAQOUBHxORhMH0aXL47OcEgYHn4lX4DVDcR+h753k
-         pS8m55n7hKcs1870hb+6jkzQ4Y4hOqyTh+qFPTOw5QTtaHcct/8Fzjr3EAy6QtUJp1cx
-         KyUET/gsSplkOkFcbo/6p1SdQblDU04hcskJTN59GHBEP+O7ERNwYa8+5aeeOV3hcRuK
-         yHtCI12e5y1XMpaMXn8erNZN3adUgbyEfrLqft76sd2cYdK9LbTYlZouV7OzsSQqn7IP
-         3Vyg==
-X-Gm-Message-State: AG10YOS2hgYYmsF14VVncD1D/VfXQCsbzbhofGYDMX7i2ARmhKSP4++BiWOtNx6Ngd7ZwA==
-X-Received: by 10.112.172.233 with SMTP id bf9mr6552533lbc.121.1454245401794;
-        Sun, 31 Jan 2016 05:03:21 -0800 (PST)
-Received: from flare (t35.niisi.ras.ru. [193.232.173.35])
-        by smtp.gmail.com with ESMTPSA id ja4sm3257451lbc.8.2016.01.31.05.03.20
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Sun, 31 Jan 2016 05:03:21 -0800 (PST)
-Date:   Sun, 31 Jan 2016 16:28:44 +0300
-From:   Antony Pavlov <antonynpavlov@gmail.com>
-To:     Kishon Vijay Abraham I <kishon@ti.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 31 Jan 2016 16:07:03 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:4226 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27011382AbcAaPHBvBXhX (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 31 Jan 2016 16:07:01 +0100
+Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
+        by Websense Email Security Gateway with ESMTPS id 166DAE351FEB9;
+        Sun, 31 Jan 2016 15:06:53 +0000 (GMT)
+Received: from [10.100.200.149] (10.100.200.149) by hhmail02.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server id 14.3.266.1; Sun, 31 Jan 2016
+ 15:06:55 +0000
+Date:   Sun, 31 Jan 2016 15:05:49 +0000
+From:   "Maciej W. Rozycki" <macro@imgtec.com>
+To:     Alexander Kapshuk <alexander.kapshuk@gmail.com>
+CC:     Daniel Sanders <Daniel.Sanders@imgtec.com>,
+        James Hogan <James.Hogan@imgtec.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Michal Marek <mmarek@suse.com>,
+        "linux-kbuild@vger.kernel.org" <linux-kbuild@vger.kernel.org>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
         Ralf Baechle <ralf@linux-mips.org>
-Cc:     Alban Bedel <albeu@free.fr>, linux-kernel@vger.kernel.org,
-        linux-mips@linux-mips.org
-Subject: phy: please review ATH79 USB phy driver
-Message-Id: <20160131162844.7230eb766ab73138795891d7@gmail.com>
-X-Mailer: Sylpheed 3.5.0beta3 (GTK+ 2.24.25; i586-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-Return-Path: <antonynpavlov@gmail.com>
+Subject: Re: [PATCH] ld-version: fix it on Fedora
+In-Reply-To: <alpine.DEB.2.00.1601301311170.5958@tp.orcam.me.uk>
+Message-ID: <alpine.DEB.2.00.1601311445300.5958@tp.orcam.me.uk>
+References: <1452189189-31188-1-git-send-email-mst@redhat.com> <CAAG0J995iCNwdN6PpuJfzo+TVWNXR3UVqS9v-4HXbryyvMn+=w@mail.gmail.com> <E484D272A3A61B4880CDF2E712E9279F45D04AA7@HHMAIL01.hh.imgtec.org> <CAJ1xhMWth4kNuEkuVEUiUEz=d_9dmKxh0+Z_GrRcKB+F72W91w@mail.gmail.com>
+ <E484D272A3A61B4880CDF2E712E9279F45D179FA@HHMAIL01.hh.imgtec.org> <CAJ1xhMVbxoag7psNg+5L6AmL4WYXKyBYNuVGjJcfqe6Km_10SQ@mail.gmail.com> <alpine.DEB.2.00.1601301311170.5958@tp.orcam.me.uk>
+User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
+MIME-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+X-Originating-IP: [10.100.200.149]
+Return-Path: <Maciej.Rozycki@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51552
+X-archive-position: 51553
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: antonynpavlov@gmail.com
+X-original-sender: macro@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -68,54 +50,66 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hello!
+On Sat, 30 Jan 2016, Maciej W. Rozycki wrote:
 
-In current linux-mips master branch from git://git.linux-mips.org/pub/scm/ralf/linux
-there are two commits
+> > % echo 2.24.51.20140217 | ld-version.sh
+> > 22451000
+> 
+>  So the above version is a non-release snapshot from the development tree 
+> as the repository trunk is switched to x.y+1.51 once a release branch for 
+> x.y has been made.  Then the release branch is switched to x.y-1.90 for 
+> prereleases, before settling on x.y or x.y.0 (this hasn't been consistent) 
+> for the actual base release.  Any subsequent maintenance releases will 
+> then have their version set to x.y.1, x.y.2, and so on.  We shouldn't ever 
+> rely on versions that are not proper releases.
 
-    commit 76654c7be21c1704607e9ed22cf5d18d430fd828
-    Author: Alban Bedel <albeu@free.fr>
-    Date:   Mon Nov 16 22:22:04 2015 +0100
+ I need to correct myself here for unclear notation or off-by-one errors, 
+the flow is of course as follows:
 
-        MIPS: ath79: Enable the USB port on the TL-WR1043ND
+    trunk
+   x.y-1.51
+      |
+      |
+      |
+release branchpoint
+      |      \
+    x.y.51 x.y-1.90
+      |   prerelease
+      |       |
+      |       |
+      v    x.y-1.91
+      .   prerelease
+      .       |
+      .       |
+              |
+           x.y-1.92
+          prerelease
+              .
+              .
+              .
+            x.y.0
+         base release
+              |
+              |
+              |
+            x.y.1
+      maintenance release
+              |
+              |
+              |
+            x.y.2
+      maintenance release
+              |
+              v
+              .
+              .
+              .
 
-    commit 25ee4e47a316f55a1ceaa0deda8c5fa812cefeae
-    Author: Alban Bedel <albeu@free.fr>
-    Date:   Mon Nov 16 22:22:03 2015 +0100
+ The revision number is sometimes bumped up on trunk as well, to 52, 53, 
+etc., though the criteria are not completely clear to me; perhaps to make 
+a trunk snapshot "release".
 
-        MIPS: ath79: Add the EHCI controller and USB phy to the AR9132 dtsi
+ And last but not least for non-release builds the snapshot date is 
+automatically appended to the version number reported, as seen above.
 
-The commits add USB support for TL-WR1043ND.
-I have tried to run linux on TL-WR1043ND, but USB port does not work
-through USB phy driver absence.
-
-I have found the appropriate phy driver patches in the ath79 branch
-in the https://github.com/AlbanBedel/linux repo and at linux-mips patchwork site
-
-    https://patchwork.linux-mips.org/patch/11497/
-
-    commit ceccaefd0ec63b61c03a0e0eadc607ab9f2253d0
-    Author: Alban Bedel <albeu@free.fr>
-    Date:   Tue Sep 1 14:06:54 2015 +0200
-
-        phy: Add a driver for the ATH79 USB phy
-
-
-    https://patchwork.linux-mips.org/patch/11495/
-
-    commit 4572165504c10f5a31a7807d8ba4e7bb135f8a27
-    Author: Alban Bedel <albeu@free.fr>
-    Date:   Thu Nov 12 00:08:59 2015 +0100
-
-        phy: Add a driver for simple phy
-
-After applying these patches TL-WR1043ND USB port works fine.
-
-However, I can't find these patches in git://git.kernel.org/pub/scm/linux/kernel/git/kishon/linux-phy.git
-so they are not enqueued for merging into mainline linux kernel.
-
-Could you please review the patches?
-
--- 
-Best regards,
-  Antony Pavlov
+  Maciej

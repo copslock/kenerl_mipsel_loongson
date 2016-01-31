@@ -1,55 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 31 Jan 2016 21:29:43 +0100 (CET)
-Received: from mail-pa0-f41.google.com ([209.85.220.41]:34964 "EHLO
-        mail-pa0-f41.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011382AbcAaU3jrfuT7 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 31 Jan 2016 21:29:39 +0100
-Received: by mail-pa0-f41.google.com with SMTP id ho8so69749156pac.2;
-        Sun, 31 Jan 2016 12:29:39 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 31 Jan 2016 21:34:38 +0100 (CET)
+Received: from mail-lb0-f172.google.com ([209.85.217.172]:35564 "EHLO
+        mail-lb0-f172.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011382AbcAaUegenv77 convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 31 Jan 2016 21:34:36 +0100
+Received: by mail-lb0-f172.google.com with SMTP id bc4so64633811lbc.2
+        for <linux-mips@linux-mips.org>; Sun, 31 Jan 2016 12:34:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id;
-        bh=JTFmwrCvLTCfE2Oikft0nI1ODRbF2diyJVsjvYkRlwQ=;
-        b=z0EAYdJFnBtc/bvfCNwqXrPw9Ayo9y6XUS/Kr/JC7MBZewWALhDxrpzt+LVJ9ACivb
-         32rOBUM/Uhkk0iXsHcyADajjm9MioZwVunSaHv2ue0zYtbVLq12oGc2+ZGcyAFWyi45T
-         C5U5Yp16zJ64RjOm7OtrP0pJ1qCVipKuQ/oljZo+/RwRtyzAuna/y4Vlx/QFkeazUaSb
-         BSlS7oFK9Tv+g2tJlLqpci1TJea3MOVsOGSaetRB2feexQGRGX3PisrhLrgbq41r3kFv
-         vXA8LpsaPIf1oEnBFmfihJaWhIPBZwkuXxyH2i4oDZ5R/+BOTcasseKdWHLrIMIOIz8t
-         Pn9Q==
+        h=date:from:to:cc:subject:message-id:in-reply-to:references
+         :mime-version:content-type:content-transfer-encoding;
+        bh=wkSI4eih72Ht8b/4Bc05Ij8XLGMkyLsBEiiw8BcZO84=;
+        b=QuBR2yA/N/b702wkand482TEsHY99dRvWvIdOOIxKsYQ9484dnIRie7DosxANz0WqX
+         Vr3MpwXY1xEWqZ1/+4xrW4BGLpsi7CCr5FOaZ1vyhaKBNOy8SxALO7+tHrqG7xd0BXuX
+         /w70iq9u/P7iCm246WldNZUo9vtILmYMJ7NTStoRB2QSYDiESuHFTUU9u5K7aMG86CHd
+         1dTsMefl1Vbd+3a1uo6Swn9X8QxgH7OKXaAhBI/itxH5vHV4NTIGLkiC89nMHfoKj1l5
+         YhgREbu3cEML2iljE3TnNuFitqfUFypxwfaVP7HM7sRKTte6TGUrTNOz5LCI2uErwVNk
+         Faqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=JTFmwrCvLTCfE2Oikft0nI1ODRbF2diyJVsjvYkRlwQ=;
-        b=aPHwOC1eFAA9HV56s9F2lcGSFP7s2Eh013Z47O9QFzVePxMIsVjmt6Y6LsiXnyQXNm
-         +ZmLkrMeRtqibZrmGMfj8xMxIqHfJoEbqS3SFvoE5d2Q3gWCtcz9/XYDh9dABnoFzKo6
-         EXt5uz5h21elsuGXU0WDeBi5up+NYmrddXpgDt6fy/8oVqjykcOQbarRu8P6QKiRS0gs
-         Rl3bhqjUejkpolmLVPh4om58fvFZiNn26Gahs/Fwuk7QosAb6hCA/jutSrQOAWSuEwRb
-         0QRHOFzjih+j6falr/v8hOcwh2fXl+bhSyMOVcGTY/Z+/uNKBDhbYmSRt9FH0G6TDfo0
-         LRTA==
-X-Gm-Message-State: AG10YOQCjiNtPNxUwmbxZnqYIHuyyVGCQq7Vk89Op19KLDsYdWjxTKHeD4zjxnO7El90tw==
-X-Received: by 10.66.158.37 with SMTP id wr5mr32604440pab.48.1454272173733;
-        Sun, 31 Jan 2016 12:29:33 -0800 (PST)
-Received: from localhost.localdomain (5520-maca-inet1-outside.broadcom.com. [216.31.211.11])
-        by smtp.gmail.com with ESMTPSA id ya4sm37806112pab.22.2016.01.31.12.29.32
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Sun, 31 Jan 2016 12:29:32 -0800 (PST)
-From:   Florian Fainelli <f.fainelli@gmail.com>
-To:     linux-mips@linux-mips.org
-Cc:     ralf@linux-mips.org, cernekee@gmail.com, arnd@arndb.de,
-        jaedon.shin@gmail.com, pgynther@google.com,
-        Florian Fainelli <f.fainelli@gmail.com>
-Subject: [PATCH] bus: brcmstb_gisb: Hook to MIPS board_be_handler
-Date:   Sun, 31 Jan 2016 12:29:27 -0800
-Message-Id: <1454272167-565-1-git-send-email-f.fainelli@gmail.com>
-X-Mailer: git-send-email 1.7.1
-Return-Path: <f.fainelli@gmail.com>
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:in-reply-to
+         :references:mime-version:content-type:content-transfer-encoding;
+        bh=wkSI4eih72Ht8b/4Bc05Ij8XLGMkyLsBEiiw8BcZO84=;
+        b=a/nPE7xPuIIQTZH7y4GnCJ32mL8jwju0Rz1Uc24jmzYpZzIm7n4vTNXRkjmI8ObMVM
+         FxjFYWMUUBGmw9uJyWchtVdGmIRYwAf+dFScu9ekmo84bIHhXXz4qhu3tQ8om/LjaLF0
+         8fLl3TXFMGmarpV6eej8k5Gn5yZs0Gmw0SkvUuHEsyg5xhUjhZ/qHsAZUOEkj+VtQ9m7
+         BzAh9JD+P2uXQhiz9h+htbLJrWpyVwTCZVoeZHXMKa1Ov7DUkm1HIv70ywyIBPEp92kq
+         Gk58mV0oUPOnn0SD9pWhL0SoFdYB3ZsJorZBHoZHMI+zslFWZE9QodrobcuZgicHvK9n
+         pEcQ==
+X-Gm-Message-State: AG10YOTRXonxYXiyT8RgcS/qj3O768Lx3XrmJDJA1omqSFdkQsieqxy+D+GKGXPwEUU5gA==
+X-Received: by 10.112.140.71 with SMTP id re7mr5932012lbb.73.1454272471123;
+        Sun, 31 Jan 2016 12:34:31 -0800 (PST)
+Received: from flare (t35.niisi.ras.ru. [193.232.173.35])
+        by smtp.gmail.com with ESMTPSA id k3sm3591635lbp.9.2016.01.31.12.34.30
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Sun, 31 Jan 2016 12:34:30 -0800 (PST)
+Date:   Sun, 31 Jan 2016 23:59:54 +0300
+From:   Antony Pavlov <antonynpavlov@gmail.com>
+To:     Alban <albeu@free.fr>
+Cc:     linux-mips@linux-mips.org, Gabor Juhos <juhosg@openwrt.org>,
+        devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Grant Likely <grant.likely@linaro.org>
+Subject: Re: [RFC v3 08/14] MIPS: dts: qca: introduce AR9331 devicetree
+Message-Id: <20160131235954.255ec9cb48ab36f6dc64a67f@gmail.com>
+In-Reply-To: <20160125234630.16098b7f@tock>
+References: <1453580251-2341-1-git-send-email-antonynpavlov@gmail.com>
+        <1453580251-2341-9-git-send-email-antonynpavlov@gmail.com>
+        <20160125234630.16098b7f@tock>
+X-Mailer: Sylpheed 3.5.0beta3 (GTK+ 2.24.25; i586-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
+Return-Path: <antonynpavlov@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51555
+X-archive-position: 51556
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: f.fainelli@gmail.com
+X-original-sender: antonynpavlov@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -62,82 +73,60 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-MIPS kernels allow platforms to invoke a custom Bus Error handler, add the
-necessary code to do this for Broadcom SoCs where the GISB bus error handler can be used.
+On Mon, 25 Jan 2016 23:46:30 +0100
+Alban <albeu@free.fr> wrote:
 
-We may get a bus error from an address decoded outside of the GISB bus space,
-so we need to check the validity of such a capture before printing anything.
+> On Sat, 23 Jan 2016 23:17:25 +0300
+> Antony Pavlov <antonynpavlov@gmail.com> wrote:
+> 
+> > This patch introduces devicetree for Atheros AR9331 SoC (AKA Hornet).
+> > The AR9331 chip is a Wi-Fi System-On-Chip (WiSOC),
+> > typically used in very cheap Access Points and Routers.
+> > 
+> > Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> > Cc: Gabor Juhos <juhosg@openwrt.org>
+> > Cc: Alban Bedel <albeu@free.fr>
+> > Cc: linux-mips@linux-mips.org
+> > Cc: devicetree@vger.kernel.org
+> > ---
+> >  arch/mips/boot/dts/qca/ar9331.dtsi | 123 +++++++++++++++++++++++++++++++++++++
+> >  1 file changed, 123 insertions(+)
+> > 
+> > diff --git a/arch/mips/boot/dts/qca/ar9331.dtsi b/arch/mips/boot/dts/qca/ar9331.dtsi
+> > new file mode 100644
+> > index 0000000..bf128a2
+> > --- /dev/null
+> > +++ b/arch/mips/boot/dts/qca/ar9331.dtsi
+> > @@ -0,0 +1,123 @@
+> > +#include <dt-bindings/clock/ath79-clk.h>
+> > +
+> > +/ {
+> > +	compatible = "qca,ar9331";
+> > +
+> 
+> [...]
+> 
+> > +
+> > +	extosc: oscillator {
+> > +		compatible = "fixed-clock";
+> > +		#clock-cells = <0>;
+> > +	};
+> 
+> This oscillator is on the board and not in the SoC, so it should
+> be in the board DTS.
 
-Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
----
-Ralf, Arnd,
+This oscillator is always has to be connected to the SoC, it's abligatory thing.
+So there no logic incosistency in adding this oscillator node template to SoC's dtsi file.
 
-We first introduced this driver through an arm-soc drivers pull request, but since then
-there has not been many changes to this driver, at least, nothing in flight that would
-cause merge conflicts.
+This oscillator node is not describes oscillator completely but this node
+makes it possible to introduce oscillator early so we can make reference on
+it just in ar9331.dtsi file. So we have no need to make full oscillator description
+in every board dts file.
+Futher is we make full oscillator' description in a board dts file then we have
+to additionally describe binding of the oscillator to SoC's clk block.
 
-I am okay to take this in an upcoming arm-soc drivers pull request, of directly via the
-MIPS tree, whatever works best for you.
 
-Thank you!
 
- drivers/bus/brcmstb_gisb.c |   30 ++++++++++++++++++++++++++++++
- 1 files changed, 30 insertions(+), 0 deletions(-)
-
-diff --git a/drivers/bus/brcmstb_gisb.c b/drivers/bus/brcmstb_gisb.c
-index f364fa4..72fe0a5 100644
---- a/drivers/bus/brcmstb_gisb.c
-+++ b/drivers/bus/brcmstb_gisb.c
-@@ -30,6 +30,10 @@
- #include <asm/signal.h>
- #endif
- 
-+#ifdef CONFIG_MIPS
-+#include <asm/traps.h>
-+#endif
-+
- #define  ARB_ERR_CAP_CLEAR		(1 << 0)
- #define  ARB_ERR_CAP_STATUS_TIMEOUT	(1 << 12)
- #define  ARB_ERR_CAP_STATUS_TEA		(1 << 11)
-@@ -238,6 +242,29 @@ static int brcmstb_bus_error_handler(unsigned long addr, unsigned int fsr,
- }
- #endif
- 
-+#ifdef CONFIG_MIPS
-+static int brcmstb_bus_error_handler(struct pt_regs *regs, int is_fixup)
-+{
-+	int ret = 0;
-+	struct brcmstb_gisb_arb_device *gdev;
-+	u32 cap_status;
-+
-+	list_for_each_entry(gdev, &brcmstb_gisb_arb_device_list, next) {
-+		cap_status = gisb_read(gdev, ARB_ERR_CAP_STATUS);
-+
-+		/* Invalid captured address, bail out */
-+		if (!(cap_status & ARB_ERR_CAP_STATUS_VALID)) {
-+			is_fixup = 1;
-+			goto out;
-+		}
-+
-+		ret |= brcmstb_gisb_arb_decode_addr(gdev, "bus error");
-+	}
-+out:
-+	return is_fixup ? MIPS_BE_FIXUP : MIPS_BE_FATAL;
-+}
-+#endif
-+
- static irqreturn_t brcmstb_gisb_timeout_handler(int irq, void *dev_id)
- {
- 	brcmstb_gisb_arb_decode_addr(dev_id, "timeout");
-@@ -355,6 +382,9 @@ static int __init brcmstb_gisb_arb_probe(struct platform_device *pdev)
- 	hook_fault_code(22, brcmstb_bus_error_handler, SIGBUS, 0,
- 			"imprecise external abort");
- #endif
-+#ifdef CONFIG_MIPS
-+	board_be_handler = brcmstb_bus_error_handler;
-+#endif
- 
- 	dev_info(&pdev->dev, "registered mem: %p, irqs: %d, %d\n",
- 			gdev->base, timeout_irq, tea_irq);
--- 
-1.7.1
+-- 
+Best regards,
+  Antony Pavlov

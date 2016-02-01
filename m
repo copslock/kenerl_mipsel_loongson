@@ -1,36 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Feb 2016 01:56:33 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:54603 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27010933AbcBAA4cWVzOW (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 1 Feb 2016 01:56:32 +0100
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Websense Email Security Gateway with ESMTPS id 52631B8F979FA;
-        Mon,  1 Feb 2016 00:56:22 +0000 (GMT)
-Received: from [10.100.200.149] (10.100.200.149) by hhmail02.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server id 14.3.266.1; Mon, 1 Feb 2016
- 00:56:26 +0000
-Date:   Mon, 1 Feb 2016 00:52:28 +0000
-From:   "Maciej W. Rozycki" <macro@imgtec.com>
-To:     Daniel Wagner <daniel.wagner@bmw-carit.de>
-CC:     <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [PATCH] MIPS: Differentiate between 32 and 64 bit ELF header
-In-Reply-To: <1454074137-16334-1-git-send-email-daniel.wagner@bmw-carit.de>
-Message-ID: <alpine.DEB.2.00.1602010038230.5958@tp.orcam.me.uk>
-References: <1453992270-4688-1-git-send-email-daniel.wagner@bmw-carit.de> <1454074137-16334-1-git-send-email-daniel.wagner@bmw-carit.de>
-User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Feb 2016 02:40:12 +0100 (CET)
+Received: from mail-ob0-f171.google.com ([209.85.214.171]:36756 "EHLO
+        mail-ob0-f171.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27009637AbcBABkKtE25S (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 1 Feb 2016 02:40:10 +0100
+Received: by mail-ob0-f171.google.com with SMTP id ba1so106950558obb.3;
+        Sun, 31 Jan 2016 17:40:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id:mime-version:content-type
+         :content-transfer-encoding;
+        bh=Gvc47rZL8rMl/KeUsvtbjMO2q6YN85K4gBqfXW2WOgA=;
+        b=0K2++pA8wSkDai5H/pxFTGWfcac8huZpmOZTGhbugPDXopEjxg21j8JF+AxV3O8TJv
+         fqiNjDXkJNENVeLGTwjmFUZD3cJbtmOXzNarBr45Js6JSTKDcmJZ3BnlB21ynoYmQcEH
+         FWYHOgIrWQYCZ1XEcfKzUOTm9Qp+EkWBz9IslrYBPZvumt6N7/O+Nup4UArJ22tZIpmK
+         Va21SfJYKG8dqOlc+StW8mVyL2EuN8YJClEw01L5VMUvb7UvOMlHh4p2Y5aKPykrSjwc
+         nzU/g6Xw3tMcbEXFkHQJQ0RwKhunjG2Xt5rwUxStMdzYoSvUGs7r8g6fmNQVUSK/iYxi
+         MB1w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-type:content-transfer-encoding;
+        bh=Gvc47rZL8rMl/KeUsvtbjMO2q6YN85K4gBqfXW2WOgA=;
+        b=hw8yhBCZ99dnB1a+lIzIalduwd2BPCkYLsxIK4iNrZxX8kfjPmBoibtsMMlYl6QjHZ
+         Fbw8XPEl8cXMAkhN9EuMb8+m/LRswS0rOTmeb5R3M6yU53nhYATvnaHC+vOm92iebyA4
+         KikTSV7fze2AGZOefNjWV3o5klOxkl0BMnE4Q8YMaI6NOXBVxENSvPmA7PIO5Ez80NtP
+         TA8PhEZrl4ecMo+pqdkYzktD6Sqn0aznHC9415IeugODPYOBbQMwvcpJZEgtRLS2XmB/
+         5TM87FV7jZynOtIm0GHIRUTMALbJk5FInazX3gRbMw8JHVovDMWrOGFGsDxji5IsxJ7g
+         wA0w==
+X-Gm-Message-State: AG10YOSsiendggRZJK+RsJfDR706TMM/qSoYXjOUFQBmIQ3+WoVjEyO/N2ytpZbVRzrglg==
+X-Received: by 10.60.94.82 with SMTP id da18mr15635687oeb.40.1454290804797;
+        Sun, 31 Jan 2016 17:40:04 -0800 (PST)
+Received: from bender.lan (ip68-5-39-32.oc.oc.cox.net. [68.5.39.32])
+        by smtp.gmail.com with ESMTPSA id y9sm12855983obg.4.2016.01.31.17.40.03
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Sun, 31 Jan 2016 17:40:04 -0800 (PST)
+From:   Florian Fainelli <f.fainelli@gmail.com>
+To:     linux-mips@linux-mips.org
+Cc:     ralf@linux-mips.org, blogic@openwrt.org, cernekee@gmail.com,
+        Florian Fainelli <f.fainelli@gmail.com>
+Subject: [PATCH] MAINTAINERS: Remove stale entry for BCM33xx chips
+Date:   Sun, 31 Jan 2016 17:40:01 -0800
+Message-Id: <1454290801-29735-1-git-send-email-f.fainelli@gmail.com>
+X-Mailer: git-send-email 2.5.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-X-Originating-IP: [10.100.200.149]
-Return-Path: <Maciej.Rozycki@imgtec.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51577
+X-archive-position: 51578
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@imgtec.com
+X-original-sender: f.fainelli@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,40 +66,33 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, 29 Jan 2016, Daniel Wagner wrote:
+Commit 70371cef114ca ("MAINTAINERS: Add entry for BMIPS multiplatform
+kernel") supersedes this entry for BCM33xx.
 
-> Depending on the configuration either the 32 or 64 bit version of
-> elf_check_arch() is defined. parse_crash_elf32_headers() does
-> some basic verification of the ELF header via elf_check_arch().
-> parse_crash_elf64_headers() does it via vmcore_elf64_check_arch()
-> which expands to the same elf_check_check().
-> 
->    In file included from include/linux/elf.h:4:0,
->                     from fs/proc/vmcore.c:13:
->    fs/proc/vmcore.c: In function 'parse_crash_elf64_headers':
-> >> arch/mips/include/asm/elf.h:228:23: error: initialization from incompatible pointer type [-Werror=incompatible-pointer-types]
->      struct elfhdr *__h = (hdr);     \
->                           ^
->    include/linux/crash_dump.h:41:37: note: in expansion of macro 'elf_check_arch'
->     #define vmcore_elf64_check_arch(x) (elf_check_arch(x) || vmcore_elf_check_arch_cross(x))
->                                         ^
->    fs/proc/vmcore.c:1015:4: note: in expansion of macro 'vmcore_elf64_check_arch'
->       !vmcore_elf64_check_arch(&ehdr) ||
->        ^
-> 
-> Since the MIPS ELF header for 32 bit and 64 bit differ we need
-> to check accordingly.
+Fixes: 70371cef114ca ("MAINTAINERS: Add entry for BMIPS multiplatform kernel")
+Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
+---
+ MAINTAINERS | 8 --------
+ 1 file changed, 8 deletions(-)
 
- I fail to see how it can work as it stands given that `elf_check_arch' is 
-called from the same source file both on a pointer to `Elf32_Ehdr' and one 
-to `Elf64_Ehdr'.  However the MIPS implementations of `elf_check_arch' 
-only use an auxiliary variable to avoid multiple evaluation of a macro 
-argument and therefore instead I recommend the use of the usual approach
-taken in such a situation within a statement expression, that is to 
-declare the variable with `typeof' rather than an explicit type.  As an
-upside this will minimise code disruption as well.
-
- For consistency I suggest making the same change to the `elf_check_arch' 
-definitions in arch/mips/kernel/binfmt_elf*.c as well.
-
-  Maciej
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 30aca4aa5467..3361093cd799 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -2357,14 +2357,6 @@ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/rpi/linux-rpi.git
+ S:	Maintained
+ N:	bcm2835
+ 
+-BROADCOM BCM33XX MIPS ARCHITECTURE
+-M:	Kevin Cernekee <cernekee@gmail.com>
+-L:	linux-mips@linux-mips.org
+-S:	Maintained
+-F:	arch/mips/bcm3384/*
+-F:	arch/mips/include/asm/mach-bcm3384/*
+-F:	arch/mips/kernel/*bmips*
+-
+ BROADCOM BCM47XX MIPS ARCHITECTURE
+ M:	Hauke Mehrtens <hauke@hauke-m.de>
+ M:	Rafał Miłecki <zajec5@gmail.com>
+-- 
+2.5.0

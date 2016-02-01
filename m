@@ -1,24 +1,24 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Feb 2016 13:26:51 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:26615 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Feb 2016 13:50:24 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:45342 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27011171AbcBAM0uGQ8Cl (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 1 Feb 2016 13:26:50 +0100
+        with ESMTP id S27011480AbcBAMuXCoDil (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 1 Feb 2016 13:50:23 +0100
 Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Websense Email Security Gateway with ESMTPS id 37FC1FA4A2083;
-        Mon,  1 Feb 2016 12:26:41 +0000 (GMT)
+        by Websense Email Security Gateway with ESMTPS id 27B97F7364CD5;
+        Mon,  1 Feb 2016 12:50:15 +0000 (GMT)
 Received: from [10.100.200.149] (10.100.200.149) by hhmail02.hh.imgtec.org
  (10.100.10.21) with Microsoft SMTP Server id 14.3.266.1; Mon, 1 Feb 2016
- 12:26:43 +0000
-Date:   Mon, 1 Feb 2016 12:26:42 +0000
+ 12:50:16 +0000
+Date:   Mon, 1 Feb 2016 12:50:16 +0000
 From:   "Maciej W. Rozycki" <macro@imgtec.com>
-To:     Jeffrey Merkey <jeffmerkey@gmail.com>
-CC:     <linux-kernel@vger.kernel.org>, Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <james.hogan@imgtec.com>, <linux.mdb@gmail.com>,
-        <linux-mips@linux-mips.org>
-Subject: Re: [PATCH 21/31] Add debugger entry points for MIPS
-In-Reply-To: <1454010437-29265-1-git-send-email-jeffmerkey@gmail.com>
-Message-ID: <alpine.DEB.2.00.1602011150380.15885@tp.orcam.me.uk>
-References: <1454010437-29265-1-git-send-email-jeffmerkey@gmail.com>
+To:     James Hogan <james.hogan@imgtec.com>
+CC:     Ralf Baechle <ralf@linux-mips.org>,
+        Milko Leporis <milko.leporis@imgtec.com>,
+        <linux-mips@linux-mips.org>, <stable@vger.kernel.org>
+Subject: Re: [PATCH] MIPS: Fix buffer overflow in syscall_get_arguments()
+In-Reply-To: <20160201115036.GB32210@jhogan-linux.le.imgtec.org>
+Message-ID: <alpine.DEB.2.00.1602011236500.15885@tp.orcam.me.uk>
+References: <1453753923-26620-1-git-send-email-james.hogan@imgtec.com> <alpine.DEB.2.00.1601312327590.5958@tp.orcam.me.uk> <20160201115036.GB32210@jhogan-linux.le.imgtec.org>
 User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
 MIME-Version: 1.0
 Content-Type: text/plain; charset="US-ASCII"
@@ -27,7 +27,7 @@ Return-Path: <Maciej.Rozycki@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51582
+X-archive-position: 51583
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -44,71 +44,64 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, 28 Jan 2016, Jeffrey Merkey wrote:
+On Mon, 1 Feb 2016, James Hogan wrote:
 
-> This patch series adds an export which can be set by system debuggers to
-> direct the hard lockup and soft lockup detector to trigger a breakpoint
-> exception and enter a debugger if one is active.  It is assumed that if
-> someone sets this variable, then an breakpoint handler of some sort will
-> be actively loaded or registered via the notify die handler chain.
+> > > diff --git a/arch/mips/include/asm/syscall.h b/arch/mips/include/asm/syscall.h
+> > > index 6499d93ae68d..47bc45a67e9b 100644
+> > > --- a/arch/mips/include/asm/syscall.h
+> > > +++ b/arch/mips/include/asm/syscall.h
+> > > @@ -101,10 +101,8 @@ static inline void syscall_get_arguments(struct task_struct *task,
+> > >  	/* O32 ABI syscall() - Either 64-bit with O32 or 32-bit */
+> > >  	if ((config_enabled(CONFIG_32BIT) ||
+> > >  	    test_tsk_thread_flag(task, TIF_32BIT_REGS)) &&
+> > > -	    (regs->regs[2] == __NR_syscall)) {
+> > > +	    (regs->regs[2] == __NR_syscall))
+> > >  		i++;
+> > > -		n++;
+> > > -	}
+> > >  
+> > >  	while (n--)
+> > >  		ret |= mips_get_syscall_arg(args++, task, regs, i++);
+> > 
+> >  What I think it really needs to do is to *decrease* the number of 
+> > arguments, as we're throwing the syscall number away as not an argument to 
+> > itself.  So this looks like a typo to me, the expression was meant to be 
+> > `n--' rather than `n++'.  With the number of arguments unchanged, as in 
+> > your proposed change, we're still reaching one word too far.
 > 
-> This addition is extremely useful for debugging hard and soft lockups
-> real time and quickly from a console debugger.
+> No, the caller asked for n args, thats what it should get. It doesn't
+> care whether the syscall was indirected or not.
+> 
+> The syscall doesn't have 1 less arg as a result of indirection. E.g.
+> What about system calls with 6 arguments, and hence 7 arguments
+> including syscall number argument when redirected? We'd get an
+> uninitialised 6th arg back when passing n=6.
 
- What's the intended use case for this hook and what do you call a console 
-debugger?
+ Do you mean the caller ignores the extra argument holding the number of 
+the wrapped syscall in counting syscall arguments?  Where does it take `n' 
+from?
 
- I'm asking because from the debugging perspective the Linux kernel is a 
-bare metal application and for such the BREAK instruction is not the usual 
-choice on the MIPS target.  This instruction is normally used for userland 
-debugging, it traps to the kernel and is handled there.  Furthermore there 
-are a few other applications of this instruction defined as a part of the 
-MIPS ABI, also handled by the kernel, determined by the breakpoint code 
-embedded with the instruction word, e.g. to trap integer division errors.  
-See arch/mips/include/uapi/asm/break.h for the codes defined so far.
+> Note scall32-o32.S sys_syscall shifts 7 arguments starting at a1 (I've
+> reordered code slightly):
+> 	move	a0, a1				# shift argument registers
+> 	move	a1, a2
+> 	move	a2, a3
+> 	lw	a3, 16(sp)
+> 	lw	t4, 20(sp)
+> 	lw	t5, 24(sp)
+> 	lw	t6, 28(sp)
+> 
+> 	sw	a0, PT_R4(sp)			# .. and push back a0 - a3, some
+> 	sw	a1, PT_R5(sp)			# syscalls expect them there
+> 	sw	a2, PT_R6(sp)
+> 	sw	a3, PT_R7(sp)
+> 	sw	t4, 16(sp)
+> 	sw	t5, 20(sp)
+> 	sw	t6, 24(sp)
+> 
+> So it takes args 0..2 from a1..a3, and 3..6 from stack.
 
- All this means the trap may not be appropriate for debugging the kernel 
-itself as you don't want to intercept it or the system won't run 
-correctly.  You'd have to hook into the kernel itself to intercept it too.
-
- But if you do have a working debug environment already set up around this 
-arrangement, then it might be fine after all.  In that case I think using 
-a non-zero breakpoint code would make sense though, as 0 is often treated 
-as a random (spurious) trap (it was used by IRIX though).  Or do you 
-detect it by the symbol name somehow?
-
- I've got a couple of further notes on the patch itself below.
-
-> diff --git a/arch/mips/include/asm/kdebug.h b/arch/mips/include/asm/kdebug.h
-> index 8e3d08e..af5999e 100644
-> --- a/arch/mips/include/asm/kdebug.h
-> +++ b/arch/mips/include/asm/kdebug.h
-> @@ -16,4 +16,16 @@ enum die_val {
->  	DIE_UPROBE_XOL,
->  };
->  
-> +
-> +void arch_breakpoint(void)
-> +{
-> +	__asm__ __volatile__(
-> +		".globl breakinst\n\t"
-
- Please keep formatting consistent -- the rest of code below uses `\t' as 
-the separator, so use it here as well.  We don't have an established 
-inline assembly formatting style, so please just keep your chosen one 
-consistent.
-
-> +		".set\tnoreorder\n\t"
-> +		"nop\n"
-> +		"breakinst:\tbreak\n\t"
-> +		"nop\n\t"
-> +		".set\treorder");
-> +}
-> +
->  #endif /* _ASM_MIPS_KDEBUG_H */
-
- Why do you need these NOPs around the breakpoint?  You also need to mark 
-`breakinst' as a function symbol (`.aent' might do) or otherwise you'll 
-get garbled disassembly if this is built as microMIPS code.
+ Sure, no need to explain it as far as I'm concerned, I didn't question 
+it.
 
   Maciej

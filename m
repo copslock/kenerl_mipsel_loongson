@@ -1,58 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Feb 2016 17:04:02 +0100 (CET)
-Received: from mail-io0-f194.google.com ([209.85.223.194]:33543 "EHLO
-        mail-io0-f194.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011931AbcBAQEAsTO9N (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 1 Feb 2016 17:04:00 +0100
-Received: by mail-io0-f194.google.com with SMTP id f81so12105498iof.0;
-        Mon, 01 Feb 2016 08:04:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        bh=L0mzpn9Xee7gnES4Hxgx6pxIDY4Ct4c3rhp+/gW36zM=;
-        b=goBEzZG+SBM4fm0RHFvdQJHFrj+MabWLoAv0TJRHrpjsSKb9Yz1ekU2JyaqWFfXsxb
-         PX1wVGE8hnOYa6BztZfQAVPGv9m7VpIAYBH9g9XHIxiff6XIIPPxBAUnKMchjDO1ypZt
-         2IoEjNMc9jn/AqQz+46V23z/ctQwXHwWKkWyXiQuUrkvjrBujyVbVnRCxaZ4MFLHmeUh
-         uXtIpNZg8ara0yMX+BE39WDKz28FkSmUUlHEnjWRBS8mmvt3u2QXCLiYz8EAMHmG+SwT
-         9M7W66FeL/Jkz7xUaNBtEg7ajWReGAfuTdWmutyvE8BItQv8iqsQf4k/ej1ggr0FwyFg
-         CRQg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:in-reply-to:references:date
-         :message-id:subject:from:to:cc:content-type;
-        bh=L0mzpn9Xee7gnES4Hxgx6pxIDY4Ct4c3rhp+/gW36zM=;
-        b=Ra3ksdO+hIctD0FDpAQiO2NLFwg+k4iwiKMtZxl09PhrVY0dvTkytb0Cs08Lg4R3vN
-         r6WKT4HyR63jFcKYm5I1ZpynS6PbXT/tkmhIqMabSkcqjP0QfqfroFoUDmN9NbjmD43m
-         WBWFjC4Jyqgs2NV/1WuscUdtu6jQk0Da+NqDk/46zJ+ughk6FrO+3V6kg7P71YVznRAZ
-         mq9XVU+JztCJvJJwVfgg8E/zp0WzUnLMwBCA9SgT6emVZrmv1/bTUDVxx33tzpP//h+b
-         P2IvLgO2B/1LzI4q6qG0/9Qo7Gq7tswN8UmPoGhCkZT/5nYM9FtvFYgdoLK2MNOmKoXY
-         VZiQ==
-X-Gm-Message-State: AG10YOT5UejO4YNFgvg0TmA865XdqtF8pcai+pKbyeWUV6NL8HWvP+znYSppTK5vBvsuymQfflpfXTxRc7WfvQ==
-MIME-Version: 1.0
-X-Received: by 10.107.198.14 with SMTP id w14mr23019056iof.83.1454342634875;
- Mon, 01 Feb 2016 08:03:54 -0800 (PST)
-Received: by 10.79.75.69 with HTTP; Mon, 1 Feb 2016 08:03:54 -0800 (PST)
-In-Reply-To: <alpine.DEB.2.00.1602011150380.15885@tp.orcam.me.uk>
-References: <1454010437-29265-1-git-send-email-jeffmerkey@gmail.com>
-        <alpine.DEB.2.00.1602011150380.15885@tp.orcam.me.uk>
-Date:   Mon, 1 Feb 2016 09:03:54 -0700
-Message-ID: <CAO6TR8U1m+7ALr8kbrWp8qkH0NsAVnaj4edyYTfOa+BJ22gDtA@mail.gmail.com>
-Subject: Re: [PATCH 21/31] Add debugger entry points for MIPS
-From:   Jeff Merkey <linux.mdb@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Feb 2016 17:07:13 +0100 (CET)
+Received: from mail.bmw-carit.de ([62.245.222.98]:43380 "EHLO
+        mail.bmw-carit.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27011951AbcBAQHLUZ9JN (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 1 Feb 2016 17:07:11 +0100
+Received: from exchange2010.bmw-carit.intra ([192.168.100.28]:27945 helo=mail.bmw-carit.de)
+        by mail.bmw-carit.de with esmtps (TLSv1:AES256-SHA:256)
+        (Exim 4.82_1-5b7a7c0-XX)
+        (envelope-from <Daniel.Wagner@bmw-carit.de>)
+        id 1aQH0O-0005Sm-32; Mon, 01 Feb 2016 17:07:09 +0100
+Received: from handman.bmw-carit.intra (10.242.2.82) by
+ Exchange2010.bmw-carit.intra (192.168.100.28) with Microsoft SMTP Server
+ (TLS) id 14.3.123.3; Mon, 1 Feb 2016 17:07:08 +0100
+X-CTCH-RefID: str=0001.0A0C0202.56AF82AD.0004,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Subject: Re: [PATCH] MIPS: Differentiate between 32 and 64 bit ELF header
 To:     "Maciej W. Rozycki" <macro@imgtec.com>
-Cc:     Jeffrey Merkey <jeffmerkey@gmail.com>,
-        linux-kernel@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <james.hogan@imgtec.com>, linux-mips@linux-mips.org
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <linux.mdb@gmail.com>
+References: <1453992270-4688-1-git-send-email-daniel.wagner@bmw-carit.de>
+ <1454074137-16334-1-git-send-email-daniel.wagner@bmw-carit.de>
+ <alpine.DEB.2.00.1602010038230.5958@tp.orcam.me.uk>
+CC:     <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>
+From:   Daniel Wagner <daniel.wagner@bmw-carit.de>
+Message-ID: <56AF82AB.5010502@bmw-carit.de>
+Date:   Mon, 1 Feb 2016 17:07:07 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+ Thunderbird/38.5.0
+MIME-Version: 1.0
+In-Reply-To: <alpine.DEB.2.00.1602010038230.5958@tp.orcam.me.uk>
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: 7bit
+Return-Path: <daniel.wagner@bmw-carit.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51590
+X-archive-position: 51591
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linux.mdb@gmail.com
+X-original-sender: daniel.wagner@bmw-carit.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -65,78 +49,124 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 2/1/16, Maciej W. Rozycki <macro@imgtec.com> wrote:
-> On Thu, 28 Jan 2016, Jeffrey Merkey wrote:
->
->> This patch series adds an export which can be set by system debuggers to
->> direct the hard lockup and soft lockup detector to trigger a breakpoint
->> exception and enter a debugger if one is active.  It is assumed that if
->> someone sets this variable, then an breakpoint handler of some sort will
->> be actively loaded or registered via the notify die handler chain.
+On 02/01/2016 01:52 AM, Maciej W. Rozycki wrote:
+> On Fri, 29 Jan 2016, Daniel Wagner wrote:
+> 
+>> Depending on the configuration either the 32 or 64 bit version of
+>> elf_check_arch() is defined. parse_crash_elf32_headers() does
+>> some basic verification of the ELF header via elf_check_arch().
+>> parse_crash_elf64_headers() does it via vmcore_elf64_check_arch()
+>> which expands to the same elf_check_check().
 >>
->> This addition is extremely useful for debugging hard and soft lockups
->> real time and quickly from a console debugger.
->
->  What's the intended use case for this hook and what do you call a console
-> debugger?
->
->  I'm asking because from the debugging perspective the Linux kernel is a
-> bare metal application and for such the BREAK instruction is not the usual
-> choice on the MIPS target.  This instruction is normally used for userland
-> debugging, it traps to the kernel and is handled there.  Furthermore there
-> are a few other applications of this instruction defined as a part of the
-> MIPS ABI, also handled by the kernel, determined by the breakpoint code
-> embedded with the instruction word, e.g. to trap integer division errors.
-> See arch/mips/include/uapi/asm/break.h for the codes defined so far.
->
->  All this means the trap may not be appropriate for debugging the kernel
-> itself as you don't want to intercept it or the system won't run
-> correctly.  You'd have to hook into the kernel itself to intercept it too.
->
->  But if you do have a working debug environment already set up around this
-> arrangement, then it might be fine after all.  In that case I think using
-> a non-zero breakpoint code would make sense though, as 0 is often treated
-> as a random (spurious) trap (it was used by IRIX though).  Or do you
-> detect it by the symbol name somehow?
->
->  I've got a couple of further notes on the patch itself below.
->
->> diff --git a/arch/mips/include/asm/kdebug.h
->> b/arch/mips/include/asm/kdebug.h
->> index 8e3d08e..af5999e 100644
->> --- a/arch/mips/include/asm/kdebug.h
->> +++ b/arch/mips/include/asm/kdebug.h
->> @@ -16,4 +16,16 @@ enum die_val {
->>  	DIE_UPROBE_XOL,
->>  };
+>>    In file included from include/linux/elf.h:4:0,
+>>                     from fs/proc/vmcore.c:13:
+>>    fs/proc/vmcore.c: In function 'parse_crash_elf64_headers':
+>>>> arch/mips/include/asm/elf.h:228:23: error: initialization from incompatible pointer type [-Werror=incompatible-pointer-types]
+>>      struct elfhdr *__h = (hdr);     \
+>>                           ^
+>>    include/linux/crash_dump.h:41:37: note: in expansion of macro 'elf_check_arch'
+>>     #define vmcore_elf64_check_arch(x) (elf_check_arch(x) || vmcore_elf_check_arch_cross(x))
+>>                                         ^
+>>    fs/proc/vmcore.c:1015:4: note: in expansion of macro 'vmcore_elf64_check_arch'
+>>       !vmcore_elf64_check_arch(&ehdr) ||
+>>        ^
 >>
->> +
->> +void arch_breakpoint(void)
->> +{
->> +	__asm__ __volatile__(
->> +		".globl breakinst\n\t"
->
->  Please keep formatting consistent -- the rest of code below uses `\t' as
-> the separator, so use it here as well.  We don't have an established
-> inline assembly formatting style, so please just keep your chosen one
-> consistent.
->
->> +		".set\tnoreorder\n\t"
->> +		"nop\n"
->> +		"breakinst:\tbreak\n\t"
->> +		"nop\n\t"
->> +		".set\treorder");
->> +}
->> +
->>  #endif /* _ASM_MIPS_KDEBUG_H */
->
->  Why do you need these NOPs around the breakpoint?  You also need to mark
-> `breakinst' as a function symbol (`.aent' might do) or otherwise you'll
-> get garbled disassembly if this is built as microMIPS code.
->
->   Maciej
->
+>> Since the MIPS ELF header for 32 bit and 64 bit differ we need
+>> to check accordingly.
+> 
+>  I fail to see how it can work as it stands given that `elf_check_arch' is 
+> called from the same source file both on a pointer to `Elf32_Ehdr' and one 
+> to `Elf64_Ehdr'.  However the MIPS implementations of `elf_check_arch' 
+> only use an auxiliary variable to avoid multiple evaluation of a macro 
+> argument and therefore instead I recommend the use of the usual approach
+> taken in such a situation within a statement expression, that is to 
+> declare the variable with `typeof' rather than an explicit type.  As an
+> upside this will minimise code disruption as well.
 
-You can drop this patch series, I am rethinking a better way to do this.
+Good point on the type for hdr. Thought elf_check_arch() implementation
+differ on 32 bit and 64 bit implementation. I played a bit around and the
+simplest version I found was this here:
 
-Jeff
+
+diff --git a/arch/mips/include/asm/elf.h b/arch/mips/include/asm/elf.h
+index b01a6ff..8c88238 100644
+--- a/arch/mips/include/asm/elf.h
++++ b/arch/mips/include/asm/elf.h
+@@ -205,8 +205,6 @@ struct mips_elf_abiflags_v0 {
+ #define MIPS_ABI_FP_64		6	/* -mips32r2 -mfp64 */
+ #define MIPS_ABI_FP_64A		7	/* -mips32r2 -mfp64 -mno-odd-spreg */
+ 
+-#ifdef CONFIG_32BIT
+-
+ /*
+  * In order to be sure that we don't attempt to execute an O32 binary which
+  * requires 64 bit FP (FR=1) on a system which does not support it we refuse
+@@ -225,23 +223,30 @@ struct mips_elf_abiflags_v0 {
+ #define elf_check_arch(hdr)						\
+ ({									\
+ 	int __res = 1;							\
+-	struct elfhdr *__h = (hdr);					\
++	typeof(*(hdr)) *__h = (hdr);					\
+ 									\
+ 	if (__h->e_machine != EM_MIPS)					\
+ 		__res = 0;						\
+-	if (__h->e_ident[EI_CLASS] != ELFCLASS32)			\
+-		__res = 0;						\
+-	if ((__h->e_flags & EF_MIPS_ABI2) != 0)				\
+-		__res = 0;						\
+-	if (((__h->e_flags & EF_MIPS_ABI) != 0) &&			\
+-	    ((__h->e_flags & EF_MIPS_ABI) != EF_MIPS_ABI_O32))		\
+-		__res = 0;						\
+-	if (__h->e_flags & __MIPS_O32_FP64_MUST_BE_ZERO)		\
+-		__res = 0;						\
++	if (__same_type(hdr, Elf32_Ehdr *)) {				\
++		if (__h->e_ident[EI_CLASS] != ELFCLASS32)		\
++			__res = 0;					\
++		if ((__h->e_flags & EF_MIPS_ABI2) != 0)			\
++			__res = 0;					\
++		if (((__h->e_flags & EF_MIPS_ABI) != 0) &&		\
++			((__h->e_flags & EF_MIPS_ABI) != EF_MIPS_ABI_O32)) \
++			__res = 0;					\
++		if (__h->e_flags & __MIPS_O32_FP64_MUST_BE_ZERO)	\
++			__res = 0;					\
++	} else if (__same_type(hdr, Elf64_Ehdr *)) {			\
++		if (__h->e_ident[EI_CLASS] != ELFCLASS64)		\
++			__res = 0;					\
++	}								\
+ 									\
+ 	__res;								\
+ })
+ 
++#ifdef CONFIG_32BIT
++
+ /*
+  * These are used to set parameters in the core dumps.
+  */
+@@ -250,21 +255,6 @@ struct mips_elf_abiflags_v0 {
+ #endif /* CONFIG_32BIT */
+ 
+ #ifdef CONFIG_64BIT
+-/*
+- * This is used to ensure we don't load something for the wrong architecture.
+- */
+-#define elf_check_arch(hdr)						\
+-({									\
+-	int __res = 1;							\
+-	struct elfhdr *__h = (hdr);					\
+-									\
+-	if (__h->e_machine != EM_MIPS)					\
+-		__res = 0;						\
+-	if (__h->e_ident[EI_CLASS] != ELFCLASS64)			\
+-		__res = 0;						\
+-									\
+-	__res;								\
+-})
+ 
+ /*
+  * These are used to set parameters in the core dumps.
+
+
+Not sure if that is what you had in mind.
+
+cheers,
+daniel

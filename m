@@ -1,59 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Feb 2016 23:44:05 +0100 (CET)
-Received: from mail-pf0-f176.google.com ([209.85.192.176]:36729 "EHLO
-        mail-pf0-f176.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012015AbcBAWoDja4fJ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 1 Feb 2016 23:44:03 +0100
-Received: by mail-pf0-f176.google.com with SMTP id n128so90473506pfn.3;
-        Mon, 01 Feb 2016 14:44:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id;
-        bh=7Hx8PS1TCZh2syFYMYImYcPZUt7NJnh70EZGn8IC6E4=;
-        b=e9Jwsaqd3VXh8ReYxMPFIWyl9zxZNhEVJy2kIxgwWgCuCaRiPyhenK+exw3p5gsGgL
-         2w3niy7Luqd3jinsjcINI1ehKV8KMXQGZtDkFq2eQkgpxwj875pzT0e8wkLEvD2CUNE+
-         CMTjbRrz4plRSTMx/iElux/iy4+m/GEk47JZ9H96h4+PVW1mK3/2ARVDBq9VEJvy0Y1F
-         XD+ehbuKCopSEkrDU8rj5DbcvxQ0GSUmRRXCRdrgP5Dlx8S87xWT4JEloqVtQx0XqFW8
-         coy1HLMsQwqoD8geoMAG/Tumca1A0nM/VAKRjI/tYpD/X9fkD3u76QwjNub9M4XGtTJx
-         P4sg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=7Hx8PS1TCZh2syFYMYImYcPZUt7NJnh70EZGn8IC6E4=;
-        b=HTkhjVwcv4vvBNmMhj3p/HDjIYgUkeOnnXQvMRgJpfUNDLHnIFFD1PNbKPNXtWkLme
-         kXMKEbnitQivIq1ZuV9QyDmHa5TaeQlOYGqcb2aiRl4aYJ3FfidNTQQLGWdO8X65AsKQ
-         8gXupX8RqJD7MnzGMkUlMXj6f3J3hPrdWMC6kS5LQyrGWak+tDESM+Kio5cla4HTcmWc
-         LH02ChMmHG7TFjyHpFCo1MZIet3TculBihoXXA4VE438mXmfPigSm/xhAKLbJ7HrtpNO
-         +08HhQY3YF2XshnbKjbWql+gsCGsASIaLj4DyFFgNciAPgnYp2hFzkell7HYlG+nHkE+
-         +SZw==
-X-Gm-Message-State: AG10YORnaPw+CtTH1uYNP5/2v8MJjDqwMUpgQmL0VnNoLgKjSP4ZuTsd+ifAtxF1Tpgzag==
-X-Received: by 10.98.16.86 with SMTP id y83mr14420162pfi.45.1454366637599;
-        Mon, 01 Feb 2016 14:43:57 -0800 (PST)
-Received: from dl.caveonetworks.com ([64.2.3.194])
-        by smtp.gmail.com with ESMTPSA id fc8sm45698525pab.21.2016.02.01.14.43.55
-        (version=TLS1 cipher=AES128-SHA bits=128/128);
-        Mon, 01 Feb 2016 14:43:56 -0800 (PST)
-Received: from dl.caveonetworks.com (localhost.localdomain [127.0.0.1])
-        by dl.caveonetworks.com (8.14.5/8.14.5) with ESMTP id u11MhsAb010093;
-        Mon, 1 Feb 2016 14:43:54 -0800
-Received: (from ddaney@localhost)
-        by dl.caveonetworks.com (8.14.5/8.14.5/Submit) id u11Mhg3l010090;
-        Mon, 1 Feb 2016 14:43:42 -0800
-From:   David Daney <ddaney.cavm@gmail.com>
-To:     linux-mips@linux-mips.org, ralf@linux-mips.org
-Cc:     David Daney <david.daney@cavium.com>
-Subject: [PATCH] MIPS: Add CPU identifiers and probing for Cavium CN73xx and CNF75xx processors.
-Date:   Mon,  1 Feb 2016 14:43:41 -0800
-Message-Id: <1454366621-10057-1-git-send-email-ddaney.cavm@gmail.com>
-X-Mailer: git-send-email 1.7.11.7
-Return-Path: <ddaney.cavm@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Feb 2016 23:45:01 +0100 (CET)
+Received: from exsmtp01.microchip.com ([198.175.253.37]:19411 "EHLO
+        email.microchip.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S27012023AbcBAWo7GCxmJ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 1 Feb 2016 23:44:59 +0100
+Received: from mx.microchip.com (10.10.76.4) by CHN-SV-EXCH01.mchp-main.com
+ (10.10.76.37) with Microsoft SMTP Server id 14.3.181.6; Mon, 1 Feb 2016
+ 15:44:51 -0700
+Received: by mx.microchip.com (sSMTP sendmail emulation); Mon, 01 Feb 2016
+ 15:48:40 -0700
+From:   Joshua Henderson <joshua.henderson@microchip.com>
+To:     <linux-kernel@vger.kernel.org>
+CC:     <linus.walleij@linaro.org>, <linux-mips@linux-mips.org>,
+        Joshua Henderson <joshua.henderson@microchip.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Pawel Moll <pawel.moll@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ian Campbell <ijc+devicetree@hellion.org.uk>,
+        Kumar Gala <galak@codeaurora.org>, <devicetree@vger.kernel.org>
+Subject: [PATCH v6 1/2] dt/bindings: Add bindings for PIC32 pin control and GPIO
+Date:   Mon, 1 Feb 2016 15:48:29 -0700
+Message-ID: <1454366916-10925-1-git-send-email-joshua.henderson@microchip.com>
+X-Mailer: git-send-email 1.7.9.5
+MIME-Version: 1.0
+Content-Type: text/plain
+Return-Path: <Joshua.Henderson@microchip.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51600
+X-archive-position: 51601
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: joshua.henderson@microchip.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -66,46 +45,147 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: David Daney <david.daney@cavium.com>
+Document the devicetree bindings for PINCTRL and GPIO found on Microchip
+PIC32 class devices.
 
-Add new processor identifiers for Cavium CN73xx and CNF75xx
-processors, and probe for them in cpu-probe.c
-
-Signed-off-by: David Daney <david.daney@cavium.com>
+Signed-off-by: Joshua Henderson <joshua.henderson@microchip.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Acked-by: Rob Herring <robh@kernel.org>
+Cc: Linus Walleij <linus.walleij@linaro.org>
 ---
+Changes since v5: None
+Changes since v4: None
+Changes since v3: None
+Changes since v2: None
+Changes since v1:
+	- Complete bindings API change to use standard bindings
+---
+ .../bindings/gpio/microchip,pic32-gpio.txt         |   49 ++++++++++++++++
+ .../bindings/pinctrl/microchip,pic32-pinctrl.txt   |   60 ++++++++++++++++++++
+ 2 files changed, 109 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/gpio/microchip,pic32-gpio.txt
+ create mode 100644 Documentation/devicetree/bindings/pinctrl/microchip,pic32-pinctrl.txt
 
-The kernel needs some follow-on changes to support these processors,
-but this is an essential starting point.
-
- arch/mips/include/asm/cpu.h  | 2 ++
- arch/mips/kernel/cpu-probe.c | 2 ++
- 2 files changed, 4 insertions(+)
-
-diff --git a/arch/mips/include/asm/cpu.h b/arch/mips/include/asm/cpu.h
-index a97ca97..7bea0f3 100644
---- a/arch/mips/include/asm/cpu.h
-+++ b/arch/mips/include/asm/cpu.h
-@@ -169,6 +169,8 @@
- #define PRID_IMP_CAVIUM_CNF71XX 0x9400
- #define PRID_IMP_CAVIUM_CN78XX 0x9500
- #define PRID_IMP_CAVIUM_CN70XX 0x9600
-+#define PRID_IMP_CAVIUM_CN73XX 0x9700
-+#define PRID_IMP_CAVIUM_CNF75XX 0x9800
- 
- /*
-  * These are the PRID's for when 23:16 == PRID_COMP_INGENIC_*
-diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
-index b725b71..9ad6157 100644
---- a/arch/mips/kernel/cpu-probe.c
-+++ b/arch/mips/kernel/cpu-probe.c
-@@ -1481,6 +1481,8 @@ platform:
- 		set_elf_platform(cpu, "octeon2");
- 		break;
- 	case PRID_IMP_CAVIUM_CN70XX:
-+	case PRID_IMP_CAVIUM_CN73XX:
-+	case PRID_IMP_CAVIUM_CNF75XX:
- 	case PRID_IMP_CAVIUM_CN78XX:
- 		c->cputype = CPU_CAVIUM_OCTEON3;
- 		__cpu_name[cpu] = "Cavium Octeon III";
+diff --git a/Documentation/devicetree/bindings/gpio/microchip,pic32-gpio.txt b/Documentation/devicetree/bindings/gpio/microchip,pic32-gpio.txt
+new file mode 100644
+index 0000000..ef37528
+--- /dev/null
++++ b/Documentation/devicetree/bindings/gpio/microchip,pic32-gpio.txt
+@@ -0,0 +1,49 @@
++* Microchip PIC32 GPIO devices (PIO).
++
++Required properties:
++ - compatible: "microchip,pic32mzda-gpio"
++ - reg: Base address and length for the device.
++ - interrupts: The port interrupt shared by all pins.
++ - gpio-controller: Marks the port as GPIO controller.
++ - #gpio-cells: Two. The first cell is the pin number and
++   the second cell is used to specify the gpio polarity as defined in
++   defined in <dt-bindings/gpio/gpio.h>:
++      0 = GPIO_ACTIVE_HIGH
++      1 = GPIO_ACTIVE_LOW
++      2 = GPIO_OPEN_DRAIN
++ - interrupt-controller: Marks the device node as an interrupt controller.
++ - #interrupt-cells: Two. The first cell is the GPIO number and second cell
++   is used to specify the trigger type as defined in
++   <dt-bindings/interrupt-controller/irq.h>:
++      IRQ_TYPE_EDGE_RISING
++      IRQ_TYPE_EDGE_FALLING
++      IRQ_TYPE_EDGE_BOTH
++ - clocks: Clock specifier (see clock bindings for details).
++ - microchip,gpio-bank: Specifies which bank a controller owns.
++ - gpio-ranges: Interaction with the PINCTRL subsystem.
++
++Example:
++
++/* PORTA */
++gpio0: gpio0@1f860000 {
++	compatible = "microchip,pic32mzda-gpio";
++	reg = <0x1f860000 0x100>;
++	interrupts = <118 IRQ_TYPE_LEVEL_HIGH>;
++	#gpio-cells = <2>;
++	gpio-controller;
++	interrupt-controller;
++	#interrupt-cells = <2>;
++	clocks = <&PBCLK4>;
++	microchip,gpio-bank = <0>;
++	gpio-ranges = <&pic32_pinctrl 0 0 16>;
++};
++
++keys {
++	...
++
++	button@sw1 {
++		label = "ESC";
++		linux,code = <1>;
++		gpios = <&gpio0 12 0>;
++	};
++};
+diff --git a/Documentation/devicetree/bindings/pinctrl/microchip,pic32-pinctrl.txt b/Documentation/devicetree/bindings/pinctrl/microchip,pic32-pinctrl.txt
+new file mode 100644
+index 0000000..4b5efa5
+--- /dev/null
++++ b/Documentation/devicetree/bindings/pinctrl/microchip,pic32-pinctrl.txt
+@@ -0,0 +1,60 @@
++* Microchip PIC32 Pin Controller
++
++Please refer to pinctrl-bindings.txt, ../gpio/gpio.txt, and
++../interrupt-controller/interrupts.txt for generic information regarding
++pin controller, GPIO, and interrupt bindings.
++
++PIC32 'pin configuration node' is a node of a group of pins which can be
++used for a specific device or function. This node represents configuraions of
++pins, optional function, and optional mux related configuration.
++
++Required properties for pin controller node:
++ - compatible: "microchip,pic32mada-pinctrl"
++ - reg: Address range of the pinctrl registers.
++ - clocks: Clock specifier (see clock bindings for details)
++
++Required properties for pin configuration sub-nodes:
++ - pins: List of pins to which the configuration applies.
++
++Optional properties for pin configuration sub-nodes:
++----------------------------------------------------
++ - function: Mux function for the specified pins.
++ - bias-pull-up: Enable weak pull-up.
++ - bias-pull-down: Enable weak pull-down.
++ - input-enable: Set the pin as an input.
++ - output-low: Set the pin as an output level low.
++ - output-high: Set the pin as an output level high.
++ - microchip,digital: Enable digital I/O.
++ - microchip,analog: Enable analog I/O.
++
++Example:
++
++pic32_pinctrl: pinctrl@1f801400{
++	#address-cells = <1>;
++	#size-cells = <1>;
++	compatible = "microchip,pic32mzda-pinctrl";
++	reg = <0x1f801400 0x400>;
++	clocks = <&PBCLK1>;
++
++	pinctrl_uart2: pinctrl_uart2 {
++		uart2-tx {
++			pins = "G9";
++			function = "U2TX";
++			microchip,digital;
++			output-low;
++		};
++		uart2-rx {
++			pins = "B0";
++			function = "U2RX";
++			microchip,digital;
++			input-enable;
++		};
++	};
++};
++
++uart2: serial@1f822200 {
++	compatible = "microchip,pic32mzda-uart";
++	reg = <0x1f822200 0x50>;
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_uart2>;
++};
 -- 
-1.7.11.7
+1.7.9.5

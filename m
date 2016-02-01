@@ -1,42 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Feb 2016 17:07:13 +0100 (CET)
-Received: from mail.bmw-carit.de ([62.245.222.98]:43380 "EHLO
-        mail.bmw-carit.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27011951AbcBAQHLUZ9JN (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 1 Feb 2016 17:07:11 +0100
-Received: from exchange2010.bmw-carit.intra ([192.168.100.28]:27945 helo=mail.bmw-carit.de)
-        by mail.bmw-carit.de with esmtps (TLSv1:AES256-SHA:256)
-        (Exim 4.82_1-5b7a7c0-XX)
-        (envelope-from <Daniel.Wagner@bmw-carit.de>)
-        id 1aQH0O-0005Sm-32; Mon, 01 Feb 2016 17:07:09 +0100
-Received: from handman.bmw-carit.intra (10.242.2.82) by
- Exchange2010.bmw-carit.intra (192.168.100.28) with Microsoft SMTP Server
- (TLS) id 14.3.123.3; Mon, 1 Feb 2016 17:07:08 +0100
-X-CTCH-RefID: str=0001.0A0C0202.56AF82AD.0004,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Subject: Re: [PATCH] MIPS: Differentiate between 32 and 64 bit ELF header
-To:     "Maciej W. Rozycki" <macro@imgtec.com>
-References: <1453992270-4688-1-git-send-email-daniel.wagner@bmw-carit.de>
- <1454074137-16334-1-git-send-email-daniel.wagner@bmw-carit.de>
- <alpine.DEB.2.00.1602010038230.5958@tp.orcam.me.uk>
-CC:     <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>
-From:   Daniel Wagner <daniel.wagner@bmw-carit.de>
-Message-ID: <56AF82AB.5010502@bmw-carit.de>
-Date:   Mon, 1 Feb 2016 17:07:07 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.5.0
-MIME-Version: 1.0
-In-Reply-To: <alpine.DEB.2.00.1602010038230.5958@tp.orcam.me.uk>
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: 7bit
-Return-Path: <daniel.wagner@bmw-carit.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Feb 2016 19:16:37 +0100 (CET)
+Received: from mail-lf0-f46.google.com ([209.85.215.46]:33950 "EHLO
+        mail-lf0-f46.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011972AbcBASQgA24HS convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 1 Feb 2016 19:16:36 +0100
+Received: by mail-lf0-f46.google.com with SMTP id j78so32392931lfb.1
+        for <linux-mips@linux-mips.org>; Mon, 01 Feb 2016 10:16:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=date:from:to:cc:subject:message-id:in-reply-to:references
+         :mime-version:content-type:content-transfer-encoding;
+        bh=hI/NNEesXWhXQ2MTLdCND/0m4CmJ4DKVhILlX6WW6kk=;
+        b=oxw4dfozVHviO5o9aA3zHWNJMlYM8d6fLTGVlI/L0XLjAWpS84VKrjMzq3Y4VHe3CG
+         r9bOZ8rEDfL5H4VNpwbNk1qnMLDxsDfUbWoiHK/YjcItWXQm/Df9K/k3gUqpBkCYxly3
+         46M6+8kX9od5YUm6jCewAh61tUhRy9M8fxxgzZexUQwOXV3mDaQ+k18WITLiVwo2gGJj
+         klGxPCg+nihLmc9ra6pTCyoVybe4doADKHqSdK/7gzJ3fXDQS3+LK9wTS9JBnOFOPRPg
+         tMUcVqbD0NQejHz9y4Pxikq85Fx8EejNqVyHBzCmgmiQRZok7pM/1reir4tHqs0268fl
+         nvXw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:in-reply-to
+         :references:mime-version:content-type:content-transfer-encoding;
+        bh=hI/NNEesXWhXQ2MTLdCND/0m4CmJ4DKVhILlX6WW6kk=;
+        b=ObZBPX78tsrlfUoHWdy8rJdkY2ouTb9stC2DJovGIT/CD9CMzIbTBEeAU+M46RkQkn
+         +wWPVuD9I1Oq+IVMirK8V3ZZO3GX7RRL5RBQGM02T7TE7ZmtQkCR0w3kAf8J0FliS5be
+         E8QUPj0i1zFt5yYwA3PBjxueu/jWqRtMLZwtIW8BYHdjnO7LokdVop6Y6FAh+DQFFg6V
+         KdmW6njOUPVPA15t0qqTvzIK1wuLQyKpDqTlo7g5XKnyGanu6m3BnWqab4e1L/163iCQ
+         KPjTRGa2CCG29HOfQ41lMth4QftHQV85EvdfU+5ietjUTC310j1sj1t8YfpRBCzUSPCI
+         Ln7A==
+X-Gm-Message-State: AG10YOTXHm6GJcA2YP2pR4hGonFRUHUoKpUhe3iy/6dzCQCHm2tvlKazQDqadKkXmpv63g==
+X-Received: by 10.25.40.139 with SMTP id o133mr7394286lfo.10.1454350590457;
+        Mon, 01 Feb 2016 10:16:30 -0800 (PST)
+Received: from flare (t35.niisi.ras.ru. [193.232.173.35])
+        by smtp.gmail.com with ESMTPSA id m21sm4204384lfe.29.2016.02.01.10.16.29
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Mon, 01 Feb 2016 10:16:29 -0800 (PST)
+Date:   Mon, 1 Feb 2016 21:41:54 +0300
+From:   Antony Pavlov <antonynpavlov@gmail.com>
+To:     Alban <albeu@free.fr>
+Cc:     linux-mips@linux-mips.org, devicetree@vger.kernel.org,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Marek Vasut <marex@denx.de>, Wills Wang <wills.wang@live.com>,
+        Daniel Schwierzeck <daniel.schwierzeck@gmail.com>
+Subject: Re: [RFC v3 06/14] MIPS: dts: qca: ar9132: use short references for
+ uart and spi nodes
+Message-Id: <20160201214154.d4242555ea8e9f5da6a7abfa@gmail.com>
+In-Reply-To: <20160125233148.4951e311@tock>
+References: <1453580251-2341-1-git-send-email-antonynpavlov@gmail.com>
+        <1453580251-2341-7-git-send-email-antonynpavlov@gmail.com>
+        <20160125233148.4951e311@tock>
+X-Mailer: Sylpheed 3.5.0beta3 (GTK+ 2.24.25; i586-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
+Return-Path: <antonynpavlov@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51591
+X-archive-position: 51592
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: daniel.wagner@bmw-carit.de
+X-original-sender: antonynpavlov@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,124 +74,154 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 02/01/2016 01:52 AM, Maciej W. Rozycki wrote:
-> On Fri, 29 Jan 2016, Daniel Wagner wrote:
+On Mon, 25 Jan 2016 23:31:48 +0100
+Alban <albeu@free.fr> wrote:
+
+> On Sat, 23 Jan 2016 23:17:23 +0300
+> Antony Pavlov <antonynpavlov@gmail.com> wrote:
 > 
->> Depending on the configuration either the 32 or 64 bit version of
->> elf_check_arch() is defined. parse_crash_elf32_headers() does
->> some basic verification of the ELF header via elf_check_arch().
->> parse_crash_elf64_headers() does it via vmcore_elf64_check_arch()
->> which expands to the same elf_check_check().
->>
->>    In file included from include/linux/elf.h:4:0,
->>                     from fs/proc/vmcore.c:13:
->>    fs/proc/vmcore.c: In function 'parse_crash_elf64_headers':
->>>> arch/mips/include/asm/elf.h:228:23: error: initialization from incompatible pointer type [-Werror=incompatible-pointer-types]
->>      struct elfhdr *__h = (hdr);     \
->>                           ^
->>    include/linux/crash_dump.h:41:37: note: in expansion of macro 'elf_check_arch'
->>     #define vmcore_elf64_check_arch(x) (elf_check_arch(x) || vmcore_elf_check_arch_cross(x))
->>                                         ^
->>    fs/proc/vmcore.c:1015:4: note: in expansion of macro 'vmcore_elf64_check_arch'
->>       !vmcore_elf64_check_arch(&ehdr) ||
->>        ^
->>
->> Since the MIPS ELF header for 32 bit and 64 bit differ we need
->> to check accordingly.
+> I personally prefer the version without aliases :) Is there any
+> guidelines on this?
+
+Here are some Sascha Hauer's arguments for using aliases in the dts files:
+
+ - Using aliases reduces the number of indentations in dts files;
+
+ - dts files become independent of the layout of the dtsi files (it
+   becomes possible to introduce another bus {} hierarchy between a
+   toplevel bus and the devices when you have to);
+
+ - less chances for typos. if &i2c2 does not exist you get an error. If
+   instead you duplicate the whole path in the dts file a typo in the
+   path will just create another node.
+
+And here is a Marek Vasut's additional argument:
+
+ - Aliases allow you to introduce some sort of ordering. For example if you have
+   gmac0 and gmac1 and you want to have them ordered correctly, you use aliases.
+   (in case we're talking about the /aliases node).
+
+
+> > Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> > Cc: Alban Bedel <albeu@free.fr>
+> > Cc: linux-mips@linux-mips.org
+> > Cc: devicetree@vger.kernel.org
+> > ---
+> >  arch/mips/boot/dts/qca/ar9132.dtsi               |  4 +-
+> >  arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts | 70 +++++++++++-------------
+> >  2 files changed, 35 insertions(+), 39 deletions(-)
+> > 
+> > diff --git a/arch/mips/boot/dts/qca/ar9132.dtsi b/arch/mips/boot/dts/qca/ar9132.dtsi
+> > index cd1602f..a14f6f2 100644
+> > --- a/arch/mips/boot/dts/qca/ar9132.dtsi
+> > +++ b/arch/mips/boot/dts/qca/ar9132.dtsi
+> > @@ -61,7 +61,7 @@
+> >  				#qca,ddr-wb-channel-cells = <1>;
+> >  			};
+> >  
+> > -			uart@18020000 {
+> > +			uart: uart@18020000 {
+> >  				compatible = "ns8250";
+> >  				reg = <0x18020000 0x20>;
+> >  				interrupts = <3>;
+> > @@ -134,7 +134,7 @@
+> >  			};
+> >  		};
+> >  
+> > -		spi@1f000000 {
+> > +		spi: spi@1f000000 {
+> >  			compatible = "qca,ar9132-spi", "qca,ar7100-spi";
+> >  			reg = <0x1f000000 0x10>;
+> >  
+> > diff --git a/arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts b/arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts
+> > index 9618105..f22c22c 100644
+> > --- a/arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts
+> > +++ b/arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts
+> > @@ -14,43 +14,6 @@
+> >  		reg = <0x0 0x2000000>;
+> >  	};
+> >  
+> > -	ahb {
+> > -		apb {
+> > -			uart@18020000 {
+> > -				status = "okay";
+> > -			};
+> > -		};
+> > -
+> > -		spi@1f000000 {
+> > -			status = "okay";
+> > -			num-cs = <1>;
+> > -
+> > -			flash@0 {
+> > -				#address-cells = <1>;
+> > -				#size-cells = <1>;
+> > -				compatible = "s25sl064a";
+> > -				reg = <0>;
+> > -				spi-max-frequency = <25000000>;
+> > -
+> > -				partition@0 {
+> > -					label = "u-boot";
+> > -					reg = <0x000000 0x020000>;
+> > -				};
+> > -
+> > -				partition@1 {
+> > -					label = "firmware";
+> > -					reg = <0x020000 0x7D0000>;
+> > -				};
+> > -
+> > -				partition@2 {
+> > -					label = "art";
+> > -					reg = <0x7F0000 0x010000>;
+> > -					read-only;
+> > -				};
+> > -			};
+> > -		};
+> > -	};
+> > -
+> >  	gpio-keys {
+> >  		compatible = "gpio-keys-polled";
+> >  		#address-cells = <1>;
+> > @@ -100,3 +63,36 @@
+> >  &extosc {
+> >  	clock-frequency = <40000000>;
+> >  };
+> > +
+> > +&uart {
+> > +	status = "okay";
+> > +};
+> > +
+> > +&spi {
+> > +	status = "okay";
+> > +	num-cs = <1>;
+> > +
+> > +	flash@0 {
+> > +		#address-cells = <1>;
+> > +		#size-cells = <1>;
+> > +		compatible = "s25sl064a";
+> > +		reg = <0>;
+> > +		spi-max-frequency = <25000000>;
+> > +
+> > +		partition@0 {
+> > +			label = "u-boot";
+> > +			reg = <0x000000 0x020000>;
+> > +		};
+> > +
+> > +		partition@1 {
+> > +			label = "firmware";
+> > +			reg = <0x020000 0x7D0000>;
+> > +		};
+> > +
+> > +		partition@2 {
+> > +			label = "art";
+> > +			reg = <0x7F0000 0x010000>;
+> > +			read-only;
+> > +		};
+> > +	};
+> > +};
 > 
->  I fail to see how it can work as it stands given that `elf_check_arch' is 
-> called from the same source file both on a pointer to `Elf32_Ehdr' and one 
-> to `Elf64_Ehdr'.  However the MIPS implementations of `elf_check_arch' 
-> only use an auxiliary variable to avoid multiple evaluation of a macro 
-> argument and therefore instead I recommend the use of the usual approach
-> taken in such a situation within a statement expression, that is to 
-> declare the variable with `typeof' rather than an explicit type.  As an
-> upside this will minimise code disruption as well.
-
-Good point on the type for hdr. Thought elf_check_arch() implementation
-differ on 32 bit and 64 bit implementation. I played a bit around and the
-simplest version I found was this here:
 
 
-diff --git a/arch/mips/include/asm/elf.h b/arch/mips/include/asm/elf.h
-index b01a6ff..8c88238 100644
---- a/arch/mips/include/asm/elf.h
-+++ b/arch/mips/include/asm/elf.h
-@@ -205,8 +205,6 @@ struct mips_elf_abiflags_v0 {
- #define MIPS_ABI_FP_64		6	/* -mips32r2 -mfp64 */
- #define MIPS_ABI_FP_64A		7	/* -mips32r2 -mfp64 -mno-odd-spreg */
- 
--#ifdef CONFIG_32BIT
--
- /*
-  * In order to be sure that we don't attempt to execute an O32 binary which
-  * requires 64 bit FP (FR=1) on a system which does not support it we refuse
-@@ -225,23 +223,30 @@ struct mips_elf_abiflags_v0 {
- #define elf_check_arch(hdr)						\
- ({									\
- 	int __res = 1;							\
--	struct elfhdr *__h = (hdr);					\
-+	typeof(*(hdr)) *__h = (hdr);					\
- 									\
- 	if (__h->e_machine != EM_MIPS)					\
- 		__res = 0;						\
--	if (__h->e_ident[EI_CLASS] != ELFCLASS32)			\
--		__res = 0;						\
--	if ((__h->e_flags & EF_MIPS_ABI2) != 0)				\
--		__res = 0;						\
--	if (((__h->e_flags & EF_MIPS_ABI) != 0) &&			\
--	    ((__h->e_flags & EF_MIPS_ABI) != EF_MIPS_ABI_O32))		\
--		__res = 0;						\
--	if (__h->e_flags & __MIPS_O32_FP64_MUST_BE_ZERO)		\
--		__res = 0;						\
-+	if (__same_type(hdr, Elf32_Ehdr *)) {				\
-+		if (__h->e_ident[EI_CLASS] != ELFCLASS32)		\
-+			__res = 0;					\
-+		if ((__h->e_flags & EF_MIPS_ABI2) != 0)			\
-+			__res = 0;					\
-+		if (((__h->e_flags & EF_MIPS_ABI) != 0) &&		\
-+			((__h->e_flags & EF_MIPS_ABI) != EF_MIPS_ABI_O32)) \
-+			__res = 0;					\
-+		if (__h->e_flags & __MIPS_O32_FP64_MUST_BE_ZERO)	\
-+			__res = 0;					\
-+	} else if (__same_type(hdr, Elf64_Ehdr *)) {			\
-+		if (__h->e_ident[EI_CLASS] != ELFCLASS64)		\
-+			__res = 0;					\
-+	}								\
- 									\
- 	__res;								\
- })
- 
-+#ifdef CONFIG_32BIT
-+
- /*
-  * These are used to set parameters in the core dumps.
-  */
-@@ -250,21 +255,6 @@ struct mips_elf_abiflags_v0 {
- #endif /* CONFIG_32BIT */
- 
- #ifdef CONFIG_64BIT
--/*
-- * This is used to ensure we don't load something for the wrong architecture.
-- */
--#define elf_check_arch(hdr)						\
--({									\
--	int __res = 1;							\
--	struct elfhdr *__h = (hdr);					\
--									\
--	if (__h->e_machine != EM_MIPS)					\
--		__res = 0;						\
--	if (__h->e_ident[EI_CLASS] != ELFCLASS64)			\
--		__res = 0;						\
--									\
--	__res;								\
--})
- 
- /*
-  * These are used to set parameters in the core dumps.
-
-
-Not sure if that is what you had in mind.
-
-cheers,
-daniel
+-- 
+-- 
+Best regards,
+  Antony Pavlov

@@ -1,59 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Feb 2016 02:40:12 +0100 (CET)
-Received: from mail-ob0-f171.google.com ([209.85.214.171]:36756 "EHLO
-        mail-ob0-f171.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27009637AbcBABkKtE25S (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 1 Feb 2016 02:40:10 +0100
-Received: by mail-ob0-f171.google.com with SMTP id ba1so106950558obb.3;
-        Sun, 31 Jan 2016 17:40:10 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Feb 2016 10:59:03 +0100 (CET)
+Received: from mail-ig0-f179.google.com ([209.85.213.179]:33998 "EHLO
+        mail-ig0-f179.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008545AbcBAJ7BocRar (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 1 Feb 2016 10:59:01 +0100
+Received: by mail-ig0-f179.google.com with SMTP id ik10so31969320igb.1
+        for <linux-mips@linux-mips.org>; Mon, 01 Feb 2016 01:59:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:mime-version:content-type
-         :content-transfer-encoding;
-        bh=Gvc47rZL8rMl/KeUsvtbjMO2q6YN85K4gBqfXW2WOgA=;
-        b=0K2++pA8wSkDai5H/pxFTGWfcac8huZpmOZTGhbugPDXopEjxg21j8JF+AxV3O8TJv
-         fqiNjDXkJNENVeLGTwjmFUZD3cJbtmOXzNarBr45Js6JSTKDcmJZ3BnlB21ynoYmQcEH
-         FWYHOgIrWQYCZ1XEcfKzUOTm9Qp+EkWBz9IslrYBPZvumt6N7/O+Nup4UArJ22tZIpmK
-         Va21SfJYKG8dqOlc+StW8mVyL2EuN8YJClEw01L5VMUvb7UvOMlHh4p2Y5aKPykrSjwc
-         nzU/g6Xw3tMcbEXFkHQJQ0RwKhunjG2Xt5rwUxStMdzYoSvUGs7r8g6fmNQVUSK/iYxi
-         MB1w==
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type;
+        bh=thkgbWPHR+ufsvLX4+lrAtasVD7aIm9z+I7wGzBB6Q4=;
+        b=fkbnCbWR6yv29OhbyCNK5Rj1kmVostaFV9x5k7UWN1uJsaLQQbFz75+6LASfIzB5SM
+         KklQfekStcNZYrVJFqlGenUhA8rILPvjxLr03gx12HkfU86WkLotUeOjqK4OTdADn/00
+         JITFhEcYL00/E/F3uUDwCUEFH90BsKJjpHw4mxSbZ7MVn15O0eznNj8HN/EJ907hNARd
+         pD1HAZVDFUaA8MHoRcyOI7EPTMHH2g8Sj9XpLAYJcMJNi8ueDvTjlCF9auysLsdPJCxA
+         V4YmaEBwnex3hcxabex+PTK692mux1sOApCT97RMs+A0i9FDOqIlRzSjrs+uYztpqOUC
+         b2cA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-type:content-transfer-encoding;
-        bh=Gvc47rZL8rMl/KeUsvtbjMO2q6YN85K4gBqfXW2WOgA=;
-        b=hw8yhBCZ99dnB1a+lIzIalduwd2BPCkYLsxIK4iNrZxX8kfjPmBoibtsMMlYl6QjHZ
-         Fbw8XPEl8cXMAkhN9EuMb8+m/LRswS0rOTmeb5R3M6yU53nhYATvnaHC+vOm92iebyA4
-         KikTSV7fze2AGZOefNjWV3o5klOxkl0BMnE4Q8YMaI6NOXBVxENSvPmA7PIO5Ez80NtP
-         TA8PhEZrl4ecMo+pqdkYzktD6Sqn0aznHC9415IeugODPYOBbQMwvcpJZEgtRLS2XmB/
-         5TM87FV7jZynOtIm0GHIRUTMALbJk5FInazX3gRbMw8JHVovDMWrOGFGsDxji5IsxJ7g
-         wA0w==
-X-Gm-Message-State: AG10YOSsiendggRZJK+RsJfDR706TMM/qSoYXjOUFQBmIQ3+WoVjEyO/N2ytpZbVRzrglg==
-X-Received: by 10.60.94.82 with SMTP id da18mr15635687oeb.40.1454290804797;
-        Sun, 31 Jan 2016 17:40:04 -0800 (PST)
-Received: from bender.lan (ip68-5-39-32.oc.oc.cox.net. [68.5.39.32])
-        by smtp.gmail.com with ESMTPSA id y9sm12855983obg.4.2016.01.31.17.40.03
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Sun, 31 Jan 2016 17:40:04 -0800 (PST)
-From:   Florian Fainelli <f.fainelli@gmail.com>
-To:     linux-mips@linux-mips.org
-Cc:     ralf@linux-mips.org, blogic@openwrt.org, cernekee@gmail.com,
-        Florian Fainelli <f.fainelli@gmail.com>
-Subject: [PATCH] MAINTAINERS: Remove stale entry for BCM33xx chips
-Date:   Sun, 31 Jan 2016 17:40:01 -0800
-Message-Id: <1454290801-29735-1-git-send-email-f.fainelli@gmail.com>
-X-Mailer: git-send-email 2.5.0
+        h=x-gm-message-state:mime-version:sender:in-reply-to:references:date
+         :message-id:subject:from:to:cc:content-type;
+        bh=thkgbWPHR+ufsvLX4+lrAtasVD7aIm9z+I7wGzBB6Q4=;
+        b=Vrks7g9AdfyCGVk1plPD98xg2Fmt078vXPiakor3nUSQ/DkY/wyP6Wwng1hmTQydE+
+         hiyk7e42cyhRaxRhV9DxDklXMhFOFPmFZq0rTyT9gvntiPOv2bm2hMeKxBjO1lhyt+ZU
+         8xtkYLlRzcCMHDZ9T5TAk/49A7k4lf7v/sezl/hMJXLqibGiTgpFJkVd19ao0Q6REDc3
+         5t6lfVfdlUSNmTM7DGZdyNcYhfw8mwM5a4Zm5mLyVxrRaTdn/rw9ayj32JGJwcjg/kfo
+         XXvYYE+5VRXbc04YHSU67fuNKjRqMp/abl5F2N4NbUOYOugsv6QQRcgyNaJIWG9FZPEk
+         VDMw==
+X-Gm-Message-State: AG10YOTjItpN9YJSwVehNvMrTs8q876KLW5nNL0rZDS449i9qwaEGnDEIDJw7ioozukAPbbmJppnl3jdXOz4EA==
 MIME-Version: 1.0
+X-Received: by 10.50.20.133 with SMTP id n5mr10561534ige.31.1454320735873;
+ Mon, 01 Feb 2016 01:58:55 -0800 (PST)
+Received: by 10.107.9.97 with HTTP; Mon, 1 Feb 2016 01:58:55 -0800 (PST)
+In-Reply-To: <1454320556-9141-1-git-send-email-geert@linux-m68k.org>
+References: <1454320556-9141-1-git-send-email-geert@linux-m68k.org>
+Date:   Mon, 1 Feb 2016 10:58:55 +0100
+X-Google-Sender-Auth: up-Hm-qVXSXFHZy1lNost4YhAHU
+Message-ID: <CAMuHMdXtza8WKWqtrSA=mf5BRzKxgoAcf+eA19Dyd6XjgHH3iA@mail.gmail.com>
+Subject: Re: Build regressions/improvements in v4.5-rc2
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+To:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Cc:     Linux MIPS Mailing List <linux-mips@linux-mips.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Return-Path: <f.fainelli@gmail.com>
+Return-Path: <geert.uytterhoeven@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51578
+X-archive-position: 51579
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: f.fainelli@gmail.com
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -66,33 +63,46 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Commit 70371cef114ca ("MAINTAINERS: Add entry for BMIPS multiplatform
-kernel") supersedes this entry for BCM33xx.
+On Mon, Feb 1, 2016 at 10:55 AM, Geert Uytterhoeven
+<geert@linux-m68k.org> wrote:
+> JFYI, when comparing v4.5-rc2[1] to v4.5-rc1[3], the summaries are:
+>   - build errors: +11/-14
 
-Fixes: 70371cef114ca ("MAINTAINERS: Add entry for BMIPS multiplatform kernel")
-Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
----
- MAINTAINERS | 8 --------
- 1 file changed, 8 deletions(-)
+  + /home/kisskb/slave/src/include/linux/workqueue.h: error:
+dereferencing type-punned pointer will break strict-aliasing rules
+[-Werror=strict-aliasing]:  => 186:2
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 30aca4aa5467..3361093cd799 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -2357,14 +2357,6 @@ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/rpi/linux-rpi.git
- S:	Maintained
- N:	bcm2835
- 
--BROADCOM BCM33XX MIPS ARCHITECTURE
--M:	Kevin Cernekee <cernekee@gmail.com>
--L:	linux-mips@linux-mips.org
--S:	Maintained
--F:	arch/mips/bcm3384/*
--F:	arch/mips/include/asm/mach-bcm3384/*
--F:	arch/mips/kernel/*bmips*
--
- BROADCOM BCM47XX MIPS ARCHITECTURE
- M:	Hauke Mehrtens <hauke@hauke-m.de>
- M:	Rafał Miłecki <zajec5@gmail.com>
--- 
-2.5.0
+mips-allmodconfig (reported before)
+
+  + /tmp/cc1QBZQq.s: Error: can't resolve `_start' {*UND* section} -
+`L0^A' {.text section}:  => 43
+  + /tmp/cc8ZbZGS.s: Error: can't resolve `_start' {*UND* section} -
+`L0^A' {.text section}:  => 366, 49
+  + /tmp/ccFjnXEZ.s: Error: can't resolve `_start' {*UND* section} -
+`L0^A' {.text section}:  => 329, 50
+  + /tmp/ccKewrem.s: Error: can't resolve `_start' {*UND* section} -
+`L0^A' {.text section}:  => 378, 49
+  + /tmp/ccWo9QOz.s: Error: can't resolve `_start' {*UND* section} -
+`L0^A' {.text section}:  => 43
+  + /tmp/ccXxR9ys.s: Error: can't resolve `_start' {*UND* section} -
+`L0^A' {.text section}:  => 43
+  + /tmp/ccjk8gwa.s: Error: can't resolve `_start' {*UND* section} -
+`L0^A' {.text section}:  => 49, 366
+  + /tmp/ccrL6L9s.s: Error: can't resolve `_start' {*UND* section} -
+`L0^A' {.text section}:  => 326, 50
+
+Various mips, not really new but shifting shape on every build
+
+> [1] http://kisskb.ellerman.id.au/kisskb/head/9870/ (all 261 configs)
+> [3] http://kisskb.ellerman.id.au/kisskb/head/9841/ (all 261 configs)
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

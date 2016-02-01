@@ -1,56 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Feb 2016 10:59:03 +0100 (CET)
-Received: from mail-ig0-f179.google.com ([209.85.213.179]:33998 "EHLO
-        mail-ig0-f179.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008545AbcBAJ7BocRar (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 1 Feb 2016 10:59:01 +0100
-Received: by mail-ig0-f179.google.com with SMTP id ik10so31969320igb.1
-        for <linux-mips@linux-mips.org>; Mon, 01 Feb 2016 01:59:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc:content-type;
-        bh=thkgbWPHR+ufsvLX4+lrAtasVD7aIm9z+I7wGzBB6Q4=;
-        b=fkbnCbWR6yv29OhbyCNK5Rj1kmVostaFV9x5k7UWN1uJsaLQQbFz75+6LASfIzB5SM
-         KklQfekStcNZYrVJFqlGenUhA8rILPvjxLr03gx12HkfU86WkLotUeOjqK4OTdADn/00
-         JITFhEcYL00/E/F3uUDwCUEFH90BsKJjpHw4mxSbZ7MVn15O0eznNj8HN/EJ907hNARd
-         pD1HAZVDFUaA8MHoRcyOI7EPTMHH2g8Sj9XpLAYJcMJNi8ueDvTjlCF9auysLsdPJCxA
-         V4YmaEBwnex3hcxabex+PTK692mux1sOApCT97RMs+A0i9FDOqIlRzSjrs+uYztpqOUC
-         b2cA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:sender:in-reply-to:references:date
-         :message-id:subject:from:to:cc:content-type;
-        bh=thkgbWPHR+ufsvLX4+lrAtasVD7aIm9z+I7wGzBB6Q4=;
-        b=Vrks7g9AdfyCGVk1plPD98xg2Fmt078vXPiakor3nUSQ/DkY/wyP6Wwng1hmTQydE+
-         hiyk7e42cyhRaxRhV9DxDklXMhFOFPmFZq0rTyT9gvntiPOv2bm2hMeKxBjO1lhyt+ZU
-         8xtkYLlRzcCMHDZ9T5TAk/49A7k4lf7v/sezl/hMJXLqibGiTgpFJkVd19ao0Q6REDc3
-         5t6lfVfdlUSNmTM7DGZdyNcYhfw8mwM5a4Zm5mLyVxrRaTdn/rw9ayj32JGJwcjg/kfo
-         XXvYYE+5VRXbc04YHSU67fuNKjRqMp/abl5F2N4NbUOYOugsv6QQRcgyNaJIWG9FZPEk
-         VDMw==
-X-Gm-Message-State: AG10YOTjItpN9YJSwVehNvMrTs8q876KLW5nNL0rZDS449i9qwaEGnDEIDJw7ioozukAPbbmJppnl3jdXOz4EA==
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Feb 2016 12:03:24 +0100 (CET)
+Received: from smtp2-g21.free.fr ([212.27.42.2]:29800 "EHLO smtp2-g21.free.fr"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27010663AbcBALDXTjpvA (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 1 Feb 2016 12:03:23 +0100
+Received: from tock (unknown [176.0.132.117])
+        (Authenticated sender: albeu)
+        by smtp2-g21.free.fr (Postfix) with ESMTPSA id 4B29A4B01A9;
+        Mon,  1 Feb 2016 12:00:59 +0100 (CET)
+Date:   Mon, 1 Feb 2016 12:03:00 +0100
+From:   Alban <albeu@free.fr>
+To:     Antony Pavlov <antonynpavlov@gmail.com>
+Cc:     Aban Bedel <albeu@free.fr>, linux-mips@linux-mips.org,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@codeaurora.org>,
+        Rob Herring <robh+dt@kernel.org>, linux-clk@vger.kernel.org,
+        devicetree@vger.kernel.org
+Subject: Re: [RFC v3 01/14] WIP: clk: add Atheros AR724X/AR913X/AR933X SoCs
+ clock driver
+Message-ID: <20160201120300.3d6fd1b3@tock>
+In-Reply-To: <20160131234155.eee918745880878963c044aa@gmail.com>
+References: <1453580251-2341-1-git-send-email-antonynpavlov@gmail.com>
+        <1453580251-2341-2-git-send-email-antonynpavlov@gmail.com>
+        <20160125232156.35c0ce3f@tock>
+        <20160131234155.eee918745880878963c044aa@gmail.com>
+X-Mailer: Claws Mail 3.9.3 (GTK+ 2.24.23; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-X-Received: by 10.50.20.133 with SMTP id n5mr10561534ige.31.1454320735873;
- Mon, 01 Feb 2016 01:58:55 -0800 (PST)
-Received: by 10.107.9.97 with HTTP; Mon, 1 Feb 2016 01:58:55 -0800 (PST)
-In-Reply-To: <1454320556-9141-1-git-send-email-geert@linux-m68k.org>
-References: <1454320556-9141-1-git-send-email-geert@linux-m68k.org>
-Date:   Mon, 1 Feb 2016 10:58:55 +0100
-X-Google-Sender-Auth: up-Hm-qVXSXFHZy1lNost4YhAHU
-Message-ID: <CAMuHMdXtza8WKWqtrSA=mf5BRzKxgoAcf+eA19Dyd6XjgHH3iA@mail.gmail.com>
-Subject: Re: Build regressions/improvements in v4.5-rc2
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-To:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Cc:     Linux MIPS Mailing List <linux-mips@linux-mips.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <geert.uytterhoeven@gmail.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <albeu@free.fr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51579
+X-archive-position: 51580
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: albeu@free.fr
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -63,46 +48,39 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Feb 1, 2016 at 10:55 AM, Geert Uytterhoeven
-<geert@linux-m68k.org> wrote:
-> JFYI, when comparing v4.5-rc2[1] to v4.5-rc1[3], the summaries are:
->   - build errors: +11/-14
+On Sun, 31 Jan 2016 23:41:55 +0300
+Antony Pavlov <antonynpavlov@gmail.com> wrote:
 
-  + /home/kisskb/slave/src/include/linux/workqueue.h: error:
-dereferencing type-punned pointer will break strict-aliasing rules
-[-Werror=strict-aliasing]:  => 186:2
+> > > +	ath79_clks[ATH79_CLK_REF] = ath79_add_sys_clkdev("ref", ref_rate);
+> > > +	ath79_clks[ATH79_CLK_CPU] = ath79_add_sys_clkdev("cpu", cpu_rate);
+> > > +	ath79_clks[ATH79_CLK_DDR] = ath79_add_sys_clkdev("ddr", ddr_rate);
+> > > +	ath79_clks[ATH79_CLK_AHB] = ath79_add_sys_clkdev("ahb", ahb_rate);
+> > > +	ath79_clks[ATH79_CLK_WDT] = ath79_add_sys_clkdev("wdt", ahb_rate);
+> > > +	ath79_clks[ATH79_CLK_UART] = ath79_add_sys_clkdev("uart", ahb_rate);  
+> > 
+> > You shouldn't add ref, wdt and uart, they are not needed and make the
+> > driver incompatible with the current DT bindings.  
+> 
+> Please describe the situation then this incompatibility does matter.
+> 
+> Current ath79 dt support is very preliminary and the only dt user
+> is 5-years old TP-Link WR1043ND so it's near impossible to break somethink.
+> 
+> Anyway current ath79 dt binding is somewhat broken (see __your__ message
+> 'Re: [RFC 1/4] WIP: MIPS: ath79: make ar933x clks more
+> devicetree-friendly' from 'Thu, 21 Jan 2016 12:03:20 +0100').
 
-mips-allmodconfig (reported before)
+The point is that DT is about describing the hardware in a consistent
+and OS independent manner. It shouldn't be modeled just to suit some
+existing code. So it is no big deal if the code doesn't use all the
+informations provided by the DT, like here where the input clock is not
+*yet* used by the code. However it is a no-go to extend the binding to
+add things that don't exists in the hardware just to suit some old code.
 
-  + /tmp/cc1QBZQq.s: Error: can't resolve `_start' {*UND* section} -
-`L0^A' {.text section}:  => 43
-  + /tmp/cc8ZbZGS.s: Error: can't resolve `_start' {*UND* section} -
-`L0^A' {.text section}:  => 366, 49
-  + /tmp/ccFjnXEZ.s: Error: can't resolve `_start' {*UND* section} -
-`L0^A' {.text section}:  => 329, 50
-  + /tmp/ccKewrem.s: Error: can't resolve `_start' {*UND* section} -
-`L0^A' {.text section}:  => 378, 49
-  + /tmp/ccWo9QOz.s: Error: can't resolve `_start' {*UND* section} -
-`L0^A' {.text section}:  => 43
-  + /tmp/ccXxR9ys.s: Error: can't resolve `_start' {*UND* section} -
-`L0^A' {.text section}:  => 43
-  + /tmp/ccjk8gwa.s: Error: can't resolve `_start' {*UND* section} -
-`L0^A' {.text section}:  => 49, 366
-  + /tmp/ccrL6L9s.s: Error: can't resolve `_start' {*UND* section} -
-`L0^A' {.text section}:  => 326, 50
+I agree we might need to clear a few things regarding the UART clock in
+the newer SoC, in particular if the UART use the output of the PLL
+pre-divider or something similar. Then we would need to rework the DT
+binding for the those SoC. However with the current knowledge I don't
+see any need to change the biding yet.
 
-Various mips, not really new but shifting shape on every build
-
-> [1] http://kisskb.ellerman.id.au/kisskb/head/9870/ (all 261 configs)
-> [3] http://kisskb.ellerman.id.au/kisskb/head/9841/ (all 261 configs)
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Alban

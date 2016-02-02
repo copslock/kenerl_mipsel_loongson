@@ -1,61 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Feb 2016 04:27:13 +0100 (CET)
-Received: from bh-25.webhostbox.net ([208.91.199.152]:38575 "EHLO
-        bh-25.webhostbox.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27006587AbcBBD1KwSmzQ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 2 Feb 2016 04:27:10 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=roeck-us.net; s=default; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:MIME-Version:Date:Message-ID:From:Cc:References:To:Subject;
-        bh=54KZ3oHcKKPt2RGCJbylxL3rEiCfpamc+56Zc8gb0Pg=; b=FPgLLmzEXxwaPdvOaWA3UDGQsK
-        p5vT6jvY3zRKRNTyrPpZNewkwSLCLMCqkqnT++OOUHhBgW0Emo2Pjcvhlc4TrkzZ5WbxaZoS+d3jN
-        Ir9j0oisw4IMXuF0sn8kgyUbkwCJqJiGGIOUjFVH1q+K92jpUAR3EsVwuLTF3L82P5cWDpIUwDMNh
-        3VjWdEfOvYS59B0rSGeau6ueRatiLsEvGXS8k7hAM7z67JjK+OwZoWaaDLkTOtwR68fTmbxwSpMns
-        FwoLTG8Sf3uV1Mq5TNwiqFuzArb+EDawQBlwjuH5JMVUB8+xq92q3RwXqEGCh2k4PoHk3XaRPE6mO
-        2hxTB7FA==;
-Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:43942 helo=server.roeck-us.net)
-        by bh-25.webhostbox.net with esmtpsa (TLSv1:DHE-RSA-AES128-SHA:128)
-        (Exim 4.86)
-        (envelope-from <linux@roeck-us.net>)
-        id 1aQRcN-001oYo-SD; Tue, 02 Feb 2016 03:27:04 +0000
-Subject: Re: [PATCH 2/2] watchdog: pic32-wdt: Add PIC32 watchdog driver
-To:     Joshua Henderson <joshua.henderson@microchip.com>,
-        linux-kernel@vger.kernel.org
-References: <1454371381-25160-1-git-send-email-joshua.henderson@microchip.com>
- <1454371381-25160-2-git-send-email-joshua.henderson@microchip.com>
-Cc:     linux-mips@linux-mips.org, ralf@linux-mips.org,
-        Purna Chandra Mandal <purna.mandal@microchip.com>,
-        Wim Van Sebroeck <wim@iguana.be>,
-        linux-watchdog@vger.kernel.org
-From:   Guenter Roeck <linux@roeck-us.net>
-Message-ID: <56B02206.2000002@roeck-us.net>
-Date:   Mon, 1 Feb 2016 19:27:02 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.5.1
-MIME-Version: 1.0
-In-Reply-To: <1454371381-25160-2-git-send-email-joshua.henderson@microchip.com>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Authenticated_sender: linux@roeck-us.net
-X-OutGoing-Spam-Status: No, score=-1.0
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - bh-25.webhostbox.net
-X-AntiAbuse: Original Domain - linux-mips.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - roeck-us.net
-X-Get-Message-Sender-Via: bh-25.webhostbox.net: authenticated_id: linux@roeck-us.net
-X-Authenticated-Sender: bh-25.webhostbox.net: linux@roeck-us.net
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-Return-Path: <linux@roeck-us.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Feb 2016 07:49:50 +0100 (CET)
+Received: from smtpbgbr2.qq.com ([54.207.22.56]:43647 "EHLO smtpbgbr2.qq.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27007168AbcBBGtrYv5k3 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 2 Feb 2016 07:49:47 +0100
+X-QQ-mid: bizesmtp14t1454395734t687t32
+Received: from software.domain.org (unknown [222.92.8.142])
+        by esmtp4.qq.com (ESMTP) with 
+        id ; Tue, 02 Feb 2016 14:48:39 +0800 (CST)
+X-QQ-SSF: 01100000002000F0FK70B60A0000000
+X-QQ-FEAT: JOVh5Yj1n8Z5pfeuVbJ75QgFHiSmosVn0Do83D7VzC5G6FOpz+Ew5K1redL3j
+        4YdGYdzdFLWnDGmI01DvHd+tL112PZdJ6vhWw+WQB5iSdhx3C6Rpcv7Ggj+ey423fpcyaow
+        8Edu3AimldbTg/xNo3aUTOGATg9+vCiCd+dGwnUUUkt8ij28efkcX8B0rF9rdinFz1jdjwC
+        porYAzpqxfLPfZF3eqIP/IvrhmT3Uf7IKmol8GG+j3e4BpZJEQBUj7iCDEZuz9cm9v1g8Kg
+        18X7MEjFMefEGt
+X-QQ-GoodBg: 0
+From:   Huacai Chen <chenhc@lemote.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     Aurelien Jarno <aurelien@aurel32.net>,
+        "Steven J . Hill" <Steven.Hill@imgtec.com>,
+        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        Huacai Chen <chenhc@lemote.com>
+Subject: [PATCH V2 0/6] MIPS: Loongson: Add Loongson-3A R2 support
+Date:   Tue,  2 Feb 2016 14:48:38 +0800
+Message-Id: <1454395724-28442-1-git-send-email-chenhc@lemote.com>
+X-Mailer: git-send-email 2.7.0
+X-QQ-SENDSIZE: 520
+X-QQ-Bgrelay: 1
+Return-Path: <chenhc@lemote.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51614
+X-archive-position: 51615
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linux@roeck-us.net
+X-original-sender: chenhc@lemote.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -68,449 +48,66 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 02/01/2016 04:02 PM, Joshua Henderson wrote:
-> When enabled, the watchdog peripheral can be used to reset the device if the
-> WDT is not cleared periodically in software.
+This patchset is is prepared for the next 4.6 release for Linux/MIPS.
+It adds Loongson-3A R2 (Loongson-3A2000) support and fixes a potential
+bug related to FTLB.
 
-Commit description is a bit long.
+Loongson-3 CPU family:
 
->
-> Signed-off-by: Joshua Henderson <joshua.henderson@microchip.com>
-> Signed-off-by: Purna Chandra Mandal <purna.mandal@microchip.com>
-> Cc: Ralf Baechle <ralf@linux-mips.org>
-> Cc: <linux-mips@linux-mips.org>
-> ---
-> Note: Please merge this patch series through the MIPS tree.
-> ---
->   drivers/watchdog/Kconfig     |   14 ++
->   drivers/watchdog/Makefile    |    1 +
->   drivers/watchdog/pic32-wdt.c |  301 ++++++++++++++++++++++++++++++++++++++++++
->   3 files changed, 316 insertions(+)
->   create mode 100644 drivers/watchdog/pic32-wdt.c
->
-> diff --git a/drivers/watchdog/Kconfig b/drivers/watchdog/Kconfig
-> index 4f0e7be..131abc2 100644
-> --- a/drivers/watchdog/Kconfig
-> +++ b/drivers/watchdog/Kconfig
-> @@ -1410,6 +1410,20 @@ config MT7621_WDT
->   	help
->   	  Hardware driver for the Mediatek/Ralink MT7621/8 SoC Watchdog Timer.
->
-> +config PIC32_WDT
-> +	tristate "Microchip PIC32 hardware watchdog"
-> +	select WATCHDOG_CORE
-> +	depends on MACH_PIC32
-> +	default y
+Code-name       Brand-name       PRId
+Loongson-3A R1  Loongson-3A1000  0x6305
+Loongson-3A R2  Loongson-3A2000  0x6308
+Loongson-3B R1  Loongson-3B1000  0x6306
+Loongson-3B R2  Loongson-3B1500  0x6307
 
-Sure you want "y" here ?
+Features of R2 revision of Loongson-3A:
+1, Primary cache includes I-Cache, D-Cache and V-Cache (Victim Cache).
+2, I-Cache, D-Cache and V-Cache are 16-way set-associative, linesize is 64 Bytes.
+3, 64 entries of VTLB (classic TLB), 1024 entries of FTLB (8-way set-associative).
+4, Support DSP/DSPv2 instructions, UserLocal register and Read-Inhibit/Execute-Inhibit.
 
-> +	help
-> +	  Watchdog driver for the built in watchdog hardware in a PIC32.
-> +
-> +	  Configuration bits must be set appropriately for the watchdog to be
-> +	  controlled by this driver.
-> +
-> +	  To compile this driver as a loadable module, choose M here.
-> +	  The module will be called pic32-wdt.
-> +
->   # PARISC Architecture
->
->   # POWERPC Architecture
-> diff --git a/drivers/watchdog/Makefile b/drivers/watchdog/Makefile
-> index f566753..244ed80 100644
-> --- a/drivers/watchdog/Makefile
-> +++ b/drivers/watchdog/Makefile
-> @@ -153,6 +153,7 @@ obj-$(CONFIG_LANTIQ_WDT) += lantiq_wdt.o
->   obj-$(CONFIG_RALINK_WDT) += rt2880_wdt.o
->   obj-$(CONFIG_IMGPDC_WDT) += imgpdc_wdt.o
->   obj-$(CONFIG_MT7621_WDT) += mt7621_wdt.o
-> +obj-$(CONFIG_PIC32_WDT) += pic32-wdt.o
->
->   # PARISC Architecture
->
-> diff --git a/drivers/watchdog/pic32-wdt.c b/drivers/watchdog/pic32-wdt.c
-> new file mode 100644
-> index 0000000..d80e62d
-> --- /dev/null
-> +++ b/drivers/watchdog/pic32-wdt.c
-> @@ -0,0 +1,301 @@
-> +/*
-> + * PIC32 watchdog driver
-> + *
-> + * Joshua Henderson <joshua.henderson@microchip.com>
-> + * Copyright (c) 2016, Microchip Technology Inc.
-> + *
-> + * This program is free software; you can redistribute it and/or
-> + * modify it under the terms of the GNU General Public License
-> + * as published by the Free Software Foundation; either version
-> + * 2 of the License, or (at your option) any later version.
-> + */
-> +
-> +#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
-> +
-> +#include <linux/kernel.h>
-> +#include <linux/module.h>
-> +#include <linux/clk.h>
-> +#include <linux/err.h>
-> +#include <linux/io.h>
-> +#include <linux/of.h>
-> +#include <linux/of_device.h>
-> +#include <linux/pm.h>
-> +#include <linux/watchdog.h>
-> +#include <linux/spinlock.h>
-> +#include <linux/device.h>
-> +#include <linux/platform_device.h>
+V1 -> V2:
+1, Probe MIPS_CPU_PREFETCH by PRId.
+2, Use PRID_REV_MASK instead of hardcode.
+3, Update commit messages to avoid confusion.
 
-Alphabetic order, please.
+Huacai Chen(6):
+ MIPS: Loongson: Add Loongson-3A R2 basic support.
+ MIPS: Loongson: Invalidate special TLBs when needed.
+ MIPS: Loongson-3: Fast TLB refill handler.
+ MIPS: tlbex: Fix bugs in tlbchange handler.
+ MIPS: Loongson: Introduce and use cpu_has_coherent_cache feature.
+ MIPS: Loongson-3: Introduce CONFIG_LOONGSON3_ENHANCEMENT.
 
-> +
-> +#include <asm/mach-pic32/pic32.h>
-> +
-> +/* Watchdog Timer Registers */
-> +#define WDTCON_REG		0x00
-> +
-> +/* Watchdog Timer Control Register fields */
-> +#define WDTCON_WIN_EN		0x0001
-> +#define WDTCON_RMCS_MASK	0x0003
-> +#define WDTCON_RMCS_SHIFT	0x0006
-> +#define WDTCON_RMPS_MASK	0x001F
-> +#define WDTCON_RMPS_SHIFT	0x0008
-> +#define WDTCON_ON		0x8000
-> +#define WDTCON_CLR_KEY		0x5743
-> +
-> +/* Reset Control Register fields for watchdog */
-> +#define RESETCON_TIMEOUT_IDLE	0x0004
-> +#define RESETCON_TIMEOUT_SLEEP	0x0008
-> +#define RESETCON_WDT_TIMEOUT	0x0010
-> +
-
-Can you use BIT() to make it easier to understand which values are bit masks ?
-
-> +struct pic32_wdt {
-> +	spinlock_t	lock;
-> +	void __iomem	*regs;
-> +	void __iomem	*rst_base;
-> +	struct clk	*clk;
-> +	unsigned long	next_heartbeat;
-> +	unsigned long	timeout;
-> +};
-> +
-> +static inline int wdt_is_enabled(struct pic32_wdt *wdt)
-> +{
-> +	return readl(wdt->regs + WDTCON_REG) & WDTCON_ON;
-> +}
-
-Return bool.
-
-> +
-> +static inline int wdt_is_win_enabled(struct pic32_wdt *wdt)
-> +{
-
-Return bool.
-
-> +	u32 v;
-> +
-> +	v = readl(wdt->regs + WDTCON_REG);
-> +	v &= WDTCON_WIN_EN;
-> +
-> +	return v;
-
-	return readl(wdt->regs + WDTCON_REG) & WDTCON_WIN_EN;
-
-would be good enough and be more consistent with the other
-function above.
-
-> +}
-> +
-> +static inline void wdt_enable(struct pic32_wdt *wdt)
-> +{
-> +	writel(WDTCON_ON, PIC32_SET(wdt->regs + WDTCON_REG));
-> +}
-> +
-
-Can you use consistent function name prefixes ?
-
-> +static inline void wdt_disable(struct pic32_wdt *wdt)
-> +{
-> +	writel(WDTCON_ON, PIC32_CLR(wdt->regs + WDTCON_REG));
-> +	cpu_relax();
-
-Is this needed ?
-
-> +}
-> +
-> +static inline u32 wdt_get_post_scaler(struct pic32_wdt *wdt)
-> +{
-> +	u32 v = readl(wdt->regs + WDTCON_REG);
-> +
-> +	return (v >> WDTCON_RMPS_SHIFT) & WDTCON_RMPS_MASK;
-> +}
-> +
-> +static inline u32 wdt_get_clk_id(struct pic32_wdt *wdt)
-> +{
-> +	u32 v = readl(wdt->regs + WDTCON_REG);
-> +
-> +	return (v >> WDTCON_RMCS_SHIFT) & WDTCON_RMCS_MASK;
-> +}
-> +
-> +static inline void wdt_keepalive(struct pic32_wdt *wdt)
-> +{
-> +	/* write key through single half-word */
-> +	writew(WDTCON_CLR_KEY, wdt->regs + WDTCON_REG + 2);
-> +}
-> +
-> +static int pic32_wdt_bootstatus(struct pic32_wdt *wdt)
-> +{
-> +	u32 v = readl(wdt->rst_base);
-> +
-> +	writel(RESETCON_WDT_TIMEOUT, PIC32_CLR(wdt->rst_base));
-> +
-> +	return v & RESETCON_WDT_TIMEOUT;
-> +}
-> +
-> +static int pic32_wdt_get_timeout_secs(struct pic32_wdt *wdt)
-> +{
-> +	unsigned long rate;
-> +	u32 period, ps, terminal;
-> +
-> +	rate = clk_get_rate(wdt->clk);
-> +	pr_debug("wdt: clk_id %d, clk_rate %lu (prescale)\n",
-> +		 wdt_get_clk_id(wdt), rate);
-> +
-> +	/* default, prescaler of 32 (i.e. div-by-32) is implicit. */
-> +	rate >>= 5;
-> +
-> +	/* calculate terminal count from postscaler. */
-> +	ps = wdt_get_post_scaler(wdt);
-> +	terminal = 1 << ps;
-
-BIT(ps) would be a bit nicer.
-
-> +
-> +	/* find time taken (in secs) to reach terminal count */
-> +	period = terminal / rate;
-
-Can rate be 0 ?
-
-> +	pr_info("wdt: clk_rate %lu (postscale) / terminal %d, timeout %dsec\n",
-> +		rate, terminal, period);
-
-Is this needed ? Seems like a debug message to me.
-Users won't be able to make sense of it.
-
-> +
-> +	return period;
-> +}
-> +
-> +static void pic32_wdt_keepalive(struct pic32_wdt *wdt)
-> +{
-> +	wdt->next_heartbeat = jiffies +
-> +		msecs_to_jiffies(wdt->timeout * MSEC_PER_SEC);
-> +	wdt_keepalive(wdt);
-> +}
-> +
-> +static int pic32_wdt_start(struct watchdog_device *wdd)
-> +{
-> +	struct pic32_wdt *wdt = watchdog_get_drvdata(wdd);
-> +
-> +	spin_lock(&wdt->lock);
-
-Is this lock (on top of the lock provided by the watchdog subsystem)
-needed ? If so, please explain.
-
-> +	if (wdt_is_enabled(wdt))
-> +		goto done;
-
-Can this happpen, and if so, does it matter ?
-
-> +
-> +	wdt_enable(wdt);
-> +done:
-> +	pic32_wdt_keepalive(wdt);
-> +	spin_unlock(&wdt->lock);
-> +
-> +	return 0;
-> +}
-> +
-> +static int pic32_wdt_stop(struct watchdog_device *wdd)
-> +{
-> +	struct pic32_wdt *wdt = watchdog_get_drvdata(wdd);
-> +
-> +	spin_lock(&wdt->lock);
-> +	wdt_disable(wdt);
-> +	spin_unlock(&wdt->lock);
-> +
-> +	return 0;
-> +}
-> +
-> +static int pic32_wdt_ping(struct watchdog_device *wdd)
-> +{
-> +	struct pic32_wdt *wdt = watchdog_get_drvdata(wdd);
-> +
-> +	spin_lock(&wdt->lock);
-> +	pic32_wdt_keepalive(wdt);
-> +	spin_unlock(&wdt->lock);
-> +
-> +	return 0;
-> +}
-> +
-> +static unsigned int pic32_wdt_get_timeleft(struct watchdog_device *wdd)
-> +{
-> +	struct pic32_wdt *wdt = watchdog_get_drvdata(wdd);
-> +
-> +	return jiffies_to_msecs(wdt->next_heartbeat - jiffies) / MSEC_PER_SEC;
-> +}
-
-Please no software "get_timeleft" implementation. If this is desired,
-we can implement it in the watchdog core.
-
-> +
-> +static const struct watchdog_ops pic32_wdt_fops = {
-> +	.owner		= THIS_MODULE,
-> +	.start		= pic32_wdt_start,
-> +	.stop		= pic32_wdt_stop,
-> +	.get_timeleft	= pic32_wdt_get_timeleft,
-> +	.ping		= pic32_wdt_ping,
-> +};
-> +
-> +static const struct watchdog_info pic32_wdt_ident = {
-> +	.options = WDIOF_KEEPALIVEPING |
-> +			WDIOF_MAGICCLOSE | WDIOF_CARDRESET,
-
-Is the timeout truly not configurable ?
-
-> +	.identity = "PIC32 Watchdog",
-> +};
-> +
-> +static struct watchdog_device pic32_wdd = {
-> +	.info		= &pic32_wdt_ident,
-> +	.ops		= &pic32_wdt_fops,
-> +	.min_timeout	= 1,
-> +	.max_timeout	= 1048,
-
-Real or arbitrary ?
-
-> +};
-> +
-> +static const struct of_device_id pic32_wdt_dt_ids[] = {
-> +	{ .compatible = "microchip,pic32mzda-wdt-v2", },
-
-Is this compatible statement documented ?
-
-> +	{ /* sentinel */ }
-> +};
-> +MODULE_DEVICE_TABLE(of, pic32_wdt_dt_ids);
-> +
-> +static int pic32_wdt_drv_probe(struct platform_device *pdev)
-> +{
-> +	int ret;
-> +	struct watchdog_device *wdd = &pic32_wdd;
-> +	struct pic32_wdt *wdt;
-> +	struct resource *mem;
-> +
-> +	wdt = devm_kzalloc(&pdev->dev, sizeof(*wdt), GFP_KERNEL);
-> +	if (IS_ERR(wdt))
-> +		return PTR_ERR(wdt);
-> +
-> +	mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> +	wdt->regs = devm_ioremap_resource(&pdev->dev, mem);
-> +	if (IS_ERR(wdt->regs))
-> +		return PTR_ERR(wdt->regs);
-> +
-> +	wdt->rst_base = devm_ioremap(&pdev->dev, PIC32_BASE_RESET, 0x10);
-> +	if (IS_ERR(wdt->rst_base))
-> +		return PTR_ERR(wdt->rst_base);
-> +
-> +	wdt->clk = devm_clk_get(&pdev->dev, NULL);
-> +	if (IS_ERR(wdt->clk)) {
-> +		dev_err(&pdev->dev, "clk not found\n");
-> +		return PTR_ERR(wdt->clk);
-> +	}
-> +
-> +	ret = clk_prepare_enable(wdt->clk);
-> +	if (ret) {
-> +		dev_err(&pdev->dev, "clk enable failed\n");
-> +		return ret;
-> +	}
-> +
-> +	if (wdt_is_win_enabled(wdt)) {
-> +		dev_err(&pdev->dev, "windowed-clear mode is not supported.\n");
-> +		ret = -EOPNOTSUPP;
-> +		goto out_disable_clk;
-
-It might make more sense to check this first, before enabling the clock.
-
-Also, can this not be disabled in software ?
-
-> +	}
-> +
-> +	wdt->timeout = pic32_wdt_get_timeout_secs(wdt);
-
-Can timeout end up being 0 (less than 1 second) ?
-
-> +	spin_lock_init(&wdt->lock);
-> +
-> +	wdd->timeout = wdt->timeout;
-
-wdt->timeout is only used to calculate next_timeout which is only used
-to calculate the time left in software, which you should not do. Please drop.
-
-> +	wdd->bootstatus = pic32_wdt_bootstatus(wdt) ? WDIOF_CARDRESET : 0;
-> +
-> +	ret = watchdog_register_device(wdd);
-> +	if (ret) {
-> +		dev_err(&pdev->dev, "watchdog register failed, err %d\n", ret);
-> +		goto out_disable_clk;
-> +	}
-> +
-> +	watchdog_set_nowayout(wdd, WATCHDOG_NOWAYOUT);
-> +	watchdog_set_drvdata(wdd, wdt);
-
-Race condition.
-
-> +
-> +	platform_set_drvdata(pdev, wdd);
-> +	return 0;
-> +
-> +out_disable_clk:
-> +	clk_disable_unprepare(wdt->clk);
-> +
-> +	return ret;
-> +}
-> +
-> +static int pic32_wdt_drv_remove(struct platform_device *pdev)
-> +{
-> +	struct watchdog_device *wdd = platform_get_drvdata(pdev);
-> +	struct pic32_wdt *wdt = watchdog_get_drvdata(wdd);
-> +
-> +	clk_disable_unprepare(wdt->clk);
-> +	watchdog_unregister_device(wdd);
-
-Please call unregister first.
-
-> +
-> +	return 0;
-> +}
-> +
-> +static struct platform_driver pic32_wdt_driver = {
-> +	.probe		= pic32_wdt_drv_probe,
-> +	.remove		= pic32_wdt_drv_remove,
-> +	.driver		= {
-> +		.name		= "pi32-wdt",
-
-pi32 or pic32 ?
-
-> +		.owner		= THIS_MODULE,
-> +		.of_match_table = of_match_ptr(pic32_wdt_dt_ids),
-> +	}
-> +};
-> +
-> +module_platform_driver(pic32_wdt_driver);
-> +
-> +MODULE_AUTHOR("Joshua Henderson <joshua.henderson@microchip.com>");
-> +MODULE_DESCRIPTION("Microchip PIC32 Watchdog Timer");
-> +MODULE_LICENSE("GPL");
-> --
-> 1.7.9.5
->
->
+Signed-off-by: Huacai Chen <chenhc@lemote.com>
+---
+ arch/mips/Kconfig                                  |  19 +++
+ arch/mips/include/asm/cacheops.h                   |   6 +
+ arch/mips/include/asm/cpu-features.h               |   6 +
+ arch/mips/include/asm/cpu-info.h                   |   1 +
+ arch/mips/include/asm/cpu.h                        |   6 +-
+ arch/mips/include/asm/hazards.h                    |   7 +-
+ arch/mips/include/asm/io.h                         |  10 +-
+ arch/mips/include/asm/irqflags.h                   |   5 +
+ .../asm/mach-loongson64/cpu-feature-overrides.h    |  13 +-
+ .../asm/mach-loongson64/kernel-entry-init.h        |  18 ++-
+ arch/mips/include/asm/mipsregs.h                   |   8 ++
+ arch/mips/include/asm/pgtable-bits.h               |   8 +-
+ arch/mips/include/asm/pgtable.h                    |   4 +-
+ arch/mips/include/asm/uasm.h                       |   3 +-
+ arch/mips/include/uapi/asm/inst.h                  |  10 ++
+ arch/mips/kernel/cpu-probe.c                       |  40 +++++-
+ arch/mips/kernel/idle.c                            |   5 +
+ arch/mips/kernel/traps.c                           |   3 +-
+ arch/mips/loongson64/common/env.c                  |   7 +-
+ arch/mips/loongson64/loongson-3/smp.c              | 106 ++++++++++++--
+ arch/mips/mm/c-r4k.c                               |  51 +++++++
+ arch/mips/mm/page.c                                |   9 ++
+ arch/mips/mm/tlb-r4k.c                             |  27 ++--
+ arch/mips/mm/tlbex.c                               | 157 ++++++++++++++++++++-
+ arch/mips/mm/uasm-mips.c                           |   2 +
+ arch/mips/mm/uasm.c                                |   3 +
+ drivers/platform/mips/cpu_hwmon.c                  |   4 +-
+ 27 files changed, 478 insertions(+), 60 deletions(-)
+--
+2.4.6

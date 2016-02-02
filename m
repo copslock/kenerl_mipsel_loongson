@@ -1,62 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Feb 2016 02:47:44 +0100 (CET)
-Received: from mail-pf0-f195.google.com ([209.85.192.195]:33623 "EHLO
-        mail-pf0-f195.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012058AbcBBBrIFN90u (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 2 Feb 2016 02:47:08 +0100
-Received: by mail-pf0-f195.google.com with SMTP id e126so53635pfe.0;
-        Mon, 01 Feb 2016 17:47:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=7JC2IVwqUwtLwpzQ6k/tCc8Lb7zmFVo0j2UrhZMVLfY=;
-        b=awYkwyaNUKJmeyliI96jLlSJpH0hqReFBGBeSx93q4iCrtAS/zFV4PFH9B7vR2ryRi
-         AcQ07WPZJqH1d2ilEXiWU1y+m74TPfSdSS0CAAo7KRF9CVxR3C3mEDX0WI+JfdrZQ+kS
-         gp2tllaELcbyuGrgeAedybW7Jcr0vpQUknfcdnQ4UQZe0fQIYII7+NiUYmG34EKucWfx
-         8jjTdJOA8rpwRGRP0Gcs8geogX7eRYsgUKHwab+sdkxjkbi/Hp0Qc9DH9CLk33hWmlXO
-         OnbM3Xi/11gCMEk59jrlW7/ABIZKksWJHpvkJNiKapQsywM0EKxO4qKow8uUDcKks60f
-         cDng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=7JC2IVwqUwtLwpzQ6k/tCc8Lb7zmFVo0j2UrhZMVLfY=;
-        b=L7SQFXizlUYZjRraMg52Sxm5gP/6LItVsd5ymH67XmIWmk6MdthzsCy1kbNxUWd9Dk
-         6BTEBSz4foJTtVBOHeBF0ptsDW2c2ekgr7KGk8N/jeIH2Hzp1vORnK0RtDxZp9uVFbc5
-         eC7hWizuYIHAO7XnPbOVQBR/+WQgvF9G8wUtJF4so51+fQRksUCtd7tG+40LEn5b8GxK
-         /tfFTnI67oU7GfXFMyKIpBa5hvagZ2tk7GpRI691mLURMXqWndetaOoaBH7MrRlyRLKG
-         +Wx2xHuZ1vTo4wWt77Z5aFzpon1rBBNJ+CR8KRdM2+f2Pt1QvD45JS0m1ZCrqvb5pDeQ
-         Rw8g==
-X-Gm-Message-State: AG10YOR5IRnWOHAUKNQZsexWMSSvvOj1vU/ctDlmLY4DRTG5xPgz3qDpNJYr0VmPUEfJIw==
-X-Received: by 10.98.66.157 with SMTP id h29mr43174864pfd.91.1454377622284;
-        Mon, 01 Feb 2016 17:47:02 -0800 (PST)
-Received: from dl.caveonetworks.com ([64.2.3.194])
-        by smtp.gmail.com with ESMTPSA id r77sm12195256pfa.47.2016.02.01.17.46.58
-        (version=TLS1 cipher=AES128-SHA bits=128/128);
-        Mon, 01 Feb 2016 17:46:58 -0800 (PST)
-Received: from dl.caveonetworks.com (localhost.localdomain [127.0.0.1])
-        by dl.caveonetworks.com (8.14.5/8.14.5) with ESMTP id u121kv00014959;
-        Mon, 1 Feb 2016 17:46:57 -0800
-Received: (from ddaney@localhost)
-        by dl.caveonetworks.com (8.14.5/8.14.5/Submit) id u121kvk8014958;
-        Mon, 1 Feb 2016 17:46:57 -0800
-From:   David Daney <ddaney.cavm@gmail.com>
-To:     linux-mips@linux-mips.org, ralf@linux-mips.org
-Cc:     David Daney <david.daney@cavium.com>
-Subject: [PATCH 2/2] MIPS: OCTEON: Extend number of supported CPUs past 32
-Date:   Mon,  1 Feb 2016 17:46:54 -0800
-Message-Id: <1454377614-14915-3-git-send-email-ddaney.cavm@gmail.com>
-X-Mailer: git-send-email 1.7.11.7
-In-Reply-To: <1454377614-14915-1-git-send-email-ddaney.cavm@gmail.com>
-References: <1454377614-14915-1-git-send-email-ddaney.cavm@gmail.com>
-Return-Path: <ddaney.cavm@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Feb 2016 04:04:38 +0100 (CET)
+Received: from bh-25.webhostbox.net ([208.91.199.152]:34831 "EHLO
+        bh-25.webhostbox.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27012038AbcBBDEdHI1Kz (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 2 Feb 2016 04:04:33 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=roeck-us.net; s=default; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:MIME-Version:Date:Message-ID:From:Cc:References:To:Subject;
+        bh=9O/7QEozVI1r5McHEmSD723DcTTrmRqWW5q2m4qYGPM=; b=Oqj9TnxtpyzK3FB1kPDOJD06s2
+        1359pny3IdaokNb46GA5S/u6zZsH5cBe2dP7os+O9LdE/pJzIe8sGfkMrv8hpfExychEe8fv3jig2
+        ux3rU+c2l9QyoV0Y5W1tG3aykaCyfME+NRG9e9Rw+RFYpuOnDjcWVWMJJYJuzXwAR3k+a5gPl83k/
+        EmD4azarp2/HOsRn8kPyzRqsCRqt/x9wwmBYomtn3HJys69hMZR8hydgLe4U9Cv0W1XTKMJ2gNKjw
+        QcGqr5M/qTCUssaX7pkieRMaJanwv4vbG5xDeDKvLy0V+xXCDNy2/00XWRWre1oJ0829ByZnJCg7q
+        j82u9iwA==;
+Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:43818 helo=server.roeck-us.net)
+        by bh-25.webhostbox.net with esmtpsa (TLSv1:DHE-RSA-AES128-SHA:128)
+        (Exim 4.86)
+        (envelope-from <linux@roeck-us.net>)
+        id 1aQRGR-002noV-NO; Tue, 02 Feb 2016 03:04:25 +0000
+Subject: Re: [PATCH 2/2] watchdog: pic32-dmt: Add PIC32 deadman timer driver
+ support
+To:     Joshua Henderson <joshua.henderson@microchip.com>,
+        linux-kernel@vger.kernel.org
+References: <1454371348-25104-1-git-send-email-joshua.henderson@microchip.com>
+ <1454371348-25104-2-git-send-email-joshua.henderson@microchip.com>
+Cc:     linux-mips@linux-mips.org, ralf@linux-mips.org,
+        Purna Chandra Mandal <purna.mandal@microchip.com>,
+        Wim Van Sebroeck <wim@iguana.be>,
+        linux-watchdog@vger.kernel.org
+From:   Guenter Roeck <linux@roeck-us.net>
+Message-ID: <56B01CB6.6010700@roeck-us.net>
+Date:   Mon, 1 Feb 2016 19:04:22 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+ Thunderbird/38.5.1
+MIME-Version: 1.0
+In-Reply-To: <1454371348-25104-2-git-send-email-joshua.henderson@microchip.com>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Authenticated_sender: linux@roeck-us.net
+X-OutGoing-Spam-Status: No, score=-1.0
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - bh-25.webhostbox.net
+X-AntiAbuse: Original Domain - linux-mips.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - roeck-us.net
+X-Get-Message-Sender-Via: bh-25.webhostbox.net: authenticated_id: linux@roeck-us.net
+X-Authenticated-Sender: bh-25.webhostbox.net: linux@roeck-us.net
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+Return-Path: <linux@roeck-us.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51612
+X-archive-position: 51613
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: linux@roeck-us.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -69,247 +69,436 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: David Daney <david.daney@cavium.com>
+On 02/01/2016 04:02 PM, Joshua Henderson wrote:
+> From: Purna Chandra Mandal <purna.mandal@microchip.com>
+>
+> The primary function of the deadman timer (DMT) is to reset the processor
+> in the event of a software malfunction. The DMT is a free-running
+> instruction fetch timer, which is clocked whenever an instruction fetch
+> occurs until a count match occurs. Instructions are not fetched when
+> the processor is in sleep mode.
+>
+> Signed-off-by: Purna Chandra Mandal <purna.mandal@microchip.com>
+> Signed-off-by: Joshua Henderson <joshua.henderson@microchip.com>
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: <linux-mips@linux-mips.org>
 
-To support more than 48 CPUs, the bootinfo structure grows a new
-coremask structure.  Add the definition of the structure and add it to
-struct cvmx_bootinfo.  In prom_init(), copy the new coremask data into
-the sysinfo structure, and use it in smp_setup().
+Please drop this Cc: from the commit log.
 
-Signed-off-by: David Daney <david.daney@cavium.com>
----
- arch/mips/cavium-octeon/setup.c              | 19 +++++-
- arch/mips/cavium-octeon/smp.c                |  4 +-
- arch/mips/include/asm/octeon/cvmx-bootinfo.h | 14 ++++-
- arch/mips/include/asm/octeon/cvmx-coremask.h | 89 ++++++++++++++++++++++++++++
- arch/mips/include/asm/octeon/cvmx-sysinfo.h  |  7 ++-
- 5 files changed, 125 insertions(+), 8 deletions(-)
- create mode 100644 arch/mips/include/asm/octeon/cvmx-coremask.h
+> ---
+> Note: Please merge this patch series through the MIPS tree.
+> ---
+>   drivers/watchdog/Kconfig     |   14 ++
+>   drivers/watchdog/Makefile    |    1 +
+>   drivers/watchdog/pic32-dmt.c |  296 ++++++++++++++++++++++++++++++++++++++++++
+>   3 files changed, 311 insertions(+)
+>   create mode 100644 drivers/watchdog/pic32-dmt.c
+>
+> diff --git a/drivers/watchdog/Kconfig b/drivers/watchdog/Kconfig
+> index 131abc2..87985c6 100644
+> --- a/drivers/watchdog/Kconfig
+> +++ b/drivers/watchdog/Kconfig
+> @@ -1424,6 +1424,20 @@ config PIC32_WDT
+>   	  To compile this driver as a loadable module, choose M here.
+>   	  The module will be called pic32-wdt.
+>
+> +config PIC32_DMT
+> +	tristate "Microchip PIC32 Deadman Timer"
+> +	select WATCHDOG_CORE
+> +	depends on MACH_PIC32
+> +	default y
 
-diff --git a/arch/mips/cavium-octeon/setup.c b/arch/mips/cavium-octeon/setup.c
-index cd7101f..9c6ad2f 100644
---- a/arch/mips/cavium-octeon/setup.c
-+++ b/arch/mips/cavium-octeon/setup.c
-@@ -637,9 +637,22 @@ void __init prom_init(void)
- 	sysinfo = cvmx_sysinfo_get();
- 	memset(sysinfo, 0, sizeof(*sysinfo));
- 	sysinfo->system_dram_size = octeon_bootinfo->dram_size << 20;
--	sysinfo->phy_mem_desc_ptr =
--		cvmx_phys_to_ptr(octeon_bootinfo->phy_mem_desc_addr);
--	sysinfo->core_mask = octeon_bootinfo->core_mask;
-+	sysinfo->phy_mem_desc_addr = (u64)phys_to_virt(octeon_bootinfo->phy_mem_desc_addr);
-+
-+	if ((octeon_bootinfo->major_version > 1) ||
-+	    (octeon_bootinfo->major_version == 1 &&
-+	     octeon_bootinfo->minor_version >= 4))
-+		cvmx_coremask_copy(&sysinfo->core_mask,
-+				   &octeon_bootinfo->ext_core_mask);
-+	else
-+		cvmx_coremask_set64(&sysinfo->core_mask,
-+				    octeon_bootinfo->core_mask);
-+
-+	/* Some broken u-boot pass garbage in upper bits, clear them out */
-+	if (!OCTEON_IS_MODEL(OCTEON_CN78XX))
-+		for (i = 512; i < 1024; i++)
-+			cvmx_coremask_clear_core(&sysinfo->core_mask, i);
-+
- 	sysinfo->exception_base_addr = octeon_bootinfo->exception_base_addr;
- 	sysinfo->cpu_clock_hz = octeon_bootinfo->eclock_hz;
- 	sysinfo->dram_data_rate_hz = octeon_bootinfo->dclock_hz * 2;
-diff --git a/arch/mips/cavium-octeon/smp.c b/arch/mips/cavium-octeon/smp.c
-index b7fa9ae..b0f9a0a 100644
---- a/arch/mips/cavium-octeon/smp.c
-+++ b/arch/mips/cavium-octeon/smp.c
-@@ -103,6 +103,8 @@ static void octeon_smp_setup(void)
- 	int cpus;
- 	int id;
- 	int core_mask = octeon_get_boot_coremask();
-+	struct cvmx_sysinfo *sysinfo = cvmx_sysinfo_get();
-+
- #ifdef CONFIG_HOTPLUG_CPU
- 	unsigned int num_cores = cvmx_octeon_num_cores();
- #endif
-@@ -119,7 +121,7 @@ static void octeon_smp_setup(void)
- 	/* The present CPUs get the lowest CPU numbers. */
- 	cpus = 1;
- 	for (id = 0; id < NR_CPUS; id++) {
--		if ((id != coreid) && (core_mask & (1 << id))) {
-+		if ((id != coreid) && cvmx_coremask_is_core_set(&sysinfo->core_mask, id)) {
- 			set_cpu_possible(cpus, true);
- 			set_cpu_present(cpus, true);
- 			__cpu_number_map[id] = cpus;
-diff --git a/arch/mips/include/asm/octeon/cvmx-bootinfo.h b/arch/mips/include/asm/octeon/cvmx-bootinfo.h
-index d92cf59..c455d34 100644
---- a/arch/mips/include/asm/octeon/cvmx-bootinfo.h
-+++ b/arch/mips/include/asm/octeon/cvmx-bootinfo.h
-@@ -32,6 +32,8 @@
- #ifndef __CVMX_BOOTINFO_H__
- #define __CVMX_BOOTINFO_H__
- 
-+#include "cvmx-coremask.h"
-+
- /*
-  * Current major and minor versions of the CVMX bootinfo block that is
-  * passed from the bootloader to the application.  This is versioned
-@@ -39,7 +41,7 @@
-  * versions.
-  */
- #define CVMX_BOOTINFO_MAJ_VER 1
--#define CVMX_BOOTINFO_MIN_VER 3
-+#define CVMX_BOOTINFO_MIN_VER 4
- 
- #if (CVMX_BOOTINFO_MAJ_VER == 1)
- #define CVMX_BOOTINFO_OCTEON_SERIAL_LEN 20
-@@ -124,6 +126,13 @@ struct cvmx_bootinfo {
- 	 */
- 	uint64_t fdt_addr;
- #endif
-+#if (CVMX_BOOTINFO_MIN_VER >= 4)
-+	/*
-+	 * Coremask used for processors with more than 32 cores
-+	 * or with OCI.  This replaces core_mask.
-+	 */
-+	struct cvmx_coremask ext_core_mask;
-+#endif
- #else				/* __BIG_ENDIAN */
- 	/*
- 	 * Little-Endian: When the CPU mode is switched to
-@@ -177,6 +186,9 @@ struct cvmx_bootinfo {
- #if (CVMX_BOOTINFO_MIN_VER >= 3)
- 	uint64_t fdt_addr;
- #endif
-+#if (CVMX_BOOTINFO_MIN_VER >= 4)
-+	struct cvmx_coremask ext_core_mask;
-+#endif
- #endif
- };
- 
-diff --git a/arch/mips/include/asm/octeon/cvmx-coremask.h b/arch/mips/include/asm/octeon/cvmx-coremask.h
-new file mode 100644
-index 0000000..097dc09
---- /dev/null
-+++ b/arch/mips/include/asm/octeon/cvmx-coremask.h
-@@ -0,0 +1,89 @@
-+/*
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-+ *
-+ * Copyright (c) 2016  Cavium Inc. (support@cavium.com).
-+ *
-+ */
-+
-+/*
-+ * Module to support operations on bitmap of cores. Coremask can be used to
-+ * select a specific core, a group of cores, or all available cores, for
-+ * initialization and differentiation of roles within a single shared binary
-+ * executable image.
-+ *
-+ * The core numbers used in this file are the same value as what is found in
-+ * the COP0_EBASE register and the rdhwr 0 instruction.
-+ *
-+ * For the CN78XX and other multi-node environments the core numbers are not
-+ * contiguous.  The core numbers for the CN78XX are as follows:
-+ *
-+ * Node 0:	Cores 0 - 47
-+ * Node 1:	Cores 128 - 175
-+ * Node 2:	Cores 256 - 303
-+ * Node 3:	Cores 384 - 431
-+ *
-+ */
-+
-+#ifndef __CVMX_COREMASK_H__
-+#define __CVMX_COREMASK_H__
-+
-+#define CVMX_MIPS_MAX_CORES 1024
-+/* bits per holder */
-+#define CVMX_COREMASK_ELTSZ 64
-+
-+/* cvmx_coremask_t's size in u64 */
-+#define CVMX_COREMASK_BMPSZ (CVMX_MIPS_MAX_CORES / CVMX_COREMASK_ELTSZ)
-+
-+
-+/* cvmx_coremask_t */
-+struct cvmx_coremask {
-+	u64 coremask_bitmap[CVMX_COREMASK_BMPSZ];
-+};
-+
-+/*
-+ * Is ``core'' set in the coremask?
-+ */
-+static inline bool cvmx_coremask_is_core_set(const struct cvmx_coremask *pcm,
-+					    int core)
-+{
-+	int n, i;
-+
-+	n = core % CVMX_COREMASK_ELTSZ;
-+	i = core / CVMX_COREMASK_ELTSZ;
-+
-+	return (pcm->coremask_bitmap[i] & ((u64)1 << n)) != 0;
-+}
-+
-+/*
-+ * Make a copy of a coremask
-+ */
-+static inline void cvmx_coremask_copy(struct cvmx_coremask *dest,
-+				      const struct cvmx_coremask *src)
-+{
-+	memcpy(dest, src, sizeof(*dest));
-+}
-+
-+/*
-+ * Set the lower 64-bit of the coremask.
-+ */
-+static inline void cvmx_coremask_set64(struct cvmx_coremask *pcm,
-+				       uint64_t coremask_64)
-+{
-+	pcm->coremask_bitmap[0] = coremask_64;
-+}
-+
-+/*
-+ * Clear ``core'' from the coremask.
-+ */
-+static inline void cvmx_coremask_clear_core(struct cvmx_coremask *pcm, int core)
-+{
-+	int n, i;
-+
-+	n = core % CVMX_COREMASK_ELTSZ;
-+	i = core / CVMX_COREMASK_ELTSZ;
-+	pcm->coremask_bitmap[i] &= ~(1ull << n);
-+}
-+
-+#endif /* __CVMX_COREMASK_H__ */
-diff --git a/arch/mips/include/asm/octeon/cvmx-sysinfo.h b/arch/mips/include/asm/octeon/cvmx-sysinfo.h
-index 78cd64a..c6c3ee3 100644
---- a/arch/mips/include/asm/octeon/cvmx-sysinfo.h
-+++ b/arch/mips/include/asm/octeon/cvmx-sysinfo.h
-@@ -32,6 +32,8 @@
- #ifndef __CVMX_SYSINFO_H__
- #define __CVMX_SYSINFO_H__
- 
-+#include "cvmx-coremask.h"
-+
- #define OCTEON_SERIAL_LEN 20
- /**
-  * Structure describing application specific information.
-@@ -50,8 +52,7 @@ struct cvmx_sysinfo {
- 	uint64_t system_dram_size;
- 
- 	/* ptr to memory descriptor block */
--	void *phy_mem_desc_ptr;
--
-+	uint64_t phy_mem_desc_addr;
- 
- 	/* Application image specific variables */
- 	/* stack top address (virtual) */
-@@ -63,7 +64,7 @@ struct cvmx_sysinfo {
- 	/* heap size in bytes */
- 	uint32_t heap_size;
- 	/* coremask defining cores running application */
--	uint32_t core_mask;
-+	struct cvmx_coremask core_mask;
- 	/* Deprecated, use cvmx_coremask_first_core() to select init core */
- 	uint32_t init_core;
- 
--- 
-1.7.11.7
+Are you sure ?
+
+> +	help
+> +	  Watchdog driver for PIC32 instruction fetch counting timer. This specific
+> +	  timer is typically be used in misson critical and safety critical
+> +	  applications, where any single failure of the software functionality
+> +	  and sequencing must be detected.
+> +
+> +	  To compile this driver as a loadable module, choose M here.
+> +	  The module will be called pic32-dmt.
+> +
+>   # PARISC Architecture
+>
+>   # POWERPC Architecture
+> diff --git a/drivers/watchdog/Makefile b/drivers/watchdog/Makefile
+> index 244ed80..d051c9c 100644
+> --- a/drivers/watchdog/Makefile
+> +++ b/drivers/watchdog/Makefile
+> @@ -154,6 +154,7 @@ obj-$(CONFIG_RALINK_WDT) += rt2880_wdt.o
+>   obj-$(CONFIG_IMGPDC_WDT) += imgpdc_wdt.o
+>   obj-$(CONFIG_MT7621_WDT) += mt7621_wdt.o
+>   obj-$(CONFIG_PIC32_WDT) += pic32-wdt.o
+> +obj-$(CONFIG_PIC32_DMT) += pic32-dmt.o
+>
+>   # PARISC Architecture
+>
+> diff --git a/drivers/watchdog/pic32-dmt.c b/drivers/watchdog/pic32-dmt.c
+> new file mode 100644
+> index 0000000..13dd1e3
+> --- /dev/null
+> +++ b/drivers/watchdog/pic32-dmt.c
+> @@ -0,0 +1,296 @@
+> +/*
+> + * PIC32 deadman timer driver
+> + *
+> + * Purna Chandra Mandal <purna.mandal@microchip.com>
+> + * Copyright (c) 2016, Microchip Technology Inc.
+> + *
+> + * This program is free software; you can redistribute it and/or
+> + * modify it under the terms of the GNU General Public License
+> + * as published by the Free Software Foundation; either version
+> + * 2 of the License, or (at your option) any later version.
+> + */
+> +
+> +#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+> +
+> +#include <linux/kernel.h>
+> +#include <linux/module.h>
+> +#include <linux/clk.h>
+> +#include <linux/err.h>
+> +#include <linux/io.h>
+> +#include <linux/of.h>
+> +#include <linux/of_device.h>
+> +#include <linux/pm.h>
+> +#include <linux/watchdog.h>
+> +#include <linux/spinlock.h>
+> +#include <linux/device.h>
+> +#include <linux/platform_device.h>
+
+Please list include files in alphabetic order.
+
+> +
+> +#include <asm/mach-pic32/pic32.h>
+> +
+> +/* Deadman Timer Regs */
+> +#define DMTCON_REG	0x00
+> +#define DMTPRECLR_REG	0x10
+> +#define DMTCLR_REG	0x20
+> +#define DMTSTAT_REG	0x30
+> +#define DMTCNT_REG	0x40
+> +#define DMTPSCNT_REG	0x60
+> +#define DMTPSINTV_REG	0x70
+> +
+> +/* Deadman Timer Regs fields */
+> +#define DMT_ON			0x8000
+> +#define DMT_STEP1_KEY		0x40
+> +#define DMT_STEP1_KEY_BYTE	1
+> +#define DMT_STEP2_KEY		0x08
+> +#define DMTSTAT_WINOPN		0x01
+> +#define DMTSTAT_EVENT		0x20
+> +#define DMTSTAT_BAD2		0x40
+> +#define DMTSTAT_BAD1		0x80
+> +
+
+BIT() ?
+
+> +/* Reset Control Register fields for watchdog */
+> +#define RESETCON_DMT_TIMEOUT    0x0020
+> +
+> +struct pic32_dmt {
+> +	spinlock_t	lock;
+> +	void __iomem	*regs;
+> +	struct clk	*clk;
+> +};
+> +
+> +static inline int dmt_is_enabled(struct pic32_dmt *dmt)
+
+Should return bool.
+
+> +{
+> +	return readl(dmt->regs + DMTCON_REG) & DMT_ON;
+> +}
+> +
+> +static inline void dmt_enable(struct pic32_dmt *dmt)
+> +{
+> +	writel(DMT_ON, PIC32_SET(dmt->regs + DMTCON_REG));
+> +}
+> +
+> +static inline void dmt_disable(struct pic32_dmt *dmt)
+> +{
+> +	writel(DMT_ON, PIC32_CLR(dmt->regs + DMTCON_REG));
+> +	cpu_relax();
+
+Is this needed ?
+
+> +}
+> +
+> +static inline int dmt_bad_status(struct pic32_dmt *dmt)
+> +{
+> +	u32 val;
+> +
+> +	val = readl(dmt->regs + DMTSTAT_REG);
+> +	val &= (DMTSTAT_BAD1 | DMTSTAT_BAD2 | DMTSTAT_EVENT);
+> +	if (val)
+> +		pr_err("dmt: bad event generated: sts %08x\n", val);
+> +
+Is this error message really necessary (in addition to the error being reported
+to userspace) ?
+
+Also, where used, the error is reported as EAGAIN, which suggests a normal condition.
+If so, please drop the message.
+
+> +	return val;
+
+I would suggest to return a valid error code directly instead of converting
+the zero/nonzero result to an error in the calling code.
+
+> +}
+> +
+> +static inline int dmt_keepalive(struct pic32_dmt *dmt)
+> +{
+> +	u32 v;
+> +
+> +	/* set pre-clear key */
+> +	writel(DMT_STEP1_KEY << 8, dmt->regs + DMTPRECLR_REG);
+> +
+> +	/* wait for DMT window to open */
+> +	for (;;) {
+> +		v = readl(dmt->regs + DMTSTAT_REG) & DMTSTAT_WINOPN;
+> +		if (v == DMTSTAT_WINOPN)
+> +			break;
+> +	}
+
+Really wait forever in a hot loop with no timeout and no means to escape ?
+
+> +
+> +	/* apply key2 */
+> +	writel(DMT_STEP2_KEY, dmt->regs + DMTCLR_REG);
+> +
+> +	/* check whether keys are latched correctly */
+> +	return dmt_bad_status(dmt);
+> +}
+> +
+> +static inline u32 dmt_timeleft(struct pic32_dmt *dmt)
+> +{
+> +	u32 top = readl(dmt->regs + DMTPSCNT_REG);
+> +
+> +	return top - readl(dmt->regs + DMTCNT_REG);
+> +}
+> +
+> +static inline u32 dmt_interval_time_to_clear(struct pic32_dmt *dmt)
+> +{
+> +	return readl(dmt->regs + DMTPSINTV_REG);
+> +}
+> +
+
+This function is not used anywhere.
+
+> +static inline u32 pic32_dmt_get_timeout_secs(struct pic32_dmt *dmt)
+> +{
+> +	return readl(dmt->regs + DMTPSCNT_REG) / clk_get_rate(dmt->clk);
+> +}
+> +
+> +static inline u32 pic32_dmt_bootstatus(struct pic32_dmt *dmt)
+> +{
+> +	u32 v;
+> +	void __iomem *rst_base;
+> +
+> +	rst_base = ioremap(PIC32_BASE_RESET, 0x10);
+> +	if (!rst_base)
+> +		return 0;
+> +
+> +	v = readl(rst_base);
+> +
+> +	writel(RESETCON_DMT_TIMEOUT, PIC32_CLR(rst_base));
+> +
+> +	iounmap(rst_base);
+> +	return v & RESETCON_DMT_TIMEOUT;
+> +}
+> +
+> +static int pic32_dmt_start(struct watchdog_device *wdd)
+> +{
+> +	struct pic32_dmt *dmt = watchdog_get_drvdata(wdd);
+> +
+> +	spin_lock(&dmt->lock);
+
+Is this lock (on top of the watchdg core lock) needed ?
+
+> +	if (dmt_is_enabled(dmt))
+> +		goto done;
+> +
+Can this happen ?
+
+> +	dmt_enable(dmt);
+
+If so, does it hurt to just enable it again ?
+
+> +done:
+> +	dmt_keepalive(dmt);
+
+This returns an error. Is it not reported on purpose ?
+
+> +	spin_unlock(&dmt->lock);
+> +
+> +	return 0;
+> +}
+> +
+> +static int pic32_dmt_stop(struct watchdog_device *wdd)
+> +{
+> +	struct pic32_dmt *dmt = watchdog_get_drvdata(wdd);
+> +
+> +	spin_lock(&dmt->lock);
+> +	dmt_disable(dmt);
+> +	spin_unlock(&dmt->lock);
+> +
+> +	return 0;
+> +}
+> +
+> +static int pic32_dmt_ping(struct watchdog_device *wdd)
+> +{
+> +	struct pic32_dmt *dmt = watchdog_get_drvdata(wdd);
+> +	int ret;
+> +
+> +	spin_lock(&dmt->lock);
+> +	ret = dmt_keepalive(dmt);
+> +	spin_unlock(&dmt->lock);
+> +
+> +	return ret ? -EAGAIN : 0;
+> +}
+> +
+> +static unsigned int pic32_dmt_get_timeleft(struct watchdog_device *wdd)
+> +{
+> +	struct pic32_dmt *dmt = watchdog_get_drvdata(wdd);
+> +
+> +	return dmt_timeleft(dmt);
+
+Does that function return the remaining time in seconds ?
+
+> +}
+> +
+> +static const struct watchdog_ops pic32_dmt_fops = {
+> +	.owner		= THIS_MODULE,
+> +	.start		= pic32_dmt_start,
+> +	.stop		= pic32_dmt_stop,
+> +	.get_timeleft	= pic32_dmt_get_timeleft,
+> +	.ping		= pic32_dmt_ping,
+> +};
+> +
+> +static const struct watchdog_info pic32_dmt_ident = {
+> +	.options	= WDIOF_KEEPALIVEPING |
+> +			  WDIOF_MAGICCLOSE,
+> +	.identity	= "PIC32 Deadman Timer",
+> +};
+> +
+> +static struct watchdog_device pic32_dmt_wdd = {
+> +	.info		= &pic32_dmt_ident,
+> +	.ops		= &pic32_dmt_fops,
+> +	.min_timeout	= 1,
+> +	.max_timeout	= UINT_MAX,
+> +};
+> +
+> +static int pic32_dmt_probe(struct platform_device *pdev)
+> +{
+> +	int ret;
+> +	struct pic32_dmt *dmt;
+> +	struct resource *mem;
+> +	struct watchdog_device *wdd = &pic32_dmt_wdd;
+> +
+> +	dmt = devm_kzalloc(&pdev->dev, sizeof(*dmt), GFP_KERNEL);
+> +	if (IS_ERR(dmt))
+> +		return PTR_ERR(dmt);
+> +
+> +	mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+> +	dmt->regs = devm_ioremap_resource(&pdev->dev, mem);
+> +	if (IS_ERR(dmt->regs))
+> +		return PTR_ERR(dmt->regs);
+> +
+> +	dmt->clk = devm_clk_get(&pdev->dev, NULL);
+> +	if (IS_ERR(dmt->clk)) {
+> +		dev_err(&pdev->dev, "clk not found\n");
+> +		return PTR_ERR(dmt->clk);
+> +	}
+> +
+> +	ret = clk_prepare_enable(dmt->clk);
+> +	if (ret)
+> +		return ret;
+> +
+> +	wdd->max_timeout /= clk_get_rate(dmt->clk);
+
+Please just assign UINT_MAX / clk_get_rate(dmt->clk).
+
+> +	wdd->timeout = pic32_dmt_get_timeout_secs(dmt);
+> +	wdd->bootstatus = pic32_dmt_bootstatus(dmt) ? WDIOF_CARDRESET : 0;
+> +	if (!wdd->timeout) {
+> +		dev_err(&pdev->dev,
+> +			"timeout %dsec too small for DMT\n", wdd->timeout);
+
+wdd->timeout is 0 here, so displaying the variable does not provide much value.
+Besides "0sec" looks a bit odd.
+
+> +		ret = -EINVAL;
+> +		goto out_disable_clk;
+> +	}
+> +
+> +	spin_lock_init(&dmt->lock);
+> +
+> +	dev_info(&pdev->dev, "max_timeout %d, min_timeout %d, cur_timeout %d\n",
+> +		 wdd->max_timeout, wdd->min_timeout, wdd->timeout);
+
+min_timeout is a constant and thus not worth reporting.
+Please report the current timeout as "timeout".
+
+> +	ret = watchdog_register_device(wdd);
+> +	if (ret) {
+> +		dev_err(&pdev->dev, "watchdog register failed, err %d\n", ret);
+> +		goto out_disable_clk;
+> +	}
+> +
+> +	watchdog_set_nowayout(wdd, WATCHDOG_NOWAYOUT);
+> +	watchdog_set_drvdata(wdd, dmt);
+
+Race condition: drvdata may be needed after the call to watchdog_register_device().
+
+> +
+> +	platform_set_drvdata(pdev, wdd);
+> +	return 0;
+> +
+> +out_disable_clk:
+> +	clk_disable_unprepare(dmt->clk);
+> +	return ret;
+> +}
+> +
+> +static int pic32_dmt_remove(struct platform_device *pdev)
+> +{
+> +	struct watchdog_device *wdd = platform_get_drvdata(pdev);
+> +	struct pic32_dmt *dmt = watchdog_get_drvdata(wdd);
+> +
+> +	clk_disable_unprepare(dmt->clk);
+> +	watchdog_unregister_device(wdd);
+
+Unregister first ?
+
+> +
+> +	return 0;
+> +}
+> +
+> +static const struct of_device_id pic32_dmt_of_ids[] = {
+> +	{ .compatible = "microchip,pic32mzda-dmt",},
+
+Is the documentation for this compatible string added with a separate patch ?
+
+> +	{ /* sentinel */ }
+> +};
+> +MODULE_DEVICE_TABLE(of, pic32_dmt_of_ids);
+> +
+> +static struct platform_driver pic32_dmt_driver = {
+> +	.probe		= pic32_dmt_probe,
+> +	.remove		= pic32_dmt_remove,
+> +	.driver		= {
+> +		.name		= "pi32-dmt",
+> +		.owner		= THIS_MODULE,
+> +		.of_match_table = of_match_ptr(pic32_dmt_of_ids),
+> +	}
+> +};
+> +
+> +module_platform_driver(pic32_dmt_driver);
+> +
+> +MODULE_AUTHOR("Purna Chandra Mandal <purna.mandal@microchip.com>");
+> +MODULE_DESCRIPTION("Microchip PIC32 DMT Driver");
+> +MODULE_LICENSE("GPL");
+> --
+> 1.7.9.5
+>
+>

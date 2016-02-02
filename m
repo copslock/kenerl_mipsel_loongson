@@ -1,65 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Feb 2016 12:38:27 +0100 (CET)
-Received: from mail-lf0-f53.google.com ([209.85.215.53]:35757 "EHLO
-        mail-lf0-f53.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010877AbcBBLiXke9Bl (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 2 Feb 2016 12:38:23 +0100
-Received: by mail-lf0-f53.google.com with SMTP id l143so49302555lfe.2
-        for <linux-mips@linux-mips.org>; Tue, 02 Feb 2016 03:38:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cogentembedded-com.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:references:cc:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-type:content-transfer-encoding;
-        bh=NKlYmlM5QF/LZAaY+e8e1lnihXga66BN0owoC5Gax30=;
-        b=QsayLd3H1O4x/QI2qgDN+nWZQJ+QkHDU0hmQ8o3eCFhMzbAIwImnfbmworYInhPewB
-         KIRW9AOX3OsaIGRGrmf32lUKsGK+2jax7fGfazo1mwhCptZ1GalTQz8nx7Zr06sGN6ve
-         CNAefbXCgrP1NEFOPm+RWpTupW80WLqL8UBekB/xVXY3G3LlRuR6P7thePVEy72RPZLg
-         h+0XmCu8h6OgI/FZuWppLt8UMKdVV7nqH5as5ssRgwF7AlYN2C+lEF/15cAgxUsu9iXC
-         cwHHsrdLWRYz768Oucp+5oC4w8bZ2sxSuesjxS0Yqduv7m9tFiookqss9GnRQii06qq3
-         zNwQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:subject:to:references:cc:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-type
-         :content-transfer-encoding;
-        bh=NKlYmlM5QF/LZAaY+e8e1lnihXga66BN0owoC5Gax30=;
-        b=ANFxr7HCLxQvgbzQyYmq50xUcv+bJ4wyC2YRqJDFzG72aRFXz8moK07qu0L/rdXm6G
-         iZvb830NurF/3Toyh75N7KLEST1fQwVsbvItEXiW77sZ+nO/6MapkyhfAyP+VOizbRj/
-         j6+ojK3P9J2pqp4pCx3n40MtH+ShbHhVBedeGDRFgHqX8E6QNLJN+L15b5crNp+iNm+w
-         wNFCcUUIvaKpUt38qLVVNT9U+HXRpS0lzz268gD/8s0latkAPBatkLgtXAkoc+3BLAxP
-         m5mnPGLk2cnkJalRBTzzoddGZ6Xm0onLQ2BESXsNMeMfDn1PcYmbYMAycrsOewYtHA4n
-         pwog==
-X-Gm-Message-State: AG10YOSCQ3mxLiDivTuRF4v6ylnLyAoovPHQ2ms6fT1lavpm3TuK9RMJ55daA8uqzGr/qA==
-X-Received: by 10.25.141.129 with SMTP id p123mr8864241lfd.65.1454413098093;
-        Tue, 02 Feb 2016 03:38:18 -0800 (PST)
-Received: from [192.168.4.126] ([31.173.84.176])
-        by smtp.gmail.com with ESMTPSA id ug1sm144265lbb.43.2016.02.02.03.38.16
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Tue, 02 Feb 2016 03:38:16 -0800 (PST)
-Subject: Re: [PATCH] MIPS: Octeon: Add Octeon III CN7XXX interface detection
-To:     Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>,
-        david.daney@cavium.com
-References: <1454412318-27213-1-git-send-email-Zubair.Kakakhel@imgtec.com>
-Cc:     janne.huttunen@nokia.com, aaro.koskinen@nokia.com,
-        ralf@linux-mips.org, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org
-From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Message-ID: <56B09528.1030902@cogentembedded.com>
-Date:   Tue, 2 Feb 2016 14:38:16 +0300
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:38.0) Gecko/20100101
- Thunderbird/38.5.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Feb 2016 13:13:55 +0100 (CET)
+Received: from mezzanine.sirena.org.uk ([106.187.55.193]:44260 "EHLO
+        mezzanine.sirena.org.uk" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010877AbcBBMNxJm8Ll (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 2 Feb 2016 13:13:53 +0100
+Received: from debutante.sirena.org.uk ([2a01:348:6:8808:fab::3] helo=debutante)
+        by mezzanine.sirena.org.uk with esmtpsa (TLS1.2:RSA_AES_128_CBC_SHA1:128)
+        (Exim 4.80)
+        (envelope-from <broonie@sirena.org.uk>)
+        id 1aQZq6-0002Oq-5z; Tue, 02 Feb 2016 12:13:47 +0000
+Received: from broonie by debutante with local (Exim 4.86)
+        (envelope-from <broonie@sirena.org.uk>)
+        id 1aQZq2-0003l5-Ui; Tue, 02 Feb 2016 12:13:42 +0000
+Date:   Tue, 2 Feb 2016 12:13:42 +0000
+From:   Mark Brown <broonie@kernel.org>
+To:     Joshua Henderson <joshua.henderson@microchip.com>
+Cc:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        Purna Chandra Mandal <purna.mandal@microchip.com>,
+        linux-spi@vger.kernel.org
+Message-ID: <20160202121342.GN4455@sirena.org.uk>
+References: <1454366701-10847-1-git-send-email-joshua.henderson@microchip.com>
+ <1454366701-10847-2-git-send-email-joshua.henderson@microchip.com>
 MIME-Version: 1.0
-In-Reply-To: <1454412318-27213-1-git-send-email-Zubair.Kakakhel@imgtec.com>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sergei.shtylyov@cogentembedded.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="bPrm2PuLP7ysUh6c"
+Content-Disposition: inline
+In-Reply-To: <1454366701-10847-2-git-send-email-joshua.henderson@microchip.com>
+X-Cookie: Duckies are fun!
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-SA-Exim-Connect-IP: 2a01:348:6:8808:fab::3
+X-SA-Exim-Mail-From: broonie@sirena.org.uk
+Subject: Re: [PATCH 2/2] spi: spi-pic32: Add PIC32 SPI master driver
+X-SA-Exim-Version: 4.2.1 (built Mon, 26 Dec 2011 16:24:06 +0000)
+X-SA-Exim-Scanned: Yes (on mezzanine.sirena.org.uk)
+Return-Path: <broonie@sirena.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51626
+X-archive-position: 51627
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sergei.shtylyov@cogentembedded.com
+X-original-sender: broonie@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -72,73 +53,325 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hello.
 
-On 2/2/2016 2:25 PM, Zubair Lutfullah Kakakhel wrote:
+--bPrm2PuLP7ysUh6c
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-> Add basic CN7XXX interface detection.
->
-> This allows the kernel to boot with ethernet working as it initializes
-> the ethernet ports with SGMII instead of defaulting to RGMII routines.
->
-> Tested on the utm8 from Rhino Labs with a CN7130.
->
-> Signed-off-by: Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>
-> ---
->   arch/mips/cavium-octeon/executive/cvmx-helper.c | 41 +++++++++++++++++++++++++
->   1 file changed, 41 insertions(+)
->
-> diff --git a/arch/mips/cavium-octeon/executive/cvmx-helper.c b/arch/mips/cavium-octeon/executive/cvmx-helper.c
-> index 376701f..1a28009 100644
-> --- a/arch/mips/cavium-octeon/executive/cvmx-helper.c
-> +++ b/arch/mips/cavium-octeon/executive/cvmx-helper.c
-[...]
-> @@ -260,6 +262,39 @@ static cvmx_helper_interface_mode_t __cvmx_get_mode_octeon2(int interface)
->   }
->
->   /**
-> + * @INTERNAL
-> + * Return interface mode for CN7XXX.
-> + */
-> +static cvmx_helper_interface_mode_t __cvmx_get_mode_cn7xxx(int interface)
+On Mon, Feb 01, 2016 at 03:44:57PM -0700, Joshua Henderson wrote:
 
-    Not *unsigned*?
+> The PIC32 SPI driver is capable of performing SPI transfers either using
+> polling or based on interrupt-trigger. GPIO based CS support (necessary
+> for correct SPI operation) is available. It is dependent on availability
+> of "cs-gpios" property of spi node in board dts file.
 
+There's quite a lot of issues here.  At a high level the big issues are
+with duplicating core functionality, a large number of helper functions
+that don't seem to add much and some interesting locking.  There's also
+no DT binding documentation which is mandatory for new bindings.
+
+> +config SPI_PIC32
+> +	tristate "Microchip PIC32 series SPI"
+> +	depends on MACH_PIC32
+> +	help
+> +	  SPI driver for PIC32 SPI master controller.
+> +
+> +
+>  #
+>  # Add new SPI master controllers in alphabetical order above this line
+>  #
+
+Note the comment here (yes, there are some things out of order but
+that's no reason to add more).  Please also add an || COMPILE_TEST
+unless there's an actual build time dependency.
+
+> diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
+> index 8991ffc..bb37fed 100644
+> --- a/drivers/spi/Makefile
+> +++ b/drivers/spi/Makefile
+> @@ -94,3 +94,4 @@ obj-$(CONFIG_SPI_XILINX)		+= spi-xilinx.o
+>  obj-$(CONFIG_SPI_XLP)			+= spi-xlp.o
+>  obj-$(CONFIG_SPI_XTENSA_XTFPGA)		+= spi-xtensa-xtfpga.o
+>  obj-$(CONFIG_SPI_ZYNQMP_GQSPI)		+= spi-zynqmp-gqspi.o
+> +obj-$(CONFIG_SPI_PIC32)			+= spi-pic32.o
+
+Similarly here where things are better sorted already.
+
+> +/*
+> + * PIC32 SPI core controller driver (refer dw_spi.c)
+
+What should we refer to dw_spi.c for?  If this is a Designware IP you
+should share the same driver.
+
+> +static inline void spi_disable_chip(struct pic32_spi *pic32s)
 > +{
-> +	union cvmx_gmxx_inf_mode mode;
-> +
-> +	mode.u64 = cvmx_read_csr(CVMX_GMXX_INF_MODE(interface));
-> +
-> +	if (interface < 2) {		/* SGMII/QSGMII/XAUI */
-> +		switch (mode.cn68xx.mode) {
-> +		case 0:
-> +			return CVMX_HELPER_INTERFACE_MODE_DISABLED;
-> +		case 1:
-> +		case 2:
-> +			return CVMX_HELPER_INTERFACE_MODE_SGMII;
-> +		case 3:
-> +			return CVMX_HELPER_INTERFACE_MODE_XAUI;
-> +		default:
-> +			return CVMX_HELPER_INTERFACE_MODE_SGMII;
-> +		}
-> +	} else if (interface == 2)	/* NPI */
-> +		return CVMX_HELPER_INTERFACE_MODE_NPI;
-> +	else if (interface == 3)	/* LOOP */
-> +		return CVMX_HELPER_INTERFACE_MODE_LOOP;
-> +	else if (interface == 4)	/* RGMII (AGL) */
-> +		return CVMX_HELPER_INTERFACE_MODE_RGMII;
-
-    This is asking to be a *switch* statement.
-
-> +
-> +	return CVMX_HELPER_INTERFACE_MODE_DISABLED;
+> +	writel(SPICON_ON, pic32s->regs + SPICON_CLR);
+> +	cpu_relax();
 > +}
-> +
-> +
-> +/**
->    * Get the operating mode of an interface. Depending on the Octeon
->    * chip and configuration, this function returns an enumeration
->    * of the type of packet I/O supported by an interface.
-[...]
 
-MBR, Sergei
+What is the cpu_relax() intended to do here?
+
+> +static inline void spi_set_clk_mode(struct pic32_spi *pic32s, int mode)
+> +{
+> +	u32 conset = 0, conclr = 0;
+> +
+> +	/* active low */
+> +	if (mode & SPI_CPOL)
+> +		conset |= SPICON_CKP;
+> +	else
+> +		conclr |= SPICON_CKP;
+> +
+> +	/* tx on rising edge of clk */
+> +	if (mode & SPI_CPHA)
+> +		conclr |= SPICON_CKE;
+> +	else
+> +		conset |= SPICON_CKE;
+> +
+> +	/* rx at end of tx */
+> +	conset |= SPICON_SMP;
+> +
+> +	writel(conclr, pic32s->regs + SPICON_CLR);
+> +	writel(conset, pic32s->regs + SPICON_SET);
+> +}
+
+This is large for an inline function and only has one caller anyway.
+Why not just include it in that user?
+
+> +static inline void spi_drain_rx_buf(struct pic32_spi *pic32s)
+> +{
+> +	u32 sr;
+> +
+> +	/* drain rx bytes until empty */
+> +	for (;;) {
+> +		sr = readl(pic32s->regs + SPISTAT);
+> +		if (sr & STAT_RF_EMPTY)
+> +			break;
+> +
+> +		(void)readl(pic32s->regs + SPIBUF);
+
+Why do you need this cast to void?
+
+> +	}
+
+A busy waiting loop like this is more where I'd expect to see a
+cpu_relax().  I'd also expect to see some kind of timeout here,
+otherwise if something goes wrong we could lock up.
+
+> +static inline void spi_set_clk_rate(struct pic32_spi *pic32s, u32 sck)
+
+Essentially all the functions in this file appear to be marked as
+inline.  Don't do this unless the function really *needs* to be inline,
+just let the compiler inline it if it figures out that it's a good idea.
+
+> +static inline void spi_set_ss_auto(struct pic32_spi *pic32s, u8 mst, u32 mode)
+> +{
+> +	u32 v;
+> +
+> +	/* spi controller can drive CS/SS during transfer depending on fifo
+> +	 * fill-level. SS will stay asserted as long as TX fifo has something
+> +	 * to transfer, else will be deasserted confirming completion of
+> +	 * the ongoing transfer.
+> +	 */
+> +
+> +	v = readl(pic32s->regs + SPICON);
+> +	v &= ~SPICON_MSSEN;
+> +	if (mst) {
+> +		v |= SPICON_MSSEN;
+> +		if (mode & SPI_CS_HIGH)
+> +			v |= SPICON_FRMPOL;
+> +		else
+> +			v &= ~SPICON_FRMPOL;
+> +	}
+> +
+> +	writel(v, pic32s->regs + SPICON);
+> +}
+
+I don't really know what the above is suposed to do just from looking at
+it.  If it's enabling automatic /CS managment that doesn't sound like
+something we can actually use in Linux based on the comment.
+
+> +static inline void spi_set_err_int(struct pic32_spi *pic32s)
+> +{
+> +	u32 mask;
+> +
+> +	mask = SPI_INT_TX_UR_EN | SPI_INT_RX_OV_EN | SPI_INT_FRM_ERR_EN;
+> +	writel(mask, pic32s->regs + SPICON2_SET);
+> +}
+
+There is no need for this to be a function - there is one caller and
+it contains only a single function.  Just inline it and add a comment if
+there is a need for documentation.  This applies to quite a lot of the
+functions in this file, they are very small and have only one user so
+mostly just make the code less direct.  Using spi_ as the prefix also
+has a namespacing issue, that's the namespace for the core.
+
+> +	pic32s->mesg->state = (void *)-1;
+
+This is trying to munge a numeric return code into a pointer without
+using PTR_ERR() and friends which is ugly and fragile.  If you really
+need to do this use the standard macros, but since we already have an
+error code in the message you can use that (though it seems nothing
+actually ever reads these...).  You should also use real error codes not
+magic numbers.
+
+> +	complete(&pic32s->xfer_done);
+> +
+> +	disable_irq_nosync(pic32s->fault_irq);
+> +	disable_irq_nosync(pic32s->rx_irq);
+> +	disable_irq_nosync(pic32s->tx_irq);
+
+This is racy, you are completing the transfer then disabling the
+interrupts.  Something could come along and try and do another transfer
+before the interrupts are disabled.
+
+> +	if (!pic32s->mesg) {
+> +		pic32_err_stop(pic32s, "err_irq: mesg error");
+> +		goto irq_handled;
+> +	}
+
+There's nothing in this case that checks that the interrupt actually
+fired.
+
+> +	/* tx complete? mask and disable tx interrupt */
+> +	if (pic32s->tx_end == pic32s->tx)
+> +		disable_irq_nosync(pic32s->tx_irq);
+
+It seems there's no interrupt masking in the actual IP and the
+interrupts will scream when the IP is idle?
+
+> +static inline void pic32_spi_cs_assert(struct pic32_spi *pic32s)
+> +{
+> +	int cs_high;
+> +	struct spi_device *spi_dev = pic32s->spi_dev;
+> +
+> +	if (pic32s->flags & SPI_SS_MASTER)
+> +		return;
+> +
+> +	cs_high = pic32s->mode & SPI_CS_HIGH;
+> +	gpio_set_value(spi_dev->cs_gpio, cs_high);
+> +}
+
+Don't open code GPIO chip selects, use the core support.
+
+> +static void pic32_spi_dma_rx_notify(void *data)
+> +{
+> +	struct pic32_spi *pic32s = data;
+> +
+> +	spin_lock(&pic32s->lock);
+> +	complete(&pic32s->xfer_done);
+> +	spin_unlock(&pic32s->lock);
+> +}
+
+Taking the spinlock here looks completely pointless - what is it
+intended to protect?
+
+> +err_dma:
+> +	pic32_spi_dma_abort(pic32s);
+> +	return -ENOMEM;
+
+-ENOMEM looks completely random here, please use a sensible error code
+(if you got one back from another funtion pass it through).
+
+> +static int pic32_spi_one_transfer(struct pic32_spi *pic32s,
+> +				  struct spi_message *message,
+> +				  struct spi_transfer *transfer)
+
+> +	if (transfer->speed_hz && (transfer->speed_hz != pic32s->speed_hz)) {
+
+Just use the transfer, the core will ensure that it is set.
+
+> +	spin_lock_irqsave(&pic32s->lock, flags);
+> +
+> +	spi_enable_chip(pic32s);
+> +
+> +	/* polling mode? */
+> +	if (pic32s->flags & SPI_XFER_POLL) {
+> +		ret = pic32_spi_poll_transfer(pic32s, 2 * HZ);
+> +		spin_unlock_irqrestore(&pic32s->lock, flags);
+> +
+> +		if (ret) {
+> +			dev_err(&master->dev, "poll-xfer timedout\n");
+> +			message->status = ret;
+> +			goto err_xfer_done;
+> +		}
+> +		goto out_xfer_done;
+> +	}
+> +
+> +	reinit_completion(&pic32s->xfer_done);
+> +
+> +	/* DMA mode ? */
+> +	if (pic32_spi_dma_is_ready(pic32s)) {
+> +		spin_unlock_irqrestore(&pic32s->lock, flags);
+> +
+> +		ret = pic32_spi_dma_transfer(pic32s, transfer);
+> +		if (ret) {
+> +			dev_err(&master->dev, "dma xfer error\n");
+> +			message->status = ret;
+> +			spin_lock_irqsave(&pic32s->lock, flags);
+> +		} else {
+> +			goto out_wait_for_xfer;
+> +		}
+> +	}
+> +
+> +	/* enable interrupt */
+> +	enable_irq(pic32s->fault_irq);
+> +	enable_irq(pic32s->tx_irq);
+> +	enable_irq(pic32s->rx_irq);
+> +
+> +	spin_unlock_irqrestore(&pic32s->lock, flags);
+
+This seems like a very large section of code to hold a spinlock for and
+I'm not immediately seeing a reason why the locking has to be so
+aggressive.  Among other things it's holding a spinlock with interrupts
+disabled for up to two seconds over a polling transfer which is at best
+needless.
+
+> +static int pic32_spi_one_message(struct spi_master *master,
+> +				 struct spi_message *msg)
+> +{
+> +	int ret = 0;
+> +	int cs_active = 0;
+
+Don't open code message parsing, use the core support and implement
+transfer_one().
+
+> +	clk_prepare_enable(pic32s->clk);
+
+No error checking.  It'd also be better to have runtime power management
+of this.
+
+> +	if (dev->of_node) {
+
+This has DT support but the DT binding is not documented.  Documentation
+is mandatory for all new DT bindings.
+
+> +		of_property_read_u32(dev->of_node,
+> +				     "max-clock-frequency", &max_spi_rate);
+
+This looks like it's duplicating something that should be in the clock
+bindings.  As far as I can tell we never change the parent clock rate so
+we can just look at that to identify the maximum clock rate.
+
+> +		if (of_find_property(dev->of_node, "use-no-dma", NULL)) {
+> +			dev_warn(dev, "DMA support not requested\n");
+> +			pic32s->flags &= ~SPI_DMA_CAP;
+> +		}
+
+Why not just handle the DT binding information being missing?
+
+--bPrm2PuLP7ysUh6c
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJWsJ12AAoJECTWi3JdVIfQslQH/iHeR5LrfgnNh0Ei/WbzSllU
+TTmpMT/hUbfMvaqGnNelDxn/INWdUs8Hx7TRZs+Oa8IhS+Qo8srrIeFjt07hZy7D
+butExMdlP51av3NblaMBr6ZqYd0lF6Gur8FFB1VptUI+hyZkzxex8gW3emthqT6d
+YBKhVb5WxJWmKWZs5RSJ10LkG76i8x0WWGrfdRQJLEVCfgyyGLOGYGO7J9dsYrBd
+g/lkxS3YZ8qLamrhaMIwhPQfzF2Bnq+2NwR5TSJDbhiL3MDBO62vhASnt7lIg7to
+6bPB9NSDVkjvnFQJRnPTdbIgdFtpfw0SdB2ti8LHEc32Kzhn2PGlExnmxylconU=
+=XUdy
+-----END PGP SIGNATURE-----
+
+--bPrm2PuLP7ysUh6c--

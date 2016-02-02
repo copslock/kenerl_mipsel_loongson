@@ -1,69 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Feb 2016 12:16:37 +0100 (CET)
-Received: from mail-lb0-f171.google.com ([209.85.217.171]:34559 "EHLO
-        mail-lb0-f171.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27009961AbcBBLQbpgLRe (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 2 Feb 2016 12:16:31 +0100
-Received: by mail-lb0-f171.google.com with SMTP id e9so4184880lbp.1
-        for <linux-mips@linux-mips.org>; Tue, 02 Feb 2016 03:16:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cogentembedded-com.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:references:cc:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-type:content-transfer-encoding;
-        bh=OnZG9mZSog/YVB/WjXRjyiJczA4TSHP3vNLE5eu404U=;
-        b=u6+j5p6lA8L98VapK/ZuUjuGQi464O8lCf2/Yhr9cLvqvAHYmdARJaQPYkGr1qVorz
-         pRJx01HhdjsmGek42eGNQAKnyM5V+dOnsFKvqBLkFo8ZRP580vh1xXaS7+1usG6XwEPL
-         f1B5St3kfTyKCCmZydKwhD6Lf7h+dv0JJxu6ZQjDjfz7kmckqmi6fkdQ1vZxamDj1WRB
-         Gc+s34sgiBk5E1Xwd5UFp45KdR0Fn3kOzMdC3/HLh49EL29OzA4c+zZsmsFGyl9qugNG
-         6IDeSa+DZ2yVTXzj/fLxvBHZuXZRO88EUDGsVQqJvNyluml+HFlnhzcbWeNYlOnjd6Lb
-         J/4Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:subject:to:references:cc:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-type
-         :content-transfer-encoding;
-        bh=OnZG9mZSog/YVB/WjXRjyiJczA4TSHP3vNLE5eu404U=;
-        b=dMgqaRaaCKjzoXGUX/f1KOp88nyFW7qpEWenDhHn1HZW6RKzicHsUNQyRS8/xJNh4E
-         5Qp7FhDf5LwuIN4nNf+JR8DeEeL+dmLFt914idW7wUxkhy538CR8WKufdbQDV4wSSI6n
-         OMmas+btxxuwvWSCW97Ux2SgEoyzgT38QKhBpEZSl9hgI0FIpj9HnAHlHC6+sSUTrO4P
-         LB2yuzsxXsY1PAFSiSW1kxzOCQxfdbg83d2SqMmC85pwh1f/suk43Le1m5AMrtzGSF8K
-         mGf4WwPSV9zuUn8xGeqTXZG39LFGT2PKvqPt+XCMnM0phjjl1tHBxGV7oYpo/0E1zpTs
-         jSBA==
-X-Gm-Message-State: AG10YOQyHdUBSFm+iIzv/LtsmxZxI/iJacuhAj68QuuOFo4vjalO36xNx+XiK4/NxIJEWg==
-X-Received: by 10.112.134.165 with SMTP id pl5mr11019173lbb.126.1454411785056;
-        Tue, 02 Feb 2016 03:16:25 -0800 (PST)
-Received: from [192.168.4.126] ([31.173.84.176])
-        by smtp.gmail.com with ESMTPSA id ot1sm136725lbb.26.2016.02.02.03.16.21
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Tue, 02 Feb 2016 03:16:24 -0800 (PST)
-Subject: Re: [PATCH 1/2] dt/bindings: Add bindings for PIC32 watchdog
- peripheral
-To:     Joshua Henderson <joshua.henderson@microchip.com>,
-        linux-kernel@vger.kernel.org
-References: <1454371381-25160-1-git-send-email-joshua.henderson@microchip.com>
-Cc:     linux-mips@linux-mips.org, ralf@linux-mips.org,
-        Rob Herring <robh+dt@kernel.org>,
-        Pawel Moll <pawel.moll@arm.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ian Campbell <ijc+devicetree@hellion.org.uk>,
-        Kumar Gala <galak@codeaurora.org>, devicetree@vger.kernel.org
-From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Message-ID: <56B09005.2000006@cogentembedded.com>
-Date:   Tue, 2 Feb 2016 14:16:21 +0300
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:38.0) Gecko/20100101
- Thunderbird/38.5.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Feb 2016 12:25:51 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:29339 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27009961AbcBBLZueOiHl (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 2 Feb 2016 12:25:50 +0100
+Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
+        by Websense Email Security Gateway with ESMTPS id 483FAB55A4834;
+        Tue,  2 Feb 2016 11:25:42 +0000 (GMT)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
+ 14.3.266.1; Tue, 2 Feb 2016 11:25:44 +0000
+Received: from zkakakhel-linux.le.imgtec.org (192.168.154.45) by
+ LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
+ 14.3.210.2; Tue, 2 Feb 2016 11:25:43 +0000
+From:   Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>
+To:     <david.daney@cavium.com>
+CC:     <janne.huttunen@nokia.com>, <aaro.koskinen@nokia.com>,
+        <ralf@linux-mips.org>, <linux-mips@linux-mips.org>,
+        <linux-kernel@vger.kernel.org>, <Zubair.Kakakhel@imgtec.com>
+Subject: [PATCH] MIPS: Octeon: Add Octeon III CN7XXX interface detection
+Date:   Tue, 2 Feb 2016 11:25:18 +0000
+Message-ID: <1454412318-27213-1-git-send-email-Zubair.Kakakhel@imgtec.com>
+X-Mailer: git-send-email 1.9.1
 MIME-Version: 1.0
-In-Reply-To: <1454371381-25160-1-git-send-email-joshua.henderson@microchip.com>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sergei.shtylyov@cogentembedded.com>
+Content-Type: text/plain
+X-Originating-IP: [192.168.154.45]
+Return-Path: <Zubair.Kakakhel@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51624
+X-archive-position: 51625
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sergei.shtylyov@cogentembedded.com
+X-original-sender: Zubair.Kakakhel@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -76,44 +45,83 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 2/2/2016 3:02 AM, Joshua Henderson wrote:
+Add basic CN7XXX interface detection.
 
-> Document the devicetree bindings for the watchdog peripheral found on Microchip
-> PIC32 SoC class devices.
->
-> Signed-off-by: Joshua Henderson <joshua.henderson@microchip.com>
-> Cc: Ralf Baechle <ralf@linux-mips.org>
-> Cc: <linux-mips@linux-mips.org>
-> ---
-> Note: Please merge this patch series through the MIPS tree.
-> ---
->   .../bindings/watchdog/microchip,pic32-wdt.txt      |   18 ++++++++++++++++++
->   1 file changed, 18 insertions(+)
->   create mode 100644 Documentation/devicetree/bindings/watchdog/microchip,pic32-wdt.txt
->
-> diff --git a/Documentation/devicetree/bindings/watchdog/microchip,pic32-wdt.txt b/Documentation/devicetree/bindings/watchdog/microchip,pic32-wdt.txt
-> new file mode 100644
-> index 0000000..3ce2839
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/watchdog/microchip,pic32-wdt.txt
-> @@ -0,0 +1,18 @@
-> +* Microchip PIC32 Watchdog Timer
-> +
-> +When enabled, the watchdog peripheral can be used to reset the device if the
-> +WDT is not cleared periodically in software.
-> +
-> +Required properties:
-> +- compatible: must be "microchip,pic32mzda-wdt".
-> +- reg: physical base address of the controller and length of memory mapped
-> +  region.
-> +- clocks: phandle of source clk. should be <&LPRC> clk.
-> +
-> +Example:
-> +
-> +	watchdog0: wdt@1f800800 {
+This allows the kernel to boot with ethernet working as it initializes
+the ethernet ports with SGMII instead of defaulting to RGMII routines.
 
-    The ePAPR standard tells to to use "watchdog@1f800800" as the node name.
+Tested on the utm8 from Rhino Labs with a CN7130.
 
-[...]
+Signed-off-by: Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>
+---
+ arch/mips/cavium-octeon/executive/cvmx-helper.c | 41 +++++++++++++++++++++++++
+ 1 file changed, 41 insertions(+)
 
-MBR, Sergei
+diff --git a/arch/mips/cavium-octeon/executive/cvmx-helper.c b/arch/mips/cavium-octeon/executive/cvmx-helper.c
+index 376701f..1a28009 100644
+--- a/arch/mips/cavium-octeon/executive/cvmx-helper.c
++++ b/arch/mips/cavium-octeon/executive/cvmx-helper.c
+@@ -87,6 +87,8 @@ int cvmx_helper_get_number_of_interfaces(void)
+ 		return 9;
+ 	if (OCTEON_IS_MODEL(OCTEON_CN56XX) || OCTEON_IS_MODEL(OCTEON_CN52XX))
+ 		return 4;
++	if (OCTEON_IS_MODEL(OCTEON_CN7XXX))
++		return 5;
+ 	else
+ 		return 3;
+ }
+@@ -260,6 +262,39 @@ static cvmx_helper_interface_mode_t __cvmx_get_mode_octeon2(int interface)
+ }
+ 
+ /**
++ * @INTERNAL
++ * Return interface mode for CN7XXX.
++ */
++static cvmx_helper_interface_mode_t __cvmx_get_mode_cn7xxx(int interface)
++{
++	union cvmx_gmxx_inf_mode mode;
++
++	mode.u64 = cvmx_read_csr(CVMX_GMXX_INF_MODE(interface));
++
++	if (interface < 2) {		/* SGMII/QSGMII/XAUI */
++		switch (mode.cn68xx.mode) {
++		case 0:
++			return CVMX_HELPER_INTERFACE_MODE_DISABLED;
++		case 1:
++		case 2:
++			return CVMX_HELPER_INTERFACE_MODE_SGMII;
++		case 3:
++			return CVMX_HELPER_INTERFACE_MODE_XAUI;
++		default:
++			return CVMX_HELPER_INTERFACE_MODE_SGMII;
++		}
++	} else if (interface == 2)	/* NPI */
++		return CVMX_HELPER_INTERFACE_MODE_NPI;
++	else if (interface == 3)	/* LOOP */
++		return CVMX_HELPER_INTERFACE_MODE_LOOP;
++	else if (interface == 4)	/* RGMII (AGL) */
++		return CVMX_HELPER_INTERFACE_MODE_RGMII;
++
++	return CVMX_HELPER_INTERFACE_MODE_DISABLED;
++}
++
++
++/**
+  * Get the operating mode of an interface. Depending on the Octeon
+  * chip and configuration, this function returns an enumeration
+  * of the type of packet I/O supported by an interface.
+@@ -278,6 +313,12 @@ cvmx_helper_interface_mode_t cvmx_helper_interface_get_mode(int interface)
+ 		return CVMX_HELPER_INTERFACE_MODE_DISABLED;
+ 
+ 	/*
++	 * OCTEON III models
++	 */
++	if (OCTEON_IS_MODEL(OCTEON_CN7XXX))
++		return __cvmx_get_mode_cn7xxx(interface);
++
++	/*
+ 	 * Octeon II models
+ 	 */
+ 	if (OCTEON_IS_MODEL(OCTEON_CN6XXX) || OCTEON_IS_MODEL(OCTEON_CNF71XX))
+-- 
+1.9.1

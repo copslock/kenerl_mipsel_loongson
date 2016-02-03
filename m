@@ -1,42 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Feb 2016 17:55:53 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:60689 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Feb 2016 18:45:54 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:56770 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27012139AbcBCQzvxtUct (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 3 Feb 2016 17:55:51 +0100
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Websense Email Security Gateway with ESMTPS id 323D64B4B7AF1;
-        Wed,  3 Feb 2016 16:55:43 +0000 (GMT)
-Received: from [10.100.200.149] (10.100.200.149) by hhmail02.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server id 14.3.266.1; Wed, 3 Feb 2016
- 16:55:45 +0000
-Date:   Wed, 3 Feb 2016 16:55:44 +0000
-From:   "Maciej W. Rozycki" <macro@imgtec.com>
-To:     Paul Burton <paul.burton@imgtec.com>
-CC:     <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <james.hogan@imgtec.com>,
-        Andrey Konovalov <adech.fo@gmail.com>,
-        "Steven J. Hill" <Steven.Hill@imgtec.com>,
-        Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-        <linux-kernel@vger.kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        "Maciej W. Rozycki" <macro@linux-mips.org>
-Subject: Re: [PATCH 1/5] MIPS: Bail on unsupported module relocs
-In-Reply-To: <20160203161517.GE30470@NP-P-BURTON>
-Message-ID: <alpine.DEB.2.00.1602031636220.15885@tp.orcam.me.uk>
-References: <1454471085-20963-1-git-send-email-paul.burton@imgtec.com> <1454471085-20963-2-git-send-email-paul.burton@imgtec.com> <alpine.DEB.2.00.1602031139250.15885@tp.orcam.me.uk> <20160203161517.GE30470@NP-P-BURTON>
-User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
+        with ESMTP id S27011683AbcBCRpvcppqz (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 3 Feb 2016 18:45:51 +0100
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Websense Email Security Gateway with ESMTPS id A4E8E9462A3D8;
+        Wed,  3 Feb 2016 17:45:42 +0000 (GMT)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ HHMAIL01.hh.imgtec.org (10.100.10.19) with Microsoft SMTP Server (TLS) id
+ 14.3.266.1; Wed, 3 Feb 2016 17:45:45 +0000
+Received: from [192.168.154.45] (192.168.154.45) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Wed, 3 Feb
+ 2016 17:45:44 +0000
+Subject: Re: [PATCH] MIPS: Octeon: Add Octeon III CN7XXX interface detection
+To:     Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
+        <david.daney@cavium.com>
+References: <1454412318-27213-1-git-send-email-Zubair.Kakakhel@imgtec.com>
+ <56B09528.1030902@cogentembedded.com>
+CC:     <janne.huttunen@nokia.com>, <aaro.koskinen@nokia.com>,
+        <ralf@linux-mips.org>, <linux-mips@linux-mips.org>,
+        <linux-kernel@vger.kernel.org>
+From:   Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>
+Message-ID: <56B23CB2.5090805@imgtec.com>
+Date:   Wed, 3 Feb 2016 17:45:22 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+ Thunderbird/38.3.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-X-Originating-IP: [10.100.200.149]
-Return-Path: <Maciej.Rozycki@imgtec.com>
+In-Reply-To: <56B09528.1030902@cogentembedded.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [192.168.154.45]
+Return-Path: <Zubair.Kakakhel@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51705
+X-archive-position: 51706
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@imgtec.com
+X-original-sender: Zubair.Kakakhel@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,31 +51,93 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, 3 Feb 2016, Paul Burton wrote:
+Hi,
 
-> >  Hmm, this looks like a fatal error condition to me, the module won't 
-> > load.  Why `pr_warn' rather than `pr_err' then?  Likewise in the other 
-> > file.
-> 
-> To me fatality implies death, and nothing dies here. The module isn't
-> loaded but that's done gracefully & is not likely due to an error in the
-> kernel - it's far more likely that the module isn't valid. So to me,
-> warning seems appropriate rather than implying an error in the kernel.
+Thanks for the review. Comments below.
 
- It may be bikeshedding, however these levels affect what goes to syslog 
-and the console.  There are `crit', `alert' and `emerg' levels above, to 
-raise more severe conditions.  As to `warn' I'd expect one on a succesful 
-action made with some limitations, e.g. a compatibility mode of some kind, 
-running with a performance limitation, some functionality disabled, etc.  
-There's also `notice', which is lower, I'd use for normal actions that 
-might require operator's attention, e.g. I'd put switching a network 
-interface into the promiscuous mode there, due to its side effect on 
-overall system performance.
+On 02/02/16 11:38, Sergei Shtylyov wrote:
+> Hello.
+>
+> On 2/2/2016 2:25 PM, Zubair Lutfullah Kakakhel wrote:
+>
+>> Add basic CN7XXX interface detection.
+>>
+>> This allows the kernel to boot with ethernet working as it initializes
+>> the ethernet ports with SGMII instead of defaulting to RGMII routines.
+>>
+>> Tested on the utm8 from Rhino Labs with a CN7130.
+>>
+>> Signed-off-by: Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>
+>> ---
+>>   arch/mips/cavium-octeon/executive/cvmx-helper.c | 41 +++++++++++++++++++++++++
+>>   1 file changed, 41 insertions(+)
+>>
+>> diff --git a/arch/mips/cavium-octeon/executive/cvmx-helper.c b/arch/mips/cavium-octeon/executive/cvmx-helper.c
+>> index 376701f..1a28009 100644
+>> --- a/arch/mips/cavium-octeon/executive/cvmx-helper.c
+>> +++ b/arch/mips/cavium-octeon/executive/cvmx-helper.c
+> [...]
+>> @@ -260,6 +262,39 @@ static cvmx_helper_interface_mode_t __cvmx_get_mode_octeon2(int interface)
+>>   }
+>>
+>>   /**
+>> + * @INTERNAL
+>> + * Return interface mode for CN7XXX.
+>> + */
+>> +static cvmx_helper_interface_mode_t __cvmx_get_mode_cn7xxx(int interface)
+>
+>     Not *unsigned*?
 
- And I don't think it has to be a bug in the kernel to raise an `err' 
-condition.  However I do agree the boundary here may be a bit fuzzy and 
-code you've been changing doesn't seem consistent either.
+The rest of the instances in the file don't have unsigned.
 
- FWIW,
+Probably because it is an enum..
 
-  Maciej
+>
+>> +{
+>> +    union cvmx_gmxx_inf_mode mode;
+>> +
+>> +    mode.u64 = cvmx_read_csr(CVMX_GMXX_INF_MODE(interface));
+>> +
+>> +    if (interface < 2) {        /* SGMII/QSGMII/XAUI */
+>> +        switch (mode.cn68xx.mode) {
+>> +        case 0:
+>> +            return CVMX_HELPER_INTERFACE_MODE_DISABLED;
+>> +        case 1:
+>> +        case 2:
+>> +            return CVMX_HELPER_INTERFACE_MODE_SGMII;
+>> +        case 3:
+>> +            return CVMX_HELPER_INTERFACE_MODE_XAUI;
+>> +        default:
+>> +            return CVMX_HELPER_INTERFACE_MODE_SGMII;
+>> +        }
+>> +    } else if (interface == 2)    /* NPI */
+>> +        return CVMX_HELPER_INTERFACE_MODE_NPI;
+>> +    else if (interface == 3)    /* LOOP */
+>> +        return CVMX_HELPER_INTERFACE_MODE_LOOP;
+>> +    else if (interface == 4)    /* RGMII (AGL) */
+>> +        return CVMX_HELPER_INTERFACE_MODE_RGMII;
+>
+>     This is asking to be a *switch* statement.
+
+Ask and you shall receive
+
+(⌐▀͡ ̯ʖ▀)
+
+Thanks
+ZubairLK
+
+>
+>> +
+>> +    return CVMX_HELPER_INTERFACE_MODE_DISABLED;
+>> +}
+>> +
+>> +
+>> +/**
+>>    * Get the operating mode of an interface. Depending on the Octeon
+>>    * chip and configuration, this function returns an enumeration
+>>    * of the type of packet I/O supported by an interface.
+> [...]
+>
+> MBR, Sergei
+>
+>

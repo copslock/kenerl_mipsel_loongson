@@ -1,32 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Feb 2016 12:31:44 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:56620 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Feb 2016 12:32:06 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:36607 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27012118AbcBCLblV2fvM (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 3 Feb 2016 12:31:41 +0100
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Websense Email Security Gateway with ESMTPS id 15AF2A3C0886C;
-        Wed,  3 Feb 2016 11:31:33 +0000 (GMT)
+        with ESMTP id S27010839AbcBCLb40sEUM (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 3 Feb 2016 12:31:56 +0100
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Websense Email Security Gateway with ESMTPS id C7A6EF06F4D9B;
+        Wed,  3 Feb 2016 11:31:47 +0000 (GMT)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
- 14.3.266.1; Wed, 3 Feb 2016 11:31:34 +0000
+ HHMAIL01.hh.imgtec.org (10.100.10.19) with Microsoft SMTP Server (TLS) id
+ 14.3.266.1; Wed, 3 Feb 2016 11:31:49 +0000
 Received: from localhost (10.100.200.105) by LEMAIL01.le.imgtec.org
  (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Wed, 3 Feb
- 2016 11:31:33 +0000
+ 2016 11:31:48 +0000
 From:   Paul Burton <paul.burton@imgtec.com>
 To:     <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>
 CC:     Paul Burton <paul.burton@imgtec.com>,
-        Miguel Ojeda Sandonis <miguel.ojeda.sandonis@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "Jiri Slaby" <jslaby@suse.com>,
-        Mauro Carvalho Chehab <mchehab@osg.samsung.com>,
-        <linux-kernel@vger.kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        "Joe Perches" <joe@perches.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH v2 02/15] auxdisplay: driver for simple memory mapped ASCII LCD displays
-Date:   Wed, 3 Feb 2016 11:30:32 +0000
-Message-ID: <1454499045-5020-3-git-send-email-paul.burton@imgtec.com>
+        Joshua Kinard <kumba@gentoo.org>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>,
+        Jens Axboe <axboe@fb.com>, <linux-kernel@vger.kernel.org>,
+        Yijing Wang <wangyijing@huawei.com>,
+        "John Crispin" <blogic@openwrt.org>,
+        Yinghai Lu <yinghai@kernel.org>
+Subject: [PATCH v2 03/15] MIPS: PCI: Compatibility with ARM-like PCI host drivers
+Date:   Wed, 3 Feb 2016 11:30:33 +0000
+Message-ID: <1454499045-5020-4-git-send-email-paul.burton@imgtec.com>
 X-Mailer: git-send-email 2.7.0
 In-Reply-To: <1454499045-5020-1-git-send-email-paul.burton@imgtec.com>
 References: <1454499045-5020-1-git-send-email-paul.burton@imgtec.com>
@@ -37,7 +36,7 @@ Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51663
+X-archive-position: 51664
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -54,308 +53,862 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add a driver for simple memory mapped ASCII LCD displays such as those
-found on the MIPS Malta & Boston development boards. The driver displays
-the Linux kernel version as the default message, but allows the message
-to be changed via a character device. Messages longer then the number of
-characters that the display can show will scroll.
+Introduce support for struct hw_pci & the associated pci_common_init_dev
+function as used by the PCI drivers written for ARM platforms under
+drivers/pci. This is in preparation for reusing the xilinx-pcie driver
+on the MIPS Boston board.
 
-This provides different behaviour to the existing LCD display code for
-the MIPS Malta platform in the following ways:
-
-  - The default string to display is not "LINUX ON MALTA" but "Linux"
-    followed by the version number of the kernel (UTS_RELEASE).
-
-  - Since that string tends to significantly longer it scrolls twice
-    as fast, moving every 500ms rather than every 1s.
-
-  - The LCD won't be updated until the driver is probed, so it doesn't
-    provide the early "LINUX" string.
+Platforms that make use of this more generic code will need to select
+CONFIG_MIPS_GENERIC_PCI. Platforms which don't will continue to work as
+they have, with the intent that PCI drivers be migrated towards struct
+hw_pci & drivers/pci/ over time.
 
 Signed-off-by: Paul Burton <paul.burton@imgtec.com>
 ---
 
 Changes in v2: None
 
- MAINTAINERS                    |   1 +
- drivers/auxdisplay/Kconfig     |   7 ++
- drivers/auxdisplay/Makefile    |   1 +
- drivers/auxdisplay/ascii-lcd.c | 230 +++++++++++++++++++++++++++++++++++++++++
- 4 files changed, 239 insertions(+)
- create mode 100644 drivers/auxdisplay/ascii-lcd.c
+ arch/mips/Kconfig           |   6 ++
+ arch/mips/include/asm/pci.h |  67 ++++++++++++-
+ arch/mips/lib/iomap-pci.c   |   2 +-
+ arch/mips/pci/Makefile      |   6 ++
+ arch/mips/pci/pci-generic.c | 138 ++++++++++++++++++++++++++
+ arch/mips/pci/pci-legacy.c  | 232 ++++++++++++++++++++++++++++++++++++++++++++
+ arch/mips/pci/pci.c         | 226 ++----------------------------------------
+ 7 files changed, 456 insertions(+), 221 deletions(-)
+ create mode 100644 arch/mips/pci/pci-generic.c
+ create mode 100644 arch/mips/pci/pci-legacy.c
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index cd19e5f..301bc429 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1823,6 +1823,7 @@ ASCII LCD DRIVER
- M:	Paul Burton <paul.burton@imgtec.com>
- S:	Maintained
- F:	Documentation/devicetree/bindings/ascii-lcd.txt
-+F:	drivers/auxdisplay/ascii-lcd.c
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 57a945e..82a1f71 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -2848,11 +2848,14 @@ config HW_HAS_EISA
+ 	bool
+ config HW_HAS_PCI
+ 	bool
++config MIPS_GENERIC_PCI
++	bool
  
- ASUS NOTEBOOKS AND EEEPC ACPI/WMI EXTRAS DRIVERS
- M:	Corentin Chary <corentin.chary@gmail.com>
-diff --git a/drivers/auxdisplay/Kconfig b/drivers/auxdisplay/Kconfig
-index c07e725..a465e0d 100644
---- a/drivers/auxdisplay/Kconfig
-+++ b/drivers/auxdisplay/Kconfig
-@@ -119,4 +119,11 @@ config CFAG12864B_RATE
- 	  If you compile this as a module, you can still override this
- 	  value using the module parameters.
+ config PCI
+ 	bool "Support for PCI controller"
+ 	depends on HW_HAS_PCI
+ 	select PCI_DOMAINS
++	select PCI_DOMAINS_GENERIC if MIPS_GENERIC_PCI
+ 	select NO_GENERIC_PCI_IOPORT_MAP
+ 	help
+ 	  Find out whether you have a PCI motherboard. PCI is the name of a
+@@ -2874,6 +2877,9 @@ config HT_PCI
+ config PCI_DOMAINS
+ 	bool
  
-+config ASCII_LCD
-+	tristate "ASCII LCD Display"
-+	default y if MIPS_MALTA
-+	help
-+	  Enable this to support simple memory mapped ASCII LCD displays such
-+	  as those found on the MIPS Malta & Boston development boards.
++config PCI_DOMAINS_GENERIC
++	bool
 +
- endif # AUXDISPLAY
-diff --git a/drivers/auxdisplay/Makefile b/drivers/auxdisplay/Makefile
-index 8a8936a..8a5aa81 100644
---- a/drivers/auxdisplay/Makefile
-+++ b/drivers/auxdisplay/Makefile
-@@ -4,3 +4,4 @@
+ source "drivers/pci/Kconfig"
  
- obj-$(CONFIG_KS0108)		+= ks0108.o
- obj-$(CONFIG_CFAG12864B)	+= cfag12864b.o cfag12864bfb.o
-+obj-$(CONFIG_ASCII_LCD)		+= ascii-lcd.o
-diff --git a/drivers/auxdisplay/ascii-lcd.c b/drivers/auxdisplay/ascii-lcd.c
+ source "drivers/pci/pcie/Kconfig"
+diff --git a/arch/mips/include/asm/pci.h b/arch/mips/include/asm/pci.h
+index 98c31e5..f02f3f8 100644
+--- a/arch/mips/include/asm/pci.h
++++ b/arch/mips/include/asm/pci.h
+@@ -19,12 +19,47 @@
+ #include <linux/ioport.h>
+ #include <linux/of.h>
+ 
++struct pci_sys_data;
++
++struct hw_pci {
++#ifdef CONFIG_PCI_DOMAINS
++	int		domain;
++#endif
++#ifdef CONFIG_PCI_MSI
++	struct msi_controller *msi_ctrl;
++#endif
++	struct pci_ops	*ops;
++	int		nr_controllers;
++	void		**private_data;
++	int		(*setup)(int nr, struct pci_sys_data *);
++	struct pci_bus *(*scan)(int nr, struct pci_sys_data *);
++	void		(*preinit)(void);
++	void		(*postinit)(void);
++	u8		(*swizzle)(struct pci_dev *dev, u8 *pin);
++	int		(*map_irq)(const struct pci_dev *dev, u8 slot, u8 pin);
++	resource_size_t (*align_resource)(struct pci_dev *dev,
++					  const struct resource *res,
++					  resource_size_t start,
++					  resource_size_t size,
++					  resource_size_t align);
++};
++
++struct pci_sys_data {
++	int busnr;
++	struct list_head resources;
++	void *private_data;
++#ifdef CONFIG_PCI_MSI
++	struct msi_controller *msi_ctrl;
++#endif
++};
++
+ /*
+  * Each pci channel is a top-level PCI bus seem by CPU.	 A machine  with
+  * multiple PCI channels may have multiple PCI host controllers or a
+  * single controller supporting multiple channels.
+  */
+ struct pci_controller {
++	struct pci_sys_data sysdata;
+ 	struct pci_controller *next;
+ 	struct pci_bus *bus;
+ 	struct device_node *of_node;
+@@ -45,17 +80,36 @@ struct pci_controller {
+ 
+ 	int iommu;
+ 
++	int		(*map_irq)(const struct pci_dev *dev, u8 slot, u8 pin);
++	resource_size_t (*align_resource)(struct pci_dev *dev,
++					  const struct resource *res,
++					  resource_size_t start,
++					  resource_size_t size,
++					  resource_size_t align);
++
+ 	/* Optional access methods for reading/writing the bus number
+ 	   of the PCI controller */
+ 	int (*get_busno)(void);
+ 	void (*set_busno)(int busno);
+ };
+ 
++extern struct pci_controller *hose_head;
++
++static inline struct pci_controller *
++sysdata_to_hose(struct pci_sys_data *sysdata)
++{
++	return container_of(sysdata, struct pci_controller, sysdata);
++}
++
++extern void pci_common_init_dev(struct device *, struct hw_pci *);
++
+ /*
+  * Used by boards to register their PCI busses before the actual scanning.
+  */
+ extern void register_pci_controller(struct pci_controller *hose);
+ 
++extern void add_pci_controller(struct pci_controller *hose);
++
+ /*
+  * board supplied pci irq fixup routine
+  */
+@@ -113,12 +167,19 @@ struct pci_dev;
+  */
+ extern unsigned int PCI_DMA_BUS_IS_PHYS;
+ 
+-#ifdef CONFIG_PCI_DOMAINS
+-#define pci_domain_nr(bus) ((struct pci_controller *)(bus)->sysdata)->index
++#ifdef CONFIG_PCI_DOMAINS_GENERIC
++
++static inline int pci_proc_domain(struct pci_bus *bus)
++{
++	return pci_domain_nr(bus);
++}
++
++#elif defined(CONFIG_PCI_DOMAINS)
++#define pci_domain_nr(bus) (sysdata_to_hose(bus->sysdata)->index)
+ 
+ static inline int pci_proc_domain(struct pci_bus *bus)
+ {
+-	struct pci_controller *hose = bus->sysdata;
++	struct pci_controller *hose = sysdata_to_hose(bus->sysdata);
+ 	return hose->need_domain_info;
+ }
+ #endif /* CONFIG_PCI_DOMAINS */
+diff --git a/arch/mips/lib/iomap-pci.c b/arch/mips/lib/iomap-pci.c
+index fd35daa..9595827 100644
+--- a/arch/mips/lib/iomap-pci.c
++++ b/arch/mips/lib/iomap-pci.c
+@@ -13,7 +13,7 @@
+ void __iomem *__pci_ioport_map(struct pci_dev *dev,
+ 			       unsigned long port, unsigned int nr)
+ {
+-	struct pci_controller *ctrl = dev->bus->sysdata;
++	struct pci_controller *ctrl = sysdata_to_hose(dev->bus->sysdata);
+ 	unsigned long base = ctrl->io_map_base;
+ 
+ 	/* This will eventually become a BUG_ON but for now be gentle */
+diff --git a/arch/mips/pci/Makefile b/arch/mips/pci/Makefile
+index 139ad1d..6ddfad4 100644
+--- a/arch/mips/pci/Makefile
++++ b/arch/mips/pci/Makefile
+@@ -4,6 +4,12 @@
+ 
+ obj-y				+= pci.o
+ 
++ifeq ($(CONFIG_MIPS_GENERIC_PCI),y)
++obj-y				+= pci-generic.o
++else
++obj-y				+= pci-legacy.o
++endif
++
+ #
+ # PCI bus host bridge specific code
+ #
+diff --git a/arch/mips/pci/pci-generic.c b/arch/mips/pci/pci-generic.c
 new file mode 100644
-index 0000000..5c9ec32
+index 0000000..f20adc0
 --- /dev/null
-+++ b/drivers/auxdisplay/ascii-lcd.c
-@@ -0,0 +1,230 @@
++++ b/arch/mips/pci/pci-generic.c
+@@ -0,0 +1,138 @@
 +/*
-+ * Copyright (C) 2015 Imagination Technologies
-+ * Author: Paul Burton <paul.burton@imgtec.com>
-+ *
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms of the GNU General Public License as published by the
-+ * Free Software Foundation; either version 2 of the License, or (at your
++ * This program is free software; you can redistribute	it and/or modify it
++ * under  the terms of	the GNU General	 Public License as published by the
++ * Free Software Foundation;  either version 2 of the  License, or (at your
 + * option) any later version.
++ *
++ * Copyright (C) 2003, 04, 11 Ralf Baechle (ralf@linux-mips.org)
++ * Copyright (C) 2011 Wind River Systems,
++ *   written by Ralf Baechle (ralf@linux-mips.org)
 + */
 +
-+#include <generated/utsrelease.h>
-+#include <linux/kernel.h>
-+#include <linux/io.h>
-+#include <linux/module.h>
++#include <linux/pci.h>
++
++int __weak pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
++{
++	struct pci_sys_data *sysdata = dev->sysdata;
++	struct pci_controller *ctl = sysdata_to_hose(sysdata);
++
++	if (!ctl->map_irq)
++		return -1;
++
++	return ctl->map_irq(dev, slot, pin);
++}
++
++void pci_common_init_dev(struct device *parent, struct hw_pci *hw)
++{
++	struct pci_controller *ctl;
++	struct resource_entry *window;
++	struct resource **ctl_res;
++	int i, ret, next_busnr = 0;
++
++	for (i = 0; i < hw->nr_controllers; i++) {
++		ctl = kzalloc(sizeof(*ctl), GFP_KERNEL);
++		if (!ctl) {
++			pr_err("%s: unable to allocate pci_controller\n",
++			       __func__);
++			continue;
++		}
++
++		ctl->pci_ops = hw->ops;
++		ctl->align_resource = hw->align_resource;
++		ctl->map_irq = hw->map_irq;
++
++		INIT_LIST_HEAD(&ctl->sysdata.resources);
++
++		if (hw->private_data)
++			ctl->sysdata.private_data = hw->private_data[i];
++
++		ctl->sysdata.busnr = next_busnr;
++#ifdef CONFIG_PCI_MSI
++		ctl->sysdata.msi_ctrl = hw->msi_ctrl;
++#endif
++
++		if (hw->preinit)
++			hw->preinit();
++
++		ret = hw->setup(i, &ctl->sysdata);
++		if (ret < 0) {
++			pr_err("%s: unable to setup controller: %d\n",
++			       __func__, ret);
++			kfree(ctl);
++			continue;
++		}
++
++		resource_list_for_each_entry(window, &ctl->sysdata.resources) {
++			switch (resource_type(window->res)) {
++			case IORESOURCE_IO:
++				ctl_res = &ctl->io_resource;
++				break;
++
++			case IORESOURCE_MEM:
++				ctl_res = &ctl->mem_resource;
++				break;
++
++			default:
++				ctl_res = NULL;
++			}
++
++			if (!ctl_res)
++				continue;
++
++			if (*ctl_res) {
++				pr_warn("%s: multiple resources of type 0x%lx\n",
++					__func__, resource_type(window->res));
++				continue;
++			}
++
++			*ctl_res = window->res;
++		}
++
++		if (hw->scan)
++			ctl->bus = hw->scan(i, &ctl->sysdata);
++		else
++			ctl->bus = pci_scan_root_bus(parent,
++					ctl->sysdata.busnr,
++					hw->ops, &ctl->sysdata,
++					&ctl->sysdata.resources);
++
++		add_pci_controller(ctl);
++
++		if (hw->postinit)
++			hw->postinit();
++
++		pci_fixup_irqs(pci_common_swizzle, pcibios_map_irq);
++
++		if (ctl->bus) {
++			if (!pci_has_flag(PCI_PROBE_ONLY)) {
++				pci_bus_size_bridges(ctl->bus);
++				pci_bus_assign_resources(ctl->bus);
++			}
++
++			pci_bus_add_devices(ctl->bus);
++			next_busnr = ctl->bus->busn_res.end + 1;
++		}
++	}
++}
++
++void pcibios_fixup_bus(struct pci_bus *bus)
++{
++	pci_read_bridge_bases(bus);
++}
++
++int pcibios_enable_device(struct pci_dev *dev, int mask)
++{
++	if (pci_has_flag(PCI_PROBE_ONLY))
++		return 0;
++
++	return pci_enable_resources(dev, mask);
++}
++
++#ifdef CONFIG_PCI_MSI
++struct msi_controller *pcibios_msi_controller(struct pci_dev *dev)
++{
++	struct pci_sys_data *sysdata = dev->sysdata;
++
++	return sysdata->msi_ctrl;
++}
++#endif
+diff --git a/arch/mips/pci/pci-legacy.c b/arch/mips/pci/pci-legacy.c
+new file mode 100644
+index 0000000..cf76a08
+--- /dev/null
++++ b/arch/mips/pci/pci-legacy.c
+@@ -0,0 +1,232 @@
++/*
++ * This program is free software; you can redistribute	it and/or modify it
++ * under  the terms of	the GNU General	 Public License as published by the
++ * Free Software Foundation;  either version 2 of the  License, or (at your
++ * option) any later version.
++ *
++ * Copyright (C) 2003, 04, 11 Ralf Baechle (ralf@linux-mips.org)
++ * Copyright (C) 2011 Wind River Systems,
++ *   written by Ralf Baechle (ralf@linux-mips.org)
++ */
++
++#include <linux/init.h>
++#include <linux/list.h>
 +#include <linux/of_address.h>
-+#include <linux/of_platform.h>
-+#include <linux/platform_device.h>
-+#include <linux/slab.h>
-+#include <linux/sysfs.h>
++#include <linux/pci.h>
 +
-+struct ascii_lcd_ctx;
++#include <asm/cpu-info.h>
 +
-+struct ascii_lcd_config {
-+	unsigned num_chars;
-+	void (*update)(struct ascii_lcd_ctx *ctx);
-+};
++static int pci_initialized;
++static DEFINE_MUTEX(pci_scan_mutex);
 +
-+struct ascii_lcd_ctx {
-+	struct platform_device *pdev;
-+	void __iomem *base;
-+	const struct ascii_lcd_config *cfg;
-+	char *message;
-+	unsigned message_len;
-+	unsigned scroll_pos;
-+	unsigned scroll_rate;
-+	struct timer_list timer;
-+	char curr[] __aligned(8);
-+};
-+
-+static void update_boston(struct ascii_lcd_ctx *ctx)
++static void pcibios_scanbus(struct pci_controller *hose)
 +{
-+	u32 val32;
-+	u64 val64;
++	static int next_busno;
++	static int need_domain_info;
++	LIST_HEAD(resources);
++	struct pci_bus *bus;
 +
-+	if (config_enabled(CONFIG_64BIT)) {
-+		val64 = *((u64 *)&ctx->curr[0]);
-+		__raw_writeq(val64, ctx->base);
-+	} else {
-+		val32 = *((u32 *)&ctx->curr[0]);
-+		__raw_writel(val32, ctx->base);
-+		val32 = *((u32 *)&ctx->curr[4]);
-+		__raw_writel(val32, ctx->base + 4);
++	if (!hose->iommu)
++		PCI_DMA_BUS_IS_PHYS = 1;
++
++	if (hose->get_busno && pci_has_flag(PCI_PROBE_ONLY))
++		next_busno = (*hose->get_busno)();
++
++	hose->sysdata.busnr = next_busno;
++
++	pci_add_resource_offset(&resources,
++				hose->mem_resource, hose->mem_offset);
++	pci_add_resource_offset(&resources,
++				hose->io_resource, hose->io_offset);
++	pci_add_resource_offset(&resources,
++				hose->busn_resource, hose->busn_offset);
++	bus = pci_scan_root_bus(NULL, next_busno, hose->pci_ops, &hose->sysdata,
++				&resources);
++	hose->bus = bus;
++
++	need_domain_info = need_domain_info || hose->index;
++	hose->need_domain_info = need_domain_info;
++
++	if (!bus) {
++		pci_free_resource_list(&resources);
++		return;
++	}
++
++	next_busno = bus->busn_res.end + 1;
++	/* Don't allow 8-bit bus number overflow inside the hose -
++	   reserve some space for bridges. */
++	if (next_busno > 224) {
++		next_busno = 0;
++		need_domain_info = 1;
++	}
++
++	if (!pci_has_flag(PCI_PROBE_ONLY)) {
++		pci_bus_size_bridges(bus);
++		pci_bus_assign_resources(bus);
++	}
++	pci_bus_add_devices(bus);
++}
++
++#ifdef CONFIG_OF
++void pci_load_of_ranges(struct pci_controller *hose, struct device_node *node)
++{
++	struct of_pci_range range;
++	struct of_pci_range_parser parser;
++
++	pr_info("PCI host bridge %s ranges:\n", node->full_name);
++	hose->of_node = node;
++
++	if (of_pci_range_parser_init(&parser, node))
++		return;
++
++	for_each_of_pci_range(&parser, &range) {
++		struct resource *res = NULL;
++
++		switch (range.flags & IORESOURCE_TYPE_BITS) {
++		case IORESOURCE_IO:
++			pr_info("  IO 0x%016llx..0x%016llx\n",
++				range.cpu_addr,
++				range.cpu_addr + range.size - 1);
++			hose->io_map_base =
++				(unsigned long)ioremap(range.cpu_addr,
++						       range.size);
++			res = hose->io_resource;
++			break;
++		case IORESOURCE_MEM:
++			pr_info(" MEM 0x%016llx..0x%016llx\n",
++				range.cpu_addr,
++				range.cpu_addr + range.size - 1);
++			res = hose->mem_resource;
++			break;
++		}
++		if (res != NULL)
++			of_pci_range_to_resource(&range, node, res);
 +	}
 +}
 +
-+static void update_malta(struct ascii_lcd_ctx *ctx)
++struct device_node *pcibios_get_phb_of_node(struct pci_bus *bus)
 +{
-+	unsigned i;
++	struct pci_controller *hose = sysdata_to_hose(bus->sysdata);
 +
-+	for (i = 0; i < ctx->cfg->num_chars; i++)
-+		__raw_writel(ctx->curr[i], ctx->base + (i * 8));
++	return of_node_get(hose->of_node);
 +}
++#endif
 +
-+static struct ascii_lcd_config boston_config = {
-+	.num_chars = 8,
-+	.update = update_boston,
-+};
-+
-+static struct ascii_lcd_config malta_config = {
-+	.num_chars = 8,
-+	.update = update_malta,
-+};
-+
-+static const struct of_device_id ascii_lcd_matches[] = {
-+	{ .compatible = "img,boston-lcd", .data = &boston_config },
-+	{ .compatible = "mti,malta-lcd", .data = &malta_config },
-+};
-+
-+static void ascii_lcd_scroll(unsigned long arg)
++void register_pci_controller(struct pci_controller *hose)
 +{
-+	struct ascii_lcd_ctx *ctx = (struct ascii_lcd_ctx *)arg;
-+	unsigned i, ch = ctx->scroll_pos;
-+	unsigned num_chars = ctx->cfg->num_chars;
++	struct resource *parent;
 +
-+	/* update the current message string */
-+	for (i = 0; i < num_chars;) {
-+		/* copy as many characters from the string as possible */
-+		for (; i < num_chars && ch < ctx->message_len; i++, ch++)
-+			ctx->curr[i] = ctx->message[ch];
++	parent = hose->mem_resource->parent;
++	if (!parent)
++		parent = &iomem_resource;
 +
-+		/* wrap around to the start of the string */
-+		ch = 0;
++	if (request_resource(parent, hose->mem_resource) < 0)
++		goto out;
++
++	parent = hose->io_resource->parent;
++	if (!parent)
++		parent = &ioport_resource;
++
++	if (request_resource(parent, hose->io_resource) < 0) {
++		release_resource(hose->mem_resource);
++		goto out;
 +	}
 +
-+	/* update the LCD */
-+	ctx->cfg->update(ctx);
++	add_pci_controller(hose);
 +
-+	/* move on to the next character */
-+	ctx->scroll_pos++;
-+	ctx->scroll_pos %= ctx->message_len;
++	/*
++	 * Do not panic here but later - this might happen before console init.
++	 */
++	if (!hose->io_map_base) {
++		printk(KERN_WARNING
++		       "registering PCI controller with io_map_base unset\n");
++	}
 +
-+	/* rearm the timer */
-+	if (ctx->message_len > ctx->cfg->num_chars)
-+		mod_timer(&ctx->timer, jiffies + ctx->scroll_rate);
++	/*
++	 * Scan the bus if it is register after the PCI subsystem
++	 * initialization.
++	 */
++	if (pci_initialized) {
++		mutex_lock(&pci_scan_mutex);
++		pcibios_scanbus(hose);
++		mutex_unlock(&pci_scan_mutex);
++	}
++
++	return;
++
++out:
++	printk(KERN_WARNING
++	       "Skipping PCI bus scan due to resource conflict\n");
 +}
 +
-+static int ascii_lcd_display(struct ascii_lcd_ctx *ctx,
-+			     const char *msg, ssize_t count)
++static int __init pcibios_init(void)
 +{
-+	char *new_msg;
++	struct pci_controller *hose;
 +
-+	/* stop the scroll timer */
-+	del_timer_sync(&ctx->timer);
++	/* Scan all of the recorded PCI controllers.  */
++	for (hose = hose_head; hose; hose = hose->next)
++		pcibios_scanbus(hose);
 +
-+	if (count == -1)
-+		count = strlen(msg);
++	pci_fixup_irqs(pci_common_swizzle, pcibios_map_irq);
 +
-+	/* if the string ends with a newline, trim it */
-+	if (msg[count - 1] == '\n')
-+		count--;
-+
-+	new_msg = devm_kmalloc(&ctx->pdev->dev, count + 1, GFP_KERNEL);
-+	if (!new_msg)
-+		return -ENOMEM;
-+
-+	memcpy(new_msg, msg, count);
-+	new_msg[count] = 0;
-+
-+	if (ctx->message)
-+		devm_kfree(&ctx->pdev->dev, ctx->message);
-+
-+	ctx->message = new_msg;
-+	ctx->message_len = count;
-+	ctx->scroll_pos = 0;
-+
-+	/* update the LCD */
-+	ascii_lcd_scroll((unsigned long)ctx);
++	pci_initialized = 1;
 +
 +	return 0;
 +}
++subsys_initcall(pcibios_init);
 +
-+static ssize_t message_show(struct device *dev, struct device_attribute *attr,
-+			    char *buf)
++static int pcibios_enable_resources(struct pci_dev *dev, int mask)
 +{
-+	struct ascii_lcd_ctx *ctx = dev_get_drvdata(dev);
++	u16 cmd, old_cmd;
++	int idx;
++	struct resource *r;
 +
-+	return sprintf(buf, "%s\n", ctx->message);
++	pci_read_config_word(dev, PCI_COMMAND, &cmd);
++	old_cmd = cmd;
++	for (idx = 0; idx < PCI_NUM_RESOURCES; idx++) {
++		/* Only set up the requested stuff */
++		if (!(mask & (1<<idx)))
++			continue;
++
++		r = &dev->resource[idx];
++		if (!(r->flags & (IORESOURCE_IO | IORESOURCE_MEM)))
++			continue;
++		if ((idx == PCI_ROM_RESOURCE) &&
++				(!(r->flags & IORESOURCE_ROM_ENABLE)))
++			continue;
++		if (!r->start && r->end) {
++			printk(KERN_ERR "PCI: Device %s not available "
++			       "because of resource collisions\n",
++			       pci_name(dev));
++			return -EINVAL;
++		}
++		if (r->flags & IORESOURCE_IO)
++			cmd |= PCI_COMMAND_IO;
++		if (r->flags & IORESOURCE_MEM)
++			cmd |= PCI_COMMAND_MEMORY;
++	}
++	if (cmd != old_cmd) {
++		printk("PCI: Enabling device %s (%04x -> %04x)\n",
++		       pci_name(dev), old_cmd, cmd);
++		pci_write_config_word(dev, PCI_COMMAND, cmd);
++	}
++	return 0;
 +}
 +
-+static ssize_t message_store(struct device *dev, struct device_attribute *attr,
-+			     const char *buf, size_t count)
++int pcibios_enable_device(struct pci_dev *dev, int mask)
 +{
-+	struct ascii_lcd_ctx *ctx = dev_get_drvdata(dev);
 +	int err;
 +
-+	err = ascii_lcd_display(ctx, buf, count);
-+	return err ?: count;
++	err = pcibios_enable_resources(dev, mask);
++	return err ?: pcibios_plat_dev_init(dev);
 +}
 +
-+static DEVICE_ATTR_RW(message);
-+
-+static int ascii_lcd_probe(struct platform_device *pdev)
++void pcibios_fixup_bus(struct pci_bus *bus)
 +{
-+	const struct of_device_id *match;
-+	const struct ascii_lcd_config *cfg;
-+	struct ascii_lcd_ctx *ctx;
-+	struct resource *res;
-+	int err;
++	struct pci_dev *dev = bus->self;
 +
-+	match = of_match_device(ascii_lcd_matches, &pdev->dev);
-+	if (!match)
-+		return -ENODEV;
-+
-+	cfg = match->data;
-+	ctx = devm_kzalloc(&pdev->dev, sizeof(*ctx) + cfg->num_chars,
-+			   GFP_KERNEL);
-+	if (!ctx)
-+		return -ENOMEM;
-+
-+	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+	ctx->base = devm_ioremap_resource(&pdev->dev, res);
-+	if (IS_ERR(ctx->base))
-+		return PTR_ERR(ctx->base);
-+
-+	ctx->pdev = pdev;
-+	ctx->cfg = cfg;
-+	ctx->message = NULL;
-+	ctx->scroll_pos = 0;
-+	ctx->scroll_rate = HZ / 2;
-+
-+	/* initialise a timer for scrolling the message */
-+	init_timer(&ctx->timer);
-+	ctx->timer.function = ascii_lcd_scroll;
-+	ctx->timer.data = (unsigned long)ctx;
-+
-+	platform_set_drvdata(pdev, ctx);
-+
-+	/* display a default message */
-+	err = ascii_lcd_display(ctx, "Linux " UTS_RELEASE "       ", -1);
-+	if (err)
-+		goto out_del_timer;
-+
-+	err = device_create_file(&pdev->dev, &dev_attr_message);
-+	if (err)
-+		goto out_del_timer;
-+
-+	return 0;
-+out_del_timer:
-+	del_timer_sync(&ctx->timer);
-+	return err;
++	if (pci_has_flag(PCI_PROBE_ONLY) && dev &&
++	    (dev->class >> 8) == PCI_CLASS_BRIDGE_PCI) {
++		pci_read_bridge_bases(bus);
++	}
 +}
-+
-+static int ascii_lcd_remove(struct platform_device *pdev)
-+{
-+	struct ascii_lcd_ctx *ctx = platform_get_drvdata(pdev);
-+
-+	device_remove_file(&pdev->dev, &dev_attr_message);
-+	del_timer_sync(&ctx->timer);
-+	return 0;
-+}
-+
-+static struct platform_driver ascii_lcd_driver = {
-+	.driver = {
-+		.name		= "ascii-lcd",
-+		.of_match_table	= ascii_lcd_matches,
-+	},
-+	.probe	= ascii_lcd_probe,
-+	.remove	= ascii_lcd_remove,
-+};
-+module_platform_driver(ascii_lcd_driver);
+diff --git a/arch/mips/pci/pci.c b/arch/mips/pci/pci.c
+index b8a0bf5..18ea99b 100644
+--- a/arch/mips/pci/pci.c
++++ b/arch/mips/pci/pci.c
+@@ -29,13 +29,12 @@
+  * The PCI controller list.
+  */
+ 
+-static struct pci_controller *hose_head, **hose_tail = &hose_head;
++struct pci_controller *hose_head;
++static struct pci_controller **hose_tail = &hose_head;
+ 
+ unsigned long PCIBIOS_MIN_IO;
+ unsigned long PCIBIOS_MIN_MEM;
+ 
+-static int pci_initialized;
+-
+ /*
+  * We need to avoid collisions with `mirrored' VGA ports
+  * and other strange ISA hardware, so we always want the
+@@ -54,7 +53,7 @@ pcibios_align_resource(void *data, const struct resource *res,
+ 		       resource_size_t size, resource_size_t align)
+ {
+ 	struct pci_dev *dev = data;
+-	struct pci_controller *hose = dev->sysdata;
++	struct pci_controller *hose = sysdata_to_hose(dev->sysdata);
+ 	resource_size_t start = res->start;
+ 
+ 	if (res->flags & IORESOURCE_IO) {
+@@ -73,151 +72,19 @@ pcibios_align_resource(void *data, const struct resource *res,
+ 			start = PCIBIOS_MIN_MEM + hose->mem_resource->start;
+ 	}
+ 
+-	return start;
+-}
+-
+-static void pcibios_scanbus(struct pci_controller *hose)
+-{
+-	static int next_busno;
+-	static int need_domain_info;
+-	LIST_HEAD(resources);
+-	struct pci_bus *bus;
+-
+-	if (!hose->iommu)
+-		PCI_DMA_BUS_IS_PHYS = 1;
+-
+-	if (hose->get_busno && pci_has_flag(PCI_PROBE_ONLY))
+-		next_busno = (*hose->get_busno)();
+-
+-	pci_add_resource_offset(&resources,
+-				hose->mem_resource, hose->mem_offset);
+-	pci_add_resource_offset(&resources,
+-				hose->io_resource, hose->io_offset);
+-	pci_add_resource_offset(&resources,
+-				hose->busn_resource, hose->busn_offset);
+-	bus = pci_scan_root_bus(NULL, next_busno, hose->pci_ops, hose,
+-				&resources);
+-	hose->bus = bus;
+-
+-	need_domain_info = need_domain_info || hose->index;
+-	hose->need_domain_info = need_domain_info;
+-
+-	if (!bus) {
+-		pci_free_resource_list(&resources);
+-		return;
+-	}
+-
+-	next_busno = bus->busn_res.end + 1;
+-	/* Don't allow 8-bit bus number overflow inside the hose -
+-	   reserve some space for bridges. */
+-	if (next_busno > 224) {
+-		next_busno = 0;
+-		need_domain_info = 1;
+-	}
+-
+-	if (!pci_has_flag(PCI_PROBE_ONLY)) {
+-		pci_bus_size_bridges(bus);
+-		pci_bus_assign_resources(bus);
+-	}
+-	pci_bus_add_devices(bus);
+-}
+-
+-#ifdef CONFIG_OF
+-void pci_load_of_ranges(struct pci_controller *hose, struct device_node *node)
+-{
+-	struct of_pci_range range;
+-	struct of_pci_range_parser parser;
+-
+-	pr_info("PCI host bridge %s ranges:\n", node->full_name);
+-	hose->of_node = node;
+-
+-	if (of_pci_range_parser_init(&parser, node))
+-		return;
+-
+-	for_each_of_pci_range(&parser, &range) {
+-		struct resource *res = NULL;
+-
+-		switch (range.flags & IORESOURCE_TYPE_BITS) {
+-		case IORESOURCE_IO:
+-			pr_info("  IO 0x%016llx..0x%016llx\n",
+-				range.cpu_addr,
+-				range.cpu_addr + range.size - 1);
+-			hose->io_map_base =
+-				(unsigned long)ioremap(range.cpu_addr,
+-						       range.size);
+-			res = hose->io_resource;
+-			break;
+-		case IORESOURCE_MEM:
+-			pr_info(" MEM 0x%016llx..0x%016llx\n",
+-				range.cpu_addr,
+-				range.cpu_addr + range.size - 1);
+-			res = hose->mem_resource;
+-			break;
+-		}
+-		if (res != NULL)
+-			of_pci_range_to_resource(&range, node, res);
+-	}
+-}
+-
+-struct device_node *pcibios_get_phb_of_node(struct pci_bus *bus)
+-{
+-	struct pci_controller *hose = bus->sysdata;
++	if (hose->align_resource)
++		return hose->align_resource(dev, res, start, size, align);
+ 
+-	return of_node_get(hose->of_node);
++	return start;
+ }
+-#endif
+ 
+-static DEFINE_MUTEX(pci_scan_mutex);
+-
+-void register_pci_controller(struct pci_controller *hose)
++void add_pci_controller(struct pci_controller *hose)
+ {
+-	struct resource *parent;
+-
+-	parent = hose->mem_resource->parent;
+-	if (!parent)
+-		parent = &iomem_resource;
+-
+-	if (request_resource(parent, hose->mem_resource) < 0)
+-		goto out;
+-
+-	parent = hose->io_resource->parent;
+-	if (!parent)
+-		parent = &ioport_resource;
+-
+-	if (request_resource(parent, hose->io_resource) < 0) {
+-		release_resource(hose->mem_resource);
+-		goto out;
+-	}
+-
+ 	*hose_tail = hose;
+ 	hose_tail = &hose->next;
+-
+-	/*
+-	 * Do not panic here but later - this might happen before console init.
+-	 */
+-	if (!hose->io_map_base) {
+-		printk(KERN_WARNING
+-		       "registering PCI controller with io_map_base unset\n");
+-	}
+-
+-	/*
+-	 * Scan the bus if it is register after the PCI subsystem
+-	 * initialization.
+-	 */
+-	if (pci_initialized) {
+-		mutex_lock(&pci_scan_mutex);
+-		pcibios_scanbus(hose);
+-		mutex_unlock(&pci_scan_mutex);
+-	}
+-
+-	return;
+-
+-out:
+-	printk(KERN_WARNING
+-	       "Skipping PCI bus scan due to resource conflict\n");
+ }
+ 
+-static void __init pcibios_set_cache_line_size(void)
++static int __init pcibios_set_cache_line_size(void)
+ {
+ 	struct cpuinfo_mips *c = &current_cpu_data;
+ 	unsigned int lsize;
+@@ -235,90 +102,15 @@ static void __init pcibios_set_cache_line_size(void)
+ 	pci_dfl_cache_line_size = lsize >> 2;
+ 
+ 	pr_debug("PCI: pci_cache_line_size set to %d bytes\n", lsize);
+-}
+-
+-static int __init pcibios_init(void)
+-{
+-	struct pci_controller *hose;
+-
+-	pcibios_set_cache_line_size();
+-
+-	/* Scan all of the recorded PCI controllers.  */
+-	for (hose = hose_head; hose; hose = hose->next)
+-		pcibios_scanbus(hose);
+-
+-	pci_fixup_irqs(pci_common_swizzle, pcibios_map_irq);
+-
+-	pci_initialized = 1;
+-
+-	return 0;
+-}
+-
+-subsys_initcall(pcibios_init);
+-
+-static int pcibios_enable_resources(struct pci_dev *dev, int mask)
+-{
+-	u16 cmd, old_cmd;
+-	int idx;
+-	struct resource *r;
+-
+-	pci_read_config_word(dev, PCI_COMMAND, &cmd);
+-	old_cmd = cmd;
+-	for (idx=0; idx < PCI_NUM_RESOURCES; idx++) {
+-		/* Only set up the requested stuff */
+-		if (!(mask & (1<<idx)))
+-			continue;
+-
+-		r = &dev->resource[idx];
+-		if (!(r->flags & (IORESOURCE_IO | IORESOURCE_MEM)))
+-			continue;
+-		if ((idx == PCI_ROM_RESOURCE) &&
+-				(!(r->flags & IORESOURCE_ROM_ENABLE)))
+-			continue;
+-		if (!r->start && r->end) {
+-			printk(KERN_ERR "PCI: Device %s not available "
+-			       "because of resource collisions\n",
+-			       pci_name(dev));
+-			return -EINVAL;
+-		}
+-		if (r->flags & IORESOURCE_IO)
+-			cmd |= PCI_COMMAND_IO;
+-		if (r->flags & IORESOURCE_MEM)
+-			cmd |= PCI_COMMAND_MEMORY;
+-	}
+-	if (cmd != old_cmd) {
+-		printk("PCI: Enabling device %s (%04x -> %04x)\n",
+-		       pci_name(dev), old_cmd, cmd);
+-		pci_write_config_word(dev, PCI_COMMAND, cmd);
+-	}
+ 	return 0;
+ }
++arch_initcall(pcibios_set_cache_line_size);
+ 
+ unsigned int pcibios_assign_all_busses(void)
+ {
+ 	return 1;
+ }
+ 
+-int pcibios_enable_device(struct pci_dev *dev, int mask)
+-{
+-	int err;
+-
+-	if ((err = pcibios_enable_resources(dev, mask)) < 0)
+-		return err;
+-
+-	return pcibios_plat_dev_init(dev);
+-}
+-
+-void pcibios_fixup_bus(struct pci_bus *bus)
+-{
+-	struct pci_dev *dev = bus->self;
+-
+-	if (pci_has_flag(PCI_PROBE_ONLY) && dev &&
+-	    (dev->class >> 8) == PCI_CLASS_BRIDGE_PCI) {
+-		pci_read_bridge_bases(bus);
+-	}
+-}
+-
+ EXPORT_SYMBOL(PCIBIOS_MIN_IO);
+ EXPORT_SYMBOL(PCIBIOS_MIN_MEM);
+ 
 -- 
 2.7.0

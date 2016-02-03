@@ -1,40 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Feb 2016 15:48:47 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:45878 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Feb 2016 15:59:07 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:50966 "EHLO
         imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27012288AbcBCOspLw3F3 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 3 Feb 2016 15:48:45 +0100
+        by eddie.linux-mips.org with ESMTP id S27012294AbcBCO7FoeqS3 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 3 Feb 2016 15:59:05 +0100
 Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
-        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id D9C3E41F8DC8;
-        Wed,  3 Feb 2016 14:48:39 +0000 (GMT)
+        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 53A1241F8DA8;
+        Wed,  3 Feb 2016 14:59:00 +0000 (GMT)
 Received: from mailapp01.imgtec.com ([10.100.180.241])
   by imgpgp01.kl.imgtec.org (PGP Universal service);
-  Wed, 03 Feb 2016 14:48:39 +0000
+  Wed, 03 Feb 2016 14:59:00 +0000
 X-PGP-Universal: processed;
-        by imgpgp01.kl.imgtec.org on Wed, 03 Feb 2016 14:48:39 +0000
+        by imgpgp01.kl.imgtec.org on Wed, 03 Feb 2016 14:59:00 +0000
 Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Websense Email Security Gateway with ESMTPS id 717A362EE8246;
-        Wed,  3 Feb 2016 14:48:37 +0000 (GMT)
+        by Websense Email Security Gateway with ESMTPS id CA4C1139562AE;
+        Wed,  3 Feb 2016 14:58:57 +0000 (GMT)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
  hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
- 14.3.266.1; Wed, 3 Feb 2016 14:48:39 +0000
+ 14.3.266.1; Wed, 3 Feb 2016 14:58:59 +0000
 Received: from localhost (192.168.154.110) by LEMAIL01.le.imgtec.org
  (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Wed, 3 Feb
- 2016 14:48:39 +0000
-Date:   Wed, 3 Feb 2016 14:48:39 +0000
+ 2016 14:58:59 +0000
+Date:   Wed, 3 Feb 2016 14:58:59 +0000
 From:   James Hogan <james.hogan@imgtec.com>
 To:     Paul Burton <paul.burton@imgtec.com>
 CC:     <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>,
-        "Markos Chandras" <markos.chandras@imgtec.com>,
-        <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 03/15] MIPS: pm-cps: Avoid offset overflow on MIPSr6
-Message-ID: <20160203144838.GG5464@jhogan-linux.le.imgtec.org>
+        "Matt Redfearn" <matt.redfearn@imgtec.com>,
+        <linux-kernel@vger.kernel.org>,
+        "Thomas Gleixner" <tglx@linutronix.de>,
+        Markos Chandras <markos.chandras@imgtec.com>
+Subject: Re: [PATCH 06/15] MIPS: CM: Fix mips_cm_max_vp_width for UP kernels
+Message-ID: <20160203145858.GH5464@jhogan-linux.le.imgtec.org>
 References: <1454469335-14778-1-git-send-email-paul.burton@imgtec.com>
- <1454469335-14778-4-git-send-email-paul.burton@imgtec.com>
+ <1454469335-14778-7-git-send-email-paul.burton@imgtec.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="m972NQjnE83KvVa/"
+        protocol="application/pgp-signature"; boundary="IbVRjBtIbJdbeK1C"
 Content-Disposition: inline
-In-Reply-To: <1454469335-14778-4-git-send-email-paul.burton@imgtec.com>
+In-Reply-To: <1454469335-14778-7-git-send-email-paul.burton@imgtec.com>
 User-Agent: Mutt/1.5.23 (2014-03-12)
 X-Originating-IP: [192.168.154.110]
 X-ESG-ENCRYPT-TAG: 56f439c
@@ -42,7 +44,7 @@ Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51694
+X-archive-position: 51695
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -59,103 +61,80 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---m972NQjnE83KvVa/
+--IbVRjBtIbJdbeK1C
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Feb 03, 2016 at 03:15:23AM +0000, Paul Burton wrote:
-> From: Markos Chandras <markos.chandras@imgtec.com>
+On Wed, Feb 03, 2016 at 03:15:26AM +0000, Paul Burton wrote:
+> Fix mips_cm_max_vp_width for UP kernels where it previously referenced
+> smp_num_siblings, which is not declared for UP kernels. This led to
+> build errors such as the following:
 >=20
-> This is similar to commit 934c79231c1b ("MIPS: asm: r4kcache: Add MIPS
-> R6 cache unroll functions"). The CACHE instruction has been redefined
-> for MIPSr6 and it reduced its offset field to 8 bits. This leads to
-> micro-assembler field overflow warnings when booting SMP MIPSr6 cores
-> like the following one:
+>   drivers/built-in.o: In function `$L446':
+>   irq-mips-gic.c:(.text+0x1994): undefined reference to `smp_num_siblings'
+>   drivers/built-in.o:irq-mips-gic.c:(.text+0x199c): more undefined refere=
+nces to `smp_num_siblings' follow
 >=20
-> Call Trace:
-> [<ffffffff8010af88>] show_stack+0x68/0x88
-> [<ffffffff8056ddf0>] dump_stack+0x68/0x88
-> [<ffffffff801305bc>] warn_slowpath_common+0x8c/0xc8
-> [<ffffffff80130630>] warn_slowpath_fmt+0x38/0x48
-> [<ffffffff80125814>] build_insn+0x514/0x5c0
-> [<ffffffff806ee134>] cps_gen_cache_routine.isra.3+0xe0/0x1b8
-> [<ffffffff806ee570>] cps_pm_init+0x364/0x9ec
-> [<ffffffff80100538>] do_one_initcall+0x90/0x1a8
-> [<ffffffff806e8c14>] kernel_init_freeable+0x160/0x21c
-> [<ffffffff8056b6a0>] kernel_init+0x10/0xf8
-> [<ffffffff801059f8>] ret_from_kernel_thread+0x14/0x1c
+> On UP kernels simply return 1, leaving the reference to smp_num_siblings
+> in place only for SMP kernels.
 >=20
-> We fix this by incrementing the base register on every loop.
->=20
-> Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
 > Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-> ---
->=20
->  arch/mips/kernel/pm-cps.c | 15 +++++++++++----
->  1 file changed, 11 insertions(+), 4 deletions(-)
->=20
-> diff --git a/arch/mips/kernel/pm-cps.c b/arch/mips/kernel/pm-cps.c
-> index f63a289..524ba11 100644
-> --- a/arch/mips/kernel/pm-cps.c
-> +++ b/arch/mips/kernel/pm-cps.c
-> @@ -224,11 +224,18 @@ static void __init cps_gen_cache_routine(u32 **pp, =
-struct uasm_label **pl,
->  	uasm_build_label(pl, *pp, lbl);
-> =20
->  	/* Generate the cache ops */
-> -	for (i =3D 0; i < unroll_lines; i++)
-> -		uasm_i_cache(pp, op, i * cache->linesz, t0);
-> +	for (i =3D 0; i < unroll_lines; i++) {
 
-Maybe worth adding a comment here to mention different immediate field
-size in r6 encodings, otherwise it could look a bit mysterious to the
-reader.
+Need tagging for stable v4.3+?
+
+I do wonder if this should be handled in the header files though...
 
 Cheers
 James
 
-> +		if (cpu_has_mips_r6) {
-> +			uasm_i_cache(pp, op, 0, t0);
-> +			uasm_i_addiu(pp, t0, t0, cache->linesz);
-> +		} else {
-> +			uasm_i_cache(pp, op, i * cache->linesz, t0);
-> +		}
-> +	}
+> ---
+>=20
+>  arch/mips/include/asm/mips-cm.h | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/arch/mips/include/asm/mips-cm.h b/arch/mips/include/asm/mips=
+-cm.h
+> index 1395bbc..3fdb6c9 100644
+> --- a/arch/mips/include/asm/mips-cm.h
+> +++ b/arch/mips/include/asm/mips-cm.h
+> @@ -462,7 +462,10 @@ static inline unsigned int mips_cm_max_vp_width(void)
+>  	if (mips_cm_revision() >=3D CM_REV_CM3)
+>  		return read_gcr_sys_config2() & CM_GCR_SYS_CONFIG2_MAXVPW_MSK;
 > =20
-> -	/* Update the base address */
-> -	uasm_i_addiu(pp, t0, t0, unroll_lines * cache->linesz);
-> +	if (!cpu_has_mips_r6)
-> +		/* Update the base address */
-> +		uasm_i_addiu(pp, t0, t0, unroll_lines * cache->linesz);
+> -	return smp_num_siblings;
+> +	if (config_enabled(CONFIG_SMP))
+> +		return smp_num_siblings;
+> +
+> +	return 1;
+>  }
 > =20
->  	/* Loop if we haven't reached the end address yet */
->  	uasm_il_bne(pp, pr, t0, t1, lbl);
+>  /**
 > --=20
 > 2.7.0
 >=20
 >=20
 
---m972NQjnE83KvVa/
+--IbVRjBtIbJdbeK1C
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQIcBAEBCAAGBQJWshNGAAoJEGwLaZPeOHZ6E2oP/0k2Jqgng4sEXpZi5kCXX+0+
-E8QLoGqCg9BytB0wHOtkOkSotAcmVrfYB7+rLtjzdn0DGYGoLrVTxCBhDZ/viLQQ
-jZuR9UZXXveTqM6Ws+H5ZXL+Hi/uhYv0XmZolM69OUBTBh6EmNFM8aa3j1irnPzZ
-rN2RCD6fh9Glu7yXju2f1R/qRyMp66gbZSOD48OSnc4DlOt3J50krRF6sFckQEdy
-W0cywaE8vYKTpiHJZ3MMbFZlg6bqJ2b5Q4scD4ff+cmeqsedJsInPw6cYLBzvjCT
-bWDJg5MEBHGCzMYZdVd8cq8K0ucRiB4w0fyxqs44pdEaNIQbm20191c3rb/8rHRG
-IofppYgaj47HiKXnufMTl7uDtswVpH1r0ov/ntiDFMoOoD8S4I4rfsPlFPigXmj8
-mnIUX5PqCvVN0Psphmi+QCgNONC+4Y+K+t9eygOyMKw3zBWkHpV+/K2ieuD0nDBr
-iOPCMamJiqwV06zDVVvl5A9QmvmIecj/S4R0xYzgP/UBi3Cbmnz2s6c58N2YGE+L
-PxNxZgWygTo++yrbS1uW3+nuzEI9ymJULWh1s3sZYH7dUnUQjObroY0ghvtICSXH
-LGpgTaJg9kSXZmO4DftN4oxKjUy2pdEFywdAKjyponBmHOBjf+OW2dS4Jq6/2vST
-n/B6A4RAyr2dkjUovVjo
-=Q0sr
+iQIcBAEBCAAGBQJWshWyAAoJEGwLaZPeOHZ67DQP/3Y5RL1+CwHuU9GpPQXTJhmH
+cArxyVQMcBKxUpvuXXP7Uya6hU2IYuyz1ahGfLNUNJlFF9WKW06FV5a+DdsoYTG7
+2mzFk4S7CEiyihlwiXbeCNmunnq64y4+PC5TDSZmLhH2QuEkph/8Z/z6RLAy5dzR
+Jnuz3GsrvGQVKPt01F7Y+AeJDJDvKkUHTg/fBZ+8mLxwb7H0TrQWbMUX2SZrFkUa
+QiOVFfF510LE54b4DJyyXmSbKD5Hmb9c9TCCEb49tev+f21nEYV5j/1atMW93vl5
+HjVEu/Id3n/CTUjRmw2RafZZIKDWtoG4WzLLNvfAqpGmGKjSECmOUMN3t7ZJDHiC
+l+/5ZxdfwPj68Jo/G6NsO8ertHzFX2UA6SFhtRP99n/a8tj7lO7KyU2xhfu4oCVN
+sZARJp0KrGes48SbEKJOzRA/IztycyKeeE3SLH2Kaa9dW4a93PswmfgC9PIUbkGi
+9ACQ2CHtmAHO39H3A/J8UYcw+FB4NNbs4fT6U1xoJax9GFiw6aVnu0o1Gbxg06/L
+hskKuel8oHKjdDc5KIY0ciYe0pjKrWS0TwNXQobM6T8FnFiboTYrCKHOi51TZQ3J
+1flSG2rKfsmwZURm1NcZL1QH4JwOrcn2hcthC2PKwMZydavDQYnGye866TVAH5Ov
+GJoNUGcI/T1akaGCrN1Z
+=sywA
 -----END PGP SIGNATURE-----
 
---m972NQjnE83KvVa/--
+--IbVRjBtIbJdbeK1C--

@@ -1,69 +1,82 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Feb 2016 12:23:04 +0100 (CET)
-Received: from mail-wm0-f41.google.com ([74.125.82.41]:34799 "EHLO
-        mail-wm0-f41.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010839AbcBCLXBelgMO (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 3 Feb 2016 12:23:01 +0100
-Received: by mail-wm0-f41.google.com with SMTP id 128so160357788wmz.1
-        for <linux-mips@linux-mips.org>; Wed, 03 Feb 2016 03:23:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=subject:to:references:cc:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-type:content-transfer-encoding;
-        bh=KZ5czXs92NoDVKUSfX2mlEXo2xj5RGvBJthDi718msY=;
-        b=ZGTDsyyII2VF/yteWcVhXkIkedWGXEdFbg5X8xF50nEHeJC+ph+1/0tEhovf8uXLq9
-         5jdCBFocH2NIMW0QEw+AJZEAXYv2U8pNVL046iZ17l75ZQoNfcZQblRBDcNWF/D7pkAP
-         5NgV8M8LjG7X+UqL67Uavfrw5OgNiKmdsI6yA=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:subject:to:references:cc:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-type
-         :content-transfer-encoding;
-        bh=KZ5czXs92NoDVKUSfX2mlEXo2xj5RGvBJthDi718msY=;
-        b=XWpfus/AnQ4wJjXBlyuR4ybC//SKcndMrj3Ko54CxTmmeWVGrPq/JF0nOJCGdx2IRL
-         X7bF1TXCrbam1TZKWokT765yoR2zXvYbtcGkvuSEYTmAtzQS6jmRdBvjqfgvyUCL0Wg0
-         Px1q9FHOVD6lAxmrYN+jC3t9qDqYSB/+S8mjhJj7NXR96bb2zTZv9enKmP/Gh7aCl0iO
-         5OE6d+T452/Jltem1S9G7HSEUM5aJAwIZ0mqkaQNw9FeWh7uQIvV2CnWaLiBk+nPkC6k
-         arj6fTrCMcuVuAFWFLAML7R9Ie3qPErmRHde+kZH8cc81vdit+0fN1oD1RLmHAJut6co
-         //ow==
-X-Gm-Message-State: AG10YOR9WoWapnOixK9b7Wk0S4ydwRpUbFa9bxtdUWR4gf47Na/D8uBIZn1S5fmJdfJOVewV
-X-Received: by 10.28.128.138 with SMTP id b132mr3428280wmd.26.1454498575513;
-        Wed, 03 Feb 2016 03:22:55 -0800 (PST)
-Received: from [192.168.1.125] (cpc4-aztw19-0-0-cust71.18-1.cable.virginm.net. [82.33.25.72])
-        by smtp.googlemail.com with ESMTPSA id ll9sm5991440wjc.29.2016.02.03.03.22.54
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Wed, 03 Feb 2016 03:22:54 -0800 (PST)
-Subject: Re: [PATCH 2/2] rng: pic32-rng: Add PIC32 RNG hardware driver
-To:     Joshua Henderson <joshua.henderson@microchip.com>,
-        linux-kernel@vger.kernel.org
-References: <1454366511-10640-1-git-send-email-joshua.henderson@microchip.com>
- <1454366511-10640-2-git-send-email-joshua.henderson@microchip.com>
-Cc:     linux-mips@linux-mips.org,
-        Purna Chandra Mandal <purna.mandal@microchip.com>,
-        Matt Mackall <mpm@selenic.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Kieran Bingham <kieranbingham@gmail.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        Pankaj Dev <pankaj.dev@st.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Feb 2016 12:31:13 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:40288 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27012118AbcBCLbLdAjFM (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 3 Feb 2016 12:31:11 +0100
+Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
+        by Websense Email Security Gateway with ESMTPS id E305AA408D917;
+        Wed,  3 Feb 2016 11:31:02 +0000 (GMT)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
+ 14.3.266.1; Wed, 3 Feb 2016 11:31:04 +0000
+Received: from localhost (10.100.200.105) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Wed, 3 Feb
+ 2016 11:31:03 +0000
+From:   Paul Burton <paul.burton@imgtec.com>
+To:     <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>
+CC:     Paul Burton <paul.burton@imgtec.com>,
+        Phil Edworthy <phil.edworthy@renesas.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Joshua Kinard <kumba@gentoo.org>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Jiri Slaby <jslaby@suse.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        "Zubair Lutfullah Kakakhel" <Zubair.Kakakhel@imgtec.com>,
+        Kumar Gala <galak@codeaurora.org>,
+        Yijing Wang <wangyijing@huawei.com>,
+        Ian Campbell <ijc+devicetree@hellion.org.uk>,
+        Rob Herring <robh+dt@kernel.org>,
+        "John Crispin" <blogic@openwrt.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Ray Jui <rjui@broadcom.com>,
+        Richard Cochran <richardcochran@gmail.com>,
+        =?UTF-8?q?S=C3=B6ren=20Brinkmann?= <soren.brinkmann@xilinx.com>,
+        Michal Simek <michal.simek@xilinx.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "Andrew Bresticker" <abrestic@chromium.org>,
+        Russell Joyce <russell.joyce@york.ac.uk>,
         Scott Branden <sbranden@broadcom.com>,
-        Ray Jui <rjui@broadcom.com>, linux-crypto@vger.kernel.org
-From:   Daniel Thompson <daniel.thompson@linaro.org>
-Message-ID: <56B1E30D.8090509@linaro.org>
-Date:   Wed, 3 Feb 2016 11:22:53 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.5.0
+        "Thomas Gleixner" <tglx@linutronix.de>,
+        <linux-arm-kernel@lists.infradead.org>,
+        "Pawel Moll" <pawel.moll@arm.com>, <linux-pci@vger.kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        "Ley Foon Tan" <lftan@altera.com>, <devicetree@vger.kernel.org>,
+        Jiang Liu <jiang.liu@linux.intel.com>,
+        Rob Herring <robh@kernel.org>,
+        "Mauro Carvalho Chehab" <mchehab@osg.samsung.com>,
+        Jens Axboe <axboe@fb.com>, Duc Dang <dhdang@apm.com>,
+        Markos Chandras <markos.chandras@imgtec.com>,
+        Vinod Koul <vinod.koul@intel.com>,
+        Gabriele Paoloni <gabriele.paoloni@huawei.com>,
+        Marc Zyngier <marc.zyngier@arm.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Miguel Ojeda Sandonis <miguel.ojeda.sandonis@gmail.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        Stanimir Varbanov <svarbanov@mm-sol.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Joe Perches <joe@perches.com>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Hauke Mehrtens <hauke@hauke-m.de>,
+        Yinghai Lu <yinghai@kernel.org>, <dmaengine@vger.kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>
+Subject: [PATCH v2 00/15] MIPS Boston board support
+Date:   Wed, 3 Feb 2016 11:30:30 +0000
+Message-ID: <1454499045-5020-1-git-send-email-paul.burton@imgtec.com>
+X-Mailer: git-send-email 2.7.0
 MIME-Version: 1.0
-In-Reply-To: <1454366511-10640-2-git-send-email-joshua.henderson@microchip.com>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <daniel.thompson@linaro.org>
+Content-Type: text/plain
+X-Originating-IP: [10.100.200.105]
+Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51660
+X-archive-position: 51661
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: daniel.thompson@linaro.org
+X-original-sender: paul.burton@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -76,227 +89,92 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 01/02/16 22:41, Joshua Henderson wrote:
-> Add support for the hardware pseudo and true random number generator
-> peripheral found on PIC32.
->
-> Signed-off-by: Joshua Henderson <joshua.henderson@microchip.com>
-> Signed-off-by: Purna Chandra Mandal <purna.mandal@microchip.com>
-> ---
->   drivers/char/hw_random/Kconfig     |   13 +++
->   drivers/char/hw_random/Makefile    |    1 +
->   drivers/char/hw_random/pic32-rng.c |  152 ++++++++++++++++++++++++++++++++++++
->   3 files changed, 166 insertions(+)
->   create mode 100644 drivers/char/hw_random/pic32-rng.c
->
-> diff --git a/drivers/char/hw_random/Kconfig b/drivers/char/hw_random/Kconfig
-> index dbf2271..3ab0c46 100644
-> --- a/drivers/char/hw_random/Kconfig
-> +++ b/drivers/char/hw_random/Kconfig
-> @@ -381,6 +381,19 @@ config HW_RANDOM_STM32
->
->   	  If unsure, say N.
->
-> +config HW_RANDOM_PIC32
-> +	tristate "Microchip PIC32 Random Number Generator support"
-> +	depends on HW_RANDOM && MACH_PIC32
-> +	default y
-> +	---help---
-> +	  This driver provides kernel-side support for the Random Number
-> +	  Generator hardware found on a PIC32.
-> +
-> +	  To compile this driver as a module, choose M here. the
-> +	  module will be called pic32-rng.
-> +
-> +	  If unsure, say Y.
-> +
->   endif # HW_RANDOM
->
->   config UML_RANDOM
-> diff --git a/drivers/char/hw_random/Makefile b/drivers/char/hw_random/Makefile
-> index 5ad3976..f5a6fa7 100644
-> --- a/drivers/char/hw_random/Makefile
-> +++ b/drivers/char/hw_random/Makefile
-> @@ -33,3 +33,4 @@ obj-$(CONFIG_HW_RANDOM_MSM) += msm-rng.o
->   obj-$(CONFIG_HW_RANDOM_ST) += st-rng.o
->   obj-$(CONFIG_HW_RANDOM_XGENE) += xgene-rng.o
->   obj-$(CONFIG_HW_RANDOM_STM32) += stm32-rng.o
-> +obj-$(CONFIG_HW_RANDOM_PIC32) += pic32-rng.o
-> diff --git a/drivers/char/hw_random/pic32-rng.c b/drivers/char/hw_random/pic32-rng.c
-> new file mode 100644
-> index 0000000..d2f32c4
-> --- /dev/null
-> +++ b/drivers/char/hw_random/pic32-rng.c
-> @@ -0,0 +1,152 @@
-> +/*
-> + * PIC32 RNG driver
-> + *
-> + * Joshua Henderson <joshua.henderson@microchip.com>
-> + * Copyright (C) 2016 Microchip Technology Inc.  All rights reserved.
-> + *
-> + * This program is free software; you can distribute it and/or modify it
-> + * under the terms of the GNU General Public License (Version 2) as
-> + * published by the Free Software Foundation.
-> + *
-> + * This program is distributed in the hope it will be useful, but WITHOUT
-> + * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-> + * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
-> + * for more details.
-> + */
-> +
-> +#include <linux/kernel.h>
-> +#include <linux/module.h>
-> +#include <linux/delay.h>
-> +#include <linux/slab.h>
-> +#include <linux/err.h>
-> +#include <linux/io.h>
-> +#include <linux/hw_random.h>
-> +#include <linux/platform_device.h>
-> +#include <linux/of.h>
-> +#include <linux/of_device.h>
-> +#include <linux/clk.h>
-> +#include <linux/clkdev.h>
-> +
-> +#define RNGCON		0x04
-> +#define  TRNGEN		BIT(8)
-> +#define  PRNGEN		BIT(9)
-> +#define  PRNGCONT	BIT(10)
-> +#define  TRNGMOD	BIT(11)
-> +#define  SEEDLOAD	BIT(12)
-> +#define RNGPOLY1	0x08
-> +#define RNGPOLY2	0x0C
-> +#define RNGNUMGEN1	0x10
-> +#define RNGNUMGEN2	0x14
-> +#define RNGSEED1	0x18
-> +#define RNGSEED2	0x1C
-> +#define RNGRCNT		0x20
-> +#define  RCNT_MASK	0x7F
-> +
-> +struct pic32_rng {
-> +	void __iomem	*base;
-> +	struct hwrng	rng;
-> +	struct clk	*clk;
-> +};
-> +
-> +static int pic32_rng_read(struct hwrng *rng, void *buf, size_t max,
-> +			  bool wait)
-> +{
-> +	struct pic32_rng *prng = container_of(rng, struct pic32_rng, rng);
-> +	u64 *data = buf;
-> +
-> +	*data = ((u64)readl(prng->base + RNGNUMGEN2) << 32) +
-> +		readl(prng->base + RNGNUMGEN1);
-> +	return 4;
-> +}
+This series introduces support for the Imagination Technologies MIPS
+Boston development board. Boston is an FPGA-based development board
+akin to the much older Malta board, built around a Xilinx FPGA running
+a MIPS CPU & other logic including a PCIe root port connected to an
+Intel EG20T Platform Controller Hub. This provides a base set of
+peripherals including SATA, USB, SD/MMC, ethernet, I2C & GPIOs. PCIe
+slots are also present for expansion.
 
-I have a number of questions at this point (although #3 is by far the 
-most important).
+v2 of this series splits out the pch_gbe ethernet driver changes to a
+separate series, but keeps the Xilinx PCIe driver changes since PCIe is
+so central to the Boston board & the series has shrunk somewhat since
+its earlier submission.
 
-1. If the random number of 42-bit shouldn't this be return 5; ?
+Applies atop v4.5-rc2.
 
-2. If you really do mean return 4; then why mess about with all the
-    shifting. You can just read and discard the upper 32-bits.
+Paul Burton (15):
+  dt-bindings: ascii-lcd: Document a binding for simple ASCII LCDs
+  auxdisplay: driver for simple memory mapped ASCII LCD displays
+  MIPS: PCI: Compatibility with ARM-like PCI host drivers
+  PCI: xilinx: Keep references to both IRQ domains
+  PCI: xilinx: Unify INTx & MSI interrupt FIFO decode
+  PCI: xilinx: Always clear interrupt decode register
+  PCI: xilinx: Clear interrupt FIFO during probe
+  PCI: xilinx: Fix INTX irq dispatch
+  PCI: xilinx: Allow build on MIPS platforms
+  misc: pch_phub: Allow build on MIPS platforms
+  dmaengine: pch_dma: Allow build on MIPS platforms
+  ptp: pch: Allow build on MIPS platforms
+  MIPS: Support for generating FIT (.itb) images
+  dt-bindings: mips: img,boston: Document img,boston binding
+  MIPS: Boston board support
 
-3. Why are you using the PRNG at all? The PRNG is a simple LSFR and
-    I don't think it ever gets reseeded at any point (meaning we get
-    almost no useful entropy from it at all).
+ Documentation/devicetree/bindings/ascii-lcd.txt    |  10 +
+ .../devicetree/bindings/mips/img/boston.txt        |  15 ++
+ MAINTAINERS                                        |  14 ++
+ arch/mips/Kbuild.platforms                         |   1 +
+ arch/mips/Kconfig                                  |  48 +++++
+ arch/mips/Makefile                                 |   6 +-
+ arch/mips/boot/Makefile                            |  61 ++++++
+ arch/mips/boot/dts/Makefile                        |   1 +
+ arch/mips/boot/dts/img/Makefile                    |   7 +
+ arch/mips/boot/dts/img/boston.dts                  | 204 ++++++++++++++++++
+ arch/mips/boot/skeleton.its                        |  24 +++
+ arch/mips/boston/Makefile                          |  12 ++
+ arch/mips/boston/Platform                          |   8 +
+ arch/mips/boston/init.c                            | 106 ++++++++++
+ arch/mips/boston/int.c                             |  33 +++
+ arch/mips/boston/time.c                            |  89 ++++++++
+ arch/mips/boston/vmlinux.its                       |  23 ++
+ arch/mips/configs/boston_defconfig                 | 173 +++++++++++++++
+ .../asm/mach-boston/cpu-feature-overrides.h        |  26 +++
+ arch/mips/include/asm/mach-boston/irq.h            |  18 ++
+ arch/mips/include/asm/mach-boston/spaces.h         |  20 ++
+ arch/mips/include/asm/pci.h                        |  67 +++++-
+ arch/mips/lib/iomap-pci.c                          |   2 +-
+ arch/mips/pci/Makefile                             |   6 +
+ arch/mips/pci/pci-generic.c                        | 138 ++++++++++++
+ arch/mips/pci/pci-legacy.c                         | 232 +++++++++++++++++++++
+ arch/mips/pci/pci.c                                | 226 +-------------------
+ drivers/auxdisplay/Kconfig                         |   7 +
+ drivers/auxdisplay/Makefile                        |   1 +
+ drivers/auxdisplay/ascii-lcd.c                     | 230 ++++++++++++++++++++
+ drivers/dma/Kconfig                                |   2 +-
+ drivers/misc/Kconfig                               |   2 +-
+ drivers/pci/host/Kconfig                           |   2 +-
+ drivers/pci/host/pcie-xilinx.c                     | 125 ++++++-----
+ drivers/ptp/Kconfig                                |   2 +-
+ 35 files changed, 1649 insertions(+), 292 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/ascii-lcd.txt
+ create mode 100644 Documentation/devicetree/bindings/mips/img/boston.txt
+ create mode 100644 arch/mips/boot/dts/img/Makefile
+ create mode 100644 arch/mips/boot/dts/img/boston.dts
+ create mode 100644 arch/mips/boot/skeleton.its
+ create mode 100644 arch/mips/boston/Makefile
+ create mode 100644 arch/mips/boston/Platform
+ create mode 100644 arch/mips/boston/init.c
+ create mode 100644 arch/mips/boston/int.c
+ create mode 100644 arch/mips/boston/time.c
+ create mode 100644 arch/mips/boston/vmlinux.its
+ create mode 100644 arch/mips/configs/boston_defconfig
+ create mode 100644 arch/mips/include/asm/mach-boston/cpu-feature-overrides.h
+ create mode 100644 arch/mips/include/asm/mach-boston/irq.h
+ create mode 100644 arch/mips/include/asm/mach-boston/spaces.h
+ create mode 100644 arch/mips/pci/pci-generic.c
+ create mode 100644 arch/mips/pci/pci-legacy.c
+ create mode 100644 drivers/auxdisplay/ascii-lcd.c
 
-    Far better to read directly from the TRNG.
-
-
-> +
-> +static int pic32_rng_probe(struct platform_device *pdev)
-> +{
-> +	struct pic32_rng *prng;
-> +	struct resource *res;
-> +	u32 v, t;
-> +	int ret;
-> +
-> +	prng = devm_kzalloc(&pdev->dev, sizeof(*prng), GFP_KERNEL);
-> +	if (!prng)
-> +		return -ENOMEM;
-> +
-> +	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> +	prng->base = devm_ioremap_resource(&pdev->dev, res);
-> +	if (IS_ERR(prng->base))
-> +		return PTR_ERR(prng->base);
-> +
-> +	prng->clk = devm_clk_get(&pdev->dev, NULL);
-> +	if (IS_ERR(prng->clk))
-> +		return PTR_ERR(prng->clk);
-> +
-> +	clk_prepare_enable(prng->clk);
-> +
-> +	/* enable TRNG in enhanced mode */
-> +	v = readl(prng->base + RNGCON);
-> +	v &= ~(TRNGEN | PRNGEN | 0xff);
-> +	v |= TRNGMOD;
-> +	writel(v | TRNGEN, prng->base + RNGCON);
-> +
-> +	/* wait for valid seed */
-> +	usleep_range(100, 200);
-> +	t = readl(prng->base + RNGRCNT) & RCNT_MASK;
-> +	if (t < 0x2A)
-> +		dev_warn(&pdev->dev, "seed not generated.\n");
-> +
-> +	/* load initial seed */
-> +	writel(v | SEEDLOAD, prng->base + RNGCON);
-> +
-> +	/* load initial polynomial: 42bit poly */
-> +	writel(0x00c00003, prng->base + RNGPOLY1);
-> +	writel(0x00000000, prng->base + RNGPOLY2);
-> +
-> +	/* start PRNG to generate 42bit random */
-> +	v |= 0x2A | PRNGCONT | PRNGEN;
-> +	writel(v, prng->base + RNGCON);
-> +
-> +	prng->rng.name = pdev->name;
-> +	prng->rng.read = pic32_rng_read;
-> +
-> +	ret = hwrng_register(&prng->rng);
-> +	if (ret)
-> +		goto err_register;
-> +
-> +	platform_set_drvdata(pdev, prng);
-> +
-> +	return 0;
-> +
-> +err_register:
-> +	return ret;
-
-Looks like we leak clock references on this error path.
-
-
-> +
-> +static int pic32_rng_remove(struct platform_device *pdev)
-> +{
-> +	struct pic32_rng *rng = platform_get_drvdata(pdev);
-> +
-> +	hwrng_unregister(&rng->rng);
-> +	writel(0, rng->base + RNGCON);
-> +	clk_disable_unprepare(rng->clk);
-> +	return 0;
-> +}
-> +
-> +static const struct of_device_id pic32_rng_of_match[] = {
-> +	{ .compatible	= "microchip,pic32mzda-rng", },
-> +	{ /* sentinel */ }
-> +};
-> +MODULE_DEVICE_TABLE(of, pic32_rng_of_match);
-> +
-> +static struct platform_driver pic32_rng_driver = {
-> +	.probe		= pic32_rng_probe,
-> +	.remove		= pic32_rng_remove,
-> +	.driver		= {
-> +		.name	= "pic32-rng",
-> +		.owner	= THIS_MODULE,
-> +		.of_match_table = of_match_ptr(pic32_rng_of_match),
-> +	},
-> +};
-> +
-> +module_platform_driver(pic32_rng_driver);
-> +
-> +MODULE_LICENSE("GPL");
-> +MODULE_AUTHOR("Joshua Henderson <joshua.henderson@microchip.com>");
-> +MODULE_DESCRIPTION("Microchip PIC32 RNG Driver");
->
+-- 
+2.7.0

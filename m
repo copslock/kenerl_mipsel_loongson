@@ -1,56 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Feb 2016 17:54:54 +0100 (CET)
-Received: from smtp-out6.electric.net ([192.162.217.191]:56555 "EHLO
-        smtp-out6.electric.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011683AbcBCQyxG690t convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 3 Feb 2016 17:54:53 +0100
-Received: from 1aR0hf-0006Ox-Tx by out6d.electric.net with emc1-ok (Exim 4.85)
-        (envelope-from <David.Laight@ACULAB.COM>)
-        id 1aR0hf-0006Tg-WC; Wed, 03 Feb 2016 08:54:51 -0800
-Received: by emcmailer; Wed, 03 Feb 2016 08:54:51 -0800
-Received: from [213.249.233.130] (helo=AcuExch.aculab.com)
-        by out6d.electric.net with esmtps (TLSv1:AES128-SHA:128)
-        (Exim 4.85)
-        (envelope-from <David.Laight@ACULAB.COM>)
-        id 1aR0hf-0006Ox-Tx; Wed, 03 Feb 2016 08:54:51 -0800
-Received: from ACUEXCH.Aculab.com ([::1]) by AcuExch.aculab.com ([::1]) with
- mapi id 14.03.0123.003; Wed, 3 Feb 2016 16:51:35 +0000
-From:   David Laight <David.Laight@ACULAB.COM>
-To:     'Paul Burton' <paul.burton@imgtec.com>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        Ralf Baechle <ralf@linux-mips.org>
-CC:     "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH v2 6/6] net: pch_gbe: Allow longer for resets
-Thread-Topic: [PATCH v2 6/6] net: pch_gbe: Allow longer for resets
-Thread-Index: AQHRXnq3fgQTopO/nkaWnymXFPZpDp8aiNpg
-Date:   Wed, 3 Feb 2016 16:51:34 +0000
-Message-ID: <063D6719AE5E284EB5DD2968C1650D6D1CCD57CD@AcuExch.aculab.com>
-References: <1454500964-6256-1-git-send-email-paul.burton@imgtec.com>
- <1454500964-6256-7-git-send-email-paul.burton@imgtec.com>
-In-Reply-To: <1454500964-6256-7-git-send-email-paul.burton@imgtec.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.202.99.200]
-Content-Type: text/plain; charset="Windows-1252"
-Content-Transfer-Encoding: 8BIT
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Feb 2016 17:55:53 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:60689 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27012139AbcBCQzvxtUct (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 3 Feb 2016 17:55:51 +0100
+Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
+        by Websense Email Security Gateway with ESMTPS id 323D64B4B7AF1;
+        Wed,  3 Feb 2016 16:55:43 +0000 (GMT)
+Received: from [10.100.200.149] (10.100.200.149) by hhmail02.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server id 14.3.266.1; Wed, 3 Feb 2016
+ 16:55:45 +0000
+Date:   Wed, 3 Feb 2016 16:55:44 +0000
+From:   "Maciej W. Rozycki" <macro@imgtec.com>
+To:     Paul Burton <paul.burton@imgtec.com>
+CC:     <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <james.hogan@imgtec.com>,
+        Andrey Konovalov <adech.fo@gmail.com>,
+        "Steven J. Hill" <Steven.Hill@imgtec.com>,
+        Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+        <linux-kernel@vger.kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        "Maciej W. Rozycki" <macro@linux-mips.org>
+Subject: Re: [PATCH 1/5] MIPS: Bail on unsupported module relocs
+In-Reply-To: <20160203161517.GE30470@NP-P-BURTON>
+Message-ID: <alpine.DEB.2.00.1602031636220.15885@tp.orcam.me.uk>
+References: <1454471085-20963-1-git-send-email-paul.burton@imgtec.com> <1454471085-20963-2-git-send-email-paul.burton@imgtec.com> <alpine.DEB.2.00.1602031139250.15885@tp.orcam.me.uk> <20160203161517.GE30470@NP-P-BURTON>
+User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
 MIME-Version: 1.0
-X-Outbound-IP: 213.249.233.130
-X-Env-From: David.Laight@ACULAB.COM
-X-PolicySMART: 3396946, 3397078
-X-Virus-Status: Scanned by VirusSMART (c)
-X-Virus-Status: Scanned by VirusSMART (s)
-Return-Path: <David.Laight@ACULAB.COM>
+Content-Type: text/plain; charset="US-ASCII"
+X-Originating-IP: [10.100.200.149]
+Return-Path: <Maciej.Rozycki@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51704
+X-archive-position: 51705
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: David.Laight@ACULAB.COM
+X-original-sender: macro@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -63,28 +49,31 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Paul Burton
-> Sent: 03 February 2016 12:03
-> Resets of the EG20T MAC on the MIPS Boston development board take longer
-> than the 1000 loops that pch_gbe_wait_clr_bit was performing. Bump up
-> the number of loops.
-...
-> diff --git a/drivers/net/ethernet/oki-semi/pch_gbe/pch_gbe_main.c b/drivers/net/ethernet/oki-
-> semi/pch_gbe/pch_gbe_main.c
-> index 00ef83c..87994d2 100644
-> --- a/drivers/net/ethernet/oki-semi/pch_gbe/pch_gbe_main.c
-> +++ b/drivers/net/ethernet/oki-semi/pch_gbe/pch_gbe_main.c
-> @@ -321,7 +321,7 @@ static void pch_gbe_wait_clr_bit(void *reg, u32 bit)
->  	u32 tmp;
+On Wed, 3 Feb 2016, Paul Burton wrote:
+
+> >  Hmm, this looks like a fatal error condition to me, the module won't 
+> > load.  Why `pr_warn' rather than `pr_err' then?  Likewise in the other 
+> > file.
 > 
->  	/* wait busy */
-> -	tmp = 1000;
-> +	tmp = 10000;
->  	while ((ioread32(reg) & bit) && --tmp)
->  		cpu_relax();
->  	if (!tmp)
+> To me fatality implies death, and nothing dies here. The module isn't
+> loaded but that's done gracefully & is not likely due to an error in the
+> kernel - it's far more likely that the module isn't valid. So to me,
+> warning seems appropriate rather than implying an error in the kernel.
 
-Why not sleep for (say) 100us ?
-That'll stop the loop depending on the cpu speed.
+ It may be bikeshedding, however these levels affect what goes to syslog 
+and the console.  There are `crit', `alert' and `emerg' levels above, to 
+raise more severe conditions.  As to `warn' I'd expect one on a succesful 
+action made with some limitations, e.g. a compatibility mode of some kind, 
+running with a performance limitation, some functionality disabled, etc.  
+There's also `notice', which is lower, I'd use for normal actions that 
+might require operator's attention, e.g. I'd put switching a network 
+interface into the promiscuous mode there, due to its side effect on 
+overall system performance.
 
-	David
+ And I don't think it has to be a bug in the kernel to raise an `err' 
+condition.  However I do agree the boundary here may be a bit fuzzy and 
+code you've been changing doesn't seem consistent either.
+
+ FWIW,
+
+  Maciej

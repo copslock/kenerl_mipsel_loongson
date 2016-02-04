@@ -1,13 +1,13 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Feb 2016 11:14:47 +0100 (CET)
-Received: from down.free-electrons.com ([37.187.137.238]:37797 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Feb 2016 11:15:04 +0100 (CET)
+Received: from down.free-electrons.com ([37.187.137.238]:37779 "EHLO
         mail.free-electrons.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27012552AbcBDKH6OrDkO (ORCPT
+        by eddie.linux-mips.org with ESMTP id S27012555AbcBDKH6lFJuO (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Thu, 4 Feb 2016 11:07:58 +0100
 Received: by mail.free-electrons.com (Postfix, from userid 110)
-        id 4F4E8474B; Thu,  4 Feb 2016 11:07:53 +0100 (CET)
+        id B22C44786; Thu,  4 Feb 2016 11:07:58 +0100 (CET)
 Received: from localhost.localdomain (AToulouse-657-1-20-139.w83-193.abo.wanadoo.fr [83.193.84.139])
-        by mail.free-electrons.com (Postfix) with ESMTPSA id 9FCDB4209;
-        Thu,  4 Feb 2016 11:07:34 +0100 (CET)
+        by mail.free-electrons.com (Postfix) with ESMTPSA id 1C4D14210;
+        Thu,  4 Feb 2016 11:07:36 +0100 (CET)
 From:   Boris Brezillon <boris.brezillon@free-electrons.com>
 To:     David Woodhouse <dwmw2@infradead.org>,
         Brian Norris <computersforpeace@gmail.com>,
@@ -31,9 +31,9 @@ Cc:     Daniel Mack <daniel@zonque.org>,
         punnaiah choudary kalluri <punnaia@xilinx.com>,
         Priit Laes <plaes@plaes.org>,
         Boris Brezillon <boris.brezillon@free-electrons.com>
-Subject: [PATCH v2 25/51] mtd: nand: atmel: switch to mtd_ooblayout_ops
-Date:   Thu,  4 Feb 2016 11:06:48 +0100
-Message-Id: <1454580434-32078-26-git-send-email-boris.brezillon@free-electrons.com>
+Subject: [PATCH v2 27/51] mtd: nand: brcm: switch to mtd_ooblayout_ops
+Date:   Thu,  4 Feb 2016 11:06:50 +0100
+Message-Id: <1454580434-32078-28-git-send-email-boris.brezillon@free-electrons.com>
 X-Mailer: git-send-email 2.1.4
 In-Reply-To: <1454580434-32078-1-git-send-email-boris.brezillon@free-electrons.com>
 References: <1454580434-32078-1-git-send-email-boris.brezillon@free-electrons.com>
@@ -41,7 +41,7 @@ Return-Path: <boris.brezillon@free-electrons.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51743
+X-archive-position: 51744
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -63,167 +63,307 @@ ECC/OOB layout to MTD users.
 
 Signed-off-by: Boris Brezillon <boris.brezillon@free-electrons.com>
 ---
- drivers/mtd/nand/atmel_nand.c | 84 ++++++++++++++++++++-----------------------
- 1 file changed, 38 insertions(+), 46 deletions(-)
+ drivers/mtd/nand/brcmnand/brcmnand.c | 258 +++++++++++++++++++++--------------
+ 1 file changed, 157 insertions(+), 101 deletions(-)
 
-diff --git a/drivers/mtd/nand/atmel_nand.c b/drivers/mtd/nand/atmel_nand.c
-index 9dde308..dddb219 100644
---- a/drivers/mtd/nand/atmel_nand.c
-+++ b/drivers/mtd/nand/atmel_nand.c
-@@ -67,30 +67,44 @@ struct atmel_nand_caps {
- 	bool pmecc_correct_erase_page;
- };
- 
--/* oob layout for large page size
-+/*
-+ * oob layout for large page size
-  * bad block info is on bytes 0 and 1
-  * the bytes have to be consecutives to avoid
-  * several NAND_CMD_RNDOUT during read
-- */
--static struct nand_ecclayout atmel_oobinfo_large = {
--	.eccbytes = 4,
--	.eccpos = {60, 61, 62, 63},
--	.oobfree = {
--		{2, 58}
--	},
--};
--
--/* oob layout for small page size
-+ *
-+ * oob layout for small page size
-  * bad block info is on bytes 4 and 5
-  * the bytes have to be consecutives to avoid
-  * several NAND_CMD_RNDOUT during read
-  */
--static struct nand_ecclayout atmel_oobinfo_small = {
--	.eccbytes = 4,
--	.eccpos = {0, 1, 2, 3},
--	.oobfree = {
--		{6, 10}
--	},
-+static int atmel_ooblayout_ecc_sp(struct mtd_info *mtd, int section,
-+				  struct mtd_oob_region *oobregion)
-+{
-+	if (section)
-+		return -ERANGE;
-+
-+	oobregion->length = 4;
-+	oobregion->offset = 0;
-+
-+	return 0;
-+}
-+
-+static int atmel_ooblayout_free_sp(struct mtd_info *mtd, int section,
-+				   struct mtd_oob_region *oobregion)
-+{
-+	if (section)
-+		return -ERANGE;
-+
-+	oobregion->offset = 6;
-+	oobregion->length = mtd->oobsize - oobregion->offset;
-+
-+	return 0;
-+}
-+
-+static const struct mtd_ooblayout_ops atmel_ooblayout_sp_ops = {
-+	.ecc = atmel_ooblayout_ecc_sp,
-+	.free = atmel_ooblayout_free_sp,
- };
- 
- struct atmel_nfc {
-@@ -156,8 +170,6 @@ struct atmel_nand_host {
- 	int			*pmecc_delta;
- };
- 
--static struct nand_ecclayout atmel_pmecc_oobinfo;
--
- /*
-  * Enable NAND.
-  */
-@@ -475,22 +487,6 @@ static int pmecc_get_ecc_bytes(int cap, int sector_size)
- 	return (m * cap + 7) / 8;
+diff --git a/drivers/mtd/nand/brcmnand/brcmnand.c b/drivers/mtd/nand/brcmnand/brcmnand.c
+index b86882b..169a095 100644
+--- a/drivers/mtd/nand/brcmnand/brcmnand.c
++++ b/drivers/mtd/nand/brcmnand/brcmnand.c
+@@ -749,127 +749,183 @@ static inline bool is_hamming_ecc(struct brcmnand_cfg *cfg)
  }
  
--static void pmecc_config_ecc_layout(struct nand_ecclayout *layout,
--				    int oobsize, int ecc_len)
--{
--	int i;
--
--	layout->eccbytes = ecc_len;
--
--	/* ECC will occupy the last ecc_len bytes continuously */
--	for (i = 0; i < ecc_len; i++)
--		layout->eccpos[i] = oobsize - ecc_len + i;
--
--	layout->oobfree[0].offset = PMECC_OOB_RESERVED_BYTES;
--	layout->oobfree[0].length =
--		oobsize - ecc_len - layout->oobfree[0].offset;
--}
--
- static void __iomem *pmecc_get_alpha_to(struct atmel_nand_host *host)
+ /*
+- * Returns a nand_ecclayout strucutre for the given layout/configuration.
+- * Returns NULL on failure.
++ * Set mtd->ooblayout to the appropriate mtd_ooblayout_ops given
++ * the layout/configuration.
++ * Returns -ERRCODE on failure.
+  */
+-static struct nand_ecclayout *brcmnand_create_layout(int ecc_level,
+-						     struct brcmnand_host *host)
++static int brcmnand_hamming_ooblayout_ecc(struct mtd_info *mtd, int section,
++					  struct mtd_oob_region *oobregion)
  {
- 	int table_size;
-@@ -1002,8 +998,8 @@ static void atmel_pmecc_core_init(struct mtd_info *mtd)
- {
- 	struct nand_chip *nand_chip = mtd_to_nand(mtd);
- 	struct atmel_nand_host *host = nand_get_controller_data(nand_chip);
-+	int eccbytes = mtd_ooblayout_count_eccbytes(mtd);
- 	uint32_t val = 0;
--	struct nand_ecclayout *ecc_layout;
- 	struct mtd_oob_region oobregion;
++	struct nand_chip *chip = mtd_to_nand(mtd);
++	struct brcmnand_host *host = nand_get_controller_data(chip);
+ 	struct brcmnand_cfg *cfg = &host->hwcfg;
+-	int i, j;
+-	struct nand_ecclayout *layout;
+-	int req;
+-	int sectors;
+-	int sas;
+-	int idx1, idx2;
+-
+-	layout = devm_kzalloc(&host->pdev->dev, sizeof(*layout), GFP_KERNEL);
+-	if (!layout)
+-		return NULL;
+-
+-	sectors = cfg->page_size / (512 << cfg->sector_size_1k);
+-	sas = cfg->spare_area_size << cfg->sector_size_1k;
+-
+-	/* Hamming */
+-	if (is_hamming_ecc(cfg)) {
+-		for (i = 0, idx1 = 0, idx2 = 0; i < sectors; i++) {
+-			/* First sector of each page may have BBI */
+-			if (i == 0) {
+-				layout->oobfree[idx2].offset = i * sas + 1;
+-				/* Small-page NAND use byte 6 for BBI */
+-				if (cfg->page_size == 512)
+-					layout->oobfree[idx2].offset--;
+-				layout->oobfree[idx2].length = 5;
+-			} else {
+-				layout->oobfree[idx2].offset = i * sas;
+-				layout->oobfree[idx2].length = 6;
+-			}
+-			idx2++;
+-			layout->eccpos[idx1++] = i * sas + 6;
+-			layout->eccpos[idx1++] = i * sas + 7;
+-			layout->eccpos[idx1++] = i * sas + 8;
+-			layout->oobfree[idx2].offset = i * sas + 9;
+-			layout->oobfree[idx2].length = 7;
+-			idx2++;
+-			/* Leave zero-terminated entry for OOBFREE */
+-			if (idx1 >= MTD_MAX_ECCPOS_ENTRIES_LARGE ||
+-				    idx2 >= MTD_MAX_OOBFREE_ENTRIES_LARGE - 1)
+-				break;
+-		}
++	int sas = cfg->spare_area_size << cfg->sector_size_1k;
++	int sectors = cfg->page_size / (512 << cfg->sector_size_1k);
  
- 	pmecc_writel(host->ecc, CTRL, PMECC_CTRL_RST);
-@@ -1051,12 +1047,11 @@ static void atmel_pmecc_core_init(struct mtd_info *mtd)
- 		| PMECC_CFG_AUTO_DISABLE);
- 	pmecc_writel(host->ecc, CFG, val);
+-		return layout;
+-	}
++	if (section >= sectors)
++		return -ERANGE;
  
--	ecc_layout = nand_chip->ecc.layout;
- 	pmecc_writel(host->ecc, SAREA, mtd->oobsize - 1);
- 	mtd_ooblayout_ecc(mtd, 0, &oobregion);
- 	pmecc_writel(host->ecc, SADDR, oobregion.offset);
- 	pmecc_writel(host->ecc, EADDR,
--		     oobregion.offset + ecc_layout->eccbytes - 1);
-+		     oobregion.offset + eccbytes - 1);
- 	/* See datasheet about PMECC Clock Control Register */
- 	pmecc_writel(host->ecc, CLK, 2);
- 	pmecc_writel(host->ecc, IDR, 0xff);
-@@ -1271,11 +1266,8 @@ static int atmel_pmecc_nand_init_params(struct platform_device *pdev,
- 			err_no = -EINVAL;
- 			goto err;
+-	/*
+-	 * CONTROLLER_VERSION:
+-	 *   < v5.0: ECC_REQ = ceil(BCH_T * 13/8)
+-	 *  >= v5.0: ECC_REQ = ceil(BCH_T * 14/8)
+-	 * But we will just be conservative.
+-	 */
+-	req = DIV_ROUND_UP(ecc_level * 14, 8);
+-	if (req >= sas) {
+-		dev_err(&host->pdev->dev,
+-			"error: ECC too large for OOB (ECC bytes %d, spare sector %d)\n",
+-			req, sas);
+-		return NULL;
+-	}
++	oobregion->offset = (section * sas) + 6;
++	oobregion->length = 3;
++
++	return 0;
++}
++
++static int brcmnand_hamming_ooblayout_free(struct mtd_info *mtd, int section,
++					   struct mtd_oob_region *oobregion)
++{
++	struct nand_chip *chip = mtd_to_nand(mtd);
++	struct brcmnand_host *host = nand_get_controller_data(chip);
++	struct brcmnand_cfg *cfg = &host->hwcfg;
++	int sas = cfg->spare_area_size << cfg->sector_size_1k;
++	int sectors = cfg->page_size / (512 << cfg->sector_size_1k);
++
++	if (section >= sectors * 2)
++		return -ERANGE;
+ 
+-	layout->eccbytes = req * sectors;
+-	for (i = 0, idx1 = 0, idx2 = 0; i < sectors; i++) {
+-		for (j = sas - req; j < sas && idx1 <
+-				MTD_MAX_ECCPOS_ENTRIES_LARGE; j++, idx1++)
+-			layout->eccpos[idx1] = i * sas + j;
++	oobregion->offset = (section / 2) * sas;
++
++	if (section & 1) {
++		oobregion->offset += 9;
++		oobregion->length = 7;
++	} else {
++		oobregion->length = 6;
+ 
+ 		/* First sector of each page may have BBI */
+-		if (i == 0) {
+-			if (cfg->page_size == 512 && (sas - req >= 6)) {
+-				/* Small-page NAND use byte 6 for BBI */
+-				layout->oobfree[idx2].offset = 0;
+-				layout->oobfree[idx2].length = 5;
+-				idx2++;
+-				if (sas - req > 6) {
+-					layout->oobfree[idx2].offset = 6;
+-					layout->oobfree[idx2].length =
+-						sas - req - 6;
+-					idx2++;
+-				}
+-			} else if (sas > req + 1) {
+-				layout->oobfree[idx2].offset = i * sas + 1;
+-				layout->oobfree[idx2].length = sas - req - 1;
+-				idx2++;
+-			}
+-		} else if (sas > req) {
+-			layout->oobfree[idx2].offset = i * sas;
+-			layout->oobfree[idx2].length = sas - req;
+-			idx2++;
++		if (!section) {
++			/*
++			 * Small-page NAND use byte 6 for BBI while large-page
++			 * NAND use byte 0.
++			 */
++			if (cfg->page_size > 512)
++				oobregion->offset++;
++			oobregion->length--;
  		}
--		pmecc_config_ecc_layout(&atmel_pmecc_oobinfo,
--					mtd->oobsize,
--					nand_chip->ecc.total);
+-		/* Leave zero-terminated entry for OOBFREE */
+-		if (idx1 >= MTD_MAX_ECCPOS_ENTRIES_LARGE ||
+-				idx2 >= MTD_MAX_OOBFREE_ENTRIES_LARGE - 1)
+-			break;
+ 	}
  
--		nand_chip->ecc.layout = &atmel_pmecc_oobinfo;
-+		mtd_set_ooblayout(mtd, &nand_ooblayout_lp_ops);
- 		break;
- 	default:
- 		dev_warn(host->dev,
-@@ -1617,19 +1609,19 @@ static int atmel_hw_nand_init_params(struct platform_device *pdev,
- 	/* set ECC page size and oob layout */
- 	switch (mtd->writesize) {
- 	case 512:
--		nand_chip->ecc.layout = &atmel_oobinfo_small;
-+		mtd_set_ooblayout(mtd, &atmel_ooblayout_sp_ops);
- 		ecc_writel(host->ecc, MR, ATMEL_ECC_PAGESIZE_528);
- 		break;
- 	case 1024:
--		nand_chip->ecc.layout = &atmel_oobinfo_large;
-+		mtd_set_ooblayout(mtd, &nand_ooblayout_lp_ops);
- 		ecc_writel(host->ecc, MR, ATMEL_ECC_PAGESIZE_1056);
- 		break;
- 	case 2048:
--		nand_chip->ecc.layout = &atmel_oobinfo_large;
-+		mtd_set_ooblayout(mtd, &nand_ooblayout_lp_ops);
- 		ecc_writel(host->ecc, MR, ATMEL_ECC_PAGESIZE_2112);
- 		break;
- 	case 4096:
--		nand_chip->ecc.layout = &atmel_oobinfo_large;
-+		mtd_set_ooblayout(mtd, &nand_ooblayout_lp_ops);
- 		ecc_writel(host->ecc, MR, ATMEL_ECC_PAGESIZE_4224);
- 		break;
- 	default:
+-	return layout;
++	return 0;
++}
++
++static const struct mtd_ooblayout_ops brcmnand_hamming_ooblayout_ops = {
++	.ecc = brcmnand_hamming_ooblayout_ecc,
++	.free = brcmnand_hamming_ooblayout_free,
++};
++
++static int brcmnand_bch_ooblayout_ecc(struct mtd_info *mtd, int section,
++				      struct mtd_oob_region *oobregion)
++{
++	struct nand_chip *chip = mtd_to_nand(mtd);
++	struct brcmnand_host *host = nand_get_controller_data(chip);
++	struct brcmnand_cfg *cfg = &host->hwcfg;
++	int sas = cfg->spare_area_size << cfg->sector_size_1k;
++	int sectors = cfg->page_size / (512 << cfg->sector_size_1k);
++
++	if (section >= sectors)
++		return -ERANGE;
++
++	oobregion->offset = (section * (sas + 1)) - chip->ecc.bytes;
++	oobregion->length = chip->ecc.bytes;
++
++	return 0;
+ }
+ 
+-static struct nand_ecclayout *brcmstb_choose_ecc_layout(
+-		struct brcmnand_host *host)
++static int brcmnand_bch_ooblayout_free_lp(struct mtd_info *mtd, int section,
++					  struct mtd_oob_region *oobregion)
++{
++	struct nand_chip *chip = mtd_to_nand(mtd);
++	struct brcmnand_host *host = nand_get_controller_data(chip);
++	struct brcmnand_cfg *cfg = &host->hwcfg;
++	int sas = cfg->spare_area_size << cfg->sector_size_1k;
++	int sectors = cfg->page_size / (512 << cfg->sector_size_1k);
++
++	if (section >= sectors)
++		return -ERANGE;
++
++	if (sas <= chip->ecc.bytes)
++		return 0;
++
++	oobregion->offset = section * sas;
++	oobregion->length = sas - chip->ecc.bytes;
++
++	if (!section) {
++		oobregion->offset++;
++		oobregion->length--;
++	}
++
++	return 0;
++}
++
++static int brcmnand_bch_ooblayout_free_sp(struct mtd_info *mtd, int section,
++					  struct mtd_oob_region *oobregion)
++{
++	struct nand_chip *chip = mtd_to_nand(mtd);
++	struct brcmnand_host *host = nand_get_controller_data(chip);
++	struct brcmnand_cfg *cfg = &host->hwcfg;
++	int sas = cfg->spare_area_size << cfg->sector_size_1k;
++
++	if (section > 1 || sas - chip->ecc.bytes < 6 ||
++	    (section && sas - chip->ecc.bytes == 6))
++		return -ERANGE;
++
++	if (!section) {
++		oobregion->offset = 0;
++		oobregion->length = 5;
++	} else {
++		oobregion->offset = 6;
++		oobregion->length = sas - chip->ecc.bytes - 6;
++	}
++
++	return 0;
++}
++
++static const struct mtd_ooblayout_ops brcmnand_bch_lp_ooblayout_ops = {
++	.ecc = brcmnand_bch_ooblayout_ecc,
++	.free = brcmnand_bch_ooblayout_free_lp,
++};
++
++static const struct mtd_ooblayout_ops brcmnand_bch_sp_ooblayout_ops = {
++	.ecc = brcmnand_bch_ooblayout_ecc,
++	.free = brcmnand_bch_ooblayout_free_sp,
++};
++
++static int brcmstb_choose_ecc_layout(struct brcmnand_host *host)
+ {
+-	struct nand_ecclayout *layout;
+ 	struct brcmnand_cfg *p = &host->hwcfg;
++	struct mtd_info *mtd = nand_to_mtd(&host->chip);
++	struct nand_ecc_ctrl *ecc = &host->chip.ecc;
+ 	unsigned int ecc_level = p->ecc_level;
++	int sas = p->spare_area_size << p->sector_size_1k;
++	int sectors = p->page_size / (512 << p->sector_size_1k);
+ 
+ 	if (p->sector_size_1k)
+ 		ecc_level <<= 1;
+ 
+-	layout = brcmnand_create_layout(ecc_level, host);
+-	if (!layout) {
++	if (is_hamming_ecc(p)) {
++		ecc->bytes = 3 * sectors;
++		mtd_set_ooblayout(mtd, &brcmnand_hamming_ooblayout_ops);
++		return 0;
++	}
++
++	/*
++	 * CONTROLLER_VERSION:
++	 *   < v5.0: ECC_REQ = ceil(BCH_T * 13/8)
++	 *  >= v5.0: ECC_REQ = ceil(BCH_T * 14/8)
++	 * But we will just be conservative.
++	 */
++	ecc->bytes = DIV_ROUND_UP(ecc_level * 14, 8);
++	if (p->page_size == 512)
++		mtd_set_ooblayout(mtd, &brcmnand_bch_sp_ooblayout_ops);
++	else
++		mtd_set_ooblayout(mtd, &brcmnand_bch_lp_ooblayout_ops);
++
++	if (ecc->bytes >= sas) {
+ 		dev_err(&host->pdev->dev,
+-				"no proper ecc_layout for this NAND cfg\n");
+-		return NULL;
++			"error: ECC too large for OOB (ECC bytes %d, spare sector %d)\n",
++			ecc->bytes, sas);
++		return -EINVAL;
+ 	}
+ 
+-	return layout;
++	return 0;
+ }
+ 
+ static void brcmnand_wp(struct mtd_info *mtd, int wp)
+@@ -1979,9 +2035,9 @@ static int brcmnand_init_cs(struct brcmnand_host *host, struct device_node *dn)
+ 	/* only use our internal HW threshold */
+ 	mtd->bitflip_threshold = 1;
+ 
+-	chip->ecc.layout = brcmstb_choose_ecc_layout(host);
+-	if (!chip->ecc.layout)
+-		return -ENXIO;
++	ret = brcmstb_choose_ecc_layout(host);
++	if (ret)
++		return ret;
+ 
+ 	if (nand_scan_tail(mtd))
+ 		return -ENXIO;
 -- 
 2.1.4

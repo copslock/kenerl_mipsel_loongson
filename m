@@ -1,48 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Feb 2016 17:10:40 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:5896 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Feb 2016 17:11:03 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:54360 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27012696AbcBDQKigyC08 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 4 Feb 2016 17:10:38 +0100
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Websense Email Security Gateway with ESMTPS id 8909365434A23;
-        Thu,  4 Feb 2016 16:10:29 +0000 (GMT)
+        with ESMTP id S27012604AbcBDQK7r3D28 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 4 Feb 2016 17:10:59 +0100
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Websense Email Security Gateway with ESMTPS id 12C9415F2D2F8;
+        Thu,  4 Feb 2016 16:10:49 +0000 (GMT)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
- 14.3.266.1; Thu, 4 Feb 2016 16:10:32 +0000
+ HHMAIL01.hh.imgtec.org (10.100.10.19) with Microsoft SMTP Server (TLS) id
+ 14.3.266.1; Thu, 4 Feb 2016 16:10:52 +0000
 Received: from localhost (10.100.200.26) by LEMAIL01.le.imgtec.org
  (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Thu, 4 Feb
- 2016 16:10:29 +0000
+ 2016 16:10:48 +0000
 From:   Paul Burton <paul.burton@imgtec.com>
 To:     <linux-mips@linux-mips.org>
 CC:     Bharat Kumar Gogada <bharatku@xilinx.com>,
         Michal Simek <michal.simek@xilinx.com>,
         Ravikiran Gummaluri <rgummal@xilinx.com>,
         "Paul Burton" <paul.burton@imgtec.com>,
-        Ley Foon Tan <lftan@altera.com>,
-        "Arnd Bergmann" <arnd@arndb.de>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
+        =?UTF-8?q?S=C3=B6ren=20Brinkmann?= <soren.brinkmann@xilinx.com>,
+        Jiang Liu <jiang.liu@linux.intel.com>,
+        "Lorenzo Pieralisi" <lorenzo.pieralisi@arm.com>,
         Russell Joyce <russell.joyce@york.ac.uk>,
         Bjorn Helgaas <bhelgaas@google.com>,
-        <linux-pci@vger.kernel.org>, Jingoo Han <jingoohan1@gmail.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Ray Jui <rjui@broadcom.com>,
-        =?UTF-8?q?S=C3=B6ren=20Brinkmann?= <soren.brinkmann@xilinx.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        "Thomas Gleixner" <tglx@linutronix.de>,
-        Phil Edworthy <phil.edworthy@renesas.com>,
-        Hauke Mehrtens <hauke@hauke-m.de>,
-        Jiang Liu <jiang.liu@linux.intel.com>,
-        "Rob Herring" <robh@kernel.org>, Duc Dang <dhdang@apm.com>,
-        Gabriele Paoloni <gabriele.paoloni@huawei.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        <linux-pci@vger.kernel.org>, Rob Herring <robh@kernel.org>,
         <linux-kernel@vger.kernel.org>,
-        Stanimir Varbanov <svarbanov@mm-sol.com>,
-        Marc Zyngier <marc.zyngier@arm.com>
-Subject: [PATCH v3 0/6] Xilinx AXI PCIe Host Bridge driver fixes
-Date:   Thu, 4 Feb 2016 16:10:07 +0000
-Message-ID: <1454602213-967-1-git-send-email-paul.burton@imgtec.com>
+        Thomas Gleixner <tglx@linutronix.de>,
+        "Jingoo Han" <jingoohan1@gmail.com>,
+        <linux-arm-kernel@lists.infradead.org>
+Subject: [PATCH v3 1/6] PCI: xilinx: Keep references to both IRQ domains
+Date:   Thu, 4 Feb 2016 16:10:08 +0000
+Message-ID: <1454602213-967-2-git-send-email-paul.burton@imgtec.com>
 X-Mailer: git-send-email 2.7.0
+In-Reply-To: <1454602213-967-1-git-send-email-paul.burton@imgtec.com>
+References: <1454602213-967-1-git-send-email-paul.burton@imgtec.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [10.100.200.26]
@@ -50,7 +41,7 @@ Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51779
+X-archive-position: 51780
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -67,24 +58,141 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This series fixes a number of issues found using the Xilinx AXI PCIe
-Host Bridge IP on the Imagination Technologies MIPS Boston development
-board. It has been split out of the larger Boston board support series
-at Michal's request.
+pcie-xilinx creates 2 IRQ domains when built with MSI support: one for
+MSI interrupts & one for legacy INTx interrupts. However, it only kept a
+reference to the MSI IRQ domain. This means that any INTx interrupts
+that may occur would be mapped using the wrong domain, and that only the
+MSI IRQ domain would be removed along with the driver. Track both IRQ
+domains & clean up both as appropriate.
 
-Applies atop v4.5-rc2.
+Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+Fixes: 8961def56845 ("PCI: xilinx: Add Xilinx AXI PCIe Host Bridge IP driver")
 
-Paul Burton (6):
-  PCI: xilinx: Keep references to both IRQ domains
-  PCI: xilinx: Unify INTx & MSI interrupt FIFO decode
-  PCI: xilinx: Always clear interrupt decode register
-  PCI: xilinx: Clear interrupt FIFO during probe
-  PCI: xilinx: Fix INTX irq dispatch
-  PCI: xilinx: Allow build on MIPS platforms
+---
 
- drivers/pci/host/Kconfig       |   2 +-
- drivers/pci/host/pcie-xilinx.c | 125 +++++++++++++++++++----------------------
- 2 files changed, 60 insertions(+), 67 deletions(-)
+Changes in v3:
+- Split out from Boston patchset.
 
+Changes in v2:
+- Add Fixes tag.
+
+ drivers/pci/host/pcie-xilinx.c | 58 ++++++++++++++++++++----------------------
+ 1 file changed, 28 insertions(+), 30 deletions(-)
+
+diff --git a/drivers/pci/host/pcie-xilinx.c b/drivers/pci/host/pcie-xilinx.c
+index 4cfa463..1490bd1 100644
+--- a/drivers/pci/host/pcie-xilinx.c
++++ b/drivers/pci/host/pcie-xilinx.c
+@@ -105,6 +105,7 @@
+  * @root_busno: Root Bus number
+  * @dev: Device pointer
+  * @irq_domain: IRQ domain pointer
++ * @msi_irq_domain: MSI IRQ domain pointer
+  * @bus_range: Bus range
+  * @resources: Bus Resources
+  */
+@@ -115,6 +116,7 @@ struct xilinx_pcie_port {
+ 	u8 root_busno;
+ 	struct device *dev;
+ 	struct irq_domain *irq_domain;
++	struct irq_domain *msi_irq_domain;
+ 	struct resource bus_range;
+ 	struct list_head resources;
+ };
+@@ -291,7 +293,7 @@ static int xilinx_pcie_msi_setup_irq(struct msi_controller *chip,
+ 	if (hwirq < 0)
+ 		return hwirq;
+ 
+-	irq = irq_create_mapping(port->irq_domain, hwirq);
++	irq = irq_create_mapping(port->msi_irq_domain, hwirq);
+ 	if (!irq)
+ 		return -EINVAL;
+ 
+@@ -517,31 +519,21 @@ static irqreturn_t xilinx_pcie_intr_handler(int irq, void *data)
+ 
+ /**
+  * xilinx_pcie_free_irq_domain - Free IRQ domain
+- * @port: PCIe port information
++ * @domain: the IRQ domain to free
++ * @nr: the number of IRQs in the domain
+  */
+-static void xilinx_pcie_free_irq_domain(struct xilinx_pcie_port *port)
++static void xilinx_pcie_free_irq_domain(struct irq_domain *domain, int nr)
+ {
+ 	int i;
+-	u32 irq, num_irqs;
+-
+-	/* Free IRQ Domain */
+-	if (IS_ENABLED(CONFIG_PCI_MSI)) {
+-
+-		free_pages(port->msi_pages, 0);
+-
+-		num_irqs = XILINX_NUM_MSI_IRQS;
+-	} else {
+-		/* INTx */
+-		num_irqs = 4;
+-	}
++	u32 irq;
+ 
+-	for (i = 0; i < num_irqs; i++) {
+-		irq = irq_find_mapping(port->irq_domain, i);
++	for (i = 0; i < nr; i++) {
++		irq = irq_find_mapping(domain, i);
+ 		if (irq > 0)
+ 			irq_dispose_mapping(irq);
+ 	}
+ 
+-	irq_domain_remove(port->irq_domain);
++	irq_domain_remove(domain);
+ }
+ 
+ /**
+@@ -571,20 +563,20 @@ static int xilinx_pcie_init_irq_domain(struct xilinx_pcie_port *port)
+ 		return PTR_ERR(port->irq_domain);
+ 	}
+ 
+-	/* Setup MSI */
+-	if (IS_ENABLED(CONFIG_PCI_MSI)) {
+-		port->irq_domain = irq_domain_add_linear(node,
+-							 XILINX_NUM_MSI_IRQS,
+-							 &msi_domain_ops,
+-							 &xilinx_pcie_msi_chip);
+-		if (!port->irq_domain) {
+-			dev_err(dev, "Failed to get a MSI IRQ domain\n");
+-			return PTR_ERR(port->irq_domain);
+-		}
++	if (!IS_ENABLED(CONFIG_PCI_MSI))
++		return 0;
+ 
+-		xilinx_pcie_enable_msi(port);
++	/* Setup MSI */
++	port->msi_irq_domain = irq_domain_add_linear(node,
++						     XILINX_NUM_MSI_IRQS,
++						     &msi_domain_ops,
++						     &xilinx_pcie_msi_chip);
++	if (!port->msi_irq_domain) {
++		dev_err(dev, "Failed to get a MSI IRQ domain\n");
++		return PTR_ERR(port->msi_irq_domain);
+ 	}
+ 
++	xilinx_pcie_enable_msi(port);
+ 	return 0;
+ }
+ 
+@@ -869,7 +861,13 @@ static int xilinx_pcie_remove(struct platform_device *pdev)
+ {
+ 	struct xilinx_pcie_port *port = platform_get_drvdata(pdev);
+ 
+-	xilinx_pcie_free_irq_domain(port);
++	xilinx_pcie_free_irq_domain(port->irq_domain, 4);
++
++	if (config_enabled(CONFIG_MSI)) {
++		free_pages(port->msi_pages, 0);
++		xilinx_pcie_free_irq_domain(port->msi_irq_domain,
++					    XILINX_NUM_MSI_IRQS);
++	}
+ 
+ 	return 0;
+ }
 -- 
 2.7.0

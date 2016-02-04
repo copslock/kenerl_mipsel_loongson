@@ -1,40 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Feb 2016 17:41:05 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:29580 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27012696AbcBDQlDzHfmh (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 4 Feb 2016 17:41:03 +0100
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Websense Email Security Gateway with ESMTPS id C68F891751F4E;
-        Thu,  4 Feb 2016 16:40:54 +0000 (GMT)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- HHMAIL01.hh.imgtec.org (10.100.10.19) with Microsoft SMTP Server (TLS) id
- 14.3.266.1; Thu, 4 Feb 2016 16:40:58 +0000
-Received: from localhost (10.100.200.26) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Thu, 4 Feb
- 2016 16:40:57 +0000
-From:   Paul Burton <paul.burton@imgtec.com>
-To:     <linux-mips@linux-mips.org>
-CC:     Paul Burton <paul.burton@imgtec.com>,
-        <linux-kernel@vger.kernel.org>,
-        James Hogan <james.hogan@imgtec.com>,
-        Markos Chandras <markos.chandras@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH v2] MIPS: Stop using dla in 32 bit kernels
-Date:   Thu, 4 Feb 2016 16:40:37 +0000
-Message-ID: <1454604037-17054-1-git-send-email-paul.burton@imgtec.com>
-X-Mailer: git-send-email 2.7.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Feb 2016 18:46:57 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.136]:58132 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27012801AbcBDRqz2zOft (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 4 Feb 2016 18:46:55 +0100
+Received: from mail.kernel.org (localhost [127.0.0.1])
+        by mail.kernel.org (Postfix) with ESMTP id E9068203A0
+        for <linux-mips@linux-mips.org>; Thu,  4 Feb 2016 17:46:50 +0000 (UTC)
+Received: from mail-yw0-f169.google.com (mail-yw0-f169.google.com [209.85.161.169])
+        (using TLSv1.2 with cipher AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 48934203AC
+        for <linux-mips@linux-mips.org>; Thu,  4 Feb 2016 17:46:48 +0000 (UTC)
+Received: by mail-yw0-f169.google.com with SMTP id h129so31254895ywb.1
+        for <linux-mips@linux-mips.org>; Thu, 04 Feb 2016 09:46:48 -0800 (PST)
+X-Gm-Message-State: AG10YOTUJzd8o5YGc4p36q5kafBDjhXoMzu2IjjVWnErtzPQf4xJm/F6HIHRFe8S4yn7icR0+VDznNiRwjy/8A==
+X-Received: by 10.129.35.6 with SMTP id j6mr4800858ywj.133.1454608007409; Thu,
+ 04 Feb 2016 09:46:47 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.100.200.26]
-Return-Path: <Paul.Burton@imgtec.com>
+Received: by 10.129.153.19 with HTTP; Thu, 4 Feb 2016 09:46:28 -0800 (PST)
+In-Reply-To: <1454602213-967-7-git-send-email-paul.burton@imgtec.com>
+References: <1454602213-967-1-git-send-email-paul.burton@imgtec.com> <1454602213-967-7-git-send-email-paul.burton@imgtec.com>
+From:   Rob Herring <robh@kernel.org>
+Date:   Thu, 4 Feb 2016 11:46:28 -0600
+X-Gmail-Original-Message-ID: <CAL_JsqLRMiJ-0j_PrXSKqf6MrRfyqbDGaiaiEn4rAoFaCNgtKQ@mail.gmail.com>
+Message-ID: <CAL_JsqLRMiJ-0j_PrXSKqf6MrRfyqbDGaiaiEn4rAoFaCNgtKQ@mail.gmail.com>
+Subject: Re: [PATCH v3 6/6] PCI: xilinx: Allow build on MIPS platforms
+To:     Paul Burton <paul.burton@imgtec.com>
+Cc:     Linux-MIPS <linux-mips@linux-mips.org>,
+        Bharat Kumar Gogada <bharatku@xilinx.com>,
+        Michal Simek <michal.simek@xilinx.com>,
+        Ravikiran Gummaluri <rgummal@xilinx.com>,
+        Ley Foon Tan <lftan@altera.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Phil Edworthy <phil.edworthy@renesas.com>,
+        Scott Branden <sbranden@broadcom.com>,
+        Stanimir Varbanov <svarbanov@mm-sol.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Duc Dang <dhdang@apm.com>,
+        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+        Gabriele Paoloni <gabriele.paoloni@huawei.com>,
+        Marc Zyngier <marc.zyngier@arm.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Ray Jui <rjui@broadcom.com>, Hauke Mehrtens <hauke@hauke-m.de>
+Content-Type: text/plain; charset=UTF-8
+X-Virus-Scanned: ClamAV using ClamSMTP
+Return-Path: <robh@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51788
+X-archive-position: 51789
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@imgtec.com
+X-original-sender: robh@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,59 +66,33 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The instruction_hazard macro made use of the dla pseudo-instruction even
-for 32 bit kernels. Although it surrounded that use with ".set mips64rX"
-that isn't sufficient to avoid warnings for MIPSr6 CONFIG_32BIT=y
-kernels. For example this can be reproduced using maltasmvp_defconfig &
-changing only the CPU type to 64r6 (CONFIG_CPU_MIPS64_R6):
+On Thu, Feb 4, 2016 at 10:10 AM, Paul Burton <paul.burton@imgtec.com> wrote:
+> Allow the xilinx-pcie driver to be built on MIPS platforms. This will be
+> used on the MIPS Boston board.
+>
+> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+>
+> ---
+>
+> Changes in v3:
+> - Split out from Boston patchset.
+>
+> Changes in v2: None
+>
+>  drivers/pci/host/Kconfig | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/pci/host/Kconfig b/drivers/pci/host/Kconfig
+> index 75a6054..0aee193 100644
+> --- a/drivers/pci/host/Kconfig
+> +++ b/drivers/pci/host/Kconfig
+> @@ -81,7 +81,7 @@ config PCI_KEYSTONE
+>
+>  config PCIE_XILINX
+>         bool "Xilinx AXI PCIe host bridge support"
+> -       depends on ARCH_ZYNQ
+> +       depends on ARCH_ZYNQ || MIPS
 
-      CC      arch/mips/mm/c-r4k.o
-    {standard input}: Assembler messages:
-    {standard input}:4105: Warning: dla used to load 32-bit register;
-        recommend using la instead
-    {standard input}:4129: Warning: dla used to load 32-bit register;
-        recommend using la instead
+Why don't you just remove the dependency? Then it gets better build coverage.
 
-Avoid this by instead making use of the PTR_LA macro which defines the
-appropriate variant of the "la" instruction to use. The .set <isa>
-directive is then no longer needed for the la pseudo-instruction, but
-needs to remain around the jr.hb for pre-MIPSr2 kernels.
-
-Tested with Codescape GNU Tools 2015.06-05 for MIPS IMG Linux, which
-includes binutils 2.24.90 & gcc 4.9.2.
-
-Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-
----
-
-Changes in v2:
-- Leave .set <isa> around jr.hb.
-- Describe how to reproduce in the commit message.
-
- arch/mips/include/asm/hazards.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/arch/mips/include/asm/hazards.h b/arch/mips/include/asm/hazards.h
-index 7b99efd..835c770 100644
---- a/arch/mips/include/asm/hazards.h
-+++ b/arch/mips/include/asm/hazards.h
-@@ -11,6 +11,7 @@
- #define _ASM_HAZARDS_H
- 
- #include <linux/stringify.h>
-+#include <asm/asm.h>
- #include <asm/compiler.h>
- 
- #define ___ssnop							\
-@@ -65,8 +66,8 @@ do {									\
- 	unsigned long tmp;						\
- 									\
- 	__asm__ __volatile__(						\
-+	"	" __stringify(PTR_LA) "	%0, 1f			\n"	\
- 	"	.set "MIPS_ISA_LEVEL"				\n"	\
--	"	dla	%0, 1f					\n"	\
- 	"	jr.hb	%0					\n"	\
- 	"	.set	mips0					\n"	\
- 	"1:							\n"	\
--- 
-2.7.0
+Rob

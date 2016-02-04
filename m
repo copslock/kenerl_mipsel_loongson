@@ -1,13 +1,13 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Feb 2016 11:13:14 +0100 (CET)
-Received: from down.free-electrons.com ([37.187.137.238]:37687 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Feb 2016 11:13:31 +0100 (CET)
+Received: from down.free-electrons.com ([37.187.137.238]:37726 "EHLO
         mail.free-electrons.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27012502AbcBDKHt6qT0O (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 4 Feb 2016 11:07:49 +0100
+        by eddie.linux-mips.org with ESMTP id S27011688AbcBDKHwNuBYO (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 4 Feb 2016 11:07:52 +0100
 Received: by mail.free-electrons.com (Postfix, from userid 110)
-        id C8F9444AB; Thu,  4 Feb 2016 11:07:44 +0100 (CET)
+        id 5BF711F24; Thu,  4 Feb 2016 11:07:46 +0100 (CET)
 Received: from localhost.localdomain (AToulouse-657-1-20-139.w83-193.abo.wanadoo.fr [83.193.84.139])
-        by mail.free-electrons.com (Postfix) with ESMTPSA id C075188E;
-        Thu,  4 Feb 2016 11:07:30 +0100 (CET)
+        by mail.free-electrons.com (Postfix) with ESMTPSA id 5FE972204;
+        Thu,  4 Feb 2016 11:07:32 +0100 (CET)
 From:   Boris Brezillon <boris.brezillon@free-electrons.com>
 To:     David Woodhouse <dwmw2@infradead.org>,
         Brian Norris <computersforpeace@gmail.com>,
@@ -31,9 +31,9 @@ Cc:     Daniel Mack <daniel@zonque.org>,
         punnaiah choudary kalluri <punnaia@xilinx.com>,
         Priit Laes <plaes@plaes.org>,
         Boris Brezillon <boris.brezillon@free-electrons.com>
-Subject: [PATCH v2 20/51] mtd: docg3: switch to mtd_ooblayout_ops
-Date:   Thu,  4 Feb 2016 11:06:43 +0100
-Message-Id: <1454580434-32078-21-git-send-email-boris.brezillon@free-electrons.com>
+Subject: [PATCH v2 22/51] mtd: nand: bch: switch to mtd_ooblayout_ops
+Date:   Thu,  4 Feb 2016 11:06:45 +0100
+Message-Id: <1454580434-32078-23-git-send-email-boris.brezillon@free-electrons.com>
 X-Mailer: git-send-email 2.1.4
 In-Reply-To: <1454580434-32078-1-git-send-email-boris.brezillon@free-electrons.com>
 References: <1454580434-32078-1-git-send-email-boris.brezillon@free-electrons.com>
@@ -41,7 +41,7 @@ Return-Path: <boris.brezillon@free-electrons.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51738
+X-archive-position: 51739
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -63,64 +63,79 @@ definition.
 
 Signed-off-by: Boris Brezillon <boris.brezillon@free-electrons.com>
 ---
- drivers/mtd/devices/docg3.c | 38 +++++++++++++++++++++++++++++++++-----
- 1 file changed, 33 insertions(+), 5 deletions(-)
+ drivers/mtd/nand/nand_bch.c | 33 +++++++++++----------------------
+ 1 file changed, 11 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/mtd/devices/docg3.c b/drivers/mtd/devices/docg3.c
-index 6b516e1..0f63f51 100644
---- a/drivers/mtd/devices/docg3.c
-+++ b/drivers/mtd/devices/docg3.c
-@@ -73,10 +73,38 @@ MODULE_PARM_DESC(reliable_mode, "Set the docg3 mode (0=normal MLC, 1=fast, "
-  * @eccpos: ecc positions (byte 7 is Hamming ECC, byte 8-14 are BCH ECC)
-  * @oobfree: free pageinfo bytes (byte 0 until byte 6, byte 15
+diff --git a/drivers/mtd/nand/nand_bch.c b/drivers/mtd/nand/nand_bch.c
+index b3039de..e29e75f 100644
+--- a/drivers/mtd/nand/nand_bch.c
++++ b/drivers/mtd/nand/nand_bch.c
+@@ -32,13 +32,11 @@
+ /**
+  * struct nand_bch_control - private NAND BCH control structure
+  * @bch:       BCH control structure
+- * @ecclayout: private ecc layout for this BCH configuration
+  * @errloc:    error location array
+  * @eccmask:   XOR ecc mask, allows erased pages to be decoded as valid
   */
--static struct nand_ecclayout docg3_oobinfo = {
--	.eccbytes = 8,
--	.eccpos = {7, 8, 9, 10, 11, 12, 13, 14},
--	.oobfree = {{0, 7}, {15, 1} },
-+static int docg3_ooblayout_ecc(struct mtd_info *mtd, int section,
-+			       struct mtd_oob_region *oobregion)
-+{
-+	if (section)
-+		return -ERANGE;
-+
-+	oobregion->offset = 7;
-+	oobregion->length = 8;
-+
-+	return 0;
-+}
-+
-+static int docg3_ooblayout_free(struct mtd_info *mtd, int section,
-+				struct mtd_oob_region *oobregion)
-+{
-+	if (section > 1)
-+		return -ERANGE;
-+
-+	if (!section) {
-+		oobregion->offset = 0;
-+		oobregion->length = 7;
-+	} else {
-+		oobregion->offset = 15;
-+		oobregion->length = 1;
-+	}
-+
-+	return 0;
-+}
-+
-+static const struct mtd_ooblayout_ops nand_ooblayout_docg3_ops = {
-+	.ecc = docg3_ooblayout_ecc,
-+	.free = docg3_ooblayout_free,
+ struct nand_bch_control {
+ 	struct bch_control   *bch;
+-	struct nand_ecclayout ecclayout;
+ 	unsigned int         *errloc;
+ 	unsigned char        *eccmask;
  };
+@@ -124,7 +122,6 @@ struct nand_bch_control *nand_bch_init(struct mtd_info *mtd)
+ {
+ 	struct nand_chip *nand = mtd_to_nand(mtd);
+ 	unsigned int m, t, eccsteps, i;
+-	struct nand_ecclayout *layout = nand->ecc.layout;
+ 	struct nand_bch_control *nbc = NULL;
+ 	unsigned char *erased_page;
+ 	unsigned int eccsize = nand->ecc.size;
+@@ -161,8 +158,17 @@ struct nand_bch_control *nand_bch_init(struct mtd_info *mtd)
  
- static inline u8 doc_readb(struct docg3 *docg3, u16 reg)
-@@ -1857,7 +1885,7 @@ static int __init doc_set_driver_info(int chip_id, struct mtd_info *mtd)
- 	mtd->_read_oob = doc_read_oob;
- 	mtd->_write_oob = doc_write_oob;
- 	mtd->_block_isbad = doc_block_isbad;
--	mtd_set_ecclayout(mtd, &docg3_oobinfo);
-+	mtd_set_ooblayout(mtd, &nand_ooblayout_docg3_ops);
- 	mtd->oobavail = 8;
- 	mtd->ecc_strength = DOC_ECC_BCH_T;
+ 	eccsteps = mtd->writesize/eccsize;
  
++	/*
++	 * Rely on the default ecclayout to ooblayout wrapper provided by MTD
++	 * core if ecc.layout is not NULL.
++	 * FIXME: this should be removed when all callers have moved to the
++	 * mtd_ooblayout_ops approach.
++	 */
++	if (nand->ecc.layout)
++		mtd_set_ecclayout(mtd, nand->ecc.layout);
++
+ 	/* if no ecc placement scheme was provided, build one */
+-	if (!layout) {
++	if (!mtd->ooblayout) {
+ 
+ 		/* handle large page devices only */
+ 		if (mtd->oobsize < 64) {
+@@ -171,24 +177,7 @@ struct nand_bch_control *nand_bch_init(struct mtd_info *mtd)
+ 			goto fail;
+ 		}
+ 
+-		layout = &nbc->ecclayout;
+-		layout->eccbytes = eccsteps*eccbytes;
+-
+-		/* reserve 2 bytes for bad block marker */
+-		if (layout->eccbytes+2 > mtd->oobsize) {
+-			printk(KERN_WARNING "no suitable oob scheme available "
+-			       "for oobsize %d eccbytes %u\n", mtd->oobsize,
+-			       eccbytes);
+-			goto fail;
+-		}
+-		/* put ecc bytes at oob tail */
+-		for (i = 0; i < layout->eccbytes; i++)
+-			layout->eccpos[i] = mtd->oobsize-layout->eccbytes+i;
+-
+-		layout->oobfree[0].offset = 2;
+-		layout->oobfree[0].length = mtd->oobsize-2-layout->eccbytes;
+-
+-		nand->ecc.layout = layout;
++		mtd_set_ooblayout(mtd, &nand_ooblayout_lp_ops);
+ 	}
+ 
+ 	/* sanity checks */
 -- 
 2.1.4

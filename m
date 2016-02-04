@@ -1,13 +1,13 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Feb 2016 11:20:03 +0100 (CET)
-Received: from down.free-electrons.com ([37.187.137.238]:38141 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Feb 2016 11:20:26 +0100 (CET)
+Received: from down.free-electrons.com ([37.187.137.238]:38189 "EHLO
         mail.free-electrons.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27012602AbcBDKIPFUV0O (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 4 Feb 2016 11:08:15 +0100
+        by eddie.linux-mips.org with ESMTP id S27012610AbcBDKI1OI6OO (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 4 Feb 2016 11:08:27 +0100
 Received: by mail.free-electrons.com (Postfix, from userid 110)
-        id 1F37644BE; Thu,  4 Feb 2016 11:08:10 +0100 (CET)
+        id 9D74B4937; Thu,  4 Feb 2016 11:08:17 +0100 (CET)
 Received: from localhost.localdomain (AToulouse-657-1-20-139.w83-193.abo.wanadoo.fr [83.193.84.139])
-        by mail.free-electrons.com (Postfix) with ESMTPSA id EE4962204;
-        Thu,  4 Feb 2016 11:07:46 +0100 (CET)
+        by mail.free-electrons.com (Postfix) with ESMTPSA id A55D54564;
+        Thu,  4 Feb 2016 11:07:47 +0100 (CET)
 From:   Boris Brezillon <boris.brezillon@free-electrons.com>
 To:     David Woodhouse <dwmw2@infradead.org>,
         Brian Norris <computersforpeace@gmail.com>,
@@ -31,9 +31,9 @@ Cc:     Daniel Mack <daniel@zonque.org>,
         punnaiah choudary kalluri <punnaia@xilinx.com>,
         Priit Laes <plaes@plaes.org>,
         Boris Brezillon <boris.brezillon@free-electrons.com>
-Subject: [PATCH v2 42/51] mtd: nand: pxa3xx: switch to mtd_ooblayout_ops
-Date:   Thu,  4 Feb 2016 11:07:05 +0100
-Message-Id: <1454580434-32078-43-git-send-email-boris.brezillon@free-electrons.com>
+Subject: [PATCH v2 43/51] mtd: nand: s3c2410: switch to mtd_ooblayout_ops
+Date:   Thu,  4 Feb 2016 11:07:06 +0100
+Message-Id: <1454580434-32078-44-git-send-email-boris.brezillon@free-electrons.com>
 X-Mailer: git-send-email 2.1.4
 In-Reply-To: <1454580434-32078-1-git-send-email-boris.brezillon@free-electrons.com>
 References: <1454580434-32078-1-git-send-email-boris.brezillon@free-electrons.com>
@@ -41,7 +41,7 @@ Return-Path: <boris.brezillon@free-electrons.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51760
+X-archive-position: 51761
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -63,167 +63,59 @@ ECC/OOB layout to MTD users.
 
 Signed-off-by: Boris Brezillon <boris.brezillon@free-electrons.com>
 ---
- drivers/mtd/nand/pxa3xx_nand.c | 104 +++++++++++++++++++++++++----------------
- 1 file changed, 64 insertions(+), 40 deletions(-)
+ drivers/mtd/nand/s3c2410.c | 32 +++++++++++++++++++++++++++-----
+ 1 file changed, 27 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/mtd/nand/pxa3xx_nand.c b/drivers/mtd/nand/pxa3xx_nand.c
-index e42496a..2ce5111 100644
---- a/drivers/mtd/nand/pxa3xx_nand.c
-+++ b/drivers/mtd/nand/pxa3xx_nand.c
-@@ -296,6 +296,62 @@ static struct pxa3xx_nand_flash builtin_flash_types[] = {
- 	{ 0xba20, 16, 16, &timing[3] },
- };
+diff --git a/drivers/mtd/nand/s3c2410.c b/drivers/mtd/nand/s3c2410.c
+index 9c9397b..efa339b 100644
+--- a/drivers/mtd/nand/s3c2410.c
++++ b/drivers/mtd/nand/s3c2410.c
+@@ -84,11 +84,33 @@
  
-+static int pxa3xx_ooblayout_ecc(struct mtd_info *mtd, int section,
-+				struct mtd_oob_region *oobregion)
+ /* new oob placement block for use with hardware ecc generation
+  */
++static int s3c2410_ooblayout_ecc(struct mtd_info *mtd, int section,
++				 struct mtd_oov_region *oobregion)
 +{
-+	struct nand_chip *chip = mtd_to_nand(mtd);
-+	struct pxa3xx_nand_host *host = nand_get_controller_data(chip);
-+	struct pxa3xx_nand_info *info = host->info_data;
-+	int nchunks = mtd->writesize / info->chunk_size;
-+
-+	if (section >= nchunks)
++	if (section)
 +		return -ERANGE;
 +
-+	oobregion->offset = ((info->ecc_size + info->spare_size) * section) +
-+			    info->spare_size;
-+	oobregion->length = info->ecc_size;
++	oobregion->offset = 0;
++	oobregion->length = 3;
 +
 +	return 0;
 +}
 +
-+static int pxa3xx_ooblayout_free(struct mtd_info *mtd, int section,
-+				 struct mtd_oob_region *oobregion)
++static int s3c2410_ooblayout_free(struct mtd_info *mtd, int section,
++				  struct mtd_oov_region *oobregion)
 +{
-+	struct nand_chip *chip = mtd_to_nand(mtd);
-+	struct pxa3xx_nand_host *host = nand_get_controller_data(chip);
-+	struct pxa3xx_nand_info *info = host->info_data;
-+	int nchunks = mtd->writesize / info->chunk_size;
-+
-+	if (section >= nchunks)
++	if (section)
 +		return -ERANGE;
 +
-+	if (!info->spare_size)
-+		return 0;
-+
-+	oobregion->offset = section * (info->ecc_size + info->spare_size);
-+	oobregion->length = info->spare_size;
-+	if (!section) {
-+		/*
-+		 * Bootrom looks in bytes 0 & 5 for bad blocks for the
-+		 * 4KB page / 4bit BCH combination.
-+		 */
-+		if (mtd->writesize == 4096 && info->chunk_size == 2048) {
-+			oobregion->offset += 6;
-+			oobregion->length -= 6;
-+		} else {
-+			oobregion->offset += 2;
-+			oobregion->length -= 2;
-+		}
-+	}
++	oobregion->offset = 8;
++	oobregion->length = 8;
 +
 +	return 0;
 +}
-+
-+const struct mtd_ooblayout_ops pxa3xx_ooblayout_ops = {
-+	.ecc = pxa3xx_ooblayout_ecc,
-+	.free = pxa3xx_ooblayout_free,
-+};
-+
- static u8 bbt_pattern[] = {'M', 'V', 'B', 'b', 't', '0' };
- static u8 bbt_mirror_pattern[] = {'1', 't', 'b', 'B', 'V', 'M' };
  
-@@ -319,41 +375,6 @@ static struct nand_bbt_descr bbt_mirror_descr = {
- 	.pattern = bbt_mirror_pattern
+-static struct nand_ecclayout nand_hw_eccoob = {
+-	.eccbytes = 3,
+-	.eccpos = {0, 1, 2},
+-	.oobfree = {{8, 8}}
++const struct mtd_ooblayout_ops s3c2410_ooblayout_ops = {
++	.eccpos = s3c2410_eccpos,
++	.oobfree = s3c2410_oobfree,
  };
  
--static struct nand_ecclayout ecc_layout_2KB_bch4bit = {
--	.eccbytes = 32,
--	.eccpos = {
--		32, 33, 34, 35, 36, 37, 38, 39,
--		40, 41, 42, 43, 44, 45, 46, 47,
--		48, 49, 50, 51, 52, 53, 54, 55,
--		56, 57, 58, 59, 60, 61, 62, 63},
--	.oobfree = { {2, 30} }
--};
--
--static struct nand_ecclayout ecc_layout_4KB_bch4bit = {
--	.eccbytes = 64,
--	.eccpos = {
--		32,  33,  34,  35,  36,  37,  38,  39,
--		40,  41,  42,  43,  44,  45,  46,  47,
--		48,  49,  50,  51,  52,  53,  54,  55,
--		56,  57,  58,  59,  60,  61,  62,  63,
--		96,  97,  98,  99,  100, 101, 102, 103,
--		104, 105, 106, 107, 108, 109, 110, 111,
--		112, 113, 114, 115, 116, 117, 118, 119,
--		120, 121, 122, 123, 124, 125, 126, 127},
--	/* Bootrom looks in bytes 0 & 5 for bad blocks */
--	.oobfree = { {6, 26}, { 64, 32} }
--};
--
--static struct nand_ecclayout ecc_layout_4KB_bch8bit = {
--	.eccbytes = 128,
--	.eccpos = {
--		32,  33,  34,  35,  36,  37,  38,  39,
--		40,  41,  42,  43,  44,  45,  46,  47,
--		48,  49,  50,  51,  52,  53,  54,  55,
--		56,  57,  58,  59,  60,  61,  62,  63},
--	.oobfree = { }
--};
--
- #define NDTR0_tCH(c)	(min((c), 7) << 19)
- #define NDTR0_tCS(c)	(min((c), 7) << 16)
- #define NDTR0_tWH(c)	(min((c), 7) << 11)
-@@ -1514,9 +1535,12 @@ static void pxa3xx_nand_free_buff(struct pxa3xx_nand_info *info)
+ /* controller and mtd information */
+@@ -919,7 +941,7 @@ static void s3c2410_nand_update_chip(struct s3c2410_nand_info *info,
+ 	} else {
+ 		chip->ecc.size	    = 512;
+ 		chip->ecc.bytes	    = 3;
+-		chip->ecc.layout    = &nand_hw_eccoob;
++		mtd_set_ooblayout(nand_to_mtd(chip), &s3c2410_ooblayout_ops);
+ 	}
  }
  
- static int pxa_ecc_init(struct pxa3xx_nand_info *info,
--			struct nand_ecc_ctrl *ecc,
-+			struct mtd_info *mtd,
- 			int strength, int ecc_stepsize, int page_size)
- {
-+	struct nand_chip *chip = mtd_to_nand(mtd);
-+	struct nand_ecc_ctrl *ecc = &chip->ecc;
-+
- 	if (strength == 1 && ecc_stepsize == 512 && page_size == 2048) {
- 		info->chunk_size = 2048;
- 		info->spare_size = 40;
-@@ -1544,7 +1568,7 @@ static int pxa_ecc_init(struct pxa3xx_nand_info *info,
- 		info->ecc_size = 32;
- 		ecc->mode = NAND_ECC_HW;
- 		ecc->size = info->chunk_size;
--		ecc->layout = &ecc_layout_2KB_bch4bit;
-+		mtd_set_ooblayout(mtd, &pxa3xx_ooblayout_ops);
- 		ecc->strength = 16;
- 
- 	} else if (strength == 4 && ecc_stepsize == 512 && page_size == 4096) {
-@@ -1554,7 +1578,7 @@ static int pxa_ecc_init(struct pxa3xx_nand_info *info,
- 		info->ecc_size = 32;
- 		ecc->mode = NAND_ECC_HW;
- 		ecc->size = info->chunk_size;
--		ecc->layout = &ecc_layout_4KB_bch4bit;
-+		mtd_set_ooblayout(mtd, &pxa3xx_ooblayout_ops);
- 		ecc->strength = 16;
- 
- 	/*
-@@ -1568,7 +1592,7 @@ static int pxa_ecc_init(struct pxa3xx_nand_info *info,
- 		info->ecc_size = 32;
- 		ecc->mode = NAND_ECC_HW;
- 		ecc->size = info->chunk_size;
--		ecc->layout = &ecc_layout_4KB_bch8bit;
-+		mtd_set_ooblayout(mtd, &pxa3xx_ooblayout_ops);
- 		ecc->strength = 16;
- 	} else {
- 		dev_err(&info->pdev->dev,
-@@ -1659,7 +1683,7 @@ static int pxa3xx_nand_scan(struct mtd_info *mtd)
- 		ecc_step = 512;
- 	}
- 
--	ret = pxa_ecc_init(info, &chip->ecc, ecc_strength,
-+	ret = pxa_ecc_init(info, mtd, ecc_strength,
- 			   ecc_step, mtd->writesize);
- 	if (ret)
- 		return ret;
 -- 
 2.1.4

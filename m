@@ -1,13 +1,13 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Feb 2016 11:16:21 +0100 (CET)
-Received: from down.free-electrons.com ([37.187.137.238]:37779 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Feb 2016 11:16:42 +0100 (CET)
+Received: from down.free-electrons.com ([37.187.137.238]:37797 "EHLO
         mail.free-electrons.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27012566AbcBDKIAm-OSO (ORCPT
+        by eddie.linux-mips.org with ESMTP id S27012570AbcBDKIAxHqMO (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Thu, 4 Feb 2016 11:08:00 +0100
 Received: by mail.free-electrons.com (Postfix, from userid 110)
-        id C651147B9; Thu,  4 Feb 2016 11:08:00 +0100 (CET)
+        id DA16B21DE; Thu,  4 Feb 2016 11:08:00 +0100 (CET)
 Received: from localhost.localdomain (AToulouse-657-1-20-139.w83-193.abo.wanadoo.fr [83.193.84.139])
-        by mail.free-electrons.com (Postfix) with ESMTPSA id 005304216;
-        Thu,  4 Feb 2016 11:07:38 +0100 (CET)
+        by mail.free-electrons.com (Postfix) with ESMTPSA id B9FD64237;
+        Thu,  4 Feb 2016 11:07:39 +0100 (CET)
 From:   Boris Brezillon <boris.brezillon@free-electrons.com>
 To:     David Woodhouse <dwmw2@infradead.org>,
         Brian Norris <computersforpeace@gmail.com>,
@@ -31,9 +31,9 @@ Cc:     Daniel Mack <daniel@zonque.org>,
         punnaiah choudary kalluri <punnaia@xilinx.com>,
         Priit Laes <plaes@plaes.org>,
         Boris Brezillon <boris.brezillon@free-electrons.com>
-Subject: [PATCH v2 31/51] mtd: nand: diskonchip: switch to mtd_ooblayout_ops
-Date:   Thu,  4 Feb 2016 11:06:54 +0100
-Message-Id: <1454580434-32078-32-git-send-email-boris.brezillon@free-electrons.com>
+Subject: [PATCH v2 32/51] mtd: nand: docg4: switch to mtd_ooblayout_ops
+Date:   Thu,  4 Feb 2016 11:06:55 +0100
+Message-Id: <1454580434-32078-33-git-send-email-boris.brezillon@free-electrons.com>
 X-Mailer: git-send-email 2.1.4
 In-Reply-To: <1454580434-32078-1-git-send-email-boris.brezillon@free-electrons.com>
 References: <1454580434-32078-1-git-send-email-boris.brezillon@free-electrons.com>
@@ -41,7 +41,7 @@ Return-Path: <boris.brezillon@free-electrons.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51748
+X-archive-position: 51749
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -63,71 +63,66 @@ ECC/OOB layout to MTD users.
 
 Signed-off-by: Boris Brezillon <boris.brezillon@free-electrons.com>
 ---
- drivers/mtd/nand/diskonchip.c | 38 +++++++++++++++++++++++++++++++++-----
- 1 file changed, 33 insertions(+), 5 deletions(-)
+ drivers/mtd/nand/docg4.c | 33 ++++++++++++++++++++++++++++-----
+ 1 file changed, 28 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/mtd/nand/diskonchip.c b/drivers/mtd/nand/diskonchip.c
-index f170f3c..9fb63b4 100644
---- a/drivers/mtd/nand/diskonchip.c
-+++ b/drivers/mtd/nand/diskonchip.c
-@@ -960,10 +960,38 @@ static int doc200x_correct_data(struct mtd_info *mtd, u_char *dat,
-  * safer.  The only problem with it is that any code that parses oobfree must
-  * be able to handle out-of-order segments.
+diff --git a/drivers/mtd/nand/docg4.c b/drivers/mtd/nand/docg4.c
+index fb46fd7..f5ca9a5 100644
+--- a/drivers/mtd/nand/docg4.c
++++ b/drivers/mtd/nand/docg4.c
+@@ -222,10 +222,33 @@ struct docg4_priv {
+  * Bytes 8 - 14 are hw-generated ecc covering entire page + oob bytes 0 - 14.
+  * Byte 15 (the last) is used by the driver as a "page written" flag.
   */
--static struct nand_ecclayout doc200x_oobinfo = {
--	.eccbytes = 6,
--	.eccpos = {0, 1, 2, 3, 4, 5},
--	.oobfree = {{8, 8}, {6, 2}}
-+static int doc200x_ooblayout_ecc(struct mtd_info *mtd, int section,
-+				 struct mtd_oob_region *oobregion)
+-static struct nand_ecclayout docg4_oobinfo = {
+-	.eccbytes = 9,
+-	.eccpos = {7, 8, 9, 10, 11, 12, 13, 14, 15},
+-	.oobfree = { {.offset = 2, .length = 5} }
++static int docg4_ooblayout_ecc(struct mtd_info *mtd, int section,
++			       struct mtd_oob_region *oobregion)
 +{
 +	if (section)
 +		return -ERANGE;
 +
-+	oobregion->offset = 0;
-+	oobregion->length = 6;
++	oobregion->offset = 7;
++	oobregion->length = 9;
 +
 +	return 0;
 +}
 +
-+static int doc200x_ooblayout_free(struct mtd_info *mtd, int section,
-+				  struct mtd_oob_region *oobregion)
++static int docg4_ooblayout_free(struct mtd_info *mtd, int section,
++				struct mtd_oob_region *oobregion)
 +{
-+	if (section > 1)
++	if (section)
 +		return -ERANGE;
 +
-+	if (!section) {
-+		oobregion->offset = 8;
-+		oobregion->length = 8;
-+	} else {
-+		oobregion->offset = 6;
-+		oobregion->length = 2;
-+	}
++	oobregion->offset = 2;
++	oobregion->length = 5;
 +
 +	return 0;
 +}
 +
-+static const struct mtd_ooblayout_ops doc200x_ooblayout_ops = {
-+	.ecc = doc200x_ooblayout_ecc,
-+	.free = doc200x_ooblayout_free,
++static const struct mtd_ooblayout_ops docg4_ooblayout_ops = {
++	.ecc = docg4_ooblayout_ecc,
++	.free = docg4_ooblayout_free,
  };
  
- /* Find the (I)NFTL Media Header, and optionally also the mirror media header.
-@@ -1537,6 +1565,7 @@ static int __init doc_probe(unsigned long physadr)
- 	nand->bbt_md		= nand->bbt_td + 1;
- 
- 	mtd->owner		= THIS_MODULE;
-+	mtd_set_ooblayout(mtd, &doc200x_ooblayout_ops);
- 
- 	nand_set_controller_data(nand, doc);
- 	nand->select_chip	= doc200x_select_chip;
-@@ -1548,7 +1577,6 @@ static int __init doc_probe(unsigned long physadr)
- 	nand->ecc.calculate	= doc200x_calculate_ecc;
- 	nand->ecc.correct	= doc200x_correct_data;
- 
--	nand->ecc.layout	= &doc200x_oobinfo;
- 	nand->ecc.mode		= NAND_ECC_HW_SYNDROME;
- 	nand->ecc.size		= 512;
- 	nand->ecc.bytes		= 6;
+ /*
+@@ -1209,6 +1232,7 @@ static void __init init_mtd_structs(struct mtd_info *mtd)
+ 	mtd->writesize = DOCG4_PAGE_SIZE;
+ 	mtd->erasesize = DOCG4_BLOCK_SIZE;
+ 	mtd->oobsize = DOCG4_OOB_SIZE;
++	mtd_set_ooblayout(mtd, &docg4_ooblayout_ops);
+ 	nand->chipsize = DOCG4_CHIP_SIZE;
+ 	nand->chip_shift = DOCG4_CHIP_SHIFT;
+ 	nand->bbt_erase_shift = nand->phys_erase_shift = DOCG4_ERASE_SHIFT;
+@@ -1217,7 +1241,6 @@ static void __init init_mtd_structs(struct mtd_info *mtd)
+ 	nand->pagemask = 0x3ffff;
+ 	nand->badblockpos = NAND_LARGE_BADBLOCK_POS;
+ 	nand->badblockbits = 8;
+-	nand->ecc.layout = &docg4_oobinfo;
+ 	nand->ecc.mode = NAND_ECC_HW_SYNDROME;
+ 	nand->ecc.size = DOCG4_PAGE_SIZE;
+ 	nand->ecc.prepad = 8;
 -- 
 2.1.4

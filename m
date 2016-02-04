@@ -1,13 +1,13 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Feb 2016 11:12:40 +0100 (CET)
-Received: from down.free-electrons.com ([37.187.137.238]:37600 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Feb 2016 11:12:56 +0100 (CET)
+Received: from down.free-electrons.com ([37.187.137.238]:37614 "EHLO
         mail.free-electrons.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27012155AbcBDKHhpIfWO (ORCPT
+        by eddie.linux-mips.org with ESMTP id S27012428AbcBDKHhvCNRO (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Thu, 4 Feb 2016 11:07:37 +0100
 Received: by mail.free-electrons.com (Postfix, from userid 110)
-        id BEB823DA0; Thu,  4 Feb 2016 11:07:32 +0100 (CET)
+        id D547C34F; Thu,  4 Feb 2016 11:07:32 +0100 (CET)
 Received: from localhost.localdomain (AToulouse-657-1-20-139.w83-193.abo.wanadoo.fr [83.193.84.139])
-        by mail.free-electrons.com (Postfix) with ESMTPSA id 727EB1B67;
-        Thu,  4 Feb 2016 11:07:28 +0100 (CET)
+        by mail.free-electrons.com (Postfix) with ESMTPSA id 3377736A;
+        Thu,  4 Feb 2016 11:07:29 +0100 (CET)
 From:   Boris Brezillon <boris.brezillon@free-electrons.com>
 To:     David Woodhouse <dwmw2@infradead.org>,
         Brian Norris <computersforpeace@gmail.com>,
@@ -31,9 +31,9 @@ Cc:     Daniel Mack <daniel@zonque.org>,
         punnaiah choudary kalluri <punnaia@xilinx.com>,
         Priit Laes <plaes@plaes.org>,
         Boris Brezillon <boris.brezillon@free-electrons.com>
-Subject: [PATCH v2 17/51] mtd: onenand: use mtd_set_ecclayout() where appropriate
-Date:   Thu,  4 Feb 2016 11:06:40 +0100
-Message-Id: <1454580434-32078-18-git-send-email-boris.brezillon@free-electrons.com>
+Subject: [PATCH v2 18/51] mtd: docg3: use mtd_set_ecclayout() where appropriate
+Date:   Thu,  4 Feb 2016 11:06:41 +0100
+Message-Id: <1454580434-32078-19-git-send-email-boris.brezillon@free-electrons.com>
 X-Mailer: git-send-email 2.1.4
 In-Reply-To: <1454580434-32078-1-git-send-email-boris.brezillon@free-electrons.com>
 References: <1454580434-32078-1-git-send-email-boris.brezillon@free-electrons.com>
@@ -41,7 +41,7 @@ Return-Path: <boris.brezillon@free-electrons.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51736
+X-archive-position: 51737
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -63,21 +63,21 @@ mtd->ecclayout field.
 
 Signed-off-by: Boris Brezillon <boris.brezillon@free-electrons.com>
 ---
- drivers/mtd/onenand/onenand_base.c | 2 +-
+ drivers/mtd/devices/docg3.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mtd/onenand/onenand_base.c b/drivers/mtd/onenand/onenand_base.c
-index 6906c95..1d8406d 100644
---- a/drivers/mtd/onenand/onenand_base.c
-+++ b/drivers/mtd/onenand/onenand_base.c
-@@ -3994,7 +3994,7 @@ int onenand_scan(struct mtd_info *mtd, int maxchips)
- 	if (mtd->oobavail < 0)
- 		mtd->oobavail = 0;
+diff --git a/drivers/mtd/devices/docg3.c b/drivers/mtd/devices/docg3.c
+index e7b2e43..6b516e1 100644
+--- a/drivers/mtd/devices/docg3.c
++++ b/drivers/mtd/devices/docg3.c
+@@ -1857,7 +1857,7 @@ static int __init doc_set_driver_info(int chip_id, struct mtd_info *mtd)
+ 	mtd->_read_oob = doc_read_oob;
+ 	mtd->_write_oob = doc_write_oob;
+ 	mtd->_block_isbad = doc_block_isbad;
+-	mtd->ecclayout = &docg3_oobinfo;
++	mtd_set_ecclayout(mtd, &docg3_oobinfo);
+ 	mtd->oobavail = 8;
+ 	mtd->ecc_strength = DOC_ECC_BCH_T;
  
--	mtd->ecclayout = this->ecclayout;
-+	mtd_set_ecclayout(mtd, this->ecclayout);
- 	mtd->ecc_strength = 1;
- 
- 	/* Fill in remaining MTD driver data */
 -- 
 2.1.4

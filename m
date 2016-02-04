@@ -1,46 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Feb 2016 20:43:56 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:33963 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27011683AbcBCTnzCyGC3 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 3 Feb 2016 20:43:55 +0100
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Websense Email Security Gateway with ESMTPS id 248979E89C529;
-        Wed,  3 Feb 2016 19:43:46 +0000 (GMT)
-Received: from [10.100.200.149] (10.100.200.149) by hhmail02.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server id 14.3.266.1; Wed, 3 Feb 2016
- 19:43:48 +0000
-Date:   Wed, 3 Feb 2016 19:43:44 +0000
-From:   "Maciej W. Rozycki" <macro@imgtec.com>
-To:     Paul Burton <paul.burton@imgtec.com>
-CC:     <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Joshua Kinard <kumba@gentoo.org>,
-        Andrzej Hajda <a.hajda@samsung.com>,
-        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
-        Paul Gortmaker <paul.gortmaker@windriver.com>,
-        <linux-kernel@vger.kernel.org>,
-        James Hogan <james.hogan@imgtec.com>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        Markos Chandras <markos.chandras@imgtec.com>,
-        Petri Gynther <pgynther@google.com>
-Subject: Re: [PATCH 2/3] MIPS: Add P6600 cases to CPU switch statements
-In-Reply-To: <1454469999-17818-3-git-send-email-paul.burton@imgtec.com>
-Message-ID: <alpine.DEB.2.00.1602031941170.15885@tp.orcam.me.uk>
-References: <1454469999-17818-1-git-send-email-paul.burton@imgtec.com> <1454469999-17818-3-git-send-email-paul.burton@imgtec.com>
-User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
-MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-X-Originating-IP: [10.100.200.149]
-Return-Path: <Maciej.Rozycki@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Feb 2016 03:15:04 +0100 (CET)
+Received: from mail-pf0-f170.google.com ([209.85.192.170]:35503 "EHLO
+        mail-pf0-f170.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012433AbcBDCPDKkl0x (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 4 Feb 2016 03:15:03 +0100
+Received: by mail-pf0-f170.google.com with SMTP id 65so26902810pfd.2;
+        Wed, 03 Feb 2016 18:15:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id;
+        bh=cln4+EQAU7wftDh+P0PRYZNePXLcyke9mixiFFwhzbg=;
+        b=HKKUEyXau4RqpqnWv4gdS+5WiodZ3LUaJKEv8VGjYT5Ni65Y7dzU2KEEDQeFSSb2qf
+         EIWIta+1wrrUDGfM0b7oIhKLmdzusO5RxXExC1OiDDVvfHBZbEw4a3LMaOOzLSGz3dF3
+         PBFBbcxxJid0FxAwgOxa5t2fvaUEeYZtxYfjxufU78HZjv/3X1PoonyEBcI3YnmlJGBK
+         Z6QAsgjxis4dpeYfXLSYNx8//taqZzyvNIsOEq+ItVCsX0DSQJ5Y0oU87iGGSVKOcRjE
+         2pyvXkB/0kB+OKPgjG0KG91ux3dqBSeIrarSwjEqSgwB43kPceuAQysHA75YzXtRvBoj
+         DezQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=cln4+EQAU7wftDh+P0PRYZNePXLcyke9mixiFFwhzbg=;
+        b=MO5Was3Gum1WDdTbFWp9GXXatH5BEZ4coNzbxHgji4TpMChZtd38Gx3Grej7rx9Ji2
+         zcpk1v+JabhbjI/dMSPZW88/rmminALY7SewCOjfg+gUpzOnUpAahtNhmTb5Ta9q2Z+Z
+         eUMc7+/b1M9I+IVdLhGSMLfD018RVYh0Tr3luaBFxxoJ9Auw2MUDoP0EnH4wzmmmW5L4
+         qhTIf2zBYW1O5dxCo+ZJegHZAcTEeoKclE3Vxht2WL+GAULZ1n9sHKtaGwlv2K5ZWkW+
+         VWJL1KffsMa7zK2NlHrBBNU6f3xOlX/Vog0wTDxuEWux71DmPf9RJq6U4bnrSaD9jpvQ
+         3kIQ==
+X-Gm-Message-State: AG10YOQXrsR3RUMxXv0boSWBQ4HIAuhIKsuB1jNVuuk/89Dsetb72cAEwOoQhaR/SVDrFw==
+X-Received: by 10.98.40.131 with SMTP id o125mr7335309pfo.83.1454552096526;
+        Wed, 03 Feb 2016 18:14:56 -0800 (PST)
+Received: from stb-bld-03.irv.broadcom.com (5520-maca-inet1-outside.broadcom.com. [216.31.211.11])
+        by smtp.gmail.com with ESMTPSA id l14sm12646282pfb.73.2016.02.03.18.14.55
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 03 Feb 2016 18:14:55 -0800 (PST)
+From:   Florian Fainelli <f.fainelli@gmail.com>
+To:     linux-mips@linux-mips.org
+Cc:     ralf@linux-mips.org, blogic@openwrt.org, cernekee@gmail.com,
+        jon.fraser@broadcom.com, jaedon.shin@gmail.com,
+        dragan.stancevic@gmail.com, jogo@openwrt.org,
+        Florian Fainelli <f.fainelli@gmail.com>
+Subject: [PATCH 0/4] MIPS: BMIPS5200 SMP support
+Date:   Wed,  3 Feb 2016 18:14:49 -0800
+Message-Id: <1454552093-17897-1-git-send-email-f.fainelli@gmail.com>
+X-Mailer: git-send-email 2.1.0
+Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51711
+X-archive-position: 51712
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@imgtec.com
+X-original-sender: f.fainelli@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,46 +63,27 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, 3 Feb 2016, Paul Burton wrote:
+Hi all,
 
-> diff --git a/arch/mips/kernel/perf_event_mipsxx.c b/arch/mips/kernel/perf_event_mipsxx.c
-> index d7b8dd4..ae378d9 100644
-> --- a/arch/mips/kernel/perf_event_mipsxx.c
-> +++ b/arch/mips/kernel/perf_event_mipsxx.c
-> @@ -1556,6 +1556,7 @@ static const struct mips_perf_event *mipsxx_pmu_map_raw_event(u64 config)
->  #endif
->  		break;
->  	case CPU_P5600:
-> +	case CPU_P6600:
->  	case CPU_I6400:
->  		/* 8-bit event numbers */
->  		raw_id = config & 0x1ff;
-> @@ -1718,6 +1719,11 @@ init_hw_perf_events(void)
->  		mipspmu.general_event_map = &mipsxxcore_event_map2;
->  		mipspmu.cache_event_map = &mipsxxcore_cache_map2;
->  		break;
-> +	case CPU_P6600:
-> +		mipspmu.name = "mips/P6600";
-> +		mipspmu.general_event_map = &mipsxxcore_event_map2;
-> +		mipspmu.cache_event_map = &mipsxxcore_cache_map2;
-> +		break;
->  	case CPU_I6400:
->  		mipspmu.name = "mips/I6400";
->  		mipspmu.general_event_map = &mipsxxcore_event_map2;
-> diff --git a/arch/mips/kernel/spram.c b/arch/mips/kernel/spram.c
-> index 8489c88..d6e6cf7 100644
-> --- a/arch/mips/kernel/spram.c
-> +++ b/arch/mips/kernel/spram.c
-> @@ -210,6 +210,7 @@ void spram_config(void)
->  	case CPU_P5600:
->  	case CPU_QEMU_GENERIC:
->  	case CPU_I6400:
-> +	case CPU_P6600:
->  		config0 = read_c0_config();
->  		/* FIXME: addresses are Malta specific */
->  		if (config0 & (1<<24)) {
+This patch series adds BCM7435/BMIPS52000 SMP support, it builds
+on top of the series submitted here:
 
- Minor nit: you sometimes place the I6400 before and sometimes after the 
-P6600 -- would it make sense to keep the ordering consistent?
+https://www.linux-mips.org/archives/linux-mips/2016-01/msg00737.html
 
-  Maciej
+Florian Fainelli (4):
+  MIPS: BMIPS: Add Whirlwind (BMIPS5200) initialization code
+  MIPS: BMIPS: Add missing 7038 L1 register cells to BCM7435
+  MIPS: BMIPS: Remove maxcpus from BCM97435SVMB DTS
+  MIPS: BMIPS: Fill in current_cpu_data.core
+
+ arch/mips/boot/dts/brcm/bcm7435.dtsi     |   5 +-
+ arch/mips/boot/dts/brcm/bcm97435svmb.dts |   2 +-
+ arch/mips/kernel/Makefile                |   2 +-
+ arch/mips/kernel/bmips_5xxx_init.S       | 753 +++++++++++++++++++++++++++++++
+ arch/mips/kernel/bmips_vec.S             |  41 +-
+ arch/mips/kernel/smp-bmips.c             |   1 +
+ 6 files changed, 797 insertions(+), 7 deletions(-)
+ create mode 100644 arch/mips/kernel/bmips_5xxx_init.S
+
+-- 
+2.1.0

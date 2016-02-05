@@ -1,61 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 Feb 2016 01:43:14 +0100 (CET)
-Received: from mail-pa0-f66.google.com ([209.85.220.66]:33048 "EHLO
-        mail-pa0-f66.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011619AbcBEAnMdW5ql (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 5 Feb 2016 01:43:12 +0100
-Received: by mail-pa0-f66.google.com with SMTP id pv5so1733139pac.0;
-        Thu, 04 Feb 2016 16:43:12 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 Feb 2016 01:43:29 +0100 (CET)
+Received: from mail-pf0-f193.google.com ([209.85.192.193]:36437 "EHLO
+        mail-pf0-f193.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27014856AbcBEAnOAgwYl (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 5 Feb 2016 01:43:14 +0100
+Received: by mail-pf0-f193.google.com with SMTP id n128so4498440pfn.3;
+        Thu, 04 Feb 2016 16:43:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id;
-        bh=1syASTiN8af8oRXB3aQQm8kpEU2toMeIiKyI4UyFfrY=;
-        b=p1gfyrh44/vrY09+sK551ZDd0e8lQ+KxWkfQXo0CErEHyyQ8Z+NzuE4bwoxAIGVz8/
-         1ECZ2eOFU0fgWVlFpqxMUqIvJ+avufUEic8Qar+htqekYV2bAG2OU4xjGD2ygyxKREV1
-         ZcIO0vUJRfm19ImMxXkQTm0MTulkXY8OwnggbQeBImyjTe5HLIOuc9BeOS64h81dDHSH
-         U1fLZQufFImuIg1HmmlTZVIRJ4nIIh4fpK0Wbg7awsK83ZhsIzhZOZEIDj0cuyKiW5eZ
-         aBairvaKhMUg3esxDXBIOplIzZ9nmx8dXaBOoPalKuyIWEunBNbX1l9smrmjljdrubBX
-         OLSA==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references;
+        bh=oOI8k4yw/XMwUYGFpXZR5Sz7xBpTRKP0emVwn2oDstQ=;
+        b=zqXqBz7+5I3UC6PN+7qcVplfsDrdq6k8zwopFA9kmKL+rFJ+ujbC/3C7IPwF7znlxE
+         WBnhDMBqFGIy3RhGS1o1snaNgrpetsQragggvKE1XorPctPDBjepVzvyonvNOoNhX6J6
+         cyBzD14UmXSBkDcPAkoNvL2W1ldveT6G5tpABFWhAKCxKI65uzTGp22mmFLb4GZLrtUH
+         7wnkwP2t8WHfOcPrUBaQt3xECc8l8/DLQLQ4MIsHACSwkh8uk/JBiyJLlG8xga75Ifof
+         UlwvK4DRNzokw1aqWWJ/6ZG81hzaP+6KmN8UnhvdmR7tlUW8yD0eF9EH7pr12AEO6wST
+         j5eQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=1syASTiN8af8oRXB3aQQm8kpEU2toMeIiKyI4UyFfrY=;
-        b=CuzgvrA9e5VZJ57ZjEQYojTxvgrv8mBeh9kjBm6L9JaWw0mD3HuoI2RoaFdHhHzLTt
-         Jy3oOBjuEi6KFnMUCS/z5lSp5E3jQzxwn37ONP2wp+EwxLz4h2khnprM+2+uQiYQbgcd
-         9oPsz5lSZLEXjgeYtYGFHZEKrm171i4lMtRy+iB961rpVeqx1A4+nC7K2PfBdLE8y5GX
-         R/WtTBquJpB4Z95qwrtcZHaymSYITOsUP56V9zoV6pBR9EfmLAzKhERsYN10ES7s9IQN
-         p2q9RuFuHttJHFylqC5D3GUAP/Kpan3kCt3GEh91xLPFQUtdtKW0q0c3LKZF4np2nXfY
-         +7+A==
-X-Gm-Message-State: AG10YOTMjlMMCFLe5PworVSqh9llQzgIWhr/GzriqbbfyeSx6kNXBu3j6xkO6fqprPAhKA==
-X-Received: by 10.66.142.234 with SMTP id rz10mr15603998pab.113.1454632986440;
-        Thu, 04 Feb 2016 16:43:06 -0800 (PST)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references;
+        bh=oOI8k4yw/XMwUYGFpXZR5Sz7xBpTRKP0emVwn2oDstQ=;
+        b=FKLaAKRHloyI9zcUkzQYC01oFYn/D/irRCcGrHop+muAfJGBe+XX/sDZQBL54ziXOB
+         vM7GEn43AFK/cFpvkILmgUwYfcmJYGz/qCijKmrvTZ8RtUGu7uVktcHbOdb0IeEL7K/q
+         98a8PGubewXsD8NUXry26QP1VVUlbcEI3YnWM5kchyIdFrVVuG/Jx3oONXV71PHOKaRY
+         HiE13nTQHiDMXJTnZ6KxlkocziIwoLMzW0xE3RkyfJPw4Uf7kHufrZ/oUFUeTovq+vai
+         r2tnTpcDEr16EqE5Z210KysIan9nw94MkmUC578d5GOQdv89MfvDEEZqZjZqk8tPPe4k
+         +VmA==
+X-Gm-Message-State: AG10YOQYtGzU2ZwUG1ReieR6+zlRo2SRTGwNU5Vg/pKa+zcuAJo86pr+tC1vSxetb6/R1g==
+X-Received: by 10.98.11.9 with SMTP id t9mr15500332pfi.71.1454632988030;
+        Thu, 04 Feb 2016 16:43:08 -0800 (PST)
 Received: from dl.caveonetworks.com ([64.2.3.194])
-        by smtp.gmail.com with ESMTPSA id q16sm19730004pfi.80.2016.02.04.16.43.04
+        by smtp.gmail.com with ESMTPSA id m5sm19735227pfi.84.2016.02.04.16.43.04
         (version=TLS1 cipher=AES128-SHA bits=128/128);
         Thu, 04 Feb 2016 16:43:04 -0800 (PST)
 Received: from dl.caveonetworks.com (localhost.localdomain [127.0.0.1])
-        by dl.caveonetworks.com (8.14.5/8.14.5) with ESMTP id u150h2Nt007727;
+        by dl.caveonetworks.com (8.14.5/8.14.5) with ESMTP id u150h3ha007731;
         Thu, 4 Feb 2016 16:43:03 -0800
 Received: (from ddaney@localhost)
-        by dl.caveonetworks.com (8.14.5/8.14.5/Submit) id u150gvbX007725;
-        Thu, 4 Feb 2016 16:42:57 -0800
+        by dl.caveonetworks.com (8.14.5/8.14.5/Submit) id u150h3nE007730;
+        Thu, 4 Feb 2016 16:43:03 -0800
 From:   David Daney <ddaney.cavm@gmail.com>
 To:     linux-mips@linux-mips.org, ralf@linux-mips.org
-Cc:     linux-kernel@vger.kernel.org, David Daney <david.daney@cavium.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Pawel Moll <pawel.moll@arm.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ian Campbell <ijc+devicetree@hellion.org.uk>,
-        Kumar Gala <galak@codeaurora.org>, devicetree@vger.kernel.org,
-        Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 0/7] MIPS: Add support for OCTEON cn78xx and cn73xx.
-Date:   Thu,  4 Feb 2016 16:42:47 -0800
-Message-Id: <1454632974-7686-1-git-send-email-ddaney.cavm@gmail.com>
+Cc:     linux-kernel@vger.kernel.org, David Daney <david.daney@cavium.com>
+Subject: [PATCH 1/7] MIPS: OCTEON: Remove some code limiting NR_IRQS to 255
+Date:   Thu,  4 Feb 2016 16:42:48 -0800
+Message-Id: <1454632974-7686-2-git-send-email-ddaney.cavm@gmail.com>
 X-Mailer: git-send-email 1.7.11.7
+In-Reply-To: <1454632974-7686-1-git-send-email-ddaney.cavm@gmail.com>
+References: <1454632974-7686-1-git-send-email-ddaney.cavm@gmail.com>
 Return-Path: <ddaney.cavm@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51794
+X-archive-position: 51795
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -74,62 +71,90 @@ X-list: linux-mips
 
 From: David Daney <david.daney@cavium.com>
 
-The OCTEON III cn78xx and cn73xx family of SoCs has some architectural
-differences from previous OCTEON processors.
+Follow-on patches for OCTEON III will increase the number of irqs to
+potentially more than 256.
 
-Here we add support for the new interrupt controller and related IPI
-machinery.  This is enough to be able to boot an initrd based system
-to a command prompt on the serial console.
+Increase the width of the octeon_irq_ciu_to_irq to int to be able to
+handle this case.  Remove the hacky code that verified that u8 would
+not be overflowed.
 
-Still pending are support for: PCI, Watchdog, I2C, Sata, USB,
-Ethernet, etc.
+Signed-off-by: David Daney <david.daney@cavium.com>
+---
+ arch/mips/cavium-octeon/octeon-irq.c | 27 ++-------------------------
+ 1 file changed, 2 insertions(+), 25 deletions(-)
 
-This set depends on these two sets:
-http://www.linux-mips.org/archives/linux-mips/2016-02/msg00051.html
-http://www.linux-mips.org/archives/linux-mips/2016-02/msg00041.html
-
-All patches are to the MIPS tree except the device tree binding
-definition.  Probably they could be merged via Ralf's tree if there
-were no objections.
-
-David Daney (7):
-  MIPS: OCTEON: Remove some code limiting NR_IRQS to 255
-  MIPS: Select CONFIG_HANDLE_DOMAIN_IRQ and make it work.
-  MIPS: OCTEON: Add register definitions for cn73xx, cnf75xx and
-    cn78xx.
-  MIPS: OCTEON: Add model checking support for cn73xx, cnf75xx and
-    cn78xx
-  MIPS: OCTEON: Don't attempt to use nonexistent registers on OCTEON
-    III models.
-  MIPS: OCTEON: Add support for OCTEON III interrupt  controller.
-  MIPS: OCTEON: Add SMP support for OCTEON cn78xx et al.
-
- .../devicetree/bindings/mips/cavium/ciu3.txt       |  27 +
- arch/mips/Kconfig                                  |   1 +
- arch/mips/cavium-octeon/csrc-octeon.c              |  13 +-
- arch/mips/cavium-octeon/executive/octeon-model.c   |  82 ++-
- arch/mips/cavium-octeon/octeon-irq.c               | 678 ++++++++++++++++++++-
- arch/mips/cavium-octeon/setup.c                    |  36 +-
- arch/mips/cavium-octeon/smp.c                      | 145 ++++-
- arch/mips/include/asm/irq_regs.h                   |  10 +
- arch/mips/include/asm/octeon/cvmx-ciu3-defs.h      | 353 +++++++++++
- arch/mips/include/asm/octeon/cvmx-fpa-defs.h       |   1 +
- arch/mips/include/asm/octeon/cvmx-mio-defs.h       | 410 ++++++++++++-
- arch/mips/include/asm/octeon/cvmx.h                |  27 +-
- arch/mips/include/asm/octeon/octeon-feature.h      |  19 +-
- arch/mips/include/asm/octeon/octeon-model.h        |   5 +
- arch/mips/include/asm/octeon/octeon.h              |   8 +
- 15 files changed, 1733 insertions(+), 82 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/mips/cavium/ciu3.txt
- create mode 100644 arch/mips/include/asm/octeon/cvmx-ciu3-defs.h
-
-Cc: Rob Herring <robh+dt@kernel.org>
-Cc: Pawel Moll <pawel.moll@arm.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Ian Campbell <ijc+devicetree@hellion.org.uk>
-Cc: Kumar Gala <galak@codeaurora.org>
-Cc: devicetree@vger.kernel.org
-Cc: Thomas Gleixner <tglx@linutronix.de>
-
+diff --git a/arch/mips/cavium-octeon/octeon-irq.c b/arch/mips/cavium-octeon/octeon-irq.c
+index 4f9eb05..bc30d3a 100644
+--- a/arch/mips/cavium-octeon/octeon-irq.c
++++ b/arch/mips/cavium-octeon/octeon-irq.c
+@@ -3,7 +3,7 @@
+  * License.  See the file "COPYING" in the main directory of this archive
+  * for more details.
+  *
+- * Copyright (C) 2004-2014 Cavium, Inc.
++ * Copyright (C) 2004-2016 Cavium, Inc.
+  */
+ 
+ #include <linux/of_address.h>
+@@ -28,7 +28,7 @@ struct octeon_irq_ciu_domain_data {
+ 	int num_sum;  /* number of sum registers (2 or 3). */
+ };
+ 
+-static __read_mostly u8 octeon_irq_ciu_to_irq[8][64];
++static __read_mostly int octeon_irq_ciu_to_irq[8][64];
+ 
+ struct octeon_ciu_chip_data {
+ 	union {
+@@ -1158,16 +1158,6 @@ static struct irq_chip *octeon_irq_ciu_chip;
+ static struct irq_chip *octeon_irq_ciu_chip_edge;
+ static struct irq_chip *octeon_irq_gpio_chip;
+ 
+-static bool octeon_irq_virq_in_range(unsigned int virq)
+-{
+-	/* We cannot let it overflow the mapping array. */
+-	if (virq < (1ul << 8 * sizeof(octeon_irq_ciu_to_irq[0][0])))
+-		return true;
+-
+-	WARN_ONCE(true, "virq out of range %u.\n", virq);
+-	return false;
+-}
+-
+ static int octeon_irq_ciu_map(struct irq_domain *d,
+ 			      unsigned int virq, irq_hw_number_t hw)
+ {
+@@ -1176,13 +1166,6 @@ static int octeon_irq_ciu_map(struct irq_domain *d,
+ 	unsigned int bit = hw & 63;
+ 	struct octeon_irq_ciu_domain_data *dd = d->host_data;
+ 
+-	if (!octeon_irq_virq_in_range(virq))
+-		return -EINVAL;
+-
+-	/* Don't map irq if it is reserved for GPIO. */
+-	if (line == 0 && bit >= 16 && bit <32)
+-		return 0;
+-
+ 	if (line >= dd->num_sum || octeon_irq_ciu_to_irq[line][bit] != 0)
+ 		return -EINVAL;
+ 
+@@ -1215,9 +1198,6 @@ static int octeon_irq_gpio_map(struct irq_domain *d,
+ 	unsigned int line, bit;
+ 	int r;
+ 
+-	if (!octeon_irq_virq_in_range(virq))
+-		return -EINVAL;
+-
+ 	line = (hw + gpiod->base_hwirq) >> 6;
+ 	bit = (hw + gpiod->base_hwirq) & 63;
+ 	if (line > ARRAY_SIZE(octeon_irq_ciu_to_irq) ||
+@@ -1899,9 +1879,6 @@ static int octeon_irq_ciu2_map(struct irq_domain *d,
+ 	unsigned int line = hw >> 6;
+ 	unsigned int bit = hw & 63;
+ 
+-	if (!octeon_irq_virq_in_range(virq))
+-		return -EINVAL;
+-
+ 	/*
+ 	 * Don't map irq if it is reserved for GPIO.
+ 	 * (Line 7 are the GPIO lines.)
 -- 
 1.7.11.7

@@ -1,56 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 Feb 2016 23:57:43 +0100 (CET)
-Received: from mail-oi0-f47.google.com ([209.85.218.47]:36446 "EHLO
-        mail-oi0-f47.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012795AbcBEW5lZvAlk (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 5 Feb 2016 23:57:41 +0100
-Received: by mail-oi0-f47.google.com with SMTP id x21so50436574oix.3
-        for <linux-mips@linux-mips.org>; Fri, 05 Feb 2016 14:57:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        bh=p2Z5EctXvH6Z1pcey4wxpA3tTM1imMVYW9mftIY/TFg=;
-        b=BuSR8uFeQrYYt1llxMjlZLLvhS4LIy8dS0drCzfn8lZTg5yInHMMr061oEJhUzV9wc
-         ANK51Mk+hCv6PsYyl6UFzm7TkOUljBhgm4DsOjmZzldbaQhYhkehbZsZ8Mhy2qovlfcO
-         Iwc+wuFo4OTmigceaYIfte5kevUtFTcNMjg5g=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:in-reply-to:references:date
-         :message-id:subject:from:to:cc:content-type;
-        bh=p2Z5EctXvH6Z1pcey4wxpA3tTM1imMVYW9mftIY/TFg=;
-        b=BqW+/BN47GJn8dOr7DiqlBcbzd3AJV4BUk36kVAehk2CILUtdr6FqYHJgZP6WYq3xi
-         GlQI3R98lc2Dai1QuoTK/pSvc+abmTKB/V61Hss0pcexqBJMzrN/AqTzlXCcBcwT3bJz
-         sJbFNowK0qABPilC9cW5zLOVEJFB50ravGY2eS0YZLZ7Zx80xF1ABdSJlMuqyB/MBnfe
-         tA/NPHBA/G8ZN4grVRc55DSSSmINO1vGJisMEqdDbnKpZUeoVv+T6YHpRFTsNRT3RVkK
-         epIYA+43y+1RyRE6+7vQn2YRKQawADHhVicCdIB3w/AbbW4PFuO9d1mRtBEN1mW8Gi43
-         5bYQ==
-X-Gm-Message-State: AG10YOQ/FPQzQUEsc15e21JuLLrRsundQamaccY29WUKeu8ebr33IzvtiU1VBQgcy5eC0RIgDJXDecV7PETdNQBG
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 06 Feb 2016 15:24:40 +0100 (CET)
+Received: from m12-17.163.com ([220.181.12.17]:52254 "EHLO m12-17.163.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27010928AbcBFOYhN98As (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 6 Feb 2016 15:24:37 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+        s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=oQPml
+        OEAIMPEqK7gb+0HInc3B5AVq7mUmsB6xDdaTaw=; b=QORrM8sd8H4XflIX/ptXN
+        Rv2IuJ7TIla4kiacwlKUxrrPv9pvESzArJh5BP6Zpk2yYUrYvVijAxHtlQoikGqN
+        UVjj3qk6ehwmD+wejl87702gk47gL0cza8gi8aWFM3VgklCgAvg4jwkGqWJY9QxA
+        hJydeRrxZh9O7tJNeP0bKU=
+Received: from localhost.localdomain.localdomain (unknown [49.77.206.103])
+        by smtp13 (Coremail) with SMTP id EcCowAAXTnYfArZW3M2kAw--.40432S2;
+        Sat, 06 Feb 2016 22:24:33 +0800 (CST)
+From:   weiyj_lk@163.com
+To:     Ralf Baechle <ralf@linux-mips.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        John Crispin <blogic@openwrt.org>
+Cc:     Wei Yongjun <yongjun_wei@trendmicro.com.cn>,
+        linux-mips@linux-mips.org, linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] MIPS: pci-mt7620: Fix return value check in mt7620_pci_probe()
+Date:   Sat,  6 Feb 2016 22:24:19 +0800
+Message-Id: <1454768659-32720-1-git-send-email-weiyj_lk@163.com>
+X-Mailer: git-send-email 2.4.3
 MIME-Version: 1.0
-X-Received: by 10.202.56.6 with SMTP id f6mr10137306oia.135.1454713055692;
- Fri, 05 Feb 2016 14:57:35 -0800 (PST)
-Received: by 10.182.55.105 with HTTP; Fri, 5 Feb 2016 14:57:35 -0800 (PST)
-In-Reply-To: <1454366916-10925-2-git-send-email-joshua.henderson@microchip.com>
-References: <1454366916-10925-1-git-send-email-joshua.henderson@microchip.com>
-        <1454366916-10925-2-git-send-email-joshua.henderson@microchip.com>
-Date:   Fri, 5 Feb 2016 23:57:35 +0100
-Message-ID: <CACRpkdYfBNgX8sqOdUfU=qfJkm8MyO88c3PwiOVex=Gpu3s3gg@mail.gmail.com>
-Subject: Re: [PATCH v6 2/2] pinctrl: pinctrl-pic32: Add PIC32 pin control driver
-From:   Linus Walleij <linus.walleij@linaro.org>
-To:     Joshua Henderson <joshua.henderson@microchip.com>
-Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Linux MIPS <linux-mips@linux-mips.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <linus.walleij@linaro.org>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID: EcCowAAXTnYfArZW3M2kAw--.40432S2
+X-Coremail-Antispam: 1Uf129KBjvdXoW7Wr4kAFWDXryfuF1fuFyDWrg_yoWDKrgEv3
+        90krn7JrZ3JFyYqay2yry5CFy3Aa4qgr9Igr4vgay3Aryrury3KFW7ur9rAF4ru39xKrWq
+        9rZxGr47ur43AjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+        9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IUnxMaUUUUUU==
+X-Originating-IP: [49.77.206.103]
+X-CM-SenderInfo: pzhl5yxbonqiywtou0bp/1tbiowAH1lUL4agH2gAAs4
+Return-Path: <weiyj_lk@163.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51813
+X-archive-position: 51814
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linus.walleij@linaro.org
+X-original-sender: weiyj_lk@163.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -63,21 +54,35 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Feb 1, 2016 at 11:48 PM, Joshua Henderson
-<joshua.henderson@microchip.com> wrote:
+From: Wei Yongjun <yongjun_wei@trendmicro.com.cn>
 
-> Add a driver for the pin controller present on the Microchip PIC32
-> including the specific variant PIC32MZDA. This driver provides pinmux
-> and pinconfig operations as well as GPIO and IRQ chips for the GPIO
-> banks.
->
-> Signed-off-by: Joshua Henderson <joshua.henderson@microchip.com>
-> Cc: Ralf Baechle <ralf@linux-mips.org>
-> Cc: Linus Walleij <linus.walleij@linaro.org>
-> ---
-> Changes since v5:
+In case of error, the function devm_ioremap_resource() returns
+ERR_PTR() and never returns NULL. The NULL test in the return
+value check should be replaced with IS_ERR().
 
-Patch applied.
+Signed-off-by: Wei Yongjun <yongjun_wei@trendmicro.com.cn>
+---
+ arch/mips/pci/pci-mt7620.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-Yours,
-Linus Walleij
+diff --git a/arch/mips/pci/pci-mt7620.c b/arch/mips/pci/pci-mt7620.c
+index a009ee4..044c1cd 100644
+--- a/arch/mips/pci/pci-mt7620.c
++++ b/arch/mips/pci/pci-mt7620.c
+@@ -297,12 +297,12 @@ static int mt7620_pci_probe(struct platform_device *pdev)
+ 		return PTR_ERR(rstpcie0);
+ 
+ 	bridge_base = devm_ioremap_resource(&pdev->dev, bridge_res);
+-	if (!bridge_base)
+-		return -ENOMEM;
++	if (IS_ERR(bridge_base))
++		return PTR_ERR(bridge_base);
+ 
+ 	pcie_base = devm_ioremap_resource(&pdev->dev, pcie_res);
+-	if (!pcie_base)
+-		return -ENOMEM;
++	if (IS_ERR(pcie_base))
++		return PTR_ERR(pcie_base);
+ 
+ 	iomem_resource.start = 0;
+ 	iomem_resource.end = ~0;

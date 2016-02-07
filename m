@@ -1,56 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 06 Feb 2016 22:57:48 +0100 (CET)
-Received: from smtp05.smtpout.orange.fr ([80.12.242.127]:22685 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010804AbcBFV5qbrTEv (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 6 Feb 2016 22:57:46 +0100
-Received: from belgarion ([109.222.219.121])
-        by mwinf5d61 with ME
-        id F9xf1s00Y2dl3Th039xgJo; Sat, 06 Feb 2016 22:57:41 +0100
-X-ME-Helo: belgarion
-X-ME-Auth: amFyem1pay5yb2JlcnRAb3JhbmdlLmZy
-X-ME-Date: Sat, 06 Feb 2016 22:57:41 +0100
-X-ME-IP: 109.222.219.121
-From:   Robert Jarzmik <robert.jarzmik@free.fr>
-To:     Boris Brezillon <boris.brezillon@free-electrons.com>
-Cc:     David Woodhouse <dwmw2@infradead.org>,
-        Brian Norris <computersforpeace@gmail.com>,
-        linux-mtd@lists.infradead.org, Daniel Mack <daniel@zonque.org>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Kukjin Kim <kgene@kernel.org>,
-        Krzysztof Kozlowski <k.kozlowski@samsung.com>,
-        linux-samsung-soc@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        Josh Wu <josh.wu@atmel.com>,
-        Ezequiel Garcia <ezequiel.garcia@free-electrons.com>,
-        Maxime Ripard <maxime.ripard@free-electrons.com>,
-        Chen-Yu Tsai <wens@csie.org>, linux-sunxi@googlegroups.com,
-        Stefan Agner <stefan@agner.ch>,
-        Kyungmin Park <kyungmin.park@samsung.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        devel@driverdev.osuosl.org, linux-kernel@vger.kernel.org,
-        punnaiah choudary kalluri <punnaia@xilinx.com>,
-        Priit Laes <plaes@plaes.org>
-Subject: Re: [PATCH v2 20/51] mtd: docg3: switch to mtd_ooblayout_ops
-References: <1454580434-32078-1-git-send-email-boris.brezillon@free-electrons.com>
-        <1454580434-32078-21-git-send-email-boris.brezillon@free-electrons.com>
-X-URL:  http://belgarath.falguerolles.org/
-Date:   Sat, 06 Feb 2016 22:57:39 +0100
-In-Reply-To: <1454580434-32078-21-git-send-email-boris.brezillon@free-electrons.com>
-        (Boris Brezillon's message of "Thu, 4 Feb 2016 11:06:43 +0100")
-Message-ID: <87y4ax33jg.fsf@belgarion.home>
-User-Agent: Gnus/5.130008 (Ma Gnus v0.8) Emacs/24.4 (gnu/linux)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 07 Feb 2016 08:04:45 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:40565 "EHLO
+        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27009323AbcBGHEnYnYT7 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 7 Feb 2016 08:04:43 +0100
+Received: from localhost (c-50-170-35-168.hsd1.wa.comcast.net [50.170.35.168])
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 285A2E83;
+        Sun,  7 Feb 2016 07:04:37 +0000 (UTC)
+Date:   Sat, 6 Feb 2016 23:04:36 -0800
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Joshua Henderson <joshua.henderson@microchip.com>
+Cc:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        ralf@linux-mips.org,
+        Andrei Pistirica <andrei.pistirica@microchip.com>,
+        Jiri Slaby <jslaby@suse.com>, linux-serial@vger.kernel.org,
+        linux-api@vger.kernel.org
+Subject: Re: [PATCH v5 10/14] serial: pic32_uart: Add PIC32 UART driver
+Message-ID: <20160207070436.GA11518@kroah.com>
+References: <1452734299-460-1-git-send-email-joshua.henderson@microchip.com>
+ <1452734299-460-11-git-send-email-joshua.henderson@microchip.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-Return-Path: <robert.jarzmik@free.fr>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1452734299-460-11-git-send-email-joshua.henderson@microchip.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51818
+X-archive-position: 51819
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: robert.jarzmik@free.fr
+X-original-sender: gregkh@linuxfoundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -63,15 +44,15 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Boris Brezillon <boris.brezillon@free-electrons.com> writes:
+On Wed, Jan 13, 2016 at 06:15:43PM -0700, Joshua Henderson wrote:
+> From: Andrei Pistirica <andrei.pistirica@microchip.com>
+> 
+> This adds UART and a serial console driver for Microchip PIC32 class
+> devices.
+> 
+> Signed-off-by: Andrei Pistirica <andrei.pistirica@microchip.com>
+> Signed-off-by: Joshua Henderson <joshua.henderson@microchip.com>
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> ---
 
-> Replace the nand_ecclayout definition by the equivalent mtd_ooblayout_ops
-> definition.
->
-> Signed-off-by: Boris Brezillon <boris.brezillon@free-electrons.com>
-Acked-by: Robert Jarzmik <robert.jarzmik@free.fr>
-
-Cheers.
-
---
-Robert
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>

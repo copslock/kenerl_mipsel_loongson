@@ -1,47 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 08 Feb 2016 23:26:58 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:35094 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27012226AbcBHW04bPCcq (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 8 Feb 2016 23:26:56 +0100
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Websense Email Security Gateway with ESMTPS id 7ED0E419317F5;
-        Mon,  8 Feb 2016 22:26:46 +0000 (GMT)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
- 14.3.266.1; Mon, 8 Feb 2016 22:26:50 +0000
-Received: from [10.20.79.140] (10.20.79.140) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Mon, 8 Feb
- 2016 22:26:49 +0000
-Subject: Re: [PATCH] MIPS: Always page align TASK_SIZE
-To:     David Daney <ddaney@caviumnetworks.com>
-References: <1454954723-24887-1-git-send-email-harvey.hunt@imgtec.com>
- <56B8DA56.9020108@caviumnetworks.com> <56B8DB2D.3070604@imgtec.com>
- <56B90A3E.7000507@gentoo.org> <56B90D30.5020904@imgtec.com>
- <56B911D1.2090402@caviumnetworks.com>
-CC:     Joshua Kinard <kumba@gentoo.org>, <linux-mips@linux-mips.org>,
-        <ralf@linux-mips.org>, David Daney <david.daney@cavium.com>,
-        Paul Burton <paul.burton@imgtec.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        <linux-kernel@vger.kernel.org>
-From:   Harvey Hunt <harvey.hunt@imgtec.com>
-Message-ID: <56B91623.4020408@imgtec.com>
-Date:   Mon, 8 Feb 2016 14:26:43 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.5.1
-MIME-Version: 1.0
-In-Reply-To: <56B911D1.2090402@caviumnetworks.com>
-Content-Type: text/plain; charset="windows-1252"; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Feb 2016 00:36:44 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:59525 "EHLO
+        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012296AbcBHXgnXJIg8 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 9 Feb 2016 00:36:43 +0100
+Received: from akpm3.mtv.corp.google.com (unknown [104.132.0.65])
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 3D4D0E53;
+        Mon,  8 Feb 2016 23:36:36 +0000 (UTC)
+Date:   Mon, 8 Feb 2016 15:36:35 -0800
+From:   Andrew Morton <akpm@linux-foundation.org>
+To:     David Decotigny <ddecotig@gmail.com>
+Cc:     "David S. Miller" <davem@davemloft.net>,
+        Ben Hutchings <ben@decadent.org.uk>,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        linux-api@vger.kernel.org, linux-mips@linux-mips.org,
+        fcoe-devel@open-fcoe.org, Tejun Heo <tj@kernel.org>,
+        Eric Dumazet <edumazet@google.com>,
+        Eugenia Emantayev <eugenia@mellanox.co.il>,
+        Or Gerlitz <ogerlitz@mellanox.com>,
+        Ido Shamay <idos@mellanox.com>, Joe Perches <joe@perches.com>,
+        Saeed Mahameed <saeedm@mellanox.com>,
+        Govindarajulu Varadarajan <_govind@gmx.com>,
+        Venkata Duvvuru <VenkatKumar.Duvvuru@Emulex.Com>,
+        Jeff Kirsher <jeffrey.t.kirsher@intel.com>,
+        Pravin B Shelar <pshelar@nicira.com>,
+        Ed Swierk <eswierk@skyportsystems.com>,
+        Robert Love <robert.w.love@intel.com>,
+        "James E.J. Bottomley" <JBottomley@parallels.com>,
+        Yuval Mintz <Yuval.Mintz@qlogic.com>,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        David Decotigny <decot@googlers.com>
+Subject: Re: [PATCH net-next v7 01/19] lib/bitmap.c: conversion routines
+ to/from u32 array
+Message-Id: <20160208153635.67df5ac2576138088a859087@linux-foundation.org>
+In-Reply-To: <1454893743-6285-2-git-send-email-ddecotig@gmail.com>
+References: <1454893743-6285-1-git-send-email-ddecotig@gmail.com>
+        <1454893743-6285-2-git-send-email-ddecotig@gmail.com>
+X-Mailer: Sylpheed 3.4.1 (GTK+ 2.24.23; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.20.79.140]
-Return-Path: <Harvey.Hunt@imgtec.com>
+Return-Path: <akpm@linux-foundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51872
+X-archive-position: 51873
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: harvey.hunt@imgtec.com
+X-original-sender: akpm@linux-foundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,122 +60,53 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+On Sun,  7 Feb 2016 17:08:45 -0800 David Decotigny <ddecotig@gmail.com> wrote:
 
+> From: David Decotigny <decot@googlers.com>
+> 
+> Aimed at transferring bitmaps to/from user-space in a 32/64-bit agnostic
+> way.
+> 
+> Tested:
+>   unit tests (next patch) on qemu i386, x86_64, ppc, ppc64 BE and LE,
+>   ARM.
+> 
+> @@ -1060,6 +1062,90 @@ int bitmap_allocate_region(unsigned long *bitmap, unsigned int pos, int order)
+>  EXPORT_SYMBOL(bitmap_allocate_region);
+>  
+>  /**
+> + * bitmap_from_u32array - copy the contents of a u32 array of bits to bitmap
+> + *	@bitmap: array of unsigned longs, the destination bitmap, non NULL
+> + *	@nbits: number of bits in @bitmap
+> + *	@buf: array of u32 (in host byte order), the source bitmap, non NULL
+> + *	@nwords: number of u32 words in @buf
+> + *
+> + * copy min(nbits, 32*nwords) bits from @buf to @bitmap, remaining
+> + * bits between nword and nbits in @bitmap (if any) are cleared. In
+> + * last word of @bitmap, the bits beyond nbits (if any) are kept
+> + * unchanged.
+> + */
 
-On 02/08/2016 02:08 PM, David Daney wrote:
-> On 02/08/2016 01:48 PM, Harvey Hunt wrote:
->> Hi Joshua,
->>
->> On 02/08/2016 01:35 PM, Joshua Kinard wrote:
->>> On 02/08/2016 13:15, Harvey Hunt wrote:
->>>> Hi David,
->>>>
->>>> On 02/08/2016 10:11 AM, David Daney wrote:
->>>>> On 02/08/2016 10:05 AM, Harvey Hunt wrote:
->>>>>> STACK_TOP_MAX is aligned on a 32k boundary. When __bprm_mm_init()
->>>>>> creates an
->>>>>> initial stack for a process, it does so using STACK_TOP_MAX as the
->>>>>> end
->>>>>> of the
->>>>>> vma. A process's arguments and environment information are placed on
->>>>>> the stack
->>>>>> and then the stack is relocated and aligned on a page boundary. When
->>>>>> using a 32
->>>>>> bit kernel with 64k pages, the relocated stack has the process's args
->>>>>> erroneously stored in the middle of the stack. This means that
->>>>>> processes
->>>>>> receive no arguments or environment variables, preventing them from
->>>>>> running
->>>>>> correctly.
->>>>>>
->>>>>> Fix this by aligning TASK_SIZE on a page boundary.
->>>>>>
->>>>>> Signed-off-by: Harvey Hunt <harvey.hunt@imgtec.com>
->>>>>> Cc: David Daney <david.daney@cavium.com>
->>>>>> Cc: Paul Burton <paul.burton@imgtec.com>
->>>>>> Cc: James Hogan <james.hogan@imgtec.com>
->>>>>> Cc: linux-kernel@vger.kernel.org
->>>>>> ---
->>>>>>    arch/mips/include/asm/processor.h | 6 +++---
->>>>>>    1 file changed, 3 insertions(+), 3 deletions(-)
->>>>>>
->>>>>> diff --git a/arch/mips/include/asm/processor.h
->>>>>> b/arch/mips/include/asm/processor.h
->>>>>> index 3f832c3..b618b40 100644
->>>>>> --- a/arch/mips/include/asm/processor.h
->>>>>> +++ b/arch/mips/include/asm/processor.h
->>>>>> @@ -39,13 +39,13 @@ extern unsigned int vced_count, vcei_count;
->>>>>>    #ifdef CONFIG_32BIT
->>>>>>    #ifdef CONFIG_KVM_GUEST
->>>>>>    /* User space process size is limited to 1GB in KVM Guest Mode */
->>>>>> -#define TASK_SIZE    0x3fff8000UL
->>>>>> +#define TASK_SIZE    (0x40000000UL - PAGE_SIZE)
->>>>>>    #else
->>>>>>    /*
->>>>>>     * User space process size: 2GB. This is hardcoded into a few
->>>>>> places,
->>>>>>     * so don't change it unless you know what you are doing.
->>>>>>     */
->>>>>> -#define TASK_SIZE    0x7fff8000UL
->>>>>> +#define TASK_SIZE    (0x7fff8000UL & PAGE_SIZE)
->>>>>
->>>>> Can you check your math here.  This doesn't seem correct.
->>>>
->>>> Thanks for spotting that - it should have been:
->>>>
->>>> (0x7fff8000UL & PAGE_MASK)
->>>>
->>>> I'll do a v2 now.
->>>>
->>>
->>> FYI, TASK_SIZE was recently changed to 0x80000000UL in commit
->>> 7f8ca9cb1ed3 on
->>> the linux-mips.org tree.
->>
->> Thanks, I'll rebase.
->
-> You may find that in rebasing, suddenly you have a completely empty patch!
->
+This will leave the caller not knowing how many valid bits are actually
+present in the resulting bitmap.  To determine that, the caller will
+need to perform (duplicated) math on `nbits' and `nwords'.
 
-Yeah, I noticed that. I'll just drop this patch...
+> +void bitmap_from_u32array(unsigned long *bitmap, unsigned int nbits,
+> +			  const u32 *buf, unsigned int nwords)
 
-Thanks,
+So how about we make this return the number of valid bits in *bitmap?
 
-Harvey
+> +/**
+> + * bitmap_to_u32array - copy the contents of bitmap to a u32 array of bits
+> + *	@buf: array of u32 (in host byte order), the dest bitmap, non NULL
+> + *	@nwords: number of u32 words in @buf
+> + *	@bitmap: array of unsigned longs, the source bitmap, non NULL
+> + *	@nbits: number of bits in @bitmap
+> + *
+> + * copy min(nbits, 32*nwords) bits from @bitmap to @buf. Remaining
+> + * bits after nbits in @buf (if any) are cleared.
+> + */
+> +void bitmap_to_u32array(u32 *buf, unsigned int nwords,
+> +			const unsigned long *bitmap, unsigned int nbits)
 
->
->>
->>>
->>>
->>>>>
->>>>>>    #endif
->>>>>>
->>>>>>    #define STACK_TOP_MAX    TASK_SIZE
->>>>>> @@ -62,7 +62,7 @@ extern unsigned int vced_count, vcei_count;
->>>>>>     * support 16TB; the architectural reserve for future expansion is
->>>>>>     * 8192EB ...
->>>>>>     */
->>>>>> -#define TASK_SIZE32    0x7fff8000UL
->>>>>> +#define TASK_SIZE32    (0x7fff8000UL & PAGE_SIZE)
->>>>>
->>>>> Same here.
->>>>
->>>> As above.
->>>>
->>>>>
->>>>>>    #define TASK_SIZE64    0x10000000000UL
->>>>>>    #define TASK_SIZE (test_thread_flag(TIF_32BIT_ADDR) ?
->>>>>> TASK_SIZE32 :
->>>>>> TASK_SIZE64)
->>>>>>    #define STACK_TOP_MAX    TASK_SIZE64
->>>>>>
->>>>>
->>>>
->>>> Thanks,
->>>>
->>>> Harvey
->>>>
->>>>
->>>
->>>
->
+Ditto.

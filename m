@@ -1,17 +1,17 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 08 Feb 2016 18:30:11 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.136]:37633 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 08 Feb 2016 18:30:52 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.136]:37752 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27012154AbcBHRaEnZjzY (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 8 Feb 2016 18:30:04 +0100
+        id S27012163AbcBHRatPzO5Y (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 8 Feb 2016 18:30:49 +0100
 Received: from mail.kernel.org (localhost [127.0.0.1])
-        by mail.kernel.org (Postfix) with ESMTP id 068E72024D;
-        Mon,  8 Feb 2016 17:30:01 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTP id D65C7201EC;
+        Mon,  8 Feb 2016 17:30:47 +0000 (UTC)
 Received: from rob-hp-laptop (72-48-98-129.dyn.grandenetworks.net [72.48.98.129])
         (using TLSv1.2 with cipher AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 2C48E2014A;
-        Mon,  8 Feb 2016 17:29:59 +0000 (UTC)
-Date:   Mon, 8 Feb 2016 11:29:57 -0600
+        by mail.kernel.org (Postfix) with ESMTPSA id D24492014A;
+        Mon,  8 Feb 2016 17:30:45 +0000 (UTC)
+Date:   Mon, 8 Feb 2016 11:30:43 -0600
 From:   Rob Herring <robh@kernel.org>
 To:     Paul Burton <paul.burton@imgtec.com>
 Cc:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
@@ -27,22 +27,22 @@ Cc:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
         Pawel Moll <pawel.moll@arm.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Mark Rutland <mark.rutland@arm.com>
-Subject: Re: [PATCH v2 01/15] dt-bindings: ascii-lcd: Document a binding for
- simple ASCII LCDs
-Message-ID: <20160208172957.GA31126@rob-hp-laptop>
+Subject: Re: [PATCH v2 14/15] dt-bindings: mips: img,boston: Document
+ img,boston binding
+Message-ID: <20160208173043.GA348@rob-hp-laptop>
 References: <1454499045-5020-1-git-send-email-paul.burton@imgtec.com>
- <1454499045-5020-2-git-send-email-paul.burton@imgtec.com>
+ <1454499045-5020-15-git-send-email-paul.burton@imgtec.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1454499045-5020-2-git-send-email-paul.burton@imgtec.com>
+In-Reply-To: <1454499045-5020-15-git-send-email-paul.burton@imgtec.com>
 User-Agent: Mutt/1.5.23 (2014-03-12)
 X-Virus-Scanned: ClamAV using ClamSMTP
 Return-Path: <robh@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51857
+X-archive-position: 51858
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -59,19 +59,18 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Feb 03, 2016 at 11:30:31AM +0000, Paul Burton wrote:
-> Add documentation for a devicetree binding for simple memory-mapped
-> ASCII LCD displays, such as those found on the Imagination Technologies
-> Boston & Malta development boards.
+On Wed, Feb 03, 2016 at 11:30:44AM +0000, Paul Burton wrote:
+> Add documentation for the simple img,boston devicetree binding & the
+> boot protocol used to pass the devicetree to the kernel.
 > 
 > Signed-off-by: Paul Burton <paul.burton@imgtec.com>
 > ---
 > 
 > Changes in v2: None
 > 
->  Documentation/devicetree/bindings/ascii-lcd.txt | 10 ++++++++++
+>  Documentation/devicetree/bindings/mips/img/boston.txt | 15 +++++++++++++++
+>  MAINTAINERS                                           |  5 +++++
+>  2 files changed, 20 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/mips/img/boston.txt
 
-Given this is specific to some IT block, then it should not have a 
-generic name. Otherwise, the binding looks fine.
-
-Rob
+Acked-by: Rob Herring <robh@kernel.org>

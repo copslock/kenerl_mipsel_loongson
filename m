@@ -1,30 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 08 Feb 2016 19:44:45 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:3824 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 08 Feb 2016 19:45:02 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:4714 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27012185AbcBHSoMZuU4b (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 8 Feb 2016 19:44:12 +0100
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Websense Email Security Gateway with ESMTPS id 2F55E103708C0;
+        with ESMTP id S27012202AbcBHSoNZqcrb (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 8 Feb 2016 19:44:13 +0100
+Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
+        by Websense Email Security Gateway with ESMTPS id 8B09847D7F22B;
         Mon,  8 Feb 2016 18:44:03 +0000 (GMT)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- HHMAIL01.hh.imgtec.org (10.100.10.19) with Microsoft SMTP Server (TLS) id
+ hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
  14.3.266.1; Mon, 8 Feb 2016 18:44:06 +0000
 Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
  LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.210.2; Mon, 8 Feb 2016 18:44:05 +0000
+ 14.3.210.2; Mon, 8 Feb 2016 18:44:06 +0000
 From:   James Hogan <james.hogan@imgtec.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
 CC:     <linux-kernel@vger.kernel.org>,
         Christopher Ferris <cferris@google.com>,
         James Hogan <james.hogan@imgtec.com>,
-        Arnd Bergmann <arnd@arndb.de>, "Petr Malat" <oss@malat.biz>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        <linux-arch@vger.kernel.org>, <linux-mips@linux-mips.org>,
-        <linux-ia64@vger.kernel.org>, <stable@vger.kernel.org>
-Subject: [PATCH 2/3] signal: Move generic copy_siginfo() to signal.h
-Date:   Mon, 8 Feb 2016 18:43:50 +0000
-Message-ID: <1454957031-20138-3-git-send-email-james.hogan@imgtec.com>
+        Petr Malat <oss@malat.biz>, <linux-mips@linux-mips.org>,
+        <stable@vger.kernel.org>
+Subject: [PATCH 3/3] MIPS: Fix uapi include in exported asm/siginfo.h
+Date:   Mon, 8 Feb 2016 18:43:51 +0000
+Message-ID: <1454957031-20138-4-git-send-email-james.hogan@imgtec.com>
 X-Mailer: git-send-email 2.4.10
 In-Reply-To: <1454957031-20138-1-git-send-email-james.hogan@imgtec.com>
 References: <1454957031-20138-1-git-send-email-james.hogan@imgtec.com>
@@ -35,7 +32,7 @@ Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51866
+X-archive-position: 51867
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -52,93 +49,49 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The generic copy_siginfo() is currently defined in
-asm-generic/siginfo.h, after including uapi/asm-generic/siginfo.h which
-defines the generic struct siginfo. However this makes it awkward for an
-architecture to use it if it has to define its own struct siginfo (e.g.
-MIPS and potentially IA64), since it means that asm-generic/siginfo.h
-can only be included after defining the arch-specific siginfo, which may
-be problematic if the arch-specific definition needs definitions from
-uapi/asm-generic/siginfo.h.
+Since commit 8cb48fe169dd ("MIPS: Provide correct siginfo_t.si_stime"),
+MIPS' uapi/asm/siginfo.h has included uapi/asm-generic/siginfo.h
+directly before defining MIPS' struct siginfo, in order to get the
+necessary definitions needed for the siginfo struct without the generic
+copy_siginfo() hitting compiler errors due to struct siginfo not yet
+being defined.
 
-It is possible to work around this by first including
-uapi/asm-generic/siginfo.h to get the constants before defining the
-arch-specific siginfo, and include asm-generic/siginfo.h after. However
-uapi headers can't be included by other uapi headers, so that first
-include has to be in an ifdef __kernel__, with the non __kernel__ case
-including the non-UAPI header instead.
+Now that the generic copy_siginfo() is moved out to linux/signal.h we
+can safely include asm-generic/siginfo.h before defining the MIPS
+specific struct siginfo, which avoids the uapi/ include as well as
+breakage due to generic copy_siginfo() being defined before struct
+siginfo.
 
-Instead of that mess, move the generic copy_siginfo() definition into
-linux/signal.h, which allows an arch-specific uapi/asm/siginfo.h to
-include asm-generic/siginfo.h and define the arch-specific siginfo, and
-for the generic copy_siginfo() to see that arch-specific definition.
-
+Reported-by: Christopher Ferris <cferris@google.com>
+Fixes: 8cb48fe169dd ("MIPS: Provide correct siginfo_t.si_stime")
 Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Arnd Bergmann <arnd@arndb.de>
 Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: Petr Malat <oss@malat.biz>
-Cc: Tony Luck <tony.luck@intel.com>
-Cc: Fenghua Yu <fenghua.yu@intel.com>
-Cc: linux-arch@vger.kernel.org
 Cc: linux-mips@linux-mips.org
-Cc: linux-ia64@vger.kernel.org
 Cc: <stable@vger.kernel.org> # 4.0-
 ---
- include/asm-generic/siginfo.h | 15 ---------------
- include/linux/signal.h        | 15 +++++++++++++++
- 2 files changed, 15 insertions(+), 15 deletions(-)
+ arch/mips/include/uapi/asm/siginfo.h | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/include/asm-generic/siginfo.h b/include/asm-generic/siginfo.h
-index 3d1a3af5cf59..a2508a8f9a9c 100644
---- a/include/asm-generic/siginfo.h
-+++ b/include/asm-generic/siginfo.h
-@@ -17,21 +17,6 @@
- struct siginfo;
- void do_schedule_next_timer(struct siginfo *info);
+diff --git a/arch/mips/include/uapi/asm/siginfo.h b/arch/mips/include/uapi/asm/siginfo.h
+index 03ec1090f781..e2b5337e840f 100644
+--- a/arch/mips/include/uapi/asm/siginfo.h
++++ b/arch/mips/include/uapi/asm/siginfo.h
+@@ -28,7 +28,7 @@
  
--#ifndef HAVE_ARCH_COPY_SIGINFO
--
--#include <linux/string.h>
--
--static inline void copy_siginfo(struct siginfo *to, struct siginfo *from)
--{
--	if (from->si_code < 0)
--		memcpy(to, from, sizeof(*to));
--	else
--		/* _sigchld is currently the largest know union member */
--		memcpy(to, from, __ARCH_SI_PREAMBLE_SIZE + sizeof(from->_sifields._sigchld));
--}
--
--#endif
--
- extern int copy_siginfo_to_user(struct siginfo __user *to, const struct siginfo *from);
+ #define __ARCH_SIGSYS
  
- #endif
-diff --git a/include/linux/signal.h b/include/linux/signal.h
-index 92557bbce7e7..d80259afb9e5 100644
---- a/include/linux/signal.h
-+++ b/include/linux/signal.h
-@@ -28,6 +28,21 @@ struct sigpending {
- 	sigset_t signal;
- };
+-#include <uapi/asm-generic/siginfo.h>
++#include <asm-generic/siginfo.h>
  
-+#ifndef HAVE_ARCH_COPY_SIGINFO
-+
-+#include <linux/string.h>
-+
-+static inline void copy_siginfo(struct siginfo *to, struct siginfo *from)
-+{
-+	if (from->si_code < 0)
-+		memcpy(to, from, sizeof(*to));
-+	else
-+		/* _sigchld is currently the largest know union member */
-+		memcpy(to, from, __ARCH_SI_PREAMBLE_SIZE + sizeof(from->_sifields._sigchld));
-+}
-+
-+#endif
-+
- /*
-  * Define some primitives to manipulate sigset_t.
-  */
+ /* We can't use generic siginfo_t, because our si_code and si_errno are swapped */
+ typedef struct siginfo {
+@@ -118,6 +118,4 @@ typedef struct siginfo {
+ #define SI_TIMER __SI_CODE(__SI_TIMER, -3) /* sent by timer expiration */
+ #define SI_MESGQ __SI_CODE(__SI_MESGQ, -4) /* sent by real time mesq state change */
+ 
+-#include <asm-generic/siginfo.h>
+-
+ #endif /* _UAPI_ASM_SIGINFO_H */
 -- 
 2.4.10

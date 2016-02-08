@@ -1,38 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 08 Feb 2016 02:09:40 +0100 (CET)
-Received: from mail-pf0-f196.google.com ([209.85.192.196]:34841 "EHLO
-        mail-pf0-f196.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011680AbcBHBJhjsTfT (ORCPT
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 08 Feb 2016 02:09:55 +0100 (CET)
+Received: from mail-pf0-f193.google.com ([209.85.192.193]:36351 "EHLO
+        mail-pf0-f193.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011674AbcBHBJhkw0FT (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Mon, 8 Feb 2016 02:09:37 +0100
-Received: by mail-pf0-f196.google.com with SMTP id 66so7997139pfe.2
+Received: by mail-pf0-f193.google.com with SMTP id e127so490656pfe.3
         for <linux-mips@linux-mips.org>; Sun, 07 Feb 2016 17:09:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=W91fS6/kCTvxpN9oUaegO1BUr1Z/FxCHfX020UmvNOo=;
-        b=Bay02PUj83sZXrMA138bCWAHvbVHtyq1HNvX0pJVYjusjIBhaXGk5sNmXKHyFKc+1z
-         vkrfZdqIsd231JbGfYPQlhmePwW6DdWnx7IBhAhAGjAJPvTttJ/KUDhH8Xv7n1AjwF44
-         Kj0X0lDKz3hcFLn8xa9FE27/xXg0pr4GB8kAZnzN81Jwcq6Y/V3z0AMbUtagGzVqiXEt
-         U1irQme5bEB1CleAWNg9qvdG+S6mses2FovCVRBAHC1asnfk6ok+YAWrYsUqR88AxpHQ
-         uI7fmnjHiQ/rRwWFLfvVXo+7D+HsZfLrXa5Zgg8QDzZ81zjIOoGKfQ0swBCcCvYsUsKt
-         XJqA==
+        bh=5rvRaX+snvraiepduGOG338j05vEbZuIxfAxKpZqoz4=;
+        b=ryxq73x63xqrLUS+zbqeOb3MwPt+LH349jHU39Wm377yCZlzigDq2cqGe2pVn8p4Sq
+         0Wj+sG+g+S+3CPuD9DmxadaQUWmB3X44m7hEEMQMNB6z3Ah/uB2a8/McC7e97yqrjgZS
+         JIJkK3nt6s5F5/Es/+AeCS9UaOjH+bHbNuJENdhSKjjTBKLmtzN28c0xy6RFSsDRh+S1
+         ++5eNrW+qGM9WhVptU1Dz2/5IK7loXrobENF2/5jURWXNgdGq0qQfpULRpyLgsCe2kmi
+         6h68OQG7KWJzB1UivQsEvZvggM8QmyWwiNFcj2nbQ2rDIaoNaclJ8U27KuFonor19Dep
+         PHDQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=W91fS6/kCTvxpN9oUaegO1BUr1Z/FxCHfX020UmvNOo=;
-        b=ZTzJwNy9s0dIFbUos4CjCpUc0aZT8qKFgSXAX8OgvsFB4rTLJPIeUuzXw/a7wLj2Yc
-         6xhgDdJGtIwTvg/tkAKVBOdRhaSzIad2beclnlc83dscC1Vdz/auSWOSmgkX9L/bPA3/
-         +TvGRymw+L7zGrGoHZVN85D0J52EgXkSg78F07D8dW0kpAiyWdAbmR5cuuplG3y5I2bx
-         Zk2fCuk/lUpgFsqsZ6vkZ6DwRQ960E8Z/9X6TTfQ0CzVkIYcq8S8mu+JenTyFCIT4Rtc
-         eyyi9m6acq/69WrAz0HgDpgrWfMyaN7ACPgytK6sb2OZTg80dImvFEd75+z34S9iDzAT
-         V6mA==
-X-Gm-Message-State: AG10YOThfj5XaUi8NLAkCfOaWubS4/IZwRqX8v6ANsy4GvsqdKzW9tNO9vaY8psmju/y8A==
-X-Received: by 10.98.72.133 with SMTP id q5mr38894366pfi.166.1454893768581;
-        Sun, 07 Feb 2016 17:09:28 -0800 (PST)
+        bh=5rvRaX+snvraiepduGOG338j05vEbZuIxfAxKpZqoz4=;
+        b=mgiF0MpZ+C95OkckXBzDFaM0hXXP44cU1ogLtaSyPmJXEjtk00BxtN5aQwYzQsa+0e
+         C398YgQV6WfrTgdTdRSfcKYRCnj0VCAejX8X4D7K67+aDnZKF2O41PzYH4rFnK+kwq+g
+         E9iv7wH5oP4cCpagiwW2VpKM7YbwtzoRmxYMpdyNhve58uG2tv6Tdx55D/hnU/1SQuOs
+         7V7VpFX861sUSSpwXC6rY5sIyo8CNacJAat4GdeX5ZI6c/A3uw97iI/p2LNDvO3AW6jH
+         NoUEc5D1yy8rGdyT6CjiDZX5hFrQ1qDonnxD62oCLnXrOsFHTncTlkpnCpFZzHHIC1JZ
+         939w==
+X-Gm-Message-State: AG10YOSsOKGNqOI4jhAlIbKS6/NTSMgYIhCxUgOdeOjrJS2287eJenxQvcXMPipXDsDQNA==
+X-Received: by 10.98.14.69 with SMTP id w66mr38727091pfi.144.1454893767372;
+        Sun, 07 Feb 2016 17:09:27 -0800 (PST)
 Received: from decotigny.mtv.corp.google.com ([172.18.64.159])
-        by smtp.gmail.com with ESMTPSA id wt2sm569211pac.48.2016.02.07.17.09.27
+        by smtp.gmail.com with ESMTPSA id wt2sm569211pac.48.2016.02.07.17.09.26
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Sun, 07 Feb 2016 17:09:28 -0800 (PST)
+        Sun, 07 Feb 2016 17:09:26 -0800 (PST)
 From:   David Decotigny <ddecotig@gmail.com>
 To:     "David S. Miller" <davem@davemloft.net>,
         Ben Hutchings <ben@decadent.org.uk>,
@@ -56,9 +56,9 @@ Cc:     Eric Dumazet <edumazet@google.com>,
         Yuval Mintz <Yuval.Mintz@qlogic.com>,
         Rasmus Villemoes <linux@rasmusvillemoes.dk>,
         David Decotigny <decot@googlers.com>
-Subject: [PATCH net-next v7 04/19] net: usnic: use __ethtool_get_settings
-Date:   Sun,  7 Feb 2016 17:08:48 -0800
-Message-Id: <1454893743-6285-5-git-send-email-ddecotig@gmail.com>
+Subject: [PATCH net-next v7 03/19] net: usnic: remove unused call to ethtool_ops::get_settings
+Date:   Sun,  7 Feb 2016 17:08:47 -0800
+Message-Id: <1454893743-6285-4-git-send-email-ddecotig@gmail.com>
 X-Mailer: git-send-email 2.7.0.rc3.207.g0ac5344
 In-Reply-To: <1454893743-6285-1-git-send-email-ddecotig@gmail.com>
 References: <1454893743-6285-1-git-send-email-ddecotig@gmail.com>
@@ -66,7 +66,7 @@ Return-Path: <ddecotig@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51822
+X-archive-position: 51823
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -87,21 +87,28 @@ From: David Decotigny <decot@googlers.com>
 
 Signed-off-by: David Decotigny <decot@googlers.com>
 ---
- drivers/infiniband/hw/usnic/usnic_ib_verbs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/infiniband/hw/usnic/usnic_ib_verbs.c | 2 --
+ 1 file changed, 2 deletions(-)
 
 diff --git a/drivers/infiniband/hw/usnic/usnic_ib_verbs.c b/drivers/infiniband/hw/usnic/usnic_ib_verbs.c
-index ea003ec..1cf19a3 100644
+index 6cdb4d2..ea003ec 100644
 --- a/drivers/infiniband/hw/usnic/usnic_ib_verbs.c
 +++ b/drivers/infiniband/hw/usnic/usnic_ib_verbs.c
-@@ -329,7 +329,7 @@ int usnic_ib_query_port(struct ib_device *ibdev, u8 port,
+@@ -269,7 +269,6 @@ int usnic_ib_query_device(struct ib_device *ibdev,
+ 	struct usnic_ib_dev *us_ibdev = to_usdev(ibdev);
+ 	union ib_gid gid;
+ 	struct ethtool_drvinfo info;
+-	struct ethtool_cmd cmd;
+ 	int qp_per_vf;
+ 
  	usnic_dbg("\n");
+@@ -278,7 +277,6 @@ int usnic_ib_query_device(struct ib_device *ibdev,
  
  	mutex_lock(&us_ibdev->usdev_lock);
+ 	us_ibdev->netdev->ethtool_ops->get_drvinfo(us_ibdev->netdev, &info);
 -	us_ibdev->netdev->ethtool_ops->get_settings(us_ibdev->netdev, &cmd);
-+	__ethtool_get_settings(us_ibdev->netdev, &cmd);
  	memset(props, 0, sizeof(*props));
- 
- 	props->lid = 0;
+ 	usnic_mac_ip_to_gid(us_ibdev->ufdev->mac, us_ibdev->ufdev->inaddr,
+ 			&gid.raw[0]);
 -- 
 2.7.0.rc3.207.g0ac5344

@@ -1,25 +1,24 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 08 Feb 2016 16:45:25 +0100 (CET)
-Received: from mail.bmw-carit.de ([62.245.222.98]:47646 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 08 Feb 2016 16:45:41 +0100 (CET)
+Received: from mail.bmw-carit.de ([62.245.222.98]:47644 "EHLO
         linuxmail.bmw-carit.de" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27011491AbcBHPougDsXk (ORCPT
+        by eddie.linux-mips.org with ESMTP id S27011496AbcBHPouiF3Jk (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Mon, 8 Feb 2016 16:44:50 +0100
 Received: from localhost (handman.bmw-carit.intra [192.168.101.8])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by linuxmail.bmw-carit.de (Postfix) with ESMTPS id 1D1B65C43F;
-        Mon,  8 Feb 2016 16:27:59 +0100 (CET)
+        by linuxmail.bmw-carit.de (Postfix) with ESMTPS id B580E5C343;
+        Mon,  8 Feb 2016 16:27:58 +0100 (CET)
 From:   Daniel Wagner <daniel.wagner@bmw-carit.de>
 To:     "Maciej W. Rozycki" <macro@imgtec.com>
 Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-kernel@vger.kernel.org,
         linux-mips@linux-mips.org,
         Daniel Wagner <daniel.wagner@bmw-carit.de>
-Subject: [PATCH v3 1/3] mips: Use arch specific auxvec.h instead of generic-asm version
-Date:   Mon,  8 Feb 2016 16:44:36 +0100
-Message-Id: <1454946278-13859-2-git-send-email-daniel.wagner@bmw-carit.de>
+Subject: [PATCH v3 0/3] Differentiate between 32 and 64 bit ELF header
+Date:   Mon,  8 Feb 2016 16:44:35 +0100
+Message-Id: <1454946278-13859-1-git-send-email-daniel.wagner@bmw-carit.de>
 X-Mailer: git-send-email 2.5.0
-In-Reply-To: <1454946278-13859-1-git-send-email-daniel.wagner@bmw-carit.de>
+In-Reply-To: <alpine.DEB.2.00.1602061624460.15885@tp.orcam.me.uk>
 References: <alpine.DEB.2.00.1602061624460.15885@tp.orcam.me.uk>
- <1454946278-13859-1-git-send-email-daniel.wagner@bmw-carit.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -27,7 +26,7 @@ Return-Path: <daniel.wagner@oss.bmw-carit.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51847
+X-archive-position: 51848
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -44,43 +43,30 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The generic auxvec.h is used instead the arch specific version.
-This happens when cross compiling the kernel.
+Hi Maciej,
 
-mips64-linux-gnu-gcc (GCC) 5.2.1 20151104 (Red Hat Cross 5.2.1-4)
+Thanks a lot for your input. It looks like we getting somewhere.
+This version is much smaller and not so invasive as the prevision one.
 
-arch/mips/kernel/../../../fs/binfmt_elf.c: In function ‘create_elf_tables’:
-./arch/mips/include/asm/elf.h:425:14: error: ‘AT_SYSINFO_EHDR’ undeclared (first use in this function)
-  NEW_AUX_ENT(AT_SYSINFO_EHDR,     \
-              ^
-arch/mips/kernel/../../../fs/binfmt_elf.c:222:26: note: in definition of macro ‘NEW_AUX_ENT’
-   elf_info[ei_index++] = id; \
-                          ^
-arch/mips/kernel/../../../fs/binfmt_elf.c:233:2: note: in expansion of macro ‘ARCH_DLINFO’
-  ARCH_DLINFO;
-  ^
-./arch/mips/include/asm/elf.h:425:14: note: each undeclared identifier is reported only once for each function it appears in
-  NEW_AUX_ENT(AT_SYSINFO_EHDR,     \
-              ^
-arch/mips/kernel/../../../fs/binfmt_elf.c:222:26: note: in definition of macro ‘NEW_AUX_ENT’
-   elf_info[ei_index++] = id; \
-                          ^
-arch/mips/kernel/../../../fs/binfmt_elf.c:233:2: note: in expansion of macro ‘ARCH_DLINFO’
-  ARCH_DLINFO;
-  ^
+I had some trouble with my cross compile setup. The first patch addresses
+this problem. If I got it right it is just a missing include wrapper file.
 
-Signed-off-by: Daniel Wagner <daniel.wagner@bmw-carit.de>
----
- arch/mips/include/asm/auxvec.h | 1 +
- 1 file changed, 1 insertion(+)
+cheers,
+daniel
+
+Daniel Wagner (3):
+  mips: Use arch specific auxvec.h instead of generic-asm version
+  crash_dump: Add vmcore_elf32_check_arch
+  mips: Differentiate between 32 and 64 bit ELF header
+
+ arch/mips/include/asm/auxvec.h   | 1 +
+ arch/mips/include/asm/elf.h      | 9 +++++++--
+ arch/mips/kernel/binfmt_elfn32.c | 2 +-
+ arch/mips/kernel/binfmt_elfo32.c | 2 +-
+ fs/proc/vmcore.c                 | 2 +-
+ include/linux/crash_dump.h       | 8 ++++++--
+ 6 files changed, 17 insertions(+), 7 deletions(-)
  create mode 100644 arch/mips/include/asm/auxvec.h
 
-diff --git a/arch/mips/include/asm/auxvec.h b/arch/mips/include/asm/auxvec.h
-new file mode 100644
-index 0000000..fbd388c
---- /dev/null
-+++ b/arch/mips/include/asm/auxvec.h
-@@ -0,0 +1 @@
-+#include <uapi/asm/auxvec.h>
 -- 
 2.5.0

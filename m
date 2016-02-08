@@ -1,66 +1,84 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Jul 2016 23:01:06 +0200 (CEST)
-Received: from youngberry.canonical.com ([91.189.89.112]:40293 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992128AbcGFVAieefXJ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 6 Jul 2016 23:00:38 +0200
-Received: from 1.general.kamal.us.vpn ([10.172.68.52] helo=fourier)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_128_CBC_SHA1:16)
-        (Exim 4.76)
-        (envelope-from <kamal@canonical.com>)
-        id 1bKtvw-0000Xb-Or; Wed, 06 Jul 2016 21:00:36 +0000
-Received: from kamal by fourier with local (Exim 4.86_2)
-        (envelope-from <kamal@whence.com>)
-        id 1bKtvu-0004H8-KN; Wed, 06 Jul 2016 14:00:34 -0700
-From:   Kamal Mostafa <kamal@canonical.com>
-To:     James Hogan <james.hogan@imgtec.com>
-Cc:     Christopher Ferris <cferris@google.com>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
-        Kamal Mostafa <kamal@canonical.com>,
-        kernel-team@lists.ubuntu.com
-Subject: [3.19.y-ckt stable] Patch "MIPS: Fix siginfo.h to use strict posix types" has been added to the 3.19.y-ckt tree
-Date:   Wed,  6 Jul 2016 14:00:34 -0700
-Message-Id: <1467838834-16399-1-git-send-email-kamal@canonical.com>
-X-Mailer: git-send-email 2.7.4
-X-Extended-Stable: 3.19
-Return-Path: <kamal@canonical.com>
-X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
-X-Orcpt: rfc822;linux-mips@linux-mips.org
-Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54233
-X-ecartis-version: Ecartis v1.0.0
-Sender: linux-mips-bounce@linux-mips.org
-Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kamal@canonical.com
-Precedence: bulk
-List-help: <mailto:ecartis@linux-mips.org?Subject=help>
-List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
-List-software: Ecartis version 1.0.0
-List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
-X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
-List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
-List-owner: <mailto:ralf@linux-mips.org>
-List-post: <mailto:linux-mips@linux-mips.org>
-List-archive: <http://www.linux-mips.org/archives/linux-mips/>
-X-list: linux-mips
+From: James Hogan <james.hogan@imgtec.com>
+Date: Mon, 8 Feb 2016 18:43:49 +0000
+Subject: MIPS: Fix siginfo.h to use strict posix types
+Message-ID: <20160208184349.2Dc4rD2Mg0RSq6Pkj0jwsPJ3QsMz31e9hqE7tR4t1Gw@z>
 
-This is a note to let you know that I have just added a patch titled
+commit 5daebc477da4dfeb31ae193d83084def58fd2697 upstream.
 
-    MIPS: Fix siginfo.h to use strict posix types
+Commit 85efde6f4e0d ("make exported headers use strict posix types")
+changed the asm-generic siginfo.h to use the __kernel_* types, and
+commit 3a471cbc081b ("remove __KERNEL_STRICT_NAMES") make the internal
+types accessible only to the kernel, but the MIPS implementation hasn't
+been updated to match.
 
-to the linux-3.19.y-queue branch of the 3.19.y-ckt extended stable tree 
-which can be found at:
+Switch to proper types now so that the exported asm/siginfo.h won't
+produce quite so many compiler errors when included alone by a user
+program.
 
-    https://git.launchpad.net/~canonical-kernel/linux/+git/linux-stable-ckt/log/?h=linux-3.19.y-queue
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Cc: Christopher Ferris <cferris@google.com>
+Cc: linux-mips@linux-mips.org
+Cc: linux-kernel@vger.kernel.org
+Patchwork: https://patchwork.linux-mips.org/patch/12477/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: Kamal Mostafa <kamal@canonical.com>
+---
+ arch/mips/include/uapi/asm/siginfo.h | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-This patch is scheduled to be released in version 3.19.8-ckt23.
+diff --git a/arch/mips/include/uapi/asm/siginfo.h b/arch/mips/include/uapi/asm/siginfo.h
+index d08f83f..182b34f 100644
+--- a/arch/mips/include/uapi/asm/siginfo.h
++++ b/arch/mips/include/uapi/asm/siginfo.h
+@@ -48,13 +48,13 @@ typedef struct siginfo {
 
-If you, or anyone else, feels it should not be added to this tree, please 
-reply to this email.
+ 		/* kill() */
+ 		struct {
+-			pid_t _pid;		/* sender's pid */
++			__kernel_pid_t _pid;	/* sender's pid */
+ 			__ARCH_SI_UID_T _uid;	/* sender's uid */
+ 		} _kill;
 
-For more information about the 3.19.y-ckt tree, see
-https://wiki.ubuntu.com/Kernel/Dev/ExtendedStable
+ 		/* POSIX.1b timers */
+ 		struct {
+-			timer_t _tid;		/* timer id */
++			__kernel_timer_t _tid;	/* timer id */
+ 			int _overrun;		/* overrun count */
+ 			char _pad[sizeof( __ARCH_SI_UID_T) - sizeof(int)];
+ 			sigval_t _sigval;	/* same as below */
+@@ -63,26 +63,26 @@ typedef struct siginfo {
 
-Thanks.
--Kamal
+ 		/* POSIX.1b signals */
+ 		struct {
+-			pid_t _pid;		/* sender's pid */
++			__kernel_pid_t _pid;	/* sender's pid */
+ 			__ARCH_SI_UID_T _uid;	/* sender's uid */
+ 			sigval_t _sigval;
+ 		} _rt;
 
----8<------------------------------------------------------------
+ 		/* SIGCHLD */
+ 		struct {
+-			pid_t _pid;		/* which child */
++			__kernel_pid_t _pid;	/* which child */
+ 			__ARCH_SI_UID_T _uid;	/* sender's uid */
+ 			int _status;		/* exit code */
+-			clock_t _utime;
+-			clock_t _stime;
++			__kernel_clock_t _utime;
++			__kernel_clock_t _stime;
+ 		} _sigchld;
+
+ 		/* IRIX SIGCHLD */
+ 		struct {
+-			pid_t _pid;		/* which child */
+-			clock_t _utime;
++			__kernel_pid_t _pid;	/* which child */
++			__kernel_clock_t _utime;
+ 			int _status;		/* exit code */
+-			clock_t _stime;
++			__kernel_clock_t _stime;
+ 		} _irix_sigchld;
+
+ 		/* SIGILL, SIGFPE, SIGSEGV, SIGBUS */
+--
+2.7.4

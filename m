@@ -1,36 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 08 Feb 2016 16:45:41 +0100 (CET)
-Received: from mail.bmw-carit.de ([62.245.222.98]:47644 "EHLO
-        linuxmail.bmw-carit.de" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27011496AbcBHPouiF3Jk (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 8 Feb 2016 16:44:50 +0100
-Received: from localhost (handman.bmw-carit.intra [192.168.101.8])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 08 Feb 2016 17:03:16 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.136]:53055 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27011484AbcBHQDOqT4fk (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 8 Feb 2016 17:03:14 +0100
+Received: from mail.kernel.org (localhost [127.0.0.1])
+        by mail.kernel.org (Postfix) with ESMTP id A55822024D;
+        Mon,  8 Feb 2016 16:03:12 +0000 (UTC)
+Received: from rob-hp-laptop (72-48-98-129.dyn.grandenetworks.net [72.48.98.129])
+        (using TLSv1.2 with cipher AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by linuxmail.bmw-carit.de (Postfix) with ESMTPS id B580E5C343;
-        Mon,  8 Feb 2016 16:27:58 +0100 (CET)
-From:   Daniel Wagner <daniel.wagner@bmw-carit.de>
-To:     "Maciej W. Rozycki" <macro@imgtec.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-kernel@vger.kernel.org,
-        linux-mips@linux-mips.org,
-        Daniel Wagner <daniel.wagner@bmw-carit.de>
-Subject: [PATCH v3 0/3] Differentiate between 32 and 64 bit ELF header
-Date:   Mon,  8 Feb 2016 16:44:35 +0100
-Message-Id: <1454946278-13859-1-git-send-email-daniel.wagner@bmw-carit.de>
-X-Mailer: git-send-email 2.5.0
-In-Reply-To: <alpine.DEB.2.00.1602061624460.15885@tp.orcam.me.uk>
-References: <alpine.DEB.2.00.1602061624460.15885@tp.orcam.me.uk>
+        by mail.kernel.org (Postfix) with ESMTPSA id E7842201EC;
+        Mon,  8 Feb 2016 16:03:07 +0000 (UTC)
+Date:   Mon, 8 Feb 2016 10:03:06 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Joshua Henderson <joshua.henderson@microchip.com>
+Cc:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        Pawel Moll <pawel.moll@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ian Campbell <ijc+devicetree@hellion.org.uk>,
+        Kumar Gala <galak@codeaurora.org>, devicetree@vger.kernel.org
+Subject: Re: [PATCH 1/2] dt/bindings: Add bindings for the PIC32 random
+ number generator
+Message-ID: <20160208160306.GA13031@rob-hp-laptop>
+References: <1454366511-10640-1-git-send-email-joshua.henderson@microchip.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Return-Path: <daniel.wagner@oss.bmw-carit.de>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1454366511-10640-1-git-send-email-joshua.henderson@microchip.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+X-Virus-Scanned: ClamAV using ClamSMTP
+Return-Path: <robh@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51848
+X-archive-position: 51849
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: daniel.wagner@bmw-carit.de
+X-original-sender: robh@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,30 +50,14 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Maciej,
+On Mon, Feb 01, 2016 at 03:41:41PM -0700, Joshua Henderson wrote:
+> Document the devicetree bindings for the random number generator found
+> on Microchip PIC32 class devices.
+> 
+> Signed-off-by: Joshua Henderson <joshua.henderson@microchip.com>
+> ---
+>  .../bindings/rng/microchip,pic32-rng.txt           |   17 +++++++++++++++++
+>  1 file changed, 17 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/rng/microchip,pic32-rng.txt
 
-Thanks a lot for your input. It looks like we getting somewhere.
-This version is much smaller and not so invasive as the prevision one.
-
-I had some trouble with my cross compile setup. The first patch addresses
-this problem. If I got it right it is just a missing include wrapper file.
-
-cheers,
-daniel
-
-Daniel Wagner (3):
-  mips: Use arch specific auxvec.h instead of generic-asm version
-  crash_dump: Add vmcore_elf32_check_arch
-  mips: Differentiate between 32 and 64 bit ELF header
-
- arch/mips/include/asm/auxvec.h   | 1 +
- arch/mips/include/asm/elf.h      | 9 +++++++--
- arch/mips/kernel/binfmt_elfn32.c | 2 +-
- arch/mips/kernel/binfmt_elfo32.c | 2 +-
- fs/proc/vmcore.c                 | 2 +-
- include/linux/crash_dump.h       | 8 ++++++--
- 6 files changed, 17 insertions(+), 7 deletions(-)
- create mode 100644 arch/mips/include/asm/auxvec.h
-
--- 
-2.5.0
+Acked-by: Rob Herring <robh@kernel.org>

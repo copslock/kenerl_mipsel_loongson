@@ -1,38 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 08 Feb 2016 18:19:30 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:23581 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27012134AbcBHRT22Z8DP (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 8 Feb 2016 18:19:28 +0100
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Websense Email Security Gateway with ESMTPS id 85BD0BE8BF33B;
-        Mon,  8 Feb 2016 17:19:17 +0000 (GMT)
-Received: from [10.100.200.149] (10.100.200.149) by hhmail02.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server id 14.3.266.1; Mon, 8 Feb 2016
- 17:19:20 +0000
-Date:   Mon, 8 Feb 2016 17:19:14 +0000
-From:   "Maciej W. Rozycki" <macro@imgtec.com>
-To:     Daniel Wagner <daniel.wagner@bmw-carit.de>
-CC:     Ralf Baechle <ralf@linux-mips.org>, <linux-kernel@vger.kernel.org>,
-        <linux-mips@linux-mips.org>
-Subject: Re: [PATCH v3 1/3] mips: Use arch specific auxvec.h instead of
- generic-asm version
-In-Reply-To: <1454946278-13859-2-git-send-email-daniel.wagner@bmw-carit.de>
-Message-ID: <alpine.DEB.2.00.1602081705470.15885@tp.orcam.me.uk>
-References: <alpine.DEB.2.00.1602061624460.15885@tp.orcam.me.uk> <1454946278-13859-1-git-send-email-daniel.wagner@bmw-carit.de> <1454946278-13859-2-git-send-email-daniel.wagner@bmw-carit.de>
-User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 08 Feb 2016 18:30:11 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.136]:37633 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27012154AbcBHRaEnZjzY (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 8 Feb 2016 18:30:04 +0100
+Received: from mail.kernel.org (localhost [127.0.0.1])
+        by mail.kernel.org (Postfix) with ESMTP id 068E72024D;
+        Mon,  8 Feb 2016 17:30:01 +0000 (UTC)
+Received: from rob-hp-laptop (72-48-98-129.dyn.grandenetworks.net [72.48.98.129])
+        (using TLSv1.2 with cipher AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 2C48E2014A;
+        Mon,  8 Feb 2016 17:29:59 +0000 (UTC)
+Date:   Mon, 8 Feb 2016 11:29:57 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Paul Burton <paul.burton@imgtec.com>
+Cc:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
+        Joe Perches <joe@perches.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Jiri Slaby <jslaby@suse.com>,
+        Mauro Carvalho Chehab <mchehab@osg.samsung.com>,
+        linux-kernel@vger.kernel.org, Kumar Gala <galak@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Ian Campbell <ijc+devicetree@hellion.org.uk>,
+        devicetree@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Pawel Moll <pawel.moll@arm.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Mark Rutland <mark.rutland@arm.com>
+Subject: Re: [PATCH v2 01/15] dt-bindings: ascii-lcd: Document a binding for
+ simple ASCII LCDs
+Message-ID: <20160208172957.GA31126@rob-hp-laptop>
+References: <1454499045-5020-1-git-send-email-paul.burton@imgtec.com>
+ <1454499045-5020-2-git-send-email-paul.burton@imgtec.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Originating-IP: [10.100.200.149]
-Return-Path: <Maciej.Rozycki@imgtec.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1454499045-5020-2-git-send-email-paul.burton@imgtec.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+X-Virus-Scanned: ClamAV using ClamSMTP
+Return-Path: <robh@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51856
+X-archive-position: 51857
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@imgtec.com
+X-original-sender: robh@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,39 +59,19 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, 8 Feb 2016, Daniel Wagner wrote:
-
-> The generic auxvec.h is used instead the arch specific version.
-> This happens when cross compiling the kernel.
+On Wed, Feb 03, 2016 at 11:30:31AM +0000, Paul Burton wrote:
+> Add documentation for a devicetree binding for simple memory-mapped
+> ASCII LCD displays, such as those found on the Imagination Technologies
+> Boston & Malta development boards.
 > 
-> mips64-linux-gnu-gcc (GCC) 5.2.1 20151104 (Red Hat Cross 5.2.1-4)
+> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+> ---
 > 
-> arch/mips/kernel/../../../fs/binfmt_elf.c: In function ‘create_elf_tables’:
-> ./arch/mips/include/asm/elf.h:425:14: error: ‘AT_SYSINFO_EHDR’ undeclared (first use in this function)
+> Changes in v2: None
+> 
+>  Documentation/devicetree/bindings/ascii-lcd.txt | 10 ++++++++++
 
- There must be something wrong with your setup, or maybe a bug somewhere 
-in our build machinery you just happened to trigger.  Most of us routinely 
-use a cross-compiler to build the kernel and you're the first one to 
-report the problem.
+Given this is specific to some IT block, then it should not have a 
+generic name. Otherwise, the binding looks fine.
 
- Can you report the compiler invocation that has lead to this error?  
-Have you used a default config or a custom one?
-
-> diff --git a/arch/mips/include/asm/auxvec.h b/arch/mips/include/asm/auxvec.h
-> new file mode 100644
-> index 0000000..fbd388c
-> --- /dev/null
-> +++ b/arch/mips/include/asm/auxvec.h
-> @@ -0,0 +1 @@
-> +#include <uapi/asm/auxvec.h>
-
- You're not supposed to require a header in asm/ merely to include a 
-header of the same name from uapi/asm/ as there are normally 
--I./arch/mips/include and -I./arch/mips/include/uapi options present both 
-at once, in this order, on the compiler's invocation line.  So:
-
-#include <asm/auxvec.h>
-
-will pull the header from uapi/asm/ if none is present in asm/.
-
-  Maciej
+Rob

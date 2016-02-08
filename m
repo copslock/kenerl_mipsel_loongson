@@ -1,38 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 08 Feb 2016 02:10:39 +0100 (CET)
-Received: from mail-pf0-f193.google.com ([209.85.192.193]:33784 "EHLO
-        mail-pf0-f193.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011744AbcBHBJhxhULT (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 8 Feb 2016 02:09:37 +0100
-Received: by mail-pf0-f193.google.com with SMTP id c10so7614970pfc.0
-        for <linux-mips@linux-mips.org>; Sun, 07 Feb 2016 17:09:37 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 08 Feb 2016 02:11:02 +0100 (CET)
+Received: from mail-pf0-f196.google.com ([209.85.192.196]:32784 "EHLO
+        mail-pf0-f196.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011861AbcBHBJm7L5ZT (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 8 Feb 2016 02:09:42 +0100
+Received: by mail-pf0-f196.google.com with SMTP id c10so7615117pfc.0
+        for <linux-mips@linux-mips.org>; Sun, 07 Feb 2016 17:09:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=0pdp/HEresJath1kEG0VV1dzyrr8Md2CV/rgpLbsBQQ=;
-        b=on66Fp2QbzZSQnSG1cDwXyOLYjtY7SKninCIVmkR3CDF5edxcGTmm5Z2u7oqzwJVBc
-         B0lWWHIok3EFZ5nQ8hzPcSUGdpeiGbWuykfO7oQrghXPDofKYnHEPW2r7qrtV4PlDWpr
-         GeHqOZGeMVdyJErtZ65U511dCKgLf0+kM4UIyKLSOztX3zfNZ4ByA4r+dF/nv4AmJ22s
-         /fl+epL/jLNtc0viUTImDfUrIPvwM+k5rfrkRk0lfWDishFC3mMzejRF3L2rguG7SO18
-         NFLSHM3MILOEvbOweSFRp1TBPKSZTgN3gNjt6tnHetqEhIxhhKMws6pj4xL5ZFVAS5UE
-         5M7w==
+        bh=KTYWeEEzjj97eb9ojBPzb/1B0v1RQJrewoXHhvSno6I=;
+        b=fNdAA2SMlVU7bIcqCZaeU/0IBiqeSO8QSBN+zgQIrM6xcCanhPN01/qisg03+82tUN
+         nJwliTn6l99RbufAYKfPUb5QG28FF8go9YOPT9NfxawuFqvsaPj/Wtz+FLqkhm/ht8fh
+         y0mWIw6I6WRQ1nvCpjd6MByQ9VZXu6GUu+cKlYOkaq+u5EwtqCaheR/uqpR6iFOWDe/B
+         WzLYuy37m2/T2Uhcy0SBweEF9McRp5UJIzIRRFPlYHtq66UU6W0oxN2z/KpamT+y/mC9
+         IC16nH+4iZTZ4IgzGkvEY7j84R5QrY8RtIHtlzGN94RINIP+QAtku9AxC/DYhDmz73iS
+         y+ww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=0pdp/HEresJath1kEG0VV1dzyrr8Md2CV/rgpLbsBQQ=;
-        b=DIaMBheU8DXPpMIXEvjmtL+DgKBFOSa00WfB7debJqbfUr32PqLl/XU3a56EvDBLts
-         pZ/6KI+2sAJfVflEgtZGWGidoYwTl69vWjakSe1/GJQxSR+Hv/4Ju1ctc+mJSV5qCmI7
-         irOLXJIlaOjTt7azNPlKEqTmZfoF2LI+5vgTwzbD2Mb5DS+ucwz7HR5BKNxZVqGq/g13
-         adu6zVwHZEHuINN/YylpBVizAtCQstD9oikR1qjbj/E4gU1zgPPZs+aZoFjK24j2J+C5
-         pEFojuP5Lf5xXaxjv9cbtvP1HfBEASNI4y3xhB6CL5ils+aFF2cbVIB4+433cYPCLNX8
-         zMCQ==
-X-Gm-Message-State: AG10YOTDdSnxP2OzeokDcT6jz9EpKmOYeBFcS29w4leHp7nSTtYk0pB2314YfISr8T/ciw==
-X-Received: by 10.98.10.139 with SMTP id 11mr12440719pfk.87.1454893765993;
-        Sun, 07 Feb 2016 17:09:25 -0800 (PST)
+        bh=KTYWeEEzjj97eb9ojBPzb/1B0v1RQJrewoXHhvSno6I=;
+        b=OuWqLxDogbE66motFRcMvXwI+aRUwLMjdnycmNFpK+uQKX74SLL3QBgaCnfdmyGPnN
+         J+8Iff9SjCPOegi33nj92YihRIA/OsttaxToHOVwoShGIhicjn5pSyKTUFWvUxNbI6Ri
+         spe7PMil2Y1J/bRZ9i1NLCr8OkmT5nUz6m07p+ieq0ydPAzseFLX0tJpRK6oFFGDL7FU
+         rxMRR+uLhLht4cfA3uypmDzttEsnuCSmgxNUr93+v1ucs92Cssdii0g2t5VMPmBuI09J
+         ye14g2QtzCEvjjEKh+sx/9kW9CvGrsxI3U03gx+s+uEceC+EktSofFutxsWB0MM2qo18
+         tB4w==
+X-Gm-Message-State: AG10YOTJIxDdAwtcWcTL0MwxwLSpeRqe07nOZv4J1mS8AwMtwVshVeosTaLSvvEI5DtudA==
+X-Received: by 10.98.15.19 with SMTP id x19mr38779006pfi.60.1454893776362;
+        Sun, 07 Feb 2016 17:09:36 -0800 (PST)
 Received: from decotigny.mtv.corp.google.com ([172.18.64.159])
-        by smtp.gmail.com with ESMTPSA id wt2sm569211pac.48.2016.02.07.17.09.24
+        by smtp.gmail.com with ESMTPSA id wt2sm569211pac.48.2016.02.07.17.09.35
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Sun, 07 Feb 2016 17:09:25 -0800 (PST)
+        Sun, 07 Feb 2016 17:09:35 -0800 (PST)
 From:   David Decotigny <ddecotig@gmail.com>
 To:     "David S. Miller" <davem@davemloft.net>,
         Ben Hutchings <ben@decadent.org.uk>,
@@ -56,9 +56,9 @@ Cc:     Eric Dumazet <edumazet@google.com>,
         Yuval Mintz <Yuval.Mintz@qlogic.com>,
         Rasmus Villemoes <linux@rasmusvillemoes.dk>,
         David Decotigny <decot@googlers.com>
-Subject: [PATCH net-next v7 02/19] test_bitmap: unit tests for lib/bitmap.c
-Date:   Sun,  7 Feb 2016 17:08:46 -0800
-Message-Id: <1454893743-6285-3-git-send-email-ddecotig@gmail.com>
+Subject: [PATCH net-next v7 10/19] net: macvlan: use __ethtool_get_ksettings
+Date:   Sun,  7 Feb 2016 17:08:54 -0800
+Message-Id: <1454893743-6285-11-git-send-email-ddecotig@gmail.com>
 X-Mailer: git-send-email 2.7.0.rc3.207.g0ac5344
 In-Reply-To: <1454893743-6285-1-git-send-email-ddecotig@gmail.com>
 References: <1454893743-6285-1-git-send-email-ddecotig@gmail.com>
@@ -66,7 +66,7 @@ Return-Path: <ddecotig@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51825
+X-archive-position: 51826
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -85,435 +85,39 @@ X-list: linux-mips
 
 From: David Decotigny <decot@googlers.com>
 
-This is mainly testing bitmap construction and conversion to/from u32[]
-for now.
-
-Tested:
-  qemu i386, x86_64, ppc, ppc64 BE and LE, ARM.
-
 Signed-off-by: David Decotigny <decot@googlers.com>
 ---
- lib/Kconfig.debug                     |   8 +
- lib/Makefile                          |   1 +
- lib/test_bitmap.c                     | 348 ++++++++++++++++++++++++++++++++++
- tools/testing/selftests/lib/Makefile  |   2 +-
- tools/testing/selftests/lib/bitmap.sh |  10 +
- 5 files changed, 368 insertions(+), 1 deletion(-)
- create mode 100644 lib/test_bitmap.c
- create mode 100644 tools/testing/selftests/lib/bitmap.sh
+ drivers/net/macvlan.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
-index ecb9e75..f890ee5 100644
---- a/lib/Kconfig.debug
-+++ b/lib/Kconfig.debug
-@@ -1738,6 +1738,14 @@ config TEST_KSTRTOX
- config TEST_PRINTF
- 	tristate "Test printf() family of functions at runtime"
+diff --git a/drivers/net/macvlan.c b/drivers/net/macvlan.c
+index 94e6888..a54ad4c 100644
+--- a/drivers/net/macvlan.c
++++ b/drivers/net/macvlan.c
+@@ -940,12 +940,12 @@ static void macvlan_ethtool_get_drvinfo(struct net_device *dev,
+ 	strlcpy(drvinfo->version, "0.1", sizeof(drvinfo->version));
+ }
  
-+config TEST_BITMAP
-+	tristate "Test bitmap_*() family of functions at runtime"
-+	default n
-+	help
-+	  Enable this option to test the bitmap functions at boot.
-+
-+	  If unsure, say N.
-+
- config TEST_RHASHTABLE
- 	tristate "Perform selftest on resizable hash table"
- 	default n
-diff --git a/lib/Makefile b/lib/Makefile
-index a7c26a4..dda4039 100644
---- a/lib/Makefile
-+++ b/lib/Makefile
-@@ -43,6 +43,7 @@ obj-$(CONFIG_TEST_USER_COPY) += test_user_copy.o
- obj-$(CONFIG_TEST_STATIC_KEYS) += test_static_keys.o
- obj-$(CONFIG_TEST_STATIC_KEYS) += test_static_key_base.o
- obj-$(CONFIG_TEST_PRINTF) += test_printf.o
-+obj-$(CONFIG_TEST_BITMAP) += test_bitmap.o
+-static int macvlan_ethtool_get_settings(struct net_device *dev,
+-					struct ethtool_cmd *cmd)
++static int macvlan_ethtool_get_ksettings(struct net_device *dev,
++					 struct ethtool_ksettings *cmd)
+ {
+ 	const struct macvlan_dev *vlan = netdev_priv(dev);
  
- ifeq ($(CONFIG_DEBUG_KOBJECT),y)
- CFLAGS_kobject.o += -DDEBUG
-diff --git a/lib/test_bitmap.c b/lib/test_bitmap.c
-new file mode 100644
-index 0000000..57578c4
---- /dev/null
-+++ b/lib/test_bitmap.c
-@@ -0,0 +1,348 @@
-+/*
-+ * Test cases for printf facility.
-+ */
-+
-+#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
-+
-+#include <linux/bitmap.h>
-+#include <linux/init.h>
-+#include <linux/kernel.h>
-+#include <linux/module.h>
-+#include <linux/printk.h>
-+#include <linux/slab.h>
-+#include <linux/string.h>
-+
-+static unsigned total_tests __initdata;
-+static unsigned failed_tests __initdata;
-+
-+static char pbl_buffer[PAGE_SIZE] __initdata;
-+
-+
-+static bool __init
-+__check_eq_bitmap(const unsigned long *exp_bmap, unsigned int exp_nbits,
-+		  const unsigned long *bmap, unsigned int nbits)
-+{
-+	if (exp_nbits != nbits) {
-+		pr_warn("bitmap length mismatch: expected %u, got %u\n",
-+			exp_nbits, nbits);
-+		return false;
-+	}
-+
-+	if (!bitmap_equal(exp_bmap, bmap, nbits)) {
-+		pr_warn("bitmaps contents differ: expected \"%*pbl\", got \"%*pbl\"\n",
-+			exp_nbits, exp_bmap, nbits, bmap);
-+		return false;
-+	}
-+	return true;
-+}
-+
-+static int __init
-+expect_eq_bitmap(const unsigned long *exp_bmap, unsigned int exp_nbits,
-+	       const unsigned long *bmap, unsigned int nbits)
-+{
-+	total_tests++;
-+	if (!__check_eq_bitmap(exp_bmap, exp_nbits, bmap, nbits)) {
-+		failed_tests++;
-+		return 1;
-+	}
-+	return 0;
-+}
-+
-+static bool __init
-+__check_eq_pbl(const char *expected_pbl,
-+	       const unsigned long *bitmap, unsigned int nbits)
-+{
-+	snprintf(pbl_buffer, sizeof(pbl_buffer), "%*pbl", nbits, bitmap);
-+	if (strcmp(expected_pbl, pbl_buffer)) {
-+		pr_warn("expected \"%s\", got \"%s\"\n",
-+			expected_pbl, pbl_buffer);
-+		return false;
-+	}
-+	return true;
-+}
-+
-+static int __init
-+expect_eq_pbl(const char *expected_pbl,
-+	    const unsigned long *bitmap, unsigned int nbits)
-+{
-+	total_tests++;
-+	if (!__check_eq_pbl(expected_pbl, bitmap, nbits)) {
-+		failed_tests++;
-+		return 1;
-+	}
-+	return 0;
-+}
-+
-+static bool __init
-+__check_eq_u32_array(const u32 *exp_arr, unsigned int exp_len,
-+		     const u32 *arr, unsigned int len)
-+{
-+	if (exp_len != len) {
-+		pr_warn("array length differ: expected %u, got %u\n",
-+			exp_len, len);
-+		return false;
-+	}
-+
-+	if (memcmp(exp_arr, arr, len*sizeof(*arr))) {
-+		pr_warn("array contents differ\n");
-+		print_hex_dump(KERN_WARNING, "  exp:  ", DUMP_PREFIX_OFFSET,
-+			       32, 4, exp_arr, exp_len*sizeof(*exp_arr), false);
-+		print_hex_dump(KERN_WARNING, "  got:  ", DUMP_PREFIX_OFFSET,
-+			       32, 4, arr, len*sizeof(*arr), false);
-+		return false;
-+	}
-+
-+	return true;
-+}
-+
-+static int __init
-+expect_eq_u32_array(const u32 *exp_arr, unsigned int exp_len,
-+		  const u32 *arr, unsigned int len)
-+{
-+	total_tests++;
-+	if (!__check_eq_u32_array(exp_arr, exp_len, arr, len)) {
-+		failed_tests++;
-+		return 1;
-+	}
-+	return 0;
-+}
-+
-+static void __init test_zero_fill_copy(void)
-+{
-+	DECLARE_BITMAP(bmap1, 1024);
-+	DECLARE_BITMAP(bmap2, 1024);
-+
-+	bitmap_zero(bmap1, 1024);
-+	bitmap_zero(bmap2, 1024);
-+
-+	/* single-word bitmaps */
-+	expect_eq_pbl("", bmap1, 23);
-+
-+	bitmap_fill(bmap1, 19);
-+	expect_eq_pbl("0-18", bmap1, 1024);
-+
-+	bitmap_copy(bmap2, bmap1, 23);
-+	expect_eq_pbl("0-18", bmap2, 1024);
-+
-+	bitmap_fill(bmap2, 23);
-+	expect_eq_pbl("0-22", bmap2, 1024);
-+
-+	bitmap_copy(bmap2, bmap1, 23);
-+	expect_eq_pbl("0-18", bmap2, 1024);
-+
-+	bitmap_zero(bmap1, 23);
-+	expect_eq_pbl("", bmap1, 1024);
-+
-+	/* multi-word bitmaps */
-+	bitmap_zero(bmap1, 1024);
-+	expect_eq_pbl("", bmap1, 1024);
-+
-+	bitmap_fill(bmap1, 109);
-+	expect_eq_pbl("0-108", bmap1, 1024);
-+
-+	bitmap_copy(bmap2, bmap1, 1024);
-+	expect_eq_pbl("0-108", bmap2, 1024);
-+
-+	bitmap_fill(bmap2, 1024);
-+	expect_eq_pbl("0-1023", bmap2, 1024);
-+
-+	bitmap_copy(bmap2, bmap1, 1024);
-+	expect_eq_pbl("0-108", bmap2, 1024);
-+
-+	/* the following tests assume a 32- or 64-bit arch (even 128b
-+	 * if we care)
-+	 */
-+
-+	bitmap_fill(bmap2, 1024);
-+	bitmap_copy(bmap2, bmap1, 109);  /* ... but 0-padded til word length */
-+	expect_eq_pbl("0-108,128-1023", bmap2, 1024);
-+
-+	bitmap_fill(bmap2, 1024);
-+	bitmap_copy(bmap2, bmap1, 97);  /* ... but aligned on word length */
-+	expect_eq_pbl("0-108,128-1023", bmap2, 1024);
-+
-+	bitmap_zero(bmap2, 97);  /* ... but 0-padded til word length */
-+	expect_eq_pbl("128-1023", bmap2, 1024);
-+}
-+
-+static void __init test_bitmap_u32_array_conversions(void)
-+{
-+	DECLARE_BITMAP(bmap1, 1024);
-+	DECLARE_BITMAP(bmap2, 1024);
-+	u32 exp_arr[32], arr[32];
-+	unsigned nbits;
-+
-+	for (nbits = 0 ; nbits < 257 ; ++nbits) {
-+		const unsigned int used_u32s = DIV_ROUND_UP(nbits, 32);
-+		unsigned int i;
-+
-+		bitmap_zero(bmap1, nbits);
-+		bitmap_set(bmap1, nbits, 1024 - nbits);  /* garbage */
-+
-+		memset(arr, 0xff, sizeof(arr));
-+		bitmap_to_u32array(arr, used_u32s, bmap1, nbits);
-+
-+		memset(exp_arr, 0xff, sizeof(exp_arr));
-+		memset(exp_arr, 0, used_u32s*sizeof(*exp_arr));
-+		expect_eq_u32_array(exp_arr, 32, arr, 32);
-+
-+		bitmap_fill(bmap2, 1024);
-+		bitmap_from_u32array(bmap2, nbits, arr, used_u32s);
-+		expect_eq_bitmap(bmap1, 1024, bmap2, 1024);
-+
-+		for (i = 0 ; i < nbits ; ++i) {
-+			/*
-+			 * test conversion bitmap -> u32[]
-+			 */
-+
-+			bitmap_zero(bmap1, 1024);
-+			__set_bit(i, bmap1);
-+			bitmap_set(bmap1, nbits, 1024 - nbits);  /* garbage */
-+
-+			memset(arr, 0xff, sizeof(arr));
-+			bitmap_to_u32array(arr, used_u32s, bmap1, nbits);
-+
-+			/* 1st used u32 words contain expected bit set, the
-+			 * remaining words are left unchanged (0xff)
-+			 */
-+			memset(exp_arr, 0xff, sizeof(exp_arr));
-+			memset(exp_arr, 0, used_u32s*sizeof(*exp_arr));
-+			exp_arr[i/32] = (1U<<(i%32));
-+			expect_eq_u32_array(exp_arr, 32, arr, 32);
-+
-+
-+			/* same, with longer array to fill
-+			 */
-+			memset(arr, 0xff, sizeof(arr));
-+			bitmap_to_u32array(arr, 32, bmap1, nbits);
-+
-+			/* 1st used u32 words contain expected bit set, the
-+			 * remaining words are all 0s
-+			 */
-+			memset(exp_arr, 0, sizeof(exp_arr));
-+			exp_arr[i/32] = (1U<<(i%32));
-+			expect_eq_u32_array(exp_arr, 32, arr, 32);
-+
-+			/*
-+			 * test conversion u32[] -> bitmap
-+			 */
-+
-+			/* the 1st nbits of bmap2 are identical to
-+			 * bmap1, the remaining bits of bmap2 are left
-+			 * unchanged (all 1s)
-+			 */
-+			bitmap_fill(bmap2, 1024);
-+			bitmap_from_u32array(bmap2, nbits, exp_arr, used_u32s);
-+
-+			expect_eq_bitmap(bmap1, 1024, bmap2, 1024);
-+
-+			/* same, with more bits to fill
-+			 */
-+			memset(arr, 0xff, sizeof(arr));  /* garbage */
-+			memset(arr, 0, used_u32s*sizeof(u32));
-+			arr[i/32] = (1U<<(i%32));
-+
-+			bitmap_fill(bmap2, 1024);
-+			bitmap_from_u32array(bmap2, 1024, arr, used_u32s);
-+
-+			/* the 1st nbits of bmap2 are identical to
-+			 * bmap1, the remaining bits of bmap2 are cleared
-+			 */
-+			bitmap_zero(bmap1, 1024);
-+			__set_bit(i, bmap1);
-+			expect_eq_bitmap(bmap1, 1024, bmap2, 1024);
-+
-+
-+			/*
-+			 * test short conversion bitmap -> u32[] (1
-+			 * word too short)
-+			 */
-+			if (used_u32s > 1) {
-+				bitmap_zero(bmap1, 1024);
-+				__set_bit(i, bmap1);
-+				bitmap_set(bmap1, nbits,
-+					   1024 - nbits);  /* garbage */
-+				memset(arr, 0xff, sizeof(arr));
-+
-+				bitmap_to_u32array(arr, used_u32s - 1,
-+						   bmap1, nbits);
-+
-+				/* 1st used u32 words contain expected
-+				 * bit set, the remaining words are
-+				 * left unchanged (0xff)
-+				 */
-+				memset(exp_arr, 0xff, sizeof(exp_arr));
-+				memset(exp_arr, 0,
-+				       (used_u32s-1)*sizeof(*exp_arr));
-+				if ((i/32) < (used_u32s - 1))
-+					exp_arr[i/32] = (1U<<(i%32));
-+				expect_eq_u32_array(exp_arr, 32, arr, 32);
-+			}
-+
-+			/*
-+			 * test short conversion u32[] -> bitmap (3
-+			 * bits too short)
-+			 */
-+			if (nbits > 3) {
-+				memset(arr, 0xff, sizeof(arr));  /* garbage */
-+				memset(arr, 0, used_u32s*sizeof(*arr));
-+				arr[i/32] = (1U<<(i%32));
-+
-+				bitmap_zero(bmap1, 1024);
-+				bitmap_from_u32array(bmap1, nbits - 3,
-+						     arr, used_u32s);
-+
-+				/* we are expecting the bit < nbits -
-+				 * 3 (none otherwise), and the rest of
-+				 * bmap1 unchanged (0-filled)
-+				 */
-+				bitmap_zero(bmap2, 1024);
-+				if (i < nbits - 3)
-+					__set_bit(i, bmap2);
-+				expect_eq_bitmap(bmap2, 1024, bmap1, 1024);
-+
-+				/* do the same with bmap1 initially
-+				 * 1-filled
-+				 */
-+
-+				bitmap_fill(bmap1, 1024);
-+				bitmap_from_u32array(bmap1, nbits - 3,
-+						     arr, used_u32s);
-+
-+				/* we are expecting the bit < nbits -
-+				 * 3 (none otherwise), and the rest of
-+				 * bmap1 unchanged (1-filled)
-+				 */
-+				bitmap_zero(bmap2, 1024);
-+				if (i < nbits - 3)
-+					__set_bit(i, bmap2);
-+				bitmap_set(bmap2, nbits-3, 1024 - nbits + 3);
-+				expect_eq_bitmap(bmap2, 1024, bmap1, 1024);
-+			}
-+		}
-+	}
-+}
-+
-+static int __init test_bitmap_init(void)
-+{
-+	test_zero_fill_copy();
-+	test_bitmap_u32_array_conversions();
-+
-+	if (failed_tests == 0)
-+		pr_info("all %u tests passed\n", total_tests);
-+	else
-+		pr_warn("failed %u out of %u tests\n",
-+			failed_tests, total_tests);
-+
-+	return failed_tests ? -EINVAL : 0;
-+}
-+
-+static void __exit test_bitmap_cleanup(void)
-+{
-+}
-+
-+module_init(test_bitmap_init);
-+module_exit(test_bitmap_cleanup);
-+
-+MODULE_AUTHOR("david decotigny <david.decotigny@googlers.com>");
-+MODULE_LICENSE("GPL");
-diff --git a/tools/testing/selftests/lib/Makefile b/tools/testing/selftests/lib/Makefile
-index 47147b9..0836006 100644
---- a/tools/testing/selftests/lib/Makefile
-+++ b/tools/testing/selftests/lib/Makefile
-@@ -3,6 +3,6 @@
- # No binaries, but make sure arg-less "make" doesn't trigger "run_tests"
- all:
+-	return __ethtool_get_settings(vlan->lowerdev, cmd);
++	return __ethtool_get_ksettings(vlan->lowerdev, cmd);
+ }
  
--TEST_PROGS := printf.sh
-+TEST_PROGS := printf.sh bitmap.sh
+ static netdev_features_t macvlan_fix_features(struct net_device *dev,
+@@ -1020,7 +1020,7 @@ static int macvlan_dev_get_iflink(const struct net_device *dev)
  
- include ../lib.mk
-diff --git a/tools/testing/selftests/lib/bitmap.sh b/tools/testing/selftests/lib/bitmap.sh
-new file mode 100644
-index 0000000..2da187b
---- /dev/null
-+++ b/tools/testing/selftests/lib/bitmap.sh
-@@ -0,0 +1,10 @@
-+#!/bin/sh
-+# Runs bitmap infrastructure tests using test_bitmap kernel module
-+
-+if /sbin/modprobe -q test_bitmap; then
-+	/sbin/modprobe -q -r test_bitmap
-+	echo "bitmap: ok"
-+else
-+	echo "bitmap: [FAIL]"
-+	exit 1
-+fi
+ static const struct ethtool_ops macvlan_ethtool_ops = {
+ 	.get_link		= ethtool_op_get_link,
+-	.get_settings		= macvlan_ethtool_get_settings,
++	.get_ksettings		= macvlan_ethtool_get_ksettings,
+ 	.get_drvinfo		= macvlan_ethtool_get_drvinfo,
+ };
+ 
 -- 
 2.7.0.rc3.207.g0ac5344

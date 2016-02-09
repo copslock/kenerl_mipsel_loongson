@@ -1,47 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Feb 2016 09:16:11 +0100 (CET)
-Received: from mail-lf0-f66.google.com ([209.85.215.66]:34248 "EHLO
-        mail-lf0-f66.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011955AbcBIIOfA-Zw5 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 9 Feb 2016 09:14:35 +0100
-Received: by mail-lf0-f66.google.com with SMTP id 78so5995670lfy.1
-        for <linux-mips@linux-mips.org>; Tue, 09 Feb 2016 00:14:34 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Feb 2016 09:16:27 +0100 (CET)
+Received: from mail-lf0-f65.google.com ([209.85.215.65]:35617 "EHLO
+        mail-lf0-f65.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011990AbcBIIOhTpN05 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 9 Feb 2016 09:14:37 +0100
+Received: by mail-lf0-f65.google.com with SMTP id j99so5995431lfi.2
+        for <linux-mips@linux-mips.org>; Tue, 09 Feb 2016 00:14:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=Pmf64A65Iytj2PAgS8BJmXiFvpHgzgTDFpJ9DJLSFAA=;
-        b=qyUpMyUtWFzJsxjAXUj/5wBIljnnasJ6w4yxuyCIRqiHp/qxyg6YUNZCsrY81NApim
-         nmR2Vp0I0z2ohVHBduSs3KRx/bGlZnUPbfKmWzWMjtKQaHF6EKD7WcEFzd4KgufCIvRB
-         Fo2I9u+ygtRpP+kXwsgVNv4uaHrDs7DHXhm39REff4Lil6L2qFX61ujayElfzyYHz0DD
-         X4vQRjoFUOb+rEl+0M47gNOrhAmfwiPwHet70Xwy07x1fnKGO4mV46cdCYzMKl46ArUu
-         RZdCieGF9DJiyFUXPS/3bgMF2aoyPUmHgXV13LViJ5ZmRN1WMb3dMWTTT/RhSIAekne6
-         uhww==
+        bh=I/LCWAe+1GlSM23/VcEFcCb/Xrh4VHEbKsCgWLKojqU=;
+        b=F0Zm2HTPbNEGpTbUbhqPGIwht/A2Weg/yt5z/Hg7+qddzC8L/A3pnd0CQojEpK9vV/
+         rjOjyPNS1jHkNTrQjPXOCZHomqUlVbSt5RJmOcJdpmVMTv6Y9EdnMzH8Lgp5BhWPphtZ
+         eyjx5mGNHM4VeiKhqkIga5sMrQPDA3SFFntCHaapAW3aUJM0lSb77ZzCYP+wQb+olJoJ
+         HLyQGi9sMRHtQnzpCUziWTyMXZk8fvYIQUZdiKrjFo+NaB6Ma2MZ14W5KZWtQi1DvadE
+         SiCHTfNdIQfg69sMtr2wOUry7/knSWRJX4usl8o3b6dZXHlvKdAD0G4BAGrS/4s3oUZJ
+         0Fkg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=Pmf64A65Iytj2PAgS8BJmXiFvpHgzgTDFpJ9DJLSFAA=;
-        b=loJejKlzyRJCHIBSyVMK2yzv8tl22DparjI3CIP4H4Q9WrkQjByeqiGyfBodZntm/8
-         fP//XAkNyGaKlQ7LdUPkPO4YBXLPDIII3LuvzQbwEZfSOSRLeL2zfQLxB00lfKp3zPvp
-         JQbSZtN6zRMoy9wLyloMTYIXLxXuPKtji5RsJObpsRXvKfGF8iB+8UEoWJkOAdMNUH3g
-         nXr0Vi0xsteX2uIlbvIIGAi3zjur8d1oUIyC7TavziWzEUWndcVba3Sm0LNxJFpN+SGg
-         AmTJfyHP0F7GKLHbbVO3q3jCD/85DtA2Pmn/pU6ZlGq+aOp68vYvhUlMlPq4X6Dj9Krd
-         oxsg==
-X-Gm-Message-State: AG10YOTL1h+fLzUD+2sHXzCRwc+btaSz+c7iYo+o+5y4MnNCuEtLB8fuTgirgDsAXzLXTw==
-X-Received: by 10.25.41.140 with SMTP id p134mr6178998lfp.15.1455005669720;
-        Tue, 09 Feb 2016 00:14:29 -0800 (PST)
+        bh=I/LCWAe+1GlSM23/VcEFcCb/Xrh4VHEbKsCgWLKojqU=;
+        b=DNm7tQEowMDpqw/uoO/thpZeOE0nJAAC4E0h//yaOIpjiEWFdMwRqZWneluMYxRjfa
+         F3oNoIMpTG4QGBe4s2aa/tYeRn/y8u/aSrzK59mBPAntz6sZyRA6OongVqzBFt/S2u6a
+         7URivq4XEIiVGig8girWE78RuptPrlD3t60V2tl3WMLNufcum2mHGO6mdXXk+4YWqm0t
+         Xju5db7Dynpg0yJQxUv57iTct4OQrjI0l3h3X4Fuz+VawYhVtJzcLcHAzew+WO2zWRyy
+         MEVSwzfANWpMDHvzCLMsIRB18zEp2+j7yQmtQICsnvjpqn2qr/M4Chk2c8hf3Ftfz+Tg
+         iP4A==
+X-Gm-Message-State: AG10YOStj7jDnNL6wmlqHnpl9okiROab9R5U4Nbm4kj+/i3U/TzpjRkmmnHJGe228PUdww==
+X-Received: by 10.25.137.136 with SMTP id l130mr11540312lfd.158.1455005672008;
+        Tue, 09 Feb 2016 00:14:32 -0800 (PST)
 Received: from localhost.localdomain (ppp109-252-26-173.pppoe.spdop.ru. [109.252.26.173])
-        by smtp.gmail.com with ESMTPSA id v140sm212726lfd.24.2016.02.09.00.14.28
+        by smtp.gmail.com with ESMTPSA id v140sm212726lfd.24.2016.02.09.00.14.29
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Tue, 09 Feb 2016 00:14:29 -0800 (PST)
+        Tue, 09 Feb 2016 00:14:31 -0800 (PST)
 From:   Antony Pavlov <antonynpavlov@gmail.com>
 To:     linux-mips@linux-mips.org
 Cc:     Marek Vasut <marex@denx.de>, Wills Wang <wills.wang@live.com>,
         Daniel Schwierzeck <daniel.schwierzeck@gmail.com>,
-        Alban Bedel <albeu@free.fr>, Gabor Juhos <juhosg@openwrt.org>,
-        devicetree@vger.kernel.org
-Subject: [RFC v5 06/15] MIPS: ath79: add initial support for TP-LINK MR3020
-Date:   Tue,  9 Feb 2016 11:13:52 +0300
-Message-Id: <1455005641-7079-7-git-send-email-antonynpavlov@gmail.com>
+        Alban Bedel <albeu@free.fr>,
+        Alan Stern <stern@rowland.harvard.edu>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [RFC v5 07/15] usb: ehci: add vbus-gpio parameter
+Date:   Tue,  9 Feb 2016 11:13:53 +0300
+Message-Id: <1455005641-7079-8-git-send-email-antonynpavlov@gmail.com>
 X-Mailer: git-send-email 2.7.0
 In-Reply-To: <1455005641-7079-1-git-send-email-antonynpavlov@gmail.com>
 References: <1455005641-7079-1-git-send-email-antonynpavlov@gmail.com>
@@ -49,7 +51,7 @@ Return-Path: <antonynpavlov@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51882
+X-archive-position: 51883
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -66,143 +68,67 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The following features are supported:
+This patch retrieves and configures the vbus control gpio via
+the device tree.
 
-  * UART;
-  * SPI-flash;
-  * GPIO keys and LEDs.
-
-Links:
-
-  * http://www.tp-link.com/en/products/details/?model=TL-MR3020
-  * http://wiki.openwrt.org/toh/tp-link/tl-mr3020
-  * https://wikidevi.com/wiki/TP-LINK_TL-MR3020
+This patch is based on a ehci-s5p.c commit fd81d59c90d38661
+("USB: ehci-s5p: Add vbus setup function to the s5p ehci glue layer").
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: Gabor Juhos <juhosg@openwrt.org>
-Cc: Alban Bedel <albeu@free.fr>
-Cc: linux-mips@linux-mips.org
-Cc: devicetree@vger.kernel.org
+Cc: Alan Stern <stern@rowland.harvard.edu>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: linux-usb@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
 ---
- arch/mips/boot/dts/qca/Makefile      |  1 +
- arch/mips/boot/dts/qca/tl_mr3020.dts | 99 ++++++++++++++++++++++++++++++++++++
- 2 files changed, 100 insertions(+)
+ drivers/usb/host/ehci-platform.c | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
-diff --git a/arch/mips/boot/dts/qca/Makefile b/arch/mips/boot/dts/qca/Makefile
-index 14bd225..504c4b1 100644
---- a/arch/mips/boot/dts/qca/Makefile
-+++ b/arch/mips/boot/dts/qca/Makefile
-@@ -1,5 +1,6 @@
- # All DTBs
- dtb-$(CONFIG_ATH79)			+= ar9132_tl_wr1043nd_v1.dtb
-+dtb-$(CONFIG_ATH79)			+= tl_mr3020.dtb
+diff --git a/drivers/usb/host/ehci-platform.c b/drivers/usb/host/ehci-platform.c
+index bd7082f2..0d95ced 100644
+--- a/drivers/usb/host/ehci-platform.c
++++ b/drivers/usb/host/ehci-platform.c
+@@ -28,6 +28,7 @@
+ #include <linux/io.h>
+ #include <linux/module.h>
+ #include <linux/of.h>
++#include <linux/of_gpio.h>
+ #include <linux/phy/phy.h>
+ #include <linux/platform_device.h>
+ #include <linux/reset.h>
+@@ -142,6 +143,25 @@ static struct usb_ehci_pdata ehci_platform_defaults = {
+ 	.power_off =		ehci_platform_power_off,
+ };
  
- # Force kbuild to make empty built-in.o if necessary
- obj-				+= dummy.o
-diff --git a/arch/mips/boot/dts/qca/tl_mr3020.dts b/arch/mips/boot/dts/qca/tl_mr3020.dts
-new file mode 100644
-index 0000000..2a1b296
---- /dev/null
-+++ b/arch/mips/boot/dts/qca/tl_mr3020.dts
-@@ -0,0 +1,99 @@
-+/dts-v1/;
++static void setup_vbus_gpio(struct device *dev)
++{
++	int err;
++	int gpio;
 +
-+#include <dt-bindings/gpio/gpio.h>
-+#include <dt-bindings/input/input.h>
++	if (!dev->of_node)
++		return;
 +
-+#include "ar9331.dtsi"
++	gpio = of_get_named_gpio(dev->of_node, "vbus-gpio", 0);
++	if (!gpio_is_valid(gpio))
++		return;
 +
-+/ {
-+	model = "TP-Link TL-MR3020";
-+	compatible = "tplink,tl-mr3020";
++	err = devm_gpio_request_one(dev, gpio,
++				GPIOF_OUT_INIT_HIGH | GPIOF_EXPORT_DIR_FIXED,
++				"ehci_vbus_gpio");
++	if (err)
++		dev_err(dev, "can't request ehci vbus gpio %d", gpio);
++}
 +
-+	aliases {
-+		serial0 = &uart;
-+	};
+ static int ehci_platform_probe(struct platform_device *dev)
+ {
+ 	struct usb_hcd *hcd;
+@@ -174,6 +194,8 @@ static int ehci_platform_probe(struct platform_device *dev)
+ 		return irq;
+ 	}
+ 
++	setup_vbus_gpio(&dev->dev);
 +
-+	memory@0 {
-+		device_type = "memory";
-+		reg = <0x0 0x2000000>;
-+	};
-+
-+	leds {
-+		compatible = "gpio-leds";
-+
-+		wlan {
-+			label = "tp-link:green:wlan";
-+			gpios = <&gpio 0 GPIO_ACTIVE_HIGH>;
-+			default-state = "off";
-+		};
-+
-+		lan {
-+			label = "tp-link:green:lan";
-+			gpios = <&gpio 17 GPIO_ACTIVE_LOW>;
-+			default-state = "off";
-+		};
-+
-+		wps {
-+			label = "tp-link:green:wps";
-+			gpios = <&gpio 26 GPIO_ACTIVE_LOW>;
-+			default-state = "off";
-+		};
-+
-+		led3g {
-+			label = "tp-link:green:3g";
-+			gpios = <&gpio 27 GPIO_ACTIVE_LOW>;
-+			default-state = "off";
-+		};
-+	};
-+
-+	gpio-keys-polled {
-+		compatible = "gpio-keys-polled";
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+		poll-interval = <100>;
-+
-+		button@0 {
-+			label = "wps";
-+			linux,code = <KEY_WPS_BUTTON>;
-+			gpios = <&gpio 11 GPIO_ACTIVE_HIGH>;
-+		};
-+
-+		button@1 {
-+			label = "sw1";
-+			linux,code = <BTN_0>;
-+			gpios = <&gpio 18 GPIO_ACTIVE_HIGH>;
-+		};
-+
-+		button@2 {
-+			label = "sw2";
-+			linux,code = <BTN_1>;
-+			gpios = <&gpio 20 GPIO_ACTIVE_HIGH>;
-+		};
-+	};
-+};
-+
-+&ref {
-+	clock-frequency = <25000000>;
-+};
-+
-+&uart {
-+	status = "okay";
-+};
-+
-+&gpio {
-+	status = "okay";
-+};
-+
-+&spi {
-+	num-chipselects = <1>;
-+	status = "okay";
-+
-+	/* Spansion S25FL032PIF SPI flash */
-+	spiflash: s25sl032p@0 {
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+		compatible = "spansion,s25sl032p", "jedec,spi-nor";
-+		spi-max-frequency = <104000000>;
-+		reg = <0>;
-+	};
-+};
+ 	hcd = usb_create_hcd(&ehci_platform_hc_driver, &dev->dev,
+ 			     dev_name(&dev->dev));
+ 	if (!hcd)
 -- 
 2.7.0

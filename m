@@ -1,39 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Feb 2016 15:30:11 +0100 (CET)
-Received: from relay1.mentorg.com ([192.94.38.131]:60274 "EHLO
-        relay1.mentorg.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27011379AbcBIOaKRcIa6 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 9 Feb 2016 15:30:10 +0100
-Received: from svr-orw-fem-06.mgc.mentorg.com ([147.34.97.120])
-        by relay1.mentorg.com with esmtp 
-        id 1aT9Ip-0005VN-KW from Luis_Gustavo@mentor.com ; Tue, 09 Feb 2016 06:30:03 -0800
-Received: from [172.30.10.142] (147.34.91.1) by SVR-ORW-FEM-06.mgc.mentorg.com
- (147.34.97.120) with Microsoft SMTP Server id 14.3.224.2; Tue, 9 Feb 2016
- 06:30:03 -0800
-Reply-To: Luis Machado <lgustavo@codesourcery.com>
-Subject: Re: [PATCH] Expect SI_KERNEL si_code for a MIPS software breakpoint
- trap
-References: <1442592647-3051-1-git-send-email-lgustavo@codesourcery.com>
- <alpine.LFD.2.20.1509181729100.10647@eddie.linux-mips.org>
-To:     "Maciej W. Rozycki" <macro@linux-mips.org>
-CC:     <gdb-patches@sourceware.org>, <linux-mips@linux-mips.org>
-From:   Luis Machado <lgustavo@codesourcery.com>
-Message-ID: <56B9F7E6.5010006@codesourcery.com>
-Date:   Tue, 9 Feb 2016 12:29:58 -0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.5.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Feb 2016 15:51:55 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:33983 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27011582AbcBIOvyQmqc6 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 9 Feb 2016 15:51:54 +0100
+Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
+        by Websense Email Security Gateway with ESMTPS id 709D144935181;
+        Tue,  9 Feb 2016 14:51:46 +0000 (GMT)
+Received: from [10.100.200.149] (10.100.200.149) by hhmail02.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server id 14.3.266.1; Tue, 9 Feb 2016
+ 14:51:48 +0000
+Date:   Tue, 9 Feb 2016 14:51:47 +0000
+From:   "Maciej W. Rozycki" <macro@imgtec.com>
+To:     Daniel Wagner <daniel.wagner@bmw-carit.de>
+CC:     Ralf Baechle <ralf@linux-mips.org>, <linux-kernel@vger.kernel.org>,
+        <linux-mips@linux-mips.org>
+Subject: Re: [PATCH v3 1/3] mips: Use arch specific auxvec.h instead of
+ generic-asm version
+In-Reply-To: <56B9DD98.7090809@bmw-carit.de>
+Message-ID: <alpine.DEB.2.00.1602091435340.15885@tp.orcam.me.uk>
+References: <alpine.DEB.2.00.1602061624460.15885@tp.orcam.me.uk> <1454946278-13859-1-git-send-email-daniel.wagner@bmw-carit.de> <1454946278-13859-2-git-send-email-daniel.wagner@bmw-carit.de> <alpine.DEB.2.00.1602081705470.15885@tp.orcam.me.uk>
+ <56B98EAE.9080505@bmw-carit.de> <alpine.DEB.2.00.1602091129020.15885@tp.orcam.me.uk> <56B9DD98.7090809@bmw-carit.de>
+User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
 MIME-Version: 1.0
-In-Reply-To: <alpine.LFD.2.20.1509181729100.10647@eddie.linux-mips.org>
-Content-Type: text/plain; charset="windows-1252"; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <Luis_Gustavo@mentor.com>
+Content-Type: text/plain; charset="US-ASCII"
+X-Originating-IP: [10.100.200.149]
+Return-Path: <Maciej.Rozycki@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51904
+X-archive-position: 51905
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: lgustavo@codesourcery.com
+X-original-sender: macro@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,70 +45,18 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Maciej,
+On Tue, 9 Feb 2016, Daniel Wagner wrote:
 
-I'm finally getting back to this. Sorry for the delay.
+> >  Can you try `make mrproper' (stash away your .config) and see if the 
+> > problem goes away?
+> 
+> Indeed, 'make mrproper' did the trick. I am sorry for the noise. Until
+> now I never had to use mrproper before and therefore didn't think of it.
 
-On 09/18/2015 01:56 PM, Maciej W. Rozycki wrote:
-> Hi Luis,
->
->> I tracked this down to the lack of a proper definition of what MIPS' kernel
->> returns in the si_code for a software breakpoint trap.
->>
->> Though i did not find documentation about this, tests showed that we should
->> check for SI_KERNEL, just like i386. I've cc-ed Maciej, just to be sure this
->> is indeed correct.
->
->   Hmm, the MIPS/Linux port does not set any particular code for SIGTRAP,
-> all such signals will have the SI_KERNEL default, so you may well return
-> TRUE unconditionally.
->
+ People have been being hit by stale generated files recently and I reckon 
+effort has been taken to address the issue by removing them automagically 
+somehow on rebuilds.  Until that has been complete you're advised to clean 
+your build tree after an update, or maybe rebuild speculatively and then 
+clean only if something actually breaks.
 
-That is unfortunate. It would be nice to have a well defined standard of 
-communicating these events from kernels to debuggers. All is not lost 
-though, since that can be improved.
-
->   I'm not convinced however that it is safe to assume all SIGTRAPs come
-> from breakpoints -- this signal is sent by the kernel for both BREAK and
-> trap (multiple mnemonics, e.g. TEQ, TGEI, etc.) instructions which may
-> have been placed throughout code for some reason, for example to serve as
-> cheap assertion checks.
->
->   Is there a separate check made afterwards like `bpstat_explains_signal'
-> to validate the source of the signal here?
->
-
-In my specific example we are dealing with two breakpoint hits by 
-different threads. The first one is reported just fine and the one we 
-have problems with is the queued one that is reported afterwards when we 
-attempt to move the other thread.
-
-We do rely on bpstat_explains_signal when gdbserver/the remote target 
-notifies gdb about a stop. In the case of a queued breakpoint hit, it 
-doesn't even get reported back to gdb and is just ignored by gdbserver 
-if it is recognized as a breakpoint hit.
-
-With the proposed change, even the hardcoded traps will initially be 
-recognized as breakpoints, albeit maybe recognized as permanent 
-breakpoints for some opcodes. It may cause gdbserver to ignore a second 
-hardcoded trap hit, which is not desirable.
-
->   Perhaps we should make it a part of the ABI and teach MIPS/Linux about
-> the breakpoint encoding used by GDB, which is `BREAK 5' (aka BRK_SSTEPBP
-> in kernel-speak, a misnomer I'm afraid), and make it set `si_code' to
-> TRAP_BRKPT, as expected.  This won't fix history of course, but at least
-> it will make debugging a little bit easier to handle in the future.
-> Cc-ing `linux-mips' for further input.
-
-This is the best solution in my opinion and will definitely make the 
-debugger's life easier if it can tell the difference between multiple 
-seemingly equivalent SIGTRAP's.
-
-Does this involve handling BRK_SSTEPBP inside 
-arch/mips/kernel/traps.c:do_trap_or_bp?
-
->
->   I was wondering where these SIGTRAPs come from too BTW, thanks for
-> investigating it.  And thanks for the heads-up!
-
-You're welcome.
+  Maciej

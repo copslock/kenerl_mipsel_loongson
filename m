@@ -1,43 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Feb 2016 09:03:39 +0100 (CET)
-Received: from mail.bmw-carit.de ([62.245.222.98]:46996 "EHLO
-        mail.bmw-carit.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27010545AbcBIIDgva275 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 9 Feb 2016 09:03:36 +0100
-Received: from exchange2010.bmw-carit.intra ([192.168.100.28]:14684 helo=mail.bmw-carit.de)
-        by mail.bmw-carit.de with esmtps (TLSv1:AES256-SHA:256)
-        (Exim 4.82_1-5b7a7c0-XX)
-        (envelope-from <Daniel.Wagner@bmw-carit.de>)
-        id 1aT3Go-0008Sy-0i; Tue, 09 Feb 2016 09:03:34 +0100
-Received: from handman.bmw-carit.intra (192.168.101.8) by
- Exchange2010.bmw-carit.intra (192.168.100.28) with Microsoft SMTP Server
- (TLS) id 14.3.123.3; Tue, 9 Feb 2016 09:03:33 +0100
-X-CTCH-RefID: str=0001.0A0C0205.56B99D56.00E6,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Subject: Re: [PATCH v3 3/3] mips: Differentiate between 32 and 64 bit ELF
- header
-To:     "Maciej W. Rozycki" <macro@imgtec.com>
-References: <201602090033.mukhdG4N%fengguang.wu@intel.com>
-CC:     kbuild test robot <lkp@intel.com>, <kbuild-all@01.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        <linux-kernel@vger.kernel.org>, <linux-mips@linux-mips.org>
-From:   Daniel Wagner <daniel.wagner@bmw-carit.de>
-X-Enigmail-Draft-Status: N1110
-Message-ID: <56B99D55.2020301@bmw-carit.de>
-Date:   Tue, 9 Feb 2016 09:03:33 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.5.0
-MIME-Version: 1.0
-In-Reply-To: <201602090033.mukhdG4N%fengguang.wu@intel.com>
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: 7bit
-Return-Path: <daniel.wagner@bmw-carit.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Feb 2016 09:14:29 +0100 (CET)
+Received: from mail-lf0-f50.google.com ([209.85.215.50]:34143 "EHLO
+        mail-lf0-f50.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011117AbcBIIO2da035 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 9 Feb 2016 09:14:28 +0100
+Received: by mail-lf0-f50.google.com with SMTP id j78so110750437lfb.1
+        for <linux-mips@linux-mips.org>; Tue, 09 Feb 2016 00:14:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id;
+        bh=rU38N0d7OgF1ZEsxjXRFcyMqruicXgkJ+t+gKH0v1Z4=;
+        b=XJmltl7yDollOFUz//uO16Jrwc9rnwAnpZtaWF584HHAzm1LiXm+5WC4SHFzEA+GJ/
+         FhyR0y1n5T8JO2oREJOsnTbsLknbfU/7tvhzaPJ4J/5X7smDd+rCc0WU10lBZjTX8WuE
+         zu4j4WrAWimeb8QzROKIzqcj6NDfSdKxXj5VYCezx9Q4GjZ4jMvZpbtwQnMmOu7cx8dI
+         Kt4yT6fkTDiQAoJs8tlPNwBtEoeWiCHKV3Hydtild5juaaAleda0JjPUvpXfPvGKGRJR
+         Oa8/XjUOsu5IaOPgIUTrsefGiUQCXiAsUwPwmu7ZEKzykh8//WWQFFCgQaPi85mWZ3Vo
+         uo1w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=rU38N0d7OgF1ZEsxjXRFcyMqruicXgkJ+t+gKH0v1Z4=;
+        b=Z2PGDtl6P+3MolBuoS5YkjRY/t6/8OHSLTL9lS2SRW8ibu8FiCFR3Phb07UuigLIjP
+         jrbcpl/bRTIsxgqrV/YDfiRwUpT8YfXMgi/Y860YFFD+zstZe680qb8nFyi9S3F6qUN5
+         yy37RDuA+hsCQbQCze1Ja0zgGEAr3VZXwpLN1kX63/NUK0JSxCdMAi0Kz+cxVC43V0PK
+         2lAmic5SU553HHEdGc74gNaVXSeT0PbZd6Wu4jR/F06g/ecei843UjM5WW8yO1zfwk1Z
+         ejIZGS1d0ecUhhSWvGhvtRqo1vFMwhLe4CS85ozTqXWQyMV7ZEhLOG17/8kkg6pQFkCp
+         IV2w==
+X-Gm-Message-State: AG10YORsHcENHprDjufIfjt456mwc6j1e8w899jNsSPR57+2jtyC4etoWlor55nrPJWb0Q==
+X-Received: by 10.25.8.4 with SMTP id 4mr6825937lfi.164.1455005663150;
+        Tue, 09 Feb 2016 00:14:23 -0800 (PST)
+Received: from localhost.localdomain (ppp109-252-26-173.pppoe.spdop.ru. [109.252.26.173])
+        by smtp.gmail.com with ESMTPSA id v140sm212726lfd.24.2016.02.09.00.14.22
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Tue, 09 Feb 2016 00:14:22 -0800 (PST)
+From:   Antony Pavlov <antonynpavlov@gmail.com>
+To:     linux-mips@linux-mips.org
+Cc:     Marek Vasut <marex@denx.de>, Wills Wang <wills.wang@live.com>,
+        Daniel Schwierzeck <daniel.schwierzeck@gmail.com>,
+        Alban Bedel <albeu@free.fr>
+Subject: [RFC v5 00/15] MIPS: ath79: AR9331: add devicetree support
+Date:   Tue,  9 Feb 2016 11:13:46 +0300
+Message-Id: <1455005641-7079-1-git-send-email-antonynpavlov@gmail.com>
+X-Mailer: git-send-email 2.7.0
+Return-Path: <antonynpavlov@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51875
+X-archive-position: 51876
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: daniel.wagner@bmw-carit.de
+X-original-sender: antonynpavlov@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,45 +62,92 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Maciej,
+This patchseries relies on additonal USB support and appended DTB handling
+patches by Alban Bedel:
 
-On 02/08/2016 05:22 PM, kbuild test robot wrote:
-> Hi Daniel,
-> 
-> [auto build test ERROR on v4.5-rc3]
-> [also build test ERROR on next-20160208]
-> [if your patch is applied to the wrong git tree, please drop us a note to help improving the system]
-> 
-> url:    https://github.com/0day-ci/linux/commits/Daniel-Wagner/Differentiate-between-32-and-64-bit-ELF-header/20160208-234759
-> config: mips-fuloong2e_defconfig (attached as .config)
-> reproduce:
->         wget https://git.kernel.org/cgit/linux/kernel/git/wfg/lkp-tests.git/plain/sbin/make.cross -O ~/bin/make.cross
->         chmod +x ~/bin/make.cross
->         # save the attached .config to linux build tree
->         make.cross ARCH=mips 
-> 
-> All error/warnings (new ones prefixed by >>):
-> 
->    arch/mips/kernel/../../../fs/binfmt_elf.c: In function 'load_elf_interp':
->>> arch/mips/kernel/binfmt_elfn32.c:38:7: error: implicit declaration of function 'mips_elf_check_machine' [-Werror=implicit-function-declaration]
->      if (!mips_elf_check_machine(__h))    \
->           ^
->>> arch/mips/kernel/../../../fs/binfmt_elf.c:536:7: note: in expansion of macro 'elf_check_arch'
->      if (!elf_check_arch(interp_elf_ex))
->           ^
->    cc1: some warnings being treated as errors
-> --
->    arch/mips/kernel/../../../fs/binfmt_elf.c: In function 'load_elf_interp':
+  * https://patchwork.linux-mips.org/patch/11497/
+  * https://patchwork.linux-mips.org/patch/11495/
 
-Hmm how I was able to build binfmt_elfo32.o because it should suffer
-from the same problem.
+  * MIPS: OF: Rework the appended DTB handling to keep the PROM arguments
+    https://github.com/AlbanBedel/linux/commit/3e1bb5db49a9da1d5d9c90d345fd114f00596c19
 
-I think reusing mips_elf_check_machine() in binfmt_elf?32.c is only
-going to work if we include arch/mips/include/asm/elf.h. Though this
-looks kind of wrong.
+  * MIPS: ath79: Add support for DTB passed using the UHI boot protocol
+    https://github.com/AlbanBedel/linux/commit/b0229b82f84c3e054308eb481d0f4a782fc8ac41
 
-Should I add a mips_elf_check_machine() to binfmt_elf?32.c as well or
-just leave them as they are at this point?
+  * MIPS: ath79: Remove the builtin DTB support
+    https://github.com/AlbanBedel/linux/commit/0b8843b069e525db690c253e03b7a15bc1d1f0df
 
-cheers,
-daniel
+Changes since RFC v4:
+
+  * AR3132-related patches are postponed;
+  * drivers/clk/clk-ath79.c is rewritten;
+  * DPTechnics DPT-Module board support is added;
+  * TP-LINK MR3020 USB support is added;
+  * gpio polled keys support is added for all boards;
+  * appended DTB is used, so now we can use single vmlinux.bin
+    image for all boards.
+
+Changes since RFC v3:
+
+  * clk: get pll registers base address from devicetree node
+  * MIPS: dts: qca: ar9132: use short references for usb too
+  * MIPS: dts: qca: ar9331: add usb support
+  * MIPS: ath79: Dragino MS14: enable usb support
+
+Changes since RFC v2:
+
+  * add Onion Omega board support;
+  * add AR9132 SoC clock driver;
+  * add AR9132 devicetree fixes.
+
+Changes since RFC v1:
+
+  * add Dragino MS14 board support;
+  * add "ref" oscillator input clock for pll-controller;
+    add necessary nodes to board dts files.
+
+
+Antony Pavlov (15):
+  WIP: clk: add Atheros AR933X SoCs clock driver
+  dt-bindings: clock: qca,ath79-pll: fix copy-paste typos
+  MIPS: ath79: use clk-ath79.c driver for AR933X
+  WIP: MIPS: ath79: setup.c: disable platform code for OF boards
+  MIPS: dts: qca: introduce AR9331 devicetree
+  MIPS: ath79: add initial support for TP-LINK MR3020
+  usb: ehci: add vbus-gpio parameter
+  MIPS: tl_mr3020: enable usb support
+  devicetree: add Dragino vendor id
+  MIPS: ath79: add initial support for Dragino MS14 (Dragino 2)
+  devicetree: add Onion Corporation vendor id
+  MIPS: ath79: add initial support for Onion Omega
+  devicetree: add DPTechnics vendor id
+  MIPS: ath79: add DPT-Module support
+  WIP: MIPS: ath79: add AR9331 devicetree defconfig
+
+ .../devicetree/bindings/clock/qca,ath79-pll.txt    |   4 +-
+ .../devicetree/bindings/vendor-prefixes.txt        |   3 +
+ arch/mips/ath79/clock.c                            |   6 +-
+ arch/mips/ath79/setup.c                            |  17 +-
+ arch/mips/boot/dts/qca/Makefile                    |   4 +
+ arch/mips/boot/dts/qca/ar9331.dtsi                 | 157 +++++++++
+ arch/mips/boot/dts/qca/dpt_module.dts              |  77 +++++
+ arch/mips/boot/dts/qca/dragino_ms14.dts            | 101 ++++++
+ arch/mips/boot/dts/qca/omega.dts                   |  77 +++++
+ arch/mips/boot/dts/qca/tl_mr3020.dts               | 108 +++++++
+ arch/mips/configs/ar9331-dt-raw_defconfig          | 100 ++++++
+ drivers/clk/Makefile                               |   1 +
+ drivers/clk/clk-ath79.c                            | 354 +++++++++++++++++++++
+ drivers/usb/host/ehci-platform.c                   |  22 ++
+ include/dt-bindings/clock/ath79-clk.h              |  22 ++
+ 15 files changed, 1041 insertions(+), 12 deletions(-)
+ create mode 100644 arch/mips/boot/dts/qca/ar9331.dtsi
+ create mode 100644 arch/mips/boot/dts/qca/dpt_module.dts
+ create mode 100644 arch/mips/boot/dts/qca/dragino_ms14.dts
+ create mode 100644 arch/mips/boot/dts/qca/omega.dts
+ create mode 100644 arch/mips/boot/dts/qca/tl_mr3020.dts
+ create mode 100644 arch/mips/configs/ar9331-dt-raw_defconfig
+ create mode 100644 drivers/clk/clk-ath79.c
+ create mode 100644 include/dt-bindings/clock/ath79-clk.h
+
+-- 
+2.7.0

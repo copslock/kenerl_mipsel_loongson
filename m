@@ -1,47 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Feb 2016 09:15:52 +0100 (CET)
-Received: from mail-lf0-f67.google.com ([209.85.215.67]:36653 "EHLO
-        mail-lf0-f67.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011798AbcBIIOd4AXj5 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 9 Feb 2016 09:14:33 +0100
-Received: by mail-lf0-f67.google.com with SMTP id h198so5993015lfh.3
-        for <linux-mips@linux-mips.org>; Tue, 09 Feb 2016 00:14:33 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Feb 2016 09:16:11 +0100 (CET)
+Received: from mail-lf0-f66.google.com ([209.85.215.66]:34248 "EHLO
+        mail-lf0-f66.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011955AbcBIIOfA-Zw5 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 9 Feb 2016 09:14:35 +0100
+Received: by mail-lf0-f66.google.com with SMTP id 78so5995670lfy.1
+        for <linux-mips@linux-mips.org>; Tue, 09 Feb 2016 00:14:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=cduLPUBxU4QkcLlvmEyOHfsVedmWE2Cy8gndJCzrqhA=;
-        b=j0CN6a923fFC90GciIFZ9w5X+PNvujMfbX7pPT3S7N0cm70GNpt/qngWWKRDIPqhXI
-         yZ8lZM/jHT3kCS8E2q+7xLgsozBJW6cQ0y49cXG7E2Ra30xFCP1qnXtWuWzqrhdRFlPE
-         uvIcBb+xz+dR1hcQhZC3Du1NTkWc3aCZiEhQQnz1GvTO8qZb7WyHraSdXBASVJ/IkMr/
-         HCl/iagqVon8fBGj+3vw4gLvE23+ZqH/pRXwT1jXO8VrcMhuDvFBZQpaKdgv2sUu5Xpl
-         /LgpQNS+b+qBZ9nGb7vILxMUxEADKjHTZvEQ/wzqLApMFGACOIflwUOlewstrlubh4CE
-         28ww==
+        bh=Pmf64A65Iytj2PAgS8BJmXiFvpHgzgTDFpJ9DJLSFAA=;
+        b=qyUpMyUtWFzJsxjAXUj/5wBIljnnasJ6w4yxuyCIRqiHp/qxyg6YUNZCsrY81NApim
+         nmR2Vp0I0z2ohVHBduSs3KRx/bGlZnUPbfKmWzWMjtKQaHF6EKD7WcEFzd4KgufCIvRB
+         Fo2I9u+ygtRpP+kXwsgVNv4uaHrDs7DHXhm39REff4Lil6L2qFX61ujayElfzyYHz0DD
+         X4vQRjoFUOb+rEl+0M47gNOrhAmfwiPwHet70Xwy07x1fnKGO4mV46cdCYzMKl46ArUu
+         RZdCieGF9DJiyFUXPS/3bgMF2aoyPUmHgXV13LViJ5ZmRN1WMb3dMWTTT/RhSIAekne6
+         uhww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=cduLPUBxU4QkcLlvmEyOHfsVedmWE2Cy8gndJCzrqhA=;
-        b=I/txiJn05K2+azoVgfhSo3EpFmvNp9WfSsyEfb5YB+KU+OuMu3PTtGWG9DcQHDVt2L
-         jxNKOLuhsmRxmWEerSni1QL+oyVt9bj2NPFe7r7fOfHyfhp1OqT1uBZMlpwqnnleB6Ml
-         /6NGfWEvodcsZKUwJBF+LLdxeGTOkYzIUpVRR0ebkPtjqSCWMm+25JRnIOPa4ogzynKn
-         jcpE3sgq+jYzvxUddW2zgWgIZFTPrE9xatIOhahzD+Gx7Vo+jKLTGHq8EQ3KLbaICWio
-         KKRSBHLf7r5Nr6xAAESw5Wb8ynpq3xEhfG582WqVAMySDaMta1AqrA6NF/MOMSyOB5cL
-         dNpA==
-X-Gm-Message-State: AG10YOQgtszKvJPHm7cTiw9TGGO+ZJvA8iuk46vtaANtin3PH1sTYaAJMPVgTWp0QN0v/g==
-X-Received: by 10.25.16.30 with SMTP id f30mr14299788lfi.126.1455005668656;
-        Tue, 09 Feb 2016 00:14:28 -0800 (PST)
+        bh=Pmf64A65Iytj2PAgS8BJmXiFvpHgzgTDFpJ9DJLSFAA=;
+        b=loJejKlzyRJCHIBSyVMK2yzv8tl22DparjI3CIP4H4Q9WrkQjByeqiGyfBodZntm/8
+         fP//XAkNyGaKlQ7LdUPkPO4YBXLPDIII3LuvzQbwEZfSOSRLeL2zfQLxB00lfKp3zPvp
+         JQbSZtN6zRMoy9wLyloMTYIXLxXuPKtji5RsJObpsRXvKfGF8iB+8UEoWJkOAdMNUH3g
+         nXr0Vi0xsteX2uIlbvIIGAi3zjur8d1oUIyC7TavziWzEUWndcVba3Sm0LNxJFpN+SGg
+         AmTJfyHP0F7GKLHbbVO3q3jCD/85DtA2Pmn/pU6ZlGq+aOp68vYvhUlMlPq4X6Dj9Krd
+         oxsg==
+X-Gm-Message-State: AG10YOTL1h+fLzUD+2sHXzCRwc+btaSz+c7iYo+o+5y4MnNCuEtLB8fuTgirgDsAXzLXTw==
+X-Received: by 10.25.41.140 with SMTP id p134mr6178998lfp.15.1455005669720;
+        Tue, 09 Feb 2016 00:14:29 -0800 (PST)
 Received: from localhost.localdomain (ppp109-252-26-173.pppoe.spdop.ru. [109.252.26.173])
-        by smtp.gmail.com with ESMTPSA id v140sm212726lfd.24.2016.02.09.00.14.27
+        by smtp.gmail.com with ESMTPSA id v140sm212726lfd.24.2016.02.09.00.14.28
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Tue, 09 Feb 2016 00:14:27 -0800 (PST)
+        Tue, 09 Feb 2016 00:14:29 -0800 (PST)
 From:   Antony Pavlov <antonynpavlov@gmail.com>
 To:     linux-mips@linux-mips.org
 Cc:     Marek Vasut <marex@denx.de>, Wills Wang <wills.wang@live.com>,
         Daniel Schwierzeck <daniel.schwierzeck@gmail.com>,
         Alban Bedel <albeu@free.fr>, Gabor Juhos <juhosg@openwrt.org>,
         devicetree@vger.kernel.org
-Subject: [RFC v5 05/15] MIPS: dts: qca: introduce AR9331 devicetree
-Date:   Tue,  9 Feb 2016 11:13:51 +0300
-Message-Id: <1455005641-7079-6-git-send-email-antonynpavlov@gmail.com>
+Subject: [RFC v5 06/15] MIPS: ath79: add initial support for TP-LINK MR3020
+Date:   Tue,  9 Feb 2016 11:13:52 +0300
+Message-Id: <1455005641-7079-7-git-send-email-antonynpavlov@gmail.com>
 X-Mailer: git-send-email 2.7.0
 In-Reply-To: <1455005641-7079-1-git-send-email-antonynpavlov@gmail.com>
 References: <1455005641-7079-1-git-send-email-antonynpavlov@gmail.com>
@@ -49,7 +49,7 @@ Return-Path: <antonynpavlov@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51881
+X-archive-position: 51882
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -66,9 +66,17 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This patch introduces devicetree for Atheros AR9331 SoC (AKA Hornet).
-The AR9331 chip is a Wi-Fi System-On-Chip (WiSOC),
-typically used in very cheap Access Points and Routers.
+The following features are supported:
+
+  * UART;
+  * SPI-flash;
+  * GPIO keys and LEDs.
+
+Links:
+
+  * http://www.tp-link.com/en/products/details/?model=TL-MR3020
+  * http://wiki.openwrt.org/toh/tp-link/tl-mr3020
+  * https://wikidevi.com/wiki/TP-LINK_TL-MR3020
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: Gabor Juhos <juhosg@openwrt.org>
@@ -76,170 +84,124 @@ Cc: Alban Bedel <albeu@free.fr>
 Cc: linux-mips@linux-mips.org
 Cc: devicetree@vger.kernel.org
 ---
- arch/mips/boot/dts/qca/ar9331.dtsi | 157 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 157 insertions(+)
+ arch/mips/boot/dts/qca/Makefile      |  1 +
+ arch/mips/boot/dts/qca/tl_mr3020.dts | 99 ++++++++++++++++++++++++++++++++++++
+ 2 files changed, 100 insertions(+)
 
-diff --git a/arch/mips/boot/dts/qca/ar9331.dtsi b/arch/mips/boot/dts/qca/ar9331.dtsi
+diff --git a/arch/mips/boot/dts/qca/Makefile b/arch/mips/boot/dts/qca/Makefile
+index 14bd225..504c4b1 100644
+--- a/arch/mips/boot/dts/qca/Makefile
++++ b/arch/mips/boot/dts/qca/Makefile
+@@ -1,5 +1,6 @@
+ # All DTBs
+ dtb-$(CONFIG_ATH79)			+= ar9132_tl_wr1043nd_v1.dtb
++dtb-$(CONFIG_ATH79)			+= tl_mr3020.dtb
+ 
+ # Force kbuild to make empty built-in.o if necessary
+ obj-				+= dummy.o
+diff --git a/arch/mips/boot/dts/qca/tl_mr3020.dts b/arch/mips/boot/dts/qca/tl_mr3020.dts
 new file mode 100644
-index 0000000..333c7ff
+index 0000000..2a1b296
 --- /dev/null
-+++ b/arch/mips/boot/dts/qca/ar9331.dtsi
-@@ -0,0 +1,157 @@
-+#include <dt-bindings/clock/ath79-clk.h>
++++ b/arch/mips/boot/dts/qca/tl_mr3020.dts
+@@ -0,0 +1,99 @@
++/dts-v1/;
++
++#include <dt-bindings/gpio/gpio.h>
++#include <dt-bindings/input/input.h>
++
++#include "ar9331.dtsi"
 +
 +/ {
-+	compatible = "qca,ar9331";
++	model = "TP-Link TL-MR3020";
++	compatible = "tplink,tl-mr3020";
 +
-+	#address-cells = <1>;
-+	#size-cells = <1>;
++	aliases {
++		serial0 = &uart;
++	};
 +
-+	cpus {
++	memory@0 {
++		device_type = "memory";
++		reg = <0x0 0x2000000>;
++	};
++
++	leds {
++		compatible = "gpio-leds";
++
++		wlan {
++			label = "tp-link:green:wlan";
++			gpios = <&gpio 0 GPIO_ACTIVE_HIGH>;
++			default-state = "off";
++		};
++
++		lan {
++			label = "tp-link:green:lan";
++			gpios = <&gpio 17 GPIO_ACTIVE_LOW>;
++			default-state = "off";
++		};
++
++		wps {
++			label = "tp-link:green:wps";
++			gpios = <&gpio 26 GPIO_ACTIVE_LOW>;
++			default-state = "off";
++		};
++
++		led3g {
++			label = "tp-link:green:3g";
++			gpios = <&gpio 27 GPIO_ACTIVE_LOW>;
++			default-state = "off";
++		};
++	};
++
++	gpio-keys-polled {
++		compatible = "gpio-keys-polled";
 +		#address-cells = <1>;
 +		#size-cells = <0>;
++		poll-interval = <100>;
 +
-+		cpu@0 {
-+			device_type = "cpu";
-+			compatible = "mips,mips24Kc";
-+			reg = <0>;
++		button@0 {
++			label = "wps";
++			linux,code = <KEY_WPS_BUTTON>;
++			gpios = <&gpio 11 GPIO_ACTIVE_HIGH>;
++		};
++
++		button@1 {
++			label = "sw1";
++			linux,code = <BTN_0>;
++			gpios = <&gpio 18 GPIO_ACTIVE_HIGH>;
++		};
++
++		button@2 {
++			label = "sw2";
++			linux,code = <BTN_1>;
++			gpios = <&gpio 20 GPIO_ACTIVE_HIGH>;
 +		};
 +	};
++};
 +
-+	cpuintc: interrupt-controller {
-+		compatible = "qca,ar7100-cpu-intc";
++&ref {
++	clock-frequency = <25000000>;
++};
 +
-+		interrupt-controller;
-+		#interrupt-cells = <1>;
++&uart {
++	status = "okay";
++};
 +
-+		qca,ddr-wb-channel-interrupts = <2>, <3>;
-+		qca,ddr-wb-channels = <&ddr_ctrl 3>, <&ddr_ctrl 2>;
-+	};
++&gpio {
++	status = "okay";
++};
 +
-+	ref: ref {
-+		compatible = "fixed-clock";
-+		#clock-cells = <0>;
-+	};
++&spi {
++	num-chipselects = <1>;
++	status = "okay";
 +
-+	ahb {
-+		compatible = "simple-bus";
-+		ranges;
-+
++	/* Spansion S25FL032PIF SPI flash */
++	spiflash: s25sl032p@0 {
 +		#address-cells = <1>;
 +		#size-cells = <1>;
-+
-+		interrupt-parent = <&cpuintc>;
-+
-+		apb {
-+			compatible = "simple-bus";
-+			ranges;
-+
-+			#address-cells = <1>;
-+			#size-cells = <1>;
-+
-+			interrupt-parent = <&miscintc>;
-+
-+			ddr_ctrl: memory-controller@18000000 {
-+				compatible = "qca,ar7240-ddr-controller";
-+				reg = <0x18000000 0x100>;
-+
-+				#qca,ddr-wb-channel-cells = <1>;
-+			};
-+
-+			uart: uart@18020000 {
-+				compatible = "qca,ar9330-uart";
-+				reg = <0x18020000 0x14>;
-+
-+				interrupts = <3>;
-+
-+				clocks = <&pll ATH79_CLK_UART>;
-+				clock-names = "uart";
-+
-+				status = "disabled";
-+			};
-+
-+			gpio: gpio@18040000 {
-+				compatible = "qca,ar7100-gpio";
-+				reg = <0x18040000 0x34>;
-+				interrupts = <2>;
-+
-+				ngpios = <30>;
-+
-+				gpio-controller;
-+				#gpio-cells = <2>;
-+
-+				interrupt-controller;
-+				#interrupt-cells = <2>;
-+
-+				status = "disabled";
-+			};
-+
-+			pll: pll-controller@18050000 {
-+				compatible = "qca,ar9330-pll";
-+				reg = <0x18050000 0x100>;
-+
-+				clocks = <&ref>;
-+				clock-names = "ref";
-+
-+				#clock-cells = <1>;
-+			};
-+
-+			miscintc: interrupt-controller@18060010 {
-+				compatible = "qca,ar7240-misc-intc";
-+				reg = <0x18060010 0x4>;
-+
-+				interrupt-parent = <&cpuintc>;
-+				interrupts = <6>;
-+
-+				interrupt-controller;
-+				#interrupt-cells = <1>;
-+			};
-+
-+			rst: reset-controller@1806001c {
-+				compatible = "qca,ar7100-reset";
-+				reg = <0x1806001c 0x4>;
-+
-+				#reset-cells = <1>;
-+			};
-+
-+			usb: usb@1b000100 {
-+				compatible = "qca,ar7100-ehci", "generic-ehci";
-+				reg = <0x1b000100 0x100>;
-+
-+				interrupt-parent = <&cpuintc>;
-+				interrupts = <3>;
-+				resets = <&rst 5>;
-+
-+				has-transaction-translator;
-+
-+				phy-names = "usb";
-+				phys = <&usb_phy>;
-+
-+				status = "disabled";
-+			};
-+
-+			spi: spi@1f000000 {
-+				compatible = "qca,ar7100-spi";
-+				reg = <0x1f000000 0x10>;
-+
-+				clocks = <&pll ATH79_CLK_AHB>;
-+				clock-names = "ahb";
-+
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+
-+				status = "disabled";
-+			};
-+		};
-+	};
-+
-+	usb_phy: usb-phy {
-+		compatible = "qca,ar7100-usb-phy";
-+
-+		reset-names = "usb-phy", "usb-suspend-override";
-+		resets = <&rst 4>, <&rst 3>;
-+
-+		#phy-cells = <0>;
-+
-+		status = "disabled";
++		compatible = "spansion,s25sl032p", "jedec,spi-nor";
++		spi-max-frequency = <104000000>;
++		reg = <0>;
 +	};
 +};
 -- 

@@ -1,50 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Feb 2016 20:02:02 +0100 (CET)
-Received: from mail-pf0-f196.google.com ([209.85.192.196]:35473 "EHLO
-        mail-pf0-f196.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012331AbcBITBGU6SxR (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 9 Feb 2016 20:01:06 +0100
-Received: by mail-pf0-f196.google.com with SMTP id 66so10349226pfe.2;
-        Tue, 09 Feb 2016 11:01:06 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Feb 2016 20:02:19 +0100 (CET)
+Received: from mail-pa0-f67.google.com ([209.85.220.67]:33304 "EHLO
+        mail-pa0-f67.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012336AbcBITBHvbO0R (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 9 Feb 2016 20:01:07 +0100
+Received: by mail-pa0-f67.google.com with SMTP id gc2so613442pab.0;
+        Tue, 09 Feb 2016 11:01:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=E6afx6t5TwB5gDMMJBXmr1CTPMAs+tjwsQRrxBeMoEo=;
-        b=DqD8Ivl08xBzQKA//G3Ltz7UR1m2i1Ppx4VKtZrL6naUf0FoThoRTCVrs/h4P8oJqd
-         m6OfkSBgNul1actVjvtLAqCmGewt/D/2Oir+Suj81L53zT101yjtor4jemvOcIOGQVbA
-         j+BkP4/keCqfPT4b9cxkVovWwpTnydGhHQtlsfsHIbv31lD43Hjzy19bzgNnrIV9ZW7/
-         yJT+gojlSKiqEvFbjD4ICg3yiKf2TCYncygq98dqOft+AUMoAh07QocEXYemxgsZVBTY
-         epLC6tG4vcz+0IoCpgwxNwHgs4FFah2sRFAeyAQ5W2Em1bqiHbqydn8KhUtPH/8j3ML9
-         sc/Q==
+        bh=kDAYwY9+PlLPcTE52gHDqF/M3Oxywmmnd6Ak6ua9Js4=;
+        b=Gl93SYev4v1b33gqYBXrEehc9TZyBgiNEMdEFOwPqsWSU0BpyLCW/UjkI14yswGhid
+         pcaIXeFCqI7ArQWiyYw6EVuXXjKojx1a4psUxmvurl+mgI3d86CcE1wd/03wY6Aqdg0h
+         D1y7Sgvlr1bnViJ/IXkyJVD0CBzAKa8x7N5aMN/3YNYjbtVEVqPz7FRnO5ZfntdyeUrX
+         g5rGZAlcaS6DELBmkdkNZ06a15EoGhZG84AWTvN7trnv+4gKMslSQJNiF9iQbY4YVP54
+         b1rRTOOfpKTSx4GfTMEMNl6xOTr0LK6XXeN+spzPOMYnehX1rhT+v2L8Xbph5uNY0Bwm
+         d62Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=E6afx6t5TwB5gDMMJBXmr1CTPMAs+tjwsQRrxBeMoEo=;
-        b=cHNDR60nrQ3c8r1dRoaF7lFjGWezrde5FM4Mrq5pAn8jDzl7EhELeKoJ4ZurOL3FOX
-         Vdb3I1TzBy4D/aT7vph1wk5cg/i5OVP8b1Jpx91DIK8Xdk2G85DxUrlPa3/hwcL4dqxQ
-         mGZ/E/h5q0N9KwMrZU4wNatpriDDok+hm69+R0hqJFA7tvCzHS4JBCB/wMko/IteQgjz
-         dMS3j9/Kba+NX7UNEcR/t7x9Mc2b29Y0BTdF2kwVDhEGOsdhEZc/+DDGqfhZT6/2XcXN
-         kvcJxXEGGGyL78Vv0bh3hDAFTSkIm/5sb4Qn4putsnvVoiqYE4ff1s7fypCVVpAYNQLR
-         LNVQ==
-X-Gm-Message-State: AG10YOSxAE2tSoqMadsQZMaRZbJBJou2hx9kUk3g3GpOmJybYLrLemICKw4dIJP5JcOsxA==
-X-Received: by 10.98.17.92 with SMTP id z89mr53077333pfi.16.1455044460468;
-        Tue, 09 Feb 2016 11:01:00 -0800 (PST)
+        bh=kDAYwY9+PlLPcTE52gHDqF/M3Oxywmmnd6Ak6ua9Js4=;
+        b=E55YAT3frMpoxZaGntvBL2S9DtZ2blysN1/WaNozDXUx0JhI5AkEjmZQePt6WsRWWd
+         nJHRV0y3w9tB5P2bTRa9gBY0h7Nm1Uk20p0A7fVORQtTWbNX5T3t37JqVLfAedGP8oyb
+         uWUei5YhFMLFhLvSTAKH83jz00/NMPYMgt/CHJPpgaqVgP4An5TEe9Uh+tghPS4t1YkY
+         cI+wpS7Iq8g1pSCgjEGsjPsLeM7exnDVtwgKViGbLaZZzdR9i/Ibp0vDfF2i7gEfMctE
+         qpCw7qGQw2BIRmTonvJHEFS5GhhgoEZGwAynzPF/WRioCvs9MlluHmU+sVeD1vFhmIed
+         +ejg==
+X-Gm-Message-State: AG10YOSFV6O1MjuvAQHRni8GRQDBimes+gA6acC4ghPa6k0sbnjyweogoqs7MTByd9Z8cQ==
+X-Received: by 10.66.234.104 with SMTP id ud8mr52810412pac.143.1455044462044;
+        Tue, 09 Feb 2016 11:01:02 -0800 (PST)
 Received: from dl.caveonetworks.com ([64.2.3.194])
-        by smtp.gmail.com with ESMTPSA id r77sm52273034pfa.47.2016.02.09.11.00.53
+        by smtp.gmail.com with ESMTPSA id 79sm52221391pfq.65.2016.02.09.11.00.54
         (version=TLS1 cipher=AES128-SHA bits=128/128);
         Tue, 09 Feb 2016 11:00:58 -0800 (PST)
 Received: from dl.caveonetworks.com (localhost.localdomain [127.0.0.1])
-        by dl.caveonetworks.com (8.14.5/8.14.5) with ESMTP id u19J0rCV009880;
+        by dl.caveonetworks.com (8.14.5/8.14.5) with ESMTP id u19J0rKr009884;
         Tue, 9 Feb 2016 11:00:53 -0800
 Received: (from ddaney@localhost)
-        by dl.caveonetworks.com (8.14.5/8.14.5/Submit) id u19J0rBe009879;
+        by dl.caveonetworks.com (8.14.5/8.14.5/Submit) id u19J0rrg009883;
         Tue, 9 Feb 2016 11:00:53 -0800
 From:   David Daney <ddaney.cavm@gmail.com>
 To:     linux-mips@linux-mips.org, ralf@linux-mips.org
 Cc:     linux-kernel@vger.kernel.org, David Daney <david.daney@cavium.com>
-Subject: [PATCH v2 3/8] MIPS: OCTEON: Add register definitions for cn73xx, cnf75xx and cn78xx.
-Date:   Tue,  9 Feb 2016 11:00:08 -0800
-Message-Id: <1455044413-9823-4-git-send-email-ddaney.cavm@gmail.com>
+Subject: [PATCH v2 4/8] MIPS: OCTEON: Add model checking support for cn73xx, cnf75xx and cn78xx
+Date:   Tue,  9 Feb 2016 11:00:09 -0800
+Message-Id: <1455044413-9823-5-git-send-email-ddaney.cavm@gmail.com>
 X-Mailer: git-send-email 1.7.11.7
 In-Reply-To: <1455044413-9823-1-git-send-email-ddaney.cavm@gmail.com>
 References: <1455044413-9823-1-git-send-email-ddaney.cavm@gmail.com>
@@ -52,7 +52,7 @@ Return-Path: <ddaney.cavm@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51910
+X-archive-position: 51911
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -71,860 +71,256 @@ X-list: linux-mips
 
 From: David Daney <david.daney@cavium.com>
 
-These new members of the OCTEON III family have some new registers,
-update some of the definitions for use in follow on patches.
+Follow on patchs need to be able to distinguish the new models.
 
 Signed-off-by: David Daney <david.daney@cavium.com>
 ---
- arch/mips/include/asm/octeon/cvmx-ciu3-defs.h | 353 ++++++++++++++++++++++
- arch/mips/include/asm/octeon/cvmx-fpa-defs.h  |   1 +
- arch/mips/include/asm/octeon/cvmx-mio-defs.h  | 410 +++++++++++++++++++++++++-
- 3 files changed, 748 insertions(+), 16 deletions(-)
- create mode 100644 arch/mips/include/asm/octeon/cvmx-ciu3-defs.h
+ arch/mips/cavium-octeon/executive/octeon-model.c | 82 +++++++++++++++++++++++-
+ arch/mips/include/asm/octeon/cvmx.h              | 27 +++++++-
+ arch/mips/include/asm/octeon/octeon-feature.h    | 19 +++++-
+ arch/mips/include/asm/octeon/octeon-model.h      |  5 ++
+ 4 files changed, 125 insertions(+), 8 deletions(-)
 
-diff --git a/arch/mips/include/asm/octeon/cvmx-ciu3-defs.h b/arch/mips/include/asm/octeon/cvmx-ciu3-defs.h
-new file mode 100644
-index 0000000..547f778
---- /dev/null
-+++ b/arch/mips/include/asm/octeon/cvmx-ciu3-defs.h
-@@ -0,0 +1,353 @@
-+/*
-+ * Copyright (c) 2003-2016 Cavium Inc.
-+ *
-+ * This file is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License, Version 2, as
-+ * published by the Free Software Foundation.
-+ *
-+ * This file is distributed in the hope that it will be useful, but
-+ * AS-IS and WITHOUT ANY WARRANTY; without even the implied warranty
-+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE, TITLE, or
-+ * NONINFRINGEMENT.  See the GNU General Public License for more
-+ * details.
-+ *
-+ */
-+
-+#ifndef __CVMX_CIU3_DEFS_H__
-+#define __CVMX_CIU3_DEFS_H__
-+
-+#define CVMX_CIU3_FUSE CVMX_ADD_IO_SEG(0x00010100000001A0ull)
-+#define CVMX_CIU3_BIST CVMX_ADD_IO_SEG(0x00010100000001C0ull)
-+#define CVMX_CIU3_CONST CVMX_ADD_IO_SEG(0x0001010000000220ull)
-+#define CVMX_CIU3_CTL CVMX_ADD_IO_SEG(0x00010100000000E0ull)
-+#define CVMX_CIU3_DESTX_IO_INT(offset) (CVMX_ADD_IO_SEG(0x0001010000210000ull) + ((offset) & 7) * 8)
-+#define CVMX_CIU3_DESTX_PP_INT(offset) (CVMX_ADD_IO_SEG(0x0001010000200000ull) + ((offset) & 255) * 8)
-+#define CVMX_CIU3_GSTOP CVMX_ADD_IO_SEG(0x0001010000000140ull)
-+#define CVMX_CIU3_IDTX_CTL(offset) (CVMX_ADD_IO_SEG(0x0001010000110000ull) + ((offset) & 255) * 8)
-+#define CVMX_CIU3_IDTX_IO(offset) (CVMX_ADD_IO_SEG(0x0001010000130000ull) + ((offset) & 255) * 8)
-+#define CVMX_CIU3_IDTX_PPX(offset, block_id) (CVMX_ADD_IO_SEG(0x0001010000120000ull) + ((block_id) & 255) * 0x20ull)
-+#define CVMX_CIU3_INTR_RAM_ECC_CTL CVMX_ADD_IO_SEG(0x0001010000000260ull)
-+#define CVMX_CIU3_INTR_RAM_ECC_ST CVMX_ADD_IO_SEG(0x0001010000000280ull)
-+#define CVMX_CIU3_INTR_READY CVMX_ADD_IO_SEG(0x00010100000002A0ull)
-+#define CVMX_CIU3_INTR_SLOWDOWN CVMX_ADD_IO_SEG(0x0001010000000240ull)
-+#define CVMX_CIU3_ISCX_CTL(offset) (CVMX_ADD_IO_SEG(0x0001010080000000ull) + ((offset) & 1048575) * 8)
-+#define CVMX_CIU3_ISCX_W1C(offset) (CVMX_ADD_IO_SEG(0x0001010090000000ull) + ((offset) & 1048575) * 8)
-+#define CVMX_CIU3_ISCX_W1S(offset) (CVMX_ADD_IO_SEG(0x00010100A0000000ull) + ((offset) & 1048575) * 8)
-+#define CVMX_CIU3_NMI CVMX_ADD_IO_SEG(0x0001010000000160ull)
-+#define CVMX_CIU3_SISCX(offset) (CVMX_ADD_IO_SEG(0x0001010000220000ull) + ((offset) & 255) * 8)
-+#define CVMX_CIU3_TIMX(offset) (CVMX_ADD_IO_SEG(0x0001010000010000ull) + ((offset) & 15) * 8)
-+
-+union cvmx_ciu3_bist {
-+	uint64_t u64;
-+	struct cvmx_ciu3_bist_s {
-+#ifdef __BIG_ENDIAN_BITFIELD
-+	uint64_t reserved_9_63                : 55;
-+	uint64_t bist                         : 9;
-+#else
-+	uint64_t bist                         : 9;
-+	uint64_t reserved_9_63                : 55;
-+#endif
-+	} s;
-+};
-+
-+union cvmx_ciu3_const {
-+	uint64_t u64;
-+	struct cvmx_ciu3_const_s {
-+#ifdef __BIG_ENDIAN_BITFIELD
-+	uint64_t dests_io                     : 16;
-+	uint64_t pintsn                       : 16;
-+	uint64_t dests_pp                     : 16;
-+	uint64_t idt                          : 16;
-+#else
-+	uint64_t idt                          : 16;
-+	uint64_t dests_pp                     : 16;
-+	uint64_t pintsn                       : 16;
-+	uint64_t dests_io                     : 16;
-+#endif
-+	} s;
-+};
-+
-+union cvmx_ciu3_ctl {
-+	uint64_t u64;
-+	struct cvmx_ciu3_ctl_s {
-+#ifdef __BIG_ENDIAN_BITFIELD
-+	uint64_t reserved_5_63                : 59;
-+	uint64_t mcd_sel                      : 2;
-+	uint64_t iscmem_le                    : 1;
-+	uint64_t seq_dis                      : 1;
-+	uint64_t cclk_dis                     : 1;
-+#else
-+	uint64_t cclk_dis                     : 1;
-+	uint64_t seq_dis                      : 1;
-+	uint64_t iscmem_le                    : 1;
-+	uint64_t mcd_sel                      : 2;
-+	uint64_t reserved_5_63                : 59;
-+#endif
-+	} s;
-+};
-+
-+union cvmx_ciu3_destx_io_int {
-+	uint64_t u64;
-+	struct cvmx_ciu3_destx_io_int_s {
-+#ifdef __BIG_ENDIAN_BITFIELD
-+	uint64_t reserved_52_63               : 12;
-+	uint64_t intsn                        : 20;
-+	uint64_t reserved_10_31               : 22;
-+	uint64_t intidt                       : 8;
-+	uint64_t newint                       : 1;
-+	uint64_t intr                         : 1;
-+#else
-+	uint64_t intr                         : 1;
-+	uint64_t newint                       : 1;
-+	uint64_t intidt                       : 8;
-+	uint64_t reserved_10_31               : 22;
-+	uint64_t intsn                        : 20;
-+	uint64_t reserved_52_63               : 12;
-+#endif
-+	} s;
-+};
-+
-+union cvmx_ciu3_destx_pp_int {
-+	uint64_t u64;
-+	struct cvmx_ciu3_destx_pp_int_s {
-+#ifdef __BIG_ENDIAN_BITFIELD
-+	uint64_t reserved_52_63               : 12;
-+	uint64_t intsn                        : 20;
-+	uint64_t reserved_10_31               : 22;
-+	uint64_t intidt                       : 8;
-+	uint64_t newint                       : 1;
-+	uint64_t intr                         : 1;
-+#else
-+	uint64_t intr                         : 1;
-+	uint64_t newint                       : 1;
-+	uint64_t intidt                       : 8;
-+	uint64_t reserved_10_31               : 22;
-+	uint64_t intsn                        : 20;
-+	uint64_t reserved_52_63               : 12;
-+#endif
-+	} s;
-+};
-+
-+union cvmx_ciu3_gstop {
-+	uint64_t u64;
-+	struct cvmx_ciu3_gstop_s {
-+#ifdef __BIG_ENDIAN_BITFIELD
-+	uint64_t reserved_1_63                : 63;
-+	uint64_t gstop                        : 1;
-+#else
-+	uint64_t gstop                        : 1;
-+	uint64_t reserved_1_63                : 63;
-+#endif
-+	} s;
-+};
-+
-+union cvmx_ciu3_idtx_ctl {
-+	uint64_t u64;
-+	struct cvmx_ciu3_idtx_ctl_s {
-+#ifdef __BIG_ENDIAN_BITFIELD
-+	uint64_t reserved_52_63               : 12;
-+	uint64_t intsn                        : 20;
-+	uint64_t reserved_4_31                : 28;
-+	uint64_t intr                         : 1;
-+	uint64_t newint                       : 1;
-+	uint64_t ip_num                       : 2;
-+#else
-+	uint64_t ip_num                       : 2;
-+	uint64_t newint                       : 1;
-+	uint64_t intr                         : 1;
-+	uint64_t reserved_4_31                : 28;
-+	uint64_t intsn                        : 20;
-+	uint64_t reserved_52_63               : 12;
-+#endif
-+	} s;
-+};
-+
-+union cvmx_ciu3_idtx_io {
-+	uint64_t u64;
-+	struct cvmx_ciu3_idtx_io_s {
-+#ifdef __BIG_ENDIAN_BITFIELD
-+	uint64_t reserved_5_63                : 59;
-+	uint64_t io                           : 5;
-+#else
-+	uint64_t io                           : 5;
-+	uint64_t reserved_5_63                : 59;
-+#endif
-+	} s;
-+};
-+
-+union cvmx_ciu3_idtx_ppx {
-+	uint64_t u64;
-+	struct cvmx_ciu3_idtx_ppx_s {
-+#ifdef __BIG_ENDIAN_BITFIELD
-+	uint64_t reserved_48_63               : 16;
-+	uint64_t pp                           : 48;
-+#else
-+	uint64_t pp                           : 48;
-+	uint64_t reserved_48_63               : 16;
-+#endif
-+	} s;
-+};
-+
-+union cvmx_ciu3_intr_ram_ecc_ctl {
-+	uint64_t u64;
-+	struct cvmx_ciu3_intr_ram_ecc_ctl_s {
-+#ifdef __BIG_ENDIAN_BITFIELD
-+	uint64_t reserved_3_63                : 61;
-+	uint64_t flip_synd                    : 2;
-+	uint64_t ecc_ena                      : 1;
-+#else
-+	uint64_t ecc_ena                      : 1;
-+	uint64_t flip_synd                    : 2;
-+	uint64_t reserved_3_63                : 61;
-+#endif
-+	} s;
-+};
-+
-+union cvmx_ciu3_intr_ram_ecc_st {
-+	uint64_t u64;
-+	struct cvmx_ciu3_intr_ram_ecc_st_s {
-+#ifdef __BIG_ENDIAN_BITFIELD
-+	uint64_t reserved_52_63               : 12;
-+	uint64_t addr                         : 20;
-+	uint64_t reserved_6_31                : 26;
-+	uint64_t sisc_dbe                     : 1;
-+	uint64_t sisc_sbe                     : 1;
-+	uint64_t idt_dbe                      : 1;
-+	uint64_t idt_sbe                      : 1;
-+	uint64_t isc_dbe                      : 1;
-+	uint64_t isc_sbe                      : 1;
-+#else
-+	uint64_t isc_sbe                      : 1;
-+	uint64_t isc_dbe                      : 1;
-+	uint64_t idt_sbe                      : 1;
-+	uint64_t idt_dbe                      : 1;
-+	uint64_t sisc_sbe                     : 1;
-+	uint64_t sisc_dbe                     : 1;
-+	uint64_t reserved_6_31                : 26;
-+	uint64_t addr                         : 20;
-+	uint64_t reserved_52_63               : 12;
-+#endif
-+	} s;
-+};
-+
-+union cvmx_ciu3_intr_ready {
-+	uint64_t u64;
-+	struct cvmx_ciu3_intr_ready_s {
-+#ifdef __BIG_ENDIAN_BITFIELD
-+	uint64_t reserved_46_63               : 18;
-+	uint64_t index                        : 14;
-+	uint64_t reserved_1_31                : 31;
-+	uint64_t ready                        : 1;
-+#else
-+	uint64_t ready                        : 1;
-+	uint64_t reserved_1_31                : 31;
-+	uint64_t index                        : 14;
-+	uint64_t reserved_46_63               : 18;
-+#endif
-+	} s;
-+};
-+
-+union cvmx_ciu3_intr_slowdown {
-+	uint64_t u64;
-+	struct cvmx_ciu3_intr_slowdown_s {
-+#ifdef __BIG_ENDIAN_BITFIELD
-+	uint64_t reserved_3_63                : 61;
-+	uint64_t ctl                          : 3;
-+#else
-+	uint64_t ctl                          : 3;
-+	uint64_t reserved_3_63                : 61;
-+#endif
-+	} s;
-+};
-+
-+union cvmx_ciu3_iscx_ctl {
-+	uint64_t u64;
-+	struct cvmx_ciu3_iscx_ctl_s {
-+#ifdef __BIG_ENDIAN_BITFIELD
-+	uint64_t reserved_24_63               : 40;
-+	uint64_t idt                          : 8;
-+	uint64_t imp                          : 1;
-+	uint64_t reserved_2_14                : 13;
-+	uint64_t en                           : 1;
-+	uint64_t raw                          : 1;
-+#else
-+	uint64_t raw                          : 1;
-+	uint64_t en                           : 1;
-+	uint64_t reserved_2_14                : 13;
-+	uint64_t imp                          : 1;
-+	uint64_t idt                          : 8;
-+	uint64_t reserved_24_63               : 40;
-+#endif
-+	} s;
-+};
-+
-+union cvmx_ciu3_iscx_w1c {
-+	uint64_t u64;
-+	struct cvmx_ciu3_iscx_w1c_s {
-+#ifdef __BIG_ENDIAN_BITFIELD
-+	uint64_t reserved_2_63                : 62;
-+	uint64_t en                           : 1;
-+	uint64_t raw                          : 1;
-+#else
-+	uint64_t raw                          : 1;
-+	uint64_t en                           : 1;
-+	uint64_t reserved_2_63                : 62;
-+#endif
-+	} s;
-+};
-+
-+union cvmx_ciu3_iscx_w1s {
-+	uint64_t u64;
-+	struct cvmx_ciu3_iscx_w1s_s {
-+#ifdef __BIG_ENDIAN_BITFIELD
-+	uint64_t reserved_2_63                : 62;
-+	uint64_t en                           : 1;
-+	uint64_t raw                          : 1;
-+#else
-+	uint64_t raw                          : 1;
-+	uint64_t en                           : 1;
-+	uint64_t reserved_2_63                : 62;
-+#endif
-+	} s;
-+};
-+
-+union cvmx_ciu3_nmi {
-+	uint64_t u64;
-+	struct cvmx_ciu3_nmi_s {
-+#ifdef __BIG_ENDIAN_BITFIELD
-+	uint64_t reserved_48_63               : 16;
-+	uint64_t nmi                          : 48;
-+#else
-+	uint64_t nmi                          : 48;
-+	uint64_t reserved_48_63               : 16;
-+#endif
-+	} s;
-+};
-+
-+union cvmx_ciu3_siscx {
-+	uint64_t u64;
-+	struct cvmx_ciu3_siscx_s {
-+#ifdef __BIG_ENDIAN_BITFIELD
-+	uint64_t en                           : 64;
-+#else
-+	uint64_t en                           : 64;
-+#endif
-+	} s;
-+};
-+
-+union cvmx_ciu3_timx {
-+	uint64_t u64;
-+	struct cvmx_ciu3_timx_s {
-+#ifdef __BIG_ENDIAN_BITFIELD
-+	uint64_t reserved_37_63               : 27;
-+	uint64_t one_shot                     : 1;
-+	uint64_t len                          : 36;
-+#else
-+	uint64_t len                          : 36;
-+	uint64_t one_shot                     : 1;
-+	uint64_t reserved_37_63               : 27;
-+#endif
-+	} s;
-+};
-+
-+#endif
-diff --git a/arch/mips/include/asm/octeon/cvmx-fpa-defs.h b/arch/mips/include/asm/octeon/cvmx-fpa-defs.h
-index 1d79e3c..887ff8e 100644
---- a/arch/mips/include/asm/octeon/cvmx-fpa-defs.h
-+++ b/arch/mips/include/asm/octeon/cvmx-fpa-defs.h
-@@ -66,6 +66,7 @@
- #define CVMX_FPA_WART_CTL (CVMX_ADD_IO_SEG(0x00011800280000D8ull))
- #define CVMX_FPA_WART_STATUS (CVMX_ADD_IO_SEG(0x00011800280000E0ull))
- #define CVMX_FPA_WQE_THRESHOLD (CVMX_ADD_IO_SEG(0x0001180028000468ull))
-+#define CVMX_FPA_CLK_COUNT (CVMX_ADD_IO_SEG(0x00012800000000F0ull))
+diff --git a/arch/mips/cavium-octeon/executive/octeon-model.c b/arch/mips/cavium-octeon/executive/octeon-model.c
+index b2104bd..d08a2bc 100644
+--- a/arch/mips/cavium-octeon/executive/octeon-model.c
++++ b/arch/mips/cavium-octeon/executive/octeon-model.c
+@@ -71,11 +71,11 @@ static const char *__init octeon_model_get_string_buffer(uint32_t chip_id,
+ 	uint32_t fuse_data = 0;
  
- union cvmx_fpa_addr_range_error {
- 	uint64_t u64;
-diff --git a/arch/mips/include/asm/octeon/cvmx-mio-defs.h b/arch/mips/include/asm/octeon/cvmx-mio-defs.h
-index bb0ae33..5196c04 100644
---- a/arch/mips/include/asm/octeon/cvmx-mio-defs.h
-+++ b/arch/mips/include/asm/octeon/cvmx-mio-defs.h
-@@ -1481,7 +1481,9 @@ union cvmx_mio_fus_dat2 {
- 	uint64_t u64;
- 	struct cvmx_mio_fus_dat2_s {
- #ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_48_63:16;
-+		uint64_t reserved_59_63:5;
-+		uint64_t run_platform:3;
-+		uint64_t gbl_pwr_throttle:8;
- 		uint64_t fus118:1;
- 		uint64_t rom_info:10;
- 		uint64_t power_limit:2;
-@@ -1513,7 +1515,9 @@ union cvmx_mio_fus_dat2 {
- 		uint64_t power_limit:2;
- 		uint64_t rom_info:10;
- 		uint64_t fus118:1;
--		uint64_t reserved_48_63:16;
-+		uint64_t gbl_pwr_throttle:8;
-+		uint64_t run_platform:3;
-+		uint64_t reserved_59_63:5;
- #endif
- 	} s;
- 	struct cvmx_mio_fus_dat2_cn30xx {
-@@ -1837,50 +1841,192 @@ union cvmx_mio_fus_dat2 {
- #endif
- 	} cn68xx;
- 	struct cvmx_mio_fus_dat2_cn68xx cn68xxp1;
-+	struct cvmx_mio_fus_dat2_cn70xx {
-+#ifdef __BIG_ENDIAN_BITFIELD
-+		uint64_t reserved_48_63:16;
-+		uint64_t fus118:1;
-+		uint64_t rom_info:10;
-+		uint64_t power_limit:2;
-+		uint64_t dorm_crypto:1;
-+		uint64_t fus318:1;
-+		uint64_t raid_en:1;
-+		uint64_t reserved_31_29:3;
-+		uint64_t nodfa_cp2:1;
-+		uint64_t nomul:1;
-+		uint64_t nocrypto:1;
-+		uint64_t reserved_25_24:2;
-+		uint64_t chip_id:8;
-+		uint64_t reserved_15_0:16;
-+#else
-+		uint64_t reserved_15_0:16;
-+		uint64_t chip_id:8;
-+		uint64_t reserved_25_24:2;
-+		uint64_t nocrypto:1;
-+		uint64_t nomul:1;
-+		uint64_t nodfa_cp2:1;
-+		uint64_t reserved_31_29:3;
-+		uint64_t raid_en:1;
-+		uint64_t fus318:1;
-+		uint64_t dorm_crypto:1;
-+		uint64_t power_limit:2;
-+		uint64_t rom_info:10;
-+		uint64_t fus118:1;
-+		uint64_t reserved_48_63:16;
-+#endif
-+	} cn70xx;
-+	struct cvmx_mio_fus_dat2_cn70xx cn70xxp1;
-+	struct cvmx_mio_fus_dat2_cn73xx {
-+#ifdef __BIG_ENDIAN_BITFIELD
-+		uint64_t reserved_59_63:5;
-+		uint64_t run_platform:3;
-+		uint64_t gbl_pwr_throttle:8;
-+		uint64_t fus118:1;
-+		uint64_t rom_info:10;
-+		uint64_t power_limit:2;
-+		uint64_t dorm_crypto:1;
-+		uint64_t fus318:1;
-+		uint64_t raid_en:1;
-+		uint64_t reserved_31_29:3;
-+		uint64_t nodfa_cp2:1;
-+		uint64_t nomul:1;
-+		uint64_t nocrypto:1;
-+		uint64_t reserved_25_24:2;
-+		uint64_t chip_id:8;
-+		uint64_t reserved_15_0:16;
-+#else
-+		uint64_t reserved_15_0:16;
-+		uint64_t chip_id:8;
-+		uint64_t reserved_25_24:2;
-+		uint64_t nocrypto:1;
-+		uint64_t nomul:1;
-+		uint64_t nodfa_cp2:1;
-+		uint64_t reserved_31_29:3;
-+		uint64_t raid_en:1;
-+		uint64_t fus318:1;
-+		uint64_t dorm_crypto:1;
-+		uint64_t power_limit:2;
-+		uint64_t rom_info:10;
-+		uint64_t fus118:1;
-+		uint64_t gbl_pwr_throttle:8;
-+		uint64_t run_platform:3;
-+		uint64_t reserved_59_63:5;
-+#endif
-+	} cn73xx;
-+	struct cvmx_mio_fus_dat2_cn78xx {
-+#ifdef __BIG_ENDIAN_BITFIELD
-+		uint64_t reserved_59_63:5;
-+		uint64_t run_platform:3;
-+		uint64_t reserved_48_55:8;
-+		uint64_t fus118:1;
-+		uint64_t rom_info:10;
-+		uint64_t power_limit:2;
-+		uint64_t dorm_crypto:1;
-+		uint64_t fus318:1;
-+		uint64_t raid_en:1;
-+		uint64_t reserved_31_29:3;
-+		uint64_t nodfa_cp2:1;
-+		uint64_t nomul:1;
-+		uint64_t nocrypto:1;
-+		uint64_t reserved_25_24:2;
-+		uint64_t chip_id:8;
-+		uint64_t reserved_0_15:16;
-+#else
-+		uint64_t reserved_0_15:16;
-+		uint64_t chip_id:8;
-+		uint64_t reserved_25_24:2;
-+		uint64_t nocrypto:1;
-+		uint64_t nomul:1;
-+		uint64_t nodfa_cp2:1;
-+		uint64_t reserved_31_29:3;
-+		uint64_t raid_en:1;
-+		uint64_t fus318:1;
-+		uint64_t dorm_crypto:1;
-+		uint64_t power_limit:2;
-+		uint64_t rom_info:10;
-+		uint64_t fus118:1;
-+		uint64_t reserved_48_55:8;
-+		uint64_t run_platform:3;
-+		uint64_t reserved_59_63:5;
-+#endif
-+	} cn78xx;
-+	struct cvmx_mio_fus_dat2_cn78xxp2 {
-+#ifdef __BIG_ENDIAN_BITFIELD
-+		uint64_t reserved_59_63:5;
-+		uint64_t run_platform:3;
-+		uint64_t gbl_pwr_throttle:8;
-+		uint64_t fus118:1;
-+		uint64_t rom_info:10;
-+		uint64_t power_limit:2;
-+		uint64_t dorm_crypto:1;
-+		uint64_t fus318:1;
-+		uint64_t raid_en:1;
-+		uint64_t reserved_31_29:3;
-+		uint64_t nodfa_cp2:1;
-+		uint64_t nomul:1;
-+		uint64_t nocrypto:1;
-+		uint64_t reserved_25_24:2;
-+		uint64_t chip_id:8;
-+		uint64_t reserved_0_15:16;
-+#else
-+		uint64_t reserved_0_15:16;
-+		uint64_t chip_id:8;
-+		uint64_t reserved_25_24:2;
-+		uint64_t nocrypto:1;
-+		uint64_t nomul:1;
-+		uint64_t nodfa_cp2:1;
-+		uint64_t reserved_31_29:3;
-+		uint64_t raid_en:1;
-+		uint64_t fus318:1;
-+		uint64_t dorm_crypto:1;
-+		uint64_t power_limit:2;
-+		uint64_t rom_info:10;
-+		uint64_t fus118:1;
-+		uint64_t gbl_pwr_throttle:8;
-+		uint64_t run_platform:3;
-+		uint64_t reserved_59_63:5;
-+#endif
-+	} cn78xxp2;
- 	struct cvmx_mio_fus_dat2_cn61xx cnf71xx;
-+	struct cvmx_mio_fus_dat2_cn73xx cnf75xx;
+ 	fus3.u64 = 0;
+-	if (!OCTEON_IS_MODEL(OCTEON_CN6XXX))
++	if (OCTEON_IS_MODEL(OCTEON_CN3XXX) || OCTEON_IS_MODEL(OCTEON_CN5XXX))
+ 		fus3.u64 = cvmx_read_csr(CVMX_L2D_FUS3);
+ 	fus_dat2.u64 = cvmx_read_csr(CVMX_MIO_FUS_DAT2);
+ 	fus_dat3.u64 = cvmx_read_csr(CVMX_MIO_FUS_DAT3);
+-	num_cores = cvmx_pop(cvmx_read_csr(CVMX_CIU_FUSE));
++	num_cores = cvmx_octeon_num_cores();
+ 
+ 	/* Make sure the non existent devices look disabled */
+ 	switch ((chip_id >> 8) & 0xff) {
+@@ -121,6 +121,15 @@ static const char *__init octeon_model_get_string_buffer(uint32_t chip_id,
+ 	 * later.
+ 	 */
+ 	switch (num_cores) {
++	case 48:
++		core_model = "90";
++		break;
++	case 44:
++		core_model = "88";
++		break;
++	case 40:
++		core_model = "85";
++		break;
+ 	case 32:
+ 		core_model = "80";
+ 		break;
+@@ -297,7 +306,7 @@ static const char *__init octeon_model_get_string_buffer(uint32_t chip_id,
+ 				if (fus_dat3.s.nozip)
+ 					suffix = "SCP";
+ 
+-				if (fus_dat3.s.bar2_en)
++				if (fus_dat3.cn56xx.bar2_en)
+ 					suffix = "NSPB2";
+ 			}
+ 			if (fus3.cn56xx.crip_1024k)
+@@ -369,6 +378,73 @@ static const char *__init octeon_model_get_string_buffer(uint32_t chip_id,
+ 		else
+ 			suffix = "AAP";
+ 		break;
++	case 0x94:		/* CNF71XX */
++		family = "F71";
++		if (fus_dat3.cnf71xx.nozip)
++			suffix = "SCP";
++		else
++			suffix = "AAP";
++		break;
++	case 0x95:		/* CN78XX */
++		if (num_cores == 6)	/* Other core counts match generic */
++			core_model = "35";
++		if (OCTEON_IS_MODEL(OCTEON_CN76XX))
++			family = "76";
++		else
++			family = "78";
++		if (fus_dat3.cn78xx.l2c_crip == 2)
++			family = "77";
++		if (fus_dat3.cn78xx.nozip
++		    && fus_dat3.cn78xx.nodfa_dte
++		    && fus_dat3.cn78xx.nohna_dte) {
++			if (fus_dat3.cn78xx.nozip &&
++				!fus_dat2.cn78xx.raid_en &&
++				fus_dat3.cn78xx.nohna_dte) {
++				suffix = "CP";
++			} else {
++				suffix = "SCP";
++			}
++		} else if (fus_dat2.cn78xx.raid_en == 0)
++			suffix = "HCP";
++		else
++			suffix = "AAP";
++		break;
++	case 0x96:		/* CN70XX */
++		family = "70";
++		if (cvmx_read_csr(CVMX_MIO_FUS_PDF) & (0x1ULL << 32))
++			family = "71";
++		if (fus_dat2.cn70xx.nocrypto)
++			suffix = "CP";
++		else if (fus_dat3.cn70xx.nodfa_dte)
++			suffix = "SCP";
++		else
++			suffix = "AAP";
++		break;
++	case 0x97:		/* CN73XX */
++		if (num_cores == 6)	/* Other core counts match generic */
++			core_model = "35";
++		family = "73";
++		if (fus_dat3.cn73xx.l2c_crip == 2)
++			family = "72";
++		if (fus_dat3.cn73xx.nozip
++				&& fus_dat3.cn73xx.nodfa_dte
++				&& fus_dat3.cn73xx.nohna_dte) {
++			if (!fus_dat2.cn73xx.raid_en)
++				suffix = "CP";
++			else
++				suffix = "SCP";
++		} else
++			suffix = "AAP";
++		break;
++	case 0x98:		/* CN75XX */
++		family = "F75";
++		if (fus_dat3.cn78xx.nozip
++		    && fus_dat3.cn78xx.nodfa_dte
++		    && fus_dat3.cn78xx.nohna_dte)
++			suffix = "SCP";
++		else
++			suffix = "AAP";
++		break;
+ 	default:
+ 		family = "XX";
+ 		core_model = "XX";
+diff --git a/arch/mips/include/asm/octeon/cvmx.h b/arch/mips/include/asm/octeon/cvmx.h
+index 774bb45..9ea9279 100644
+--- a/arch/mips/include/asm/octeon/cvmx.h
++++ b/arch/mips/include/asm/octeon/cvmx.h
+@@ -57,6 +57,7 @@ enum cvmx_mips_space {
+ #include <asm/octeon/cvmx-sysinfo.h>
+ 
+ #include <asm/octeon/cvmx-ciu-defs.h>
++#include <asm/octeon/cvmx-ciu3-defs.h>
+ #include <asm/octeon/cvmx-gpio-defs.h>
+ #include <asm/octeon/cvmx-iob-defs.h>
+ #include <asm/octeon/cvmx-ipd-defs.h>
+@@ -332,6 +333,21 @@ static inline unsigned int cvmx_get_core_num(void)
+ 	return core_num;
+ }
+ 
++/* Maximum # of bits to define core in node */
++#define CVMX_NODE_NO_SHIFT	7
++#define CVMX_NODE_MASK		0x3
++static inline unsigned int cvmx_get_node_num(void)
++{
++	unsigned int core_num = cvmx_get_core_num();
++
++	return (core_num >> CVMX_NODE_NO_SHIFT) & CVMX_NODE_MASK;
++}
++
++static inline unsigned int cvmx_get_local_core_num(void)
++{
++	return cvmx_get_core_num() & ((1 << CVMX_NODE_NO_SHIFT) - 1);
++}
++
+ /**
+  * Returns the number of bits set in the provided value.
+  * Simple wrapper for POP instruction.
+@@ -439,8 +455,15 @@ static inline uint64_t cvmx_get_cycle_global(void)
+ /* Return the number of cores available in the chip */
+ static inline uint32_t cvmx_octeon_num_cores(void)
+ {
+-	uint32_t ciu_fuse = (uint32_t) cvmx_read_csr(CVMX_CIU_FUSE) & 0xffff;
+-	return cvmx_pop(ciu_fuse);
++	u64 ciu_fuse_reg;
++	u64 ciu_fuse;
++
++	if (OCTEON_IS_OCTEON3() && !OCTEON_IS_MODEL(OCTEON_CN70XX))
++		ciu_fuse_reg = CVMX_CIU3_FUSE;
++	else
++		ciu_fuse_reg = CVMX_CIU_FUSE;
++	ciu_fuse = cvmx_read_csr(ciu_fuse_reg);
++	return cvmx_dpop(ciu_fuse);
+ }
+ 
+ #endif /*  __CVMX_H__  */
+diff --git a/arch/mips/include/asm/octeon/octeon-feature.h b/arch/mips/include/asm/octeon/octeon-feature.h
+index 8ebd3f57..22d7475 100644
+--- a/arch/mips/include/asm/octeon/octeon-feature.h
++++ b/arch/mips/include/asm/octeon/octeon-feature.h
+@@ -81,6 +81,10 @@ enum octeon_feature {
+ 	OCTEON_FEATURE_HFA,
+ 	OCTEON_FEATURE_DFM,
+ 	OCTEON_FEATURE_CIU2,
++	OCTEON_FEATURE_CIU3,
++	/* Octeon has FPA first seen on 78XX */
++	OCTEON_FEATURE_FPA3,
++	OCTEON_FEATURE_FAU,
+ 	OCTEON_MAX_FEATURE
  };
  
- union cvmx_mio_fus_dat3 {
- 	uint64_t u64;
- 	struct cvmx_mio_fus_dat3_s {
- #ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_58_63:6;
-+		uint64_t ema0:6;
- 		uint64_t pll_ctl:10;
- 		uint64_t dfa_info_dte:3;
- 		uint64_t dfa_info_clm:4;
--		uint64_t reserved_40_40:1;
--		uint64_t ema:2;
-+		uint64_t pll_alt_matrix:1;
-+		uint64_t reserved_38_39:2;
- 		uint64_t efus_lck_rsv:1;
- 		uint64_t efus_lck_man:1;
- 		uint64_t pll_half_dis:1;
- 		uint64_t l2c_crip:3;
--		uint64_t pll_div4:1;
--		uint64_t reserved_29_30:2;
--		uint64_t bar2_en:1;
-+		uint64_t reserved_28_31:4;
- 		uint64_t efus_lck:1;
- 		uint64_t efus_ign:1;
- 		uint64_t nozip:1;
- 		uint64_t nodfa_dte:1;
--		uint64_t icache:24;
-+		uint64_t reserved_0_23:24;
- #else
--		uint64_t icache:24;
-+		uint64_t reserved_0_23:24;
- 		uint64_t nodfa_dte:1;
- 		uint64_t nozip:1;
- 		uint64_t efus_ign:1;
- 		uint64_t efus_lck:1;
--		uint64_t bar2_en:1;
--		uint64_t reserved_29_30:2;
--		uint64_t pll_div4:1;
-+		uint64_t reserved_28_31:4;
- 		uint64_t l2c_crip:3;
- 		uint64_t pll_half_dis:1;
- 		uint64_t efus_lck_man:1;
- 		uint64_t efus_lck_rsv:1;
--		uint64_t ema:2;
--		uint64_t reserved_40_40:1;
-+		uint64_t reserved_38_39:2;
-+		uint64_t pll_alt_matrix:1;
- 		uint64_t dfa_info_clm:4;
- 		uint64_t dfa_info_dte:3;
- 		uint64_t pll_ctl:10;
--		uint64_t reserved_58_63:6;
-+		uint64_t ema0:6;
- #endif
- 	} s;
- 	struct cvmx_mio_fus_dat3_cn30xx {
-@@ -2022,7 +2168,239 @@ union cvmx_mio_fus_dat3 {
- 	struct cvmx_mio_fus_dat3_cn61xx cn66xx;
- 	struct cvmx_mio_fus_dat3_cn61xx cn68xx;
- 	struct cvmx_mio_fus_dat3_cn61xx cn68xxp1;
-+	struct cvmx_mio_fus_dat3_cn70xx {
-+#ifdef __BIG_ENDIAN_BITFIELD
-+		uint64_t ema0:6;
-+		uint64_t pll_ctl:10;
-+		uint64_t dfa_info_dte:3;
-+		uint64_t dfa_info_clm:4;
-+		uint64_t pll_alt_matrix:1;
-+		uint64_t pll_bwadj_denom:2;
-+		uint64_t efus_lck_rsv:1;
-+		uint64_t efus_lck_man:1;
-+		uint64_t pll_half_dis:1;
-+		uint64_t l2c_crip:3;
-+		uint64_t use_int_refclk:1;
-+		uint64_t zip_info:2;
-+		uint64_t bar2_sz_conf:1;
-+		uint64_t efus_lck:1;
-+		uint64_t efus_ign:1;
-+		uint64_t nozip:1;
-+		uint64_t nodfa_dte:1;
-+		uint64_t ema1:6;
-+		uint64_t reserved_0_17:18;
-+#else
-+		uint64_t reserved_0_17:18;
-+		uint64_t ema1:6;
-+		uint64_t nodfa_dte:1;
-+		uint64_t nozip:1;
-+		uint64_t efus_ign:1;
-+		uint64_t efus_lck:1;
-+		uint64_t bar2_sz_conf:1;
-+		uint64_t zip_info:2;
-+		uint64_t use_int_refclk:1;
-+		uint64_t l2c_crip:3;
-+		uint64_t pll_half_dis:1;
-+		uint64_t efus_lck_man:1;
-+		uint64_t efus_lck_rsv:1;
-+		uint64_t pll_bwadj_denom:2;
-+		uint64_t pll_alt_matrix:1;
-+		uint64_t dfa_info_clm:4;
-+		uint64_t dfa_info_dte:3;
-+		uint64_t pll_ctl:10;
-+		uint64_t ema0:6;
-+#endif
-+	} cn70xx;
-+	struct cvmx_mio_fus_dat3_cn70xxp1 {
-+#ifdef __BIG_ENDIAN_BITFIELD
-+		uint64_t ema0:6;
-+		uint64_t pll_ctl:10;
-+		uint64_t dfa_info_dte:3;
-+		uint64_t dfa_info_clm:4;
-+		uint64_t reserved_38_40:3;
-+		uint64_t efus_lck_rsv:1;
-+		uint64_t efus_lck_man:1;
-+		uint64_t pll_half_dis:1;
-+		uint64_t l2c_crip:3;
-+		uint64_t reserved_31_31:1;
-+		uint64_t zip_info:2;
-+		uint64_t bar2_sz_conf:1;
-+		uint64_t efus_lck:1;
-+		uint64_t efus_ign:1;
-+		uint64_t nozip:1;
-+		uint64_t nodfa_dte:1;
-+		uint64_t ema1:6;
-+		uint64_t reserved_0_17:18;
-+#else
-+		uint64_t reserved_0_17:18;
-+		uint64_t ema1:6;
-+		uint64_t nodfa_dte:1;
-+		uint64_t nozip:1;
-+		uint64_t efus_ign:1;
-+		uint64_t efus_lck:1;
-+		uint64_t bar2_sz_conf:1;
-+		uint64_t zip_info:2;
-+		uint64_t reserved_31_31:1;
-+		uint64_t l2c_crip:3;
-+		uint64_t pll_half_dis:1;
-+		uint64_t efus_lck_man:1;
-+		uint64_t efus_lck_rsv:1;
-+		uint64_t reserved_38_40:3;
-+		uint64_t dfa_info_clm:4;
-+		uint64_t dfa_info_dte:3;
-+		uint64_t pll_ctl:10;
-+		uint64_t ema0:6;
-+#endif
-+	} cn70xxp1;
-+	struct cvmx_mio_fus_dat3_cn73xx {
-+#ifdef __BIG_ENDIAN_BITFIELD
-+		uint64_t ema0:6;
-+		uint64_t pll_ctl:10;
-+		uint64_t dfa_info_dte:3;
-+		uint64_t dfa_info_clm:4;
-+		uint64_t pll_alt_matrix:1;
-+		uint64_t pll_bwadj_denom:2;
-+		uint64_t efus_lck_rsv:1;
-+		uint64_t efus_lck_man:1;
-+		uint64_t pll_half_dis:1;
-+		uint64_t l2c_crip:3;
-+		uint64_t use_int_refclk:1;
-+		uint64_t zip_info:2;
-+		uint64_t bar2_sz_conf:1;
-+		uint64_t efus_lck:1;
-+		uint64_t efus_ign:1;
-+		uint64_t nozip:1;
-+		uint64_t nodfa_dte:1;
-+		uint64_t ema1:6;
-+		uint64_t nohna_dte:1;
-+		uint64_t hna_info_dte:3;
-+		uint64_t hna_info_clm:4;
-+		uint64_t reserved_9_9:1;
-+		uint64_t core_pll_mul:5;
-+		uint64_t pnr_pll_mul:4;
-+#else
-+		uint64_t pnr_pll_mul:4;
-+		uint64_t core_pll_mul:5;
-+		uint64_t reserved_9_9:1;
-+		uint64_t hna_info_clm:4;
-+		uint64_t hna_info_dte:3;
-+		uint64_t nohna_dte:1;
-+		uint64_t ema1:6;
-+		uint64_t nodfa_dte:1;
-+		uint64_t nozip:1;
-+		uint64_t efus_ign:1;
-+		uint64_t efus_lck:1;
-+		uint64_t bar2_sz_conf:1;
-+		uint64_t zip_info:2;
-+		uint64_t use_int_refclk:1;
-+		uint64_t l2c_crip:3;
-+		uint64_t pll_half_dis:1;
-+		uint64_t efus_lck_man:1;
-+		uint64_t efus_lck_rsv:1;
-+		uint64_t pll_bwadj_denom:2;
-+		uint64_t pll_alt_matrix:1;
-+		uint64_t dfa_info_clm:4;
-+		uint64_t dfa_info_dte:3;
-+		uint64_t pll_ctl:10;
-+		uint64_t ema0:6;
-+#endif
-+	} cn73xx;
-+	struct cvmx_mio_fus_dat3_cn78xx {
-+#ifdef __BIG_ENDIAN_BITFIELD
-+		uint64_t ema0:6;
-+		uint64_t pll_ctl:10;
-+		uint64_t dfa_info_dte:3;
-+		uint64_t dfa_info_clm:4;
-+		uint64_t reserved_38_40:3;
-+		uint64_t efus_lck_rsv:1;
-+		uint64_t efus_lck_man:1;
-+		uint64_t pll_half_dis:1;
-+		uint64_t l2c_crip:3;
-+		uint64_t reserved_31_31:1;
-+		uint64_t zip_info:2;
-+		uint64_t bar2_sz_conf:1;
-+		uint64_t efus_lck:1;
-+		uint64_t efus_ign:1;
-+		uint64_t nozip:1;
-+		uint64_t nodfa_dte:1;
-+		uint64_t ema1:6;
-+		uint64_t nohna_dte:1;
-+		uint64_t hna_info_dte:3;
-+		uint64_t hna_info_clm:4;
-+		uint64_t reserved_0_9:10;
-+#else
-+		uint64_t reserved_0_9:10;
-+		uint64_t hna_info_clm:4;
-+		uint64_t hna_info_dte:3;
-+		uint64_t nohna_dte:1;
-+		uint64_t ema1:6;
-+		uint64_t nodfa_dte:1;
-+		uint64_t nozip:1;
-+		uint64_t efus_ign:1;
-+		uint64_t efus_lck:1;
-+		uint64_t bar2_sz_conf:1;
-+		uint64_t zip_info:2;
-+		uint64_t reserved_31_31:1;
-+		uint64_t l2c_crip:3;
-+		uint64_t pll_half_dis:1;
-+		uint64_t efus_lck_man:1;
-+		uint64_t efus_lck_rsv:1;
-+		uint64_t reserved_38_40:3;
-+		uint64_t dfa_info_clm:4;
-+		uint64_t dfa_info_dte:3;
-+		uint64_t pll_ctl:10;
-+		uint64_t ema0:6;
-+#endif
-+	} cn78xx;
-+	struct cvmx_mio_fus_dat3_cn73xx cn78xxp2;
- 	struct cvmx_mio_fus_dat3_cn61xx cnf71xx;
-+	struct cvmx_mio_fus_dat3_cnf75xx {
-+#ifdef __BIG_ENDIAN_BITFIELD
-+		uint64_t ema0:6;
-+		uint64_t pll_ctl:10;
-+		uint64_t dfa_info_dte:3;
-+		uint64_t dfa_info_clm:4;
-+		uint64_t pll_alt_matrix:1;
-+		uint64_t pll_bwadj_denom:2;
-+		uint64_t efus_lck_rsv:1;
-+		uint64_t efus_lck_man:1;
-+		uint64_t pll_half_dis:1;
-+		uint64_t l2c_crip:3;
-+		uint64_t use_int_refclk:1;
-+		uint64_t zip_info:2;
-+		uint64_t bar2_sz_conf:1;
-+		uint64_t efus_lck:1;
-+		uint64_t efus_ign:1;
-+		uint64_t nozip:1;
-+		uint64_t nodfa_dte:1;
-+		uint64_t ema1:6;
-+		uint64_t reserved_9_17:9;
-+		uint64_t core_pll_mul:5;
-+		uint64_t pnr_pll_mul:4;
-+#else
-+		uint64_t pnr_pll_mul:4;
-+		uint64_t core_pll_mul:5;
-+		uint64_t reserved_9_17:9;
-+		uint64_t ema1:6;
-+		uint64_t nodfa_dte:1;
-+		uint64_t nozip:1;
-+		uint64_t efus_ign:1;
-+		uint64_t efus_lck:1;
-+		uint64_t bar2_sz_conf:1;
-+		uint64_t zip_info:2;
-+		uint64_t use_int_refclk:1;
-+		uint64_t l2c_crip:3;
-+		uint64_t pll_half_dis:1;
-+		uint64_t efus_lck_man:1;
-+		uint64_t efus_lck_rsv:1;
-+		uint64_t pll_bwadj_denom:2;
-+		uint64_t pll_alt_matrix:1;
-+		uint64_t dfa_info_clm:4;
-+		uint64_t dfa_info_dte:3;
-+		uint64_t pll_ctl:10;
-+		uint64_t ema0:6;
-+#endif
-+	} cnf75xx;
- };
+@@ -110,7 +114,7 @@ static inline int octeon_has_crypto(void)
+  * Returns Non zero if the feature exists. Zero if the feature does not
+  *	   exist.
+  */
+-static inline int octeon_has_feature(enum octeon_feature feature)
++static inline bool octeon_has_feature(enum octeon_feature feature)
+ {
+ 	switch (feature) {
+ 	case OCTEON_FEATURE_SAAD:
+@@ -122,7 +126,7 @@ static inline int octeon_has_feature(enum octeon_feature feature)
+ 			fus_2.u64 = cvmx_read_csr(CVMX_MIO_FUS_DAT2);
+ 			return !fus_2.s.nocrypto && !fus_2.s.nomul && fus_2.s.dorm_crypto;
+ 		} else {
+-			return 0;
++			return false;
+ 		}
  
- union cvmx_mio_fus_ema {
+ 	case OCTEON_FEATURE_PCIE:
+@@ -189,11 +193,20 @@ static inline int octeon_has_feature(enum octeon_feature feature)
+ 
+ 	case OCTEON_FEATURE_CIU2:
+ 		return OCTEON_IS_MODEL(OCTEON_CN68XX);
++	case OCTEON_FEATURE_CIU3:
++	case OCTEON_FEATURE_FPA3:
++		return OCTEON_IS_MODEL(OCTEON_CN78XX)
++			|| OCTEON_IS_MODEL(OCTEON_CNF75XX)
++			|| OCTEON_IS_MODEL(OCTEON_CN73XX);
++	case OCTEON_FEATURE_FAU:
++		return !(OCTEON_IS_MODEL(OCTEON_CN78XX)
++			 || OCTEON_IS_MODEL(OCTEON_CNF75XX)
++			 || OCTEON_IS_MODEL(OCTEON_CN73XX));
+ 
+ 	default:
+ 		break;
+ 	}
+-	return 0;
++	return false;
+ }
+ 
+ #endif /* __OCTEON_FEATURE_H__ */
+diff --git a/arch/mips/include/asm/octeon/octeon-model.h b/arch/mips/include/asm/octeon/octeon-model.h
+index 92b377e..6c68517 100644
+--- a/arch/mips/include/asm/octeon/octeon-model.h
++++ b/arch/mips/include/asm/octeon/octeon-model.h
+@@ -74,7 +74,12 @@
+  * CN7XXX models with new revision encoding
+  */
+ 
++#define OCTEON_CNF75XX_PASS1_0	0x000d9800
++#define OCTEON_CNF75XX		(OCTEON_CNF75XX_PASS1_0 | OM_IGNORE_REVISION)
++#define OCTEON_CNF75XX_PASS1_X	(OCTEON_CNF75XX_PASS1_0 | OM_IGNORE_MINOR_REVISION)
++
+ #define OCTEON_CN73XX_PASS1_0	0x000d9700
++#define OCTEON_CN73XX_PASS1_1	0x000d9701
+ #define OCTEON_CN73XX		(OCTEON_CN73XX_PASS1_0 | OM_IGNORE_REVISION)
+ #define OCTEON_CN73XX_PASS1_X	(OCTEON_CN73XX_PASS1_0 | \
+ 				 OM_IGNORE_MINOR_REVISION)
 -- 
 1.7.11.7

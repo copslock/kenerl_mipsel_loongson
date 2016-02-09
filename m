@@ -1,47 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Feb 2016 21:57:14 +0100 (CET)
-Received: from mail-pf0-f173.google.com ([209.85.192.173]:36074 "EHLO
-        mail-pf0-f173.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012419AbcBIU4MFAJpb (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 9 Feb 2016 21:56:12 +0100
-Received: by mail-pf0-f173.google.com with SMTP id e127so37793789pfe.3;
-        Tue, 09 Feb 2016 12:56:11 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Feb 2016 21:57:33 +0100 (CET)
+Received: from mail-pa0-f52.google.com ([209.85.220.52]:35326 "EHLO
+        mail-pa0-f52.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012423AbcBIU4NklVvb (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 9 Feb 2016 21:56:13 +0100
+Received: by mail-pa0-f52.google.com with SMTP id ho8so96921721pac.2;
+        Tue, 09 Feb 2016 12:56:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=4AY0aTwuux2T/Vh5/KSQUnypyFYhkqUh+9NKWGheTWA=;
-        b=Cz+gLXKLzg45NyCMak+JR7Nq14bEYIBgxX6nOJ5z/yg9mm6/Ym1VNcL2l7eoySMFbJ
-         WqeQJLQkdk4DL11e2cxYGHMHKZrCxwnmbomJ0sctSuQ/rXjpwBanft/h5iI9GBmfnK/v
-         hcx7RzwilibaXjA7ocQkTUdcMnPBhpHZM35O0X/Gf01kQEq7SiikFXfV194aKGswx5k2
-         fP5FbcAncyP/fkcNAnEr4bj2/GTW8I8ILN7pYlEVDax9jNkG3s+KSz8UxGZ8Cr6uGZCj
-         VjpZLOOl66CsUmqSgSeMAYnnWsUeUQ9mWAK89RiwqjkRKAUnsOdFPzcP/atD/riWe4Ul
-         UYAQ==
+        bh=x3NdSPh/YCEpCPhUOPTY24DYI/UhkvEpDa5pK/j4F7I=;
+        b=uRKRRyh3rE9CdH/6N8oXzEFFbUoGPWf9hJp3HqJINa+hSjxkeIoPpjcO9pUrgauQv9
+         wHySMussRPYA3IE94dhjRSOJu/PItnbh/iEyptRE+lWYP4j72FrHeMFwecqlkTEW0eSe
+         CO17XiC8U0in6VsWNUTBn43ibyld8FfJudmMPmtjot50TfkM4QYeYoTQpnM649nK1zvf
+         fwfGbxmG9+UquV9ANFgcpsTnx+UX1glV9NZscfr1blxLm3CP2P2ODZM4z53h7rn7ClKk
+         +ucuV4fidp3eYJmXvgOme4YouHpoVFR2jf6ehcB4xxDhg5yH9TUwIB+vMlKRFwvGNnmo
+         pD/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=4AY0aTwuux2T/Vh5/KSQUnypyFYhkqUh+9NKWGheTWA=;
-        b=VkoHgdpVORMDCz/Bua2pgILk4Z4m7P5QkgQjoKsXpXbq8fdesvYf7cRBHrGmfi1eCw
-         sK+yfSHaNAWG+6ZjmKqLKOrx4YK9Z/mur0pk330KSG4AgM0DdM1DZMd4VEyr4vLkBu50
-         5ORvBZJMzydlcRb5SfP9JXsJKdtgE6OWXGpU7CvQgI9ZFgkof0Ny+ZCjuTXwU7vW3Qrk
-         CaQ+N5IqP6SVAsQ8jCZ92OvX4+q8M7Wvu9foEJ9Y0thgGqUhJQ0Dxgz1Y+NtPjyf8Lru
-         xc3kqLF+Ct9CrZCQBowIZwSH5ntFhXTQp2uGNmQPzQXoQ8a3hfzZ/R+df1x+9vTpl5M0
-         x59Q==
-X-Gm-Message-State: AG10YORDAXoR8O5K1oYaDjlO/YGm1GhY4dCJai7cwqhIEOmb9vFPCARkGyb4cWxF5pNVsw==
-X-Received: by 10.98.33.77 with SMTP id h74mr52987249pfh.157.1455051366420;
-        Tue, 09 Feb 2016 12:56:06 -0800 (PST)
+        bh=x3NdSPh/YCEpCPhUOPTY24DYI/UhkvEpDa5pK/j4F7I=;
+        b=iQlXNukoZKVeOD8o72WXHcv4/7n8R4IVjXrcepqF2U7x1fDvoYcZEgVK//ynHocchj
+         TK/9U1TaklnKlWvjNcon7dJjR5GNWKdu6ir0BL+l50w5Ss0G8OmS5GQ1PZjAYLbJXEH5
+         yd2mZRdig5w2vtC7QaMZJkxelQ8KR+gujMGDH0XxLntM98c30BtRnqaQMno/BQFENU5A
+         h6VQ6iq1TqcHHG43JBqPb26DDniNXSXH0WvnCjQave6+cWhG6cGQXZgKxg72KsOU1y6T
+         3MWTJoL2P1FK4583e/+SQPUv484Ch7HqbGfWNcmaUui5wjIeLhtRABBvZAbzZM3H6c8z
+         0EVQ==
+X-Gm-Message-State: AG10YOSPm7XMoOYhRo2TD9FxHjbBumRXHDQ7XAQt3HR+IyMEFo1xStQgRh9b/k3zQJ/dzA==
+X-Received: by 10.66.159.161 with SMTP id xd1mr42162781pab.104.1455051367576;
+        Tue, 09 Feb 2016 12:56:07 -0800 (PST)
 Received: from stb-bld-03.irv.broadcom.com (5520-maca-inet1-outside.broadcom.com. [216.31.211.11])
-        by smtp.gmail.com with ESMTPSA id n4sm52684059pfi.3.2016.02.09.12.56.05
+        by smtp.gmail.com with ESMTPSA id n4sm52684059pfi.3.2016.02.09.12.56.06
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 09 Feb 2016 12:56:05 -0800 (PST)
+        Tue, 09 Feb 2016 12:56:07 -0800 (PST)
 From:   Florian Fainelli <f.fainelli@gmail.com>
 To:     linux-mips@linux-mips.org
 Cc:     ralf@linux-mips.org, blogic@openwrt.org, cernekee@gmail.com,
         jon.fraser@broadcom.com, pgynther@google.com,
         paul.burton@imgtec.com, ddaney.cavm@gmail.com,
         Florian Fainelli <f.fainelli@gmail.com>
-Subject: [PATCH 4/6] MIPS: Move RIXI exception enabling after vendor-specific cpu_probe
-Date:   Tue,  9 Feb 2016 12:55:52 -0800
-Message-Id: <1455051354-6225-5-git-send-email-f.fainelli@gmail.com>
+Subject: [PATCH 5/6] MIPS: BMIPS: BMIPS4380 and BMIPS5000 support RIXI
+Date:   Tue,  9 Feb 2016 12:55:53 -0800
+Message-Id: <1455051354-6225-6-git-send-email-f.fainelli@gmail.com>
 X-Mailer: git-send-email 2.1.0
 In-Reply-To: <1455051354-6225-1-git-send-email-f.fainelli@gmail.com>
 References: <1455051354-6225-1-git-send-email-f.fainelli@gmail.com>
@@ -49,7 +49,7 @@ Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51921
+X-archive-position: 51922
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -66,54 +66,57 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Some processors may not have the RIXI bit advertised in the Config3 register,
-not being a MIPS32R2 or R6 core, yet, they might be supporting it through a
-different way, which is overriden during vendor-specific cpu_probe().
-
-Move the RIXI exceptions enabling after the vendor-specific cpu_probe()
-function has had a change to run and override the current CPU's options with
-MIPS_CPU_RIXI.
+Make BMIPS4380 and BMIPS5000 advertise support for RIXI through
+cpu_probe_broadcom(). bmips_cpu_setup() needs to be called shortly after that,
+during prom_init() in order to enable the proper Broadcom-specific register to
+turn on RIXI and the "rotr" instruction.
 
 Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
 ---
- arch/mips/kernel/cpu-probe.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ arch/mips/Kconfig            | 2 ++
+ arch/mips/kernel/cpu-probe.c | 3 ++-
+ 2 files changed, 4 insertions(+), 1 deletion(-)
 
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 29f5b3138d6b..b03a68879b6a 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -1799,6 +1799,7 @@ config CPU_BMIPS4380
+ 	select MIPS_L1_CACHE_SHIFT_6
+ 	select SYS_SUPPORTS_SMP
+ 	select SYS_SUPPORTS_HOTPLUG_CPU
++	select CPU_HAS_RIXI
+ 
+ config CPU_BMIPS5000
+ 	bool
+@@ -1806,6 +1807,7 @@ config CPU_BMIPS5000
+ 	select MIPS_L1_CACHE_SHIFT_7
+ 	select SYS_SUPPORTS_SMP
+ 	select SYS_SUPPORTS_HOTPLUG_CPU
++	select CPU_HAS_RIXI
+ 
+ config SYS_HAS_CPU_LOONGSON3
+ 	bool
 diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
-index b725b713b9f8..a2df0357b453 100644
+index a2df0357b453..cf9869d15c9f 100644
 --- a/arch/mips/kernel/cpu-probe.c
 +++ b/arch/mips/kernel/cpu-probe.c
-@@ -828,15 +828,6 @@ static void decode_configs(struct cpuinfo_mips *c)
- 
- 	mips_probe_watch_registers(c);
- 
--	if (cpu_has_rixi) {
--		/* Enable the RIXI exceptions */
--		set_c0_pagegrain(PG_IEC);
--		back_to_back_c0_hazard();
--		/* Verify the IEC bit is set */
--		if (read_c0_pagegrain() & PG_IEC)
--			c->options |= MIPS_CPU_RIXIEX;
--	}
--
- #ifndef CONFIG_MIPS_CPS
- 	if (cpu_has_mips_r2_r6) {
- 		c->core = get_ebase_cpunum();
-@@ -1660,6 +1651,15 @@ void cpu_probe(void)
- 	 */
- 	BUG_ON(current_cpu_type() != c->cputype);
- 
-+	if (cpu_has_rixi) {
-+		/* Enable the RIXI exceptions */
-+		set_c0_pagegrain(PG_IEC);
-+		back_to_back_c0_hazard();
-+		/* Verify the IEC bit is set */
-+		if (read_c0_pagegrain() & PG_IEC)
-+			c->options |= MIPS_CPU_RIXIEX;
-+	}
-+
- 	if (mips_fpu_disabled)
- 		c->options &= ~MIPS_CPU_FPU;
- 
+@@ -1426,6 +1426,7 @@ static inline void cpu_probe_broadcom(struct cpuinfo_mips *c, unsigned int cpu)
+ 			c->cputype = CPU_BMIPS4380;
+ 			__cpu_name[cpu] = "Broadcom BMIPS4380";
+ 			set_elf_platform(cpu, "bmips4380");
++			c->options |= MIPS_CPU_RIXI;
+ 		} else {
+ 			c->cputype = CPU_BMIPS4350;
+ 			__cpu_name[cpu] = "Broadcom BMIPS4350";
+@@ -1438,7 +1439,7 @@ static inline void cpu_probe_broadcom(struct cpuinfo_mips *c, unsigned int cpu)
+ 		c->cputype = CPU_BMIPS5000;
+ 		__cpu_name[cpu] = "Broadcom BMIPS5000";
+ 		set_elf_platform(cpu, "bmips5000");
+-		c->options |= MIPS_CPU_ULRI;
++		c->options |= MIPS_CPU_ULRI | MIPS_CPU_RIXI;
+ 		break;
+ 	}
+ }
 -- 
 2.1.0

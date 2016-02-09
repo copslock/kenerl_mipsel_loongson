@@ -1,59 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Feb 2016 21:57:48 +0100 (CET)
-Received: from mail-pf0-f178.google.com ([209.85.192.178]:34912 "EHLO
-        mail-pf0-f178.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012425AbcBIU4Og8xFb (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 9 Feb 2016 21:56:14 +0100
-Received: by mail-pf0-f178.google.com with SMTP id c10so66656217pfc.2;
-        Tue, 09 Feb 2016 12:56:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=AZUF2ZROkXVZZSNBBmj2A5KPOpTiN2YfCmxwPkQuwx0=;
-        b=o7sK6bf4CjTWQZ9oZJNqQSrYbd7WvvPhnAiYiQCYJL17K8HZX0abpKw7V+s0V0fDeG
-         239W7gIcr67yzgKUqcKQ3n9H4hq05e99rq1WGemwATqynPOfJ12iWKJUjL38sm3u60L7
-         UD+GXXWgiZU7HKMvl0xCBLQfWDh6l9VxwX6TK3hn7vJvk/WWf4NPGRsiS+SXj89zJidV
-         bVyXk4d7Cbye13uYchLIPAzzPZX7m6znjBvYIEXtDk4smUtfXmELbzQAXprD1gAxPv2E
-         8a4ZAUpgBL+Zpqsd4g3tMI67MDlBzhMbeMV3usyvsWdJOKYUTMkcrqQcssAyv1AbEjFM
-         Eovw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=AZUF2ZROkXVZZSNBBmj2A5KPOpTiN2YfCmxwPkQuwx0=;
-        b=WzpdcaLCf4eLGDwmxzapLd5X/bu+WJ4UrAKz230N22x7H8dbCYfLqyLTGK8hiI1EFU
-         PlC6FG2ZGKKi9LPH0+j6kQc3FVXCpjQ6QxrYZrDKF4vhvzhokVMcatNegNIH5oj6GugM
-         s3KFGc6VyY6gd7kXRkyu1byfv2cS4xZjJ36qkhbQ5DU7vpgACMNeLQf/wvS8IqwIQLLX
-         B6JgY+WnaAC0rArUZE1FaGASiHZdorPLEBE/oZQbkBDjfvB5rzFWatOqDyR/e92pjusi
-         40b0//9xbNwTYxgRlpLCQ00898IHgJb5iQ5AHxsj5yblF8526wzT6FZeMyrwhjKslJpt
-         0yZg==
-X-Gm-Message-State: AG10YOT3/OSkHmhUe5H4RkZqWKKSQi1wV6pNX1EKg+9ODc3AutXdc+DQs3Zie2o2G9YeYw==
-X-Received: by 10.98.10.65 with SMTP id s62mr53538914pfi.119.1455051368945;
-        Tue, 09 Feb 2016 12:56:08 -0800 (PST)
-Received: from stb-bld-03.irv.broadcom.com (5520-maca-inet1-outside.broadcom.com. [216.31.211.11])
-        by smtp.gmail.com with ESMTPSA id n4sm52684059pfi.3.2016.02.09.12.56.07
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 09 Feb 2016 12:56:08 -0800 (PST)
-From:   Florian Fainelli <f.fainelli@gmail.com>
-To:     linux-mips@linux-mips.org
-Cc:     ralf@linux-mips.org, blogic@openwrt.org, cernekee@gmail.com,
-        jon.fraser@broadcom.com, pgynther@google.com,
-        paul.burton@imgtec.com, ddaney.cavm@gmail.com,
-        Florian Fainelli <f.fainelli@gmail.com>
-Subject: [PATCH 6/6] MIPS: Expose current_cpu_data.options through debugfs
-Date:   Tue,  9 Feb 2016 12:55:54 -0800
-Message-Id: <1455051354-6225-7-git-send-email-f.fainelli@gmail.com>
-X-Mailer: git-send-email 2.1.0
-In-Reply-To: <1455051354-6225-1-git-send-email-f.fainelli@gmail.com>
-References: <1455051354-6225-1-git-send-email-f.fainelli@gmail.com>
-Return-Path: <f.fainelli@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Feb 2016 22:01:25 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:20488 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27011766AbcBIVBXdbg7b (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 9 Feb 2016 22:01:23 +0100
+Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
+        by Websense Email Security Gateway with ESMTPS id 2E0DEA866ABBC;
+        Tue,  9 Feb 2016 21:01:14 +0000 (GMT)
+Received: from [10.100.200.149] (10.100.200.149) by hhmail02.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server id 14.3.266.1; Tue, 9 Feb 2016
+ 21:01:16 +0000
+Date:   Tue, 9 Feb 2016 20:55:34 +0000
+From:   "Maciej W. Rozycki" <macro@imgtec.com>
+To:     Luis Machado <lgustavo@codesourcery.com>
+CC:     "Maciej W. Rozycki" <macro@linux-mips.org>,
+        <gdb-patches@sourceware.org>, <linux-mips@linux-mips.org>
+Subject: Re: [PATCH] Expect SI_KERNEL si_code for a MIPS software breakpoint
+ trap
+In-Reply-To: <56B9F7E6.5010006@codesourcery.com>
+Message-ID: <alpine.DEB.2.00.1602092020150.15885@tp.orcam.me.uk>
+References: <1442592647-3051-1-git-send-email-lgustavo@codesourcery.com> <alpine.LFD.2.20.1509181729100.10647@eddie.linux-mips.org> <56B9F7E6.5010006@codesourcery.com>
+User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
+MIME-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+X-Originating-IP: [10.100.200.149]
+Return-Path: <Maciej.Rozycki@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51923
+X-archive-position: 51924
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: f.fainelli@gmail.com
+X-original-sender: macro@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -66,50 +44,81 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Debugging a missing features in cpu-features-override.h, or a runtime feature
-set/clear in the vendor specific cpu_probe() function can be a little tedious,
-ease that by providing a debugfs entry representing the
-current_cpu_data.options bitmask.
+On Tue, 9 Feb 2016, Luis Machado wrote:
 
-Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
----
- arch/mips/kernel/cpu-probe.c | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+> I'm finally getting back to this. Sorry for the delay.
 
-diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
-index cf9869d15c9f..4b569e13f727 100644
---- a/arch/mips/kernel/cpu-probe.c
-+++ b/arch/mips/kernel/cpu-probe.c
-@@ -17,6 +17,7 @@
- #include <linux/smp.h>
- #include <linux/stddef.h>
- #include <linux/export.h>
-+#include <linux/debugfs.h>
- 
- #include <asm/bugs.h>
- #include <asm/cpu.h>
-@@ -1719,3 +1720,22 @@ void cpu_report(void)
- 	if (cpu_has_msa)
- 		pr_info("MSA revision is: %08x\n", c->msa_id);
- }
-+
-+#ifdef CONFIG_DEBUG_FS
-+extern struct dentry *mips_debugfs_dir;
-+static int __init debugfs_cpu_options(void)
-+{
-+	struct dentry *d;
-+
-+	if (!mips_debugfs_dir)
-+		return -ENODEV;
-+
-+	d = debugfs_create_x64("cpu_options", S_IRUGO,
-+			       mips_debugfs_dir, &current_cpu_data.options);
-+	if (!d)
-+		return -ENOMEM;
-+
-+	return 0;
-+}
-+__initcall(debugfs_cpu_options);
-+#endif
--- 
-2.1.0
+ No problem, thanks for keeping a track of it.
+
+> >   I'm not convinced however that it is safe to assume all SIGTRAPs come
+> > from breakpoints -- this signal is sent by the kernel for both BREAK and
+> > trap (multiple mnemonics, e.g. TEQ, TGEI, etc.) instructions which may
+> > have been placed throughout code for some reason, for example to serve as
+> > cheap assertion checks.
+> > 
+> >   Is there a separate check made afterwards like `bpstat_explains_signal'
+> > to validate the source of the signal here?
+> 
+> In my specific example we are dealing with two breakpoint hits by different
+> threads. The first one is reported just fine and the one we have problems with
+> is the queued one that is reported afterwards when we attempt to move the
+> other thread.
+> 
+> We do rely on bpstat_explains_signal when gdbserver/the remote target notifies
+> gdb about a stop. In the case of a queued breakpoint hit, it doesn't even get
+> reported back to gdb and is just ignored by gdbserver if it is recognized as a
+> breakpoint hit.
+
+ I'm not sure I understand what's going on here, why is a breakpoint hit
+required to be ignored by gdbserver?
+
+ From what you say I infer GDB controls a multi-threaded program and there 
+it sets a software breakpoint which, by its nature, is global to all the 
+threads.  Then multiple threads hit the breakpoint simultaneously (or 
+nearly simultaneously) and the hits are delivered to GDB one by one, via 
+gdbserver.  So why is GDB not prepared for that?
+
+ It set the breakpoint itself so it should expect it to hit sometime, and 
+if there are multiple threads, then there can be multiple hits at once or 
+almost at once because, even in the all-stop mode, there is no guaranteed 
+way to stop the threads all at once.  The threads may be spread across 
+different processors in an SMP system for example, all trapping literally 
+at once -- and then the kernel queueing the signals according to its own 
+internal schedule before delivering them to the debugger (that, from the 
+kernel's point of view, being gdbserver in this case).
+
+> With the proposed change, even the hardcoded traps will initially be
+> recognized as breakpoints, albeit maybe recognized as permanent breakpoints
+> for some opcodes. It may cause gdbserver to ignore a second hardcoded trap
+> hit, which is not desirable.
+
+ So why does gdbserver have to be taught which breakpoints may have 
+potentially been set by GDB and which may have not?  Why not to deliver 
+them all and leave it up to GDB to decide?  I believe it will be the right 
+thing to let GDB know that more than one thread has hit the same 
+breakpoint.
+
+ Did I miss anything?  How is this situation handled in a native debug 
+scenario?
+
+> >   Perhaps we should make it a part of the ABI and teach MIPS/Linux about
+> > the breakpoint encoding used by GDB, which is `BREAK 5' (aka BRK_SSTEPBP
+> > in kernel-speak, a misnomer I'm afraid), and make it set `si_code' to
+> > TRAP_BRKPT, as expected.  This won't fix history of course, but at least
+> > it will make debugging a little bit easier to handle in the future.
+> > Cc-ing `linux-mips' for further input.
+> 
+> This is the best solution in my opinion and will definitely make the
+> debugger's life easier if it can tell the difference between multiple
+> seemingly equivalent SIGTRAP's.
+> 
+> Does this involve handling BRK_SSTEPBP inside
+> arch/mips/kernel/traps.c:do_trap_or_bp?
+
+ No, as I noted in my reply to David elsewhere in this thread, this would 
+have to be in `do_bp' instead, to exclude trap instructions (e.g. TEQ, 
+etc.) from being treated as breakpoints.  I can implement this change 
+myself for you, but we need to agree first what the right solution for GDB 
+is.  So far it looks to me we'd be only papering over a problem elsewhere.
+
+  Maciej

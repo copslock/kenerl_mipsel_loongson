@@ -1,55 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Feb 2016 16:46:53 +0100 (CET)
-Received: from demumfd001.nsn-inter.net ([93.183.12.32]:40050 "EHLO
-        demumfd001.nsn-inter.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011685AbcBIPqrY7EVQ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 9 Feb 2016 16:46:47 +0100
-Received: from demuprx017.emea.nsn-intra.net ([10.150.129.56])
-        by demumfd001.nsn-inter.net (8.15.2/8.15.2) with ESMTPS id u19FkUL2021200
-        (version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
-        Tue, 9 Feb 2016 15:46:30 GMT
-Received: from [10.151.38.189] ([10.151.38.189])
-        by demuprx017.emea.nsn-intra.net (8.12.11.20060308/8.12.11) with ESMTP id u19FkSCv017463;
-        Tue, 9 Feb 2016 16:46:28 +0100
-Subject: Re: [PATCH] MIPS: Fix early CM probing
-To:     EXT Paul Burton <paul.burton@imgtec.com>, linux-mips@linux-mips.org
-References: <1454953591-19491-1-git-send-email-paul.burton@imgtec.com>
-Cc:     Andrzej Hajda <a.hajda@samsung.com>,
-        Aaro Koskinen <aaro.koskinen@nokia.com>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Rob Herring <robh@kernel.org>,
-        Alexander Sverdlin <alexander.sverdlin@gmail.com>,
-        Peter Hurley <peter@hurleysoftware.com>,
-        linux-kernel@vger.kernel.org,
-        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
-        Jaedon Shin <jaedon.shin@gmail.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        Jonas Gorski <jogo@openwrt.org>,
-        Markos Chandras <markos.chandras@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-From:   Alexander Sverdlin <alexander.sverdlin@nokia.com>
-Message-ID: <56BA09D6.1080002@nokia.com>
-Date:   Tue, 9 Feb 2016 16:46:30 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.5.1
-MIME-Version: 1.0
-In-Reply-To: <1454953591-19491-1-git-send-email-paul.burton@imgtec.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-purgate-type: clean
-X-purgate-Ad: Categorized by eleven eXpurgate (R) http://www.eleven.de
-X-purgate: clean
-X-purgate: This mail is considered clean (visit http://www.eleven.de for further information)
-X-purgate-size: 3155
-X-purgate-ID: 151667::1455032792-000006B0-EEF31170/0/0
-Return-Path: <alexander.sverdlin@nokia.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Feb 2016 20:01:03 +0100 (CET)
+Received: from mail-pa0-f65.google.com ([209.85.220.65]:34346 "EHLO
+        mail-pa0-f65.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012125AbcBITBBxwA3R (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 9 Feb 2016 20:01:01 +0100
+Received: by mail-pa0-f65.google.com with SMTP id yy13so7335499pab.1;
+        Tue, 09 Feb 2016 11:01:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references;
+        bh=oOI8k4yw/XMwUYGFpXZR5Sz7xBpTRKP0emVwn2oDstQ=;
+        b=zqqSE81du7xBHT9/4uDVCmWl8WagFbD7tezQ4LyI0u4l83jBE53BJlvL2z27BNyiMO
+         8oypWphAdisy8uyer+CGl2P6zcExwqjwkI7fvaI7ANc5rA2Fyc2wVdI8benP3KEJLtL6
+         bp/HEb7utcBYGd7I9zqpNb19Cne140PgehgrrDvuTOXJIDhypVp5ldhRe4LOCU4qCM9t
+         YvcprMZkDmtqabo2+ZYNoWFAZQul6g2SfpdFyoVGNtnGpUELr+11UbqxQgHJ3slRROLD
+         mWxwYjyMuhZhAOOOSx6zRb3MQ9hLqGAgXLIcq8SlG6jiU06GEU2+Ue6Y50EZYNRpxOof
+         iN3Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references;
+        bh=oOI8k4yw/XMwUYGFpXZR5Sz7xBpTRKP0emVwn2oDstQ=;
+        b=V1QmLQVKNtm/xhg2iVe8RY9cszbtScj2X8/8KZaxqmnDe3AICT6qQzgns5j1sAhFNb
+         CmUWz6+NoYtXSwJMdCbUPG++9zMTZewfIF2AgO8YJW5RtSXVTG7mx8cHQ3Kj5eM87YgZ
+         PH7RkG9/3BtGe350z7+YwE9rvrJOEaRczzyrwvyz91eKhrIyUWkg5mjmN6WKYfrm3BT2
+         gIGdS7GHqHIPyWAciZIKubzbNLzOSH61n2QIZsoMwTh33H5AJAGqZbODZgisUTIeWUfk
+         ECRMjXjpq8TGFxpo044gw3XRaa8LuonCyA85gvL+mC9bcLIQNSr2c4lSgPfUVHobHN5i
+         m49Q==
+X-Gm-Message-State: AG10YOQ014HoPMEz5JsnrfuLpR53NVIM1X6PKz0YF7eWa7NEZNNMFh+rgHMmd8RbaDKGbQ==
+X-Received: by 10.66.120.200 with SMTP id le8mr52811416pab.61.1455044455826;
+        Tue, 09 Feb 2016 11:00:55 -0800 (PST)
+Received: from dl.caveonetworks.com ([64.2.3.194])
+        by smtp.gmail.com with ESMTPSA id xv2sm52411592pab.10.2016.02.09.11.00.53
+        (version=TLS1 cipher=AES128-SHA bits=128/128);
+        Tue, 09 Feb 2016 11:00:53 -0800 (PST)
+Received: from dl.caveonetworks.com (localhost.localdomain [127.0.0.1])
+        by dl.caveonetworks.com (8.14.5/8.14.5) with ESMTP id u19J0qAj009872;
+        Tue, 9 Feb 2016 11:00:52 -0800
+Received: (from ddaney@localhost)
+        by dl.caveonetworks.com (8.14.5/8.14.5/Submit) id u19J0qOQ009871;
+        Tue, 9 Feb 2016 11:00:52 -0800
+From:   David Daney <ddaney.cavm@gmail.com>
+To:     linux-mips@linux-mips.org, ralf@linux-mips.org
+Cc:     linux-kernel@vger.kernel.org, David Daney <david.daney@cavium.com>
+Subject: [PATCH v2 1/8] MIPS: OCTEON: Remove some code limiting NR_IRQS to 255
+Date:   Tue,  9 Feb 2016 11:00:06 -0800
+Message-Id: <1455044413-9823-2-git-send-email-ddaney.cavm@gmail.com>
+X-Mailer: git-send-email 1.7.11.7
+In-Reply-To: <1455044413-9823-1-git-send-email-ddaney.cavm@gmail.com>
+References: <1455044413-9823-1-git-send-email-ddaney.cavm@gmail.com>
+Return-Path: <ddaney.cavm@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51906
+X-archive-position: 51907
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alexander.sverdlin@nokia.com
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -62,97 +69,92 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi!
+From: David Daney <david.daney@cavium.com>
 
-On 08.02.2016 18:46, EXT Paul Burton wrote:
-> Commit c014d164f21d ("MIPS: Add platform callback before initializing
-> the L2 cache") added a platform_early_l2_init function in order to allow
-> platforms to probe for the CM before L2 initialisation is performed, so
-> that CM GCRs are available to mips_sc_probe.
-> 
-> That commit actually fails to do anything useful, since it checks
-> mips_cm_revision to determine whether it should call mips_cm_probe but
-> the result of mips_cm_revision will always be 0 until mips_cm_probe has
-> been called. Thus the "early" mips_cm_probe call never occurs.
-> 
-> Fix this & drop the useless weak platform_early_l2_init function by
-> simply calling mips_cm_probe from setup_arch. For platforms that don't
-> select CONFIG_MIPS_CM this will be a no-op, and for those that do it
-> removes the requirement for them to call mips_cm_probe manually
-> (although doing so isn't harmful for now).
-> 
-> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+Follow-on patches for OCTEON III will increase the number of irqs to
+potentially more than 256.
 
-Reviewed-by: Alexander Sverdlin <alexander.sverdlin@nokia.com>
+Increase the width of the octeon_irq_ciu_to_irq to int to be able to
+handle this case.  Remove the hacky code that verified that u8 would
+not be overflowed.
 
-> ---
-> 
->  arch/mips/kernel/setup.c         |  1 +
->  arch/mips/mm/sc-mips.c           | 10 ----------
->  arch/mips/mti-malta/malta-init.c |  8 --------
->  3 files changed, 1 insertion(+), 18 deletions(-)
-> 
-> diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
-> index 569a7d5..5fdaf8b 100644
-> --- a/arch/mips/kernel/setup.c
-> +++ b/arch/mips/kernel/setup.c
-> @@ -782,6 +782,7 @@ static inline void prefill_possible_map(void) {}
->  void __init setup_arch(char **cmdline_p)
->  {
->  	cpu_probe();
-> +	mips_cm_probe();
->  	prom_init();
->  
->  	setup_early_fdc_console();
-> diff --git a/arch/mips/mm/sc-mips.c b/arch/mips/mm/sc-mips.c
-> index 3bd0597..2496475 100644
-> --- a/arch/mips/mm/sc-mips.c
-> +++ b/arch/mips/mm/sc-mips.c
-> @@ -181,10 +181,6 @@ static int __init mips_sc_probe_cm3(void)
->  	return 1;
->  }
->  
-> -void __weak platform_early_l2_init(void)
-> -{
-> -}
-> -
->  static inline int __init mips_sc_probe(void)
->  {
->  	struct cpuinfo_mips *c = &current_cpu_data;
-> @@ -194,12 +190,6 @@ static inline int __init mips_sc_probe(void)
->  	/* Mark as not present until probe completed */
->  	c->scache.flags |= MIPS_CACHE_NOT_PRESENT;
->  
-> -	/*
-> -	 * Do we need some platform specific probing before
-> -	 * we configure L2?
-> -	 */
-> -	platform_early_l2_init();
-> -
->  	if (mips_cm_revision() >= CM_REV_CM3)
->  		return mips_sc_probe_cm3();
->  
-> diff --git a/arch/mips/mti-malta/malta-init.c b/arch/mips/mti-malta/malta-init.c
-> index 571148c..dc2c521 100644
-> --- a/arch/mips/mti-malta/malta-init.c
-> +++ b/arch/mips/mti-malta/malta-init.c
-> @@ -293,7 +293,6 @@ mips_pci_controller:
->  	console_config();
->  #endif
->  	/* Early detection of CMP support */
-> -	mips_cm_probe();
->  	mips_cpc_probe();
->  
->  	if (!register_cps_smp_ops())
-> @@ -304,10 +303,3 @@ mips_pci_controller:
->  		return;
->  	register_up_smp_ops();
->  }
-> -
-> -void platform_early_l2_init(void)
-> -{
-> -	/* L2 configuration lives in the CM3 */
-> -	if (mips_cm_revision() >= CM_REV_CM3)
-> -		mips_cm_probe();
-> -}
-> 
+Signed-off-by: David Daney <david.daney@cavium.com>
+---
+ arch/mips/cavium-octeon/octeon-irq.c | 27 ++-------------------------
+ 1 file changed, 2 insertions(+), 25 deletions(-)
+
+diff --git a/arch/mips/cavium-octeon/octeon-irq.c b/arch/mips/cavium-octeon/octeon-irq.c
+index 4f9eb05..bc30d3a 100644
+--- a/arch/mips/cavium-octeon/octeon-irq.c
++++ b/arch/mips/cavium-octeon/octeon-irq.c
+@@ -3,7 +3,7 @@
+  * License.  See the file "COPYING" in the main directory of this archive
+  * for more details.
+  *
+- * Copyright (C) 2004-2014 Cavium, Inc.
++ * Copyright (C) 2004-2016 Cavium, Inc.
+  */
+ 
+ #include <linux/of_address.h>
+@@ -28,7 +28,7 @@ struct octeon_irq_ciu_domain_data {
+ 	int num_sum;  /* number of sum registers (2 or 3). */
+ };
+ 
+-static __read_mostly u8 octeon_irq_ciu_to_irq[8][64];
++static __read_mostly int octeon_irq_ciu_to_irq[8][64];
+ 
+ struct octeon_ciu_chip_data {
+ 	union {
+@@ -1158,16 +1158,6 @@ static struct irq_chip *octeon_irq_ciu_chip;
+ static struct irq_chip *octeon_irq_ciu_chip_edge;
+ static struct irq_chip *octeon_irq_gpio_chip;
+ 
+-static bool octeon_irq_virq_in_range(unsigned int virq)
+-{
+-	/* We cannot let it overflow the mapping array. */
+-	if (virq < (1ul << 8 * sizeof(octeon_irq_ciu_to_irq[0][0])))
+-		return true;
+-
+-	WARN_ONCE(true, "virq out of range %u.\n", virq);
+-	return false;
+-}
+-
+ static int octeon_irq_ciu_map(struct irq_domain *d,
+ 			      unsigned int virq, irq_hw_number_t hw)
+ {
+@@ -1176,13 +1166,6 @@ static int octeon_irq_ciu_map(struct irq_domain *d,
+ 	unsigned int bit = hw & 63;
+ 	struct octeon_irq_ciu_domain_data *dd = d->host_data;
+ 
+-	if (!octeon_irq_virq_in_range(virq))
+-		return -EINVAL;
+-
+-	/* Don't map irq if it is reserved for GPIO. */
+-	if (line == 0 && bit >= 16 && bit <32)
+-		return 0;
+-
+ 	if (line >= dd->num_sum || octeon_irq_ciu_to_irq[line][bit] != 0)
+ 		return -EINVAL;
+ 
+@@ -1215,9 +1198,6 @@ static int octeon_irq_gpio_map(struct irq_domain *d,
+ 	unsigned int line, bit;
+ 	int r;
+ 
+-	if (!octeon_irq_virq_in_range(virq))
+-		return -EINVAL;
+-
+ 	line = (hw + gpiod->base_hwirq) >> 6;
+ 	bit = (hw + gpiod->base_hwirq) & 63;
+ 	if (line > ARRAY_SIZE(octeon_irq_ciu_to_irq) ||
+@@ -1899,9 +1879,6 @@ static int octeon_irq_ciu2_map(struct irq_domain *d,
+ 	unsigned int line = hw >> 6;
+ 	unsigned int bit = hw & 63;
+ 
+-	if (!octeon_irq_virq_in_range(virq))
+-		return -EINVAL;
+-
+ 	/*
+ 	 * Don't map irq if it is reserved for GPIO.
+ 	 * (Line 7 are the GPIO lines.)
+-- 
+1.7.11.7

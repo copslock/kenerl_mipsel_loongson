@@ -1,42 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Feb 2016 12:25:46 +0100 (CET)
-Received: from mail-out.m-online.net ([212.18.0.10]:58408 "EHLO
-        mail-out.m-online.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011768AbcBILXkKU8D9 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 9 Feb 2016 12:23:40 +0100
-Received: from mail.nefkom.net (unknown [192.168.8.184])
-        by mail-out.m-online.net (Postfix) with ESMTP id 3q020V3Hrgz3hjZR;
-        Tue,  9 Feb 2016 12:23:38 +0100 (CET)
-X-Auth-Info: oRhuqclZy14eK3e48CVRhQmDnEK2APICgiqRAl2bw7U=
-Received: from chi.localnet (unknown [195.140.253.167])
-        (using TLSv1 with cipher DHE-RSA-CAMELLIA256-SHA (256/256 bits))
-        (No client certificate requested)
-        by smtp-auth.mnet-online.de (Postfix) with ESMTPSA id 3q020V1ghrzvhTg;
-        Tue,  9 Feb 2016 12:23:38 +0100 (CET)
-From:   Marek Vasut <marex@denx.de>
-To:     Antony Pavlov <antonynpavlov@gmail.com>
-Subject: Re: [RFC v5 05/15] MIPS: dts: qca: introduce AR9331 devicetree
-Date:   Tue, 9 Feb 2016 12:12:12 +0100
-User-Agent: KMail/1.13.7 (Linux/3.14-2-amd64; KDE/4.13.1; x86_64; ; )
-Cc:     linux-mips@linux-mips.org, Wills Wang <wills.wang@live.com>,
-        Daniel Schwierzeck <daniel.schwierzeck@gmail.com>,
-        Alban Bedel <albeu@free.fr>, Gabor Juhos <juhosg@openwrt.org>,
-        devicetree@vger.kernel.org
-References: <1455005641-7079-1-git-send-email-antonynpavlov@gmail.com> <1455005641-7079-6-git-send-email-antonynpavlov@gmail.com>
-In-Reply-To: <1455005641-7079-6-git-send-email-antonynpavlov@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Feb 2016 12:47:43 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:3887 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27011628AbcBILrmZgIwg (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 9 Feb 2016 12:47:42 +0100
+Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
+        by Websense Email Security Gateway with ESMTPS id D57C2C9D6567B;
+        Tue,  9 Feb 2016 11:47:34 +0000 (GMT)
+Received: from [10.100.200.149] (10.100.200.149) by hhmail02.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server id 14.3.266.1; Tue, 9 Feb 2016
+ 11:47:36 +0000
+Date:   Tue, 9 Feb 2016 11:46:33 +0000
+From:   "Maciej W. Rozycki" <macro@imgtec.com>
+To:     Daniel Wagner <daniel.wagner@bmw-carit.de>
+CC:     Ralf Baechle <ralf@linux-mips.org>, <linux-kernel@vger.kernel.org>,
+        <linux-mips@linux-mips.org>
+Subject: Re: [PATCH v3 1/3] mips: Use arch specific auxvec.h instead of
+ generic-asm version
+In-Reply-To: <56B98EAE.9080505@bmw-carit.de>
+Message-ID: <alpine.DEB.2.00.1602091129020.15885@tp.orcam.me.uk>
+References: <alpine.DEB.2.00.1602061624460.15885@tp.orcam.me.uk> <1454946278-13859-1-git-send-email-daniel.wagner@bmw-carit.de> <1454946278-13859-2-git-send-email-daniel.wagner@bmw-carit.de> <alpine.DEB.2.00.1602081705470.15885@tp.orcam.me.uk>
+ <56B98EAE.9080505@bmw-carit.de>
+User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
 MIME-Version: 1.0
-Content-Type: Text/Plain;
-  charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Message-Id: <201602091212.12258.marex@denx.de>
-Return-Path: <marex@denx.de>
+Content-Type: text/plain; charset="US-ASCII"
+X-Originating-IP: [10.100.200.149]
+Return-Path: <Maciej.Rozycki@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51899
+X-archive-position: 51900
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: marex@denx.de
+X-original-sender: macro@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,41 +45,18 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tuesday, February 09, 2016 at 09:13:51 AM, Antony Pavlov wrote:
-> This patch introduces devicetree for Atheros AR9331 SoC (AKA Hornet).
-> The AR9331 chip is a Wi-Fi System-On-Chip (WiSOC),
-> typically used in very cheap Access Points and Routers.
-> 
-> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> Cc: Gabor Juhos <juhosg@openwrt.org>
-> Cc: Alban Bedel <albeu@free.fr>
-> Cc: linux-mips@linux-mips.org
-> Cc: devicetree@vger.kernel.org
-> ---
+On Tue, 9 Feb 2016, Daniel Wagner wrote:
 
-[...]
+> Also I looked at the cpp output and saw that there was no uapi/asm/auxvec.h
+> included instead it pulls arch/mips/include/generated/uapi/asm/auxvec.h
 
-> +			usb: usb@1b000100 {
-> +				compatible = "qca,ar7100-ehci", "generic-ehci";
-> +				reg = <0x1b000100 0x100>;
+ Hmm, did you update your source in an old build tree and reuse it for a 
+new build?  The rule to make arch/mips/include/generated/uapi/asm/auxvec.h 
+was removed with commit ebb5e78cc634 ("MIPS: Initial implementation of a 
+VDSO") as arch/mips/include/uapi/asm/auxvec.h was added, in the 4.4-rc1 
+timeframe.  So the generated version is not supposed to be there anymore.
 
-It's actually chipidea HDRC , you should bind that driver with it instead.
-See for example this:
-http://patchwork.linux-mips.org/patch/4968/
+ Can you try `make mrproper' (stash away your .config) and see if the 
+problem goes away?
 
-> +				interrupt-parent = <&cpuintc>;
-> +				interrupts = <3>;
-> +				resets = <&rst 5>;
-> +
-> +				has-transaction-translator;
-> +
-> +				phy-names = "usb";
-> +				phys = <&usb_phy>;
-> +
-> +				status = "disabled";
-> +			};
-
-[...]
-
-Best regards,
-Marek Vasut
+  Maciej

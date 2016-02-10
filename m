@@ -1,29 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Feb 2016 10:21:28 +0100 (CET)
-Received: from mail.bmw-carit.de ([62.245.222.98]:47672 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Feb 2016 10:21:45 +0100 (CET)
+Received: from mail.bmw-carit.de ([62.245.222.98]:47673 "EHLO
         linuxmail.bmw-carit.de" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27010943AbcBJJV0t6xz6 (ORCPT
+        by eddie.linux-mips.org with ESMTP id S27011045AbcBJJV0wPjW6 (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Wed, 10 Feb 2016 10:21:26 +0100
 Received: from localhost (handman.bmw-carit.intra [192.168.101.8])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by linuxmail.bmw-carit.de (Postfix) with ESMTPS id 4FF145CD2B;
+        by linuxmail.bmw-carit.de (Postfix) with ESMTPS id 67A595CD3C;
         Wed, 10 Feb 2016 10:04:25 +0100 (CET)
 From:   Daniel Wagner <daniel.wagner@bmw-carit.de>
 To:     "Maciej W. Rozycki" <macro@imgtec.com>
 Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-kernel@vger.kernel.org,
         linux-mips@linux-mips.org,
         Daniel Wagner <daniel.wagner@bmw-carit.de>
-Subject: [PATCH v4 0/2]  Differentiate between 32 and 64 bit ELF header
-Date:   Wed, 10 Feb 2016 10:21:19 +0100
-Message-Id: <1455096081-7176-1-git-send-email-daniel.wagner@bmw-carit.de>
+Subject: [PATCH v4 1/2] crash_dump: Add vmcore_elf32_check_arch
+Date:   Wed, 10 Feb 2016 10:21:20 +0100
+Message-Id: <1455096081-7176-2-git-send-email-daniel.wagner@bmw-carit.de>
 X-Mailer: git-send-email 2.5.0
-In-Reply-To: <56BAD881.9000208@bmw-carit.de>
+In-Reply-To: <1455096081-7176-1-git-send-email-daniel.wagner@bmw-carit.de>
 References: <56BAD881.9000208@bmw-carit.de>
+ <1455096081-7176-1-git-send-email-daniel.wagner@bmw-carit.de>
 Return-Path: <daniel.wagner@oss.bmw-carit.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51965
+X-archive-position: 51966
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -40,24 +41,53 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Maciej,
+parse_crash_elf{32|64}_headers will check the headers via the
+elf_check_arch respectively vmcore_elf64_check_arch macro.
 
-I did test compile a few different configurations and with and without
-mrproper upfront. All looks fine now. Let's see what still goes wrong :)
+The MIPS architecture implements those two macros differently.
+In order to make the differentiation more explicit, let's introduce
+an vmcore_elf32_check_arch to allow the archs to overwrite it.
 
-cheers,
-daniel
+Signed-off-by: Daniel Wagner <daniel.wagner@bmw-carit.de>
+Suggested-by: Maciej W. Rozycki <macro@imgtec.com>
+Reviewed-by: Maciej W. Rozycki <macro@imgtec.com>
+---
+ fs/proc/vmcore.c           | 2 +-
+ include/linux/crash_dump.h | 8 ++++++--
+ 2 files changed, 7 insertions(+), 3 deletions(-)
 
-Daniel Wagner (2):
-  crash_dump: Add vmcore_elf32_check_arch
-  mips: Differentiate between 32 and 64 bit ELF header
-
- arch/mips/include/asm/elf.h      | 9 +++++++--
- arch/mips/kernel/binfmt_elfn32.c | 2 +-
- arch/mips/kernel/binfmt_elfo32.c | 2 +-
- fs/proc/vmcore.c                 | 2 +-
- include/linux/crash_dump.h       | 8 ++++++--
- 5 files changed, 16 insertions(+), 7 deletions(-)
-
+diff --git a/fs/proc/vmcore.c b/fs/proc/vmcore.c
+index 4e61388..c8ed209 100644
+--- a/fs/proc/vmcore.c
++++ b/fs/proc/vmcore.c
+@@ -1068,7 +1068,7 @@ static int __init parse_crash_elf32_headers(void)
+ 	/* Do some basic Verification. */
+ 	if (memcmp(ehdr.e_ident, ELFMAG, SELFMAG) != 0 ||
+ 		(ehdr.e_type != ET_CORE) ||
+-		!elf_check_arch(&ehdr) ||
++		!vmcore_elf32_check_arch(&ehdr) ||
+ 		ehdr.e_ident[EI_CLASS] != ELFCLASS32||
+ 		ehdr.e_ident[EI_VERSION] != EV_CURRENT ||
+ 		ehdr.e_version != EV_CURRENT ||
+diff --git a/include/linux/crash_dump.h b/include/linux/crash_dump.h
+index 3849fce..3873697 100644
+--- a/include/linux/crash_dump.h
++++ b/include/linux/crash_dump.h
+@@ -34,9 +34,13 @@ void vmcore_cleanup(void);
+ 
+ /*
+  * Architecture code can redefine this if there are any special checks
+- * needed for 64-bit ELF vmcores. In case of 32-bit only architecture,
+- * this can be set to zero.
++ * needed for 32-bit ELF or 64-bit ELF vmcores.  In case of 32-bit
++ * only architecture, vmcore_elf64_check_arch can be set to zero.
+  */
++#ifndef vmcore_elf32_check_arch
++#define vmcore_elf32_check_arch(x) elf_check_arch(x)
++#endif
++
+ #ifndef vmcore_elf64_check_arch
+ #define vmcore_elf64_check_arch(x) (elf_check_arch(x) || vmcore_elf_check_arch_cross(x))
+ #endif
 -- 
 2.5.0

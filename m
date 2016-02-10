@@ -1,45 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Feb 2016 23:11:00 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:46508 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27012302AbcBJWK6UNxHu (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 10 Feb 2016 23:10:58 +0100
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Websense Email Security Gateway with ESMTPS id 45EB07028F2CA;
-        Wed, 10 Feb 2016 22:10:48 +0000 (GMT)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
- 14.3.266.1; Wed, 10 Feb 2016 22:10:51 +0000
-Received: from localhost (10.100.200.47) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Wed, 10 Feb
- 2016 22:10:51 +0000
-Date:   Wed, 10 Feb 2016 14:10:49 -0800
-From:   Paul Burton <paul.burton@imgtec.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     <linux-mips@linux-mips.org>,
-        "Steven J. Hill" <Steven.Hill@imgtec.com>,
-        Joshua Kinard <kumba@gentoo.org>,
-        <linux-kernel@vger.kernel.org>,
-        =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        Markos Chandras <markos.chandras@imgtec.com>
-Subject: Re: [PATCH] MIPS: tlb-r4k: panic if the MMU doesn't support PAGE_SIZE
-Message-ID: <20160210221049.GA26712@NP-P-BURTON>
-References: <1436803964-29820-1-git-send-email-paul.burton@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Feb 2016 00:10:32 +0100 (CET)
+Received: from mail-pa0-f67.google.com ([209.85.220.67]:33437 "EHLO
+        mail-pa0-f67.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011623AbcBJXKaSdeNr (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 11 Feb 2016 00:10:30 +0100
+Received: by mail-pa0-f67.google.com with SMTP id zv9so41593pab.0
+        for <linux-mips@linux-mips.org>; Wed, 10 Feb 2016 15:10:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=subject:to:references:from:message-id:date:user-agent:mime-version
+         :in-reply-to:content-type:content-transfer-encoding;
+        bh=ogc/H6YGbTIW382AljWJcIrGqCgTXXvA83Ll644jkww=;
+        b=Ki+hQDzhcsksJ6kCwDpjcQ0FAmaqfb2vgWreMKCVMvfvh0QJqG4qRART0tWVRwDSh3
+         CctaTV2cmYmtNbMiUrV3GMJKYIRAtn+SbZrqRTBuq3WUMWBXdvNFJgmHkSCmrA0Y90E/
+         RALlU2ZWTpHOR2MGEoNo1OXPq60jpvuBqPo6lIGR6IAfzH6bB9FK+Rvqzx06yRA2C5AC
+         kngw5pgkT82xBuFAgSrGbTOc6X4q1p4fvJq6NeCusmOS6IpTHS28qsqaxugPDbfHLf/x
+         OdBaBAC8puofGK34Pbw0ZZ9n13xLY+vl5is4WKIcjNEWsrBfvf2IkaGEy0DrnAxKJPrO
+         VlEg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:subject:to:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-type
+         :content-transfer-encoding;
+        bh=ogc/H6YGbTIW382AljWJcIrGqCgTXXvA83Ll644jkww=;
+        b=MYI/hgosyHxyw4zuMWVyWVFAct3DYvaE/ef2hIUH0uzKCtzy+XaW1CTiDfFq8MFRcg
+         h8zI9JfKD0Dos2QgmARCU0tA5nFg+CIM4YWwBdgEqrcRWwLcLogujPUAP3L6BSBBBvw7
+         HaYxjIgaV6qmxCdH8olq8bFlXCuFRi2wnPD3yMzzd7gEy82qihJwPkr0Ace/hKBQLWRp
+         57Yd3IhSlcnX3rKKyw+i0yDM3eI+5cQbNHEhYbycfilbwB3lJARj4qQjNHF7YP2JwId6
+         GBMLXXMhYSaA60G46F0O/I81arT5wUYi0K8bJex5993IYKPc5R+mM7pcHjzM/KSlMy7e
+         0M6A==
+X-Gm-Message-State: AG10YOT/KFxM0v6YB+DDxpwwWn4ql/Qj2rh2kEmkSDS4JBAuhARZmAXFplq2J1dJYBMEkQ==
+X-Received: by 10.66.55.106 with SMTP id r10mr47832747pap.133.1455145824210;
+        Wed, 10 Feb 2016 15:10:24 -0800 (PST)
+Received: from [10.12.156.244] (5520-maca-inet1-outside.broadcom.com. [216.31.211.11])
+        by smtp.googlemail.com with ESMTPSA id 1sm7554679pfm.10.2016.02.10.15.10.23
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 10 Feb 2016 15:10:23 -0800 (PST)
+Subject: Re: [PATCH 1/3] MIPS: add hook for platforms to register CMA memory
+To:     Manuel Lauss <manuel.lauss@gmail.com>,
+        Linux-MIPS <linux-mips@linux-mips.org>
+References: <1444148603-45454-1-git-send-email-manuel.lauss@gmail.com>
+From:   Florian Fainelli <f.fainelli@gmail.com>
+Message-ID: <56BBC31F.10301@gmail.com>
+Date:   Wed, 10 Feb 2016 15:09:19 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:44.0) Gecko/20100101
+ Thunderbird/44.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-In-Reply-To: <1436803964-29820-1-git-send-email-paul.burton@imgtec.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-X-Originating-IP: [10.100.200.47]
-Return-Path: <Paul.Burton@imgtec.com>
+In-Reply-To: <1444148603-45454-1-git-send-email-manuel.lauss@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51980
+X-archive-position: 51981
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@imgtec.com
+X-original-sender: f.fainelli@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,52 +69,73 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Jul 13, 2015 at 05:12:44PM +0100, Paul Burton wrote:
-> After writing the appropriate mask to the cop0 PageMask register, read
-> the register back & check it matches what we want. If it doesn't then
-> the MMU does not support the page size the kernel is configured for and
-> we're better off bailing than continuing to do odd things with TLB
-> exceptions.
+On 06/10/15 09:23, Manuel Lauss wrote:
+> Add a hook which is called after MIPS CMA memory reservation
+> to allow platforms to register device-specific CMA areas.
+> I'm going to use this for the Au1200/Au1300 framebuffer initially.
 > 
-> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+> Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
+
+Acked-by: Florian Fainelli <f.fainelli@gmail.com>
+
+This is also useful for BMIPS_GENERIC platforms where we may need to do
+custom memory reservations.
+
+Thanks!
+
 > ---
-
-Hi Ralf,
-
-This patch is marked as accepted in patchwork[1] but is not present in
-upstream. Did you lose it somehow? Could you please merge it?
-
-Thanks,
-    Paul
-
-[1] http://patchwork.linux-mips.org/patch/10691/
-
->  arch/mips/mm/tlb-r4k.c | 5 +++++
->  1 file changed, 5 insertions(+)
+> Tested on Db1200/Db1300 and Db1500.  I found that this is the only
+> place in the initcall-chain where allocating CMA memory for devices
+> is actually possible on MIPS/Alchemy.
 > 
-> diff --git a/arch/mips/mm/tlb-r4k.c b/arch/mips/mm/tlb-r4k.c
-> index 08318ec..4330315 100644
-> --- a/arch/mips/mm/tlb-r4k.c
-> +++ b/arch/mips/mm/tlb-r4k.c
-> @@ -19,6 +19,7 @@
->  #include <asm/cpu.h>
->  #include <asm/cpu-type.h>
->  #include <asm/bootinfo.h>
-> +#include <asm/hazards.h>
->  #include <asm/mmu_context.h>
->  #include <asm/pgtable.h>
->  #include <asm/tlb.h>
-> @@ -486,6 +487,10 @@ static void r4k_tlb_configure(void)
->  	 *     be set to fixed-size pages.
->  	 */
->  	write_c0_pagemask(PM_DEFAULT_MASK);
-> +	back_to_back_c0_hazard();
-> +	if (read_c0_pagemask() != PM_DEFAULT_MASK)
-> +		panic("MMU doesn't support PAGE_SIZE=0x%lx", PAGE_SIZE);
+>  arch/mips/include/asm/bootinfo.h | 5 +++++
+>  arch/mips/kernel/setup.c         | 7 +++++++
+>  2 files changed, 12 insertions(+)
+> 
+> diff --git a/arch/mips/include/asm/bootinfo.h b/arch/mips/include/asm/bootinfo.h
+> index b603804..1fc1f67 100644
+> --- a/arch/mips/include/asm/bootinfo.h
+> +++ b/arch/mips/include/asm/bootinfo.h
+> @@ -132,6 +132,11 @@ extern unsigned long fw_arg0, fw_arg1, fw_arg2, fw_arg3;
+>   */
+>  extern void plat_mem_setup(void);
+>  
+> +/*
+> + * optional hook to reserve CMA memory for devices
+> + */
+> +extern void (*plat_reserve_mem)(void);
 > +
->  	write_c0_wired(0);
->  	if (current_cpu_type() == CPU_R10000 ||
->  	    current_cpu_type() == CPU_R12000 ||
-> -- 
-> 2.4.5
+>  #ifdef CONFIG_SWIOTLB
+>  /*
+>   * Optional platform hook to call swiotlb_setup().
+> diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
+> index 35b8316..2b56885 100644
+> --- a/arch/mips/kernel/setup.c
+> +++ b/arch/mips/kernel/setup.c
+> @@ -71,6 +71,8 @@ char __initdata arcs_cmdline[COMMAND_LINE_SIZE];
+>  static char __initdata builtin_cmdline[COMMAND_LINE_SIZE] = CONFIG_CMDLINE;
+>  #endif
+>  
+> +void (*plat_reserve_mem)(void) __initdata = NULL;
+> +
+>  /*
+>   * mips_io_port_base is the begin of the address space to which x86 style
+>   * I/O ports are mapped.
+> @@ -678,7 +680,12 @@ static void __init arch_mem_init(char **cmdline_p)
+>  	plat_swiotlb_setup();
+>  	paging_init();
+>  
+> +	/* allocate default CMA area */
+>  	dma_contiguous_reserve(PFN_PHYS(max_low_pfn));
+> +	/* allow platforms to reserve CMA memory for devices */
+> +	if (plat_reserve_mem)
+> +		plat_reserve_mem();
+> +
+>  	/* Tell bootmem about cma reserved memblock section */
+>  	for_each_memblock(reserved, reg)
+>  		if (reg->size != 0)
 > 
+
+
+-- 
+Florian

@@ -1,88 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Feb 2016 01:36:05 +0100 (CET)
-Received: from mail-wm0-f49.google.com ([74.125.82.49]:38503 "EHLO
-        mail-wm0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012521AbcBJAbSU-obx (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 10 Feb 2016 01:31:18 +0100
-Received: by mail-wm0-f49.google.com with SMTP id p63so6007234wmp.1
-        for <linux-mips@linux-mips.org>; Tue, 09 Feb 2016 16:31:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=mime-version:sender:in-reply-to:references:from:date:message-id
-         :subject:to:cc:content-type;
-        bh=DcvWfTR9tEq7H3OqMb7kpoki2n0LVEFxIVqCi3RRMog=;
-        b=lHqOZRtMakjiYzyq0Ap3xu6yZPDcZlphE1Q5IvgAjUIEQEO2TGCUufUhI3hT119ydV
-         6+7yb/QvUVIRTV3YKt/grOFnnn6u67RgUiXs3s0fODh26SQUT06FFcsWuEwskTYeR/Ak
-         5GZbqnfl0lZvKcgasvuJ1xY28b7niaMqDhvp4tSS5IP+iV5fcXm2/2SpKIFEjR+352fH
-         hhnTFBRUr4xH1Kn151vc5DanQAiqUvCdouAMb4GB/OT0Lw6tgudjUug+K16OoXm2glpQ
-         kcZo5EUUjQiyYzYLjW8s49UVsvoetMQh73gvxU7cIKAFWfMLxLVgSn5W/QovKp3mO5CF
-         iFhQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:sender:in-reply-to:references:from:date:message-id
-         :subject:to:cc:content-type;
-        bh=DcvWfTR9tEq7H3OqMb7kpoki2n0LVEFxIVqCi3RRMog=;
-        b=WZb+/tSI895MSKBRr7pkN5SunB6SvrwJDfJqbpoSKuSzaUM9Hl5XlC8srK1GmeX7TS
-         3dCrXKgbrX59nZ+ce29yiv0mtr1Sgav2I6nhgSmJQQdmlqpz20tploSlKpYdI2YBXqCQ
-         bWzsxgSbmtn8hUdJG1KOgjQJZx/RQkBWjji/1BsnD706DA2BhiKTHTmyYq2jNw8AX6/B
-         gDzfi0vD7E78KLcBE2sbcCLzziF+lgcCTh+0G3+bEdUWPdMY2s/8DTSkI0knoj8LUgje
-         HgRE11Y39Us9/n7yBQgHfzKaGXzx3AiBC7wKW+FYbPqozXVvPSUGe6bBZrhBT9wMeGit
-         9c3Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
-         :date:message-id:subject:to:cc:content-type;
-        bh=DcvWfTR9tEq7H3OqMb7kpoki2n0LVEFxIVqCi3RRMog=;
-        b=mLJWF4g8pAcG6SizXSufzeqdkWWhlA1Eom50N+i9yCtUOnSlCKZxX2xatuyEldlMq4
-         05Q9sTdi67/uHi1BoaIFNyeUve2E9pcfcaIK5wRa1V0rgYMQ6G8i6A+ABQ6MfQhVU6PG
-         FUE6Fn838oLaK3vGxp9NjwKYUvHE3USYbsdwBRQYzOLDW99/fubKyfqPAmCtjm30WIY+
-         zHaeTeMnnjFg2qBsffMNzNxUfQ8Pv4u294giDQTPt77d+zJVz0X0t5G/c5cWhee8YM50
-         kW4sQKCW3afCElTBEZ+MJGpxqwmAw+FTd+ViFcmHxP2Sq1M0+R7jJPfIW/vVn9QIuOcW
-         jR4A==
-X-Gm-Message-State: AG10YOSI3mTeQ1EELhMlNkj46QTUuvkGEQ5pn7mSFI1HHBPR2nZjBVLEFrYIuKvTqOPjrN/4lTfMvRaSlCVDNbT7
-X-Received: by 10.28.103.197 with SMTP id b188mr7550568wmc.4.1455064270980;
- Tue, 09 Feb 2016 16:31:10 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Feb 2016 01:54:40 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:53843 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27011376AbcBJAyjLKRSx (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 10 Feb 2016 01:54:39 +0100
+Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
+        by Websense Email Security Gateway with ESMTPS id D0EA68B7685F3;
+        Wed, 10 Feb 2016 00:54:28 +0000 (GMT)
+Received: from [10.100.200.149] (10.100.200.149) by hhmail02.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server id 14.3.266.1; Wed, 10 Feb 2016
+ 00:54:32 +0000
+Date:   Wed, 10 Feb 2016 00:54:31 +0000
+From:   "Maciej W. Rozycki" <macro@imgtec.com>
+To:     Florian Fainelli <f.fainelli@gmail.com>
+CC:     <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>,
+        <blogic@openwrt.org>, <cernekee@gmail.com>,
+        <jon.fraser@broadcom.com>, <pgynther@google.com>,
+        <paul.burton@imgtec.com>, <ddaney.cavm@gmail.com>
+Subject: Re: [PATCH 1/6] MIPS: BMIPS: Disable pref 30 for buggy CPUs
+In-Reply-To: <56BA7E94.6080302@gmail.com>
+Message-ID: <alpine.DEB.2.00.1602100013570.15885@tp.orcam.me.uk>
+References: <1455051354-6225-1-git-send-email-f.fainelli@gmail.com> <1455051354-6225-2-git-send-email-f.fainelli@gmail.com> <alpine.DEB.2.00.1602092101240.15885@tp.orcam.me.uk> <56BA6AD3.9050308@gmail.com> <alpine.DEB.2.00.1602092245180.15885@tp.orcam.me.uk>
+ <56BA7E94.6080302@gmail.com>
+User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
 MIME-Version: 1.0
-Received: by 10.28.27.18 with HTTP; Tue, 9 Feb 2016 16:30:51 -0800 (PST)
-In-Reply-To: <20160208153635.67df5ac2576138088a859087@linux-foundation.org>
-References: <1454893743-6285-1-git-send-email-ddecotig@gmail.com>
- <1454893743-6285-2-git-send-email-ddecotig@gmail.com> <20160208153635.67df5ac2576138088a859087@linux-foundation.org>
-From:   David Decotigny <ddecotig@gmail.com>
-Date:   Tue, 9 Feb 2016 16:30:51 -0800
-X-Google-Sender-Auth: HdDQ4WsSwLTRJvScxN1-zZ8zBx8
-Message-ID: <CAG88wWaA-pWcS8CnZykQxoWR4_jZxRhhEeOVQqNK_cOFo=VxFA@mail.gmail.com>
-Subject: Re: [PATCH net-next v7 01/19] lib/bitmap.c: conversion routines
- to/from u32 array
-To:     Andrew Morton <akpm@linux-foundation.org>
-Cc:     "David S. Miller" <davem@davemloft.net>,
-        Ben Hutchings <ben@decadent.org.uk>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-api@vger.kernel.org" <linux-api@vger.kernel.org>,
-        linux-mips@linux-mips.org, fcoe-devel@open-fcoe.org,
-        Tejun Heo <tj@kernel.org>, Eric Dumazet <edumazet@google.com>,
-        Eugenia Emantayev <eugenia@mellanox.co.il>,
-        Or Gerlitz <ogerlitz@mellanox.com>,
-        Ido Shamay <idos@mellanox.com>, Joe Perches <joe@perches.com>,
-        Saeed Mahameed <saeedm@mellanox.com>,
-        Govindarajulu Varadarajan <_govind@gmx.com>,
-        Venkata Duvvuru <VenkatKumar.Duvvuru@emulex.com>,
-        Jeff Kirsher <jeffrey.t.kirsher@intel.com>,
-        Pravin B Shelar <pshelar@nicira.com>,
-        Ed Swierk <eswierk@skyportsystems.com>,
-        Robert Love <robert.w.love@intel.com>,
-        "James E.J. Bottomley" <JBottomley@parallels.com>,
-        Yuval Mintz <Yuval.Mintz@qlogic.com>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <decot@google.com>
+Content-Type: text/plain; charset="US-ASCII"
+X-Originating-IP: [10.100.200.149]
+Return-Path: <Maciej.Rozycki@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51958
+X-archive-position: 51959
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddecotig@gmail.com
+X-original-sender: macro@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -95,58 +46,86 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-thanks. done in v8 I am sending right now.
+On Wed, 10 Feb 2016, Florian Fainelli wrote:
 
-On Mon, Feb 8, 2016 at 3:36 PM, Andrew Morton <akpm@linux-foundation.org> wrote:
-> On Sun,  7 Feb 2016 17:08:45 -0800 David Decotigny <ddecotig@gmail.com> wrote:
->
->> From: David Decotigny <decot@googlers.com>
->>
->> Aimed at transferring bitmaps to/from user-space in a 32/64-bit agnostic
->> way.
->>
->> Tested:
->>   unit tests (next patch) on qemu i386, x86_64, ppc, ppc64 BE and LE,
->>   ARM.
->>
->> @@ -1060,6 +1062,90 @@ int bitmap_allocate_region(unsigned long *bitmap, unsigned int pos, int order)
->>  EXPORT_SYMBOL(bitmap_allocate_region);
->>
->>  /**
->> + * bitmap_from_u32array - copy the contents of a u32 array of bits to bitmap
->> + *   @bitmap: array of unsigned longs, the destination bitmap, non NULL
->> + *   @nbits: number of bits in @bitmap
->> + *   @buf: array of u32 (in host byte order), the source bitmap, non NULL
->> + *   @nwords: number of u32 words in @buf
->> + *
->> + * copy min(nbits, 32*nwords) bits from @buf to @bitmap, remaining
->> + * bits between nword and nbits in @bitmap (if any) are cleared. In
->> + * last word of @bitmap, the bits beyond nbits (if any) are kept
->> + * unchanged.
->> + */
->
-> This will leave the caller not knowing how many valid bits are actually
-> present in the resulting bitmap.  To determine that, the caller will
-> need to perform (duplicated) math on `nbits' and `nwords'.
->
->> +void bitmap_from_u32array(unsigned long *bitmap, unsigned int nbits,
->> +                       const u32 *buf, unsigned int nwords)
->
-> So how about we make this return the number of valid bits in *bitmap?
->
->> +/**
->> + * bitmap_to_u32array - copy the contents of bitmap to a u32 array of bits
->> + *   @buf: array of u32 (in host byte order), the dest bitmap, non NULL
->> + *   @nwords: number of u32 words in @buf
->> + *   @bitmap: array of unsigned longs, the source bitmap, non NULL
->> + *   @nbits: number of bits in @bitmap
->> + *
->> + * copy min(nbits, 32*nwords) bits from @bitmap to @buf. Remaining
->> + * bits after nbits in @buf (if any) are cleared.
->> + */
->> +void bitmap_to_u32array(u32 *buf, unsigned int nwords,
->> +                     const unsigned long *bitmap, unsigned int nbits)
->
-> Ditto.
->
->
+> >  So first, are you aware of support for these Broadcom instruction 
+> > encoding extensions being considered for inclusion in binutils?  I'll be 
+> > happy to accept a patch and AFAICT it's a simple extension of the `sel' 
+> > field within the existing MFC0/MTC0 instruction definitions.
+> 
+> That's a bit of a stretch for something that a) nobody is likely to
+> benefit from except these two patches, b) introducing a 3 way dependency
+> with: getting these current patches accepted, wait for the new binutils
+> to be widely spread we can count on the assembler to know about these
+> additional selectors, update the kernel again...
+
+ No need to wait, we have all the build tools at hand, that is we could 
+conditionalise it on $(as-instr), formulated appropriately.  See 
+Documentation/kbuild/makefiles.txt and examples in our tree.
+
+ Overall I think the toolchain should be complete, even if for an exotic 
+case here or there.  If a processor has an instruction, then the assembler 
+should support it.  As I say this addition looks very simple to me and I 
+could (and, if nobody beats me to, probably will, now that I'm aware) make 
+such a change to binutils myself, but I'd prefer to get a change from 
+someone actually having a documentation reference for the instruction set 
+extension.
+
+ An immediate benefit will be that you'll get a proper disassembly in 
+`objdump' so the unaware poor soul debugging an odd issue won't have to 
+scratch their head wondering what the heck 0x4008b008 in disassembly is, 
+and if this is toolchain bug or some corruption (though it would likely 
+still require telling the disassembler to use BMIPS5000 as the processor 
+to disassemble for).
+
+> > #define __read_32bit_c0_brcm_register(reg, sel)				\
+> > ({									\
+> > 	register unsigned int __res asm("t0");				\
+
+ Actually on second thoughts explicit asm("$8") will be better here.  For 
+GCC both variants are equivalent, unlike GAS the compiler does not have a 
+concept of ABI register names, so no `a4' in place of `t0', etc., but 0x08 
+is embedded in the instruction word used, so better have it consistent.
+
+> > (why is ROTR set along NO_PREF30 BTW? -- it does not seem related).
+> 
+> They are not, Petri is quoting the downstream kernel which does thing
+> completely differently because it has separate build options per SoC.
+> The upstream kernel does not, it can run the sam binary on multiple SoCs
+> and perform run-time detection, hence the two patches which changes
+> things at two different spots because, unrelated.
+
+ Hmm, maybe call the quirk `bmips5000_pref30_rotr_quirk' or suchlike then?
+
+> >  I hope you agree this all is reasonable from a maintainer's point of 
+> > view.  I'll leave it up to you to make a patch out of it.  You'll then be 
+> > able to use this stuff in 2/6 too.
+> 
+> It seems reasonable to adopt your suggestion, but I will certainly drop
+> the binutils suggestion, that's just way out of the scope of this patch,
+> and creates a dependency issue that I do not want to deal with, as
+> history showed recently, testing correctly for a proper ld version
+> turned out to be interesting, so pardon my skepticism here.
+
+ Fine with me, I just wanted to have a full picture and also hoped a 
+little a patch might have already been in the works.
+
+ The LD version case?  Well, the lack of experience with the toolchain has 
+certainly contributed here (not a blame, not especially for kernel hackers 
+who need not necessarily go down to such details, just an observation -- 
+though I think a question how to correctly interpret binutils versioning 
+posted to <binutils@sourceware.org> would have certainly been addressed 
+with a correct answer).  We've had an LD version check sorted out since 
+forever in glibc's build machinery for example, by using prefix matching, 
+essentially. :)
+
+> >  Please try to give meaningful names to the other magic numbers you 
+> > introduce too.
+> 
+> These are actually *magic* register values, I swear to you, I had to dig
+> in the RTL to understand what this does, there is zero documentation
+> besides the code.
+
+ OK, fair enough.  Thanks for your patience in explaining the details!
+
+  Maciej

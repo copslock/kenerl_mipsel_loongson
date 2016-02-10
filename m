@@ -1,38 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Feb 2016 01:32:36 +0100 (CET)
-Received: from mail-pf0-f193.google.com ([209.85.192.193]:33058 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Feb 2016 01:32:52 +0100 (CET)
+Received: from mail-pf0-f193.google.com ([209.85.192.193]:35153 "EHLO
         mail-pf0-f193.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012487AbcBJAaIOYQ4x (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 10 Feb 2016 01:30:08 +0100
-Received: by mail-pf0-f193.google.com with SMTP id c10so175493pfc.0
-        for <linux-mips@linux-mips.org>; Tue, 09 Feb 2016 16:30:08 -0800 (PST)
+        by eddie.linux-mips.org with ESMTP id S27012491AbcBJAaJu6nFx (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 10 Feb 2016 01:30:09 +0100
+Received: by mail-pf0-f193.google.com with SMTP id 66so172944pfe.2
+        for <linux-mips@linux-mips.org>; Tue, 09 Feb 2016 16:30:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=0j1t+SKIZ/poZtjnNNa47rUo/uK+LDyZVb8UMVTVCsI=;
-        b=P0uEFWQtGVjva0lM4hypQoxvLJ+lK4zfG1ZjOo2z1GNuNc4EaviPZVHS/y/kLeAWwu
-         pwsW1HrVQBXs/TWb7wl351E7HNNkko7Yfq93EtFbg3540M/pTj8xEiGKeXUYtqsa+ufX
-         9rHtPX6bDLKiWB8EtUCS4OSk3JN+xYlOe601nkWs+wpaeIEiDVh+XJowv1RnmJF8vXuj
-         mp3RDWAgeFGG9kfaDCRca/xXSWhItQrnZ78mH7uu6wDquAkYF4jeplREzPs7IfgxDqyb
-         2D8m72U6Oo58yPIrKUCb/kOkcF+fIobvGyHFzvFFxaQDp3hYDeqdgxug94D4ByYG8q1b
-         P+Kg==
+        bh=KTYWeEEzjj97eb9ojBPzb/1B0v1RQJrewoXHhvSno6I=;
+        b=mhXwJxYIST+0JBTG54ugamMEcb0PNvjD3a3E/RLkeLtEKxktezj5r7+NW6tU0PQ44B
+         /Pu/WedT7vBkbayc7Tme6tnOt+GKHgUkjR9oFqh+X7uB1vIoQxBnezypHMYPVwyiJ9I/
+         wN48RTXcBKZbW8taAKIojm3h81ON5AIuuQ3WnvfgZPsufclcpCOV+fnRLOyt4kkmrKv5
+         J68/j6+hdq5xlk0dNAJuaxOhmgN0JbkVPBKhXWuDpB9C4TJPI4iV9P5ZtUtdJx41Mzvy
+         hoN2py064FxQ+0l2Cs93V0gcV3NSZ2eoOXCi3UZhPF4r8vQIQr1jo+uR4lP1ErU2bNN9
+         FYgQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=0j1t+SKIZ/poZtjnNNa47rUo/uK+LDyZVb8UMVTVCsI=;
-        b=hpaIwzPVwdA9oBrCIfG70YFWtHdDxMMTBVdx0qQDRRHkTvMgHrtKaLw2PAKev8mP6n
-         x2NRcI+2k+yWRgCpbX8xby78GOJDR1Sws+j3E/iI6YIr2z7ZG92cj3SrBopIMp62v0wT
-         zQ3kIegLmgY7i+ei4rIayothoniYxUmNJFAA/mcaGbst6XI8SVjwY3s5zrrAbyIB8Egr
-         tYCvqSC8yk9CxzCcU7WudkXSdTZGAnD/uyN3sLMECkUB2PsW1h+y/nvg9HW7gKT+qT81
-         YYZm0tQCZ3K4GmjyZmj6ECPfUi/0uNDglq57+sAbqUO5m+6qPqwg7Trf4/DzKNO6B4Zc
-         YLVA==
-X-Gm-Message-State: AG10YOQ8oEdEj1/AePEDjiGFstmtY3eDPg95MwmE6d+uku03E1x3IXGPJCAsNN2Xnrl6Pg==
-X-Received: by 10.98.10.86 with SMTP id s83mr37351104pfi.85.1455064202613;
-        Tue, 09 Feb 2016 16:30:02 -0800 (PST)
+        bh=KTYWeEEzjj97eb9ojBPzb/1B0v1RQJrewoXHhvSno6I=;
+        b=RcVyDUT9CZFQvN8rWPtFyK1pIcixuN1Z8wTviUejCj1WsEfhvs/somv0QEdp9GK0EN
+         FTjJ80f3xCxne/bc/a3IyuytRFiy/vX8Q93c15ytcfbhf+Buwalt47WztBKJ/WH6h4I3
+         SgyomDszIGQaa3Z/atDvgJ9ipfDolzACF9/1DyXvfnf6PNlV5Fy16xONMtCP9F6/dLSL
+         vJuvcWkZt9VsBFi4rQfDlAdu1MrN6E43Vk7ERsdgayJAouSHQZmjm1JpmV+INfdoui3C
+         QhN6tPYF8p2ez0S9OXWr6TtANRi21S+1jQ57WD9R/62y5d9wNbjq4gOnaTBMhV1FYhwD
+         yMHQ==
+X-Gm-Message-State: AG10YOR1ozYNyfFzGRiicye3yjmj9uJYj5UWiRxzpSs2bsYP41xx2/TpWPgBv46jow3aow==
+X-Received: by 10.98.17.208 with SMTP id 77mr53793321pfr.37.1455064204250;
+        Tue, 09 Feb 2016 16:30:04 -0800 (PST)
 Received: from decotigny.mtv.corp.google.com ([172.18.64.159])
-        by smtp.gmail.com with ESMTPSA id s90sm429295pfa.49.2016.02.09.16.30.00
+        by smtp.gmail.com with ESMTPSA id s90sm429295pfa.49.2016.02.09.16.30.02
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Tue, 09 Feb 2016 16:30:01 -0800 (PST)
+        Tue, 09 Feb 2016 16:30:03 -0800 (PST)
 From:   David Decotigny <ddecotig@gmail.com>
 To:     "David S. Miller" <davem@davemloft.net>,
         Ben Hutchings <ben@decadent.org.uk>,
@@ -56,9 +56,9 @@ Cc:     Eric Dumazet <edumazet@google.com>,
         Yuval Mintz <Yuval.Mintz@qlogic.com>,
         Rasmus Villemoes <linux@rasmusvillemoes.dk>,
         David Decotigny <decot@googlers.com>
-Subject: [PATCH net-next v8 09/19] net: ipvlan: use __ethtool_get_ksettings
-Date:   Tue,  9 Feb 2016 16:29:18 -0800
-Message-Id: <1455064168-5102-10-git-send-email-ddecotig@gmail.com>
+Subject: [PATCH net-next v8 10/19] net: macvlan: use __ethtool_get_ksettings
+Date:   Tue,  9 Feb 2016 16:29:19 -0800
+Message-Id: <1455064168-5102-11-git-send-email-ddecotig@gmail.com>
 X-Mailer: git-send-email 2.7.0.rc3.207.g0ac5344
 In-Reply-To: <1455064168-5102-1-git-send-email-ddecotig@gmail.com>
 References: <1455064168-5102-1-git-send-email-ddecotig@gmail.com>
@@ -66,7 +66,7 @@ Return-Path: <ddecotig@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51947
+X-archive-position: 51948
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -87,37 +87,37 @@ From: David Decotigny <decot@googlers.com>
 
 Signed-off-by: David Decotigny <decot@googlers.com>
 ---
- drivers/net/ipvlan/ipvlan_main.c | 8 ++++----
+ drivers/net/macvlan.c | 8 ++++----
  1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ipvlan/ipvlan_main.c b/drivers/net/ipvlan/ipvlan_main.c
-index 7a3b414..9703610 100644
---- a/drivers/net/ipvlan/ipvlan_main.c
-+++ b/drivers/net/ipvlan/ipvlan_main.c
-@@ -346,12 +346,12 @@ static const struct header_ops ipvlan_header_ops = {
- 	.cache_update	= eth_header_cache_update,
- };
- 
--static int ipvlan_ethtool_get_settings(struct net_device *dev,
--				       struct ethtool_cmd *cmd)
-+static int ipvlan_ethtool_get_ksettings(struct net_device *dev,
-+					struct ethtool_ksettings *cmd)
- {
- 	const struct ipvl_dev *ipvlan = netdev_priv(dev);
- 
--	return __ethtool_get_settings(ipvlan->phy_dev, cmd);
-+	return __ethtool_get_ksettings(ipvlan->phy_dev, cmd);
+diff --git a/drivers/net/macvlan.c b/drivers/net/macvlan.c
+index 94e6888..a54ad4c 100644
+--- a/drivers/net/macvlan.c
++++ b/drivers/net/macvlan.c
+@@ -940,12 +940,12 @@ static void macvlan_ethtool_get_drvinfo(struct net_device *dev,
+ 	strlcpy(drvinfo->version, "0.1", sizeof(drvinfo->version));
  }
  
- static void ipvlan_ethtool_get_drvinfo(struct net_device *dev,
-@@ -377,7 +377,7 @@ static void ipvlan_ethtool_set_msglevel(struct net_device *dev, u32 value)
+-static int macvlan_ethtool_get_settings(struct net_device *dev,
+-					struct ethtool_cmd *cmd)
++static int macvlan_ethtool_get_ksettings(struct net_device *dev,
++					 struct ethtool_ksettings *cmd)
+ {
+ 	const struct macvlan_dev *vlan = netdev_priv(dev);
  
- static const struct ethtool_ops ipvlan_ethtool_ops = {
- 	.get_link	= ethtool_op_get_link,
--	.get_settings	= ipvlan_ethtool_get_settings,
-+	.get_ksettings	= ipvlan_ethtool_get_ksettings,
- 	.get_drvinfo	= ipvlan_ethtool_get_drvinfo,
- 	.get_msglevel	= ipvlan_ethtool_get_msglevel,
- 	.set_msglevel	= ipvlan_ethtool_set_msglevel,
+-	return __ethtool_get_settings(vlan->lowerdev, cmd);
++	return __ethtool_get_ksettings(vlan->lowerdev, cmd);
+ }
+ 
+ static netdev_features_t macvlan_fix_features(struct net_device *dev,
+@@ -1020,7 +1020,7 @@ static int macvlan_dev_get_iflink(const struct net_device *dev)
+ 
+ static const struct ethtool_ops macvlan_ethtool_ops = {
+ 	.get_link		= ethtool_op_get_link,
+-	.get_settings		= macvlan_ethtool_get_settings,
++	.get_ksettings		= macvlan_ethtool_get_ksettings,
+ 	.get_drvinfo		= macvlan_ethtool_get_drvinfo,
+ };
+ 
 -- 
 2.7.0.rc3.207.g0ac5344

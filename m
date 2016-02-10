@@ -1,66 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Feb 2016 23:41:31 +0100 (CET)
-Received: from mail-pa0-f43.google.com ([209.85.220.43]:33933 "EHLO
-        mail-pa0-f43.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012379AbcBIWl3lFXTD (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 9 Feb 2016 23:41:29 +0100
-Received: by mail-pa0-f43.google.com with SMTP id kp3so969312pab.1;
-        Tue, 09 Feb 2016 14:41:29 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Feb 2016 00:35:17 +0100 (CET)
+Received: from mail-lf0-f44.google.com ([209.85.215.44]:34240 "EHLO
+        mail-lf0-f44.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011376AbcBIXfPMFesO convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 10 Feb 2016 00:35:15 +0100
+Received: by mail-lf0-f44.google.com with SMTP id j78so1691321lfb.1
+        for <linux-mips@linux-mips.org>; Tue, 09 Feb 2016 15:35:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=subject:to:references:cc:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-type:content-transfer-encoding;
-        bh=KcMTmf4y73NdCeVoXns7ImMjG0vDp3PIqO0fjXbyWC0=;
-        b=EvBFJqT1WdzupcooHxt+cEy8rVqAUxAXmhsSNeXUmzJAvNVRGO2ZgtGU9rnPyzRkil
-         E7BwbYLZxpqqv5MshJBkIbt0GFb/iFJQPJSEGrlLTC7/DzYFJxSa2g9AC95sdonZpkF7
-         0TA3aIXxzKznT2eUedA5jDQGc9Sm5A71xVWH8sWVwHAphDm1i5c1KArfNgX5460hUzL6
-         aS71hAAzsqhMlbJF4hl98HBQYtZOfB3SNGkr1Kmd1L/D0X4IJlsxjy/in6f/FmdQKCTd
-         wTaGxdnzLt5B1Pzd5u5iwK05jiZJOUP87q6sUlcxtGIKITTLDNmBRnMOk4h/50b81VZV
-         6FpA==
+        h=date:from:to:cc:subject:message-id:in-reply-to:references
+         :mime-version:content-type:content-transfer-encoding;
+        bh=HRrWRxYbpWAwMmQNKM74BChlYFpXiRmiOREkYf8fN38=;
+        b=VVrkqPV7Gw8NIy/iU822OZQCjQGS2ewwaG2OQWhfDwWCzKOM36EZnWVNftbbp+27Gc
+         XUfipfnp8Tb95bIS2lKqH1/Dm923UtMDp74Py1WXGRsaU2/XQwLY7ZayMi4PxNV7M2JM
+         yJ/fiCjM+y1kCc1dc0NcDjCvUtHFk4vRs4h7tmQZFeZDa+S06NihoO7vxbBom0l5WOco
+         GmwlOmcjnMwbXVQ4bCm6ku7Xnd7kUzyYrNssLH14f7leEqnSS0dbhBaF097ZQdrPWsXt
+         gwsuUMZfQFAihII44lv8rQ2Ejl6qXihIDfJ6q7QfX3GiZzgfu5VXhGZYSlNVMw3nm+Qi
+         OniQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
-        h=x-gm-message-state:subject:to:references:cc:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-type
-         :content-transfer-encoding;
-        bh=KcMTmf4y73NdCeVoXns7ImMjG0vDp3PIqO0fjXbyWC0=;
-        b=QyvVvwVlHajET8del5KAmrLaUkTw3kp6JZROJLlqhWetjzdoOSSW2QcJLsGDYAwf4A
-         1VroBteYCfrutZncyEVXmerODj3jfTAH6q4PfQZ6gWFfUk8Rp7xD4moKKK1SLxu3Rxev
-         DmywiWBGO3aPTHJPca7gp4LVHaO3aNGkxe9ACVSQnB1xe9cq/45rrJW/rw430YFCzRB8
-         i8TWkPJ7yXgUYojkVHOqP3Fjrv0JMKuk1NP5kDMgHBTBGXkvvC1qjWKs4BPiQ2YVf9QR
-         8rMvVgdIZWQ81N1AhDObkX/uoMKY+zQ5pJKmD2m4R71sJ4IrjA5/CcVjV6K7op+ZO//2
-         w9ww==
-X-Gm-Message-State: AG10YORDVlvBbk7AEfZ7/AOGiRqgOrcNyJq7RPa4Wrf5lyiwQFbutf3ltBvrLYuhYxUBBw==
-X-Received: by 10.66.102.106 with SMTP id fn10mr54759030pab.60.1455057683668;
-        Tue, 09 Feb 2016 14:41:23 -0800 (PST)
-Received: from [10.12.156.244] (5520-maca-inet1-outside.broadcom.com. [216.31.211.11])
-        by smtp.googlemail.com with ESMTPSA id 6sm152841pfo.58.2016.02.09.14.41.22
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 09 Feb 2016 14:41:23 -0800 (PST)
-Subject: Re: [PATCH 1/6] MIPS: BMIPS: Disable pref 30 for buggy CPUs
-To:     "Maciej W. Rozycki" <macro@imgtec.com>
-References: <1455051354-6225-1-git-send-email-f.fainelli@gmail.com>
- <1455051354-6225-2-git-send-email-f.fainelli@gmail.com>
- <alpine.DEB.2.00.1602092101240.15885@tp.orcam.me.uk>
-Cc:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
-        blogic@openwrt.org, cernekee@gmail.com, jon.fraser@broadcom.com,
-        pgynther@google.com, paul.burton@imgtec.com, ddaney.cavm@gmail.com
-From:   Florian Fainelli <f.fainelli@gmail.com>
-Message-ID: <56BA6AD3.9050308@gmail.com>
-Date:   Tue, 9 Feb 2016 14:40:19 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:44.0) Gecko/20100101
- Thunderbird/44.0
-MIME-Version: 1.0
-In-Reply-To: <alpine.DEB.2.00.1602092101240.15885@tp.orcam.me.uk>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Return-Path: <f.fainelli@gmail.com>
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:in-reply-to
+         :references:mime-version:content-type:content-transfer-encoding;
+        bh=HRrWRxYbpWAwMmQNKM74BChlYFpXiRmiOREkYf8fN38=;
+        b=QjCbwuYSAkZUTH7W/vBhlUgVXYeiIG0qplA1lwo/nXX5BWqQJpGo4sKw26+jAQndRB
+         qziPR/zqKtfNhVdJvF88E4ccKdU22rmt2eBXm7izjpM8YJwevbyRu9UzQL6YhF3Rj7jg
+         Q0BzDt0w22EPKnPXNZj2QFCXpn5bP7IHZNcZ1t33vYrM8JjA4MrDbYa9bOkEfqKcsrqw
+         9RyaY5HcCRQmfoF/Ia03La/q1sb/PGsOupsd3AVvuhiipvehKAW0cKwglTvL3vS2nKHy
+         WNrlI1xdcE9L1Qja/4TcZfxOy41/R/8HfUWgab2t+85a8HimC8BYxBBKP/4scoCFtJWN
+         q0yg==
+X-Gm-Message-State: AG10YORWMbeU/iF1du3Tchm+mDv6IRr0hipRWBf3ZdUSu8WQfq9SJiWiiyYGhudZF4C0mQ==
+X-Received: by 10.25.23.220 with SMTP id 89mr15268197lfx.49.1455060909793;
+        Tue, 09 Feb 2016 15:35:09 -0800 (PST)
+Received: from flare (t35.niisi.ras.ru. [193.232.173.35])
+        by smtp.gmail.com with ESMTPSA id p124sm46735lfe.31.2016.02.09.15.35.08
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Tue, 09 Feb 2016 15:35:09 -0800 (PST)
+Date:   Wed, 10 Feb 2016 03:00:44 +0300
+From:   Antony Pavlov <antonynpavlov@gmail.com>
+To:     Alban <albeu@free.fr>
+Cc:     linux-mips@linux-mips.org, Marek Vasut <marex@denx.de>,
+        Wills Wang <wills.wang@live.com>,
+        Daniel Schwierzeck <daniel.schwierzeck@gmail.com>,
+        Alan Stern <stern@rowland.harvard.edu>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [RFC v5 07/15] usb: ehci: add vbus-gpio parameter
+Message-Id: <20160210030044.7c4428af97245f2bbf995f01@gmail.com>
+In-Reply-To: <20160209231520.727b6ccd@tock>
+References: <1455005641-7079-1-git-send-email-antonynpavlov@gmail.com>
+        <1455005641-7079-8-git-send-email-antonynpavlov@gmail.com>
+        <20160209231520.727b6ccd@tock>
+X-Mailer: Sylpheed 3.5.0beta3 (GTK+ 2.24.25; i586-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
+Return-Path: <antonynpavlov@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51931
+X-archive-position: 51932
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: f.fainelli@gmail.com
+X-original-sender: antonynpavlov@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -73,61 +75,23 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 09/02/16 13:19, Maciej W. Rozycki wrote:
-> On Tue, 9 Feb 2016, Florian Fainelli wrote:
-> 
->> +static void bmips5000_pref30_quirk(void)
->> +{
->> +	__asm__ __volatile__(
->> +	"	.word	0x4008b008\n"	/* mfc0 $8, $22, 8 */
->> +	"	lui	$9, 0x0100\n"
->> +	"	or	$8, $9\n"
->> +	/* disable "pref 30" on buggy CPUs */
->> +	"	lui	$9, 0x0800\n"
->> +	"	or	$8, $9\n"
->> +	"	.word	0x4088b008\n"	/* mtc0 $8, $22, 8 */
->> +	: : : "$8", "$9");
->> +}
-> 
->  Ouch, why not using our standard accessors and avoid magic numbers, e.g.:
+On Tue, 9 Feb 2016 23:15:20 +0100
+Alban <albeu@free.fr> wrote:
 
-Are you positive the assembler will not barf on these custom cp0 reg 22
-selectors?
-
+> On Tue,  9 Feb 2016 11:13:53 +0300
+> Antony Pavlov <antonynpavlov@gmail.com> wrote:
 > 
-> #define read_c0_brcm_whateverthisiscalled() \
-> 	__read_32bit_c0_register($22, 8)
-> #define write_c0_brcm_whateverthisiscalled(val) \
-> 	__write_32bit_c0_register($22, 8, val)
+> > This patch retrieves and configures the vbus control gpio via
+> > the device tree.
 > 
-> #define BMIPS5000_WHATEVERTHISISCALLED_BIT_X 0x0100
-> #define BMIPS5000_WHATEVERTHISISCALLED_BIT_Y 0x0800
-> 
-> static void bmips5000_pref30_quirk(void)
-> {
-> 	unsigned int whateverthisiscalled;
-> 
-> 	whateverthisiscalled = read_c0_brcm_whateverthisiscalled();
-> 	whateverthisiscalled |= BMIPS_WHATEVERTHISISCALLED_BIT_X;
-> 	/* disable "pref 30" on buggy CPUs */
-> 	whateverthisiscalled |= BMIPS_WHATEVERTHISISCALLED_BIT_Y;
-> 	write_c0_brcm_whateverthisiscalled(whateverthisiscalled);
-> }
-> 
-> ?  I'm leaving it up to you to select the right names here -- just about 
-> anything will be better than the halfway-binary piece you have proposed.
-
-These are not standardized registers in any form, which is why these are
-in a halfway-binary form, they are not meant to be re-used outside of
-two known places: disabling pref30 and enabling "rotr".
-
-> 
->  FYI, we already have BMIPS5000 accessors defined up to ($22, 7) in 
-> <asm/mipsregs.h> so it will be the right place for the new ones as well.
-> 
->   Maciej
+> Wouldn't using a regulator be better than hard coding the GPIO case?
 > 
 
+Marek Vasut has noted that it is possible to use compatible = "chipidea,usb2",
+which makes it possible to connect fixed vbus regulator via "vbus-supply" property.
 
--- 
-Florian
+I'll try to use fixed-regulator in RFC v6.
+
+-- 
+Best regards,
+  Antony Pavlov

@@ -1,38 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Feb 2016 01:34:48 +0100 (CET)
-Received: from mail-pf0-f194.google.com ([209.85.192.194]:33118 "EHLO
-        mail-pf0-f194.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012512AbcBJAaWDp1px (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 10 Feb 2016 01:30:22 +0100
-Received: by mail-pf0-f194.google.com with SMTP id c10so175750pfc.0
-        for <linux-mips@linux-mips.org>; Tue, 09 Feb 2016 16:30:21 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Feb 2016 01:35:10 +0100 (CET)
+Received: from mail-pa0-f68.google.com ([209.85.220.68]:35298 "EHLO
+        mail-pa0-f68.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012505AbcBJAaXpy1Ix (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 10 Feb 2016 01:30:23 +0100
+Received: by mail-pa0-f68.google.com with SMTP id fl4so159042pad.2
+        for <linux-mips@linux-mips.org>; Tue, 09 Feb 2016 16:30:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=AmThrRa7bLmY+7KYhHvw7+pO4bpYLUY8nDHj2mgYmM0=;
-        b=wGkJ7LMZldhxuoTU1DCWQSLg6peA1MfLI0hco/GCGxU2VUEOmMDV1XeXydB8XFVT8b
-         kmXserl0/AVaBDf7fWVjzfweYKqe/SrJsc9mmCY9LS8SpypmERQ2BMTDJiHSroZdFycB
-         JeYgZzVb3kgAXekk2cUEwZYlmrTOnC4xpe0wun37aWrZSX5FabWn9XuEHEyRn0Hyd+fL
-         uDbHKPKTYyEVY18Xw0K4mEhnOu7prCi2j3SWeOYsPErU4z9G608VR4OH3D0E/jLbrpDF
-         3yzJBqV6sDf4t7eC9lx7qImcxGrSU7Fq5axRToWYM6KEtVBUmR4mci28WvGr4xxbmSWB
-         DIWg==
+        bh=BC5MVW4fkXbCHPz7AmLsG33g3+VYtluRix3tR64p+Pw=;
+        b=vl7M9PfZ5TSe/m9xgsp6EYprNAO4NWfEQBgrfXRNAMhfKk7obl3bxdPyharnZ/V+DE
+         17/oYn8iA5du40jhQE0JNPHXps7cmVLHt16WzildW+n95/ws3/O8AL/ti958yhSe0Lp1
+         tuPmzfVq8ALU3+QOc2FbRdiKSnQxYe/0nE0AE5+CmX0/NNy3Cw960u1A7t6FVVUfXSqm
+         sGqzhzeVzvZ9vzLOtNxnXH4DJi+S/6KrnJ/iBzGprZS1VsSt4TQP7LOMglMNnV8vG+wY
+         Hj9I/iBtktGLd6TwMZGNXXKPhXao8sZsPQMrb9gOU0gk9aFjtwC3FiwJrauo0fLRyhK2
+         tn6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=AmThrRa7bLmY+7KYhHvw7+pO4bpYLUY8nDHj2mgYmM0=;
-        b=eUqrQpbREm8Q4chNmU6WIZpsQjouGZA1D0V8UpCbPuxOyXIqQIM5J5635j1KjICKRf
-         hl6zJWun3mK/vBzMu0LdTLBhtZ4aQAzVUbpDRB4pm3Ix+WIRnhjk2+DjdsrUEj37iIJK
-         qDsHNJVOU1vFEMJXYsjaHC2K2kyf32QvKtNRUJiRVixVSr/LICejYu8oIitFQtcFklIA
-         QS1D1uxHYjgNdE39ggRgoXKQJnbT8Rt92eqLW9MNwLCFBAjpKhgjLs0MGEyt5loYAnZu
-         eeDOkXl83+0qepeSnKjDWtHgO5gelrARZlpCllzalcpzK2yoOatl/mnIPuUCKVFXuE/k
-         1wRA==
-X-Gm-Message-State: AG10YOSiE8q0pQeXk3Rg7MndlWKZn+X2ZebM2K6dF/nrHdNgaRJtOaGiHSNLfG+sVGG7xA==
-X-Received: by 10.98.72.24 with SMTP id v24mr53864178pfa.15.1455064216481;
-        Tue, 09 Feb 2016 16:30:16 -0800 (PST)
+        bh=BC5MVW4fkXbCHPz7AmLsG33g3+VYtluRix3tR64p+Pw=;
+        b=QvtfeVnTEO2N6CDQlgDgxePgm6dmekFSpYSCpwR70XUYCIip+4MBf/6dYMkwyqPpkc
+         O+m7NzTSgDFIiJa/1cAPcHV/+eu53VjJ4XZ7Oh66vPYVU/4kGErwp1Bmv6M90h6Q4d2m
+         30QzawO7uCxY/dPG45KaK2u++2QkL7ajJToQKK9doCeppz++oJ5U3S2wumfpippYOL2K
+         BXz+YuoYOdbOwf/9v1kRuJ5rk2I7OEqman/QgZZ4Jb5SYUl2742j0JL/bXgI3bRSEpdH
+         h8/kMLurklZJ7M6GSM7PcRHJTqlww6FXxwep7kMi7/iQWrFN0qW9dxuP6P36EYJ77Vk5
+         Q7RQ==
+X-Gm-Message-State: AG10YOQvuzVeykFbzira0WuXX+wJAiBJe+i2/GVL3krl5vq4OnDIEdJSJOdZutVfzNx9Lw==
+X-Received: by 10.66.90.227 with SMTP id bz3mr1216392pab.121.1455064218160;
+        Tue, 09 Feb 2016 16:30:18 -0800 (PST)
 Received: from decotigny.mtv.corp.google.com ([172.18.64.159])
-        by smtp.gmail.com with ESMTPSA id s90sm429295pfa.49.2016.02.09.16.30.14
+        by smtp.gmail.com with ESMTPSA id s90sm429295pfa.49.2016.02.09.16.30.16
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Tue, 09 Feb 2016 16:30:15 -0800 (PST)
+        Tue, 09 Feb 2016 16:30:17 -0800 (PST)
 From:   David Decotigny <ddecotig@gmail.com>
 To:     "David S. Miller" <davem@davemloft.net>,
         Ben Hutchings <ben@decadent.org.uk>,
@@ -56,9 +56,9 @@ Cc:     Eric Dumazet <edumazet@google.com>,
         Yuval Mintz <Yuval.Mintz@qlogic.com>,
         Rasmus Villemoes <linux@rasmusvillemoes.dk>,
         David Decotigny <decot@googlers.com>
-Subject: [PATCH net-next v8 16/19] net: core: use __ethtool_get_ksettings
-Date:   Tue,  9 Feb 2016 16:29:25 -0800
-Message-Id: <1455064168-5102-17-git-send-email-ddecotig@gmail.com>
+Subject: [PATCH net-next v8 17/19] net: ethtool: remove unused __ethtool_get_settings
+Date:   Tue,  9 Feb 2016 16:29:26 -0800
+Message-Id: <1455064168-5102-18-git-send-email-ddecotig@gmail.com>
 X-Mailer: git-send-email 2.7.0.rc3.207.g0ac5344
 In-Reply-To: <1455064168-5102-1-git-send-email-ddecotig@gmail.com>
 References: <1455064168-5102-1-git-send-email-ddecotig@gmail.com>
@@ -66,7 +66,7 @@ Return-Path: <ddecotig@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51954
+X-archive-position: 51955
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -85,84 +85,102 @@ X-list: linux-mips
 
 From: David Decotigny <decot@googlers.com>
 
+replaced by __ethtool_get_ksettings.
+
 Signed-off-by: David Decotigny <decot@googlers.com>
 ---
- net/core/net-sysfs.c   | 15 +++++++++------
- net/packet/af_packet.c | 11 +++++------
- 2 files changed, 14 insertions(+), 12 deletions(-)
+ include/linux/ethtool.h |  4 ----
+ net/core/ethtool.c      | 45 ++++++++++++++-------------------------------
+ 2 files changed, 14 insertions(+), 35 deletions(-)
 
-diff --git a/net/core/net-sysfs.c b/net/core/net-sysfs.c
-index da7dbc2..b9c8b91 100644
---- a/net/core/net-sysfs.c
-+++ b/net/core/net-sysfs.c
-@@ -199,9 +199,10 @@ static ssize_t speed_show(struct device *dev,
- 		return restart_syscall();
+diff --git a/include/linux/ethtool.h b/include/linux/ethtool.h
+index 6077cbb..05d4f0e 100644
+--- a/include/linux/ethtool.h
++++ b/include/linux/ethtool.h
+@@ -148,10 +148,6 @@ struct ethtool_ksettings {
+ extern int __ethtool_get_ksettings(struct net_device *dev,
+ 				   struct ethtool_ksettings *ksettings);
  
- 	if (netif_running(netdev)) {
--		struct ethtool_cmd cmd;
--		if (!__ethtool_get_settings(netdev, &cmd))
--			ret = sprintf(buf, fmt_dec, ethtool_cmd_speed(&cmd));
-+		struct ethtool_ksettings cmd;
+-/* DEPRECATED, use __ethtool_get_ksettings */
+-extern int __ethtool_get_settings(struct net_device *dev,
+-				  struct ethtool_cmd *cmd);
+-
+ /**
+  * struct ethtool_ops - optional netdev operations
+  * @get_settings: DEPRECATED, use %get_ksettings/%set_ksettings
+diff --git a/net/core/ethtool.c b/net/core/ethtool.c
+index 669bd78..10e2c48 100644
+--- a/net/core/ethtool.c
++++ b/net/core/ethtool.c
+@@ -529,7 +529,12 @@ int __ethtool_get_ksettings(struct net_device *dev,
+ 	 * legacy %ethtool_cmd API, unless it's not supported either.
+ 	 * TODO: remove when ethtool_ops::get_settings disappears internally
+ 	 */
+-	err = __ethtool_get_settings(dev, &cmd);
++	if (!dev->ethtool_ops->get_settings)
++		return -EOPNOTSUPP;
 +
-+		if (!__ethtool_get_ksettings(netdev, &cmd))
-+			ret = sprintf(buf, fmt_dec, cmd.parent.speed);
- 	}
- 	rtnl_unlock();
- 	return ret;
-@@ -218,10 +219,12 @@ static ssize_t duplex_show(struct device *dev,
- 		return restart_syscall();
++	memset(&cmd, 0, sizeof(cmd));
++	cmd.cmd = ETHTOOL_GSET;
++	err = dev->ethtool_ops->get_settings(dev, &cmd);
+ 	if (err < 0)
+ 		return err;
  
- 	if (netif_running(netdev)) {
--		struct ethtool_cmd cmd;
--		if (!__ethtool_get_settings(netdev, &cmd)) {
-+		struct ethtool_ksettings cmd;
-+
-+		if (!__ethtool_get_ksettings(netdev, &cmd)) {
- 			const char *duplex;
--			switch (cmd.duplex) {
-+
-+			switch (cmd.parent.duplex) {
- 			case DUPLEX_HALF:
- 				duplex = "half";
- 				break;
-diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-index 992396a..626dae0 100644
---- a/net/packet/af_packet.c
-+++ b/net/packet/af_packet.c
-@@ -557,9 +557,8 @@ static int prb_calc_retire_blk_tmo(struct packet_sock *po,
+@@ -699,30 +704,6 @@ static int ethtool_set_ksettings(struct net_device *dev, void __user *useraddr)
+ 	return dev->ethtool_ops->set_ksettings(dev, &ksettings);
+ }
+ 
+-/* Internal kernel helper to query a device ethtool_cmd settings.
+- *
+- * Note about transition to ethtool_settings API: We do not need (or
+- * want) this function to support "dev" instances that implement the
+- * ethtool_settings API as we will update the drivers calling this
+- * function to call __ethtool_get_ksettings instead, before the first
+- * drivers implement ethtool_ops::get_ksettings.
+- *
+- * TODO 1: at least make this function static when no driver is using it
+- * TODO 2: remove when ethtool_ops::get_settings disappears internally
+- */
+-int __ethtool_get_settings(struct net_device *dev, struct ethtool_cmd *cmd)
+-{
+-	ASSERT_RTNL();
+-
+-	if (!dev->ethtool_ops->get_settings)
+-		return -EOPNOTSUPP;
+-
+-	memset(cmd, 0, sizeof(struct ethtool_cmd));
+-	cmd->cmd = ETHTOOL_GSET;
+-	return dev->ethtool_ops->get_settings(dev, cmd);
+-}
+-EXPORT_SYMBOL(__ethtool_get_settings);
+-
+ static void
+ warn_incomplete_ethtool_legacy_settings_conversion(const char *details)
  {
- 	struct net_device *dev;
- 	unsigned int mbits = 0, msec = 0, div = 0, tmo = 0;
--	struct ethtool_cmd ecmd;
-+	struct ethtool_ksettings ecmd;
- 	int err;
--	u32 speed;
- 
- 	rtnl_lock();
- 	dev = __dev_get_by_index(sock_net(&po->sk), po->ifindex);
-@@ -567,19 +566,19 @@ static int prb_calc_retire_blk_tmo(struct packet_sock *po,
- 		rtnl_unlock();
- 		return DEFAULT_PRB_RETIRE_TOV;
- 	}
--	err = __ethtool_get_settings(dev, &ecmd);
--	speed = ethtool_cmd_speed(&ecmd);
-+	err = __ethtool_get_ksettings(dev, &ecmd);
- 	rtnl_unlock();
- 	if (!err) {
- 		/*
- 		 * If the link speed is so slow you don't really
- 		 * need to worry about perf anyways
+@@ -764,16 +745,18 @@ static int ethtool_get_settings(struct net_device *dev, void __user *useraddr)
+ 		/* send a sensible cmd tag back to user */
+ 		cmd.cmd = ETHTOOL_GSET;
+ 	} else {
+-		int err;
+-		/* TODO: return -EOPNOTSUPP when
+-		 * ethtool_ops::get_settings disappears internally
+-		 */
+-
+ 		/* driver doesn't support %ethtool_ksettings
+ 		 * API. revert to legacy %ethtool_cmd API, unless it's
+ 		 * not supported either.
  		 */
--		if (speed < SPEED_1000 || speed == SPEED_UNKNOWN) {
-+		if (ecmd.parent.speed < SPEED_1000 ||
-+		    ecmd.parent.speed == SPEED_UNKNOWN) {
- 			return DEFAULT_PRB_RETIRE_TOV;
- 		} else {
- 			msec = 1;
--			div = speed / 1000;
-+			div = ecmd.parent.speed / 1000;
- 		}
+-		err = __ethtool_get_settings(dev, &cmd);
++		int err;
++
++		if (!dev->ethtool_ops->get_settings)
++			return -EOPNOTSUPP;
++
++		memset(&cmd, 0, sizeof(cmd));
++		cmd.cmd = ETHTOOL_GSET;
++		err = dev->ethtool_ops->get_settings(dev, &cmd);
+ 		if (err < 0)
+ 			return err;
  	}
- 
 -- 
 2.7.0.rc3.207.g0ac5344

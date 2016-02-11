@@ -1,33 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Feb 2016 15:25:52 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:31338 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Feb 2016 15:59:04 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:1630 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27012528AbcBKOZunrpLv (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 11 Feb 2016 15:25:50 +0100
+        with ESMTP id S27011033AbcBKO7Cp0dHv (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 11 Feb 2016 15:59:02 +0100
 Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Websense Email Security Gateway with ESMTPS id 9652F6A19AB24;
-        Thu, 11 Feb 2016 14:25:42 +0000 (GMT)
+        by Websense Email Security Gateway with ESMTPS id 757D65772ADEF;
+        Thu, 11 Feb 2016 14:58:54 +0000 (GMT)
 Received: from [10.100.200.149] (10.100.200.149) by hhmail02.hh.imgtec.org
  (10.100.10.21) with Microsoft SMTP Server id 14.3.266.1; Thu, 11 Feb 2016
- 14:25:44 +0000
-Date:   Thu, 11 Feb 2016 14:25:43 +0000
+ 14:58:56 +0000
+Date:   Thu, 11 Feb 2016 14:58:55 +0000
 From:   "Maciej W. Rozycki" <macro@imgtec.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     "Michael S. Tsirkin" <mst@redhat.com>,
-        Michal Marek <mmarek@suse.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        <linux-kbuild@vger.kernel.org>, <linux-mips@linux-mips.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: [PATCH] ld-version: Drop the 4th and 5th version components
-Message-ID: <alpine.DEB.2.00.1602111359390.15885@tp.orcam.me.uk>
+CC:     Daniel Wagner <daniel.wagner@bmw-carit.de>,
+        <linux-kernel@vger.kernel.org>, <linux-mips@linux-mips.org>
+Subject: Re: [PATCH v4 2/2] mips: Differentiate between 32 and 64 bit ELF
+ header
+In-Reply-To: <alpine.DEB.2.00.1602111153320.15885@tp.orcam.me.uk>
+Message-ID: <alpine.DEB.2.00.1602111430530.15885@tp.orcam.me.uk>
+References: <56BAD881.9000208@bmw-carit.de> <1455096081-7176-1-git-send-email-daniel.wagner@bmw-carit.de> <1455096081-7176-3-git-send-email-daniel.wagner@bmw-carit.de> <20160211104903.GD11091@linux-mips.org>
+ <alpine.DEB.2.00.1602111153320.15885@tp.orcam.me.uk>
 User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
+Content-Type: text/plain; charset="ISO-8859-7"
+Content-Transfer-Encoding: 8BIT
 X-Originating-IP: [10.100.200.149]
 Return-Path: <Maciej.Rozycki@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52005
+X-archive-position: 52006
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -44,47 +46,54 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-... making upstream development binutils snapshots work as expected,
-e.g.:
+On Thu, 11 Feb 2016, Maciej W. Rozycki wrote:
 
-$ mips64el-linux-ld --version
-GNU ld (GNU Binutils) 2.20.1.20100303
-[...]
-$ 
+> > > Signed-off-by: Daniel Wagner <daniel.wagner@bmw-carit.de>
+> > > Suggested-by: Maciej W. Rozycki <macro@imgtec.com>
+> > > Reviewed-by: Maciej W. Rozycki <macro@imgtec.com>
+> > > Reported-by: Fengguang Wu <fengguang.wu@intel.com>
+> > 
+> > Thanks, applied.
+> > 
+> > I'm getting a less spectacular warning from gcc 5.2:
+> > 
+> >   CC      fs/proc/vmcore.o
+> > fs/proc/vmcore.c: In function ¡parse_crash_elf64_headers¢:
+> > fs/proc/vmcore.c:939:47: warning: initialization from incompatible pointer type [-Wincompatible-pointer-types]
+> 
+>  Yes, the temporaries still need to have their pointed types changed, to 
+> `Elf32_Ehdr' and `Elf64_Ehdr' respectively, as in the original change.
+> 
+>  I had it mentioned in a WIP version of my review (stating that it would 
+> verify that the correct type is used by the caller), but then deleted that 
+> part inadvertently, sigh.
 
-Signed-off-by: Maciej W. Rozycki <macro@imgtec.com>
----
- It may well actually have been a release mistake with the proper 2.20.1 
-maintenance release as I reckon the development vs release build switch is 
-a knob that used to require to be flipped in the sources by the release 
-manager; maybe it still does.  Either way this version guarantees all the 
-2.20.1 stuff to be present as the version number is only bumped up as a 
-release is being made, so any prior snapshot would report 2.20.0.20100302, 
-etc., or maybe even 2.20.0.20100303 if made earlier on on the same day.
+ Hold on, I was right in dropping it actually.
 
- So please apply, or anyone is welcome to improve it, as my limited awk-fu 
-(which I'll be happy to get corrected) tells me the script doesn't really 
-terminate parsing on a non-point-non-digit character.
+ With your v4 change in place all `parse_crash_elf64_headers' is supposed 
+to call is `mips_elf_check_machine' and that doesn't make any 
+intialisations, it just dereferences the pointer passed once.  This error 
+does not make any sense to me and line 939 isn't even in 
+`parse_crash_elf64_headers', which starts at line 999, it's in 
+`process_ptload_program_headers_elf32'.
 
- NB comments in scripts/Kbuild.include around `ld-version' have not been 
-accordingly updated in the course of changes made to `ld-version.sh' and 
-they still need such an update, unless we right-shift the version code 
-calculated back by 4 decimal digits, which I hesitated doing here for 
-simplicity.  What was the original reason to add the 4th and 5th 
-components?
+ So Ralf, what tree are you using that is off from LMO/Linus by 60 lines?
+
+ BTW line 939 at LMO and in Linus's tree looks like:
+
+	Elf32_Phdr *phdr_ptr;
+
+and the pointer is assigned to at line 944 like this:
+
+	phdr_ptr = (Elf32_Phdr*)(elfptr + sizeof(Elf32_Ehdr)); /* PT_NOTE hdr */
+
+so this does not explain the error.  I get a clean build with this version 
+of Daniel's patches, both 32-bit and 64-bit, and FAOD with 
+CONFIG_PROC_VMCORE=y.
+
+ Daniel, please hold on with further updates, before this is cleared.  
+Your v4 looks fine to me AFAICT, no need to change types.  Sorry about 
+this all confusion, something's clearly broken somewhere -- maybe due to 
+someone else's unpublished patch.
 
   Maciej
-
-linux-mips-ld-version-fix.diff
-Index: linux-20160211/scripts/ld-version.sh
-===================================================================
---- linux-20160211.orig/scripts/ld-version.sh
-+++ linux-20160211/scripts/ld-version.sh
-@@ -5,6 +5,6 @@
- 	gsub(".*version ", "");
- 	gsub("-.*", "");
- 	split($1,a, ".");
--	print a[1]*100000000 + a[2]*1000000 + a[3]*10000 + a[4]*100 + a[5];
-+	print a[1]*100000000 + a[2]*1000000 + a[3]*10000;
- 	exit
- 	}

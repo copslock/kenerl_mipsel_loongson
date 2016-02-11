@@ -1,34 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Feb 2016 20:28:28 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:54571 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Feb 2016 20:37:22 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:46926 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27012151AbcBKT21HQCya (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 11 Feb 2016 20:28:27 +0100
+        with ESMTP id S27006547AbcBKThTl3nga (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 11 Feb 2016 20:37:19 +0100
 Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Websense Email Security Gateway with ESMTPS id 03C98441479E5;
-        Thu, 11 Feb 2016 19:28:16 +0000 (GMT)
+        by Websense Email Security Gateway with ESMTPS id 1B72DCC65C44A;
+        Thu, 11 Feb 2016 19:37:11 +0000 (GMT)
 Received: from [10.100.200.149] (10.100.200.149) by hhmail02.hh.imgtec.org
  (10.100.10.21) with Microsoft SMTP Server id 14.3.266.1; Thu, 11 Feb 2016
- 19:28:18 +0000
-Date:   Thu, 11 Feb 2016 19:28:17 +0000
+ 19:37:13 +0000
+Date:   Thu, 11 Feb 2016 19:37:12 +0000
 From:   "Maciej W. Rozycki" <macro@imgtec.com>
-To:     David Daney <ddaney@caviumnetworks.com>
-CC:     Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Matt Redfearn <matt.redfearn@imgtec.com>,
-        <linux-mmc@vger.kernel.org>, <david.daney@cavium.com>,
-        <ulf.hansson@linaro.org>, <linux-mips@linux-mips.org>,
-        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <Zubair.Kakakhel@imgtec.com>,
-        Aleksey Makarov <aleksey.makarov@caviumnetworks.com>,
-        Chandrakala Chavva <cchavva@caviumnetworks.com>,
-        Aleksey Makarov <aleksey.makarov@auriga.com>,
-        Leonid Rosenboim <lrosenboim@caviumnetworks.com>,
-        Peter Swain <pswain@cavium.com>,
-        Aaron Williams <aaron.williams@cavium.com>
-Subject: Re: [PATCH v5] mmc: OCTEON: Add host driver for OCTEON MMC
- controller
-In-Reply-To: <56BBD6AD.2090902@caviumnetworks.com>
-Message-ID: <alpine.DEB.2.00.1602111910240.15885@tp.orcam.me.uk>
-References: <1455125775-7245-1-git-send-email-matt.redfearn@imgtec.com> <56BB7B2F.60307@caviumnetworks.com> <20160210234907.GC1640@darkstar.musicnaut.iki.fi> <56BBD6AD.2090902@caviumnetworks.com>
+To:     Paul Burton <paul.burton@imgtec.com>
+CC:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>,
+        "Steven J. Hill" <Steven.Hill@imgtec.com>,
+        Joshua Kinard <kumba@gentoo.org>,
+        <linux-kernel@vger.kernel.org>,
+        =?ISO-8859-2?Q?Rafa=B3_Mi=B3ecki?= <zajec5@gmail.com>,
+        James Hogan <james.hogan@imgtec.com>,
+        Markos Chandras <markos.chandras@imgtec.com>
+Subject: Re: [PATCH] MIPS: tlb-r4k: panic if the MMU doesn't support
+ PAGE_SIZE
+In-Reply-To: <20160210221049.GA26712@NP-P-BURTON>
+Message-ID: <alpine.DEB.2.00.1602111931450.15885@tp.orcam.me.uk>
+References: <1436803964-29820-1-git-send-email-paul.burton@imgtec.com> <20160210221049.GA26712@NP-P-BURTON>
 User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
 MIME-Version: 1.0
 Content-Type: text/plain; charset="US-ASCII"
@@ -37,7 +32,7 @@ Return-Path: <Maciej.Rozycki@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52019
+X-archive-position: 52020
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -54,45 +49,22 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, 11 Feb 2016, David Daney wrote:
+On Wed, 10 Feb 2016, Paul Burton wrote:
 
-> > > The vast majority of people that see it will not be able to change their
-> > > firmware.  So it will be forever cluttering up their boot logs.
-> > 
-> > Until they switch to use APPENDED_DTB. :-)
-> > 
-> 
-> I am philosophically opposed to making the DTB an internal kernel
-> implementation detail.
-> 
-> For OCTEON boards, it is an ABI between the boot firmware and the kernel, and
-> is impractical to change.
-> 
-> One could argue that many years ago, when the decision was made (by me), that
-> we should have opted to carry in the kernel source code tree the DTS files for
-> all OCTEON boards ever made, but we did not do that.  Due to the
-> non-reversibility of time, the decision is hard to reverse.
+> > diff --git a/arch/mips/mm/tlb-r4k.c b/arch/mips/mm/tlb-r4k.c
+> > index 08318ec..4330315 100644
+> > --- a/arch/mips/mm/tlb-r4k.c
+> > +++ b/arch/mips/mm/tlb-r4k.c
+> > @@ -486,6 +487,10 @@ static void r4k_tlb_configure(void)
+> >  	 *     be set to fixed-size pages.
+> >  	 */
+> >  	write_c0_pagemask(PM_DEFAULT_MASK);
+> > +	back_to_back_c0_hazard();
+> > +	if (read_c0_pagemask() != PM_DEFAULT_MASK)
+> > +		panic("MMU doesn't support PAGE_SIZE=0x%lx", PAGE_SIZE);
 
- I concur, a very good decision as far as I'm concerned!
-
- I had the misfortune to work with some Freescale Power boards which used 
-in-kernel DTS files in a hope to match the respective board's firmware 
-(U-boot).  Needless to say, that didn't quite work.  The mapping of board 
-resources was reportedly changed in some version of the firmware to give 
-more flexibility and the DTS files bundled with Linux updated accordingly, 
-however no version of the old files was kept around and maintained.  So a 
-kernel upgrade, which turned out inevitable at one point, became a 
-challenging task to update the DTS files so as to match the version of the 
-firmware the boards had.
-
- With some pain I was eventually able to sort this out through patching 
-the old DTS files to match the ever-changing DTS syntax and get them 
-accepted for a DTB build and work to an acceptable extent with the then 
-current version of Linux.  However some board resources were lost, for 
-example the IDE interface was no longer accessible; fortunately I didn't 
-need it, so I just left it like that and didn't figure out what else I'd 
-have to do to regain access.
-
- So no, no standalone DTS/DTBs please, thank you very much.
+ I think it would make sense to report here what the minimum/maximum page 
+size actually supported is, so that the users know what there might be 
+after.
 
   Maciej

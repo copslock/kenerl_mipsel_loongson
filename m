@@ -1,62 +1,72 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Feb 2016 02:59:37 +0100 (CET)
-Received: from mail-pf0-f194.google.com ([209.85.192.194]:34893 "EHLO
-        mail-pf0-f194.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010896AbcBKB7fZh6lb (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 11 Feb 2016 02:59:35 +0100
-Received: by mail-pf0-f194.google.com with SMTP id w128so1211743pfb.2;
-        Wed, 10 Feb 2016 17:59:35 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Feb 2016 03:56:06 +0100 (CET)
+Received: from mail-ob0-f194.google.com ([209.85.214.194]:33278 "EHLO
+        mail-ob0-f194.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012402AbcBKC4ERJbOt (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 11 Feb 2016 03:56:04 +0100
+Received: by mail-ob0-f194.google.com with SMTP id o4so4140679obb.0
+        for <linux-mips@linux-mips.org>; Wed, 10 Feb 2016 18:56:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=subject:to:references:cc:from:message-id:date:user-agent
          :mime-version:in-reply-to:content-type:content-transfer-encoding;
-        bh=ryEF5ONVQ2P2w2oGNAPtUDzY/I1hIF/L+wr8Epdnxl8=;
-        b=tv45LA2UPWxp1JBt8FKntF6767IJDGd9OKvkyPTWzlCHz5nbm1gVoMqo+PTrCop+lB
-         ULlfF2yXC80Zf38IdRAu83n1jZcB0svkGn/cdE4GpF18wSongJe+EyBKMrQc5XPTYThf
-         XT9Qnb8mz63qsnWVCv9rf2U3flNyz/qmD8JHtt7OeU4MNFlTKUzu3AhoEuMxXggT0ZdS
-         C6NU+1EFj9b5sTrQGFY53wMTR2mM21/A2uQW0Az1XnM//aZuLjaWHk1JRlbdl0AKYtwk
-         j8mGq4aj3AVMz3kR4Z/w2PdHhd5E55Dm9qWNZxTFI1lBeubCdKgR1TV+9RTTaFq85P6V
-         WdVA==
+        bh=hWv3B83y8Udey/AFVZRvkkFkFEXPi3+qJyjgdoD2N+4=;
+        b=CHY85zscBlzj2RqNXrDns28+GN4Rb+Exuc6XpFk9IR6Zaw9ZxCaIujBi3Q7ZFpMwZC
+         c+km2UTx819oSL9dy2TtXvcQjDcj5VzgYtZmiT7JqevDzF98eMfTMu2lN7jnavjYplZ2
+         Yp/qEVw7cFGfejoMXUY2YRWC8jWofexs7cXlwO5sgBjnpVt+QkdfBUmrmMfkgYZqn4qA
+         ltTqYHOjiJUGUI6oL2JjyjZXs+nrk9Gy90Qg9VMU7xFpoYW00oAaMrwPCdW9/lgnGUQ7
+         Yj7Bi7J8qB6cue2uAmGSauKSH5AT37P3YfXfyOVlJLL1JmTluN3rz/F/Eli1y0h5rbdS
+         dYww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:subject:to:references:cc:from:message-id:date
          :user-agent:mime-version:in-reply-to:content-type
          :content-transfer-encoding;
-        bh=ryEF5ONVQ2P2w2oGNAPtUDzY/I1hIF/L+wr8Epdnxl8=;
-        b=l5k/qaLpAg47udM51v3oMBY1mg+EVG26xIJgta5VwnzZSne8Z/moCLNtwTZB7vKOZ3
-         JDXf2z1sXmjHDUsDHwBXptY7ZPC75H0p2r3cDc7fweB46dOpQ4TjSgd8r8r29ZziRZL/
-         072vhwdGmjXAqqiKPHFGKslQ/iBzCfil7RU1CIvfr5wWO3zLD63F20waTGWU35dUoU3N
-         OZBM46EGaR/2I45qRGKlXLb2/Pm9BPLNIAQ3LEhketb/DL2Wpf35OJ49W2vM4M0pB/XW
-         fnC2v9W6jRCVFIc0iS9MuIzDTH+MnVxs2fNsJg5pBYJEQ4cBO8cpHmI/pSrTDtBR3sVA
-         S9bA==
-X-Gm-Message-State: AG10YOQAcDwaFHZLCgQnnLup/GNgLygtggzbHQF2trzQakQW1TzYys5IvF/dAMRGQMapZw==
-X-Received: by 10.98.14.149 with SMTP id 21mr62948179pfo.79.1455155969171;
-        Wed, 10 Feb 2016 17:59:29 -0800 (PST)
-Received: from [10.12.156.244] (5520-maca-inet1-outside.broadcom.com. [216.31.211.11])
-        by smtp.googlemail.com with ESMTPSA id u64sm7928611pfa.86.2016.02.10.17.59.27
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 10 Feb 2016 17:59:28 -0800 (PST)
-Subject: Re: [PATCH 6/6] MIPS: Expose current_cpu_data.options through debugfs
-To:     Ralf Baechle <ralf@linux-mips.org>
-References: <1455051354-6225-1-git-send-email-f.fainelli@gmail.com>
- <1455051354-6225-7-git-send-email-f.fainelli@gmail.com>
- <20160210104629.GA11091@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, blogic@openwrt.org, cernekee@gmail.com,
-        jon.fraser@broadcom.com, pgynther@google.com,
-        paul.burton@imgtec.com, ddaney.cavm@gmail.com
+        bh=hWv3B83y8Udey/AFVZRvkkFkFEXPi3+qJyjgdoD2N+4=;
+        b=J8s8nS/CziLotGZ6WjyffWzhVAaxFV4WyIam+pRnsvss9jP4FB1iomw9ZinsaBo47L
+         UNz3VDjNN5unAYaWmjoq61jV/npVUucCa/miYNFaPdsIEQFYjaYVcgXIAKhKovtFgMSO
+         ekLhxDgVUqO3TGYDbEhJHD970etaTVJUPqam6phY60AOG8qhokPwVKyu4FAsZWy6/gs2
+         G8wUukVxxVr/Odf15+PNFzMyrXF9nc5JDK4zcpg1rCBmMt81QXufUGVOPEIqcvWn6gC/
+         rjUzyGpcmwI+TZ3D63RlM+bzl6Kvs0K7ir7rIwN/k22Vt/IT1PlN2okn0Wi88KNLTpRH
+         ro1w==
+X-Gm-Message-State: AG10YOT7wBDNkNbSlsprPB5pW0f/0fFw0iw0+HH9p+4nl1SMnaHlUwZkuwQiu/Zp0BGfDw==
+X-Received: by 10.60.67.166 with SMTP id o6mr41679730oet.77.1455159358366;
+        Wed, 10 Feb 2016 18:55:58 -0800 (PST)
+Received: from ?IPv6:2001:470:d:73f:602a:b7e7:faa0:100? ([2001:470:d:73f:602a:b7e7:faa0:100])
+        by smtp.googlemail.com with ESMTPSA id wt9sm3486585obb.18.2016.02.10.18.55.56
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Wed, 10 Feb 2016 18:55:57 -0800 (PST)
+Subject: Re: [PATCH v5] mmc: OCTEON: Add host driver for OCTEON MMC controller
+To:     David Daney <ddaney@caviumnetworks.com>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>
+References: <1455125775-7245-1-git-send-email-matt.redfearn@imgtec.com>
+ <56BB7B2F.60307@caviumnetworks.com>
+ <20160210234907.GC1640@darkstar.musicnaut.iki.fi>
+ <56BBD6AD.2090902@caviumnetworks.com>
+Cc:     Matt Redfearn <matt.redfearn@imgtec.com>,
+        linux-mmc@vger.kernel.org, david.daney@cavium.com,
+        ulf.hansson@linaro.org, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        Zubair.Kakakhel@imgtec.com,
+        Aleksey Makarov <aleksey.makarov@caviumnetworks.com>,
+        Chandrakala Chavva <cchavva@caviumnetworks.com>,
+        Aleksey Makarov <aleksey.makarov@auriga.com>,
+        Leonid Rosenboim <lrosenboim@caviumnetworks.com>,
+        Peter Swain <pswain@cavium.com>,
+        Aaron Williams <aaron.williams@cavium.com>
 From:   Florian Fainelli <f.fainelli@gmail.com>
-Message-ID: <56BBEABF.8030804@gmail.com>
-Date:   Wed, 10 Feb 2016 17:58:23 -0800
+Message-ID: <56BBF83B.8020908@gmail.com>
+Date:   Wed, 10 Feb 2016 18:55:55 -0800
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
  Thunderbird/38.5.1
 MIME-Version: 1.0
-In-Reply-To: <20160210104629.GA11091@linux-mips.org>
+In-Reply-To: <56BBD6AD.2090902@caviumnetworks.com>
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51986
+X-archive-position: 51987
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -73,35 +83,41 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 10/02/16 02:46, Ralf Baechle wrote:
-> On Tue, Feb 09, 2016 at 12:55:54PM -0800, Florian Fainelli wrote:
+Le 10/02/2016 16:32, David Daney a écrit :
+> On 02/10/2016 03:49 PM, Aaro Koskinen wrote:
+>> Hi,
+>>
+>> On Wed, Feb 10, 2016 at 10:02:23AM -0800, David Daney wrote:
+>>> On 02/10/2016 09:36 AM, Matt Redfearn wrote:
+>>>> +        pr_warn(FW_WARN "%s: Legacy property '%s'. Please remove\n",
+>>>> +            node->full_name, legacy_name);
+>>>
+>>> I don't like this warning message.
+>>>
+>>> The vast majority of people that see it will not be able to change their
+>>> firmware.  So it will be forever cluttering up their boot logs.
+>>
+>> Until they switch to use APPENDED_DTB. :-)
+>>
 > 
->> Debugging a missing features in cpu-features-override.h, or a runtime feature
->> set/clear in the vendor specific cpu_probe() function can be a little tedious,
->> ease that by providing a debugfs entry representing the
->> current_cpu_data.options bitmask.
+> I am philosophically opposed to making the DTB an internal kernel
+> implementation detail.
 > 
-> Hm..  Bits in the options bitmaps are not an ABI, they come and sometimes
-> they go as well and manual decoding can be tedious to humans.  so I'm
-> wondering if something in /sys/devices/system/cpu would be more suitable.
-
-Not sure, you need this while bringing up systems and/or debugging why a
-kernel does not have this or that enabled as you think it should,
-outside of that, not so much probably?. More standard interfaces like
-/proc/cpuinfo should be used, but that does not give you the full picture.
-
-> It'd depend on just sysfs, not debugfs which is disabled in production
-> kernels.
+> For OCTEON boards, it is an ABI between the boot firmware and the
+> kernel, and is impractical to change.
 > 
-> Thoughts?
+> One could argue that many years ago, when the decision was made (by me),
+> that we should have opted to carry in the kernel source code tree the
+> DTS files for all OCTEON boards ever made, but we did not do that.  Due
+> to the non-reversibility of time, the decision is hard to reverse.
+> 
+> In the case of this MMC driver, the only real difference is that two
+> properties have legacy names that later had differing "official" names.
+>  The overhead of carrying the legacy bindings is very low.
 
-I suppose this is fine, in that case, we would probably want to go with
-a text-based approach to make the interface more stable.
-
-NB: I also have a patch that adds cache info reporting to MIPS, since it
-seems useful for people dealing with user-space cache flushes (graphics,
-JIT, etc.), Russell King rejected adding that for ARM, but ARM64 and x86
-have it (arch/arm64/kernel/cacheinfo.c) would you oppose to having that
-for MIPS?
+Since there is an existing FDT patching infrastructure in
+arch/mips/cavium-octeon/ would not that be a place where you could put
+an adaptation layer between your legacy firmware properties and the
+upstream binding?
 -- 
 Florian

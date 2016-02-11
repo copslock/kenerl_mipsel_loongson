@@ -1,76 +1,105 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Feb 2016 03:56:06 +0100 (CET)
-Received: from mail-ob0-f194.google.com ([209.85.214.194]:33278 "EHLO
-        mail-ob0-f194.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012402AbcBKC4ERJbOt (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 11 Feb 2016 03:56:04 +0100
-Received: by mail-ob0-f194.google.com with SMTP id o4so4140679obb.0
-        for <linux-mips@linux-mips.org>; Wed, 10 Feb 2016 18:56:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=subject:to:references:cc:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-type:content-transfer-encoding;
-        bh=hWv3B83y8Udey/AFVZRvkkFkFEXPi3+qJyjgdoD2N+4=;
-        b=CHY85zscBlzj2RqNXrDns28+GN4Rb+Exuc6XpFk9IR6Zaw9ZxCaIujBi3Q7ZFpMwZC
-         c+km2UTx819oSL9dy2TtXvcQjDcj5VzgYtZmiT7JqevDzF98eMfTMu2lN7jnavjYplZ2
-         Yp/qEVw7cFGfejoMXUY2YRWC8jWofexs7cXlwO5sgBjnpVt+QkdfBUmrmMfkgYZqn4qA
-         ltTqYHOjiJUGUI6oL2JjyjZXs+nrk9Gy90Qg9VMU7xFpoYW00oAaMrwPCdW9/lgnGUQ7
-         Yj7Bi7J8qB6cue2uAmGSauKSH5AT37P3YfXfyOVlJLL1JmTluN3rz/F/Eli1y0h5rbdS
-         dYww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:subject:to:references:cc:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-type
-         :content-transfer-encoding;
-        bh=hWv3B83y8Udey/AFVZRvkkFkFEXPi3+qJyjgdoD2N+4=;
-        b=J8s8nS/CziLotGZ6WjyffWzhVAaxFV4WyIam+pRnsvss9jP4FB1iomw9ZinsaBo47L
-         UNz3VDjNN5unAYaWmjoq61jV/npVUucCa/miYNFaPdsIEQFYjaYVcgXIAKhKovtFgMSO
-         ekLhxDgVUqO3TGYDbEhJHD970etaTVJUPqam6phY60AOG8qhokPwVKyu4FAsZWy6/gs2
-         G8wUukVxxVr/Odf15+PNFzMyrXF9nc5JDK4zcpg1rCBmMt81QXufUGVOPEIqcvWn6gC/
-         rjUzyGpcmwI+TZ3D63RlM+bzl6Kvs0K7ir7rIwN/k22Vt/IT1PlN2okn0Wi88KNLTpRH
-         ro1w==
-X-Gm-Message-State: AG10YOT7wBDNkNbSlsprPB5pW0f/0fFw0iw0+HH9p+4nl1SMnaHlUwZkuwQiu/Zp0BGfDw==
-X-Received: by 10.60.67.166 with SMTP id o6mr41679730oet.77.1455159358366;
-        Wed, 10 Feb 2016 18:55:58 -0800 (PST)
-Received: from ?IPv6:2001:470:d:73f:602a:b7e7:faa0:100? ([2001:470:d:73f:602a:b7e7:faa0:100])
-        by smtp.googlemail.com with ESMTPSA id wt9sm3486585obb.18.2016.02.10.18.55.56
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Wed, 10 Feb 2016 18:55:57 -0800 (PST)
-Subject: Re: [PATCH v5] mmc: OCTEON: Add host driver for OCTEON MMC controller
-To:     David Daney <ddaney@caviumnetworks.com>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>
-References: <1455125775-7245-1-git-send-email-matt.redfearn@imgtec.com>
- <56BB7B2F.60307@caviumnetworks.com>
- <20160210234907.GC1640@darkstar.musicnaut.iki.fi>
- <56BBD6AD.2090902@caviumnetworks.com>
-Cc:     Matt Redfearn <matt.redfearn@imgtec.com>,
-        linux-mmc@vger.kernel.org, david.daney@cavium.com,
-        ulf.hansson@linaro.org, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        Zubair.Kakakhel@imgtec.com,
-        Aleksey Makarov <aleksey.makarov@caviumnetworks.com>,
-        Chandrakala Chavva <cchavva@caviumnetworks.com>,
-        Aleksey Makarov <aleksey.makarov@auriga.com>,
-        Leonid Rosenboim <lrosenboim@caviumnetworks.com>,
-        Peter Swain <pswain@cavium.com>,
-        Aaron Williams <aaron.williams@cavium.com>
-From:   Florian Fainelli <f.fainelli@gmail.com>
-Message-ID: <56BBF83B.8020908@gmail.com>
-Date:   Wed, 10 Feb 2016 18:55:55 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.5.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Feb 2016 06:42:44 +0100 (CET)
+Received: from mail-sn1nam02on0056.outbound.protection.outlook.com ([104.47.36.56]:42384
+        "EHLO NAM02-SN1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S27011403AbcBKFmmIImdA convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 11 Feb 2016 06:42:42 +0100
+Received: from SN1NAM02FT001.eop-nam02.prod.protection.outlook.com
+ (10.152.72.58) by SN1NAM02HT035.eop-nam02.prod.protection.outlook.com
+ (10.152.72.193) with Microsoft SMTP Server (TLS) id 15.1.409.7; Thu, 11 Feb
+ 2016 05:42:35 +0000
+Authentication-Results: spf=pass (sender IP is 149.199.60.83)
+ smtp.mailfrom=xilinx.com; linutronix.de; dkim=none (message not signed)
+ header.d=none;linutronix.de; dmarc=bestguesspass action=none
+ header.from=xilinx.com;
+Received-SPF: Pass (protection.outlook.com: domain of xilinx.com designates
+ 149.199.60.83 as permitted sender) receiver=protection.outlook.com;
+ client-ip=149.199.60.83; helo=xsj-pvapsmtpgw01;
+Received: from xsj-pvapsmtpgw01 (149.199.60.83) by
+ SN1NAM02FT001.mail.protection.outlook.com (10.152.72.158) with Microsoft SMTP
+ Server (TLS) id 15.1.415.6 via Frontend Transport; Thu, 11 Feb 2016 05:42:34
+ +0000
+Received: from unknown-38-66.xilinx.com ([149.199.38.66] helo=xsj-pvapsmtp01)
+        by xsj-pvapsmtpgw01 with esmtp (Exim 4.63)
+        (envelope-from <bharat.kumar.gogada@xilinx.com>)
+        id 1aTk1R-0006Ig-Ht; Wed, 10 Feb 2016 21:42:33 -0800
+Received: from [127.0.0.1] (helo=xsj-smtp-dlp1.xlnx.xilinx.com)
+        by xsj-pvapsmtp01 with esmtp (Exim 4.63)
+        (envelope-from <bharat.kumar.gogada@xilinx.com>)
+        id 1aTk1R-0004x2-CR; Wed, 10 Feb 2016 21:42:33 -0800
+Received: from xsj-pvapsmtp01 (mailhub.xilinx.com [149.199.38.66])
+        by xsj-smtp-dlp1.xlnx.xilinx.com (8.13.8/8.13.1) with ESMTP id u1B5gWfR025202;
+        Wed, 10 Feb 2016 21:42:32 -0800
+Received: from [172.22.159.25] (helo=XAP-PVEXCAS01.xlnx.xilinx.com)
+        by xsj-pvapsmtp01 with esmtp (Exim 4.63)
+        (envelope-from <bharatku@xilinx.com>)
+        id 1aTk1P-0004wm-V4; Wed, 10 Feb 2016 21:42:32 -0800
+Received: from XAP-PVEXMBX01.xlnx.xilinx.com ([fe80::4c50:cc5:695a:c7f8]) by
+ XAP-PVEXCAS01.xlnx.xilinx.com ([::1]) with mapi id 14.03.0248.002; Thu, 11
+ Feb 2016 13:42:30 +0800
+From:   Bharat Kumar Gogada <bharat.kumar.gogada@xilinx.com>
+To:     Paul Burton <paul.burton@imgtec.com>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+CC:     Michal Simek <michals@xilinx.com>,
+        Ravikiran Gummaluri <rgummal@xilinx.com>,
+        Soren Brinkmann <sorenb@xilinx.com>,
+        Jiang Liu <jiang.liu@linux.intel.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Russell Joyce <russell.joyce@york.ac.uk>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+        Rob Herring <robh@kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "Jingoo Han" <jingoohan1@gmail.com>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>
+Subject: RE: [PATCH v3 2/6] PCI: xilinx: Unify INTx & MSI interrupt FIFO
+ decode
+Thread-Topic: [PATCH v3 2/6] PCI: xilinx: Unify INTx & MSI interrupt FIFO
+ decode
+Thread-Index: AQHRX2auqVVPAenjokWn6lnTz/Skzp8mXkXg
+Date:   Thu, 11 Feb 2016 05:42:30 +0000
+Message-ID: <8520D5D51A55D047800579B09414719825881ADE@XAP-PVEXMBX01.xlnx.xilinx.com>
+References: <1454602213-967-1-git-send-email-paul.burton@imgtec.com>
+ <1454602213-967-3-git-send-email-paul.burton@imgtec.com>
+In-Reply-To: <1454602213-967-3-git-send-email-paul.burton@imgtec.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.23.96.57]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-In-Reply-To: <56BBD6AD.2090902@caviumnetworks.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-Return-Path: <f.fainelli@gmail.com>
+X-RCIS-Action: ALLOW
+X-TM-AS-Product-Ver: IMSS-7.1.0.1224-8.0.0.1202-22122.006
+X-TM-AS-User-Approved-Sender: Yes;Yes
+X-EOPAttributedMessage: 0
+X-Forefront-Antispam-Report: CIP:149.199.60.83;CTRY:US;IPV:NLI;EFV:NLI;SFV:NSPM;SFS:(10009020)(6009001)(2980300002)(438002)(199003)(189002)(2900100001)(5001770100001)(86362001)(63266004)(2920100001)(87936001)(6116002)(2950100001)(97756001)(106116001)(46406003)(106466001)(5003600100002)(55846006)(47776003)(50986999)(5250100002)(92566002)(54356999)(76176999)(33656002)(586003)(3846002)(1096002)(1220700001)(4326007)(5008740100001)(5004730100002)(102836003)(19580395003)(50466002)(11100500001)(19580405001)(189998001)(2906002)(5001960100002)(6806005)(23726003)(2501003)(107986001);DIR:OUT;SFP:1101;SCL:1;SRVR:SN1NAM02HT035;H:xsj-pvapsmtpgw01;FPR:;SPF:Pass;MLV:sfv;A:1;MX:1;LANG:en;
+X-MS-Office365-Filtering-Correlation-Id: bb5606be-9f84-43bb-e216-08d332a62466
+X-Microsoft-Antispam: UriScan:;BCL:0;PCL:0;RULEID:(8251501002);SRVR:SN1NAM02HT035;
+X-Microsoft-Antispam-PRVS: <e0277734dbf14297a8d02cf6eb1b57eb@SN1NAM02HT035.eop-nam02.prod.protection.outlook.com>
+X-Exchange-Antispam-Report-Test: UriScan:;
+X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(601004)(2401047)(13023025)(13017025)(13015025)(5005006)(8121501046)(13024025)(13018025)(3002001)(10201501046);SRVR:SN1NAM02HT035;BCL:0;PCL:0;RULEID:;SRVR:SN1NAM02HT035;
+X-Forefront-PRVS: 08497C3D99
+X-OriginatorOrg: xilinx.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Feb 2016 05:42:34.0741
+ (UTC)
+X-MS-Exchange-CrossTenant-Id: 657af505-d5df-48d0-8300-c31994686c5c
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=657af505-d5df-48d0-8300-c31994686c5c;Ip=[149.199.60.83];Helo=[xsj-pvapsmtpgw01]
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN1NAM02HT035
+Return-Path: <bharat.kumar.gogada@xilinx.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51987
+X-archive-position: 51988
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: f.fainelli@gmail.com
+X-original-sender: bharat.kumar.gogada@xilinx.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -83,41 +112,112 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Le 10/02/2016 16:32, David Daney a écrit :
-> On 02/10/2016 03:49 PM, Aaro Koskinen wrote:
->> Hi,
->>
->> On Wed, Feb 10, 2016 at 10:02:23AM -0800, David Daney wrote:
->>> On 02/10/2016 09:36 AM, Matt Redfearn wrote:
->>>> +        pr_warn(FW_WARN "%s: Legacy property '%s'. Please remove\n",
->>>> +            node->full_name, legacy_name);
->>>
->>> I don't like this warning message.
->>>
->>> The vast majority of people that see it will not be able to change their
->>> firmware.  So it will be forever cluttering up their boot logs.
->>
->> Until they switch to use APPENDED_DTB. :-)
->>
+> Subject: [PATCH v3 2/6] PCI: xilinx: Unify INTx & MSI interrupt FIFO decode
 > 
-> I am philosophically opposed to making the DTB an internal kernel
-> implementation detail.
+> When decoding either an INTx or MSI interrupt, the driver has no way to
+> know which it will pull out of the interrupt FIFO. If both were pending then
+> this would lead to either the interrupt being handled incorrectly (MSI
+> interrupt treated as INTx) or not at all (INTx interrupt dropped by MSI path).
+> Unify the reading of the interrupt FIFO & act according to the type of
+> interrupt actually read.
 > 
-> For OCTEON boards, it is an ABI between the boot firmware and the
-> kernel, and is impractical to change.
+> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+> Fixes: 8961def56845 ("PCI: xilinx: Add Xilinx AXI PCIe Host Bridge IP driver")
 > 
-> One could argue that many years ago, when the decision was made (by me),
-> that we should have opted to carry in the kernel source code tree the
-> DTS files for all OCTEON boards ever made, but we did not do that.  Due
-> to the non-reversibility of time, the decision is hard to reverse.
+> ---
 > 
-> In the case of this MMC driver, the only real difference is that two
-> properties have legacy names that later had differing "official" names.
->  The overhead of carrying the legacy bindings is very low.
+> Changes in v3:
+> - Split out from Boston patchset.
+> 
+> Changes in v2:
+> - Add Fixes tag.
+> 
+>  drivers/pci/host/pcie-xilinx.c | 47 +++++++++++++-----------------------------
+>  1 file changed, 14 insertions(+), 33 deletions(-)
+> 
+> diff --git a/drivers/pci/host/pcie-xilinx.c b/drivers/pci/host/pcie-xilinx.c index
+> 1490bd1..afdfb09 100644
+> --- a/drivers/pci/host/pcie-xilinx.c
+> +++ b/drivers/pci/host/pcie-xilinx.c
+> @@ -397,7 +397,7 @@ static const struct irq_domain_ops intx_domain_ops
+> = {  static irqreturn_t xilinx_pcie_intr_handler(int irq, void *data)  {
+>  	struct xilinx_pcie_port *port = (struct xilinx_pcie_port *)data;
+> -	u32 val, mask, status, msi_data;
+> +	u32 val, mask, status;
+> 
+>  	/* Read interrupt decode and mask registers */
+>  	val = pcie_read(port, XILINX_PCIE_REG_IDR); @@ -437,8 +437,8 @@
+> static irqreturn_t xilinx_pcie_intr_handler(int irq, void *data)
+>  		xilinx_pcie_clear_err_interrupts(port);
+>  	}
+> 
+> -	if (status & XILINX_PCIE_INTR_INTX) {
+> -		/* INTx interrupt received */
+> +	if (status & (XILINX_PCIE_INTR_INTX | XILINX_PCIE_INTR_MSI)) {
+> +		/* Interrupt received */
+>  		val = pcie_read(port, XILINX_PCIE_REG_RPIFR1);
+> 
+>  		/* Check whether interrupt valid */
+> @@ -447,41 +447,22 @@ static irqreturn_t xilinx_pcie_intr_handler(int irq,
+> void *data)
+>  			return IRQ_HANDLED;
+>  		}
+> 
+> -		if (!(val & XILINX_PCIE_RPIFR1_MSI_INTR)) {
+> -			/* Clear interrupt FIFO register 1 */
+> -			pcie_write(port, XILINX_PCIE_RPIFR1_ALL_MASK,
+> -				   XILINX_PCIE_REG_RPIFR1);
+> -
+> -			/* Handle INTx Interrupt */
+> +		if (val & XILINX_PCIE_RPIFR1_MSI_INTR) {
+> +			irq = pcie_read(port, XILINX_PCIE_REG_RPIFR2) &
+> +				XILINX_PCIE_RPIFR2_MSG_DATA;
+> +		} else {
+>  			val = ((val & XILINX_PCIE_RPIFR1_INTR_MASK) >>
+>  				XILINX_PCIE_RPIFR1_INTR_SHIFT) + 1;
+> -			generic_handle_irq(irq_find_mapping(port-
+> >irq_domain,
+> -							    val));
+> +			irq = irq_find_mapping(port->irq_domain, val);
+>  		}
+> -	}
+> 
+> -	if (status & XILINX_PCIE_INTR_MSI) {
+> -		/* MSI Interrupt */
+> -		val = pcie_read(port, XILINX_PCIE_REG_RPIFR1);
+> +		/* Clear interrupt FIFO register 1 */
+> +		pcie_write(port, XILINX_PCIE_RPIFR1_ALL_MASK,
+> +			   XILINX_PCIE_REG_RPIFR1);
+> 
+> -		if (!(val & XILINX_PCIE_RPIFR1_INTR_VALID)) {
+> -			dev_warn(port->dev, "RP Intr FIFO1 read error\n");
+> -			return IRQ_HANDLED;
+> -		}
+> -
+> -		if (val & XILINX_PCIE_RPIFR1_MSI_INTR) {
+> -			msi_data = pcie_read(port,
+> XILINX_PCIE_REG_RPIFR2) &
+> -				   XILINX_PCIE_RPIFR2_MSG_DATA;
+> -
+> -			/* Clear interrupt FIFO register 1 */
+> -			pcie_write(port, XILINX_PCIE_RPIFR1_ALL_MASK,
+> -				   XILINX_PCIE_REG_RPIFR1);
+> -
+> -			if (IS_ENABLED(CONFIG_PCI_MSI)) {
+> -				/* Handle MSI Interrupt */
+> -				generic_handle_irq(msi_data);
+> -			}
+> -		}
+> +		if (IS_ENABLED(CONFIG_PCI_MSI) ||
+> +			!(val & XILINX_PCIE_RPIFR1_MSI_INTR))
+> +			generic_handle_irq(irq);
+>  	}
+> 
+>  	if (status & XILINX_PCIE_INTR_SLV_UNSUPP)
+> --
 
-Since there is an existing FDT patching infrastructure in
-arch/mips/cavium-octeon/ would not that be a place where you could put
-an adaptation layer between your legacy firmware properties and the
-upstream binding?
--- 
-Florian
+Hi Paul,
+
+Even with above condition you are still missing either MSI or legacy interrupt handling, when both MSI and legacy interrupts occurred.
+
+Bharat

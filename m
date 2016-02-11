@@ -1,81 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Feb 2016 01:58:41 +0100 (CET)
-Received: from mail-pa0-f47.google.com ([209.85.220.47]:32839 "EHLO
-        mail-pa0-f47.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012446AbcBKA6jSSFwE (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 11 Feb 2016 01:58:39 +0100
-Received: by mail-pa0-f47.google.com with SMTP id fl4so8428969pad.0
-        for <linux-mips@linux-mips.org>; Wed, 10 Feb 2016 16:58:39 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Feb 2016 02:59:37 +0100 (CET)
+Received: from mail-pf0-f194.google.com ([209.85.192.194]:34893 "EHLO
+        mail-pf0-f194.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010896AbcBKB7fZh6lb (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 11 Feb 2016 02:59:35 +0100
+Received: by mail-pf0-f194.google.com with SMTP id w128so1211743pfb.2;
+        Wed, 10 Feb 2016 17:59:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=networkplumber-org.20150623.gappssmtp.com; s=20150623;
-        h=date:from:to:cc:subject:message-id:in-reply-to:references
-         :mime-version:content-type:content-transfer-encoding;
-        bh=Vrvtu7j9cCfsZQlDAL8+oWyy+6KCeOD8S5zj32zeu74=;
-        b=MebKVxA4ixuafIsdQyhEccjy66Tabpw+wYJ7tCPcd5myEpeYqvVXB5ZmQUdLRdtnvM
-         q1TrXhXi6Sjd7W8wex0WswbKftU/SBqmKcDqB/YTteP5bNgCbEUBZQ+5X9zJFyIm8QKD
-         BdMbwvqrzt0Craj5bOQ8oeP/M3UIRQHEi+QBaVv/5IGNvISFolrXNE2n3ahLqC2LCn0H
-         2aufl97Cx+KJTWDHKM0xawUwfifBc++i5Uv9VS+2FtK9EuylVmAETtiRpKXOvEtyOYp7
-         q1TSstV9m3W2kdBNydPiyUrKnbK1XwVI90rIiYD+EzrT9KknVhbM+LIdt9a18jmRKMtH
-         cmSA==
+        d=gmail.com; s=20120113;
+        h=subject:to:references:cc:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-type:content-transfer-encoding;
+        bh=ryEF5ONVQ2P2w2oGNAPtUDzY/I1hIF/L+wr8Epdnxl8=;
+        b=tv45LA2UPWxp1JBt8FKntF6767IJDGd9OKvkyPTWzlCHz5nbm1gVoMqo+PTrCop+lB
+         ULlfF2yXC80Zf38IdRAu83n1jZcB0svkGn/cdE4GpF18wSongJe+EyBKMrQc5XPTYThf
+         XT9Qnb8mz63qsnWVCv9rf2U3flNyz/qmD8JHtt7OeU4MNFlTKUzu3AhoEuMxXggT0ZdS
+         C6NU+1EFj9b5sTrQGFY53wMTR2mM21/A2uQW0Az1XnM//aZuLjaWHk1JRlbdl0AKYtwk
+         j8mGq4aj3AVMz3kR4Z/w2PdHhd5E55Dm9qWNZxTFI1lBeubCdKgR1TV+9RTTaFq85P6V
+         WdVA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:in-reply-to
-         :references:mime-version:content-type:content-transfer-encoding;
-        bh=Vrvtu7j9cCfsZQlDAL8+oWyy+6KCeOD8S5zj32zeu74=;
-        b=GAvrlY4P3k2P+SdZXUEHpjPQ9alc4mfyvDHqUig+byhRWZ4kFiy2hmhq7lnJEDC0Bg
-         rm7mSZk5UnRToxZAymM0HfEz0fJoa1pfbwqoKZpf5+jdHsetUh/t+rlyoht09WqLtnEe
-         yPsLnPxebam3uaeVc4qg7c9Zw4v7NqT1ITPrSOuM+3uvOacp35FbPu7yEAiclxYxKN/b
-         VsvJf8xBSQ7EvpwgKwK3GbQZSXWo/oxmk2HSzVwT6cIHAtsb8wp7qyJ8XxAk+dnNyMAp
-         2Pp5dl9Q3yXs/FPZIj8tV0ZZ4x4fSCsaOy1x9z9SiUq+fHQGs7mYUF3v7avNyhGUPg51
-         ZiQA==
-X-Gm-Message-State: AG10YOT9+SEO51Y30mC6rPlZyZWkUSp/VJy4goWQSFZRfm3MdCWbq85Q62QrfNkLPOkibA==
-X-Received: by 10.66.122.36 with SMTP id lp4mr63270617pab.31.1455152313625;
-        Wed, 10 Feb 2016 16:58:33 -0800 (PST)
-Received: from xeon-e3 (static-50-53-82-155.bvtn.or.frontiernet.net. [50.53.82.155])
-        by smtp.gmail.com with ESMTPSA id e20sm7808466pfd.4.2016.02.10.16.58.32
+        h=x-gm-message-state:subject:to:references:cc:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-type
+         :content-transfer-encoding;
+        bh=ryEF5ONVQ2P2w2oGNAPtUDzY/I1hIF/L+wr8Epdnxl8=;
+        b=l5k/qaLpAg47udM51v3oMBY1mg+EVG26xIJgta5VwnzZSne8Z/moCLNtwTZB7vKOZ3
+         JDXf2z1sXmjHDUsDHwBXptY7ZPC75H0p2r3cDc7fweB46dOpQ4TjSgd8r8r29ZziRZL/
+         072vhwdGmjXAqqiKPHFGKslQ/iBzCfil7RU1CIvfr5wWO3zLD63F20waTGWU35dUoU3N
+         OZBM46EGaR/2I45qRGKlXLb2/Pm9BPLNIAQ3LEhketb/DL2Wpf35OJ49W2vM4M0pB/XW
+         fnC2v9W6jRCVFIc0iS9MuIzDTH+MnVxs2fNsJg5pBYJEQ4cBO8cpHmI/pSrTDtBR3sVA
+         S9bA==
+X-Gm-Message-State: AG10YOQAcDwaFHZLCgQnnLup/GNgLygtggzbHQF2trzQakQW1TzYys5IvF/dAMRGQMapZw==
+X-Received: by 10.98.14.149 with SMTP id 21mr62948179pfo.79.1455155969171;
+        Wed, 10 Feb 2016 17:59:29 -0800 (PST)
+Received: from [10.12.156.244] (5520-maca-inet1-outside.broadcom.com. [216.31.211.11])
+        by smtp.googlemail.com with ESMTPSA id u64sm7928611pfa.86.2016.02.10.17.59.27
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 10 Feb 2016 16:58:33 -0800 (PST)
-Date:   Wed, 10 Feb 2016 16:58:46 -0800
-From:   Stephen Hemminger <stephen@networkplumber.org>
-To:     David Decotigny <ddecotig@gmail.com>
-Cc:     "David S. Miller" <davem@davemloft.net>,
-        Ben Hutchings <ben@decadent.org.uk>,
-        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-        linux-api@vger.kernel.org, linux-mips@linux-mips.org,
-        fcoe-devel@open-fcoe.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Tejun Heo <tj@kernel.org>, Eric Dumazet <edumazet@google.com>,
-        Eugenia Emantayev <eugenia@mellanox.co.il>,
-        Or Gerlitz <ogerlitz@mellanox.com>,
-        Ido Shamay <idos@mellanox.com>, Joe Perches <joe@perches.com>,
-        Saeed Mahameed <saeedm@mellanox.com>,
-        Govindarajulu Varadarajan <_govind@gmx.com>,
-        Venkata Duvvuru <VenkatKumar.Duvvuru@Emulex.Com>,
-        Jeff Kirsher <jeffrey.t.kirsher@intel.com>,
-        Pravin B Shelar <pshelar@nicira.com>,
-        Ed Swierk <eswierk@skyportsystems.com>,
-        Robert Love <robert.w.love@intel.com>,
-        "James E.J. Bottomley" <JBottomley@parallels.com>,
-        Yuval Mintz <Yuval.Mintz@qlogic.com>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        David Decotigny <decot@googlers.com>
-Subject: Re: [PATCH net-next v7 15/19] net: bridge: use
- __ethtool_get_ksettings
-Message-ID: <20160210165846.0e7ae670@xeon-e3>
-In-Reply-To: <1454893743-6285-16-git-send-email-ddecotig@gmail.com>
-References: <1454893743-6285-1-git-send-email-ddecotig@gmail.com>
-        <1454893743-6285-16-git-send-email-ddecotig@gmail.com>
+        Wed, 10 Feb 2016 17:59:28 -0800 (PST)
+Subject: Re: [PATCH 6/6] MIPS: Expose current_cpu_data.options through debugfs
+To:     Ralf Baechle <ralf@linux-mips.org>
+References: <1455051354-6225-1-git-send-email-f.fainelli@gmail.com>
+ <1455051354-6225-7-git-send-email-f.fainelli@gmail.com>
+ <20160210104629.GA11091@linux-mips.org>
+Cc:     linux-mips@linux-mips.org, blogic@openwrt.org, cernekee@gmail.com,
+        jon.fraser@broadcom.com, pgynther@google.com,
+        paul.burton@imgtec.com, ddaney.cavm@gmail.com
+From:   Florian Fainelli <f.fainelli@gmail.com>
+Message-ID: <56BBEABF.8030804@gmail.com>
+Date:   Wed, 10 Feb 2016 17:58:23 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+ Thunderbird/38.5.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+In-Reply-To: <20160210104629.GA11091@linux-mips.org>
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
-Return-Path: <stephen@networkplumber.org>
+Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 51985
+X-archive-position: 51986
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: stephen@networkplumber.org
+X-original-sender: f.fainelli@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -88,37 +73,35 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sun,  7 Feb 2016 17:08:59 -0800
-David Decotigny <ddecotig@gmail.com> wrote:
-
-> From: David Decotigny <decot@googlers.com>
+On 10/02/16 02:46, Ralf Baechle wrote:
+> On Tue, Feb 09, 2016 at 12:55:54PM -0800, Florian Fainelli wrote:
 > 
-> Signed-off-by: David Decotigny <decot@googlers.com>
-> ---
->  net/bridge/br_if.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
+>> Debugging a missing features in cpu-features-override.h, or a runtime feature
+>> set/clear in the vendor specific cpu_probe() function can be a little tedious,
+>> ease that by providing a debugfs entry representing the
+>> current_cpu_data.options bitmask.
 > 
-> diff --git a/net/bridge/br_if.c b/net/bridge/br_if.c
-> index c367b3e..cafe4e6 100644
-> --- a/net/bridge/br_if.c
-> +++ b/net/bridge/br_if.c
-> @@ -36,10 +36,10 @@
->   */
->  static int port_cost(struct net_device *dev)
->  {
-> -	struct ethtool_cmd ecmd;
-> +	struct ethtool_ksettings ecmd;
->  
-> -	if (!__ethtool_get_settings(dev, &ecmd)) {
-> -		switch (ethtool_cmd_speed(&ecmd)) {
-> +	if (!__ethtool_get_ksettings(dev, &ecmd)) {
-> +		switch (ecmd.parent.speed) {
->  		case SPEED_10000:
->  			return 2;
->  		case SPEED_1000:
+> Hm..  Bits in the options bitmaps are not an ABI, they come and sometimes
+> they go as well and manual decoding can be tedious to humans.  so I'm
+> wondering if something in /sys/devices/system/cpu would be more suitable.
 
-Sure looks fine for bridge.
-This reminds me that bridge code needs to transition to this decade
-and do latest STP.
+Not sure, you need this while bringing up systems and/or debugging why a
+kernel does not have this or that enabled as you think it should,
+outside of that, not so much probably?. More standard interfaces like
+/proc/cpuinfo should be used, but that does not give you the full picture.
 
-Acked-by: Stephen Hemminger <stephen@networkplumber.org>
+> It'd depend on just sysfs, not debugfs which is disabled in production
+> kernels.
+> 
+> Thoughts?
+
+I suppose this is fine, in that case, we would probably want to go with
+a text-based approach to make the interface more stable.
+
+NB: I also have a patch that adds cache info reporting to MIPS, since it
+seems useful for people dealing with user-space cache flushes (graphics,
+JIT, etc.), Russell King rejected adding that for ARM, but ARM64 and x86
+have it (arch/arm64/kernel/cacheinfo.c) would you oppose to having that
+for MIPS?
+-- 
+Florian

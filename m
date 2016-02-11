@@ -1,51 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Feb 2016 15:11:21 +0100 (CET)
-Received: from mout.kundenserver.de ([212.227.126.135]:62322 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27012528AbcBKOLT73yWX (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 11 Feb 2016 15:11:19 +0100
-Received: from wuerfel.localnet ([78.42.132.4]) by mrelayeu.kundenserver.de
- (mreue003) with ESMTPSA (Nemesis) id 0LckSJ-1ZlUNe0Sc3-00k7Dp; Thu, 11 Feb
- 2016 15:10:53 +0100
-From:   Arnd Bergmann <arnd@arndb.de>
-To:     Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>
-Cc:     tj@kernel.org, hdegoede@redhat.com, david.daney@cavium.com,
-        aleksey.makarov@caviumnetworks.com, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-ide@vger.kernel.org,
-        linux-mips@linux-mips.org, ralf@linux-mips.org
-Subject: Re: [Patch v9] SATA: OCTEON: support SATA on OCTEON platform
-Date:   Thu, 11 Feb 2016 15:10:48 +0100
-Message-ID: <3605862.y2fqt1KHLm@wuerfel>
-User-Agent: KMail/4.11.5 (Linux/3.16.0-10-generic; KDE/4.11.5; x86_64; ; )
-In-Reply-To: <1455198788-24754-1-git-send-email-Zubair.Kakakhel@imgtec.com>
-References: <1455198788-24754-1-git-send-email-Zubair.Kakakhel@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Feb 2016 15:25:52 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:31338 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27012528AbcBKOZunrpLv (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 11 Feb 2016 15:25:50 +0100
+Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
+        by Websense Email Security Gateway with ESMTPS id 9652F6A19AB24;
+        Thu, 11 Feb 2016 14:25:42 +0000 (GMT)
+Received: from [10.100.200.149] (10.100.200.149) by hhmail02.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server id 14.3.266.1; Thu, 11 Feb 2016
+ 14:25:44 +0000
+Date:   Thu, 11 Feb 2016 14:25:43 +0000
+From:   "Maciej W. Rozycki" <macro@imgtec.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+CC:     "Michael S. Tsirkin" <mst@redhat.com>,
+        Michal Marek <mmarek@suse.com>,
+        James Hogan <james.hogan@imgtec.com>,
+        <linux-kbuild@vger.kernel.org>, <linux-mips@linux-mips.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: [PATCH] ld-version: Drop the 4th and 5th version components
+Message-ID: <alpine.DEB.2.00.1602111359390.15885@tp.orcam.me.uk>
+User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-X-Provags-ID: V03:K0:Flyv4vHNYfP64js+LgFmjVIgVcPj8Itd6jw4v1PYiIwnHVoKDjN
- E8WCbdh5cPnltIatk1IYcBy4h+5OPCIV90iHE6pXXWViUCwsrMJ1ZV8snfz7rzvt54Mf2RG
- odG1k+dIhzHAYSgnFUlBXxV8xk2oJ3KX0PLoWRyyyERLa6Oquz2pKeZx6IzTBMlVIpDcN8n
- nOyFCfIqEN8XRKzuZFhWA==
-X-UI-Out-Filterresults: notjunk:1;V01:K0:jOdenZyH1eQ=:erQ+nnA72aRTLG/Nm4ySk9
- voZPnbrxb7xl3zUdfw5CCQbdYEi/rw6YJtwPX/EEf/BoGs0CEMz+ql10OLyXM653f17hEGYGx
- IIF9f/ehvufXLkzZO0v64ltS6+oCSHXOs7FW1bOkXMh2qbjmod91KoNe+o8vNGrEcBjFgghO5
- jQW5SVzw2IKxqyzdr6cRKhpT5BWJJESAmoTE5COdwG9/og0UIGnaKaTILH2BtUYDvT0wxpoiu
- MKCh8lKS9J0R7SBGsgQa5Wb+h+HIIGgAXRoeJbac+FLLqjG/gjrExLTqgDxuGAosfPpaPWkku
- ggPUbM9MUW1/FBHJh2FGEIjUypqRFMBdxzxMqjbbNlfI3d+Bin4NY+rFPyFsrD8iin6vAlkxn
- Cq4ST/sYFfCEC37ongaHezqrRv1TiedCg0E1SR7EZ+n42Oc5DY5pOi/KvBjoSuH1hGIbjzLS/
- 8M5w3k5augJMqpkOn/9KggqqccQ6PP/7rbaYN+xA0zg8VXTFH8zFwvWC1TTbCmiBEungXDg99
- JboA4CCJ6qciq8KsQTjjMR7o5+he+szztrGcTdYr3GXhs3aVxk+oAmPXZXiMhsPBPZp3hZ/nS
- o/IkolnX8WjxeNRsIaRvyoauXX1Zza8ksZDs1+p7yKUWanydBEYPHWo+Yjc+1yb1VTDDWEfOF
- Q9aGz3KLPMEV1tGI+MS4np7r+VOn0NDjdoN32yNCXlUschhlJviPV11gBDrG/0tCFrIwePbVu
- 2VivBmodp4r923kw
-Return-Path: <arnd@arndb.de>
+Content-Type: text/plain; charset="US-ASCII"
+X-Originating-IP: [10.100.200.149]
+Return-Path: <Maciej.Rozycki@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52004
+X-archive-position: 52005
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arnd@arndb.de
+X-original-sender: macro@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,17 +44,47 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thursday 11 February 2016 13:53:08 Zubair Lutfullah Kakakhel wrote:
-> From: Aleksey Makarov <aleksey.makarov@caviumnetworks.com>
-> 
-> The OCTEON SATA controller is currently found on cn71XX devices.
-> 
-> Cc: Arnd Bergmann <arnd@arndb.de>
-> Acked-by: Hans de Goede <hdegoede@redhat.com>
-> Acked-by: Rob Herring <robh@kernel.org>
-> Signed-off-by: David Daney <david.daney@cavium.com>
-> Signed-off-by: Vinita Gupta <vgupta@caviumnetworks.com>
-> Signed-off-by: Aleksey Makarov <aleksey.makarov@auriga.com>
-> Signed-off-by: Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>
+... making upstream development binutils snapshots work as expected,
+e.g.:
 
-Acked-by: Arnd Bergmann <arnd@arndb.de>
+$ mips64el-linux-ld --version
+GNU ld (GNU Binutils) 2.20.1.20100303
+[...]
+$ 
+
+Signed-off-by: Maciej W. Rozycki <macro@imgtec.com>
+---
+ It may well actually have been a release mistake with the proper 2.20.1 
+maintenance release as I reckon the development vs release build switch is 
+a knob that used to require to be flipped in the sources by the release 
+manager; maybe it still does.  Either way this version guarantees all the 
+2.20.1 stuff to be present as the version number is only bumped up as a 
+release is being made, so any prior snapshot would report 2.20.0.20100302, 
+etc., or maybe even 2.20.0.20100303 if made earlier on on the same day.
+
+ So please apply, or anyone is welcome to improve it, as my limited awk-fu 
+(which I'll be happy to get corrected) tells me the script doesn't really 
+terminate parsing on a non-point-non-digit character.
+
+ NB comments in scripts/Kbuild.include around `ld-version' have not been 
+accordingly updated in the course of changes made to `ld-version.sh' and 
+they still need such an update, unless we right-shift the version code 
+calculated back by 4 decimal digits, which I hesitated doing here for 
+simplicity.  What was the original reason to add the 4th and 5th 
+components?
+
+  Maciej
+
+linux-mips-ld-version-fix.diff
+Index: linux-20160211/scripts/ld-version.sh
+===================================================================
+--- linux-20160211.orig/scripts/ld-version.sh
++++ linux-20160211/scripts/ld-version.sh
+@@ -5,6 +5,6 @@
+ 	gsub(".*version ", "");
+ 	gsub("-.*", "");
+ 	split($1,a, ".");
+-	print a[1]*100000000 + a[2]*1000000 + a[3]*10000 + a[4]*100 + a[5];
++	print a[1]*100000000 + a[2]*1000000 + a[3]*10000;
+ 	exit
+ 	}

@@ -1,33 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Feb 2016 13:37:41 +0100 (CET)
-Received: from mail.bmw-carit.de ([62.245.222.98]:47692 "EHLO
-        linuxmail.bmw-carit.de" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27012515AbcBKMhDeoFAJ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 11 Feb 2016 13:37:03 +0100
-Received: from localhost (handman.bmw-carit.intra [192.168.101.8])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by linuxmail.bmw-carit.de (Postfix) with ESMTPS id ED3F95D25E;
-        Thu, 11 Feb 2016 13:19:57 +0100 (CET)
-From:   Daniel Wagner <daniel.wagner@bmw-carit.de>
-To:     "Maciej W. Rozycki" <macro@imgtec.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-kernel@vger.kernel.org,
-        linux-mips@linux-mips.org,
-        Daniel Wagner <daniel.wagner@bmw-carit.de>
-Subject: [PATCH v5 1/2] crash_dump: Add vmcore_elf32_check_arch
-Date:   Thu, 11 Feb 2016 13:36:54 +0100
-Message-Id: <1455194215-20026-2-git-send-email-daniel.wagner@bmw-carit.de>
-X-Mailer: git-send-email 2.5.0
-In-Reply-To: <1455194215-20026-1-git-send-email-daniel.wagner@bmw-carit.de>
-References: <1455194215-20026-1-git-send-email-daniel.wagner@bmw-carit.de>
-Return-Path: <daniel.wagner@oss.bmw-carit.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Feb 2016 14:00:36 +0100 (CET)
+Received: (from localhost user: 'macro', uid#1010) by eddie.linux-mips.org
+        with ESMTP id S27012512AbcBKNAcCrZkJ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 11 Feb 2016 14:00:32 +0100
+Date:   Thu, 11 Feb 2016 13:00:32 +0000 (GMT)
+From:   "Maciej W. Rozycki" <macro@linux-mips.org>
+To:     Ralf Baechle <ralf@linux-mips.org>
+cc:     "Michael S. Tsirkin" <mst@redhat.com>,
+        linux-kernel@vger.kernel.org, Michal Marek <mmarek@suse.com>,
+        linux-kbuild@vger.kernel.org, linux-mips@linux-mips.org,
+        James Hogan <james.hogan@imgtec.com>
+Subject: Re: [PATCH] ld-version: fix it on Fedora
+In-Reply-To: <20160107181920.GE17031@linux-mips.org>
+Message-ID: <alpine.LFD.2.20.1602111249400.2715@eddie.linux-mips.org>
+References: <1452189189-31188-1-git-send-email-mst@redhat.com> <20160107181920.GE17031@linux-mips.org>
+User-Agent: Alpine 2.20 (LFD 67 2015-01-07)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52001
+X-archive-position: 52002
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: daniel.wagner@bmw-carit.de
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -40,53 +37,38 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-parse_crash_elf{32|64}_headers will check the headers via the
-elf_check_arch respectively vmcore_elf64_check_arch macro.
+On Thu, 7 Jan 2016, Ralf Baechle wrote:
 
-The MIPS architecture implements those two macros differently.
-In order to make the differentiation more explicit, let's introduce
-an vmcore_elf32_check_arch to allow the archs to overwrite it.
+> > GNU ld version 2.25-15.fc23
+> > 
+> > But ld-version.sh fails to parse this, so e.g.  mips build fails to
+> > enable VDSO, printing a warning that binutils >= 2.24 is required.
+> > 
+> > To fix, teach ld-version to parse this format.
+> > 
+> > Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+> > ---
+> > 
+> > Which tree should this be merged through? Mine? MIPS?
+> 
+> MIPS is the sole user of ld-ifversion at this time and taking this through
+> the MIPS tree will avoid possible merge conflicts with James Hogan's
+> pending d5ece1cb074b2c7082c9a2948ac598dd0ad40657 fix ("Fix ld-version.sh to
+> handle large 3rd version part").  So I think I should take this through
+> the MIPS tree.
 
-Signed-off-by: Daniel Wagner <daniel.wagner@bmw-carit.de>
-Suggested-by: Maciej W. Rozycki <macro@imgtec.com>
-Reviewed-by: Maciej W. Rozycki <macro@imgtec.com>
----
- fs/proc/vmcore.c           | 2 +-
- include/linux/crash_dump.h | 8 ++++++--
- 2 files changed, 7 insertions(+), 3 deletions(-)
+ FYI, I'm still getting a failure here, with:
 
-diff --git a/fs/proc/vmcore.c b/fs/proc/vmcore.c
-index 4e61388..c8ed209 100644
---- a/fs/proc/vmcore.c
-+++ b/fs/proc/vmcore.c
-@@ -1068,7 +1068,7 @@ static int __init parse_crash_elf32_headers(void)
- 	/* Do some basic Verification. */
- 	if (memcmp(ehdr.e_ident, ELFMAG, SELFMAG) != 0 ||
- 		(ehdr.e_type != ET_CORE) ||
--		!elf_check_arch(&ehdr) ||
-+		!vmcore_elf32_check_arch(&ehdr) ||
- 		ehdr.e_ident[EI_CLASS] != ELFCLASS32||
- 		ehdr.e_ident[EI_VERSION] != EV_CURRENT ||
- 		ehdr.e_version != EV_CURRENT ||
-diff --git a/include/linux/crash_dump.h b/include/linux/crash_dump.h
-index 3849fce..3873697 100644
---- a/include/linux/crash_dump.h
-+++ b/include/linux/crash_dump.h
-@@ -34,9 +34,13 @@ void vmcore_cleanup(void);
- 
- /*
-  * Architecture code can redefine this if there are any special checks
-- * needed for 64-bit ELF vmcores. In case of 32-bit only architecture,
-- * this can be set to zero.
-+ * needed for 32-bit ELF or 64-bit ELF vmcores.  In case of 32-bit
-+ * only architecture, vmcore_elf64_check_arch can be set to zero.
-  */
-+#ifndef vmcore_elf32_check_arch
-+#define vmcore_elf32_check_arch(x) elf_check_arch(x)
-+#endif
-+
- #ifndef vmcore_elf64_check_arch
- #define vmcore_elf64_check_arch(x) (elf_check_arch(x) || vmcore_elf_check_arch_cross(x))
- #endif
--- 
-2.5.0
+$ mips64el-linux-ld --version
+GNU ld (GNU Binutils) 2.20.1.20100303
+[...]
+$
+
+-- so this is a plain upstream development snapshot as these have their 
+date appended.  Can we just get rid of the subversion components beyond 
+the third, as I already suggested?  I.e. stop on the third point and in 
+any case on a non-point-non-digit.
+
+ I'll post a minimal fix shortly, feel free to enhance it if needed.
+
+  Maciej

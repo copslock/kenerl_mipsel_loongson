@@ -1,69 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Feb 2016 03:21:33 +0100 (CET)
-Received: from mail-pf0-f179.google.com ([209.85.192.179]:36072 "EHLO
-        mail-pf0-f179.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012572AbcBLCVchLX0R convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 12 Feb 2016 03:21:32 +0100
-Received: by mail-pf0-f179.google.com with SMTP id e127so39325766pfe.3
-        for <linux-mips@linux-mips.org>; Thu, 11 Feb 2016 18:21:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20150623.gappssmtp.com; s=20150623;
-        h=content-type:mime-version:content-transfer-encoding:to:from
-         :in-reply-to:cc:references:message-id:user-agent:subject:date;
-        bh=AO2hLaK8zFmpI9OXNH1ONjun5jcIo3tygqMomFYtBZY=;
-        b=DE4BI+GucLRpxEwcl5DCRPfFzuml7ZMHpzLq45LQrooibF1ay45i0h/sUmDK/MeqIg
-         HR97VMooiYvnkYzTYiqcgElc0sp8fG8f7sAvIDd9MhhqxEDvBnmNqtpp4SKUV8/POhWo
-         oLC/gJsnMoxyTI1/dMZADLVjwE2Zdo8xoBlJPX7ZfjySVBOHhjAJi5isSeaNO0y/9dUN
-         +eTZ5mbKce7YCQ0fTLz3Bh1ucUHxw9dxOHv+psmPEx1Dv0fjDi02KabvzsCF3L3ftHEp
-         WNa2ASj4eoIN+VuN5HBu282qkD9BE7O7ki26mk4mHsi4LDe7ehfCTJwXzqLoFaspA0al
-         KsYA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:content-type:mime-version
-         :content-transfer-encoding:to:from:in-reply-to:cc:references
-         :message-id:user-agent:subject:date;
-        bh=AO2hLaK8zFmpI9OXNH1ONjun5jcIo3tygqMomFYtBZY=;
-        b=AMcsletDPn0JCl0fyrgbqViHrprwk+zx3ewUHvKp40DdggWsRDRi8snfWPuVIx//De
-         VaObBAY0rD4c1U9WA9pJuTQ4enEFzoY0fvOO+cnHtVLPzFJB3ibQvWuzY9Ncqgk/d8o6
-         CYWTqtWPecFcty0l0DOU0QvGDDz204lSmIJce70QHQFSM5ESr0NYizPHuF9Z+xGIPgdJ
-         TFPg0tPIlqhHVU8zJeqnOvG1a9JD82EJ6305aXKzU7N37JpS7TJ7ajadwLBI3n5eOVtk
-         6UUMUvvYbhV48oyeQwS1Qum+X55wwk4OtIWv0NSssDiCcvQY8zOzrlPsdyjyVu5LccPE
-         1mSQ==
-X-Gm-Message-State: AG10YOSetz3sfPbXabfQ4GOMGwdtZhkh4HSUxYsrvyq7EcKx3360wtQWmw0iybvp1+11b9N+
-X-Received: by 10.98.71.92 with SMTP id u89mr71470078pfa.122.1455243686210;
-        Thu, 11 Feb 2016 18:21:26 -0800 (PST)
-Received: from localhost (cpe-172-248-200-249.socal.res.rr.com. [172.248.200.249])
-        by smtp.gmail.com with ESMTPSA id r5sm15148610pap.7.2016.02.11.18.21.24
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 11 Feb 2016 18:21:25 -0800 (PST)
-Content-Type: text/plain; charset="utf-8"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Feb 2016 11:57:46 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:44022 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S27012111AbcBLK5oZpC1t (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 12 Feb 2016 11:57:44 +0100
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.15.2/8.14.8) with ESMTP id u1CAvd23028606;
+        Fri, 12 Feb 2016 11:57:39 +0100
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.15.2/8.15.2/Submit) id u1CAvasY028605;
+        Fri, 12 Feb 2016 11:57:36 +0100
+Date:   Fri, 12 Feb 2016 11:57:36 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     "Maciej W. Rozycki" <macro@imgtec.com>
+Cc:     Paul Burton <paul.burton@imgtec.com>, linux-mips@linux-mips.org,
+        "Steven J. Hill" <Steven.Hill@imgtec.com>,
+        Joshua Kinard <kumba@gentoo.org>, linux-kernel@vger.kernel.org,
+        =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+        James Hogan <james.hogan@imgtec.com>,
+        Markos Chandras <markos.chandras@imgtec.com>
+Subject: Re: [PATCH] MIPS: tlb-r4k: panic if the MMU doesn't support PAGE_SIZE
+Message-ID: <20160212105736.GA11854@linux-mips.org>
+References: <1436803964-29820-1-git-send-email-paul.burton@imgtec.com>
+ <20160210221049.GA26712@NP-P-BURTON>
+ <alpine.DEB.2.00.1602111931450.15885@tp.orcam.me.uk>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-To:     Antony Pavlov <antonynpavlov@gmail.com>, linux-mips@linux-mips.org
-From:   Michael Turquette <mturquette@baylibre.com>
-In-Reply-To: <1455005641-7079-2-git-send-email-antonynpavlov@gmail.com>
-Cc:     "Marek Vasut" <marex@denx.de>, "Wills Wang" <wills.wang@live.com>,
-        "Daniel Schwierzeck" <daniel.schwierzeck@gmail.com>,
-        "Alban Bedel" <albeu@free.fr>,
-        "Stephen Boyd" <sboyd@codeaurora.org>,
-        "Rob Herring" <robh+dt@kernel.org>,
-        "Paul Burton" <paul.burton@imgtec.com>, linux-clk@vger.kernel.org,
-        devicetree@vger.kernel.org
-References: <1455005641-7079-1-git-send-email-antonynpavlov@gmail.com>
- <1455005641-7079-2-git-send-email-antonynpavlov@gmail.com>
-Message-ID: <20160212022124.3210.30707@quark.deferred.io>
-User-Agent: alot/0.3.6
-Subject: Re: [RFC v5 01/15] WIP: clk: add Atheros AR933X SoCs clock driver
-Date:   Thu, 11 Feb 2016 18:21:24 -0800
-Return-Path: <mturquette@baylibre.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <alpine.DEB.2.00.1602111931450.15885@tp.orcam.me.uk>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52021
+X-archive-position: 52022
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mturquette@baylibre.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -76,25 +49,24 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Quoting Antony Pavlov (2016-02-09 00:13:47)
-> +static void __init ar9130_init(struct device_node *np)
-> +{
-> +       int retval;
-> +       struct ath79_cblk *cblk;
-> +
-> +       cblk = ath79_cblk_new(ar9331_clocks, ARRAY_SIZE(ar9331_clocks), np);
-> +       if (!cblk) {
-> +               pr_err("%s: failed to initialise clk block\n", __func__);
-> +               return;
-> +       }
-> +
-> +       retval = ath79_cblk_register_clocks(cblk);
-> +       if (retval)
-> +               pr_err("%s: failed to register clocks\n", __func__);
-> +}
-> +CLK_OF_DECLARE(ar933x_clk, "qca,ar9330-pll", ar9130_init);
+On Thu, Feb 11, 2016 at 07:37:12PM +0000, Maciej W. Rozycki wrote:
 
-Is there any reason this isn't a platform_driver?
+> > > index 08318ec..4330315 100644
+> > > --- a/arch/mips/mm/tlb-r4k.c
+> > > +++ b/arch/mips/mm/tlb-r4k.c
+> > > @@ -486,6 +487,10 @@ static void r4k_tlb_configure(void)
+> > >  	 *     be set to fixed-size pages.
+> > >  	 */
+> > >  	write_c0_pagemask(PM_DEFAULT_MASK);
+> > > +	back_to_back_c0_hazard();
+> > > +	if (read_c0_pagemask() != PM_DEFAULT_MASK)
+> > > +		panic("MMU doesn't support PAGE_SIZE=0x%lx", PAGE_SIZE);
+> 
+>  I think it would make sense to report here what the minimum/maximum page 
+> size actually supported is, so that the users know what there might be 
+> after.
 
-Thanks,
-Mike
+This is a very unlikely error condition to be hit so I'd rather keep it
+simple.  Even just BUG_ON() would suffice.
+
+  Ralf

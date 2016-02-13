@@ -1,19 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 13 Feb 2016 02:39:23 +0100 (CET)
-Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:36329 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 13 Feb 2016 02:49:31 +0100 (CET)
+Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:36374 "EHLO
         shadbolt.e.decadent.org.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27009751AbcBMBjU2GnEJ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 13 Feb 2016 02:39:20 +0100
+        by eddie.linux-mips.org with ESMTP id S27009751AbcBMBt3rppVJ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 13 Feb 2016 02:49:29 +0100
 Received: from [2a02:8011:400e:2:a11:96ff:fe28:a980] (helo=deadeye)
         by shadbolt.decadent.org.uk with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.84)
         (envelope-from <ben@decadent.org.uk>)
-        id 1aUPB4-0003bj-7v; Sat, 13 Feb 2016 01:39:14 +0000
+        id 1aUPKq-00044E-0Z; Sat, 13 Feb 2016 01:49:20 +0000
 Received: from ben by deadeye with local (Exim 4.86)
         (envelope-from <ben@decadent.org.uk>)
-        id 1aUPAy-0007gv-W3; Sat, 13 Feb 2016 01:39:08 +0000
-Message-ID: <1455327543.2801.79.camel@decadent.org.uk>
-Subject: Re: [PATCH net-next v8 02/19] test_bitmap: unit tests for
- lib/bitmap.c
+        id 1aUPKk-0007kp-It; Sat, 13 Feb 2016 01:49:14 +0000
+Message-ID: <1455328149.2801.82.camel@decadent.org.uk>
+Subject: Re: [PATCH net-next v8 05/19] net: ethtool: add new
+ ETHTOOL_GSETTINGS/SSETTINGS API
 From:   Ben Hutchings <ben@decadent.org.uk>
 To:     David Decotigny <ddecotig@gmail.com>,
         "David S. Miller" <davem@davemloft.net>,
@@ -33,15 +33,15 @@ Cc:     Eric Dumazet <edumazet@google.com>,
         Pravin B Shelar <pshelar@nicira.com>,
         Ed Swierk <eswierk@skyportsystems.com>,
         Robert Love <robert.w.love@intel.com>,
-        Yuval Mintz <Yuval.Mintz@qlogic.com>,
+        "James E.Yuval Mintz" <Yuval.Mintz@qlogic.com>,
         Rasmus Villemoes <linux@rasmusvillemoes.dk>,
         David Decotigny <decot@googlers.com>
-Date:   Sat, 13 Feb 2016 01:39:03 +0000
-In-Reply-To: <1455064168-5102-3-git-send-email-ddecotig@gmail.com>
+Date:   Sat, 13 Feb 2016 01:49:09 +0000
+In-Reply-To: <1455064168-5102-6-git-send-email-ddecotig@gmail.com>
 References: <1455064168-5102-1-git-send-email-ddecotig@gmail.com>
-         <1455064168-5102-3-git-send-email-ddecotig@gmail.com>
+         <1455064168-5102-6-git-send-email-ddecotig@gmail.com>
 Content-Type: multipart/signed; micalg="pgp-sha512";
-        protocol="application/pgp-signature"; boundary="=-dMEmN+NpsyqIDHiwxqFo"
+        protocol="application/pgp-signature"; boundary="=-NCwJIfUL82hmdvCgSQ0U"
 X-Mailer: Evolution 3.18.3-1 
 Mime-Version: 1.0
 X-SA-Exim-Connect-IP: 2a02:8011:400e:2:a11:96ff:fe28:a980
@@ -51,7 +51,7 @@ Return-Path: <ben@decadent.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52030
+X-archive-position: 52031
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -69,66 +69,52 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 
---=-dMEmN+NpsyqIDHiwxqFo
+--=-NCwJIfUL82hmdvCgSQ0U
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
 On Tue, 2016-02-09 at 16:29 -0800, David Decotigny wrote:
 > From: David Decotigny <decot@googlers.com>
 >=20
-> This is mainly testing bitmap construction and conversion to/from u32[]
-> for now.
->=20
-> Tested:
-> =C2=A0 qemu i386, x86_64, ppc, ppc64 BE and LE, ARM.
->=20
-> Signed-off-by: David Decotigny <decot@googlers.com>
+> This patch defines a new ETHTOOL_GSETTINGS/SSETTINGS API, handled by
+> the new get_ksettings/set_ksettings callbacks. This API provides
+> support for most legacy ethtool_cmd fields, adds support for larger
+> link mode masks (up to 4064 bits, variable length), and removes
+> ethtool_cmd deprecated fields (transceiver/maxrxpkt/maxtxpkt).
 [...]
-> diff --git a/tools/testing/selftests/lib/bitmap.sh b/tools/testing/selfte=
-sts/lib/bitmap.sh
-> new file mode 100644
 
-This needs to have mode 755.
+I previously asked you to include 'link' in the command names and
+structure name. =C2=A0This would clarify that these are now only for link
+settings and reduce the risk of confusion between old and new commands.
+However, you didn't reply to that review. =C2=A0Do you have any objection t=
+o
+doing this?
 
 Ben.
 
-> index 0000000..2da187b
-> --- /dev/null
-> +++ b/tools/testing/selftests/lib/bitmap.sh
-> @@ -0,0 +1,10 @@
-> +#!/bin/sh
-> +# Runs bitmap infrastructure tests using test_bitmap kernel module
-> +
-> +if /sbin/modprobe -q test_bitmap; then
-> +	/sbin/modprobe -q -r test_bitmap
-> +	echo "bitmap: ok"
-> +else
-> +	echo "bitmap: [FAIL]"
-> +	exit 1
-> +fi
 --=20
 Ben Hutchings
 Sturgeon's Law: Ninety percent of everything is crap.
---=-dMEmN+NpsyqIDHiwxqFo
+--=-NCwJIfUL82hmdvCgSQ0U
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: This is a digitally signed message part
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1
 
-iQIVAwUAVr6JN+e/yOyVhhEJAQoreg/8CyAqnMX0OsvT/Kq3OZbYtJ+ox8k0w7lY
-QF1kUm532EjcM+eS0ebXuzngeuty2jMLnJ7d4jI6ZtMqCVt5jY4vxvsELPbYut3W
-zFVW1WRatPwQA7aa4TUDprR5CuvYqpEp+EVoVUdoMRIgBgOSHHEJJSS1E2Esm4IY
-7rtk1thYjbSSXqEFSR5SvVVZ+E8gkh5Awkmr2t67oxhw2aU6kzDq4TD4NP/6OeXu
-OFx+hCh7BCu3kkUdkVswWvISiDbXcgKy7khDcAJSI6pvjmMz13Sl9UEOdsqwV/H9
-5BRQM4FXyG6Mmc1u6M6vIwWKL5DNcstr0Zp9WA8xwkFimdA/uphCONzWTb4PQZ41
-Y0PkQ3qbvAsPsuCyKIxAKi815RzYCbiUn1nhLgXvmJVCw5NHD3lkjJjqh4ejaFIP
-nyUOpCJWLPeKAxmH0P1C4827mGJCAbd9zUEjamWqJ6E+NhjyTW7u6VI9yAqQv9oQ
-T5cwgec4O2trPqTD2JYLxeXPTtiJQxIBh8ofW9s1V3cdIw5v3or3t2JRvKwNIy2Y
-kgXpjr433jhbrxL+cgwX9bRzOmbKlK1xvJpzVze+SO7Vay8tnqlHQu3R5eoNASWs
-1jNTYHbo0ARZMMqZDpS0vIAvoBJLG7oBir6qjj2NYT6aby24No5BLNALr8KZMi7X
-EFKHaJ7Brcg=
-=hORQ
+iQIVAwUAVr6Llee/yOyVhhEJAQptQxAAqHw6JCPN3b1UNtl5CkykMq9sgZ+j8VOi
+9b6BaMefBawGFNaPzk6xQBpnwfrGdcofFw+r3Y+OThloB1NB5orhWTnX8citmnlA
+zFuKYE0Si1YC23nlITS+n3U8xJnQKyjwN4jB+acYc3YqELGg6qXvLGQYYpRXKBa0
+rwlYT13ZjTF9oar0dpEXJo9Y3uUsWDVnAeG1E3AAqel5llKzr0n+bUdjO76rdNMQ
+/B2IOq2H09ufZdRKJl9Mtd0LrcvNXZzFepfRqW86kd9NqClwwLsHsinlUVttYaz2
+I5DprGRLIC2CCh82aqLwBMqvnwcR2erOANIPdGpnHS8vUpkgCdClxEXujB3IOzcs
++CYF4FMZjjVZp0fsedds4hkTKdgn1ALKurMoyfWPKbzFBdgJR8qGbpzAdR2uz3Vg
++AzeRqLv9EP3VnctF9Cmndlmy0ycmpb1Vd3sU3x+2MNFy1lPavzmbXULtB1T+GsN
+TRnfUfvWQ2T+dadHpqH+tVElNivQoiaKOpL2FVWUPZEs+0ngI9I74VKQuMG2RbBu
+3EzolbI3XfCt+kMbvnkJuCXHdvt63OOcVGy6QBfQW+Hy64aUaDB7ojau+/3NJjwl
+K9F+jJF07SRDWToWHNO2h98fnZt2/9dxazlELgwAnyU7PpK1RieS9huDeHvXG8Ge
+QM9yzxMhV4s=
+=aMKY
 -----END PGP SIGNATURE-----
 
---=-dMEmN+NpsyqIDHiwxqFo--
+--=-NCwJIfUL82hmdvCgSQ0U--

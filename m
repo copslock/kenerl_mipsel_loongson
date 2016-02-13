@@ -1,61 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 13 Feb 2016 02:49:31 +0100 (CET)
-Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:36374 "EHLO
-        shadbolt.e.decadent.org.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27009751AbcBMBt3rppVJ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 13 Feb 2016 02:49:29 +0100
-Received: from [2a02:8011:400e:2:a11:96ff:fe28:a980] (helo=deadeye)
-        by shadbolt.decadent.org.uk with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.84)
-        (envelope-from <ben@decadent.org.uk>)
-        id 1aUPKq-00044E-0Z; Sat, 13 Feb 2016 01:49:20 +0000
-Received: from ben by deadeye with local (Exim 4.86)
-        (envelope-from <ben@decadent.org.uk>)
-        id 1aUPKk-0007kp-It; Sat, 13 Feb 2016 01:49:14 +0000
-Message-ID: <1455328149.2801.82.camel@decadent.org.uk>
-Subject: Re: [PATCH net-next v8 05/19] net: ethtool: add new
- ETHTOOL_GSETTINGS/SSETTINGS API
-From:   Ben Hutchings <ben@decadent.org.uk>
-To:     David Decotigny <ddecotig@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-        linux-api@vger.kernel.org, linux-mips@linux-mips.org,
-        fcoe-devel@open-fcoe.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Tejun Heo <tj@kernel.org>
-Cc:     Eric Dumazet <edumazet@google.com>,
-        Eugenia Emantayev <eugenia@mellanox.co.il>,
-        Or Gerlitz <ogerlitz@mellanox.com>,
-        Ido Shamay <idos@mellanox.com>, Joe Perches <joe@perches.com>,
-        Saeed Mahameed <saeedm@mellanox.com>,
-        Govindarajulu Varadarajan <_govind@gmx.com>,
-        Venkata Duvvuru <VenkatKumar.Duvvuru@Emulex.Com>,
-        Jeff Kirsher <jeffrey.t.kirsher@intel.com>,
-        Pravin B Shelar <pshelar@nicira.com>,
-        Ed Swierk <eswierk@skyportsystems.com>,
-        Robert Love <robert.w.love@intel.com>,
-        "James E.Yuval Mintz" <Yuval.Mintz@qlogic.com>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        David Decotigny <decot@googlers.com>
-Date:   Sat, 13 Feb 2016 01:49:09 +0000
-In-Reply-To: <1455064168-5102-6-git-send-email-ddecotig@gmail.com>
-References: <1455064168-5102-1-git-send-email-ddecotig@gmail.com>
-         <1455064168-5102-6-git-send-email-ddecotig@gmail.com>
-Content-Type: multipart/signed; micalg="pgp-sha512";
-        protocol="application/pgp-signature"; boundary="=-NCwJIfUL82hmdvCgSQ0U"
-X-Mailer: Evolution 3.18.3-1 
-Mime-Version: 1.0
-X-SA-Exim-Connect-IP: 2a02:8011:400e:2:a11:96ff:fe28:a980
-X-SA-Exim-Mail-From: ben@decadent.org.uk
-X-SA-Exim-Scanned: No (on shadbolt.decadent.org.uk); SAEximRunCond expanded to false
-Return-Path: <ben@decadent.org.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 13 Feb 2016 22:58:32 +0100 (CET)
+Received: from mail-lf0-f65.google.com ([209.85.215.65]:33796 "EHLO
+        mail-lf0-f65.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012138AbcBMV6aQYv1i (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 13 Feb 2016 22:58:30 +0100
+Received: by mail-lf0-f65.google.com with SMTP id 78so5751871lfy.1;
+        Sat, 13 Feb 2016 13:58:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id;
+        bh=cz796i2mGK7eiTdbJcO/mw10x5wDpBH3guRF6ImPwoY=;
+        b=dDjB1UXJ7gOl6BaWO/T/Q/64S9Pjll8lwqL9BypIVsQul2yCZVMA/MhQ4VkaswmR2b
+         N9+UlTMN/E/2V2Hlygi4we0VIjs+9NmYMU6DBmb41fyJJMS+asvvd63+7+OHRqiHf8US
+         V5y/v3KWg/BZUbtSGrrkIMLu8LHP8MezP2yMqUiAEP72pCJCNaRNIQrFzJVQ3Y6ci0BX
+         ngSgek6WtlZ/GAUCVlaQiB+qGAtk3pYuSukVPLictjcAiqIrVJlZmDYDnoWlyzvIe7tJ
+         BAOGjjZ8Nbvrykcj0gerbPvIY6KMtGvcKb1XdWXxISt0c/qOw7skbSQdj6umGfSn0q6P
+         cJWg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=cz796i2mGK7eiTdbJcO/mw10x5wDpBH3guRF6ImPwoY=;
+        b=PYHhNcMlBVZUuS1Y9R6QEiI2W00zJvDDD5ajygyb/RpGyPag2GrTZNAXBNEtdeC2Sd
+         DxWrc39cfzhtADvPf7Xf4cHoAJhFZoL77opn4AZOSuxa7rhRiYCiGXX1XKKAtuIeKHq0
+         Wswc5gRL0gtF5E/XKzistvclQfGhD2qlzRiwKJ5AHTk0hxjUenaJataJ/fouEo2iL6Yg
+         N3Jxwh8Dip7BO0tSS6Q+hoXfg1oMO71cVeuKVKD38p89dGTKPyH8eM7l4iiGHe7I67VM
+         0v5EkCG9D5w89V24DcW2ITenqFHe+RiF6SfC6a48vwfgI6WL8sY1kZrxD6R1gJIKkj94
+         oqAg==
+X-Gm-Message-State: AG10YOTECHub1lEv/mtcfEVglM80Ax0Zayk+IhDedXiOqD/MIVZGaS3+HU5iCbZ7S8dsUg==
+X-Received: by 10.25.16.214 with SMTP id 83mr3635119lfq.13.1455400704892;
+        Sat, 13 Feb 2016 13:58:24 -0800 (PST)
+Received: from localhost.localdomain (ppp109-252-26-173.pppoe.spdop.ru. [109.252.26.173])
+        by smtp.gmail.com with ESMTPSA id jr10sm2624949lbc.42.2016.02.13.13.58.23
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Sat, 13 Feb 2016 13:58:24 -0800 (PST)
+From:   Antony Pavlov <antonynpavlov@gmail.com>
+To:     linux-mips@linux-mips.org
+Cc:     Ralf Baechle <ralf@linux-mips.org>, Alban Bedel <albeu@free.fr>,
+        Marek Vasut <marex@denx.de>, Wills Wang <wills.wang@live.com>,
+        Daniel Schwierzeck <daniel.schwierzeck@gmail.com>
+Subject: [PATCH 00/10] MIPS: ath79: update devicetree support for AR9132
+Date:   Sun, 14 Feb 2016 00:58:07 +0300
+Message-Id: <1455400697-29898-1-git-send-email-antonynpavlov@gmail.com>
+X-Mailer: git-send-email 2.7.0
+Return-Path: <antonynpavlov@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52031
+X-archive-position: 52032
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ben@decadent.org.uk
+X-original-sender: antonynpavlov@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -68,53 +62,34 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+Alban Bedel (1):
+  MIPS: ath79: Fix the ar913x reference clock rate
 
---=-NCwJIfUL82hmdvCgSQ0U
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Antony Pavlov (8):
+  dt-bindings: clock: qca,ath79-pll: fix copy-paste typos
+  MIPS: dts: qca: ar9132: fix typo: "ppl" -> "pll"
+  MIPS: dts: qca: ar9132_tl_wr1043nd_v1.dts: drop unused alias node
+  MIPS: dts: qca: ar9132: use short references for uart, usb and spi nodes
+  MIPS: dts: qca: ar9132_tl_wr1043nd_v1.dts: use "ref" for reference clock name
+  MIPS: ath79: update devicetree support for AR9132
+  MIPS: ath79: setup.c: disable platform code for OF boards
+  WIP: MIPS: ath79: add tl-wr1043nd{,no-dt}_defconfig
 
-On Tue, 2016-02-09 at 16:29 -0800, David Decotigny wrote:
-> From: David Decotigny <decot@googlers.com>
->=20
-> This patch defines a new ETHTOOL_GSETTINGS/SSETTINGS API, handled by
-> the new get_ksettings/set_ksettings callbacks. This API provides
-> support for most legacy ethtool_cmd fields, adds support for larger
-> link mode masks (up to 4064 bits, variable length), and removes
-> ethtool_cmd deprecated fields (transceiver/maxrxpkt/maxtxpkt).
-[...]
+Weijie Gao (1):
+  MIPS: ath79: Fix the ar724x clock calculation
 
-I previously asked you to include 'link' in the command names and
-structure name. =C2=A0This would clarify that these are now only for link
-settings and reduce the risk of confusion between old and new commands.
-However, you didn't reply to that review. =C2=A0Do you have any objection t=
-o
-doing this?
+ .../devicetree/bindings/clock/qca,ath79-pll.txt    |   6 +-
+ arch/mips/ath79/clock.c                            | 160 +++++++++++++--------
+ arch/mips/ath79/setup.c                            |  15 +-
+ arch/mips/boot/dts/qca/ar9132.dtsi                 |  16 ++-
+ arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts   |  88 ++++++------
+ arch/mips/configs/tl-wr1043nd-no-dt_defconfig      | 100 +++++++++++++
+ arch/mips/configs/tl-wr1043nd_defconfig            |  98 +++++++++++++
+ include/dt-bindings/clock/ath79-clk.h              |  20 +++
+ 8 files changed, 382 insertions(+), 121 deletions(-)
+ create mode 100644 arch/mips/configs/tl-wr1043nd-no-dt_defconfig
+ create mode 100644 arch/mips/configs/tl-wr1043nd_defconfig
+ create mode 100644 include/dt-bindings/clock/ath79-clk.h
 
-Ben.
-
---=20
-Ben Hutchings
-Sturgeon's Law: Ninety percent of everything is crap.
---=-NCwJIfUL82hmdvCgSQ0U
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
-
-iQIVAwUAVr6Llee/yOyVhhEJAQptQxAAqHw6JCPN3b1UNtl5CkykMq9sgZ+j8VOi
-9b6BaMefBawGFNaPzk6xQBpnwfrGdcofFw+r3Y+OThloB1NB5orhWTnX8citmnlA
-zFuKYE0Si1YC23nlITS+n3U8xJnQKyjwN4jB+acYc3YqELGg6qXvLGQYYpRXKBa0
-rwlYT13ZjTF9oar0dpEXJo9Y3uUsWDVnAeG1E3AAqel5llKzr0n+bUdjO76rdNMQ
-/B2IOq2H09ufZdRKJl9Mtd0LrcvNXZzFepfRqW86kd9NqClwwLsHsinlUVttYaz2
-I5DprGRLIC2CCh82aqLwBMqvnwcR2erOANIPdGpnHS8vUpkgCdClxEXujB3IOzcs
-+CYF4FMZjjVZp0fsedds4hkTKdgn1ALKurMoyfWPKbzFBdgJR8qGbpzAdR2uz3Vg
-+AzeRqLv9EP3VnctF9Cmndlmy0ycmpb1Vd3sU3x+2MNFy1lPavzmbXULtB1T+GsN
-TRnfUfvWQ2T+dadHpqH+tVElNivQoiaKOpL2FVWUPZEs+0ngI9I74VKQuMG2RbBu
-3EzolbI3XfCt+kMbvnkJuCXHdvt63OOcVGy6QBfQW+Hy64aUaDB7ojau+/3NJjwl
-K9F+jJF07SRDWToWHNO2h98fnZt2/9dxazlELgwAnyU7PpK1RieS9huDeHvXG8Ge
-QM9yzxMhV4s=
-=aMKY
------END PGP SIGNATURE-----
-
---=-NCwJIfUL82hmdvCgSQ0U--
+-- 
+2.7.0

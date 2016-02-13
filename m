@@ -1,72 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Feb 2016 19:53:56 +0100 (CET)
-Received: from mail-pa0-f68.google.com ([209.85.220.68]:35191 "EHLO
-        mail-pa0-f68.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011901AbcBLSxzgyAAb (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 12 Feb 2016 19:53:55 +0100
-Received: by mail-pa0-f68.google.com with SMTP id fl4so4129143pad.2;
-        Fri, 12 Feb 2016 10:53:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-type:content-disposition:in-reply-to:user-agent;
-        bh=KaarVcINqAP1S6IRRhLRkTqtgAH/EjK6pyN/DFSV8gQ=;
-        b=H8KAoRDgECE+4G5KzRgNIQOeHyiOUI1ujh7+NRQTbJ5br/8y+yeDWcLCvxpeWRc2ea
-         TPuj+/NMyPRIQSt8Cd3Y61s3dPAbasnxFqzRL6toCkbOHVhgllwQ6bockfXmNU6iAKf3
-         2O63MMerFtM7MOQXLyu0IP5c6rVrbYrEpfuMVErKE1gysvOrushsZwk21K/0VCP/se+l
-         lgYfDPCyvYKvqzMwOj4zO4PGLaOmqs0MOqYtY4UANhVoqWPNtaULUNbw5hYD51Gcc4CK
-         NkWG6W7e4h2rSllOnF8lUNtHPujfx/vQ9oVnFOywGQ0JHkg6zNbEd71HJLgzw5Qt4ydw
-         lRPQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-type:content-disposition:in-reply-to
-         :user-agent;
-        bh=KaarVcINqAP1S6IRRhLRkTqtgAH/EjK6pyN/DFSV8gQ=;
-        b=B5PEdVKnYIdOHvO5VzvP5i30Z5WalhcvjZGQ5BC1SlrIQYQVXlUTDxTD6uRLlP9hjI
-         zpibGZ4R9NaX7P8fie1dsVqjgD3j8GlsiFBrA4h7du0gT7V7dvkz8ITGkzUopN/2ieO6
-         baTFDILWekU0YMYGtuBUZp7xOl7LrXSh4OU4SzOmwdKYPDeCYMkRCFaBtLi4FzNftb2a
-         uOPXrXwoxZTH0tfNvth8mMJBRr/FPdH9ZegVSbxPweaLJ+pZbVC91sRaM2SU+wRtSBDc
-         maN0N38vg02Ro/j2WB2/1CeLBgz6UWZxgHt3pHJnq342hRi/6s2zMAvY/ikJaprH9X0n
-         AF6g==
-X-Gm-Message-State: AG10YORy23SpE7rmdjbme8SOwZByHd5iBppi8SemLkbkP5BhOuPUDXRS0yvEVZKEfkcxLw==
-X-Received: by 10.66.55.102 with SMTP id r6mr4286780pap.67.1455303229966;
-        Fri, 12 Feb 2016 10:53:49 -0800 (PST)
-Received: from google.com ([2620:0:1000:1301:7c71:7f64:5e00:7fed])
-        by smtp.gmail.com with ESMTPSA id fl9sm21109761pab.30.2016.02.12.10.53.49
-        (version=TLS1_2 cipher=AES128-SHA bits=128/128);
-        Fri, 12 Feb 2016 10:53:49 -0800 (PST)
-Date:   Fri, 12 Feb 2016 10:53:47 -0800
-From:   Brian Norris <computersforpeace@gmail.com>
-To:     Simon Arlott <simon@fire.lp0.eu>,
-        Ralf Baechle <ralf@linux-mips.org>
-Cc:     David Woodhouse <dwmw2@infradead.org>,
-        Kevin Cernekee <cernekee@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Jonas Gorski <jogo@openwrt.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        MIPS Mailing List <linux-mips@linux-mips.org>,
-        MTD Maling List <linux-mtd@lists.infradead.org>,
-        sfr@canb.auug.org.au
-Subject: Re: [PATCH linux-next v4 07/11] MIPS: bcm63xx: nvram: Remove unused
- bcm63xx_nvram_get_psi_size() function
-Message-ID: <20160212185347.GA21465@google.com>
-References: <566DF43B.5010400@simon.arlott.org.uk>
- <566DF625.3060801@simon.arlott.org.uk>
- <20160126191607.GA111152@google.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20160126191607.GA111152@google.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <computersforpeace@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 13 Feb 2016 02:04:53 +0100 (CET)
+Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:36212 "EHLO
+        shadbolt.e.decadent.org.uk" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011744AbcBMBEvsOoFB (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 13 Feb 2016 02:04:51 +0100
+Received: from [2a02:8011:400e:2:a11:96ff:fe28:a980] (helo=deadeye)
+        by shadbolt.decadent.org.uk with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.84)
+        (envelope-from <ben@decadent.org.uk>)
+        id 1aUOdf-0001yF-CI; Sat, 13 Feb 2016 01:04:43 +0000
+Received: from ben by deadeye with local (Exim 4.86)
+        (envelope-from <ben@decadent.org.uk>)
+        id 1aUOda-0007b4-4v; Sat, 13 Feb 2016 01:04:38 +0000
+Message-ID: <1455325472.2801.73.camel@decadent.org.uk>
+Subject: Re: [PATCH net-next v8 01/19] lib/bitmap.c: conversion routines
+ to/from u32 array
+From:   Ben Hutchings <ben@decadent.org.uk>
+To:     David Decotigny <ddecotig@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        linux-api@vger.kernel.org, linux-mips@linux-mips.org,
+        fcoe-devel@open-fcoe.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Tejun Heo <tj@kernel.org>
+Cc:     Eric Dumazet <edumazet@google.com>,
+        Eugenia Emantayev <eugenia@mellanox.co.il>,
+        Or Gerlitz <ogerlitz@mellanox.com>,
+        Ido Shamay <idos@mellanox.com>, Joe Perches <joe@perches.com>,
+        Saeed Mahameed <saeedm@mellanox.com>,
+        Govindarajulu Varadarajan <_govind@gmx.com>,
+        Venkata Duvvuru <VenkatKumar.Duvvuru@Emulex.Com>,
+        Jeff Kirsher <jeffrey.t.kirsher@intel.com>,
+        Pravin B Shelar <pshelar@nicira.com>,
+        Ed Swierk <eswierk@skyportsystems.com>,
+        Robert Love <robert.w.love@intel.com>,
+        "James E.J. Bottomley" <JBottomley@parallels.com>,
+        Yuval Mintz <Yuval.Mintz@qlogic.com>,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        David Decotigny <decot@googlers.com>
+Date:   Sat, 13 Feb 2016 01:04:32 +0000
+In-Reply-To: <1455064168-5102-2-git-send-email-ddecotig@gmail.com>
+References: <1455064168-5102-1-git-send-email-ddecotig@gmail.com>
+         <1455064168-5102-2-git-send-email-ddecotig@gmail.com>
+Content-Type: multipart/signed; micalg="pgp-sha512";
+        protocol="application/pgp-signature"; boundary="=-SoZ15GJO7MTtLdasxqMl"
+X-Mailer: Evolution 3.18.3-1 
+Mime-Version: 1.0
+X-SA-Exim-Connect-IP: 2a02:8011:400e:2:a11:96ff:fe28:a980
+X-SA-Exim-Mail-From: ben@decadent.org.uk
+X-SA-Exim-Scanned: No (on shadbolt.decadent.org.uk); SAEximRunCond expanded to false
+Return-Path: <ben@decadent.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52028
+X-archive-position: 52029
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: computersforpeace@gmail.com
+X-original-sender: ben@decadent.org.uk
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -79,33 +69,51 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Ralf,
 
-On Tue, Jan 26, 2016 at 11:16:07AM -0800, Brian Norris wrote:
-> On Sun, Dec 13, 2015 at 10:50:13PM +0000, Simon Arlott wrote:
-> > Remove bcm63xx_nvram_get_psi_size() as it now has no users.
-> > 
-> > Signed-off-by: Simon Arlott <simon@fire.lp0.eu>
-> > ---
-> > v4: New patch.
-> 
-> Ralf,
-> 
-> Please revert this and send it to Linus (or else, I can send it myself).
-> This is causing build failures, because I didn't take the rest of
-> Simon's series yet.
-> 
-> drivers/mtd/bcm63xxpart.c: In function 'bcm63xx_parse_cfe_partitions':
-> drivers/mtd/bcm63xxpart.c:93:2: error: implicit declaration of function 'bcm63xx_nvram_get_psi_size' [-Werror=implicit-function-declaration]
-> 
-> I will reply to the series if/when I accept any patches from it. I would
-> appreciate it if you would do the same.
+--=-SoZ15GJO7MTtLdasxqMl
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-I see that the revert made it to Linus. Thanks!
+On Tue, 2016-02-09 at 16:29 -0800, David Decotigny wrote:
+> From: David Decotigny <decot@googlers.com>
+>=20
+> Aimed at transferring bitmaps to/from user-space in a 32/64-bit agnostic
+> way.
+>=20
+> Tested:
+> =C2=A0 unit tests (next patch) on qemu i386, x86_64, ppc, ppc64 BE and LE=
+,
+> =C2=A0 ARM.
+>=20
+> Signed-off-by: David Decotigny <decot@googlers.com>
 
-I've now pushed the dependent pieces to l2-mtd.git, and they should make
-it to v4.6-rc1. So I guess it's fair game to re-apply this patch?
-Although, if you don't merge in my MTD branch first, you'd still be
-breaking bisectability... Maybe it's a post-rc1 candidate?
+Reviewed-by: Ben Hutchings <ben@decadent.org.uk>
 
-Brian
+[...]
+
+--=20
+Ben Hutchings
+Sturgeon's Law: Ninety percent of everything is crap.
+--=-SoZ15GJO7MTtLdasxqMl
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
+
+iQIVAwUAVr6BIOe/yOyVhhEJAQqiyQ/8D8DlXKxG4ASRdvf3Gte7dXZDg8Bv/oQG
+M8Cc6bJjkqAPaIvUBuSEQNYc0kVWoRE0B4nz0hN8tb/OKHW7lw6JOvButoU7eaTS
+05tpY35akzhIawmy7E9h5dk+6f0dPAwPdAOyHqN0nZPfpxPr9PntByoW/yRiXsW7
++3pKi8OAi49gdMJiC+0EsfpD6X+t/hw/sg7iU0+YwQjhaHhU1B+Mba8SFq9Vxl+q
+dZe2MvZbSn1UwhDbnKK5WWrcLJgSg2OVb6WyuYx0b/ntjnC57mFt4UPd8suwFkXa
+mooS9XQxaTILYNrDBBpHXs+l4ZE6WAIlqRTQKWe3sImfdYqsvG0aclPHQgtNY6He
+CGIudsz/6x9mrhe48aY+L961XHJNDZpGb665qK6Qvw/u0VTW8xw0yD+mMKbza6Pn
+g9VwRz+VBET1/ZZW3BPBziyvW4W0GS5Jsi7g2QxaVugBQ6Oc5Qkronx1/GQCXS1W
+vfU/vzRnyTkZrZOMg5o4uUcM/2RspQiznc+KpstRn7SgIcklBPQ76ArSfaWdD+i3
+UlkrJUih+OAHFlsCyre6jGd9ThnYyuNDvXA7kVzAgT//Yhj01ynu0YgVr7YJ7PtY
+OTyEQjy1U89EOBsRlwvdV+zexnbrpwe5bqSjMSXrdXAfKXq8H+uvaRv0XlydS1ZO
+0uU79RpTMaI=
+=tBPL
+-----END PGP SIGNATURE-----
+
+--=-SoZ15GJO7MTtLdasxqMl--

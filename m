@@ -1,40 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 14 Feb 2016 20:21:17 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:43645 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27010848AbcBNTVPl3E0v (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 14 Feb 2016 20:21:15 +0100
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Websense Email Security Gateway with ESMTPS id E3A9B9447D701;
-        Sun, 14 Feb 2016 19:21:05 +0000 (GMT)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- HHMAIL01.hh.imgtec.org (10.100.10.19) with Microsoft SMTP Server (TLS) id
- 14.3.266.1; Sun, 14 Feb 2016 19:21:09 +0000
-Received: from localhost (10.100.200.211) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Sun, 14 Feb
- 2016 19:21:08 +0000
-From:   Paul Burton <paul.burton@imgtec.com>
-To:     <linux-mips@linux-mips.org>
-CC:     Paul Burton <paul.burton@imgtec.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        <linux-kernel@vger.kernel.org>,
-        Dan Williams <dan.j.williams@intel.com>,
-        "Ralf Baechle" <ralf@linux-mips.org>
-Subject: [PATCH] MIPS: Use CPHYSADDR to implement mips32 __pa
-Date:   Sun, 14 Feb 2016 11:20:26 -0800
-Message-ID: <1455477626-30988-1-git-send-email-paul.burton@imgtec.com>
-X-Mailer: git-send-email 2.7.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 14 Feb 2016 22:25:06 +0100 (CET)
+Received: from smtp5-g21.free.fr ([212.27.42.5]:15326 "EHLO smtp5-g21.free.fr"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27011781AbcBNVZBdP7Pn (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 14 Feb 2016 22:25:01 +0100
+Received: from tock (unknown [78.54.179.56])
+        (Authenticated sender: albeu)
+        by smtp5-g21.free.fr (Postfix) with ESMTPSA id 749C0D48127;
+        Sun, 14 Feb 2016 22:22:04 +0100 (CET)
+Date:   Sun, 14 Feb 2016 22:24:45 +0100
+From:   Alban <albeu@free.fr>
+To:     Antony Pavlov <antonynpavlov@gmail.com>
+Cc:     Aban Bedel <albeu@free.fr>, linux-mips@linux-mips.org,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Marek Vasut <marex@denx.de>, Wills Wang <wills.wang@live.com>,
+        Daniel Schwierzeck <daniel.schwierzeck@gmail.com>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Grant Likely <grant.likely@linaro.org>,
+        devicetree@vger.kernel.org
+Subject: Re: [PATCH 06/10] MIPS: dts: qca: ar9132: use short references for
+ uart, usb and spi nodes
+Message-ID: <20160214222445.6eee4365@tock>
+In-Reply-To: <1455400697-29898-7-git-send-email-antonynpavlov@gmail.com>
+References: <1455400697-29898-1-git-send-email-antonynpavlov@gmail.com>
+        <1455400697-29898-7-git-send-email-antonynpavlov@gmail.com>
+X-Mailer: Claws Mail 3.9.3 (GTK+ 2.24.23; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.100.200.211]
-Return-Path: <Paul.Burton@imgtec.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <albeu@free.fr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52048
+X-archive-position: 52049
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@imgtec.com
+X-original-sender: albeu@free.fr
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,48 +50,177 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Use CPHYSADDR to implement the __pa macro converting from a virtual to a
-physical address for MIPS32, much as is already done for MIPS64 (though
-without the complication of having both compatibility & XKPHYS
-segments).
+On Sun, 14 Feb 2016 00:58:13 +0300
+Antony Pavlov <antonynpavlov@gmail.com> wrote:
 
-This allows for __pa to work regardless of whether the address being
-translated is in kseg0 or kseg1, unlike the previous subtraction based
-approach which only worked for addresses in kseg0. Working for kseg1
-addresses is important if __pa is used on addresses allocated by
-dma_alloc_coherent, where on systems with non-coherent I/O we provide
-addresses in kseg1. If this address is then used with
-dma_map_single_attrs then it is provided to virt_to_page, which in turn
-calls virt_to_phys which is a wrapper around __pa. The result is that we
-end up with a physical address 0x20000000 bytes (ie. the size of kseg0)
-too high.
+> Here are some Sascha Hauer's arguments for using aliases in the dts
+> files:
+> 
+>  - using aliases reduces the number of indentations in dts files;
+> 
+>  - dts files become independent of the layout of the dtsi files
+>    (it becomes possible to introduce another bus {} hierarchy between
+>    a toplevel bus and the devices when you have to);
+> 
+>  - less chances for typos. if &i2c2 does not exist you get an error.
+>    If instead you duplicate the whole path in the dts file a typo
+>    in the path will just create another node.
+> 
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> Cc: Alban Bedel <albeu@free.fr>
+> Cc: Sascha Hauer <s.hauer@pengutronix.de>
+> Cc: Rob Herring <robh+dt@kernel.org>
+> Cc: Frank Rowand <frowand.list@gmail.com>
+> Cc: Grant Likely <grant.likely@linaro.org>
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: linux-mips@linux-mips.org
+> Cc: devicetree@vger.kernel.org
+> ---
+>  arch/mips/boot/dts/qca/ar9132.dtsi               |  6 +-
+>  arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts | 82 ++++++++++++------------
+>  2 files changed, 44 insertions(+), 44 deletions(-)
+> 
+> diff --git a/arch/mips/boot/dts/qca/ar9132.dtsi b/arch/mips/boot/dts/qca/ar9132.dtsi
+> index 3c2ed9e..511cb4d 100644
+> --- a/arch/mips/boot/dts/qca/ar9132.dtsi
+> +++ b/arch/mips/boot/dts/qca/ar9132.dtsi
+> @@ -52,7 +52,7 @@
+>  				#qca,ddr-wb-channel-cells = <1>;
+>  			};
+>  
+> -			uart@18020000 {
+> +			uart: uart@18020000 {
+>  				compatible = "ns8250";
+>  				reg = <0x18020000 0x20>;
+>  				interrupts = <3>;
 
-In addition to providing consistency with MIPS64 & fixing the kseg1 case
-above this has the added bonus of generating smaller code for systems
-implementing MIPS32r2 & beyond, where a single ext instruction can
-extract the physical address rather than needing to load an immediate
-into a temp register & subtract it. This results in ~1.3KB savings for a
-boston_defconfig kernel adjusted to set CONFIG_32BIT=y.
+Please also add a label for the watchdog, then all devices would be
+covered.
 
-Signed-off-by: Paul Burton <paul.burton@imgtec.com>
----
+> @@ -125,7 +125,7 @@
+>  			};
+>  		};
+>  
+> -		usb@1b000100 {
+> +		usb: usb@1b000100 {
+>  			compatible = "qca,ar7100-ehci", "generic-ehci";
+>  			reg = <0x1b000100 0x100>;
+>  
+> @@ -140,7 +140,7 @@
+>  			status = "disabled";
+>  		};
+>  
+> -		spi@1f000000 {
+> +		spi: spi@1f000000 {
+>  			compatible = "qca,ar9132-spi", "qca,ar7100-spi";
+>  			reg = <0x1f000000 0x10>;
+>  
+> diff --git a/arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts b/arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts
+> index c3069c3..9528ebd 100644
+> --- a/arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts
+> +++ b/arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts
+> @@ -22,51 +22,10 @@
+>  
+>  	ahb {
+>  		apb {
+> -			uart@18020000 {
+> -				status = "okay";
+> -			};
+> -
+>  			pll-controller@18050000 {
+>  				clocks = <&extosc>;
+>  			};
+>  		};
 
- arch/mips/include/asm/page.h | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+Better use a reference for the PLL clock too.
 
-diff --git a/arch/mips/include/asm/page.h b/arch/mips/include/asm/page.h
-index 21ed715..35c1222 100644
---- a/arch/mips/include/asm/page.h
-+++ b/arch/mips/include/asm/page.h
-@@ -169,8 +169,7 @@ typedef struct { unsigned long pgprot; } pgprot_t;
-     __x < CKSEG0 ? XPHYSADDR(__x) : CPHYSADDR(__x);			\
- })
- #else
--#define __pa(x)								\
--    ((unsigned long)(x) - PAGE_OFFSET + PHYS_OFFSET)
-+#define __pa(x)		CPHYSADDR(x)
- #endif
- #define __va(x)		((void *)((unsigned long)(x) + PAGE_OFFSET - PHYS_OFFSET))
- #include <asm/io.h>
--- 
-2.7.1
+> -
+> -		usb@1b000100 {
+> -			status = "okay";
+> -		};
+> -
+> -		spi@1f000000 {
+> -			status = "okay";
+> -			num-cs = <1>;
+> -
+> -			flash@0 {
+> -				#address-cells = <1>;
+> -				#size-cells = <1>;
+> -				compatible = "s25sl064a";
+> -				reg = <0>;
+> -				spi-max-frequency = <25000000>;
+> -
+> -				partition@0 {
+> -					label = "u-boot";
+> -					reg = <0x000000 0x020000>;
+> -				};
+> -
+> -				partition@1 {
+> -					label = "firmware";
+> -					reg = <0x020000 0x7D0000>;
+> -				};
+> -
+> -				partition@2 {
+> -					label = "art";
+> -					reg = <0x7F0000 0x010000>;
+> -					read-only;
+> -				};
+> -			};
+> -		};
+> -	};
+> -
+> -	usb-phy {
+> -		status = "okay";
+>  	};
+>  
+>  	gpio-keys {
+> @@ -114,3 +73,44 @@
+>  		};
+>  	};
+>  };
+> +
+> +&uart {
+> +	status = "okay";
+> +};
+> +
+> +&usb {
+> +	status = "okay";
+> +};
+> +
+> +&usb_phy {
+> +	status = "okay";
+> +};
+> +
+> +&spi {
+> +	status = "okay";
+> +	num-cs = <1>;
+> +
+> +	flash@0 {
+> +		#address-cells = <1>;
+> +		#size-cells = <1>;
+> +		compatible = "s25sl064a";
+> +		reg = <0>;
+> +		spi-max-frequency = <25000000>;
+> +
+> +		partition@0 {
+> +			label = "u-boot";
+> +			reg = <0x000000 0x020000>;
+> +		};
+> +
+> +		partition@1 {
+> +			label = "firmware";
+> +			reg = <0x020000 0x7D0000>;
+> +		};
+> +
+> +		partition@2 {
+> +			label = "art";
+> +			reg = <0x7F0000 0x010000>;
+> +			read-only;
+> +		};
+
+Looses partitions like this are now deprecated, we could take the
+opportunity to move to the new scheme. We just have to put all the
+"partition" nodes under a "partitions" node with a proper compatible and
+#address-cells and #size-cells.
+
+Alban

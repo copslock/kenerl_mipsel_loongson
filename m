@@ -1,55 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Feb 2016 21:17:12 +0100 (CET)
-Received: from mout.kundenserver.de ([212.227.126.131]:62864 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27012438AbcBOURKE9Pl2 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 15 Feb 2016 21:17:10 +0100
-Received: from wuerfel.localnet ([78.42.132.4]) by mrelayeu.kundenserver.de
- (mreue001) with ESMTPSA (Nemesis) id 0MH974-1ai0Uf2LWk-00Dn0l; Mon, 15 Feb
- 2016 21:16:31 +0100
-From:   Arnd Bergmann <arnd@arndb.de>
-To:     Lars-Peter Clausen <lars@metafoo.de>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        Alexandre Courbot <gnurou@gmail.com>,
-        linux-arm-kernel@lists.infradead.org,
-        Russell King <rmk+kernel@arm.linux.org.uk>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@imgtec.com>, linux-mips@linux-mips.org
-Subject: Re: [PATCH 1/4] gpio: remove broken irq_to_gpio() interface
-Date:   Mon, 15 Feb 2016 21:16:30 +0100
-Message-ID: <4277616.myYDBWrFcU@wuerfel>
-User-Agent: KMail/4.11.5 (Linux/3.16.0-10-generic; KDE/4.11.5; x86_64; ; )
-In-Reply-To: <56C1F645.1070405@metafoo.de>
-References: <20160202194831.10827.63244.stgit@bhelgaas-glaptop2.roam.corp.google.com> <1455551208-2825510-2-git-send-email-arnd@arndb.de> <56C1F645.1070405@metafoo.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Feb 2016 21:35:18 +0100 (CET)
+Received: from e33.co.us.ibm.com ([32.97.110.151]:57455 "EHLO
+        e33.co.us.ibm.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27012457AbcBOUfQztlMO (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 15 Feb 2016 21:35:16 +0100
+Received: from localhost
+        by e33.co.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <linux-mips@linux-mips.org> from <paulmck@linux.vnet.ibm.com>;
+        Mon, 15 Feb 2016 13:35:10 -0700
+Received: from d03dlp01.boulder.ibm.com (9.17.202.177)
+        by e33.co.us.ibm.com (192.168.1.133) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        Mon, 15 Feb 2016 13:35:08 -0700
+X-IBM-Helo: d03dlp01.boulder.ibm.com
+X-IBM-MailFrom: paulmck@linux.vnet.ibm.com
+X-IBM-RcptTo: linux-mips@linux-mips.org
+Received: from b01cxnp23034.gho.pok.ibm.com (b01cxnp23034.gho.pok.ibm.com [9.57.198.29])
+        by d03dlp01.boulder.ibm.com (Postfix) with ESMTP id 87C7B1FF0029
+        for <linux-mips@linux-mips.org>; Mon, 15 Feb 2016 13:23:17 -0700 (MST)
+Received: from d01av01.pok.ibm.com (d01av01.pok.ibm.com [9.56.224.215])
+        by b01cxnp23034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id u1FKZ70530212184
+        for <linux-mips@linux-mips.org>; Mon, 15 Feb 2016 20:35:07 GMT
+Received: from d01av01.pok.ibm.com (localhost [127.0.0.1])
+        by d01av01.pok.ibm.com (8.14.4/8.14.4/NCO v10.0 AVout) with ESMTP id u1FKZ5Po017268
+        for <linux-mips@linux-mips.org>; Mon, 15 Feb 2016 15:35:07 -0500
+Received: from paulmck-ThinkPad-W541 ([9.70.82.75])
+        by d01av01.pok.ibm.com (8.14.4/8.14.4/NCO v10.0 AVin) with ESMTP id u1FKZ5Ls017228;
+        Mon, 15 Feb 2016 15:35:05 -0500
+Received: by paulmck-ThinkPad-W541 (Postfix, from userid 1000)
+        id AD38516C14DD; Mon, 15 Feb 2016 12:35:12 -0800 (PST)
+Date:   Mon, 15 Feb 2016 12:35:12 -0800
+From:   "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>
+To:     Will Deacon <will.deacon@arm.com>
+Cc:     Andy.Glew@imgtec.com, Leonid.Yegoshin@imgtec.com,
+        peterz@infradead.org, linux-arch@vger.kernel.org, arnd@arndb.de,
+        davem@davemloft.net, linux-arm-kernel@lists.infradead.org,
+        linux-metag@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-xtensa@linux-xtensa.org, linuxppc-dev@lists.ozlabs.org,
+        graham.whaley@gmail.com, torvalds@linux-foundation.org,
+        hpa@zytor.com, mingo@kernel.org
+Subject: Re: Writes, smp_wmb(), and transitivity?
+Message-ID: <20160215203512.GL6719@linux.vnet.ibm.com>
+Reply-To: paulmck@linux.vnet.ibm.com
+References: <20160215175825.GA15878@linux.vnet.ibm.com>
+ <20160215185832.GQ6298@arm.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-X-Provags-ID: V03:K0:5V3mmFSVQ3ctjraJU486u+T21/fiTK1/YwlOH3oKzdBGO+2g2PB
- QKGByyMvTG6jmQnAvb1PY99dMQcix9O8YpZo1j7UCF0ZxK+eYkADefJ0vbOxcyj+I1OZ+Z7
- UAlHtFfXU/23gE/aSzE/U4M1bC18lCQw/MJKVTYHwj9l4bz5/DGY7FjzlfVLp5KhJnLcZCj
- yh8PrJzhVskuAf8Ytm3Sg==
-X-UI-Out-Filterresults: notjunk:1;V01:K0:ylWPSZ/yuxo=:gCC3WqzzCpvefvDvzOFsrf
- OKlK36GoYf+MRjNXUye8Eu+o2957nZv3uxdDzWn4NBVIIRDozzWZoN6yQdATDnbtkXNMvQrEC
- NAL74VoJ6i+mX0zkaM+WXjEhoEEPYJBegok2JjffWs2MK/gRJjjA7nwNqX566o/p6DUDdUQWC
- UWtmgodGPtGN1wE/umIEM7ZDx2hot5JJgo7B/XnEgdIMUHf30G0FSgQXIpsGSzyUxPZU6KUkl
- 3mt/R5sVWZy2LJtpaNBCMU59yAN8uVbl0+N2AASGhtnsKbyhMledtnsIvdagRfpnsyuGFbg0V
- DjL+OVet4+ghNvr3bvfPGKQBDH6GOJ5HVWFCsOzOoDWelB11e455zwB7nxK9cr+II3lnlGrLN
- tZpmtTxtNPG7Ds9foceoSVa06hsY7hRM7IB6lJLVW70fKhXBHRGncNW7gR5C1ca32RlJOmWA/
- 5pGNnKg0MkMNeJm0Nvk5UhM/CBNV/V2SeceHgz+JCGJf75M7rwAjVjKumIee9JFjSw3NZrHD1
- krzjZ9MMC846zkJSOJi9mn37WRlN+WNy7L3tjkTCEckPZXOE/C9xH74RErthblDXoVEyoOqhR
- oxJyLEJ0RgontsdFVKjb1YIsOJdvEeS4OzpxhxVEnqdoKak9rnS447iJBfNN6FslbBI8rV5a1
- r1qu8qQVKSEr+KZJCF6Ho6aQ9QZ9AwcEsL0EzSfcz/pMaTbGfVKgcbYr10j261Tz6LIWFt1X/
- eAgLveRo7tKt3r3U
-Return-Path: <arnd@arndb.de>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20160215185832.GQ6298@arm.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-TM-AS-MML: disable
+X-Content-Scanned: Fidelis XPS MAILER
+x-cbid: 16021520-0009-0000-0000-000012663BB3
+Return-Path: <paulmck@linux.vnet.ibm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52075
+X-archive-position: 52076
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arnd@arndb.de
+X-original-sender: paulmck@linux.vnet.ibm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -62,23 +71,78 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Monday 15 February 2016 17:01:09 Lars-Peter Clausen wrote:
-> On 02/15/2016 04:46 PM, Arnd Bergmann wrote:
-> > +static inline __deprecated int irq_to_gpio(unsigned int irq)
-> > +{
-> > +     /* this has clearly not worked for a long time */
-> > +     return -EINVAL;
-> > +}
-> > +
-> >  #define IRQ_TO_BIT(irq) BIT(irq_to_gpio(irq) & 0x1f)
+On Mon, Feb 15, 2016 at 06:58:32PM +0000, Will Deacon wrote:
+> On Mon, Feb 15, 2016 at 09:58:25AM -0800, Paul E. McKenney wrote:
+> > Hello!
 > 
-> The issue seems to be a fallout from commit 832f5dacfa0b ("MIPS: Remove all
-> the uses of custom gpio.h").
+> Hi Paul,
 > 
-> The irq_to_gpio() should be replaced with "(irq - JZ4740_IRQ_GPIO(0))".
+> > Some architectures provide local transitivity for a chain of threads doing
+> > writes separated by smp_wmb(), as exemplified by the litmus tests below.
+> > The pattern is that each thread writes to a its own variable, does an
+> > smp_wmb(), then writes a different value to the next thread's variable.
+> > 
+> > I don't know of a use of this, but if everyone supports it, it might
+> > be good to mandate it.  Status quo is that smp_wmb() is non-transitive,
+> > so it currently isn't supported.
+> > 
+> > Anyone know of any architectures that do -not- support this?
+> > 
+> > Assuming all architectures -do- support this, any arguments -against-
+> > officially supporting it in Linux?
+> > 
+> > 							Thanx, Paul
+> > 
+> > ------------------------------------------------------------------------
+> > 
+> > Two threads:
+> > 
+> > 	int a, b;
+> > 
+> > 	void thread0(void)
+> > 	{
+> > 		WRITE_ONCE(a, 1);
+> > 		smp_wmb();
+> > 		WRITE_ONCE(b, 2);
+> > 	}
+> > 
+> > 	void thread1(void)
+> > 	{
+> > 		WRITE_ONCE(b, 1);
+> > 		smp_wmb();
+> > 		WRITE_ONCE(a, 2);
+> > 	}
+> > 
+> > 	/* After all threads have completed and the dust has settled... */
+> > 
+> > 	BUG_ON(a == 1 && b == 1);
+> 
+> My understanding is that this test, and the generalisation to n threads,
+> is forbidden on ARM. However, the transitivity of DMB ST (used to
+> construct smp_wmb()) has been the subject of long debates, because we
+> allow the following test:
 > 
 > 
+> P0:
+> Wx = 1
+> 
+> P1:
+> Rx == 1
+> DMB ST
+> Wy = 1
+> 
+> P2:
+> Ry == 1
+> <addr dep>
+> Rx == 0
+> 
+> 
+> so I'd be uneasy about saying "it's all transitive".
 
-Ah, that explain it, so it has not been broken for that long.
+Agreed!  For one thing, doesn't DMB ST need writes on both sides?
 
-	Arnd
+But that is one reason that I am only semi-enthusiastic about this.
+The potentially locally transitive case is -very- restrictive, applying
+only to situations where -all- accesses are writes.
+
+							Thanx, Paul

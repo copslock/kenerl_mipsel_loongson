@@ -1,64 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Feb 2016 05:31:18 +0100 (CET)
-Received: from mail-pf0-f195.google.com ([209.85.192.195]:34490 "EHLO
-        mail-pf0-f195.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27006520AbcBOEbQmVDsJ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 15 Feb 2016 05:31:16 +0100
-Received: by mail-pf0-f195.google.com with SMTP id 71so6994454pfv.1;
-        Sun, 14 Feb 2016 20:31:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=content-type:mime-version:subject:from:in-reply-to:date:cc
-         :content-transfer-encoding:message-id:references:to;
-        bh=nBoeh6KSAHRFbqE4TsKYIPO4FENCrJcWZiGWVNJSJ0Q=;
-        b=cKH1vR81LaPJPYIez648IvJKfJjKNhvWFaUlUSaHkLktdQcQVTKbg3hpBBZHWEbb3E
-         4rvyux7MC24Zd/+vS8y1y/Yuzh9HTe/VRrGfhFfhz6UmobvOkkNU3CYAnUBB32Vwyj6d
-         hqAd98H0peTG3oxiwzu4Z5SDgevwH/WmFukRVyRCpFEwOnJpcwFc/feZRFmZsJNUxren
-         hPQX6eFcumA4mkIGaTjezyPvDLl9yDjkaArAJ6oM0/wN45tGJWknvwX+t3YoGUXODTbt
-         wdmRoImpWQ4FbzPJNgaEjp6q+zgdrKg8seqcEwN7IV5Hh/djEhN7zg4Km/D6th8cqTXO
-         QWhg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:content-type:mime-version:subject:from
-         :in-reply-to:date:cc:content-transfer-encoding:message-id:references
-         :to;
-        bh=nBoeh6KSAHRFbqE4TsKYIPO4FENCrJcWZiGWVNJSJ0Q=;
-        b=DnnM8DErvIEYT/Fba1rxoKiSFYbsF1p+Jc2RuDCxgkr44/KSFeGUOt6K0Sox2m86iE
-         qnwQ4zjbbZvRrB3r+9det94hPVXhqMeSfE2dT31ZGlzcex/IuIYO2WCsxOVGp3d6oTKC
-         /6G1Sw0DFxTueRyKmRPH6KujAyBo1cQuaCWytJ5xQXHX2Nx7EKP4XzZ4Pde3M8y/QRM1
-         Hda/Wdjde0Sbchl9cQLPKLPLBEACEl7NIIvpW6hexuWUB+MSqHvoZCtRr30nu1v67KyN
-         u9HSUanQaTZppmqnSx7zNMKtm70r22AKVajky2vhVy0QX4ZP1ou646yaSEOIhAczJoaE
-         XX1w==
-X-Gm-Message-State: AG10YORXWKrXtGeI6yWSSG9YRvIslulaTCTTy/L7stlgio/zMWvqDGBC13bpjCeAbLC9FA==
-X-Received: by 10.98.15.19 with SMTP id x19mr20800391pfi.60.1455510670604;
-        Sun, 14 Feb 2016 20:31:10 -0800 (PST)
-Received: from [172.16.1.101] ([211.255.134.166])
-        by smtp.gmail.com with ESMTPSA id t12sm34623992pfa.54.2016.02.14.20.31.08
-        (version=TLS1 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Sun, 14 Feb 2016 20:31:10 -0800 (PST)
-Content-Type: text/plain; charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3120\))
-Subject: Re: [PATCH 0/7] cleanup and add device tree for BCM7xxx platforms
-From:   Jaedon Shin <jaedon.shin@gmail.com>
-In-Reply-To: <56788942.3030601@gmail.com>
-Date:   Mon, 15 Feb 2016 13:31:05 +0900
-Cc:     Florian Fainelli <f.fainelli@gmail.com>,
-        Linux-MIPS <linux-mips@linux-mips.org>,
-        Kevin Cernekee <cernekee@gmail.com>,
-        Dragan Stancevic <dragan.stancevic@gmail.com>
-Content-Transfer-Encoding: 7bit
-Message-Id: <F1F89384-2E24-4D97-A8A5-19CB45CAA70F@gmail.com>
-References: <1447900493-1167-1-git-send-email-jaedon.shin@gmail.com> <56788942.3030601@gmail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-X-Mailer: Apple Mail (2.3120)
-Return-Path: <jaedon.shin@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Feb 2016 06:27:11 +0100 (CET)
+Received: from mout.gmx.net ([212.227.15.18]:64568 "EHLO mout.gmx.net"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27006568AbcBOF1K0rLj8 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 15 Feb 2016 06:27:10 +0100
+Received: from ubnt.fritz.box ([37.24.8.189]) by mail.gmx.com (mrgmx003) with
+ ESMTPSA (Nemesis) id 0Lymoh-1Zt1Ou11b5-016A6O; Mon, 15 Feb 2016 06:26:43
+ +0100
+From:   Heinrich Schuchardt <xypron.glpk@gmx.de>
+To:     Rob Herring <robh+dt@kernel.org>, Pawel Moll <pawel.moll@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ian Campbell <ijc+devicetree@hellion.org.uk>,
+        Kumar Gala <galak@codeaurora.org>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Andrew Bresticker <abrestic@chromium.org>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        devicetree@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org,
+        Heinrich Schuchardt <xypron.glpk@gmx.de>
+Subject: [PATCH 1/1] MIPS: DTS: cavium-octeon: provide model attribute
+Date:   Mon, 15 Feb 2016 06:26:17 +0100
+Message-Id: <1455513977-934-1-git-send-email-xypron.glpk@gmx.de>
+X-Mailer: git-send-email 2.1.4
+X-Provags-ID: V03:K0:AT5PNGJ6apyyrK3zg5dW1QVD0GepOuY2Rq2yCu/UNzj9mBDpHOZ
+ Fbh+mdNcW65k/bgPp2ndZHcjApP7BNwUvFf5crZfbjvr3bmHmIHzZvz0PZLumPSAr1jE4Jr
+ UWJN6A+BcKCHaVz431X4Jl2VGbh1E3BaE8NudHWQ281CoWWxn1uW5bHAzOVBTERgN8bXi86
+ jgPxYm1WMFWlG5WbK/rRg==
+X-UI-Out-Filterresults: notjunk:1;V01:K0:7v/Bjx5VTB8=:R45w9OL5qE7cvlaY0BGoOv
+ f/esIdkNLLCVn8J7GGyyBegg0HCdKN3VuJOorF6GnSh5T/9O+uZtdAMFxD0s8oIvLBfYh9Igu
+ MA9xl1NEPcDnkwUeTRH22y2xk7pZd5I0CwyWUjqcGDoizwYbvwOjEEb4CLfF9j+FXG7SLxE6a
+ HNMjuucJAQkxE7UanpzO3QZJRXFXJjoNhNJTCvfW6TDqk8g6Tjq9bByYRWIyX8EMAPfs4eXEf
+ wiIeqgGzbQQkzOvJ6yYKECZsKgl3f4tnGqgOCAifxUU9xgNN/XEq5Fu1MYF9VSY4HZ2qEvIRc
+ kotWYXCLrVO5LhE33TsMKlOim1YVrwEpP1rpIokPy/Qkx+aI31loUqxOS5O3WFQG/sYDyrIX7
+ 6kv+559pXCioGYoz8U+TIn9UQlfApwkUhf70uWDKEmchZsb6vAPGFIo7DWxHmYWFaVP16OyhY
+ hYPgR21LoYkUVIP3/6K32uuG+t1fMA0727WcRszA4gRSBBn/jlmhXatYD++/ETv9RBBKmqZCU
+ SzFxQCKMFQuttlCMkI01AS9Wgy8dMI31NDdKRX2+DfA8q34QA4IHIFEbLWdMuHR5NU0mtmPQq
+ GDHbWw1QgdV+go2U4VcM2ftYTsf/xpLHX9y0axojl34WWMQfYwrk1hqU+wMGvncLwcId64mU2
+ 2aelcFLI6ChMTL+XdIkYDGBJBOkKS+wzx4ZEZnv+13Wrrc0ugaUOlyvoJToAM2nLA6H1CnKfu
+ qNm+C+SuyJVSnpX9p6h2RnQm+jsF9Fzm1e+sJJLYiyBSnu8t20RoxqkTZOU=
+Return-Path: <xypron.glpk@gmx.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52050
+X-archive-position: 52051
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jaedon.shin@gmail.com
+X-original-sender: xypron.glpk@gmx.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -71,44 +58,44 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Ralf,
+Downstream packages like Debian flash-kernel rely on
+/proc/device-tree/model
+to determine how to install an updated kernel image.
 
-> On Dec 22, 2015, at 8:20 AM, Florian Fainelli <f.fainelli@gmail.com> wrote:
-> 
-> On 18/11/15 18:34, Jaedon Shin wrote:
->> Hi all,
->> 
->> This patch series is including device tree entries that clean up existing
->> entries and adds missing entries for BCM7xxx platforms.
->> 
->> Jaedon Shin (7):
->>  MIPS: BMIPS: remove unused aliases in device tree
->>  MIPS: BMIPS: remove wrong sata properties
->>  MIPS: BMIPS: fix phy name in device tree
->>  MIPS: BMIPS: fix interrupt number in bcm7425.dtsi
->>  MIPS: BMIPS: add device tree entry for BCM7xxx UART
->>  MIPS: BMIPS: add device tree entry for BCM7xxx I2C
->>  MIPS: BMIPS: add device tree entry for BCM7xxx SATA
-> 
-> Reviewed-by: Florian Fainelli <f.fainelli@gmail.com>
-> 
-> Thanks!
-> 
-> Ralf, since 19e88101c78f MIPS: BMIPS: Add SATA/PHY nodes for bcm7346 and
-> other changes got into 4.4-rc1, could you queue at least
-> 
-> MIPS: BMIPS: remove wrong sata properties
-> and
-> MIPS: BMIPS: fix interrupt number in bcm7425.dtsi
-> 
-> for an upcoming 4.4 pull request so we have correct device trees from
-> there on?
-> 
-> Thank you!
-> -- 
-> Florian
+Most dts files provide this property.
+It is suggested by IEEE Std 1275-1994.
 
-Would you consider applying a patchset or the two fixes?
+This patch adds a model attribute for Octeon CPUs.
 
-Thanks,
-Jaedon
+Signed-off-by: Heinrich Schuchardt <xypron.glpk@gmx.de>
+---
+ arch/mips/boot/dts/cavium-octeon/octeon_3xxx.dts | 1 +
+ arch/mips/boot/dts/cavium-octeon/octeon_68xx.dts | 1 +
+ 2 files changed, 2 insertions(+)
+
+diff --git a/arch/mips/boot/dts/cavium-octeon/octeon_3xxx.dts b/arch/mips/boot/dts/cavium-octeon/octeon_3xxx.dts
+index 9c48e05..a746678 100644
+--- a/arch/mips/boot/dts/cavium-octeon/octeon_3xxx.dts
++++ b/arch/mips/boot/dts/cavium-octeon/octeon_3xxx.dts
+@@ -8,6 +8,7 @@
+  */
+ / {
+ 	compatible = "cavium,octeon-3860";
++	model = "Cavium Octeon 3XXX";
+ 	#address-cells = <2>;
+ 	#size-cells = <2>;
+ 	interrupt-parent = <&ciu>;
+diff --git a/arch/mips/boot/dts/cavium-octeon/octeon_68xx.dts b/arch/mips/boot/dts/cavium-octeon/octeon_68xx.dts
+index 79b46fc..c8a292a 100644
+--- a/arch/mips/boot/dts/cavium-octeon/octeon_68xx.dts
++++ b/arch/mips/boot/dts/cavium-octeon/octeon_68xx.dts
+@@ -8,6 +8,7 @@
+  */
+ / {
+ 	compatible = "cavium,octeon-6880";
++	model = "Cavium Octeon 68XX";
+ 	#address-cells = <2>;
+ 	#size-cells = <2>;
+ 	interrupt-parent = <&ciu2>;
+-- 
+2.1.4

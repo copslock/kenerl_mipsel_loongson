@@ -1,43 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 14 Feb 2016 22:25:06 +0100 (CET)
-Received: from smtp5-g21.free.fr ([212.27.42.5]:15326 "EHLO smtp5-g21.free.fr"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27011781AbcBNVZBdP7Pn (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 14 Feb 2016 22:25:01 +0100
-Received: from tock (unknown [78.54.179.56])
-        (Authenticated sender: albeu)
-        by smtp5-g21.free.fr (Postfix) with ESMTPSA id 749C0D48127;
-        Sun, 14 Feb 2016 22:22:04 +0100 (CET)
-Date:   Sun, 14 Feb 2016 22:24:45 +0100
-From:   Alban <albeu@free.fr>
-To:     Antony Pavlov <antonynpavlov@gmail.com>
-Cc:     Aban Bedel <albeu@free.fr>, linux-mips@linux-mips.org,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Marek Vasut <marex@denx.de>, Wills Wang <wills.wang@live.com>,
-        Daniel Schwierzeck <daniel.schwierzeck@gmail.com>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Grant Likely <grant.likely@linaro.org>,
-        devicetree@vger.kernel.org
-Subject: Re: [PATCH 06/10] MIPS: dts: qca: ar9132: use short references for
- uart, usb and spi nodes
-Message-ID: <20160214222445.6eee4365@tock>
-In-Reply-To: <1455400697-29898-7-git-send-email-antonynpavlov@gmail.com>
-References: <1455400697-29898-1-git-send-email-antonynpavlov@gmail.com>
-        <1455400697-29898-7-git-send-email-antonynpavlov@gmail.com>
-X-Mailer: Claws Mail 3.9.3 (GTK+ 2.24.23; x86_64-pc-linux-gnu)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Feb 2016 05:31:18 +0100 (CET)
+Received: from mail-pf0-f195.google.com ([209.85.192.195]:34490 "EHLO
+        mail-pf0-f195.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006520AbcBOEbQmVDsJ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 15 Feb 2016 05:31:16 +0100
+Received: by mail-pf0-f195.google.com with SMTP id 71so6994454pfv.1;
+        Sun, 14 Feb 2016 20:31:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=content-type:mime-version:subject:from:in-reply-to:date:cc
+         :content-transfer-encoding:message-id:references:to;
+        bh=nBoeh6KSAHRFbqE4TsKYIPO4FENCrJcWZiGWVNJSJ0Q=;
+        b=cKH1vR81LaPJPYIez648IvJKfJjKNhvWFaUlUSaHkLktdQcQVTKbg3hpBBZHWEbb3E
+         4rvyux7MC24Zd/+vS8y1y/Yuzh9HTe/VRrGfhFfhz6UmobvOkkNU3CYAnUBB32Vwyj6d
+         hqAd98H0peTG3oxiwzu4Z5SDgevwH/WmFukRVyRCpFEwOnJpcwFc/feZRFmZsJNUxren
+         hPQX6eFcumA4mkIGaTjezyPvDLl9yDjkaArAJ6oM0/wN45tGJWknvwX+t3YoGUXODTbt
+         wdmRoImpWQ4FbzPJNgaEjp6q+zgdrKg8seqcEwN7IV5Hh/djEhN7zg4Km/D6th8cqTXO
+         QWhg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:content-type:mime-version:subject:from
+         :in-reply-to:date:cc:content-transfer-encoding:message-id:references
+         :to;
+        bh=nBoeh6KSAHRFbqE4TsKYIPO4FENCrJcWZiGWVNJSJ0Q=;
+        b=DnnM8DErvIEYT/Fba1rxoKiSFYbsF1p+Jc2RuDCxgkr44/KSFeGUOt6K0Sox2m86iE
+         qnwQ4zjbbZvRrB3r+9det94hPVXhqMeSfE2dT31ZGlzcex/IuIYO2WCsxOVGp3d6oTKC
+         /6G1Sw0DFxTueRyKmRPH6KujAyBo1cQuaCWytJ5xQXHX2Nx7EKP4XzZ4Pde3M8y/QRM1
+         Hda/Wdjde0Sbchl9cQLPKLPLBEACEl7NIIvpW6hexuWUB+MSqHvoZCtRr30nu1v67KyN
+         u9HSUanQaTZppmqnSx7zNMKtm70r22AKVajky2vhVy0QX4ZP1ou646yaSEOIhAczJoaE
+         XX1w==
+X-Gm-Message-State: AG10YORXWKrXtGeI6yWSSG9YRvIslulaTCTTy/L7stlgio/zMWvqDGBC13bpjCeAbLC9FA==
+X-Received: by 10.98.15.19 with SMTP id x19mr20800391pfi.60.1455510670604;
+        Sun, 14 Feb 2016 20:31:10 -0800 (PST)
+Received: from [172.16.1.101] ([211.255.134.166])
+        by smtp.gmail.com with ESMTPSA id t12sm34623992pfa.54.2016.02.14.20.31.08
+        (version=TLS1 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Sun, 14 Feb 2016 20:31:10 -0800 (PST)
+Content-Type: text/plain; charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3120\))
+Subject: Re: [PATCH 0/7] cleanup and add device tree for BCM7xxx platforms
+From:   Jaedon Shin <jaedon.shin@gmail.com>
+In-Reply-To: <56788942.3030601@gmail.com>
+Date:   Mon, 15 Feb 2016 13:31:05 +0900
+Cc:     Florian Fainelli <f.fainelli@gmail.com>,
+        Linux-MIPS <linux-mips@linux-mips.org>,
+        Kevin Cernekee <cernekee@gmail.com>,
+        Dragan Stancevic <dragan.stancevic@gmail.com>
 Content-Transfer-Encoding: 7bit
-Return-Path: <albeu@free.fr>
+Message-Id: <F1F89384-2E24-4D97-A8A5-19CB45CAA70F@gmail.com>
+References: <1447900493-1167-1-git-send-email-jaedon.shin@gmail.com> <56788942.3030601@gmail.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+X-Mailer: Apple Mail (2.3120)
+Return-Path: <jaedon.shin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52049
+X-archive-position: 52050
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: albeu@free.fr
+X-original-sender: jaedon.shin@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,177 +71,44 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sun, 14 Feb 2016 00:58:13 +0300
-Antony Pavlov <antonynpavlov@gmail.com> wrote:
+Hi Ralf,
 
-> Here are some Sascha Hauer's arguments for using aliases in the dts
-> files:
+> On Dec 22, 2015, at 8:20 AM, Florian Fainelli <f.fainelli@gmail.com> wrote:
 > 
->  - using aliases reduces the number of indentations in dts files;
+> On 18/11/15 18:34, Jaedon Shin wrote:
+>> Hi all,
+>> 
+>> This patch series is including device tree entries that clean up existing
+>> entries and adds missing entries for BCM7xxx platforms.
+>> 
+>> Jaedon Shin (7):
+>>  MIPS: BMIPS: remove unused aliases in device tree
+>>  MIPS: BMIPS: remove wrong sata properties
+>>  MIPS: BMIPS: fix phy name in device tree
+>>  MIPS: BMIPS: fix interrupt number in bcm7425.dtsi
+>>  MIPS: BMIPS: add device tree entry for BCM7xxx UART
+>>  MIPS: BMIPS: add device tree entry for BCM7xxx I2C
+>>  MIPS: BMIPS: add device tree entry for BCM7xxx SATA
 > 
->  - dts files become independent of the layout of the dtsi files
->    (it becomes possible to introduce another bus {} hierarchy between
->    a toplevel bus and the devices when you have to);
+> Reviewed-by: Florian Fainelli <f.fainelli@gmail.com>
 > 
->  - less chances for typos. if &i2c2 does not exist you get an error.
->    If instead you duplicate the whole path in the dts file a typo
->    in the path will just create another node.
+> Thanks!
 > 
-> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> Cc: Alban Bedel <albeu@free.fr>
-> Cc: Sascha Hauer <s.hauer@pengutronix.de>
-> Cc: Rob Herring <robh+dt@kernel.org>
-> Cc: Frank Rowand <frowand.list@gmail.com>
-> Cc: Grant Likely <grant.likely@linaro.org>
-> Cc: Ralf Baechle <ralf@linux-mips.org>
-> Cc: linux-mips@linux-mips.org
-> Cc: devicetree@vger.kernel.org
-> ---
->  arch/mips/boot/dts/qca/ar9132.dtsi               |  6 +-
->  arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts | 82 ++++++++++++------------
->  2 files changed, 44 insertions(+), 44 deletions(-)
+> Ralf, since 19e88101c78f MIPS: BMIPS: Add SATA/PHY nodes for bcm7346 and
+> other changes got into 4.4-rc1, could you queue at least
 > 
-> diff --git a/arch/mips/boot/dts/qca/ar9132.dtsi b/arch/mips/boot/dts/qca/ar9132.dtsi
-> index 3c2ed9e..511cb4d 100644
-> --- a/arch/mips/boot/dts/qca/ar9132.dtsi
-> +++ b/arch/mips/boot/dts/qca/ar9132.dtsi
-> @@ -52,7 +52,7 @@
->  				#qca,ddr-wb-channel-cells = <1>;
->  			};
->  
-> -			uart@18020000 {
-> +			uart: uart@18020000 {
->  				compatible = "ns8250";
->  				reg = <0x18020000 0x20>;
->  				interrupts = <3>;
+> MIPS: BMIPS: remove wrong sata properties
+> and
+> MIPS: BMIPS: fix interrupt number in bcm7425.dtsi
+> 
+> for an upcoming 4.4 pull request so we have correct device trees from
+> there on?
+> 
+> Thank you!
+> -- 
+> Florian
 
-Please also add a label for the watchdog, then all devices would be
-covered.
+Would you consider applying a patchset or the two fixes?
 
-> @@ -125,7 +125,7 @@
->  			};
->  		};
->  
-> -		usb@1b000100 {
-> +		usb: usb@1b000100 {
->  			compatible = "qca,ar7100-ehci", "generic-ehci";
->  			reg = <0x1b000100 0x100>;
->  
-> @@ -140,7 +140,7 @@
->  			status = "disabled";
->  		};
->  
-> -		spi@1f000000 {
-> +		spi: spi@1f000000 {
->  			compatible = "qca,ar9132-spi", "qca,ar7100-spi";
->  			reg = <0x1f000000 0x10>;
->  
-> diff --git a/arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts b/arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts
-> index c3069c3..9528ebd 100644
-> --- a/arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts
-> +++ b/arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts
-> @@ -22,51 +22,10 @@
->  
->  	ahb {
->  		apb {
-> -			uart@18020000 {
-> -				status = "okay";
-> -			};
-> -
->  			pll-controller@18050000 {
->  				clocks = <&extosc>;
->  			};
->  		};
-
-Better use a reference for the PLL clock too.
-
-> -
-> -		usb@1b000100 {
-> -			status = "okay";
-> -		};
-> -
-> -		spi@1f000000 {
-> -			status = "okay";
-> -			num-cs = <1>;
-> -
-> -			flash@0 {
-> -				#address-cells = <1>;
-> -				#size-cells = <1>;
-> -				compatible = "s25sl064a";
-> -				reg = <0>;
-> -				spi-max-frequency = <25000000>;
-> -
-> -				partition@0 {
-> -					label = "u-boot";
-> -					reg = <0x000000 0x020000>;
-> -				};
-> -
-> -				partition@1 {
-> -					label = "firmware";
-> -					reg = <0x020000 0x7D0000>;
-> -				};
-> -
-> -				partition@2 {
-> -					label = "art";
-> -					reg = <0x7F0000 0x010000>;
-> -					read-only;
-> -				};
-> -			};
-> -		};
-> -	};
-> -
-> -	usb-phy {
-> -		status = "okay";
->  	};
->  
->  	gpio-keys {
-> @@ -114,3 +73,44 @@
->  		};
->  	};
->  };
-> +
-> +&uart {
-> +	status = "okay";
-> +};
-> +
-> +&usb {
-> +	status = "okay";
-> +};
-> +
-> +&usb_phy {
-> +	status = "okay";
-> +};
-> +
-> +&spi {
-> +	status = "okay";
-> +	num-cs = <1>;
-> +
-> +	flash@0 {
-> +		#address-cells = <1>;
-> +		#size-cells = <1>;
-> +		compatible = "s25sl064a";
-> +		reg = <0>;
-> +		spi-max-frequency = <25000000>;
-> +
-> +		partition@0 {
-> +			label = "u-boot";
-> +			reg = <0x000000 0x020000>;
-> +		};
-> +
-> +		partition@1 {
-> +			label = "firmware";
-> +			reg = <0x020000 0x7D0000>;
-> +		};
-> +
-> +		partition@2 {
-> +			label = "art";
-> +			reg = <0x7F0000 0x010000>;
-> +			read-only;
-> +		};
-
-Looses partitions like this are now deprecated, we could take the
-opportunity to move to the new scheme. We just have to put all the
-"partition" nodes under a "partitions" node with a proper compatible and
-#address-cells and #size-cells.
-
-Alban
+Thanks,
+Jaedon

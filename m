@@ -1,53 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Feb 2016 15:37:07 +0100 (CET)
-Received: from mailout2.w1.samsung.com ([210.118.77.12]:32637 "EHLO
-        mailout2.w1.samsung.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011838AbcBOOgtMAgDJ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 15 Feb 2016 15:36:49 +0100
-Received: from eucpsbgm2.samsung.com (unknown [203.254.199.245])
- by mailout2.w1.samsung.com
- (Oracle Communications Messaging Server 7.0.5.31.0 64bit (built May  5 2014))
- with ESMTP id <0O2L007AZF950C40@mailout2.w1.samsung.com>; Mon,
- 15 Feb 2016 14:36:41 +0000 (GMT)
-X-AuditID: cbfec7f5-f79b16d000005389-c3-56c1e279f95b
-Received: from eusync3.samsung.com ( [203.254.199.213])
-        by eucpsbgm2.samsung.com (EUCPMTA) with SMTP id 55.7D.21385.972E1C65; Mon,
- 15 Feb 2016 14:36:41 +0000 (GMT)
-Received: from AMDC1061.digital.local ([106.116.147.88])
- by eusync3.samsung.com (Oracle Communications Messaging Server 7.0.5.31.0
- 64bit (built May  5 2014))
- with ESMTPA id <0O2L005QPF94GF00@eusync3.samsung.com>; Mon,
- 15 Feb 2016 14:36:41 +0000 (GMT)
-From:   Andrzej Hajda <a.hajda@samsung.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     Andrzej Hajda <a.hajda@samsung.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: [PATCH 2/7] MIPS: module: fix incorrect IS_ERR_VALUE macro usages
-Date:   Mon, 15 Feb 2016 15:35:20 +0100
-Message-id: <1455546925-22119-3-git-send-email-a.hajda@samsung.com>
-X-Mailer: git-send-email 1.9.1
-In-reply-to: <1455546925-22119-1-git-send-email-a.hajda@samsung.com>
-References: <1455546925-22119-1-git-send-email-a.hajda@samsung.com>
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFmpkluLIzCtJLcpLzFFi42I5/e/4Vd3KRwfDDPaeMbe4te4cq8XGGetZ
-        LS7vmsNmMWHqJHaLtUfusltc2qPiwOZxdOVaJo++LasYPT5vkgtgjuKySUnNySxLLdK3S+DK
-        mLfvMXvBK56K1ccuszQwXufqYuTkkBAwkfjVsIUJwhaTuHBvPRuILSSwlFHiwnwhCLuJSWJf
-        cwWIzSagKfF3802wGhEBBYnNvc9Yuxi5OJgFzjNKbHz7mxEkISzgJfFg/RIWEJtFQFViyrfP
-        7F2MHBy8As4Sh2dpQOySkzh5bDIrSJhTwEViwd4CiFXOEvt3b2OawMi7gJFhFaNoamlyQXFS
-        eq6RXnFibnFpXrpecn7uJkZIwHzdwbj0mNUhRgEORiUe3ogzB8KEWBPLiitzDzFKcDArifBa
-        nD4YJsSbklhZlVqUH19UmpNafIhRmoNFSZx35q73IUIC6YklqdmpqQWpRTBZJg5OqQbGiKSV
-        ssvWPd4QMDV/U90Zn2nNt4KOqb368TGb68mEPTJrPxTcO3O+7OwHiyWTFYIKJ+nq+HmdfWpz
-        yW5DUP7p9b+8zKxydH2FvV1+KgXOibQ33CBX6ORQHBQ7d5fRa1Wf7MfL3/xznvhqeQBH4N24
-        BUqiQpd9vgkubl9l4TXrdOq7pi1TZt9hVWIpzkg01GIuKk4EADxuafgUAgAA
-Return-Path: <a.hajda@samsung.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Feb 2016 16:45:38 +0100 (CET)
+Received: from demumfd002.nsn-inter.net ([93.183.12.31]:33624 "EHLO
+        demumfd002.nsn-inter.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011655AbcBOPpf6iChN (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 15 Feb 2016 16:45:35 +0100
+Received: from demuprx016.emea.nsn-intra.net ([10.150.129.55])
+        by demumfd002.nsn-inter.net (8.15.2/8.15.2) with ESMTPS id u1FFjFQ8023181
+        (version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
+        Mon, 15 Feb 2016 15:45:16 GMT
+Received: from ulegcpding.emea.nsn-net.net ([10.151.15.193])
+        by demuprx016.emea.nsn-intra.net (8.12.11.20060308/8.12.11) with SMTP id u1FFjDai010475;
+        Mon, 15 Feb 2016 16:45:13 +0100
+Date:   Mon, 15 Feb 2016 16:45:13 +0100
+From:   Ioan Nicu <ioan.nicu.ext@nokia.com>
+To:     Ralf Baechle <ralf@linux-mips.org>,
+        David Daney <david.daney@cavium.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Aleksey Makarov <aleksey.makarov@auriga.com>,
+        Leonid Rosenboim <lrosenboim@caviumnetworks.com>,
+        Jiang Liu <jiang.liu@linux.intel.com>,
+        Marc Zyngier <marc.zyngier@arm.com>,
+        Alexander Sverdlin <alexander.sverdlin@nokia.com>,
+        Uwe Duerr <uwe.duerr.ext@nokia.com>
+Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] MIPS: Octeon: do not change affinity for disabled irqs
+Message-ID: <20160215154513.GF25050@ulegcpding.emea.nsn-net.net>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.20 (2009-12-10)
+X-purgate-type: clean
+X-purgate-Ad: Categorized by eleven eXpurgate (R) http://www.eleven.de
+X-purgate: clean
+X-purgate: This mail is considered clean (visit http://www.eleven.de for further information)
+X-purgate-size: 4634
+X-purgate-ID: 151667::1455551116-00004E94-6E86FD97/0/0
+Return-Path: <ioan.nicu.ext@nokia.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52060
+X-archive-position: 52061
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: a.hajda@samsung.com
+X-original-sender: ioan.nicu.ext@nokia.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -60,45 +55,131 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-IS_ERR_VALUE macro should be used only with unsigned long type.
-Specifically it works incorrectly with longer types.
+Octeon sets the default irq affinity to value 1 in the early arch init
+code, so by default all irqs get registered with their affinity set to
+core 0.
 
-The patch follows conclusion from discussion on LKML [1][2].
+When setting one CPU ofline, octeon_irq_cpu_offline_ciu() calls
+irq_set_affinity_locked(), but this function sets the IRQD_AFFINITY_SET bit
+in the irq descriptor. This has the side effect that if one irq is
+requested later, after putting one CPU offline, the affinity of this irq
+would not be the default anymore, but rather forced to "all cores - the
+offline core".
 
-[1]: http://permalink.gmane.org/gmane.linux.kernel/2120927
-[2]: http://permalink.gmane.org/gmane.linux.kernel/2150581
+This patch sets the IRQCHIP_ONOFFLINE_ENABLED flag in octeon irq
+controllers, so that the kernel would call the irq_cpu_[on|off]line()
+callbacks only for enabled irqs. If some other irq is requested after
+setting one cpu offline, it would use the default irq affinity, same as it
+would do in the normal case where there is no CPU hotplug operation.
 
-Signed-off-by: Andrzej Hajda <a.hajda@samsung.com>
+Signed-off-by: Ioan Nicu <ioan.nicu.ext@nokia.com>
+Acked-by: Alexander Sverdlin <alexander.sverdlin@nokia.com>
 ---
- arch/mips/kernel/module-rela.c | 2 +-
- arch/mips/kernel/module.c      | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ arch/mips/cavium-octeon/octeon-irq.c |   15 ++++++++++++---
+ 1 files changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/arch/mips/kernel/module-rela.c b/arch/mips/kernel/module-rela.c
-index 2b70723..08100dc 100644
---- a/arch/mips/kernel/module-rela.c
-+++ b/arch/mips/kernel/module-rela.c
-@@ -125,7 +125,7 @@ int apply_relocate_add(Elf_Shdr *sechdrs, const char *strtab,
- 		/* This is the symbol it is referring to */
- 		sym = (Elf_Sym *)sechdrs[symindex].sh_addr
- 			+ ELF_MIPS_R_SYM(rel[i]);
--		if (IS_ERR_VALUE(sym->st_value)) {
-+		if (sym->st_value >= -MAX_ERRNO) {
- 			/* Ignore unresolved weak symbol */
- 			if (ELF_ST_BIND(sym->st_info) == STB_WEAK)
- 				continue;
-diff --git a/arch/mips/kernel/module.c b/arch/mips/kernel/module.c
-index 1833f51..2ba73bf4 100644
---- a/arch/mips/kernel/module.c
-+++ b/arch/mips/kernel/module.c
-@@ -214,7 +214,7 @@ int apply_relocate(Elf_Shdr *sechdrs, const char *strtab,
- 		/* This is the symbol it is referring to */
- 		sym = (Elf_Sym *)sechdrs[symindex].sh_addr
- 			+ ELF_MIPS_R_SYM(rel[i]);
--		if (IS_ERR_VALUE(sym->st_value)) {
-+		if (sym->st_value >= -MAX_ERRNO) {
- 			/* Ignore unresolved weak symbol */
- 			if (ELF_ST_BIND(sym->st_info) == STB_WEAK)
- 				continue;
+diff --git a/arch/mips/cavium-octeon/octeon-irq.c b/arch/mips/cavium-octeon/octeon-irq.c
+index 368eb49..684582e 100644
+--- a/arch/mips/cavium-octeon/octeon-irq.c
++++ b/arch/mips/cavium-octeon/octeon-irq.c
+@@ -935,6 +935,7 @@ static struct irq_chip octeon_irq_chip_ciu_v2 = {
+ #ifdef CONFIG_SMP
+ 	.irq_set_affinity = octeon_irq_ciu_set_affinity_v2,
+ 	.irq_cpu_offline = octeon_irq_cpu_offline_ciu,
++	.flags = IRQCHIP_ONOFFLINE_ENABLED,
+ #endif
+ };
+ 
+@@ -948,6 +949,7 @@ static struct irq_chip octeon_irq_chip_ciu_v2_edge = {
+ #ifdef CONFIG_SMP
+ 	.irq_set_affinity = octeon_irq_ciu_set_affinity_v2,
+ 	.irq_cpu_offline = octeon_irq_cpu_offline_ciu,
++	.flags = IRQCHIP_ONOFFLINE_ENABLED,
+ #endif
+ };
+ 
+@@ -963,6 +965,7 @@ static struct irq_chip octeon_irq_chip_ciu_sum2 = {
+ #ifdef CONFIG_SMP
+ 	.irq_set_affinity = octeon_irq_ciu_set_affinity_sum2,
+ 	.irq_cpu_offline = octeon_irq_cpu_offline_ciu,
++	.flags = IRQCHIP_ONOFFLINE_ENABLED,
+ #endif
+ };
+ 
+@@ -976,6 +979,7 @@ static struct irq_chip octeon_irq_chip_ciu_sum2_edge = {
+ #ifdef CONFIG_SMP
+ 	.irq_set_affinity = octeon_irq_ciu_set_affinity_sum2,
+ 	.irq_cpu_offline = octeon_irq_cpu_offline_ciu,
++	.flags = IRQCHIP_ONOFFLINE_ENABLED,
+ #endif
+ };
+ 
+@@ -988,6 +992,7 @@ static struct irq_chip octeon_irq_chip_ciu = {
+ #ifdef CONFIG_SMP
+ 	.irq_set_affinity = octeon_irq_ciu_set_affinity,
+ 	.irq_cpu_offline = octeon_irq_cpu_offline_ciu,
++	.flags = IRQCHIP_ONOFFLINE_ENABLED,
+ #endif
+ };
+ 
+@@ -1001,6 +1006,7 @@ static struct irq_chip octeon_irq_chip_ciu_edge = {
+ #ifdef CONFIG_SMP
+ 	.irq_set_affinity = octeon_irq_ciu_set_affinity,
+ 	.irq_cpu_offline = octeon_irq_cpu_offline_ciu,
++	.flags = IRQCHIP_ONOFFLINE_ENABLED,
+ #endif
+ };
+ 
+@@ -1041,7 +1047,7 @@ static struct irq_chip octeon_irq_chip_ciu_gpio_v2 = {
+ 	.irq_set_affinity = octeon_irq_ciu_set_affinity_v2,
+ 	.irq_cpu_offline = octeon_irq_cpu_offline_ciu,
+ #endif
+-	.flags = IRQCHIP_SET_TYPE_MASKED,
++	.flags = IRQCHIP_SET_TYPE_MASKED | IRQCHIP_ONOFFLINE_ENABLED,
+ };
+ 
+ static struct irq_chip octeon_irq_chip_ciu_gpio = {
+@@ -1056,7 +1062,7 @@ static struct irq_chip octeon_irq_chip_ciu_gpio = {
+ 	.irq_set_affinity = octeon_irq_ciu_set_affinity,
+ 	.irq_cpu_offline = octeon_irq_cpu_offline_ciu,
+ #endif
+-	.flags = IRQCHIP_SET_TYPE_MASKED,
++	.flags = IRQCHIP_SET_TYPE_MASKED | IRQCHIP_ONOFFLINE_ENABLED,
+ };
+ 
+ /*
+@@ -1838,6 +1844,7 @@ static struct irq_chip octeon_irq_chip_ciu2 = {
+ #ifdef CONFIG_SMP
+ 	.irq_set_affinity = octeon_irq_ciu2_set_affinity,
+ 	.irq_cpu_offline = octeon_irq_cpu_offline_ciu,
++	.flags = IRQCHIP_ONOFFLINE_ENABLED,
+ #endif
+ };
+ 
+@@ -1851,6 +1858,7 @@ static struct irq_chip octeon_irq_chip_ciu2_edge = {
+ #ifdef CONFIG_SMP
+ 	.irq_set_affinity = octeon_irq_ciu2_set_affinity,
+ 	.irq_cpu_offline = octeon_irq_cpu_offline_ciu,
++	.flags = IRQCHIP_ONOFFLINE_ENABLED,
+ #endif
+ };
+ 
+@@ -1886,7 +1894,7 @@ static struct irq_chip octeon_irq_chip_ciu2_gpio = {
+ 	.irq_set_affinity = octeon_irq_ciu2_set_affinity,
+ 	.irq_cpu_offline = octeon_irq_cpu_offline_ciu,
+ #endif
+-	.flags = IRQCHIP_SET_TYPE_MASKED,
++	.flags = IRQCHIP_SET_TYPE_MASKED | IRQCHIP_ONOFFLINE_ENABLED,
+ };
+ 
+ static int octeon_irq_ciu2_xlat(struct irq_domain *d,
+@@ -2537,6 +2545,7 @@ static struct irq_chip octeon_irq_chip_ciu3 = {
+ #ifdef CONFIG_SMP
+ 	.irq_set_affinity = octeon_irq_ciu3_set_affinity,
+ 	.irq_cpu_offline = octeon_irq_cpu_offline_ciu,
++	.flags = IRQCHIP_ONOFFLINE_ENABLED,
+ #endif
+ };
+ 
 -- 
-1.9.1
+1.7.1

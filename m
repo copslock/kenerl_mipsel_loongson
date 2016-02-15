@@ -1,67 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Feb 2016 10:28:32 +0100 (CET)
-Received: from mail-lb0-f193.google.com ([209.85.217.193]:36021 "EHLO
-        mail-lb0-f193.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010546AbcBOJ2bHQ3S9 convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 15 Feb 2016 10:28:31 +0100
-Received: by mail-lb0-f193.google.com with SMTP id zr1so6066401lbb.3;
-        Mon, 15 Feb 2016 01:28:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=date:from:to:cc:subject:message-id:in-reply-to:references
-         :mime-version:content-type:content-transfer-encoding;
-        bh=YmctZoC+b2OC2Ck6qUyi9QFHZpeo6+pV60mTLtp96FU=;
-        b=ErQBOEW8jb42HYZ3FkBi/foDMi/67poGPX36M6Ggu3sc/4OoeiHWItRmum+fUsfSvy
-         unBw+LcNd2i4SxZIeaxneIRaSv4lVz4rqrMUrmP3erDSvzloIsyLN2lq67oi10QmDEyI
-         ySnMFCJnUp4gnkWP4JfP9MR6jMsBKc0j2R6l9eKPJIWCwBxuHylq+wlTYabwqsIxqIgH
-         bS4JSePEZ/+paNAvLb1bO/xTLoUywn8OofgKvIZbbBkRdROXhyVcL9X63a9yRMPDAGIx
-         ZruHgQWYV0kMJkXQYHDksCbsvD53j9OyjHSQijEcWd+zR1s5c2b/SKpu0kWykdpJsQZH
-         0sNA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:in-reply-to
-         :references:mime-version:content-type:content-transfer-encoding;
-        bh=YmctZoC+b2OC2Ck6qUyi9QFHZpeo6+pV60mTLtp96FU=;
-        b=FxS5t1Sfu6FxH7emR4HBFXAT35EYp2HTr0nNtJGRhEjtZw2EIN93Mr7QP2WH/fqzAF
-         hqrUTUbBmrusmBtVdZ3GiJ3P/eY1/mbvykJ3bk2zu/B4WI6rgiuRXf6hoJAiGfjFNnRA
-         UXHhG9oha6rfwDa0gjgqYCb3s6bbSBrYLNorGkhkc6ff6gvajLR3CEtzNrq1OSiuDdVN
-         iIlO23e+FFZ6/4XKo9w4ET0sYB1+nRllGxn64QajymkvHtkp6R5l1/wC1FlYcsE87vto
-         YG8RSehmXN+NTk8M5YUhDewGvfYMh3yo64kSG3/snskY02o8WNV4ssWK3aoDBiP+eafM
-         Gq6w==
-X-Gm-Message-State: AG10YOTGN6NZPoUrFzX7nr3eNkAD2KIH0ViVbr8kQHev9Ckl5y5LdSvVVWgZVJ5vHTVPpQ==
-X-Received: by 10.112.129.233 with SMTP id nz9mr6388288lbb.82.1455528505676;
-        Mon, 15 Feb 2016 01:28:25 -0800 (PST)
-Received: from flare (t35.niisi.ras.ru. [193.232.173.35])
-        by smtp.gmail.com with ESMTPSA id f202sm3537743lfg.12.2016.02.15.01.28.24
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Mon, 15 Feb 2016 01:28:24 -0800 (PST)
-Date:   Mon, 15 Feb 2016 12:54:08 +0300
-From:   Antony Pavlov <antonynpavlov@gmail.com>
-To:     Marek Vasut <marex@denx.de>
-Cc:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
-        Alban Bedel <albeu@free.fr>, Wills Wang <wills.wang@live.com>,
-        Daniel Schwierzeck <daniel.schwierzeck@gmail.com>,
-        devicetree@vger.kernel.org, David Daney <ddaney.cavm@gmail.com>
-Subject: Re: [PATCH 05/10] MIPS: dts: qca: ar9132_tl_wr1043nd_v1.dts: drop
- unused alias node
-Message-Id: <20160215125408.8aa7386cf9ace5125fbb6579@gmail.com>
-In-Reply-To: <56C0851D.5090105@denx.de>
-References: <1455400697-29898-1-git-send-email-antonynpavlov@gmail.com>
-        <1455400697-29898-6-git-send-email-antonynpavlov@gmail.com>
-        <56C0851D.5090105@denx.de>
-X-Mailer: Sylpheed 3.5.0beta3 (GTK+ 2.24.25; i586-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-Return-Path: <antonynpavlov@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Feb 2016 11:35:37 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:33750 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27010629AbcBOKffVaXTj (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 15 Feb 2016 11:35:35 +0100
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Websense Email Security Gateway with ESMTPS id 1E61616427DDC
+        for <linux-mips@linux-mips.org>; Mon, 15 Feb 2016 10:35:27 +0000 (GMT)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ HHMAIL01.hh.imgtec.org (10.100.10.19) with Microsoft SMTP Server (TLS) id
+ 14.3.266.1; Mon, 15 Feb 2016 10:35:29 +0000
+Received: from [192.168.154.116] (192.168.154.116) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Mon, 15 Feb
+ 2016 10:35:28 +0000
+Subject: Re: [PATCH] MIPS: Use CPHYSADDR to implement mips32 __pa
+To:     <linux-mips@linux-mips.org>
+References: <1455477626-30988-1-git-send-email-paul.burton@imgtec.com>
+From:   Matt Redfearn <matt.redfearn@imgtec.com>
+Message-ID: <56C1A9F0.90706@imgtec.com>
+Date:   Mon, 15 Feb 2016 10:35:28 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+ Thunderbird/38.5.1
+MIME-Version: 1.0
+In-Reply-To: <1455477626-30988-1-git-send-email-paul.burton@imgtec.com>
+Content-Type: text/plain; charset="windows-1252"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.154.116]
+Return-Path: <Matt.Redfearn@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52055
+X-archive-position: 52056
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: antonynpavlov@gmail.com
+X-original-sender: matt.redfearn@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -74,28 +46,56 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sun, 14 Feb 2016 14:46:05 +0100
-Marek Vasut <marex@denx.de> wrote:
+Hi Paul,
 
-> On 02/13/2016 10:58 PM, Antony Pavlov wrote:
-> > The TP-LINK TL-WR1043ND board has only one serial port,
-> > so replacing the default of 0 with 0 does nothing useful.
-> 
-> I'd suggest to keep the aliases node, since it can be used by other
-> non-Linux systems to access the serial port 0 . This might be useful in
-> case you add some additional UART chip(s) too.
-> 
-> [...]
+On 14/02/16 19:20, Paul Burton wrote:
+> Use CPHYSADDR to implement the __pa macro converting from a virtual to a
+> physical address for MIPS32, much as is already done for MIPS64 (though
+> without the complication of having both compatibility & XKPHYS
+> segments).
+>
+> This allows for __pa to work regardless of whether the address being
+> translated is in kseg0 or kseg1, unlike the previous subtraction based
+> approach which only worked for addresses in kseg0. Working for kseg1
+> addresses is important if __pa is used on addresses allocated by
+> dma_alloc_coherent, where on systems with non-coherent I/O we provide
+> addresses in kseg1. If this address is then used with
+> dma_map_single_attrs then it is provided to virt_to_page, which in turn
+> calls virt_to_phys which is a wrapper around __pa. The result is that we
+> end up with a physical address 0x20000000 bytes (ie. the size of kseg0)
+> too high.
+>
+> In addition to providing consistency with MIPS64 & fixing the kseg1 case
+> above this has the added bonus of generating smaller code for systems
+> implementing MIPS32r2 & beyond, where a single ext instruction can
+> extract the physical address rather than needing to load an immediate
+> into a temp register & subtract it. This results in ~1.3KB savings for a
+> boston_defconfig kernel adjusted to set CONFIG_32BIT=y.
+>
+> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+> ---
+>
+>   arch/mips/include/asm/page.h | 3 +--
+>   1 file changed, 1 insertion(+), 2 deletions(-)
+>
+> diff --git a/arch/mips/include/asm/page.h b/arch/mips/include/asm/page.h
+> index 21ed715..35c1222 100644
+> --- a/arch/mips/include/asm/page.h
+> +++ b/arch/mips/include/asm/page.h
+> @@ -169,8 +169,7 @@ typedef struct { unsigned long pgprot; } pgprot_t;
+>       __x < CKSEG0 ? XPHYSADDR(__x) : CPHYSADDR(__x);			\
+>   })
+>   #else
+> -#define __pa(x)								\
+> -    ((unsigned long)(x) - PAGE_OFFSET + PHYS_OFFSET)
+> +#define __pa(x)		CPHYSADDR(x)
+>   #endif
+>   #define __va(x)		((void *)((unsigned long)(x) + PAGE_OFFSET - PHYS_OFFSET))
+>   #include <asm/io.h>
+I have tested this patch on an EVA Interaptiv and confirmed that it 
+fixes previous regressions.
 
-I have already submitted the patch which keeps the aliases node:
+Tested-by: Matt Redfearn <matt.redfearn@imgtec.com>
 
-   https://www.linux-mips.org/archives/linux-mips/2016-01/msg00306.html
-
-
-It was David Daney who proposed to drop unused aliases node:
-
-   https://www.linux-mips.org/archives/linux-mips/2016-01/msg00353.html
-
--- 
-Best regards,
-  Antony Pavlov
+Thanks,
+Matt

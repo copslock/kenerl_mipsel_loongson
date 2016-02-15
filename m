@@ -1,61 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Feb 2016 18:58:30 +0100 (CET)
-Received: from e19.ny.us.ibm.com ([129.33.205.209]:39609 "EHLO
-        e19.ny.us.ibm.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27012408AbcBOR63UoDUr (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 15 Feb 2016 18:58:29 +0100
-Received: from localhost
-        by e19.ny.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <linux-mips@linux-mips.org> from <paulmck@linux.vnet.ibm.com>;
-        Mon, 15 Feb 2016 12:58:23 -0500
-Received: from d01dlp02.pok.ibm.com (9.56.250.167)
-        by e19.ny.us.ibm.com (146.89.104.206) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        Mon, 15 Feb 2016 12:58:21 -0500
-X-IBM-Helo: d01dlp02.pok.ibm.com
-X-IBM-MailFrom: paulmck@linux.vnet.ibm.com
-X-IBM-RcptTo: linux-mips@linux-mips.org
-Received: from b01cxnp22034.gho.pok.ibm.com (b01cxnp22034.gho.pok.ibm.com [9.57.198.24])
-        by d01dlp02.pok.ibm.com (Postfix) with ESMTP id 59A4A6E8040
-        for <linux-mips@linux-mips.org>; Mon, 15 Feb 2016 12:45:12 -0500 (EST)
-Received: from d01av01.pok.ibm.com (d01av01.pok.ibm.com [9.56.224.215])
-        by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id u1FHwKSF31850574
-        for <linux-mips@linux-mips.org>; Mon, 15 Feb 2016 17:58:20 GMT
-Received: from d01av01.pok.ibm.com (localhost [127.0.0.1])
-        by d01av01.pok.ibm.com (8.14.4/8.14.4/NCO v10.0 AVout) with ESMTP id u1FHwJQj027185
-        for <linux-mips@linux-mips.org>; Mon, 15 Feb 2016 12:58:20 -0500
-Received: from paulmck-ThinkPad-W541 ([9.70.82.75])
-        by d01av01.pok.ibm.com (8.14.4/8.14.4/NCO v10.0 AVin) with ESMTP id u1FHwIHF027163;
-        Mon, 15 Feb 2016 12:58:19 -0500
-Received: by paulmck-ThinkPad-W541 (Postfix, from userid 1000)
-        id BB0F516C14DD; Mon, 15 Feb 2016 09:58:25 -0800 (PST)
-Date:   Mon, 15 Feb 2016 09:58:25 -0800
-From:   "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>
-To:     will.deacon@arm.com, Andy.Glew@imgtec.com,
-        Leonid.Yegoshin@imgtec.com, peterz@infradead.org,
-        linux-arch@vger.kernel.org, arnd@arndb.de, davem@davemloft.net,
-        linux-arm-kernel@lists.infradead.org, linux-metag@vger.kernel.org,
-        linux-mips@linux-mips.org, linux-xtensa@linux-xtensa.org,
-        linuxppc-dev@lists.ozlabs.org
-Cc:     graham.whaley@gmail.com, torvalds@linux-foundation.org,
-        hpa@zytor.com, mingo@kernel.org
-Subject: Writes, smp_wmb(), and transitivity?
-Message-ID: <20160215175825.GA15878@linux.vnet.ibm.com>
-Reply-To: paulmck@linux.vnet.ibm.com
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Feb 2016 18:59:49 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:60346 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27011948AbcBOR7sG0m0r (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 15 Feb 2016 18:59:48 +0100
+Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
+        by Websense Email Security Gateway with ESMTPS id 7B15381B947A2;
+        Mon, 15 Feb 2016 17:59:38 +0000 (GMT)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
+ 14.3.266.1; Mon, 15 Feb 2016 17:59:41 +0000
+Received: from localhost (10.100.200.11) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Mon, 15 Feb
+ 2016 17:59:39 +0000
+From:   Paul Burton <paul.burton@imgtec.com>
+To:     <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>
+CC:     Paul Burton <paul.burton@imgtec.com>,
+        "# v4 . 4+" <stable@vger.kernel.org>,
+        Matthew Fortune <matthew.fortune@imgtec.com>,
+        Robert Suchanek <robert.suchanek@imgtec.com>,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        Hannes Frederic Sowa <hannes@stressinduktion.org>,
+        <linux-kernel@vger.kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Joe Perches <joe@perches.com>,
+        Andrey Ryabinin <aryabinin@virtuozzo.com>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        "Andrew Morton" <akpm@linux-foundation.org>
+Subject: [PATCH] compiler-gcc: Workaround MIPS GCC reordering bug
+Date:   Mon, 15 Feb 2016 09:59:05 -0800
+Message-ID: <1455559145-26805-1-git-send-email-paul.burton@imgtec.com>
+X-Mailer: git-send-email 2.7.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-TM-AS-MML: disable
-X-Content-Scanned: Fidelis XPS MAILER
-x-cbid: 16021517-0057-0000-0000-0000036DDF8E
-Return-Path: <paulmck@linux.vnet.ibm.com>
+Content-Type: text/plain
+X-Originating-IP: [10.100.200.11]
+Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52065
+X-archive-position: 52066
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paulmck@linux.vnet.ibm.com
+X-original-sender: paul.burton@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -68,111 +54,79 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hello!
+GCC for MIPS currently has a bug which leads to it reordering
+instructions into branch delay slots incorrectly when a call to
+__builtin_unreachable is the only content of the default case of a
+switch statement. See this thread for details:
 
-Some architectures provide local transitivity for a chain of threads doing
-writes separated by smp_wmb(), as exemplified by the litmus tests below.
-The pattern is that each thread writes to a its own variable, does an
-smp_wmb(), then writes a different value to the next thread's variable.
+    https://gcc.gnu.org/ml/gcc-patches/2015-09/msg00360.html
 
-I don't know of a use of this, but if everyone supports it, it might
-be good to mandate it.  Status quo is that smp_wmb() is non-transitive,
-so it currently isn't supported.
+Work around this bug by placing an empty volatile asm statement before
+the __builtin_unreachable call, which prevents GCC's delay slot filler
+from seeing past the asm statement (& thus the call to
+__builtin_unreachable) to instructions it shouldn't reorder. It would be
+good to guard this based upon GCC_VERSION once the bug is fixed in GCC,
+but meanwhile this workaround has no known negative side effects.
 
-Anyone know of any architectures that do -not- support this?
+This bug affects at least a maltasmvp_defconfig kernel built from the
+v4.4 tag using GCC 4.9.2 (from a Codescape SDK 2015.06-05 toolchain),
+with the result being an address exception taken after log messages
+about the L1 caches (during probe of the L2 cache):
 
-Assuming all architectures -do- support this, any arguments -against-
-officially supporting it in Linux?
+    Initmem setup node 0 [mem 0x0000000080000000-0x000000009fffffff]
+    VPE topology {2,2} total 4
+    Primary instruction cache 64kB, VIPT, 4-way, linesize 32 bytes.
+    Primary data cache 64kB, 4-way, PIPT, no aliases, linesize 32 bytes
+    <AdEL exception here>
 
-							Thanx, Paul
+This is early enough that the kernel exception vectors are not in use,
+so any further output depends upon the bootloader. This is reproducible
+in QEMU where no further output occurs - ie. the system hangs here.
+Given the affected v4.4 configuration this patch is marked for stable
+backport to v4.4, however I cannot test every configuration so it's
+entirely possible that this bug hits other platforms in earlier kernel
+versions. Given the nature of the bug it may potentially be hit with
+differing symptoms.
 
-------------------------------------------------------------------------
+Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+Cc: <stable@vger.kernel.org> # v4.4+
+Cc: Matthew Fortune <matthew.fortune@imgtec.com>
+Cc: Robert Suchanek <robert.suchanek@imgtec.com>
+---
 
-Two threads:
+ include/linux/compiler-gcc.h | 20 +++++++++++++++++++-
+ 1 file changed, 19 insertions(+), 1 deletion(-)
 
-	int a, b;
-
-	void thread0(void)
-	{
-		WRITE_ONCE(a, 1);
-		smp_wmb();
-		WRITE_ONCE(b, 2);
-	}
-
-	void thread1(void)
-	{
-		WRITE_ONCE(b, 1);
-		smp_wmb();
-		WRITE_ONCE(a, 2);
-	}
-
-	/* After all threads have completed and the dust has settled... */
-
-	BUG_ON(a == 1 && b == 1);
-
-Three threads:
-
-	int a, b, c;
-
-	void thread0(void)
-	{
-		WRITE_ONCE(a, 1);
-		smp_wmb();
-		WRITE_ONCE(b, 2);
-	}
-
-	void thread1(void)
-	{
-		WRITE_ONCE(b, 1);
-		smp_wmb();
-		WRITE_ONCE(c, 2);
-	}
-
-	void thread2(void)
-	{
-		WRITE_ONCE(c, 1);
-		smp_wmb();
-		WRITE_ONCE(a, 2);
-	}
-
-	/* After all threads have completed and the dust has settled... */
-
-	BUG_ON(a == 1 && b == 1 && c == 1);
-
-Four threads:
-
-	int a, b, c, d;
-
-	void thread0(void)
-	{
-		WRITE_ONCE(a, 1);
-		smp_wmb();
-		WRITE_ONCE(b, 2);
-	}
-
-	void thread1(void)
-	{
-		WRITE_ONCE(b, 1);
-		smp_wmb();
-		WRITE_ONCE(c, 2);
-	}
-
-	void thread2(void)
-	{
-		WRITE_ONCE(c, 1);
-		smp_wmb();
-		WRITE_ONCE(d, 2);
-	}
-
-	void thread3(void)
-	{
-		WRITE_ONCE(d, 1);
-		smp_wmb();
-		WRITE_ONCE(a, 2);
-	}
-
-	/* After all threads have completed and the dust has settled... */
-
-	BUG_ON(a == 1 && b == 1 && c == 1 && d == 1);
-
-And so on...
+diff --git a/include/linux/compiler-gcc.h b/include/linux/compiler-gcc.h
+index 22ab246..e7c3502 100644
+--- a/include/linux/compiler-gcc.h
++++ b/include/linux/compiler-gcc.h
+@@ -196,7 +196,25 @@
+  * this in the preprocessor, but we can live with this because they're
+  * unreleased.  Really, we need to have autoconf for the kernel.
+  */
+-#define unreachable() __builtin_unreachable()
++#if defined(__mips__)
++/*
++ * GCC for MIPS currently has a bug which leads to it incorrectly
++ * reordering instructions into branch delay slots when a call to
++ * __builtin_unreachable() is the only thing in the default case of a
++ * switch statement. We avoid this bug for those versions of GCC by
++ * placing an empty volatile asm statement before the call to
++ * __builtin_unreachable, which GCC is prevented from reordering past.
++ *
++ * See this thread for details:
++ * https://gcc.gnu.org/ml/gcc-patches/2015-09/msg00360.html
++ */
++# define unreachable() do {		\
++	asm volatile("");		\
++	__builtin_unreachable();	\
++} while (0)
++#else
++# define unreachable() __builtin_unreachable()
++#endif
+ 
+ /* Mark a function definition as prohibited from being cloned. */
+ #define __noclone	__attribute__((__noclone__))
+-- 
+2.7.1

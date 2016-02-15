@@ -1,51 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Feb 2016 06:27:11 +0100 (CET)
-Received: from mout.gmx.net ([212.227.15.18]:64568 "EHLO mout.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27006568AbcBOF1K0rLj8 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 15 Feb 2016 06:27:10 +0100
-Received: from ubnt.fritz.box ([37.24.8.189]) by mail.gmx.com (mrgmx003) with
- ESMTPSA (Nemesis) id 0Lymoh-1Zt1Ou11b5-016A6O; Mon, 15 Feb 2016 06:26:43
- +0100
-From:   Heinrich Schuchardt <xypron.glpk@gmx.de>
-To:     Rob Herring <robh+dt@kernel.org>, Pawel Moll <pawel.moll@arm.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ian Campbell <ijc+devicetree@hellion.org.uk>,
-        Kumar Gala <galak@codeaurora.org>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Andrew Bresticker <abrestic@chromium.org>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        devicetree@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org,
-        Heinrich Schuchardt <xypron.glpk@gmx.de>
-Subject: [PATCH 1/1] MIPS: DTS: cavium-octeon: provide model attribute
-Date:   Mon, 15 Feb 2016 06:26:17 +0100
-Message-Id: <1455513977-934-1-git-send-email-xypron.glpk@gmx.de>
-X-Mailer: git-send-email 2.1.4
-X-Provags-ID: V03:K0:AT5PNGJ6apyyrK3zg5dW1QVD0GepOuY2Rq2yCu/UNzj9mBDpHOZ
- Fbh+mdNcW65k/bgPp2ndZHcjApP7BNwUvFf5crZfbjvr3bmHmIHzZvz0PZLumPSAr1jE4Jr
- UWJN6A+BcKCHaVz431X4Jl2VGbh1E3BaE8NudHWQ281CoWWxn1uW5bHAzOVBTERgN8bXi86
- jgPxYm1WMFWlG5WbK/rRg==
-X-UI-Out-Filterresults: notjunk:1;V01:K0:7v/Bjx5VTB8=:R45w9OL5qE7cvlaY0BGoOv
- f/esIdkNLLCVn8J7GGyyBegg0HCdKN3VuJOorF6GnSh5T/9O+uZtdAMFxD0s8oIvLBfYh9Igu
- MA9xl1NEPcDnkwUeTRH22y2xk7pZd5I0CwyWUjqcGDoizwYbvwOjEEb4CLfF9j+FXG7SLxE6a
- HNMjuucJAQkxE7UanpzO3QZJRXFXJjoNhNJTCvfW6TDqk8g6Tjq9bByYRWIyX8EMAPfs4eXEf
- wiIeqgGzbQQkzOvJ6yYKECZsKgl3f4tnGqgOCAifxUU9xgNN/XEq5Fu1MYF9VSY4HZ2qEvIRc
- kotWYXCLrVO5LhE33TsMKlOim1YVrwEpP1rpIokPy/Qkx+aI31loUqxOS5O3WFQG/sYDyrIX7
- 6kv+559pXCioGYoz8U+TIn9UQlfApwkUhf70uWDKEmchZsb6vAPGFIo7DWxHmYWFaVP16OyhY
- hYPgR21LoYkUVIP3/6K32uuG+t1fMA0727WcRszA4gRSBBn/jlmhXatYD++/ETv9RBBKmqZCU
- SzFxQCKMFQuttlCMkI01AS9Wgy8dMI31NDdKRX2+DfA8q34QA4IHIFEbLWdMuHR5NU0mtmPQq
- GDHbWw1QgdV+go2U4VcM2ftYTsf/xpLHX9y0axojl34WWMQfYwrk1hqU+wMGvncLwcId64mU2
- 2aelcFLI6ChMTL+XdIkYDGBJBOkKS+wzx4ZEZnv+13Wrrc0ugaUOlyvoJToAM2nLA6H1CnKfu
- qNm+C+SuyJVSnpX9p6h2RnQm+jsF9Fzm1e+sJJLYiyBSnu8t20RoxqkTZOU=
-Return-Path: <xypron.glpk@gmx.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Feb 2016 09:11:13 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:9084 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27008752AbcBOILJo2Owx (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 15 Feb 2016 09:11:09 +0100
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Websense Email Security Gateway with ESMTPS id 4393F3D16D156;
+        Mon, 15 Feb 2016 08:11:01 +0000 (GMT)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ HHMAIL01.hh.imgtec.org (10.100.10.19) with Microsoft SMTP Server (TLS) id
+ 14.3.266.1; Mon, 15 Feb 2016 08:11:02 +0000
+Received: from [192.168.154.116] (192.168.154.116) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.210.2; Mon, 15 Feb
+ 2016 08:11:02 +0000
+Subject: Re: [PATCH v5] mmc: OCTEON: Add host driver for OCTEON MMC controller
+To:     Rob Herring <robh@kernel.org>
+References: <1455125775-7245-1-git-send-email-matt.redfearn@imgtec.com>
+ <20160212153940.GA32211@rob-hp-laptop>
+CC:     <linux-mmc@vger.kernel.org>, <david.daney@cavium.com>,
+        <ulf.hansson@linaro.org>, <linux-mips@linux-mips.org>,
+        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <Zubair.Kakakhel@imgtec.com>,
+        Aleksey Makarov <aleksey.makarov@caviumnetworks.com>,
+        Chandrakala Chavva <cchavva@caviumnetworks.com>,
+        Aleksey Makarov <aleksey.makarov@auriga.com>,
+        Leonid Rosenboim <lrosenboim@caviumnetworks.com>,
+        Peter Swain <pswain@cavium.com>,
+        Aaron Williams <aaron.williams@cavium.com>
+From:   Matt Redfearn <matt.redfearn@imgtec.com>
+Message-ID: <56C18816.2010708@imgtec.com>
+Date:   Mon, 15 Feb 2016 08:11:02 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+ Thunderbird/38.5.1
+MIME-Version: 1.0
+In-Reply-To: <20160212153940.GA32211@rob-hp-laptop>
+Content-Type: text/plain; charset="windows-1252"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.154.116]
+Return-Path: <Matt.Redfearn@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52051
+X-archive-position: 52052
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: xypron.glpk@gmx.de
+X-original-sender: matt.redfearn@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,44 +57,212 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Downstream packages like Debian flash-kernel rely on
-/proc/device-tree/model
-to determine how to install an updated kernel image.
+Hi Rob,
 
-Most dts files provide this property.
-It is suggested by IEEE Std 1275-1994.
+On 12/02/16 15:39, Rob Herring wrote:
+> On Wed, Feb 10, 2016 at 05:36:15PM +0000, Matt Redfearn wrote:
+>> From: Aleksey Makarov <aleksey.makarov@caviumnetworks.com>
+>>
+>> The OCTEON MMC controller is currently found on cn61XX and cnf71XX
+>> devices.  Device parameters are configured from device tree data.
+>>
+>> eMMC, MMC and SD devices are supported.
+>>
+>> Tested-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+>> Signed-off-by: Chandrakala Chavva <cchavva@caviumnetworks.com>
+>> Signed-off-by: David Daney <david.daney@cavium.com>
+>> Signed-off-by: Aleksey Makarov <aleksey.makarov@auriga.com>
+>> Signed-off-by: Leonid Rosenboim <lrosenboim@caviumnetworks.com>
+>> Signed-off-by: Peter Swain <pswain@cavium.com>
+>> Signed-off-by: Aaron Williams <aaron.williams@cavium.com>
+>> Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
+>> ---
+>> v5:
+>> Incoroprate comments from review
+>> http://patchwork.linux-mips.org/patch/9558/
+>> - Use standard <bus-width> property instead of <cavium,bus-max-width>.
+>> - Use standard <max-frequency> property instead of <spi-max-frequency>.
+>> - Add octeon_mmc_of_parse_legacy function to deal with the above
+>>    properties, since many devices have shipped with those properties
+>>    embedded in firmware.
+>> - Allow the <vmmc-supply> binding in addition to the legacy
+>>    <gpios-power>.
+>> - Remove the secondary driver for each slot.
+>> - Use core gpio cd/wp handling
+>>
+>> Tested on Rhino labs UTM8, Cavium CN7130.
+>>
+>> For reference, the binding in the shipped devices is:
+>> mmc: mmc@1180000002000 {
+>> 	compatible = "cavium,octeon-6130-mmc";
+>> 	reg = <0x11800 0x00002000 0x0 0x100>,
+>> 		<0x11800 0x00000168 0x0 0x20>;
+>> 	#address-cells = <1>;
+>> 	#size-cells = <0>;
+>> 	/* EMM irq, DMA irq */
+>> 	interrupts = <1 19>, <0 63>;
+>>
+>> 	/* The board only has a single MMC slot */
+>> 	mmc-slot@2 {
+>> 		compatible = "cavium,octeon-6130-mmc-slot";
+>> 		reg = <2>;
+>> 		voltage-ranges = <3300 3300>;
+>> 		spi-max-frequency = <26000000>;
+>> 		/* Power on GPIO 8, active high */
+>> 		/* power-gpios = <&gpio 8 0>; */
+>> 		power-gpios = <&gpio 8 1>;
+>>
+>> 	/*      spi-max-frequency = <52000000>; */
+>> 		/* bus width can be 1, 4 or 8 */
+>> 		cavium,bus-max-width = <8>;
+>> 	};
+>> 	mmc-slot@0 {
+>> 		compatible = "cavium,octeon-6130-mmc-slot";
+>> 		reg = <0>;
+>> 		voltage-ranges = <3300 3300>;
+>> 		spi-max-frequency = <26000000>;
+>> 		/* non-removable; */
+>> 		bus-width = <8>;
+>> 		/* bus width can be 1, 4 or 8 */
+>> 		cavium,bus-max-width = <8>;
+>> 	};
+>> };
+>>
+>> v3:
+>> https://lkml.kernel.org/g/<1425567033-31236-1-git-send-email-aleksey.makarov@auriga.com>
+>>
+>> Changes in v4:
+>> - The sparse error discovered by Aaro Koskinen has been fixed
+>> - Other sparse warnings have been silenced
+>>
+>> Changes in v3:
+>> - Rebased to v4.0-rc2
+>> - Use gpiod_*() functions instead of legacy gpio
+>> - Cosmetic changes
+>>
+>> Changes in v2: All the fixes suggested by Mark Rutland were implemented:
+>> - Device tree parsing has been fixed
+>> - Device tree docs have been fixed
+>> - Comment about errata workaroud has been added
+>> ---
+>>   .../devicetree/bindings/mmc/octeon-mmc.txt         |   80 ++
+>>   drivers/mmc/host/Kconfig                           |   10 +
+>>   drivers/mmc/host/Makefile                          |    1 +
+>>   drivers/mmc/host/octeon_mmc.c                      | 1409 ++++++++++++++++++++
+>>   4 files changed, 1500 insertions(+)
+>>   create mode 100644 Documentation/devicetree/bindings/mmc/octeon-mmc.txt
+>>   create mode 100644 drivers/mmc/host/octeon_mmc.c
+>>
+>> diff --git a/Documentation/devicetree/bindings/mmc/octeon-mmc.txt b/Documentation/devicetree/bindings/mmc/octeon-mmc.txt
+>> new file mode 100644
+>> index 000000000000..a1b20753172f
+>> --- /dev/null
+>> +++ b/Documentation/devicetree/bindings/mmc/octeon-mmc.txt
+>> @@ -0,0 +1,80 @@
+>> +* OCTEON SD/MMC Host Controller
+>> +
+>> +This controller is present on some members of the Cavium OCTEON SoC
+>> +family, provide an interface for eMMC, MMC and SD devices.  There is a
+>> +single controller that may have several "slots" connected.  These
+>> +slots appear as children of the main controller node.
+>> +The DMA engine is an integral part of the controller block.
+>> +
+>> +1) MMC node
+>> +
+>> +Required properties:
+>> +- compatible : Should be "cavium,octeon-6130-mmc" or "cavium,octeon-7890-mmc"
+>> +- reg : Two entries:
+>> +	1) The base address of the MMC controller register bank.
+>> +	2) The base address of the MMC DMA engine register bank.
+>> +- interrupts :
+>> +	For "cavium,octeon-6130-mmc": two entries:
+>> +	1) The MMC controller interrupt line.
+>> +	2) The MMC DMA engine interrupt line.
+>> +	For "cavium,octeon-7890-mmc": nine entries:
+>> +	1) The next block transfer of a multiblock transfer has completed (BUF_DONE)
+>> +	2) Operation completed successfully (CMD_DONE).
+>> +	3) DMA transfer completed successfully (DMA_DONE).
+>> +	4) Operation encountered an error (CMD_ERR).
+>> +	5) DMA transfer encountered an error (DMA_ERR).
+>> +	6) Switch operation completed successfully (SWITCH_DONE).
+>> +	7) Switch operation encountered an error (SWITCH_ERR).
+>> +	8) Internal DMA engine request completion interrupt (DONE).
+>> +	9) Internal DMA FIFO underflow (FIFO).
+> Why do h/w designers think doing this speeds up interrupt handling...
 
-This patch adds a model attribute for Octeon CPUs.
+I know, right? :-/
 
-Signed-off-by: Heinrich Schuchardt <xypron.glpk@gmx.de>
----
- arch/mips/boot/dts/cavium-octeon/octeon_3xxx.dts | 1 +
- arch/mips/boot/dts/cavium-octeon/octeon_68xx.dts | 1 +
- 2 files changed, 2 insertions(+)
+>> +- #address-cells : Must be <1>
+>> +- #size-cells : Must be <0>
+>> +
+>> +The node contains child nodes for each slot that the platform uses.
+>> +
+>> +Example:
+>> +mmc@1180000002000 {
+>> +	compatible = "cavium,octeon-6130-mmc";
+>> +	reg = <0x11800 0x00002000 0x0 0x100>,
+>> +		<0x11800 0x00000168 0x0 0x20>;
+>> +	#address-cells = <1>;
+>> +	#size-cells = <0>;
+>> +	/* EMM irq, DMA irq */
+>> +	interrupts = <1 19>, <0 63>;
+>> +
+>> +	[ child node definitions...]
+>> +};
+>> +
+>> +
+>> +2) Slot nodes
+>> +Properties in mmc.txt apply to each slot node that the platform uses.
+>> +
+>> +Required properties:
+>> +- reg : The slot number.
+>> +
+>> +Optional properties:
+>> +- cavium,cmd-clk-skew : the amount of delay (in pS) past the clock edge
+>> +	to sample the command pin.
+>> +- cavium,dat-clk-skew : the amount of delay (in pS) past the clock edge
+>> +	to sample the data pin.
+> Are you trying to maintain compatibility with legacy bindings here? If
+> not, append units (-ps).
 
-diff --git a/arch/mips/boot/dts/cavium-octeon/octeon_3xxx.dts b/arch/mips/boot/dts/cavium-octeon/octeon_3xxx.dts
-index 9c48e05..a746678 100644
---- a/arch/mips/boot/dts/cavium-octeon/octeon_3xxx.dts
-+++ b/arch/mips/boot/dts/cavium-octeon/octeon_3xxx.dts
-@@ -8,6 +8,7 @@
-  */
- / {
- 	compatible = "cavium,octeon-3860";
-+	model = "Cavium Octeon 3XXX";
- 	#address-cells = <2>;
- 	#size-cells = <2>;
- 	interrupt-parent = <&ciu>;
-diff --git a/arch/mips/boot/dts/cavium-octeon/octeon_68xx.dts b/arch/mips/boot/dts/cavium-octeon/octeon_68xx.dts
-index 79b46fc..c8a292a 100644
---- a/arch/mips/boot/dts/cavium-octeon/octeon_68xx.dts
-+++ b/arch/mips/boot/dts/cavium-octeon/octeon_68xx.dts
-@@ -8,6 +8,7 @@
-  */
- / {
- 	compatible = "cavium,octeon-6880";
-+	model = "Cavium Octeon 68XX";
- 	#address-cells = <2>;
- 	#size-cells = <2>;
- 	interrupt-parent = <&ciu2>;
--- 
-2.1.4
+Yes, we're trying to maintain compatibility, but should be able to 
+accept either form, with the "-ps" version being the binding documented.
+
+>
+>> +
+>> +Example:
+>> +	mmc@1180000002000 {
+>> +		compatible = "cavium,octeon-6130-mmc";
+>> +		reg = <0x11800 0x00002000 0x0 0x100>,
+>> +		      <0x11800 0x00000168 0x0 0x20>;
+>> +		#address-cells = <1>;
+>> +		#size-cells = <0>;
+>> +		/* EMM irq, DMA irq */
+>> +		interrupts = <1 19>, <0 63>;
+>> +
+>> +		/* The board only has a single MMC slot */
+>> +		mmc-slot@0 {
+> Most mmc bindings don't separately describe the slot. This is probably
+> a more correct h/w description, but then again I've never seen more than
+> 1 slot.
+
+The OCTEON MMC controller supports up to 4 slots of MMC, eMMC or SD 
+types. The board I have (a Rhino Labs UTM8) has both a uSD card slot and 
+eMMC device connected to the controller - the best way to describe this 
+is via multiple slot nodes as children of the controller.
+
+>
+> Otherwise, this looks fine to me.
+
+Thanks,
+Matt
+
+>
+>> +			reg = <0>;
+>> +			max-frequency = <20000000>;
+>> +			bus-width = <8>;
+>> +			vmmc-supply = <&reg_vmmc3>;
+>> +			cd-gpios = <&gpio 9 0>;
+>> +			wp-gpios = <&gpio 10 0>;
+>> +		};
+>> +	};

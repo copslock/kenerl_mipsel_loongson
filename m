@@ -1,44 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Feb 2016 19:38:43 +0100 (CET)
-Received: from emh02.mail.saunalahti.fi ([62.142.5.108]:59259 "EHLO
-        emh02.mail.saunalahti.fi" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011948AbcBOSimarUlQ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 15 Feb 2016 19:38:42 +0100
-Received: from darkstar.musicnaut.iki.fi (85-76-167-245-nat.elisa-mobile.fi [85.76.167.245])
-        by emh02.mail.saunalahti.fi (Postfix) with ESMTP id 373B2234056;
-        Mon, 15 Feb 2016 20:38:39 +0200 (EET)
-Date:   Mon, 15 Feb 2016 20:38:39 +0200
-From:   Aaro Koskinen <aaro.koskinen@iki.fi>
-To:     Heinrich Schuchardt <xypron.glpk@gmx.de>
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Pawel Moll <pawel.moll@arm.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ian Campbell <ijc+devicetree@hellion.org.uk>,
-        Kumar Gala <galak@codeaurora.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Andrew Bresticker <abrestic@chromium.org>,
-        devicetree@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/1] MIPS: DTS: cavium-octeon: provide model attribute
-Message-ID: <20160215183838.GD1640@darkstar.musicnaut.iki.fi>
-References: <1455513977-934-1-git-send-email-xypron.glpk@gmx.de>
- <56C1B3A0.4090301@cogentembedded.com>
- <56C21054.4070702@gmx.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Feb 2016 19:58:39 +0100 (CET)
+Received: from foss.arm.com ([217.140.101.70]:57638 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27010717AbcBOS6gFDMCQ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 15 Feb 2016 19:58:36 +0100
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 567E23A1;
+        Mon, 15 Feb 2016 10:57:39 -0800 (PST)
+Received: from arm.com (usa-sjc-imap-foss1.foss.arm.com [10.72.51.249])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 20D593F246;
+        Mon, 15 Feb 2016 10:58:25 -0800 (PST)
+Date:   Mon, 15 Feb 2016 18:58:32 +0000
+From:   Will Deacon <will.deacon@arm.com>
+To:     "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>
+Cc:     Andy.Glew@imgtec.com, Leonid.Yegoshin@imgtec.com,
+        peterz@infradead.org, linux-arch@vger.kernel.org, arnd@arndb.de,
+        davem@davemloft.net, linux-arm-kernel@lists.infradead.org,
+        linux-metag@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-xtensa@linux-xtensa.org, linuxppc-dev@lists.ozlabs.org,
+        graham.whaley@gmail.com, torvalds@linux-foundation.org,
+        hpa@zytor.com, mingo@kernel.org
+Subject: Re: Writes, smp_wmb(), and transitivity?
+Message-ID: <20160215185832.GQ6298@arm.com>
+References: <20160215175825.GA15878@linux.vnet.ibm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <56C21054.4070702@gmx.de>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-Return-Path: <aaro.koskinen@iki.fi>
+In-Reply-To: <20160215175825.GA15878@linux.vnet.ibm.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <will.deacon@arm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52069
+X-archive-position: 52070
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aaro.koskinen@iki.fi
+X-original-sender: will.deacon@arm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,22 +48,71 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi,
+On Mon, Feb 15, 2016 at 09:58:25AM -0800, Paul E. McKenney wrote:
+> Hello!
 
-On Mon, Feb 15, 2016 at 06:52:20PM +0100, Heinrich Schuchardt wrote:
-> On 02/15/2016 12:16 PM, Sergei Shtylyov wrote:
-> > On 2/15/2016 8:26 AM, Heinrich Schuchardt wrote:
-> >> Downstream packages like Debian flash-kernel rely on
-> >> /proc/device-tree/model
-> >> to determine how to install an updated kernel image.
+Hi Paul,
+
+> Some architectures provide local transitivity for a chain of threads doing
+> writes separated by smp_wmb(), as exemplified by the litmus tests below.
+> The pattern is that each thread writes to a its own variable, does an
+> smp_wmb(), then writes a different value to the next thread's variable.
 > 
-> Would you support a patch having the following strings?
+> I don't know of a use of this, but if everyone supports it, it might
+> be good to mandate it.  Status quo is that smp_wmb() is non-transitive,
+> so it currently isn't supported.
 > 
-> model = "CAVM, Octeon 3860";
-> model = "CAVM, Octeon 6880";
+> Anyone know of any architectures that do -not- support this?
+> 
+> Assuming all architectures -do- support this, any arguments -against-
+> officially supporting it in Linux?
+> 
+> 							Thanx, Paul
+> 
+> ------------------------------------------------------------------------
+> 
+> Two threads:
+> 
+> 	int a, b;
+> 
+> 	void thread0(void)
+> 	{
+> 		WRITE_ONCE(a, 1);
+> 		smp_wmb();
+> 		WRITE_ONCE(b, 2);
+> 	}
+> 
+> 	void thread1(void)
+> 	{
+> 		WRITE_ONCE(b, 1);
+> 		smp_wmb();
+> 		WRITE_ONCE(a, 2);
+> 	}
+> 
+> 	/* After all threads have completed and the dust has settled... */
+> 
+> 	BUG_ON(a == 1 && b == 1);
 
-The built-in DTBs are shared by multiple completely different boards
-(from multiple different manufacturers). How would those strings help
-for cases like flash-kernel?
+My understanding is that this test, and the generalisation to n threads,
+is forbidden on ARM. However, the transitivity of DMB ST (used to
+construct smp_wmb()) has been the subject of long debates, because we
+allow the following test:
 
-A.
+
+P0:
+Wx = 1
+
+P1:
+Rx == 1
+DMB ST
+Wy = 1
+
+P2:
+Ry == 1
+<addr dep>
+Rx == 0
+
+
+so I'd be uneasy about saying "it's all transitive".
+
+Will

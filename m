@@ -1,40 +1,76 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Feb 2016 18:41:43 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:39938 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27011174AbcBPRll5FZrZ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 16 Feb 2016 18:41:41 +0100
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Websense Email Security Gateway with ESMTPS id 07B8AEC5F38E2;
-        Tue, 16 Feb 2016 17:41:33 +0000 (GMT)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- HHMAIL01.hh.imgtec.org (10.100.10.19) with Microsoft SMTP Server (TLS) id
- 14.3.266.1; Tue, 16 Feb 2016 17:41:35 +0000
-Received: from localhost (10.100.200.63) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.266.1; Tue, 16 Feb
- 2016 17:41:34 +0000
-From:   Paul Burton <paul.burton@imgtec.com>
-To:     <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>
-CC:     Matt Redfearn <matt.redfearn@imgtec.com>,
-        Paul Burton <paul.burton@imgtec.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        <linux-kernel@vger.kernel.org>,
-        Dan Williams <dan.j.williams@intel.com>
-Subject: [PATCH v2] MIPS: Use CPHYSADDR to implement mips32 __pa
-Date:   Tue, 16 Feb 2016 09:41:18 -0800
-Message-ID: <1455644478-23415-1-git-send-email-paul.burton@imgtec.com>
-X-Mailer: git-send-email 2.7.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Feb 2016 19:59:15 +0100 (CET)
+Received: from mail-ig0-f169.google.com ([209.85.213.169]:38903 "EHLO
+        mail-ig0-f169.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012840AbcBPS7OC7Zdk (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 16 Feb 2016 19:59:14 +0100
+Received: by mail-ig0-f169.google.com with SMTP id y8so84147561igp.1
+        for <linux-mips@linux-mips.org>; Tue, 16 Feb 2016 10:59:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type;
+        bh=xZnJofAX8Zwi+cIB6kC2aA8ep+Eg1lpL8k12XbSIReM=;
+        b=TOE8/ALiAE5ZtfKnWj/8qwBG3D3hm1fZRGfycmxxASw04Sb/lGO0qJanz9UgBEMOJH
+         sY+3TTuWnRoTxw60PmP6vDY6HwCrWLuw0oR8a7XTCqoP7uZ0dvbMCHoxGNWVP51Mwso6
+         tc9k3wFVT0gisGNCXs8wf26ekWIM45YW3nYo6Lh52kN0kORJaQ8cAw/487y6K0wg7MVo
+         1I1Tz4pMXYUaf7p1vAXyD+wXFbxxa+FwnIC2JihPnSSl/3tsU8bYMEVnwpZBEmOaitfa
+         3xjroG0FUaiyyAUCkI3eQxAx7OQecXnJyu2P1E+tumVBWWpO1OSOcrWvXOLaCFWMLHf/
+         yOLA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google;
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type;
+        bh=xZnJofAX8Zwi+cIB6kC2aA8ep+Eg1lpL8k12XbSIReM=;
+        b=L+SGFg9Uecz5IjyGyHOBZ6yq+e7q7eTsdUSGuROH0OvYa3EriMJ2peod6JAR1366Gw
+         7s8HTkcxBARnXR9UQthRxynEyGs4ciOO5965+vHf0X9kyPPjyZ+JHYK0kEsSH8GguPru
+         ZCcZ9QGTStDcpaT474dHyGuCpjX0aRzlUb5pw=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:sender:in-reply-to:references:date
+         :message-id:subject:from:to:cc:content-type;
+        bh=xZnJofAX8Zwi+cIB6kC2aA8ep+Eg1lpL8k12XbSIReM=;
+        b=eGg1m08r67TEfBIOXu9pDm1UXtTMf7IoQG3SDRaxWfuOcSO+zQ+MzLt18k0cAPdhMF
+         eqLhHX+8N6XIEU3kSRV2Exjp/BHOj+FkF8DH9iOy8xMDIJ+N89y1w6PSw8DLhRXKS8cR
+         ppxGCElZ7ixAV1KbjiJri7EttkxOVUion3yAkO07xiBIP4fL13VXp1+A28DmIg6HilXR
+         0Uq0gyMSLff/WcY43x1VyzOw+8J0sExkgpwhPKSqEKFoyUx7murkidHM0jWsjoOOsB2n
+         ErxYrgC1fEOn51K9++FRNj4EdN9ZdKdgAVFiJaDkmYWJX1iHlch3QOcjyhQqjEfYfrfo
+         OZJQ==
+X-Gm-Message-State: AG10YOT/YkCAwzNzb/70rzqE02WM0E0I1yhBFMWggeZKiX2+j7T4kOriYv57GgMxRwOEPblZJZmIlFpRGVupLg==
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.100.200.63]
-Return-Path: <Paul.Burton@imgtec.com>
+X-Received: by 10.50.112.10 with SMTP id im10mr1863073igb.93.1455649148130;
+ Tue, 16 Feb 2016 10:59:08 -0800 (PST)
+Received: by 10.36.93.202 with HTTP; Tue, 16 Feb 2016 10:59:08 -0800 (PST)
+In-Reply-To: <20160215175825.GA15878@linux.vnet.ibm.com>
+References: <20160215175825.GA15878@linux.vnet.ibm.com>
+Date:   Tue, 16 Feb 2016 10:59:08 -0800
+X-Google-Sender-Auth: Oq9GN_tTGyQY1sWcPA37Tun4EKw
+Message-ID: <CA+55aFxaQEvDrzecmZUQ5QfKzU4ei6E-+NpsW5hYp3ouaLP98g@mail.gmail.com>
+Subject: Re: Writes, smp_wmb(), and transitivity?
+From:   Linus Torvalds <torvalds@linux-foundation.org>
+To:     Paul McKenney <paulmck@linux.vnet.ibm.com>
+Cc:     Will Deacon <will.deacon@arm.com>, Andy.Glew@imgtec.com,
+        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        David Miller <davem@davemloft.net>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        linux-metag@vger.kernel.org,
+        linux-mips <linux-mips@linux-mips.org>,
+        linux-xtensa@linux-xtensa.org,
+        ppc-dev <linuxppc-dev@lists.ozlabs.org>, graham.whaley@gmail.com,
+        Peter Anvin <hpa@zytor.com>, Ingo Molnar <mingo@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <linus971@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52095
+X-archive-position: 52096
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@imgtec.com
+X-original-sender: torvalds@linux-foundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,73 +83,39 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Use CPHYSADDR to implement the __pa macro converting from a virtual to a
-physical address for MIPS32, much as is already done for MIPS64 (though
-without the complication of having both compatibility & XKPHYS
-segments).
+On Mon, Feb 15, 2016 at 9:58 AM, Paul E. McKenney
+<paulmck@linux.vnet.ibm.com> wrote:
+>
+> Two threads:
+>
+>         int a, b;
+>
+>         void thread0(void)
+>         {
+>                 WRITE_ONCE(a, 1);
+>                 smp_wmb();
+>                 WRITE_ONCE(b, 2);
+>         }
+>
+>         void thread1(void)
+>         {
+>                 WRITE_ONCE(b, 1);
+>                 smp_wmb();
+>                 WRITE_ONCE(a, 2);
+>         }
+>
+>         /* After all threads have completed and the dust has settled... */
+>
+>         BUG_ON(a == 1 && b == 1);
 
-This allows for __pa to work regardless of whether the address being
-translated is in kseg0 or kseg1, unlike the previous subtraction based
-approach which only worked for addresses in kseg0. Working for kseg1
-addresses is important if __pa is used on addresses allocated by
-dma_alloc_coherent, where on systems with non-coherent I/O we provide
-addresses in kseg1. If this address is then used with
-dma_map_single_attrs then it is provided to virt_to_page, which in turn
-calls virt_to_phys which is a wrapper around __pa. The result is that we
-end up with a physical address 0x20000000 bytes (ie. the size of kseg0)
-too high.
+So the more I look at that kind of litmus test, the less I think that
+we should care, because I can't come up with a scenario in where that
+kind of test makes sense. without even a possibility of any causal
+relationship between the two, I can't say why we'd ever care about the
+ordering of the (independent) writes to the individual variables.
 
-In addition to providing consistency with MIPS64 & fixing the kseg1 case
-above this has the added bonus of generating smaller code for systems
-implementing MIPS32r2 & beyond, where a single ext instruction can
-extract the physical address rather than needing to load an immediate
-into a temp register & subtract it. This results in ~1.3KB savings for a
-boston_defconfig kernel adjusted to set CONFIG_32BIT=y.
+If somebody can make up a causal chain, things differ. But as long as
+all the CPU's are just doing locally ordered writes, I don't think we
+need to care about a global store ordering.
 
-This patch does not change the EVA case, which may or may not have
-similar issues around handling both cached & uncached addresses but is
-beyond the scope of this patch.
-
-Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-
----
-
-Changes in v2:
-- Leave the EVA case as-is.
-
- arch/mips/include/asm/page.h | 20 ++++++++++++++++++--
- 1 file changed, 18 insertions(+), 2 deletions(-)
-
-diff --git a/arch/mips/include/asm/page.h b/arch/mips/include/asm/page.h
-index 21ed715..ac0c1b7 100644
---- a/arch/mips/include/asm/page.h
-+++ b/arch/mips/include/asm/page.h
-@@ -169,8 +169,24 @@ typedef struct { unsigned long pgprot; } pgprot_t;
-     __x < CKSEG0 ? XPHYSADDR(__x) : CPHYSADDR(__x);			\
- })
- #else
--#define __pa(x)								\
--    ((unsigned long)(x) - PAGE_OFFSET + PHYS_OFFSET)
-+static inline unsigned long __pa(unsigned long x)
-+{
-+	if (!config_enabled(CONFIG_EVA)) {
-+		/*
-+		 * We're using the standard MIPS32 legacy memory map, ie.
-+		 * the address x is going to be in kseg0 or kseg1. We can
-+		 * handle either case by masking out the desired bits using
-+		 * CPHYSADDR.
-+		 */
-+		return CPHYSADDR(x);
-+	}
-+
-+	/*
-+	 * EVA is in use so the memory map could be anything, making it not
-+	 * safe to just mask out bits.
-+	 */
-+	return x - PAGE_OFFSET + PHYS_OFFSET;
-+}
- #endif
- #define __va(x)		((void *)((unsigned long)(x) + PAGE_OFFSET - PHYS_OFFSET))
- #include <asm/io.h>
--- 
-2.7.1
+              Linus

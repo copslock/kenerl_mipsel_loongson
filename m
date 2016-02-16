@@ -1,11 +1,11 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Feb 2016 16:42:16 +0100 (CET)
-Received: from mout.kundenserver.de ([212.227.126.187]:54533 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Feb 2016 16:42:33 +0100 (CET)
+Received: from mout.kundenserver.de ([212.227.126.187]:53220 "EHLO
         mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27012831AbcBPPl573dtn (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 16 Feb 2016 16:41:57 +0100
+        with ESMTP id S27011979AbcBPPmCW7Hgn (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 16 Feb 2016 16:42:02 +0100
 Received: from wuerfel.lan. ([78.42.132.4]) by mrelayeu.kundenserver.de
- (mreue003) with ESMTPA (Nemesis) id 0Lr6Rz-1a0EYS1l3b-00eZAT; Tue, 16 Feb
- 2016 16:41:23 +0100
+ (mreue003) with ESMTPA (Nemesis) id 0LpAdk-1a2AM12BpU-00epso; Tue, 16 Feb
+ 2016 16:41:13 +0100
 From:   Arnd Bergmann <arnd@arndb.de>
 To:     Linus Walleij <linus.walleij@linaro.org>
 Cc:     linux-arm-kernel@lists.infradead.org,
@@ -15,34 +15,36 @@ Cc:     linux-arm-kernel@lists.infradead.org,
         Alexandre Courbot <gnurou@gmail.com>,
         linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: [PATCH v2 2/5] gpio: remove broken irq_to_gpio() interface
-Date:   Tue, 16 Feb 2016 16:40:35 +0100
-Message-Id: <1455637261-2920972-2-git-send-email-arnd@arndb.de>
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        "# v4 . 3+" <stable@vger.kernel.org>, Alban Bedel <albeu@free.fr>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Paul Burton <paul.burton@imgtec.com>
+Subject: [PATCH v2 1/5] MIPS: jz4740: remove broken irq_to_gpio() call
+Date:   Tue, 16 Feb 2016 16:40:34 +0100
+Message-Id: <1455637261-2920972-1-git-send-email-arnd@arndb.de>
 X-Mailer: git-send-email 2.7.0
-In-Reply-To: <1455637261-2920972-1-git-send-email-arnd@arndb.de>
+In-Reply-To: <455637086-2794174-1-git-send-email-arnd@arndb.de>
 References: <455637086-2794174-1-git-send-email-arnd@arndb.de>
- <1455637261-2920972-1-git-send-email-arnd@arndb.de>
-X-Provags-ID: V03:K0:UY7KgFRESGsZqo3RjHOskQaSayC6+nUAG4MDu3zYUjuMv/jE+l1
- ZBGa8OlIBPPw6osqfSSVXYmlftsu1ckWT7ES3RXACMjlJLws5Ac5iQaaMco2KWGX7yB+yT3
- zeVdwqMaNHeTJ75IzCtHwY14LQmPD6poRMCblKCCFrKESt9m6SalFl02oKYjrrpl2E/3gOb
- 5HMBeFp5Q6k3xlQ5ZjB5w==
-X-UI-Out-Filterresults: notjunk:1;V01:K0:2RdMCxG5lto=:6db6buIAUFCj06FeOmvow/
- KwRcWBcK4NKaqYlYjZbhSXu+4xEX0GqN4uD89TjpM8llF8BiTTjl4LU3zD9T0vPyz1gkSchrg
- aOwK2VuiXw2ldJ6gUqb7MzQehuSwtih9XZJNZAj6y/eoOv6FyUan9ik+MRjyMmKqERPtD7rWX
- iROJn+9t0yWxtMnVmNcuesQ7M2UweUvWZDH4ezKKQmGDjGcJnyJI58WNosNemGDtkBb5eMei8
- QBzTMSxZgm3sAa8WF45ilvoX9ZtmFthiDmbbNj/NJyAOyA1H2icU8vu2OK8TenW96Z2/020IA
- p1jcYTxShVeUPyfxhj8F1UBvEHIERXFIKtn9IS/1EW2MdMcFKTbIKURuUGEfLBNoD5S7H7Scv
- 2DswQL/3MPs2lqFzhrUJlXNmKTVjJ+XVCSPKHfiHtxXvEGt3i4YxLjVtl8/kSOwsnELdNqGHe
- lu86zDn+BDSyyW/SakdE/RHs9O/pa11eIJzVpI9vhfseFRnqOKshxdx6BzxR8NmJXt66nYSZ8
- XUKtYG4Hu61PopZspMSwi85xMqmeo3eGGYsaS1BevLzpk10+Drop9+w2/sZkeQOA+Ppon79os
- l5OLr8fIsTMDjaZX9wbnANbS0YyB8hdj/v0QovLtaId5z0t0QoN7P40qzVkfwYzU7yw0Yl3cd
- Q6PqOVmCTn+ErQ8ZyrdbQKv5jNPiXQoat8gcXluxnKjsiRHSjYHEPj3aLjsbRT8DPwPY=
+X-Provags-ID: V03:K0:gSycZQZpcMneao4j+bplvES8VGXkXohQ0lbdhcmpTyYYyDQBE8k
+ PT4qa7Pr0V/v53emodKthu5X77UOG4Zi9bVu/XQoswEXyRnCdmMf8RLRvV68ASER2jwW6Jp
+ +wzsYF8s4p534evQ0NVwIrNNF1WwgSgfnigrGV97g5dC1tHh181jtqx0iDo7iOGYDbpT8Ty
+ Nj27BZtLQQvSAoGSaZt0A==
+X-UI-Out-Filterresults: notjunk:1;V01:K0:ZRt5ZyZSNH0=:IWlXwxYCG1u0IDjdJNiFfv
+ sIE83fZ6GzlNUdxQA5+Luyc2UbjdiyAVmPLbmmAc0Y/N/aAZ51rpR6dQOMzf9lBvLSCQG4KiA
+ /6fFjc6QTziD6H5VpPQdxYcT3byJcrqnKzhSgINUpYZCooYPw9knZ+KGErl6HvzgmYBvFAbp1
+ BL0SwxJZ8QKUh9HYFKQUGXSAKxMY6svd5GtFiIdPaHMJfyNDCFUnHMAkXGyNiXxWGW38f1C+h
+ TQSpq2FI9ADzHAyKPx1+T0LE8uDXqALr/JZy2DUnFs/wlPTzyydFMzu58gWGk8qpOiB8N1T0a
+ dDyA75sJsLUEiQ2a0Otg9LAeNrCLlE4wCijcMfYQX/eAMzZ6l3VmcBYmOgEvBNtgpMnBoa6Og
+ IuiCGjVekBl34kbMekN8+1cagiYJsGYNcz5BXarcM8gXgUcPhWdYkRIB7OkxOC9dgbas6JIM5
+ sUoxf0Q8Vhh7pHcQLJonMNt9Qh6hraOm0MhKUKPb+irxkGm8YhIp6HqO9HHWJFz1YCnaAXwkx
+ b6o82krNX0KpF82IXkRLnymtU+jBaTUoJrQDs0iqPSssh+kNmWjrMwZfNVTkWw81mCvccFjzr
+ TDqRwKpqKuhG0Pk8D7fHOx+zhJrZSdUHE5vF2F+hum9TYTsPii672PxxaxAZPzz5Lv3QZJRMy
+ Kc5EUucMzwodz5IObAJTHuVQ/yCyh6U6uvP6eFzKP3CyoDEfwB/UDR3YnYVMxbG/owGQ=
 Return-Path: <arnd@arndb.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52085
+X-archive-position: 52086
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -62,43 +64,33 @@ X-list: linux-mips
 gpiolib has removed the irq_to_gpio() API several years ago,
 but the global header still provided a non-working stub.
 
-To prevent new users of this broken function from showing
-up, let's remove the stubs as well.
+With a MIPS-wide change to use the generic header file, the jz4740
+platform is now using the wrong stub implementation of irq_to_gpio(),
+which cannot work.
 
+This uses an open-coded implementation in the only line it
+is used in.
+
+Suggested-by: Lars-Peter Clausen <lars@metafoo.de>
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Cc: <stable@vger.kernel.org> # v4.3+
+Fixes: 832f5dacfa0b ("MIPS: Remove all the uses of custom gpio.h").
 ---
- include/linux/gpio.h | 12 ------------
- 1 file changed, 12 deletions(-)
+ arch/mips/jz4740/gpio.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/gpio.h b/include/linux/gpio.h
-index d12b5d566e4b..6fc1c9e74854 100644
---- a/include/linux/gpio.h
-+++ b/include/linux/gpio.h
-@@ -70,11 +70,6 @@ static inline int gpio_to_irq(unsigned int gpio)
- 	return __gpio_to_irq(gpio);
+diff --git a/arch/mips/jz4740/gpio.c b/arch/mips/jz4740/gpio.c
+index 8c6d76c9b2d6..d9907e57e9b9 100644
+--- a/arch/mips/jz4740/gpio.c
++++ b/arch/mips/jz4740/gpio.c
+@@ -270,7 +270,7 @@ uint32_t jz_gpio_port_get_value(int port, uint32_t mask)
  }
+ EXPORT_SYMBOL(jz_gpio_port_get_value);
  
--static inline int irq_to_gpio(unsigned int irq)
--{
--	return -EINVAL;
--}
--
- #endif /* ! CONFIG_ARCH_HAVE_CUSTOM_GPIO_H */
+-#define IRQ_TO_BIT(irq) BIT(irq_to_gpio(irq) & 0x1f)
++#define IRQ_TO_BIT(irq) BIT((irq - JZ4740_IRQ_GPIO(0)) & 0x1f)
  
- /* CONFIG_GPIOLIB: bindings for managed devices that want to request gpios */
-@@ -222,13 +217,6 @@ static inline void gpiochip_unlock_as_irq(struct gpio_chip *chip,
- 	WARN_ON(1);
- }
- 
--static inline int irq_to_gpio(unsigned irq)
--{
--	/* irq can never have been returned from gpio_to_irq() */
--	WARN_ON(1);
--	return -EINVAL;
--}
--
- static inline int
- gpiochip_add_pin_range(struct gpio_chip *chip, const char *pinctl_name,
- 		       unsigned int gpio_offset, unsigned int pin_offset,
+ static void jz_gpio_check_trigger_both(struct jz_gpio_chip *chip, unsigned int irq)
+ {
 -- 
 2.7.0

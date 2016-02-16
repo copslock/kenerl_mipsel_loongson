@@ -1,40 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Feb 2016 10:57:07 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:28601 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27012696AbcBPJ5ETbKB6 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 16 Feb 2016 10:57:04 +0100
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Websense Email Security Gateway with ESMTPS id 1268EEDA367AE
-        for <linux-mips@linux-mips.org>; Tue, 16 Feb 2016 09:56:56 +0000 (GMT)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
- 14.3.266.1; Tue, 16 Feb 2016 09:56:57 +0000
-Received: from [192.168.154.116] (192.168.154.116) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.266.1; Tue, 16 Feb
- 2016 09:56:57 +0000
-Subject: Re: [PATCH] MIPS: Use CPHYSADDR to implement mips32 __pa
-To:     <linux-mips@linux-mips.org>
-References: <1455477626-30988-1-git-send-email-paul.burton@imgtec.com>
- <56C1A9F0.90706@imgtec.com>
-From:   Matt Redfearn <matt.redfearn@imgtec.com>
-Message-ID: <56C2F269.6090905@imgtec.com>
-Date:   Tue, 16 Feb 2016 09:56:57 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.5.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Feb 2016 12:13:46 +0100 (CET)
+Received: from e18.ny.us.ibm.com ([129.33.205.208]:48241 "EHLO
+        e18.ny.us.ibm.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27012745AbcBPLNpM1Ko1 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 16 Feb 2016 12:13:45 +0100
+Received: from localhost
+        by e18.ny.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <linux-mips@linux-mips.org> from <paulmck@linux.vnet.ibm.com>;
+        Tue, 16 Feb 2016 06:13:39 -0500
+Received: from d01dlp02.pok.ibm.com (9.56.250.167)
+        by e18.ny.us.ibm.com (146.89.104.205) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        Tue, 16 Feb 2016 06:13:36 -0500
+X-IBM-Helo: d01dlp02.pok.ibm.com
+X-IBM-MailFrom: paulmck@linux.vnet.ibm.com
+X-IBM-RcptTo: linux-mips@linux-mips.org
+Received: from b01cxnp22035.gho.pok.ibm.com (b01cxnp22035.gho.pok.ibm.com [9.57.198.25])
+        by d01dlp02.pok.ibm.com (Postfix) with ESMTP id D231A6E8045
+        for <linux-mips@linux-mips.org>; Tue, 16 Feb 2016 06:00:27 -0500 (EST)
+Received: from d01av01.pok.ibm.com (d01av01.pok.ibm.com [9.56.224.215])
+        by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id u1GBDYam25886906
+        for <linux-mips@linux-mips.org>; Tue, 16 Feb 2016 11:13:36 GMT
+Received: from d01av01.pok.ibm.com (localhost [127.0.0.1])
+        by d01av01.pok.ibm.com (8.14.4/8.14.4/NCO v10.0 AVout) with ESMTP id u1GBDXtR014571
+        for <linux-mips@linux-mips.org>; Tue, 16 Feb 2016 06:13:34 -0500
+Received: from paulmck-ThinkPad-W541 (sig-9-77-130-225.ibm.com [9.77.130.225])
+        by d01av01.pok.ibm.com (8.14.4/8.14.4/NCO v10.0 AVin) with ESMTP id u1GBDWbq014529;
+        Tue, 16 Feb 2016 06:13:32 -0500
+Received: by paulmck-ThinkPad-W541 (Postfix, from userid 1000)
+        id 63E0F16C124D; Tue, 16 Feb 2016 03:13:40 -0800 (PST)
+Date:   Tue, 16 Feb 2016 03:13:40 -0800
+From:   "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>
+To:     Will Deacon <will.deacon@arm.com>
+Cc:     Andy.Glew@imgtec.com, Leonid.Yegoshin@imgtec.com,
+        peterz@infradead.org, linux-arch@vger.kernel.org, arnd@arndb.de,
+        davem@davemloft.net, linux-arm-kernel@lists.infradead.org,
+        linux-metag@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-xtensa@linux-xtensa.org, linuxppc-dev@lists.ozlabs.org,
+        graham.whaley@gmail.com, torvalds@linux-foundation.org,
+        hpa@zytor.com, mingo@kernel.org
+Subject: Re: Writes, smp_wmb(), and transitivity?
+Message-ID: <20160216111340.GS6719@linux.vnet.ibm.com>
+Reply-To: paulmck@linux.vnet.ibm.com
+References: <20160215175825.GA15878@linux.vnet.ibm.com>
+ <20160215185832.GQ6298@arm.com>
+ <20160215203512.GL6719@linux.vnet.ibm.com>
+ <20160216095319.GA14509@arm.com>
 MIME-Version: 1.0
-In-Reply-To: <56C1A9F0.90706@imgtec.com>
-Content-Type: text/plain; charset="windows-1252"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.154.116]
-Return-Path: <Matt.Redfearn@imgtec.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20160216095319.GA14509@arm.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-TM-AS-MML: disable
+X-Content-Scanned: Fidelis XPS MAILER
+x-cbid: 16021611-0045-0000-0000-00000357CCC6
+Return-Path: <paulmck@linux.vnet.ibm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52081
+X-archive-position: 52082
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: matt.redfearn@imgtec.com
+X-original-sender: paulmck@linux.vnet.ibm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,131 +73,92 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Paul,
+On Tue, Feb 16, 2016 at 09:53:20AM +0000, Will Deacon wrote:
+> On Mon, Feb 15, 2016 at 12:35:12PM -0800, Paul E. McKenney wrote:
+> > On Mon, Feb 15, 2016 at 06:58:32PM +0000, Will Deacon wrote:
+> > > On Mon, Feb 15, 2016 at 09:58:25AM -0800, Paul E. McKenney wrote:
+> > > > Some architectures provide local transitivity for a chain of threads doing
+> > > > writes separated by smp_wmb(), as exemplified by the litmus tests below.
+> > > > The pattern is that each thread writes to a its own variable, does an
+> > > > smp_wmb(), then writes a different value to the next thread's variable.
+> > > > 
+> > > > I don't know of a use of this, but if everyone supports it, it might
+> > > > be good to mandate it.  Status quo is that smp_wmb() is non-transitive,
+> > > > so it currently isn't supported.
+> > > > 
+> > > > Anyone know of any architectures that do -not- support this?
+> > > > 
+> > > > Assuming all architectures -do- support this, any arguments -against-
+> > > > officially supporting it in Linux?
+> > > > 
+> > > > 							Thanx, Paul
+> > > > 
+> > > > ------------------------------------------------------------------------
+> > > > 
+> > > > Two threads:
+> > > > 
+> > > > 	int a, b;
+> > > > 
+> > > > 	void thread0(void)
+> > > > 	{
+> > > > 		WRITE_ONCE(a, 1);
+> > > > 		smp_wmb();
+> > > > 		WRITE_ONCE(b, 2);
+> > > > 	}
+> > > > 
+> > > > 	void thread1(void)
+> > > > 	{
+> > > > 		WRITE_ONCE(b, 1);
+> > > > 		smp_wmb();
+> > > > 		WRITE_ONCE(a, 2);
+> > > > 	}
+> > > > 
+> > > > 	/* After all threads have completed and the dust has settled... */
+> > > > 
+> > > > 	BUG_ON(a == 1 && b == 1);
+> > > 
+> > > My understanding is that this test, and the generalisation to n threads,
+> > > is forbidden on ARM. However, the transitivity of DMB ST (used to
+> > > construct smp_wmb()) has been the subject of long debates, because we
+> > > allow the following test:
+> > > 
+> > > 
+> > > P0:
+> > > Wx = 1
+> > > 
+> > > P1:
+> > > Rx == 1
+> > > DMB ST
+> > > Wy = 1
+> > > 
+> > > P2:
+> > > Ry == 1
+> > > <addr dep>
+> > > Rx == 0
+> > > 
+> > > 
+> > > so I'd be uneasy about saying "it's all transitive".
+> > 
+> > Agreed!  For one thing, doesn't DMB ST need writes on both sides?
+> 
+> Yes, but it's a common trap that people fall into where they think the
+> above is forbidden because the DMB ST in P1 should order P0's write
+> before its own write of y.
 
-On 15/02/16 10:35, Matt Redfearn wrote:
-> Hi Paul,
->
-> On 14/02/16 19:20, Paul Burton wrote:
->> Use CPHYSADDR to implement the __pa macro converting from a virtual to a
->> physical address for MIPS32, much as is already done for MIPS64 (though
->> without the complication of having both compatibility & XKPHYS
->> segments).
->>
->> This allows for __pa to work regardless of whether the address being
->> translated is in kseg0 or kseg1, unlike the previous subtraction based
->> approach which only worked for addresses in kseg0. Working for kseg1
->> addresses is important if __pa is used on addresses allocated by
->> dma_alloc_coherent, where on systems with non-coherent I/O we provide
->> addresses in kseg1. If this address is then used with
->> dma_map_single_attrs then it is provided to virt_to_page, which in turn
->> calls virt_to_phys which is a wrapper around __pa. The result is that we
->> end up with a physical address 0x20000000 bytes (ie. the size of kseg0)
->> too high.
->>
->> In addition to providing consistency with MIPS64 & fixing the kseg1 case
->> above this has the added bonus of generating smaller code for systems
->> implementing MIPS32r2 & beyond, where a single ext instruction can
->> extract the physical address rather than needing to load an immediate
->> into a temp register & subtract it. This results in ~1.3KB savings for a
->> boston_defconfig kernel adjusted to set CONFIG_32BIT=y.
->>
->> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
->> ---
->>
->>   arch/mips/include/asm/page.h | 3 +--
->>   1 file changed, 1 insertion(+), 2 deletions(-)
->>
->> diff --git a/arch/mips/include/asm/page.h b/arch/mips/include/asm/page.h
->> index 21ed715..35c1222 100644
->> --- a/arch/mips/include/asm/page.h
->> +++ b/arch/mips/include/asm/page.h
->> @@ -169,8 +169,7 @@ typedef struct { unsigned long pgprot; } pgprot_t;
->>       __x < CKSEG0 ? XPHYSADDR(__x) : CPHYSADDR(__x);            \
->>   })
->>   #else
->> -#define __pa(x)                                \
->> -    ((unsigned long)(x) - PAGE_OFFSET + PHYS_OFFSET)
->> +#define __pa(x)        CPHYSADDR(x)
->>   #endif
->>   #define __va(x)        ((void *)((unsigned long)(x) + PAGE_OFFSET - 
->> PHYS_OFFSET))
->>   #include <asm/io.h>
-> I have tested this patch on an EVA Interaptiv and confirmed that it 
-> fixes previous regressions.
->
-> Tested-by: Matt Redfearn <matt.redfearn@imgtec.com>
->
-> Thanks,
-> Matt
->
-Scratch that, I had a messed up .config that did not have EVA enabled in 
-the kernel. This patch breaks booting on Malta when CONFIG_EVA is enabled.
-When setting up pcpu_embed_first_chunk(), the memory allocated with 
-CONFIG_EVA enabled comes from the physically aliased 0x8XXXXXXX region, 
-mapped to virtual space 0x0XXXXXXX. With this patch, when the kernel 
-attempts to free some of this memory, the __pa() macro returns an 
-address in 0x0XXXXXXX which does not map to any physical memory, and the 
-kernel hits the BUG() in mark_bootmem().
+True enough.
 
-The below patch fixes EVA (on Malta at least - I'm not sure other 
-platforms, which don't use the physical aliasing technique, will fall 
-into this hole).
+> > But that is one reason that I am only semi-enthusiastic about this.
+> > The potentially locally transitive case is -very- restrictive, applying
+> > only to situations where -all- accesses are writes.
+> 
+> I think that we will confuse people more by trying to describe the
+> restricted case where we provide order than if we blanket say that its
+> not transitive. I know Linus prefers to be as strong as possible, but
+> this doesn't look like a realistic programming paradigm and having a
+> straightforward rule that "rmb and wmb are not transitive" is much
+> easier for people to deal with in my opinion.
 
---- a/arch/mips/include/asm/page.h
-+++ b/arch/mips/include/asm/page.h
-@@ -169,7 +169,42 @@ typedef struct { unsigned long pgprot; } pgprot_t;
-      __x < CKSEG0 ? XPHYSADDR(__x) : CPHYSADDR(__x);                    \
-  })
-  #else
-+#if def CONFIG_EVA
-+static unsigned long ___pa(unsigned long virt)
-+{
-+       unsigned long segaddr = virt & 0x1fffffffUL;
-+       unsigned long segcfg;
-+
-+       if (virt < 0x40000000) {
-+               segcfg = read_c0_segctl2() >> 16;
-+               return (((segcfg >> MIPS_SEGCFG_PA_SHIFT) & 0x7) << 29) 
-| segaddr;
-+       }
-+       else if (virt < 0x80000000) {
-+               segcfg = read_c0_segctl2();
-+               return (((segcfg >> MIPS_SEGCFG_PA_SHIFT) & 0x7) << 29) 
-| segaddr;
-+       }
-+       else if (virt < 0xa0000000) {
-+               segcfg = read_c0_segctl1() >> 16;
-+               return (((segcfg >> MIPS_SEGCFG_PA_SHIFT) & 0x7) << 29) 
-| segaddr;
-+       }
-+       else if (virt < 0xc0000000) {
-+               segcfg = read_c0_segctl1();
-+               return (((segcfg >> MIPS_SEGCFG_PA_SHIFT) & 0x7) << 29) 
-| segaddr;
-+       }
-+       else if (virt < 0xe0000000) {
-+               segcfg = read_c0_segctl0() >> 16;
-+               return (((segcfg >> MIPS_SEGCFG_PA_SHIFT) & 0x7) << 29) 
-| segaddr;
-+       }
-+       else {
-+               segcfg = read_c0_segctl0();
-+               return (((segcfg >> MIPS_SEGCFG_PA_SHIFT) & 0x7) << 29) 
-| segaddr;
-+       }
-+       return 0;
-+}
-+#define __pa(x)                ___pa((unsigned long)x)
-+#else
-  #define __pa(x)                CPHYSADDR(x)
-+#endif /* CONFIG_EVA */
-  #endif
-  #define __va(x)                ((void *)((unsigned long)(x) + 
-PAGE_OFFSET - PHYS_OFFSET))
-  #include <asm/io.h>
+That is a good explanation of why I am only semi-enthusiastic about
+this.  ;-)
 
-Discuss :-)
-
-Thanks,
-Matt
+							Thanx, Paul

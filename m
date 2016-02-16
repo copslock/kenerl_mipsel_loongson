@@ -1,39 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Feb 2016 01:57:46 +0100 (CET)
-Received: from mx1.redhat.com ([209.132.183.28]:44950 "EHLO mx1.redhat.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Feb 2016 10:53:30 +0100 (CET)
+Received: from foss.arm.com ([217.140.101.70]:33214 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27012309AbcBPA5pAOGKH (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 16 Feb 2016 01:57:45 +0100
-Received: from int-mx10.intmail.prod.int.phx2.redhat.com (int-mx10.intmail.prod.int.phx2.redhat.com [10.5.11.23])
-        by mx1.redhat.com (Postfix) with ESMTPS id 0A2E3804E7;
-        Tue, 16 Feb 2016 00:57:38 +0000 (UTC)
-Received: from [127.0.0.1] (ovpn01.gateway.prod.ext.phx2.redhat.com [10.5.9.1])
-        by int-mx10.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with ESMTP id u1G0vZ57016391;
-        Mon, 15 Feb 2016 19:57:36 -0500
-Message-ID: <56C273FF.7070206@redhat.com>
-Date:   Tue, 16 Feb 2016 00:57:35 +0000
-From:   Pedro Alves <palves@redhat.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.7.0
+        id S27012696AbcBPJx1GImd6 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 16 Feb 2016 10:53:27 +0100
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7D3513A1;
+        Tue, 16 Feb 2016 01:52:28 -0800 (PST)
+Received: from arm.com (usa-sjc-imap-foss1.foss.arm.com [10.72.51.249])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 857823F246;
+        Tue, 16 Feb 2016 01:53:15 -0800 (PST)
+Date:   Tue, 16 Feb 2016 09:53:20 +0000
+From:   Will Deacon <will.deacon@arm.com>
+To:     "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>
+Cc:     Andy.Glew@imgtec.com, Leonid.Yegoshin@imgtec.com,
+        peterz@infradead.org, linux-arch@vger.kernel.org, arnd@arndb.de,
+        davem@davemloft.net, linux-arm-kernel@lists.infradead.org,
+        linux-metag@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-xtensa@linux-xtensa.org, linuxppc-dev@lists.ozlabs.org,
+        graham.whaley@gmail.com, torvalds@linux-foundation.org,
+        hpa@zytor.com, mingo@kernel.org
+Subject: Re: Writes, smp_wmb(), and transitivity?
+Message-ID: <20160216095319.GA14509@arm.com>
+References: <20160215175825.GA15878@linux.vnet.ibm.com>
+ <20160215185832.GQ6298@arm.com>
+ <20160215203512.GL6719@linux.vnet.ibm.com>
 MIME-Version: 1.0
-To:     Luis Machado <lgustavo@codesourcery.com>,
-        "Maciej W. Rozycki" <macro@imgtec.com>
-CC:     "Maciej W. Rozycki" <macro@linux-mips.org>,
-        gdb-patches@sourceware.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH] Expect SI_KERNEL si_code for a MIPS software breakpoint
- trap
-References: <1442592647-3051-1-git-send-email-lgustavo@codesourcery.com> <alpine.LFD.2.20.1509181729100.10647@eddie.linux-mips.org> <56B9F7E6.5010006@codesourcery.com> <alpine.DEB.2.00.1602092020150.15885@tp.orcam.me.uk> <56BB329F.3080606@codesourcery.com>
-In-Reply-To: <56BB329F.3080606@codesourcery.com>
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.68 on 10.5.11.23
-Return-Path: <palves@redhat.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20160215203512.GL6719@linux.vnet.ibm.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <will.deacon@arm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52079
+X-archive-position: 52080
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: palves@redhat.com
+X-original-sender: will.deacon@arm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,38 +50,86 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 02/10/2016 12:52 PM, Luis Machado wrote:
-> The problem of forcing gdbserver to recognize all traps with 
-> si_code==SI_KERNEL is that even hardcoded traps will be reported back to 
-> GDB as a swbreak event, which is not ideal.
-
-That's how swbreak is defined:
-
- @item swbreak
- @anchor{swbreak stop reason}
- The packet indicates a memory breakpoint instruction was executed,
- irrespective of whether it was @value{GDBN} that planted the
- breakpoint or the breakpoint is hardcoded in the program.
-
+On Mon, Feb 15, 2016 at 12:35:12PM -0800, Paul E. McKenney wrote:
+> On Mon, Feb 15, 2016 at 06:58:32PM +0000, Will Deacon wrote:
+> > On Mon, Feb 15, 2016 at 09:58:25AM -0800, Paul E. McKenney wrote:
+> > > Some architectures provide local transitivity for a chain of threads doing
+> > > writes separated by smp_wmb(), as exemplified by the litmus tests below.
+> > > The pattern is that each thread writes to a its own variable, does an
+> > > smp_wmb(), then writes a different value to the next thread's variable.
+> > > 
+> > > I don't know of a use of this, but if everyone supports it, it might
+> > > be good to mandate it.  Status quo is that smp_wmb() is non-transitive,
+> > > so it currently isn't supported.
+> > > 
+> > > Anyone know of any architectures that do -not- support this?
+> > > 
+> > > Assuming all architectures -do- support this, any arguments -against-
+> > > officially supporting it in Linux?
+> > > 
+> > > 							Thanx, Paul
+> > > 
+> > > ------------------------------------------------------------------------
+> > > 
+> > > Two threads:
+> > > 
+> > > 	int a, b;
+> > > 
+> > > 	void thread0(void)
+> > > 	{
+> > > 		WRITE_ONCE(a, 1);
+> > > 		smp_wmb();
+> > > 		WRITE_ONCE(b, 2);
+> > > 	}
+> > > 
+> > > 	void thread1(void)
+> > > 	{
+> > > 		WRITE_ONCE(b, 1);
+> > > 		smp_wmb();
+> > > 		WRITE_ONCE(a, 2);
+> > > 	}
+> > > 
+> > > 	/* After all threads have completed and the dust has settled... */
+> > > 
+> > > 	BUG_ON(a == 1 && b == 1);
+> > 
+> > My understanding is that this test, and the generalisation to n threads,
+> > is forbidden on ARM. However, the transitivity of DMB ST (used to
+> > construct smp_wmb()) has been the subject of long debates, because we
+> > allow the following test:
+> > 
+> > 
+> > P0:
+> > Wx = 1
+> > 
+> > P1:
+> > Rx == 1
+> > DMB ST
+> > Wy = 1
+> > 
+> > P2:
+> > Ry == 1
+> > <addr dep>
+> > Rx == 0
+> > 
+> > 
+> > so I'd be uneasy about saying "it's all transitive".
 > 
-> But currently there is no easy way to tell a software breakpoint hit and 
-> a hardcoded trap (and maybe even a hardware breakpoint hit?) apart.
+> Agreed!  For one thing, doesn't DMB ST need writes on both sides?
 
-Software breakpoint hits or hardcoded traps are handled the same.  Even if GDB
-plants the breakpoint instruction itself with direct memory pokes (instead of
-z0 packets), the target should report "swbreak" stops, so that gdb can do
-the right thing.
+Yes, but it's a common trap that people fall into where they think the
+above is forbidden because the DMB ST in P1 should order P0's write
+before its own write of y.
 
-GDB knows whether to discard the hit as a delayed breakpoint hit event by
-checking whether the thread's PC points at an hardcoded trap.  If it does,
-the event is not discarded, but instead reported to the user as a SIGTRAP.
+> But that is one reason that I am only semi-enthusiastic about this.
+> The potentially locally transitive case is -very- restrictive, applying
+> only to situations where -all- accesses are writes.
 
-Hardware breakpoint hits are distinguished from software breakpoint hits,
-because they're reported with "hwbreak", not "swbreak":
+I think that we will confuse people more by trying to describe the
+restricted case where we provide order than if we blanket say that its
+not transitive. I know Linus prefers to be as strong as possible, but
+this doesn't look like a realistic programming paradigm and having a
+straightforward rule that "rmb and wmb are not transitive" is much
+easier for people to deal with in my opinion.
 
- @item hwbreak
- The packet indicates the target stopped for a hardware breakpoint.
- The @var{r} part must be left empty.
-
-Thanks,
-Pedro Alves
+Will

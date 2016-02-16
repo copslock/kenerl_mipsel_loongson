@@ -1,11 +1,11 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Feb 2016 16:42:51 +0100 (CET)
-Received: from mout.kundenserver.de ([212.227.126.133]:57980 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Feb 2016 16:43:08 +0100 (CET)
+Received: from mout.kundenserver.de ([212.227.126.135]:55603 "EHLO
         mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27012842AbcBPPmF2WQXn (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 16 Feb 2016 16:42:05 +0100
+        with ESMTP id S27012843AbcBPPmGIvCPn (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 16 Feb 2016 16:42:06 +0100
 Received: from wuerfel.lan. ([78.42.132.4]) by mrelayeu.kundenserver.de
- (mreue003) with ESMTPA (Nemesis) id 0Lpis6-1a1c8V1D9y-00fO76; Tue, 16 Feb
- 2016 16:41:29 +0100
+ (mreue003) with ESMTPA (Nemesis) id 0Lvfyq-1ZvXbL3W6W-017XtC; Tue, 16 Feb
+ 2016 16:41:32 +0100
 From:   Arnd Bergmann <arnd@arndb.de>
 To:     Linus Walleij <linus.walleij@linaro.org>
 Cc:     linux-arm-kernel@lists.infradead.org,
@@ -15,34 +15,35 @@ Cc:     linux-arm-kernel@lists.infradead.org,
         Alexandre Courbot <gnurou@gmail.com>,
         linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: [PATCH v2 4/5] gpio: ep93xx: remove private irq_to_gpio function
-Date:   Tue, 16 Feb 2016 16:40:37 +0100
-Message-Id: <1455637261-2920972-4-git-send-email-arnd@arndb.de>
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        linux-arch@vger.kernel.org
+Subject: [PATCH v2 5/5] gpio: allow setting ARCH_NR_GPIOS from Kconfig
+Date:   Tue, 16 Feb 2016 16:40:38 +0100
+Message-Id: <1455637261-2920972-5-git-send-email-arnd@arndb.de>
 X-Mailer: git-send-email 2.7.0
 In-Reply-To: <1455637261-2920972-1-git-send-email-arnd@arndb.de>
 References: <455637086-2794174-1-git-send-email-arnd@arndb.de>
  <1455637261-2920972-1-git-send-email-arnd@arndb.de>
-X-Provags-ID: V03:K0:j9cyZI0vRxWKbLcNM0OuDEZkwDwLKPWFjYn6eTNbF2sa+PRfHO1
- KyEVbzz2jKzisg/tmyv/VJoiL2oYVemdsH2cMRNC6l3dYPBsvGyL5GA/uK4gzGJ306ym3VU
- sPgONX5QJQ9wvBxqYhP3y9/nq/FJ3FbU7tF4LeG2z6wrXIfNDgFm9LOqbaqR83srqcaqwhD
- kk/A84+jeNmH0Detue0UA==
-X-UI-Out-Filterresults: notjunk:1;V01:K0:m+GRaYezSaE=:qASBZG7Rgy8opG1PGhBZpd
- cSUfbzzoXB/rVb3BN3nanwlSqxIDXuFOWUfOg/WHE7SbAMj8bj4ympVH9IxSogIHCcnU165sq
- UQryuLY7u59qWM2pTQ6Rlb9rnoeVuVKyo3pcw5AlBQjYIZxpXJayfpyGCucvQ/8Y3PZYoomiG
- LQ/FgkYwf8oKfZwPTKO8ZlwMFw3gnG9UHwsFDNktI09KnSSAS8ciKYL0/+Qx6La+P7xl8HXuh
- RvwNnkCF8mNCjd4c2jKHlA3aGO2PUxSsXN9R9c0trPZahGnhVjYKe7U0/5EZz5Cp2yvE8zsUL
- 56ILbcK38+8fHHjhAX+s2LDdTyyqUxjcaV3manrSAiTs1vx3n2nvBsqdQ5TxCiZQ/mQXQJGb3
- Yd9pTeQpSE+4yOXA3REttkO1YroEnH6uAz9SNp9Q8+TXRj37+ayuhlIyxzWdSsnfgDjj+brIc
- F27QeFeGZAbrfra4cb6eRzgy1Zx+NMHGf8hIV7tQsq5ir6tC6rvchLcVdEISB/YuU9AbYobYD
- e4l8WfkUiqvynocX2u+Hk70miHz+jqmOwu5Rn79cA1M87hGFO3XvtlglxA3Tje2w9RUgnHvLp
- pzik4Zftftu7Q7WbWAuQydQ1vHk95E1ClxSBTEghYOsiTYKwoSGB7x0SA4FSwNN658JAs8OPC
- GyMjzaCTL1smanb2V6KK0dCEfETEUsGt7MPgxknh3rxP+WuNKqQjhi5MGCoBBK5JyOq0=
+X-Provags-ID: V03:K0:e9I4n9sy6PyfgfkQLus4LmFKwzxjGnLahn87Oh+4EEz/dEqZzmI
+ LtnORHyhCGaFgmUaH5Ihrjgy7613+uzJecPpIVM2X+Xx8EcpoO9BD5nEgbnXW4tr0ewq7UK
+ m5WTq6i2c2QuL9MfeyxJgpViae6H/T7kxu9Yu45wrUbtMwByfdIyIBjULFfEfyEVxlW4VXf
+ DiYm2g/2zC+4bpKMDAVMg==
+X-UI-Out-Filterresults: notjunk:1;V01:K0:t6Cj3QeaQKw=:I+oXVxtRdcp0uPYz95qpLK
+ G5wlMx5OOjmurCFCNs8JulEdslbXS6tP+F8HYlbpf9c2B8v7vHJvBDyz8rm3TMzEfufqtR63T
+ 25d+E3pDQYFchwhhdxtgfSZBG7klAZLQawXA9l39z0WUTwpRWtBTOyMyx3zlpZEXKbALutpGP
+ Mw22GxLl6ZEXVP6YW0oZGGnGYuMTEYzVjdZBr7UCExWmvtVyJMOZDMO4psfHcRCackMtWz7rZ
+ B08HEXwKfH4n83Hnjtft/zjqR3nzekQO96+0UEks/qqznwF8rASWSDI0uLDMEcqcZHLCpgpZD
+ kbTkZgnNnGX4wpaK8oq3ZO+tC7uYHOdr7OUrsVdsnebR+WSyrQ9nSZp0S4mhTDMwUebEbvPYr
+ 2aWELeMj/dTrVCxaPRYFey48jJfJLdW531WHbGfwJIRcvwC8ukL7e7rZTKqTCl2Twtld+/mE6
+ eR3y3Rfy41YxwCGxdbJnjekPuJXF92sfRRhsI0CWil4YW+LqoFWuQGoStsrqlPfmMgbAKSRq5
+ jF/cwF+46TJABq72sMAoDidh0kk2tJZ2stCCSnwCrEEwysAwUDPBC0ldPQl+Ug01JNMiBhinS
+ e6K8gmcLcmv5iQ8Z6ZKVBTwnIKMNuuBtiTKTeI1g8nZQDz2Ea8pkrSKAOPxMikAC5p7QFqeOI
+ Mm+/hGhfN9B4ibsir0HPgBCCKP6MqzsBVcpI+SR34bWDoqQC2r3pt1NCqxdx1O1pVn9M=
 Return-Path: <arnd@arndb.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52087
+X-archive-position: 52088
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -59,161 +60,34 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The ep93xx goes through its own back-and-forth dance every time
-it wants to know the gpio number for an irq line, when it really
-just hardcodes a fixed offset in ep93xx_gpio_to_irq().
+The ARM version of asm/gpio.h basically just contains the same definitions
+as the gpiolib version, with the exception of ARCH_NR_GPIOS.
 
-This removes the pointless macro and replaces the conversion inside
-of the driver with simple add/subtract operations, using an
-explicit macro.
+This adds the option for overriding the constant through Kconfig to
+the architecture-independent header, so we can remove the ARM specific
+file later.
 
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 ---
- drivers/gpio/gpio-ep93xx.c | 37 +++++++++++++++++--------------------
- 1 file changed, 17 insertions(+), 20 deletions(-)
+ include/asm-generic/gpio.h | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/gpio/gpio-ep93xx.c b/drivers/gpio/gpio-ep93xx.c
-index 20e5846bda28..cd83d30e8ff7 100644
---- a/drivers/gpio/gpio-ep93xx.c
-+++ b/drivers/gpio/gpio-ep93xx.c
-@@ -18,12 +18,8 @@
- #include <linux/io.h>
- #include <linux/irq.h>
- #include <linux/slab.h>
--#include <linux/gpio/driver.h>
--/* FIXME: this is here for gpio_to_irq() - get rid of this! */
- #include <linux/gpio.h>
- 
--#define irq_to_gpio(irq)	((irq) - gpio_to_irq(0))
--
- void __iomem *ep93xx_gpio_base; /* FIXME: put this into irq_data */
- 
- #define EP93XX_GPIO_REG(x)		(ep93xx_gpio_base + (x))
-@@ -35,6 +31,7 @@ void __iomem *ep93xx_gpio_base; /* FIXME: put this into irq_data */
- #define EP93XX_GPIO_LINE_MAX		63
- 
- /* maximum value for irq capable line identifiers */
-+#define EP93XX_GPIO_IRQ_BASE		64
- #define EP93XX_GPIO_LINE_MAX_IRQ	23
- 
- 
-@@ -77,7 +74,7 @@ static void ep93xx_gpio_update_int_params(unsigned port)
- 
- static void ep93xx_gpio_int_debounce(unsigned int irq, bool enable)
- {
--	int line = irq_to_gpio(irq);
-+	int line = irq - EP93XX_GPIO_IRQ_BASE;
- 	int port = line >> 3;
- 	int port_mask = 1 << (line & 7);
- 
-@@ -98,7 +95,7 @@ static void ep93xx_gpio_ab_irq_handler(struct irq_desc *desc)
- 	status = readb(EP93XX_GPIO_A_INT_STATUS);
- 	for (i = 0; i < 8; i++) {
- 		if (status & (1 << i)) {
--			int gpio_irq = gpio_to_irq(0) + i;
-+			int gpio_irq = EP93XX_GPIO_IRQ_BASE + i;
- 			generic_handle_irq(gpio_irq);
- 		}
- 	}
-@@ -106,7 +103,7 @@ static void ep93xx_gpio_ab_irq_handler(struct irq_desc *desc)
- 	status = readb(EP93XX_GPIO_B_INT_STATUS);
- 	for (i = 0; i < 8; i++) {
- 		if (status & (1 << i)) {
--			int gpio_irq = gpio_to_irq(8) + i;
-+			int gpio_irq = EP93XX_GPIO_IRQ_BASE + 8 + i;
- 			generic_handle_irq(gpio_irq);
- 		}
- 	}
-@@ -121,14 +118,14 @@ static void ep93xx_gpio_f_irq_handler(struct irq_desc *desc)
- 	 */
- 	unsigned int irq = irq_desc_get_irq(desc);
- 	int port_f_idx = ((irq + 1) & 7) ^ 4; /* {19..22,47..50} -> {0..7} */
--	int gpio_irq = gpio_to_irq(16) + port_f_idx;
-+	int gpio_irq = EP93XX_GPIO_IRQ_BASE + 16 + port_f_idx;
- 
- 	generic_handle_irq(gpio_irq);
- }
- 
- static void ep93xx_gpio_irq_ack(struct irq_data *d)
- {
--	int line = irq_to_gpio(d->irq);
-+	int line = d->irq - EP93XX_GPIO_IRQ_BASE;
- 	int port = line >> 3;
- 	int port_mask = 1 << (line & 7);
- 
-@@ -142,7 +139,7 @@ static void ep93xx_gpio_irq_ack(struct irq_data *d)
- 
- static void ep93xx_gpio_irq_mask_ack(struct irq_data *d)
- {
--	int line = irq_to_gpio(d->irq);
-+	int line = d->irq - EP93XX_GPIO_IRQ_BASE;
- 	int port = line >> 3;
- 	int port_mask = 1 << (line & 7);
- 
-@@ -157,7 +154,7 @@ static void ep93xx_gpio_irq_mask_ack(struct irq_data *d)
- 
- static void ep93xx_gpio_irq_mask(struct irq_data *d)
- {
--	int line = irq_to_gpio(d->irq);
-+	int line = d->irq - EP93XX_GPIO_IRQ_BASE;
- 	int port = line >> 3;
- 
- 	gpio_int_unmasked[port] &= ~(1 << (line & 7));
-@@ -166,7 +163,7 @@ static void ep93xx_gpio_irq_mask(struct irq_data *d)
- 
- static void ep93xx_gpio_irq_unmask(struct irq_data *d)
- {
--	int line = irq_to_gpio(d->irq);
-+	int line = d->irq - EP93XX_GPIO_IRQ_BASE;
- 	int port = line >> 3;
- 
- 	gpio_int_unmasked[port] |= 1 << (line & 7);
-@@ -180,7 +177,7 @@ static void ep93xx_gpio_irq_unmask(struct irq_data *d)
+diff --git a/include/asm-generic/gpio.h b/include/asm-generic/gpio.h
+index 40ec1433f05d..8ca627dcea11 100644
+--- a/include/asm-generic/gpio.h
++++ b/include/asm-generic/gpio.h
+@@ -26,8 +26,12 @@
   */
- static int ep93xx_gpio_irq_type(struct irq_data *d, unsigned int type)
- {
--	const int gpio = irq_to_gpio(d->irq);
-+	const int gpio = d->irq - EP93XX_GPIO_IRQ_BASE;
- 	const int port = gpio >> 3;
- 	const int port_mask = 1 << (gpio & 7);
- 	irq_flow_handler_t handler;
-@@ -241,14 +238,14 @@ static struct irq_chip ep93xx_gpio_irq_chip = {
  
- static void ep93xx_gpio_init_irq(struct platform_device *pdev)
- {
--	int gpio_irq;
-+	int gpio;
- 	int i;
+ #ifndef ARCH_NR_GPIOS
++#if defined(CONFIG_ARCH_NR_GPIO) && CONFIG_ARCH_NR_GPIO > 0
++#define ARCH_NR_GPIOS CONFIG_ARCH_NR_GPIO
++#else
+ #define ARCH_NR_GPIOS		512
+ #endif
++#endif
  
--	for (gpio_irq = gpio_to_irq(0);
--	     gpio_irq <= gpio_to_irq(EP93XX_GPIO_LINE_MAX_IRQ); ++gpio_irq) {
--		irq_set_chip_and_handler(gpio_irq, &ep93xx_gpio_irq_chip,
-+	for (gpio = 0; gpio <= EP93XX_GPIO_LINE_MAX_IRQ; ++gpio) {
-+		irq_set_chip_and_handler(EP93XX_GPIO_IRQ_BASE + gpio,
-+					 &ep93xx_gpio_irq_chip,
- 					 handle_level_irq);
--		irq_clear_status_flags(gpio_irq, IRQ_NOREQUEST);
-+		irq_clear_status_flags(EP93XX_GPIO_IRQ_BASE + gpio, IRQ_NOREQUEST);
- 	}
- 
- 	irq_set_chained_handler(platform_get_irq(pdev, 0),
-@@ -294,7 +291,7 @@ static int ep93xx_gpio_set_debounce(struct gpio_chip *chip,
- 				    unsigned offset, unsigned debounce)
- {
- 	int gpio = chip->base + offset;
--	int irq = gpio_to_irq(gpio);
-+	int irq = EP93XX_GPIO_IRQ_BASE + gpio;
- 
- 	if (irq < 0)
- 		return -EINVAL;
-@@ -316,7 +313,7 @@ static int ep93xx_gpio_to_irq(struct gpio_chip *chip, unsigned offset)
- 	if (gpio > EP93XX_GPIO_LINE_MAX_IRQ)
- 		return -EINVAL;
- 
--	return 64 + gpio;
-+	return EP93XX_GPIO_IRQ_BASE + gpio;
- }
- 
- static int ep93xx_gpio_add_bank(struct gpio_chip *gc, struct device *dev,
+ /*
+  * "valid" GPIO numbers are nonnegative and may be passed to
 -- 
 2.7.0

@@ -1,70 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Feb 2016 20:37:01 +0100 (CET)
-Received: from e33.co.us.ibm.com ([32.97.110.151]:49217 "EHLO
-        e33.co.us.ibm.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27008543AbcBPTg7KkuEF (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 16 Feb 2016 20:36:59 +0100
-Received: from localhost
-        by e33.co.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <linux-mips@linux-mips.org> from <paulmck@linux.vnet.ibm.com>;
-        Tue, 16 Feb 2016 12:36:52 -0700
-Received: from d03dlp01.boulder.ibm.com (9.17.202.177)
-        by e33.co.us.ibm.com (192.168.1.133) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        Tue, 16 Feb 2016 12:36:40 -0700
-X-IBM-Helo: d03dlp01.boulder.ibm.com
-X-IBM-MailFrom: paulmck@linux.vnet.ibm.com
-X-IBM-RcptTo: linux-mips@linux-mips.org
-Received: from b01cxnp22034.gho.pok.ibm.com (b01cxnp22034.gho.pok.ibm.com [9.57.198.24])
-        by d03dlp01.boulder.ibm.com (Postfix) with ESMTP id 946031FF001E
-        for <linux-mips@linux-mips.org>; Tue, 16 Feb 2016 12:24:49 -0700 (MST)
-Received: from d01av01.pok.ibm.com (d01av01.pok.ibm.com [9.56.224.215])
-        by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id u1GJadTr32047122
-        for <linux-mips@linux-mips.org>; Tue, 16 Feb 2016 19:36:39 GMT
-Received: from d01av01.pok.ibm.com (localhost [127.0.0.1])
-        by d01av01.pok.ibm.com (8.14.4/8.14.4/NCO v10.0 AVout) with ESMTP id u1GJab5T014131
-        for <linux-mips@linux-mips.org>; Tue, 16 Feb 2016 14:36:38 -0500
-Received: from paulmck-ThinkPad-W541 ([9.70.82.75])
-        by d01av01.pok.ibm.com (8.14.4/8.14.4/NCO v10.0 AVin) with ESMTP id u1GJaaUD014085;
-        Tue, 16 Feb 2016 14:36:36 -0500
-Received: by paulmck-ThinkPad-W541 (Postfix, from userid 1000)
-        id 33A6116C2A87; Tue, 16 Feb 2016 11:36:44 -0800 (PST)
-Date:   Tue, 16 Feb 2016 11:36:44 -0800
-From:   "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Will Deacon <will.deacon@arm.com>, Andy.Glew@imgtec.com,
-        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        David Miller <davem@davemloft.net>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        linux-metag@vger.kernel.org,
-        linux-mips <linux-mips@linux-mips.org>,
-        linux-xtensa@linux-xtensa.org,
-        ppc-dev <linuxppc-dev@lists.ozlabs.org>, graham.whaley@gmail.com,
-        Peter Anvin <hpa@zytor.com>, Ingo Molnar <mingo@kernel.org>
-Subject: Re: Writes, smp_wmb(), and transitivity?
-Message-ID: <20160216193644.GV6719@linux.vnet.ibm.com>
-Reply-To: paulmck@linux.vnet.ibm.com
-References: <20160215175825.GA15878@linux.vnet.ibm.com>
- <CA+55aFxaQEvDrzecmZUQ5QfKzU4ei6E-+NpsW5hYp3ouaLP98g@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Feb 2016 00:02:50 +0100 (CET)
+Received: from down.free-electrons.com ([37.187.137.238]:52693 "EHLO
+        mail.free-electrons.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S27009983AbcBPXCryhYNp (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 17 Feb 2016 00:02:47 +0100
+Received: by mail.free-electrons.com (Postfix, from userid 110)
+        id 6BD46249; Wed, 17 Feb 2016 00:02:41 +0100 (CET)
+Received: from localhost (unknown [88.191.26.124])
+        by mail.free-electrons.com (Postfix) with ESMTPSA id 2941221E;
+        Wed, 17 Feb 2016 00:02:41 +0100 (CET)
+Date:   Wed, 17 Feb 2016 00:02:41 +0100
+From:   Alexandre Belloni <alexandre.belloni@free-electrons.com>
+To:     Joshua Henderson <joshua.henderson@microchip.com>
+Cc:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        Alessandro Zummo <a.zummo@towertech.it>,
+        rtc-linux@googlegroups.com
+Subject: Re: [PATCH 2/2] rtc: rtc-pic32: Add PIC32 real time clock driver
+Message-ID: <20160216230241.GC2189@piout.net>
+References: <1454366606-10779-1-git-send-email-joshua.henderson@microchip.com>
+ <1454366606-10779-2-git-send-email-joshua.henderson@microchip.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CA+55aFxaQEvDrzecmZUQ5QfKzU4ei6E-+NpsW5hYp3ouaLP98g@mail.gmail.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-TM-AS-MML: disable
-X-Content-Scanned: Fidelis XPS MAILER
-x-cbid: 16021619-0009-0000-0000-0000126EDF11
-Return-Path: <paulmck@linux.vnet.ibm.com>
+In-Reply-To: <1454366606-10779-2-git-send-email-joshua.henderson@microchip.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+Return-Path: <alexandre.belloni@free-electrons.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52097
+X-archive-position: 52098
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paulmck@linux.vnet.ibm.com
+X-original-sender: alexandre.belloni@free-electrons.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -77,52 +44,297 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Feb 16, 2016 at 10:59:08AM -0800, Linus Torvalds wrote:
-> On Mon, Feb 15, 2016 at 9:58 AM, Paul E. McKenney
-> <paulmck@linux.vnet.ibm.com> wrote:
-> >
-> > Two threads:
-> >
-> >         int a, b;
-> >
-> >         void thread0(void)
-> >         {
-> >                 WRITE_ONCE(a, 1);
-> >                 smp_wmb();
-> >                 WRITE_ONCE(b, 2);
-> >         }
-> >
-> >         void thread1(void)
-> >         {
-> >                 WRITE_ONCE(b, 1);
-> >                 smp_wmb();
-> >                 WRITE_ONCE(a, 2);
-> >         }
-> >
-> >         /* After all threads have completed and the dust has settled... */
-> >
-> >         BUG_ON(a == 1 && b == 1);
+Hi,
+
+On 01/02/2016 at 15:43:22 -0700, Joshua Henderson wrote :
+> This drivers adds support for the PIC32 real time clock and calendar
+> peripheral:
+>      - reading and setting time
+>      - alarms when connected to an IRQ
 > 
-> So the more I look at that kind of litmus test, the less I think that
-> we should care, because I can't come up with a scenario in where that
-> kind of test makes sense. without even a possibility of any causal
-> relationship between the two, I can't say why we'd ever care about the
-> ordering of the (independent) writes to the individual variables.
-> 
-> If somebody can make up a causal chain, things differ. But as long as
-> all the CPU's are just doing locally ordered writes, I don't think we
-> need to care about a global store ordering.
+> Signed-off-by: Joshua Henderson <joshua.henderson@microchip.com>
+> ---
+>  drivers/rtc/Kconfig     |   10 ++
+>  drivers/rtc/Makefile    |    1 +
+>  drivers/rtc/rtc-pic32.c |  450 +++++++++++++++++++++++++++++++++++++++++++++++
 
-Works for me!  (Yes, I can artificially generate a use case for this
-thing, but all the ones I have come up with have some better and more
-sane way to get the job done.  So I completely agree with your not caring
-about it.)
+Nitpick: there are multiple alignment and blank lines issues that you
+can spot using checkpatch --strict.
 
-So for transitivity, we focus on causal chains, where one task writes
-to some variable that the next task reads.
+> diff --git a/drivers/rtc/Makefile b/drivers/rtc/Makefile
+> index 62d61b2..20c9be5 100644
+> --- a/drivers/rtc/Makefile
+> +++ b/drivers/rtc/Makefile
+> @@ -162,3 +162,4 @@ obj-$(CONFIG_RTC_DRV_WM8350)	+= rtc-wm8350.o
+>  obj-$(CONFIG_RTC_DRV_X1205)	+= rtc-x1205.o
+>  obj-$(CONFIG_RTC_DRV_XGENE)	+= rtc-xgene.o
+>  obj-$(CONFIG_RTC_DRV_ZYNQMP)	+= rtc-zynqmp.o
+> +obj-$(CONFIG_RTC_DRV_PIC32)	+= rtc-pic32.o
 
-In addition, if all threads use full memory barriers throughout, as in
-smp_mb(), then full ordering is of course provided regardless of the
-pattern of reads and writes.
+This list has to be ordered alphabetically.
 
-							Thanx, Paul
+> diff --git a/drivers/rtc/rtc-pic32.c b/drivers/rtc/rtc-pic32.c
+> new file mode 100644
+> index 0000000..7c46ccb
+> --- /dev/null
+> +++ b/drivers/rtc/rtc-pic32.c
+> @@ -0,0 +1,450 @@
+> +/*
+> + * PIC32 RTC driver
+> + *
+> + * Joshua Henderson <joshua.henderson@microchip.com>
+> + * Copyright (C) 2016 Microchip Technology Inc.  All rights reserved.
+> + *
+> + * This program is free software; you can distribute it and/or modify it
+> + * under the terms of the GNU General Public License (Version 2) as
+> + * published by the Free Software Foundation.
+> + *
+
+This specify GPL v2 but you use MODULE_LICENSE("GPL")
+
+> + * This program is distributed in the hope it will be useful, but WITHOUT
+> + * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+> + * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+> + * for more details.
+> + */
+> +#include <linux/init.h>
+> +#include <linux/module.h>
+> +#include <linux/of.h>
+> +#include <linux/platform_device.h>
+> +#include <linux/io.h>
+> +#include <linux/slab.h>
+> +#include <linux/clk.h>
+> +#include <linux/rtc.h>
+> +#include <linux/bcd.h>
+> +
+> +#include <asm/mach-pic32/pic32.h>
+> +
+> +#define DRIVER_NAME "pic32-rtc"
+> +
+> +#define PIC32_RTCCON		(0x00)
+
+You probably don't need those parenthesis.
+
+> +#define PIC32_RTCCON_ON		BIT(15)
+> +#define PIC32_RTCCON_SIDL	BIT(13)
+> +#define PIC32_RTCCON_RTCCLKSEL	(3 << 9)
+> +#define PIC32_RTCCON_RTCCLKON	BIT(6)
+> +#define PIC32_RTCCON_RTCWREN	BIT(3)
+> +#define PIC32_RTCCON_RTCSYNC	BIT(2)
+> +#define PIC32_RTCCON_HALFSEC	BIT(1)
+> +#define PIC32_RTCCON_RTCOE	BIT(0)
+> +
+> +#define PIC32_RTCALRM		(0x10)
+
+ditto
+
+> +#define PIC32_RTCALRM_ALRMEN	BIT(15)
+> +#define PIC32_RTCALRM_CHIME	BIT(14)
+> +#define PIC32_RTCALRM_PIV	BIT(13)
+> +#define PIC32_RTCALRM_ALARMSYNC	BIT(12)
+> +#define PIC32_RTCALRM_AMASK	(0x0F << 8)
+> +#define PIC32_RTCALRM_ARPT	(0xFF << 0)
+
+Nit: For those masks, you can use genmask() or directly 0x0F00 and 0xFF
+
+> +struct pic32_rtc_dev {
+> +	struct rtc_device	*rtc;
+> +	void __iomem		*reg_base;
+> +	struct clk		*clk;
+> +	spinlock_t		flags_lock;
+
+flags_lock is unnecessary, it is used only in one function that is
+called only at probe time
+
+> +	spinlock_t		alarm_lock;
+> +	int			alarm_irq;
+> +	bool			alarm_clk_enabled;
+> +};
+> +
+
+[...]
+
+> +static int pic32_rtc_gettime(struct device *dev, struct rtc_time *rtc_tm)
+> +{
+> +	struct pic32_rtc_dev *pdata = dev_get_drvdata(dev);
+> +	void __iomem *base = pdata->reg_base;
+> +	unsigned int have_retried = 0;
+> +
+> +	clk_enable(pdata->clk);
+> +retry_get_time:
+> +	rtc_tm->tm_hour = readb(base + PIC32_RTCHOUR);
+> +	rtc_tm->tm_min = readb(base + PIC32_RTCMIN);
+> +	rtc_tm->tm_mon  = readb(base + PIC32_RTCMON);
+> +	rtc_tm->tm_mday = readb(base + PIC32_RTCDAY);
+> +	rtc_tm->tm_year = readb(base + PIC32_RTCYEAR);
+> +	rtc_tm->tm_sec  = readb(base + PIC32_RTCSEC);
+> +
+> +	/*
+> +	 * The only way to work out whether the system was mid-update
+> +	 * when we read it is to check the second counter, and if it
+> +	 * is zero, then we re-try the entire read.
+> +	 */
+> +
+> +	if (rtc_tm->tm_sec == 0 && !have_retried) {
+> +		have_retried = 1;
+> +		goto retry_get_time;
+> +	}
+
+Please change that goto in a do while loop.
+
+> +
+> +	rtc_tm->tm_sec = bcd2bin(rtc_tm->tm_sec);
+> +	rtc_tm->tm_min = bcd2bin(rtc_tm->tm_min);
+> +	rtc_tm->tm_hour = bcd2bin(rtc_tm->tm_hour);
+> +	rtc_tm->tm_mday = bcd2bin(rtc_tm->tm_mday);
+> +	rtc_tm->tm_mon = bcd2bin(rtc_tm->tm_mon);
+> +	rtc_tm->tm_year = bcd2bin(rtc_tm->tm_year);
+> +
+> +	rtc_tm->tm_year += 100;
+> +
+> +	dev_dbg(dev, "read time %04d.%02d.%02d %02d:%02d:%02d\n",
+> +		1900 + rtc_tm->tm_year, rtc_tm->tm_mon, rtc_tm->tm_mday,
+> +		rtc_tm->tm_hour, rtc_tm->tm_min, rtc_tm->tm_sec);
+> +
+> +	rtc_tm->tm_mon -= 1;
+
+Maybe you should do that substraction with the assignment the only
+drawback is that it changes the debug output.
+
+> +
+> +	clk_disable(pdata->clk);
+> +	return rtc_valid_tm(rtc_tm);
+> +}
+> +
+
+[...]
+
+> +static int pic32_rtc_getalarm(struct device *dev, struct rtc_wkalrm *alrm)
+> +{
+> +	struct pic32_rtc_dev *pdata = dev_get_drvdata(dev);
+> +	struct rtc_time *alm_tm = &alrm->time;
+> +	void __iomem *base = pdata->reg_base;
+> +	unsigned int alm_en;
+> +
+> +	clk_enable(pdata->clk);
+> +	alm_tm->tm_sec  = readb(base + PIC32_ALRMSEC);
+> +	alm_tm->tm_min  = readb(base + PIC32_ALRMMIN);
+> +	alm_tm->tm_hour = readb(base + PIC32_ALRMHOUR);
+> +	alm_tm->tm_mon  = readb(base + PIC32_ALRMMON);
+> +	alm_tm->tm_mday = readb(base + PIC32_ALRMDAY);
+> +	alm_tm->tm_year = readb(base + PIC32_ALRMYEAR);
+> +
+> +	alm_en = readb(base + PIC32_RTCALRM);
+> +
+> +	alrm->enabled = (alm_en & PIC32_RTCALRM_ALRMEN) ? 1 : 0;
+> +
+> +	dev_dbg(dev, "getalarm: %d, %04d.%02d.%02d %02d:%02d:%02d\n",
+> +		alm_en,
+> +		1900 + alm_tm->tm_year, alm_tm->tm_mon, alm_tm->tm_mday,
+> +		alm_tm->tm_hour, alm_tm->tm_min, alm_tm->tm_sec);
+> +
+> +	alm_tm->tm_sec = bcd2bin(alm_tm->tm_sec);
+> +	alm_tm->tm_min = bcd2bin(alm_tm->tm_min);
+> +	alm_tm->tm_hour = bcd2bin(alm_tm->tm_hour);
+> +	alm_tm->tm_mday = bcd2bin(alm_tm->tm_mday);
+> +	alm_tm->tm_mon = bcd2bin(alm_tm->tm_mon);
+> +	alm_tm->tm_mon -= 1;
+You could merge both lines.
+
+> +	alm_tm->tm_year = bcd2bin(alm_tm->tm_year);
+> +
+> +	clk_disable(pdata->clk);
+> +	return 0;
+> +}
+> +
+> +static int pic32_rtc_setalarm(struct device *dev, struct rtc_wkalrm *alrm)
+> +{
+> +	struct pic32_rtc_dev *pdata = dev_get_drvdata(dev);
+> +	struct rtc_time *tm = &alrm->time;
+> +	void __iomem *base = pdata->reg_base;
+> +
+> +	clk_enable(pdata->clk);
+> +	dev_dbg(dev, "setalarm: %d, %04d.%02d.%02d %02d:%02d:%02d\n",
+> +		alrm->enabled,
+> +		1900 + tm->tm_year, tm->tm_mon + 1, tm->tm_mday,
+> +		tm->tm_hour, tm->tm_min, tm->tm_sec);
+> +
+> +	writel(0x00, base + PIC32_ALRMTIME);
+> +	writel(0x00, base + PIC32_ALRMDATE);
+> +
+> +	if (tm->tm_sec < 60 && tm->tm_sec >= 0)
+> +		writeb(bin2bcd(tm->tm_sec), base + PIC32_ALRMSEC);
+> +
+> +	if (tm->tm_min < 60 && tm->tm_min >= 0)
+> +		writeb(bin2bcd(tm->tm_min), base + PIC32_ALRMMIN);
+> +
+> +	if (tm->tm_hour < 24 && tm->tm_hour >= 0)
+> +		writeb(bin2bcd(tm->tm_hour), base + PIC32_ALRMHOUR);
+> +
+
+Those three tests are unnecessary because rtc_valid_tm() is called
+before ops->set_alarm.
+
+> +	pic32_rtc_setaie(dev, alrm->enabled);
+> +
+> +	clk_disable(pdata->clk);
+> +	return 0;
+> +}
+> +
+
+[...]
+
+
+> +	pic32_rtc_gettime(&pdev->dev, &rtc_tm);
+> +
+> +	if (rtc_valid_tm(&rtc_tm)) {
+> +		rtc_tm.tm_year	= 100;
+> +		rtc_tm.tm_mon	= 0;
+> +		rtc_tm.tm_mday	= 1;
+> +		rtc_tm.tm_hour	= 0;
+> +		rtc_tm.tm_min	= 0;
+> +		rtc_tm.tm_sec	= 0;
+> +
+> +		pic32_rtc_settime(NULL, &rtc_tm);
+> +
+> +		dev_warn(&pdev->dev,
+> +			"warning: invalid RTC value so initializing it\n");
+
+This is a bad idea. If you do that, userspace has no way of knowing
+whether the date is valid or not.
+
+[...]
+
+> +static const struct of_device_id pic32_rtc_dt_ids[] = {
+> +	{ .compatible = "microchip,pic32mzda-rtc" },
+> +	{ /* sentinel */ }
+> +};
+> +MODULE_DEVICE_TABLE(of, pic32_rtc_dt_ids);
+
+This compatible string needs to be documented. Was that patch 1/2?
+
+> +
+> +static struct platform_driver pic32_rtc_driver = {
+> +	.probe		= pic32_rtc_probe,
+> +	.remove		= pic32_rtc_remove,
+> +	.driver		= {
+> +		.name	= DRIVER_NAME,
+> +		.owner	= THIS_MODULE,
+> +		.of_match_table	= of_match_ptr(pic32_rtc_dt_ids),
+> +	},
+> +};
+> +module_platform_driver(pic32_rtc_driver);
+> +
+> +MODULE_DESCRIPTION("Microchip PIC32 RTC Driver");
+> +MODULE_AUTHOR("Joshua Henderson <joshua.henderson@microchip.com>");
+> +MODULE_LICENSE("GPL");
+> +MODULE_ALIAS("platform:" DRIVER_NAME);
+
+I think this driver is DT only, you can get rid of MODULE_ALIAS and
+DRIVER_NAME
+
+
+-- 
+Alexandre Belloni, Free Electrons
+Embedded Linux, Kernel and Android engineering
+http://free-electrons.com

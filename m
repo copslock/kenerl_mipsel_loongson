@@ -1,57 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Feb 2016 16:46:14 +0100 (CET)
-Received: from mout.kundenserver.de ([212.227.17.10]:50797 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27012831AbcBPPqMa6S0n (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 16 Feb 2016 16:46:12 +0100
-Received: from wuerfel.localnet ([78.42.132.4]) by mrelayeu.kundenserver.de
- (mreue102) with ESMTPSA (Nemesis) id 0LtX6a-1ZouNC0tjY-010xVw; Tue, 16 Feb
- 2016 16:45:30 +0100
-From:   Arnd Bergmann <arnd@arndb.de>
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     Alexandre Courbot <gnurou@gmail.com>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Feb 2016 16:47:42 +0100 (CET)
+Received: from smtp-out-188.synserver.de ([212.40.185.188]:1077 "EHLO
+        smtp-out-221.synserver.de" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S27012831AbcBPPrlACRgn (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 16 Feb 2016 16:47:41 +0100
+Received: (qmail 6700 invoked by uid 0); 16 Feb 2016 15:47:39 -0000
+X-SynServer-TrustedSrc: 1
+X-SynServer-AuthUser: lars@metafoo.de
+X-SynServer-PPID: 6678
+Received: from p4fde6749.dip0.t-ipconnect.de (HELO ?192.168.2.127?) [79.222.103.73]
+  by 217.119.54.73 with AES128-SHA encrypted SMTP; 16 Feb 2016 15:47:39 -0000
+Subject: Re: [PATCH v2 1/5] MIPS: jz4740: remove broken irq_to_gpio() call
+To:     Arnd Bergmann <arnd@arndb.de>,
+        Linus Walleij <linus.walleij@linaro.org>
+References: <455637086-2794174-1-git-send-email-arnd@arndb.de>
+ <1455637261-2920972-1-git-send-email-arnd@arndb.de>
+Cc:     linux-arm-kernel@lists.infradead.org,
         Russell King <rmk+kernel@arm.linux.org.uk>,
         Bjorn Helgaas <bhelgaas@google.com>,
-        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@imgtec.com>,
-        Linux MIPS <linux-mips@linux-mips.org>
-Subject: Re: [PATCH 1/4] gpio: remove broken irq_to_gpio() interface
-Date:   Tue, 16 Feb 2016 16:45:28 +0100
-Message-ID: <2646870.5L1En4yxph@wuerfel>
-User-Agent: KMail/4.11.5 (Linux/3.16.0-10-generic; KDE/4.11.5; x86_64; ; )
-In-Reply-To: <CACRpkdaQN9_qoTn4_riZGvi4BKRLEVkRRL4CWzKj8e_di7Q2Xg@mail.gmail.com>
-References: <20160202194831.10827.63244.stgit@bhelgaas-glaptop2.roam.corp.google.com> <1455551208-2825510-2-git-send-email-arnd@arndb.de> <CACRpkdaQN9_qoTn4_riZGvi4BKRLEVkRRL4CWzKj8e_di7Q2Xg@mail.gmail.com>
+        Alexandre Courbot <gnurou@gmail.com>,
+        linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        "# v4 . 3+" <stable@vger.kernel.org>, Alban Bedel <albeu@free.fr>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Paul Burton <paul.burton@imgtec.com>
+From:   Lars-Peter Clausen <lars@metafoo.de>
+Message-ID: <56C34499.5010704@metafoo.de>
+Date:   Tue, 16 Feb 2016 16:47:37 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+ Icedove/38.5.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-X-Provags-ID: V03:K0:zd4dqKmgvIbAl2MygblI7krGr+bn2HScmcVioVb6fLvW/p/qvcs
- /5igRk3iweiAYtwpoEHzRQovNoHbauR9gq6YrkoX0yQwOuTeaW/Q4BZywXlMgMCH8VjMQmU
- nlIHChoNeqNYHZqZnGgU/saRKWfYeYsx+ev6Mkw3wLWPqcToPMcTOCMkVj4Ae7pIn2Dy/r3
- ahgx/jdNHGauTMgI0VpEA==
-X-UI-Out-Filterresults: notjunk:1;V01:K0:tAzsQdoiwvc=:FV/ogZv5uUo/17qgyBLnMC
- vx/NMdZdXhPqXPUm8F/lp8SP53Wv0HLW34zvlAAqlkuiNajqhLKjX6TUEpVoluiovG08so6DO
- 6Kmckv2mlMKUmmSzQrwA9cQPr8U/61dYFCZnuQ5xhRiKmlpe1dxALaH2yprtf7YleDFr9viVq
- lKOMQBgmF6SmntqsznDApHJrclF9rW7RD8TOu+WbMGxGkOuF1THTVbbhMP0MSGtNl6KUUKt9v
- iu60ezVnwGLMr7SOZLHyj97FxPKfIWgdyATQTFDy8j8A6wgo/A9hM10ikZ9WgWcg7mA2aRaFw
- wp30KD4KJWMMzDjhJgWoB6QYy4y4EF8vckQY+9+ZS5eO/fCoYoQcUIO9tOrNbbYuqJNZ51zZK
- s3RV2s2qoq55L7CXqLDPjrzBzezVydOGNo0oEfzpaLcvBLtdFPWfnlqlafYG80DbKAw7oOeuS
- 7LNqDEFfGHagv7FJDYZ8aOTGsXg1k2qzvceXdXhPAzGiKSisgXcklKobrzOqvHjb7HeDGwsBW
- FwIaHyyBFH7lFJVAsetFUC7WT6gQv9deRHewqhFh7H28u6fbBl6OxCFdTd3WaSqZIKSly9iwp
- iFRNlu6UXgq4QqWsDCpf7MI2p6hM3+rLJDHkBHVGKBfukrZ+U66yAg7Rsw8ilMjHGQOdPumY1
- MS5DGkXkcYdo9Zdhr8NVq9EVdGLoUvsxvqhWRQjPVfIV8DMl3X4tbfWKo+YCfrqcvlU/bVcEZ
- nx74DUhKS2jygOWk
-Return-Path: <arnd@arndb.de>
+In-Reply-To: <1455637261-2920972-1-git-send-email-arnd@arndb.de>
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
+Return-Path: <lars@metafoo.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52090
+X-archive-position: 52091
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arnd@arndb.de
+X-original-sender: lars@metafoo.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -64,26 +53,41 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tuesday 16 February 2016 16:42:18 Linus Walleij wrote:
-> On Mon, Feb 15, 2016 at 4:46 PM, Arnd Bergmann <arnd@arndb.de> wrote:
+On 02/16/2016 04:40 PM, Arnd Bergmann wrote:
+> gpiolib has removed the irq_to_gpio() API several years ago,
+> but the global header still provided a non-working stub.
 > 
-> > gpiolib has removed the irq_to_gpio() API several years ago,
-> > but the global header still provided a non-working stub.
-> >
-> > Apparently one new user has shown up in arch/mips, so this patch
-> > moves the broken definition to where it is used, ensuring that
-> > we get new users but not changing the current behavior on jz4740.
-> >
-> > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> With a MIPS-wide change to use the generic header file, the jz4740
+> platform is now using the wrong stub implementation of irq_to_gpio(),
+> which cannot work.
 > 
-> Patch applied.
+> This uses an open-coded implementation in the only line it
+> is used in.
 > 
-> I expect the driver maintainer to deal with the resulting
-> deprecation fallout.
-> 
+> Suggested-by: Lars-Peter Clausen <lars@metafoo.de>
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> Cc: <stable@vger.kernel.org> # v4.3+
+> Fixes: 832f5dacfa0b ("MIPS: Remove all the uses of custom gpio.h").
 
-I've just sent v2 of the series, with a separate patch for MIPS
-that now conflicts with this one. Can you pick up the new patch
-instead?
+Acked-by: Lars-Peter Clausen <lars@metafoo.de>
 
-	Arnd
+Thanks.
+
+> ---
+>  arch/mips/jz4740/gpio.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/mips/jz4740/gpio.c b/arch/mips/jz4740/gpio.c
+> index 8c6d76c9b2d6..d9907e57e9b9 100644
+> --- a/arch/mips/jz4740/gpio.c
+> +++ b/arch/mips/jz4740/gpio.c
+> @@ -270,7 +270,7 @@ uint32_t jz_gpio_port_get_value(int port, uint32_t mask)
+>  }
+>  EXPORT_SYMBOL(jz_gpio_port_get_value);
+>  
+> -#define IRQ_TO_BIT(irq) BIT(irq_to_gpio(irq) & 0x1f)
+> +#define IRQ_TO_BIT(irq) BIT((irq - JZ4740_IRQ_GPIO(0)) & 0x1f)
+>  
+>  static void jz_gpio_check_trigger_both(struct jz_gpio_chip *chip, unsigned int irq)
+>  {
+> 

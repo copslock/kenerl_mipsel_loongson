@@ -1,11 +1,11 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Feb 2016 16:41:59 +0100 (CET)
-Received: from mout.kundenserver.de ([212.227.126.187]:49474 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Feb 2016 16:42:16 +0100 (CET)
+Received: from mout.kundenserver.de ([212.227.126.187]:54533 "EHLO
         mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27011844AbcBPPl57SFWn (ORCPT
+        with ESMTP id S27012831AbcBPPl573dtn (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Tue, 16 Feb 2016 16:41:57 +0100
 Received: from wuerfel.lan. ([78.42.132.4]) by mrelayeu.kundenserver.de
- (mreue003) with ESMTPA (Nemesis) id 0MCucZ-1adi5s0jxb-009gKj; Tue, 16 Feb
- 2016 16:41:27 +0100
+ (mreue003) with ESMTPA (Nemesis) id 0Lr6Rz-1a0EYS1l3b-00eZAT; Tue, 16 Feb
+ 2016 16:41:23 +0100
 From:   Arnd Bergmann <arnd@arndb.de>
 To:     Linus Walleij <linus.walleij@linaro.org>
 Cc:     linux-arm-kernel@lists.infradead.org,
@@ -16,33 +16,33 @@ Cc:     linux-arm-kernel@lists.infradead.org,
         linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
         Lars-Peter Clausen <lars@metafoo.de>,
         Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: [PATCH v2 3/5] gpio: ks8695: remove irq_to_gpio function
-Date:   Tue, 16 Feb 2016 16:40:36 +0100
-Message-Id: <1455637261-2920972-3-git-send-email-arnd@arndb.de>
+Subject: [PATCH v2 2/5] gpio: remove broken irq_to_gpio() interface
+Date:   Tue, 16 Feb 2016 16:40:35 +0100
+Message-Id: <1455637261-2920972-2-git-send-email-arnd@arndb.de>
 X-Mailer: git-send-email 2.7.0
 In-Reply-To: <1455637261-2920972-1-git-send-email-arnd@arndb.de>
 References: <455637086-2794174-1-git-send-email-arnd@arndb.de>
  <1455637261-2920972-1-git-send-email-arnd@arndb.de>
-X-Provags-ID: V03:K0:RHyJA5NbnimJeXzJNmLJgrFVR60PmG362MbQhRaRPn/nu/fG3MX
- KHpQScypIVaZ28e7W/JHnnk5W5DOZE7gZEB8mYOC74D1i4DDk+pYkWurDKbur8ADq8gJHGK
- 72v1GZdttf12WglQpFIES66f88OSeDnTQk3YquP0ktqNMqxq0jIqKSnCk/nVE5IHUn1M4eK
- p/eIUBg2Gwb0f0MXh72Yw==
-X-UI-Out-Filterresults: notjunk:1;V01:K0:0h6encW2r6U=:V1DNevHH5svF0bIqNxdFlH
- EXNEjB2tFiAzyIN/OuEuZpPnDfJX4iBDLzJiGvPwLKpt+j2AiMWmN/ohLefYFpyjwhoQbRaav
- 043N1XMNBwPO2IuOjnDx0r2J91XiGrHjc2q16t4yl6LhUrOgBd7omqFT4Fg/fu8fVBow7w+oO
- uxCT9OPAuTZun2QxjD86HDXmb+yaIJUTePwysmPM3p6KIVv30EItiJDD62O7Ojz4vNrLWi0lf
- dCyPx5o/xHJ0zplgbT6SCNI/O07/8MkeiKBAk/W54h6n/HM3q0KcY285QLV5ykfZ/2km1oPBr
- ON/6DnUnB1NEB3i5VwzuxQn+mDD2rqoqtP+FNMIGKrl5qMcZ7t08ZDS662q4GXYubQwGXdrL8
- nQs1zB5LGYKKnf56BFQGwPMDAoXPNDEFVRuhBX2b54qYtmanx1bRn1NDzOesmSdJlAj9Jf59P
- GX+l+ohP6Anw++FG4jymci0aqVuRbxZ5sEqbXeKyStqFsmLYDI4/B7BJXH/N0TvqvBMttESWD
- 6/RkeqxZZfN4d/NGR808hnIVwUI0Y+4qSBojpUzTVALC+azSOhtJK/Od03Qt1c0ks2FktH1Sp
- ZeGnoRb2F8PEQYShQjoZ1clM2CUbENeFjEJQ6/S7/PZpDBeNAmtLYsmFq6UEZ0fG0es1m/eRD
- XiE5H+BnbiyJt9o2Oyzj1xNkbrIhXJulyM4ZmZghrFmttoVKjRFmrPhB3sVUzwTNZ100=
+X-Provags-ID: V03:K0:UY7KgFRESGsZqo3RjHOskQaSayC6+nUAG4MDu3zYUjuMv/jE+l1
+ ZBGa8OlIBPPw6osqfSSVXYmlftsu1ckWT7ES3RXACMjlJLws5Ac5iQaaMco2KWGX7yB+yT3
+ zeVdwqMaNHeTJ75IzCtHwY14LQmPD6poRMCblKCCFrKESt9m6SalFl02oKYjrrpl2E/3gOb
+ 5HMBeFp5Q6k3xlQ5ZjB5w==
+X-UI-Out-Filterresults: notjunk:1;V01:K0:2RdMCxG5lto=:6db6buIAUFCj06FeOmvow/
+ KwRcWBcK4NKaqYlYjZbhSXu+4xEX0GqN4uD89TjpM8llF8BiTTjl4LU3zD9T0vPyz1gkSchrg
+ aOwK2VuiXw2ldJ6gUqb7MzQehuSwtih9XZJNZAj6y/eoOv6FyUan9ik+MRjyMmKqERPtD7rWX
+ iROJn+9t0yWxtMnVmNcuesQ7M2UweUvWZDH4ezKKQmGDjGcJnyJI58WNosNemGDtkBb5eMei8
+ QBzTMSxZgm3sAa8WF45ilvoX9ZtmFthiDmbbNj/NJyAOyA1H2icU8vu2OK8TenW96Z2/020IA
+ p1jcYTxShVeUPyfxhj8F1UBvEHIERXFIKtn9IS/1EW2MdMcFKTbIKURuUGEfLBNoD5S7H7Scv
+ 2DswQL/3MPs2lqFzhrUJlXNmKTVjJ+XVCSPKHfiHtxXvEGt3i4YxLjVtl8/kSOwsnELdNqGHe
+ lu86zDn+BDSyyW/SakdE/RHs9O/pa11eIJzVpI9vhfseFRnqOKshxdx6BzxR8NmJXt66nYSZ8
+ XUKtYG4Hu61PopZspMSwi85xMqmeo3eGGYsaS1BevLzpk10+Drop9+w2/sZkeQOA+Ppon79os
+ l5OLr8fIsTMDjaZX9wbnANbS0YyB8hdj/v0QovLtaId5z0t0QoN7P40qzVkfwYzU7yw0Yl3cd
+ Q6PqOVmCTn+ErQ8ZyrdbQKv5jNPiXQoat8gcXluxnKjsiRHSjYHEPj3aLjsbRT8DPwPY=
 Return-Path: <arnd@arndb.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52084
+X-archive-position: 52085
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -59,38 +59,46 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The ks8695 gpio driver has its own copy of the irq_to_gpio()
-function. This is completely unused in the mainline kernel
-after we converted all remaining users several years ago,
-so we can remove the definition as well.
+gpiolib has removed the irq_to_gpio() API several years ago,
+but the global header still provided a non-working stub.
+
+To prevent new users of this broken function from showing
+up, let's remove the stubs as well.
 
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 ---
- drivers/gpio/gpio-ks8695.c | 12 ------------
+ include/linux/gpio.h | 12 ------------
  1 file changed, 12 deletions(-)
 
-diff --git a/drivers/gpio/gpio-ks8695.c b/drivers/gpio/gpio-ks8695.c
-index 9f86ed9c753b..179723d02f55 100644
---- a/drivers/gpio/gpio-ks8695.c
-+++ b/drivers/gpio/gpio-ks8695.c
-@@ -205,18 +205,6 @@ static int ks8695_gpio_to_irq(struct gpio_chip *gc, unsigned int pin)
- 	return gpio_irq[pin];
+diff --git a/include/linux/gpio.h b/include/linux/gpio.h
+index d12b5d566e4b..6fc1c9e74854 100644
+--- a/include/linux/gpio.h
++++ b/include/linux/gpio.h
+@@ -70,11 +70,6 @@ static inline int gpio_to_irq(unsigned int gpio)
+ 	return __gpio_to_irq(gpio);
  }
  
--/*
-- * Map IRQ number to GPIO line.
-- */
--int irq_to_gpio(unsigned int irq)
+-static inline int irq_to_gpio(unsigned int irq)
 -{
--	if ((irq < KS8695_IRQ_EXTERN0) || (irq > KS8695_IRQ_EXTERN3))
--		return -EINVAL;
--
--	return (irq - KS8695_IRQ_EXTERN0);
+-	return -EINVAL;
 -}
--EXPORT_SYMBOL(irq_to_gpio);
 -
- /* GPIOLIB interface */
+ #endif /* ! CONFIG_ARCH_HAVE_CUSTOM_GPIO_H */
  
- static struct gpio_chip ks8695_gpio_chip = {
+ /* CONFIG_GPIOLIB: bindings for managed devices that want to request gpios */
+@@ -222,13 +217,6 @@ static inline void gpiochip_unlock_as_irq(struct gpio_chip *chip,
+ 	WARN_ON(1);
+ }
+ 
+-static inline int irq_to_gpio(unsigned irq)
+-{
+-	/* irq can never have been returned from gpio_to_irq() */
+-	WARN_ON(1);
+-	return -EINVAL;
+-}
+-
+ static inline int
+ gpiochip_add_pin_range(struct gpio_chip *chip, const char *pinctl_name,
+ 		       unsigned int gpio_offset, unsigned int pin_offset,
 -- 
 2.7.0

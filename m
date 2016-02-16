@@ -1,11 +1,11 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Feb 2016 16:38:48 +0100 (CET)
-Received: from mout.kundenserver.de ([212.227.17.13]:52535 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Feb 2016 16:41:59 +0100 (CET)
+Received: from mout.kundenserver.de ([212.227.126.187]:49474 "EHLO
         mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27011979AbcBPPiqhS33n (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 16 Feb 2016 16:38:46 +0100
+        with ESMTP id S27011844AbcBPPl57SFWn (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 16 Feb 2016 16:41:57 +0100
 Received: from wuerfel.lan. ([78.42.132.4]) by mrelayeu.kundenserver.de
- (mreue103) with ESMTPA (Nemesis) id 0M5qIb-1ZlKO313eb-00xtm6; Tue, 16 Feb
- 2016 16:38:10 +0100
+ (mreue003) with ESMTPA (Nemesis) id 0MCucZ-1adi5s0jxb-009gKj; Tue, 16 Feb
+ 2016 16:41:27 +0100
 From:   Arnd Bergmann <arnd@arndb.de>
 To:     Linus Walleij <linus.walleij@linaro.org>
 Cc:     linux-arm-kernel@lists.infradead.org,
@@ -16,32 +16,33 @@ Cc:     linux-arm-kernel@lists.infradead.org,
         linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
         Lars-Peter Clausen <lars@metafoo.de>,
         Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: [PATCH v2 0/5] gpio: clean up irq_to_gpio and ARCH_NR_GPIOS
-Date:   Tue, 16 Feb 2016 16:37:59 +0100
-Message-Id: <1455637086-2794174-1-git-send-email-arnd@arndb.de>
+Subject: [PATCH v2 3/5] gpio: ks8695: remove irq_to_gpio function
+Date:   Tue, 16 Feb 2016 16:40:36 +0100
+Message-Id: <1455637261-2920972-3-git-send-email-arnd@arndb.de>
 X-Mailer: git-send-email 2.7.0
-In-Reply-To: <20160202194831.10827.63244.stgit@bhelgaas-glaptop2.roam.corp.google.com>
-References: <20160202194831.10827.63244.stgit@bhelgaas-glaptop2.roam.corp.google.com>
-X-Provags-ID: V03:K0:JFzbTPFeKRdnhHmikA96klwWmUpSvhV65sgxC4YgpbHpv0xerOU
- CExuMFulT5gUe9q0rLJWpJ3b3RtGATT40yQKK5B3L1ICv5HJ2UmmHnJ/AsnDL/H7w0BxxYe
- mRmbqXGtoGFnK4L17v8v6dGPDWC88EMl4H9WP6bStTg8FOS8PbwnPoSdU6xu5SoOReEgwfF
- n43ZQ2kyB8kAuF5Uo3Tig==
-X-UI-Out-Filterresults: notjunk:1;V01:K0:dCPvDnFK6YE=:G65Mn4XQJe6A3zY4R6jvTC
- D+cwCFCg8yjW/WNrcH2go2/MtIsenfNfHXZWSdBvJdlVHo/nL98NFC1d0doq2WfKA1BMCyAUW
- GBT+vdTOuYmtc+IaiNizz0uwn37l5Jan41CLHNqhVKz3DcolQAveY1toS6Kc14a6K5lHqpO6V
- 73hlBBJt3AdNECpK0GiFt/T94SUAWbAEwbPv8t8HU7eOQvBxOBn175Gh01FdSMui+W/hK4Dsk
- 8ob4ufrIBJQ4NnRRZ8cKgzouJ0Mu62+VOBvMZEOEGjoJrxNTgc9QMCxu7K8sXNs48W5uxDLWV
- Suz1OedTLK1jds0TBvdi/9ULJZDy4eEbeGE4Yr2hBGdnUfsjfOhtW5ElbX7t6eGf3s0st0hbW
- QLPpyI3nAO5/CPAMh506Ak50zu7MubbqIHUhm8QoQgRaRB1YU7FK8rGggW0QpZiydvZkFkDzy
- 3MTHXfAWfegAMj7oHObSeyo7/JcbEuspS4S9LHvXZp8MFXYNwQdDYkQHztgXM8As68Mv7Ef21
- 86ptamT/CicZsR+kuE8WSO430azcuyD3zrCDXfu7Bmuw2ScKqK118H+MrvyRIUWrNx/GCZ+NB
- L0+Is66prhFkCvgMnWEGsXIV4ET6y0/BF5FBq8vabx/xVa+yk11mcRJM532l3b3XENS5CCfWz
- fPZ02Fkd1tgviowhqfD6gbYXcUeE8tPPSZZGQnG0MN0nJHUT07ASidiO2x+IbxG20DQg=
+In-Reply-To: <1455637261-2920972-1-git-send-email-arnd@arndb.de>
+References: <455637086-2794174-1-git-send-email-arnd@arndb.de>
+ <1455637261-2920972-1-git-send-email-arnd@arndb.de>
+X-Provags-ID: V03:K0:RHyJA5NbnimJeXzJNmLJgrFVR60PmG362MbQhRaRPn/nu/fG3MX
+ KHpQScypIVaZ28e7W/JHnnk5W5DOZE7gZEB8mYOC74D1i4DDk+pYkWurDKbur8ADq8gJHGK
+ 72v1GZdttf12WglQpFIES66f88OSeDnTQk3YquP0ktqNMqxq0jIqKSnCk/nVE5IHUn1M4eK
+ p/eIUBg2Gwb0f0MXh72Yw==
+X-UI-Out-Filterresults: notjunk:1;V01:K0:0h6encW2r6U=:V1DNevHH5svF0bIqNxdFlH
+ EXNEjB2tFiAzyIN/OuEuZpPnDfJX4iBDLzJiGvPwLKpt+j2AiMWmN/ohLefYFpyjwhoQbRaav
+ 043N1XMNBwPO2IuOjnDx0r2J91XiGrHjc2q16t4yl6LhUrOgBd7omqFT4Fg/fu8fVBow7w+oO
+ uxCT9OPAuTZun2QxjD86HDXmb+yaIJUTePwysmPM3p6KIVv30EItiJDD62O7Ojz4vNrLWi0lf
+ dCyPx5o/xHJ0zplgbT6SCNI/O07/8MkeiKBAk/W54h6n/HM3q0KcY285QLV5ykfZ/2km1oPBr
+ ON/6DnUnB1NEB3i5VwzuxQn+mDD2rqoqtP+FNMIGKrl5qMcZ7t08ZDS662q4GXYubQwGXdrL8
+ nQs1zB5LGYKKnf56BFQGwPMDAoXPNDEFVRuhBX2b54qYtmanx1bRn1NDzOesmSdJlAj9Jf59P
+ GX+l+ohP6Anw++FG4jymci0aqVuRbxZ5sEqbXeKyStqFsmLYDI4/B7BJXH/N0TvqvBMttESWD
+ 6/RkeqxZZfN4d/NGR808hnIVwUI0Y+4qSBojpUzTVALC+azSOhtJK/Od03Qt1c0ks2FktH1Sp
+ ZeGnoRb2F8PEQYShQjoZ1clM2CUbENeFjEJQ6/S7/PZpDBeNAmtLYsmFq6UEZ0fG0es1m/eRD
+ XiE5H+BnbiyJt9o2Oyzj1xNkbrIhXJulyM4ZmZghrFmttoVKjRFmrPhB3sVUzwTNZ100=
 Return-Path: <arnd@arndb.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52083
+X-archive-position: 52084
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -58,31 +59,38 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-I noticed that arch/arm/include/asm/gpio.h can almost be removed,
-after we have already removed the file for most other architectures
-now.
+The ks8695 gpio driver has its own copy of the irq_to_gpio()
+function. This is completely unused in the mainline kernel
+after we converted all remaining users several years ago,
+so we can remove the definition as well.
 
-When I removed it, I ran into problems with irq_to_gpio(), which
-we had already killed off in ARM, but it survived (barely) in the
-global headers and accidentally gained an invalid user
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+---
+ drivers/gpio/gpio-ks8695.c | 12 ------------
+ 1 file changed, 12 deletions(-)
 
-This kills it off some more.
-
-The first patch should go as a bugfix into the MIPS tree, the
-other ones should only get merged later, but I think that's fine
-if they get submitted for 4.6. I left them as a series of five
-patches to clarify the build-time dependency. Merging patch
-2 before 1 turns the MIPS runtime error into a compiletime
-error.
-
-changes in v2:
-
-* the MIPS change should now correctly fix the bug, thanks
-  to Lars-Peter.
-
-* I left out the ARM specific change for now, and just adapted
-  the generic file so we don't need that any more.
-
-*  Fixed the bug that Russell pointed out
-
-	Arnd
+diff --git a/drivers/gpio/gpio-ks8695.c b/drivers/gpio/gpio-ks8695.c
+index 9f86ed9c753b..179723d02f55 100644
+--- a/drivers/gpio/gpio-ks8695.c
++++ b/drivers/gpio/gpio-ks8695.c
+@@ -205,18 +205,6 @@ static int ks8695_gpio_to_irq(struct gpio_chip *gc, unsigned int pin)
+ 	return gpio_irq[pin];
+ }
+ 
+-/*
+- * Map IRQ number to GPIO line.
+- */
+-int irq_to_gpio(unsigned int irq)
+-{
+-	if ((irq < KS8695_IRQ_EXTERN0) || (irq > KS8695_IRQ_EXTERN3))
+-		return -EINVAL;
+-
+-	return (irq - KS8695_IRQ_EXTERN0);
+-}
+-EXPORT_SYMBOL(irq_to_gpio);
+-
+ /* GPIOLIB interface */
+ 
+ static struct gpio_chip ks8695_gpio_chip = {
+-- 
+2.7.0

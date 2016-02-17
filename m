@@ -1,40 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Feb 2016 14:15:44 +0100 (CET)
-Received: from smtp2-g21.free.fr ([212.27.42.2]:7216 "EHLO smtp2-g21.free.fr"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27011271AbcBQNPm08qz1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 17 Feb 2016 14:15:42 +0100
-Received: from tock (unknown [78.50.169.39])
-        (Authenticated sender: albeu)
-        by smtp2-g21.free.fr (Postfix) with ESMTPSA id 36B074B01B6;
-        Wed, 17 Feb 2016 14:12:37 +0100 (CET)
-Date:   Wed, 17 Feb 2016 14:15:29 +0100
-From:   Alban <albeu@free.fr>
-To:     Jason Cooper <jason@lakedaemon.net>
-Cc:     Aban Bedel <albeu@free.fr>, Marc Zyngier <marc.zyngier@arm.com>,
-        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Alexander Couzens <lynxis@fe80.eu>,
-        Joel Porquet <joel@porquet.org>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] MIPS: ath79: irq: Move the MISC driver to
- drivers/irqchip
-Message-ID: <20160217141529.74b49deb@tock>
-In-Reply-To: <20160123163122.GF676@io.lakedaemon.net>
-References: <1453553867-27003-1-git-send-email-albeu@free.fr>
-        <20160123150200.5bc027a6@arm.com>
-        <20160123163122.GF676@io.lakedaemon.net>
-X-Mailer: Claws Mail 3.9.3 (GTK+ 2.24.23; x86_64-pc-linux-gnu)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Feb 2016 16:37:24 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:37231 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27012229AbcBQPhWoTd04 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 17 Feb 2016 16:37:22 +0100
+Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
+        by Websense Email Security Gateway with ESMTPS id 01993D2E3E699;
+        Wed, 17 Feb 2016 15:37:14 +0000 (GMT)
+Received: from metadesk01.kl.imgtec.org (192.168.169.39) by
+ hhmail02.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
+ 14.3.266.1; Wed, 17 Feb 2016 15:37:16 +0000
+From:   Daniel Sanders <daniel.sanders@imgtec.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+CC:     Daniel Sanders <daniel.sanders@imgtec.com>,
+        Scott Egerton <Scott.Egerton@imgtec.com>,
+        Paul Burton <paul.burton@imgtec.com>,
+        Markos Chandras <markos.chandras@imgtec.com>,
+        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
+        <linux-mips@linux-mips.org>
+Subject: [PATCH] mips: Avoid a form of the .type directive that is not supported by LLVM's Integrated Assembler
+Date:   Wed, 17 Feb 2016 15:37:09 +0000
+Message-ID: <1455723429-26459-1-git-send-email-daniel.sanders@imgtec.com>
+X-Mailer: git-send-email 2.1.4
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <albeu@free.fr>
+Content-Type: text/plain
+X-Originating-IP: [192.168.169.39]
+Return-Path: <Daniel.Sanders@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52102
+X-archive-position: 52103
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: albeu@free.fr
+X-original-sender: daniel.sanders@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,31 +45,40 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sat, 23 Jan 2016 16:31:22 +0000
-Jason Cooper <jason@lakedaemon.net> wrote:
+The target independent parts of the LLVM Lexer considers 'fault@function'
+to be a single token representing the 'fault' symbol with a 'function'
+modifier. However, this is not the case in the .type directive where
+'function' refers to STT_FUNC from the ELF standard.
 
-> On Sat, Jan 23, 2016 at 03:02:00PM +0000, Marc Zyngier wrote:
-> > On Sat, 23 Jan 2016 13:57:46 +0100
-> > Alban Bedel <albeu@free.fr> wrote:
-> > 
-> > > The driver stays the same but the initialization changes a bit.
-> > > For OF boards we now get the memory map from the OF node and use
-> > > a linear mapping instead of the legacy mapping. For legacy boards
-> > > we still use a legacy mapping and just pass down all the parameters
-> > > from the board init code.
-> > > 
-> > > Signed-off-by: Alban Bedel <albeu@free.fr>
-> > 
-> > Acked-by: Marc Zyngier <marc.zyngier@arm.com>
-> 
-> Thanks Marc, I'll pick this up when -rc1 drops.
+This is the only example of this form of '.type' that we are aware of in
+MIPS source so we'd prefer to make this small source change rather than
+complicate the target independent parts of LLVM's assembly lexer with
+directive and/or target specific exceptions to the lexing rules.
 
-RC1 has been released for a while now, however I still can't see
-these patches in the irqchip git trees. I checked both tree:
+Signed-off-by: Scott Egerton <Scott.Egerton@imgtec.com>
+Signed-off-by: Daniel Sanders <daniel.sanders@imgtec.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Paul Burton <paul.burton@imgtec.com>
+Cc: Markos Chandras <markos.chandras@imgtec.com>
+Cc: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+Cc: linux-mips@linux-mips.org
 
-git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git irq/core
-git://git.infradead.org/users/jcooper/linux.git irqchip/core
+---
+ arch/mips/kernel/r4k_fpu.S | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-or are these still queued and going to be merged later?
-
-Alban
+diff --git a/arch/mips/kernel/r4k_fpu.S b/arch/mips/kernel/r4k_fpu.S
+index f09546e..17732f8 100644
+--- a/arch/mips/kernel/r4k_fpu.S
++++ b/arch/mips/kernel/r4k_fpu.S
+@@ -358,7 +358,7 @@ LEAF(_restore_msa_all_upper)
+ 
+ 	.set	reorder
+ 
+-	.type	fault@function
++	.type	fault, @function
+ 	.ent	fault
+ fault:	li	v0, -EFAULT				# failure
+ 	jr	ra
+-- 
+2.1.4

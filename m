@@ -1,70 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Feb 2016 02:17:16 +0100 (CET)
-Received: from mail-pa0-f42.google.com ([209.85.220.42]:33196 "EHLO
-        mail-pa0-f42.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010964AbcBQBP2EGBph (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 17 Feb 2016 02:15:28 +0100
-Received: by mail-pa0-f42.google.com with SMTP id fl4so1321809pad.0;
-        Tue, 16 Feb 2016 17:15:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=skv31tHwcrOISI2nr+pEo4dpS4pNxlRjACTaP9NEAz0=;
-        b=kVnJ+ZPYLrmtCNyjLdLoKPeYsYvx9L6PEWWQz8ryGWnE4xrurhRXen4dLCDoAhujmR
-         XB0u51Z9w28R21tse3pjVm+Ey6/uZDLqzjwtr+nFP+OH47Dqp7dOu9iSJdhUiwap5PPc
-         LM3PTcwEow6xA33ws8SfxZKE4XzD8+NBmvd5XA9TRQtLAgCivVaDrej8wGlAU/+FD/R+
-         NzIqXxWAxiJqG22qc4mMAGjsQIp7SHkOyFfHqvdZrrBDmv3MFfV6S4RZjHSWkVsU1rCA
-         bRvJK1jxGmfRFVdgnKVDZ2z13VtGw4rF+BYKvYJwzRkk9Bsyg0wORwO/dbo3qnrawgnD
-         ivyg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:message-id:date:from:user-agent:mime-version:to
-         :cc:subject:references:in-reply-to:content-type
-         :content-transfer-encoding;
-        bh=skv31tHwcrOISI2nr+pEo4dpS4pNxlRjACTaP9NEAz0=;
-        b=WmwYvhlc+7bsCnlp6wW4c9bK2KDzf/ZGm3wJlU6Wwgr/I+za8NELzF1gDGjFaKXZ8q
-         HrnVBesouoC9LDSymKezUkTIoZwrBjgYQoOQD5GYAuTEYo1u31xPeJcl65K4xu6PPkS3
-         WpovzeKMt7KCvedJyow3EBiPvnZXUeJPDYvFi2VuKC+PPNuWWxg+iKzeBx+j4Fgro3Xo
-         LEov8jNuCPuQ4XNfsVpTFwMxaSVIV5n6UqcE/A5ltPkgeg6MKzv0vSjzSHQsK9LMcWfL
-         q6i7+gYsAVVmNo/iBAr24N/o5/p3mz6KqxqoL8eYq7VvCgphaeMQEOtPY1UqjOVHFctQ
-         vWDQ==
-X-Gm-Message-State: AG10YOSYLzc857DICVFzTWUyU5t/RJyibGpQHm1YjRyfc1Jv+rvGhk/1nkIOwQXlaJUyCw==
-X-Received: by 10.66.152.204 with SMTP id va12mr35255776pab.0.1455671719415;
-        Tue, 16 Feb 2016 17:15:19 -0800 (PST)
-Received: from dl.caveonetworks.com ([64.2.3.194])
-        by smtp.googlemail.com with ESMTPSA id a21sm48447283pfj.40.2016.02.16.17.15.16
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Tue, 16 Feb 2016 17:15:17 -0800 (PST)
-Message-ID: <56C3C9A4.1040109@gmail.com>
-Date:   Tue, 16 Feb 2016 17:15:16 -0800
-From:   David Daney <ddaney.cavm@gmail.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Feb 2016 11:49:18 +0100 (CET)
+Received: from mout.kundenserver.de ([217.72.192.75]:55702 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27010488AbcBQKtRlfaZv (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 17 Feb 2016 11:49:17 +0100
+Received: from wuerfel.localnet ([78.42.132.4]) by mrelayeu.kundenserver.de
+ (mreue101) with ESMTPSA (Nemesis) id 0MZUcf-1aFiOT2XWP-00LGl4; Wed, 17 Feb
+ 2016 11:48:40 +0100
+From:   Arnd Bergmann <arnd@arndb.de>
+To:     linux-arm-kernel@lists.infradead.org
+Cc:     Andrzej Hajda <a.hajda@samsung.com>, linux-kernel@vger.kernel.org,
+        linux-mips@linux-mips.org, linux-fbdev@vger.kernel.org,
+        linux-samsung-soc@vger.kernel.org,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        netdev@vger.kernel.org, linux-usb@vger.kernel.org,
+        coreteam@netfilter.org, netfilter-devel@vger.kernel.org,
+        linux-serial@vger.kernel.org,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        linuxppc-dev@lists.ozlabs.org, linux-media@vger.kernel.org
+Subject: Re: [PATCH 0/7] fix IS_ERR_VALUE usage
+Date:   Wed, 17 Feb 2016 11:48:38 +0100
+Message-ID: <7443859.JK6ybmGO1A@wuerfel>
+User-Agent: KMail/4.11.5 (Linux/3.16.0-10-generic; KDE/4.11.5; x86_64; ; )
+In-Reply-To: <1455546925-22119-1-git-send-email-a.hajda@samsung.com>
+References: <1455546925-22119-1-git-send-email-a.hajda@samsung.com>
 MIME-Version: 1.0
-To:     Ioan Nicu <ioan.nicu.ext@nokia.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Thomas Gleixner <tglx@linutronix.de>
-CC:     David Daney <david.daney@cavium.com>,
-        Aleksey Makarov <aleksey.makarov@auriga.com>,
-        Leonid Rosenboim <lrosenboim@caviumnetworks.com>,
-        Jiang Liu <jiang.liu@linux.intel.com>,
-        Marc Zyngier <marc.zyngier@arm.com>,
-        Alexander Sverdlin <alexander.sverdlin@nokia.com>,
-        Uwe Duerr <uwe.duerr.ext@nokia.com>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] MIPS: Octeon: do not change affinity for disabled irqs
-References: <20160215154513.GF25050@ulegcpding.emea.nsn-net.net>
-In-Reply-To: <20160215154513.GF25050@ulegcpding.emea.nsn-net.net>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <ddaney.cavm@gmail.com>
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+X-Provags-ID: V03:K0:Snagi/NV2Ll1OA+Wl8QqUKLObfdm6VzkBf9Hf4QBiwD6FPntLi+
+ qR63ieI5B5kpz0HIhiPS8smb5kJ+9qOF4FSrn0+x9WIYzbXIrCxJj5D8b2Rh8GbM7UtMyGO
+ LaDKsKc1omrYOtNEDzEckBt5s449VGMwwHTKtoeukktAqbULpuRlBNWrDjehj/rlfdGwRwV
+ 9RAMGKROTLzfCm1Vqom8g==
+X-UI-Out-Filterresults: notjunk:1;V01:K0:wx7G5CPTxoQ=:VCVt5rZtw0/Yms6p2NRNqV
+ yeEspevZ7J21SMDQAsAqwwwl3bjMIu3ldZcgxwRJCKGiAkr+vTLlK6euLxXyg6IK5Fe3QpvMS
+ Nq1Wp+mG3nHWeRT9Ofs4CZR7ugUYMJBlymiaWAEr8omnbJkuoiT3MlYZXW5CeSkWTEB83RyPH
+ I85pbEibntNaTpg+0WNCGDTE9ZvCQ1aUY7YwP2XHGM8xOfm2k30wX/c56CsephLnSkBZCQWpk
+ jaYZjTS2LgRK+Tn6CptP/58/dwTIX2anPJ2e9MqmKMFdZakrtPKF09HekOd1hCtLjFh4bZI6S
+ Jf8HQ3oYicqZI34FfqgFw7HqC+YRVr3e3cpSdXav8XVqNzismZw7w8y/TwYw+mi/5N3KGz1PW
+ qXjX5dKcJVyQHNJ3iYSSJKfJQhJzCGe1rNvvvWUDZEB5t1Aa7VVau1WwHFgQA4nBBBaM/95Ka
+ 8ftQ/UnBzvFYiCFYi3lNdUm0MAxIacWoc4yIw3Qico8TAFuCsiXhqAohUu6RgCc1DKF/GZ19Q
+ A7FVqQRppme2j9JqcX0+5TBmSjFBYg+IRufi7d5o7vwUh8JoIXSvxneIEP2Q50gr+XGYwFqRe
+ +mVZFsu+SeBQ7or8gwKljnrTzjxpx6KHKbemK79WD5rBZ/hZdffq8ejivltYtllhLoirvE/eB
+ 1LyNV5OWLbtVUZHuyXoX8L+CHvKfApxgEU/1MmO3eP9foYCVGTbdvLNPzLt4xhN5qKQ9WmJK0
+ xdcKqnLvmdP9tcEV
+Return-Path: <arnd@arndb.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52100
+X-archive-position: 52101
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: arnd@arndb.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -77,143 +63,19 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 02/15/2016 07:45 AM, Ioan Nicu wrote:
-> Octeon sets the default irq affinity to value 1 in the early arch init
-> code, so by default all irqs get registered with their affinity set to
-> core 0.
->
-> When setting one CPU ofline, octeon_irq_cpu_offline_ciu() calls
-> irq_set_affinity_locked(), but this function sets the IRQD_AFFINITY_SET bit
-> in the irq descriptor. This has the side effect that if one irq is
-> requested later, after putting one CPU offline, the affinity of this irq
-> would not be the default anymore, but rather forced to "all cores - the
-> offline core".
->
-> This patch sets the IRQCHIP_ONOFFLINE_ENABLED flag in octeon irq
-> controllers, so that the kernel would call the irq_cpu_[on|off]line()
-> callbacks only for enabled irqs. If some other irq is requested after
-> setting one cpu offline, it would use the default irq affinity, same as it
-> would do in the normal case where there is no CPU hotplug operation.
->
-> Signed-off-by: Ioan Nicu <ioan.nicu.ext@nokia.com>
-> Acked-by: Alexander Sverdlin <alexander.sverdlin@nokia.com>
+On Monday 15 February 2016 15:35:18 Andrzej Hajda wrote:
+> 
+> Andrzej Hajda (7):
+>   netfilter: fix IS_ERR_VALUE usage
+>   MIPS: module: fix incorrect IS_ERR_VALUE macro usages
+>   drivers: char: mem: fix IS_ERROR_VALUE usage
+>   atmel-isi: fix IS_ERR_VALUE usage
+>   serial: clps711x: fix IS_ERR_VALUE usage
+>   fbdev: exynos: fix IS_ERR_VALUE usage
+>   usb: gadget: fsl_qe_udc: fix IS_ERR_VALUE usage
+> 
 
-In principle, I don't object.
+Can you Cc me the next time on all of the patches? I only got
+three of them this time.
 
-I would like to see what tglx has to say about this though.  If we are 
-worried about the IRQD_AFFINITY_SET bit, I am not convinced that this is 
-the best place to be tweaking code.  Are we papering over something that 
-should be handled in a more general manner?  I don't know.
-
-David Daney
-
-
-
-> ---
->   arch/mips/cavium-octeon/octeon-irq.c |   15 ++++++++++++---
->   1 files changed, 12 insertions(+), 3 deletions(-)
->
-> diff --git a/arch/mips/cavium-octeon/octeon-irq.c b/arch/mips/cavium-octeon/octeon-irq.c
-> index 368eb49..684582e 100644
-> --- a/arch/mips/cavium-octeon/octeon-irq.c
-> +++ b/arch/mips/cavium-octeon/octeon-irq.c
-> @@ -935,6 +935,7 @@ static struct irq_chip octeon_irq_chip_ciu_v2 = {
->   #ifdef CONFIG_SMP
->   	.irq_set_affinity = octeon_irq_ciu_set_affinity_v2,
->   	.irq_cpu_offline = octeon_irq_cpu_offline_ciu,
-> +	.flags = IRQCHIP_ONOFFLINE_ENABLED,
->   #endif
->   };
->
-> @@ -948,6 +949,7 @@ static struct irq_chip octeon_irq_chip_ciu_v2_edge = {
->   #ifdef CONFIG_SMP
->   	.irq_set_affinity = octeon_irq_ciu_set_affinity_v2,
->   	.irq_cpu_offline = octeon_irq_cpu_offline_ciu,
-> +	.flags = IRQCHIP_ONOFFLINE_ENABLED,
->   #endif
->   };
->
-> @@ -963,6 +965,7 @@ static struct irq_chip octeon_irq_chip_ciu_sum2 = {
->   #ifdef CONFIG_SMP
->   	.irq_set_affinity = octeon_irq_ciu_set_affinity_sum2,
->   	.irq_cpu_offline = octeon_irq_cpu_offline_ciu,
-> +	.flags = IRQCHIP_ONOFFLINE_ENABLED,
->   #endif
->   };
->
-> @@ -976,6 +979,7 @@ static struct irq_chip octeon_irq_chip_ciu_sum2_edge = {
->   #ifdef CONFIG_SMP
->   	.irq_set_affinity = octeon_irq_ciu_set_affinity_sum2,
->   	.irq_cpu_offline = octeon_irq_cpu_offline_ciu,
-> +	.flags = IRQCHIP_ONOFFLINE_ENABLED,
->   #endif
->   };
->
-> @@ -988,6 +992,7 @@ static struct irq_chip octeon_irq_chip_ciu = {
->   #ifdef CONFIG_SMP
->   	.irq_set_affinity = octeon_irq_ciu_set_affinity,
->   	.irq_cpu_offline = octeon_irq_cpu_offline_ciu,
-> +	.flags = IRQCHIP_ONOFFLINE_ENABLED,
->   #endif
->   };
->
-> @@ -1001,6 +1006,7 @@ static struct irq_chip octeon_irq_chip_ciu_edge = {
->   #ifdef CONFIG_SMP
->   	.irq_set_affinity = octeon_irq_ciu_set_affinity,
->   	.irq_cpu_offline = octeon_irq_cpu_offline_ciu,
-> +	.flags = IRQCHIP_ONOFFLINE_ENABLED,
->   #endif
->   };
->
-> @@ -1041,7 +1047,7 @@ static struct irq_chip octeon_irq_chip_ciu_gpio_v2 = {
->   	.irq_set_affinity = octeon_irq_ciu_set_affinity_v2,
->   	.irq_cpu_offline = octeon_irq_cpu_offline_ciu,
->   #endif
-> -	.flags = IRQCHIP_SET_TYPE_MASKED,
-> +	.flags = IRQCHIP_SET_TYPE_MASKED | IRQCHIP_ONOFFLINE_ENABLED,
->   };
->
->   static struct irq_chip octeon_irq_chip_ciu_gpio = {
-> @@ -1056,7 +1062,7 @@ static struct irq_chip octeon_irq_chip_ciu_gpio = {
->   	.irq_set_affinity = octeon_irq_ciu_set_affinity,
->   	.irq_cpu_offline = octeon_irq_cpu_offline_ciu,
->   #endif
-> -	.flags = IRQCHIP_SET_TYPE_MASKED,
-> +	.flags = IRQCHIP_SET_TYPE_MASKED | IRQCHIP_ONOFFLINE_ENABLED,
->   };
->
->   /*
-> @@ -1838,6 +1844,7 @@ static struct irq_chip octeon_irq_chip_ciu2 = {
->   #ifdef CONFIG_SMP
->   	.irq_set_affinity = octeon_irq_ciu2_set_affinity,
->   	.irq_cpu_offline = octeon_irq_cpu_offline_ciu,
-> +	.flags = IRQCHIP_ONOFFLINE_ENABLED,
->   #endif
->   };
->
-> @@ -1851,6 +1858,7 @@ static struct irq_chip octeon_irq_chip_ciu2_edge = {
->   #ifdef CONFIG_SMP
->   	.irq_set_affinity = octeon_irq_ciu2_set_affinity,
->   	.irq_cpu_offline = octeon_irq_cpu_offline_ciu,
-> +	.flags = IRQCHIP_ONOFFLINE_ENABLED,
->   #endif
->   };
->
-> @@ -1886,7 +1894,7 @@ static struct irq_chip octeon_irq_chip_ciu2_gpio = {
->   	.irq_set_affinity = octeon_irq_ciu2_set_affinity,
->   	.irq_cpu_offline = octeon_irq_cpu_offline_ciu,
->   #endif
-> -	.flags = IRQCHIP_SET_TYPE_MASKED,
-> +	.flags = IRQCHIP_SET_TYPE_MASKED | IRQCHIP_ONOFFLINE_ENABLED,
->   };
->
->   static int octeon_irq_ciu2_xlat(struct irq_domain *d,
-> @@ -2537,6 +2545,7 @@ static struct irq_chip octeon_irq_chip_ciu3 = {
->   #ifdef CONFIG_SMP
->   	.irq_set_affinity = octeon_irq_ciu3_set_affinity,
->   	.irq_cpu_offline = octeon_irq_cpu_offline_ciu,
-> +	.flags = IRQCHIP_ONOFFLINE_ENABLED,
->   #endif
->   };
->
->
+	Arnd

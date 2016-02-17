@@ -1,56 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Feb 2016 11:49:18 +0100 (CET)
-Received: from mout.kundenserver.de ([217.72.192.75]:55702 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27010488AbcBQKtRlfaZv (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 17 Feb 2016 11:49:17 +0100
-Received: from wuerfel.localnet ([78.42.132.4]) by mrelayeu.kundenserver.de
- (mreue101) with ESMTPSA (Nemesis) id 0MZUcf-1aFiOT2XWP-00LGl4; Wed, 17 Feb
- 2016 11:48:40 +0100
-From:   Arnd Bergmann <arnd@arndb.de>
-To:     linux-arm-kernel@lists.infradead.org
-Cc:     Andrzej Hajda <a.hajda@samsung.com>, linux-kernel@vger.kernel.org,
-        linux-mips@linux-mips.org, linux-fbdev@vger.kernel.org,
-        linux-samsung-soc@vger.kernel.org,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        netdev@vger.kernel.org, linux-usb@vger.kernel.org,
-        coreteam@netfilter.org, netfilter-devel@vger.kernel.org,
-        linux-serial@vger.kernel.org,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        linuxppc-dev@lists.ozlabs.org, linux-media@vger.kernel.org
-Subject: Re: [PATCH 0/7] fix IS_ERR_VALUE usage
-Date:   Wed, 17 Feb 2016 11:48:38 +0100
-Message-ID: <7443859.JK6ybmGO1A@wuerfel>
-User-Agent: KMail/4.11.5 (Linux/3.16.0-10-generic; KDE/4.11.5; x86_64; ; )
-In-Reply-To: <1455546925-22119-1-git-send-email-a.hajda@samsung.com>
-References: <1455546925-22119-1-git-send-email-a.hajda@samsung.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Feb 2016 14:15:44 +0100 (CET)
+Received: from smtp2-g21.free.fr ([212.27.42.2]:7216 "EHLO smtp2-g21.free.fr"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27011271AbcBQNPm08qz1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 17 Feb 2016 14:15:42 +0100
+Received: from tock (unknown [78.50.169.39])
+        (Authenticated sender: albeu)
+        by smtp2-g21.free.fr (Postfix) with ESMTPSA id 36B074B01B6;
+        Wed, 17 Feb 2016 14:12:37 +0100 (CET)
+Date:   Wed, 17 Feb 2016 14:15:29 +0100
+From:   Alban <albeu@free.fr>
+To:     Jason Cooper <jason@lakedaemon.net>
+Cc:     Aban Bedel <albeu@free.fr>, Marc Zyngier <marc.zyngier@arm.com>,
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Alexander Couzens <lynxis@fe80.eu>,
+        Joel Porquet <joel@porquet.org>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] MIPS: ath79: irq: Move the MISC driver to
+ drivers/irqchip
+Message-ID: <20160217141529.74b49deb@tock>
+In-Reply-To: <20160123163122.GF676@io.lakedaemon.net>
+References: <1453553867-27003-1-git-send-email-albeu@free.fr>
+        <20160123150200.5bc027a6@arm.com>
+        <20160123163122.GF676@io.lakedaemon.net>
+X-Mailer: Claws Mail 3.9.3 (GTK+ 2.24.23; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-X-Provags-ID: V03:K0:Snagi/NV2Ll1OA+Wl8QqUKLObfdm6VzkBf9Hf4QBiwD6FPntLi+
- qR63ieI5B5kpz0HIhiPS8smb5kJ+9qOF4FSrn0+x9WIYzbXIrCxJj5D8b2Rh8GbM7UtMyGO
- LaDKsKc1omrYOtNEDzEckBt5s449VGMwwHTKtoeukktAqbULpuRlBNWrDjehj/rlfdGwRwV
- 9RAMGKROTLzfCm1Vqom8g==
-X-UI-Out-Filterresults: notjunk:1;V01:K0:wx7G5CPTxoQ=:VCVt5rZtw0/Yms6p2NRNqV
- yeEspevZ7J21SMDQAsAqwwwl3bjMIu3ldZcgxwRJCKGiAkr+vTLlK6euLxXyg6IK5Fe3QpvMS
- Nq1Wp+mG3nHWeRT9Ofs4CZR7ugUYMJBlymiaWAEr8omnbJkuoiT3MlYZXW5CeSkWTEB83RyPH
- I85pbEibntNaTpg+0WNCGDTE9ZvCQ1aUY7YwP2XHGM8xOfm2k30wX/c56CsephLnSkBZCQWpk
- jaYZjTS2LgRK+Tn6CptP/58/dwTIX2anPJ2e9MqmKMFdZakrtPKF09HekOd1hCtLjFh4bZI6S
- Jf8HQ3oYicqZI34FfqgFw7HqC+YRVr3e3cpSdXav8XVqNzismZw7w8y/TwYw+mi/5N3KGz1PW
- qXjX5dKcJVyQHNJ3iYSSJKfJQhJzCGe1rNvvvWUDZEB5t1Aa7VVau1WwHFgQA4nBBBaM/95Ka
- 8ftQ/UnBzvFYiCFYi3lNdUm0MAxIacWoc4yIw3Qico8TAFuCsiXhqAohUu6RgCc1DKF/GZ19Q
- A7FVqQRppme2j9JqcX0+5TBmSjFBYg+IRufi7d5o7vwUh8JoIXSvxneIEP2Q50gr+XGYwFqRe
- +mVZFsu+SeBQ7or8gwKljnrTzjxpx6KHKbemK79WD5rBZ/hZdffq8ejivltYtllhLoirvE/eB
- 1LyNV5OWLbtVUZHuyXoX8L+CHvKfApxgEU/1MmO3eP9foYCVGTbdvLNPzLt4xhN5qKQ9WmJK0
- xdcKqnLvmdP9tcEV
-Return-Path: <arnd@arndb.de>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <albeu@free.fr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52101
+X-archive-position: 52102
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arnd@arndb.de
+X-original-sender: albeu@free.fr
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -63,19 +47,31 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Monday 15 February 2016 15:35:18 Andrzej Hajda wrote:
-> 
-> Andrzej Hajda (7):
->   netfilter: fix IS_ERR_VALUE usage
->   MIPS: module: fix incorrect IS_ERR_VALUE macro usages
->   drivers: char: mem: fix IS_ERROR_VALUE usage
->   atmel-isi: fix IS_ERR_VALUE usage
->   serial: clps711x: fix IS_ERR_VALUE usage
->   fbdev: exynos: fix IS_ERR_VALUE usage
->   usb: gadget: fsl_qe_udc: fix IS_ERR_VALUE usage
-> 
+On Sat, 23 Jan 2016 16:31:22 +0000
+Jason Cooper <jason@lakedaemon.net> wrote:
 
-Can you Cc me the next time on all of the patches? I only got
-three of them this time.
+> On Sat, Jan 23, 2016 at 03:02:00PM +0000, Marc Zyngier wrote:
+> > On Sat, 23 Jan 2016 13:57:46 +0100
+> > Alban Bedel <albeu@free.fr> wrote:
+> > 
+> > > The driver stays the same but the initialization changes a bit.
+> > > For OF boards we now get the memory map from the OF node and use
+> > > a linear mapping instead of the legacy mapping. For legacy boards
+> > > we still use a legacy mapping and just pass down all the parameters
+> > > from the board init code.
+> > > 
+> > > Signed-off-by: Alban Bedel <albeu@free.fr>
+> > 
+> > Acked-by: Marc Zyngier <marc.zyngier@arm.com>
+> 
+> Thanks Marc, I'll pick this up when -rc1 drops.
 
-	Arnd
+RC1 has been released for a while now, however I still can't see
+these patches in the irqchip git trees. I checked both tree:
+
+git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git irq/core
+git://git.infradead.org/users/jcooper/linux.git irqchip/core
+
+or are these still queued and going to be merged later?
+
+Alban

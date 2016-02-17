@@ -1,37 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Feb 2016 00:02:50 +0100 (CET)
-Received: from down.free-electrons.com ([37.187.137.238]:52693 "EHLO
-        mail.free-electrons.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27009983AbcBPXCryhYNp (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 17 Feb 2016 00:02:47 +0100
-Received: by mail.free-electrons.com (Postfix, from userid 110)
-        id 6BD46249; Wed, 17 Feb 2016 00:02:41 +0100 (CET)
-Received: from localhost (unknown [88.191.26.124])
-        by mail.free-electrons.com (Postfix) with ESMTPSA id 2941221E;
-        Wed, 17 Feb 2016 00:02:41 +0100 (CET)
-Date:   Wed, 17 Feb 2016 00:02:41 +0100
-From:   Alexandre Belloni <alexandre.belloni@free-electrons.com>
-To:     Joshua Henderson <joshua.henderson@microchip.com>
-Cc:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        Alessandro Zummo <a.zummo@towertech.it>,
-        rtc-linux@googlegroups.com
-Subject: Re: [PATCH 2/2] rtc: rtc-pic32: Add PIC32 real time clock driver
-Message-ID: <20160216230241.GC2189@piout.net>
-References: <1454366606-10779-1-git-send-email-joshua.henderson@microchip.com>
- <1454366606-10779-2-git-send-email-joshua.henderson@microchip.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Feb 2016 01:20:34 +0100 (CET)
+Received: from mail-pa0-f42.google.com ([209.85.220.42]:33490 "EHLO
+        mail-pa0-f42.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010964AbcBQAUcObkHG (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 17 Feb 2016 01:20:32 +0100
+Received: by mail-pa0-f42.google.com with SMTP id fl4so567353pad.0;
+        Tue, 16 Feb 2016 16:20:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding;
+        bh=PVY8pfBg1JB8/rTzjxsrNUawUIFcyOLKFXPRlYF37Yo=;
+        b=jLeeSsBhedENm+1mlYlVUJeqqIa8cc9Vim9ZRXhQ4sCuRDnqfJvfktoL0FYaYXH0/C
+         tZPIq9ZHQWhF2rlHziITeBmEvea5aRT2RMGZap1tWyi30RtqNNgP6rXubXN/k22D5ib9
+         JBCIsNbNbm5epYqNIPLIK4ELOjVKLW6FanCc2R5s9CJncIvXj5zuKf/wANItEucAuN2Y
+         kIGClNiFBGTjvw63/kOextMiBzqqCe0oZZOOpcz1AIAWdD5E5iF4aERrAiitXFA8ydlY
+         GE8N3qiwSofoTwML4zGkYP7ZPHmbaXzzw29t8UJ6HxVimb6KGKoPYz3q7Et0ADekiorN
+         QxKA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:message-id:date:from:user-agent:mime-version:to
+         :cc:subject:references:in-reply-to:content-type
+         :content-transfer-encoding;
+        bh=PVY8pfBg1JB8/rTzjxsrNUawUIFcyOLKFXPRlYF37Yo=;
+        b=BcfANrI5+wQmYonKrYPMkMvwC5VryDVzu6yoi35A6Tq46FtvT8ZX86yAH5OeEYaYXS
+         nbRrv4tEAc8KkFETvC4d1okDX4/UQyzE7lcGlvFI3sve9iztxR5ugU2Y+rwiqOn50Ih8
+         cPPANEq8y+nZLJYuDTlLPRP2nAJRJIEMUPmXN609LVO/B6oze0aqsJy70gG+L1/dTYN7
+         KZVZ2VUnREqFAIOcb30RWtIjozv0DdkxwLIG0rLUfkY1botvT5Z/0qy6f6vR3zJbnYWH
+         lPSO8igs8zkVEd2rzTfnvKNCafrxnqcap9fm5CYum3Nkwe+0nTNW5vzmVDRahB07CmIc
+         +3Jw==
+X-Gm-Message-State: AG10YORBEQEiXGPZPqZ/FgxYA7TuwZMlfyTuFiGy3Gn01qIf7TGuZCVB5IwnBhYOgVbQyA==
+X-Received: by 10.66.164.39 with SMTP id yn7mr35165029pab.107.1455668423003;
+        Tue, 16 Feb 2016 16:20:23 -0800 (PST)
+Received: from dl.caveonetworks.com ([64.2.3.194])
+        by smtp.googlemail.com with ESMTPSA id sm8sm48362139pac.43.2016.02.16.16.20.20
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Tue, 16 Feb 2016 16:20:20 -0800 (PST)
+Message-ID: <56C3BCC3.5020109@gmail.com>
+Date:   Tue, 16 Feb 2016 16:20:19 -0800
+From:   David Daney <ddaney.cavm@gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1454366606-10779-2-git-send-email-joshua.henderson@microchip.com>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-Return-Path: <alexandre.belloni@free-electrons.com>
+To:     Heinrich Schuchardt <xypron.glpk@gmx.de>
+CC:     Rob Herring <robh+dt@kernel.org>, Pawel Moll <pawel.moll@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ian Campbell <ijc+devicetree@hellion.org.uk>,
+        Kumar Gala <galak@codeaurora.org>,
+        Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Andrew Bresticker <abrestic@chromium.org>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Arnd Bergmann <arnd@arndb.de>, devicetree@vger.kernel.org,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/1 v2] MIPS: DTS: cavium-octeon: provide model attribute
+References: <56C214EE.5050200@cogentembedded.com> <1455561341-2071-1-git-send-email-xypron.glpk@gmx.de>
+In-Reply-To: <1455561341-2071-1-git-send-email-xypron.glpk@gmx.de>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <ddaney.cavm@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52098
+X-archive-position: 52099
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alexandre.belloni@free-electrons.com
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,297 +77,69 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi,
+On 02/15/2016 10:35 AM, Heinrich Schuchardt wrote:
+> Downstream packages like Debian flash-kernel rely on
+> /proc/device-tree/model
+> to determine how to install an updated kernel image.
+>
+> Most dts files provide this property.
+>
+> This patch adds a model attribute Octeon CPUs.
+>
+> v2:
+> 	Use vendor prefix defined in vendor-prefixes.txt.
+> 	Separate model from vendor by comma.
+> 	Avoid wildcards.
+>
+> Cc: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+> Cc: Arnd Bergmann <arnd@arndb.de>
+> Signed-off-by: Heinrich Schuchardt <xypron.glpk@gmx.de>
 
-On 01/02/2016 at 15:43:22 -0700, Joshua Henderson wrote :
-> This drivers adds support for the PIC32 real time clock and calendar
-> peripheral:
->      - reading and setting time
->      - alarms when connected to an IRQ
-> 
-> Signed-off-by: Joshua Henderson <joshua.henderson@microchip.com>
+
+NAK.
+
+These device tree templates are only used on systems with archaic 
+versions of u-boot.  For all modern OCTEON systems, the device tree is 
+provided by the firmware and is not under the control of the authors of 
+the Linux kernel.
+
+Whatever problem you are attempting to solve, almost by definition, 
+cannot be solved by modifying these files.
+
+We are worse off changing these, and giving people false hope that you 
+are fixing something, than doing nothing.
+
+David Daney
+
+
+
 > ---
->  drivers/rtc/Kconfig     |   10 ++
->  drivers/rtc/Makefile    |    1 +
->  drivers/rtc/rtc-pic32.c |  450 +++++++++++++++++++++++++++++++++++++++++++++++
-
-Nitpick: there are multiple alignment and blank lines issues that you
-can spot using checkpatch --strict.
-
-> diff --git a/drivers/rtc/Makefile b/drivers/rtc/Makefile
-> index 62d61b2..20c9be5 100644
-> --- a/drivers/rtc/Makefile
-> +++ b/drivers/rtc/Makefile
-> @@ -162,3 +162,4 @@ obj-$(CONFIG_RTC_DRV_WM8350)	+= rtc-wm8350.o
->  obj-$(CONFIG_RTC_DRV_X1205)	+= rtc-x1205.o
->  obj-$(CONFIG_RTC_DRV_XGENE)	+= rtc-xgene.o
->  obj-$(CONFIG_RTC_DRV_ZYNQMP)	+= rtc-zynqmp.o
-> +obj-$(CONFIG_RTC_DRV_PIC32)	+= rtc-pic32.o
-
-This list has to be ordered alphabetically.
-
-> diff --git a/drivers/rtc/rtc-pic32.c b/drivers/rtc/rtc-pic32.c
-> new file mode 100644
-> index 0000000..7c46ccb
-> --- /dev/null
-> +++ b/drivers/rtc/rtc-pic32.c
-> @@ -0,0 +1,450 @@
-> +/*
-> + * PIC32 RTC driver
-> + *
-> + * Joshua Henderson <joshua.henderson@microchip.com>
-> + * Copyright (C) 2016 Microchip Technology Inc.  All rights reserved.
-> + *
-> + * This program is free software; you can distribute it and/or modify it
-> + * under the terms of the GNU General Public License (Version 2) as
-> + * published by the Free Software Foundation.
-> + *
-
-This specify GPL v2 but you use MODULE_LICENSE("GPL")
-
-> + * This program is distributed in the hope it will be useful, but WITHOUT
-> + * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-> + * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
-> + * for more details.
-> + */
-> +#include <linux/init.h>
-> +#include <linux/module.h>
-> +#include <linux/of.h>
-> +#include <linux/platform_device.h>
-> +#include <linux/io.h>
-> +#include <linux/slab.h>
-> +#include <linux/clk.h>
-> +#include <linux/rtc.h>
-> +#include <linux/bcd.h>
-> +
-> +#include <asm/mach-pic32/pic32.h>
-> +
-> +#define DRIVER_NAME "pic32-rtc"
-> +
-> +#define PIC32_RTCCON		(0x00)
-
-You probably don't need those parenthesis.
-
-> +#define PIC32_RTCCON_ON		BIT(15)
-> +#define PIC32_RTCCON_SIDL	BIT(13)
-> +#define PIC32_RTCCON_RTCCLKSEL	(3 << 9)
-> +#define PIC32_RTCCON_RTCCLKON	BIT(6)
-> +#define PIC32_RTCCON_RTCWREN	BIT(3)
-> +#define PIC32_RTCCON_RTCSYNC	BIT(2)
-> +#define PIC32_RTCCON_HALFSEC	BIT(1)
-> +#define PIC32_RTCCON_RTCOE	BIT(0)
-> +
-> +#define PIC32_RTCALRM		(0x10)
-
-ditto
-
-> +#define PIC32_RTCALRM_ALRMEN	BIT(15)
-> +#define PIC32_RTCALRM_CHIME	BIT(14)
-> +#define PIC32_RTCALRM_PIV	BIT(13)
-> +#define PIC32_RTCALRM_ALARMSYNC	BIT(12)
-> +#define PIC32_RTCALRM_AMASK	(0x0F << 8)
-> +#define PIC32_RTCALRM_ARPT	(0xFF << 0)
-
-Nit: For those masks, you can use genmask() or directly 0x0F00 and 0xFF
-
-> +struct pic32_rtc_dev {
-> +	struct rtc_device	*rtc;
-> +	void __iomem		*reg_base;
-> +	struct clk		*clk;
-> +	spinlock_t		flags_lock;
-
-flags_lock is unnecessary, it is used only in one function that is
-called only at probe time
-
-> +	spinlock_t		alarm_lock;
-> +	int			alarm_irq;
-> +	bool			alarm_clk_enabled;
-> +};
-> +
-
-[...]
-
-> +static int pic32_rtc_gettime(struct device *dev, struct rtc_time *rtc_tm)
-> +{
-> +	struct pic32_rtc_dev *pdata = dev_get_drvdata(dev);
-> +	void __iomem *base = pdata->reg_base;
-> +	unsigned int have_retried = 0;
-> +
-> +	clk_enable(pdata->clk);
-> +retry_get_time:
-> +	rtc_tm->tm_hour = readb(base + PIC32_RTCHOUR);
-> +	rtc_tm->tm_min = readb(base + PIC32_RTCMIN);
-> +	rtc_tm->tm_mon  = readb(base + PIC32_RTCMON);
-> +	rtc_tm->tm_mday = readb(base + PIC32_RTCDAY);
-> +	rtc_tm->tm_year = readb(base + PIC32_RTCYEAR);
-> +	rtc_tm->tm_sec  = readb(base + PIC32_RTCSEC);
-> +
-> +	/*
-> +	 * The only way to work out whether the system was mid-update
-> +	 * when we read it is to check the second counter, and if it
-> +	 * is zero, then we re-try the entire read.
-> +	 */
-> +
-> +	if (rtc_tm->tm_sec == 0 && !have_retried) {
-> +		have_retried = 1;
-> +		goto retry_get_time;
-> +	}
-
-Please change that goto in a do while loop.
-
-> +
-> +	rtc_tm->tm_sec = bcd2bin(rtc_tm->tm_sec);
-> +	rtc_tm->tm_min = bcd2bin(rtc_tm->tm_min);
-> +	rtc_tm->tm_hour = bcd2bin(rtc_tm->tm_hour);
-> +	rtc_tm->tm_mday = bcd2bin(rtc_tm->tm_mday);
-> +	rtc_tm->tm_mon = bcd2bin(rtc_tm->tm_mon);
-> +	rtc_tm->tm_year = bcd2bin(rtc_tm->tm_year);
-> +
-> +	rtc_tm->tm_year += 100;
-> +
-> +	dev_dbg(dev, "read time %04d.%02d.%02d %02d:%02d:%02d\n",
-> +		1900 + rtc_tm->tm_year, rtc_tm->tm_mon, rtc_tm->tm_mday,
-> +		rtc_tm->tm_hour, rtc_tm->tm_min, rtc_tm->tm_sec);
-> +
-> +	rtc_tm->tm_mon -= 1;
-
-Maybe you should do that substraction with the assignment the only
-drawback is that it changes the debug output.
-
-> +
-> +	clk_disable(pdata->clk);
-> +	return rtc_valid_tm(rtc_tm);
-> +}
-> +
-
-[...]
-
-> +static int pic32_rtc_getalarm(struct device *dev, struct rtc_wkalrm *alrm)
-> +{
-> +	struct pic32_rtc_dev *pdata = dev_get_drvdata(dev);
-> +	struct rtc_time *alm_tm = &alrm->time;
-> +	void __iomem *base = pdata->reg_base;
-> +	unsigned int alm_en;
-> +
-> +	clk_enable(pdata->clk);
-> +	alm_tm->tm_sec  = readb(base + PIC32_ALRMSEC);
-> +	alm_tm->tm_min  = readb(base + PIC32_ALRMMIN);
-> +	alm_tm->tm_hour = readb(base + PIC32_ALRMHOUR);
-> +	alm_tm->tm_mon  = readb(base + PIC32_ALRMMON);
-> +	alm_tm->tm_mday = readb(base + PIC32_ALRMDAY);
-> +	alm_tm->tm_year = readb(base + PIC32_ALRMYEAR);
-> +
-> +	alm_en = readb(base + PIC32_RTCALRM);
-> +
-> +	alrm->enabled = (alm_en & PIC32_RTCALRM_ALRMEN) ? 1 : 0;
-> +
-> +	dev_dbg(dev, "getalarm: %d, %04d.%02d.%02d %02d:%02d:%02d\n",
-> +		alm_en,
-> +		1900 + alm_tm->tm_year, alm_tm->tm_mon, alm_tm->tm_mday,
-> +		alm_tm->tm_hour, alm_tm->tm_min, alm_tm->tm_sec);
-> +
-> +	alm_tm->tm_sec = bcd2bin(alm_tm->tm_sec);
-> +	alm_tm->tm_min = bcd2bin(alm_tm->tm_min);
-> +	alm_tm->tm_hour = bcd2bin(alm_tm->tm_hour);
-> +	alm_tm->tm_mday = bcd2bin(alm_tm->tm_mday);
-> +	alm_tm->tm_mon = bcd2bin(alm_tm->tm_mon);
-> +	alm_tm->tm_mon -= 1;
-You could merge both lines.
-
-> +	alm_tm->tm_year = bcd2bin(alm_tm->tm_year);
-> +
-> +	clk_disable(pdata->clk);
-> +	return 0;
-> +}
-> +
-> +static int pic32_rtc_setalarm(struct device *dev, struct rtc_wkalrm *alrm)
-> +{
-> +	struct pic32_rtc_dev *pdata = dev_get_drvdata(dev);
-> +	struct rtc_time *tm = &alrm->time;
-> +	void __iomem *base = pdata->reg_base;
-> +
-> +	clk_enable(pdata->clk);
-> +	dev_dbg(dev, "setalarm: %d, %04d.%02d.%02d %02d:%02d:%02d\n",
-> +		alrm->enabled,
-> +		1900 + tm->tm_year, tm->tm_mon + 1, tm->tm_mday,
-> +		tm->tm_hour, tm->tm_min, tm->tm_sec);
-> +
-> +	writel(0x00, base + PIC32_ALRMTIME);
-> +	writel(0x00, base + PIC32_ALRMDATE);
-> +
-> +	if (tm->tm_sec < 60 && tm->tm_sec >= 0)
-> +		writeb(bin2bcd(tm->tm_sec), base + PIC32_ALRMSEC);
-> +
-> +	if (tm->tm_min < 60 && tm->tm_min >= 0)
-> +		writeb(bin2bcd(tm->tm_min), base + PIC32_ALRMMIN);
-> +
-> +	if (tm->tm_hour < 24 && tm->tm_hour >= 0)
-> +		writeb(bin2bcd(tm->tm_hour), base + PIC32_ALRMHOUR);
-> +
-
-Those three tests are unnecessary because rtc_valid_tm() is called
-before ops->set_alarm.
-
-> +	pic32_rtc_setaie(dev, alrm->enabled);
-> +
-> +	clk_disable(pdata->clk);
-> +	return 0;
-> +}
-> +
-
-[...]
-
-
-> +	pic32_rtc_gettime(&pdev->dev, &rtc_tm);
-> +
-> +	if (rtc_valid_tm(&rtc_tm)) {
-> +		rtc_tm.tm_year	= 100;
-> +		rtc_tm.tm_mon	= 0;
-> +		rtc_tm.tm_mday	= 1;
-> +		rtc_tm.tm_hour	= 0;
-> +		rtc_tm.tm_min	= 0;
-> +		rtc_tm.tm_sec	= 0;
-> +
-> +		pic32_rtc_settime(NULL, &rtc_tm);
-> +
-> +		dev_warn(&pdev->dev,
-> +			"warning: invalid RTC value so initializing it\n");
-
-This is a bad idea. If you do that, userspace has no way of knowing
-whether the date is valid or not.
-
-[...]
-
-> +static const struct of_device_id pic32_rtc_dt_ids[] = {
-> +	{ .compatible = "microchip,pic32mzda-rtc" },
-> +	{ /* sentinel */ }
-> +};
-> +MODULE_DEVICE_TABLE(of, pic32_rtc_dt_ids);
-
-This compatible string needs to be documented. Was that patch 1/2?
-
-> +
-> +static struct platform_driver pic32_rtc_driver = {
-> +	.probe		= pic32_rtc_probe,
-> +	.remove		= pic32_rtc_remove,
-> +	.driver		= {
-> +		.name	= DRIVER_NAME,
-> +		.owner	= THIS_MODULE,
-> +		.of_match_table	= of_match_ptr(pic32_rtc_dt_ids),
-> +	},
-> +};
-> +module_platform_driver(pic32_rtc_driver);
-> +
-> +MODULE_DESCRIPTION("Microchip PIC32 RTC Driver");
-> +MODULE_AUTHOR("Joshua Henderson <joshua.henderson@microchip.com>");
-> +MODULE_LICENSE("GPL");
-> +MODULE_ALIAS("platform:" DRIVER_NAME);
-
-I think this driver is DT only, you can get rid of MODULE_ALIAS and
-DRIVER_NAME
-
-
--- 
-Alexandre Belloni, Free Electrons
-Embedded Linux, Kernel and Android engineering
-http://free-electrons.com
+>   arch/mips/boot/dts/cavium-octeon/octeon_3xxx.dts | 1 +
+>   arch/mips/boot/dts/cavium-octeon/octeon_68xx.dts | 1 +
+>   2 files changed, 2 insertions(+)
+>
+> diff --git a/arch/mips/boot/dts/cavium-octeon/octeon_3xxx.dts b/arch/mips/boot/dts/cavium-octeon/octeon_3xxx.dts
+> index 9c48e05..f70cd58 100644
+> --- a/arch/mips/boot/dts/cavium-octeon/octeon_3xxx.dts
+> +++ b/arch/mips/boot/dts/cavium-octeon/octeon_3xxx.dts
+> @@ -8,6 +8,7 @@
+>    */
+>   / {
+>   	compatible = "cavium,octeon-3860";
+> +	model = "cavium,Octeon 3860";
+>   	#address-cells = <2>;
+>   	#size-cells = <2>;
+>   	interrupt-parent = <&ciu>;
+> diff --git a/arch/mips/boot/dts/cavium-octeon/octeon_68xx.dts b/arch/mips/boot/dts/cavium-octeon/octeon_68xx.dts
+> index 79b46fc..0b40899 100644
+> --- a/arch/mips/boot/dts/cavium-octeon/octeon_68xx.dts
+> +++ b/arch/mips/boot/dts/cavium-octeon/octeon_68xx.dts
+> @@ -8,6 +8,7 @@
+>    */
+>   / {
+>   	compatible = "cavium,octeon-6880";
+> +	model = "cavium,Octeon 6880";
+>   	#address-cells = <2>;
+>   	#size-cells = <2>;
+>   	interrupt-parent = <&ciu2>;
+>

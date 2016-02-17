@@ -1,32 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Feb 2016 19:39:22 +0100 (CET)
-Received: from mga14.intel.com ([192.55.52.115]:53030 "EHLO mga14.intel.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27012354AbcBQSjTuLuY4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 17 Feb 2016 19:39:19 +0100
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga103.fm.intel.com with ESMTP; 17 Feb 2016 10:17:03 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.22,461,1449561600"; 
-   d="scan'208";a="905287862"
-Received: from viggo.jf.intel.com (HELO localhost.localdomain) ([10.54.39.121])
-  by fmsmga001.fm.intel.com with ESMTP; 17 Feb 2016 10:17:03 -0800
-Subject: [PATCH] signals, ia64, mips: update arch-specific siginfos with pkeys field
-To:     linux-kernel@vger.kernel.org
-Cc:     linux-mm@kvack.org, x86@kernel.org, Dave Hansen <dave@sr71.net>,
-        dave.hansen@linux.intel.com, linux-mips@linux-mips.org,
-        linux-ia64@vger.kernel.org
-From:   Dave Hansen <dave@sr71.net>
-Date:   Wed, 17 Feb 2016 10:17:03 -0800
-Message-Id: <20160217181703.E99B6656@viggo.jf.intel.com>
-Return-Path: <dave@sr71.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Feb 2016 21:04:40 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:59580 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27012373AbcBQUEib95WU (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 17 Feb 2016 21:04:38 +0100
+Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
+        by Websense Email Security Gateway with ESMTPS id 26CC37DB7FF23;
+        Wed, 17 Feb 2016 20:04:29 +0000 (GMT)
+Received: from [10.100.200.149] (10.100.200.149) by hhmail02.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server id 14.3.266.1; Wed, 17 Feb 2016
+ 20:04:31 +0000
+Date:   Wed, 17 Feb 2016 20:04:31 +0000
+From:   "Maciej W. Rozycki" <macro@imgtec.com>
+To:     Daniel Sanders <daniel.sanders@imgtec.com>
+CC:     Ralf Baechle <ralf@linux-mips.org>,
+        Scott Egerton <Scott.Egerton@imgtec.com>,
+        Paul Burton <paul.burton@imgtec.com>,
+        Markos Chandras <markos.chandras@imgtec.com>,
+        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
+        <linux-mips@linux-mips.org>
+Subject: Re: [PATCH] mips: Avoid a form of the .type directive that is not
+ supported by LLVM's Integrated Assembler
+In-Reply-To: <1455723429-26459-1-git-send-email-daniel.sanders@imgtec.com>
+Message-ID: <alpine.DEB.2.00.1602171944410.15885@tp.orcam.me.uk>
+References: <1455723429-26459-1-git-send-email-daniel.sanders@imgtec.com>
+User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
+MIME-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+X-Originating-IP: [10.100.200.149]
+Return-Path: <Maciej.Rozycki@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52107
+X-archive-position: 52108
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dave@sr71.net
+X-original-sender: macro@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -39,68 +48,45 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+Hi Daniel,
 
-This fixes a compile error that Ingo was hitting with MIPS when the
-x86 pkeys patch set is applied.
+ Please try to fit your patch summary (subject) in 75 characters to avoid 
+line wrapping in GIT.
 
-ia64 and mips have separate definitions for siginfo from the
-generic one.  Patch them to have the pkey fields.
+> The target independent parts of the LLVM Lexer considers 'fault@function'
+> to be a single token representing the 'fault' symbol with a 'function'
+> modifier. However, this is not the case in the .type directive where
+> 'function' refers to STT_FUNC from the ELF standard.
 
-Note that this is exactly what we did for MPX as well.
+ If LLVM strives to be GNU toolchain compatible, then this looks like a 
+bug in their scanner as generic ELF support in GAS (gas/config/obj-elf.c) 
+has this, in `obj_elf_type':
 
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: linux-mips@linux-mips.org
-Cc: linux-ia64@vger.kernel.org
----
+  if (*input_line_pointer == ',')
+    ++input_line_pointer;
 
- b/arch/ia64/include/uapi/asm/siginfo.h |   13 +++++++++----
- b/arch/mips/include/uapi/asm/siginfo.h |   13 +++++++++----
- 2 files changed, 18 insertions(+), 8 deletions(-)
+so the comma is entirely optional.  I realise this is undocumented, but 
+there you go.  It must have been there since forever.
 
-diff -puN arch/ia64/include/uapi/asm/siginfo.h~pkeys-09-1-siginfo-for-mips-ia64 arch/ia64/include/uapi/asm/siginfo.h
---- a/arch/ia64/include/uapi/asm/siginfo.h~pkeys-09-1-siginfo-for-mips-ia64	2016-02-17 09:32:06.001815266 -0800
-+++ b/arch/ia64/include/uapi/asm/siginfo.h	2016-02-17 09:32:06.010815672 -0800
-@@ -63,10 +63,15 @@ typedef struct siginfo {
- 			unsigned int _flags;	/* see below */
- 			unsigned long _isr;	/* isr */
- 			short _addr_lsb;	/* lsb of faulting address */
--			struct {
--				void __user *_lower;
--				void __user *_upper;
--			} _addr_bnd;
-+			union {
-+				/* used when si_code=SEGV_BNDERR */
-+				struct {
-+					void __user *_lower;
-+					void __user *_upper;
-+				} _addr_bnd;
-+				/* used when si_code=SEGV_PKUERR */
-+				u64 _pkey;
-+			};
- 		} _sigfault;
- 
- 		/* SIGPOLL */
-diff -puN arch/mips/include/uapi/asm/siginfo.h~pkeys-09-1-siginfo-for-mips-ia64 arch/mips/include/uapi/asm/siginfo.h
---- a/arch/mips/include/uapi/asm/siginfo.h~pkeys-09-1-siginfo-for-mips-ia64	2016-02-17 09:32:06.003815357 -0800
-+++ b/arch/mips/include/uapi/asm/siginfo.h	2016-02-17 09:32:06.010815672 -0800
-@@ -86,10 +86,15 @@ typedef struct siginfo {
- 			int _trapno;	/* TRAP # which caused the signal */
- #endif
- 			short _addr_lsb;
--			struct {
--				void __user *_lower;
--				void __user *_upper;
--			} _addr_bnd;
-+			union {
-+				/* used when si_code=SEGV_BNDERR */
-+				struct {
-+					void __user *_lower;
-+					void __user *_upper;
-+				} _addr_bnd;
-+				/* used when si_code=SEGV_PKUERR */
-+				u64 _pkey;
-+			};
- 		} _sigfault;
- 
- 		/* SIGPOLL, SIGXFSZ (To do ...)	 */
-_
+> This is the only example of this form of '.type' that we are aware of in
+> MIPS source so we'd prefer to make this small source change rather than
+> complicate the target independent parts of LLVM's assembly lexer with
+> directive and/or target specific exceptions to the lexing rules.
+
+ So this has nothing to do with the MIPS target really.
+
+ As to the change itself I agree it seems rather pointless to have this 
+single oddity, which I suspect has been a finger slip which has only 
+survived because GAS is happy to accept this form.  So:
+
+Reviewed-by: Maciej W. Rozycki <macro@imgtec.com>
+
+although please make the same change to arch/mips/kernel/r2300_fpu.S (the 
+same patch should apply there cleanly) for consistency and resend with the 
+last paragraph rewritten so as not to confuse people this has anything to 
+do with our target.
+
+ For the record this was introduced with commit 0ae8dceaebe3 ("Merge with 
+2.3.10.").
+
+  Maciej

@@ -1,70 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Feb 2016 03:40:54 +0100 (CET)
-Received: from mail-ob0-f181.google.com ([209.85.214.181]:33732 "EHLO
-        mail-ob0-f181.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012795AbcBRCkwyWWQU (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 18 Feb 2016 03:40:52 +0100
-Received: by mail-ob0-f181.google.com with SMTP id jq7so45961727obb.0;
-        Wed, 17 Feb 2016 18:40:52 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Feb 2016 11:15:47 +0100 (CET)
+Received: from mail-wm0-f51.google.com ([74.125.82.51]:37472 "EHLO
+        mail-wm0-f51.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010865AbcBRKPpkL-dr (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 18 Feb 2016 11:15:45 +0100
+Received: by mail-wm0-f51.google.com with SMTP id g62so17945866wme.0
+        for <linux-mips@linux-mips.org>; Thu, 18 Feb 2016 02:15:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=subject:to:references:cc:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-type:content-transfer-encoding;
-        bh=7W9K46wmes8YiVjL5z4gbKZQQk8wDkDVIEkjYLrdsW8=;
-        b=S42csBSeO2Pbx/zTrrSd8V36bQEYJsA6DibylYSBjTRpgkyLw9r+9zAf+8zKKW266s
-         S5ILRKkOQO3yhq1y702YxLShVXvpLGMveYFR7AYA9TjFywQKk9DQylDToug/2k3gGu2n
-         5NjP8JTD/cXRsfxohJVhFEenzY5o2vzQsfRlfuVA5OZq2xO3kC7UrnLvDWNX5Mhq0lr7
-         xg/iT1tN9mMqPEOx/xk92w9duOHD70Idc1Pfjlpe5RnldIA8R7bhGp5drzWlVIvn7mLZ
-         snbPacRcXoPsd4cvH+SUVzOhk7m3NRGy/wr5Xip8m2B+nGWaBVXMGICGxzPcMlMX72o+
-         2+yA==
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-type:content-disposition:content-transfer-encoding
+         :in-reply-to:user-agent;
+        bh=H2wFngdn2suIAkdKgN3j1x//gBKnR3O+AwAutwilFho=;
+        b=E/GuptHBpzA5pP5JuDJfv9E4PjMi7Fig8FSfp0WPtC4aLPx0PUNrEzYMyzIy6ev1U1
+         YNouZj6L+CwLGNQT92/fYfaacFigTuOwzSozkUg3eKnIYIaAcG+7I3Gi63wRVvvnNV/3
+         I/gbe5aWfJLoKwiyKwxObkbUMWqRf265Hv3FoHTHkYiubXXTmwyxFZoolnQ4fbYp9wEE
+         mWOltIWqbtBnOtS2NrIYbMoabWgqFzoe1T5jJcS6Mz9Qdsf4wSXXMHnkuRdY6VQ7dWzi
+         Q77myCNwfv/qrEtcb96Km9awxhqskRugPVBHVIQNgvju7qSSHWEQasy22i3K0rBpDORr
+         Zf4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
-        h=x-gm-message-state:subject:to:references:cc:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-type
-         :content-transfer-encoding;
-        bh=7W9K46wmes8YiVjL5z4gbKZQQk8wDkDVIEkjYLrdsW8=;
-        b=f6AfQQOvPzqjGExU5EdRrBC5lPAi8YuUxDBZEpl5q+ynHTPKyQoZOGyETXfpWa0ndL
-         X51zn4zyNQNaoZlVl2P/waXRf5z06f2C/Of/YnOUzQNGLWZ0qrTj3OUJZSyT0Zdqouwl
-         FHXvzVEPtkbIhWyF/l1ghylwJR4DbkggBlnSl4YGGNe/1xBir7ZKT0kA2n2geepqkMRJ
-         a62xjzyQoBNJpbBmMDvOyqBnWfvCTZ5f72BNvEOhPcC2UxRYny4B3KPxaz3IYG8Zo1fE
-         kBGMIs17Ljo9DyAH/DpVzO82SBLbeJbJaaLicBr7ExjveMl6xacCsDJTFBWNpzvutQFL
-         8UHQ==
-X-Gm-Message-State: AG10YOSKAyDehOB2UxLUVXGJ3i8m+knY0vh8oGK1YpPlnPTE4UtGx30U8utgz+d2hTLwSA==
-X-Received: by 10.60.116.169 with SMTP id jx9mr4096061oeb.30.1455763246815;
-        Wed, 17 Feb 2016 18:40:46 -0800 (PST)
-Received: from ?IPv6:2001:470:d:73f:f423:6f06:7df9:a250? ([2001:470:d:73f:f423:6f06:7df9:a250])
-        by smtp.googlemail.com with ESMTPSA id j79sm2598462oig.26.2016.02.17.18.40.44
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Wed, 17 Feb 2016 18:40:45 -0800 (PST)
-Subject: Re: [PATCH 14/15] MIPS: smp-cps: Add nothreads kernel parameter
-To:     Paul Burton <paul.burton@imgtec.com>, linux-mips@linux-mips.org,
-        Ralf Baechle <ralf@linux-mips.org>
-References: <1454469335-14778-1-git-send-email-paul.burton@imgtec.com>
- <1454469335-14778-15-git-send-email-paul.burton@imgtec.com>
-Cc:     Matt Redfearn <matt.redfearn@imgtec.com>,
-        Rusty Russell <rusty@rustcorp.com.au>,
-        linux-kernel@vger.kernel.org,
-        Niklas Cassel <niklas.cassel@axis.com>,
-        Ezequiel Garcia <ezequiel.garcia@imgtec.com>,
-        Markos Chandras <markos.chandras@imgtec.com>
-From:   Florian Fainelli <f.fainelli@gmail.com>
-X-Enigmail-Draft-Status: N1110
-Message-ID: <56C52F2C.8070307@gmail.com>
-Date:   Wed, 17 Feb 2016 18:40:44 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.5.1
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-type:content-disposition
+         :content-transfer-encoding:in-reply-to:user-agent;
+        bh=H2wFngdn2suIAkdKgN3j1x//gBKnR3O+AwAutwilFho=;
+        b=iMCPVAjQhh1c/Zk8jEEXILjzk6U4jkIZZInI+ZJoskolT/GHxTQrTjLrbdODrR/zP3
+         +4s5SSQ9F3AlkNu8ZFivQdh/9EEs8C2HpHPIz1vw6/4vt2PgEwmYpziBP+pUJVELDaqQ
+         tfnircAOjTavdm3uE0rx6mIuHmUOHHWq5hTo7ZSknNKFp5WIVGXhmyTo9tfXe+WeB+rU
+         euubTV5+M2XvZ7GxxAfRZjsH51NyXQ+GGQHn6886IHjrPFbpqIpXw03mn2/4F0RmC3li
+         d/Z/JcUSvpkVe74SggcNRW7DBht8b335Sld5OSdyxbSZ4rDzTAJw56fmwVQbUaMN1Tmj
+         An0w==
+X-Gm-Message-State: AG10YOSDWDZpZ/S0+nMzBSwVpdUTxV0JB7/ACqoQ7CPq21XdL4ABShPas3y5a1v0vM55yg==
+X-Received: by 10.194.220.230 with SMTP id pz6mr6665843wjc.39.1455790540329;
+        Thu, 18 Feb 2016 02:15:40 -0800 (PST)
+Received: from gmail.com (2E8B0CD5.catv.pool.telekom.hu. [46.139.12.213])
+        by smtp.gmail.com with ESMTPSA id d9sm5765173wjf.43.2016.02.18.02.15.38
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 18 Feb 2016 02:15:39 -0800 (PST)
+Date:   Thu, 18 Feb 2016 11:15:37 +0100
+From:   Ingo Molnar <mingo@kernel.org>
+To:     Dave Hansen <dave@sr71.net>
+Cc:     linux-kernel@vger.kernel.org, linux-mm@kvack.org, x86@kernel.org,
+        dave.hansen@linux.intel.com, linux-mips@linux-mips.org,
+        linux-ia64@vger.kernel.org
+Subject: Re: [PATCH] signals, ia64, mips: update arch-specific siginfos with
+ pkeys field
+Message-ID: <20160218101537.GA5540@gmail.com>
+References: <20160217181703.E99B6656@viggo.jf.intel.com>
 MIME-Version: 1.0
-In-Reply-To: <1454469335-14778-15-git-send-email-paul.burton@imgtec.com>
 Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Return-Path: <f.fainelli@gmail.com>
+In-Reply-To: <20160217181703.E99B6656@viggo.jf.intel.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <mingo.kernel.org@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52112
+X-archive-position: 52114
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: f.fainelli@gmail.com
+X-original-sender: mingo@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -77,11 +73,37 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Le 02/02/2016 19:15, Paul Burton a écrit :
-> When debugging a new system or core it can be useful to disable the use
-> of multithreading. Introduce a "nothreads" kernel command line parameter
-> that can be set in order to do so.
 
-This should be documented in Documentation/kernel-parameters.txt as well.
--- 
-Florian
+* Dave Hansen <dave@sr71.net> wrote:
+
+> 
+> This fixes a compile error that Ingo was hitting with MIPS when the
+> x86 pkeys patch set is applied.
+> 
+> ia64 and mips have separate definitions for siginfo from the
+> generic one.  Patch them to have the pkey fields.
+> 
+> Note that this is exactly what we did for MPX as well.
+> 
+> Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+> Cc: linux-mips@linux-mips.org
+> Cc: linux-ia64@vger.kernel.org
+> ---
+> 
+>  b/arch/ia64/include/uapi/asm/siginfo.h |   13 +++++++++----
+>  b/arch/mips/include/uapi/asm/siginfo.h |   13 +++++++++----
+>  2 files changed, 18 insertions(+), 8 deletions(-)
+
+This solved the MIPS and IA64 build problems, but there's still one bug left: UML 
+does not build:
+
+ /home/mingo/tip/mm/gup.c: In function ‘check_vma_flags’:
+ /home/mingo/tip/mm/gup.c:456:2: error: implicit declaration of function ‘arch_vma_access_permitted’ [-Werror=implicit-function-declaration]
+   if (!arch_vma_access_permitted(vma, write, false, foreign))
+ [...]
+
+Please send a delta patch for this too.
+
+Thanks,
+
+	Ingo

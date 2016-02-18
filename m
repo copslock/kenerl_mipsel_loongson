@@ -1,72 +1,87 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Feb 2016 19:31:31 +0100 (CET)
-Received: from mail-lf0-f47.google.com ([209.85.215.47]:36277 "EHLO
-        mail-lf0-f47.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012963AbcBRSb3OaN-u (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 18 Feb 2016 19:31:29 +0100
-Received: by mail-lf0-f47.google.com with SMTP id 78so38531938lfy.3
-        for <linux-mips@linux-mips.org>; Thu, 18 Feb 2016 10:31:29 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Feb 2016 20:50:23 +0100 (CET)
+Received: from mail-wm0-f50.google.com ([74.125.82.50]:37486 "EHLO
+        mail-wm0-f50.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011968AbcBRTuURid25 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 18 Feb 2016 20:50:20 +0100
+Received: by mail-wm0-f50.google.com with SMTP id g62so41335287wme.0
+        for <linux-mips@linux-mips.org>; Thu, 18 Feb 2016 11:50:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cogentembedded-com.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:references:cc:from:organization:message-id:date
-         :user-agent:mime-version:in-reply-to:content-type
-         :content-transfer-encoding;
-        bh=Gp2BozNAfqnvaKOOc7STX/ScyCjMVDWhw2FrWFuvuE8=;
-        b=0vBlwaYKZVtp2PqiCuO7+9iTk4bO083cHN7RSJ2I4cwQnccxDj8jQ7ImB+pHbjUs62
-         hay7ZkwwFqMbdmBVoryDAPo6CLnLj9YPg8pRudxwwpMeS+18tjbtk8sOkptJTFEXDnUw
-         DJcP11Mqf17tdhWtFfyZSLHvYfzhPdxgdUjXF472XsQshel38Vg8fgsk2QmcDvHMS9P/
-         4/Z/bWousLusmRyhDd9UGDGQ9UV8RlGmEB0wG2Wej2qJi1WjiDszNmmJishXXK2y80Kw
-         o8P2hlrsPd2zur70EO3R55lzMeSdl9qkNtLWhrvTaR9Y0QX1C4GvokdoU4hQQW5gidsO
-         tI0Q==
+        d=google.com; s=20120113;
+        h=mime-version:sender:in-reply-to:references:from:date:message-id
+         :subject:to:cc:content-type;
+        bh=SunHvOnEYEJPIegfCEefPMrPKtZ/0CFT6MM3860ICPw=;
+        b=Y6TZk+SCOAGlnni6/jpN6yNAvHprSv5sTVdGqx9Uf0GpIgeUwZyj/HlHeyRlVqIYuP
+         RAh5yXIeJDLv/9SX02rHktiplWbZtr1PxDbpSiGGnQh3HmZOxjQi5Id1CMxBcTOMB6Pr
+         aC7gIkHsc2vMexCLaJw5n7mtlUZl9szsxeyACewEDTUmNkus92JBmGQUGNDQFHZluy0P
+         4lJbWpL0bzsSsO6M0bJ/rLuEEdVrXzoVJjqL0hrI5ak2Bz8n0I8FZvB4XbNjmivPyOjJ
+         HdZiFgQTd0cgaGHW7cB/d9iSxMeawDRzyDjGwZ4jS7U4gQa8r+MbjyejmEVxOjBs9TFE
+         Obkg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:sender:in-reply-to:references:from:date:message-id
+         :subject:to:cc:content-type;
+        bh=SunHvOnEYEJPIegfCEefPMrPKtZ/0CFT6MM3860ICPw=;
+        b=fg3ipAiQd9PqW9HPB3NDwpxAUf0nyKvd7THcCDB1Ql1Kj4sdsJsX63H+sVRcc0bwzU
+         YcQcKFqrJSG2B7ztrSBX+w6H6KgW1EAAnvq3Fsxmmncvq1HPQdEdq3j2cOp4CMHpl0lV
+         DB9GoKOKLIWSgaaRqmcwKoe6d9+/Njb3fCPASkNSotiz6KEcKxJceEWFc38kk4xmSJJv
+         s3DsPPWuGSG0PI+V8ANgjI628rudZsbm0pqvxUP9uDs6wgMSfucLIG7KB98020RIqk46
+         n/Y/0wBu8Ikdy2qQ3rF5DIS4eCaETzkWhoNWDLeYiaqpg2RZTfLO/ZOVJe+6NCp/oWS8
+         sXMA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
-        h=x-gm-message-state:subject:to:references:cc:from:organization
-         :message-id:date:user-agent:mime-version:in-reply-to:content-type
-         :content-transfer-encoding;
-        bh=Gp2BozNAfqnvaKOOc7STX/ScyCjMVDWhw2FrWFuvuE8=;
-        b=HugOiZb5/EquKCxZHnrRXCjHA0c2+6D6wpJzgv5PvlM4RkYHSJiAqclS6p7LIJNJBB
-         ZHKROxWOtUkvkD2K+erE0tYiQYynEvrLFbpk+EID84UdkwG3lMe168mO0Wl4PopR5J0y
-         pd01NR79f39vDWrbpf4mzohlFFdbchcHJhH9shU8lUkoIYX1f2QduPts63zmhPgXr7or
-         DCQh70NYNqILkJytwVowl55vCXEWywgI/owiRaxj0tisBbWjjf9ob3grpHlYwmYdnTnb
-         IVGsRInvX6pU8PEkOIR+v7hOkLNXm3oWprQwVhvoNUrhhd4QXJ64AhUzJrHjvFD9DPV3
-         152Q==
-X-Gm-Message-State: AG10YOT0Mkj6dDPCiY+AFXLgIx9q+TXXBA5CV+E2xRQBOuWXN8LVeOgDDYwnfdN2wnI0Dg==
-X-Received: by 10.25.167.18 with SMTP id q18mr3243092lfe.27.1455820283770;
-        Thu, 18 Feb 2016 10:31:23 -0800 (PST)
-Received: from wasted.cogentembedded.com ([195.16.111.145])
-        by smtp.gmail.com with ESMTPSA id l129sm1086231lfl.18.2016.02.18.10.31.21
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Thu, 18 Feb 2016 10:31:22 -0800 (PST)
-Subject: Re: [RFC v5 07/15] usb: ehci: add vbus-gpio parameter
-To:     Antony Pavlov <antonynpavlov@gmail.com>,
-        Alan Stern <stern@rowland.harvard.edu>,
-        Marek Vasut <marex@denx.de>
-References: <1455005641-7079-8-git-send-email-antonynpavlov@gmail.com>
- <Pine.LNX.4.44L0.1602181111350.1280-100000@iolanthe.rowland.org>
- <20160218210652.68ae464eed8ddbffd33e7a02@gmail.com>
-Cc:     linux-mips@linux-mips.org, Wills Wang <wills.wang@live.com>,
-        Daniel Schwierzeck <daniel.schwierzeck@gmail.com>,
-        Alban Bedel <albeu@free.fr>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org
-From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Organization: Cogent Embedded
-Message-ID: <56C60DF8.1060809@cogentembedded.com>
-Date:   Thu, 18 Feb 2016 21:31:20 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.5.0
+        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
+         :date:message-id:subject:to:cc:content-type;
+        bh=SunHvOnEYEJPIegfCEefPMrPKtZ/0CFT6MM3860ICPw=;
+        b=MEzoLeKpG686IQ/fSZidrSgvJlPlA0lfN6oBx1iWHOtlujD+zUL1l1rXVTmdUJdOkY
+         BjGUy4KclFTORmVcvjK6Mu0VhU+L6i4hqX1fF8sf+1yg716ock4h6bN5Eb/D6sAbPq4b
+         RqXTaV/w9gqMqA9K/GSKzztZZEKPSC7dBpmkvdgF1XUFkyhr+G9T8Qhx2w2dcF3ODG0a
+         X3Mpy6mAdq0s1Ti63MW+Y2h/lmk19UVH1qfhxPOHoyynAYzr6b+pWokjR2WYbq1onHwc
+         euvehnBw1ltJ5GisDqTK1MshmIt/+NPLVtkLWBBwYjZfX9er5bpgHmhmYmsrSP/6zIRc
+         N9VQ==
+X-Gm-Message-State: AG10YOQHasAKrpMyrUcHrwgWi6IxoWbNapucHJtELMvhlKrdeMxKaihaQ13srQniYrQJBT6Tfin7BCTcqZ6ewxib
+X-Received: by 10.28.135.4 with SMTP id j4mr5369609wmd.80.1455825014854; Thu,
+ 18 Feb 2016 11:50:14 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <20160218210652.68ae464eed8ddbffd33e7a02@gmail.com>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sergei.shtylyov@cogentembedded.com>
+Received: by 10.28.27.18 with HTTP; Thu, 18 Feb 2016 11:49:55 -0800 (PST)
+In-Reply-To: <1455328149.2801.82.camel@decadent.org.uk>
+References: <1455064168-5102-1-git-send-email-ddecotig@gmail.com>
+ <1455064168-5102-6-git-send-email-ddecotig@gmail.com> <1455328149.2801.82.camel@decadent.org.uk>
+From:   David Decotigny <ddecotig@gmail.com>
+Date:   Thu, 18 Feb 2016 11:49:55 -0800
+X-Google-Sender-Auth: PcNlEXHX88M_etTWmP55mhCQcOc
+Message-ID: <CAG88wWZNB5bT7ywMbcfGbQS=f2gdbC6NpKVt5Opcs-oAbMUjLw@mail.gmail.com>
+Subject: Re: [PATCH net-next v8 05/19] net: ethtool: add new
+ ETHTOOL_GSETTINGS/SSETTINGS API
+To:     Ben Hutchings <ben@decadent.org.uk>
+Cc:     "David S. Miller" <davem@davemloft.net>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-api@vger.kernel.org" <linux-api@vger.kernel.org>,
+        linux-mips@linux-mips.org, fcoe-devel@open-fcoe.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Tejun Heo <tj@kernel.org>, Eric Dumazet <edumazet@google.com>,
+        Eugenia Emantayev <eugenia@mellanox.co.il>,
+        Or Gerlitz <ogerlitz@mellanox.com>,
+        Ido Shamay <idos@mellanox.com>, Joe Perches <joe@perches.com>,
+        Saeed Mahameed <saeedm@mellanox.com>,
+        Govindarajulu Varadarajan <_govind@gmx.com>,
+        Venkata Duvvuru <VenkatKumar.Duvvuru@emulex.com>,
+        Jeff Kirsher <jeffrey.t.kirsher@intel.com>,
+        Pravin B Shelar <pshelar@nicira.com>,
+        Ed Swierk <eswierk@skyportsystems.com>,
+        Robert Love <robert.w.love@intel.com>,
+        "James E.Yuval Mintz" <Yuval.Mintz@qlogic.com>,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <decot@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52120
+X-archive-position: 52121
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sergei.shtylyov@cogentembedded.com
+X-original-sender: ddecotig@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -79,106 +94,54 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 02/18/2016 09:06 PM, Antony Pavlov wrote:
+Sure, I will send an update:
 
->>> This patch retrieves and configures the vbus control gpio via
->>> the device tree.
->>>
->>> This patch is based on a ehci-s5p.c commit fd81d59c90d38661
->>> ("USB: ehci-s5p: Add vbus setup function to the s5p ehci glue layer").
->>>
->>> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
->>> Cc: Alan Stern <stern@rowland.harvard.edu>
->>> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
->>> Cc: linux-usb@vger.kernel.org
->>> Cc: linux-kernel@vger.kernel.org
->>> ---
->>>   drivers/usb/host/ehci-platform.c | 22 ++++++++++++++++++++++
->>>   1 file changed, 22 insertions(+)
->>>
->>> diff --git a/drivers/usb/host/ehci-platform.c b/drivers/usb/host/ehci-platform.c
->>> index bd7082f2..0d95ced 100644
->>> --- a/drivers/usb/host/ehci-platform.c
->>> +++ b/drivers/usb/host/ehci-platform.c
->>> @@ -28,6 +28,7 @@
->>>   #include <linux/io.h>
->>>   #include <linux/module.h>
->>>   #include <linux/of.h>
->>> +#include <linux/of_gpio.h>
->>>   #include <linux/phy/phy.h>
->>>   #include <linux/platform_device.h>
->>>   #include <linux/reset.h>
->>> @@ -142,6 +143,25 @@ static struct usb_ehci_pdata ehci_platform_defaults = {
->>>   	.power_off =		ehci_platform_power_off,
->>>   };
->>>
->>> +static void setup_vbus_gpio(struct device *dev)
->>> +{
->>> +	int err;
->>> +	int gpio;
->>> +
->>> +	if (!dev->of_node)
->>> +		return;
->>> +
->>> +	gpio = of_get_named_gpio(dev->of_node, "vbus-gpio", 0);
->>> +	if (!gpio_is_valid(gpio))
->>> +		return;
->>> +
->>> +	err = devm_gpio_request_one(dev, gpio,
->>> +				GPIOF_OUT_INIT_HIGH | GPIOF_EXPORT_DIR_FIXED,
->>> +				"ehci_vbus_gpio");
->>> +	if (err)
->>> +		dev_err(dev, "can't request ehci vbus gpio %d", gpio);
+struct ethtool_link_settings {
+        __u32   cmd;
+        __u32   speed;
+        __u8    duplex;
+        __u8    port;
+        __u8    phy_address;
+        __u8    autoneg;
+        __u8    mdio_support;
+        __u8    eth_tp_mdix;
+        __u8    eth_tp_mdix_ctrl;
+        __s8    link_mode_masks_nwords;
+        __u32   reserved[8];
+        __u32   link_mode_masks[0];
+};
+
+(+ same renaming for the ioctl sub-cmds)
+
+that would still replace GSET/SSET/ethtool_cmd.
+
+would that be ok?
+
+Or, just to make sure: would you rather keep GSET/SSET/ethtool_cmd as
+now for everything but the link mode masks (that would be marked as
+deprecated), and have only a new command G/SLINK_MODES + struct
+ethtool_link_mode_support that would only take care of the link mode
+masks?
+
+On Fri, Feb 12, 2016 at 5:49 PM, Ben Hutchings <ben@decadent.org.uk> wrote:
+> On Tue, 2016-02-09 at 16:29 -0800, David Decotigny wrote:
+>> From: David Decotigny <decot@googlers.com>
 >>
->>
->> I don't understand this.  If you get an error here, what's the point of
->> allowing the probe to continue?  Shouldn't you return an error code so
->> the probe will fail?
+>> This patch defines a new ETHTOOL_GSETTINGS/SSETTINGS API, handled by
+>> the new get_ksettings/set_ksettings callbacks. This API provides
+>> support for most legacy ethtool_cmd fields, adds support for larger
+>> link mode masks (up to 4064 bits, variable length), and removes
+>> ethtool_cmd deprecated fields (transceiver/maxrxpkt/maxtxpkt).
+> [...]
 >
-> Please ignore the 'usb: ehci: add vbus-gpio parameter' patch!
+> I previously asked you to include 'link' in the command names and
+> structure name.  This would clarify that these are now only for link
+> settings and reduce the risk of confusion between old and new commands.
+> However, you didn't reply to that review.  Do you have any objection to
+> doing this?
 >
-> In the new AR9331 patchseries I use chipidea USB driver (thanks to Marek for the suggestion)
-> in the AR9331 dtsi-file:
+> Ben.
 >
->          usb: usb@1b000100 {
->                  compatible = "chipidea,usb2";
->                  reg = <0x1b000000 0x200>;
->
->                  interrupt-parent = <&cpuintc>;
->                  interrupts = <3>;
->                  resets = <&rst 5>;
->
->                  phy-names = "usb-phy";
->                  phys = <&usb_phy>;
->
->                  status = "disabled";
->          };
->
->
-> so I use regulator in the TL-MR3020 board dts file:
->
->          reg_usb_vbus: reg_usb_vbus {
->                  compatible = "regulator-fixed";
->                  regulator-name = "usb_vbus";
->                  regulator-min-microvolt = <5000000>;
-
-    Not 0?
-
->                  regulator-max-microvolt = <5000000>;
->                  gpio = <&gpio 8 GPIO_ACTIVE_HIGH>;
-
-    Where's the switch if both voltages are equal?
-
->                  enable-active-high;
->          };
->
-> &usb {
->          dr_mode = "host";
->          vbus-supply = <&reg_usb_vbus>;
->          status = "okay";
-> };
->
-> As a result there is no need in adding vbus-gpio parameter to ehci anymore!
-[...]
-
-MBR, Sergei
+> --
+> Ben Hutchings
+> Sturgeon's Law: Ninety percent of everything is crap.

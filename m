@@ -1,43 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Feb 2016 17:39:48 +0100 (CET)
-Received: from mail-out.m-online.net ([212.18.0.10]:33805 "EHLO
-        mail-out.m-online.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011800AbcBRQjqjYI9m (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 18 Feb 2016 17:39:46 +0100
-Received: from mail.nefkom.net (unknown [192.168.8.184])
-        by mail-out.m-online.net (Postfix) with ESMTP id 3q5hb50jDfz3hjkP;
-        Thu, 18 Feb 2016 17:39:45 +0100 (CET)
-X-Auth-Info: XWbrS6dDp6jGqrFa9FAHTlAjn983gwqHEgwSfIDD3o8=
-Received: from [IPv6:::1] (unknown [195.140.253.167])
-        (using TLSv1 with cipher DHE-RSA-CAMELLIA256-SHA (256/256 bits))
-        (No client certificate requested)
-        by smtp-auth.mnet-online.de (Postfix) with ESMTPSA id 3q5hb43PkVzvdWS;
-        Thu, 18 Feb 2016 17:39:44 +0100 (CET)
-Message-ID: <56C5F3D4.3080809@denx.de>
-Date:   Thu, 18 Feb 2016 17:39:48 +0100
-From:   Marek Vasut <marex@denx.de>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Icedove/31.7.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Feb 2016 17:48:08 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:28668 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27012596AbcBRQsHOGpVm (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 18 Feb 2016 17:48:07 +0100
+Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
+        by Websense Email Security Gateway with ESMTPS id 2225FB52DDEC4;
+        Thu, 18 Feb 2016 16:47:58 +0000 (GMT)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
+ 14.3.266.1; Thu, 18 Feb 2016 16:48:00 +0000
+Received: from [192.168.154.116] (192.168.154.116) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.266.1; Thu, 18 Feb
+ 2016 16:48:00 +0000
+Subject: Re: [PATCH v7 1/2] mmc: OCTEON: Add DT bindings for OCTEON MMC
+ controller
+To:     Rob Herring <robh@kernel.org>
+References: <1455725574-9947-1-git-send-email-matt.redfearn@imgtec.com>
+ <20160218143516.GA9654@rob-hp-laptop>
+CC:     <david.daney@cavium.com>, <aleksey.makarov@caviumnetworks.com>,
+        <ulf.hansson@linaro.org>, <linux-mmc@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-mips@linux-mips.org>,
+        Chandrakala Chavva <cchavva@caviumnetworks.com>,
+        Aleksey Makarov <aleksey.makarov@auriga.com>,
+        Leonid Rosenboim <lrosenboim@caviumnetworks.com>,
+        Peter Swain <pswain@cavium.com>,
+        Aaron Williams <aaron.williams@cavium.com>
+From:   Matt Redfearn <matt.redfearn@imgtec.com>
+Message-ID: <56C5F5C0.7010008@imgtec.com>
+Date:   Thu, 18 Feb 2016 16:48:00 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+ Thunderbird/38.5.1
 MIME-Version: 1.0
-To:     Alan Stern <stern@rowland.harvard.edu>,
-        Antony Pavlov <antonynpavlov@gmail.com>
-CC:     linux-mips@linux-mips.org, Wills Wang <wills.wang@live.com>,
-        Daniel Schwierzeck <daniel.schwierzeck@gmail.com>,
-        Alban Bedel <albeu@free.fr>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [RFC v5 07/15] usb: ehci: add vbus-gpio parameter
-References: <Pine.LNX.4.44L0.1602181111350.1280-100000@iolanthe.rowland.org>
-In-Reply-To: <Pine.LNX.4.44L0.1602181111350.1280-100000@iolanthe.rowland.org>
-Content-Type: text/plain; charset=windows-1252
+In-Reply-To: <20160218143516.GA9654@rob-hp-laptop>
+Content-Type: text/plain; charset="windows-1252"; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <marex@denx.de>
+X-Originating-IP: [192.168.154.116]
+Return-Path: <Matt.Redfearn@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52117
+X-archive-position: 52118
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: marex@denx.de
+X-original-sender: matt.redfearn@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,63 +56,115 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 02/18/2016 05:12 PM, Alan Stern wrote:
-> On Tue, 9 Feb 2016, Antony Pavlov wrote:
-> 
->> This patch retrieves and configures the vbus control gpio via
->> the device tree.
->>
->> This patch is based on a ehci-s5p.c commit fd81d59c90d38661
->> ("USB: ehci-s5p: Add vbus setup function to the s5p ehci glue layer").
->>
->> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
->> Cc: Alan Stern <stern@rowland.harvard.edu>
->> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
->> Cc: linux-usb@vger.kernel.org
->> Cc: linux-kernel@vger.kernel.org
->> ---
->>  drivers/usb/host/ehci-platform.c | 22 ++++++++++++++++++++++
->>  1 file changed, 22 insertions(+)
->>
->> diff --git a/drivers/usb/host/ehci-platform.c b/drivers/usb/host/ehci-platform.c
->> index bd7082f2..0d95ced 100644
->> --- a/drivers/usb/host/ehci-platform.c
->> +++ b/drivers/usb/host/ehci-platform.c
->> @@ -28,6 +28,7 @@
->>  #include <linux/io.h>
->>  #include <linux/module.h>
->>  #include <linux/of.h>
->> +#include <linux/of_gpio.h>
->>  #include <linux/phy/phy.h>
->>  #include <linux/platform_device.h>
->>  #include <linux/reset.h>
->> @@ -142,6 +143,25 @@ static struct usb_ehci_pdata ehci_platform_defaults = {
->>  	.power_off =		ehci_platform_power_off,
->>  };
->>  
->> +static void setup_vbus_gpio(struct device *dev)
->> +{
->> +	int err;
->> +	int gpio;
->> +
->> +	if (!dev->of_node)
->> +		return;
->> +
->> +	gpio = of_get_named_gpio(dev->of_node, "vbus-gpio", 0);
->> +	if (!gpio_is_valid(gpio))
->> +		return;
->> +
->> +	err = devm_gpio_request_one(dev, gpio,
->> +				GPIOF_OUT_INIT_HIGH | GPIOF_EXPORT_DIR_FIXED,
->> +				"ehci_vbus_gpio");
->> +	if (err)
->> +		dev_err(dev, "can't request ehci vbus gpio %d", gpio);
-> 
-> I don't understand this.  If you get an error here, what's the point of 
-> allowing the probe to continue?  Shouldn't you return an error code so 
-> the probe will fail?
 
-The idea is I believe that if there is no vbus gpio specified, the port
-might just not have vbus control, so the probe can continue. But this
-patch is irrelevant anyway, since Alexey will switch to CI HDRC driver
-and use standard regulator, as it should be done.
+
+On 18/02/16 14:35, Rob Herring wrote:
+> On Wed, Feb 17, 2016 at 04:12:53PM +0000, Matt Redfearn wrote:
+>> From: Aleksey Makarov <aleksey.makarov@caviumnetworks.com>
+>>
+>> Add Device Tree binding document for Octeon MMC controller. The driver
+>> is in a following patch.
+>>
+>> The MMC controller can be connected to up to 4 "slots" which may be
+>> eMMC, MMC or SD card devices. As there is a single controller, each
+>> available slot is represented as a child node of the controller.
+>>
+>> This is a similar concept to the atmel-mci driver.
+>>
+>> Tested-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+>> Signed-off-by: Chandrakala Chavva <cchavva@caviumnetworks.com>
+>> Signed-off-by: David Daney <david.daney@cavium.com>
+>> Signed-off-by: Aleksey Makarov <aleksey.makarov@auriga.com>
+>> Signed-off-by: Leonid Rosenboim <lrosenboim@caviumnetworks.com>
+>> Signed-off-by: Peter Swain <pswain@cavium.com>
+>> Signed-off-by: Aaron Williams <aaron.williams@cavium.com>
+>> Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
+>> ---
+>> v7: No changes
+>>
+>> v6:
+>> - Split up patch
+>> - Moved device tree fixup to platform code
+>> ---
+>>   .../devicetree/bindings/mmc/octeon-mmc.txt         | 79 ++++++++++++++++++++++
+>>   1 file changed, 79 insertions(+)
+>>   create mode 100644 Documentation/devicetree/bindings/mmc/octeon-mmc.txt
+>>
+>> diff --git a/Documentation/devicetree/bindings/mmc/octeon-mmc.txt b/Documentation/devicetree/bindings/mmc/octeon-mmc.txt
+>> new file mode 100644
+>> index 000000000000..d2c576d9ad65
+>> --- /dev/null
+>> +++ b/Documentation/devicetree/bindings/mmc/octeon-mmc.txt
+>> @@ -0,0 +1,79 @@
+>> +* OCTEON SD/MMC Host Controller
+>> +
+>> +This controller is present on some members of the Cavium OCTEON SoC
+>> +family, provide an interface for eMMC, MMC and SD devices.  There is a
+>> +single controller that may have several "slots" connected.  These
+>> +slots appear as children of the main controller node.
+>> +The DMA engine is an integral part of the controller block.
+>> +
+>> +1) MMC node
+>> +
+>> +Required properties:
+>> +- compatible : Should be "cavium,octeon-6130-mmc" or "cavium,octeon-7890-mmc"
+>> +- reg : Two entries:
+>> +	1) The base address of the MMC controller register bank.
+>> +	2) The base address of the MMC DMA engine register bank.
+>> +- interrupts :
+>> +	For "cavium,octeon-6130-mmc": two entries:
+>> +	1) The MMC controller interrupt line.
+>> +	2) The MMC DMA engine interrupt line.
+>> +	For "cavium,octeon-7890-mmc": nine entries:
+>> +	1) The next block transfer of a multiblock transfer has completed (BUF_DONE)
+>> +	2) Operation completed successfully (CMD_DONE).
+>> +	3) DMA transfer completed successfully (DMA_DONE).
+>> +	4) Operation encountered an error (CMD_ERR).
+>> +	5) DMA transfer encountered an error (DMA_ERR).
+>> +	6) Switch operation completed successfully (SWITCH_DONE).
+>> +	7) Switch operation encountered an error (SWITCH_ERR).
+>> +	8) Internal DMA engine request completion interrupt (DONE).
+>> +	9) Internal DMA FIFO underflow (FIFO).
+>> +- #address-cells : Must be <1>
+>> +- #size-cells : Must be <0>
+>> +
+>> +The node contains child nodes for each slot that the platform uses.
+>> +
+>> +Example:
+>> +mmc@1180000002000 {
+>> +	compatible = "cavium,octeon-6130-mmc";
+>> +	reg = <0x11800 0x00002000 0x0 0x100>,
+>> +		<0x11800 0x00000168 0x0 0x20>;
+>> +	#address-cells = <1>;
+>> +	#size-cells = <0>;
+>> +	/* EMM irq, DMA irq */
+>> +	interrupts = <1 19>, <0 63>;
+>> +
+>> +	[ child node definitions...]
+>> +};
+>> +
+>> +
+>> +2) Slot nodes
+>> +Properties in mmc.txt apply to each slot node that the platform uses.
+>> +
+>> +Required properties:
+>> +- reg : The slot number.
+>> +
+>> +Optional properties:
+>> +- cavium,cmd-clk-skew : the amount of delay (in pS) past the clock edge
+>> +	to sample the command pin.
+>> +- cavium,dat-clk-skew : the amount of delay (in pS) past the clock edge
+>> +	to sample the data pin.
+> I thought you were okay with adding -ps? Either way:
+>
+> Acked-by: Rob Herring <robh@kernel.org>
+>
+Thanks Rob.
+Adding the -ps to the binding creates quite a bit of extra code in the 
+driver, as we have to support the legacy version (without -ps) which is 
+already in shipped devices. Depending how many revisions the driver 
+itself goes through and how that code ends up being structured I may add 
+them back in.
+
+Thanks,
+Matt

@@ -1,41 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Feb 2016 00:22:01 +0100 (CET)
-Received: from mail-ob0-f178.google.com ([209.85.214.178]:33849 "EHLO
-        mail-ob0-f178.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012971AbcBRXV5BLHLy (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 19 Feb 2016 00:21:57 +0100
-Received: by mail-ob0-f178.google.com with SMTP id kf7so8664964obb.1
-        for <linux-mips@linux-mips.org>; Thu, 18 Feb 2016 15:21:56 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Feb 2016 00:24:02 +0100 (CET)
+Received: from mail-ob0-f173.google.com ([209.85.214.173]:33802 "EHLO
+        mail-ob0-f173.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012774AbcBRXYAbYG04 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 19 Feb 2016 00:24:00 +0100
+Received: by mail-ob0-f173.google.com with SMTP id kf7so8695455obb.1
+        for <linux-mips@linux-mips.org>; Thu, 18 Feb 2016 15:24:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:in-reply-to:references:date:message-id:subject:from:to
          :cc:content-type;
-        bh=oHxTMo3erVINf3PyRdaeMhpMS6vw4EFlZEbT43EPVVY=;
-        b=eBO9Cdx1O3inYWXcWCNRqqCRDMN0FG5KzL3j4zbP+JlV3Ttdba6ps2l+nPd3/iRBDu
-         8VtSmgLm/J1tWWL+RKTunYGP+l/oBa4Z1OFshNnbMacRW/cIFzMAvmnboOjbSIjWQ4eD
-         lZ5hHMDR4k7SzOO11l/9d/FHYG1s6lilGqTmU=
+        bh=Xu7j+cMsUXYC+SzslIA9YgtsizvWZSQ8BTqbHeY0aRQ=;
+        b=XAjSmuCGZ5JSddFnm5AyFP/D2+0FGUNt94zNC/itD/f5F+IZ/WOyoUMLs2/yI7AmFC
+         4vponC1XxiO93A3ZnTDKVzP+4AVrBcVvWCtSYGEgesONyevhWBxHuTiCLBQPGWsLZiPH
+         y3FXCFIXWTFXm+vqOCKEuSXxJZmTgtmOWTuZ8=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:mime-version:in-reply-to:references:date
          :message-id:subject:from:to:cc:content-type;
-        bh=oHxTMo3erVINf3PyRdaeMhpMS6vw4EFlZEbT43EPVVY=;
-        b=BQBZNmfnqFlsEeFPq4wrWSiTNKt0xccd0iNVXuOM7ASlwOEKV2MeaW+/MwiVHt0xQu
-         BYwRhrowinbcbUaiDZS+dlRLxYJvHA0m6gsxn3ysbe3shPTOTitfUqYsAAlv1jODlLvO
-         s3gI2n0CSvjgOWVriNImmEjj1MoRzDRVWm/RAyyeJzUjpQQf20vGxJakmGM4qBk2SlAn
-         uW44vApBGbsjEJEwybdQCaNsmaaJkiy/zR5ffIWxbWscd5hgGTsFZFq8CzyOVjDOFy2k
-         zE1CYQZEq87pz2HAYrUkWx90sNcCdoC+8xP7mH544l1Y4AGfomSi0FfSngMPOCXSPxzP
-         443A==
-X-Gm-Message-State: AG10YOQcyVIjAi7+7npF1tABWIdKANxTG3MFHR2zhpTyF9n7LQ7CncGvj8UUKrsC/CRPEQTDlvZlDb4TR61/EgwA
+        bh=Xu7j+cMsUXYC+SzslIA9YgtsizvWZSQ8BTqbHeY0aRQ=;
+        b=B8xtuZnRB6Dkq+n1RKRWjWlB2XFXcFqosWcAA7YWF7jK1aE1ZZuSMix8yrrzvwdmuq
+         7hlO6nTSHB0GG3rkA0WLEZM5+PdfOxm4wQdiL3TzprshoGlBbC0SEmrWMafDCPYx1vSf
+         iL3uxnMIRLwwUy2qEo/rqwdKnnAuMnEnEDm6RqgU2wkVPaH0hjfdMB9/EOBqutQWlp4Q
+         zvzRQllCCxJWPlaCTpTz/UTS0Dkhyvbigvc4JcPepEBM1oLieZg6KNxSEG1ymMvevjuP
+         a012OkTQR6Bsr6a2lVSIL+kZrYdIgNMcsjXvRqQRow0cHkznL98SjXj1FJyP1duHTKX4
+         TCDQ==
+X-Gm-Message-State: AG10YOTCEHOhtxU+g2JC/ZMb7KnreIorO1zyYxXxSwzL+iMdLxua2GT8aijWPntY/ufDdqvt9HGw9O5hRaWsxp6v
 MIME-Version: 1.0
-X-Received: by 10.60.147.137 with SMTP id tk9mr9037450oeb.45.1455837711289;
- Thu, 18 Feb 2016 15:21:51 -0800 (PST)
-Received: by 10.182.55.105 with HTTP; Thu, 18 Feb 2016 15:21:51 -0800 (PST)
-In-Reply-To: <1455637261-2920972-4-git-send-email-arnd@arndb.de>
+X-Received: by 10.182.76.2 with SMTP id g2mr8786038obw.21.1455837819949; Thu,
+ 18 Feb 2016 15:23:39 -0800 (PST)
+Received: by 10.182.55.105 with HTTP; Thu, 18 Feb 2016 15:23:39 -0800 (PST)
+In-Reply-To: <1455637261-2920972-5-git-send-email-arnd@arndb.de>
 References: <455637086-2794174-1-git-send-email-arnd@arndb.de>
         <1455637261-2920972-1-git-send-email-arnd@arndb.de>
-        <1455637261-2920972-4-git-send-email-arnd@arndb.de>
-Date:   Fri, 19 Feb 2016 00:21:51 +0100
-Message-ID: <CACRpkdYrUxkOGvxi85zAn8O32otLNGtBGrvQPSqvnm1htp=+-w@mail.gmail.com>
-Subject: Re: [PATCH v2 4/5] gpio: ep93xx: remove private irq_to_gpio function
+        <1455637261-2920972-5-git-send-email-arnd@arndb.de>
+Date:   Fri, 19 Feb 2016 00:23:39 +0100
+Message-ID: <CACRpkdaSxhBrSt5qcUUJPcN6nv9Go96TP52cyU_nBZZM0phuPA@mail.gmail.com>
+Subject: Re: [PATCH v2 5/5] gpio: allow setting ARCH_NR_GPIOS from Kconfig
 From:   Linus Walleij <linus.walleij@linaro.org>
 To:     Arnd Bergmann <arnd@arndb.de>
 Cc:     "linux-arm-kernel@lists.infradead.org" 
@@ -47,13 +47,14 @@ Cc:     "linux-arm-kernel@lists.infradead.org"
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Ralf Baechle <ralf@linux-mips.org>,
-        Linux MIPS <linux-mips@linux-mips.org>
+        Linux MIPS <linux-mips@linux-mips.org>,
+        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Return-Path: <linus.walleij@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52126
+X-archive-position: 52127
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -72,17 +73,16 @@ X-list: linux-mips
 
 On Tue, Feb 16, 2016 at 4:40 PM, Arnd Bergmann <arnd@arndb.de> wrote:
 
-> The ep93xx goes through its own back-and-forth dance every time
-> it wants to know the gpio number for an irq line, when it really
-> just hardcodes a fixed offset in ep93xx_gpio_to_irq().
+> The ARM version of asm/gpio.h basically just contains the same definitions
+> as the gpiolib version, with the exception of ARCH_NR_GPIOS.
 >
-> This removes the pointless macro and replaces the conversion inside
-> of the driver with simple add/subtract operations, using an
-> explicit macro.
+> This adds the option for overriding the constant through Kconfig to
+> the architecture-independent header, so we can remove the ARM specific
+> file later.
 >
 > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 
-Holding this back waiting for the dependent cleanup to come in.
+Patch applied.
 
 Yours,
 Linus Walleij

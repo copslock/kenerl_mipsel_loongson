@@ -1,66 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Feb 2016 11:15:47 +0100 (CET)
-Received: from mail-wm0-f51.google.com ([74.125.82.51]:37472 "EHLO
-        mail-wm0-f51.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010865AbcBRKPpkL-dr (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 18 Feb 2016 11:15:45 +0100
-Received: by mail-wm0-f51.google.com with SMTP id g62so17945866wme.0
-        for <linux-mips@linux-mips.org>; Thu, 18 Feb 2016 02:15:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=sender:date:from:to:cc:subject:message-id:references:mime-version
-         :content-type:content-disposition:content-transfer-encoding
-         :in-reply-to:user-agent;
-        bh=H2wFngdn2suIAkdKgN3j1x//gBKnR3O+AwAutwilFho=;
-        b=E/GuptHBpzA5pP5JuDJfv9E4PjMi7Fig8FSfp0WPtC4aLPx0PUNrEzYMyzIy6ev1U1
-         YNouZj6L+CwLGNQT92/fYfaacFigTuOwzSozkUg3eKnIYIaAcG+7I3Gi63wRVvvnNV/3
-         I/gbe5aWfJLoKwiyKwxObkbUMWqRf265Hv3FoHTHkYiubXXTmwyxFZoolnQ4fbYp9wEE
-         mWOltIWqbtBnOtS2NrIYbMoabWgqFzoe1T5jJcS6Mz9Qdsf4wSXXMHnkuRdY6VQ7dWzi
-         Q77myCNwfv/qrEtcb96Km9awxhqskRugPVBHVIQNgvju7qSSHWEQasy22i3K0rBpDORr
-         Zf4A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
-         :references:mime-version:content-type:content-disposition
-         :content-transfer-encoding:in-reply-to:user-agent;
-        bh=H2wFngdn2suIAkdKgN3j1x//gBKnR3O+AwAutwilFho=;
-        b=iMCPVAjQhh1c/Zk8jEEXILjzk6U4jkIZZInI+ZJoskolT/GHxTQrTjLrbdODrR/zP3
-         +4s5SSQ9F3AlkNu8ZFivQdh/9EEs8C2HpHPIz1vw6/4vt2PgEwmYpziBP+pUJVELDaqQ
-         tfnircAOjTavdm3uE0rx6mIuHmUOHHWq5hTo7ZSknNKFp5WIVGXhmyTo9tfXe+WeB+rU
-         euubTV5+M2XvZ7GxxAfRZjsH51NyXQ+GGQHn6886IHjrPFbpqIpXw03mn2/4F0RmC3li
-         d/Z/JcUSvpkVe74SggcNRW7DBht8b335Sld5OSdyxbSZ4rDzTAJw56fmwVQbUaMN1Tmj
-         An0w==
-X-Gm-Message-State: AG10YOSDWDZpZ/S0+nMzBSwVpdUTxV0JB7/ACqoQ7CPq21XdL4ABShPas3y5a1v0vM55yg==
-X-Received: by 10.194.220.230 with SMTP id pz6mr6665843wjc.39.1455790540329;
-        Thu, 18 Feb 2016 02:15:40 -0800 (PST)
-Received: from gmail.com (2E8B0CD5.catv.pool.telekom.hu. [46.139.12.213])
-        by smtp.gmail.com with ESMTPSA id d9sm5765173wjf.43.2016.02.18.02.15.38
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 18 Feb 2016 02:15:39 -0800 (PST)
-Date:   Thu, 18 Feb 2016 11:15:37 +0100
-From:   Ingo Molnar <mingo@kernel.org>
-To:     Dave Hansen <dave@sr71.net>
-Cc:     linux-kernel@vger.kernel.org, linux-mm@kvack.org, x86@kernel.org,
-        dave.hansen@linux.intel.com, linux-mips@linux-mips.org,
-        linux-ia64@vger.kernel.org
-Subject: Re: [PATCH] signals, ia64, mips: update arch-specific siginfos with
- pkeys field
-Message-ID: <20160218101537.GA5540@gmail.com>
-References: <20160217181703.E99B6656@viggo.jf.intel.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Feb 2016 15:35:29 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.136]:49102 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27012796AbcBROf0XdyZ9 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 18 Feb 2016 15:35:26 +0100
+Received: from mail.kernel.org (localhost [127.0.0.1])
+        by mail.kernel.org (Postfix) with ESMTP id 3AD3E20225;
+        Thu, 18 Feb 2016 14:35:21 +0000 (UTC)
+Received: from rob-hp-laptop (pool-108-31-35-198.washdc.fios.verizon.net [108.31.35.198])
+        (using TLSv1.2 with cipher AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id D15AD20222;
+        Thu, 18 Feb 2016 14:35:18 +0000 (UTC)
+Date:   Thu, 18 Feb 2016 08:35:16 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Matt Redfearn <matt.redfearn@imgtec.com>
+Cc:     david.daney@cavium.com, aleksey.makarov@caviumnetworks.com,
+        ulf.hansson@linaro.org, linux-mmc@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-mips@linux-mips.org,
+        Chandrakala Chavva <cchavva@caviumnetworks.com>,
+        Aleksey Makarov <aleksey.makarov@auriga.com>,
+        Leonid Rosenboim <lrosenboim@caviumnetworks.com>,
+        Peter Swain <pswain@cavium.com>,
+        Aaron Williams <aaron.williams@cavium.com>
+Subject: Re: [PATCH v7 1/2] mmc: OCTEON: Add DT bindings for OCTEON MMC
+ controller
+Message-ID: <20160218143516.GA9654@rob-hp-laptop>
+References: <1455725574-9947-1-git-send-email-matt.redfearn@imgtec.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20160217181703.E99B6656@viggo.jf.intel.com>
+In-Reply-To: <1455725574-9947-1-git-send-email-matt.redfearn@imgtec.com>
 User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <mingo.kernel.org@gmail.com>
+X-Virus-Scanned: ClamAV using ClamSMTP
+Return-Path: <robh@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52114
+X-archive-position: 52115
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mingo@kernel.org
+X-original-sender: robh@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -73,37 +53,103 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-
-* Dave Hansen <dave@sr71.net> wrote:
-
+On Wed, Feb 17, 2016 at 04:12:53PM +0000, Matt Redfearn wrote:
+> From: Aleksey Makarov <aleksey.makarov@caviumnetworks.com>
 > 
-> This fixes a compile error that Ingo was hitting with MIPS when the
-> x86 pkeys patch set is applied.
+> Add Device Tree binding document for Octeon MMC controller. The driver
+> is in a following patch.
 > 
-> ia64 and mips have separate definitions for siginfo from the
-> generic one.  Patch them to have the pkey fields.
+> The MMC controller can be connected to up to 4 "slots" which may be
+> eMMC, MMC or SD card devices. As there is a single controller, each
+> available slot is represented as a child node of the controller.
 > 
-> Note that this is exactly what we did for MPX as well.
+> This is a similar concept to the atmel-mci driver.
 > 
-> Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-> Cc: linux-mips@linux-mips.org
-> Cc: linux-ia64@vger.kernel.org
+> Tested-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+> Signed-off-by: Chandrakala Chavva <cchavva@caviumnetworks.com>
+> Signed-off-by: David Daney <david.daney@cavium.com>
+> Signed-off-by: Aleksey Makarov <aleksey.makarov@auriga.com>
+> Signed-off-by: Leonid Rosenboim <lrosenboim@caviumnetworks.com>
+> Signed-off-by: Peter Swain <pswain@cavium.com>
+> Signed-off-by: Aaron Williams <aaron.williams@cavium.com>
+> Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
 > ---
+> v7: No changes
 > 
->  b/arch/ia64/include/uapi/asm/siginfo.h |   13 +++++++++----
->  b/arch/mips/include/uapi/asm/siginfo.h |   13 +++++++++----
->  2 files changed, 18 insertions(+), 8 deletions(-)
+> v6:
+> - Split up patch
+> - Moved device tree fixup to platform code
+> ---
+>  .../devicetree/bindings/mmc/octeon-mmc.txt         | 79 ++++++++++++++++++++++
+>  1 file changed, 79 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/mmc/octeon-mmc.txt
+> 
+> diff --git a/Documentation/devicetree/bindings/mmc/octeon-mmc.txt b/Documentation/devicetree/bindings/mmc/octeon-mmc.txt
+> new file mode 100644
+> index 000000000000..d2c576d9ad65
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/mmc/octeon-mmc.txt
+> @@ -0,0 +1,79 @@
+> +* OCTEON SD/MMC Host Controller
+> +
+> +This controller is present on some members of the Cavium OCTEON SoC
+> +family, provide an interface for eMMC, MMC and SD devices.  There is a
+> +single controller that may have several "slots" connected.  These
+> +slots appear as children of the main controller node.
+> +The DMA engine is an integral part of the controller block.
+> +
+> +1) MMC node
+> +
+> +Required properties:
+> +- compatible : Should be "cavium,octeon-6130-mmc" or "cavium,octeon-7890-mmc"
+> +- reg : Two entries:
+> +	1) The base address of the MMC controller register bank.
+> +	2) The base address of the MMC DMA engine register bank.
+> +- interrupts :
+> +	For "cavium,octeon-6130-mmc": two entries:
+> +	1) The MMC controller interrupt line.
+> +	2) The MMC DMA engine interrupt line.
+> +	For "cavium,octeon-7890-mmc": nine entries:
+> +	1) The next block transfer of a multiblock transfer has completed (BUF_DONE)
+> +	2) Operation completed successfully (CMD_DONE).
+> +	3) DMA transfer completed successfully (DMA_DONE).
+> +	4) Operation encountered an error (CMD_ERR).
+> +	5) DMA transfer encountered an error (DMA_ERR).
+> +	6) Switch operation completed successfully (SWITCH_DONE).
+> +	7) Switch operation encountered an error (SWITCH_ERR).
+> +	8) Internal DMA engine request completion interrupt (DONE).
+> +	9) Internal DMA FIFO underflow (FIFO).
+> +- #address-cells : Must be <1>
+> +- #size-cells : Must be <0>
+> +
+> +The node contains child nodes for each slot that the platform uses.
+> +
+> +Example:
+> +mmc@1180000002000 {
+> +	compatible = "cavium,octeon-6130-mmc";
+> +	reg = <0x11800 0x00002000 0x0 0x100>,
+> +		<0x11800 0x00000168 0x0 0x20>;
+> +	#address-cells = <1>;
+> +	#size-cells = <0>;
+> +	/* EMM irq, DMA irq */
+> +	interrupts = <1 19>, <0 63>;
+> +
+> +	[ child node definitions...]
+> +};
+> +
+> +
+> +2) Slot nodes
+> +Properties in mmc.txt apply to each slot node that the platform uses.
+> +
+> +Required properties:
+> +- reg : The slot number.
+> +
+> +Optional properties:
+> +- cavium,cmd-clk-skew : the amount of delay (in pS) past the clock edge
+> +	to sample the command pin.
+> +- cavium,dat-clk-skew : the amount of delay (in pS) past the clock edge
+> +	to sample the data pin.
 
-This solved the MIPS and IA64 build problems, but there's still one bug left: UML 
-does not build:
+I thought you were okay with adding -ps? Either way:
 
- /home/mingo/tip/mm/gup.c: In function ‘check_vma_flags’:
- /home/mingo/tip/mm/gup.c:456:2: error: implicit declaration of function ‘arch_vma_access_permitted’ [-Werror=implicit-function-declaration]
-   if (!arch_vma_access_permitted(vma, write, false, foreign))
- [...]
-
-Please send a delta patch for this too.
-
-Thanks,
-
-	Ingo
+Acked-by: Rob Herring <robh@kernel.org>

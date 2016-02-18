@@ -1,49 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Feb 2016 17:48:08 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:28668 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27012596AbcBRQsHOGpVm (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 18 Feb 2016 17:48:07 +0100
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Websense Email Security Gateway with ESMTPS id 2225FB52DDEC4;
-        Thu, 18 Feb 2016 16:47:58 +0000 (GMT)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
- 14.3.266.1; Thu, 18 Feb 2016 16:48:00 +0000
-Received: from [192.168.154.116] (192.168.154.116) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.266.1; Thu, 18 Feb
- 2016 16:48:00 +0000
-Subject: Re: [PATCH v7 1/2] mmc: OCTEON: Add DT bindings for OCTEON MMC
- controller
-To:     Rob Herring <robh@kernel.org>
-References: <1455725574-9947-1-git-send-email-matt.redfearn@imgtec.com>
- <20160218143516.GA9654@rob-hp-laptop>
-CC:     <david.daney@cavium.com>, <aleksey.makarov@caviumnetworks.com>,
-        <ulf.hansson@linaro.org>, <linux-mmc@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-mips@linux-mips.org>,
-        Chandrakala Chavva <cchavva@caviumnetworks.com>,
-        Aleksey Makarov <aleksey.makarov@auriga.com>,
-        Leonid Rosenboim <lrosenboim@caviumnetworks.com>,
-        Peter Swain <pswain@cavium.com>,
-        Aaron Williams <aaron.williams@cavium.com>
-From:   Matt Redfearn <matt.redfearn@imgtec.com>
-Message-ID: <56C5F5C0.7010008@imgtec.com>
-Date:   Thu, 18 Feb 2016 16:48:00 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.5.1
-MIME-Version: 1.0
-In-Reply-To: <20160218143516.GA9654@rob-hp-laptop>
-Content-Type: text/plain; charset="windows-1252"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.154.116]
-Return-Path: <Matt.Redfearn@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Feb 2016 18:41:10 +0100 (CET)
+Received: from mail-lf0-f42.google.com ([209.85.215.42]:34289 "EHLO
+        mail-lf0-f42.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012967AbcBRRlJNxi6y convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 18 Feb 2016 18:41:09 +0100
+Received: by mail-lf0-f42.google.com with SMTP id j78so37688169lfb.1
+        for <linux-mips@linux-mips.org>; Thu, 18 Feb 2016 09:41:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=date:from:to:cc:subject:message-id:in-reply-to:references
+         :mime-version:content-type:content-transfer-encoding;
+        bh=2i0C7I/npKOtS2H1A2Osy5oyHor9I+P3L/dw7HXPcFI=;
+        b=a3QvQdDA5OpQnGhjr3xaNrThlwlCNbmxj4JIA0Nv/BUCqu1vRH9IuRoaBEKxt5w8oK
+         qCxkIdz7rs/KPL+cELC76LXrutjMHEyxnWd+wEWhyFd27keHhxwtIR9YR2AuurxYe+qb
+         HP1OxpzSDI0N1NGHGvPGMyVsMLCXhbGOLMTEuuwx4aSfTk71/3SCk86okIDDSaNGT+xY
+         1OekqW5f3wG4wiJ3MPgYhGdLaY1EGqiCNmpi4fnG02O0XJKmJWZiLJLmA/prnZao46Sg
+         30GCq82kyfU65xuUVHaEIHfzXQSW2IeR3CA3OsuMS4A7q6klyZ5HVzCyvwfNugXb0O0F
+         4l7A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:in-reply-to
+         :references:mime-version:content-type:content-transfer-encoding;
+        bh=2i0C7I/npKOtS2H1A2Osy5oyHor9I+P3L/dw7HXPcFI=;
+        b=bCJ898FoYANiT/VEA2Nn8xJum2HfYvtGJV674QZbdv4Pr8oZTpgBaFponIi9qIfImZ
+         phy7bIh9NKv5vgcx+Inp8Yo6pvHF2pAfrzWCXlldcHBWZWM2oDmUqIH8soFlXzVqf00K
+         mstBLv6UGDMlNsY92BHdw0QDnbMTlsMa/o1Zcl0CdIz5bLB2ESuSfSdtJAz8s/tk8n8c
+         jKPC8co0yDqlUqnvFNkle3cFYDAV/wxG1jQNHE1FAAHm1fRlEwEY3Ad9ZmcTh3KLr2mB
+         aW7tt+OJVIF/LmoydoB+3ff6AdP46tXNUpBpQCc6FMyswGA6lO7+rDHv1uCB+mLN9KuM
+         7KwQ==
+X-Gm-Message-State: AG10YORjItXphWGJ2gkX1pALLBcrJsUC2q8F+3DbzUNUD8TzMR1Kh5btnFuiPG4L56S0eg==
+X-Received: by 10.25.127.208 with SMTP id a199mr3062833lfd.149.1455817263823;
+        Thu, 18 Feb 2016 09:41:03 -0800 (PST)
+Received: from flare (t35.niisi.ras.ru. [193.232.173.35])
+        by smtp.gmail.com with ESMTPSA id 88sm1056369lfr.44.2016.02.18.09.41.02
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Thu, 18 Feb 2016 09:41:03 -0800 (PST)
+Date:   Thu, 18 Feb 2016 21:06:52 +0300
+From:   Antony Pavlov <antonynpavlov@gmail.com>
+To:     Alan Stern <stern@rowland.harvard.edu>, Marek Vasut <marex@denx.de>
+Cc:     linux-mips@linux-mips.org, Wills Wang <wills.wang@live.com>,
+        Daniel Schwierzeck <daniel.schwierzeck@gmail.com>,
+        Alban Bedel <albeu@free.fr>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        <linux-usb@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [RFC v5 07/15] usb: ehci: add vbus-gpio parameter
+Message-Id: <20160218210652.68ae464eed8ddbffd33e7a02@gmail.com>
+In-Reply-To: <Pine.LNX.4.44L0.1602181111350.1280-100000@iolanthe.rowland.org>
+References: <1455005641-7079-8-git-send-email-antonynpavlov@gmail.com>
+        <Pine.LNX.4.44L0.1602181111350.1280-100000@iolanthe.rowland.org>
+X-Mailer: Sylpheed 3.5.0beta3 (GTK+ 2.24.25; i586-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
+Return-Path: <antonynpavlov@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52118
+X-archive-position: 52119
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: matt.redfearn@imgtec.com
+X-original-sender: antonynpavlov@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,115 +73,123 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+On Thu, 18 Feb 2016 11:12:43 -0500 (EST)
+Alan Stern <stern@rowland.harvard.edu> wrote:
 
-
-On 18/02/16 14:35, Rob Herring wrote:
-> On Wed, Feb 17, 2016 at 04:12:53PM +0000, Matt Redfearn wrote:
->> From: Aleksey Makarov <aleksey.makarov@caviumnetworks.com>
->>
->> Add Device Tree binding document for Octeon MMC controller. The driver
->> is in a following patch.
->>
->> The MMC controller can be connected to up to 4 "slots" which may be
->> eMMC, MMC or SD card devices. As there is a single controller, each
->> available slot is represented as a child node of the controller.
->>
->> This is a similar concept to the atmel-mci driver.
->>
->> Tested-by: Aaro Koskinen <aaro.koskinen@iki.fi>
->> Signed-off-by: Chandrakala Chavva <cchavva@caviumnetworks.com>
->> Signed-off-by: David Daney <david.daney@cavium.com>
->> Signed-off-by: Aleksey Makarov <aleksey.makarov@auriga.com>
->> Signed-off-by: Leonid Rosenboim <lrosenboim@caviumnetworks.com>
->> Signed-off-by: Peter Swain <pswain@cavium.com>
->> Signed-off-by: Aaron Williams <aaron.williams@cavium.com>
->> Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
->> ---
->> v7: No changes
->>
->> v6:
->> - Split up patch
->> - Moved device tree fixup to platform code
->> ---
->>   .../devicetree/bindings/mmc/octeon-mmc.txt         | 79 ++++++++++++++++++++++
->>   1 file changed, 79 insertions(+)
->>   create mode 100644 Documentation/devicetree/bindings/mmc/octeon-mmc.txt
->>
->> diff --git a/Documentation/devicetree/bindings/mmc/octeon-mmc.txt b/Documentation/devicetree/bindings/mmc/octeon-mmc.txt
->> new file mode 100644
->> index 000000000000..d2c576d9ad65
->> --- /dev/null
->> +++ b/Documentation/devicetree/bindings/mmc/octeon-mmc.txt
->> @@ -0,0 +1,79 @@
->> +* OCTEON SD/MMC Host Controller
->> +
->> +This controller is present on some members of the Cavium OCTEON SoC
->> +family, provide an interface for eMMC, MMC and SD devices.  There is a
->> +single controller that may have several "slots" connected.  These
->> +slots appear as children of the main controller node.
->> +The DMA engine is an integral part of the controller block.
->> +
->> +1) MMC node
->> +
->> +Required properties:
->> +- compatible : Should be "cavium,octeon-6130-mmc" or "cavium,octeon-7890-mmc"
->> +- reg : Two entries:
->> +	1) The base address of the MMC controller register bank.
->> +	2) The base address of the MMC DMA engine register bank.
->> +- interrupts :
->> +	For "cavium,octeon-6130-mmc": two entries:
->> +	1) The MMC controller interrupt line.
->> +	2) The MMC DMA engine interrupt line.
->> +	For "cavium,octeon-7890-mmc": nine entries:
->> +	1) The next block transfer of a multiblock transfer has completed (BUF_DONE)
->> +	2) Operation completed successfully (CMD_DONE).
->> +	3) DMA transfer completed successfully (DMA_DONE).
->> +	4) Operation encountered an error (CMD_ERR).
->> +	5) DMA transfer encountered an error (DMA_ERR).
->> +	6) Switch operation completed successfully (SWITCH_DONE).
->> +	7) Switch operation encountered an error (SWITCH_ERR).
->> +	8) Internal DMA engine request completion interrupt (DONE).
->> +	9) Internal DMA FIFO underflow (FIFO).
->> +- #address-cells : Must be <1>
->> +- #size-cells : Must be <0>
->> +
->> +The node contains child nodes for each slot that the platform uses.
->> +
->> +Example:
->> +mmc@1180000002000 {
->> +	compatible = "cavium,octeon-6130-mmc";
->> +	reg = <0x11800 0x00002000 0x0 0x100>,
->> +		<0x11800 0x00000168 0x0 0x20>;
->> +	#address-cells = <1>;
->> +	#size-cells = <0>;
->> +	/* EMM irq, DMA irq */
->> +	interrupts = <1 19>, <0 63>;
->> +
->> +	[ child node definitions...]
->> +};
->> +
->> +
->> +2) Slot nodes
->> +Properties in mmc.txt apply to each slot node that the platform uses.
->> +
->> +Required properties:
->> +- reg : The slot number.
->> +
->> +Optional properties:
->> +- cavium,cmd-clk-skew : the amount of delay (in pS) past the clock edge
->> +	to sample the command pin.
->> +- cavium,dat-clk-skew : the amount of delay (in pS) past the clock edge
->> +	to sample the data pin.
-> I thought you were okay with adding -ps? Either way:
+> On Tue, 9 Feb 2016, Antony Pavlov wrote:
+> 
+> > This patch retrieves and configures the vbus control gpio via
+> > the device tree.
+> > 
+> > This patch is based on a ehci-s5p.c commit fd81d59c90d38661
+> > ("USB: ehci-s5p: Add vbus setup function to the s5p ehci glue layer").
+> > 
+> > Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> > Cc: Alan Stern <stern@rowland.harvard.edu>
+> > Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> > Cc: linux-usb@vger.kernel.org
+> > Cc: linux-kernel@vger.kernel.org
+> > ---
+> >  drivers/usb/host/ehci-platform.c | 22 ++++++++++++++++++++++
+> >  1 file changed, 22 insertions(+)
+> > 
+> > diff --git a/drivers/usb/host/ehci-platform.c b/drivers/usb/host/ehci-platform.c
+> > index bd7082f2..0d95ced 100644
+> > --- a/drivers/usb/host/ehci-platform.c
+> > +++ b/drivers/usb/host/ehci-platform.c
+> > @@ -28,6 +28,7 @@
+> >  #include <linux/io.h>
+> >  #include <linux/module.h>
+> >  #include <linux/of.h>
+> > +#include <linux/of_gpio.h>
+> >  #include <linux/phy/phy.h>
+> >  #include <linux/platform_device.h>
+> >  #include <linux/reset.h>
+> > @@ -142,6 +143,25 @@ static struct usb_ehci_pdata ehci_platform_defaults = {
+> >  	.power_off =		ehci_platform_power_off,
+> >  };
+> >  
+> > +static void setup_vbus_gpio(struct device *dev)
+> > +{
+> > +	int err;
+> > +	int gpio;
+> > +
+> > +	if (!dev->of_node)
+> > +		return;
+> > +
+> > +	gpio = of_get_named_gpio(dev->of_node, "vbus-gpio", 0);
+> > +	if (!gpio_is_valid(gpio))
+> > +		return;
+> > +
+> > +	err = devm_gpio_request_one(dev, gpio,
+> > +				GPIOF_OUT_INIT_HIGH | GPIOF_EXPORT_DIR_FIXED,
+> > +				"ehci_vbus_gpio");
+> > +	if (err)
+> > +		dev_err(dev, "can't request ehci vbus gpio %d", gpio);
 >
-> Acked-by: Rob Herring <robh@kernel.org>
 >
-Thanks Rob.
-Adding the -ps to the binding creates quite a bit of extra code in the 
-driver, as we have to support the legacy version (without -ps) which is 
-already in shipped devices. Depending how many revisions the driver 
-itself goes through and how that code ends up being structured I may add 
-them back in.
+> I don't understand this.  If you get an error here, what's the point of 
+> allowing the probe to continue?  Shouldn't you return an error code so 
+> the probe will fail?
 
-Thanks,
-Matt
+Please ignore the 'usb: ehci: add vbus-gpio parameter' patch!
+
+In the new AR9331 patchseries I use chipidea USB driver (thanks to Marek for the suggestion)
+in the AR9331 dtsi-file:
+
+        usb: usb@1b000100 {
+                compatible = "chipidea,usb2";
+                reg = <0x1b000000 0x200>;
+
+                interrupt-parent = <&cpuintc>;
+                interrupts = <3>;
+                resets = <&rst 5>;
+
+                phy-names = "usb-phy";
+                phys = <&usb_phy>;
+
+                status = "disabled";
+        };
+
+
+so I use regulator in the TL-MR3020 board dts file:
+
+        reg_usb_vbus: reg_usb_vbus {
+                compatible = "regulator-fixed";
+                regulator-name = "usb_vbus";
+                regulator-min-microvolt = <5000000>;
+                regulator-max-microvolt = <5000000>;
+                gpio = <&gpio 8 GPIO_ACTIVE_HIGH>;
+                enable-active-high;
+        };
+
+&usb {
+        dr_mode = "host";
+        vbus-supply = <&reg_usb_vbus>;
+        status = "okay";
+};
+
+As a result there is no need in adding vbus-gpio parameter to ehci anymore!
+
+> > +}
+> > +
+> >  static int ehci_platform_probe(struct platform_device *dev)
+> >  {
+> >  	struct usb_hcd *hcd;
+> > @@ -174,6 +194,8 @@ static int ehci_platform_probe(struct platform_device *dev)
+> >  		return irq;
+> >  	}
+> >  
+> > +	setup_vbus_gpio(&dev->dev);
+> > +
+> >  	hcd = usb_create_hcd(&ehci_platform_hc_driver, &dev->dev,
+> >  			     dev_name(&dev->dev));
+> >  	if (!hcd)
+> > 
+> 
+
+
+-- 
+-- 
+Best regards,
+  Antony Pavlov

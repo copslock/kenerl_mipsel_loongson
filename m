@@ -1,21 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 20 Feb 2016 01:05:15 +0100 (CET)
-Received: from mail.windriver.com ([147.11.1.11]:38933 "EHLO
-        mail.windriver.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27012263AbcBTAFNiHsoD (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 20 Feb 2016 01:05:13 +0100
-Received: from ALA-HCA.corp.ad.wrs.com (ala-hca.corp.ad.wrs.com [147.11.189.40])
-        by mail.windriver.com (8.15.2/8.15.1) with ESMTPS id u1K056Pf017149
-        (version=TLSv1 cipher=AES128-SHA bits=128 verify=FAIL);
-        Fri, 19 Feb 2016 16:05:06 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 20 Feb 2016 01:32:35 +0100 (CET)
+Received: from mail5.windriver.com ([192.103.53.11]:33304 "EHLO mail5.wrs.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27012263AbcBTAcculyxy (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 20 Feb 2016 01:32:32 +0100
+Received: from ALA-HCB.corp.ad.wrs.com (ala-hcb.corp.ad.wrs.com [147.11.189.41])
+        by mail5.wrs.com (8.15.2/8.15.2) with ESMTPS id u1K0WNQ4018725
+        (version=TLSv1 cipher=AES128-SHA bits=128 verify=OK);
+        Fri, 19 Feb 2016 16:32:23 -0800
 Received: from yshi-Precision-T5600.corp.ad.wrs.com (147.11.216.82) by
- ALA-HCA.corp.ad.wrs.com (147.11.189.40) with Microsoft SMTP Server id
- 14.3.248.2; Fri, 19 Feb 2016 16:05:05 -0800
+ ALA-HCB.corp.ad.wrs.com (147.11.189.41) with Microsoft SMTP Server id
+ 14.3.248.2; Fri, 19 Feb 2016 16:32:22 -0800
 From:   Yang Shi <yang.shi@windriver.com>
-To:     <ralf@linux-mips.org>
+To:     <david.daney@cavium.com>, <ralf@linux-mips.org>
 CC:     <linux-kernel@vger.kernel.org>, <linux-mips@linux-mips.org>
-Subject: [PATCH] mips: Kconfig: replace OPROFILE=n to !OPROFILE
-Date:   Fri, 19 Feb 2016 15:42:11 -0800
-Message-ID: <1455925331-9662-1-git-send-email-yang.shi@windriver.com>
+Subject: [PATCH] mips: octeon: unselect NR_CPUS_DEFAULT_16
+Date:   Fri, 19 Feb 2016 16:09:28 -0800
+Message-ID: <1455926968-12779-1-git-send-email-yang.shi@windriver.com>
 X-Mailer: git-send-email 2.0.2
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -23,7 +23,7 @@ Return-Path: <Yang.Shi@windriver.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52136
+X-archive-position: 52137
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -40,26 +40,26 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-In Kconfig "=n" is not correct syntax, "!" is the preferred way for
-false-positive expression.
+In the octeon defconfig, NR_CPUS is 32. And, some model of OCTEON II do have
+> 16 cores. Given the typical memory size equipped by Octeon boards, it sounds
+like not a big deal to set a bigger NR_CPUS value as default.
 
 Signed-off-by: Yang Shi <yang.shi@windriver.com>
 ---
- arch/mips/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/Kconfig | 1 -
+ 1 file changed, 1 deletion(-)
 
 diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 74a3db9..ab433d3 100644
+index ab433d3..a885156 100644
 --- a/arch/mips/Kconfig
 +++ b/arch/mips/Kconfig
-@@ -2484,7 +2484,7 @@ config NODES_SHIFT
- 
- config HW_PERF_EVENTS
- 	bool "Enable hardware performance counter support for perf events"
--	depends on PERF_EVENTS && OPROFILE=n && (CPU_MIPS32 || CPU_MIPS64 || CPU_R10000 || CPU_SB1 || CPU_CAVIUM_OCTEON || CPU_XLP || CPU_LOONGSON3)
-+	depends on PERF_EVENTS && !OPROFILE && (CPU_MIPS32 || CPU_MIPS64 || CPU_R10000 || CPU_SB1 || CPU_CAVIUM_OCTEON || CPU_XLP || CPU_LOONGSON3)
- 	default y
+@@ -885,7 +885,6 @@ config CAVIUM_OCTEON_SOC
+ 	select USE_OF
+ 	select ARCH_SPARSEMEM_ENABLE
+ 	select SYS_SUPPORTS_SMP
+-	select NR_CPUS_DEFAULT_16
+ 	select BUILTIN_DTB
+ 	select MTD_COMPLEX_MAPPINGS
  	help
- 	  Enable hardware performance counter support for perf events. If
 -- 
 2.0.2

@@ -1,39 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 21 Feb 2016 12:41:35 +0100 (CET)
-Received: from mail-wm0-f42.google.com ([74.125.82.42]:35691 "EHLO
-        mail-wm0-f42.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007424AbcBULldnD4I5 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 21 Feb 2016 12:41:33 +0100
-Received: by mail-wm0-f42.google.com with SMTP id c200so133894947wme.0;
-        Sun, 21 Feb 2016 03:41:33 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 21 Feb 2016 12:41:53 +0100 (CET)
+Received: from mail-wm0-f45.google.com ([74.125.82.45]:34166 "EHLO
+        mail-wm0-f45.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011712AbcBULlfSzHC5 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 21 Feb 2016 12:41:35 +0100
+Received: by mail-wm0-f45.google.com with SMTP id b205so121621053wmb.1;
+        Sun, 21 Feb 2016 03:41:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:mime-version:content-type
          :content-transfer-encoding;
-        bh=dxZLh7EEBEGcGk1e/CwSCiXh5TdcVG/YwW0LRzasG9M=;
-        b=PRKfiqZnsVsTirM4BPoE6Al32OPtHrjIuh04Lm3jfV0Fvhxyr1bqTVcVWJbCPtz4D9
-         FgMrm0+rNjURrzXa82PJH1IvH5uR89zWm7aNiw3Ig4Y9oYuw1ktrTZNSTZ2IrBxyJHE2
-         +ACRTXHfcrZh84Tf3ql8QyDyVZektd4S7yF6klbL0AG611NnZ2e53n/IzQP5Leo54iKc
-         jtSUVbJdPob/KfbvGa+EjMxDjiDHumeIrgzSN0Syd0G4DqeZXEuK8W1mA69URYp9Wxf7
-         x+HQq3BbXXjSmtFl5faF2zaEUp3+kaE5WobjumZJqYcQ46T2NWT1gZFV6izT2E7OI0RU
-         zSyw==
+        bh=xA3z0zSRtinuY9e8mtbX8zeAfyz/6Yeoy4E1bUkOfAY=;
+        b=MufB+jhKNIiCmwFyYHdDqkRIJc5dXKTyE3v46dc3ic0GDgSJlT5E1umKOTERH1piVm
+         dkMNWp7dElIGjOOivolpeA5zcuB73qzyxO1CEH48gH6lqFM6V6QUBPGzC7+hRZHu/ty7
+         3NhgvV22nrYioIQdmKIFxyn/yfFquP8+bYai7rb+lObNXZr0UN8oI7B348lI7jZXl3W5
+         WW9A/Yg947acgpqTHp00YytAA09uMpGAile6qzXWKYPMG7CIM52TJUb+qu8cfsQ/uqUo
+         C2/yw8yh3xPyJgbgSFo8piTbFK09YOfSWbtKW+RTnJL4YKFqEXbzW+ct2GAs46Kwjp+v
+         cP3g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-type:content-transfer-encoding;
-        bh=dxZLh7EEBEGcGk1e/CwSCiXh5TdcVG/YwW0LRzasG9M=;
-        b=Xk3CthwCnd6Lf+9XbHGZzeKpA3LVBGoEVOQNSB56GnuRsa0LMNLvZi59M6ambkaBG+
-         J7KpHKMsotlcCmjQvL0Z1ngLw0iBIhOeXPM+lXTayqOgZdQ3cl9BvyHDJIa4XLlYaSr8
-         mf9ZZ+3ZWd0Ek5MZw55hPbnkv5+d47gJlNiMvQLCEK7LbS4Xk38nA4S1OmXbGy6+KqVs
-         ysFPcJK2n0hoyLSvV8kWUdgCb6wnXuQYlTGKwV5kDDAh0xF4JyWD8x+It6KA4imbzdM2
-         t7OO9KTG4zUEgCjvsDZa7cdJGtaebGVZVu8M3lh1NGkS1jzXKvUvsBwGVWASXFU34I6i
-         bNKg==
-X-Gm-Message-State: AG10YOTUN1HzU/EM34faiDJUe5N+ZSpa7ohmbtMaZtb5a+NjrVTnU52VAWpEgunTgQAp0Q==
-X-Received: by 10.194.78.175 with SMTP id c15mr22804556wjx.16.1456054888542;
-        Sun, 21 Feb 2016 03:41:28 -0800 (PST)
+        bh=xA3z0zSRtinuY9e8mtbX8zeAfyz/6Yeoy4E1bUkOfAY=;
+        b=mIqkK2ACCXjJ1w2eTE1tff5ZapVNRVQpnNRIyfQAeHzgbcWZ+FgFMRyUiY+X/s2kmH
+         k7YVu3xRrtzmDZ4mLSZ8yuOnQ36ffhiFuHyGWvljdN2Lvio8CdcOxLbthDI6ppUINoQg
+         9wov2Le0lIswiGmHnR+h0cAETUsS0chqA1qR8AUgysE1oizYfgULIxfMSbflJxRdjq4E
+         4fYBOOfARqGuUWtpcfRgIrg0uH1XKuB2rDr3vPyUPeOkZyCzinfskPmozoVZJpFc2+ha
+         jLAMvuI1YRN/o4RjAAJB5+Ei1BzEt1apL163NMHNFaXN1RTSaPVdGUlV39pAeJER8Zrh
+         tyxA==
+X-Gm-Message-State: AG10YOTwhMAT6zPfsNO+LRZRsoUwNmBkMjBBwPGrme6TUGqwHknVQQupjMSY55OYlZyU+g==
+X-Received: by 10.194.63.75 with SMTP id e11mr22190582wjs.79.1456054890153;
+        Sun, 21 Feb 2016 03:41:30 -0800 (PST)
 Received: from skynet.lan (140.Red-83-35-232.dynamicIP.rima-tde.net. [83.35.232.140])
-        by smtp.gmail.com with ESMTPSA id e9sm19644726wja.25.2016.02.21.03.41.26
+        by smtp.gmail.com with ESMTPSA id e9sm19644726wja.25.2016.02.21.03.41.28
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Sun, 21 Feb 2016 03:41:27 -0800 (PST)
+        Sun, 21 Feb 2016 03:41:28 -0800 (PST)
 From:   =?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= 
         <noltari@gmail.com>
 To:     linux-mips@linux-mips.org, ralf@linux-mips.org,
@@ -41,9 +41,9 @@ To:     linux-mips@linux-mips.org, ralf@linux-mips.org,
         f.fainelli@gmail.com, jogo@openwrt.org, cernekee@gmail.com
 Cc:     =?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= 
         <noltari@gmail.com>
-Subject: [PATCH v2 1/2] bmips: add BCM6358 support
-Date:   Sun, 21 Feb 2016 12:41:20 +0100
-Message-Id: <1456054881-26787-1-git-send-email-noltari@gmail.com>
+Subject: [PATCH v2 2/2] bmips: add device tree example for BCM6358
+Date:   Sun, 21 Feb 2016 12:41:21 +0100
+Message-Id: <1456054881-26787-2-git-send-email-noltari@gmail.com>
 X-Mailer: git-send-email 1.9.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -52,7 +52,7 @@ Return-Path: <noltari@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52145
+X-archive-position: 52146
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -69,130 +69,237 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-BCM6358 has a shared TLB which conflicts with current SMP support, so it must
-be disabled for now.
-BCM6358 uses >= 0xfffe0000 addresses for internal registers, which need to be
-remapped (by using a simplified version of BRCM63xx ioremap.h).
+This adds a device tree example for SFR Neufbox4 (Sercomm version), which
+also serves as a real example for brcm,bcm6358-leds.
 
 Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
 ---
- v2: Use a different approach for remapping internal registers
+ v2: Remove led0 alias and use stdout-path only
 
- arch/mips/bmips/setup.c                    | 29 +++++++++++++++++------
- arch/mips/include/asm/mach-bmips/ioremap.h | 37 ++++++++++++++++++++++++++++++
- 2 files changed, 59 insertions(+), 7 deletions(-)
- create mode 100644 arch/mips/include/asm/mach-bmips/ioremap.h
+ .../devicetree/bindings/mips/brcm/soc.txt          |   2 +-
+ arch/mips/bmips/Kconfig                            |   4 +
+ arch/mips/boot/dts/brcm/Makefile                   |   2 +
+ arch/mips/boot/dts/brcm/bcm6358.dtsi               | 111 +++++++++++++++++++++
+ arch/mips/boot/dts/brcm/bcm96358nb4ser.dts         |  46 +++++++++
+ 5 files changed, 164 insertions(+), 1 deletion(-)
+ create mode 100644 arch/mips/boot/dts/brcm/bcm6358.dtsi
+ create mode 100644 arch/mips/boot/dts/brcm/bcm96358nb4ser.dts
 
-diff --git a/arch/mips/bmips/setup.c b/arch/mips/bmips/setup.c
-index 3553528..f834a86 100644
---- a/arch/mips/bmips/setup.c
-+++ b/arch/mips/bmips/setup.c
-@@ -18,6 +18,7 @@
- #include <linux/of_fdt.h>
- #include <linux/of_platform.h>
- #include <linux/smp.h>
-+#include <linux/types.h>
- #include <asm/addrspace.h>
- #include <asm/bmips.h>
- #include <asm/bootinfo.h>
-@@ -35,9 +36,12 @@
+diff --git a/Documentation/devicetree/bindings/mips/brcm/soc.txt b/Documentation/devicetree/bindings/mips/brcm/soc.txt
+index 7bab90c..e58a4f6 100644
+--- a/Documentation/devicetree/bindings/mips/brcm/soc.txt
++++ b/Documentation/devicetree/bindings/mips/brcm/soc.txt
+@@ -4,7 +4,7 @@ Required properties:
  
- static const unsigned long kbase = VMLINUX_LOAD_ADDRESS & 0xfff00000;
+ - compatible: "brcm,bcm3384", "brcm,bcm33843"
+               "brcm,bcm3384-viper", "brcm,bcm33843-viper"
+-              "brcm,bcm6328", "brcm,bcm6368",
++              "brcm,bcm6328", "brcm,bcm6358", "brcm,bcm6368",
+               "brcm,bcm7125", "brcm,bcm7346", "brcm,bcm7358", "brcm,bcm7360",
+               "brcm,bcm7362", "brcm,bcm7420", "brcm,bcm7425"
  
-+phys_addr_t bmips_internal_registers;
+diff --git a/arch/mips/bmips/Kconfig b/arch/mips/bmips/Kconfig
+index e2c4fd6..264328d 100644
+--- a/arch/mips/bmips/Kconfig
++++ b/arch/mips/bmips/Kconfig
+@@ -21,6 +21,10 @@ config DT_BCM93384WVG_VIPER
+ 	bool "BCM93384WVG Viper CPU (EXPERIMENTAL)"
+ 	select BUILTIN_DTB
+ 
++config DT_BCM96358NB4SER
++	bool "BCM96358NB4SER"
++	select BUILTIN_DTB
 +
- struct bmips_quirk {
--	const char		*compatible;
--	void			(*quirk_fn)(void);
-+	const char *compatible;
-+	void (*quirk_fn)(void);
-+	const phys_addr_t regs;
- };
- 
- static void kbase_setup(void)
-@@ -95,17 +99,27 @@ static void bcm6328_quirks(void)
- 		bcm63xx_fixup_cpu1();
- }
- 
-+static void bcm6358_quirks(void)
-+{
-+	/*
-+	 * BCM6358 needs special handling for its shared TLB, so
-+	 * disable SMP for now
-+	 */
-+	bmips_smp_enabled = 0;
-+}
-+
- static void bcm6368_quirks(void)
- {
- 	bcm63xx_fixup_cpu1();
- }
- 
- static const struct bmips_quirk bmips_quirk_list[] = {
--	{ "brcm,bcm3384-viper",		&bcm3384_viper_quirks		},
--	{ "brcm,bcm33843-viper",	&bcm3384_viper_quirks		},
--	{ "brcm,bcm6328",		&bcm6328_quirks			},
--	{ "brcm,bcm6368",		&bcm6368_quirks			},
--	{ "brcm,bcm63168",		&bcm6368_quirks			},
-+	{ "brcm,bcm3384-viper", &bcm3384_viper_quirks, 0 },
-+	{ "brcm,bcm33843-viper", &bcm3384_viper_quirks, 0 },
-+	{ "brcm,bcm6328", &bcm6328_quirks, 0 },
-+	{ "brcm,bcm6358", &bcm6358_quirks, 0xfffe0000 },
-+	{ "brcm,bcm6368", &bcm6368_quirks, 0 },
-+	{ "brcm,bcm63168", &bcm6368_quirks, 0 },
- 	{ },
- };
- 
-@@ -162,6 +176,7 @@ void __init plat_mem_setup(void)
- 	for (q = bmips_quirk_list; q->quirk_fn; q++) {
- 		if (of_flat_dt_is_compatible(of_get_flat_dt_root(),
- 					     q->compatible)) {
-+			bmips_internal_registers = q->regs;
- 			q->quirk_fn();
- 		}
- 	}
-diff --git a/arch/mips/include/asm/mach-bmips/ioremap.h b/arch/mips/include/asm/mach-bmips/ioremap.h
+ config DT_BCM96368MVWG
+ 	bool "BCM96368MVWG"
+ 	select BUILTIN_DTB
+diff --git a/arch/mips/boot/dts/brcm/Makefile b/arch/mips/boot/dts/brcm/Makefile
+index eabeb60..fda9d38 100644
+--- a/arch/mips/boot/dts/brcm/Makefile
++++ b/arch/mips/boot/dts/brcm/Makefile
+@@ -1,5 +1,6 @@
+ dtb-$(CONFIG_DT_BCM93384WVG)		+= bcm93384wvg.dtb
+ dtb-$(CONFIG_DT_BCM93384WVG_VIPER)	+= bcm93384wvg_viper.dtb
++dtb-$(CONFIG_DT_BCM96358NB4SER)		+= bcm96358nb4ser.dtb
+ dtb-$(CONFIG_DT_BCM96368MVWG)		+= bcm96368mvwg.dtb
+ dtb-$(CONFIG_DT_BCM9EJTAGPRB)		+= bcm9ejtagprb.dtb
+ dtb-$(CONFIG_DT_BCM97125CBMB)		+= bcm97125cbmb.dtb
+@@ -14,6 +15,7 @@ dtb-$(CONFIG_DT_BCM97435SVMB)		+= bcm97435svmb.dtb
+ dtb-$(CONFIG_DT_NONE)			+= \
+ 						bcm93384wvg.dtb		\
+ 						bcm93384wvg_viper.dtb	\
++						bcm96358nb4ser.dtb	\
+ 						bcm96368mvwg.dtb	\
+ 						bcm9ejtagprb.dtb	\
+ 						bcm97125cbmb.dtb	\
+diff --git a/arch/mips/boot/dts/brcm/bcm6358.dtsi b/arch/mips/boot/dts/brcm/bcm6358.dtsi
 new file mode 100644
-index 0000000..5ffca94
+index 0000000..4da824f
 --- /dev/null
-+++ b/arch/mips/include/asm/mach-bmips/ioremap.h
-@@ -0,0 +1,37 @@
-+#ifndef __ASM_MACH_BMIPS_IOREMAP_H
-+#define __ASM_MACH_BMIPS_IOREMAP_H
++++ b/arch/mips/boot/dts/brcm/bcm6358.dtsi
+@@ -0,0 +1,111 @@
++/ {
++	#address-cells = <1>;
++	#size-cells = <1>;
++	compatible = "brcm,bcm6358";
 +
-+#include <linux/types.h>
++	cpus {
++		#address-cells = <1>;
++		#size-cells = <0>;
 +
-+extern phys_addr_t bmips_internal_registers;
++		mips-hpt-frequency = <150000000>;
 +
-+static inline phys_addr_t fixup_bigphys_addr(phys_addr_t phys_addr,
-+					     phys_addr_t size)
-+{
-+	return phys_addr;
-+}
++		cpu@0 {
++			compatible = "brcm,bmips4350";
++			device_type = "cpu";
++			reg = <0>;
++		};
 +
-+static inline int is_bmips_internal_registers(phys_addr_t offset)
-+{
-+	if (bmips_internal_registers != 0 && offset >= bmips_internal_registers)
-+		return 1;
-+	else
-+		return 0;
-+}
++		cpu@1 {
++			compatible = "brcm,bmips4350";
++			device_type = "cpu";
++			reg = <1>;
++		};
++	};
 +
-+static inline void __iomem *plat_ioremap(phys_addr_t offset,
-+					 unsigned long size,
-+					 unsigned long flags)
-+{
-+	if (is_bmips_internal_registers(offset))
-+		return (void __iomem *) offset;
++	clocks {
++		periph_clk: periph_clk {
++			compatible = "fixed-clock";
++			#clock-cells = <0>;
++			clock-frequency = <50000000>;
++		};
++	};
 +
-+	return NULL;
-+}
++	aliases {
++		uart0 = &uart0;
++		uart1 = &uart1;
++	};
 +
-+static inline int plat_iounmap(const volatile void __iomem *addr)
-+{
-+	return is_bmips_internal_registers((unsigned long) addr);
-+}
++	cpu_intc: cpu_intc {
++		#address-cells = <0>;
++		compatible = "mti,cpu-interrupt-controller";
 +
-+#endif /* __ASM_MACH_BMIPS_IOREMAP_H */
++		interrupt-controller;
++		#interrupt-cells = <1>;
++	};
++
++	ubus {
++		#address-cells = <1>;
++		#size-cells = <1>;
++
++		compatible = "simple-bus";
++		ranges;
++
++		periph_cntl: syscon@fffe0000 {
++			compatible = "syscon";
++			reg = <0xfffe0000 0xc>;
++			little-endian;
++		};
++
++		reboot: syscon-reboot@fffe0008 {
++			compatible = "syscon-reboot";
++			regmap = <&periph_cntl>;
++			offset = <0x8>;
++			mask = <0x1>;
++		};
++
++		periph_intc: periph_intc@fffe000c {
++			compatible = "brcm,bcm3380-l2-intc";
++			reg = <0xfffe0010 0x4 0xfffe000c 0x4>,
++			      <0xfffe003c 0x4 0xfffe0038 0x4>;
++
++			interrupt-controller;
++			#interrupt-cells = <1>;
++
++			interrupt-parent = <&cpu_intc>;
++			interrupts = <2>;
++		};
++
++		leds0: led-controller@fffe00d0 {
++			#address-cells = <1>;
++			#size-cells = <0>;
++			compatible = "brcm,bcm6358-leds";
++			reg = <0xfffe00d0 0x8>;
++
++			status = "disabled";
++		};
++
++		uart0: serial@fffe0100 {
++			compatible = "brcm,bcm6345-uart";
++			reg = <0xfffe0100 0x18>;
++
++			interrupt-parent = <&periph_intc>;
++			interrupts = <2>;
++
++			clocks = <&periph_clk>;
++
++			status = "disabled";
++		};
++
++		uart1: serial@fffe0120 {
++			compatible = "brcm,bcm6345-uart";
++			reg = <0xfffe0120 0x18>;
++
++			interrupt-parent = <&periph_intc>;
++			interrupts = <3>;
++
++			clocks = <&periph_clk>;
++
++			status = "disabled";
++		};
++	};
++};
+diff --git a/arch/mips/boot/dts/brcm/bcm96358nb4ser.dts b/arch/mips/boot/dts/brcm/bcm96358nb4ser.dts
+new file mode 100644
+index 0000000..c313e2c
+--- /dev/null
++++ b/arch/mips/boot/dts/brcm/bcm96358nb4ser.dts
+@@ -0,0 +1,46 @@
++/dts-v1/;
++
++/include/ "bcm6358.dtsi"
++
++/ {
++	compatible = "sfr,nb4-ser", "brcm,bcm6358";
++	model = "SFR Neufbox 4 (Sercomm)";
++
++	memory@0 {
++		device_type = "memory";
++		reg = <0x00000000 0x02000000>;
++	};
++
++	chosen {
++		stdout-path = &uart0;
++	};
++};
++
++&leds0 {
++	status = "ok";
++
++	alarm_white@0 {
++		reg = <0>;
++		active-low;
++		label = "nb4-ser:white:alarm";
++	};
++	tv_white@2 {
++		reg = <2>;
++		active-low;
++		label = "nb4-ser:white:tv";
++	};
++	tel_white@3 {
++		reg = <3>;
++		active-low;
++		label = "nb4-ser:white:tel";
++	};
++	adsl_white@4 {
++		reg = <4>;
++		active-low;
++		label = "nb4-ser:white:adsl";
++	};
++};
++
++&uart0 {
++	status = "okay";
++};
 -- 
 1.9.1

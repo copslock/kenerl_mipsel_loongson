@@ -1,34 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 20 Feb 2016 13:01:47 +0100 (CET)
-Received: from hauke-m.de ([5.39.93.123]:51380 "EHLO hauke-m.de"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27007220AbcBTMBnX24n- (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 20 Feb 2016 13:01:43 +0100
-Received: from [192.168.178.24] (p5DE96EB7.dip0.t-ipconnect.de [93.233.110.183])
-        by hauke-m.de (Postfix) with ESMTPSA id DDE011001AC;
-        Sat, 20 Feb 2016 13:01:40 +0100 (CET)
-Subject: Re: vdso clock_gettime() sometimes broken after sleep
-To:     markos.chandras@imgtec.com, Alex Smith <alex.smith@imgtec.com>
-References: <56ABDA74.9010203@hauke-m.de>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        LKML <linux-kernel@vger.kernel.org>
-From:   Hauke Mehrtens <hauke@hauke-m.de>
-Message-ID: <56C855A4.8080403@hauke-m.de>
-Date:   Sat, 20 Feb 2016 13:01:40 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Icedove/38.5.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 21 Feb 2016 12:28:02 +0100 (CET)
+Received: from mail-wm0-f42.google.com ([74.125.82.42]:38614 "EHLO
+        mail-wm0-f42.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007427AbcBUL2ArtPP5 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 21 Feb 2016 12:28:00 +0100
+Received: by mail-wm0-f42.google.com with SMTP id a4so126715933wme.1;
+        Sun, 21 Feb 2016 03:28:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=subject:to:references:cc:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-type:content-transfer-encoding;
+        bh=wWr5KG8TkWpApA6l7DA5OAzLl0o4ecI3qiovUcx32Io=;
+        b=qey2HzxKKi8w78IWRXTBBmQwqDPuuZiWvwAwbGEbCTbZK9PAZXlsqvVculmqlj4l6h
+         6SFk4W/y9GGsbxuIguewedVf6wF+0Pn2Nkb4qYrwePeeFB/uE9T4cyPHfWhwjMCeJcS5
+         dgOWqMwYY3lN2PpDUJuUM49tENrj4DbTWjGdoCARPMkCR678IGSe23F5vDLTb3Y83axR
+         Tnd5YenVV1VbbPnfyAJ3wwtTKths3X23ChViKZTAe5TO8bnVA6YR5barF73RmgV3Nuxv
+         TfG4qZD5Mu7EH51cTt0VxlqBo3OPDre2jR3I13Ym+Z8JglvtDM/B5SR3Jvf4lDdgRmNi
+         08/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:subject:to:references:cc:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-type
+         :content-transfer-encoding;
+        bh=wWr5KG8TkWpApA6l7DA5OAzLl0o4ecI3qiovUcx32Io=;
+        b=Pw4Pna66B+JLpvmgTk8FLDrPchPlE+vLpj8GXy6Pa0tYUq0XKuIT9gpsQ9JCDn5l26
+         k+GDKIBzuYkZ5F2aL6u3b4hCH9gY5B4zBSRXztGOk5pCet6UwPV3WMbSg0C2BZglr1Hb
+         Vp1YI2rGmGU0Y2gvIgQrYtoXbRrvzQM7n2g3kQLkZH5bi4uS1FyUY7NsMcYbub3F8Sez
+         J57K4uz8m34rUVx42mGYJ/6x/k3P7rJWNAG0aKMUn1B4LjOHja4RQfEfqUSja54Uo9gT
+         nCiJXojOy6Q+jTegKhrG2dE1or4p/ZeKFgRF0y/15XU2uSfAxJ2t8d61jKCJCPdfUWye
+         m/tA==
+X-Gm-Message-State: AG10YOQf2KFWkv8q5OPnQtoHlAizlJvn6NsA+5CgHM3nfKIdSgg4CSyj3x+1tT431u/E9w==
+X-Received: by 10.194.61.169 with SMTP id q9mr22214142wjr.77.1456054075589;
+        Sun, 21 Feb 2016 03:27:55 -0800 (PST)
+Received: from [192.168.1.10] (140.Red-83-35-232.dynamicIP.rima-tde.net. [83.35.232.140])
+        by smtp.gmail.com with ESMTPSA id w66sm16051429wmd.2.2016.02.21.03.27.53
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Sun, 21 Feb 2016 03:27:54 -0800 (PST)
+Subject: Re: [PATCH 2/2] bmips: add device tree example for BCM6358
+To:     Rob Herring <robh@kernel.org>
+References: <1453030101-14794-2-git-send-email-noltari@gmail.com>
+ <20160120165910.GA32520@rob-hp-laptop>
+Cc:     linux-mips@linux-mips.org, ralf@linux-mips.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        f.fainelli@gmail.com, jogo@openwrt.org, cernekee@gmail.com
+From:   =?UTF-8?Q?=c3=81lvaro_Fern=c3=a1ndez_Rojas?= <noltari@gmail.com>
+Message-ID: <56C99F38.2070709@gmail.com>
+Date:   Sun, 21 Feb 2016 12:27:52 +0100
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:38.0) Gecko/20100101
+ Thunderbird/38.6.0
 MIME-Version: 1.0
-In-Reply-To: <56ABDA74.9010203@hauke-m.de>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Return-Path: <hauke@hauke-m.de>
+In-Reply-To: <20160120165910.GA32520@rob-hp-laptop>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 8bit
+Return-Path: <noltari@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52143
+X-archive-position: 52144
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hauke@hauke-m.de
+X-original-sender: noltari@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -41,100 +72,96 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 01/29/2016 10:32 PM, Hauke Mehrtens wrote:
-> When using the vdso clock_gettime() it looks like that the clock is
-> sometimes not going forward when the process sleeps and the clock also
-> sleeps. This problem only happens with the vdso clock and not with the
-> normal syscall clock.
-> 
-> I wrote a small test program which calls the syscall and the vdso
-> version. In the first call they are showing the same time, but after I
-> sleeped for 1 second, they are off by one second. This problem occurs
-> not 100% reliable but I see it pretty often. Only the CLOCK_REALTIME and
-> CLOCK_MONOTONIC seam to be affected CLOCK_REALTIME_COARSE is not affected.
-> 
-> I am using an MIPS BE 34Kc V5.6 CPU with two VPEs, but only one is used.
-> This is a Lantiq VRX200 SoC with OpenWrt Linux kernel 4.4 and musl libc.
-> 
-> Hauke
 
-Hi,
-
-Any news on this? For me this is a usespace API regression. Should I
-send a patch deactivating the vdso support only for the MIPS 34Kc CPU or
-for completely for mips?
-
-Hauke
-
-
-> Here are my measurements:
-> 
-> start test
-> syscall: CLOCK_REALTIME: tv_sec: 1454098944, tv_nsec: 463189916
-> vdso:    CLOCK_REALTIME: tv_sec: 1454098944, tv_nsec: 463242196
-> syscall: CLOCK_REALTIME_COARSE: tv_sec: 1454098944, tv_nsec: 456000000
-> vdso:    CLOCK_REALTIME_COARSE: tv_sec: 1454098944, tv_nsec: 456000000
-> syscall: CLOCK_MONOTONIC: tv_sec: 107, tv_nsec: 28113172
-> vdso:    CLOCK_MONOTONIC: tv_sec: 107, tv_nsec: 32150208
-> syscall: CLOCK_MONOTONIC_COARSE: tv_sec: 107, tv_nsec: 24678324
-> vdso:    CLOCK_MONOTONIC_COARSE: tv_sec: 107, tv_nsec: 24678324
-> syscall: CLOCK_MONOTONIC_RAW: tv_sec: 107, tv_nsec: 28263008
-> vdso:    CLOCK_MONOTONIC_RAW: tv_sec: 107, tv_nsec: 28300760
-> syscall: CLOCK_BOOTTIME: tv_sec: 107, tv_nsec: 28337540
-> vdso:    CLOCK_BOOTTIME: tv_sec: 107, tv_nsec: 28379100
-> syscall: CLOCK_PROCESS_CPUTIME_ID: tv_sec: 0, tv_nsec: 3111128
-> vdso:    CLOCK_PROCESS_CPUTIME_ID: tv_sec: 0, tv_nsec: 3153120
-> syscall: CLOCK_THREAD_CPUTIME_ID: tv_sec: 0, tv_nsec: 3192208
-> vdso:    CLOCK_THREAD_CPUTIME_ID: tv_sec: 0, tv_nsec: 3231696
-> sleep(1)
-> syscall: CLOCK_REALTIME: tv_sec: 1454098945, tv_nsec: 464023036
-> vdso:    CLOCK_REALTIME: tv_sec: 1454098946, tv_nsec: 468077456
-> syscall: CLOCK_REALTIME_COARSE: tv_sec: 1454098945, tv_nsec: 460000000
-> vdso:    CLOCK_REALTIME_COARSE: tv_sec: 1454098945, tv_nsec: 460000000
-> syscall: CLOCK_MONOTONIC: tv_sec: 108, tv_nsec: 28874940
-> vdso:    CLOCK_MONOTONIC: tv_sec: 109, tv_nsec: 32911852
-> syscall: CLOCK_MONOTONIC_COARSE: tv_sec: 108, tv_nsec: 24678324
-> vdso:    CLOCK_MONOTONIC_COARSE: tv_sec: 108, tv_nsec: 24678324
-> syscall: CLOCK_MONOTONIC_RAW: tv_sec: 108, tv_nsec: 29023384
-> vdso:    CLOCK_MONOTONIC_RAW: tv_sec: 108, tv_nsec: 29061372
-> syscall: CLOCK_BOOTTIME: tv_sec: 108, tv_nsec: 29097912
-> vdso:    CLOCK_BOOTTIME: tv_sec: 108, tv_nsec: 29139864
-> syscall: CLOCK_PROCESS_CPUTIME_ID: tv_sec: 0, tv_nsec: 3824540
-> vdso:    CLOCK_PROCESS_CPUTIME_ID: tv_sec: 0, tv_nsec: 3865708
-> syscall: CLOCK_THREAD_CPUTIME_ID: tv_sec: 0, tv_nsec: 3904680
-> vdso:    CLOCK_THREAD_CPUTIME_ID: tv_sec: 0, tv_nsec: 3943892
-> sleep(2)
-> syscall: CLOCK_REALTIME: tv_sec: 1454098947, tv_nsec: 464791376
-> vdso:    CLOCK_REALTIME: tv_sec: 1454098950, tv_nsec: 468847600
-> syscall: CLOCK_REALTIME_COARSE: tv_sec: 1454098947, tv_nsec: 460000000
-> vdso:    CLOCK_REALTIME_COARSE: tv_sec: 1454098947, tv_nsec: 460000000
-> syscall: CLOCK_MONOTONIC: tv_sec: 110, tv_nsec: 29644468
-> vdso:    CLOCK_MONOTONIC: tv_sec: 113, tv_nsec: 33682152
-> syscall: CLOCK_MONOTONIC_COARSE: tv_sec: 110, tv_nsec: 24678324
-> vdso:    CLOCK_MONOTONIC_COARSE: tv_sec: 110, tv_nsec: 24678324
-> syscall: CLOCK_MONOTONIC_RAW: tv_sec: 110, tv_nsec: 29794136
-> vdso:    CLOCK_MONOTONIC_RAW: tv_sec: 110, tv_nsec: 29831728
-> syscall: CLOCK_BOOTTIME: tv_sec: 110, tv_nsec: 29868576
-> vdso:    CLOCK_BOOTTIME: tv_sec: 110, tv_nsec: 29909920
-> syscall: CLOCK_PROCESS_CPUTIME_ID: tv_sec: 0, tv_nsec: 4547416
-> vdso:    CLOCK_PROCESS_CPUTIME_ID: tv_sec: 0, tv_nsec: 4589684
-> syscall: CLOCK_THREAD_CPUTIME_ID: tv_sec: 0, tv_nsec: 4628872
-> vdso:    CLOCK_THREAD_CPUTIME_ID: tv_sec: 0, tv_nsec: 4668808
-> sleep(3)
-> syscall: CLOCK_REALTIME: tv_sec: 1454098950, tv_nsec: 465558716
-> vdso:    CLOCK_REALTIME: tv_sec: 1454098956, tv_nsec: 469613960
-> syscall: CLOCK_REALTIME_COARSE: tv_sec: 1454098950, tv_nsec: 460000000
-> vdso:    CLOCK_REALTIME_COARSE: tv_sec: 1454098950, tv_nsec: 460000000
-> syscall: CLOCK_MONOTONIC: tv_sec: 113, tv_nsec: 30411308
-> vdso:    CLOCK_MONOTONIC: tv_sec: 119, tv_nsec: 34448236
-> syscall: CLOCK_MONOTONIC_COARSE: tv_sec: 113, tv_nsec: 24678324
-> vdso:    CLOCK_MONOTONIC_COARSE: tv_sec: 113, tv_nsec: 24678324
-> syscall: CLOCK_MONOTONIC_RAW: tv_sec: 113, tv_nsec: 30559184
-> vdso:    CLOCK_MONOTONIC_RAW: tv_sec: 113, tv_nsec: 30596676
-> syscall: CLOCK_BOOTTIME: tv_sec: 113, tv_nsec: 30632568
-> vdso:    CLOCK_BOOTTIME: tv_sec: 113, tv_nsec: 30673204
-> syscall: CLOCK_PROCESS_CPUTIME_ID: tv_sec: 0, tv_nsec: 5262328
-> vdso:    CLOCK_PROCESS_CPUTIME_ID: tv_sec: 0, tv_nsec: 5304576
-> syscall: CLOCK_THREAD_CPUTIME_ID: tv_sec: 0, tv_nsec: 5343136
-> vdso:    CLOCK_THREAD_CPUTIME_ID: tv_sec: 0, tv_nsec: 5382616
-> 
+El 20/01/2016 a las 17:59, Rob Herring escribió:
+> On Sun, Jan 17, 2016 at 12:28:21PM +0100, Álvaro Fernández Rojas wrote:
+>> This adds a device tree example for SFR Neufbox4 (Sercomm version), which
+>> also serves as a real example for brcm,bcm6358-leds.
+>>
+>> Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
+> [...]
+>
+>> diff --git a/arch/mips/boot/dts/brcm/bcm6358.dtsi
+> b/arch/mips/boot/dts/brcm/bcm6358.dtsi
+>> new file mode 100644
+>> index 0000000..b2d11da
+>> --- /dev/null
+>> +++ b/arch/mips/boot/dts/brcm/bcm6358.dtsi
+>> @@ -0,0 +1,111 @@
+>> +/ {
+>> +	#address-cells = <1>;
+>> +	#size-cells = <1>;
+>> +	compatible = "brcm,bcm6358";
+>> +
+>> +	cpus {
+>> +		#address-cells = <1>;
+>> +		#size-cells = <0>;
+>> +
+>> +		mips-hpt-frequency = <150000000>;
+>> +
+>> +		cpu@0 {
+>> +			compatible = "brcm,bmips4350";
+>> +			device_type = "cpu";
+>> +			reg = <0>;
+>> +		};
+>> +
+>> +		cpu@1 {
+>> +			compatible = "brcm,bmips4350";
+>> +			device_type = "cpu";
+>> +			reg = <1>;
+>> +		};
+>> +	};
+>> +
+>> +	clocks {
+>> +		periph_clk: periph_clk {
+>> +			compatible = "fixed-clock";
+>> +			#clock-cells = <0>;
+>> +			clock-frequency = <50000000>;
+>> +		};
+>> +	};
+>> +
+>> +	aliases {
+>> +		leds0 = &leds0;
+> Why do we need alias for LEDs?
+Okay, I will remove this, but you should know it was accepted for 
+BCM6328 and BCM6368 too:
+http://git.linux-mips.org/cgit/sjhill/linux-sjhill.git/commit/arch/mips/boot/dts/brcm?h=mips-for-linux-next&id=db66dbbbfd8ded204a97d090357aff582968fcf5
+http://git.linux-mips.org/cgit/sjhill/linux-sjhill.git/commit/arch/mips/boot/dts/brcm?h=mips-for-linux-next&id=70ce14bfc9fdb9b6af84ac492e9d3311551618a5
+>
+>> +		uart0 = &uart0;
+>> +		uart1 = &uart1;
+>> +	};
+> [...]
+>
+>> diff --git a/arch/mips/boot/dts/brcm/bcm96358nb4ser.dts b/arch/mips/boot/dts/brcm/bcm96358nb4ser.dts
+>> new file mode 100644
+>> index 0000000..ca95084
+>> --- /dev/null
+>> +++ b/arch/mips/boot/dts/brcm/bcm96358nb4ser.dts
+>> @@ -0,0 +1,47 @@
+>> +/dts-v1/;
+>> +
+>> +/include/ "bcm6358.dtsi"
+>> +
+>> +/ {
+>> +	compatible = "sfr,nb4-ser", "brcm,bcm6358";
+>> +	model = "SFR Neufbox 4 (Sercomm)";
+>> +
+>> +	memory@0 {
+>> +		device_type = "memory";
+>> +		reg = <0x00000000 0x02000000>;
+>> +	};
+>> +
+>> +	chosen {
+>> +		bootargs = "console=ttyS0,115200";
+>> +		stdout-path = &uart0;
+> You shouldn't need both here. Just stdout-path.
+Okay, I will use stdout-path only, but once again you should know that 
+both are used on every bmips board:
+https://github.com/torvalds/linux/tree/master/arch/mips/boot/dts/brcm
+https://github.com/torvalds/linux/blob/master/arch/mips/boot/dts/brcm/bcm93384wvg.dts#L9
+...
+https://github.com/torvalds/linux/blob/master/arch/mips/boot/dts/brcm/bcm9ejtagprb.dts#L14
+>
+> Rob
+Álvaro.

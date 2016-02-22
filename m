@@ -1,65 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Feb 2016 00:11:32 +0100 (CET)
-Received: from mail-pa0-f41.google.com ([209.85.220.41]:36546 "EHLO
-        mail-pa0-f41.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012297AbcBVXLakilCQ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 23 Feb 2016 00:11:30 +0100
-Received: by mail-pa0-f41.google.com with SMTP id yy13so98529011pab.3;
-        Mon, 22 Feb 2016 15:11:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=subject:to:references:from:message-id:date:user-agent:mime-version
-         :in-reply-to:content-type:content-transfer-encoding;
-        bh=W7kyYdXPb/jJT509CzOKl0KNhmg9kFXeIKRD5jje3QE=;
-        b=Yc7vbpRdPuOllbQtlEQXc8vcEidQNvXS9nr63idmwcPOXf8KednvIAQrQ/ENbHldYj
-         PDtgXAuL5FvXcBuFad/yNAgZyflxN3L4qPB+hT8XfTFIpHcvyTVILXnQUL85PPho3db4
-         YO93kgCnocgPgxyx9oR06oVsESBNDgTrhnD0+JIRVOmmp5qWR6Q73ggSGW1ALLSoVWFc
-         D06zS1cwvqteU7EZkE98kIx+P5KMpKRl81ipiPGugROvyALjIrdiuK9RHtlsKXfwmY80
-         7s9/vXEoUKnug2KolCsD26Aw8YMXx/fW6xBIuzDK2kCNNNQK2iAGI1WBmsDZ4G18Bzo/
-         Icmw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:subject:to:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-type
-         :content-transfer-encoding;
-        bh=W7kyYdXPb/jJT509CzOKl0KNhmg9kFXeIKRD5jje3QE=;
-        b=ItmtWyvQKfDzFAwjN1rwNGfABfMBsoeghDI/lDikwbMGv7h6EVJfh196Swso2iBdl1
-         32qu7QPeDpbnjKgq6iqMOheVKlnVjpS8SPQyHM/lBeyI8LVlCRUYB3za73FANWBA6ppw
-         DEhuSPi+imoesd5wXrbvTzHarnnBxILYH9R38L+7HZW7azJ9la66bCJ9g1Ae/TGlsXjf
-         NtuPIr3rCkDj4nAj5Hm4kDapcLHRvjl08OHBxfMciYRr2/SL31ai9x0o4zbxhUdU7mIb
-         tkuMNJI9z4LuSJenwYTwBBkxs7XmXZNBAiRn7uCJPjrJ0oVdp1bDaujZfDAyFRVFXosw
-         Pj7A==
-X-Gm-Message-State: AG10YOSFecuJPlM3GQATttiKELTbcN0sLzlmLpzznCugh8X2+9qVabzvXr0uVDMM2ICYyw==
-X-Received: by 10.66.159.136 with SMTP id xc8mr41948067pab.71.1456182684675;
-        Mon, 22 Feb 2016 15:11:24 -0800 (PST)
-Received: from [10.12.156.244] (5520-maca-inet1-outside.broadcom.com. [216.31.211.11])
-        by smtp.googlemail.com with ESMTPSA id v29sm39266975pfa.31.2016.02.22.15.11.22
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 22 Feb 2016 15:11:23 -0800 (PST)
-Subject: Re: [PATCH 2/3] MIPS: OCTEON: device_tree_init: don't fill mac if
- already set
-To:     Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        David Daney <ddaney.cavm@gmail.com>, linux-mips@linux-mips.org
-References: <1456180788-6803-1-git-send-email-aaro.koskinen@iki.fi>
- <1456180788-6803-3-git-send-email-aaro.koskinen@iki.fi>
-From:   Florian Fainelli <f.fainelli@gmail.com>
-Message-ID: <56CB954F.1070504@gmail.com>
-Date:   Mon, 22 Feb 2016 15:10:07 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.5.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Feb 2016 00:39:49 +0100 (CET)
+Received: from resqmta-po-05v.sys.comcast.net ([96.114.154.164]:46709 "EHLO
+        resqmta-po-05v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012297AbcBVXjruGnYt (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 23 Feb 2016 00:39:47 +0100
+Received: from resomta-po-08v.sys.comcast.net ([96.114.154.232])
+        by resqmta-po-05v.sys.comcast.net with comcast
+        id MbfS1s004516pyw01bfgsL; Mon, 22 Feb 2016 23:39:40 +0000
+Received: from [192.168.1.13] ([76.106.83.43])
+        by resomta-po-08v.sys.comcast.net with comcast
+        id Mbfd1s00N0w5D3801bfetK; Mon, 22 Feb 2016 23:39:40 +0000
+Subject: Re: [PATCH 1/2] MIPS: Add barriers between dcache & icache flushes
+To:     Paul Burton <paul.burton@imgtec.com>, linux-mips@linux-mips.org,
+        Ralf Baechle <ralf@linux-mips.org>
+References: <1456164585-26910-1-git-send-email-paul.burton@imgtec.com>
+Cc:     James Hogan <james.hogan@imgtec.com>,
+        Paul Gortmaker <paul.gortmaker@windriver.com>,
+        linux-kernel@vger.kernel.org,
+        "Maciej W. Rozycki" <macro@codesourcery.com>,
+        Markos Chandras <markos.chandras@imgtec.com>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+From:   Joshua Kinard <kumba@gentoo.org>
+Message-ID: <56CB9C32.2010308@gentoo.org>
+Date:   Mon, 22 Feb 2016 18:39:30 -0500
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:44.0) Gecko/20100101
+ Thunderbird/44.0
 MIME-Version: 1.0
-In-Reply-To: <1456180788-6803-3-git-send-email-aaro.koskinen@iki.fi>
-Content-Type: text/plain; charset=utf-8
+In-Reply-To: <1456164585-26910-1-git-send-email-paul.burton@imgtec.com>
+Content-Type: text/plain; charset=windows-1252
 Content-Transfer-Encoding: 7bit
-Return-Path: <f.fainelli@gmail.com>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=comcast.net;
+        s=q20140121; t=1456184380;
+        bh=xTEYt4FXJt/p8nHcdAtPEVgQ78pFpiqhdr+P4wsWcPw=;
+        h=Received:Received:Subject:To:From:Message-ID:Date:MIME-Version:
+         Content-Type;
+        b=wI33wM/+YY/05+QHOzG24iDASGCr8Ted+wzvgy3Rh2IBidnTYZJz0yenaMxQFWONL
+         oOXG6F67mxv/RadN9x+5tu/XKM9LFmfO6DkomUt1cuvF+FhqlCHUoOsCVN+QQ30rZY
+         EPGHRunpjFLN+qc3vyar6BnQvzaukjYrl0jebd1qLkgOMR7S7jkUm7Lof2mK1d1kOg
+         egu7P0NNs8361qjFMyEoXAvCV8cyWUakznsmyNRsjzAYX45hD/ZLLqt8FVFN5gGogs
+         YU55b5CvYKASaJjMhj91cefDw2ar4iDVmzzLM4LmNxbBiXYuwgyLtWcu2zp0ZhTYG+
+         a8iafl6FdE8WA==
+Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52171
+X-archive-position: 52172
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: f.fainelli@gmail.com
+X-original-sender: kumba@gentoo.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -72,37 +60,96 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 22/02/16 14:39, Aaro Koskinen wrote:
-> Don't fill MAC address if it's already set. This allows DTB to
-> override the bootinfo.
+On 02/22/2016 13:09, Paul Burton wrote:
+> Index-based cache operations may be arbitrarily reordered by out of
+> order CPUs. Thus code which writes back the dcache & then invalidates
+> the icache using indexed cache ops must include a barrier between
+> operating on the 2 caches in order to prevent the scenario in which:
 > 
-> Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
-> ---
->  arch/mips/cavium-octeon/octeon-platform.c | 9 +++++++++
->  1 file changed, 9 insertions(+)
+>   - icache invalidation occurs.
 > 
-> diff --git a/arch/mips/cavium-octeon/octeon-platform.c b/arch/mips/cavium-octeon/octeon-platform.c
-> index a7d9f07..c5de792 100644
-> --- a/arch/mips/cavium-octeon/octeon-platform.c
-> +++ b/arch/mips/cavium-octeon/octeon-platform.c
-> @@ -525,10 +525,19 @@ static void __init octeon_fdt_set_phy(int eth, int phy_addr)
->  
->  static void __init octeon_fdt_set_mac_addr(int n, u64 *pmac)
->  {
-> +	const u8 *old_mac;
-> +	int old_len;
->  	u8 new_mac[6];
->  	u64 mac = *pmac;
->  	int r;
->  
-> +	old_mac = fdt_getprop(initial_boot_params, n, "local-mac-address",
-> +			      &old_len);
-> +	if (!old_mac || old_len != 6 || old_mac[0] || old_mac[1] ||
-> +					old_mac[2] || old_mac[3] ||
-> +					old_mac[4] || old_mac[5])
+>   - icache fetch occurs, due to speculation.
+> 
+>   - dcache writeback occurs.
+> 
+> If the above were allowed to happen then the icache would contain stale
+> data. Forcing the dcache writeback to complete before the icache
+> invalidation avoids this.
 
-There is nothing that tells you that these are valid MAC addresses
-though, although unlikely, the FW could be handing you bad addresses,
-might be better to use is_valid_ether_addr() here?
--- 
-Florian
+Is there a particular symptom one should look for to check for this issue
+occurring?  I haven't seen any odd effects on my SGI systems that appear to
+relate to this.  I believe the R1x000 family resolves all hazards in hardware,
+so maybe this issue doesn't affect that CPU family?
+
+If not, let me know what to look or test for so I can check the patch out on my
+systems.
+
+Thanks!
+
+--J
+
+
+> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+> Cc: James Hogan <james.hogan@imgtec.com>
+> ---
+> 
+>  arch/mips/mm/c-r4k.c | 15 +++++++++++++--
+>  1 file changed, 13 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
+> index caac3d7..a49010c 100644
+> --- a/arch/mips/mm/c-r4k.c
+> +++ b/arch/mips/mm/c-r4k.c
+> @@ -449,6 +449,7 @@ static inline void local_r4k___flush_cache_all(void * args)
+>  
+>  	default:
+>  		r4k_blast_dcache();
+> +		mb(); /* cache instructions may be reordered */
+>  		r4k_blast_icache();
+>  		break;
+>  	}
+> @@ -493,8 +494,10 @@ static inline void local_r4k_flush_cache_range(void * args)
+>  		return;
+>  
+>  	r4k_blast_dcache();
+> -	if (exec)
+> +	if (exec) {
+> +		mb(); /* cache instructions may be reordered */
+>  		r4k_blast_icache();
+> +	}
+>  }
+>  
+>  static void r4k_flush_cache_range(struct vm_area_struct *vma,
+> @@ -599,8 +602,13 @@ static inline void local_r4k_flush_cache_page(void *args)
+>  	if (cpu_has_dc_aliases || (exec && !cpu_has_ic_fills_f_dc)) {
+>  		vaddr ? r4k_blast_dcache_page(addr) :
+>  			r4k_blast_dcache_user_page(addr);
+> -		if (exec && !cpu_icache_snoops_remote_store)
+> +		if (exec)
+> +			mb(); /* cache instructions may be reordered */
+> +
+> +		if (exec && !cpu_icache_snoops_remote_store) {
+>  			r4k_blast_scache_page(addr);
+> +			mb(); /* cache instructions may be reordered */
+> +		}
+>  	}
+>  	if (exec) {
+>  		if (vaddr && cpu_has_vtag_icache && mm == current->active_mm) {
+> @@ -660,6 +668,7 @@ static inline void local_r4k_flush_icache_range(unsigned long start, unsigned lo
+>  			R4600_HIT_CACHEOP_WAR_IMPL;
+>  			protected_blast_dcache_range(start, end);
+>  		}
+> +		mb(); /* cache instructions may be reordered */
+>  	}
+>  
+>  	if (end - start > icache_size)
+> @@ -798,6 +807,8 @@ static void local_r4k_flush_cache_sigtramp(void * arg)
+>  		protected_writeback_dcache_line(addr & ~(dc_lsize - 1));
+>  	if (!cpu_icache_snoops_remote_store && scache_size)
+>  		protected_writeback_scache_line(addr & ~(sc_lsize - 1));
+> +	if ((dc_lsize || scache_size) && ic_lsize)
+> +		mb(); /* cache instructions may be reordered */
+>  	if (ic_lsize)
+>  		protected_flush_icache_line(addr & ~(ic_lsize - 1));
+>  	if (MIPS4K_ICACHE_REFILL_WAR) {
+> 

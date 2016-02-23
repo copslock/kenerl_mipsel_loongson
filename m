@@ -1,38 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Feb 2016 11:29:44 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:40429 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27012509AbcBWK3nF7gf- (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 23 Feb 2016 11:29:43 +0100
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Websense Email Security Gateway with ESMTPS id 3445F63B32D5;
-        Tue, 23 Feb 2016 10:29:35 +0000 (GMT)
-Received: from metadesk01.kl.imgtec.org (192.168.169.39) by
- hhmail02.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.266.1; Tue, 23 Feb 2016 10:29:36 +0000
-From:   Daniel Sanders <daniel.sanders@imgtec.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     Daniel Sanders <daniel.sanders@imgtec.com>,
-        Scott Egerton <Scott.Egerton@imgtec.com>,
-        "Maciej W. Rozycki" <macro@imgtec.com>,
-        Paul Burton <paul.burton@imgtec.com>,
-        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
-        <linux-mips@linux-mips.org>
-Subject: [PATCH v2] mips: Avoid variant of .type unsupported by LLVM Assembler
-Date:   Tue, 23 Feb 2016 10:29:20 +0000
-Message-ID: <1456223360-31806-1-git-send-email-daniel.sanders@imgtec.com>
-X-Mailer: git-send-email 2.1.4
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Feb 2016 21:47:21 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.136]:41014 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27013760AbcBWUrPKDftg (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 23 Feb 2016 21:47:15 +0100
+Received: from mail.kernel.org (localhost [127.0.0.1])
+        by mail.kernel.org (Postfix) with ESMTP id 7CA2D20253;
+        Tue, 23 Feb 2016 20:47:11 +0000 (UTC)
+Received: from rob-hp-laptop (72-48-98-129.dyn.grandenetworks.net [72.48.98.129])
+        (using TLSv1.2 with cipher AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 62B0D202E9;
+        Tue, 23 Feb 2016 20:47:09 +0000 (UTC)
+Date:   Tue, 23 Feb 2016 14:47:02 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Joshua Henderson <joshua.henderson@microchip.com>
+Cc:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        ralf@linux-mips.org,
+        Purna Chandra Mandal <purna.mandal@microchip.com>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@codeaurora.org>,
+        Pawel Moll <pawel.moll@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ian Campbell <ijc+devicetree@hellion.org.uk>,
+        Kumar Gala <galak@codeaurora.org>, devicetree@vger.kernel.org
+Subject: Re: [PATCH v7 1/3] dt/bindings: Add PIC32 clock binding documentation
+Message-ID: <20160223204702.GA22594@rob-hp-laptop>
+References: <1455899179-14097-1-git-send-email-joshua.henderson@microchip.com>
+ <1455899179-14097-2-git-send-email-joshua.henderson@microchip.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.169.39]
-Return-Path: <Daniel.Sanders@imgtec.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1455899179-14097-2-git-send-email-joshua.henderson@microchip.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+X-Virus-Scanned: ClamAV using ClamSMTP
+Return-Path: <robh@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52179
+X-archive-position: 52180
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: daniel.sanders@imgtec.com
+X-original-sender: robh@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,60 +54,34 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The target independent parts of the LLVM Lexer considers 'fault@function'
-to be a single token representing the 'fault' symbol with a 'function'
-modifier. However, this is not the case in the .type directive where
-'function' refers to STT_FUNC from the ELF standard.
+On Fri, Feb 19, 2016 at 09:25:34AM -0700, Joshua Henderson wrote:
+> From: Purna Chandra Mandal <purna.mandal@microchip.com>
+> 
+> Document the devicetree bindings for the clock driver found on Microchip
+> PIC32 class devices.
+> 
+> Signed-off-by: Purna Chandra Mandal <purna.mandal@microchip.com>
+> Signed-off-by: Joshua Henderson <joshua.henderson@microchip.com>
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: Michael Turquette <mturquette@baylibre.com>
+> Cc: Stephen Boyd <sboyd@codeaurora.org>
+> ---
+> Note: Please pull this complete series through the MIPS tree.
+> 
+> Changes since v6:
+> 	- Update Microchip PIC32 clock binding document based on review
+> 	- Add header defining clocks
+> Changes since v5: None
+> Changes since v4: None
+> Changes since v3: None
+> Changes since v2:
+> 	- Force lowercase in PIC32 clock binding documentation
+> Changes since v1: None
+> ---
+>  .../devicetree/bindings/clock/microchip,pic32.txt  |   39 ++++++++++++++++++
+>  include/dt-bindings/clock/microchip,pic32-clock.h  |   42 ++++++++++++++++++++
+>  2 files changed, 81 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/clock/microchip,pic32.txt
+>  create mode 100644 include/dt-bindings/clock/microchip,pic32-clock.h
 
-Although GAS accepts it, '.type symbol@function' is an undocumented form of
-this directive. The documentation specifies a comma between the symbol and
-'@function'.
-
-Signed-off-by: Scott Egerton <Scott.Egerton@imgtec.com>
-Signed-off-by: Daniel Sanders <daniel.sanders@imgtec.com>
-Reviewed-by: Maciej W. Rozycki <macro@imgtec.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Maciej W. Rozycki <macro@imgtec.com>
-Cc: Paul Burton <paul.burton@imgtec.com>
-Cc: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-Cc: linux-mips@linux-mips.org
-
----
-
-V2:
-* Shortened the subject line.
-* Rewrote second paragraph of the commit message.
-* Made the same change to r2300_fpu.S.
-
- arch/mips/kernel/r2300_fpu.S | 2 +-
- arch/mips/kernel/r4k_fpu.S   | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/arch/mips/kernel/r2300_fpu.S b/arch/mips/kernel/r2300_fpu.S
-index 5ce3b74..b4ac637 100644
---- a/arch/mips/kernel/r2300_fpu.S
-+++ b/arch/mips/kernel/r2300_fpu.S
-@@ -125,7 +125,7 @@ LEAF(_restore_fp_context)
- 	END(_restore_fp_context)
- 	.set	reorder
- 
--	.type	fault@function
-+	.type	fault, @function
- 	.ent	fault
- fault:	li	v0, -EFAULT
- 	jr	ra
-diff --git a/arch/mips/kernel/r4k_fpu.S b/arch/mips/kernel/r4k_fpu.S
-index f09546e..17732f8 100644
---- a/arch/mips/kernel/r4k_fpu.S
-+++ b/arch/mips/kernel/r4k_fpu.S
-@@ -358,7 +358,7 @@ LEAF(_restore_msa_all_upper)
- 
- 	.set	reorder
- 
--	.type	fault@function
-+	.type	fault, @function
- 	.ent	fault
- fault:	li	v0, -EFAULT				# failure
- 	jr	ra
--- 
-2.1.4
+Acked-by: Rob Herring <robh@kernel.org>

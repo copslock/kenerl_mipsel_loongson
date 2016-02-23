@@ -1,58 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Feb 2016 03:03:07 +0100 (CET)
-Received: from mail-pa0-f53.google.com ([209.85.220.53]:34241 "EHLO
-        mail-pa0-f53.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011315AbcBWCDFhmPYj (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 23 Feb 2016 03:03:05 +0100
-Received: by mail-pa0-f53.google.com with SMTP id fy10so100805812pac.1;
-        Mon, 22 Feb 2016 18:03:05 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Feb 2016 03:03:32 +0100 (CET)
+Received: from mail-pf0-f173.google.com ([209.85.192.173]:36541 "EHLO
+        mail-pf0-f173.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27011315AbcBWCD1XWpkj (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 23 Feb 2016 03:03:27 +0100
+Received: by mail-pf0-f173.google.com with SMTP id e127so102912916pfe.3;
+        Mon, 22 Feb 2016 18:03:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=message-id:date:from:user-agent:mime-version:to:cc:subject
          :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=WHbQgLXdSd7kMnBIeAfr5f6Oyd4c+LHlaX4npLwC9+U=;
-        b=RBV4sLMZOcTD7DcSmkVRoVnh5I3uMOklNWSd5jKDDVlK71IgN617RyPR5foUCF6/VA
-         qEmg0NhsaRJ9VSrBu3vx/+nGYK1KCzOVGMfGyddU4sMLES7lmJJLp6M7XeszJqONxDcq
-         RccY6hNT3BfZFWz7U65NYNVa2V5cKx+PaqpfjWRJxEi8U2s/bHO6AvlX9IQvPjXDWnwy
-         Z/MsppcWTrRTXUbYZjeh3RkrWoyO5IK7vczUoL9msRh6extHlWv6Q4jXS51tj9/lRM4G
-         L/DkmL8eSa0i+hVbwta5e8UTBwNN63l43vCdfzknHQutGRkJ2hoo7ZLCEKnFakxQFbaX
-         H8GA==
+        bh=Qg2gqjB4Dk1fwvzmWEWUlxszlHwrENHTLSvipiDdDwc=;
+        b=E+y/Eh7+05sn0dCLqV8LAMu+loXWSx0CHh1bPoB0B4KkF+1y7zJMTxHwctvTXOIlAw
+         zWFr39BpU+6tnNvXv1N25zORITV/VXMl9Es1Mn0B2C1JHuj0wqfpO9wTo9GrmvgXZ/vo
+         GBveIRSKws33yMa1l4PU+G9PGBkU3Pr/MMJiDAPTp0+lDqSfVFlzjCF4fMjyZkGFcfA4
+         fy6afPQchnWnfr0wmiENFIMZknIwub/npp8XFJNCEG4jw5LlTdo4ObV17OUyW0Bw881N
+         2tzSUNVQrzdXeLE0c823lm8fJKeDtowjz+kRFOtWwf21MPK4msN6RILdN2E2FVVtdzuK
+         T9+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:message-id:date:from:user-agent:mime-version:to
          :cc:subject:references:in-reply-to:content-type
          :content-transfer-encoding;
-        bh=WHbQgLXdSd7kMnBIeAfr5f6Oyd4c+LHlaX4npLwC9+U=;
-        b=nJ93r6w1foKlU3+44IYN9A058GSBS0DC/j4Fz28ne54hPNXGv/AjJyRzI8wplsHHgY
-         kcZnOEIsM1Mouq33d0XrGCj8HA21tH0Z9L92sP23PTVBFlstCPfeejvb1waPpUmu6c+P
-         fzFjMzg/8G+h+PvNZfy5VT0bd2SsXEEIGTPmYV8LEXQYzEQbQ/N0jy4E1Aj5yi05Ssdg
-         iSvx/g1CNIm4hb2adXXP0maa0cfvmWfMppfrCdt0NXYv6xPmwlUZfaX9q/pijylQtJ6T
-         dbcek9y8v8TC0z+ls7d+i3okKvjhNrw+rAA7ewW7BmDsm3o/1HJWpbJq6wHIHG4PaOpD
-         XRUQ==
-X-Gm-Message-State: AG10YOSmL0nVPhDtwOwinUwFXMyfqyATwxlkeEvy/dPZklCNqbFh1H+hPR53tDsrzjfksQ==
-X-Received: by 10.66.231.100 with SMTP id tf4mr42767823pac.44.1456192979535;
-        Mon, 22 Feb 2016 18:02:59 -0800 (PST)
+        bh=Qg2gqjB4Dk1fwvzmWEWUlxszlHwrENHTLSvipiDdDwc=;
+        b=jmuLWuu3O+h9A2YfLoBmj4Gd+JbJKJ/vwiEAgyh6bSNXKLgWDm82qqVBejLm/9FEYn
+         09rApdzaG1fcg2/H5GM/DmzM9HLNGMmMpM9d+CgdbUKcqNz1PSlOi8mmQz6b5MWSSFHq
+         GRHZTJNMIvAwfZD5nz+UMQ7awe69/F0MFllAr6XXqN5jHiQ6U+XT/R367QPM6+Ry9fAp
+         bflGFOMt+gMY2cCmtBzNUSRyhZbsmIWU5lmCRvfhwTe/zMeehoYKtz0D6xNC6myIUVkK
+         K+qZDgLA/KkCWz4m9PNIK2mZTI9bwW/A2BFi82pKwdP6Ak0e3MjhUwVBcNtgDREJyj6Q
+         oIZQ==
+X-Gm-Message-State: AG10YOTAGuDyCIcm0r0w6yVhbzu2kW2uD6+GRK6jx1msK9ZP/6uZ61SsUr+kESBggYcB7g==
+X-Received: by 10.98.9.129 with SMTP id 1mr42934691pfj.163.1456193001327;
+        Mon, 22 Feb 2016 18:03:21 -0800 (PST)
 Received: from dl.caveonetworks.com ([64.2.3.194])
-        by smtp.googlemail.com with ESMTPSA id yj1sm39904691pac.16.2016.02.22.18.02.57
+        by smtp.googlemail.com with ESMTPSA id kw10sm39981836pab.0.2016.02.22.18.03.19
         (version=TLSv1/SSLv3 cipher=OTHER);
-        Mon, 22 Feb 2016 18:02:57 -0800 (PST)
-Message-ID: <56CBBDD0.3030709@gmail.com>
-Date:   Mon, 22 Feb 2016 18:02:56 -0800
+        Mon, 22 Feb 2016 18:03:19 -0800 (PST)
+Message-ID: <56CBBDE6.6090308@gmail.com>
+Date:   Mon, 22 Feb 2016 18:03:18 -0800
 From:   David Daney <ddaney.cavm@gmail.com>
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
 MIME-Version: 1.0
-To:     Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Ralf Baechle <ralf@linux-mips.org>
-CC:     linux-mips@linux-mips.org
-Subject: Re: [PATCH 0/3] MIPS: OCTEON: Make DT "model" visible in /proc/cpuinfo
-References: <1456179777-6247-1-git-send-email-aaro.koskinen@iki.fi>
-In-Reply-To: <1456179777-6247-1-git-send-email-aaro.koskinen@iki.fi>
+To:     Aaro Koskinen <aaro.koskinen@iki.fi>
+CC:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: Re: [PATCH 0/3] MIPS: OCTEON: fill mac addresses with appended DTB
+References: <1456180788-6803-1-git-send-email-aaro.koskinen@iki.fi>
+In-Reply-To: <1456180788-6803-1-git-send-email-aaro.koskinen@iki.fi>
 Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
 Return-Path: <ddaney.cavm@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52175
+X-archive-position: 52176
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -71,28 +70,22 @@ X-list: linux-mips
 
 Acked-by: David Daney <david.daney@cavium.com>
 
-On 02/22/2016 02:22 PM, Aaro Koskinen wrote:
+On 02/22/2016 02:39 PM, Aaro Koskinen wrote:
 > Hi,
 >
-> This is a small cosmetic change to get rid of "Unsupported Board" in
-> /proc/cpuinfo with "pure DT" boards.
->
-> E.g. on EdgeRouter Pro this changes system type in /proc/cpuinfo from:
->
-> 	system type             : Unsupported Board (CN6120p1.1-1000-NSP)
->
-> to:
->
-> 	system type             : ubnt,e200 (CN6120p1.1-1000-NSP)
+> When using appended DTB, the MAC addresses should be filled in
+> from the bootinfo.
 >
 > A.
 >
 > Aaro Koskinen (3):
->    MIPS: OCTEON: board_type_to_string: return NULL for unsupported board
->    MIPS: OCTEON: initialize system type string after device tree init
->    MIPS: OCTEON: use model string from DTB for unknown board type
+>    MIPS: OCTEON: device_tree_init: use separate pass to fill mac
+>      addresses
+>    MIPS: OCTEON: device_tree_init: don't fill mac if already set
+>    MIPS: OCTEON: device_tree_init: fill mac addresses when using appended
+>      dtb
 >
->   arch/mips/cavium-octeon/setup.c              | 23 +++++++++++++++++------
->   arch/mips/include/asm/octeon/cvmx-bootinfo.h |  2 +-
->   2 files changed, 18 insertions(+), 7 deletions(-)
+>   arch/mips/cavium-octeon/octeon-platform.c | 95 +++++++++++++++++++++++++------
+>   arch/mips/cavium-octeon/setup.c           |  8 +++
+>   2 files changed, 87 insertions(+), 16 deletions(-)
 >

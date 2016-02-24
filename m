@@ -1,39 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Feb 2016 12:52:09 +0100 (CET)
-Received: from mx1.redhat.com ([209.132.183.28]:34547 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27010717AbcBXLwHfnJtl (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 24 Feb 2016 12:52:07 +0100
-Received: from int-mx14.intmail.prod.int.phx2.redhat.com (int-mx14.intmail.prod.int.phx2.redhat.com [10.5.11.27])
-        by mx1.redhat.com (Postfix) with ESMTPS id D3DE985542;
-        Wed, 24 Feb 2016 11:52:03 +0000 (UTC)
-Received: from [127.0.0.1] (ovpn01.gateway.prod.ext.phx2.redhat.com [10.5.9.1])
-        by int-mx14.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with ESMTP id u1OBq0YZ024239;
-        Wed, 24 Feb 2016 06:52:02 -0500
-Message-ID: <56CD9960.4060908@redhat.com>
-Date:   Wed, 24 Feb 2016 11:52:00 +0000
-From:   Pedro Alves <palves@redhat.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.7.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Feb 2016 13:31:02 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:26185 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27010717AbcBXMa7jzyg2 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 24 Feb 2016 13:30:59 +0100
+Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
+        by Websense Email Security Gateway with ESMTPS id EF16B727596B2;
+        Wed, 24 Feb 2016 12:30:51 +0000 (GMT)
+Received: from [10.100.200.149] (10.100.200.149) by hhmail02.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server id 14.3.266.1; Wed, 24 Feb 2016
+ 12:30:53 +0000
+Date:   Wed, 24 Feb 2016 12:30:52 +0000
+From:   "Maciej W. Rozycki" <macro@imgtec.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+CC:     Daniel Sanders <daniel.sanders@imgtec.com>,
+        Scott Egerton <Scott.Egerton@imgtec.com>,
+        Paul Burton <paul.burton@imgtec.com>,
+        Markos Chandras <markos.chandras@imgtec.com>,
+        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
+        <linux-mips@linux-mips.org>
+Subject: Re: [PATCH] mips: Avoid a form of the .type directive that is not
+ supported by LLVM's Integrated Assembler
+In-Reply-To: <20160224015058.GA25673@linux-mips.org>
+Message-ID: <alpine.DEB.2.00.1602240328360.15885@tp.orcam.me.uk>
+References: <1455723429-26459-1-git-send-email-daniel.sanders@imgtec.com> <alpine.DEB.2.00.1602171944410.15885@tp.orcam.me.uk> <20160224015058.GA25673@linux-mips.org>
+User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
 MIME-Version: 1.0
-To:     "Maciej W. Rozycki" <macro@imgtec.com>
-CC:     Luis Machado <lgustavo@codesourcery.com>,
-        "Maciej W. Rozycki" <macro@linux-mips.org>,
-        gdb-patches@sourceware.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH] Expect SI_KERNEL si_code for a MIPS software breakpoint
- trap
-References: <1442592647-3051-1-git-send-email-lgustavo@codesourcery.com> <alpine.LFD.2.20.1509181729100.10647@eddie.linux-mips.org> <56B9F7E6.5010006@codesourcery.com> <alpine.DEB.2.00.1602092020150.15885@tp.orcam.me.uk> <56BB329F.3080606@codesourcery.com> <alpine.DEB.2.00.1602152315540.15885@tp.orcam.me.uk> <56C26D8A.9070401@redhat.com> <alpine.DEB.2.00.1602182328160.15885@tp.orcam.me.uk>
-In-Reply-To: <alpine.DEB.2.00.1602182328160.15885@tp.orcam.me.uk>
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.68 on 10.5.11.27
-Return-Path: <palves@redhat.com>
+Content-Type: text/plain; charset="US-ASCII"
+X-Originating-IP: [10.100.200.149]
+Return-Path: <Maciej.Rozycki@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52188
+X-archive-position: 52189
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: palves@redhat.com
+X-original-sender: macro@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,91 +48,38 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Maciej,
+On Wed, 24 Feb 2016, Ralf Baechle wrote:
 
->  As to the kernel side with the observations made in this discussion I 
-> think we should set the trap code for SIGTRAP signals issued with BREAK 
-> instructions to TRAP_BRKPT unconditionally, regardless of the code used.  
-> This won't of course affect encodings which send a different signal such 
-> as SIGFPE.
+> >  If LLVM strives to be GNU toolchain compatible, then this looks like a 
+> > bug in their scanner as generic ELF support in GAS (gas/config/obj-elf.c) 
+> > has this, in `obj_elf_type':
+> > 
+> >   if (*input_line_pointer == ',')
+> >     ++input_line_pointer;
+> > 
+> > so the comma is entirely optional.  I realise this is undocumented, but 
+> > there you go.  It must have been there since forever.
 > 
->  We're lacking a code suitable for (conditional) trap instructions.  I 
-> think TRAP_TRAP or suchlike needs to be added.
-
-Yeah, looks like it.
-
->> Hardware breakpoint hits are distinguished from software breakpoint hits,
->> because they're reported with "hwbreak", not "swbreak":
->>
->>  @item hwbreak
->>  The packet indicates the target stopped for a hardware breakpoint.
->>  The @var{r} part must be left empty.
+> It contradicts documentation.  The gas manual says:
 > 
->  Umm, any requirements for this?  We have MIPS data hardware breakpoint 
-> support in the Linux kernel (regrettably not for instructions, but that 
-> could be added sometime), but I can't see TRAP_HWBKPT being set for them, 
-> they just use generic SI_KERNEL as everything else right now.
+> * Type::                        `.type <INT | NAME , TYPE DESCRIPTION>'
+> 
+> And the SGI assembler manual I dug up as ".type name, value".  So maybe
+> gas is too generous here?
 
-Can userspace/ptrace still tell whether a hardware breakpoint triggered by
-consulting debug registers, similarly to how it can for watchpoints,
-with PTRACE_GET_WATCH_REGS, and looking at watchhi ?
+ I find it interesting that you mention SGI here as the commit which might 
+be responsible for the current interpretation is this:
 
-(assuming this comment is correct):
+Mon Sep 12 17:51:39 1994  Ian Lance Taylor  (ian@sanguine.cygnus.com)
 
-/* Target to_stopped_by_watchpoint implementation.  Return 1 if
-   stopped by watchpoint.  The watchhi R and W bits indicate the watch
-   register triggered.  */
+	* config/obj-elf.c (obj_elf_type): Rewrite to accept syntax
+	reportedly to be used on Irix 6.
 
-static int
-mips_linux_stopped_by_watchpoint (struct target_ops *ops)
-{
+Given its age I doubt further information can be found, it might be just 
+sloppy coding.
 
+> Either way, I think the patch is right and I've just applied v2.
 
-This is not reachable today, due to lack of TRAP_* in si_code, but I
-think that can be fixed.
+ Sure, thanks!
 
-
-The only use for hwbreak currently is to know whether to ignore hardware
-breakpoint traps gdb can't explain (gdb assumes they're a delayed event for
-a hw breakpoint that has since been removed):
-
-  /* Maybe this was a trap for a hardware breakpoint/watchpoint that
-     has since been removed.  */
-  if (random_signal && target_stopped_by_hw_breakpoint ())
-    {
-      /* A delayed hardware breakpoint event.  Ignore the trap.  */
-      if (debug_infrun)
-	fprintf_unfiltered (gdb_stdlog,
-			    "infrun: delayed hardware breakpoint/watchpoint "
-			    "trap, ignoring\n");
-      random_signal = 0;
-    }
-
-So if the server claims it supports this stop reason, but then doesn't
-send it for hw breakpoint trap, users will see their programs
-occasionally stop for random spurious SIGTRAPs (if they use hardware
-breapoints).
-
-If the server does _not_ claim support for the swbreak/hwbreak stop
-reason, then the old moribund breakpoints heuristic kicks in:
-
-  /* Check if a moribund breakpoint explains the stop.  */
-  if (!target_supports_stopped_by_sw_breakpoint ()
-      || !target_supports_stopped_by_hw_breakpoint ())
-    {
-      for (ix = 0; VEC_iterate (bp_location_p, moribund_locations, ix, loc); ++ix)
-	{
-	  if (breakpoint_location_address_match (loc, aspace, bp_addr)
-	      && need_moribund_for_location_type (loc))
-	    {
-	      bs = bpstat_alloc (loc, &bs_link);
-	      /* For hits of moribund locations, we should just proceed.  */
-	      bs->stop = 0;
-	      bs->print = 0;
-	      bs->print_it = print_it_noop;
-	    }
-	}
-    }
-
-Thanks,
-Pedro Alves
+  Maciej

@@ -1,56 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Feb 2016 09:02:56 +0100 (CET)
-Received: from bes.se.axis.com ([195.60.68.10]:33714 "EHLO bes.se.axis.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27010622AbcBXICyamWt9 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 24 Feb 2016 09:02:54 +0100
-Received: from localhost (localhost [127.0.0.1])
-        by bes.se.axis.com (Postfix) with ESMTP id 6D1112E135;
-        Wed, 24 Feb 2016 09:02:48 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at bes.se.axis.com
-Received: from bes.se.axis.com ([IPv6:::ffff:127.0.0.1])
-        by localhost (bes.se.axis.com [::ffff:127.0.0.1]) (amavisd-new, port 10024)
-        with LMTP id 2BENgtamusqE; Wed, 24 Feb 2016 09:02:47 +0100 (CET)
-Received: from boulder.se.axis.com (boulder.se.axis.com [10.0.2.104])
-        by bes.se.axis.com (Postfix) with ESMTP id 192022E0B5;
-        Wed, 24 Feb 2016 09:02:47 +0100 (CET)
-Received: from boulder.se.axis.com (localhost [127.0.0.1])
-        by postfix.imss71 (Postfix) with ESMTP id EE0EA1289;
-        Wed, 24 Feb 2016 09:02:46 +0100 (CET)
-Received: from seth.se.axis.com (seth.se.axis.com [10.0.2.172])
-        by boulder.se.axis.com (Postfix) with ESMTP id E2982DF6;
-        Wed, 24 Feb 2016 09:02:46 +0100 (CET)
-Received: from XBOX02.axis.com (xbox02.axis.com [10.0.5.16])
-        by seth.se.axis.com (Postfix) with ESMTP id DCAF13E3F9;
-        Wed, 24 Feb 2016 09:02:46 +0100 (CET)
-Received: from [10.88.41.2] (10.0.5.55) by XBOX02.axis.com (10.0.5.16) with
- Microsoft SMTP Server (TLS) id 15.0.1156.6; Wed, 24 Feb 2016 09:02:46 +0100
-Message-ID: <56CD63A6.5090305@axis.com>
-Date:   Wed, 24 Feb 2016 09:02:46 +0100
-From:   Lars Persson <lars.persson@axis.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Icedove/31.8.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Feb 2016 11:26:07 +0100 (CET)
+Received: from mail-lf0-f49.google.com ([209.85.215.49]:33058 "EHLO
+        mail-lf0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010717AbcBXK0BnYh1z (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 24 Feb 2016 11:26:01 +0100
+Received: by mail-lf0-f49.google.com with SMTP id m1so8795889lfg.0
+        for <linux-mips@linux-mips.org>; Wed, 24 Feb 2016 02:26:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cogentembedded-com.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:references:from:message-id:date:user-agent:mime-version
+         :in-reply-to:content-type:content-transfer-encoding;
+        bh=Y7/4XwhJ67G9H+v7ifUCZmrQgPTj5YNr4g74y4mY9jY=;
+        b=Eu/QcBZcTqvyQKcOwa3cstOAQ8KwKzf0AJ3xqUeutQojs6SIxcphBH0BLIDu/ThqJV
+         HPFXjJCZ88TuGMuXZ/Q4sf5iU+wxhcOYsxZJNupjQs+w0WHgLGWIx7SLKxlEzpOeiHcR
+         7VLALUFRNJFmmyfJAOxe/uQTHnAlHrWzSRqZ0EP9hO0rBle34WNNaPMXp/G2wBcPjMgC
+         JPHYo0p42HJTMDBRvWWHi5ftrWy50GWOwpy7ynDS3LdqhHUASiccP+FgFw3FixwWz520
+         lkf+EIDH2FCv/qKWd1vFvQfHZHtDHXyY+zXlPW0hYPCOMh/S7HXllHN4Oofq9F8sYpPu
+         xKEw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:subject:to:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-type
+         :content-transfer-encoding;
+        bh=Y7/4XwhJ67G9H+v7ifUCZmrQgPTj5YNr4g74y4mY9jY=;
+        b=F2ohXZxi1f/bWjcb/KQFEs1SCcA+27DlOeRFoU/dLcu5qs8sMAqFQd50BRCrkYy8E2
+         WmHPUdIMCG3cA88YKJC5f0Fi7pzbQLE5vtp+ye7zpgv6RoksDzSyGZ+sqhwUJ4WP2alA
+         fP7EjiqwhJAUBEE09KZOsSlnI6Dg/ADgXHJIq4p3UR2/Ppui16hJJWKRpyQWaQusf0kF
+         x2cb7KMPJwljEjQtpNTeYpfQZdBN1q+GBYmi688Pmp/68rxcdlnY7xq8UJ1FcIwBHH/f
+         tIpQOrjMw1I/DKV8N6SunLmaN3lOmZhQM/No8/JaaR/ec46mcyMhsJd4+vTMiaQOvjBh
+         N02A==
+X-Gm-Message-State: AG10YOS63qw5vo6yHrL0UBfvxMFNTqDQXICdavONh9NIF39/KgFB1QUftPA2rkZHm+YZNg==
+X-Received: by 10.25.15.216 with SMTP id 85mr10878613lfp.62.1456309556088;
+        Wed, 24 Feb 2016 02:25:56 -0800 (PST)
+Received: from [192.168.4.126] ([31.173.84.246])
+        by smtp.gmail.com with ESMTPSA id n96sm284845lfi.45.2016.02.24.02.25.54
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Wed, 24 Feb 2016 02:25:55 -0800 (PST)
+Subject: Re: [PATCH v2 2/3] MIPS: OCTEON: device_tree_init: don't fill mac if
+ already set
+To:     Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        David Daney <ddaney.cavm@gmail.com>, linux-mips@linux-mips.org
+References: <1456267927-2492-1-git-send-email-aaro.koskinen@iki.fi>
+ <1456267927-2492-3-git-send-email-aaro.koskinen@iki.fi>
+From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Message-ID: <56CD852F.4000204@cogentembedded.com>
+Date:   Wed, 24 Feb 2016 13:25:51 +0300
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:38.0) Gecko/20100101
+ Thunderbird/38.6.0
 MIME-Version: 1.0
-To:     Paul Burton <paul.burton@imgtec.com>, <linux-mips@linux-mips.org>,
-        Ralf Baechle <ralf@linux-mips.org>
-CC:     Lars Persson <larper@axis.com>, <linux-kernel@vger.kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Jerome Marchand <jmarchan@redhat.com>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: Re: [PATCH 2/2] MIPS: Flush highmem pages from dcache in __flush_icache_page
-References: <1456164585-26910-1-git-send-email-paul.burton@imgtec.com> <1456164585-26910-2-git-send-email-paul.burton@imgtec.com>
-In-Reply-To: <1456164585-26910-2-git-send-email-paul.burton@imgtec.com>
-Content-Type: text/plain; charset="windows-1252"; format=flowed
+In-Reply-To: <1456267927-2492-3-git-send-email-aaro.koskinen@iki.fi>
+Content-Type: text/plain; charset=windows-1252; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.0.5.55]
-X-ClientProxiedBy: XBOX04.axis.com (10.0.5.18) To XBOX02.axis.com (10.0.5.16)
-Return-Path: <lars.persson@axis.com>
+Return-Path: <sergei.shtylyov@cogentembedded.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52186
+X-archive-position: 52187
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: lars.persson@axis.com
+X-original-sender: sergei.shtylyov@cogentembedded.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -63,55 +72,48 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+Hello.
 
-On 02/22/2016 07:09 PM, Paul Burton wrote:
-> When a page is to be mapped executable for userspace, we can presume
-> that the icache doesn't contain anything valid for its address range but
-> we cannot be sure that its content has been written back from the dcache
-> to L2 or memory further out. If the icache fills from those memories,
-> ie. does not fill from the dcache, then we need to ensure that content
-> has been flushed from the dcache. This was being done for lowmem pages
-> but not for highmem pages. Fix this by mapping the page & flushing its
-> content from the dcache in __flush_icache_page, before the page is
-> provided to userland.
+On 2/24/2016 1:52 AM, Aaro Koskinen wrote:
+
+> Don't fill MAC address if it's already set. This allows DTB to
+> override the bootinfo.
 >
-
-Reviewed-by: Lars Persson <larper@axis.com>
-
-> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
->
+> Acked-by: David Daney <david.daney@cavium.com>
+> Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
 > ---
+>   arch/mips/cavium-octeon/octeon-platform.c | 8 ++++++++
+>   1 file changed, 8 insertions(+)
 >
->   arch/mips/mm/cache.c | 9 +++++++--
->   1 file changed, 7 insertions(+), 2 deletions(-)
+> diff --git a/arch/mips/cavium-octeon/octeon-platform.c b/arch/mips/cavium-octeon/octeon-platform.c
+> index a7d9f07..7aeafed 100644
+> --- a/arch/mips/cavium-octeon/octeon-platform.c
+> +++ b/arch/mips/cavium-octeon/octeon-platform.c
+> @@ -13,6 +13,7 @@
+>   #include <linux/i2c.h>
+>   #include <linux/usb.h>
+>   #include <linux/dma-mapping.h>
+> +#include <linux/etherdevice.h>
+>   #include <linux/module.h>
+>   #include <linux/mutex.h>
+>   #include <linux/slab.h>
+> @@ -525,10 +526,17 @@ static void __init octeon_fdt_set_phy(int eth, int phy_addr)
 >
-> diff --git a/arch/mips/mm/cache.c b/arch/mips/mm/cache.c
-> index 3f159ca..734cb2f 100644
-> --- a/arch/mips/mm/cache.c
-> +++ b/arch/mips/mm/cache.c
-> @@ -16,6 +16,7 @@
->   #include <linux/mm.h>
+>   static void __init octeon_fdt_set_mac_addr(int n, u64 *pmac)
+>   {
+> +	const u8 *old_mac;
+> +	int old_len;
+>   	u8 new_mac[6];
+>   	u64 mac = *pmac;
+>   	int r;
 >
->   #include <asm/cacheflush.h>
-> +#include <asm/highmem.h>
->   #include <asm/processor.h>
->   #include <asm/cpu.h>
->   #include <asm/cpu-features.h>
-> @@ -124,10 +125,14 @@ void __flush_icache_page(struct vm_area_struct *vma, struct page *page)
->   	unsigned long addr;
->
->   	if (PageHighMem(page))
-> -		return;
-> +		addr = (unsigned long)kmap_atomic(page);
-> +	else
-> +		addr = (unsigned long)page_address(page);
->
-> -	addr = (unsigned long) page_address(page);
->   	flush_data_cache_page(addr);
-> +
-> +	if (PageHighMem(page))
-> +		__kunmap_atomic((void *)addr);
->   }
->   EXPORT_SYMBOL_GPL(__flush_icache_page);
->
->
+> +	old_mac = fdt_getprop(initial_boot_params, n, "local-mac-address",
+> +			      &old_len);
+> +	if (!old_mac || old_len != 6 || is_valid_ether_addr(old_mac))
+> +		return;
+
+    So if there's no such prop or the length is not 6, you just return?
+
+[...]
+
+MBR, Sergei

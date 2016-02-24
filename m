@@ -1,65 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Feb 2016 11:26:07 +0100 (CET)
-Received: from mail-lf0-f49.google.com ([209.85.215.49]:33058 "EHLO
-        mail-lf0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27010717AbcBXK0BnYh1z (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 24 Feb 2016 11:26:01 +0100
-Received: by mail-lf0-f49.google.com with SMTP id m1so8795889lfg.0
-        for <linux-mips@linux-mips.org>; Wed, 24 Feb 2016 02:26:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cogentembedded-com.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:references:from:message-id:date:user-agent:mime-version
-         :in-reply-to:content-type:content-transfer-encoding;
-        bh=Y7/4XwhJ67G9H+v7ifUCZmrQgPTj5YNr4g74y4mY9jY=;
-        b=Eu/QcBZcTqvyQKcOwa3cstOAQ8KwKzf0AJ3xqUeutQojs6SIxcphBH0BLIDu/ThqJV
-         HPFXjJCZ88TuGMuXZ/Q4sf5iU+wxhcOYsxZJNupjQs+w0WHgLGWIx7SLKxlEzpOeiHcR
-         7VLALUFRNJFmmyfJAOxe/uQTHnAlHrWzSRqZ0EP9hO0rBle34WNNaPMXp/G2wBcPjMgC
-         JPHYo0p42HJTMDBRvWWHi5ftrWy50GWOwpy7ynDS3LdqhHUASiccP+FgFw3FixwWz520
-         lkf+EIDH2FCv/qKWd1vFvQfHZHtDHXyY+zXlPW0hYPCOMh/S7HXllHN4Oofq9F8sYpPu
-         xKEw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:subject:to:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-type
-         :content-transfer-encoding;
-        bh=Y7/4XwhJ67G9H+v7ifUCZmrQgPTj5YNr4g74y4mY9jY=;
-        b=F2ohXZxi1f/bWjcb/KQFEs1SCcA+27DlOeRFoU/dLcu5qs8sMAqFQd50BRCrkYy8E2
-         WmHPUdIMCG3cA88YKJC5f0Fi7pzbQLE5vtp+ye7zpgv6RoksDzSyGZ+sqhwUJ4WP2alA
-         fP7EjiqwhJAUBEE09KZOsSlnI6Dg/ADgXHJIq4p3UR2/Ppui16hJJWKRpyQWaQusf0kF
-         x2cb7KMPJwljEjQtpNTeYpfQZdBN1q+GBYmi688Pmp/68rxcdlnY7xq8UJ1FcIwBHH/f
-         tIpQOrjMw1I/DKV8N6SunLmaN3lOmZhQM/No8/JaaR/ec46mcyMhsJd4+vTMiaQOvjBh
-         N02A==
-X-Gm-Message-State: AG10YOS63qw5vo6yHrL0UBfvxMFNTqDQXICdavONh9NIF39/KgFB1QUftPA2rkZHm+YZNg==
-X-Received: by 10.25.15.216 with SMTP id 85mr10878613lfp.62.1456309556088;
-        Wed, 24 Feb 2016 02:25:56 -0800 (PST)
-Received: from [192.168.4.126] ([31.173.84.246])
-        by smtp.gmail.com with ESMTPSA id n96sm284845lfi.45.2016.02.24.02.25.54
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Wed, 24 Feb 2016 02:25:55 -0800 (PST)
-Subject: Re: [PATCH v2 2/3] MIPS: OCTEON: device_tree_init: don't fill mac if
- already set
-To:     Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        David Daney <ddaney.cavm@gmail.com>, linux-mips@linux-mips.org
-References: <1456267927-2492-1-git-send-email-aaro.koskinen@iki.fi>
- <1456267927-2492-3-git-send-email-aaro.koskinen@iki.fi>
-From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Message-ID: <56CD852F.4000204@cogentembedded.com>
-Date:   Wed, 24 Feb 2016 13:25:51 +0300
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:38.0) Gecko/20100101
- Thunderbird/38.6.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Feb 2016 12:52:09 +0100 (CET)
+Received: from mx1.redhat.com ([209.132.183.28]:34547 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27010717AbcBXLwHfnJtl (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 24 Feb 2016 12:52:07 +0100
+Received: from int-mx14.intmail.prod.int.phx2.redhat.com (int-mx14.intmail.prod.int.phx2.redhat.com [10.5.11.27])
+        by mx1.redhat.com (Postfix) with ESMTPS id D3DE985542;
+        Wed, 24 Feb 2016 11:52:03 +0000 (UTC)
+Received: from [127.0.0.1] (ovpn01.gateway.prod.ext.phx2.redhat.com [10.5.9.1])
+        by int-mx14.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with ESMTP id u1OBq0YZ024239;
+        Wed, 24 Feb 2016 06:52:02 -0500
+Message-ID: <56CD9960.4060908@redhat.com>
+Date:   Wed, 24 Feb 2016 11:52:00 +0000
+From:   Pedro Alves <palves@redhat.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.7.0
 MIME-Version: 1.0
-In-Reply-To: <1456267927-2492-3-git-send-email-aaro.koskinen@iki.fi>
-Content-Type: text/plain; charset=windows-1252; format=flowed
+To:     "Maciej W. Rozycki" <macro@imgtec.com>
+CC:     Luis Machado <lgustavo@codesourcery.com>,
+        "Maciej W. Rozycki" <macro@linux-mips.org>,
+        gdb-patches@sourceware.org, linux-mips@linux-mips.org
+Subject: Re: [PATCH] Expect SI_KERNEL si_code for a MIPS software breakpoint
+ trap
+References: <1442592647-3051-1-git-send-email-lgustavo@codesourcery.com> <alpine.LFD.2.20.1509181729100.10647@eddie.linux-mips.org> <56B9F7E6.5010006@codesourcery.com> <alpine.DEB.2.00.1602092020150.15885@tp.orcam.me.uk> <56BB329F.3080606@codesourcery.com> <alpine.DEB.2.00.1602152315540.15885@tp.orcam.me.uk> <56C26D8A.9070401@redhat.com> <alpine.DEB.2.00.1602182328160.15885@tp.orcam.me.uk>
+In-Reply-To: <alpine.DEB.2.00.1602182328160.15885@tp.orcam.me.uk>
+Content-Type: text/plain; charset=windows-1252
 Content-Transfer-Encoding: 7bit
-Return-Path: <sergei.shtylyov@cogentembedded.com>
+X-Scanned-By: MIMEDefang 2.68 on 10.5.11.27
+Return-Path: <palves@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52187
+X-archive-position: 52188
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sergei.shtylyov@cogentembedded.com
+X-original-sender: palves@redhat.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -72,48 +46,91 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hello.
+Hi Maciej,
 
-On 2/24/2016 1:52 AM, Aaro Koskinen wrote:
+>  As to the kernel side with the observations made in this discussion I 
+> think we should set the trap code for SIGTRAP signals issued with BREAK 
+> instructions to TRAP_BRKPT unconditionally, regardless of the code used.  
+> This won't of course affect encodings which send a different signal such 
+> as SIGFPE.
+> 
+>  We're lacking a code suitable for (conditional) trap instructions.  I 
+> think TRAP_TRAP or suchlike needs to be added.
 
-> Don't fill MAC address if it's already set. This allows DTB to
-> override the bootinfo.
->
-> Acked-by: David Daney <david.daney@cavium.com>
-> Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
-> ---
->   arch/mips/cavium-octeon/octeon-platform.c | 8 ++++++++
->   1 file changed, 8 insertions(+)
->
-> diff --git a/arch/mips/cavium-octeon/octeon-platform.c b/arch/mips/cavium-octeon/octeon-platform.c
-> index a7d9f07..7aeafed 100644
-> --- a/arch/mips/cavium-octeon/octeon-platform.c
-> +++ b/arch/mips/cavium-octeon/octeon-platform.c
-> @@ -13,6 +13,7 @@
->   #include <linux/i2c.h>
->   #include <linux/usb.h>
->   #include <linux/dma-mapping.h>
-> +#include <linux/etherdevice.h>
->   #include <linux/module.h>
->   #include <linux/mutex.h>
->   #include <linux/slab.h>
-> @@ -525,10 +526,17 @@ static void __init octeon_fdt_set_phy(int eth, int phy_addr)
->
->   static void __init octeon_fdt_set_mac_addr(int n, u64 *pmac)
->   {
-> +	const u8 *old_mac;
-> +	int old_len;
->   	u8 new_mac[6];
->   	u64 mac = *pmac;
->   	int r;
->
-> +	old_mac = fdt_getprop(initial_boot_params, n, "local-mac-address",
-> +			      &old_len);
-> +	if (!old_mac || old_len != 6 || is_valid_ether_addr(old_mac))
-> +		return;
+Yeah, looks like it.
 
-    So if there's no such prop or the length is not 6, you just return?
+>> Hardware breakpoint hits are distinguished from software breakpoint hits,
+>> because they're reported with "hwbreak", not "swbreak":
+>>
+>>  @item hwbreak
+>>  The packet indicates the target stopped for a hardware breakpoint.
+>>  The @var{r} part must be left empty.
+> 
+>  Umm, any requirements for this?  We have MIPS data hardware breakpoint 
+> support in the Linux kernel (regrettably not for instructions, but that 
+> could be added sometime), but I can't see TRAP_HWBKPT being set for them, 
+> they just use generic SI_KERNEL as everything else right now.
 
-[...]
+Can userspace/ptrace still tell whether a hardware breakpoint triggered by
+consulting debug registers, similarly to how it can for watchpoints,
+with PTRACE_GET_WATCH_REGS, and looking at watchhi ?
 
-MBR, Sergei
+(assuming this comment is correct):
+
+/* Target to_stopped_by_watchpoint implementation.  Return 1 if
+   stopped by watchpoint.  The watchhi R and W bits indicate the watch
+   register triggered.  */
+
+static int
+mips_linux_stopped_by_watchpoint (struct target_ops *ops)
+{
+
+
+This is not reachable today, due to lack of TRAP_* in si_code, but I
+think that can be fixed.
+
+
+The only use for hwbreak currently is to know whether to ignore hardware
+breakpoint traps gdb can't explain (gdb assumes they're a delayed event for
+a hw breakpoint that has since been removed):
+
+  /* Maybe this was a trap for a hardware breakpoint/watchpoint that
+     has since been removed.  */
+  if (random_signal && target_stopped_by_hw_breakpoint ())
+    {
+      /* A delayed hardware breakpoint event.  Ignore the trap.  */
+      if (debug_infrun)
+	fprintf_unfiltered (gdb_stdlog,
+			    "infrun: delayed hardware breakpoint/watchpoint "
+			    "trap, ignoring\n");
+      random_signal = 0;
+    }
+
+So if the server claims it supports this stop reason, but then doesn't
+send it for hw breakpoint trap, users will see their programs
+occasionally stop for random spurious SIGTRAPs (if they use hardware
+breapoints).
+
+If the server does _not_ claim support for the swbreak/hwbreak stop
+reason, then the old moribund breakpoints heuristic kicks in:
+
+  /* Check if a moribund breakpoint explains the stop.  */
+  if (!target_supports_stopped_by_sw_breakpoint ()
+      || !target_supports_stopped_by_hw_breakpoint ())
+    {
+      for (ix = 0; VEC_iterate (bp_location_p, moribund_locations, ix, loc); ++ix)
+	{
+	  if (breakpoint_location_address_match (loc, aspace, bp_addr)
+	      && need_moribund_for_location_type (loc))
+	    {
+	      bs = bpstat_alloc (loc, &bs_link);
+	      /* For hits of moribund locations, we should just proceed.  */
+	      bs->stop = 0;
+	      bs->print = 0;
+	      bs->print_it = print_it_noop;
+	    }
+	}
+    }
+
+Thanks,
+Pedro Alves

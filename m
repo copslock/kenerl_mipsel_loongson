@@ -1,30 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Feb 2016 23:53:06 +0100 (CET)
-Received: from emh02.mail.saunalahti.fi ([62.142.5.108]:33995 "EHLO
-        emh02.mail.saunalahti.fi" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27013849AbcBWWwLr1nqR (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 23 Feb 2016 23:52:11 +0100
-Received: from localhost.localdomain (85-76-167-245-nat.elisa-mobile.fi [85.76.167.245])
-        by emh02.mail.saunalahti.fi (Postfix) with ESMTP id 5A81523405D;
-        Wed, 24 Feb 2016 00:52:11 +0200 (EET)
-From:   Aaro Koskinen <aaro.koskinen@iki.fi>
-To:     Ralf Baechle <ralf@linux-mips.org>,
-        David Daney <ddaney.cavm@gmail.com>, linux-mips@linux-mips.org
-Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>
-Subject: [PATCH v2 3/3] MIPS: OCTEON: device_tree_init: fill mac addresses when using appended dtb
-Date:   Wed, 24 Feb 2016 00:52:07 +0200
-Message-Id: <1456267927-2492-4-git-send-email-aaro.koskinen@iki.fi>
-X-Mailer: git-send-email 2.4.0
-In-Reply-To: <1456267927-2492-1-git-send-email-aaro.koskinen@iki.fi>
-References: <1456267927-2492-1-git-send-email-aaro.koskinen@iki.fi>
-Return-Path: <aaro.koskinen@iki.fi>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Feb 2016 02:51:01 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:58988 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S27013108AbcBXBu7yIsGt (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 24 Feb 2016 02:50:59 +0100
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.15.2/8.14.8) with ESMTP id u1O1oxTx026094;
+        Wed, 24 Feb 2016 02:50:59 +0100
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.15.2/8.15.2/Submit) id u1O1owGc026093;
+        Wed, 24 Feb 2016 02:50:58 +0100
+Date:   Wed, 24 Feb 2016 02:50:58 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     "Maciej W. Rozycki" <macro@imgtec.com>
+Cc:     Daniel Sanders <daniel.sanders@imgtec.com>,
+        Scott Egerton <Scott.Egerton@imgtec.com>,
+        Paul Burton <paul.burton@imgtec.com>,
+        Markos Chandras <markos.chandras@imgtec.com>,
+        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
+        linux-mips@linux-mips.org
+Subject: Re: [PATCH] mips: Avoid a form of the .type directive that is not
+ supported by LLVM's Integrated Assembler
+Message-ID: <20160224015058.GA25673@linux-mips.org>
+References: <1455723429-26459-1-git-send-email-daniel.sanders@imgtec.com>
+ <alpine.DEB.2.00.1602171944410.15885@tp.orcam.me.uk>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <alpine.DEB.2.00.1602171944410.15885@tp.orcam.me.uk>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52184
+X-archive-position: 52185
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aaro.koskinen@iki.fi
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -37,59 +49,25 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Fill MAC addresses from bootinfo when using appended DTB.
+On Wed, Feb 17, 2016 at 08:04:31PM +0000, Maciej W. Rozycki wrote:
 
-Acked-by: David Daney <david.daney@cavium.com>
-Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
----
- arch/mips/cavium-octeon/setup.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+>  If LLVM strives to be GNU toolchain compatible, then this looks like a 
+> bug in their scanner as generic ELF support in GAS (gas/config/obj-elf.c) 
+> has this, in `obj_elf_type':
+> 
+>   if (*input_line_pointer == ',')
+>     ++input_line_pointer;
+> 
+> so the comma is entirely optional.  I realise this is undocumented, but 
+> there you go.  It must have been there since forever.
 
-diff --git a/arch/mips/cavium-octeon/setup.c b/arch/mips/cavium-octeon/setup.c
-index ed3063f..f2df1d9 100644
---- a/arch/mips/cavium-octeon/setup.c
-+++ b/arch/mips/cavium-octeon/setup.c
-@@ -1089,11 +1089,13 @@ void __init device_tree_init(void)
- {
- 	const void *fdt;
- 	bool do_prune;
-+	bool fill_mac;
- 
- #ifdef CONFIG_MIPS_ELF_APPENDED_DTB
- 	if (!fdt_check_header(&__appended_dtb)) {
- 		fdt = &__appended_dtb;
- 		do_prune = false;
-+		fill_mac = true;
- 		pr_info("Using appended Device Tree.\n");
- 	} else
- #endif
-@@ -1102,22 +1104,26 @@ void __init device_tree_init(void)
- 		if (fdt_check_header(fdt))
- 			panic("Corrupt Device Tree passed to kernel.");
- 		do_prune = false;
-+		fill_mac = false;
- 		pr_info("Using passed Device Tree.\n");
- 	} else if (OCTEON_IS_MODEL(OCTEON_CN68XX)) {
- 		fdt = &__dtb_octeon_68xx_begin;
- 		do_prune = true;
-+		fill_mac = true;
- 	} else {
- 		fdt = &__dtb_octeon_3xxx_begin;
- 		do_prune = true;
-+		fill_mac = true;
- 	}
- 
- 	initial_boot_params = (void *)fdt;
- 
- 	if (do_prune) {
- 		octeon_prune_device_tree();
--		octeon_fill_mac_addresses();
- 		pr_info("Using internal Device Tree.\n");
- 	}
-+	if (fill_mac)
-+		octeon_fill_mac_addresses();
- 	unflatten_and_copy_device_tree();
- }
- 
--- 
-2.4.0
+It contradicts documentation.  The gas manual says:
+
+* Type::                        `.type <INT | NAME , TYPE DESCRIPTION>'
+
+And the SGI assembler manual I dug up as ".type name, value".  So maybe
+gas is too generous here?
+
+Either way, I think the patch is right and I've just applied v2.
+
+  Ralf

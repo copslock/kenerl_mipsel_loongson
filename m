@@ -1,38 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Feb 2016 20:02:38 +0100 (CET)
-Received: from mail-pa0-f68.google.com ([209.85.220.68]:34191 "EHLO
-        mail-pa0-f68.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27013942AbcBXS6ytS1BA (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 24 Feb 2016 19:58:54 +0100
-Received: by mail-pa0-f68.google.com with SMTP id yy13so1388566pab.1
-        for <linux-mips@linux-mips.org>; Wed, 24 Feb 2016 10:58:54 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Feb 2016 20:02:54 +0100 (CET)
+Received: from mail-pf0-f193.google.com ([209.85.192.193]:33533 "EHLO
+        mail-pf0-f193.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27013944AbcBXS6zlxh2A (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 24 Feb 2016 19:58:55 +0100
+Received: by mail-pf0-f193.google.com with SMTP id c10so1454091pfc.0
+        for <linux-mips@linux-mips.org>; Wed, 24 Feb 2016 10:58:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=2cpccZ/cSkKBh9RLdhNU1fsAcsmIbg32s47uQBLJ/kc=;
-        b=J53IeriJLp5j1gsA7WFsdG0amP9hWOPrUpcKJHsQK1KzkFpeAn0gLcDSrpRAeVblwx
-         +iXlq4sorPIkoFKKmiCjN206e7nCx5WA4sQrmcptJ5J0U2Bb2DCvcuuylfl6u0hpXSLv
-         5UZmdsWnH5MremA/ENg3Vl8mUZb8zKlhqoDRRHBaqsBJdPLsfCGdkCgFHL2ZYE/kR3Ql
-         UDP+vxHyYmy4YDOxPdPCXXCFpX7H5TadeTLC4KDcsqjEvcN/fYA0FpYf/y5FIaAxFefS
-         PlaIs1wNB6lTUm0WO5Nizz3SdYVv2MfWXv9EeED/DdC0HlxDIR/ss0fRuARYBbv2NJTt
-         VfSQ==
+        bh=5EdjfWqj7JiHpWoCvhJjDdktYC4yUSya0G6h+JISzMo=;
+        b=UDJZMNO4cBeLyjsclA5gjRFMuSd/yF+r/6msTq8cZCGVYGbGgykNaRfULrIbQYJZrP
+         l2jm9QtAWuTujdxiPGIrc3aFhWeVUb03fkm57NCn72nsqmVXWrVYX6Q7iqjuFee0ZuXH
+         8YazV5CU68M41MJgltYKqbkuIn4UdTvDTGbjAoILXzuRhAgPu1520ssflWJWtjrBTFok
+         zdHb6meo0Bx0Lh60ODq0zElS/uRf/fquBzHuKAjUiNNfN/qcKGlcI+BGnXyTH0DP5Q3P
+         UWRcVwCdUi+yhpwYYem8Z5mvNhV9OeG66D7cRm0j3s3ZTI+boUAlwTqsEwc2WuRXfDTv
+         PllA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=2cpccZ/cSkKBh9RLdhNU1fsAcsmIbg32s47uQBLJ/kc=;
-        b=iuK5lt/bhv2pPc4f0oNen3mRkap6C3otCxWx5zXUHBtswM1UvZgUuTOt8pLKsWEd1V
-         NxY4pKRY5nOHPf05drUgTgBHUoSt7JfbGwumiPKaEoC71ND8Ik1IfUIWEhHafpYFempc
-         Ym/yuBoomMrPt5nNXd3LF1M6utVEypJ9s6/AHdNkHkVjvWk1xGeBN/UfosU6HmeECfew
-         m6gvVyB61tNLJ5NZcTTfDtyc0AuQSSktf+jYOn0z4sQAaTjgTwouqaqWlLMSySOqwLXl
-         lIT4TipSowWaOWm+QIs6IYXOmK9YuPaU2OOMKN6NmxED2uNzS7QzwNrwCB3m1IzXJq8e
-         iOOA==
-X-Gm-Message-State: AG10YOTeHCKDV7eY01z8WFD97hBkoLKYL2ixuJFlKW+RliTvZWmDeKpTftkhtJUOVHO4RQ==
-X-Received: by 10.66.249.41 with SMTP id yr9mr56966143pac.86.1456340328056;
-        Wed, 24 Feb 2016 10:58:48 -0800 (PST)
+        bh=5EdjfWqj7JiHpWoCvhJjDdktYC4yUSya0G6h+JISzMo=;
+        b=CZA6Ea3mj+EylRvCGb211Ez+YqHW5HWVAAbE+LHO2/uH22oQV659N5eN0nVcOzIiqL
+         umPxvnkzclSwidRfnmohQFv3Gob3EXKsAkFi8SGHjXCKw+HKrN+PPAKni+hEcMUYEkNy
+         DCOJ2UE9XE3oAVckN9U/cbJVtemf2NlOcJX+TPIIQ8QxtgKE8Az1eV/tJLN3TYxe4uTW
+         bZi13u4Ai9+kPhLAmJ9H1B2xEowjErU6tdPusNSMf/r+cQMxxe67RVX7CpwYmxyNXKNk
+         JTraR4qV1k9noqwoZBep0kKE/Bq8W/T+dBMuSv4ZvlvAwcCUVelSz+DVXeEMTFLdRcqe
+         KRKw==
+X-Gm-Message-State: AG10YOQvVGo44z+TZkDwA1/f1fB7Vx6snlX5GXjllRJ8ODc7OVyKrIiaiQ4hBHDaFXITkg==
+X-Received: by 10.98.18.207 with SMTP id 76mr56317123pfs.53.1456340329608;
+        Wed, 24 Feb 2016 10:58:49 -0800 (PST)
 Received: from decotigny.mtv.corp.google.com ([172.18.64.159])
-        by smtp.gmail.com with ESMTPSA id fl9sm6726317pab.30.2016.02.24.10.58.46
+        by smtp.gmail.com with ESMTPSA id fl9sm6726317pab.30.2016.02.24.10.58.48
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Wed, 24 Feb 2016 10:58:47 -0800 (PST)
+        Wed, 24 Feb 2016 10:58:48 -0800 (PST)
 From:   David Decotigny <ddecotig@gmail.com>
 To:     "David S. Miller" <davem@davemloft.net>,
         Ben Hutchings <ben@decadent.org.uk>,
@@ -57,9 +57,9 @@ Cc:     Eric Dumazet <edumazet@google.com>,
         Rasmus Villemoes <linux@rasmusvillemoes.dk>,
         kan.liang@intel.com, vidya@cumulusnetworks.com,
         David Decotigny <decot@googlers.com>
-Subject: [PATCH net-next v9 15/16] net: ethtool: remove unused __ethtool_get_settings
-Date:   Wed, 24 Feb 2016 10:58:11 -0800
-Message-Id: <1456340292-26003-16-git-send-email-ddecotig@gmail.com>
+Subject: [PATCH net-next v9 16/16] net: mlx4: use new ETHTOOL_G/SSETTINGS API
+Date:   Wed, 24 Feb 2016 10:58:12 -0800
+Message-Id: <1456340292-26003-17-git-send-email-ddecotig@gmail.com>
 X-Mailer: git-send-email 2.7.0.rc3.207.g0ac5344
 In-Reply-To: <1456340292-26003-1-git-send-email-ddecotig@gmail.com>
 References: <1456340292-26003-1-git-send-email-ddecotig@gmail.com>
@@ -67,7 +67,7 @@ Return-Path: <ddecotig@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52220
+X-archive-position: 52221
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -86,102 +86,536 @@ X-list: linux-mips
 
 From: David Decotigny <decot@googlers.com>
 
-replaced by __ethtool_get_link_ksettings.
-
 Signed-off-by: David Decotigny <decot@googlers.com>
 ---
- include/linux/ethtool.h |  4 ----
- net/core/ethtool.c      | 45 ++++++++++++++-------------------------------
- 2 files changed, 14 insertions(+), 35 deletions(-)
+ drivers/net/ethernet/mellanox/mlx4/en_ethtool.c | 357 +++++++++++++-----------
+ drivers/net/ethernet/mellanox/mlx4/en_main.c    |   1 +
+ drivers/net/ethernet/mellanox/mlx4/mlx4_en.h    |   1 +
+ 3 files changed, 189 insertions(+), 170 deletions(-)
 
-diff --git a/include/linux/ethtool.h b/include/linux/ethtool.h
-index 8a400a5..e2b7bf2 100644
---- a/include/linux/ethtool.h
-+++ b/include/linux/ethtool.h
-@@ -150,10 +150,6 @@ extern int
- __ethtool_get_link_ksettings(struct net_device *dev,
- 			     struct ethtool_link_ksettings *link_ksettings);
- 
--/* DEPRECATED, use __ethtool_get_link_ksettings */
--extern int __ethtool_get_settings(struct net_device *dev,
--				  struct ethtool_cmd *cmd);
--
- /**
-  * struct ethtool_ops - optional netdev operations
-  * @get_settings: DEPRECATED, use %get_link_ksettings/%set_link_ksettings
-diff --git a/net/core/ethtool.c b/net/core/ethtool.c
-index edcec56..2966cd0 100644
---- a/net/core/ethtool.c
-+++ b/net/core/ethtool.c
-@@ -551,7 +551,12 @@ int __ethtool_get_link_ksettings(struct net_device *dev,
- 	 * legacy %ethtool_cmd API, unless it's not supported either.
- 	 * TODO: remove when ethtool_ops::get_settings disappears internally
- 	 */
--	err = __ethtool_get_settings(dev, &cmd);
-+	if (!dev->ethtool_ops->get_settings)
-+		return -EOPNOTSUPP;
-+
-+	memset(&cmd, 0, sizeof(cmd));
-+	cmd.cmd = ETHTOOL_GSET;
-+	err = dev->ethtool_ops->get_settings(dev, &cmd);
- 	if (err < 0)
- 		return err;
- 
-@@ -729,30 +734,6 @@ static int ethtool_set_link_ksettings(struct net_device *dev,
- 	return dev->ethtool_ops->set_link_ksettings(dev, &link_ksettings);
+diff --git a/drivers/net/ethernet/mellanox/mlx4/en_ethtool.c b/drivers/net/ethernet/mellanox/mlx4/en_ethtool.c
+index dd84cab..f69584a 100644
+--- a/drivers/net/ethernet/mellanox/mlx4/en_ethtool.c
++++ b/drivers/net/ethernet/mellanox/mlx4/en_ethtool.c
+@@ -501,34 +501,30 @@ static u32 mlx4_en_autoneg_get(struct net_device *dev)
+ 	return autoneg;
  }
  
--/* Internal kernel helper to query a device ethtool_cmd settings.
-- *
-- * Note about transition to ethtool_link_settings API: We do not need
-- * (or want) this function to support "dev" instances that implement
-- * the ethtool_link_settings API as we will update the drivers calling
-- * this function to call __ethtool_get_link_ksettings instead, before
-- * the first drivers implement ethtool_ops::get_link_ksettings.
-- *
-- * TODO 1: at least make this function static when no driver is using it
-- * TODO 2: remove when ethtool_ops::get_settings disappears internally
-- */
--int __ethtool_get_settings(struct net_device *dev, struct ethtool_cmd *cmd)
--{
--	ASSERT_RTNL();
--
--	if (!dev->ethtool_ops->get_settings)
--		return -EOPNOTSUPP;
--
--	memset(cmd, 0, sizeof(struct ethtool_cmd));
--	cmd->cmd = ETHTOOL_GSET;
--	return dev->ethtool_ops->get_settings(dev, cmd);
--}
--EXPORT_SYMBOL(__ethtool_get_settings);
--
- static void
- warn_incomplete_ethtool_legacy_settings_conversion(const char *details)
+-static u32 ptys_get_supported_port(struct mlx4_ptys_reg *ptys_reg)
++static void ptys2ethtool_update_supported_port(unsigned long *mask,
++					       struct mlx4_ptys_reg *ptys_reg)
  {
-@@ -796,16 +777,18 @@ static int ethtool_get_settings(struct net_device *dev, void __user *useraddr)
- 		/* send a sensible cmd tag back to user */
- 		cmd.cmd = ETHTOOL_GSET;
- 	} else {
--		int err;
--		/* TODO: return -EOPNOTSUPP when
--		 * ethtool_ops::get_settings disappears internally
--		 */
+ 	u32 eth_proto = be32_to_cpu(ptys_reg->eth_proto_cap);
+ 
+ 	if (eth_proto & (MLX4_PROT_MASK(MLX4_10GBASE_T)
+ 			 | MLX4_PROT_MASK(MLX4_1000BASE_T)
+ 			 | MLX4_PROT_MASK(MLX4_100BASE_TX))) {
+-			return SUPPORTED_TP;
+-	}
 -
- 		/* driver doesn't support %ethtool_link_ksettings
- 		 * API. revert to legacy %ethtool_cmd API, unless it's
- 		 * not supported either.
- 		 */
--		err = __ethtool_get_settings(dev, &cmd);
-+		int err;
-+
-+		if (!dev->ethtool_ops->get_settings)
-+			return -EOPNOTSUPP;
-+
-+		memset(&cmd, 0, sizeof(cmd));
-+		cmd.cmd = ETHTOOL_GSET;
-+		err = dev->ethtool_ops->get_settings(dev, &cmd);
- 		if (err < 0)
- 			return err;
+-	if (eth_proto & (MLX4_PROT_MASK(MLX4_10GBASE_CR)
++		__set_bit(ETHTOOL_LINK_MODE_TP_BIT, mask);
++	} else if (eth_proto & (MLX4_PROT_MASK(MLX4_10GBASE_CR)
+ 			 | MLX4_PROT_MASK(MLX4_10GBASE_SR)
+ 			 | MLX4_PROT_MASK(MLX4_56GBASE_SR4)
+ 			 | MLX4_PROT_MASK(MLX4_40GBASE_CR4)
+ 			 | MLX4_PROT_MASK(MLX4_40GBASE_SR4)
+ 			 | MLX4_PROT_MASK(MLX4_1000BASE_CX_SGMII))) {
+-			return SUPPORTED_FIBRE;
+-	}
+-
+-	if (eth_proto & (MLX4_PROT_MASK(MLX4_56GBASE_KR4)
++		__set_bit(ETHTOOL_LINK_MODE_FIBRE_BIT, mask);
++	} else if (eth_proto & (MLX4_PROT_MASK(MLX4_56GBASE_KR4)
+ 			 | MLX4_PROT_MASK(MLX4_40GBASE_KR4)
+ 			 | MLX4_PROT_MASK(MLX4_20GBASE_KR2)
+ 			 | MLX4_PROT_MASK(MLX4_10GBASE_KR)
+ 			 | MLX4_PROT_MASK(MLX4_10GBASE_KX4)
+ 			 | MLX4_PROT_MASK(MLX4_1000BASE_KX))) {
+-			return SUPPORTED_Backplane;
++		__set_bit(ETHTOOL_LINK_MODE_Backplane_BIT, mask);
  	}
+-	return 0;
+ }
+ 
+ static u32 ptys_get_active_port(struct mlx4_ptys_reg *ptys_reg)
+@@ -574,122 +570,111 @@ static u32 ptys_get_active_port(struct mlx4_ptys_reg *ptys_reg)
+ enum ethtool_report {
+ 	SUPPORTED = 0,
+ 	ADVERTISED = 1,
+-	SPEED = 2
+ };
+ 
++struct ptys2ethtool_config {
++	__ETHTOOL_DECLARE_LINK_MODE_MASK(supported);
++	__ETHTOOL_DECLARE_LINK_MODE_MASK(advertised);
++	u32 speed;
++};
++
++static unsigned long *ptys2ethtool_link_mode(struct ptys2ethtool_config *cfg,
++					     enum ethtool_report report)
++{
++	switch (report) {
++	case SUPPORTED:
++		return cfg->supported;
++	case ADVERTISED:
++		return cfg->advertised;
++	}
++	return NULL;
++}
++
++#define MLX4_BUILD_PTYS2ETHTOOL_CONFIG(reg_, speed_, ...)		\
++	({								\
++		struct ptys2ethtool_config *cfg;			\
++		const unsigned int modes[] = { __VA_ARGS__ };		\
++		unsigned int i;						\
++		cfg = &ptys2ethtool_map[reg_];				\
++		cfg->speed = speed_;					\
++		bitmap_zero(cfg->supported,				\
++			    __ETHTOOL_LINK_MODE_MASK_NBITS);		\
++		bitmap_zero(cfg->advertised,				\
++			    __ETHTOOL_LINK_MODE_MASK_NBITS);		\
++		for (i = 0 ; i < ARRAY_SIZE(modes) ; ++i) {		\
++			__set_bit(modes[i], cfg->supported);		\
++			__set_bit(modes[i], cfg->advertised);		\
++		}							\
++	})
++
+ /* Translates mlx4 link mode to equivalent ethtool Link modes/speed */
+-static u32 ptys2ethtool_map[MLX4_LINK_MODES_SZ][3] = {
+-	[MLX4_100BASE_TX] = {
+-		SUPPORTED_100baseT_Full,
+-		ADVERTISED_100baseT_Full,
+-		SPEED_100
+-		},
+-
+-	[MLX4_1000BASE_T] = {
+-		SUPPORTED_1000baseT_Full,
+-		ADVERTISED_1000baseT_Full,
+-		SPEED_1000
+-		},
+-	[MLX4_1000BASE_CX_SGMII] = {
+-		SUPPORTED_1000baseKX_Full,
+-		ADVERTISED_1000baseKX_Full,
+-		SPEED_1000
+-		},
+-	[MLX4_1000BASE_KX] = {
+-		SUPPORTED_1000baseKX_Full,
+-		ADVERTISED_1000baseKX_Full,
+-		SPEED_1000
+-		},
+-
+-	[MLX4_10GBASE_T] = {
+-		SUPPORTED_10000baseT_Full,
+-		ADVERTISED_10000baseT_Full,
+-		SPEED_10000
+-		},
+-	[MLX4_10GBASE_CX4] = {
+-		SUPPORTED_10000baseKX4_Full,
+-		ADVERTISED_10000baseKX4_Full,
+-		SPEED_10000
+-		},
+-	[MLX4_10GBASE_KX4] = {
+-		SUPPORTED_10000baseKX4_Full,
+-		ADVERTISED_10000baseKX4_Full,
+-		SPEED_10000
+-		},
+-	[MLX4_10GBASE_KR] = {
+-		SUPPORTED_10000baseKR_Full,
+-		ADVERTISED_10000baseKR_Full,
+-		SPEED_10000
+-		},
+-	[MLX4_10GBASE_CR] = {
+-		SUPPORTED_10000baseKR_Full,
+-		ADVERTISED_10000baseKR_Full,
+-		SPEED_10000
+-		},
+-	[MLX4_10GBASE_SR] = {
+-		SUPPORTED_10000baseKR_Full,
+-		ADVERTISED_10000baseKR_Full,
+-		SPEED_10000
+-		},
+-
+-	[MLX4_20GBASE_KR2] = {
+-		SUPPORTED_20000baseMLD2_Full | SUPPORTED_20000baseKR2_Full,
+-		ADVERTISED_20000baseMLD2_Full | ADVERTISED_20000baseKR2_Full,
+-		SPEED_20000
+-		},
+-
+-	[MLX4_40GBASE_CR4] = {
+-		SUPPORTED_40000baseCR4_Full,
+-		ADVERTISED_40000baseCR4_Full,
+-		SPEED_40000
+-		},
+-	[MLX4_40GBASE_KR4] = {
+-		SUPPORTED_40000baseKR4_Full,
+-		ADVERTISED_40000baseKR4_Full,
+-		SPEED_40000
+-		},
+-	[MLX4_40GBASE_SR4] = {
+-		SUPPORTED_40000baseSR4_Full,
+-		ADVERTISED_40000baseSR4_Full,
+-		SPEED_40000
+-		},
+-
+-	[MLX4_56GBASE_KR4] = {
+-		SUPPORTED_56000baseKR4_Full,
+-		ADVERTISED_56000baseKR4_Full,
+-		SPEED_56000
+-		},
+-	[MLX4_56GBASE_CR4] = {
+-		SUPPORTED_56000baseCR4_Full,
+-		ADVERTISED_56000baseCR4_Full,
+-		SPEED_56000
+-		},
+-	[MLX4_56GBASE_SR4] = {
+-		SUPPORTED_56000baseSR4_Full,
+-		ADVERTISED_56000baseSR4_Full,
+-		SPEED_56000
+-		},
++static struct ptys2ethtool_config ptys2ethtool_map[MLX4_LINK_MODES_SZ];
++
++void __init mlx4_en_init_ptys2ethtool_map(void)
++{
++	MLX4_BUILD_PTYS2ETHTOOL_CONFIG(MLX4_100BASE_TX, SPEED_100,
++				       ETHTOOL_LINK_MODE_100baseT_Full_BIT);
++	MLX4_BUILD_PTYS2ETHTOOL_CONFIG(MLX4_1000BASE_T, SPEED_1000,
++				       ETHTOOL_LINK_MODE_1000baseT_Full_BIT);
++	MLX4_BUILD_PTYS2ETHTOOL_CONFIG(MLX4_1000BASE_CX_SGMII, SPEED_1000,
++				       ETHTOOL_LINK_MODE_1000baseKX_Full_BIT);
++	MLX4_BUILD_PTYS2ETHTOOL_CONFIG(MLX4_1000BASE_KX, SPEED_1000,
++				       ETHTOOL_LINK_MODE_1000baseKX_Full_BIT);
++	MLX4_BUILD_PTYS2ETHTOOL_CONFIG(MLX4_10GBASE_T, SPEED_10000,
++				       ETHTOOL_LINK_MODE_10000baseT_Full_BIT);
++	MLX4_BUILD_PTYS2ETHTOOL_CONFIG(MLX4_10GBASE_CX4, SPEED_10000,
++				       ETHTOOL_LINK_MODE_10000baseKX4_Full_BIT);
++	MLX4_BUILD_PTYS2ETHTOOL_CONFIG(MLX4_10GBASE_KX4, SPEED_10000,
++				       ETHTOOL_LINK_MODE_10000baseKX4_Full_BIT);
++	MLX4_BUILD_PTYS2ETHTOOL_CONFIG(MLX4_10GBASE_KR, SPEED_10000,
++				       ETHTOOL_LINK_MODE_10000baseKR_Full_BIT);
++	MLX4_BUILD_PTYS2ETHTOOL_CONFIG(MLX4_10GBASE_CR, SPEED_10000,
++				       ETHTOOL_LINK_MODE_10000baseKR_Full_BIT);
++	MLX4_BUILD_PTYS2ETHTOOL_CONFIG(MLX4_10GBASE_SR, SPEED_10000,
++				       ETHTOOL_LINK_MODE_10000baseKR_Full_BIT);
++	MLX4_BUILD_PTYS2ETHTOOL_CONFIG(MLX4_20GBASE_KR2, SPEED_20000,
++				       ETHTOOL_LINK_MODE_20000baseMLD2_Full_BIT,
++				       ETHTOOL_LINK_MODE_20000baseKR2_Full_BIT);
++	MLX4_BUILD_PTYS2ETHTOOL_CONFIG(MLX4_40GBASE_CR4, SPEED_40000,
++				       ETHTOOL_LINK_MODE_40000baseCR4_Full_BIT);
++	MLX4_BUILD_PTYS2ETHTOOL_CONFIG(MLX4_40GBASE_KR4, SPEED_40000,
++				       ETHTOOL_LINK_MODE_40000baseKR4_Full_BIT);
++	MLX4_BUILD_PTYS2ETHTOOL_CONFIG(MLX4_40GBASE_SR4, SPEED_40000,
++				       ETHTOOL_LINK_MODE_40000baseSR4_Full_BIT);
++	MLX4_BUILD_PTYS2ETHTOOL_CONFIG(MLX4_56GBASE_KR4, SPEED_56000,
++				       ETHTOOL_LINK_MODE_56000baseKR4_Full_BIT);
++	MLX4_BUILD_PTYS2ETHTOOL_CONFIG(MLX4_56GBASE_CR4, SPEED_56000,
++				       ETHTOOL_LINK_MODE_56000baseCR4_Full_BIT);
++	MLX4_BUILD_PTYS2ETHTOOL_CONFIG(MLX4_56GBASE_SR4, SPEED_56000,
++				       ETHTOOL_LINK_MODE_56000baseSR4_Full_BIT);
+ };
+ 
+-static u32 ptys2ethtool_link_modes(u32 eth_proto, enum ethtool_report report)
++static void ptys2ethtool_update_link_modes(unsigned long *link_modes,
++					   u32 eth_proto,
++					   enum ethtool_report report)
+ {
+ 	int i;
+-	u32 link_modes = 0;
+-
+ 	for (i = 0; i < MLX4_LINK_MODES_SZ; i++) {
+ 		if (eth_proto & MLX4_PROT_MASK(i))
+-			link_modes |= ptys2ethtool_map[i][report];
++			bitmap_or(link_modes, link_modes,
++				  ptys2ethtool_link_mode(&ptys2ethtool_map[i],
++							 report),
++				  __ETHTOOL_LINK_MODE_MASK_NBITS);
+ 	}
+-	return link_modes;
+ }
+ 
+-static u32 ethtool2ptys_link_modes(u32 link_modes, enum ethtool_report report)
++static u32 ethtool2ptys_link_modes(const unsigned long *link_modes,
++				   enum ethtool_report report)
+ {
+ 	int i;
+ 	u32 ptys_modes = 0;
+ 
+ 	for (i = 0; i < MLX4_LINK_MODES_SZ; i++) {
+-		if (ptys2ethtool_map[i][report] & link_modes)
++		if (bitmap_intersects(
++			    ptys2ethtool_link_mode(&ptys2ethtool_map[i],
++						   report),
++			    link_modes,
++			    __ETHTOOL_LINK_MODE_MASK_NBITS))
+ 			ptys_modes |= 1 << i;
+ 	}
+ 	return ptys_modes;
+@@ -702,14 +687,15 @@ static u32 speed2ptys_link_modes(u32 speed)
+ 	u32 ptys_modes = 0;
+ 
+ 	for (i = 0; i < MLX4_LINK_MODES_SZ; i++) {
+-		if (ptys2ethtool_map[i][SPEED] == speed)
++		if (ptys2ethtool_map[i].speed == speed)
+ 			ptys_modes |= 1 << i;
+ 	}
+ 	return ptys_modes;
+ }
+ 
+-static int ethtool_get_ptys_settings(struct net_device *dev,
+-				     struct ethtool_cmd *cmd)
++static int
++ethtool_get_ptys_link_ksettings(struct net_device *dev,
++				struct ethtool_link_ksettings *link_ksettings)
+ {
+ 	struct mlx4_en_priv *priv = netdev_priv(dev);
+ 	struct mlx4_ptys_reg ptys_reg;
+@@ -737,79 +723,102 @@ static int ethtool_get_ptys_settings(struct net_device *dev,
+ 	en_dbg(DRV, priv, "ptys_reg.eth_proto_lp_adv %x\n",
+ 	       be32_to_cpu(ptys_reg.eth_proto_lp_adv));
+ 
+-	cmd->supported = 0;
+-	cmd->advertising = 0;
++	/* reset supported/advertising masks */
++	ethtool_link_ksettings_zero_link_mode(link_ksettings, supported);
++	ethtool_link_ksettings_zero_link_mode(link_ksettings, advertising);
+ 
+-	cmd->supported |= ptys_get_supported_port(&ptys_reg);
++	ptys2ethtool_update_supported_port(link_ksettings->link_modes.supported,
++					   &ptys_reg);
+ 
+ 	eth_proto = be32_to_cpu(ptys_reg.eth_proto_cap);
+-	cmd->supported |= ptys2ethtool_link_modes(eth_proto, SUPPORTED);
++	ptys2ethtool_update_link_modes(link_ksettings->link_modes.supported,
++				       eth_proto, SUPPORTED);
+ 
+ 	eth_proto = be32_to_cpu(ptys_reg.eth_proto_admin);
+-	cmd->advertising |= ptys2ethtool_link_modes(eth_proto, ADVERTISED);
++	ptys2ethtool_update_link_modes(link_ksettings->link_modes.advertising,
++				       eth_proto, ADVERTISED);
+ 
+-	cmd->supported |= SUPPORTED_Pause | SUPPORTED_Asym_Pause;
+-	cmd->advertising |= (priv->prof->tx_pause) ? ADVERTISED_Pause : 0;
++	ethtool_link_ksettings_add_link_mode(link_ksettings, supported,
++					     Pause);
++	ethtool_link_ksettings_add_link_mode(link_ksettings, supported,
++					     Asym_Pause);
+ 
+-	cmd->advertising |= (priv->prof->tx_pause ^ priv->prof->rx_pause) ?
+-		ADVERTISED_Asym_Pause : 0;
++	if (priv->prof->tx_pause)
++		ethtool_link_ksettings_add_link_mode(link_ksettings,
++						     advertising, Pause);
++	if (priv->prof->tx_pause ^ priv->prof->rx_pause)
++		ethtool_link_ksettings_add_link_mode(link_ksettings,
++						     advertising, Asym_Pause);
+ 
+-	cmd->port = ptys_get_active_port(&ptys_reg);
+-	cmd->transceiver = (SUPPORTED_TP & cmd->supported) ?
+-		XCVR_EXTERNAL : XCVR_INTERNAL;
++	link_ksettings->base.port = ptys_get_active_port(&ptys_reg);
+ 
+ 	if (mlx4_en_autoneg_get(dev)) {
+-		cmd->supported |= SUPPORTED_Autoneg;
+-		cmd->advertising |= ADVERTISED_Autoneg;
++		ethtool_link_ksettings_add_link_mode(link_ksettings,
++						     supported, Autoneg);
++		ethtool_link_ksettings_add_link_mode(link_ksettings,
++						     advertising, Autoneg);
+ 	}
+ 
+-	cmd->autoneg = (priv->port_state.flags & MLX4_EN_PORT_ANC) ?
++	link_ksettings->base.autoneg
++		= (priv->port_state.flags & MLX4_EN_PORT_ANC) ?
+ 		AUTONEG_ENABLE : AUTONEG_DISABLE;
+ 
+ 	eth_proto = be32_to_cpu(ptys_reg.eth_proto_lp_adv);
+-	cmd->lp_advertising = ptys2ethtool_link_modes(eth_proto, ADVERTISED);
+ 
+-	cmd->lp_advertising |= (priv->port_state.flags & MLX4_EN_PORT_ANC) ?
+-			ADVERTISED_Autoneg : 0;
++	ethtool_link_ksettings_zero_link_mode(link_ksettings, lp_advertising);
++	ptys2ethtool_update_link_modes(
++		link_ksettings->link_modes.lp_advertising,
++		eth_proto, ADVERTISED);
++	if (priv->port_state.flags & MLX4_EN_PORT_ANC)
++		ethtool_link_ksettings_add_link_mode(link_ksettings,
++						     lp_advertising, Autoneg);
+ 
+-	cmd->phy_address = 0;
+-	cmd->mdio_support = 0;
+-	cmd->maxtxpkt = 0;
+-	cmd->maxrxpkt = 0;
+-	cmd->eth_tp_mdix = ETH_TP_MDI_INVALID;
+-	cmd->eth_tp_mdix_ctrl = ETH_TP_MDI_AUTO;
++	link_ksettings->base.phy_address = 0;
++	link_ksettings->base.mdio_support = 0;
++	link_ksettings->base.eth_tp_mdix = ETH_TP_MDI_INVALID;
++	link_ksettings->base.eth_tp_mdix_ctrl = ETH_TP_MDI_AUTO;
+ 
+ 	return ret;
+ }
+ 
+-static void ethtool_get_default_settings(struct net_device *dev,
+-					 struct ethtool_cmd *cmd)
++static void
++ethtool_get_default_link_ksettings(
++	struct net_device *dev, struct ethtool_link_ksettings *link_ksettings)
+ {
+ 	struct mlx4_en_priv *priv = netdev_priv(dev);
+ 	int trans_type;
+ 
+-	cmd->autoneg = AUTONEG_DISABLE;
+-	cmd->supported = SUPPORTED_10000baseT_Full;
+-	cmd->advertising = ADVERTISED_10000baseT_Full;
+-	trans_type = priv->port_state.transceiver;
++	link_ksettings->base.autoneg = AUTONEG_DISABLE;
++
++	ethtool_link_ksettings_zero_link_mode(link_ksettings, supported);
++	ethtool_link_ksettings_add_link_mode(link_ksettings, supported,
++					     10000baseT_Full);
+ 
++	ethtool_link_ksettings_zero_link_mode(link_ksettings, advertising);
++	ethtool_link_ksettings_add_link_mode(link_ksettings, advertising,
++					     10000baseT_Full);
++
++	trans_type = priv->port_state.transceiver;
+ 	if (trans_type > 0 && trans_type <= 0xC) {
+-		cmd->port = PORT_FIBRE;
+-		cmd->transceiver = XCVR_EXTERNAL;
+-		cmd->supported |= SUPPORTED_FIBRE;
+-		cmd->advertising |= ADVERTISED_FIBRE;
++		link_ksettings->base.port = PORT_FIBRE;
++		ethtool_link_ksettings_add_link_mode(link_ksettings,
++						     supported, FIBRE);
++		ethtool_link_ksettings_add_link_mode(link_ksettings,
++						     advertising, FIBRE);
+ 	} else if (trans_type == 0x80 || trans_type == 0) {
+-		cmd->port = PORT_TP;
+-		cmd->transceiver = XCVR_INTERNAL;
+-		cmd->supported |= SUPPORTED_TP;
+-		cmd->advertising |= ADVERTISED_TP;
++		link_ksettings->base.port = PORT_TP;
++		ethtool_link_ksettings_add_link_mode(link_ksettings,
++						     supported, TP);
++		ethtool_link_ksettings_add_link_mode(link_ksettings,
++						     advertising, TP);
+ 	} else  {
+-		cmd->port = -1;
+-		cmd->transceiver = -1;
++		link_ksettings->base.port = -1;
+ 	}
+ }
+ 
+-static int mlx4_en_get_settings(struct net_device *dev, struct ethtool_cmd *cmd)
++static int
++mlx4_en_get_link_ksettings(struct net_device *dev,
++			   struct ethtool_link_ksettings *link_ksettings)
+ {
+ 	struct mlx4_en_priv *priv = netdev_priv(dev);
+ 	int ret = -EINVAL;
+@@ -822,16 +831,16 @@ static int mlx4_en_get_settings(struct net_device *dev, struct ethtool_cmd *cmd)
+ 	       priv->port_state.flags & MLX4_EN_PORT_ANE);
+ 
+ 	if (priv->mdev->dev->caps.flags2 & MLX4_DEV_CAP_FLAG2_ETH_PROT_CTRL)
+-		ret = ethtool_get_ptys_settings(dev, cmd);
++		ret = ethtool_get_ptys_link_ksettings(dev, link_ksettings);
+ 	if (ret) /* ETH PROT CRTL is not supported or PTYS CMD failed */
+-		ethtool_get_default_settings(dev, cmd);
++		ethtool_get_default_link_ksettings(dev, link_ksettings);
+ 
+ 	if (netif_carrier_ok(dev)) {
+-		ethtool_cmd_speed_set(cmd, priv->port_state.link_speed);
+-		cmd->duplex = DUPLEX_FULL;
++		link_ksettings->base.speed = priv->port_state.link_speed;
++		link_ksettings->base.duplex = DUPLEX_FULL;
+ 	} else {
+-		ethtool_cmd_speed_set(cmd, SPEED_UNKNOWN);
+-		cmd->duplex = DUPLEX_UNKNOWN;
++		link_ksettings->base.speed = SPEED_UNKNOWN;
++		link_ksettings->base.duplex = DUPLEX_UNKNOWN;
+ 	}
+ 	return 0;
+ }
+@@ -855,21 +864,29 @@ static __be32 speed_set_ptys_admin(struct mlx4_en_priv *priv, u32 speed,
+ 	return proto_admin;
+ }
+ 
+-static int mlx4_en_set_settings(struct net_device *dev, struct ethtool_cmd *cmd)
++static int
++mlx4_en_set_link_ksettings(struct net_device *dev,
++			   const struct ethtool_link_ksettings *link_ksettings)
+ {
+ 	struct mlx4_en_priv *priv = netdev_priv(dev);
+ 	struct mlx4_ptys_reg ptys_reg;
+ 	__be32 proto_admin;
+ 	int ret;
+ 
+-	u32 ptys_adv = ethtool2ptys_link_modes(cmd->advertising, ADVERTISED);
+-	int speed = ethtool_cmd_speed(cmd);
++	u32 ptys_adv = ethtool2ptys_link_modes(
++		link_ksettings->link_modes.advertising, ADVERTISED);
++	const int speed = link_ksettings->base.speed;
+ 
+-	en_dbg(DRV, priv, "Set Speed=%d adv=0x%x autoneg=%d duplex=%d\n",
+-	       speed, cmd->advertising, cmd->autoneg, cmd->duplex);
++	en_dbg(DRV, priv,
++	       "Set Speed=%d adv={%*pbl} autoneg=%d duplex=%d\n",
++	       speed, __ETHTOOL_LINK_MODE_MASK_NBITS,
++	       link_ksettings->link_modes.advertising,
++	       link_ksettings->base.autoneg,
++	       link_ksettings->base.duplex);
+ 
+-	if (!(priv->mdev->dev->caps.flags2 & MLX4_DEV_CAP_FLAG2_ETH_PROT_CTRL) ||
+-	    (cmd->duplex == DUPLEX_HALF))
++	if (!(priv->mdev->dev->caps.flags2 &
++	      MLX4_DEV_CAP_FLAG2_ETH_PROT_CTRL) ||
++	    (link_ksettings->base.duplex == DUPLEX_HALF))
+ 		return -EINVAL;
+ 
+ 	memset(&ptys_reg, 0, sizeof(ptys_reg));
+@@ -883,7 +900,7 @@ static int mlx4_en_set_settings(struct net_device *dev, struct ethtool_cmd *cmd)
+ 		return 0;
+ 	}
+ 
+-	proto_admin = cmd->autoneg == AUTONEG_ENABLE ?
++	proto_admin = link_ksettings->base.autoneg == AUTONEG_ENABLE ?
+ 		cpu_to_be32(ptys_adv) :
+ 		speed_set_ptys_admin(priv, speed,
+ 				     ptys_reg.eth_proto_cap);
+@@ -1982,8 +1999,8 @@ static int mlx4_en_set_phys_id(struct net_device *dev,
+ 
+ const struct ethtool_ops mlx4_en_ethtool_ops = {
+ 	.get_drvinfo = mlx4_en_get_drvinfo,
+-	.get_settings = mlx4_en_get_settings,
+-	.set_settings = mlx4_en_set_settings,
++	.get_link_ksettings = mlx4_en_get_link_ksettings,
++	.set_link_ksettings = mlx4_en_set_link_ksettings,
+ 	.get_link = ethtool_op_get_link,
+ 	.get_strings = mlx4_en_get_strings,
+ 	.get_sset_count = mlx4_en_get_sset_count,
+diff --git a/drivers/net/ethernet/mellanox/mlx4/en_main.c b/drivers/net/ethernet/mellanox/mlx4/en_main.c
+index e0ec280..bf7628d 100644
+--- a/drivers/net/ethernet/mellanox/mlx4/en_main.c
++++ b/drivers/net/ethernet/mellanox/mlx4/en_main.c
+@@ -382,6 +382,7 @@ static void mlx4_en_verify_params(void)
+ static int __init mlx4_en_init(void)
+ {
+ 	mlx4_en_verify_params();
++	mlx4_en_init_ptys2ethtool_map();
+ 
+ 	return mlx4_register_interface(&mlx4_en_interface);
+ }
+diff --git a/drivers/net/ethernet/mellanox/mlx4/mlx4_en.h b/drivers/net/ethernet/mellanox/mlx4/mlx4_en.h
+index 35de7d2..d12ab6a 100644
+--- a/drivers/net/ethernet/mellanox/mlx4/mlx4_en.h
++++ b/drivers/net/ethernet/mellanox/mlx4/mlx4_en.h
+@@ -607,6 +607,7 @@ static inline struct mlx4_cqe *mlx4_en_get_cqe(void *buf, int idx, int cqe_sz)
+ 
+ #define MLX4_EN_WOL_DO_MODIFY (1ULL << 63)
+ 
++void mlx4_en_init_ptys2ethtool_map(void);
+ void mlx4_en_update_loopback_state(struct net_device *dev,
+ 				   netdev_features_t features);
+ 
 -- 
 2.7.0.rc3.207.g0ac5344

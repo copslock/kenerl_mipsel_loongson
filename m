@@ -1,77 +1,72 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Feb 2016 20:02:54 +0100 (CET)
-Received: from mail-pf0-f193.google.com ([209.85.192.193]:33533 "EHLO
-        mail-pf0-f193.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27013944AbcBXS6zlxh2A (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 24 Feb 2016 19:58:55 +0100
-Received: by mail-pf0-f193.google.com with SMTP id c10so1454091pfc.0
-        for <linux-mips@linux-mips.org>; Wed, 24 Feb 2016 10:58:55 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Feb 2016 21:58:06 +0100 (CET)
+Received: from mail-pf0-f178.google.com ([209.85.192.178]:36761 "EHLO
+        mail-pf0-f178.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27013928AbcBXU6EA03rf convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 24 Feb 2016 21:58:04 +0100
+Received: by mail-pf0-f178.google.com with SMTP id e127so19315459pfe.3
+        for <linux-mips@linux-mips.org>; Wed, 24 Feb 2016 12:58:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=5EdjfWqj7JiHpWoCvhJjDdktYC4yUSya0G6h+JISzMo=;
-        b=UDJZMNO4cBeLyjsclA5gjRFMuSd/yF+r/6msTq8cZCGVYGbGgykNaRfULrIbQYJZrP
-         l2jm9QtAWuTujdxiPGIrc3aFhWeVUb03fkm57NCn72nsqmVXWrVYX6Q7iqjuFee0ZuXH
-         8YazV5CU68M41MJgltYKqbkuIn4UdTvDTGbjAoILXzuRhAgPu1520ssflWJWtjrBTFok
-         zdHb6meo0Bx0Lh60ODq0zElS/uRf/fquBzHuKAjUiNNfN/qcKGlcI+BGnXyTH0DP5Q3P
-         UWRcVwCdUi+yhpwYYem8Z5mvNhV9OeG66D7cRm0j3s3ZTI+boUAlwTqsEwc2WuRXfDTv
-         PllA==
+        d=baylibre-com.20150623.gappssmtp.com; s=20150623;
+        h=content-type:mime-version:content-transfer-encoding:to:from
+         :in-reply-to:cc:references:message-id:user-agent:subject:date;
+        bh=507FrzPVQQyWb9zQ+Sfxys7T7Jk2SnncfsmXibWLgmQ=;
+        b=BFRlBhqsOqyym2eXBp2KX2hkvEwEyYRiJAjR8MkFN6a/etscYPH/UJmifiGjsgfule
+         yMYAMCNcv/82ysEcNeVJPHUpAnqJ3DlhORV/uGlbqCEo+ImB0FsA0G/7SihO1IZT+AOH
+         UMKh6CwnKlMlYMYPzGcOuD14xkNA+uLdcQkLwIDfh/5gMyB/mTQYJcxBizyI2UsuPU+s
+         Oh5wJpFXx58gNY5bTKBd/GvE7ZDgLjNtIy39Q/9IbhP6bH4dVzGk1fnIZ0boP81NtAAR
+         h9FctX6SNYrPztIl7yZw3Ut9qwreTL2FuXPrajK6CJZHH5Z1B6HHGT05GyyI6JTUwvna
+         Fthg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=5EdjfWqj7JiHpWoCvhJjDdktYC4yUSya0G6h+JISzMo=;
-        b=CZA6Ea3mj+EylRvCGb211Ez+YqHW5HWVAAbE+LHO2/uH22oQV659N5eN0nVcOzIiqL
-         umPxvnkzclSwidRfnmohQFv3Gob3EXKsAkFi8SGHjXCKw+HKrN+PPAKni+hEcMUYEkNy
-         DCOJ2UE9XE3oAVckN9U/cbJVtemf2NlOcJX+TPIIQ8QxtgKE8Az1eV/tJLN3TYxe4uTW
-         bZi13u4Ai9+kPhLAmJ9H1B2xEowjErU6tdPusNSMf/r+cQMxxe67RVX7CpwYmxyNXKNk
-         JTraR4qV1k9noqwoZBep0kKE/Bq8W/T+dBMuSv4ZvlvAwcCUVelSz+DVXeEMTFLdRcqe
-         KRKw==
-X-Gm-Message-State: AG10YOQvVGo44z+TZkDwA1/f1fB7Vx6snlX5GXjllRJ8ODc7OVyKrIiaiQ4hBHDaFXITkg==
-X-Received: by 10.98.18.207 with SMTP id 76mr56317123pfs.53.1456340329608;
-        Wed, 24 Feb 2016 10:58:49 -0800 (PST)
-Received: from decotigny.mtv.corp.google.com ([172.18.64.159])
-        by smtp.gmail.com with ESMTPSA id fl9sm6726317pab.30.2016.02.24.10.58.48
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Wed, 24 Feb 2016 10:58:48 -0800 (PST)
-From:   David Decotigny <ddecotig@gmail.com>
-To:     "David S. Miller" <davem@davemloft.net>,
-        Ben Hutchings <ben@decadent.org.uk>,
-        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-        linux-api@vger.kernel.org, linux-mips@linux-mips.org,
-        fcoe-devel@open-fcoe.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Tejun Heo <tj@kernel.org>
-Cc:     Eric Dumazet <edumazet@google.com>,
-        Eugenia Emantayev <eugenia@mellanox.co.il>,
-        Or Gerlitz <ogerlitz@mellanox.com>,
-        Ido Shamay <idos@mellanox.com>, Joe Perches <joe@perches.com>,
-        Saeed Mahameed <saeedm@mellanox.com>,
-        Govindarajulu Varadarajan <_govind@gmx.com>,
-        Venkata Duvvuru <VenkatKumar.Duvvuru@Emulex.Com>,
-        Jeff Kirsher <jeffrey.t.kirsher@intel.com>,
-        Pravin B Shelar <pshelar@nicira.com>,
-        Ed Swierk <eswierk@skyportsystems.com>,
-        Robert Love <robert.w.love@intel.com>,
-        "James E.J. Bottomley" <JBottomley@parallels.com>,
-        Yuval Mintz <Yuval.Mintz@qlogic.com>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        kan.liang@intel.com, vidya@cumulusnetworks.com,
-        David Decotigny <decot@googlers.com>
-Subject: [PATCH net-next v9 16/16] net: mlx4: use new ETHTOOL_G/SSETTINGS API
-Date:   Wed, 24 Feb 2016 10:58:12 -0800
-Message-Id: <1456340292-26003-17-git-send-email-ddecotig@gmail.com>
-X-Mailer: git-send-email 2.7.0.rc3.207.g0ac5344
-In-Reply-To: <1456340292-26003-1-git-send-email-ddecotig@gmail.com>
-References: <1456340292-26003-1-git-send-email-ddecotig@gmail.com>
-Return-Path: <ddecotig@gmail.com>
+        h=x-gm-message-state:content-type:mime-version
+         :content-transfer-encoding:to:from:in-reply-to:cc:references
+         :message-id:user-agent:subject:date;
+        bh=507FrzPVQQyWb9zQ+Sfxys7T7Jk2SnncfsmXibWLgmQ=;
+        b=QqF5+V+R+SGKN0Tmv+EgrzcbXUj6YNSe+ZUWWcU9eIC1uLEv7kOwkmrW44Fg6xZ1GI
+         LHuGCBOQeDWCehbTB9tmBskhZxf3SbqFwAqPS72Cwturwx9gB7cn65wXLziD2Oe8I7iC
+         ZDAEdGGPgq8qQevy1Ab4R6kGRd5PsTLRvtNyk5Z8P1aPYqvOvpAogBU0ldBZdN4joafL
+         XYrNw0ogB68Dz+e3ORJOTWHN1j8F/BSyfuVC/+dMuTrFcnro5tMd44XRdhMVaEhS/2nl
+         8C2BM6d7FeVNoJum2uqZNXlSu8784vG/uxoI93q+PoS00Q3jKNQC7y9Rfit28j6Vhwc2
+         /A2A==
+X-Gm-Message-State: AG10YOR392GAncVeNcr+kXj9/t/y5iSSgo9UnkyoskdfrNmxdILUZHWJSb6mma8Jd5TqJEst
+X-Received: by 10.98.80.150 with SMTP id g22mr57953333pfj.132.1456347478318;
+        Wed, 24 Feb 2016 12:57:58 -0800 (PST)
+Received: from localhost (cpe-172-248-200-249.socal.res.rr.com. [172.248.200.249])
+        by smtp.gmail.com with ESMTPSA id c68sm7049986pfj.41.2016.02.24.12.57.56
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 24 Feb 2016 12:57:57 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8BIT
+To:     Joshua Henderson <joshua.henderson@microchip.com>,
+        linux-kernel@vger.kernel.org
+From:   Michael Turquette <mturquette@baylibre.com>
+In-Reply-To: <1456330090-27226-2-git-send-email-joshua.henderson@microchip.com>
+Cc:     linux-mips@linux-mips.org, ralf@linux-mips.org,
+        "Purna Chandra Mandal" <purna.mandal@microchip.com>,
+        "Joshua Henderson" <joshua.henderson@microchip.com>,
+        "Stephen Boyd" <sboyd@codeaurora.org>,
+        "Rob Herring" <robh+dt@kernel.org>,
+        "Pawel Moll" <pawel.moll@arm.com>,
+        "Mark Rutland" <mark.rutland@arm.com>,
+        "Ian Campbell" <ijc+devicetree@hellion.org.uk>,
+        "Kumar Gala" <galak@codeaurora.org>, devicetree@vger.kernel.org
+References: <1456330090-27226-1-git-send-email-joshua.henderson@microchip.com>
+ <1456330090-27226-2-git-send-email-joshua.henderson@microchip.com>
+Message-ID: <20160224205758.2278.85870@quark.deferred.io>
+User-Agent: alot/0.3.6
+Subject: Re: [PATCH v8 1/3] dt/bindings: Add PIC32 clock binding documentation
+Date:   Wed, 24 Feb 2016 12:57:58 -0800
+Return-Path: <mturquette@baylibre.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52221
+X-archive-position: 52222
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddecotig@gmail.com
+X-original-sender: mturquette@baylibre.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -84,538 +79,134 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: David Decotigny <decot@googlers.com>
+Quoting Joshua Henderson (2016-02-24 08:07:15)
+> From: Purna Chandra Mandal <purna.mandal@microchip.com>
+> 
+> Document the devicetree bindings for the clock driver found on Microchip
+> PIC32 class devices.
+> 
+> Signed-off-by: Purna Chandra Mandal <purna.mandal@microchip.com>
+> Signed-off-by: Joshua Henderson <joshua.henderson@microchip.com>
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: Michael Turquette <mturquette@baylibre.com>
+> Cc: Stephen Boyd <sboyd@codeaurora.org>
+> Acked-by: Rob Herring <robh@kernel.org>
 
-Signed-off-by: David Decotigny <decot@googlers.com>
----
- drivers/net/ethernet/mellanox/mlx4/en_ethtool.c | 357 +++++++++++++-----------
- drivers/net/ethernet/mellanox/mlx4/en_main.c    |   1 +
- drivers/net/ethernet/mellanox/mlx4/mlx4_en.h    |   1 +
- 3 files changed, 189 insertions(+), 170 deletions(-)
+Acked-by: Michael Turquette <mturquette@baylibre.com>
 
-diff --git a/drivers/net/ethernet/mellanox/mlx4/en_ethtool.c b/drivers/net/ethernet/mellanox/mlx4/en_ethtool.c
-index dd84cab..f69584a 100644
---- a/drivers/net/ethernet/mellanox/mlx4/en_ethtool.c
-+++ b/drivers/net/ethernet/mellanox/mlx4/en_ethtool.c
-@@ -501,34 +501,30 @@ static u32 mlx4_en_autoneg_get(struct net_device *dev)
- 	return autoneg;
- }
- 
--static u32 ptys_get_supported_port(struct mlx4_ptys_reg *ptys_reg)
-+static void ptys2ethtool_update_supported_port(unsigned long *mask,
-+					       struct mlx4_ptys_reg *ptys_reg)
- {
- 	u32 eth_proto = be32_to_cpu(ptys_reg->eth_proto_cap);
- 
- 	if (eth_proto & (MLX4_PROT_MASK(MLX4_10GBASE_T)
- 			 | MLX4_PROT_MASK(MLX4_1000BASE_T)
- 			 | MLX4_PROT_MASK(MLX4_100BASE_TX))) {
--			return SUPPORTED_TP;
--	}
--
--	if (eth_proto & (MLX4_PROT_MASK(MLX4_10GBASE_CR)
-+		__set_bit(ETHTOOL_LINK_MODE_TP_BIT, mask);
-+	} else if (eth_proto & (MLX4_PROT_MASK(MLX4_10GBASE_CR)
- 			 | MLX4_PROT_MASK(MLX4_10GBASE_SR)
- 			 | MLX4_PROT_MASK(MLX4_56GBASE_SR4)
- 			 | MLX4_PROT_MASK(MLX4_40GBASE_CR4)
- 			 | MLX4_PROT_MASK(MLX4_40GBASE_SR4)
- 			 | MLX4_PROT_MASK(MLX4_1000BASE_CX_SGMII))) {
--			return SUPPORTED_FIBRE;
--	}
--
--	if (eth_proto & (MLX4_PROT_MASK(MLX4_56GBASE_KR4)
-+		__set_bit(ETHTOOL_LINK_MODE_FIBRE_BIT, mask);
-+	} else if (eth_proto & (MLX4_PROT_MASK(MLX4_56GBASE_KR4)
- 			 | MLX4_PROT_MASK(MLX4_40GBASE_KR4)
- 			 | MLX4_PROT_MASK(MLX4_20GBASE_KR2)
- 			 | MLX4_PROT_MASK(MLX4_10GBASE_KR)
- 			 | MLX4_PROT_MASK(MLX4_10GBASE_KX4)
- 			 | MLX4_PROT_MASK(MLX4_1000BASE_KX))) {
--			return SUPPORTED_Backplane;
-+		__set_bit(ETHTOOL_LINK_MODE_Backplane_BIT, mask);
- 	}
--	return 0;
- }
- 
- static u32 ptys_get_active_port(struct mlx4_ptys_reg *ptys_reg)
-@@ -574,122 +570,111 @@ static u32 ptys_get_active_port(struct mlx4_ptys_reg *ptys_reg)
- enum ethtool_report {
- 	SUPPORTED = 0,
- 	ADVERTISED = 1,
--	SPEED = 2
- };
- 
-+struct ptys2ethtool_config {
-+	__ETHTOOL_DECLARE_LINK_MODE_MASK(supported);
-+	__ETHTOOL_DECLARE_LINK_MODE_MASK(advertised);
-+	u32 speed;
-+};
-+
-+static unsigned long *ptys2ethtool_link_mode(struct ptys2ethtool_config *cfg,
-+					     enum ethtool_report report)
-+{
-+	switch (report) {
-+	case SUPPORTED:
-+		return cfg->supported;
-+	case ADVERTISED:
-+		return cfg->advertised;
-+	}
-+	return NULL;
-+}
-+
-+#define MLX4_BUILD_PTYS2ETHTOOL_CONFIG(reg_, speed_, ...)		\
-+	({								\
-+		struct ptys2ethtool_config *cfg;			\
-+		const unsigned int modes[] = { __VA_ARGS__ };		\
-+		unsigned int i;						\
-+		cfg = &ptys2ethtool_map[reg_];				\
-+		cfg->speed = speed_;					\
-+		bitmap_zero(cfg->supported,				\
-+			    __ETHTOOL_LINK_MODE_MASK_NBITS);		\
-+		bitmap_zero(cfg->advertised,				\
-+			    __ETHTOOL_LINK_MODE_MASK_NBITS);		\
-+		for (i = 0 ; i < ARRAY_SIZE(modes) ; ++i) {		\
-+			__set_bit(modes[i], cfg->supported);		\
-+			__set_bit(modes[i], cfg->advertised);		\
-+		}							\
-+	})
-+
- /* Translates mlx4 link mode to equivalent ethtool Link modes/speed */
--static u32 ptys2ethtool_map[MLX4_LINK_MODES_SZ][3] = {
--	[MLX4_100BASE_TX] = {
--		SUPPORTED_100baseT_Full,
--		ADVERTISED_100baseT_Full,
--		SPEED_100
--		},
--
--	[MLX4_1000BASE_T] = {
--		SUPPORTED_1000baseT_Full,
--		ADVERTISED_1000baseT_Full,
--		SPEED_1000
--		},
--	[MLX4_1000BASE_CX_SGMII] = {
--		SUPPORTED_1000baseKX_Full,
--		ADVERTISED_1000baseKX_Full,
--		SPEED_1000
--		},
--	[MLX4_1000BASE_KX] = {
--		SUPPORTED_1000baseKX_Full,
--		ADVERTISED_1000baseKX_Full,
--		SPEED_1000
--		},
--
--	[MLX4_10GBASE_T] = {
--		SUPPORTED_10000baseT_Full,
--		ADVERTISED_10000baseT_Full,
--		SPEED_10000
--		},
--	[MLX4_10GBASE_CX4] = {
--		SUPPORTED_10000baseKX4_Full,
--		ADVERTISED_10000baseKX4_Full,
--		SPEED_10000
--		},
--	[MLX4_10GBASE_KX4] = {
--		SUPPORTED_10000baseKX4_Full,
--		ADVERTISED_10000baseKX4_Full,
--		SPEED_10000
--		},
--	[MLX4_10GBASE_KR] = {
--		SUPPORTED_10000baseKR_Full,
--		ADVERTISED_10000baseKR_Full,
--		SPEED_10000
--		},
--	[MLX4_10GBASE_CR] = {
--		SUPPORTED_10000baseKR_Full,
--		ADVERTISED_10000baseKR_Full,
--		SPEED_10000
--		},
--	[MLX4_10GBASE_SR] = {
--		SUPPORTED_10000baseKR_Full,
--		ADVERTISED_10000baseKR_Full,
--		SPEED_10000
--		},
--
--	[MLX4_20GBASE_KR2] = {
--		SUPPORTED_20000baseMLD2_Full | SUPPORTED_20000baseKR2_Full,
--		ADVERTISED_20000baseMLD2_Full | ADVERTISED_20000baseKR2_Full,
--		SPEED_20000
--		},
--
--	[MLX4_40GBASE_CR4] = {
--		SUPPORTED_40000baseCR4_Full,
--		ADVERTISED_40000baseCR4_Full,
--		SPEED_40000
--		},
--	[MLX4_40GBASE_KR4] = {
--		SUPPORTED_40000baseKR4_Full,
--		ADVERTISED_40000baseKR4_Full,
--		SPEED_40000
--		},
--	[MLX4_40GBASE_SR4] = {
--		SUPPORTED_40000baseSR4_Full,
--		ADVERTISED_40000baseSR4_Full,
--		SPEED_40000
--		},
--
--	[MLX4_56GBASE_KR4] = {
--		SUPPORTED_56000baseKR4_Full,
--		ADVERTISED_56000baseKR4_Full,
--		SPEED_56000
--		},
--	[MLX4_56GBASE_CR4] = {
--		SUPPORTED_56000baseCR4_Full,
--		ADVERTISED_56000baseCR4_Full,
--		SPEED_56000
--		},
--	[MLX4_56GBASE_SR4] = {
--		SUPPORTED_56000baseSR4_Full,
--		ADVERTISED_56000baseSR4_Full,
--		SPEED_56000
--		},
-+static struct ptys2ethtool_config ptys2ethtool_map[MLX4_LINK_MODES_SZ];
-+
-+void __init mlx4_en_init_ptys2ethtool_map(void)
-+{
-+	MLX4_BUILD_PTYS2ETHTOOL_CONFIG(MLX4_100BASE_TX, SPEED_100,
-+				       ETHTOOL_LINK_MODE_100baseT_Full_BIT);
-+	MLX4_BUILD_PTYS2ETHTOOL_CONFIG(MLX4_1000BASE_T, SPEED_1000,
-+				       ETHTOOL_LINK_MODE_1000baseT_Full_BIT);
-+	MLX4_BUILD_PTYS2ETHTOOL_CONFIG(MLX4_1000BASE_CX_SGMII, SPEED_1000,
-+				       ETHTOOL_LINK_MODE_1000baseKX_Full_BIT);
-+	MLX4_BUILD_PTYS2ETHTOOL_CONFIG(MLX4_1000BASE_KX, SPEED_1000,
-+				       ETHTOOL_LINK_MODE_1000baseKX_Full_BIT);
-+	MLX4_BUILD_PTYS2ETHTOOL_CONFIG(MLX4_10GBASE_T, SPEED_10000,
-+				       ETHTOOL_LINK_MODE_10000baseT_Full_BIT);
-+	MLX4_BUILD_PTYS2ETHTOOL_CONFIG(MLX4_10GBASE_CX4, SPEED_10000,
-+				       ETHTOOL_LINK_MODE_10000baseKX4_Full_BIT);
-+	MLX4_BUILD_PTYS2ETHTOOL_CONFIG(MLX4_10GBASE_KX4, SPEED_10000,
-+				       ETHTOOL_LINK_MODE_10000baseKX4_Full_BIT);
-+	MLX4_BUILD_PTYS2ETHTOOL_CONFIG(MLX4_10GBASE_KR, SPEED_10000,
-+				       ETHTOOL_LINK_MODE_10000baseKR_Full_BIT);
-+	MLX4_BUILD_PTYS2ETHTOOL_CONFIG(MLX4_10GBASE_CR, SPEED_10000,
-+				       ETHTOOL_LINK_MODE_10000baseKR_Full_BIT);
-+	MLX4_BUILD_PTYS2ETHTOOL_CONFIG(MLX4_10GBASE_SR, SPEED_10000,
-+				       ETHTOOL_LINK_MODE_10000baseKR_Full_BIT);
-+	MLX4_BUILD_PTYS2ETHTOOL_CONFIG(MLX4_20GBASE_KR2, SPEED_20000,
-+				       ETHTOOL_LINK_MODE_20000baseMLD2_Full_BIT,
-+				       ETHTOOL_LINK_MODE_20000baseKR2_Full_BIT);
-+	MLX4_BUILD_PTYS2ETHTOOL_CONFIG(MLX4_40GBASE_CR4, SPEED_40000,
-+				       ETHTOOL_LINK_MODE_40000baseCR4_Full_BIT);
-+	MLX4_BUILD_PTYS2ETHTOOL_CONFIG(MLX4_40GBASE_KR4, SPEED_40000,
-+				       ETHTOOL_LINK_MODE_40000baseKR4_Full_BIT);
-+	MLX4_BUILD_PTYS2ETHTOOL_CONFIG(MLX4_40GBASE_SR4, SPEED_40000,
-+				       ETHTOOL_LINK_MODE_40000baseSR4_Full_BIT);
-+	MLX4_BUILD_PTYS2ETHTOOL_CONFIG(MLX4_56GBASE_KR4, SPEED_56000,
-+				       ETHTOOL_LINK_MODE_56000baseKR4_Full_BIT);
-+	MLX4_BUILD_PTYS2ETHTOOL_CONFIG(MLX4_56GBASE_CR4, SPEED_56000,
-+				       ETHTOOL_LINK_MODE_56000baseCR4_Full_BIT);
-+	MLX4_BUILD_PTYS2ETHTOOL_CONFIG(MLX4_56GBASE_SR4, SPEED_56000,
-+				       ETHTOOL_LINK_MODE_56000baseSR4_Full_BIT);
- };
- 
--static u32 ptys2ethtool_link_modes(u32 eth_proto, enum ethtool_report report)
-+static void ptys2ethtool_update_link_modes(unsigned long *link_modes,
-+					   u32 eth_proto,
-+					   enum ethtool_report report)
- {
- 	int i;
--	u32 link_modes = 0;
--
- 	for (i = 0; i < MLX4_LINK_MODES_SZ; i++) {
- 		if (eth_proto & MLX4_PROT_MASK(i))
--			link_modes |= ptys2ethtool_map[i][report];
-+			bitmap_or(link_modes, link_modes,
-+				  ptys2ethtool_link_mode(&ptys2ethtool_map[i],
-+							 report),
-+				  __ETHTOOL_LINK_MODE_MASK_NBITS);
- 	}
--	return link_modes;
- }
- 
--static u32 ethtool2ptys_link_modes(u32 link_modes, enum ethtool_report report)
-+static u32 ethtool2ptys_link_modes(const unsigned long *link_modes,
-+				   enum ethtool_report report)
- {
- 	int i;
- 	u32 ptys_modes = 0;
- 
- 	for (i = 0; i < MLX4_LINK_MODES_SZ; i++) {
--		if (ptys2ethtool_map[i][report] & link_modes)
-+		if (bitmap_intersects(
-+			    ptys2ethtool_link_mode(&ptys2ethtool_map[i],
-+						   report),
-+			    link_modes,
-+			    __ETHTOOL_LINK_MODE_MASK_NBITS))
- 			ptys_modes |= 1 << i;
- 	}
- 	return ptys_modes;
-@@ -702,14 +687,15 @@ static u32 speed2ptys_link_modes(u32 speed)
- 	u32 ptys_modes = 0;
- 
- 	for (i = 0; i < MLX4_LINK_MODES_SZ; i++) {
--		if (ptys2ethtool_map[i][SPEED] == speed)
-+		if (ptys2ethtool_map[i].speed == speed)
- 			ptys_modes |= 1 << i;
- 	}
- 	return ptys_modes;
- }
- 
--static int ethtool_get_ptys_settings(struct net_device *dev,
--				     struct ethtool_cmd *cmd)
-+static int
-+ethtool_get_ptys_link_ksettings(struct net_device *dev,
-+				struct ethtool_link_ksettings *link_ksettings)
- {
- 	struct mlx4_en_priv *priv = netdev_priv(dev);
- 	struct mlx4_ptys_reg ptys_reg;
-@@ -737,79 +723,102 @@ static int ethtool_get_ptys_settings(struct net_device *dev,
- 	en_dbg(DRV, priv, "ptys_reg.eth_proto_lp_adv %x\n",
- 	       be32_to_cpu(ptys_reg.eth_proto_lp_adv));
- 
--	cmd->supported = 0;
--	cmd->advertising = 0;
-+	/* reset supported/advertising masks */
-+	ethtool_link_ksettings_zero_link_mode(link_ksettings, supported);
-+	ethtool_link_ksettings_zero_link_mode(link_ksettings, advertising);
- 
--	cmd->supported |= ptys_get_supported_port(&ptys_reg);
-+	ptys2ethtool_update_supported_port(link_ksettings->link_modes.supported,
-+					   &ptys_reg);
- 
- 	eth_proto = be32_to_cpu(ptys_reg.eth_proto_cap);
--	cmd->supported |= ptys2ethtool_link_modes(eth_proto, SUPPORTED);
-+	ptys2ethtool_update_link_modes(link_ksettings->link_modes.supported,
-+				       eth_proto, SUPPORTED);
- 
- 	eth_proto = be32_to_cpu(ptys_reg.eth_proto_admin);
--	cmd->advertising |= ptys2ethtool_link_modes(eth_proto, ADVERTISED);
-+	ptys2ethtool_update_link_modes(link_ksettings->link_modes.advertising,
-+				       eth_proto, ADVERTISED);
- 
--	cmd->supported |= SUPPORTED_Pause | SUPPORTED_Asym_Pause;
--	cmd->advertising |= (priv->prof->tx_pause) ? ADVERTISED_Pause : 0;
-+	ethtool_link_ksettings_add_link_mode(link_ksettings, supported,
-+					     Pause);
-+	ethtool_link_ksettings_add_link_mode(link_ksettings, supported,
-+					     Asym_Pause);
- 
--	cmd->advertising |= (priv->prof->tx_pause ^ priv->prof->rx_pause) ?
--		ADVERTISED_Asym_Pause : 0;
-+	if (priv->prof->tx_pause)
-+		ethtool_link_ksettings_add_link_mode(link_ksettings,
-+						     advertising, Pause);
-+	if (priv->prof->tx_pause ^ priv->prof->rx_pause)
-+		ethtool_link_ksettings_add_link_mode(link_ksettings,
-+						     advertising, Asym_Pause);
- 
--	cmd->port = ptys_get_active_port(&ptys_reg);
--	cmd->transceiver = (SUPPORTED_TP & cmd->supported) ?
--		XCVR_EXTERNAL : XCVR_INTERNAL;
-+	link_ksettings->base.port = ptys_get_active_port(&ptys_reg);
- 
- 	if (mlx4_en_autoneg_get(dev)) {
--		cmd->supported |= SUPPORTED_Autoneg;
--		cmd->advertising |= ADVERTISED_Autoneg;
-+		ethtool_link_ksettings_add_link_mode(link_ksettings,
-+						     supported, Autoneg);
-+		ethtool_link_ksettings_add_link_mode(link_ksettings,
-+						     advertising, Autoneg);
- 	}
- 
--	cmd->autoneg = (priv->port_state.flags & MLX4_EN_PORT_ANC) ?
-+	link_ksettings->base.autoneg
-+		= (priv->port_state.flags & MLX4_EN_PORT_ANC) ?
- 		AUTONEG_ENABLE : AUTONEG_DISABLE;
- 
- 	eth_proto = be32_to_cpu(ptys_reg.eth_proto_lp_adv);
--	cmd->lp_advertising = ptys2ethtool_link_modes(eth_proto, ADVERTISED);
- 
--	cmd->lp_advertising |= (priv->port_state.flags & MLX4_EN_PORT_ANC) ?
--			ADVERTISED_Autoneg : 0;
-+	ethtool_link_ksettings_zero_link_mode(link_ksettings, lp_advertising);
-+	ptys2ethtool_update_link_modes(
-+		link_ksettings->link_modes.lp_advertising,
-+		eth_proto, ADVERTISED);
-+	if (priv->port_state.flags & MLX4_EN_PORT_ANC)
-+		ethtool_link_ksettings_add_link_mode(link_ksettings,
-+						     lp_advertising, Autoneg);
- 
--	cmd->phy_address = 0;
--	cmd->mdio_support = 0;
--	cmd->maxtxpkt = 0;
--	cmd->maxrxpkt = 0;
--	cmd->eth_tp_mdix = ETH_TP_MDI_INVALID;
--	cmd->eth_tp_mdix_ctrl = ETH_TP_MDI_AUTO;
-+	link_ksettings->base.phy_address = 0;
-+	link_ksettings->base.mdio_support = 0;
-+	link_ksettings->base.eth_tp_mdix = ETH_TP_MDI_INVALID;
-+	link_ksettings->base.eth_tp_mdix_ctrl = ETH_TP_MDI_AUTO;
- 
- 	return ret;
- }
- 
--static void ethtool_get_default_settings(struct net_device *dev,
--					 struct ethtool_cmd *cmd)
-+static void
-+ethtool_get_default_link_ksettings(
-+	struct net_device *dev, struct ethtool_link_ksettings *link_ksettings)
- {
- 	struct mlx4_en_priv *priv = netdev_priv(dev);
- 	int trans_type;
- 
--	cmd->autoneg = AUTONEG_DISABLE;
--	cmd->supported = SUPPORTED_10000baseT_Full;
--	cmd->advertising = ADVERTISED_10000baseT_Full;
--	trans_type = priv->port_state.transceiver;
-+	link_ksettings->base.autoneg = AUTONEG_DISABLE;
-+
-+	ethtool_link_ksettings_zero_link_mode(link_ksettings, supported);
-+	ethtool_link_ksettings_add_link_mode(link_ksettings, supported,
-+					     10000baseT_Full);
- 
-+	ethtool_link_ksettings_zero_link_mode(link_ksettings, advertising);
-+	ethtool_link_ksettings_add_link_mode(link_ksettings, advertising,
-+					     10000baseT_Full);
-+
-+	trans_type = priv->port_state.transceiver;
- 	if (trans_type > 0 && trans_type <= 0xC) {
--		cmd->port = PORT_FIBRE;
--		cmd->transceiver = XCVR_EXTERNAL;
--		cmd->supported |= SUPPORTED_FIBRE;
--		cmd->advertising |= ADVERTISED_FIBRE;
-+		link_ksettings->base.port = PORT_FIBRE;
-+		ethtool_link_ksettings_add_link_mode(link_ksettings,
-+						     supported, FIBRE);
-+		ethtool_link_ksettings_add_link_mode(link_ksettings,
-+						     advertising, FIBRE);
- 	} else if (trans_type == 0x80 || trans_type == 0) {
--		cmd->port = PORT_TP;
--		cmd->transceiver = XCVR_INTERNAL;
--		cmd->supported |= SUPPORTED_TP;
--		cmd->advertising |= ADVERTISED_TP;
-+		link_ksettings->base.port = PORT_TP;
-+		ethtool_link_ksettings_add_link_mode(link_ksettings,
-+						     supported, TP);
-+		ethtool_link_ksettings_add_link_mode(link_ksettings,
-+						     advertising, TP);
- 	} else  {
--		cmd->port = -1;
--		cmd->transceiver = -1;
-+		link_ksettings->base.port = -1;
- 	}
- }
- 
--static int mlx4_en_get_settings(struct net_device *dev, struct ethtool_cmd *cmd)
-+static int
-+mlx4_en_get_link_ksettings(struct net_device *dev,
-+			   struct ethtool_link_ksettings *link_ksettings)
- {
- 	struct mlx4_en_priv *priv = netdev_priv(dev);
- 	int ret = -EINVAL;
-@@ -822,16 +831,16 @@ static int mlx4_en_get_settings(struct net_device *dev, struct ethtool_cmd *cmd)
- 	       priv->port_state.flags & MLX4_EN_PORT_ANE);
- 
- 	if (priv->mdev->dev->caps.flags2 & MLX4_DEV_CAP_FLAG2_ETH_PROT_CTRL)
--		ret = ethtool_get_ptys_settings(dev, cmd);
-+		ret = ethtool_get_ptys_link_ksettings(dev, link_ksettings);
- 	if (ret) /* ETH PROT CRTL is not supported or PTYS CMD failed */
--		ethtool_get_default_settings(dev, cmd);
-+		ethtool_get_default_link_ksettings(dev, link_ksettings);
- 
- 	if (netif_carrier_ok(dev)) {
--		ethtool_cmd_speed_set(cmd, priv->port_state.link_speed);
--		cmd->duplex = DUPLEX_FULL;
-+		link_ksettings->base.speed = priv->port_state.link_speed;
-+		link_ksettings->base.duplex = DUPLEX_FULL;
- 	} else {
--		ethtool_cmd_speed_set(cmd, SPEED_UNKNOWN);
--		cmd->duplex = DUPLEX_UNKNOWN;
-+		link_ksettings->base.speed = SPEED_UNKNOWN;
-+		link_ksettings->base.duplex = DUPLEX_UNKNOWN;
- 	}
- 	return 0;
- }
-@@ -855,21 +864,29 @@ static __be32 speed_set_ptys_admin(struct mlx4_en_priv *priv, u32 speed,
- 	return proto_admin;
- }
- 
--static int mlx4_en_set_settings(struct net_device *dev, struct ethtool_cmd *cmd)
-+static int
-+mlx4_en_set_link_ksettings(struct net_device *dev,
-+			   const struct ethtool_link_ksettings *link_ksettings)
- {
- 	struct mlx4_en_priv *priv = netdev_priv(dev);
- 	struct mlx4_ptys_reg ptys_reg;
- 	__be32 proto_admin;
- 	int ret;
- 
--	u32 ptys_adv = ethtool2ptys_link_modes(cmd->advertising, ADVERTISED);
--	int speed = ethtool_cmd_speed(cmd);
-+	u32 ptys_adv = ethtool2ptys_link_modes(
-+		link_ksettings->link_modes.advertising, ADVERTISED);
-+	const int speed = link_ksettings->base.speed;
- 
--	en_dbg(DRV, priv, "Set Speed=%d adv=0x%x autoneg=%d duplex=%d\n",
--	       speed, cmd->advertising, cmd->autoneg, cmd->duplex);
-+	en_dbg(DRV, priv,
-+	       "Set Speed=%d adv={%*pbl} autoneg=%d duplex=%d\n",
-+	       speed, __ETHTOOL_LINK_MODE_MASK_NBITS,
-+	       link_ksettings->link_modes.advertising,
-+	       link_ksettings->base.autoneg,
-+	       link_ksettings->base.duplex);
- 
--	if (!(priv->mdev->dev->caps.flags2 & MLX4_DEV_CAP_FLAG2_ETH_PROT_CTRL) ||
--	    (cmd->duplex == DUPLEX_HALF))
-+	if (!(priv->mdev->dev->caps.flags2 &
-+	      MLX4_DEV_CAP_FLAG2_ETH_PROT_CTRL) ||
-+	    (link_ksettings->base.duplex == DUPLEX_HALF))
- 		return -EINVAL;
- 
- 	memset(&ptys_reg, 0, sizeof(ptys_reg));
-@@ -883,7 +900,7 @@ static int mlx4_en_set_settings(struct net_device *dev, struct ethtool_cmd *cmd)
- 		return 0;
- 	}
- 
--	proto_admin = cmd->autoneg == AUTONEG_ENABLE ?
-+	proto_admin = link_ksettings->base.autoneg == AUTONEG_ENABLE ?
- 		cpu_to_be32(ptys_adv) :
- 		speed_set_ptys_admin(priv, speed,
- 				     ptys_reg.eth_proto_cap);
-@@ -1982,8 +1999,8 @@ static int mlx4_en_set_phys_id(struct net_device *dev,
- 
- const struct ethtool_ops mlx4_en_ethtool_ops = {
- 	.get_drvinfo = mlx4_en_get_drvinfo,
--	.get_settings = mlx4_en_get_settings,
--	.set_settings = mlx4_en_set_settings,
-+	.get_link_ksettings = mlx4_en_get_link_ksettings,
-+	.set_link_ksettings = mlx4_en_set_link_ksettings,
- 	.get_link = ethtool_op_get_link,
- 	.get_strings = mlx4_en_get_strings,
- 	.get_sset_count = mlx4_en_get_sset_count,
-diff --git a/drivers/net/ethernet/mellanox/mlx4/en_main.c b/drivers/net/ethernet/mellanox/mlx4/en_main.c
-index e0ec280..bf7628d 100644
---- a/drivers/net/ethernet/mellanox/mlx4/en_main.c
-+++ b/drivers/net/ethernet/mellanox/mlx4/en_main.c
-@@ -382,6 +382,7 @@ static void mlx4_en_verify_params(void)
- static int __init mlx4_en_init(void)
- {
- 	mlx4_en_verify_params();
-+	mlx4_en_init_ptys2ethtool_map();
- 
- 	return mlx4_register_interface(&mlx4_en_interface);
- }
-diff --git a/drivers/net/ethernet/mellanox/mlx4/mlx4_en.h b/drivers/net/ethernet/mellanox/mlx4/mlx4_en.h
-index 35de7d2..d12ab6a 100644
---- a/drivers/net/ethernet/mellanox/mlx4/mlx4_en.h
-+++ b/drivers/net/ethernet/mellanox/mlx4/mlx4_en.h
-@@ -607,6 +607,7 @@ static inline struct mlx4_cqe *mlx4_en_get_cqe(void *buf, int idx, int cqe_sz)
- 
- #define MLX4_EN_WOL_DO_MODIFY (1ULL << 63)
- 
-+void mlx4_en_init_ptys2ethtool_map(void);
- void mlx4_en_update_loopback_state(struct net_device *dev,
- 				   netdev_features_t features);
- 
--- 
-2.7.0.rc3.207.g0ac5344
+> ---
+> Note: Please pull this complete series through the MIPS tree.
+> 
+> Changes since v7: None
+> Changes since v6:
+>         - Update Microchip PIC32 clock binding document based on review
+>         - Add header defining clocks
+> Changes since v5: None
+> Changes since v4: None
+> Changes since v3: None
+> Changes since v2:
+>         - Force lowercase in PIC32 clock binding documentation
+> Changes since v1: None
+> ---
+>  .../devicetree/bindings/clock/microchip,pic32.txt  |   39 ++++++++++++++++++
+>  include/dt-bindings/clock/microchip,pic32-clock.h  |   42 ++++++++++++++++++++
+>  2 files changed, 81 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/clock/microchip,pic32.txt
+>  create mode 100644 include/dt-bindings/clock/microchip,pic32-clock.h
+> 
+> diff --git a/Documentation/devicetree/bindings/clock/microchip,pic32.txt b/Documentation/devicetree/bindings/clock/microchip,pic32.txt
+> new file mode 100644
+> index 0000000..5352718
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/clock/microchip,pic32.txt
+> @@ -0,0 +1,39 @@
+> +Microchip PIC32 Clock Controller Binding
+> +----------------------------------------
+> +Microchip clock controller is consists of few oscillators, PLL, multiplexer
+> +and few divider modules.
+> +
+> +This binding uses common clock bindings.
+> +[1] Documentation/devicetree/bindings/clock/clock-bindings.txt
+> +
+> +Required properties:
+> +- compatible: shall be "microchip,pic32mzda-clk".
+> +- reg: shall contain base address and length of clock registers.
+> +- #clock-cells: shall be 1.
+> +
+> +Optional properties:
+> +- microchip,pic32mzda-sosc: shall be added only if platform has
+> +  secondary oscillator connected.
+> +
+> +Example:
+> +       rootclk: clock-controller@1f801200 {
+> +               compatible = "microchip,pic32mzda-clk";
+> +               reg = <0x1f801200 0x200>;
+> +               #clock-cells = <1>;
+> +               /* optional */
+> +               microchip,pic32mzda-sosc;
+> +       };
+> +
+> +
+> +The clock consumer shall specify the desired clock-output of the clock
+> +controller (as defined in [2]) by specifying output-id in its "clock"
+> +phandle cell.
+> +[2] include/dt-bindings/clock/microchip,pic32-clock.h
+> +
+> +For example for UART2:
+> +uart2: serial@2 {
+> +       compatible = "microchip,pic32mzda-uart";
+> +        reg = <>;
+> +       interrupts = <>;
+> +       clocks = <&rootclk PB2CLK>;
+> +};
+> diff --git a/include/dt-bindings/clock/microchip,pic32-clock.h b/include/dt-bindings/clock/microchip,pic32-clock.h
+> new file mode 100644
+> index 0000000..184647a6
+> --- /dev/null
+> +++ b/include/dt-bindings/clock/microchip,pic32-clock.h
+> @@ -0,0 +1,42 @@
+> +/*
+> + * Purna Chandra Mandal,<purna.mandal@microchip.com>
+> + * Copyright (C) 2015 Microchip Technology Inc.  All rights reserved.
+> + *
+> + * This program is free software; you can distribute it and/or modify it
+> + * under the terms of the GNU General Public License (Version 2) as
+> + * published by the Free Software Foundation.
+> + *
+> + * This program is distributed in the hope it will be useful, but WITHOUT
+> + * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+> + * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+> + * for more details.
+> + */
+> +
+> +#ifndef _DT_BINDINGS_CLK_MICROCHIP_PIC32_H_
+> +#define _DT_BINDINGS_CLK_MICROCHIP_PIC32_H_
+> +
+> +/* clock output indices */
+> +#define POSCCLK                0
+> +#define FRCCLK         1
+> +#define BFRCCLK                2
+> +#define LPRCCLK                3
+> +#define SOSCCLK                4
+> +#define FRCDIVCLK      5
+> +#define PLLCLK         6
+> +#define SCLK           7
+> +#define PB1CLK         8
+> +#define PB2CLK         9
+> +#define PB3CLK         10
+> +#define PB4CLK         11
+> +#define PB5CLK         12
+> +#define PB6CLK         13
+> +#define PB7CLK         14
+> +#define REF1CLK                15
+> +#define REF2CLK                16
+> +#define REF3CLK                17
+> +#define REF4CLK                18
+> +#define REF5CLK                19
+> +#define UPLLCLK                20
+> +#define MAXCLKS                21
+> +
+> +#endif /* _DT_BINDINGS_CLK_MICROCHIP_PIC32_H_ */
+> -- 
+> 1.7.9.5
+> 

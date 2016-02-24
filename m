@@ -1,37 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Feb 2016 19:58:25 +0100 (CET)
-Received: from mail-pa0-f66.google.com ([209.85.220.66]:33517 "EHLO
-        mail-pa0-f66.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27013144AbcBXS6XUrLmA (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 24 Feb 2016 19:58:23 +0100
-Received: by mail-pa0-f66.google.com with SMTP id y7so1392532paa.0
-        for <linux-mips@linux-mips.org>; Wed, 24 Feb 2016 10:58:23 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Feb 2016 19:58:41 +0100 (CET)
+Received: from mail-pf0-f196.google.com ([209.85.192.196]:33412 "EHLO
+        mail-pf0-f196.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27013924AbcBXS6dTILzA (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 24 Feb 2016 19:58:33 +0100
+Received: by mail-pf0-f196.google.com with SMTP id c10so1453534pfc.0
+        for <linux-mips@linux-mips.org>; Wed, 24 Feb 2016 10:58:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id;
-        bh=tiJBXwmRVf+7TH4FMx5wP0UhuDXFNd6VSRRA3zOOr24=;
-        b=G97ny6dOrUwHUbWLZF20HJFLh0mvvA8d7UKO6CwpeiZIZBu9PL7NDrtbYUkfdNE6L/
-         owrNjuMN0MH7X1tUV0UIfea1Ebj8akgXVpQRvv+VCurRLczmmOG/qvRJH8f0HRgzyqcO
-         Facpv7y7GfRhsiZ45XeagB148yrbpMDx/RVgmikNcs2uSTjF6xZVEHLebnmVG8zd5uAz
-         BX2UQAw3m0X9ZInStLpT4D3BN3Brkyor4Z+VP6Z6RDhFdnPiMtEyWTcEeQoha1djwQdW
-         MjID5pQj7UkJyOoujfkvUsyCV1jzHMJt5N1JPdD+wbvqKFKBbuj7kPYVT3tutJC2wa8F
-         gP1g==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references;
+        bh=5rvRaX+snvraiepduGOG338j05vEbZuIxfAxKpZqoz4=;
+        b=cPyBFxOutV6mP+WEpb5qgdxM/sC/LI2XVz518ozWv1/wIofZrAIalJ/Ta3aRwbaopW
+         zo8/940VK61DSIU0hhLMPpl6g8GZJbVgJ7IyK+oXQyWa/eBxih60yos9tLXfvWrLao1A
+         7vLqAse9s8SllhH5CXZFZ6kKlDsPX+Bjy9gOpo4j2ZFghy/W98XzqdfqOJKH1UCmf/FK
+         dkuHH/RMG7t9afjWQEvdz4cDmp2mq+y7shOjFF+Q6rdP6yDij/pTyNDgZuzXb7Dx/R4e
+         spS+98OMASef70/ZlfeHjsqxobHVyBRszgPDrq694wh0j6lte/jmaoNEIHmGe3hvNtiO
+         oLQA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=tiJBXwmRVf+7TH4FMx5wP0UhuDXFNd6VSRRA3zOOr24=;
-        b=mJq6RSco5roNhxOenCe/cuTL5j2lidJXy88nZOxxcoV0OjGUlvf/RJRcjfpzslBvgH
-         OnDaQ6FXEZpLYNycABbUfnyxQplVuajC1hSBzbedHutQlj9zPV346wnMCryKD4oVb6ww
-         6gBcuZ/FzjGtVzrjnSdmx/sfFcZY7ssKQOfBRLBzI+QzmgiEpedv7zQPXlqMZCZtC5T2
-         MmjUnE+syJWQy97lQMZ828hhoe+zvGWL5JxSsPMideZGnPXxcAUyYA5ePaey8FAsg9BD
-         NSJ5QGuqlSalLpgRHQfi9H1WPebm2mGxTPL5ofqG7wC+k0M9YPsoMP3MJ1s2dAz3tz3K
-         4ulA==
-X-Gm-Message-State: AG10YORREMzju14tW9ES7SLBwlaQ06HiDDvj+hQS7kS8W1PcHjHZiKMtwO6kQqWQC9VHow==
-X-Received: by 10.67.7.197 with SMTP id de5mr20576237pad.105.1456340297039;
-        Wed, 24 Feb 2016 10:58:17 -0800 (PST)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references;
+        bh=5rvRaX+snvraiepduGOG338j05vEbZuIxfAxKpZqoz4=;
+        b=d2yz28EzHgWSCbJBRbXxTPwciaSF4k4TVBJZa1cJvvE3/nLM6CiwmhSXq1xvk7AJ8d
+         0gVDxkD+i7FszXqpafwgTm4UAi+rGzyYyoMo6XTpRRxGA60FQ4Z7qvRxrdweUUpdCB+o
+         XtzWmJu07CTZno7PrPRHxqk7d1HE+oJKzC7A7OJ/rTWI6ifU70iHKg25TtME+cMWZbTZ
+         Y9VKBaP+GdVtGX/2ZowJCNmBIjqvfP+k76OzdvH/LTm5XFuQWFnY4rMxZT0fG02nUxA9
+         iRRJxk21hyvhhT7wEr3faxP4AEnLCH7WzwOh1+EJYzD6L1KyGSKkrqDYLk9YSD+kVSj6
+         KJ6A==
+X-Gm-Message-State: AG10YOQI7AImEMZXgyBkjEYKYPWKvop5b2/AWuIkplU2y21sFKGIeuq8gAEfwho/krC1bg==
+X-Received: by 10.98.18.207 with SMTP id 76mr56314936pfs.53.1456340307469;
+        Wed, 24 Feb 2016 10:58:27 -0800 (PST)
 Received: from decotigny.mtv.corp.google.com ([172.18.64.159])
-        by smtp.gmail.com with ESMTPSA id fl9sm6726317pab.30.2016.02.24.10.58.15
+        by smtp.gmail.com with ESMTPSA id fl9sm6726317pab.30.2016.02.24.10.58.26
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Wed, 24 Feb 2016 10:58:16 -0800 (PST)
+        Wed, 24 Feb 2016 10:58:26 -0800 (PST)
 From:   David Decotigny <ddecotig@gmail.com>
 To:     "David S. Miller" <davem@davemloft.net>,
         Ben Hutchings <ben@decadent.org.uk>,
@@ -56,15 +57,17 @@ Cc:     Eric Dumazet <edumazet@google.com>,
         Rasmus Villemoes <linux@rasmusvillemoes.dk>,
         kan.liang@intel.com, vidya@cumulusnetworks.com,
         David Decotigny <decot@googlers.com>
-Subject: [PATCH net-next v9 00/16] new ETHTOOL_GLINKSETTINGS/SLINKSETTINGS API
-Date:   Wed, 24 Feb 2016 10:57:56 -0800
-Message-Id: <1456340292-26003-1-git-send-email-ddecotig@gmail.com>
+Subject: [PATCH net-next v9 01/16] net: usnic: remove unused call to ethtool_ops::get_settings
+Date:   Wed, 24 Feb 2016 10:57:57 -0800
+Message-Id: <1456340292-26003-2-git-send-email-ddecotig@gmail.com>
 X-Mailer: git-send-email 2.7.0.rc3.207.g0ac5344
+In-Reply-To: <1456340292-26003-1-git-send-email-ddecotig@gmail.com>
+References: <1456340292-26003-1-git-send-email-ddecotig@gmail.com>
 Return-Path: <ddecotig@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52205
+X-archive-position: 52206
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -83,144 +86,30 @@ X-list: linux-mips
 
 From: David Decotigny <decot@googlers.com>
 
+Signed-off-by: David Decotigny <decot@googlers.com>
+---
+ drivers/infiniband/hw/usnic/usnic_ib_verbs.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-History:
- v9
- - add 'link' in macro, struct and function names
- - rename ethtool_link_ksettings::parent -> ::base
- - remove un-needed mlx4 en_dbg_enabled() companion patch
- - note: bitmap u32[] API patches were merged separately by Kan Liang
- v8
- - bitmap u32 API returns number of bits copied, unit tests updated
- v7
- - module_exit in test_bitmap
- v6
- - fix copy_from_user in user/kernel handshake
- v5
- note: please see v4 bullets for a question regarding bitmap.c
- - minor fix to make allyesconfig/allmodconfig
- v4
- - removed typedef for link mode bitmaps
- - moved bitmap<->u32[] conversion routines to bitmap.c . This is the
-   naive implementation. I have an endian-aware version that uses
-   memcpy/memset as much as possible, but I find it harder to follow
-   (see http://paste.ubuntu.com/13863722/). Please let me know if I
-   should use it instead.
- - fixes suggested by Ben Hutchings
- v3
- - rebased v2 on top of latest net-next, minor checkpatch/printf %*pb
-   updates
- v2
- - keep return 0 in get_settings when successful, instead of
-   propagating positive result from driver's get_settings callback.
- v1
- - original submission
-
-
-The main goal of this series is to support ethtool link mode masks
-larger than 32 bits. It implements a new ioctl pair
-(ETHTOOL_GLINKSETTINGS/SLINKSETTINGS), its associated callbacks
-(get/set_link_ksettings) and a new struct ethtool_link_settings, which
-should eventually replace legacy ethtool_cmd. Internally, the kernel
-uses fixed length link mode masks defined at compilation time in
-ethtool.h (for now: 31 bits), that can be increased by changing
-__ETHTOOL_LINK_MODE_LAST in ethtool.h (absolute max is 4064 bits,
-checked at compile time), and the user/kernel interface allows this
-length to be arbitrary within 1..4064. This should allow some
-flexibility without using too much heap/stack space, at the cost of a
-small kernel/user handshake for the user to determine the sizes of
-those bitmaps.
-
-Along the way, I chose to drop in the new structure the 3 ethtool_cmd
-fields marked "deprecated" (transceiver/maxrxpkt/maxtxpkt). They are
-still available for old drivers via the (old) ETHTOOL_GSET/SSET API,
-but are not available to drivers that switch to new API. Of those 3
-fields, ethtool_cmd::transceiver seems to be still actively used by
-several drivers, maybe we should not consider this field deprecated?
-The 2 other fields are basically not used. This transition requires
-some care in the way old and new ethtool talk to the kernel.
-
-More technical details provided in the description for main patch. In
-particular details about backward compatibility properties.
-
-Some open questions:
- - the kernel/interface multiplexes the "tell me the bitmap length"
-   handshake and the "give me the settings" inside the new
-   ETHTOOL_GLINKSETTINGS cmd. I was thinking of making this into 2
-   separate cmds: 1 cmd ETHTOOL_GKERNELPROPERTIES which would be
-   kernel-wide rather than device-specific, would return properties
-   like "length of the link mode bitmaps", and possibly others. And
-   ETHTOOL_GLINKSETTINGS would expect the proper bitmaps
- - the link mode bitmaps are piggybacked at tail of the new struct
-   ethtool_link_settings. Since its user-visible definition does not
-   assume specific bitmap width, I am using a 0-length array as the
-   publicly visible placeholder. But then, the kernel needs to
-   specialize it (struct ethtool_link_ksettings) to specify its
-   current link mode masks. This means that kernel code is "littered"
-   with "ksettings->base.field" to access "field" inside
-   ethtool_settings:
-   + I could use ethtool_link_settings everywhere (instead of a new
-     ethtool_ksettings) and an container_of accessor (or a plain cast)
-     to retrieve the link mode masks?
-   + or: we could decide to make the link mode masks statically
-     bounded again, ie. make their width public, but larger than
-     current 32, and unchangeable forever. This would make everything
-     straightforward, but we might hit limits later, or have an
-     unneeded memory/stack usage for unused bits.
-   any preference?
- - I foresee bugs where people use the legacy/deprecated SUPPORTED_x
-   macros instead of the new ETHTOOL_LINK_MODE_x_BIT enums in the new
-   get/set_link_ksettings callbacks. Not sure how to prevent problems
-   with this.
-
-The only driver which was converted for now is mlx4. I am not
-considering fcoe as fully converted, but I updated it a minima to be
-able to remove __ethtool_get_settings, now known as
-__ethtool_get_link_ksettings.
-
-Tested with legacy and "future" ethtool on 64b x86 kernel and 32+64b
-ethtool, and on a 32b x86 kernel + 32b ethtool.
-
-############################################
-# Patch Set Summary:
-
-David Decotigny (16):
-  net: usnic: remove unused call to ethtool_ops::get_settings
-  net: usnic: use __ethtool_get_settings
-  net: ethtool: add new ETHTOOL_xLINKSETTINGS API
-  tx4939: use __ethtool_get_ksettings
-  net: usnic: use __ethtool_get_ksettings
-  net: bonding: use __ethtool_get_ksettings
-  net: ipvlan: use __ethtool_get_ksettings
-  net: macvlan: use __ethtool_get_ksettings
-  net: team: use __ethtool_get_ksettings
-  net: fcoe: use __ethtool_get_ksettings
-  net: rdma: use __ethtool_get_ksettings
-  net: 8021q: use __ethtool_get_ksettings
-  net: bridge: use __ethtool_get_ksettings
-  net: core: use __ethtool_get_ksettings
-  net: ethtool: remove unused __ethtool_get_settings
-  net: mlx4: use new ETHTOOL_G/SSETTINGS API
-
- arch/mips/txx9/generic/setup_tx4939.c           |   7 +-
- drivers/infiniband/hw/usnic/usnic_ib_verbs.c    |  10 +-
- drivers/net/bonding/bond_main.c                 |  14 +-
- drivers/net/ethernet/mellanox/mlx4/en_ethtool.c | 357 ++++++++++---------
- drivers/net/ethernet/mellanox/mlx4/en_main.c    |   1 +
- drivers/net/ethernet/mellanox/mlx4/mlx4_en.h    |   1 +
- drivers/net/ipvlan/ipvlan_main.c                |   8 +-
- drivers/net/macvlan.c                           |   8 +-
- drivers/net/team/team.c                         |   8 +-
- drivers/scsi/fcoe/fcoe_transport.c              |  36 +-
- include/linux/ethtool.h                         |  87 ++++-
- include/rdma/ib_addr.h                          |  14 +-
- include/uapi/linux/ethtool.h                    | 322 +++++++++++++----
- net/8021q/vlan_dev.c                            |   8 +-
- net/bridge/br_if.c                              |   6 +-
- net/core/ethtool.c                              | 446 +++++++++++++++++++++++-
- net/core/net-sysfs.c                            |  15 +-
- net/packet/af_packet.c                          |  11 +-
- 18 files changed, 1032 insertions(+), 327 deletions(-)
-
+diff --git a/drivers/infiniband/hw/usnic/usnic_ib_verbs.c b/drivers/infiniband/hw/usnic/usnic_ib_verbs.c
+index 6cdb4d2..ea003ec 100644
+--- a/drivers/infiniband/hw/usnic/usnic_ib_verbs.c
++++ b/drivers/infiniband/hw/usnic/usnic_ib_verbs.c
+@@ -269,7 +269,6 @@ int usnic_ib_query_device(struct ib_device *ibdev,
+ 	struct usnic_ib_dev *us_ibdev = to_usdev(ibdev);
+ 	union ib_gid gid;
+ 	struct ethtool_drvinfo info;
+-	struct ethtool_cmd cmd;
+ 	int qp_per_vf;
+ 
+ 	usnic_dbg("\n");
+@@ -278,7 +277,6 @@ int usnic_ib_query_device(struct ib_device *ibdev,
+ 
+ 	mutex_lock(&us_ibdev->usdev_lock);
+ 	us_ibdev->netdev->ethtool_ops->get_drvinfo(us_ibdev->netdev, &info);
+-	us_ibdev->netdev->ethtool_ops->get_settings(us_ibdev->netdev, &cmd);
+ 	memset(props, 0, sizeof(*props));
+ 	usnic_mac_ip_to_gid(us_ibdev->ufdev->mac, us_ibdev->ufdev->inaddr,
+ 			&gid.raw[0]);
 -- 
 2.7.0.rc3.207.g0ac5344

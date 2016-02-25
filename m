@@ -1,33 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Feb 2016 10:46:30 +0100 (CET)
-Received: from metis.ext.4.pengutronix.de ([92.198.50.35]:60857 "EHLO
-        metis.ext.4.pengutronix.de" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27012690AbcBYJpzWPUvm (ORCPT
-        <rfc822;linux-mips@linux-mips.Org>); Thu, 25 Feb 2016 10:45:55 +0100
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7] helo=dude.pengutronix.de.)
-        by metis.ext.pengutronix.de with esmtp (Exim 4.80)
-        (envelope-from <p.zabel@pengutronix.de>)
-        id 1aYsUW-0001iy-7d; Thu, 25 Feb 2016 10:45:48 +0100
-From:   Philipp Zabel <p.zabel@pengutronix.de>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     John Crispin <blogic@openwrt.org>, linux-mips@linux-mips.org,
-        kernel@pengutronix.de, Philipp Zabel <p.zabel@pengutronix.de>
-Subject: [PATCH 0/2] MIPS: Make reset_control_ops const
-Date:   Thu, 25 Feb 2016 10:45:45 +0100
-Message-Id: <1456393547-28030-1-git-send-email-p.zabel@pengutronix.de>
-X-Mailer: git-send-email 2.7.0
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::7
-X-SA-Exim-Mail-From: p.zabel@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-mips@linux-mips.org
-Return-Path: <p.zabel@pengutronix.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Feb 2016 10:51:23 +0100 (CET)
+Received: from arrakis.dune.hu ([78.24.191.176]:50347 "EHLO arrakis.dune.hu"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27006642AbcBYJvVVKmRm (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 25 Feb 2016 10:51:21 +0100
+Received: from arrakis.dune.hu (localhost [127.0.0.1])
+        by arrakis.dune.hu (Postfix) with ESMTP id 3105D2803F9;
+        Thu, 25 Feb 2016 10:51:19 +0100 (CET)
+Received: from Dicker-Alter.lan (p548C9A7A.dip0.t-ipconnect.de [84.140.154.122])
+        by arrakis.dune.hu (Postfix) with ESMTPSA;
+        Thu, 25 Feb 2016 10:51:19 +0100 (CET)
+Subject: Re: [PATCH 1/2] MIPS: lantiq: Make reset_control_ops const
+To:     Philipp Zabel <p.zabel@pengutronix.de>,
+        Ralf Baechle <ralf@linux-mips.org>
+References: <1456393547-28030-1-git-send-email-p.zabel@pengutronix.de>
+ <1456393547-28030-2-git-send-email-p.zabel@pengutronix.de>
+Cc:     linux-mips@linux-mips.org, kernel@pengutronix.de
+From:   John Crispin <blogic@openwrt.org>
+Message-ID: <56CECE96.5000508@openwrt.org>
+Date:   Thu, 25 Feb 2016 10:51:18 +0100
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:38.0)
+ Gecko/20100101 Thunderbird/38.6.0
+MIME-Version: 1.0
+In-Reply-To: <1456393547-28030-2-git-send-email-p.zabel@pengutronix.de>
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
+Return-Path: <blogic@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
-X-Orcpt: rfc822;linux-mips@linux-mips.Org
-Original-Recipient: rfc822;linux-mips@linux-mips.Org
-X-archive-position: 52234
+X-Orcpt: rfc822;linux-mips@linux-mips.org
+Original-Recipient: rfc822;linux-mips@linux-mips.org
+X-archive-position: 52235
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: p.zabel@pengutronix.de
+X-original-sender: blogic@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -40,21 +45,30 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Since commit 203d4f347d86 ("reset: Make reset_control_ops const") marked
-the ops pointer in struct reset_controller_dev as const, these structs
-can be made const, too. The commit is currently sitting in the
-arm-soc/for-next branch.
 
-regards
-Philipp
 
-Philipp Zabel (2):
-  MIPS: lantiq: Make reset_control_ops const
-  MIPS: ralink: Make reset_control_ops const
+On 25/02/2016 10:45, Philipp Zabel wrote:
+> The reset_ops structure is never modified. Make it const.
+> 
+> Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
 
- arch/mips/lantiq/xway/reset.c | 2 +-
- arch/mips/ralink/reset.c      | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+Acked-by: John Crispin <blogic@openwrt.org>
 
--- 
-2.7.0
+> ---
+>  arch/mips/lantiq/xway/reset.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/mips/lantiq/xway/reset.c b/arch/mips/lantiq/xway/reset.c
+> index bc29bb3..1f34608 100644
+> --- a/arch/mips/lantiq/xway/reset.c
+> +++ b/arch/mips/lantiq/xway/reset.c
+> @@ -258,7 +258,7 @@ static int ltq_reset_device(struct reset_controller_dev *rcdev,
+>  	return ltq_deassert_device(rcdev, id);
+>  }
+>  
+> -static struct reset_control_ops reset_ops = {
+> +static const struct reset_control_ops reset_ops = {
+>  	.reset = ltq_reset_device,
+>  	.assert = ltq_assert_device,
+>  	.deassert = ltq_deassert_device,
+> 

@@ -1,52 +1,117 @@
-From: James Hogan <james.hogan@imgtec.com>
-Date: Mon, 25 Jan 2016 20:32:03 +0000
-Subject: MIPS: Fix buffer overflow in syscall_get_arguments()
-Message-ID: <20160125203203.I9TiTsBv-qPdewmSSDs_7y-xg93vAYa4G1QobVxMdmA@z>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Feb 2016 21:29:49 +0100 (CET)
+Received: from exsmtp03.microchip.com ([198.175.253.49]:28825 "EHLO
+        email.microchip.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S27013458AbcBYU3qqNWWk (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 25 Feb 2016 21:29:46 +0100
+Received: from [10.14.4.125] (10.10.76.4) by chn-sv-exch03.mchp-main.com
+ (10.10.76.49) with Microsoft SMTP Server id 14.3.181.6; Thu, 25 Feb 2016
+ 13:29:39 -0700
+Subject: Re: [PATCH] clk: Get rid of HAVE_MACH_CLKDEV
+To:     Stephen Boyd <sboyd@codeaurora.org>,
+        Mike Turquette <mturquette@baylibre.com>
+References: <1453933020-8577-1-git-send-email-sboyd@codeaurora.org>
+CC:     <linux-kernel@vger.kernel.org>, <linux-clk@vger.kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
+From:   Joshua Henderson <joshua.henderson@microchip.com>
+Message-ID: <56CF6461.9040308@microchip.com>
+Date:   Thu, 25 Feb 2016 13:30:25 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+ Thunderbird/38.5.1
+MIME-Version: 1.0
+In-Reply-To: <1453933020-8577-1-git-send-email-sboyd@codeaurora.org>
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: 7bit
+Return-Path: <Joshua.Henderson@microchip.com>
+X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
+X-Orcpt: rfc822;linux-mips@linux-mips.org
+Original-Recipient: rfc822;linux-mips@linux-mips.org
+X-archive-position: 52272
+X-ecartis-version: Ecartis v1.0.0
+Sender: linux-mips-bounce@linux-mips.org
+Errors-to: linux-mips-bounce@linux-mips.org
+X-original-sender: joshua.henderson@microchip.com
+Precedence: bulk
+List-help: <mailto:ecartis@linux-mips.org?Subject=help>
+List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
+List-software: Ecartis version 1.0.0
+List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
+X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
+List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
+List-owner: <mailto:ralf@linux-mips.org>
+List-post: <mailto:linux-mips@linux-mips.org>
+List-archive: <http://www.linux-mips.org/archives/linux-mips/>
+X-list: linux-mips
 
-commit f4dce1ffd2e30fa31756876ef502ce6d2324be35 upstream.
+On 01/27/2016 03:17 PM, Stephen Boyd wrote:
+> This config was used for the ARM port so that it could use a
+> machine specific clkdev.h include, but those are all gone now.
+> The MIPS architecture is the last user, and from what I can tell
+> it doesn't actually use it anyway, so let's remove the config all
+> together.
+> 
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: <linux-mips@linux-mips.org>
+> Signed-off-by: Stephen Boyd <sboyd@codeaurora.org>
 
-Since commit 4c21b8fd8f14 ("MIPS: seccomp: Handle indirect system calls
-(o32)"), syscall_get_arguments() attempts to handle o32 indirect syscall
-arguments by incrementing both the start argument number and the number
-of arguments to fetch. However only the start argument number needs to
-be incremented. The number of arguments does not change, they're just
-shifted up by one, and in fact the output array is provided by the
-caller and is likely only n entries long, so reading more arguments
-overflows the output buffer.
+Reviewed-by: Joshua Henderson <joshua.henderson@microchip.com>
 
-In the case of seccomp, this results in it fetching 7 arguments starting
-at the 2nd one, which overflows the unsigned long args[6] in
-populate_seccomp_data(). This clobbers the $s0 register from
-syscall_trace_enter() which __seccomp_phase1_filter() saved onto the
-stack, into which syscall_trace_enter() had placed its syscall number
-argument. This caused Chromium to crash.
+Thanks,
+Josh
 
-Credit goes to Milko for tracking it down as far as $s0 being clobbered.
-
-Fixes: 4c21b8fd8f14 ("MIPS: seccomp: Handle indirect system calls (o32)")
-Reported-by: Milko Leporis <milko.leporis@imgtec.com>
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/12213/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Luis Henriques <luis.henriques@canonical.com>
----
- arch/mips/include/asm/syscall.h | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
-
-diff --git a/arch/mips/include/asm/syscall.h b/arch/mips/include/asm/syscall.h
-index cdf68b33bd65..1c7e4526cbf3 100644
---- a/arch/mips/include/asm/syscall.h
-+++ b/arch/mips/include/asm/syscall.h
-@@ -107,10 +107,8 @@ static inline void syscall_get_arguments(struct task_struct *task,
- 	/* O32 ABI syscall() - Either 64-bit with O32 or 32-bit */
- 	if ((config_enabled(CONFIG_32BIT) ||
- 	    test_tsk_thread_flag(task, TIF_32BIT_REGS)) &&
--	    (regs->regs[2] == __NR_syscall)) {
-+	    (regs->regs[2] == __NR_syscall))
- 		i++;
--		n++;
--	}
-
- 	while (n--)
- 		ret |= mips_get_syscall_arg(args++, task, regs, i++);
+> ---
+> 
+> I don't see a problem if this goes through the MIPS tree or the clk tree.
+> Let me know and I can take it through clk.
+> 
+>  arch/mips/Kconfig       | 2 --
+>  arch/mips/pic32/Kconfig | 1 -
+>  drivers/clk/Kconfig     | 3 ---
+>  3 files changed, 6 deletions(-)
+> 
+> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+> index 56f57816613e..8e1be2889af3 100644
+> --- a/arch/mips/Kconfig
+> +++ b/arch/mips/Kconfig
+> @@ -328,7 +328,6 @@ config LANTIQ
+>  	select ARCH_REQUIRE_GPIOLIB
+>  	select SWAP_IO_SPACE
+>  	select BOOT_RAW
+> -	select HAVE_MACH_CLKDEV
+>  	select CLKDEV_LOOKUP
+>  	select USE_OF
+>  	select PINCTRL
+> @@ -590,7 +589,6 @@ config RALINK
+>  	select SYS_SUPPORTS_LITTLE_ENDIAN
+>  	select SYS_SUPPORTS_MIPS16
+>  	select SYS_HAS_EARLY_PRINTK
+> -	select HAVE_MACH_CLKDEV
+>  	select CLKDEV_LOOKUP
+>  	select ARCH_HAS_RESET_CONTROLLER
+>  	select RESET_CONTROLLER
+> diff --git a/arch/mips/pic32/Kconfig b/arch/mips/pic32/Kconfig
+> index fde56a8b85ca..1985971b9890 100644
+> --- a/arch/mips/pic32/Kconfig
+> +++ b/arch/mips/pic32/Kconfig
+> @@ -15,7 +15,6 @@ config PIC32MZDA
+>  	select SYS_SUPPORTS_32BIT_KERNEL
+>  	select SYS_SUPPORTS_LITTLE_ENDIAN
+>  	select ARCH_REQUIRE_GPIOLIB
+> -	select HAVE_MACH_CLKDEV
+>  	select COMMON_CLK
+>  	select CLKDEV_LOOKUP
+>  	select LIBFDT
+> diff --git a/drivers/clk/Kconfig b/drivers/clk/Kconfig
+> index eca8e019e005..35cbde8449a0 100644
+> --- a/drivers/clk/Kconfig
+> +++ b/drivers/clk/Kconfig
+> @@ -6,9 +6,6 @@ config CLKDEV_LOOKUP
+>  config HAVE_CLK_PREPARE
+>  	bool
+>  
+> -config HAVE_MACH_CLKDEV
+> -	bool
+> -
+>  config COMMON_CLK
+>  	bool
+>  	select HAVE_CLK_PREPARE
+> 

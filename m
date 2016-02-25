@@ -1,27 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Feb 2016 01:50:00 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:38021 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Feb 2016 01:59:29 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:50322 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27010189AbcBYAt7AtO4x (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 25 Feb 2016 01:49:59 +0100
+        with ESMTP id S27007825AbcBYA72Tmb3x (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 25 Feb 2016 01:59:28 +0100
 Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Websense Email Security Gateway with ESMTPS id 6C96D62C74C85;
-        Thu, 25 Feb 2016 00:49:49 +0000 (GMT)
+        by Websense Email Security Gateway with ESMTPS id EE16BECEC55FD;
+        Thu, 25 Feb 2016 00:59:17 +0000 (GMT)
 Received: from [10.100.200.149] (10.100.200.149) by hhmail02.hh.imgtec.org
  (10.100.10.21) with Microsoft SMTP Server id 14.3.266.1; Thu, 25 Feb 2016
- 00:49:52 +0000
-Date:   Thu, 25 Feb 2016 00:49:52 +0000
+ 00:59:21 +0000
+Date:   Thu, 25 Feb 2016 00:59:21 +0000
 From:   "Maciej W. Rozycki" <macro@imgtec.com>
 To:     Huacai Chen <chenhc@lemote.com>
 CC:     Ralf Baechle <ralf@linux-mips.org>,
         Aurelien Jarno <aurelien@aurel32.net>,
         "Steven J . Hill" <Steven.Hill@imgtec.com>,
         <linux-mips@linux-mips.org>, Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>
-Subject: Re: [PATCH V3 5/5] MIPS: Loongson-3: Introduce
- CONFIG_LOONGSON3_ENHANCEMENT
-In-Reply-To: <1456324384-18118-8-git-send-email-chenhc@lemote.com>
-Message-ID: <alpine.DEB.2.00.1602250046480.15885@tp.orcam.me.uk>
-References: <1456324384-18118-1-git-send-email-chenhc@lemote.com> <1456324384-18118-8-git-send-email-chenhc@lemote.com>
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        "Maciej W. Rozycki" <macro@linux-mips.org>
+Subject: Re: [PATCH] MIPS: Introduce cpu_has_coherent_cache feature
+In-Reply-To: <1456324384-18118-3-git-send-email-chenhc@lemote.com>
+Message-ID: <alpine.DEB.2.00.1602250050170.15885@tp.orcam.me.uk>
+References: <1456324384-18118-1-git-send-email-chenhc@lemote.com> <1456324384-18118-3-git-send-email-chenhc@lemote.com>
 User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
 MIME-Version: 1.0
 Content-Type: text/plain; charset="US-ASCII"
@@ -30,7 +30,7 @@ Return-Path: <Maciej.Rozycki@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52225
+X-archive-position: 52226
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -49,33 +49,33 @@ X-list: linux-mips
 
 On Wed, 24 Feb 2016, Huacai Chen wrote:
 
-> This patch introduce a config option, CONFIG_LOONGSON3_ENHANCEMENT, to
-> enable those enhancements which cannot be probed at run time. If you
-> want a generic kernel to run on all Loongson 3 machines, please say 'N'
-> here. If you want a high-performance kernel to run on new Loongson 3
-> machines only, please say 'Y' here.
+> If a platform maintains cache coherency by hardware fully:
+>  1) It's icache is coherent with dcache.
+>  2) It's dcaches don't alias (maybe depend on PAGE_SIZE).
+>  3) It maintains cache coherency across cores (and for DMA).
+> 
+> So we introduce a MIPS_CPU_CACHE_COHERENT bit, and a cpu feature named
+> cpu_has_coherent_cache to modify MIPS's cache flushing functions.
 [...]
-> diff --git a/arch/mips/include/asm/irqflags.h b/arch/mips/include/asm/irqflags.h
-> index 65c351e..9d3610b 100644
-> --- a/arch/mips/include/asm/irqflags.h
-> +++ b/arch/mips/include/asm/irqflags.h
-> @@ -41,7 +41,12 @@ static inline unsigned long arch_local_irq_save(void)
->  	"	.set	push						\n"
->  	"	.set	reorder						\n"
->  	"	.set	noat						\n"
-> +#if defined(CONFIG_CPU_LOONGSON3)
-> +	"	mfc0	%[flags], $12					\n"
-> +	"	di							\n"
-> +#else
->  	"	di	%[flags]					\n"
-> +#endif
->  	"	andi	%[flags], 1					\n"
->  	"	" __stringify(__irq_disable_hazard) "			\n"
->  	"	.set	pop						\n"
+> diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
+> index caac3d7..04a38d8 100644
+> --- a/arch/mips/mm/c-r4k.c
+> +++ b/arch/mips/mm/c-r4k.c
+> @@ -428,6 +428,9 @@ static void r4k_blast_scache_setup(void)
+>  
+>  static inline void local_r4k___flush_cache_all(void * args)
+>  {
+> +	if (cpu_has_coherent_cache)
+> +		return;
+> +
+[etc.]
 
- This part does not appear related to CONFIG_LOONGSON3_ENHANCEMENT -- 
-please either fold it into one of the other changes in the set, if there's 
-one it really belongs to, or make it an entirely separate change 
-otherwise.
+ Have you considered setting the relevant handlers to `cache_noop' in 
+`r4k_cache_init' instead?  It seems more natural to me and avoids the 
+performance hit where `cpu_has_coherent_cache' is variable, which at this 
+time means everywhere.
+
+ Also you don't set the MIPS_CPU_CACHE_COHERENT bit anywhere within you 
+patch set -- is there a follow-up change you're going to submit?
 
   Maciej

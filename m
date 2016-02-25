@@ -1,62 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Feb 2016 16:59:19 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.136]:59461 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27011906AbcBYP7Q26HpV (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 25 Feb 2016 16:59:16 +0100
-Received: from mail.kernel.org (localhost [127.0.0.1])
-        by mail.kernel.org (Postfix) with ESMTP id 8B3292034C;
-        Thu, 25 Feb 2016 15:59:13 +0000 (UTC)
-Received: from localhost (unknown [150.199.177.227])
-        (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id BD66C20253;
-        Thu, 25 Feb 2016 15:59:12 +0000 (UTC)
-Date:   Thu, 25 Feb 2016 09:59:11 -0600
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Paul Burton <paul.burton@imgtec.com>
-Cc:     linux-mips@linux-mips.org,
-        Bharat Kumar Gogada <bharatku@xilinx.com>,
-        Michal Simek <michal.simek@xilinx.com>,
-        Ravikiran Gummaluri <rgummal@xilinx.com>,
-        Ley Foon Tan <lftan@altera.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Russell Joyce <russell.joyce@york.ac.uk>,
-        Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Ray Jui <rjui@broadcom.com>,
-        =?iso-8859-1?Q?S=F6ren?= Brinkmann <soren.brinkmann@xilinx.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Phil Edworthy <phil.edworthy@renesas.com>,
-        Hauke Mehrtens <hauke@hauke-m.de>,
-        Jiang Liu <jiang.liu@linux.intel.com>,
-        Rob Herring <robh@kernel.org>, Duc Dang <dhdang@apm.com>,
-        Gabriele Paoloni <gabriele.paoloni@huawei.com>,
-        linux-arm-kernel@lists.infradead.org,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        linux-kernel@vger.kernel.org,
-        Stanimir Varbanov <svarbanov@mm-sol.com>,
-        Marc Zyngier <marc.zyngier@arm.com>
-Subject: Re: [PATCH v3 0/6] Xilinx AXI PCIe Host Bridge driver fixes
-Message-ID: <20160225155911.GF8120@localhost>
-References: <1454602213-967-1-git-send-email-paul.burton@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Feb 2016 19:08:17 +0100 (CET)
+Received: from exsmtp01.microchip.com ([198.175.253.37]:18449 "EHLO
+        email.microchip.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S27013779AbcBYSIQUymGy (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 25 Feb 2016 19:08:16 +0100
+Received: from mx.microchip.com (10.10.76.4) by CHN-SV-EXCH01.mchp-main.com
+ (10.10.76.37) with Microsoft SMTP Server id 14.3.181.6; Thu, 25 Feb 2016
+ 11:08:07 -0700
+Received: by mx.microchip.com (sSMTP sendmail emulation); Thu, 25 Feb 2016
+ 11:08:53 -0700
+From:   Joshua Henderson <joshua.henderson@microchip.com>
+To:     <linux-kernel@vger.kernel.org>
+CC:     <linux-mips@linux-mips.org>, <ralf@linux-mips.org>,
+        Joshua Henderson <joshua.henderson@microchip.com>,
+        <devicetree@vger.kernel.org>, <linux-clk@vger.kernel.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Purna Chandra Mandal <purna.mandal@microchip.com>,
+        Rob Herring <robh@kernel.org>,
+        Sandeep Sheriker <sandeepsheriker.mallikarjun@microchip.com>
+Subject: [PATCH v9 0/3] PIC32MZDA Clock Driver
+Date:   Thu, 25 Feb 2016 11:07:50 -0700
+Message-ID: <1456423709-24145-1-git-send-email-joshua.henderson@microchip.com>
+X-Mailer: git-send-email 1.7.9.5
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1454602213-967-1-git-send-email-paul.burton@imgtec.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Virus-Scanned: ClamAV using ClamSMTP
-Return-Path: <helgaas@kernel.org>
+Content-Type: text/plain
+Return-Path: <Joshua.Henderson@microchip.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52262
+X-archive-position: 52263
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: helgaas@kernel.org
+X-original-sender: joshua.henderson@microchip.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -69,28 +44,36 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Paul,
+Clock bindings got acked and then essentially unacked, while the clock
+driver never made it upstream. In the meantime, the initial DTS file
+made it upstream. This latest patch series includes a patch to go back
+and correct the DTS files to reflect the new clock bindings in this
+patch series.
 
-On Thu, Feb 04, 2016 at 04:10:07PM +0000, Paul Burton wrote:
-> This series fixes a number of issues found using the Xilinx AXI PCIe
-> Host Bridge IP on the Imagination Technologies MIPS Boston development
-> board. It has been split out of the larger Boston board support series
-> at Michal's request.
-> 
-> Applies atop v4.5-rc2.
-> 
-> Paul Burton (6):
->   PCI: xilinx: Keep references to both IRQ domains
->   PCI: xilinx: Unify INTx & MSI interrupt FIFO decode
->   PCI: xilinx: Always clear interrupt decode register
->   PCI: xilinx: Clear interrupt FIFO during probe
->   PCI: xilinx: Fix INTX irq dispatch
->   PCI: xilinx: Allow build on MIPS platforms
-> 
->  drivers/pci/host/Kconfig       |   2 +-
->  drivers/pci/host/pcie-xilinx.c | 125 +++++++++++++++++++----------------------
+Purna Chandra Mandal (3):
+  dt/bindings: Add PIC32 clock binding documentation
+  clk: clk-pic32: Add PIC32 clock driver
+  MIPS: dts: pic32: Update dts to reflect new PIC32MZDA clk binding
 
-Looks like Bharat has some IRQ concerns, so I'm guessing you'll be
-posting a v4?
+ .../devicetree/bindings/clock/microchip,pic32.txt  |   39 +
+ arch/mips/boot/dts/pic32/pic32mzda-clk.dtsi        |  236 -----
+ arch/mips/boot/dts/pic32/pic32mzda.dtsi            |   63 +-
+ arch/mips/boot/dts/pic32/pic32mzda_sk.dts          |    5 +-
+ drivers/clk/Kconfig                                |    3 +
+ drivers/clk/Makefile                               |    1 +
+ drivers/clk/microchip/Makefile                     |    2 +
+ drivers/clk/microchip/clk-core.c                   |  954 ++++++++++++++++++++
+ drivers/clk/microchip/clk-core.h                   |   78 ++
+ drivers/clk/microchip/clk-pic32mzda.c              |  269 ++++++
+ include/dt-bindings/clock/microchip,pic32-clock.h  |   42 +
+ 11 files changed, 1433 insertions(+), 259 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/clock/microchip,pic32.txt
+ delete mode 100644 arch/mips/boot/dts/pic32/pic32mzda-clk.dtsi
+ create mode 100644 drivers/clk/microchip/Makefile
+ create mode 100644 drivers/clk/microchip/clk-core.c
+ create mode 100644 drivers/clk/microchip/clk-core.h
+ create mode 100644 drivers/clk/microchip/clk-pic32mzda.c
+ create mode 100644 include/dt-bindings/clock/microchip,pic32-clock.h
 
-Bjorn
+--
+1.7.9.5

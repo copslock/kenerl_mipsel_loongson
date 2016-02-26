@@ -1,59 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Feb 2016 03:49:45 +0100 (CET)
-Received: from down.free-electrons.com ([37.187.137.238]:42034 "EHLO
-        mail.free-electrons.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27014891AbcBZCtnpmSnQ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 26 Feb 2016 03:49:43 +0100
-Received: by mail.free-electrons.com (Postfix, from userid 110)
-        id 4DB2E1895; Fri, 26 Feb 2016 03:49:36 +0100 (CET)
-Received: from bbrezillon (unknown [208.66.31.210])
-        by mail.free-electrons.com (Postfix) with ESMTPSA id 2832B46B;
-        Fri, 26 Feb 2016 03:16:04 +0100 (CET)
-Date:   Fri, 26 Feb 2016 03:16:00 +0100
-From:   Boris Brezillon <boris.brezillon@free-electrons.com>
-To:     Stefan Agner <stefan@agner.ch>
-Cc:     David Woodhouse <dwmw2@infradead.org>,
-        Brian Norris <computersforpeace@gmail.com>,
-        linux-mtd@lists.infradead.org, Daniel Mack <daniel@zonque.org>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        Kukjin Kim <kgene@kernel.org>,
-        Krzysztof Kozlowski <k.kozlowski@samsung.com>,
-        linux-samsung-soc@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        Nicolas Ferre <nicolas.ferre@atmel.com>,
-        Jean-Christophe Plagniol-Villard <plagnioj@jcrosoft.com>,
-        Alexandre Belloni <alexandre.belloni@free-electrons.com>,
-        Wenyou Yang <wenyou.yang@atmel.com>,
-        Josh Wu <rainyfeeling@outlook.com>,
-        Ezequiel Garcia <ezequiel.garcia@free-electrons.com>,
-        Maxime Ripard <maxime.ripard@free-electrons.com>,
-        Chen-Yu Tsai <wens@csie.org>, linux-sunxi@googlegroups.com,
-        Kyungmin Park <kyungmin.park@samsung.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        devel@driverdev.osuosl.org, linux-kernel@vger.kernel.org,
-        punnaiah choudary kalluri <punnaia@xilinx.com>,
-        Priit Laes <plaes@plaes.org>,
-        Kamal Dasu <kdasu.kdev@gmail.com>,
-        bcm-kernel-feedback-list@broadcom.com, linux-api@vger.kernel.org
-Subject: Re: [PATCH v3 00/52] mtd: rework ECC layout definition
-Message-ID: <20160226031600.15ad27ba@bbrezillon>
-In-Reply-To: <d968b867f4d7f603581a0ff83e07c15c@agner.ch>
-References: <1456448280-27788-1-git-send-email-boris.brezillon@free-electrons.com>
-        <d968b867f4d7f603581a0ff83e07c15c@agner.ch>
-X-Mailer: Claws Mail 3.11.1 (GTK+ 2.24.27; x86_64-pc-linux-gnu)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Feb 2016 06:35:55 +0100 (CET)
+Received: from mail-wm0-f44.google.com ([74.125.82.44]:37480 "EHLO
+        mail-wm0-f44.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27005162AbcBZFfw34qgE (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 26 Feb 2016 06:35:52 +0100
+Received: by mail-wm0-f44.google.com with SMTP id g62so55812587wme.0;
+        Thu, 25 Feb 2016 21:35:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type;
+        bh=S8ivwE5FKa9bijF7v50H3xwQG0CWaFUHLKvXOvUzcxg=;
+        b=kdYEnZ+TENo/p8m8YxEVnjsL4LhuUnbAzHKpXh6G26cGOFxWigNoTXqmkuYqJJ3xfh
+         OxwJqspI45udn7NeNxL7JCaZvIhAFsbOrQNhvbHl1xSXqROmepsmw6C1HO24c8ZkIoEI
+         Jtvd2WCFL03a7PtWw7guQJg8umAPkrjOlTLs8BdmwmiWs8jikRMTqfmH5Bz2RJE4WZPR
+         F1iwRU2do5OCXL108dczncbEPH5adit28LExitSYuPbRP3GR+Ma1wDrxxBylSyxJhBHZ
+         AXc1LLvFInHRCtieHwgEcXJg73ZXqK7cySkiYkoFsFzqB2i8+cC1s+AFLAdabmwTO1N7
+         mnWg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:sender:in-reply-to:references:date
+         :message-id:subject:from:to:cc:content-type;
+        bh=S8ivwE5FKa9bijF7v50H3xwQG0CWaFUHLKvXOvUzcxg=;
+        b=P4qjDiTAVrh5YOCoQnV0+QzdsOKURwWJG8dkiltujDBTu8rBpBZXeT/5EkqJUJmtuw
+         Dhq3EBW0wCiXndXxnTzU2yF/s+02O37TyjuXhkYYF/+aTncCfjOHUBnmxAzhOHBC1dN7
+         yNk7dt3Er2PvadYsqrdV9M/ROmVDQlmy8np6pH9v94ul+sVFUC6p9Vavp96AGDsNihDO
+         9qN8eumKEiITaCiHlBGY32MNoryXxqJ3Esv6yELdVyr5P1LAs9KeQBgRgnU8y15fd5l8
+         Hb8rFVYWD5dACJ45zBxPDlx++7bIn81igsbVmKRDUPrphf0FYqYMcKaBF3v0JZnyBBri
+         ZNWg==
+X-Gm-Message-State: AG10YOSDUwhyoearlFL13wEm1w3dCdGn7nFnntQeuhpva5DgxcpWqCuMQfT5gk0L48k1eczeV9QZgltFAkx/Bw==
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <boris.brezillon@free-electrons.com>
+X-Received: by 10.194.220.230 with SMTP id pz6mr48183943wjc.39.1456464947302;
+ Thu, 25 Feb 2016 21:35:47 -0800 (PST)
+Received: by 10.27.13.9 with HTTP; Thu, 25 Feb 2016 21:35:47 -0800 (PST)
+In-Reply-To: <CAAhV-H4nc_z1OWF2JLJ2bfwTcCkYXRZ8CTc1kh3zRs5WHQKKQw@mail.gmail.com>
+References: <1456324384-18118-1-git-send-email-chenhc@lemote.com>
+        <1456324384-18118-3-git-send-email-chenhc@lemote.com>
+        <alpine.DEB.2.00.1602250050170.15885@tp.orcam.me.uk>
+        <CAAhV-H5NW7NG0C9OU-qjCzPO-CB+pWmsh0RC0ZmKKmUx0U75=Q@mail.gmail.com>
+        <alpine.DEB.2.00.1602251116010.15885@tp.orcam.me.uk>
+        <CAAhV-H4nc_z1OWF2JLJ2bfwTcCkYXRZ8CTc1kh3zRs5WHQKKQw@mail.gmail.com>
+Date:   Fri, 26 Feb 2016 13:35:47 +0800
+X-Google-Sender-Auth: pyoADL-O7CuGpW9UOn-j5nwmVTE
+Message-ID: <CAAhV-H4UEJC=QsEbNaGddEb7LtQ9-ntxVRbM257OmhQbcGJDEQ@mail.gmail.com>
+Subject: Re: [PATCH] MIPS: Introduce cpu_has_coherent_cache feature
+From:   Huacai Chen <chenhc@lemote.com>
+To:     "Maciej W. Rozycki" <macro@imgtec.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Aurelien Jarno <aurelien@aurel32.net>,
+        "Steven J . Hill" <Steven.Hill@imgtec.com>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        "Maciej W. Rozycki" <macro@linux-mips.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <chenhuacai@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52328
+X-archive-position: 52329
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: boris.brezillon@free-electrons.com
+X-original-sender: chenhc@lemote.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -66,59 +74,25 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, 25 Feb 2016 17:27:23 -0800
-Stefan Agner <stefan@agner.ch> wrote:
+Hi, Maciej,
 
-> Hi Boris,
-> 
-> On 2016-02-25 16:57, Boris Brezillon wrote:
-> > Hello,
-> > 
-> > This patchset aims at getting rid of the nand_ecclayout limitations.
-> > struct nand_ecclayout is defining fixed eccpos and oobfree arrays which
-> > can only be increased by modifying the MTD_MAX_ECCPOS_ENTRIES_LARGE and
-> > MTD_MAX_OOBFREE_ENTRIES_LARGE macros.
-> > This approach forces us to modify the macro values each time we add a
-> > new NAND chip with a bigger OOB area, and increasing these arrays also
-> > penalize all platforms, even those who only support small NAND devices
-> > (with small OOB area).
-> > 
-> > The idea to overcome this limitation, is to define the ECC/OOB layout
-> > by the mean of two functions: ->ecc() and ->free(), which will
-> > basically return the same information has those stored in the
-> > nand_ecclayout struct.
-> > 
-> > Another advantage of this solution is that ECC layouts are usually
-> > following a repetitive pattern (i.e. leave X bytes free and put Y bytes
-> > of ECC per ECC chunk), which allows one to implement the ->ecc()
-> > and ->free() functions with a simple logic that can be applied
-> > to any size of OOB.
-> > 
-> > Patches 1 to 4 are just cleanups or trivial fixes that can be taken
-> > independently.
-> > 
-> > Also note that the last two commits are removing the nand_ecclayout
-> > definition, thus preventing any new driver to use this structure.
-> > Of course, this step can be delayed if some of the previous patches
-> > are not accepted.
-> 
-> Is the patch set somewhere available to pull from?
+Not all handlers have the same prototype as cache_noop(), so what should I do?
 
-Yes, it's here [1].
+Huacai
 
-> 
-> Do I see things right that patch 21/52 contains the crucial function
-> nand_ooblayout_ecc_lp which calculate the ECC position? (for those who
-> do not provide mtd_ooblayout_ops anyway...)
-
-You're correct. This implementation is here for NAND controller drivers
-relying on the linux default ECC layout (the one used when soft ECC is
-selected, or when not layout is specified). This layout is just putting
-all ECC bytes at the end of the OOB area.
-
-[1]https://github.com/bbrezillon/linux-0day/tree/nand/ecclayout
-
--- 
-Boris Brezillon, Free Electrons
-Embedded Linux and Kernel engineering
-http://free-electrons.com
+On Thu, Feb 25, 2016 at 8:53 PM, Huacai Chen <chenhc@lemote.com> wrote:
+> OK, thanks. I will consider setting the relevant handlers to
+> cache_noop in r4k_cache_init().
+>
+> On Thu, Feb 25, 2016 at 7:16 PM, Maciej W. Rozycki <macro@imgtec.com> wrote:
+>> On Thu, 25 Feb 2016, Huacai Chen wrote:
+>>
+>>> Joshua Kinard suggest me to split the patch, which you can see here:
+>>> https://patchwork.linux-mips.org/patch/12324/
+>>> If it is better to not split, please see my V2 patchset.
+>>
+>>  Splitting is the correct action, however please answer my questions as
+>> well.
+>>
+>>   Maciej
+>>

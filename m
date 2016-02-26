@@ -1,13 +1,13 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Feb 2016 02:01:05 +0100 (CET)
-Received: from down.free-electrons.com ([37.187.137.238]:37116 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Feb 2016 02:01:19 +0100 (CET)
+Received: from down.free-electrons.com ([37.187.137.238]:37138 "EHLO
         mail.free-electrons.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27014909AbcBZA7de4Cdb (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 26 Feb 2016 01:59:33 +0100
+        by eddie.linux-mips.org with ESMTP id S27014910AbcBZA7hK6d-b (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 26 Feb 2016 01:59:37 +0100
 Received: by mail.free-electrons.com (Postfix, from userid 110)
-        id C32764AF; Fri, 26 Feb 2016 01:59:27 +0100 (CET)
+        id 64A4E46B; Fri, 26 Feb 2016 01:59:31 +0100 (CET)
 Received: from localhost.localdomain (unknown [208.66.31.210])
-        by mail.free-electrons.com (Postfix) with ESMTPSA id 6AED943F;
-        Fri, 26 Feb 2016 01:59:13 +0100 (CET)
+        by mail.free-electrons.com (Postfix) with ESMTPSA id 7AF91396;
+        Fri, 26 Feb 2016 01:59:20 +0100 (CET)
 From:   Boris Brezillon <boris.brezillon@free-electrons.com>
 To:     David Woodhouse <dwmw2@infradead.org>,
         Brian Norris <computersforpeace@gmail.com>,
@@ -37,9 +37,9 @@ Cc:     Daniel Mack <daniel@zonque.org>,
         Kamal Dasu <kdasu.kdev@gmail.com>,
         bcm-kernel-feedback-list@broadcom.com, linux-api@vger.kernel.org,
         Boris Brezillon <boris.brezillon@free-electrons.com>
-Subject: [PATCH v3 09/52] mtd: nand: fsl_ifc: use mtd_ooblayout_xxx() helpers where appropriate
-Date:   Fri, 26 Feb 2016 01:57:17 +0100
-Message-Id: <1456448280-27788-10-git-send-email-boris.brezillon@free-electrons.com>
+Subject: [PATCH v3 10/52] mtd: nand: gpmi: use mtd_ooblayout_xxx() helpers where appropriate
+Date:   Fri, 26 Feb 2016 01:57:18 +0100
+Message-Id: <1456448280-27788-11-git-send-email-boris.brezillon@free-electrons.com>
 X-Mailer: git-send-email 2.1.4
 In-Reply-To: <1456448280-27788-1-git-send-email-boris.brezillon@free-electrons.com>
 References: <1456448280-27788-1-git-send-email-boris.brezillon@free-electrons.com>
@@ -47,7 +47,7 @@ Return-Path: <boris.brezillon@free-electrons.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52283
+X-archive-position: 52284
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -71,40 +71,36 @@ where directly accessed.
 
 Signed-off-by: Boris Brezillon <boris.brezillon@free-electrons.com>
 ---
- drivers/mtd/nand/fsl_ifc_nand.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ drivers/mtd/nand/gpmi-nand/gpmi-nand.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/mtd/nand/fsl_ifc_nand.c b/drivers/mtd/nand/fsl_ifc_nand.c
-index 43f5a3a..2e970ac 100644
---- a/drivers/mtd/nand/fsl_ifc_nand.c
-+++ b/drivers/mtd/nand/fsl_ifc_nand.c
-@@ -257,18 +257,22 @@ static int is_blank(struct mtd_info *mtd, unsigned int bufnum)
- 	u8 __iomem *addr = priv->vbase + bufnum * (mtd->writesize * 2);
- 	u32 __iomem *mainarea = (u32 __iomem *)addr;
- 	u8 __iomem *oob = addr + mtd->writesize;
--	int i;
-+	struct mtd_oob_region oobregion = { };
-+	int i, section = 0;
+diff --git a/drivers/mtd/nand/gpmi-nand/gpmi-nand.c b/drivers/mtd/nand/gpmi-nand/gpmi-nand.c
+index 8122c69..3a29b65 100644
+--- a/drivers/mtd/nand/gpmi-nand/gpmi-nand.c
++++ b/drivers/mtd/nand/gpmi-nand/gpmi-nand.c
+@@ -1327,18 +1327,19 @@ static int gpmi_ecc_read_oob(struct mtd_info *mtd, struct nand_chip *chip,
+ static int
+ gpmi_ecc_write_oob(struct mtd_info *mtd, struct nand_chip *chip, int page)
+ {
+-	struct nand_oobfree *of = mtd->ecclayout->oobfree;
++	struct mtd_oob_region of = { };
+ 	int status = 0;
  
- 	for (i = 0; i < mtd->writesize / 4; i++) {
- 		if (__raw_readl(&mainarea[i]) != 0xffffffff)
- 			return 0;
- 	}
+ 	/* Do we have available oob area? */
+-	if (!of->length)
++	mtd_ooblayout_free(mtd, 0, &of);
++	if (!of.length)
+ 		return -EPERM;
  
--	for (i = 0; i < chip->ecc.layout->eccbytes; i++) {
--		int pos = chip->ecc.layout->eccpos[i];
-+	mtd_ooblayout_ecc(mtd, section++, &oobregion);
-+	while (oobregion.length) {
-+		for (i = 0; i < oobregion.length; i++) {
-+			if (__raw_readb(&oob[oobregion.offset + i]) != 0xff)
-+				return 0;
-+		}
+ 	if (!nand_is_slc(chip))
+ 		return -EPERM;
  
--		if (__raw_readb(&oob[pos]) != 0xff)
--			return 0;
-+		mtd_ooblayout_ecc(mtd, section++, &oobregion);
- 	}
+-	chip->cmdfunc(mtd, NAND_CMD_SEQIN, mtd->writesize + of->offset, page);
+-	chip->write_buf(mtd, chip->oob_poi + of->offset, of->length);
++	chip->cmdfunc(mtd, NAND_CMD_SEQIN, mtd->writesize + of.offset, page);
++	chip->write_buf(mtd, chip->oob_poi + of.offset, of.length);
+ 	chip->cmdfunc(mtd, NAND_CMD_PAGEPROG, -1, -1);
  
- 	return 1;
+ 	status = chip->waitfunc(mtd, chip);
 -- 
 2.1.4

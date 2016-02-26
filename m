@@ -1,13 +1,13 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Feb 2016 02:04:46 +0100 (CET)
-Received: from down.free-electrons.com ([37.187.137.238]:37528 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Feb 2016 02:05:02 +0100 (CET)
+Received: from down.free-electrons.com ([37.187.137.238]:37582 "EHLO
         mail.free-electrons.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27014921AbcBZBCfNeYLb (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 26 Feb 2016 02:02:35 +0100
+        by eddie.linux-mips.org with ESMTP id S27014925AbcBZBDIQG0Ob (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 26 Feb 2016 02:03:08 +0100
 Received: by mail.free-electrons.com (Postfix, from userid 110)
-        id 7FD6B4C5E; Fri, 26 Feb 2016 02:02:29 +0100 (CET)
+        id 87BFE4C72; Fri, 26 Feb 2016 02:03:02 +0100 (CET)
 Received: from localhost.localdomain (unknown [208.66.31.210])
-        by mail.free-electrons.com (Postfix) with ESMTPSA id B74D417BA;
-        Fri, 26 Feb 2016 02:00:30 +0100 (CET)
+        by mail.free-electrons.com (Postfix) with ESMTPSA id 216F817C1;
+        Fri, 26 Feb 2016 02:00:36 +0100 (CET)
 From:   Boris Brezillon <boris.brezillon@free-electrons.com>
 To:     David Woodhouse <dwmw2@infradead.org>,
         Brian Norris <computersforpeace@gmail.com>,
@@ -37,9 +37,9 @@ Cc:     Daniel Mack <daniel@zonque.org>,
         Kamal Dasu <kdasu.kdev@gmail.com>,
         bcm-kernel-feedback-list@broadcom.com, linux-api@vger.kernel.org,
         Boris Brezillon <boris.brezillon@free-electrons.com>
-Subject: [PATCH v3 21/52] mtd: nand: implement the default mtd_ooblayout_ops
-Date:   Fri, 26 Feb 2016 01:57:29 +0100
-Message-Id: <1456448280-27788-22-git-send-email-boris.brezillon@free-electrons.com>
+Subject: [PATCH v3 22/52] mtd: nand: bch: switch to mtd_ooblayout_ops
+Date:   Fri, 26 Feb 2016 01:57:30 +0100
+Message-Id: <1456448280-27788-23-git-send-email-boris.brezillon@free-electrons.com>
 X-Mailer: git-send-email 2.1.4
 In-Reply-To: <1456448280-27788-1-git-send-email-boris.brezillon@free-electrons.com>
 References: <1456448280-27788-1-git-send-email-boris.brezillon@free-electrons.com>
@@ -47,7 +47,7 @@ Return-Path: <boris.brezillon@free-electrons.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52295
+X-archive-position: 52296
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -64,216 +64,84 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Replace the default nand_ecclayout definitions for large and small page
-devices with the equivalent mtd_ooblayout_ops.
+Replace the nand_ecclayout definition by the equivalent mtd_ooblayout_ops
+definition.
 
 Signed-off-by: Boris Brezillon <boris.brezillon@free-electrons.com>
 ---
- drivers/mtd/nand/nand_base.c | 148 ++++++++++++++++++++++++++++---------------
- include/linux/mtd/nand.h     |   3 +
- 2 files changed, 99 insertions(+), 52 deletions(-)
+ drivers/mtd/nand/nand_bch.c | 33 +++++++++++----------------------
+ 1 file changed, 11 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/mtd/nand/nand_base.c b/drivers/mtd/nand/nand_base.c
-index 5093a3c..71d5948 100644
---- a/drivers/mtd/nand/nand_base.c
-+++ b/drivers/mtd/nand/nand_base.c
-@@ -48,50 +48,6 @@
- #include <linux/mtd/partitions.h>
- #include <linux/of_mtd.h>
- 
--/* Define default oob placement schemes for large and small page devices */
--static struct nand_ecclayout nand_oob_8 = {
--	.eccbytes = 3,
--	.eccpos = {0, 1, 2},
--	.oobfree = {
--		{.offset = 3,
--		 .length = 2},
--		{.offset = 6,
--		 .length = 2} }
--};
--
--static struct nand_ecclayout nand_oob_16 = {
--	.eccbytes = 6,
--	.eccpos = {0, 1, 2, 3, 6, 7},
--	.oobfree = {
--		{.offset = 8,
--		 . length = 8} }
--};
--
--static struct nand_ecclayout nand_oob_64 = {
--	.eccbytes = 24,
--	.eccpos = {
--		   40, 41, 42, 43, 44, 45, 46, 47,
--		   48, 49, 50, 51, 52, 53, 54, 55,
--		   56, 57, 58, 59, 60, 61, 62, 63},
--	.oobfree = {
--		{.offset = 2,
--		 .length = 38} }
--};
--
--static struct nand_ecclayout nand_oob_128 = {
--	.eccbytes = 48,
--	.eccpos = {
--		   80, 81, 82, 83, 84, 85, 86, 87,
--		   88, 89, 90, 91, 92, 93, 94, 95,
--		   96, 97, 98, 99, 100, 101, 102, 103,
--		   104, 105, 106, 107, 108, 109, 110, 111,
--		   112, 113, 114, 115, 116, 117, 118, 119,
--		   120, 121, 122, 123, 124, 125, 126, 127},
--	.oobfree = {
--		{.offset = 2,
--		 .length = 78} }
--};
--
- static int nand_get_device(struct mtd_info *mtd, int new_state);
- 
- static int nand_do_write_oob(struct mtd_info *mtd, loff_t to,
-@@ -103,6 +59,92 @@ static int nand_do_write_oob(struct mtd_info *mtd, loff_t to,
+diff --git a/drivers/mtd/nand/nand_bch.c b/drivers/mtd/nand/nand_bch.c
+index b3039de..e29e75f 100644
+--- a/drivers/mtd/nand/nand_bch.c
++++ b/drivers/mtd/nand/nand_bch.c
+@@ -32,13 +32,11 @@
+ /**
+  * struct nand_bch_control - private NAND BCH control structure
+  * @bch:       BCH control structure
+- * @ecclayout: private ecc layout for this BCH configuration
+  * @errloc:    error location array
+  * @eccmask:   XOR ecc mask, allows erased pages to be decoded as valid
   */
- DEFINE_LED_TRIGGER(nand_led_trigger);
- 
-+/* Define default oob placement schemes for large and small page devices */
-+static int nand_ooblayout_ecc_sp(struct mtd_info *mtd, int section,
-+				 struct mtd_oob_region *oobregion)
-+{
-+	struct nand_chip *chip = mtd_to_nand(mtd);
-+	struct nand_ecc_ctrl *ecc = &chip->ecc;
-+
-+	if (section > 1)
-+		return -ERANGE;
-+
-+	if (!section) {
-+		oobregion->offset = 0;
-+		oobregion->length = 4;
-+	} else {
-+		oobregion->offset = 6;
-+		oobregion->length = (ecc->bytes * ecc->steps) - 4;
-+	}
-+
-+	return 0;
-+}
-+
-+static int nand_ooblayout_free_sp(struct mtd_info *mtd, int section,
-+				  struct mtd_oob_region *oobregion)
-+{
-+	if (section > 1)
-+		return -ERANGE;
-+
-+	if (mtd->oobsize == 16) {
-+		if (section)
-+			return -ERANGE;
-+
-+		oobregion->length = 8;
-+		oobregion->offset = 8;
-+	} else {
-+		oobregion->length = 2;
-+		if (!section)
-+			oobregion->offset = 3;
-+		else
-+			oobregion->offset = 6;
-+	}
-+
-+	return 0;
-+}
-+
-+const struct mtd_ooblayout_ops nand_ooblayout_sp_ops = {
-+	.ecc = nand_ooblayout_ecc_sp,
-+	.free = nand_ooblayout_free_sp,
-+};
-+EXPORT_SYMBOL_GPL(nand_ooblayout_sp_ops);
-+
-+static int nand_ooblayout_ecc_lp(struct mtd_info *mtd, int section,
-+				 struct mtd_oob_region *oobregion)
-+{
-+	struct nand_chip *chip = mtd_to_nand(mtd);
-+	struct nand_ecc_ctrl *ecc = &chip->ecc;
-+
-+	if (section)
-+		return -ERANGE;
-+
-+	oobregion->length = ecc->bytes * ecc->steps;
-+	oobregion->offset = mtd->oobsize - oobregion->length;
-+
-+	return 0;
-+}
-+
-+static int nand_ooblayout_free_lp(struct mtd_info *mtd, int section,
-+				  struct mtd_oob_region *oobregion)
-+{
-+	struct nand_chip *chip = mtd_to_nand(mtd);
-+	struct nand_ecc_ctrl *ecc = &chip->ecc;
-+
-+	if (section)
-+		return -ERANGE;
-+
-+	oobregion->length = mtd->oobsize - (ecc->bytes * ecc->steps) - 2;
-+	oobregion->offset = 2;
-+
-+	return 0;
-+}
-+
-+const struct mtd_ooblayout_ops nand_ooblayout_lp_ops = {
-+	.ecc = nand_ooblayout_ecc_lp,
-+	.free = nand_ooblayout_free_lp,
-+};
-+EXPORT_SYMBOL_GPL(nand_ooblayout_lp_ops);
-+
- static int check_offs_len(struct mtd_info *mtd,
- 					loff_t ofs, uint64_t len)
- {
-@@ -4120,21 +4162,24 @@ int nand_scan_tail(struct mtd_info *mtd)
- 	chip->oob_poi = chip->buffers->databuf + mtd->writesize;
- 
- 	/*
-+	 * Set the provided ECC layout. If ecc->layout is NULL, the MTD core
-+	 * will just leave mtd->ooblayout to NULL, if it's not NULL, it will
-+	 * set ->ooblayout to the default ecclayout wrapper.
-+	 */
-+	mtd_set_ecclayout(mtd, ecc->layout);
-+
-+	/*
- 	 * If no default placement scheme is given, select an appropriate one.
- 	 */
--	if (!ecc->layout && (ecc->mode != NAND_ECC_SOFT_BCH)) {
-+	if (!mtd->ooblayout && (ecc->mode != NAND_ECC_SOFT_BCH)) {
- 		switch (mtd->oobsize) {
- 		case 8:
--			ecc->layout = &nand_oob_8;
--			break;
- 		case 16:
--			ecc->layout = &nand_oob_16;
-+			mtd_set_ooblayout(mtd, &nand_ooblayout_sp_ops);
- 			break;
- 		case 64:
--			ecc->layout = &nand_oob_64;
--			break;
- 		case 128:
--			ecc->layout = &nand_oob_128;
-+			mtd_set_ooblayout(mtd, &nand_ooblayout_lp_ops);
- 			break;
- 		default:
- 			pr_warn("No oob scheme defined for oobsize %d\n",
-@@ -4288,7 +4333,6 @@ int nand_scan_tail(struct mtd_info *mtd)
- 		ecc->write_oob_raw = ecc->write_oob;
- 
- 	/* propagate ecc info to mtd_info */
--	mtd_set_ecclayout(mtd, ecc->layout);
- 	mtd->ecc_strength = ecc->strength;
- 	mtd->ecc_step_size = ecc->size;
- 
-diff --git a/include/linux/mtd/nand.h b/include/linux/mtd/nand.h
-index 7604f4b..82a005a 100644
---- a/include/linux/mtd/nand.h
-+++ b/include/linux/mtd/nand.h
-@@ -740,6 +740,9 @@ struct nand_chip {
- 	void *priv;
+ struct nand_bch_control {
+ 	struct bch_control   *bch;
+-	struct nand_ecclayout ecclayout;
+ 	unsigned int         *errloc;
+ 	unsigned char        *eccmask;
  };
- 
-+extern const struct mtd_ooblayout_ops nand_ooblayout_sp_ops;
-+extern const struct mtd_ooblayout_ops nand_ooblayout_lp_ops;
-+
- static inline void nand_set_flash_node(struct nand_chip *chip,
- 				       struct device_node *np)
+@@ -124,7 +122,6 @@ struct nand_bch_control *nand_bch_init(struct mtd_info *mtd)
  {
+ 	struct nand_chip *nand = mtd_to_nand(mtd);
+ 	unsigned int m, t, eccsteps, i;
+-	struct nand_ecclayout *layout = nand->ecc.layout;
+ 	struct nand_bch_control *nbc = NULL;
+ 	unsigned char *erased_page;
+ 	unsigned int eccsize = nand->ecc.size;
+@@ -161,8 +158,17 @@ struct nand_bch_control *nand_bch_init(struct mtd_info *mtd)
+ 
+ 	eccsteps = mtd->writesize/eccsize;
+ 
++	/*
++	 * Rely on the default ecclayout to ooblayout wrapper provided by MTD
++	 * core if ecc.layout is not NULL.
++	 * FIXME: this should be removed when all callers have moved to the
++	 * mtd_ooblayout_ops approach.
++	 */
++	if (nand->ecc.layout)
++		mtd_set_ecclayout(mtd, nand->ecc.layout);
++
+ 	/* if no ecc placement scheme was provided, build one */
+-	if (!layout) {
++	if (!mtd->ooblayout) {
+ 
+ 		/* handle large page devices only */
+ 		if (mtd->oobsize < 64) {
+@@ -171,24 +177,7 @@ struct nand_bch_control *nand_bch_init(struct mtd_info *mtd)
+ 			goto fail;
+ 		}
+ 
+-		layout = &nbc->ecclayout;
+-		layout->eccbytes = eccsteps*eccbytes;
+-
+-		/* reserve 2 bytes for bad block marker */
+-		if (layout->eccbytes+2 > mtd->oobsize) {
+-			printk(KERN_WARNING "no suitable oob scheme available "
+-			       "for oobsize %d eccbytes %u\n", mtd->oobsize,
+-			       eccbytes);
+-			goto fail;
+-		}
+-		/* put ecc bytes at oob tail */
+-		for (i = 0; i < layout->eccbytes; i++)
+-			layout->eccpos[i] = mtd->oobsize-layout->eccbytes+i;
+-
+-		layout->oobfree[0].offset = 2;
+-		layout->oobfree[0].length = mtd->oobsize-2-layout->eccbytes;
+-
+-		nand->ecc.layout = layout;
++		mtd_set_ooblayout(mtd, &nand_ooblayout_lp_ops);
+ 	}
+ 
+ 	/* sanity checks */
 -- 
 2.1.4

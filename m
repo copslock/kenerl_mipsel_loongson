@@ -1,18 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 27 Feb 2016 11:09:01 +0100 (CET)
-Received: from smtpbg202.qq.com ([184.105.206.29]:45399 "EHLO smtpbg202.qq.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 27 Feb 2016 11:09:54 +0100 (CET)
+Received: from smtpbgau1.qq.com ([54.206.16.166]:36973 "EHLO smtpbgau1.qq.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27006863AbcB0KI6l5xx1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 27 Feb 2016 11:08:58 +0100
-X-QQ-mid: bizesmtp15t1456567702t047t08
+        id S27006863AbcB0KJvlP4S1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 27 Feb 2016 11:09:51 +0100
+X-QQ-mid: bizesmtp15t1456567773t911t12
 Received: from software.domain.org (unknown [222.92.8.142])
         by esmtp4.qq.com (ESMTP) with 
-        id ; Sat, 27 Feb 2016 18:07:41 +0800 (CST)
+        id ; Sat, 27 Feb 2016 18:08:24 +0800 (CST)
 X-QQ-SSF: 01100000002000F0FK70B00A0000000
-X-QQ-FEAT: +c2Kczbw9d2ojlD+MUoxfauEbxtMjB440VC4+Aksg1OtcXyOQDHHBqaODWPoW
-        cUKRKp1itQRw/jczKTVkGjgiE0tBWbGNl238I8KDi1sbKzHMr+MfH2EQzi2fUTfmG9ckHF+
-        a1rbaYvxxeWbwTuGICI1fPyHSjhTtJ3bcFzkUAGOp3a0hg8s9D1FuMrHH9UBtqNNldRxpFr
-        0JJFL9q3ipk2I3kE3sIALCfZL15/py80c59Hy8zOE3sqG7UvC2nQKXv7CXLRBafrpruljgm
-        ew2bt8tJfiv9QEq79CX3oPaGA=
+X-QQ-FEAT: p/Y2uUKTrsz9ZxL6LcK4PbkO+t73zpxYPg3wQwBdhv74lnruPts5ouhfvWBIl
+        8Dv9fTUxp/B52iTfLftI1IeLvhbxBeePDDZ5oDTKHnXakHWby79gcKXTp54Z03PYOH/aIBv
+        YiYMmgNzoziooJIJ30vF2KUtDPpJnWw9M8FxFKj6nFEAKm8+AbPcLSO0E8hENcG6pJ5iEN2
+        +yo/23v3k80g8X4NTueQdBQziWKmEXEnnRhKnz6vO4k9c6rmSExvc4i/WUqgSyuwqakg7Mm
+        0xi7BMFQxl5uR4ZWxQabnZS+c=
 X-QQ-GoodBg: 0
 From:   Huacai Chen <chenhc@lemote.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
@@ -21,9 +21,9 @@ Cc:     Aurelien Jarno <aurelien@aurel32.net>,
         linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
         Zhangjin Wu <wuzhangjin@gmail.com>,
         Huacai Chen <chenhc@lemote.com>
-Subject: [PATCH V4 2/5] MIPS: Loongson-3: Set cache flush handlers to cache_noop
-Date:   Sat, 27 Feb 2016 18:07:35 +0800
-Message-Id: <1456567658-14694-3-git-send-email-chenhc@lemote.com>
+Subject: [PATCH V4 3/5] MIPS: Loongson: Invalidate special TLBs when needed
+Date:   Sat, 27 Feb 2016 18:07:36 +0800
+Message-Id: <1456567658-14694-4-git-send-email-chenhc@lemote.com>
 X-Mailer: git-send-email 2.7.0
 In-Reply-To: <1456567658-14694-1-git-send-email-chenhc@lemote.com>
 References: <1456567658-14694-1-git-send-email-chenhc@lemote.com>
@@ -33,7 +33,7 @@ Return-Path: <chenhc@lemote.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52351
+X-archive-position: 52352
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -50,42 +50,124 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Loongson-3 maintains cache coherency by hardware, this means:
- 1) It's icache is coherent with dcache.
- 2) It's dcaches don't alias (maybe depend on PAGE_SIZE).
- 3) It maintains cache coherency across cores (and for DMA).
+Loongson-2 has a 4 entry itlb which is a subset of jtlb, Loongson-3 has
+a 4 entry itlb and a 4 entry dtlb which are subsets of jtlb. We should
+write diag register to invalidate itlb/dtlb when flushing jtlb because
+itlb/dtlb are not totally transparent to software.
 
-So we can skip most cache flush operations by setting relevant handlers
-to `cache_noop' in `r4k_cache_init'.
+For Loongson-3A R2 (and newer), we should invalidate ITLB, DTLB, VTLB
+and FTLB before we enable/disable FTLB.
 
 Signed-off-by: Huacai Chen <chenhc@lemote.com>
 ---
- arch/mips/mm/c-r4k.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ arch/mips/kernel/cpu-probe.c |  2 ++
+ arch/mips/mm/tlb-r4k.c       | 27 +++++++++++++++------------
+ 2 files changed, 17 insertions(+), 12 deletions(-)
 
-diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
-index 2abc73d..8df4a94 100644
---- a/arch/mips/mm/c-r4k.c
-+++ b/arch/mips/mm/c-r4k.c
-@@ -1777,6 +1777,20 @@ void r4k_cache_init(void)
- 		/* Optimization: an L2 flush implicitly flushes the L1 */
- 		current_cpu_data.options |= MIPS_CPU_INCLUSIVE_CACHES;
+diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
+index 2a2ae86..ef605e2 100644
+--- a/arch/mips/kernel/cpu-probe.c
++++ b/arch/mips/kernel/cpu-probe.c
+@@ -562,6 +562,8 @@ static int set_ftlb_enable(struct cpuinfo_mips *c, int enable)
+ 					   << MIPS_CONF7_FTLBP_SHIFT));
  		break;
-+	case CPU_LOONGSON3:
-+		/* Loongson-3 maintains cache coherency by hardware */
-+		__flush_cache_all	= cache_noop;
-+		__flush_cache_vmap	= cache_noop;
-+		__flush_cache_vunmap	= cache_noop;
-+		__flush_kernel_vmap_range = (void *)cache_noop;
-+		flush_cache_mm		= (void *)cache_noop;
-+		flush_cache_page	= (void *)cache_noop;
-+		flush_cache_range	= (void *)cache_noop;
-+		flush_cache_sigtramp	= (void *)cache_noop;
-+		flush_icache_all	= (void *)cache_noop;
-+		flush_data_cache_page	= (void *)cache_noop;
-+		local_flush_data_cache_page	= (void *)cache_noop;
+ 	case CPU_LOONGSON3:
++		/* Flush ITLB, DTLB, VTLB and FTLB */
++		write_c0_diag(1<<2 | 1<<3 | 1<<12 | 1<<13);
+ 		/* Loongson-3 cores use Config6 to enable the FTLB */
+ 		config = read_c0_config6();
+ 		if (enable)
+diff --git a/arch/mips/mm/tlb-r4k.c b/arch/mips/mm/tlb-r4k.c
+index c17d762..7593529 100644
+--- a/arch/mips/mm/tlb-r4k.c
++++ b/arch/mips/mm/tlb-r4k.c
+@@ -28,25 +28,28 @@
+ extern void build_tlb_refill_handler(void);
+ 
+ /*
+- * LOONGSON2/3 has a 4 entry itlb which is a subset of dtlb,
+- * unfortunately, itlb is not totally transparent to software.
++ * LOONGSON-2 has a 4 entry itlb which is a subset of jtlb, LOONGSON-3 has
++ * a 4 entry itlb and a 4 entry dtlb which are subsets of jtlb. Unfortunately,
++ * itlb/dtlb are not totally transparent to software.
+  */
+-static inline void flush_itlb(void)
++static inline void flush_spec_tlb(void)
+ {
+ 	switch (current_cpu_type()) {
+ 	case CPU_LOONGSON2:
++		write_c0_diag(0x4);
 +		break;
+ 	case CPU_LOONGSON3:
+-		write_c0_diag(4);
++		write_c0_diag(0xc);
+ 		break;
+ 	default:
+ 		break;
  	}
+ }
+ 
+-static inline void flush_itlb_vm(struct vm_area_struct *vma)
++static inline void flush_spec_tlb_vm(struct vm_area_struct *vma)
+ {
+ 	if (vma->vm_flags & VM_EXEC)
+-		flush_itlb();
++		flush_spec_tlb();
+ }
+ 
+ void local_flush_tlb_all(void)
+@@ -93,7 +96,7 @@ void local_flush_tlb_all(void)
+ 	tlbw_use_hazard();
+ 	write_c0_entryhi(old_ctx);
+ 	htw_start();
+-	flush_itlb();
++	flush_spec_tlb();
+ 	local_irq_restore(flags);
+ }
+ EXPORT_SYMBOL(local_flush_tlb_all);
+@@ -159,7 +162,7 @@ void local_flush_tlb_range(struct vm_area_struct *vma, unsigned long start,
+ 		} else {
+ 			drop_mmu_context(mm, cpu);
+ 		}
+-		flush_itlb();
++		flush_spec_tlb();
+ 		local_irq_restore(flags);
+ 	}
+ }
+@@ -205,7 +208,7 @@ void local_flush_tlb_kernel_range(unsigned long start, unsigned long end)
+ 	} else {
+ 		local_flush_tlb_all();
+ 	}
+-	flush_itlb();
++	flush_spec_tlb();
+ 	local_irq_restore(flags);
+ }
+ 
+@@ -240,7 +243,7 @@ void local_flush_tlb_page(struct vm_area_struct *vma, unsigned long page)
+ 	finish:
+ 		write_c0_entryhi(oldpid);
+ 		htw_start();
+-		flush_itlb_vm(vma);
++		flush_spec_tlb_vm(vma);
+ 		local_irq_restore(flags);
+ 	}
+ }
+@@ -274,7 +277,7 @@ void local_flush_tlb_one(unsigned long page)
+ 	}
+ 	write_c0_entryhi(oldpid);
+ 	htw_start();
+-	flush_itlb();
++	flush_spec_tlb();
+ 	local_irq_restore(flags);
+ }
+ 
+@@ -357,7 +360,7 @@ void __update_tlb(struct vm_area_struct * vma, unsigned long address, pte_t pte)
+ 	}
+ 	tlbw_use_hazard();
+ 	htw_start();
+-	flush_itlb_vm(vma);
++	flush_spec_tlb_vm(vma);
+ 	local_irq_restore(flags);
  }
  
 -- 

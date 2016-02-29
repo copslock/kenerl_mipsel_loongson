@@ -1,36 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Feb 2016 11:33:58 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:3290 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Feb 2016 11:46:05 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:33515 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27007282AbcB2Kd4fpyTE (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 29 Feb 2016 11:33:56 +0100
+        with ESMTP id S27007259AbcB2KqDKUuZE (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 29 Feb 2016 11:46:03 +0100
 Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Websense Email Security Gateway with ESMTPS id 31E96F5D6D769;
-        Mon, 29 Feb 2016 10:33:48 +0000 (GMT)
+        by Websense Email Security Gateway with ESMTPS id DB875536EEBF;
+        Mon, 29 Feb 2016 10:45:54 +0000 (GMT)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
  hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
- 14.3.266.1; Mon, 29 Feb 2016 10:33:49 +0000
+ 14.3.266.1; Mon, 29 Feb 2016 10:45:56 +0000
 Received: from [192.168.154.40] (192.168.154.40) by LEMAIL01.le.imgtec.org
  (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.266.1; Mon, 29 Feb
- 2016 10:33:49 +0000
-Subject: Re: [PATCH v3 07/52] mtd: nand: core: use mtd_ooblayout_xxx() helpers
- where appropriate
-To:     Boris Brezillon <boris.brezillon@free-electrons.com>
-References: <1456448280-27788-1-git-send-email-boris.brezillon@free-electrons.com>
- <1456448280-27788-8-git-send-email-boris.brezillon@free-electrons.com>
- <56D0629C.9080805@imgtec.com> <20160226161054.3477cd4b@bbrezillon>
- <56D06C88.9080608@imgtec.com> <20160226193325.2d84a8c8@bbrezillon>
-CC:     David Woodhouse <dwmw2@infradead.org>,
+ 2016 10:45:56 +0000
+Subject: Re: [PATCH v3 39/52] mtd: nand: jz4780: switch to mtd_ooblayout_ops
+To:     Boris Brezillon <boris.brezillon@free-electrons.com>,
+        David Woodhouse <dwmw2@infradead.org>,
         Brian Norris <computersforpeace@gmail.com>,
-        <linux-mtd@lists.infradead.org>, Daniel Mack <daniel@zonque.org>,
+        <linux-mtd@lists.infradead.org>
+References: <1456448280-27788-1-git-send-email-boris.brezillon@free-electrons.com>
+ <1456448280-27788-40-git-send-email-boris.brezillon@free-electrons.com>
+CC:     Daniel Mack <daniel@zonque.org>,
         Haojian Zhuang <haojian.zhuang@gmail.com>,
-        "Robert Jarzmik" <robert.jarzmik@free.fr>,
-        Kukjin Kim <kgene@kernel.org>,
-        "Krzysztof Kozlowski" <k.kozlowski@samsung.com>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        "Kukjin Kim" <kgene@kernel.org>,
+        Krzysztof Kozlowski <k.kozlowski@samsung.com>,
         <linux-samsung-soc@vger.kernel.org>,
         <linux-arm-kernel@lists.infradead.org>,
         Ralf Baechle <ralf@linux-mips.org>,
         <linux-mips@linux-mips.org>,
-        Nicolas Ferre <nicolas.ferre@atmel.com>,
+        "Nicolas Ferre" <nicolas.ferre@atmel.com>,
         Jean-Christophe Plagniol-Villard <plagnioj@jcrosoft.com>,
         Alexandre Belloni <alexandre.belloni@free-electrons.com>,
         Wenyou Yang <wenyou.yang@atmel.com>,
@@ -48,12 +46,12 @@ CC:     David Woodhouse <dwmw2@infradead.org>,
         <bcm-kernel-feedback-list@broadcom.com>,
         <linux-api@vger.kernel.org>
 From:   Harvey Hunt <harvey.hunt@imgtec.com>
-Message-ID: <56D41E8D.1010901@imgtec.com>
-Date:   Mon, 29 Feb 2016 10:33:49 +0000
+Message-ID: <56D42164.9030007@imgtec.com>
+Date:   Mon, 29 Feb 2016 10:45:56 +0000
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
  Thunderbird/38.6.0
 MIME-Version: 1.0
-In-Reply-To: <20160226193325.2d84a8c8@bbrezillon>
+In-Reply-To: <1456448280-27788-40-git-send-email-boris.brezillon@free-electrons.com>
 Content-Type: text/plain; charset="windows-1252"; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Originating-IP: [192.168.154.40]
@@ -61,7 +59,7 @@ Return-Path: <Harvey.Hunt@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52358
+X-archive-position: 52359
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -80,56 +78,77 @@ X-list: linux-mips
 
 Hi Boris,
 
-On 26/02/16 18:33, Boris Brezillon wrote:
-> Hi Harvey,
+On 26/02/16 00:57, Boris Brezillon wrote:
+> Implementing the mtd_ooblayout_ops interface is the new way of exposing
+> ECC/OOB layout to MTD users.
 >
-> On Fri, 26 Feb 2016 15:17:28 +0000
-> Harvey Hunt <harvey.hunt@imgtec.com> wrote:
+> Signed-off-by: Boris Brezillon <boris.brezillon@free-electrons.com>
+> ---
+>   drivers/mtd/nand/jz4780_nand.c | 19 +++++--------------
+>   1 file changed, 5 insertions(+), 14 deletions(-)
 >
->> Hi Boris,
->>
->> On 26/02/16 15:10, Boris Brezillon wrote:
->>> Hi Harvey,
->>>
->>> On Fri, 26 Feb 2016 14:35:08 +0000
->>> Harvey Hunt <harvey.hunt@imgtec.com> wrote:
->>>
->>>> [...]
->>>> I'll look into this more later today, but wanted to run it by you in
->>>> case you have any thoughts.
->>>
->>> Can you apply this patch [1], and let me know if you see the additional
->>> trace?
->>
->> I applied the patch, the following is the (unchanged) output:
->>
->> [    0.256375] nand: device found, Manufacturer ID: 0x2c, Chip ID: 0x88
->> [    0.262887] nand: Micron MT29F64G08CBAAAWP
->> [    0.266995] nand: 8192 MiB, MLC, erase size: 2048 KiB, page size:
->> 8192, OOB size: 448
->> [    0.274881] jz4780-nand 1b000000.nand-controller: using hardware BCH
->> (strength 24, size 1024, bytes 42)
->> [    0.289046] Bad block table not found for chip 0
->> [    0.297769] Bad block table not found for chip 0
->> [    0.302425] Scanning device for bad blocks
->> [    0.320239] Bad eraseblock 90 at 0x00000b400000
->> [    0.324934] Bad eraseblock 91 at 0x00000b600000
->> [    0.931054] Bad eraseblock 4092 at 0x0001ff800000
->> [    0.935917] Bad eraseblock 4093 at 0x0001ffa00000
->> [    0.944660] nand_bbt: error while writing bad block table -34
->> [    0.950448] jz4780-nand: probe of 1b000000.nand-controller failed
->> with error -34
->> [    0.958079] UBI error: cannot open mtd 3, error -19
->> [    0.962788] UBI error: cannot open mtd 4, error -19[    0.970229]
->> clk: Not disabling unused clocks
->>
+> diff --git a/drivers/mtd/nand/jz4780_nand.c b/drivers/mtd/nand/jz4780_nand.c
+> index e1c016c..b86a579 100644
+> --- a/drivers/mtd/nand/jz4780_nand.c
+> +++ b/drivers/mtd/nand/jz4780_nand.c
+> @@ -56,8 +56,6 @@ struct jz4780_nand_chip {
+>   	struct nand_chip chip;
+>   	struct list_head chip_list;
 >
-> Can you test with this one [1]?
+> -	struct nand_ecclayout ecclayout;
+> -
+>   	struct gpio_desc *busy_gpio;
+>   	struct gpio_desc *wp_gpio;
+>   	unsigned int reading: 1;
+> @@ -165,8 +163,7 @@ static int jz4780_nand_init_ecc(struct jz4780_nand_chip *nand, struct device *de
+>   	struct nand_chip *chip = &nand->chip;
+>   	struct mtd_info *mtd = nand_to_mtd(chip);
+>   	struct jz4780_nand_controller *nfc = to_jz4780_nand_controller(chip->controller);
+> -	struct nand_ecclayout *layout = &nand->ecclayout;
+> -	u32 start, i;
+> +	int eccbytes;
 >
-> [1]http://code.bulix.org/36oytz-91960
+>   	chip->ecc.bytes = fls((1 + 8) * chip->ecc.size)	*
+>   				(chip->ecc.strength / 8);
+> @@ -201,23 +198,17 @@ static int jz4780_nand_init_ecc(struct jz4780_nand_chip *nand, struct device *de
+>   		return 0;
+>
+>   	/* Generate ECC layout. ECC codes are right aligned in the OOB area. */
+> -	layout->eccbytes = mtd->writesize / chip->ecc.size * chip->ecc.bytes;
+> +	eccbytes = mtd->writesize / chip->ecc.size * chip->ecc.bytes;
+>
+> -	if (layout->eccbytes > mtd->oobsize - 2) {
+> +	if (eccbytes > mtd->oobsize - 2) {
+>   		dev_err(dev,
+>   			"invalid ECC config: required %d ECC bytes, but only %d are available",
+> -			layout->eccbytes, mtd->oobsize - 2);
+> +			eccbytes, mtd->oobsize - 2);
+>   		return -EINVAL;
+>   	}
+>
+> -	start = mtd->oobsize - layout->eccbytes;
+> -	for (i = 0; i < layout->eccbytes; i++)
+> -		layout->eccpos[i] = start + i;
+> -
+> -	layout->oobfree[0].offset = 2;
+> -	layout->oobfree[0].length = mtd->oobsize - layout->eccbytes - 2;
+> +	mtd->ooblayout = &nand_ooblayout_lp_ops;
+>
+> -	chip->ecc.layout = layout;
+>   	return 0;
+>   }
+>
+>
 
-With that patch applied, my Ci20 successfully boots again.
+With your patch applied [0] that you gave me earlier in the patchset, I 
+am able to boot to userland on my Ci20 (jz4780_{nand,bch}) with a NAND 
+rootfs. So, dependant upon that patch (or equivalent) being added to 
+this patchset:
 
-Thanks for looking into it :-)
+Tested-by: Harvey Hunt <harvey.hunt@imgtec.com>
+
+Thanks,
 
 Harvey
+
+[0] http://code.bulix.org/36oytz-91960

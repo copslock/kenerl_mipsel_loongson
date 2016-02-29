@@ -1,66 +1,71 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 28 Feb 2016 18:36:05 +0100 (CET)
-Received: from mail-lb0-f179.google.com ([209.85.217.179]:35441 "EHLO
-        mail-lb0-f179.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008000AbcB1RgDDEr1G (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 28 Feb 2016 18:36:03 +0100
-Received: by mail-lb0-f179.google.com with SMTP id bc4so68781954lbc.2
-        for <linux-mips@linux-mips.org>; Sun, 28 Feb 2016 09:36:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cogentembedded-com.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:references:cc:from:organization:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
-        bh=EHD1UDqYSJayycE5rZQcHOrAAAPGNvq7OW6v5im5DQQ=;
-        b=AG28ASJY4hZcIV1qXjj7YLrOJAECQdlpdXu6VYZ4h3k/6ngOPKd/NqhiXr9Gq3kQdJ
-         dg8ARlDQLhg7krSeD3hjpf6P/lFv+iYjesZPuanYkJRN9IYPQASxVqYXdWlnnXakRvF5
-         YfWktqEGO7yF9loUyf602f2VOSaAyGRXBxemtMrNKPoDNQ4NWQ2/o/lTjhFR9Efr9sAk
-         A3qwNTJDxfTbAIc/Vo3dP+/2CivkfyDLVqMtTDu+cw51gEopsL4cb8PEHtyXjdpOysTO
-         31Dy2Osa4Cqe6Ut/lvmK3MaCOo/YQVHxfQxWPWu0cDFKJ/08j5nkYz7ItlcU7h+ZTul+
-         F+Hw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:subject:to:references:cc:from:organization
-         :message-id:date:user-agent:mime-version:in-reply-to
-         :content-transfer-encoding;
-        bh=EHD1UDqYSJayycE5rZQcHOrAAAPGNvq7OW6v5im5DQQ=;
-        b=BXuO0I6A5BCRMq4uxqO4vN3lqRo8w27A1PD+Kg5cfKKzkUVD64xq6jKVR+nFEkd8zK
-         81JKabahuhiQjCDZq60C5M4Gc4Vz83FXHRc3N/UufHy8+kzVS8edTDtIDbCURcFiCrT5
-         0trY9OBWB6HvqvXtlw8gRcuzcjEWfdDFIYNW53E/g2YjM0r0MgvzzIcgLUjVXGZL7FrI
-         VbnY4FDfx6JD8VoBUtigj3RBCX5/UIW8XS4iVvW8VivnrZ1Q+AHI9DELc2niPhlM/vKB
-         TgyUV/jdqVr2aef7sItl4j5C2C/VHw8/RF+mg5yuiZ38KcCPV3V/wRCS7hLwP4BUsO7m
-         FaAw==
-X-Gm-Message-State: AD7BkJLX5cZoLsW07UGi/knI7Wj/w+5lOjoBmvIQDdCoTySh/asNv5chZOuFm7gzTvDB1A==
-X-Received: by 10.112.132.5 with SMTP id oq5mr3979165lbb.16.1456680957670;
-        Sun, 28 Feb 2016 09:35:57 -0800 (PST)
-Received: from wasted.cogentembedded.com ([195.16.111.30])
-        by smtp.gmail.com with ESMTPSA id s75sm3277720lfs.21.2016.02.28.09.35.56
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Sun, 28 Feb 2016 09:35:56 -0800 (PST)
-Subject: Re: [PATCH for-4,5] mips/kvm: fix ioctl error handling
-To:     "Michael S. Tsirkin" <mst@redhat.com>, linux-kernel@vger.kernel.org
-References: <1456673711-24132-1-git-send-email-mst@redhat.com>
-Cc:     stable@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>, kvm@vger.kernel.org,
-        linux-mips@linux-mips.org
-From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Organization: Cogent Embedded
-Message-ID: <56D32FFA.1000907@cogentembedded.com>
-Date:   Sun, 28 Feb 2016 20:35:54 +0300
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Feb 2016 11:33:58 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:3290 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27007282AbcB2Kd4fpyTE (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 29 Feb 2016 11:33:56 +0100
+Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
+        by Websense Email Security Gateway with ESMTPS id 31E96F5D6D769;
+        Mon, 29 Feb 2016 10:33:48 +0000 (GMT)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
+ 14.3.266.1; Mon, 29 Feb 2016 10:33:49 +0000
+Received: from [192.168.154.40] (192.168.154.40) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.266.1; Mon, 29 Feb
+ 2016 10:33:49 +0000
+Subject: Re: [PATCH v3 07/52] mtd: nand: core: use mtd_ooblayout_xxx() helpers
+ where appropriate
+To:     Boris Brezillon <boris.brezillon@free-electrons.com>
+References: <1456448280-27788-1-git-send-email-boris.brezillon@free-electrons.com>
+ <1456448280-27788-8-git-send-email-boris.brezillon@free-electrons.com>
+ <56D0629C.9080805@imgtec.com> <20160226161054.3477cd4b@bbrezillon>
+ <56D06C88.9080608@imgtec.com> <20160226193325.2d84a8c8@bbrezillon>
+CC:     David Woodhouse <dwmw2@infradead.org>,
+        Brian Norris <computersforpeace@gmail.com>,
+        <linux-mtd@lists.infradead.org>, Daniel Mack <daniel@zonque.org>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        "Robert Jarzmik" <robert.jarzmik@free.fr>,
+        Kukjin Kim <kgene@kernel.org>,
+        "Krzysztof Kozlowski" <k.kozlowski@samsung.com>,
+        <linux-samsung-soc@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        <linux-mips@linux-mips.org>,
+        Nicolas Ferre <nicolas.ferre@atmel.com>,
+        Jean-Christophe Plagniol-Villard <plagnioj@jcrosoft.com>,
+        Alexandre Belloni <alexandre.belloni@free-electrons.com>,
+        Wenyou Yang <wenyou.yang@atmel.com>,
+        Josh Wu <rainyfeeling@outlook.com>,
+        Ezequiel Garcia <ezequiel.garcia@free-electrons.com>,
+        Maxime Ripard <maxime.ripard@free-electrons.com>,
+        Chen-Yu Tsai <wens@csie.org>, <linux-sunxi@googlegroups.com>,
+        Stefan Agner <stefan@agner.ch>,
+        Kyungmin Park <kyungmin.park@samsung.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        <devel@driverdev.osuosl.org>, <linux-kernel@vger.kernel.org>,
+        "punnaiah choudary kalluri" <punnaia@xilinx.com>,
+        Priit Laes <plaes@plaes.org>,
+        "Kamal Dasu" <kdasu.kdev@gmail.com>,
+        <bcm-kernel-feedback-list@broadcom.com>,
+        <linux-api@vger.kernel.org>
+From:   Harvey Hunt <harvey.hunt@imgtec.com>
+Message-ID: <56D41E8D.1010901@imgtec.com>
+Date:   Mon, 29 Feb 2016 10:33:49 +0000
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.5.0
+ Thunderbird/38.6.0
 MIME-Version: 1.0
-In-Reply-To: <1456673711-24132-1-git-send-email-mst@redhat.com>
-Content-Type: text/plain; charset=windows-1252; format=flowed
+In-Reply-To: <20160226193325.2d84a8c8@bbrezillon>
+Content-Type: text/plain; charset="windows-1252"; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <sergei.shtylyov@cogentembedded.com>
+X-Originating-IP: [192.168.154.40]
+Return-Path: <Harvey.Hunt@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52356
+X-archive-position: 52358
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sergei.shtylyov@cogentembedded.com
+X-original-sender: harvey.hunt@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -73,27 +78,58 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hello.
+Hi Boris,
 
-On 02/28/2016 06:35 PM, Michael S. Tsirkin wrote:
-
-> Calling return copy_to_user(...) or return copy_from_user in an ioctl
-
-    Calling return? Perhaps "returning the result of"?
-
-> will not do the right thing if there's a pagefault:
-> copy_to_user/copy_from_user return the number of bytes not copied in
-> this case.
+On 26/02/16 18:33, Boris Brezillon wrote:
+> Hi Harvey,
 >
-> Fix up kvm on mips to do
-> 	return copy_to_user(...)) ?  -EFAULT : 0;
-> and
-> 	return copy_from_user(...)) ?  -EFAULT : 0;
+> On Fri, 26 Feb 2016 15:17:28 +0000
+> Harvey Hunt <harvey.hunt@imgtec.com> wrote:
 >
-> everywhere.
+>> Hi Boris,
+>>
+>> On 26/02/16 15:10, Boris Brezillon wrote:
+>>> Hi Harvey,
+>>>
+>>> On Fri, 26 Feb 2016 14:35:08 +0000
+>>> Harvey Hunt <harvey.hunt@imgtec.com> wrote:
+>>>
+>>>> [...]
+>>>> I'll look into this more later today, but wanted to run it by you in
+>>>> case you have any thoughts.
+>>>
+>>> Can you apply this patch [1], and let me know if you see the additional
+>>> trace?
+>>
+>> I applied the patch, the following is the (unchanged) output:
+>>
+>> [    0.256375] nand: device found, Manufacturer ID: 0x2c, Chip ID: 0x88
+>> [    0.262887] nand: Micron MT29F64G08CBAAAWP
+>> [    0.266995] nand: 8192 MiB, MLC, erase size: 2048 KiB, page size:
+>> 8192, OOB size: 448
+>> [    0.274881] jz4780-nand 1b000000.nand-controller: using hardware BCH
+>> (strength 24, size 1024, bytes 42)
+>> [    0.289046] Bad block table not found for chip 0
+>> [    0.297769] Bad block table not found for chip 0
+>> [    0.302425] Scanning device for bad blocks
+>> [    0.320239] Bad eraseblock 90 at 0x00000b400000
+>> [    0.324934] Bad eraseblock 91 at 0x00000b600000
+>> [    0.931054] Bad eraseblock 4092 at 0x0001ff800000
+>> [    0.935917] Bad eraseblock 4093 at 0x0001ffa00000
+>> [    0.944660] nand_bbt: error while writing bad block table -34
+>> [    0.950448] jz4780-nand: probe of 1b000000.nand-controller failed
+>> with error -34
+>> [    0.958079] UBI error: cannot open mtd 3, error -19
+>> [    0.962788] UBI error: cannot open mtd 4, error -19[    0.970229]
+>> clk: Not disabling unused clocks
+>>
 >
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-[...]
+> Can you test with this one [1]?
+>
+> [1]http://code.bulix.org/36oytz-91960
 
-MBR, Sergei
+With that patch applied, my Ci20 successfully boots again.
+
+Thanks for looking into it :-)
+
+Harvey

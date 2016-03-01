@@ -1,28 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Mar 2016 01:49:56 +0100 (CET)
-Received: from mail-pf0-f195.google.com ([209.85.192.195]:33901 "EHLO
-        mail-pf0-f195.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007995AbcCAAsb20eg8 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 1 Mar 2016 01:48:31 +0100
-Received: by mail-pf0-f195.google.com with SMTP id 184so4087231pff.1;
-        Mon, 29 Feb 2016 16:48:31 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Mar 2016 01:50:12 +0100 (CET)
+Received: from mail-pa0-f66.google.com ([209.85.220.66]:35916 "EHLO
+        mail-pa0-f66.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27024612AbcCAAsex85b8 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 1 Mar 2016 01:48:34 +0100
+Received: by mail-pa0-f66.google.com with SMTP id a7so8101938pax.3;
+        Mon, 29 Feb 2016 16:48:34 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=WhD3Kvk+EAlKFRfQULqLIhrlizIDxSh+yxm2Amfzh50=;
-        b=YU3Y+m0yfSg2v23n7NbAK9ayNq9mYF6Z+VJnyLyslE7qv9nqkMEawcKsiJ5Q02HqYk
-         X16mSw/sbuc3DJOlDF0vb+2m15hZ5Gc/U9qDlGEQ/28/j6g8350V0Sfu9OA7wzlHeUkH
-         3PgaiO97UnhVxyFAIAVFTiTAxUXKGY2LDANvvyCp00y4dpm2okCSS/ENIyBtu+lRn1O+
-         cjXLPS/18Fpv7GPjTSV2wnWifch9YCZBvPMkX+c++y/3+oCz4xYaeD5l8QMufZe0Fr4R
-         BmoAFgo07WLk5zorG4gMYIRBqGueYVd+ObjReUnsrFlK2a4SOfLAx7sIYP64pdN78Okq
-         Sv6w==
-X-Gm-Message-State: AD7BkJKW7MohAq/vdAeCrJN0jTbjiTlW8lCVFbpqQakT+ClZnhK+Z5evdM/lmIzk90pqCg==
-X-Received: by 10.98.66.75 with SMTP id p72mr26590641pfa.50.1456793305831;
-        Mon, 29 Feb 2016 16:48:25 -0800 (PST)
+        bh=T3wzFWg67ansCHzuX5mhDvGo/vtvLp0r2OZLH+B40fA=;
+        b=b/FWUbcOshe3tawfAWHWsEoY+JTcLZgz2jsW8ZaM6ezlt3D1a0JtF5T6v2CVZqNmXm
+         HAFrfTy/1IgK4opB9qT8fYfV+xFECDUPJmojy9USypTveEFyTHTzVb04fxmkIIAlD9Ss
+         wK4he6mnMeLzqirMRiFSOyYGb9RKeOO82hux10m2wbMgRYlLNiGD3NLJszBj/4J5PRZq
+         oolKFlG1syPMhuPPmNl8ON5w8djCoeJzGHyVzNCxBOnLlVzll4cStD2n2JWpaiDfOCyA
+         HAT/6Cre/Mixjc/H5BigUZX0BQ7rT44hX80q7x+ey+iZCR9qZnUmc2tV1YDT1qnBpqhc
+         XQxw==
+X-Gm-Message-State: AD7BkJLEKt8Zj1AdPUp1/m6nwykiC93tIeS/inK/mAV2PA438lfwV9szRrtO8tpy1dzOzw==
+X-Received: by 10.66.163.40 with SMTP id yf8mr25778159pab.148.1456793309263;
+        Mon, 29 Feb 2016 16:48:29 -0800 (PST)
 Received: from software.domain.org ([222.92.8.142])
-        by smtp.gmail.com with ESMTPSA id s197sm40683975pfs.62.2016.02.29.16.48.22
+        by smtp.gmail.com with ESMTPSA id s197sm40683975pfs.62.2016.02.29.16.48.26
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Mon, 29 Feb 2016 16:48:25 -0800 (PST)
+        Mon, 29 Feb 2016 16:48:28 -0800 (PST)
 From:   Binbin Zhou <zhoubb@lemote.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     John Crispin <john@phrozen.org>,
@@ -32,9 +32,9 @@ Cc:     John Crispin <john@phrozen.org>,
         Kelvin Cheung <keguang.zhang@gmail.com>,
         Binbin Zhou <zhoubb@lemote.com>, Chunbo Cui <cuicb@lemote.com>,
         Huacai Chen <chenhc@lemote.com>
-Subject: [PATCH v3 6/8] MIPS: Loongson-1A: Add IRQ type setting support
-Date:   Tue,  1 Mar 2016 08:48:14 +0800
-Message-Id: <1456793296-17120-7-git-send-email-zhoubb@lemote.com>
+Subject: [PATCH v3 7/8] MIPS: Loongson-1A: Enable SPARSEMEN and HIGHMEM
+Date:   Tue,  1 Mar 2016 08:48:15 +0800
+Message-Id: <1456793296-17120-8-git-send-email-zhoubb@lemote.com>
 X-Mailer: git-send-email 2.7.0
 In-Reply-To: <1456793296-17120-1-git-send-email-zhoubb@lemote.com>
 References: <1456793296-17120-1-git-send-email-zhoubb@lemote.com>
@@ -42,7 +42,7 @@ Return-Path: <zhoubb.aaron@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52369
+X-archive-position: 52370
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -59,90 +59,57 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Loongson 1A's INT controller support two different interrupt trigger mode:
-level trigger and edge trigger.
-
-Whether the INT controller stores the external interrupts is
-the difference between them.
-The edge trigger should do this, and operate INT_CLR register
-to clear the CPU interrupt state.
-
 Signed-off-by: Chunbo Cui <cuicb@lemote.com>
 Signed-off-by: Binbin Zhou <zhoubb@lemote.com>
 Signed-off-by: Huacai Chen <chenhc@lemote.com>
 ---
- arch/mips/loongson32/common/irq.c | 46 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 46 insertions(+)
+ arch/mips/include/asm/sparsemem.h   | 6 +++++-
+ arch/mips/loongson32/Kconfig        | 1 +
+ arch/mips/loongson32/common/setup.c | 3 ++-
+ 3 files changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/arch/mips/loongson32/common/irq.c b/arch/mips/loongson32/common/irq.c
-index 455a770..01e8cb9 100644
---- a/arch/mips/loongson32/common/irq.c
-+++ b/arch/mips/loongson32/common/irq.c
-@@ -62,12 +62,57 @@ static void ls1x_irq_unmask(struct irq_data *d)
- 			| (1 << bit), LS1X_INTC_INTIEN(n));
+diff --git a/arch/mips/include/asm/sparsemem.h b/arch/mips/include/asm/sparsemem.h
+index b1071c1..f73e671 100644
+--- a/arch/mips/include/asm/sparsemem.h
++++ b/arch/mips/include/asm/sparsemem.h
+@@ -11,7 +11,11 @@
+ #else
+ # define SECTION_SIZE_BITS	28
+ #endif
+-#define MAX_PHYSMEM_BITS	48
++#ifdef CONFIG_64BIT
++# define MAX_PHYSMEM_BITS	48
++#else
++# define MAX_PHYSMEM_BITS	36
++#endif
+ 
+ #endif /* CONFIG_SPARSEMEM */
+ #endif /* _MIPS_SPARSEMEM_H */
+diff --git a/arch/mips/loongson32/Kconfig b/arch/mips/loongson32/Kconfig
+index 741867c..5a96672 100644
+--- a/arch/mips/loongson32/Kconfig
++++ b/arch/mips/loongson32/Kconfig
+@@ -11,6 +11,7 @@ config LOONGSON1_LS1A
+ 	bool "Loongson LS1A board"
+ 	select CEVT_R4K
+ 	select CSRC_R4K
++	select ARCH_SPARSEMEM_ENABLE
+ 	select SYS_HAS_CPU_LOONGSON1A
+ 	select DMA_NONCOHERENT
+ 	select BOOT_ELF32
+diff --git a/arch/mips/loongson32/common/setup.c b/arch/mips/loongson32/common/setup.c
+index 87d21c9..d764fae 100644
+--- a/arch/mips/loongson32/common/setup.c
++++ b/arch/mips/loongson32/common/setup.c
+@@ -48,7 +48,8 @@ void __init plat_mem_setup(void)
+ 		.orig_video_points	= 16,
+ 	};
+ #endif
+-	add_memory_region(0x20000000, 0x30000000, BOOT_MEM_RESERVED);
++	if (highmemsize > 0)
++		add_memory_region(0x50000000, highmemsize << 20, BOOT_MEM_RAM);
+ #endif
  }
  
-+static int ls1x_irq_set_type(struct irq_data *data, unsigned int flow_type)
-+{
-+	unsigned int bit = (data->irq - LS1X_IRQ_BASE) & 0x1f;
-+	unsigned int n = (data->irq - LS1X_IRQ_BASE) >> 5;
-+
-+	if (flow_type & IRQ_TYPE_EDGE_BOTH) {
-+		if ((flow_type & IRQ_TYPE_EDGE_BOTH) == IRQ_TYPE_EDGE_BOTH) {
-+			pr_info("ls1x irq don't support both rising and falling\n");
-+			return -1;
-+		}
-+		ls1x_writel(ls1x_readl(LS1X_INTC_INTCLR(n))
-+				| (1 << bit), LS1X_INTC_INTCLR(n));
-+		if (flow_type & IRQ_TYPE_EDGE_RISING)
-+			ls1x_writel(ls1x_readl(LS1X_INTC_INTPOL(n))
-+					| (1 << bit), LS1X_INTC_INTPOL(n));
-+		else
-+			ls1x_writel(ls1x_readl(LS1X_INTC_INTPOL(n))
-+					& ~(1 << bit), LS1X_INTC_INTPOL(n));
-+
-+		ls1x_writel(ls1x_readl(LS1X_INTC_INTEDGE(n))
-+				| (1 << bit), LS1X_INTC_INTEDGE(n));
-+		ls1x_writel(ls1x_readl(LS1X_INTC_INTIEN(n))
-+				| (1 << bit), LS1X_INTC_INTIEN(n));
-+		irq_set_handler_locked(data, handle_edge_irq);
-+	} else if (flow_type && IRQ_TYPE_LEVEL_MASK) {
-+		ls1x_writel(ls1x_readl(LS1X_INTC_INTCLR(n))
-+				| (1 << bit), LS1X_INTC_INTCLR(n));
-+		if (flow_type & IRQ_TYPE_LEVEL_HIGH)
-+			ls1x_writel(ls1x_readl(LS1X_INTC_INTPOL(n))
-+					| (1 << bit), LS1X_INTC_INTPOL(n));
-+		else if (flow_type & IRQ_TYPE_LEVEL_LOW)
-+			ls1x_writel(ls1x_readl(LS1X_INTC_INTPOL(n))
-+					& ~(1 << bit), LS1X_INTC_INTPOL(n));
-+
-+		ls1x_writel(ls1x_readl(LS1X_INTC_INTEDGE(n))
-+				& ~(1 << bit), LS1X_INTC_INTEDGE(n));
-+		ls1x_writel(ls1x_readl(LS1X_INTC_INTIEN(n))
-+				| (1 << bit), LS1X_INTC_INTIEN(n));
-+		irq_set_handler_locked(data, handle_level_irq);
-+	}
-+
-+	return IRQ_SET_MASK_OK;
-+}
-+
- static struct irq_chip ls1x_irq_chip = {
- 	.name		= "LS1X-INTC",
- 	.irq_ack	= ls1x_irq_ack,
- 	.irq_mask	= ls1x_irq_mask,
- 	.irq_mask_ack	= ls1x_irq_mask_ack,
- 	.irq_unmask	= ls1x_irq_unmask,
-+	.irq_set_type	= ls1x_irq_set_type,
- };
- 
- static void ls1x_irq_dispatch(int n)
-@@ -138,6 +183,7 @@ static void __init ls1x_irq_init(int base)
- 	setup_irq(INT1_IRQ, &cascade_irqaction);
- 	setup_irq(INT2_IRQ, &cascade_irqaction);
- 	setup_irq(INT3_IRQ, &cascade_irqaction);
-+	setup_irq(INT4_IRQ, &cascade_irqaction);
- }
- 
- void __init arch_init_irq(void)
 -- 
 1.9.1

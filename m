@@ -1,43 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Mar 2016 03:27:47 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:64014 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Mar 2016 03:38:31 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:58872 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27007810AbcCAC1p47fZ- (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 1 Mar 2016 03:27:45 +0100
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Websense Email Security Gateway with ESMTPS id E80296E5C8236;
-        Tue,  1 Mar 2016 02:27:39 +0000 (GMT)
+        with ESMTP id S27011399AbcCACi3XqtE- (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 1 Mar 2016 03:38:29 +0100
+Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
+        by Websense Email Security Gateway with ESMTPS id D2ADB4664902D;
+        Tue,  1 Mar 2016 02:38:22 +0000 (GMT)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- HHMAIL01.hh.imgtec.org (10.100.10.19) with Microsoft SMTP Server (TLS) id
- 14.3.266.1; Tue, 1 Mar 2016 02:27:40 +0000
+ hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
+ 14.3.266.1; Tue, 1 Mar 2016 02:38:23 +0000
 Received: from localhost (10.100.200.88) by LEMAIL01.le.imgtec.org
  (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.266.1; Tue, 1 Mar
- 2016 02:27:39 +0000
-Date:   Tue, 1 Mar 2016 02:27:39 +0000
+ 2016 02:38:22 +0000
 From:   Paul Burton <paul.burton@imgtec.com>
-To:     Florian Fainelli <f.fainelli@gmail.com>
-CC:     <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>,
-        "James Hogan" <james.hogan@imgtec.com>,
-        Joshua Kinard <kumba@gentoo.org>,
-        "Paul Gortmaker" <paul.gortmaker@windriver.com>,
+To:     <linux-mips@linux-mips.org>
+CC:     Paul Burton <paul.burton@imgtec.com>,
+        Lars Persson <lars.persson@axis.com>,
+        "Steven J. Hill" <Steven.Hill@imgtec.com>,
+        "Huacai Chen" <chenhc@lemote.com>,
+        David Daney <david.daney@cavium.com>,
+        "Aneesh Kumar K.V" <aneesh.kumar@linux.vnet.ibm.com>,
         <linux-kernel@vger.kernel.org>,
-        "Maciej W. Rozycki" <macro@codesourcery.com>,
-        Markos Chandras <markos.chandras@imgtec.com>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: Re: [PATCH 1/2] MIPS: Add barriers between dcache & icache flushes
-Message-ID: <20160301022738.GB12741@NP-P-BURTON>
-References: <1456164585-26910-1-git-send-email-paul.burton@imgtec.com>
- <56CBA181.8070606@gmail.com>
+        Jerome Marchand <jmarchan@redhat.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 0/4] MIPS cache & highmem fixes
+Date:   Tue, 1 Mar 2016 02:37:55 +0000
+Message-ID: <1456799879-14711-1-git-send-email-paul.burton@imgtec.com>
+X-Mailer: git-send-email 2.7.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-In-Reply-To: <56CBA181.8070606@gmail.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
+Content-Type: text/plain
 X-Originating-IP: [10.100.200.88]
 Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52375
+X-archive-position: 52376
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -54,29 +53,28 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Feb 22, 2016 at 04:02:09PM -0800, Florian Fainelli wrote:
-> On 22/02/16 10:09, Paul Burton wrote:
-> > Index-based cache operations may be arbitrarily reordered by out of
-> > order CPUs. Thus code which writes back the dcache & then invalidates
-> > the icache using indexed cache ops must include a barrier between
-> > operating on the 2 caches in order to prevent the scenario in which:
-> > 
-> >   - icache invalidation occurs.
-> > 
-> >   - icache fetch occurs, due to speculation.
-> > 
-> >   - dcache writeback occurs.
-> > 
-> > If the above were allowed to happen then the icache would contain stale
-> > data. Forcing the dcache writeback to complete before the icache
-> > invalidation avoids this.
-> 
-> Is that also true for CPUs with have cpu_has_ic_fills_dc?
+This series fixes up a few issues with our current cache maintenance
+code, some specific to highmem & some not. It fixes an issue with icache
+corruption seen on the pistachio SoC & Ci40, and icache corruption seen
+using highmem on MIPS Malta boards with a P5600 CPU.
 
-Hi Florian,
-
-Good question. I imagine not, but probably need to think some more & ask
-some questions.
+Applies atop v4.5-rc6. It would be great to squeeze these in for v4.5,
+but I recognise it's quite late in the cycle & this brokenness has been
+around for a while so won't object to v4.6.
 
 Thanks,
     Paul
+
+Paul Burton (4):
+  MIPS: Flush dcache for flush_kernel_dcache_page
+  MIPS: Flush highmem pages in __flush_dcache_page
+  MIPS: Handle highmem pages in __update_cache
+  MIPS: Sync icache & dcache in set_pte_at
+
+ arch/mips/include/asm/cacheflush.h |  7 +------
+ arch/mips/include/asm/pgtable.h    | 26 +++++++++++++++++++-----
+ arch/mips/mm/cache.c               | 41 +++++++++++++++++++-------------------
+ 3 files changed, 43 insertions(+), 31 deletions(-)
+
+-- 
+2.7.1

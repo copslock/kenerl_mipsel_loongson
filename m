@@ -1,60 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Mar 2016 23:27:40 +0100 (CET)
-Received: from mail-pf0-f195.google.com ([209.85.192.195]:33893 "EHLO
-        mail-pf0-f195.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008265AbcCAW1idbwqQ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 1 Mar 2016 23:27:38 +0100
-Received: by mail-pf0-f195.google.com with SMTP id 184so5884194pff.1;
-        Tue, 01 Mar 2016 14:27:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-transfer-encoding;
-        bh=fWkJ0/JQDxNmyr6H4Rfdx9Xc0TKYJj0RyKHtiBMTpqU=;
-        b=A7Xfy4ifXLQ+MlxQi5Arpt+TafjovS0I3PotmJu23EdkEbULf5RogcY1wDg2R/nLYk
-         Ywa3uNbJmGVKxD/KxLQNUU5yzmc2Pj286w1t9vPITS++1psKG3b5i9FsiMPDCcQqqL9S
-         vIUY3E8167m4+7MdD9xdCxul4e+4dC4gEWIqy6AftRqpArtYTxKd4ZQ8E9cY0hT53/ks
-         Zwtc15kiW2kXhZKYqn7YTPJXKcj+u/kes0Ao6y3h6zms3JNivpEmeEN4o53tuYKEpRGq
-         eUvVCj8ItANoBa1CKiIOBDhWFQSXe3ZJeiTSmeG5bjOsx2MsL3bxU+IInU8/HX34MuXM
-         hKqg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:message-id:date:from:user-agent:mime-version:to
-         :cc:subject:references:in-reply-to:content-transfer-encoding;
-        bh=fWkJ0/JQDxNmyr6H4Rfdx9Xc0TKYJj0RyKHtiBMTpqU=;
-        b=KYsC3LyRMqKMPBJmxnJlhuWC7jO5H9uTVWCfVs8UtNAIqRVvpnCnhhdndmzAOuOkyD
-         lQLS/HyM8YOv7mVE5josUTe+m+GxTJ+JE3m1tHTEGFV228cz84oJTIUX2ySb5uer44Y1
-         fTt+ciImKkjUbCmA8r27X37ysn668gddZTq+kkmI/Wgkthwy1U0l45y9mOoFuCAU+ZY0
-         EXTJZyJbl7KY4KkFyYLAt/m66fOlfDG5QYg3W1L351vLAIghllq4bnlkTg7xeIeJz0yw
-         viNqHP1omp3iOHf+C6LplNGMJhqAUtbP6BseOne8SZptYLpIaMJLSOjEMEm/R0eozEiW
-         ZFgQ==
-X-Gm-Message-State: AD7BkJK4P3QiotKMk1TKnr5SmuxT056QAsh5PCmpCXlbWbUAi38mDBMfxtXpm3GNCeGwow==
-X-Received: by 10.98.17.75 with SMTP id z72mr33879914pfi.16.1456871252773;
-        Tue, 01 Mar 2016 14:27:32 -0800 (PST)
-Received: from dl.caveonetworks.com ([64.2.3.194])
-        by smtp.googlemail.com with ESMTPSA id s14sm18824702pfa.3.2016.03.01.14.27.31
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Tue, 01 Mar 2016 14:27:31 -0800 (PST)
-Message-ID: <56D61752.7020804@gmail.com>
-Date:   Tue, 01 Mar 2016 14:27:30 -0800
-From:   David Daney <ddaney.cavm@gmail.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Mar 2016 00:47:16 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:53131 "EHLO
+        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007431AbcCAXrLfI2CJ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Mar 2016 00:47:11 +0100
+Received: from localhost (c-50-170-35-168.hsd1.wa.comcast.net [50.170.35.168])
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 2D20DDBF;
+        Tue,  1 Mar 2016 23:47:05 +0000 (UTC)
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, James Hogan <james.hogan@imgtec.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Gleb Natapov <gleb@kernel.org>, linux-mips@linux-mips.org,
+        kvm@vger.kernel.org
+Subject: [PATCH 3.10 16/80] MIPS: KVM: Fix ASID restoration logic
+Date:   Tue,  1 Mar 2016 15:45:10 -0800
+Message-Id: <20160301234350.176327405@linuxfoundation.org>
+X-Mailer: git-send-email 2.7.2
+In-Reply-To: <20160301234349.667990420@linuxfoundation.org>
+References: <20160301234349.667990420@linuxfoundation.org>
+User-Agent: quilt/0.64
 MIME-Version: 1.0
-To:     James Hogan <james.hogan@imgtec.com>
-CC:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: Re: [PATCH 4/4] MIPS: Add and use watch register field definitions
-References: <1456870779-21007-1-git-send-email-james.hogan@imgtec.com> <1456870779-21007-5-git-send-email-james.hogan@imgtec.com>
-In-Reply-To: <1456870779-21007-5-git-send-email-james.hogan@imgtec.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <ddaney.cavm@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52394
+X-archive-position: 52395
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: gregkh@linuxfoundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -67,24 +44,66 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 03/01/2016 02:19 PM, James Hogan wrote:
-> The files watch.c and ptrace.c contain various magic masks for
-> WatchLo/WatchHi register fields. Add some definitions to mipsregs.h for
-> these registers and make use of them in both watch.c and ptrace.c,
-> hopefully making them more readable.
->
-> Signed-off-by: James Hogan<james.hogan@imgtec.com>
+3.10-stable review patch.  If anyone has any objections, please let me know.
 
-Seems sane,
+------------------
 
-Reviewed-by: David Daney <david.daney@cavium.com>
+From: James Hogan <james.hogan@imgtec.com>
 
-> Cc: Ralf Baechle<ralf@linux-mips.org>
-> Cc:linux-mips@linux-mips.org
-> ---
->   arch/mips/include/asm/mipsregs.h | 18 ++++++++++
->   arch/mips/kernel/ptrace.c        |  7 ++--
->   arch/mips/kernel/watch.c         | 74 ++++++++++++++++++++++------------------
->   3 files changed, 63 insertions(+), 36 deletions(-)
->
-[...]
+commit 002374f371bd02df864cce1fe85d90dc5b292837 upstream.
+
+ASID restoration on guest resume should determine the guest execution
+mode based on the guest Status register rather than bit 30 of the guest
+PC.
+
+Fix the two places in locore.S that do this, loading the guest status
+from the cop0 area. Note, this assembly is specific to the trap &
+emulate implementation of KVM, so it doesn't need to check the
+supervisor bit as that mode is not implemented in the guest.
+
+Fixes: b680f70fc111 ("KVM/MIPS32: Entry point for trampolining to...")
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Gleb Natapov <gleb@kernel.org>
+Cc: linux-mips@linux-mips.org
+Cc: kvm@vger.kernel.org
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ arch/mips/kvm/kvm_locore.S |   16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
+
+--- a/arch/mips/kvm/kvm_locore.S
++++ b/arch/mips/kvm/kvm_locore.S
+@@ -156,9 +156,11 @@ FEXPORT(__kvm_mips_vcpu_run)
+ 
+ FEXPORT(__kvm_mips_load_asid)
+     /* Set the ASID for the Guest Kernel */
+-    sll         t0, t0, 1                       /* with kseg0 @ 0x40000000, kernel */
+-                                                /* addresses shift to 0x80000000 */
+-    bltz        t0, 1f                          /* If kernel */
++    PTR_L	t0, VCPU_COP0(k1)
++    LONG_L	t0, COP0_STATUS(t0)
++    andi	t0, KSU_USER | ST0_ERL | ST0_EXL
++    xori	t0, KSU_USER
++    bnez	t0, 1f		/* If kernel */
+ 	addiu       t1, k1, VCPU_GUEST_KERNEL_ASID  /* (BD)  */
+     addiu       t1, k1, VCPU_GUEST_USER_ASID    /* else user */
+ 1:
+@@ -442,9 +444,11 @@ __kvm_mips_return_to_guest:
+ 	mtc0		t0, CP0_EPC
+ 
+     /* Set the ASID for the Guest Kernel */
+-    sll         t0, t0, 1                       /* with kseg0 @ 0x40000000, kernel */
+-                                                /* addresses shift to 0x80000000 */
+-    bltz        t0, 1f                          /* If kernel */
++    PTR_L	t0, VCPU_COP0(k1)
++    LONG_L	t0, COP0_STATUS(t0)
++    andi	t0, KSU_USER | ST0_ERL | ST0_EXL
++    xori	t0, KSU_USER
++    bnez	t0, 1f		/* If kernel */
+ 	addiu       t1, k1, VCPU_GUEST_KERNEL_ASID  /* (BD)  */
+     addiu       t1, k1, VCPU_GUEST_USER_ASID    /* else user */
+ 1:

@@ -1,39 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Mar 2016 21:15:07 +0100 (CET)
-Received: from userp1040.oracle.com ([156.151.31.81]:28803 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Mar 2016 21:28:24 +0100 (CET)
+Received: from userp1040.oracle.com ([156.151.31.81]:37009 "EHLO
         userp1040.oracle.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27013091AbcCBUPF06MwP (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Mar 2016 21:15:05 +0100
+        with ESMTP id S27008280AbcCBU2XI3oln (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Mar 2016 21:28:23 +0100
 Received: from aserv0022.oracle.com (aserv0022.oracle.com [141.146.126.234])
-        by userp1040.oracle.com (Sentrion-MTA-4.3.2/Sentrion-MTA-4.3.2) with ESMTP id u22KEqjT014319
+        by userp1040.oracle.com (Sentrion-MTA-4.3.2/Sentrion-MTA-4.3.2) with ESMTP id u22KSBCm031164
         (version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
-        Wed, 2 Mar 2016 20:14:54 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by aserv0022.oracle.com (8.13.8/8.13.8) with ESMTP id u22KEq79014294
+        Wed, 2 Mar 2016 20:28:12 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by aserv0022.oracle.com (8.13.8/8.13.8) with ESMTP id u22KSBFN014284
         (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=FAIL);
-        Wed, 2 Mar 2016 20:14:52 GMT
-Received: from abhmp0003.oracle.com (abhmp0003.oracle.com [141.146.116.9])
-        by userv0121.oracle.com (8.13.8/8.13.8) with ESMTP id u22KEogB008664;
-        Wed, 2 Mar 2016 20:14:51 GMT
+        Wed, 2 Mar 2016 20:28:11 GMT
+Received: from abhmp0015.oracle.com (abhmp0015.oracle.com [141.146.116.21])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id u22KSARm022318;
+        Wed, 2 Mar 2016 20:28:11 GMT
 Received: from lappy.us.oracle.com (/10.154.138.173)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 02 Mar 2016 12:14:50 -0800
+        with ESMTP ; Wed, 02 Mar 2016 12:28:10 -0800
 From:   Sasha Levin <sasha.levin@oracle.com>
 To:     stable@vger.kernel.org, stable-commits@vger.kernel.org
 Cc:     James Hogan <james.hogan@imgtec.com>, linux-mips@linux-mips.org,
         Ralf Baechle <ralf@linux-mips.org>,
         Sasha Levin <sasha.levin@oracle.com>
-Subject: [added to the 4.1 stable tree] MIPS: Fix buffer overflow in syscall_get_arguments()
-Date:   Wed,  2 Mar 2016 15:13:23 -0500
-Message-Id: <1456949673-25036-16-git-send-email-sasha.levin@oracle.com>
+Subject: [added to the 3.18 stable tree] MIPS: Fix buffer overflow in syscall_get_arguments()
+Date:   Wed,  2 Mar 2016 15:26:59 -0500
+Message-Id: <1456950474-1149-16-git-send-email-sasha.levin@oracle.com>
 X-Mailer: git-send-email 2.5.0
-In-Reply-To: <1456949673-25036-1-git-send-email-sasha.levin@oracle.com>
-References: <1456949673-25036-1-git-send-email-sasha.levin@oracle.com>
+In-Reply-To: <1456950474-1149-1-git-send-email-sasha.levin@oracle.com>
+References: <1456950474-1149-1-git-send-email-sasha.levin@oracle.com>
 X-Source-IP: aserv0022.oracle.com [141.146.126.234]
 Return-Path: <sasha.levin@oracle.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52425
+X-archive-position: 52426
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -52,7 +52,7 @@ X-list: linux-mips
 
 From: James Hogan <james.hogan@imgtec.com>
 
-This patch has been added to the 4.1 stable tree. If you have any
+This patch has been added to the 3.18 stable tree. If you have any
 objections, please let us know.
 
 ===============
@@ -90,10 +90,10 @@ Signed-off-by: Sasha Levin <sasha.levin@oracle.com>
  1 file changed, 1 insertion(+), 3 deletions(-)
 
 diff --git a/arch/mips/include/asm/syscall.h b/arch/mips/include/asm/syscall.h
-index 6499d93..47bc45a 100644
+index bb79637..b81d3ba 100644
 --- a/arch/mips/include/asm/syscall.h
 +++ b/arch/mips/include/asm/syscall.h
-@@ -101,10 +101,8 @@ static inline void syscall_get_arguments(struct task_struct *task,
+@@ -107,10 +107,8 @@ static inline void syscall_get_arguments(struct task_struct *task,
  	/* O32 ABI syscall() - Either 64-bit with O32 or 32-bit */
  	if ((config_enabled(CONFIG_32BIT) ||
  	    test_tsk_thread_flag(task, TIF_32BIT_REGS)) &&

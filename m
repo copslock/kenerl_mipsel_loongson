@@ -1,43 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Mar 2016 21:28:24 +0100 (CET)
-Received: from userp1040.oracle.com ([156.151.31.81]:37009 "EHLO
-        userp1040.oracle.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27008280AbcCBU2XI3oln (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Mar 2016 21:28:23 +0100
-Received: from aserv0022.oracle.com (aserv0022.oracle.com [141.146.126.234])
-        by userp1040.oracle.com (Sentrion-MTA-4.3.2/Sentrion-MTA-4.3.2) with ESMTP id u22KSBCm031164
-        (version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
-        Wed, 2 Mar 2016 20:28:12 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by aserv0022.oracle.com (8.13.8/8.13.8) with ESMTP id u22KSBFN014284
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=FAIL);
-        Wed, 2 Mar 2016 20:28:11 GMT
-Received: from abhmp0015.oracle.com (abhmp0015.oracle.com [141.146.116.21])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id u22KSARm022318;
-        Wed, 2 Mar 2016 20:28:11 GMT
-Received: from lappy.us.oracle.com (/10.154.138.173)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 02 Mar 2016 12:28:10 -0800
-From:   Sasha Levin <sasha.levin@oracle.com>
-To:     stable@vger.kernel.org, stable-commits@vger.kernel.org
-Cc:     James Hogan <james.hogan@imgtec.com>, linux-mips@linux-mips.org,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Sasha Levin <sasha.levin@oracle.com>
-Subject: [added to the 3.18 stable tree] MIPS: Fix buffer overflow in syscall_get_arguments()
-Date:   Wed,  2 Mar 2016 15:26:59 -0500
-Message-Id: <1456950474-1149-16-git-send-email-sasha.levin@oracle.com>
-X-Mailer: git-send-email 2.5.0
-In-Reply-To: <1456950474-1149-1-git-send-email-sasha.levin@oracle.com>
-References: <1456950474-1149-1-git-send-email-sasha.levin@oracle.com>
-X-Source-IP: aserv0022.oracle.com [141.146.126.234]
-Return-Path: <sasha.levin@oracle.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Mar 2016 21:47:27 +0100 (CET)
+Received: from emh02.mail.saunalahti.fi ([62.142.5.108]:49550 "EHLO
+        emh02.mail.saunalahti.fi" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008280AbcCBUr0NSoCn (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Mar 2016 21:47:26 +0100
+Received: from localhost.localdomain (85-76-14-12-nat.elisa-mobile.fi [85.76.14.12])
+        by emh02.mail.saunalahti.fi (Postfix) with ESMTP id 933A6234024;
+        Wed,  2 Mar 2016 22:47:25 +0200 (EET)
+From:   Aaro Koskinen <aaro.koskinen@iki.fi>
+To:     Ralf Baechle <ralf@linux-mips.org>,
+        David Daney <ddaney.cavm@gmail.com>, linux-mips@linux-mips.org
+Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>
+Subject: [PATCH] MIPS: OCTEON: cavium_octeon_defconfig: enable all OCTEON SoC drivers
+Date:   Wed,  2 Mar 2016 22:47:19 +0200
+Message-Id: <1456951639-6935-1-git-send-email-aaro.koskinen@iki.fi>
+X-Mailer: git-send-email 2.4.0
+Return-Path: <aaro.koskinen@iki.fi>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52426
+X-archive-position: 52427
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sasha.levin@oracle.com
+X-original-sender: aaro.koskinen@iki.fi
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,60 +35,49 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: James Hogan <james.hogan@imgtec.com>
+Some drivers for SoC provided functionality are missing.
+Enable to those in defconfig to provide better build/testing coverage.
 
-This patch has been added to the 3.18 stable tree. If you have any
-objections, please let us know.
-
-===============
-
-[ Upstream commit f4dce1ffd2e30fa31756876ef502ce6d2324be35 ]
-
-Since commit 4c21b8fd8f14 ("MIPS: seccomp: Handle indirect system calls
-(o32)"), syscall_get_arguments() attempts to handle o32 indirect syscall
-arguments by incrementing both the start argument number and the number
-of arguments to fetch. However only the start argument number needs to
-be incremented. The number of arguments does not change, they're just
-shifted up by one, and in fact the output array is provided by the
-caller and is likely only n entries long, so reading more arguments
-overflows the output buffer.
-
-In the case of seccomp, this results in it fetching 7 arguments starting
-at the 2nd one, which overflows the unsigned long args[6] in
-populate_seccomp_data(). This clobbers the $s0 register from
-syscall_trace_enter() which __seccomp_phase1_filter() saved onto the
-stack, into which syscall_trace_enter() had placed its syscall number
-argument. This caused Chromium to crash.
-
-Credit goes to Milko for tracking it down as far as $s0 being clobbered.
-
-Fixes: 4c21b8fd8f14 ("MIPS: seccomp: Handle indirect system calls (o32)")
-Reported-by: Milko Leporis <milko.leporis@imgtec.com>
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: linux-mips@linux-mips.org
-Cc: <stable@vger.kernel.org> # 3.15-
-Patchwork: https://patchwork.linux-mips.org/patch/12213/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Sasha Levin <sasha.levin@oracle.com>
+Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
 ---
- arch/mips/include/asm/syscall.h | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ arch/mips/configs/cavium_octeon_defconfig | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
-diff --git a/arch/mips/include/asm/syscall.h b/arch/mips/include/asm/syscall.h
-index bb79637..b81d3ba 100644
---- a/arch/mips/include/asm/syscall.h
-+++ b/arch/mips/include/asm/syscall.h
-@@ -107,10 +107,8 @@ static inline void syscall_get_arguments(struct task_struct *task,
- 	/* O32 ABI syscall() - Either 64-bit with O32 or 32-bit */
- 	if ((config_enabled(CONFIG_32BIT) ||
- 	    test_tsk_thread_flag(task, TIF_32BIT_REGS)) &&
--	    (regs->regs[2] == __NR_syscall)) {
-+	    (regs->regs[2] == __NR_syscall))
- 		i++;
--		n++;
--	}
- 
- 	while (n--)
- 		ret |= mips_get_syscall_arg(args++, task, regs, i++);
+diff --git a/arch/mips/configs/cavium_octeon_defconfig b/arch/mips/configs/cavium_octeon_defconfig
+index e57058d..dcac308 100644
+--- a/arch/mips/configs/cavium_octeon_defconfig
++++ b/arch/mips/configs/cavium_octeon_defconfig
+@@ -119,14 +119,16 @@ CONFIG_SPI=y
+ CONFIG_SPI_OCTEON=y
+ # CONFIG_HWMON is not set
+ CONFIG_WATCHDOG=y
+-# CONFIG_USB_SUPPORT is not set
+-CONFIG_USB_EHCI_BIG_ENDIAN_MMIO=y
+-CONFIG_USB_OHCI_BIG_ENDIAN_MMIO=y
+-CONFIG_USB_OHCI_LITTLE_ENDIAN=y
++CONFIG_USB=m
++CONFIG_USB_EHCI_HCD=m
++CONFIG_USB_EHCI_HCD_PLATFORM=m
++CONFIG_USB_OHCI_HCD=m
++CONFIG_USB_OHCI_HCD_PLATFORM=m
+ CONFIG_RTC_CLASS=y
+ CONFIG_RTC_DRV_DS1307=y
+ CONFIG_STAGING=y
+ CONFIG_OCTEON_ETHERNET=y
++CONFIG_OCTEON_USB=m
+ # CONFIG_IOMMU_SUPPORT is not set
+ CONFIG_EXT4_FS=y
+ CONFIG_EXT4_FS_POSIX_ACL=y
+@@ -152,6 +154,9 @@ CONFIG_SECURITY=y
+ CONFIG_SECURITY_NETWORK=y
+ CONFIG_CRYPTO_CBC=y
+ CONFIG_CRYPTO_HMAC=y
+-CONFIG_CRYPTO_MD5=y
++CONFIG_CRYPTO_MD5_OCTEON=y
++CONFIG_CRYPTO_SHA1_OCTEON=m
++CONFIG_CRYPTO_SHA256_OCTEON=m
++CONFIG_CRYPTO_SHA512_OCTEON=m
+ CONFIG_CRYPTO_DES=y
+ # CONFIG_CRYPTO_ANSI_CPRNG is not set
 -- 
-2.5.0
+2.4.0

@@ -1,63 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Mar 2016 10:35:33 +0100 (CET)
-Received: from mail-wm0-f68.google.com ([74.125.82.68]:34555 "EHLO
-        mail-wm0-f68.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007226AbcCBJf3PeTJs (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Mar 2016 10:35:29 +0100
-Received: by mail-wm0-f68.google.com with SMTP id p65so8580392wmp.1;
-        Wed, 02 Mar 2016 01:35:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=sender:subject:to:references:cc:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding;
-        bh=SIf2+Ol4nDcevIjTN1vtgzZfKhrv6rrdEnz2LYaiI8I=;
-        b=xh0RJe6kN7k5LnVT0DwheIi+DzYbWRgP22ruhjapj+x/SSzKrb2suelTEc4DxxKanu
-         cLjwf5LGIURI58HEal0predDniNGGFQiZp8WqgSWw2O5LE1QegmSu6OjcHFQsTkzEKq6
-         nYUA9fo3rhFB/E3PSyuwgclZw2f9g9+JMtAG1t/z7oTsSxgddsRQqBmt8tc4QcGja5n/
-         EZu3o43MoA8zDfn2mZX3EIziwavdn6FsLz4z94pKwjMsCPYw7T+mESt4nIU/dlPyqhLy
-         1CNewf977rOS2LG86WHIimgOQzBCMoeBlFx8FzxLmJ9f67l6Kkz7ZUeQxKtk9a85WcJ5
-         HWdw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:sender:subject:to:references:cc:from:message-id
-         :date:user-agent:mime-version:in-reply-to:content-transfer-encoding;
-        bh=SIf2+Ol4nDcevIjTN1vtgzZfKhrv6rrdEnz2LYaiI8I=;
-        b=Tve8Nj7G2XHRNbSj+mWhLsE4QmxSYnh2K0VAUgn8XPgpwFg/1zb8Hr+VTDz8XaY2Xq
-         cCqwasKRr4bneZw3hnVLegY+1wESpDUEz86KeFNdNrZI/Iu59+XrmVgZR//a7ISTCUy8
-         925VWv/+OLPfyATBq+ihDN45emFvJ1Z7wAv4DK6NMo1NGeqkwm0Wp8rX8hbKMXC/wFJ8
-         EUWHeSbiCiJlssWEcV+y3TzmG034ydski0mDpTMDq3Dc5HprQHP2G8JyZvbb1buObEH+
-         ySzgNZZjUbBM8d9kxMtPEVNARXaD587Hfx2G/SYg7YfWjzLc6od9T/d4tmRvnl28n37J
-         MPZA==
-X-Gm-Message-State: AD7BkJL7XsH4UwdCILN6qco4mSVeR2MHa7qLJha5I/bS6a3kacW11GhD4XX+80UwMfDXOg==
-X-Received: by 10.28.225.8 with SMTP id y8mr3635745wmg.23.1456911323673;
-        Wed, 02 Mar 2016 01:35:23 -0800 (PST)
-Received: from [192.168.10.150] (94-39-138-146.adsl-ull.clienti.tiscali.it. [94.39.138.146])
-        by smtp.googlemail.com with ESMTPSA id e19sm3270835wmd.1.2016.03.02.01.35.22
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Wed, 02 Mar 2016 01:35:22 -0800 (PST)
-Subject: Re: [PATCH for-4,5] mips/kvm: fix ioctl error handling
-To:     "Michael S. Tsirkin" <mst@redhat.com>, linux-kernel@vger.kernel.org
-References: <1456673711-24132-1-git-send-email-mst@redhat.com>
-Cc:     stable@vger.kernel.org, James Hogan <james.hogan@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>, kvm@vger.kernel.org,
-        linux-mips@linux-mips.org
-From:   Paolo Bonzini <pbonzini@redhat.com>
-Message-ID: <56D6B3D8.1090000@redhat.com>
-Date:   Wed, 2 Mar 2016 10:35:20 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.6.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Mar 2016 11:41:48 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:56662 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S27012482AbcCBKllGoooC (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 2 Mar 2016 11:41:41 +0100
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.15.2/8.14.8) with ESMTP id u22AfYuj013081;
+        Wed, 2 Mar 2016 11:41:34 +0100
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.15.2/8.15.2/Submit) id u22AfT5x013080;
+        Wed, 2 Mar 2016 11:41:29 +0100
+Date:   Wed, 2 Mar 2016 11:41:29 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Huacai Chen <chenhc@lemote.com>
+Cc:     Aurelien Jarno <aurelien@aurel32.net>,
+        "Steven J . Hill" <Steven.Hill@imgtec.com>,
+        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>
+Subject: Re: [PATCH V4 3/5] MIPS: Loongson: Invalidate special TLBs when
+ needed
+Message-ID: <20160302104128.GA18341@linux-mips.org>
+References: <1456567658-14694-1-git-send-email-chenhc@lemote.com>
+ <1456567658-14694-4-git-send-email-chenhc@lemote.com>
 MIME-Version: 1.0
-In-Reply-To: <1456673711-24132-1-git-send-email-mst@redhat.com>
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-Return-Path: <paolo.bonzini@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1456567658-14694-4-git-send-email-chenhc@lemote.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52418
+X-archive-position: 52419
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: pbonzini@redhat.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -70,54 +47,85 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+On Sat, Feb 27, 2016 at 06:07:36PM +0800, Huacai Chen wrote:
 
-
-On 28/02/2016 16:35, Michael S. Tsirkin wrote:
-> Calling return copy_to_user(...) or return copy_from_user in an ioctl
-> will not do the right thing if there's a pagefault:
-> copy_to_user/copy_from_user return the number of bytes not copied in
-> this case.
+> Loongson-2 has a 4 entry itlb which is a subset of jtlb, Loongson-3 has
+> a 4 entry itlb and a 4 entry dtlb which are subsets of jtlb. We should
+> write diag register to invalidate itlb/dtlb when flushing jtlb because
+> itlb/dtlb are not totally transparent to software.
 > 
-> Fix up kvm on mips to do
-> 	return copy_to_user(...)) ?  -EFAULT : 0;
-> and
-> 	return copy_from_user(...)) ?  -EFAULT : 0;
+> For Loongson-3A R2 (and newer), we should invalidate ITLB, DTLB, VTLB
+> and FTLB before we enable/disable FTLB.
 > 
-> everywhere.
-> 
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+> Signed-off-by: Huacai Chen <chenhc@lemote.com>
 > ---
+>  arch/mips/kernel/cpu-probe.c |  2 ++
+>  arch/mips/mm/tlb-r4k.c       | 27 +++++++++++++++------------
+>  2 files changed, 17 insertions(+), 12 deletions(-)
 > 
-> Untested.
-> 
->  arch/mips/kvm/mips.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/mips/kvm/mips.c b/arch/mips/kvm/mips.c
-> index 8bc3977..3110447 100644
-> --- a/arch/mips/kvm/mips.c
-> +++ b/arch/mips/kvm/mips.c
-> @@ -702,7 +702,7 @@ static int kvm_mips_get_reg(struct kvm_vcpu *vcpu,
->  	} else if ((reg->id & KVM_REG_SIZE_MASK) == KVM_REG_SIZE_U128) {
->  		void __user *uaddr = (void __user *)(long)reg->addr;
->  
-> -		return copy_to_user(uaddr, vs, 16);
-> +		return copy_to_user(uaddr, vs, 16) ? -EFAULT : 0;
->  	} else {
->  		return -EINVAL;
->  	}
-> @@ -732,7 +732,7 @@ static int kvm_mips_set_reg(struct kvm_vcpu *vcpu,
->  	} else if ((reg->id & KVM_REG_SIZE_MASK) == KVM_REG_SIZE_U128) {
->  		void __user *uaddr = (void __user *)(long)reg->addr;
->  
-> -		return copy_from_user(vs, uaddr, 16);
-> +		return copy_from_user(vs, uaddr, 16) ? -EFAULT : 0;
->  	} else {
->  		return -EINVAL;
->  	}
-> 
+> diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
+> index 2a2ae86..ef605e2 100644
+> --- a/arch/mips/kernel/cpu-probe.c
+> +++ b/arch/mips/kernel/cpu-probe.c
+> @@ -562,6 +562,8 @@ static int set_ftlb_enable(struct cpuinfo_mips *c, int enable)
+>  					   << MIPS_CONF7_FTLBP_SHIFT));
+>  		break;
+>  	case CPU_LOONGSON3:
+> +		/* Flush ITLB, DTLB, VTLB and FTLB */
+> +		write_c0_diag(1<<2 | 1<<3 | 1<<12 | 1<<13);
 
-Applied with the commit message tweak suggested by Sergei.
+Too many magic numbers.  Could you use defines for the magic numbers you're
+writing to these registers?
 
-Paolo
+>  		/* Loongson-3 cores use Config6 to enable the FTLB */
+>  		config = read_c0_config6();
+>  		if (enable)
+> diff --git a/arch/mips/mm/tlb-r4k.c b/arch/mips/mm/tlb-r4k.c
+> index c17d762..7593529 100644
+> --- a/arch/mips/mm/tlb-r4k.c
+> +++ b/arch/mips/mm/tlb-r4k.c
+> @@ -28,25 +28,28 @@
+>  extern void build_tlb_refill_handler(void);
+>  
+>  /*
+> - * LOONGSON2/3 has a 4 entry itlb which is a subset of dtlb,
+> - * unfortunately, itlb is not totally transparent to software.
+> + * LOONGSON-2 has a 4 entry itlb which is a subset of jtlb, LOONGSON-3 has
+> + * a 4 entry itlb and a 4 entry dtlb which are subsets of jtlb. Unfortunately,
+> + * itlb/dtlb are not totally transparent to software.
+>   */
+> -static inline void flush_itlb(void)
+> +static inline void flush_spec_tlb(void)
+>  {
+>  	switch (current_cpu_type()) {
+>  	case CPU_LOONGSON2:
+> +		write_c0_diag(0x4);
+
+Same here.
+
+> +		break;
+>  	case CPU_LOONGSON3:
+> -		write_c0_diag(4);
+> +		write_c0_diag(0xc);
+
+And here.
+
+Also, why did the magic number change from 4 to 0xc?
+
+>  		break;
+>  	default:
+>  		break;
+>  	}
+>  }
+>  
+> -static inline void flush_itlb_vm(struct vm_area_struct *vma)
+> +static inline void flush_spec_tlb_vm(struct vm_area_struct *vma)
+>  {
+>  	if (vma->vm_flags & VM_EXEC)
+> -		flush_itlb();
+> +		flush_spec_tlb();
+
+Hm..  "spec tlb" is not very descriptive in my opinion.  How about
+renameing this function to flush_micro_tlb().
+
+  Ralf

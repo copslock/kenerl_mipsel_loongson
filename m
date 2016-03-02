@@ -1,18 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Mar 2016 04:47:23 +0100 (CET)
-Received: from smtpbg202.qq.com ([184.105.206.29]:55568 "EHLO smtpbg202.qq.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Mar 2016 04:47:51 +0100 (CET)
+Received: from smtpbgau1.qq.com ([54.206.16.166]:42492 "EHLO smtpbgau1.qq.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27006150AbcCBDrWBGdHd (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 2 Mar 2016 04:47:22 +0100
-X-QQ-mid: bizesmtp15t1456890416t994t17
+        id S27006150AbcCBDrtbvFed (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 2 Mar 2016 04:47:49 +0100
+X-QQ-mid: bizesmtp15t1456890443t749t19
 Received: from software.domain.org (unknown [222.92.8.142])
         by esmtp4.qq.com (ESMTP) with 
-        id ; Wed, 02 Mar 2016 11:46:21 +0800 (CST)
+        id ; Wed, 02 Mar 2016 11:46:58 +0800 (CST)
 X-QQ-SSF: 01100000000000F0FK70B00A0000000
-X-QQ-FEAT: oIoGrveFQB/FaFmnE86hUDBTpmwvTW+sjnGJSz5UL7faZvyX/gWs7az0Pi1KT
-        XMeNWjpX8hl6Nc0Z0QLPE2JF425A2HcnYHhdOLLjKvMsAJ4AhrVC42DKZ0GqQbr2dOQHpVg
-        OaXFsEZWrsntEwF8obpAjmhzsX8q0yOvDCC0xjXbHnSiI0iO64OHwXbdO4TRV7ojus6BxWQ
-        TOPLmJk80us6m4NPFVcrRckDShBzk47eBI3v2YSMVOwC2NbzHRpl5zacH4VEF5Io/pWHRWU
-        BPZ6YaZqPTclH2
+X-QQ-FEAT: 6dXuswn9i1Wr5+Lp+eSqN5EF2wVePx+J9fGQ4hhYRcDqdT4kCJw0RS+vl+IY2
+        M38sFJHdt+3jaPrLiQ1IZkG0ODHzHzFYadcCpaf/TxiwogZ8O9IxiqT24X43MT7xYfJjY7h
+        hKVTfyM6JjqkFxmvOm4DK6szkVn490fSHnnwkz2md19uDLKbmnCYY2Ee/OqCmYeQG8af5EN
+        +wBKBvFkjJVKkXNN9FFrQG+uy9AlBG2Hymam4IileiLUSuTHcjlQY886gjNDN+Lmey4tzRb
+        91KKaUHdQrpapYnVBuLuK0jo8=
 X-QQ-GoodBg: 0
 From:   Huacai Chen <chenhc@lemote.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
@@ -21,9 +21,9 @@ Cc:     Aurelien Jarno <aurelien@aurel32.net>,
         linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
         Zhangjin Wu <wuzhangjin@gmail.com>,
         Huacai Chen <chenhc@lemote.com>
-Subject: [PATCH V5 4/5] MIPS: Loongson-3: Fast TLB refill handler
-Date:   Wed,  2 Mar 2016 11:45:14 +0800
-Message-Id: <1456890315-28814-5-git-send-email-chenhc@lemote.com>
+Subject: [PATCH V5 5/5] MIPS: Loongson-3: Introduce CONFIG_LOONGSON3_ENHANCEMENT
+Date:   Wed,  2 Mar 2016 11:45:15 +0800
+Message-Id: <1456890315-28814-6-git-send-email-chenhc@lemote.com>
 X-Mailer: git-send-email 2.7.0
 In-Reply-To: <1456890315-28814-1-git-send-email-chenhc@lemote.com>
 References: <1456890315-28814-1-git-send-email-chenhc@lemote.com>
@@ -33,7 +33,7 @@ Return-Path: <chenhc@lemote.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52410
+X-archive-position: 52411
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -50,317 +50,209 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Loongson-3A R2 has pwbase/pwfield/pwsize/pwctl registers in CP0 (this
-is very similar to HTW) and lwdir/lwpte/lddir/ldpte instructions which
-can be used for fast TLB refill.
+New Loongson 3 CPU (since Loongson-3A R2, as opposed to Loongson-3A R1,
+Loongson-3B R1 and Loongson-3B R2) has many enhancements, such as FTLB,
+L1-VCache, EI/DI/Wait/Prefetch instruction, DSP/DSPv2 ASE, User Local
+register, Read-Inhibit/Execute-Inhibit, SFB (Store Fill Buffer), Fast
+TLB refill support, etc.
+
+This patch introduce a config option, CONFIG_LOONGSON3_ENHANCEMENT, to
+enable those enhancements which are not probed at run time. If you want
+a generic kernel to run on all Loongson 3 machines, please say 'N'
+here. If you want a high-performance kernel to run on new Loongson 3
+machines only, please say 'Y' here.
+
+Some additional explanations:
+1) SFB locates between core and L1 cache, it causes memory access out
+   of order, so writel/outl (and other similar functions) need a I/O
+   reorder barrier.
+2) Loongson 3 has a bug that di instruction can not save the irqflag,
+   so arch_local_irq_save() is modified. Since CPU_MIPSR2 is selected
+   by CONFIG_LOONGSON3_ENHANCEMENT, generic kernel doesn't use ei/di
+   at all.
+3) CPU_HAS_PREFETCH is selected by CONFIG_LOONGSON3_ENHANCEMENT, so
+   MIPS_CPU_PREFETCH (used by uasm) probing is also put in this patch.
 
 Signed-off-by: Huacai Chen <chenhc@lemote.com>
 ---
- arch/mips/include/asm/cpu-features.h |   3 +
- arch/mips/include/asm/cpu.h          |   1 +
- arch/mips/include/asm/mipsregs.h     |   6 ++
- arch/mips/include/asm/uasm.h         |   3 +-
- arch/mips/include/uapi/asm/inst.h    |  10 +++
- arch/mips/kernel/cpu-probe.c         |   2 +-
- arch/mips/mm/tlbex.c                 | 124 ++++++++++++++++++++++++++++++++++-
- arch/mips/mm/uasm-mips.c             |   2 +
- arch/mips/mm/uasm.c                  |   3 +
- 9 files changed, 149 insertions(+), 5 deletions(-)
+ arch/mips/Kconfig                                      | 18 ++++++++++++++++++
+ arch/mips/include/asm/hazards.h                        |  7 ++++---
+ arch/mips/include/asm/io.h                             | 10 +++++-----
+ arch/mips/include/asm/irqflags.h                       |  5 +++++
+ .../include/asm/mach-loongson64/kernel-entry-init.h    | 12 ++++++++++++
+ arch/mips/mm/c-r4k.c                                   |  2 ++
+ arch/mips/mm/page.c                                    |  9 +++++++++
+ 7 files changed, 55 insertions(+), 8 deletions(-)
 
-diff --git a/arch/mips/include/asm/cpu-features.h b/arch/mips/include/asm/cpu-features.h
-index eeec8c8..e0ba50a 100644
---- a/arch/mips/include/asm/cpu-features.h
-+++ b/arch/mips/include/asm/cpu-features.h
-@@ -35,6 +35,9 @@
- #ifndef cpu_has_htw
- #define cpu_has_htw		(cpu_data[0].options & MIPS_CPU_HTW)
- #endif
-+#ifndef cpu_has_ldpte
-+#define cpu_has_ldpte		(cpu_data[0].options & MIPS_CPU_LDPTE)
-+#endif
- #ifndef cpu_has_rixiex
- #define cpu_has_rixiex		(cpu_data[0].options & MIPS_CPU_RIXIEX)
- #endif
-diff --git a/arch/mips/include/asm/cpu.h b/arch/mips/include/asm/cpu.h
-index 68807b8..67bbff5 100644
---- a/arch/mips/include/asm/cpu.h
-+++ b/arch/mips/include/asm/cpu.h
-@@ -392,6 +392,7 @@ enum cpu_type_enum {
- #define MIPS_CPU_FTLB		0x20000000000ull /* CPU has Fixed-page-size TLB */
- #define MIPS_CPU_NAN_LEGACY	0x40000000000ull /* Legacy NaN implemented */
- #define MIPS_CPU_NAN_2008	0x80000000000ull /* 2008 NaN implemented */
-+#define MIPS_CPU_LDPTE		0x100000000000ull /* CPU has ldpte/lddir instructions */
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 38c0b11..68ec57a 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -1350,6 +1350,24 @@ config CPU_LOONGSON3
+ 		The Loongson 3 processor implements the MIPS64R2 instruction
+ 		set with many extensions.
  
++config LOONGSON3_ENHANCEMENT
++	bool "New Loongson 3 CPU Enhancements"
++	default n
++	select CPU_MIPSR2
++	select CPU_HAS_PREFETCH
++	depends on CPU_LOONGSON3
++	help
++	  New Loongson 3 CPU (since Loongson-3A R2, as opposed to Loongson-3A
++	  R1, Loongson-3B R1 and Loongson-3B R2) has many enhancements, such as
++	  FTLB, L1-VCache, EI/DI/Wait/Prefetch instruction, DSP/DSPv2 ASE, User
++	  Local register, Read-Inhibit/Execute-Inhibit, SFB (Store Fill Buffer),
++	  Fast TLB refill support, etc.
++
++	  This option enable those enhancements which are not probed at run
++	  time. If you want a generic kernel to run on all Loongson 3 machines,
++	  please say 'N' here. If you want a high-performance kernel to run on
++	  new Loongson 3 machines only, please say 'Y' here.
++
+ config CPU_LOONGSON2E
+ 	bool "Loongson 2E"
+ 	depends on SYS_HAS_CPU_LOONGSON2E
+diff --git a/arch/mips/include/asm/hazards.h b/arch/mips/include/asm/hazards.h
+index 7b99efd..dbb1eb6 100644
+--- a/arch/mips/include/asm/hazards.h
++++ b/arch/mips/include/asm/hazards.h
+@@ -22,7 +22,8 @@
  /*
-  * CPU ASE encodings
-diff --git a/arch/mips/include/asm/mipsregs.h b/arch/mips/include/asm/mipsregs.h
-index 9290fd4..8affca2 100644
---- a/arch/mips/include/asm/mipsregs.h
-+++ b/arch/mips/include/asm/mipsregs.h
-@@ -1444,6 +1444,12 @@ do {									\
- #define read_c0_pwctl()		__read_32bit_c0_register($6, 6)
- #define write_c0_pwctl(val)	__write_32bit_c0_register($6, 6, val)
- 
-+#define read_c0_pgd()		__read_64bit_c0_register($9, 7)
-+#define write_c0_pgd(val)	__write_64bit_c0_register($9, 7, val)
-+
-+#define read_c0_kpgd()		__read_64bit_c0_register($31, 7)
-+#define write_c0_kpgd(val)	__write_64bit_c0_register($31, 7, val)
-+
- /* Cavium OCTEON (cnMIPS) */
- #define read_c0_cvmcount()	__read_ulong_c0_register($9, 6)
- #define write_c0_cvmcount(val)	__write_ulong_c0_register($9, 6, val)
-diff --git a/arch/mips/include/asm/uasm.h b/arch/mips/include/asm/uasm.h
-index fc1cdd2..b6ecfee 100644
---- a/arch/mips/include/asm/uasm.h
-+++ b/arch/mips/include/asm/uasm.h
-@@ -171,7 +171,8 @@ Ip_u2u1(_wsbh);
- Ip_u3u1u2(_xor);
- Ip_u2u1u3(_xori);
- Ip_u2u1(_yield);
--
-+Ip_u1u2(_ldpte);
-+Ip_u2u1u3(_lddir);
- 
- /* Handle labels. */
- struct uasm_label {
-diff --git a/arch/mips/include/uapi/asm/inst.h b/arch/mips/include/uapi/asm/inst.h
-index ddea53e..3bb8cd9 100644
---- a/arch/mips/include/uapi/asm/inst.h
-+++ b/arch/mips/include/uapi/asm/inst.h
-@@ -204,6 +204,16 @@ enum mad_func {
- };
- 
- /*
-+ * func field for page table walker (Loongson-3).
-+ */
-+enum ptw_func {
-+	lwdir_op = 0x00,
-+	lwpte_op = 0x01,
-+	lddir_op = 0x02,
-+	ldpte_op = 0x03,
-+};
-+
-+/*
-  * func field for special3 lx opcodes (Cavium Octeon).
+  * TLB hazards
   */
- enum lx_func {
-diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
-index ef605e2..aa2e615 100644
---- a/arch/mips/kernel/cpu-probe.c
-+++ b/arch/mips/kernel/cpu-probe.c
-@@ -1521,7 +1521,7 @@ static inline void cpu_probe_loongson(struct cpuinfo_mips *c, unsigned int cpu)
- 		}
+-#if defined(CONFIG_CPU_MIPSR2) || defined(CONFIG_CPU_MIPSR6) && !defined(CONFIG_CPU_CAVIUM_OCTEON)
++#if (defined(CONFIG_CPU_MIPSR2) || defined(CONFIG_CPU_MIPSR6)) && \
++	!defined(CONFIG_CPU_CAVIUM_OCTEON) && !defined(CONFIG_LOONGSON3_ENHANCEMENT)
  
- 		decode_configs(c);
--		c->options |= MIPS_CPU_TLBINV;
-+		c->options |= MIPS_CPU_TLBINV | MIPS_CPU_LDPTE;
- 		c->writecombine = _CACHE_UNCACHED_ACCELERATED;
- 		break;
- 	default:
-diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
-index b1a712f..7bc8978 100644
---- a/arch/mips/mm/tlbex.c
-+++ b/arch/mips/mm/tlbex.c
-@@ -284,7 +284,12 @@ static inline void dump_handler(const char *symbol, const u32 *handler, int coun
- #define C0_ENTRYLO1	3, 0
- #define C0_CONTEXT	4, 0
- #define C0_PAGEMASK	5, 0
-+#define C0_PWBASE	5, 5
-+#define C0_PWFIELD	5, 6
-+#define C0_PWSIZE	5, 7
-+#define C0_PWCTL	6, 6
- #define C0_BADVADDR	8, 0
-+#define C0_PGD		9, 7
- #define C0_ENTRYHI	10, 0
- #define C0_EPC		14, 0
- #define C0_XCONTEXT	20, 0
-@@ -808,7 +813,10 @@ build_get_pmde64(u32 **p, struct uasm_label **l, struct uasm_reloc **r,
+ /*
+  * MIPSR2 defines ehb for hazard avoidance
+@@ -155,8 +156,8 @@ do {									\
+ } while (0)
  
- 	if (pgd_reg != -1) {
- 		/* pgd is in pgd_reg */
--		UASM_i_MFC0(p, ptr, c0_kscratch(), pgd_reg);
-+		if (cpu_has_ldpte)
-+			UASM_i_MFC0(p, ptr, C0_PWBASE);
-+		else
-+			UASM_i_MFC0(p, ptr, c0_kscratch(), pgd_reg);
- 	} else {
- #if defined(CONFIG_MIPS_PGD_C0_CONTEXT)
- 		/*
-@@ -1421,6 +1429,108 @@ static void build_r4000_tlb_refill_handler(void)
- 	dump_handler("r4000_tlb_refill", (u32 *)ebase, 64);
+ #elif defined(CONFIG_MIPS_ALCHEMY) || defined(CONFIG_CPU_CAVIUM_OCTEON) || \
+-	defined(CONFIG_CPU_LOONGSON2) || defined(CONFIG_CPU_R10000) || \
+-	defined(CONFIG_CPU_R5500) || defined(CONFIG_CPU_XLR)
++	defined(CONFIG_CPU_LOONGSON2) || defined(CONFIG_LOONGSON3_ENHANCEMENT) || \
++	defined(CONFIG_CPU_R10000) || defined(CONFIG_CPU_R5500) || defined(CONFIG_CPU_XLR)
+ 
+ /*
+  * R10000 rocks - all hazards handled in hardware, so this becomes a nobrainer.
+diff --git a/arch/mips/include/asm/io.h b/arch/mips/include/asm/io.h
+index 2b4dc7a..ecabc00 100644
+--- a/arch/mips/include/asm/io.h
++++ b/arch/mips/include/asm/io.h
+@@ -304,10 +304,10 @@ static inline void iounmap(const volatile void __iomem *addr)
+ #undef __IS_KSEG1
  }
  
-+static void setup_pw(void)
-+{
-+	unsigned long pgd_i, pgd_w;
-+#ifndef __PAGETABLE_PMD_FOLDED
-+	unsigned long pmd_i, pmd_w;
-+#endif
-+	unsigned long pt_i, pt_w;
-+	unsigned long pte_i, pte_w;
-+#ifdef CONFIG_MIPS_HUGE_TLB_SUPPORT
-+	unsigned long psn;
-+
-+	psn = ilog2(_PAGE_HUGE);     /* bit used to indicate huge page */
-+#endif
-+	pgd_i = PGDIR_SHIFT;  /* 1st level PGD */
-+#ifndef __PAGETABLE_PMD_FOLDED
-+	pgd_w = PGDIR_SHIFT - PMD_SHIFT + PGD_ORDER;
-+
-+	pmd_i = PMD_SHIFT;    /* 2nd level PMD */
-+	pmd_w = PMD_SHIFT - PAGE_SHIFT;
-+#else
-+	pgd_w = PGDIR_SHIFT - PAGE_SHIFT + PGD_ORDER;
-+#endif
-+
-+	pt_i  = PAGE_SHIFT;    /* 3rd level PTE */
-+	pt_w  = PAGE_SHIFT - 3;
-+
-+	pte_i = ilog2(_PAGE_GLOBAL);
-+	pte_w = 0;
-+
-+#ifndef __PAGETABLE_PMD_FOLDED
-+	write_c0_pwfield(pgd_i << 24 | pmd_i << 12 | pt_i << 6 | pte_i);
-+	write_c0_pwsize(1 << 30 | pgd_w << 24 | pmd_w << 12 | pt_w << 6 | pte_w);
-+#else
-+	write_c0_pwfield(pgd_i << 24 | pt_i << 6 | pte_i);
-+	write_c0_pwsize(1 << 30 | pgd_w << 24 | pt_w << 6 | pte_w);
-+#endif
-+
-+#ifdef CONFIG_MIPS_HUGE_TLB_SUPPORT
-+	write_c0_pwctl(1 << 6 | psn);
-+#endif
-+	write_c0_kpgd(swapper_pg_dir);
-+	kscratch_used_mask |= (1 << 7); /* KScratch6 is used for KPGD */
-+}
-+
-+static void build_loongson3_tlb_refill_handler(void)
-+{
-+	u32 *p = tlb_handler;
-+	struct uasm_label *l = labels;
-+	struct uasm_reloc *r = relocs;
-+
-+	memset(labels, 0, sizeof(labels));
-+	memset(relocs, 0, sizeof(relocs));
-+	memset(tlb_handler, 0, sizeof(tlb_handler));
-+
-+	if (check_for_high_segbits) {
-+		uasm_i_dmfc0(&p, K0, C0_BADVADDR);
-+		uasm_i_dsrl_safe(&p, K1, K0, PGDIR_SHIFT + PGD_ORDER + PAGE_SHIFT - 3);
-+		uasm_il_beqz(&p, &r, K1, label_vmalloc);
-+		uasm_i_nop(&p);
-+
-+		uasm_il_bgez(&p, &r, K0, label_large_segbits_fault);
-+		uasm_i_nop(&p);
-+		uasm_l_vmalloc(&l, p);
-+	}
-+
-+	uasm_i_dmfc0(&p, K1, C0_PGD);
-+
-+	uasm_i_lddir(&p, K0, K1, 3);  /* global page dir */
-+#ifndef __PAGETABLE_PMD_FOLDED
-+	uasm_i_lddir(&p, K1, K0, 1);  /* middle page dir */
-+#endif
-+	uasm_i_ldpte(&p, K1, 0);      /* even */
-+	uasm_i_ldpte(&p, K1, 1);      /* odd */
-+	uasm_i_tlbwr(&p);
-+
-+	/* restore page mask */
-+	if (PM_DEFAULT_MASK >> 16) {
-+		uasm_i_lui(&p, K0, PM_DEFAULT_MASK >> 16);
-+		uasm_i_ori(&p, K0, K0, PM_DEFAULT_MASK & 0xffff);
-+		uasm_i_mtc0(&p, K0, C0_PAGEMASK);
-+	} else if (PM_DEFAULT_MASK) {
-+		uasm_i_ori(&p, K0, 0, PM_DEFAULT_MASK);
-+		uasm_i_mtc0(&p, K0, C0_PAGEMASK);
-+	} else {
-+		uasm_i_mtc0(&p, 0, C0_PAGEMASK);
-+	}
-+
-+	uasm_i_eret(&p);
-+
-+	if (check_for_high_segbits) {
-+		uasm_l_large_segbits_fault(&l, p);
-+		UASM_i_LA(&p, K1, (unsigned long)tlb_do_page_fault_0);
-+		uasm_i_jr(&p, K1);
-+		uasm_i_nop(&p);
-+	}
-+
-+	uasm_resolve_relocs(relocs, labels);
-+	memcpy((void *)(ebase + 0x80), tlb_handler, 0x80);
-+	local_flush_icache_range(ebase + 0x80, ebase + 0x100);
-+	dump_handler("loongson3_tlb_refill", (u32 *)(ebase + 0x80), 32);
-+}
-+
- extern u32 handle_tlbl[], handle_tlbl_end[];
- extern u32 handle_tlbs[], handle_tlbs_end[];
- extern u32 handle_tlbm[], handle_tlbm_end[];
-@@ -1468,7 +1578,10 @@ static void build_setup_pgd(void)
- 	} else {
- 		/* PGD in c0_KScratch */
- 		uasm_i_jr(&p, 31);
--		UASM_i_MTC0(&p, a0, c0_kscratch(), pgd_reg);
-+		if (cpu_has_ldpte)
-+			UASM_i_MTC0(&p, a0, C0_PWBASE);
-+		else
-+			UASM_i_MTC0(&p, a0, c0_kscratch(), pgd_reg);
- 	}
+-#ifdef CONFIG_CPU_CAVIUM_OCTEON
+-#define war_octeon_io_reorder_wmb()		wmb()
++#if defined(CONFIG_CPU_CAVIUM_OCTEON) || defined(CONFIG_LOONGSON3_ENHANCEMENT)
++#define war_io_reorder_wmb()		wmb()
  #else
- #ifdef CONFIG_SMP
-@@ -2437,13 +2550,18 @@ void build_tlb_refill_handler(void)
+-#define war_octeon_io_reorder_wmb()		do { } while (0)
++#define war_io_reorder_wmb()		do { } while (0)
+ #endif
+ 
+ #define __BUILD_MEMORY_SINGLE(pfx, bwlq, type, irq)			\
+@@ -318,7 +318,7 @@ static inline void pfx##write##bwlq(type val,				\
+ 	volatile type *__mem;						\
+ 	type __val;							\
+ 									\
+-	war_octeon_io_reorder_wmb();					\
++	war_io_reorder_wmb();					\
+ 									\
+ 	__mem = (void *)__swizzle_addr_##bwlq((unsigned long)(mem));	\
+ 									\
+@@ -387,7 +387,7 @@ static inline void pfx##out##bwlq##p(type val, unsigned long port)	\
+ 	volatile type *__addr;						\
+ 	type __val;							\
+ 									\
+-	war_octeon_io_reorder_wmb();					\
++	war_io_reorder_wmb();					\
+ 									\
+ 	__addr = (void *)__swizzle_addr_##bwlq(mips_io_port_base + port); \
+ 									\
+diff --git a/arch/mips/include/asm/irqflags.h b/arch/mips/include/asm/irqflags.h
+index 65c351e..9d3610b 100644
+--- a/arch/mips/include/asm/irqflags.h
++++ b/arch/mips/include/asm/irqflags.h
+@@ -41,7 +41,12 @@ static inline unsigned long arch_local_irq_save(void)
+ 	"	.set	push						\n"
+ 	"	.set	reorder						\n"
+ 	"	.set	noat						\n"
++#if defined(CONFIG_CPU_LOONGSON3)
++	"	mfc0	%[flags], $12					\n"
++	"	di							\n"
++#else
+ 	"	di	%[flags]					\n"
++#endif
+ 	"	andi	%[flags], 1					\n"
+ 	"	" __stringify(__irq_disable_hazard) "			\n"
+ 	"	.set	pop						\n"
+diff --git a/arch/mips/include/asm/mach-loongson64/kernel-entry-init.h b/arch/mips/include/asm/mach-loongson64/kernel-entry-init.h
+index da83482..8393bc54 100644
+--- a/arch/mips/include/asm/mach-loongson64/kernel-entry-init.h
++++ b/arch/mips/include/asm/mach-loongson64/kernel-entry-init.h
+@@ -26,6 +26,12 @@
+ 	mfc0	t0, $5, 1
+ 	or	t0, (0x1 << 29)
+ 	mtc0	t0, $5, 1
++#ifdef CONFIG_LOONGSON3_ENHANCEMENT
++	/* Enable STFill Buffer */
++	mfc0	t0, $16, 6
++	or	t0, 0x100
++	mtc0	t0, $16, 6
++#endif
+ 	_ehb
+ 	.set	pop
+ #endif
+@@ -46,6 +52,12 @@
+ 	mfc0	t0, $5, 1
+ 	or	t0, (0x1 << 29)
+ 	mtc0	t0, $5, 1
++#ifdef CONFIG_LOONGSON3_ENHANCEMENT
++	/* Enable STFill Buffer */
++	mfc0	t0, $16, 6
++	or	t0, 0x100
++	mtc0	t0, $16, 6
++#endif
+ 	_ehb
+ 	.set	pop
+ #endif
+diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
+index 8df4a94..51cc4f0 100644
+--- a/arch/mips/mm/c-r4k.c
++++ b/arch/mips/mm/c-r4k.c
+@@ -1149,6 +1149,8 @@ static void probe_pcache(void)
+ 					  c->dcache.ways *
+ 					  c->dcache.linesz;
+ 		c->dcache.waybit = 0;
++		if ((prid & PRID_REV_MASK) >= PRID_REV_LOONGSON3A_R2)
++			c->options |= MIPS_CPU_PREFETCH;
  		break;
  
- 	default:
-+		if (cpu_has_ldpte)
-+			setup_pw();
+ 	case CPU_CAVIUM_OCTEON3:
+diff --git a/arch/mips/mm/page.c b/arch/mips/mm/page.c
+index 885d73f..c41953c 100644
+--- a/arch/mips/mm/page.c
++++ b/arch/mips/mm/page.c
+@@ -188,6 +188,15 @@ static void set_prefetch_parameters(void)
+ 			}
+ 			break;
+ 
++		case CPU_LOONGSON3:
++			/* Loongson-3 only support the Pref_Load/Pref_Store. */
++			pref_bias_clear_store = 128;
++			pref_bias_copy_load = 128;
++			pref_bias_copy_store = 128;
++			pref_src_mode = Pref_Load;
++			pref_dst_mode = Pref_Store;
++			break;
 +
- 		if (!run_once) {
- 			scratch_reg = allocate_kscratch();
- 			build_setup_pgd();
- 			build_r4000_tlb_load_handler();
- 			build_r4000_tlb_store_handler();
- 			build_r4000_tlb_modify_handler();
--			if (!cpu_has_local_ebase)
-+			if (cpu_has_ldpte)
-+				build_loongson3_tlb_refill_handler();
-+			else if (!cpu_has_local_ebase)
- 				build_r4000_tlb_refill_handler();
- 			flush_tlb_handlers();
- 			run_once++;
-diff --git a/arch/mips/mm/uasm-mips.c b/arch/mips/mm/uasm-mips.c
-index b4a83789..9c2220a 100644
---- a/arch/mips/mm/uasm-mips.c
-+++ b/arch/mips/mm/uasm-mips.c
-@@ -153,6 +153,8 @@ static struct insn insn_table[] = {
- 	{ insn_xori,  M(xori_op, 0, 0, 0, 0, 0),  RS | RT | UIMM },
- 	{ insn_xor,  M(spec_op, 0, 0, 0, 0, xor_op),  RS | RT | RD },
- 	{ insn_yield, M(spec3_op, 0, 0, 0, 0, yield_op), RS | RD },
-+	{ insn_ldpte, M(lwc2_op, 0, 0, 0, ldpte_op, mult_op), RS | RD },
-+	{ insn_lddir, M(lwc2_op, 0, 0, 0, lddir_op, mult_op), RS | RT | RD },
- 	{ insn_invalid, 0, 0 }
- };
- 
-diff --git a/arch/mips/mm/uasm.c b/arch/mips/mm/uasm.c
-index 319051c..ad718de 100644
---- a/arch/mips/mm/uasm.c
-+++ b/arch/mips/mm/uasm.c
-@@ -60,6 +60,7 @@ enum opcode {
- 	insn_sltiu, insn_sltu, insn_sra, insn_srl, insn_srlv, insn_subu,
- 	insn_sw, insn_sync, insn_syscall, insn_tlbp, insn_tlbr, insn_tlbwi,
- 	insn_tlbwr, insn_wait, insn_wsbh, insn_xor, insn_xori, insn_yield,
-+	insn_lddir, insn_ldpte,
- };
- 
- struct insn {
-@@ -335,6 +336,8 @@ I_u1u2s3(_bbit0);
- I_u1u2s3(_bbit1);
- I_u3u1u2(_lwx)
- I_u3u1u2(_ldx)
-+I_u1u2(_ldpte)
-+I_u2u1u3(_lddir)
- 
- #ifdef CONFIG_CPU_CAVIUM_OCTEON
- #include <asm/octeon/octeon.h>
+ 		default:
+ 			pref_bias_clear_store = 128;
+ 			pref_bias_copy_load = 256;
 -- 
 2.7.0

@@ -1,18 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Mar 2016 04:46:16 +0100 (CET)
-Received: from smtpbgsg2.qq.com ([54.254.200.128]:39893 "EHLO smtpbgsg2.qq.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Mar 2016 04:46:32 +0100 (CET)
+Received: from smtpbgsg2.qq.com ([54.254.200.128]:40475 "EHLO smtpbgsg2.qq.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27007209AbcCBDp50IoLd (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 2 Mar 2016 04:45:57 +0100
-X-QQ-mid: bizesmtp15t1456890303t704t23
+        id S27007642AbcCBDqITdQgd (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 2 Mar 2016 04:46:08 +0100
+X-QQ-mid: bizesmtp15t1456890345t465t20
 Received: from software.domain.org (unknown [222.92.8.142])
         by esmtp4.qq.com (ESMTP) with 
-        id ; Wed, 02 Mar 2016 11:44:48 +0800 (CST)
+        id ; Wed, 02 Mar 2016 11:45:15 +0800 (CST)
 X-QQ-SSF: 01100000000000F0FK70B00A0000000
-X-QQ-FEAT: Ngtn/3KK5eqGkjWBHmFj437WNJGwPByCl0pZVFsVS5k9w/B9O4MvTBSNhe7BU
-        4envA/Pxle84CIDY9rCg2tQsMGFUtW3oHmbyGzSUhbdMW6vVlCQQ1dmSGxFJE5Cs+1xectz
-        cA9rswojPz8JMpkbFH0dfUWqYz9A4cU2H2sFrGhok0cOjmYQ1FkoBgsKcIosg4iqyqDODfG
-        ERA2dbsuaXkMI99u48GrDNQFSlUMuJKOp5EgmXoWNv20q3ekuNsPIWwTw2+WdxlH96ieJKa
-        C28KtH2dzkaADe
+X-QQ-FEAT: uuX/0Mknq+qBKX4wVSFydyK1Jk4QKouz5nbN/N2+p/HM2HDTbqxHqaCMslMa0
+        iStxAQ4qE16cdtnU3q4lhidz0Q01EH7eWU/EV96bR3K3ZIQaiV9FzUoCcSTXjXSb806RzYV
+        a3JIauBDVhD48p3RrbHj7OTP45LrBaXu64vQtgHBjtqpNet5jxl+o6/fgN394z4fWEBtsly
+        gvadD3DNqr0dv+7x6bwV85kjEvkkzfs7NjMeulD2kn14IIH2uorzOSPLA2zHuW3K9UidU1e
+        tlcwo3v7i6jMjd
 X-QQ-GoodBg: 0
 From:   Huacai Chen <chenhc@lemote.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
@@ -21,17 +21,19 @@ Cc:     Aurelien Jarno <aurelien@aurel32.net>,
         linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
         Zhangjin Wu <wuzhangjin@gmail.com>,
         Huacai Chen <chenhc@lemote.com>
-Subject: [PATCH V5 0/5] MIPS: Loongson: Add Loongson-3A R2 support
-Date:   Wed,  2 Mar 2016 11:45:10 +0800
-Message-Id: <1456890315-28814-1-git-send-email-chenhc@lemote.com>
+Subject: [PATCH V5 2/5] MIPS: Loongson-3: Set cache flush handlers to cache_noop
+Date:   Wed,  2 Mar 2016 11:45:12 +0800
+Message-Id: <1456890315-28814-3-git-send-email-chenhc@lemote.com>
 X-Mailer: git-send-email 2.7.0
+In-Reply-To: <1456890315-28814-1-git-send-email-chenhc@lemote.com>
+References: <1456890315-28814-1-git-send-email-chenhc@lemote.com>
 X-QQ-SENDSIZE: 520
 X-QQ-Bgrelay: 1
 Return-Path: <chenhc@lemote.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52407
+X-archive-position: 52408
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,77 +50,43 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This patchset is is prepared for the next 4.6 release for Linux/MIPS.
-It adds Loongson-3A R2 (Loongson-3A2000) support and fixes a potential
-bug related to FTLB.
+Loongson-3 maintains cache coherency by hardware, this means:
+ 1) It's icache is coherent with dcache.
+ 2) It's dcaches don't alias (maybe depend on PAGE_SIZE).
+ 3) It maintains cache coherency across cores (and for DMA).
 
-Loongson-3 CPU family:
-
-Code-name       Brand-name       PRId
-Loongson-3A R1  Loongson-3A1000  0x6305
-Loongson-3A R2  Loongson-3A2000  0x6308
-Loongson-3B R1  Loongson-3B1000  0x6306
-Loongson-3B R2  Loongson-3B1500  0x6307
-
-Features of R2 revision of Loongson-3A:
-1, Primary cache includes I-Cache, D-Cache and V-Cache (Victim Cache).
-2, I-Cache, D-Cache and V-Cache are 16-way set-associative, linesize is 64 Bytes.
-3, 64 entries of VTLB (classic TLB), 1024 entries of FTLB (8-way set-associative).
-4, Support DSP/DSPv2 instructions, UserLocal register and Read-Inhibit/Execute-Inhibit.
-
-V1 -> V2:
-1, Probe MIPS_CPU_PREFETCH by PRId.
-2, Use PRID_REV_MASK instead of hardcode.
-3, Update commit messages to avoid confusion.
-
-V2 -> V3:
-1, Remove the 4th patch since it is a bugfix not only for Loongson.
-2, Split the 5th patch and remove the generic part since that is not only for Loongson.
-
-V3 -> V4:
-1, Rework by setting the relevant handlers to `cache_noop' in `r4k_cache_init'.
-
-V4 -> V5:
-1, Update help and commit messages.
-
-Huacai Chen(5):
- MIPS: Loongson: Add Loongson-3A R2 basic support.
- MIPS: Loongson-3: Set cache flush handlers to cache_noop.
- MIPS: Loongson: Invalidate special TLBs when needed.
- MIPS: Loongson-3: Fast TLB refill handler.
- MIPS: Loongson-3: Introduce CONFIG_LOONGSON3_ENHANCEMENT.
+So we can skip most cache flush operations by setting relevant handlers
+to `cache_noop' in `r4k_cache_init'.
 
 Signed-off-by: Huacai Chen <chenhc@lemote.com>
 ---
- arch/mips/Kconfig                                  |  19 ++++
- arch/mips/include/asm/cacheops.h                   |   6 +
- arch/mips/include/asm/cpu-features.h               |   3 +
- arch/mips/include/asm/cpu-info.h                   |   1 +
- arch/mips/include/asm/cpu.h                        |   5 +-
- arch/mips/include/asm/hazards.h                    |   7 +-
- arch/mips/include/asm/io.h                         |  10 +-
- arch/mips/include/asm/irqflags.h                   |   5 +
- .../asm/mach-loongson64/cpu-feature-overrides.h    |  12 +-
- .../asm/mach-loongson64/kernel-entry-init.h        |  18 ++-
- arch/mips/include/asm/mipsregs.h                   |   8 ++
- arch/mips/include/asm/pgtable-bits.h               |   8 +-
- arch/mips/include/asm/pgtable.h                    |   4 +-
- arch/mips/include/asm/uasm.h                       |   3 +-
- arch/mips/include/uapi/asm/inst.h                  |  10 ++
- arch/mips/kernel/cpu-probe.c                       |  40 ++++++-
- arch/mips/kernel/idle.c                            |   5 +
- arch/mips/kernel/traps.c                           |   3 +-
- arch/mips/loongson64/common/env.c                  |   7 +-
- arch/mips/loongson64/loongson-3/smp.c              | 106 +++++++++++++++--
- arch/mips/mm/c-r4k.c                               |  43 +++++++
- arch/mips/mm/page.c                                |   9 ++
- arch/mips/mm/tlb-r4k.c                             |  27 +++--
- arch/mips/mm/tlbex.c                               | 126 ++++++++++++++++++++-
- arch/mips/mm/uasm-mips.c                           |   2 +
- arch/mips/mm/uasm.c                                |   3 +
- drivers/platform/mips/cpu_hwmon.c                  |   4 +-
- 27 files changed, 435 insertions(+), 59 deletions(-)
---
-2.7.0
+ arch/mips/mm/c-r4k.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-	
+diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
+index 2abc73d..8df4a94 100644
+--- a/arch/mips/mm/c-r4k.c
++++ b/arch/mips/mm/c-r4k.c
+@@ -1777,6 +1777,20 @@ void r4k_cache_init(void)
+ 		/* Optimization: an L2 flush implicitly flushes the L1 */
+ 		current_cpu_data.options |= MIPS_CPU_INCLUSIVE_CACHES;
+ 		break;
++	case CPU_LOONGSON3:
++		/* Loongson-3 maintains cache coherency by hardware */
++		__flush_cache_all	= cache_noop;
++		__flush_cache_vmap	= cache_noop;
++		__flush_cache_vunmap	= cache_noop;
++		__flush_kernel_vmap_range = (void *)cache_noop;
++		flush_cache_mm		= (void *)cache_noop;
++		flush_cache_page	= (void *)cache_noop;
++		flush_cache_range	= (void *)cache_noop;
++		flush_cache_sigtramp	= (void *)cache_noop;
++		flush_icache_all	= (void *)cache_noop;
++		flush_data_cache_page	= (void *)cache_noop;
++		local_flush_data_cache_page	= (void *)cache_noop;
++		break;
+ 	}
+ }
+ 
+-- 
+2.7.0

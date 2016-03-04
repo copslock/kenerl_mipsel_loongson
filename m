@@ -1,49 +1,71 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Mar 2016 18:47:28 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:14345 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27013288AbcCDRr0atEOK (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 4 Mar 2016 18:47:26 +0100
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Websense Email Security Gateway with ESMTPS id F0E2E50BF09FC;
-        Fri,  4 Mar 2016 17:47:16 +0000 (GMT)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
- 14.3.266.1; Fri, 4 Mar 2016 17:47:20 +0000
-Received: from localhost (10.100.200.173) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.266.1; Fri, 4 Mar
- 2016 17:47:19 +0000
-Date:   Fri, 4 Mar 2016 17:47:18 +0000
-From:   Paul Burton <paul.burton@imgtec.com>
-To:     David Daney <ddaney@caviumnetworks.com>
-CC:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>, "Lars
- Persson" <lars.persson@axis.com>, "stable # v4 . 1+"
-        <stable@vger.kernel.org>, "Steven J. Hill" <Steven.Hill@imgtec.com>, David
- Daney <david.daney@cavium.com>, Huacai Chen <chenhc@lemote.com>, Aneesh Kumar
- K.V <aneesh.kumar@linux.vnet.ibm.com>, <linux-kernel@vger.kernel.org>,
-        "Andrew Morton" <akpm@linux-foundation.org>, Jerome Marchand
-        <jmarchan@redhat.com>, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: Re: [PATCH 4/4] MIPS: Sync icache & dcache in set_pte_at
-Message-ID: <20160304174718.GA4468@NP-P-BURTON>
-References: <1456799879-14711-1-git-send-email-paul.burton@imgtec.com>
- <1456799879-14711-5-git-send-email-paul.burton@imgtec.com>
- <56D5CDB3.80407@caviumnetworks.com>
- <20160301171940.GA26791@NP-P-BURTON>
- <56D9C95A.5020106@caviumnetworks.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Mar 2016 19:48:41 +0100 (CET)
+Received: from mail-vk0-f50.google.com ([209.85.213.50]:35427 "EHLO
+        mail-vk0-f50.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27013234AbcCDSsjKAm2m (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 4 Mar 2016 19:48:39 +0100
+Received: by mail-vk0-f50.google.com with SMTP id e6so62860689vkh.2
+        for <linux-mips@linux-mips.org>; Fri, 04 Mar 2016 10:48:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc;
+        bh=pffMR4tGQxlyz+5Cv+QHX0qRpwMf8p/xzKIRfsVuD0Q=;
+        b=U4R/ARvLDDW1NdyRy0/sM+hPC9S1nWBnyoSBFRS4p1YDSFG/0lySEyyet0d8WMU2yg
+         xZD4T4s0jCV3REtsnvt43P9sASmPU3KDRbMb5sm8FKn+xBjfEv5w+mbB6hibLeKNZ/IG
+         JsauMNKUS6jbHeQpu4wNaRpqIhn3ietDReKGhV889wT25jXUbgc1/HYWs3LLUYVqA3ke
+         Id1sf1I98tuE+Z6s3hBH49+atuxttqXenfWx+IQvrKEN27lHozAQN9YTp7x091lar3f4
+         qUXTzPFpeLJDIiAgu099wPmzhqBz3azjKRSfziKpZwTNTxvNnS4JwfM5U5fC3g+Xcb1x
+         tSqQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc;
+        bh=pffMR4tGQxlyz+5Cv+QHX0qRpwMf8p/xzKIRfsVuD0Q=;
+        b=DCy1n82QMqC/Heiz3fHaesqR4T7xpvNfT6BqaWtc9o2MAJrIl/bPZATKj966ZDpEYs
+         ElgDBlS0/mYfZ3SpVpGZ55ILe8Q0lwZGNVEaUJR/x6RTvxB4+tTEgB05EZbcEge4rKNf
+         +9Om2JGSribCNSpz6b4+S+xBh1t3ZbrS8t9tE=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:sender:in-reply-to:references:date
+         :message-id:subject:from:to:cc;
+        bh=pffMR4tGQxlyz+5Cv+QHX0qRpwMf8p/xzKIRfsVuD0Q=;
+        b=Umb3w0ode/ghHkJK8vD1dC8OYyq1J3aH9lwAKQZ9U4RN3P3HksgpZIV3FP5L6iMpRf
+         4NmA+Cz1+O9lIwPDoyD+5sNZjKorM1DSkV1s4pv70M/g3mTjscVz/xyuDZVicsnjfPOj
+         7Sriv/hk/fFij4EvO8kj4uIm3iSpxZX+4urN7XHObfTMFXEeEoa1q2F/rGdOLIhXRqdc
+         BloIuApkPw4nqB08iWqX8/t3bZDzlVffDaMGbcMRicQ7ryoAN36fNDZtRzpLyEZdWMQx
+         x/+AIjMnNiwyFugKJlabU4HpvjakSLOstN0k/JqykqwSuJ3dAV5+Fp7s88s1LmKY54ZA
+         rWzw==
+X-Gm-Message-State: AD7BkJLiqrM6tJ+9VpVseTYgYxxcD+0mv1xhXkm57SyGox+CIVgqMYemYmvAInYFFwYYfiAzunv16gAzJZF2p3aX
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-In-Reply-To: <56D9C95A.5020106@caviumnetworks.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-X-Originating-IP: [10.100.200.173]
-Return-Path: <Paul.Burton@imgtec.com>
+X-Received: by 10.31.47.207 with SMTP id v198mr7376773vkv.6.1457117313131;
+ Fri, 04 Mar 2016 10:48:33 -0800 (PST)
+Received: by 10.176.68.65 with HTTP; Fri, 4 Mar 2016 10:48:33 -0800 (PST)
+In-Reply-To: <1457105302-15070-1-git-send-email-Govindraj.Raja@imgtec.com>
+References: <1457105302-15070-1-git-send-email-Govindraj.Raja@imgtec.com>
+Date:   Fri, 4 Mar 2016 10:48:33 -0800
+X-Google-Sender-Auth: dqIhFYsDNxyrYJ5QbjtviXM5tvo
+Message-ID: <CAL1qeaHYgqCBSAJBEyrEW3d0ys4BGZ8tzFYbJGONPRSO2fGevA@mail.gmail.com>
+Subject: Re: [PATCH] pinctrl: pistachio: fix mfio84-89 function description
+ and pinmux.
+From:   Andrew Bresticker <abrestic@chromium.org>
+To:     Govindraj Raja <Govindraj.Raja@imgtec.com>
+Cc:     "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Linux-MIPS <linux-mips@linux-mips.org>,
+        James Hartley <James.Hartley@imgtec.com>,
+        "Stable kernel (v4.1)" <stable@vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <abrestic@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52452
+X-archive-position: 52453
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@imgtec.com
+X-original-sender: abrestic@chromium.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,101 +78,139 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Mar 04, 2016 at 09:43:54AM -0800, David Daney wrote:
-> On 03/01/2016 09:19 AM, Paul Burton wrote:
-> >On Tue, Mar 01, 2016 at 09:13:23AM -0800, David Daney wrote:
-> >>On 02/29/2016 06:37 PM, Paul Burton wrote:
-> >>[...]
-> >>>@@ -234,6 +237,22 @@ static inline void pte_clear(struct mm_struct *mm, unsigned long addr, pte_t *pt
-> >>>  }
-> >>>  #endif
-> >>>
-> >>>+static inline void set_pte_at(struct mm_struct *mm, unsigned long addr,
-> >>>+			      pte_t *ptep, pte_t pteval)
-> >>>+{
-> >>>+	extern void __update_cache(unsigned long address, pte_t pte);
-> >>>+
-> >>>+	if (!pte_present(pteval))
-> >>>+		goto cache_sync_done;
-> >>>+
-> >>>+	if (pte_present(*ptep) && (pte_pfn(*ptep) == pte_pfn(pteval)))
-> >>>+		goto cache_sync_done;
-> >>>+
-> >>>+	__update_cache(addr, pteval);
-> >>>+cache_sync_done:
-> >>>+	set_pte(ptep, pteval);
-> >>>+}
-> >>>+
-> >>
-> >>This seems crazy.
-> >
-> >Perhaps, but also correct...
-> >
-> >>I don't think any other architecture does this type of work in set_pte_at().
-> >
-> >Yes they do. As mentioned in the commit message see arm, ia64 or powerpc
-> >for architectures that all do the same sort of thing in set_pte_at.
-> >
-> >>Can you look into finding a better way?
-> >
-> >Not that I can see.
-> >
-> >>What if you ...
-> >>
-> >>
-> >>>  /*
-> >>>   * (pmds are folded into puds so this doesn't get actually called,
-> >>>   * but the define is needed for a generic inline function.)
-> >>>@@ -430,15 +449,12 @@ static inline pte_t pte_modify(pte_t pte, pgprot_t newprot)
-> >>>
-> >>>  extern void __update_tlb(struct vm_area_struct *vma, unsigned long address,
-> >>>  	pte_t pte);
-> >>>-extern void __update_cache(struct vm_area_struct *vma, unsigned long address,
-> >>>-	pte_t pte);
-> >>>
-> >>>  static inline void update_mmu_cache(struct vm_area_struct *vma,
-> >>>  	unsigned long address, pte_t *ptep)
-> >>>  {
-> >>>  	pte_t pte = *ptep;
-> >>>  	__update_tlb(vma, address, pte);
-> >>>-	__update_cache(vma, address, pte);
-> >>
-> >>... Reversed the order of these two operations?
-> >
-> >It would make no difference. The window for the race exists between
-> >flush_dcache_page & set_pte_at. update_mmu_cache isn't called until
-> >later than set_pte_at, so cannot possibly avoid the race. The commit
-> >message walks through where the race exists - I don't think you've read
-> >it.
-> 
-> 
-> I think the code that calls set_pte_at() should be fixed.
-> 
-> If cache maintenance is needed before modifying the page tables, that is
-> explicitly done in the calling code.
-> 
-> In migrate.c (remove_migration_pte, similar in do_swap_page) we have:
->    .
->    .
->    .
-> 	flush_dcache_page(new);
-> 	set_pte_at(mm, addr, ptep, pte);
->    .
->    .
->    .
-> 
-> Similar in huge_memory.c (unfreeze_page_vma, freeze_page_vma, etc.)
-> 
-> The point being, the callers have the knowledge about what is changing and
-> should make sure they do the right thing to keep the caches consistent.  The
-> job of set_pte_at() is to manipulate the page tables, nothing else.
+Govindraj,
 
-...but if we do the flush in flush_dcache_page then we abandon the lazy
-flushing.
+On Fri, Mar 4, 2016 at 7:28 AM, Govindraj Raja
+<Govindraj.Raja@imgtec.com> wrote:
+> mfio 84 to 89 are described wrongly, fix it to describe
+> the right pin and add them to right pin-mux group.
+>
+> The correct order is:
+>         pll1_lock => mips_pll   -- MFIO_83
+>         pll2_lock => audio_pll  -- MFIO_84
+>         pll3_lock => rpu_v_pll  -- MFIO_85
+>         pll4_lock => rpu_l_pll  -- MFIO_86
+>         pll5_lock => sys_pll    -- MFIO_87
+>         pll6_lock => wifi_pll   -- MFIO_88
+>         pll7_lock => bt_pll     -- MFIO_89
+>
+> Fixes: cefc03e5995e("pinctrl: Add Pistachio SoC pin control driver")
+> Signed-off-by: Govindraj Raja <Govindraj.Raja@imgtec.com>
+> Cc: linux-gpio@vger.kernel.org
+> Cc: devicetree@vger.kernel.org
+> Cc: Rob Herring <robh+dt@kernel.org>
+> Cc: Linus Walleij <linus.walleij@linaro.org>
+> Cc: Andrew Bresticker <abrestic@chromium.org>
+> Cc: linux-mips@linux-mips.org
+> Cc: James Hartley <James.Hartley@imgtec.com>
+> Cc: <stable@vger.kernel.org> # v4.2+
 
-Why do you want MIPS to be different to every other widely used
-architecture that has this problem? set_pte_at clearly is not used only
-to manipulate page tables, no matter what you might like.
+Acked-by: Andrew Bresticker <abrestic@chromium.org>
 
-Thanks,
-    Paul
+> Do I need to split this patch into dt & pinctrl?
+> Or can it be picked up through pinctrl subsystem with dt maintainers Ack?
+
+I would think that since this is a correction to the existing
+binding/driver that shouldn't be necessary, but that's up to Linus.
+
+>
+>  .../bindings/pinctrl/img,pistachio-pinctrl.txt     | 12 +++++------
+>  drivers/pinctrl/pinctrl-pistachio.c                | 24 +++++++++++-----------
+>  2 files changed, 18 insertions(+), 18 deletions(-)
+>
+> diff --git a/Documentation/devicetree/bindings/pinctrl/img,pistachio-pinctrl.txt b/Documentation/devicetree/bindings/pinctrl/img,pistachio-pinctrl.txt
+> index 08a4a32..0326154 100644
+> --- a/Documentation/devicetree/bindings/pinctrl/img,pistachio-pinctrl.txt
+> +++ b/Documentation/devicetree/bindings/pinctrl/img,pistachio-pinctrl.txt
+> @@ -134,12 +134,12 @@ mfio80            ddr_debug, mips_trace_data, mips_debug
+>  mfio81         dreq0, mips_trace_data, eth_debug
+>  mfio82         dreq1, mips_trace_data, eth_debug
+>  mfio83         mips_pll_lock, mips_trace_data, usb_debug
+> -mfio84         sys_pll_lock, mips_trace_data, usb_debug
+> -mfio85         wifi_pll_lock, mips_trace_data, sdhost_debug
+> -mfio86         bt_pll_lock, mips_trace_data, sdhost_debug
+> -mfio87         rpu_v_pll_lock, dreq2, socif_debug
+> -mfio88         rpu_l_pll_lock, dreq3, socif_debug
+> -mfio89         audio_pll_lock, dreq4, dreq5
+> +mfio84         audio_pll_lock, mips_trace_data, usb_debug
+> +mfio85         rpu_v_pll_lock, mips_trace_data, sdhost_debug
+> +mfio86         rpu_l_pll_lock, mips_trace_data, sdhost_debug
+> +mfio87         sys_pll_lock, dreq2, socif_debug
+> +mfio88         wifi_pll_lock, dreq3, socif_debug
+> +mfio89         bt_pll_lock, dreq4, dreq5
+>  tck
+>  trstn
+>  tdi
+> diff --git a/drivers/pinctrl/pinctrl-pistachio.c b/drivers/pinctrl/pinctrl-pistachio.c
+> index 856f736..2673cd9 100644
+> --- a/drivers/pinctrl/pinctrl-pistachio.c
+> +++ b/drivers/pinctrl/pinctrl-pistachio.c
+> @@ -469,27 +469,27 @@ static const char * const pistachio_mips_pll_lock_groups[] = {
+>         "mfio83",
+>  };
+>
+> -static const char * const pistachio_sys_pll_lock_groups[] = {
+> +static const char * const pistachio_audio_pll_lock_groups[] = {
+>         "mfio84",
+>  };
+>
+> -static const char * const pistachio_wifi_pll_lock_groups[] = {
+> +static const char * const pistachio_rpu_v_pll_lock_groups[] = {
+>         "mfio85",
+>  };
+>
+> -static const char * const pistachio_bt_pll_lock_groups[] = {
+> +static const char * const pistachio_rpu_l_pll_lock_groups[] = {
+>         "mfio86",
+>  };
+>
+> -static const char * const pistachio_rpu_v_pll_lock_groups[] = {
+> +static const char * const pistachio_sys_pll_lock_groups[] = {
+>         "mfio87",
+>  };
+>
+> -static const char * const pistachio_rpu_l_pll_lock_groups[] = {
+> +static const char * const pistachio_wifi_pll_lock_groups[] = {
+>         "mfio88",
+>  };
+>
+> -static const char * const pistachio_audio_pll_lock_groups[] = {
+> +static const char * const pistachio_bt_pll_lock_groups[] = {
+>         "mfio89",
+>  };
+>
+> @@ -559,12 +559,12 @@ enum pistachio_mux_option {
+>         PISTACHIO_FUNCTION_DREQ4,
+>         PISTACHIO_FUNCTION_DREQ5,
+>         PISTACHIO_FUNCTION_MIPS_PLL_LOCK,
+> +       PISTACHIO_FUNCTION_AUDIO_PLL_LOCK,
+> +       PISTACHIO_FUNCTION_RPU_V_PLL_LOCK,
+> +       PISTACHIO_FUNCTION_RPU_L_PLL_LOCK,
+>         PISTACHIO_FUNCTION_SYS_PLL_LOCK,
+>         PISTACHIO_FUNCTION_WIFI_PLL_LOCK,
+>         PISTACHIO_FUNCTION_BT_PLL_LOCK,
+> -       PISTACHIO_FUNCTION_RPU_V_PLL_LOCK,
+> -       PISTACHIO_FUNCTION_RPU_L_PLL_LOCK,
+> -       PISTACHIO_FUNCTION_AUDIO_PLL_LOCK,
+>         PISTACHIO_FUNCTION_DEBUG_RAW_CCA_IND,
+>         PISTACHIO_FUNCTION_DEBUG_ED_SEC20_CCA_IND,
+>         PISTACHIO_FUNCTION_DEBUG_ED_SEC40_CCA_IND,
+> @@ -620,12 +620,12 @@ static const struct pistachio_function pistachio_functions[] = {
+>         FUNCTION(dreq4),
+>         FUNCTION(dreq5),
+>         FUNCTION(mips_pll_lock),
+> +       FUNCTION(audio_pll_lock),
+> +       FUNCTION(rpu_v_pll_lock),
+> +       FUNCTION(rpu_l_pll_lock),
+>         FUNCTION(sys_pll_lock),
+>         FUNCTION(wifi_pll_lock),
+>         FUNCTION(bt_pll_lock),
+> -       FUNCTION(rpu_v_pll_lock),
+> -       FUNCTION(rpu_l_pll_lock),
+> -       FUNCTION(audio_pll_lock),
+>         FUNCTION(debug_raw_cca_ind),
+>         FUNCTION(debug_ed_sec20_cca_ind),
+>         FUNCTION(debug_ed_sec40_cca_ind),
+> --
+> 2.5.0
+>

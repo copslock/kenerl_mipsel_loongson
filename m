@@ -1,41 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Mar 2016 14:43:46 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:17004 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27013201AbcCDNnoaDfqp (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 4 Mar 2016 14:43:44 +0100
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Websense Email Security Gateway with ESMTPS id 34BD8A89F9319;
-        Fri,  4 Mar 2016 13:43:36 +0000 (GMT)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- HHMAIL01.hh.imgtec.org (10.100.10.19) with Microsoft SMTP Server (TLS) id
- 14.3.266.1; Fri, 4 Mar 2016 13:43:38 +0000
-Received: from [192.168.154.116] (192.168.154.116) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.266.1; Fri, 4 Mar
- 2016 13:43:37 +0000
-Subject: Re: [PATCH] MIPS: smp.c: Fix uninitialised temp_foreign_map
-To:     James Hogan <james.hogan@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-References: <1457086251-6477-1-git-send-email-james.hogan@imgtec.com>
-CC:     Paul Burton <paul.burton@imgtec.com>, <linux-mips@linux-mips.org>
-From:   Matt Redfearn <matt.redfearn@imgtec.com>
-Message-ID: <56D99109.2050306@imgtec.com>
-Date:   Fri, 4 Mar 2016 13:43:37 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.5.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Mar 2016 14:46:27 +0100 (CET)
+Received: from exsmtp03.microchip.com ([198.175.253.49]:21449 "EHLO
+        email.microchip.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S27006974AbcCDNqZBBvPp (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 4 Mar 2016 14:46:25 +0100
+Received: from mx.microchip.com (10.10.76.4) by chn-sv-exch03.mchp-main.com
+ (10.10.76.49) with Microsoft SMTP Server id 14.3.181.6; Fri, 4 Mar 2016
+ 06:46:15 -0700
+Received: by mx.microchip.com (sSMTP sendmail emulation); Fri, 04 Mar 2016
+ 19:14:45 +0530
+From:   Purna Chandra Mandal <purna.mandal@microchip.com>
+To:     <linux-kernel@vger.kernel.org>, <linux-spi@vger.kernel.org>
+CC:     Purna Chandra Mandal <purna.mandal@microchip.com>,
+        <devicetree@vger.kernel.org>, <linux-mips@linux-mips.org>,
+        Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
+        Kumar Gala <galak@codeaurora.org>,
+        Ian Campbell <ijc+devicetree@hellion.org.uk>,
+        Rob Herring <robh+dt@kernel.org>,
+        Pawel Moll <pawel.moll@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>
+Subject: [PATCH v2 1/2] dt/bindings: Add bindings for PIC32 SPI peripheral
+Date:   Fri, 4 Mar 2016 19:14:41 +0530
+Message-ID: <1457099082-12587-1-git-send-email-purna.mandal@microchip.com>
+X-Mailer: git-send-email 1.8.3.1
 MIME-Version: 1.0
-In-Reply-To: <1457086251-6477-1-git-send-email-james.hogan@imgtec.com>
-Content-Type: text/plain; charset="windows-1252"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.154.116]
-Return-Path: <Matt.Redfearn@imgtec.com>
+Content-Type: text/plain
+Return-Path: <Purna.Mandal@microchip.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52445
+X-archive-position: 52446
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: matt.redfearn@imgtec.com
+X-original-sender: purna.mandal@microchip.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,44 +45,58 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi James,
+Signed-off-by: Purna Chandra Mandal <purna.mandal@microchip.com>
 
-On 04/03/16 10:10, James Hogan wrote:
-> When calculate_cpu_foreign_map() recalculates the cpu_foreign_map
-> cpumask it uses the local variable temp_foreign_map without initialising
-> it to zero. Since the calculation only ever sets bits in this cpumask
-> any existing bits at that memory location will remain set and find their
-> way into cpu_foreign_map too. This could potentially lead to cache
-> operations suboptimally doing smp calls to multiple VPEs in the same
-> core, even though the VPEs share primary caches.
->
-> Therefore initialise temp_foreign_map using cpumask_clear() before use.
->
-> Fixes: cccf34e9411c ("MIPS: c-r4k: Fix cache flushing for MT cores")
+---
 
-cccf34e9411c was CC'd to stable 3.15+, should this fix do the same?
+Changes in v2:
+ - fix indentation
+ - add space after comma
+ - moved 'cs-gpios' section under 'required' properties.
 
-Thanks,
-Matt
+ .../bindings/spi/microchip,spi-pic32.txt           | 34 ++++++++++++++++++++++
+ 1 file changed, 34 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/microchip,spi-pic32.txt
 
-
-> Signed-off-by: James Hogan <james.hogan@imgtec.com>
-> Cc: Ralf Baechle <ralf@linux-mips.org>
-> Cc: Paul Burton <paul.burton@imgtec.com>
-> Cc: linux-mips@linux-mips.org
-> ---
->   arch/mips/kernel/smp.c | 1 +
->   1 file changed, 1 insertion(+)
->
-> diff --git a/arch/mips/kernel/smp.c b/arch/mips/kernel/smp.c
-> index bd4385a8e6e8..2b521e07b860 100644
-> --- a/arch/mips/kernel/smp.c
-> +++ b/arch/mips/kernel/smp.c
-> @@ -121,6 +121,7 @@ static inline void calculate_cpu_foreign_map(void)
->   	cpumask_t temp_foreign_map;
->   
->   	/* Re-calculate the mask */
-> +	cpumask_clear(&temp_foreign_map);
->   	for_each_online_cpu(i) {
->   		core_present = 0;
->   		for_each_cpu(k, &temp_foreign_map)
+diff --git a/Documentation/devicetree/bindings/spi/microchip,spi-pic32.txt b/Documentation/devicetree/bindings/spi/microchip,spi-pic32.txt
+new file mode 100644
+index 0000000..79de379f
+--- /dev/null
++++ b/Documentation/devicetree/bindings/spi/microchip,spi-pic32.txt
+@@ -0,0 +1,34 @@
++Microchip PIC32 SPI Master controller
++
++Required properties:
++- compatible: Should be "microchip,pic32mzda-spi".
++- reg: Address and length of register space for the device.
++- interrupts: Should contain all three spi interrupts in sequence
++              of <fault-irq>, <receive-irq>, <transmit-irq>.
++- interrupt-names: Should be "fault", "rx", "tx" in order.
++- clocks: Phandle of the clock generating SPI clock on the bus.
++- clock-names: Should be "mck0".
++- cs-gpios: Specifies the gpio pins to be used for chipselects.
++            See: Documentation/devicetree/bindings/spi/spi-bus.txt
++
++Optional properties:
++- dmas: Two or more DMA channel specifiers following the convention outlined
++        in Documentation/devicetree/bindings/dma/dma.txt
++- dma-names: Names for the dma channels. There must be at least one channel
++             named "spi-tx" for transmit and named "spi-rx" for receive.
++
++Example:
++
++spi1: spi@1f821000 {
++        compatible = "microchip,pic32mzda-spi";
++        reg = <0x1f821000 0x200>;
++        interrupts = <109 IRQ_TYPE_LEVEL_HIGH>,
++                     <110 IRQ_TYPE_LEVEL_HIGH>,
++                     <111 IRQ_TYPE_LEVEL_HIGH>;
++        interrupt-names = "fault", "rx", "tx";
++        clocks = <&PBCLK2>;
++        clock-names = "mck0";
++        cs-gpios = <&gpio3 4 GPIO_ACTIVE_LOW>;
++        dmas = <&dma 134>, <&dma 135>;
++        dma-names = "spi-rx", "spi-tx";
++};
+-- 
+1.8.3.1

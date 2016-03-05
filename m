@@ -1,62 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 05 Mar 2016 10:01:16 +0100 (CET)
-Received: from down.free-electrons.com ([37.187.137.238]:41410 "EHLO
-        mail.free-electrons.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27006623AbcCEJBOp8t0d (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 5 Mar 2016 10:01:14 +0100
-Received: by mail.free-electrons.com (Postfix, from userid 110)
-        id E50B33DE; Sat,  5 Mar 2016 10:01:08 +0100 (CET)
-Received: from bbrezillon (AToulouse-657-1-1120-33.w92-156.abo.wanadoo.fr [92.156.34.33])
-        by mail.free-electrons.com (Postfix) with ESMTPSA id D2A7F25E;
-        Sat,  5 Mar 2016 10:01:07 +0100 (CET)
-Date:   Sat, 5 Mar 2016 10:01:07 +0100
-From:   Boris Brezillon <boris.brezillon@free-electrons.com>
-To:     Brian Norris <computersforpeace@gmail.com>
-Cc:     David Woodhouse <dwmw2@infradead.org>,
-        linux-mtd@lists.infradead.org, Daniel Mack <daniel@zonque.org>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        Kukjin Kim <kgene@kernel.org>,
-        Krzysztof Kozlowski <k.kozlowski@samsung.com>,
-        linux-samsung-soc@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        Nicolas Ferre <nicolas.ferre@atmel.com>,
-        Jean-Christophe Plagniol-Villard <plagnioj@jcrosoft.com>,
-        Alexandre Belloni <alexandre.belloni@free-electrons.com>,
-        Wenyou Yang <wenyou.yang@atmel.com>,
-        Josh Wu <rainyfeeling@outlook.com>,
-        Ezequiel Garcia <ezequiel.garcia@free-electrons.com>,
-        Maxime Ripard <maxime.ripard@free-electrons.com>,
-        Chen-Yu Tsai <wens@csie.org>, linux-sunxi@googlegroups.com,
-        Stefan Agner <stefan@agner.ch>,
-        Kyungmin Park <kyungmin.park@samsung.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        devel@driverdev.osuosl.org, linux-kernel@vger.kernel.org,
-        punnaiah choudary kalluri <punnaia@xilinx.com>,
-        Priit Laes <plaes@plaes.org>,
-        Kamal Dasu <kdasu.kdev@gmail.com>,
-        bcm-kernel-feedback-list@broadcom.com, linux-api@vger.kernel.org
-Subject: Re: [PATCH v3 16/52] mtd: nand: use mtd_set_ecclayout() where
- appropriate
-Message-ID: <20160305100107.5d582bee@bbrezillon>
-In-Reply-To: <20160305095337.4a9e50fe@bbrezillon>
-References: <1456448280-27788-1-git-send-email-boris.brezillon@free-electrons.com>
-        <1456448280-27788-17-git-send-email-boris.brezillon@free-electrons.com>
-        <20160305022621.GN55664@google.com>
-        <20160305095337.4a9e50fe@bbrezillon>
-X-Mailer: Claws Mail 3.11.1 (GTK+ 2.24.27; x86_64-pc-linux-gnu)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <boris.brezillon@free-electrons.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 05 Mar 2016 23:39:30 +0100 (CET)
+Received: from rev33.vpn.fdn.fr ([80.67.179.33]:40985 "EHLO
+        outils.crapouillou.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007928AbcCEWj2vVfZb (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 5 Mar 2016 23:39:28 +0100
+From:   Paul Cercueil <paul@crapouillou.net>
+To:     Alexandre Belloni <alexandre.belloni@free-electrons.com>
+Cc:     Rob Herring <robh+dt@kernel.org>, Pawel Moll <pawel.moll@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ian Campbell <ijc+devicetree@hellion.org.uk>,
+        Kumar Gala <galak@codeaurora.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Alessandro Zummo <a.zummo@towertech.it>,
+        Paul Cercueil <paul@crapouillou.net>,
+        Paul Burton <paul.burton@imgtec.com>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mips@linux-mips.org, rtc-linux@googlegroups.com
+Subject: [PATCH 1/5] rtc: rtc-jz4740: Add support for the RTC in the jz4780 SoC
+Date:   Sat,  5 Mar 2016 23:38:47 +0100
+Message-Id: <1457217531-26064-1-git-send-email-paul@crapouillou.net>
+Return-Path: <paul@outils.crapouillou.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52464
+X-archive-position: 52465
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: boris.brezillon@free-electrons.com
+X-original-sender: paul@crapouillou.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -69,76 +39,134 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sat, 5 Mar 2016 09:53:37 +0100
-Boris Brezillon <boris.brezillon@free-electrons.com> wrote:
+Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+---
+ drivers/rtc/Kconfig      |  6 +++---
+ drivers/rtc/rtc-jz4740.c | 50 ++++++++++++++++++++++++++++++++++++++++++++++--
+ 2 files changed, 51 insertions(+), 5 deletions(-)
 
-> Hi Brian,
-> 
-> On Fri, 4 Mar 2016 18:26:21 -0800
-> Brian Norris <computersforpeace@gmail.com> wrote:
-> 
-> > On Fri, Feb 26, 2016 at 01:57:24AM +0100, Boris Brezillon wrote:
-> > > Use the mtd_set_ecclayout() helper instead of directly assigning the
-> > > mtd->ecclayout field.
-> > > 
-> > > Signed-off-by: Boris Brezillon <boris.brezillon@free-electrons.com>
-> > > ---
-> > >  drivers/mtd/nand/nand_base.c | 2 +-
-> > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > > 
-> > > diff --git a/drivers/mtd/nand/nand_base.c b/drivers/mtd/nand/nand_base.c
-> > > index 17504f2..5093a3c 100644
-> > > --- a/drivers/mtd/nand/nand_base.c
-> > > +++ b/drivers/mtd/nand/nand_base.c
-> > > @@ -4288,7 +4288,7 @@ int nand_scan_tail(struct mtd_info *mtd)
-> > >  		ecc->write_oob_raw = ecc->write_oob;
-> > >  
-> > >  	/* propagate ecc info to mtd_info */
-> > > -	mtd->ecclayout = ecc->layout;
-> > > +	mtd_set_ecclayout(mtd, ecc->layout);
-> > 
-> > I'm having trouble applying this one. For the life of me, I can't figure
-> > out where you got this context from. This block only appears much later
-> > in nand_scan_tail()...
-> > 
-> 
-> Patch 7 has moved this section upper in the function to avoid problems
-> when calculating the number of available/free OOB bytes.
-> 
-> > Do you think you could post a git tree with your intended changes? I may
-> > just try to pull something in like that instead.
-> 
-> Yep, it's there [1].
-
-Forgot to paste the link.
-
-> Note that this branch contains the two fixes I
-> talked about with Harvey and Stephan. I also made a few changes to use
-> ecc->total instead of calculating (ecc->steps * ecc->bytes).
-
-I'll probably also send a v4 with the fixes squashed in patch 5 and 7,
-just for the record.
-
-> 
-> > 
-> > BTW, I'm not sure the OMAP refactorings are going to come in time, but I
-> > was planning to pull those directly from the TI folks (i.e., they won't
-> > be rebased on l2-mtd.git), since there's some intermingling of platform
-> > changes there. I think I can fix the conflicts fine, but FYI.
-> 
-> Okay, then I'll let you deal with those conflicts. I can check your
-> conflict resolution if you're unsure.
-> 
-> Thanks,
-> 
-> Boris
-> 
-> 
-
-[1]https://github.com/bbrezillon/linux-0day/tree/nand/ecclayout
-
-
+diff --git a/drivers/rtc/Kconfig b/drivers/rtc/Kconfig
+index e593c55..b322f08 100644
+--- a/drivers/rtc/Kconfig
++++ b/drivers/rtc/Kconfig
+@@ -1494,10 +1494,10 @@ config RTC_DRV_MPC5121
+ 
+ config RTC_DRV_JZ4740
+ 	tristate "Ingenic JZ4740 SoC"
+-	depends on MACH_JZ4740 || COMPILE_TEST
++	depends on MACH_INGENIC || COMPILE_TEST
+ 	help
+-	  If you say yes here you get support for the Ingenic JZ4740 SoC RTC
+-	  controller.
++	  If you say yes here you get support for the Ingenic JZ47xx SoCs RTC
++	  controllers.
+ 
+ 	  This driver can also be buillt as a module. If so, the module
+ 	  will be called rtc-jz4740.
+diff --git a/drivers/rtc/rtc-jz4740.c b/drivers/rtc/rtc-jz4740.c
+index b2bcfc0..47617bd 100644
+--- a/drivers/rtc/rtc-jz4740.c
++++ b/drivers/rtc/rtc-jz4740.c
+@@ -29,6 +29,10 @@
+ #define JZ_REG_RTC_HIBERNATE	0x20
+ #define JZ_REG_RTC_SCRATCHPAD	0x34
+ 
++/* The following are present on the jz4780 */
++#define JZ_REG_RTC_WENR	0x3C
++#define JZ_RTC_WENR_WEN	BIT(31)
++
+ #define JZ_RTC_CTRL_WRDY	BIT(7)
+ #define JZ_RTC_CTRL_1HZ		BIT(6)
+ #define JZ_RTC_CTRL_1HZ_IRQ	BIT(5)
+@@ -37,8 +41,17 @@
+ #define JZ_RTC_CTRL_AE		BIT(2)
+ #define JZ_RTC_CTRL_ENABLE	BIT(0)
+ 
++/* Magic value to enable writes on jz4780 */
++#define JZ_RTC_WENR_MAGIC	0xA55A
++
++enum jz4740_rtc_type {
++	ID_JZ4740,
++	ID_JZ4780,
++};
++
+ struct jz4740_rtc {
+ 	void __iomem *base;
++	enum jz4740_rtc_type type;
+ 
+ 	struct rtc_device *rtc;
+ 
+@@ -64,11 +77,33 @@ static int jz4740_rtc_wait_write_ready(struct jz4740_rtc *rtc)
+ 	return timeout ? 0 : -EIO;
+ }
+ 
++static inline int jz4780_rtc_enable_write(struct jz4740_rtc *rtc)
++{
++	uint32_t ctrl;
++	int ret, timeout = 1000;
++
++	ret = jz4740_rtc_wait_write_ready(rtc);
++	if (ret != 0)
++		return ret;
++
++	writel(JZ_RTC_WENR_MAGIC, rtc->base + JZ_REG_RTC_WENR);
++
++	do {
++		ctrl = readl(rtc->base + JZ_REG_RTC_WENR);
++	} while (!(ctrl & JZ_RTC_WENR_WEN) && --timeout);
++
++	return timeout ? 0 : -EIO;
++}
++
+ static inline int jz4740_rtc_reg_write(struct jz4740_rtc *rtc, size_t reg,
+ 	uint32_t val)
+ {
+-	int ret;
+-	ret = jz4740_rtc_wait_write_ready(rtc);
++	int ret = 0;
++
++	if (rtc->type >= ID_JZ4780)
++		ret = jz4780_rtc_enable_write(rtc);
++	if (ret == 0)
++		ret = jz4740_rtc_wait_write_ready(rtc);
+ 	if (ret == 0)
+ 		writel(val, rtc->base + reg);
+ 
+@@ -216,11 +251,14 @@ static int jz4740_rtc_probe(struct platform_device *pdev)
+ 	struct jz4740_rtc *rtc;
+ 	uint32_t scratchpad;
+ 	struct resource *mem;
++	const struct platform_device_id *id = platform_get_device_id(pdev);
+ 
+ 	rtc = devm_kzalloc(&pdev->dev, sizeof(*rtc), GFP_KERNEL);
+ 	if (!rtc)
+ 		return -ENOMEM;
+ 
++	rtc->type = id->driver_data;
++
+ 	rtc->irq = platform_get_irq(pdev, 0);
+ 	if (rtc->irq < 0) {
+ 		dev_err(&pdev->dev, "Failed to get platform irq\n");
+@@ -295,12 +333,20 @@ static const struct dev_pm_ops jz4740_pm_ops = {
+ #define JZ4740_RTC_PM_OPS NULL
+ #endif  /* CONFIG_PM */
+ 
++static const struct platform_device_id jz4740_rtc_ids[] = {
++	{"jz4740-rtc", ID_JZ4740},
++	{"jz4780-rtc", ID_JZ4780},
++	{}
++};
++MODULE_DEVICE_TABLE(platform, jz4740_rtc_ids);
++
+ static struct platform_driver jz4740_rtc_driver = {
+ 	.probe	 = jz4740_rtc_probe,
+ 	.driver	 = {
+ 		.name  = "jz4740-rtc",
+ 		.pm    = JZ4740_RTC_PM_OPS,
+ 	},
++	.id_table = jz4740_rtc_ids,
+ };
+ 
+ module_platform_driver(jz4740_rtc_driver);
 -- 
-Boris Brezillon, Free Electrons
-Embedded Linux and Kernel engineering
-http://free-electrons.com
+2.7.0

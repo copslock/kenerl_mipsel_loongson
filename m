@@ -1,8 +1,8 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 05 Mar 2016 23:40:18 +0100 (CET)
-Received: from rev33.vpn.fdn.fr ([80.67.179.33]:41053 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 05 Mar 2016 23:40:37 +0100 (CET)
+Received: from rev33.vpn.fdn.fr ([80.67.179.33]:41081 "EHLO
         outils.crapouillou.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27015015AbcCEWjiHOnVb (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 5 Mar 2016 23:39:38 +0100
+        by eddie.linux-mips.org with ESMTP id S27024652AbcCEWjlXrWSb (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 5 Mar 2016 23:39:41 +0100
 From:   Paul Cercueil <paul@crapouillou.net>
 To:     Alexandre Belloni <alexandre.belloni@free-electrons.com>
 Cc:     Rob Herring <robh+dt@kernel.org>, Pawel Moll <pawel.moll@arm.com>,
@@ -15,16 +15,16 @@ Cc:     Rob Herring <robh+dt@kernel.org>, Pawel Moll <pawel.moll@arm.com>,
         Paul Burton <paul.burton@imgtec.com>,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-mips@linux-mips.org, rtc-linux@googlegroups.com
-Subject: [PATCH 4/5] rtc: jz4740_rtc: Add support for acting as the system power controller
-Date:   Sat,  5 Mar 2016 23:38:50 +0100
-Message-Id: <1457217531-26064-4-git-send-email-paul@crapouillou.net>
+Subject: [PATCH 5/5] MIPS: jz4740: Use the jz4740-rtc driver as the power controller
+Date:   Sat,  5 Mar 2016 23:38:51 +0100
+Message-Id: <1457217531-26064-5-git-send-email-paul@crapouillou.net>
 In-Reply-To: <1457217531-26064-1-git-send-email-paul@crapouillou.net>
 References: <1457217531-26064-1-git-send-email-paul@crapouillou.net>
 Return-Path: <paul@outils.crapouillou.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52468
+X-archive-position: 52469
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -43,138 +43,106 @@ X-list: linux-mips
 
 Signed-off-by: Paul Cercueil <paul@crapouillou.net>
 ---
- drivers/rtc/rtc-jz4740.c | 77 ++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 77 insertions(+)
+ arch/mips/boot/dts/ingenic/jz4740.dtsi |  2 ++
+ arch/mips/jz4740/reset.c               | 64 ----------------------------------
+ 2 files changed, 2 insertions(+), 64 deletions(-)
 
-diff --git a/drivers/rtc/rtc-jz4740.c b/drivers/rtc/rtc-jz4740.c
-index 3914b1c..f53cfd6 100644
---- a/drivers/rtc/rtc-jz4740.c
-+++ b/drivers/rtc/rtc-jz4740.c
-@@ -14,11 +14,13 @@
+diff --git a/arch/mips/boot/dts/ingenic/jz4740.dtsi b/arch/mips/boot/dts/ingenic/jz4740.dtsi
+index 8b2437c..f2ddacb 100644
+--- a/arch/mips/boot/dts/ingenic/jz4740.dtsi
++++ b/arch/mips/boot/dts/ingenic/jz4740.dtsi
+@@ -32,6 +32,8 @@
+ 		compatible = "fixed-clock";
+ 		#clock-cells = <0>;
+ 		clock-frequency = <32768>;
++
++		system-power-controller;
+ 	};
+ 
+ 	cgu: jz4740-cgu@10000000 {
+diff --git a/arch/mips/jz4740/reset.c b/arch/mips/jz4740/reset.c
+index 954e669..0a88b17 100644
+--- a/arch/mips/jz4740/reset.c
++++ b/arch/mips/jz4740/reset.c
+@@ -12,7 +12,6 @@
   *
   */
  
-+#include <linux/clk.h>
+-#include <linux/clk.h>
  #include <linux/io.h>
  #include <linux/kernel.h>
- #include <linux/module.h>
- #include <linux/of_device.h>
- #include <linux/platform_device.h>
-+#include <linux/reboot.h>
- #include <linux/rtc.h>
- #include <linux/slab.h>
- #include <linux/spinlock.h>
-@@ -28,6 +30,8 @@
- #define JZ_REG_RTC_SEC_ALARM	0x08
- #define JZ_REG_RTC_REGULATOR	0x0C
- #define JZ_REG_RTC_HIBERNATE	0x20
-+#define JZ_REG_RTC_WAKEUP_FILTER	0x24
-+#define JZ_REG_RTC_RESET_COUNTER	0x28
- #define JZ_REG_RTC_SCRATCHPAD	0x34
+ #include <linux/pm.h>
+@@ -57,71 +56,8 @@ static void jz4740_restart(char *command)
+ 	jz4740_halt();
+ }
  
- /* The following are present on the jz4780 */
-@@ -45,6 +49,9 @@
- /* Magic value to enable writes on jz4780 */
- #define JZ_RTC_WENR_MAGIC	0xA55A
- 
-+#define JZ_RTC_WAKEUP_FILTER_MASK	0x0000FFE0
-+#define JZ_RTC_RESET_COUNTER_MASK	0x00000FE0
-+
- enum jz4740_rtc_type {
- 	ID_JZ4740,
- 	ID_JZ4780,
-@@ -59,8 +66,13 @@ struct jz4740_rtc {
- 	int irq;
- 
- 	spinlock_t lock;
-+
-+	unsigned int min_wakeup_pin_assert_time;
-+	unsigned int reset_pin_assert_time;
- };
- 
-+static struct device *dev_for_power_off;
-+
- static inline uint32_t jz4740_rtc_reg_read(struct jz4740_rtc *rtc, size_t reg)
+-#define JZ_REG_RTC_CTRL			0x00
+-#define JZ_REG_RTC_HIBERNATE		0x20
+-#define JZ_REG_RTC_WAKEUP_FILTER	0x24
+-#define JZ_REG_RTC_RESET_COUNTER	0x28
+-
+-#define JZ_RTC_CTRL_WRDY		BIT(7)
+-#define JZ_RTC_WAKEUP_FILTER_MASK	0x0000FFE0
+-#define JZ_RTC_RESET_COUNTER_MASK	0x00000FE0
+-
+-static inline void jz4740_rtc_wait_ready(void __iomem *rtc_base)
+-{
+-	uint32_t ctrl;
+-
+-	do {
+-		ctrl = readl(rtc_base + JZ_REG_RTC_CTRL);
+-	} while (!(ctrl & JZ_RTC_CTRL_WRDY));
+-}
+-
+-static void jz4740_power_off(void)
+-{
+-	void __iomem *rtc_base = ioremap(JZ4740_RTC_BASE_ADDR, 0x38);
+-	unsigned long wakeup_filter_ticks;
+-	unsigned long reset_counter_ticks;
+-	struct clk *rtc_clk;
+-	unsigned long rtc_rate;
+-
+-	rtc_clk = clk_get(NULL, "rtc");
+-	if (IS_ERR(rtc_clk))
+-		panic("unable to get RTC clock");
+-	rtc_rate = clk_get_rate(rtc_clk);
+-	clk_put(rtc_clk);
+-
+-	/*
+-	 * Set minimum wakeup pin assertion time: 100 ms.
+-	 * Range is 0 to 2 sec if RTC is clocked at 32 kHz.
+-	 */
+-	wakeup_filter_ticks = (100 * rtc_rate) / 1000;
+-	if (wakeup_filter_ticks < JZ_RTC_WAKEUP_FILTER_MASK)
+-		wakeup_filter_ticks &= JZ_RTC_WAKEUP_FILTER_MASK;
+-	else
+-		wakeup_filter_ticks = JZ_RTC_WAKEUP_FILTER_MASK;
+-	jz4740_rtc_wait_ready(rtc_base);
+-	writel(wakeup_filter_ticks, rtc_base + JZ_REG_RTC_WAKEUP_FILTER);
+-
+-	/*
+-	 * Set reset pin low-level assertion time after wakeup: 60 ms.
+-	 * Range is 0 to 125 ms if RTC is clocked at 32 kHz.
+-	 */
+-	reset_counter_ticks = (60 * rtc_rate) / 1000;
+-	if (reset_counter_ticks < JZ_RTC_RESET_COUNTER_MASK)
+-		reset_counter_ticks &= JZ_RTC_RESET_COUNTER_MASK;
+-	else
+-		reset_counter_ticks = JZ_RTC_RESET_COUNTER_MASK;
+-	jz4740_rtc_wait_ready(rtc_base);
+-	writel(reset_counter_ticks, rtc_base + JZ_REG_RTC_RESET_COUNTER);
+-
+-	jz4740_rtc_wait_ready(rtc_base);
+-	writel(1, rtc_base + JZ_REG_RTC_HIBERNATE);
+-
+-	jz4740_halt();
+-}
+-
+ void jz4740_reset_init(void)
  {
- 	return readl(rtc->base + reg);
-@@ -246,6 +258,49 @@ void jz4740_rtc_poweroff(struct device *dev)
+ 	_machine_restart = jz4740_restart;
+ 	_machine_halt = jz4740_halt;
+-	pm_power_off = jz4740_power_off;
  }
- EXPORT_SYMBOL_GPL(jz4740_rtc_poweroff);
- 
-+static void jz4740_rtc_power_off(void)
-+{
-+	struct jz4740_rtc *rtc = dev_get_drvdata(dev_for_power_off);
-+	unsigned long wakeup_filter_ticks;
-+	unsigned long reset_counter_ticks;
-+	struct clk *rtc_clk;
-+	unsigned long rtc_rate;
-+
-+	rtc_clk = clk_get(dev_for_power_off, "rtc");
-+	if (IS_ERR(rtc_clk))
-+		panic("unable to get RTC clock");
-+	rtc_rate = clk_get_rate(rtc_clk);
-+	clk_put(rtc_clk);
-+
-+	/*
-+	 * Set minimum wakeup pin assertion time: 100 ms.
-+	 * Range is 0 to 2 sec if RTC is clocked at 32 kHz.
-+	 */
-+	wakeup_filter_ticks =
-+		(rtc->min_wakeup_pin_assert_time * rtc_rate) / 1000;
-+	if (wakeup_filter_ticks < JZ_RTC_WAKEUP_FILTER_MASK)
-+		wakeup_filter_ticks &= JZ_RTC_WAKEUP_FILTER_MASK;
-+	else
-+		wakeup_filter_ticks = JZ_RTC_WAKEUP_FILTER_MASK;
-+	jz4740_rtc_reg_write(rtc,
-+			JZ_REG_RTC_WAKEUP_FILTER, wakeup_filter_ticks);
-+
-+	/*
-+	 * Set reset pin low-level assertion time after wakeup: 60 ms.
-+	 * Range is 0 to 125 ms if RTC is clocked at 32 kHz.
-+	 */
-+	reset_counter_ticks = (rtc->reset_pin_assert_time * rtc_rate) / 1000;
-+	if (reset_counter_ticks < JZ_RTC_RESET_COUNTER_MASK)
-+		reset_counter_ticks &= JZ_RTC_RESET_COUNTER_MASK;
-+	else
-+		reset_counter_ticks = JZ_RTC_RESET_COUNTER_MASK;
-+	jz4740_rtc_reg_write(rtc,
-+			JZ_REG_RTC_RESET_COUNTER, reset_counter_ticks);
-+
-+	jz4740_rtc_poweroff(dev_for_power_off);
-+	machine_halt();
-+}
-+
- static const struct of_device_id jz4740_rtc_of_match[] = {
- 	{ .compatible = "ingenic,jz4740-rtc", .data = (void *) ID_JZ4740 },
- 	{ .compatible = "ingenic,jz4780-rtc", .data = (void *) ID_JZ4780 },
-@@ -314,6 +369,28 @@ static int jz4740_rtc_probe(struct platform_device *pdev)
- 		}
- 	}
- 
-+	if (of_device_is_system_power_controller(pdev->dev.of_node)) {
-+		if (!pm_power_off) {
-+			/* Default: 60ms */
-+			rtc->reset_pin_assert_time = 60;
-+			device_property_read_u32(&pdev->dev,
-+					"reset-pin-assert-time",
-+					&rtc->reset_pin_assert_time);
-+
-+			/* Default: 100ms */
-+			rtc->min_wakeup_pin_assert_time = 100;
-+			device_property_read_u32(&pdev->dev,
-+					"min-wakeup-pin-assert-time",
-+					&rtc->min_wakeup_pin_assert_time);
-+
-+			dev_for_power_off = &pdev->dev;
-+			pm_power_off = jz4740_rtc_power_off;
-+		} else {
-+			dev_err(&pdev->dev,
-+					"Poweroff handler already present!\n");
-+		}
-+	}
-+
- 	return 0;
- }
- 
 -- 
 2.7.0

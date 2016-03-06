@@ -1,68 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 06 Mar 2016 13:14:06 +0100 (CET)
-Received: from mail-lb0-f182.google.com ([209.85.217.182]:33735 "EHLO
-        mail-lb0-f182.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008306AbcCFMOEDXM6A (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 6 Mar 2016 13:14:04 +0100
-Received: by mail-lb0-f182.google.com with SMTP id k15so103961200lbg.0
-        for <linux-mips@linux-mips.org>; Sun, 06 Mar 2016 04:14:03 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 06 Mar 2016 13:17:20 +0100 (CET)
+Received: from mail-lb0-f170.google.com ([209.85.217.170]:34594 "EHLO
+        mail-lb0-f170.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008404AbcCFMRPz3PwA (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 6 Mar 2016 13:17:15 +0100
+Received: by mail-lb0-f170.google.com with SMTP id xr8so7332618lbb.1
+        for <linux-mips@linux-mips.org>; Sun, 06 Mar 2016 04:17:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=cogentembedded-com.20150623.gappssmtp.com; s=20150623;
         h=subject:to:references:cc:from:message-id:date:user-agent
          :mime-version:in-reply-to:content-transfer-encoding;
-        bh=9wHTAqghftLlZf3yI0up9Gi6Gr5NnzxrO65hxfM54ho=;
-        b=EzekSCamioeRp3XfJdCm6QCLn6Oee9xaaiSJo6m3TVRiPGTgKw33+ebEHepjYsXM5L
-         r1IdiED6gV+603gn2LzVO3+Xz4/5Rdz/vH6JHUBy56JRWWyHJTo0oTXRewj9nsjeuHRk
-         XeZZPVHumnUj+WbHOf2gGlWPDC8+q833Y/EaXgxABy5jMYLzTXOt+ixHQMFWXjxAdfv8
-         CrBlqe9TCL+5XlJlBO1GPW9QdDjEVpNDc90pQaBoIA15IpMcwaPTawRLU5tlp8kvoxZ4
-         9NBGaIYl7S4JM0lvAvwiS632Lue8cQStN5Q0NCglkHQSnQzB83xFzt4s20l93GgbIhxO
-         fw3g==
+        bh=7EDANN/67KKAnW1rTj1mfK80bUnfEKcEeZW34PzDDQ0=;
+        b=xFoLjylEokjz9eT6Qbfdpx7P/x8HtPNxdqvSTgE4Ql+peMifcOCdf4x68aR4iHZN1s
+         orAbKyi+XVlOflp674NjtyS0KsNL/Kd4v+KfG0badB6bC2H8BGw+S//XrgZlO5QFxR31
+         Yg1YbX7NbDlXAMnRvKSOeXETx21ovhXPTPSmQE0BAIZRzyMlIYAQJfAT5n9c5nQH8I6b
+         VbOlelSIOh5mkCPKxE2zPqS/OZtLR9VlDO1tJMf90l3lGkDziamH6jNEijElX+B0cKg0
+         OBnNoA1zXapsWhcudWxct8LQ0wxENjLTJVqW79WccD8jbR81gUnobqOVaASf3smx60t1
+         PFiA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:subject:to:references:cc:from:message-id:date
          :user-agent:mime-version:in-reply-to:content-transfer-encoding;
-        bh=9wHTAqghftLlZf3yI0up9Gi6Gr5NnzxrO65hxfM54ho=;
-        b=N0LdbRugOD4GsG688NIJOZcMy6VWy0HNrCKFM3CW/bFnYBeLQ26BBtdFscr2qQpnew
-         nEAO5U15cy3JAQ5j0aq9t9R0e1IptUo0I0EhoaArdKPRt9G7xs8MlcRdlD48ErcwlRLK
-         M1/0ov+B1X4XKoPBxBqScZU2g9SN/AbhGu95Sy6wk+kxAX+E56aJjZObfcvi5I8aY2DA
-         ciH3XC1l8itmiQzoKG0MyLZ7zMYaj3whAdneU6wTFzxn891Dvgg39NVvh0U+EOtqPRR2
-         pTBOl0u/kDIFizzhdnqGLKiZJYTppc6QtxmB2LK5pbPL4aRt9dkX82nGAejQQ0/CkLlm
-         qglg==
-X-Gm-Message-State: AD7BkJJi3oOWLdXbo4sv7E/2znocInKvaSWZ+8cknbhaUOKwVF9muZKOeYNc1xoA037cBw==
-X-Received: by 10.112.146.35 with SMTP id sz3mr6073558lbb.10.1457266438418;
-        Sun, 06 Mar 2016 04:13:58 -0800 (PST)
+        bh=7EDANN/67KKAnW1rTj1mfK80bUnfEKcEeZW34PzDDQ0=;
+        b=OcquJ2HvxN2VcGTxve+cqCvaCPUM6t5LS/5mSuu4bnSdN4HQq3xHwHvz2MigpOMdIN
+         eE7VjV6kHLAMYlLW0ZPfLkE7iNAleQ0U15rPXUUNrXUnW18YBDi8s3ZrnkD2ZNsxCnyg
+         VNZexiMA6744yfAkLLekX3TMBEBgf3M45nB4fX5kcOzypBlQiWfZJu28M6lbENKfZ/Bn
+         qbFfv+Ys/nkTAbijV70nr5qKyp07thStnUjpBg2vWqhWobUCXJeI5UJdGb9mf0oN+EaP
+         B7ZDvk8k1uil39BCvirn+PecB7SVXhAqeW+dPooGUxdcINnf8JBxlev9pOIGiCYL9aga
+         S+rg==
+X-Gm-Message-State: AD7BkJI8GKbyuI0hbyi/N04lYkyA59S49OH+hRwxM2eCm+b0RowSdwtTqpdG2cyzB4+v7g==
+X-Received: by 10.112.143.163 with SMTP id sf3mr5653123lbb.117.1457266629757;
+        Sun, 06 Mar 2016 04:17:09 -0800 (PST)
 Received: from [192.168.4.126] ([195.16.110.49])
-        by smtp.gmail.com with ESMTPSA id f184sm2054217lfe.6.2016.03.06.04.13.55
+        by smtp.gmail.com with ESMTPSA id ze8sm2002947lbb.45.2016.03.06.04.17.08
         (version=TLSv1/SSLv3 cipher=OTHER);
-        Sun, 06 Mar 2016 04:13:57 -0800 (PST)
-Subject: Re: [PATCH 2/5] Documentation: dt: Add binding info for jz4740-rtc
- driver
-To:     Paul Cercueil <paul@crapouillou.net>,
-        Alexandre Belloni <alexandre.belloni@free-electrons.com>
-References: <1457217531-26064-1-git-send-email-paul@crapouillou.net>
- <1457217531-26064-2-git-send-email-paul@crapouillou.net>
-Cc:     Rob Herring <robh+dt@kernel.org>, Pawel Moll <pawel.moll@arm.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ian Campbell <ijc+devicetree@hellion.org.uk>,
-        Kumar Gala <galak@codeaurora.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Alessandro Zummo <a.zummo@towertech.it>,
-        Paul Burton <paul.burton@imgtec.com>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mips@linux-mips.org, rtc-linux@googlegroups.com
+        Sun, 06 Mar 2016 04:17:08 -0800 (PST)
+Subject: Re: [PATCH 1/3] MIPS: Reserve nosave data for hibernation
+To:     Huacai Chen <chenhc@lemote.com>, Ralf Baechle <ralf@linux-mips.org>
+References: <1457236202-16321-1-git-send-email-chenhc@lemote.com>
+Cc:     Aurelien Jarno <aurelien@aurel32.net>,
+        "Steven J . Hill" <Steven.Hill@imgtec.com>,
+        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>
 From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Message-ID: <56DC1F04.7050907@cogentembedded.com>
-Date:   Sun, 6 Mar 2016 15:13:56 +0300
+Message-ID: <56DC1FC4.7020007@cogentembedded.com>
+Date:   Sun, 6 Mar 2016 15:17:08 +0300
 User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:38.0) Gecko/20100101
  Thunderbird/38.6.0
 MIME-Version: 1.0
-In-Reply-To: <1457217531-26064-2-git-send-email-paul@crapouillou.net>
+In-Reply-To: <1457236202-16321-1-git-send-email-chenhc@lemote.com>
 Content-Type: text/plain; charset=windows-1252; format=flowed
 Content-Transfer-Encoding: 7bit
 Return-Path: <sergei.shtylyov@cogentembedded.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52476
+X-archive-position: 52477
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -81,32 +73,19 @@ X-list: linux-mips
 
 Hello.
 
-On 3/6/2016 1:38 AM, Paul Cercueil wrote:
+On 3/6/2016 6:50 AM, Huacai Chen wrote:
 
-> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-> ---
->   .../devicetree/bindings/rtc/ingenic,jz4740-rtc.txt | 38 ++++++++++++++++++++++
->   1 file changed, 38 insertions(+)
->   create mode 100644 Documentation/devicetree/bindings/rtc/ingenic,jz4740-rtc.txt
+> After commit 92923ca3aacef63c92dc (mm: meminit: only set page reserved
+> in the memblock region), the MIPS hibernation is broken. Because pages
+
+    scripts/checkpatch.pl now enforces certain commit citing style, yours 
+doesn't quite match it...
+
+> in nosave data section should be "reserved", but currently they aren't
+> set to "reserved" at initialization. This patch makes hibernation work
+> again.
 >
-> diff --git a/Documentation/devicetree/bindings/rtc/ingenic,jz4740-rtc.txt b/Documentation/devicetree/bindings/rtc/ingenic,jz4740-rtc.txt
-> new file mode 100644
-> index 0000000..71e4ad0
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/rtc/ingenic,jz4740-rtc.txt
-> @@ -0,0 +1,38 @@
-> +JZ4740 and similar SoCs real-time clock driver
-> +
-> +Required properties:
-> +
-> +- compatible: One of:
-> +  - "ingenic,jz4740-rtc" - for use with the JZ4740 SoC
-> +  - "ingenic,jz4780-rtc" - for use with the JZ4780 SoC
-> +- reg: Address range of rtc register set
-> +- interrupts: IRQ number for the alarm interrupt
-> +- interrupt-parent: phandle of the interrupt controller
-
-    This is never a required property, it can be inherited from the parent node.
+> Signed-off-by: Huacai Chen <chenhc@lemote.com>
 
 [...]
 

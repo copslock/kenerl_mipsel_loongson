@@ -1,40 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 06 Mar 2016 15:58:25 +0100 (CET)
-Received: from exsmtp03.microchip.com ([198.175.253.49]:60915 "EHLO
-        email.microchip.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27005162AbcCFO6WzFxbC (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 6 Mar 2016 15:58:22 +0100
-Received: from mx.microchip.com (10.10.76.4) by chn-sv-exch03.mchp-main.com
- (10.10.76.49) with Microsoft SMTP Server id 14.3.181.6; Sun, 6 Mar 2016
- 07:58:13 -0700
-Received: by mx.microchip.com (sSMTP sendmail emulation); Sun, 06 Mar 2016
- 20:26:41 +0530
-From:   Purna Chandra Mandal <purna.mandal@microchip.com>
-To:     <linux-kernel@vger.kernel.org>, <linux-spi@vger.kernel.org>
-CC:     Mark Brown <broonie@kernel.org>,
-        Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
-        Joshua Henderson <digitalpeer@digitalpeer.com>,
-        Purna Chandra Mandal <purna.mandal@microchip.com>,
-        <devicetree@vger.kernel.org>, <linux-mips@linux-mips.org>,
-        Kumar Gala <galak@codeaurora.org>,
-        Ian Campbell <ijc+devicetree@hellion.org.uk>,
-        Rob Herring <robh+dt@kernel.org>,
-        Pawel Moll <pawel.moll@arm.com>,
-        Mark Rutland <mark.rutland@arm.com>
-Subject: [PATCH v3 1/2] dt/bindings: Add bindings for PIC32 SPI peripheral
-Date:   Sun, 6 Mar 2016 20:26:37 +0530
-Message-ID: <1457276198-30622-1-git-send-email-purna.mandal@microchip.com>
-X-Mailer: git-send-email 1.8.3.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 06 Mar 2016 21:23:08 +0100 (CET)
+Received: from mail-lb0-f174.google.com ([209.85.217.174]:34962 "EHLO
+        mail-lb0-f174.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27010740AbcCFUXGZrgHe (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 6 Mar 2016 21:23:06 +0100
+Received: by mail-lb0-f174.google.com with SMTP id bc4so110110208lbc.2
+        for <linux-mips@linux-mips.org>; Sun, 06 Mar 2016 12:23:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cogentembedded-com.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:references:cc:from:organization:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
+        bh=scf9qbQJPM774IfClJRV1nPtC9bLjqzTqnmz99Duq6s=;
+        b=ucnBMBa403Vzv7s9GICcm2lAS4GRRrSjCwZer9rQtgLhddBPN8t0ViPhPfImk7XCzJ
+         r0Y5dFIyHizGPPhacMRWCMqIk9anU2yXMilMryibre5I496u+i+D5Hk3l35HW2hOYFNj
+         OMiVN0lfnKXWi70GFxDWcgyIOoPB4KcCH8re6BEybFP2T4inqNxWcNUgPI0J85f8ObMs
+         ojJ98aLrmReTaqGpOO84PDG0Xnsqz2NuUdu9Nk5B3j5sJfAIHNMOmpTrJaAItB8qSY1Y
+         iciKM7ZukYdL7R36UCrgePV5Ah41NFyEyxem1V6gN8o4q+GRh0yJhxsuR9Fkq/H7spOp
+         pZ8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:subject:to:references:cc:from:organization
+         :message-id:date:user-agent:mime-version:in-reply-to
+         :content-transfer-encoding;
+        bh=scf9qbQJPM774IfClJRV1nPtC9bLjqzTqnmz99Duq6s=;
+        b=BvjK8a32U7Cd1vcQ+kGZIvYkvXd3pylkl5lE0dtzCjIhHVB+hlqr4vYn1S9NSH5pXp
+         nMHFF9j4kpxvWHbuscOv/jr6m15jV89ITHU6F04mbgORtoAlBjaKdCiFltEs+oc9h1tq
+         us1Lqxu8bTu0FsELdS3A6e69h1d4N7Ag0l6Dwbc5TjW0FoAip+ePhKPPuVhk1ezG2B82
+         gjJ1IfZAUpicFb57c5Bm+36jxrM7mthmB3B6lnmyii+cr0QSKT3DjpoeLVrsiwljt0D8
+         r9ci9TZXq0Q7zez+pNJ8tBZj/+13Yq5NkNg+/6HBE7tHy7gwcW1tb10meUuEZ20Rn/SH
+         6rHQ==
+X-Gm-Message-State: AD7BkJKXyl9WL1QZU9kq5AA1mp/m/T4kgKYQ9eMH4DO54sbpbeHUUoDHPu+4Kd4J1UALSg==
+X-Received: by 10.112.124.137 with SMTP id mi9mr3763602lbb.112.1457295780949;
+        Sun, 06 Mar 2016 12:23:00 -0800 (PST)
+Received: from wasted.cogentembedded.com ([83.149.8.2])
+        by smtp.gmail.com with ESMTPSA id y184sm2324433lfd.16.2016.03.06.12.22.59
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Sun, 06 Mar 2016 12:22:59 -0800 (PST)
+Subject: Re: [PATCH] MIPS: fix build error when SMP is used without GIC
+To:     Hauke Mehrtens <hauke@hauke-m.de>, linux-mips@linux-mips.org,
+        ralf@linux-mips.org
+References: <1457273756-4182-1-git-send-email-hauke@hauke-m.de>
+Cc:     Paul Burton <paul.burton@imgtec.com>,
+        "# v3 . 15+" <stable@vger.kernel.org>
+From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Organization: Cogent Embedded
+Message-ID: <56DC91A1.5070404@cogentembedded.com>
+Date:   Sun, 6 Mar 2016 23:22:57 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+ Thunderbird/38.5.0
 MIME-Version: 1.0
-Content-Type: text/plain
-Return-Path: <Purna.Mandal@microchip.com>
+In-Reply-To: <1457273756-4182-1-git-send-email-hauke@hauke-m.de>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sergei.shtylyov@cogentembedded.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52480
+X-archive-position: 52481
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: purna.mandal@microchip.com
+X-original-sender: sergei.shtylyov@cogentembedded.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,60 +72,34 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Signed-off-by: Purna Chandra Mandal <purna.mandal@microchip.com>
-Acked-by: Rob Herring <robh@kernel.org>
+Hello.
 
----
+On 03/06/2016 05:15 PM, Hauke Mehrtens wrote:
 
-Changes in v3: None
-Changes in v2:
- - fix indentation
- - add space after comma
- - moved 'cs-gpios' section under 'required' properties.
+> The MIPS_GIC_IPI should only be selected when MIPS_GIC is also
+> selected, otherwise it results in a compile error. smp-gic.c uses some
+> functions form include/linux/irqchip/mips-gic.h like
 
- .../bindings/spi/microchip,spi-pic32.txt           | 34 ++++++++++++++++++++++
- 1 file changed, 34 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/spi/microchip,spi-pic32.txt
+   s/form/from/.
 
-diff --git a/Documentation/devicetree/bindings/spi/microchip,spi-pic32.txt b/Documentation/devicetree/bindings/spi/microchip,spi-pic32.txt
-new file mode 100644
-index 0000000..79de379f
---- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/microchip,spi-pic32.txt
-@@ -0,0 +1,34 @@
-+Microchip PIC32 SPI Master controller
-+
-+Required properties:
-+- compatible: Should be "microchip,pic32mzda-spi".
-+- reg: Address and length of register space for the device.
-+- interrupts: Should contain all three spi interrupts in sequence
-+              of <fault-irq>, <receive-irq>, <transmit-irq>.
-+- interrupt-names: Should be "fault", "rx", "tx" in order.
-+- clocks: Phandle of the clock generating SPI clock on the bus.
-+- clock-names: Should be "mck0".
-+- cs-gpios: Specifies the gpio pins to be used for chipselects.
-+            See: Documentation/devicetree/bindings/spi/spi-bus.txt
-+
-+Optional properties:
-+- dmas: Two or more DMA channel specifiers following the convention outlined
-+        in Documentation/devicetree/bindings/dma/dma.txt
-+- dma-names: Names for the dma channels. There must be at least one channel
-+             named "spi-tx" for transmit and named "spi-rx" for receive.
-+
-+Example:
-+
-+spi1: spi@1f821000 {
-+        compatible = "microchip,pic32mzda-spi";
-+        reg = <0x1f821000 0x200>;
-+        interrupts = <109 IRQ_TYPE_LEVEL_HIGH>,
-+                     <110 IRQ_TYPE_LEVEL_HIGH>,
-+                     <111 IRQ_TYPE_LEVEL_HIGH>;
-+        interrupt-names = "fault", "rx", "tx";
-+        clocks = <&PBCLK2>;
-+        clock-names = "mck0";
-+        cs-gpios = <&gpio3 4 GPIO_ACTIVE_LOW>;
-+        dmas = <&dma 134>, <&dma 135>;
-+        dma-names = "spi-rx", "spi-tx";
-+};
--- 
-1.8.3.1
+> plat_ipi_call_int_xlate() which are only added to the header file when
+> MIPS_GIC is set. The Lantiq SoC does not use the GIC, but supports SMP.
+> The calls top the functions from smp-gic.c are laready protected by
+
+    s/laready/already/.
+
+> some #ifdefs
+>
+> The first part of this was introduced in commit 72e20142b "MIPS: Move
+> GIC IPI functions out of smp-cmp.c"
+
+    scripts/checkpatch.pl now enforces certain commit citing style, yours 
+doesn't quite match it...
+
+> Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
+> Cc: Paul Burton <paul.burton@imgtec.com>
+> Cc: <stable@vger.kernel.org> # v3.15+
+
+[...]
+
+MBR, Sergei

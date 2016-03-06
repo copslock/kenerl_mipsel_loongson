@@ -1,40 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 06 Mar 2016 05:37:30 +0100 (CET)
-Received: from exsmtp03.microchip.com ([198.175.253.49]:29075 "EHLO
-        email.microchip.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27005160AbcCFEh3A3rQg (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 6 Mar 2016 05:37:29 +0100
-Received: from mx.microchip.com (10.10.76.4) by chn-sv-exch03.mchp-main.com
- (10.10.76.49) with Microsoft SMTP Server id 14.3.181.6; Sat, 5 Mar 2016
- 21:37:19 -0700
-Received: by mx.microchip.com (sSMTP sendmail emulation); Sun, 06 Mar 2016
- 10:05:47 +0530
-From:   Purna Chandra Mandal <purna.mandal@microchip.com>
-To:     <linux-kernel@vger.kernel.org>, <linux-spi@vger.kernel.org>
-CC:     Mark Brown <broonie@kernel.org>,
-        Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
-        Joshua Henderson <digitalpeer@digitalpeer.com>,
-        Purna Chandra Mandal <purna.mandal@microchip.com>,
-        <devicetree@vger.kernel.org>, <linux-mips@linux-mips.org>,
-        Kumar Gala <galak@codeaurora.org>,
-        Ian Campbell <ijc+devicetree@hellion.org.uk>,
-        Rob Herring <robh+dt@kernel.org>,
-        Pawel Moll <pawel.moll@arm.com>,
-        Mark Rutland <mark.rutland@arm.com>
-Subject: [RESEND PATCH v2 1/2] dt/bindings: Add bindings for PIC32 SPI peripheral
-Date:   Sun, 6 Mar 2016 10:05:26 +0530
-Message-ID: <1457238927-16120-1-git-send-email-purna.mandal@microchip.com>
-X-Mailer: git-send-email 1.8.3.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 06 Mar 2016 10:52:56 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:40066 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S27006822AbcCFJwywWfzB (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 6 Mar 2016 10:52:54 +0100
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.15.2/8.14.8) with ESMTP id u269qs3i024016;
+        Sun, 6 Mar 2016 10:52:54 +0100
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.15.2/8.15.2/Submit) id u269qrII024015;
+        Sun, 6 Mar 2016 10:52:53 +0100
+Date:   Sun, 6 Mar 2016 10:52:53 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     linux-mips@linux-mips.org
+Subject: MIPS: Pull request
+Message-ID: <20160306095253.GA24012@linux-mips.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-Return-Path: <Purna.Mandal@microchip.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.24 (2015-08-30)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52473
+X-archive-position: 52474
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: purna.mandal@microchip.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,58 +40,58 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Signed-off-by: Purna Chandra Mandal <purna.mandal@microchip.com>
+Hi Linus,
 
----
+The following changes since commit fc77dbd34c5c99bce46d40a2491937c3bcbd10af:
 
-Changes in v2:
- - fix indentation
- - add space after comma
- - moved 'cs-gpios' section under 'required' properties.
+  Linux 4.5-rc6 (2016-02-28 08:41:20 -0800)
 
- .../bindings/spi/microchip,spi-pic32.txt           | 34 ++++++++++++++++++++++
- 1 file changed, 34 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/spi/microchip,spi-pic32.txt
+are available in the git repository at:
 
-diff --git a/Documentation/devicetree/bindings/spi/microchip,spi-pic32.txt b/Documentation/devicetree/bindings/spi/microchip,spi-pic32.txt
-new file mode 100644
-index 0000000..79de379f
---- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/microchip,spi-pic32.txt
-@@ -0,0 +1,34 @@
-+Microchip PIC32 SPI Master controller
-+
-+Required properties:
-+- compatible: Should be "microchip,pic32mzda-spi".
-+- reg: Address and length of register space for the device.
-+- interrupts: Should contain all three spi interrupts in sequence
-+              of <fault-irq>, <receive-irq>, <transmit-irq>.
-+- interrupt-names: Should be "fault", "rx", "tx" in order.
-+- clocks: Phandle of the clock generating SPI clock on the bus.
-+- clock-names: Should be "mck0".
-+- cs-gpios: Specifies the gpio pins to be used for chipselects.
-+            See: Documentation/devicetree/bindings/spi/spi-bus.txt
-+
-+Optional properties:
-+- dmas: Two or more DMA channel specifiers following the convention outlined
-+        in Documentation/devicetree/bindings/dma/dma.txt
-+- dma-names: Names for the dma channels. There must be at least one channel
-+             named "spi-tx" for transmit and named "spi-rx" for receive.
-+
-+Example:
-+
-+spi1: spi@1f821000 {
-+        compatible = "microchip,pic32mzda-spi";
-+        reg = <0x1f821000 0x200>;
-+        interrupts = <109 IRQ_TYPE_LEVEL_HIGH>,
-+                     <110 IRQ_TYPE_LEVEL_HIGH>,
-+                     <111 IRQ_TYPE_LEVEL_HIGH>;
-+        interrupt-names = "fault", "rx", "tx";
-+        clocks = <&PBCLK2>;
-+        clock-names = "mck0";
-+        cs-gpios = <&gpio3 4 GPIO_ACTIVE_LOW>;
-+        dmas = <&dma 134>, <&dma 135>;
-+        dma-names = "spi-rx", "spi-tx";
-+};
--- 
-1.8.3.1
+  git://git.linux-mips.org/pub/scm/ralf/upstream-linus.git upstream
+
+for you to fetch changes up to e723e3f7f9591b79e8c56b3d7c5a204a9c571b55:
+
+  MIPS: traps: Fix SIGFPE information leak from `do_ov' and `do_trap_or_bp' (2016-03-04 22:52:32 +0100)
+
+Another round of fixes for 4.5:
+
+ - Fix the use of an undocumented syntactial variant of the .type pseudo
+   op which is not supported by the LLVM assembler.
+ - Fix invalid initialization on S-cache-less systems.
+ - Fix possible information leak from the kernel stack for SIGFPE.
+ - Fix handling of copy_{from,to}_user() return value in KVM
+ - Fix the last instance of irq_to_gpio() which now was causing build
+   errors.
+
+Please consider pulling,
+
+  Ralf
+
+----------------------------------------------------------------
+
+This has been sitting in linux-next for a few days and also survived
+Imagination's test farm.
+
+Daniel Sanders (1):
+      MIPS: Avoid variant of .type unsupported by LLVM Assembler
+
+Govindraj Raja (1):
+      MIPS: scache: Fix scache init with invalid line size.
+
+Maciej W. Rozycki (1):
+      MIPS: traps: Fix SIGFPE information leak from `do_ov' and `do_trap_or_bp'
+
+Michael S. Tsirkin (1):
+      MIPS: kvm: Fix ioctl error handling.
+
+Ralf Baechle (1):
+      MIPS: jz4740: Fix surviving instance of irq_to_gpio()
+
+ arch/mips/jz4740/gpio.c      |  2 +-
+ arch/mips/kernel/r2300_fpu.S |  2 +-
+ arch/mips/kernel/r4k_fpu.S   |  2 +-
+ arch/mips/kernel/traps.c     | 13 ++++++-------
+ arch/mips/kvm/mips.c         |  4 ++--
+ arch/mips/mm/sc-mips.c       | 13 +++++++++----
+ 6 files changed, 20 insertions(+), 16 deletions(-)

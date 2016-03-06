@@ -1,66 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Mar 2016 20:42:20 +0100 (CET)
-Received: from youngberry.canonical.com ([91.189.89.112]:53224 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007080AbcCPTmSVRvSL (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 16 Mar 2016 20:42:18 +0100
-Received: from 1.general.kamal.us.vpn ([10.172.68.52] helo=fourier)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_128_CBC_SHA1:16)
-        (Exim 4.76)
-        (envelope-from <kamal@canonical.com>)
-        id 1agHKj-0006jo-7L; Wed, 16 Mar 2016 19:42:17 +0000
-Received: from kamal by fourier with local (Exim 4.86)
-        (envelope-from <kamal@whence.com>)
-        id 1agHKg-00028J-I0; Wed, 16 Mar 2016 12:42:14 -0700
-From:   Kamal Mostafa <kamal@canonical.com>
-To:     Hauke Mehrtens <hauke@hauke-m.de>
-Cc:     Paul Burton <paul.burton@imgtec.com>, linux-mips@linux-mips.org,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Kamal Mostafa <kamal@canonical.com>,
-        kernel-team@lists.ubuntu.com
-Subject: [3.19.y-ckt stable] Patch "MIPS: Fix build error when SMP is used without GIC" has been added to the 3.19.y-ckt tree
-Date:   Wed, 16 Mar 2016 12:42:13 -0700
-Message-Id: <1458157333-8163-1-git-send-email-kamal@canonical.com>
-X-Mailer: git-send-email 2.7.0
-X-Extended-Stable: 3.19
-Return-Path: <kamal@canonical.com>
-X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
-X-Orcpt: rfc822;linux-mips@linux-mips.org
-Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52607
-X-ecartis-version: Ecartis v1.0.0
-Sender: linux-mips-bounce@linux-mips.org
-Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kamal@canonical.com
-Precedence: bulk
-List-help: <mailto:ecartis@linux-mips.org?Subject=help>
-List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
-List-software: Ecartis version 1.0.0
-List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
-X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
-List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
-List-owner: <mailto:ralf@linux-mips.org>
-List-post: <mailto:linux-mips@linux-mips.org>
-List-archive: <http://www.linux-mips.org/archives/linux-mips/>
-X-list: linux-mips
+From: Hauke Mehrtens <hauke@hauke-m.de>
+Date: Sun, 6 Mar 2016 22:28:56 +0100
+Subject: MIPS: Fix build error when SMP is used without GIC
+Message-ID: <20160306212856.BcHMcjI2U-1xVpza1IjKLRs7KHuE3HUq-89E_2k958Y@z>
 
-This is a note to let you know that I have just added a patch titled
+commit 7a50e4688dabb8005df39b2b992d76629b8af8aa upstream.
 
-    MIPS: Fix build error when SMP is used without GIC
+The MIPS_GIC_IPI should only be selected when MIPS_GIC is also
+selected, otherwise it results in a compile error. smp-gic.c uses some
+functions from include/linux/irqchip/mips-gic.h like
+plat_ipi_call_int_xlate() which are only added to the header file when
+MIPS_GIC is set. The Lantiq SoC does not use the GIC, but supports SMP.
+The calls top the functions from smp-gic.c are already protected by
+some #ifdefs
 
-to the linux-3.19.y-queue branch of the 3.19.y-ckt extended stable tree 
-which can be found at:
+The first part of this was introduced in commit 72e20142b2bf ("MIPS:
+Move GIC IPI functions out of smp-cmp.c")
 
-    http://kernel.ubuntu.com/git/ubuntu/linux.git/log/?h=linux-3.19.y-queue
+Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
+Cc: Paul Burton <paul.burton@imgtec.com>
+Cc: linux-mips@linux-mips.org
+Patchwork: https://patchwork.linux-mips.org/patch/12774/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: Kamal Mostafa <kamal@canonical.com>
+---
+ arch/mips/Kconfig | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-This patch is scheduled to be released in version 3.19.8-ckt17.
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 2a50476..023b29b 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -1977,7 +1977,7 @@ config MIPS_MT_SMP
+ 	select CPU_MIPSR2_IRQ_VI
+ 	select CPU_MIPSR2_IRQ_EI
+ 	select SYNC_R4K
+-	select MIPS_GIC_IPI
++	select MIPS_GIC_IPI if MIPS_GIC
+ 	select MIPS_MT
+ 	select SMP
+ 	select SMP_UP
+@@ -2062,7 +2062,7 @@ config MIPS_VPE_APSP_API_MT
+ config MIPS_CMP
+ 	bool "MIPS CMP framework support (DEPRECATED)"
+ 	depends on SYS_SUPPORTS_MIPS_CMP
+-	select MIPS_GIC_IPI
++	select MIPS_GIC_IPI if MIPS_GIC
+ 	select SMP
+ 	select SYNC_R4K
+ 	select SYS_SUPPORTS_SMP
+@@ -2082,7 +2082,7 @@ config MIPS_CPS
+ 	select MIPS_CM
+ 	select MIPS_CPC
+ 	select MIPS_CPS_PM if HOTPLUG_CPU
+-	select MIPS_GIC_IPI
++	select MIPS_GIC_IPI if MIPS_GIC
+ 	select SMP
+ 	select SYNC_R4K if (CEVT_R4K || CSRC_R4K)
+ 	select SYS_SUPPORTS_HOTPLUG_CPU
+@@ -2101,6 +2101,7 @@ config MIPS_CPS_PM
+ 	bool
 
-If you, or anyone else, feels it should not be added to this tree, please 
-reply to this email.
+ config MIPS_GIC_IPI
++	depends on MIPS_GIC
+ 	bool
 
-For more information about the 3.19.y-ckt tree, see
-https://wiki.ubuntu.com/Kernel/Dev/ExtendedStable
-
-Thanks.
--Kamal
-
----8<------------------------------------------------------------
+ config MIPS_CM
+--
+2.7.0

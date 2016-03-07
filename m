@@ -1,13 +1,13 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Mar 2016 10:52:18 +0100 (CET)
-Received: from down.free-electrons.com ([37.187.137.238]:38260 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Mar 2016 10:52:34 +0100 (CET)
+Received: from down.free-electrons.com ([37.187.137.238]:38257 "EHLO
         mail.free-electrons.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27011517AbcCGJs2cBq4S (ORCPT
+        by eddie.linux-mips.org with ESMTP id S27010845AbcCGJs23SQ0S (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Mon, 7 Mar 2016 10:48:28 +0100
 Received: by mail.free-electrons.com (Postfix, from userid 110)
-        id 78FD2400; Mon,  7 Mar 2016 10:48:17 +0100 (CET)
+        id F3F7D629; Mon,  7 Mar 2016 10:48:18 +0100 (CET)
 Received: from localhost.localdomain (AToulouse-657-1-1129-172.w92-156.abo.wanadoo.fr [92.156.51.172])
-        by mail.free-electrons.com (Postfix) with ESMTPSA id 8D15F625;
-        Mon,  7 Mar 2016 10:47:58 +0100 (CET)
+        by mail.free-electrons.com (Postfix) with ESMTPSA id 6DE75655;
+        Mon,  7 Mar 2016 10:48:01 +0100 (CET)
 From:   Boris Brezillon <boris.brezillon@free-electrons.com>
 To:     David Woodhouse <dwmw2@infradead.org>,
         Brian Norris <computersforpeace@gmail.com>,
@@ -38,9 +38,9 @@ Cc:     Daniel Mack <daniel@zonque.org>,
         bcm-kernel-feedback-list@broadcom.com, linux-api@vger.kernel.org,
         Harvey Hunt <harvey.hunt@imgtec.com>,
         Boris Brezillon <boris.brezillon@free-electrons.com>
-Subject: [PATCH v4 13/52] mtd: onenand: use mtd_ooblayout_xxx() helpers where appropriate
-Date:   Mon,  7 Mar 2016 10:47:03 +0100
-Message-Id: <1457344062-11633-14-git-send-email-boris.brezillon@free-electrons.com>
+Subject: [PATCH v4 16/52] mtd: nand: use mtd_set_ecclayout() where appropriate
+Date:   Mon,  7 Mar 2016 10:47:06 +0100
+Message-Id: <1457344062-11633-17-git-send-email-boris.brezillon@free-electrons.com>
 X-Mailer: git-send-email 2.1.4
 In-Reply-To: <1457344062-11633-1-git-send-email-boris.brezillon@free-electrons.com>
 References: <1457344062-11633-1-git-send-email-boris.brezillon@free-electrons.com>
@@ -48,7 +48,7 @@ Return-Path: <boris.brezillon@free-electrons.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52502
+X-archive-position: 52503
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -65,115 +65,26 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The mtd_ooblayout_xxx() helper functions have been added to avoid direct
-accesses to the ecclayout field, and thus ease for future reworks.
-Use these helpers in all places where the oobfree[] and eccpos[] arrays
-where directly accessed.
+Use the mtd_set_ecclayout() helper instead of directly assigning the
+mtd->ecclayout field.
 
 Signed-off-by: Boris Brezillon <boris.brezillon@free-electrons.com>
 ---
- drivers/mtd/onenand/onenand_base.c | 75 ++++++++------------------------------
- 1 file changed, 15 insertions(+), 60 deletions(-)
+ drivers/mtd/nand/nand_base.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mtd/onenand/onenand_base.c b/drivers/mtd/onenand/onenand_base.c
-index af28bb3..20fdf8c 100644
---- a/drivers/mtd/onenand/onenand_base.c
-+++ b/drivers/mtd/onenand/onenand_base.c
-@@ -1024,34 +1024,15 @@ static int onenand_transfer_auto_oob(struct mtd_info *mtd, uint8_t *buf, int col
- 				int thislen)
- {
- 	struct onenand_chip *this = mtd->priv;
--	struct nand_oobfree *free;
--	int readcol = column;
--	int readend = column + thislen;
--	int lastgap = 0;
--	unsigned int i;
--	uint8_t *oob_buf = this->oob_buf;
--
--	free = this->ecclayout->oobfree;
--	for (i = 0; i < MTD_MAX_OOBFREE_ENTRIES && free->length; i++, free++) {
--		if (readcol >= lastgap)
--			readcol += free->offset - lastgap;
--		if (readend >= lastgap)
--			readend += free->offset - lastgap;
--		lastgap = free->offset + free->length;
--	}
--	this->read_bufferram(mtd, ONENAND_SPARERAM, oob_buf, 0, mtd->oobsize);
--	free = this->ecclayout->oobfree;
--	for (i = 0; i < MTD_MAX_OOBFREE_ENTRIES && free->length; i++, free++) {
--		int free_end = free->offset + free->length;
--		if (free->offset < readend && free_end > readcol) {
--			int st = max_t(int,free->offset,readcol);
--			int ed = min_t(int,free_end,readend);
--			int n = ed - st;
--			memcpy(buf, oob_buf + st, n);
--			buf += n;
--		} else if (column == 0)
--			break;
--	}
-+	int ret;
-+
-+	this->read_bufferram(mtd, ONENAND_SPARERAM, this->oob_buf, 0,
-+			     mtd->oobsize);
-+	ret = mtd_ooblayout_get_databytes(mtd, buf, this->oob_buf,
-+					  column, thislen);
-+	if (ret)
-+		return ret;
-+
- 	return 0;
- }
+diff --git a/drivers/mtd/nand/nand_base.c b/drivers/mtd/nand/nand_base.c
+index 39696f7..1e36a02 100644
+--- a/drivers/mtd/nand/nand_base.c
++++ b/drivers/mtd/nand/nand_base.c
+@@ -4288,7 +4288,7 @@ int nand_scan_tail(struct mtd_info *mtd)
+ 		ecc->write_oob_raw = ecc->write_oob;
  
-@@ -1808,34 +1789,7 @@ static int onenand_panic_write(struct mtd_info *mtd, loff_t to, size_t len,
- static int onenand_fill_auto_oob(struct mtd_info *mtd, u_char *oob_buf,
- 				  const u_char *buf, int column, int thislen)
- {
--	struct onenand_chip *this = mtd->priv;
--	struct nand_oobfree *free;
--	int writecol = column;
--	int writeend = column + thislen;
--	int lastgap = 0;
--	unsigned int i;
--
--	free = this->ecclayout->oobfree;
--	for (i = 0; i < MTD_MAX_OOBFREE_ENTRIES && free->length; i++, free++) {
--		if (writecol >= lastgap)
--			writecol += free->offset - lastgap;
--		if (writeend >= lastgap)
--			writeend += free->offset - lastgap;
--		lastgap = free->offset + free->length;
--	}
--	free = this->ecclayout->oobfree;
--	for (i = 0; i < MTD_MAX_OOBFREE_ENTRIES && free->length; i++, free++) {
--		int free_end = free->offset + free->length;
--		if (free->offset < writeend && free_end > writecol) {
--			int st = max_t(int,free->offset,writecol);
--			int ed = min_t(int,free_end,writeend);
--			int n = ed - st;
--			memcpy(oob_buf + st, buf, n);
--			buf += n;
--		} else if (column == 0)
--			break;
--	}
--	return 0;
-+	return mtd_ooblayout_set_databytes(mtd, buf, oob_buf, column, thislen);
- }
+ 	/* propagate ecc info to mtd_info */
+-	mtd->ecclayout = ecc->layout;
++	mtd_set_ecclayout(mtd, ecc->layout);
+ 	mtd->ecc_strength = ecc->strength;
+ 	mtd->ecc_step_size = ecc->size;
  
- /**
-@@ -4037,10 +3991,11 @@ int onenand_scan(struct mtd_info *mtd, int maxchips)
- 	 * The number of bytes available for a client to place data into
- 	 * the out of band area
- 	 */
--	mtd->oobavail = 0;
--	for (i = 0; i < MTD_MAX_OOBFREE_ENTRIES &&
--	    this->ecclayout->oobfree[i].length; i++)
--		mtd->oobavail += this->ecclayout->oobfree[i].length;
-+	ret = mtd_ooblayout_count_freebytes(mtd);
-+	if (ret < 0)
-+		ret = 0;
-+
-+	mtd->oobavail = ret;
- 
- 	mtd->ecclayout = this->ecclayout;
- 	mtd->ecc_strength = 1;
 -- 
 2.1.4

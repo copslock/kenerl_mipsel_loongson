@@ -1,34 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Mar 2016 23:52:33 +0100 (CET)
-Received: from youngberry.canonical.com ([91.189.89.112]:50734 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Mar 2016 23:56:12 +0100 (CET)
+Received: from youngberry.canonical.com ([91.189.89.112]:51902 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27006883AbcCGWwbyc2Ea (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 7 Mar 2016 23:52:31 +0100
+        by eddie.linux-mips.org with ESMTP id S27011443AbcCGW4LJv0ia (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 7 Mar 2016 23:56:11 +0100
 Received: from 1.general.kamal.us.vpn ([10.172.68.52] helo=fourier)
         by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_128_CBC_SHA1:16)
         (Exim 4.76)
         (envelope-from <kamal@canonical.com>)
-        id 1ad40t-00009t-9Z; Mon, 07 Mar 2016 22:52:31 +0000
+        id 1ad44Q-0000de-08; Mon, 07 Mar 2016 22:56:10 +0000
 Received: from kamal by fourier with local (Exim 4.86)
         (envelope-from <kamal@whence.com>)
-        id 1ad40q-0001ty-JR; Mon, 07 Mar 2016 14:52:28 -0800
+        id 1ad44N-0002CU-BB; Mon, 07 Mar 2016 14:56:07 -0800
 From:   Kamal Mostafa <kamal@canonical.com>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
         kernel-team@lists.ubuntu.com
-Cc:     James Hogan <james.hogan@imgtec.com>, linux-mips@linux-mips.org,
+Cc:     Florian Fainelli <f.fainelli@gmail.com>, blogic@openwrt.org,
+        cernekee@gmail.com, linux-mips@linux-mips.org,
         Ralf Baechle <ralf@linux-mips.org>,
         Kamal Mostafa <kamal@canonical.com>
-Subject: [PATCH 4.2.y-ckt 059/273] MIPS: Fix buffer overflow in syscall_get_arguments()
-Date:   Mon,  7 Mar 2016 14:47:30 -0800
-Message-Id: <1457391064-6660-60-git-send-email-kamal@canonical.com>
+Subject: [PATCH 4.2.y-ckt 261/273] MAINTAINERS: Remove stale entry for BCM33xx chips
+Date:   Mon,  7 Mar 2016 14:50:52 -0800
+Message-Id: <1457391064-6660-262-git-send-email-kamal@canonical.com>
 X-Mailer: git-send-email 2.7.0
 In-Reply-To: <1457391064-6660-1-git-send-email-kamal@canonical.com>
 References: <1457391064-6660-1-git-send-email-kamal@canonical.com>
+MIME-Version: 1.0
 X-Extended-Stable: 4.2
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Return-Path: <kamal@canonical.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52547
+X-archive-position: 52548
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -49,54 +53,43 @@ X-list: linux-mips
 
 ---8<------------------------------------------------------------
 
-From: James Hogan <james.hogan@imgtec.com>
+From: Florian Fainelli <f.fainelli@gmail.com>
 
-commit f4dce1ffd2e30fa31756876ef502ce6d2324be35 upstream.
+commit 87bee0ecf01d2ed0d48bba1fb12c954f9476d243 upstream.
 
-Since commit 4c21b8fd8f14 ("MIPS: seccomp: Handle indirect system calls
-(o32)"), syscall_get_arguments() attempts to handle o32 indirect syscall
-arguments by incrementing both the start argument number and the number
-of arguments to fetch. However only the start argument number needs to
-be incremented. The number of arguments does not change, they're just
-shifted up by one, and in fact the output array is provided by the
-caller and is likely only n entries long, so reading more arguments
-overflows the output buffer.
+Commit 70371cef114ca ("MAINTAINERS: Add entry for BMIPS multiplatform
+kernel") supersedes this entry for BCM33xx.
 
-In the case of seccomp, this results in it fetching 7 arguments starting
-at the 2nd one, which overflows the unsigned long args[6] in
-populate_seccomp_data(). This clobbers the $s0 register from
-syscall_trace_enter() which __seccomp_phase1_filter() saved onto the
-stack, into which syscall_trace_enter() had placed its syscall number
-argument. This caused Chromium to crash.
-
-Credit goes to Milko for tracking it down as far as $s0 being clobbered.
-
-Fixes: 4c21b8fd8f14 ("MIPS: seccomp: Handle indirect system calls (o32)")
-Reported-by: Milko Leporis <milko.leporis@imgtec.com>
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Fixes: 70371cef114ca ("MAINTAINERS: Add entry for BMIPS multiplatform kernel")
+Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
+Cc: blogic@openwrt.org
+Cc: cernekee@gmail.com
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/12213/
+Patchwork: https://patchwork.linux-mips.org/patch/12301/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Kamal Mostafa <kamal@canonical.com>
 ---
- arch/mips/include/asm/syscall.h | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ MAINTAINERS | 8 --------
+ 1 file changed, 8 deletions(-)
 
-diff --git a/arch/mips/include/asm/syscall.h b/arch/mips/include/asm/syscall.h
-index 6499d93..47bc45a 100644
---- a/arch/mips/include/asm/syscall.h
-+++ b/arch/mips/include/asm/syscall.h
-@@ -101,10 +101,8 @@ static inline void syscall_get_arguments(struct task_struct *task,
- 	/* O32 ABI syscall() - Either 64-bit with O32 or 32-bit */
- 	if ((config_enabled(CONFIG_32BIT) ||
- 	    test_tsk_thread_flag(task, TIF_32BIT_REGS)) &&
--	    (regs->regs[2] == __NR_syscall)) {
-+	    (regs->regs[2] == __NR_syscall))
- 		i++;
--		n++;
--	}
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 66a6649..4be1334 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -2223,14 +2223,6 @@ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/rpi/linux-rpi.git
+ S:	Maintained
+ N:	bcm2835
  
- 	while (n--)
- 		ret |= mips_get_syscall_arg(args++, task, regs, i++);
+-BROADCOM BCM33XX MIPS ARCHITECTURE
+-M:	Kevin Cernekee <cernekee@gmail.com>
+-L:	linux-mips@linux-mips.org
+-S:	Maintained
+-F:	arch/mips/bcm3384/*
+-F:	arch/mips/include/asm/mach-bcm3384/*
+-F:	arch/mips/kernel/*bmips*
+-
+ BROADCOM BCM47XX MIPS ARCHITECTURE
+ M:	Hauke Mehrtens <hauke@hauke-m.de>
+ M:	Rafał Miłecki <zajec5@gmail.com>
 -- 
 2.7.0

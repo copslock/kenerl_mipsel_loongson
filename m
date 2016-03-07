@@ -1,13 +1,13 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Mar 2016 10:54:34 +0100 (CET)
-Received: from down.free-electrons.com ([37.187.137.238]:38372 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Mar 2016 10:54:52 +0100 (CET)
+Received: from down.free-electrons.com ([37.187.137.238]:38432 "EHLO
         mail.free-electrons.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27012326AbcCGJsgHd5FS (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 7 Mar 2016 10:48:36 +0100
+        by eddie.linux-mips.org with ESMTP id S27012345AbcCGJskp2CdS (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 7 Mar 2016 10:48:40 +0100
 Received: by mail.free-electrons.com (Postfix, from userid 110)
-        id 4EF0F288D; Mon,  7 Mar 2016 10:48:29 +0100 (CET)
+        id 01192645; Mon,  7 Mar 2016 10:48:30 +0100 (CET)
 Received: from localhost.localdomain (AToulouse-657-1-1129-172.w92-156.abo.wanadoo.fr [92.156.51.172])
-        by mail.free-electrons.com (Postfix) with ESMTPSA id 3DC5EB23;
-        Mon,  7 Mar 2016 10:48:05 +0100 (CET)
+        by mail.free-electrons.com (Postfix) with ESMTPSA id 21F364AF;
+        Mon,  7 Mar 2016 10:48:10 +0100 (CET)
 From:   Boris Brezillon <boris.brezillon@free-electrons.com>
 To:     David Woodhouse <dwmw2@infradead.org>,
         Brian Norris <computersforpeace@gmail.com>,
@@ -38,9 +38,9 @@ Cc:     Daniel Mack <daniel@zonque.org>,
         bcm-kernel-feedback-list@broadcom.com, linux-api@vger.kernel.org,
         Harvey Hunt <harvey.hunt@imgtec.com>,
         Boris Brezillon <boris.brezillon@free-electrons.com>
-Subject: [PATCH v4 20/52] mtd: docg3: switch to mtd_ooblayout_ops
-Date:   Mon,  7 Mar 2016 10:47:10 +0100
-Message-Id: <1457344062-11633-21-git-send-email-boris.brezillon@free-electrons.com>
+Subject: [PATCH v4 25/52] mtd: nand: atmel: switch to mtd_ooblayout_ops
+Date:   Mon,  7 Mar 2016 10:47:15 +0100
+Message-Id: <1457344062-11633-26-git-send-email-boris.brezillon@free-electrons.com>
 X-Mailer: git-send-email 2.1.4
 In-Reply-To: <1457344062-11633-1-git-send-email-boris.brezillon@free-electrons.com>
 References: <1457344062-11633-1-git-send-email-boris.brezillon@free-electrons.com>
@@ -48,7 +48,7 @@ Return-Path: <boris.brezillon@free-electrons.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52510
+X-archive-position: 52511
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -65,78 +65,172 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Replace the nand_ecclayout definition by the equivalent mtd_ooblayout_ops
-definition.
+Implementing the mtd_ooblayout_ops interface is the new way of exposing
+ECC/OOB layout to MTD users.
 
 Signed-off-by: Boris Brezillon <boris.brezillon@free-electrons.com>
-Acked-by: Robert Jarzmik <robert.jarzmik@free.fr>
 ---
- drivers/mtd/devices/docg3.c | 46 ++++++++++++++++++++++++++++++++++-----------
- 1 file changed, 35 insertions(+), 11 deletions(-)
+ drivers/mtd/nand/atmel_nand.c | 84 ++++++++++++++++++++-----------------------
+ 1 file changed, 38 insertions(+), 46 deletions(-)
 
-diff --git a/drivers/mtd/devices/docg3.c b/drivers/mtd/devices/docg3.c
-index 6b516e1..b833e6c 100644
---- a/drivers/mtd/devices/docg3.c
-+++ b/drivers/mtd/devices/docg3.c
-@@ -67,16 +67,40 @@ module_param(reliable_mode, uint, 0);
- MODULE_PARM_DESC(reliable_mode, "Set the docg3 mode (0=normal MLC, 1=fast, "
- 		 "2=reliable) : MLC normal operations are in normal mode");
+diff --git a/drivers/mtd/nand/atmel_nand.c b/drivers/mtd/nand/atmel_nand.c
+index ac3dd3f..a922193 100644
+--- a/drivers/mtd/nand/atmel_nand.c
++++ b/drivers/mtd/nand/atmel_nand.c
+@@ -72,30 +72,44 @@ struct atmel_nand_nfc_caps {
+ 	uint32_t rb_mask;
+ };
  
--/**
-- * struct docg3_oobinfo - DiskOnChip G3 OOB layout
-- * @eccbytes: 8 bytes are used (1 for Hamming ECC, 7 for BCH ECC)
-- * @eccpos: ecc positions (byte 7 is Hamming ECC, byte 8-14 are BCH ECC)
-- * @oobfree: free pageinfo bytes (byte 0 until byte 6, byte 15
+-/* oob layout for large page size
++/*
++ * oob layout for large page size
+  * bad block info is on bytes 0 and 1
+  * the bytes have to be consecutives to avoid
+  * several NAND_CMD_RNDOUT during read
 - */
--static struct nand_ecclayout docg3_oobinfo = {
--	.eccbytes = 8,
--	.eccpos = {7, 8, 9, 10, 11, 12, 13, 14},
--	.oobfree = {{0, 7}, {15, 1} },
-+static int docg3_ooblayout_ecc(struct mtd_info *mtd, int section,
-+			       struct mtd_oob_region *oobregion)
+-static struct nand_ecclayout atmel_oobinfo_large = {
+-	.eccbytes = 4,
+-	.eccpos = {60, 61, 62, 63},
+-	.oobfree = {
+-		{2, 58}
+-	},
+-};
+-
+-/* oob layout for small page size
++ *
++ * oob layout for small page size
+  * bad block info is on bytes 4 and 5
+  * the bytes have to be consecutives to avoid
+  * several NAND_CMD_RNDOUT during read
+  */
+-static struct nand_ecclayout atmel_oobinfo_small = {
+-	.eccbytes = 4,
+-	.eccpos = {0, 1, 2, 3},
+-	.oobfree = {
+-		{6, 10}
+-	},
++static int atmel_ooblayout_ecc_sp(struct mtd_info *mtd, int section,
++				  struct mtd_oob_region *oobregion)
 +{
 +	if (section)
 +		return -ERANGE;
 +
-+	/* byte 7 is Hamming ECC, byte 8-14 are BCH ECC */
-+	oobregion->offset = 7;
-+	oobregion->length = 8;
++	oobregion->length = 4;
++	oobregion->offset = 0;
 +
 +	return 0;
 +}
 +
-+static int docg3_ooblayout_free(struct mtd_info *mtd, int section,
-+				struct mtd_oob_region *oobregion)
++static int atmel_ooblayout_free_sp(struct mtd_info *mtd, int section,
++				   struct mtd_oob_region *oobregion)
 +{
-+	if (section > 1)
++	if (section)
 +		return -ERANGE;
 +
-+	/* free bytes: byte 0 until byte 6, byte 15 */
-+	if (!section) {
-+		oobregion->offset = 0;
-+		oobregion->length = 7;
-+	} else {
-+		oobregion->offset = 15;
-+		oobregion->length = 1;
-+	}
++	oobregion->offset = 6;
++	oobregion->length = mtd->oobsize - oobregion->offset;
 +
 +	return 0;
 +}
 +
-+static const struct mtd_ooblayout_ops nand_ooblayout_docg3_ops = {
-+	.ecc = docg3_ooblayout_ecc,
-+	.free = docg3_ooblayout_free,
++static const struct mtd_ooblayout_ops atmel_ooblayout_sp_ops = {
++	.ecc = atmel_ooblayout_ecc_sp,
++	.free = atmel_ooblayout_free_sp,
  };
  
- static inline u8 doc_readb(struct docg3 *docg3, u16 reg)
-@@ -1857,7 +1881,7 @@ static int __init doc_set_driver_info(int chip_id, struct mtd_info *mtd)
- 	mtd->_read_oob = doc_read_oob;
- 	mtd->_write_oob = doc_write_oob;
- 	mtd->_block_isbad = doc_block_isbad;
--	mtd_set_ecclayout(mtd, &docg3_oobinfo);
-+	mtd_set_ooblayout(mtd, &nand_ooblayout_docg3_ops);
- 	mtd->oobavail = 8;
- 	mtd->ecc_strength = DOC_ECC_BCH_T;
+ struct atmel_nfc {
+@@ -163,8 +177,6 @@ struct atmel_nand_host {
+ 	int			*pmecc_delta;
+ };
  
+-static struct nand_ecclayout atmel_pmecc_oobinfo;
+-
+ /*
+  * Enable NAND.
+  */
+@@ -483,22 +495,6 @@ static int pmecc_get_ecc_bytes(int cap, int sector_size)
+ 	return (m * cap + 7) / 8;
+ }
+ 
+-static void pmecc_config_ecc_layout(struct nand_ecclayout *layout,
+-				    int oobsize, int ecc_len)
+-{
+-	int i;
+-
+-	layout->eccbytes = ecc_len;
+-
+-	/* ECC will occupy the last ecc_len bytes continuously */
+-	for (i = 0; i < ecc_len; i++)
+-		layout->eccpos[i] = oobsize - ecc_len + i;
+-
+-	layout->oobfree[0].offset = PMECC_OOB_RESERVED_BYTES;
+-	layout->oobfree[0].length =
+-		oobsize - ecc_len - layout->oobfree[0].offset;
+-}
+-
+ static void __iomem *pmecc_get_alpha_to(struct atmel_nand_host *host)
+ {
+ 	int table_size;
+@@ -1010,8 +1006,8 @@ static void atmel_pmecc_core_init(struct mtd_info *mtd)
+ {
+ 	struct nand_chip *nand_chip = mtd_to_nand(mtd);
+ 	struct atmel_nand_host *host = nand_get_controller_data(nand_chip);
++	int eccbytes = mtd_ooblayout_count_eccbytes(mtd);
+ 	uint32_t val = 0;
+-	struct nand_ecclayout *ecc_layout;
+ 	struct mtd_oob_region oobregion;
+ 
+ 	pmecc_writel(host->ecc, CTRL, PMECC_CTRL_RST);
+@@ -1062,12 +1058,11 @@ static void atmel_pmecc_core_init(struct mtd_info *mtd)
+ 		| PMECC_CFG_AUTO_DISABLE);
+ 	pmecc_writel(host->ecc, CFG, val);
+ 
+-	ecc_layout = nand_chip->ecc.layout;
+ 	pmecc_writel(host->ecc, SAREA, mtd->oobsize - 1);
+ 	mtd_ooblayout_ecc(mtd, 0, &oobregion);
+ 	pmecc_writel(host->ecc, SADDR, oobregion.offset);
+ 	pmecc_writel(host->ecc, EADDR,
+-		     oobregion.offset + ecc_layout->eccbytes - 1);
++		     oobregion.offset + eccbytes - 1);
+ 	/* See datasheet about PMECC Clock Control Register */
+ 	pmecc_writel(host->ecc, CLK, 2);
+ 	pmecc_writel(host->ecc, IDR, 0xff);
+@@ -1289,11 +1284,8 @@ static int atmel_pmecc_nand_init_params(struct platform_device *pdev,
+ 			err_no = -EINVAL;
+ 			goto err;
+ 		}
+-		pmecc_config_ecc_layout(&atmel_pmecc_oobinfo,
+-					mtd->oobsize,
+-					nand_chip->ecc.total);
+ 
+-		nand_chip->ecc.layout = &atmel_pmecc_oobinfo;
++		mtd_set_ooblayout(mtd, &nand_ooblayout_lp_ops);
+ 		break;
+ 	default:
+ 		dev_warn(host->dev,
+@@ -1641,19 +1633,19 @@ static int atmel_hw_nand_init_params(struct platform_device *pdev,
+ 	/* set ECC page size and oob layout */
+ 	switch (mtd->writesize) {
+ 	case 512:
+-		nand_chip->ecc.layout = &atmel_oobinfo_small;
++		mtd_set_ooblayout(mtd, &atmel_ooblayout_sp_ops);
+ 		ecc_writel(host->ecc, MR, ATMEL_ECC_PAGESIZE_528);
+ 		break;
+ 	case 1024:
+-		nand_chip->ecc.layout = &atmel_oobinfo_large;
++		mtd_set_ooblayout(mtd, &nand_ooblayout_lp_ops);
+ 		ecc_writel(host->ecc, MR, ATMEL_ECC_PAGESIZE_1056);
+ 		break;
+ 	case 2048:
+-		nand_chip->ecc.layout = &atmel_oobinfo_large;
++		mtd_set_ooblayout(mtd, &nand_ooblayout_lp_ops);
+ 		ecc_writel(host->ecc, MR, ATMEL_ECC_PAGESIZE_2112);
+ 		break;
+ 	case 4096:
+-		nand_chip->ecc.layout = &atmel_oobinfo_large;
++		mtd_set_ooblayout(mtd, &nand_ooblayout_lp_ops);
+ 		ecc_writel(host->ecc, MR, ATMEL_ECC_PAGESIZE_4224);
+ 		break;
+ 	default:
 -- 
 2.1.4

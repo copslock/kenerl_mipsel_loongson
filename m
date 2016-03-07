@@ -1,29 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 06 Mar 2016 22:29:06 +0100 (CET)
-Received: from hauke-m.de ([5.39.93.123]:37383 "EHLO hauke-m.de"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Mar 2016 02:33:13 +0100 (CET)
+Received: from SMTPBG19.QQ.COM ([183.60.61.236]:60415 "EHLO smtpbg19.qq.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27006677AbcCFV3FFHltB (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 6 Mar 2016 22:29:05 +0100
-Received: from hauke-desktop.fritz.box (p5DE968F0.dip0.t-ipconnect.de [93.233.104.240])
-        by hauke-m.de (Postfix) with ESMTPSA id 1983E1001AD;
-        Sun,  6 Mar 2016 22:29:02 +0100 (CET)
-From:   Hauke Mehrtens <hauke@hauke-m.de>
-To:     linux-mips@linux-mips.org, ralf@linux-mips.org
-Cc:     Hauke Mehrtens <hauke@hauke-m.de>,
-        Paul Burton <paul.burton@imgtec.com>,
-        "# v3 . 15+" <stable@vger.kernel.org>
-Subject: [PATCH v2] MIPS: fix build error when SMP is used without GIC
-Date:   Sun,  6 Mar 2016 22:28:56 +0100
-Message-Id: <1457299736-24669-1-git-send-email-hauke@hauke-m.de>
+        id S27006656AbcCGBdIYJPN4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 7 Mar 2016 02:33:08 +0100
+X-QQ-mid: bizesmtp11t1457314288t334t22
+Received: from software.domain.org (unknown [222.92.8.142])
+        by esmtp4.qq.com (ESMTP) with 
+        id ; Mon, 07 Mar 2016 09:31:17 +0800 (CST)
+X-QQ-SSF: 01100000000000F0FK70
+X-QQ-FEAT: gfF3hKh4GIkeJfo8Q3OF8qxYpp7t0r0rjFBuQrYHifpB9g2/Qhe8QajDc5iGu
+        Q4qQp1yWqxfzSLZslKlUS00+AMhzfaMfMItj6Afe1aFAYJoOMJ2BexkS13faagAPM2rIPEc
+        1NNqvEAySMXG6U+4ZtZXt4JdtisMta9zU6ij81aELmDzoOosVoVCgvxPVYrSNApOiUtoAiU
+        HatGbjtH8p1R96gkxLB88soOUOVfWPcjbGOvDl/sIIk5AfH8tLu21C6kknej+FsVRfhXz3B
+        bKoWE0im4ESD5v
+X-QQ-GoodBg: 0
+From:   Huacai Chen <chenhc@lemote.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     Aurelien Jarno <aurelien@aurel32.net>,
+        "Steven J . Hill" <Steven.Hill@imgtec.com>,
+        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        Huacai Chen <chenhc@lemote.com>, stable@vger.kernel.org
+Subject: [PATCH V2 1/3] MIPS: Reserve nosave data for hibernation
+Date:   Mon,  7 Mar 2016 09:31:45 +0800
+Message-Id: <1457314307-8510-1-git-send-email-chenhc@lemote.com>
 X-Mailer: git-send-email 2.7.0
-Return-Path: <hauke@hauke-m.de>
+X-QQ-SENDSIZE: 520
+X-QQ-Bgrelay: 1
+Return-Path: <chenhc@lemote.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52482
+X-archive-position: 52483
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hauke@hauke-m.de
+X-original-sender: chenhc@lemote.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -36,66 +48,31 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The MIPS_GIC_IPI should only be selected when MIPS_GIC is also
-selected, otherwise it results in a compile error. smp-gic.c uses some
-functions from include/linux/irqchip/mips-gic.h like
-plat_ipi_call_int_xlate() which are only added to the header file when
-MIPS_GIC is set. The Lantiq SoC does not use the GIC, but supports SMP.
-The calls top the functions from smp-gic.c are already protected by
-some #ifdefs
+After commit 92923ca3aacef63c92d ("mm: meminit: only set page reserved
+in the memblock region"), the MIPS hibernation is broken. Because pages
+in nosave data section should be "reserved", but currently they aren't
+set to "reserved" at initialization. This patch makes hibernation work
+again.
 
-The first part of this was introduced in commit 72e20142b2bf ("MIPS:
-Move GIC IPI functions out of smp-cmp.c")
-
-Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
-Cc: Paul Burton <paul.burton@imgtec.com>
-Cc: <stable@vger.kernel.org> # v3.15+
+Cc: stable@vger.kernel.org
+Signed-off-by: Huacai Chen <chenhc@lemote.com>
 ---
+ arch/mips/kernel/setup.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-Changes since v1:
- * Fix commit message based on Sergei's comments.
-
- arch/mips/Kconfig | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
-
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 74a3db9..d3da79d 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -2169,7 +2169,7 @@ config MIPS_MT_SMP
- 	select CPU_MIPSR2_IRQ_VI
- 	select CPU_MIPSR2_IRQ_EI
- 	select SYNC_R4K
--	select MIPS_GIC_IPI
-+	select MIPS_GIC_IPI if MIPS_GIC
- 	select MIPS_MT
- 	select SMP
- 	select SMP_UP
-@@ -2267,7 +2267,7 @@ config MIPS_VPE_APSP_API_MT
- config MIPS_CMP
- 	bool "MIPS CMP framework support (DEPRECATED)"
- 	depends on SYS_SUPPORTS_MIPS_CMP && !CPU_MIPSR6
--	select MIPS_GIC_IPI
-+	select MIPS_GIC_IPI if MIPS_GIC
- 	select SMP
- 	select SYNC_R4K
- 	select SYS_SUPPORTS_SMP
-@@ -2287,7 +2287,7 @@ config MIPS_CPS
- 	select MIPS_CM
- 	select MIPS_CPC
- 	select MIPS_CPS_PM if HOTPLUG_CPU
--	select MIPS_GIC_IPI
-+	select MIPS_GIC_IPI if MIPS_GIC
- 	select SMP
- 	select SYNC_R4K if (CEVT_R4K || CSRC_R4K)
- 	select SYS_SUPPORTS_HOTPLUG_CPU
-@@ -2306,6 +2306,7 @@ config MIPS_CPS_PM
- 	bool
+diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
+index 5fdaf8b..6f68cdd 100644
+--- a/arch/mips/kernel/setup.c
++++ b/arch/mips/kernel/setup.c
+@@ -706,6 +706,9 @@ static void __init arch_mem_init(char **cmdline_p)
+ 	for_each_memblock(reserved, reg)
+ 		if (reg->size != 0)
+ 			reserve_bootmem(reg->base, reg->size, BOOTMEM_DEFAULT);
++
++	reserve_bootmem_region(__pa_symbol(&__nosave_begin),
++			__pa_symbol(&__nosave_end)); /* Reserve for hibernation */
+ }
  
- config MIPS_GIC_IPI
-+	depends on MIPS_GIC
- 	bool
- 
- config MIPS_CM
+ static void __init resource_init(void)
 -- 
 2.7.0

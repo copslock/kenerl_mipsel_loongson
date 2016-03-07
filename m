@@ -1,13 +1,13 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Mar 2016 10:56:14 +0100 (CET)
-Received: from down.free-electrons.com ([37.187.137.238]:38527 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Mar 2016 10:56:29 +0100 (CET)
+Received: from down.free-electrons.com ([37.187.137.238]:38570 "EHLO
         mail.free-electrons.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27006929AbcCGJstTr56S (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 7 Mar 2016 10:48:49 +0100
+        by eddie.linux-mips.org with ESMTP id S27012362AbcCGJswTclWS (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 7 Mar 2016 10:48:52 +0100
 Received: by mail.free-electrons.com (Postfix, from userid 110)
-        id 7B20B42; Mon,  7 Mar 2016 10:48:43 +0100 (CET)
+        id 812A21F63; Mon,  7 Mar 2016 10:48:46 +0100 (CET)
 Received: from localhost.localdomain (AToulouse-657-1-1129-172.w92-156.abo.wanadoo.fr [92.156.51.172])
-        by mail.free-electrons.com (Postfix) with ESMTPSA id F0C101BD;
-        Mon,  7 Mar 2016 10:48:13 +0100 (CET)
+        by mail.free-electrons.com (Postfix) with ESMTPSA id D1EA0216F;
+        Mon,  7 Mar 2016 10:48:15 +0100 (CET)
 From:   Boris Brezillon <boris.brezillon@free-electrons.com>
 To:     David Woodhouse <dwmw2@infradead.org>,
         Brian Norris <computersforpeace@gmail.com>,
@@ -38,9 +38,9 @@ Cc:     Daniel Mack <daniel@zonque.org>,
         bcm-kernel-feedback-list@broadcom.com, linux-api@vger.kernel.org,
         Harvey Hunt <harvey.hunt@imgtec.com>,
         Boris Brezillon <boris.brezillon@free-electrons.com>
-Subject: [PATCH v4 29/52] mtd: nand: davinci: switch to mtd_ooblayout_ops
-Date:   Mon,  7 Mar 2016 10:47:19 +0100
-Message-Id: <1457344062-11633-30-git-send-email-boris.brezillon@free-electrons.com>
+Subject: [PATCH v4 31/52] mtd: nand: diskonchip: switch to mtd_ooblayout_ops
+Date:   Mon,  7 Mar 2016 10:47:21 +0100
+Message-Id: <1457344062-11633-32-git-send-email-boris.brezillon@free-electrons.com>
 X-Mailer: git-send-email 2.1.4
 In-Reply-To: <1457344062-11633-1-git-send-email-boris.brezillon@free-electrons.com>
 References: <1457344062-11633-1-git-send-email-boris.brezillon@free-electrons.com>
@@ -48,7 +48,7 @@ Return-Path: <boris.brezillon@free-electrons.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52516
+X-archive-position: 52517
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -70,155 +70,93 @@ ECC/OOB layout to MTD users.
 
 Signed-off-by: Boris Brezillon <boris.brezillon@free-electrons.com>
 ---
- drivers/mtd/nand/davinci_nand.c | 118 +++++++++++++++-------------------------
- 1 file changed, 44 insertions(+), 74 deletions(-)
+ drivers/mtd/nand/diskonchip.c | 60 ++++++++++++++++++++++++++++++++-----------
+ 1 file changed, 45 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/mtd/nand/davinci_nand.c b/drivers/mtd/nand/davinci_nand.c
-index 8cb821b..fe3fd29 100644
---- a/drivers/mtd/nand/davinci_nand.c
-+++ b/drivers/mtd/nand/davinci_nand.c
-@@ -54,7 +54,6 @@
-  */
- struct davinci_nand_info {
- 	struct nand_chip	chip;
--	struct nand_ecclayout	ecclayout;
+diff --git a/drivers/mtd/nand/diskonchip.c b/drivers/mtd/nand/diskonchip.c
+index f170f3c..4411e99 100644
+--- a/drivers/mtd/nand/diskonchip.c
++++ b/drivers/mtd/nand/diskonchip.c
+@@ -950,20 +950,50 @@ static int doc200x_correct_data(struct mtd_info *mtd, u_char *dat,
  
- 	struct device		*dev;
- 	struct clk		*clk;
-@@ -480,63 +479,46 @@ static int nand_davinci_dev_ready(struct mtd_info *mtd)
-  * ten ECC bytes plus the manufacturer's bad block marker byte, and
-  * and not overlapping the default BBT markers.
-  */
--static struct nand_ecclayout hwecc4_small = {
--	.eccbytes = 10,
--	.eccpos = { 0, 1, 2, 3, 4,
--		/* offset 5 holds the badblock marker */
--		6, 7,
--		13, 14, 15, },
--	.oobfree = {
--		{.offset = 8, .length = 5, },
--		{.offset = 16, },
--	},
--};
-+static int hwecc4_ooblayout_small_ecc(struct mtd_info *mtd, int section,
-+				      struct mtd_oob_region *oobregion)
+ //u_char mydatabuf[528];
+ 
+-/* The strange out-of-order .oobfree list below is a (possibly unneeded)
+- * attempt to retain compatibility.  It used to read:
+- * 	.oobfree = { {8, 8} }
+- * Since that leaves two bytes unusable, it was changed.  But the following
+- * scheme might affect existing jffs2 installs by moving the cleanmarker:
+- * 	.oobfree = { {6, 10} }
+- * jffs2 seems to handle the above gracefully, but the current scheme seems
+- * safer.  The only problem with it is that any code that parses oobfree must
+- * be able to handle out-of-order segments.
+- */
+-static struct nand_ecclayout doc200x_oobinfo = {
+-	.eccbytes = 6,
+-	.eccpos = {0, 1, 2, 3, 4, 5},
+-	.oobfree = {{8, 8}, {6, 2}}
++static int doc200x_ooblayout_ecc(struct mtd_info *mtd, int section,
++				 struct mtd_oob_region *oobregion)
 +{
-+	if (section > 2)
++	if (section)
 +		return -ERANGE;
 +
-+	if (!section) {
-+		oobregion->offset = 0;
-+		oobregion->length = 5;
-+	} else if (section == 1) {
-+		oobregion->offset = 6;
-+		oobregion->length = 2;
-+	} else {
-+		oobregion->offset = 13;
-+		oobregion->length = 3;
-+	}
- 
--/* An ECC layout for using 4-bit ECC with large-page (2048bytes) flash,
-- * storing ten ECC bytes plus the manufacturer's bad block marker byte,
-- * and not overlapping the default BBT markers.
-- */
--static struct nand_ecclayout hwecc4_2048 = {
--	.eccbytes = 40,
--	.eccpos = {
--		/* at the end of spare sector */
--		24, 25, 26, 27, 28, 29,	30, 31, 32, 33,
--		34, 35, 36, 37, 38, 39,	40, 41, 42, 43,
--		44, 45, 46, 47, 48, 49, 50, 51, 52, 53,
--		54, 55, 56, 57, 58, 59, 60, 61, 62, 63,
--		},
--	.oobfree = {
--		/* 2 bytes at offset 0 hold manufacturer badblock markers */
--		{.offset = 2, .length = 22, },
--		/* 5 bytes at offset 8 hold BBT markers */
--		/* 8 bytes at offset 16 hold JFFS2 clean markers */
--	},
--};
++	oobregion->offset = 0;
++	oobregion->length = 6;
++
 +	return 0;
 +}
- 
--/*
-- * An ECC layout for using 4-bit ECC with large-page (4096bytes) flash,
-- * storing ten ECC bytes plus the manufacturer's bad block marker byte,
-- * and not overlapping the default BBT markers.
-- */
--static struct nand_ecclayout hwecc4_4096 = {
--	.eccbytes = 80,
--	.eccpos = {
--		/* at the end of spare sector */
--		48, 49, 50, 51, 52, 53, 54, 55, 56, 57,
--		58, 59, 60, 61, 62, 63, 64, 65, 66, 67,
--		68, 69, 70, 71, 72, 73, 74, 75, 76, 77,
--		78, 79, 80, 81, 82, 83, 84, 85, 86, 87,
--		88, 89, 90, 91, 92, 93, 94, 95, 96, 97,
--		98, 99, 100, 101, 102, 103, 104, 105, 106, 107,
--		108, 109, 110, 111, 112, 113, 114, 115, 116, 117,
--		118, 119, 120, 121, 122, 123, 124, 125, 126, 127,
--	},
--	.oobfree = {
--		/* 2 bytes at offset 0 hold manufacturer badblock markers */
--		{.offset = 2, .length = 46, },
--		/* 5 bytes at offset 8 hold BBT markers */
--		/* 8 bytes at offset 16 hold JFFS2 clean markers */
--	},
-+static int hwecc4_ooblayout_small_free(struct mtd_info *mtd, int section,
-+				       struct mtd_oob_region *oobregion)
++
++static int doc200x_ooblayout_free(struct mtd_info *mtd, int section,
++				  struct mtd_oob_region *oobregion)
 +{
 +	if (section > 1)
 +		return -ERANGE;
 +
++	/*
++	 * The strange out-of-order free bytes definition is a (possibly
++	 * unneeded) attempt to retain compatibility.  It used to read:
++	 *	.oobfree = { {8, 8} }
++	 * Since that leaves two bytes unusable, it was changed.  But the
++	 * following scheme might affect existing jffs2 installs by moving the
++	 * cleanmarker:
++	 *	.oobfree = { {6, 10} }
++	 * jffs2 seems to handle the above gracefully, but the current scheme
++	 * seems safer. The only problem with it is that any code retrieving
++	 * free bytes position must be able to handle out-of-order segments.
++	 */
 +	if (!section) {
 +		oobregion->offset = 8;
-+		oobregion->length = 5;
++		oobregion->length = 8;
 +	} else {
-+		oobregion->offset = 16;
-+		oobregion->length = mtd->oobsize - 16;
++		oobregion->offset = 6;
++		oobregion->length = 2;
 +	}
 +
 +	return 0;
 +}
 +
-+static const struct mtd_ooblayout_ops hwecc4_small_ooblayout_ops = {
-+	.ecc = hwecc4_ooblayout_small_ecc,
-+	.free = hwecc4_ooblayout_small_free,
++static const struct mtd_ooblayout_ops doc200x_ooblayout_ops = {
++	.ecc = doc200x_ooblayout_ecc,
++	.free = doc200x_ooblayout_free,
  };
  
- #if defined(CONFIG_OF)
-@@ -805,26 +787,14 @@ static int nand_davinci_probe(struct platform_device *pdev)
- 		 * table marker fits in the free bytes.
- 		 */
- 		if (chunks == 1) {
--			info->ecclayout = hwecc4_small;
--			info->ecclayout.oobfree[1].length = mtd->oobsize - 16;
--			goto syndrome_done;
--		}
--		if (chunks == 4) {
--			info->ecclayout = hwecc4_2048;
-+			mtd_set_ooblayout(mtd, &hwecc4_small_ooblayout_ops);
-+		} else if (chunks == 4 || chunks == 8) {
-+			mtd_set_ooblayout(mtd, &nand_ooblayout_lp_ops);
- 			info->chip.ecc.mode = NAND_ECC_HW_OOB_FIRST;
--			goto syndrome_done;
--		}
--		if (chunks == 8) {
--			info->ecclayout = hwecc4_4096;
--			info->chip.ecc.mode = NAND_ECC_HW_OOB_FIRST;
--			goto syndrome_done;
-+		} else {
-+			ret = -EIO;
-+			goto err;
- 		}
--
--		ret = -EIO;
--		goto err;
--
--syndrome_done:
--		info->chip.ecc.layout = &info->ecclayout;
- 	}
+ /* Find the (I)NFTL Media Header, and optionally also the mirror media header.
+@@ -1537,6 +1567,7 @@ static int __init doc_probe(unsigned long physadr)
+ 	nand->bbt_md		= nand->bbt_td + 1;
  
- 	ret = nand_scan_tail(mtd);
+ 	mtd->owner		= THIS_MODULE;
++	mtd_set_ooblayout(mtd, &doc200x_ooblayout_ops);
+ 
+ 	nand_set_controller_data(nand, doc);
+ 	nand->select_chip	= doc200x_select_chip;
+@@ -1548,7 +1579,6 @@ static int __init doc_probe(unsigned long physadr)
+ 	nand->ecc.calculate	= doc200x_calculate_ecc;
+ 	nand->ecc.correct	= doc200x_correct_data;
+ 
+-	nand->ecc.layout	= &doc200x_oobinfo;
+ 	nand->ecc.mode		= NAND_ECC_HW_SYNDROME;
+ 	nand->ecc.size		= 512;
+ 	nand->ecc.bytes		= 6;
 -- 
 2.1.4

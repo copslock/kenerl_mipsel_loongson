@@ -1,60 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Mar 2016 19:07:28 +0100 (CET)
-Received: from mail.kmu-office.ch ([178.209.48.109]:46941 "EHLO
-        mail.kmu-office.ch" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27007085AbcCGSH040SGA (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 7 Mar 2016 19:07:26 +0100
-Received: from webmail.kmu-office.ch (unknown [178.209.48.103])
-        by mail.kmu-office.ch (Postfix) with ESMTPSA id CFBF25C063A;
-        Mon,  7 Mar 2016 19:06:57 +0100 (CET)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Mar 2016 22:31:07 +0100 (CET)
+Received: from resqmta-ch2-02v.sys.comcast.net ([69.252.207.34]:54100 "EHLO
+        resqmta-ch2-02v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006792AbcCGVbDHjklK (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 7 Mar 2016 22:31:03 +0100
+Received: from resomta-ch2-16v.sys.comcast.net ([69.252.207.112])
+        by resqmta-ch2-02v.sys.comcast.net with comcast
+        id T9Uu1s0082S2Q5R019WwP3; Mon, 07 Mar 2016 21:30:56 +0000
+Received: from [192.168.1.13] ([76.106.83.43])
+        by resomta-ch2-16v.sys.comcast.net with comcast
+        id T9Wt1s00H0w5D38019WtWQ; Mon, 07 Mar 2016 21:30:55 +0000
+Subject: Re: [PATCH] rtc: ds1685: actually spin forever in poweroff error path
+To:     Josh Poimboeuf <jpoimboe@redhat.com>,
+        Alessandro Zummo <a.zummo@towertech.it>,
+        Alexandre Belloni <alexandre.belloni@free-electrons.com>
+References: <201603060005.PHCyifJr%fengguang.wu@intel.com>
+ <25c2e99dc116c666a05e641082a2690c05c09a23.1457362965.git.jpoimboe@redhat.com>
+Cc:     rtc-linux@googlegroups.com, linux-kernel@vger.kernel.org,
+        kbuild test robot <fengguang.wu@intel.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        Linux/MIPS <linux-mips@linux-mips.org>
+From:   Joshua Kinard <kumba@gentoo.org>
+X-Enigmail-Draft-Status: N1110
+Message-ID: <56DDF30A.70505@gentoo.org>
+Date:   Mon, 7 Mar 2016 16:30:50 -0500
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:44.0) Gecko/20100101
+ Thunderbird/44.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+In-Reply-To: <25c2e99dc116c666a05e641082a2690c05c09a23.1457362965.git.jpoimboe@redhat.com>
+Content-Type: text/plain; charset=windows-1252
 Content-Transfer-Encoding: 7bit
-Date:   Mon, 07 Mar 2016 10:04:36 -0800
-From:   Stefan Agner <stefan@agner.ch>
-To:     Boris Brezillon <boris.brezillon@free-electrons.com>
-Cc:     David Woodhouse <dwmw2@infradead.org>,
-        Brian Norris <computersforpeace@gmail.com>,
-        linux-mtd@lists.infradead.org, Daniel Mack <daniel@zonque.org>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        Kukjin Kim <kgene@kernel.org>,
-        Krzysztof Kozlowski <k.kozlowski@samsung.com>,
-        linux-samsung-soc@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        Nicolas Ferre <nicolas.ferre@atmel.com>,
-        Jean-Christophe Plagniol-Villard <plagnioj@jcrosoft.com>,
-        Alexandre Belloni <alexandre.belloni@free-electrons.com>,
-        Wenyou Yang <wenyou.yang@atmel.com>,
-        Josh Wu <rainyfeeling@outlook.com>,
-        Ezequiel Garcia <ezequiel.garcia@free-electrons.com>,
-        Maxime Ripard <maxime.ripard@free-electrons.com>,
-        Chen-Yu Tsai <wens@csie.org>, linux-sunxi@googlegroups.com,
-        Kyungmin Park <kyungmin.park@samsung.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        devel@driverdev.osuosl.org, linux-kernel@vger.kernel.org,
-        punnaiah choudary kalluri <punnaia@xilinx.com>,
-        Priit Laes <plaes@plaes.org>,
-        Kamal Dasu <kdasu.kdev@gmail.com>,
-        bcm-kernel-feedback-list@broadcom.com, linux-api@vger.kernel.org,
-        Harvey Hunt <harvey.hunt@imgtec.com>
-Subject: Re: [PATCH v4 48/52] mtd: nand: vf610: switch to mtd_ooblayout_ops
-In-Reply-To: <1457344062-11633-49-git-send-email-boris.brezillon@free-electrons.com>
-References: <1457344062-11633-1-git-send-email-boris.brezillon@free-electrons.com>
- <1457344062-11633-49-git-send-email-boris.brezillon@free-electrons.com>
-Message-ID: <73e28b049f14566167c1b6cd3c329099@agner.ch>
-X-Sender: stefan@agner.ch
-User-Agent: Roundcube Webmail/1.1.3
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=agner.ch; s=dkim; t=1457374017; bh=/NlfUKqmoYvRBZekZ/KGEny+3sf0vv4tDDhPGoFVCZs=; h=MIME-Version:Content-Type:Content-Transfer-Encoding:Date:From:To:Cc:Subject:In-Reply-To:References:Message-ID; b=p28mOndvVUiPBiNtEqJVyUUAX639H1g9o8rF3Prllpf5JV4o6vdtTUSoeeVF0L0smxy6juuGtdt10vBf2K0GycV4wIWAZryufsTA+/QnOu4TPVSGAH8Dgxtg4zlZLhYovdHzoKMJZuD3AfvLrYV4goNSvquF7Lce6zj+WSgcwBI=
-Return-Path: <stefan@agner.ch>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=comcast.net;
+        s=q20140121; t=1457386256;
+        bh=JRZSoG6/zU/FZF/t9IPfOmExVkQJb84eM4NjgxRzpUo=;
+        h=Received:Received:Subject:To:From:Message-ID:Date:MIME-Version:
+         Content-Type;
+        b=IcqPMJuhxG9bW/hZpWpmdUYGhPtOIwB4Ghg6UxMgeOTCE96tp79uHF+P+WaNhygHL
+         +P2Qpi339x4MDODHViFIodQ0pavwfcy9m+8zPG+Rzk7+QfvzRPqUcndI+fuB4N9J4P
+         zjqlaG27GE92VdLRLcQ8XHv4AsU9C5DQsHB3wjo5145de4CFqikiDy4Ipz6cPX/4BS
+         s2Jnq0+mp1TD8hfDu/Q4ox34OGS/w9WypkkhlprdOy78Rf4OTeYd2v8W+D5hpaSQqd
+         Z2Y1VhHfX0N2/qYZ+BclEeGUVQjGAOHC7JGHI6onB6kLHGfjZck46aKpeHuuXzHPT0
+         XnvwXMw4est3Q==
+Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52541
+X-archive-position: 52542
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: stefan@agner.ch
+X-original-sender: kumba@gentoo.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -67,84 +61,81 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 2016-03-07 01:47, Boris Brezillon wrote:
-> Implementing the mtd_ooblayout_ops interface is the new way of exposing
-> ECC/OOB layout to MTD users.
-
-Hi Boris,
-
-Tested this revision, works out of the box now!
-
-Thanks!
-
-Tested-by: Stefan Agner <stefan@agner.ch>
-Acked-by: Stefan Agner <stefan@agner.ch>
-
---
-Stefan
-
+On 03/07/2016 10:03, Josh Poimboeuf wrote:
+> objtool reports the following warnings:
 > 
-> Signed-off-by: Boris Brezillon <boris.brezillon@free-electrons.com>
+>   drivers/rtc/rtc-ds1685.o: warning: objtool: ds1685_rtc_work_queue()+0x0: duplicate frame pointer save
+>   drivers/rtc/rtc-ds1685.o: warning: objtool: ds1685_rtc_work_queue()+0x3: duplicate frame pointer setup
+>   drivers/rtc/rtc-ds1685.o: warning: objtool: ds1685_rtc_work_queue()+0x0: frame pointer state mismatch
+> 
+> The warning message needs to be improved, but what it really means in
+> this case is that ds1685_rtc_poweroff() has a possible code path where
+> it can actually fall through to the next function in the object code,
+> ds1685_rtc_work_queue().
+> 
+> The bug is caused by the use of the unreachable() macro in a place which
+> is actually reachable.  That causes gcc to assume that the printk()
+> immediately before the unreachable() macro never returns, when in fact
+> it does.  So gcc places the printk() at the very end of the function's
+> object code.  When the printk() returns, the next function starts
+> executing.
+> 
+> The surrounding comment and printk message state that the code should
+> spin forever, which explains the unreachable() statement.  However the
+> actual spin code is missing.
+
+So this power down trick is used by both SGI O2 (IP32) and SGI Octane (IP30)
+systems via this RTC chip, and I've noticed lately that the Octane has stopped
+powering off via this function (it just sits and spins forever).  The O2 powers
+off as expected.  When I initially wrote this driver from the original version
+I found on LKML in '09, I hadn't gotten the Octane code back into a working
+shape, and once that happened, I only tested the non-SMP case (fixed Octane SMP
+in 4.1).  I suspect on the Octane, the use of SMP may be what is interfering
+somehow, and this bug may partially explain it.  This patch doesn't fix
+poweroff for me, but it's something to start from when I can get some time to
+chase it down.
+
+That said, I initially left the 'while (1);' clause out because at one point
+during development, gcc yelled at me for using that at the end of the function,
+so I looked at some other drivers and saw the use of 'unreachable();' and used
+it instead.  Wasn't aware both of them are needed together in this instance.  I
+thought 'unreachable()' evaluated out to a 'while (1)' at the end.  Seems to
+actually be some kind of internal gcc trick.
+
+How exactly did the kbuild bot trigger the above warnings?  I've only built and
+tested this driver on a MIPS platform and haven't seen that particular warning
+before.
+
+
+> Reported-by: kbuild test robot <fengguang.wu@intel.com>
+> Signed-off-by: Josh Poimboeuf <jpoimboe@redhat.com>
 > ---
->  drivers/mtd/nand/vf610_nfc.c | 34 ++++------------------------------
->  1 file changed, 4 insertions(+), 30 deletions(-)
+>  drivers/rtc/rtc-ds1685.c | 1 +
+>  1 file changed, 1 insertion(+)
 > 
-> diff --git a/drivers/mtd/nand/vf610_nfc.c b/drivers/mtd/nand/vf610_nfc.c
-> index 293feb1..da34de1 100644
-> --- a/drivers/mtd/nand/vf610_nfc.c
-> +++ b/drivers/mtd/nand/vf610_nfc.c
-> @@ -175,34 +175,6 @@ static inline struct vf610_nfc *mtd_to_nfc(struct
-> mtd_info *mtd)
->  	return container_of(mtd_to_nand(mtd), struct vf610_nfc, chip);
->  }
->  
-> -static struct nand_ecclayout vf610_nfc_ecc45 = {
-> -	.eccbytes = 45,
-> -	.eccpos = {19, 20, 21, 22, 23,
-> -		   24, 25, 26, 27, 28, 29, 30, 31,
-> -		   32, 33, 34, 35, 36, 37, 38, 39,
-> -		   40, 41, 42, 43, 44, 45, 46, 47,
-> -		   48, 49, 50, 51, 52, 53, 54, 55,
-> -		   56, 57, 58, 59, 60, 61, 62, 63},
-> -	.oobfree = {
-> -		{.offset = 2,
-> -		 .length = 17} }
-> -};
-> -
-> -static struct nand_ecclayout vf610_nfc_ecc60 = {
-> -	.eccbytes = 60,
-> -	.eccpos = { 4,  5,  6,  7,  8,  9, 10, 11,
-> -		   12, 13, 14, 15, 16, 17, 18, 19,
-> -		   20, 21, 22, 23, 24, 25, 26, 27,
-> -		   28, 29, 30, 31, 32, 33, 34, 35,
-> -		   36, 37, 38, 39, 40, 41, 42, 43,
-> -		   44, 45, 46, 47, 48, 49, 50, 51,
-> -		   52, 53, 54, 55, 56, 57, 58, 59,
-> -		   60, 61, 62, 63 },
-> -	.oobfree = {
-> -		{.offset = 2,
-> -		 .length = 2} }
-> -};
-> -
->  static inline u32 vf610_nfc_read(struct vf610_nfc *nfc, uint reg)
->  {
->  	return readl(nfc->regs + reg);
-> @@ -781,14 +753,16 @@ static int vf610_nfc_probe(struct platform_device *pdev)
->  		if (mtd->oobsize > 64)
->  			mtd->oobsize = 64;
->  
-> +		/*
-> +		 * mtd->ecclayout is not specified here because we're using the
-> +		 * default large page ECC layout defined in NAND core.
-> +		 */
->  		if (chip->ecc.strength == 32) {
->  			nfc->ecc_mode = ECC_60_BYTE;
->  			chip->ecc.bytes = 60;
-> -			chip->ecc.layout = &vf610_nfc_ecc60;
->  		} else if (chip->ecc.strength == 24) {
->  			nfc->ecc_mode = ECC_45_BYTE;
->  			chip->ecc.bytes = 45;
-> -			chip->ecc.layout = &vf610_nfc_ecc45;
->  		} else {
->  			dev_err(nfc->dev, "Unsupported ECC strength\n");
->  			err = -ENXIO;
+> diff --git a/drivers/rtc/rtc-ds1685.c b/drivers/rtc/rtc-ds1685.c
+> index 08e0ff8..1e6cfc8 100644
+> --- a/drivers/rtc/rtc-ds1685.c
+> +++ b/drivers/rtc/rtc-ds1685.c
+> @@ -2161,6 +2161,7 @@ ds1685_rtc_poweroff(struct platform_device *pdev)
+>  	/* Check for valid RTC data, else, spin forever. */
+>  	if (unlikely(!pdev)) {
+>  		pr_emerg("platform device data not available, spinning forever ...\n");
+> +		while(1);
+>  		unreachable();
+>  	} else {
+>  		/* Get the rtc data. */
+> 
+
+
+-- 
+Joshua Kinard
+Gentoo/MIPS
+kumba@gentoo.org
+6144R/F5C6C943 2015-04-27
+177C 1972 1FB8 F254 BAD0 3E72 5C63 F4E3 F5C6 C943
+
+"The past tempts us, the present confuses us, the future frightens us.  And our
+lives slip away, moment by moment, lost in that vast, terrible in-between."
+
+--Emperor Turhan, Centauri Republic

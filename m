@@ -1,13 +1,13 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Mar 2016 10:51:44 +0100 (CET)
-Received: from down.free-electrons.com ([37.187.137.238]:38143 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Mar 2016 10:52:02 +0100 (CET)
+Received: from down.free-electrons.com ([37.187.137.238]:38177 "EHLO
         mail.free-electrons.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27008408AbcCGJsXxm37S (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 7 Mar 2016 10:48:23 +0100
+        by eddie.linux-mips.org with ESMTP id S27008474AbcCGJsYNQGhS (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 7 Mar 2016 10:48:24 +0100
 Received: by mail.free-electrons.com (Postfix, from userid 110)
-        id F2730463; Mon,  7 Mar 2016 10:48:17 +0100 (CET)
+        id 5DDB53FA; Mon,  7 Mar 2016 10:48:17 +0100 (CET)
 Received: from localhost.localdomain (AToulouse-657-1-1129-172.w92-156.abo.wanadoo.fr [92.156.51.172])
-        by mail.free-electrons.com (Postfix) with ESMTPSA id 74B7C63B;
-        Mon,  7 Mar 2016 10:48:00 +0100 (CET)
+        by mail.free-electrons.com (Postfix) with ESMTPSA id 86CAF629;
+        Mon,  7 Mar 2016 10:47:59 +0100 (CET)
 From:   Boris Brezillon <boris.brezillon@free-electrons.com>
 To:     David Woodhouse <dwmw2@infradead.org>,
         Brian Norris <computersforpeace@gmail.com>,
@@ -38,9 +38,9 @@ Cc:     Daniel Mack <daniel@zonque.org>,
         bcm-kernel-feedback-list@broadcom.com, linux-api@vger.kernel.org,
         Harvey Hunt <harvey.hunt@imgtec.com>,
         Boris Brezillon <boris.brezillon@free-electrons.com>
-Subject: [PATCH v4 15/52] mtd: use mtd_set_ecclayout() where appropriate
-Date:   Mon,  7 Mar 2016 10:47:05 +0100
-Message-Id: <1457344062-11633-16-git-send-email-boris.brezillon@free-electrons.com>
+Subject: [PATCH v4 14/52] mtd: add mtd_set_ecclayout() helper function
+Date:   Mon,  7 Mar 2016 10:47:04 +0100
+Message-Id: <1457344062-11633-15-git-send-email-boris.brezillon@free-electrons.com>
 X-Mailer: git-send-email 2.1.4
 In-Reply-To: <1457344062-11633-1-git-send-email-boris.brezillon@free-electrons.com>
 References: <1457344062-11633-1-git-send-email-boris.brezillon@free-electrons.com>
@@ -48,7 +48,7 @@ Return-Path: <boris.brezillon@free-electrons.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52500
+X-archive-position: 52501
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -65,40 +65,31 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Use the mtd_set_ecclayout() helper instead of directly assigning the
-mtd->ecclayout field.
+Add an mtd_set_ecclayout() helper function to avoid direct accesses to the
+mtd->ecclayout field. This will ease future reworks of ECC layout
+definition.
 
 Signed-off-by: Boris Brezillon <boris.brezillon@free-electrons.com>
 ---
- drivers/mtd/mtdconcat.c | 2 +-
- drivers/mtd/mtdpart.c   | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ include/linux/mtd/mtd.h | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/mtd/mtdconcat.c b/drivers/mtd/mtdconcat.c
-index 239a8c8..481565e 100644
---- a/drivers/mtd/mtdconcat.c
-+++ b/drivers/mtd/mtdconcat.c
-@@ -777,7 +777,7 @@ struct mtd_info *mtd_concat_create(struct mtd_info *subdev[],	/* subdevices to c
+diff --git a/include/linux/mtd/mtd.h b/include/linux/mtd/mtd.h
+index b141f26..6250dd8 100644
+--- a/include/linux/mtd/mtd.h
++++ b/include/linux/mtd/mtd.h
+@@ -286,6 +286,12 @@ int mtd_ooblayout_set_databytes(struct mtd_info *mtd, const u8 *databuf,
+ int mtd_ooblayout_count_freebytes(struct mtd_info *mtd);
+ int mtd_ooblayout_count_eccbytes(struct mtd_info *mtd);
  
- 	}
- 
--	concat->mtd.ecclayout = subdev[0]->ecclayout;
-+	mtd_set_ecclayout(&concat->mtd, subdev[0]->ecclayout);
- 
- 	concat->num_subdev = num_devs;
- 	concat->mtd.name = name;
-diff --git a/drivers/mtd/mtdpart.c b/drivers/mtd/mtdpart.c
-index 08de4b2..f53d9d7 100644
---- a/drivers/mtd/mtdpart.c
-+++ b/drivers/mtd/mtdpart.c
-@@ -533,7 +533,7 @@ static struct mtd_part *allocate_partition(struct mtd_info *master,
- 			part->name);
- 	}
- 
--	slave->mtd.ecclayout = master->ecclayout;
-+	mtd_set_ecclayout(&slave->mtd, master->ecclayout);
- 	slave->mtd.ecc_step_size = master->ecc_step_size;
- 	slave->mtd.ecc_strength = master->ecc_strength;
- 	slave->mtd.bitflip_threshold = master->bitflip_threshold;
++static inline void mtd_set_ecclayout(struct mtd_info *mtd,
++				     struct nand_ecclayout *ecclayout)
++{
++	mtd->ecclayout = ecclayout;
++}
++
+ static inline void mtd_set_of_node(struct mtd_info *mtd,
+ 				   struct device_node *np)
+ {
 -- 
 2.1.4

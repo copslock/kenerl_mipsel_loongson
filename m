@@ -1,55 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Mar 2016 21:50:15 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:54719 "EHLO
-        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27007691AbcCJUuLpyEj4 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 10 Mar 2016 21:50:11 +0100
-Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
-        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 541B141F8E05;
-        Thu, 10 Mar 2016 20:50:05 +0000 (GMT)
-Received: from mailapp01.imgtec.com ([10.100.180.241])
-  by imgpgp01.kl.imgtec.org (PGP Universal service);
-  Thu, 10 Mar 2016 20:50:05 +0000
-X-PGP-Universal: processed;
-        by imgpgp01.kl.imgtec.org on Thu, 10 Mar 2016 20:50:05 +0000
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Websense Email Security Gateway with ESMTPS id D7D57956F65FD;
-        Thu, 10 Mar 2016 20:50:01 +0000 (GMT)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- HHMAIL01.hh.imgtec.org (10.100.10.19) with Microsoft SMTP Server (TLS) id
- 14.3.266.1; Thu, 10 Mar 2016 20:50:04 +0000
-Received: from localhost (192.168.154.110) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.266.1; Thu, 10 Mar
- 2016 20:50:04 +0000
-Date:   Thu, 10 Mar 2016 20:50:04 +0000
-From:   James Hogan <james.hogan@imgtec.com>
-To:     Sudip Mukherjee <sudipm.mukherjee@gmail.com>
-CC:     Ralf Baechle <ralf@linux-mips.org>, Michal Marek <mmarek@suse.com>,
-        "Andi Kleen" <ak@linux.intel.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        "Michael S. Tsirkin" <mst@redhat.com>, <linux-mips@linux-mips.org>,
-        <linux-kbuild@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <stable@vger.kernel.org>
-Subject: Re: [PATCH] ld-version: Fix awk regex compile failure
-Message-ID: <20160310205004.GB31414@jhogan-linux.le.imgtec.org>
-References: <1457455673-12219-1-git-send-email-james.hogan@imgtec.com>
- <56E1B3C5.7040204@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 Mar 2016 14:35:45 +0100 (CET)
+Received: from mail-oi0-f41.google.com ([209.85.218.41]:36695 "EHLO
+        mail-oi0-f41.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007520AbcCKNfnNkGD3 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 11 Mar 2016 14:35:43 +0100
+Received: by mail-oi0-f41.google.com with SMTP id r187so85424040oih.3
+        for <linux-mips@linux-mips.org>; Fri, 11 Mar 2016 05:35:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:date:message-id:subject:from:to;
+        bh=FouGC9OkJ0XplPOlVRUeR6C3rjJDFqYiK+dqdqHAyco=;
+        b=gtyy9m/oMUTXaKd5MJqOxSqlOUZo/QAgBNrpP0BQz7F9MlPnFIbmmSO90Oj5NSqRSJ
+         iUA6dYkFItF+RGPAeMK8OWj5+dZRvvTkAe0W0Zavcogt4v5zY/tgKr9iU7TCqJV9Deq6
+         4FdgOrvIbnMNiBwikp9gJfqzHGShrTUzaanZZnUwkC4FpuUFABKWtLNzeqKSE7G5N/h+
+         nz2TdGej1aovhRrIMpIALpRUwxOCfQXJeXhH8lMLnixrPrzcB42YflCS1eLY0/q+ziZs
+         Lcl3fPo5FrhI1oiJnckljCQa0RpfMzbHnoJUb8Wdjdjj0pBdkTCj9JNr8aksBHdQYWdI
+         z7+A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
+        bh=FouGC9OkJ0XplPOlVRUeR6C3rjJDFqYiK+dqdqHAyco=;
+        b=EDcFcuGUtWx4GBC1kh67mcL7uiafEqaNq30xKb8DSISl61BZkbpXP2Iz7QaZoNcSnS
+         Om5xjjyOszvelpnXc+oEQUM/Ms4Nju9mbkLpqqV9EiQyQ2YoCJx8EfUelibP8tnHKure
+         0xL8avvTA0l4fYm5nzBzZ3syDCP8Slja1tWLNQsR0wu5MMqeyYDeWMqVpzVvJyhDTIDh
+         2MNycAvkL5KwRl10puGL5DMKgEKie4S+2f2hx/FjRu7SF9KkHXac6i8HITUevCOb0Vfk
+         sxhTp+z4eBu0NX481khGje80y81CqfSorWMqB27UYq4BKRUMSeu9JAs0NlnYIbTgHgdm
+         lOzg==
+X-Gm-Message-State: AD7BkJJIFBM9HW8PWTlMRFfuUlKNTpgc/FoP0Wcdhgt7zW4UdpPhkNlSD8Jqiy18EA0TrRVB/zM/pkuIQCyjEQ==
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="EH85xkKza2NXtwkF"
-Content-Disposition: inline
-In-Reply-To: <56E1B3C5.7040204@gmail.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-X-Originating-IP: [192.168.154.110]
-X-ESG-ENCRYPT-TAG: 56f439c
-Return-Path: <James.Hogan@imgtec.com>
+X-Received: by 10.202.3.135 with SMTP id 129mr5393839oid.91.1457703337215;
+ Fri, 11 Mar 2016 05:35:37 -0800 (PST)
+Received: by 10.182.45.68 with HTTP; Fri, 11 Mar 2016 05:35:37 -0800 (PST)
+Date:   Fri, 11 Mar 2016 19:05:37 +0530
+Message-ID: <CAL1vVhox1WZLwSJHgCpGYiJB0TuX9p2SRYemNcZw4AdjLzM5BA@mail.gmail.com>
+Subject: uImage for MIPS32 load address below 0x80000000
+From:   Kaushal Parikh <kaushalparikh@gmail.com>
+To:     linux-mips@linux-mips.org
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <kaushalparikh@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52571
+X-archive-position: 52572
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: kaushalparikh@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -62,62 +57,14 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---EH85xkKza2NXtwkF
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Hello,
 
-On Thu, Mar 10, 2016 at 11:19:57PM +0530, Sudip Mukherjee wrote:
-> On Tuesday 08 March 2016 10:17 PM, James Hogan wrote:
-> > The ld-version.sh script fails on some versions of awk with the
-> > following error, resulting in build failures for MIPS:
-> >
-> > awk: scripts/ld-version.sh: line 4: regular expression compile failed (=
-missing '(')
-> >
-> > This is due to the regular expression ".*)", meant to strip off the
-> > beginning of the ld version string up to the close bracket, however
-> > brackets have a meaning in regular expressions, so lets escape it so
-> > that awk doesn't expect a corresponding open bracket.
-> >
-> > Fixes: ccbef1674a15 ("Kbuild, lto: add ld-version and ld-ifversion ...")
-> > Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
-> > Signed-off-by: James Hogan <james.hogan@imgtec.com>
->=20
-> This error was only coming in my gitlab builds but was not showing in=20
-> the build of travis-ci. Maybe it depends on the version of awk also.
-> Build log at: https://gitlab.com/sudipm/linux-next/builds/839573
->=20
-> Tested-by: Sudip Mukherjee <sudip.mukherjee@codethink.co.uk>
+MIPS arch Makefile only allows uImage target for load address >
+0xffffffff80010000. Any specific reason for this limitation?
 
-Great, that looks pretty conclusive. Thanks for testing Sudip and
-Michael.
+I am using a lower load address on MIPS interAptiv CPU (with EVA
+enabled). So to enable uImage target, I had to remove the check in
+Makefile.
 
-Ralf: is it too late to get this into v4.5 via MIPS tree?
-
-Cheers
-James
-
---EH85xkKza2NXtwkF
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQIcBAEBCAAGBQJW4d38AAoJEGwLaZPeOHZ64ysP/RVG0eQAAPvheI/yCFhjWUDo
-Tor55GMAMBF8Wd/XExW77EVSRSpPBGc/UWaIv1LHXdCRciNIvU/awY7J4rEKYQTL
-tpQIfoIwUG5oXneWFQGKVtt0W93KYOAtTQooIaBJ+tPvY4sjqLvrtI02hdbHnVzg
-mzpK9Xdxy1C0aAjtZMyL9+0gAdL/ijCet2TUmvK478KvMNPp2VbFOgocMIYpC60S
-MGY91pvNY8uHhMKnz30KgRFy1f/YGxkH6zcSKmW99xhUNh03PtE501Fagp8mH+24
-aMI0s6qYGJxA66l28QCurZzt2l41gBGDl3DSx2MnYJp9xmTcciTJRFdrasgfF3mR
-MFStIDJ2c8ilEpiVLWRKmE9HuVEbFav/mGtQYs0Y7KI2smO9CTV9AmLL86eXnD2B
-wSBTOwEteCjDNrdwx8pAQp7ZwkTV0sAxkODZUXvWdEB9nJRIX2GhUNmCziBu8Tpw
-X8gs7h4KFeSSgByRF+mE7sZdPwYNSf9QywX4OIOPTN43OrusrSvo/MYr18oorClm
-dqLolsgo6zXLzsJiM8RaQ3XCT6ZeaVvAjq1bRH7rmJpeipDJZBte6XRqPnyvoqCi
-Q5MCONCaad3K+ZqGnQTRBZPHqe/96MsQPrdlIOtYOc7w8IQBsjrIkAyHvRINIxFT
-+nsPpa1GjHKeEJ5G2s9E
-=FOWj
------END PGP SIGNATURE-----
-
---EH85xkKza2NXtwkF--
+Thanks
+Kaushal

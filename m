@@ -1,36 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Mar 2016 08:28:45 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:48616 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27007763AbcCNH2lU1G3h (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 14 Mar 2016 08:28:41 +0100
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.15.2/8.14.8) with ESMTP id u2E7Se2r003831;
-        Mon, 14 Mar 2016 08:28:40 +0100
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.15.2/8.15.2/Submit) id u2E7SavV003830;
-        Mon, 14 Mar 2016 08:28:36 +0100
-Date:   Mon, 14 Mar 2016 08:28:36 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     miles.chen@mediatek.com
-Cc:     James Hogan <james.hogan@imgtec.com>,
-        Paul Burton <paul.burton@imgtec.com>, linux-mips@linux-mips.org
-Subject: Re: [PATCH] MIPS: smp.c: Fix uninitialised temp_foreign_map
-Message-ID: <20160314072836.GC29020@linux-mips.org>
-References: <1457935978-16062-1-git-send-email-miles.chen@mediatek.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1457935978-16062-1-git-send-email-miles.chen@mediatek.com>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Mar 2016 15:22:07 +0100 (CET)
+Received: from mout.kundenserver.de ([212.227.126.133]:52542 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27007830AbcCNOWDW6kaq (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 14 Mar 2016 15:22:03 +0100
+Received: from wuerfel.lan. ([78.42.132.4]) by mrelayeu.kundenserver.de
+ (mreue003) with ESMTPA (Nemesis) id 0MHtl3-1agqQ615Kf-003bLO; Mon, 14 Mar
+ 2016 15:21:51 +0100
+From:   Arnd Bergmann <arnd@arndb.de>
+To:     =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
+Cc:     Arnd Bergmann <arnd@arndb.de>, Ralf Baechle <ralf@linux-mips.org>,
+        Paul Walmsley <paul@pwsan.com>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] Firmware: broadcom sprom: clarifiy SSB dependency
+Date:   Mon, 14 Mar 2016 15:21:32 +0100
+Message-Id: <1457965305-3258441-1-git-send-email-arnd@arndb.de>
+X-Mailer: git-send-email 2.7.0
+X-Provags-ID: V03:K0:x0pDF1Js8HPOOfBa7kW7FOXb/xOHPIBTjfqcrzQkQUaNFUdB3/G
+ tqsEQB87ei2KuuLXdnr/PznkVcgXBJFotEyoL6noz1wvshnHsewkFqZM+aeoATsFH1OQYVA
+ qxS7bxLoK4YQixS43fvUeJNHHMSG1+1AnXslFyHHdCi4+JpPFtzUh3nOYmxVptJJ5+7r8kG
+ yqEBaWWwBFgu5VrAvmk3w==
+X-UI-Out-Filterresults: notjunk:1;V01:K0:KcRIr5zMXAY=:zNAZhzWgi/tEklZ6mLy5Sq
+ I2SjZf4hlDbOpaNIjWwqdjVMNfPt+jKOUPBSuzMoBmVqP21QuPrNUFJ8fC5+RiS41LrgdLbck
+ LlFhzRieGznDa6qfkkk0HXRu7U8hpALAgxBp+YUBxy2YYJurv+/GnKSoCSXEvtmgfGSQy/wcc
+ eFZXBZgSPugY3Wpw1hjTOy+uU0r9ZIHdcxcLWOgyKuaOQmRM1NUv27brbYDMGm6wgl21quvJ+
+ zXn7XVlGk5xH81wldaegkGQfehgsYdnkRWTMSnt9apjj0IrMHoBB4R2j29XbwL4UdDh9oNWKt
+ hPykGoZltIA67ShZue+Ja21DxHIqHYr56ZCge5tIHTXbyXDfSqQn+W0Xb1VsrnZbAvxaeNxkA
+ 8ZRMhWPChZJH3ICM4irPeaYcYWQRdfarJkUlGwVMVgfztiLwYyrwKCSvn5hZsEi6B78+eeXGq
+ Rs/nNyDnVNO3kMYMVo/yrgU7oOXElM3H0fg1FhhnGrIX4AeewrHPr6hwB2z2nEh8ttqVi8+B+
+ KWqLJmEsIlCArvI3mFfRKQ+jrMuvq+F05lwKIFHolDfA6iLJCyplpMLsDTMu7v0e3ukt5yUZh
+ nlY5Dc1ZjrPPQZZcfnpXPWMQSqyVqBwGHyisB1S78fW6Gl48eRIhxaz1rkSY9bRj5Wk3KLBeU
+ x/Pb3FLgNOQDEqhl4Ur6fZ7ksaG75H8CtYWOcm++tQnkovP10QEm/aeZl6YhCNs2pSQQ=
+Return-Path: <arnd@arndb.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52579
+X-archive-position: 52580
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: arnd@arndb.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,55 +51,32 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Please fix your scripts to not repost patches.
+The broadcom firmware drvier calls into the ssb SPROM code if that
+is enabled, but it fails if the SSB code is in a loadable module
+because the bcm47xx firmware is always built-in:
 
-  Ralf
+drivers/firmware/built-in.o: In function `bcm47xx_sprom_register_fallbacks':
+bcm47xx_sprom.c:(.text+0x11c4): undefined reference to `ssb_arch_register_fallback_sprom'
 
-On Mon, Mar 14, 2016 at 02:12:58PM +0800, miles.chen@mediatek.com wrote:
+This adds a Kconfig dependency to ensure that we cannot turn on the
+generic sprom support if the ssb sprom is in a module.
 
-> From: miles.chen@mediatek.com
-> To: Miles <miles.chen@mediatek.com>
-> CC: James Hogan <james.hogan@imgtec.com>, Paul Burton
->  <paul.burton@imgtec.com>, linux-mips@linux-mips.org, Ralf Baechle
->  <ralf@linux-mips.org>
-> Subject: [PATCH] MIPS: smp.c: Fix uninitialised temp_foreign_map
-> Content-Type: text/plain
-> 
-> From: James Hogan <james.hogan@imgtec.com>
-> 
-> When calculate_cpu_foreign_map() recalculates the cpu_foreign_map
-> cpumask it uses the local variable temp_foreign_map without initialising
-> it to zero. Since the calculation only ever sets bits in this cpumask
-> any existing bits at that memory location will remain set and find their
-> way into cpu_foreign_map too. This could potentially lead to cache
-> operations suboptimally doing smp calls to multiple VPEs in the same
-> core, even though the VPEs share primary caches.
-> 
-> Therefore initialise temp_foreign_map using cpumask_clear() before use.
-> 
-> Fixes: cccf34e9411c ("MIPS: c-r4k: Fix cache flushing for MT cores")
-> Signed-off-by: James Hogan <james.hogan@imgtec.com>
-> Cc: Paul Burton <paul.burton@imgtec.com>
-> Cc: linux-mips@linux-mips.org
-> Patchwork: https://patchwork.linux-mips.org/patch/12759/
-> Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-> ---
->  arch/mips/kernel/smp.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/arch/mips/kernel/smp.c b/arch/mips/kernel/smp.c
-> index bd4385a..2b521e0 100644
-> --- a/arch/mips/kernel/smp.c
-> +++ b/arch/mips/kernel/smp.c
-> @@ -121,6 +121,7 @@ static inline void calculate_cpu_foreign_map(void)
->  	cpumask_t temp_foreign_map;
->  
->  	/* Re-calculate the mask */
-> +	cpumask_clear(&temp_foreign_map);
->  	for_each_online_cpu(i) {
->  		core_present = 0;
->  		for_each_cpu(k, &temp_foreign_map)
-> -- 
-> 1.9.1
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+---
+ drivers/firmware/broadcom/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-  Ralf
+diff --git a/drivers/firmware/broadcom/Kconfig b/drivers/firmware/broadcom/Kconfig
+index 3c7e5b741e37..42f7d9bfb148 100644
+--- a/drivers/firmware/broadcom/Kconfig
++++ b/drivers/firmware/broadcom/Kconfig
+@@ -13,6 +13,7 @@ config BCM47XX_NVRAM
+ config BCM47XX_SPROM
+ 	bool "Broadcom SPROM driver"
+ 	depends on BCM47XX_NVRAM
++	depends on SSB=y || SSB=n
+ 	help
+ 	  Broadcom devices store configuration data in SPROM. Accessing it is
+ 	  specific to the bus host type, e.g. PCI(e) devices have it mapped in
+-- 
+2.7.0

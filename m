@@ -1,44 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Mar 2016 15:22:07 +0100 (CET)
-Received: from mout.kundenserver.de ([212.227.126.133]:52542 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27007830AbcCNOWDW6kaq (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 14 Mar 2016 15:22:03 +0100
-Received: from wuerfel.lan. ([78.42.132.4]) by mrelayeu.kundenserver.de
- (mreue003) with ESMTPA (Nemesis) id 0MHtl3-1agqQ615Kf-003bLO; Mon, 14 Mar
- 2016 15:21:51 +0100
-From:   Arnd Bergmann <arnd@arndb.de>
-To:     =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
-Cc:     Arnd Bergmann <arnd@arndb.de>, Ralf Baechle <ralf@linux-mips.org>,
-        Paul Walmsley <paul@pwsan.com>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] Firmware: broadcom sprom: clarifiy SSB dependency
-Date:   Mon, 14 Mar 2016 15:21:32 +0100
-Message-Id: <1457965305-3258441-1-git-send-email-arnd@arndb.de>
-X-Mailer: git-send-email 2.7.0
-X-Provags-ID: V03:K0:x0pDF1Js8HPOOfBa7kW7FOXb/xOHPIBTjfqcrzQkQUaNFUdB3/G
- tqsEQB87ei2KuuLXdnr/PznkVcgXBJFotEyoL6noz1wvshnHsewkFqZM+aeoATsFH1OQYVA
- qxS7bxLoK4YQixS43fvUeJNHHMSG1+1AnXslFyHHdCi4+JpPFtzUh3nOYmxVptJJ5+7r8kG
- yqEBaWWwBFgu5VrAvmk3w==
-X-UI-Out-Filterresults: notjunk:1;V01:K0:KcRIr5zMXAY=:zNAZhzWgi/tEklZ6mLy5Sq
- I2SjZf4hlDbOpaNIjWwqdjVMNfPt+jKOUPBSuzMoBmVqP21QuPrNUFJ8fC5+RiS41LrgdLbck
- LlFhzRieGznDa6qfkkk0HXRu7U8hpALAgxBp+YUBxy2YYJurv+/GnKSoCSXEvtmgfGSQy/wcc
- eFZXBZgSPugY3Wpw1hjTOy+uU0r9ZIHdcxcLWOgyKuaOQmRM1NUv27brbYDMGm6wgl21quvJ+
- zXn7XVlGk5xH81wldaegkGQfehgsYdnkRWTMSnt9apjj0IrMHoBB4R2j29XbwL4UdDh9oNWKt
- hPykGoZltIA67ShZue+Ja21DxHIqHYr56ZCge5tIHTXbyXDfSqQn+W0Xb1VsrnZbAvxaeNxkA
- 8ZRMhWPChZJH3ICM4irPeaYcYWQRdfarJkUlGwVMVgfztiLwYyrwKCSvn5hZsEi6B78+eeXGq
- Rs/nNyDnVNO3kMYMVo/yrgU7oOXElM3H0fg1FhhnGrIX4AeewrHPr6hwB2z2nEh8ttqVi8+B+
- KWqLJmEsIlCArvI3mFfRKQ+jrMuvq+F05lwKIFHolDfA6iLJCyplpMLsDTMu7v0e3ukt5yUZh
- nlY5Dc1ZjrPPQZZcfnpXPWMQSqyVqBwGHyisB1S78fW6Gl48eRIhxaz1rkSY9bRj5Wk3KLBeU
- x/Pb3FLgNOQDEqhl4Ur6fZ7ksaG75H8CtYWOcm++tQnkovP10QEm/aeZl6YhCNs2pSQQ=
-Return-Path: <arnd@arndb.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Mar 2016 15:37:26 +0100 (CET)
+Received: from mail-io0-f173.google.com ([209.85.223.173]:34709 "EHLO
+        mail-io0-f173.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27013686AbcCNOhYtMkH0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 14 Mar 2016 15:37:24 +0100
+Received: by mail-io0-f173.google.com with SMTP id m184so224708435iof.1;
+        Mon, 14 Mar 2016 07:37:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc;
+        bh=GKf+czCIGDzxeEBvyDgfRMBR8bMS1P6WhedA2g6Q3AA=;
+        b=pLXUQohwcTqc0c6DNlj2Emgyym0agFdebC3wHDvUY63OFf1+UwaF9rkiVyI4xH4dxx
+         /BnIBsKFLXCK4ykvVx629wCTmd+ohyMtfTx1ubzs+XSFa52pk2rhNHWMlA8r+DvldbgJ
+         s/GJ8MI21nrPNR0JbcyP3IDfAi0lGmFBhwEubWeWzPaTo4XBeDNeyf5z3Wd1wsAWInqP
+         LyM0qureTSNWJNJSuyEcQrUEGklvYL1Ts9g2iJJ3LXhrzo11MBpOql/7OlbDMrwKiaGN
+         WhrfgtWz+Lg4N8d7TP5p3HcuN62AYL9yHRBrOwLnC8xR53H0Zw5q+zepdNAZQZv/NtW3
+         baYg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:in-reply-to:references:date
+         :message-id:subject:from:to:cc;
+        bh=GKf+czCIGDzxeEBvyDgfRMBR8bMS1P6WhedA2g6Q3AA=;
+        b=HDOttnZoy1rj+i8hbnw0MvAQZXI0myBJ01XTkwxN2dg9rcTk0TjBvwMzwIZezL6eLg
+         S52la04SvPQawYqaLasKMev8jQgGhrbXzebCXAJVXdqGzzWS4DRgFSlUUJBEz127Iri7
+         AmmtVKp7NDrlueRQkblGsQPMaQN47hbx8tYwPFV/IwD3VdRDIwjUYMo0OuMKfhu/3YCJ
+         L6ily3XSHkSEd1S5ylWm8zAnO5bhDcdeG7FyrMmici/lWwI8t/hFOaqzDHq6YAmsrgq6
+         lprHXQiRS/F2N6SBpJnzTnrT6OX+SOFAPseucM2+8nI3w8LWZ4SOZOPVqhtYvwKNTfmm
+         1DZg==
+X-Gm-Message-State: AD7BkJJZ8g0lFvcJjzCZv29ysQZLZOp3rCnPzCa9jUocJORn1F/xmTJg8krORoPoTmIoNUZJwevEUZTXgv9TUA==
+MIME-Version: 1.0
+X-Received: by 10.107.43.2 with SMTP id r2mr24415131ior.156.1457966238952;
+ Mon, 14 Mar 2016 07:37:18 -0700 (PDT)
+Received: by 10.107.159.142 with HTTP; Mon, 14 Mar 2016 07:37:18 -0700 (PDT)
+In-Reply-To: <1457965305-3258441-1-git-send-email-arnd@arndb.de>
+References: <1457965305-3258441-1-git-send-email-arnd@arndb.de>
+Date:   Mon, 14 Mar 2016 15:37:18 +0100
+Message-ID: <CACna6rwx4Lna-PXNaHFwqn8xWitN=5ReUsAGPsK75YC2SLpDNg@mail.gmail.com>
+Subject: Re: [PATCH] Firmware: broadcom sprom: clarifiy SSB dependency
+From:   =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     Ralf Baechle <ralf@linux-mips.org>, Paul Walmsley <paul@pwsan.com>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <zajec5@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52580
+X-archive-position: 52581
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arnd@arndb.de
+X-original-sender: zajec5@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,32 +64,21 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The broadcom firmware drvier calls into the ssb SPROM code if that
-is enabled, but it fails if the SSB code is in a loadable module
-because the bcm47xx firmware is always built-in:
+On 14 March 2016 at 15:21, Arnd Bergmann <arnd@arndb.de> wrote:
+> The broadcom firmware drvier calls into the ssb SPROM code if that
+> is enabled, but it fails if the SSB code is in a loadable module
+> because the bcm47xx firmware is always built-in:
+>
+> drivers/firmware/built-in.o: In function `bcm47xx_sprom_register_fallbacks':
+> bcm47xx_sprom.c:(.text+0x11c4): undefined reference to `ssb_arch_register_fallback_sprom'
+>
+> This adds a Kconfig dependency to ensure that we cannot turn on the
+> generic sprom support if the ssb sprom is in a module.
 
-drivers/firmware/built-in.o: In function `bcm47xx_sprom_register_fallbacks':
-bcm47xx_sprom.c:(.text+0x11c4): undefined reference to `ssb_arch_register_fallback_sprom'
+Can you attach your config that triggered this build error? I modified
+condition to the:
+#if IS_BUILTIN(CONFIG_SSB) && IS_ENABLED(CONFIG_SSB_SPROM)
+which I believe should be enough.
 
-This adds a Kconfig dependency to ensure that we cannot turn on the
-generic sprom support if the ssb sprom is in a module.
-
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
- drivers/firmware/broadcom/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/firmware/broadcom/Kconfig b/drivers/firmware/broadcom/Kconfig
-index 3c7e5b741e37..42f7d9bfb148 100644
---- a/drivers/firmware/broadcom/Kconfig
-+++ b/drivers/firmware/broadcom/Kconfig
-@@ -13,6 +13,7 @@ config BCM47XX_NVRAM
- config BCM47XX_SPROM
- 	bool "Broadcom SPROM driver"
- 	depends on BCM47XX_NVRAM
-+	depends on SSB=y || SSB=n
- 	help
- 	  Broadcom devices store configuration data in SPROM. Accessing it is
- 	  specific to the bus host type, e.g. PCI(e) devices have it mapped in
--- 
-2.7.0
+I'm afraid your patch won't allow compiling SPROM driver with BCMA=y
+and SSB as a module.

@@ -1,61 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Mar 2016 16:57:14 +0100 (CET)
-Received: from mail-io0-f182.google.com ([209.85.223.182]:36826 "EHLO
-        mail-io0-f182.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008987AbcCNP5MvRV81 convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 14 Mar 2016 16:57:12 +0100
-Received: by mail-io0-f182.google.com with SMTP id z76so227713210iof.3;
-        Mon, 14 Mar 2016 08:57:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-transfer-encoding;
-        bh=fCZ2oLHrgSO9Oo9oH9+/78dTxUULcN25afxllo3s11c=;
-        b=wJWwb3EJ19Z7XR3JV9dv/P+YovBwJpmcUa/3T3xTJ5QxZLodSmRzJedW0KVPxbRe/H
-         /iDv4MYh/0E25AsVJB9CBHhaJAxnTZvHSfwhND8dFuT/yMnGabs/0dxNvI5LKrNh1z27
-         jYCC8HSvTdLSQVcsNZ9GddF6ArrhZbL0BbWlykW+CCCNhzTBcMRimeqNhdTLd6l2MC8y
-         fNB6REh3KQDqRgxg84P11IgOYMuhv4gm214UxQ3tWOdEo6M2Zc0b1fTzLOf5wDW4WG56
-         po3YUUy7a3DVtihRbiJY3hBayYZ7KC2H8xFCWJCvowFHg9kEdnnbLKG+RxP4IGvLs+lj
-         OLxA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:in-reply-to:references:date
-         :message-id:subject:from:to:cc:content-transfer-encoding;
-        bh=fCZ2oLHrgSO9Oo9oH9+/78dTxUULcN25afxllo3s11c=;
-        b=jFGuAgsM08WhMN7QJP0OTJ0/ysVqVgapJt0Yreppm/ooAF785AdgQ3sV14Di/8xRMJ
-         4IOLvDBpAJfkeVp7aaJF9lESAQggtFx+pvNYFER5WgVeySkBL8uA2ZFVZu3UgpZlbmLP
-         xOpmp060rxWmQVIs0V7lUAMPqAek7PfASMFHrf/sRvJsuWnKm1qbPI0i5XUWNL+e+p/U
-         gnGXDU4xU9L13eqZfCC7dBP7cW5ZtW7akQ99cZ2addujfA4woyuUfiTDwzxKt/tAGUb7
-         B4x4PN405L/OuXMnoWELYP8GmWEdOHcxt+v/VtaH/+qxNGaxpXtg+hvd7hDkqz5RQzNH
-         3bYg==
-X-Gm-Message-State: AD7BkJICFiglqPBMi/G7329Rn5vAscOXlFl8TCtc/wuWdK+3AJfV0dj0Ar0/hKRL5R0r1F0fTray9uRelNhdJA==
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Mar 2016 18:52:06 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:50956 "EHLO
+        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007808AbcCNRwEwzz0i (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 14 Mar 2016 18:52:04 +0100
+Received: from localhost (c-50-170-35-168.hsd1.wa.comcast.net [50.170.35.168])
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 7BAF5D0A;
+        Mon, 14 Mar 2016 17:51:58 +0000 (UTC)
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, Hauke Mehrtens <hauke@hauke-m.de>,
+        Paul Burton <paul.burton@imgtec.com>,
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH 4.4 46/50] MIPS: Fix build error when SMP is used without GIC
+Date:   Mon, 14 Mar 2016 10:51:04 -0700
+Message-Id: <20160314175019.898810635@linuxfoundation.org>
+X-Mailer: git-send-email 2.7.2
+In-Reply-To: <20160314175013.403628835@linuxfoundation.org>
+References: <20160314175013.403628835@linuxfoundation.org>
+User-Agent: quilt/0.64
 MIME-Version: 1.0
-X-Received: by 10.107.135.96 with SMTP id j93mr24561402iod.96.1457971026911;
- Mon, 14 Mar 2016 08:57:06 -0700 (PDT)
-Received: by 10.107.159.142 with HTTP; Mon, 14 Mar 2016 08:57:06 -0700 (PDT)
-In-Reply-To: <4928549.J7iBRWWaDH@wuerfel>
-References: <1457965305-3258441-1-git-send-email-arnd@arndb.de>
-        <CACna6rwx4Lna-PXNaHFwqn8xWitN=5ReUsAGPsK75YC2SLpDNg@mail.gmail.com>
-        <4928549.J7iBRWWaDH@wuerfel>
-Date:   Mon, 14 Mar 2016 16:57:06 +0100
-Message-ID: <CACna6rzds0_+qxzp_MkFyiJijMyODK6VkxWvXuiEBKYHj-dwEQ@mail.gmail.com>
-Subject: Re: [PATCH] Firmware: broadcom sprom: clarifiy SSB dependency
-From:   =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, Paul Walmsley <paul@pwsan.com>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-Return-Path: <zajec5@gmail.com>
+Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52583
+X-archive-position: 52584
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: zajec5@gmail.com
+X-original-sender: gregkh@linuxfoundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -68,33 +42,70 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 14 March 2016 at 16:34, Arnd Bergmann <arnd@arndb.de> wrote:
-> On Monday 14 March 2016 15:37:18 Rafał Miłecki wrote:
->> On 14 March 2016 at 15:21, Arnd Bergmann <arnd@arndb.de> wrote:
->> > The broadcom firmware drvier calls into the ssb SPROM code if that
->> > is enabled, but it fails if the SSB code is in a loadable module
->> > because the bcm47xx firmware is always built-in:
->> >
->> > drivers/firmware/built-in.o: In function `bcm47xx_sprom_register_fallbacks':
->> > bcm47xx_sprom.c:(.text+0x11c4): undefined reference to `ssb_arch_register_fallback_sprom'
->> >
->> > This adds a Kconfig dependency to ensure that we cannot turn on the
->> > generic sprom support if the ssb sprom is in a module.
->>
->> Can you attach your config that triggered this build error? I modified
->> condition to the:
->> #if IS_BUILTIN(CONFIG_SSB) && IS_ENABLED(CONFIG_SSB_SPROM)
->> which I believe should be enough.
->
-> From inspection, I think your solution is sufficient to avoid the error.
-> I found the bug while travelling and I'm only now catching up on the submissions,
-> so I must have missed the fact that it was fixed. I looked at the code
-> to see if additional patches had been applied on top, but I did not
-> realize that you had modified the driver in place.
+4.4-stable review patch.  If anyone has any objections, please let me know.
 
-I sent a separated patch for this:
-https://patchwork.linux-mips.org/patch/12836/
-and it was folded/squashed by Ralf.
+------------------
 
--- 
-Rafał
+From: Hauke Mehrtens <hauke@hauke-m.de>
+
+commit 7a50e4688dabb8005df39b2b992d76629b8af8aa upstream.
+
+The MIPS_GIC_IPI should only be selected when MIPS_GIC is also
+selected, otherwise it results in a compile error. smp-gic.c uses some
+functions from include/linux/irqchip/mips-gic.h like
+plat_ipi_call_int_xlate() which are only added to the header file when
+MIPS_GIC is set. The Lantiq SoC does not use the GIC, but supports SMP.
+The calls top the functions from smp-gic.c are already protected by
+some #ifdefs
+
+The first part of this was introduced in commit 72e20142b2bf ("MIPS:
+Move GIC IPI functions out of smp-cmp.c")
+
+Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
+Cc: Paul Burton <paul.burton@imgtec.com>
+Cc: linux-mips@linux-mips.org
+Patchwork: https://patchwork.linux-mips.org/patch/12774/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+---
+ arch/mips/Kconfig |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -2155,7 +2155,7 @@ config MIPS_MT_SMP
+ 	select CPU_MIPSR2_IRQ_VI
+ 	select CPU_MIPSR2_IRQ_EI
+ 	select SYNC_R4K
+-	select MIPS_GIC_IPI
++	select MIPS_GIC_IPI if MIPS_GIC
+ 	select MIPS_MT
+ 	select SMP
+ 	select SMP_UP
+@@ -2253,7 +2253,7 @@ config MIPS_VPE_APSP_API_MT
+ config MIPS_CMP
+ 	bool "MIPS CMP framework support (DEPRECATED)"
+ 	depends on SYS_SUPPORTS_MIPS_CMP && !CPU_MIPSR6
+-	select MIPS_GIC_IPI
++	select MIPS_GIC_IPI if MIPS_GIC
+ 	select SMP
+ 	select SYNC_R4K
+ 	select SYS_SUPPORTS_SMP
+@@ -2273,7 +2273,7 @@ config MIPS_CPS
+ 	select MIPS_CM
+ 	select MIPS_CPC
+ 	select MIPS_CPS_PM if HOTPLUG_CPU
+-	select MIPS_GIC_IPI
++	select MIPS_GIC_IPI if MIPS_GIC
+ 	select SMP
+ 	select SYNC_R4K if (CEVT_R4K || CSRC_R4K)
+ 	select SYS_SUPPORTS_HOTPLUG_CPU
+@@ -2292,6 +2292,7 @@ config MIPS_CPS_PM
+ 	bool
+ 
+ config MIPS_GIC_IPI
++	depends on MIPS_GIC
+ 	bool
+ 
+ config MIPS_CM

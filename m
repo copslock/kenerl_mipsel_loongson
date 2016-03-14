@@ -1,42 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Mar 2016 03:00:40 +0100 (CET)
-Received: from mga11.intel.com ([192.55.52.93]:18506 "EHLO mga11.intel.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27007564AbcCNCAimQLfk (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 14 Mar 2016 03:00:38 +0100
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmsmga102.fm.intel.com with ESMTP; 13 Mar 2016 19:00:32 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.24,334,1455004800"; 
-   d="scan'208";a="668970181"
-Received: from elu2-mobl98.ccr.corp.intel.com (HELO wfg-t540p.sh.intel.com) ([10.254.214.171])
-  by FMSMGA003.fm.intel.com with ESMTP; 13 Mar 2016 19:00:28 -0700
-Received: from wfg by wfg-t540p.sh.intel.com with local (Exim 4.86)
-        (envelope-from <fengguang.wu@intel.com>)
-        id 1afHo3-0000q0-IO; Mon, 14 Mar 2016 10:00:27 +0800
-Date:   Mon, 14 Mar 2016 10:00:27 +0800
-From:   Fengguang Wu <fengguang.wu@intel.com>
-To:     Alex Smith <alex.smith@imgtec.com>
-Cc:     Markos Chandras <markos.chandras@imgtec.com>, kbuild-all@01.org,
-        Ralf Baechle <ralf@linux-mips.org>,
-        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
-Subject: Re: [kbuild-all] arch/mips/vdso/elf.S:1:0: error: '-march=r3900'
- requires '-mfp32'
-Message-ID: <20160314020027.GA3055@wfg-t540p.sh.intel.com>
-References: <201603131744.eo9ZTwix%fengguang.wu@intel.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Mar 2016 07:13:15 +0100 (CET)
+Received: from mailgw02.mediatek.com ([210.61.82.184]:1204 "EHLO
+        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S27007246AbcCNGNOQDqQq (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 14 Mar 2016 07:13:14 +0100
+Received: from mtkhts09.mediatek.inc [(172.21.101.70)] by mailgw02.mediatek.com
+        (envelope-from <miles.chen@mediatek.com>)
+        (mhqrelay.mediatek.com ESMTP with TLS)
+        with ESMTP id 429707555; Mon, 14 Mar 2016 14:13:03 +0800
+Received: from mtkslt207.mediatek.inc (10.21.15.94) by mtkhts09.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 14.3.266.1; Mon, 14 Mar 2016
+ 14:13:02 +0800
+From:   <miles.chen@mediatek.com>
+To:     Miles <miles.chen@mediatek.com>
+CC:     James Hogan <james.hogan@imgtec.com>,
+        Paul Burton <paul.burton@imgtec.com>,
+        <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH] MIPS: smp.c: Fix uninitialised temp_foreign_map
+Date:   Mon, 14 Mar 2016 14:12:58 +0800
+Message-ID: <1457935978-16062-1-git-send-email-miles.chen@mediatek.com>
+X-Mailer: git-send-email 1.9.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <201603131744.eo9ZTwix%fengguang.wu@intel.com>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-Return-Path: <fengguang.wu@intel.com>
+Content-Type: text/plain
+X-MTK:  N
+Return-Path: <miles.chen@mediatek.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52577
+X-archive-position: 52578
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: fengguang.wu@intel.com
+X-original-sender: miles.chen@mediatek.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,54 +43,39 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Alex,
+From: James Hogan <james.hogan@imgtec.com>
 
-This error has been there for some time. Shall I stop reporting it
-by adding this error to blacklist?
+When calculate_cpu_foreign_map() recalculates the cpu_foreign_map
+cpumask it uses the local variable temp_foreign_map without initialising
+it to zero. Since the calculation only ever sets bits in this cpumask
+any existing bits at that memory location will remain set and find their
+way into cpu_foreign_map too. This could potentially lead to cache
+operations suboptimally doing smp calls to multiple VPEs in the same
+core, even though the VPEs share primary caches.
 
-Thanks,
-Fengguang
+Therefore initialise temp_foreign_map using cpumask_clear() before use.
 
-On Sun, Mar 13, 2016 at 05:08:45PM +0800, kbuild test robot wrote:
-> Hi Alex,
-> 
-> FYI, the error/warning still remains.
-> 
-> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
-> head:   f414ca64be4b36c30deb5b5fa25c5a8ff42ea56b
-> commit: ebb5e78cc63417a35254a791de66e1cc84f963cc MIPS: Initial implementation of a VDSO
-> date:   4 months ago
-> config: mips-jmr3927_defconfig (attached as .config)
-> reproduce:
->         wget https://git.kernel.org/cgit/linux/kernel/git/wfg/lkp-tests.git/plain/sbin/make.cross -O ~/bin/make.cross
->         chmod +x ~/bin/make.cross
->         git checkout ebb5e78cc63417a35254a791de66e1cc84f963cc
->         # save the attached .config to linux build tree
->         make.cross ARCH=mips 
-> 
-> All errors (new ones prefixed by >>):
-> 
-> >> arch/mips/vdso/elf.S:1:0: error: '-march=r3900' requires '-mfp32'
->     /*
->     ^
-> --
-> >> arch/mips/vdso/sigreturn.S:1:0: error: '-march=r3900' requires '-mfp32'
->     /*
->     ^
-> 
-> vim +1 arch/mips/vdso/elf.S
-> 
->    > 1	/*
->      2	 * Copyright (C) 2015 Imagination Technologies
->      3	 * Author: Alex Smith <alex.smith@imgtec.com>
->      4	 *
-> 
-> ---
-> 0-DAY kernel test infrastructure                Open Source Technology Center
-> https://lists.01.org/pipermail/kbuild-all                   Intel Corporation
+Fixes: cccf34e9411c ("MIPS: c-r4k: Fix cache flushing for MT cores")
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Cc: Paul Burton <paul.burton@imgtec.com>
+Cc: linux-mips@linux-mips.org
+Patchwork: https://patchwork.linux-mips.org/patch/12759/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+---
+ arch/mips/kernel/smp.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-
-> _______________________________________________
-> kbuild-all mailing list
-> kbuild-all@lists.01.org
-> https://lists.01.org/mailman/listinfo/kbuild-all
+diff --git a/arch/mips/kernel/smp.c b/arch/mips/kernel/smp.c
+index bd4385a..2b521e0 100644
+--- a/arch/mips/kernel/smp.c
++++ b/arch/mips/kernel/smp.c
+@@ -121,6 +121,7 @@ static inline void calculate_cpu_foreign_map(void)
+ 	cpumask_t temp_foreign_map;
+ 
+ 	/* Re-calculate the mask */
++	cpumask_clear(&temp_foreign_map);
+ 	for_each_online_cpu(i) {
+ 		core_present = 0;
+ 		for_each_cpu(k, &temp_foreign_map)
+-- 
+1.9.1

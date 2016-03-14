@@ -1,20 +1,24 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Mar 2016 18:52:24 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:50958 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Mar 2016 18:52:39 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:50973 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008987AbcCNRwE4VIIi (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 14 Mar 2016 18:52:04 +0100
+        by eddie.linux-mips.org with ESMTP id S27013726AbcCNRwGlyJ9i (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 14 Mar 2016 18:52:06 +0100
 Received: from localhost (c-50-170-35-168.hsd1.wa.comcast.net [50.170.35.168])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id D855CD0B;
-        Mon, 14 Mar 2016 17:51:58 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id C5918D0F;
+        Mon, 14 Mar 2016 17:52:00 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, James Hogan <james.hogan@imgtec.com>,
-        Paul Burton <paul.burton@imgtec.com>,
-        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.4 47/50] MIPS: smp.c: Fix uninitialised temp_foreign_map
-Date:   Mon, 14 Mar 2016 10:51:05 -0700
-Message-Id: <20160314175020.053660127@linuxfoundation.org>
+        stable@vger.kernel.org, Geert Uytterhoeven <geert@linux-m68k.org>,
+        James Hogan <james.hogan@imgtec.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        Sudip Mukherjee <sudip.mukherjee@codethink.co.uk>,
+        Michal Marek <mmarek@suse.com>,
+        Andi Kleen <ak@linux.intel.com>, linux-mips@linux-mips.org,
+        linux-kbuild@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH 4.4 50/50] ld-version: Fix awk regex compile failure
+Date:   Mon, 14 Mar 2016 10:51:08 -0700
+Message-Id: <20160314175020.516966872@linuxfoundation.org>
 X-Mailer: git-send-email 2.7.2
 In-Reply-To: <20160314175013.403628835@linuxfoundation.org>
 References: <20160314175013.403628835@linuxfoundation.org>
@@ -25,7 +29,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52585
+X-archive-position: 52586
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,37 +52,46 @@ X-list: linux-mips
 
 From: James Hogan <james.hogan@imgtec.com>
 
-commit d825c06bfe8b885b797f917ad47365d0e9c21fbb upstream.
+commit 4b7b1ef2c2f83d702272555e8adb839a50ba0f8e upstream.
 
-When calculate_cpu_foreign_map() recalculates the cpu_foreign_map
-cpumask it uses the local variable temp_foreign_map without initialising
-it to zero. Since the calculation only ever sets bits in this cpumask
-any existing bits at that memory location will remain set and find their
-way into cpu_foreign_map too. This could potentially lead to cache
-operations suboptimally doing smp calls to multiple VPEs in the same
-core, even though the VPEs share primary caches.
+The ld-version.sh script fails on some versions of awk with the
+following error, resulting in build failures for MIPS:
 
-Therefore initialise temp_foreign_map using cpumask_clear() before use.
+awk: scripts/ld-version.sh: line 4: regular expression compile failed (missing '(')
 
-Fixes: cccf34e9411c ("MIPS: c-r4k: Fix cache flushing for MT cores")
+This is due to the regular expression ".*)", meant to strip off the
+beginning of the ld version string up to the close bracket, however
+brackets have a meaning in regular expressions, so lets escape it so
+that awk doesn't expect a corresponding open bracket.
+
+Fixes: ccbef1674a15 ("Kbuild, lto: add ld-version and ld-ifversion ...")
+Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
 Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Paul Burton <paul.burton@imgtec.com>
+Tested-by: Michael S. Tsirkin <mst@redhat.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Tested-by: Sudip Mukherjee <sudip.mukherjee@codethink.co.uk>
+Cc: Michal Marek <mmarek@suse.com>
+Cc: Andi Kleen <ak@linux.intel.com>
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/12759/
+Cc: linux-kbuild@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Patchwork: https://patchwork.linux-mips.org/patch/12838/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/kernel/smp.c |    1 +
- 1 file changed, 1 insertion(+)
+ scripts/ld-version.sh |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/mips/kernel/smp.c
-+++ b/arch/mips/kernel/smp.c
-@@ -121,6 +121,7 @@ static inline void calculate_cpu_foreign
- 	cpumask_t temp_foreign_map;
- 
- 	/* Re-calculate the mask */
-+	cpumask_clear(&temp_foreign_map);
- 	for_each_online_cpu(i) {
- 		core_present = 0;
- 		for_each_cpu(k, &temp_foreign_map)
+--- a/scripts/ld-version.sh
++++ b/scripts/ld-version.sh
+@@ -1,7 +1,7 @@
+ #!/usr/bin/awk -f
+ # extract linker version number from stdin and turn into single number
+ 	{
+-	gsub(".*)", "");
++	gsub(".*\\)", "");
+ 	split($1,a, ".");
+ 	print a[1]*10000000 + a[2]*100000 + a[3]*10000 + a[4]*100 + a[5];
+ 	exit

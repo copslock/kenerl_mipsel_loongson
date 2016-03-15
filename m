@@ -1,46 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Mar 2016 06:27:04 +0100 (CET)
-Received: from forward.webhostbox.net ([5.100.155.124]:48462 "EHLO
-        forward.webhostbox.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27006622AbcCOF1BbbK0z (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 15 Mar 2016 06:27:01 +0100
-Received: from bh-25.webhostbox.net (bh-25.webhostbox.net [208.91.199.152])
-        by forward.webhostbox.net (Postfix) with ESMTP id 62F4755C09EF;
-        Tue, 15 Mar 2016 05:26:59 +0000 (GMT)
-Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:34698 helo=localhost)
-        by bh-25.webhostbox.net with esmtpa (Exim 4.86_1)
-        (envelope-from <linux@roeck-us.net>)
-        id 1afhVU-0027Qr-4m; Tue, 15 Mar 2016 05:27:00 +0000
-Date:   Mon, 14 Mar 2016 22:26:59 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Stephen Rothwell <sfr@canb.auug.org.au>
-Cc:     linux-next@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Qais Yousef <qais.yousef@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: Re: linux-next: Tree for Mar 14 (mips qemu failure bisected)
-Message-ID: <20160315052659.GA9320@roeck-us.net>
-References: <20160314174037.0097df55@canb.auug.org.au>
- <20160314143729.GA31845@roeck-us.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Mar 2016 09:58:47 +0100 (CET)
+Received: from mail-ob0-f179.google.com ([209.85.214.179]:34160 "EHLO
+        mail-ob0-f179.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006789AbcCOI6pWONBQ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 15 Mar 2016 09:58:45 +0100
+Received: by mail-ob0-f179.google.com with SMTP id ts10so10473200obc.1
+        for <linux-mips@linux-mips.org>; Tue, 15 Mar 2016 01:58:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc;
+        bh=dOTzPN16StE+NWLhOMI8prz3qHhOLEPwBcdOU2wOkAE=;
+        b=ZWiMJh3rWIjL82hhzC6O59SSW0xOJim/EKdCYV/BjsQiTObmaNisBum9LM2vuqGuCL
+         U+vbyeX3G953gJ8RSNqC1sAAu3dBA1w9ewBZQZf9TDlpg+rszFbN/au6DxIemaWLgSK+
+         1Qh6hQ0XYT5NIYcCYRFMNaHhDXa4tWi5qZcXc=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:in-reply-to:references:date
+         :message-id:subject:from:to:cc;
+        bh=dOTzPN16StE+NWLhOMI8prz3qHhOLEPwBcdOU2wOkAE=;
+        b=Tp9hDUz9LF/vFEGP/NJ5ctMPryogKz8D2faMe8xzbJzTLeDxL8ffCPlJFZj1rFUbDi
+         4b28sqmfo1zZeBZ+zS0g3KtTWX7FiqvyXUhrKMEb+2avMKkC+/L33w0TaO1ap50kXgXB
+         p9yrKvt0Q3IKfYZOC5HgpGeBMICjvZe7Md2dNKscYRWiZtimELT/HJNdLws/FEQ2GM20
+         NcR+EAoXoSGR3CCcl1NfTsQ0DIjngnrzEE128o/37IExon54n5LDgORsBdG3uOKFrzIk
+         wCuSnzgiFgd4H3/KEUDK/OiyJiz/BSYD8woRH5lZvqGEnaHo+8BxWumantoSBomFaS/k
+         ffUg==
+X-Gm-Message-State: AD7BkJIV8NqV+JBUNv5iuoLMzT3ymUlcYjwsHhXClO95MK/wn9zimJ+yjg6n9lEBu8HqOBZGMUxZFdBXtyb20H6O
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20160314143729.GA31845@roeck-us.net>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-X-Authenticated_sender: guenter@roeck-us.net
-X-OutGoing-Spam-Status: No, score=-1.0
-X-CMAE-Score: 0
-X-CMAE-Analysis: v=2.1 cv=NfdGrz34 c=1 sm=1 tr=0
-        a=QNED+QcLUkoL9qulTODnwA==:117 a=2cfIYNtKkjgZNaOwnGXpGw==:17
-        a=L9H7d07YOLsA:10 a=9cW_t1CCXrUA:10 a=s5jvgZ67dGcA:10 a=kj9zAlcOel0A:10
-        a=7OsogOcEt9IA:10 a=r8N4ijXKTd2s8t9S8RsA:9 a=CjuIK1q_8ugA:10
-Return-Path: <SRS0+9QRA=PL=roeck-us.net=linux@forward.webhostbox.net>
+X-Received: by 10.60.73.99 with SMTP id k3mr16673821oev.10.1458032318630; Tue,
+ 15 Mar 2016 01:58:38 -0700 (PDT)
+Received: by 10.182.55.105 with HTTP; Tue, 15 Mar 2016 01:58:38 -0700 (PDT)
+In-Reply-To: <1457105302-15070-1-git-send-email-Govindraj.Raja@imgtec.com>
+References: <1457105302-15070-1-git-send-email-Govindraj.Raja@imgtec.com>
+Date:   Tue, 15 Mar 2016 09:58:38 +0100
+Message-ID: <CACRpkdaGy-X8qatpMkaDz-7sGrL9vmmrJeZCWy3UYPePrO2+gQ@mail.gmail.com>
+Subject: Re: [PATCH] pinctrl: pistachio: fix mfio84-89 function description
+ and pinmux.
+From:   Linus Walleij <linus.walleij@linaro.org>
+To:     Govindraj Raja <Govindraj.Raja@imgtec.com>
+Cc:     "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Andrew Bresticker <abrestic@chromium.org>,
+        Linux MIPS <linux-mips@linux-mips.org>,
+        James Hartley <James.Hartley@imgtec.com>,
+        stable <stable@vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <linus.walleij@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52589
+X-archive-position: 52590
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linux@roeck-us.net
+X-original-sender: linus.walleij@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,81 +66,33 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Mar 14, 2016 at 07:37:29AM -0700, Guenter Roeck wrote:
-> On Mon, Mar 14, 2016 at 05:40:37PM +1100, Stephen Rothwell wrote:
-> > Hi all,
-> > 
-> > Changes since 20160311:
-> > 
-> > The vfs tree gained a conflict against Linus' tree. I also applied a
-> > patch for a known runtime bug.
-> > 
-> > The tip tree gained a conflict against the mips tree.
-> > 
-> > The aio tree still had a build failure so I removed several commits
-> > from it.  It also gained a conflict against the vfs tree.
-> > 
-> > Non-merge commits (relative to Linus' tree): 11202
-> >  8646 files changed, 426680 insertions(+), 211740 deletions(-)
-> > 
-> 
-> To give people an idea what to expect in the merge window, here are my current
-> build and runtime test results. Some of the runtime failures are due to the
-> newly introduced i2c bug, but many (including the arm64 boot failures) have
-> been around for a while.
-> 
-[ ... ]
+On Fri, Mar 4, 2016 at 4:28 PM, Govindraj Raja
+<Govindraj.Raja@imgtec.com> wrote:
 
-> Qemu test results:
-> 	total: 96 pass: 69 fail: 27
-> Failed tests:
-[ ... ]
-> 	mips:mips_malta_smp_defconfig
+> mfio 84 to 89 are described wrongly, fix it to describe
+> the right pin and add them to right pin-mux group.
+>
+> The correct order is:
+>         pll1_lock => mips_pll   -- MFIO_83
+>         pll2_lock => audio_pll  -- MFIO_84
+>         pll3_lock => rpu_v_pll  -- MFIO_85
+>         pll4_lock => rpu_l_pll  -- MFIO_86
+>         pll5_lock => sys_pll    -- MFIO_87
+>         pll6_lock => wifi_pll   -- MFIO_88
+>         pll7_lock => bt_pll     -- MFIO_89
+>
+> Fixes: cefc03e5995e("pinctrl: Add Pistachio SoC pin control driver")
+> Signed-off-by: Govindraj Raja <Govindraj.Raja@imgtec.com>
+> Cc: linux-gpio@vger.kernel.org
+> Cc: devicetree@vger.kernel.org
+> Cc: Rob Herring <robh+dt@kernel.org>
+> Cc: Linus Walleij <linus.walleij@linaro.org>
+> Cc: Andrew Bresticker <abrestic@chromium.org>
+> Cc: linux-mips@linux-mips.org
+> Cc: James Hartley <James.Hartley@imgtec.com>
+> Cc: <stable@vger.kernel.org> # v4.2+
 
-I bisected this failure to commit bb11cff327e54 ("MIPS: Make smp CMP, CPS and MT
-use the new generic IPI functions". Bisect log is attached.
+Patch applied for fixes with the ACKs and all.
 
-> 	mips64:smp:mips_malta64_defconfig
-> 	mips:mipsel_malta_smp_defconfig
-> 	mips:mipsel_malta64_smp_defconfig
-
-If necessary I can repeat the bisect for those. Please let me know.
-
-Thanks,
-Guenter
-
----
-Bisect log:
-
-# bad: [4342eec3c5a2402ca5de3d6e56f541fe1c5171e2] Add linux-next specific files for 20160314
-# good: [f6cede5b49e822ebc41a099fe41ab4989f64e2cb] Linux 4.5-rc7
-git bisect start 'HEAD' 'v4.5-rc7'
-# good: [0525c3e26ec2c43cd509433be3be25210a0154ef] Merge remote-tracking branch 'drm-tegra/drm/tegra/for-next'
-git bisect good 0525c3e26ec2c43cd509433be3be25210a0154ef
-# bad: [385128a1b49762c1b9515c9f6294aeebbc55b956] Merge remote-tracking branch 'usb-chipidea-next/ci-for-usb-next'
-git bisect bad 385128a1b49762c1b9515c9f6294aeebbc55b956
-# good: [dfdb27baab4fc45c9399a991270413d0fb1c694a] Merge remote-tracking branch 'spi/for-next'
-git bisect good dfdb27baab4fc45c9399a991270413d0fb1c694a
-# bad: [e368d7d2a0dce6d6795ead1fc8a09bcca8a4a565] Merge branch 'timers/nohz'
-git bisect bad e368d7d2a0dce6d6795ead1fc8a09bcca8a4a565
-# good: [ced30bc9129777d715057d06fc8dbdfd3b81e94d] Merge tag 'perf-core-for-mingo-20160310' of git://git.kernel.org/pub/scm/linux/kernel/git/acme/linux into perf/core
-git bisect good ced30bc9129777d715057d06fc8dbdfd3b81e94d
-# bad: [656a61d4d9cbb8dfc2d007281190b2eccebad522] manual merge of mm/pkeys
-git bisect bad 656a61d4d9cbb8dfc2d007281190b2eccebad522
-# good: [16f7379f2da43f29d9faa2f474745e2705a3f510] Merge branch 'efi/core'
-git bisect good 16f7379f2da43f29d9faa2f474745e2705a3f510
-# bad: [a7fb9a8169be9a55e0cfb98346aece1b51c016fa] Merge branch 'locking/core'
-git bisect bad a7fb9a8169be9a55e0cfb98346aece1b51c016fa
-# good: [2a07870511829977d02609dac6450017b0419ea9] irqchip/mips-gic: Use gic_vpes instead of NR_CPUS
-git bisect good 2a07870511829977d02609dac6450017b0419ea9
-# good: [eaff0e7003cca6c2748b67ead2d4b1a8ad858fc7] locking/pvqspinlock: Move lock stealing count tracking code into pv_queued_spin_steal_lock()
-git bisect good eaff0e7003cca6c2748b67ead2d4b1a8ad858fc7
-# good: [013e379a3094ff2898f8d33cfbff1573d471ee14] tools/lib/lockdep: Fix link creation warning
-git bisect good 013e379a3094ff2898f8d33cfbff1573d471ee14
-# bad: [7eb8c99db26cc6499bfb1eba72dffc4730570752] MIPS: Delete smp-gic.c
-git bisect bad 7eb8c99db26cc6499bfb1eba72dffc4730570752
-# good: [fbde2d7d8290d8c642d591a471356abda2446874] MIPS: Add generic SMP IPI support
-git bisect good fbde2d7d8290d8c642d591a471356abda2446874
-# bad: [bb11cff327e54179c13446c4022ed4ed7d4871c7] MIPS: Make smp CMP, CPS and MT use the new generic IPI functions
-git bisect bad bb11cff327e54179c13446c4022ed4ed7d4871c7
-# first bad commit: [bb11cff327e54179c13446c4022ed4ed7d4871c7] MIPS: Make smp CMP, CPS and MT use the new generic IPI functions
+Yours,
+Linus Walleij
